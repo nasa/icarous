@@ -1,4 +1,4 @@
-package InterfaceTest;
+package gov.nasa.larc.ICAROUS;
 
 import java.io.*;
 import java.net.*;
@@ -23,24 +23,24 @@ public class ICAROUS_Interface{
     private InetAddress host      = null;
     private Parser MsgParser      = new Parser();
     public short interfaceType    = 0;
-    MAVLinkMessages RcvdMessages  = null;
+    AircraftData SharedData       = null;
 
     private msg_command_long CommandLong  = new msg_command_long();
 
-    public ICAROUS_Interface(String hostName,int receivePort,MAVLinkMessages msgs){
+    public ICAROUS_Interface(String hostName,int receivePort,AircraftData msgs){
 
 	interfaceType   = SITL;
 	udpHost         = hostName;
 	udpReceivePort  = receivePort;
-	RcvdMessages    = msgs;
+	SharedData      = msgs;
 	InitSocketInterface();
 	
     }
 
-    public ICAROUS_Interface(String portName, MAVLinkMessages msgs){
+    public ICAROUS_Interface(String portName, AircraftData msgs){
 
 	interfaceType  = PX4;
-	RcvdMessages   = msgs;
+	SharedData     = msgs;
     }
 
 
@@ -68,7 +68,9 @@ public class ICAROUS_Interface{
 	    System.out.println(e);
 	}
 
-	CheckHeartBeat();
+	if(interfaceType == SITL || interfaceType == PX4){
+	    CheckHeartBeat();
+	}
 
     }
 
@@ -159,10 +161,10 @@ public class ICAROUS_Interface{
 	
 	for(int i=0;i<(6+255+2);i++){
 	    
-	    RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer_data[i]);
+	    RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & input[i]);
 	    
 	    if(RcvdPacket != null){
-		RcvdMessages.decode_message(RcvdPacket);
+		SharedData.RcvdMessages.decode_message(RcvdPacket);
 	    }
 	}
 	
@@ -203,8 +205,8 @@ public class ICAROUS_Interface{
 	}
 
 	synchronized(RcvdMessages){
-	    if(RcvdMessages.msgCommandAck.command == CommandLong.command &&
-	       RcvdMessages.msgCommandAck.result == 0 ){
+	    if(SharedData.RcvdMessages.msgCommandAck.command == CommandLong.command &&
+	       SharedData.RcvdMessages.msgCommandAck.result == 0 ){
 		return 1;
 	    }
 	    else{
