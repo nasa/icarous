@@ -8,34 +8,34 @@ public class AircraftData{
     public MAVLinkMessages RcvdMessages;
 
     // Aircraft attitude
-    public float roll;
-    public float pitch;
-    public float yaw;
+    public double roll;
+    public double pitch;
+    public double yaw;
 
     // Aircraft euler rates
-    public float roll_rate;
-    public float pitch_rate;
-    public float yaw_rate;
+    public double roll_rate;
+    public double pitch_rate;
+    public double yaw_rate;
 
     // Aircraft angular rates
-    public float p;
-    public float q;
-    public float r;
+    public double p;
+    public double q;
+    public double r;
 
     // Aircraft velocity components in the body frame
-    public float u;
-    public float v;
-    public float w;
+    public double u;
+    public double v;
+    public double w;
 
     // Aircraft position (GPS)
-    public float lat;
-    public float lon;
-    public float alt;
+    public double lat;
+    public double lon;
+    public double alt;
 
     // Angle of attack, sideslip and airspeed
-    public float aoa;
-    public float sideslip;
-    public float airspeed;
+    public double aoa;
+    public double sideslip;
+    public double airspeed;
 
     public AircraftData(boolean msg_requirement){
 	if(msg_requirement){
@@ -72,6 +72,10 @@ public class AircraftData{
 
     public void GetDataFromMessages(){
 
+
+	lat = (double) (RcvdMessages.msgGlobalPositionInt.lat)/1.0E7;
+	lon = (double) (RcvdMessages.msgGlobalPositionInt.lon)/1.0E7;
+	alt = (double) (RcvdMessages.msgGlobalPositionInt.alt)/1.0E3;
     }
 
 }
