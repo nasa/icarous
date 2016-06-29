@@ -25,7 +25,6 @@ public class ICAROUS_Interface{
     public short interfaceType    = 0;
     AircraftData SharedData       = null;
 
-    private msg_command_long CommandLong  = new msg_command_long();
 
     public ICAROUS_Interface(String hostName,int receivePort,AircraftData msgs){
 
@@ -113,9 +112,9 @@ public class ICAROUS_Interface{
 	
     }
 
-    public void UDPWrite(){
+    public void UDPWrite(MAVLinkMessage msg2send){
 
-	MAVLinkPacket raw_packet = CommandLong.pack();
+	MAVLinkPacket raw_packet = msg2send.pack();
 	byte[] buffer            = raw_packet.encodePacket();
 
 	try{
@@ -133,7 +132,7 @@ public class ICAROUS_Interface{
 	//TODO;
     }
 
-    public void SerialWrite(){
+    public void SerialWrite(MAVLinkMessage msg2send){
 	//TODO;
     }
 	
@@ -146,12 +145,12 @@ public class ICAROUS_Interface{
 	}
     }
 
-    public void AP_Write(){
+    public void AP_Write(MAVLinkMessage msg2send){
 	if(interfaceType == SITL){
-	    this.UDPWrite();
+	    this.UDPWrite(msg2send);
 	}
 	else{
-	    this.SerialWrite();
+	    this.SerialWrite(msg2send);
 	}
     }
 
@@ -183,6 +182,7 @@ public class ICAROUS_Interface{
 			    float param6,
 			    float param7){
 
+	msg_command_long CommandLong  = new msg_command_long();
 	
 	CommandLong.target_system     = (short) target_system;
 	CommandLong.target_component  = (short) target_component;
@@ -196,7 +196,7 @@ public class ICAROUS_Interface{
 	CommandLong.param6            = param6;
 	CommandLong.param7            = param7;
 	
-	this.AP_Write();
+	this.AP_Write(CommandLong);
 
 	try{
 	    Thread.sleep(100);
@@ -204,9 +204,31 @@ public class ICAROUS_Interface{
 	    System.out.println(e);
 	}
 
+	return CheckAcknowledgement();
+    }
+
+    public int SetMode(int modeid){
+
+	msg_set_mode Mode = new msg_set_mode();
+	Mode.target_system = (short) 0;
+	Mode.base_mode     = (short) 1;
+	Mode.custom_mode   = (long) modeid;
+
+	this.AP_Write(Mode);
+
+	try{
+	    Thread.sleep(100);
+	}catch(InterruptedException e){
+	    System.out.println(e);
+	}
+	
+	return CheckAcknowledgement();	
+    }
+
+    public int CheckAcknowledgement(){
+
 	synchronized(SharedData){
-	    if(SharedData.RcvdMessages.msgCommandAck.command == CommandLong.command &&
-	       SharedData.RcvdMessages.msgCommandAck.result == 0 ){
+	    if(SharedData.RcvdMessages.msgCommandAck.result == 0 ){
 		return 1;
 	    }
 	    else{
@@ -214,9 +236,8 @@ public class ICAROUS_Interface{
 		return 0;
 	    }
 	}
+	
     }
-    
-    
     
     
 }

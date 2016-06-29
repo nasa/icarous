@@ -46,8 +46,8 @@ public class FMS_Thread implements Runnable{
 
 	/* --------- Example Mission ---------- */
 	
-	// Set mode to guided
-	
+	// Set mode to guided (4 is the custom mode in the arudpilot code)
+	AP.SetMode(4);
 	
 	// Arm the throttles
 	AP.SendCommand(0,0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,
