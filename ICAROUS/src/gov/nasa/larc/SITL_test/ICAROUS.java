@@ -1,4 +1,4 @@
-import InterfaceTest.*;
+import gov.nasa.larc.ICAROUS.*;
 
 public class ICAROUS{
 
