@@ -10,7 +10,7 @@ public class DAQ_Thread implements Runnable{
     public DAQ_Thread(String name,AircraftData Input, ICAROUS_Interface apInterface){
 	threadName   = name;
 	SharedData   = Input;
-	Px4          = apInterface;	
+	AP           = apInterface;	
     }
 
     public void run(){

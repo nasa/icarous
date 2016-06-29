@@ -78,7 +78,7 @@ public class ICAROUS_Interface{
 	System.out.println("Waiting for hearbeat...");
 	while(true){
 	    this.UDPRead();
-	    if(RcvdMessages.msgHeartbeat != null){
+	    if(SharedData.RcvdMessages.msgHeartbeat != null){
 		System.out.println("Got heart beat");
 		break;
 	    }
@@ -155,7 +155,7 @@ public class ICAROUS_Interface{
 	}
     }
 
-    public void ParseMessage(buffer[] input){
+    public void ParseMessage(byte[] input){
 	
 	MAVLinkPacket RcvdPacket = null;
 	
@@ -204,7 +204,7 @@ public class ICAROUS_Interface{
 	    System.out.println(e);
 	}
 
-	synchronized(RcvdMessages){
+	synchronized(SharedData){
 	    if(SharedData.RcvdMessages.msgCommandAck.command == CommandLong.command &&
 	       SharedData.RcvdMessages.msgCommandAck.result == 0 ){
 		return 1;

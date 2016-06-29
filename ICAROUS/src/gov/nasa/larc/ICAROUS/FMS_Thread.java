@@ -7,7 +7,7 @@ public class FMS_Thread implements Runnable{
     public String threadName;
     public AircraftData SharedData;
     public AircraftData apState;
-    public AP_Interface AP;
+    public ICAROUS_Interface AP;
     
     public FMS_Thread(String name,AircraftData Input, ICAROUS_Interface apInterface){
 	threadName       = name;
@@ -20,7 +20,7 @@ public class FMS_Thread implements Runnable{
 		
 	synchronized(SharedData){
 	    SharedData.GetDataFromMessages();
-	    apState.CopyAircraftStateInfo(rcvdData);
+	    apState.CopyAircraftStateInfo(SharedData);
 	}
 	
 	this.FlightManagement();

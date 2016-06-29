@@ -2,8 +2,8 @@ package gov.nasa.larc.ICAROUS;
 
 public class AircraftData{
 
-    public boolean INIT_MESSAGES = 1;
-    public boolean NO_MESSAGES   = 0;
+    public static boolean INIT_MESSAGES = true;
+    public static boolean NO_MESSAGES   = false;
     
     public MAVLinkMessages RcvdMessages;
 
