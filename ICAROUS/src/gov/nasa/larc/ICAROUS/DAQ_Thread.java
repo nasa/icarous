@@ -25,7 +25,7 @@ public class DAQ_Thread implements Runnable{
 
     public void run(){
 	while(true){
-	    AP.AP_Read();   
+	    AP.Read();   
 	}
     }
 

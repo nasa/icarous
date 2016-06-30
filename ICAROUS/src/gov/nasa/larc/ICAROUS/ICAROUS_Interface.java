@@ -90,7 +90,7 @@ public class ICAROUS_Interface{
     public void CheckHeartBeat(){
 	System.out.println("Waiting for hearbeat...");
 	while(true){
-	    this.AP_Read();
+	    this.Read();
 	    if(SharedData.RcvdMessages.msgHeartbeat != null){
 		System.out.println("Got heart beat");
 		break;
@@ -190,7 +190,7 @@ public class ICAROUS_Interface{
 	
     }
 	
-    public void AP_Read(){
+    public void Read(){
 	synchronized(SharedData){
 	    if(interfaceType == SITL){
 		this.UDPRead();
@@ -201,7 +201,7 @@ public class ICAROUS_Interface{
 	}
     }
 
-    public void AP_Write(MAVLinkMessage msg2send){
+    public void Write(MAVLinkMessage msg2send){
 
 	synchronized(SharedData){
 	    if(interfaceType == SITL){
@@ -256,7 +256,7 @@ public class ICAROUS_Interface{
 	CommandLong.param6            = param6;
 	CommandLong.param7            = param7;
 	
-	this.AP_Write(CommandLong);
+	this.Write(CommandLong);
 
 	try{
 	    Thread.sleep(100);
@@ -274,7 +274,7 @@ public class ICAROUS_Interface{
 	Mode.base_mode     = (short) 1;
 	Mode.custom_mode   = (long) modeid;
 
-	this.AP_Write(Mode);
+	this.Write(Mode);
 
 	try{
 	    Thread.sleep(100);
