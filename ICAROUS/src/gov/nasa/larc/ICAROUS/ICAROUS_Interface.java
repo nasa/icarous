@@ -17,7 +17,6 @@ import com.MAVLink.Messages.*;
 import com.MAVLink.common.*;
 import com.MAVLink.MAVLinkPacket;
 
-
 public class ICAROUS_Interface{
 
     public static short PX4       = 0;
@@ -99,11 +98,12 @@ public class ICAROUS_Interface{
     public void InitSerialInterface(){
 
 	//TODO:
+	
     }
 
     public void UDPRead(){
 
-	byte[] buffer = new byte[65536];
+	byte[] buffer = new byte[6+255+2];
 	byte[] buffer_data;
 	    
 	DatagramPacket input = new DatagramPacket(buffer, buffer.length);
@@ -156,6 +156,7 @@ public class ICAROUS_Interface{
     }
 
     public void AP_Write(MAVLinkMessage msg2send){
+
 	if(interfaceType == SITL){
 	    this.UDPWrite(msg2send);
 	}
@@ -174,6 +175,7 @@ public class ICAROUS_Interface{
 	    
 	    if(RcvdPacket != null){
 		SharedData.RcvdMessages.decode_message(RcvdPacket);
+		RcvdPacket = null;
 	    }
 	}
 	
