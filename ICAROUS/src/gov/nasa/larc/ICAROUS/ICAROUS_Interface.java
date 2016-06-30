@@ -35,7 +35,7 @@ public class ICAROUS_Interface{
     private Parser MsgParser      = new Parser();
     public short interfaceType    = 0;
     AircraftData SharedData       = null;
-    SerailPort serialPort         = null;
+    SerialPort serialPort         = null;
 
 
     public ICAROUS_Interface(String hostName,int receivePort,AircraftData msgs){
@@ -52,7 +52,7 @@ public class ICAROUS_Interface{
 
 	interfaceType  = PX4;
 	SharedData     = msgs;
-	SerialPortName = portName;
+	serialPortName = portName;
 	InitSerialInterface();
     }
 
@@ -81,7 +81,7 @@ public class ICAROUS_Interface{
 	    System.out.println(e);
 	}
 
-	if(interfaceType == SITL || interfaceType == PX4){
+	if(interfaceType == SITL){
 	    CheckHeartBeat();
 	}
 
@@ -116,7 +116,11 @@ public class ICAROUS_Interface{
 	    System.out.println(ex);
 	}
 
-	CheckHeartBeat();
+	System.out.println("Connected to serial port:"+serialPortName);
+
+	if(interfaceType == PX4){
+	    CheckHeartBeat();
+	}
     }
 	
     public void UDPRead(){
@@ -157,11 +161,33 @@ public class ICAROUS_Interface{
     }
 
     public void SerialRead(){
-	//TODO;
+
+	byte[] buffer = null;
+	
+	try{
+	    buffer = serialPort.readBytes(6+255+2);
+	}
+	catch(SerialPortException e){
+	    System.out.println(e);
+	}
+
+	ParseMessage(buffer);
     }
 
     public void SerialWrite(MAVLinkMessage msg2send){
-	//TODO;
+
+	MAVLinkPacket raw_packet = msg2send.pack();
+	byte[] buffer            = raw_packet.encodePacket();
+
+	try{
+	    serialPort.writeBytes(buffer);
+	    System.out.println("Sent command");
+	}
+	catch(SerialPortException e){
+	    System.err.println(e);
+	}
+
+	
     }
 	
     public void AP_Read(){
