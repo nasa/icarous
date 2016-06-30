@@ -65,7 +65,7 @@ public class FMS_Thread implements Runnable{
 
 	// Takeoff at current location
 	AP.SendCommand(0,0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,
-		       1,0,0,0, (float) apState.lat, (float) apState.lon, (float) apState.alt + 1.0f);
+		       1,0,0,0, (float) apState.lat, (float) apState.lon, (float) apState.alt + 10.0f);
     }
 
     
