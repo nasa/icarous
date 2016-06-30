@@ -9,7 +9,9 @@ package com.MAVLink;
 import java.io.Serializable;
 import com.MAVLink.Messages.MAVLinkPayload;
 import com.MAVLink.Messages.MAVLinkMessage;
+import com.MAVLink.icarous.CRC;
 import com.MAVLink.common.*;
+import com.MAVLink.icarous.*;
 
 /**
 * Common interface for all MAVLink Messages
@@ -149,7 +151,20 @@ public class MAVLinkPacket implements Serializable {
     */
     public MAVLinkMessage unpack() {
         switch (msgid) {
-                                                      
+                         
+            case msg_icarous_flightplan_update.MAVLINK_MSG_ID_ICAROUS_FLIGHTPLAN_UPDATE:
+                return  new msg_icarous_flightplan_update(this);
+                 
+            case msg_icarous_geofence.MAVLINK_MSG_ID_ICAROUS_GEOFENCE:
+                return  new msg_icarous_geofence(this);
+                 
+            case msg_icarous_mission_start_stop.MAVLINK_MSG_ID_ICAROUS_MISSION_START_STOP:
+                return  new msg_icarous_mission_start_stop(this);
+                 
+            case msg_combox_pulse.MAVLINK_MSG_ID_COMBOX_PULSE:
+                return  new msg_combox_pulse(this);
+            
+                             
             case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
                 return  new msg_heartbeat(this);
                  
