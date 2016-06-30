@@ -156,12 +156,6 @@ public class MAVLinkMessages{
 	
 	case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
 	    msgHeartbeat = (msg_heartbeat) message.unpack();
-	    System.out.println("HEART BEAT");
-	    System.out.println("Type           = "+msgHeartbeat.type);
-	    System.out.println("autopilot      = "+msgHeartbeat.autopilot);
-	    System.out.println("base mode      = "+msgHeartbeat.base_mode);
-	    System.out.println("custom mode    = "+msgHeartbeat.custom_mode);
-	    System.out.println("system status  = "+msgHeartbeat.system_status);
 	    break;
 	    
 	case msg_sys_status.MAVLINK_MSG_ID_SYS_STATUS:
