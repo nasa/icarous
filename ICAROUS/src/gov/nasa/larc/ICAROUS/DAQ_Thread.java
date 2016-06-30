@@ -25,21 +25,7 @@ public class DAQ_Thread implements Runnable{
 
     public void run(){
 	while(true){
-	    synchronized(SharedData){
-
-		// Pause reading if writing commands to pixhawk
-		if( ((AP.interfaceType == ICAROUS_Interface.PX4) ||
-		     (AP.interfaceType == ICAROUS_Interface.SITL)) &&
-		    SharedData.sendmsg){
-		    try{
-			SharedData.wait();
-		    }
-		    catch(InterruptedException e){
-			System.out.println(e);
-		    }
-		}
-		AP.AP_Read();
-	    }
+	    AP.AP_Read();   
 	}
     }
 

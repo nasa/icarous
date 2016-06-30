@@ -191,29 +191,24 @@ public class ICAROUS_Interface{
     }
 	
     public void AP_Read(){
-
-	if(interfaceType == SITL){
-	    this.UDPRead();
-	}
-	else{
-	    this.SerialRead();
+	synchronized(SharedData){
+	    if(interfaceType == SITL){
+		this.UDPRead();
+	    }
+	    else{
+		this.SerialRead();
+	    }
 	}
     }
 
     public void AP_Write(MAVLinkMessage msg2send){
 
-	SharedData.sendmsg = true;
-	if(interfaceType == SITL){
-	    this.UDPWrite(msg2send);
-	}
-	else{
-	    this.SerialWrite(msg2send);
-	}
-	SharedData.sendmsg = false;
-
-	if(interfaceType == SITL || interfaceType == PX4){
-	    synchronized(SharedData){
-		SharedData.notify();
+	synchronized(SharedData){
+	    if(interfaceType == SITL){
+		this.UDPWrite(msg2send);
+	    }
+	    else{
+		this.SerialWrite(msg2send);
 	    }
 	}
     }
