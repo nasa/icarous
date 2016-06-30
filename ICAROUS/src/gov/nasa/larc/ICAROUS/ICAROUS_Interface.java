@@ -192,7 +192,7 @@ public class ICAROUS_Interface{
 	
     public void Read(){
 	synchronized(SharedData){
-	    if(interfaceType == SITL){
+	    if(interfaceType == SITL || interfaceType == COMBOX){
 		this.UDPRead();
 	    }
 	    else{
@@ -204,7 +204,7 @@ public class ICAROUS_Interface{
     public void Write(MAVLinkMessage msg2send){
 
 	synchronized(SharedData){
-	    if(interfaceType == SITL){
+	    if(interfaceType == SITL || interfaceType == COMBOX){
 		this.UDPWrite(msg2send);
 	    }
 	    else{
