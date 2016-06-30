@@ -47,6 +47,8 @@ public class AircraftData{
     public double sideslip;
     public double airspeed;
 
+    boolean sendmsg;
+    
     public AircraftData(boolean msg_requirement){
 	if(msg_requirement){
 	    RcvdMessages = new MAVLinkMessages();
