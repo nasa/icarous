@@ -16,6 +16,8 @@ import com.MAVLink.Parser;
 import com.MAVLink.Messages.*;
 import com.MAVLink.common.*;
 import com.MAVLink.MAVLinkPacket;
+import jssc.SerialPort;
+import jssc.SerialPortException;
 
 public class ICAROUS_Interface{
 
@@ -28,11 +30,12 @@ public class ICAROUS_Interface{
     private int udpReceivePort    = 0;
     private int udpSendPort       = 0;
     private String udpHost        = null;
-    private String serialPort     = null;
+    private String serialPortName = null;
     private InetAddress host      = null;
     private Parser MsgParser      = new Parser();
     public short interfaceType    = 0;
     AircraftData SharedData       = null;
+    SerailPort serialPort         = null;
 
 
     public ICAROUS_Interface(String hostName,int receivePort,AircraftData msgs){
@@ -49,6 +52,8 @@ public class ICAROUS_Interface{
 
 	interfaceType  = PX4;
 	SharedData     = msgs;
+	SerialPortName = portName;
+	InitSerialInterface();
     }
 
 
@@ -85,7 +90,7 @@ public class ICAROUS_Interface{
     public void CheckHeartBeat(){
 	System.out.println("Waiting for hearbeat...");
 	while(true){
-	    this.UDPRead();
+	    this.AP_Read();
 	    if(SharedData.RcvdMessages.msgHeartbeat != null){
 		System.out.println("Got heart beat");
 		break;
@@ -97,10 +102,23 @@ public class ICAROUS_Interface{
     
     public void InitSerialInterface(){
 
-	//TODO:
-	
-    }
+	serialPort = new SerialPort(serialPortName);
 
+	try {
+	    serialPort.openPort();
+	    serialPort.setParams(SerialPort.BAUDRATE_57600, 
+				 SerialPort.DATABITS_8,
+				 SerialPort.STOPBITS_1,
+				 SerialPort.PARITY_NONE);
+	
+	}
+	catch(SerialPortException ex){
+	    System.out.println(ex);
+	}
+
+	CheckHeartBeat();
+    }
+	
     public void UDPRead(){
 
 	byte[] buffer = new byte[6+255+2];
