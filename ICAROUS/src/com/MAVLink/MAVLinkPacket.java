@@ -9,9 +9,7 @@ package com.MAVLink;
 import java.io.Serializable;
 import com.MAVLink.Messages.MAVLinkPayload;
 import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.ruddertest.CRC;
 import com.MAVLink.common.*;
-import com.MAVLink.ruddertest.*;
 
 /**
 * Common interface for all MAVLink Messages
@@ -151,11 +149,7 @@ public class MAVLinkPacket implements Serializable {
     */
     public MAVLinkMessage unpack() {
         switch (msgid) {
-                         
-            case msg_rudder_raw.MAVLINK_MSG_ID_RUDDER_RAW:
-                return  new msg_rudder_raw(this);
-            
-                             
+                                                      
             case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
                 return  new msg_heartbeat(this);
                  
