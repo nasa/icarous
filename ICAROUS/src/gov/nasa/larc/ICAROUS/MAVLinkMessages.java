@@ -13,6 +13,7 @@ package gov.nasa.larc.ICAROUS;;
 import java.io.*;
 import com.MAVLink.common.*;
 import com.MAVLink.MAVLinkPacket;
+import com.MAVLink.icarous.*;
 
 public class MAVLinkMessages{
 
@@ -149,7 +150,18 @@ public class MAVLinkMessages{
     public msg_statustext msgStatustext;
     public msg_debug msgDebug;
 
-
+    public msg_flightplan_info msgFlightplanInfo;
+    public msg_geofence_info msgGeofenceInfo;
+    public msg_pointofinterest msgPointofinterest;
+    public msg_command_acknowledgement msgCommandAcknowledgement;
+    public msg_combox_pulse msgComboxPulse;
+    public msg_mission_start_stop msgMissionStartStop;
+    
+    public int FlightPlanUpdateInterrupt;
+    public int GeoFenceUpdateInterrupt;
+    public int TrafficUpdateInterrupt;
+    public int ObstacleUpdateInterrupt;
+    
     public void decode_message(MAVLinkPacket message){
 
 	switch(message.msgid){
@@ -681,7 +693,21 @@ public class MAVLinkMessages{
 	case msg_debug.MAVLINK_MSG_ID_DEBUG:
 	    msgDebug = (msg_debug) message.unpack();
 	    break;
-	
+
+	case msg_flightplan_info.MAVLINK_MSG_ID_FLIGHTPLAN_INFO:
+	    msgFlightplanInfo = (msg_flightplan_info) message.unpack();
+	    FlightPlanUpdateInterrupt  = 1;
+	    break;
+
+	case msg_geofence_info.MAVLINK_MSG_ID_GEOFENCE_INFO:
+	    msgGeofenceInfo = (msg_geofence_info) message.unpack();
+	    GeoFenceUpdateInterrupt = 1;
+	    break;
+
+	case msg_combox_pulse.MAVLINK_MSG_ID_COMBOX_PULSE:
+	    msgComboxPulse = (msg_combox_pulse) message.unpack();
+	    break;
+	    
 	    
 	}
 	

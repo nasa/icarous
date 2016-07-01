@@ -9,6 +9,7 @@
  * Rights Reserved.
  */
 package gov.nasa.larc.ICAROUS;
+import java.util.*;
 
 public class AircraftData{
 
@@ -38,9 +39,7 @@ public class AircraftData{
     public double w;
 
     // Aircraft position (GPS)
-    public double lat;
-    public double lon;
-    public double alt;
+    public Position aircraftPosition;
 
     // Angle of attack, sideslip and airspeed
     public double aoa;
@@ -48,22 +47,28 @@ public class AircraftData{
     public double airspeed;
 
     boolean sendmsg;
+    List Waypoints = new ArrayList(); // List for mission waypoints
+    List GeoFence  = new ArrayList(); // List for geofence vertices
+    List Obstacles = new ArrayList(); // List for obstacles
+    List Traffic   = new ArrayList(); // List for traffic information
     
     public AircraftData(boolean msg_requirement){
 	if(msg_requirement){
 	    RcvdMessages = new MAVLinkMessages();
 	}
+
+	aircraftPosition = new Position();
     }
 
     public void CopyAircraftStateInfo(AircraftData Input){
 
-	roll = Input.roll;
+	roll  = Input.roll;
 	pitch = Input.pitch;
-	yaw = Input.pitch;
+	yaw   = Input.yaw;
 
-	roll_rate = Input.roll_rate;
+	roll_rate  = Input.roll_rate;
 	pitch_rate = Input.pitch_rate;
-	yaw_rate = Input.yaw_rate;
+	yaw_rate   = Input.yaw_rate;
 
 	p = Input.p;
 	q = Input.q;
@@ -73,21 +78,22 @@ public class AircraftData{
 	v = Input.v;
 	w = Input.w;
 
-	lat = Input.lat;
-	lon = Input.lon;
-	alt = Input.alt;
+	aircraftPosition.UpdatePosition(Input.aircraftPosition.lat,
+					Input.aircraftPosition.lon,
+					Input.aircraftPosition.alt);
 
-	aoa = Input.aoa;
+	aoa      = Input.aoa;
 	sideslip = Input.sideslip;
 	airspeed = Input.airspeed;
     }
 
     public void GetDataFromMessages(){
 
+	double lat = (double) (RcvdMessages.msgGlobalPositionInt.lat)/1.0E7;
+	double lon = (double) (RcvdMessages.msgGlobalPositionInt.lon)/1.0E7;
+	double alt = (double) (RcvdMessages.msgGlobalPositionInt.alt)/1.0E3;
 
-	lat = (double) (RcvdMessages.msgGlobalPositionInt.lat)/1.0E7;
-	lon = (double) (RcvdMessages.msgGlobalPositionInt.lon)/1.0E7;
-	alt = (double) (RcvdMessages.msgGlobalPositionInt.alt)/1.0E3;
+	aircraftPosition.UpdatePosition((float)lat,(float)lon,(float)alt);
     }
 
 }
