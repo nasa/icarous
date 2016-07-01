@@ -152,17 +152,23 @@ public class MAVLinkPacket implements Serializable {
     public MAVLinkMessage unpack() {
         switch (msgid) {
                          
-            case msg_icarous_flightplan_update.MAVLINK_MSG_ID_ICAROUS_FLIGHTPLAN_UPDATE:
-                return  new msg_icarous_flightplan_update(this);
+            case msg_flightplan_info.MAVLINK_MSG_ID_FLIGHTPLAN_INFO:
+                return  new msg_flightplan_info(this);
                  
-            case msg_icarous_geofence.MAVLINK_MSG_ID_ICAROUS_GEOFENCE:
-                return  new msg_icarous_geofence(this);
+            case msg_pointofinterest.MAVLINK_MSG_ID_PointOfInterest:
+                return  new msg_pointofinterest(this);
                  
-            case msg_icarous_mission_start_stop.MAVLINK_MSG_ID_ICAROUS_MISSION_START_STOP:
-                return  new msg_icarous_mission_start_stop(this);
+            case msg_geofence_info.MAVLINK_MSG_ID_GEOFENCE_INFO:
+                return  new msg_geofence_info(this);
+                 
+            case msg_mission_start_stop.MAVLINK_MSG_ID_MISSION_START_STOP:
+                return  new msg_mission_start_stop(this);
                  
             case msg_combox_pulse.MAVLINK_MSG_ID_COMBOX_PULSE:
                 return  new msg_combox_pulse(this);
+                 
+            case msg_command_acknowledgement.MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT:
+                return  new msg_command_acknowledgement(this);
             
                              
             case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:

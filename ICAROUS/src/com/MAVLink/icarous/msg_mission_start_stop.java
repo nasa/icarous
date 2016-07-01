@@ -4,27 +4,27 @@
  * java mavlink generator tool. It should not be modified by hand.
  */
 
-// MESSAGE COMBOX_PULSE PACKING
+// MESSAGE MISSION_START_STOP PACKING
 package com.MAVLink.icarous;
 import com.MAVLink.MAVLinkPacket;
 import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPayload;
         
 /**
-* Combox heartbeat
+* Flag to start/stop mission
 */
-public class msg_combox_pulse extends MAVLinkMessage{
+public class msg_mission_start_stop extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_COMBOX_PULSE = 154;
-    public static final int MAVLINK_MSG_LENGTH = 8;
-    private static final long serialVersionUID = MAVLINK_MSG_ID_COMBOX_PULSE;
+    public static final int MAVLINK_MSG_ID_MISSION_START_STOP = 153;
+    public static final int MAVLINK_MSG_LENGTH = 1;
+    private static final long serialVersionUID = MAVLINK_MSG_ID_MISSION_START_STOP;
 
 
       
     /**
-    * count
+    *  mission start (true)/stop (false)
     */
-    public long count;
+    public short missionStart;
     
 
     /**
@@ -35,30 +35,30 @@ public class msg_combox_pulse extends MAVLinkMessage{
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH);
         packet.sysid = 255;
         packet.compid = 190;
-        packet.msgid = MAVLINK_MSG_ID_COMBOX_PULSE;
+        packet.msgid = MAVLINK_MSG_ID_MISSION_START_STOP;
               
-        packet.payload.putUnsignedLong(count);
+        packet.payload.putUnsignedByte(missionStart);
         
         return packet;
     }
 
     /**
-    * Decode a combox_pulse message into this class fields
+    * Decode a mission_start_stop message into this class fields
     *
     * @param payload The message to decode
     */
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
               
-        this.count = payload.getUnsignedLong();
+        this.missionStart = payload.getUnsignedByte();
         
     }
 
     /**
     * Constructor for a new message, just initializes the msgid
     */
-    public msg_combox_pulse(){
-        msgid = MAVLINK_MSG_ID_COMBOX_PULSE;
+    public msg_mission_start_stop(){
+        msgid = MAVLINK_MSG_ID_MISSION_START_STOP;
     }
 
     /**
@@ -66,10 +66,10 @@ public class msg_combox_pulse extends MAVLinkMessage{
     * from a mavlink packet
     *
     */
-    public msg_combox_pulse(MAVLinkPacket mavLinkPacket){
+    public msg_mission_start_stop(MAVLinkPacket mavLinkPacket){
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_COMBOX_PULSE;
+        this.msgid = MAVLINK_MSG_ID_MISSION_START_STOP;
         unpack(mavLinkPacket.payload);        
     }
 
@@ -78,7 +78,7 @@ public class msg_combox_pulse extends MAVLinkMessage{
     * Returns a string with the MSG name and data
     */
     public String toString(){
-        return "MAVLINK_MSG_ID_COMBOX_PULSE -"+" count:"+count+"";
+        return "MAVLINK_MSG_ID_MISSION_START_STOP -"+" missionStart:"+missionStart+"";
     }
 }
         

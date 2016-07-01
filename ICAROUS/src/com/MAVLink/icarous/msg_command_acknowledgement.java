@@ -4,27 +4,32 @@
  * java mavlink generator tool. It should not be modified by hand.
  */
 
-// MESSAGE ICAROUS_MISSION_START_STOP PACKING
+// MESSAGE COMMAND_ACKNOWLEDGEMENT PACKING
 package com.MAVLink.icarous;
 import com.MAVLink.MAVLinkPacket;
 import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPayload;
         
 /**
-* Flag to start/stop mission
+* Acknowledgement
 */
-public class msg_icarous_mission_start_stop extends MAVLinkMessage{
+public class msg_command_acknowledgement extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_ICAROUS_MISSION_START_STOP = 152;
-    public static final int MAVLINK_MSG_LENGTH = 1;
-    private static final long serialVersionUID = MAVLINK_MSG_ID_ICAROUS_MISSION_START_STOP;
+    public static final int MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT = 155;
+    public static final int MAVLINK_MSG_LENGTH = 2;
+    private static final long serialVersionUID = MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT;
 
 
       
     /**
-    *  mission start (true)/stop (false)
+    * Acknowledgement type (0-waypoints,1-geofence)
     */
-    public short missionStart;
+    public short acktype;
+      
+    /**
+    * 1-success,0-failure
+    */
+    public short value;
     
 
     /**
@@ -35,30 +40,34 @@ public class msg_icarous_mission_start_stop extends MAVLinkMessage{
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH);
         packet.sysid = 255;
         packet.compid = 190;
-        packet.msgid = MAVLINK_MSG_ID_ICAROUS_MISSION_START_STOP;
+        packet.msgid = MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT;
               
-        packet.payload.putUnsignedByte(missionStart);
+        packet.payload.putUnsignedByte(acktype);
+              
+        packet.payload.putUnsignedByte(value);
         
         return packet;
     }
 
     /**
-    * Decode a icarous_mission_start_stop message into this class fields
+    * Decode a command_acknowledgement message into this class fields
     *
     * @param payload The message to decode
     */
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
               
-        this.missionStart = payload.getUnsignedByte();
+        this.acktype = payload.getUnsignedByte();
+              
+        this.value = payload.getUnsignedByte();
         
     }
 
     /**
     * Constructor for a new message, just initializes the msgid
     */
-    public msg_icarous_mission_start_stop(){
-        msgid = MAVLINK_MSG_ID_ICAROUS_MISSION_START_STOP;
+    public msg_command_acknowledgement(){
+        msgid = MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT;
     }
 
     /**
@@ -66,19 +75,19 @@ public class msg_icarous_mission_start_stop extends MAVLinkMessage{
     * from a mavlink packet
     *
     */
-    public msg_icarous_mission_start_stop(MAVLinkPacket mavLinkPacket){
+    public msg_command_acknowledgement(MAVLinkPacket mavLinkPacket){
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_ICAROUS_MISSION_START_STOP;
+        this.msgid = MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT;
         unpack(mavLinkPacket.payload);        
     }
 
-      
+        
     /**
     * Returns a string with the MSG name and data
     */
     public String toString(){
-        return "MAVLINK_MSG_ID_ICAROUS_MISSION_START_STOP -"+" missionStart:"+missionStart+"";
+        return "MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT -"+" acktype:"+acktype+" value:"+value+"";
     }
 }
         
