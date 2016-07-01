@@ -1,4 +1,5 @@
 MAVLinkSRC = $(wildcard src/com/MAVLink/*.java src/com/MAVLink/common/*.java \
+			src/com/MAVLink/icarous/*.java \
 	                src/com/MAVLink/enums/*.java \
 			src/com/MAVLink/Messages/*.java)
 
