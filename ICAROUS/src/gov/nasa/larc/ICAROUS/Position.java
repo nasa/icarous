@@ -30,37 +30,20 @@ class Waypoint extends Position{
 
     int id;
     float heading;
-    float maxHorDev;
-    float maxVerDev;
 
     public Waypoint(){
 	super();
 	id        =0;
 	heading   =0.0f;
-	maxHorDev =0.0f;
-	maxVerDev =0.0f;
     }
 
     public Waypoint(int id_in,float lat_in,float lon_in,float alt_in,
-		    float heading_in,float maxHorDev_in,float maxVerDev_in){
+		    float heading_in){
 	super(lat_in,lon_in,alt_in);
 	id    = id_in;
 	heading   = heading_in;
-        maxHorDev = maxHorDev_in;
-	maxVerDev = maxVerDev_in;
     }
-
-    public void UpdateWaypoint(int id_in,float lat_in,float lon_in,float alt_in,
-			       float heading_in,float maxHorDev_in,float maxVerDev_in){
-	id    = id_in;
-	this.UpdatePosition(lat_in,lon_in,alt_in);
-	heading   = heading_in;
-        maxHorDev = maxHorDev_in;
-	maxVerDev = maxVerDev_in;
-	
-    }
-    
-    
+        
 }
 
 class Obstacle extends Position{
@@ -73,3 +56,40 @@ class Obstacle extends Position{
     }
     
 }
+
+class FlightPlan{
+
+    public List wayPoints;
+    public int numWayPoints;
+    public float maxHorDev;
+    public float maxVerDev;
+    public float standOffDist;
+    public Iteration wpIt = null;
+
+    public FlightPlan(){
+	wayPoints    = new ArrayList();
+    }
+    
+    public void FlightPlanInfo(int num,float HorDev, float VerDev, float standDist){
+
+	numWayPoints = num;
+	maxHorDev    = HorDev;
+	maxVerDev    = VerDev;
+	standOffDist = standDist;
+    }
+
+    public void AddWaypoints(int index,Waypoint wp){
+	wayPoints.add(index,wp);
+
+	if(wpIt != null){
+	    wpIt = wayPoints.iterator();
+	}
+    }
+}
+
+
+
+
+
+
+

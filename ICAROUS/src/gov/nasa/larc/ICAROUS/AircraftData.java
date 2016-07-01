@@ -47,8 +47,9 @@ public class AircraftData{
     public double airspeed;
 
     boolean sendmsg;
-    List Waypoints = new ArrayList(); // List for mission waypoints
-    List GeoFence  = new ArrayList(); // List for geofence vertices
+    
+    public FlightPlan CurrentFlightPlan;
+    
     List Obstacles = new ArrayList(); // List for obstacles
     List Traffic   = new ArrayList(); // List for traffic information
     
@@ -57,7 +58,8 @@ public class AircraftData{
 	    RcvdMessages = new MAVLinkMessages();
 	}
 
-	aircraftPosition = new Position();
+	aircraftPosition    = new Position();
+	CurrentFlightPlan   = new FlightPlan();
     }
 
     public void CopyAircraftStateInfo(AircraftData Input){
