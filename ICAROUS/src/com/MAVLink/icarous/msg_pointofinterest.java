@@ -16,7 +16,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 public class msg_pointofinterest extends MAVLinkMessage{
 
     public static final int MAVLINK_MSG_ID_PointOfInterest = 151;
-    public static final int MAVLINK_MSG_LENGTH = 17;
+    public static final int MAVLINK_MSG_LENGTH = 18;
     private static final long serialVersionUID = MAVLINK_MSG_ID_PointOfInterest;
 
 
@@ -42,9 +42,14 @@ public class msg_pointofinterest extends MAVLinkMessage{
     public float heading;
       
     /**
-    * Identifier
+    * Identifier (0-Waypoint,1-geofence,2-Obstacle,3-Traffic)
     */
-    public short id;
+    public byte id;
+      
+    /**
+    * Index
+    */
+    public byte index;
     
 
     /**
@@ -65,7 +70,9 @@ public class msg_pointofinterest extends MAVLinkMessage{
               
         packet.payload.putFloat(heading);
               
-        packet.payload.putUnsignedByte(id);
+        packet.payload.putByte(id);
+              
+        packet.payload.putByte(index);
         
         return packet;
     }
@@ -86,7 +93,9 @@ public class msg_pointofinterest extends MAVLinkMessage{
               
         this.heading = payload.getFloat();
               
-        this.id = payload.getUnsignedByte();
+        this.id = payload.getByte();
+              
+        this.index = payload.getByte();
         
     }
 
@@ -109,12 +118,12 @@ public class msg_pointofinterest extends MAVLinkMessage{
         unpack(mavLinkPacket.payload);        
     }
 
-              
+                
     /**
     * Returns a string with the MSG name and data
     */
     public String toString(){
-        return "MAVLINK_MSG_ID_PointOfInterest -"+" lat:"+lat+" lon:"+lon+" alt:"+alt+" heading:"+heading+" id:"+id+"";
+        return "MAVLINK_MSG_ID_PointOfInterest -"+" lat:"+lat+" lon:"+lon+" alt:"+alt+" heading:"+heading+" id:"+id+" index:"+index+"";
     }
 }
         
