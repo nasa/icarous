@@ -10,13 +10,16 @@
  */
 package gov.nasa.larc.ICAROUS;
 
-enum FP_READ_STATE{
-    FP_INFO, FP_WAYPT_INFO, FP_ACK
-}
+import com.MAVLink.icarous.*;
 
 
 public class COM_Thread implements Runnable{
 
+    public enum FP_READ_STATE{
+	FP_INFO, FP_WAYPT_INFO, FP_ACK
+    }
+
+    
     public Thread t;
     public String threadName;
     public AircraftData SharedData;
@@ -66,20 +69,20 @@ public class COM_Thread implements Runnable{
     public void UpdateFlightPlan(){
 	
 	  boolean getFP        = true;
-	  FP_READ_STATE state1 = FP_INFO;
+	  FP_READ_STATE state1 = FP_READ_STATE.FP_INFO;
 	  int count            = 0;
 	  boolean failure      = false;
 	  
 	  while(getFP){
 	      switch(state1){
 		  
-	      case FP_IFO:
+	      case FP_INFO:
 		  
 		  msg_flightplan_info msg1 = SharedData.RcvdMessages.msgFlightplanInfo;
 
-		  SharedData.CurrentFlightPlan.FlightPlanInfo(msg.numWaypoints,msg.maxHorDev,msg.maxVerDev,msg.standoffDist);
+		  SharedData.CurrentFlightPlan.FlightPlanInfo(msg1.numWaypoints,msg1.maxHorDev,msg1.maxVerDev,msg1.standoffDist);
 		  
-		  state1 = WAYPOINT_INFO;
+		  state1 = FP_READ_STATE.FP_WAYPT_INFO;
 		  
 		  break;
 		  
@@ -91,7 +94,7 @@ public class COM_Thread implements Runnable{
 
 		  if(msg2.id == 0 && msg2.index != count){
 		      failure = true;
-		      state1  = ACKNOWLEDGE;
+		      state1  = FP_READ_STATE.FP_ACK;
 		      break;
 		  }
 		  
@@ -99,8 +102,8 @@ public class COM_Thread implements Runnable{
 
 		  SharedData.CurrentFlightPlan.AddWaypoints(count,wp);
 
-		  if(count == SharedData.CurrentFlightPlan.numWaypoints){
-		      state1  = ACKNOWLEDGE;
+		  if(count == SharedData.CurrentFlightPlan.numWayPoints){
+		      state1  = FP_READ_STATE.FP_ACK;
 		      failure = false;
 		  }
 		  else{

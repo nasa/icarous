@@ -1,5 +1,7 @@
 package gov.nasa.larc.ICAROUS;
 
+import java.util.*;
+
 public class Position{
 
     float lat;
@@ -60,17 +62,17 @@ class Obstacle extends Position{
 class FlightPlan{
 
     public List wayPoints;
-    public int numWayPoints;
+    public long numWayPoints;
     public float maxHorDev;
     public float maxVerDev;
     public float standOffDist;
-    public Iteration wpIt = null;
+    public Iterator wpIt = null;
 
     public FlightPlan(){
 	wayPoints    = new ArrayList();
     }
     
-    public void FlightPlanInfo(int num,float HorDev, float VerDev, float standDist){
+    public void FlightPlanInfo(long num,float HorDev, float VerDev, float standDist){
 
 	numWayPoints = num;
 	maxHorDev    = HorDev;
