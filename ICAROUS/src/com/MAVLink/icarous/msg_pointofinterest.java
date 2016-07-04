@@ -4,7 +4,7 @@
  * java mavlink generator tool. It should not be modified by hand.
  */
 
-// MESSAGE PointOfInterest PACKING
+// MESSAGE POINTOFINTEREST PACKING
 package com.MAVLink.icarous;
 import com.MAVLink.MAVLinkPacket;
 import com.MAVLink.Messages.MAVLinkMessage;
@@ -15,9 +15,9 @@ import com.MAVLink.Messages.MAVLinkPayload;
 */
 public class msg_pointofinterest extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_PointOfInterest = 151;
+    public static final int MAVLINK_MSG_ID_POINTOFINTEREST = 151;
     public static final int MAVLINK_MSG_LENGTH = 18;
-    private static final long serialVersionUID = MAVLINK_MSG_ID_PointOfInterest;
+    private static final long serialVersionUID = MAVLINK_MSG_ID_POINTOFINTEREST;
 
 
       
@@ -60,7 +60,7 @@ public class msg_pointofinterest extends MAVLinkMessage{
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH);
         packet.sysid = 255;
         packet.compid = 190;
-        packet.msgid = MAVLINK_MSG_ID_PointOfInterest;
+        packet.msgid = MAVLINK_MSG_ID_POINTOFINTEREST;
               
         packet.payload.putFloat(lat);
               
@@ -103,7 +103,7 @@ public class msg_pointofinterest extends MAVLinkMessage{
     * Constructor for a new message, just initializes the msgid
     */
     public msg_pointofinterest(){
-        msgid = MAVLINK_MSG_ID_PointOfInterest;
+        msgid = MAVLINK_MSG_ID_POINTOFINTEREST;
     }
 
     /**
@@ -114,7 +114,7 @@ public class msg_pointofinterest extends MAVLinkMessage{
     public msg_pointofinterest(MAVLinkPacket mavLinkPacket){
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_PointOfInterest;
+        this.msgid = MAVLINK_MSG_ID_POINTOFINTEREST;
         unpack(mavLinkPacket.payload);        
     }
 
@@ -123,7 +123,7 @@ public class msg_pointofinterest extends MAVLinkMessage{
     * Returns a string with the MSG name and data
     */
     public String toString(){
-        return "MAVLINK_MSG_ID_PointOfInterest -"+" lat:"+lat+" lon:"+lon+" alt:"+alt+" heading:"+heading+" id:"+id+" index:"+index+"";
+        return "MAVLINK_MSG_ID_POINTOFINTEREST -"+" lat:"+lat+" lon:"+lon+" alt:"+alt+" heading:"+heading+" id:"+id+" index:"+index+"";
     }
 }
         

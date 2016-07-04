@@ -155,7 +155,7 @@ public class MAVLinkPacket implements Serializable {
             case msg_flightplan_info.MAVLINK_MSG_ID_FLIGHTPLAN_INFO:
                 return  new msg_flightplan_info(this);
                  
-            case msg_pointofinterest.MAVLINK_MSG_ID_PointOfInterest:
+            case msg_pointofinterest.MAVLINK_MSG_ID_POINTOFINTEREST:
                 return  new msg_pointofinterest(this);
                  
             case msg_geofence_info.MAVLINK_MSG_ID_GEOFENCE_INFO:
