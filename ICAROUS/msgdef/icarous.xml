@@ -13,7 +13,7 @@
 		  <field type="uint32_t" name="numWaypoints">Number of waypoints</field>
 		</message>
 
-		<message id="151" name="PointOfInterest">
+		<message id="151" name="POINTOFINTEREST">
 		  <description>Point in space (Waypoint/Vertex etc...)</description>
 		  <field type="int8_t" name="id">Identifier (0-Waypoint,1-geofence,2-Obstacle,3-Traffic)</field>
 		  <field type="int8_t" name="index">Index</field>
