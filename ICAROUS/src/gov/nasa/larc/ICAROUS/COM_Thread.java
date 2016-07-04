@@ -16,7 +16,7 @@ import com.MAVLink.icarous.*;
 public class COM_Thread implements Runnable{
 
     public enum FP_READ_STATE{
-	FP_INFO, FP_WAYPT_INFO, FP_ACK
+	FP_INFO, FP_WAYPT_INFO, FP_ACK_FAIL,FP_ACK_SUCCESS
     }
 
     
@@ -37,6 +37,9 @@ public class COM_Thread implements Runnable{
 
 	if(SharedData.RcvdMessages.FlightPlanUpdateInterrupt == 1){
 	    //TODO: synchronization
+	    synchronized(SharedData){
+		UpdateFlightPlan();
+	    }
 	}
 
 	if(SharedData.RcvdMessages.GeoFenceUpdateInterrupt == 1){
@@ -52,6 +55,15 @@ public class COM_Thread implements Runnable{
 
 
 	}
+
+	System.out.println("Printing received waypoint information");
+	for(int i=0;i<SharedData.CurrentFlightPlan.wayPoints.size();i++){
+	    Waypoint wp = (Waypoint) SharedData.CurrentFlightPlan.wayPoints.get(i);
+	    System.out.println("**** Waypoint "+i+" ****");
+	    System.out.println("latitude " + wp.lat);
+	    System.out.println("longitude " + wp.lon);
+	}
+	
 
 	// TODO: Implement COM box write
 	// COM.Write()	
@@ -71,7 +83,6 @@ public class COM_Thread implements Runnable{
 	  boolean getFP        = true;
 	  FP_READ_STATE state1 = FP_READ_STATE.FP_INFO;
 	  int count            = 0;
-	  boolean failure      = false;
 	  
 	  while(getFP){
 	      switch(state1){
@@ -83,6 +94,8 @@ public class COM_Thread implements Runnable{
 		  SharedData.CurrentFlightPlan.FlightPlanInfo(msg1.numWaypoints,msg1.maxHorDev,msg1.maxVerDev,msg1.standoffDist);
 		  
 		  state1 = FP_READ_STATE.FP_WAYPT_INFO;
+
+		  System.out.println("Received flight plan info, Reading " +msg1.numWaypoints+" waypoints");
 		  
 		  break;
 		  
@@ -93,8 +106,8 @@ public class COM_Thread implements Runnable{
 		  msg_pointofinterest msg2 = SharedData.RcvdMessages.msgPointofinterest;
 
 		  if(msg2.id == 0 && msg2.index != count){
-		      failure = true;
-		      state1  = FP_READ_STATE.FP_ACK;
+		      
+		      state1  = FP_READ_STATE.FP_ACK_FAIL;
 		      break;
 		  }
 		  
@@ -102,34 +115,48 @@ public class COM_Thread implements Runnable{
 
 		  SharedData.CurrentFlightPlan.AddWaypoints(count,wp);
 
-		  if(count == SharedData.CurrentFlightPlan.numWayPoints){
-		      state1  = FP_READ_STATE.FP_ACK;
-		      failure = false;
+		  if(count == (SharedData.CurrentFlightPlan.numWayPoints-1)){
+		      state1  = FP_READ_STATE.FP_ACK_SUCCESS;
+		      
 		  }
 		  else{
 		      count++;
+		      System.out.println("Receiving next waypoint");
 		  }
 		  
 		  break;
-		  
-	      case FP_ACK:
+
+	      case FP_ACK_SUCCESS:
 
 		  msg_command_acknowledgement msg3 = new msg_command_acknowledgement();
 
 		  msg3.acktype = 0;
 		  
-		  if(failure){
-		      getFP = false;
-		      // Send acknowledgment
-		      msg3.value = 0;
-		  }
-		  else{
-		      getFP = false;
-		      // Send acknowledgment
-		      msg3.value = 1;
-		  }
+		 
+		  getFP = false;
+		  // Send acknowledgment
+		  msg3.value = 1;
+		  
 		  
 		  COM.Write(msg3);
+
+		  System.out.println("Waypoints received successfully");
+		  
+		  break;  
+		  
+	      case FP_ACK_FAIL:
+
+		  msg_command_acknowledgement msg4 = new msg_command_acknowledgement();
+
+		  msg4.acktype = 0;
+		  
+		  
+		  getFP = false;
+		  // Send acknowledgment
+		  msg4.value = 0;
+		  
+		  
+		  COM.Write(msg4);
 		  
 		  break;
 		  

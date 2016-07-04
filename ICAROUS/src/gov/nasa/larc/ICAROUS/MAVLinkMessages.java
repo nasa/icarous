@@ -17,7 +17,7 @@ import com.MAVLink.icarous.*;
 
 public class MAVLinkMessages{
 
-    public msg_heartbeat msgHeartbeat;
+    public msg_heartbeat msgHeartbeat = null;
     public msg_sys_status msgSysStatus;
     public msg_system_time msgSystemTime;
     public msg_ping msgPing;
@@ -154,7 +154,7 @@ public class MAVLinkMessages{
     public msg_geofence_info msgGeofenceInfo;
     public msg_pointofinterest msgPointofinterest;
     public msg_command_acknowledgement msgCommandAcknowledgement;
-    public msg_combox_pulse msgComboxPulse;
+    public msg_combox_pulse msgComboxPulse = null;
     public msg_mission_start_stop msgMissionStartStop;
     
     public int FlightPlanUpdateInterrupt;
@@ -697,6 +697,10 @@ public class MAVLinkMessages{
 	case msg_flightplan_info.MAVLINK_MSG_ID_FLIGHTPLAN_INFO:
 	    msgFlightplanInfo = (msg_flightplan_info) message.unpack();
 	    FlightPlanUpdateInterrupt  = 1;
+	    break;
+
+	case msg_pointofinterest.MAVLINK_MSG_ID_POINTOFINTEREST:
+	    msgPointofinterest = (msg_pointofinterest) message.unpack();
 	    break;
 
 	case msg_geofence_info.MAVLINK_MSG_ID_GEOFENCE_INFO:
