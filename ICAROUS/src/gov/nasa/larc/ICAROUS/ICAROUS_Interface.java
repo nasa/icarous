@@ -38,9 +38,9 @@ public class ICAROUS_Interface{
     SerialPort serialPort         = null;
 
 
-    public ICAROUS_Interface(String hostName,int receivePort,AircraftData msgs){
+    public ICAROUS_Interface(int intType,String hostName,int receivePort,AircraftData msgs){
 
-	interfaceType   = SITL;
+	interfaceType   = (short) intType;
 	udpHost         = hostName;
 	udpReceivePort  = receivePort;
 	SharedData      = msgs;
@@ -48,9 +48,9 @@ public class ICAROUS_Interface{
 	
     }
 
-    public ICAROUS_Interface(String portName, AircraftData msgs){
+    public ICAROUS_Interface(int intType,String portName, AircraftData msgs){
 
-	interfaceType  = PX4;
+	interfaceType  = (short) intType;
 	SharedData     = msgs;
 	serialPortName = portName;
 	InitSerialInterface();
@@ -66,33 +66,34 @@ public class ICAROUS_Interface{
 	catch(IOException e){
 	    System.err.println(e);
 	}
-	
-	byte[] buffer = new byte[65536];
-	byte[] buffer_data;
-	    
-	DatagramPacket input = new DatagramPacket(buffer, buffer.length);
-
-	// Initial read to get port number to send messages
-	System.out.println("Waiting for input from port:"+udpReceivePort);
-	try{
-	    sock.receive(input);
-	    udpSendPort = input.getPort();
-	}catch(IOException e){
-	    System.out.println(e);
-	}
-
+		
 	if(interfaceType == SITL){
-	    CheckHeartBeat();
+	    CheckAPHeartBeat();
+	}
+	else if(interfaceType == COMBOX){
+	    CheckCOMHeartBeat();
 	}
 
     }
 
-    public void CheckHeartBeat(){
-	System.out.println("Waiting for hearbeat...");
+    public void CheckAPHeartBeat(){
+	System.out.println("Waiting for hearbeat from autopilot...");
 	while(true){
 	    this.Read();
 	    if(SharedData.RcvdMessages.msgHeartbeat != null){
 		System.out.println("Got heart beat");
+		break;
+	    }
+	}
+	
+    }
+
+    public void CheckCOMHeartBeat(){
+	System.out.println("Waiting for hearbeat from combox...");
+	while(true){
+	    this.Read();
+	    if(SharedData.RcvdMessages.msgComboxPulse != null){
+		System.out.println("Got heart beat from combox");
 		break;
 	    }
 	}
@@ -119,7 +120,7 @@ public class ICAROUS_Interface{
 	System.out.println("Connected to serial port:"+serialPortName);
 
 	if(interfaceType == PX4){
-	    CheckHeartBeat();
+	    CheckAPHeartBeat();
 	}
     }
 	
@@ -132,10 +133,15 @@ public class ICAROUS_Interface{
 
 	try{
 	    sock.receive(input);
-		
+
+	    // Get port number on host to send data
+	    if(udpSendPort == 0){
+		udpSendPort = input.getPort();
+	    }
+	    
 	    buffer_data   = input.getData();
 		
-	    this.ParseMessage(buffer_data);
+	    this.ParseMessage(buffer_data);	    
 	    
 	}catch(IOException e){
 	    System.out.println(e);
