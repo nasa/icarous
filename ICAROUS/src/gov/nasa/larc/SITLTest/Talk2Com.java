@@ -133,10 +133,13 @@ public class Talk2Com{
 	wp4.alt     = 0.0f;
 	wp4.heading = 0.0f;
 
+	msg_mission_start_stop msgMissionStart = new msg_mission_start_stop();
+
+	msgMissionStart.missionStart = 1;
 	
 	// Send all messages
 	try{
-	UDPWrite(msgComboxPulse,sock,host,udpSendPort);	Thread.sleep(1000);
+	UDPWrite(msgComboxPulse,sock,host,udpSendPort);	Thread.sleep(5000);
 
 	UDPWrite(msgFlightPlanInfo,sock,host,udpSendPort); Thread.sleep(100);
 	
@@ -152,9 +155,10 @@ public class Talk2Com{
 
 	if(ack.acktype == 0 && ack.value == 1){
 	    System.out.println("Waypoints sent successfully");
+	    UDPWrite(msgMissionStart,sock,host,udpSendPort);
 	}
 	else{
-	    System.out.println("Resend waypoints");;
+	    System.out.println("Resend waypoints");
 	}
 	}
 	catch(InterruptedException e){

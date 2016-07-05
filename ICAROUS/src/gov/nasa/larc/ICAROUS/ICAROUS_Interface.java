@@ -38,13 +38,13 @@ public class ICAROUS_Interface{
     SerialPort serialPort         = null;
 
 
-    public ICAROUS_Interface(int intType,String hostName,int receivePort,AircraftData msgs){
+    public ICAROUS_Interface(int intType,String hostName,int receivePort,int timeout,AircraftData msgs){
 
 	interfaceType   = (short) intType;
 	udpHost         = hostName;
 	udpReceivePort  = receivePort;
 	SharedData      = msgs;
-	InitSocketInterface();
+	InitSocketInterface(timeout);
 	
     }
 
@@ -57,7 +57,7 @@ public class ICAROUS_Interface{
     }
 
 
-    public void InitSocketInterface(){
+    public void InitSocketInterface(int timeout){
 	
 	try{
 	    host  = InetAddress.getByName(udpHost);
@@ -74,10 +74,17 @@ public class ICAROUS_Interface{
 	    CheckCOMHeartBeat();
 	}
 
+	try{
+	    sock.setSoTimeout(timeout);
+	}
+	catch(SocketException e){
+	    System.out.println(e);
+	}
+
     }
 
     public void CheckAPHeartBeat(){
-	System.out.println("Waiting for hearbeat from autopilot...");
+	System.out.println("Waiting for heartbeat from autopilot...");
 	while(true){
 	    this.Read();
 	    if(SharedData.RcvdMessages.msgHeartbeat != null){
@@ -89,7 +96,7 @@ public class ICAROUS_Interface{
     }
 
     public void CheckCOMHeartBeat(){
-	System.out.println("Waiting for hearbeat from combox...");
+	System.out.println("Waiting for heartbeat from combox...");
 	while(true){
 	    this.Read();
 	    if(SharedData.RcvdMessages.msgComboxPulse != null){
@@ -142,6 +149,8 @@ public class ICAROUS_Interface{
 	    buffer_data   = input.getData();
 		
 	    this.ParseMessage(buffer_data);	    
+	    
+	}catch(SocketTimeoutException e){
 	    
 	}catch(IOException e){
 	    System.out.println(e);
@@ -197,13 +206,11 @@ public class ICAROUS_Interface{
     }
 	
     public void Read(){
-	synchronized(SharedData){
-	    if(interfaceType == SITL || interfaceType == COMBOX){
-		this.UDPRead();
-	    }
-	    else{
-		this.SerialRead();
-	    }
+	if(interfaceType == SITL || interfaceType == COMBOX){
+	    this.UDPRead();
+	}
+	else{
+	    this.SerialRead();
 	}
     }
 
@@ -226,10 +233,12 @@ public class ICAROUS_Interface{
 	for(int i=0;i<(6+255+2);i++){
 	    
 	    RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & input[i]);
-	    
-	    if(RcvdPacket != null){
-		SharedData.RcvdMessages.decode_message(RcvdPacket);
-		RcvdPacket = null;
+
+	    synchronized(SharedData){
+		if(RcvdPacket != null){
+		    SharedData.RcvdMessages.decode_message(RcvdPacket);
+		    RcvdPacket = null;
+		}
 	    }
 	}
 	

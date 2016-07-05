@@ -17,6 +17,7 @@ public class SITL_ComTest{
 	ICAROUS_Interface COMint   = new ICAROUS_Interface(ICAROUS_Interface.COMBOX,  /*Interface type */
 							   args[0],                   /*Host name */
 							   Integer.parseInt(args[1]), /*Receiving port address */
+							   0,                         /*Port time out*/
 							   SharedData);               /*Shared data */
 	
 	COM_Thread COM             = new COM_Thread("Communication",SharedData,COMint);

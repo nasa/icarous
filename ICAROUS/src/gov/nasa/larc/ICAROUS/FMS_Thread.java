@@ -19,27 +19,28 @@ public class FMS_Thread implements Runnable{
     public AircraftData SharedData;
     public AircraftData apState;
     public ICAROUS_Interface AP;
-    
+    public int FMS_state;
     
     public FMS_Thread(String name,AircraftData Input, ICAROUS_Interface apInterface){
 	threadName       = name;
 	SharedData       = Input;
 	AP               = apInterface;
 	apState          = new AircraftData(AircraftData.NO_MESSAGES);
+	FMS_state        = 0;
     }
 
     public void run(){
 
-
-	synchronized(SharedData){
-	    SharedData.GetDataFromMessages();
-	    apState.CopyAircraftStateInfo(SharedData);
+	while(true){
+	    synchronized(SharedData){
+		SharedData.GetDataFromMessages();
+		apState.CopyAircraftStateInfo(SharedData);
+	    }
+	    
+	    this.FlightManagement();
 	}
-	
-	this.FlightManagement();
-
     }
-
+    
     
     public void start(){
 	System.out.println("Starting "+threadName);
@@ -77,29 +78,23 @@ public class FMS_Thread implements Runnable{
 	*/
 
 	
-	Waypoint wp1 = new Waypoint();
-	wp1.id       = 0;
-	wp1.lat      = 37.611865f;
-	wp1.lon      = -122.3754350f;
-	wp1.alt      = 0.0f;
-	wp1.heading  = 0.0f;
+	if(FMS_state == 0){
 
-	Waypoint wp2 = new Waypoint();
-	wp2.id       = 1;
-	wp2.lat      = 37.615267f; 
-	wp2.lon      = -122.373179f;
-	wp2.alt      = 0.0f;
-	wp2.heading  = 0.0f;
-
-	SharedData.CurrentFlightPlan.FlightPlanInfo(2,0,0,0);
-	SharedData.CurrentFlightPlan.AddWaypoints(0,wp1);
-	SharedData.CurrentFlightPlan.AddWaypoints(1,wp2);
-
-	
-	
-	System.out.println("Starting write");
-	synchronized(SharedData){
-	    SendFlightPlanToAP();
+	    //System.out.println("start mission:"+SharedData.startMission);
+	    synchronized(SharedData){
+		if(SharedData.startMission == 1){
+		    FMS_state++;
+		    SharedData.startMission = -1;
+		    System.out.println("Starting mission sequence");
+		}
+	    }
+	}
+	else if(FMS_state == 1){
+	    System.out.println("Starting write");
+	    synchronized(SharedData){
+		this.SendFlightPlanToAP();
+	    }
+	    FMS_state = 2;
 	}
     }
 
@@ -125,13 +120,16 @@ public class FMS_Thread implements Runnable{
 	System.out.println("Clearing mission on AP");
 	AP.Write(msgMissionClearAll);
 	
+	
 	while(!writeComplete){
 
 	    if(state == 0){
+		
+		
 		msgMissionCount.count = SharedData.CurrentFlightPlan.numWayPoints;
 
 		AP.Write(msgMissionCount);
-		System.out.println("Wrote mission count");
+		System.out.println("Wrote mission count: "+SharedData.CurrentFlightPlan.numWayPoints);
 		state++;
 	    }
 	    else if(state == 1){
@@ -139,7 +137,7 @@ public class FMS_Thread implements Runnable{
 		AP.Read();
 		
 		try{
-		    Thread.sleep(500);
+		    Thread.sleep(50);
 		}
 		catch(InterruptedException e){
 		    System.out.println(e);
@@ -147,7 +145,7 @@ public class FMS_Thread implements Runnable{
 		
 		if(SharedData.RcvdMessages.RcvdMissionRequest == 1){
 		    SharedData.RcvdMessages.RcvdMissionRequest = 0;
-		    
+
 		    System.out.println("Received mission request: "+SharedData.RcvdMessages.msgMissionRequest.seq);
 		    
 		    msgMissionItem.seq     = SharedData.RcvdMessages.msgMissionRequest.seq;
@@ -165,35 +163,25 @@ public class FMS_Thread implements Runnable{
 		    
 		    AP.Write(msgMissionItem);
 		    System.out.println("Wrote mission item");
+		    count++;
 		}
-		
-		
-		count++;
-		
-		if(count == SharedData.CurrentFlightPlan.numWayPoints){
-		    state++;
-		}
-		
-	    	
-		
-	    }
-	    else if(state == 2){
 		
 		if(SharedData.RcvdMessages.RcvdMissionAck == 1){
 		    SharedData.RcvdMessages.RcvdMissionAck = 0;
 		    System.out.println("Received acknowledgement - type: "+SharedData.RcvdMessages.msgMissionAck.type);
 		    if(SharedData.RcvdMessages.msgMissionAck.type == 0){
-			writeComplete = true;
-			System.out.println("Waypoints sent successfully");
+			if(count == SharedData.CurrentFlightPlan.numWayPoints){
+			    state++;
+			    System.out.println("Waypoints sent successfully");
+			    writeComplete = true;
+			}
+			
 		    }
 		    else{
 			state = 0;
 			System.out.println("Error in writing mission to AP");
 		    }
-		}
-		
-		
-		
+		}			
 	    }
 	}
 

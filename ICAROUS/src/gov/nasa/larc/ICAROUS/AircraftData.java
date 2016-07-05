@@ -52,6 +52,8 @@ public class AircraftData{
     
     List Obstacles = new ArrayList(); // List for obstacles
     List Traffic   = new ArrayList(); // List for traffic information
+
+    public int startMission = -1; // -1: last command executed, 0 - stop mission, 1 - start mission
     
     public AircraftData(boolean msg_requirement){
 	if(msg_requirement){

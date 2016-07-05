@@ -33,41 +33,58 @@ public class COM_Thread implements Runnable{
 
     public void run(){
 
-	COM.Read();
+	while(true){
+	
+	    COM.Read();
 
-	if(SharedData.RcvdMessages.FlightPlanUpdateInterrupt == 1){
-	    //TODO: synchronization
-	    synchronized(SharedData){
-		UpdateFlightPlan();
+	    if(SharedData.RcvdMessages.FlightPlanUpdateInterrupt == 1){
+		//TODO: synchronization
+		synchronized(SharedData){
+		    UpdateFlightPlan();
+		    SharedData.RcvdMessages.FlightPlanUpdateInterrupt = 0;
+		}
+		
 	    }
-	}
 
-	if(SharedData.RcvdMessages.GeoFenceUpdateInterrupt == 1){
-
-
-	}
-
-	if(SharedData.RcvdMessages.TrafficUpdateInterrupt == 1){
-
-	}
-
-	if(SharedData.RcvdMessages.ObstacleUpdateInterrupt == 1){
+	    if(SharedData.RcvdMessages.GeoFenceUpdateInterrupt == 1){
 
 
-	}
+	    }
 
-	System.out.println("Printing received waypoint information");
-	for(int i=0;i<SharedData.CurrentFlightPlan.wayPoints.size();i++){
-	    Waypoint wp = (Waypoint) SharedData.CurrentFlightPlan.wayPoints.get(i);
-	    System.out.println("**** Waypoint "+i+" ****");
-	    System.out.println("latitude " + wp.lat);
-	    System.out.println("longitude " + wp.lon);
-	}
+	    if(SharedData.RcvdMessages.TrafficUpdateInterrupt == 1){
+
+	    }
+
+	    if(SharedData.RcvdMessages.ObstacleUpdateInterrupt == 1){
+
+
+	    }
+
+	    
+	    if(SharedData.RcvdMessages.RcvdMissionStart == 1){
+		synchronized(SharedData){
+		    SharedData.startMission = SharedData.RcvdMessages.msgMissionStartStop.missionStart;
+		    SharedData.RcvdMessages.RcvdMissionStart = -1;
+		}
+		System.out.println("Received mission start");
+		
+	    }
+
+	  
+
+	    /*
+	    System.out.println("Printing received waypoint information");
+	    for(int i=0;i<SharedData.CurrentFlightPlan.wayPoints.size();i++){
+		Waypoint wp = (Waypoint) SharedData.CurrentFlightPlan.wayPoints.get(i);
+		System.out.println("**** Waypoint "+i+" ****");
+		System.out.println("latitude " + wp.lat);
+		System.out.println("longitude " + wp.lon);
+		}*/
 	
 
-	// TODO: Implement COM box write
-	// COM.Write()	
-
+	    // TODO: Implement COM box write
+	    // COM.Write()	
+	}
     }
 
     

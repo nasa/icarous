@@ -165,6 +165,7 @@ public class MAVLinkMessages{
     public int RcvdMissionItem;
     public int RcvdMissionRequest;
     public int RcvdMissionAck;
+    public int RcvdMissionStart;
 
     public MAVLinkMessages(){
 	FlightPlanUpdateInterrupt = 0;
@@ -175,7 +176,7 @@ public class MAVLinkMessages{
 	RcvdMissionItem           = 0;
 	RcvdMissionRequest        = 0;
 	RcvdMissionAck            = 0;
-
+	RcvdMissionStart          = -1;
     }
     
     public void decode_message(MAVLinkPacket message){
@@ -730,6 +731,11 @@ public class MAVLinkMessages{
 
 	case msg_combox_pulse.MAVLINK_MSG_ID_COMBOX_PULSE:
 	    msgComboxPulse = (msg_combox_pulse) message.unpack();
+	    break;
+
+	case msg_mission_start_stop.MAVLINK_MSG_ID_MISSION_START_STOP:
+	    msgMissionStartStop = (msg_mission_start_stop) message.unpack();
+	    RcvdMissionStart    = 1;
 	    break;
 	    
 	    
