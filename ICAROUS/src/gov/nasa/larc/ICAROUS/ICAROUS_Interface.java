@@ -245,74 +245,7 @@ public class ICAROUS_Interface{
 
     }
     
-    public int SendCommand( int target_system,
-			    int target_component,
-			    int confirmation,
-			    int command,
-			    float param1,
-			    float param2,
-			    float param3,
-			    float param4,
-			    float param5,
-			    float param6,
-			    float param7){
-
-	msg_command_long CommandLong  = new msg_command_long();
-	
-	CommandLong.target_system     = (short) target_system;
-	CommandLong.target_component  = (short) target_component;
-	CommandLong.command           = command;
-	CommandLong.confirmation      = (short) confirmation;
-	CommandLong.param1            = param1;
-	CommandLong.param2            = param2;
-	CommandLong.param3            = param3;
-	CommandLong.param4            = param4;
-	CommandLong.param5            = param5;
-	CommandLong.param6            = param6;
-	CommandLong.param7            = param7;
-	
-	this.Write(CommandLong);
-
-	try{
-	    Thread.sleep(100);
-	}catch(InterruptedException e){
-	    System.out.println(e);
-	}
-
-	return CheckAcknowledgement();
-    }
-
-    public int SetMode(int modeid){
-
-	msg_set_mode Mode = new msg_set_mode();
-	Mode.target_system = (short) 0;
-	Mode.base_mode     = (short) 1;
-	Mode.custom_mode   = (long) modeid;
-
-	this.Write(Mode);
-
-	try{
-	    Thread.sleep(100);
-	}catch(InterruptedException e){
-	    System.out.println(e);
-	}
-	
-	return CheckAcknowledgement();	
-    }
-
-    public int CheckAcknowledgement(){
-
-	synchronized(SharedData){
-	    if(SharedData.RcvdMessages.msgCommandAck.result == 0 ){
-		return 1;
-	    }
-	    else{
-		System.out.println("Command not accepted\n");
-		return 0;
-	    }
-	}
-	
-    }
+    
     
     
 }

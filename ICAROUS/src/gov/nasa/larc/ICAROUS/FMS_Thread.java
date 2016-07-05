@@ -12,13 +12,10 @@ package gov.nasa.larc.ICAROUS;
 import com.MAVLink.enums.*;
 import com.MAVLink.common.*;
 
-public class FMS_Thread implements Runnable{
+public class FMS_Thread extends Aircraft implements Runnable{
 
     public Thread t;
-    public String threadName;
-    public AircraftData SharedData;
-    public AircraftData apState;
-    public ICAROUS_Interface AP;
+    public String threadName;    
     public int FMS_state;
     
     public FMS_Thread(String name,AircraftData Input, ICAROUS_Interface apInterface){
@@ -96,180 +93,33 @@ public class FMS_Thread implements Runnable{
 	    }
 	    FMS_state = 2;
 	}
-    }
-
-
-    public void SendFlightPlanToAP(){
+	else if(FMS_state == 2){
+	    SetMode(4);
 	
-	int state = 0;
+	    // Arm the throttles
+	    SendCommand(0,0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,
+			   1,0,0,0,0,0,0);
+	    
+	    // Takeoff at current location
+	    SendCommand(0,0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,
+			   1,0,0,0, (float) apState.aircraftPosition.lat,
+			   (float) apState.aircraftPosition.lon,
+			   (float) apState.aircraftPosition.alt_msl + 10.0f);
+	    FMS_state++;
+	}
+	else if(FMS_state == 3){
 
-	msg_mission_count msgMissionCount = new msg_mission_count();
-	msg_mission_item msgMissionItem   = new msg_mission_item();
-	msg_mission_clear_all msgMissionClearAll = new msg_mission_clear_all();
-	boolean writeComplete = false;
-	int count = 0;
-
-	msgMissionCount.target_system    = 0;
-	msgMissionCount.target_component = 0;
-	msgMissionItem.target_system     = 0;
-	msgMissionItem.target_component  = 0;
-
-	msgMissionClearAll.target_system    = 0;
-	msgMissionClearAll.target_component = 0;
-
-	System.out.println("Clearing mission on AP");
-	AP.Write(msgMissionClearAll);
-	
-	
-	while(!writeComplete){
-
-	    if(state == 0){
-		
-		
-		msgMissionCount.count = SharedData.CurrentFlightPlan.numWayPoints;
-
-		AP.Write(msgMissionCount);
-		System.out.println("Wrote mission count: "+SharedData.CurrentFlightPlan.numWayPoints);
-		state++;
-	    }
-	    else if(state == 1){
-
-		AP.Read();
-		
-		try{
-		    Thread.sleep(50);
-		}
-		catch(InterruptedException e){
-		    System.out.println(e);
-		}
-		
-		if(SharedData.RcvdMessages.RcvdMissionRequest == 1){
-		    SharedData.RcvdMessages.RcvdMissionRequest = 0;
-
-		    System.out.println("Received mission request: "+SharedData.RcvdMessages.msgMissionRequest.seq);
-		    
-		    msgMissionItem.seq     = SharedData.RcvdMessages.msgMissionRequest.seq;
-		    msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
-		    msgMissionItem.command = MAV_CMD.MAV_CMD_NAV_WAYPOINT;
-		    msgMissionItem.current = 0;
-		    msgMissionItem.autocontinue = 0;
-		    msgMissionItem.param1  = 0.0f;
-		    msgMissionItem.param2  = 0.0f;
-		    msgMissionItem.param3  = 0.0f;
-		    msgMissionItem.param4  = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).heading;
-		    msgMissionItem.x       = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).lat;
-		    msgMissionItem.y       = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).lon;
-		    msgMissionItem.z       = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).alt;
-		    
-		    AP.Write(msgMissionItem);
-		    System.out.println("Wrote mission item");
-		    count++;
-		}
-		
-		if(SharedData.RcvdMessages.RcvdMissionAck == 1){
-		    SharedData.RcvdMessages.RcvdMissionAck = 0;
-		    System.out.println("Received acknowledgement - type: "+SharedData.RcvdMessages.msgMissionAck.type);
-		    if(SharedData.RcvdMessages.msgMissionAck.type == 0){
-			if(count == SharedData.CurrentFlightPlan.numWayPoints){
-			    state++;
-			    System.out.println("Waypoints sent successfully");
-			    writeComplete = true;
-			}
-			
-		    }
-		    else{
-			state = 0;
-			System.out.println("Error in writing mission to AP");
-		    }
-		}			
+	    if(apState.aircraftPosition.alt_agl > 10.0f){
+		System.out.println("Reached commanded altitude for takeoff");
+		//Set mode to auto
+		SetMode(3);
+		FMS_state = 4;
 	    }
 	}
-
     }
+
+
     
-    public void GetFlightPlanFromAP(){
-
-	int state = 0;
-	msg_mission_request_list msgRequestMissionList = new msg_mission_request_list();
-	msg_mission_request msgMissionRequest          = new msg_mission_request();
-	boolean readComplete = false;
-	
-	while(!readComplete){
-	    if(state == 0){
-		
-		msgRequestMissionList.target_system    = 0;
-		msgRequestMissionList.target_component = 0;
-		
-		AP.Write(msgRequestMissionList);
-		state = 1;
-	    }
-
-	    if(state == 1){
-		synchronized(SharedData){
-		    if (SharedData.RcvdMessages.RcvdMissionCount == 1){
-			System.out.println("Received missioncount");
-			SharedData.RcvdMessages.RcvdMissionCount = 0;
-
-			state = 2;
-		    }
-		    else{
-			state = 0;
-		    }
-		}
-	    }
-
-	    if(state == 2){
-	    
-		msgMissionRequest.target_system    = 0;
-		msgMissionRequest.target_component = 0;
-
-		for(int i=0;i<SharedData.RcvdMessages.msgMissionCount.count;i++){
-		    msgMissionRequest.seq          = i;
-
-		    AP.Write(msgMissionRequest);
-		
-		    try{
-			Thread.sleep(100);
-		    }
-		    catch(InterruptedException e){
-			System.out.println(e);
-		    }
-
-		    synchronized(SharedData){
-			if (SharedData.RcvdMessages.RcvdMissionItem == 1){
-			    System.out.println("Received mission item: "+i);
-			    SharedData.RcvdMessages.RcvdMissionItem = 0;
-
-			    System.out.println(SharedData.RcvdMessages.msgMissionItem.x);
-			    System.out.println(SharedData.RcvdMessages.msgMissionItem.y);
-			    System.out.println(SharedData.RcvdMessages.msgMissionItem.z);
-		 
-			}
-			else{
-			    System.out.println("Transaction failed");
-
-			}
-
-		    }
-		
-		    state = 3;
-		    
-		}
-
-		if (state == 3){
-
-		    msg_mission_ack msgMissionAck = new msg_mission_ack();
-		    msgMissionAck.target_system    = 0;
-		    msgMissionAck.target_component = 0;
-		    msgMissionAck.type             = 0;
-
-		    AP.Write(msgMissionAck);
-		}
-	    
-	    
-	    }
-	}
-	
-
-    }
+      
 }
+
