@@ -1,0 +1,262 @@
+/**
+ * ICAROUS Interface
+ * Contact: Swee Balachandran (swee.balachandran@nianet.org)
+ * 
+ * 
+ * Copyright (c) 2011-2016 United States Government as represented by
+ * the National Aeronautics and Space Administration.  No copyright
+ * is claimed in the United States under Title 17, U.S.Code. All Other
+ * Rights Reserved.
+ */
+package gov.nasa.larc.ICAROUS;
+import com.MAVLink.enums.*;
+import com.MAVLink.common.*;
+
+public class Aircraft{
+
+    public AircraftData SharedData;
+    public AircraftData apState;
+    public ICAROUS_Interface AP;
+
+    public int SendCommand( int target_system,
+			    int target_component,
+			    int confirmation,
+			    int command,
+			    float param1,
+			    float param2,
+			    float param3,
+			    float param4,
+			    float param5,
+			    float param6,
+			    float param7){
+
+	msg_command_long CommandLong  = new msg_command_long();
+	
+	CommandLong.target_system     = (short) target_system;
+	CommandLong.target_component  = (short) target_component;
+	CommandLong.command           = command;
+	CommandLong.confirmation      = (short) confirmation;
+	CommandLong.param1            = param1;
+	CommandLong.param2            = param2;
+	CommandLong.param3            = param3;
+	CommandLong.param4            = param4;
+	CommandLong.param5            = param5;
+	CommandLong.param6            = param6;
+	CommandLong.param7            = param7;
+	
+	AP.Write(CommandLong);
+
+	try{
+	    Thread.sleep(100);
+	}catch(InterruptedException e){
+	    System.out.println(e);
+	}
+
+	return CheckAcknowledgement();
+    }
+
+    public int SetMode(int modeid){
+
+	msg_set_mode Mode = new msg_set_mode();
+	Mode.target_system = (short) 0;
+	Mode.base_mode     = (short) 1;
+	Mode.custom_mode   = (long) modeid;
+
+	AP.Write(Mode);
+
+	try{
+	    Thread.sleep(100);
+	}catch(InterruptedException e){
+	    System.out.println(e);
+	}
+	
+	return CheckAcknowledgement();	
+    }
+
+    public int CheckAcknowledgement(){
+
+	synchronized(SharedData){
+	    if(SharedData.RcvdMessages.msgCommandAck.result == 0 ){
+		return 1;
+	    }
+	    else{
+		System.out.println("Command not accepted\n");
+		return 0;
+	    }
+	}
+	
+    }
+
+    public void SendFlightPlanToAP(){
+	
+	int state = 0;
+	
+	msg_mission_count msgMissionCount = new msg_mission_count();
+	msg_mission_item msgMissionItem   = new msg_mission_item();
+	msg_mission_clear_all msgMissionClearAll = new msg_mission_clear_all();
+	boolean writeComplete = false;
+	int count = 0;
+
+	msgMissionCount.target_system    = 0;
+	msgMissionCount.target_component = 0;
+	msgMissionItem.target_system     = 0;
+	msgMissionItem.target_component  = 0;
+
+	msgMissionClearAll.target_system    = 0;
+	msgMissionClearAll.target_component = 0;
+
+	System.out.println("Clearing mission on AP");
+	AP.Write(msgMissionClearAll);
+	
+	
+	while(!writeComplete){
+
+	    if(state == 0){
+		
+		
+		msgMissionCount.count = SharedData.CurrentFlightPlan.numWayPoints;
+
+		AP.Write(msgMissionCount);
+		System.out.println("Wrote mission count: "+SharedData.CurrentFlightPlan.numWayPoints);
+		state++;
+	    }
+	    else if(state == 1){
+
+		AP.Read();
+		
+		try{
+		    Thread.sleep(50);
+		}
+		catch(InterruptedException e){
+		    System.out.println(e);
+		}
+		
+		if(SharedData.RcvdMessages.RcvdMissionRequest == 1){
+		    SharedData.RcvdMessages.RcvdMissionRequest = 0;
+
+		    System.out.println("Received mission request: "+SharedData.RcvdMessages.msgMissionRequest.seq);
+		    
+		    msgMissionItem.seq     = SharedData.RcvdMessages.msgMissionRequest.seq;
+		    msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
+		    msgMissionItem.command = MAV_CMD.MAV_CMD_NAV_WAYPOINT;
+		    msgMissionItem.current = 0;
+		    msgMissionItem.autocontinue = 0;
+		    msgMissionItem.param1  = 0.0f;
+		    msgMissionItem.param2  = 0.0f;
+		    msgMissionItem.param3  = 0.0f;
+		    msgMissionItem.param4  = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).heading;
+		    msgMissionItem.x       = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).lat;
+		    msgMissionItem.y       = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).lon;
+		    msgMissionItem.z       = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).alt_msl;
+		    
+		    AP.Write(msgMissionItem);
+		    System.out.println("Wrote mission item");
+		    count++;
+		}
+		
+		if(SharedData.RcvdMessages.RcvdMissionAck == 1){
+		    SharedData.RcvdMessages.RcvdMissionAck = 0;
+		    System.out.println("Received acknowledgement - type: "+SharedData.RcvdMessages.msgMissionAck.type);
+		    if(SharedData.RcvdMessages.msgMissionAck.type == 0){
+			if(count == SharedData.CurrentFlightPlan.numWayPoints){
+			    state++;
+			    System.out.println("Waypoints sent successfully");
+			    writeComplete = true;
+			}
+			
+		    }
+		    else{
+			state = 0;
+			System.out.println("Error in writing mission to AP");
+		    }
+		}			
+	    }
+	}
+
+    }
+    
+    public void GetFlightPlanFromAP(){
+
+	int state = 0;
+	msg_mission_request_list msgRequestMissionList = new msg_mission_request_list();
+	msg_mission_request msgMissionRequest          = new msg_mission_request();
+	boolean readComplete = false;
+	
+	while(!readComplete){
+	    if(state == 0){
+		
+		msgRequestMissionList.target_system    = 0;
+		msgRequestMissionList.target_component = 0;
+		
+		AP.Write(msgRequestMissionList);
+		state = 1;
+	    }
+
+	    if(state == 1){
+		synchronized(SharedData){
+		    if (SharedData.RcvdMessages.RcvdMissionCount == 1){
+			System.out.println("Received missioncount");
+			SharedData.RcvdMessages.RcvdMissionCount = 0;
+
+			state = 2;
+		    }
+		    else{
+			state = 0;
+		    }
+		}
+	    }
+
+	    if(state == 2){
+	    
+		msgMissionRequest.target_system    = 0;
+		msgMissionRequest.target_component = 0;
+
+		for(int i=0;i<SharedData.RcvdMessages.msgMissionCount.count;i++){
+		    msgMissionRequest.seq          = i;
+
+		    AP.Write(msgMissionRequest);
+		
+		    try{
+			Thread.sleep(100);
+		    }
+		    catch(InterruptedException e){
+			System.out.println(e);
+		    }
+
+		    synchronized(SharedData){
+			if (SharedData.RcvdMessages.RcvdMissionItem == 1){
+			    System.out.println("Received mission item: "+i);
+			    SharedData.RcvdMessages.RcvdMissionItem = 0;
+
+			    System.out.println(SharedData.RcvdMessages.msgMissionItem.x);
+			    System.out.println(SharedData.RcvdMessages.msgMissionItem.y);
+			    System.out.println(SharedData.RcvdMessages.msgMissionItem.z);
+		 
+			}
+			else{
+			    System.out.println("Transaction failed");
+
+			}
+
+		    }
+		
+		    state = 3;
+		    
+		}
+
+		if (state == 3){
+
+		    msg_mission_ack msgMissionAck = new msg_mission_ack();
+		    msgMissionAck.target_system    = 0;
+		    msgMissionAck.target_component = 0;
+		    msgMissionAck.type             = 0;
+
+		    AP.Write(msgMissionAck);
+		}
+	    
+	    
+	    }
+	}
+
+    }
+}
