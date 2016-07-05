@@ -10,7 +10,7 @@
 		  <field type="float" name="standoffDist">Standoff distance</field>
 		  <field type="float" name="maxHorDev">Maximum horizontal deviation from flight plan</field>
 		  <field type="float" name="maxVerDev">Maximum vertical deviation from flight plan</field>
-		  <field type="uint32_t" name="numWaypoints">Number of waypoints</field>
+		  <field type="int32_t" name="numWaypoints">Number of waypoints</field>
 		</message>
 
 		<message id="151" name="POINTOFINTEREST">

@@ -39,7 +39,7 @@ public class msg_flightplan_info extends MAVLinkMessage{
     /**
     * Number of waypoints
     */
-    public long numWaypoints;
+    public int numWaypoints;
       
     /**
     * Message type, 0-new flight plan, 1-update existing flight plan
@@ -63,7 +63,7 @@ public class msg_flightplan_info extends MAVLinkMessage{
               
         packet.payload.putFloat(maxVerDev);
               
-        packet.payload.putUnsignedInt(numWaypoints);
+        packet.payload.putInt(numWaypoints);
               
         packet.payload.putUnsignedByte(msgType);
         
@@ -84,7 +84,7 @@ public class msg_flightplan_info extends MAVLinkMessage{
               
         this.maxVerDev = payload.getFloat();
               
-        this.numWaypoints = payload.getUnsignedInt();
+        this.numWaypoints = payload.getInt();
               
         this.msgType = payload.getUnsignedByte();
         
