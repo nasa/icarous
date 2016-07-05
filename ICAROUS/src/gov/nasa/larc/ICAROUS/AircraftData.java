@@ -84,7 +84,8 @@ public class AircraftData{
 
 	aircraftPosition.UpdatePosition(Input.aircraftPosition.lat,
 					Input.aircraftPosition.lon,
-					Input.aircraftPosition.alt);
+					Input.aircraftPosition.alt_msl,
+					Input.aircraftPosition.alt_agl);
 
 	aoa      = Input.aoa;
 	sideslip = Input.sideslip;
@@ -95,9 +96,10 @@ public class AircraftData{
 
 	double lat = (double) (RcvdMessages.msgGlobalPositionInt.lat)/1.0E7;
 	double lon = (double) (RcvdMessages.msgGlobalPositionInt.lon)/1.0E7;
-	double alt = (double) (RcvdMessages.msgGlobalPositionInt.alt)/1.0E3;
+	double alt_msl = (double) (RcvdMessages.msgGlobalPositionInt.alt)/1.0E3;
+	double alt_agl = (double) (RcvdMessages.msgGlobalPositionInt.relative_alt)/1.0E3;
 
-	aircraftPosition.UpdatePosition((float)lat,(float)lon,(float)alt);
+	aircraftPosition.UpdatePosition((float)lat,(float)lon,(float)alt_msl,(float)alt_agl);
     }
 
 }
