@@ -21,7 +21,7 @@ public class FMS_Thread extends Aircraft implements Runnable{
     public FMS_Thread(String name,AircraftData Input, ICAROUS_Interface apInterface){
 	threadName       = name;
 	SharedData       = Input;
-	AP               = apInterface;
+	Intf             = apInterface;
 	apState          = new AircraftData(AircraftData.NO_MESSAGES);
 	FMS_state        = 0;
     }

@@ -11,13 +11,19 @@
 package gov.nasa.larc.ICAROUS;
 import com.MAVLink.enums.*;
 import com.MAVLink.common.*;
+import com.MAVLink.icarous.*;
 
 public class Aircraft{
 
     public AircraftData SharedData;
     public AircraftData apState;
-    public ICAROUS_Interface AP;
+    public ICAROUS_Interface Intf;
 
+    public enum FP_READ_STATE{
+	FP_INFO, FP_WAYPT_INFO, FP_ACK_FAIL,FP_ACK_SUCCESS
+    }
+
+    
     public int SendCommand( int target_system,
 			    int target_component,
 			    int confirmation,
@@ -44,7 +50,7 @@ public class Aircraft{
 	CommandLong.param6            = param6;
 	CommandLong.param7            = param7;
 	
-	AP.Write(CommandLong);
+	Intf.Write(CommandLong);
 
 	try{
 	    Thread.sleep(100);
@@ -62,7 +68,7 @@ public class Aircraft{
 	Mode.base_mode     = (short) 1;
 	Mode.custom_mode   = (long) modeid;
 
-	AP.Write(Mode);
+	Intf.Write(Mode);
 
 	try{
 	    Thread.sleep(100);
@@ -106,7 +112,7 @@ public class Aircraft{
 	msgMissionClearAll.target_component = 0;
 
 	System.out.println("Clearing mission on AP");
-	AP.Write(msgMissionClearAll);
+	Intf.Write(msgMissionClearAll);
 	
 	
 	while(!writeComplete){
@@ -116,13 +122,13 @@ public class Aircraft{
 		
 		msgMissionCount.count = SharedData.CurrentFlightPlan.numWayPoints;
 
-		AP.Write(msgMissionCount);
+		Intf.Write(msgMissionCount);
 		System.out.println("Wrote mission count: "+SharedData.CurrentFlightPlan.numWayPoints);
 		state++;
 	    }
 	    else if(state == 1){
 
-		AP.Read();
+		Intf.Read();
 		
 		try{
 		    Thread.sleep(50);
@@ -149,7 +155,7 @@ public class Aircraft{
 		    msgMissionItem.y       = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).lon;
 		    msgMissionItem.z       = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).alt_msl;
 		    
-		    AP.Write(msgMissionItem);
+		    Intf.Write(msgMissionItem);
 		    System.out.println("Wrote mission item");
 		    count++;
 		}
@@ -188,7 +194,7 @@ public class Aircraft{
 		msgRequestMissionList.target_system    = 0;
 		msgRequestMissionList.target_component = 0;
 		
-		AP.Write(msgRequestMissionList);
+		Intf.Write(msgRequestMissionList);
 		state = 1;
 	    }
 
@@ -214,7 +220,7 @@ public class Aircraft{
 		for(int i=0;i<SharedData.RcvdMessages.msgMissionCount.count;i++){
 		    msgMissionRequest.seq          = i;
 
-		    AP.Write(msgMissionRequest);
+		    Intf.Write(msgMissionRequest);
 		
 		    try{
 			Thread.sleep(100);
@@ -251,12 +257,107 @@ public class Aircraft{
 		    msgMissionAck.target_component = 0;
 		    msgMissionAck.type             = 0;
 
-		    AP.Write(msgMissionAck);
+		    Intf.Write(msgMissionAck);
 		}
 	    
 	    
 	    }
 	}
 
+    }
+
+    public void UpdateFlightPlan(){
+	
+	  boolean getFP        = true;
+	  FP_READ_STATE state1 = FP_READ_STATE.FP_INFO;
+	  int count            = 0;
+	  
+	  
+	  while(getFP){
+	      switch(state1){
+		  
+	      case FP_INFO:
+		  
+		  msg_flightplan_info msg1 = SharedData.RcvdMessages.msgFlightplanInfo;
+
+		  SharedData.CurrentFlightPlan.FlightPlanInfo(msg1.numWaypoints,msg1.maxHorDev,msg1.maxVerDev,msg1.standoffDist);
+		  
+		  state1 = FP_READ_STATE.FP_WAYPT_INFO;
+
+		  System.out.println("Received flight plan info, Reading " +msg1.numWaypoints+" waypoints");
+		  
+		  break;
+		  
+	      case FP_WAYPT_INFO:
+		  
+		  Intf.Read();
+
+		  msg_pointofinterest msg2 = SharedData.RcvdMessages.msgPointofinterest;
+
+		  if(msg2.id == 0 && msg2.index != count){
+		      
+		      state1  = FP_READ_STATE.FP_ACK_FAIL;
+		      break;
+		  }
+
+		  Waypoint wp          = new Waypoint(msg2.index,msg2.lat,msg2.lon,msg2.alt,msg2.heading);
+		  
+		  //wp.id      = msg2.index;
+		  //wp.lat     = msg2.lat;
+		  //wp.lon     = msg2.lon;
+		  //wp.alt_msl = msg2.alt;
+		  //wp.heading = msg2.heading;
+
+		  System.out.println("waypoint:"+count+" lat:"+wp.lat+" lon:"+wp.lon);
+		  SharedData.CurrentFlightPlan.AddWaypoints(count,wp);
+
+		  if(count == (SharedData.CurrentFlightPlan.numWayPoints-1)){
+		      state1  = FP_READ_STATE.FP_ACK_SUCCESS;
+		      
+		  }
+		  else{
+		      count++;
+		      System.out.println("Receiving next waypoint");
+		  }
+		  
+		  break;
+
+	      case FP_ACK_SUCCESS:
+
+		  msg_command_acknowledgement msg3 = new msg_command_acknowledgement();
+
+		  msg3.acktype = 0;
+		  
+		 
+		  getFP = false;
+		  // Send acknowledgment
+		  msg3.value = 1;
+		  
+		  
+		  Intf.Write(msg3);
+
+		  System.out.println("Waypoints received successfully");
+		  
+		  break;  
+		  
+	      case FP_ACK_FAIL:
+
+		  msg_command_acknowledgement msg4 = new msg_command_acknowledgement();
+
+		  msg4.acktype = 0;
+		  
+		  
+		  getFP = false;
+		  // Send acknowledgment
+		  msg4.value = 0;
+		  
+		  
+		  Intf.Write(msg4);
+		  
+		  break;
+		  
+	      }
+	  }
+	  
     }
 }
