@@ -5,7 +5,7 @@ MAVLinkSRC = $(wildcard src/com/MAVLink/*.java src/com/MAVLink/common/*.java \
 
 ICAROUSSRC = $(wildcard src/gov/nasa/larc/ICAROUS/*.java)
 
-SITLSRC    = $(wildcard src/gov/nasa/larc/SITL/*.java)
+SITLSRC    = $(wildcard src/gov/nasa/larc/SITLTest/*.java)
 
 JAR        = :lib/jssc-2.8.0.jar
 
