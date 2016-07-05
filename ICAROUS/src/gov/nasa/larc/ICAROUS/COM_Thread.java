@@ -62,6 +62,20 @@ public class COM_Thread implements Runnable{
 
 	    
 	    if(SharedData.RcvdMessages.RcvdMissionStart == 1){
+
+		/*
+		Waypoint wp = null;
+		
+		System.out.println("Printing received waypoint information");
+		synchronized(SharedData){
+		    for(int i=0;i<SharedData.CurrentFlightPlan.wayPoints.size();i++){
+			wp = (Waypoint) SharedData.CurrentFlightPlan.wayPoints.get(i);
+			System.out.println("**** Waypoint "+i+" ****");
+			System.out.println("latitude " + wp.lat);
+			System.out.println("longitude " + wp.lon);
+		    }
+		    }*/
+		
 		synchronized(SharedData){
 		    SharedData.startMission = SharedData.RcvdMessages.msgMissionStartStop.missionStart;
 		    SharedData.RcvdMessages.RcvdMissionStart = -1;
@@ -72,14 +86,8 @@ public class COM_Thread implements Runnable{
 
 	  
 
-	    /*
-	    System.out.println("Printing received waypoint information");
-	    for(int i=0;i<SharedData.CurrentFlightPlan.wayPoints.size();i++){
-		Waypoint wp = (Waypoint) SharedData.CurrentFlightPlan.wayPoints.get(i);
-		System.out.println("**** Waypoint "+i+" ****");
-		System.out.println("latitude " + wp.lat);
-		System.out.println("longitude " + wp.lon);
-		}*/
+	    
+	    
 	
 
 	    // TODO: Implement COM box write
@@ -100,7 +108,7 @@ public class COM_Thread implements Runnable{
 	  boolean getFP        = true;
 	  FP_READ_STATE state1 = FP_READ_STATE.FP_INFO;
 	  int count            = 0;
-	  Waypoint wp          = new Waypoint();
+	  
 	  
 	  while(getFP){
 	      switch(state1){
@@ -128,13 +136,16 @@ public class COM_Thread implements Runnable{
 		      state1  = FP_READ_STATE.FP_ACK_FAIL;
 		      break;
 		  }
-		  
-		  wp.id      = msg2.index;
-		  wp.lat     = msg2.lat;
-		  wp.lon     = msg2.lon;
-		  wp.alt     = msg2.alt;
-		  wp.heading = msg2.heading;
 
+		  Waypoint wp          = new Waypoint(msg2.index,msg2.lat,msg2.lon,msg2.alt,msg2.heading);
+		  
+		  //wp.id      = msg2.index;
+		  //wp.lat     = msg2.lat;
+		  //wp.lon     = msg2.lon;
+		  //wp.alt_msl = msg2.alt;
+		  //wp.heading = msg2.heading;
+
+		  System.out.println("waypoint:"+count+" lat:"+wp.lat+" lon:"+wp.lon);
 		  SharedData.CurrentFlightPlan.AddWaypoints(count,wp);
 
 		  if(count == (SharedData.CurrentFlightPlan.numWayPoints-1)){
