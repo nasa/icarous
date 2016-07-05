@@ -62,7 +62,7 @@ class Obstacle extends Position{
 class FlightPlan{
 
     public List wayPoints;
-    public long numWayPoints;
+    public int numWayPoints;
     public float maxHorDev;
     public float maxVerDev;
     public float standOffDist;
@@ -72,7 +72,7 @@ class FlightPlan{
 	wayPoints    = new ArrayList();
     }
     
-    public void FlightPlanInfo(long num,float HorDev, float VerDev, float standDist){
+    public void FlightPlanInfo(int num,float HorDev, float VerDev, float standDist){
 
 	numWayPoints = num;
 	maxHorDev    = HorDev;
@@ -87,6 +87,12 @@ class FlightPlan{
 	    wpIt = wayPoints.iterator();
 	}
     }
+
+    public Waypoint GetWaypoints(int index){
+	return (Waypoint) wayPoints.get(index);
+    }
+
+    
 }
 
 

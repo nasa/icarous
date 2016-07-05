@@ -209,14 +209,14 @@ public class ICAROUS_Interface{
 
     public void Write(MAVLinkMessage msg2send){
 
-	synchronized(SharedData){
+	
 	    if(interfaceType == SITL || interfaceType == COMBOX){
 		this.UDPWrite(msg2send);
 	    }
 	    else{
 		this.SerialWrite(msg2send);
 	    }
-	}
+	
     }
 
     public void ParseMessage(byte[] input){

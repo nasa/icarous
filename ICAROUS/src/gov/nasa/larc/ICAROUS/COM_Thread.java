@@ -83,6 +83,7 @@ public class COM_Thread implements Runnable{
 	  boolean getFP        = true;
 	  FP_READ_STATE state1 = FP_READ_STATE.FP_INFO;
 	  int count            = 0;
+	  Waypoint wp          = new Waypoint();
 	  
 	  while(getFP){
 	      switch(state1){
@@ -111,7 +112,11 @@ public class COM_Thread implements Runnable{
 		      break;
 		  }
 		  
-		  Waypoint wp = new Waypoint(msg2.id,msg2.lat,msg2.lon,msg2.alt,msg2.alt);
+		  wp.id      = msg2.index;
+		  wp.lat     = msg2.lat;
+		  wp.lon     = msg2.lon;
+		  wp.alt     = msg2.alt;
+		  wp.heading = msg2.heading;
 
 		  SharedData.CurrentFlightPlan.AddWaypoints(count,wp);
 

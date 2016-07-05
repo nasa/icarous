@@ -161,6 +161,22 @@ public class MAVLinkMessages{
     public int GeoFenceUpdateInterrupt;
     public int TrafficUpdateInterrupt;
     public int ObstacleUpdateInterrupt;
+    public int RcvdMissionCount;
+    public int RcvdMissionItem;
+    public int RcvdMissionRequest;
+    public int RcvdMissionAck;
+
+    public MAVLinkMessages(){
+	FlightPlanUpdateInterrupt = 0;
+	GeoFenceUpdateInterrupt   = 0;
+	TrafficUpdateInterrupt    = 0;
+	ObstacleUpdateInterrupt   = 0;
+	RcvdMissionCount          = 0;
+	RcvdMissionItem           = 0;
+	RcvdMissionRequest        = 0;
+	RcvdMissionAck            = 0;
+
+    }
     
     public void decode_message(MAVLinkPacket message){
 
@@ -276,10 +292,12 @@ public class MAVLinkMessages{
 	    
 	case msg_mission_item.MAVLINK_MSG_ID_MISSION_ITEM:
 	    msgMissionItem = (msg_mission_item) message.unpack();
+	    RcvdMissionItem = 1;
 	    break;
 	    
 	case msg_mission_request.MAVLINK_MSG_ID_MISSION_REQUEST:
 	    msgMissionRequest = (msg_mission_request) message.unpack();
+	    RcvdMissionRequest = 1;
 	    break;
 	    
 	case msg_mission_set_current.MAVLINK_MSG_ID_MISSION_SET_CURRENT:
@@ -296,6 +314,7 @@ public class MAVLinkMessages{
 	    
 	case msg_mission_count.MAVLINK_MSG_ID_MISSION_COUNT:
 	    msgMissionCount = (msg_mission_count) message.unpack();
+	    RcvdMissionCount = 1;
 	    break;
 	    
 	case msg_mission_clear_all.MAVLINK_MSG_ID_MISSION_CLEAR_ALL:
@@ -308,6 +327,7 @@ public class MAVLinkMessages{
 	    
 	case msg_mission_ack.MAVLINK_MSG_ID_MISSION_ACK:
 	    msgMissionAck = (msg_mission_ack) message.unpack();
+	    RcvdMissionAck = 1;
 	    break;
 	    
 	case msg_set_gps_global_origin.MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN:
