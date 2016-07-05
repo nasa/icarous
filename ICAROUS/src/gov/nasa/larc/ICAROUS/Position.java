@@ -6,24 +6,34 @@ public class Position{
 
     float lat;
     float lon;
-    float alt;
+    float alt_msl;
+    float alt_agl;
 
     public Position(){
 	lat   = 0.0f;
 	lon   = 0.0f;
-	alt   = 0.0f;
+	alt_msl   = 0.0f;
+	alt_agl   = 0.0f;
     }
 
-    public Position(float lat_in,float lon_in,float alt_in){
+    public Position(float lat_in,float lon_in,float altmsl_in){
 	lat   = lat_in;
 	lon   = lon_in;
-	alt   = alt_in;
+	alt_msl   = altmsl_in;
     }
 
-    public void UpdatePosition(float lat_in,float lon_in,float alt_in){
+    public Position(float lat_in,float lon_in,float altmsl_in,float altagl_in){
+	lat     = lat_in;
+	lon     = lon_in;
+	alt_msl   = altmsl_in;
+	alt_agl   = altagl_in;
+    }
+
+    public void UpdatePosition(float lat_in,float lon_in,float altmsl_in,float altagl_in){
 	lat   = lat_in;
 	lon   = lon_in;
-	alt   = alt_in;
+	alt_msl   = altmsl_in;
+	alt_agl   = altagl_in;
     }
 
 }
@@ -39,10 +49,10 @@ class Waypoint extends Position{
 	heading   =0.0f;
     }
 
-    public Waypoint(int id_in,float lat_in,float lon_in,float alt_in,
+    public Waypoint(int id_in,float lat_in,float lon_in,float altmsl_in,
 		    float heading_in){
-	super(lat_in,lon_in,alt_in);
-	id    = id_in;
+	super(lat_in,lon_in,altmsl_in);
+	id        = id_in;
 	heading   = heading_in;
     }
         
@@ -52,8 +62,8 @@ class Obstacle extends Position{
 
     int id;
 
-    public Obstacle(int id_in,float lat_in, float lon_in, float alt_in){
-	super(lat_in,lon_in,alt_in);
+    public Obstacle(int id_in,float lat_in, float lon_in, float altmsl_in){
+	super(lat_in,lon_in,altmsl_in);
 	id = id_in;
     }
     
