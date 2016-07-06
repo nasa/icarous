@@ -2,7 +2,7 @@ package gov.nasa.larc.ICAROUS;
 
 import java.util.*;
 
-public class Position{
+class Position{
 
     float lat;
     float lon;
@@ -76,7 +76,7 @@ class Obstacle extends Position{
     
 }
 
-class FlightPlan{
+public class FlightPlan{
 
     public List wayPoints;
     public int numWayPoints;
