@@ -38,10 +38,9 @@ public class ICAROUS_Interface{
     SerialPort serialPort         = null;
 
 
-    public ICAROUS_Interface(int intType,String hostName,int receivePort,AircraftData msgs){
+    public ICAROUS_Interface(int intType,int receivePort,AircraftData msgs){
 
 	interfaceType   = (short) intType;
-	udpHost         = hostName;
 	udpReceivePort  = receivePort;
 	SharedData      = msgs;
     }

@@ -15,8 +15,7 @@ public class SITL_ComTest{
     public static void main(String args[]){
 	AircraftData SharedData    = new AircraftData(AircraftData.INIT_MESSAGES);
 	ICAROUS_Interface COMint   = new ICAROUS_Interface(ICAROUS_Interface.COMBOX,  /*Interface type */
-							   args[0],                   /*Host name */
-							   Integer.parseInt(args[1]), /*Receiving port address */
+							   Integer.parseInt(args[0]), /*port number */
 							   SharedData);               /*Shared data */
 	
 	COM_Thread COM             = new COM_Thread("Communication",SharedData,COMint);
