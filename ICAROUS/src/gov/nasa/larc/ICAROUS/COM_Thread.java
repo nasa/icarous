@@ -33,9 +33,22 @@ public class COM_Thread extends Aircraft implements Runnable{
 	    if(SharedData.RcvdMessages.FlightPlanUpdateInterrupt == 1){
 		//TODO: synchronization
 		synchronized(SharedData){
-		    UpdateFlightPlan();
 		    SharedData.RcvdMessages.FlightPlanUpdateInterrupt = 0;
+		    UpdateFlightPlan();
 		}
+
+		/*
+		Waypoint wp = null;
+		
+		System.out.println("Printing received waypoint information");
+		synchronized(SharedData){
+		    for(int i=0;i<SharedData.CurrentFlightPlan.wayPoints.size();i++){
+			wp = (Waypoint) SharedData.CurrentFlightPlan.wayPoints.get(i);
+			System.out.println("**** Waypoint "+i+" ****");
+			System.out.println("latitude " + wp.lat);
+			System.out.println("longitude " + wp.lon);
+		    }
+		}*/
 		
 	    }
 
@@ -56,31 +69,15 @@ public class COM_Thread extends Aircraft implements Runnable{
 	    
 	    if(SharedData.RcvdMessages.RcvdMissionStart == 1){
 
-		/*
-		Waypoint wp = null;
-		
-		System.out.println("Printing received waypoint information");
-		synchronized(SharedData){
-		    for(int i=0;i<SharedData.CurrentFlightPlan.wayPoints.size();i++){
-			wp = (Waypoint) SharedData.CurrentFlightPlan.wayPoints.get(i);
-			System.out.println("**** Waypoint "+i+" ****");
-			System.out.println("latitude " + wp.lat);
-			System.out.println("longitude " + wp.lon);
-		    }
-		    }*/
-		
 		synchronized(SharedData){
 		    SharedData.startMission = SharedData.RcvdMessages.msgMissionStartStop.missionStart;
 		    SharedData.RcvdMessages.RcvdMissionStart = -1;
 		}
 		System.out.println("Received mission start");
-		
+	     		
 	    }
 
 	  
-
-	    
-	 
 	    // TODO: Implement COM box write
 	    // COM.Write()	
 	}

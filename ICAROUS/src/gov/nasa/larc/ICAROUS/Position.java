@@ -55,6 +55,13 @@ class Waypoint extends Position{
 	id        = id_in;
 	heading   = heading_in;
     }
+
+    public Waypoint(Waypoint wp){
+	super(wp.lat,wp.lon,wp.alt_msl,wp.alt_agl);
+	id = wp.id;
+	heading = wp.heading; 
+
+    }
         
 }
 
@@ -98,10 +105,22 @@ class FlightPlan{
 	}
     }
 
-    public Waypoint GetWaypoints(int index){
+    public Waypoint GetWaypoint(int index){
 	return (Waypoint) wayPoints.get(index);
     }
 
+    public void Copy(FlightPlan newFP){
+
+	numWayPoints = newFP.numWayPoints;
+	maxHorDev    = newFP.maxHorDev;
+	maxVerDev    = newFP.maxVerDev;
+	standOffDist = newFP.standOffDist;
+
+	for(int i=0;i<numWayPoints;i++){
+	    Waypoint wp = new Waypoint(newFP.GetWaypoint(i));
+	    this.AddWaypoints(i,wp);
+	}
+    }
     
 }
 

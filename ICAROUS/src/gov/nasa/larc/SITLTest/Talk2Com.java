@@ -165,6 +165,9 @@ public class Talk2Com{
 	    System.out.println(e);
 	}
 
+	while(true){
+
+	}
 	
     }
 

@@ -83,6 +83,7 @@ public class FMS_Thread extends Aircraft implements Runnable{
 		    FMS_state++;
 		    SharedData.startMission = -1;
 		    System.out.println("Starting mission sequence");
+		    SharedData.CurrentFlightPlan.Copy(SharedData.NewFlightPlan);
 		}
 	    }
 	}

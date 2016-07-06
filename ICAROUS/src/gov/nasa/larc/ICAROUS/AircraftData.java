@@ -47,7 +47,8 @@ public class AircraftData{
     public double airspeed;
 
     boolean sendmsg;
-    
+
+    public FlightPlan NewFlightPlan;
     public FlightPlan CurrentFlightPlan;
     
     List Obstacles = new ArrayList(); // List for obstacles
@@ -62,6 +63,7 @@ public class AircraftData{
 
 	aircraftPosition    = new Position();
 	CurrentFlightPlan   = new FlightPlan();
+	NewFlightPlan       = new FlightPlan();
     }
 
     public void CopyAircraftStateInfo(AircraftData Input){

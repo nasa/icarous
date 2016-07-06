@@ -163,10 +163,10 @@ public class Aircraft{
 		    msgMissionItem.param1  = 0.0f;
 		    msgMissionItem.param2  = 0.0f;
 		    msgMissionItem.param3  = 0.0f;
-		    msgMissionItem.param4  = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).heading;
-		    msgMissionItem.x       = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).lat;
-		    msgMissionItem.y       = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).lon;
-		    msgMissionItem.z       = SharedData.CurrentFlightPlan.GetWaypoints(msgMissionItem.seq).alt_msl;
+		    msgMissionItem.param4  = SharedData.CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).heading;
+		    msgMissionItem.x       = SharedData.CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).lat;
+		    msgMissionItem.y       = SharedData.CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).lon;
+		    msgMissionItem.z       = SharedData.CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).alt_msl;
 		    
 		    Intf.Write(msgMissionItem);
 		    System.out.println("Wrote mission item");
@@ -280,7 +280,7 @@ public class Aircraft{
     public void UpdateFlightPlan(){
 	
 	  boolean getFP        = true;
-	  FP_READ_COM state1 = FP_READ_COM.FP_INFO;
+	  FP_READ_COM state1   = FP_READ_COM.FP_INFO;
 	  int count            = 0;
 	  
 	  
@@ -291,7 +291,7 @@ public class Aircraft{
 		  
 		  msg_flightplan_info msg1 = SharedData.RcvdMessages.msgFlightplanInfo;
 
-		  SharedData.CurrentFlightPlan.FlightPlanInfo(msg1.numWaypoints,msg1.maxHorDev,msg1.maxVerDev,msg1.standoffDist);
+		  SharedData.NewFlightPlan.FlightPlanInfo(msg1.numWaypoints,msg1.maxHorDev,msg1.maxVerDev,msg1.standoffDist);
 		  
 		  state1 = FP_READ_COM.FP_WAYPT_INFO;
 
@@ -320,9 +320,9 @@ public class Aircraft{
 		  //wp.heading = msg2.heading;
 
 		  System.out.println("waypoint:"+count+" lat:"+wp.lat+" lon:"+wp.lon);
-		  SharedData.CurrentFlightPlan.AddWaypoints(count,wp);
+		  SharedData.NewFlightPlan.AddWaypoints(count,wp);
 
-		  if(count == (SharedData.CurrentFlightPlan.numWayPoints-1)){
+		  if(count == (SharedData.NewFlightPlan.numWayPoints-1)){
 		      state1  = FP_READ_COM.FP_ACK_SUCCESS;
 		      
 		  }
