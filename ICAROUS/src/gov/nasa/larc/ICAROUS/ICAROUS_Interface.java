@@ -71,7 +71,6 @@ public class ICAROUS_Interface{
     public void InitSocketInterface(int timeout){
 	
 	try{
-	    host  = InetAddress.getByName(udpHost);
 	    sock  = new DatagramSocket(udpReceivePort);
 	}
 	catch(IOException e){
@@ -155,6 +154,7 @@ public class ICAROUS_Interface{
 	    // Get port number on host to send data
 	    if(udpSendPort == 0){
 		udpSendPort = input.getPort();
+		host        = input.getAddress();
 	    }
 	    
 	    buffer_data   = input.getData();
