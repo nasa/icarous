@@ -38,14 +38,12 @@ public class ICAROUS_Interface{
     SerialPort serialPort         = null;
 
 
-    public ICAROUS_Interface(int intType,String hostName,int receivePort,int timeout,AircraftData msgs){
+    public ICAROUS_Interface(int intType,String hostName,int receivePort,AircraftData msgs){
 
 	interfaceType   = (short) intType;
 	udpHost         = hostName;
 	udpReceivePort  = receivePort;
 	SharedData      = msgs;
-	InitSocketInterface(timeout);
-	
     }
 
     public ICAROUS_Interface(int intType,String portName, AircraftData msgs){
@@ -53,9 +51,22 @@ public class ICAROUS_Interface{
 	interfaceType  = (short) intType;
 	SharedData     = msgs;
 	serialPortName = portName;
-	InitSerialInterface();
     }
 
+    public void InitInterface(int timeout){
+
+	if ((interfaceType == SITL) || (interfaceType == COMBOX)){
+	    InitSocketInterface(timeout);
+	}
+	else if((interfaceType == PX4) || (interfaceType == SAFEGUARD)){
+	    InitSerialInterface();
+	}
+	else{
+	    System.out.println("Unknown interface type");
+	}
+	
+	
+    }
 
     public void InitSocketInterface(int timeout){
 	

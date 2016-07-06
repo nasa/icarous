@@ -19,8 +19,16 @@ public class Aircraft{
     public AircraftData apState;
     public ICAROUS_Interface Intf;
 
-    public enum FP_READ_STATE{
+    public enum FP_READ_COM{
 	FP_INFO, FP_WAYPT_INFO, FP_ACK_FAIL,FP_ACK_SUCCESS
+    }
+
+    public enum FP_READ_AP{
+
+    }
+
+    public enum FP_WRITE_AP{
+	FP_CLR, FP_SEND_COUNT, FP_SEND_WP
     }
 
     
@@ -95,7 +103,7 @@ public class Aircraft{
 
     public void SendFlightPlanToAP(){
 	
-	int state = 0;
+	FP_WRITE_AP state = FP_WRITE_AP.FP_CLR;
 	
 	msg_mission_count msgMissionCount = new msg_mission_count();
 	msg_mission_item msgMissionItem   = new msg_mission_item();
@@ -110,23 +118,28 @@ public class Aircraft{
 
 	msgMissionClearAll.target_system    = 0;
 	msgMissionClearAll.target_component = 0;
-
-	System.out.println("Clearing mission on AP");
-	Intf.Write(msgMissionClearAll);
-	
-	
+		
 	while(!writeComplete){
 
-	    if(state == 0){
+	    switch(state){
+
+	    case FP_CLR:
+		Intf.Write(msgMissionClearAll);
+		System.out.println("Cleared mission on AP");
+		state = FP_WRITE_AP.FP_SEND_COUNT;
 		
+		break;
+
+	    case FP_SEND_COUNT:
 		
 		msgMissionCount.count = SharedData.CurrentFlightPlan.numWayPoints;
 
 		Intf.Write(msgMissionCount);
 		System.out.println("Wrote mission count: "+SharedData.CurrentFlightPlan.numWayPoints);
-		state++;
-	    }
-	    else if(state == 1){
+		state = FP_WRITE_AP.FP_SEND_WP;
+		break;
+	    
+	    case FP_SEND_WP:
 
 		Intf.Read();
 		
@@ -165,20 +178,18 @@ public class Aircraft{
 		    System.out.println("Received acknowledgement - type: "+SharedData.RcvdMessages.msgMissionAck.type);
 		    if(SharedData.RcvdMessages.msgMissionAck.type == 0){
 			if(count == SharedData.CurrentFlightPlan.numWayPoints){
-			    state++;
 			    System.out.println("Waypoints sent successfully");
 			    writeComplete = true;
 			}
 			
 		    }
 		    else{
-			state = 0;
+			state = FP_WRITE_AP.FP_CLR;
 			System.out.println("Error in writing mission to AP");
 		    }
-		}			
+		}
 	    }
-	}
-
+	}	
     }
     
     public void GetFlightPlanFromAP(){
@@ -269,7 +280,7 @@ public class Aircraft{
     public void UpdateFlightPlan(){
 	
 	  boolean getFP        = true;
-	  FP_READ_STATE state1 = FP_READ_STATE.FP_INFO;
+	  FP_READ_COM state1 = FP_READ_COM.FP_INFO;
 	  int count            = 0;
 	  
 	  
@@ -282,7 +293,7 @@ public class Aircraft{
 
 		  SharedData.CurrentFlightPlan.FlightPlanInfo(msg1.numWaypoints,msg1.maxHorDev,msg1.maxVerDev,msg1.standoffDist);
 		  
-		  state1 = FP_READ_STATE.FP_WAYPT_INFO;
+		  state1 = FP_READ_COM.FP_WAYPT_INFO;
 
 		  System.out.println("Received flight plan info, Reading " +msg1.numWaypoints+" waypoints");
 		  
@@ -296,7 +307,7 @@ public class Aircraft{
 
 		  if(msg2.id == 0 && msg2.index != count){
 		      
-		      state1  = FP_READ_STATE.FP_ACK_FAIL;
+		      state1  = FP_READ_COM.FP_ACK_FAIL;
 		      break;
 		  }
 
@@ -312,7 +323,7 @@ public class Aircraft{
 		  SharedData.CurrentFlightPlan.AddWaypoints(count,wp);
 
 		  if(count == (SharedData.CurrentFlightPlan.numWayPoints-1)){
-		      state1  = FP_READ_STATE.FP_ACK_SUCCESS;
+		      state1  = FP_READ_COM.FP_ACK_SUCCESS;
 		      
 		  }
 		  else{
