@@ -207,7 +207,7 @@ public class ICAROUS_Interface{
 
 	try{
 	    serialPort.writeBytes(buffer);
-	    System.out.println("Sent command");
+	    System.err.println("Sent command:");
 	}
 	catch(SerialPortException e){
 	    System.err.println(e);

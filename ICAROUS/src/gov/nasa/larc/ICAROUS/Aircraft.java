@@ -44,7 +44,8 @@ public class Aircraft{
 	missionState     = FMS_MISSION.TAKEOFF;
 	takeoff_cmd_sent = false;
     }
-    
+
+    // Function to send commands to pixhawk
     public int SendCommand( int target_system,
 			    int target_component,
 			    int confirmation,
@@ -82,6 +83,7 @@ public class Aircraft{
 	return CheckAcknowledgement();
     }
 
+    // Function to set mode
     public int SetMode(int modeid){
 
 	msg_set_mode Mode = new msg_set_mode();
@@ -100,6 +102,7 @@ public class Aircraft{
 	return CheckAcknowledgement();	
     }
 
+    // Check acknowledgement
     public int CheckAcknowledgement(){
 
 	synchronized(SharedData){
@@ -114,6 +117,7 @@ public class Aircraft{
 	
     }
 
+    // Function to send a flight plan to pixhawk
     public void SendFlightPlanToAP(){
 	
 	FP_WRITE_AP state = FP_WRITE_AP.FP_CLR;
@@ -204,7 +208,9 @@ public class Aircraft{
 	    } // end of switch case
 	}//end of while	
     }//end of function
+
     
+    // Function to update new flight plan received from combox
     public void UpdateFlightPlan(){
 	
 	  boolean getFP        = true;
@@ -241,12 +247,6 @@ public class Aircraft{
 
 		  Waypoint wp          = new Waypoint(msg2.index,msg2.lat,msg2.lon,msg2.alt,msg2.heading);
 		  
-		  //wp.id      = msg2.index;
-		  //wp.lat     = msg2.lat;
-		  //wp.lon     = msg2.lon;
-		  //wp.alt_msl = msg2.alt;
-		  //wp.heading = msg2.heading;
-
 		  System.out.println("waypoint:"+count+" lat:"+wp.lat+" lon:"+wp.lon);
 		  SharedData.NewFlightPlan.AddWaypoints(count,wp);
 
@@ -268,6 +268,7 @@ public class Aircraft{
 		  msg3.acktype = 0;
 		  		 
 		  getFP = false;
+
 		  // Send acknowledgment
 		  msg3.value = 1;
 		  
@@ -284,6 +285,7 @@ public class Aircraft{
 		  msg4.acktype = 0;		  
 		  
 		  getFP = false;
+
 		  // Send acknowledgment
 		  msg4.value = 0;
 		  
@@ -295,6 +297,7 @@ public class Aircraft{
 	  }// end of while
     }//end of function
 
+    // Main function that runs the mission
     public void Mission(){
 
 	switch(missionState){

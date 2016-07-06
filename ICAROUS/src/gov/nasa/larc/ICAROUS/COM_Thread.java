@@ -30,43 +30,32 @@ public class COM_Thread extends Aircraft implements Runnable{
 	
 	    Intf.Read();
 
+	    // Handle new flight plan inputs
 	    if(SharedData.RcvdMessages.FlightPlanUpdateInterrupt == 1){
-		//TODO: synchronization
 		synchronized(SharedData){
 		    SharedData.RcvdMessages.FlightPlanUpdateInterrupt = 0;
 		    UpdateFlightPlan();
 		}
-
-		/*
-		Waypoint wp = null;
-		
-		System.out.println("Printing received waypoint information");
-		synchronized(SharedData){
-		    for(int i=0;i<SharedData.CurrentFlightPlan.wayPoints.size();i++){
-			wp = (Waypoint) SharedData.CurrentFlightPlan.wayPoints.get(i);
-			System.out.println("**** Waypoint "+i+" ****");
-			System.out.println("latitude " + wp.lat);
-			System.out.println("longitude " + wp.lon);
-		    }
-		}*/
-		
 	    }
 
+	    // Handle geo fence messages
 	    if(SharedData.RcvdMessages.GeoFenceUpdateInterrupt == 1){
 
 
 	    }
 
+	    // Handle traffic information
 	    if(SharedData.RcvdMessages.TrafficUpdateInterrupt == 1){
 
 	    }
 
+	    // Handle obstacle information
 	    if(SharedData.RcvdMessages.ObstacleUpdateInterrupt == 1){
 
 
 	    }
 
-	    
+	    // Handling mission commands (start/stop)
 	    if(SharedData.RcvdMessages.RcvdMissionStart == 1){
 
 		synchronized(SharedData){

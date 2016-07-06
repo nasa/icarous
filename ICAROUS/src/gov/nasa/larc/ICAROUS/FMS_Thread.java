@@ -46,10 +46,6 @@ public class FMS_Thread extends Aircraft implements Runnable{
 	
     public void FlightManagement(){
 	
-	/*
-	  ICAROUS functionalities go in here.
-	*/
-
 	switch(fmsState){
 
 	case IDLE:
