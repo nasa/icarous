@@ -15,22 +15,35 @@ import com.MAVLink.icarous.*;
 
 public class Aircraft{
 
-    public AircraftData SharedData;
-    public AircraftData apState;
-    public ICAROUS_Interface Intf;
-
     public enum FP_READ_COM{
 	FP_INFO, FP_WAYPT_INFO, FP_ACK_FAIL,FP_ACK_SUCCESS
-    }
-
-    public enum FP_READ_AP{
-
     }
 
     public enum FP_WRITE_AP{
 	FP_CLR, FP_SEND_COUNT, FP_SEND_WP
     }
 
+    public enum QUAD_FMS{
+	IDLE, MISSION, TERMINATE 
+    }
+
+    public enum FMS_MISSION{
+	TAKEOFF, MONITOR, LAND
+    }
+    
+    public AircraftData SharedData;
+    public AircraftData apState;
+    public ICAROUS_Interface Intf;
+    public QUAD_FMS fmsState;
+    public FMS_MISSION missionState;
+
+    private boolean takeoff_cmd_sent;
+
+    public Aircraft(){
+	fmsState         = QUAD_FMS.IDLE;
+	missionState     = FMS_MISSION.TAKEOFF;
+	takeoff_cmd_sent = false;
+    }
     
     public int SendCommand( int target_system,
 			    int target_component,
@@ -188,95 +201,10 @@ public class Aircraft{
 			System.out.println("Error in writing mission to AP");
 		    }
 		}
-	    }
-	}	
-    }
+	    } // end of switch case
+	}//end of while	
+    }//end of function
     
-    public void GetFlightPlanFromAP(){
-
-	int state = 0;
-	msg_mission_request_list msgRequestMissionList = new msg_mission_request_list();
-	msg_mission_request msgMissionRequest          = new msg_mission_request();
-	boolean readComplete = false;
-	
-	while(!readComplete){
-	    if(state == 0){
-		
-		msgRequestMissionList.target_system    = 0;
-		msgRequestMissionList.target_component = 0;
-		
-		Intf.Write(msgRequestMissionList);
-		state = 1;
-	    }
-
-	    if(state == 1){
-		synchronized(SharedData){
-		    if (SharedData.RcvdMessages.RcvdMissionCount == 1){
-			System.out.println("Received missioncount");
-			SharedData.RcvdMessages.RcvdMissionCount = 0;
-
-			state = 2;
-		    }
-		    else{
-			state = 0;
-		    }
-		}
-	    }
-
-	    if(state == 2){
-	    
-		msgMissionRequest.target_system    = 0;
-		msgMissionRequest.target_component = 0;
-
-		for(int i=0;i<SharedData.RcvdMessages.msgMissionCount.count;i++){
-		    msgMissionRequest.seq          = i;
-
-		    Intf.Write(msgMissionRequest);
-		
-		    try{
-			Thread.sleep(100);
-		    }
-		    catch(InterruptedException e){
-			System.out.println(e);
-		    }
-
-		    synchronized(SharedData){
-			if (SharedData.RcvdMessages.RcvdMissionItem == 1){
-			    System.out.println("Received mission item: "+i);
-			    SharedData.RcvdMessages.RcvdMissionItem = 0;
-
-			    System.out.println(SharedData.RcvdMessages.msgMissionItem.x);
-			    System.out.println(SharedData.RcvdMessages.msgMissionItem.y);
-			    System.out.println(SharedData.RcvdMessages.msgMissionItem.z);
-		 
-			}
-			else{
-			    System.out.println("Transaction failed");
-
-			}
-
-		    }
-		
-		    state = 3;
-		    
-		}
-
-		if (state == 3){
-
-		    msg_mission_ack msgMissionAck = new msg_mission_ack();
-		    msgMissionAck.target_system    = 0;
-		    msgMissionAck.target_component = 0;
-		    msgMissionAck.type             = 0;
-
-		    Intf.Write(msgMissionAck);
-		}
-	    
-	    
-	    }
-	}
-
-    }
-
     public void UpdateFlightPlan(){
 	
 	  boolean getFP        = true;
@@ -338,12 +266,10 @@ public class Aircraft{
 		  msg_command_acknowledgement msg3 = new msg_command_acknowledgement();
 
 		  msg3.acktype = 0;
-		  
-		 
+		  		 
 		  getFP = false;
 		  // Send acknowledgment
 		  msg3.value = 1;
-		  
 		  
 		  Intf.Write(msg3);
 
@@ -355,20 +281,63 @@ public class Aircraft{
 
 		  msg_command_acknowledgement msg4 = new msg_command_acknowledgement();
 
-		  msg4.acktype = 0;
-		  
+		  msg4.acktype = 0;		  
 		  
 		  getFP = false;
 		  // Send acknowledgment
 		  msg4.value = 0;
 		  
-		  
 		  Intf.Write(msg4);
 		  
 		  break;
 		  
-	      }
-	  }
-	  
-    }
+	      } // end of switch case
+	  }// end of while
+    }//end of function
+
+    public void Mission(){
+
+	switch(missionState){
+
+	case TAKEOFF:
+	
+	    if(!takeoff_cmd_sent){
+	
+		// Set mode to guided
+		SetMode(4);
+		
+		// Arm the throttles
+		SendCommand(0,0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,
+			    1,0,0,0,0,0,0);
+		
+		// Takeoff at current location
+		SendCommand(0,0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,
+			    1,0,0,0, (float) apState.aircraftPosition.lat,
+			    (float) apState.aircraftPosition.lon,
+			    (float) apState.aircraftPosition.alt_msl + 50.0f);
+
+		takeoff_cmd_sent = true;
+	    }else{
+		// Switch to auto once 50 m is reached and start mission in auto mode
+		if(apState.aircraftPosition.alt_agl >= 50.0f){
+		    missionState = FMS_MISSION.MONITOR;
+		    SetMode(3);
+		}
+	    }
+
+	    break;
+
+	case MONITOR:
+
+	    
+	    break;
+
+	case LAND:
+
+	    break;
+		
+	
+	}// end switch
+    }//end Monitor()
+    
 }
