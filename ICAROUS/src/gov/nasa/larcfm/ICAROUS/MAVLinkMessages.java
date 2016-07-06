@@ -8,7 +8,7 @@
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
-package gov.nasa.larc.ICAROUS;;
+package gov.nasa.larcfm.ICAROUS;
 
 import java.io.*;
 import com.MAVLink.common.*;

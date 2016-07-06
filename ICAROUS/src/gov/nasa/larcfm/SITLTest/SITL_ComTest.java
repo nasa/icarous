@@ -8,7 +8,7 @@
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
-import gov.nasa.larc.ICAROUS.*;
+import gov.nasa.larcfm.ICAROUS.*;
 
 public class SITL_ComTest{
 
