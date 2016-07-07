@@ -183,7 +183,7 @@ public class Aircraft{
 		    System.out.println("Received mission request: "+SharedData.RcvdMessages.msgMissionRequest.seq);
 		    
 		    msgMissionItem.seq     = SharedData.RcvdMessages.msgMissionRequest.seq;
-		    msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
+		    msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL_INT;
 		    msgMissionItem.command = MAV_CMD.MAV_CMD_NAV_WAYPOINT;
 		    msgMissionItem.current = 0;
 		    msgMissionItem.autocontinue = 0;
