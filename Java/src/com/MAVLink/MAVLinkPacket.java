@@ -169,6 +169,9 @@ public class MAVLinkPacket implements Serializable {
                  
             case msg_command_acknowledgement.MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT:
                 return  new msg_command_acknowledgement(this);
+                 
+            case msg_aircraft_6dof_state.MAVLINK_MSG_ID_AIRCRAFT_6DOF_STATE:
+                return  new msg_aircraft_6dof_state(this);
             
                              
             case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:

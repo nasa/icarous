@@ -33,7 +33,7 @@
 		  <field type="float" name="fenceCeiling"> Fence ceiling height </field>
 		  <field type="float" name="numVertices"> Number of polygon verticies </field>
 		</message>
-
+		
 		<message id="153" name="MISSION_START_STOP">
 		  <description>Flag to start/stop mission</description>
 		  <field type="uint8_t" name="missionStart"> mission start (true)/stop (false)</field>
@@ -49,6 +49,16 @@
 		  <field type="uint8_t" name="acktype">Acknowledgement type (0-waypoints,1-geofence)</field>
 		  <field type="uint8_t" name="value">1-success,0-failure</field>
 		</message>
+
+		<message id="156" name="AIRCRAFT_6DOF_STATE">
+		  <description>Aircraft state information</description>
+		  <field type="float" name="lat">latitude</field>
+		  <field type="float" name="lon">longitude</field>
+		  <field type="float" name="alt">altitude</field>
+		  <field type="float" name="roll">roll</field>
+		  <field type="float" name="pitch">pitch</field>
+		  <field type="float" name="yaw">yaw</field>
+		</message>		  
 		
 	</messages>
 </mavlink>
