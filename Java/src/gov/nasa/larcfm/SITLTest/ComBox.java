@@ -106,7 +106,7 @@ public class ComBox{
 	wp1.index   = 0;
 	wp1.lat     = 37.611865f;
 	wp1.lon     = -122.3754350f;
-	wp1.alt     = 600.0f;
+	wp1.alt     = 20.0f;
 	wp1.heading = 0.0f;
 
 	msg_pointofinterest wp2 = new msg_pointofinterest();
@@ -114,7 +114,7 @@ public class ComBox{
 	wp2.index   = 1;
 	wp2.lat     = 37.615267f; 
 	wp2.lon     = -122.373179f;
-	wp2.alt     = 600.0f;
+	wp2.alt     = 20.0f;
 	wp2.heading = 0.0f;
 	
 	msg_pointofinterest wp3 = new msg_pointofinterest();
@@ -122,7 +122,7 @@ public class ComBox{
 	wp3.index   = 2;
 	wp3.lat     = 37.616911f;
 	wp3.lon     = -122.377167f;
-	wp3.alt     = 600.0f;
+	wp3.alt     = 20.0f;
 	wp3.heading = 0.0f;
 
 	msg_pointofinterest wp4 = new msg_pointofinterest();
@@ -130,7 +130,7 @@ public class ComBox{
 	wp4.index   = 3;
 	wp4.lat     = 37.612451f;
 	wp4.lon     = -122.380198f;
-	wp4.alt     = 600.0f;
+	wp4.alt     = 20.0f;
 	wp4.heading = 0.0f;
 
 	msg_mission_start_stop msgMissionStart = new msg_mission_start_stop();
