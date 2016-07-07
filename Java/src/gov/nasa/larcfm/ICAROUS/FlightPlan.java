@@ -11,6 +11,7 @@
 package gov.nasa.larcfm.ICAROUS;
 
 import java.util.*;
+import java.lang.*;
 
 class Position{
 
@@ -133,9 +134,38 @@ public class FlightPlan{
 	}
     }
 
-    public double[] Distance2NextWaypoint(Position currentPos){
-	
+    public double[] Distance2Waypoint(Position currentPos,Waypoint wp){
 
+	double Dist[] = new double[2];
+	
+	double lat1 = currentPos.lat;
+	double lon1 = currentPos.lon;
+
+	double lat2 = wp.lat;
+	double lon2 = wp.lon;
+
+	double d2r  = Math.PI/180;
+	double r2d  = 180/Math.PI;
+	
+	double R    = 6371.0f;                                                           
+	double dLat = (lat2-lat1)*d2r;
+	double dLon = (lon2-lon1)*d2r;
+	lat1 = lat1*d2r;
+	lat2 = lat2*d2r;
+	
+	double a    = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+	double c    = 2 * Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+	double D    = R * c;
+	
+	double y = Math.sin(dLon) * Math.cos(lat2);
+	double x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
+	double H = Math.atan2(y, x)*r2d;
+
+	Dist[0] = D;
+	Dist[1] = H;
+
+	return Dist;
+	
     }
     
 }

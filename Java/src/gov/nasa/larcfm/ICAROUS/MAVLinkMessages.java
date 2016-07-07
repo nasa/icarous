@@ -166,6 +166,7 @@ public class MAVLinkMessages{
     public int RcvdMissionRequest;
     public int RcvdMissionAck;
     public int RcvdMissionStart;
+    public int RcvdMissionItemReached;
 
     public MAVLinkMessages(){
 	FlightPlanUpdateInterrupt = 0;
@@ -177,6 +178,7 @@ public class MAVLinkMessages{
 	RcvdMissionRequest        = 0;
 	RcvdMissionAck            = 0;
 	RcvdMissionStart          = -1;
+	RcvdMissionItemReached    = 0;
     }
     
     public void decode_message(MAVLinkPacket message){
@@ -324,6 +326,7 @@ public class MAVLinkMessages{
 	    
 	case msg_mission_item_reached.MAVLINK_MSG_ID_MISSION_ITEM_REACHED:
 	    msgMissionItemReached = (msg_mission_item_reached) message.unpack();
+	    RcvdMissionItemReached = 1;
 	    break;
 	    
 	case msg_mission_ack.MAVLINK_MSG_ID_MISSION_ACK:

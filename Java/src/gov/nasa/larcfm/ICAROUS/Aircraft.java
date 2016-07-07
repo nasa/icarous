@@ -39,8 +39,7 @@ public class Aircraft{
 
     private boolean takeoff_cmd_sent;
     private long takeoff_start_time;
-    private long takeoff_time1;
-    private long takeoff_time2;
+    private long time1;
     
     public Aircraft(){
 	fmsState         = QUAD_FMS.IDLE;
@@ -303,8 +302,9 @@ public class Aircraft{
     // Main function that runs the mission
     public void Mission(){
 
-		    	    
-	long current_time = System.nanoTime();
+	FlightPlan FP       = SharedData.CurrentFlightPlan;
+	Position currentPos = apState.aircraftPosition;
+	long current_time   = System.nanoTime();
 	long time_elapsed;
 	
 	switch(missionState){
@@ -330,6 +330,7 @@ public class Aircraft{
 
 		takeoff_start_time = current_time;
 		time1              = takeoff_start_time;
+		FP.nextWaypoint = 1;
 		
 	    }else{
 		// Switch to auto once 50 m is reached and start mission in auto mode
@@ -343,14 +344,23 @@ public class Aircraft{
 
 	case MONITOR:
 
-	    time_elapsed = time1 - current_time;
+	    time_elapsed = current_time - time1;
 
 	    if(time_elapsed > 5E9){
 		time1 = current_time;
 
+		Waypoint wp = FP.GetWaypoint(FP.nextWaypoint);
+
+		double dist[] = FP.Distance2Waypoint(currentPos,wp);
+
+		System.out.println("Distance to next waypoint: "+dist[0]+" heading: "+dist[1]);
 		
 	    }
-	    
+
+	    if(CheckMissionItemReached()){
+		System.out.println("Reached waypoint");
+		SharedData.CurrentFlightPlan.nextWaypoint++;
+	    }
 	    
 	    break;
 
@@ -361,5 +371,20 @@ public class Aircraft{
 	
 	}// end switch
     }//end Monitor()
-    
+
+    public boolean CheckMissionItemReached(){
+
+	boolean reached = false;
+	
+	synchronized(SharedData){
+
+	    if(SharedData.RcvdMessages.RcvdMissionItemReached == 1){
+		SharedData.RcvdMessages.RcvdMissionItemReached = 0;
+		reached = true;
+	    }
+	}
+
+	return reached;
+	
+    }
 }
