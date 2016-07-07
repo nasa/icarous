@@ -93,6 +93,7 @@ public class FlightPlan{
     public float maxHorDev;
     public float maxVerDev;
     public float standOffDist;
+    public int nextWaypoint;
     public Iterator wpIt = null;
 
     public FlightPlan(){
@@ -130,6 +131,11 @@ public class FlightPlan{
 	    Waypoint wp = new Waypoint(newFP.GetWaypoint(i));
 	    this.AddWaypoints(i,wp);
 	}
+    }
+
+    public double[] Distance2NextWaypoint(Position currentPos){
+	
+
     }
     
 }

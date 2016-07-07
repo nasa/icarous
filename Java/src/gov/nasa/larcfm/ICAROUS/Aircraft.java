@@ -38,7 +38,10 @@ public class Aircraft{
     public FMS_MISSION missionState;
 
     private boolean takeoff_cmd_sent;
-
+    private long takeoff_start_time;
+    private long takeoff_time1;
+    private long takeoff_time2;
+    
     public Aircraft(){
 	fmsState         = QUAD_FMS.IDLE;
 	missionState     = FMS_MISSION.TAKEOFF;
@@ -300,6 +303,10 @@ public class Aircraft{
     // Main function that runs the mission
     public void Mission(){
 
+		    	    
+	long current_time = System.nanoTime();
+	long time_elapsed;
+	
 	switch(missionState){
 
 	case TAKEOFF:
@@ -320,6 +327,10 @@ public class Aircraft{
 			    (float) apState.aircraftPosition.alt_msl + 50.0f);
 
 		takeoff_cmd_sent = true;
+
+		takeoff_start_time = current_time;
+		time1              = takeoff_start_time;
+		
 	    }else{
 		// Switch to auto once 50 m is reached and start mission in auto mode
 		if(apState.aircraftPosition.alt_agl >= 50.0f){
@@ -332,6 +343,14 @@ public class Aircraft{
 
 	case MONITOR:
 
+	    time_elapsed = time1 - current_time;
+
+	    if(time_elapsed > 5E9){
+		time1 = current_time;
+
+		
+	    }
+	    
 	    
 	    break;
 
