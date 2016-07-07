@@ -30,6 +30,10 @@ public class Aircraft{
     public enum FMS_MISSION{
 	TAKEOFF, MONITOR, LAND
     }
+
+    public enum AP_MODE{
+	ND,AUTO,GUIDED
+    }
     
     public AircraftData SharedData;
     public AircraftData apState;
@@ -40,11 +44,15 @@ public class Aircraft{
     private boolean takeoff_cmd_sent;
     private long takeoff_start_time;
     private long time1;
+    private AP_MODE apMode;    // Current AP mode
+    private AP_MODE reqMode;   // ICAROUS requested mode
     
     public Aircraft(){
 	fmsState         = QUAD_FMS.IDLE;
 	missionState     = FMS_MISSION.TAKEOFF;
 	takeoff_cmd_sent = false;
+	apMode           = AP_MODE.ND;
+	reqMode          = AP_MODE.ND;
     }
 
     // Function to send commands to pixhawk
@@ -315,6 +323,7 @@ public class Aircraft{
 	
 		// Set mode to guided
 		SetMode(4);
+		apMode = AP_MODE.GUIDED;
 		
 		// Arm the throttles
 		SendCommand(0,0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,
@@ -337,6 +346,7 @@ public class Aircraft{
 		if(apState.aircraftPosition.alt_agl >= 50.0f){
 		    missionState = FMS_MISSION.MONITOR;
 		    SetMode(3);
+		    apMode = AP_MODE.AUTO;
 		}
 	    }
 
@@ -344,23 +354,21 @@ public class Aircraft{
 
 	case MONITOR:
 
-	    time_elapsed = current_time - time1;
+	    // Check for conflicts and determine mode
+	    Monitor();
 
-	    if(time_elapsed > 5E9){
-		time1 = current_time;
-
-		Waypoint wp = FP.GetWaypoint(FP.nextWaypoint);
-
-		double dist[] = FP.Distance2Waypoint(currentPos,wp);
-
-		System.out.println("Distance to next waypoint: "+dist[0]+" heading: "+dist[1]);
-		
+	    // Set the requested mode
+	    if(reqMode != apMode){
+		if(apMode == AP_MODE.AUTO){
+		    SetMode(3);
+		}
+		else if(apMode == AP_MODE.GUIDED){
+		    SetMode(4);
+		}
 	    }
 
-	    if(CheckMissionItemReached()){
-		System.out.println("Reached waypoint");
-		SharedData.CurrentFlightPlan.nextWaypoint++;
-	    }
+	    // Resolve the conflict
+	    Resolve();
 	    
 	    break;
 
@@ -370,7 +378,7 @@ public class Aircraft{
 		
 	
 	}// end switch
-    }//end Monitor()
+    }//end Mission()
 
     public boolean CheckMissionItemReached(){
 
@@ -384,7 +392,52 @@ public class Aircraft{
 	    }
 	}
 
-	return reached;
+	return reached;	
+    }
+
+
+    public void Monitor(){
+
+	FlightPlan FP       = SharedData.CurrentFlightPlan;
+	Position currentPos = apState.aircraftPosition;
 	
+	long current_time   = System.nanoTime();
+	
+	long time_elapsed = current_time - time1;
+	
+	// Check for deviation from prescribed flight profile.
+
+	// Check for conflicts from DAIDALUS against other traffic.
+
+	// Check for geofence resolutions.
+
+	// Check for mission payload related flags.
+
+	// Check mission progress.
+	if(time_elapsed > 5E9){
+	    time1 = current_time;    
+	    Waypoint wp = FP.GetWaypoint(FP.nextWaypoint);	    
+	    double dist[] = FP.Distance2Waypoint(currentPos,wp);	    
+	    System.out.format("Distance to next waypoint: %2.2f (Miles), heading: %3.2f (degrees)\n",dist[0]*0.62,dist[1]);	    
+	}
+	
+	if(CheckMissionItemReached()){
+	    System.out.println("Reached waypoint");
+	    SharedData.CurrentFlightPlan.nextWaypoint++;
+	}
+	
+
+	// Determine mode
+	reqMode = AP_MODE.AUTO;
+	
+	
+    }// end Monitor()
+
+
+    public void Resolve(){	
+
+	// If conflicts detected, switch to guided mode and perform resolution.
+	
+
     }
 }
