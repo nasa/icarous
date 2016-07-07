@@ -5,7 +5,7 @@ import com.MAVLink.Messages.*;
 import com.MAVLink.icarous.*;
 
 
-public class Talk2Com{
+public class ComBox{
 
     public static void UDPWrite(MAVLinkMessage msg2send,DatagramSocket sock,InetAddress host, int udpSendPort){
 
