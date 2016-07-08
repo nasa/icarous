@@ -167,7 +167,8 @@ public class MAVLinkMessages{
     public int RcvdMissionAck;
     public int RcvdMissionStart;
     public int RcvdMissionItemReached;
-
+    public int RcvdPntInterest;
+    
     public MAVLinkMessages(){
 	FlightPlanUpdateInterrupt = 0;
 	GeoFenceUpdateInterrupt   = 0;
@@ -179,6 +180,7 @@ public class MAVLinkMessages{
 	RcvdMissionAck            = 0;
 	RcvdMissionStart          = -1;
 	RcvdMissionItemReached    = 0;
+	RcvdPntInterest           = 0;
     }
     
     public void decode_message(MAVLinkPacket message){
@@ -721,10 +723,12 @@ public class MAVLinkMessages{
 	case msg_flightplan_info.MAVLINK_MSG_ID_FLIGHTPLAN_INFO:
 	    msgFlightplanInfo = (msg_flightplan_info) message.unpack();
 	    FlightPlanUpdateInterrupt  = 1;
+	    System.out.println("Received flight plan update interrupt");
 	    break;
 
 	case msg_pointofinterest.MAVLINK_MSG_ID_POINTOFINTEREST:
 	    msgPointofinterest = (msg_pointofinterest) message.unpack();
+	    RcvdPntInterest = 1;
 	    break;
 
 	case msg_geofence_info.MAVLINK_MSG_ID_GEOFENCE_INFO:

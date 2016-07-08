@@ -67,8 +67,6 @@ public class COM_Thread extends Aircraft implements Runnable{
 	    }
 
 	  
-	    // TODO: Implement COM box write
-	    // COM.Write()	
 	}
     }
 

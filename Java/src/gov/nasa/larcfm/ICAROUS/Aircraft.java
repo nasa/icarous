@@ -247,7 +247,14 @@ public class Aircraft{
 		  
 		  Intf.Read();
 
-		  msg_pointofinterest msg2 = SharedData.RcvdMessages.msgPointofinterest;
+		  if(RcvdPntInterest == 1){
+		      msg_pointofinterest msg2 = SharedData.RcvdMessages.msgPointofinterest;
+		      RcvdPntInterest = 0;
+		  }
+		  else{
+		      state1  = FP_READ_COM.FP_ACK_FAIL;
+		      break;
+		  }
 
 		  if(msg2.id == 0 && msg2.index != count){
 		      
