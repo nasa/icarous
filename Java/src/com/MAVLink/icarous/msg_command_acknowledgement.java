@@ -15,7 +15,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 */
 public class msg_command_acknowledgement extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT = 155;
+    public static final int MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT = 224;
     public static final int MAVLINK_MSG_LENGTH = 2;
     private static final long serialVersionUID = MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT;
 

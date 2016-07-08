@@ -15,7 +15,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 */
 public class msg_pointofinterest extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_POINTOFINTEREST = 151;
+    public static final int MAVLINK_MSG_ID_POINTOFINTEREST = 220;
     public static final int MAVLINK_MSG_LENGTH = 19;
     private static final long serialVersionUID = MAVLINK_MSG_ID_POINTOFINTEREST;
 

@@ -15,7 +15,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 */
 public class msg_combox_pulse extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_COMBOX_PULSE = 154;
+    public static final int MAVLINK_MSG_ID_COMBOX_PULSE = 219;
     public static final int MAVLINK_MSG_LENGTH = 8;
     private static final long serialVersionUID = MAVLINK_MSG_ID_COMBOX_PULSE;
 

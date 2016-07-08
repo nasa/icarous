@@ -15,7 +15,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 */
 public class msg_mission_start_stop extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_MISSION_START_STOP = 153;
+    public static final int MAVLINK_MSG_ID_MISSION_START_STOP = 223;
     public static final int MAVLINK_MSG_LENGTH = 1;
     private static final long serialVersionUID = MAVLINK_MSG_ID_MISSION_START_STOP;
 

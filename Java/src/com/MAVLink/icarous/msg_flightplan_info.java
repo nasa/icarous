@@ -15,7 +15,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 */
 public class msg_flightplan_info extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_FLIGHTPLAN_INFO = 150;
+    public static final int MAVLINK_MSG_ID_FLIGHTPLAN_INFO = 221;
     public static final int MAVLINK_MSG_LENGTH = 17;
     private static final long serialVersionUID = MAVLINK_MSG_ID_FLIGHTPLAN_INFO;
 

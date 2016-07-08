@@ -15,7 +15,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 */
 public class msg_geofence_info extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_GEOFENCE_INFO = 152;
+    public static final int MAVLINK_MSG_ID_GEOFENCE_INFO = 222;
     public static final int MAVLINK_MSG_LENGTH = 15;
     private static final long serialVersionUID = MAVLINK_MSG_ID_GEOFENCE_INFO;
 

@@ -4,61 +4,62 @@
 	<enums>
 	</enums>
 	<messages>
-		<message id="150" name="FLIGHTPLAN_INFO">
-		  <description>Flight plan information </description>
-		  <field type="uint8_t" name="msgType">Message type, 0-new flight plan, 1-update existing flight plan</field>
-		  <field type="float" name="standoffDist">Standoff distance</field>
-		  <field type="float" name="maxHorDev">Maximum horizontal deviation from flight plan</field>
-		  <field type="float" name="maxVerDev">Maximum vertical deviation from flight plan</field>
-		  <field type="int32_t" name="numWaypoints">Number of waypoints</field>
-		</message>
 
-		<message id="151" name="POINTOFINTEREST">
-		  <description>Point in space (Waypoint/Vertex etc...)</description>
-		  <field type="int8_t" name="id">Identifier (0-Waypoint,1-geofence,2-Obstacle,3-Traffic,4-Others)</field>
-		  <field type="int8_t" name="subtype">Sub type</field>
-		  <field type="int8_t" name="index">Index</field>
-		  <field type="float" name="lat">Latitude</field>
-		  <field type="float" name="lon">Longitude</field>
-		  <field type="float" name="alt">Altitude</field>
-		  <field type="float" name="heading">Heading</field>
-		</message>
+	  <message id="219" name="COMBOX_PULSE">
+	    <description>Combox heartbeat</description>
+	    <field type="uint64_t" name="count">count</field>
+	  </message>
 
-		<message id="152" name="GEOFENCE_INFO">
-		  <description>Geo fence information</description>
-		  <field type="uint8_t" name="msgType">Flag, 0-new fence, 1-remove existing fence</field>
-		  <field type="uint8_t" name="fenceType">Flag, 0-keep in, 1-keep out</field>
-		  <field type="uint8_t" name="fenceID"> Geo-fence ID</field>
-		  <field type="float" name="fenceFloor"> Fence floor height </field>
-		  <field type="float" name="fenceCeiling"> Fence ceiling height </field>
-		  <field type="float" name="numVertices"> Number of polygon verticies </field>
-		</message>
-		
-		<message id="153" name="MISSION_START_STOP">
-		  <description>Flag to start/stop mission</description>
-		  <field type="uint8_t" name="missionStart"> mission start (true)/stop (false)</field>
-		</message>
-
-		<message id="154" name="COMBOX_PULSE">
-		  <description>Combox heartbeat</description>
-		  <field type="uint64_t" name="count">count</field>
-		</message>
-
-		<message id="155" name="COMMAND_ACKNOWLEDGEMENT">
-		  <description>Acknowledgement</description>
-		  <field type="uint8_t" name="acktype">Acknowledgement type (0-waypoints,1-geofence)</field>
-		  <field type="uint8_t" name="value">1-success,0-failure</field>
-		</message>
-
-		<message id="156" name="AIRCRAFT_6DOF_STATE">
-		  <description>Aircraft state information</description>
-		  <field type="float" name="lat">latitude</field>
-		  <field type="float" name="lon">longitude</field>
-		  <field type="float" name="alt">altitude</field>
-		  <field type="float" name="roll">roll</field>
-		  <field type="float" name="pitch">pitch</field>
-		  <field type="float" name="yaw">yaw</field>
-		</message>		  
-		
+	  <message id="220" name="POINTOFINTEREST">
+	    <description>Point in space (Waypoint/Vertex etc...)</description>
+	    <field type="int8_t" name="id">Identifier (0-Waypoint,1-geofence,2-Obstacle,3-Traffic,4-Others)</field>
+	    <field type="int8_t" name="subtype">Sub type</field>
+	    <field type="int8_t" name="index">Index</field>
+	    <field type="float" name="lat">Latitude</field>
+	    <field type="float" name="lon">Longitude</field>
+	    <field type="float" name="alt">Altitude</field>
+	    <field type="float" name="heading">Heading</field>
+	  </message>
+	  
+	  <message id="221" name="FLIGHTPLAN_INFO">
+	    <description>Flight plan information </description>
+	    <field type="uint8_t" name="msgType">Message type, 0-new flight plan, 1-update existing flight plan</field>
+	    <field type="float" name="standoffDist">Standoff distance</field>
+	    <field type="float" name="maxHorDev">Maximum horizontal deviation from flight plan</field>
+	    <field type="float" name="maxVerDev">Maximum vertical deviation from flight plan</field>
+	    <field type="int32_t" name="numWaypoints">Number of waypoints</field>
+	  </message>
+	  	  
+	  <message id="222" name="GEOFENCE_INFO">
+	    <description>Geo fence information</description>
+	    <field type="uint8_t" name="msgType">Flag, 0-new fence, 1-remove existing fence</field>
+	    <field type="uint8_t" name="fenceType">Flag, 0-keep in, 1-keep out</field>
+	    <field type="uint8_t" name="fenceID"> Geo-fence ID</field>
+	    <field type="float" name="fenceFloor"> Fence floor height </field>
+	    <field type="float" name="fenceCeiling"> Fence ceiling height </field>
+	    <field type="float" name="numVertices"> Number of polygon verticies </field>
+	  </message>
+	  
+	  <message id="223" name="MISSION_START_STOP">
+	    <description>Flag to start/stop mission</description>
+	    <field type="uint8_t" name="missionStart"> mission start (true)/stop (false)</field>
+	  </message>
+	  
+	  <message id="224" name="COMMAND_ACKNOWLEDGEMENT">
+	    <description>Acknowledgement</description>
+	    <field type="uint8_t" name="acktype">Acknowledgement type (0-waypoints,1-geofence)</field>
+	    <field type="uint8_t" name="value">1-success,0-failure</field>
+	  </message>
+	  
+	  <message id="225" name="AIRCRAFT_6DOF_STATE">
+	    <description>Aircraft state information</description>
+	    <field type="float" name="lat">latitude</field>
+	    <field type="float" name="lon">longitude</field>
+	    <field type="float" name="alt">altitude</field>
+	    <field type="float" name="roll">roll</field>
+	    <field type="float" name="pitch">pitch</field>
+	    <field type="float" name="yaw">yaw</field>
+	  </message>		  
+	  
 	</messages>
 </mavlink>
