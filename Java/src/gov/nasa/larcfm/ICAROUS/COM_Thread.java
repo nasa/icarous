@@ -32,10 +32,9 @@ public class COM_Thread extends Aircraft implements Runnable{
 
 	    // Handle new flight plan inputs
 	    if(SharedData.RcvdMessages.RcvdFlightPlanUpdate == 1){
-		synchronized(SharedData){
 		    SharedData.RcvdMessages.RcvdFlightPlanUpdate = 0;
-		    UpdateFlightPlan();
-		}
+		    SharedData.NewFlightPlan = new FlightPlan();
+		    SharedData.NewFlightPlan.UpdateFlightPlan(Intf);
 	    }
 
 	    // Handle geo fence messages

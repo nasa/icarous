@@ -54,15 +54,17 @@ public class FMS_Thread extends Aircraft implements Runnable{
 	       - Set current flight plan as the new flight plan 
 	       - Send the current flight plan to the pixhawk    */
 	    
-	    synchronized(SharedData){
-		if(SharedData.startMission == 1){
-		    SharedData.startMission = -1;
-		    SharedData.CurrentFlightPlan.Copy(SharedData.NewFlightPlan);
-		    this.SendFlightPlanToAP();
-		    fmsState = QUAD_FMS.MISSION;
-		}
-	    }
 	    
+	    if(SharedData.startMission == 1){
+		SharedData.startMission = -1;
+       		FlightPlan FP = SharedData.CurrentFlightPlan;		
+		FP.Copy(SharedData.NewFlightPlan);
+		synchronized(SharedData){
+		    FP.SendFlightPlanToAP(Intf);
+		}
+		fmsState = QUAD_FMS.MISSION;
+	    }
+	    	    
 	    break;
 
 	case MISSION:
