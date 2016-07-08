@@ -244,39 +244,44 @@ public class Aircraft{
 		  break;
 		  
 	      case FP_WAYPT_INFO:
-		  
+
+		  Intf.SetTimeout(500);
 		  Intf.Read();
+		  Intf.SetTimeout(0);
 
-		  if(RcvdPntInterest == 1){
+		  if(SharedData.RcvdMessages.RcvdPntInterest == 1){
 		      msg_pointofinterest msg2 = SharedData.RcvdMessages.msgPointofinterest;
-		      RcvdPntInterest = 0;
-		  }
-		  else{
-		      state1  = FP_READ_COM.FP_ACK_FAIL;
-		      break;
-		  }
+		      SharedData.RcvdMessages.RcvdPntInterest = 0;
 
-		  if(msg2.id == 0 && msg2.index != count){
+		      if(msg2.id == 0 && msg2.index != count){
 		      
-		      state1  = FP_READ_COM.FP_ACK_FAIL;
-		      break;
-		  }
-
-		  Waypoint wp          = new Waypoint(msg2.index,msg2.lat,msg2.lon,msg2.alt,msg2.heading);
-		  
-		  System.out.println("waypoint:"+count+" lat:"+wp.lat+" lon:"+wp.lon);
-		  SharedData.NewFlightPlan.AddWaypoints(count,wp);
-
-		  if(count == (SharedData.NewFlightPlan.numWayPoints-1)){
-		      state1  = FP_READ_COM.FP_ACK_SUCCESS;
+			  state1  = FP_READ_COM.FP_ACK_FAIL;
+			  break;
+		      }
 		      
-		  }
-		  else{
-		      count++;
-		      System.out.println("Receiving next waypoint");
-		  }
-		  
+		      Waypoint wp          = new Waypoint(msg2.index,msg2.lat,msg2.lon,msg2.alt,msg2.heading);
+		      
+		      System.out.println("waypoint:"+count+" lat:"+wp.lat+" lon:"+wp.lon);
+		      SharedData.NewFlightPlan.AddWaypoints(count,wp);
+		      
+		      if(count == (SharedData.NewFlightPlan.numWayPoints-1)){
+			  state1  = FP_READ_COM.FP_ACK_SUCCESS;
+			  
+		      }
+		      else{
+			  count++;
+			  System.out.println("Receiving next waypoint");
+		      }
+		      
 		  break;
+		      
+		  }
+		  else{
+		      state1  = FP_READ_COM.FP_ACK_FAIL;
+		      break;
+		  }
+
+		  
 
 	      case FP_ACK_SUCCESS:
 
