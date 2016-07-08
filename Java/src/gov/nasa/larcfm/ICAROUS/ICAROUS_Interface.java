@@ -92,6 +92,15 @@ public class ICAROUS_Interface{
 
     }
 
+    public void SetTimeout(int timeout){
+	try{
+	    sock.setSoTimeout(timeout);
+	}
+	catch(SocketException e){
+	    System.out.println(e);
+	}
+    }
+
     public void CheckAPHeartBeat(){
 	System.out.println("Waiting for heartbeat from autopilot...");
 	while(true){
