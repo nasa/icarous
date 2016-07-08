@@ -482,13 +482,13 @@ class GeoFence extends Position{
 
     public int Type;
     public int ID;
-    public int numVertices;
+    public float numVertices;
     public double floor;
     public double ceiling;
     
     List<Position> Vertices;
 
-    public GeoFence(int IDin,int TypeIn,int numVerticesIn,double floorIn,double ceilingIn){
+    public GeoFence(int IDIn,int TypeIn,float numVerticesIn,double floorIn,double ceilingIn){
 	Vertices = new ArrayList<Position>();
 	Type     = TypeIn;
 	ID       = IDIn;
@@ -497,8 +497,8 @@ class GeoFence extends Position{
 	ceilingIn = ceilingIn;
     }
 
-    public void AddVertex(int index,double lat,double lon){
-	Position pos = new pos(lat,lon,0);
+    public void AddVertex(int index,float lat,float lon){
+	Position pos = new Position(lat,lon,0);
 	Vertices.add(index,pos);
     }
     
@@ -507,25 +507,27 @@ class GeoFence extends Position{
 class GEOFENCES{
 
     enum FENCESTATE{
-	IDLE,INFO,VERTICES,ACK_FAIL,ACK_SUCCESS,UPDATE
+	IDLE,INFO,VERTICES,ACK_FAIL,ACK_SUCCESS,UPDATE,REMOVE
     }
     
-    public List<Geofence> fenceList;
+    public List<GeoFence> fenceList;
     FENCESTATE state;
     
-    public GeoFences(){
-	fenceList  = new ArrayList<Geofence>();
+    public GEOFENCES(){
+	fenceList  = new ArrayList<GeoFence>();
 	state = FENCESTATE.IDLE;
     }
 
 
-    public GetNewGeoFence(ICAROUS_Interface Intf){
+    public void GetNewGeoFence(ICAROUS_Interface Intf){
 
-	GeoFence fence1;
+	GeoFence fence1 = null;
 	int count = 0;
 	boolean getfence = true;
 
-	msg_geofence_info msg1 = SharedData.RcvdMessage.msgGeofenceInfo;;
+	MAVLinkMessages RcvdMessages = Intf.SharedData.RcvdMessages;
+	
+	msg_geofence_info msg1 = RcvdMessages.msgGeofenceInfo;;
 
 	if(msg1.msgType == 0){
 	    state = FENCESTATE.INFO;
@@ -550,9 +552,9 @@ class GEOFENCES{
 		Intf.Read();
 		Intf.SetTimeout(0);
 	    
-		if(SharedData.RcvdMessages.RcvdPntInterest == 1){
-		    msg_pointofinterest msg2 = SharedData.RcvdMessages.msgPointofinterest;
-		    SharedData.RcvdMessages.RcvdPntInterest = 0;
+		if(RcvdMessages.RcvdPntInterest == 1){
+		    msg_pointofinterest msg2 = RcvdMessages.msgPointofinterest;
+		    RcvdMessages.RcvdPntInterest = 0;
 		
 		    if(msg2.id == 1 && msg2.index != count){
 		      
@@ -560,7 +562,7 @@ class GEOFENCES{
 			break;
 		    }
 
-		    fence1.AddVertex(msg2.index,msg2.lat.msg2.lon);
+		    fence1.AddVertex(msg2.index,msg2.lat,msg2.lon);
 		    count++;
 
 		    if(count == fence1.numVertices){
@@ -582,7 +584,7 @@ class GEOFENCES{
 		Iterator Itr = fenceList.iterator();
 
 		while(Itr.hasNext()){
-		    GeoFence f1 = Itr.next();
+		    GeoFence f1 = (GeoFence) Itr.next();
 
 		    if(f1.ID == msg1.fenceID){
 			Itr.remove();
@@ -610,16 +612,16 @@ class GEOFENCES{
 
 	    case ACK_SUCCESS:
 
-		msg_command_acknowledgement msg4 = new msg_command_acknowledgement();
+		msg_command_acknowledgement msg5 = new msg_command_acknowledgement();
 
-		msg4.acktype = 1;		  
+		msg5.acktype = 1;		  
 		
 		getfence = false;
 		
 		// Send acknowledgment
-		msg4.value = 1;
+		msg5.value = 1;
 		
-		Intf.Write(msg4);
+		Intf.Write(msg5);
 
 		state = FENCESTATE.UPDATE;
 		
@@ -630,10 +632,7 @@ class GEOFENCES{
 	    
     }//end of function
     
-    public UpdateGeoFenceList(){
-
-
-    }
+    
     
     
 }
