@@ -152,8 +152,8 @@ public class MAVLinkPacket implements Serializable {
     public MAVLinkMessage unpack() {
         switch (msgid) {
                          
-            case msg_combox_pulse.MAVLINK_MSG_ID_COMBOX_PULSE:
-                return  new msg_combox_pulse(this);
+            case msg_heartbeat_combox.MAVLINK_MSG_ID_HEARTBEAT_COMBOX:
+                return  new msg_heartbeat_combox(this);
                  
             case msg_pointofinterest.MAVLINK_MSG_ID_POINTOFINTEREST:
                 return  new msg_pointofinterest(this);

@@ -5,7 +5,7 @@
 	</enums>
 	<messages>
 
-	  <message id="219" name="COMBOX_PULSE">
+	  <message id="219" name="HEARTBEAT_COMBOX">
 	    <description>Combox heartbeat</description>
 	    <field type="uint64_t" name="count">count</field>
 	  </message>
