@@ -54,7 +54,7 @@ public class AircraftData{
     public FlightPlan NewFlightPlan;
     public FlightPlan CurrentFlightPlan;
 
-    public List<Geofence> Fences;
+    
     // List for obstacles
     // List for traffic information
 
@@ -67,7 +67,7 @@ public class AircraftData{
 
 	aircraftPosition    = new Position();
 	CurrentFlightPlan   = new FlightPlan();
-	Fences              = new ArrayList<Geofence>();
+	
     }
 
     public void CopyAircraftStateInfo(AircraftData Input){
@@ -488,7 +488,7 @@ class GeoFence extends Position{
     
     List<Position> Vertices;
 
-    public GeoFence(int TypeIn,int IDIn,int numVerticesIn,double floorIn,double ceilingIn){
+    public GeoFence(int IDin,int TypeIn,int numVerticesIn,double floorIn,double ceilingIn){
 	Vertices = new ArrayList<Position>();
 	Type     = TypeIn;
 	ID       = IDIn;
@@ -500,6 +500,139 @@ class GeoFence extends Position{
     public void AddVertex(int index,double lat,double lon){
 	Position pos = new pos(lat,lon,0);
 	Vertices.add(index,pos);
+    }
+    
+}
+
+class GEOFENCES{
+
+    enum FENCESTATE{
+	IDLE,INFO,VERTICES,ACK_FAIL,ACK_SUCCESS,UPDATE
+    }
+    
+    public List<Geofence> fenceList;
+    FENCESTATE state;
+    
+    public GeoFences(){
+	fenceList  = new ArrayList<Geofence>();
+	state = FENCESTATE.IDLE;
+    }
+
+
+    public GetNewGeoFence(ICAROUS_Interface Intf){
+
+	GeoFence fence1;
+	int count = 0;
+	boolean getfence = true;
+
+	msg_geofence_info msg1 = SharedData.RcvdMessage.msgGeofenceInfo;;
+
+	if(msg1.msgType == 0){
+	    state = FENCESTATE.INFO;
+	}
+	else{
+	    state = FENCESTATE.REMOVE;
+	}
+	
+	while(getfence){    
+
+	    switch(state){
+	    
+	    case INFO:
+	    
+		fence1 = new GeoFence(msg1.fenceID,msg1.fenceType,msg1.numVertices,msg1.fenceFloor,msg1.fenceCeiling);
+		
+		break;
+
+	    case VERTICES:
+
+		Intf.SetTimeout(500);
+		Intf.Read();
+		Intf.SetTimeout(0);
+	    
+		if(SharedData.RcvdMessages.RcvdPntInterest == 1){
+		    msg_pointofinterest msg2 = SharedData.RcvdMessages.msgPointofinterest;
+		    SharedData.RcvdMessages.RcvdPntInterest = 0;
+		
+		    if(msg2.id == 1 && msg2.index != count){
+		      
+			state  =  FENCESTATE.ACK_FAIL;
+			break;
+		    }
+
+		    fence1.AddVertex(msg2.index,msg2.lat.msg2.lon);
+		    count++;
+
+		    if(count == fence1.numVertices){
+			state = FENCESTATE.UPDATE;
+			break;
+		    }
+		}
+
+	    case UPDATE:
+
+		fenceList.add(fence1);
+
+		state = FENCESTATE.ACK_SUCCESS;
+		
+		break;
+
+	    case REMOVE:
+
+		Iterator Itr = fenceList.iterator();
+
+		while(Itr.hasNext()){
+		    GeoFence f1 = Itr.next();
+
+		    if(f1.ID == msg1.fenceID){
+			Itr.remove();
+			break;   
+		    }
+		}
+
+		break;
+
+	       
+	    case ACK_FAIL:
+
+		msg_command_acknowledgement msg4 = new msg_command_acknowledgement();
+
+		msg4.acktype = 1;		  
+		
+		getfence = false;
+		
+		// Send acknowledgment
+		msg4.value = 0;
+		
+		Intf.Write(msg4);
+		
+		break;
+
+	    case ACK_SUCCESS:
+
+		msg_command_acknowledgement msg4 = new msg_command_acknowledgement();
+
+		msg4.acktype = 1;		  
+		
+		getfence = false;
+		
+		// Send acknowledgment
+		msg4.value = 1;
+		
+		Intf.Write(msg4);
+
+		state = FENCESTATE.UPDATE;
+		
+		break;
+		
+	    }//end of switch
+	}//end of while
+	    
+    }//end of function
+    
+    public UpdateGeoFenceList(){
+
+
     }
     
     
