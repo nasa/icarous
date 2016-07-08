@@ -17,7 +17,7 @@ import com.MAVLink.icarous.*;
 
 public class MAVLinkMessages{
 
-    public msg_heartbeat msgHeartbeat = null;
+    public msg_heartbeat msgHeartbeat;
     public msg_sys_status msgSysStatus;
     public msg_system_time msgSystemTime;
     public msg_ping msgPing;
@@ -154,13 +154,13 @@ public class MAVLinkMessages{
     public msg_geofence_info msgGeofenceInfo;
     public msg_pointofinterest msgPointofinterest;
     public msg_command_acknowledgement msgCommandAcknowledgement;
-    public msg_combox_pulse msgComboxPulse = null;
+    public msg_heartbeat_combox msgHeartbeatCombox;
     public msg_mission_start_stop msgMissionStartStop;
     
-    public int FlightPlanUpdateInterrupt;
-    public int GeoFenceUpdateInterrupt;
-    public int TrafficUpdateInterrupt;
-    public int ObstacleUpdateInterrupt;
+    public int RcvdFlightPlanUpdate;
+    public int RcvdGeoFenceUpdate;
+    public int RcvdTrafficUpdate;
+    public int RcvdObstacleUpdate;
     public int RcvdMissionCount;
     public int RcvdMissionItem;
     public int RcvdMissionRequest;
@@ -168,12 +168,14 @@ public class MAVLinkMessages{
     public int RcvdMissionStart;
     public int RcvdMissionItemReached;
     public int RcvdPntInterest;
+    public int RcvdHeartbeat_AP;
+    public int RcvdHeartbeat_COM;
     
     public MAVLinkMessages(){
-	FlightPlanUpdateInterrupt = 0;
-	GeoFenceUpdateInterrupt   = 0;
-	TrafficUpdateInterrupt    = 0;
-	ObstacleUpdateInterrupt   = 0;
+	RcvdFlightPlanUpdate      = 0;
+	RcvdGeoFenceUpdate        = 0;
+	RcvdTrafficUpdate         = 0;
+	RcvdObstacleUpdate        = 0;
 	RcvdMissionCount          = 0;
 	RcvdMissionItem           = 0;
 	RcvdMissionRequest        = 0;
@@ -181,6 +183,8 @@ public class MAVLinkMessages{
 	RcvdMissionStart          = -1;
 	RcvdMissionItemReached    = 0;
 	RcvdPntInterest           = 0;
+	RcvdHeartbeat_AP          = 0;
+	RcvdHeartbeat_COM         = 0;
     }
     
     public void decode_message(MAVLinkPacket message){
@@ -189,6 +193,7 @@ public class MAVLinkMessages{
 	
 	case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
 	    msgHeartbeat = (msg_heartbeat) message.unpack();
+	    RcvdHeartbeat_AP = 1;
 	    break;
 	    
 	case msg_sys_status.MAVLINK_MSG_ID_SYS_STATUS:
@@ -722,8 +727,7 @@ public class MAVLinkMessages{
 
 	case msg_flightplan_info.MAVLINK_MSG_ID_FLIGHTPLAN_INFO:
 	    msgFlightplanInfo = (msg_flightplan_info) message.unpack();
-	    FlightPlanUpdateInterrupt  = 1;
-	    System.out.println("Received flight plan update interrupt");
+	    RcvdFlightPlanUpdate  = 1;
 	    break;
 
 	case msg_pointofinterest.MAVLINK_MSG_ID_POINTOFINTEREST:
@@ -733,11 +737,12 @@ public class MAVLinkMessages{
 
 	case msg_geofence_info.MAVLINK_MSG_ID_GEOFENCE_INFO:
 	    msgGeofenceInfo = (msg_geofence_info) message.unpack();
-	    GeoFenceUpdateInterrupt = 1;
+	    RcvdGeoFenceUpdate = 1;
 	    break;
 
-	case msg_combox_pulse.MAVLINK_MSG_ID_COMBOX_PULSE:
-	    msgComboxPulse = (msg_combox_pulse) message.unpack();
+	case msg_heartbeat_combox.MAVLINK_MSG_ID_HEARTBEAT_COMBOX:
+	    msgHeartbeatCombox = (msg_heartbeat_combox) message.unpack();
+	    RcvdHeartbeat_COM = 1;
 	    break;
 
 	case msg_mission_start_stop.MAVLINK_MSG_ID_MISSION_START_STOP:

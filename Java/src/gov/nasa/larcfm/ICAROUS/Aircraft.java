@@ -55,6 +55,35 @@ public class Aircraft{
 	reqMode          = AP_MODE.ND;
     }
 
+
+    public boolean CheckHeartBeat(){
+
+	boolean pulse = false;
+
+	int compID    = (int) Intf.componentType;
+	
+	synchronized(SharedData){
+	    if(compID == 1)
+		SharedData.RcvdMessages.RcvdHeartbeat_AP  = 0;
+	    else if(compID == 2)
+		SharedData.RcvdMessages.RcvdHeartbeat_COM = 0;
+	}
+	
+	Intf.SetTimeout(5000);
+	Intf.Read();
+	Intf.SetTimeout(0);
+
+	synchronized(SharedData){
+	    if( (compID == 1) && SharedData.RcvdMessages.RcvdHeartbeat_AP == 1)
+		pulse = true;
+	    else if( (compID == 2) && SharedData.RcvdMessages.RcvdHeartbeat_COM == 1)
+		pulse = true;
+		
+	}
+
+	return pulse;
+    }
+    
     // Function to send commands to pixhawk
     public int SendCommand( int target_system,
 			    int target_component,

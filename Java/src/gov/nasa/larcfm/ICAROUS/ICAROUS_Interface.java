@@ -21,59 +21,62 @@ import jssc.SerialPortException;
 
 public class ICAROUS_Interface{
 
-    public static short PX4       = 0;
-    public static short SITL      = 1;
-    public static short COMBOX    = 2;
+    public static short PX4       = 1;
+    public static short COM       = 2;
     public static short SAFEGUARD = 3;
-    public static short BROADCAST = 4;   
+    public static short BROADCAST = 4;
+
+    public static short UDP_UNI   = 0;
+    public static short UDP_MUL   = 1;
+    public static short SERIAL    = 2;
     
-    private DatagramSocket sock   = null;
+    
+    public short interfaceType    = 0;
+    public short componentType    = 0;
     private int udpReceivePort    = 0;
     private int udpSendPort       = 0;
     private String udpHost        = null;
     private String serialPortName = null;
     private InetAddress host      = null;
+    private DatagramSocket sock   = null;
+    private SerialPort serialPort = null;
     private Parser MsgParser      = new Parser();
-    public short interfaceType    = 0;
-    AircraftData SharedData       = null;
-    SerialPort serialPort         = null;
+    
+    public AircraftData SharedData  = null;
+    
 
 
-    public ICAROUS_Interface(int intType,int receivePort,AircraftData msgs){
+    public ICAROUS_Interface(int intType,int compType,String hostname,int recvPort,int sendPort, AircraftData msgs){
 
 	interfaceType   = (short) intType;
-	udpReceivePort  = receivePort;
+	componentType   = (short) compType;
+	udpReceivePort  = recvPort;
+	udpSendPort     = sendPort;
 	SharedData      = msgs;
+
+	if(hostname != null){
+	    try{
+		host           = InetAddress.getByName(hostname);
+	    }catch(UnknownHostException e){
+		System.out.println(e);
+	    }
+	}
     }
 
-    public ICAROUS_Interface(int intType,String portName, AircraftData msgs){
+    public ICAROUS_Interface(int intType,int compType,String portName, AircraftData msgs){
 
 	interfaceType  = (short) intType;
+	componentType  = (short) compType;
 	SharedData     = msgs;
 	serialPortName = portName;
     }
 
-    public ICAROUS_Interface(int intType,String hostname,int port,AircraftData msgs){
-	interfaceType  = (short) intType;
-	SharedData     = msgs;
-	udpSendPort    = port;
-	udpReceivePort = 0;
-	try{
-	    host           = InetAddress.getByName(hostname);
-	}catch(UnknownHostException e){
-	    System.out.println(e);
-	}
-       
-    }
-
     public void InitInterface(int timeout){
 
-	if ((interfaceType == SITL) ||
-	    (interfaceType == COMBOX) ||
-	    (interfaceType == BROADCAST) ){
+	if ( (interfaceType == UDP_UNI) || (interfaceType == UDP_MUL) ){
 	    InitSocketInterface(timeout);
 	}
-	else if((interfaceType == PX4) || (interfaceType == SAFEGUARD)){
+	else if(interfaceType == SERIAL){
 	    InitSerialInterface();
 	}
 	else{
@@ -91,20 +94,12 @@ public class ICAROUS_Interface{
 	    }
 	    else{
 		sock  = new DatagramSocket();
-		System.out.println("Initialized socket");
 	    }
 	}
 	catch(IOException e){
 	    System.err.println(e);
 	}
-		
-	if(interfaceType == SITL){
-	    CheckAPHeartBeat();
-	}
-	else if(interfaceType == COMBOX){
-	    CheckCOMHeartBeat();
-	}
-
+			
 	try{
 	    sock.setSoTimeout(timeout);
 	}
@@ -122,31 +117,6 @@ public class ICAROUS_Interface{
 	    System.out.println(e);
 	}
     }
-
-    public void CheckAPHeartBeat(){
-	System.out.println("Waiting for heartbeat from autopilot...");
-	while(true){
-	    this.Read();
-	    if(SharedData.RcvdMessages.msgHeartbeat != null){
-		System.out.println("Got heart beat");
-		break;
-	    }
-	}
-	
-    }
-
-    public void CheckCOMHeartBeat(){
-	System.out.println("Waiting for heartbeat from combox...");
-	while(true){
-	    this.Read();
-	    if(SharedData.RcvdMessages.msgComboxPulse != null){
-		System.out.println("Got heart beat from combox");
-		break;
-	    }
-	}
-	
-    }
-
     
     public void InitSerialInterface(){
 
@@ -166,9 +136,6 @@ public class ICAROUS_Interface{
 
 	System.out.println("Connected to serial port:"+serialPortName);
 
-	if(interfaceType == PX4){
-	    CheckAPHeartBeat();
-	}
     }
 	
     public void UDPRead(){
@@ -183,8 +150,11 @@ public class ICAROUS_Interface{
 
 	    // Get port number on host to send data
 	    if(udpSendPort == 0){
-		udpSendPort = input.getPort();
-		host        = input.getAddress();
+		udpSendPort = input.getPort();		
+	    }
+
+	    if(host == null){
+		host = input.getAddress();
 	    }
 	    
 	    buffer_data   = input.getData();
@@ -206,6 +176,7 @@ public class ICAROUS_Interface{
 	byte[] buffer            = raw_packet.encodePacket();
 
 	try{
+
 	    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
 	    sock.send(output);
 	}
@@ -246,23 +217,24 @@ public class ICAROUS_Interface{
     }
 	
     public void Read(){
-	if(interfaceType == SITL || interfaceType == COMBOX){
+	if(interfaceType == UDP_UNI || interfaceType == UDP_MUL){
 	    this.UDPRead();
 	}
-	else{
+	else if(interfaceType == SERIAL){
 	    this.SerialRead();
+	}
+	else{
+	    System.out.println("Unknown interface");
 	}
     }
 
     public void Write(MAVLinkMessage msg2send){
 
 	
-	    if(interfaceType == SITL   ||
-	       interfaceType == COMBOX ||
-	       interfaceType == BROADCAST){
+	    if(interfaceType == UDP_UNI   || interfaceType == UDP_MUL){
 		this.UDPWrite(msg2send);
 	    }
-	    else{
+	    else if (interfaceType == SERIAL){
 		this.SerialWrite(msg2send);
 	    }
 	

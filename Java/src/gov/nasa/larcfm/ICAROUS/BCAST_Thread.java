@@ -30,7 +30,7 @@ public class BCAST_Thread extends Aircraft implements Runnable{
 	while(true){
 	
 	    // Broadcast messages here	  
-		Intf.Write(SharedData.RcvdMessages.msgAttitude);
+	    Intf.Write(SharedData.RcvdMessages.msgHeartbeat);
 	    	  
 	}
     }

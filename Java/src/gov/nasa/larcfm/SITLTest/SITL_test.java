@@ -13,23 +13,53 @@ import gov.nasa.larcfm.ICAROUS.*;
 public class SITL_test{
 
     public static void main(String args[]){
-	AircraftData SharedData  = new AircraftData(AircraftData.INIT_MESSAGES);
+	AircraftData SharedData    = new AircraftData(AircraftData.INIT_MESSAGES);
 	
-	ICAROUS_Interface SITL     = new ICAROUS_Interface(ICAROUS_Interface.SITL,Integer.parseInt(args[0]),SharedData);
-	ICAROUS_Interface COMInt   = new ICAROUS_Interface(ICAROUS_Interface.COMBOX,Integer.parseInt(args[1]),SharedData);
-	ICAROUS_Interface BCASTInt = new ICAROUS_Interface(ICAROUS_Interface.BROADCAST,"230.1.1.1",5555,SharedData);
+	ICAROUS_Interface SITL     = new ICAROUS_Interface(ICAROUS_Interface.UDP_UNI,
+							   ICAROUS_Interface.PX4,
+							   null,
+							   Integer.parseInt(args[0]),
+							   0,
+							   SharedData);
+	
+	ICAROUS_Interface COMInt   = new ICAROUS_Interface(ICAROUS_Interface.UDP_UNI,
+							   ICAROUS_Interface.COM,
+							   null,
+							   Integer.parseInt(args[1]),
+							   0,
+							   SharedData);
+	
+	ICAROUS_Interface BCASTInt = new ICAROUS_Interface(ICAROUS_Interface.UDP_MUL,
+							   ICAROUS_Interface.BROADCAST,
+							   "230.1.1.1",
+							   0,
+							   5555,
+							   SharedData);
 	
 	FMS_Thread FMS           = new FMS_Thread("Flight management",SharedData,SITL);
 	DAQ_Thread DAQ           = new DAQ_Thread("Data acquisition",SharedData,SITL);
 	COM_Thread COM           = new COM_Thread("Communications",SharedData,COMInt);
 	BCAST_Thread BCAST       = new BCAST_Thread("Broadcast",SharedData,BCASTInt);
 
-	// Initialized interfaces
+	// Initialize interfaces
 	SITL.InitInterface(0);	
 	COMInt.InitInterface(0);
 	BCASTInt.InitInterface(0);
 
+	while(!FMS.CheckHeartBeat()){
+	    
+	}
+
+	System.out.println("Received heartbeat from AP");
+
+	while(!COM.CheckHeartBeat()){
+	    
+	}
+
+	System.out.println("Received heartbeat from COM");
+	    
 	DAQ.start();
+	    
 
 	try{
 	    Thread.sleep(1000);

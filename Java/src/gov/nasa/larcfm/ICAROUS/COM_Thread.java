@@ -31,26 +31,26 @@ public class COM_Thread extends Aircraft implements Runnable{
 	    Intf.Read();
 
 	    // Handle new flight plan inputs
-	    if(SharedData.RcvdMessages.FlightPlanUpdateInterrupt == 1){
+	    if(SharedData.RcvdMessages.RcvdFlightPlanUpdate == 1){
 		synchronized(SharedData){
-		    SharedData.RcvdMessages.FlightPlanUpdateInterrupt = 0;
+		    SharedData.RcvdMessages.RcvdFlightPlanUpdate = 0;
 		    UpdateFlightPlan();
 		}
 	    }
 
 	    // Handle geo fence messages
-	    if(SharedData.RcvdMessages.GeoFenceUpdateInterrupt == 1){
+	    if(SharedData.RcvdMessages.RcvdGeoFenceUpdate== 1){
 
 
 	    }
 
 	    // Handle traffic information
-	    if(SharedData.RcvdMessages.TrafficUpdateInterrupt == 1){
+	    if(SharedData.RcvdMessages.RcvdTrafficUpdate == 1){
 
 	    }
 
 	    // Handle obstacle information
-	    if(SharedData.RcvdMessages.ObstacleUpdateInterrupt == 1){
+	    if(SharedData.RcvdMessages.RcvdObstacleUpdate == 1){
 
 
 	    }
