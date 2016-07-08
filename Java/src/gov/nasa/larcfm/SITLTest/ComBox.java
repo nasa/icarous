@@ -8,7 +8,7 @@ import com.MAVLink.icarous.*;
 public class ComBox{
 
     public static void UDPWrite(MAVLinkMessage msg2send,DatagramSocket sock,InetAddress host, int udpSendPort){
-
+	
 	MAVLinkPacket raw_packet = msg2send.pack();
 	byte[] buffer            = raw_packet.encodePacket();
 
@@ -21,6 +21,47 @@ public class ComBox{
 	    System.err.println(e);
 	}
 
+    }
+
+    public static void ParseMessage(byte[] input){
+	
+	MAVLinkPacket RcvdPacket = null;
+
+	Parser MsgParser = new Parser();
+	
+	for(int i=0;i<(6+255+2);i++){
+	    
+	    RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & input[i]);
+
+	    if(RcvdPacket != null){
+
+		RcvdPacket = null;
+	    }
+	}
+    }
+
+    
+    public static void MultiUDPRead(MulticastSocket sock){
+
+	byte[] buffer = new byte[6+255+2];
+	byte[] buffer_data;
+	    
+	DatagramPacket input = new DatagramPacket(buffer, buffer.length);
+
+	try{
+	    sock.receive(input);
+	    
+	    buffer_data   = input.getData();
+		
+	    ParseMessage(buffer_data);	    
+	    
+	}catch(SocketTimeoutException e){
+	    
+	}catch(IOException e){
+	    System.out.println(e);
+	}
+	
+	
     }
 
     public static msg_command_acknowledgement UDPRead(DatagramSocket sock){
@@ -73,7 +114,24 @@ public class ComBox{
 
 	DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
+	MulticastSocket multisock = null;
+	
+	try{
+	    multisock = new MulticastSocket(5555);
+	    InetAddress mcAddress = InetAddress.getByName("230.1.1.1");
+	    multisock.joinGroup(mcAddress);
+	}
+	catch(IOException e){
+	    System.err.println(e);
+	    multisock = null;
+	}
+
+	
+
+	
 	msg_command_acknowledgement ack = new msg_command_acknowledgement();
+
+
 	
 	try{
 	    host  = InetAddress.getByName(udpHost);
@@ -169,9 +227,6 @@ public class ComBox{
 	    System.out.println(e);
 	}
 
-	while(true){
-
-	}
 	
     }
 

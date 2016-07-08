@@ -25,6 +25,7 @@ public class ICAROUS_Interface{
     public static short SITL      = 1;
     public static short COMBOX    = 2;
     public static short SAFEGUARD = 3;
+    public static short BROADCAST = 4;   
     
     private DatagramSocket sock   = null;
     private int udpReceivePort    = 0;
@@ -52,9 +53,24 @@ public class ICAROUS_Interface{
 	serialPortName = portName;
     }
 
+    public ICAROUS_Interface(int intType,String hostname,int port,AircraftData msgs){
+	interfaceType  = (short) intType;
+	SharedData     = msgs;
+	udpSendPort    = port;
+	udpReceivePort = 0;
+	try{
+	    host           = InetAddress.getByName(hostname);
+	}catch(UnknownHostException e){
+	    System.out.println(e);
+	}
+       
+    }
+
     public void InitInterface(int timeout){
 
-	if ((interfaceType == SITL) || (interfaceType == COMBOX)){
+	if ((interfaceType == SITL) ||
+	    (interfaceType == COMBOX) ||
+	    (interfaceType == BROADCAST) ){
 	    InitSocketInterface(timeout);
 	}
 	else if((interfaceType == PX4) || (interfaceType == SAFEGUARD)){
@@ -70,7 +86,13 @@ public class ICAROUS_Interface{
     public void InitSocketInterface(int timeout){
 	
 	try{
-	    sock  = new DatagramSocket(udpReceivePort);
+	    if(udpReceivePort != 0){
+		sock  = new DatagramSocket(udpReceivePort);
+	    }
+	    else{
+		sock  = new DatagramSocket();
+		System.out.println("Initialized socket");
+	    }
 	}
 	catch(IOException e){
 	    System.err.println(e);
@@ -186,7 +208,6 @@ public class ICAROUS_Interface{
 	try{
 	    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
 	    sock.send(output);
-	    System.out.println("Sent command");
 	}
 	catch(IOException e){
 	    System.err.println(e);
@@ -236,7 +257,9 @@ public class ICAROUS_Interface{
     public void Write(MAVLinkMessage msg2send){
 
 	
-	    if(interfaceType == SITL || interfaceType == COMBOX){
+	    if(interfaceType == SITL   ||
+	       interfaceType == COMBOX ||
+	       interfaceType == BROADCAST){
 		this.UDPWrite(msg2send);
 	    }
 	    else{
