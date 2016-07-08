@@ -50,14 +50,13 @@ public class AircraftData{
     public double aoa;
     public double sideslip;
     public double airspeed;
-
-    boolean sendmsg;
-
+    
     public FlightPlan NewFlightPlan;
     public FlightPlan CurrentFlightPlan;
-    
-    List Obstacles = new ArrayList(); // List for obstacles
-    List Traffic   = new ArrayList(); // List for traffic information
+
+    public List<Geofence> Fences;
+    // List for obstacles
+    // List for traffic information
 
     public int startMission = -1; // -1: last command executed, 0 - stop mission, 1 - start mission
     
@@ -68,6 +67,7 @@ public class AircraftData{
 
 	aircraftPosition    = new Position();
 	CurrentFlightPlan   = new FlightPlan();
+	Fences              = new ArrayList<Geofence>();
     }
 
     public void CopyAircraftStateInfo(AircraftData Input){
@@ -474,5 +474,33 @@ class FlightPlan{
 	      } // end of switch case
 	  }// end of while
     }//end of function
+    
+}
+
+
+class GeoFence extends Position{
+
+    public int Type;
+    public int ID;
+    public int numVertices;
+    public double floor;
+    public double ceiling;
+    
+    List<Position> Vertices;
+
+    public GeoFence(int TypeIn,int IDIn,int numVerticesIn,double floorIn,double ceilingIn){
+	Vertices = new ArrayList<Position>();
+	Type     = TypeIn;
+	ID       = IDIn;
+	numVertices = numVerticesIn;
+	floor     = floorIn;
+	ceilingIn = ceilingIn;
+    }
+
+    public void AddVertex(int index,double lat,double lon){
+	Position pos = new pos(lat,lon,0);
+	Vertices.add(index,pos);
+    }
+    
     
 }
