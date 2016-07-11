@@ -159,8 +159,6 @@ public class MAVLinkMessages{
     
     public int RcvdFlightPlanUpdate;
     public int RcvdGeoFenceUpdate;
-    public int RcvdTrafficUpdate;
-    public int RcvdObstacleUpdate;
     public int RcvdMissionCount;
     public int RcvdMissionItem;
     public int RcvdMissionRequest;
@@ -180,8 +178,6 @@ public class MAVLinkMessages{
     public MAVLinkMessages(){
 	RcvdFlightPlanUpdate      = 0;
 	RcvdGeoFenceUpdate        = 0;
-	RcvdTrafficUpdate         = 0;
-	RcvdObstacleUpdate        = 0;
 	RcvdMissionCount          = 0;
 	RcvdMissionItem           = 0;
 	RcvdMissionRequest        = 0;

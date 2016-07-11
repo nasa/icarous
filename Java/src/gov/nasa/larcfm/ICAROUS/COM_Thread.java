@@ -44,14 +44,24 @@ public class COM_Thread extends Aircraft implements Runnable{
 	    }
 
 	    // Handle traffic information
-	    if(SharedData.RcvdMessages.RcvdTrafficUpdate == 1){
-
+	    if(SharedData.RcvdMessages.RcvdTraffic == 1){
+		SharedData.RcvdMessages.RcvdTraffic = 0;
+		msg_pointofinterest msg = SharedData.RcvdMessages.msgPointofinterest;
+		SharedData.traffic.AddObject(msg);
 	    }
 
 	    // Handle obstacle information
-	    if(SharedData.RcvdMessages.RcvdObstacleUpdate == 1){
+	    if(SharedData.RcvdMessages.RcvdObstacle == 1){
+		SharedData.RcvdMessages.RcvdObstacle = 0;
+		msg_pointofinterest msg = SharedData.RcvdMessages.msgPointofinterest;
+		SharedData.obstacles.AddObject(msg);
+	    }
 
-
+	    // Handle other points of interest (mission related)
+	    if(SharedData.RcvdMessages.RcvdObstacle == 1){
+		SharedData.RcvdMessages.RcvdOthers = 0;
+		msg_pointofinterest msg = SharedData.RcvdMessages.msgPointofinterest;
+		SharedData.missionObj.AddObject(msg);
 	    }
 
 	    // Handling mission commands (start/stop)

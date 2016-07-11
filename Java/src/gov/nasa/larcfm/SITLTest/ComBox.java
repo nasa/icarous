@@ -302,6 +302,17 @@ public class ComBox{
 
 	    System.out.println("Removing fence");
 	    UDPWrite(msgGeoFenceInfo3,sock,host,udpSendPort);Thread.sleep(100);
+
+	    msg_pointofinterest obj = new msg_pointofinterest();
+	    obj.id      = 2;
+	    obj.index   = 0;
+	    obj.subtype = 0;
+	    obj.lat     = 37.612451f;
+	    obj.lon     = -122.380198f;
+	    obj.alt     = 20.0f;
+	    obj.heading = 0.0f;
+
+	    UDPWrite(obj,sock,host,udpSendPort); Thread.sleep(100);
 	
 	}
 	catch(InterruptedException e){

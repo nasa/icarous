@@ -57,7 +57,12 @@ public class AircraftData{
     public GEOFENCES listOfFences;
     
     // List for obstacles
+    public ObjectList obstacles;
+    public ObjectList traffic;
+    public ObjectList missionObj;
+    
     // List for traffic information
+    
 
     public int startMission = -1; // -1: last command executed, 0 - stop mission, 1 - start mission
     
@@ -69,6 +74,9 @@ public class AircraftData{
 	aircraftPosition    = new Position();
 	CurrentFlightPlan   = new FlightPlan();
 	listOfFences        = new GEOFENCES();
+	obstacles           = new ObjectList();
+	traffic             = new ObjectList();
+	missionObj          = new ObjectList();
     }
 
     public void CopyAircraftStateInfo(AircraftData Input){
@@ -138,6 +146,12 @@ class Position{
 	alt_agl   = altagl_in;
     }
 
+    public void UpdatePosition(float lat_in,float lon_in,float altmsl_in){
+	lat   = lat_in;
+	lon   = lon_in;
+	alt_msl   = altmsl_in;
+    }
+    
     public void UpdatePosition(float lat_in,float lon_in,float altmsl_in,float altagl_in){
 	lat   = lat_in;
 	lon   = lon_in;
@@ -177,12 +191,68 @@ class Waypoint extends Position{
 class Obstacle extends Position{
 
     int id;
+    int type;
+    float vx;
+    float vy;
+    float vz;
+    float orientation;
 
-    public Obstacle(int id_in,float lat_in, float lon_in, float altmsl_in){
+    public Obstacle(int id_in,int type_in,
+		    float lat_in, float lon_in, float altmsl_in,
+		    float orient_in,
+		    float vx_in, float vy_in,float vz_in){
 	super(lat_in,lon_in,altmsl_in);
 	id = id_in;
+	type = type_in;
+	orientation = orient_in;
+	vx = vx_in;
+	vy = vy_in;
+	vz = vz_in;
     }
     
+}
+
+class ObjectList{
+
+    public List<Obstacle> listofobjects;
+    public int numObjects;
+
+    public ObjectList(){
+	numObjects = 0;
+	listofobjects = new ArrayList<Obstacle>();
+    }
+
+    public void AddObject(int id,int type,
+			  float lat, float lon, float altmsl,
+			  float orient,float vx,float vy, float vz){
+	Obstacle obj = new Obstacle(id,type,
+				    lat,lon,altmsl,
+				    orient,vx,vy,vz);
+	listofobjects.add(obj);
+	System.out.println("Adding obstacle "+id+" at lat:"+lat+" lon: "+lon);
+    }
+
+    public void AddObject(msg_pointofinterest msg){
+
+	this.AddObject(msg.index,msg.subtype,msg.lat,msg.lon,msg.alt,msg.heading,msg.vx,msg.vy,msg.vz);
+
+    }
+
+    public void RemoveObject(int id){
+
+	Obstacle obj;
+	Iterator Itr = listofobjects.iterator();
+	
+	while(Itr.hasNext()){
+	    obj = (Obstacle) Itr.next();
+	    
+	    if(obj.id == id){
+		Itr.remove();
+		numObjects = listofobjects.size();
+		break;   
+	    }
+	}
+    }
 }
 
 class FlightPlan{
@@ -634,6 +704,8 @@ class GEOFENCES{
 			break;   
 		    }
 		}
+
+		getfence = false;
 
 		break;
 
