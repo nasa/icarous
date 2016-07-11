@@ -16,7 +16,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 public class msg_pointofinterest extends MAVLinkMessage{
 
     public static final int MAVLINK_MSG_ID_POINTOFINTEREST = 220;
-    public static final int MAVLINK_MSG_LENGTH = 19;
+    public static final int MAVLINK_MSG_LENGTH = 31;
     private static final long serialVersionUID = MAVLINK_MSG_ID_POINTOFINTEREST;
 
 
@@ -40,6 +40,21 @@ public class msg_pointofinterest extends MAVLinkMessage{
     * Heading
     */
     public float heading;
+      
+    /**
+    * Velocity (north)
+    */
+    public float vx;
+      
+    /**
+    * Velocity (east)
+    */
+    public float vy;
+      
+    /**
+    * Velocity (down)
+    */
+    public float vz;
       
     /**
     * Identifier (0-Waypoint,1-geofence,2-Obstacle,3-Traffic,4-Others)
@@ -75,6 +90,12 @@ public class msg_pointofinterest extends MAVLinkMessage{
               
         packet.payload.putFloat(heading);
               
+        packet.payload.putFloat(vx);
+              
+        packet.payload.putFloat(vy);
+              
+        packet.payload.putFloat(vz);
+              
         packet.payload.putByte(id);
               
         packet.payload.putByte(subtype);
@@ -99,6 +120,12 @@ public class msg_pointofinterest extends MAVLinkMessage{
         this.alt = payload.getFloat();
               
         this.heading = payload.getFloat();
+              
+        this.vx = payload.getFloat();
+              
+        this.vy = payload.getFloat();
+              
+        this.vz = payload.getFloat();
               
         this.id = payload.getByte();
               
@@ -127,12 +154,12 @@ public class msg_pointofinterest extends MAVLinkMessage{
         unpack(mavLinkPacket.payload);        
     }
 
-                  
+                        
     /**
     * Returns a string with the MSG name and data
     */
     public String toString(){
-        return "MAVLINK_MSG_ID_POINTOFINTEREST -"+" lat:"+lat+" lon:"+lon+" alt:"+alt+" heading:"+heading+" id:"+id+" subtype:"+subtype+" index:"+index+"";
+        return "MAVLINK_MSG_ID_POINTOFINTEREST -"+" lat:"+lat+" lon:"+lon+" alt:"+alt+" heading:"+heading+" vx:"+vx+" vy:"+vy+" vz:"+vz+" id:"+id+" subtype:"+subtype+" index:"+index+"";
     }
 }
         

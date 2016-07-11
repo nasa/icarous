@@ -19,6 +19,9 @@
 	    <field type="float" name="lon">Longitude</field>
 	    <field type="float" name="alt">Altitude</field>
 	    <field type="float" name="heading">Heading</field>
+	    <field type="float" name="vx">Velocity (north)</field>
+	    <field type="float" name="vy">Velocity (east)</field>
+	    <field type="float" name="vz">Velocity (down)</field>
 	  </message>
 	  
 	  <message id="221" name="FLIGHTPLAN_INFO">
