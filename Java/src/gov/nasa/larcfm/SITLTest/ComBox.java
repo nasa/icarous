@@ -198,30 +198,106 @@ public class ComBox{
 	msg_mission_start_stop msgMissionStart = new msg_mission_start_stop();
 
 	msgMissionStart.missionStart = 1;
+
+	msg_geofence_info msgGeoFenceInfo = new msg_geofence_info();
+	msgGeoFenceInfo.msgType   = (short) 0;
+	msgGeoFenceInfo.fenceID   = (short) 0;
+	msgGeoFenceInfo.fenceType =  (short) 0;
+	msgGeoFenceInfo.numVertices = 4;
+	msgGeoFenceInfo.fenceFloor = 300;
+	msgGeoFenceInfo.fenceCeiling = 500;
+	
+	msg_geofence_info msgGeoFenceInfo2 = new msg_geofence_info();
+	msgGeoFenceInfo2.msgType   = (short) 0;
+	msgGeoFenceInfo2.fenceID   = (short) 1;
+	msgGeoFenceInfo2.fenceType =  (short) 1;
+	msgGeoFenceInfo2.numVertices = 4;
+	msgGeoFenceInfo2.fenceFloor = 300;
+	msgGeoFenceInfo2.fenceCeiling = 600;
+
+	msg_geofence_info msgGeoFenceInfo3 = new msg_geofence_info();
+	msgGeoFenceInfo3.msgType   = (short) 1;
+	msgGeoFenceInfo3.fenceID   = (short) 0;
+	msgGeoFenceInfo3.fenceType =  (short) 0;
+	msgGeoFenceInfo3.numVertices = 0;
+	msgGeoFenceInfo3.fenceFloor = 0;
+	msgGeoFenceInfo3.fenceCeiling = 0;
+
 	
 	// Send all messages
 	try{
-	UDPWrite(msgComboxPulse,sock,host,udpSendPort);	Thread.sleep(5000);
+	    UDPWrite(msgComboxPulse,sock,host,udpSendPort);	Thread.sleep(5000);
 
-	UDPWrite(msgFlightPlanInfo,sock,host,udpSendPort); Thread.sleep(100);
+	    UDPWrite(msgFlightPlanInfo,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    UDPWrite(wp1,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    UDPWrite(wp2,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    UDPWrite(wp3,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    UDPWrite(wp4,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    ack = UDPRead(sock);
+
+	    if(ack.acktype == 0 && ack.value == 1){
+		System.out.println("Waypoints sent successfully");
+		//UDPWrite(msgMissionStart,sock,host,udpSendPort);
+	    }
+	    else{
+		System.out.println("Resend waypoints");
+	    }
+
+	    Thread.sleep(1000);
+
+	    UDPWrite(msgGeoFenceInfo,sock,host,udpSendPort);Thread.sleep(100);
+
+	    UDPWrite(wp1,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    UDPWrite(wp2,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    UDPWrite(wp3,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    UDPWrite(wp4,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    ack = UDPRead(sock);	
 	
-	UDPWrite(wp1,sock,host,udpSendPort); Thread.sleep(100);
+	    if(ack.acktype == 1 && ack.value == 1){
+		System.out.println("Geofence sent  successfully");
+		//UDPWrite(msgMissionStart,sock,host,udpSendPort);
+	    }
+	    else{
+		System.out.println("Resend waypoints");
+	    }
 
-	UDPWrite(wp2,sock,host,udpSendPort); Thread.sleep(100);
+	    System.out.println("Writing 2nd geofence");
+	    Thread.sleep(1000);
+	    
+	    UDPWrite(msgGeoFenceInfo2,sock,host,udpSendPort);Thread.sleep(100);
 
-	UDPWrite(wp3,sock,host,udpSendPort); Thread.sleep(100);
+	    UDPWrite(wp1,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    UDPWrite(wp2,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    UDPWrite(wp3,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    UDPWrite(wp4,sock,host,udpSendPort); Thread.sleep(100);
+	    
+	    ack = UDPRead(sock);	
+	
+	    if(ack.acktype == 1 && ack.value == 1){
+		System.out.println("Geofence sent  successfully");
+		//UDPWrite(msgMissionStart,sock,host,udpSendPort);
+	    }
+	    else{
+		System.out.println("Resend waypoints");
+	    }
 
-	UDPWrite(wp4,sock,host,udpSendPort); Thread.sleep(100);
+	    Thread.sleep(1000);
 
-	ack = UDPRead(sock);
-
-	if(ack.acktype == 0 && ack.value == 1){
-	    System.out.println("Waypoints sent successfully");
-	    UDPWrite(msgMissionStart,sock,host,udpSendPort);
-	}
-	else{
-	    System.out.println("Resend waypoints");
-	}
+	    System.out.println("Removing fence");
+	    UDPWrite(msgGeoFenceInfo3,sock,host,udpSendPort);Thread.sleep(100);
+	
 	}
 	catch(InterruptedException e){
 	    System.out.println(e);

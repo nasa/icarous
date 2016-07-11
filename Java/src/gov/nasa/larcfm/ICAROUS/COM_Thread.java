@@ -39,8 +39,8 @@ public class COM_Thread extends Aircraft implements Runnable{
 
 	    // Handle geo fence messages
 	    if(SharedData.RcvdMessages.RcvdGeoFenceUpdate== 1){
-
-
+		SharedData.RcvdMessages.RcvdGeoFenceUpdate = 0;
+		SharedData.listOfFences.GetNewGeoFence(Intf);
 	    }
 
 	    // Handle traffic information

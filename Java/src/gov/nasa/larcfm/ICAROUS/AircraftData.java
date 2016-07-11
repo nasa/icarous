@@ -54,6 +54,7 @@ public class AircraftData{
     public FlightPlan NewFlightPlan;
     public FlightPlan CurrentFlightPlan;
 
+    public GEOFENCES listOfFences;
     
     // List for obstacles
     // List for traffic information
@@ -67,7 +68,7 @@ public class AircraftData{
 
 	aircraftPosition    = new Position();
 	CurrentFlightPlan   = new FlightPlan();
-	
+	listOfFences        = new GEOFENCES();
     }
 
     public void CopyAircraftStateInfo(AircraftData Input){
@@ -482,24 +483,39 @@ class GeoFence extends Position{
 
     public int Type;
     public int ID;
-    public float numVertices;
+    public int numVertices;
     public double floor;
     public double ceiling;
     
     List<Position> Vertices;
 
-    public GeoFence(int IDIn,int TypeIn,float numVerticesIn,double floorIn,double ceilingIn){
+    public GeoFence(int IDIn,int TypeIn,int numVerticesIn,double floorIn,double ceilingIn){
 	Vertices = new ArrayList<Position>();
 	Type     = TypeIn;
 	ID       = IDIn;
 	numVertices = numVerticesIn;
 	floor     = floorIn;
-	ceilingIn = ceilingIn;
+	ceiling   = ceilingIn;
     }
 
     public void AddVertex(int index,float lat,float lon){
 	Position pos = new Position(lat,lon,0);
 	Vertices.add(index,pos);
+    }
+
+    public void print(){
+	System.out.println("Type: "+Type);
+	System.out.println("ID:" + ID);
+	System.out.println("Num vertices:"+numVertices);
+	System.out.println("Floor:"+floor);
+	System.out.println("Ceiling:"+ceiling);
+	System.out.println("Vertices information");
+	for(int i=0;i<numVertices;i++){
+	    Position vertex = Vertices.get(i);
+	    System.out.println("Lat :"+vertex.lat);
+	    System.out.println("Lon :"+vertex.lon);
+	}
+
     }
     
 }
@@ -512,10 +528,24 @@ class GEOFENCES{
     
     public List<GeoFence> fenceList;
     FENCESTATE state;
+    int numFences;
     
     public GEOFENCES(){
 	fenceList  = new ArrayList<GeoFence>();
 	state = FENCESTATE.IDLE;
+	numFences = 0;
+    }
+
+    public GeoFence GetGeoFence(int index){
+
+	int size = fenceList.size();
+	
+	if(index > 0){
+	    return (GeoFence) fenceList.get(index);
+	}
+	else{
+	    return (GeoFence) fenceList.get(size-1);
+	}
     }
 
 
@@ -531,9 +561,11 @@ class GEOFENCES{
 
 	if(msg1.msgType == 0){
 	    state = FENCESTATE.INFO;
+	    System.out.println("Adding fence");
 	}
 	else{
 	    state = FENCESTATE.REMOVE;
+	    System.out.println("Removing fence");
 	}
 	
 	while(getfence){    
@@ -543,7 +575,8 @@ class GEOFENCES{
 	    case INFO:
 	    
 		fence1 = new GeoFence(msg1.fenceID,msg1.fenceType,msg1.numVertices,msg1.fenceFloor,msg1.fenceCeiling);
-		
+		System.out.println("Received geofence information: "+msg1.fenceCeiling);
+		state = FENCESTATE.VERTICES;
 		break;
 
 	    case VERTICES:
@@ -551,7 +584,7 @@ class GEOFENCES{
 		Intf.SetTimeout(500);
 		Intf.Read();
 		Intf.SetTimeout(0);
-	    
+		
 		if(RcvdMessages.RcvdPntInterest == 1){
 		    msg_pointofinterest msg2 = RcvdMessages.msgPointofinterest;
 		    RcvdMessages.RcvdPntInterest = 0;
@@ -562,19 +595,27 @@ class GEOFENCES{
 			break;
 		    }
 
+		    System.out.println("Adding vertex :"+count);
 		    fence1.AddVertex(msg2.index,msg2.lat,msg2.lon);
 		    count++;
 
+		    
 		    if(count == fence1.numVertices){
 			state = FENCESTATE.UPDATE;
 			break;
 		    }
 		}
 
+		break;
+
 	    case UPDATE:
 
 		fenceList.add(fence1);
-
+		GeoFence gf = this.GetGeoFence(-1);
+		gf.print();
+		System.out.println("Updated fence list");
+		numFences = fenceList.size();
+		System.out.println("Total fences in ICAROUS:"+numFences);
 		state = FENCESTATE.ACK_SUCCESS;
 		
 		break;
@@ -588,6 +629,8 @@ class GEOFENCES{
 
 		    if(f1.ID == msg1.fenceID){
 			Itr.remove();
+			numFences = fenceList.size();
+			System.out.println("Total fences in ICAROUS:"+numFences);
 			break;   
 		    }
 		}
