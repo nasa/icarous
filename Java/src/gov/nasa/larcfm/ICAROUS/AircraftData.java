@@ -406,9 +406,9 @@ class FlightPlan{
 		  Intf.Read();
 		  Intf.SetTimeout(0);
 
-		  if(SharedData.RcvdMessages.RcvdPntInterest == 1){
+		  if(SharedData.RcvdMessages.RcvdWaypoint == 1){
 		      msg_pointofinterest msg2 = SharedData.RcvdMessages.msgPointofinterest;
-		      SharedData.RcvdMessages.RcvdPntInterest = 0;
+		      SharedData.RcvdMessages.RcvdWaypoint = 0;
 
 		      if(msg2.id == 0 && msg2.index != count){
 		      
@@ -585,9 +585,9 @@ class GEOFENCES{
 		Intf.Read();
 		Intf.SetTimeout(0);
 		
-		if(RcvdMessages.RcvdPntInterest == 1){
+		if(RcvdMessages.RcvdVertex == 1){
 		    msg_pointofinterest msg2 = RcvdMessages.msgPointofinterest;
-		    RcvdMessages.RcvdPntInterest = 0;
+		    RcvdMessages.RcvdVertex = 0;
 		
 		    if(msg2.id == 1 && msg2.index != count){
 		      

@@ -167,7 +167,13 @@ public class MAVLinkMessages{
     public int RcvdMissionAck;
     public int RcvdMissionStart;
     public int RcvdMissionItemReached;
-    public int RcvdPntInterest;
+
+    public int RcvdWaypoint;
+    public int RcvdVertex;
+    public int RcvdObstacle;
+    public int RcvdTraffic;
+    public int RcvdOthers;
+    
     public int RcvdHeartbeat_AP;
     public int RcvdHeartbeat_COM;
     
@@ -182,7 +188,11 @@ public class MAVLinkMessages{
 	RcvdMissionAck            = 0;
 	RcvdMissionStart          = -1;
 	RcvdMissionItemReached    = 0;
-	RcvdPntInterest           = 0;
+	RcvdWaypoint              = 0;
+	RcvdVertex                = 0;
+	RcvdObstacle              = 0;
+	RcvdTraffic               = 0;
+	RcvdOthers                = 0;
 	RcvdHeartbeat_AP          = 0;
 	RcvdHeartbeat_COM         = 0;
     }
@@ -732,7 +742,20 @@ public class MAVLinkMessages{
 
 	case msg_pointofinterest.MAVLINK_MSG_ID_POINTOFINTEREST:
 	    msgPointofinterest = (msg_pointofinterest) message.unpack();
-	    RcvdPntInterest = 1;
+	    
+
+	    if(msgPointofinterest.id == 0)
+		RcvdWaypoint = 1;
+	    else if(msgPointofinterest.id == 1)
+		RcvdVertex = 1;
+	    else if(msgPointofinterest.id == 2)
+		RcvdObstacle = 1;
+	    else if(msgPointofinterest.id == 3)
+		RcvdTraffic = 1;
+	    else if(msgPointofinterest.id == 4)
+		RcvdOthers = 1;
+	    
+	    
 	    break;
 
 	case msg_geofence_info.MAVLINK_MSG_ID_GEOFENCE_INFO:
