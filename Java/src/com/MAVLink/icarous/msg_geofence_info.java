@@ -34,7 +34,7 @@ public class msg_geofence_info extends MAVLinkMessage{
     /**
     *  Number of polygon verticies 
     */
-    public float numVertices;
+    public int numVertices;
       
     /**
     * Flag, 0-new fence, 1-remove existing fence
@@ -66,7 +66,7 @@ public class msg_geofence_info extends MAVLinkMessage{
               
         packet.payload.putFloat(fenceCeiling);
               
-        packet.payload.putFloat(numVertices);
+        packet.payload.putInt(numVertices);
               
         packet.payload.putUnsignedByte(msgType);
               
@@ -89,7 +89,7 @@ public class msg_geofence_info extends MAVLinkMessage{
               
         this.fenceCeiling = payload.getFloat();
               
-        this.numVertices = payload.getFloat();
+        this.numVertices = payload.getInt();
               
         this.msgType = payload.getUnsignedByte();
               

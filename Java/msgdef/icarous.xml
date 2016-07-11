@@ -37,7 +37,7 @@
 	    <field type="uint8_t" name="fenceID"> Geo-fence ID</field>
 	    <field type="float" name="fenceFloor"> Fence floor height </field>
 	    <field type="float" name="fenceCeiling"> Fence ceiling height </field>
-	    <field type="float" name="numVertices"> Number of polygon verticies </field>
+	    <field type="int32_t" name="numVertices"> Number of polygon verticies </field>
 	  </message>
 	  
 	  <message id="223" name="MISSION_START_STOP">
