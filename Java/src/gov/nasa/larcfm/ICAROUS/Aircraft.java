@@ -81,8 +81,8 @@ public class Aircraft{
     // Function to send commands to pixhawk
     public int SendCommand( int target_system,
 			    int target_component,
-			    int confirmation,
 			    int command,
+			    int confirmation,
 			    float param1,
 			    float param2,
 			    float param3,
@@ -170,11 +170,11 @@ public class Aircraft{
 		apMode = AP_MODE.GUIDED;
 		
 		// Arm the throttles
-		SendCommand(0,0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,
+		SendCommand(0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,0,
 			    1,0,0,0,0,0,0);
 		
 		// Takeoff at current location
-		SendCommand(0,0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,
+		SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
 			    1,0,0,0, (float) apState.aircraftPosition.lat,
 			    (float) apState.aircraftPosition.lon,
 			    (float) apState.aircraftPosition.alt_msl + 50.0f);
@@ -191,6 +191,10 @@ public class Aircraft{
 		    missionState = FMS_MISSION.MONITOR;
 		    SetMode(3);
 		    apMode = AP_MODE.AUTO;
+
+		    // Set speed
+		    SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
+			        1,5,0,0,0,0,0);
 		}
 	    }
 

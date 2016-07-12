@@ -7,7 +7,7 @@ ICAROUSSRC = $(wildcard src/gov/nasa/larcfm/ICAROUS/*.java)
 
 SITLSRC    = $(wildcard src/gov/nasa/larcfm/SITLTest/*.java)
 
-JAR        = :lib/jssc-2.8.0.jar
+JAR        = :lib/jssc-2.8.0.jar:lib/FormalATM.jar
 
 CLASSPATH  = bin
 

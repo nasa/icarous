@@ -9,6 +9,14 @@
  * Rights Reserved.
  */
 package gov.nasa.larcfm.ICAROUS;
+
+import gov.nasa.larcfm.Util.Vect3;
+import gov.nasa.larcfm.Util.Vect2;
+import gov.nasa.larcfm.Util.LatLonAlt;
+import gov.nasa.larcfm.Util.Projection;
+import gov.nasa.larcfm.Util.EuclideanProjection;
+import gov.nasa.larcfm.Util.Poly2D;
+
 import java.util.*;
 import java.lang.*;
 import com.MAVLink.common.*;
@@ -22,7 +30,7 @@ public class AircraftData{
     public static boolean NO_MESSAGES   = false;
     
     public MAVLinkMessages RcvdMessages;
-
+    
     // Aircraft attitude
     public double roll;
     public double pitch;
@@ -549,28 +557,117 @@ class FlightPlan{
 }
 
 
-class GeoFence extends Position{
+class GeoFence{
 
     public int Type;
     public int ID;
     public int numVertices;
     public double floor;
     public double ceiling;
-    
-    List<Position> Vertices;
 
+    LatLonAlt origin = null;
+    List<Position> Vertices_LLA;
+
+    EuclideanProjection proj;
+    Poly2D geoPolygon; 
+    
     public GeoFence(int IDIn,int TypeIn,int numVerticesIn,double floorIn,double ceilingIn){
-	Vertices = new ArrayList<Position>();
-	Type     = TypeIn;
-	ID       = IDIn;
-	numVertices = numVerticesIn;
-	floor     = floorIn;
-	ceiling   = ceilingIn;
+	Vertices_LLA = new ArrayList<Position>();
+	geoPolygon   = new Poly2D();
+	Type         = TypeIn;
+	ID           = IDIn;
+	numVertices  = numVerticesIn;
+	floor        = floorIn;
+	ceiling      = ceilingIn;
     }
 
     public void AddVertex(int index,float lat,float lon){
 	Position pos = new Position(lat,lon,0);
-	Vertices.add(index,pos);
+	Vertices_LLA.add(index,pos);
+
+	if(origin == null){
+	    origin = LatLonAlt.make((double)lat,(double)lon,0);
+	    proj   = Projection.createProjection(origin);
+	    LatLonAlt p = LatLonAlt.make((double)lat,(double)lon,0);
+	    geoPolygon.addVertex(proj.project(p).vect2());	    	    
+	}
+	else{
+	    LatLonAlt p = LatLonAlt.mk((double)lat,(double)lon,0);
+	    geoPolygon.addVertex(proj.project(p).vect2());	    	    
+	}
+	
+	
+    }
+
+    public double CheckViolation(Position pos){
+
+	double min = Double.MAX_VALUE;
+	double x1 = 0.0;
+	double y1 = 0.0;
+	double x2 = 0.0;
+	double y2 = 0.0;
+	double x3 = 0.0;
+	double y3 = 0.0;
+	double x0 = 0.0;
+	double y0 = 0.0;
+	
+	double m  = 0;
+	double a  = 0;
+	double b  = 0;
+	double c  = 0;
+	int vert_i = 0;
+	int vert_j = 0;
+
+	boolean insegment;
+	
+	LatLonAlt p = LatLonAlt.mk((double)pos.lat,(double)pos.lon,0);
+	Vect2 xy     = proj.project(p).vect2();
+	x3          = xy.x();
+	y3          = xy.y();
+	
+	// Check if perpendicular intersection lies within line segment
+	for(int i=0;i<geoPolygon.size();i++){
+	    vert_i = i;
+
+	    if(i == geoPolygon.size() - 1)
+		vert_j = 0;
+	    else
+		vert_j = i + 1;
+
+	    x1 = geoPolygon.getVertex(vert_i).x();
+	    y1 = geoPolygon.getVertex(vert_i).y();
+
+	    x2 = geoPolygon.getVertex(vert_j).x();
+	    y2 = geoPolygon.getVertex(vert_j).y();
+	    
+	    m  = (y2 - y1)/(x2 - x1);
+
+	    a  = m;
+	    b  = -1;
+	    c  = (y1-m*x1);
+
+	    x0 = (b*(b*x3 - a*y3) - a*c)/(Math.pow(a,2)+Math.pow(b,2));
+	    y0 = (a*(-b*x3 + a*y3) - a*c)/(Math.pow(a,2)+Math.pow(b,2));
+
+	    insegment = false;
+	    if( (x0 > x1) && (x0 < x2) ){
+		if( ( y0 > y1) && (y0 < y2) )
+		    insegment = true;
+	        else if( ( y0 < y1) && (y0 > y2) )
+		    insegment = true;
+	    }
+	    else if( (x0 < x1) && (x0 > x2) ){
+		if( ( y0 > y1) && (y0 < y2) )
+		    insegment = true;
+	        else if( ( y0 < y1) && (y0 > y2) )
+		    insegment = true;
+	    }
+
+	}
+	
+	
+	
+	return 0;
     }
 
     public void print(){
@@ -581,7 +678,7 @@ class GeoFence extends Position{
 	System.out.println("Ceiling:"+ceiling);
 	System.out.println("Vertices information");
 	for(int i=0;i<numVertices;i++){
-	    Position vertex = Vertices.get(i);
+	    Position vertex = Vertices_LLA.get(i);
 	    System.out.println("Lat :"+vertex.lat);
 	    System.out.println("Lon :"+vertex.lon);
 	}
