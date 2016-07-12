@@ -63,7 +63,14 @@
 	    <field type="float" name="roll">roll</field>
 	    <field type="float" name="pitch">pitch</field>
 	    <field type="float" name="yaw">yaw</field>
-	  </message>		  
+	  </message>
+
+	  <message id="226" name="POWERLINE_DATA">
+	    <description>Power line information</description>
+	    <field type="float" name="distance">Perpendicular distance to power line [m]</field>
+	    <field type="float" name="heading">Direction of the perpendicular distance [deg]</field>
+	  </message>
+
 	  
 	</messages>
 </mavlink>
