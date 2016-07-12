@@ -14,14 +14,15 @@
 	    <description>Point in space (Waypoint/Vertex etc...)</description>
 	    <field type="int8_t" name="id">Identifier (0-Waypoint,1-geofence,2-Obstacle,3-Traffic,4-Others)</field>
 	    <field type="int8_t" name="subtype">Sub type</field>
-	    <field type="int8_t" name="index">Index</field>
-	    <field type="float" name="lat">Latitude</field>
-	    <field type="float" name="lon">Longitude</field>
-	    <field type="float" name="alt">Altitude</field>
+	    <field type="int8_t" name="index">Index (sequence number)</field>
+	    <field type="int8_t" name="geodesic">1 for lat/lon/alt,0 for NED</field> 
+	    <field type="float" name="lat">Latitude (deg)/Relative North (m)</field>
+	    <field type="float" name="lon">Longitude (deg)/Relative East (m)</field>
+	    <field type="float" name="alt">Altitude (deg)/Relative UP (m)</field>
 	    <field type="float" name="heading">Heading</field>
-	    <field type="float" name="vx">Velocity (north)</field>
-	    <field type="float" name="vy">Velocity (east)</field>
-	    <field type="float" name="vz">Velocity (down)</field>
+	    <field type="float" name="vx">Velocity (north m/s)</field>
+	    <field type="float" name="vy">Velocity (east m/s)</field>
+	    <field type="float" name="vz">Velocity (down m/s)</field>
 	  </message>
 	  
 	  <message id="221" name="FLIGHTPLAN_INFO">
