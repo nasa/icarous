@@ -265,7 +265,7 @@ public class Aircraft{
 	if(time_elapsed > 5E9){
 	    time1 = current_time;    
 	    Waypoint wp = FP.GetWaypoint(FP.nextWaypoint);	    
-	    double dist[] = FP.Distance2Waypoint(currentPos,wp);	    
+	    double dist[] = FP.Distance2Waypoint(currentPos,wp.pos);	    
 	    System.out.format("Distance to next waypoint: %2.2f (Miles), heading: %3.2f (degrees)\n",dist[0]*0.62,dist[1]);	    
 	}
 	
