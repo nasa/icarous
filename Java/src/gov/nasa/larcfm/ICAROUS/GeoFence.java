@@ -33,12 +33,16 @@ public class GeoFence{
     public double ceiling;
     public static double hthreshold = 0.5;
     public static double vthreshold = 0.5;
+    public static double hstepback  = 50;
+    public static double vstepback  = 50;
+    
     
     LatLonAlt origin      = null;
     Position SafetyPoint = null;
     boolean violation     = false;
     boolean hconflict     = false;
     boolean vconflict     = false;
+    boolean isconvex      = false;
     List<Position> Vertices_LLA;
 
     EuclideanProjection proj;
@@ -68,6 +72,10 @@ public class GeoFence{
 	else{
 	    LatLonAlt p = LatLonAlt.make((double)lat,(double)lon,0);
 	    geoPolygon.addVertex(proj.project(p).vect2());	    	    
+	}
+
+	if(geoPolygon.size() == numVertices){
+	    isconvex = geoPolygon.isConvex();
 	}
 				    
     }
@@ -182,7 +190,7 @@ public class GeoFence{
 	
     }
 
-    public CheckViolation(Position pos){
+    public Position CheckViolation(Position pos){
 
 	double hdist;
 	double vdist;
@@ -199,29 +207,22 @@ public class GeoFence{
 	    vdist = VerticalProximity(pos);
 
 
-	    if(hdist >= hthreshold){
+	    if(hdist <= hthreshold){
 		hconflict = true;
 	    }
 	    else{
 		hconflict = false;
 	    }
 
-	    if(vdist >= vthreshold){
-		vconflict = true;
-	    }
-	    else{
-		vconflict = false;
-	    }
-
 	    if(hconflict){
 		Vect2 Ctd   = geoPolygon.centroid();
 		LatLonAlt p = LatLonAlt.make((double)pos.lat,(double)pos.lon,0);
 		Vect2 xy    = proj.project(p).vect2();
-		violation   = contains(xy);
+		violation   = geoPolygon.contains(xy);
 
 		Vect2 inv_slope = xy.Sub(Ctd);
 		double norm_slope = inv_slope.norm();
-		Vect2 step  = inv_slope.Scal(1/norm_slope*0.5);
+		Vect2 step  = inv_slope.Scal(1/norm_slope*hstepback);
 
 		Vect2 sf;
 		
@@ -240,21 +241,23 @@ public class GeoFence{
 
 		LatLonAlt lla = proj.inverse(sf,pos.alt_msl);
 
-		SafetyPoint.lat = lla.latitude();
-		SafetyPoint.lon = lla.longitude();
+		SafetyPoint.lat = (float) lla.latitude();
+		SafetyPoint.lon = (float) lla.longitude();
 		    
 	    }
 
-	    if(vconflict){
-
-		if( (ceiling - pos.alt_msl) < hthreshold){
-		    SafetyPoint.alt_msl = ceiling - 1;
-		}
-		else if( (pos.alt_msl - floor) < hthreshold){
-		    SafetyPoint.alt_msl = floor + 0.5;
-		}
-		
+	    vconflict = false;
+	    if( (ceiling - pos.alt_msl) <= vthreshold){
+		SafetyPoint.alt_msl = (float) (ceiling - vstepback);
+		vconflict = true;
 	    }
+	    else if( (pos.alt_msl - floor) <= vthreshold){
+		SafetyPoint.alt_msl = (float) (floor + vstepback);
+		vconflict = true;
+	    }
+
+	    
+	    
 	    
 	}
 	//Keep out Geofence
@@ -263,6 +266,8 @@ public class GeoFence{
 	    
 
 	}
+
+	return SafetyPoint;
 	
     }
 
