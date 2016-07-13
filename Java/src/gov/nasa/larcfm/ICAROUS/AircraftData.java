@@ -211,7 +211,7 @@ class ObjectList{
 
     public void AddObject(msg_pointofinterest msg){
 
-	this.AddObject(msg.index,msg.subtype,msg.lat,msg.lon,msg.alt,msg.heading,msg.vx,msg.vy,msg.vz);
+	this.AddObject(msg.index,msg.subtype,msg.latx,msg.lony,msg.altz,msg.heading,msg.vx,msg.vy,msg.vz);
 
     }
 

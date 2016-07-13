@@ -24,17 +24,17 @@ public class msg_pointofinterest extends MAVLinkMessage{
     /**
     * Latitude (deg)/Relative North (m)
     */
-    public float lat;
+    public float latx;
       
     /**
     * Longitude (deg)/Relative East (m)
     */
-    public float lon;
+    public float lony;
       
     /**
     * Altitude (deg)/Relative UP (m)
     */
-    public float alt;
+    public float altz;
       
     /**
     * Heading
@@ -87,11 +87,11 @@ public class msg_pointofinterest extends MAVLinkMessage{
         packet.compid = 190;
         packet.msgid = MAVLINK_MSG_ID_POINTOFINTEREST;
               
-        packet.payload.putFloat(lat);
+        packet.payload.putFloat(latx);
               
-        packet.payload.putFloat(lon);
+        packet.payload.putFloat(lony);
               
-        packet.payload.putFloat(alt);
+        packet.payload.putFloat(altz);
               
         packet.payload.putFloat(heading);
               
@@ -120,11 +120,11 @@ public class msg_pointofinterest extends MAVLinkMessage{
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
               
-        this.lat = payload.getFloat();
+        this.latx = payload.getFloat();
               
-        this.lon = payload.getFloat();
+        this.lony = payload.getFloat();
               
-        this.alt = payload.getFloat();
+        this.altz = payload.getFloat();
               
         this.heading = payload.getFloat();
               
@@ -168,7 +168,7 @@ public class msg_pointofinterest extends MAVLinkMessage{
     * Returns a string with the MSG name and data
     */
     public String toString(){
-        return "MAVLINK_MSG_ID_POINTOFINTEREST -"+" lat:"+lat+" lon:"+lon+" alt:"+alt+" heading:"+heading+" vx:"+vx+" vy:"+vy+" vz:"+vz+" id:"+id+" subtype:"+subtype+" index:"+index+" geodesic:"+geodesic+"";
+        return "MAVLINK_MSG_ID_POINTOFINTEREST -"+" latx:"+latx+" lony:"+lony+" altz:"+altz+" heading:"+heading+" vx:"+vx+" vy:"+vy+" vz:"+vz+" id:"+id+" subtype:"+subtype+" index:"+index+" geodesic:"+geodesic+"";
     }
 }
         

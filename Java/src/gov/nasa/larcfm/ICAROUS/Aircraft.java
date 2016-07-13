@@ -16,7 +16,6 @@ import com.MAVLink.icarous.*;
 public class Aircraft{
 
     
-
     public enum QUAD_FMS{
 	IDLE, MISSION, TERMINATE 
     }
@@ -251,7 +250,7 @@ public class Aircraft{
 	
 	long current_time   = System.nanoTime();
 	
-	long time_elapsed = current_time - time1;
+	long time_elapsed   = current_time - time1;
 	
 	// Check for deviation from prescribed flight profile.
 

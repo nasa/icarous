@@ -277,7 +277,7 @@ public class FlightPlan{
 			  break;
 		      }
 		      
-		      Waypoint wp          = new Waypoint(msg2.index,msg2.lat,msg2.lon,msg2.alt,msg2.heading);
+		      Waypoint wp          = new Waypoint(msg2.index,msg2.latx,msg2.lony,msg2.altz,msg2.heading);
 		      
 		      System.out.println("waypoint:"+count+" lat:"+wp.pos.lat+" lon:"+wp.pos.lon);
 		      this.AddWaypoints(count,wp);

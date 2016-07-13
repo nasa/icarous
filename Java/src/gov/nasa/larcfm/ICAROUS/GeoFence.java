@@ -23,6 +23,7 @@ import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
 import com.MAVLink.enums.*;
 
+
 public class GeoFence{
 
     public int Type;
@@ -50,7 +51,7 @@ public class GeoFence{
     public void AddVertex(int index,float lat,float lon){
 	Position pos = new Position(lat,lon,0);
 	Vertices_LLA.add(index,pos);
-
+	
 	if(origin == null){
 	    origin = LatLonAlt.make((double)lat,(double)lon,0);
 	    proj   = Projection.createProjection(origin);
@@ -58,16 +59,39 @@ public class GeoFence{
 	    geoPolygon.addVertex(proj.project(p).vect2());	    	    
 	}
 	else{
-	    LatLonAlt p = LatLonAlt.mk((double)lat,(double)lon,0);
+	    LatLonAlt p = LatLonAlt.make((double)lat,(double)lon,0);
 	    geoPolygon.addVertex(proj.project(p).vect2());	    	    
 	}
-	
-	
+				    
     }
+    
+    public double VerticalProximity(Position pos){
 
-    public double CheckViolation(Position pos){
+	double d1  = pos.alt_msl - floor;
+	double d2  = ceiling  - pos.alt_msl;
 
+	if(Type == 0){
+	    if(d1 < 0 || d2 < 0){
+		return -1;
+	    }
+	    else{
+		return Math.min(d1,d2);
+	    }	    
+	}
+	else{
+	    if(d1 < 0 || d2 < 0){
+		return Math.min(d1,d2);
+	    }
+	    else{
+		return -1;
+	    }
+	}
+    }
+    
+    public double HorizontalProximity(Position pos){
+	
 	double min = Double.MAX_VALUE;
+	double dist = 0;
 	double x1 = 0.0;
 	double y1 = 0.0;
 	double x2 = 0.0;
@@ -86,11 +110,12 @@ public class GeoFence{
 
 	boolean insegment;
 	
-	LatLonAlt p = LatLonAlt.mk((double)pos.lat,(double)pos.lon,0);
+	LatLonAlt p = LatLonAlt.make((double)pos.lat,(double)pos.lon,0);
 	Vect2 xy     = proj.project(p).vect2();
 	x3          = xy.x();
 	y3          = xy.y();
-	
+
+			
 	// Check if perpendicular intersection lies within line segment
 	for(int i=0;i<geoPolygon.size();i++){
 	    vert_i = i;
@@ -116,6 +141,7 @@ public class GeoFence{
 	    y0 = (a*(-b*x3 + a*y3) - a*c)/(Math.pow(a,2)+Math.pow(b,2));
 
 	    insegment = false;
+
 	    if( (x0 > x1) && (x0 < x2) ){
 		if( ( y0 > y1) && (y0 < y2) )
 		    insegment = true;
@@ -129,11 +155,28 @@ public class GeoFence{
 		    insegment = true;
 	    }
 
+	    if(insegment){
+		dist = Math.abs(a*x3 + b*y3 + c)/Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
+	    }
+	    else{
+		double d1 = Math.sqrt( Math.pow(x3-x1,2) + Math.pow(y3-y1,2) );
+		double d2 = Math.sqrt( Math.pow(x3-x2,2) + Math.pow(y3-y2,2) );
+		dist = Math.min(d1,d2);
+	    }
+
+	    if(dist < min){
+		min = dist;
+	    }
+
 	}
 	
+
+	return min;
 	
+    }
+
+    public void ComputeQuadResolution(){
 	
-	return 0;
     }
 
     public void print(){
@@ -229,7 +272,7 @@ class GEOFENCES{
 		    }
 
 		    System.out.println("Adding vertex :"+count);
-		    fence1.AddVertex(msg2.index,msg2.lat,msg2.lon);
+		    fence1.AddVertex(msg2.index,msg2.latx,msg2.lony);
 		    count++;
 
 		    

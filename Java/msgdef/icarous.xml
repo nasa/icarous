@@ -16,9 +16,9 @@
 	    <field type="int8_t" name="subtype">Sub type</field>
 	    <field type="int8_t" name="index">Index (sequence number)</field>
 	    <field type="int8_t" name="geodesic">1 for lat/lon/alt,0 for NED</field> 
-	    <field type="float" name="lat">Latitude (deg)/Relative North (m)</field>
-	    <field type="float" name="lon">Longitude (deg)/Relative East (m)</field>
-	    <field type="float" name="alt">Altitude (deg)/Relative UP (m)</field>
+	    <field type="float" name="latx">Latitude (deg)/Relative North (m)</field>
+	    <field type="float" name="lony">Longitude (deg)/Relative East (m)</field>
+	    <field type="float" name="altz">Altitude (deg)/Relative UP (m)</field>
 	    <field type="float" name="heading">Heading</field>
 	    <field type="float" name="vx">Velocity (north m/s)</field>
 	    <field type="float" name="vy">Velocity (east m/s)</field>
