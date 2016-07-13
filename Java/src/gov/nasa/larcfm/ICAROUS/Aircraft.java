@@ -1,5 +1,5 @@
 /**
- * ICAROUS Interface
+ * Aircraft
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
  * 
