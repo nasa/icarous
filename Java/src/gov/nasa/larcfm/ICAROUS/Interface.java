@@ -1,5 +1,10 @@
 /**
  * Interface
+ * 
+ * This is a class that will enable establishing a socket or
+ * a serial interface between ICAROUS and any component that can
+ * stream MAVLink messages
+ *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
  * 
@@ -26,13 +31,10 @@ public class Interface{
     public static short SAFEGUARD = 3;
     public static short BROADCAST = 4;
 
-    public static short UDP_UNI   = 0;
-    public static short UDP_MUL   = 1;
-    public static short SERIAL    = 2;
-    
+    public static short SOCKET    = 0;
+    public static short SERIAL    = 1;
     
     public short interfaceType    = 0;
-    public short componentType    = 0;
     private int udpReceivePort    = 0;
     private int udpSendPort       = 0;
     private String udpHost        = null;
@@ -43,7 +45,7 @@ public class Interface{
     private Parser MsgParser      = new Parser();
     
     
-    public Interface(int intType,int compType,String hostname,int recvPort,int sendPort){
+    public Interface(int intType,String hostname,int recvPort,int sendPort){
 
 	interfaceType   = (short) intType;
 	componentType   = (short) compType;
@@ -58,11 +60,11 @@ public class Interface{
 		System.out.println(e);
 	    }
 	}
-
+	
 	InitSocketInterface();
     }
 
-    public Interface(int intType,int compType,String portName){
+    public Interface(int intType,String portName){
 
 	interfaceType  = (short) intType;
 	componentType  = (short) compType;
