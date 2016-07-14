@@ -23,6 +23,10 @@ public class Aircraft{
     public enum RESOLUTION{
 	NOMINAL, RESOLVE, EXECUTE, RESOLVED
     }
+
+    public enum FMS_MISSION{
+	TAKEOFF, MONITOR, LAND, TERMINATE
+    }
     
     public AircraftData FlightData;
 
@@ -40,7 +44,6 @@ public class Aircraft{
     
     
     public Aircraft(){
-	fmsState         = QUAD_FMS.IDLE;
 	missionState     = FMS_MISSION.TAKEOFF;
 	takeoff_cmd_sent = false;
 	apMode           = AP_MODE.ND;
@@ -55,9 +58,9 @@ public class Aircraft{
 
 	FlightData.Inbox.ReadHeartbeat_AP();
 	
-	AP.SetTimeout(5000);
-	FlightData.Inbox.decode_message(AP.Read());
-	AP.SetTimeout(0);
+	Intf.SetTimeout(5000);
+	FlightData.Inbox.decode_message(Intf.Read());
+	Intf.SetTimeout(0);
 
 	if(FlightData.Inbox.UnreadHeartbeat_AP()){
 	    return true;
@@ -139,21 +142,21 @@ public class Aircraft{
 	
     }
 
-    public void PreFlight(){
+    public int PreFlight(){
 	
 	// Send flight plan to pixhawk
-	SendFlightPlanToAP(Intf);
+	FlightData.SendFlightPlanToAP(Intf);
 	
-	
+	return 1;
     }
 
     
     // Main function that runs the mission
-    public void Mission(){
+    public int Flight(){
 
-	FlightPlan FP       = FlightData.Inbox.CurrentFlightPlan;
-	Position currentPos = FlightData.currPosition;
-	long current_time   = System.nanoTime();
+	FlightPlan FP         = FlightData.CurrentFlightPlan;
+	Position currPosition = FlightData.currPosition;
+	long current_time     = System.nanoTime();
 	long time_elapsed;
 	
 	switch(missionState){
@@ -184,7 +187,7 @@ public class Aircraft{
 		
 	    }else{
 		// Switch to auto once 50 m is reached and start mission in auto mode
-		if(apState.aircraftPosition.alt_agl >= 50.0f){
+		if(currPosition.alt_agl >= 50.0f){
 		    missionState = FMS_MISSION.MONITOR;
 		    SetMode(3);
 		    apMode = AP_MODE.AUTO;
@@ -223,28 +226,40 @@ public class Aircraft{
 		
 	
 	}// end switch
-    }//end Mission()
+
+
+	if(missionState == FMS_MISSION.TERMINATE){
+	    return 1;
+	}
+	else{
+	    return 0;
+	}
+	
+    }//end Flight()
 
     public boolean CheckMissionItemReached(){
 
 	boolean reached = false;
 	
-	synchronized(SharedData){
-
-	    if(FlightData.Inbox.UnreadMissionItemReached()){
-		FlightData.Inbox.ReadMissionItemReached();
-		reached = true;
-	    }
+	if(FlightData.Inbox.UnreadMissionItemReached()){
+	    FlightData.Inbox.ReadMissionItemReached();
+	    reached = true;
 	}
 
+
 	return reached;	
+    }
+
+    public int Terminate(){
+
+	return 1;
     }
 
 
     public void Monitor(){
 
-	FlightPlan FP       = SharedData.CurrentFlightPlan;
-	Position currentPos = apState.aircraftPosition;
+	FlightPlan FP       = FlightData.CurrentFlightPlan;
+	Position currentPos = FlightData.currPosition;
 	
 	long current_time   = System.nanoTime();
 	
@@ -268,7 +283,7 @@ public class Aircraft{
 	
 	if(CheckMissionItemReached()){
 	    System.out.println("Reached waypoint");
-	    SharedData.CurrentFlightPlan.nextWaypoint++;
+	    FlightData.CurrentFlightPlan.nextWaypoint++;
 	}
 	
 

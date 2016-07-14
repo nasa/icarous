@@ -941,7 +941,7 @@ public class MAVLinkMessages{
     }
     
 
-    public synchronized msg_flightplan_info FlightPlanInfo(){
+    public synchronized msg_flightplan_info FlightplanInfo(){
 	return msgFlightplanInfo;
     }
 
@@ -957,7 +957,7 @@ public class MAVLinkMessages{
 	return msgGlobalPositionInt;
     }
 
-    public synchronized msg_command_ack CommadAck(){
+    public synchronized msg_command_ack CommandAck(){
 	return msgCommandAck;
     }
 

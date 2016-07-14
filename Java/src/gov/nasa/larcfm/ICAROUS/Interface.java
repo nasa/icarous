@@ -48,10 +48,8 @@ public class Interface{
     public Interface(int intType,String hostname,int recvPort,int sendPort){
 
 	interfaceType   = (short) intType;
-	componentType   = (short) compType;
 	udpReceivePort  = recvPort;
 	udpSendPort     = sendPort;
-	SharedData      = msgs;
 
 	if(hostname != null){
 	    try{
@@ -67,8 +65,6 @@ public class Interface{
     public Interface(int intType,String portName){
 
 	interfaceType  = (short) intType;
-	componentType  = (short) compType;
-	SharedData     = msgs;
 	serialPortName = portName;
 
 	InitSerialInterface();
@@ -147,7 +143,8 @@ public class Interface{
 	}catch(IOException e){
 	    System.out.println(e);
 	}	
-	
+
+	return null;
     }
 
     public void UDPWrite(MAVLinkMessage msg2send){

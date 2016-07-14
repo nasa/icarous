@@ -46,13 +46,7 @@ class Waypoint{
         
 }
 
-public class FlightPlan{
-
-    public enum FP_READ_COM{
-	FP_INFO, FP_WAYPT_INFO, FP_ACK_FAIL,FP_ACK_SUCCESS
-    }
-
-    
+public class FlightPlan{    
     
     public List<Waypoint> wayPoints;
     public int numWayPoints;

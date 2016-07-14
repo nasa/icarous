@@ -14,7 +14,7 @@
 package gov.nasa.larcfm.ICAROUS;
 
 import com.MAVLink.icarous.*;
-
+import com.MAVLink.*;
 
 public class COM implements Runnable{
 
@@ -25,7 +25,7 @@ public class COM implements Runnable{
         
     public COM(String name,AircraftData acData, Interface comInterface){
 	threadName       = name;
-	FlightData       = Input;
+	FlightData       = acData;
 	com              = comInterface;
     }
 
@@ -52,8 +52,8 @@ public class COM implements Runnable{
 	  
 
 	    // Handling mission commands (start/stop)
-	    if(FlightData.Inbox.UnreadRcvdMissionStart()){
-		FlightData.Inbox.ReadRcvdMissionStart();		
+	    if(FlightData.Inbox.UnreadMissionStart()){
+		FlightData.Inbox.ReadMissionStart();		
 		FlightData.startMission = FlightData.Inbox.MissionStartStop().missionStart;				
 		System.out.println("Received mission start");
 	     		

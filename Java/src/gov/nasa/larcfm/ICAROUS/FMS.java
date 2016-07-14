@@ -53,9 +53,9 @@ public class FMS implements Runnable{
 
 	    /* - Wait for mission start flag from COMBOX */
 	    
-	    if(UAS.startMission == 1){
-		UAS.startMission = -1;		
-		state = FMS_STATE.START;
+	    if(UAS.FlightData.startMission == 1){
+		UAS.FlightData.startMission = -1;		
+		state = FMS_STATE.PREFLIGHT;
 	    }
 	    
 	    break;
@@ -67,7 +67,7 @@ public class FMS implements Runnable{
 	    status = UAS.PreFlight();
 
 	    if(status == 1){
-		state = FMS_STATE.MISSION;
+		state = FMS_STATE.FLIGHT;
 	    }
 	    
 	    break;

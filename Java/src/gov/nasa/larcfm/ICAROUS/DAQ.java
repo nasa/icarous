@@ -14,6 +14,8 @@
  */
 package gov.nasa.larcfm.ICAROUS;
 
+import com.MAVLink.*;
+
 public class DAQ implements Runnable{
 
     public Thread t;

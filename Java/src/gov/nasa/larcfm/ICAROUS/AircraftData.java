@@ -22,6 +22,11 @@ public class AircraftData{
     public enum FP_WRITE_AP{
 	FP_CLR, FP_SEND_COUNT, FP_SEND_WP
     }
+
+    public enum FP_READ_COM{
+	FP_INFO, FP_WAYPT_INFO, FP_ACK_FAIL,FP_ACK_SUCCESS
+    }
+
     
     public MAVLinkMessages Inbox;
     
@@ -71,7 +76,7 @@ public class AircraftData{
     public AircraftData(boolean msg_requirement){
 
 	Inbox               = new MAVLinkMessages();
-	aircraftPosition    = new Position();
+	currPosition    = new Position();
 	CurrentFlightPlan   = new FlightPlan();
 	listOfFences        = new GEOFENCES();
 	obstacles           = new ObjectList();
@@ -129,10 +134,10 @@ public class AircraftData{
 
 	    case FP_SEND_COUNT:
 		
-		msgMissionCount.count = numWayPoints;
+		msgMissionCount.count = CurrentFlightPlan.numWayPoints;
 
 		Intf.Write(msgMissionCount);
-		System.out.println("Wrote mission count: "+numWayPoints);
+		System.out.println("Wrote mission count: "+msgMissionCount.count);
 		state = FP_WRITE_AP.FP_SEND_WP;
 		break;
 	    
@@ -149,9 +154,9 @@ public class AircraftData{
 		
 		if(Inbox.UnreadMissionRequest()){
 		    
-		    Inbox.ReadMissionReqest();
+		    Inbox.ReadMissionRequest();
 
-		    int seq = Inbox.MissionRequest().seq
+		    int seq = Inbox.MissionRequest().seq;
 		    
 		    System.out.println("Received mission request: "+ seq );
 		    
@@ -173,14 +178,14 @@ public class AircraftData{
 		    count++;
 		}
 		
-		if(Inbox.UnreadRcvdMissionAck()){
+		if(Inbox.UnreadMissionAck()){
 
-		    Inbox.ReadRcvdMissionAck();
+		    Inbox.ReadMissionAck();
 		    
 		    System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
 		    
 		    if(Inbox.MissionAck().type == 0){
-			if(count == numWayPoints){
+			if(count == CurrentFlightPlan.numWayPoints){
 			    System.out.println("Waypoints sent successfully");
 			    writeComplete = true;
 			}
@@ -231,7 +236,7 @@ public class AircraftData{
 		      
 		      if(msg2.id == 0 && msg2.index != count){
 		      
-			  state2  = FP_READ_COM.FP_ACK_FAIL;
+			  state  = FP_READ_COM.FP_ACK_FAIL;
 			  break;
 		      }
 		      

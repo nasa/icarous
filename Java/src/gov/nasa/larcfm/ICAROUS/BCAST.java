@@ -12,15 +12,16 @@ package gov.nasa.larcfm.ICAROUS;
 
 import com.MAVLink.icarous.*;
 
-public class BCAST_Thread extends Aircraft implements Runnable{
+public class BCAST implements Runnable{
 
     public Thread t;
     public String threadName;
-    public AircraftData SharedData;
+    public AircraftData FlightData;
+    public Interface Intf;
     
-    public BCAST_Thread(String name,AircraftData Input, ICAROUS_Interface bcastInterface){
+    public BCAST(String name,AircraftData acData, Interface bcastInterface){
 	threadName       = name;
-	SharedData       = Input;
+	FlightData       = acData;
 	Intf             = bcastInterface;
     }
 
@@ -30,7 +31,7 @@ public class BCAST_Thread extends Aircraft implements Runnable{
 	while(true){
 	
 	    // Broadcast messages here	  
-	    Intf.Write(SharedData.RcvdMessages.msgHeartbeat);
+	    // Intf.Write(FlightData.Inbox.msgHeartbeat);
 	    	  
 	}
     }
