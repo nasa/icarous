@@ -273,38 +273,39 @@ public class GeoFence{
 
     public boolean CheckWaypointFeasibility(Position CurrPos, Position NextWP){
 
-	LatLonAlt p1      = LatLonAlt.make((double)CurrPos.lat,(double)CurrPos.lon,(double)CurrPos.alt_msl);
-	LatLonAlt p2      = LatLonAlt.make((double)NextWP.lat,(double)NextWP.lon,(double)NextWP.alt_msl);
+	LatLonAlt p1      = LatLonAlt.make((double)CurrPos.lat,(double)CurrPos.lon,(double)CurrPos.alt_msl*3.28084);
+	LatLonAlt p2      = LatLonAlt.make((double)NextWP.lat,(double)NextWP.lon,(double)NextWP.alt_msl*3.28084);
 	Vect3 CurrPosVec  = proj.project(p1);
 	Vect3 NextWPVec   = proj.project(p2);
 	int vertexi,vertexj;
 
 	boolean InPlaneInt;
-	
+
 	for(int i=0;i<numVertices;i++){
 	    vertexi = i;
 
-	    if(i=numVertices - 1){
+	    // **
+	    if(i==numVertices - 1){
 		vertexj = 0;
 	    }
 	    else{
 		vertexj = vertexi + 1;
 	    }
-
-	    InPlaneInt = LinePlaneIntersection(geoPolygon.get(vertexi),geoPolygon.get(vertexj),
+	    // **
+	    InPlaneInt = LinePlaneIntersection(geoPolygon.getVertex(vertexi),geoPolygon.getVertex(vertexj),
 					       floor,ceiling,CurrPosVec,NextWPVec);
 	    
 	    if(InPlaneInt){
-		return true;
+		return false;
 	    }
 	}
 
-	return false;
+	return true;
 	
     }
 
     public boolean LinePlaneIntersection(Vect2 A, Vect2 B,double floor, double ceiling,Vect3 CurrPos,Vect3 NextWP){
-
+	
 	double x1 = A.x();
 	double y1 = A.y();
 	double z1 = floor;
@@ -312,6 +313,8 @@ public class GeoFence{
 	double x2 = B.x();
 	double y2 = B.y();
 	double z2 = ceiling;
+
+	
 
 	Vect3 l0  = new Vect3(CurrPos.x(),CurrPos.y(),CurrPos.z());
 	Vect3 p0  = new Vect3(x1,y1,z1);
@@ -322,30 +325,29 @@ public class GeoFence{
 	double d  = (p0.Sub(l0).dot(n))/(l.dot(n));
 
 	Vect3 PntI = l0.Add(l.Scal(d));
-
-	Vect3 OA   = Vect3(x2-x1,y2-y1,0);
-	Vect3 OB   = Vect3(0,0,z2-z1);
-	Vect3 OP   = PntI - p0;
+	
+	// **
+	Vect3 OA   = new Vect3(x2-x1,y2-y1,0);
+	Vect3 OB   = new Vect3(0,0,z2-z1);
+	Vect3 OP   = PntI.Sub(p0);
+	Vect3 CN   = NextWP.Sub(CurrPos);
+	Vect3 CP   = PntI.Sub(CurrPos);
 
 	double proj1      = OP.dot(OA)/Math.pow(OA.norm(),2);
 	double proj2      = OP.dot(OB)/Math.pow(OB.norm(),2);
+	double proj3      = CP.dot(CN)/Math.pow(CN.norm(),2);
+	
 
 	if(proj1 >= 0 && proj1 <= 1){
 	    if(proj2 >= 0 && proj2 <= 1){
-		return true;
-	    }
-	    else{
-		return false;
+		if(proj3 >= 0 && proj3 <= 1)
+		    return true;
 	    }
 	}
-	else{
-	    return false;
-	}
 	
 	
-	
-	
-
+	return false;
+		
     }
 
     
