@@ -397,7 +397,7 @@ class GEOFENCES{
 	}
     }
 
-
+    /*
     public void GetNewGeoFence(ICAROUS_Interface Intf){
 
 	GeoFence fence1 = null;
@@ -525,7 +525,7 @@ class GEOFENCES{
 	}//end of while
 	    
     }//end of function
-    
+    */
     
     
     

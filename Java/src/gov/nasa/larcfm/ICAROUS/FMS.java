@@ -53,8 +53,8 @@ public class FMS implements Runnable{
 
 	    /* - Wait for mission start flag from COMBOX */
 	    
-	    if(SharedData.startMission == 1){
-		SharedData.startMission = -1;		
+	    if(UAS.startMission == 1){
+		UAS.startMission = -1;		
 		state = FMS_STATE.START;
 	    }
 	    

@@ -18,12 +18,12 @@ public class DAQ implements Runnable{
 
     public Thread t;
     public String threadName;
-    public AircraftData sharedData;
+    public AircraftData FlightData;
     public Interface icarousAP;
     
     public DAQ(String name,AircraftData acData, Interface apIntf){
 	threadName   = name;
-	sharedData   = acData;
+	FlightData   = acData;
 	icarousAP    = apIntf;	
     }
 
@@ -43,9 +43,8 @@ public class DAQ implements Runnable{
 
 	MAVLinkPacket RcvdPacket = icarousAP.Read();
 
-	synchronized(sharedData.Inbox){
-	    sharedData.Inbox.decode_message(RcvdPacket);
-	}
+	FlightData.Inbox.decode_message(RcvdPacket);
+
     }
 
 }

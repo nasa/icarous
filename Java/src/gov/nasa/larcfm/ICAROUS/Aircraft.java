@@ -16,12 +16,6 @@ import com.MAVLink.icarous.*;
 public class Aircraft{
 
     
-    
-
-    public enum FMS_MISSION{
-	TAKEOFF, MONITOR, LAND
-    }
-
     public enum AP_MODE{
 	ND,AUTO,GUIDED
     }
@@ -30,10 +24,9 @@ public class Aircraft{
 	NOMINAL, RESOLVE, EXECUTE, RESOLVED
     }
     
-    public AircraftData SharedData;
-    public AircraftData apState;
-    public ICAROUS_Interface Intf;
-    public QUAD_FMS fmsState;
+    public AircraftData FlightData;
+
+    public Interface Intf;
     public FMS_MISSION missionState;
     
     private boolean takeoff_cmd_sent;
@@ -56,32 +49,23 @@ public class Aircraft{
     }
 
 
-    public boolean CheckHeartBeat(){
+    public boolean CheckAPHeartBeat(){
 
 	boolean pulse = false;
 
-	int compID    = (int) Intf.componentType;
+	FlightData.Inbox.ReadHeartbeat_AP();
 	
-	synchronized(SharedData){
-	    if(compID == 1)
-		SharedData.RcvdMessages.RcvdHeartbeat_AP  = 0;
-	    else if(compID == 2)
-		SharedData.RcvdMessages.RcvdHeartbeat_COM = 0;
+	AP.SetTimeout(5000);
+	FlightData.Inbox.decode_message(AP.Read());
+	AP.SetTimeout(0);
+
+	if(FlightData.Inbox.UnreadHeartbeat_AP()){
+	    return true;
+	}
+	else{
+	    return false;
 	}
 	
-	Intf.SetTimeout(5000);
-	Intf.Read();
-	Intf.SetTimeout(0);
-
-	synchronized(SharedData){
-	    if( (compID == 1) && SharedData.RcvdMessages.RcvdHeartbeat_AP == 1)
-		pulse = true;
-	    else if( (compID == 2) && SharedData.RcvdMessages.RcvdHeartbeat_COM == 1)
-		pulse = true;
-		
-	}
-
-	return pulse;
     }
     
     // Function to send commands to pixhawk
@@ -144,24 +128,22 @@ public class Aircraft{
     // Check acknowledgement
     public int CheckAcknowledgement(){
 
-	synchronized(SharedData){
-	    if(SharedData.RcvdMessages.msgCommandAck.result == 0 ){
-		return 1;
-	    }
-	    else{
-		System.out.println("Command not accepted\n");
-		return 0;
-	    }
+	if(FlightData.Inbox.CommandAck().result == 0 ){
+	    return 1;
 	}
+	else{
+	    System.out.println("Command not accepted\n");
+	    return 0;
+	}
+	
 	
     }
 
     public void PreFlight(){
-	FlightPlan FP = SharedData.CurrentFlightPlan;		
-	FP.Copy(SharedData.NewFlightPlan);
-	synchronized(SharedData){
-	    FP.SendFlightPlanToAP(Intf);
-	}
+	
+	// Send flight plan to pixhawk
+	SendFlightPlanToAP(Intf);
+	
 	
     }
 
@@ -169,8 +151,8 @@ public class Aircraft{
     // Main function that runs the mission
     public void Mission(){
 
-	FlightPlan FP       = SharedData.CurrentFlightPlan;
-	Position currentPos = apState.aircraftPosition;
+	FlightPlan FP       = FlightData.Inbox.CurrentFlightPlan;
+	Position currentPos = FlightData.currPosition;
 	long current_time   = System.nanoTime();
 	long time_elapsed;
 	
@@ -190,9 +172,9 @@ public class Aircraft{
 		
 		// Takeoff at current location
 		SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
-			    1,0,0,0, (float) apState.aircraftPosition.lat,
-			    (float) apState.aircraftPosition.lon,
-			    (float) apState.aircraftPosition.alt_msl + 50.0f);
+			    1,0,0,0, (float) currPosition.lat,
+			    (float) currPosition.lon,
+			    (float) currPosition.alt_msl + 50.0f);
 
 		takeoff_cmd_sent = true;
 
@@ -249,8 +231,8 @@ public class Aircraft{
 	
 	synchronized(SharedData){
 
-	    if(SharedData.RcvdMessages.RcvdMissionItemReached == 1){
-		SharedData.RcvdMessages.RcvdMissionItemReached = 0;
+	    if(FlightData.Inbox.UnreadMissionItemReached()){
+		FlightData.Inbox.ReadMissionItemReached();
 		reached = true;
 	    }
 	}
@@ -273,11 +255,7 @@ public class Aircraft{
 	// Check for conflicts from DAIDALUS against other traffic.
 
 	// Check for geofence resolutions.
-	for(int i=0;i<SharedData.listOfFences.size();i++){
-	    GeoFence GF = listofFences.get(i);
-	    GF.CheckViolation(currentPos);
-	}
-	
+		
 	// Check for mission payload related flags.
 
 	// Check mission progress.

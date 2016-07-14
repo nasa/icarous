@@ -105,6 +105,9 @@ public class AircraftData{
 	boolean writeComplete = false;
 	int count = 0;
 
+	// Copy new flight into current flight plan
+	CurrentFlightPlan.Copy(NewFlightPlan);
+
 	msgMissionCount.target_system    = 0;
 	msgMissionCount.target_component = 0;
 	msgMissionItem.target_system     = 0;
@@ -147,11 +150,12 @@ public class AircraftData{
 		if(Inbox.UnreadMissionRequest()){
 		    
 		    Inbox.ReadMissionReqest();
-		    
 
-		    System.out.println("Received mission request: "+ RcvdMessages.msgMissionRequest.seq);
+		    int seq = Inbox.MissionRequest().seq
 		    
-		    msgMissionItem.seq     = RcvdMessages.msgMissionRequest.seq;
+		    System.out.println("Received mission request: "+ seq );
+		    
+		    msgMissionItem.seq     = seq;
 		    msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL;
 		    msgMissionItem.command = MAV_CMD.MAV_CMD_NAV_WAYPOINT;
 		    msgMissionItem.current = 0;
@@ -159,10 +163,10 @@ public class AircraftData{
 		    msgMissionItem.param1  = 0.0f;
 		    msgMissionItem.param2  = 0.0f;
 		    msgMissionItem.param3  = 0.0f;
-		    msgMissionItem.param4  = GetWaypoint(msgMissionItem.seq).heading;
-		    msgMissionItem.x       = GetWaypoint(msgMissionItem.seq).pos.lat;
-		    msgMissionItem.y       = GetWaypoint(msgMissionItem.seq).pos.lon;
-		    msgMissionItem.z       = GetWaypoint(msgMissionItem.seq).pos.alt_msl;
+		    msgMissionItem.param4  = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).heading;
+		    msgMissionItem.x       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.lat;
+		    msgMissionItem.y       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.lon;
+		    msgMissionItem.z       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.alt_msl;
 		    
 		    Intf.Write(msgMissionItem);
 		    System.out.println("Wrote mission item");
@@ -173,7 +177,7 @@ public class AircraftData{
 
 		    Inbox.ReadRcvdMissionAck();
 		    
-		    System.out.println("Received acknowledgement - type: "+RcvdMessages.msgMissionAck.type);
+		    System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
 		    
 		    if(Inbox.MissionAck().type == 0){
 			if(count == numWayPoints){

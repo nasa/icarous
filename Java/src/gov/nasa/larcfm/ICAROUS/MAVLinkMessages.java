@@ -182,7 +182,7 @@ public class MAVLinkMessages{
 	RcvdMissionItem           = 0;
 	RcvdMissionRequest        = 0;
 	RcvdMissionAck            = 0;
-	RcvdMissionStart          = -1;
+	RcvdMissionStart          = 0;
 	RcvdMissionItemReached    = 0;
 	RcvdWaypoint              = 0;
 	RcvdVertex                = 0;
@@ -956,6 +956,17 @@ public class MAVLinkMessages{
     public synchronized msg_global_position_int GlobalPositionInt(){
 	return msgGlobalPositionInt;
     }
-    
+
+    public synchronized msg_command_ack CommadAck(){
+	return msgCommandAck;
+    }
+
+    public synchronized msg_mission_request MissionRequest(){
+	return msgMissionRequest;
+    }
+
+    public synchronized msg_mission_start_stop MissionStartStop(){
+	return msgMissionStartStop;
+    }
 }
 
