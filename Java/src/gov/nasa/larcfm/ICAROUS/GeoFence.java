@@ -157,19 +157,17 @@ public class GeoFence{
 
 	    insegment = false;
 
-	    if( (x0 > x1) && (x0 < x2) ){
-		if( ( y0 > y1) && (y0 < y2) )
-		    insegment = true;
-	        else if( ( y0 < y1) && (y0 > y2) )
-		    insegment = true;
-	    }
-	    else if( (x0 < x1) && (x0 > x2) ){
-		if( ( y0 > y1) && (y0 < y2) )
-		    insegment = true;
-	        else if( ( y0 < y1) && (y0 > y2) )
-		    insegment = true;
-	    }
 
+	    Vect2 AB = new Vect2(x2-x1,y2-y1);
+	    Vect2 AC = new Vect2(x0-x1,y0-y1);
+
+	    double proj = AC.dot(AB)/Math.pow(AB.norm(),2);
+
+	    if(proj >= 0 && proj <= 1)
+		insegment = true;
+	    else
+		insegment = false;    
+	    
 	    if(insegment){
 		dist = Math.abs(a*x3 + b*y3 + c)/Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
 	    }
@@ -267,9 +265,90 @@ public class GeoFence{
 
 	}
 
+	
+
 	return SafetyPoint;
 	
     }
+
+    public boolean CheckWaypointFeasibility(Position CurrPos, Position NextWP){
+
+	LatLonAlt p1      = LatLonAlt.make((double)CurrPos.lat,(double)CurrPos.lon,(double)CurrPos.alt_msl);
+	LatLonAlt p2      = LatLonAlt.make((double)NextWP.lat,(double)NextWP.lon,(double)NextWP.alt_msl);
+	Vect3 CurrPosVec  = proj.project(p1);
+	Vect3 NextWPVec   = proj.project(p2);
+	int vertexi,vertexj;
+
+	boolean InPlaneInt;
+	
+	for(int i=0;i<numVertices;i++){
+	    vertexi = i;
+
+	    if(i=numVertices - 1){
+		vertexj = 0;
+	    }
+	    else{
+		vertexj = vertexi + 1;
+	    }
+
+	    InPlaneInt = LinePlaneIntersection(geoPolygon.get(vertexi),geoPolygon.get(vertexj),
+					       floor,ceiling,CurrPosVec,NextWPVec);
+	    
+	    if(InPlaneInt){
+		return true;
+	    }
+	}
+
+	return false;
+	
+    }
+
+    public boolean LinePlaneIntersection(Vect2 A, Vect2 B,double floor, double ceiling,Vect3 CurrPos,Vect3 NextWP){
+
+	double x1 = A.x();
+	double y1 = A.y();
+	double z1 = floor;
+	
+	double x2 = B.x();
+	double y2 = B.y();
+	double z2 = ceiling;
+
+	Vect3 l0  = new Vect3(CurrPos.x(),CurrPos.y(),CurrPos.z());
+	Vect3 p0  = new Vect3(x1,y1,z1);
+
+	Vect3 n   = new Vect3(-(z2-z1)*(y2-y1),(z2-z1)*(x2-x1),0);
+	Vect3 l   = new Vect3( NextWP.x() - CurrPos.x(), NextWP.y() - CurrPos.y(), NextWP.z() - CurrPos.z() );
+
+	double d  = (p0.Sub(l0).dot(n))/(l.dot(n));
+
+	Vect3 PntI = l0.Add(l.Scal(d));
+
+	Vect3 OA   = Vect3(x2-x1,y2-y1,0);
+	Vect3 OB   = Vect3(0,0,z2-z1);
+	Vect3 OP   = PntI - p0;
+
+	double proj1      = OP.dot(OA)/Math.pow(OA.norm(),2);
+	double proj2      = OP.dot(OB)/Math.pow(OB.norm(),2);
+
+	if(proj1 >= 0 && proj1 <= 1){
+	    if(proj2 >= 0 && proj2 <= 1){
+		return true;
+	    }
+	    else{
+		return false;
+	    }
+	}
+	else{
+	    return false;
+	}
+	
+	
+	
+	
+
+    }
+
+    
 
     public void print(){
 	System.out.println("Type: "+Type);

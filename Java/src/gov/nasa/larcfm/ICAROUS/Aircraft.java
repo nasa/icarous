@@ -27,18 +27,26 @@ public class Aircraft{
     public enum AP_MODE{
 	ND,AUTO,GUIDED
     }
+
+    public enum RESOLUTION{
+	NOMINAL, RESOLVE, EXECUTE, RESOLVED
+    }
     
     public AircraftData SharedData;
     public AircraftData apState;
     public ICAROUS_Interface Intf;
     public QUAD_FMS fmsState;
     public FMS_MISSION missionState;
-
+    
     private boolean takeoff_cmd_sent;
     private long takeoff_start_time;
     private long time1;
     private AP_MODE apMode;    // Current AP mode
     private AP_MODE reqMode;   // ICAROUS requested mode
+    private RESOLUTION stateResolve;
+    private boolean conflictGeofence;
+    private boolean conflictTraffic;
+    
     
     public Aircraft(){
 	fmsState         = QUAD_FMS.IDLE;
@@ -46,6 +54,7 @@ public class Aircraft{
 	takeoff_cmd_sent = false;
 	apMode           = AP_MODE.ND;
 	reqMode          = AP_MODE.ND;
+	stateResolve     = RESOLUTION.NOMINAL;
     }
 
 
@@ -257,7 +266,11 @@ public class Aircraft{
 	// Check for conflicts from DAIDALUS against other traffic.
 
 	// Check for geofence resolutions.
-
+	for(int i=0;i<SharedData.listOfFences.size();i++){
+	    GeoFence GF = listofFences.get(i);
+	    GF.CheckViolation(currentPos);
+	}
+	
 	// Check for mission payload related flags.
 
 	// Check mission progress.
@@ -284,7 +297,25 @@ public class Aircraft{
     public void Resolve(){	
 
 	// If conflicts detected, switch to guided mode and perform resolution.
-	
+	switch(stateResolve){
+	    
+	case NOMINAL:
+
+	    break;
+
+	case RESOLVE:
+
+	    break;
+
+	case EXECUTE:
+
+	    break;
+
+	case RESOLVED:
+
+	    break;
+
+	}
 
     }
 }
