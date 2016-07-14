@@ -119,7 +119,7 @@ public class Interface{
 
     }
 	
-    public void UDPRead(){
+    public MAVLinkPacket UDPRead(){
 
 	byte[] buffer = new byte[6+255+2];
 	byte[] buffer_data;
@@ -140,7 +140,7 @@ public class Interface{
 	    
 	    buffer_data   = input.getData();
 		
-	    this.ParseMessage(buffer_data);	    
+	    return ParseMessage(buffer_data);	    
 	    
 	}catch(SocketTimeoutException e){
 	    
@@ -166,7 +166,7 @@ public class Interface{
 
     }
 
-    public void SerialRead(){
+    public MAVLinkPacket SerialRead(){
 
 	byte[] buffer = null;
 	
@@ -177,7 +177,7 @@ public class Interface{
 	    System.out.println(e);
 	}
 
-	ParseMessage(buffer);
+	return ParseMessage(buffer);
     }
 
     public void SerialWrite(MAVLinkMessage msg2send){
@@ -196,22 +196,23 @@ public class Interface{
 	
     }
 	
-    public void Read(){
-	if(interfaceType == UDP_UNI || interfaceType == UDP_MUL){
-	    this.UDPRead();
+    public synchronized MAVLinkPacket Read(){
+	if(interfaceType == SOCKET){
+	    return UDPRead();
 	}
 	else if(interfaceType == SERIAL){
-	    this.SerialRead();
+	    return SerialRead();
 	}
 	else{
 	    System.out.println("Unknown interface");
+	    return null;
 	}
     }
 
     public void Write(MAVLinkMessage msg2send){
 
 	
-	    if(interfaceType == UDP_UNI   || interfaceType == UDP_MUL){
+	    if(interfaceType == SOCKET){
 		this.UDPWrite(msg2send);
 	    }
 	    else if (interfaceType == SERIAL){

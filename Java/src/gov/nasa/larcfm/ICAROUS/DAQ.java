@@ -1,5 +1,9 @@
 /**
- * ICAROUS Interface
+ * Data acquisition (DAQ)
+ * 
+ * This class constantly reads the given interface and stores
+ * the MAVLink message.
+ * 
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
  * 
@@ -25,7 +29,7 @@ public class DAQ implements Runnable{
 
     public void run(){
 	while(true){
-	    icarousAP.Read();   
+	    Read();   
 	}
     }
 
@@ -33,6 +37,15 @@ public class DAQ implements Runnable{
 	System.out.println("Starting "+threadName);
 	t = new Thread(this,threadName);
 	t.start();
+    }
+
+    public void Read(){
+
+	MAVLinkPacket RcvdPacket = icarousAP.Read();
+
+	synchronized(sharedData.Inbox){
+	    sharedData.Inbox.decode_message(RcvdPacket);
+	}
     }
 
 }

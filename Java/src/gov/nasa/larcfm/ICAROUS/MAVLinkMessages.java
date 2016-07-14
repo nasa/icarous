@@ -157,23 +157,23 @@ public class MAVLinkMessages{
     public msg_heartbeat_combox msgHeartbeatCombox;
     public msg_mission_start_stop msgMissionStartStop;
     
-    public int RcvdFlightPlanUpdate;
-    public int RcvdGeoFenceUpdate;
-    public int RcvdMissionCount;
-    public int RcvdMissionItem;
-    public int RcvdMissionRequest;
-    public int RcvdMissionAck;
-    public int RcvdMissionStart;
-    public int RcvdMissionItemReached;
+    private int RcvdFlightPlanUpdate;
+    private int RcvdGeoFenceUpdate;
+    private int RcvdMissionCount;
+    private int RcvdMissionItem;
+    private int RcvdMissionRequest;
+    private int RcvdMissionAck;
+    private int RcvdMissionStart;
+    private int RcvdMissionItemReached;
 
-    public int RcvdWaypoint;
-    public int RcvdVertex;
-    public int RcvdObstacle;
-    public int RcvdTraffic;
-    public int RcvdOthers;
+    private int RcvdWaypoint;
+    private int RcvdVertex;
+    private int RcvdObstacle;
+    private int RcvdTraffic;
+    private int RcvdOthers;
     
-    public int RcvdHeartbeat_AP;
-    public int RcvdHeartbeat_COM;
+    private int RcvdHeartbeat_AP;
+    private int RcvdHeartbeat_COM;
     
     public MAVLinkMessages(){
 	RcvdFlightPlanUpdate      = 0;
@@ -192,9 +192,175 @@ public class MAVLinkMessages{
 	RcvdHeartbeat_AP          = 0;
 	RcvdHeartbeat_COM         = 0;
     }
-    
-    public void decode_message(MAVLinkPacket message){
 
+    public synchronized boolean UnreadFlightPlanUpdate(){
+	if(RcvdFlightPlanUpdate == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadGeoFenceUpdate(){
+	if(RcvdGeoFenceUpdate == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadMissionCount(){
+	if(RcvdMissionCount == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadMissionItem(){
+	if(RcvdMissionItem == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadMissionRequest(){
+	if(RcvdMissionRequest == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadMissionAck(){
+	if(RcvdMissionAck == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadMissionStart(){
+	if(RcvdMissionStart == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadMissionItemReached(){
+	if(RcvdMissionItemReached == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadWaypoint(){
+	if(RcvdWaypoint == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadVertex(){
+	if(RcvdVertex == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadObstacle(){
+	if(RcvdObstacle == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadTraffic(){
+	if(RcvdTraffic == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadOthers(){
+	if(RcvdOthers == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadHeartbeat_AP(){
+	if(RcvdHeartbeat_AP == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadHeartbeat_COM(){
+	if(RcvdHeartbeat_COM == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized void ReadFlightPlanUpdate(){
+	RcvdFlightPlanUpdate = 0;
+    }
+
+    public synchronized void ReadGeoFenceUpdate(){
+	RcvdGeoFenceUpdate = 0;
+    }
+
+    public synchronized void ReadMissionCount(){
+	RcvdMissionCount = 0;
+    }
+
+    public synchronized void ReadMissionItem(){
+	RcvdMissionItem = 0;
+    }
+
+    public synchronized void ReadMissionRequest(){
+	RcvdMissionRequest = 0;
+    }
+
+    public synchronized void ReadMissionAck(){
+	RcvdMissionAck = 0;
+    }
+
+    public synchronized void ReadMissionStart(){
+	RcvdMissionStart = 0;
+    }
+
+    public synchronized void ReadMissionItemReached(){
+	RcvdMissionItemReached = 0;	
+    }
+
+    public synchronized void ReadWaypoint(){
+	RcvdWaypoint = 0;
+    }
+
+    public synchronized void ReadVertex(){
+	RcvdVertex = 0;
+    }
+
+    public synchronized void ReadObstacle(){
+	RcvdObstacle = 0;
+    }
+
+    public synchronized void ReadTraffic(){
+	RcvdTraffic = 0;
+    }
+
+    public synchronized void ReadOthers(){
+	RcvdOthers = 0;
+    }
+
+    public synchronized void ReadHeartbeat_AP(){
+	RcvdHeartbeat_AP = 0;
+    }
+
+    public synchronized void ReadHeartbeat_COM(){
+	RcvdHeartbeat_COM = 0;
+    }
+    
+    public synchronized void decode_message(MAVLinkPacket message){
+
+	
 	switch(message.msgid){
 	
 	case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
@@ -212,11 +378,11 @@ public class MAVLinkMessages{
 	    
 	case msg_ping.MAVLINK_MSG_ID_PING:
 	    msgPing = (msg_ping) message.unpack();
-            break;
+	    break;
 	    
 	case msg_change_operator_control.MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL:
 	    msgChangeOperatorControl = (msg_change_operator_control) message.unpack();
-            break;
+	    break;
 	    
 	case msg_change_operator_control_ack.MAVLINK_MSG_ID_CHANGE_OPERATOR_CONTROL_ACK:
 	    msgChangeOperatorControlAck = (msg_change_operator_control_ack) message.unpack();
@@ -772,8 +938,24 @@ public class MAVLinkMessages{
 	    
 	}
 	
-	
-    }	
+    }
+    
 
+    public synchronized msg_flightplan_info FlightPlanInfo(){
+	return msgFlightplanInfo;
+    }
+
+    public synchronized msg_mission_ack MissionAck(){
+	return msgMissionAck;
+    }
+
+    public synchronized msg_pointofinterest Pointofinterest(){
+	return msgPointofinterest;
+    }
+
+    public synchronized msg_global_position_int GlobalPositionInt(){
+	return msgGlobalPositionInt;
+    }
+    
 }
 
