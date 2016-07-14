@@ -10,22 +10,22 @@
  */
 package gov.nasa.larcfm.ICAROUS;
 
-public class DAQ_Thread implements Runnable{
+public class DAQ implements Runnable{
 
     public Thread t;
     public String threadName;
-    public AircraftData SharedData;
-    public ICAROUS_Interface AP;
+    public AircraftData sharedData;
+    public Interface icarousAP;
     
-    public DAQ_Thread(String name,AircraftData Input, ICAROUS_Interface apInterface){
+    public DAQ(String name,AircraftData acData, Interface apIntf){
 	threadName   = name;
-	SharedData   = Input;
-	AP           = apInterface;	
+	sharedData   = acData;
+	icarousAP    = apIntf;	
     }
 
     public void run(){
 	while(true){
-	    AP.Read();   
+	    icarousAP.Read();   
 	}
     }
 

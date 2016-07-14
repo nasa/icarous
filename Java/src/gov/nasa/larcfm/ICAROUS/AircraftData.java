@@ -18,9 +18,6 @@ import com.MAVLink.enums.*;
 
 
 public class AircraftData{
-
-    public static boolean INIT_MESSAGES = true;
-    public static boolean NO_MESSAGES   = false;
     
     public MAVLinkMessages RcvdMessages;
     
@@ -68,10 +65,8 @@ public class AircraftData{
     public int startMission = -1; // -1: last command executed, 0 - stop mission, 1 - start mission
     
     public AircraftData(boolean msg_requirement){
-	if(msg_requirement){
-	    RcvdMessages = new MAVLinkMessages();
-	}
 
+	RcvdMessages        = new MAVLinkMessages();
 	aircraftPosition    = new Position();
 	CurrentFlightPlan   = new FlightPlan();
 	listOfFences        = new GEOFENCES();

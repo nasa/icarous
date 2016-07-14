@@ -1,5 +1,5 @@
 /**
- * ICAROUS Interface
+ * Interface
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
  * 
@@ -19,7 +19,7 @@ import com.MAVLink.MAVLinkPacket;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
-public class ICAROUS_Interface{
+public class Interface{
 
     public static short PX4       = 1;
     public static short COM       = 2;
@@ -42,11 +42,8 @@ public class ICAROUS_Interface{
     private SerialPort serialPort = null;
     private Parser MsgParser      = new Parser();
     
-    public AircraftData SharedData  = null;
     
-
-
-    public ICAROUS_Interface(int intType,int compType,String hostname,int recvPort,int sendPort, AircraftData msgs){
+    public Interface(int intType,int compType,String hostname,int recvPort,int sendPort){
 
 	interfaceType   = (short) intType;
 	componentType   = (short) compType;
@@ -61,32 +58,21 @@ public class ICAROUS_Interface{
 		System.out.println(e);
 	    }
 	}
+
+	InitSocketInterface();
     }
 
-    public ICAROUS_Interface(int intType,int compType,String portName, AircraftData msgs){
+    public Interface(int intType,int compType,String portName){
 
 	interfaceType  = (short) intType;
 	componentType  = (short) compType;
 	SharedData     = msgs;
 	serialPortName = portName;
+
+	InitSerialInterface();
     }
 
-    public void InitInterface(int timeout){
-
-	if ( (interfaceType == UDP_UNI) || (interfaceType == UDP_MUL) ){
-	    InitSocketInterface(timeout);
-	}
-	else if(interfaceType == SERIAL){
-	    InitSerialInterface();
-	}
-	else{
-	    System.out.println("Unknown interface type");
-	}
-	
-	
-    }
-
-    public void InitSocketInterface(int timeout){
+    public void InitSocketInterface(){
 	
 	try{
 	    if(udpReceivePort != 0){
@@ -100,13 +86,6 @@ public class ICAROUS_Interface{
 	    System.err.println(e);
 	}
 			
-	try{
-	    sock.setSoTimeout(timeout);
-	}
-	catch(SocketException e){
-	    System.out.println(e);
-	}
-
     }
 
     public void SetTimeout(int timeout){
@@ -165,8 +144,7 @@ public class ICAROUS_Interface{
 	    
 	}catch(IOException e){
 	    System.out.println(e);
-	}
-	
+	}	
 	
     }
 
@@ -240,7 +218,7 @@ public class ICAROUS_Interface{
 	
     }
 
-    public void ParseMessage(byte[] input){
+    public MAVLinkPacket ParseMessage(byte[] input){
 	
 	MAVLinkPacket RcvdPacket = null;
 	
@@ -248,18 +226,17 @@ public class ICAROUS_Interface{
 	    
 	    RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & input[i]);
 
-	    synchronized(SharedData){
-		if(RcvdPacket != null){
-		    SharedData.RcvdMessages.decode_message(RcvdPacket);
-		    RcvdPacket = null;
-		}
+
+	    if(RcvdPacket != null){
+		return RcvdPacket;
 	    }
+	
 	}
 	
-
+	return null;
+	    
+	
     }
     
-    
-    
-    
+        
 }

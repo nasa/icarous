@@ -16,9 +16,7 @@ import com.MAVLink.icarous.*;
 public class Aircraft{
 
     
-    public enum QUAD_FMS{
-	IDLE, MISSION, TERMINATE 
-    }
+    
 
     public enum FMS_MISSION{
 	TAKEOFF, MONITOR, LAND
@@ -158,6 +156,15 @@ public class Aircraft{
 	
     }
 
+    public void PreFlight(){
+	FlightPlan FP = SharedData.CurrentFlightPlan;		
+	FP.Copy(SharedData.NewFlightPlan);
+	synchronized(SharedData){
+	    FP.SendFlightPlanToAP(Intf);
+	}
+	
+    }
+
     
     // Main function that runs the mission
     public void Mission(){
@@ -191,7 +198,7 @@ public class Aircraft{
 
 		takeoff_start_time = current_time;
 		time1              = takeoff_start_time;
-		FP.nextWaypoint = 1;
+		FP.nextWaypoint    = 1;
 		
 	    }else{
 		// Switch to auto once 50 m is reached and start mission in auto mode
