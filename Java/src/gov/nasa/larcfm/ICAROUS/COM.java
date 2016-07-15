@@ -48,12 +48,47 @@ public class COM implements Runnable{
 	    }
 	    
 	    // Handle traffic information
-	  
+	    if(FlightData.Inbox.UnreadTraffic()){
+		msg_pointofinterest msg1 = FlightData.Inbox.Pointofinterest();
+		FlightData.Inbox.ReadTraffic();
+		
+		FlightData.traffic.AddObject(msg1);
+		System.out.print("Received traffic information");
+
+		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();
+		msg2.acktype = 2;
+		msg2.value = 1;	       
+		comIntf.Write(msg2);
+	    }
+	    
 	    // Handle obstacle information
-	  
+	    if(FlightData.Inbox.UnreadObstacle()){
+		msg_pointofinterest msg1 = FlightData.Inbox.Pointofinterest();
+		FlightData.Inbox.ReadObstacle();
+		FlightData.obstacles.AddObject(msg1);
+		System.out.print("Received obstacle information");
+		
+		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();
+		msg2.acktype = 3;
+		msg2.value = 1;		
+		comIntf.Write(msg2);
+		
+	    }
 
 	    // Handle other points of interest (mission related)
-	  
+	    if(FlightData.Inbox.UnreadOthers()){
+		msg_pointofinterest msg1 = FlightData.Inbox.Pointofinterest();
+		FlightData.Inbox.ReadOthers();
+		FlightData.missionObj.AddObject(msg1);
+		System.out.print("Received mission object");
+		
+		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();
+		msg2.acktype = 4;
+		msg2.value = 1;
+		comIntf.Write(msg2);
+		
+		
+	    }
 
 	    // Handling mission commands (start/stop)
 	    if(FlightData.Inbox.UnreadMissionStart()){
