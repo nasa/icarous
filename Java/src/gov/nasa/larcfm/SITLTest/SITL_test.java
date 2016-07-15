@@ -10,8 +10,23 @@
  */
 import gov.nasa.larcfm.ICAROUS.*;
 
+class PowerLineInspection implements Mission{
+
+	public PowerLineInspection(){
+
+	}
+	
+	public int Execute(Aircraft UAS){
+
+	    //Do nothing
+	    return 0;
+	}
+}
+
 public class SITL_test{
 
+    
+    
     public static void main(String args[]){
 	AircraftData FlightData    = new AircraftData();
 	
@@ -31,7 +46,9 @@ public class SITL_test{
 					   0,
 					   5555);
 
-	Aircraft uasQuad  = new Aircraft(SITLInt,COMInt,FlightData);
+	PowerLineInspection test = new PowerLineInspection();
+	
+	Aircraft uasQuad  = new Aircraft(SITLInt,COMInt,FlightData,test);
 	
 	FMS fms_module           = new FMS("Flight management",uasQuad);
 	DAQ daq_module           = new DAQ("Data acquisition",uasQuad);
@@ -39,9 +56,7 @@ public class SITL_test{
 	BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);
 
 	
-	
-
-	while(!uasQuad.CheckAPHeartBeat()){
+	while(!uasQuad.fsam.CheckAPHeartBeat()){
 	    
 	}
 

@@ -129,7 +129,7 @@ public class AircraftData{
 		Intf.Write(msgMissionClearAll);
 		System.out.println("Cleared mission on AP");
 		state = FP_WRITE_AP.FP_SEND_COUNT;
-		
+		count = 0;
 		break;
 
 	    case FP_SEND_COUNT:
@@ -145,13 +145,7 @@ public class AircraftData{
 
 		Inbox.decode_message(Intf.Read());
 		
-		try{
-		    Thread.sleep(50);
-		}
-		catch(InterruptedException e){
-		    System.out.println(e);
-		}
-		
+				
 		if(Inbox.UnreadMissionRequest()){
 		    
 		    Inbox.ReadMissionRequest();

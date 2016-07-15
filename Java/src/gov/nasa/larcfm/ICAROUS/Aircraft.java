@@ -29,24 +29,23 @@ public class Aircraft{
     public Interface comIntf;
 
     public FSAM fsam;
-    public MISSION mission;
+    public Mission mission;
     
     public FLIGHT_STATE state;
-    private long timeStart;
-    private long timeEvent1;
+    public long timeStart;
+    public long timeCurrent;
     
     private AP_MODE apMode;    // Current AP mode
-    private AP_MODE reqMode;   // ICAROUS requested mode
         
-    public Aircraft(Interface ap_Intf,Interface com_Intf,AircraftData acData){
-	missionState     = FMS_MISSION.TAKEOFF;
-	takeoff_cmd_sent = false;
-	apMode           = AP_MODE.ND;
-	reqMode          = AP_MODE.ND;
-	stateResolve     = RESOLUTION.NOMINAL;
+    public Aircraft(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc){
+	
 	apIntf           = ap_Intf;
 	comIntf          = com_Intf;
 	FlightData       = acData;
+	mission          = mc;
+	state            = FLIGHT_STATE.TAKEOFF;
+	apMode           = AP_MODE.ND;
+	fsam             = new FSAM(this,mission);
     }
 
     // Function to send commands to pixhawk
@@ -123,7 +122,9 @@ public class Aircraft{
     public int PreFlight(){
 	
 	// Send flight plan to pixhawk
-	FlightData.SendFlightPlanToAP(apIntf);
+	synchronized(apIntf){
+	    FlightData.SendFlightPlanToAP(apIntf);
+	}
 	
 	return 1;
     }
@@ -132,9 +133,8 @@ public class Aircraft{
 
 	FlightPlan FP         = FlightData.CurrentFlightPlan;
 	Position currPosition = FlightData.currPosition;
-	long current_time     = System.nanoTime();
-	long time_elapsed;
-	int status;
+	timeCurrent           = System.nanoTime();
+	FSAM_OUTPUT status;
 	
 	switch(state){
 
@@ -154,8 +154,7 @@ public class Aircraft{
 			(float) currPosition.lon,
 			(float) currPosition.alt_msl + 50.0f);
 	    
-	    timeStart          = current_time;
-	    timeEvent1         = start_time;
+	    timeStart          = timeCurrent;
 	    FP.nextWaypoint    = 1;
 	    state = FLIGHT_STATE.TAKEOFF_CLIMB;
 
@@ -182,11 +181,11 @@ public class Aircraft{
 	    // Check for conflicts and determine mode
 	    status = fsam.Monitor();
 
-	    if(status == CONFLICT){
-		fsam.Resolve()
+	    if(status == FSAM_OUTPUT.CONFLICT){
+		fsam.Resolve();
 	    }
-	    else if(status == NOOP){
-		mission.Execute();
+	    else if(status == FSAM_OUTPUT.NOOP){
+		mission.Execute(this);
 	    }
 	    else{
 

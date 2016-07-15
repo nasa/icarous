@@ -47,6 +47,10 @@ public class FMS implements Runnable{
     public void FlightManagement(){
 
 	int status = 0;
+
+	
+	UAS.FlightData.GetGPSdata();
+
 	
 	switch(state){
 

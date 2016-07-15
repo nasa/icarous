@@ -10,26 +10,44 @@
  */
 package gov.nasa.larcfm.ICAROUS;
 
+enum FSAM_OUTPUT{
+	CONFLICT,NOOP
+}
+
 public class FSAM{
 
     Aircraft UAS;
     AircraftData FlightData;
     MAVLinkMessages Inbox;
+    Mission mission;
+    Interface apIntf;
+
+    long timeEvent1;
+    long timeElapsed;
     
-    public FSAM(Aircraft ac){
+    public FSAM(Aircraft ac,Mission ms){
 	UAS = ac;
 	FlightData = ac.FlightData;
 	Inbox   = FlightData.Inbox;
+	mission = ms;
+	timeEvent1 = 0;
+	timeElapsed = 0;
+	apIntf = ac.apIntf;
     }
 
-    public int Monitor(){
+    public FSAM_OUTPUT Monitor(){
 
 	FlightPlan FP       = FlightData.CurrentFlightPlan;
 	Position currentPos = FlightData.currPosition;
+
 	
-	long current_time   = System.nanoTime();
+	long timeCurrent    = UAS.timeCurrent;
+	timeElapsed         = timeCurrent - timeEvent1;
 	
-	long time_elapsed   = current_time - timeEvent1;
+	if(timeEvent1 == 0){
+	    timeEvent1 = UAS.timeStart;
+	}
+	
 	
 	// Check for deviation from prescribed flight profile.
 
@@ -40,8 +58,8 @@ public class FSAM{
 	// Check for mission payload related flags.
 
 	// Check mission progress.
-	if(time_elapsed > 5E9){
-	    timeEvent1 = current_time;    
+	if(timeElapsed > 5E9){
+	    timeEvent1 = timeCurrent;    
 	    Waypoint wp = FP.GetWaypoint(FP.nextWaypoint);	    
 	    double dist[] = FP.Distance2Waypoint(currentPos,wp.pos);	    
 	    System.out.format("Distance to next waypoint: %2.2f (Miles), heading: %3.2f (degrees)\n",dist[0]*0.62,dist[1]);	    
@@ -53,15 +71,14 @@ public class FSAM{
 	}
 	
 
-	// Determine mode
-	reqMode = AP_MODE.AUTO;
-
+	return FSAM_OUTPUT.NOOP;
 	
     }
 
     public int Resolve(){
 
 
+	return 0;
     }
 
     public boolean CheckMissionItemReached(){
