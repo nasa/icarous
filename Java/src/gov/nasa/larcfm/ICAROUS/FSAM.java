@@ -21,9 +21,12 @@ public class FSAM{
     MAVLinkMessages Inbox;
     Mission mission;
     Interface apIntf;
+    double distance2WP;
+    double heading2WP;
 
     long timeEvent1;
     long timeElapsed;
+    FSAM_OUTPUT output;
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS = ac;
@@ -47,22 +50,26 @@ public class FSAM{
 	if(timeEvent1 == 0){
 	    timeEvent1 = UAS.timeStart;
 	}
-	
+
+	//Get distance to next waypoint
+	Waypoint wp = FP.GetWaypoint(FP.nextWaypoint);	    
+	double dist[] = FP.Distance2Waypoint(currentPos,wp.pos);
+	distance2WP = dist[0]*1000;
+	heading2WP  = dist[1];
 	
 	// Check for deviation from prescribed flight profile.
 
 	// Check for conflicts from DAIDALUS against other traffic.
 
 	// Check for geofence resolutions.
+	
 		
 	// Check for mission payload related flags.
 
 	// Check mission progress.
 	if(timeElapsed > 5E9){
-	    timeEvent1 = timeCurrent;    
-	    Waypoint wp = FP.GetWaypoint(FP.nextWaypoint);	    
-	    double dist[] = FP.Distance2Waypoint(currentPos,wp.pos);	    
-	    System.out.format("Distance to next waypoint: %2.2f (Miles), heading: %3.2f (degrees)\n",dist[0]*0.62,dist[1]);	    
+	    timeEvent1 = timeCurrent;      
+	    //System.out.format("Distance to next waypoint: %2.2f (Miles), heading: %3.2f (degrees)\n",dist[0]*0.62,dist[1]);	   
 	}
 	
 	if(CheckMissionItemReached()){
@@ -71,7 +78,7 @@ public class FSAM{
 	}
 	
 
-	return FSAM_OUTPUT.NOOP;
+	return output;
 	
     }
 

@@ -369,37 +369,6 @@ public class GeoFence{
     
 }
 
-class GEOFENCES{
+    
+    
 
-    enum FENCESTATE{
-	IDLE,INFO,VERTICES,ACK_FAIL,ACK_SUCCESS,UPDATE,REMOVE
-    }
-    
-    public List<GeoFence> fenceList;
-    FENCESTATE state;
-    int numFences;
-    
-    public GEOFENCES(){
-	fenceList  = new ArrayList<GeoFence>();
-	state = FENCESTATE.IDLE;
-	numFences = 0;
-    }
-
-    public GeoFence GetGeoFence(int index){
-
-	int size = fenceList.size();
-	
-	if(index > 0){
-	    return (GeoFence) fenceList.get(index);
-	}
-	else{
-	    return (GeoFence) fenceList.get(size-1);
-	}
-    }
-
-    
-    
-    
-    
-    
-}
