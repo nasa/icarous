@@ -360,6 +360,10 @@ public class MAVLinkMessages{
     
     public synchronized void decode_message(MAVLinkPacket message){
 
+	if(message == null){
+	    return;
+	}
+
 	
 	switch(message.msgid){
 	

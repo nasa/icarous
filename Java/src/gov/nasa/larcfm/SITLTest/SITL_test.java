@@ -13,52 +13,47 @@ import gov.nasa.larcfm.ICAROUS.*;
 public class SITL_test{
 
     public static void main(String args[]){
-	AircraftData SharedData    = new AircraftData(AircraftData.INIT_MESSAGES);
+	AircraftData FlightData    = new AircraftData();
 	
-	ICAROUS_Interface SITL     = new ICAROUS_Interface(ICAROUS_Interface.UDP_UNI,
-							   ICAROUS_Interface.PX4,
-							   null,
-							   Integer.parseInt(args[0]),
-							   0,
-							   SharedData);
 	
-	ICAROUS_Interface COMInt   = new ICAROUS_Interface(ICAROUS_Interface.UDP_UNI,
-							   ICAROUS_Interface.COM,
-							   null,
-							   Integer.parseInt(args[1]),
-							   0,
-							   SharedData);
+	Interface SITLInt    = new Interface(Interface.SOCKET,
+					   null,
+					   Integer.parseInt(args[0]),
+					   0);
 	
-	ICAROUS_Interface BCASTInt = new ICAROUS_Interface(ICAROUS_Interface.UDP_MUL,
-							   ICAROUS_Interface.BROADCAST,
-							   "230.1.1.1",
-							   0,
-							   5555,
-							   SharedData);
+	Interface COMInt   = new Interface(Interface.SOCKET,
+					   null,
+					   Integer.parseInt(args[1]),
+					   0);
 	
-	FMS_Thread FMS           = new FMS_Thread("Flight management",SharedData,SITL);
-	DAQ_Thread DAQ           = new DAQ_Thread("Data acquisition",SharedData,SITL);
-	COM_Thread COM           = new COM_Thread("Communications",SharedData,COMInt);
-	BCAST_Thread BCAST       = new BCAST_Thread("Broadcast",SharedData,BCASTInt);
+	Interface BCASTInt = new Interface(Interface.SOCKET,
+					   "230.1.1.1",
+					   0,
+					   5555);
 
-	// Initialize interfaces
-	SITL.InitInterface(0);	
-	COMInt.InitInterface(0);
-	BCASTInt.InitInterface(0);
+	Aircraft uasQuad  = new Aircraft(SITLInt,COMInt,FlightData);
+	
+	FMS fms_module           = new FMS("Flight management",uasQuad);
+	DAQ daq_module           = new DAQ("Data acquisition",uasQuad);
+	COM com_module           = new COM("Communications",uasQuad);
+	BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);
 
-	while(!FMS.CheckHeartBeat()){
+	
+	
+
+	while(!uasQuad.CheckAPHeartBeat()){
 	    
 	}
 
 	System.out.println("Received heartbeat from AP");
 
-	while(!COM.CheckHeartBeat()){
+	while(!com_module.CheckCOMHeartBeat()){
 	    
 	}
 
 	System.out.println("Received heartbeat from COM");
 	    
-	DAQ.start();
+	daq_module.start();
 	    
 
 	try{
@@ -67,7 +62,7 @@ public class SITL_test{
 	    System.out.println(e);
 	}
 
-	BCAST.start();
+	bcast_module.start();
 	
 	try{
 	    Thread.sleep(1000);
@@ -76,7 +71,7 @@ public class SITL_test{
 	}
 
 	
-	COM.start();
+	com_module.start();
 
 	try{
 	    Thread.sleep(1000);
@@ -84,7 +79,7 @@ public class SITL_test{
 	    System.out.println(e);
 	}
 	
-	FMS.start();
+	fms_module.start();
 	
     }
 

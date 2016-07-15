@@ -21,12 +21,12 @@ public class COM implements Runnable{
     public Thread t;
     public String threadName;
     public AircraftData FlightData;
-    public Interface com;
+    public Interface comIntf;
         
-    public COM(String name,AircraftData acData, Interface comInterface){
+    public COM(String name,Aircraft UAS){
 	threadName       = name;
-	FlightData       = acData;
-	com              = comInterface;
+	FlightData       = UAS.FlightData;
+	comIntf          = UAS.comIntf;
     }
 
     public void run(){
@@ -38,7 +38,7 @@ public class COM implements Runnable{
 	    // Handle new flight plan inputs
 	    if(FlightData.Inbox.UnreadFlightPlanUpdate()){
 		FlightData.Inbox.ReadFlightPlanUpdate();		
-		FlightData.UpdateFlightPlan(com);
+		FlightData.UpdateFlightPlan(comIntf);
 	    }
 
 	    // Handle geo fence messages
@@ -72,10 +72,25 @@ public class COM implements Runnable{
 
     public void Read(){
 
-	MAVLinkPacket RcvdPacket = com.Read();
+	MAVLinkPacket RcvdPacket = comIntf.Read();
 	FlightData.Inbox.decode_message(RcvdPacket);
 	
     }
-    
+
+    public boolean CheckCOMHeartBeat(){
+
+	FlightData.Inbox.ReadHeartbeat_COM();
+	
+	comIntf.SetTimeout(5000);
+	FlightData.Inbox.decode_message(comIntf.Read());
+	comIntf.SetTimeout(0);
+
+	if(FlightData.Inbox.UnreadHeartbeat_COM()){
+	    return true;
+	}
+	else{
+	    return false;
+	}
+    }
     
 }

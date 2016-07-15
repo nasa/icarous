@@ -23,10 +23,10 @@ public class DAQ implements Runnable{
     public AircraftData FlightData;
     public Interface icarousAP;
     
-    public DAQ(String name,AircraftData acData, Interface apIntf){
+    public DAQ(String name,Aircraft UAS){
 	threadName   = name;
-	FlightData   = acData;
-	icarousAP    = apIntf;	
+	FlightData   = UAS.FlightData;
+	icarousAP    = UAS.apIntf;	
     }
 
     public void run(){

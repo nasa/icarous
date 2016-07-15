@@ -30,7 +30,8 @@ public class Aircraft{
     
     public AircraftData FlightData;
 
-    public Interface Intf;
+    public Interface apIntf;
+    public Interface comIntf;
     public FMS_MISSION missionState;
     
     private boolean takeoff_cmd_sent;
@@ -41,26 +42,29 @@ public class Aircraft{
     private RESOLUTION stateResolve;
     private boolean conflictGeofence;
     private boolean conflictTraffic;
+
     
     
-    public Aircraft(){
+    public Aircraft(Interface ap_Intf,Interface com_Intf,AircraftData acData){
 	missionState     = FMS_MISSION.TAKEOFF;
 	takeoff_cmd_sent = false;
 	apMode           = AP_MODE.ND;
 	reqMode          = AP_MODE.ND;
 	stateResolve     = RESOLUTION.NOMINAL;
+	apIntf           = ap_Intf;
+	comIntf          = com_Intf;
+	FlightData       = acData;
     }
 
 
     public boolean CheckAPHeartBeat(){
 
-	boolean pulse = false;
-
 	FlightData.Inbox.ReadHeartbeat_AP();
 	
-	Intf.SetTimeout(5000);
-	FlightData.Inbox.decode_message(Intf.Read());
-	Intf.SetTimeout(0);
+	apIntf.SetTimeout(5000);
+	FlightData.Inbox.decode_message(apIntf.Read());
+	apIntf.SetTimeout(0);
+		
 
 	if(FlightData.Inbox.UnreadHeartbeat_AP()){
 	    return true;
@@ -98,7 +102,7 @@ public class Aircraft{
 	CommandLong.param6            = param6;
 	CommandLong.param7            = param7;
 	
-	Intf.Write(CommandLong);
+	apIntf.Write(CommandLong);
 
 	try{
 	    Thread.sleep(100);
@@ -117,7 +121,7 @@ public class Aircraft{
 	Mode.base_mode     = (short) 1;
 	Mode.custom_mode   = (long) modeid;
 
-	Intf.Write(Mode);
+	apIntf.Write(Mode);
 
 	try{
 	    Thread.sleep(100);
@@ -145,7 +149,7 @@ public class Aircraft{
     public int PreFlight(){
 	
 	// Send flight plan to pixhawk
-	FlightData.SendFlightPlanToAP(Intf);
+	FlightData.SendFlightPlanToAP(apIntf);
 	
 	return 1;
     }

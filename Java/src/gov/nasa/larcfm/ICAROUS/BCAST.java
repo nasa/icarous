@@ -19,10 +19,10 @@ public class BCAST implements Runnable{
     public AircraftData FlightData;
     public Interface Intf;
     
-    public BCAST(String name,AircraftData acData, Interface bcastInterface){
+    public BCAST(String name,Aircraft UAS,Interface bcastIntf){
 	threadName       = name;
-	FlightData       = acData;
-	Intf             = bcastInterface;
+	FlightData       = UAS.FlightData;
+	Intf             = bcastIntf;
     }
 
     public void run(){

@@ -29,6 +29,7 @@ public class FMS implements Runnable{
 	threadName       = name;
 	UAS              = ac;
 	FMSrunning       = true;
+	state            = FMS_STATE.IDLE;
     }
 
     public void run(){	

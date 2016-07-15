@@ -73,10 +73,10 @@ public class AircraftData{
 
     public int startMission = -1; // -1: last command executed, 0 - stop mission, 1 - start mission
     
-    public AircraftData(boolean msg_requirement){
+    public AircraftData(){
 
 	Inbox               = new MAVLinkMessages();
-	currPosition    = new Position();
+	currPosition        = new Position();
 	CurrentFlightPlan   = new FlightPlan();
 	listOfFences        = new GEOFENCES();
 	obstacles           = new ObjectList();

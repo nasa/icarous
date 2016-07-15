@@ -163,36 +163,36 @@ public class ComBox{
 	wp1.id      = 0;
 	wp1.index   = 0;
 	wp1.subtype = 0;
-	wp1.lat     = 37.611865f;
-	wp1.lon     = -122.3754350f;
-	wp1.alt     = 20.0f;
+	wp1.latx    = 37.611865f;
+	wp1.lony    = -122.3754350f;
+	wp1.altz    = 20.0f;
 	wp1.heading = 0.0f;
 
 	msg_pointofinterest wp2 = new msg_pointofinterest();
 	wp2.id      = 0;
 	wp2.index   = 1;
 	wp2.subtype = 0;
-	wp2.lat     = 37.615267f; 
-	wp2.lon     = -122.373179f;
-	wp2.alt     = 20.0f;
+	wp2.latx    = 37.615267f; 
+	wp2.lony    = -122.373179f;
+	wp2.altz    = 20.0f;
 	wp2.heading = 0.0f;
 	
 	msg_pointofinterest wp3 = new msg_pointofinterest();
 	wp3.id      = 0;
 	wp3.index   = 2;
 	wp3.subtype = 0;
-	wp3.lat     = 37.616911f;
-	wp3.lon     = -122.377167f;
-	wp3.alt     = 20.0f;
+	wp3.latx    = 37.616911f;
+	wp3.lony    = -122.377167f;
+	wp3.altz    = 20.0f;
 	wp3.heading = 0.0f;
 
 	msg_pointofinterest wp4 = new msg_pointofinterest();
 	wp4.id      = 0;
 	wp4.index   = 3;
 	wp4.subtype = 0;
-	wp4.lat     = 37.612451f;
-	wp4.lon     = -122.380198f;
-	wp4.alt     = 20.0f;
+	wp4.latx    = 37.612451f;
+	wp4.lony    = -122.380198f;
+	wp4.altz    = 20.0f;
 	wp4.heading = 0.0f;
 
 	msg_mission_start_stop msgMissionStart = new msg_mission_start_stop();
@@ -242,12 +242,13 @@ public class ComBox{
 
 	    if(ack.acktype == 0 && ack.value == 1){
 		System.out.println("Waypoints sent successfully");
-		//UDPWrite(msgMissionStart,sock,host,udpSendPort);
+		UDPWrite(msgMissionStart,sock,host,udpSendPort);
 	    }
 	    else{
 		System.out.println("Resend waypoints");
 	    }
 
+	    /*
 	    Thread.sleep(1000);
 
 	    UDPWrite(msgGeoFenceInfo,sock,host,udpSendPort);Thread.sleep(100);
@@ -307,23 +308,19 @@ public class ComBox{
 	    obj.id      = 2;
 	    obj.index   = 0;
 	    obj.subtype = 0;
-	    obj.lat     = 37.612451f;
-	    obj.lon     = -122.380198f;
-	    obj.alt     = 20.0f;
+	    obj.latx    = 37.612451f;
+	    obj.lony    = -122.380198f;
+	    obj.altz    = 20.0f;
 	    obj.heading = 0.0f;
 
 	    UDPWrite(obj,sock,host,udpSendPort); Thread.sleep(100);
-	
+	    */
 	}
 	catch(InterruptedException e){
 	    System.out.println(e);
 	}
 
-	
-    }
-
-    
-    
-
+	    
+	}
     
 }
