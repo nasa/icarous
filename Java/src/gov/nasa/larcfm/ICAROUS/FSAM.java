@@ -62,25 +62,15 @@ public class FSAM{
 	double dist[] = FP.Distance2Waypoint(currentPos,wp.pos);
 	distance2WP = dist[0]*1000;
 	heading2WP  = dist[1];
+
+	// Check for geofence resolutions.
+	CheckGeoFences();
 	
 	// Check for deviation from prescribed flight profile.
 
+	    
 	// Check for conflicts from DAIDALUS against other traffic.
 
-	// Check for geofence resolutions.
-	for(int i=0;i< FlightData.fenceList.size();i++){
-	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
-	    GF.CheckViolation(currentPos);
-
-	    	    
-	    if(GF.hconflict || GF.vconflict){
-
-
-	    }
-	}
-	
-		
-	// Check for mission payload related flags.
 
 	// Check mission progress.
 	if(timeElapsed > 5E9){
@@ -93,8 +83,10 @@ public class FSAM{
 	    FlightData.CurrentFlightPlan.nextWaypoint++;
 	}
 	
-
-	return output;
+	if(conflictList.size() > 0)
+	    return FSAM_OUTPUT.CONFLICT;
+	else
+	    return FSAM_OUTPUT.NOOP;
 	
     }
 
@@ -131,6 +123,25 @@ public class FSAM{
 	}
 	else{
 	    return false;
+	}
+	
+    }
+
+    public void CheckGeoFences(){
+
+	for(int i=0;i< FlightData.fenceList.size();i++){
+	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
+	    GF.CheckViolation(currentPos);
+	    	    
+	    if(GF.hconflict || GF.vconflict){
+		if(GF.Type == 0){
+		    Conflict cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_IN,GF);
+		}
+		else{
+		    Conflict cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_OUT,GF);
+		}
+		Conflict.AddConflictToList(conflictList,cf);
+	    }
 	}
 	
     }

@@ -86,17 +86,23 @@ public class Conflict{
 
 	    
     public static void AddConflictToList(List<Conflict> conflictList, Conflict conf){
-	for(int i=0;i<conflictList.size();i++){
 
-	    Conflict con = (Conflict) conflictList.get(i);
+	if(conflictList.size() > 0){
+	    for(int i=0;i<conflictList.size();i++){
 
-	    int check = con.IsEqual(conf);
+		Conflict con = (Conflict) conflictList.get(i);
 
-	    if(check < 0)
-		conflictList.add(conf);
-	    else if(check > 0)
-		con.SetPriority(conf.priority);
+		int check = con.IsEqual(conf);
+
+		if(check < 0)
+		    conflictList.add(conf);
+		else if(check > 0)
+		    con.SetPriority(conf.priority);
 	
+	    }
+	}
+	else{
+	    conflictList.add(conf);
 	}
 	
     }
