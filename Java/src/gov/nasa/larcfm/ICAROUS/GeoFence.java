@@ -25,7 +25,7 @@ import com.MAVLink.enums.*;
 
 
 public class GeoFence{
-
+    
     public int Type;
     public int ID;
     public int numVertices;
@@ -188,7 +188,7 @@ public class GeoFence{
 	
     }
 
-    public Position CheckViolation(Position pos){
+    public void CheckViolation(Position pos){
 
 	double hdist;
 	double vdist;
@@ -245,6 +245,7 @@ public class GeoFence{
 	    }
 
 	    vconflict = false;
+	   
 	    if( (ceiling - pos.alt_msl) <= vthreshold){
 		SafetyPoint.alt_msl = (float) (ceiling - vstepback);
 		vconflict = true;
@@ -265,9 +266,6 @@ public class GeoFence{
 
 	}
 
-	
-
-	return SafetyPoint;
 	
     }
 

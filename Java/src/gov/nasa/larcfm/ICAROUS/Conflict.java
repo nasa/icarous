@@ -12,8 +12,10 @@ package gov.nasa.larcfm.ICAROUS;
 
 public class Conflict{
 
-    public enum TYPE{
-	KEEPIN, KEEPOUT, TRAFFIC, OBSTACLE, EXAMINE, FLIGHTPLAN
+    public enum CF_TYPE{
+	NONE,KEEPIN, KEEPOUT, TRAFFIC, OBSTACLE, EXAMINE, FLIGHTPLAN
     }
+
+    CF_TYPE conflictType;
 
 }

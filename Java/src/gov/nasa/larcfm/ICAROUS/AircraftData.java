@@ -66,10 +66,10 @@ public class AircraftData{
 
     public List<GeoFence> fenceList; 
     
-    // List for obstacles
-    public ObjectList obstacles;
-    public ObjectList traffic;
-    public ObjectList missionObj;
+    // List for various objects
+    public List<GenericObject> obstacles;
+    public List<GenericObject> traffic;
+    public List<GenericObject> missionObj;
     
     // List for traffic information
     
@@ -82,9 +82,9 @@ public class AircraftData{
 	currPosition        = new Position();
 	CurrentFlightPlan   = new FlightPlan();
 	fenceList           = new ArrayList<GeoFence>();
-	obstacles           = new ObjectList();
-	traffic             = new ObjectList();
-	missionObj          = new ObjectList();
+	obstacles           = new ArrayList<GenericObject>();
+	traffic             = new ArrayList<GenericObject>();
+	missionObj          = new ArrayList<GenericObject>();
     }
 
     public void GetGPSdata(){

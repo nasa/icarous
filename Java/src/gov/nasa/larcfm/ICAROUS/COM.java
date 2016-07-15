@@ -52,7 +52,7 @@ public class COM implements Runnable{
 		msg_pointofinterest msg1 = FlightData.Inbox.Pointofinterest();
 		FlightData.Inbox.ReadTraffic();
 		
-		FlightData.traffic.AddObject(msg1);
+		GenericObject.AddObject(FlightData.traffic,msg1);
 		System.out.print("Received traffic information");
 
 		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();
@@ -65,7 +65,8 @@ public class COM implements Runnable{
 	    if(FlightData.Inbox.UnreadObstacle()){
 		msg_pointofinterest msg1 = FlightData.Inbox.Pointofinterest();
 		FlightData.Inbox.ReadObstacle();
-		FlightData.obstacles.AddObject(msg1);
+
+		GenericObject.AddObject(FlightData.obstacles,msg1);
 		System.out.print("Received obstacle information");
 		
 		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();
@@ -79,7 +80,8 @@ public class COM implements Runnable{
 	    if(FlightData.Inbox.UnreadOthers()){
 		msg_pointofinterest msg1 = FlightData.Inbox.Pointofinterest();
 		FlightData.Inbox.ReadOthers();
-		FlightData.missionObj.AddObject(msg1);
+
+		GenericObject.AddObject(FlightData.missionObj,msg1);
 		System.out.print("Received mission object");
 		
 		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();

@@ -10,6 +10,9 @@
  */
 package gov.nasa.larcfm.ICAROUS;
 
+import java.util.*;
+import java.lang.*;
+
 enum FSAM_OUTPUT{
 	CONFLICT,NOOP
 }
@@ -27,6 +30,8 @@ public class FSAM{
     long timeEvent1;
     long timeElapsed;
     FSAM_OUTPUT output;
+
+    List<Conflict> conflictList;
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS = ac;
@@ -36,6 +41,7 @@ public class FSAM{
 	timeEvent1 = 0;
 	timeElapsed = 0;
 	apIntf = ac.apIntf;
+	conflictList = new ArrayList<Conflict>();
     }
 
     public FSAM_OUTPUT Monitor(){
@@ -62,6 +68,16 @@ public class FSAM{
 	// Check for conflicts from DAIDALUS against other traffic.
 
 	// Check for geofence resolutions.
+	for(int i=0;i< FlightData.fenceList.size();i++){
+	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
+	    GF.CheckViolation(currentPos);
+
+	    	    
+	    if(GF.hconflict || GF.vconflict){
+
+
+	    }
+	}
 	
 		
 	// Check for mission payload related flags.
