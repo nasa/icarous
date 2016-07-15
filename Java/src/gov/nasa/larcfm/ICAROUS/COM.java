@@ -42,7 +42,11 @@ public class COM implements Runnable{
 	    }
 
 	    // Handle geo fence messages
-	  
+	    if(FlightData.Inbox.UnreadGeoFenceUpdate()){
+		FlightData.Inbox.ReadGeoFenceUpdate();		
+		FlightData.GetNewGeoFence(comIntf);
+	    }
+	    
 	    // Handle traffic information
 	  
 	    // Handle obstacle information

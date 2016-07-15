@@ -27,6 +27,9 @@ public class AircraftData{
 	FP_INFO, FP_WAYPT_INFO, FP_ACK_FAIL,FP_ACK_SUCCESS
     }
 
+    enum FENCE_STATE{
+	    IDLE,INFO,VERTICES,ACK_FAIL,ACK_SUCCESS,UPDATE,REMOVE
+    }
     
     public MAVLinkMessages Inbox;
     
@@ -61,7 +64,7 @@ public class AircraftData{
     public FlightPlan NewFlightPlan;
     public FlightPlan CurrentFlightPlan;
 
-    public GEOFENCES listOfFences;
+    public List<GeoFence> fenceList; 
     
     // List for obstacles
     public ObjectList obstacles;
@@ -78,7 +81,7 @@ public class AircraftData{
 	Inbox               = new MAVLinkMessages();
 	currPosition        = new Position();
 	CurrentFlightPlan   = new FlightPlan();
-	listOfFences        = new GEOFENCES();
+	fenceList           = new ArrayList<GeoFence>();
 	obstacles           = new ObjectList();
 	traffic             = new ObjectList();
 	missionObj          = new ObjectList();
@@ -294,6 +297,135 @@ public class AircraftData{
 	  }// end of while
     }//end of function
 
+
+    public void GetNewGeoFence(Interface Intf){
+
+	GeoFence fence1 = null;
+	int count = 0;
+	boolean getfence = true;
+	FENCE_STATE state;
+	int numFences;
+	
+	msg_geofence_info msg1 = Inbox.GeofenceInfo();
+
+	if(msg1.msgType == 0){
+	    state = FENCE_STATE.INFO;
+	    System.out.println("Adding fence");
+	}
+	else{
+	    state = FENCE_STATE.REMOVE;
+	    System.out.println("Removing fence");
+	}
+	
+	while(getfence){    
+
+	    switch(state){
+	    
+	    case INFO:
+	    
+		fence1 = new GeoFence(msg1.fenceID,msg1.fenceType,msg1.numVertices,msg1.fenceFloor,msg1.fenceCeiling);
+		System.out.println("Received geofence information: "+msg1.fenceCeiling);
+		state = FENCE_STATE.VERTICES;
+		break;
+
+	    case VERTICES:
+
+		Intf.SetTimeout(500);
+		Inbox.decode_message(Intf.Read());
+		Intf.SetTimeout(0);
+		
+		if(Inbox.UnreadVertex()){
+		    msg_pointofinterest msg2 = Inbox.Pointofinterest();
+		    Inbox.ReadVertex();
+		    
+		    if(msg2.id == 1 && msg2.index != count){
+		      
+			state  =  FENCE_STATE.ACK_FAIL;
+			break;
+		    }
+
+		    System.out.println("Adding vertex :"+count);
+		    fence1.AddVertex(msg2.index,msg2.latx,msg2.lony);
+		    count++;
+
+		    
+		    if(count == fence1.numVertices){
+			state = FENCE_STATE.UPDATE;
+			break;
+		    }
+		}
+
+		break;
+
+	    case UPDATE:
+		
+		fenceList.add(fence1);
+		numFences = fenceList.size();
+		GeoFence gf = (GeoFence)fenceList.get(numFences-1);
+		gf.print();
+		System.out.println("Updated fence list");		
+		System.out.println("Total fences in ICAROUS:"+numFences);
+		state = FENCE_STATE.ACK_SUCCESS;
+		
+		break;
+
+	    case REMOVE:
+
+		Iterator Itr = fenceList.iterator();
+
+		while(Itr.hasNext()){
+		    GeoFence f1 = (GeoFence) Itr.next();
+
+		    if(f1.ID == msg1.fenceID){
+			Itr.remove();
+			numFences = fenceList.size();
+			System.out.println("Total fences in ICAROUS:"+numFences);
+			break;   
+		    }
+		}
+
+		getfence = false;
+
+		break;
+
+	       
+	    case ACK_FAIL:
+
+		msg_command_acknowledgement msg4 = new msg_command_acknowledgement();
+
+		msg4.acktype = 1;		  
+		
+		getfence = false;
+		
+		// Send acknowledgment
+		msg4.value = 0;
+		
+		Intf.Write(msg4);
+		
+		break;
+
+	    case ACK_SUCCESS:
+
+		msg_command_acknowledgement msg5 = new msg_command_acknowledgement();
+
+		msg5.acktype = 1;		  
+		
+		getfence = false;
+		
+		// Send acknowledgment
+		msg5.value = 1;
+		
+		Intf.Write(msg5);
+
+		state = FENCE_STATE.UPDATE;
+		
+		break;
+		
+	    }//end of switch
+	}//end of while
+	    
+    }//end of function
+    
     
 }
 

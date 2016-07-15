@@ -972,5 +972,9 @@ public class MAVLinkMessages{
     public synchronized msg_mission_start_stop MissionStartStop(){
 	return msgMissionStartStop;
     }
+
+    public synchronized msg_geofence_info GeofenceInfo(){
+	return msgGeofenceInfo;
+    }
 }
 

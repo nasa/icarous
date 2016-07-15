@@ -242,13 +242,13 @@ public class ComBox{
 
 	    if(ack.acktype == 0 && ack.value == 1){
 		System.out.println("Waypoints sent successfully");
-		UDPWrite(msgMissionStart,sock,host,udpSendPort);
+		//UDPWrite(msgMissionStart,sock,host,udpSendPort);
 	    }
 	    else{
 		System.out.println("Resend waypoints");
 	    }
 
-	    /*
+	    
 	    Thread.sleep(1000);
 
 	    UDPWrite(msgGeoFenceInfo,sock,host,udpSendPort);Thread.sleep(100);
@@ -314,7 +314,7 @@ public class ComBox{
 	    obj.heading = 0.0f;
 
 	    UDPWrite(obj,sock,host,udpSendPort); Thread.sleep(100);
-	    */
+	    
 	}
 	catch(InterruptedException e){
 	    System.out.println(e);
