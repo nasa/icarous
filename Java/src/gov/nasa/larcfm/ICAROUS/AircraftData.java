@@ -123,77 +123,80 @@ public class AircraftData{
 
 	msgMissionClearAll.target_system    = 0;
 	msgMissionClearAll.target_component = 0;
-		
+
+	
 	while(!writeComplete){
 
-	    switch(state){
+	    synchronized(Intf){
+		switch(state){
 
-	    case FP_CLR:
-		Intf.Write(msgMissionClearAll);
-		System.out.println("Cleared mission on AP");
-		state = FP_WRITE_AP.FP_SEND_COUNT;
-		count = 0;
-		break;
+		case FP_CLR:
+		    Intf.Write(msgMissionClearAll);
+		    System.out.println("Cleared mission on AP");
+		    state = FP_WRITE_AP.FP_SEND_COUNT;
+		    count = 0;
+		    break;
 
-	    case FP_SEND_COUNT:
+		case FP_SEND_COUNT:
 		
-		msgMissionCount.count = CurrentFlightPlan.numWayPoints;
+		    msgMissionCount.count = CurrentFlightPlan.numWayPoints;
 
-		Intf.Write(msgMissionCount);
-		System.out.println("Wrote mission count: "+msgMissionCount.count);
-		state = FP_WRITE_AP.FP_SEND_WP;
-		break;
+		    Intf.Write(msgMissionCount);
+		    System.out.println("Wrote mission count: "+msgMissionCount.count);
+		    state = FP_WRITE_AP.FP_SEND_WP;
+		    break;
 	    
-	    case FP_SEND_WP:
+		case FP_SEND_WP:
 
-		Inbox.decode_message(Intf.Read());
+		    Inbox.decode_message(Intf.Read());
 		
 				
-		if(Inbox.UnreadMissionRequest()){
+		    if(Inbox.UnreadMissionRequest()){
 		    
-		    Inbox.ReadMissionRequest();
+			Inbox.ReadMissionRequest();
 
-		    int seq = Inbox.MissionRequest().seq;
+			int seq = Inbox.MissionRequest().seq;
 		    
-		    System.out.println("Received mission request: "+ seq );
+			System.out.println("Received mission request: "+ seq );
 		    
-		    msgMissionItem.seq     = seq;
-		    msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL;
-		    msgMissionItem.command = MAV_CMD.MAV_CMD_NAV_WAYPOINT;
-		    msgMissionItem.current = 0;
-		    msgMissionItem.autocontinue = 0;
-		    msgMissionItem.param1  = 0.0f;
-		    msgMissionItem.param2  = 0.0f;
-		    msgMissionItem.param3  = 0.0f;
-		    msgMissionItem.param4  = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).heading;
-		    msgMissionItem.x       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.lat;
-		    msgMissionItem.y       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.lon;
-		    msgMissionItem.z       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.alt_msl;
+			msgMissionItem.seq     = seq;
+			msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL;
+			msgMissionItem.command = MAV_CMD.MAV_CMD_NAV_WAYPOINT;
+			msgMissionItem.current = 0;
+			msgMissionItem.autocontinue = 0;
+			msgMissionItem.param1  = 0.0f;
+			msgMissionItem.param2  = 0.0f;
+			msgMissionItem.param3  = 0.0f;
+			msgMissionItem.param4  = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).heading;
+			msgMissionItem.x       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.lat;
+			msgMissionItem.y       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.lon;
+			msgMissionItem.z       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.alt_msl;
 		    
-		    Intf.Write(msgMissionItem);
-		    System.out.println("Wrote mission item");
-		    count++;
-		}
+			Intf.Write(msgMissionItem);
+			System.out.println("Wrote mission item");
+			count++;
+		    }
 		
-		if(Inbox.UnreadMissionAck()){
+		    if(Inbox.UnreadMissionAck()){
 
-		    Inbox.ReadMissionAck();
+			Inbox.ReadMissionAck();
 		    
-		    System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
+			System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
 		    
-		    if(Inbox.MissionAck().type == 0){
-			if(count == CurrentFlightPlan.numWayPoints){
-			    System.out.println("Waypoints sent successfully");
-			    writeComplete = true;
-			}
+			if(Inbox.MissionAck().type == 0){
+			    if(count == CurrentFlightPlan.numWayPoints){
+				System.out.println("Waypoints sent successfully");
+				writeComplete = true;
+			    }
 			
+			}
+			else{
+			    state = FP_WRITE_AP.FP_CLR;
+			    System.out.println("Error in writing mission to AP");
+			}
 		    }
-		    else{
-			state = FP_WRITE_AP.FP_CLR;
-			System.out.println("Error in writing mission to AP");
-		    }
-		}
-	    } // end of switch case
+		} // end of switch case
+	    }//end of synchronized
 	}//end of while	
     }//end of function
 

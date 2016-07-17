@@ -134,8 +134,10 @@ public class FSAM{
 	    GF.CheckViolation(currentPos);
 	    	    
 	    if(GF.hconflict || GF.vconflict){
+		
 		if(GF.Type == 0){
 		    Conflict cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_IN,GF);
+		    System.out.println("Keep in geofence conflict detected. Adding to queue.")
 		}
 		else{
 		    Conflict cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_OUT,GF);

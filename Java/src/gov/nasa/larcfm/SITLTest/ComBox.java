@@ -163,17 +163,17 @@ public class ComBox{
 	wp1.id      = 0;
 	wp1.index   = 0;
 	wp1.subtype = 0;
-	wp1.latx    = 37.611865f;
-	wp1.lony    = -122.3754350f;
-	wp1.altz    = 20.0f;
+	wp1.latx    = 37.615759f;
+	wp1.lony    = -122.365150f;
+	wp1.altz    = 50.0f;
 	wp1.heading = 0.0f;
 
 	msg_pointofinterest wp2 = new msg_pointofinterest();
 	wp2.id      = 0;
 	wp2.index   = 1;
 	wp2.subtype = 0;
-	wp2.latx    = 37.615267f; 
-	wp2.lony    = -122.373179f;
+	wp2.latx    = 37.614369f; 
+	wp2.lony    = -122.361927f;
 	wp2.altz    = 20.0f;
 	wp2.heading = 0.0f;
 	
@@ -181,8 +181,8 @@ public class ComBox{
 	wp3.id      = 0;
 	wp3.index   = 2;
 	wp3.subtype = 0;
-	wp3.latx    = 37.616911f;
-	wp3.lony    = -122.377167f;
+	wp3.latx    = 37.617655f;
+	wp3.lony    = -122.359112f;
 	wp3.altz    = 20.0f;
 	wp3.heading = 0.0f;
 
@@ -190,8 +190,8 @@ public class ComBox{
 	wp4.id      = 0;
 	wp4.index   = 3;
 	wp4.subtype = 0;
-	wp4.latx    = 37.612451f;
-	wp4.lony    = -122.380198f;
+	wp4.latx    = 37.617624f;
+	wp4.lony    = -122.363878f;
 	wp4.altz    = 20.0f;
 	wp4.heading = 0.0f;
 
@@ -204,24 +204,46 @@ public class ComBox{
 	msgGeoFenceInfo.fenceID   = (short) 0;
 	msgGeoFenceInfo.fenceType =  (short) 0;
 	msgGeoFenceInfo.numVertices = 4;
-	msgGeoFenceInfo.fenceFloor = 300;
-	msgGeoFenceInfo.fenceCeiling = 500;
-	
-	msg_geofence_info msgGeoFenceInfo2 = new msg_geofence_info();
-	msgGeoFenceInfo2.msgType   = (short) 0;
-	msgGeoFenceInfo2.fenceID   = (short) 1;
-	msgGeoFenceInfo2.fenceType =  (short) 1;
-	msgGeoFenceInfo2.numVertices = 4;
-	msgGeoFenceInfo2.fenceFloor = 300;
-	msgGeoFenceInfo2.fenceCeiling = 600;
+	msgGeoFenceInfo.fenceFloor = 0;
+	msgGeoFenceInfo.fenceCeiling = 1000;
 
-	msg_geofence_info msgGeoFenceInfo3 = new msg_geofence_info();
-	msgGeoFenceInfo3.msgType   = (short) 1;
-	msgGeoFenceInfo3.fenceID   = (short) 0;
-	msgGeoFenceInfo3.fenceType =  (short) 0;
-	msgGeoFenceInfo3.numVertices = 0;
-	msgGeoFenceInfo3.fenceFloor = 0;
-	msgGeoFenceInfo3.fenceCeiling = 0;
+	// Send four waypoints
+	msg_pointofinterest gf1 = new msg_pointofinterest();
+	gf1.id      = 1;
+	gf1.index   = 0;
+	gf1.subtype = 0;
+	gf1.latx    = 37.609712f;
+	gf1.lony    = -122.359299f;
+	gf1.altz    = 0.0f;
+	gf1.heading = 0.0f;
+
+	msg_pointofinterest gf2 = new msg_pointofinterest();
+	gf2.id      = 1;
+	gf2.index   = 1;
+	gf2.subtype = 0;
+	gf2.latx    = 37.614297f; 
+	gf2.lony    = -122.355688f;
+	gf2.altz    = 0.0f;
+	gf2.heading = 0.0f;
+	
+	msg_pointofinterest gf3 = new msg_pointofinterest();
+	gf3.id      = 1;
+	gf3.index   = 2;
+	gf3.subtype = 0;
+	gf3.latx    = 37.618960f;
+	gf3.lony    = -122.366671f;
+	gf3.altz    = 0.0f;
+	gf3.heading = 0.0f;
+
+	msg_pointofinterest gf4 = new msg_pointofinterest();
+	gf4.id      = 1;
+	gf4.index   = 3;
+	gf4.subtype = 0;
+	gf4.latx    =  37.614623f;
+	gf4.lony    = -122.370068f;
+	gf4.altz    = 0.0f;
+	gf4.heading = 0.0f;
+	
 
 	
 	// Send all messages
@@ -242,7 +264,7 @@ public class ComBox{
 
 	    if(ack.acktype == 0 && ack.value == 1){
 		System.out.println("Waypoints sent successfully");
-		//UDPWrite(msgMissionStart,sock,host,udpSendPort);
+		UDPWrite(msgMissionStart,sock,host,udpSendPort);
 	    }
 	    else{
 		System.out.println("Resend waypoints");
@@ -253,67 +275,16 @@ public class ComBox{
 
 	    UDPWrite(msgGeoFenceInfo,sock,host,udpSendPort);Thread.sleep(100);
 
-	    wp1.id = 1;
-	    wp2.id = 1;
-	    wp3.id = 1;
-	    wp4.id = 1;
+	    UDPWrite(gf1,sock,host,udpSendPort); Thread.sleep(100);
 	    
-	    UDPWrite(wp1,sock,host,udpSendPort); Thread.sleep(100);
+	    UDPWrite(gf2,sock,host,udpSendPort); Thread.sleep(100);
 	    
-	    UDPWrite(wp2,sock,host,udpSendPort); Thread.sleep(100);
+	    UDPWrite(gf3,sock,host,udpSendPort); Thread.sleep(100);
 	    
-	    UDPWrite(wp3,sock,host,udpSendPort); Thread.sleep(100);
-	    
-	    UDPWrite(wp4,sock,host,udpSendPort); Thread.sleep(100);
+	    UDPWrite(gf4,sock,host,udpSendPort); Thread.sleep(100);
 	    
 	    ack = UDPRead(sock);	
 	
-	    if(ack.acktype == 1 && ack.value == 1){
-		System.out.println("Geofence sent  successfully");
-		//UDPWrite(msgMissionStart,sock,host,udpSendPort);
-	    }
-	    else{
-		System.out.println("Resend waypoints");
-	    }
-
-	    System.out.println("Writing 2nd geofence");
-	    Thread.sleep(1000);
-	    
-	    UDPWrite(msgGeoFenceInfo2,sock,host,udpSendPort);Thread.sleep(100);
-
-	    UDPWrite(wp1,sock,host,udpSendPort); Thread.sleep(100);
-	    
-	    UDPWrite(wp2,sock,host,udpSendPort); Thread.sleep(100);
-	    
-	    UDPWrite(wp3,sock,host,udpSendPort); Thread.sleep(100);
-	    
-	    UDPWrite(wp4,sock,host,udpSendPort); Thread.sleep(100);
-	    
-	    ack = UDPRead(sock);	
-	
-	    if(ack.acktype == 1 && ack.value == 1){
-		System.out.println("Geofence sent  successfully");
-		//UDPWrite(msgMissionStart,sock,host,udpSendPort);
-	    }
-	    else{
-		System.out.println("Resend waypoints");
-	    }
-
-	    Thread.sleep(1000);
-
-	    System.out.println("Removing fence");
-	    UDPWrite(msgGeoFenceInfo3,sock,host,udpSendPort);Thread.sleep(100);
-
-	    msg_pointofinterest obj = new msg_pointofinterest();
-	    obj.id      = 2;
-	    obj.index   = 0;
-	    obj.subtype = 0;
-	    obj.latx    = 37.612451f;
-	    obj.lony    = -122.380198f;
-	    obj.altz    = 20.0f;
-	    obj.heading = 0.0f;
-
-	    UDPWrite(obj,sock,host,udpSendPort); Thread.sleep(100);
 	    
 	}
 	catch(InterruptedException e){

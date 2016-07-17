@@ -122,9 +122,9 @@ public class Aircraft{
     public int PreFlight(){
 	
 	// Send flight plan to pixhawk
-	synchronized(apIntf){
-	    FlightData.SendFlightPlanToAP(apIntf);
-	}
+	
+	FlightData.SendFlightPlanToAP(apIntf);
+	
 	
 	return 1;
     }
@@ -188,7 +188,7 @@ public class Aircraft{
 		mission.Execute(this);
 	    }
 	    else{
-
+		
 	    }
 	   
 		
