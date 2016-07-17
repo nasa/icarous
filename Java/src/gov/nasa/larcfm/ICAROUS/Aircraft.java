@@ -86,6 +86,48 @@ public class Aircraft{
 	return CheckAcknowledgement();
     }
 
+    public void SetYaw(double heading){
+
+	SendCommand(0,0,MAV_CMD.MAV_CMD_CONDITION_YAW,0,
+		    (float)heading,0,1,0,
+		    0,0,0);
+	
+    }
+
+    
+    public int SetGPSPos(double lat,double lon, double alt){
+
+	msg_set_position_target_global_int msg= new msg_set_position_target_global_int();
+
+	msg.time_boot_ms     = 0;
+	msg.target_system    = 0;
+	msg.target_component = 0;
+	msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_INT;
+	msg.type_mask        = 0b0000111111111000;
+	msg.lat_int          = (int) (lat*1E7);
+	msg.lon_int          = (int) (lon*1E7);
+	msg.alt              = (float) alt;
+	msg.vx               = 0;
+	msg.vy               = 0;
+	msg.vz               = 0;
+	msg.afx              = 0;
+	msg.afy              = 0;
+	msg.afz              = 0;
+	msg.yaw              = 0;
+	msg.yaw_rate         = 0;
+
+	apIntf.Write(msg);
+
+	try{
+	    Thread.sleep(100);
+	}catch(InterruptedException e){
+	    System.out.println(e);
+	}
+
+	return CheckAcknowledgement();
+
+    }
+
     // Function to set mode
     public int SetMode(int modeid){
 

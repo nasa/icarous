@@ -204,7 +204,7 @@ public class GeoFence{
 	    hdist = HorizontalProximity(pos);
 	    vdist = VerticalProximity(pos);
 
-
+	    System.out.println("Hdist = "+hdist);
 	    if(hdist <= hthreshold){
 		hconflict = true;
 	    }

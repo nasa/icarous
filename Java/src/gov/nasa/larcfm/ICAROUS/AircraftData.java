@@ -102,6 +102,15 @@ public class AircraftData{
 	currPosition.UpdatePosition((float)lat,(float)lon,(float)alt_msl,(float)alt_agl);
     }
 
+    public void GetAttitude(){
+
+	msg_attitude msg = Inbox.Attitude();
+
+	roll  = msg.roll*180/Math.PI;
+	pitch = msg.pitch*180/Math.PI;
+	yaw   = msg.yaw*180/Math.PI;
+    }
+
     // Function to send a flight plan to pixhawk
     public void SendFlightPlanToAP(Interface Intf){
 

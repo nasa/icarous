@@ -103,6 +103,7 @@ public class Conflict{
 	}
 	else{
 	    conflictList.add(conf);
+	    System.out.println("Adding conflict");
 	}
 	
     }

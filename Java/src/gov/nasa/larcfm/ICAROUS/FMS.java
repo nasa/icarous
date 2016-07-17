@@ -50,7 +50,7 @@ public class FMS implements Runnable{
 
 	
 	UAS.FlightData.GetGPSdata();
-
+	UAS.FlightData.GetAttitude();
 	
 	switch(state){
 

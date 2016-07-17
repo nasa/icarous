@@ -12,9 +12,15 @@ package gov.nasa.larcfm.ICAROUS;
 
 import java.util.*;
 import java.lang.*;
+import com.MAVLink.common.*;
 
 enum FSAM_OUTPUT{
 	CONFLICT,NOOP
+}
+
+enum RESOLVE_STATE{
+
+    COMPUTE, EXECUTE, MONITOR, JOIN, NOOP
 }
 
 public class FSAM{
@@ -32,6 +38,7 @@ public class FSAM{
     FSAM_OUTPUT output;
 
     List<Conflict> conflictList;
+    RESOLVE_STATE rState;
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS = ac;
@@ -42,6 +49,7 @@ public class FSAM{
 	timeElapsed = 0;
 	apIntf = ac.apIntf;
 	conflictList = new ArrayList<Conflict>();
+	rState = RESOLVE_STATE.COMPUTE;
     }
 
     public FSAM_OUTPUT Monitor(){
@@ -83,8 +91,9 @@ public class FSAM{
 	    FlightData.CurrentFlightPlan.nextWaypoint++;
 	}
 	
-	if(conflictList.size() > 0)
-	    return FSAM_OUTPUT.CONFLICT;
+	if(conflictList.size() > 0){
+	    return FSAM_OUTPUT.CONFLICT;	    
+	}
 	else
 	    return FSAM_OUTPUT.NOOP;
 	
@@ -92,7 +101,81 @@ public class FSAM{
 
     public int Resolve(){
 
+	switch(rState){
 
+	case COMPUTE:
+	    
+
+	    rState = RESOLVE_STATE.EXECUTE;
+	    
+	    break;
+
+	case EXECUTE:
+
+	   	    
+	    // Compute resolution
+	    UAS.SetMode(4);
+
+	    UAS.SetYaw(270.0);
+
+	    try{
+		Thread.sleep(3000);
+	    }catch(InterruptedException e){
+		System.out.println(e);
+	    }	    
+
+	    System.out.println("Setting safe position");
+	    UAS.SetGPSPos(37.615288,-122.360266,20);
+	    
+	    	    
+	    rState = RESOLVE_STATE.MONITOR;
+
+	    break;
+
+	case MONITOR:
+
+	    FlightPlan FP  = FlightData.CurrentFlightPlan;
+	    Position pos   = new Position(37.615288f,-122.360266f,20f);
+	    double dist[]  = FP.Distance2Waypoint(UAS.FlightData.currPosition,pos);
+
+	    if(dist[0] < 0.05){
+		System.out.println("Reached safe position");
+		rState = RESOLVE_STATE.JOIN;
+	    }
+	    
+	    break;
+
+	case JOIN:
+
+
+	    Iterator Itr = conflictList.iterator();
+	    while(Itr.hasNext()){
+		Conflict cf = (Conflict) Itr.next();
+		Itr.remove();
+	    }
+	    
+	    System.out.println("Remove conflicts:"+conflictList.size());
+	    
+	    msg_mission_set_current msgMission = new msg_mission_set_current();
+	    msgMission.target_system = 0;
+	    msgMission.target_component = 0;
+	    msgMission.seq               = 3;	    
+
+	    
+	    UAS.apIntf.Write(msgMission);
+	    UAS.SetMode(3);
+	    
+	    break;
+
+	case NOOP:
+
+	    break;
+	    
+	    // Execute resolution
+	    
+	    // Rejoin mission
+	}
+	
 	return 0;
     }
 
@@ -131,16 +214,17 @@ public class FSAM{
 
 	for(int i=0;i< FlightData.fenceList.size();i++){
 	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
-	    GF.CheckViolation(currentPos);
-	    	    
+	    GF.CheckViolation(FlightData.currPosition);
+
+	    Conflict cf;
+	    
 	    if(GF.hconflict || GF.vconflict){
 		
 		if(GF.Type == 0){
-		    Conflict cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_IN,GF);
-		    System.out.println("Keep in geofence conflict detected. Adding to queue.")
+		    cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_IN,GF);
 		}
 		else{
-		    Conflict cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_OUT,GF);
+		    cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_OUT,GF);
 		}
 		Conflict.AddConflictToList(conflictList,cf);
 	    }

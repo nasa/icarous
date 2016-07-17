@@ -976,5 +976,9 @@ public class MAVLinkMessages{
     public synchronized msg_geofence_info GeofenceInfo(){
 	return msgGeofenceInfo;
     }
+
+    public synchronized msg_attitude Attitude(){
+	return msgAttitude;
+    }
 }
 
