@@ -173,7 +173,6 @@ public class Aircraft{
 
     public int Flight(){
 
-	FlightPlan FP         = FlightData.CurrentFlightPlan;
 	Position currPosition = FlightData.currPosition;
 	timeCurrent           = System.nanoTime();
 	FSAM_OUTPUT status;

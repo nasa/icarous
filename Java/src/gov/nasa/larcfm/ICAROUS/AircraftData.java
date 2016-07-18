@@ -15,7 +15,8 @@ import java.lang.*;
 import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
 import com.MAVLink.enums.*;
-
+import gov.nasa.Util.NavPoint;
+import gov.nasa.Util.Plan;
 
 public class AircraftData{
 
@@ -38,32 +39,17 @@ public class AircraftData{
     public double pitch;
     public double yaw;
 
-    // Aircraft euler rates
-    public double roll_rate;
-    public double pitch_rate;
-    public double yaw_rate;
-
-    // Aircraft angular rates
-    public double p;
-    public double q;
-    public double r;
-
-    // Aircraft velocity components in the body frame
-    public double u;
-    public double v;
-    public double w;
+    
 
     // Aircraft's current position (GPS)
     public Position currPosition;
 
-    // Angle of attack, sideslip and airspeed
-    public double aoa;
-    public double sideslip;
-    public double airspeed;
     
-    public FlightPlan NewFlightPlan;
-    public FlightPlan CurrentFlightPlan;
-
+    //public FlightPlan NewFlightPlan;
+    //public FlightPlan CurrentFlightPlan;
+    public Plan NewFlightPlan;
+    public Plan CurrentFlightPlan;
+    
     public List<GeoFence> fenceList; 
     
     // List for various objects
@@ -72,7 +58,13 @@ public class AircraftData{
     public List<GenericObject> missionObj;
     
     // List for traffic information
-    
+
+
+    // Flight plan specific data
+    double FP_maxHorizontalDeviation;
+    double FP_maxVerticalDeviation;
+    double FP_standoffDistance;
+    int FP_numWaypoints;
 
     public int startMission = -1; // -1: last command executed, 0 - stop mission, 1 - start mission
     
@@ -80,7 +72,6 @@ public class AircraftData{
 
 	Inbox               = new MAVLinkMessages();
 	currPosition        = new Position();
-	CurrentFlightPlan   = new FlightPlan();
 	fenceList           = new ArrayList<GeoFence>();
 	obstacles           = new ArrayList<GenericObject>();
 	traffic             = new ArrayList<GenericObject>();
@@ -123,7 +114,7 @@ public class AircraftData{
 	int count = 0;
 
 	// Copy new flight into current flight plan
-	CurrentFlightPlan.Copy(NewFlightPlan);
+	CurrentFlightPlan = new Plan(NewFlightPlan);
 
 	msgMissionCount.target_system    = 0;
 	msgMissionCount.target_component = 0;
@@ -133,10 +124,10 @@ public class AircraftData{
 	msgMissionClearAll.target_system    = 0;
 	msgMissionClearAll.target_component = 0;
 
-	
+	synchronized(Intf){
 	while(!writeComplete){
 
-	    synchronized(Intf){
+	    
 		switch(state){
 
 		case FP_CLR:
@@ -148,7 +139,7 @@ public class AircraftData{
 
 		case FP_SEND_COUNT:
 		
-		    msgMissionCount.count = CurrentFlightPlan.numWayPoints;
+		    msgMissionCount.count = CurrentFlightPlan.size();
 
 		    Intf.Write(msgMissionCount);
 		    System.out.println("Wrote mission count: "+msgMissionCount.count);
@@ -176,10 +167,10 @@ public class AircraftData{
 			msgMissionItem.param1  = 0.0f;
 			msgMissionItem.param2  = 0.0f;
 			msgMissionItem.param3  = 0.0f;
-			msgMissionItem.param4  = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).heading;
-			msgMissionItem.x       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.lat;
-			msgMissionItem.y       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.lon;
-			msgMissionItem.z       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.alt_msl;
+			msgMissionItem.param4  = 0.0f;
+			msgMissionItem.x       = CurrentFlightPlan.point(msgMissionItem.seq).lla().latitude();
+			msgMissionItem.y       = CurrentFlightPlan.point(msgMissionItem.seq).lla().longitude();
+			msgMissionItem.z       = CurrentFlightPlan.point(msgMissionItem.seq).lla().alt();
 		    
 			Intf.Write(msgMissionItem);
 			System.out.println("Wrote mission item");
@@ -193,7 +184,7 @@ public class AircraftData{
 			System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
 		    
 			if(Inbox.MissionAck().type == 0){
-			    if(count == CurrentFlightPlan.numWayPoints){
+			    if(count == CurrentFlightPlan.size()){
 				System.out.println("Waypoints sent successfully");
 				writeComplete = true;
 			    }
@@ -216,7 +207,7 @@ public class AircraftData{
 	  FP_READ_COM state    = FP_READ_COM.FP_INFO;
 	  int count            = 0;
 
-	  NewFlightPlan = new FlightPlan();
+	  NewFlightPlan = new Plan();
 	  
 	  while(getFP){
 	      switch(state){
@@ -225,7 +216,10 @@ public class AircraftData{
 		  
 		  msg_flightplan_info msg1 = Inbox.FlightplanInfo();
 
-		  NewFlightPlan.FlightPlanInfo(msg1.numWaypoints,msg1.maxHorDev,msg1.maxVerDev,msg1.standoffDist);
+		  FP_numWaypoints           = msg1.numWaypoints;
+		  FP_maxHorizontalDeviation = msg1.maxHorDev;
+		  FP_maxVerticalDeviation   = msg1.maxVerDev;
+		  FP_standoffDistance       = msg1.standoffDist;
 		  
 		  state = FP_READ_COM.FP_WAYPT_INFO;
 
@@ -252,9 +246,9 @@ public class AircraftData{
 		      Waypoint wp          = new Waypoint(msg2.index,msg2.latx,msg2.lony,msg2.altz,msg2.heading);
 		      
 		      System.out.println("waypoint:"+count+" lat:"+wp.pos.lat+" lon:"+wp.pos.lon);
-		      NewFlightPlan.AddWaypoints(count,wp);
+		      NewFlightPlan.add(NavPoint.makeLatLonAlt(msg2.latx,msg2.lony,msg2.altz*3.28));
 		      
-		      if(count == (NewFlightPlan.numWayPoints-1)){
+		      if(count == (FP_numWaypoints-1)){
 			  state  = FP_READ_COM.FP_ACK_SUCCESS;
 			  
 		      }
