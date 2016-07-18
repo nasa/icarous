@@ -147,8 +147,8 @@ public class ComBox{
 	// Assemble all the messages to be sent
 
 	// COMBOX hearbeat
-	msg_combox_pulse msgComboxPulse  = new msg_combox_pulse();
-	msgComboxPulse.count             = (long) 1;
+	msg_heartbeat_combox msgHeartBeatCombox  = new msg_heartbeat_combox();
+	msgHeartBeatCombox.count             = (long) 1;
 
 	// Flightplan information
 	msg_flightplan_info msgFlightPlanInfo = new msg_flightplan_info();
@@ -248,7 +248,7 @@ public class ComBox{
 	
 	// Send all messages
 	try{
-	    UDPWrite(msgComboxPulse,sock,host,udpSendPort);	Thread.sleep(5000);
+	    UDPWrite(msgHeartBeatCombox,sock,host,udpSendPort);	Thread.sleep(5000);
 
 	    UDPWrite(msgFlightPlanInfo,sock,host,udpSendPort); Thread.sleep(100);
 	    

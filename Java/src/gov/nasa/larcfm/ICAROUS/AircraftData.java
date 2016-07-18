@@ -133,10 +133,10 @@ public class AircraftData{
 	msgMissionClearAll.target_system    = 0;
 	msgMissionClearAll.target_component = 0;
 
-	
+	synchronized(Intf){
 	while(!writeComplete){
 
-	    synchronized(Intf){
+	    
 		switch(state){
 
 		case FP_CLR:
