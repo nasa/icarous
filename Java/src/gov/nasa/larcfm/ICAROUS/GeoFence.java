@@ -160,16 +160,25 @@ public class GeoFence{
 
 	    Vect2 AB = new Vect2(x2-x1,y2-y1);
 	    Vect2 AC = new Vect2(x0-x1,y0-y1);
+	    
 
-	    double proj = AC.dot(AB)/Math.pow(AB.norm(),2);
+	    double projAC = AC.dot(AB)/Math.pow(AB.norm(),2);
 
-	    if(proj >= 0 && proj <= 1)
+	    if(projAC >= 0 && projAC <= 1)
 		insegment = true;
 	    else
 		insegment = false;    
 	    
 	    if(insegment){
 		dist = Math.abs(a*x3 + b*y3 + c)/Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
+		Vect2 CD  = new Vect2(x3-x0,y3-y0);
+		Vect2 CDe = xy.Add(CD.Scal(0.5/CD.norm()));
+
+		LatLonAlt lla       = proj.inverse(CDe,pos.alt_msl);
+		SafetyPoint.lat     = (float) lla.latitude();
+		SafetyPoint.lon     = (float) lla.longitude();
+		SafetyPoint.alt_msl = (float) pos.alt_msl;
+		
 	    }
 	    else{
 		double d1 = Math.sqrt( Math.pow(x3-x1,2) + Math.pow(y3-y1,2) );
@@ -193,18 +202,12 @@ public class GeoFence{
 	double hdist;
 	double vdist;
 
-
-	SafetyPoint.lat     = pos.lat;
-	SafetyPoint.lon     = pos.lon;
-	SafetyPoint.alt_msl = pos.alt_msl;
-
 	// Keep in geofence
 	if(Type == 0){
 	    
 	    hdist = HorizontalProximity(pos);
 	    vdist = VerticalProximity(pos);
 
-	    System.out.println("Hdist = "+hdist);
 	    if(hdist <= hthreshold){
 		hconflict = true;
 	    }
@@ -213,6 +216,8 @@ public class GeoFence{
 	    }
 
 	    if(hconflict){
+
+		if(isconvex){
 		Vect2 Ctd   = geoPolygon.centroid();
 		LatLonAlt p = LatLonAlt.make((double)pos.lat,(double)pos.lon,0);
 		Vect2 xy    = proj.project(p).vect2();
@@ -241,7 +246,13 @@ public class GeoFence{
 
 		SafetyPoint.lat = (float) lla.latitude();
 		SafetyPoint.lon = (float) lla.longitude();
-		    
+		SafetyPoint.alt_msl = (float) pos.alt_msl;
+		}				    
+	    }
+	    else{
+		SafetyPoint.lat = (float) pos.lat;
+		SafetyPoint.lon = (float) pos.lon;
+		SafetyPoint.alt_msl = (float) pos.alt_msl;
 	    }
 
 	    vconflict = false;

@@ -23,6 +23,10 @@ enum RESOLVE_STATE{
     COMPUTE, EXECUTE, MONITOR, JOIN, NOOP
 }
 
+enum EXECUTE_STATE{
+    START, SEND_COMMAND, AWAIT_COMPLETION, COMPLETE
+}
+
 public class FSAM{
 
     Aircraft UAS;
@@ -38,7 +42,16 @@ public class FSAM{
     FSAM_OUTPUT output;
 
     List<Conflict> conflictList;
+    List<Waypoint> ResolutionPlan;
+    int currentResolutionLeg;
     RESOLVE_STATE rState;
+    EXECUTE_STATE executeState;
+
+    boolean FenceKeepInConflict;
+    boolean FenceKeepOutConflict;
+    boolean TrafficConflict;
+    boolean FlightPlanConflict;
+    boolean GotoNextWP;
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS = ac;
@@ -48,8 +61,15 @@ public class FSAM{
 	timeEvent1 = 0;
 	timeElapsed = 0;
 	apIntf = ac.apIntf;
-	conflictList = new ArrayList<Conflict>();
-	rState = RESOLVE_STATE.COMPUTE;
+	conflictList   = new ArrayList<Conflict>();
+	ResolutionPlan = new ArrayList<Waypoint>();
+	rState = RESOLVE_STATE.NOOP;
+	executeState = EXECUTE_STATE.COMPLETE;
+	FenceKeepInConflict   = false;
+	FenceKeepOutConflict  = false;
+	TrafficConflict          = false;
+	FlightPlanConflict       = false;
+	int currentResolutionLeg = 0;
     }
 
     public FSAM_OUTPUT Monitor(){
@@ -92,6 +112,10 @@ public class FSAM{
 	}
 	
 	if(conflictList.size() > 0){
+	    if(rState == RESOLVE_STATE.NOOP){
+		rState = RESOLVE_STATE.COMPUTE;
+	    }
+	    
 	    return FSAM_OUTPUT.CONFLICT;	    
 	}
 	else
@@ -101,45 +125,39 @@ public class FSAM{
 
     public int Resolve(){
 
+	int status;
+	FlightPlan CurrentFP = FlightData.CurrentFlightPlan;
+	
 	switch(rState){
 
 	case COMPUTE:
 	    
+	    if(FenceKeepInConflict){
+		GeoFence GF = conflictList.get(0).fence;		
+		Waypoint wp = new Waypoint(0,GF.SafetyPoint.lat,GF.SafetyPoint.lon,GF.SafetyPoint.alt_msl,400.0f);
+		ResolutionPlan.add(wp);
 
-	    rState = RESOLVE_STATE.EXECUTE;
+		Waypoint nextwp = CurrentFP.GetWaypoint(CurrentFP.nextWaypoint);
+		if(!GF.CheckWaypointFeasibility(wp.pos,nextwp.pos)){
+		    GotoNextWP = true;
+		    System.out.println("Goto next waypoint after resolution");
+		}else{
+		    GotoNextWP = false;
+		}
+		
+	    }
+	    
+	    rState       = RESOLVE_STATE.EXECUTE;
+	    executeState = EXECUTE_STATE.START;
 	    
 	    break;
 
 	case EXECUTE:
 
-	   	    
-	    // Compute resolution
-	    UAS.SetMode(4);
-
-	    UAS.SetYaw(270.0);
-
-	    try{
-		Thread.sleep(3000);
-	    }catch(InterruptedException e){
-		System.out.println(e);
-	    }	    
-
-	    System.out.println("Setting safe position");
-	    UAS.SetGPSPos(37.615288,-122.360266,20);
-	    
-	    	    
-	    rState = RESOLVE_STATE.MONITOR;
-
-	    break;
-
-	case MONITOR:
-
-	    FlightPlan FP  = FlightData.CurrentFlightPlan;
-	    Position pos   = new Position(37.615288f,-122.360266f,20f);
-	    double dist[]  = FP.Distance2Waypoint(UAS.FlightData.currPosition,pos);
-
-	    if(dist[0] < 0.05){
-		System.out.println("Reached safe position");
+	    if( executeState != EXECUTE_STATE.COMPLETE ){
+		ExecuteResolution();
+	    }
+	    else{
 		rState = RESOLVE_STATE.JOIN;
 	    }
 	    
@@ -155,15 +173,20 @@ public class FSAM{
 	    }
 	    
 	    System.out.println("Remove conflicts:"+conflictList.size());
-	    
-	    msg_mission_set_current msgMission = new msg_mission_set_current();
-	    msgMission.target_system = 0;
-	    msgMission.target_component = 0;
-	    msgMission.seq               = 3;	    
 
+	    if(GotoNextWP){
+		msg_mission_set_current msgMission = new msg_mission_set_current();
+		msgMission.target_system     = 0;
+		msgMission.target_component  = 0;
+		msgMission.seq               = 3;	    
+
+		
+		UAS.apIntf.Write(msgMission);
+	    }
 	    
-	    UAS.apIntf.Write(msgMission);
 	    UAS.SetMode(3);
+
+	    rState = RESOLVE_STATE.NOOP;
 	    
 	    break;
 
@@ -171,9 +194,6 @@ public class FSAM{
 
 	    break;
 	    
-	    // Execute resolution
-	    
-	    // Rejoin mission
 	}
 	
 	return 0;
@@ -217,19 +237,81 @@ public class FSAM{
 	    GF.CheckViolation(FlightData.currPosition);
 
 	    Conflict cf;
-	    
+
+	    FenceKeepInConflict  = false;
+	    FenceKeepOutConflict = false;
+
 	    if(GF.hconflict || GF.vconflict){
 		
 		if(GF.Type == 0){
 		    cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_IN,GF);
+		    FenceKeepInConflict = true;
 		}
 		else{
 		    cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_OUT,GF);
+		    FenceKeepOutConflict = true;
 		}
 		Conflict.AddConflictToList(conflictList,cf);
+		
 	    }
 	}
 	
     }
+
+
+    public void ExecuteResolution(){
+
+	Waypoint wp;
+	
+	switch(executeState){
+
+	case START:
+	    UAS.SetMode(4);
+	    currentResolutionLeg = 0;
+	    executeState = EXECUTE_STATE.SEND_COMMAND;
+	    break;
+	    
+	case SEND_COMMAND:
+
+	    wp = ResolutionPlan.get(currentResolutionLeg);
+	    UAS.SetGPSPos(wp.pos.lat,wp.pos.lon,wp.pos.alt_msl);
+	    executeState = EXECUTE_STATE.AWAIT_COMPLETION;
+	    break;
+	    
+	case AWAIT_COMPLETION:
+	    
+	    wp = ResolutionPlan.get(currentResolutionLeg);
+	    Position pos   = new Position(wp.pos.lat,wp.pos.lon,wp.pos.alt_msl);
+	    double dist[]  = FlightPlan.Distance2Waypoint(UAS.FlightData.currPosition,pos);
+
+	    if(dist[0] < 0.05){
+		System.out.println("Reached safe position");
+		currentResolutionLeg = currentResolutionLeg + 1;
+		if(currentResolutionLeg < ResolutionPlan.size()){
+		    executeState = EXECUTE_STATE.SEND_COMMAND;
+		}
+		else{
+		    executeState = EXECUTE_STATE.COMPLETE;
+		}
+	    }
+	    
+	    break;
+	    
+	    
+	case COMPLETE:
+
+	    Iterator Itr = ResolutionPlan.iterator();
+	    while(Itr.hasNext()){
+		Waypoint wpr = (Waypoint) Itr.next();
+		Itr.remove();
+	    }
+
+	    
+	    break;
+	}//end switch case
+
+
+    }//end function
+
     
 }

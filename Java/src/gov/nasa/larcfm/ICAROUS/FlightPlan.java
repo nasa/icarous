@@ -93,7 +93,7 @@ public class FlightPlan{
 	}
     }
 
-    public double[] Distance2Waypoint(Position currentPos,Position next_wp){
+    public static double[] Distance2Waypoint(Position currentPos,Position next_wp){
 
 	double Dist[] = new double[2];
 	
