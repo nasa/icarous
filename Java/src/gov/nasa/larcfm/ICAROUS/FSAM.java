@@ -267,6 +267,14 @@ public class FSAM{
 
 	case START:
 	    UAS.SetMode(4);
+
+	    try{
+		Thread.sleep(500);
+	    }
+	    catch(InterruptedException e){
+		System.out.println(e);
+	    }
+	    
 	    currentResolutionLeg = 0;
 	    executeState = EXECUTE_STATE.SEND_COMMAND;
 	    break;
@@ -284,7 +292,7 @@ public class FSAM{
 	    Position pos   = new Position(wp.pos.lat,wp.pos.lon,wp.pos.alt_msl);
 	    double dist[]  = FlightPlan.Distance2Waypoint(UAS.FlightData.currPosition,pos);
 
-	    if(dist[0] < 0.05){
+	    if(dist[0]*1000 < 1){
 		System.out.println("Reached safe position");
 		currentResolutionLeg = currentResolutionLeg + 1;
 		if(currentResolutionLeg < ResolutionPlan.size()){

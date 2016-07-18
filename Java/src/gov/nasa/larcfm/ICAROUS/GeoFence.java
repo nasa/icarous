@@ -368,6 +368,7 @@ public class GeoFence{
 	System.out.println("Floor:"+floor);
 	System.out.println("Ceiling:"+ceiling);
 	System.out.println("Vertices information");
+	System.out.println("Convex:"+isconvex);
 	for(int i=0;i<numVertices;i++){
 	    Position vertex = Vertices_LLA.get(i);
 	    System.out.println("Lat :"+vertex.lat);
