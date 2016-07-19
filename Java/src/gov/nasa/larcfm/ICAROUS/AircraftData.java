@@ -17,6 +17,8 @@ import com.MAVLink.icarous.*;
 import com.MAVLink.enums.*;
 import gov.nasa.Util.NavPoint;
 import gov.nasa.Util.Plan;
+import gov.nasa.Util.Position;
+import gov.nasa.Util.AircraftState;
 
 public class AircraftData{
 
@@ -39,10 +41,8 @@ public class AircraftData{
     public double pitch;
     public double yaw;
 
-    
-
     // Aircraft's current position (GPS)
-    public Position currPosition;
+    public AircraftState acState;
 
     
     //public FlightPlan NewFlightPlan;
@@ -61,36 +61,45 @@ public class AircraftData{
 
 
     // Flight plan specific data
-    double FP_maxHorizontalDeviation;
-    double FP_maxVerticalDeviation;
-    double FP_standoffDistance;
-    int FP_numWaypoints;
+    public double FP_maxHorizontalDeviation;
+    public double FP_maxVerticalDeviation;
+    public double FP_standoffDistance;
+    public int FP_numWaypoints;
+    public int FP_nextWaypoint;
 
-    public int startMission = -1; // -1: last command executed, 0 - stop mission, 1 - start mission
+    public int startMission; // -1: last command executed, 0 - stop mission, 1 - start mission
     
     public AircraftData(){
 
 	Inbox               = new MAVLinkMessages();
-	currPosition        = new Position();
+	acState             = new AircraftState();
 	fenceList           = new ArrayList<GeoFence>();
 	obstacles           = new ArrayList<GenericObject>();
 	traffic             = new ArrayList<GenericObject>();
 	missionObj          = new ArrayList<GenericObject>();
+	startMission        = -1;
+	FP_nextWaypoint     = 1;
     }
 
     public void GetGPSdata(){
 
-	double lat,lon,alt_msl,alt_agl;
-
+	double lat,lon,alt;
+	double vx,vy,vz;
+	double bootTime;
+	
 	msg_global_position_int GPS = Inbox.GlobalPositionInt();
-	
-	lat = (double) (GPS.lat)/1.0E7;
-	lon = (double) (GPS.lon)/1.0E7;
-	alt_msl = (double) (GPS.alt)/1.0E3;
-	alt_agl = (double) (GPS.relative_alt)/1.0E3;
-	
+	bootTime = (double) (GPS.time_boot_ms)/1E6;
+	lat      = (double) (GPS.lat)/1.0E7;
+	lon      = (double) (GPS.lon)/1.0E7;
+	alt      = (double) (GPS.alt)/1.0E3;
+        vx       = (double) (GPS.vx)/1E2;
+	vy       = (double) (GPS.vy)/1E2;
+	vz       = (double) (GPS.vz)/1E2;
 
-	currPosition.UpdatePosition((float)lat,(float)lon,(float)alt_msl,(float)alt_agl);
+	Velocity V = makeVxyz(vx,vy,vz);
+	Position P = makeLatLonAlt(lat,lon,alt*3.28);
+	
+	acState.add(P,V,bootTime);
     }
 
     public void GetAttitude(){
@@ -107,9 +116,10 @@ public class AircraftData{
 
 	FP_WRITE_AP state = FP_WRITE_AP.FP_CLR;
 	
-	msg_mission_count msgMissionCount = new msg_mission_count();
-	msg_mission_item msgMissionItem   = new msg_mission_item();
+	msg_mission_count msgMissionCount        = new msg_mission_count();
+	msg_mission_item msgMissionItem          = new msg_mission_item();
 	msg_mission_clear_all msgMissionClearAll = new msg_mission_clear_all();
+
 	boolean writeComplete = false;
 	int count = 0;
 
@@ -242,11 +252,9 @@ public class AircraftData{
 			  state  = FP_READ_COM.FP_ACK_FAIL;
 			  break;
 		      }
-		      
-		      Waypoint wp          = new Waypoint(msg2.index,msg2.latx,msg2.lony,msg2.altz,msg2.heading);
-		      
+		      		      		      
 		      System.out.println("waypoint:"+count+" lat:"+wp.pos.lat+" lon:"+wp.pos.lon);
-		      NewFlightPlan.add(NavPoint.makeLatLonAlt(msg2.latx,msg2.lony,msg2.altz*3.28));
+		      NewFlightPlan.add(NavPoint.makeLatLonAlt(msg2.latx,msg2.lony,msg2.altz*3.28,0));
 		      
 		      if(count == (FP_numWaypoints-1)){
 			  state  = FP_READ_COM.FP_ACK_SUCCESS;
@@ -434,47 +442,3 @@ public class AircraftData{
     
     
 }
-
-class Position{
-
-    float lat;
-    float lon;
-    float alt_msl;
-    float alt_agl;
-
-    public Position(){
-	lat   = 0.0f;
-	lon   = 0.0f;
-	alt_msl   = 0.0f;
-	alt_agl   = 0.0f;
-    }
-
-    public Position(float lat_in,float lon_in,float altmsl_in){
-	lat   = lat_in;
-	lon   = lon_in;
-	alt_msl   = altmsl_in;
-    }
-
-    public Position(float lat_in,float lon_in,float altmsl_in,float altagl_in){
-	lat     = lat_in;
-	lon     = lon_in;
-	alt_msl   = altmsl_in;
-	alt_agl   = altagl_in;
-    }
-
-    public void UpdatePosition(float lat_in,float lon_in,float altmsl_in){
-	lat   = lat_in;
-	lon   = lon_in;
-	alt_msl   = altmsl_in;
-    }
-    
-    public void UpdatePosition(float lat_in,float lon_in,float altmsl_in,float altagl_in){
-	lat   = lat_in;
-	lon   = lon_in;
-	alt_msl   = altmsl_in;
-	alt_agl   = altagl_in;
-    }
-
-}
-
-

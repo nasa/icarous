@@ -16,6 +16,7 @@ import gov.nasa.larcfm.Util.LatLonAlt;
 import gov.nasa.larcfm.Util.Projection;
 import gov.nasa.larcfm.Util.EuclideanProjection;
 import gov.nasa.larcfm.Util.Poly2D;
+import gov.NASA.larcfm.Util.Position;
 
 import java.util.*;
 import java.lang.*;
@@ -38,7 +39,7 @@ public class GeoFence{
     
     
     LatLonAlt origin      = null;
-    Position SafetyPoint = null;
+    Position SafetyPoint  = null;
     boolean violation     = false;
     boolean hconflict     = false;
     boolean vconflict     = false;
@@ -56,7 +57,6 @@ public class GeoFence{
 	numVertices  = numVerticesIn;
 	floor        = floorIn;
 	ceiling      = ceilingIn;
-	SafetyPoint  = new Position();
     }
 
     public void AddVertex(int index,float lat,float lon){
@@ -82,8 +82,8 @@ public class GeoFence{
     
     public double VerticalProximity(Position pos){
 
-	double d1  = pos.alt_msl - floor;
-	double d2  = ceiling  - pos.alt_msl;
+	double d1  = pos.alt() - floor;
+	double d2  = ceiling  - pos.alt();
 
 	if(Type == 0){
 	    if(d1 < 0 || d2 < 0){
@@ -125,8 +125,8 @@ public class GeoFence{
 
 	boolean insegment;
 	
-	LatLonAlt p = LatLonAlt.make((double)pos.lat,(double)pos.lon,0);
-	Vect2 xy     = proj.project(p).vect2();
+	LatLonAlt p = pos.zeroAlt().lla();
+	Vect2 xy    = proj.project(p).vect2();
 	x3          = xy.x();
 	y3          = xy.y();
 
@@ -157,11 +157,9 @@ public class GeoFence{
 
 	    insegment = false;
 
-
 	    Vect2 AB = new Vect2(x2-x1,y2-y1);
 	    Vect2 AC = new Vect2(x0-x1,y0-y1);
 	    
-
 	    double projAC = AC.dot(AB)/Math.pow(AB.norm(),2);
 
 	    if(projAC >= 0 && projAC <= 1)
@@ -174,10 +172,8 @@ public class GeoFence{
 		Vect2 CD  = new Vect2(x3-x0,y3-y0);
 		Vect2 CDe = xy.Add(CD.Scal(0.5/CD.norm()));
 
-		LatLonAlt lla       = proj.inverse(CDe,pos.alt_msl);
-		SafetyPoint.lat     = (float) lla.latitude();
-		SafetyPoint.lon     = (float) lla.longitude();
-		SafetyPoint.alt_msl = (float) pos.alt_msl;
+		LatLonAlt LLA       = proj.inverse(CDe,pos.alt());
+		SafetyPoint         = makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude())
 		
 	    }
 	    else{
@@ -202,6 +198,8 @@ public class GeoFence{
 	double hdist;
 	double vdist;
 
+	double alt;
+
 	// Keep in geofence
 	if(Type == 0){
 	    
@@ -215,59 +213,19 @@ public class GeoFence{
 		hconflict = false;
 	    }
 
-	    if(hconflict){
-
-		if(isconvex){
-		Vect2 Ctd   = geoPolygon.centroid();
-		LatLonAlt p = LatLonAlt.make((double)pos.lat,(double)pos.lon,0);
-		Vect2 xy    = proj.project(p).vect2();
-		violation   = geoPolygon.contains(xy);
-
-		Vect2 inv_slope = xy.Sub(Ctd);
-		double norm_slope = inv_slope.norm();
-		Vect2 step  = inv_slope.Scal(1/norm_slope*hstepback);
-
-		Vect2 sf;
-		
-		if (xy.y() > Ctd.y()){
-		    sf = xy.Sub(step);
-		}
-		else if( xy.y() < Ctd.y() ){
-		    sf = xy.Add(step);
-		}
-		else{
-		    if(xy.x() < Ctd.x())
-			sf = xy.Add(step);
-		    else
-			sf = xy.Sub(step);
-		}
-
-		LatLonAlt lla = proj.inverse(sf,pos.alt_msl);
-
-		SafetyPoint.lat = (float) lla.latitude();
-		SafetyPoint.lon = (float) lla.longitude();
-		SafetyPoint.alt_msl = (float) pos.alt_msl;
-		}				    
-	    }
-	    else{
-		SafetyPoint.lat = (float) pos.lat;
-		SafetyPoint.lon = (float) pos.lon;
-		SafetyPoint.alt_msl = (float) pos.alt_msl;
-	    }
-
 	    vconflict = false;
 	   
 	    if( (ceiling - pos.alt_msl) <= vthreshold){
-		SafetyPoint.alt_msl = (float) (ceiling - vstepback);
+		alt = (ceiling - vstepback);
+		SafetyPosition = SafetyPosition.mkAlt(alt);
 		vconflict = true;
 	    }
 	    else if( (pos.alt_msl - floor) <= vthreshold){
-		SafetyPoint.alt_msl = (float) (floor + vstepback);
+		alt = (floor + vstepback);                
+		SafetyPosition = SafetyPosition.mkAlt(alt);
 		vconflict = true;
 	    }
-
-	    
-	    
+	    	    
 	    
 	}
 	//Keep out Geofence
@@ -276,14 +234,12 @@ public class GeoFence{
 	    
 
 	}
-
-	
     }
 
     public boolean CheckWaypointFeasibility(Position CurrPos, Position NextWP){
 
-	LatLonAlt p1      = LatLonAlt.make((double)CurrPos.lat,(double)CurrPos.lon,(double)CurrPos.alt_msl*3.28084);
-	LatLonAlt p2      = LatLonAlt.make((double)NextWP.lat,(double)NextWP.lon,(double)NextWP.alt_msl*3.28084);
+	LatLonAlt p1      = CurrPos.lla();
+	LatLonAlt p2      = NextWP.lla();
 	Vect3 CurrPosVec  = proj.project(p1);
 	Vect3 NextWPVec   = proj.project(p2);
 	int vertexi,vertexj;
@@ -323,8 +279,6 @@ public class GeoFence{
 	double y2 = B.y();
 	double z2 = ceiling;
 
-	
-
 	Vect3 l0  = new Vect3(CurrPos.x(),CurrPos.y(),CurrPos.z());
 	Vect3 p0  = new Vect3(x1,y1,z1);
 
@@ -353,8 +307,7 @@ public class GeoFence{
 		    return true;
 	    }
 	}
-	
-	
+		
 	return false;
 		
     }
