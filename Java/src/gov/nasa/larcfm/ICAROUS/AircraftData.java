@@ -15,10 +15,11 @@ import java.lang.*;
 import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
 import com.MAVLink.enums.*;
-import gov.nasa.Util.NavPoint;
-import gov.nasa.Util.Plan;
-import gov.nasa.Util.Position;
-import gov.nasa.Util.AircraftState;
+import gov.nasa.larcfm.Util.NavPoint;
+import gov.nasa.larcfm.Util.Plan;
+import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.Velocity;
+import gov.nasa.larcfm.Util.AircraftState;
 
 public class AircraftData{
 
@@ -96,8 +97,8 @@ public class AircraftData{
 	vy       = (double) (GPS.vy)/1E2;
 	vz       = (double) (GPS.vz)/1E2;
 
-	Velocity V = makeVxyz(vx,vy,vz);
-	Position P = makeLatLonAlt(lat,lon,alt*3.28);
+	Velocity V = Velocity.makeVxyz(vx,vy,vz);
+	Position P = Position.makeLatLonAlt(lat,lon,alt*3.28);
 	
 	acState.add(P,V,bootTime);
     }
@@ -178,12 +179,15 @@ public class AircraftData{
 			msgMissionItem.param2  = 0.0f;
 			msgMissionItem.param3  = 0.0f;
 			msgMissionItem.param4  = 0.0f;
-			msgMissionItem.x       = CurrentFlightPlan.point(msgMissionItem.seq).lla().latitude();
-			msgMissionItem.y       = CurrentFlightPlan.point(msgMissionItem.seq).lla().longitude();
-			msgMissionItem.z       = CurrentFlightPlan.point(msgMissionItem.seq).lla().alt();
-		    
+			msgMissionItem.x       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().latitude();
+			msgMissionItem.y       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().longitude();
+			msgMissionItem.z       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().alt();
+
+			
+			
 			Intf.Write(msgMissionItem);
-			System.out.println("Wrote mission item");
+			System.out.println("Wrote mission item:"+count);
+			System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
 			count++;
 		    }
 		
@@ -252,9 +256,8 @@ public class AircraftData{
 			  state  = FP_READ_COM.FP_ACK_FAIL;
 			  break;
 		      }
-		      		      		      
-		      System.out.println("waypoint:"+count+" lat:"+wp.pos.lat+" lon:"+wp.pos.lon);
-		      NewFlightPlan.add(NavPoint.makeLatLonAlt(msg2.latx,msg2.lony,msg2.altz*3.28,0));
+		      		      		      		      
+		      NewFlightPlan.add(NavPoint.makeLatLonAlt(msg2.latx,msg2.lony,msg2.altz*3.28,count));
 		      
 		      if(count == (FP_numWaypoints-1)){
 			  state  = FP_READ_COM.FP_ACK_SUCCESS;
@@ -262,7 +265,7 @@ public class AircraftData{
 		      }
 		      else{
 			  count++;
-			  System.out.println("Receiving next waypoint");
+			  System.out.format("Size of FlightPlan = %d, Receiving next waypoint\n",NewFlightPlan.size());
 		      }
 		      
 		  break;

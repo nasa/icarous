@@ -147,8 +147,8 @@ public class ComBox{
 	// Assemble all the messages to be sent
 
 	// COMBOX hearbeat
-	msg_combox_pulse msgComboxPulse  = new msg_combox_pulse();
-	msgComboxPulse.count             = (long) 1;
+	msg_heartbeat_combox msgHeartBeatCombox  = new msg_heartbeat_combox();
+	msgHeartBeatCombox.count             = (long) 1;
 
 	// Flightplan information
 	msg_flightplan_info msgFlightPlanInfo = new msg_flightplan_info();
@@ -172,8 +172,8 @@ public class ComBox{
 	wp2.id      = 0;
 	wp2.index   = 1;
 	wp2.subtype = 0;
-	wp2.latx    = 37.614369f; 
-	wp2.lony    = -122.361927f;
+	wp2.latx    =  37.615644f; 
+	wp2.lony    = -122.363191f;
 	wp2.altz    = 20.0f;
 	wp2.heading = 0.0f;
 	
@@ -181,8 +181,8 @@ public class ComBox{
 	wp3.id      = 0;
 	wp3.index   = 2;
 	wp3.subtype = 0;
-	wp3.latx    = 37.617655f;
-	wp3.lony    = -122.359112f;
+	wp3.latx    =  37.618343f;
+	wp3.lony    =  -122.360675f;
 	wp3.altz    = 20.0f;
 	wp3.heading = 0.0f;
 
@@ -190,8 +190,8 @@ public class ComBox{
 	wp4.id      = 0;
 	wp4.index   = 3;
 	wp4.subtype = 0;
-	wp4.latx    = 37.617624f;
-	wp4.lony    = -122.363878f;
+	wp4.latx    = 37.616875f;
+	wp4.lony    = -122.364818f;
 	wp4.altz    = 20.0f;
 	wp4.heading = 0.0f;
 
@@ -248,7 +248,7 @@ public class ComBox{
 	
 	// Send all messages
 	try{
-	    UDPWrite(msgComboxPulse,sock,host,udpSendPort);	Thread.sleep(5000);
+	    UDPWrite(msgHeartBeatCombox,sock,host,udpSendPort);	Thread.sleep(5000);
 
 	    UDPWrite(msgFlightPlanInfo,sock,host,udpSendPort); Thread.sleep(100);
 	    

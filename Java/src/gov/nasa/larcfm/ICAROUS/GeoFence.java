@@ -16,7 +16,7 @@ import gov.nasa.larcfm.Util.LatLonAlt;
 import gov.nasa.larcfm.Util.Projection;
 import gov.nasa.larcfm.Util.EuclideanProjection;
 import gov.nasa.larcfm.Util.Poly2D;
-import gov.NASA.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.Position;
 
 import java.util.*;
 import java.lang.*;
@@ -32,10 +32,10 @@ public class GeoFence{
     public int numVertices;
     public double floor;
     public double ceiling;
-    public static double hthreshold = 0.5;
-    public static double vthreshold = 0.5;
-    public static double hstepback  = 50;
-    public static double vstepback  = 50;
+    public static double hthreshold = 1.5;
+    public static double vthreshold = 1.5;
+    public static double hstepback  = 5;
+    public static double vstepback  = 5;
     
     
     LatLonAlt origin      = null;
@@ -60,7 +60,8 @@ public class GeoFence{
     }
 
     public void AddVertex(int index,float lat,float lon){
-	Position pos = new Position(lat,lon,0);
+
+	Position pos = Position.makeLatLonAlt(lat,lon,0);
 	Vertices_LLA.add(index,pos);
 	
 	if(origin == null){
@@ -105,7 +106,7 @@ public class GeoFence{
     
     public double HorizontalProximity(Position pos){
 	
-	double min = Double.MAX_VALUE;
+	double Min = Double.MAX_VALUE;
 	double dist = 0;
 	double x1 = 0.0;
 	double y1 = 0.0;
@@ -124,12 +125,15 @@ public class GeoFence{
 	int vert_j = 0;
 
 	boolean insegment;
+
+	Vect2 C,CD,CDe;
+	LatLonAlt LLA;
 	
 	LatLonAlt p = pos.zeroAlt().lla();
 	Vect2 xy    = proj.project(p).vect2();
 	x3          = xy.x();
 	y3          = xy.y();
-
+	Position Safe;
 			
 	// Check if perpendicular intersection lies within line segment
 	for(int i=0;i<geoPolygon.size();i++){
@@ -153,12 +157,13 @@ public class GeoFence{
 	    c  = (y1-m*x1);
 
 	    x0 = (b*(b*x3 - a*y3) - a*c)/(Math.pow(a,2)+Math.pow(b,2));
-	    y0 = (a*(-b*x3 + a*y3) - a*c)/(Math.pow(a,2)+Math.pow(b,2));
+	    y0 = (a*(-b*x3 + a*y3) - b*c)/(Math.pow(a,2)+Math.pow(b,2));
 
 	    insegment = false;
 
 	    Vect2 AB = new Vect2(x2-x1,y2-y1);
 	    Vect2 AC = new Vect2(x0-x1,y0-y1);
+	    C        = new Vect2(x0,y0);
 	    
 	    double projAC = AC.dot(AB)/Math.pow(AB.norm(),2);
 
@@ -169,27 +174,44 @@ public class GeoFence{
 	    
 	    if(insegment){
 		dist = Math.abs(a*x3 + b*y3 + c)/Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
-		Vect2 CD  = new Vect2(x3-x0,y3-y0);
-		Vect2 CDe = xy.Add(CD.Scal(0.5/CD.norm()));
+		CD  = new Vect2(x3-x0,y3-y0);
+		CDe = C.Add(CD.Scal(hstepback/CD.norm()));
 
-		LatLonAlt LLA       = proj.inverse(CDe,pos.alt());
-		SafetyPoint         = makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude())
+		LLA       = proj.inverse(CDe,pos.alt());
+		Safe      = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
 		
 	    }
 	    else{
 		double d1 = Math.sqrt( Math.pow(x3-x1,2) + Math.pow(y3-y1,2) );
 		double d2 = Math.sqrt( Math.pow(x3-x2,2) + Math.pow(y3-y2,2) );
 		dist = Math.min(d1,d2);
+
+		if(d1 <= d2){
+		    CD  = new Vect2(x3-x1,y3-y1);
+		    C   = new Vect2(x1,y1);
+		}
+		else{
+		    CD  = new Vect2(x3-x2,y3-y2);
+		    C   = new Vect2(x2,y2);
+		}
+
+		
+		CDe = C.Add(CD.Scal(hstepback/CD.norm()));
+		    
+		LLA       = proj.inverse(CDe,pos.alt());
+		Safe      = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
 	    }
 
-	    if(dist < min){
-		min = dist;
+	    if(dist < Min){
+		Min = dist;
+		SafetyPoint = Safe;
+		
 	    }
 
 	}
 	
 
-	return min;
+	return Min;
 	
     }
 
@@ -215,14 +237,14 @@ public class GeoFence{
 
 	    vconflict = false;
 	   
-	    if( (ceiling - pos.alt_msl) <= vthreshold){
+	    if( (ceiling - pos.alt()) <= vthreshold){
 		alt = (ceiling - vstepback);
-		SafetyPosition = SafetyPosition.mkAlt(alt);
+		SafetyPoint = SafetyPoint.mkAlt(alt);
 		vconflict = true;
 	    }
-	    else if( (pos.alt_msl - floor) <= vthreshold){
+	    else if( (pos.alt() - floor) <= vthreshold){
 		alt = (floor + vstepback);                
-		SafetyPosition = SafetyPosition.mkAlt(alt);
+		SafetyPoint = SafetyPoint.mkAlt(alt);
 		vconflict = true;
 	    }
 	    	    
@@ -323,8 +345,8 @@ public class GeoFence{
 	System.out.println("Vertices information");
 	for(int i=0;i<numVertices;i++){
 	    Position vertex = Vertices_LLA.get(i);
-	    System.out.println("Lat :"+vertex.lat);
-	    System.out.println("Lon :"+vertex.lon);
+	    System.out.println("Lat :"+vertex.latitude());
+	    System.out.println("Lon :"+vertex.longitude());
 	}
 
     }

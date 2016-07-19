@@ -14,6 +14,11 @@ import java.util.*;
 import java.lang.*;
 import com.MAVLink.common.*;
 
+import gov.nasa.larcfm.Util.Plan;
+import gov.nasa.larcfm.Util.AircraftState;
+import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.NavPoint;
+
 enum FSAM_OUTPUT{
 	CONFLICT,NOOP
 }
@@ -137,11 +142,12 @@ public class FSAM{
 	    
 	    if(FenceKeepInConflict){
 		GeoFence GF = conflictList.get(0).fence;		
-		NavPoint wp = new NavPoint(GF.SafetyPoint,0)
+		NavPoint wp = new NavPoint(GF.SafetyPoint,0);
+		System.out.println("Safe position:"+GF.SafetyPoint.toString());
 		ResolutionPlan.add(wp);
 
 		NavPoint nextWP = CurrentFP.point(FlightData.FP_nextWaypoint);
-		if(!GF.CheckWaypointFeasibility(wp.position(),nextwp.position())){
+		if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){
 		    GotoNextWP = true;
 		    System.out.println("Goto next waypoint after resolution");
 		}else{
@@ -237,7 +243,7 @@ public class FSAM{
 
 	for(int i=0;i< FlightData.fenceList.size();i++){
 	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
-	    GF.CheckViolation(FlightData.currPosition);
+	    GF.CheckViolation(FlightData.acState.positionLast());
 
 	    Conflict cf;
 
@@ -262,9 +268,7 @@ public class FSAM{
     }
 
 
-    public void ExecuteResolution(){
-
-	Waypoint wp;
+    public void ExecuteResolution(){	
 	
 	switch(executeState){
 
@@ -276,8 +280,8 @@ public class FSAM{
 	    
 	case SEND_COMMAND:
 
-	    wp = ResolutionPlan.get(currentResolutionLeg);
-	    UAS.SetGPSPos(wp.pos.lat,wp.pos.lon,wp.pos.alt_msl);
+	    NavPoint wp = ResolutionPlan.point(currentResolutionLeg);
+	    UAS.SetGPSPos(wp.lla().latitude(),wp.lla().longitude(),wp.alt());
 	    executeState = EXECUTE_STATE.AWAIT_COMPLETION;
 	    break;
 	    
@@ -285,9 +289,9 @@ public class FSAM{
 	    
 
 	    Position pos   = ResolutionPlan.point(currentResolutionLeg).position();
-	    double dist[]  = pos.DistanceH(UAS.FlightData.currPosition);
+	    double dist    = pos.distanceH(UAS.FlightData.acState.positionLast());
 
-	    if(dist[0] < 0.05){
+	    if(dist < 1){
 		System.out.println("Reached safe position");
 		currentResolutionLeg = currentResolutionLeg + 1;
 		if(currentResolutionLeg < ResolutionPlan.size()){
