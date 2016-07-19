@@ -15,7 +15,11 @@ import java.lang.*;
 import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
 import com.MAVLink.enums.*;
-
+import gov.nasa.larcfm.Util.NavPoint;
+import gov.nasa.larcfm.Util.Plan;
+import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.Velocity;
+import gov.nasa.larcfm.Util.AircraftState;
 
 public class AircraftData{
 
@@ -38,32 +42,15 @@ public class AircraftData{
     public double pitch;
     public double yaw;
 
-    // Aircraft euler rates
-    public double roll_rate;
-    public double pitch_rate;
-    public double yaw_rate;
-
-    // Aircraft angular rates
-    public double p;
-    public double q;
-    public double r;
-
-    // Aircraft velocity components in the body frame
-    public double u;
-    public double v;
-    public double w;
-
     // Aircraft's current position (GPS)
-    public Position currPosition;
+    public AircraftState acState;
 
-    // Angle of attack, sideslip and airspeed
-    public double aoa;
-    public double sideslip;
-    public double airspeed;
     
-    public FlightPlan NewFlightPlan;
-    public FlightPlan CurrentFlightPlan;
-
+    //public FlightPlan NewFlightPlan;
+    //public FlightPlan CurrentFlightPlan;
+    public Plan NewFlightPlan;
+    public Plan CurrentFlightPlan;
+    
     public List<GeoFence> fenceList; 
     
     // List for various objects
@@ -72,34 +59,48 @@ public class AircraftData{
     public List<GenericObject> missionObj;
     
     // List for traffic information
-    
 
-    public int startMission = -1; // -1: last command executed, 0 - stop mission, 1 - start mission
+
+    // Flight plan specific data
+    public double FP_maxHorizontalDeviation;
+    public double FP_maxVerticalDeviation;
+    public double FP_standoffDistance;
+    public int FP_numWaypoints;
+    public int FP_nextWaypoint;
+
+    public int startMission; // -1: last command executed, 0 - stop mission, 1 - start mission
     
     public AircraftData(){
 
 	Inbox               = new MAVLinkMessages();
-	currPosition        = new Position();
-	CurrentFlightPlan   = new FlightPlan();
+	acState             = new AircraftState();
 	fenceList           = new ArrayList<GeoFence>();
 	obstacles           = new ArrayList<GenericObject>();
 	traffic             = new ArrayList<GenericObject>();
 	missionObj          = new ArrayList<GenericObject>();
+	startMission        = -1;
+	FP_nextWaypoint     = 1;
     }
 
     public void GetGPSdata(){
 
-	double lat,lon,alt_msl,alt_agl;
-
+	double lat,lon,alt;
+	double vx,vy,vz;
+	double bootTime;
+	
 	msg_global_position_int GPS = Inbox.GlobalPositionInt();
-	
-	lat = (double) (GPS.lat)/1.0E7;
-	lon = (double) (GPS.lon)/1.0E7;
-	alt_msl = (double) (GPS.alt)/1.0E3;
-	alt_agl = (double) (GPS.relative_alt)/1.0E3;
-	
+	bootTime = (double) (GPS.time_boot_ms)/1E6;
+	lat      = (double) (GPS.lat)/1.0E7;
+	lon      = (double) (GPS.lon)/1.0E7;
+	alt      = (double) (GPS.alt)/1.0E3;
+        vx       = (double) (GPS.vx)/1E2;
+	vy       = (double) (GPS.vy)/1E2;
+	vz       = (double) (GPS.vz)/1E2;
 
-	currPosition.UpdatePosition((float)lat,(float)lon,(float)alt_msl,(float)alt_agl);
+	Velocity V = Velocity.makeVxyz(vx,vy,vz);
+	Position P = Position.makeLatLonAlt(lat,lon,alt*3.28);
+	
+	acState.add(P,V,bootTime);
     }
 
     public void GetAttitude(){
@@ -116,14 +117,15 @@ public class AircraftData{
 
 	FP_WRITE_AP state = FP_WRITE_AP.FP_CLR;
 	
-	msg_mission_count msgMissionCount = new msg_mission_count();
-	msg_mission_item msgMissionItem   = new msg_mission_item();
+	msg_mission_count msgMissionCount        = new msg_mission_count();
+	msg_mission_item msgMissionItem          = new msg_mission_item();
 	msg_mission_clear_all msgMissionClearAll = new msg_mission_clear_all();
+
 	boolean writeComplete = false;
 	int count = 0;
 
 	// Copy new flight into current flight plan
-	CurrentFlightPlan.Copy(NewFlightPlan);
+	CurrentFlightPlan = new Plan(NewFlightPlan);
 
 	msgMissionCount.target_system    = 0;
 	msgMissionCount.target_component = 0;
@@ -148,7 +150,7 @@ public class AircraftData{
 
 		case FP_SEND_COUNT:
 		
-		    msgMissionCount.count = CurrentFlightPlan.numWayPoints;
+		    msgMissionCount.count = CurrentFlightPlan.size();
 
 		    Intf.Write(msgMissionCount);
 		    System.out.println("Wrote mission count: "+msgMissionCount.count);
@@ -176,13 +178,16 @@ public class AircraftData{
 			msgMissionItem.param1  = 0.0f;
 			msgMissionItem.param2  = 0.0f;
 			msgMissionItem.param3  = 0.0f;
-			msgMissionItem.param4  = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).heading;
-			msgMissionItem.x       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.lat;
-			msgMissionItem.y       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.lon;
-			msgMissionItem.z       = CurrentFlightPlan.GetWaypoint(msgMissionItem.seq).pos.alt_msl;
-		    
+			msgMissionItem.param4  = 0.0f;
+			msgMissionItem.x       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().latitude();
+			msgMissionItem.y       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().longitude();
+			msgMissionItem.z       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().alt();
+
+			
+			
 			Intf.Write(msgMissionItem);
-			System.out.println("Wrote mission item");
+			System.out.println("Wrote mission item:"+count);
+			System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
 			count++;
 		    }
 		
@@ -193,7 +198,7 @@ public class AircraftData{
 			System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
 		    
 			if(Inbox.MissionAck().type == 0){
-			    if(count == CurrentFlightPlan.numWayPoints){
+			    if(count == CurrentFlightPlan.size()){
 				System.out.println("Waypoints sent successfully");
 				writeComplete = true;
 			    }
@@ -216,7 +221,7 @@ public class AircraftData{
 	  FP_READ_COM state    = FP_READ_COM.FP_INFO;
 	  int count            = 0;
 
-	  NewFlightPlan = new FlightPlan();
+	  NewFlightPlan = new Plan();
 	  
 	  while(getFP){
 	      switch(state){
@@ -225,7 +230,10 @@ public class AircraftData{
 		  
 		  msg_flightplan_info msg1 = Inbox.FlightplanInfo();
 
-		  NewFlightPlan.FlightPlanInfo(msg1.numWaypoints,msg1.maxHorDev,msg1.maxVerDev,msg1.standoffDist);
+		  FP_numWaypoints           = msg1.numWaypoints;
+		  FP_maxHorizontalDeviation = msg1.maxHorDev;
+		  FP_maxVerticalDeviation   = msg1.maxVerDev;
+		  FP_standoffDistance       = msg1.standoffDist;
 		  
 		  state = FP_READ_COM.FP_WAYPT_INFO;
 
@@ -248,19 +256,16 @@ public class AircraftData{
 			  state  = FP_READ_COM.FP_ACK_FAIL;
 			  break;
 		      }
+		      		      		      		      
+		      NewFlightPlan.add(NavPoint.makeLatLonAlt(msg2.latx,msg2.lony,msg2.altz*3.28,count));
 		      
-		      Waypoint wp          = new Waypoint(msg2.index,msg2.latx,msg2.lony,msg2.altz,msg2.heading);
-		      
-		      System.out.println("waypoint:"+count+" lat:"+wp.pos.lat+" lon:"+wp.pos.lon);
-		      NewFlightPlan.AddWaypoints(count,wp);
-		      
-		      if(count == (NewFlightPlan.numWayPoints-1)){
+		      if(count == (FP_numWaypoints-1)){
 			  state  = FP_READ_COM.FP_ACK_SUCCESS;
 			  
 		      }
 		      else{
 			  count++;
-			  System.out.println("Receiving next waypoint");
+			  System.out.format("Size of FlightPlan = %d, Receiving next waypoint\n",NewFlightPlan.size());
 		      }
 		      
 		  break;
@@ -440,47 +445,3 @@ public class AircraftData{
     
     
 }
-
-class Position{
-
-    float lat;
-    float lon;
-    float alt_msl;
-    float alt_agl;
-
-    public Position(){
-	lat   = 0.0f;
-	lon   = 0.0f;
-	alt_msl   = 0.0f;
-	alt_agl   = 0.0f;
-    }
-
-    public Position(float lat_in,float lon_in,float altmsl_in){
-	lat   = lat_in;
-	lon   = lon_in;
-	alt_msl   = altmsl_in;
-    }
-
-    public Position(float lat_in,float lon_in,float altmsl_in,float altagl_in){
-	lat     = lat_in;
-	lon     = lon_in;
-	alt_msl   = altmsl_in;
-	alt_agl   = altagl_in;
-    }
-
-    public void UpdatePosition(float lat_in,float lon_in,float altmsl_in){
-	lat   = lat_in;
-	lon   = lon_in;
-	alt_msl   = altmsl_in;
-    }
-    
-    public void UpdatePosition(float lat_in,float lon_in,float altmsl_in,float altagl_in){
-	lat   = lat_in;
-	lon   = lon_in;
-	alt_msl   = altmsl_in;
-	alt_agl   = altagl_in;
-    }
-
-}
-
-

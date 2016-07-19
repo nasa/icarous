@@ -12,6 +12,7 @@ package gov.nasa.larcfm.ICAROUS;
 import com.MAVLink.enums.*;
 import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
+import gov.nasa.larcfm.Util.Position;
 
 public class Aircraft{
 
@@ -173,8 +174,7 @@ public class Aircraft{
 
     public int Flight(){
 
-	FlightPlan FP         = FlightData.CurrentFlightPlan;
-	Position currPosition = FlightData.currPosition;
+	Position currPosition = FlightData.acState.positionLast();
 	timeCurrent           = System.nanoTime();
 	FSAM_OUTPUT status;
 	
@@ -192,12 +192,12 @@ public class Aircraft{
 	    
 	    // Takeoff at current location
 	    SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
-			1,0,0,0, (float) currPosition.lat,
-			(float) currPosition.lon,
-			(float) currPosition.alt_msl + 50.0f);
+			1,0,0,0, (float) currPosition.latitude(),
+			(float) currPosition.longitude(),
+			(float) 50.0f);
 	    
 	    timeStart          = timeCurrent;
-	    FP.nextWaypoint    = 1;
+	    FlightData.FP_nextWaypoint    = 1;
 	    state = FLIGHT_STATE.TAKEOFF_CLIMB;
 
 	    break;
@@ -205,7 +205,7 @@ public class Aircraft{
 	case TAKEOFF_CLIMB:
 
 	    // Switch to auto once 50 m is reached and start mission in auto mode
-	    if(currPosition.alt_agl >= 50.0f){
+	    if(currPosition.alt() >= 50.0f){
 		state = FLIGHT_STATE.MONITOR;
 		SetMode(3);
 		apMode = AP_MODE.AUTO;

@@ -14,6 +14,11 @@ import java.util.*;
 import java.lang.*;
 import com.MAVLink.common.*;
 
+import gov.nasa.larcfm.Util.Plan;
+import gov.nasa.larcfm.Util.AircraftState;
+import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.NavPoint;
+
 enum FSAM_OUTPUT{
 	CONFLICT,NOOP
 }
@@ -42,7 +47,9 @@ public class FSAM{
     FSAM_OUTPUT output;
 
     List<Conflict> conflictList;
-    List<Waypoint> ResolutionPlan;
+    
+    Plan ResolutionPlan;
+    
     int currentResolutionLeg;
     RESOLVE_STATE rState;
     EXECUTE_STATE executeState;
@@ -62,7 +69,7 @@ public class FSAM{
 	timeElapsed = 0;
 	apIntf = ac.apIntf;
 	conflictList   = new ArrayList<Conflict>();
-	ResolutionPlan = new ArrayList<Waypoint>();
+	ResolutionPlan = new Plan();
 	rState = RESOLVE_STATE.NOOP;
 	executeState = EXECUTE_STATE.COMPLETE;
 	FenceKeepInConflict   = false;
@@ -74,8 +81,8 @@ public class FSAM{
 
     public FSAM_OUTPUT Monitor(){
 
-	FlightPlan FP       = FlightData.CurrentFlightPlan;
-	Position currentPos = FlightData.currPosition;
+	Plan FlightPlan       = FlightData.CurrentFlightPlan;
+	AircraftState acState = FlightData.acState;
 
 	
 	long timeCurrent    = UAS.timeCurrent;
@@ -86,11 +93,12 @@ public class FSAM{
 	}
 
 	//Get distance to next waypoint
-	Waypoint wp = FP.GetWaypoint(FP.nextWaypoint);	    
-	double dist[] = FP.Distance2Waypoint(currentPos,wp.pos);
-	distance2WP = dist[0]*1000;
-	heading2WP  = dist[1];
-
+	Position wp         = FlightPlan.point(FlightData.FP_nextWaypoint).position();
+	Position currentPos = acState.positionLast();
+	
+	double distance2WP  = currentPos.distanceH(wp);
+	
+	
 	// Check for geofence resolutions.
 	CheckGeoFences();
 	
@@ -103,12 +111,12 @@ public class FSAM{
 	// Check mission progress.
 	if(timeElapsed > 5E9){
 	    timeEvent1 = timeCurrent;      
-	    //System.out.format("Distance to next waypoint: %2.2f (Miles), heading: %3.2f (degrees)\n",dist[0]*0.62,dist[1]);	   
+	    //System.out.format("Distance to next waypoint: %2.2f \n",distance);	   
 	}
 	
 	if(CheckMissionItemReached()){
 	    System.out.println("Reached waypoint");
-	    FlightData.CurrentFlightPlan.nextWaypoint++;
+	    FlightData.FP_nextWaypoint++;
 	}
 	
 	if(conflictList.size() > 0){
@@ -126,7 +134,7 @@ public class FSAM{
     public int Resolve(){
 
 	int status;
-	FlightPlan CurrentFP = FlightData.CurrentFlightPlan;
+	Plan CurrentFP = FlightData.CurrentFlightPlan;
 	
 	switch(rState){
 
@@ -134,11 +142,12 @@ public class FSAM{
 	    
 	    if(FenceKeepInConflict){
 		GeoFence GF = conflictList.get(0).fence;		
-		Waypoint wp = new Waypoint(0,GF.SafetyPoint.lat,GF.SafetyPoint.lon,GF.SafetyPoint.alt_msl,400.0f);
+		NavPoint wp = new NavPoint(GF.SafetyPoint,0);
+		System.out.println("Safe position:"+GF.SafetyPoint.toString());
 		ResolutionPlan.add(wp);
 
-		Waypoint nextwp = CurrentFP.GetWaypoint(CurrentFP.nextWaypoint);
-		if(!GF.CheckWaypointFeasibility(wp.pos,nextwp.pos)){
+		NavPoint nextWP = CurrentFP.point(FlightData.FP_nextWaypoint);
+		if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){
 		    GotoNextWP = true;
 		    System.out.println("Goto next waypoint after resolution");
 		}else{
@@ -234,7 +243,7 @@ public class FSAM{
 
 	for(int i=0;i< FlightData.fenceList.size();i++){
 	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
-	    GF.CheckViolation(FlightData.currPosition);
+	    GF.CheckViolation(FlightData.acState.positionLast());
 
 	    Conflict cf;
 
@@ -259,9 +268,7 @@ public class FSAM{
     }
 
 
-    public void ExecuteResolution(){
-
-	Waypoint wp;
+    public void ExecuteResolution(){	
 	
 	switch(executeState){
 
@@ -281,18 +288,18 @@ public class FSAM{
 	    
 	case SEND_COMMAND:
 
-	    wp = ResolutionPlan.get(currentResolutionLeg);
-	    UAS.SetGPSPos(wp.pos.lat,wp.pos.lon,wp.pos.alt_msl);
+	    NavPoint wp = ResolutionPlan.point(currentResolutionLeg);
+	    UAS.SetGPSPos(wp.lla().latitude(),wp.lla().longitude(),wp.alt());
 	    executeState = EXECUTE_STATE.AWAIT_COMPLETION;
 	    break;
 	    
 	case AWAIT_COMPLETION:
 	    
-	    wp = ResolutionPlan.get(currentResolutionLeg);
-	    Position pos   = new Position(wp.pos.lat,wp.pos.lon,wp.pos.alt_msl);
-	    double dist[]  = FlightPlan.Distance2Waypoint(UAS.FlightData.currPosition,pos);
+	    Position pos   = ResolutionPlan.point(currentResolutionLeg).position();
+	    double dist    = pos.distanceH(UAS.FlightData.acState.positionLast());
 
-	    if(dist[0]*1000 < 1){
+	    if(dist < 1){
+
 		System.out.println("Reached safe position");
 		currentResolutionLeg = currentResolutionLeg + 1;
 		if(currentResolutionLeg < ResolutionPlan.size()){
@@ -308,11 +315,7 @@ public class FSAM{
 	    
 	case COMPLETE:
 
-	    Iterator Itr = ResolutionPlan.iterator();
-	    while(Itr.hasNext()){
-		Waypoint wpr = (Waypoint) Itr.next();
-		Itr.remove();
-	    }
+	    ResolutionPlan.clear();
 
 	    
 	    break;
