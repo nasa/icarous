@@ -317,6 +317,8 @@ public class FSAM{
 		    executeState = EXECUTE_STATE.SEND_COMMAND;
 		}
 		else{
+		    ResolutionPlan.clear();
+		    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Resolution complete");
 		    executeState = EXECUTE_STATE.COMPLETE;
 		}
 	    }
@@ -324,12 +326,6 @@ public class FSAM{
 	    break;
 	    
 	    
-	case COMPLETE:
-
-	    ResolutionPlan.clear();
-	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Resolution complete");
-	    
-	    break;
 	}//end switch case
 
 
