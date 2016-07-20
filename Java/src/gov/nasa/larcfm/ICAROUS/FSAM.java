@@ -180,7 +180,7 @@ public class FSAM{
 		msgMission.target_component  = 0;
 		msgMission.seq               = 3;	    
 
-		
+		UAS.error.addWarning("[" + UAS.timeLog + "] CMD: Set next mission item");
 		UAS.apIntf.Write(msgMission);
 	    }
 
