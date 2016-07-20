@@ -143,7 +143,7 @@ public class AircraftData{
 
 		case FP_CLR:
 		    Intf.Write(msgMissionClearAll);
-		    System.out.println("Cleared mission on AP");
+		    //System.out.println("Cleared mission on AP");
 		    state = FP_WRITE_AP.FP_SEND_COUNT;
 		    count = 0;
 		    break;
@@ -153,7 +153,7 @@ public class AircraftData{
 		    msgMissionCount.count = CurrentFlightPlan.size();
 
 		    Intf.Write(msgMissionCount);
-		    System.out.println("Wrote mission count: "+msgMissionCount.count);
+		    //System.out.println("Wrote mission count: "+msgMissionCount.count);
 		    state = FP_WRITE_AP.FP_SEND_WP;
 		    break;
 	    
@@ -168,7 +168,7 @@ public class AircraftData{
 
 			int seq = Inbox.MissionRequest().seq;
 		    
-			System.out.println("Received mission request: "+ seq );
+			//System.out.println("Received mission request: "+ seq );
 		    
 			msgMissionItem.seq     = seq;
 			msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL;
@@ -186,8 +186,8 @@ public class AircraftData{
 			
 			
 			Intf.Write(msgMissionItem);
-			System.out.println("Wrote mission item:"+count);
-			System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
+			//System.out.println("Wrote mission item:"+count);
+			//System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
 			count++;
 		    }
 		
@@ -195,18 +195,18 @@ public class AircraftData{
 
 			Inbox.ReadMissionAck();
 		    
-			System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
+			//System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
 		    
 			if(Inbox.MissionAck().type == 0){
 			    if(count == CurrentFlightPlan.size()){
-				System.out.println("Waypoints sent successfully");
+				//System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
 			    }
 			
 			}
 			else{
 			    state = FP_WRITE_AP.FP_CLR;
-			    System.out.println("Error in writing mission to AP");
+			    //System.out.println("Error in writing mission to AP");
 			}
 		    }
 		} // end of switch case
@@ -237,7 +237,7 @@ public class AircraftData{
 		  
 		  state = FP_READ_COM.FP_WAYPT_INFO;
 
-		  System.out.println("Received flight plan info, Reading " +msg1.numWaypoints+" waypoints");
+		  //System.out.println("Received flight plan info, Reading " +msg1.numWaypoints+" waypoints");
 		  
 		  break;
 		  
@@ -265,7 +265,7 @@ public class AircraftData{
 		      }
 		      else{
 			  count++;
-			  System.out.format("Size of FlightPlan = %d, Receiving next waypoint\n",NewFlightPlan.size());
+			  //System.out.format("Size of FlightPlan = %d, Receiving next waypoint\n",NewFlightPlan.size());
 		      }
 		      
 		  break;
@@ -291,7 +291,7 @@ public class AircraftData{
 		  
 		  Intf.Write(msg3);
 
-		  System.out.println("Waypoints received successfully");
+		  //System.out.println("Waypoints received successfully");
 		  
 		  break;  
 		  
@@ -327,11 +327,11 @@ public class AircraftData{
 
 	if(msg1.msgType == 0){
 	    state = FENCE_STATE.INFO;
-	    System.out.println("Adding fence");
+	    //System.out.println("Adding fence");
 	}
 	else{
 	    state = FENCE_STATE.REMOVE;
-	    System.out.println("Removing fence");
+	    //System.out.println("Removing fence");
 	}
 	
 	while(getfence){    
@@ -341,7 +341,7 @@ public class AircraftData{
 	    case INFO:
 	    
 		fence1 = new GeoFence(msg1.fenceID,msg1.fenceType,msg1.numVertices,msg1.fenceFloor,msg1.fenceCeiling);
-		System.out.println("Received geofence information: "+msg1.fenceCeiling);
+		//System.out.println("Received geofence information: "+msg1.fenceCeiling);
 		state = FENCE_STATE.VERTICES;
 		break;
 
@@ -361,7 +361,7 @@ public class AircraftData{
 			break;
 		    }
 
-		    System.out.println("Adding vertex :"+count);
+		    //System.out.println("Adding vertex :"+count);
 		    fence1.AddVertex(msg2.index,msg2.latx,msg2.lony);
 		    count++;
 
@@ -379,9 +379,7 @@ public class AircraftData{
 		fenceList.add(fence1);
 		numFences = fenceList.size();
 		GeoFence gf = (GeoFence)fenceList.get(numFences-1);
-		gf.print();
-		System.out.println("Updated fence list");		
-		System.out.println("Total fences in ICAROUS:"+numFences);
+		//gf.print();				
 		state = FENCE_STATE.ACK_SUCCESS;
 		
 		break;
@@ -396,7 +394,7 @@ public class AircraftData{
 		    if(f1.ID == msg1.fenceID){
 			Itr.remove();
 			numFences = fenceList.size();
-			System.out.println("Total fences in ICAROUS:"+numFences);
+			//System.out.println("Total fences in ICAROUS:"+numFences);
 			break;   
 		    }
 		}
@@ -442,6 +440,7 @@ public class AircraftData{
 	}//end of while
 	    
     }//end of function
+
     
     
 }

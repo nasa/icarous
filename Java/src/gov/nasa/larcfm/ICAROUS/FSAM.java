@@ -34,31 +34,35 @@ enum EXECUTE_STATE{
 
 public class FSAM{
 
-    Aircraft UAS;
-    AircraftData FlightData;
-    MAVLinkMessages Inbox;
-    Mission mission;
-    Interface apIntf;
-    double distance2WP;
-    double heading2WP;
+    private Aircraft UAS;
+    private AircraftData FlightData;
+    private MAVLinkMessages Inbox;
+    private Mission mission;
+    private Interface apIntf;
+    private double distance2WP;
+    private double heading2WP;
 
-    long timeEvent1;
-    long timeElapsed;
-    FSAM_OUTPUT output;
-
-    List<Conflict> conflictList;
+    private long timeEvent1;
+    private long timeElapsed;
+    private long timeCurrent;
+    private double logtime;
     
-    Plan ResolutionPlan;
-    
-    int currentResolutionLeg;
-    RESOLVE_STATE rState;
-    EXECUTE_STATE executeState;
+    private FSAM_OUTPUT output;
 
-    boolean FenceKeepInConflict;
-    boolean FenceKeepOutConflict;
-    boolean TrafficConflict;
-    boolean FlightPlanConflict;
-    boolean GotoNextWP;
+    private List<Conflict> conflictList;
+    
+    private Plan ResolutionPlan;
+    
+    private int currentResolutionLeg;
+
+    public RESOLVE_STATE rState;
+    public EXECUTE_STATE executeState;
+
+    private boolean FenceKeepInConflict;
+    private boolean FenceKeepOutConflict;
+    private boolean TrafficConflict;
+    private boolean FlightPlanConflict;
+    private boolean GotoNextWP;
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS = ac;
@@ -85,8 +89,8 @@ public class FSAM{
 	AircraftState acState = FlightData.acState;
 
 	
-	long timeCurrent    = UAS.timeCurrent;
-	timeElapsed         = timeCurrent - timeEvent1;
+	timeCurrent    = UAS.timeCurrent;	
+	timeElapsed    = timeCurrent - timeEvent1;
 	
 	if(timeEvent1 == 0){
 	    timeEvent1 = UAS.timeStart;
@@ -115,12 +119,13 @@ public class FSAM{
 	}
 	
 	if(CheckMissionItemReached()){
-	    System.out.println("Reached waypoint");
+	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Reached waypoint");
 	    FlightData.FP_nextWaypoint++;
 	}
 	
 	if(conflictList.size() > 0){
 	    if(rState == RESOLVE_STATE.NOOP){
+		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Conflict(s) detected");
 		rState = RESOLVE_STATE.COMPUTE;
 	    }
 	    
@@ -141,19 +146,7 @@ public class FSAM{
 	case COMPUTE:
 	    
 	    if(FenceKeepInConflict){
-		GeoFence GF = conflictList.get(0).fence;		
-		NavPoint wp = new NavPoint(GF.SafetyPoint,0);
-		System.out.println("Safe position:"+GF.SafetyPoint.toString());
-		ResolutionPlan.add(wp);
-
-		NavPoint nextWP = CurrentFP.point(FlightData.FP_nextWaypoint);
-		if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){
-		    GotoNextWP = true;
-		    System.out.println("Goto next waypoint after resolution");
-		}else{
-		    GotoNextWP = false;
-		}
-		
+		ResolveKeepInConflict();		
 	    }
 	    
 	    rState       = RESOLVE_STATE.EXECUTE;
@@ -181,8 +174,6 @@ public class FSAM{
 		Itr.remove();
 	    }
 	    
-	    System.out.println("Remove conflicts:"+conflictList.size());
-
 	    if(GotoNextWP){
 		msg_mission_set_current msgMission = new msg_mission_set_current();
 		msgMission.target_system     = 0;
@@ -192,9 +183,10 @@ public class FSAM{
 		
 		UAS.apIntf.Write(msgMission);
 	    }
-	    
-	    UAS.SetMode(3);
 
+	    UAS.apMode = Aircraft.AP_MODE.AUTO;
+	    UAS.SetMode(3);
+	    UAS.error.addWarning("[" + UAS.timeLog + "] MODE: AUTO");
 	    rState = RESOLVE_STATE.NOOP;
 	    
 	    break;
@@ -267,12 +259,32 @@ public class FSAM{
 	
     }
 
+    public void ResolveKeepInConflict(){
 
+	Plan CurrentFP = FlightData.CurrentFlightPlan;
+	GeoFence GF = conflictList.get(0).fence;		
+	NavPoint wp = new NavPoint(GF.SafetyPoint,0);
+	
+	ResolutionPlan.add(wp);
+	
+	NavPoint nextWP = CurrentFP.point(FlightData.FP_nextWaypoint);
+	if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){
+	    GotoNextWP = true;	
+	}else{
+	    GotoNextWP = false;
+	}
+	
+
+    }
+
+    
     public void ExecuteResolution(){	
 	
 	switch(executeState){
 
 	case START:
+	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Reached safe position");	    
+	    UAS.apMode = Aircraft.AP_MODE.GUIDED;
 	    UAS.SetMode(4);
 
 	    try{
@@ -300,7 +312,6 @@ public class FSAM{
 
 	    if(dist < 1){
 
-		System.out.println("Reached safe position");
 		currentResolutionLeg = currentResolutionLeg + 1;
 		if(currentResolutionLeg < ResolutionPlan.size()){
 		    executeState = EXECUTE_STATE.SEND_COMMAND;
@@ -316,7 +327,7 @@ public class FSAM{
 	case COMPLETE:
 
 	    ResolutionPlan.clear();
-
+	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Resolution complete");
 	    
 	    break;
 	}//end switch case

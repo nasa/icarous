@@ -13,10 +13,11 @@ import com.MAVLink.enums.*;
 import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
 import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.ErrorLog;
+import gov.nasa.larcfm.Util.ErrorReporter;
 
-public class Aircraft{
+public class Aircraft implements ErrorReporter{
 
-    
     public enum AP_MODE{
 	ND,AUTO,GUIDED
     }
@@ -25,19 +26,23 @@ public class Aircraft{
 	TAKEOFF, TAKEOFF_CLIMB, MONITOR, LAND, TERMINATE
     }
     
-    public AircraftData FlightData;
     public Interface apIntf;
     public Interface comIntf;
 
+    public AircraftData FlightData;
     public FSAM fsam;
     public Mission mission;
     
-    public FLIGHT_STATE state;
+    public FLIGHT_STATE state; // State machine state for Flight functionalities
+    public AP_MODE apMode;    // Current AP mode
+
+    
     public long timeStart;
     public long timeCurrent;
+    public String timeLog;
     
-    private AP_MODE apMode;    // Current AP mode
-        
+    public ErrorLog error;
+    
     public Aircraft(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc){
 	
 	apIntf           = ap_Intf;
@@ -47,6 +52,9 @@ public class Aircraft{
 	state            = FLIGHT_STATE.TAKEOFF;
 	apMode           = AP_MODE.ND;
 	fsam             = new FSAM(this,mission);
+	error            = new ErrorLog("Aircraft");
+	timeStart        = System.nanoTime();
+	timeLog          = String.format("%.3f",0.0f);
     }
 
     // Function to send commands to pixhawk
@@ -155,7 +163,7 @@ public class Aircraft{
 	    return 1;
 	}
 	else{
-	    System.out.println("Command not accepted\n");
+	    error.addError("Command not accepted");
 	    return 0;
 	}
 	
@@ -176,6 +184,7 @@ public class Aircraft{
 
 	Position currPosition = FlightData.acState.positionLast();
 	timeCurrent           = System.nanoTime();
+	timeLog               = String.format("%.3f",(double) (timeCurrent - timeStart)/1E9);
 	FSAM_OUTPUT status;
 	
 	switch(state){
@@ -183,20 +192,22 @@ public class Aircraft{
 	case TAKEOFF:
 		
 	    // Set mode to guided
+	    error.addWarning("[" + timeLog + "] MODE:GUIDED");
 	    SetMode(4);
 	    apMode = AP_MODE.GUIDED;
 	    
 	    // Arm the throttles
+	    error.addWarning("[" + timeLog + "] CMD:ARM");
 	    SendCommand(0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,0,
 			1,0,0,0,0,0,0);
-	    
+
+	    error.addWarning("[" + timeLog + "] CMD:TAKEOFF");
 	    // Takeoff at current location
 	    SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
 			1,0,0,0, (float) currPosition.latitude(),
 			(float) currPosition.longitude(),
 			(float) 50.0f);
 	    
-	    timeStart          = timeCurrent;
 	    FlightData.FP_nextWaypoint    = 1;
 	    state = FLIGHT_STATE.TAKEOFF_CLIMB;
 
@@ -206,11 +217,13 @@ public class Aircraft{
 
 	    // Switch to auto once 50 m is reached and start mission in auto mode
 	    if(currPosition.alt() >= 50.0f){
+		error.addWarning("[" + timeLog + "] MODE:AUTO");
 		state = FLIGHT_STATE.MONITOR;
 		SetMode(3);
 		apMode = AP_MODE.AUTO;
 		
 		// Set speed
+		error.addWarning("[" + timeLog + "] CMD:SPEED CHANGE");
 		SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
 			    1,5,0,0,0,0,0);
 	    }
@@ -257,7 +270,22 @@ public class Aircraft{
 	return 1;
     }
 
+    public boolean hasError() {
+	return error.hasError();
+    }
+    
+    public boolean hasMessage() {
+	return error.hasMessage();
+    }
+    
+    public String getMessage() {
+	return error.getMessage();
+    }
+    
+    public String getMessageNoClear() {
+	return error.getMessageNoClear();
+    }
 
-
+    
 
 }

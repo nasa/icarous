@@ -15,36 +15,47 @@ package gov.nasa.larcfm.ICAROUS;
 
 import com.MAVLink.icarous.*;
 import com.MAVLink.*;
+import gov.nasa.larcfm.Util.ErrorLog;
+import gov.nasa.larcfm.Util.ErrorReporter;
 
-public class COM implements Runnable{
+public class COM implements Runnable,ErrorReporter{
 
     public Thread t;
     public String threadName;
+    public Aircraft UAS;
     public AircraftData FlightData;
     public Interface comIntf;
+    public ErrorLog error;
+    
         
-    public COM(String name,Aircraft UAS){
+    public COM(String name,Aircraft uas){
 	threadName       = name;
+	UAS              = uas;
 	FlightData       = UAS.FlightData;
 	comIntf          = UAS.comIntf;
+	error            = new ErrorLog("COM     ");
     }
 
     public void run(){
 
 	while(true){
-	
+
+	    String timeLog = UAS.timeLog;
+	    
 	    Read();
 
 	    // Handle new flight plan inputs
 	    if(FlightData.Inbox.UnreadFlightPlanUpdate()){
 		FlightData.Inbox.ReadFlightPlanUpdate();		
 		FlightData.UpdateFlightPlan(comIntf);
+		error.addWarning("[" + timeLog + "] MSG: Flight plan update");
 	    }
 
 	    // Handle geo fence messages
 	    if(FlightData.Inbox.UnreadGeoFenceUpdate()){
 		FlightData.Inbox.ReadGeoFenceUpdate();		
 		FlightData.GetNewGeoFence(comIntf);
+		error.addWarning("[" + timeLog + "] MSG: Geo fence update   ");
 	    }
 	    
 	    // Handle traffic information
@@ -53,7 +64,7 @@ public class COM implements Runnable{
 		FlightData.Inbox.ReadTraffic();
 		
 		GenericObject.AddObject(FlightData.traffic,msg1);
-		System.out.print("Received traffic information");
+	        error.addWarning("[" + timeLog + "] MSG: Traffic update");
 
 		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();
 		msg2.acktype = 2;
@@ -67,7 +78,7 @@ public class COM implements Runnable{
 		FlightData.Inbox.ReadObstacle();
 
 		GenericObject.AddObject(FlightData.obstacles,msg1);
-		System.out.print("Received obstacle information");
+		error.addWarning("[" + timeLog + "] MSG: Obstacle update");
 		
 		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();
 		msg2.acktype = 3;
@@ -82,7 +93,7 @@ public class COM implements Runnable{
 		FlightData.Inbox.ReadOthers();
 
 		GenericObject.AddObject(FlightData.missionObj,msg1);
-		System.out.print("Received mission object");
+		error.addWarning("[" + timeLog + "] MSG: Mission object update");
 		
 		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();
 		msg2.acktype = 4;
@@ -96,7 +107,7 @@ public class COM implements Runnable{
 	    if(FlightData.Inbox.UnreadMissionStart()){
 		FlightData.Inbox.ReadMissionStart();		
 		FlightData.startMission = FlightData.Inbox.MissionStartStop().missionStart;				
-		System.out.println("Received mission start");
+		error.addWarning("[" + timeLog + "] MSG: Received Mission START/STOP");
 	     		
 	    }
 
@@ -132,6 +143,22 @@ public class COM implements Runnable{
 	else{
 	    return false;
 	}
+    }
+
+    public boolean hasError() {
+	return error.hasError();
+    }
+    
+    public boolean hasMessage() {
+	return error.hasMessage();
+    }
+    
+    public String getMessage() {
+	return error.getMessage();
+    }
+    
+    public String getMessageNoClear() {
+	return error.getMessageNoClear();
     }
     
 }

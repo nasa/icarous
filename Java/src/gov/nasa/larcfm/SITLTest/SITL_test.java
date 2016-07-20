@@ -49,12 +49,16 @@ public class SITL_test{
 	PowerLineInspection test = new PowerLineInspection();
 	
 	Aircraft uasQuad  = new Aircraft(SITLInt,COMInt,FlightData,test);
+
+	uasQuad.error.setConsoleOutput(true);
+	
 	
 	FMS fms_module           = new FMS("Flight management",uasQuad);
 	DAQ daq_module           = new DAQ("Data acquisition",uasQuad);
 	COM com_module           = new COM("Communications",uasQuad);
 	BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);
 
+	com_module.error.setConsoleOutput(true);
 	
 	while(!uasQuad.fsam.CheckAPHeartBeat()){
 	    
