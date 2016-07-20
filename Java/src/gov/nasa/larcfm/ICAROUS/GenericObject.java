@@ -13,36 +13,34 @@ package gov.nasa.larcfm.ICAROUS;
 import java.util.*;
 import java.lang.*;
 import com.MAVLink.icarous.*;
-
+import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.Velocity;
 
 class GenericObject{
 
     int id;
     int type;
     Position pos;
-    float vx;
-    float vy;
-    float vz;
+    Velocity vel;
     float orientation;
 
     public GenericObject(int id_in,int type_in,
 			 float lat_in, float lon_in, float altmsl_in,
 			 float orient_in,
 			 float vx_in, float vy_in,float vz_in){
-	pos = new Position(lat_in,lon_in,altmsl_in);
-	id = id_in;
+	id   = id_in;
 	type = type_in;
+	pos  = Position.makeLatLonAlt(lat_in,lon_in,altmsl_in*3.28);
+	vel  = Velocity.makeVxyz(vx_in,vy_in,vz_in);		
 	orientation = orient_in;
-	vx = vx_in;
-	vy = vy_in;
-	vz = vz_in;
+	
     }
 
     public static void AddObject(List<GenericObject> objectList,msg_pointofinterest msg){
 
 	GenericObject obj = new GenericObject(msg.index,msg.subtype,
-					 msg.latx,msg.lony,msg.altz,msg.heading,
-					 msg.vx,msg.vy,msg.vz);
+				         	 msg.latx,msg.lony,msg.altz,msg.heading,
+					         msg.vx,msg.vy,msg.vz);
 	
 	objectList.add(obj);
     }
