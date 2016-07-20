@@ -283,7 +283,7 @@ public class FSAM{
 	switch(executeState){
 
 	case START:
-	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Reached safe position");	    
+	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Starting resolution");	    
 	    UAS.apMode = Aircraft.AP_MODE.GUIDED;
 	    UAS.SetMode(4);
 

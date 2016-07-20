@@ -30,8 +30,8 @@ public class BCAST implements Runnable{
 	
 	while(true){
 	
-	    // Broadcast messages here	  
-	    // Intf.Write(FlightData.Inbox.msgHeartbeat);
+	    // Broadcast messages here	    	    
+	    Intf.Write(FlightData.Inbox.GlobalPositionInt());
 	    	  
 	}
     }

@@ -5,7 +5,7 @@ MAVLinkSRC = $(wildcard src/com/MAVLink/*.java src/com/MAVLink/common/*.java \
 
 ICAROUSSRC = $(wildcard src/gov/nasa/larcfm/ICAROUS/*.java)
 
-SITLSRC    = $(wildcard src/gov/nasa/larcfm/SITLTest/*.java)
+SITLSRC    = $(wildcard src/gov/nasa/larcfm/SITL/*.java)
 
 JAR        = :lib/jssc-2.8.0.jar:lib/FormalATM.jar
 
