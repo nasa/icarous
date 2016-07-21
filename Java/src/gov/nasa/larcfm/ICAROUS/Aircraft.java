@@ -170,6 +170,26 @@ public class Aircraft implements ErrorReporter{
 	
     }
 
+    public void EnableDataStream(){
+	
+	msg_heartbeat msg1 = new msg_heartbeat();
+	
+	msg1.type      = MAV_TYPE.MAV_TYPE_ONBOARD_CONTROLLER;
+	msg1.autopilot = MAV_AUTOPILOT.MAV_AUTOPILOT_GENERIC;
+	
+	apIntf.Write(msg1);
+
+	msg_request_data_stream req = new msg_request_data_stream();
+	req.req_message_rate = 20;
+	req.req_stream_id    = MAV_DATA_STREAM.MAV_DATA_STREAM_ALL;
+	req.start_stop       = 1;
+	req.target_system    = 0;
+	req.target_component = 0;
+
+	apIntf.Write(req);
+
+    }
+    
     public int PreFlight(){
 	
 	// Send flight plan to pixhawk
