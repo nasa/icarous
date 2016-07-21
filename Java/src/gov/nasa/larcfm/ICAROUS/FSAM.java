@@ -217,9 +217,9 @@ public class FSAM{
 
 	FlightData.Inbox.ReadHeartbeat_AP();
 	
-	apIntf.SetTimeout(5000);
+	
 	FlightData.Inbox.decode_message(apIntf.Read());
-	apIntf.SetTimeout(0);
+	
 		
 
 	if(FlightData.Inbox.UnreadHeartbeat_AP()){
