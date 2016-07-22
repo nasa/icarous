@@ -16,7 +16,7 @@ import com.MAVLink.icarous.*;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Velocity;
 
-class GenericObject{
+public class GenericObject{
 
     int id;
     int type;
