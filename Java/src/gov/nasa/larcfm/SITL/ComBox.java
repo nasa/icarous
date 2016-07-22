@@ -115,8 +115,7 @@ public class ComBox{
 	int updSendPort  = 0;
 
 	DatagramSocket sock = null;
-
-	System.out.println(args[0]);
+	
 	FileReader in = new FileReader(args[0]);
 	SeparatedInput reader = new SeparatedInput(in);
 	
@@ -202,82 +201,6 @@ public class ComBox{
 	    Geofence.add(gf);
 	    reader.readLine();
 	}
-
-	/*
-	// Send four waypoints
-	msg_pointofinterest wp1 = new msg_pointofinterest();
-	wp1.id      = 0;
-	wp1.index   = 0;
-	wp1.subtype = 0;
-	wp1.latx    = 37.615759f;
-	wp1.lony    = -122.365150f;
-	wp1.altz    = 50.0f;
-	wp1.heading = 0.0f;
-
-	msg_pointofinterest wp2 = new msg_pointofinterest();
-	wp2.id      = 0;
-	wp2.index   = 1;
-	wp2.subtype = 0;
-	wp2.latx    =  37.615644f; 
-	wp2.lony    = -122.363191f;
-	wp2.altz    = 20.0f;
-	wp2.heading = 0.0f;
-	
-	msg_pointofinterest wp3 = new msg_pointofinterest();
-	wp3.id      = 0;
-	wp3.index   = 2;
-	wp3.subtype = 0;
-	wp3.latx    =  37.618343f;
-	wp3.lony    =  -122.360675f;
-	wp3.altz    = 20.0f;
-	wp3.heading = 0.0f;
-
-	msg_pointofinterest wp4 = new msg_pointofinterest();
-	wp4.id      = 0;
-	wp4.index   = 3;
-	wp4.subtype = 0;
-	wp4.latx    = 37.616875f;
-	wp4.lony    = -122.364818f;
-	wp4.altz    = 20.0f;
-	wp4.heading = 0.0f;	
-
-	// Send four waypoints
-	msg_pointofinterest gf1 = new msg_pointofinterest();
-	gf1.id      = 1;
-	gf1.index   = 0;
-	gf1.subtype = 0;
-	gf1.latx    = 37.609712f;
-	gf1.lony    = -122.359299f;
-	gf1.altz    = 0.0f;
-	gf1.heading = 0.0f;
-
-	msg_pointofinterest gf2 = new msg_pointofinterest();
-	gf2.id      = 1;
-	gf2.index   = 1;
-	gf2.subtype = 0;
-	gf2.latx    = 37.614297f; 
-	gf2.lony    = -122.355688f;
-	gf2.altz    = 0.0f;
-	gf2.heading = 0.0f;
-	
-	msg_pointofinterest gf3 = new msg_pointofinterest();
-	gf3.id      = 1;
-	gf3.index   = 2;
-	gf3.subtype = 0;
-	gf3.latx    = 37.618960f;
-	gf3.lony    = -122.366671f;
-	gf3.altz    = 0.0f;
-	gf3.heading = 0.0f;
-
-	msg_pointofinterest gf4 = new msg_pointofinterest();
-	gf4.id      = 1;
-	gf4.index   = 3;
-	gf4.subtype = 0;
-	gf4.latx    =  37.614623f;
-	gf4.lony    = -122.370068f;
-	gf4.altz    = 0.0f;
-	gf4.heading = 0.0f;
-	*/
 
 
 	msg_mission_start_stop msgMissionStart = new msg_mission_start_stop();
