@@ -9,19 +9,7 @@
  * Rights Reserved.
  */
 import gov.nasa.larcfm.ICAROUS.*;
-
-class PowerLineInspection implements Mission{
-
-	public PowerLineInspection(){
-
-	}
-	
-	public int Execute(Aircraft UAS){
-
-	    //Do nothing
-	    return 0;
-	}
-}
+import gov.nasa.larcfm.MISSION.*;
 
 public class SITL_test{
 
@@ -49,7 +37,7 @@ public class SITL_test{
 					   5555,
 					   FlightData);
 
-	PowerLineInspection test = new PowerLineInspection();
+	Demo test = new Demo();
 	
 	Aircraft uasQuad  = new Aircraft(SITLInt,COMInt,FlightData,test);
 

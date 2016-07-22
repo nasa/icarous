@@ -206,8 +206,6 @@ public class ComBox{
 	msg_mission_start_stop msgMissionStart = new msg_mission_start_stop();
 
 	msgMissionStart.missionStart = 1;
-
-
 	
 	// Send all messages
 	try{
@@ -252,7 +250,41 @@ public class ComBox{
 	    System.out.println(e);
 	}
 
-	    
+	double CurrentTime, ElapsedTime, StartTime;
+
+	
+	CurrentTime = (double) System.nanoTime()/1E9;
+	StartTime   = CurrentTime;
+	
+	boolean ObjectDetected = false;
+
+	while(!ObjectDetected){
+	    CurrentTime = (double) System.nanoTime()/1E9; 
+	    ElapsedTime = CurrentTime - StartTime;
+
+	    if(ElapsedTime > 60){
+		ObjectDetected = true;
+	    }
 	}
+
+	msg_pointofinterest obj = new msg_pointofinterest();
+
+	obj.id      = 4;
+	obj.index   = 0;
+	obj.subtype = 0;
+
+	UDPWrite(obj,sock,host,udpSendPort);
+
+	ack = UDPRead(sock);
+
+	if(ack.acktype == 4 && ack.value == 1){
+	    System.out.println("Object sent successfully");	 
+	}
+	else{
+	    System.out.println("Resend object");
+	}
+	
+	
+    }
     
 }
