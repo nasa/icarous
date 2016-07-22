@@ -10,6 +10,10 @@
  */
 import gov.nasa.larcfm.ICAROUS.*;
 
+import com.MAVLink.*;
+import com.MAVLink.common.*;
+
+
 class PowerLineInspection implements Mission{
 
 	public PowerLineInspection(){
@@ -31,70 +35,70 @@ public class PX4Test{
 	AircraftData FlightData    = new AircraftData();
 	
 	
-	Interface PX4Int    = new Interface(Interface.SERIAL,args[0]);
-					   
+	Interface PX4Int    = new Interface(Interface.SERIAL,args[0],FlightData);
+
+	//Interface PX4Int    = new Interface(Interface.SOCKET,
+	//				    null,
+	//				    Integer.parseInt(args[0]),
+	//				    0);
+					    
 	
 	Interface COMInt   = new Interface(Interface.SOCKET,
 					   null,
 					   Integer.parseInt(args[1]),
-					   0);
+					   0,
+					   FlightData);
 	
 	Interface BCASTInt = new Interface(Interface.SOCKET,
 					   "230.1.1.1",
 					   0,
-					   5555);
+					   5555,
+					   FlightData);
 
 	PowerLineInspection test = new PowerLineInspection();
 	
 	Aircraft uasQuad  = new Aircraft(PX4Int,COMInt,FlightData,test);
 
+	
+	
 	uasQuad.error.setConsoleOutput(true);
 	
 	
-	FMS fms_module           = new FMS("Flight management",uasQuad);
-	DAQ daq_module           = new DAQ("Data acquisition",uasQuad);
-	COM com_module           = new COM("Communications",uasQuad);
-	BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);
+	//FMS fms_module           = new FMS("Flight management",uasQuad);
+	DAQ daq_module             = new DAQ("Data acquisition",uasQuad);
+	//COM com_module           = new COM("Communications",uasQuad);
+	//BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);
 
-	com_module.error.setConsoleOutput(true);
+	//com_module.error.setConsoleOutput(true);
+
+	uasQuad.EnableDataStream();
 	
 	while(!uasQuad.fsam.CheckAPHeartBeat()){
 	    
 	}
-
+	
 	System.out.println("Received heartbeat from AP");
 
-	while(!com_module.CheckCOMHeartBeat()){
-	    
-	}
-
-	System.out.println("Received heartbeat from COM");
-	    
-	daq_module.start();
-	    
-
-	try{
-	    Thread.sleep(1000);
-	}catch(InterruptedException e){
-	    System.out.println(e);
-	}
-
-	bcast_module.start();
+	//uasQuad.EnableDataStream();
 	
-	try{
-	    Thread.sleep(1000);
-	}catch(InterruptedException e){
-	    System.out.println(e);
-	}
+	//while(!com_module.CheckCOMHeartBeat()){
+	    
+	//}
 
+	//System.out.println("Received heartbeat from COM");
 	
-	com_module.start();
+	daq_module.start();	    
+	
+	while(true){
 
-	try{
-	    Thread.sleep(1000);
-	}catch(InterruptedException e){
-	    System.out.println(e);
+	    uasQuad.FlightData.GetAttitude();
+	  
+	    System.out.format("%f,%f,%f\n",uasQuad.FlightData.roll,uasQuad.FlightData.pitch,uasQuad.FlightData.yaw);
+	 
+	  
+	  
 	}
+	    
 	
 	//fms_module.start();
 	

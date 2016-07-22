@@ -63,10 +63,11 @@ public class Interface{
 	InitSocketInterface();
     }
 
-    public Interface(int intType,String portName){
+    public Interface(int intType,String portName,AircraftData acData){
 
 	interfaceType  = (short) intType;
 	serialPortName = portName;
+	Inbox          = acData.Inbox;
 
 	InitSerialInterface();
     }
@@ -170,6 +171,7 @@ public class Interface{
     public void SerialRead(){
 
 	byte[] buffer = null;
+	MAVLinkPacket RcvdPacket = null;
 	
 	try{
 	    buffer = serialPort.readBytes(6+255+2);
@@ -178,7 +180,11 @@ public class Interface{
 	    System.out.println(e);
 	}
 
-	//return ParseMessage(buffer);
+	for(int i=0;i<(6+255+2);i++){
+	    
+	    RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer[i]);	    
+	    Inbox.decode_message(RcvdPacket);	    	    	
+	}
     }
 
     public void SerialWrite(MAVLinkMessage msg2send){
