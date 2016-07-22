@@ -34,17 +34,20 @@ public class SITL_test{
 	Interface SITLInt    = new Interface(Interface.SOCKET,
 					   null,
 					   Integer.parseInt(args[0]),
-					   0);
+					   0,
+					   FlightData);
 	
 	Interface COMInt   = new Interface(Interface.SOCKET,
 					   null,
 					   Integer.parseInt(args[1]),
-					   0);
+					   0,
+					   FlightData);
 	
 	Interface BCASTInt = new Interface(Interface.SOCKET,
 					   "230.1.1.1",
 					   0,
-					   5555);
+					   5555,
+					   FlightData);
 
 	PowerLineInspection test = new PowerLineInspection();
 	

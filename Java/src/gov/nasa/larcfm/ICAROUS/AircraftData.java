@@ -159,7 +159,7 @@ public class AircraftData{
 	    
 		case FP_SEND_WP:
 
-		    Inbox.decode_message(Intf.Read());
+		    Intf.Read();
 		
 				
 		    if(Inbox.UnreadMissionRequest()){
@@ -244,7 +244,7 @@ public class AircraftData{
 	      case FP_WAYPT_INFO:
 
 		  Intf.SetTimeout(500);
-		  Inbox.decode_message(Intf.Read());
+		  Intf.Read();
 		  Intf.SetTimeout(0);
 
 		  if(Inbox.UnreadWaypoint()){
@@ -348,7 +348,7 @@ public class AircraftData{
 	    case VERTICES:
 
 		Intf.SetTimeout(500);
-		Inbox.decode_message(Intf.Read());
+		Intf.Read();
 		Intf.SetTimeout(0);
 		
 		if(Inbox.UnreadVertex()){

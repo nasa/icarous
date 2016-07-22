@@ -43,13 +43,14 @@ public class Interface{
     private DatagramSocket sock   = null;
     private SerialPort serialPort = null;
     private Parser MsgParser      = new Parser();
+    private MAVLinkMessages Inbox;
     
-    
-    public Interface(int intType,String hostname,int recvPort,int sendPort){
+    public Interface(int intType,String hostname,int recvPort,int sendPort,AircraftData acData){
 
 	interfaceType   = (short) intType;
 	udpReceivePort  = recvPort;
 	udpSendPort     = sendPort;
+	Inbox           = acData.Inbox;
 
 	if(hostname != null){
 	    try{
@@ -115,13 +116,14 @@ public class Interface{
 
     }
 	
-    public MAVLinkPacket UDPRead(){
+    public void UDPRead(){
 
 	byte[] buffer = new byte[6+255+2];
 	byte[] buffer_data;
 	    
 	DatagramPacket input = new DatagramPacket(buffer, buffer.length);
-
+	MAVLinkPacket RcvdPacket = null;
+	
 	try{
 	    sock.receive(input);
 
@@ -135,16 +137,18 @@ public class Interface{
 	    }
 	    
 	    buffer_data   = input.getData();
-		
-	    return ParseMessage(buffer_data);	    
-	    
+
+	    for(int i=0;i<(6+255+2);i++){
+		RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer_data[i]);
+		Inbox.decode_message(RcvdPacket);	
+	    }
+	    	    	    
 	}catch(SocketTimeoutException e){
 	    
 	}catch(IOException e){
 	    System.out.println(e);
 	}	
 
-	return null;
     }
 
     public void UDPWrite(MAVLinkMessage msg2send){
@@ -163,7 +167,7 @@ public class Interface{
 
     }
 
-    public MAVLinkPacket SerialRead(){
+    public void SerialRead(){
 
 	byte[] buffer = null;
 	
@@ -174,7 +178,7 @@ public class Interface{
 	    System.out.println(e);
 	}
 
-	return ParseMessage(buffer);
+	//return ParseMessage(buffer);
     }
 
     public void SerialWrite(MAVLinkMessage msg2send){
@@ -184,7 +188,6 @@ public class Interface{
 
 	try{
 	    serialPort.writeBytes(buffer);
-	    System.err.println("Sent command:");
 	}
 	catch(SerialPortException e){
 	    System.err.println(e);
@@ -193,16 +196,16 @@ public class Interface{
 	
     }
 	
-    public synchronized MAVLinkPacket Read(){
+    public synchronized void Read(){
 	if(interfaceType == SOCKET){
-	    return UDPRead();
+	    UDPRead();
 	}
 	else if(interfaceType == SERIAL){
-	    return SerialRead();
+	    SerialRead();
 	}
 	else{
 	    System.out.println("Unknown interface");
-	    return null;
+	    
 	}
     }
 

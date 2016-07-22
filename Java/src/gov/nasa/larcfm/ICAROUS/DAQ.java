@@ -31,7 +31,7 @@ public class DAQ implements Runnable{
 
     public void run(){
 	while(true){
-	    Read();   
+	    icarousAP.Read();   
 	}
     }
 
@@ -41,12 +41,6 @@ public class DAQ implements Runnable{
 	t.start();
     }
 
-    public void Read(){
 
-	MAVLinkPacket RcvdPacket = icarousAP.Read();
-
-	FlightData.Inbox.decode_message(RcvdPacket);
-
-    }
 
 }

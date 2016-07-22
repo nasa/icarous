@@ -216,12 +216,9 @@ public class FSAM{
     public boolean CheckAPHeartBeat(){
 
 	FlightData.Inbox.ReadHeartbeat_AP();
-	
-	
-	FlightData.Inbox.decode_message(apIntf.Read());
-	
 		
-
+	apIntf.Read();
+			
 	if(FlightData.Inbox.UnreadHeartbeat_AP()){
 	    return true;
 	}

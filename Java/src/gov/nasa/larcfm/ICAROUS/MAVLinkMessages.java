@@ -191,6 +191,8 @@ public class MAVLinkMessages{
 	RcvdOthers                = 0;
 	RcvdHeartbeat_AP          = 0;
 	RcvdHeartbeat_COM         = 0;
+
+	msgAttitude = new msg_attitude();
     }
 
     public synchronized boolean UnreadFlightPlanUpdate(){
@@ -363,7 +365,7 @@ public class MAVLinkMessages{
 	if(message == null){
 	    return;
 	}
-
+	//System.out.println("Message id:"+message.msgid);
 	
 	switch(message.msgid){
 	

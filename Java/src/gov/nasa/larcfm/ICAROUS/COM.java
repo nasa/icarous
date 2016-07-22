@@ -42,7 +42,7 @@ public class COM implements Runnable,ErrorReporter{
 
 	    String timeLog = UAS.timeLog;
 	    
-	    Read();
+	    comIntf.Read();
 
 	    // Handle new flight plan inputs
 	    if(FlightData.Inbox.UnreadFlightPlanUpdate()){
@@ -122,21 +122,14 @@ public class COM implements Runnable,ErrorReporter{
 	t.start();
     }
 
-    public void Read(){
 
-	MAVLinkPacket RcvdPacket = comIntf.Read();
-	FlightData.Inbox.decode_message(RcvdPacket);
-	
-    }
 
     public boolean CheckCOMHeartBeat(){
 
 	FlightData.Inbox.ReadHeartbeat_COM();
 	
-	comIntf.SetTimeout(5000);
-	FlightData.Inbox.decode_message(comIntf.Read());
-	comIntf.SetTimeout(0);
-
+	comIntf.Read();
+	
 	if(FlightData.Inbox.UnreadHeartbeat_COM()){
 	    return true;
 	}

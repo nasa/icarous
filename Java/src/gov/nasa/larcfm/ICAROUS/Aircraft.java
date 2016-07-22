@@ -180,14 +180,15 @@ public class Aircraft implements ErrorReporter{
 	apIntf.Write(msg1);
 
 	msg_request_data_stream req = new msg_request_data_stream();
-	req.req_message_rate = 20;
-	req.req_stream_id    = MAV_DATA_STREAM.MAV_DATA_STREAM_ALL;
+	req.req_message_rate = 10;
+	req.req_stream_id    = MAV_DATA_STREAM.MAV_DATA_STREAM_ALL;           ;
 	req.start_stop       = 1;
 	req.target_system    = 0;
 	req.target_component = 0;
 
 	apIntf.Write(req);
 
+	
     }
     
     public int PreFlight(){
