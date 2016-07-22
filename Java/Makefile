@@ -16,23 +16,25 @@ CLASSPATH  = bin
 JAVAC      = javac
 
 
+ALL: MAVLINK ICAROUS SITL PX4
+
 MAVLINK: $(MAVLinkSRC)
 	@echo
 	@echo "Compiling MAVLink messages"
-	$(JAVAC) $(MAVLinkSRC) -d $(CLASSPATH)
+	@$(JAVAC) $(MAVLinkSRC) -d $(CLASSPATH)
 
 ICAROUS: $(ICAROUSSRC)
 	@echo
-	@echo
-	$(JAVAC) -cp $(CLASSPATH)$(JAR) $(ICAROUSSRC) -d $(CLASSPATH)
+	@echo "Compiling ICAROUS package"
+	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(ICAROUSSRC) -d $(CLASSPATH)
 
 SITL: $(SITLSRC)
 	@echo
-	@echo
-	$(JAVAC) -cp $(CLASSPATH)$(JAR) $(SITLSRC) -d $(CLASSPATH)
+	@echo "Compiling SITL files"
+	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(SITLSRC) -d $(CLASSPATH)
 
 PX4: $(PX4SRC)
 	@echo
-	@echo
-	$(JAVAC) -cp $(CLASSPATH)$(JAR) $(PX4SRC) -d $(CLASSPATH)
+	@echo "Compiling PX4 files"
+	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(PX4SRC) -d $(CLASSPATH)
 
