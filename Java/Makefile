@@ -5,6 +5,8 @@ MAVLinkSRC = $(wildcard src/com/MAVLink/*.java src/com/MAVLink/common/*.java \
 
 ICAROUSSRC = $(wildcard src/gov/nasa/larcfm/ICAROUS/*.java)
 
+MISSIONSRC = $(wildcard src/gov/nasa/larcfm/MISSION/*.java)
+
 SITLSRC    = $(wildcard src/gov/nasa/larcfm/SITL/*.java)
 
 PX4SRC     = $(wildcard src/gov/nasa/larcfm/PX4/*.java)
@@ -16,7 +18,7 @@ CLASSPATH  = bin
 JAVAC      = javac
 
 
-ALL: MAVLINK ICAROUS SITL PX4
+ALL: MAVLINK ICAROUS MISSION SITL PX4
 
 MAVLINK: $(MAVLinkSRC)
 	@echo
@@ -27,6 +29,11 @@ ICAROUS: $(ICAROUSSRC)
 	@echo
 	@echo "Compiling ICAROUS package"
 	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(ICAROUSSRC) -d $(CLASSPATH)
+
+MISSION: $(MISSIONSRC)
+	@echo
+	@echo "Compiling Mission files"
+	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(MISSIONSRC) -d $(CLASSPATH)
 
 SITL: $(SITLSRC)
 	@echo
