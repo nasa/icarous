@@ -20,7 +20,7 @@ import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.NavPoint;
 
 enum FSAM_OUTPUT{
-	CONFLICT,NOOP
+    CONFLICT,NOOP, TERMINATE
 }
 
 enum RESOLVE_STATE{
@@ -120,7 +120,7 @@ public class FSAM{
 	
 	if(CheckMissionItemReached()){
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Reached waypoint");
-	    FlightData.FP_nextWaypoint++;
+	    FlightData.FP_nextWaypoint++;	  
 	}
 	
 	if(conflictList.size() > 0){
@@ -179,9 +179,10 @@ public class FSAM{
 		msgMission.target_system     = 0;
 		msgMission.target_component  = 0;
 		msgMission.seq               = 3;	    
-
+		
 		UAS.error.addWarning("[" + UAS.timeLog + "] CMD: Set next mission item");
 		UAS.apIntf.Write(msgMission);
+		FlightData.FP_nextWaypoint++;
 	    }
 
 	    UAS.apMode = Aircraft.AP_MODE.AUTO;

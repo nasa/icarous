@@ -10,6 +10,7 @@
  */
 import gov.nasa.larcfm.ICAROUS.*;
 import gov.nasa.larcfm.MISSION.*;
+import java.io.*;
 
 public class SITL_test{
 
@@ -50,6 +51,7 @@ public class SITL_test{
 	BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);
 
 	com_module.error.setConsoleOutput(true);
+	test.error.setConsoleOutput(true);
 	
 	while(!uasQuad.fsam.CheckAPHeartBeat()){
 	    
@@ -90,6 +92,22 @@ public class SITL_test{
 	}
 	
 	fms_module.start();
+
+	while(fms_module.isFMSrunning()){
+	    // DO nothing
+	}
+
+	System.out.println("Creating log file");
+	try{
+	    FileWriter writer = new FileWriter("SITLLog.log");
+	    writer.write(uasQuad.getMessage());
+	    writer.write(com_module.getMessage());
+	    writer.write(test.getMessage());
+	    writer.close();
+	}
+	catch(IOException e){
+	    System.out.println(e);
+	}
 	
     }
 

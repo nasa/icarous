@@ -30,10 +30,14 @@ public class Demo implements Mission,ErrorReporter{
 
     public ErrorLog error;
     String timeLog;
+
+    boolean missionComplete;
     
     public Demo(){
 	stateMission = MISSION_STATE.NOOP;
+	missionComplete = false;
 	error = new ErrorLog("Mission ");
+	
     }
 
     public int Execute(Aircraft UAS){
@@ -95,6 +99,10 @@ public class Demo implements Mission,ErrorReporter{
 
         case NOOP:
 
+	    if(missionComplete){
+		return 1;
+	    }
+	    
 	    break;
 	    
 	    
@@ -109,10 +117,16 @@ public class Demo implements Mission,ErrorReporter{
 	    UAS.SetMode(3);
 	    UAS.apMode = Aircraft.AP_MODE.AUTO;
 	    stateMission = MISSION_STATE.NOOP;
+	    missionComplete = true;
+	    error.addWarning("[" + timeLog + "] MSG: Object examination completed");
 	    break;
 	}
 	
 	return 0;
+    }
+
+    public boolean isMissionComplete(){
+	return missionComplete;
     }
 
     public boolean hasError() {

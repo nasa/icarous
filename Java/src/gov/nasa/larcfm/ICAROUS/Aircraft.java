@@ -23,7 +23,7 @@ public class Aircraft implements ErrorReporter{
     }
 
     public enum FLIGHT_STATE{
-	TAKEOFF, TAKEOFF_CLIMB, MONITOR, LAND, TERMINATE
+	TAKEOFF, TAKEOFF_CLIMB, CRUISE, LAND, TERMINATE
     }
     
     public Interface apIntf;
@@ -42,6 +42,8 @@ public class Aircraft implements ErrorReporter{
     public String timeLog;
     
     public ErrorLog error;
+
+    private boolean landStart;
     
     public Aircraft(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc){
 	
@@ -55,6 +57,7 @@ public class Aircraft implements ErrorReporter{
 	error            = new ErrorLog("Aircraft");
 	timeStart        = System.nanoTime();
 	timeLog          = String.format("%.3f",0.0f);
+	landStart        = false;
     }
 
     // Function to send commands to pixhawk
@@ -239,7 +242,7 @@ public class Aircraft implements ErrorReporter{
 	    // Switch to auto once 50 m is reached and start mission in auto mode
 	    if(currPosition.alt() >= 50.0f){
 		error.addWarning("[" + timeLog + "] MODE:AUTO");
-		state = FLIGHT_STATE.MONITOR;
+		state = FLIGHT_STATE.CRUISE;
 		SetMode(3);
 		apMode = AP_MODE.AUTO;
 		
@@ -252,8 +255,8 @@ public class Aircraft implements ErrorReporter{
 
 	    break;
 
-	case MONITOR:
-
+	case CRUISE:
+	    	    
 	    // Check for conflicts and determine mode
 	    status = fsam.Monitor();
 
@@ -263,15 +266,38 @@ public class Aircraft implements ErrorReporter{
 	    else if(status == FSAM_OUTPUT.NOOP){
 		mission.Execute(this);
 	    }
-	    else{
-		
+
+	    if(mission.isMissionComplete() && (FlightData.FP_nextWaypoint >= FlightData.FP_numWaypoints)){
+		state = FLIGHT_STATE.LAND;
 	    }
-	   
 		
 	    break;
 
 	case LAND:
 
+	    if(!landStart){
+		// Set mode to guided
+		error.addWarning("[" + timeLog + "] MSG: Landing started");
+		error.addWarning("[" + timeLog + "] MODE:GUIDED");
+		SetMode(4);
+		apMode = AP_MODE.GUIDED;
+	    
+		SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_LAND,0,
+			    6.0f,0,0,0,
+			    (float) currPosition.latitude(),
+			    (float) currPosition.longitude(),
+			    (float) currPosition.alt());
+
+		landStart = true;
+	    
+	    }
+
+	    if(currPosition.alt() < 6.0){
+		state =FLIGHT_STATE.TERMINATE;
+		
+	    }
+	    
+	    	    
 	    break;
 
 	case TERMINATE:

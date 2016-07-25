@@ -14,4 +14,6 @@ public interface Mission{
 
     public int Execute(Aircraft UAS);
 
+    public boolean isMissionComplete();
+
 }

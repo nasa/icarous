@@ -36,12 +36,18 @@ public class FMS implements Runnable{
 	while(FMSrunning){	    
 	    FlightManagement();
 	}
+
+	UAS.error.addWarning("[" + UAS.timeLog + "] MSG:FMS shutting down");
     }
         
     public void start(){
 	System.out.println("Starting "+threadName);
 	t = new Thread(this,threadName);
 	t.start();
+    }
+
+    public synchronized boolean isFMSrunning(){
+	return FMSrunning;
     }
 	
     public void FlightManagement(){

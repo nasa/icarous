@@ -38,11 +38,11 @@ public class COM implements Runnable,ErrorReporter{
 
     public void run(){
 
-	while(true){
-
-	    String timeLog = UAS.timeLog;
+	while(true){	    
 	    
 	    comIntf.Read();
+
+	    String timeLog = UAS.timeLog;
 
 	    // Handle new flight plan inputs
 	    if(FlightData.Inbox.UnreadFlightPlanUpdate()){
