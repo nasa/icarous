@@ -165,6 +165,7 @@ public class MAVLinkMessages{
     private int RcvdMissionAck;
     private int RcvdMissionStart;
     private int RcvdMissionItemReached;
+    private int RcvdCmdAck;
 
     private int RcvdWaypoint;
     private int RcvdVertex;
@@ -300,6 +301,13 @@ public class MAVLinkMessages{
 	    return false;
     }
 
+    public synchronized boolean UnreadCmdAck(){
+	if(RcvdCmdAck == 1)
+	    return true;
+	else
+	    return false;
+    }
+
     public synchronized void ReadFlightPlanUpdate(){
 	RcvdFlightPlanUpdate = 0;
     }
@@ -358,6 +366,10 @@ public class MAVLinkMessages{
 
     public synchronized void ReadHeartbeat_COM(){
 	RcvdHeartbeat_COM = 0;
+    }
+
+    public synchronized void ReadCmdAck(){
+	RcvdCmdAck = 0;
     }
     
     public synchronized void decode_message(MAVLinkPacket message){
@@ -597,6 +609,7 @@ public class MAVLinkMessages{
 	    
 	case msg_command_ack.MAVLINK_MSG_ID_COMMAND_ACK:
 	    msgCommandAck = (msg_command_ack) message.unpack();
+	    RcvdCmdAck = 1;
 	    break;
 	    
 	case msg_manual_setpoint.MAVLINK_MSG_ID_MANUAL_SETPOINT:
@@ -982,5 +995,6 @@ public class MAVLinkMessages{
     public synchronized msg_attitude Attitude(){
 	return msgAttitude;
     }
+    
 }
 

@@ -151,7 +151,7 @@ public class Aircraft implements ErrorReporter{
 	apIntf.Write(Mode);
 
 	try{
-	    Thread.sleep(100);
+	    Thread.sleep(200);
 	}catch(InterruptedException e){
 	    System.out.println(e);
 	}
@@ -162,17 +162,61 @@ public class Aircraft implements ErrorReporter{
     // Check acknowledgement
     public int CheckAcknowledgement(){
 
-	if(FlightData.Inbox.CommandAck().result == 0 ){
-	    return 1;
-	}
-	else{
-	    error.addError("Command not accepted");
-	    return 0;
-	}
+	short status;
 	
-	
-    }
+	if(FlightData.Inbox.UnreadCmdAck()){
+	    FlightData.Inbox.ReadCmdAck();
 
+	    status = FlightData.Inbox.CommandAck().result;
+	    
+	    switch(status){
+
+	    case MAV_CMD_ACK.MAV_CMD_ACK_OK:
+		return 1;
+
+	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_FAIL:
+		error.addError("Command error: fail");
+		return 0;
+
+	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_ACCESS_DENIED:
+		error.addError("Command error: access denied");
+		return 0;
+
+	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_NOT_SUPPORTED:
+		error.addError("Command error: not supported");
+		return 0;
+
+	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_COORDINATE_FRAME_NOT_SUPPORTED:
+		error.addError("Command error: frame not supported");
+		return 0;
+
+	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_COORDINATES_OUT_OF_RANGE:
+		error.addError("Command error: coordinates out of range");
+		return 0;
+
+	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_X_LAT_OUT_OF_RANGE:
+		error.addError("Command error: x lat out of range");
+		return 0;
+
+	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_Y_LON_OUT_OF_RANGE:
+		error.addError("Command error: y lat out of range");
+		return 0;
+
+	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_Z_ALT_OUT_OF_RANGE:
+		error.addError("Command error: z alt out of range");
+		return 0;
+
+	    case MAV_CMD_ACK.MAV_CMD_ACK_ENUM_END:
+		error.addError("Command error: enum end");
+		return 0;	       		
+		
+	    }
+	   
+	    
+	}
+	return 0;
+    }
+    
     public void EnableDataStream(){
 	
 	msg_heartbeat msg1 = new msg_heartbeat();
