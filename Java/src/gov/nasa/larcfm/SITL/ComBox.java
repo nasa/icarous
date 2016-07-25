@@ -262,7 +262,7 @@ public class ComBox{
 	    CurrentTime = (double) System.nanoTime()/1E9; 
 	    ElapsedTime = CurrentTime - StartTime;
 
-	    if(ElapsedTime > 60){
+	    if(ElapsedTime > 40){
 		ObjectDetected = true;
 	    }
 	}
