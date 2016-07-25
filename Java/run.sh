@@ -7,6 +7,6 @@ fi;
 
 if [ "$1" == 'COMBOX' ];then
    echo "Launching COMBOX"
-   java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATM.jar ComBox ./bin/ComInput.txt
+   java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATM.jar ComBox ./params/ComInput.txt
 fi;
 

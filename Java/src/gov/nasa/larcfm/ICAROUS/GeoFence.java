@@ -17,12 +17,16 @@ import gov.nasa.larcfm.Util.Projection;
 import gov.nasa.larcfm.Util.EuclideanProjection;
 import gov.nasa.larcfm.Util.Poly2D;
 import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.SeparatedInput;
+import gov.nasa.larcfm.Util.ParameterData;
 
 import java.util.*;
 import java.lang.*;
+import java.io.*;
 import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
 import com.MAVLink.enums.*;
+
 
 
 public class GeoFence{
@@ -32,10 +36,10 @@ public class GeoFence{
     public int numVertices;
     public double floor;
     public double ceiling;
-    public static double hthreshold = 1.5;
-    public static double vthreshold = 1.5;
-    public static double hstepback  = 5;
-    public static double vstepback  = 5;
+    public static double hthreshold;
+    public static double vthreshold;
+    public static double hstepback;
+    public static double vstepback;
     
     
     LatLonAlt origin      = null;
@@ -57,6 +61,24 @@ public class GeoFence{
 	numVertices  = numVerticesIn;
 	floor        = floorIn;
 	ceiling      = ceilingIn;
+
+	try{
+	    FileReader in = new FileReader("params/Geofence.txt");
+	    SeparatedInput reader = new SeparatedInput(in);
+
+	    reader.readLine();
+	    ParameterData parameters = reader.getParametersRef();
+	    
+	    hthreshold   = parameters.getValue("hthreshold");
+	    vthreshold   = parameters.getValue("vthreshold");
+	    hstepback    = parameters.getValue("hstepback");
+	    vstepback    = parameters.getValue("vstepback");
+	}
+	catch(FileNotFoundException e){
+	    System.out.println("Geofence parameters not found");
+	}
+			
+	
     }
 
     public void AddVertex(int index,float lat,float lon){
