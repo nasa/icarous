@@ -16,8 +16,10 @@ package gov.nasa.larcfm.MISSION;
 
 import gov.nasa.larcfm.ICAROUS.*;
 import java.util.*;
+import gov.nasa.larcfm.Util.ErrorLog;
+import gov.nasa.larcfm.Util.ErrorReporter;
 
-public class Demo implements Mission{
+public class Demo implements Mission,ErrorReporter{
 
     public enum MISSION_STATE{
 	NOOP,TURN1, TURN2, EXAMINE, CONTINUE;
@@ -25,15 +27,19 @@ public class Demo implements Mission{
     
     double Event1;
     MISSION_STATE stateMission;
+
+    public ErrorLog error;
+    String timeLog;
     
     public Demo(){
 	stateMission = MISSION_STATE.NOOP;
+	error = new ErrorLog("Mission ");
     }
 
     public int Execute(Aircraft UAS){
 
 	AircraftData FlightData = UAS.FlightData;
-
+	timeLog = UAS.timeLog;
 	double CurrentTime =  System.nanoTime()/1E9;
 	double ElapsedTime;
 	double Targetheading;
@@ -45,7 +51,7 @@ public class Demo implements Mission{
 	switch(stateMission){
 
 	case TURN1:
-	    System.out.println("TURN 1");
+	    error.addWarning("[" + timeLog + "] MSG: TURN GOPRO TOWARDS OBJECT");
 	    UAS.SetMode(4);
 	    UAS.apMode = Aircraft.AP_MODE.GUIDED;
 	    // Turn so that the go pro can get a clear shot of the balloon
@@ -55,8 +61,6 @@ public class Demo implements Mission{
 	    if(Targetheading < 0)
 		Targetheading = 360 + Targetheading;
 	    
-	    
-	    System.out.println("Target heading:"+Targetheading);
 	    UAS.SetYaw(Targetheading);
 	    stateMission = MISSION_STATE.TURN2;
 	    Event1 = CurrentTime;
@@ -67,7 +71,7 @@ public class Demo implements Mission{
 	    ElapsedTime = CurrentTime - Event1;
 
 	    if(ElapsedTime > 10){
-		System.out.println("turning back");
+		error.addWarning("[" + timeLog + "] MSG: TURN FIREFLY TOWARDS OBJECT");
 		// Turn so that the go pro can get a clear shot of the balloon
 		Targetheading = FlightData.yaw + 90;
 		UAS.SetYaw(Targetheading);
@@ -83,6 +87,7 @@ public class Demo implements Mission{
 	    ElapsedTime = CurrentTime - Event1;
 	    
 	    if(ElapsedTime > 10){
+		error.addWarning("[" + timeLog + "] MSG: CONTINUE MISSION");
 		stateMission = MISSION_STATE.CONTINUE;
 	    }
 	    
@@ -108,6 +113,22 @@ public class Demo implements Mission{
 	}
 	
 	return 0;
+    }
+
+    public boolean hasError() {
+	return error.hasError();
+    }
+    
+    public boolean hasMessage() {
+	return error.hasMessage();
+    }
+    
+    public String getMessage() {
+	return error.getMessage();
+    }
+    
+    public String getMessageNoClear() {
+	return error.getMessageNoClear();
     }
 
 }
