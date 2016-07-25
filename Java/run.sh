@@ -10,3 +10,8 @@ if [ "$1" == 'COMBOX' ];then
    java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATM.jar ComBox ./params/ComInput.txt
 fi;
 
+if [ "$1" == 'TestVoldemort' ];then
+   echo "Testing message receipt from VOLDEMORT"
+   java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATM.jar Voldemort_test 14551 14552
+fi;
+

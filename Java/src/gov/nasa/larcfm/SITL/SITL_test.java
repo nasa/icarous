@@ -1,5 +1,5 @@
 /**
- * ICAROUS Interface
+ * Software in the loop test
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
  * 
