@@ -231,14 +231,14 @@ public class FSAM{
 
     public void CheckGeoFences(){
 
+	 FenceKeepInConflict  = false;
+	 FenceKeepOutConflict = false;
+	
 	for(int i=0;i< FlightData.fenceList.size();i++){
 	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
 	    GF.CheckViolation(FlightData.acState.positionLast());
 
-	    Conflict cf;
-
-	    FenceKeepInConflict  = false;
-	    FenceKeepOutConflict = false;
+	    Conflict cf;	   
 
 	    if(GF.hconflict || GF.vconflict){
 		
