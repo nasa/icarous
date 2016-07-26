@@ -293,7 +293,7 @@ public class Aircraft implements ErrorReporter{
 		// Set speed
 		error.addWarning("[" + timeLog + "] CMD:SPEED CHANGE");
 		SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
-			    1,5,0,0,0,0,0);
+			    1,3,0,0,0,0,0);
 	    }
 	    
 

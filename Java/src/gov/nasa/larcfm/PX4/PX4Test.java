@@ -8,28 +8,14 @@
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
+
 import gov.nasa.larcfm.ICAROUS.*;
+import gov.nasa.larcfm.MISSION.*;
+import java.io.*;
 
-import com.MAVLink.*;
-import com.MAVLink.common.*;
 
-
-class PowerLineInspection implements Mission{
-
-	public PowerLineInspection(){
-
-	}
-	
-	public int Execute(Aircraft UAS){
-
-	    //Do nothing
-	    return 0;
-	}
-}
 
 public class PX4Test{
-
-    
     
     public static void main(String args[]){
 	AircraftData FlightData    = new AircraftData();
@@ -37,12 +23,7 @@ public class PX4Test{
 	
 	Interface PX4Int    = new Interface(Interface.SERIAL,args[0],FlightData);
 
-	//Interface PX4Int    = new Interface(Interface.SOCKET,
-	//				    null,
-	//				    Integer.parseInt(args[0]),
-	//				    0);
-					    
-	
+					    	
 	Interface COMInt   = new Interface(Interface.SOCKET,
 					   null,
 					   Integer.parseInt(args[1]),
@@ -55,21 +36,19 @@ public class PX4Test{
 					   5555,
 					   FlightData);
 
-	PowerLineInspection test = new PowerLineInspection();
+	Demo test = new Demo();
 	
 	Aircraft uasQuad  = new Aircraft(PX4Int,COMInt,FlightData,test);
 
+	uasQuad.error.setConsoleOutput(false);
 	
 	
-	uasQuad.error.setConsoleOutput(true);
-	
-	
-	//FMS fms_module           = new FMS("Flight management",uasQuad);
-	DAQ daq_module             = new DAQ("Data acquisition",uasQuad);
-	//COM com_module           = new COM("Communications",uasQuad);
-	//BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);
+	FMS fms_module           = new FMS("Flight management",uasQuad);
+	DAQ daq_module           = new DAQ("Data acquisition",uasQuad);
+	COM com_module           = new COM("Communications",uasQuad);
+	BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);
 
-	//com_module.error.setConsoleOutput(true);
+	com_module.error.setConsoleOutput(false);
 
 	uasQuad.EnableDataStream();
 	
@@ -78,29 +57,55 @@ public class PX4Test{
 	}
 	
 	System.out.println("Received heartbeat from AP");
-
-	//uasQuad.EnableDataStream();
-	
-	//while(!com_module.CheckCOMHeartBeat()){
+		
+	while(!com_module.CheckCOMHeartBeat()){
 	    
-	//}
+	}
 
-	//System.out.println("Received heartbeat from COM");
+	System.out.println("Received heartbeat from COM");
 	
 	daq_module.start();	    
-	
-	while(true){
-
-	    uasQuad.FlightData.GetAttitude();
-	  
-	    System.out.format("%f,%f,%f\n",uasQuad.FlightData.roll,uasQuad.FlightData.pitch,uasQuad.FlightData.yaw);
-	 
-	  
-	  
+		    	
+	try{
+	    Thread.sleep(1000);
+	}catch(InterruptedException e){
+	    System.out.println(e);
 	}
-	    
+
+	bcast_module.start();
 	
-	//fms_module.start();
+	try{
+	    Thread.sleep(1000);
+	}catch(InterruptedException e){
+	    System.out.println(e);
+	}
+
+	
+	com_module.start();
+
+	try{
+	    Thread.sleep(1000);
+	}catch(InterruptedException e){
+	    System.out.println(e);
+	}
+	
+	fms_module.start();
+
+	while(fms_module.isFMSrunning()){
+	    // DO nothing
+	}
+
+	System.out.println("Creating log file");
+	try{
+	    FileWriter writer = new FileWriter("SITLLog.log");
+	    writer.write(uasQuad.getMessage());
+	    writer.write(com_module.getMessage());
+	    writer.write(test.getMessage());
+	    writer.close();
+	}
+	catch(IOException e){
+	    System.out.println(e);
+	}
 	
     }
 

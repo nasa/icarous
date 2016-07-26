@@ -164,6 +164,7 @@ public class ComBox{
 	msgFlightPlanInfo.maxHorDev    = parameters.getInt("maxHDev");
 	msgFlightPlanInfo.maxVerDev    = parameters.getInt("maxVDev");
 	msgFlightPlanInfo.standoffDist = parameters.getInt("standoff");
+	double missionStartTime        = parameters.getInt("StartTime");
 
 	msg_geofence_info msgGeoFenceInfo = new msg_geofence_info();
 	msgGeoFenceInfo.msgType   = 0;
@@ -206,6 +207,14 @@ public class ComBox{
 	msg_mission_start_stop msgMissionStart = new msg_mission_start_stop();
 
 	msgMissionStart.missionStart = 1;
+
+
+	double CurrentTime, ElapsedTime, StartTime;
+	boolean missionStart = false;
+	
+	CurrentTime = (double) System.nanoTime()/1E9;
+	StartTime   = CurrentTime;
+	
 	
 	// Send all messages
 	try{
@@ -222,7 +231,7 @@ public class ComBox{
 
 	    if(ack.acktype == 0 && ack.value == 1){
 		System.out.println("Waypoints sent successfully");
-		UDPWrite(msgMissionStart,sock,host,udpSendPort);
+	      
 	    }
 	    else{
 		System.out.println("Resend waypoints");
@@ -244,45 +253,30 @@ public class ComBox{
 	    else{
 		System.out.println("Resend geofence");
 	    }
+
+
+	    while(!missionStart){
+		CurrentTime = (double) System.nanoTime()/1E9; 
+		ElapsedTime = CurrentTime - StartTime;
+		
+		if(ElapsedTime > missionStartTime ){
+		    missionStart = true;
+		}
+	    }
+	    
+	    
+	    UDPWrite(msgMissionStart,sock,host,udpSendPort);
 	    
 	}
 	catch(InterruptedException e){
 	    System.out.println(e);
 	}
 
-	double CurrentTime, ElapsedTime, StartTime;
+	
+
+	 
 
 	
-	CurrentTime = (double) System.nanoTime()/1E9;
-	StartTime   = CurrentTime;
-	
-	boolean ObjectDetected = false;
-
-	while(!ObjectDetected){
-	    CurrentTime = (double) System.nanoTime()/1E9; 
-	    ElapsedTime = CurrentTime - StartTime;
-
-	    if(ElapsedTime > 40){
-		ObjectDetected = true;
-	    }
-	}
-
-	msg_pointofinterest obj = new msg_pointofinterest();
-
-	obj.id      = 4;
-	obj.index   = 0;
-	obj.subtype = 0;
-
-	UDPWrite(obj,sock,host,udpSendPort);
-
-	ack = UDPRead(sock);
-
-	if(ack.acktype == 4 && ack.value == 1){
-	    System.out.println("Object sent successfully");	 
-	}
-	else{
-	    System.out.println("Resend object");
-	}
 	
 	
     }
