@@ -18,29 +18,61 @@ import java.io.*;
 public class PX4Test{
     
     public static void main(String args[]){
+
+	boolean verbose   = false;
+	String px4port = null;
+	String bcastgroup = null;
+	int sitlport      = 0;
+	int bcastport     = 0;
+	int comport       = 0;
+
+	// Process input arguments
+	for(int i=0;i<args.length && args[i].startsWith("-");i++){
+	    if(args[i].startsWith("-v")){
+		verbose = true;
+	    }
+
+	    else if(args[i].startsWith("--px4")){
+		px4port = args[++i];
+	    }
+
+	    else if(args[i].startsWith("--sitl")){
+		sitlport = Integer.parseInt(args[++i]);
+	    }
+
+	    else if(args[i].startsWith("--com")){
+		comport = Integer.parseInt(args[++i]);		
+	    }
+
+	    else if(args[i].startsWith("--bc")){
+		bcastgroup = args[++i];
+		bcastport  = Integer.parseInt(args[++i]);
+	    }
+	}
+	
 	AircraftData FlightData    = new AircraftData();
 	
 	
-	Interface PX4Int    = new Interface(Interface.SERIAL,args[0],FlightData);
+	Interface PX4Int    = new Interface(Interface.SERIAL,px4port,FlightData);
 
 					    	
 	Interface COMInt   = new Interface(Interface.SOCKET,
 					   null,
-					   Integer.parseInt(args[1]),
+					   comport,
 					   0,
 					   FlightData);
 	
 	Interface BCASTInt = new Interface(Interface.SOCKET,
-					   "230.1.1.1",
+					   bcastgroup,
 					   0,
-					   5555,
+					   bcastport,
 					   FlightData);
 
 	Demo test = new Demo();
 	
 	Aircraft uasQuad  = new Aircraft(PX4Int,COMInt,FlightData,test);
 
-	uasQuad.error.setConsoleOutput(false);
+	uasQuad.error.setConsoleOutput(verbose);
 	
 	
 	FMS fms_module           = new FMS("Flight management",uasQuad);
@@ -48,8 +80,9 @@ public class PX4Test{
 	COM com_module           = new COM("Communications",uasQuad);
 	BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);
 
-	com_module.error.setConsoleOutput(false);
-
+	com_module.error.setConsoleOutput(verbose);
+	test.error.setConsoleOutput(verbose);
+	
 	uasQuad.EnableDataStream();
 	
 	while(!uasQuad.fsam.CheckAPHeartBeat()){
