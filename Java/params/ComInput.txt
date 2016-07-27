@@ -9,7 +9,7 @@ NumWP = 4
 maxHDev = 2
 maxVDev = 2
 standoff = 1
-StartTime = 120
+StartTime = 30
 
 # GeoFence information
 NumVertices = 4
