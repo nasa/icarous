@@ -1,5 +1,5 @@
 # Geofence parameters
 hthreshold = 1.5
 vthreshold = 1.5
-hstepback  = 5
-vstepback  = 5
+hstepback  = 2.5
+vstepback  = 2.5
