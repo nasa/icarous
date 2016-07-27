@@ -12,6 +12,7 @@ if [ "$1" == 'COMBOX' ];then
     else
 	mission=$2
     fi
+    echo "Mission: $mission"
     java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATM.jar ComBox $mission
 fi
 
