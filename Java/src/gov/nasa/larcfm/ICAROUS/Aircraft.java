@@ -311,7 +311,7 @@ public class Aircraft implements ErrorReporter{
 		mission.Execute(this);
 	    }
 
-	    if(mission.isMissionComplete() && (FlightData.FP_nextWaypoint >= FlightData.FP_numWaypoints)){
+	    if((FlightData.FP_nextWaypoint >= FlightData.FP_numWaypoints)){
 		state = FLIGHT_STATE.LAND;
 	    }
 		
