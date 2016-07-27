@@ -11,6 +11,8 @@ SITLSRC    = $(wildcard src/gov/nasa/larcfm/SITL/*.java)
 
 PX4SRC     = $(wildcard src/gov/nasa/larcfm/PX4/*.java)
 
+LAUNCHSRC  = src/gov/nasa/larcfm/launch.java
+
 JAR        = :lib/jssc-2.8.0.jar:lib/FormalATM.jar
 
 CLASSPATH  = bin
@@ -18,7 +20,7 @@ CLASSPATH  = bin
 JAVAC      = javac
 
 
-ALL: MAVLINK ICAROUS MISSION SITL PX4
+ALL: MAVLINK ICAROUS MISSION LAUNCH SITL PX4 
 
 PRE:
 	test -d bin || mkdir bin
@@ -48,3 +50,7 @@ PX4: PRE $(PX4SRC)
 	@echo "Compiling PX4 files"
 	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(PX4SRC) -d $(CLASSPATH)
 
+LAUNCH: PRE $(LAUNCHSRC)
+	@echo
+	@echo "Compiling launch module"
+	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(LAUNCHSRC) -d $(CLASSPATH)
