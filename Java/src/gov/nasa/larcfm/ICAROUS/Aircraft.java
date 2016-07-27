@@ -23,7 +23,7 @@ public class Aircraft implements ErrorReporter{
     }
 
     public enum FLIGHT_STATE{
-	TAKEOFF, TAKEOFF_CLIMB, CRUISE, LAND, TERMINATE
+	IDLE, TAKEOFF, TAKEOFF_CLIMB, CRUISE, LAND, TERMINATE
     }
     
     public Interface apIntf;
@@ -32,6 +32,7 @@ public class Aircraft implements ErrorReporter{
     public AircraftData FlightData;
     public FSAM fsam;
     public Mission mission;
+    int MissionState;
     
     public FLIGHT_STATE state; // State machine state for Flight functionalities
     public AP_MODE apMode;    // Current AP mode
@@ -51,13 +52,14 @@ public class Aircraft implements ErrorReporter{
 	comIntf          = com_Intf;
 	FlightData       = acData;
 	mission          = mc;
-	state            = FLIGHT_STATE.TAKEOFF;
+	state            = FLIGHT_STATE.IDLE;
 	apMode           = AP_MODE.ND;
 	fsam             = new FSAM(this,mission);
 	error            = new ErrorLog("Aircraft");
 	timeStart        = System.nanoTime();
 	timeLog          = String.format("%.3f",0.0f);
 	landStart        = false;
+	MissionState     = 0;
     }
 
     // Function to send commands to pixhawk
@@ -354,6 +356,28 @@ public class Aircraft implements ErrorReporter{
 	
     }//end Flight()
 
+    public int GetAircraftState(){
+	switch(state){
+
+	case IDLE:
+	    return 0;
+	    
+	case TAKEOFF:
+	    return 1;
+
+	case TAKEOFF_CLIMB:
+	    return 2;
+	    
+	case CRUISE:
+	    return 3;
+	    
+	case LAND:
+	    return 4;
+
+	default:
+	    return -1;
+	}
+    }
     
 
     public int Terminate(){

@@ -71,6 +71,11 @@
 	    <field type="float" name="heading">Direction of the perpendicular distance [deg]</field>
 	  </message>
 
+	  <message id="227" name="HEARTBEAT_ICAROUS">
+	    <description>ICAROUS heartbeat</description>
+	    <field type="int8_t" name="status">FMS state (0-idle, 1-Takeoff, 2-Climb, 3-Cruise, 4-Land)</field>
+	  </message>
+	  
 	  
 	</messages>
 </mavlink>

@@ -49,6 +49,10 @@ public class FMS implements Runnable{
     public synchronized boolean isFMSrunning(){
 	return FMSrunning;
     }
+
+    public synchronized FMS_STATE getFMSstate(){
+	return state;
+    }
 	
     public void FlightManagement(){
 
@@ -78,7 +82,8 @@ public class FMS implements Runnable{
 	    status = UAS.PreFlight();
 
 	    if(status == 1){
-		state = FMS_STATE.FLIGHT;
+		state     = FMS_STATE.FLIGHT;
+		UAS.state = Aircraft.FLIGHT_STATE.TAKEOFF;
 	    }
 	    
 	    break;

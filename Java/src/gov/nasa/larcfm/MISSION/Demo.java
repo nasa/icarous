@@ -22,7 +22,7 @@ import gov.nasa.larcfm.Util.ErrorReporter;
 public class Demo implements Mission,ErrorReporter{
 
     public enum MISSION_STATE{
-	NOOP,TURN1, TURN2, EXAMINE, CONTINUE;
+	IDLE, TURN1, TURN2, EXAMINE, CONTINUE;
     }
     
     double Event1;
@@ -34,7 +34,7 @@ public class Demo implements Mission,ErrorReporter{
     boolean missionComplete;
     
     public Demo(){
-	stateMission = MISSION_STATE.NOOP;
+	stateMission = MISSION_STATE.IDLE;
 	missionComplete = false;
 	error = new ErrorLog("Mission ");
 	
@@ -48,7 +48,7 @@ public class Demo implements Mission,ErrorReporter{
 	double ElapsedTime;
 	double Targetheading;
 	
-	if(FlightData.missionObj.size() > 0 && stateMission == MISSION_STATE.NOOP){
+	if(FlightData.missionObj.size() > 0 && stateMission == MISSION_STATE.IDLE){
 	    stateMission = MISSION_STATE.TURN1;
 	}
 
@@ -97,7 +97,7 @@ public class Demo implements Mission,ErrorReporter{
 	    
 	    break;
 
-        case NOOP:
+        case IDLE:
 
 	    if(missionComplete){
 		return 1;
@@ -116,12 +116,16 @@ public class Demo implements Mission,ErrorReporter{
 	    
 	    UAS.SetMode(3);
 	    UAS.apMode = Aircraft.AP_MODE.AUTO;
-	    stateMission = MISSION_STATE.NOOP;
+	    stateMission = MISSION_STATE.IDLE;
 	    missionComplete = true;
 	    error.addWarning("[" + timeLog + "] MSG: Object examination completed");
 	    break;
 	}
 	
+	return 0;
+    }
+
+    public int GetMissionState(){
 	return 0;
     }
 

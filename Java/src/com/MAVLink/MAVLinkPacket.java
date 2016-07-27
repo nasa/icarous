@@ -175,6 +175,9 @@ public class MAVLinkPacket implements Serializable {
                  
             case msg_powerline_data.MAVLINK_MSG_ID_POWERLINE_DATA:
                 return  new msg_powerline_data(this);
+                 
+            case msg_heartbeat_icarous.MAVLINK_MSG_ID_HEARTBEAT_ICAROUS:
+                return  new msg_heartbeat_icarous(this);
             
                              
             case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:

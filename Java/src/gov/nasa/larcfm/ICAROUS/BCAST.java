@@ -16,11 +16,13 @@ public class BCAST implements Runnable{
 
     public Thread t;
     public String threadName;
+    public Aircraft UAS;
     public AircraftData FlightData;
     public Interface Intf;
     
-    public BCAST(String name,Aircraft UAS,Interface bcastIntf){
+    public BCAST(String name,Aircraft uas,Interface bcastIntf){
 	threadName       = name;
+	UAS              = uas;               
 	FlightData       = UAS.FlightData;
 	Intf             = bcastIntf;
     }
@@ -29,8 +31,12 @@ public class BCAST implements Runnable{
 
 	
 	while(true){
-	
-	    // Broadcast messages here	    	    
+
+	    msg_heartbeat_icarous ICAROUSstate = new msg_heartbeat_icarous();
+
+	    ICAROUSstate.status = (byte) UAS.GetAircraftState();
+	    // Broadcast messages here
+	    Intf.Write(ICAROUSstate);
 	    Intf.Write(FlightData.Inbox.GlobalPositionInt());
 	    	  
 	}

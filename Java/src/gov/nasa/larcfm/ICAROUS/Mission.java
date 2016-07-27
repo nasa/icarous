@@ -16,4 +16,6 @@ public interface Mission{
 
     public boolean isMissionComplete();
 
+    public int GetMissionState();
+
 }
