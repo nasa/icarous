@@ -11,7 +11,7 @@ SITLSRC    = $(wildcard src/gov/nasa/larcfm/SITL/*.java)
 
 PX4SRC     = $(wildcard src/gov/nasa/larcfm/PX4/*.java)
 
-LAUNCHSRC  = src/gov/nasa/larcfm/launch.java
+LAUNCHSRC  = $(wildcard src/gov/nasa/larcfm/*.java)
 
 JAR        = :lib/jssc-2.8.0.jar:lib/FormalATM.jar
 

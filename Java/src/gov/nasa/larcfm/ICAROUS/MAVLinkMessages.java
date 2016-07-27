@@ -194,6 +194,7 @@ public class MAVLinkMessages{
 	RcvdHeartbeat_COM         = 0;
 
 	msgAttitude = new msg_attitude();
+	msgGpsRawInt = new msg_gps_raw_int();
     }
 
     public synchronized boolean UnreadFlightPlanUpdate(){
@@ -982,6 +983,10 @@ public class MAVLinkMessages{
 
     public synchronized msg_mission_request MissionRequest(){
 	return msgMissionRequest;
+    }
+
+    public synchronized msg_gps_raw_int GpsRawInt(){
+	return msgGpsRawInt;
     }
 
     public synchronized msg_mission_start_stop MissionStartStop(){

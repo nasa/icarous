@@ -15,6 +15,11 @@ if [ "$1" == 'PX4' ];then
    java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATM.jar PX4Test -v --px4 /dev/ttyO1 --com 14552 --bc 230.1.1.1 5555
 fi;
 
+if [ "$1" == 'GPSdebug' ];then
+   echo "GPS debugger"
+   java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATM.jar DebugGPS --px4 /dev/ttyO1
+fi;
+
 if [ "$1" == 'TestVoldemort' ];then
    echo "Testing message receipt from VOLDEMORT"
    java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATM.jar Voldemort_test -v --sitl 14551 --com 14552 --bc 230.1.1.1 5555
