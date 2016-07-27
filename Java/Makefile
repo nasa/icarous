@@ -20,27 +20,30 @@ JAVAC      = javac
 
 ALL: MAVLINK ICAROUS MISSION SITL PX4
 
-MAVLINK: $(MAVLinkSRC)
+PRE:
+	test -d bin || mkdir bin
+
+MAVLINK: PRE $(MAVLinkSRC)
 	@echo
 	@echo "Compiling MAVLink messages"
 	@$(JAVAC) $(MAVLinkSRC) -d $(CLASSPATH)
 
-ICAROUS: $(ICAROUSSRC)
+ICAROUS: PRE $(ICAROUSSRC)
 	@echo
 	@echo "Compiling ICAROUS package"
 	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(ICAROUSSRC) -d $(CLASSPATH)
 
-MISSION: $(MISSIONSRC)
+MISSION: PRE $(MISSIONSRC)
 	@echo
 	@echo "Compiling Mission files"
 	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(MISSIONSRC) -d $(CLASSPATH)
 
-SITL: $(SITLSRC)
+SITL: PRE $(SITLSRC)
 	@echo
 	@echo "Compiling SITL files"
 	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(SITLSRC) -d $(CLASSPATH)
 
-PX4: $(PX4SRC)
+PX4: PRE $(PX4SRC)
 	@echo
 	@echo "Compiling PX4 files"
 	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(PX4SRC) -d $(CLASSPATH)
