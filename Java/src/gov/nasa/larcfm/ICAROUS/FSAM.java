@@ -178,11 +178,13 @@ public class FSAM{
 		msg_mission_set_current msgMission = new msg_mission_set_current();
 		msgMission.target_system     = 0;
 		msgMission.target_component  = 0;
-		msgMission.seq               = 3;	    
+
+		FlightData.FP_nextWaypoint++;
+		msgMission.seq               = FlightData.FP_nextWaypoint;	    
 		
 		UAS.error.addWarning("[" + UAS.timeLog + "] CMD: Set next mission item");
 		UAS.apIntf.Write(msgMission);
-		FlightData.FP_nextWaypoint++;
+		
 	    }
 
 	    UAS.apMode = Aircraft.AP_MODE.AUTO;
