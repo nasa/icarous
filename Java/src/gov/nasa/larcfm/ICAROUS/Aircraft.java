@@ -252,6 +252,7 @@ public class Aircraft implements ErrorReporter{
 
     public int Flight(){
 
+	float targetAlt = (float)FlightData.CurrentFlightPlan.point(0).lla().alt();
 	Position currPosition = FlightData.acState.positionLast();
 	timeCurrent           = System.nanoTime();
 	timeLog               = String.format("%.3f",(double) (timeCurrent - timeStart)/1E9);
@@ -273,10 +274,11 @@ public class Aircraft implements ErrorReporter{
 
 	    error.addWarning("[" + timeLog + "] CMD:TAKEOFF");
 	    // Takeoff at current location
+	    error.addWarning("[ "+ timeLog + " ] ALT: "+targetAlt);
 	    SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
 			1,0,0,0, (float) currPosition.latitude(),
 			(float) currPosition.longitude(),
-			(float) 50.0f);
+			targetAlt);
 	    
 	    FlightData.FP_nextWaypoint    = 1;
 	    state = FLIGHT_STATE.TAKEOFF_CLIMB;
@@ -285,8 +287,8 @@ public class Aircraft implements ErrorReporter{
 
 	case TAKEOFF_CLIMB:
 
-	    // Switch to auto once 50 m is reached and start mission in auto mode
-	    if(currPosition.alt() >= 50.0f){
+	    // Switch to auto once targetAlt [m] is reached and start mission in auto mode
+	    if(currPosition.alt() >= targetAlt){
 		error.addWarning("[" + timeLog + "] MODE:AUTO");
 		state = FLIGHT_STATE.CRUISE;
 		SetMode(3);
