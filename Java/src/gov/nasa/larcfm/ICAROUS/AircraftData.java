@@ -79,7 +79,7 @@ public class AircraftData{
 	traffic             = new ArrayList<GenericObject>();
 	missionObj          = new ArrayList<GenericObject>();
 	startMission        = -1;
-	FP_nextWaypoint     = 1;
+	FP_nextWaypoint     = 0;
     }
 
     public void GetGPSdata(){
@@ -256,8 +256,14 @@ public class AircraftData{
 			  state  = FP_READ_COM.FP_ACK_FAIL;
 			  break;
 		      }
-		      		      		      		      
+		      		      		      		      		      
 		      NewFlightPlan.add(NavPoint.makeLatLonAlt(msg2.latx,msg2.lony,msg2.altz*3.28,count));
+
+		      if(count > 0){
+			  double time = NewFlightPlan.pathDistance(count-1)/msg2.vx;
+			  			  
+			  NewFlightPlan.setTime(count,time);
+		      }
 		      
 		      if(count == (FP_numWaypoints-1)){
 			  state  = FP_READ_COM.FP_ACK_SUCCESS;

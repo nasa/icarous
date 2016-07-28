@@ -184,6 +184,7 @@ public class ComBox{
 	    wp.lony    = (float)reader.getColumn(4);
 	    wp.altz    = (float)reader.getColumn(5);
 	    wp.heading = (float)reader.getColumn(6);
+	    wp.vx      = (float)reader.getColumn(7);
 
 	    Waypoints.add(wp);
 	    reader.readLine();

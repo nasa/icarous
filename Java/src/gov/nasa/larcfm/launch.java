@@ -17,14 +17,16 @@ public class launch{
     public static void main(String args[]){
 
 	boolean verbose   = false;
-	String px4port = null;
+	String px4port    = null;
 	String bcastgroup = null;
+	String paraminput = null
 	int sitlport      = 0;
 	int bcastport     = 0;
 	int comport       = 0;
+	
 
 	// Process input arguments
-	for(int i=0;i<args.length && args[i].startsWith("-");i++){
+	for(int i=0;i<args.length && args[i].startsWith("-");++i){
 	    if(args[i].startsWith("-v")){
 		verbose = true;
 	    }
@@ -45,7 +47,17 @@ public class launch{
 		bcastgroup = args[++i];
 		bcastport  = Integer.parseInt(args[++i]);
 	    }
+
+	    else if(args[i].startsWith("--param")){
+		paraminput = args[++i];
+	    }
 	}
+
+	//FileReader in = new FileReader(paraminput);
+	//SeparatedInput reader = new SeparatedInput(in);
+	
+	//reader.readLine();
+	//ParameterData parameters = reader.getParametersRef();
 	
 	AircraftData FlightData    = new AircraftData();
 	Interface APInt = null;
@@ -86,6 +98,8 @@ public class launch{
 
 	com_module.error.setConsoleOutput(verbose);
 	test.error.setConsoleOutput(verbose);
+
+	uasQuad.EnableDataStream();
 	
 	while(!uasQuad.fsam.CheckAPHeartBeat()){
 	    

@@ -12,6 +12,7 @@ package gov.nasa.larcfm.ICAROUS;
 import com.MAVLink.enums.*;
 import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
+import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
@@ -252,10 +253,11 @@ public class Aircraft implements ErrorReporter{
 
     public int Flight(){
 
-	float targetAlt = (float)FlightData.CurrentFlightPlan.point(0).lla().alt();
-	Position currPosition = FlightData.acState.positionLast();
-	timeCurrent           = System.nanoTime();
-	timeLog               = String.format("%.3f",(double) (timeCurrent - timeStart)/1E9);
+	float targetAlt        = (float)FlightData.CurrentFlightPlan.point(0).lla().alt();
+	Position currPosition  = FlightData.acState.positionLast();
+	Plan CurrentFlightPlan = FlightData.CurrentFlightPlan;
+	timeCurrent            = System.nanoTime();
+	timeLog                = String.format("%.3f",(double) (timeCurrent - timeStart)/1E9);
 	FSAM_OUTPUT status;
 	
 	switch(state){
@@ -280,7 +282,7 @@ public class Aircraft implements ErrorReporter{
 			(float) currPosition.longitude(),
 			targetAlt);
 	    
-	    FlightData.FP_nextWaypoint    = 1;
+	    
 	    state = FLIGHT_STATE.TAKEOFF_CLIMB;
 
 	    break;
@@ -295,9 +297,14 @@ public class Aircraft implements ErrorReporter{
 		apMode = AP_MODE.AUTO;
 		
 		// Set speed
-		error.addWarning("[" + timeLog + "] CMD:SPEED CHANGE");
+				
+	        float speed = (float)  CurrentFlightPlan.pathDistance(FlightData.FP_nextWaypoint)/
+		                         CurrentFlightPlan.getTime(FlightData.FP_nextWaypoint+1);
+		
+		error.addWarning("[" + timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
 		SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
-			    1,0.25f,0,0,0,0,0);
+			    1,speed,0,0,0,0,0);
+		FlightData.FP_nextWaypoint++;
 	    }
 	    
 

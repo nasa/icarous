@@ -13,6 +13,7 @@ package gov.nasa.larcfm.ICAROUS;
 import java.util.*;
 import java.lang.*;
 import com.MAVLink.common.*;
+import com.MAVLink.enums.*;
 
 import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.AircraftState;
@@ -119,8 +120,17 @@ public class FSAM{
 	}
 	
 	if(CheckMissionItemReached()){
+	    Plan CurrentFlightPlan = FlightData.CurrentFlightPlan;
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Reached waypoint");
-	    FlightData.FP_nextWaypoint++;	  
+	    FlightData.FP_nextWaypoint++;
+
+	    if(FlightData.FP_nextWaypoint < FlightData.FP_numWaypoints){
+		float speed = (float)  CurrentFlightPlan.pathDistance(FlightData.FP_nextWaypoint)/
+		                      CurrentFlightPlan.getTime(FlightData.FP_nextWaypoint+1);
+		UAS.error.addWarning("[" + UAS.timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
+		UAS.SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
+			    1,speed,0,0,0,0,0);
+	    }
 	}
 	
 	if(conflictList.size() > 0){
