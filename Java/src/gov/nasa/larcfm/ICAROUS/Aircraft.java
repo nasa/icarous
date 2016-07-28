@@ -116,7 +116,7 @@ public class Aircraft implements ErrorReporter{
 	msg.time_boot_ms     = 0;
 	msg.target_system    = 0;
 	msg.target_component = 0;
-	msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_INT;
+	msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
 	msg.type_mask        = 0b0000111111111000;
 	msg.lat_int          = (int) (lat*1E7);
 	msg.lon_int          = (int) (lon*1E7);

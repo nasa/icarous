@@ -92,7 +92,7 @@ public class AircraftData{
 	bootTime = (double) (GPS.time_boot_ms)/1E6;
 	lat      = (double) (GPS.lat)/1.0E7;
 	lon      = (double) (GPS.lon)/1.0E7;
-	alt      = (double) (GPS.alt)/1.0E3;
+	alt      = (double) (GPS.relative_alt)/1.0E3;
         vx       = (double) (GPS.vx)/1E2;
 	vy       = (double) (GPS.vy)/1E2;
 	vz       = (double) (GPS.vz)/1E2;
@@ -171,7 +171,7 @@ public class AircraftData{
 			//System.out.println("Received mission request: "+ seq );
 		    
 			msgMissionItem.seq     = seq;
-			msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL;
+			msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
 			msgMissionItem.command = MAV_CMD.MAV_CMD_NAV_WAYPOINT;
 			msgMissionItem.current = 0;
 			msgMissionItem.autocontinue = 0;

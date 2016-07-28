@@ -258,7 +258,7 @@ public class ComBox{
 	    while(!missionStart){
 		CurrentTime = (double) System.nanoTime()/1E9; 
 		ElapsedTime = CurrentTime - StartTime;
-		
+		System.out.println("Time counter: "+ElpasedTime+" [s]");
 		if(ElapsedTime > missionStartTime ){
 		    missionStart = true;
 		}
