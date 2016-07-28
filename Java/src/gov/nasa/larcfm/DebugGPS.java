@@ -88,7 +88,7 @@ public class DebugGPS{
 	    System.out.format("Fix type           : %d\n",msg.fix_type);
 	    System.out.format("lat                : %3.5f (degrees)\n",msg.lat/1E7);
 	    System.out.format("lon                : %3.5f (degrees)\n",msg.lon/1E7);
-	    System.out.format("alt                : %3.5f (degrees)\n",msg.alt/1E3);
+	    System.out.format("alt                : %3.5f (m)\n",msg.alt/1E3);
 	    System.out.format("Satellites visible : %d \n",msg.satellites_visible);
 
 	    try{

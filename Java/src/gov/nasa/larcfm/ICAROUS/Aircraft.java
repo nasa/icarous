@@ -255,7 +255,7 @@ public class Aircraft implements ErrorReporter{
 
 	float targetAlt        = (float)FlightData.CurrentFlightPlan.point(0).lla().alt();
 	Position currPosition  = FlightData.acState.positionLast();
-	Plan CurrentFlightPlan = FlightData.CurrentFlightPlan;
+	
 	timeCurrent            = System.nanoTime();
 	timeLog                = String.format("%.3f",(double) (timeCurrent - timeStart)/1E9);
 	FSAM_OUTPUT status;
@@ -297,10 +297,7 @@ public class Aircraft implements ErrorReporter{
 		apMode = AP_MODE.AUTO;
 		
 		// Set speed
-				
-	        float speed = (float)  CurrentFlightPlan.pathDistance(FlightData.FP_nextWaypoint)/
-		                         CurrentFlightPlan.getTime(FlightData.FP_nextWaypoint+1);
-		
+		float speed = GetSpeed();			        
 		error.addWarning("[" + timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
 		SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
 			    1,speed,0,0,0,0,0);
@@ -386,6 +383,19 @@ public class Aircraft implements ErrorReporter{
 	default:
 	    return -1;
 	}
+    }
+
+    public float GetSpeed(){
+
+	Plan CurrentFlightPlan = FlightData.CurrentFlightPlan;
+	
+	float speed = (float)(CurrentFlightPlan.pathDistance(FlightData.FP_nextWaypoint)/
+				      CurrentFlightPlan.getTime(FlightData.FP_nextWaypoint+1));
+
+	System.out.println("distance: "+ CurrentFlightPlan.pathDistance(FlightData.FP_nextWaypoint));
+	System.out.println("time: "+CurrentFlightPlan.getTime(FlightData.FP_nextWaypoint+1)); 
+
+	return speed;
     }
     
 
