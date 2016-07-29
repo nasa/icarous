@@ -24,7 +24,7 @@ import gov.nasa.larcfm.Util.AircraftState;
 public class AircraftData{
 
     public enum FP_WRITE_AP{
-	FP_CLR, FP_SEND_COUNT, FP_SEND_WP
+	FP_CLR, FP_CLR_ACK, FP_SEND_COUNT, FP_SEND_WP
     }
 
     public enum FP_READ_COM{
@@ -144,8 +144,26 @@ public class AircraftData{
 		case FP_CLR:
 		    Intf.Write(msgMissionClearAll);
 		    //System.out.println("Cleared mission on AP");
-		    state = FP_WRITE_AP.FP_SEND_COUNT;
+		    state = FP_WRITE_AP.FP_CLR_ACK;
 		    count = 0;
+		    break;
+
+		case FP_CLR_ACK:
+
+		    Intf.Read();
+
+		    if(Inbox.UnreadMissionAck()){
+			Inbox.ReadMissionAck();
+		    		    
+			if(Inbox.MissionAck().type == 0){
+			    state = FP_WRITE_AP.FP_SEND_COUNT;
+			    //System.out.println("CLEAR acknowledgement");
+			}
+			else{			  
+			    //System.out.println("No CLEAR acknowledgement");
+			}
+		    }
+
 		    break;
 
 		case FP_SEND_COUNT:
@@ -159,14 +177,14 @@ public class AircraftData{
 	    
 		case FP_SEND_WP:
 
-		    Intf.Read();
-		
+		    Intf.Read();		
 				
 		    if(Inbox.UnreadMissionRequest()){
 		    
 			Inbox.ReadMissionRequest();
 
 			int seq = Inbox.MissionRequest().seq;
+			count   = seq;
 		    
 			//System.out.println("Received mission request: "+ seq );
 		    
@@ -188,7 +206,7 @@ public class AircraftData{
 			Intf.Write(msgMissionItem);
 			//System.out.println("Wrote mission item:"+count);
 			//System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
-			count++;
+			
 		    }
 		
 		    if(Inbox.UnreadMissionAck()){
@@ -198,11 +216,14 @@ public class AircraftData{
 			//System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
 		    
 			if(Inbox.MissionAck().type == 0){
-			    if(count == CurrentFlightPlan.size()){
+			    if(count == CurrentFlightPlan.size() - 1){
 				//System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
 			    }
 			
+			}
+			else if(Inbox.MissionAck().type == 13){
+
 			}
 			else{
 			    state = FP_WRITE_AP.FP_CLR;
