@@ -103,7 +103,7 @@ public class Interface{
 
 	try {
 	    serialPort.openPort();
-	    serialPort.setParams(SerialPort.BAUDRATE_57600, 
+	    serialPort.setParams(SerialPort.BAUDRATE_115200, 
 				 SerialPort.DATABITS_8,
 				 SerialPort.STOPBITS_1,
 				 SerialPort.PARITY_NONE);
