@@ -138,7 +138,7 @@ public class Interface{
 	    }
 	    
 	    buffer_data   = input.getData();
-
+	    
 	    for(int i=0;i<(6+255+2);i++){
 		RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer_data[i]);
 		Inbox.decode_message(RcvdPacket);	
@@ -174,13 +174,13 @@ public class Interface{
 	MAVLinkPacket RcvdPacket = null;
 	
 	try{
-	    buffer = serialPort.readBytes(6+255+2);
+	    buffer = serialPort.readBytes(1);
 	}
 	catch(SerialPortException e){
 	    System.out.println(e);
 	}
 
-	for(int i=0;i<(6+255+2);i++){
+	for(int i=0;i<(1);i++){
 	    
 	    RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer[i]);	    
 	    Inbox.decode_message(RcvdPacket);	    	    	
