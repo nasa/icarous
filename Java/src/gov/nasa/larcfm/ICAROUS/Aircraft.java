@@ -16,6 +16,7 @@ import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 
+
 public class Aircraft implements ErrorReporter{
 
     public enum AP_MODE{
@@ -298,8 +299,11 @@ public class Aircraft implements ErrorReporter{
 		
 		// Set speed
 		error.addWarning("[" + timeLog + "] CMD:SPEED CHANGE");
+		error.addWarning("[" + timeLog + "] CMD:SPEED CHANGE");
 		SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
-			    1,0.25f,0,0,0,0,0);
+			    1,2.0f,0,0,0,0,0);
+
+		
 	    }
 	    
 
@@ -383,7 +387,8 @@ public class Aircraft implements ErrorReporter{
 	}
     }
     
-
+    
+    
     public int Terminate(){
 
 	return 1;

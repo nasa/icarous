@@ -96,7 +96,8 @@ public class SITL_test{
 	System.out.println("Received heartbeat from COM");
 	    
 	daq_module.start();
-	    
+
+	
 
 	try{
 	    Thread.sleep(1000);
@@ -120,9 +121,10 @@ public class SITL_test{
 	}catch(InterruptedException e){
 	    System.out.println(e);
 	}
-	
-	fms_module.start();
 
+	fms_module.start();
+	
+	
 	while(fms_module.isFMSrunning()){
 	    // DO nothing
 	}
