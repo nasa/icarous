@@ -135,7 +135,6 @@ public class AircraftData{
 	msgMissionClearAll.target_system    = 0;
 	msgMissionClearAll.target_component = 0;
 
-	synchronized(Intf){
 	while(!writeComplete){
 
 	    
@@ -231,7 +230,6 @@ public class AircraftData{
 			}
 		    }
 		} // end of switch case
-	    }//end of synchronized
 	}//end of while	
     }//end of function
 
