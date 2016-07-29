@@ -219,7 +219,7 @@ public class Aircraft implements ErrorReporter{
 	return 0;
     }
     
-    public void EnableDataStream(){
+    public void EnableDataStream(int option){
 	
 	msg_heartbeat msg1 = new msg_heartbeat();
 	
@@ -231,7 +231,7 @@ public class Aircraft implements ErrorReporter{
 	msg_request_data_stream req = new msg_request_data_stream();
 	req.req_message_rate = 10;
 	req.req_stream_id    = MAV_DATA_STREAM.MAV_DATA_STREAM_ALL;           ;
-	req.start_stop       = 1;
+	req.start_stop       = (byte) option;
 	req.target_system    = 0;
 	req.target_component = 0;
 
@@ -243,9 +243,11 @@ public class Aircraft implements ErrorReporter{
     public int PreFlight(){
 	
 	// Send flight plan to pixhawk
-	
-	FlightData.SendFlightPlanToAP(apIntf);
-	
+	synchronized(apIntf){
+	    EnableDataStream(0);
+	    FlightData.SendFlightPlanToAP(apIntf);
+	    EnableDataStream(1);
+	}
 	
 	return 1;
     }
