@@ -288,7 +288,7 @@ public class Aircraft implements ErrorReporter{
 	case TAKEOFF_CLIMB:
 
 	    // Switch to auto once targetAlt [m] is reached and start mission in auto mode
-	    if(currPosition.alt() >= targetAlt){
+	    if( Math.abs(currPosition.alt() - targetAlt) < 0.5 ){
 		error.addWarning("[" + timeLog + "] MODE:AUTO");
 		state = FLIGHT_STATE.CRUISE;
 		SetMode(3);
