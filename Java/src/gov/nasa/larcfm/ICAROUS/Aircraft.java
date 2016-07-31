@@ -364,7 +364,7 @@ public class Aircraft implements ErrorReporter{
 	
     }//end Flight()
 
-    public int GetAircraftState(){
+    public synchronized int GetAircraftState(){
 	switch(state){
 
 	case IDLE:
