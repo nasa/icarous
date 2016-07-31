@@ -45,6 +45,11 @@ public class SITL_test{
 		bcastgroup = args[++i];
 		bcastport  = Integer.parseInt(args[++i]);
 	    }
+
+	    else if(args[i].startsWith("-")) {
+		System.out.println("Invalid option "+args[i]);
+		System.exit(0);
+	    }
 	}
 	
 	AircraftData FlightData    = new AircraftData();
@@ -73,7 +78,6 @@ public class SITL_test{
 	Aircraft uasQuad  = new Aircraft(SITLInt,COMInt,FlightData,test);
 
 	uasQuad.error.setConsoleOutput(verbose);
-	
 	
 	FMS fms_module           = new FMS("Flight management",uasQuad);
 	DAQ daq_module           = new DAQ("Data acquisition",uasQuad);
