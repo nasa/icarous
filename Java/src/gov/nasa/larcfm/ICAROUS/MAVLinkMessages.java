@@ -197,6 +197,7 @@ public class MAVLinkMessages{
 	RcvdParamValue            = 0;
 	msgAttitude = new msg_attitude();
 	msgGpsRawInt = new msg_gps_raw_int();
+	msgGlobalPositionInt = new msg_global_position_int();
     }
 
     public synchronized boolean UnreadFlightPlanUpdate(){
