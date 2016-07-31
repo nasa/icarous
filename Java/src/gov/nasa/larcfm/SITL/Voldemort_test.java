@@ -72,6 +72,8 @@ public class Voldemort_test{
 					   0,
 					   bcastport,
 					   FlightData);
+
+	
 	
 	Demo test = new Demo();
 	
@@ -80,12 +82,12 @@ public class Voldemort_test{
 	uasQuad.error.setConsoleOutput(verbose);
 		
 	COM com_module    = new COM("Communications",uasQuad);
-	BCAST bcast_module  = new BCAST("Broadcast",uasQuad,BCASTInt);
+	BCAST bcast_module  = new BCAST("Broadcast",uasQuad,BCASTInt);	
 	
 	com_module.error.setConsoleOutput(verbose);
 	uasQuad.error.setConsoleOutput(verbose);
 	test.error.setConsoleOutput(true);			
-	    	
+	
 	bcast_module.start();
 	
 	try{
