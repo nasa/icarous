@@ -98,7 +98,7 @@ public class AircraftData{
 	vz       = (double) (GPS.vz)/1E2;
 
 	Velocity V = Velocity.makeVxyz(vx,vy,vz);
-	Position P = Position.makeLatLonAlt(lat,lon,alt*3.28);
+	Position P = Position.makeLatLonAlt(lat,"degree",lon,"degree",alt,"m");
 	
 	acState.add(P,V,bootTime);
     }
@@ -276,13 +276,14 @@ public class AircraftData{
 			  break;
 		      }
 		      		      		      		      		      
-		      NewFlightPlan.add(NavPoint.makeLatLonAlt(msg2.latx,msg2.lony,msg2.altz*3.28,count));
+		      double wptime= 0;
+		      Position nextWP = Position.makeLatLonAlt(msg2.latx,"degree",msg2.lony,"degree",msg2.altz,"m");
+		      if(count > 0 ){			  
+			  double distance = NewFlightPlan.point(count - 1).position().distanceH(nextWP);
+			  wptime          = NewFlightPlan.getTime(count-1) + distance/msg2.vx;			  
+		      }		     
 
-		      if(count > 0){
-			  double time = NewFlightPlan.pathDistance(count-1)/msg2.vx;
-			  			  
-			  NewFlightPlan.setTime(count,time);
-		      }
+		      NewFlightPlan.add(new NavPoint(nextWP,wptime));
 		      
 		      if(count == (FP_numWaypoints-1)){
 			  state  = FP_READ_COM.FP_ACK_SUCCESS;

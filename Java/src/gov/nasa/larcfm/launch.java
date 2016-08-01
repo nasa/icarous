@@ -19,7 +19,7 @@ public class launch{
 	boolean verbose   = false;
 	String px4port    = null;
 	String bcastgroup = null;
-	String paraminput = null
+	String paraminput = null;
 	int sitlport      = 0;
 	int bcastport     = 0;
 	int comport       = 0;
@@ -98,8 +98,6 @@ public class launch{
 
 	com_module.error.setConsoleOutput(verbose);
 	test.error.setConsoleOutput(verbose);
-
-	uasQuad.EnableDataStream();
 	
 	uasQuad.EnableDataStream(1);
 

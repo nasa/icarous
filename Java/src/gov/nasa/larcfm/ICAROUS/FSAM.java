@@ -125,11 +125,9 @@ public class FSAM{
 	    FlightData.FP_nextWaypoint++;
 
 	    if(FlightData.FP_nextWaypoint < FlightData.FP_numWaypoints){
-		float speed = (float) (CurrentFlightPlan.pathDistance(FlightData.FP_nextWaypoint)/
-				       CurrentFlightPlan.getTime(FlightData.FP_nextWaypoint+1));
+		float speed = UAS.GetSpeed();					
+		UAS.SetSpeed(speed);
 		UAS.error.addWarning("[" + UAS.timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
-		UAS.SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
-			    1,speed,0,0,0,0,0);
 	    }
 	}
 	
@@ -156,6 +154,7 @@ public class FSAM{
 	case COMPUTE:
 	    
 	    if(FenceKeepInConflict){
+		UAS.SetSpeed(1.0f);
 		ResolveKeepInConflict();		
 	    }
 	    
@@ -330,6 +329,9 @@ public class FSAM{
 		    ResolutionPlan.clear();
 		    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Resolution complete");
 		    executeState = EXECUTE_STATE.COMPLETE;
+		    float speed = UAS.GetSpeed();					
+		    UAS.SetSpeed(speed);
+		    UAS.error.addWarning("[" + UAS.timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
 		}
 	    }
 	    

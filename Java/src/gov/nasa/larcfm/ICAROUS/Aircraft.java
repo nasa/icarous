@@ -241,6 +241,13 @@ public class Aircraft implements ErrorReporter{
 
 	
     }
+
+    public void SetSpeed(float speed){
+	
+	SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
+		    1,speed,0,0,0,0,0);
+
+    }
     
     public int PreFlight(){
 	
@@ -300,12 +307,10 @@ public class Aircraft implements ErrorReporter{
 		apMode = AP_MODE.AUTO;
 		
 		// Set speed
-
-		float speed = GetSpeed();			        
-		error.addWarning("[" + timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
-		SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
-			    1,speed,0,0,0,0,0);
 		FlightData.FP_nextWaypoint++;
+		float speed = GetSpeed();			        
+		SetSpeed(speed);
+		error.addWarning("[" + timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
 
 	    }
 	    
@@ -394,11 +399,9 @@ public class Aircraft implements ErrorReporter{
 
 	Plan CurrentFlightPlan = FlightData.CurrentFlightPlan;
 	
-	float speed = (float)(CurrentFlightPlan.pathDistance(FlightData.FP_nextWaypoint)/
-				      CurrentFlightPlan.getTime(FlightData.FP_nextWaypoint+1));
-
-	System.out.println("distance: "+ CurrentFlightPlan.pathDistance(FlightData.FP_nextWaypoint));
-	System.out.println("time: "+CurrentFlightPlan.getTime(FlightData.FP_nextWaypoint+1)); 
+	float speed = (float)(CurrentFlightPlan.pathDistance(FlightData.FP_nextWaypoint-1,true)/
+			      (CurrentFlightPlan.getTime(FlightData.FP_nextWaypoint) -
+			       CurrentFlightPlan.getTime(FlightData.FP_nextWaypoint-1)));
 
 	return speed;
     }

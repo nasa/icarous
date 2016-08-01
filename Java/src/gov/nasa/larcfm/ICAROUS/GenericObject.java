@@ -30,7 +30,7 @@ public class GenericObject{
 			 float vx_in, float vy_in,float vz_in){
 	id   = id_in;
 	type = type_in;
-	pos  = Position.makeLatLonAlt(lat_in,lon_in,altmsl_in*3.28);
+	pos  = Position.makeLatLonAlt(lat_in,"degree",lon_in,"degree",altmsl_in,"m");
 	vel  = Velocity.makeVxyz(vx_in,vy_in,vz_in);		
 	orientation = orient_in;
 	
