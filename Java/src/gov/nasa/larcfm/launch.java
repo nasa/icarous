@@ -101,6 +101,8 @@ public class launch{
 
 	uasQuad.EnableDataStream();
 	
+	uasQuad.EnableDataStream(1);
+
 	while(!uasQuad.fsam.CheckAPHeartBeat()){
 	    
 	}

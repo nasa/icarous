@@ -175,6 +175,8 @@ public class MAVLinkMessages{
     
     private int RcvdHeartbeat_AP;
     private int RcvdHeartbeat_COM;
+
+    private int RcvdParamValue;
     
     public MAVLinkMessages(){
 	RcvdFlightPlanUpdate      = 0;
@@ -192,9 +194,10 @@ public class MAVLinkMessages{
 	RcvdOthers                = 0;
 	RcvdHeartbeat_AP          = 0;
 	RcvdHeartbeat_COM         = 0;
-
+	RcvdParamValue            = 0;
 	msgAttitude = new msg_attitude();
 	msgGpsRawInt = new msg_gps_raw_int();
+	msgGlobalPositionInt = new msg_global_position_int();
     }
 
     public synchronized boolean UnreadFlightPlanUpdate(){
@@ -309,6 +312,13 @@ public class MAVLinkMessages{
 	    return false;
     }
 
+    public synchronized boolean UnreadParamValue(){
+	if(RcvdParamValue == 1)
+	    return true;
+	else
+	    return false;
+    }
+
     public synchronized void ReadFlightPlanUpdate(){
 	RcvdFlightPlanUpdate = 0;
     }
@@ -372,6 +382,10 @@ public class MAVLinkMessages{
     public synchronized void ReadCmdAck(){
 	RcvdCmdAck = 0;
     }
+
+    public synchronized void ReadParamValue(){
+	RcvdParamValue = 0;
+    }
     
     public synchronized void decode_message(MAVLinkPacket message){
 
@@ -425,6 +439,7 @@ public class MAVLinkMessages{
 	    
 	case msg_param_value.MAVLINK_MSG_ID_PARAM_VALUE:
 	    msgParamValue = (msg_param_value) message.unpack();
+	    RcvdParamValue = 1;
 	    break;
 	    
 	case msg_param_set.MAVLINK_MSG_ID_PARAM_SET:
@@ -1000,6 +1015,9 @@ public class MAVLinkMessages{
     public synchronized msg_attitude Attitude(){
 	return msgAttitude;
     }
-    
+
+    public synchronized msg_param_value ParamValue(){
+	return msgParamValue;
+    }
 }
 

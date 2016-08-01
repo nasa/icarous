@@ -210,7 +210,7 @@ public class ComBox{
 	msgMissionStart.missionStart = 1;
 
 
-	double CurrentTime, ElapsedTime, StartTime;
+	double CurrentTime, ElapsedTime1, ElapsedTime2, StartTime;
 	boolean missionStart = false;
 	
 	CurrentTime = (double) System.nanoTime()/1E9;
@@ -255,13 +255,21 @@ public class ComBox{
 		System.out.println("Resend geofence");
 	    }
 
-
+	    double countDownTime = 0;
+	    int count = 0;
 	    while(!missionStart){
 		CurrentTime = (double) System.nanoTime()/1E9; 
-		ElapsedTime = CurrentTime - StartTime;
+		ElapsedTime1 = CurrentTime - StartTime;
+		ElapsedTime2 = CurrentTime - countDownTime;
 		
-		if(ElapsedTime > missionStartTime ){
+		if(ElapsedTime1 > missionStartTime ){
 		    missionStart = true;
+		}
+
+		if(ElapsedTime2 > 5){
+		    count++;
+		    System.out.format("Mission starts in %3.3f seconds\n",missionStartTime - count*5);
+		    countDownTime = CurrentTime;
 		}
 	    }
 	    

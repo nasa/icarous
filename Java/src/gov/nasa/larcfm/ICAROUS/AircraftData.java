@@ -24,7 +24,7 @@ import gov.nasa.larcfm.Util.AircraftState;
 public class AircraftData{
 
     public enum FP_WRITE_AP{
-	FP_CLR, FP_SEND_COUNT, FP_SEND_WP
+	FP_CLR, FP_CLR_ACK, FP_SEND_COUNT, FP_SEND_WP
     }
 
     public enum FP_READ_COM{
@@ -92,7 +92,7 @@ public class AircraftData{
 	bootTime = (double) (GPS.time_boot_ms)/1E6;
 	lat      = (double) (GPS.lat)/1.0E7;
 	lon      = (double) (GPS.lon)/1.0E7;
-	alt      = (double) (GPS.alt)/1.0E3;
+	alt      = (double) (GPS.relative_alt)/1.0E3;
         vx       = (double) (GPS.vx)/1E2;
 	vy       = (double) (GPS.vy)/1E2;
 	vz       = (double) (GPS.vz)/1E2;
@@ -135,7 +135,6 @@ public class AircraftData{
 	msgMissionClearAll.target_system    = 0;
 	msgMissionClearAll.target_component = 0;
 
-	synchronized(Intf){
 	while(!writeComplete){
 
 	    
@@ -144,8 +143,26 @@ public class AircraftData{
 		case FP_CLR:
 		    Intf.Write(msgMissionClearAll);
 		    //System.out.println("Cleared mission on AP");
-		    state = FP_WRITE_AP.FP_SEND_COUNT;
+		    state = FP_WRITE_AP.FP_CLR_ACK;
 		    count = 0;
+		    break;
+
+		case FP_CLR_ACK:
+
+		    Intf.Read();
+
+		    if(Inbox.UnreadMissionAck()){
+			Inbox.ReadMissionAck();
+		    		    
+			if(Inbox.MissionAck().type == 0){
+			    state = FP_WRITE_AP.FP_SEND_COUNT;
+			    //System.out.println("CLEAR acknowledgement");
+			}
+			else{			  
+			    //System.out.println("No CLEAR acknowledgement");
+			}
+		    }
+
 		    break;
 
 		case FP_SEND_COUNT:
@@ -159,19 +176,19 @@ public class AircraftData{
 	    
 		case FP_SEND_WP:
 
-		    Intf.Read();
-		
+		    Intf.Read();		
 				
 		    if(Inbox.UnreadMissionRequest()){
 		    
 			Inbox.ReadMissionRequest();
 
 			int seq = Inbox.MissionRequest().seq;
+			count   = seq;
 		    
 			//System.out.println("Received mission request: "+ seq );
 		    
 			msgMissionItem.seq     = seq;
-			msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL;
+			msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
 			msgMissionItem.command = MAV_CMD.MAV_CMD_NAV_WAYPOINT;
 			msgMissionItem.current = 0;
 			msgMissionItem.autocontinue = 0;
@@ -188,7 +205,7 @@ public class AircraftData{
 			Intf.Write(msgMissionItem);
 			//System.out.println("Wrote mission item:"+count);
 			//System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
-			count++;
+			
 		    }
 		
 		    if(Inbox.UnreadMissionAck()){
@@ -198,11 +215,14 @@ public class AircraftData{
 			//System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
 		    
 			if(Inbox.MissionAck().type == 0){
-			    if(count == CurrentFlightPlan.size()){
+			    if(count == CurrentFlightPlan.size() - 1){
 				//System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
 			    }
 			
+			}
+			else if(Inbox.MissionAck().type == 13){
+
 			}
 			else{
 			    state = FP_WRITE_AP.FP_CLR;
@@ -210,7 +230,6 @@ public class AircraftData{
 			}
 		    }
 		} // end of switch case
-	    }//end of synchronized
 	}//end of while	
     }//end of function
 

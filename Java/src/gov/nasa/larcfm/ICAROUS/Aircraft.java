@@ -17,6 +17,7 @@ import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 
+
 public class Aircraft implements ErrorReporter{
 
     public enum AP_MODE{
@@ -117,7 +118,7 @@ public class Aircraft implements ErrorReporter{
 	msg.time_boot_ms     = 0;
 	msg.target_system    = 0;
 	msg.target_component = 0;
-	msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_INT;
+	msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
 	msg.type_mask        = 0b0000111111111000;
 	msg.lat_int          = (int) (lat*1E7);
 	msg.lon_int          = (int) (lon*1E7);
@@ -220,7 +221,7 @@ public class Aircraft implements ErrorReporter{
 	return 0;
     }
     
-    public void EnableDataStream(){
+    public void EnableDataStream(int option){
 	
 	msg_heartbeat msg1 = new msg_heartbeat();
 	
@@ -232,7 +233,7 @@ public class Aircraft implements ErrorReporter{
 	msg_request_data_stream req = new msg_request_data_stream();
 	req.req_message_rate = 10;
 	req.req_stream_id    = MAV_DATA_STREAM.MAV_DATA_STREAM_ALL;           ;
-	req.start_stop       = 1;
+	req.start_stop       = (byte) option;
 	req.target_system    = 0;
 	req.target_component = 0;
 
@@ -244,9 +245,11 @@ public class Aircraft implements ErrorReporter{
     public int PreFlight(){
 	
 	// Send flight plan to pixhawk
-	
-	FlightData.SendFlightPlanToAP(apIntf);
-	
+	synchronized(apIntf){
+	    EnableDataStream(0);
+	    FlightData.SendFlightPlanToAP(apIntf);
+	    EnableDataStream(1);
+	}
 	
 	return 1;
     }
@@ -290,18 +293,20 @@ public class Aircraft implements ErrorReporter{
 	case TAKEOFF_CLIMB:
 
 	    // Switch to auto once targetAlt [m] is reached and start mission in auto mode
-	    if(currPosition.alt() >= targetAlt){
+	    if( Math.abs(currPosition.alt() - targetAlt) < 0.5 ){
 		error.addWarning("[" + timeLog + "] MODE:AUTO");
 		state = FLIGHT_STATE.CRUISE;
 		SetMode(3);
 		apMode = AP_MODE.AUTO;
 		
 		// Set speed
+
 		float speed = GetSpeed();			        
 		error.addWarning("[" + timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
 		SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
 			    1,speed,0,0,0,0,0);
 		FlightData.FP_nextWaypoint++;
+
 	    }
 	    
 
@@ -362,7 +367,7 @@ public class Aircraft implements ErrorReporter{
 	
     }//end Flight()
 
-    public int GetAircraftState(){
+    public synchronized int GetAircraftState(){
 	switch(state){
 
 	case IDLE:
@@ -398,7 +403,8 @@ public class Aircraft implements ErrorReporter{
 	return speed;
     }
     
-
+    
+    
     public int Terminate(){
 
 	return 1;

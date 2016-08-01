@@ -45,6 +45,11 @@ public class SITL_test{
 		bcastgroup = args[++i];
 		bcastport  = Integer.parseInt(args[++i]);
 	    }
+
+	    else if(args[i].startsWith("-")) {
+		System.out.println("Invalid option "+args[i]);
+		System.exit(0);
+	    }
 	}
 	
 	AircraftData FlightData    = new AircraftData();
@@ -74,7 +79,6 @@ public class SITL_test{
 
 	uasQuad.error.setConsoleOutput(verbose);
 	
-	
 	FMS fms_module           = new FMS("Flight management",uasQuad);
 	DAQ daq_module           = new DAQ("Data acquisition",uasQuad);
 	COM com_module           = new COM("Communications",uasQuad);
@@ -96,7 +100,8 @@ public class SITL_test{
 	System.out.println("Received heartbeat from COM");
 	    
 	daq_module.start();
-	    
+
+	
 
 	try{
 	    Thread.sleep(1000);
@@ -120,9 +125,10 @@ public class SITL_test{
 	}catch(InterruptedException e){
 	    System.out.println(e);
 	}
-	
-	fms_module.start();
 
+	fms_module.start();
+	
+	
 	while(fms_module.isFMSrunning()){
 	    // DO nothing
 	}

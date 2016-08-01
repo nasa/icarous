@@ -84,7 +84,7 @@ public class PX4Test{
 	com_module.error.setConsoleOutput(verbose);
 	test.error.setConsoleOutput(verbose);
 	
-	uasQuad.EnableDataStream();
+	uasQuad.EnableDataStream(1);
 	
 	while(!uasQuad.fsam.CheckAPHeartBeat()){
 	    

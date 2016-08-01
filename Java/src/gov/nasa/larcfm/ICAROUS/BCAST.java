@@ -29,16 +29,18 @@ public class BCAST implements Runnable{
 
     public void run(){
 
-	
-	while(true){
+	msg_heartbeat_icarous ICAROUSstate = new msg_heartbeat_icarous();
 
-	    msg_heartbeat_icarous ICAROUSstate = new msg_heartbeat_icarous();
+	while(true){	    	    	    	   
 
-	    ICAROUSstate.status = (byte) UAS.GetAircraftState();
+
+	    ICAROUSstate.status = 10;
+	    
 	    // Broadcast messages here
 	    Intf.Write(ICAROUSstate);
 	    Intf.Write(FlightData.Inbox.GlobalPositionInt());
-	    	  
+
+
 	}
     }
 
