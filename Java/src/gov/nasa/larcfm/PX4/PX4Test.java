@@ -106,7 +106,7 @@ public class PX4Test{
 	    System.out.println(e);
 	}
 
-	bcast_module.start();
+	//bcast_module.start();
 	
 	try{
 	    Thread.sleep(1000);
