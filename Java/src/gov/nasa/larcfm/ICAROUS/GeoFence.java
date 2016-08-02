@@ -124,7 +124,7 @@ public class GeoFence{
 	Vect2 xy    = proj.project(p).vect2();
 	x3          = xy.x();
 	y3          = xy.y();
-	Position Safe;
+	Position Safe = Position.makeXYZ(0.0,0.0,0.0);
 			
 	// Check if perpendicular intersection lies within line segment
 	for(int i=0;i<geoPoly3D.size();i++){

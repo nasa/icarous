@@ -14,7 +14,7 @@ import gov.nasa.larcfm.MISSION.*;
 import java.io.*;
 
 import gov.nasa.larcfm.IO.SeparatedInput;
-import gov.nasa.larcfm.IO.ParameterData;
+import gov.nasa.larcfm.Util.ParameterData;
 
 public class PX4Test{
     
