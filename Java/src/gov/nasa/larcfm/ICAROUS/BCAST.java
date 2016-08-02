@@ -34,7 +34,7 @@ public class BCAST implements Runnable{
 	while(true){	    	    	    	   
 
 
-	    ICAROUSstate.status = 10;
+	    ICAROUSstate.status = (byte) UAS.GetAircraftState();
 	    
 	    // Broadcast messages here
 	    Intf.Write(ICAROUSstate);

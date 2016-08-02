@@ -13,8 +13,8 @@ import gov.nasa.larcfm.ICAROUS.*;
 import gov.nasa.larcfm.MISSION.*;
 import java.io.*;
 
-import gov.nasa.larcfm.Util.SeparatedInput;
-import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larcfm.IO.SeparatedInput;
+import gov.nasa.larcfm.IO.ParameterData;
 
 public class PX4Test{
     

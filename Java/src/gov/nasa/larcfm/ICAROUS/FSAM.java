@@ -251,7 +251,7 @@ public class FSAM{
 
 	    Conflict cf;	   
 
-	    if(GF.hconflict || GF.vconflict){
+	    if(GF.conflict){
 		
 		if(GF.Type == 0){
 		    cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_IN,GF);

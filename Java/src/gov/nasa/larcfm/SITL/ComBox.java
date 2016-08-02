@@ -5,8 +5,8 @@ import com.MAVLink.*;
 import com.MAVLink.Messages.*;
 import com.MAVLink.icarous.*;
 
-import gov.nasa.larcfm.Util.SeparatedInput;
-import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larcfm.IO.SeparatedInput;
+import gov.nasa.larcfm.IO.ParameterData;
 
 public class ComBox{
 
