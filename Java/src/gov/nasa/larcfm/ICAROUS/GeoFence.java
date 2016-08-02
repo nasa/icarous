@@ -40,6 +40,8 @@ public class GeoFence{
     public double ceiling;
     public static double hthreshold;
     public static double vthreshold;
+    public static double hstepback;
+    public static double vstepback;
     
     Position SafetyPoint  = null;
     boolean violation         = false;
@@ -71,6 +73,8 @@ public class GeoFence{
 	    
 	    hthreshold   = parameters.getValue("hthreshold");
 	    vthreshold   = parameters.getValue("vthreshold");
+	    hstepback    = parameters.getValue("hstepback");
+	    vstepback    = parameters.getValue("vstepback");
 	}
 	catch(FileNotFoundException e){
 	    System.out.println("Geofence parameters not found");
@@ -87,7 +91,7 @@ public class GeoFence{
 	if(geoPolyLLA.size() == numVertices){
 	    isconvex = geoPoly3D.poly2D().isConvex();
 
-	    proj      = Projection.createProjection(geoPolyLLA.centroid());
+	    proj      = Projection.createProjection(geoPolyLLA.getVertex(0));
 	    geoPoly3D = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
 	    
 	}
@@ -120,11 +124,12 @@ public class GeoFence{
 	Vect2 C,CD,CDe;
 	LatLonAlt LLA;
 	
-	LatLonAlt p = pos.zeroAlt().lla();
-	Vect2 xy    = proj.project(p).vect2();
-	x3          = xy.x();
-	y3          = xy.y();
+	LatLonAlt p   = pos.zeroAlt().lla();
+	Vect2 xy      = proj.project(p).vect2();
+	x3            = xy.x();
+	y3            = xy.y();
 	Position Safe = Position.makeXYZ(0.0,0.0,0.0);
+	Position RecoveryPoint = Position.makeXYZ(0.0,0.0,0.0);
 			
 	// Check if perpendicular intersection lies within line segment
 	for(int i=0;i<geoPoly3D.size();i++){
@@ -135,11 +140,11 @@ public class GeoFence{
 	    else
 		vert_j = i + 1;
 
-	    x1 = geoPoly3D.getVertex(vert_i).x();
-	    y1 = geoPoly3D.getVertex(vert_i).y();
+	    x1 = geoPoly3D.poly2D().getVertex(vert_i).x();
+	    y1 = geoPoly3D.poly2D().getVertex(vert_i).y();
 
-	    x2 = geoPoly3D.getVertex(vert_j).x();
-	    y2 = geoPoly3D.getVertex(vert_j).y();
+	    x2 = geoPoly3D.poly2D().getVertex(vert_j).x();
+	    y2 = geoPoly3D.poly2D().getVertex(vert_j).y();
 	    
 	    m  = (y2 - y1)/(x2 - x1);
 
@@ -161,9 +166,7 @@ public class GeoFence{
 	    if(projAC >= 0 && projAC <= 1)
 		insegment = true;
 	    else
-		insegment = false;    
-
-	    double hstepback = hthreshold + 2;
+		insegment = false;    	
 	    
 	    if(insegment){
 		dist = Math.abs(a*x3 + b*y3 + c)/Math.sqrt(Math.pow(a,2) + Math.pow(b,2));
@@ -189,29 +192,33 @@ public class GeoFence{
 		}
 
 		
-		CDe = C.Add(CD.Scal(hstepback/CD.norm()));
+		CDe       = C.Add(CD.Scal(hstepback/CD.norm()));
 		    
 		LLA       = proj.inverse(CDe,pos.alt());
 		Safe      = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
 	    }
 
+	    if(dist < Min){
+		Min = dist;
+		RecoveryPoint = Safe;
+		
+	    }
 	    
 
 	}
 
 	double alt;
-	double vstepback = vthreshold + 2;
 	if( (ceiling - pos.alt()) <= vthreshold){
 	    alt = (ceiling - vstepback);
-	    Safe = Safe.mkAlt(alt);
+	    RecoveryPoint = RecoveryPoint.mkAlt(alt);
 	}
 	else if( (pos.alt() - floor) <= vthreshold){
 	    alt = (floor + vstepback);                
-	    Safe = Safe.mkAlt(alt);
+	    RecoveryPoint = RecoveryPoint.mkAlt(alt);
 	}
 	
 
-	return Safe;
+	return RecoveryPoint;
     }
     
     public void CheckViolation(Position pos){
@@ -223,16 +230,22 @@ public class GeoFence{
 
 	Vect3 so = proj.project(pos);
 
-	System.out.println("Distance from edge:"+geoPoly3D.distanceFromEdge(so));
+	SafetyPoint = GetSafetyPoint(pos);
+	//System.out.println("Distance from edge:"+geoPoly3D.distanceFromEdge(so));
 	
 	// Keep in geofence
 	if(Type == 0){	    
 	    if(geoPolyCarp.nearEdge(so,geoPoly3D,hthreshold,vthreshold)){
-		conflict = true;
+		conflict  = true;				
+	    }else{
+		conflict = false;
+		
 	    }
 
 	    if(geoPolyCarp.definitelyInside(so,geoPoly3D)){
-		violation = true;
+		violation = true;		
+	    }else{
+		violation = false;
 	    }
 	    	   	    	    	    	    
 	}
