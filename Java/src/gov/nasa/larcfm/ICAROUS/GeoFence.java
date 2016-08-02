@@ -88,7 +88,7 @@ public class GeoFence{
 	    isconvex = geoPoly3D.poly2D().isConvex();
 
 	    proj      = Projection.createProjection(geoPolyLLA.centroid());
-	    geoPoly3D = geoPolyLLA.poly3D(proj);
+	    geoPoly3D = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
 	    
 	}
 				    
@@ -222,6 +222,8 @@ public class GeoFence{
 	double alt;
 
 	Vect3 so = proj.project(pos);
+
+	System.out.println("Distance from edge:"+geoPoly3D.distanceFromEdge(so));
 	
 	// Keep in geofence
 	if(Type == 0){	    
