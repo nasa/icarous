@@ -40,7 +40,7 @@ public class launch{
 	    }
 
 	    else if(args[i].startsWith("--com")){
-		comport = Integer.parseInt(args[++i]);		
+		comport = Integer.parseInt(args[++i]);	    
 	    }
 
 	    else if(args[i].startsWith("--bc")){
@@ -53,12 +53,7 @@ public class launch{
 	    }
 	}
 
-	//FileReader in = new FileReader(paraminput);
-	//SeparatedInput reader = new SeparatedInput(in);
-	
-	//reader.readLine();
-	//ParameterData parameters = reader.getParametersRef();
-	
+		
 	AircraftData FlightData    = new AircraftData();
 	Interface APInt = null;
 	

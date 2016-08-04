@@ -65,7 +65,7 @@ public class GeoFence{
 	CDPolycarp.setCheckNice(false);
 
 	try{
-	    FileReader in = new FileReader("params/Geofence.txt");
+	    FileReader in = new FileReader("params/icarous.txt");
 	    SeparatedInput reader = new SeparatedInput(in);
 
 	    reader.readLine();
@@ -77,7 +77,7 @@ public class GeoFence{
 	    vstepback    = parameters.getValue("vstepback");
 	}
 	catch(FileNotFoundException e){
-	    System.out.println("Geofence parameters not found");
+	    System.out.println("parameter file not found");
 	}
 			
 	

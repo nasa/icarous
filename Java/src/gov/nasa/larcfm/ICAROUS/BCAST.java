@@ -10,7 +10,11 @@
  */
 package gov.nasa.larcfm.ICAROUS;
 
+import gov.nasa.larcfm.IO.SeparatedInput;
+import gov.nasa.larcfm.Util.ParameterData;
 import com.MAVLink.icarous.*;
+import java.io.*;
+
 
 public class BCAST implements Runnable{
 
@@ -19,26 +23,48 @@ public class BCAST implements Runnable{
     public Aircraft UAS;
     public AircraftData FlightData;
     public Interface Intf;
+    ParameterData parameters;
     
     public BCAST(String name,Aircraft uas,Interface bcastIntf){
 	threadName       = name;
 	UAS              = uas;               
 	FlightData       = UAS.FlightData;
 	Intf             = bcastIntf;
+
+	try{
+	    FileReader in = new FileReader("params/icarous.txt");
+	    SeparatedInput reader = new SeparatedInput(in);
+
+	    reader.readLine();
+	    parameters = reader.getParametersRef();
+	    
+	}
+	catch(FileNotFoundException e){
+	    System.out.println("parameter file not found");
+	}
     }
 
     public void run(){
 
 	msg_heartbeat_icarous ICAROUSstate = new msg_heartbeat_icarous();
+	double ic_hz                       = parameters.getValue("ic_heartbeat_Hz");
 
+	double timeStart                   = (double) (System.nanoTime()/1E9);
+	double timeCurrent,timeElapsed;                 
 	while(true){	    	    	    	   
 
+	    timeCurrent = (double) (System.nanoTime()/1E9);
 
-	    ICAROUSstate.status = (byte) UAS.GetAircraftState();
+	    timeElapsed = timeCurrent - timeStart;
+
+	    if(timeElapsed > 1/ic_hz){
+		ICAROUSstate.status = (byte) UAS.GetAircraftState();
 	    
-	    // Broadcast messages here
-	    Intf.Write(ICAROUSstate);
-	    Intf.Write(FlightData.Inbox.GlobalPositionInt());
+		// Broadcast messages here
+		Intf.Write(ICAROUSstate);
+		
+		timeStart = timeCurrent;
+	    }
 
 
 	}
