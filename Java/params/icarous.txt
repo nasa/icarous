@@ -1,3 +1,6 @@
+# ICAROUS heartbeat (Hz)
+ic_heartbeat_hz = 5
+
 # Geofence parameters
 hthreshold = 2.0
 vthreshold = 2.0
