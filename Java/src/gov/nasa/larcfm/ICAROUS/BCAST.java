@@ -47,7 +47,7 @@ public class BCAST implements Runnable{
     public void run(){
 
 	msg_heartbeat_icarous ICAROUSstate = new msg_heartbeat_icarous();
-	double ic_hz                       = parameters.getValue("ic_heartbeat_Hz");
+	double ic_hz                       = parameters.getValue("ic_heartbeat_hz");
 
 	double timeStart                   = (double) (System.nanoTime()/1E9);
 	double timeCurrent,timeElapsed;                 
