@@ -69,6 +69,8 @@ public class AircraftData{
     public int FP_nextWaypoint;
 
     public int startMission; // -1: last command executed, 0 - stop mission, 1 - start mission
+
+    double planTime;
     
     public AircraftData(){
 
@@ -110,6 +112,17 @@ public class AircraftData{
 	roll  = msg.roll*180/Math.PI;
 	pitch = msg.pitch*180/Math.PI;
 	yaw   = msg.yaw*180/Math.PI;
+    }
+
+    public void getPlanTime(){
+	Plan FP = CurrentFlightPlan;
+	
+	double legDistance    = FP.pathDistance(nextWP - 1);
+	double legTime        = FP.getTime(i) - FP.getTime(i-1);
+	double lastWPDistance = FP.point(i-1).position().distanceH(pos);
+	double currentTime    = FP.getTime(i) + legTime/legDistance * lastWPDistance;
+
+	planTime = currentTime;
     }
 
     // Function to send a flight plan to pixhawk
@@ -401,8 +414,13 @@ public class AircraftData{
 		break;
 
 	    case UPDATE:
-		
-		fenceList.add(fence1);
+		// Always add the keep in fence as the first fence on the list
+		// There should only be one keep in fence
+		if(fence1.Type == 0){
+		    fenceList.(0,fence1);
+		}else{
+		    fenceList.add(fence1);
+		}
 		numFences = fenceList.size();
 		GeoFence gf = (GeoFence)fenceList.get(numFences-1);
 		//gf.print();				

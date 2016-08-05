@@ -52,6 +52,11 @@ public class GeoFence{
     SimplePoly geoPolyLLA;
     Poly3D geoPoly3D;
     CDPolycarp geoPolyCarp;
+    PolyPath geoPolyPath;
+    CDIIPolygon cdp;
+
+    double entryTime;
+    double exitTime;
                 
     public GeoFence(int IDIn,int TypeIn,int numVerticesIn,double floorIn,double ceilingIn){
 	geoPolyLLA     = new SimplePoly(floorIn,ceilingIn);
@@ -93,9 +98,54 @@ public class GeoFence{
 
 	    proj      = Projection.createProjection(geoPolyLLA.getVertex(0));
 	    geoPoly3D = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
-	    
+	    geoPolyPath.addPolygon(geoPolyLLA,0);
 	}
 				    
+    }
+
+    public void CheckViolation(Position pos, double currentTime,Plan FP){
+
+	double hdist;
+	double vdist;
+
+	double alt;
+
+	Vect3 so = proj.project(pos);
+
+	SafetyPoint = GetSafetyPoint(pos);
+	//System.out.println("Distance from edge:"+geoPoly3D.distanceFromEdge(so));
+	
+	// Keep in geofence
+	if(Type == 0){	    
+	    if(geoPolyCarp.nearEdge(so,geoPoly3D,hthreshold,vthreshold)){
+		conflict  = true;				
+	    }else{
+		conflict = false;
+		
+	    }
+
+	    if(geoPolyCarp.definitelyInside(so,geoPoly3D)){
+		violation = true;		
+	    }else{
+		violation = false;
+	    }
+	    	   	    	    	    	    
+	}
+	//Keep out Geofence
+	else{
+	    cdp.detection(FP,0,FP.getLastTime());
+
+	    if(cdp.conflictBetween(currentTime,currentTime + 5)){
+		conflict = true;
+		entryTime = cdp.getTimeIn(0);
+		exitTime  = cdp.getTimeOut(cpd.size()-1);
+	    }
+	    else{
+		conflict = false;
+	    }
+	    
+
+	}
     }
         
     public Position GetSafetyPoint(Position pos){
@@ -221,41 +271,7 @@ public class GeoFence{
 	return RecoveryPoint;
     }
     
-    public void CheckViolation(Position pos){
-
-	double hdist;
-	double vdist;
-
-	double alt;
-
-	Vect3 so = proj.project(pos);
-
-	SafetyPoint = GetSafetyPoint(pos);
-	//System.out.println("Distance from edge:"+geoPoly3D.distanceFromEdge(so));
-	
-	// Keep in geofence
-	if(Type == 0){	    
-	    if(geoPolyCarp.nearEdge(so,geoPoly3D,hthreshold,vthreshold)){
-		conflict  = true;				
-	    }else{
-		conflict = false;
-		
-	    }
-
-	    if(geoPolyCarp.definitelyInside(so,geoPoly3D)){
-		violation = true;		
-	    }else{
-		violation = false;
-	    }
-	    	   	    	    	    	    
-	}
-	//Keep out Geofence
-	else{
-	    
-	    
-
-	}
-    }
+    
 
     public boolean CheckWaypointFeasibility(Position CurrPos, Position NextWP){
 

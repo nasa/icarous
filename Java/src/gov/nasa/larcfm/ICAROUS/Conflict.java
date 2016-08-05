@@ -53,30 +53,28 @@ public class Conflict{
 	    switch(conflictType){
 		
 	    case KEEP_IN:
-	    case KEEP_OUT:
 		if (fence.ID == conf.fence.ID){
-		    if(priority == conf.priority)
-			return 0;
-		    else
-			return 1;
+		    return 1;
+		}else{
+		    return 0;
 		}
-		else
-		    return -1;
+		
+	    case KEEP_OUT:
+		if (fence.ID == conf.fence.ID){		    
+			return 1;
+		}else{
+		    return 0;
+		}
 		
 	    case TRAFFIC:
 	    case OBSTACLE:		
 	    case EXAMINE:
 
-		if (object.id == conf.object.id){
-		    if(priority == conf.priority)
+		if (object.id == conf.object.id){		    
 			return 0;
-		    else
+		}else{
 			return 1;
-		}
-		else
-		    return -1;
-		
-	    
+		}					    
 	    
 	    } // switch
    

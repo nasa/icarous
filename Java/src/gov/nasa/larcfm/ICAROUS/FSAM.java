@@ -26,7 +26,7 @@ enum FSAM_OUTPUT{
 
 enum RESOLVE_STATE{
 
-    COMPUTE, EXECUTE, MONITOR, JOIN, NOOP
+    COMPUTE, EXECUTE, MONITOR, RESUME, NOOP
 }
 
 enum EXECUTE_STATE{
@@ -65,6 +65,10 @@ public class FSAM{
     private boolean FlightPlanConflict;
     private boolean GotoNextWP;
     
+    private float resolutionSpeed;
+    private int currentConflicts;
+    private boolean NominalPlan;
+    
     public FSAM(Aircraft ac,Mission ms){
 	UAS = ac;
 	FlightData = ac.FlightData;
@@ -81,7 +85,9 @@ public class FSAM{
 	FenceKeepOutConflict  = false;
 	TrafficConflict          = false;
 	FlightPlanConflict       = false;
-	int currentResolutionLeg = 0;
+	NominalPlan              = true;
+	currentResolutionLeg = 0;
+	currentConflicts     = 0;
     }
 
     public FSAM_OUTPUT Monitor(){
@@ -103,6 +109,8 @@ public class FSAM{
 	
 	double distance2WP  = currentPos.distanceH(wp);
 	
+
+	UAS.FlightData.GetPlanTime();
 	
 	// Check for geofence resolutions.
 	CheckGeoFences();
@@ -132,10 +140,12 @@ public class FSAM{
 	}
 	
 	if(conflictList.size() > 0){
-	    if(rState == RESOLVE_STATE.NOOP){
-		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Conflict(s) detected");
+
+	    if(conflictList.size() != currentConflicts){
+		currentConflicts = conflictList.size();
 		rState = RESOLVE_STATE.COMPUTE;
-	    }
+		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Conflict(s) detected");
+	    }	    	    
 	    
 	    return FSAM_OUTPUT.CONFLICT;	    
 	}
@@ -147,41 +157,53 @@ public class FSAM{
     public int Resolve(){
 
 	int status;
-	Plan CurrentFP = FlightData.CurrentFlightPlan;
-	
+	Plan CurrentFP  = FlightData.CurrentFlightPlan;
+	boolean UsePlan = true;
+	    
 	switch(rState){
 
 	case COMPUTE:
 	    
 	    if(FenceKeepInConflict){
-		UAS.SetSpeed(1.0f);
+		UAS.SetSpeed(ResolutionSpeed);
 		ResolveKeepInConflict();		
 	    }
-	    
-	    rState       = RESOLVE_STATE.EXECUTE;
-	    executeState = EXECUTE_STATE.START;
+
+	    if(FenceKeepOutConflict){
+	       UAS.SetSpeed(ResolutionSpeed);
+	       ResolveKeepOutConflict();		
+	    }
+
+	    if(UsePlan){
+		rState       = RESOLVE_STATE.EXECUTE;
+		executeState = EXECUTE_STATE.START;
+		NominalPlan  = false;
+	    }
+	    else{
+
+	    }
 	    
 	    break;
 
 	case EXECUTE:
-
+	   
 	    if( executeState != EXECUTE_STATE.COMPLETE ){
 		ExecuteResolution();
 	    }
 	    else{
-		rState = RESOLVE_STATE.JOIN;
+		rState = RESOLVE_STATE.RESUME;
 	    }
 	    
 	    break;
 
-	case JOIN:
-
+	case RESUME:
 
 	    Iterator Itr = conflictList.iterator();
 	    while(Itr.hasNext()){
 		Conflict cf = (Conflict) Itr.next();
 		Itr.remove();
 	    }
+	    currentConflicts = conflictList.size();
 	    
 	    if(GotoNextWP){
 		msg_mission_set_current msgMission = new msg_mission_set_current();
@@ -200,6 +222,7 @@ public class FSAM{
 	    UAS.SetMode(3);
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MODE: AUTO");
 	    rState = RESOLVE_STATE.NOOP;
+	    NominalPlan = true;
 	    
 	    break;
 
@@ -247,7 +270,7 @@ public class FSAM{
 	
 	for(int i=0;i< FlightData.fenceList.size();i++){
 	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
-	    GF.CheckViolation(FlightData.acState.positionLast());
+	    GF.CheckViolation(FlightData.acState.positionLast(),UAS.FlightData.planTime,UAS.FlightData.CurrentFlightPlan);
 
 	    Conflict cf;	   
 
@@ -273,7 +296,7 @@ public class FSAM{
 	Plan CurrentFP = FlightData.CurrentFlightPlan;
 	GeoFence GF = conflictList.get(0).fence;		
 	NavPoint wp = new NavPoint(GF.SafetyPoint,0);
-	
+	ResolutionPlan.clear();
 	ResolutionPlan.add(wp);
 	
 	NavPoint nextWP = CurrentFP.point(FlightData.FP_nextWaypoint);
@@ -284,6 +307,61 @@ public class FSAM{
 	}
 	
 
+    }
+
+    public void ResolveKeepOutConflict(){
+
+	Plan CurrentFP = FlightData.CurrentFlightPlan;
+
+	double minTime = Double.MAX_VALUE;
+	double maxTime = 0.0;
+
+	double currentTime = UAS.FlightData.planTime;
+
+	ArrayList<PolyPath> LPP = new ArrayList<PolyPath>();
+	ArrayList<PolyPath> CPP = new ArrayList<PolyPath>();
+	
+	// Get conflict start and end time
+	for(int i=0;i<Conflict.size();i++){
+
+	    Conflict conf = (Conflict) conflictList.get(i);
+
+	    if(conf.conflictType == CONFLICT_TYPE.KEEP_OUT){
+
+		if(GF.EntryTime <= minTime){
+		    minTime = GF.entryTime;
+		}
+
+		if(GF.ExitTime >= maxTime){
+		    maxTime = GF.exitTime;
+		}
+   				
+		LPP.add(GF.geoPolyPath);
+	    }
+	}
+
+	CPP = add(FlightData.fenceList.get(0));
+	
+	minTime = minTime - 3;
+	maxTime = maxTime + 3;
+	
+	if(minTime < currentTime){
+	    minTime = currentTime;
+	}
+
+	// Get flight plan between start time and end time (with a 3 second buffer on both sides)
+	Plan ConflictPlan = PlanUtil.cutDown(CurrentFP,minTime,maxTime);
+
+	
+	// Reroute flight plan
+	UAS.setMode(4); // Set mode to guided for quadrotor to hover before replanning
+	
+	Pair<Plan,DensityGrid> Resolution = WU.reRouteWx(ConflictFP,LPP,gridsize,buffer,0,lookahead,null,false,false,
+							 currentTime,0.0,true,0.0,0.0,false);
+
+	// Smooth flight plan
+	ResolutionPlan  = SmoothPlan(Resolution.getFirst());
+	
     }
 
     
@@ -343,5 +421,54 @@ public class FSAM{
 
     }//end function
 
+    public static Plan SmoothPlan(Plan input){
+
+	int size = input.size();
+	int filtersize = 3;
+
+	if(filtersize >= size){
+	    return input;
+	}
+
+	Plan PF = new Plan();
+	PF.add(input.point(0));
+	PF.setTime(0,0);
+	
+	for(int i=0;i<size;i++){
+
+	    double cumlat = 0;
+	    double cumlon = 0;
+	    double cumalt = 0;
+	    
+	    for(int j=0;j<filtersize;j++){
+
+		if(i+j < size){
+		    cumlat = cumlat + input.point(i+j).position().latitude();
+		    cumlon = cumlon + input.point(i+j).position().longitude();
+		    cumalt = cumalt + input.point(i+j).position().alt();
+		}
+		else{
+		    cumlat = cumlat + input.point(size-1).position().latitude();
+		    cumlon = cumlon + input.point(size-1).position().longitude();
+		    cumalt = cumalt + input.point(size-1).position().alt();
+		}
+	    }
+
+	    Position p =Position.makeLatLonAlt(cumlat/filtersize,"degree",
+					       cumlon/filtersize,"degree",
+					       cumalt/filtersize,"m");
+
+
+	    // Plan already has the first waypoint hence the i instead of i-1.
+	    double time = PF.getTime(i) + p.distanceH(PF.point(i).position())/resolutionSpeed;
+	    NavPoint np = new NavPoint(p,time);
+	    PF.add(np);
+
+	    
+	}
+		    
+	return PF;
+
+    }
     
 }

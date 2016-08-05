@@ -405,9 +405,7 @@ public class Aircraft implements ErrorReporter{
 
 	return speed;
     }
-    
-    
-    
+                
     public int Terminate(){
 
 	return 1;
