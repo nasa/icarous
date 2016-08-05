@@ -12,15 +12,20 @@ package gov.nasa.larcfm.ICAROUS;
 
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Vect2;
+import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.LatLonAlt;
 import gov.nasa.larcfm.Util.Projection;
 import gov.nasa.larcfm.Util.EuclideanProjection;
 import gov.nasa.larcfm.Util.Poly3D;
 import gov.nasa.larcfm.Util.SimplePoly;
 import gov.nasa.larcfm.Util.Position;
-import gov.nasa.larcfm.ACCoRD.CDPolycarp;
-import gov.nasa.larcfm.IO.SeparatedInput;
+import gov.nasa.larcfm.Util.PolyPath;
 import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larcfm.Util.Plan;
+import gov.nasa.larcfm.ACCoRD.CDPolycarp;
+import gov.nasa.larcfm.ACCoRD.CDIIPolygon;
+import gov.nasa.larcfm.IO.SeparatedInput;
+
 
 import java.util.*;
 import java.lang.*;
@@ -43,7 +48,7 @@ public class GeoFence{
     public static double hstepback;
     public static double vstepback;
     
-    Position SafetyPoint  = null;
+    Position SafetyPoint      = null;
     boolean violation         = false;
     boolean conflict          = false;
     boolean isconvex          = false;
@@ -67,7 +72,9 @@ public class GeoFence{
 	floor          = floorIn;
 	ceiling        = ceilingIn;
 	geoPolyCarp    = new CDPolycarp();
+	geoPolyPath    = new PolyPath();
 	CDPolycarp.setCheckNice(false);
+	cdp            = new CDIIPolygon(geoPolyCarp);
 
 	try{
 	    FileReader in = new FileReader("params/icarous.txt");
@@ -98,7 +105,8 @@ public class GeoFence{
 
 	    proj      = Projection.createProjection(geoPolyLLA.getVertex(0));
 	    geoPoly3D = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
-	    geoPolyPath.addPolygon(geoPolyLLA,0);
+	    Velocity v = Velocity.makeTrkGsVs(0.0,0.0,0.0);
+	    geoPolyPath.addPolygon(geoPolyLLA,v,0);
 	}
 				    
     }
@@ -133,12 +141,15 @@ public class GeoFence{
 	}
 	//Keep out Geofence
 	else{
-	    cdp.detection(FP,0,FP.getLastTime());
+	    // System.out.println(FP.toString());
+	    // System.out.println(geoPolyPath.toString());
+	    //System.out.println(FP.getLastTime());
+	    cdp.detection(FP,geoPolyPath,0,FP.getLastTime());
 
 	    if(cdp.conflictBetween(currentTime,currentTime + 5)){
 		conflict = true;
 		entryTime = cdp.getTimeIn(0);
-		exitTime  = cdp.getTimeOut(cpd.size()-1);
+		exitTime  = cdp.getTimeOut(cdp.size()-1);		
 	    }
 	    else{
 		conflict = false;

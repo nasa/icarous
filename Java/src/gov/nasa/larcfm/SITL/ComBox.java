@@ -106,6 +106,7 @@ public class ComBox{
 
 	List<msg_pointofinterest> Waypoints = new ArrayList<msg_pointofinterest>();
 	List<msg_pointofinterest> Geofence  = new ArrayList<msg_pointofinterest>();
+	List<msg_pointofinterest> Geofence2 = new ArrayList<msg_pointofinterest>();
 	
 	MAVLinkMessage msg2send;
 	MAVLinkPacket raw_packet;
@@ -204,6 +205,27 @@ public class ComBox{
 	    reader.readLine();
 	}
 
+	msg_geofence_info msgGeoFenceInfo2 = new msg_geofence_info();
+	msgGeoFenceInfo2.msgType   = 0;
+	msgGeoFenceInfo2.fenceID   = 1;
+	msgGeoFenceInfo2.fenceType =  1;
+	msgGeoFenceInfo2.numVertices = parameters.getInt("NumVertices");
+	msgGeoFenceInfo2.fenceFloor = parameters.getInt("Floor");
+	msgGeoFenceInfo2.fenceCeiling = parameters.getInt("Ceiling");
+
+	for(int i=0;i<msgGeoFenceInfo2.numVertices;i++){
+	    msg_pointofinterest gf = new msg_pointofinterest();
+	    gf.id      = (byte)reader.getColumn(0);
+	    gf.index   = (byte)reader.getColumn(1);
+	    gf.subtype = (byte)reader.getColumn(2);
+	    gf.latx    = (float)reader.getColumn(3);
+	    gf.lony    = (float)reader.getColumn(4);
+	    gf.altz    = (float)reader.getColumn(5);
+	    gf.heading = (float)reader.getColumn(6);
+
+	    Geofence2.add(gf);
+	    reader.readLine();
+	}
 
 	msg_mission_start_stop msgMissionStart = new msg_mission_start_stop();
 
@@ -244,6 +266,21 @@ public class ComBox{
 
 	    for(int i=0;i<Geofence.size();i++){
 		msg_pointofinterest gf = (msg_pointofinterest) Geofence.get(i);
+		UDPWrite(gf,sock,host,udpSendPort); Thread.sleep(100);
+	    }	    
+	    ack = UDPRead(sock);	
+
+	    if(ack.acktype == 1 && ack.value == 1){
+		System.out.println("Geofence sent successfully");
+	    }
+	    else{
+		System.out.println("Resend geofence");
+	    }
+
+	    UDPWrite(msgGeoFenceInfo2,sock,host,udpSendPort);Thread.sleep(100);
+
+	    for(int i=0;i<Geofence.size();i++){
+		msg_pointofinterest gf = (msg_pointofinterest) Geofence2.get(i);
 		UDPWrite(gf,sock,host,udpSendPort); Thread.sleep(100);
 	    }	    
 	    ack = UDPRead(sock);	

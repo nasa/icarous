@@ -12,6 +12,7 @@ package gov.nasa.larcfm.ICAROUS;
 
 import java.util.*;
 import java.lang.*;
+import java.io.*;
 import com.MAVLink.common.*;
 import com.MAVLink.enums.*;
 
@@ -19,6 +20,13 @@ import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.AircraftState;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.NavPoint;
+import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larcfm.Util.PolyPath;
+import gov.nasa.larcfm.Util.PlanUtil;
+import gov.nasa.larcfm.Util.Pair;
+import gov.nasa.larcfm.Util.WeatherUtil;
+import gov.nasa.larcfm.Util.DensityGrid;
+import gov.nasa.larcfm.IO.SeparatedInput;
 
 enum FSAM_OUTPUT{
     CONFLICT,NOOP, TERMINATE
@@ -68,6 +76,11 @@ public class FSAM{
     private float resolutionSpeed;
     private int currentConflicts;
     private boolean NominalPlan;
+
+    private double gridsize;
+    private double buffer;
+    private double lookahead;
+    private double proximityfactor;
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS = ac;
@@ -88,6 +101,23 @@ public class FSAM{
 	NominalPlan              = true;
 	currentResolutionLeg = 0;
 	currentConflicts     = 0;
+
+	try{
+	    FileReader in = new FileReader("params/icarous.txt");
+	    SeparatedInput reader = new SeparatedInput(in);
+
+	    reader.readLine();
+	    ParameterData parameters = reader.getParametersRef();
+	    
+	    resolutionSpeed   = (float) parameters.getValue("ResolutionSpeed");
+	    gridsize          = parameters.getValue("gridsize");
+	    buffer            = parameters.getValue("buffer");
+	    lookahead         = parameters.getValue("lookahead");
+	    proximityfactor   = parameters.getValue("proximityfactor");
+	}
+	catch(FileNotFoundException e){
+	    System.out.println("parameter file not found");
+	}
     }
 
     public FSAM_OUTPUT Monitor(){
@@ -110,7 +140,7 @@ public class FSAM{
 	double distance2WP  = currentPos.distanceH(wp);
 	
 
-	UAS.FlightData.GetPlanTime();
+	UAS.FlightData.getPlanTime();
 	
 	// Check for geofence resolutions.
 	CheckGeoFences();
@@ -165,12 +195,12 @@ public class FSAM{
 	case COMPUTE:
 	    
 	    if(FenceKeepInConflict){
-		UAS.SetSpeed(ResolutionSpeed);
+		UAS.SetSpeed(resolutionSpeed);
 		ResolveKeepInConflict();		
 	    }
 
 	    if(FenceKeepOutConflict){
-	       UAS.SetSpeed(ResolutionSpeed);
+	       UAS.SetSpeed(resolutionSpeed);
 	       ResolveKeepOutConflict();		
 	    }
 
@@ -205,18 +235,12 @@ public class FSAM{
 	    }
 	    currentConflicts = conflictList.size();
 	    
-	    if(GotoNextWP){
-		msg_mission_set_current msgMission = new msg_mission_set_current();
-		msgMission.target_system     = 0;
-		msgMission.target_component  = 0;
-
-		FlightData.FP_nextWaypoint++;
-		msgMission.seq               = FlightData.FP_nextWaypoint;	    
-		
-		UAS.error.addWarning("[" + UAS.timeLog + "] CMD: Set next mission item");
-		UAS.apIntf.Write(msgMission);
-		
-	    }
+	    msg_mission_set_current msgMission = new msg_mission_set_current();
+	    msgMission.target_system     = 0;
+	    msgMission.target_component  = 0;
+	    msgMission.seq               = FlightData.FP_nextWaypoint;	    		
+	    UAS.error.addWarning("[" + UAS.timeLog + "] CMD: Set next mission item");
+	    UAS.apIntf.Write(msgMission);
 
 	    UAS.apMode = Aircraft.AP_MODE.AUTO;
 	    UAS.SetMode(3);
@@ -267,8 +291,7 @@ public class FSAM{
 
 	 FenceKeepInConflict  = false;
 	 FenceKeepOutConflict = false;
-	
-	for(int i=0;i< FlightData.fenceList.size();i++){
+	 for(int i=0;i< FlightData.fenceList.size();i++){
 	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
 	    GF.CheckViolation(FlightData.acState.positionLast(),UAS.FlightData.planTime,UAS.FlightData.CurrentFlightPlan);
 
@@ -301,7 +324,8 @@ public class FSAM{
 	
 	NavPoint nextWP = CurrentFP.point(FlightData.FP_nextWaypoint);
 	if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){
-	    GotoNextWP = true;	
+	    GotoNextWP = true;
+	    FlightData.FP_nextWaypoint++;				
 	}else{
 	    GotoNextWP = false;
 	}
@@ -320,47 +344,46 @@ public class FSAM{
 
 	ArrayList<PolyPath> LPP = new ArrayList<PolyPath>();
 	ArrayList<PolyPath> CPP = new ArrayList<PolyPath>();
+	WeatherUtil WU = new WeatherUtil();
 	
 	// Get conflict start and end time
-	for(int i=0;i<Conflict.size();i++){
+	for(int i=0;i<conflictList.size();i++){
 
-	    Conflict conf = (Conflict) conflictList.get(i);
-
-	    if(conf.conflictType == CONFLICT_TYPE.KEEP_OUT){
-
-		if(GF.EntryTime <= minTime){
-		    minTime = GF.entryTime;
-		}
-
-		if(GF.ExitTime >= maxTime){
-		    maxTime = GF.exitTime;
-		}
-   				
-		LPP.add(GF.geoPolyPath);
+	    GeoFence GF = (GeoFence) conflictList.get(i).fence;
+	    
+	    if(GF.entryTime <= minTime){
+		minTime = GF.entryTime;
 	    }
+	    
+	    if(GF.exitTime >= maxTime){
+		maxTime = GF.exitTime;
+	    }
+	    
+	    LPP.add(GF.geoPolyPath);
+	    
 	}
 
-	CPP = add(FlightData.fenceList.get(0));
+	CPP.add(FlightData.fenceList.get(0).geoPolyPath);
 	
-	minTime = minTime - 3;
-	maxTime = maxTime + 3;
+	minTime = minTime - 5;
+	maxTime = maxTime + 5;
 	
 	if(minTime < currentTime){
 	    minTime = currentTime;
 	}
 
+	FlightData.FP_nextWaypoint = CurrentFP.getSegment(maxTime)+1;	
+
 	// Get flight plan between start time and end time (with a 3 second buffer on both sides)
 	Plan ConflictPlan = PlanUtil.cutDown(CurrentFP,minTime,maxTime);
-
 	
 	// Reroute flight plan
-	UAS.setMode(4); // Set mode to guided for quadrotor to hover before replanning
+	UAS.SetMode(4); // Set mode to guided for quadrotor to hover before replanning
 	
-	Pair<Plan,DensityGrid> Resolution = WU.reRouteWx(ConflictFP,LPP,gridsize,buffer,0,lookahead,null,false,false,
+	Pair<Plan,DensityGrid> Resolution = WU.reRouteWx(ConflictPlan,LPP,gridsize,buffer,proximityfactor,lookahead,CPP,false,false,
 							 currentTime,0.0,true,0.0,0.0,false);
 
-	// Smooth flight plan
-	ResolutionPlan  = SmoothPlan(Resolution.getFirst());
+	ResolutionPlan  = Resolution.getFirst();
 	
     }
 
@@ -421,7 +444,7 @@ public class FSAM{
 
     }//end function
 
-    public static Plan SmoothPlan(Plan input){
+    public Plan SmoothPlan(Plan input){
 
 	int size = input.size();
 	int filtersize = 3;

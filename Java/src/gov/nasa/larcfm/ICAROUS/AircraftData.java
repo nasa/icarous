@@ -116,11 +116,12 @@ public class AircraftData{
 
     public void getPlanTime(){
 	Plan FP = CurrentFlightPlan;
-	
-	double legDistance    = FP.pathDistance(nextWP - 1);
-	double legTime        = FP.getTime(i) - FP.getTime(i-1);
-	double lastWPDistance = FP.point(i-1).position().distanceH(pos);
-	double currentTime    = FP.getTime(i) + legTime/legDistance * lastWPDistance;
+
+	Position pos = acState.positionLast();
+	double legDistance    = FP.pathDistance(FP_nextWaypoint - 1);
+	double legTime        = FP.getTime(FP_nextWaypoint) - FP.getTime(FP_nextWaypoint-1);
+	double lastWPDistance = FP.point(FP_nextWaypoint-1).position().distanceH(pos);
+	double currentTime    = FP.getTime(FP_nextWaypoint-1) + legTime/legDistance * lastWPDistance;
 
 	planTime = currentTime;
     }
@@ -417,7 +418,7 @@ public class AircraftData{
 		// Always add the keep in fence as the first fence on the list
 		// There should only be one keep in fence
 		if(fence1.Type == 0){
-		    fenceList.(0,fence1);
+		    fenceList.add(0,fence1);
 		}else{
 		    fenceList.add(fence1);
 		}
