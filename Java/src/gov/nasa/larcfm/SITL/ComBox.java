@@ -106,8 +106,8 @@ public class ComBox{
 
 	List<msg_pointofinterest> Waypoints = new ArrayList<msg_pointofinterest>();
 	List<msg_pointofinterest> Geofence  = new ArrayList<msg_pointofinterest>();
-	List<msg_pointofinterest> Geofence2 = new ArrayList<msg_pointofinterest>();
-	
+	List<msg_geofence_info> GeoInfo = new ArrayList<msg_geofence_info>();
+		
 	MAVLinkMessage msg2send;
 	MAVLinkPacket raw_packet;
 	byte[] receiveData = new byte[6+255+2];
@@ -167,14 +167,27 @@ public class ComBox{
 	msgFlightPlanInfo.standoffDist = parameters.getInt("standoff");
 	double missionStartTime        = parameters.getInt("StartTime");
 
-	msg_geofence_info msgGeoFenceInfo = new msg_geofence_info();
-	msgGeoFenceInfo.msgType   = 0;
-	msgGeoFenceInfo.fenceID   = 1;
-	msgGeoFenceInfo.fenceType =  0;
-	msgGeoFenceInfo.numVertices = parameters.getInt("NumVertices");
-	msgGeoFenceInfo.fenceFloor = parameters.getInt("Floor");
-	msgGeoFenceInfo.fenceCeiling = parameters.getInt("Ceiling");
-	
+	int numFences = parameters.getInt("numFences");
+
+
+	for(int i=0;i<numFences;i++){
+	    msg_geofence_info msgGeoFenceInfo = new msg_geofence_info();
+	    msgGeoFenceInfo.msgType      = 0;
+	    msgGeoFenceInfo.fenceID      = 1;
+
+	    if(i==0){
+		msgGeoFenceInfo.fenceType    =  0;
+	    }
+	    else{
+		msgGeoFenceInfo.fenceType    =  1;
+	    }
+	    
+	    msgGeoFenceInfo.numVertices  = parameters.getInt("NumVertices");
+	    msgGeoFenceInfo.fenceFloor   = parameters.getInt("Floor");
+	    msgGeoFenceInfo.fenceCeiling = parameters.getInt("Ceiling");
+
+	    GeoInfo.add(msgGeoFenceInfo);
+	}
 
 	for(int i=0;i<msgFlightPlanInfo.numWaypoints;i++){
 	    msg_pointofinterest wp = new msg_pointofinterest();
@@ -191,41 +204,23 @@ public class ComBox{
 	    reader.readLine();
 	}
 
-	for(int i=0;i<msgGeoFenceInfo.numVertices;i++){
-	    msg_pointofinterest gf = new msg_pointofinterest();
-	    gf.id      = (byte)reader.getColumn(0);
-	    gf.index   = (byte)reader.getColumn(1);
-	    gf.subtype = (byte)reader.getColumn(2);
-	    gf.latx    = (float)reader.getColumn(3);
-	    gf.lony    = (float)reader.getColumn(4);
-	    gf.altz    = (float)reader.getColumn(5);
-	    gf.heading = (float)reader.getColumn(6);
-
-	    Geofence.add(gf);
-	    reader.readLine();
-	}
-
-	msg_geofence_info msgGeoFenceInfo2 = new msg_geofence_info();
-	msgGeoFenceInfo2.msgType   = 0;
-	msgGeoFenceInfo2.fenceID   = 1;
-	msgGeoFenceInfo2.fenceType =  1;
-	msgGeoFenceInfo2.numVertices = parameters.getInt("NumVertices");
-	msgGeoFenceInfo2.fenceFloor = parameters.getInt("Floor");
-	msgGeoFenceInfo2.fenceCeiling = parameters.getInt("Ceiling");
-
-	for(int i=0;i<msgGeoFenceInfo2.numVertices;i++){
-	    msg_pointofinterest gf = new msg_pointofinterest();
-	    gf.id      = (byte)reader.getColumn(0);
-	    gf.index   = (byte)reader.getColumn(1);
-	    gf.subtype = (byte)reader.getColumn(2);
-	    gf.latx    = (float)reader.getColumn(3);
-	    gf.lony    = (float)reader.getColumn(4);
-	    gf.altz    = (float)reader.getColumn(5);
-	    gf.heading = (float)reader.getColumn(6);
-
-	    Geofence2.add(gf);
-	    reader.readLine();
-	}
+	for(int i=0;i<numFences;i++){
+	    msg_geofence_info msgGeoFenceInfo = GeoInfo.get(i);
+	    
+	    for(int j=0;j<msgGeoFenceInfo.numVertices;j++){
+		msg_pointofinterest gf = new msg_pointofinterest();
+		gf.id      = (byte)reader.getColumn(0);
+		gf.index   = (byte)reader.getColumn(1);
+		gf.subtype = (byte)reader.getColumn(2);
+		gf.latx    = (float)reader.getColumn(3);
+		gf.lony    = (float)reader.getColumn(4);
+		gf.altz    = (float)reader.getColumn(5);
+		gf.heading = (float)reader.getColumn(6);
+		
+		Geofence.add(gf);
+		reader.readLine();
+	    }
+	}	
 
 	msg_mission_start_stop msgMissionStart = new msg_mission_start_stop();
 
@@ -262,35 +257,30 @@ public class ComBox{
 
 	    Thread.sleep(1000);
 
-	    UDPWrite(msgGeoFenceInfo,sock,host,udpSendPort);Thread.sleep(100);
+	    int countOld = 0;
+	    for(int i=0;i<numFences;i++){
+		msg_geofence_info msgInfo = GeoInfo.get(i);
+		    
+		UDPWrite(msgInfo,sock,host,udpSendPort);Thread.sleep(100);
 
-	    for(int i=0;i<Geofence.size();i++){
-		msg_pointofinterest gf = (msg_pointofinterest) Geofence.get(i);
-		UDPWrite(gf,sock,host,udpSendPort); Thread.sleep(100);
-	    }	    
-	    ack = UDPRead(sock);	
+		for(int j=0;j<msgInfo.numVertices;j++){
+		    if(i>0){
+			countOld  = GeoInfo.get(i-1).numVertices;
+		    }
+		    msg_pointofinterest gf = (msg_pointofinterest) Geofence.get(j + countOld);
+		    UDPWrite(gf,sock,host,udpSendPort); Thread.sleep(100);
+		    
+		}
+	    
+		ack = UDPRead(sock);	
 
-	    if(ack.acktype == 1 && ack.value == 1){
-		System.out.println("Geofence sent successfully");
-	    }
-	    else{
-		System.out.println("Resend geofence");
-	    }
-
-	    UDPWrite(msgGeoFenceInfo2,sock,host,udpSendPort);Thread.sleep(100);
-
-	    for(int i=0;i<Geofence.size();i++){
-		msg_pointofinterest gf = (msg_pointofinterest) Geofence2.get(i);
-		UDPWrite(gf,sock,host,udpSendPort); Thread.sleep(100);
-	    }	    
-	    ack = UDPRead(sock);	
-
-	    if(ack.acktype == 1 && ack.value == 1){
-		System.out.println("Geofence sent successfully");
-	    }
-	    else{
-		System.out.println("Resend geofence");
-	    }
+		if(ack.acktype == 1 && ack.value == 1){
+		    System.out.println("Geofence sent successfully");
+		}
+		else{
+		    System.out.println("Resend geofence");
+		}
+	    }	   
 
 	    double countDownTime = 0;
 	    int count = 0;

@@ -125,13 +125,19 @@ public class FSAM{
     public double GetResolutionTime(){
 	Plan FP = ResolutionPlan;
 
-	Position pos = FlightData.acState.positionLast();
-	double legDistance    = FP.pathDistance(currentResolutionLeg);
-	double legTime        = FP.getTime(currentResolutionLeg + 1) - FP.getTime(currentResolutionLeg);
-	double lastWPDistance = FP.point(currentResolutionLeg).position().distanceH(pos);
-	double currentTime    = FP.getTime(currentResolutionLeg) + legTime/legDistance * lastWPDistance;
-
-	return currentTime;
+	
+	if(currentResolutionLeg < ResolutionPlan.size()-1){
+	    Position pos = FlightData.acState.positionLast();
+	    double legDistance    = FP.pathDistance(currentResolutionLeg);
+	    double legTime        = FP.getTime(currentResolutionLeg + 1) - FP.getTime(currentResolutionLeg);
+	    double lastWPDistance = FP.point(currentResolutionLeg).position().distanceH(pos);
+	    double currentTime    = FP.getTime(currentResolutionLeg) + legTime/legDistance * lastWPDistance;
+	
+	    return currentTime;
+	}
+	else{
+	    return ResolutionPlan.getLastTime();
+	}
     }
 
     public FSAM_OUTPUT Monitor(){
@@ -392,8 +398,8 @@ public class FSAM{
 
 	CPP.add(FlightData.fenceList.get(0).geoPolyPath);
 	
-	minTime = minTime - 5;
-	maxTime = maxTime + 5;
+	minTime = minTime - lookahead;
+	maxTime = maxTime + lookahead;
 	
 	if(minTime < currentTime){
 	    minTime = currentTime;
@@ -528,6 +534,7 @@ public class FSAM{
 		    float speed = UAS.GetSpeed();					
 		    UAS.SetSpeed(speed);
 		    UAS.error.addWarning("[" + UAS.timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
+		    
 		}
 	    }
 	    
