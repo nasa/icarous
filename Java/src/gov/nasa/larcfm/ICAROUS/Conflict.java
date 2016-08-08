@@ -12,6 +12,7 @@ package gov.nasa.larcfm.ICAROUS;
 
 import java.util.*;
 import java.lang.*;
+import gov.nasa.larcfm.Util.Position;
 
 enum CONFLICT_TYPE{
 	NONE,KEEP_IN, KEEP_OUT, TRAFFIC, OBSTACLE, EXAMINE, FLIGHTPLAN
@@ -28,11 +29,13 @@ public class Conflict{
 
     GeoFence fence;
     GenericObject object;
+    Position place;
 
-    public Conflict(PRIORITY_LEVEL level, CONFLICT_TYPE ctype,GeoFence GF){
+    public Conflict(PRIORITY_LEVEL level, CONFLICT_TYPE ctype,GeoFence GF,Position pos){
 	priority     = level;
 	conflictType = ctype;
-	fence        = GF;	
+	fence        = GF;
+	place        = pos;
     }
 
     public Conflict(PRIORITY_LEVEL level, CONFLICT_TYPE ctype,GenericObject OB){
@@ -54,7 +57,13 @@ public class Conflict{
 		
 	    case KEEP_IN:
 		if (fence.ID == conf.fence.ID){
-		    return 1;
+		    double distance = place.distanceH(conf.place);
+		    if(distance < 5){
+			return 1;
+		    }
+		    else{
+			return 0;
+		    }
 		}else{
 		    return 0;
 		}
@@ -85,28 +94,53 @@ public class Conflict{
 	    
     public static void AddConflictToList(List<Conflict> conflictList, Conflict conf){
 
+	
 	if(conflictList.size() > 0){
+	    boolean inList = false;
 	    for(int i=0;i<conflictList.size();i++){
 
 		Conflict con = (Conflict) conflictList.get(i);
 
 		int check = con.IsEqual(conf);
 
-		if(check < 0)
-		    conflictList.add(conf);
-		else if(check > 0)
-		    con.SetPriority(conf.priority);
-	
+		if(check > 0){
+		    inList = true;
+		}
+			
+	    }
+
+	    if(!inList){
+		conflictList.add(conf);
+		System.out.println("adding conflict");
 	    }
 	}
 	else{
-	    conflictList.add(conf);	
+	    conflictList.add(conf);
+	    System.out.println("adding conflict");
 	}
 	
     }
 
-    public static void RemoveConflicts(){
+    /*
+    public static void RemoveConflict(List<Conflict> conflictList, Conflict conf){
+	if(conflictList.size() > 0){
+	    boolean inList = false;
+	    for(int i=0;i<conflictList.size();i++){
 
-    }
+		Conflict con = (Conflict) conflictList.get(i);
+
+		int check = con.IsEqual(conf,true);
+
+		if(check > 0){
+		    conflictList.remove(i);
+		    System.out.println("Removing conflict");
+		    System.out.println("Conflict size:"+conflictList.size());
+		}
+			
+	    }
+	    
+	}
+	
+	}*/
 
 }
