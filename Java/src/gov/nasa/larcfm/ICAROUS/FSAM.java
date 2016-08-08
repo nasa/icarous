@@ -326,7 +326,7 @@ public class FSAM{
 	 
 	 for(int i=0;i< FlightData.fenceList.size();i++){
 	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
-	    GF.CheckViolation(FlightData.acState.positionLast(),planTime,CurrentPlan);
+	    GF.CheckViolation(FlightData.acState,planTime,CurrentPlan);
 
 	    Conflict cf;	   
 

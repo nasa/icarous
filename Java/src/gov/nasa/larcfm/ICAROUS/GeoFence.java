@@ -33,7 +33,7 @@ import java.io.*;
 import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
 import com.MAVLink.enums.*;
-
+import gov.nasa.larcfm.Util.AircraftState;
 
 
 public class GeoFence{
@@ -48,6 +48,7 @@ public class GeoFence{
     public static double hstepback;
     public static double vstepback;
     
+    
     Position SafetyPoint      = null;
     boolean violation         = false;
     boolean conflict          = false;
@@ -60,8 +61,10 @@ public class GeoFence{
     PolyPath geoPolyPath;
     CDIIPolygon cdp;
 
-    double entryTime;
-    double exitTime;
+    public double entryTime;
+    public double exitTime;
+    private double lookahead;
+    private int stepbacktype;
                 
     public GeoFence(int IDIn,int TypeIn,int numVerticesIn,double floorIn,double ceilingIn){
 	geoPolyLLA     = new SimplePoly(floorIn,ceilingIn);
@@ -87,6 +90,8 @@ public class GeoFence{
 	    vthreshold   = parameters.getValue("vthreshold");
 	    hstepback    = parameters.getValue("hstepback");
 	    vstepback    = parameters.getValue("vstepback");
+	    lookahead    = parameters.getValue("lookahead");
+	    stepbacktype = parameters.getInt("stepbacktype");
 	}
 	catch(FileNotFoundException e){
 	    System.out.println("parameter file not found");
@@ -111,16 +116,17 @@ public class GeoFence{
 				    
     }
 
-    public void CheckViolation(Position pos, double currentTime,Plan FP){
+    public void CheckViolation(AircraftState acState, double currentTime,Plan FP){
 
 	double hdist;
 	double vdist;
 
 	double alt;
 
+	Position pos = acState.positionLast();
 	Vect3 so = proj.project(pos);
 
-	SafetyPoint = GetSafetyPoint(pos);
+	SafetyPoint = GetSafetyPoint(acState);
 	//System.out.println("Distance from edge:"+geoPoly3D.distanceFromEdge(so));
 	
 	// Keep in geofence
@@ -141,12 +147,9 @@ public class GeoFence{
 	}
 	//Keep out Geofence
 	else{
-	    // System.out.println(FP.toString());
-	    // System.out.println(geoPolyPath.toString());
-	    //System.out.println(FP.getLastTime());
 	    cdp.detection(FP,geoPolyPath,0,FP.getLastTime());
 
-	    if(cdp.conflictBetween(currentTime,currentTime + 5)){
+	    if(cdp.conflictBetween(currentTime,currentTime + lookahead)){
 		conflict = true;
 		entryTime = cdp.getTimeIn(0);
 		exitTime  = cdp.getTimeOut(cdp.size()-1);		
@@ -159,7 +162,7 @@ public class GeoFence{
 	}
     }
         
-    public Position GetSafetyPoint(Position pos){
+    public Position GetSafetyPoint(AircraftState acState){
 	
 	double Min  = Double.MAX_VALUE;
 	double dist = 0.0;
@@ -169,6 +172,8 @@ public class GeoFence{
 	double y2   = 0.0;
 	double x3   = 0.0;
 	double y3   = 0.0;
+	double x30  = 0.0;
+	double y30  = 0.0;
 	double x0   = 0.0;
 	double y0   = 0.0;
 	
@@ -184,13 +189,22 @@ public class GeoFence{
 
 	Vect2 C,CD,CDe;
 	LatLonAlt LLA;
+
+	Position pos  = acState.positionLast();
+	Position pos0 = acState.position(acState.size()-2);
 	
 	LatLonAlt p   = pos.zeroAlt().lla();
+	LatLonAlt p0  = pos0.zeroAlt().lla();
 	Vect2 xy      = proj.project(p).vect2();
+	Vect2 xy0     = proj.project(p0).vect2();
 	x3            = xy.x();
 	y3            = xy.y();
+	x30           = xy0.x();
+	y30           = xy0.y();
+	
 	Position Safe = Position.makeXYZ(0.0,0.0,0.0);
 	Position RecoveryPoint = Position.makeXYZ(0.0,0.0,0.0);
+	
 			
 	// Check if perpendicular intersection lies within line segment
 	for(int i=0;i<geoPoly3D.size();i++){
@@ -266,6 +280,15 @@ public class GeoFence{
 	    }
 	    
 
+	}
+
+	if(stepbacktype == 0){
+	    CD  = new Vect2(x30-x3,y30-y3);
+	    C   = new Vect2(x3,y3);
+	    CDe = C.Add(CD.Scal(hstepback/CD.norm()));
+	    
+	    LLA         = proj.inverse(CDe,pos.alt());
+	    RecoveryPoint  = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
 	}
 
 	double alt;

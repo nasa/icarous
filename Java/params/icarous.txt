@@ -6,10 +6,14 @@ hthreshold = 2.0
 vthreshold = 2.0
 hstepback  = 4.0
 vstepback  = 4.0
+stepbacktype = 0
+
+# Search parameters
 gridsize   = 0.5
 buffer     = 1
-lookahead  = 0.5
+lookahead  = 2
 proximityfactor = 3.0
+
 
 # Flight plan resolution parameters
 ResolutionSpeed = 1.0
