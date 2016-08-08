@@ -26,6 +26,8 @@ import gov.nasa.larcfm.Util.PlanUtil;
 import gov.nasa.larcfm.Util.Pair;
 import gov.nasa.larcfm.Util.WeatherUtil;
 import gov.nasa.larcfm.Util.DensityGrid;
+import gov.nasa.larcfm.Util.BoundingRectangle;
+import gov.nasa.larcfm.Util.SimplePoly;
 import gov.nasa.larcfm.IO.SeparatedInput;
 
 enum FSAM_OUTPUT{
@@ -118,6 +120,18 @@ public class FSAM{
 	catch(FileNotFoundException e){
 	    System.out.println("parameter file not found");
 	}
+    }
+
+    public double GetResolutionTime(){
+	Plan FP = ResolutionPlan;
+
+	Position pos = FlightData.acState.positionLast();
+	double legDistance    = FP.pathDistance(currentResolutionLeg);
+	double legTime        = FP.getTime(currentResolutionLeg + 1) - FP.getTime(currentResolutionLeg);
+	double lastWPDistance = FP.point(currentResolutionLeg).position().distanceH(pos);
+	double currentTime    = FP.getTime(currentResolutionLeg) + legTime/legDistance * lastWPDistance;
+
+	return currentTime;
     }
 
     public FSAM_OUTPUT Monitor(){
@@ -291,9 +305,22 @@ public class FSAM{
 
 	 FenceKeepInConflict  = false;
 	 FenceKeepOutConflict = false;
+
+	 Plan CurrentPlan;
+	 double planTime;
+	 
+	 if(NominalPlan){
+	     CurrentPlan =  UAS.FlightData.CurrentFlightPlan;
+	     planTime    =  UAS.FlightData.planTime;
+	 }
+	 else{
+	     CurrentPlan = ResolutionPlan;
+	     planTime    = GetResolutionTime();
+	 }
+	 
 	 for(int i=0;i< FlightData.fenceList.size();i++){
 	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
-	    GF.CheckViolation(FlightData.acState.positionLast(),UAS.FlightData.planTime,UAS.FlightData.CurrentFlightPlan);
+	    GF.CheckViolation(FlightData.acState.positionLast(),planTime,CurrentPlan);
 
 	    Conflict cf;	   
 
@@ -375,15 +402,83 @@ public class FSAM{
 	FlightData.FP_nextWaypoint = CurrentFP.getSegment(maxTime)+1;	
 
 	// Get flight plan between start time and end time (with a 3 second buffer on both sides)
-	Plan ConflictPlan = PlanUtil.cutDown(CurrentFP,minTime,maxTime);
+	Plan ConflictFP = PlanUtil.cutDown(CurrentFP,minTime,maxTime);
 	
 	// Reroute flight plan
 	UAS.SetMode(4); // Set mode to guided for quadrotor to hover before replanning
-	
-	Pair<Plan,DensityGrid> Resolution = WU.reRouteWx(ConflictPlan,LPP,gridsize,buffer,proximityfactor,lookahead,CPP,false,false,
-							 currentTime,0.0,true,0.0,0.0,false);
 
-	ResolutionPlan  = Resolution.getFirst();
+	// Create a bounding box based on containment geofence
+	BoundingRectangle BR = new BoundingRectangle();
+
+	SimplePoly CF = FlightData.fenceList.get(0).geoPolyLLA;
+
+	for(int i=0;i<CF.size();i++){
+	    BR.add(CF.getVertex(i));
+	}	
+
+	// Get start and end positions based on conflicted parts of the original flight plan
+	NavPoint start = ConflictFP.point(0);
+	Position end   = ConflictFP.getLastPoint().position();
+
+	// Instantiate a grid to search over
+	DensityGrid dg = new DensityGrid(BR,start,end,(int)buffer,gridsize,true);
+	dg.snapToStart();
+	
+	// Set weights for the search space and obstacles
+	dg.setWeights(5.0);
+
+	for(int i=1;i<FlightData.fenceList.size();i++){
+	    SimplePoly GF = FlightData.fenceList.get(i).geoPolyLLA;
+	    dg.setWeightsInside(GF,100.0);
+	}
+
+	// Perform A* seartch
+	List<Pair <Integer,Integer>> GridPath = dg.optimalPath();
+
+	List<Position> PlanPosition = new ArrayList<Position>();
+	double currHeading = 0.0;
+	double nextHeading = 0.0;
+
+	// Reduce number of waypoints based on heading
+	PlanPosition.add(start.position());
+	double startAlt = start.position().alt();
+	PlanPosition.add(dg.getPosition(GridPath.get(0)).mkAlt(startAlt));
+	currHeading = dg.getPosition(GridPath.get(0)).track(dg.getPosition(GridPath.get(1)));
+
+	for(int i=1;i<GridPath.size();i++){
+	    Position pos1 = dg.getPosition(GridPath.get(i));
+	    	    	    
+	    if(i==GridPath.size()-1){
+		PlanPosition.add(pos1.mkAlt(startAlt));
+		break;
+	    }
+	    else{
+		Position pos2 = dg.getPosition(GridPath.get(i+1));
+
+		nextHeading = pos1.track(pos2);
+		
+		if(Math.abs(nextHeading - currHeading) > 0.01){		    		
+		    PlanPosition.add(pos1.mkAlt(startAlt));
+		    currHeading = nextHeading;
+		}
+	    }
+	    
+	}
+	PlanPosition.add(end);
+
+	// Create new flight plan based on waypoints
+	ResolutionPlan.clear();
+	double ETA   = 0.0;
+	ResolutionPlan.add(new NavPoint(PlanPosition.get(0),ETA));
+	for(int i=1;i<PlanPosition.size();i++){
+	    Position pos = PlanPosition.get(i);
+	    double distance = pos.distanceH(PlanPosition.get(i-1));
+	    ETA      = ETA + distance/resolutionSpeed;
+
+	    ResolutionPlan.add(new NavPoint(pos,ETA));
+	}
+
+	
 	
     }
 
@@ -444,54 +539,6 @@ public class FSAM{
 
     }//end function
 
-    public Plan SmoothPlan(Plan input){
-
-	int size = input.size();
-	int filtersize = 3;
-
-	if(filtersize >= size){
-	    return input;
-	}
-
-	Plan PF = new Plan();
-	PF.add(input.point(0));
-	PF.setTime(0,0);
-	
-	for(int i=0;i<size;i++){
-
-	    double cumlat = 0;
-	    double cumlon = 0;
-	    double cumalt = 0;
-	    
-	    for(int j=0;j<filtersize;j++){
-
-		if(i+j < size){
-		    cumlat = cumlat + input.point(i+j).position().latitude();
-		    cumlon = cumlon + input.point(i+j).position().longitude();
-		    cumalt = cumalt + input.point(i+j).position().alt();
-		}
-		else{
-		    cumlat = cumlat + input.point(size-1).position().latitude();
-		    cumlon = cumlon + input.point(size-1).position().longitude();
-		    cumalt = cumalt + input.point(size-1).position().alt();
-		}
-	    }
-
-	    Position p =Position.makeLatLonAlt(cumlat/filtersize,"degree",
-					       cumlon/filtersize,"degree",
-					       cumalt/filtersize,"m");
-
-
-	    // Plan already has the first waypoint hence the i instead of i-1.
-	    double time = PF.getTime(i) + p.distanceH(PF.point(i).position())/resolutionSpeed;
-	    NavPoint np = new NavPoint(p,time);
-	    PF.add(np);
-
-	    
-	}
-		    
-	return PF;
-
-    }
+    
     
 }
