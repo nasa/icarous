@@ -15,7 +15,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 */
 public class msg_heartbeat_combox extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_HEARTBEAT_COMBOX = 219;
+    public static final int MAVLINK_MSG_ID_HEARTBEAT_COMBOX = 228;
     public static final int MAVLINK_MSG_LENGTH = 8;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HEARTBEAT_COMBOX;
 

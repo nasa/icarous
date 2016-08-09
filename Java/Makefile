@@ -1,6 +1,7 @@
 MAVLinkSRC = $(wildcard src/com/MAVLink/*.java src/com/MAVLink/common/*.java \
 			src/com/MAVLink/icarous/*.java \
-	                src/com/MAVLink/enums/*.java \
+			src/com/MAVLink/ardupilotmega/*.java \
+			src/com/MAVLink/enums/*.java \
 			src/com/MAVLink/Messages/*.java)
 
 ICAROUSSRC = $(wildcard src/gov/nasa/larcfm/ICAROUS/*.java)

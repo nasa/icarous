@@ -86,9 +86,16 @@ public class GStest{
 
 	com_module.error.setConsoleOutput(verbose);
 	test.error.setConsoleOutput(verbose);
-		
-	daq_module.start();
 
+	daq_module.start();	
+	
+	while(!uasQuad.fsam.CheckAPHeartBeat()){
+	    
+	}
+
+	System.out.println("Received heartbeat from AP");
+	
+	
 	
 	try{
 	    Thread.sleep(1000);

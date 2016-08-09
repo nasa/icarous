@@ -4,32 +4,32 @@
  * java mavlink generator tool. It should not be modified by hand.
  */
 
-// MESSAGE POWERLINE_DATA PACKING
-package com.MAVLink.icarous;
+// MESSAGE GOPRO_SET_RESPONSE PACKING
+package com.MAVLink.ardupilotmega;
 import com.MAVLink.MAVLinkPacket;
 import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPayload;
         
 /**
-* Power line information
+* Response from a GOPRO_COMMAND set request
 */
-public class msg_powerline_data extends MAVLinkMessage{
+public class msg_gopro_set_response extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_POWERLINE_DATA = 226;
-    public static final int MAVLINK_MSG_LENGTH = 8;
-    private static final long serialVersionUID = MAVLINK_MSG_ID_POWERLINE_DATA;
+    public static final int MAVLINK_MSG_ID_GOPRO_SET_RESPONSE = 219;
+    public static final int MAVLINK_MSG_LENGTH = 2;
+    private static final long serialVersionUID = MAVLINK_MSG_ID_GOPRO_SET_RESPONSE;
 
 
       
     /**
-    * Perpendicular distance to power line [m]
+    * Command ID
     */
-    public float distance;
+    public short cmd_id;
       
     /**
-    * Direction of the perpendicular distance [deg]
+    * Status
     */
-    public float heading;
+    public short status;
     
 
     /**
@@ -40,34 +40,34 @@ public class msg_powerline_data extends MAVLinkMessage{
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH);
         packet.sysid = 255;
         packet.compid = 190;
-        packet.msgid = MAVLINK_MSG_ID_POWERLINE_DATA;
+        packet.msgid = MAVLINK_MSG_ID_GOPRO_SET_RESPONSE;
               
-        packet.payload.putFloat(distance);
+        packet.payload.putUnsignedByte(cmd_id);
               
-        packet.payload.putFloat(heading);
+        packet.payload.putUnsignedByte(status);
         
         return packet;
     }
 
     /**
-    * Decode a powerline_data message into this class fields
+    * Decode a gopro_set_response message into this class fields
     *
     * @param payload The message to decode
     */
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
               
-        this.distance = payload.getFloat();
+        this.cmd_id = payload.getUnsignedByte();
               
-        this.heading = payload.getFloat();
+        this.status = payload.getUnsignedByte();
         
     }
 
     /**
     * Constructor for a new message, just initializes the msgid
     */
-    public msg_powerline_data(){
-        msgid = MAVLINK_MSG_ID_POWERLINE_DATA;
+    public msg_gopro_set_response(){
+        msgid = MAVLINK_MSG_ID_GOPRO_SET_RESPONSE;
     }
 
     /**
@@ -75,10 +75,10 @@ public class msg_powerline_data extends MAVLinkMessage{
     * from a mavlink packet
     *
     */
-    public msg_powerline_data(MAVLinkPacket mavLinkPacket){
+    public msg_gopro_set_response(MAVLinkPacket mavLinkPacket){
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_POWERLINE_DATA;
+        this.msgid = MAVLINK_MSG_ID_GOPRO_SET_RESPONSE;
         unpack(mavLinkPacket.payload);        
     }
 
@@ -87,7 +87,7 @@ public class msg_powerline_data extends MAVLinkMessage{
     * Returns a string with the MSG name and data
     */
     public String toString(){
-        return "MAVLINK_MSG_ID_POWERLINE_DATA -"+" distance:"+distance+" heading:"+heading+"";
+        return "MAVLINK_MSG_ID_GOPRO_SET_RESPONSE -"+" cmd_id:"+cmd_id+" status:"+status+"";
     }
 }
         

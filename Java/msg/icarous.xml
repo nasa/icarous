@@ -5,7 +5,7 @@
 	</enums>
 	<messages>
 
-	  <message id="219" name="HEARTBEAT_COMBOX">
+	  <message id="228" name="HEARTBEAT_COMBOX">
 	    <description>Combox heartbeat</description>
 	    <field type="uint64_t" name="count">count</field>
 	  </message>
@@ -65,13 +65,8 @@
 	    <field type="float" name="yaw">yaw</field>
 	  </message>
 
-	  <message id="226" name="POWERLINE_DATA">
-	    <description>Power line information</description>
-	    <field type="float" name="distance">Perpendicular distance to power line [m]</field>
-	    <field type="float" name="heading">Direction of the perpendicular distance [deg]</field>
-	  </message>
-
-	  <message id="227" name="HEARTBEAT_ICAROUS">
+	 
+	  <message id="229" name="HEARTBEAT_ICAROUS">
 	    <description>ICAROUS heartbeat</description>
 	    <field type="int8_t" name="status">FMS state (0-idle, 1-Takeoff, 2-Climb, 3-Cruise, 4-Land)</field>
 	  </message>

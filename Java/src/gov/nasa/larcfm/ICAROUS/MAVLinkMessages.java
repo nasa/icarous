@@ -12,12 +12,14 @@ package gov.nasa.larcfm.ICAROUS;
 
 import java.io.*;
 import com.MAVLink.common.*;
+import com.MAVLink.ardupilotmega.*;
 import com.MAVLink.MAVLinkPacket;
 import com.MAVLink.icarous.*;
 
 public class MAVLinkMessages{
 
     public msg_heartbeat msgHeartbeat;
+    public msg_heartbeat msgHeartbeat_AP;
     public msg_sys_status msgSysStatus;
     public msg_system_time msgSystemTime;
     public msg_ping msgPing;
@@ -149,6 +151,14 @@ public class MAVLinkMessages{
     public msg_named_value_int msgNamedValueInt;
     public msg_statustext msgStatustext;
     public msg_debug msgDebug;
+    public msg_ahrs msgAhrs;
+    public msg_ahrs2 msgAhrs2;
+    public msg_ahrs3 msgAhrs3;
+    public msg_ekf_status_report msgEkfStatusReport;
+    public msg_simstate msgSimstate;
+    public msg_meminfo msgMeminfo;
+    public msg_hwstatus msgHwstatus;
+    
 
     public msg_flightplan_info msgFlightplanInfo;
     public msg_geofence_info msgGeofenceInfo;
@@ -161,8 +171,12 @@ public class MAVLinkMessages{
     private int RcvdGeoFenceUpdate;
     private int RcvdMissionCount;
     private int RcvdMissionItem;
+
     private int RcvdMissionRequest;
+
     private int RcvdMissionRequestList;
+    private int RcvdParamRequestList;
+    private int RcvdParamRequestRead;
     private int RcvdMissionAck;
     private int RcvdMissionStart;
     private int RcvdMissionItemReached;
@@ -184,8 +198,11 @@ public class MAVLinkMessages{
 	RcvdGeoFenceUpdate        = 0;
 	RcvdMissionCount          = 0;
 	RcvdMissionItem           = 0;
+	
 	RcvdMissionRequest        = 0;
 	RcvdMissionRequestList    = 0;
+	RcvdParamRequestList      = 0;
+	RcvdParamRequestRead      = 0;
 	RcvdMissionAck            = 0;
 	RcvdMissionStart          = 0;
 	RcvdMissionItemReached    = 0;
@@ -200,6 +217,20 @@ public class MAVLinkMessages{
 	msgAttitude = new msg_attitude();
 	msgGpsRawInt = new msg_gps_raw_int();
 	msgGlobalPositionInt = new msg_global_position_int();
+	msgLocalPositionNed = new msg_local_position_ned();
+	msgSimState = new msg_sim_state();
+	msgMissionItem = new msg_mission_item();
+	msgMissionCount = new msg_mission_count();
+	msgStatustext = new msg_statustext();
+
+	msgAhrs = new msg_ahrs();
+	msgAhrs2 = new msg_ahrs2();
+	msgAhrs3 = new msg_ahrs3();
+	msgEkfStatusReport = new msg_ekf_status_report();
+	msgSimstate = new msg_simstate();
+	msgMeminfo = new msg_meminfo();
+	msgHwstatus = new msg_hwstatus();
+	msgParamValue = new msg_param_value();
     }
 
     public synchronized boolean UnreadFlightPlanUpdate(){
@@ -228,7 +259,7 @@ public class MAVLinkMessages{
 	    return true;
 	else
 	    return false;
-    }
+    } 
 
     public synchronized boolean UnreadMissionRequest(){
 	if(RcvdMissionRequest == 1)
@@ -239,6 +270,20 @@ public class MAVLinkMessages{
 
     public synchronized boolean UnreadMissionRequestList(){
 	if(RcvdMissionRequestList == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadParamRequestList(){
+	if(RcvdParamRequestList == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadParamRequestRead(){
+	if(RcvdParamRequestRead == 1)
 	    return true;
 	else
 	    return false;
@@ -342,7 +387,7 @@ public class MAVLinkMessages{
 
     public synchronized void ReadMissionItem(){
 	RcvdMissionItem = 0;
-    }
+    }   
 
     public synchronized void ReadMissionRequest(){
 	RcvdMissionRequest = 0;
@@ -350,6 +395,14 @@ public class MAVLinkMessages{
 
     public synchronized void ReadMissionRequestList(){
 	RcvdMissionRequestList = 0;
+    }
+
+    public synchronized void ReadParamRequestList(){
+	RcvdParamRequestList = 0;
+    }
+
+    public synchronized void ReadParamRequestRead(){
+	RcvdParamRequestRead = 0;
     }
 
     public synchronized void ReadMissionAck(){
@@ -405,13 +458,21 @@ public class MAVLinkMessages{
 	if(message == null){
 	    return;
 	}
-	System.out.println("Message id:"+message.msgid);
+	//System.out.println("Message id:"+message.msgid);
+
+	if(message.msgid == 148){
+	    System.out.println("autopilot");
+	}
 	
 	switch(message.msgid){
 	
 	case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
 	    msgHeartbeat = (msg_heartbeat) message.unpack();
-	    RcvdHeartbeat_AP = 1;
+
+	    if(msgHeartbeat.type == 2){
+		RcvdHeartbeat_AP = 1;
+		msgHeartbeat_AP = msgHeartbeat;
+	    }
 	    break;
 	    
 	case msg_sys_status.MAVLINK_MSG_ID_SYS_STATUS:
@@ -444,10 +505,12 @@ public class MAVLinkMessages{
 	    
 	case msg_param_request_read.MAVLINK_MSG_ID_PARAM_REQUEST_READ:
 	    msgParamRequestRead = (msg_param_request_read) message.unpack();
+	    RcvdParamRequestRead = 1;
 	    break;
 	    
 	case msg_param_request_list.MAVLINK_MSG_ID_PARAM_REQUEST_LIST:
 	    msgParamRequestList = (msg_param_request_list) message.unpack();
+	    RcvdParamRequestList = 1;
 	    break;
 	    
 	case msg_param_value.MAVLINK_MSG_ID_PARAM_VALUE:
@@ -990,6 +1053,10 @@ public class MAVLinkMessages{
     }
     
 
+    public synchronized msg_heartbeat Heartbeat_AP(){
+	return msgHeartbeat_AP;
+    }
+    
     public synchronized msg_flightplan_info FlightplanInfo(){
 	return msgFlightplanInfo;
     }
@@ -1020,6 +1087,14 @@ public class MAVLinkMessages{
 
     public synchronized msg_mission_request_list MissionRequestList(){
 	return msgMissionRequestList;
+    }
+
+    public synchronized msg_param_request_list ParamRequestList(){
+	return msgParamRequestList;
+    }
+
+    public synchronized msg_param_request_read ParamRequestRead(){
+	return msgParamRequestRead;
     }
 
     public synchronized msg_mission_item MissionItem(){

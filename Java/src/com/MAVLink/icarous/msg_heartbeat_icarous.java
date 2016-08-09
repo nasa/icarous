@@ -15,7 +15,7 @@ import com.MAVLink.Messages.MAVLinkPayload;
 */
 public class msg_heartbeat_icarous extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_HEARTBEAT_ICAROUS = 227;
+    public static final int MAVLINK_MSG_ID_HEARTBEAT_ICAROUS = 229;
     public static final int MAVLINK_MSG_LENGTH = 1;
     private static final long serialVersionUID = MAVLINK_MSG_ID_HEARTBEAT_ICAROUS;
 
