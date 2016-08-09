@@ -27,6 +27,10 @@ public class AircraftData{
 	FP_CLR, FP_CLR_ACK, FP_SEND_COUNT, FP_SEND_WP
     }
 
+    public enum FP_READ{
+	FP_ITEM_REQUEST, FP_WP_READ, FP_READ_COMPLETE
+    }
+
     public enum FP_READ_COM{
 	FP_INFO, FP_WAYPT_INFO, FP_ACK_FAIL,FP_ACK_SUCCESS
     }
@@ -52,7 +56,8 @@ public class AircraftData{
     public Plan CurrentFlightPlan;
     
     public List<GeoFence> fenceList; 
-    
+
+    public List<msg_mission_item>InputFlightPlan;
     // List for various objects
     public List<GenericObject> obstacles;
     public List<GenericObject> traffic;
@@ -80,6 +85,7 @@ public class AircraftData{
 	obstacles           = new ArrayList<GenericObject>();
 	traffic             = new ArrayList<GenericObject>();
 	missionObj          = new ArrayList<GenericObject>();
+        InputFlightPlan     = new ArrayList<msg_mission_item>();
 	startMission        = -1;
 	FP_nextWaypoint     = 0;
     }
@@ -240,6 +246,183 @@ public class AircraftData{
 			}
 			else{
 			    state = FP_WRITE_AP.FP_CLR;
+			    //System.out.println("Error in writing mission to AP");
+			}
+		    }
+		} // end of switch case
+	}//end of while	
+    }//end of function
+
+    // Function to send a flight plan to pixhawk
+    public void GetWaypoints(Interface Intf,int target_system,int target_component,int COUNT,List<msg_mission_item> mission){
+
+	boolean readComplete = false;
+	int count = 0;
+	
+	msg_mission_request msgMissionRequest = new msg_mission_request();
+
+	msgMissionRequest.target_system    = (short) target_system;
+	msgMissionRequest.target_component = (short) target_component;
+
+	msg_mission_ack msgMissionAck = new msg_mission_ack();
+
+	msgMissionAck.target_system    = (short)target_system;
+	msgMissionAck.target_component = (short)target_component;
+
+	FP_READ state = FP_READ.FP_ITEM_REQUEST;
+	
+	while(!readComplete){
+
+		switch(state){
+
+		case FP_ITEM_REQUEST:
+		    
+		    msgMissionRequest.seq = count;
+		    Intf.Write(msgMissionRequest);
+		    System.out.println("wrote count:"+count);
+		    state = FP_READ.FP_WP_READ;
+		    break;
+
+		case FP_WP_READ:
+
+		    Intf.SetTimeout(1000);
+		    Intf.Read();
+		    Intf.SetTimeout(0);
+
+		    if(Inbox.UnreadMissionItem()){
+			Inbox.ReadMissionItem();
+		    		    
+			msg_mission_item msgMissionItem = Inbox.MissionItem();
+			System.out.println("mission sequence received:"+msgMissionItem.seq);
+			if(msgMissionItem.seq == count){
+			    mission.add(msgMissionItem);
+			    state = FP_READ.FP_ITEM_REQUEST;
+
+			    count++;
+
+			    if(count >= COUNT){
+				state = FP_READ.FP_READ_COMPLETE;
+			    }
+			    System.out.println("Added waypoint");
+			}
+			else{
+			    msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_INVALID_SEQUENCE;
+			    Intf.Write(msgMissionAck);
+			    System.out.println("Error receiving waypoints");
+			    return;
+			}
+		    }
+
+		    break;
+
+		case FP_READ_COMPLETE:
+
+		    msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED;
+		    Intf.Write(msgMissionAck);
+		    readComplete = true;
+		    System.out.println("All waypoints received");
+		    break;
+		    
+		    
+		} // end of switch case
+	}//end of while	
+    }//end of function
+
+    public void SendWaypoints(Interface Intf,List<msg_mission_item> mission){
+
+	FP_WRITE_AP state = FP_WRITE_AP.FP_SEND_COUNT;
+	
+	msg_mission_count msgMissionCount        = new msg_mission_count();
+	msg_mission_item msgMissionItem          = new msg_mission_item();
+
+	boolean writeComplete = false;
+	int count = 0;
+
+	// Copy new flight into current flight plan
+	CurrentFlightPlan = new Plan(NewFlightPlan);
+
+	msgMissionCount.target_system    = 0;
+	msgMissionCount.target_component = 0;
+	msgMissionItem.target_system     = 0;
+	msgMissionItem.target_component  = 0;
+
+	while(!writeComplete){
+	    
+		switch(state){
+
+		case FP_CLR:
+		    Intf.Write(msgMissionClearAll);
+		    //System.out.println("Cleared mission on AP");
+		    state = FP_WRITE_AP.FP_CLR_ACK;
+		    count = 0;
+		    break;
+
+		case FP_CLR_ACK:
+
+		    Intf.Read();
+
+		    if(Inbox.UnreadMissionAck()){
+			Inbox.ReadMissionAck();
+		    		    
+			if(Inbox.MissionAck().type == 0){
+			    state = FP_WRITE_AP.FP_SEND_COUNT;
+			    //System.out.println("CLEAR acknowledgement");
+			}
+			else{			  
+			    //System.out.println("No CLEAR acknowledgement");
+			}
+		    }
+
+		    break;
+
+		case FP_SEND_COUNT:
+		
+		    msgMissionCount.count = mission.size();
+
+		    Intf.Write(msgMissionCount);
+		    //System.out.println("Wrote mission count: "+msgMissionCount.count);
+		    state = FP_WRITE_AP.FP_SEND_WP;
+		    break;
+	    
+		case FP_SEND_WP:
+
+		    Intf.Read();		
+				
+		    if(Inbox.UnreadMissionRequest()){
+		    
+			Inbox.ReadMissionRequest();
+
+			int seq = Inbox.MissionRequest().seq;
+			count   = seq;
+		    
+			//System.out.println("Received mission request: "+ seq );
+
+			msgMissionItem = mission.get(seq);									
+			
+			Intf.Write(msgMissionItem);
+			//System.out.println("Wrote mission item:"+count);
+			//System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
+			
+		    }
+		
+		    if(Inbox.UnreadMissionAck()){
+
+			Inbox.ReadMissionAck();
+		    
+			//System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
+		    
+			if(Inbox.MissionAck().type == 0){
+			    if(count == CurrentFlightPlan.size() - 1){
+				//System.out.println("Waypoints sent successfully to AP");
+				writeComplete = true;
+			    }
+			
+			}
+			else if(Inbox.MissionAck().type == 13){
+
+			}
+			else{
+			    // state = FP_WRITE_AP.FP_CLR;
 			    //System.out.println("Error in writing mission to AP");
 			}
 		    }

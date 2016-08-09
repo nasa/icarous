@@ -392,7 +392,7 @@ public class MAVLinkMessages{
 	if(message == null){
 	    return;
 	}
-	//System.out.println("Message id:"+message.msgid);
+	System.out.println("Message id:"+message.msgid);
 	
 	switch(message.msgid){
 	
@@ -984,6 +984,10 @@ public class MAVLinkMessages{
 	return msgMissionAck;
     }
 
+    public synchronized msg_mission_count MissionCount(){
+	return msgMissionCount;
+    }
+
     public synchronized msg_pointofinterest Pointofinterest(){
 	return msgPointofinterest;
     }
@@ -998,6 +1002,10 @@ public class MAVLinkMessages{
 
     public synchronized msg_mission_request MissionRequest(){
 	return msgMissionRequest;
+    }
+
+    public synchronized msg_mission_item MissionItem(){
+	return msgMissionItem;
     }
 
     public synchronized msg_gps_raw_int GpsRawInt(){

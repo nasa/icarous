@@ -266,7 +266,7 @@ public class Aircraft implements ErrorReporter{
 	float targetAlt        = (float)FlightData.CurrentFlightPlan.point(0).lla().alt();
 	Position currPosition  = FlightData.acState.positionLast();
 	
-	timeCurrent            = System.nanoTime();
+	
 	timeLog                = String.format("%.3f",(double) (timeCurrent - timeStart)/1E9);
 	FSAM_OUTPUT status;
 	

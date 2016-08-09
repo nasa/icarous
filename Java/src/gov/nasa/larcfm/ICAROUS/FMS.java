@@ -33,7 +33,8 @@ public class FMS implements Runnable{
     }
 
     public void run(){	
-	while(FMSrunning){	    
+	while(FMSrunning){
+	    UAS.timeCurrent            = System.nanoTime();
 	    FlightManagement();
 	}
 

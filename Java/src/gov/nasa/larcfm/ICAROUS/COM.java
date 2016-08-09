@@ -14,6 +14,8 @@
 package gov.nasa.larcfm.ICAROUS;
 
 import com.MAVLink.icarous.*;
+import com.MAVLink.common.*;
+import com.MAVLink.enums.*;
 import com.MAVLink.*;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
@@ -38,11 +40,37 @@ public class COM implements Runnable,ErrorReporter{
 
     public void run(){
 
+	msg_heartbeat msghb = new msg_heartbeat();
+	
+	msghb.type      = MAV_TYPE.MAV_TYPE_ONBOARD_CONTROLLER;
+	msghb.autopilot = MAV_AUTOPILOT.MAV_AUTOPILOT_GENERIC;
+	
+	comIntf.SetTimeout(500);
+
+	double time1 = UAS.timeCurrent;
+	
 	while(true){	    
+
+	    double time2 = UAS.timeCurrent;
+	    //System.out.println(time2-time1);
+	    if( (time2 - time1)/1E9 >= 2){
+		time1 = time2;
+		//System.out.println("Sending heartbeat\n");
+		comIntf.Write(msghb);
+	    }
+
 	    
 	    comIntf.Read();
+	    
 
 	    String timeLog = UAS.timeLog;
+
+	    if(FlightData.Inbox.UnreadMissionCount()){
+		FlightData.Inbox.ReadMissionCount();
+		msg_mission_count msgMissionCount = FlightData.Inbox.MissionCount();
+		FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);
+		error.addWarning("[" + timeLog + "] MSG: Got waypoints");
+	    }
 
 	    // Handle new flight plan inputs
 	    if(FlightData.Inbox.UnreadFlightPlanUpdate()){
