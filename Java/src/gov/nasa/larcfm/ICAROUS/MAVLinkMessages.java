@@ -162,6 +162,7 @@ public class MAVLinkMessages{
     private int RcvdMissionCount;
     private int RcvdMissionItem;
     private int RcvdMissionRequest;
+    private int RcvdMissionRequestList;
     private int RcvdMissionAck;
     private int RcvdMissionStart;
     private int RcvdMissionItemReached;
@@ -184,6 +185,7 @@ public class MAVLinkMessages{
 	RcvdMissionCount          = 0;
 	RcvdMissionItem           = 0;
 	RcvdMissionRequest        = 0;
+	RcvdMissionRequestList    = 0;
 	RcvdMissionAck            = 0;
 	RcvdMissionStart          = 0;
 	RcvdMissionItemReached    = 0;
@@ -230,6 +232,13 @@ public class MAVLinkMessages{
 
     public synchronized boolean UnreadMissionRequest(){
 	if(RcvdMissionRequest == 1)
+	    return true;
+	else
+	    return false;
+    }
+
+    public synchronized boolean UnreadMissionRequestList(){
+	if(RcvdMissionRequestList == 1)
 	    return true;
 	else
 	    return false;
@@ -337,6 +346,10 @@ public class MAVLinkMessages{
 
     public synchronized void ReadMissionRequest(){
 	RcvdMissionRequest = 0;
+    }
+
+    public synchronized void ReadMissionRequestList(){
+	RcvdMissionRequestList = 0;
     }
 
     public synchronized void ReadMissionAck(){
@@ -526,6 +539,7 @@ public class MAVLinkMessages{
 	    
 	case msg_mission_request_list.MAVLINK_MSG_ID_MISSION_REQUEST_LIST:
 	    msgMissionRequestList = (msg_mission_request_list) message.unpack();
+	    RcvdMissionRequestList = 1;
 	    break;
 	    
 	case msg_mission_count.MAVLINK_MSG_ID_MISSION_COUNT:
@@ -1002,6 +1016,10 @@ public class MAVLinkMessages{
 
     public synchronized msg_mission_request MissionRequest(){
 	return msgMissionRequest;
+    }
+
+    public synchronized msg_mission_request_list MissionRequestList(){
+	return msgMissionRequestList;
     }
 
     public synchronized msg_mission_item MissionItem(){

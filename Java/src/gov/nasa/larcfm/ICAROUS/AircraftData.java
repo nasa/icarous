@@ -336,10 +336,7 @@ public class AircraftData{
 	msg_mission_item msgMissionItem          = new msg_mission_item();
 
 	boolean writeComplete = false;
-	int count = 0;
-
-	// Copy new flight into current flight plan
-	CurrentFlightPlan = new Plan(NewFlightPlan);
+	int count = 0;	
 
 	msgMissionCount.target_system    = 0;
 	msgMissionCount.target_component = 0;
@@ -348,32 +345,7 @@ public class AircraftData{
 
 	while(!writeComplete){
 	    
-		switch(state){
-
-		case FP_CLR:
-		    Intf.Write(msgMissionClearAll);
-		    //System.out.println("Cleared mission on AP");
-		    state = FP_WRITE_AP.FP_CLR_ACK;
-		    count = 0;
-		    break;
-
-		case FP_CLR_ACK:
-
-		    Intf.Read();
-
-		    if(Inbox.UnreadMissionAck()){
-			Inbox.ReadMissionAck();
-		    		    
-			if(Inbox.MissionAck().type == 0){
-			    state = FP_WRITE_AP.FP_SEND_COUNT;
-			    //System.out.println("CLEAR acknowledgement");
-			}
-			else{			  
-			    //System.out.println("No CLEAR acknowledgement");
-			}
-		    }
-
-		    break;
+		switch(state){		
 
 		case FP_SEND_COUNT:
 		
@@ -409,10 +381,10 @@ public class AircraftData{
 
 			Inbox.ReadMissionAck();
 		    
-			//System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
+			System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
 		    
 			if(Inbox.MissionAck().type == 0){
-			    if(count == CurrentFlightPlan.size() - 1){
+			    if(count == mission.size() - 1){
 				//System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
 			    }

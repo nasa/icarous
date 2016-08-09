@@ -72,6 +72,15 @@ public class COM implements Runnable,ErrorReporter{
 		error.addWarning("[" + timeLog + "] MSG: Got waypoints");
 	    }
 
+	    if(FlightData.Inbox.UnreadMissionRequestList()){
+		FlightData.Inbox.ReadMissionRequestList();
+
+		if(FlightData.InputFlightPlan.size() > 0){
+		    FlightData.SendWaypoints(comIntf,FlightData.InputFlightPlan);
+		}
+		error.addWarning("[" + timeLog + "] MSG: Sent waypoints");
+	    }
+
 	    // Handle new flight plan inputs
 	    if(FlightData.Inbox.UnreadFlightPlanUpdate()){
 		FlightData.Inbox.ReadFlightPlanUpdate();		
