@@ -2,10 +2,10 @@
 ic_heartbeat_hz = 5
 
 # Geofence parameters
-hthreshold = 2.0
-vthreshold = 2.0
-hstepback  = 4.0
-vstepback  = 4.0
+hthreshold = 1.0
+vthreshold = 1.0
+hstepback  = 2.0
+vstepback  = 2.0
 stepbacktype = 0
 
 # Search parameters
