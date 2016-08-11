@@ -9,8 +9,8 @@ NumWP = 4
 maxHDev = 2
 maxVDev = 2
 standoff = 1
-StartTime = 30
-FenceTime = 90
+StartTime = 0
+FenceTime = 0
 numFences = 2
 
 # GeoFence information

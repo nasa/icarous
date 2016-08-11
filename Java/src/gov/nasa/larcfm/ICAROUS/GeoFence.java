@@ -120,7 +120,7 @@ public class GeoFence{
 
 	    // Expand fence if it is a keep out fence
 	    if(Type == 1){
-		geoPolyLLA = pu.bufferedConvexHull(geoPolyLLA,hthreshold,vthreshold);
+		//geoPolyLLA = pu.bufferedConvexHull(geoPolyLLA,hthreshold,vthreshold);
 	    }
 	    
 	    proj       = Projection.createProjection(geoPolyLLA.getVertex(0));
