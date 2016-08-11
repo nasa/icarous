@@ -20,6 +20,7 @@ import gov.nasa.larcfm.Util.Poly3D;
 import gov.nasa.larcfm.Util.SimplePoly;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.PolyPath;
+import gov.nasa.larcfm.Util.PolyUtil;
 import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.ACCoRD.CDPolycarp;
@@ -63,7 +64,9 @@ public class GeoFence{
     PolyPath geoPolyPath;
     CDIIPolygon cdp;
     PolycarpResolution pcr;
+    PolyUtil pu;
     ArrayList<Vect2> fenceVertices;
+    
 
     public double entryTime;
     public double exitTime;
@@ -83,6 +86,7 @@ public class GeoFence{
 	CDPolycarp.setCheckNice(false);
 	cdp            = new CDIIPolygon(geoPolyCarp);
 	pcr            = new PolycarpResolution();
+	pu             = new PolyUtil();
 	fenceVertices  = new ArrayList<Vect2>();
 
 	try{
@@ -114,8 +118,13 @@ public class GeoFence{
 	if(geoPolyLLA.size() == numVertices){
 	    isconvex = geoPoly3D.poly2D().isConvex();
 
-	    proj      = Projection.createProjection(geoPolyLLA.getVertex(0));
-	    geoPoly3D = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
+	    // Expand fence if it is a keep out fence
+	    if(Type == 1){
+		geoPolyLLA = pu.bufferedConvexHull(geoPolyLLA,hthreshold,vthreshold);
+	    }
+	    
+	    proj       = Projection.createProjection(geoPolyLLA.getVertex(0));
+	    geoPoly3D  = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
 	    Velocity v = Velocity.makeTrkGsVs(0.0,0.0,0.0);
 	    geoPolyPath.addPolygon(geoPolyLLA,v,0);
 
