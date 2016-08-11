@@ -150,9 +150,16 @@ public class GeoFence{
 	    }
 
 	    if(geoPolyCarp.definitelyInside(so,geoPoly3D)){
-		violation = true;		
+		violation = false;		
 	    }else{
-		violation = false;
+
+		Vect2 so_2 = so.vect2();
+
+		Vect2 recpoint = pcr.inside_recovery_point(hthreshold,fenceVertices,so_2);
+		
+		LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
+		RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
+		
 	    }
 	    	   	    	    	    	    
 	}
@@ -178,14 +185,10 @@ public class GeoFence{
 		conflict = false;
 	    }
 
-	    if(cdp.size()>0){
-		entryTime = cdp.getTimeIn(0);
-		exitTime  = cdp.getTimeOut(0);
-
-		if(currentTime>= entryTime && currentTime <=entryTime){
-		    violation = true;
-		    conflict = true;
-		}
+	    if(geoPolyCarp.definitelyInside(so,geoPoly3D)){
+		violation = true;		
+	    }else{
+		violation = false;
 	    }
 	    
 

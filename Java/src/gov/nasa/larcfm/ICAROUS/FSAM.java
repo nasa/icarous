@@ -402,8 +402,16 @@ public class FSAM{
 		break;
 	    }
 	}
+
+	NavPoint wp = null;
+	if(GF.violation){
+	    wp = new NavPoint(GF.RecoveryPoint,0);
+	}
+	else{
+	    wp = new NavPoint(GF.SafetyPoint,0);
+	}
 	
-	NavPoint wp = new NavPoint(GF.SafetyPoint,0);
+	
 	ResolutionPlan.clear();
 	currentResolutionWP = 0;
 	
