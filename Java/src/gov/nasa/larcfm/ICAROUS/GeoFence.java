@@ -24,6 +24,7 @@ import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.ACCoRD.CDPolycarp;
 import gov.nasa.larcfm.ACCoRD.CDIIPolygon;
+import gov.nasa.larcfm.ACCoRD.PolycarpResolution;
 import gov.nasa.larcfm.IO.SeparatedInput;
 
 
@@ -50,6 +51,7 @@ public class GeoFence{
     
     
     Position SafetyPoint      = null;
+    Position RecoveryPoint    = null;
     boolean violation         = false;
     boolean conflict          = false;
     boolean isconvex          = false;
@@ -60,6 +62,8 @@ public class GeoFence{
     CDPolycarp geoPolyCarp;
     PolyPath geoPolyPath;
     CDIIPolygon cdp;
+    PolycarpResolution pcr;
+    ArrayList<Vect2> fenceVertices;
 
     public double entryTime;
     public double exitTime;
@@ -78,6 +82,8 @@ public class GeoFence{
 	geoPolyPath    = new PolyPath();
 	CDPolycarp.setCheckNice(false);
 	cdp            = new CDIIPolygon(geoPolyCarp);
+	pcr            = new PolycarpResolution();
+	fenceVertices  = new ArrayList<Vect2>();
 
 	try{
 	    FileReader in = new FileReader("params/icarous.txt");
@@ -112,6 +118,10 @@ public class GeoFence{
 	    geoPoly3D = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
 	    Velocity v = Velocity.makeTrkGsVs(0.0,0.0,0.0);
 	    geoPolyPath.addPolygon(geoPolyLLA,v,0);
+
+	    for(int i=0;i<geoPoly3D.size();++i){
+		fenceVertices.add(geoPoly3D.getVertex(i));
+	    }
 	}
 				    
     }
@@ -127,6 +137,7 @@ public class GeoFence{
 	Vect3 so = proj.project(pos);
 
 	SafetyPoint = GetSafetyPoint(acState);
+	
 	//System.out.println("Distance from edge:"+geoPoly3D.distanceFromEdge(so));
 	
 	// Keep in geofence
@@ -147,6 +158,14 @@ public class GeoFence{
 	}
 	//Keep out Geofence
 	else{
+
+	    Vect2 so_2 = so.vect2();
+
+	    Vect2 recpoint = pcr.outside_recovery_point(hthreshold,fenceVertices,so_2);
+
+	    LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
+	    RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
+	    
 	    cdp.detection(FP,geoPolyPath,0,FP.getLastTime());
 	    	    
 	    
@@ -214,7 +233,7 @@ public class GeoFence{
 	y30           = xy0.y();
 	
 	Position Safe = Position.makeXYZ(0.0,0.0,0.0);
-	Position RecoveryPoint = Position.makeXYZ(0.0,0.0,0.0);
+	Position recPoint = Position.makeXYZ(0.0,0.0,0.0);
 	
 			
 	// Check if perpendicular intersection lies within line segment
@@ -286,7 +305,7 @@ public class GeoFence{
 
 	    if(dist < Min){
 		Min = dist;
-		RecoveryPoint = Safe;
+		recPoint = Safe;
 		
 	    }
 	    
@@ -299,21 +318,21 @@ public class GeoFence{
 	    CDe = C.Add(CD.Scal(hstepback/CD.norm()));
 	    
 	    LLA         = proj.inverse(CDe,pos.alt());
-	    RecoveryPoint  = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
+	    recPoint  = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
 	}
 
 	double alt;
 	if( (ceiling - pos.alt()) <= vthreshold){
 	    alt = (ceiling - vstepback);
-	    RecoveryPoint = RecoveryPoint.mkAlt(alt);
+	    recPoint = RecoveryPoint.mkAlt(alt);
 	}
 	else if( (pos.alt() - floor) <= vthreshold){
 	    alt = (floor + vstepback);                
-	    RecoveryPoint = RecoveryPoint.mkAlt(alt);
+	    recPoint = RecoveryPoint.mkAlt(alt);
 	}
 	
 
-	return RecoveryPoint;
+	return recPoint;
     }
     
     
