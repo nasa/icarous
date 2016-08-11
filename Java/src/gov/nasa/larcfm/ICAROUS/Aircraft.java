@@ -167,11 +167,11 @@ public class Aircraft implements ErrorReporter{
     public int CheckAcknowledgement(){
 
 	short status;
-	
-	if(FlightData.Inbox.UnreadCmdAck()){
-	    FlightData.Inbox.ReadCmdAck();
 
-	    status = FlightData.Inbox.CommandAck().result;
+	msg_command_ack msgCommandAck = FlightData.Inbox.GetCommandAck();
+	if(msgCommandAck != null){
+
+	    status = msgCommandAck.result;
 	    
 	    switch(status){
 

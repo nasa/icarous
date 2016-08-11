@@ -132,6 +132,7 @@ public class AircraftData{
 	planTime = currentTime;
     }
 
+    
     // Function to send a flight plan to pixhawk
     public void SendFlightPlanToAP(Interface Intf){
 
@@ -170,11 +171,10 @@ public class AircraftData{
 		case FP_CLR_ACK:
 
 		    Intf.Read();
-
-		    if(Inbox.UnreadMissionAck()){
-			Inbox.ReadMissionAck();
+		    msg_mission_ack msgMissionAck1 = Inbox.GetMissionAck();
+		    if(msgMissionAck1 != null){
 		    		    
-			if(Inbox.MissionAck().type == 0){
+			if(msgMissionAck1.type == 0){
 			    state = FP_WRITE_AP.FP_SEND_COUNT;
 			    //System.out.println("CLEAR acknowledgement");
 			}
@@ -197,12 +197,11 @@ public class AircraftData{
 		case FP_SEND_WP:
 
 		    Intf.Read();		
-				
-		    if(Inbox.UnreadMissionRequest()){
-		    
-			Inbox.ReadMissionRequest();
 
-			int seq = Inbox.MissionRequest().seq;
+		    msg_mission_request msgMissionRequest = Inbox.GetMissionRequest();
+		    if(msgMissionRequest != null){
+		    
+			int seq = msgMissionRequest.seq;
 			count   = seq;
 		    
 			//System.out.println("Received mission request: "+ seq );
@@ -227,21 +226,20 @@ public class AircraftData{
 			//System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
 			
 		    }
-		
-		    if(Inbox.UnreadMissionAck()){
 
-			Inbox.ReadMissionAck();
-		    
+		    msg_mission_ack msgMissionAck2 = Inbox.GetMissionAck();
+		    if(msgMissionAck2 != null){
+
 			//System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
 		    
-			if(Inbox.MissionAck().type == 0){
+			if(msgMissionAck2.type == 0){
 			    if(count == CurrentFlightPlan.size() - 1){
 				//System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
 			    }
 			
 			}
-			else if(Inbox.MissionAck().type == 13){
+			else if(msgMissionAck2.type == 13){
 
 			}
 			else{
@@ -289,10 +287,9 @@ public class AircraftData{
 		    Intf.Read();
 		    Intf.SetTimeout(0);
 
-		    if(Inbox.UnreadMissionItem()){
-			Inbox.ReadMissionItem();
-		    		    
-			msg_mission_item msgMissionItem = Inbox.MissionItem();
+		    msg_mission_item msgMissionItem = Inbox.GetMissionItem();
+		    if(msgMissionItem != null){
+			
 			System.out.println("mission sequence received:"+msgMissionItem.seq);
 			if(msgMissionItem.seq == count){
 			    mission.add(msgMissionItem);
@@ -359,12 +356,11 @@ public class AircraftData{
 		case FP_SEND_WP:
 
 		    Intf.Read();		
-				
-		    if(Inbox.UnreadMissionRequest()){
-		    
-			Inbox.ReadMissionRequest();
 
-			int seq = Inbox.MissionRequest().seq;
+		    msg_mission_request msgMissionRequest = Inbox.GetMissionRequest();
+		    if(msgMissionRequest != null){
+		    
+			int seq = msgMissionRequest.seq;
 			count   = seq;
 		    
 			//System.out.println("Received mission request: "+ seq );
@@ -376,21 +372,20 @@ public class AircraftData{
 			//System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
 			
 		    }
-		
-		    if(Inbox.UnreadMissionAck()){
 
-			Inbox.ReadMissionAck();
+		    msg_mission_ack msgMissionAck = Inbox.GetMissionAck();
+		    if(msgMissionAck != null){
 		    
-			System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
+			System.out.println("Received acknowledgement - type: "+msgMissionAck.type);
 		    
-			if(Inbox.MissionAck().type == 0){
+			if(msgMissionAck.type == 0){
 			    if(count == mission.size() - 1){
 				//System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
 			    }
 			
 			}
-			else if(Inbox.MissionAck().type == 13){
+			else if(msgMissionAck.type == 13){
 
 			}
 			else{
