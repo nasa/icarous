@@ -148,15 +148,25 @@ public class GeoFence{
 	//Keep out Geofence
 	else{
 	    cdp.detection(FP,geoPolyPath,0,FP.getLastTime());
-	  
+	    	    
+	    
 	    if(cdp.conflictBetween(currentTime,currentTime + lookahead)){
 		conflict = true;
 		entryTime = cdp.getTimeIn(0);
 		exitTime  = cdp.getTimeOut(0);
-	
 	    }
 	    else{
 		conflict = false;
+	    }
+
+	    if(cdp.size()>0){
+		entryTime = cdp.getTimeIn(0);
+		exitTime  = cdp.getTimeOut(0);
+
+		if(currentTime>= entryTime && currentTime <=entryTime){
+		    violation = true;
+		    conflict = true;
+		}
 	    }
 	    
 
