@@ -155,23 +155,6 @@ public class Interface{
     public void UDPWrite(MAVLinkMessage msg2send){
 
 	MAVLinkPacket raw_packet = msg2send.pack();
-	
-	byte[] buffer            = raw_packet.encodePacket();
-
-	try{
-
-	    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
-	    sock.send(output);
-	}
-	catch(IOException e){
-	    System.err.println(e);
-	}
-
-    }
-
-    public void _UDPWrite_(MAVLinkMessage msg2send){
-
-	MAVLinkPacket raw_packet = msg2send.pack();
 
 	raw_packet.sysid  = msg2send.sysid;
 	raw_packet.compid = msg2send.compid;
@@ -187,7 +170,7 @@ public class Interface{
 	    System.err.println(e);
 	}
 
-    }
+    }   
 
     public void SerialRead(){
 
@@ -213,6 +196,9 @@ public class Interface{
 	MAVLinkPacket raw_packet = msg2send.pack();
 	byte[] buffer            = raw_packet.encodePacket();
 
+	raw_packet.sysid  = msg2send.sysid;
+	raw_packet.compid = msg2send.compid;
+	
 	try{
 	    serialPort.writeBytes(buffer);
 	}

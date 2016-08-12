@@ -251,7 +251,7 @@ public class AircraftData{
 	}//end of while	
     }//end of function
 
-    // Function to send a flight plan to pixhawk
+    // Function to get flight plan
     public void GetWaypoints(Interface Intf,int target_system,int target_component,int COUNT,List<msg_mission_item> mission){
 
 	boolean readComplete = false;
@@ -259,11 +259,15 @@ public class AircraftData{
 	
 	msg_mission_request msgMissionRequest = new msg_mission_request();
 
+	msgMissionRequest.sysid            = 1;
+	msgMissionRequest.compid           = 1;
 	msgMissionRequest.target_system    = (short) target_system;
 	msgMissionRequest.target_component = (short) target_component;
 
 	msg_mission_ack msgMissionAck = new msg_mission_ack();
 
+	msgMissionAck.sysid            = 1;
+	msgMissionAck.compid           = 1;
 	msgMissionAck.target_system    = (short)target_system;
 	msgMissionAck.target_component = (short)target_component;
 
@@ -335,8 +339,12 @@ public class AircraftData{
 	boolean writeComplete = false;
 	int count = 0;	
 
+	msgMissionCount.sysid            = 1;
+	msgMissionCount.compid           = 1;
 	msgMissionCount.target_system    = 0;
 	msgMissionCount.target_component = 0;
+
+	
 	msgMissionItem.target_system     = 0;
 	msgMissionItem.target_component  = 0;
 
@@ -349,7 +357,7 @@ public class AircraftData{
 		    msgMissionCount.count = mission.size();
 
 		    Intf.Write(msgMissionCount);
-		    //System.out.println("Wrote mission count: "+msgMissionCount.count);
+		    System.out.println("Wrote mission count: "+msgMissionCount.count);
 		    state = FP_WRITE_AP.FP_SEND_WP;
 		    break;
 	    
@@ -363,12 +371,14 @@ public class AircraftData{
 			int seq = msgMissionRequest.seq;
 			count   = seq;
 		    
-			//System.out.println("Received mission request: "+ seq );
+			System.out.println("Received mission request: "+ seq );
 
 			msgMissionItem = mission.get(seq);									
+			msgMissionItem.sysid   = 1;
+			msgMissionItem.compid  = 1;
 			
 			Intf.Write(msgMissionItem);
-			//System.out.println("Wrote mission item:"+count);
+			System.out.println("Wrote mission item:"+count);
 			//System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
 			
 		    }
@@ -380,7 +390,7 @@ public class AircraftData{
 		    
 			if(msgMissionAck.type == 0){
 			    if(count == mission.size() - 1){
-				//System.out.println("Waypoints sent successfully to AP");
+				System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
 			    }
 			

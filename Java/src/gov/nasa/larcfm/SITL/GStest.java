@@ -10,6 +10,7 @@
  */
 import gov.nasa.larcfm.ICAROUS.*;
 import gov.nasa.larcfm.MISSION.*;
+import com.MAVLink.common.*;
 import java.io.*;
 
 public class GStest{
@@ -88,14 +89,13 @@ public class GStest{
 	test.error.setConsoleOutput(verbose);
 
 	daq_module.start();	
-	
-	while(!uasQuad.fsam.CheckAPHeartBeat()){
-	    
+
+	msg_heartbeat msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();	
+	while(msgHeartbeatAP == null){
+	    msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();
 	}
 
-	System.out.println("Received heartbeat from AP");
-	
-	
+	System.out.println("Received heartbeat from AP");		
 	
 	try{
 	    Thread.sleep(1000);

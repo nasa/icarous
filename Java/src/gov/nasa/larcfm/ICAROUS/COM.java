@@ -47,7 +47,7 @@ public class COM implements Runnable,ErrorReporter{
 	msghb.type      = MAV_TYPE.MAV_TYPE_ONBOARD_CONTROLLER;
 	msghb.autopilot = MAV_AUTOPILOT.MAV_AUTOPILOT_GENERIC;
 	
-	comIntf.SetTimeout(10);
+	comIntf.SetTimeout(100);
 
 	double time1 = UAS.timeCurrent;
 
@@ -60,7 +60,7 @@ public class COM implements Runnable,ErrorReporter{
 	    // Send heartbeat if available
 	    msg_heartbeat msgHeartbeat_AP = RcvdMessages.GetHeartbeat_AP();
 	    if(msgHeartbeat_AP != null){
-		comIntf._UDPWrite_(msgHeartbeat_AP);		    
+		comIntf.Write(msgHeartbeat_AP);		    
 	    }
 	    	    	    
 	    comIntf.Read();
@@ -70,6 +70,7 @@ public class COM implements Runnable,ErrorReporter{
 	    // Handle mission waypoints
 	    msg_mission_count msgMissionCount = RcvdMessages.GetMissionCount();	    
 	    if(msgMissionCount != null){
+		System.out.println("Handling new waypoints");
 		FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);
 		error.addWarning("[" + timeLog + "] MSG: Got waypoints");
 	    }
@@ -77,6 +78,7 @@ public class COM implements Runnable,ErrorReporter{
 	    // Handle mission request list
 	    msg_mission_request_list msgMissionRequestList = RcvdMessages.GetMissionRequestList();
 	    if(msgMissionRequestList != null){
+		System.out.println("Handling mission list request");
 		if(FlightData.InputFlightPlan.size() > 0){
 		    FlightData.SendWaypoints(comIntf,FlightData.InputFlightPlan);
 		}
@@ -90,7 +92,7 @@ public class COM implements Runnable,ErrorReporter{
 	    // Handle parameter requests
 	    msg_param_request_list msgParamRequestList = RcvdMessages.GetParamRequestList();
 	    if(msgParamRequestList != null){
-				
+		System.out.println("Handling parameter request list");		
 		UAS.apIntf.Write(msgParamRequestList);		
 		msg_param_value msgParamValue = null;
 		
@@ -104,7 +106,7 @@ public class COM implements Runnable,ErrorReporter{
 		double time_param_read_start  = UAS.timeCurrent;
 		for(int i=0;i<param_count;i++){
 		    
-		    comIntf._UDPWrite_(msgParamValue);		    
+		    comIntf.Write(msgParamValue);		    
 		    msgParamValue = FlightData.Inbox.GetParamValue();
 		    
 		    if(i<param_count-1){
@@ -127,7 +129,28 @@ public class COM implements Runnable,ErrorReporter{
 	    // Handle parameter value
 	    msg_param_value msgParamValue = RcvdMessages.GetParamValue();
 	    if( msgParamValue != null){
-		comIntf._UDPWrite_(msgParamValue);		
+		// Handle parameter value
+
+		System.out.println("Handle parameter value");
+		if(msgParamValue.sysid == 1){
+		    //System.out.printf("Received parameter from AP");
+		    comIntf.Write(msgParamValue);		
+		}
+		else{
+		    UAS.apIntf.Write(msgParamValue);
+		    //System.out.println("Writing to AP");
+		}
+
+		
+		
+	    }
+
+	    // Handle parameter set
+	    msg_param_set msgParamSet = RcvdMessages.GetParamSet();
+	    if( msgParamSet != null ){
+		// Handle parameter set
+		System.out.println("Handle parameter set");	
+		UAS.apIntf.Write(msgParamSet);		
 	    }
 	    	    
 	    // Handle new flight plan inputs

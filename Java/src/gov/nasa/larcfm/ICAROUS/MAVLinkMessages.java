@@ -231,13 +231,19 @@ public class MAVLinkMessages{
 	RcvdParamValue            = 0;
 	msgAttitude = new msg_attitude();
 	msgGpsRawInt = new msg_gps_raw_int();	
-	
-	listParamValue       = new ArrayList<msg_param_value>();
-	listParamRequestRead = new ArrayList<msg_param_request_read>();
-	listParamRequestList = new ArrayList<msg_param_request_list>();
-	listParamSet         = new ArrayList<msg_param_set>();
-	listMissionItem      = new ArrayList<msg_mission_item>();
-	listMissionCount     = new ArrayList<msg_mission_count>();
+
+	listHeartbeat_AP       = new ArrayList<msg_heartbeat>();
+	listParamValue         = new ArrayList<msg_param_value>();
+	listParamRequestRead   = new ArrayList<msg_param_request_read>();
+	listParamRequestList   = new ArrayList<msg_param_request_list>();
+	listParamSet           = new ArrayList<msg_param_set>();
+	listMissionItem        = new ArrayList<msg_mission_item>();
+	listMissionCount       = new ArrayList<msg_mission_count>();
+	listMissionAck         = new ArrayList<msg_mission_ack>();
+	listMissionRequestList = new ArrayList<msg_mission_request_list>();
+	listMissionRequest     = new ArrayList<msg_mission_request>();
+	listMissionItemReached = new ArrayList<msg_mission_item_reached>();
+	listCommandAck         = new ArrayList<msg_command_ack>();
     }
 
     public synchronized boolean UnreadFlightPlanUpdate(){
@@ -462,7 +468,7 @@ public class MAVLinkMessages{
 	    msg_heartbeat msgHeartbeat = (msg_heartbeat) message.unpack();
 
 	    if(msgHeartbeat.type == 2){		
-		listHeartbeat_AP.add(0,msgHeartbeat);
+		listHeartbeat_AP.add(msgHeartbeat);
 	    }
 	    break;
 	    
@@ -495,19 +501,19 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_param_request_read.MAVLINK_MSG_ID_PARAM_REQUEST_READ:
-	    listParamRequestRead.add(0,(msg_param_request_read) message.unpack());
+	    listParamRequestRead.add((msg_param_request_read) message.unpack());
 	    break;
 	    
 	case msg_param_request_list.MAVLINK_MSG_ID_PARAM_REQUEST_LIST:
-	    listParamRequestList.add(0,(msg_param_request_list) message.unpack());
+	    listParamRequestList.add((msg_param_request_list) message.unpack());
 	    break;
 	    
 	case msg_param_value.MAVLINK_MSG_ID_PARAM_VALUE:	   
-	    listParamValue.add(0,(msg_param_value) message.unpack());
+	    listParamValue.add((msg_param_value) message.unpack());
 	    break;
 	    
 	case msg_param_set.MAVLINK_MSG_ID_PARAM_SET:
-	    listParamSet.add(0,(msg_param_set) message.unpack());
+	    listParamSet.add((msg_param_set) message.unpack());
 	    break;
 	    
 	case msg_gps_raw_int.MAVLINK_MSG_ID_GPS_RAW_INT:
@@ -571,11 +577,11 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_mission_item.MAVLINK_MSG_ID_MISSION_ITEM:
-	    listMissionItem.add(0,(msg_mission_item) message.unpack());
+	    listMissionItem.add((msg_mission_item) message.unpack());
 	    break;
 	    
 	case msg_mission_request.MAVLINK_MSG_ID_MISSION_REQUEST:
-	    listMissionRequest.add(0,(msg_mission_request) message.unpack());
+	    listMissionRequest.add((msg_mission_request) message.unpack());
 	    break;
 	    
 	case msg_mission_set_current.MAVLINK_MSG_ID_MISSION_SET_CURRENT:
@@ -587,11 +593,11 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_mission_request_list.MAVLINK_MSG_ID_MISSION_REQUEST_LIST:
-	    listMissionRequestList.add(0,(msg_mission_request_list) message.unpack());
+	    listMissionRequestList.add((msg_mission_request_list) message.unpack());
 	    break;
 	    
 	case msg_mission_count.MAVLINK_MSG_ID_MISSION_COUNT:
-	    listMissionCount.add(0,(msg_mission_count) message.unpack());
+	    listMissionCount.add((msg_mission_count) message.unpack());
 	    break;
 	    
 	case msg_mission_clear_all.MAVLINK_MSG_ID_MISSION_CLEAR_ALL:
@@ -599,11 +605,11 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_mission_item_reached.MAVLINK_MSG_ID_MISSION_ITEM_REACHED:
-	    listMissionItemReached.add(0,(msg_mission_item_reached) message.unpack());
+	    listMissionItemReached.add((msg_mission_item_reached) message.unpack());
 	    break;
 	    
 	case msg_mission_ack.MAVLINK_MSG_ID_MISSION_ACK:
-	    listMissionAck.add(0,(msg_mission_ack) message.unpack());
+	    listMissionAck.add((msg_mission_ack) message.unpack());
 	    break;
 	    
 	case msg_set_gps_global_origin.MAVLINK_MSG_ID_SET_GPS_GLOBAL_ORIGIN:
@@ -683,7 +689,7 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_command_ack.MAVLINK_MSG_ID_COMMAND_ACK:
-	    listCommandAck.add(0,(msg_command_ack) message.unpack());
+	    listCommandAck.add((msg_command_ack) message.unpack());
 	    break;
 	    
 	case msg_manual_setpoint.MAVLINK_MSG_ID_MANUAL_SETPOINT:
@@ -1093,6 +1099,15 @@ public class MAVLinkMessages{
     public synchronized msg_param_request_list GetParamRequestList(){
 	if(listParamRequestList.size() > 0){
 	    return listParamRequestList.remove(0);	    
+	}
+	else{
+	    return null;
+	}
+    }
+
+    public synchronized msg_param_set GetParamSet(){
+	if(listParamSet.size() > 0){
+	    return listParamSet.remove(0);	    
 	}
 	else{
 	    return null;

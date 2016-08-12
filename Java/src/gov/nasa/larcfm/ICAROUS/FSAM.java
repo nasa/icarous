@@ -327,6 +327,7 @@ public class FSAM{
 	return reached;	
     }
 
+    
     public boolean CheckAPHeartBeat(){
 
 	FlightData.Inbox.ReadHeartbeat_AP();
@@ -340,7 +341,7 @@ public class FSAM{
 	    return false;
 	}
 	
-    }
+	}
 
     public void CheckGeoFences(){
 
