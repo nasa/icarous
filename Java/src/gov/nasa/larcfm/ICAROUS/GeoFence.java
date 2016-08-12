@@ -118,10 +118,12 @@ public class GeoFence{
 	if(geoPolyLLA.size() == numVertices){
 	    isconvex = geoPoly3D.poly2D().isConvex();
 
-	    // Expand fence if it is a keep out fence
-	    if(Type == 1){
+	    // [TODO] This expansion doesn't work with CDIIPolygon.detection()
+	    // Expand fence if it is a keep out fence 
+	    //if(Type == 1){
 		//geoPolyLLA = pu.bufferedConvexHull(geoPolyLLA,hthreshold,vthreshold);
-	    }
+	        
+	    //}
 	    
 	    proj       = Projection.createProjection(geoPolyLLA.getVertex(0));
 	    geoPoly3D  = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
@@ -181,11 +183,18 @@ public class GeoFence{
 
 	    LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
 	    RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
+
+
 	    
 	    cdp.detection(FP,geoPolyPath,0,FP.getLastTime());
 	    	    
 	    
+	    
 	    if(cdp.conflictBetween(currentTime,currentTime + lookahead)){
+		
+		
+		//System.out.println("Conflict size:"+cdp.size());
+		//System.out.println("FP last time:"+FP.getLastTime());
 		conflict = true;
 		entryTime = cdp.getTimeIn(0);
 		exitTime  = cdp.getTimeOut(0);

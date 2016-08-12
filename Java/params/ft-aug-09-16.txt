@@ -9,7 +9,7 @@ NumWP = 4
 maxHDev = 2
 maxVDev = 2
 standoff = 1
-StartTime = 0
+StartTime = 30
 FenceTime = 0
 numFences = 2
 

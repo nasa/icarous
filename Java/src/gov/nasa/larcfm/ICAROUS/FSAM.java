@@ -525,8 +525,9 @@ public class FSAM{
 	dg.setWeights(5.0);
 
 	for(int i=1;i<FlightData.fenceList.size();i++){
-	    SimplePoly GF = FlightData.fenceList.get(i).geoPolyLLA;
-	    dg.setWeightsInside(GF,100.0);
+	    GeoFence GF = FlightData.fenceList.get(i);
+	    SimplePoly expfence = GF.pu.bufferedConvexHull(GF.geoPolyLLA,GF.hthreshold,GF.vthreshold);
+	    dg.setWeightsInside(expfence,100.0);
 	}
 
 	// Perform A* seartch

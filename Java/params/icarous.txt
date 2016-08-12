@@ -11,7 +11,7 @@ stepbacktype = 0
 # Search parameters
 gridsize   = 0.5
 buffer     = 1
-lookahead  = 2
+lookahead  = 4
 proximityfactor = 3.0
 
 
