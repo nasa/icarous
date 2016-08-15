@@ -44,8 +44,7 @@ public class COM implements Runnable,ErrorReporter{
 
 	msg_heartbeat msghb = new msg_heartbeat();
 	
-	msghb.type      = MAV_TYPE.MAV_TYPE_ONBOARD_CONTROLLER;
-	msghb.autopilot = MAV_AUTOPILOT.MAV_AUTOPILOT_GENERIC;
+	msghb.type      = MAV_TYPE.MAV_TYPE_FIXED_WING;
 	
 	comIntf.SetTimeout(100);
 
@@ -67,12 +66,18 @@ public class COM implements Runnable,ErrorReporter{
 	    	    
 	    String timeLog = UAS.timeLog;
 
-	    // Handle mission waypoints
+	    // Handle mission waypoints / geofence points
 	    msg_mission_count msgMissionCount = RcvdMessages.GetMissionCount();	    
 	    if(msgMissionCount != null){
-		System.out.println("Handling new waypoints");
-		FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);
-		error.addWarning("[" + timeLog + "] MSG: Got waypoints");
+
+		if(msgMissionCount.target_system == 1){
+		    //System.out.println("Handling new waypoints");
+		    FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);
+		    error.addWarning("[" + timeLog + "] MSG: Got waypoints");
+		}
+		else if(msgMissionCount.target_system == 2){
+		    
+		}
 	    }
 
 	    // Handle mission request list
@@ -105,7 +110,7 @@ public class COM implements Runnable,ErrorReporter{
 
 		double time_param_read_start  = UAS.timeCurrent;
 		for(int i=0;i<param_count;i++){
-		    
+		    //System.out.println("count:"+i);
 		    comIntf.Write(msgParamValue);		    
 		    msgParamValue = FlightData.Inbox.GetParamValue();
 		    
@@ -131,7 +136,7 @@ public class COM implements Runnable,ErrorReporter{
 	    if( msgParamValue != null){
 		// Handle parameter value
 
-		System.out.println("Handle parameter value");
+		//System.out.println("Handle parameter value");
 		if(msgParamValue.sysid == 1){
 		    //System.out.printf("Received parameter from AP");
 		    comIntf.Write(msgParamValue);		
@@ -147,10 +152,17 @@ public class COM implements Runnable,ErrorReporter{
 
 	    // Handle parameter set
 	    msg_param_set msgParamSet = RcvdMessages.GetParamSet();
-	    if( msgParamSet != null ){
-		// Handle parameter set
-		System.out.println("Handle parameter set");	
+	    if( msgParamSet != null ){			
 		UAS.apIntf.Write(msgParamSet);		
+	    }
+
+	    // Hangle commands
+	    msg_command_long msgCommandLong = RcvdMessages.GetCommandLong();
+	    if( msgCommandLong != null ){
+
+		if(msgCommandLong.command == MAV_CMD.MAV_CMD_DO_FENCE_ENABLE){
+		    FlightData.GetGeoFence(comIntf,msgCommandLong);
+		}
 	    }
 	    	    
 	    // Handle new flight plan inputs

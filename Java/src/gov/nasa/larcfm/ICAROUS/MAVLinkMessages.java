@@ -180,7 +180,8 @@ public class MAVLinkMessages{
     //public ArrayList<msg_mission_start> listMissionStart;
     public ArrayList<msg_mission_item_reached> listMissionItemReached;
     public ArrayList<msg_command_ack> listCommandAck;
-
+    public ArrayList<msg_command_long> listCommandLong;
+    public ArrayList<msg_fence_point> listFencePoint;
     
     private int RcvdFlightPlanUpdate;
     private int RcvdGeoFenceUpdate;
@@ -244,6 +245,8 @@ public class MAVLinkMessages{
 	listMissionRequest     = new ArrayList<msg_mission_request>();
 	listMissionItemReached = new ArrayList<msg_mission_item_reached>();
 	listCommandAck         = new ArrayList<msg_command_ack>();
+	listCommandLong        = new ArrayList<msg_command_long>();
+	listFencePoint         = new ArrayList<msg_fence_point>();
     }
 
     public synchronized boolean UnreadFlightPlanUpdate(){
@@ -579,6 +582,11 @@ public class MAVLinkMessages{
 	case msg_mission_item.MAVLINK_MSG_ID_MISSION_ITEM:
 	    listMissionItem.add((msg_mission_item) message.unpack());
 	    break;
+
+	case msg_fence_point.MAVLINK_MSG_ID_FENCE_POINT:
+	    listFencePoint.add((msg_fence_point) message.unpack());
+	    System.out.println("received fence point");
+	    break;
 	    
 	case msg_mission_request.MAVLINK_MSG_ID_MISSION_REQUEST:
 	    listMissionRequest.add((msg_mission_request) message.unpack());
@@ -685,7 +693,7 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_command_long.MAVLINK_MSG_ID_COMMAND_LONG:
-	    msgCommandLong = (msg_command_long) message.unpack();
+	    listCommandLong.add((msg_command_long) message.unpack());
 	    break;
 	    
 	case msg_command_ack.MAVLINK_MSG_ID_COMMAND_ACK:
@@ -1078,6 +1086,15 @@ public class MAVLinkMessages{
 	}
     }
 
+    public synchronized msg_command_long GetCommandLong(){
+	if(listCommandLong.size()>0){
+	    return listCommandLong.remove(0);
+	}
+	else{
+	    return null;
+	}
+    }
+
     public synchronized msg_mission_request GetMissionRequest(){
 	if(listMissionRequest.size() > 0){	   
 	    return listMissionRequest.remove(0);
@@ -1125,6 +1142,15 @@ public class MAVLinkMessages{
     public synchronized msg_mission_item GetMissionItem(){
 	if(listMissionItem.size() > 0){
 	    return listMissionItem.remove(0);
+	}
+	else{
+	    return null;
+	}
+    }
+
+    public synchronized msg_fence_point GetFencePoint(){
+	if(listFencePoint.size() > 0){
+	    return listFencePoint.remove(0);
 	}
 	else{
 	    return null;

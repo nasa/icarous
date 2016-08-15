@@ -14,6 +14,7 @@ import java.util.*;
 import java.lang.*;
 import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
+import com.MAVLink.ardupilotmega.*;
 import com.MAVLink.enums.*;
 import gov.nasa.larcfm.Util.NavPoint;
 import gov.nasa.larcfm.Util.Plan;
@@ -512,6 +513,95 @@ public class AircraftData{
 		  
 	      } // end of switch case
 	  }// end of while
+    }//end of function
+
+    // Function to get flight plan
+    public void GetGeoFence(Interface Intf,msg_command_long msg){
+
+	boolean readComplete = false;
+	int count = 0;
+	int COUNT = (int) msg.param4;
+	
+	GeoFence fence1 = new GeoFence((int)msg.param2,(int)msg.param3,(int)msg.param4,msg.param5,msg.param6);
+		
+	msg_fence_fetch_point msgFenceFetchPoint = new msg_fence_fetch_point();
+
+	msgFenceFetchPoint.sysid            = 1;
+	msgFenceFetchPoint.compid           = 1;
+	msgFenceFetchPoint.target_system    = (short) msg.sysid;
+	msgFenceFetchPoint.target_component = (short) msg.compid;
+
+	msg_mission_ack msgMissionAck = new msg_mission_ack();
+
+	msgMissionAck.sysid            = 1;
+	msgMissionAck.compid           = 1;
+	msgMissionAck.target_system    = (short) msg.sysid;
+	msgMissionAck.target_component = (short) msg.compid;
+
+	FP_READ state = FP_READ.FP_ITEM_REQUEST;
+	
+	while(!readComplete){
+
+		switch(state){
+
+		case FP_ITEM_REQUEST:
+		    
+		    msgFenceFetchPoint.idx = (short) count;
+		    Intf.Write(msgFenceFetchPoint);
+		    System.out.println("wrote fence fetch point:"+count);
+		    state = FP_READ.FP_WP_READ;
+		    break;
+
+		case FP_WP_READ:
+
+		    Intf.SetTimeout(1000);
+		    Intf.Read();
+		    Intf.SetTimeout(0);
+
+		    msg_fence_point msgFencePoint = Inbox.GetFencePoint();
+		    if(msgFencePoint != null){
+			
+			System.out.println("mission sequence received:"+msgFencePoint.idx);
+			if(msgFencePoint.idx == count){
+			    
+			    fence1.AddVertex(msgFencePoint.idx,msgFencePoint.lat,msgFencePoint.lng);			    
+			    state = FP_READ.FP_ITEM_REQUEST;
+
+			    count++;
+
+			    if(count >= COUNT){
+				state = FP_READ.FP_READ_COMPLETE;
+			    }
+			    System.out.println("Added waypoint");
+			}
+			else{
+			    msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_INVALID_SEQUENCE;
+			    Intf.Write(msgMissionAck);
+			    System.out.println("Error receiving waypoints");
+			    return;
+			}
+		    }
+
+		    break;
+
+		case FP_READ_COMPLETE:
+
+		    msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED;
+		    Intf.Write(msgMissionAck);
+		    readComplete = true;
+
+		    if(fence1.Type == 0){
+			fenceList.add(0,fence1);
+		    }else{
+			fenceList.add(fence1);
+		    }
+		    
+		    System.out.println("All waypoints received");
+		    break;
+		    
+		    
+		} // end of switch case
+	}//end of while	
     }//end of function
 
 
