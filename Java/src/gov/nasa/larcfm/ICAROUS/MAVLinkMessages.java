@@ -182,6 +182,7 @@ public class MAVLinkMessages{
     public ArrayList<msg_command_ack> listCommandAck;
     public ArrayList<msg_command_long> listCommandLong;
     public ArrayList<msg_fence_point> listFencePoint;
+    public ArrayList<msg_fence_fetch_point> listFenceFetchPoint;
     
     private int RcvdFlightPlanUpdate;
     private int RcvdGeoFenceUpdate;
@@ -231,7 +232,8 @@ public class MAVLinkMessages{
 	RcvdHeartbeat_COM         = 0;
 	RcvdParamValue            = 0;
 	msgAttitude = new msg_attitude();
-	msgGpsRawInt = new msg_gps_raw_int();	
+	msgGpsRawInt = new msg_gps_raw_int();
+	msgGlobalPositionInt = new msg_global_position_int();
 
 	listHeartbeat_AP       = new ArrayList<msg_heartbeat>();
 	listParamValue         = new ArrayList<msg_param_value>();
@@ -247,6 +249,7 @@ public class MAVLinkMessages{
 	listCommandAck         = new ArrayList<msg_command_ack>();
 	listCommandLong        = new ArrayList<msg_command_long>();
 	listFencePoint         = new ArrayList<msg_fence_point>();
+	listFenceFetchPoint    = new ArrayList<msg_fence_fetch_point>();
     }
 
     public synchronized boolean UnreadFlightPlanUpdate(){
@@ -585,7 +588,10 @@ public class MAVLinkMessages{
 
 	case msg_fence_point.MAVLINK_MSG_ID_FENCE_POINT:
 	    listFencePoint.add((msg_fence_point) message.unpack());
-	    System.out.println("received fence point");
+	    break;
+
+	case msg_fence_fetch_point.MAVLINK_MSG_ID_FENCE_FETCH_POINT:
+	    listFenceFetchPoint.add((msg_fence_fetch_point) message.unpack());
 	    break;
 	    
 	case msg_mission_request.MAVLINK_MSG_ID_MISSION_REQUEST:
@@ -1113,6 +1119,15 @@ public class MAVLinkMessages{
 	}
     }
 
+    public synchronized msg_mission_item_reached GetMissionItemReached(){
+	if(listMissionItemReached.size() > 0){
+	    return listMissionItemReached.remove(0);
+	}
+	else{
+	    return null;
+	}
+    }
+
     public synchronized msg_param_request_list GetParamRequestList(){
 	if(listParamRequestList.size() > 0){
 	    return listParamRequestList.remove(0);	    
@@ -1151,6 +1166,15 @@ public class MAVLinkMessages{
     public synchronized msg_fence_point GetFencePoint(){
 	if(listFencePoint.size() > 0){
 	    return listFencePoint.remove(0);
+	}
+	else{
+	    return null;
+	}
+    }
+
+    public synchronized msg_fence_fetch_point GetFenceFetchPoint(){
+	if(listFenceFetchPoint.size() > 0){
+	    return listFenceFetchPoint.remove(0);
 	}
 	else{
 	    return null;

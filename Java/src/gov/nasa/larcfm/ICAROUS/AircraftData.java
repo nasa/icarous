@@ -32,6 +32,10 @@ public class AircraftData{
 	FP_ITEM_REQUEST, FP_WP_READ, FP_READ_COMPLETE
     }
 
+    public enum GF{
+	GF_READ, GF_SEND_BACK, GF_READ_COMPLETE
+    }
+
     public enum FP_READ_COM{
 	FP_INFO, FP_WAYPT_INFO, FP_ACK_FAIL,FP_ACK_SUCCESS
     }
@@ -148,21 +152,22 @@ public class AircraftData{
 
 	// Make a new Plan using the input mission item
 	CurrentFlightPlan = new Plan();
-
+	
 	for(int i=0;i<InputFlightPlan.size();i++){
 	    msgMissionItem = InputFlightPlan.get(i);
 	    
 	    double wptime= 0;
 	    Position nextWP = Position.makeLatLonAlt(msgMissionItem.x,"degree",msgMissionItem.y,"degree",msgMissionItem.z,"m");
-	    if(count > 0 ){			  
-		double distance = NewFlightPlan.point(count - 1).position().distanceH(nextWP);
-		wptime          = NewFlightPlan.getTime(count-1) + distance/msgMissionItem.param4;			  
+	    if(i > 0 ){			  
+		double distance = CurrentFlightPlan.point(i - 1).position().distanceH(nextWP);
+		wptime          = CurrentFlightPlan.getTime(i-1) + distance/msgMissionItem.param4;
 	    }		     
 	    
 	    CurrentFlightPlan.add(new NavPoint(nextWP,wptime));
-	    
 	}
-	
+
+	FP_numWaypoints           = CurrentFlightPlan.size();
+	System.out.println("Num waypoints:"+FP_numWaypoints);
 
 	msgMissionCount.target_system    = 0;
 	msgMissionCount.target_component = 0;
@@ -536,7 +541,7 @@ public class AircraftData{
 	boolean readComplete = false;
 	int count = 0;
 	int COUNT = (int) msg.param4;
-	System.out.println("New fence with vertices:"+COUNT);
+
 	GeoFence fence1 = new GeoFence((int)msg.param2,(int)msg.param3,(int)msg.param4,msg.param5,msg.param6);
 		
 	msg_fence_fetch_point msgFenceFetchPoint = new msg_fence_fetch_point();
@@ -551,21 +556,42 @@ public class AircraftData{
 	msgFenceStatus.sysid            = 2;
 	msgFenceStatus.compid           = 0;
 	
-	FP_READ state = FP_READ.FP_ITEM_REQUEST;
+	GF state = GF.GF_READ;
+
+	ArrayList<msg_fence_point> InputFence = new ArrayList<msg_fence_point>();
+
+	long time1 = System.nanoTime();
 	
 	while(!readComplete){
 
+	    long time2 = System.nanoTime();
+
+	    if(time2 - time1 > 3E9){
+		break;
+	    }
+	    
 		switch(state){
 
-		case FP_ITEM_REQUEST:
+		case GF_SEND_BACK:
 		    
-		    msgFenceFetchPoint.idx = (short) count;
-		    Intf.Write(msgFenceFetchPoint);
+		    Intf.SetTimeout(1000);
+		    Intf.Read();
+		    Intf.SetTimeout(0);
+
+		    msgFenceFetchPoint = Inbox.GetFenceFetchPoint();
+
+		    int idx = msgFenceFetchPoint.idx;
+		    Intf.Write(InputFence.get(idx));
 		    //System.out.println("wrote fence fetch point:"+count);
-		    state = FP_READ.FP_WP_READ;
+		    state = GF.GF_READ;
+
+		    if(count >= COUNT){
+			state = GF.GF_READ_COMPLETE;
+		    }
+		    
 		    break;
 
-		case FP_WP_READ:
+		case GF_READ:
 
 		    Intf.SetTimeout(1000);
 		    Intf.Read();
@@ -574,34 +600,26 @@ public class AircraftData{
 		    msg_fence_point msgFencePoint = Inbox.GetFencePoint();
 		    if(msgFencePoint != null){
 			
-			//System.out.println("geofence point received:"+msgFencePoint.idx);
+			System.out.println("geofence point received:"+msgFencePoint.idx);
 			if(msgFencePoint.idx == count){
-			    
+
+			    InputFence.add(msgFencePoint);
 			    fence1.AddVertex(msgFencePoint.idx,msgFencePoint.lat,msgFencePoint.lng);			    
-			    state = FP_READ.FP_ITEM_REQUEST;
+			    state = GF.GF_SEND_BACK;
 
 			    count++;
-
-			    if(count >= COUNT){
-				state = FP_READ.FP_READ_COMPLETE;
-			    }
-			    //System.out.println("Added fence vertex");
+			    time1 = time2;
+			    	       
 			}
 			else{
-			    msgFenceStatus.breach_status = 0;
-			    Intf.Write(msgFenceStatus);
-			    //System.out.println("Error receiving points");
-			    return;
+			    
 			}
 		    }
 
 		    break;
 
-		case FP_READ_COMPLETE:
-
+		case GF_READ_COMPLETE:
 		    
-		    msgFenceStatus.breach_status = 1;
-		    Intf.Write(msgFenceStatus);
 		    readComplete = true;
 
 		    if(fence1.Type == 0){
@@ -609,8 +627,9 @@ public class AircraftData{
 		    }else{
 			fenceList.add(fence1);
 		    }
+
 		    
-		    //System.out.println("All points received");
+		    fence1.print();
 		    break;
 		    
 		    

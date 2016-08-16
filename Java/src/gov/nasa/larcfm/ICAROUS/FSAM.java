@@ -294,7 +294,7 @@ public class FSAM{
 	    msgMission.target_system     = 0;
 	    msgMission.target_component  = 0;
 	    msgMission.seq               = FlightData.FP_nextWaypoint;	    		
-	    UAS.error.addWarning("[" + UAS.timeLog + "] CMD: Set next mission item");
+	    UAS.error.addWarning("[" + UAS.timeLog + "] CMD: Set next mission item: "+msgMission.seq);
 	    UAS.apIntf.Write(msgMission);
 
 	    UAS.apMode = Aircraft.AP_MODE.AUTO;
@@ -317,9 +317,9 @@ public class FSAM{
     public boolean CheckMissionItemReached(){
 
 	boolean reached = false;
-	
-	if(Inbox.UnreadMissionItemReached()){
-	    Inbox.ReadMissionItemReached();
+
+	msg_mission_item_reached msgMissionItemReached = Inbox.GetMissionItemReached();
+	if(msgMissionItemReached != null){
 	    reached = true;
 	}
 
@@ -361,7 +361,9 @@ public class FSAM{
 	 }
 	 
 	 for(int i=0;i< FlightData.fenceList.size();i++){
+	     
 	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
+
 	    GF.CheckViolation(FlightData.acState,planTime,CurrentPlan);
 
 	    Conflict cf;	   

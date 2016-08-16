@@ -10,6 +10,7 @@
  */
 import gov.nasa.larcfm.ICAROUS.*;
 import gov.nasa.larcfm.MISSION.*;
+import com.MAVLink.common.*;
 import java.io.*;
 
 public class SITL_test{
@@ -62,9 +63,9 @@ public class SITL_test{
 					   FlightData);
 	
 	Interface COMInt   = new Interface(Interface.SOCKET,
-					   null,
+					   "localhost",
 					   comport,
-					   0,
+					   14550,
 					   FlightData);
 	
 	Interface BCASTInt = new Interface(Interface.SOCKET,
@@ -86,22 +87,16 @@ public class SITL_test{
 
 	com_module.error.setConsoleOutput(verbose);
 	test.error.setConsoleOutput(verbose);
-	
-	while(!uasQuad.fsam.CheckAPHeartBeat()){
-	    
-	}
 
+	daq_module.start();	
+	
+	msg_heartbeat msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();	
+	while(msgHeartbeatAP == null){
+	    msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();
+	}
+	
 	System.out.println("Received heartbeat from AP");
-
-	while(!com_module.CheckCOMHeartBeat()){
-	    
-	}
-
-	System.out.println("Received heartbeat from COM");
-	    
-	daq_module.start();
-
-	
+		    	
 
 	try{
 	    Thread.sleep(1000);
