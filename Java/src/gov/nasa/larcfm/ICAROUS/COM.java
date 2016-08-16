@@ -56,7 +56,7 @@ public class COM implements Runnable,ErrorReporter{
 	    
 	    double time2 = UAS.timeCurrent;
 	    
-	    // Send heartbeat if available
+	    // Send AP heartbeat if available
 	    msg_heartbeat msgHeartbeat_AP = RcvdMessages.GetHeartbeat_AP();
 	    if(msgHeartbeat_AP != null){
 		comIntf.Write(msgHeartbeat_AP);		    
@@ -68,16 +68,10 @@ public class COM implements Runnable,ErrorReporter{
 
 	    // Handle mission waypoints / geofence points
 	    msg_mission_count msgMissionCount = RcvdMessages.GetMissionCount();	    
-	    if(msgMissionCount != null){
-
-		if(msgMissionCount.target_system == 1){
-		    //System.out.println("Handling new waypoints");
-		    FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);
-		    error.addWarning("[" + timeLog + "] MSG: Got waypoints");
-		}
-		else if(msgMissionCount.target_system == 2){
-		    
-		}
+	    if(msgMissionCount != null){		
+		//System.out.println("Handling new waypoints");
+		FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);
+		error.addWarning("[" + timeLog + "] MSG: Got waypoints");				
 	    }
 
 	    // Handle mission request list
@@ -159,9 +153,15 @@ public class COM implements Runnable,ErrorReporter{
 	    // Hangle commands
 	    msg_command_long msgCommandLong = RcvdMessages.GetCommandLong();
 	    if( msgCommandLong != null ){
-
+		
 		if(msgCommandLong.command == MAV_CMD.MAV_CMD_DO_FENCE_ENABLE){
 		    FlightData.GetGeoFence(comIntf,msgCommandLong);
+		}
+		else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){
+		    if(msgCommandLong.param1 == 1){
+			FlightData.startMission = 1;
+			error.addWarning("[" + timeLog + "] MSG: Received Mission START");
+		    }
 		}
 	    }
 	    	    
@@ -235,15 +235,12 @@ public class COM implements Runnable,ErrorReporter{
 	    
 	}
     }
-
     
     public void start(){
 	System.out.println("Starting "+threadName);
 	t = new Thread(this,threadName);
 	t.start();
     }
-
-
 
     public boolean CheckCOMHeartBeat(){
 

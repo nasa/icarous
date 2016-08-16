@@ -67,11 +67,16 @@ public class FMS implements Runnable{
 
 	case IDLE:
 
-	    /* - Wait for mission start flag from COMBOX */
+	    /* - Wait for mission start flag from ground station */
 	    
 	    if(UAS.FlightData.startMission == 1){
-		UAS.FlightData.startMission = -1;		
-		state = FMS_STATE.PREFLIGHT;
+		UAS.FlightData.startMission = -1;
+		if(UAS.FlightData.InputFlightPlan.size() > 0){
+		    state = FMS_STATE.PREFLIGHT;
+		}
+		else{
+		    UAS.error.addError("[" + UAS.timeLog + "] MSG: No flight plan loaded");
+		}
 	    }
 	    
 	    break;

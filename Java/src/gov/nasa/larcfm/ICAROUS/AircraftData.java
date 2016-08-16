@@ -146,8 +146,23 @@ public class AircraftData{
 	boolean writeComplete = false;
 	int count = 0;
 
-	// Copy new flight into current flight plan
-	CurrentFlightPlan = new Plan(NewFlightPlan);
+	// Make a new Plan using the input mission item
+	CurrentFlightPlan = new Plan();
+
+	for(int i=0;i<InputFlightPlan.size();i++){
+	    msgMissionItem = InputFlightPlan.get(i);
+	    
+	    double wptime= 0;
+	    Position nextWP = Position.makeLatLonAlt(msgMissionItem.x,"degree",msgMissionItem.y,"degree",msgMissionItem.z,"m");
+	    if(count > 0 ){			  
+		double distance = NewFlightPlan.point(count - 1).position().distanceH(nextWP);
+		wptime          = NewFlightPlan.getTime(count-1) + distance/msgMissionItem.param4;			  
+	    }		     
+	    
+	    CurrentFlightPlan.add(new NavPoint(nextWP,wptime));
+	    
+	}
+	
 
 	msgMissionCount.target_system    = 0;
 	msgMissionCount.target_component = 0;
@@ -282,7 +297,7 @@ public class AircraftData{
 		    
 		    msgMissionRequest.seq = count;
 		    Intf.Write(msgMissionRequest);
-		    System.out.println("wrote count:"+count);
+		    //System.out.println("wrote count:"+count);
 		    state = FP_READ.FP_WP_READ;
 		    break;
 
@@ -295,7 +310,7 @@ public class AircraftData{
 		    msg_mission_item msgMissionItem = Inbox.GetMissionItem();
 		    if(msgMissionItem != null){
 			
-			System.out.println("mission sequence received:"+msgMissionItem.seq);
+			//System.out.println("mission sequence received:"+msgMissionItem.seq);
 			if(msgMissionItem.seq == count){
 			    mission.add(msgMissionItem);
 			    state = FP_READ.FP_ITEM_REQUEST;
@@ -305,12 +320,12 @@ public class AircraftData{
 			    if(count >= COUNT){
 				state = FP_READ.FP_READ_COMPLETE;
 			    }
-			    System.out.println("Added waypoint");
+			    //System.out.println("Added waypoint");
 			}
 			else{
 			    msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_INVALID_SEQUENCE;
 			    Intf.Write(msgMissionAck);
-			    System.out.println("Error receiving waypoints");
+			    //System.out.println("Error receiving waypoints");
 			    return;
 			}
 		    }
@@ -322,7 +337,7 @@ public class AircraftData{
 		    msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED;
 		    Intf.Write(msgMissionAck);
 		    readComplete = true;
-		    System.out.println("All waypoints received");
+		    //System.out.println("All waypoints received");
 		    break;
 		    
 		    
@@ -521,23 +536,21 @@ public class AircraftData{
 	boolean readComplete = false;
 	int count = 0;
 	int COUNT = (int) msg.param4;
-	
+	System.out.println("New fence with vertices:"+COUNT);
 	GeoFence fence1 = new GeoFence((int)msg.param2,(int)msg.param3,(int)msg.param4,msg.param5,msg.param6);
 		
 	msg_fence_fetch_point msgFenceFetchPoint = new msg_fence_fetch_point();
-
+	
 	msgFenceFetchPoint.sysid            = 1;
 	msgFenceFetchPoint.compid           = 1;
 	msgFenceFetchPoint.target_system    = (short) msg.sysid;
 	msgFenceFetchPoint.target_component = (short) msg.compid;
 
-	msg_mission_ack msgMissionAck = new msg_mission_ack();
+	msg_fence_status msgFenceStatus = new msg_fence_status();
 
-	msgMissionAck.sysid            = 1;
-	msgMissionAck.compid           = 1;
-	msgMissionAck.target_system    = (short) msg.sysid;
-	msgMissionAck.target_component = (short) msg.compid;
-
+	msgFenceStatus.sysid            = 2;
+	msgFenceStatus.compid           = 0;
+	
 	FP_READ state = FP_READ.FP_ITEM_REQUEST;
 	
 	while(!readComplete){
@@ -548,7 +561,7 @@ public class AircraftData{
 		    
 		    msgFenceFetchPoint.idx = (short) count;
 		    Intf.Write(msgFenceFetchPoint);
-		    System.out.println("wrote fence fetch point:"+count);
+		    //System.out.println("wrote fence fetch point:"+count);
 		    state = FP_READ.FP_WP_READ;
 		    break;
 
@@ -561,7 +574,7 @@ public class AircraftData{
 		    msg_fence_point msgFencePoint = Inbox.GetFencePoint();
 		    if(msgFencePoint != null){
 			
-			System.out.println("mission sequence received:"+msgFencePoint.idx);
+			//System.out.println("geofence point received:"+msgFencePoint.idx);
 			if(msgFencePoint.idx == count){
 			    
 			    fence1.AddVertex(msgFencePoint.idx,msgFencePoint.lat,msgFencePoint.lng);			    
@@ -572,12 +585,12 @@ public class AircraftData{
 			    if(count >= COUNT){
 				state = FP_READ.FP_READ_COMPLETE;
 			    }
-			    System.out.println("Added waypoint");
+			    //System.out.println("Added fence vertex");
 			}
 			else{
-			    msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_INVALID_SEQUENCE;
-			    Intf.Write(msgMissionAck);
-			    System.out.println("Error receiving waypoints");
+			    msgFenceStatus.breach_status = 0;
+			    Intf.Write(msgFenceStatus);
+			    //System.out.println("Error receiving points");
 			    return;
 			}
 		    }
@@ -586,8 +599,9 @@ public class AircraftData{
 
 		case FP_READ_COMPLETE:
 
-		    msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED;
-		    Intf.Write(msgMissionAck);
+		    
+		    msgFenceStatus.breach_status = 1;
+		    Intf.Write(msgFenceStatus);
 		    readComplete = true;
 
 		    if(fence1.Type == 0){
@@ -596,7 +610,7 @@ public class AircraftData{
 			fenceList.add(fence1);
 		    }
 		    
-		    System.out.println("All waypoints received");
+		    //System.out.println("All points received");
 		    break;
 		    
 		    
