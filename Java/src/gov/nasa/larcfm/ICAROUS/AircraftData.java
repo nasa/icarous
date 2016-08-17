@@ -570,70 +570,64 @@ public class AircraftData{
 		break;
 	    }
 	    
-		switch(state){
+	    switch(state){		
+		
+	    case GF_READ:
 
-		case GF_SEND_BACK:
+		Intf.SetTimeout(1000);
+		Intf.Read();
+		Intf.SetTimeout(0);
+
+		if(count >= COUNT){
+		    state = GF.GF_READ_COMPLETE;
+		}
+
+		msg_fence_point msgFencePoint = Inbox.GetFencePoint();
+		if(msgFencePoint != null){
+			
+		    //System.out.println("geofence point received:"+msgFencePoint.idx);
+		    if(msgFencePoint.idx == count){
+
+			InputFence.add(msgFencePoint);
+			fence1.AddVertex(msgFencePoint.idx,msgFencePoint.lat,msgFencePoint.lng);			    
+			    
+			count++;
+			time1 = time2;
+			    	       
+		    }
+		    else{
+			    
+		    }
+		}
+
+		
+		msgFenceFetchPoint = Inbox.GetFenceFetchPoint();
+		if(msgFenceFetchPoint != null){
 		    
-		    Intf.SetTimeout(1000);
-		    Intf.Read();
-		    Intf.SetTimeout(0);
-
-		    msgFenceFetchPoint = Inbox.GetFenceFetchPoint();
-
 		    int idx = msgFenceFetchPoint.idx;
 		    Intf.Write(InputFence.get(idx));
 		    //System.out.println("wrote fence fetch point:"+count);
-		    state = GF.GF_READ;
+		}
+	    		
 
-		    if(count >= COUNT){
-			state = GF.GF_READ_COMPLETE;
-		    }
+		break;
+
+	    case GF_READ_COMPLETE:
 		    
-		    break;
+		readComplete = true;
 
-		case GF_READ:
-
-		    Intf.SetTimeout(1000);
-		    Intf.Read();
-		    Intf.SetTimeout(0);
-
-		    msg_fence_point msgFencePoint = Inbox.GetFencePoint();
-		    if(msgFencePoint != null){
-			
-			System.out.println("geofence point received:"+msgFencePoint.idx);
-			if(msgFencePoint.idx == count){
-
-			    InputFence.add(msgFencePoint);
-			    fence1.AddVertex(msgFencePoint.idx,msgFencePoint.lat,msgFencePoint.lng);			    
-			    state = GF.GF_SEND_BACK;
-
-			    count++;
-			    time1 = time2;
-			    	       
-			}
-			else{
-			    
-			}
-		    }
-
-		    break;
-
-		case GF_READ_COMPLETE:
-		    
-		    readComplete = true;
-
-		    if(fence1.Type == 0){
-			fenceList.add(0,fence1);
-		    }else{
-			fenceList.add(fence1);
-		    }
+		if(fence1.Type == 0){
+		    fenceList.add(0,fence1);
+		}else{
+		    fenceList.add(fence1);
+		}
 
 		    
-		    fence1.print();
-		    break;
+		fence1.print();
+		break;
 		    
 		    
-		} // end of switch case
+	    } // end of switch case
 	}//end of while	
     }//end of function
 
