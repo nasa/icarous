@@ -167,7 +167,6 @@ public class AircraftData{
 	}
 
 	FP_numWaypoints           = CurrentFlightPlan.size();
-	System.out.println("Num waypoints:"+FP_numWaypoints);
 
 	msgMissionCount.target_system    = 0;
 	msgMissionCount.target_component = 0;
