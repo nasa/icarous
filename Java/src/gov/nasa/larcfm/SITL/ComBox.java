@@ -166,6 +166,7 @@ public class ComBox{
 	msgFlightPlanInfo.maxVerDev    = parameters.getInt("maxVDev");
 	msgFlightPlanInfo.standoffDist = parameters.getInt("standoff");
 	double missionStartTime        = parameters.getInt("StartTime");
+	double keepOutSendTime         = parameters.getInt("FenceTime");
 
 	int numFences = parameters.getInt("numFences");
 
@@ -255,32 +256,28 @@ public class ComBox{
 		System.out.println("Resend waypoints");
 	    }
 
-	    Thread.sleep(1000);
-
-	    int countOld = 0;
-	    for(int i=0;i<numFences;i++){
-		msg_geofence_info msgInfo = GeoInfo.get(i);
-		    
-		UDPWrite(msgInfo,sock,host,udpSendPort);Thread.sleep(100);
-
-		for(int j=0;j<msgInfo.numVertices;j++){
-		    if(i>0){
-			countOld  = GeoInfo.get(i-1).numVertices;
-		    }
-		    msg_pointofinterest gf = (msg_pointofinterest) Geofence.get(j + countOld);
-		    UDPWrite(gf,sock,host,udpSendPort); Thread.sleep(100);
-		    
-		}
+	    Thread.sleep(1000);	    
 	    
-		ack = UDPRead(sock);	
-
-		if(ack.acktype == 1 && ack.value == 1){
-		    System.out.println("Geofence sent successfully");
-		}
-		else{
-		    System.out.println("Resend geofence");
-		}
-	    }	   
+	    msg_geofence_info msgInfo = GeoInfo.get(0);
+	    
+	    UDPWrite(msgInfo,sock,host,udpSendPort);Thread.sleep(100);
+	    
+	    for(int j=0;j<msgInfo.numVertices;j++){		
+		
+		msg_pointofinterest gf = (msg_pointofinterest) Geofence.get(j);
+		UDPWrite(gf,sock,host,udpSendPort); Thread.sleep(100);
+		
+	    }
+	    
+	    ack = UDPRead(sock);	
+	    
+	    if(ack.acktype == 1 && ack.value == 1){
+		System.out.println("Geofence sent successfully");
+	    }
+	    else{
+		System.out.println("Resend geofence");
+	    }
+	    
 
 	    double countDownTime = 0;
 	    int count = 0;
@@ -302,6 +299,37 @@ public class ComBox{
 	    
 	    
 	    UDPWrite(msgMissionStart,sock,host,udpSendPort);
+
+	    boolean keepOutSent = false;
+	    while(!keepOutSent){
+		CurrentTime = (double) System.nanoTime()/1E9; 
+		ElapsedTime1 = CurrentTime - StartTime;
+		ElapsedTime2 = CurrentTime - countDownTime;
+		
+		if(ElapsedTime1 > keepOutSendTime ){
+		    keepOutSent = true;
+		}
+	    }
+
+	    msgInfo = GeoInfo.get(1);
+	    
+	    UDPWrite(msgInfo,sock,host,udpSendPort);Thread.sleep(100);
+	    
+	    for(int j=0;j<msgInfo.numVertices;j++){		
+				
+		msg_pointofinterest gf = (msg_pointofinterest) Geofence.get(j+GeoInfo.get(0).numVertices);
+		UDPWrite(gf,sock,host,udpSendPort); Thread.sleep(100);
+		
+	    }
+	    
+	    ack = UDPRead(sock);	
+	    
+	    if(ack.acktype == 1 && ack.value == 1){
+		System.out.println("Geofence sent successfully");
+	    }
+	    else{
+		System.out.println("Resend geofence");
+	    }
 	    
 	}
 	catch(InterruptedException e){

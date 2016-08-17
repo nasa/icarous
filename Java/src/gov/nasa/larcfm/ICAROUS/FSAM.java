@@ -389,8 +389,16 @@ public class FSAM{
 		break;
 	    }
 	}
+
+	NavPoint wp = null;
+	if(GF.violation){
+	    wp = new NavPoint(GF.RecoveryPoint,0);
+	}
+	else{
+	    wp = new NavPoint(GF.SafetyPoint,0);
+	}
 	
-	NavPoint wp = new NavPoint(GF.SafetyPoint,0);
+	
 	ResolutionPlan.clear();
 	currentResolutionWP = 0;
 	
@@ -428,12 +436,19 @@ public class FSAM{
 	ArrayList<PolyPath> LPP = new ArrayList<PolyPath>();
 	ArrayList<PolyPath> CPP = new ArrayList<PolyPath>();
 	WeatherUtil WU = new WeatherUtil();
+
+	Position RecoveryPoint = null;
+	boolean violation = false;
 	
 	// Get conflict start and end time
 	for(int i=0;i<conflictList.size();i++){
 
-	    GeoFence GF = (GeoFence) conflictList.get(i).fence;
+	    if(conflictList.get(i).conflictType != CONFLICT_TYPE.KEEP_OUT){
+		continue;
+	    }
 	    
+	    GeoFence GF = (GeoFence) conflictList.get(i).fence;
+	   	    
 	    if(GF.entryTime <= minTime){
 		minTime = GF.entryTime;
 	    }
@@ -443,6 +458,11 @@ public class FSAM{
 	    }
 	    
 	    LPP.add(GF.geoPolyPath);
+
+	    if(GF.violation){
+		RecoveryPoint = GF.RecoveryPoint;
+		violation = true;
+	    }
 	    
 	}
 
@@ -475,9 +495,15 @@ public class FSAM{
 	}	
 
 	// Get start and end positions based on conflicted parts of the original flight plan
+	
 	NavPoint start = ConflictFP.point(0);
 	Position end   = ConflictFP.getLastPoint().position();
 
+	if(violation){
+	    start = new NavPoint(RecoveryPoint,0);
+	}
+
+	
 	// Instantiate a grid to search over
 	DensityGrid dg = new DensityGrid(BR,start,end,(int)buffer,gridsize,true);
 	dg.snapToStart();
@@ -486,8 +512,9 @@ public class FSAM{
 	dg.setWeights(5.0);
 
 	for(int i=1;i<FlightData.fenceList.size();i++){
-	    SimplePoly GF = FlightData.fenceList.get(i).geoPolyLLA;
-	    dg.setWeightsInside(GF,100.0);
+	    GeoFence GF = FlightData.fenceList.get(i);
+	    SimplePoly expfence = GF.pu.bufferedConvexHull(GF.geoPolyLLA,GF.hthreshold,GF.vthreshold);
+	    dg.setWeightsInside(expfence,100.0);
 	}
 
 	// Perform A* seartch
