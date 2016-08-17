@@ -172,72 +172,7 @@ public class COM implements Runnable,ErrorReporter{
 		}
 	    }
 	    	    
-	    // Handle new flight plan inputs
-	    if(FlightData.Inbox.UnreadFlightPlanUpdate()){
-		FlightData.Inbox.ReadFlightPlanUpdate();		
-		FlightData.UpdateFlightPlan(comIntf);
-		error.addWarning("[" + timeLog + "] MSG: Flight plan update");
-	    }
-
-	    // Handle geo fence messages
-	    if(FlightData.Inbox.UnreadGeoFenceUpdate()){
-		FlightData.Inbox.ReadGeoFenceUpdate();		
-		FlightData.GetNewGeoFence(comIntf);
-		error.addWarning("[" + timeLog + "] MSG: Geo fence update   ");
-	    }
 	    
-	    // Handle traffic information
-	    if(FlightData.Inbox.UnreadTraffic()){
-		msg_pointofinterest msg1 = FlightData.Inbox.Pointofinterest();
-		FlightData.Inbox.ReadTraffic();
-		
-		GenericObject.AddObject(FlightData.traffic,msg1);
-	        error.addWarning("[" + timeLog + "] MSG: Traffic update");
-
-		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();
-		msg2.acktype = 2;
-		msg2.value = 1;	       
-		comIntf.Write(msg2);
-	    }
-	    
-	    // Handle obstacle information
-	    if(FlightData.Inbox.UnreadObstacle()){
-		msg_pointofinterest msg1 = FlightData.Inbox.Pointofinterest();
-		FlightData.Inbox.ReadObstacle();
-
-		GenericObject.AddObject(FlightData.obstacles,msg1);
-		error.addWarning("[" + timeLog + "] MSG: Obstacle update");
-		
-		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();
-		msg2.acktype = 3;
-		msg2.value = 1;		
-		comIntf.Write(msg2);
-		
-	    }
-
-	    // Handle other points of interest (mission related)
-	    if(FlightData.Inbox.UnreadOthers()){
-		msg_pointofinterest msg1 = FlightData.Inbox.Pointofinterest();
-		FlightData.Inbox.ReadOthers();
-
-		GenericObject.AddObject(FlightData.missionObj,msg1);
-		error.addWarning("[" + timeLog + "] MSG: Mission object update");
-		
-		msg_command_acknowledgement msg2 = new msg_command_acknowledgement();
-		msg2.acktype = 4;
-		msg2.value = 1;
-		comIntf.Write(msg2);
-		
-		
-	    }
-
-	    // Handling mission commands (start/stop)
-	    if(FlightData.Inbox.UnreadMissionStart()){
-		FlightData.Inbox.ReadMissionStart();		
-		FlightData.startMission = FlightData.Inbox.MissionStartStop().missionStart;				
-		error.addWarning("[" + timeLog + "] MSG: Received Mission START/STOP");
-	     		
-	    }
 
 	    
 	}
@@ -247,21 +182,7 @@ public class COM implements Runnable,ErrorReporter{
 	System.out.println("Starting "+threadName);
 	t = new Thread(this,threadName);
 	t.start();
-    }
-
-    public boolean CheckCOMHeartBeat(){
-
-	FlightData.Inbox.ReadHeartbeat_COM();
-	
-	comIntf.Read();
-	
-	if(FlightData.Inbox.UnreadHeartbeat_COM()){
-	    return true;
-	}
-	else{
-	    return false;
-	}
-    }
+    }    
 
     public boolean hasError() {
 	return error.hasError();

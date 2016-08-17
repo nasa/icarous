@@ -176,64 +176,18 @@ public class MAVLinkMessages{
     public ArrayList<msg_mission_count> listMissionCount;
     public ArrayList<msg_mission_ack> listMissionAck;
     public ArrayList<msg_mission_request_list> listMissionRequestList;
-    public ArrayList<msg_mission_request> listMissionRequest;
-    //public ArrayList<msg_mission_start> listMissionStart;
+    public ArrayList<msg_mission_request> listMissionRequest;   
     public ArrayList<msg_mission_item_reached> listMissionItemReached;
     public ArrayList<msg_command_ack> listCommandAck;
     public ArrayList<msg_command_long> listCommandLong;
     public ArrayList<msg_fence_point> listFencePoint;
     public ArrayList<msg_fence_fetch_point> listFenceFetchPoint;
-    
-    private int RcvdFlightPlanUpdate;
-    private int RcvdGeoFenceUpdate;
-    private int RcvdMissionCount;
-    private int RcvdMissionItem;
-
-    private int RcvdMissionRequest;
-
-    private int RcvdMissionRequestList;
-    private int RcvdParamRequestList;
-    private int RcvdParamRequestRead;
-    private int RcvdMissionAck;
-    private int RcvdMissionStart;
-    private int RcvdMissionItemReached;
-    private int RcvdCmdAck;
-
-    private int RcvdWaypoint;
-    private int RcvdVertex;
-    private int RcvdObstacle;
-    private int RcvdTraffic;
-    private int RcvdOthers;
-    
-    private int RcvdHeartbeat_AP;
-    private int RcvdHeartbeat_COM;
-
-    private int RcvdParamValue;
-    
+        
     public MAVLinkMessages(){
-	RcvdFlightPlanUpdate      = 0;
-	RcvdGeoFenceUpdate        = 0;
-	RcvdMissionCount          = 0;
-	RcvdMissionItem           = 0;
 	
-	RcvdMissionRequest        = 0;
-	RcvdMissionRequestList    = 0;
-	RcvdParamRequestList      = 0;
-	RcvdParamRequestRead      = 0;
-	RcvdMissionAck            = 0;
-	RcvdMissionStart          = 0;
-	RcvdMissionItemReached    = 0;
-	RcvdWaypoint              = 0;
-	RcvdVertex                = 0;
-	RcvdObstacle              = 0;
-	RcvdTraffic               = 0;
-	RcvdOthers                = 0;
-	RcvdHeartbeat_AP          = 0;
-	RcvdHeartbeat_COM         = 0;
-	RcvdParamValue            = 0;
-	msgAttitude = new msg_attitude();
-	msgGpsRawInt = new msg_gps_raw_int();
-	msgGlobalPositionInt = new msg_global_position_int();
+	msgAttitude            = new msg_attitude();
+	msgGpsRawInt           = new msg_gps_raw_int();
+	msgGlobalPositionInt   = new msg_global_position_int();
 
 	listHeartbeat_AP       = new ArrayList<msg_heartbeat>();
 	listParamValue         = new ArrayList<msg_param_value>();
@@ -252,215 +206,7 @@ public class MAVLinkMessages{
 	listFenceFetchPoint    = new ArrayList<msg_fence_fetch_point>();
     }
 
-    public synchronized boolean UnreadFlightPlanUpdate(){
-	if(RcvdFlightPlanUpdate == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadGeoFenceUpdate(){
-	if(RcvdGeoFenceUpdate == 1)
-	    return true;
-	else
-	    return false;
-    }    
-
-    public synchronized boolean UnreadMissionItem(){
-	if(RcvdMissionItem == 1)
-	    return true;
-	else
-	    return false;
-    } 
-
-    public synchronized boolean UnreadMissionRequest(){
-	if(RcvdMissionRequest == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadMissionRequestList(){
-	if(RcvdMissionRequestList == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadParamRequestList(){
-	if(RcvdParamRequestList == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadParamRequestRead(){
-	if(RcvdParamRequestRead == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadMissionAck(){
-	if(RcvdMissionAck == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadMissionStart(){
-	if(RcvdMissionStart == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadMissionItemReached(){
-	if(RcvdMissionItemReached == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadWaypoint(){
-	if(RcvdWaypoint == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadVertex(){
-	if(RcvdVertex == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadObstacle(){
-	if(RcvdObstacle == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadTraffic(){
-	if(RcvdTraffic == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadOthers(){
-	if(RcvdOthers == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadHeartbeat_AP(){
-	if(RcvdHeartbeat_AP == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadHeartbeat_COM(){
-	if(RcvdHeartbeat_COM == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadCmdAck(){
-	if(RcvdCmdAck == 1)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized boolean UnreadParamValue(){
-	if(listParamValue.size() > 0)
-	    return true;
-	else
-	    return false;
-    }
-
-    public synchronized void ReadFlightPlanUpdate(){
-	RcvdFlightPlanUpdate = 0;
-    }
-
-    public synchronized void ReadGeoFenceUpdate(){
-	RcvdGeoFenceUpdate = 0;
-    }
-
-    public synchronized void ReadMissionItem(){
-	RcvdMissionItem = 0;
-    }   
-
-    public synchronized void ReadMissionRequest(){
-	RcvdMissionRequest = 0;
-    }
-
-    public synchronized void ReadMissionRequestList(){
-	RcvdMissionRequestList = 0;
-    }
-
-    public synchronized void ReadParamRequestList(){
-	RcvdParamRequestList = 0;
-    }
-
-    public synchronized void ReadParamRequestRead(){
-	RcvdParamRequestRead = 0;
-    }
-
-    public synchronized void ReadMissionAck(){
-	RcvdMissionAck = 0;
-    }
-
-    public synchronized void ReadMissionStart(){
-	RcvdMissionStart = 0;
-    }
-
-    public synchronized void ReadMissionItemReached(){
-	RcvdMissionItemReached = 0;	
-    }
-
-    public synchronized void ReadWaypoint(){
-	RcvdWaypoint = 0;
-    }
-
-    public synchronized void ReadVertex(){
-	RcvdVertex = 0;
-    }
-
-    public synchronized void ReadObstacle(){
-	RcvdObstacle = 0;
-    }
-
-    public synchronized void ReadTraffic(){
-	RcvdTraffic = 0;
-    }
-
-    public synchronized void ReadOthers(){
-	RcvdOthers = 0;
-    }
-
-    public synchronized void ReadHeartbeat_AP(){
-	RcvdHeartbeat_AP = 0;
-    }
-
-    public synchronized void ReadHeartbeat_COM(){
-	RcvdHeartbeat_COM = 0;
-    }
-
-    public synchronized void ReadCmdAck(){
-	RcvdCmdAck = 0;
-    }
-
-    public synchronized void ReadParamValue(){
-	RcvdParamValue--;
-    }
-    
+        
     public synchronized void decode_message(MAVLinkPacket message){
 
 	if(message == null){
@@ -1009,45 +755,7 @@ public class MAVLinkMessages{
 	case msg_debug.MAVLINK_MSG_ID_DEBUG:
 	    msgDebug = (msg_debug) message.unpack();
 	    break;
-
-	case msg_flightplan_info.MAVLINK_MSG_ID_FLIGHTPLAN_INFO:
-	    msgFlightplanInfo = (msg_flightplan_info) message.unpack();
-	    RcvdFlightPlanUpdate  = 1;
-	    break;
-
-	case msg_pointofinterest.MAVLINK_MSG_ID_POINTOFINTEREST:
-	    msgPointofinterest = (msg_pointofinterest) message.unpack();
-	    
-
-	    if(msgPointofinterest.id == 0)
-		RcvdWaypoint = 1;
-	    else if(msgPointofinterest.id == 1)
-		RcvdVertex = 1;
-	    else if(msgPointofinterest.id == 2)
-		RcvdObstacle = 1;
-	    else if(msgPointofinterest.id == 3)
-		RcvdTraffic = 1;
-	    else if(msgPointofinterest.id == 4)
-		RcvdOthers = 1;
-	    
-	    
-	    break;
-
-	case msg_geofence_info.MAVLINK_MSG_ID_GEOFENCE_INFO:
-	    msgGeofenceInfo = (msg_geofence_info) message.unpack();
-	    RcvdGeoFenceUpdate = 1;
-	    break;
-
-	case msg_heartbeat_combox.MAVLINK_MSG_ID_HEARTBEAT_COMBOX:
-	    msgHeartbeatCombox = (msg_heartbeat_combox) message.unpack();
-	    RcvdHeartbeat_COM = 1;
-	    break;
-
-	case msg_mission_start_stop.MAVLINK_MSG_ID_MISSION_START_STOP:
-	    msgMissionStartStop = (msg_mission_start_stop) message.unpack();
-	    RcvdMissionStart    = 1;
-	    break;
-	    
+		    
 	    
 	}
 	
@@ -1069,15 +777,7 @@ public class MAVLinkMessages{
 	else{
 	    return null;
 	}
-    }
-
-    public synchronized msg_flightplan_info FlightplanInfo(){
-	return msgFlightplanInfo;
-    }
-    
-    public synchronized msg_pointofinterest Pointofinterest(){
-	return msgPointofinterest;
-    }
+    }   
 
     public synchronized msg_global_position_int GlobalPositionInt(){
 	return msgGlobalPositionInt;
@@ -1185,15 +885,7 @@ public class MAVLinkMessages{
     public synchronized msg_gps_raw_int GpsRawInt(){
 	return msgGpsRawInt;
     }
-
-    public synchronized msg_mission_start_stop MissionStartStop(){
-	return msgMissionStartStop;
-    }
-
-    public synchronized msg_geofence_info GeofenceInfo(){
-	return msgGeofenceInfo;
-    }
-
+    
     public synchronized msg_attitude Attitude(){
 	return msgAttitude;
     }

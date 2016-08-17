@@ -325,23 +325,7 @@ public class FSAM{
 
 
 	return reached;	
-    }
-
-    
-    public boolean CheckAPHeartBeat(){
-
-	FlightData.Inbox.ReadHeartbeat_AP();
-		
-	apIntf.Read();
-			
-	if(FlightData.Inbox.UnreadHeartbeat_AP()){
-	    return true;
-	}
-	else{
-	    return false;
-	}
-	
-	}
+    }        
 
     public void CheckGeoFences(){
 
