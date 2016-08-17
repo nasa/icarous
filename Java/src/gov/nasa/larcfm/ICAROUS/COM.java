@@ -59,7 +59,11 @@ public class COM implements Runnable,ErrorReporter{
 	    // Send AP heartbeat if available
 	    msg_heartbeat msgHeartbeat_AP = RcvdMessages.GetHeartbeat_AP();
 	    if(msgHeartbeat_AP != null){
-		comIntf.Write(msgHeartbeat_AP);		    
+		comIntf.Write(msgHeartbeat_AP);
+		comIntf.Write(RcvdMessages.GpsRawInt());
+		comIntf.Write(RcvdMessages.Attitude());
+		comIntf.Write(RcvdMessages.GlobalPositionInt());
+		comIntf.Write(RcvdMessages.MissionCurrent());
 	    }
 	    	    	    
 	    comIntf.Read();

@@ -188,6 +188,7 @@ public class MAVLinkMessages{
 	msgAttitude            = new msg_attitude();
 	msgGpsRawInt           = new msg_gps_raw_int();
 	msgGlobalPositionInt   = new msg_global_position_int();
+	msgMissionCurrent      = new msg_mission_current();
 
 	listHeartbeat_AP       = new ArrayList<msg_heartbeat>();
 	listParamValue         = new ArrayList<msg_param_value>();
@@ -888,6 +889,10 @@ public class MAVLinkMessages{
     
     public synchronized msg_attitude Attitude(){
 	return msgAttitude;
+    }
+
+    public synchronized msg_mission_current MissionCurrent(){
+	return msgMissionCurrent;
     }
 
     public synchronized msg_param_value GetParamValue(){
