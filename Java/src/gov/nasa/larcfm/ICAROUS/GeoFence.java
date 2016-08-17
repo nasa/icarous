@@ -198,6 +198,9 @@ public class GeoFence{
 		conflict = true;
 		entryTime = cdp.getTimeIn(0);
 		exitTime  = cdp.getTimeOut(0);
+
+		//System.out.println("entry:"+entryTime);
+		//System.out.println("exit:"+exitTime);
 	    }
 	    else{
 		conflict = false;

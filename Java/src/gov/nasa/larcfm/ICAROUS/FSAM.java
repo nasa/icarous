@@ -472,13 +472,18 @@ public class FSAM{
 	maxTime = maxTime + lookahead;
 	
 	if(minTime < currentTime){
-	    minTime = currentTime;
+	    minTime = currentTime+0.1;
 	}
 
+	if(maxTime > CurrentFP.getLastTime()){
+	    maxTime = CurrentFP.getLastTime() - 0.1;
+	}
+
+	 
 	if(NominalPlan){
 	    FlightData.FP_nextWaypoint = CurrentFP.getSegment(maxTime)+1;
 	}
-      
+	
 	// Get flight plan between start time and end time (with a 3 second buffer on both sides)
 	Plan ConflictFP = PlanUtil.cutDown(CurrentFP,minTime,maxTime);
 	
