@@ -119,7 +119,7 @@ public class Interface{
 	
     public void UDPRead(){
 
-	byte[] buffer = new byte[6+255+2];
+	byte[] buffer = new byte[1000];
 	byte[] buffer_data;
 	    
 	DatagramPacket input = new DatagramPacket(buffer, buffer.length);
@@ -139,7 +139,7 @@ public class Interface{
 	    
 	    buffer_data   = input.getData();
 	    
-	    for(int i=0;i<(6+255+2);i++){
+	    for(int i=0;i<1000;i++){
 		RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer_data[i]);
 		Inbox.decode_message(RcvdPacket);	
 	    }

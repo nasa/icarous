@@ -466,7 +466,7 @@ public class MAVLinkMessages{
 	if(message == null){
 	    return;
 	}
-	//System.out.println("Message id:"+message.msgid);	
+	
 	
 	switch(message.msgid){
 	
@@ -1093,8 +1093,9 @@ public class MAVLinkMessages{
     }
 
     public synchronized msg_command_long GetCommandLong(){
-	if(listCommandLong.size()>0){
+	if(listCommandLong.size()>0){	
 	    return listCommandLong.remove(0);
+	    
 	}
 	else{
 	    return null;

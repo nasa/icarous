@@ -146,14 +146,10 @@ public class COM implements Runnable,ErrorReporter{
 
 	    // Handle parameter set
 	    msg_param_set msgParamSet = RcvdMessages.GetParamSet();
-	    if( msgParamSet != null ){
-
-		if(new String(msgParamSet.param_id) == "FENCE_COUNT"){
-		    System.out.println("Ingoring FENCE COUNT");
-		}
-		else{
-		    UAS.apIntf.Write(msgParamSet);
-		}
+	    if( msgParamSet != null ){		
+		
+		UAS.apIntf.Write(msgParamSet);
+		
 	    }
 
 	    // Hangle commands
@@ -161,8 +157,12 @@ public class COM implements Runnable,ErrorReporter{
 	    if( msgCommandLong != null ){
 		
 		if(msgCommandLong.command == MAV_CMD.MAV_CMD_DO_FENCE_ENABLE){
-		    FlightData.GetGeoFence(comIntf,msgCommandLong);
-		    error.addWarning("[" + timeLog + "] MSG: Geo fence update   ");
+
+		    int status;
+		    status = FlightData.GetGeoFence(comIntf,msgCommandLong);
+		    if(status == 1){
+			error.addWarning("[" + timeLog + "] MSG: Geo fence update   ");
+		    }
 		}
 		else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){
 		    if(msgCommandLong.param1 == 1){

@@ -33,7 +33,7 @@ public class AircraftData{
     }
 
     public enum GF{
-	GF_READ, GF_SEND_BACK, GF_READ_COMPLETE
+	GF_READ, GF_FETCH, GF_READ_COMPLETE
     }
 
     public enum FP_READ_COM{
@@ -536,7 +536,7 @@ public class AircraftData{
     }//end of function
 
     // Function to get flight plan
-    public void GetGeoFence(Interface Intf,msg_command_long msg){
+    public int GetGeoFence(Interface Intf,msg_command_long msg){
 
 	boolean readComplete = false;
 	int count = 0;
@@ -556,7 +556,7 @@ public class AircraftData{
 	msgFenceStatus.sysid            = 2;
 	msgFenceStatus.compid           = 0;
 	
-	GF state = GF.GF_READ;
+	GF state = GF.GF_FETCH;
 
 	ArrayList<msg_fence_point> InputFence = new ArrayList<msg_fence_point>();
 
@@ -570,18 +570,24 @@ public class AircraftData{
 		break;
 	    }
 	    
-	    switch(state){		
+	    switch(state){
+
+	    case GF_FETCH:
+
+		msgFenceFetchPoint.idx = (byte)count;		    		    
+		Intf.Write(msgFenceFetchPoint);					    		
+		//System.out.println("Wrote count:"+count);
+		state = GF.GF_READ;	       
+		
+		break;
 		
 	    case GF_READ:
 
 		Intf.SetTimeout(1000);
-		Intf.Read();
+		Intf.Read();		
 		Intf.SetTimeout(0);
-
-		if(count >= COUNT){
-		    state = GF.GF_READ_COMPLETE;
-		}
-
+				
+		
 		msg_fence_point msgFencePoint = Inbox.GetFencePoint();
 		if(msgFencePoint != null){
 			
@@ -593,22 +599,22 @@ public class AircraftData{
 			    
 			count++;
 			time1 = time2;
-			    	       
+			state = GF.GF_FETCH;    	       
 		    }
 		    else{
-			    
+
+			// Send failure acknowledgement
+			//msg_command_ack msgCommandAck = new msg_command_ack();
+		
+			//msgCommandAck.result = 0;
+			//Intf.Write(msgCommandAck);
+			
 		    }
 		}
 
-		
-		msgFenceFetchPoint = Inbox.GetFenceFetchPoint();
-		if(msgFenceFetchPoint != null){
-		    
-		    int idx = msgFenceFetchPoint.idx;
-		    Intf.Write(InputFence.get(idx));
-		    //System.out.println("wrote fence fetch point:"+count);
+		if(count >= COUNT){
+		    state = GF.GF_READ_COMPLETE;
 		}
-	    		
 
 		break;
 
@@ -622,13 +628,21 @@ public class AircraftData{
 		    fenceList.add(fence1);
 		}
 
-		    
-		fence1.print();
-		break;
+
+		msg_command_ack msgCommandAck = new msg_command_ack();
+		
+		msgCommandAck.result = 1;
+		Intf.Write(msgCommandAck);		
+		//fence1.print();
+		return 1;
+
+		
 		    
 		    
 	    } // end of switch case
-	}//end of while	
+	}//end of while
+
+	return 0;
     }//end of function
 
 
