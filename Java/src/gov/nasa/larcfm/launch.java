@@ -10,6 +10,7 @@
  */
 import gov.nasa.larcfm.ICAROUS.*;
 import gov.nasa.larcfm.MISSION.*;
+import com.MAVLink.common.*;
 import java.io.*;
 
 public class launch{
@@ -19,10 +20,12 @@ public class launch{
 	boolean verbose   = false;
 	String px4port    = null;
 	String bcastgroup = null;
-	String paraminput = null;
+	String comport    = null;
+	String radioport  = null;
 	int sitlport      = 0;
 	int bcastport     = 0;
-	int comport       = 0;
+	int comportin     = 0;
+	int comportout    = 0;
 	
 
 	// Process input arguments
@@ -38,47 +41,58 @@ public class launch{
 	    else if(args[i].startsWith("--sitl")){
 		sitlport = Integer.parseInt(args[++i]);
 	    }
-
+    
 	    else if(args[i].startsWith("--com")){
-		comport = Integer.parseInt(args[++i]);	    
+		comport    = args[++i];		
+		comportin  = Integer.parseInt(args[++i]);
+		comportout = Integer.parseInt(args[++i]);
+	    }
+
+	    else if(args[i].startsWith("--radio")){
+		radioport = args[++i];
 	    }
 
 	    else if(args[i].startsWith("--bc")){
 		bcastgroup = args[++i];
 		bcastport  = Integer.parseInt(args[++i]);
-	    }
-
-	    else if(args[i].startsWith("--param")){
-		paraminput = args[++i];
+	    }	    
+	    
+	    else if(args[i].startsWith("-")) {
+		System.out.println("Invalid option "+args[i]);
+		System.exit(0);
 	    }
 	}
 
 		
 	AircraftData FlightData    = new AircraftData();
-	Interface APInt = null;
 	
+	Interface APInt = null;	
 	if(sitlport > 0){
 	    APInt        = new Interface(Interface.SOCKET,
 						 null,
 						 sitlport,
 						 0,
 						 FlightData);
+
+	    
 	}else{	    
 	   APInt         =  new Interface(Interface.SERIAL,px4port,FlightData);
 	}
-	
-	Interface COMInt   = new Interface(Interface.SOCKET,
-					   null,
-					   comport,
-					   0,
-					   FlightData);
-	
-	Interface BCASTInt = new Interface(Interface.SOCKET,
-					   bcastgroup,
-					   0,
-					   bcastport,
-					   FlightData);
 
+	Interface COMInt = null;
+	if(radioport == null){
+	    COMInt   = new Interface(Interface.SOCKET,
+				     comport,
+				     comportin,
+				     comportout,
+				     FlightData);
+	}
+	else{
+	    COMInt   = new Interface(Interface.SERIAL,radioport, FlightData);
+	    
+	}
+
+	
 	Demo test = new Demo();
 	
 	Aircraft uasQuad  = new Aircraft(APInt,COMInt,FlightData,test);
@@ -89,50 +103,36 @@ public class launch{
 	FMS fms_module           = new FMS("Flight management",uasQuad);
 	DAQ daq_module           = new DAQ("Data acquisition",uasQuad);
 	COM com_module           = new COM("Communications",uasQuad);
-	BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);
 
 	com_module.error.setConsoleOutput(verbose);
 	test.error.setConsoleOutput(verbose);
-	
-	uasQuad.EnableDataStream(1);
+		
+	daq_module.start();
 
-	while(!uasQuad.fsam.CheckAPHeartBeat()){
-	    
+	msg_heartbeat msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();	
+	while(msgHeartbeatAP == null){
+	    msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();
 	}
 
 	System.out.println("Received heartbeat from AP");
 
-	while(!com_module.CheckCOMHeartBeat()){
-	    
-	}
-
-	System.out.println("Received heartbeat from COM");
-	    
-	daq_module.start();
-	    
-
-	try{
-	    Thread.sleep(1000);
-	}catch(InterruptedException e){
-	    System.out.println(e);
-	}
-
-	bcast_module.start();
+	uasQuad.EnableDataStream(1);
 	
-	try{
-	    Thread.sleep(1000);
-	}catch(InterruptedException e){
-	    System.out.println(e);
-	}
+	// Create broad cast thread if necessary
+	if(bcastport > 0){
 
-	
-	com_module.start();
-
-	try{
-	    Thread.sleep(1000);
-	}catch(InterruptedException e){
-	    System.out.println(e);
-	}
+	    Interface BCASTInt = new Interface(Interface.SOCKET,
+					       bcastgroup,
+					       0,
+					       bcastport,
+					       FlightData);
+	   
+	    BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);	
+	    bcast_module.start();
+		    
+	}		
+		
+	com_module.start();	
 	
 	fms_module.start();
 

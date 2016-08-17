@@ -18,12 +18,15 @@ public class SITL_test{
     public static void main(String args[]){
 
 	boolean verbose   = false;
-	String px4port = null;
+	String px4port    = null;
 	String bcastgroup = null;
+	String comport    = null;
+	String radioport  = null;
 	int sitlport      = 0;
 	int bcastport     = 0;
-	int comport       = 0;
-
+	int comportin     = 0;
+	int comportout    = 0;
+	
 	// Process input arguments
 	for(int i=0;i<args.length && args[i].startsWith("-");i++){
 	    if(args[i].startsWith("-v")){
@@ -39,7 +42,13 @@ public class SITL_test{
 	    }
 
 	    else if(args[i].startsWith("--com")){
-		comport = Integer.parseInt(args[++i]);		
+		comport    = args[++i];		
+		comportin  = Integer.parseInt(args[++i]);
+		comportout = Integer.parseInt(args[++i]);
+	    }
+
+	    else if(args[i].startsWith("--radio")){
+		radioport = args[++i];
 	    }
 
 	    else if(args[i].startsWith("--bc")){
@@ -63,9 +72,9 @@ public class SITL_test{
 					   FlightData);
 	
 	Interface COMInt   = new Interface(Interface.SOCKET,
-					   "localhost",
 					   comport,
-					   14550,
+					   comportin,
+					   comportout,
 					   FlightData);
 	
 	Interface BCASTInt = new Interface(Interface.SOCKET,
