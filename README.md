@@ -6,7 +6,8 @@ Integrated Configurable Algorithms for Reliable Operations of Unmanned Systems
 This software release contains ICAROUS and PolyCARP software
 distributions.
 
-ICAROUS is a software architecture that enables the robust integration
+ICAROUS (Integrated Configurable Algorithms for Reliable Operations of
+Unmanned Systems) is a software architecture that enables the robust integration
 of mission specific software modules and highly assured core software
 modules for building safety-centric autonomous unmanned aircraft
 applications. The set of core software modules include formally
