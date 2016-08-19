@@ -31,7 +31,9 @@ public class DAQ implements Runnable{
 
     public void run(){
 	while(true){
-	    icarousAP.Read();   
+	    icarousAP.SetTimeout(1);
+	    icarousAP.Read();
+	    icarousAP.SetTimeout(0);
 	}
     }
 

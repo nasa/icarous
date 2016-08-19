@@ -72,7 +72,7 @@ public class FSAM{
     private boolean FenceKeepInConflict;
     private boolean FenceKeepOutConflict;
     private boolean TrafficConflict;
-    private boolean FlightPlanConflict;
+    private boolean StandoffConflict;
     private boolean GotoNextWP;
     private boolean joined;
     
@@ -84,6 +84,9 @@ public class FSAM{
     private double buffer;
     private double lookahead;
     private double proximityfactor;
+    private double standoff;
+
+    public double crossTrackDeviation;
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS = ac;
@@ -97,10 +100,10 @@ public class FSAM{
 	ResolutionPlan = new Plan();
 	rState = RESOLVE_STATE.NOOP;
 	executeState = EXECUTE_STATE.COMPLETE;
-	FenceKeepInConflict   = false;
-	FenceKeepOutConflict  = false;
+	FenceKeepInConflict      = false;
+	FenceKeepOutConflict     = false;
 	TrafficConflict          = false;
-	FlightPlanConflict       = false;
+	StandoffConflict         = false;	
 	NominalPlan              = true;
 	currentResolutionWP = 0;
 	currentConflicts     = 0;
@@ -118,6 +121,7 @@ public class FSAM{
 	    buffer            = parameters.getValue("buffer");
 	    lookahead         = parameters.getValue("lookahead");
 	    proximityfactor   = parameters.getValue("proximityfactor");
+	    standoff          = parameters.getValue("standoff");
 	}
 	catch(FileNotFoundException e){
 	    System.out.println("parameter file not found");
@@ -173,7 +177,7 @@ public class FSAM{
 	CheckGeoFences();
 	
 	// Check for deviation from prescribed flight profile.
-
+	//CheckStandoff();
 	    
 	// Check for conflicts from DAIDALUS against other traffic.
 
@@ -377,6 +381,51 @@ public class FSAM{
 	
     }
 
+    /*
+    public void CheckStandoff(){
+
+	double heading = FlightData.yaw;
+
+	if(heading < 0){
+	    heading = 360 + heading;
+	}
+	    
+	double heading_fp_pos;
+
+	Position PrevWP = FlightData.CurrentFlightPlan.point(FP_nextWaypoint - 1).position();
+	Position NextWP = FlightData.CurrentFlightPlan.point(FP_nextWaypoint).position();
+
+	Position CurrentPos = FlightData.acState.positionLast();
+
+	double psi1 = PrevWP.track(NextWP) * 180/Math.PI;
+	double psi2 = PrevWP.track(CurrentPos) * 180/Math.PI;
+
+	double sgn = 0;
+	
+	if( (psi1 - psi2) >= 0){
+	    sgn = 1;              // Vehicle left of the path
+	}
+	else if( (psi1 - psi2) <= 180){
+	    sgn = -1;             // Vehicle right of the path
+	}
+	else if( (psi1 - psi2) < 0 ){
+	    sng = -1;             // Vehicle right of path
+	}
+	else if ( (psi1 - psi2) >= -180  ){
+	    sng = 1;              // Vehicle left of path
+	}
+
+	double bearing = Math.abs(psi1 - psi2);
+
+	double dist = PrevWP.distanceH(CurrentPos);
+
+	double crossTrackDeviation = sgn*dist*Math.sin(Math.toRadians(bearing));
+	
+	if(Math.abs(crossTrackDeviation) > standoff){
+	    StandoffConflict = true;
+	}
+	}*/
+
     public void ResolveKeepInConflict(){
 
 	Plan CurrentFP = FlightData.CurrentFlightPlan;
@@ -570,6 +619,10 @@ public class FSAM{
 	}
 
 	
+	
+    }
+
+    public void ResolveStandoffConflict(){
 	
     }
 
