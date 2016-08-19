@@ -49,6 +49,7 @@ public class GeoFence{
     public static double vthreshold;
     public static double hstepback;
     public static double vstepback;
+    public static final double BUFF= 0.1;
     
     
     Position SafetyPoint      = null;
@@ -83,7 +84,7 @@ public class GeoFence{
 	ceiling        = ceilingIn;
 	geoPolyCarp    = new CDPolycarp();
 	geoPolyPath    = new PolyPath();
-	CDPolycarp.setCheckNice(false);
+	geoPolyCarp.setCheckNice(false);
 	cdp            = new CDIIPolygon(geoPolyCarp);
 	pcr            = new PolycarpResolution();
 	pu             = new PolyUtil();
@@ -166,7 +167,7 @@ public class GeoFence{
 
 		Vect2 so_2 = so.vect2();
 
-		Vect2 recpoint = pcr.inside_recovery_point(hthreshold,fenceVertices,so_2);
+		Vect2 recpoint = pcr.inside_recovery_point(BUFF,hthreshold,fenceVertices,so_2);
 		
 		LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
 		RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
@@ -179,7 +180,7 @@ public class GeoFence{
 
 	    Vect2 so_2 = so.vect2();
 
-	    Vect2 recpoint = pcr.outside_recovery_point(hthreshold,fenceVertices,so_2);
+	    Vect2 recpoint = pcr.outside_recovery_point(BUFF,hthreshold,fenceVertices,so_2);
 
 	    LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
 	    RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
