@@ -102,6 +102,7 @@ public class Aircraft implements ErrorReporter{
 	return CheckAcknowledgement();
     }
 
+    // Yaw command
     public void SetYaw(double heading){
 
 	SendCommand(0,0,MAV_CMD.MAV_CMD_CONDITION_YAW,0,
@@ -110,7 +111,7 @@ public class Aircraft implements ErrorReporter{
 	
     }
 
-    
+    // Position command
     public int SetGPSPos(double lat,double lon, double alt){
 
 	msg_set_position_target_global_int msg= new msg_set_position_target_global_int();
@@ -126,6 +127,40 @@ public class Aircraft implements ErrorReporter{
 	msg.vx               = 0;
 	msg.vy               = 0;
 	msg.vz               = 0;
+	msg.afx              = 0;
+	msg.afy              = 0;
+	msg.afz              = 0;
+	msg.yaw              = 0;
+	msg.yaw_rate         = 0;
+
+	apIntf.Write(msg);
+
+	try{
+	    Thread.sleep(100);
+	}catch(InterruptedException e){
+	    System.out.println(e);
+	}
+
+	return CheckAcknowledgement();
+
+    }
+
+    // Velocity command
+    public int SetVelocity(double Vn,double Ve, double Vu){
+
+	msg_set_position_target_local_ned msg= new msg_set_position_target_local_ned();
+
+	msg.time_boot_ms     = 0;
+	msg.target_system    = 0;
+	msg.target_component = 0;
+	msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
+	msg.type_mask        = 0b0000111111000111;
+	msg.x                = 0;
+	msg.y                = 0;
+	msg.z                = 0;
+	msg.vx               = Vn;
+	msg.vy               = Ve;
+	msg.vz               = Vu;
 	msg.afx              = 0;
 	msg.afy              = 0;
 	msg.afz              = 0;

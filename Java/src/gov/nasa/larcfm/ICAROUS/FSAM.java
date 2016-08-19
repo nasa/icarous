@@ -36,7 +36,7 @@ enum FSAM_OUTPUT{
 
 enum RESOLVE_STATE{
 
-    COMPUTE, EXECUTE, MONITOR, JOIN, RESUME, NOOP
+    COMPUTE, EXECUTE_MANEUVER, EXECUTE_PLAN, MONITOR, JOIN, RESUME, NOOP
 }
 
 enum EXECUTE_STATE{
@@ -66,7 +66,7 @@ public class FSAM{
     
     private int currentResolutionWP;
 
-    public RESOLVE_STATE rState;
+    public RESOLVE_STATE resolveState;
     public EXECUTE_STATE executeState;
 
     private boolean FenceKeepInConflict;
@@ -85,6 +85,10 @@ public class FSAM{
     private double lookahead;
     private double proximityfactor;
     private double standoff;
+    private double XtrkDevGain;
+    private double Vn;
+    private double Ve;
+    private double Vu;
 
     public double crossTrackDeviation;
     
@@ -122,12 +126,19 @@ public class FSAM{
 	    lookahead         = parameters.getValue("lookahead");
 	    proximityfactor   = parameters.getValue("proximityfactor");
 	    standoff          = parameters.getValue("standoff");
+	    XtrkDevGain       = parameters.getValue("XtrkDevGain") ;
+
+	    if(XtrkDevGain < 0){
+		XtrkDevGain = -XtrkDevGain;
+	    }
 	}
 	catch(FileNotFoundException e){
 	    System.out.println("parameter file not found");
 	}
     }
 
+    // Returns time corresponding current position in the resolution flight plan
+    // (assuming constant velocity throughtout flight plan)
     public double GetResolutionTime(){
 	Plan FP = ResolutionPlan;
 
@@ -151,6 +162,7 @@ public class FSAM{
 	return currentTime;
     }
 
+    // Function to monitor conflicts (Geofence, flight plan deviation, air traffic etc...)
     public FSAM_OUTPUT Monitor(){
 
 	Plan FlightPlan       = FlightData.CurrentFlightPlan;
@@ -166,18 +178,17 @@ public class FSAM{
 
 	//Get distance to next waypoint
 	Position wp         = FlightPlan.point(FlightData.FP_nextWaypoint).position();
-	Position currentPos = acState.positionLast();
-	
+	Position currentPos = acState.positionLast();	
 	double distance2WP  = currentPos.distanceH(wp);
 	
-
+	// Get time of current position in nominal plan
 	UAS.FlightData.getPlanTime();
 	
 	// Check for geofence resolutions.
 	CheckGeoFences();
 	
 	// Check for deviation from prescribed flight profile.
-	//CheckStandoff();
+	CheckStandoff();
 	    
 	// Check for conflicts from DAIDALUS against other traffic.
 
@@ -187,7 +198,8 @@ public class FSAM{
 	    timeEvent1 = timeCurrent;      
 	    //System.out.format("Distance to next waypoint: %2.2f \n",distance);
 	}
-	
+
+	// Check if next mission item (waypoint) has been reached
 	if(CheckMissionItemReached()){
 	    Plan CurrentFlightPlan = FlightData.CurrentFlightPlan;
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Reached waypoint");
@@ -200,16 +212,15 @@ public class FSAM{
 	    }
 	}
 	
-	
-	
+	// If conflicts are detected, initialize the state machine for the resolution function	
 	if(conflictList.size() != currentConflicts){
 	    currentConflicts = conflictList.size();
-	    rState = RESOLVE_STATE.COMPUTE;
+	    resolveState = RESOLVE_STATE.COMPUTE;
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Conflict(s) detected");
 	    return FSAM_OUTPUT.CONFLICT;	    
 	}	    	    			
-
-	if(rState == RESOLVE_STATE.NOOP){
+	
+	if(resolveState == RESOLVE_STATE.NOOP){
 	    return FSAM_OUTPUT.NOOP;
 	}else{	    
 	    return FSAM_OUTPUT.CONFLICT;	    
@@ -217,15 +228,18 @@ public class FSAM{
 	
     }
 
+    // Function to compute resolutions for conflicts
     public int Resolve(){
 
 	int status;
 	Plan CurrentFP  = FlightData.CurrentFlightPlan;
 	boolean UsePlan = true;
 	    
-	switch(rState){
+	switch(resolveState){
 
 	case COMPUTE:
+	    // Call the relevant resolution functions to resolve conflicts
+	    // [TODO:] Add conflict resolution table to add prioritization/scheduling to handle multiple conflicts
 	    
 	    if(FenceKeepInConflict){
 		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for keep in conflict");
@@ -237,30 +251,40 @@ public class FSAM{
 	       UAS.SetSpeed(resolutionSpeed);
 	       ResolveKeepOutConflict();		
 	    }
+	    else if(StandoffConflict){
+		ResolveStandoffConflict();
+		UsePlan = false;
+	    }
 
+	    // Two kinds of actions to resolve conflicts : 1. Plan based resolution, 2. Maneuver based resolution
 	    if(UsePlan){
-		rState       = RESOLVE_STATE.EXECUTE;
+		resolveState = RESOLVE_STATE.EXECUTE_PLAN;
 		executeState = EXECUTE_STATE.START;
 		NominalPlan  = false;
+		joined       = false;
 	    }
 	    else{
-
+		resolveState = RESOLVE_STATE.EXECUTE_MANEUVER;
+		executeState = EXECUTE_STATE.START;
 	    }
-
-	    joined = false;
-	    
+	    	    
 	    break;
 
-	case EXECUTE:
-	   
+	case EXECUTE_MANEUVER:
+	    // Execute maneuver based resolution when appropriate
+	    ExecuteManeuver();
+	    break;
+
+	case EXECUTE_PLAN:
+	    // Execute plan based resolution when appropriate
 	    if( executeState != EXECUTE_STATE.COMPLETE ){
-		ExecuteResolution();
+		ExecuteResolutionPlan();
 	    }
 	    else{
 		if(joined){
-		    rState = RESOLVE_STATE.RESUME;
+		    resolveState = RESOLVE_STATE.RESUME;
 		}else{
-		    rState = RESOLVE_STATE.JOIN;
+		    resolveState = RESOLVE_STATE.JOIN;
 		}
 	    }
 	    
@@ -268,6 +292,7 @@ public class FSAM{
 
 	case JOIN:	    
 
+	    // Once resolution is complete, join the original mission
 	    ResolutionPlan.clear();
 	    Position pos = FlightData.acState.positionLast();
 	    Position nextWP = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
@@ -277,7 +302,7 @@ public class FSAM{
 	    double ETA      = distance/resolutionSpeed;
 	    ResolutionPlan.add(new NavPoint(nextWP,ETA));
 
-	    rState =RESOLVE_STATE.EXECUTE;
+	    resolveState = RESOLVE_STATE.EXECUTE_PLAN;
 	    executeState = EXECUTE_STATE.START;
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Joining mission");
 	    joined = true;
@@ -293,7 +318,7 @@ public class FSAM{
 	    
 
 	case RESUME:
-	    	  
+	    // Continue original mission	  
 	    msg_mission_set_current msgMission = new msg_mission_set_current();
 	    msgMission.target_system     = 0;
 	    msgMission.target_component  = 0;
@@ -304,8 +329,8 @@ public class FSAM{
 	    UAS.apMode = Aircraft.AP_MODE.AUTO;
 	    UAS.SetMode(3);
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MODE: AUTO");
-	    rState = RESOLVE_STATE.NOOP;
-	    NominalPlan = true;
+	    resolveState = RESOLVE_STATE.NOOP;
+	    NominalPlan  = true;
 	    
 	    break;
 
@@ -318,6 +343,7 @@ public class FSAM{
 	return 0;
     }
 
+    
     public boolean CheckMissionItemReached(){
 
 	boolean reached = false;
@@ -331,6 +357,7 @@ public class FSAM{
 	return reached;	
     }        
 
+    // Check for geofence violations
     public void CheckGeoFences(){
 
 	 FenceKeepInConflict  = false;
@@ -381,7 +408,7 @@ public class FSAM{
 	
     }
 
-    /*
+    // Check standoff distance violation
     public void CheckStandoff(){
 
 	double heading = FlightData.yaw;
@@ -423,9 +450,12 @@ public class FSAM{
 	
 	if(Math.abs(crossTrackDeviation) > standoff){
 	    StandoffConflict = true;
+	}else if(Math.abs(crossTrackDeviation) < (standoff)/3){
+	    StandoffConflict = false
 	}
-	}*/
+    }
 
+    // Compute resolution for keep in conflict
     public void ResolveKeepInConflict(){
 
 	Plan CurrentFP = FlightData.CurrentFlightPlan;
@@ -465,6 +495,7 @@ public class FSAM{
 
     }
 
+    // Compute resolution for keep out conflicts
     public void ResolveKeepOutConflict(){
 
 	Plan CurrentFP;
@@ -622,12 +653,64 @@ public class FSAM{
 	
     }
 
+    // Compute resolution for stand off distance violation
     public void ResolveStandoffConflict(){
-	
+
+	if(StandoffConflict){
+	    double Vs = XtrkDevGain.crossTrackDeviation;
+	    double V  = UAS.GetSpeed();
+	    
+	    if(Math.pow(Math.abs(Vs),2) >= Math.pow(V,2)){
+		Vs = V;
+	    }
+
+	    double Vf       = Math.sqrt( Math.pow(V,2) - Math.pow(Vs,2) );
+
+	    Position PrevWP = FlightData.CurrentFlightPlan.point(FP_nextWaypoint - 1).position();
+	    Position NextWP = FlightData.CurrentFlightPlan.point(FP_nextWaypoint).position();
+
+	    double Trk = PrevWP.track(NextWP);
+
+	    Vn = Math.cos(Trk) - Math.sin(Trk);
+	    Ve = Math.sin(Trk) + Math.cos(Trk);
+	    Vu = 0;
+	    
+	}
+	else{
+	    Vn = 0;
+	    Ve = 0;
+	    Vu = 0;
+	}
     }
 
+    public void ExecuteManeuver(){
+
+	switch(executeState){
+
+	case START:
+	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Starting resolution");	    
+	    UAS.apMode = Aircraft.AP_MODE.GUIDED;
+	    UAS.SetMode(4);
+	    try{
+		Thread.sleep(500);
+	    }
+	    catch(InterruptedException e){
+		System.out.println(e);
+	    }
+	    
+	    currentResolutionWP = 0;
+	    executeState = EXECUTE_STATE.SEND_COMMAND;
+	    break;
+
+	case SEND_COMMAND:
+
+	    UAS.SetVelocity(Vn,Ve,Vu);
+	    break;
+	}
+	
+    }
     
-    public void ExecuteResolution(){	
+    public void ExecuteResolutionPlan(){	
 	
 	switch(executeState){
 
