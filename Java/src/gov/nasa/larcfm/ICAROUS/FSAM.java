@@ -102,7 +102,7 @@ public class FSAM{
 	apIntf = ac.apIntf;
 	conflictList   = new ArrayList<Conflict>();
 	ResolutionPlan = new Plan();
-	rState = RESOLVE_STATE.NOOP;
+	resolveState = RESOLVE_STATE.NOOP;
 	executeState = EXECUTE_STATE.COMPLETE;
 	FenceKeepInConflict      = false;
 	FenceKeepOutConflict     = false;
