@@ -725,6 +725,14 @@ public class FSAM{
 
 	    if(!StandoffConflict){
 		executeState = EXECUTE_STATE.COMPLETE;
+
+		Iterator Itr = conflictList.iterator();
+		while(Itr.hasNext()){
+		    Conflict cf = (Conflict) Itr.next();
+		    Itr.remove();
+		}
+		currentConflicts = conflictList.size();
+		
 	    }
 	    
 	    break;
