@@ -10,6 +10,8 @@
  */
 import gov.nasa.larcfm.ICAROUS.*;
 import gov.nasa.larcfm.MISSION.*;
+import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larmcfm.IO.SeparatedInput;
 import com.MAVLink.common.*;
 import java.io.*;
 
@@ -26,6 +28,17 @@ public class launch{
 	int bcastport     = 0;
 	int comportin     = 0;
 	int comportout    = 0;
+
+	try{
+	    FileReader in = new FileReader("params/icarous.txt");
+	    SeparatedInput reader = new SeparatedInput(in);
+
+	    reader.readLine();
+	    ParameterData pData = reader.getParametersRef();	    	    
+	}
+	catch(FileNotFoundException e){
+	    System.out.println("parameter file not found");
+	}	
 	
 
 	// Process input arguments
@@ -64,7 +77,7 @@ public class launch{
 	}
 
 		
-	AircraftData FlightData    = new AircraftData();
+	AircraftData FlightData    = new AircraftData(pData);
 	
 	Interface APInt = null;	
 	if(sitlport > 0){
@@ -95,14 +108,14 @@ public class launch{
 	
 	Demo test = new Demo();
 	
-	Aircraft uasQuad  = new Aircraft(APInt,COMInt,FlightData,test);
+	Aircraft uasQuad  = new Aircraft(APInt,COMInt,FlightData,test,pData);
 
 	uasQuad.error.setConsoleOutput(verbose);
 	
 	
-	FMS fms_module           = new FMS("Flight management",uasQuad);
-	DAQ daq_module           = new DAQ("Data acquisition",uasQuad);
-	COM com_module           = new COM("Communications",uasQuad);
+	FMS fms_module           = new FMS("Flight management",uasQuad,pData);
+	DAQ daq_module           = new DAQ("Data acquisition",uasQuad,pData);
+	COM com_module           = new COM("Communications",uasQuad,pData);
 
 	com_module.error.setConsoleOutput(verbose);
 	test.error.setConsoleOutput(verbose);

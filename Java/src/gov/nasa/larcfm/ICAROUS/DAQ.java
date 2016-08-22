@@ -15,6 +15,7 @@
 package gov.nasa.larcfm.ICAROUS;
 
 import com.MAVLink.*;
+import gov.nasa.larcfm.Util.ParameterData;
 
 public class DAQ implements Runnable{
 
@@ -22,11 +23,13 @@ public class DAQ implements Runnable{
     public String threadName;
     public AircraftData FlightData;
     public Interface icarousAP;
+    private ParameterData pData;
     
-    public DAQ(String name,Aircraft UAS){
+    public DAQ(String name,Aircraft UAS,ParameterData pdata){
 	threadName   = name;
 	FlightData   = UAS.FlightData;
-	icarousAP    = UAS.apIntf;	
+	icarousAP    = UAS.apIntf;
+	pData        = pdata;
     }
 
     public void run(){

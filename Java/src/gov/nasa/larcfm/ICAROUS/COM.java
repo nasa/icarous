@@ -19,6 +19,7 @@ import com.MAVLink.enums.*;
 import com.MAVLink.*;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
+import gov.nasa.larcfm.Util.ParameterData;
 
 public class COM implements Runnable,ErrorReporter{
 
@@ -29,15 +30,16 @@ public class COM implements Runnable,ErrorReporter{
     public Interface comIntf;
     public ErrorLog error;
     public MAVLinkMessages RcvdMessages;
-    
+    private ParameterData pData;
         
-    public COM(String name,Aircraft uas){
+    public COM(String name,Aircraft uas,ParameterData pdata){
 	threadName       = name;
 	UAS              = uas;
 	FlightData       = UAS.FlightData;
 	comIntf          = UAS.comIntf;
 	error            = new ErrorLog("COM     ");
 	RcvdMessages     = FlightData.Inbox;
+	pData            = pdata;
     }
 
     public void run(){
@@ -106,23 +108,25 @@ public class COM implements Runnable,ErrorReporter{
 			UAS.apIntf.Read();
 			msgParamValue = RcvdMessages.GetParamValue();
 		    }
-						
-		    int param_count = msgParamValue.param_count;
 
+		    int param_count1 = msgParamValue.param_count;
+		    
 		    double time_param_read_start  = UAS.timeCurrent;
-		    for(int i=0;i<param_count;i++){
+		    for(int i=0;i<param_count1;i++){
 			//System.out.println("count:"+i);
+			msgParamValue.param_count = param_count1;
 			comIntf.Write(msgParamValue);		    
 			msgParamValue = FlightData.Inbox.GetParamValue();
 		    
-			if(i<param_count-1){
+			if(i<param_count1-1){
 			    double time_elapsed = 0;			
 			    while(msgParamValue  == null){
 				UAS.apIntf.Read();
 				msgParamValue = FlightData.Inbox.GetParamValue();
 			    }						
 			}
-		    }	
+		    }
+		  
 		}
 		System.out.println("Updated parameter list");
 		UAS.EnableDataStream(1);
@@ -155,10 +159,30 @@ public class COM implements Runnable,ErrorReporter{
 
 	    // Handle parameter set
 	    msg_param_set msgParamSet = RcvdMessages.GetParamSet();
-	    if( msgParamSet != null ){		
+	    if( msgParamSet != null ){
+		String ID = new String(msgParamSet.param_id);
+		System.out.println("received parameter set: "+ID+", len:"+ID.length());
+
 		
-		UAS.apIntf.Write(msgParamSet);
 		
+		msg_param_value msgParamValueIC = new msg_param_value();
+		boolean icarous_parm = false;		
+		if(ID.equals("HTHRESHOLD\0\0\0\0\0\0")){
+
+		    System.out.println("received parameter hthreshold");
+
+		    icarous_parm  = true;
+		}
+
+		else{
+		    UAS.apIntf.Write(msgParamSet);
+		}
+
+		if(icarous_parm){
+		    msgParamValueIC.param_id    =  msgParamSet.param_id;
+		    msgParamValueIC.param_value =  msgParamSet.param_value;
+		    comIntf.Write(msgParamValueIC);
+		}
 	    }
 
 	    // Hangle commands

@@ -23,31 +23,22 @@ public class BCAST implements Runnable{
     public Aircraft UAS;
     public AircraftData FlightData;
     public Interface Intf;
-    ParameterData parameters;
+    ParameterData pData;
     
-    public BCAST(String name,Aircraft uas,Interface bcastIntf){
+    public BCAST(String name,Aircraft uas,Interface bcastIntf,ParameterData pdata){
 	threadName       = name;
 	UAS              = uas;               
 	FlightData       = UAS.FlightData;
 	Intf             = bcastIntf;
-
-	try{
-	    FileReader in = new FileReader("params/icarous.txt");
-	    SeparatedInput reader = new SeparatedInput(in);
-
-	    reader.readLine();
-	    parameters = reader.getParametersRef();
-	    
-	}
-	catch(FileNotFoundException e){
-	    System.out.println("parameter file not found");
-	}
+	pData            = pdata;
+	
+	
     }
 
     public void run(){
 
 	msg_heartbeat_icarous ICAROUSstate = new msg_heartbeat_icarous();
-	double ic_hz                       = parameters.getValue("ic_heartbeat_hz");
+	double ic_hz                       = pData.getValue("ICHBEAT");
 
 	double timeStart                   = (double) (System.nanoTime()/1E9);
 	double timeCurrent,timeElapsed;                 

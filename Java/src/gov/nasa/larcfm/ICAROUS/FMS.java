@@ -11,6 +11,7 @@
 package gov.nasa.larcfm.ICAROUS;
 import com.MAVLink.enums.*;
 import com.MAVLink.common.*;
+import gov.nasa.larcfm.Util.ParameterData;
 
 public class FMS implements Runnable{
 
@@ -24,12 +25,14 @@ public class FMS implements Runnable{
     
     private FMS_STATE state;
     private boolean FMSrunning;
+    private ParameterData pData;
     
-    public FMS(String name,Aircraft ac){
+    public FMS(String name,Aircraft ac,ParameterData pdata){
 	threadName       = name;
 	UAS              = ac;
 	FMSrunning       = true;
 	state            = FMS_STATE.IDLE;
+	pData            = pdata;
     }
 
     public void run(){	

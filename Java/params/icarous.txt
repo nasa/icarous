@@ -1,21 +1,20 @@
 # ICAROUS heartbeat (Hz)
-ic_heartbeat_hz = 5
+ICHBEAT = 5
 
 # Geofence parameters
-hthreshold = 1.0
-vthreshold = 1.0
-hstepback  = 2.0
-vstepback  = 2.0
-stepbacktype = 0
+HTHRESHOLD = 1.0
+VTHRESHOLD = 1.0
+HSTEPBACK  = 2.0
+VSTEPBACK  = 2.0
+STEPBACKTYPE = 0
 
 # Search parameters
-gridsize   = 0.5
-buffer     = 1
-lookahead  = 4
-proximityfactor = 3.0
-
+GRIDSIZE   = 0.5
+BUFFER     = 1
+LOOKAHEAD  = 4
+PROXFACTOR = 3.0
 
 # Flight plan resolution parameters
-ResolutionSpeed = 1.0
-XtrkDevGain = 1.0
-standoff = 2.0
+RES_SPEED = 1.0
+XTRK_GAIN = 1.0
+STANDOFF  = 2.0

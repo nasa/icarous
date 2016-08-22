@@ -16,7 +16,7 @@ import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
-
+import gov.nasa.larcfm.Util.ParameterData;
 
 public class Aircraft implements ErrorReporter{
 
@@ -47,8 +47,9 @@ public class Aircraft implements ErrorReporter{
     public ErrorLog error;
 
     private boolean landStart;
+    public ParameterData pData;
     
-    public Aircraft(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc){
+    public Aircraft(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc,ParameterData pdata){
 	
 	apIntf           = ap_Intf;
 	comIntf          = com_Intf;
@@ -62,6 +63,7 @@ public class Aircraft implements ErrorReporter{
 	timeLog          = String.format("%.3f",0.0f);
 	landStart        = false;
 	MissionState     = 0;
+	pData            = pdata;
     }
 
     // Function to send commands to pixhawk

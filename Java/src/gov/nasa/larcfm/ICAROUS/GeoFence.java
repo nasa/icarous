@@ -67,13 +67,13 @@ public class GeoFence{
     PolyUtil pu;
     ArrayList<Vect2> fenceVertices;
     
-
+    ParameterData pData;
     public double entryTime;
     public double exitTime;
     private double lookahead;
     private int stepbacktype;
                 
-    public GeoFence(int IDIn,int TypeIn,int numVerticesIn,double floorIn,double ceilingIn){
+    public GeoFence(int IDIn,int TypeIn,int numVerticesIn,double floorIn,double ceilingIn,ParameterData pdata){
 	geoPolyLLA     = new SimplePoly(floorIn,ceilingIn);
 	geoPoly3D      = new Poly3D();
 	Type           = TypeIn;
@@ -88,25 +88,14 @@ public class GeoFence{
 	pcr            = new PolycarpResolution();
 	pu             = new PolyUtil();
 	fenceVertices  = new ArrayList<Vect2>();
-
-	try{
-	    FileReader in = new FileReader("params/icarous.txt");
-	    SeparatedInput reader = new SeparatedInput(in);
-
-	    reader.readLine();
-	    ParameterData parameters = reader.getParametersRef();
-	    
-	    hthreshold   = parameters.getValue("hthreshold");
-	    vthreshold   = parameters.getValue("vthreshold");
-	    hstepback    = parameters.getValue("hstepback");
-	    vstepback    = parameters.getValue("vstepback");
-	    lookahead    = parameters.getValue("lookahead");
-	    stepbacktype = parameters.getInt("stepbacktype");
-	}
-	catch(FileNotFoundException e){
-	    System.out.println("parameter file not found");
-	}
-			
+	pData          = pdata;
+    
+	hthreshold   = pData.getValue("HTHRESHOLD");
+	vthreshold   = pData.getValue("VTHRESHOLD");
+	hstepback    = pData.getValue("HSTEPBACK");
+	vstepback    = pData.getValue("VSTEPBACK");
+	lookahead    = pData.getValue("LOOKAHEAD");
+	stepbacktype = pData.getInt("STEPBACKTYPE");
 	
     }
 

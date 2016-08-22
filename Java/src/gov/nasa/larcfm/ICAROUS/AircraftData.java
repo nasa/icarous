@@ -21,6 +21,7 @@ import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.AircraftState;
+import gov.nasa.larcfm.Util.ParameterData;
 
 public class AircraftData{
 
@@ -81,8 +82,10 @@ public class AircraftData{
     public int startMission; // -1: last command executed, 0 - stop mission, 1 - start mission
 
     double planTime;
+
+    ParameterData pData;
     
-    public AircraftData(){
+    public AircraftData(ParameterData pdata){
 
 	Inbox               = new MAVLinkMessages();
 	acState             = new AircraftState();
@@ -93,6 +96,7 @@ public class AircraftData{
         InputFlightPlan     = new ArrayList<msg_mission_item>();
 	startMission        = -1;
 	FP_nextWaypoint     = 0;
+	pData               = pdata;
     }
 
     public void GetGPSdata(){
@@ -441,7 +445,7 @@ public class AircraftData{
 	int count = 0;
 	int COUNT = (int) msg.param4;
 
-	GeoFence fence1 = new GeoFence((int)msg.param2,(int)msg.param3,(int)msg.param4,msg.param5,msg.param6);
+	GeoFence fence1 = new GeoFence((int)msg.param2,(int)msg.param3,(int)msg.param4,msg.param5,msg.param6,pData);
 		
 	msg_fence_fetch_point msgFenceFetchPoint = new msg_fence_fetch_point();
 	

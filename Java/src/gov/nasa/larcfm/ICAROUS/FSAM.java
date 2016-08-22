@@ -93,48 +93,34 @@ public class FSAM{
     public double crossTrackDeviation;
     
     public FSAM(Aircraft ac,Mission ms){
-	UAS = ac;
-	FlightData = ac.FlightData;
-	Inbox   = FlightData.Inbox;
-	mission = ms;
-	timeEvent1 = 0;
-	timeElapsed = 0;
-	apIntf = ac.apIntf;
-	conflictList   = new ArrayList<Conflict>();
-	ResolutionPlan = new Plan();
-	resolveState = RESOLVE_STATE.NOOP;
-	executeState = EXECUTE_STATE.COMPLETE;
+	UAS                      = ac;
+	FlightData               = ac.FlightData;
+	Inbox                    = FlightData.Inbox;
+	mission                  = ms;
+	timeEvent1               = 0;
+	timeElapsed              = 0;
+	apIntf                   = ac.apIntf;
+	conflictList             = new ArrayList<Conflict>();
+	ResolutionPlan           = new Plan();
+	resolveState             = RESOLVE_STATE.NOOP;
+	executeState             = EXECUTE_STATE.COMPLETE;
 	FenceKeepInConflict      = false;
 	FenceKeepOutConflict     = false;
 	TrafficConflict          = false;
 	StandoffConflict         = false;	
 	NominalPlan              = true;
-	currentResolutionWP = 0;
-	currentConflicts     = 0;
-	joined = true;
-
-	try{
-	    FileReader in = new FileReader("params/icarous.txt");
-	    SeparatedInput reader = new SeparatedInput(in);
-
-	    reader.readLine();
-	    ParameterData parameters = reader.getParametersRef();
-	    
-	    resolutionSpeed   = (float) parameters.getValue("ResolutionSpeed");
-	    gridsize          = parameters.getValue("gridsize");
-	    buffer            = parameters.getValue("buffer");
-	    lookahead         = parameters.getValue("lookahead");
-	    proximityfactor   = parameters.getValue("proximityfactor");
-	    standoff          = parameters.getValue("standoff");
-	    XtrkDevGain       = parameters.getValue("XtrkDevGain") ;
-
-	    if(XtrkDevGain < 0){
-		XtrkDevGain = -XtrkDevGain;
-	    }
-	}
-	catch(FileNotFoundException e){
-	    System.out.println("parameter file not found");
-	}
+	currentResolutionWP      = 0;
+	currentConflicts         = 0;
+	joined                   = true;
+		    
+	resolutionSpeed   = (float) UAS.pData.getValue("RES_SPEED");
+	gridsize          = UAS.pData.getValue("GRIDSIZE");
+	buffer            = UAS.pData.getValue("BUFFER");
+	lookahead         = UAS.pData.getValue("LOOKAHEAD");
+	proximityfactor   = UAS.pData.getValue("PROXFACTOR");
+	standoff          = UAS.pData.getValue("STANDOFF");
+	XtrkDevGain       = UAS.pData.getValue("XTRKGAIN") ;
+	
     }
 
     // Returns time corresponding current position in the resolution flight plan
@@ -187,7 +173,7 @@ public class FSAM{
 	// Check for geofence resolutions.
 	CheckGeoFences();
 	
-	// Check for deviation from prescribed flight profile.
+	// Check for deviation from prescribed flight profile only in the NOOP state.
 	if(resolveState == RESOLVE_STATE.NOOP){
 	    CheckStandoff();
 	}
