@@ -3,6 +3,7 @@ MAVPROXY_PATH="$1"
 echo "Path to mavproxy modules: $MAVPROXY_PATH/MAVProxy/MAVProxy/modules/"
 echo "Creating symbolic links"
 for files in *.py;do
+    rm "$MAVPROXY_PATH/MAVProxy/MAVProxy/modules/$files"
     ln -s "$PWD/$files" "$MAVPROXY_PATH/MAVProxy/MAVProxy/modules/$files"
 done;
 

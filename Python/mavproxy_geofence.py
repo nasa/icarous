@@ -17,6 +17,7 @@ class GeoFenceModule(mp_module.MPModule):
                          "geo-fence management",
                          ["load (FILENAME)"])
         self.fenceList = []
+        self.sentFenceList = []
         self.fenceToSend= 0;
         self.have_list = False        
         self.menu_added_console = False
@@ -35,14 +36,7 @@ class GeoFenceModule(mp_module.MPModule):
         '''handle and incoming mavlink packet'''                        
         
         if m.get_type() == "FENCE_STATUS":
-            print m.breach_status
-            if m.breach_status == 1:
-                self.fenceToSend = self.fenceToSend + 1
-                print "Geofence %d of %d sent successfully" % (self.fenceToSend,len(self.fenceList))
-                if(self.fenceToSend < len(self.fenceList)):
-                    fence = self.fenceList[self.fenceToSend]                  
-                    self.send_fence(fence)
-        
+            print m.breach_status                    
         
                     
     def cmd_fence(self, args):
@@ -68,7 +62,8 @@ class GeoFenceModule(mp_module.MPModule):
             return
 
         for fence in self.fenceList:
-            self.Send_fence(fence)
+            if fence not in self.sentFenceList:
+                self.Send_fence(fence)
             
 
     def Send_fence(self,fence):
