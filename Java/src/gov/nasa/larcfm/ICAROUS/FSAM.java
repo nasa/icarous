@@ -218,13 +218,15 @@ public class FSAM{
 	    resolveState = RESOLVE_STATE.COMPUTE;
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Conflict(s) detected");
 	    return FSAM_OUTPUT.CONFLICT;	    
-	}	    	    			
+	}		 	
 	
 	if(resolveState == RESOLVE_STATE.NOOP){
 	    return FSAM_OUTPUT.NOOP;
 	}else{	    
 	    return FSAM_OUTPUT.CONFLICT;	    
 	}
+
+
 	
     }
 
@@ -272,7 +274,18 @@ public class FSAM{
 
 	case EXECUTE_MANEUVER:
 	    // Execute maneuver based resolution when appropriate
-	    ExecuteManeuver();
+	    
+	    if( executeState != EXECUTE_STATE.COMPLETE ){
+		ResolveStandoffConflict();
+		ExecuteManeuver();
+	    }
+	    else{
+		UAS.apMode = Aircraft.AP_MODE.AUTO;
+		UAS.SetMode(3);
+		UAS.error.addWarning("[" + UAS.timeLog + "] MODE: AUTO");
+		resolveState = RESOLVE_STATE.NOOP;
+	    }
+	    
 	    break;
 
 	case EXECUTE_PLAN:
@@ -419,8 +432,8 @@ public class FSAM{
 	    
 	double heading_fp_pos;
 
-	Position PrevWP = FlightData.CurrentFlightPlan.point(FP_nextWaypoint - 1).position();
-	Position NextWP = FlightData.CurrentFlightPlan.point(FP_nextWaypoint).position();
+	Position PrevWP = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
+	Position NextWP = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
 
 	Position CurrentPos = FlightData.acState.positionLast();
 
@@ -436,10 +449,10 @@ public class FSAM{
 	    sgn = -1;             // Vehicle right of the path
 	}
 	else if( (psi1 - psi2) < 0 ){
-	    sng = -1;             // Vehicle right of path
+	    sgn = -1;             // Vehicle right of path
 	}
 	else if ( (psi1 - psi2) >= -180  ){
-	    sng = 1;              // Vehicle left of path
+	    sgn = 1;              // Vehicle left of path
 	}
 
 	double bearing = Math.abs(psi1 - psi2);
@@ -447,11 +460,13 @@ public class FSAM{
 	double dist = PrevWP.distanceH(CurrentPos);
 
 	double crossTrackDeviation = sgn*dist*Math.sin(Math.toRadians(bearing));
-	
+
 	if(Math.abs(crossTrackDeviation) > standoff){
-	    StandoffConflict = true;
+	    StandoffConflict = true;	    
+	    Conflict cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.FLIGHTPLAN);
+	    Conflict.AddConflictToList(conflictList,cf);
 	}else if(Math.abs(crossTrackDeviation) < (standoff)/3){
-	    StandoffConflict = false
+	    StandoffConflict = false;
 	}
     }
 
@@ -657,7 +672,7 @@ public class FSAM{
     public void ResolveStandoffConflict(){
 
 	if(StandoffConflict){
-	    double Vs = XtrkDevGain.crossTrackDeviation;
+	    double Vs = XtrkDevGain*crossTrackDeviation;
 	    double V  = UAS.GetSpeed();
 	    
 	    if(Math.pow(Math.abs(Vs),2) >= Math.pow(V,2)){
@@ -666,14 +681,16 @@ public class FSAM{
 
 	    double Vf       = Math.sqrt( Math.pow(V,2) - Math.pow(Vs,2) );
 
-	    Position PrevWP = FlightData.CurrentFlightPlan.point(FP_nextWaypoint - 1).position();
-	    Position NextWP = FlightData.CurrentFlightPlan.point(FP_nextWaypoint).position();
+	    Position PrevWP = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
+	    Position NextWP = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
 
 	    double Trk = PrevWP.track(NextWP);
 
 	    Vn = Math.cos(Trk) - Math.sin(Trk);
 	    Ve = Math.sin(Trk) + Math.cos(Trk);
 	    Vu = 0;
+
+	    // System.out.format("Vn=%f,Ve=%f\n",Vn,Ve);
 	    
 	}
 	else{
@@ -705,6 +722,11 @@ public class FSAM{
 	case SEND_COMMAND:
 
 	    UAS.SetVelocity(Vn,Ve,Vu);
+
+	    if(!StandoffConflict){
+		executeState = EXECUTE_STATE.COMPLETE;
+	    }
+	    
 	    break;
 	}
 	

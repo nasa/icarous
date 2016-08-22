@@ -44,6 +44,13 @@ public class Conflict{
         object       = OB;
     }
 
+    public Conflict(PRIORITY_LEVEL level, CONFLICT_TYPE ctype){
+	priority     = level;
+	conflictType = ctype;
+    }
+
+    
+
     public void SetPriority(PRIORITY_LEVEL level){
 	priority = level;
     }
@@ -54,6 +61,9 @@ public class Conflict{
 	if(conflictType == conf.conflictType){
 
 	    switch(conflictType){
+		
+	    case FLIGHTPLAN:
+		return 1;
 		
 	    case KEEP_IN:
 		if (fence.ID == conf.fence.ID){

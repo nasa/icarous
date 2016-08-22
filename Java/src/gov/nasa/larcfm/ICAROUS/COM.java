@@ -94,10 +94,11 @@ public class COM implements Runnable,ErrorReporter{
 
 	    // Handle parameter requests
 	    msg_param_request_list msgParamRequestList = RcvdMessages.GetParamRequestList();
+	    
 	    if(msgParamRequestList != null){
+		System.out.println("Handling parameter request list");		
 		UAS.EnableDataStream(0);
-		synchronized(UAS.apIntf){
-		    System.out.println("Handling parameter request list");		
+		synchronized(UAS.apIntf){		    
 		    UAS.apIntf.Write(msgParamRequestList);		
 		    msg_param_value msgParamValue = null;
 		

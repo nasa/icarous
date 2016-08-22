@@ -99,7 +99,8 @@ public class Aircraft implements ErrorReporter{
 	    System.out.println(e);
 	}
 
-	return CheckAcknowledgement();
+	return CheckAcknowledgement(command);
+	//return 1;
     }
 
     // Yaw command
@@ -141,26 +142,26 @@ public class Aircraft implements ErrorReporter{
 	    System.out.println(e);
 	}
 
-	return CheckAcknowledgement();
-
+	//return CheckAcknowledgement();
+	return 1;
     }
 
     // Velocity command
     public int SetVelocity(double Vn,double Ve, double Vu){
 
-	msg_set_position_target_local_ned msg= new msg_set_position_target_local_ned();
+	msg_set_position_target_global_int msg= new msg_set_position_target_global_int();
 
 	msg.time_boot_ms     = 0;
 	msg.target_system    = 0;
 	msg.target_component = 0;
 	msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
 	msg.type_mask        = 0b0000111111000111;
-	msg.x                = 0;
-	msg.y                = 0;
-	msg.z                = 0;
-	msg.vx               = Vn;
-	msg.vy               = Ve;
-	msg.vz               = Vu;
+	msg.lat_int          = 0;
+	msg.lon_int          = 0;
+	msg.alt              = 0;
+	msg.vx               = (float)Vn;
+	msg.vy               = (float)Ve;
+	msg.vz               = (float)Vu;
 	msg.afx              = 0;
 	msg.afy              = 0;
 	msg.afz              = 0;
@@ -175,8 +176,8 @@ public class Aircraft implements ErrorReporter{
 	    System.out.println(e);
 	}
 
-	return CheckAcknowledgement();
-
+	//return CheckAcknowledgement();
+	return 1;
     }
 
     // Function to set mode
@@ -195,65 +196,88 @@ public class Aircraft implements ErrorReporter{
 	    System.out.println(e);
 	}
 	
-	return CheckAcknowledgement();	
+	//return CheckAcknowledgement();
+	return 1;
     }
 
     // Check acknowledgement
-    public int CheckAcknowledgement(){
+    public int CheckAcknowledgement(int command){
 
 	short status;
 
-	msg_command_ack msgCommandAck = FlightData.Inbox.GetCommandAck();
-	if(msgCommandAck != null){
+	msg_command_ack msgCommandAck = null;
 
-	    status = msgCommandAck.result;
-	    
-	    switch(status){
-
-	    case MAV_CMD_ACK.MAV_CMD_ACK_OK:
-		return 1;
-
-	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_FAIL:
-		error.addError("Command error: fail");
-		return 0;
-
-	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_ACCESS_DENIED:
-		error.addError("Command error: access denied");
-		return 0;
-
-	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_NOT_SUPPORTED:
-		error.addError("Command error: not supported");
-		return 0;
-
-	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_COORDINATE_FRAME_NOT_SUPPORTED:
-		error.addError("Command error: frame not supported");
-		return 0;
-
-	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_COORDINATES_OUT_OF_RANGE:
-		error.addError("Command error: coordinates out of range");
-		return 0;
-
-	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_X_LAT_OUT_OF_RANGE:
-		error.addError("Command error: x lat out of range");
-		return 0;
-
-	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_Y_LON_OUT_OF_RANGE:
-		error.addError("Command error: y lat out of range");
-		return 0;
-
-	    case MAV_CMD_ACK.MAV_CMD_ACK_ERR_Z_ALT_OUT_OF_RANGE:
-		error.addError("Command error: z alt out of range");
-		return 0;
-
-	    case MAV_CMD_ACK.MAV_CMD_ACK_ENUM_END:
-		error.addError("Command error: enum end");
-		return 0;	       		
-		
+	//System.out.println("Checking for ack");
+	
+	while(msgCommandAck == null){
+	    msgCommandAck = FlightData.Inbox.GetCommandAck(1);
+	    if(msgCommandAck != null){
+		//System.out.format("Got ack for %d = %d\n",command,msgCommandAck.result);
 	    }
+	    if( (msgCommandAck != null) && (msgCommandAck.command != command)){
+		msgCommandAck = null;
+	    }
+	}
+
+	
+
+	status = msgCommandAck.result;
+	
+	switch(status){
+
+	case 0:
+	    error.addWarning("Command Accepted");
+	    return 1;
+	    
+	case MAV_CMD_ACK.MAV_CMD_ACK_OK:
+	    error.addError("Command Accepted");
+	    return 1;
+	    
+	case MAV_CMD_ACK.MAV_CMD_ACK_ERR_FAIL:
+	    error.addError("Command error: fail");
+	    return 0;
+	    
+	case MAV_CMD_ACK.MAV_CMD_ACK_ERR_ACCESS_DENIED:
+	    error.addError("Command error: access denied");
+	    return 0;
+	    
+	case MAV_CMD_ACK.MAV_CMD_ACK_ERR_NOT_SUPPORTED:
+	    error.addError("Command error: not supported");
+	    return 0;
+
+	case MAV_CMD_ACK.MAV_CMD_ACK_ERR_COORDINATE_FRAME_NOT_SUPPORTED:
+	    error.addError("Command error: frame not supported");
+	    return 0;
+
+	case MAV_CMD_ACK.MAV_CMD_ACK_ERR_COORDINATES_OUT_OF_RANGE:
+	    error.addError("Command error: coordinates out of range");
+	    return 0;
+
+	case MAV_CMD_ACK.MAV_CMD_ACK_ERR_X_LAT_OUT_OF_RANGE:
+	    error.addError("Command error: x lat out of range");
+	    return 0;
+
+	case MAV_CMD_ACK.MAV_CMD_ACK_ERR_Y_LON_OUT_OF_RANGE:
+	    error.addError("Command error: y lat out of range");
+	    return 0;
+
+	case MAV_CMD_ACK.MAV_CMD_ACK_ERR_Z_ALT_OUT_OF_RANGE:
+	    error.addError("Command error: z alt out of range");
+	    return 0;
+
+	case MAV_CMD_ACK.MAV_CMD_ACK_ENUM_END:
+	    error.addError("Command error: enum end");
+	    return 0;
+
+	default:
+	    error.addError("Unrecognized result");
+	    return -1;
+		
+	}
 	   
 	    
-	}
-	return 0;
+	
+	
     }
     
     public void EnableDataStream(int option){
@@ -310,7 +334,9 @@ public class Aircraft implements ErrorReporter{
 	switch(state){
 
 	case TAKEOFF:
-		
+
+	    int ack;
+	    
 	    // Set mode to guided
 	    error.addWarning("[" + timeLog + "] MODE:GUIDED");
 	    SetMode(4);
@@ -318,19 +344,23 @@ public class Aircraft implements ErrorReporter{
 	    
 	    // Arm the throttles
 	    error.addWarning("[" + timeLog + "] CMD:ARM");
-	    SendCommand(0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,0,
+	    ack = SendCommand(0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,0,
 			1,0,0,0,0,0,0);
 
 	    error.addWarning("[" + timeLog + "] CMD:TAKEOFF");
 	    // Takeoff at current location
 	    error.addWarning("[ "+ timeLog + " ] ALT: "+targetAlt);
-	    SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
+	    ack = SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
 			1,0,0,0, (float) currPosition.latitude(),
 			(float) currPosition.longitude(),
 			targetAlt);
 	    
-	    
-	    state = FLIGHT_STATE.TAKEOFF_CLIMB;
+	    if(ack == 0){
+		return -1;
+	    }
+	    else{
+		state = FLIGHT_STATE.TAKEOFF_CLIMB;
+	    }
 
 	    break;
 

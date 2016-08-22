@@ -450,7 +450,7 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_command_ack.MAVLINK_MSG_ID_COMMAND_ACK:
-	    listCommandAck.add((msg_command_ack) message.unpack());
+	    listCommandAck.add((msg_command_ack) message.unpack());	 
 	    break;
 	    
 	case msg_manual_setpoint.MAVLINK_MSG_ID_MANUAL_SETPOINT:
@@ -784,9 +784,22 @@ public class MAVLinkMessages{
 	return msgGlobalPositionInt;
     }
 
-    public synchronized msg_command_ack GetCommandAck(){
-	if(listCommandAck.size()>0){
-	    return listCommandAck.remove(0);
+    public synchronized msg_command_ack GetCommandAck(int i){
+	if(i == 0){
+	    if(listCommandAck.size()>0){
+		return listCommandAck.remove(0);
+	    }
+	    else{
+		return null;
+	    }
+	}
+	else if(i==1){
+	    if(listCommandAck.size()>0){	
+		return listCommandAck.remove(listCommandAck.size()-1);	    
+	    }
+	    else{
+		return null;
+	    }
 	}
 	else{
 	    return null;
@@ -795,14 +808,14 @@ public class MAVLinkMessages{
 
     public synchronized msg_command_long GetCommandLong(){
 	if(listCommandLong.size()>0){	
-	    return listCommandLong.remove(0);
-	    
+	    return listCommandLong.remove(0);	    
 	}
 	else{
 	    return null;
-	}
+	}	
     }
 
+    
     public synchronized msg_mission_request GetMissionRequest(){
 	if(listMissionRequest.size() > 0){	   
 	    return listMissionRequest.remove(0);

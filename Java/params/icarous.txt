@@ -18,4 +18,4 @@ proximityfactor = 3.0
 # Flight plan resolution parameters
 ResolutionSpeed = 1.0
 XtrkDevGain = 1.0
-
+standoff = 2.0

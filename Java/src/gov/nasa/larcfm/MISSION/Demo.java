@@ -32,6 +32,7 @@ public class Demo implements Mission,ErrorReporter{
     String timeLog;
 
     boolean missionComplete;
+    int status = 0;
     
     public Demo(){
 	stateMission = MISSION_STATE.IDLE;
@@ -45,8 +46,25 @@ public class Demo implements Mission,ErrorReporter{
 	AircraftData FlightData = UAS.FlightData;
 	timeLog = UAS.timeLog;
 	double CurrentTime =  System.nanoTime()/1E9;
-	double ElapsedTime;
+	double ElapsedTime = 0;
 	double Targetheading;
+	double StartTime = 0; 
+	
+	if(status == 0){
+	    UAS.SetMode(4);
+	    UAS.SetVelocity(1.0,0.0,0.0);
+	    status = 1;
+	    StartTime = CurrentTime;
+	}
+
+	
+       
+	ElapsedTime = CurrentTime - StartTime;
+
+	if(ElapsedTime > 2){
+	    StartTime = CurrentTime;
+	}
+	
 	
 	if(FlightData.missionObj.size() > 0 && stateMission == MISSION_STATE.IDLE){
 	    stateMission = MISSION_STATE.TURN1;

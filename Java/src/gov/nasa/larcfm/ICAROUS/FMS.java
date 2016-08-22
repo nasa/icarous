@@ -102,6 +102,10 @@ public class FMS implements Runnable{
 	    if(status == 1){
 		state = FMS_STATE.TERMINATE;
 	    }
+	    else if(status == -1){
+		state = FMS_STATE.IDLE;
+		UAS.error.addError("[" + UAS.timeLog + "] MSG: FMS state IDLE");
+	    }
 	    break;
 
 	case TERMINATE:

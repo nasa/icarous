@@ -152,15 +152,16 @@ public class AircraftData{
 
 	// Make a new Plan using the input mission item
 	CurrentFlightPlan = new Plan();
-	
+
+	msg_mission_item msgMissionItem0         = new msg_mission_item();
 	for(int i=0;i<InputFlightPlan.size();i++){
-	    msgMissionItem = InputFlightPlan.get(i);
+	    msgMissionItem0 = InputFlightPlan.get(i);
 	    
 	    double wptime= 0;
-	    Position nextWP = Position.makeLatLonAlt(msgMissionItem.x,"degree",msgMissionItem.y,"degree",msgMissionItem.z,"m");
+	    Position nextWP = Position.makeLatLonAlt(msgMissionItem0.x,"degree",msgMissionItem0.y,"degree",msgMissionItem0.z,"m");
 	    if(i > 0 ){			  
 		double distance = CurrentFlightPlan.point(i - 1).position().distanceH(nextWP);
-		wptime          = CurrentFlightPlan.getTime(i-1) + distance/msgMissionItem.param4;
+		wptime          = CurrentFlightPlan.getTime(i-1) + distance/msgMissionItem0.param4;
 	    }		     
 	    
 	    CurrentFlightPlan.add(new NavPoint(nextWP,wptime));
@@ -183,24 +184,29 @@ public class AircraftData{
 
 		case FP_CLR:
 		    Intf.Write(msgMissionClearAll);
-		    //System.out.println("Cleared mission on AP");
+		    System.out.println("Cleared mission on AP");
 		    state = FP_WRITE_AP.FP_CLR_ACK;
 		    count = 0;
 		    break;
 
 		case FP_CLR_ACK:
 
+		    Intf.SetTimeout(10);
 		    Intf.Read();
+		    Intf.SetTimeout(0);
+		    
 		    msg_mission_ack msgMissionAck1 = Inbox.GetMissionAck();
 		    if(msgMissionAck1 != null){
 		    		    
 			if(msgMissionAck1.type == 0){
 			    state = FP_WRITE_AP.FP_SEND_COUNT;
-			    //System.out.println("CLEAR acknowledgement");
+			    System.out.println("CLEAR acknowledgement");
 			}
 			else{			  
 			    //System.out.println("No CLEAR acknowledgement");
 			}
+		    }else{
+			state = FP_WRITE_AP.FP_SEND_COUNT;
 		    }
 
 		    break;
@@ -210,7 +216,7 @@ public class AircraftData{
 		    msgMissionCount.count = CurrentFlightPlan.size();
 
 		    Intf.Write(msgMissionCount);
-		    //System.out.println("Wrote mission count: "+msgMissionCount.count);
+		    System.out.println("Wrote mission count: "+msgMissionCount.count);
 		    state = FP_WRITE_AP.FP_SEND_WP;
 		    break;
 	    
@@ -224,7 +230,7 @@ public class AircraftData{
 			int seq = msgMissionRequest.seq;
 			count   = seq;
 		    
-			//System.out.println("Received mission request: "+ seq );
+			System.out.println("Received mission request: "+ seq );
 		    
 			msgMissionItem.seq     = seq;
 			msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
@@ -254,7 +260,7 @@ public class AircraftData{
 		    
 			if(msgMissionAck2.type == 0){
 			    if(count == CurrentFlightPlan.size() - 1){
-				//System.out.println("Waypoints sent successfully to AP");
+				System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
 			    }
 			
