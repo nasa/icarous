@@ -55,9 +55,7 @@ public class Demo implements Mission,ErrorReporter{
 	    UAS.SetVelocity(1.0,0.0,0.0);
 	    status = 1;
 	    StartTime = CurrentTime;
-	}
-
-	
+	}	
        
 	ElapsedTime = CurrentTime - StartTime;
 

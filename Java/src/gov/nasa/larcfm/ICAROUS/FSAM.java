@@ -188,7 +188,9 @@ public class FSAM{
 	CheckGeoFences();
 	
 	// Check for deviation from prescribed flight profile.
-	CheckStandoff();
+	if(resolveState == RESOLVE_STATE.NOOP){
+	    CheckStandoff();
+	}
 	    
 	// Check for conflicts from DAIDALUS against other traffic.
 
@@ -254,6 +256,7 @@ public class FSAM{
 	       ResolveKeepOutConflict();		
 	    }
 	    else if(StandoffConflict){
+		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for stand off conflict");	    
 		ResolveStandoffConflict();
 		UsePlan = false;
 	    }
