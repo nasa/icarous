@@ -24,7 +24,7 @@ public class GenericObject{
     Velocity vel;
     float orientation;
 
-    public GenericObject(int id_in,int type_in,
+    public GenericObject(int type_in,int id_in,
 			 float lat_in, float lon_in, float altmsl_in,
 			 float orient_in,
 			 float vx_in, float vy_in,float vz_in){
@@ -36,13 +36,37 @@ public class GenericObject{
 	
     }
 
-    public static void AddObject(List<GenericObject> objectList,msg_pointofinterest msg){
+    public boolean isEqual(GenericObject obj,boolean update){
 
-	GenericObject obj = new GenericObject(msg.index,msg.subtype,
-				         	 msg.latx,msg.lony,msg.altz,msg.heading,
-					         msg.vx,msg.vy,msg.vz);
+	if(id == obj.id){
+	    if(update){
+		pos = obj.pos.copy();
+		vel = obj.vel.copy();
+		orientation = obj.orientation;
+	    }
+	    return true;
+	}else{
+	    return false;
+	}
 	
-	objectList.add(obj);
+    }
+	
+    
+
+    public static void AddObject(List<GenericObject> objectList,GenericObject obj){
+
+	boolean inList = false;
+	for(int i=0;i<objectList.size();i++){
+	    if( objectList.get(i).isEqual(obj,true)){ 
+		inList = true;
+		break;
+	    }
+	}
+
+	if(!inlist){
+	    objectList.add(obj);
+	}
+	
     }
 
     public static void RemoveObject(List<GenericObject> objectList, int id){

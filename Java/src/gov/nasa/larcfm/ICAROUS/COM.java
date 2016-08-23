@@ -219,6 +219,10 @@ public class COM implements Runnable,ErrorReporter{
 			error.addWarning("[" + timeLog + "] MSG: Received Mission START");
 		    }
 		}
+
+		if(msgCommandLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_1){
+		    
+		}
 	    }
 	    	    
 	    
