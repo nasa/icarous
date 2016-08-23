@@ -16,6 +16,10 @@ import java.io.*;
 import com.MAVLink.common.*;
 import com.MAVLink.enums.*;
 
+import gov.nasa.larcfm.Util.*;
+import gov.nasa.larcfm.ACCoRD.*;
+
+/*
 import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.AircraftState;
 import gov.nasa.larcfm.Util.Position;
@@ -29,6 +33,7 @@ import gov.nasa.larcfm.Util.DensityGrid;
 import gov.nasa.larcfm.Util.BoundingRectangle;
 import gov.nasa.larcfm.Util.SimplePoly;
 import gov.nasa.larcfm.IO.SeparatedInput;
+*/
 
 enum FSAM_OUTPUT{
     CONFLICT,NOOP, TERMINATE
@@ -86,6 +91,9 @@ public class FSAM{
     private double Vu;
 
     public double crossTrackDeviation;
+
+    private Daidalus daa;
+    
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS                      = ac;
@@ -106,7 +114,13 @@ public class FSAM{
 	NominalPlan              = true;
 	currentResolutionWP      = 0;
 	currentConflicts         = 0;
-	joined                   = true;		    			
+	joined                   = true;
+	
+	
+	// Create an object of type Daidalus for a well-clear volume based on TAUMOD
+	daa = new Daidalus();
+	daa.parameters.setLookaheadTime(1);
+	daa.parameters.setCollisionAvoidanceBandsFactor(1);
 	
     }
 
@@ -156,7 +170,7 @@ public class FSAM{
 	
 	// Get time of current position in nominal plan
 	UAS.FlightData.getPlanTime();
-	
+		
 	// Check for geofence resolutions.
 	CheckGeoFences();
 	
@@ -166,7 +180,9 @@ public class FSAM{
 	}
 	    
 	// Check for conflicts from DAIDALUS against other traffic.
-
+	if(FlightData.traffic.size() > 0){
+	    CheckTraffic();
+	}
 
 	// Check mission progress.
 	if(timeElapsed > 5E9){
@@ -448,6 +464,38 @@ public class FSAM{
 	    StandoffConflict = false;
 	}
     }
+
+    public void CheckTraffic(){
+
+	Position so = FlightData.acState.positionLast();
+	Velocity vo = FlightData.acState.velocityLast();
+	daa.reset();
+	daa.setOwnshipState("Ownship",so,vo,timeCurrent);
+
+	for(int i=0;i<FlightData.traffic.size();i++){
+	    synchronized(FlightData.traffic){
+		Position si = FlightData.traffic.get(i).pos.copy();
+		Velocity vi = FlightData.traffic.get(i).vel.mkAddTrk(0);
+		daa.addTrafficState("traffic"+i,si,vi);
+	    }
+	    
+	}
+
+	printTimeToViolation(daa);
+	
+    }
+
+    static void printTimeToViolation(Daidalus daa) {
+    // Aircraft at index 0 is ownship
+    for (int ac=1; ac < daa.numberOfAircraft(); ac++) {
+      double tlos = daa.timeToViolation(ac);
+      if (tlos >= 0) {
+        System.out.printf(
+            "Predicted violation with traffic aircraft %s in %.1f [s]\n",
+            daa.getAircraftState(ac).getId(),tlos);
+      }
+    }
+  }
 
     // Compute resolution for keep in conflict
     public void ResolveKeepInConflict(){
