@@ -224,8 +224,7 @@ public class COM implements Runnable,ErrorReporter{
 		    GenericObject obj = new GenericObject(0,(int)msgCommandLong.param1,
 							  msgCommandLong.param5,msgCommandLong.param6,msgCommandLong.param7,
 							  msgCommandLong.param2,msgCommandLong.param3,msgCommandLong.param4);
-		    GenericObject.AddObject(FlightData.traffic,obj);
-		    System.out.println("Traffic list size:"+FlightData.traffic.size());
+		    GenericObject.AddObject(FlightData.traffic,obj);		    
 		}
 	    }
 	    	    
