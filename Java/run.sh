@@ -9,7 +9,7 @@ elif [ "$1" == 'PX4' ];then
     java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar launch -v --px4 /dev/ttyO1 --com localhost 14552 14553 --bc 230.1.1.1 5555
 elif [ "$1" == 'GS' ];then
     echo "Launching Ground station test"
-    mavproxy.py --master=127.0.0.1:14553 --map --load-module geofence
+    mavproxy.py --master=127.0.0.1:14553 --map --load-module traffic,geofence
 elif [ "$1" == 'GPSdebug' ];then
    echo "GPS debugger"
    java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar DebugGPS --px4 /dev/ttyO1
