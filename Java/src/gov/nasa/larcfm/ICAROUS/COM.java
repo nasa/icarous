@@ -48,7 +48,7 @@ public class COM implements Runnable,ErrorReporter{
 	
 	msghb.type      = MAV_TYPE.MAV_TYPE_FIXED_WING;
 	
-	comIntf.SetTimeout(100);
+	comIntf.SetTimeout(1);
 
 	double time1 = UAS.timeCurrent;
 
@@ -160,23 +160,39 @@ public class COM implements Runnable,ErrorReporter{
 	    // Handle parameter set
 	    msg_param_set msgParamSet = RcvdMessages.GetParamSet();
 	    if( msgParamSet != null ){
-		String ID = new String(msgParamSet.param_id);
-		System.out.println("received parameter set: "+ID+", len:"+ID.length());
 
+		String ID = new String(msgParamSet.param_id);
 		
+
+		ID = ID.replaceAll("\0","");
 		
 		msg_param_value msgParamValueIC = new msg_param_value();
-		boolean icarous_parm = false;		
-		if(ID.equals("HTHRESHOLD\0\0\0\0\0\0")){
+		boolean icarous_parm = false;
 
-		    System.out.println("received parameter hthreshold");
+		switch (ID){
 
+		case "ICHBEAT":
+		case "HTHRESHOLD":
+		case "VTHRESHOLD":
+		case "HSTEPBACK":
+		case "VSTEPBACK":
+		case "STEPBACKTYPE":
+		case "GRIDSIZE":
+		case "BUFFER":
+		case "LOOKAHEAD":
+		case "PROXFACTOR":
+		case "RES_SPEED":
+		case "XTRK_GAIN":
+		case "STANDOFF":
+		    pData.set(ID,msgParamSet.param_value,pData.getUnit(ID));
+		    System.out.println(ID+": "+pData.getValue(ID));
 		    icarous_parm  = true;
-		}
-
-		else{
+		    break;
+		default:
 		    UAS.apIntf.Write(msgParamSet);
+		    break;
 		}
+		
 
 		if(icarous_parm){
 		    msgParamValueIC.param_id    =  msgParamSet.param_id;

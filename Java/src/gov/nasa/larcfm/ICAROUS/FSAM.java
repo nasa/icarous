@@ -76,16 +76,11 @@ public class FSAM{
     private boolean GotoNextWP;
     private boolean joined;
     
-    private float resolutionSpeed;
+    
     private int currentConflicts;
     private boolean NominalPlan;
 
-    private double gridsize;
-    private double buffer;
-    private double lookahead;
-    private double proximityfactor;
-    private double standoff;
-    private double XtrkDevGain;
+    
     private double Vn;
     private double Ve;
     private double Vu;
@@ -111,19 +106,11 @@ public class FSAM{
 	NominalPlan              = true;
 	currentResolutionWP      = 0;
 	currentConflicts         = 0;
-	joined                   = true;
-		    
-	resolutionSpeed   = (float) UAS.pData.getValue("RES_SPEED");
-	gridsize          = UAS.pData.getValue("GRIDSIZE");
-	buffer            = UAS.pData.getValue("BUFFER");
-	lookahead         = UAS.pData.getValue("LOOKAHEAD");
-	proximityfactor   = UAS.pData.getValue("PROXFACTOR");
-	standoff          = UAS.pData.getValue("STANDOFF");
-	XtrkDevGain       = UAS.pData.getValue("XTRKGAIN") ;
+	joined                   = true;		    			
 	
     }
 
-    // Returns time corresponding current position in the resolution flight plan
+    // Returns time corresponding to the current position in the resolution flight plan
     // (assuming constant velocity throughtout flight plan)
     public double GetResolutionTime(){
 	Plan FP = ResolutionPlan;
@@ -224,7 +211,8 @@ public class FSAM{
 	int status;
 	Plan CurrentFP  = FlightData.CurrentFlightPlan;
 	boolean UsePlan = true;
-	    
+	float resolutionSpeed   = (float) UAS.pData.getValue("RES_SPEED");
+	
 	switch(resolveState){
 
 	case COMPUTE:
@@ -413,6 +401,8 @@ public class FSAM{
     // Check standoff distance violation
     public void CheckStandoff(){
 
+	double standoff          = UAS.pData.getValue("STANDOFF");
+		
 	double heading = FlightData.yaw;
 
 	if(heading < 0){
@@ -504,7 +494,12 @@ public class FSAM{
 
 	Plan CurrentFP;
 	double currentTime;
-
+	float resolutionSpeed   = (float) UAS.pData.getValue("RES_SPEED");
+	double gridsize          = UAS.pData.getValue("GRIDSIZE");
+	double buffer            = UAS.pData.getValue("BUFFER");
+	double lookahead         = UAS.pData.getValue("LOOKAHEAD");
+	double proximityfactor   = UAS.pData.getValue("PROXFACTOR");
+	
 	if(NominalPlan){
 	    CurrentFP = FlightData.CurrentFlightPlan;
 	    currentTime = UAS.FlightData.planTime;
@@ -602,7 +597,9 @@ public class FSAM{
 
 	for(int i=1;i<FlightData.fenceList.size();i++){
 	    GeoFence GF = FlightData.fenceList.get(i);
-	    SimplePoly expfence = GF.pu.bufferedConvexHull(GF.geoPolyLLA,GF.hthreshold,GF.vthreshold);
+	    double hthreshold = UAS.pData.getValue("HTHRESHOLD");
+	    double vthreshold = UAS.pData.getValue("VTHRESHOLD");
+	    SimplePoly expfence = GF.pu.bufferedConvexHull(GF.geoPolyLLA,hthreshold,vthreshold);
 	    dg.setWeightsInside(expfence,100.0);
 	}
 
@@ -660,6 +657,13 @@ public class FSAM{
     // Compute resolution for stand off distance violation
     public void ResolveStandoffConflict(){
 
+
+	double XtrkDevGain       = UAS.pData.getValue("XTRKGAIN") ;
+
+	if(XtrkDevGain < 0){
+	    XtrkDevGain = - XtrkDevGain;
+	}
+	
 	if(StandoffConflict){
 	    double Vs = XtrkDevGain*crossTrackDeviation;
 	    double V  = UAS.GetSpeed();

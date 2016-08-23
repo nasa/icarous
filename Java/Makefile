@@ -21,7 +21,7 @@ CLASSPATH  = bin
 JAVAC      = javac
 
 
-ALL: MAVLINK ICAROUS MISSION LAUNCH SITL PX4 
+ALL: MAVLINK ICAROUS MISSION LAUNCH
 
 PRE:
 	test -d bin || mkdir bin
@@ -40,16 +40,6 @@ MISSION: PRE $(MISSIONSRC)
 	@echo
 	@echo "Compiling Mission files"
 	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(MISSIONSRC) -d $(CLASSPATH)
-
-SITL: PRE $(SITLSRC)
-	@echo
-	@echo "Compiling SITL files"
-	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(SITLSRC) -d $(CLASSPATH)
-
-PX4: PRE $(PX4SRC)
-	@echo
-	@echo "Compiling PX4 files"
-	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(PX4SRC) -d $(CLASSPATH)
 
 LAUNCH: PRE $(LAUNCHSRC)
 	@echo

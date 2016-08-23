@@ -43,7 +43,8 @@ public class BCAST implements Runnable{
 	double timeStart                   = (double) (System.nanoTime()/1E9);
 	double timeCurrent,timeElapsed;                 
 	while(true){	    	    	    	   
-
+	    ic_hz                       = pData.getValue("ICHBEAT");
+	    
 	    timeCurrent = (double) (System.nanoTime()/1E9);
 
 	    timeElapsed = timeCurrent - timeStart;

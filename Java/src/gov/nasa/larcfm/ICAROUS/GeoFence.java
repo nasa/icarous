@@ -45,12 +45,7 @@ public class GeoFence{
     public int numVertices;
     public double floor;
     public double ceiling;
-    public static double hthreshold;
-    public static double vthreshold;
-    public static double hstepback;
-    public static double vstepback;
-    
-    
+            
     Position SafetyPoint      = null;
     Position RecoveryPoint    = null;
     boolean violation         = false;
@@ -70,8 +65,7 @@ public class GeoFence{
     ParameterData pData;
     public double entryTime;
     public double exitTime;
-    private double lookahead;
-    private int stepbacktype;
+    
                 
     public GeoFence(int IDIn,int TypeIn,int numVerticesIn,double floorIn,double ceilingIn,ParameterData pdata){
 	geoPolyLLA     = new SimplePoly(floorIn,ceilingIn);
@@ -88,14 +82,7 @@ public class GeoFence{
 	pcr            = new PolycarpResolution();
 	pu             = new PolyUtil();
 	fenceVertices  = new ArrayList<Vect2>();
-	pData          = pdata;
-    
-	hthreshold   = pData.getValue("HTHRESHOLD");
-	vthreshold   = pData.getValue("VTHRESHOLD");
-	hstepback    = pData.getValue("HSTEPBACK");
-	vstepback    = pData.getValue("VSTEPBACK");
-	lookahead    = pData.getValue("LOOKAHEAD");
-	stepbacktype = pData.getInt("STEPBACKTYPE");
+	pData          = pdata;    		
 	
     }
 
@@ -137,6 +124,10 @@ public class GeoFence{
 	Vect3 so = proj.project(pos);
 
 	SafetyPoint = GetSafetyPoint(acState);
+
+	double lookahead    = pData.getValue("LOOKAHEAD");	
+	double hthreshold   = pData.getValue("HTHRESHOLD");
+	double vthreshold   = pData.getValue("VTHRESHOLD");
 	
 	//System.out.println("Distance from edge:"+geoPoly3D.distanceFromEdge(so));
 	
@@ -248,7 +239,13 @@ public class GeoFence{
 	Position Safe = Position.makeXYZ(0.0,0.0,0.0);
 	Position recPoint = Position.makeXYZ(0.0,0.0,0.0);
 	
-			
+	int stepbacktype    = pData.getInt("STEPBACKTYPE");
+	double hstepback    = pData.getValue("HSTEPBACK");
+	double vstepback    = pData.getValue("VSTEPBACK");
+	double hthreshold   = pData.getValue("HTHRESHOLD");
+	double vthreshold   = pData.getValue("VTHRESHOLD");	
+	
+	
 	// Check if perpendicular intersection lies within line segment
 	for(int i=0;i<geoPoly3D.size();i++){
 	    vert_i = i;
@@ -325,6 +322,8 @@ public class GeoFence{
 
 	}
 
+	
+	
 	if(stepbacktype == 0){
 	    CD  = new Vect2(x30-x3,y30-y3);
 	    C   = new Vect2(x3,y3);

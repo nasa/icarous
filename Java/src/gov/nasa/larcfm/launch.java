@@ -11,7 +11,7 @@
 import gov.nasa.larcfm.ICAROUS.*;
 import gov.nasa.larcfm.MISSION.*;
 import gov.nasa.larcfm.Util.ParameterData;
-import gov.nasa.larmcfm.IO.SeparatedInput;
+import gov.nasa.larcfm.IO.SeparatedInput;
 import com.MAVLink.common.*;
 import java.io.*;
 
@@ -29,18 +29,22 @@ public class launch{
 	int comportin     = 0;
 	int comportout    = 0;
 
+	// Read in initial value for all parameters (Note this can also be set from
+	// the ground station later.
+	ParameterData pData = null;
 	try{
 	    FileReader in = new FileReader("params/icarous.txt");
 	    SeparatedInput reader = new SeparatedInput(in);
 
 	    reader.readLine();
-	    ParameterData pData = reader.getParametersRef();	    	    
+	    pData = reader.getParametersRef();	    	    
 	}
 	catch(FileNotFoundException e){
 	    System.out.println("parameter file not found");
 	}	
 	
-
+	
+	
 	// Process input arguments
 	for(int i=0;i<args.length && args[i].startsWith("-");++i){
 	    if(args[i].startsWith("-v")){
@@ -140,7 +144,7 @@ public class launch{
 					       bcastport,
 					       FlightData);
 	   
-	    BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt);	
+	    BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt,pData);	
 	    bcast_module.start();
 		    
 	}		

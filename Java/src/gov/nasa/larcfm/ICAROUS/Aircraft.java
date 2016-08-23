@@ -50,7 +50,8 @@ public class Aircraft implements ErrorReporter{
     public ParameterData pData;
     
     public Aircraft(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc,ParameterData pdata){
-	
+
+	pData            = pdata;
 	apIntf           = ap_Intf;
 	comIntf          = com_Intf;
 	FlightData       = acData;
@@ -63,7 +64,7 @@ public class Aircraft implements ErrorReporter{
 	timeLog          = String.format("%.3f",0.0f);
 	landStart        = false;
 	MissionState     = 0;
-	pData            = pdata;
+	
     }
 
     // Function to send commands to pixhawk
