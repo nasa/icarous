@@ -22,17 +22,16 @@ public class GenericObject{
     int type;
     Position pos;
     Velocity vel;
-    float orientation;
+    double orientation;
 
     public GenericObject(int type_in,int id_in,
-			 float lat_in, float lon_in, float altmsl_in,
-			 float orient_in,
+			 float lat_in, float lon_in, float altmsl_in,			 
 			 float vx_in, float vy_in,float vz_in){
 	id   = id_in;
 	type = type_in;
 	pos  = Position.makeLatLonAlt(lat_in,"degree",lon_in,"degree",altmsl_in,"m");
 	vel  = Velocity.makeVxyz(vx_in,vy_in,vz_in);		
-	orientation = orient_in;
+	orientation = vel.trk();
 	
     }
 
@@ -41,7 +40,7 @@ public class GenericObject{
 	if(id == obj.id){
 	    if(update){
 		pos = obj.pos.copy();
-		vel = obj.vel.copy();
+		vel = obj.vel.mkAddTrk(0);
 		orientation = obj.orientation;
 	    }
 	    return true;
@@ -63,7 +62,7 @@ public class GenericObject{
 	    }
 	}
 
-	if(!inlist){
+	if(!inList){
 	    objectList.add(obj);
 	}
 	
