@@ -16,23 +16,19 @@ except IOError:
     parser.error("File "+args[0]+" not found")
 outfile = options.outfile 
 
-## print("Reading %s" % args[0])
-next = False
-for line in infile:
-    linestr = line.strip()
-    if linestr != "" and not re.match('#',linestr):
-          lstln = linestr.split(",")
-          if lstln[0] == "id":
-              next = True
-          elif next:
-              l0 = lstln[0].strip()
-              l1 = lstln[1].strip()
-              l3 = lstln[3].strip()
-              l4 = lstln[4].strip()
-              l5 = "0" #lstln[5].strip()
-              l6 = lstln[6].strip();
-              if l0 == "0" and l1 == "0":
-                  wp = l3+","+l4+","+l5+","+l6
-                  print(wp)
-                  next = False
+line = infile.readline()  # ignore the first line (protocol)
+
+next = True;
+while(next):
+    f = infile.readline();
+    if f[0] == "#":
+        continue
+    else:
+        entries = f.split("\t")
+        if entries[0] == "0":
+            print entries[8]+","+entries[9]+","+entries[10]+",0"
+            next = False;
+
+
+
                   
