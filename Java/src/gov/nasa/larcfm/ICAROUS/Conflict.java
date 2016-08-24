@@ -86,6 +86,8 @@ public class Conflict{
 		}
 		
 	    case TRAFFIC:
+		return 1;
+		
 	    case OBSTACLE:		
 	    case EXAMINE:
 

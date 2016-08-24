@@ -119,9 +119,37 @@ public class FSAM{
 	
 	// Create an object of type Daidalus for a well-clear volume based on TAUMOD
 	daa = new Daidalus();
-	daa.parameters.setLookaheadTime(1);
-	daa.parameters.setCollisionAvoidanceBandsFactor(1);
+
+	ParameterData p = new ParameterData();
+		
+	p.setInternal("min_gs", Units.from("m/s",0), "kts");
+	p.setInternal("max_gs", Units.from("m/s",6), "kts");
+	p.setInternal("min_vs", Units.from("fpm",0), "fpm");
+	p.setInternal("max_vs", Units.from("fpm",100), "fpm");
+	p.setInternal("min_alt", Units.from("ft",0), "ft");
+	p.setInternal("max_alt", Units.from("ft",500), "ft");
 	
+	// Kinematic bands
+	
+	p.setInternal("horizontal_accel", Units.from("m/s^2",2), "m/s^2");
+	p.setInternal("vertical_accel", Units.from("m/s^2",2), "m/s^2");
+	p.setInternal("turn_rate", Units.from("deg/s",60), "deg/s");
+	p.setInternal("bank_angle", Units.from("deg",60), "deg");
+	p.setInternal("vertical_rate", Units.from("fpm",200), "fpm");
+	
+	
+	daa.parameters.setParameters(p);			
+	daa.parameters.setLookaheadTime(15);
+	daa.parameters.setCollisionAvoidanceBands(true);
+	daa.parameters.alertor = AlertQuad();
+	
+    }
+
+    static public AlertLevels AlertQuad() {		
+	AlertLevels alertor = new AlertLevels();
+	alertor.setConflictAlertLevel(1);		
+	alertor.add(new AlertThresholds(new CDCylinder(5,"m",1,"m"),55,75,BandsRegion.NEAR));
+	return alertor;
     }
 
     // Returns time corresponding to the current position in the resolution flight plan
@@ -234,8 +262,12 @@ public class FSAM{
 	case COMPUTE:
 	    // Call the relevant resolution functions to resolve conflicts
 	    // [TODO:] Add conflict resolution table to add prioritization/scheduling to handle multiple conflicts
-	    
-	    if(FenceKeepInConflict){
+	    if(TrafficConflict){
+		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for traffic conflict");
+		ResolveKeepInConflict();
+		UsePlan = false;
+	    }
+	    else if(FenceKeepInConflict){
 		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for keep in conflict");
 		UAS.SetSpeed(resolutionSpeed);
 		ResolveKeepInConflict();		
@@ -269,7 +301,14 @@ public class FSAM{
 	    // Execute maneuver based resolution when appropriate
 	    
 	    if( executeState != EXECUTE_STATE.COMPLETE ){
-		ResolveStandoffConflict();
+
+		if(TraffiConflict){
+		    ResolveTrafficConflict();
+		}
+		else if(StandoffConflict){
+		    ResolveStandoffConflict();
+		}
+		
 		ExecuteManeuver();
 	    }
 	    else{
@@ -481,21 +520,26 @@ public class FSAM{
 	    
 	}
 
-	printTimeToViolation(daa);
-	
-    }
+	TrafficConflict = false;
+	for (int ac=1; ac < daa.numberOfAircraft(); ac++) {
+	    double tlos = daa.timeToViolation(ac);
+	    if (tlos >= 0) {
+		TrafficConflict = true
+		System.out.printf(
+				  "Predicted violation with traffic aircraft %s in %.1f [s]\n",
+				  daa.getAircraftState(ac).getId(),tlos);
 
-    static void printTimeToViolation(Daidalus daa) {
-    // Aircraft at index 0 is ownship
-    for (int ac=1; ac < daa.numberOfAircraft(); ac++) {
-      double tlos = daa.timeToViolation(ac);
-      if (tlos >= 0) {
-        System.out.printf(
-            "Predicted violation with traffic aircraft %s in %.1f [s]\n",
-            daa.getAircraftState(ac).getId(),tlos);
-      }
+		Conflict cf = new Conflict(PRIORITY_LEVEL.HIGH,CONFLICT_TYPE.TRAFFIC);
+		Conflict.AddConflictToList(conflictList,cf);
+	    }
+	}
+	
+		
     }
-  }
+    
+    
+    
+
 
     // Compute resolution for keep in conflict
     public void ResolveKeepInConflict(){
@@ -727,8 +771,8 @@ public class FSAM{
 
 	    double Trk = PrevWP.track(NextWP);
 
-	    Vn = Math.cos(Trk) - Math.sin(Trk);
-	    Ve = Math.sin(Trk) + Math.cos(Trk);
+	    Vn = Vf*Math.cos(Trk) - Vs*Math.sin(Trk);
+	    Ve = Vf*Math.sin(Trk) + Vs*Math.cos(Trk);
 	    Vu = 0;
 
 	    // System.out.format("Vn=%f,Ve=%f\n",Vn,Ve);
@@ -740,6 +784,39 @@ public class FSAM{
 	    Vu = 0;
 	}
     }
+
+    public void ResolveTraffiConflict(){
+
+	KinematicMultiBands KMB = daa.getKinematicMultiBands();
+
+	double heading_right = KMB.trackResolution(true);
+	double heading_left  = KMB.trackResolution(false);
+
+	double res_heading;
+	if(heading_right != Double.NAN && heading_right != Double.POSITIVE_INFINITY){
+	    res_heading = heading_right;
+	}
+	else if(heading_left != Double.NAN && heading_left != Double.NEGATIVE_INFINITY){
+	    res_heading = heading_left;
+	}
+	else{
+	    res_heading = Double.NAN;
+	}
+
+	if(res_heading != Double.NAN){
+		    double V  = UAS.GetSpeed();
+		    Vn = V*Math.cos(res_heading);
+		    Ve = V*Math.sin(res_heading);
+		    Vu = 0;
+	}
+	else{
+	    Vn = 0;
+	    Ve = 0;
+	    Vu = 0;
+	    System.out.println("No resolution");
+	}
+    }
+    
 
     public void ExecuteManeuver(){
 
