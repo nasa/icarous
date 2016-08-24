@@ -22,9 +22,9 @@ class Traffic:
         self.tstart = tstart
 
     def get_pos(self,t):
-        self.x0 = self.x0 + self.vx0*(t-self.tstart)
-        self.y0 = self.y0 + self.vy0*(t-self.tstart)
-        self.z0 = self.z0 + self.vz0*(t-self.tstart)
+        self.x0 = self.x0 + self.vx0*(0.5)
+        self.y0 = self.y0 + self.vy0*(0.5)
+        self.z0 = self.z0 + self.vz0*(0.5)
     
 class TrafficModule(mp_module.MPModule):
     def __init__(self, mpstate):

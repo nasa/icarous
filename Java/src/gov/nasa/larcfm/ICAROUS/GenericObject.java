@@ -18,11 +18,11 @@ import gov.nasa.larcfm.Util.Velocity;
 
 public class GenericObject{
 
-    int id;
-    int type;
-    Position pos;
-    Velocity vel;
-    double orientation;
+    public int id;
+    public int type;
+    public Position pos;
+    public Velocity vel;
+    public double orientation;
 
     public GenericObject(int type_in,int id_in,
 			 float lat_in, float lon_in, float altmsl_in,			 
@@ -30,7 +30,7 @@ public class GenericObject{
 	id   = id_in;
 	type = type_in;
 	pos  = Position.makeLatLonAlt(lat_in,"degree",lon_in,"degree",altmsl_in,"m");
-	vel  = Velocity.makeVxyz(vx_in,vy_in,vz_in);		
+	vel  = Velocity.makeVxyz(vy_in,vx_in,vz_in);		
 	orientation = vel.trk();
 	
     }

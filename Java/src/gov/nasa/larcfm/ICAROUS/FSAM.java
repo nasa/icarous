@@ -76,7 +76,7 @@ public class FSAM{
 
     private boolean FenceKeepInConflict;
     private boolean FenceKeepOutConflict;
-    private boolean TrafficConflict;
+    private boolean TrafficConflict;    
     private boolean StandoffConflict;
     private boolean GotoNextWP;
     private boolean joined;
@@ -93,7 +93,7 @@ public class FSAM{
     public double crossTrackDeviation;
 
     private Daidalus daa;
-    
+    private int daaTick;
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS                      = ac;
@@ -139,16 +139,17 @@ public class FSAM{
 	
 	
 	daa.parameters.setParameters(p);			
-	daa.parameters.setLookaheadTime(15);
+	daa.parameters.setLookaheadTime(50);
 	daa.parameters.setCollisionAvoidanceBands(true);
 	daa.parameters.alertor = AlertQuad();
-	
+
+	daaTick = 0;
     }
 
     static public AlertLevels AlertQuad() {		
 	AlertLevels alertor = new AlertLevels();
 	alertor.setConflictAlertLevel(1);		
-	alertor.add(new AlertThresholds(new CDCylinder(5,"m",1,"m"),55,75,BandsRegion.NEAR));
+	alertor.add(new AlertThresholds(new CDCylinder(10,"m",1,"m"),55,75,BandsRegion.NEAR));
 	return alertor;
     }
 
@@ -204,7 +205,7 @@ public class FSAM{
 	
 	// Check for deviation from prescribed flight profile only in the NOOP state.
 	if(resolveState == RESOLVE_STATE.NOOP){
-	    CheckStandoff();
+	    //CheckStandoff();
 	}
 	    
 	// Check for conflicts from DAIDALUS against other traffic.
@@ -263,9 +264,9 @@ public class FSAM{
 	    // Call the relevant resolution functions to resolve conflicts
 	    // [TODO:] Add conflict resolution table to add prioritization/scheduling to handle multiple conflicts
 	    if(TrafficConflict){
-		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for traffic conflict");
-		ResolveKeepInConflict();
+		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for traffic conflict");		
 		UsePlan = false;
+		// Resolution will be computed during the manuever
 	    }
 	    else if(FenceKeepInConflict){
 		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for keep in conflict");
@@ -302,7 +303,7 @@ public class FSAM{
 	    
 	    if( executeState != EXECUTE_STATE.COMPLETE ){
 
-		if(TraffiConflict){
+		if(TrafficConflict){
 		    ResolveTrafficConflict();
 		}
 		else if(StandoffConflict){
@@ -505,32 +506,49 @@ public class FSAM{
     }
 
     public void CheckTraffic(){
-
+	daaTick = daaTick+1;
 	Position so = FlightData.acState.positionLast();
 	Velocity vo = FlightData.acState.velocityLast();
+
+	//System.out.println("pos:"+so.toString());
+	//System.out.println("vel:"+vo.toString());
+	//Position so = Position.makeLatLonAlt( 37.102177,"deg", -76.387207,"deg", 5,"m");
+	//Velocity vo = Velocity.makeTrkGsVs(90.0,"deg", 1,"m/s", 0.0,"fpm");
+
+	//Position si = Position.makeLatLonAlt(37.102186,"deg", -76.386090,"deg", 5,"m"); 
+	//Velocity vi = Velocity.makeTrkGsVs(270.0,"deg", 1,"m/s", 0.0,"fpm"); 
+	
 	daa.reset();
-	daa.setOwnshipState("Ownship",so,vo,timeCurrent);
+	daa.setOwnshipState("Ownship",so,vo,0.0);
 
 	for(int i=0;i<FlightData.traffic.size();i++){
 	    synchronized(FlightData.traffic){
 		Position si = FlightData.traffic.get(i).pos.copy();
 		Velocity vi = FlightData.traffic.get(i).vel.mkAddTrk(0);
+
+		//System.out.println("traffic pos:"+si.toString());
+		//System.out.println("traffic vel:"+vi.toString());
 		daa.addTrafficState("traffic"+i,si,vi);
 	    }
 	    
 	}
 
-	TrafficConflict = false;
+	if(daaTick > 100){
+	    TrafficConflict = false;
+	}
+
+	System.out.println("Tick:"+daaTick);
 	for (int ac=1; ac < daa.numberOfAircraft(); ac++) {
 	    double tlos = daa.timeToViolation(ac);
 	    if (tlos >= 0) {
-		TrafficConflict = true
+		TrafficConflict = true;
 		System.out.printf(
 				  "Predicted violation with traffic aircraft %s in %.1f [s]\n",
 				  daa.getAircraftState(ac).getId(),tlos);
 
 		Conflict cf = new Conflict(PRIORITY_LEVEL.HIGH,CONFLICT_TYPE.TRAFFIC);
 		Conflict.AddConflictToList(conflictList,cf);
+		daaTick = 0;
 	    }
 	}
 	
@@ -785,34 +803,56 @@ public class FSAM{
 	}
     }
 
-    public void ResolveTraffiConflict(){
+    public void ResolveTrafficConflict(){
 
 	KinematicMultiBands KMB = daa.getKinematicMultiBands();
 
-	double heading_right = KMB.trackResolution(true);
-	double heading_left  = KMB.trackResolution(false);
+	//double heading_right = KMB.trackResolution(true);
+	//double heading_left  = KMB.trackResolution(false);
+	double res_heading = 1000;
+	
+	for (int i = 0; i < KMB.trackLength(); i++ ) {
+	    Interval iv = KMB.track(i,"deg"); //i-th band region
+	    double lower_trk = iv.low; //[deg]
+	    double upper_trk = iv.up; //[deg]
+	    BandsRegion regionType = KMB.trackRegion(i);
+	    System.out.println("["+lower_trk+","+upper_trk+"]");
+	    System.out.println("Band type:"+regionType.toString());
 
-	double res_heading;
-	if(heading_right != Double.NAN && heading_right != Double.POSITIVE_INFINITY){
+	    double h, diff = Double.MAX_VALUE;
+	    if(regionType.toString() == "<NONE>"){
+		h        = (lower_trk + upper_trk)/2;
+		double d = Math.abs(FlightData.yaw - h);
+		if (d < diff){
+		    res_heading = h;
+		    diff = d;
+		}
+	    }
+	}
+	
+	//System.out.println("resolution heading L:"+heading_left*180/3.142);
+	//System.out.println("resolution heading R:"+heading_right*180/3.142);
+	
+	/*
+	if(!Double.isNaN(heading_right) &&  !Double.isInfinite(heading_right)){
 	    res_heading = heading_right;
 	}
-	else if(heading_left != Double.NAN && heading_left != Double.NEGATIVE_INFINITY){
+	else if(!Double.isNaN(heading_left) && !Double.isInfinite(heading_left)){
 	    res_heading = heading_left;
 	}
 	else{
-	    res_heading = Double.NAN;
-	}
+	    res_heading = Double.NaN;
+	    }*/
 
-	if(res_heading != Double.NAN){
-		    double V  = UAS.GetSpeed();
-		    Vn = V*Math.cos(res_heading);
-		    Ve = V*Math.sin(res_heading);
-		    Vu = 0;
-	}
-	else{
-	    Vn = 0;
-	    Ve = 0;
+	System.out.println("resolution heading:"+res_heading);
+	if(res_heading < 1000){
+	    double V  = UAS.GetSpeed();
+	    Vn = V*Math.cos(Math.toRadians(res_heading));
+	    Ve = V*Math.sin(Math.toRadians(res_heading));
 	    Vu = 0;
+	    System.out.format("Vn = %f, Ve = %f, Vu = %f\n",Vn,Ve,Vu);
+	}
+	else{	    
 	    System.out.println("No resolution");
 	}
     }
@@ -841,7 +881,7 @@ public class FSAM{
 
 	    UAS.SetVelocity(Vn,Ve,Vu);
 
-	    if(!StandoffConflict){
+	    if(!StandoffConflict && !TrafficConflict){
 		executeState = EXECUTE_STATE.COMPLETE;
 
 		Iterator Itr = conflictList.iterator();
@@ -850,7 +890,7 @@ public class FSAM{
 		    Itr.remove();
 		}
 		currentConflicts = conflictList.size();
-		
+		System.out.println("Finished maneuver");
 	    }
 	    
 	    break;

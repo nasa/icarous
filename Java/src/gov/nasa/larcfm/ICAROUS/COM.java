@@ -228,6 +228,7 @@ public class COM implements Runnable,ErrorReporter{
 		    synchronized(FlightData.traffic){
 			GenericObject.AddObject(FlightData.traffic,obj);
 		    }
+
 		}
 	    }
 	    	    

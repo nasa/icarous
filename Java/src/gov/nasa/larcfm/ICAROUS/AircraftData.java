@@ -114,7 +114,7 @@ public class AircraftData{
 	vy       = (double) (GPS.vy)/1E2;
 	vz       = (double) (GPS.vz)/1E2;
 
-	Velocity V = Velocity.makeVxyz(vx,vy,vz);
+	Velocity V = Velocity.makeVxyz(vy,vx,vz);
 	Position P = Position.makeLatLonAlt(lat,"degree",lon,"degree",alt,"m");
 	
 	acState.add(P,V,bootTime);
