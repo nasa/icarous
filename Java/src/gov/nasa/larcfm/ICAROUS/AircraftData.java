@@ -163,9 +163,17 @@ public class AircraftData{
 	    
 	    double wptime= 0;
 	    Position nextWP = Position.makeLatLonAlt(msgMissionItem0.x,"degree",msgMissionItem0.y,"degree",msgMissionItem0.z,"m");
-	    if(i > 0 ){			  
+	    if(i > 0 ){
+
+		double vel = msgMissionItem0.param4;
+
+		if(vel < 0.5){
+		    vel = 1;
+		}
+		
 		double distance = CurrentFlightPlan.point(i - 1).position().distanceH(nextWP);
-		wptime          = CurrentFlightPlan.getTime(i-1) + distance/msgMissionItem0.param4;
+		wptime          = CurrentFlightPlan.getTime(i-1) + distance/vel;
+		System.out.println("Times:"+wptime);
 	    }		     
 	    
 	    CurrentFlightPlan.add(new NavPoint(nextWP,wptime));
@@ -284,6 +292,7 @@ public class AircraftData{
     // Function to get flight plan
     public void GetWaypoints(Interface Intf,int target_system,int target_component,int COUNT,List<msg_mission_item> mission){
 
+	mission.clear();
 	boolean readComplete = false;
 	int count = 0;
 	
@@ -393,8 +402,10 @@ public class AircraftData{
 	    
 		case FP_SEND_WP:
 
+		    Intf.SetTimeout(1000);
 		    Intf.Read();		
-
+		    Intf.SetTimeout(0);
+		    
 		    msg_mission_request msgMissionRequest = Inbox.GetMissionRequest();
 		    if(msgMissionRequest != null){
 		    

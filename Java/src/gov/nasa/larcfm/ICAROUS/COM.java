@@ -75,7 +75,7 @@ public class COM implements Runnable,ErrorReporter{
 	    // Handle mission waypoints / geofence points
 	    msg_mission_count msgMissionCount = RcvdMessages.GetMissionCount();	    
 	    if(msgMissionCount != null){		
-		//System.out.println("Handling new waypoints");
+		//System.out.println("Handling new waypoints");		
 		FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);
 		error.addWarning("[" + timeLog + "] MSG: Got waypoints");				
 	    }

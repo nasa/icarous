@@ -19,21 +19,6 @@ import com.MAVLink.enums.*;
 import gov.nasa.larcfm.Util.*;
 import gov.nasa.larcfm.ACCoRD.*;
 
-/*
-import gov.nasa.larcfm.Util.Plan;
-import gov.nasa.larcfm.Util.AircraftState;
-import gov.nasa.larcfm.Util.Position;
-import gov.nasa.larcfm.Util.NavPoint;
-import gov.nasa.larcfm.Util.ParameterData;
-import gov.nasa.larcfm.Util.PolyPath;
-import gov.nasa.larcfm.Util.PlanUtil;
-import gov.nasa.larcfm.Util.Pair;
-import gov.nasa.larcfm.Util.WeatherUtil;
-import gov.nasa.larcfm.Util.DensityGrid;
-import gov.nasa.larcfm.Util.BoundingRectangle;
-import gov.nasa.larcfm.Util.SimplePoly;
-import gov.nasa.larcfm.IO.SeparatedInput;
-*/
 
 enum FSAM_OUTPUT{
     CONFLICT,NOOP, TERMINATE
@@ -89,6 +74,7 @@ public class FSAM{
     private double Vn;
     private double Ve;
     private double Vu;
+    private double RefHeading;
 
     public double crossTrackDeviation;
 
@@ -536,8 +522,7 @@ public class FSAM{
 	if(daaTick > 100){
 	    TrafficConflict = false;
 	}
-
-	System.out.println("Tick:"+daaTick);
+	
 	for (int ac=1; ac < daa.numberOfAircraft(); ac++) {
 	    double tlos = daa.timeToViolation(ac);
 	    if (tlos >= 0) {
@@ -807,10 +792,11 @@ public class FSAM{
 
 	KinematicMultiBands KMB = daa.getKinematicMultiBands();
 
-	//double heading_right = KMB.trackResolution(true);
-	//double heading_left  = KMB.trackResolution(false);
+	double heading_right = KMB.trackResolution(true);
+	double heading_left  = KMB.trackResolution(false);
 	double res_heading = 1000;
-	
+
+	/*
 	for (int i = 0; i < KMB.trackLength(); i++ ) {
 	    Interval iv = KMB.track(i,"deg"); //i-th band region
 	    double lower_trk = iv.low; //[deg]
@@ -820,18 +806,49 @@ public class FSAM{
 	    System.out.println("Band type:"+regionType.toString());
 
 	    double h, diff = Double.MAX_VALUE;
-	    if(regionType.toString() == "<NONE>"){
-		h        = (lower_trk + upper_trk)/2;
-		double d = Math.abs(FlightData.yaw - h);
-		if (d < diff){
-		    res_heading = h;
-		    diff = d;
+	    if(KMB.trackLength() > 1){
+
+		
+		if(regionType.toString() == "<NONE>"){
+		    h        = (lower_trk + upper_trk)/2;
+		    double d = Math.abs(FlightData.yaw - h);
+		    if (d < diff){
+			res_heading = h;
+			diff = d;
+		    }
 		}
 	    }
-	}
+	    else{
+		Position PrevWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
+		Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
+		res_heading = PrevWP.track(NextWP); 
+	    }
+	}*/
 	
 	//System.out.println("resolution heading L:"+heading_left*180/3.142);
 	//System.out.println("resolution heading R:"+heading_right*180/3.142);
+
+	heading_left  = heading_left*180/Math.PI;
+	heading_right = heading_right*180/Math.PI;
+	
+	double d1,d2,h1,h2, diff = Double.MAX_VALUE;
+	if(KMB.trackLength() > 1){	    
+	    
+	    d1 = Math.abs(FlightData.yaw - heading_left);
+	    d2 = Math.abs(FlightData.yaw - heading_right);
+
+	    if(d1 <= d2){
+		res_heading = heading_left;
+	    }
+	    else{
+		res_heading = heading_right;
+	    }	    	    
+	}
+	else{
+	    Position PrevWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
+	    Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
+	    res_heading = PrevWP.track(NextWP); 
+	}
 	
 	/*
 	if(!Double.isNaN(heading_right) &&  !Double.isInfinite(heading_right)){
@@ -843,17 +860,18 @@ public class FSAM{
 	else{
 	    res_heading = Double.NaN;
 	    }*/
-
-	System.out.println("resolution heading:"+res_heading);
+	
 	if(res_heading < 1000){
 	    double V  = UAS.GetSpeed();
 	    Vn = V*Math.cos(Math.toRadians(res_heading));
 	    Ve = V*Math.sin(Math.toRadians(res_heading));
 	    Vu = 0;
+	    RefHeading = res_heading;
+	    System.out.println("resolution heading:"+res_heading);
 	    System.out.format("Vn = %f, Ve = %f, Vu = %f\n",Vn,Ve,Vu);
 	}
 	else{	    
-	    System.out.println("No resolution");
+	    //System.out.println("No resolution");
 	}
     }
     
@@ -880,6 +898,7 @@ public class FSAM{
 	case SEND_COMMAND:
 
 	    UAS.SetVelocity(Vn,Ve,Vu);
+	    UAS.SetYaw(RefHeading);
 
 	    if(!StandoffConflict && !TrafficConflict){
 		executeState = EXECUTE_STATE.COMPLETE;

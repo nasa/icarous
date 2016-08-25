@@ -229,11 +229,11 @@ public class Aircraft implements ErrorReporter{
 	switch(status){
 
 	case 0:
-	    error.addWarning("Command Accepted");
+	    //error.addWarning("Command Accepted");
 	    return 1;
 	    
 	case MAV_CMD_ACK.MAV_CMD_ACK_OK:
-	    error.addError("Command Accepted");
+	    //error.addError("Command Accepted");
 	    return 1;
 	    
 	case MAV_CMD_ACK.MAV_CMD_ACK_ERR_FAIL:
