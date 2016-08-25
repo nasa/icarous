@@ -519,7 +519,7 @@ public class FSAM{
 	    
 	}
 
-	if(daaTick > 100){
+	if(daaTick > 20){
 	    TrafficConflict = false;
 	}
 	
@@ -794,7 +794,7 @@ public class FSAM{
 
 	double heading_right = KMB.trackResolution(true);
 	double heading_left  = KMB.trackResolution(false);
-	double res_heading = 1000;
+	double res_heading;
 
 	/*
 	for (int i = 0; i < KMB.trackLength(); i++ ) {
@@ -825,12 +825,12 @@ public class FSAM{
 	    }
 	}*/
 	
-	//System.out.println("resolution heading L:"+heading_left*180/3.142);
-	//System.out.println("resolution heading R:"+heading_right*180/3.142);
+	System.out.println("resolution heading L:"+heading_left*180/3.142);
+	System.out.println("resolution heading R:"+heading_right*180/3.142);
 
 	heading_left  = heading_left*180/Math.PI;
 	heading_right = heading_right*180/Math.PI;
-	
+	res_heading   = Double.NaN;
 	double d1,d2,h1,h2, diff = Double.MAX_VALUE;
 	if(KMB.trackLength() > 1){	    
 	    
@@ -845,9 +845,9 @@ public class FSAM{
 	    }	    	    
 	}
 	else{
-	    Position PrevWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
-	    Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
-	    res_heading = PrevWP.track(NextWP); 
+	    //Position PrevWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
+	    //Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
+	    //res_heading = PrevWP.track(NextWP); 
 	}
 	
 	/*
@@ -861,7 +861,7 @@ public class FSAM{
 	    res_heading = Double.NaN;
 	    }*/
 	
-	if(res_heading < 1000){
+	if(!Double.isNaN(res_heading)){
 	    double V  = UAS.GetSpeed();
 	    Vn = V*Math.cos(Math.toRadians(res_heading));
 	    Ve = V*Math.sin(Math.toRadians(res_heading));
@@ -871,7 +871,11 @@ public class FSAM{
 	    System.out.format("Vn = %f, Ve = %f, Vu = %f\n",Vn,Ve,Vu);
 	}
 	else{	    
-	    //System.out.println("No resolution");
+	    res_heading = RefHeading;
+	    double V  = UAS.GetSpeed();
+	    Vn = V*Math.cos(Math.toRadians(res_heading));
+	    Ve = V*Math.sin(Math.toRadians(res_heading));
+	    Vu = 0;
 	}
     }
     
