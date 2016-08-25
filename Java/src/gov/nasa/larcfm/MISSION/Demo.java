@@ -49,13 +49,14 @@ public class Demo implements Mission,ErrorReporter{
 	double ElapsedTime = 0;
 	double Targetheading;
 	double StartTime = 0; 
-	
+
+	/*
 	if(status == 0){
-	    //UAS.SetMode(4);
-	    //UAS.SetVelocity(1.0,0.0,0.0);
-	    //status = 1;
-	    //StartTime = CurrentTime;
-	}	
+	  UAS.SetMode(4);
+	    UAS.SetVelocity(-2.0,2.0,0.0);
+	    status = 1;
+	    StartTime = CurrentTime;
+	    }*/	
        
 	ElapsedTime = CurrentTime - StartTime;
 

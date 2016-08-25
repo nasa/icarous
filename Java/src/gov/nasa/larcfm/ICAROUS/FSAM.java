@@ -74,8 +74,9 @@ public class FSAM{
     private double Vn;
     private double Ve;
     private double Vu;
-    private double RefHeading;
-
+    private double RefHeading1;
+    private double RefHeading2;
+    
     public double crossTrackDeviation;
 
     private Daidalus daa;
@@ -189,11 +190,9 @@ public class FSAM{
 	// Check for geofence resolutions.
 	CheckGeoFences();
 	
-	// Check for deviation from prescribed flight profile only in the NOOP state.
-	if(resolveState == RESOLVE_STATE.NOOP){
-	    //CheckStandoff();
-	}
-	    
+	// Check for deviation from prescribed flight profile only in the NOOP state.	
+	CheckStandoff();
+		    
 	// Check for conflicts from DAIDALUS against other traffic.
 	if(FlightData.traffic.size() > 0){
 	    CheckTraffic();
@@ -480,7 +479,7 @@ public class FSAM{
 
 	double dist = PrevWP.distanceH(CurrentPos);
 
-	double crossTrackDeviation = sgn*dist*Math.sin(Math.toRadians(bearing));
+	crossTrackDeviation = sgn*dist*Math.sin(Math.toRadians(bearing));
 
 	if(Math.abs(crossTrackDeviation) > standoff){
 	    StandoffConflict = true;	    
@@ -753,7 +752,7 @@ public class FSAM{
     public void ResolveStandoffConflict(){
 
 
-	double XtrkDevGain       = UAS.pData.getValue("XTRKGAIN") ;
+	double XtrkDevGain       = UAS.pData.getValue("XTRK_GAIN") ;
 
 	if(XtrkDevGain < 0){
 	    XtrkDevGain = - XtrkDevGain;
@@ -762,9 +761,18 @@ public class FSAM{
 	if(StandoffConflict){
 	    double Vs = XtrkDevGain*crossTrackDeviation;
 	    double V  = UAS.GetSpeed();
+
+	    double sgn = 0;
+
+	    if(Vs >= 0){
+		sgn = 1;
+	    }
+	    else{
+		sgn = -1;
+	    }
 	    
 	    if(Math.pow(Math.abs(Vs),2) >= Math.pow(V,2)){
-		Vs = V;
+		Vs = V*sgn;
 	    }
 
 	    double Vf       = Math.sqrt( Math.pow(V,2) - Math.pow(Vs,2) );
@@ -777,9 +785,15 @@ public class FSAM{
 	    Vn = Vf*Math.cos(Trk) - Vs*Math.sin(Trk);
 	    Ve = Vf*Math.sin(Trk) + Vs*Math.cos(Trk);
 	    Vu = 0;
+	    RefHeading2 = Math.toDegrees(Math.atan2(Ve,Vn));
 
-	    // System.out.format("Vn=%f,Ve=%f\n",Vn,Ve);
+	    if(RefHeading2 < 0){
+		RefHeading2 = 360 + RefHeading2;
+	    }
 	    
+	    System.out.format("Vs = %f, Vf = %f,V=%f,G=%f,Xdev=%f\n",Vs,Vf,V,XtrkDevGain,crossTrackDeviation);
+	    System.out.format("Trk = %f,Vn=%f,Ve=%f\n",Trk,Vn,Ve);
+	    System.out.println("Ref heading:"+RefHeading2);
 	}
 	else{
 	    Vn = 0;
@@ -866,12 +880,12 @@ public class FSAM{
 	    Vn = V*Math.cos(Math.toRadians(res_heading));
 	    Ve = V*Math.sin(Math.toRadians(res_heading));
 	    Vu = 0;
-	    RefHeading = res_heading;
+	    RefHeading1 = res_heading;
 	    System.out.println("resolution heading:"+res_heading);
 	    System.out.format("Vn = %f, Ve = %f, Vu = %f\n",Vn,Ve,Vu);
 	}
 	else{	    
-	    res_heading = RefHeading;
+	    res_heading = RefHeading1;
 	    double V  = UAS.GetSpeed();
 	    Vn = V*Math.cos(Math.toRadians(res_heading));
 	    Ve = V*Math.sin(Math.toRadians(res_heading));
@@ -902,7 +916,13 @@ public class FSAM{
 	case SEND_COMMAND:
 
 	    UAS.SetVelocity(Vn,Ve,Vu);
-	    UAS.SetYaw(RefHeading);
+
+	    if(TrafficConflict){
+		UAS.SetYaw(RefHeading1);
+	    }else{
+		UAS.SetYaw(RefHeading2);
+	    }
+	    
 
 	    if(!StandoffConflict && !TrafficConflict){
 		executeState = EXECUTE_STATE.COMPLETE;
