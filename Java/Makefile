@@ -8,10 +8,6 @@ ICAROUSSRC = $(wildcard src/gov/nasa/larcfm/ICAROUS/*.java)
 
 MISSIONSRC = $(wildcard src/gov/nasa/larcfm/MISSION/*.java)
 
-SITLSRC    = $(wildcard src/gov/nasa/larcfm/SITL/*.java)
-
-PX4SRC     = $(wildcard src/gov/nasa/larcfm/PX4/*.java)
-
 LAUNCHSRC  = $(wildcard src/gov/nasa/larcfm/*.java)
 
 LIB        = :lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar
@@ -45,7 +41,6 @@ LAUNCH: PRE $(LAUNCHSRC)
 	@echo
 	@echo "Compiling launch module"
 	@$(JAVAC) -cp $(CLASSPATH)$(LIB) $(LAUNCHSRC) -d $(CLASSPATH)
-
 
 JAR:
 	@cd bin && jar -cvfm icarous.jar ../MANIFEST.mf gov com *.class
