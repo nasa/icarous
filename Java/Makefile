@@ -14,7 +14,7 @@ PX4SRC     = $(wildcard src/gov/nasa/larcfm/PX4/*.java)
 
 LAUNCHSRC  = $(wildcard src/gov/nasa/larcfm/*.java)
 
-JAR        = :lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar
+LIB        = :lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar
 
 CLASSPATH  = bin
 
@@ -34,17 +34,17 @@ MAVLINK: PRE $(MAVLinkSRC)
 ICAROUS: PRE $(ICAROUSSRC)
 	@echo
 	@echo "Compiling ICAROUS package"
-	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(ICAROUSSRC) -d $(CLASSPATH)
+	@$(JAVAC) -cp $(CLASSPATH)$(LIB) $(ICAROUSSRC) -d $(CLASSPATH)
 
 MISSION: PRE $(MISSIONSRC)
 	@echo
 	@echo "Compiling Mission files"
-	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(MISSIONSRC) -d $(CLASSPATH)
+	@$(JAVAC) -cp $(CLASSPATH)$(LIB) $(MISSIONSRC) -d $(CLASSPATH)
 
 LAUNCH: PRE $(LAUNCHSRC)
 	@echo
 	@echo "Compiling launch module"
-	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(LAUNCHSRC) -d $(CLASSPATH)
+	@$(JAVAC) -cp $(CLASSPATH)$(LIB) $(LAUNCHSRC) -d $(CLASSPATH)
 
 
 JAR:
