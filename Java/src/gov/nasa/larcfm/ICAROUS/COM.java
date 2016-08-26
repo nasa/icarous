@@ -100,12 +100,12 @@ public class COM implements Runnable,ErrorReporter{
 	    if(msgParamRequestList != null){
 		System.out.println("Handling parameter request list");		
 		UAS.EnableDataStream(0);
-		synchronized(UAS.apIntf){		    
+		//synchronized(UAS.apIntf){		    
 		    UAS.apIntf.Write(msgParamRequestList);		
 		    msg_param_value msgParamValue = null;
 		
 		    while(msgParamValue  == null){
-			UAS.apIntf.Read();
+			//UAS.apIntf.Read();
 			msgParamValue = RcvdMessages.GetParamValue();
 		    }
 
@@ -114,20 +114,20 @@ public class COM implements Runnable,ErrorReporter{
 		    double time_param_read_start  = UAS.timeCurrent;
 		    for(int i=0;i<param_count1;i++){
 			//System.out.println("count:"+i);
-			msgParamValue.param_count = param_count1;
+			
 			comIntf.Write(msgParamValue);		    
 			msgParamValue = FlightData.Inbox.GetParamValue();
 		    
 			if(i<param_count1-1){
 			    double time_elapsed = 0;			
 			    while(msgParamValue  == null){
-				UAS.apIntf.Read();
+				//UAS.apIntf.Read();
 				msgParamValue = FlightData.Inbox.GetParamValue();
 			    }						
 			}
 		    }
 		  
-		}
+		    //}
 		System.out.println("Updated parameter list");
 		UAS.EnableDataStream(1);
 	    }
