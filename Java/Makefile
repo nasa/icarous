@@ -21,7 +21,7 @@ CLASSPATH  = bin
 JAVAC      = javac
 
 
-ALL: MAVLINK ICAROUS MISSION LAUNCH
+ALL: MAVLINK ICAROUS MISSION LAUNCH JAR
 
 PRE:
 	test -d bin || mkdir bin
@@ -45,3 +45,8 @@ LAUNCH: PRE $(LAUNCHSRC)
 	@echo
 	@echo "Compiling launch module"
 	@$(JAVAC) -cp $(CLASSPATH)$(JAR) $(LAUNCHSRC) -d $(CLASSPATH)
+
+
+JAR:
+	@cd bin && jar -cvfm icarous.jar ../MANIFEST.mf gov com *.class
+	@mv bin/icarous.jar ./
