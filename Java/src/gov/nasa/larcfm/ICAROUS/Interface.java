@@ -89,11 +89,14 @@ public class Interface{
     }
 
     public void SetTimeout(int timeout){
-	try{
-	    sock.setSoTimeout(timeout);
-	}
-	catch(SocketException e){
-	    System.out.println(e);
+
+	if(interfaceType == SOCKET){
+	    try{
+		sock.setSoTimeout(timeout);
+	    }
+	    catch(SocketException e){
+		System.out.println(e);
+	    }
 	}
     }
     
