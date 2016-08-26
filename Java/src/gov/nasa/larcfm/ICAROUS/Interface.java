@@ -193,11 +193,11 @@ public class Interface{
 
     public void SerialWrite(MAVLinkMessage msg2send){
 
-	MAVLinkPacket raw_packet = msg2send.pack();
-	byte[] buffer            = raw_packet.encodePacket();
-
+	MAVLinkPacket raw_packet = msg2send.pack();	
 	raw_packet.sysid  = msg2send.sysid;
 	raw_packet.compid = msg2send.compid;
+
+	byte[] buffer            = raw_packet.encodePacket();
 	
 	try{
 	    serialPort.writeBytes(buffer);
