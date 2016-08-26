@@ -3,7 +3,9 @@
 if [ "$1" == 'SITL' ];then
    echo "Launching ICAROUS for SITL"
    java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar launch -v --sitl 14551 --com localhost 14552 14553
-
+elif [ "$1" == 'RSITL' ];then
+    echo "Launching ICAROUS for SITL radio"
+    java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar launch -v --sitl 14551 --radio /dev/ttyUSB0
 elif [ "$1" == 'PX4' ];then
     echo "Launching ICAROUS for Pixhawk"
     java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar launch -v --px4 /dev/ttyO1 --com localhost 14552 14553 --bc 230.1.1.1 5555
