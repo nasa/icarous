@@ -2,10 +2,13 @@
     MAVProxy geofence module
 """
 import os, time, platform, math
-import xml.etree.ElementTree as ET
-from pymavlink import mavwp, mavutil
+from pymavlink import mavutil
 from MAVProxy.modules.lib import mp_util
 from MAVProxy.modules.lib import mp_module
+from MAVProxy.modules.mavproxy_map import mp_slipmap
+from MAVProxy.modules.lib import mp_settings
+from MAVProxy.modules.lib.mp_menu import *  # popup menus
+
 if mp_util.has_wxpython:
     from MAVProxy.modules.lib.mp_menu import *
 
@@ -19,12 +22,18 @@ class Traffic:
         self.vy0 = vy;
         self.vz0 = vz;
 
+        self.x = self.x0;
+        self.y = self.y0;
+        self.z = self.z0;
+
         self.tstart = tstart
 
     def get_pos(self,t):
-        self.x0 = self.x0 + self.vx0*(0.5)
-        self.y0 = self.y0 + self.vy0*(0.5)
-        self.z0 = self.z0 + self.vz0*(0.5)
+        dt = t-self.tstart
+        
+        self.x = self.x0 + self.vx0*(dt)
+        self.y = self.y0 + self.vy0*(dt)
+        self.z = self.z0 + self.vz0*(dt)
     
 class TrafficModule(mp_module.MPModule):
     def __init__(self, mpstate):
@@ -38,7 +47,7 @@ class TrafficModule(mp_module.MPModule):
         self.menu_added_map = False
         self.traffic_list = [];
         self.traffic_on_map = [];
-        
+        self.WCV = False;
         
         
     def idle_task(self):
@@ -48,14 +57,26 @@ class TrafficModule(mp_module.MPModule):
             self.module('console').add_menu(self.menu)
         if self.module('map') is not None and not self.menu_added_map:
             self.menu_added_map = True
-            self.module('map').add_menu(self.menu)            
+            self.module('map').add_menu(self.menu)
 
+        
+            
+                                
     def mavlink_packet(self, m):
         '''handle and incoming mavlink packet'''                        
 
         
-        self.Update_traffic();
+        self.Update_traffic();                        
+
+        wcv_volume = mp_slipmap.SlipCircle("well_clear_volume", 3,\
+                                               (self.module('map').lat,self.module('map').lon),\
+                                               10,\
+                                               (255, 0, 0), linewidth=2)                                                
         
+        
+        self.mpstate.map.add_object(wcv_volume)               
+        
+                
         if m.get_type() == "TRAFFIC_INFO":
             print m.breach_status                    
         
@@ -84,7 +105,7 @@ class TrafficModule(mp_module.MPModule):
     def Update_traffic(self):
         '''Update traffic icon on map'''
         
-        from MAVProxy.modules.mavproxy_map import mp_slipmap
+        #from MAVProxy.modules.mavproxy_map import mp_slipmap
         t = time.time()
         
         for i,tffc in enumerate(self.traffic_list):
@@ -101,7 +122,7 @@ class TrafficModule(mp_module.MPModule):
                 self.traffic_on_map.append(vehicle)
                                                         
             self.traffic_list[i].get_pos(t);
-            (lat, lon) = mp_util.gps_offset(37.1021769,-76.3872069, self.traffic_list[i].y0, self.traffic_list[i].x0)
+            (lat, lon) = mp_util.gps_offset(37.1021769,-76.3872069, self.traffic_list[i].y, self.traffic_list[i].x)
             heading = math.degrees(math.atan2(self.traffic_list[i].vy0, self.traffic_list[i].vx0))            
             self.mpstate.map.set_position(vehicle, (lat, lon), rotation=heading)
 

@@ -102,6 +102,7 @@ public class FSAM{
 	currentResolutionWP      = 0;
 	currentConflicts         = 0;
 	joined                   = true;
+	RefHeading1              = Double.NaN;
 	
 	
 	// Create an object of type Daidalus for a well-clear volume based on TAUMOD
@@ -136,7 +137,7 @@ public class FSAM{
     static public AlertLevels AlertQuad() {		
 	AlertLevels alertor = new AlertLevels();
 	alertor.setConflictAlertLevel(1);		
-	alertor.add(new AlertThresholds(new CDCylinder(10,"m",1,"m"),55,75,BandsRegion.NEAR));
+	alertor.add(new AlertThresholds(new CDCylinder(10,"m",1,"m"),30,40,BandsRegion.NEAR));
 	return alertor;
     }
 
@@ -520,6 +521,7 @@ public class FSAM{
 
 	if(daaTick > 20){
 	    TrafficConflict = false;
+	    RefHeading1     = Double.NaN;
 	}
 	
 	for (int ac=1; ac < daa.numberOfAircraft(); ac++) {
@@ -810,8 +812,13 @@ public class FSAM{
 	double heading_left  = KMB.trackResolution(false);
 	double res_heading;
 
-	/*
+	
 	for (int i = 0; i < KMB.trackLength(); i++ ) {
+
+	    if(i==0){
+		System.out.println("# Tracks:"+KMB.trackLength());
+	    }
+	    
 	    Interval iv = KMB.track(i,"deg"); //i-th band region
 	    double lower_trk = iv.low; //[deg]
 	    double upper_trk = iv.up; //[deg]
@@ -819,6 +826,7 @@ public class FSAM{
 	    System.out.println("["+lower_trk+","+upper_trk+"]");
 	    System.out.println("Band type:"+regionType.toString());
 
+	    /*
 	    double h, diff = Double.MAX_VALUE;
 	    if(KMB.trackLength() > 1){
 
@@ -836,8 +844,8 @@ public class FSAM{
 		Position PrevWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
 		Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
 		res_heading = PrevWP.track(NextWP); 
-	    }
-	}*/
+		}*/
+	}
 	
 	System.out.println("resolution heading L:"+heading_left*180/3.142);
 	System.out.println("resolution heading R:"+heading_right*180/3.142);
@@ -859,9 +867,12 @@ public class FSAM{
 	    }	    	    
 	}
 	else{
-	    //Position PrevWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
-	    //Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
-	    //res_heading = PrevWP.track(NextWP); 
+	    
+	    if(Double.isNaN(RefHeading1)){
+	       Position PrevWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
+	       Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
+	       res_heading = Math.toDegrees(PrevWP.track(NextWP));
+	    }
 	}
 	
 	/*
