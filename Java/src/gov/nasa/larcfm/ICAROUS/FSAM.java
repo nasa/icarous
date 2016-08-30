@@ -30,7 +30,7 @@ enum RESOLVE_STATE{
 }
 
 enum EXECUTE_STATE{
-    START, SEND_COMMAND, AWAIT_COMPLETION, COMPLETE
+    START, SEND_COMMAND, AWAIT_COMPLETION, COMPLETE, PAUSE
 }
 
 public class FSAM{
@@ -81,6 +81,9 @@ public class FSAM{
 
     private Daidalus daa;
     private int daaTick;
+    private KinematicMultiBands KMB;
+
+    private long pausetime_start;
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS                      = ac;
@@ -132,6 +135,7 @@ public class FSAM{
 	daa.parameters.alertor = AlertQuad();
 
 	daaTick = 0;
+	KMB = null;
     }
 
     static public AlertLevels AlertQuad() {		
@@ -494,15 +498,7 @@ public class FSAM{
     public void CheckTraffic(){
 	daaTick = daaTick+1;
 	Position so = FlightData.acState.positionLast();
-	Velocity vo = FlightData.acState.velocityLast();
-
-	//System.out.println("pos:"+so.toString());
-	//System.out.println("vel:"+vo.toString());
-	//Position so = Position.makeLatLonAlt( 37.102177,"deg", -76.387207,"deg", 5,"m");
-	//Velocity vo = Velocity.makeTrkGsVs(90.0,"deg", 1,"m/s", 0.0,"fpm");
-
-	//Position si = Position.makeLatLonAlt(37.102186,"deg", -76.386090,"deg", 5,"m"); 
-	//Velocity vi = Velocity.makeTrkGsVs(270.0,"deg", 1,"m/s", 0.0,"fpm"); 
+	Velocity vo = FlightData.acState.velocityLast();	
 	
 	daa.reset();
 	daa.setOwnshipState("Ownship",so,vo,0.0);
@@ -511,17 +507,19 @@ public class FSAM{
 	    synchronized(FlightData.traffic){
 		Position si = FlightData.traffic.get(i).pos.copy();
 		Velocity vi = FlightData.traffic.get(i).vel.mkAddTrk(0);
-
-		//System.out.println("traffic pos:"+si.toString());
-		//System.out.println("traffic vel:"+vi.toString());
+		
 		daa.addTrafficState("traffic"+i,si,vi);
 	    }
 	    
 	}
 
-	if(daaTick > 20){
-	    TrafficConflict = false;
-	    RefHeading1     = Double.NaN;
+	if(daaTick > 30){
+	    if(TrafficConflict){
+		TrafficConflict = false;
+		pausetime_start = UAS.timeCurrent;
+		executeState    = EXECUTE_STATE.PAUSE;
+		RefHeading1     = Double.NaN;
+	    }	    	    
 	}
 	
 	for (int ac=1; ac < daa.numberOfAircraft(); ac++) {
@@ -535,6 +533,10 @@ public class FSAM{
 		Conflict cf = new Conflict(PRIORITY_LEVEL.HIGH,CONFLICT_TYPE.TRAFFIC);
 		Conflict.AddConflictToList(conflictList,cf);
 		daaTick = 0;
+		System.out.println(daa.toString());
+
+		KMB = daa.getKinematicMultiBands();
+		System.out.println(KMB.outputString());
 	    }
 	}
 	
@@ -804,49 +806,12 @@ public class FSAM{
 	}
     }
 
-    public void ResolveTrafficConflict(){
-
-	KinematicMultiBands KMB = daa.getKinematicMultiBands();
-
+    public void ResolveTrafficConflict(){		
+	
 	double heading_right = KMB.trackResolution(true);
 	double heading_left  = KMB.trackResolution(false);
 	double res_heading;
-
-	
-	for (int i = 0; i < KMB.trackLength(); i++ ) {
-
-	    if(i==0){
-		System.out.println("# Tracks:"+KMB.trackLength());
-	    }
-	    
-	    Interval iv = KMB.track(i,"deg"); //i-th band region
-	    double lower_trk = iv.low; //[deg]
-	    double upper_trk = iv.up; //[deg]
-	    BandsRegion regionType = KMB.trackRegion(i);
-	    System.out.println("["+lower_trk+","+upper_trk+"]");
-	    System.out.println("Band type:"+regionType.toString());
-
-	    /*
-	    double h, diff = Double.MAX_VALUE;
-	    if(KMB.trackLength() > 1){
-
 		
-		if(regionType.toString() == "<NONE>"){
-		    h        = (lower_trk + upper_trk)/2;
-		    double d = Math.abs(FlightData.yaw - h);
-		    if (d < diff){
-			res_heading = h;
-			diff = d;
-		    }
-		}
-	    }
-	    else{
-		Position PrevWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
-		Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
-		res_heading = PrevWP.track(NextWP); 
-		}*/
-	}
-	
 	System.out.println("resolution heading L:"+heading_left*180/3.142);
 	System.out.println("resolution heading R:"+heading_right*180/3.142);
 
@@ -873,21 +838,20 @@ public class FSAM{
 	       Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
 	       res_heading = Math.toDegrees(PrevWP.track(NextWP));
 	    }
-	}
-	
-	/*
-	if(!Double.isNaN(heading_right) &&  !Double.isInfinite(heading_right)){
-	    res_heading = heading_right;
-	}
-	else if(!Double.isNaN(heading_left) && !Double.isInfinite(heading_left)){
-	    res_heading = heading_left;
-	}
-	else{
-	    res_heading = Double.NaN;
-	    }*/
+	}		
 	
 	if(!Double.isNaN(res_heading)){
 	    double V  = UAS.GetSpeed();
+
+	    double Vres = KMB.groundSpeedResolution(true);
+	    if(!Double.isNaN(Vres) && !Double.isInfinite(Vres)){
+		V = Math.ceil(Vres);		
+	    }
+	    else{
+		System.out.println("Resolution speed:"+V);
+	    }
+
+	    System.out.println("Resolution speed:"+V);
 	    Vn = V*Math.cos(Math.toRadians(res_heading));
 	    Ve = V*Math.sin(Math.toRadians(res_heading));
 	    Vu = 0;
@@ -907,8 +871,9 @@ public class FSAM{
 
     public void ExecuteManeuver(){
 
-	switch(executeState){
 
+	switch(executeState){
+	    
 	case START:
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Starting resolution");	    
 	    UAS.apMode = Aircraft.AP_MODE.GUIDED;
@@ -948,8 +913,20 @@ public class FSAM{
 	    }
 	    
 	    break;
+
+	case PAUSE:
+
+	    UAS.SetVelocity(0.0,0.0,0.0);
+
+	    System.out.println((float)((UAS.timeCurrent - pausetime_start))/1E9);
+	    if((float) ((UAS.timeCurrent - pausetime_start))/1E9 > 3){
+		executeState =EXECUTE_STATE.SEND_COMMAND;
+	    }
+
+	    break;
 	}
-	
+
+    
     }
     
     public void ExecuteResolutionPlan(){	
