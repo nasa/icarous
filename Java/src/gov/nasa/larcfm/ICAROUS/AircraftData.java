@@ -444,6 +444,11 @@ public class AircraftData{
 			    //System.out.println("Error in writing mission to AP");
 			}
 		    }
+
+		    if(count == mission.size() - 1){
+			writeComplete = true;
+		    }
+		    
 		} // end of switch case
 	}//end of while	
     }//end of function
@@ -456,8 +461,17 @@ public class AircraftData{
 	int count = 0;
 	int COUNT = (int) msg.param4;
 
+	
+	
 	GeoFence fence1 = new GeoFence((int)msg.param2,(int)msg.param3,(int)msg.param4,msg.param5,msg.param6,pData);
-		
+
+	if(COUNT < 1){
+	    if( (fence1.ID + 1) <= fenceList.size() ){
+		fenceList.remove(fence1.ID);	
+	    }
+	    return 1;
+	}
+	
 	msg_fence_fetch_point msgFenceFetchPoint = new msg_fence_fetch_point();
 	
 	msgFenceFetchPoint.sysid            = 1;
@@ -536,11 +550,13 @@ public class AircraftData{
 		    
 		readComplete = true;
 
-		if(fence1.Type == 0){
-		    fenceList.add(0,fence1);
-		}else{
+		if( fence1.ID >= fenceList.size() ){
 		    fenceList.add(fence1);
 		}
+		else{
+		    fenceList.set(fence1.ID,fence1);
+		}
+		
 
 
 		msg_command_ack msgCommandAck = new msg_command_ack();

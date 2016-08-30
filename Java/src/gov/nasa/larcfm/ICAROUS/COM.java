@@ -210,7 +210,7 @@ public class COM implements Runnable,ErrorReporter{
 		    int status;
 		    status = FlightData.GetGeoFence(comIntf,msgCommandLong);
 		    if(status == 1){
-			error.addWarning("[" + timeLog + "] MSG: Geo fence update   ");
+			error.addWarning("[" + timeLog + "] MSG: Geo fence update, #fences:"+FlightData.fenceList.size());
 		    }
 		}
 		else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){

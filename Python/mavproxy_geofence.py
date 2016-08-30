@@ -22,6 +22,17 @@ class GeoFenceModule(mp_module.MPModule):
         self.have_list = False        
         self.menu_added_console = False
         self.menu_added_map = False
+
+        if mp_util.has_wxpython:
+            self.menu = MPMenuSubMenu('Geofence',
+                                  items=[MPMenuItem('Clear', 'Clear', '# geofence clear'),
+                                         MPMenuItem('Load', 'Load', '# geofence load ',
+                                                    handler=MPMenuCallFileDialog(flags=('open',),
+                                                                                 title='Geofence Load',
+                                                                                 wildcard='*.txt')),                                       
+                                         MPMenuItem('Draw', 'Draw', '# geofence draw ',
+                                                    handler=MPMenuCallTextDialog(title='Fence info:id,type [0 in/1 out],#vertices,floor [m],ceiling [m]',
+                                                                                 default='0,0,0,0,0'))])
         
     def idle_task(self):
         '''called on idle'''
@@ -49,6 +60,26 @@ class GeoFenceModule(mp_module.MPModule):
                 print("usage: fence load <filename>")
                 return
             self.load_fence(args[1])
+
+        elif args[0] == "clear":
+            for fence in self.fenceList:
+                self.clear_fence(fence);
+
+        elif args[0] == "draw":
+            if not 'draw_lines' in self.mpstate.map_functions:
+                print("No map drawing available")
+                            
+            params = args[1].split(',');
+            self.Geofence0 = {'id':int(params[0]),
+                              'type':int(params[1]),
+                              'numV':int(params[2]),
+                              'floor':float(params[3]),
+                              'roof':float(params[4]),
+                              'Vertices':[]}
+
+            
+            self.mpstate.map_functions['draw_lines'](self.geofence_draw_callback)
+            print "Drawing geofence on map with %d vertices" % int(params[2])
         
         else:
             self.print_usage()
@@ -74,9 +105,7 @@ class GeoFenceModule(mp_module.MPModule):
         self.master.mav.command_long_send(target_system,target_component,
                                           mavutil.mavlink.MAV_CMD_DO_FENCE_ENABLE,0,
                                           0,fence["id"],fence["type"],fence["numV"],
-                                          fence["floor"],fence["roof"],0);
-
-        print("sent fence count")
+                                          fence["floor"],fence["roof"],0);    
 
         fence_sent = False;
                             
@@ -110,11 +139,31 @@ class GeoFenceModule(mp_module.MPModule):
         
         from MAVProxy.modules.mavproxy_map import mp_slipmap
         name = 'Fence'+str(fence["id"])
+
+        if(fence["type"] == 0):
+            gcf = (0,255,0)
+        else:
+            gcf = (255,0,0)
+            
         self.mpstate.map.add_object(mp_slipmap.SlipPolygon(name, points, layer=1,
-                                                               linewidth=2, colour=(0,255,0)))
+                                                               linewidth=2, colour=gcf))
 
         return
-                
+
+    def clear_fence(self,fence):
+
+        '''send fence points from fenceloader'''
+        target_system    = 2;
+        target_component = 0;
+
+        self.master.mav.command_long_send(target_system,target_component,
+                                          mavutil.mavlink.MAV_CMD_DO_FENCE_ENABLE,0,
+                                          0,fence["id"],fence["type"],0,
+                                          fence["floor"],fence["roof"],0);
+
+        name = 'Fence'+str(fence["id"])
+        self.mpstate.map.remove_object(name);
+        
 
     def fetch_fence_point(self):
         '''fetch one fence point'''
@@ -162,6 +211,24 @@ class GeoFenceModule(mp_module.MPModule):
                             'roof':roof,'Vertices':Vertices}
 
                 self.fenceList.append(Geofence)
+
+    def geofence_draw_callback(self, points):
+        '''callback from drawing waypoints'''
+        if len(points) < self.Geofence0["numV"]:            
+            print "Insufficient points in polygon, try drawing polygon again"
+            return
+        from MAVProxy.modules.lib import mp_util
+
+        for pts in points:
+            self.Geofence0["Vertices"].append(pts);
+
+        if(self.Geofence0["id"] > len(self.fenceList)-1):        
+            self.Send_fence(self.Geofence0);
+            self.fenceList.append(self.Geofence0)
+        else:
+            self.fenceList[self.Geofence0["id"]] = self.Geofence0;
+            self.Send_fence(self.Geofence0);
+            
         
 
 def init(mpstate):
