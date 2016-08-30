@@ -26,6 +26,10 @@ class GeoFenceModule(mp_module.MPModule):
         if mp_util.has_wxpython:
             self.menu = MPMenuSubMenu('Geofence',
                                   items=[MPMenuItem('Clear', 'Clear', '# geofence clear'),
+                                         MPMenuItem('Save', 'Save', '# geofence save ',
+                                                    handler=MPMenuCallFileDialog(flags=('save', 'overwrite_prompt'),
+                                                                                 title='Fence Save',
+                                                                                 wildcard='*.xml')),
                                          MPMenuItem('Load', 'Load', '# geofence load ',
                                                     handler=MPMenuCallFileDialog(flags=('open',),
                                                                                  title='Geofence Load',
@@ -61,6 +65,13 @@ class GeoFenceModule(mp_module.MPModule):
                 return
             self.load_fence(args[1])
 
+        elif args[0] == "save":
+            if(len(args) != 2):
+               return
+            else:
+               print "saving"
+               self.save_geofence(args[1])
+            
         elif args[0] == "clear":
             for fence in self.fenceList:
                 self.clear_fence(fence);
@@ -228,8 +239,33 @@ class GeoFenceModule(mp_module.MPModule):
         else:
             self.fenceList[self.Geofence0["id"]] = self.Geofence0;
             self.Send_fence(self.Geofence0);
-            
-        
+
+    def save_geofence(self,filename):
+
+        top = ET.Element('Geofence')
+
+        for fence in self.fenceList:
+            print "constructing"
+            child1   = ET.SubElement(top,'fence',id=str(fence['id']))
+            child1_1 = ET.SubElement(child1,'type')
+            child1_1.text = str(fence['type'])
+            child1_2 = ET.SubElement(child1,'num_vertices')
+            child1_2.text = str(fence['numV'])
+            child1_3 = ET.SubElement(child1,'floor')
+            child1_3.text = str(fence['floor'])
+            child1_4= ET.SubElement(child1,'roof')
+            child1_4.text = str(fence['roof'])
+            for vertex in range(len(fence['Vertices'])):
+                child1_5 = ET.SubElement(child1,'vertex',id=str(vertex))
+                child1_5_1 = ET.SubElement(child1_5,'lat')
+                child1_5_1.text = str(fence['Vertices'][vertex][0])
+                child1_5_2 = ET.SubElement(child1_5,'lon')
+                child1_5_2.text = str(fence['Vertices'][vertex][1])
+
+
+        print "writing" 
+        ET.ElementTree(top).write(filename)
+               
 
 def init(mpstate):
     '''initialise module'''
