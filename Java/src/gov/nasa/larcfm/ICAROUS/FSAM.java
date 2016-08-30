@@ -533,7 +533,7 @@ public class FSAM{
 		Conflict cf = new Conflict(PRIORITY_LEVEL.HIGH,CONFLICT_TYPE.TRAFFIC);
 		Conflict.AddConflictToList(conflictList,cf);
 		daaTick = 0;
-		System.out.println(daa.toString());
+		//System.out.println(daa.toString());
 
 		KMB = daa.getKinematicMultiBands();
 		System.out.println(KMB.outputString());
@@ -812,8 +812,8 @@ public class FSAM{
 	double heading_left  = KMB.trackResolution(false);
 	double res_heading;
 		
-	System.out.println("resolution heading L:"+heading_left*180/3.142);
-	System.out.println("resolution heading R:"+heading_right*180/3.142);
+	//System.out.println("resolution heading L:"+heading_left*180/3.142);
+	//System.out.println("resolution heading R:"+heading_right*180/3.142);
 
 	heading_left  = heading_left*180/Math.PI;
 	heading_right = heading_right*180/Math.PI;
