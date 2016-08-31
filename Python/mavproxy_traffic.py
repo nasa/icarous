@@ -71,7 +71,7 @@ class TrafficModule(mp_module.MPModule):
         wcv_volume = mp_slipmap.SlipCircle("well_clear_volume", 3,\
                                                (self.module('map').lat,self.module('map').lon),\
                                                10,\
-                                               (255, 0, 0), linewidth=2)                                                
+                                               (255, 0, 255), linewidth=2)                                                
         
         
         self.mpstate.map.add_object(wcv_volume)               
