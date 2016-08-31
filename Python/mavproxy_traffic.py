@@ -68,7 +68,8 @@ class TrafficModule(mp_module.MPModule):
         
         self.Update_traffic();                        
 
-        wcv_volume = mp_slipmap.SlipCircle("well_clear_volume", 3,\
+        if(len(self.traffic_list) > 0):
+            wcv_volume = mp_slipmap.SlipCircle("well_clear_volume", 3,\
                                                (self.module('map').lat,self.module('map').lon),\
                                                10,\
                                                (255, 0, 255), linewidth=2)                                                
@@ -141,7 +142,7 @@ class TrafficModule(mp_module.MPModule):
             
 
     def print_usage(self):
-        print("usage: traffic load <x,y,z,vx,vy,vz>")
+        print("usage: traffic load x y z vx vy vz")
         
 
 def init(mpstate):

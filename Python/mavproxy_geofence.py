@@ -145,7 +145,7 @@ class GeoFenceModule(mp_module.MPModule):
                     self.Send_fence(fence);
                     fence_sent = True;
 
-        points = fence["Vertices"]
+        points = fence["Vertices"][:]
         points.append(points[0])
         
         from MAVProxy.modules.mavproxy_map import mp_slipmap
@@ -225,13 +225,14 @@ class GeoFenceModule(mp_module.MPModule):
 
     def geofence_draw_callback(self, points):
         '''callback from drawing waypoints'''
-        if len(points) < self.Geofence0["numV"]:            
+        if len(points) != self.Geofence0["numV"]:            
             print "Insufficient points in polygon, try drawing polygon again"
             return
         from MAVProxy.modules.lib import mp_util
 
         for pts in points:
             self.Geofence0["Vertices"].append(pts);
+        
 
         if(self.Geofence0["id"] > len(self.fenceList)-1):        
             self.Send_fence(self.Geofence0);
@@ -254,7 +255,7 @@ class GeoFenceModule(mp_module.MPModule):
             child1_3 = ET.SubElement(child1,'floor')
             child1_3.text = str(fence['floor'])
             child1_4= ET.SubElement(child1,'roof')
-            child1_4.text = str(fence['roof'])
+            child1_4.text = str(fence['roof'])            
             for vertex in range(len(fence['Vertices'])):
                 child1_5 = ET.SubElement(child1,'vertex',id=str(vertex))
                 child1_5_1 = ET.SubElement(child1_5,'lat')
