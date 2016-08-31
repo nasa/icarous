@@ -340,11 +340,15 @@ public class GeoFence{
 	double alt;
 	if( (ceiling - pos.alt()) <= vthreshold){
 	    alt = (ceiling - vstepback);
-	    recPoint = RecoveryPoint.mkAlt(alt);
+	    if(RecoveryPoint != null){
+		recPoint = RecoveryPoint.mkAlt(alt);
+	    }
 	}
 	else if( (pos.alt() - floor) <= vthreshold){
-	    alt = (floor + vstepback);                
-	    recPoint = RecoveryPoint.mkAlt(alt);
+	    alt = (floor + vstepback);
+	    if(RecoveryPoint != null){
+		recPoint = RecoveryPoint.mkAlt(alt);
+	    }
 	}
 	
 
@@ -429,7 +433,94 @@ public class GeoFence{
 		
     }
 
-    
+    public ArrayList<Position> LineCircleIntersection(Position pos,Double Radius){
+
+	ArrayList<Position> Pts = new ArrayList<Position>();	
+	
+	for(int i=0;i<fenceVertices.size();i++){
+
+	    int j;
+	    if(i == fenceVertices.size() - 1){
+		j = 0;
+	    }else{
+		j = i+1;
+	    }
+
+
+	    Vect2 X = proj.project(pos).vect2();
+
+	    // Shift origin to pos
+	    double x0 = X.x();
+	    double y0 = X.y();
+	    
+	    Vect2 A = fenceVertices.get(i);
+	    Vect2 B = fenceVertices.get(j);
+
+	    
+
+	    double dx = (B.x() - x0) - (A.x() - x0);
+	    double dy = (B.y() - y0) - (A.y() - y0);
+	    double dr = Math.sqrt( Math.pow(dx,2) + Math.pow(dy,2) );
+	    double D  = (A.x()-x0)*(B.y()-y0) - (B.x()-x0)*(A.y()-y0);
+
+	    //Discriminant
+	    double delta = Math.pow(Radius*dr,2) - Math.pow(D,2);
+
+	    if (delta<0){
+		
+	    }
+	    else if(delta == 0){
+
+				
+	    }
+	    else{
+
+		double sgn;
+		if(dy < 0){
+		    sgn = -1;
+		}
+		else{
+		    sgn = 1;
+		}
+
+		double x1 = (D*dy + sgn*dx*Math.sqrt(delta))/Math.pow(dr,2) + x0;
+		double x2 = (D*dy - sgn*dx*Math.sqrt(delta))/Math.pow(dr,2) + x0;
+
+		double y1 = (-D*dx + Math.abs(dy)*Math.sqrt(delta))/Math.pow(dr,2) + y0;
+		double y2 = (-D*dx - Math.abs(dy)*Math.sqrt(delta))/Math.pow(dr,2) + y0;
+		
+		Vect2 pt1 = new Vect2(x1,y1);
+		Vect2 pt2 = new Vect2(x2,y2);
+
+		
+		
+		LatLonAlt LLA1 = proj.inverse(pt1,pos.alt());
+		LatLonAlt LLA2 = proj.inverse(pt2,pos.alt());
+
+		if( (x1 >= A.x() && x1 <= B.x()) || (x1 >= B.x() && x1 <= A.x()) ){
+		    if( (y1 >= A.y() && y1 <= B.y()) || (y1 >= B.y() && y1 <= A.y()) ){
+			Pts.add(new Position(LLA1));
+		    }
+		}
+
+		if( (x2 >= A.x() && x2 <= B.x()) || (x2 >= B.x() && x2 <= A.x()) ){
+		    if( (y2 >= A.y() && y2 <= B.y()) || (y2 >= B.y() && y2 <= A.y()) ){
+			Pts.add(new Position(LLA2));
+		    }
+		}
+		
+
+		//System.out.println(Pts.get(0));
+		//System.out.println(Pts.get(1));
+
+		
+	    }
+	    
+	    
+	}
+
+	return Pts;
+    }
 
     public void print(){
 	System.out.println("Type: "+Type);
