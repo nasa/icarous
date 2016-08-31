@@ -83,6 +83,8 @@ public class FSAM{
     private int daaTick;
     private KinematicMultiBands KMB;
 
+    private double radius, height, alertTime, lateAlertTime, lookahead;
+
     private long pausetime_start;
     
     public FSAM(Aircraft ac,Mission ms){
@@ -128,46 +130,28 @@ public class FSAM{
 	p.setInternal("bank_angle", Units.from("deg",60), "deg");
 	p.setInternal("vertical_rate", Units.from("fpm",200), "fpm");
 	
-	
+
+	lookahead = UAS.pData.getValue("DAA_LOOKAHEAD");
 	daa.parameters.setParameters(p);			
-	daa.parameters.setLookaheadTime(50);
+	daa.parameters.setLookaheadTime(lookahead);
 	daa.parameters.setCollisionAvoidanceBands(true);
-	daa.parameters.alertor = AlertQuad();
+
+	radius = UAS.pData.getValue("DAA_CYL_R");
+	height = UAS.pData.getValue("DAA_CYL_H");
+	alertTime       = UAS.pData.getValue("DAA_ALERT_TIME1");
+	lateAlertTime   = UAS.pData.getValue("DAA_ALERT_TIME2");
+	daa.parameters.alertor = AlertQuad(radius,height,alertTime,lateAlertTime);
 
 	daaTick = 0;
 	KMB = null;
     }
 
-    static public AlertLevels AlertQuad() {		
+    static public AlertLevels AlertQuad(double radius,double height,double alerttime1,double alerttime2) {		
 	AlertLevels alertor = new AlertLevels();
 	alertor.setConflictAlertLevel(1);		
-	alertor.add(new AlertThresholds(new CDCylinder(10,"m",1,"m"),30,40,BandsRegion.NEAR));
+	alertor.add(new AlertThresholds(new CDCylinder(radius,"m",height,"m"),alerttime1,alerttime2,BandsRegion.NEAR));
+	//alertor.add(new AlertThresholds(new CDCylinder(radius/2,"m",height/2,"m"),alerttime1-2,alerttime2-2,BandsRegion.NEAR));
 	return alertor;
-    }
-
-    // Returns time corresponding to the current position in the resolution flight plan
-    // (assuming constant velocity throughtout flight plan)
-    public double GetResolutionTime(){
-	Plan FP = ResolutionPlan;
-
-	
-	double legDistance, legTime, lastWPDistance, currentTime;
-	Position pos = FlightData.acState.positionLast();
-
-	if(currentResolutionWP == 0){
-	    return 0;
-	}
-
-	currentTime = 0;
-	if(currentResolutionWP < ResolutionPlan.size()){	    	    
-	    legTime        = FP.getTime(currentResolutionWP) - FP.getTime(currentResolutionWP-1);
-	    legDistance    = FP.pathDistance(currentResolutionWP-1);
-	    lastWPDistance = FP.point(currentResolutionWP-1).position().distanceH(pos);
-	    currentTime    = FP.getTime(currentResolutionWP-1) + legTime/legDistance * lastWPDistance;
-	}				
-	
-
-	return currentTime;
     }
 
     // Function to monitor conflicts (Geofence, flight plan deviation, air traffic etc...)
@@ -379,6 +363,146 @@ public class FSAM{
 	return 0;
     }
 
+    public void ExecuteManeuver(){
+
+
+	switch(executeState){
+	    
+	case START:
+	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Starting resolution");	    
+	    UAS.apMode = Aircraft.AP_MODE.GUIDED;
+	    UAS.SetMode(4);
+	    try{
+		Thread.sleep(500);
+	    }
+	    catch(InterruptedException e){
+		System.out.println(e);
+	    }
+	    
+	    currentResolutionWP = 0;
+	    executeState = EXECUTE_STATE.SEND_COMMAND;
+	    break;
+
+	case SEND_COMMAND:
+
+	    System.out.format("Vn,Ve,Vu = %f,%f,%f\n",Vn,Ve,Vu);
+	    UAS.SetVelocity(Vn,Ve,Vu);
+
+	    if(TrafficConflict){
+		//UAS.SetYaw(RefHeading1);
+	    }else{
+		UAS.SetYaw(RefHeading2);
+	    }
+	    
+
+	    if(!StandoffConflict && !TrafficConflict){
+		executeState = EXECUTE_STATE.COMPLETE;
+
+		Iterator Itr = conflictList.iterator();
+		while(Itr.hasNext()){
+		    Conflict cf = (Conflict) Itr.next();
+		    Itr.remove();
+		}
+		currentConflicts = conflictList.size();
+		System.out.println("Finished maneuver");
+	    }
+	    
+	    break;
+
+	case PAUSE:
+
+	    UAS.SetVelocity(0.0,0.0,0.0);
+
+	    System.out.println("PAUSE:"+(float)((UAS.timeCurrent - pausetime_start))/1E9);
+	    if((float) ((UAS.timeCurrent - pausetime_start))/1E9 > 3){
+		executeState =EXECUTE_STATE.SEND_COMMAND;
+	    }
+
+	    break;
+	}
+
+    
+    }
+    
+    public void ExecuteResolutionPlan(){	
+	
+	switch(executeState){
+
+	case START:
+	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Starting resolution");	    
+	    UAS.apMode = Aircraft.AP_MODE.GUIDED;
+	    UAS.SetMode(4);
+	    try{
+		Thread.sleep(500);
+	    }
+	    catch(InterruptedException e){
+		System.out.println(e);
+	    }
+	    
+	    currentResolutionWP = 0;
+	    executeState = EXECUTE_STATE.SEND_COMMAND;
+	    break;
+	    
+	case SEND_COMMAND:
+
+	    NavPoint wp = ResolutionPlan.point(currentResolutionWP);
+	    UAS.SetGPSPos(wp.lla().latitude(),wp.lla().longitude(),wp.alt());
+	    executeState = EXECUTE_STATE.AWAIT_COMPLETION;
+	    break;
+	    
+	case AWAIT_COMPLETION:
+	    
+	    Position pos   = ResolutionPlan.point(currentResolutionWP).position();
+	    double dist    = pos.distanceH(UAS.FlightData.acState.positionLast());
+
+	    if(dist < 1){
+
+		currentResolutionWP = currentResolutionWP + 1;
+		if(currentResolutionWP < ResolutionPlan.size()){
+		    executeState = EXECUTE_STATE.SEND_COMMAND;
+		}
+		else{		    
+		    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Resolution complete");
+		    executeState = EXECUTE_STATE.COMPLETE;
+		    float speed = UAS.GetSpeed();					
+		    UAS.SetSpeed(speed);
+		    UAS.error.addWarning("[" + UAS.timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
+		    
+		}
+	    }
+	    
+	    break;
+	    
+	    
+	}//end switch case
+
+
+    }//end function
+
+    // Returns time corresponding to the current position in the resolution flight plan
+    // (assuming constant velocity throughtout flight plan)
+    public double GetResolutionTime(){
+	Plan FP = ResolutionPlan;
+
+	
+	double legDistance, legTime, lastWPDistance, currentTime;
+	Position pos = FlightData.acState.positionLast();
+
+	if(currentResolutionWP == 0){
+	    return 0;
+	}
+
+	currentTime = 0;
+	if(currentResolutionWP < ResolutionPlan.size()){	    	    
+	    legTime        = FP.getTime(currentResolutionWP) - FP.getTime(currentResolutionWP-1);
+	    legDistance    = FP.pathDistance(currentResolutionWP-1);
+	    lastWPDistance = FP.point(currentResolutionWP-1).position().distanceH(pos);
+	    currentTime    = FP.getTime(currentResolutionWP-1) + legTime/legDistance * lastWPDistance;
+	}				
+	
+
+	return currentTime;
+    }    
     
     public boolean CheckMissionItemReached(){
 
@@ -504,7 +628,7 @@ public class FSAM{
 	daa.setOwnshipState("Ownship",so,vo,0.0);
 
 	double dist = Double.MAX_VALUE;
-	for(int i=0;i<FlightData.traffic.size();i++){
+	for(int i=0;i<FlightData.traffic.size();++i){
 	    synchronized(FlightData.traffic){
 		Position si = FlightData.traffic.get(i).pos.copy();
 		Velocity vi = FlightData.traffic.get(i).vel.mkAddTrk(0);
@@ -520,8 +644,27 @@ public class FSAM{
 	    
 	}
 
+	//add closest points on all geofence segments as a traffic with 0 speed
+	if(TrafficConflict){
+	    for(int i=0;i<FlightData.fenceList.size();++i){
+		synchronized(FlightData.fenceList){
+		    GeoFence GF = FlightData.fenceList.get(i);
+
+		    Position pos = FlightData.acState.positionLast();
+		    ArrayList<Position> VirtualTraffic = GF.LineCircleIntersection(pos,radius);
+
+		    if (VirtualTraffic.size() > 0){
+			Velocity vi  = Velocity.makeVxyz(0.0,0.0,0.0);
+			daa.addTrafficState("fence"+i+"1",VirtualTraffic.get(0),vi);
+			daa.addTrafficState("fence"+i+"2",VirtualTraffic.get(1),vi);
+		    }
+		    
+		}	    
+	    }
+	}
+
 	if(daaTick > 100){	    
-	    if(dist > 15){
+	    if(dist > 30){
 		if(TrafficConflict){
 		    TrafficConflict = false;
 		    pausetime_start = UAS.timeCurrent;
@@ -542,7 +685,7 @@ public class FSAM{
 		Conflict cf = new Conflict(PRIORITY_LEVEL.HIGH,CONFLICT_TYPE.TRAFFIC);
 		Conflict.AddConflictToList(conflictList,cf);
 		daaTick = 0;
-		//System.out.println(daa.toString());
+		System.out.println(daa.toString());
 
 		KMB = daa.getKinematicMultiBands();
 		System.out.println(KMB.outputString());
@@ -552,10 +695,6 @@ public class FSAM{
 		
     }
     
-    
-    
-
-
     // Compute resolution for keep in conflict
     public void ResolveKeepInConflict(){
 
@@ -816,200 +955,92 @@ public class FSAM{
     }
 
     public void ResolveTrafficConflict(){		
-	
+
+	// Get resolution headings from DAA
 	double heading_right = KMB.trackResolution(true);
 	double heading_left  = KMB.trackResolution(false);
-	double res_heading;
+	double res_heading   = Double.NaN;
 		
 	//System.out.println("resolution heading L:"+heading_left*180/3.142);
 	//System.out.println("resolution heading R:"+heading_right*180/3.142);
 
 	heading_left  = heading_left*180/Math.PI;
 	heading_right = heading_right*180/Math.PI;
-	res_heading   = Double.NaN;
 	double d1,d2,h1,h2, diff = Double.MAX_VALUE;
-	if(KMB.trackLength() > 1){	    
 
-	    Position CurrentPos = FlightData.acState.positionLast();
-	    Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
-	    double planTrack    = Math.toDegrees(CurrentPos.track(NextWP));  	    
-	    
-	    d1 = Math.abs(planTrack - heading_left);
-	    d2 = Math.abs(planTrack - heading_right);
+	// Determine which resolution to use (left/right) based on proximity to next waypoint heading.
+	Position CurrentPos = FlightData.acState.positionLast();
+	Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
 
-	    if(d1 <= d2){
-		res_heading = heading_left;
-	    }
-	    else{
-		res_heading = heading_right;
-	    }
+	// Heading to next waypoint from current position
+	double planTrack    = Math.toDegrees(CurrentPos.track(NextWP));  	    
+	
+	d1 = Math.abs(planTrack - heading_left);
+	d2 = Math.abs(planTrack - heading_right);
 
-	    for(int i=0;i<KMB.trackLength();i++){
-		Interval iv = KMB.track(i,"deg"); //i-th band region
-		double lower_trk = iv.low; //[deg]
-		double upper_trk = iv.up; //[deg]
-		BandsRegion regionType = KMB.trackRegion(i);		
-		if (regionType.toString() == "<NONE>" ){		    
-		    if (planTrack >= lower_trk && planTrack <= upper_trk){
-			res_heading = planTrack;
-		    }
-		}
-	    }	    
+	// Pick the resolution angle that is closest to the next waypoint heading
+	if(d1 <= d2){
+	    res_heading = heading_left;
 	}
 	else{
+	    res_heading = heading_right;
+	}
+
+	// If the next waypoing heading is within the <NONE> band, ignore resolution headings	
+	for(int i=0;i<KMB.trackLength();i++){
+	    Interval iv = KMB.track(i,"deg"); //i-th band region
+	    double lower_trk = iv.low; //[deg]
+	    double upper_trk = iv.up; //[deg]
+	    BandsRegion regionType = KMB.trackRegion(i);		
 	    
-	    if(Double.isNaN(RefHeading1)){
-	       Position PrevWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
-	       Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
-	       res_heading = Math.toDegrees(PrevWP.track(NextWP));
+	    if (regionType.toString() == "<NONE>" ){		    
+		if (planTrack >= lower_trk && planTrack <= upper_trk){
+		    res_heading = planTrack;
+		    break;
+		}
 	    }
-	}		
+	    
+	}	    
+
+	// Resolution speed
+	double V  = UAS.GetSpeed();
+
+	// Use DAA ground speed when available
+	double Vres = KMB.groundSpeedResolution(true);
+	if(!Double.isNaN(Vres) && !Double.isInfinite(Vres)){
+	    V = Math.ceil(Vres);		
+	}
 	
+	// Get vertical speed from DAA resolution - use 0 if unavailable
+	double Dres = KMB.verticalSpeedResolution(true);
+	if(!Double.isNaN(Dres) && !Double.isInfinite(Dres)){
+	    Vu = -Dres;		// APM -ve means climb
+	}
+	else{
+	    Vu = 0;
+	}
+	
+	// If resolution heading angles available, compute Vn,Ve based on resolution heading
 	if(!Double.isNaN(res_heading)){
-	    double V  = UAS.GetSpeed();
-
-	    double Vres = KMB.groundSpeedResolution(true);
-	    if(!Double.isNaN(Vres) && !Double.isInfinite(Vres)){
-		V = Math.ceil(Vres);		
-	    }
-	    else{
-		//System.out.println("Resolution speed:"+V);
-	    }
-
+	    
 	    //System.out.println("Resolution speed:"+V);
 	    Vn = V*Math.cos(Math.toRadians(res_heading));
 	    Ve = V*Math.sin(Math.toRadians(res_heading));
-	    Vu = 0;
 	    RefHeading1 = res_heading;
 	    //System.out.println("resolution heading:"+res_heading);
 	    //System.out.format("Vn = %f, Ve = %f, Vu = %f\n",Vn,Ve,Vu);
 	}
-	else{	    
-	    res_heading = RefHeading1;
-	    double V  = UAS.GetSpeed();
+	else{
+	    // If resolution heading unavailable, follow last know resolution heading
+	    res_heading = RefHeading1;	    
 	    Vn = V*Math.cos(Math.toRadians(res_heading));
-	    Ve = V*Math.sin(Math.toRadians(res_heading));
-	    Vu = 0;
+	    Ve = V*Math.sin(Math.toRadians(res_heading));	    
 	    //System.out.format("Vn = %f, Ve = %f, Vu = %f\n",Vn,Ve,Vu);
 	}
     }
     
 
-    public void ExecuteManeuver(){
-
-
-	switch(executeState){
-	    
-	case START:
-	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Starting resolution");	    
-	    UAS.apMode = Aircraft.AP_MODE.GUIDED;
-	    UAS.SetMode(4);
-	    try{
-		Thread.sleep(500);
-	    }
-	    catch(InterruptedException e){
-		System.out.println(e);
-	    }
-	    
-	    currentResolutionWP = 0;
-	    executeState = EXECUTE_STATE.SEND_COMMAND;
-	    break;
-
-	case SEND_COMMAND:
-
-	    //System.out.format("Vn,Ve,Vu = %f,%f,%f\n",Vn,Ve,Vu);
-	    UAS.SetVelocity(Vn,Ve,Vu);
-
-	    if(TrafficConflict){
-		//UAS.SetYaw(RefHeading1);
-	    }else{
-		UAS.SetYaw(RefHeading2);
-	    }
-	    
-
-	    if(!StandoffConflict && !TrafficConflict){
-		executeState = EXECUTE_STATE.COMPLETE;
-
-		Iterator Itr = conflictList.iterator();
-		while(Itr.hasNext()){
-		    Conflict cf = (Conflict) Itr.next();
-		    Itr.remove();
-		}
-		currentConflicts = conflictList.size();
-		System.out.println("Finished maneuver");
-	    }
-	    
-	    break;
-
-	case PAUSE:
-
-	    UAS.SetVelocity(0.0,0.0,0.0);
-
-	    System.out.println("PAUSE:"+(float)((UAS.timeCurrent - pausetime_start))/1E9);
-	    if((float) ((UAS.timeCurrent - pausetime_start))/1E9 > 3){
-		executeState =EXECUTE_STATE.SEND_COMMAND;
-	    }
-
-	    break;
-	}
-
     
-    }
-    
-    public void ExecuteResolutionPlan(){	
-	
-	switch(executeState){
-
-	case START:
-	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Starting resolution");	    
-	    UAS.apMode = Aircraft.AP_MODE.GUIDED;
-	    UAS.SetMode(4);
-	    try{
-		Thread.sleep(500);
-	    }
-	    catch(InterruptedException e){
-		System.out.println(e);
-	    }
-	    
-	    currentResolutionWP = 0;
-	    executeState = EXECUTE_STATE.SEND_COMMAND;
-	    break;
-	    
-	case SEND_COMMAND:
-
-	    NavPoint wp = ResolutionPlan.point(currentResolutionWP);
-	    UAS.SetGPSPos(wp.lla().latitude(),wp.lla().longitude(),wp.alt());
-	    executeState = EXECUTE_STATE.AWAIT_COMPLETION;
-	    break;
-	    
-	case AWAIT_COMPLETION:
-	    
-	    Position pos   = ResolutionPlan.point(currentResolutionWP).position();
-	    double dist    = pos.distanceH(UAS.FlightData.acState.positionLast());
-
-	    if(dist < 1){
-
-		currentResolutionWP = currentResolutionWP + 1;
-		if(currentResolutionWP < ResolutionPlan.size()){
-		    executeState = EXECUTE_STATE.SEND_COMMAND;
-		}
-		else{		    
-		    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Resolution complete");
-		    executeState = EXECUTE_STATE.COMPLETE;
-		    float speed = UAS.GetSpeed();					
-		    UAS.SetSpeed(speed);
-		    UAS.error.addWarning("[" + UAS.timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
-		    
-		}
-	    }
-	    
-	    break;
-	    
-	    
-	}//end switch case
-
-
-    }//end function
 
     
     
