@@ -141,7 +141,7 @@ public class FSAM{
     static public AlertLevels AlertQuad() {		
 	AlertLevels alertor = new AlertLevels();
 	alertor.setConflictAlertLevel(1);		
-	alertor.add(new AlertThresholds(new CDCylinder(10,"m",1,"m"),30,40,BandsRegion.NEAR));
+	alertor.addLevel(new AlertThresholds(new CDCylinder(10,"m",1,"m"),30,40,BandsRegion.NEAR));
 	return alertor;
     }
 
