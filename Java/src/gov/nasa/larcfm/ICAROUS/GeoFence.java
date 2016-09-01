@@ -10,24 +10,9 @@
  */
 package gov.nasa.larcfm.ICAROUS;
 
-import gov.nasa.larcfm.Util.Vect3;
-import gov.nasa.larcfm.Util.Vect2;
-import gov.nasa.larcfm.Util.Velocity;
-import gov.nasa.larcfm.Util.LatLonAlt;
-import gov.nasa.larcfm.Util.Projection;
-import gov.nasa.larcfm.Util.EuclideanProjection;
-import gov.nasa.larcfm.Util.Poly3D;
-import gov.nasa.larcfm.Util.SimplePoly;
-import gov.nasa.larcfm.Util.Position;
-import gov.nasa.larcfm.Util.PolyPath;
-import gov.nasa.larcfm.Util.PolyUtil;
-import gov.nasa.larcfm.Util.ParameterData;
-import gov.nasa.larcfm.Util.Plan;
-import gov.nasa.larcfm.ACCoRD.CDPolycarp;
-import gov.nasa.larcfm.ACCoRD.CDIIPolygon;
-import gov.nasa.larcfm.ACCoRD.PolycarpResolution;
-import gov.nasa.larcfm.IO.SeparatedInput;
-
+import gov.nasa.larcfm.Util.*;
+import gov.nasa.larcfm.ACCoRD.*;
+import gov.nasa.larcfm.IO.SeparatedInput;   
 
 import java.util.*;
 import java.lang.*;
@@ -65,6 +50,7 @@ public class GeoFence{
     PolycarpResolution pcr;
     PolyUtil pu;
     ArrayList<Vect2> fenceVertices;
+    PolycarpDetection pcDet;
     
     ParameterData pData;
     public double entryTime;
@@ -86,6 +72,7 @@ public class GeoFence{
 	pcr            = new PolycarpResolution();
 	pu             = new PolyUtil();
 	fenceVertices  = new ArrayList<Vect2>();
+	pcDet          = new PolycarpDetection();
 	pData          = pdata;    		
 	
     }
@@ -520,6 +507,19 @@ public class GeoFence{
 	}
 
 	return Pts;
+    }
+
+    public boolean CollisionDetection(Position pos, Vect2 v,double startTime,double stopTime){
+
+	Vect2 s  = proj.project(pos).vect2();
+	Vect2 pv = new Vect2(0,0);
+	boolean insideBad = false;
+
+	if(Type == 1){
+	    insideBad = true;
+	}
+	
+	return pcDet.Static_Collision_Detector(startTime,stopTime,fenceVertices,pv,s,v,BUFF,insideBad);
     }
 
     public void print(){

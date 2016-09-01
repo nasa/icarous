@@ -129,15 +129,20 @@ public class FSAM{
 	p.setInternal("turn_rate", Units.from("deg/s",60), "deg/s");
 	p.setInternal("bank_angle", Units.from("deg",60), "deg");
 	p.setInternal("vertical_rate", Units.from("fpm",200), "fpm");
+
+	
 	
 
 	lookahead = UAS.pData.getValue("DAA_LOOKAHEAD");
 	daa.parameters.setParameters(p);			
 	daa.parameters.setLookaheadTime(lookahead);
 	daa.parameters.setCollisionAvoidanceBands(true);
+	daa.parameters.setHorizontalNMAC(2,"m");
+	daa.parameters.setVerticalNMAC(0.2,"m");
+	daa.parameters.enableRecoveryBands();
 
-	radius = UAS.pData.getValue("DAA_CYL_R");
-	height = UAS.pData.getValue("DAA_CYL_H");
+	radius          = UAS.pData.getValue("DAA_CYL_R");
+	height          = UAS.pData.getValue("DAA_CYL_H");
 	alertTime       = UAS.pData.getValue("DAA_ALERT_TIME1");
 	lateAlertTime   = UAS.pData.getValue("DAA_ALERT_TIME2");
 	daa.parameters.alertor = AlertQuad(radius,height,alertTime,lateAlertTime);
@@ -149,8 +154,9 @@ public class FSAM{
     static public AlertLevels AlertQuad(double radius,double height,double alerttime1,double alerttime2) {		
 	AlertLevels alertor = new AlertLevels();
 	alertor.setConflictAlertLevel(1);		
-	alertor.add(new AlertThresholds(new CDCylinder(radius,"m",height,"m"),alerttime1,alerttime2,BandsRegion.NEAR));
-	//alertor.add(new AlertThresholds(new CDCylinder(radius/2,"m",height/2,"m"),alerttime1-2,alerttime2-2,BandsRegion.NEAR));
+
+	alertor.addLevel(new AlertThresholds(new CDCylinder(radius,"m",height,"m"),alerttime1,alerttime2,BandsRegion.NEAR));
+
 	return alertor;
     }
 
@@ -643,27 +649,9 @@ public class FSAM{
 	    }
 	    
 	}
-
-	//add closest points on all geofence segments as a traffic with 0 speed
-	if(TrafficConflict){
-	    for(int i=0;i<FlightData.fenceList.size();++i){
-		synchronized(FlightData.fenceList){
-		    GeoFence GF = FlightData.fenceList.get(i);
-
-		    Position pos = FlightData.acState.positionLast();
-		    ArrayList<Position> VirtualTraffic = GF.LineCircleIntersection(pos,radius);
-
-		    if (VirtualTraffic.size() > 0){
-			Velocity vi  = Velocity.makeVxyz(0.0,0.0,0.0);
-			daa.addTrafficState("fence"+i+"1",VirtualTraffic.get(0),vi);
-			daa.addTrafficState("fence"+i+"2",VirtualTraffic.get(1),vi);
-		    }		    
-		}	    
-	    }
-	}
-
+	
 	if(daaTick > 100){	    
-	    if(dist > 20){
+	    if(dist > 15){
 		if(TrafficConflict){
 		    TrafficConflict = false;
 		    pausetime_start = UAS.timeCurrent;
@@ -683,7 +671,7 @@ public class FSAM{
 		Conflict cf = new Conflict(PRIORITY_LEVEL.HIGH,CONFLICT_TYPE.TRAFFIC);
 		Conflict.AddConflictToList(conflictList,cf);
 		daaTick = 0;
-		System.out.println(daa.toString());
+		//System.out.println(daa.toString());
 
 		KMB = daa.getKinematicMultiBands();
 		System.out.println(KMB.outputString());
@@ -964,24 +952,70 @@ public class FSAM{
 
 	heading_left  = heading_left*180/Math.PI;
 	heading_right = heading_right*180/Math.PI;
-	double d1,d2,h1,h2, diff = Double.MAX_VALUE;
+	double d1,d2,h1,h2, diff = Double.MAX_VALUE;	
 
 	// Determine which resolution to use (left/right) based on proximity to next waypoint heading.
 	Position CurrentPos = FlightData.acState.positionLast();
 	Position NextWP     = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
 
 	// Heading to next waypoint from current position
-	double planTrack    = Math.toDegrees(CurrentPos.track(NextWP));  	    
-	
-	d1 = Math.abs(planTrack - heading_left);
-	d2 = Math.abs(planTrack - heading_right);
+	double planTrack    = Math.toDegrees(CurrentPos.track(NextWP));
 
-	// Pick the resolution angle that is closest to the next waypoint heading
-	if(d1 <= d2){
-	    res_heading = heading_left;
+	// Resolution speed
+	double V  = UAS.GetSpeed();
+
+	// Use DAA ground speed when available
+	double Vres = KMB.groundSpeedResolution(true);
+	//System.out.println("Vres:"+Vres);
+	if(!Double.isNaN(Vres) && !Double.isInfinite(Vres)){
+	    V = Math.ceil(Vres);		
+	}
+	
+	// Get vertical speed from DAA resolution - use 0 if unavailable
+	double Dres = KMB.verticalSpeedResolution(true);
+	//System.out.println("Dres:"+Dres);
+	if(!Double.isNaN(Dres) && !Double.isInfinite(Dres)){
+	    Vu = -Dres;		// APM -ve means climb
 	}
 	else{
+	    Vu = 0;
+	}	
+
+	// Check which resolution to use by checking collision against geofence
+	boolean collisionLeft  = false;
+	boolean collisionRight = false;	
+	if(!Double.isNaN(heading_right) && !Double.isNaN(heading_left)){
+	    Vect2 Vproj1 = Velocity.trkgs2v(Math.toRadians(heading_left),V);
+	    Vect2 Vproj2 = Velocity.trkgs2v(Math.toRadians(heading_right),V);	    
+	    for(int j=0;j<FlightData.fenceList.size();++j){
+		GeoFence GF    = FlightData.fenceList.get(j);
+		collisionLeft  =  collisionLeft  || GF.CollisionDetection(CurrentPos,Vproj1,0,40);
+		collisionRight =  collisionRight || GF.CollisionDetection(CurrentPos,Vproj2,0,40);
+	    }
+	}
+
+	if(collisionLeft && !collisionRight){
 	    res_heading = heading_right;
+	    System.out.println("Collision Left");
+	}
+	else if(collisionRight && !collisionLeft){
+	    res_heading = heading_left;
+	    System.out.println("Collision Right");
+	}
+	else{
+	    System.out.println("Collision Left:"+collisionLeft);
+	    System.out.println("Collision Right:"+collisionRight);
+	    d1 = Math.abs(planTrack - heading_left);
+	    d2 = Math.abs(planTrack - heading_right);
+	
+	
+	    // Pick the resolution angle that is closest to the next waypoint heading
+	    if(d1 <= d2){
+		res_heading = heading_left;
+	    }
+	    else{
+		res_heading = heading_right;
+	    }
 	}
 
 	// If the next waypoing heading is within the <NONE> band, ignore resolution headings	
@@ -990,34 +1024,21 @@ public class FSAM{
 	    double lower_trk = iv.low; //[deg]
 	    double upper_trk = iv.up; //[deg]
 	    BandsRegion regionType = KMB.trackRegion(i);		
-	    
-	    if (regionType.toString() == "<NONE>" ){		    
+	    //System.out.println("low trk:"+lower_trk);
+	    //System.out.println("upper trk:"+upper_trk);
+	    if (regionType.toString() == "NONE" ){		    
 		if (planTrack >= lower_trk && planTrack <= upper_trk){
 		    res_heading = planTrack;
+		    //System.out.println("res_heading set to:"+res_heading);
 		    break;
 		}
 	    }
 	    
-	}	    
-
-	// Resolution speed
-	double V  = UAS.GetSpeed();
-
-	// Use DAA ground speed when available
-	double Vres = KMB.groundSpeedResolution(true);
-	if(!Double.isNaN(Vres) && !Double.isInfinite(Vres)){
-	    V = Math.ceil(Vres);		
 	}
 	
-	// Get vertical speed from DAA resolution - use 0 if unavailable
-	double Dres = KMB.verticalSpeedResolution(true);
-	if(!Double.isNaN(Dres) && !Double.isInfinite(Dres)){
-	    Vu = -Dres;		// APM -ve means climb
-	}
-	else{
-	    Vu = 0;
-	}
 	
+	
+	//System.out.println("Ref heading:"+res_heading);
 	// If resolution heading angles available, compute Vn,Ve based on resolution heading
 	if(!Double.isNaN(res_heading)){
 	    
