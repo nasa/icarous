@@ -185,7 +185,7 @@ public final class Point extends Vect3 implements OutputList {
 	public Point linear(Velocity v, double t) {
 		return mk(x + v.x*t,y + v.y*t,z +v.z*t);
 	}
-
+	
 	// 
 	// output methods
 	//

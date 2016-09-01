@@ -234,14 +234,23 @@ public final class Kinematics {
    * @return time to achieve turn
    */
   public static double turnTime(double groundSpeed, double deltaTrack, double bankAngle) {
+	  //f.pln(" $$$$$ turnTime: groundSpeed = "+Units.str("kn",groundSpeed)+" deltaTrack = "+Units.str("deg",deltaTrack));
 	  double omega = Kinematics.turnRate(groundSpeed, bankAngle);
 	  if (omega == 0.0) return Double.MAX_VALUE;
-	  return Math.abs(deltaTrack/omega);
+	  double tm = Math.abs(deltaTrack/omega);
+	  //f.pln(" $$$$$ turnTime: omega = "+Units.str("deg/s",omega)+" tm = "+tm);
+	  return tm;
   }
 
-  public static double turnTime(double deltaTrack, double trackRate) {
-	   if (trackRate == 0) return Double.MAX_VALUE;
-       return Math.abs(deltaTrack/trackRate);
+  /** calculate turn time from delta track and turn rate (omega)
+   * 
+   * @param deltaTrack         track change over turn
+   * @param omega              turn rate
+   * @return
+   */
+  public static double turnTime(double deltaTrack, double omega) {
+	   if (omega == 0) return Double.MAX_VALUE;
+       return Math.abs(deltaTrack/omega);
   }
   
   /**

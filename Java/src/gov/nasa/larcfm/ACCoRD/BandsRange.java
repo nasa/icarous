@@ -7,22 +7,24 @@
 
 package gov.nasa.larcfm.ACCoRD;
 
+import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.Interval;
 
 public class BandsRange {
-  public Interval    interval;
-  public BandsRegion region;
-  
-  public BandsRange(Interval i, BandsRegion r) {
-    interval = i;
-    region = r;
-  }
-  
-  public String toString() {
-    String s = "";
-    s+=interval.toString(4)+" "+region;
-    return s;
-  }
-  
+	public Interval    interval;
+	public BandsRegion region;
+
+	public BandsRange(Interval i, BandsRegion r) {
+		interval = i;
+		region = r;
+	}
+
+	public String toString() {
+		int precision = Constants.get_output_precision();
+		String s = "";
+		s+=interval.toString(precision)+" "+region;
+		return s;
+	}
+
 }
 

@@ -7,6 +7,7 @@
 
 package gov.nasa.larcfm.ACCoRD;
 
+import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.ParameterAcceptor;
 import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.Util.f;
@@ -27,20 +28,24 @@ public class AlertLevels implements ParameterAcceptor {
 	public int conflict_level_;
 
 	public AlertLevels() {
-		init(); 
+		alertor_ = new ArrayList<AlertThresholds>();
+		conflict_level_ = 0;
 	}
 
 	public AlertLevels(AlertLevels alertor) {
-		init();
-		setAll(alertor);
-	}
-
-	private void init() {
 		alertor_ = new ArrayList<AlertThresholds>();
-		conflict_level_ = 0;
-	}		
+		copy(alertor);
+	}
 
-	static AlertLevels WC_SC_228() {
+	/** 
+	 * @return alerting thresholds (unbuffered) as defined by SC-228 MOPS.
+	 * Maneuver guidance logic produces multilevel bands:
+	 * MID: Corrective
+	 * NEAR: Warning
+	 * Well-clear volume (unbuffered) is defined by alerting level 2 (conflict_alerting_level)  
+	 * 
+	 */
+	static public AlertLevels WC_SC_228() {
 		WCVTable preventive = new WCVTable();
 		preventive.setDTHR(0.66,"nmi");
 		preventive.setZTHR(700,"ft");
@@ -61,14 +66,21 @@ public class AlertLevels implements ParameterAcceptor {
 
 		AlertLevels alertor = new AlertLevels();
 		alertor.setConflictAlertLevel(2);
-		alertor.add(new AlertThresholds(new WCV_TAUMOD(preventive),55,75,BandsRegion.NONE)); 
-		alertor.add(new AlertThresholds(new WCV_TAUMOD(corrective),55,75,BandsRegion.MID)); 
-		alertor.add(new AlertThresholds(new WCV_TAUMOD(warning),25,55,BandsRegion.NEAR));
+		alertor.addLevel(new AlertThresholds(new WCV_TAUMOD(preventive),55,75,BandsRegion.NONE)); 
+		alertor.addLevel(new AlertThresholds(new WCV_TAUMOD(corrective),55,75,BandsRegion.MID)); 
+		alertor.addLevel(new AlertThresholds(new WCV_TAUMOD(warning),25,55,BandsRegion.NEAR));
 
 		return alertor;
 	}
 
-	static AlertLevels WC_SC_228_SingleBands() {
+	/** 
+	 * @return alerting thresholds (unbuffered) as defined by SC-228 MOPS.
+	 * Maneuver guidance logic produces single level bands:
+	 * NEAR: Corrective
+	 * Well-clear volume (unbuffered) is defined by alerting level 2 (conflict_alerting_level)  
+	 * 
+	 */
+	static public AlertLevels SingleBands_WC_SC_228() {
 		WCVTable preventive = new WCVTable();
 		preventive.setDTHR(0.66,"nmi");
 		preventive.setZTHR(700,"ft");
@@ -89,14 +101,22 @@ public class AlertLevels implements ParameterAcceptor {
 
 		AlertLevels alertor = new AlertLevels();
 		alertor.setConflictAlertLevel(2);
-		alertor.add(new AlertThresholds(new WCV_TAUMOD(preventive),55,75,BandsRegion.NONE)); 
-		alertor.add(new AlertThresholds(new WCV_TAUMOD(corrective),55,75,BandsRegion.MID)); 
-		alertor.add(new AlertThresholds(new WCV_TAUMOD(warning),25,55,BandsRegion.NONE));
+		alertor.addLevel(new AlertThresholds(new WCV_TAUMOD(preventive),55,75,BandsRegion.NONE)); 
+		alertor.addLevel(new AlertThresholds(new WCV_TAUMOD(corrective),55,75,BandsRegion.MID)); 
+		alertor.addLevel(new AlertThresholds(new WCV_TAUMOD(warning),25,55,BandsRegion.NONE));
 
 		return alertor;
 	}
 
-	static AlertLevels Buffered_WC_SC_228() {
+	/** 
+	 * @return alerting thresholds (buffered) as defined by SC-228 MOPS.
+	 * Maneuver guidance logic produces multilevel bands:
+	 * MID: Corrective
+	 * NEAR: Warning
+	 * Well-clear volume (buffered) is defined by alerting level 2 (conflict_alerting_level)  
+	 * 
+	 */
+	static public AlertLevels Buffered_WC_SC_228() {
 		WCVTable preventive = new WCVTable();
 		preventive.setDTHR(1.0,"nmi");
 		preventive.setZTHR(750,"ft");
@@ -117,13 +137,26 @@ public class AlertLevels implements ParameterAcceptor {
 
 		AlertLevels alertor = new AlertLevels();
 		alertor.setConflictAlertLevel(2);
-		alertor.add(new AlertThresholds(new WCV_TAUMOD(preventive),60,75,BandsRegion.NONE));
-		alertor.add(new AlertThresholds(new WCV_TAUMOD(corrective),60,75,BandsRegion.MID));
-		alertor.add(new AlertThresholds(new WCV_TAUMOD(warning),30,55,BandsRegion.NEAR));
+		alertor.addLevel(new AlertThresholds(new WCV_TAUMOD(preventive),60,75,BandsRegion.NONE));
+		alertor.addLevel(new AlertThresholds(new WCV_TAUMOD(corrective),60,75,BandsRegion.MID));
+		alertor.addLevel(new AlertThresholds(new WCV_TAUMOD(warning),30,55,BandsRegion.NEAR));
 
 		return alertor;
 	}
 
+	/** 
+	 * @return alerting thresholds for single bands given by detector,
+	 * alerting time, and lookahead time. 
+	 */
+	static public AlertLevels SingleBands(Detection3D detector, 
+			double alerting_time, double lookahead_time) {
+		AlertLevels alertor = new AlertLevels();
+		alertor.setConflictAlertLevel(1);
+		alertor.addLevel(new AlertThresholds(detector,
+				alerting_time,lookahead_time,BandsRegion.NEAR));
+		return alertor;
+	}
+	
 	/** 
 	 * Clears alert levels
 	 **/
@@ -155,9 +188,9 @@ public class AlertLevels implements ParameterAcceptor {
 	 * @return last guidance level whose region is different from NONE
 	 */   
 	public int lastGuidanceLevel() {  
-		for (int i=alertor_.size()-1; i >= 0; --i) {
-			if (alertor_.get(i).getRegion().isConflictBand()) {
-				return i+1;
+		for (int i=alertor_.size(); i > 0; --i) {
+			if (alertor_.get(i-1).getRegion().isConflictBand()) {
+				return i;
 			}
 		}
 		return 0;
@@ -167,7 +200,7 @@ public class AlertLevels implements ParameterAcceptor {
 	 * @return conflict alert level. When the numerical is value is 0, first guidance level
 	 */   
 	public int conflictAlertLevel() {  
-		if (conflict_level_ > 0 && conflict_level_ <= mostSevereAlertLevel()) {
+		if (1 <= conflict_level_ && conflict_level_ <= mostSevereAlertLevel()) {
 			return conflict_level_;
 		} else {
 			return firstGuidanceLevel();
@@ -175,15 +208,24 @@ public class AlertLevels implements ParameterAcceptor {
 	}
 
 	/**
-	 * @return conflict detector. 
+	 * @return detector for given alert level
 	 */   
-	public Optional<Detection3D> conflictDetector() {
-		int level = conflictAlertLevel();
-		if (level > 0) {
-			return Optional.of(alertor_.get(level-1).getDetector());
+	public Optional<Detection3D> detector(int alert_level) {
+		if (alert_level == 0) {
+			alert_level = conflictAlertLevel();
+		}
+		if (alert_level > 0) {
+			return Optional.of(alertor_.get(alert_level-1).getDetector());
 		} else {
 			return Detection3D.NoDetector;
 		}
+	}
+
+	/**
+	 * @return conflict detector for conflict alert level  
+	 */   
+	public Optional<Detection3D> conflictDetector() {
+		return detector(0);
 	}
 
 	/**
@@ -198,8 +240,8 @@ public class AlertLevels implements ParameterAcceptor {
 	/**
 	 * Set the threshold values of a given alert level. 
 	 */
-	public void set(int level, AlertThresholds thresholds) {
-		if (0 < level && level <= alertor_.size()) {
+	public void setLevel(int level, AlertThresholds thresholds) {
+		if (1 <= level && level <= alertor_.size()) {
 			alertor_.set(level-1,new AlertThresholds(thresholds));
 		} 
 	}
@@ -207,7 +249,7 @@ public class AlertLevels implements ParameterAcceptor {
 	/**
 	 * Add an alert level and returns its numerical type, which is a positive number.
 	 */
-	public int add(AlertThresholds thresholds) {
+	public int addLevel(AlertThresholds thresholds) {
 		alertor_.add(new AlertThresholds(thresholds));
 		return alertor_.size();
 	}
@@ -215,8 +257,8 @@ public class AlertLevels implements ParameterAcceptor {
 	/** 
 	 * @return threshold values of a given alert level
 	 */
-	public AlertThresholds get(int level) {
-		if (0 < level && level <= alertor_.size()) {
+	public AlertThresholds getLevel(int level) {
+		if (1 <= level && level <= alertor_.size()) {
 			return alertor_.get(level-1);
 		} else {
 			return AlertThresholds.INVALID;
@@ -224,16 +266,101 @@ public class AlertLevels implements ParameterAcceptor {
 	}
 
 	/**
-	 * Set alertor to the same values as the given parameter 
+	 * Copy alertor to the same values as the given parameter.
+	 * Detectors are deeply copied.
 	 */
-	public void setAll(AlertLevels alertor) {
+	public void copy(AlertLevels alertor) {
 		alertor_.clear();
 		conflict_level_ = alertor.conflict_level_;
 		for (int i=1; i <= alertor.mostSevereAlertLevel(); ++i) {
-			alertor_.add(new AlertThresholds(alertor.get(i)));
+			alertor_.add(new AlertThresholds(alertor.getLevel(i)));
 		}
 	}
 
+	@Override
+	public ParameterData getParameters() {
+		ParameterData p = new ParameterData();
+		updateParameterData(p);
+		return p;
+	}
+
+	@Override
+	public void updateParameterData(ParameterData p) {
+		p.set("conflict_level",f.Fmi(conflict_level_));
+		// get list of detectors that are in the alerts
+		List<Detection3D> dlist = new ArrayList<Detection3D>();
+		List<String> idlist = new ArrayList<String>(); 
+		for (int i = 0; i < alertor_.size(); i++) {
+			Detection3D det = alertor_.get(i).getDetector();
+			det.setIdentifier("det_"+f.Fmi(i+1));
+			idlist.add(det.getIdentifier()+"_id");
+			dlist.add(det);
+		}
+		// create the base parameterdata object storing the detector information
+		// this also ensures they each have a unique identifier
+		ParameterData pdmain = Detection3DParameterWriter.writeCoreDetection(dlist, null, null);
+		// remove detection3d identifier keys from pdmain
+		for (String idkey:idlist) {
+			pdmain.remove(idkey);
+		}
+		int precision = Constants.get_output_precision();
+		// add parameters for each alerter, ensuring they have an ordered set of identifiers
+		for (int i = 1; i <= mostSevereAlertLevel(); i++) {
+			ParameterData pd = new ParameterData();
+			pd.set("detector", getLevel(i).getDetector().getIdentifier());
+			pd.setInternal("alerting_time", getLevel(i).getAlertingTime(), "s", precision);
+			pd.setInternal("late_alerting_time", getLevel(i).getLateAlertingTime(), "s", precision);
+			pd.set("region", getLevel(i).getRegion().name());
+			pd.setInternal("spread_trk", getLevel(i).getTrackSpread(), "deg", precision);
+			pd.setInternal("spread_gs", getLevel(i).getGroundSpeedSpread(), "knot", precision);
+			pd.setInternal("spread_vs", getLevel(i).getVerticalSpeedSpread(), "fpm", precision);
+			pd.setInternal("spread_alt", getLevel(i).getAltitudeSpread(), "ft", precision);
+			//make sure each instance has a unique, ordered name
+			String prefix = "alert_"+f.Fmi(i)+"_";
+			pdmain.copy(pd.copyWithPrefix(prefix), true);
+		}
+		p.copy(pdmain, true);
+	}
+
+	@Override
+	public void setParameters(ParameterData p) {
+		if (p.contains("conflict_level")) conflict_level_ = p.getInt("conflict_level");
+		// read in all detector information
+		List<Detection3D> dlist = Detection3DParameterReader.readCoreDetection(p).first;
+		// put in map for easy lookup
+		HashMap<String,Detection3D> dmap = new HashMap<String,Detection3D>();
+		dlist.stream().forEach(x -> dmap.put(x.getIdentifier(),x));
+		// extract parameters for each alertlevel:
+		int counter = 1;
+		String prefix = "alert_"+f.Fmi(counter)+"_";
+		ParameterData pdsub = p.extractPrefix(prefix);
+		if (pdsub.size() > 0) {
+			alertor_.clear();
+		}
+		while (pdsub.size() > 0) {
+			// build the alertlevel
+			Detection3D det = dmap.get(pdsub.getString("detector"));
+			double alertingTime = pdsub.getValue("alerting_time");
+			double lateAlertingTime = pdsub.getValue("late_alerting_time");
+			BandsRegion br = BandsRegion.valueOf(pdsub.getString("region"));
+			AlertThresholds al = new AlertThresholds(det,alertingTime,lateAlertingTime,br);
+			al.setTrackSpread(pdsub.getValue("spread_trk"));
+			al.setGroundSpeedSpread(pdsub.getValue("spread_gs"));
+			al.setVerticalSpeedSpread(pdsub.getValue("spread_vs"));
+			al.setAltitudeSpread(pdsub.getValue("spread_alt"));
+			// modify or add the alertlevel (this cannot remove levels)
+			if (counter <= alertor_.size()) {
+				setLevel(counter,al);
+			} else {
+				addLevel(al);
+			}
+			// next set
+			counter++;
+			prefix = "alert_"+f.Fmi(counter)+"_";
+			pdsub = p.extractPrefix(prefix);
+		}
+	}
+	
 	public String toString() {
 		String s = "Conflict Level: "+conflict_level_+" ("+conflictAlertLevel()+")\n";
 		for (int i=0; i < alertor_.size(); ++i) {
@@ -254,89 +381,6 @@ public class AlertLevels implements ParameterAcceptor {
 			s += alertor_.get(i).toPVS(prec);
 		}
 		return s+" :))";
-	}
-
-	@Override
-	public ParameterData getParameters() {
-		ParameterData p = new ParameterData();
-		updateParameterData(p);
-		return p;
-	}
-
-	@Override
-	public void updateParameterData(ParameterData p) {
-		p.set("conflict_level",f.Fm0(conflict_level_));
-		// get list of detectors that are in the alerts
-		List<Detection3D> dlist = new ArrayList<Detection3D>();
-		List<String> idlist = new ArrayList<String>(); 
-		for (int i = 0; i < alertor_.size(); i++) {
-			Detection3D det = alertor_.get(i).getDetector();
-			det.setIdentifier("det_"+f.Fm0(i+1));
-			idlist.add(det.getIdentifier()+"_id");
-			dlist.add(det);
-		}
-		// create the base parameterdata object storing the detector information
-		// this also ensures they each have a unique identifier
-		ParameterData pdmain = DetectionParameterWriter.writeCoreDetection(dlist, null, null);
-		// remove detection3d identifier keys from pdmain
-		for (String idkey:idlist) {
-			pdmain.remove(idkey);
-		}
-		// add parameters for each alerter, ensuring they have an ordered set of identifiers
-		for (int i = 1; i <= mostSevereAlertLevel(); i++) {
-			ParameterData pd = new ParameterData();
-			pd.set("detector", get(i).getDetector().getIdentifier());
-			pd.setInternal("alerting_time", get(i).getAlertingTime(), "s", 4);
-			pd.setInternal("late_alerting_time", get(i).getLateAlertingTime(), "s", 4);
-			pd.set("region", get(i).getRegion().toString());
-			pd.setInternal("spread_trk", get(i).getTrackSpread(), "deg", 4);
-			pd.setInternal("spread_gs", get(i).getGroundSpeedSpread(), "knot", 4);
-			pd.setInternal("spread_vs", get(i).getVerticalSpeedSpread(), "fpm", 4);
-			pd.setInternal("spread_alt", get(i).getAltitudeSpread(), "ft", 4);
-			//make sure each instance has a unique, ordered name
-			String prefix = "alert_"+f.Fm0(i)+"_";
-			pdmain.copy(pd.copyWithPrefix(prefix), true);
-		}
-		p.copy(pdmain, true);
-	}
-
-	@Override
-	public void setParameters(ParameterData p) {
-		if (p.contains("conflict_level")) conflict_level_ = p.getInt("conflict_level");
-		// read in all detector information
-		List<Detection3D> dlist = DetectionParameterReader.readCoreDetection(p).first;
-		// put in map for easy lookup
-		HashMap<String,Detection3D> dmap = new HashMap<String,Detection3D>();
-		dlist.stream().forEach(x -> dmap.put(x.getIdentifier(),x));
-		// extract parameters for each alertlevel:
-		int counter = 1;
-		String prefix = "alert_"+f.Fm0(counter)+"_";
-		ParameterData pdsub = p.extractPrefix(prefix);
-		if (pdsub.size() > 0) {
-			alertor_.clear();
-		}
-		while (pdsub.size() > 0) {
-			// build the alertlevel
-			Detection3D det = dmap.get(pdsub.getString("detector"));
-			double alertingTime = pdsub.getValue("alerting_time");
-			double lateAlertingTime = pdsub.getValue("late_alerting_time");
-			BandsRegion br = BandsRegion.valueOf(pdsub.getString("region"));
-			AlertThresholds al = new AlertThresholds(det,alertingTime,lateAlertingTime,br);
-			al.setTrackSpread(pdsub.getValue("spread_trk"));
-			al.setGroundSpeedSpread(pdsub.getValue("spread_gs"));
-			al.setVerticalSpeedSpread(pdsub.getValue("spread_vs"));
-			al.setAltitudeSpread(pdsub.getValue("spread_alt"));
-			// modify or add the alertlevel (this cannot remove levels)
-			if (counter <= alertor_.size()) {
-				set(counter,al);
-			} else {
-				add(al);
-			}
-			// next set
-			counter++;
-			prefix = "alert_"+f.Fm0(counter)+"_";
-			pdsub = p.extractPrefix(prefix);
-		}
 	}
 
 }

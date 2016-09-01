@@ -391,7 +391,7 @@ public class CR3D {
     double voz = nvz+vi.z;
     voz = Util.sign(voz)*Math.min(Math.abs(voz),maxvs);
     double algInnerFactor = 2.0;
-    //f.pln(" losr_vs_new: voz = "+Units.str("fpm",voz)+" maxvs = "+Units.str("fpm",maxvs)+" eps = "+f.Fm0(eps));
+    //f.pln(" losr_vs_new: voz = "+Units.str("fpm",voz)+" maxvs = "+Units.str("fpm",maxvs)+" eps = "+f.Fmi(eps));
     if (CD3D.cd3d(s,vo,vi,caD,algInnerFactor*caH)) {
       if (CD3D.LoS(s,caD,caH)) 
         return new Vertical(epsv*maxvs);

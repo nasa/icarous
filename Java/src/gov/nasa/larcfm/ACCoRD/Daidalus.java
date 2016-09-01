@@ -40,14 +40,18 @@ public class Daidalus implements ErrorReporter {
 	/**
 	 * Parameter values for Daidalus object
 	 */
-	public DaidalusParameters parameters; // Parameters
+	public KinematicBandsParameters parameters; // Parameters
 
 	/**
 	 * Create a new Daidalus object. This object will default to using WCV_TAUMOD as state detector.  
 	 */
 	public Daidalus() {
-		parameters = new DaidalusParameters();//DaidalusParameters.DefaultValues);
-		init();
+		parameters = new KinematicBandsParameters(KinematicBandsParameters.DefaultValues);
+		urgency_strat_ = new NoneUrgencyStrategy(); 
+		wind_vector_ = Velocity.ZERO;
+		current_time_ = 0;
+		ownship_ = TrafficState.INVALID;
+		traffic_ = new ArrayList<TrafficState>();
 	}
 
 	/**
@@ -55,21 +59,13 @@ public class Daidalus implements ErrorReporter {
 	 * from another Daidalus object.
 	 */
 	public Daidalus(Daidalus daa) {
-		parameters = new DaidalusParameters(daa.parameters);
+		parameters = new KinematicBandsParameters(daa.parameters);
 		urgency_strat_ = daa.urgency_strat_.copy();
 		wind_vector_ = daa.wind_vector_;
 		current_time_ = daa.current_time_;
 		ownship_ = daa.ownship_;
 		traffic_ = new ArrayList<TrafficState>();
 		traffic_.addAll(daa.traffic_);
-	}
-
-	private void init() {
-		urgency_strat_ = new NoneUrgencyStrategy(); 
-		wind_vector_ = Velocity.ZERO;
-		current_time_ = 0;
-		ownship_ = TrafficState.INVALID;
-		traffic_ = new ArrayList<TrafficState>();
 	}
 
 	/**
@@ -286,14 +282,8 @@ public class Daidalus implements ErrorReporter {
 	public int alerting(int ac_idx, int turning, int accelerating, int climbing) {
 		if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
 			TrafficState ac = traffic_.get(ac_idx-1);
-			TrafficState mu_ac = mostUrgentAircraft();
-			for (int alert_level=parameters.alertor.mostSevereAlertLevel(); alert_level > 0; --alert_level) {
-				AlertThresholds athr = parameters.alertor.get(alert_level);
-				if (athr.alerting(parameters,ownship_,ac,mu_ac,turning,accelerating,climbing)) {
-					return alert_level;
-				}
-			}
-			return 0;
+			KinematicMultiBands kb = getKinematicMultiBands();
+			return kb.alerting(ac, turning, accelerating, climbing);
 		} else {
 			error.addError("alerting: aircraft index "+ac_idx+" is out of bounds");
 			return -1;
@@ -310,11 +300,12 @@ public class Daidalus implements ErrorReporter {
 	}
 
 	/**
-	 * Detects conflict with aircraft at index ac_idx. Conflict data provides time 
-	 * to first violation and time to last violation. 
+	 * Detects conflict with aircraft at index ac_idx for given alert level. 
+	 * Conflict data provides time to first violation and time to last violation 
+	 * within lookahead time. 
 	 */
-	public ConflictData detection(int ac_idx) {
-		Optional<Detection3D> detector = parameters.alertor.conflictDetector();
+	public ConflictData detection(int ac_idx, int alert_level) {
+		Optional<Detection3D> detector = parameters.alertor.detector(alert_level);
 		if (1 <= ac_idx && ac_idx <= lastTrafficIndex() && detector.isPresent()) {
 			TrafficState ac = traffic_.get(ac_idx-1);
 			return detector.get().conflictDetection(ownship_.get_s(),ownship_.get_v(),ac.get_s(),ac.get_v(),
@@ -323,6 +314,15 @@ public class Daidalus implements ErrorReporter {
 			error.addError("detection: aircraft index "+ac_idx+" is out of bounds");
 			return new ConflictData();
 		}
+	}
+
+	/**
+	 * Detects conflict with aircraft at index ac_idx for conflict alert level. 
+	 * Conflict data provides time to first violation and time to last violation 
+	 * within lookahead time. 
+	 */
+	public ConflictData detection(int ac_idx) {
+		return detection(ac_idx,0);
 	}
 
 	/**
@@ -351,10 +351,9 @@ public class Daidalus implements ErrorReporter {
 			error.addError("getKinematicBands: ownship has not been set");
 			return new KinematicMultiBands();
 		} else {
-			KinematicMultiBands bands = new KinematicMultiBands(); 
+			KinematicMultiBands bands = new KinematicMultiBands(parameters); 
 			bands.setOwnship(ownship_);
 			bands.setTraffic(traffic_);
-			bands.setParameters(parameters);
 			bands.setMostUrgentAircraft(mostUrgentAircraft());
 			return bands;
 		}
@@ -398,15 +397,22 @@ public class Daidalus implements ErrorReporter {
 	}
 
 	/**
-	 * Returns most urgent aircraft at current time according to urgency strategy.
+	 * Returns most urgent aircraft for given alert level according to urgency strategy.
 	 */
-	public TrafficState mostUrgentAircraft() {
-		Optional<Detection3D> detector = parameters.alertor.conflictDetector();    
+	public TrafficState mostUrgentAircraft(int alert_level) {
+		Optional<Detection3D> detector = parameters.alertor.detector(alert_level);    
 		if (lastTrafficIndex() > 0 && detector.isPresent()) {
 			return urgency_strat_.mostUrgentAircraft(detector.get(),ownship_,traffic_,parameters.getLookaheadTime());
 		} else {
 			return TrafficState.INVALID;
 		}
+	}
+
+	/**
+	 * Returns most urgent aircraft for conflict alert level according to urgency strategy.
+	 */
+	public TrafficState mostUrgentAircraft() {
+		return mostUrgentAircraft(0);
 	}
 
 	private static void add_blob(List<List<Position>> blobs, Deque<Position> vin, Deque<Position> vout) {
@@ -422,14 +428,14 @@ public class Daidalus implements ErrorReporter {
 	}
 
 	/**
-	 * Computes horizontal contours contributed by aircraft at index ac_idx that are within 
-	 * the horizontal contour threshold of the ownship current direction. A contour is a non-empty 
-	 * list of points in counter-clockwise direction representing a polygon.   
+	 * Computes horizontal contours contributed by aircraft at index ac_idx, for 
+	 * given alert level. A contour is a non-empty list of points in counter-clockwise 
+	 * direction representing a polygon.   
 	 * @param blobs list of track contours returned by reference.
 	 * @param ac_idx is the index of the aircraft used to compute the contours.
 	 */
-	public void horizontalContours(List<List<Position>>blobs, int ac_idx) {
-		Optional<Detection3D> detector = parameters.alertor.conflictDetector();    
+	public void horizontalContours(List<List<Position>>blobs, int ac_idx, int alert_level) {
+		Optional<Detection3D> detector = parameters.alertor.detector(alert_level);    
 		blobs.clear();
 		if (1 <= ac_idx && ac_idx <= lastTrafficIndex() && detector.isPresent()) {
 			Deque<Position> vin = new ArrayDeque<Position>();
@@ -516,6 +522,17 @@ public class Daidalus implements ErrorReporter {
 			error.addError("trackContour: aircraft index "+ac_idx+" is out of bounds");
 		}
 	}
+	
+	/**
+	 * Computes horizontal contours contributed by aircraft at index ac_idx, for 
+	 * conflict alert level. A contour is a non-empty list of points in counter-clockwise 
+	 * direction representing a polygon.   
+	 * @param blobs list of track contours returned by reference.
+	 * @param ac_idx is the index of the aircraft used to compute the contours.
+	 */
+	public void horizontalContours(List<List<Position>>blobs, int ac_idx) {
+		horizontalContours(blobs,ac_idx,0);
+	}
 
 	public String aircraftListToPVS(int prec) {
 		return ownship_.listToPVSAircraftList(traffic_,prec);
@@ -524,11 +541,16 @@ public class Daidalus implements ErrorReporter {
 	public String toString() {
 		String s;
 		s = "Daidalus Object\n";
-		s += "Parameters:\n###\n"+parameters.toString();
+		s += "Alertor:\n"+parameters.alertor.toString();
+		s += "Parameters:\n"+parameters.toString();
 		if (traffic_.size() > 0) {
 			s += "###\nAircraft:\n"+ownship_.formattedTraffic(traffic_,current_time_);
 		}
 		return s;
+	}
+
+	public static String release() {
+		return "DAIDALUSj V-"+KinematicBandsParameters.VERSION; 
 	}
 
 	public boolean hasError() {

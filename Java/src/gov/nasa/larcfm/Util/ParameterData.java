@@ -371,7 +371,7 @@ public class ParameterData {
 	 * @param newEntry
 	 * @param preserve
 	 */
-	private boolean putParam(String key, Pair<Boolean, Quad<String, Double, String, Boolean>> entry) {
+	protected boolean putParam(String key, Pair<Boolean, Quad<String, Double, String, Boolean>> entry) {
 		//f.pln("ParameterData.putParam "+key+" "+newEntry);
 		boolean preserve_string = entry.first;
 		Quad<String, Double, String, Boolean> newEntry = entry.second;
@@ -886,10 +886,7 @@ public class ParameterData {
 		Collections.sort(keys);
 		for (String key : keys) {
 			Quad<String, Double, String, Boolean> val = parameters.get(key);
-			double factor = Units.getFactor(val.third);
-			String[] comp = Units.getCompatibleUnits(val.third);
-		  String core = "internal"; 
-			s = s+key+" = "+val.first+(factor > 0 && factor != 1 ?" # "+f.FmPrecision(factor*val.second,8)+" ["+core+"]":"")+"\n";
+			s = s+key+" = "+val.first+"\n";
 		}
 		return s;
 	}

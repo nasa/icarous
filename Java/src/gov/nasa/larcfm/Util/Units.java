@@ -1433,8 +1433,7 @@ public final class Units {
   
   /**
    * Returns the list of all units currently registered to the Units class and
-   * returns this list in sorted order. A full list of units is located <a
-   * href="doc-files/units.html">here</a>.
+   * returns this list in sorted order.
    */
   public static String[] getAllUnits() {
     Set<String> set;

@@ -47,7 +47,7 @@ public class PlanUtil {
 			if (!silent) {
 				f.pln(" >>> gsConsistent: GS FAIL! at i = "+i+" GSC section fails ACCEL test! a = "+a+ " acalc = "+acalc);
 			}
-			if (deltaAccel > 0.5) f.pln(" gsConsistent: **************************************************** deltaAccel = "+deltaAccel);
+			if (deltaAccel > 0.5) f.pln(" gsConsistent:  deltaAccel = "+f.Fm4(deltaAccel));
 			rtn = false;
 		}
 		double ds = vin.gs()*dt + 0.5*a*dt*dt;
@@ -56,7 +56,7 @@ public class PlanUtil {
 		//f.pln(" ds = "+Units.str("nm",ds)+ " distH = "+Units.str("nm",distH)+" absDiff = "+Units.str15("m",absDiff));
 		if (!Util.within_epsilon(absDiff, distEpsilon)) { // See testGsSimple for worst case 0.07
 			if ( ! silent) f.pln(" >>> gsConsistent: GS FAIL! at i = "+i+" GSC section fails Test! absDiff = "+Units.str("m",absDiff));
-			if ( ! silent && absDiff > Units.from("m", 10.0)) f.pln(" gsConsistent: **************************************************  distanceH = "+Units.str("m",absDiff,8));
+			if ( ! silent && absDiff > Units.from("m", 10.0)) f.pln(" gsConsistent:  distanceH = "+Units.str("m",absDiff,8));
 			rtn = false;
 		}
 		return rtn;
@@ -90,7 +90,7 @@ public class PlanUtil {
 			if (!silent) {
 				f.pln(" >>> vsConsistent VS FAIL! at i = "+i+" VSC section fails ACCEL test! a = "+a+ " acalc = "+acalc);
 			}
-			if (deltaAccel > 10.0*accelEpsilon) f.pln(" vsConsistent: ******************************************************* deltaAccel = "+deltaAccel);
+			if (deltaAccel > 10.0*accelEpsilon) f.pln(" vsConsistent: deltaAccel = "+f.Fm4(deltaAccel));
 			rtn = false;
 		}
 		//f.pln(" >>> isConsistent i = "+i+" a = "+a+"  vo = "+vo);
@@ -103,9 +103,9 @@ public class PlanUtil {
 		if (!Util.within_epsilon(absDiff,distEpsilon)) { // 0.0000001)) {
 			if (!silent) {
 				f.pln(" >>> vsConsistent VS FAIL! at i = "+i+" VSC Section fails Test! absDiff = "+Units.str("m",absDiff,8));
-				f.pln(" >>> .........  ds = "+Units.str("ft",ds,8)+ " distV = "+Units.str("ft",distV,8));
+				f.pln(" >>> .. ds = "+Units.str("ft",ds,8)+ " distV = "+Units.str("ft",distV,8));
 			}
-			if ( ! silent && absDiff > 10.0*distEpsilon) f.pln(" vsConsistent: ******************************************************* absDiff = "+Units.str("ft",absDiff,8));
+			if ( ! silent && absDiff > 10.0*distEpsilon) f.pln(" vsConsistent: absDiff = "+Units.str("ft",absDiff,8));
 			rtn = false;
 		}
 		return rtn;
@@ -143,9 +143,9 @@ public class PlanUtil {
 		double dt = EOT.time() - BOT.time();
 		double omega = BOT.trkAccel();
 		Position so = BOT.position();
-		//f.pln(" $$>>>>>>>>>>>>>>>>>>>>>>>>> turnConsistent: i = "+i+" vin = "+vin+" dt = "+dt+" omega = "+Units.str4("deg/s",omega));
-		//f.pln(" $$>>>>>>>>>>>>>>>>>>>>>>>>> turnConsistent: i = "+i+"   vout = "+vout);	
-		//f.pln(" $$>>>>>>>>>>>>>>>>>>>>>>>>> turnConsistent: i = "+i+" vin.trk() = "+Units.str("deg", vin.compassAngle())+" finalTrack = "+Units.str("deg", vout.compassAngle())+" omega = "+Units.str("deg/s",omega,4));
+		//f.pln(" $$>>>> turnConsistent: i = "+i+" vin = "+vin+" dt = "+f.Fm4(dt)+" omega = "+Units.str("deg/s",omega,4));
+		//f.pln(" $$>>>> turnConsistent: i = "+i+" vout = "+vout);	
+		//f.pln(" $$>>>> turnConsistent: i = "+i+" vin.trk() = "+Units.str("deg", vin.compassAngle())+" vout.trk() = "+Units.str("deg", vout.compassAngle()));
 		Position pos = (ProjectedKinematics.turnOmega(so, vin, dt, omega, proj).first).mkAlt(EOT.alt()); // need to treat altitude separately
 		if (!EOT.position().almostEquals(pos,distH_Epsilon,distV_Epsilon)) { //       (p,0.005,1.2)) {  
 			double distanceH = EOT.position().distanceH(pos);
@@ -156,18 +156,16 @@ public class PlanUtil {
 				double distanceV = EOT.position().distanceV(pos);
 				f.pln("            .... distanceV = "+Units.str("m",distanceV,8));
 			}
-			if ( ! silent && distanceH > 10*distH_Epsilon) f.pln(" turnConsistent: ************************************************* (turn) distanceH = "+Units.str("m",distanceH,8));
+			if ( ! silent && distanceH > 10*distH_Epsilon) f.pln(" turnConsistent:  (turn) distanceH = "+Units.str("m",distanceH,8));
 			rtn = false;
 		}
 		//f.pln(" >>> turnConsistent: i = "+i+" POSITION test! calculated EOTpos = "+pos.toString(8)+ " plan EOT = "+EOT.toString(8));
-		//f.pln(" $$$$$$>>>>>>>>>>>>>>>>>>>>>>>>>>..... EOT.velocity.trk() = "+Units.str("deg",EOT.velocityIn().trk(),4)+" finalTrack = "+Units.str("deg",finalTrack,4));				
+		//f.pln(" $$>>>> EOT.velocity.trk() = "+Units.str("deg",EOT.velocityIn().trk(),4)+" finalTrack = "+Units.str("deg",finalTrack,4));				
 		double deltaTrack = Util.turnDelta(vin.trk(),finalTrack);
-		//		double deltaTrackP = ProjectedKinematics.turnDelta(so,vin.trk(),finalTrack);		
 		double turnTime = Kinematics.turnTime(deltaTrack,omega);    
-		//	    double turnTimeP = Kinematics.turnTime(deltaTrackP,omega);    
-		//f.pln(" >>>>>>>>>>>>>>>>>>>>>>>>> turnConsistent: deltaTrack = "+Units.str("deg",deltaTrack)+" turnTime = "+turnTime);	
+		//f.pln(" $$>>>> turnConsistent: deltaTrack = "+Units.str("deg",deltaTrack)+" turnTime = "+turnTime);	
 		if (!Util.within_epsilon(dt,turnTime,timeEpsilon)) { // 0.02)) {  // See testVsWithTurnHard3Vert for worst case  ***KCHANGE*** from 0.012 to 0.02
-			if (!silent) f.pln(" >>> turnConsistent: TURN FAIL! i = "+i+" Turn section fails TIME test!  dt = "+dt+" != turnTime = "+turnTime);
+			if (!silent) f.pln(" >>> turnConsistent: TURN FAIL! i = "+i+" TIME test:  EOT.t-BOT.t = "+f.Fm4(dt)+" != turnTime = "+f.Fm4(turnTime)+" Delta = "+f.Fm4(dt-turnTime));
 			//f.pln("turnTimeProjected="+turnTimeP);			
 			rtn = false;
 		}
@@ -184,34 +182,61 @@ public class PlanUtil {
 		int ixEOT = p.nextEOT(i);
 		NavPoint EOT = p.point(ixEOT);	
 		Velocity vin = p.point(i).velocityIn();
-		//if (i == 0) vin = p.point(i).velocityIn();     // not sure if we should allow TCP as current point ??
-		//else vin = p.finalVelocity(i-1);		  
 		Velocity vout = p.initialVelocity(ixEOT);
-		//Velocity vout = p.finalVelocity(ixEOT-1);
-		//f.pln(" $$$$$$$$$$$$$$$$ turnConsistent  ixEOT = "+ixEOT+" EOT = "+EOT+" vout = "+vout);
+		//f.pln(" $$$$>>>> turnConsistent  ixEOT = "+ixEOT+" EOT = "+EOT+" vout = "+vout);
 		//DebugSupport.dumpPlan(p,"_BUGBUG");
 		return turnConsistent(i, BOT, EOT, timeEpsilon, distH_Epsilon, distV_Epsilon, vin, vout, silent);
 	}
 
-	public static boolean velocityContinuous(Plan p, int i, double velEpsilon, boolean silent) {
+	
+	public static boolean isVelocityContinuous(Plan p, int i, double velEpsilon, boolean silent) {
 		boolean rtn = true;
-		if (!p.finalVelocity(i-1).within_epsilon(p.initialVelocity(i), velEpsilon)) { // 2.6)) { // see testAces3, testRandom for worst cases
+//		double gs_i =  p.initialVelocity(i).gs();
+//		String label = p.point(i).label();
+//		f.pln(" $$ label = "+label);
+//		double turnDelta = Util.turnDelta(p.finalVelocity(i-1).trk(),p.initialVelocity(i).trk());
+//		double omega = Math.abs(p.point(i).trkAccel());
+//		boolean checkTurn = true;
+//		if (p.point(i).isTrkTCP() && omega > 0) {
+//			//double radius = p.point(i).turnRadius();			           
+//			double turnTime = turnDelta/omega;
+//			f.pln(" $$ isVelocityContinuous: p.point(i) = "+p.point(i).toStringFull());
+//			f.pln(" $$ isVelocityContinuous: turnDelta = "+turnDelta+" turnTime at i = "+i+" = "+turnTime);
+//			checkTurn = turnTime >= TrajGen.getMinTimeStep();
+//		}
+//		//boolean checkTurn = ! label.contains(TrajGen.minorTrkChangeLabel);
+//		if (checkTurn) {
+//			if (turnDelta > velEpsilon) {
+//				f.pln(" $$ FAIL: turnDelta = "+Units.str("deg",turnDelta));
+//				rtn = false;  
+//			}
+//		}
+		double gsDelta = p.finalVelocity(i-1).gs() - p.initialVelocity(i).gs();
+		if (Math.abs(gsDelta) > velEpsilon) {
+			f.pln(" $$ FAIL gsDelta = "+Units.str("kn",gsDelta));
+			rtn = false; 
+		}
+		double vsDelta = p.finalVelocity(i-1).vs() - p.initialVelocity(i).vs();
+		if ( Math.abs(vsDelta) > velEpsilon) {
+			f.pln(" $$ FAIL vsDelta = "+Units.str("fpm",vsDelta));
+			rtn = false; 
+		}	
+		if (! rtn) { // 2.6)) { // see testAces3, testRandom for worst cases
 			if (!silent) {
-				f.pln("\n ----------------------------------------------");
-				f.pln(" $$$ isConsistent: FAIL! continuity: finalVelocity("+(i-1)+") = "+p.finalVelocity(i-1).toStringUnits()						
-						+"\n                                != initialVelocity("+i+") = "+p.initialVelocity(i).toStringUnits()
+				f.pln(" $$$ isVelocityContinuous: FAIL! continuity: finalVelocity("+(i-1)+") = "+p.finalVelocity(i-1).toStringUnits()						
+						+"\n                                        != initialVelocity("+i+") = "+p.initialVelocity(i).toStringUnits()
 						+" point "+(i-1)+" type "+p.point(i-1).tcpTypeString()+" point "+i+" type "+p.point(i).tcpTypeString()); 
 				Velocity DeltaV = p.finalVelocity(i-1).Sub(p.initialVelocity(i));
-				if (DeltaV.norm() > 10*velEpsilon) {f.p(" turnConsistent: ********************************");
-				f.pln("           ....  DeltaV = "+DeltaV.toStringUnits()+" DeltaV.norm() = "+DeltaV.norm());
+				if (DeltaV.norm() > 10*velEpsilon) {
+				     f.pln("   ....  DeltaV = "+DeltaV.toStringUnits()+" DeltaV.norm() = "+DeltaV.norm());
 				}
-				//DebugSupport.halt();
 			}
-			rtn = false;  
 		} 
 		return rtn;
 	}
 
+	
+	
 	public static boolean isGsConsistent(Plan p,  double accelEpsilon, double distEpsilon, boolean silent) {	
 		boolean rtn = true;
 		for (int i = 0; i < p.size(); i++) {
@@ -251,7 +276,7 @@ public class PlanUtil {
 		boolean rtn = true;
 		for (int i = 0; i < p.size(); i++) {
 			if (p.point(i).isTCP()) { 
-				if (! PlanUtil.velocityContinuous(p, i, velEpsilon, silent)) rtn = false;
+				if (! PlanUtil.isVelocityContinuous(p, i, velEpsilon, silent)) rtn = false;
 			}
 		}		
 		return rtn;
@@ -284,7 +309,7 @@ public class PlanUtil {
 			}
 			if (i > 0) {  
 				if (p.point(i).isTCP()) { 
-					if (! PlanUtil.velocityContinuous(p, i, 2.6, silent)) rtn = false;
+					if (! PlanUtil.isVelocityContinuous(p, i, 2.6, silent)) rtn = false;
 				}
 			}
 		}		
@@ -1402,10 +1427,107 @@ public class PlanUtil {
 	}
 
 
+	/** Convert a plan (kinematic or linear) starting at waypoint wp1 to a route.   The original turn radius is 
+	 *  retained so that the horizontal path distance will be the same if it is converted back to a kinematic plan.
+	 *  Note.  the gsAccel and vsAccel acceleration parameters are not stored.
+	 *  Note.  The sourcePosition fields are used for reversion.  SourceTimes are use to identify all
+	 *         points that were generated from the soursePosition, but its value is not used.
+	 * 
+	 * 
+	 * @param p     plan to be ripped
+	 * @param wp1   starting point of the rip
+	 * @return      route from the plan
+	 */
+	
+	public static Route toRoute(Plan p, int wp1) {
+        Route rt = new Route();
+        ArrayList<Double> sourceTimes = new  ArrayList<Double>();
+		for (int j = wp1; j < p.size(); j++) {
+			NavPoint np_j = p.point(j);
+			//f.pln(" $$$$ toRoute: np_j = "+np_j.toStringFull());
+			double sourceTime = np_j.sourceTime();
+			if (! sourceTimes.contains(sourceTime)) {
+			    Position pos = np_j.sourcePosition();
+			    rt.add(pos, np_j.label(), np_j.turnRadius());
+			    sourceTimes.add(sourceTime);
+			}
+		}		
+		return rt;
+	}
+	
+	/** EXPERIMENTAL --> subtle
+	 *  Convert a plan (kinematic or linear) starting at waypoint wp1 to a route.   The original turn radius is 
+	 *  retained so that the horizontal path distance will be the same if it is converted back to a kinematic plan.
+	 *  Note.  the gsAccel and vsAccel acceleration parameters are not stored.
+	 *  Note.  The sourcePosition fields are used for reversion.  SourceTimes are use to identify all
+	 *         points that were generated from the soursePosition, but its value is not used.
+	 * 
+	 * @param p     plan to be ripped
+	 * @param wp1   starting point of the rip
+	 * @return      route from the plan
+	 */	
+	public static GsPlan toGsPlan(Plan p, int wp1) {
+		//f.pln(" $$ ------------------------- toGsPlan: p = "+p.toStringGs());
+        GsPlan gsp = new GsPlan(p.getFirstTime());
+        ArrayList<Double> sourceTimes = new  ArrayList<Double>();
+		for (int j = wp1; j < p.size(); j++) {
+			NavPoint np_j = p.point(j);
+			//f.pln(" $$$$ toGsPlan: np_j = "+np_j.toStringFull());
+			double sourceTime = np_j.sourceTime();
+			if (! sourceTimes.contains(sourceTime)) {
+			    Position pos = np_j.sourcePosition();
+			    double gsInit = p.initialVelocity(j).gs();
+			    if (np_j.isBOT()) {
+			    	//f.p(" **IS BOT** ");
+			    	int jNext = j-1;
+			    	double srcTime = sourceTime;
+			    	// find ground speed at the end of the srcTime group
+			    	while (srcTime == sourceTime && jNext < p.size()-1) {
+			    		jNext++;
+			    		//f.pln(" $$$$>>>>>>>>>>> toGsPlan: p.point("+jNext+")= "+p.point(jNext).toStringFull());
+			    		srcTime = p.point(jNext).sourceTime();
+			    	}
+			    	//f.p(" jNext = "+jNext);
+			    	gsInit = p.initialVelocity(jNext-1).gs();
+			    } else if (np_j.isBGS()) {
+			    	//f.p(" **IS BGS** ");
+			    	int jNext = p.nextEGS(j);
+			    	gsInit = p.initialVelocity(jNext).gs();
+			    } else if (np_j.isBVS()) {
+			    	//f.p(" **IS BVS** ");
+			    	int jNext = p.nextEVS(j);
+			    	double tm = p.getTime(jNext);
+			    	while (p.inGsChange(tm)) {  // if EVS is inside a BGS EGS get speed after EGS
+			    		jNext++;
+			    		 tm = p.getTime(jNext);
+			    		 if (jNext == p.size()-1) break;
+			    	}		    
+			    	gsInit = p.initialVelocity(jNext).gs();
+			    }
+			    gsp.add(pos, np_j.label(), gsInit, np_j.turnRadius());
+			    //f.pln(" $$###>>>>> toGsPlan.add: j = "+j+" "+pos+" "+np_j.label()+" gsin = "+Units.str("kn",gsInit)+" radius = "+Units.str("nm",np_j.turnRadius()));
+			    sourceTimes.add(sourceTime);
+			}
+		}		
+		return gsp;
+	}
 
+	
+	/** change the initial ground speed at ix to be gs -- all other ground speeds remain the same 
+	 * 
+	 * @param p
+	 * @param ix
+	 * @param gs
+	 * @param maxGsAccel  only needed in plan is not linear
+	 * @return
+	 */
+	public static void linearMakeGsAt(Plan p, int ix, double gs) {
+		if (ix >= p.size() - 1) return;
+		double tmIxP1 = p.linearCalcTimeGSin(ix+1,gs);
+		p.timeshiftPlan(ix+1,tmIxP1 - p.point(ix+1).time());
+	}
 
-
-
+	
 	/**
 	 * Make vertical speed constant vs between wp1 and wp2.
 	 * Assumes input plan is linear.
@@ -1602,7 +1724,8 @@ public class PlanUtil {
 		return rtn;
 	}
 
-	/**  make a new plan that is identical to plan except first part (up to startTime) and last part (after endTime) is thrown away
+	/**  make a new plan that is identical to plan from startTime to endTime 
+	 *   It assumes that  startTime and endTime are in linear segments
 	 * 
 	 * @param plan         source plan
 	 * @param startTime    absolute time of start time

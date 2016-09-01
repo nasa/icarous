@@ -15,64 +15,74 @@ import gov.nasa.larcfm.Util.Velocity;
 
 public class KinematicTrkBands extends KinematicRealBands {
 
-  private double turn_rate_;     
-  private double bank_angle_; // Only used when turn_rate is set to 0  
+	private double turn_rate_;     
+	private double bank_angle_; // Only used when turn_rate is set to 0  
 
-  // min/max is left/right relative to ownship's track
-  public KinematicTrkBands() {
-    super(DaidalusParameters.DefaultValues.getLeftTrack(),
-        DaidalusParameters.DefaultValues.getRightTrack(),
-        true,2*Math.PI,
-        DaidalusParameters.DefaultValues.getTrackStep(), 
-        DaidalusParameters.DefaultValues.isEnabledRecoveryTrackBands());
-    turn_rate_ = DaidalusParameters.DefaultValues.getTurnRate();
-    bank_angle_ = DaidalusParameters.DefaultValues.getBankAngle();
-  }
+	// min/max is left/right relative to ownship's track
+	public KinematicTrkBands(KinematicBandsParameters parameters) {
+		super(-parameters.getLeftTrack(),
+				parameters.getRightTrack(),
+				true,2*Math.PI,
+				parameters.getTrackStep(), 
+				parameters.isEnabledRecoveryTrackBands());
+		turn_rate_ = parameters.getTurnRate();
+		bank_angle_ = parameters.getBankAngle();
+	}
 
-  public KinematicTrkBands(KinematicTrkBands b) {
-    super(b);
-    turn_rate_ = b.turn_rate_;
-    bank_angle_ = b.bank_angle_;
-  }
+	public KinematicTrkBands(KinematicTrkBands b) {
+		super(b);
+		turn_rate_ = b.turn_rate_;
+		bank_angle_ = b.bank_angle_;
+	}
 
-  public double get_turn_rate() {
-    return turn_rate_;
-  }
+	public boolean instantaneous_bands() {
+		return turn_rate_ == 0 && bank_angle_ == 0;
+	}
 
-  public void set_turn_rate(double val) {
-    if (val != turn_rate_) {
-      turn_rate_ = val;
-      reset();
-    }
-  }
+	public double get_turn_rate() {
+		return turn_rate_;
+	}
 
-  public double get_bank_angle() {
-    return bank_angle_;
-  }
+	public void set_turn_rate(double val) {
+		if (val != turn_rate_) {
+			turn_rate_ = val;
+			reset();
+		}
+	}
 
-  public void set_bank_angle(double val) {
-    if (val != bank_angle_) {
-      bank_angle_ = val;
-      reset();
-    }
-  }
+	public double get_bank_angle() {
+		return bank_angle_;
+	}
 
-  public double own_val(TrafficState ownship) {
-    return ownship.track();
-  }
+	public void set_bank_angle(double val) {
+		if (val != bank_angle_) {
+			bank_angle_ = val;
+			reset();
+		}
+	}
 
-  public double time_step(TrafficState ownship) {
-    double gso = ownship.groundSpeed();
-    double omega = turn_rate_ == 0 ? Kinematics.turnRate(gso,bank_angle_) : turn_rate_;
-    return get_step()/omega;
-  }
+	public double own_val(TrafficState ownship) {
+		return ownship.track();
+	}
 
-  public Pair<Vect3, Velocity> trajectory(TrafficState ownship, double time, boolean dir) {  
-    double gso = ownship.groundSpeed();
-    double bank = turn_rate_ == 0 ? bank_angle_ : Math.abs(Kinematics.bankAngle(gso,turn_rate_));
-    double R = Kinematics.turnRadius(gso,bank);
-    Pair<Position,Velocity> posvel = ProjectedKinematics.turn(ownship.getPosition(),ownship.getVelocity(),time,R,dir);
-    return Pair.make(ownship.pos_to_s(posvel.first),ownship.vel_to_v(posvel.first,posvel.second));
-  }
+	public double time_step(TrafficState ownship) {
+		double gso = ownship.groundSpeed();
+		double omega = turn_rate_ == 0 ? Kinematics.turnRate(gso,bank_angle_) : turn_rate_;
+		return get_step()/omega;
+	}
+
+	public Pair<Vect3, Velocity> trajectory(TrafficState ownship, double time, boolean dir) {  
+		Pair<Position,Velocity> posvel;
+		if (instantaneous_bands()) {
+			double trk = ownship.getVelocity().trk()+(dir?1:-1)*j_step_*get_step(); 
+			posvel = Pair.make(ownship.getPosition(),ownship.getVelocity().mkTrk(trk));
+		} else {
+			double gso = ownship.groundSpeed();
+			double bank = turn_rate_ == 0 ? bank_angle_ : Math.abs(Kinematics.bankAngle(gso,turn_rate_));
+			double R = Kinematics.turnRadius(gso,bank);
+			posvel = ProjectedKinematics.turn(ownship.getPosition(),ownship.getVelocity(),time,R,dir);
+		}
+		return Pair.make(ownship.pos_to_s(posvel.first),ownship.vel_to_v(posvel.first,posvel.second));
+	}
 
 }

@@ -8,8 +8,6 @@ package gov.nasa.larcfm.ACCoRD;
 
 import gov.nasa.larcfm.Util.Units;
 import gov.nasa.larcfm.Util.Util;
-import gov.nasa.larcfm.Util.Vect3;
-import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.f;
 
 public class AlertThresholds {
@@ -247,79 +245,6 @@ public class AlertThresholds {
 		setAltitudeSpread(Units.from(u,spread));
 	}
 
-	/** 
-	 * Return true if and only if threshold values, defining an alerting level, are violated.
-	 */ 
-	public boolean alerting(DaidalusParameters parameters, TrafficState own, TrafficState ac, 
-			TrafficState mu_ac, int turning, int accelerating, int climbing) {
-		if (isValid()) {
-			Vect3 so = own.get_s();
-			Velocity vo = own.get_v();
-			Vect3 si = ac.get_s();
-			Velocity vi = ac.get_v();
-			if (detector_.violation(so,vo,si,vi)) {
-				return true;
-			}
-			ConflictData det = detector_.conflictDetection(so,vo,si,vi,0,alerting_time_);
-			if (det.conflict()) {
-				return true;
-			}
-			if (spread_trk_ > 0 || spread_gs_ > 0 || spread_vs_ > 0 || spread_alt_ > 0) {
-				KinematicBandsCore core = new KinematicBandsCore(); 
-				core.setParameters(parameters);
-				core.ownship = own;
-				core.most_urgent_ac = mu_ac;
-				if (spread_trk_ > 0) {
-					KinematicTrkBands trk_band = new KinematicTrkBands();
-					trk_band.set_rel(true);
-					trk_band.set_min(turning <= 0 ? -spread_trk_ : 0);
-					trk_band.set_max(turning >= 0 ? spread_trk_ : 0);
-					trk_band.set_step(parameters.getTrackStep());  
-					trk_band.set_turn_rate(parameters.getTurnRate()); 
-					trk_band.set_bank_angle(parameters.getBankAngle()); 
-					if (trk_band.kinematic_conflict(core,ac,detector_,alerting_time_)) {
-						return true;
-					}
-				}
-				if (spread_gs_ > 0) {
-					KinematicGsBands gs_band = new KinematicGsBands();
-					gs_band.set_rel(true);
-					gs_band.set_min(accelerating <= 0 ? -spread_gs_ : 0);
-					gs_band.set_max(accelerating >= 0 ? spread_gs_ : 0);
-					gs_band.set_step(parameters.getGroundSpeedStep());
-					gs_band.set_horizontal_accel(parameters.getHorizontalAcceleration()); 
-					if (gs_band.kinematic_conflict(core,ac,detector_,alerting_time_)) {
-						return true;
-					}
-				}
-				if (spread_vs_ > 0) {
-					KinematicVsBands vs_band = new KinematicVsBands();
-					vs_band.set_rel(true);
-					vs_band.set_min(climbing <= 0 ? -spread_vs_ : 0);
-					vs_band.set_max(climbing >= 0 ? spread_vs_ : 0);
-					vs_band.set_step(parameters.getVerticalSpeedStep()); 
-					vs_band.set_vertical_accel(parameters.getVerticalAcceleration()); 
-					if (vs_band.kinematic_conflict(core,ac,detector_,alerting_time_)) {
-						return true;
-					}
-				}
-				if (spread_alt_ > 0) {
-					KinematicAltBands alt_band = new KinematicAltBands();
-					alt_band.set_rel(true);
-					alt_band.set_min(climbing <= 0 ? -spread_alt_ : 0);
-					alt_band.set_max(climbing >= 0 ? spread_alt_ : 0);
-					alt_band.set_step(parameters.getAltitudeStep()); 
-					alt_band.set_vertical_rate(parameters.getVerticalRate()); 
-					alt_band.set_vertical_accel(parameters.getVerticalAcceleration()); 
-					if (alt_band.kinematic_conflict(core,ac,detector_,alerting_time_)) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
 	public String toString() {
 		return detector_.toString()+", Alerting Time: "+f.Fm1(alerting_time_)+
 				" [s], Late Alerting Time: "+f.Fm1(late_alerting_time_)+
@@ -335,7 +260,7 @@ public class AlertThresholds {
 		return "(# wcv:= "+detector_.toPVS(prec)+
 				", alerting_time:= "+f.Fm1(alerting_time_)+
 				", late_alerting_time:= "+f.Fm1(late_alerting_time_)+
-				", region:= "+region_.toPVS()+
+				", region:= "+region_+
 				", spread_trk:= ("+f.FmPrecision(spread_trk_,prec)+","+f.FmPrecision(spread_trk_,prec)+")"+
 				", spread_gs:= ("+f.FmPrecision(spread_gs_,prec)+","+f.FmPrecision(spread_gs_,prec)+")"+
 				", spread_vs:= ("+f.FmPrecision(spread_vs_,prec)+","+f.FmPrecision(spread_vs_,prec)+")"+

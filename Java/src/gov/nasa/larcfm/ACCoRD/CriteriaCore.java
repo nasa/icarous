@@ -345,7 +345,7 @@ public class CriteriaCore {
       rtn = eps*nv.z > eps*v.z && -eps*v.z*nv.vect2().dot(v2) + eps*nv.z*v2.sqv() >= 0;
       else
         rtn = eps*nv.z >= 0;
-        //f.pln(">>>>>>>>>>>>> vs_bound_crit: eps = "+f.Fm0(eps)+" rtn = "+f.bool2str(rtn));
+        //f.pln(">>>>>>>>>>>>> vs_bound_crit: eps = "+f.Fmi(eps)+" rtn = "+f.bool2str(rtn));
         return rtn;
   }    
 

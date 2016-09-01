@@ -1444,22 +1444,32 @@ public class NavPoint {
 
 
 	/** String representation, using the default output precision (see Contants.get_output_precision()) */
+	public String toStringShort() {
+		return toString(Constants.get_output_precision());
+	}
+
+	/** String representation, using the give precision */
+	public String toStringShort(int precision) {
+		return p.toStringNP(precision) + ", " + f.FmPrecision(t,precision); 
+	}
+	
+	/** String representation, using the default output precision (see Contants.get_output_precision()) */
 	public String toString() {
 		return toString(Constants.get_output_precision());
 	}
 
 	/** String representation, using the give precision */
 	public String toString(int precision) {
-		return p.toStringNP(precision) + ", " + f.FmPrecision(t,precision);
+		return p.toStringNP(precision) + ", " + f.FmPrecision(t,precision) +" TCP:"+tcpTypeString()+" "+label;
 	}
+
 
 	/** Return a string representation that includes additional information */
 	public String toStringFull() {
 		StringBuffer sb = new StringBuffer(100);
-
 		sb.append("[(");
 		if (isLatLon()) sb.append("LL: ");
-		sb.append(toString(4));
+		sb.append(toStringShort(4));
 		sb.append("), ");
 		sb.append(ty);
 		if (isTrkTCP()) {

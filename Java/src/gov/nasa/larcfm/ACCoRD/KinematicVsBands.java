@@ -14,44 +14,54 @@ import gov.nasa.larcfm.Util.Velocity;
 
 public class KinematicVsBands extends KinematicRealBands {
 
-  private double vertical_accel_; // Climb/descend acceleration
+	private double vertical_accel_; // Climb/descend acceleration
 
-  public KinematicVsBands() {
-    super(DaidalusParameters.DefaultValues.getMinVerticalSpeed(),
-        DaidalusParameters.DefaultValues.getMaxVerticalSpeed(),
-        DaidalusParameters.DefaultValues.getVerticalSpeedStep(),
-        DaidalusParameters.DefaultValues.isEnabledRecoveryVerticalSpeedBands());
-    vertical_accel_ = DaidalusParameters.DefaultValues.getVerticalAcceleration();
-  }
+	public KinematicVsBands(KinematicBandsParameters parameters) {
+		super(parameters.getMinVerticalSpeed(),
+				parameters.getMaxVerticalSpeed(),
+				parameters.getVerticalSpeedStep(),
+				parameters.isEnabledRecoveryVerticalSpeedBands());
+		vertical_accel_ = parameters.getVerticalAcceleration();
+	}
 
-  public KinematicVsBands(KinematicVsBands b) {
-    super(b);
-    vertical_accel_ = b.vertical_accel_;
-  }
+	public KinematicVsBands(KinematicVsBands b) {
+		super(b);
+		vertical_accel_ = b.vertical_accel_;
+	}
 
-  public double get_vertical_accel() {
-    return vertical_accel_;
-  }
+	public boolean instantaneous_bands() {
+		return vertical_accel_ == 0;
+	}
 
-  public void set_vertical_accel(double val) {
-    if (val != vertical_accel_) {
-      vertical_accel_ = val;
-      reset();
-    }
-  }
+	public double get_vertical_accel() {
+		return vertical_accel_;
+	}
 
-  public double own_val(TrafficState ownship) {
-    return ownship.verticalSpeed();
-  }
+	public void set_vertical_accel(double val) {
+		if (val != vertical_accel_) {
+			vertical_accel_ = val;
+			reset();
+		}
+	}
 
-  public double time_step(TrafficState ownship) {
-    return get_step()/vertical_accel_;
-  }
+	public double own_val(TrafficState ownship) {
+		return ownship.verticalSpeed();
+	}
 
-  public Pair<Vect3, Velocity> trajectory(TrafficState ownship, double time, boolean dir) {    
-    Pair<Position,Velocity> posvel = ProjectedKinematics.vsAccel(ownship.getPosition(),
-        ownship.getVelocity(),time,(dir?1:-1)*vertical_accel_);
-    return Pair.make(ownship.pos_to_s(posvel.first),ownship.vel_to_v(posvel.first,posvel.second));
-  }
+	public double time_step(TrafficState ownship) {
+		return get_step()/vertical_accel_;
+	}
+
+	public Pair<Vect3, Velocity> trajectory(TrafficState ownship, double time, boolean dir) {    
+		Pair<Position,Velocity> posvel;
+		if (instantaneous_bands()) {
+			double vs = ownship.getVelocity().vs()+(dir?1:-1)*j_step_*get_step(); 
+			posvel = Pair.make(ownship.getPosition(),ownship.getVelocity().mkVs(vs));
+		} else {
+			posvel = ProjectedKinematics.vsAccel(ownship.getPosition(),
+					ownship.getVelocity(),time,(dir?1:-1)*vertical_accel_);
+		}
+		return Pair.make(ownship.pos_to_s(posvel.first),ownship.vel_to_v(posvel.first,posvel.second));
+	}
 
 }

@@ -12,11 +12,11 @@
 
 package gov.nasa.larcfm.ACCoRD;
 
-import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Units;
 import gov.nasa.larcfm.Util.Interval;
+import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.f;
 
@@ -118,23 +118,30 @@ import java.util.List;
  */
 public class KinematicMultiBands implements GenericStateBands {
 
+	public KinematicBandsCore core_;
 	public KinematicTrkBands  trk_band_; 
 	public KinematicGsBands   gs_band_;  
 	public KinematicVsBands   vs_band_;  
 	public KinematicAltBands  alt_band_; 
-	public KinematicBandsCore core_;
 
 	protected ErrorLog error = new ErrorLog("KinematicMultiBands");
 
 	/** 
-	 * Construct a KinematicMultiBands without an empty list of detectors. 
+	 * Construct a KinematicMultiBands object with initial parameters and an empty list of detectors. 
+	 */
+	public KinematicMultiBands(KinematicBandsParameters parameters) {
+		core_ = new KinematicBandsCore(parameters);
+		trk_band_ = new KinematicTrkBands(parameters);
+		gs_band_ = new KinematicGsBands(parameters);
+		vs_band_ = new KinematicVsBands(parameters);
+		alt_band_ = new KinematicAltBands(parameters);
+	}
+
+	/** 
+	 * Construct a KinematicMultiBands object with the default parameters and an empty list of detectors. 
 	 */
 	public KinematicMultiBands() {
-		core_ = new KinematicBandsCore();
-		trk_band_ = new KinematicTrkBands();
-		gs_band_ = new KinematicGsBands();
-		vs_band_ = new KinematicVsBands();
-		alt_band_ = new KinematicAltBands();
+		this(KinematicBandsParameters.DefaultValues);
 	}
 
 	/**
@@ -219,42 +226,32 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * Set alert thresholds
 	 */
 	public void setAlertor(AlertLevels alertor) {
-		core_.alertor.setAll(alertor);
+		core_.parameters.alertor.copy(alertor);
 		reset();
 	}
 
 	/**
 	 * Set bands parameters
 	 */
-	public void setParameters(DaidalusParameters parameters) {
-		core_.setParameters(parameters);
+	public void setKinematicBandsParameters(KinematicBandsParameters parameters) {
+		core_.parameters.setKinematicBandsParameters(parameters);
 
 		// Set Track Bands
-		setLeftTrack(parameters.getLeftTrack());
-		setRightTrack(parameters.getRightTrack());
 		trk_band_.set_step(parameters.getTrackStep());  
 		trk_band_.set_turn_rate(parameters.getTurnRate()); 
 		trk_band_.set_bank_angle(parameters.getBankAngle()); 
 		trk_band_.set_recovery(parameters.isEnabledRecoveryTrackBands());
 
 		// Set Ground Speed Bands
-		setMinGroundSpeed(parameters.getMinGroundSpeed());   
-		setMaxGroundSpeed(parameters.getMaxGroundSpeed());   
 		gs_band_.set_step(parameters.getGroundSpeedStep());
 		gs_band_.set_horizontal_accel(parameters.getHorizontalAcceleration()); 
 		gs_band_.set_recovery(parameters.isEnabledRecoveryGroundSpeedBands());
 
-		setVerticalAcceleration(parameters.getVerticalAcceleration()); 
-
 		// Set Vertical Speed Bands
-		setMinVerticalSpeed(parameters.getMinVerticalSpeed());   
-		setMaxVerticalSpeed(parameters.getMaxVerticalSpeed());  
 		vs_band_.set_step(parameters.getVerticalSpeedStep()); 
 		vs_band_.set_recovery(parameters.isEnabledRecoveryVerticalSpeedBands());   
 
 		// Set Altitude Bands
-		setMinAltitude(parameters.getMinAltitude()); 
-		setMaxAltitude(parameters.getMaxAltitude()); 
 		alt_band_.set_step(parameters.getAltitudeStep()); 
 		alt_band_.set_vertical_rate(parameters.getVerticalRate()); 
 		alt_band_.set_recovery(parameters.isEnabledRecoveryAltitudeBands());   
@@ -267,7 +264,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * this time.
 	 */
 	public double getRecoveryStabilityTime() {
-		return core_.recovery_stability_time;
+		return core_.parameters.getRecoveryStabilityTime();
 	}
 
 	/**
@@ -275,18 +272,15 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * this time.
 	 */
 	public void setRecoveryStabilityTime(double t) {
-		if (error.isNonNegative("setRecoveryStabilityTime",t) && 
-				t != core_.recovery_stability_time) {
-			core_.recovery_stability_time = t;
-			reset();
-		}
+		core_.parameters.setRecoveryStabilityTime(t);
+		reset();
 	}
 
 	/**
 	 * @return minimum horizontal separation for recovery bands in internal units [m].
 	 */
 	public double getMinHorizontalRecovery() {
-		return core_.min_horizontal_recovery;
+		return core_.parameters.getMinHorizontalRecovery();
 	}
 
 	/** 
@@ -300,11 +294,8 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * Sets minimum horizontal separation for recovery bands in internal units [m].
 	 */
 	public void setMinHorizontalRecovery(double val) {
-		if (error.isNonNegative("setMinHorizontalRecovery",val) && 
-				val != core_.min_horizontal_recovery) {
-			core_.min_horizontal_recovery = val;
-			reset();
-		}
+		core_.parameters.setMinHorizontalRecovery(val);
+		reset();
 	}
 
 	/** 
@@ -318,7 +309,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return minimum vertical separation for recovery bands in internal units [m].
 	 */
 	public double getMinVerticalRecovery() {
-		return core_.min_vertical_recovery;
+		return core_.parameters.getMinVerticalRecovery();
 	}
 
 	/** 
@@ -332,11 +323,8 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * Sets minimum vertical separation for recovery bands in internal units [m].
 	 */
 	public void setMinVerticalRecovery(double val) {
-		if (error.isNonNegative("setMinVerticalRecovery",val) 
-				&& val != core_.min_vertical_recovery) {
-			core_.min_vertical_recovery = val;
-			reset();
-		}
+		core_.parameters.setMinVerticalRecovery(val);
+		reset();
 	}
 
 	/** 
@@ -344,24 +332,21 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */
 	public void setMinVerticalRecovery(double val, String u) {
 		setMinVerticalRecovery(Units.from(u,val));
-		reset();
 	}
 
 	/** 
 	 * @return true if collision avoidance bands are enabled.
 	 */
 	public boolean isEnabledCollisionAvoidanceBands() {
-		return core_.ca_bands;
+		return core_.parameters.isEnabledCollisionAvoidanceBands();
 	}
 
 	/** 
 	 * Enable/disable collision avoidance bands.
 	 */ 
 	public void setCollisionAvoidanceBands(boolean flag) {
-		if (flag != core_.ca_bands) {
-			core_.ca_bands = flag;
-			reset();
-		}
+		core_.parameters.setCollisionAvoidanceBands(flag);
+		reset();
 	}
 
 	/** 
@@ -376,6 +361,21 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */ 
 	public void disableCollisionAvoidanceBands() {
 		setCollisionAvoidanceBands(false);
+	}
+
+	/** 
+	 * @return get factor for computing collision avoidance bands. Factor value is in (0,1]
+	 */
+	public double getCollisionAvoidanceBandsFactor() {
+		return core_.parameters.getCollisionAvoidanceBandsFactor();
+	}
+
+	/** 
+	 * @return set factor for computing collision avoidance bands. Factor value is in (0,1]
+	 */
+	public void setCollisionAvoidanceBandsFactor(double val) {
+		core_.parameters.setCollisionAvoidanceBandsFactor(val);
+		reset();
 	}
 
 	/**
@@ -405,14 +405,14 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return true if repulsive criteria is enabled for conflict bands.
 	 */
 	public boolean isEnabledConflictCriteria() {
-		return core_.conflict_crit;
+		return core_.parameters.isEnabledConflictCriteria();
 	}
 
 	/** 
 	 * Enable/disable repulsive criteria for conflict bands.
 	 */
 	public void setConflictCriteria(boolean flag) {
-		core_.conflict_crit = flag;
+		core_.parameters.setConflictCriteria(flag);
 		reset();
 	}
 
@@ -434,14 +434,14 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return true if repulsive criteria is enabled for recovery bands.
 	 */
 	public boolean isEnabledRecoveryCriteria() {
-		return core_.recovery_crit;
+		return core_.parameters.isEnabledRecoveryCriteria();
 	}
 
 	/** 
 	 * Enable/disable repulsive criteria for recovery bands.
 	 */
 	public void setRecoveryCriteria(boolean flag) {
-		core_.recovery_crit = flag;
+		core_.parameters.setRecoveryCriteria(flag);
 		reset();
 	}
 
@@ -489,6 +489,11 @@ public class KinematicMultiBands implements GenericStateBands {
 		gs_band_.set_recovery(flag);
 		vs_band_.set_recovery(flag);
 		alt_band_.set_recovery(flag);
+		core_.parameters.setRecoveryTrackBands(flag);
+		core_.parameters.setRecoveryGroundSpeedBands(flag);
+		core_.parameters.setRecoveryVerticalSpeedBands(flag);
+		core_.parameters.setRecoveryAltitudeBands(flag);
+		reset();
 	}
 
 	/** 
@@ -508,7 +513,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	/** Track Bands Settings **/
 
 	/** 
-	 * @return left track in radians [-pi - 0] [rad] from current ownship's track
+	 * @return left track in radians [0 - pi] [rad] from current ownship's track
 	 */
 	public double getLeftTrack() {
 		if (trk_band_.get_rel()) {
@@ -521,7 +526,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	}
 
 	/** 
-	 * @return left track in specified units [-pi - 0] [u] from current ownship's track
+	 * @return left track in specified units [0 - pi] [u] from current ownship's track
 	 */
 	public double getLeftTrack(String u) {
 		return Units.to(u,getLeftTrack());
@@ -548,7 +553,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	}
 
 	/** 
-	 * Set left track to value in internal units [rad]. Value is expected to be in [-pi - 0]
+	 * Set left track to value in internal units [rad]. Value is expected to be in [0 - pi]
 	 */
 	public void setLeftTrack(double val) {
 		val = -Math.abs(val);
@@ -557,11 +562,12 @@ public class KinematicMultiBands implements GenericStateBands {
 				trk_band_.set_rel(true);
 			}
 			trk_band_.set_min(val);
+			reset();
 		}    
 	}
 
 	/** 
-	 * Set left track to value in specified units [u]. Value is expected to be in [-pi - 0]
+	 * Set left track to value in specified units [u]. Value is expected to be in [0 - pi]
 	 */
 	public void setLeftTrack(double val, String u) {
 		setLeftTrack(Units.from(u,val));
@@ -577,6 +583,7 @@ public class KinematicMultiBands implements GenericStateBands {
 				trk_band_.set_rel(true);
 			}
 			trk_band_.set_max(val);
+			reset();
 		}    
 	}
 
@@ -599,6 +606,7 @@ public class KinematicMultiBands implements GenericStateBands {
 			}
 			trk_band_.set_min(min);
 			trk_band_.set_max(max);
+			reset();
 		}     
 	}
 
@@ -614,7 +622,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return step size for track bands in internal units [rad]. 
 	 */
 	public double getTrackStep() {
-		return trk_band_.get_step();
+		return core_.parameters.getTrackStep();
 	}
 
 	/** 
@@ -631,6 +639,8 @@ public class KinematicMultiBands implements GenericStateBands {
 		if (error.isPositive("setTrackStep",val) && 
 				error.isLessThan("setTrackStep",val,Math.PI)) {
 			trk_band_.set_step(val);
+			core_.parameters.setTrackStep(val);
+			reset();
 		}
 	}
 
@@ -645,7 +655,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return bank angle in internal units [rad].
 	 */
 	public double getBankAngle() {
-		return trk_band_.get_bank_angle();
+		return core_.parameters.getBankAngle();
 	}
 
 	/** 
@@ -663,6 +673,8 @@ public class KinematicMultiBands implements GenericStateBands {
 		if (error.isNonNegative("setBankAngle",val)) {
 			trk_band_.set_bank_angle(val);
 			trk_band_.set_turn_rate(0);
+			core_.parameters.setBankAngle(val);
+			reset();
 		}
 	}
 
@@ -678,7 +690,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return turn rate in internal units [rad/s].
 	 */
 	public double getTurnRate() {
-		return trk_band_.get_turn_rate();
+		return core_.parameters.getTurnRate();
 	}
 
 	/** 
@@ -696,6 +708,8 @@ public class KinematicMultiBands implements GenericStateBands {
 		if (error.isNonNegative("setTurnRate",val)) {
 			trk_band_.set_turn_rate(val);
 			trk_band_.set_bank_angle(0);
+			core_.parameters.setTurnRate(val);
+			reset();
 		}
 	}
 
@@ -711,7 +725,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return true if recovery track bands are enabled.
 	 */
 	public boolean isEnabledRecoveryTrackBands() {
-		return trk_band_.get_recovery();
+		return core_.parameters.isEnabledRecoveryTrackBands();
 	}
 
 	/** 
@@ -719,6 +733,8 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */ 
 	public void setRecoveryTrackBands(boolean flag) {
 		trk_band_.set_recovery(flag);
+		core_.parameters.setRecoveryTrackBands(flag);
+		reset();
 	}
 
 	/** Ground Speed Bands Settings **/
@@ -754,6 +770,7 @@ public class KinematicMultiBands implements GenericStateBands {
 				gs_band_.set_rel(false);
 			}
 			gs_band_.set_min(val);
+			reset();
 		}
 	}
 
@@ -795,6 +812,7 @@ public class KinematicMultiBands implements GenericStateBands {
 				gs_band_.set_rel(false);
 			}
 			gs_band_.set_max(val);
+			reset();
 		}
 	}
 
@@ -807,8 +825,8 @@ public class KinematicMultiBands implements GenericStateBands {
 
 	/** 
 	 * Set below/above ground speed, relative to ownship's ground speed, for bands computations. 
-	 * Ground speeds are specified in internal units [m/s]. Below value is expected to be non-positive,
-	 * and above value is expected to be non-negative.
+	 * Ground speeds are specified in internal units [m/s]. Below and above are expected to be
+	 * non-negative values.
 	 */
 	public void setBelowAboveGroundSpeed(double below, double above) {
 		below = -Math.abs(below);
@@ -818,12 +836,13 @@ public class KinematicMultiBands implements GenericStateBands {
 		}
 		gs_band_.set_min(below);
 		gs_band_.set_max(above);
+		reset();
 	}     
 
 	/** 
 	 * Set below/above ground speed, relative to ownship's ground speed, for bands computations. 
-	 * Ground speeds are specified in given units [u]. Below value is expected to be non-positive,
-	 * and above value is expected to be non-negative.
+	 * Ground speeds are specified in given units [u]. Below and above are expected to be
+	 * non-negative values.
 	 */
 	public void setBelowAboveGroundSpeed(double below, double above, String u) {
 		setBelowAboveGroundSpeed(Units.from(u,below),Units.from(u,above));
@@ -833,7 +852,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return step size for ground speed bands in internal units [m/s]. 
 	 */
 	public double getGroundSpeedStep() {
-		return gs_band_.get_step();
+		return core_.parameters.getGroundSpeedStep();
 	}
 
 	/** 
@@ -849,6 +868,8 @@ public class KinematicMultiBands implements GenericStateBands {
 	public void setGroundSpeedStep(double val) {
 		if (error.isPositive("setGroundSpeedStep",val)) {
 			gs_band_.set_step(val);
+			core_.parameters.setGroundSpeedStep(val);
+			reset();
 		}
 	}
 
@@ -863,7 +884,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return horizontal acceleration for ground speed bands to value in internal units [m/s^2]. 
 	 */
 	public double getHorizontalAcceleration() {
-		return gs_band_.get_horizontal_accel();
+		return core_.parameters.getHorizontalAcceleration();
 	}
 
 	/** 
@@ -879,6 +900,8 @@ public class KinematicMultiBands implements GenericStateBands {
 	public void setHorizontalAcceleration(double val) {
 		if (error.isNonNegative("setHorizontalAcceleration",val)) {
 			gs_band_.set_horizontal_accel(val);
+			core_.parameters.setHorizontalAcceleration(val);
+			reset();
 		}
 	}
 
@@ -893,7 +916,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return true if recovery ground speed bands are enabled.
 	 */
 	public boolean isEnabledRecoveryGroundSpeedBands() {
-		return gs_band_.get_recovery();
+		return core_.parameters.isEnabledRecoveryGroundSpeedBands();
 	}
 
 	/** 
@@ -901,6 +924,8 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */ 
 	public void setRecoveryGroundSpeedBands(boolean flag) {
 		gs_band_.set_recovery(flag);
+		core_.parameters.setRecoveryGroundSpeedBands(flag);
+		reset();
 	}
 
 	/** Vertical Speed Bands Settings **/
@@ -935,6 +960,7 @@ public class KinematicMultiBands implements GenericStateBands {
 			vs_band_.set_rel(false);
 		}
 		vs_band_.set_min(val);
+		reset();
 	}
 
 	/** 
@@ -974,6 +1000,7 @@ public class KinematicMultiBands implements GenericStateBands {
 			vs_band_.set_rel(false);
 		}
 		vs_band_.set_max(val);
+		reset();
 	}
 
 	/** 
@@ -985,8 +1012,8 @@ public class KinematicMultiBands implements GenericStateBands {
 
 	/** 
 	 * Set below/above vertical speed, relative to ownship's vertical speed, for bands computations. 
-	 * Vertical speeds are specified in internal units [m/s]. Below value is expected to be non-positive,
-	 * and above value is expected to be non-negative.
+	 * Vertical speeds are specified in internal units [m/s]. Below and above are expected to be
+	 * non-negative values.
 	 */
 	public void setBelowAboveVerticalSpeed(double below, double above) {
 		below = -Math.abs(below);
@@ -996,12 +1023,13 @@ public class KinematicMultiBands implements GenericStateBands {
 		}
 		vs_band_.set_min(below);
 		vs_band_.set_max(above);
+		reset();
 	}
 
 	/** 
 	 * Set below/above vertical speed, relative to ownship's vertical speed, for bands computations. 
-	 * Vertical speeds are specified in given units [u]. Below value is expected to be non-positive,
-	 * and above value is expected to be non-negative.
+	 * Vertical speeds are specified in given units [u].Below and above are expected to be
+	 * non-negative values.
 	 */
 	public void setBelowAboveVerticalSpeed(double below, double above, String u) {
 		setBelowAboveVerticalSpeed(Units.from(u,below),Units.from(u,above));
@@ -1011,7 +1039,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return step size for vertical speed bands in internal units [m/s].
 	 */
 	public double getVerticalSpeedStep() {
-		return vs_band_.get_step();
+		return core_.parameters.getVerticalSpeedStep();
 	}
 
 	/** 
@@ -1027,6 +1055,8 @@ public class KinematicMultiBands implements GenericStateBands {
 	public void setVerticalSpeedStep(double val) {
 		if (error.isPositive("setVerticalSpeedStep",val)) {
 			vs_band_.set_step(val);
+			core_.parameters.setVerticalSpeedStep(val);
+			reset();
 		}
 	}
 
@@ -1042,7 +1072,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * units
 	 */
 	public double getVerticalAcceleration() {
-		return vs_band_.get_vertical_accel();
+		return core_.parameters.getVerticalAcceleration();
 	}
 
 	/** 
@@ -1061,6 +1091,8 @@ public class KinematicMultiBands implements GenericStateBands {
 		if (error.isNonNegative("setVerticalAcceleration",val)) {
 			vs_band_.set_vertical_accel(val);
 			alt_band_.set_vertical_accel(val);
+			core_.parameters.setVerticalAcceleration(val);
+			reset();
 		}
 	}
 
@@ -1076,7 +1108,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return true if recovery vertical speed bands are enabled.
 	 */
 	public boolean isEnabledRecoveryVerticalSpeedBands() {
-		return vs_band_.get_recovery();
+		return core_.parameters.isEnabledRecoveryVerticalSpeedBands();
 	}
 
 	/** 
@@ -1084,6 +1116,8 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */ 
 	public void setRecoveryVerticalSpeedBands(boolean flag) {
 		vs_band_.set_recovery(flag);
+		core_.parameters.setRecoveryVerticalSpeedBands(flag);
+		reset();
 	}
 
 	/** Altitude Bands Settings **/
@@ -1119,6 +1153,7 @@ public class KinematicMultiBands implements GenericStateBands {
 				alt_band_.set_rel(false);
 			}
 			alt_band_.set_min(val);
+			reset();
 		}
 	}
 
@@ -1160,6 +1195,7 @@ public class KinematicMultiBands implements GenericStateBands {
 				alt_band_.set_rel(false);
 			}
 			alt_band_.set_max(val);
+			reset();
 		}
 	}
 
@@ -1172,8 +1208,8 @@ public class KinematicMultiBands implements GenericStateBands {
 
 	/** 
 	 * Set below/above altitude, relative to ownship's altitude, for bands computations. 
-	 * Altitude are specified in internal units [m]. Below value is expected to be non-positive,
-	 * and above value is expected to be non-negative.
+	 * Altitude are specified in internal units [m]. Below and above are expected to be
+	 * non-negative values.
 	 */
 	public void setBelowAboveAltitude(double below, double above) {
 		below = -Math.abs(below);
@@ -1183,12 +1219,13 @@ public class KinematicMultiBands implements GenericStateBands {
 		}
 		alt_band_.set_min(below);
 		alt_band_.set_max(above);
+		reset();
 	}     
 
 	/** 
 	 * Set below/above altitude, relative to ownship's altitude, for bands computations. 
-	 * Altitudes are specified in given units [u]. Below value is expected to be non-positive,
-	 * and above value is expected to be non-negative.
+	 * Altitudes are specified in given units [u]. Below and above are expected to be
+	 * non-negative values.
 	 */
 	public void setBelowAboveAltitude(double below, double above, String u) {
 		setBelowAboveAltitude(Units.from(u,below),Units.from(u,above));
@@ -1198,7 +1235,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return step size for altitude bands in internal units [m]
 	 */
 	public double getAltitudeStep() {
-		return alt_band_.get_step();
+		return core_.parameters.getAltitudeStep();
 	}
 
 	/** 
@@ -1214,6 +1251,8 @@ public class KinematicMultiBands implements GenericStateBands {
 	public void setAltitudeStep(double val) {
 		if (error.isPositive("setAltitudeStep",val)) {
 			alt_band_.set_step(val);
+			core_.parameters.setAltitudeStep(val);
+			reset();
 		}
 	}
 
@@ -1228,7 +1267,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * @return the vertical climb/descend rate for altitude bands in internal units [m/s]
 	 */
 	public double getVerticalRate() {
-		return alt_band_.get_vertical_rate();
+		return core_.parameters.getVerticalRate();
 	}
 
 	/** 
@@ -1244,6 +1283,8 @@ public class KinematicMultiBands implements GenericStateBands {
 	public void setVerticalRate(double val) {
 		if (error.isNonNegative("setVerticalRate",val)) {
 			alt_band_.set_vertical_rate(val);
+			core_.parameters.setVerticalRate(val);
+			reset();
 		}
 	}
 
@@ -1254,11 +1295,69 @@ public class KinematicMultiBands implements GenericStateBands {
 		setVerticalRate(Units.from(u,rate));
 	}
 
+	/** 
+	 * @return horizontal NMAC distance in internal units [m].
+	 */
+	public double getHorizontalNMAC() {
+		return core_.parameters.getHorizontalNMAC();
+	}
+
+	/** 
+	 * @return horizontal NMAC distance in specified units [u].
+	 */
+	public double getHorizontalNMAC(String u) {
+		return Units.to(u,getHorizontalNMAC());
+	}
+
+	/** 
+	 * @return vertical NMAC distance in internal units [m].
+	 */
+	public double getVerticalNMAC() {
+		return core_.parameters.getVerticalNMAC();
+	}
+
+	/** 
+	 * @return vertical NMAC distance in specified units [u].
+	 */
+	public double getVerticalNMAC(String u) {
+		return Units.to(u,getVerticalNMAC());
+	}
+
+	/** 
+	 * Set horizontal NMAC distance to value in internal units [m].
+	 */
+	public void setHorizontalNMAC(double val) {
+		core_.parameters.setHorizontalNMAC(val);
+		reset();
+	}
+
+	/** 
+	 * Set horizontal NMAC distance to value in specified units [u].
+	 */
+	public void setHorizontalNMAC(double val, String u) {
+		setHorizontalNMAC(Units.from(u,val));
+	}
+
+	/** 
+	 * Set vertical NMAC distance to value in internal units [m].
+	 */
+	public void setVerticalNMAC(double val) {
+		core_.parameters.setVerticalNMAC(val);
+		reset();
+	}
+
+	/** 
+	 * Set vertical NMAC distance to value in specified units [u].
+	 */
+	public void setVerticalNMAC(double val, String u) {
+		setVerticalNMAC(Units.from(u,val));
+	}
+
 	/**
 	 * @return true if recovery altitude bands are enabled.
 	 */
 	public boolean isEnabledRecoveryAltitudeBands() {
-		return alt_band_.get_recovery();
+		return core_.parameters.isEnabledRecoveryAltitudeBands();
 	}
 
 	/** 
@@ -1266,6 +1365,8 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */ 
 	public void setRecoveryAltitudeBands(boolean flag) {
 		alt_band_.set_recovery(flag);
+		core_.parameters.setRecoveryAltitudeBands(flag);
+		reset();
 	}
 
 	/** Utility methods **/
@@ -1400,6 +1501,31 @@ public class KinematicMultiBands implements GenericStateBands {
 	}
 
 	/**
+	 * Compute track resolution maneuver for given alert level.
+	 * @parameter dir is right (true)/left (false) of ownship current track
+	 * @return track resolution in internal units [rad] in specified direction.
+	 * Resolution maneuver is valid for lookahead time. Return NaN if there is no conflict, 
+	 * positive infinity if there is no resolution to the right, and negative infinity if there 
+	 * is no resolution to the left.
+	 */
+	public double trackResolution(boolean dir, int alert_level) {
+		return trk_band_.compute_resolution(core_,alert_level,dir);
+	}
+
+	/**
+	 * Compute track resolution maneuver for conflict alert level.
+	 * @parameter dir is right (true)/left (false) of ownship current track
+	 * @parameter u units
+	 * @return track resolution in specified units [u] in specified direction. 
+	 * Resolution maneuver is valid for lookahead time. Return NaN if there is no conflict, 
+	 * positive infinity if there is no resolution to the right, and negative infinity if there 
+	 * is no resolution to the left.
+	 */
+	public double trackResolution(boolean dir, int alert_level, String u) {
+		return Units.to(u,trackResolution(dir,alert_level));
+	}
+
+	/**
 	 * Compute track resolution maneuver for conflict alert level.
 	 * @parameter dir is right (true)/left (false) of ownship current track
 	 * @return track resolution in internal units [rad] in specified direction.
@@ -1408,7 +1534,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * is no resolution to the left.
 	 */
 	public double trackResolution(boolean dir) {
-		return trk_band_.compute_resolution(core_,dir);
+		return trackResolution(dir,0);
 	}
 
 	/**
@@ -1422,6 +1548,24 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */
 	public double trackResolution(boolean dir, String u) {
 		return Units.to(u,trackResolution(dir));
+	}
+
+	/**
+	 * Compute preferred track direction, for given alert level, 
+	 * based on resolution that is closer to current track.
+	 * True: Right. False: Left.
+	 */
+	public boolean preferredTrackDirection(int alert_level) {
+		return trk_band_.preferred_direction(core_, alert_level);
+	}
+
+	/**
+	 * Compute preferred track direction, for conflict alert level, 
+	 * based on resolution that is closer to current track.
+	 * True: Right. False: Left.
+	 */
+	public boolean preferredTrackDirection() {
+		return preferredTrackDirection(0);
 	}
 
 	/**
@@ -1528,6 +1672,31 @@ public class KinematicMultiBands implements GenericStateBands {
 	}
 
 	/**
+	 * Compute ground speed resolution maneuver for given alert level.
+	 * @parameter dir is up (true)/down (false) of ownship current ground speed
+	 * @return ground speed resolution in internal units [m/s] in specified direction. 
+	 * Resolution maneuver is valid for lookahead time. Return NaN if there is no conflict, 
+	 * positive infinity if there is no up resolution, and negative infinity if there 
+	 * is no down resolution.
+	 */
+	public double groundSpeedResolution(boolean dir, int alert_level) {
+		return gs_band_.compute_resolution(core_,alert_level,dir);
+	}
+
+	/**
+	 * Compute ground speed resolution maneuver for given alert level.
+	 * @parameter dir is up (true)/down (false) of ownship current ground speed
+	 * @parameter u units
+	 * @return ground speed resolution in specified units [u] in specified direction. 
+	 * Resolution maneuver is valid for lookahead time. Return NaN if there is no conflict, 
+	 * positive infinity if there is no up resolution, and negative infinity if there 
+	 * is no down resolution.
+	 */
+	public double groundSpeedResolution(boolean dir, int alert_level, String u) {
+		return Units.to(u,groundSpeedResolution(dir,alert_level));
+	}
+
+	/**
 	 * Compute ground speed resolution maneuver for conflict alert level.
 	 * @parameter dir is up (true)/down (false) of ownship current ground speed
 	 * @return ground speed resolution in internal units [m/s] in specified direction. 
@@ -1536,7 +1705,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * is no down resolution.
 	 */
 	public double groundSpeedResolution(boolean dir) {
-		return gs_band_.compute_resolution(core_,dir);
+		return groundSpeedResolution(dir,0);
 	}
 
 	/**
@@ -1550,6 +1719,24 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */
 	public double groundSpeedResolution(boolean dir, String u) {
 		return Units.to(u,groundSpeedResolution(dir));
+	}
+
+	/**
+	 * Compute preferred ground speed direction, for given alert level, 
+	 * based on resolution that is closer to current ground speed.
+	 * True: Increase speed, False: Decrease speed.
+	 */
+	public boolean preferredGroundSpeedDirection(int alert_level) {
+		return gs_band_.preferred_direction(core_, alert_level);
+	}
+
+	/**
+	 * Compute preferred  ground speed direction, for conflict alert level, 
+	 * based on resolution that is closer to current ground speed.
+	 * True: Increase speed, False: Decrease speed.
+	 */
+	public boolean preferredGroundSpeedDirection() {
+		return preferredGroundSpeedDirection(0);
 	}
 
 	/**
@@ -1656,6 +1843,31 @@ public class KinematicMultiBands implements GenericStateBands {
 	}
 
 	/**
+	 * Compute vertical speed resolution maneuver for given alert level.
+	 * @parameter dir is up (true)/down (false) of ownship current vertical speed
+	 * @return vertical speed resolution in internal units [m/s] in specified direction. 
+	 * Resolution maneuver is valid for lookahead time. Return NaN if there is no conflict, 
+	 * positive infinity if there is no up resolution, and negative infinity if there 
+	 * is no down resolution.
+	 */
+	public double verticalSpeedResolution(boolean dir, int alert_level) {
+		return vs_band_.compute_resolution(core_,alert_level,dir);
+	}
+
+	/**
+	 * Compute vertical speed resolution maneuver for given alert level.
+	 * @parameter dir is up (true)/down (false) of ownship current vertical speed
+	 * @parameter u units
+	 * @return vertical speed resolution in specified units [u] in specified direction. 
+	 * Resolution maneuver is valid for lookahead time. Return NaN if there is no conflict, 
+	 * positive infinity if there is no up resolution, and negative infinity if there 
+	 * is no down resolution.
+	 */
+	public double verticalSpeedResolution(boolean dir, int alert_level, String u) {
+		return Units.to(u,verticalSpeedResolution(dir,alert_level));
+	}
+
+	/**
 	 * Compute vertical speed resolution maneuver for conflict alert level.
 	 * @parameter dir is up (true)/down (false) of ownship current vertical speed
 	 * @return vertical speed resolution in internal units [m/s] in specified direction. 
@@ -1664,7 +1876,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * is no down resolution.
 	 */
 	public double verticalSpeedResolution(boolean dir) {
-		return vs_band_.compute_resolution(core_,dir);
+		return verticalSpeedResolution(dir,0);
 	}
 
 	/**
@@ -1678,6 +1890,24 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */
 	public double verticalSpeedResolution(boolean dir, String u) {
 		return Units.to(u,verticalSpeedResolution(dir));
+	}
+
+	/**
+	 * Compute preferred vertical speed direction, for given alert level, 
+	 * based on resolution that is closer to current vertical speed.
+	 * True: Increase speed, False: Decrease speed.
+	 */
+	public boolean preferredVerticalSpeedDirection(int alert_level) {
+		return vs_band_.preferred_direction(core_, alert_level);
+	}
+
+	/**
+	 * Compute preferred  vertical speed direction, for conflict alert level, 
+	 * based on resolution that is closer to current vertical speed.
+	 * True: Increase speed, False: Decrease speed.
+	 */
+	public boolean preferredVerticalSpeedDirection() {
+		return preferredVerticalSpeedDirection(0);
 	}
 
 	/**
@@ -1784,6 +2014,31 @@ public class KinematicMultiBands implements GenericStateBands {
 	}
 
 	/**
+	 * Compute altitude resolution maneuver for given alert level.
+	 * @parameter dir is up (true)/down (false) of ownship current altitude
+	 * @return altitude resolution in internal units [m] in specified direction. 
+	 * Resolution maneuver is valid for lookahead time. Return NaN if there is no conflict, 
+	 * positive infinity if there is no up resolution, and negative infinity if there 
+	 * is no down resolution.
+	 */
+	public double altitudeResolution(boolean dir, int alert_level) {
+		return alt_band_.compute_resolution(core_,alert_level,dir);
+	}
+
+	/**
+	 * Compute altitude resolution maneuver for given alert level.
+	 * @parameter dir is up (true)/down (false) of ownship current altitude
+	 * @parameter u units
+	 * @return altitude resolution in specified units [u] in specified direction. 
+	 * Resolution maneuver is valid for lookahead time. Return NaN if there is no conflict, 
+	 * positive infinity if there is no up resolution, and negative infinity if there 
+	 * is no down resolution.
+	 */
+	public double altitudeResolution(boolean dir, int alert_level, String u) {
+		return Units.to(u,altitudeResolution(dir,alert_level));
+	}
+
+	/**
 	 * Compute altitude resolution maneuver for conflict alert level.
 	 * @parameter dir is up (true)/down (false) of ownship current altitude
 	 * @return altitude resolution in internal units [m] in specified direction. 
@@ -1792,12 +2047,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * is no down resolution.
 	 */
 	public double altitudeResolution(boolean dir) {
-		int conflict_level = core_.alertor.conflictAlertLevel();
-		if (conflict_level == 0 || core_.conflictAircraft(conflict_level).isEmpty()) {
-			return Double.NaN;
-		} else {
-			return alt_band_.compute_resolution(core_,dir);
-		}
+		return altitudeResolution(dir,0);
 	}
 
 	/**
@@ -1813,63 +2063,121 @@ public class KinematicMultiBands implements GenericStateBands {
 		return Units.to(u,altitudeResolution(dir));
 	}
 
-	public String toString() {
-		int precision = Constants.get_output_precision();
-		String s = ""; 
-		s+=core_.alertor.toString()+"\n";
-		s+="# Default Parameters (Bands)\n";
-		s+="min_trk = "+DaidalusParameters.val_unit(trk_band_.get_min(),"deg")+"\n";
-		s+="max_trk = "+DaidalusParameters.val_unit(trk_band_.get_max(),"deg")+"\n";
-		s+="rel_trk = "+trk_band_.get_rel()+"\n";
-		s+="min_gs = "+DaidalusParameters.val_unit(gs_band_.get_min(),"knot")+"\n";
-		s+="max_gs = "+DaidalusParameters.val_unit(gs_band_.get_max(),"knot")+"\n";
-		s+="rel_gs = "+gs_band_.get_rel()+"\n";
-		s+="min_vs = "+DaidalusParameters.val_unit(vs_band_.get_min(),"fpm")+"\n";
-		s+="max_vs = "+DaidalusParameters.val_unit(vs_band_.get_max(),"fpm")+"\n";
-		s+="rel_vs = "+vs_band_.get_rel()+"\n";
-		s+="min_alt = "+DaidalusParameters.val_unit(alt_band_.get_min(),"ft")+"\n";
-		s+="max_alt = "+DaidalusParameters.val_unit(alt_band_.get_max(),"ft")+"\n";
-		s+="rel_alt = "+alt_band_.get_rel()+"\n";
-		s+="# Default Parameters (Kinematic Bands)\n";
-		s+="trk_step = "+DaidalusParameters.val_unit(trk_band_.get_step(),"deg")+"\n";
-		s+="gs_step = "+DaidalusParameters.val_unit(gs_band_.get_step(),"knot")+"\n";
-		s+="vs_step = "+DaidalusParameters.val_unit(vs_band_.get_step(),"fpm")+"\n";
-		s+="alt_step = "+DaidalusParameters.val_unit(alt_band_.get_step(),"ft")+"\n";
-		s+="horizontal_accel = "+DaidalusParameters.val_unit(getHorizontalAcceleration(),"m/s^2")+"\n";
-		s+="vertical_accel = "+DaidalusParameters.val_unit(getVerticalAcceleration(),"m/s^2")+"\n";
-		s+="turn_rate = "+DaidalusParameters.val_unit(trk_band_.get_turn_rate(),"deg/s")+"\n";
-		s+="bank_angle = "+DaidalusParameters.val_unit(trk_band_.get_bank_angle(),"deg")+"\n";
-		s+="vertical_rate = "+DaidalusParameters.val_unit(alt_band_.get_vertical_rate(),"fpm")+"\n";
-		s+="# Default Parameters (Recovery Bands)\n";
-		s+="recovery_stability_time = "+DaidalusParameters.val_unit(getRecoveryStabilityTime(),"s")+"\n";
-		s+="min_horizontal_recovery = "+DaidalusParameters.val_unit(core_.min_horizontal_recovery,"nmi")+
-				" ("+f.Fm4(Units.to("nmi",core_.minHorizontalRecovery()))+" [nmi])\n";
-		s+="min_vertical_recovery = "+DaidalusParameters.val_unit(core_.min_vertical_recovery,"ft")+
-				" ("+f.Fm4(Units.to("ft",core_.minVerticalRecovery()))+" [ft])\n";
-		s+="most_urgent_ac = "+core_.most_urgent_ac.getId()+"\n";
-		s+="conflict_crit = "+core_.conflict_crit+"\n";
-		s+="recovery_crit = "+core_.recovery_crit+"\n";
-		s+="recovery_trk = "+trk_band_.get_recovery()+"\n";
-		s+="recovery_gs = "+gs_band_.get_recovery()+"\n";
-		s+="recovery_vs = "+vs_band_.get_recovery()+"\n";
-		s+="recovery_alt = "+alt_band_.get_recovery()+"\n";
-		s+="#\n";
-		s+="NAME sx sy sz vx vy vz time\n";
-		s+="[none] [m] [m] [m] [m/s] [m/s] [m/s] [s]\n";
-		if (hasOwnship()) {
-			s+=core_.ownship.getId()+", "+core_.ownship.get_s().formatXYZ(precision,"",", ","")+
-					", "+core_.own_v().formatXYZ(precision,"",", ","")+", 0\n";
-		}
-		if (hasTraffic()) {
-			for (int i = 0; i < core_.traffic.size(); i++) {
-				s+=core_.traffic.get(i).getId()+", "+core_.traffic_s(i).formatXYZ(precision,"",", ","")+
-						", "+core_.traffic_v(i).formatXYZ(precision,"",", ","")+", 0\n";
+	/**
+	 * Compute preferred altitude direction, for given alert level, 
+	 * based on resolution that is closer to current altitude.
+	 * True: Climb, False: Descend.
+	 */
+	public boolean preferredAltitudeDirection(int alert_level) {
+		return alt_band_.preferred_direction(core_, alert_level);
+	}
+
+	/**
+	 * Compute preferred  altitude direction, for conflict alert level, 
+	 * based on resolution that is closer to current altitude.
+	 * True: Climb, False: Descend.
+	 */
+	public boolean preferredAltitudeDirection() {
+		return preferredAltitudeDirection(0);
+	}
+
+	/** 
+	 * Return true if and only if threshold values, defining an alerting level, are violated.
+	 */ 
+	private boolean check_thresholds(AlertThresholds athr, TrafficState ac, int turning, int accelerating, int climbing) {
+		if (athr.isValid()) {
+			Vect3 so = core_.ownship.get_s();
+			Velocity vo = core_.ownship.get_v();
+			Vect3 si = ac.get_s();
+			Velocity vi = ac.get_v();
+			Detection3D detector = athr.getDetector();	
+			double alerting_time = athr.getAlertingTime();
+
+			if (detector.violation(so,vo,si,vi)) {
+				return true;
+			}
+			ConflictData det = detector.conflictDetection(so,vo,si,vi,0,athr.getAlertingTime());
+			if (det.conflict()) {
+				return true;
+			}
+			if (athr.getTrackSpread() > 0 || athr.getGroundSpeedSpread() > 0 || 
+					athr.getVerticalSpeedSpread() > 0 || athr.getAltitudeSpread() > 0) {
+				if (athr.getTrackSpread() > 0) {
+					KinematicTrkBands trk_band = new KinematicTrkBands(core_.parameters);
+					trk_band.set_rel(true);
+					trk_band.set_min(turning <= 0 ? -athr.getTrackSpread() : 0);
+					trk_band.set_max(turning >= 0 ? athr.getTrackSpread() : 0);
+					if (trk_band.kinematic_conflict(core_,ac,detector,athr.getAlertingTime())) {
+						return true;
+					}
+				}
+				if (athr.getGroundSpeedSpread() > 0) {
+					KinematicGsBands gs_band = new KinematicGsBands(core_.parameters);
+					gs_band.set_rel(true);
+					gs_band.set_min(accelerating <= 0 ? -athr.getGroundSpeedSpread() : 0);
+					gs_band.set_max(accelerating >= 0 ? athr.getGroundSpeedSpread() : 0);
+					if (gs_band.kinematic_conflict(core_,ac,detector,alerting_time)) {
+						return true;
+					}
+				}
+				if (athr.getVerticalSpeedSpread() > 0) {
+					KinematicVsBands vs_band = new KinematicVsBands(core_.parameters);
+					vs_band.set_rel(true);
+					vs_band.set_min(climbing <= 0 ? -athr.getVerticalSpeedSpread() : 0);
+					vs_band.set_max(climbing >= 0 ? athr.getVerticalSpeedSpread() : 0);
+					if (vs_band.kinematic_conflict(core_,ac,detector,alerting_time)) {
+						return true;
+					}
+				}
+				if (athr.getAltitudeSpread() > 0) {
+					KinematicAltBands alt_band = new KinematicAltBands(core_.parameters);
+					alt_band.set_rel(true);
+					alt_band.set_min(climbing <= 0 ? -athr.getAltitudeSpread() : 0);
+					alt_band.set_max(climbing >= 0 ? athr.getAltitudeSpread() : 0);
+					if (alt_band.kinematic_conflict(core_,ac,detector,alerting_time)) {
+						return true;
+					}
+				}
 			}
 		}
-		s+="Track bands [rad,rad]:\n"+trk_band_.toString()+"\n";
-		s+="Ground speed bands [m/s,m/s]:\n"+gs_band_.toString()+"\n";
-		s+="Vertical speed bands [m/s,m/s]:\n"+vs_band_.toString()+"\n";
-		s+="Altitude Bands [m,m]:\n"+alt_band_.toString()+"\n";
+		return false;
+	}
+
+	/** 
+	 * Computes alerting level beteween ownship and aircraft. 
+	 * The number 0 means no alert. A negative number means that aircraft index is not valid.
+	 * When the alertor object has been configured to consider ownship maneuvers, i.e.,
+	 * using spread values, the alerting logic could also use information about the ownship
+	 * turning, accelerating, and climbing status as follows:
+	 * - turning < 0: ownship is turning left, turning > 0: ownship is turning right, turning = 0: 
+	 * do not make any turning assumption about the ownship.
+	 * - accelerating < 0: ownship is decelerating, accelerating > 0: ownship is accelerating, 
+	 * accelerating = 0: do not make any accelerating assumption about the ownship.
+	 * - climbing < 0: ownship is descending, climbing > 0: ownship is climbing, climbing = 0:
+	 * do not make any climbing assumption about the ownship.
+	 */
+	public int alerting(TrafficState ac, int turning, int accelerating, int climbing) {
+		for (int alert_level=core_.parameters.alertor.mostSevereAlertLevel(); alert_level > 0; --alert_level) {
+			AlertThresholds athr = core_.parameters.alertor.getLevel(alert_level);
+			if (check_thresholds(athr,ac,turning,accelerating,climbing)) {
+				return alert_level;
+			}
+		}
+		return 0;
+	}
+
+	public String toString() {
+		String s = "";
+		s+="## KinematicMultiBands\n"; 
+		s+=core_.toString();
+		s+="## Track Bands Internals\n";
+		s+=trk_band_.toString()+"\n";
+		s+="## Ground Speed Bands Internals\n";
+		s+=gs_band_.toString()+"\n";
+		s+="## Vertical Speed Bands Internals\n";
+		s+=vs_band_.toString()+"\n";
+		s+="## Altitude Bands Internals\n";
+		s+=alt_band_.toString()+"\n";
 		return s;
 	}
 
@@ -1877,77 +2185,101 @@ public class KinematicMultiBands implements GenericStateBands {
 		String s="";
 		s+="Ownship Aircraft: "+core_.ownship.getId()+"\n";
 		s+="Traffic Aircraft: "+TrafficState.listToString(core_.traffic)+"\n";
-		s+="Conflict Criteria: "+(core_.conflict_crit?"Enabled":"Disabled")+"\n";
-		s+="Recovery Criteria: "+(core_.recovery_crit?"Enabled":"Disabled")+"\n";
+		s+="Conflict Criteria: "+(core_.parameters.isEnabledConflictCriteria()?"Enabled":"Disabled")+"\n";
+		s+="Recovery Criteria: "+(core_.parameters.isEnabledRecoveryCriteria()?"Enabled":"Disabled")+"\n";
 		s+="Most Urgent Aircraft: "+core_.most_urgent_ac.getId()+"\n";
 		s+="Horizontal Epsilon: "+core_.epsilonH()+"\n";
 		s+="Vertical Epsilon: "+core_.epsilonV()+"\n";
-		for (int alert_level=1; alert_level <= core_.alertor.mostSevereAlertLevel(); ++alert_level) {
+		for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
 			s+="Conflict Aircraft (alert level "+alert_level+"): "+
 					TrafficState.listToString(conflictAircraft(alert_level))+"\n";
 		}
 		// Track
 		double val = core_.ownship.track("deg");
-		s+="Ownship Track: "+f.Fm1(val)+" [deg]\n";
+		s+="Ownship Track: "+f.Fm2(val)+" [deg]\n";
 		s+="Region of Current Track: "+regionOfTrack(val,"deg").toString()+"\n";
 		s+="Track Bands [deg,deg]:\n"; 
 		for (int i=0; i < trackLength(); ++i) {
-			s+="  "+track(i, "deg").toString(1)+" "+trackRegion(i)+"\n";
+			s+="  "+track(i, "deg").toString(2)+" "+trackRegion(i)+"\n";
 		} 
-		for (int alert_level=1; alert_level <= core_.alertor.mostSevereAlertLevel(); ++alert_level) {
+		for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
 			s+="Peripheral Track Aircraft (alert level "+alert_level+"): "+
 					TrafficState.listToString(peripheralTrackAircraft(alert_level))+"\n";
 		}
 		s+="Track Resolution (right): "+f.Fm2(trackResolution(true,"deg"))+" [deg]\n";
 		s+="Track Resolution (left): "+f.Fm2(trackResolution(false,"deg"))+" [deg]\n";
+		s+="Preferred Track Direction: ";
+		if (preferredTrackDirection()) { 
+			s+="right\n";
+		} else {
+			s+="left\n";
+		}
 		s+="Time to Track Recovery: "+f.Fm2(timeToTrackRecovery())+" [s]\n";
 
 		// Ground Speed
 		val = core_.ownship.groundSpeed("knot");
-		s+="Ownship Ground Speed: "+f.Fm1(val)+" [knot]\n";
+		s+="Ownship Ground Speed: "+f.Fm2(val)+" [knot]\n";
 		s+="Region of Current Ground Speed: "+regionOfGroundSpeed(val,"knot").toString()+"\n";
 		s+="Ground Speed Bands [knot,knot]:\n";
 		for (int i=0; i < groundSpeedLength(); ++i) {
-			s+="  "+groundSpeed(i, "kn").toString(1)+" "+groundSpeedRegion(i)+"\n";
+			s+="  "+groundSpeed(i, "kn").toString(2)+" "+groundSpeedRegion(i)+"\n";
 		} 
-		for (int alert_level=1; alert_level <= core_.alertor.mostSevereAlertLevel(); ++alert_level) {
+		for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
 			s+="Peripheral Ground Speed Aircraft (alert level "+alert_level+"): "+
 					TrafficState.listToString(peripheralGroundSpeedAircraft(alert_level))+"\n";
 		}
 		s+="Ground Speed Resolution (up): "+f.Fm2(groundSpeedResolution(true,"kn"))+" [kn]\n";
 		s+="Ground Speed Resolution (down): "+f.Fm2(groundSpeedResolution(false,"kn"))+" [kn]\n";
+		s+="Preferred Ground Speed Direction: ";
+		if (preferredGroundSpeedDirection()) {
+			s+="up\n";
+		} else {
+			s+="down\n";
+		}
 		s+="Time to Ground Speed Recovery: "+f.Fm2(timeToGroundSpeedRecovery())+" [s]\n";
 
 		// Vertical Speed
 		val = core_.ownship.verticalSpeed("fpm");
-		s+="Ownship Vertical Speed: "+f.Fm1(val)+" [fpm]\n";
+		s+="Ownship Vertical Speed: "+f.Fm2(val)+" [fpm]\n";
 		s+="Region of Current Vertical Speed: "+regionOfVerticalSpeed(val,"fpm").toString()+"\n";
 		s+="Vertical Speed Bands [fpm,fpm]:\n";
 		for (int i=0; i < verticalSpeedLength(); ++i) {
-			s+="  "+verticalSpeed(i, "fpm").toString(1)+" "+ verticalSpeedRegion(i)+"\n";
+			s+="  "+verticalSpeed(i, "fpm").toString(2)+" "+ verticalSpeedRegion(i)+"\n";
 		} 
-		for (int alert_level=1; alert_level <= core_.alertor.mostSevereAlertLevel(); ++alert_level) {
+		for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
 			s+="Peripheral Vertical Speed Aircraft (alert level "+alert_level+"): "+
 					TrafficState.listToString(peripheralVerticalSpeedAircraft(alert_level))+"\n";
 		}
 		s+="Vertical Speed Resolution (up): "+f.Fm2(verticalSpeedResolution(true,"fpm"))+" [fpm]\n";
 		s+="Vertical Speed Resolution (down): "+f.Fm2(verticalSpeedResolution(false,"fpm"))+" [fpm]\n";
+		s+="Preferred Vertical Speed Direction: ";
+		if (preferredVerticalSpeedDirection()) {
+			s+="up\n";
+		} else {
+			s+="down\n";
+		}
 		s+="Time to Vertical Speed Recovery: "+f.Fm2(timeToVerticalSpeedRecovery())+" [s]\n";
 
 		// Altitude
 		val = core_.ownship.altitude("ft");
-		s+="Ownship Altitude: "+f.Fm1(val)+" [ft]\n";
+		s+="Ownship Altitude: "+f.Fm2(val)+" [ft]\n";
 		s+="Region of Current Altitude: "+regionOfAltitude(val,"ft").toString()+"\n";
 		s+="Altitude Bands [ft,ft]:\n";
 		for (int i=0; i < altitudeLength(); ++i) {
-			s+="  "+altitude(i, "ft").toString(1)+" "+ altitudeRegion(i)+"\n";
+			s+="  "+altitude(i, "ft").toString(2)+" "+ altitudeRegion(i)+"\n";
 		} 
-		for (int alert_level=1; alert_level <= core_.alertor.mostSevereAlertLevel(); ++alert_level) {
+		for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
 			s+="Peripheral Altitude Aircraft (alert level "+alert_level+"): "+
 					TrafficState.listToString(peripheralAltitudeAircraft(alert_level))+"\n";
 		}
 		s+="Altitude Resolution (up): "+f.Fm2(altitudeResolution(true,"ft"))+" [ft]\n";
 		s+="Altitude Resolution (down): "+f.Fm2(altitudeResolution(false,"ft"))+" [ft]\n";
+		s+="Preferred Altitude Direction: ";
+		if (preferredAltitudeDirection()) {
+			s+="up\n";
+		} else {
+			s+="down\n";
+		}
 		s+="Time to Altitude Recovery: "+f.Fm2(timeToAltitudeRecovery())+" [s]\n";
 
 		// Last Time to Maneuver
@@ -1958,6 +2290,155 @@ public class KinematicMultiBands implements GenericStateBands {
 			s+="  Vertical Speed Maneuver: "+f.Fm2(lastTimeToVerticalSpeedManeuver(ac))+" [s]\n";
 			s+="  Altitude Maneuver: "+f.Fm2(lastTimeToAltitudeManeuver(ac))+" [s]\n";
 		}
+		return s;
+	}
+
+	public String toPVS(int precision) {
+		String s="";
+		s += "%%% Conflict Aircraft:\n";
+		s += "(: ";
+		boolean comma = false;
+		for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
+			if (comma) {
+				s += ", ";
+			} else {
+				comma = true;
+			}
+			s += "("+alert_level+","+TrafficState.listToPVSStringList(conflictAircraft(alert_level),precision)+")";
+		}
+		s += " :)::list[[nat,list[string]]]\n";
+		s += "%%% Region of Current Track:\n"+
+				trackRegion(trackRangeOf(getOwnship().track()))+"\n";
+		s += "%%% Track Bands: "+trackLength()+"\n";
+		s += trk_band_.toPVS(precision)+"\n";
+		s += "%%% Peripheral Track Aircraft:\n";
+		s += "(: ";
+		comma = false;
+		for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
+			if (comma) {
+				s += ", ";
+			} else {
+				comma = true;
+			}
+			s += "("+alert_level+","+TrafficState.listToPVSStringList(peripheralTrackAircraft(alert_level),precision)+")";
+		}
+		s += " :)::list[[nat,list[string]]]\n";
+		s += "%%% Track Resolution:\n";
+		s += "("+f.double2PVS(trackResolution(false),precision)+
+				","+f.double2PVS(trackResolution(true),precision)+
+				","+preferredTrackDirection()+")\n";
+		s += "%%% Time to Track Recovery:\n"+f.double2PVS(timeToTrackRecovery(),2)+"\n";
+		s += "%%% Last Times to Track Maneuver:\n(:"; 
+		comma = false;
+		for (TrafficState ac : getTraffic()) {
+			if (comma) {
+				s += ",";
+			} else {
+				comma = true;
+			}
+			s += " "+f.double2PVS(lastTimeToTrackManeuver(ac),2);
+		}
+		s += " :)\n";
+
+		s += "%%% Region of Current Ground Speed:\n"+
+				groundSpeedRegion(groundSpeedRangeOf(getOwnship().groundSpeed()))+"\n";
+		s += "%%% Ground Speed Bands: "+groundSpeedLength()+"\n";
+		s += gs_band_.toPVS(precision)+"\n";
+		s += "%%% Peripheral Ground Speed Aircraft:\n";
+		s += "(: ";
+		comma = false;
+		for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
+			if (comma) {
+				s += ", ";
+			} else {
+				comma = true;
+			}
+			s += "("+alert_level+","+TrafficState.listToPVSStringList(peripheralGroundSpeedAircraft(alert_level),precision)+")";
+		}
+		s += " :)::list[[nat,list[string]]]\n";
+		s += "%%% Ground Speed Resolution:\n";
+		s += "("+f.double2PVS(groundSpeedResolution(false),precision)+
+				","+f.double2PVS(groundSpeedResolution(true),precision)+
+				","+preferredGroundSpeedDirection()+")\n";
+		s += "%%% Time to Ground Speed Recovery:\n"+f.double2PVS(timeToGroundSpeedRecovery(),2)+"\n";
+		s += "%%% Last Times to Ground Speed Maneuver:\n(:"; 
+		comma = false;
+		for (TrafficState ac : getTraffic()) {
+			if (comma) {
+				s += ",";
+			} else {
+				comma = true;
+			}
+			s += " "+f.double2PVS(lastTimeToGroundSpeedManeuver(ac),2);
+		}
+		s += " :)\n";
+
+		s += "%%% Region of Current Vertical Speed:\n"+
+				verticalSpeedRegion(verticalSpeedRangeOf(getOwnship().verticalSpeed()))+"\n";
+		s += "%%% Vertical Speed Bands: "+verticalSpeedLength()+"\n";
+		s += vs_band_.toPVS(precision)+"\n";
+		s += "%%% Peripheral Vertical Speed Aircraft:\n";
+		s += "(: ";
+		comma = false;
+		for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
+			if (comma) {
+				s += ", ";
+			} else {
+				comma = true;
+			}
+			s += "("+alert_level+","+TrafficState.listToPVSStringList(peripheralVerticalSpeedAircraft(alert_level),precision)+")";
+		}
+		s += " :)::list[[nat,list[string]]]\n";
+		s += "%%% Vertical Speed Resolution:\n";
+		s += "("+f.double2PVS(verticalSpeedResolution(false),precision)+
+				","+f.double2PVS(verticalSpeedResolution(true),precision)+
+				","+preferredVerticalSpeedDirection()+")\n";
+		s += "%%% Time to Vertical Speed Recovery:\n"+f.double2PVS(timeToVerticalSpeedRecovery(),2)+"\n";
+		s += "%%% Last Times to Vertical Speed Maneuver:\n(:"; 
+		comma = false;
+		for (TrafficState ac : getTraffic()) {
+			if (comma) {
+				s += ",";
+			} else {
+				comma = true;
+			}
+			s += " "+f.double2PVS(lastTimeToVerticalSpeedManeuver(ac),2);
+		}
+		s += " :)\n";
+
+		s += "%%% Region of Current Altitude:\n"+
+				altitudeRegion(altitudeRangeOf(getOwnship().altitude()))+"\n";
+		s += "%%% Altitude Bands: "+altitudeLength()+"\n";
+		s += alt_band_.toPVS(precision)+"\n";
+		s += "%%% Peripheral Altitude Aircraft:\n";
+		s += "(: ";
+		comma = false;
+		for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
+			if (comma) {
+				s += ", ";
+			} else {
+				comma = true;
+			}
+			s += "("+alert_level+","+TrafficState.listToPVSStringList(peripheralAltitudeAircraft(alert_level),precision)+")";
+		}
+		s += " :)::list[[nat,list[string]]]\n";
+		s += "%%% Altitude Resolution:\n";
+		s += "("+f.double2PVS(altitudeResolution(false),precision)+
+				","+f.double2PVS(altitudeResolution(true),precision)+
+				","+preferredAltitudeDirection()+")\n";
+		s += "%%% Time to Altitude Recovery:\n"+f.double2PVS(timeToAltitudeRecovery(),2)+"\n";
+		s += "%%% Last Times to Altitude Maneuver:\n(:"; 
+		comma = false;
+		for (TrafficState ac : getTraffic()) {
+			if (comma) {
+				s += ",";
+			} else {
+				comma = true;
+			}
+			s += " "+f.double2PVS(lastTimeToAltitudeManeuver(ac),2);
+		}
+		s += " :)\n";
+
 		return s;
 	}
 
@@ -1989,38 +2470,39 @@ public class KinematicMultiBands implements GenericStateBands {
 		return error.getMessageNoClear();
 	}
 
-  /** 
-   * @return lookahead time in seconds. 
-   */ 
-  public double getLookaheadTime() {
-    return core_.lookahead_time;
-  }
+	/** 
+	 * @return lookahead time in seconds. 
+	 */ 
+	public double getLookaheadTime() {
+		return core_.parameters.getLookaheadTime();
+	}
 
-  /**
-   * @return lookahead time in specified units [u]. 
-   */
+	/**
+	 * @return lookahead time in specified units [u]. 
+	 */
 
-  public double getLookahedTime(String u) {
-    return Units.to(u,getLookaheadTime());
-  }
+	public double getLookahedTime(String u) {
+		return Units.to(u,getLookaheadTime());
+	}
 
-  /** 
-   * Sets lookahead time in seconds. 
-   */ 
-  public void setLookaheadTime(double t) {
-    core_.lookahead_time = t;
-    reset();
-  }
+	/** 
+	 * Sets lookahead time in seconds. 
+	 */ 
+	public void setLookaheadTime(double t) {
+		core_.parameters.setLookaheadTime(t);
+		reset();
+	}
 
-  /** 
-   * Sets lookahead time in specified units [u]. 
-   */ 
-  public void setLookaheadTime(double t, String u) {
-    setLookaheadTime(Units.from(u,t));
-  }
+	/** 
+	 * Sets lookahead time in specified units [u]. 
+	 */ 
+	public void setLookaheadTime(double t, String u) {
+		setLookaheadTime(Units.from(u,t));
+	}
 
 	public boolean isLatLon() {
 		return hasOwnship() && core_.ownship.isLatLon();
 	}
 
 }
+

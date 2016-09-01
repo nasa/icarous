@@ -53,7 +53,7 @@ public class PolycarpResolution {
 	
 	public static int closest_edge(ArrayList<Vect2> p, double BUFF, Vect2 s) {
 		int ce = 0;
-		for (int i = 0; i < p.size() -1; i++) {
+		for (int i = 0; i < p.size(); i++) {
 			int next = i < p.size()-1 ? i+1 : 0;
 			Vect2 closp = PolycarpEdgeProximity.closest_point(p.get(i), p.get(next), s, BUFF);
 			double thisdist = s.Sub(closp).norm();
@@ -73,20 +73,32 @@ public class PolycarpResolution {
 		Vect2 ip = PolycarpEdgeProximity.closest_point(p.get(i), p.get(nexti), s, BUFF);
 		Vect2 dirvect = p.get(nexti).Sub(p.get(i)).PerpR();
 		Vect2 testdir = dirvect.Hat();
-		Vect2 testvect = ip.Add(testdir.Scal(eps*ResolBUFF));
+		Vect2 testvect = ip.Add(testdir.Scal(eps*(ResolBUFF+BUFF/2)));
 		return testvect;
 	}
 
 	public static Vect2 recovery_point(double BUFF, double ResolBUFF, ArrayList<Vect2> p, Vect2 s, int eps) {
-		Vect2 tv = recovery_test_point(BUFF,1.01*ResolBUFF,p,s,eps);
+		Vect2 tv = recovery_test_point(BUFF,ResolBUFF,p,s,eps);
 		if (eps == 1 && PolycarpContain.definitely_outside(p,s,BUFF) &&
-				!(PolycarpContain.near_any_edge(p,s, ResolBUFF))) return s;
+				!(PolycarpContain.near_any_edge(p,s, ResolBUFF))) {
+			//System.out.println("hit 1");
+			return s;
+		}
 		if (eps == -1 && PolycarpContain.definitely_inside(p,s, BUFF) &&
-				!(PolycarpContain.near_any_edge(p,s, ResolBUFF))) return s;
+				!(PolycarpContain.near_any_edge(p,s, ResolBUFF))) {
+			//System.out.println("hit 2");
+			return s;
+		}
 		if (eps == 1 && PolycarpContain.definitely_outside(p,tv,BUFF) &&
-				!(PolycarpContain.near_any_edge(p, tv, ResolBUFF))) return tv;
+				!(PolycarpContain.near_any_edge(p, tv, ResolBUFF))) {
+			//System.out.println("hit 3");
+			return tv;
+		}
 		if (eps == -1 && PolycarpContain.definitely_inside(p, tv, BUFF) &&
-				!(PolycarpContain.near_any_edge(p, tv, ResolBUFF))) return tv;
+				!(PolycarpContain.near_any_edge(p, tv, ResolBUFF))) {
+			//System.out.println("hit 4");
+			return tv;
+		}
 		int i = closest_edge(p,BUFF,s);
 		int nexti = i < p.size()-1 ? i+1 : 0;
 		int neari = s.Sub(p.get(i)).sqv() <= s.Sub(p.get(nexti)).sqv() ? i : nexti;

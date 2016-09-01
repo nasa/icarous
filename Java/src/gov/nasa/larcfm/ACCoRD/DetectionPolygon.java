@@ -11,7 +11,6 @@ import java.util.List;
 import gov.nasa.larcfm.Util.MovingPolygon3D;
 import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.Util.ParameterAcceptor;
-import gov.nasa.larcfm.Util.SimplePoly;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.Poly3D;

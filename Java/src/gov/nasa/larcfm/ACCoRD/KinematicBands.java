@@ -109,92 +109,90 @@ import gov.nasa.larcfm.ACCoRD.CDCylinder;
  */
 public class KinematicBands extends KinematicMultiBands {
 
-  /** 
-   * Construct a KinematicBands with default parameters. The initial state detector  
-   * is specified by the parameters.
-   * @param detector        State detector
-   */
-  public KinematicBands(Detection3D detector) {
-    AlertLevels alertor = new AlertLevels();
-    alertor.add(new AlertThresholds(detector,DaidalusParameters.DefaultValues.getLookaheadTime(),
-        DaidalusParameters.DefaultValues.getLookaheadTime(),BandsRegion.NEAR));
-    alertor.setConflictAlertLevel(1);
-    setAlertor(alertor);
-  }
+	/** 
+	 * Construct a KinematicBands with default parameters. The initial state detector  
+	 * is specified by the parameters.
+	 * @param detector        State detector
+	 */
+	public KinematicBands(Detection3D detector) {
+		setAlertor(AlertLevels.SingleBands(detector, 
+				KinematicBandsParameters.DefaultValues.getLookaheadTime(),
+        KinematicBandsParameters.DefaultValues.getLookaheadTime()));
+	}
 
-  /** 
-   * Construct a KinematicBands object with default values for
-   * configuration parameters. The default state detector is cylinder.  
-   */
-  public KinematicBands() {
-    this(new CDCylinder());
-  }
+	/** 
+	 * Construct a KinematicBands object with default values for
+	 * configuration parameters. The default state detector is cylinder.  
+	 */
+	public KinematicBands() {
+		this(new CDCylinder());
+	}
 
-  /**
-   * Construct a KinematicBands object from an existing KinematicBands object. This copies all traffic data.
-   */
-  public KinematicBands(KinematicBands b) {
-    super(b);
-  }
+	/**
+	 * Construct a KinematicBands object from an existing KinematicBands object. This copies all traffic data.
+	 */
+	public KinematicBands(KinematicBands b) {
+		super(b);
+	}
 
-  /** 
-   * Sets lookahead time in seconds. This is the time horizon used to compute bands.
-   */ 
-  public void setLookaheadTime(double t) {
-    int level = core_.alertor.conflictAlertLevel();
-    if (level > 0) {
-    	super.setLookaheadTime(t);
-      AlertThresholds athr = core_.alertor.get(level);
-      athr.setLateAlertingTime(t);
-      core_.alertor.clear();
-      core_.alertor.add(athr);
-      core_.alertor.setConflictAlertLevel(1);
-      reset();
-    }
-  }
+	/** 
+	 * Sets lookahead time in seconds. This is the time horizon used to compute bands.
+	 */ 
+	public void setLookaheadTime(double t) {
+		int level = core_.parameters.alertor.conflictAlertLevel();
+		if (level > 0) {
+			super.setLookaheadTime(t);
+			AlertThresholds athr = core_.parameters.alertor.getLevel(level);
+			athr.setLateAlertingTime(t);
+			core_.parameters.alertor.clear();
+			core_.parameters.alertor.addLevel(athr);
+			core_.parameters.alertor.setConflictAlertLevel(1);
+			reset();
+		}
+	}
 
-  /**
-   * @return alerting time in seconds. This is the first time prior to a violation when bands are
-   * computed.
-   */
-  public double getAlertingTime() {
-    int level = core_.alertor.conflictAlertLevel();
-    if (level > 0) {
-    	return core_.alertor.get(level).getAlertingTime();
-    }
-    return Double.NaN;
-  }
+	/**
+	 * @return alerting time in seconds. This is the first time prior to a violation when bands are
+	 * computed.
+	 */
+	public double getAlertingTime() {
+		int level = core_.parameters.alertor.conflictAlertLevel();
+		if (level > 0) {
+			return core_.parameters.alertor.getLevel(level).getAlertingTime();
+		}
+		return Double.NaN;
+	}
 
-  /**
-   * Sets alerting time in seconds. This is the first time prior to a violation when bands are
-   * computed. 
-   */
-  public void setAlertingTime(double t) {
-    int level = core_.alertor.conflictAlertLevel();
-    if (level > 0) {
-      AlertThresholds athr = core_.alertor.get(level);
-      athr.setAlertingTime(t);
-      core_.alertor.clear();
-      core_.alertor.add(athr);
-      core_.alertor.setConflictAlertLevel(1);
-      reset();
-    }
-  }
+	/**
+	 * Sets alerting time in seconds. This is the first time prior to a violation when bands are
+	 * computed. 
+	 */
+	public void setAlertingTime(double t) {
+		int level = core_.parameters.alertor.conflictAlertLevel();
+		if (level > 0) {
+			AlertThresholds athr = core_.parameters.alertor.getLevel(level);
+			athr.setAlertingTime(t);
+			core_.parameters.alertor.clear();
+			core_.parameters.alertor.addLevel(athr);
+			core_.parameters.alertor.setConflictAlertLevel(1);
+			reset();
+		}
+	}
 
-  /** Experimental. Set the underlying Detection3D object that will be used to determine conflicts.
-   * This will also clear any results (but not traffic info).
-   */
-  public void setCoreDetection(Detection3D detector) {
-    int level = core_.alertor.conflictAlertLevel();
-    if (level > 0) {
-      AlertThresholds athr = core_.alertor.get(level);
-      athr.setDetector(detector);
-      core_.alertor.clear();
-      core_.alertor.add(athr);
-      core_.alertor.setConflictAlertLevel(1);
-      reset();
-    }
-  }
+	/** Experimental. Set the underlying Detection3D object that will be used to determine conflicts.
+	 * This will also clear any results (but not traffic info).
+	 */
+	public void setCoreDetection(Detection3D detector) {
+		int level = core_.parameters.alertor.conflictAlertLevel();
+		if (level > 0) {
+			AlertThresholds athr = core_.parameters.alertor.getLevel(level);
+			athr.setDetector(detector);
+			core_.parameters.alertor.clear();
+			core_.parameters.alertor.addLevel(athr);
+			core_.parameters.alertor.setConflictAlertLevel(1);
+			reset();
+		}
+	}
 
 
 }

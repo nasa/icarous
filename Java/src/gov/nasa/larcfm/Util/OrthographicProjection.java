@@ -167,16 +167,14 @@ public final class OrthographicProjection implements EuclideanProjection {
     
     /**
      * Transforms a lat/lon position to a point on in R3 (on a sphere)
-     * From Wikipedia http://en.wikipedia.org/wiki/Curvilinear_coordinates
-     * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0.
-     * This does some trickery with altitudes 
+     * From Wikipedia https://en.wikipedia.org/wiki/Orthographic_projection_in_cartography
      * @param lat Latitude
      * @param lon Longitude
-     * @return point in R3
+     * @return point in R2
      */
     private Vect2 spherical2xy(double lat, double lon) {
     	// remove invalid points
-    	double c = Math.sin(llaRef.lat())*Math.sin(lat)+Math.cos(llaRef.lat()*Math.cos(lat)*Math.cos(lon-llaRef.lon()));
+    	double c = Math.sin(llaRef.lat())*Math.sin(lat)+Math.cos(llaRef.lat())*Math.cos(lat)*Math.cos(lon-llaRef.lon());
     	if (c < 0) return Vect2.INVALID;
     	
     	double r = GreatCircle.spherical_earth_radius;

@@ -28,6 +28,7 @@ public class GsPlan extends Route {
 	public GsPlan(double startTime) {
 		positions = new ArrayList<Position>();
 		names = new ArrayList<String>();
+		radius = new ArrayList<Double>();
 		gsAts  = new ArrayList<Double>();
 		this.startTime = startTime;
 		//defaultGroundSpeed = defGroundSpeed;
@@ -42,6 +43,7 @@ public class GsPlan extends Route {
 		if (end >= lpc.size()) end = lpc.size()-1;
 		positions = new ArrayList<Position>();
 		names = new ArrayList<String>();
+		radius = new ArrayList<Double>();
 		gsAts  = new ArrayList<Double>();
 		for (int i = start; i <= end ; i++) {
 			NavPoint np = lpc.point(i);
@@ -59,9 +61,18 @@ public class GsPlan extends Route {
 	public GsPlan(GsPlan gsp) {
 		positions = new ArrayList<Position>(gsp.positions);
 		names = new ArrayList<String>(gsp.names);
+		radius = new ArrayList<Double>(gsp.radius);
 		gsAts  = new ArrayList<Double>(gsp.gsAts);
 		startTime = gsp.startTime;
 		//defaultGroundSpeed = gsp.defaultGroundSpeed;
+	}
+	
+	public static GsPlan makeGsPlanConstant(GsPlan gsp, double gsNew) {
+		GsPlan gspNew = new GsPlan(gsp);
+		for (int j = 0; j < gsp.size(); j++) {
+			gspNew.setGs(j,gsNew);
+		}
+        return gspNew;
 	}
 
 	public int size() {
@@ -78,11 +89,27 @@ public class GsPlan extends Route {
 	 * @param label label for point -- if this equals GsPlan.virtualName, then this will become a virtual point when make into a linear plan
 	 * @param gsin grounds speed
 	 */
+	public void add(Position pos, String label, double gsin, double rad) {
+		//f.pln(" $$###>>>>> GsPlan.add: "+pos+" "+label+" gsin = "+Units.str("kn",gsin)+" radius = "+Units.str("nm",rad));
+		positions.add(pos);
+		names.add(label);
+		radius.add(rad);
+		gsAts.add(gsin);
+	}
+	
+	/**
+	 * 
+	 * @param pos position
+	 * @param label label for point -- if this equals GsPlan.virtualName, then this will become a virtual point when make into a linear plan
+	 * @param gsin grounds speed
+	 */
 	public void add(Position pos, String label, double gsin) {
 		positions.add(pos);
 		names.add(label);
+		radius.add(0.0);
 		gsAts.add(gsin);
 	}
+
 	
 	/** This method is primarily added to prevent accidental use of lower level Route method
 	 * 
@@ -92,6 +119,7 @@ public class GsPlan extends Route {
 	public void add(Position pos, String label) {
 		positions.add(pos);
 		names.add(label);
+		radius.add(0.0);
 		if (gsAts.size() > 0) {
 		   gsAts.add(gsAts.get(gsAts.size()-1));
 		} else {
@@ -116,6 +144,7 @@ public class GsPlan extends Route {
 	public void add(GsPlan p, int ix) {
 		positions.add(p.positions.get(ix));
 		names.add(p.names.get(ix));
+		radius.add(p.radius.get(ix));
 		gsAts.add(p.gsAts.get(ix));
 		//f.pln(" $$ GsPlan add "+p.names.get(ix));
 	}
@@ -123,6 +152,7 @@ public class GsPlan extends Route {
 	public void addAll(GsPlan p) {
 		positions.addAll(p.positions);
 		names.addAll(p.names);
+		radius.addAll(p.radius);
 		gsAts.addAll(p.gsAts);
 	}
 	
@@ -136,6 +166,7 @@ public class GsPlan extends Route {
 	public void remove(int i) {
 		positions.remove(i);
 		names.remove(i);
+		radius.remove(i);
 		gsAts.remove(i);
 	}
 
@@ -173,7 +204,7 @@ public class GsPlan extends Route {
 			double gs_i = gsAts.get(i-1);
 			double t = lastT + pathDist/gs_i;
 			//f.pln(" $$$ linearPlan: gs = "+Units.str("kn",gs_i)+" t = "+t);
-			NavPoint nvp = new NavPoint(np,t).makeLabel(names.get(i));
+			NavPoint nvp = new NavPoint(np,t).makeRadius(radius.get(i)).makeLabel(names.get(i));
 			if (names.get(i).equals(virtualName)) nvp = nvp.makeVirtual();
 			//f.pln(" $$$$$ GsPlan.linearPlan: nvp = "+nvp.toStringFull());
 			lpc.add(nvp);
@@ -196,10 +227,28 @@ public class GsPlan extends Route {
 		return true;
 	}
 	
+	public boolean almostEquals(GsPlan p) {
+		boolean rtn = true;
+		for (int i = 0; i < size(); i++) {                // Unchanged
+			if (!position(i).almostEquals(p.position(i))) {
+				rtn = false;
+				f.pln("almostEquals: point i = "+i+" does not match: "+position(i)+"  !=   "+p.position(i));
+			}
+
+			if (! name(i).equals(p.name(i))) {
+				f.pln("almostEquals: name i = "+i+" does not match: "+name(i)+"  !=   "+p.name(i));
+				rtn = false;
+			}
+		}
+		return rtn;
+	}
+
+	
 	public String toString() {
 		String rtn = "GsPlan size = "+positions.size()+"\n";
 		for (int i = 0; i < positions.size(); i++) {
 			rtn += " "+i+" "+positions.get(i)+" "+names.get(i);
+			if (radius(i) != 0.0) rtn += " radius ="+radius(i);
 			rtn += " gsIn = "+Units.str("kn",gsAts.get(i));
 			rtn += "\n";
 		}

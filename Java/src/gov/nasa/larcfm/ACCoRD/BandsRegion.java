@@ -25,27 +25,16 @@ public enum BandsRegion {
    * FAR: Far conflict band
    */
 
-  UNKNOWN("<UNKNOWN>"), NONE("<NONE>"), RECOVERY("<RECOVERY>"), NEAR("<NEAR>"),  MID("<MID>"), FAR("<FAR>");
+  UNKNOWN("UNKNOWN"), NONE("NONE"), RECOVERY("RECOVERY"), NEAR("NEAR"), MID("MID"), FAR("FAR");
 
   private String name;
 
-  BandsRegion(String name) {
-    this.name = name;
+  BandsRegion(String nm) {
+   name = nm;
   }
 
   public String toString() {
     return name;
-  }
-
-  public String toPVS() {
-    switch (this) {
-    case NONE: return "NONE";
-    case NEAR: return "NEAR";
-    case RECOVERY: return "RECOVERY";
-    case MID: return "MID";
-    case FAR: return "FAR";
-    default: return "UNKNOWN";
-    }
   }
   
   boolean isValidBand() {

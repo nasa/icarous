@@ -87,7 +87,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	protected String note = "";
 
 	final static double minDt   = GreatCircle.minDt;  // points that are closer together in time than this are treated as the same point for velocity calculations
-	final static String specPre = "$";
+	final static public String specPre = "$";         // special prefix for labels
 
 	
     
@@ -153,6 +153,18 @@ public class Plan implements ErrorReporter, Cloneable {
 	public Plan clone() {
 		return new Plan(this);
 	}
+	
+	public Plan append(Plan pEnd) {
+		Plan rtn = copy();
+		if (pEnd.getFirstTime() < rtn.getLastTime()) {
+			rtn.addError(" ERROR: append:  pEnd does not occur after this plan");
+			return rtn;
+		}
+		for (int j = 0; j < pEnd.size(); j++) {
+			rtn.add(pEnd.point(j));
+		}
+		return rtn;
+	}
 
 	/**
 	 * Create a (simple) new Plan by projecting state information.
@@ -212,8 +224,10 @@ public class Plan implements ErrorReporter, Cloneable {
 			if (!point(i).almostEqualsPosition(p.point(i))) {
 				rtn = false;
 				f.pln("almostEquals: point i = "+i+" does not match: "+point(i)+"  !=   "+p.point(i));
-			} else {
-				//f.pln("plans_almost_equal: point i = "+i+" matches");
+			}
+			if (Math.abs(getTime(i)-p.getTime(i)) > 0.0000001) {
+				rtn = false;
+				f.pln("almostEquals: time i = "+i+" does not match: "+getTime(i)+"  !=   "+p.getTime(i));
 			}
 		}
 		return rtn;
@@ -1576,11 +1590,10 @@ public class Plan implements ErrorReporter, Cloneable {
 		} else {
 			if (np.isBOT() || np.isBGS() || np.isBVS()) {
 				rtn = np.velocityIn();
-				//f.pln(f.Fm0(i)+" $$ initialVelocity0: velocityIn for i = "+i+" rtn = "+rtn+" np = "+np.toStringFull());
+				//f.pln(" $$ initialVelocity0: velocityIn for i = "+i+" = "+rtn+" getDtVelocity(i) = "+getDtVelocity(i));
 				if (rtn.isInvalid()) {
 					Debug.halt("\n !!!!!! Invalid velocityIn for "+name+" "+i+" this = "+toString());
 				}
-				//f.pln(f.Fm0(i)+" $$$ initialVelocity0:  rtn = np.velocityIn("+f.Fm0(i)+") = "+ np.velocityIn().toString());
 			} else if (inTrkChange(t) || inGsChange(t) || inVsChange(t) || (np.isTCP() && i == points.size()-1)) { // special case to also handle last point being in accel zone
 				rtn = velocity(t);
 				//f.pln(f.Fm0(i)+" $$$ initialVelocity1:  rtn = velocity("+f.Fm2(t)+") = "+ rtn.toString());
@@ -1675,14 +1688,15 @@ public class Plan implements ErrorReporter, Cloneable {
 			return Velocity.INVALID;
 		}
 		if (i == size()-1) {// || points.get(i).time() > getLastTime()-minDt) {
-			f.pln(" $$ finalVelocity: name = "+name+" size() = "+size()+" Attempt to get a final velocity at end of the Plan: i = "+i);
-			f.pln(" $$ finalVelocity: "+points.get(i).time()+" >? "+(getLastTime()-minDt));
+			//f.pln(" $$ finalVelocity: name = "+name+" size() = "+size()+" Attempt to get a final velocity at end of the Plan: i = "+i);
+			//f.pln(" $$ finalVelocity: "+points.get(i).time()+" >? "+(getLastTime()-minDt));
 			addWarning("finalVelocity(int): Attempt to get a final velocity at end of the Plan: "+i);
 			//			DebugSupport.halt();
 			return Velocity.ZERO;
 		}
 		if (i < 0) {
 			addWarning("finalVelocity(int): Attempt to get a final velocity before beginning of the Plan: "+i);
+			//Debug.halt();
 			return Velocity.ZERO;
 		}
 		//f.pln(" $$### finalVelocity0: i = "+i+"  np1="+points.get(i)+" np2="+points.get(i+1));
@@ -1770,7 +1784,8 @@ public class Plan implements ErrorReporter, Cloneable {
 			addError("calcTimeGSIn: invalid gs="+f.Fm2(gs), i);
 			return -1;
 		}
-		if (inGsChange(points.get(i).time())) {
+		if (inGsChange(points.get(i).time()) && ! points.get(i).isBGS()) {
+			//f.pln("#### points.get(i) = "+points.get(i));
 			double dist = pathDistance(i-1,i);
 			Velocity v = initialVelocity(i-1);
 			double dt = (gs - v.gs())/maxGsAccel;
@@ -1906,6 +1921,10 @@ public class Plan implements ErrorReporter, Cloneable {
 		return pathDistance(i,j, false);
 	}
 
+	/** 
+	 * Find the cumulative horizontal path distance between points i and j [meters]. If "linear" the
+	 * TCP turns are ignored.  Otherwise, the length of the circular turns are calculated.
+	 */
 	public double pathDistance(int i, int j, boolean linear) {
 		if (i < 0) {
 			i = 0;
@@ -1921,7 +1940,11 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 
-	// return the path distance from the location at time t until the next waypoint
+	/** return the path distance from the location at time t until the next waypoint
+	 * 
+	 * @param t  current time of interest   
+	 * @return   path distance
+	 */
 	public double partialPathDistance(double t) {
 		if (t < getFirstTime() || t >= getLastTime()) {
 			return 0.0;
@@ -1933,10 +1956,8 @@ public class Plan implements ErrorReporter, Cloneable {
 			double R = turnRadius(t);
 			//double distAB = points.get(i).position().distanceH(points.get(i+1).position());
 			//double alpha = 2*(Math.asin(distAB/(2*R))); 
-
 			double dt = points.get(seg+1).time() - t;
 			double alpha = points.get(seg).trkAccel()*dt;
-
 			//f.pln(" pathDistance: R = "+Units.str("nm",R));
 			return Math.abs(alpha*R);	    	
 		} else {
@@ -1945,9 +1966,15 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 	}
 
+	/** calculate path distance from the current position at time t to point j
+	 * 
+	 * @param t     current time
+	 * @param j     next point
+	 * @return      path distance
+	 */
 	public double pathDistanceFromTime(double t, int j) {
 		int i = getSegment(t);
-		double dist_i_j = pathDistance(i,j);
+		double dist_i_j = pathDistance(i+1,j);
 		double dist_part = partialPathDistance(t); 
 		if (j >= i) {
 			return dist_i_j + dist_part;
@@ -1956,6 +1983,11 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 	}
 
+	/** calculates vertical distance from point i to point i+1
+	 * 
+	 * @param i   point of interest
+	 * @return    vertical distance
+	 */
 	public double vertDistance(int i) {
 		//f.pln(" $$$$$$ pathDistance: i = "+i+" points = "+points);
 		if (i < 0 || i+1 > size()) {
@@ -1966,7 +1998,7 @@ public class Plan implements ErrorReporter, Cloneable {
 
 
 	/** 
-	 * Find the cumulative horizontal (curved) path distance between points i and j [meters].
+	 * Find the cumulative vertical distance between points i and j [meters].
 	 */
 	public double vertDistance(int i, int j) {
 		if (i < 0) {
@@ -1984,6 +2016,10 @@ public class Plan implements ErrorReporter, Cloneable {
 		return total;
 	}
 
+	/** calculate average ground speed over entire plan
+	 * 
+	 * @return  average ground speed
+	 */
 	public double averageGroundSpeed() {
 		return pathDistance() / (getLastTime() - getFirstTime());
 	}
@@ -2278,7 +2314,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			}
 			if (i > 0) {  
 				if (point(i).isTCP()) { 
-					if (! PlanUtil.velocityContinuous(this, i, 2.6, silent)) {
+					if (! PlanUtil.isVelocityContinuous(this, i, 2.6, silent)) {
 //						error.addWarning("isConsistent fail: "+i+" Not continuous!");
 						rtn = false;
 					}
@@ -2304,12 +2340,12 @@ public class Plan implements ErrorReporter, Cloneable {
 			return false;
 		}
 		for (int i = 0; i < size(); i++) {
-			rtn = rtn & PlanUtil.gsConsistent(this, i, 0.001, 0.1, silent);
+			rtn = rtn & PlanUtil.gsConsistent(this, i, 0.2, 0.1, silent);
 			rtn = rtn & PlanUtil.vsConsistent(this, i, 0.001, 0.005, silent);
-			rtn = rtn & PlanUtil.turnConsistent(this, i, 0.1, 0.2, 1.2, silent);
+			rtn = rtn & PlanUtil.turnConsistent(this, i, 0.1, 0.3, 1.2, silent);
 			if (i > 0) {  
 				if (point(i).isTCP()) { 
-					if (! PlanUtil.velocityContinuous(this, i, 5.00, silent)) rtn = false;
+					if (! PlanUtil.isVelocityContinuous(this, i, 5.00, silent)) rtn = false;
 				}
 			}
 		}		
@@ -2589,7 +2625,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			sb.append("<empty>");
 		} else {
 			for (int j = 0; j < size(); j++) {
-				sb.append("Waypoint "+j+": "+point(j).toStringFull());
+				sb.append("Waypoint "+j+": "+point(j).toString());
 				if (j < size()-1) {
 					if (velField == 0) sb.append("  TRK: "+Units.str("deg",initialVelocity(j).trk(),4));
 					if (velField == 1) sb.append(",  GS: "+Units.str("kn",initialVelocity(j).gs(),4));
@@ -2599,6 +2635,12 @@ public class Plan implements ErrorReporter, Cloneable {
 			}
 		}
 		return sb.toString();
+	}
+
+	
+	/** String representation of the entire plan */
+	public String toStringTrk() {
+		return toString(0);
 	}
 
 	/** String representation of the entire plan */

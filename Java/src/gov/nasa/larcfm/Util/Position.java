@@ -439,7 +439,18 @@ public final class Position implements OutputList {
     }
     return newNP;
   }
-
+  
+  public Position linearDist(double track, double d) {
+	  if (latlon) {
+		  return new Position(GreatCircle.linear_initial(ll,track,d));
+	  } else {
+		  double fakeGs = 100;
+		  Velocity v = Velocity.makeTrkGsVs(track,fakeGs,0.0);
+		  double dt = d/fakeGs;
+		  return new Position(s3.linear(v, dt)); 
+	  }
+  }
+  
   /**
    * Perform a estimation of a linear projection of the current Position with the 
    * given velocity and time.
