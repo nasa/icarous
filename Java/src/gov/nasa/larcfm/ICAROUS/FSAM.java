@@ -657,14 +657,13 @@ public class FSAM{
 			Velocity vi  = Velocity.makeVxyz(0.0,0.0,0.0);
 			daa.addTrafficState("fence"+i+"1",VirtualTraffic.get(0),vi);
 			daa.addTrafficState("fence"+i+"2",VirtualTraffic.get(1),vi);
-		    }
-		    
+		    }		    
 		}	    
 	    }
 	}
 
 	if(daaTick > 100){	    
-	    if(dist > 30){
+	    if(dist > 20){
 		if(TrafficConflict){
 		    TrafficConflict = false;
 		    pausetime_start = UAS.timeCurrent;
@@ -678,8 +677,7 @@ public class FSAM{
 	    double tlos = daa.timeToViolation(ac);
 	    if (tlos >= 0) {
 		TrafficConflict = true;
-		System.out.printf(
-				  "Predicted violation with traffic aircraft %s in %.1f [s]\n",
+		System.out.printf("Predicted violation with traffic aircraft %s in %.1f [s]\n",
 				  daa.getAircraftState(ac).getId(),tlos);
 
 		Conflict cf = new Conflict(PRIORITY_LEVEL.HIGH,CONFLICT_TYPE.TRAFFIC);
