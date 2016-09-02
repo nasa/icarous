@@ -51,6 +51,7 @@ public class AircraftData{
     public double roll;
     public double pitch;
     public double yaw;
+    public double heading;
 
     // Aircraft's current position (GPS)
     public AircraftState acState;
@@ -127,6 +128,14 @@ public class AircraftData{
 	roll  = msg.roll*180/Math.PI;
 	pitch = msg.pitch*180/Math.PI;
 	yaw   = msg.yaw*180/Math.PI;
+
+
+	heading = acState.velocityLast().track("degree");
+
+	if(heading < 0){
+	    heading = 360 + heading;
+	}
+	
     }
 
     public void getPlanTime(){

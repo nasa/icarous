@@ -71,9 +71,9 @@ public class FSAM{
     private boolean NominalPlan;
 
     
-    private double Vn;
-    private double Ve;
-    private double Vu;
+    private double Vn1,Vn2;
+    private double Ve1,Ve2;
+    private double Vu1,Vu2;
     private double RefHeading1;
     private double RefHeading2;
     
@@ -83,7 +83,7 @@ public class FSAM{
     private int daaTick;
     private KinematicMultiBands KMB;
 
-    private double radius, height, alertTime, lateAlertTime, lookahead;
+    private double daaLookahead;
 
     private long pausetime_start;
     
@@ -113,40 +113,10 @@ public class FSAM{
 	// Create an object of type Daidalus for a well-clear volume based on TAUMOD
 	daa = new Daidalus();
 
-	ParameterData p = new ParameterData();
-		
-	p.setInternal("min_gs", Units.from("m/s",0), "kts");
-	p.setInternal("max_gs", Units.from("m/s",4), "kts");
-	p.setInternal("min_vs", Units.from("fpm",0), "fpm");
-	p.setInternal("max_vs", Units.from("fpm",100), "fpm");
-	p.setInternal("min_alt", Units.from("ft",0), "ft");
-	p.setInternal("max_alt", Units.from("ft",500), "ft");
-	
-	// Kinematic bands
-	
-	p.setInternal("horizontal_accel", Units.from("m/s^2",1), "m/s^2");
-	p.setInternal("vertical_accel", Units.from("m/s^2",1), "m/s^2");
-	p.setInternal("turn_rate", Units.from("deg/s",60), "deg/s");
-	p.setInternal("bank_angle", Units.from("deg",60), "deg");
-	p.setInternal("vertical_rate", Units.from("fpm",200), "fpm");
+	daa.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
 
-	
-	
-
-	lookahead = UAS.pData.getValue("DAA_LOOKAHEAD");
-	daa.parameters.setParameters(p);			
-	daa.parameters.setLookaheadTime(lookahead);
-	daa.parameters.setCollisionAvoidanceBands(true);
-	daa.parameters.setHorizontalNMAC(2,"m");
-	daa.parameters.setVerticalNMAC(0.2,"m");
-	daa.parameters.enableRecoveryBands();
-
-	radius          = UAS.pData.getValue("DAA_CYL_R");
-	height          = UAS.pData.getValue("DAA_CYL_H");
-	alertTime       = UAS.pData.getValue("DAA_ALERT_TIME1");
-	lateAlertTime   = UAS.pData.getValue("DAA_ALERT_TIME2");
-	daa.parameters.alertor = AlertQuad(radius,height,alertTime,lateAlertTime);
-
+	daaLookahead = daa.parameters.getLookaheadTime("s");
+	// Kinematic bands			
 	daaTick = 0;
 	KMB = null;
     }
@@ -246,6 +216,7 @@ public class FSAM{
 	    if(TrafficConflict){
 		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for traffic conflict");		
 		UsePlan = false;
+		ResolveTrafficConflict();
 		// Resolution will be computed during the manuever
 	    }
 	    else if(FenceKeepInConflict){
@@ -284,7 +255,7 @@ public class FSAM{
 	    if( executeState != EXECUTE_STATE.COMPLETE ){
 
 		if(TrafficConflict){
-		    ResolveTrafficConflict();
+		    //ResolveTrafficConflict();
 		}
 		else if(StandoffConflict){
 		    ResolveStandoffConflict();
@@ -391,13 +362,14 @@ public class FSAM{
 
 	case SEND_COMMAND:
 
-	    System.out.format("Vn,Ve,Vu = %f,%f,%f\n",Vn,Ve,Vu);
-	    UAS.SetVelocity(Vn,Ve,Vu);
-
+	    	    
 	    if(TrafficConflict){
-		//UAS.SetYaw(RefHeading1);
+		UAS.SetYaw(RefHeading1);
+		UAS.SetVelocity(Vn1,Ve1,Vu1);
+		System.out.format("Traffic: Vn,Ve,Vu = %f,%f,%f\n",Vn1,Ve1,Vu1);
 	    }else{
 		UAS.SetYaw(RefHeading2);
+		UAS.SetVelocity(Vn2,Ve2,Vu2);
 	    }
 	    
 
@@ -579,11 +551,7 @@ public class FSAM{
 
 	double standoff          = UAS.pData.getValue("STANDOFF");
 		
-	double heading = FlightData.yaw;
-
-	if(heading < 0){
-	    heading = 360 + heading;
-	}
+	double heading = FlightData.heading;
 	    
 	double heading_fp_pos;
 
@@ -630,6 +598,7 @@ public class FSAM{
 	Position so = FlightData.acState.positionLast();
 	Velocity vo = FlightData.acState.velocityLast();	
 	
+	
 	daa.reset();
 	daa.setOwnshipState("Ownship",so,vo,0.0);
 
@@ -648,8 +617,9 @@ public class FSAM{
 		}
 	    }
 	    
-	}
-	
+	}	
+
+	/*
 	if(daaTick > 100){	    
 	    if(dist > 15){
 		if(TrafficConflict){
@@ -659,25 +629,165 @@ public class FSAM{
 		    RefHeading1     = Double.NaN;
 		}	    	    
 	    }
-	}
+	    }*/
 	
 	for (int ac=1; ac < daa.numberOfAircraft(); ac++) {
 	    double tlos = daa.timeToViolation(ac);
-	    if (tlos >= 0) {
+	    if (tlos >= 0 && tlos <= daaLookahead ) {
 		TrafficConflict = true;
 		System.out.printf("Predicted violation with traffic aircraft %s in %.1f [s]\n",
 				  daa.getAircraftState(ac).getId(),tlos);
 
 		Conflict cf = new Conflict(PRIORITY_LEVEL.HIGH,CONFLICT_TYPE.TRAFFIC);
 		Conflict.AddConflictToList(conflictList,cf);
-		daaTick = 0;
-		//System.out.println(daa.toString());
 
 		KMB = daa.getKinematicMultiBands();
+		System.out.println(daa.toString());
 		System.out.println(KMB.outputString());
+		daaTick = 0;	    
+	    }
+
+	    if(TrafficConflict){		
+		
+		List<TrafficState> TS = new ArrayList<TrafficState>();
+		TS.add(daa.getAircraftState(1));
+		System.out.println("size: "+TS.size()+","+daa.getOwnshipState().formattedTraffic(TS,0));
 	    }
 	}
-	
+
+	// Predict if traffic violations exist on the return path
+	if(daaTick > 100){
+	    if(TrafficConflict){
+		ResolveStandoffConflict(); // Call resolve standoff conflict here to get next heading to turn back to
+		daa.reset();
+
+		double Vgs  = UAS.GetSpeed();
+		Velocity vo2 = Velocity.makeTrkGsVs(RefHeading2,"degree",Vgs,"m/s",0,"m/s");
+		System.out.println(vo2.toString());
+		daa.setOwnshipState("Ownship",so,vo2,0.0);
+	    	    
+		for(int i=0;i<FlightData.traffic.size();++i){
+		    synchronized(FlightData.traffic){
+			Position si = FlightData.traffic.get(i).pos.copy();
+			Velocity vi = FlightData.traffic.get(i).vel.mkAddTrk(0);		
+			daa.addTrafficState("traffic"+i,si,vi);		
+		    }
+		
+		}
+
+		double CurrentHeading = FlightData.heading;
+		
+		double psi   = RefHeading2 - CurrentHeading;
+		double psi_c = 360 - Math.abs(psi);
+		boolean leftTurn = false, rightTurn = false;
+		if(psi > 0){
+		    if(Math.abs(psi) > Math.abs(psi_c)){
+			leftTurn = true;
+		    }
+		    else{
+			rightTurn = true;
+		    }
+		}else{
+		    if(Math.abs(psi) > Math.abs(psi_c)){
+			rightTurn = true;
+		    }
+		    else{
+			leftTurn = true;
+		    }
+		}
+
+		TrafficConflict = false;
+		for (int ac=1; ac < daa.numberOfAircraft(); ac++) {
+		    double tlos = daa.timeToViolation(ac);
+		    System.out.println("TLOS:"+tlos);
+		    if(tlos>=0 && tlos <= 50){
+			TrafficConflict = true;
+		    }
+		    KinematicMultiBands KMB2 = daa.getKinematicMultiBands();
+		    		    
+		    for(int i=0;i<KMB2.trackLength();i++){
+			Interval iv = KMB2.track(i,"deg"); //i-th band region
+			double lower_trk = iv.low -5; //[deg]
+			double upper_trk = iv.up + 5; //[deg]
+			BandsRegion regionType = KMB2.trackRegion(i);		
+			//System.out.println("low trk:"+lower_trk);
+			//System.out.println("upper trk:"+upper_trk);
+			if (regionType.toString() != "NONE" ){
+			    System.out.println("L:"+lower_trk);
+			    System.out.println("R:"+upper_trk);
+			    System.out.println("CurrentHeading:"+CurrentHeading);
+			    System.out.println("Ref heading:"+RefHeading2);
+			    							    
+			    if(psi > 0){
+				if(rightTurn){
+				    if( (CurrentHeading < lower_trk) && (RefHeading2 > upper_trk ) ){
+					System.out.println("A");
+					TrafficConflict  = true;
+				    }else{
+					System.out.println("B");
+					TrafficConflict = false;
+				    }
+				}
+				else{
+				    if( (CurrentHeading > upper_trk) && (RefHeading2 < lower_trk ) ){
+					System.out.println("C");
+					TrafficConflict = true;
+				    }
+				    else{
+					System.out.println("D");
+					TrafficConflict = false;
+				    }
+				}
+			    }
+			    else{
+				if(rightTurn){
+				    if( (CurrentHeading > upper_trk) && (RefHeading2 < lower_trk ) ){
+					System.out.println("E");
+					TrafficConflict = true;
+				    }
+				    else{
+					System.out.println("F");
+					TrafficConflict = false;
+				    }
+				}
+				else{
+				    if( (CurrentHeading < lower_trk) && (RefHeading2 > upper_trk ) ){
+					System.out.println("G");
+					TrafficConflict  = true;
+				    }else{
+					System.out.println("H");
+					TrafficConflict = false;
+				    }
+				}
+			    }
+
+			    if( (CurrentHeading >= lower_trk) && (CurrentHeading <= upper_trk)){
+				TrafficConflict = true;
+				System.out.println("I1");
+			    }
+
+			    if( (RefHeading2 >= lower_trk) && (RefHeading2 <= upper_trk)){
+				TrafficConflict = true;
+				System.out.println("I2");
+			    }
+			}
+			
+		    }
+
+		    
+		    
+		    		   
+		    if(!TrafficConflict){
+			System.out.println("Safe to turnback");
+		    }
+
+		    
+		    
+		}
+		
+	    
+	    }
+	}
 		
     }
     
@@ -920,23 +1030,28 @@ public class FSAM{
 
 	    double Trk = PrevWP.track(NextWP);
 
-	    Vn = Vf*Math.cos(Trk) - Vs*Math.sin(Trk);
-	    Ve = Vf*Math.sin(Trk) + Vs*Math.cos(Trk);
-	    Vu = 0;
-	    RefHeading2 = Math.toDegrees(Math.atan2(Ve,Vn));
+	    Vn2 = Vf*Math.cos(Trk) - Vs*Math.sin(Trk);
+	    Ve2 = Vf*Math.sin(Trk) + Vs*Math.cos(Trk);
+	    Vu2 = 0;
+	    RefHeading2 = Math.toDegrees(Math.atan2(Ve2,Vn2));
 
 	    if(RefHeading2 < 0){
 		RefHeading2 = 360 + RefHeading2;
 	    }
 	    
-	    //System.out.format("Vs = %f, Vf = %f,V=%f,G=%f,Xdev=%f\n",Vs,Vf,V,XtrkDevGain,crossTrackDeviation);
-	    //System.out.format("Trk = %f,Vn=%f,Ve=%f\n",Trk,Vn,Ve);
-	    //System.out.println("Ref heading:"+RefHeading2);
+	    System.out.format("Vs = %f, Vf = %f,V=%f,G=%f,Xdev=%f\n",Vs,Vf,V,XtrkDevGain,crossTrackDeviation);
+	    System.out.format("Trk = %f,Vn=%f,Ve=%f\n",Trk,Vn2,Ve2);
+	    System.out.println("Ref heading:"+RefHeading2);
+
+	    List<TrafficState> TS = new ArrayList<TrafficState>();
+	    TS.add(daa.getAircraftState(1));
+	    System.out.println("size: "+TS.size()+","+daa.getOwnshipState().formattedTraffic(TS,0));
+	    
 	}
 	else{
-	    Vn = 0;
-	    Ve = 0;
-	    Vu = 0;
+	    Vn2 = 0;
+	    Ve2 = 0;
+	    Vu2 = 0;
 	}
     }
 
@@ -947,8 +1062,8 @@ public class FSAM{
 	double heading_left  = KMB.trackResolution(false);
 	double res_heading   = Double.NaN;
 		
-	//System.out.println("resolution heading L:"+heading_left*180/3.142);
-	//System.out.println("resolution heading R:"+heading_right*180/3.142);
+	System.out.println("resolution heading L:"+heading_left*180/3.142);
+	System.out.println("resolution heading R:"+heading_right*180/3.142);
 
 	heading_left  = heading_left*180/Math.PI;
 	heading_right = heading_right*180/Math.PI;
@@ -975,10 +1090,10 @@ public class FSAM{
 	double Dres = KMB.verticalSpeedResolution(true);
 	//System.out.println("Dres:"+Dres);
 	if(!Double.isNaN(Dres) && !Double.isInfinite(Dres)){
-	    Vu = -Dres;		// APM -ve means climb
+	    //Vu1 = -Dres;		// APM -ve means climb
 	}
 	else{
-	    Vu = 0;
+	    Vu1 = 0;
 	}	
 
 	// Check which resolution to use by checking collision against geofence
@@ -1003,18 +1118,18 @@ public class FSAM{
 	    System.out.println("Collision Right");
 	}
 	else{
-	    System.out.println("Collision Left:"+collisionLeft);
-	    System.out.println("Collision Right:"+collisionRight);
+	    //System.out.println("Collision Left:"+collisionLeft);
+	    //System.out.println("Collision Right:"+collisionRight);
 	    d1 = Math.abs(planTrack - heading_left);
 	    d2 = Math.abs(planTrack - heading_right);
 	
 	
 	    // Pick the resolution angle that is closest to the next waypoint heading
 	    if(d1 <= d2){
-		res_heading = heading_left;
+		res_heading = heading_left-5;
 	    }
 	    else{
-		res_heading = heading_right;
+		res_heading = heading_right+5;
 	    }
 	}
 
@@ -1024,11 +1139,11 @@ public class FSAM{
 	    double lower_trk = iv.low; //[deg]
 	    double upper_trk = iv.up; //[deg]
 	    BandsRegion regionType = KMB.trackRegion(i);		
-	    //System.out.println("low trk:"+lower_trk);
-	    //System.out.println("upper trk:"+upper_trk);
+	    System.out.println("R:low trk:"+lower_trk);
+	    System.out.println("R:upper trk:"+upper_trk);
 	    if (regionType.toString() == "NONE" ){		    
 		if (planTrack >= lower_trk && planTrack <= upper_trk){
-		    res_heading = planTrack;
+		    //res_heading = planTrack;
 		    //System.out.println("res_heading set to:"+res_heading);
 		    break;
 		}
@@ -1043,18 +1158,19 @@ public class FSAM{
 	if(!Double.isNaN(res_heading)){
 	    
 	    //System.out.println("Resolution speed:"+V);
-	    Vn = V*Math.cos(Math.toRadians(res_heading));
-	    Ve = V*Math.sin(Math.toRadians(res_heading));
+	    Vn1 = V*Math.cos(Math.toRadians(res_heading));
+	    Ve1 = V*Math.sin(Math.toRadians(res_heading));
 	    RefHeading1 = res_heading;
-	    //System.out.println("resolution heading:"+res_heading);
-	    //System.out.format("Vn = %f, Ve = %f, Vu = %f\n",Vn,Ve,Vu);
+	    System.out.println("resolution heading:"+res_heading);
+	    //System.out.format("Vn1 = %f, Ve1 = %f, Vu1 = %f\n",Vn1,Ve1,Vu1);
 	}
 	else{
 	    // If resolution heading unavailable, follow last know resolution heading
 	    res_heading = RefHeading1;	    
-	    Vn = V*Math.cos(Math.toRadians(res_heading));
-	    Ve = V*Math.sin(Math.toRadians(res_heading));	    
-	    //System.out.format("Vn = %f, Ve = %f, Vu = %f\n",Vn,Ve,Vu);
+	    Vn1 = V*Math.cos(Math.toRadians(res_heading));
+	    Ve1 = V*Math.sin(Math.toRadians(res_heading));
+	    System.out.println("resolution heading:"+res_heading);
+	    //System.out.format("Vn1 = %f, Ve1 = %f, Vu1 = %f\n",Vn,Ve,Vu);
 	}
     }
     
