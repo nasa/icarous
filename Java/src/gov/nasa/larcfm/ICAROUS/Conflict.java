@@ -133,6 +133,19 @@ public class Conflict{
 	
     }
 
+    public static void RemoveTrafficConflict(List<Conflict> conflictList){
+
+	for(int i=0;i<conflictList.size();i++){
+	    Conflict conf = conflictList.get(i);
+
+	    if(conf.conflictType == CONFLICT_TYPE.TRAFFIC){
+		conflictList.remove(i);
+	    }
+	}
+	
+    }
+
+    
     /*
     public static void RemoveConflict(List<Conflict> conflictList, Conflict conf){
 	if(conflictList.size() > 0){

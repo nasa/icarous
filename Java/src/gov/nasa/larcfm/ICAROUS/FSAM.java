@@ -65,7 +65,7 @@ public class FSAM{
     private boolean StandoffConflict;
     private boolean GotoNextWP;
     private boolean joined;
-    
+    private boolean UsePlan;
     
     private int currentConflicts;
     private boolean NominalPlan;
@@ -104,6 +104,7 @@ public class FSAM{
 	TrafficConflict          = false;
 	StandoffConflict         = false;	
 	NominalPlan              = true;
+	UsePlan                  = true;
 	currentResolutionWP      = 0;
 	currentConflicts         = 0;
 	joined                   = true;
@@ -205,7 +206,6 @@ public class FSAM{
 
 	int status;
 	Plan CurrentFP  = FlightData.CurrentFlightPlan;
-	boolean UsePlan = true;
 	float resolutionSpeed   = (float) UAS.pData.getValue("RES_SPEED");
 	
 	switch(resolveState){
@@ -213,21 +213,28 @@ public class FSAM{
 	case COMPUTE:
 	    // Call the relevant resolution functions to resolve conflicts
 	    // [TODO:] Add conflict resolution table to add prioritization/scheduling to handle multiple conflicts
-	    if(TrafficConflict){
+	    if(TrafficConflict && (FenceKeepInConflict || FenceKeepOutConflict)){
+		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for traffic & geofence conflict");
+		UsePlan = false;
+		ResolveTrafficFenceConflict();
+	    }
+	    else if(TrafficConflict){
 		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for traffic conflict");		
 		UsePlan = false;
-		ResolveTrafficConflict();
+		// ResolveTrafficConflict();
 		// Resolution will be computed during the manuever
 	    }
-	    else if(FenceKeepInConflict){
+	    else if(FenceKeepInConflict && UsePlan){
 		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for keep in conflict");
 		UAS.SetSpeed(resolutionSpeed);
-		ResolveKeepInConflict();		
+		ResolveKeepInConflict();
+		UsePlan = true;
 	    }
-	    else if(FenceKeepOutConflict){
+	    else if(FenceKeepOutConflict && UsePlan){
 	       UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for keep out conflict");
 	       UAS.SetSpeed(resolutionSpeed);
-	       ResolveKeepOutConflict();		
+	       ResolveKeepOutConflict();
+	       UsePlan = true;
 	    }
 	    else if(StandoffConflict){
 		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for stand off conflict");	    
@@ -267,7 +274,7 @@ public class FSAM{
 		UAS.apMode = Aircraft.AP_MODE.AUTO;
 		UAS.SetMode(3);
 		UAS.error.addWarning("[" + UAS.timeLog + "] MODE: AUTO");
-		resolveState = RESOLVE_STATE.NOOP;
+		resolveState = RESOLVE_STATE.NOOP;		
 	    }
 	    
 	    break;
@@ -328,6 +335,7 @@ public class FSAM{
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MODE: AUTO");
 	    resolveState = RESOLVE_STATE.NOOP;
 	    NominalPlan  = true;
+	    UsePlan      = true;
 	    
 	    break;
 
@@ -364,7 +372,8 @@ public class FSAM{
 
 	    	    
 	    if(TrafficConflict){
-		UAS.SetYaw(RefHeading1);
+		
+		UAS.SetYaw(RefHeading1);		
 		UAS.SetVelocity(Vn1,Ve1,Vu1);
 		System.out.format("Traffic: Vn,Ve,Vu = %f,%f,%f\n",Vn1,Ve1,Vu1);
 	    }else{
@@ -497,53 +506,63 @@ public class FSAM{
 
     // Check for geofence violations
     public void CheckGeoFences(){
-
 	 FenceKeepInConflict  = false;
 	 FenceKeepOutConflict = false;
-
 	 Plan CurrentPlan;
 	 double planTime;
-	 
-	 if(NominalPlan){
-	     CurrentPlan =  UAS.FlightData.CurrentFlightPlan;
-	     planTime    =  UAS.FlightData.planTime;
+	 if(resolveState != RESOLVE_STATE.EXECUTE_MANEUVER){
+	     if(NominalPlan){
+		 CurrentPlan =  UAS.FlightData.CurrentFlightPlan;
+		 planTime    =  UAS.FlightData.planTime;
+	     }
+	     else{
+		 CurrentPlan = ResolutionPlan;
+		 planTime    = GetResolutionTime();
+	     }
+	     for(int i=0;i< FlightData.fenceList.size();i++){
+		 GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
+		 GF.CheckViolation(FlightData.acState,planTime,CurrentPlan);
+		 Conflict cf;	   
+		 if(GF.conflict){
+		     if(GF.Type == 0){
+			 cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_IN,GF,FlightData.acState.positionLast());
+			 FenceKeepInConflict = true;
+		     }
+		     else{
+			 cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_OUT,GF,FlightData.acState.positionLast());
+			 FenceKeepOutConflict = true;
+		     }
+		     Conflict.AddConflictToList(conflictList,cf);
+		 }
+		 else{
+		     
+		 }
+	     }
 	 }
 	 else{
-	     CurrentPlan = ResolutionPlan;
-	     planTime    = GetResolutionTime();
+	     // While executing maneuvers, project current position based on track and ground speed and
+	     // check if projection collides with geofences
+	     Velocity V = FlightData.acState.velocityLast();
+	     Position CurrentPos = FlightData.acState.positionLast();
+	     boolean collision = false;
+	     Conflict cf;
+	     Vect2 vecV = Velocity.trkgs2v(V.trk(),V.gs());
+	     for(int j=0;j<FlightData.fenceList.size();++j){
+		GeoFence GF    = FlightData.fenceList.get(j);
+ 		collision      = GF.CollisionDetection(CurrentPos,vecV,0,5);		
+		if(collision){
+		    if(GF.Type == 0){
+			 cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_IN,GF,FlightData.acState.positionLast());
+			 FenceKeepInConflict = true;
+		     }
+		     else{
+			 cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_OUT,GF,FlightData.acState.positionLast());
+			 FenceKeepOutConflict = true;
+		     }
+		     Conflict.AddConflictToList(conflictList,cf);
+		}
+	     }	     
 	 }
-	 
-	 for(int i=0;i< FlightData.fenceList.size();i++){
-	     
-	    GeoFence GF = (GeoFence) FlightData.fenceList.get(i);
-
-	    GF.CheckViolation(FlightData.acState,planTime,CurrentPlan);
-
-	    Conflict cf;	   
-	    
-	    
-	    if(GF.conflict){
-		
-		if(GF.Type == 0){
-		    cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_IN,GF,FlightData.acState.positionLast());
-		    FenceKeepInConflict = true;
-		}
-		else{
-		    cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_OUT,GF,FlightData.acState.positionLast());
-		    FenceKeepOutConflict = true;
-		}
-		Conflict.AddConflictToList(conflictList,cf);
-		
-	    }
-	    else{
-		//if(GF.Type == 0){
-		//    cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.KEEP_IN,GF,FlightData.acState.positionLast());
-		//    Conflict.RemoveConflict(conflictList,cf);
-		//}		
-		
-	    }
-	}
-	
     }
 
     // Check standoff distance violation
@@ -618,19 +637,7 @@ public class FSAM{
 	    }
 	    
 	}	
-
-	/*
-	if(daaTick > 100){	    
-	    if(dist > 15){
-		if(TrafficConflict){
-		    TrafficConflict = false;
-		    pausetime_start = UAS.timeCurrent;
-		    executeState    = EXECUTE_STATE.PAUSE;
-		    RefHeading1     = Double.NaN;
-		}	    	    
-	    }
-	    }*/
-	
+		
 	for (int ac=1; ac < daa.numberOfAircraft(); ac++) {
 	    double tlos = daa.timeToViolation(ac);
 	    if (tlos >= 0 && tlos <= daaLookahead ) {
@@ -644,14 +651,16 @@ public class FSAM{
 		KMB = daa.getKinematicMultiBands();
 		System.out.println(daa.toString());
 		System.out.println(KMB.outputString());
-		daaTick = 0;	    
+		daaTick = 0;
+
+		ResolveTrafficConflict();
 	    }
 
 	    if(TrafficConflict){		
 		
-		List<TrafficState> TS = new ArrayList<TrafficState>();
-		TS.add(daa.getAircraftState(1));
-		System.out.println("size: "+TS.size()+","+daa.getOwnshipState().formattedTraffic(TS,0));
+		//List<TrafficState> TS = new ArrayList<TrafficState>();
+		//TS.add(daa.getAircraftState(1));
+		//System.out.println("size: "+TS.size()+","+daa.getOwnshipState().formattedTraffic(TS,0));
 	    }
 	}
 
@@ -779,6 +788,8 @@ public class FSAM{
 		    		   
 		    if(!TrafficConflict){
 			System.out.println("Safe to turnback");
+			// Remove traffic conflict from list
+			Conflict.RemoveTrafficConflict(conflictList);
 		    }
 
 		    
@@ -1104,7 +1115,7 @@ public class FSAM{
 	    Vect2 Vproj2 = Velocity.trkgs2v(Math.toRadians(heading_right),V);	    
 	    for(int j=0;j<FlightData.fenceList.size();++j){
 		GeoFence GF    = FlightData.fenceList.get(j);
-		collisionLeft  =  collisionLeft  || GF.CollisionDetection(CurrentPos,Vproj1,0,40);
+ 		collisionLeft  =  collisionLeft  || GF.CollisionDetection(CurrentPos,Vproj1,0,40);
 		collisionRight =  collisionRight || GF.CollisionDetection(CurrentPos,Vproj2,0,40);
 	    }
 	}
@@ -1175,8 +1186,30 @@ public class FSAM{
     }
     
 
-    
+    public void ResolveTrafficFenceConflict(){
 
-    
-    
+	Position currentPos = FlightData.acState.positionLast();
+	double alt = currentPos.alt();
+	double alt_upper = KMB.altitudeResolution(true,1);
+	double alt_lower = KMB.altitudeResolution(false,1);
+	System.out.println("Lower:"+alt_lower+" Upper:"+alt_upper);
+	Vn1 = 0;
+	Ve1 = 0;
+	Vu1 = 0;
+	if(!Double.isNaN(alt_upper)){
+	    if(alt <= alt_upper){
+		Vn1 = 0;
+		Ve1 = 0;
+		Vu1 = -3;
+	    }	    
+	}
+	else if(!Double.isNaN(alt_lower)){
+	    if(alt > alt_lower){
+		Vn1 = 0;
+		Ve1 = 0;
+		Vu1 = 1;
+	    }
+	}
+    }
+        
 }
