@@ -567,23 +567,25 @@ public class FSAM{
 
     // Check standoff distance violation
     public void CheckStandoff(){
-
-	double standoff          = UAS.pData.getValue("STANDOFF");
-		
-	double heading = FlightData.heading;
-	    
+	double standoff  = UAS.pData.getValue("STANDOFF");		
+	double heading   = FlightData.heading;	    
 	double heading_fp_pos;
-
-	Position PrevWP = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
-	Position NextWP = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
-
+	Plan CurrentPlan = null;
+	double planTime = 0;
+	if(NominalPlan){
+	    CurrentPlan =  UAS.FlightData.CurrentFlightPlan;
+	    planTime    =  UAS.FlightData.planTime;
+	}
+	else{
+	    CurrentPlan = ResolutionPlan;
+	    planTime    = GetResolutionTime();
+	}		
+	Position PrevWP     = CurrentPlan.point(FlightData.FP_nextWaypoint - 1).position();
+	Position NextWP     = CurrentPlan.point(FlightData.FP_nextWaypoint).position();
 	Position CurrentPos = FlightData.acState.positionLast();
-
-	double psi1 = PrevWP.track(NextWP) * 180/Math.PI;
-	double psi2 = PrevWP.track(CurrentPos) * 180/Math.PI;
-
-	double sgn = 0;
-	
+	double psi1         = PrevWP.track(NextWP) * 180/Math.PI;
+	double psi2         = PrevWP.track(CurrentPos) * 180/Math.PI;
+	double sgn          = 0;	
 	if( (psi1 - psi2) >= 0){
 	    sgn = 1;              // Vehicle left of the path
 	}
@@ -596,13 +598,9 @@ public class FSAM{
 	else if ( (psi1 - psi2) >= -180  ){
 	    sgn = 1;              // Vehicle left of path
 	}
-
 	double bearing = Math.abs(psi1 - psi2);
-
 	double dist = PrevWP.distanceH(CurrentPos);
-
 	crossTrackDeviation = sgn*dist*Math.sin(Math.toRadians(bearing));
-
 	if(Math.abs(crossTrackDeviation) > standoff){
 	    StandoffConflict = true;	    
 	    Conflict cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.FLIGHTPLAN);
@@ -615,8 +613,7 @@ public class FSAM{
     public void CheckTraffic(){
 	daaTick = daaTick+1;
 	Position so = FlightData.acState.positionLast();
-	Velocity vo = FlightData.acState.velocityLast();	
-	
+	Velocity vo = FlightData.acState.velocityLast();
 	
 	daa.reset();
 	daa.setOwnshipState("Ownship",so,vo,0.0);
@@ -656,16 +653,17 @@ public class FSAM{
 		ResolveTrafficConflict();
 	    }
 
-	    if(TrafficConflict){		
-		
-		//List<TrafficState> TS = new ArrayList<TrafficState>();
-		//TS.add(daa.getAircraftState(1));
-		//System.out.println("size: "+TS.size()+","+daa.getOwnshipState().formattedTraffic(TS,0));
+	    /*
+	    if(TrafficConflict){				
+		List<TrafficState> TS = new ArrayList<TrafficState>();
+		TS.add(daa.getAircraftState(1));
+		System.out.println("size: "+TS.size()+","+daa.getOwnshipState().formattedTraffic(TS,0));
 	    }
+	    */
 	}
 
 	// Predict if traffic violations exist on the return path
-	if(daaTick > 100){
+	if(daaTick > 60){
 	    if(TrafficConflict){
 		ResolveStandoffConflict(); // Call resolve standoff conflict here to get next heading to turn back to
 		daa.reset();
@@ -782,24 +780,15 @@ public class FSAM{
 			}
 			
 		    }
-
-		    
-		    
-		    		   
+		    		    		    		   
 		    if(!TrafficConflict){
 			System.out.println("Safe to turnback");
 			// Remove traffic conflict from list
 			Conflict.RemoveTrafficConflict(conflictList);
-		    }
-
-		    
-		    
-		}
-		
-	    
+		    }		    		    
+		}			    
 	    }
-	}
-		
+	}		
     }
     
     // Compute resolution for keep in conflict
@@ -1091,10 +1080,14 @@ public class FSAM{
 	double V  = UAS.GetSpeed();
 
 	// Use DAA ground speed when available
-	double Vres = KMB.groundSpeedResolution(true);
+	double Vres1 = KMB.groundSpeedResolution(true);
+	double Vres2 = KMB.groundSpeedResolution(false);
 	//System.out.println("Vres:"+Vres);
-	if(!Double.isNaN(Vres) && !Double.isInfinite(Vres)){
-	    V = Math.ceil(Vres);		
+	if(!Double.isNaN(Vres1) && !Double.isInfinite(Vres1)){
+	    V = Math.ceil(Vres1);		
+	}
+	else if(!Double.isNaN(Vres2) && !Double.isInfinite(Vres2)){
+	    V = Math.ceil(Vres2);		
 	}
 	
 	// Get vertical speed from DAA resolution - use 0 if unavailable
@@ -1115,8 +1108,8 @@ public class FSAM{
 	    Vect2 Vproj2 = Velocity.trkgs2v(Math.toRadians(heading_right),V);	    
 	    for(int j=0;j<FlightData.fenceList.size();++j){
 		GeoFence GF    = FlightData.fenceList.get(j);
- 		collisionLeft  =  collisionLeft  || GF.CollisionDetection(CurrentPos,Vproj1,0,40);
-		collisionRight =  collisionRight || GF.CollisionDetection(CurrentPos,Vproj2,0,40);
+ 		collisionLeft  =  collisionLeft  || GF.CollisionDetection(CurrentPos,Vproj1,0,60);
+		collisionRight =  collisionRight || GF.CollisionDetection(CurrentPos,Vproj2,0,60);
 	    }
 	}
 
@@ -1158,16 +1151,11 @@ public class FSAM{
 		    //System.out.println("res_heading set to:"+res_heading);
 		    break;
 		}
-	    }
-	    
-	}
-	
-	
-	
+	    }	    
+	}			
 	//System.out.println("Ref heading:"+res_heading);
 	// If resolution heading angles available, compute Vn,Ve based on resolution heading
-	if(!Double.isNaN(res_heading)){
-	    
+	if(!Double.isNaN(res_heading)){	    
 	    //System.out.println("Resolution speed:"+V);
 	    Vn1 = V*Math.cos(Math.toRadians(res_heading));
 	    Ve1 = V*Math.sin(Math.toRadians(res_heading));
