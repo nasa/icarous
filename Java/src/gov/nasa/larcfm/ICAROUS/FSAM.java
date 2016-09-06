@@ -222,7 +222,7 @@ public class FSAM{
 		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for traffic conflict");		
 		UsePlan = false;
 		// ResolveTrafficConflict();
-		// Resolution will be computed during the manuever
+		// Resolution is computed during Traffic checks
 	    }
 	    else if(FenceKeepInConflict && UsePlan){
 		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for keep in conflict");
