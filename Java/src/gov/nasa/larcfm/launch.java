@@ -20,6 +20,7 @@ public class launch{
     public static void main(String args[]){
 
 	boolean verbose   = false;
+	String sitlhost   = null;
 	String px4port    = null;
 	String bcastgroup = null;
 	String comport    = null;
@@ -56,6 +57,7 @@ public class launch{
 	    }
 
 	    else if(args[i].startsWith("--sitl")){
+		sitlhost = args[++i];
 		sitlport = Integer.parseInt(args[++i]);
 	    }
     
@@ -86,7 +88,7 @@ public class launch{
 	Interface APInt = null;	
 	if(sitlport > 0){
 	    APInt        = new Interface(Interface.SOCKET,
-						 null,
+						 sitlhost,
 						 sitlport,
 						 0,
 						 FlightData);
