@@ -1,5 +1,5 @@
 /**
- * Software in the loop test
+ * Main entry point for ICAROUS
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
  * 

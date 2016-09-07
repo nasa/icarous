@@ -182,7 +182,8 @@ public class MAVLinkMessages{
     public ArrayList<msg_command_long> listCommandLong;
     public ArrayList<msg_fence_point> listFencePoint;
     public ArrayList<msg_fence_fetch_point> listFenceFetchPoint;
-        
+    public ArrayList<msg_set_mode> listSetMode;
+    
     public MAVLinkMessages(){
 	
 	msgAttitude            = new msg_attitude();
@@ -205,6 +206,7 @@ public class MAVLinkMessages{
 	listCommandLong        = new ArrayList<msg_command_long>();
 	listFencePoint         = new ArrayList<msg_fence_point>();
 	listFenceFetchPoint    = new ArrayList<msg_fence_fetch_point>();
+	listSetMode            = new ArrayList<msg_set_mode>();
     }
 
         
@@ -250,7 +252,7 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_set_mode.MAVLINK_MSG_ID_SET_MODE:
-	    msgSetMode = (msg_set_mode) message.unpack();
+	    listSetMode.add((msg_set_mode) message.unpack());
 	    break;
 	    
 	case msg_param_request_read.MAVLINK_MSG_ID_PARAM_REQUEST_READ:
@@ -780,9 +782,14 @@ public class MAVLinkMessages{
 	}
     }   
 
-    public synchronized msg_global_position_int GlobalPositionInt(){
+    public synchronized msg_global_position_int GetGlobalPositionInt(){
 	return msgGlobalPositionInt;
     }
+
+    public synchronized msg_gps_raw_int GetGpsRawInt(){
+	return msgGpsRawInt;
+    }
+    
 
     public synchronized msg_command_ack GetCommandAck(int i){
 	if(i == 0){
@@ -896,15 +903,15 @@ public class MAVLinkMessages{
 	}
     }
 
-    public synchronized msg_gps_raw_int GpsRawInt(){
+    public synchronized msg_gps_raw_int GetGpsRawInt(){
 	return msgGpsRawInt;
     }
     
-    public synchronized msg_attitude Attitude(){
+    public synchronized msg_attitude GetAttitude(){
 	return msgAttitude;
     }
 
-    public synchronized msg_mission_current MissionCurrent(){
+    public synchronized msg_mission_current GetMissionCurrent(){
 	return msgMissionCurrent;
     }
 
@@ -925,5 +932,111 @@ public class MAVLinkMessages{
 	    return null;
 	}
     }
+
+    public synchronized msg_set_mode GetSetMode(){
+	if(listSetMode.size() > 0){
+	    return listSetMode.remove(0);
+	}
+	else{
+	    return null;
+	}
+    }
+
+    public synchronized msg_sys_status GetSysStatus(){
+	return msgSysStatus;
+    }
+
+    public synchronized msg_sys_time GetSysTime(){
+	return msgSysTime;
+    }
+
+    public synchronized msg_raw_imu GetRawImu(){
+	return msgRawImu;
+    }
+
+    public synchronized msg_scaled_pressure GetScaledPressure(){
+	return msgScaledPressure;
+    }
+
+    public synchronized msg_local_position_ned GetLocalPositionNed(){
+	return msgLocalPositionNed;
+    }
+
+    public synchronized msg_global_position_ned GetGlobalPositionNed(){
+	return msgGlobalPositionNed;
+    }
+
+    public synchronized msg_rc_channels_raw GetRcChanneslRaw(){
+	return msgRcChannelsRaw;
+    }
+
+    public synchronized msg_servo_output_raw GetServoOutputRaw(){
+	return msgServoOutputRaw;
+    }
+
+    public synchronized msg_mission_current GetMissionCurrent(){
+	return msgMissionCurrent;
+    }
+
+    public synchronized msg_nav_controller_output GetNavControllerOutput(){
+	return msgNavControllerOutput;
+    }
+
+    public synchronized msg_rc_channels GetRcChannels(){
+	return msgRcChannels;
+    }
+
+    public synchronized msg_vfr_hud GetVfrHud(){
+	return msgVfrHud;
+    }
+
+    public synchronized msg_scaled_imu2 GetScaledImu2(){
+	return msgScaledImu2;
+    }
+
+    public synchronized msg_power_status GetPowerStatus(){
+	return msgPowerStatus;
+    }
+
+    public synchronized msg_terrain_report GetTerrainReport(){
+	return msgTerrainReport;
+    }
+
+    public synchronized msg_sensor_offset GetSensorOffsets(){
+	return msgSensorOffsets;
+    }
+
+    public synchronized msg_meminfo GetMeminfo(){
+	return msgMeminfo;
+    }
+
+    public synchronized msg_ahrs GetAhrs(){
+	return msgAhrs;
+    }
+
+    public synchronized msg_ahrs GetAhrs2(){
+	return msgAhrs2;
+    }
+
+    public synchronized msg_ahrs GetAhrs3(){
+	return msgAhrs3;
+    }
+
+    public synchronized msg_simstate GetSimstate(){
+	return msgSimstate;
+    }
+
+    public synchronized msg_hwstatus GetHwStatus(){
+	return msgHwStatus;
+    }
+
+    public synchronized msg_ekf_status_report GetEkfStatusReport(){
+	return msgEkfStatusReport;
+    }
+
+    public synchronized msg_vibration GetVibration(){
+	return msgVibration;
+    }
+    
 }
 
