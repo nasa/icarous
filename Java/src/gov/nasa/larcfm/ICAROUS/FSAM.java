@@ -78,7 +78,7 @@ public class FSAM{
     private double RefHeading2;
     
     public double crossTrackDeviation;
-
+    private double crossTrackOffset;
     private Daidalus daa;
     private int daaTick;
     private KinematicMultiBands KMB;
@@ -86,6 +86,12 @@ public class FSAM{
     private double daaLookahead;
 
     private long pausetime_start;
+    private double resolutionSpeed;
+    private double gridsize;
+    private double buffer;
+    private double lookahead;
+    private double proximityfactor;
+    private double standoff;
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS                      = ac;
@@ -109,7 +115,12 @@ public class FSAM{
 	currentConflicts         = 0;
 	joined                   = true;
 	RefHeading1              = Double.NaN;
-	
+	standoff  = UAS.pData.getValue("STANDOFF");		
+	resolutionSpeed   = (float) UAS.pData.getValue("RES_SPEED");
+	gridsize          = UAS.pData.getValue("GRIDSIZE");
+	buffer            = UAS.pData.getValue("BUFFER");
+	lookahead         = UAS.pData.getValue("LOOKAHEAD");
+	proximityfactor   = UAS.pData.getValue("PROXFACTOR");
 	
 	// Create an object of type Daidalus for a well-clear volume based on TAUMOD
 	daa = new Daidalus();
@@ -120,6 +131,8 @@ public class FSAM{
 	// Kinematic bands			
 	daaTick = 0;
 	KMB = null;
+
+	
     }
 
     static public AlertLevels AlertQuad(double radius,double height,double alerttime1,double alerttime2) {		
@@ -238,8 +251,7 @@ public class FSAM{
 	    }
 	    else if(StandoffConflict){
 		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for stand off conflict");	    
-		ResolveStandoffConflict();
-		UsePlan = false;
+		UsePlan = ResolveStandoffConflict();
 	    }
 
 	    // Two kinds of actions to resolve conflicts : 1. Plan based resolution, 2. Maneuver based resolution
@@ -567,7 +579,7 @@ public class FSAM{
 
     // Check standoff distance violation
     public void CheckStandoff(){
-	double standoff  = UAS.pData.getValue("STANDOFF");		
+	
 	double heading   = FlightData.heading;	    
 	double heading_fp_pos;
 	Plan CurrentPlan = null;
@@ -601,6 +613,7 @@ public class FSAM{
 	double bearing = Math.abs(psi1 - psi2);
 	double dist = PrevWP.distanceH(CurrentPos);
 	crossTrackDeviation = sgn*dist*Math.sin(Math.toRadians(bearing));
+	crossTrackOffset    = dist*Math.cos(Math.toRadians(bearing));
 	if(Math.abs(crossTrackDeviation) > standoff){
 	    StandoffConflict = true;	    
 	    Conflict cf = new Conflict(PRIORITY_LEVEL.MEDIUM,CONFLICT_TYPE.FLIGHTPLAN);
@@ -836,12 +849,7 @@ public class FSAM{
 
 	Plan CurrentFP;
 	double currentTime;
-	float resolutionSpeed   = (float) UAS.pData.getValue("RES_SPEED");
-	double gridsize          = UAS.pData.getValue("GRIDSIZE");
-	double buffer            = UAS.pData.getValue("BUFFER");
-	double lookahead         = UAS.pData.getValue("LOOKAHEAD");
-	double proximityfactor   = UAS.pData.getValue("PROXFACTOR");
-	
+		
 	if(NominalPlan){
 	    CurrentFP = FlightData.CurrentFlightPlan;
 	    currentTime = UAS.FlightData.planTime;
@@ -997,7 +1005,7 @@ public class FSAM{
     }
 
     // Compute resolution for stand off distance violation
-    public void ResolveStandoffConflict(){
+    public boolean ResolveStandoffConflict(){
 
 
 	double XtrkDevGain       = UAS.pData.getValue("XTRK_GAIN") ;
@@ -1007,52 +1015,82 @@ public class FSAM{
 	}
 	
 	if(StandoffConflict){
-	    double Vs = XtrkDevGain*crossTrackDeviation;
-	    double V  = UAS.GetSpeed();
 
-	    double sgn = 0;
+	    if(crossTrackDeviation <= 2*standoff){
+		double Vs = XtrkDevGain*crossTrackDeviation;
+		double V  = UAS.GetSpeed();
 
-	    if(Vs >= 0){
-		sgn = 1;
+		double sgn = 0;
+
+		if(Vs >= 0){
+		    sgn = 1;
+		}
+		else{
+		    sgn = -1;
+		}
+	    
+		if(Math.pow(Math.abs(Vs),2) >= Math.pow(V,2)){
+		    Vs = V*sgn;
+		}
+
+		double Vf       = Math.sqrt( Math.pow(V,2) - Math.pow(Vs,2) );
+
+		Position PrevWP = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
+		Position NextWP = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
+
+		double Trk = PrevWP.track(NextWP);
+
+		Vn2 = Vf*Math.cos(Trk) - Vs*Math.sin(Trk);
+		Ve2 = Vf*Math.sin(Trk) + Vs*Math.cos(Trk);
+		Vu2 = 0;
+		RefHeading2 = Math.toDegrees(Math.atan2(Ve2,Vn2));
+
+		if(RefHeading2 < 0){
+		    RefHeading2 = 360 + RefHeading2;
+		}
+
+		//System.out.println("Ref heading:"+RefHeading2);	    
+		return false; // false indicated that we don't have to use a resolution plan
+		
 	    }
 	    else{
-		sgn = -1;
+		
+		Plan CurrentPlan      = FlightData.CurrentFlightPlan;
+		Position PrevWP       = CurrentPlan.point(FlightData.FP_nextWaypoint - 1).position();
+		Position NextWP       = CurrentPlan.point(FlightData.FP_nextWaypoint).position();		
+		Position CurrentPos   = FlightData.acState.positionLast();
+		double headingNextWP  = PrevWP.track(NextWP);
+		
+		double dn             = crossTrackOffset*Math.cos(headingNextWP);
+		double de             = crossTrackOffset*Math.sin(headingNextWP);
+		    
+		Position cp           = PrevWP.linearEst(dn,de);
+									
+		RefHeading2 = Math.toDegrees(CurrentPos.track(cp));
+
+		if(RefHeading2 < 0){
+		    RefHeading2 = 360 + RefHeading2;
+		}
+
+		System.out.println("Closest point:"+cp.toString());
+		System.out.println("Ref heading in standoff resolution plan:"+RefHeading2);
+		ResolutionPlan.clear();
+		ResolutionPlan.add(new NavPoint(CurrentPos,0));
+		double distance = CurrentPos.distanceH(cp);
+		double ETA      = distance/resolutionSpeed;
+		ResolutionPlan.add(new NavPoint(cp,ETA));
+
+		return true; // true indicates that we should use a resolution plan
 	    }
-	    
-	    if(Math.pow(Math.abs(Vs),2) >= Math.pow(V,2)){
-		Vs = V*sgn;
-	    }
-
-	    double Vf       = Math.sqrt( Math.pow(V,2) - Math.pow(Vs,2) );
-
-	    Position PrevWP = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint - 1).position();
-	    Position NextWP = FlightData.CurrentFlightPlan.point(FlightData.FP_nextWaypoint).position();
-
-	    double Trk = PrevWP.track(NextWP);
-
-	    Vn2 = Vf*Math.cos(Trk) - Vs*Math.sin(Trk);
-	    Ve2 = Vf*Math.sin(Trk) + Vs*Math.cos(Trk);
-	    Vu2 = 0;
-	    RefHeading2 = Math.toDegrees(Math.atan2(Ve2,Vn2));
-
-	    if(RefHeading2 < 0){
-		RefHeading2 = 360 + RefHeading2;
-	    }
-	    
-	    System.out.format("Vs = %f, Vf = %f,V=%f,G=%f,Xdev=%f\n",Vs,Vf,V,XtrkDevGain,crossTrackDeviation);
-	    System.out.format("Trk = %f,Vn=%f,Ve=%f\n",Trk,Vn2,Ve2);
-	    System.out.println("Ref heading:"+RefHeading2);
-
-	    List<TrafficState> TS = new ArrayList<TrafficState>();
-	    TS.add(daa.getAircraftState(1));
-	    System.out.println("size: "+TS.size()+","+daa.getOwnshipState().formattedTraffic(TS,0));
-	    
 	}
 	else{
 	    Vn2 = 0;
 	    Ve2 = 0;
 	    Vu2 = 0;
+
+	    return false;
 	}
+
     }
 
     public void ResolveTrafficConflict(){		
