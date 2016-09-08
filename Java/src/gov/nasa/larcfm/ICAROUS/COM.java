@@ -32,7 +32,7 @@ public class COM implements Runnable,ErrorReporter{
 	public double scaled_pressure;
 	public double attitude;
 	public double local_position_ned;
-	public double global_position_ned;
+	public double global_position_int;
 	public double rc_channels_raw;
 	public double servo_output_raw;
 	public double mission_current;
@@ -62,6 +62,8 @@ public class COM implements Runnable,ErrorReporter{
     public MAVLinkMessages RcvdMessages;
     private ParameterData pData;
     private TIMERS msgScheduler = new TIMERS();
+    private boolean pauseDataStream;
+    private int paramCount;
             
     public COM(String name,Aircraft uas,ParameterData pdata){
 	threadName       = name;
@@ -71,6 +73,8 @@ public class COM implements Runnable,ErrorReporter{
 	error            = new ErrorLog("COM     ");
 	RcvdMessages     = FlightData.Inbox;
 	pData            = pdata;
+	pauseDataStream  = false;
+	paramCount       = 0;
     }
 
     public void run(){
@@ -89,26 +93,23 @@ public class COM implements Runnable,ErrorReporter{
 	    
 	    double time2 = UAS.timeCurrent;
 	    
-	    // Send AP heartbeat if available
-	    msg_heartbeat msgHeartbeat_AP = RcvdMessages.GetHeartbeat_AP();
-	    if(msgHeartbeat_AP != null){
-		comIntf.Write(msgHeartbeat_AP);
-		comIntf.Write(RcvdMessages.GpsRawInt());
-		comIntf.Write(RcvdMessages.Attitude());
-		comIntf.Write(RcvdMessages.GlobalPositionInt());
-		comIntf.Write(RcvdMessages.MissionCurrent());
-	    }
+	    sendMsg2Gs(time2);
 	    	    	    
 	    comIntf.Read();
 	    	    
 	    String timeLog = UAS.timeLog;
 
-	    // Handle mission waypoints / geofence points
+	    // Handle mission waypoints points
 	    msg_mission_count msgMissionCount = RcvdMessages.GetMissionCount();	    
 	    if(msgMissionCount != null){		
 		//System.out.println("Handling new waypoints");		
-		FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);
-		error.addWarning("[" + timeLog + "] MSG: Got waypoints");				
+		int status = FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);
+		error.addWarning("[" + timeLog + "] MSG: Got waypoints");
+		if(status == 1){
+		    UAS.EnableDataStream(0);
+		    FlightData.SendFlightPlanToAP(UAS.apIntf);
+		    UAS.EnableDataStream(1);
+		}
 	    }
 
 	    // Handle mission request list
@@ -132,23 +133,21 @@ public class COM implements Runnable,ErrorReporter{
 		System.out.println("Handling parameter request list");		
 		UAS.EnableDataStream(0);
 		//synchronized(UAS.apIntf){		    
-		    UAS.apIntf.Write(msgParamRequestList);		
-		    msg_param_value msgParamValue = null;
+		    UAS.apIntf.Write(msgParamRequestList);
+		    pauseDataStream = true;
+		    paramCount = 0;
 		    /*
+		    msg_param_value msgParamValue = null;		    
 		    while(msgParamValue  == null){
 			//UAS.apIntf.Read();
 			msgParamValue = RcvdMessages.GetParamValue();
 		    }
-
-		    int param_count1 = msgParamValue.param_count;
-		    
+		    int param_count1 = msgParamValue.param_count;		    
 		    double time_param_read_start  = UAS.timeCurrent;
 		    for(int i=0;i<param_count1;i++){
-			System.out.println("count:"+i);
-			
+			System.out.println("count:"+i);			
 			comIntf.Write(msgParamValue);		    
-			msgParamValue = FlightData.Inbox.GetParamValue();
-		    
+			msgParamValue = FlightData.Inbox.GetParamValue();		    
 			if(i<param_count1-1){
 			    double time_elapsed = 0;			
 			    while(msgParamValue  == null){
@@ -174,10 +173,20 @@ public class COM implements Runnable,ErrorReporter{
 	    if( msgParamValue != null){
 		// Handle parameter value
 
+		
+		
+		
 		//System.out.println("Handle parameter value");
 		if(msgParamValue.sysid == 1){
-		    //System.out.printf("Received parameter from AP");
-		    comIntf.Write(msgParamValue);		
+		    //System.out.printf("Received parameter from AP");		    
+		    comIntf.Write(msgParamValue);
+
+		    paramCount++;
+
+		    if(paramCount == msgParamValue.param_count){
+			pauseDataStream = false;
+		    }
+		    
 		}
 		else{
 		    UAS.apIntf.Write(msgParamValue);
@@ -278,139 +287,141 @@ public class COM implements Runnable,ErrorReporter{
 
     public void sendMsg2Gs(double time){
 
-	if(time - msgScheduler.heartbeat_AP >= 1){
+	if(time - msgScheduler.heartbeat_AP >= 1){	    
 	    comIntf.Write(RcvdMessages.GetHeartbeat_AP());
 	    msgScheduler.heartbeat_AP = time;
 	}
 
-	if(time - msgScheduler.gps_raw_int >= 1){
-	    comIntf.Write(RcvdMessages.GetGpsRawInt());
-	    msgScheduler.gps_raw_int = time;
-	}
+	if(!pauseDataStream){
+	    if(time - msgScheduler.gps_raw_int >= 1/5.0){
+		comIntf.Write(RcvdMessages.GetGpsRawInt());
+		msgScheduler.gps_raw_int = time;
+	    }
 
-	if(time - msgScheduler.sys_status >= 1){
-	    comIntf.Write(RcvdMessages.GetSysStatus());
-	    msgScheduler.gps_raw_int = time;
-	}
+	    if(time - msgScheduler.sys_status >= 1/2.0){
+		comIntf.Write(RcvdMessages.GetSysStatus());
+		msgScheduler.gps_raw_int = time;
+	    }
 
-	if(time - msgScheduler.system_time >= 1){
-	    comIntf.Write(RcvdMessages.GetSysTime());
-	    msgScheduler.system_time = time;
-	}
+	    if(time - msgScheduler.system_time >= 1/2.0){
+		comIntf.Write(RcvdMessages.GetSystemTime());
+		msgScheduler.system_time = time;
+	    }
 
-	if(time - msgScheduler.raw_imu >= 1){
-	    comIntf.Write(RcvdMessages.GetRawImu());
-	    msgScheduler.raw_imu = time;
-	}
+	    if(time - msgScheduler.raw_imu >= 1/5.0){
+		comIntf.Write(RcvdMessages.GetRawImu());
+		msgScheduler.raw_imu = time;
+	    }
 
-	if(time - msgScheduler.scaled_pressure >= 1){
-	    comIntf.Write(RcvdMessages.GetScaledPressure());
-	    msgScheduler.scaled_pressure = time;
-	}
+	    if(time - msgScheduler.scaled_pressure >= 1/2.5){
+		comIntf.Write(RcvdMessages.GetScaledPressure());
+		msgScheduler.scaled_pressure = time;
+	    }
 
-	if(time - msgScheduler.attitude >= 1){
-	    comIntf.Write(RcvdMessages.GetAttitude());
-	    msgScheduler.attitude = time;
-	}
+	    if(time - msgScheduler.attitude >= 1/5.0){
+		comIntf.Write(RcvdMessages.GetAttitude());
+		msgScheduler.attitude = time;
+	    }
 
-	if(time - msgScheduler.local_position_ned >= 1){
-	    comIntf.Write(RcvdMessages.GetLocalPositionNed());
-	    msgScheduler.local_position_ned = time;
-	}
+	    if(time - msgScheduler.local_position_ned >= 1/5.0){
+		comIntf.Write(RcvdMessages.GetLocalPositionNed());
+		msgScheduler.local_position_ned = time;
+	    }
 
-	if(time - msgScheduler.global_position_ned >= 1){
-	    comIntf.Write(RcvdMessages.GetGlobalPositionNed());
-	    msgScheduler.global_position_ned = time;
-	}
+	    if(time - msgScheduler.global_position_int >= 1/5.0){
+		comIntf.Write(RcvdMessages.GetGlobalPositionInt());
+		msgScheduler.global_position_int = time;
+	    }
 	
-	if(time - msgScheduler.rc_channels_raw >= 1){
-	    comIntf.Write(RcvdMessages.GetRCChannelsRaw());
-	    msgScheduler.rc_channels_raw = time;
-	}
+	    if(time - msgScheduler.rc_channels_raw >= 1/2.5){
+		comIntf.Write(RcvdMessages.GetRcChannelsRaw());
+		msgScheduler.rc_channels_raw = time;
+	    }
 
-	if(time - msgScheduler.servo_output_raw >= 1){
-	    comIntf.Write(RcvdMessages.GetServoOutputRaw());
-	    msgScheduler.servo_output_raw = time;
-	}
+	    if(time - msgScheduler.servo_output_raw >= 1/2.5){
+		comIntf.Write(RcvdMessages.GetServoOutputRaw());
+		msgScheduler.servo_output_raw = time;
+	    }
 
-	if(time - msgScheduler.mission_current >= 1){
-	    comIntf.Write(RcvdMessages.GetMissionCurrent());
-	    msgScheduler.mission_current = time;
-	}
+	    if(time - msgScheduler.mission_current >= 1/2.0){
+		comIntf.Write(RcvdMessages.GetMissionCurrent());
+		msgScheduler.mission_current = time;
+	    }
 
-	if(time - msgScheduler.nav_controller_output >= 1){
-	    comIntf.Write(RcvdMessages.GetNavControllerOutput());
-	    msgScheduler.nav_controller_output = time;
-	}
+	    if(time - msgScheduler.nav_controller_output >= 1/2.5){
+		comIntf.Write(RcvdMessages.GetNavControllerOutput());
+		msgScheduler.nav_controller_output = time;
+	    }
 
-	if(time - msgScheduler.rc_channels >= 1){
-	    comIntf.Write(RcvdMessages.GetRcChannels());
-	    msgScheduler.rc_channels = time;
-	}
+	    if(time - msgScheduler.rc_channels >= 1/2.5){
+		comIntf.Write(RcvdMessages.GetRcChannels());
+		msgScheduler.rc_channels = time;
+	    }
 
-	if(time - msgScheduler.vfr_hud >= 1){
-	    comIntf.Write(RcvdMessages.GetVfrHud());
-	    msgScheduler.vfr_hud = time;
-	}
+	    if(time - msgScheduler.vfr_hud >= 1/6.0){
+		comIntf.Write(RcvdMessages.GetVfrHud());
+		msgScheduler.vfr_hud = time;
+	    }
 
-        if(time - msgScheduler.scaled_imu2 >= 1){
-	    comIntf.Write(RcvdMessages.GetScaledImu2());
-	    msgScheduler.scaled_imu2 = time;
-	}
+	    if(time - msgScheduler.scaled_imu2 >= 1/3.0){
+		comIntf.Write(RcvdMessages.GetScaledImu2());
+		msgScheduler.scaled_imu2 = time;
+	    }
 
-	if(time - msgScheduler.power_status >= 1){
-	    comIntf.Write(RcvdMessages.GetPowerStatus());
-	    msgScheduler.power_status = time;
-	}
+	    if(time - msgScheduler.power_status >= 1/2.0){
+		comIntf.Write(RcvdMessages.GetPowerStatus());
+		msgScheduler.power_status = time;
+	    }
 
-	if(time - msgScheduler.terrain_report >= 1){
-	    comIntf.Write(RcvdMessages.GetTerrainReport());
-	    msgScheduler.terrain_report = time;
-	}
+	    if(time - msgScheduler.terrain_report >= 1/2.0){
+		comIntf.Write(RcvdMessages.GetTerrainReport());
+		msgScheduler.terrain_report = time;
+	    }
 
-	if(time - msgScheduler.sensor_offsets >= 1){
-	    comIntf.Write(RcvdMessages.GetSensorOffsets());
-	    msgScheduler.sensor_offsets = time;
-	}
+	    if(time - msgScheduler.sensor_offsets >= 1/2.0){
+		comIntf.Write(RcvdMessages.GetSensorOffsets());
+		msgScheduler.sensor_offsets = time;
+	    }
 
-	if(time - msgScheduler.meminfo >= 1){
-	    comIntf.Write(RcvdMessages.GetMeminfo());
-	    msgScheduler.meminfo = time;
-	}
+	    if(time - msgScheduler.meminfo >= 1/2.5){
+		comIntf.Write(RcvdMessages.GetMeminfo());
+		msgScheduler.meminfo = time;
+	    }
 
-	if(time - msgScheduler.ahrs >= 1){
-	    comIntf.Write(RcvdMessages.GetAhrs());
-	    msgScheduler.ahrs = time;
-	}
+	    if(time - msgScheduler.ahrs >= 1/3.0){
+		comIntf.Write(RcvdMessages.GetAhrs());
+		msgScheduler.ahrs = time;
+	    }
 
-	if(time - msgScheduler.ahrs2 >= 1){
-	    comIntf.Write(RcvdMessages.GetAhrs2());
-	    msgScheduler.ahrs2 = time;
-	}
+	    if(time - msgScheduler.ahrs2 >= 1/9.0){
+		comIntf.Write(RcvdMessages.GetAhrs2());
+		msgScheduler.ahrs2 = time;
+	    }
 
-	if(time - msgScheduler.ahrs3 >= 1){
-	    comIntf.Write(RcvdMessages.GetAhrs3());
-	    msgScheduler.ahrs3 = time;
-	}
+	    if(time - msgScheduler.ahrs3 >= 1/9.0){
+		comIntf.Write(RcvdMessages.GetAhrs3());
+		msgScheduler.ahrs3 = time;
+	    }
 
-	if(time - msgScheduler.simstate >= 1){
-	    comIntf.Write(RcvdMessages.GetSimstate());
-	    msgScheduler.simstate = time;
-	}
+	    if(time - msgScheduler.simstate >= 1/7.0){
+		comIntf.Write(RcvdMessages.GetSimstate());
+		msgScheduler.simstate = time;
+	    }
 
-	if(time - msgScheduler.hwstatus >= 1){
-	    comIntf.Write(RcvdMessages.GetHwstatus());
-	    msgScheduler.hwstatus = time;
-	}
+	    if(time - msgScheduler.hwstatus >= 1/2.5){
+		comIntf.Write(RcvdMessages.GetHwstatus());
+		msgScheduler.hwstatus = time;
+	    }
 
-	if(time - msgScheduler.ekf_status_report >= 1){
-	    comIntf.Write(RcvdMessages.GetEkfStatusReport());
-	    msgScheduler.ekf_status_report = time;
-	}
+	    if(time - msgScheduler.ekf_status_report >= 1/2.5){
+		comIntf.Write(RcvdMessages.GetEkfStatusReport());
+		msgScheduler.ekf_status_report = time;
+	    }
 
-	if(time - msgScheduler.vibration >= 1){
-	    comIntf.Write(RcvdMessages.GetVibration());
-	    msgScheduler.vibration = time;
+	    if(time - msgScheduler.vibration >= 1/2.5){
+		comIntf.Write(RcvdMessages.GetVibration());
+		msgScheduler.vibration = time;
+	    }
 	}
     }
     

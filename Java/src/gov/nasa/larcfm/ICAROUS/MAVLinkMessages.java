@@ -159,6 +159,7 @@ public class MAVLinkMessages{
     public msg_simstate msgSimstate;
     public msg_meminfo msgMeminfo;
     public msg_hwstatus msgHwstatus;
+    public msg_sensor_offsets msgSensorOffsets;
     
     public msg_flightplan_info msgFlightplanInfo;
     public msg_geofence_info msgGeofenceInfo;
@@ -282,7 +283,7 @@ public class MAVLinkMessages{
 	case msg_scaled_imu.MAVLINK_MSG_ID_SCALED_IMU:
 	    msgScaledImu = (msg_scaled_imu) message.unpack();
 	    break;
-	    
+		    
 	case msg_raw_imu.MAVLINK_MSG_ID_RAW_IMU:
 	    msgRawImu = (msg_raw_imu) message.unpack();
 	    break;
@@ -758,7 +759,36 @@ public class MAVLinkMessages{
 	case msg_debug.MAVLINK_MSG_ID_DEBUG:
 	    msgDebug = (msg_debug) message.unpack();
 	    break;
-		    
+
+	case msg_sensor_offsets.MAVLINK_MSG_ID_SENSOR_OFFSETS:
+	    msgSensorOffsets = (msg_sensor_offsets) message.unpack();
+	    break;
+	    
+        case msg_meminfo.MAVLINK_MSG_ID_MEMINFO:
+	    msgMeminfo = (msg_meminfo) message.unpack();
+	    break;
+	    
+	case msg_ahrs.MAVLINK_MSG_ID_AHRS:
+	    msgAhrs = (msg_ahrs) message.unpack();
+	    break;
+
+	case msg_ahrs2.MAVLINK_MSG_ID_AHRS2:
+	    msgAhrs2 = (msg_ahrs2) message.unpack();
+	    break;
+
+	case msg_ahrs3.MAVLINK_MSG_ID_AHRS3:
+	    msgAhrs3 = (msg_ahrs3) message.unpack();
+	    break;
+
+	case msg_hwstatus.MAVLINK_MSG_ID_HWSTATUS:
+	    msgHwstatus = (msg_hwstatus) message.unpack();
+	    break;
+
+	    
+	case msg_ekf_status_report.MAVLINK_MSG_ID_EKF_STATUS_REPORT:
+	    msgEkfStatusReport = (msg_ekf_status_report) message.unpack();
+	    break;	
+	    
 	    
 	}
 	
@@ -784,12 +814,7 @@ public class MAVLinkMessages{
 
     public synchronized msg_global_position_int GetGlobalPositionInt(){
 	return msgGlobalPositionInt;
-    }
-
-    public synchronized msg_gps_raw_int GetGpsRawInt(){
-	return msgGpsRawInt;
-    }
-    
+    }      
 
     public synchronized msg_command_ack GetCommandAck(int i){
 	if(i == 0){
@@ -946,8 +971,8 @@ public class MAVLinkMessages{
 	return msgSysStatus;
     }
 
-    public synchronized msg_sys_time GetSysTime(){
-	return msgSysTime;
+    public synchronized msg_system_time GetSystemTime(){
+	return msgSystemTime;
     }
 
     public synchronized msg_raw_imu GetRawImu(){
@@ -960,23 +985,15 @@ public class MAVLinkMessages{
 
     public synchronized msg_local_position_ned GetLocalPositionNed(){
 	return msgLocalPositionNed;
-    }
+    }   
 
-    public synchronized msg_global_position_ned GetGlobalPositionNed(){
-	return msgGlobalPositionNed;
-    }
-
-    public synchronized msg_rc_channels_raw GetRcChanneslRaw(){
+    public synchronized msg_rc_channels_raw GetRcChannelsRaw(){
 	return msgRcChannelsRaw;
     }
 
     public synchronized msg_servo_output_raw GetServoOutputRaw(){
 	return msgServoOutputRaw;
-    }
-
-    public synchronized msg_mission_current GetMissionCurrent(){
-	return msgMissionCurrent;
-    }
+    }  
 
     public synchronized msg_nav_controller_output GetNavControllerOutput(){
 	return msgNavControllerOutput;
@@ -1002,7 +1019,7 @@ public class MAVLinkMessages{
 	return msgTerrainReport;
     }
 
-    public synchronized msg_sensor_offset GetSensorOffsets(){
+    public synchronized msg_sensor_offsets GetSensorOffsets(){
 	return msgSensorOffsets;
     }
 
@@ -1014,11 +1031,11 @@ public class MAVLinkMessages{
 	return msgAhrs;
     }
 
-    public synchronized msg_ahrs GetAhrs2(){
+    public synchronized msg_ahrs2 GetAhrs2(){
 	return msgAhrs2;
     }
 
-    public synchronized msg_ahrs GetAhrs3(){
+    public synchronized msg_ahrs3 GetAhrs3(){
 	return msgAhrs3;
     }
 
@@ -1026,8 +1043,8 @@ public class MAVLinkMessages{
 	return msgSimstate;
     }
 
-    public synchronized msg_hwstatus GetHwStatus(){
-	return msgHwStatus;
+    public synchronized msg_hwstatus GetHwstatus(){
+	return msgHwstatus;
     }
 
     public synchronized msg_ekf_status_report GetEkfStatusReport(){

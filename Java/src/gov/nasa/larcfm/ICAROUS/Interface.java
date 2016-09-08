@@ -226,15 +226,15 @@ public class Interface{
     }
 
     public void Write(MAVLinkMessage msg2send){
-
 	
+	if(msg2send != null){
 	    if(interfaceType == SOCKET){
 		this.UDPWrite(msg2send);
 	    }
 	    else if (interfaceType == SERIAL){
 		this.SerialWrite(msg2send);
 	    }
-	
+	}
     }
 
     public MAVLinkPacket ParseMessage(byte[] input){

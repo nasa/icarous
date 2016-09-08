@@ -82,9 +82,11 @@ public class AircraftData{
 
     public int startMission; // -1: last command executed, 0 - stop mission, 1 - start mission
 
-    double planTime;
+    public double planTime;
 
-    ParameterData pData;
+    public ParameterData pData;
+
+    public boolean pauseDAQ;
     
     public AircraftData(ParameterData pdata){
 
@@ -98,6 +100,7 @@ public class AircraftData{
 	startMission        = -1;
 	FP_nextWaypoint     = 0;
 	pData               = pdata;
+	pauseDAQ            = false;
     }
 
     public void GetGPSdata(){
@@ -106,7 +109,7 @@ public class AircraftData{
 	double vx,vy,vz;
 	double bootTime;
 	
-	msg_global_position_int GPS = Inbox.GlobalPositionInt();
+	msg_global_position_int GPS = Inbox.GetGlobalPositionInt();
 	bootTime = (double) (GPS.time_boot_ms)/1E6;
 	lat      = (double) (GPS.lat)/1.0E7;
 	lon      = (double) (GPS.lon)/1.0E7;
@@ -123,7 +126,7 @@ public class AircraftData{
 
     public void GetAttitude(){
 
-	msg_attitude msg = Inbox.Attitude();
+	msg_attitude msg = Inbox.GetAttitude();
 
 	roll  = msg.roll*180/Math.PI;
 	pitch = msg.pitch*180/Math.PI;
@@ -153,59 +156,60 @@ public class AircraftData{
     
     // Function to send a flight plan to pixhawk
     public void SendFlightPlanToAP(Interface Intf){
-
-	FP_WRITE_AP state = FP_WRITE_AP.FP_CLR;
+	pauseDAQ = true;
+	synchronized(Intf){
+	    FP_WRITE_AP state = FP_WRITE_AP.FP_CLR;
 	
-	msg_mission_count msgMissionCount        = new msg_mission_count();
-	msg_mission_item msgMissionItem          = new msg_mission_item();
-	msg_mission_clear_all msgMissionClearAll = new msg_mission_clear_all();
+	    msg_mission_count msgMissionCount        = new msg_mission_count();
+	    msg_mission_item msgMissionItem          = new msg_mission_item();
+	    msg_mission_clear_all msgMissionClearAll = new msg_mission_clear_all();
 
-	boolean writeComplete = false;
-	int count = 0;
+	    boolean writeComplete = false;
+	    int count = 0;
 
-	// Make a new Plan using the input mission item
-	CurrentFlightPlan = new Plan();
+	    // Make a new Plan using the input mission item
+	    CurrentFlightPlan = new Plan();
 
-	msg_mission_item msgMissionItem0         = new msg_mission_item();
-	for(int i=0;i<InputFlightPlan.size();i++){
-	    msgMissionItem0 = InputFlightPlan.get(i);
+	    msg_mission_item msgMissionItem0         = new msg_mission_item();
+	    for(int i=0;i<InputFlightPlan.size();i++){
+		msgMissionItem0 = InputFlightPlan.get(i);
 	    
-	    double wptime= 0;
-	    Position nextWP = Position.makeLatLonAlt(msgMissionItem0.x,"degree",msgMissionItem0.y,"degree",msgMissionItem0.z,"m");
-	    if(i > 0 ){
+		double wptime= 0;
+		Position nextWP = Position.makeLatLonAlt(msgMissionItem0.x,"degree",msgMissionItem0.y,"degree",msgMissionItem0.z,"m");
+		if(i > 0 ){
 
-		double vel = msgMissionItem0.param4;
+		    double vel = msgMissionItem0.param4;
 
-		if(vel < 0.5){
-		    vel = 1;
-		}
+		    if(vel < 0.5){
+			vel = 1;
+		    }
 		
-		double distance = CurrentFlightPlan.point(i - 1).position().distanceH(nextWP);
-		wptime          = CurrentFlightPlan.getTime(i-1) + distance/vel;
-		System.out.println("Times:"+wptime);
-	    }		     
+		    double distance = CurrentFlightPlan.point(i - 1).position().distanceH(nextWP);
+		    wptime          = CurrentFlightPlan.getTime(i-1) + distance/vel;
+		    //System.out.println("Times:"+wptime);
+		}		     
 	    
-	    CurrentFlightPlan.add(new NavPoint(nextWP,wptime));
-	}
+		CurrentFlightPlan.add(new NavPoint(nextWP,wptime));
+	    }
 
-	FP_numWaypoints           = CurrentFlightPlan.size();
+	    FP_numWaypoints           = CurrentFlightPlan.size();
 
-	msgMissionCount.target_system    = 0;
-	msgMissionCount.target_component = 0;
-	msgMissionItem.target_system     = 0;
-	msgMissionItem.target_component  = 0;
+	    msgMissionCount.target_system    = 0;
+	    msgMissionCount.target_component = 0;
+	    msgMissionItem.target_system     = 0;
+	    msgMissionItem.target_component  = 0;
 
-	msgMissionClearAll.target_system    = 0;
-	msgMissionClearAll.target_component = 0;
+	    msgMissionClearAll.target_system    = 0;
+	    msgMissionClearAll.target_component = 0;
 
-	while(!writeComplete){
+	    while(!writeComplete){
 
 	    
 		switch(state){
 
 		case FP_CLR:
 		    Intf.Write(msgMissionClearAll);
-		    System.out.println("Cleared mission on AP");
+		    //System.out.println("Cleared mission on AP");
 		    state = FP_WRITE_AP.FP_CLR_ACK;
 		    count = 0;
 		    break;
@@ -221,7 +225,7 @@ public class AircraftData{
 		    		    
 			if(msgMissionAck1.type == 0){
 			    state = FP_WRITE_AP.FP_SEND_COUNT;
-			    System.out.println("CLEAR acknowledgement");
+			    //System.out.println("CLEAR acknowledgement");
 			}
 			else{			  
 			    //System.out.println("No CLEAR acknowledgement");
@@ -237,7 +241,7 @@ public class AircraftData{
 		    msgMissionCount.count = CurrentFlightPlan.size();
 
 		    Intf.Write(msgMissionCount);
-		    System.out.println("Wrote mission count: "+msgMissionCount.count);
+		    //System.out.println("Wrote mission count: "+msgMissionCount.count);
 		    state = FP_WRITE_AP.FP_SEND_WP;
 		    break;
 	    
@@ -250,24 +254,23 @@ public class AircraftData{
 		    
 			int seq = msgMissionRequest.seq;
 			count   = seq;
-		    
+			
 			System.out.println("Received mission request: "+ seq );
-		    
-			msgMissionItem.seq     = seq;
-			msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
-			msgMissionItem.command = MAV_CMD.MAV_CMD_NAV_WAYPOINT;
-			msgMissionItem.current = 0;
-			msgMissionItem.autocontinue = 0;
-			msgMissionItem.param1  = 0.0f;
-			msgMissionItem.param2  = 0.0f;
-			msgMissionItem.param3  = 0.0f;
-			msgMissionItem.param4  = 0.0f;
-			msgMissionItem.x       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().latitude();
-			msgMissionItem.y       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().longitude();
-			msgMissionItem.z       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().alt();
 
-			
-			
+			msgMissionItem = InputFlightPlan.get(seq);
+			//msgMissionItem.seq     = seq;
+			//msgMissionItem.frame   = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
+			//msgMissionItem.command = MAV_CMD.MAV_CMD_NAV_WAYPOINT;
+			//msgMissionItem.current = 0;
+			//msgMissionItem.autocontinue = 0;
+			//msgMissionItem.param1  = 0.0f;
+			//msgMissionItem.param2  = 0.0f;
+			//msgMissionItem.param3  = 0.0f;
+			//msgMissionItem.param4  = 0.0f;
+			//msgMissionItem.x       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().latitude();
+			//msgMissionItem.y       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().longitude();
+			//msgMissionItem.z       = (float)CurrentFlightPlan.point(msgMissionItem.seq).lla().alt();
+						
 			Intf.Write(msgMissionItem);
 			//System.out.println("Wrote mission item:"+count);
 			//System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
@@ -281,7 +284,7 @@ public class AircraftData{
 		    
 			if(msgMissionAck2.type == 0){
 			    if(count == CurrentFlightPlan.size() - 1){
-				System.out.println("Waypoints sent successfully to AP");
+				//System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
 			    }
 			
@@ -295,11 +298,13 @@ public class AircraftData{
 			}
 		    }
 		} // end of switch case
-	}//end of while	
+	    }//end of while
+	} // end of synchronization
+	pauseDAQ = false;
     }//end of function
 
     // Function to get flight plan
-    public void GetWaypoints(Interface Intf,int target_system,int target_component,int COUNT,List<msg_mission_item> mission){
+    public int GetWaypoints(Interface Intf,int target_system,int target_component,int COUNT,List<msg_mission_item> mission){
 
 	mission.clear();
 	boolean readComplete = false;
@@ -358,7 +363,7 @@ public class AircraftData{
 			    msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_INVALID_SEQUENCE;
 			    Intf.Write(msgMissionAck);
 			    //System.out.println("Error receiving waypoints");
-			    return;
+			    return 0;
 			}
 		    }
 
@@ -370,11 +375,11 @@ public class AircraftData{
 		    Intf.Write(msgMissionAck);
 		    readComplete = true;
 		    //System.out.println("All waypoints received");
-		    break;
-		    
-		    
+		    return 1;
+		    		    
 		} // end of switch case
-	}//end of while	
+	}//end of while
+	return 0;
     }//end of function
 
     public void SendWaypoints(Interface Intf,List<msg_mission_item> mission){
