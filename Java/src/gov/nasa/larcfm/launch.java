@@ -76,15 +76,17 @@ public class launch{
 		bcastgroup = args[++i];
 		bcastport  = Integer.parseInt(args[++i]);
 	    }	    
+
+	    else if(args[i].startsWith("--mode")){
+		mode = args[++i];
+	    }
 	    
 	    else if(args[i].startsWith("-")) {
 		System.out.println("Invalid option "+args[i]);
 		System.exit(0);
 	    }
 
-	    else if(args[i].startsWith("--mode")){
-		mode = args[++i];
-	    }
+	    
 	}
 
 		
@@ -116,7 +118,7 @@ public class launch{
 	    
 	}
 
-	if(mode == "passthrough"){
+	if(mode.equals("passthrough")){
 	    System.out.println("ICAROUS pass through mode");
 	    while(true){
 		Interface.PassThrough(APInt,COMInt);
@@ -164,7 +166,7 @@ public class launch{
 	    
 	    com_module.start();	
 
-	    if(mode == "passive"){
+	    if(mode.equals("passive")){
 
 		System.out.println("ICAROUS passive mode");
 		while(true){

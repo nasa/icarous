@@ -121,7 +121,7 @@ public class Interface{
     }
 	
     public synchronized byte[] UDPRead(){
-	byte[] buffer = new byte[1000];
+	byte[] buffer = new byte[6+255+2];
 	byte[] buffer_data = null;	    
 	DatagramPacket input = new DatagramPacket(buffer, buffer.length);
 	try{
@@ -247,13 +247,17 @@ public class Interface{
 
 	AP.SetTimeout(1);
 	GS.SetTimeout(1);
-			
+				
+
 	// Read from AP
 	AP_buffer = AP.ReadBytes();
-	
+	    
 	// Write to GS
 	GS.WriteBytes(AP_buffer);
-	
+
+
+
+
 	
 	// Read from GS	
 	GS_buffer = GS.ReadBytes();
