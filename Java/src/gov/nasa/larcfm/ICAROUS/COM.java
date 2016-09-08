@@ -91,7 +91,7 @@ public class COM implements Runnable,ErrorReporter{
 	
 	while(true){	    
 	    
-	    double time2 = UAS.timeCurrent;
+	    double time2 = (float)System.nanoTime()/1E9;
 	    
 	    sendMsg2Gs(time2);
 	    	    	    

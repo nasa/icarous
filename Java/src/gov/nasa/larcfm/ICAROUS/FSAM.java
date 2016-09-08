@@ -148,8 +148,12 @@ public class FSAM{
     public FSAM_OUTPUT Monitor(){
 
 	Plan FlightPlan       = FlightData.CurrentFlightPlan;
-	AircraftState acState = FlightData.acState;
 
+	if(FlightPlan == null){
+	    return FSAM_OUTPUT.NOOP;
+	}
+	
+	AircraftState acState = FlightData.acState;
 	
 	timeCurrent    = UAS.timeCurrent;	
 	timeElapsed    = timeCurrent - timeEvent1;
@@ -175,13 +179,7 @@ public class FSAM{
 	// Check for conflicts from DAIDALUS against other traffic.
 	if(FlightData.traffic.size() > 0){
 	    CheckTraffic();
-	}
-
-	// Check mission progress.
-	if(timeElapsed > 5E9){
-	    timeEvent1 = timeCurrent;      
-	    //System.out.format("Distance to next waypoint: %2.2f \n",distance);
-	}
+	}	
 		
 	// If conflicts are detected, initialize the state machine for the resolution function	
 	if(conflictList.size() != currentConflicts){

@@ -170,6 +170,8 @@ public class launch{
 
 		System.out.println("ICAROUS passive mode");
 		while(true){
+		    uasQuad.FlightData.GetGPSdata();
+		    uasQuad.FlightData.GetAttitude();
 		    uasQuad.fsam.Monitor();
 		}
 	    }
