@@ -399,6 +399,19 @@ public class Aircraft implements ErrorReporter{
 		mission.Execute(this);
 	    }
 
+	    // Check if next mission item (waypoint) has been reached
+	    if(CheckMissionItemReached()){
+		Plan CurrentFlightPlan = FlightData.CurrentFlightPlan;
+		error.addWarning("[" + timeLog + "] MSG: Reached waypoint");
+		FlightData.FP_nextWaypoint++;
+		
+		if(FlightData.FP_nextWaypoint < FlightData.FP_numWaypoints){
+		    float speed = GetSpeed();					
+		    SetSpeed(speed);
+		    error.addWarning("[" + timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
+		}
+	    }
+	    
 	    if((FlightData.FP_nextWaypoint >= FlightData.FP_numWaypoints)){
 		state = FLIGHT_STATE.LAND;
 	    }
@@ -475,6 +488,19 @@ public class Aircraft implements ErrorReporter{
 
 	return speed;
     }
+
+    public boolean CheckMissionItemReached(){
+
+	boolean reached = false;
+
+	msg_mission_item_reached msgMissionItemReached = FlightData.Inbox.GetMissionItemReached();
+	if(msgMissionItemReached != null){
+	    reached = true;
+	}
+
+
+	return reached;	
+    }        
                 
     public int Terminate(){
 

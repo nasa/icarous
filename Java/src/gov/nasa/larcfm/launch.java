@@ -25,6 +25,7 @@ public class launch{
 	String bcastgroup = null;
 	String comport    = null;
 	String radioport  = null;
+	String mode       = null;
 	int sitlport      = 0;
 	int bcastport     = 0;
 	int comportin     = 0;
@@ -80,6 +81,10 @@ public class launch{
 		System.out.println("Invalid option "+args[i]);
 		System.exit(0);
 	    }
+
+	    else if(args[i].startsWith("--mode")){
+		mode = args[++i];
+	    }
 	}
 
 		
@@ -111,66 +116,81 @@ public class launch{
 	    
 	}
 
-	
-	Demo test = new Demo();
-	
-	Aircraft uasQuad  = new Aircraft(APInt,COMInt,FlightData,test,pData);
-
-	uasQuad.error.setConsoleOutput(verbose);
-	
-	
-	FMS fms_module           = new FMS("Flight management",uasQuad,pData);
-	DAQ daq_module           = new DAQ("Data acquisition",uasQuad,pData);
-	COM com_module           = new COM("Communications",uasQuad,pData);
-
-	com_module.error.setConsoleOutput(verbose);
-	test.error.setConsoleOutput(verbose);
+	if(mode == "passthrough"){
+	    System.out.println("ICAROUS pass through mode");
+	    while(true){
+		Interface.PassThrough(APInt,COMInt);
+	    }
+	}	
+	else{
 		
-	daq_module.start();
-
-	msg_heartbeat msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();	
-	while(msgHeartbeatAP == null){
-	    msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();
-	}
-
-	System.out.println("Received heartbeat from AP");
-
-	uasQuad.EnableDataStream(1);
+	    Demo test = new Demo();
 	
-	// Create broad cast thread if necessary
-	if(bcastport > 0){
+	    Aircraft uasQuad  = new Aircraft(APInt,COMInt,FlightData,test,pData);
 
-	    Interface BCASTInt = new Interface(Interface.SOCKET,
-					       bcastgroup,
-					       0,
-					       bcastport,
-					       FlightData);
+	    uasQuad.error.setConsoleOutput(verbose);
+		
+	    FMS fms_module           = new FMS("Flight management",uasQuad,pData);
+	    DAQ daq_module           = new DAQ("Data acquisition",uasQuad,pData);
+	    COM com_module           = new COM("Communications",uasQuad,pData);
+
+	    com_module.error.setConsoleOutput(verbose);
+	    test.error.setConsoleOutput(verbose);
+		
+	    daq_module.start();
+
+	    msg_heartbeat msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();	
+	    while(msgHeartbeatAP == null){
+		msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();
+	    }
+
+	    System.out.println("Received heartbeat from AP");
+
+	    uasQuad.EnableDataStream(1);
+	
+	    // Create broad cast thread if necessary
+	    if(bcastport > 0){
+
+		Interface BCASTInt = new Interface(Interface.SOCKET,
+						   bcastgroup,
+						   0,
+						   bcastport,
+						   FlightData);
 	   
-	    BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt,pData);	
-	    bcast_module.start();
+		BCAST bcast_module       = new BCAST("Broadcast",uasQuad,BCASTInt,pData);	
+		bcast_module.start();
 		    
-	}		
-		
-	com_module.start();	
-	
-	fms_module.start();
+	    }
+	    
+	    com_module.start();	
 
-	while(fms_module.isFMSrunning()){
-	    // DO nothing
-	}
+	    if(mode == "passive"){
 
-	System.out.println("Creating log file");
-	try{
-	    FileWriter writer = new FileWriter("SITLLog.log");
-	    writer.write(uasQuad.getMessage());
-	    writer.write(com_module.getMessage());
-	    writer.write(test.getMessage());
-	    writer.close();
-	}
-	catch(IOException e){
-	    System.out.println(e);
-	}
-	
-    }
+		System.out.println("ICAROUS passive mode");
+		while(true){
+		    uasQuad.fsam.Monitor();
+		}
+	    }
+	    else{
+		System.out.println("ICAROUS active mode");
+		fms_module.start();
 
-}
+		while(fms_module.isFMSrunning()){
+		    // DO nothing
+		}
+
+		System.out.println("Creating log file");
+		try{
+		    FileWriter writer = new FileWriter("SITLLog.log");
+		    writer.write(uasQuad.getMessage());
+		    writer.write(com_module.getMessage());
+		    writer.write(test.getMessage());
+		    writer.close();
+		}
+		catch(IOException e){
+		    System.out.println(e);
+		}
+	    } // end of mode else (passive)
+	}// end of mode else (passthrough)
+    }// end of main    
+}// end of class

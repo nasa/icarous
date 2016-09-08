@@ -182,20 +182,7 @@ public class FSAM{
 	    timeEvent1 = timeCurrent;      
 	    //System.out.format("Distance to next waypoint: %2.2f \n",distance);
 	}
-
-	// Check if next mission item (waypoint) has been reached
-	if(CheckMissionItemReached()){
-	    Plan CurrentFlightPlan = FlightData.CurrentFlightPlan;
-	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Reached waypoint");
-	    FlightData.FP_nextWaypoint++;
-
-	    if(FlightData.FP_nextWaypoint < FlightData.FP_numWaypoints){
-		float speed = UAS.GetSpeed();					
-		UAS.SetSpeed(speed);
-		UAS.error.addWarning("[" + UAS.timeLog + "] CMD:SPEED CHANGE TO "+speed+" m/s");
-	    }
-	}
-	
+		
 	// If conflicts are detected, initialize the state machine for the resolution function	
 	if(conflictList.size() != currentConflicts){
 	    currentConflicts = conflictList.size();
@@ -501,20 +488,7 @@ public class FSAM{
 	
 
 	return currentTime;
-    }    
-    
-    public boolean CheckMissionItemReached(){
-
-	boolean reached = false;
-
-	msg_mission_item_reached msgMissionItemReached = Inbox.GetMissionItemReached();
-	if(msgMissionItemReached != null){
-	    reached = true;
-	}
-
-
-	return reached;	
-    }        
+    }            
 
     // Check for geofence violations
     public void CheckGeoFences(){

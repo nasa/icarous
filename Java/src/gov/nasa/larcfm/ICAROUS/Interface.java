@@ -120,52 +120,31 @@ public class Interface{
 
     }
 	
-    public void UDPRead(){
-
+    public byte[] UDPRead(){
 	byte[] buffer = new byte[1000];
-	byte[] buffer_data;
-	    
+	byte[] buffer_data = null;	    
 	DatagramPacket input = new DatagramPacket(buffer, buffer.length);
-	MAVLinkPacket RcvdPacket = null;
-	
 	try{
 	    sock.receive(input);
-
 	    // Get port number on host to send data
 	    if(udpSendPort == 0){
 		udpSendPort = input.getPort();		
 	    }
-
 	    if(host == null){
 		host = input.getAddress();
-	    }
-	    
+	    }	    
 	    buffer_data   = input.getData();
-	    
-	    for(int i=0;i<1000;i++){
-		RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer_data[i]);
-		Inbox.decode_message(RcvdPacket);	
-	    }
-	    	    	    
+	    	    	    	    	    
 	}catch(SocketTimeoutException e){
 	    
 	}catch(IOException e){
 	    System.out.println(e);
 	}	
-
+	return buffer_data;
     }
 
-    public void UDPWrite(MAVLinkMessage msg2send){
-
-	MAVLinkPacket raw_packet = msg2send.pack();
-
-	raw_packet.sysid  = msg2send.sysid;
-	raw_packet.compid = msg2send.compid;
-	
-	byte[] buffer            = raw_packet.encodePacket();
-
+    public void UDPWrite(byte[] buffer){	
 	try{
-
 	    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
 	    sock.send(output);
 	}
@@ -175,87 +154,113 @@ public class Interface{
 
     }   
 
-    public void SerialRead(){
-
-	byte[] buffer = null;
-	MAVLinkPacket RcvdPacket = null;
-	
+    public byte[] SerialRead(){
+	byte[] buffer = null;		
 	try{
 	    buffer = serialPort.readBytes(1);
 	}
 	catch(SerialPortException e){
 	    System.out.println(e);
 	}
-
-	for(int i=0;i<(1);i++){
-	    
-	    RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer[i]);	    
-	    Inbox.decode_message(RcvdPacket);	    	    	
-	}
+	return buffer;
     }
 
-    public void SerialWrite(MAVLinkMessage msg2send){
-
-	MAVLinkPacket raw_packet = msg2send.pack();	
-	raw_packet.sysid  = msg2send.sysid;
-	raw_packet.compid = msg2send.compid;
-
-	byte[] buffer            = raw_packet.encodePacket();
-	
+    public void SerialWrite(byte[] buffer){
 	try{
 	    serialPort.writeBytes(buffer);
 	}
 	catch(SerialPortException e){
 	    System.err.println(e);
-	}
-
-	
+	}	
     }
 	
     public synchronized void Read(){
+
+	byte[] buffer = null;
 	if(interfaceType == SOCKET){
-	    UDPRead();
+	    buffer = UDPRead();
 	}
 	else if(interfaceType == SERIAL){
-	    SerialRead();
+	    buffer = SerialRead();
 	}
 	else{
-	    System.out.println("Unknown interface");
-	    
+	    System.out.println("Unknown interface");	    
 	}
-    }
 
-    public void Write(MAVLinkMessage msg2send){
-	
-	if(msg2send != null){
-	    if(interfaceType == SOCKET){
-		this.UDPWrite(msg2send);
-	    }
-	    else if (interfaceType == SERIAL){
-		this.SerialWrite(msg2send);
-	    }
-	}
-    }
-
-    public MAVLinkPacket ParseMessage(byte[] input){
-	
 	MAVLinkPacket RcvdPacket = null;
-	
-	for(int i=0;i<(6+255+2);i++){
-	    
-	    RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & input[i]);
-
-
-	    if(RcvdPacket != null){
-		return RcvdPacket;
+	if(buffer != null){
+	    for(int i=0;i<buffer.length;++i){
+		RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer[i]);
+		Inbox.decode_message(RcvdPacket);	
 	    }
-	
-	}
-	
-	return null;
-	    
-	
+	}	
     }
     
+    public void Write(MAVLinkMessage msg2send){
+
+	if(msg2send != null){
+	    MAVLinkPacket raw_packet = msg2send.pack();
+	    raw_packet.sysid  = msg2send.sysid;
+	    raw_packet.compid = msg2send.compid;	    
+	    byte[] buffer            = raw_packet.encodePacket();	    	    
+	    if(interfaceType == SOCKET){
+		this.UDPWrite(buffer);
+	    }
+	    else if (interfaceType == SERIAL){
+		this.SerialWrite(buffer);
+	    }
+	}
+	
+    }
+
+    public byte[] ReadBytes(){
+	byte[] buffer = null;
+	if(interfaceType == SOCKET){
+	    buffer = UDPRead();
+	}
+	else if(interfaceType == SERIAL){
+	    buffer = SerialRead();
+	}
+	else{
+	    System.out.println("Unknown interface");	    
+	}
+
+	return buffer;
+    }
+
+    public void WriteBytes(byte[] buffer){
+
+	if(buffer != null){
+	    if(interfaceType == SOCKET){
+		this.UDPWrite(buffer);
+	    }
+	    else if (interfaceType == SERIAL){
+		this.SerialWrite(buffer);
+	    }
+	}
+	
+    }
+
+    public static void PassThrough(Interface AP, Interface GS){
+	byte[] AP_buffer = null;
+	byte[] GS_buffer = null;
+
+	AP.SetTimeout(1);
+	GS.SetTimeout(1);
+			
+	// Read from AP
+	AP_buffer = AP.ReadBytes();
+	
+	// Write to GS
+	GS.WriteBytes(AP_buffer);
+	
+	
+	// Read from GS	
+	GS_buffer = GS.ReadBytes();
+	    	
+	// Write to AP
+	AP.WriteBytes(GS_buffer);
+	
+    }
         
 }
