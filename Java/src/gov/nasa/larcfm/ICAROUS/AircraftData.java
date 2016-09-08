@@ -86,7 +86,7 @@ public class AircraftData{
 
     public ParameterData pData;
 
-    public boolean pauseDAQ;
+    private boolean pauseDAQ;
     
     public AircraftData(ParameterData pdata){
 
@@ -101,6 +101,14 @@ public class AircraftData{
 	FP_nextWaypoint     = 0;
 	pData               = pdata;
 	pauseDAQ            = false;
+    }
+
+    public synchronized void SetPauseDAQ(boolean val){
+	pauseDAQ =  val;
+    }
+
+    public synchronized boolean GetPauseDAQ(){
+	return pauseDAQ;
     }
 
     public void GetGPSdata(){
@@ -156,7 +164,7 @@ public class AircraftData{
     
     // Function to send a flight plan to pixhawk
     public void SendFlightPlanToAP(Interface Intf){
-	pauseDAQ = true;
+	SetPauseDAQ(true);
 	synchronized(Intf){
 	    FP_WRITE_AP state = FP_WRITE_AP.FP_CLR;
 	
@@ -255,7 +263,7 @@ public class AircraftData{
 			int seq = msgMissionRequest.seq;
 			count   = seq;
 			
-			System.out.println("Received mission request: "+ seq );
+			//System.out.println("Received mission request: "+ seq );
 
 			msgMissionItem = InputFlightPlan.get(seq);
 			//msgMissionItem.seq     = seq;
@@ -300,7 +308,7 @@ public class AircraftData{
 		} // end of switch case
 	    }//end of while
 	} // end of synchronization
-	pauseDAQ = false;
+	SetPauseDAQ(false);
     }//end of function
 
     // Function to get flight plan
@@ -325,9 +333,17 @@ public class AircraftData{
 	msgMissionAck.target_component = (short)target_component;
 
 	FP_READ state = FP_READ.FP_ITEM_REQUEST;
+
+	double time_start = (float)System.nanoTime()/1E9;
 	
 	while(!readComplete){
 
+	    double time_now = (float)System.nanoTime()/1E9;
+
+	    if(time_now - time_start > 1){
+		return 0;
+	    }
+	    
 		switch(state){
 
 		case FP_ITEM_REQUEST:
@@ -358,6 +374,7 @@ public class AircraftData{
 				state = FP_READ.FP_READ_COMPLETE;
 			    }
 			    //System.out.println("Added waypoint");
+			    time_start = (float)System.nanoTime()/1E9;
 			}
 			else{
 			    msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_INVALID_SEQUENCE;

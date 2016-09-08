@@ -217,7 +217,7 @@ public class MAVLinkMessages{
 	    return;
 	}
 	
-	
+	//System.out.println(message.msgid);
 	switch(message.msgid){
 	
 	case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
@@ -333,7 +333,7 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_mission_item.MAVLINK_MSG_ID_MISSION_ITEM:
-	    listMissionItem.add((msg_mission_item) message.unpack());
+	    listMissionItem.add((msg_mission_item) message.unpack());	    
 	    break;
 
 	case msg_fence_point.MAVLINK_MSG_ID_FENCE_POINT:
@@ -453,7 +453,7 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_command_ack.MAVLINK_MSG_ID_COMMAND_ACK:
-	    listCommandAck.add((msg_command_ack) message.unpack());	 
+	    listCommandAck.add((msg_command_ack) message.unpack());
 	    break;
 	    
 	case msg_manual_setpoint.MAVLINK_MSG_ID_MANUAL_SETPOINT:

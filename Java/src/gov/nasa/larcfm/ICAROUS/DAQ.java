@@ -35,7 +35,7 @@ public class DAQ implements Runnable{
     public void run(){
 	while(true){
 
-	    if(!FlightData.pauseDAQ){
+	    if(!FlightData.GetPauseDAQ()){
 		icarousAP.SetTimeout(1);
 		icarousAP.Read();
 		icarousAP.SetTimeout(0);

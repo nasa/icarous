@@ -102,10 +102,10 @@ public class COM implements Runnable,ErrorReporter{
 	    // Handle mission waypoints points
 	    msg_mission_count msgMissionCount = RcvdMessages.GetMissionCount();	    
 	    if(msgMissionCount != null){		
-		//System.out.println("Handling new waypoints");		
-		int status = FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);
-		error.addWarning("[" + timeLog + "] MSG: Got waypoints");
+		System.out.println("Handling new waypoints");		
+		int status = FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);		
 		if(status == 1){
+		    error.addWarning("[" + timeLog + "] MSG: Got waypoints");
 		    UAS.EnableDataStream(0);
 		    FlightData.SendFlightPlanToAP(UAS.apIntf);
 		    UAS.EnableDataStream(1);
@@ -422,6 +422,9 @@ public class COM implements Runnable,ErrorReporter{
 		comIntf.Write(RcvdMessages.GetVibration());
 		msgScheduler.vibration = time;
 	    }
+
+	    msg_command_ack msgCommandAck = UAS.GetCmdError();
+	    comIntf.Write(msgCommandAck);
 	}
     }
     

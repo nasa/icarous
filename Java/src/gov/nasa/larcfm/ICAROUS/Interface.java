@@ -120,7 +120,7 @@ public class Interface{
 
     }
 	
-    public byte[] UDPRead(){
+    public synchronized byte[] UDPRead(){
 	byte[] buffer = new byte[1000];
 	byte[] buffer_data = null;	    
 	DatagramPacket input = new DatagramPacket(buffer, buffer.length);
@@ -143,7 +143,7 @@ public class Interface{
 	return buffer_data;
     }
 
-    public void UDPWrite(byte[] buffer){	
+    public synchronized void UDPWrite(byte[] buffer){	
 	try{
 	    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
 	    sock.send(output);
@@ -154,7 +154,7 @@ public class Interface{
 
     }   
 
-    public byte[] SerialRead(){
+    public synchronized byte[] SerialRead(){
 	byte[] buffer = null;		
 	try{
 	    buffer = serialPort.readBytes(1);
@@ -165,7 +165,7 @@ public class Interface{
 	return buffer;
     }
 
-    public void SerialWrite(byte[] buffer){
+    public synchronized void SerialWrite(byte[] buffer){
 	try{
 	    serialPort.writeBytes(buffer);
 	}
@@ -196,7 +196,7 @@ public class Interface{
 	}	
     }
     
-    public void Write(MAVLinkMessage msg2send){
+    public synchronized void Write(MAVLinkMessage msg2send){
 
 	if(msg2send != null){
 	    MAVLinkPacket raw_packet = msg2send.pack();

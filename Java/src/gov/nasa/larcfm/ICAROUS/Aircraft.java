@@ -17,6 +17,7 @@ import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 import gov.nasa.larcfm.Util.ParameterData;
+import java.util.*;
 
 public class Aircraft implements ErrorReporter{
 
@@ -48,6 +49,8 @@ public class Aircraft implements ErrorReporter{
 
     private boolean landStart;
     public ParameterData pData;
+
+    private ArrayList<msg_command_ack> CmdError;
     
     public Aircraft(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc,ParameterData pdata){
 
@@ -64,6 +67,7 @@ public class Aircraft implements ErrorReporter{
 	timeLog          = String.format("%.3f",0.0f);
 	landStart        = false;
 	MissionState     = 0;
+	CmdError         = new ArrayList<msg_command_ack>();
 	
     }
 
@@ -209,10 +213,9 @@ public class Aircraft implements ErrorReporter{
 	short status;
 
 	msg_command_ack msgCommandAck = null;
-
-	//System.out.println("Checking for ack");
-	
+		
 	while(msgCommandAck == null){
+	    //System.out.println("Checking for ack");
 	    msgCommandAck = FlightData.Inbox.GetCommandAck(1);
 	    if(msgCommandAck != null){
 		//System.out.format("Got ack for %d = %d\n",command,msgCommandAck.result);
@@ -222,7 +225,7 @@ public class Aircraft implements ErrorReporter{
 	    }
 	}
 
-	
+	CmdError.add(msgCommandAck);
 
 	status = msgCommandAck.result;
 	
@@ -233,11 +236,11 @@ public class Aircraft implements ErrorReporter{
 	    return 1;
 	    
 	case MAV_CMD_ACK.MAV_CMD_ACK_OK:
-	    //error.addError("Command Accepted");
+	    //error.addError("Command Accepted");	    
 	    return 1;
 	    
 	case MAV_CMD_ACK.MAV_CMD_ACK_ERR_FAIL:
-	    error.addError("Command error: fail");
+	    error.addError("Command error: fail");	    
 	    return 0;
 	    
 	case MAV_CMD_ACK.MAV_CMD_ACK_ERR_ACCESS_DENIED:
@@ -276,11 +279,16 @@ public class Aircraft implements ErrorReporter{
 	    error.addError("Unrecognized result");
 	    return -1;
 		
+	}	   	    		
+    }
+
+    public synchronized msg_command_ack GetCmdError(){
+	if(CmdError.size() > 0){
+	    return (msg_command_ack)CmdError.remove(0);
 	}
-	   
-	    
-	
-	
+	else{
+	    return null;
+	}
     }
     
     public void EnableDataStream(int option){
