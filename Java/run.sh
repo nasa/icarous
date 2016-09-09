@@ -19,19 +19,29 @@ RADIO_SOCKET_OUT=$COM_INPUT_PORT
 
 if [ "$1" == 'SITL' ];then
    echo "Launching ICAROUS with SITL"
-   java -cp $EXEC:$JSSCLIB:$DAIDALUS launch \
+   $PRE java -cp $EXEC:$JSSCLIB:$DAIDALUS launch \
 	-v \
 	--sitl $SITL_HOST $SITL_INPUT_PORT \
 	--com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
-	--mode $MODE
+	--mode $MODE ${POST}
    
 elif [ "$1" == 'PX4' ];then
     echo "Launching ICAROUS with Pixhawk"
-    java -cp $EXEC:$JSSCLIB:$DAIDALUS launch \
+    
+    if [ "$2" == "nohup" ];then
+	nohup java -cp $EXEC BB_SAFEGUARD $GPIO_PORT $COM_INPUT_PORT &
+	nohup java -cp $EXEC:$JSSCLIB:$DAIDALUS launch \
+	 -v \
+	 --px4 $PX4_PORT \
+	 --com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
+	 --mode $MODE > pxout.txt &
+    else
+	java -cp $EXEC:$JSSCLIB:$DAIDALUS launch \
 	 -v \
 	 --px4 $PX4_PORT \
 	 --com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
 	 --mode $MODE
+    fi
     
 elif [ "$1" == 'GS' ];then
     echo "Launching Ground station test"
