@@ -4,32 +4,27 @@
  * java mavlink generator tool. It should not be modified by hand.
  */
 
-// MESSAGE COMMAND_ACKNOWLEDGEMENT PACKING
+// MESSAGE SAFEGUARD PACKING
 package com.MAVLink.icarous;
 import com.MAVLink.MAVLinkPacket;
 import com.MAVLink.Messages.MAVLinkMessage;
 import com.MAVLink.Messages.MAVLinkPayload;
         
 /**
-* Acknowledgement
+* Safeguard input
 */
-public class msg_command_acknowledgement extends MAVLinkMessage{
+public class msg_safeguard extends MAVLinkMessage{
 
-    public static final int MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT = 224;
-    public static final int MAVLINK_MSG_LENGTH = 2;
-    private static final long serialVersionUID = MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT;
+    public static final int MAVLINK_MSG_ID_SAFEGUARD = 224;
+    public static final int MAVLINK_MSG_LENGTH = 1;
+    private static final long serialVersionUID = MAVLINK_MSG_ID_SAFEGUARD;
 
 
-      
-    /**
-    * Acknowledgement type (0-waypoints,1-geofence)
-    */
-    public short acktype;
       
     /**
     * 1-success,0-failure
     */
-    public short value;
+    public byte value;
     
 
     /**
@@ -40,34 +35,30 @@ public class msg_command_acknowledgement extends MAVLinkMessage{
         MAVLinkPacket packet = new MAVLinkPacket(MAVLINK_MSG_LENGTH);
         packet.sysid = 255;
         packet.compid = 190;
-        packet.msgid = MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT;
+        packet.msgid = MAVLINK_MSG_ID_SAFEGUARD;
               
-        packet.payload.putUnsignedByte(acktype);
-              
-        packet.payload.putUnsignedByte(value);
+        packet.payload.putByte(value);
         
         return packet;
     }
 
     /**
-    * Decode a command_acknowledgement message into this class fields
+    * Decode a safeguard message into this class fields
     *
     * @param payload The message to decode
     */
     public void unpack(MAVLinkPayload payload) {
         payload.resetIndex();
               
-        this.acktype = payload.getUnsignedByte();
-              
-        this.value = payload.getUnsignedByte();
+        this.value = payload.getByte();
         
     }
 
     /**
     * Constructor for a new message, just initializes the msgid
     */
-    public msg_command_acknowledgement(){
-        msgid = MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT;
+    public msg_safeguard(){
+        msgid = MAVLINK_MSG_ID_SAFEGUARD;
     }
 
     /**
@@ -75,19 +66,19 @@ public class msg_command_acknowledgement extends MAVLinkMessage{
     * from a mavlink packet
     *
     */
-    public msg_command_acknowledgement(MAVLinkPacket mavLinkPacket){
+    public msg_safeguard(MAVLinkPacket mavLinkPacket){
         this.sysid = mavLinkPacket.sysid;
         this.compid = mavLinkPacket.compid;
-        this.msgid = MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT;
+        this.msgid = MAVLINK_MSG_ID_SAFEGUARD;
         unpack(mavLinkPacket.payload);        
     }
 
-        
+      
     /**
     * Returns a string with the MSG name and data
     */
     public String toString(){
-        return "MAVLINK_MSG_ID_COMMAND_ACKNOWLEDGEMENT -"+" acktype:"+acktype+" value:"+value+"";
+        return "MAVLINK_MSG_ID_SAFEGUARD -"+" value:"+value+"";
     }
 }
         

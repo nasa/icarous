@@ -99,6 +99,12 @@ public class COM implements Runnable,ErrorReporter{
 	    	    
 	    String timeLog = UAS.timeLog;
 
+	    // Handle messages from safeguard
+	    msg_safeguard msgSafeguard = RcvdMessages.GetSafeguard();
+	    if(msgSafeguard != null){
+		error.addWarning("[" + timeLog + "] MSG: Got SAFEGUARD flag");
+	    }
+
 	    // Handle mission waypoints points
 	    msg_mission_count msgMissionCount = RcvdMessages.GetMissionCount();	    
 	    if(msgMissionCount != null){		

@@ -48,12 +48,11 @@
 	    <description>Flag to start/stop mission</description>
 	    <field type="uint8_t" name="missionStart"> mission start (true)/stop (false)</field>
 	  </message>
-	  
-	  <message id="224" name="COMMAND_ACKNOWLEDGEMENT">
-	    <description>Acknowledgement</description>
-	    <field type="uint8_t" name="acktype">Acknowledgement type (0-waypoints,1-geofence)</field>
-	    <field type="uint8_t" name="value">1-success,0-failure</field>
-	  </message>
+
+	  <message id="224" name="SAFEGUARD">
+	    <description>Safeguard input</description>
+	    <field type="int8_t" name="value">1-success,0-failure</field>
+	  </message>	  	  
 	  
 	  <message id="225" name="AIRCRAFT_6DOF_STATE">
 	    <description>Aircraft state information</description>

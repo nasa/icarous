@@ -184,6 +184,7 @@ public class MAVLinkMessages{
     public ArrayList<msg_fence_point> listFencePoint;
     public ArrayList<msg_fence_fetch_point> listFenceFetchPoint;
     public ArrayList<msg_set_mode> listSetMode;
+    public ArrayList<msg_safeguard> listSafeguard;
     
     public MAVLinkMessages(){
 	
@@ -208,6 +209,7 @@ public class MAVLinkMessages{
 	listFencePoint         = new ArrayList<msg_fence_point>();
 	listFenceFetchPoint    = new ArrayList<msg_fence_fetch_point>();
 	listSetMode            = new ArrayList<msg_set_mode>();
+	listSafeguard          = new ArrayList<msg_safeguard>();
     }
 
         
@@ -219,7 +221,11 @@ public class MAVLinkMessages{
 	
 	//System.out.println(message.msgid);
 	switch(message.msgid){
-	
+
+        case msg_safeguard.MAVLINK_MSG_ID_SAFEGUARD:
+	    listSafeguard.add((msg_safeguard) message.unpack());
+	    break;
+	    
 	case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
 	    msg_heartbeat msgHeartbeat = (msg_heartbeat) message.unpack();
 
@@ -1053,6 +1059,15 @@ public class MAVLinkMessages{
 
     public synchronized msg_vibration GetVibration(){
 	return msgVibration;
+    }
+
+    public synchronized msg_safeguard GetSafeguard(){
+	if(listSafeguard.size() > 0){
+	    return listSafeguard.remove(0);
+	}
+	else{
+	    return null;
+	}
     }
     
 }

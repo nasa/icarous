@@ -9,9 +9,9 @@ package com.MAVLink;
 import java.io.Serializable;
 import com.MAVLink.Messages.MAVLinkPayload;
 import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.ardupilotmega.CRC;
+import com.MAVLink.icarous.CRC;
 import com.MAVLink.common.*;
-import com.MAVLink.ardupilotmega.*;
+import com.MAVLink.icarous.*;
 
 /**
 * Common interface for all MAVLink Messages
@@ -152,152 +152,29 @@ public class MAVLinkPacket implements Serializable {
     public MAVLinkMessage unpack() {
         switch (msgid) {
                          
-            case msg_sensor_offsets.MAVLINK_MSG_ID_SENSOR_OFFSETS:
-                return  new msg_sensor_offsets(this);
+            case msg_heartbeat_combox.MAVLINK_MSG_ID_HEARTBEAT_COMBOX:
+                return  new msg_heartbeat_combox(this);
                  
-            case msg_set_mag_offsets.MAVLINK_MSG_ID_SET_MAG_OFFSETS:
-                return  new msg_set_mag_offsets(this);
+            case msg_pointofinterest.MAVLINK_MSG_ID_POINTOFINTEREST:
+                return  new msg_pointofinterest(this);
                  
-            case msg_meminfo.MAVLINK_MSG_ID_MEMINFO:
-                return  new msg_meminfo(this);
+            case msg_flightplan_info.MAVLINK_MSG_ID_FLIGHTPLAN_INFO:
+                return  new msg_flightplan_info(this);
                  
-            case msg_ap_adc.MAVLINK_MSG_ID_AP_ADC:
-                return  new msg_ap_adc(this);
+            case msg_geofence_info.MAVLINK_MSG_ID_GEOFENCE_INFO:
+                return  new msg_geofence_info(this);
                  
-            case msg_digicam_configure.MAVLINK_MSG_ID_DIGICAM_CONFIGURE:
-                return  new msg_digicam_configure(this);
+            case msg_mission_start_stop.MAVLINK_MSG_ID_MISSION_START_STOP:
+                return  new msg_mission_start_stop(this);
                  
-            case msg_digicam_control.MAVLINK_MSG_ID_DIGICAM_CONTROL:
-                return  new msg_digicam_control(this);
+            case msg_safeguard.MAVLINK_MSG_ID_SAFEGUARD:
+                return  new msg_safeguard(this);
                  
-            case msg_mount_configure.MAVLINK_MSG_ID_MOUNT_CONFIGURE:
-                return  new msg_mount_configure(this);
+            case msg_aircraft_6dof_state.MAVLINK_MSG_ID_AIRCRAFT_6DOF_STATE:
+                return  new msg_aircraft_6dof_state(this);
                  
-            case msg_mount_control.MAVLINK_MSG_ID_MOUNT_CONTROL:
-                return  new msg_mount_control(this);
-                 
-            case msg_mount_status.MAVLINK_MSG_ID_MOUNT_STATUS:
-                return  new msg_mount_status(this);
-                 
-            case msg_fence_point.MAVLINK_MSG_ID_FENCE_POINT:
-                return  new msg_fence_point(this);
-                 
-            case msg_fence_fetch_point.MAVLINK_MSG_ID_FENCE_FETCH_POINT:
-                return  new msg_fence_fetch_point(this);
-                 
-            case msg_fence_status.MAVLINK_MSG_ID_FENCE_STATUS:
-                return  new msg_fence_status(this);
-                 
-            case msg_ahrs.MAVLINK_MSG_ID_AHRS:
-                return  new msg_ahrs(this);
-                 
-            case msg_simstate.MAVLINK_MSG_ID_SIMSTATE:
-                return  new msg_simstate(this);
-                 
-            case msg_hwstatus.MAVLINK_MSG_ID_HWSTATUS:
-                return  new msg_hwstatus(this);
-                 
-            case msg_radio.MAVLINK_MSG_ID_RADIO:
-                return  new msg_radio(this);
-                 
-            case msg_limits_status.MAVLINK_MSG_ID_LIMITS_STATUS:
-                return  new msg_limits_status(this);
-                 
-            case msg_wind.MAVLINK_MSG_ID_WIND:
-                return  new msg_wind(this);
-                 
-            case msg_data16.MAVLINK_MSG_ID_DATA16:
-                return  new msg_data16(this);
-                 
-            case msg_data32.MAVLINK_MSG_ID_DATA32:
-                return  new msg_data32(this);
-                 
-            case msg_data64.MAVLINK_MSG_ID_DATA64:
-                return  new msg_data64(this);
-                 
-            case msg_data96.MAVLINK_MSG_ID_DATA96:
-                return  new msg_data96(this);
-                 
-            case msg_rangefinder.MAVLINK_MSG_ID_RANGEFINDER:
-                return  new msg_rangefinder(this);
-                 
-            case msg_airspeed_autocal.MAVLINK_MSG_ID_AIRSPEED_AUTOCAL:
-                return  new msg_airspeed_autocal(this);
-                 
-            case msg_rally_point.MAVLINK_MSG_ID_RALLY_POINT:
-                return  new msg_rally_point(this);
-                 
-            case msg_rally_fetch_point.MAVLINK_MSG_ID_RALLY_FETCH_POINT:
-                return  new msg_rally_fetch_point(this);
-                 
-            case msg_compassmot_status.MAVLINK_MSG_ID_COMPASSMOT_STATUS:
-                return  new msg_compassmot_status(this);
-                 
-            case msg_ahrs2.MAVLINK_MSG_ID_AHRS2:
-                return  new msg_ahrs2(this);
-                 
-            case msg_camera_status.MAVLINK_MSG_ID_CAMERA_STATUS:
-                return  new msg_camera_status(this);
-                 
-            case msg_camera_feedback.MAVLINK_MSG_ID_CAMERA_FEEDBACK:
-                return  new msg_camera_feedback(this);
-                 
-            case msg_battery2.MAVLINK_MSG_ID_BATTERY2:
-                return  new msg_battery2(this);
-                 
-            case msg_ahrs3.MAVLINK_MSG_ID_AHRS3:
-                return  new msg_ahrs3(this);
-                 
-            case msg_autopilot_version_request.MAVLINK_MSG_ID_AUTOPILOT_VERSION_REQUEST:
-                return  new msg_autopilot_version_request(this);
-                 
-            case msg_remote_log_data_block.MAVLINK_MSG_ID_REMOTE_LOG_DATA_BLOCK:
-                return  new msg_remote_log_data_block(this);
-                 
-            case msg_remote_log_block_status.MAVLINK_MSG_ID_REMOTE_LOG_BLOCK_STATUS:
-                return  new msg_remote_log_block_status(this);
-                 
-            case msg_led_control.MAVLINK_MSG_ID_LED_CONTROL:
-                return  new msg_led_control(this);
-                 
-            case msg_mag_cal_progress.MAVLINK_MSG_ID_MAG_CAL_PROGRESS:
-                return  new msg_mag_cal_progress(this);
-                 
-            case msg_mag_cal_report.MAVLINK_MSG_ID_MAG_CAL_REPORT:
-                return  new msg_mag_cal_report(this);
-                 
-            case msg_ekf_status_report.MAVLINK_MSG_ID_EKF_STATUS_REPORT:
-                return  new msg_ekf_status_report(this);
-                 
-            case msg_pid_tuning.MAVLINK_MSG_ID_PID_TUNING:
-                return  new msg_pid_tuning(this);
-                 
-            case msg_gimbal_report.MAVLINK_MSG_ID_GIMBAL_REPORT:
-                return  new msg_gimbal_report(this);
-                 
-            case msg_gimbal_control.MAVLINK_MSG_ID_GIMBAL_CONTROL:
-                return  new msg_gimbal_control(this);
-                 
-            case msg_gimbal_torque_cmd_report.MAVLINK_MSG_ID_GIMBAL_TORQUE_CMD_REPORT:
-                return  new msg_gimbal_torque_cmd_report(this);
-                 
-            case msg_gopro_heartbeat.MAVLINK_MSG_ID_GOPRO_HEARTBEAT:
-                return  new msg_gopro_heartbeat(this);
-                 
-            case msg_gopro_get_request.MAVLINK_MSG_ID_GOPRO_GET_REQUEST:
-                return  new msg_gopro_get_request(this);
-                 
-            case msg_gopro_get_response.MAVLINK_MSG_ID_GOPRO_GET_RESPONSE:
-                return  new msg_gopro_get_response(this);
-                 
-            case msg_gopro_set_request.MAVLINK_MSG_ID_GOPRO_SET_REQUEST:
-                return  new msg_gopro_set_request(this);
-                 
-            case msg_gopro_set_response.MAVLINK_MSG_ID_GOPRO_SET_RESPONSE:
-                return  new msg_gopro_set_response(this);
-                 
-            case msg_rpm.MAVLINK_MSG_ID_RPM:
-                return  new msg_rpm(this);
+            case msg_heartbeat_icarous.MAVLINK_MSG_ID_HEARTBEAT_ICAROUS:
+                return  new msg_heartbeat_icarous(this);
             
                              
             case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
