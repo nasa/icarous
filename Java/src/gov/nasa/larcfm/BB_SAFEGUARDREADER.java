@@ -48,26 +48,42 @@ public class BB_SAFEGUARDREADER{
 	catch(IOException e){
 
 	}
-	
-	
-	byte[] input, buffer;
-	try{
-	    // Read input from port
-	    input  = Files.readAllBytes(GPIO_value) ;
-	    // Constuct MAVLink message
-	    msg_safeguard msgSafeguard = new msg_safeguard();
-	    msgSafeguard.value         = input[0];
-	    MAVLinkPacket raw_packet = msgSafeguard.pack();
-	    buffer            = raw_packet.encodePacket();
 
-	    // Send MAVLink message via socket to ICAROUS
-	    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
-	    sock.send(output);
-	}
-	catch(IOException e){
+	double timeStart = (double) System.nanoTime()/1E9;
+	
+	while(true){
+
+	    double timeNow = (double) System.nanoTime()/1E9;
+	    byte[] input, buffer;
+	    try{
+		// Read input from port
+		input  = Files.readAllBytes(GPIO_value) ;
+				
+		// Constuct MAVLink message
+		msg_safeguard msgSafeguard = new msg_safeguard();
+
+		if((int) input[0] == 48 ){
+		    msgSafeguard.value         = 0;
+		}
+		else{
+		    msgSafeguard.value         = 1;
+		}
+				
+		MAVLinkPacket raw_packet = msgSafeguard.pack();
+		buffer            = raw_packet.encodePacket();
+		
+		// Send MAVLink message via socket to ICAROUS
+		if(timeNow - timeStart > 1){
+		    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
+		    sock.send(output);
+		    timeStart = timeNow;
+		}
+		
+	    }
+	    catch(IOException e){
 	    
+	    }
 	}
-
 	
 
 	

@@ -102,7 +102,9 @@ public class COM implements Runnable,ErrorReporter{
 	    // Handle messages from safeguard
 	    msg_safeguard msgSafeguard = RcvdMessages.GetSafeguard();
 	    if(msgSafeguard != null){
-		error.addWarning("[" + timeLog + "] MSG: Got SAFEGUARD flag");
+		if( msgSafeguard.value == 1){
+		    error.addWarning("[" + timeLog + "] MSG: Got SAFEGUARD flag");
+		}
 	    }
 
 	    // Handle mission waypoints points
