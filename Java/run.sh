@@ -1,27 +1,44 @@
 #!/bin/bash
 
+EXEC=icarous.jar
+JSSCLIB=lib/jssc-2.8.0.jar
+DAIDALUS=lib/FormalATMj/FormalATM.jar
+SITL_HOST=localhost
+SITL_INPUT_PORT=14551
+COM_HOST=localhost
+COM_INPUT_PORT=14552
+COM_OUTPUT_PORT=14553
+MODE=active
+PX4_PORT=/dev/tty01
+GS_MASTER=127.0.0.1:$COM_OUTPUT_PORT
+#GS_MASTER=/dev/ttyUSB0
+GPIO_PORT=23
+
 if [ "$1" == 'SITL' ];then
-   echo "Launching ICAROUS for SITL"
-   java -cp icarous.jar:lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar launch -v --sitl localhost 14551 --com localhost 14552 14553 --mode active
-elif [ "$1" == 'RSITL' ];then
-    echo "Launching ICAROUS for SITL radio"
-    java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar launch -v --sitl 14551 --radio /dev/ttyUSB0
+   echo "Launching ICAROUS with SITL"
+   java -cp $EXEC:$JSSCLIB:$DAIDALUS launch \
+	-v \
+	--sitl $SITL_HOST $SITL_INPUT_PORT \
+	--com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
+	--mode $MODE
+   
 elif [ "$1" == 'PX4' ];then
-    echo "Launching ICAROUS for Pixhawk"
-    java -cp icarous.jar:lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar launch -v --px4 /dev/ttyO1 --radio /dev/ttyUSB0
+    echo "Launching ICAROUS with Pixhawk"
+    java -cp $EXEC:$JSSCLIB:$DAIDALUS launch \
+	 -v \
+	 --px4 $PX4_PORT \
+	 --com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
+	 --mode $MODE
+    
 elif [ "$1" == 'GS' ];then
     echo "Launching Ground station test"
-    mavproxy.py --master=127.0.0.1:14553 --map --console --load-module geofence,traffic    
-elif [ "$1" == 'GPSdebug' ];then
-    echo "GPS debugger"
-    java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar DebugGPS --px4 /dev/ttyO1
-elif [ "$1" == 'JAR' ];then
-    echo "Running ICAROUS"
-    java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar -jar icarous.jar -v --px4 /dev/ttyO1 --radio /dev/ttyUSB0
-elif [ "$1" == 'VOLDEMORT' ];then
-   echo "Testing message receipt from VOLDEMORT"
-   java -cp bin:lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar Voldemort_test -v --sitl 14551 --com 14552 --bc 230.1.1.1 5555
+    mavproxy.py --master=$GS_MASTER --map --console --load-module geofence,traffic
+    
+elif [ "$1" == 'SAFE' ];then
+    echo "Launching SAFEGUARD listener"
+    java -cp $EXEC BB_SAFEGUARD $GPIO_PORT $COM_INPUT_PORT
+    
 else
-    echo "run.sh [ SITL | COMBOX | PX4 | GPSdebug | VOLDEMORT ]"    
+    echo "run.sh [ SITL | PX4 | GS | SAFE ]"    
 fi
 
