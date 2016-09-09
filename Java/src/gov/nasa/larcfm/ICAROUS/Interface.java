@@ -50,7 +50,11 @@ public class Interface{
 	interfaceType   = (short) intType;
 	udpReceivePort  = recvPort;
 	udpSendPort     = sendPort;
-	Inbox           = acData.Inbox;
+
+	Inbox = null;
+	if(acData != null){
+	    Inbox           = acData.Inbox;
+	}
 
 	if(hostname != null){
 	    try{
@@ -67,7 +71,11 @@ public class Interface{
 
 	interfaceType  = (short) intType;
 	serialPortName = portName;
-	Inbox          = acData.Inbox;
+	
+	Inbox = null;
+	if(acData != null){
+	    Inbox           = acData.Inbox;
+	}
 
 	InitSerialInterface();
     }
