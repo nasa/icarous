@@ -258,36 +258,6 @@ public final class GreatCircle {
 	}
 
 
-	//    
-	//	private static Vect3 calcEuclidean(LatLonAlt lla) {
-	//		final double DEG_TO_RAD = Math.PI / 180.0;
-	//
-	//		double lat_rad = lla.lat() * DEG_TO_RAD;
-	//		double lon_rad = lla.lon() * DEG_TO_RAD;
-	//		double sin_lat = Math.sin(lat_rad);
-	//		double cos_lat = Math.cos(lat_rad);
-	//		double sin_lon = Math.sin(lon_rad);
-	//		double cos_lon = Math.cos(lon_rad);	
-	//		return new Vect3(lla.alt() * cos_lon * cos_lat, lla.alt() * sin_lon * cos_lat, lla.alt() * sin_lat );
-	//	}
-	//
-	//
-	//	static double dot(LatLonAlt a, LatLonAlt b) {
-	//		return calcEuclidean(a).dot(calcEuclidean(b));
-	//	}
-	//
-	//    
-	//	public static double fastDist(LatLonAlt a, LatLonAlt b) {
-	//	    final double RAD_TO_DEG = 180.0 / Math.PI;
-	//		double dotprod = dot(a, b);
-	//		//double retval = Math.acos(dotprod / a.alt() / b.alt()) * RAD_TO_DEG;
-	//		//return retval;
-	//		double retval = Math.acos(dotprod / a.alt() / b.alt());
-	//		return distance_from_angle(retval, a.alt());
-	//	}
-	//
-
-
 
 	// parameter d is the angular distance between lat/lon #1 and lat/lon #2
 	private static double initial_course_impl(LatLonAlt p1, LatLonAlt p2, double d) {
@@ -437,7 +407,14 @@ public final class GreatCircle {
 		return interpolate_impl(p1, p2, d, f, (p2.alt() - p1.alt()) * f + p1.alt());
 	}
 
-	// This is a fast but crude way of interpolating between relatively close geodesic points
+	/**
+	 * This is a fast but crude way of interpolating between relatively close geodesic points
+	 * 
+	 * @param p1
+	 * @param p2
+	 * @param f
+	 * @return
+	 */
 	public static LatLonAlt interpolateEst(LatLonAlt p1, LatLonAlt p2, double f) {
 		return LatLonAlt.mk((p2.lat() - p1.lat()) * f + p1.lat(),
 				(p2.lon() - p1.lon()) * f + p1.lon(),
@@ -723,7 +700,7 @@ public final class GreatCircle {
 	/**
 	 * This implements the supplemental (polar triangle) spherical cosine rule to complete a triangle on the unit sphere
 	 * @param A angle A
-	 * @param c side between A and B (angular distance
+	 * @param c side between A and B (angular distance)
 	 * @param B angle B
 	 * @return triple of a,b,C (side opposite A, side opposite B, angle opposite c)
 	 */
@@ -737,7 +714,7 @@ public final class GreatCircle {
 	
 	private static boolean gauss_check(double a, double b, double c, double A, double B, double C) {
 		// This function follows the convention of "Spherical Trigonometry" by Todhunter, Macmillan, 1886
-		//   Note, angles are labelled counter-clockwise a, b, c
+		//   Note, angles are labeled counter-clockwise a, b, c
 		A = Util.to_pi(A);
 		B = Util.to_pi(B);
 		C = Util.to_pi(C);
@@ -1169,12 +1146,13 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 	 * @param a point on gc1
 	 * @param b intersection of gc1 and gc2
 	 * @param c point on gc2
-	 * @return
+	 * @return angle between two great circles
 	 */
 	public static double angle_between(LatLonAlt a, LatLonAlt b, LatLonAlt c) {
 		double a1 = angular_distance(c,b);
 		double b1 = angular_distance(a,c);
 		double c1 = angular_distance(b,a);
+		//f.pln("$$$ "+a1+" "+b1+" "+c1+" "+a+" "+b+" "+c);
 		double d = Math.sin(c1)*Math.sin(a1);
 		if (d == 0.0) {
 			return Math.PI;

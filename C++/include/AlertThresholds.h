@@ -24,7 +24,7 @@ private:
   double  alerting_time_; // Alerting_time
   // If alerting_time > 0, alert is based on detection
   // If alerting_time = 0, alert is based on violation
-  double late_alerting_time_; // Late alerting time (for maneuver guidance). If zero, same as alerting_time
+  double early_alerting_time_; // Early alerting time (for maneuver guidance). If zero, same as alerting_time
   BandsRegion::Region region_;  // Guidance region for this alert
   double spread_trk_; // Alert when track band within spread (non-negative value)
   double spread_gs_;  // Alert when ground speed band within spread (non-negative value)
@@ -42,11 +42,11 @@ public:
   /**
    * Creates an alert threholds object. Parameter det is a detector,
    * alerting_time is a non-negative alerting time (possibly positive infinity),
-   * late_alerting_time is a late alerting time >= at (for maneuver guidance),
+   * early_alerting_time is a early alerting time >= at (for maneuver guidance),
    * region is the type of guidance
    */
   AlertThresholds(const Detection3D* det,
-      double alerting_time, double late_alerting_time,
+      double alerting_time, double early_alerting_time,
       BandsRegion::Region region);
 
   AlertThresholds(const AlertThresholds& athr);
@@ -77,14 +77,14 @@ public:
   void setAlertingTime(double val);
 
   /**
-   * Return late alerting time in seconds.
+   * Return early alerting time in seconds.
    */
-  double getLateAlertingTime() const;
+  double getEarlyAlertingTime() const;
 
   /**
-   * Set late alerting time in seconds. Late alerting time is a positive number >= alerting time
+   * Set early alerting time in seconds. Early alerting time is a positive number >= alerting time
    */
-  void setLateAlertingTime(double val);
+  void setEarlyAlertingTime(double val);
 
   /**
    * Return guidance region.

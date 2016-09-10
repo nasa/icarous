@@ -192,7 +192,8 @@ public class GeneralPlan implements ErrorReporter {
 	
 	public boolean validate() {
 		if (fp != null) {
-			return fp.isWeakConsistent(true);     // **RWB** use weak Consistent rather than is consistent
+			boolean useProjection = true;
+			return fp.isWeakConsistent(true,useProjection);     // **RWB** use weak Consistent rather than is consistent
 		} else if (pp != null) {
 			return pp.validate();
 		}

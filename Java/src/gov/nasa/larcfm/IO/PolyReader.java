@@ -24,6 +24,7 @@ import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.PolyPath;
 import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.f;
 import gov.nasa.larcfm.Util.NavPoint.Gs_TCPType;
@@ -512,10 +513,13 @@ public class PolyReader extends PlanReader { //implements ParameterReader, Error
 					try {
 						NavPoint.Trk_TCPType tcptrk = NavPoint.Trk_TCPType.valueOf(input.getColumnString(head[TCP_TRK]));
 						double acctrk = input.getColumn(head[ACC_TRK], "deg/s");
+						double sRadius = 0.0;
+						if (input.columnHasValue(head[RADIUS])) sRadius = input.getColumn(head[RADIUS], "NM");
+						if (Util.almost_equals(sRadius,0.0)) sRadius = vel.gs()/acctrk;
 						switch (tcptrk) {
-						case BOT: n = n.makeBOT(n.position(), n.time(), acctrk, vel); break;
+						case BOT: n = n.makeBOT(n.position(), n.time(), vel, sRadius); break;
 						case EOT: n = n.makeEOT(n.position(), n.time(), vel); break;
-						case EOTBOT: n = n.makeEOTBOT(n.position(), n.time(), acctrk, vel); break;
+						case EOTBOT: n = n.makeEOTBOT(n.position(), n.time(), vel, sRadius); break;
 						default: // no change
 						}
 					} catch (Exception e) {

@@ -39,7 +39,7 @@ public:
    * Well-clear volume (unbuffered) is defined by alerting level 2 (conflict_alerting_level)
    *
    */
-  static AlertLevels WC_SC_228();
+  static AlertLevels WC_SC_228_Thresholds();
 
   /**
    * @return alerting thresholds (unbuffered) as defined by SC-228 MOPS.
@@ -48,7 +48,7 @@ public:
    * Well-clear volume (unbuffered) is defined by alerting level 2 (conflict_alerting_level)
    *
    */
-  static AlertLevels SingleBands_WC_SC_228();
+  static AlertLevels SingleBands_WC_SC_228_Thresholds();
 
   /**
    * @return alerting thresholds (buffered) as defined by SC-228 MOPS.
@@ -58,7 +58,7 @@ public:
    * Well-clear volume (buffered) is defined by alerting level 2 (conflict_alerting_level)
    *
    */
-  static AlertLevels Buffered_WC_SC_228();
+  static AlertLevels Buffered_WC_SC_228_Thresholds();
 
   /**
    * @return alerting thresholds for single bands given by detector,

@@ -383,17 +383,31 @@ public final class Kinematics {
 	  return new Pair<Vect3,Velocity>(ns,nv);
   }
   
-
-  
+  /**   *** EXPERIMENTAL ***
+   * Position/Velocity 
+   * @param s0          starting position
+   * @param center     
+   * @param d           distance into turn 
+   * @param gsAt_d     
+   * @return Position/Velocity after t time
+   */
+  public static Pair<Vect3,Velocity> turnByDist(Vect3 s0, Vect3 center, double d, double gsAt_d) {
+	  double anySpeed = 100;
+	  double R = s0.distanceH(center);
+	  double omega = anySpeed/R;
+	  double t = d/anySpeed;
+	  Velocity vPerp = Velocity.make(s0.Sub(center));
+	  double currentTrk = vPerp.trk()+Util.sign(d)*Math.PI/2;
+	  Velocity vo = Velocity.mkTrkGsVs( currentTrk ,gsAt_d ,0.0);
+	  return turnOmega(s0,vo,t,omega);
+  }
 
   public static Vect2 center(Vect3 s0, Velocity v0, double omega) {
 	  double v = v0.gs();
 	  double theta = v0.trk();
       double R = v/omega;
       return new Vect2(s0.x + R*Math.cos(theta),s0.y - R*Math.sin(theta)); 		  
-  }
-
-  
+  }  
   
   /**
    * Position/Velocity after turning t time units according to track rate omega

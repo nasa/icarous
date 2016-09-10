@@ -7,6 +7,7 @@
 package gov.nasa.larcfm.ACCoRD;
 
 import gov.nasa.larcfm.Util.Constants;
+import gov.nasa.larcfm.Util.Interval;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Vect2;
 import gov.nasa.larcfm.Util.Vect3;
@@ -35,9 +36,11 @@ public class KinematicBandsCore {
 	private int epsh_; 
 	/* Cached vertical epsilon for implicit coordination */
 	private int epsv_; 
+	/* The length of conflict_acs_ is greater than or equal to the length of the alert levels. */
 	/* Cached list of conflict aircraft per alert level */
-	/* The length of conflict_acs_ is greater than or equal to the length of the alertor. */
 	private List<List<TrafficState>> conflict_acs_; 
+	/* Cached list of time intervals of violation per alert level */
+	private List<Interval> tiov_; //
 
 	public KinematicBandsCore(KinematicBandsParameters params) {
 		ownship = TrafficState.INVALID;
@@ -45,6 +48,7 @@ public class KinematicBandsCore {
 		parameters = new KinematicBandsParameters(params);
 		most_urgent_ac = TrafficState.INVALID;
 		conflict_acs_ = new ArrayList<List<TrafficState>>();
+		tiov_ = new ArrayList<Interval>();
 		reset();
 	}
 
@@ -62,6 +66,7 @@ public class KinematicBandsCore {
 		parameters = new KinematicBandsParameters(core.parameters);
 		most_urgent_ac = core.most_urgent_ac;
 		conflict_acs_ = new ArrayList<List<TrafficState>>();
+		tiov_ = new ArrayList<Interval>();
 		reset();	
 	}
 
@@ -81,6 +86,7 @@ public class KinematicBandsCore {
 		outdated_ = true;
 		epsh_ = 0;
 		epsv_ = 0;
+		tiov_.clear();
 	}
 
 	/**
@@ -182,14 +188,21 @@ public class KinematicBandsCore {
 	 */
 	private void conflict_aircraft(int alert_level) {
 		Detection3D detector = parameters.alertor.getLevel(alert_level).getDetector();
-		double T = parameters.alertor.getLevel(alert_level).getAlertingTime();
+		double tin  = Double.POSITIVE_INFINITY;
+		double tout = Double.NEGATIVE_INFINITY;
 		for (int i = 0; i < traffic.size(); ++i) {
 			TrafficState ac = traffic.get(i);
-			ConflictData det = detector.conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),0,T);
+			ConflictData det = detector.conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),
+					0,parameters.getLookaheadTime());
 			if (det.conflict()) {
-				conflict_acs_.get(alert_level-1).add(ac);
+				if (det.getTimeIn() <= parameters.alertor.getLevel(alert_level).getAlertingTime()) {
+					conflict_acs_.get(alert_level-1).add(ac);
+				} 
+				tin = Math.min(tin,det.getTimeIn());
+				tout = Math.max(tout,det.getTimeOut());
 			} 
 		}
+		tiov_.add(new Interval(tin,tout));
 	}
 
 	/**
@@ -202,6 +215,18 @@ public class KinematicBandsCore {
 			return conflict_acs_.get(alert_level-1);
 		}
 		return TrafficState.INVALIDL;
+	}
+
+	/**
+	 * Return time interval of violation for given alert level
+	 * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
+	 */
+	public Interval timeIntervalOfViolation(int alert_level) {
+		update();
+		if (alert_level >= 1 && alert_level <= parameters.alertor.mostSevereAlertLevel()) {
+			return tiov_.get(alert_level-1);
+		}
+		return Interval.EMPTY;
 	}
 
 	public static int epsilonH(TrafficState ownship, TrafficState ac) {
@@ -245,6 +270,10 @@ public class KinematicBandsCore {
 		for (int i=0; i < conflict_acs_.size(); ++i) {
 			s+="conflict_acs_["+f.Fmi(i)+"]: "+
 					TrafficState.listToString(conflict_acs_.get(i))+"\n";
+		}
+		for (int i=0; i < tiov_.size(); ++i) {
+			s+="tiov_["+f.Fmi(i)+"]: "+
+					tiov_.get(i).toString(precision)+"\n";
 		}
 		s+="## Ownship and Traffic\n";
 		s+="NAME sx sy sz vx vy vz time\n";

@@ -15,6 +15,7 @@
 #include "Detection3DAcceptor.h"
 #include "TCASTable.h"
 #include "KinematicBandsParameters.h"
+#include "Interval.h"
 #include <vector>
 #include <string>
 
@@ -43,9 +44,11 @@ private:
   int epsh_;
   /* Cached vertical epsilon for implicit coordination */
   int epsv_;
+  /* The length of conflict_acs_ is greater than or equal to the length of the alert levels. */
   /* Cached list of conflict aircraft per alert level */
-  /* The length of conflict_acs_ is greater than or equal to the length of the alertor. */
   std::vector< std::vector<TrafficState> > conflict_acs_;
+  /* Cached list of time intervals of violation per alert level */
+  std::vector<Interval> tiov_; //
 
   /**
    *  Update cached values
@@ -132,6 +135,12 @@ public:
    * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
    */
   std::vector<TrafficState> const & conflictAircraft(int alert_level);
+
+  /**
+   * Return time interval of violation for given alert level
+   * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
+   */
+  Interval const & timeIntervalOfViolation(int alert_level);
 
   static int epsilonH(const TrafficState& ownship, const TrafficState& ac);
 

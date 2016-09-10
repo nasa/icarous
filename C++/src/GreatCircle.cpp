@@ -133,6 +133,10 @@ namespace larcfm {
   }
 
 
+  double GreatCircle::final_course(LatLonAlt p1, LatLonAlt p2) {
+	  return initial_course(p2, p1)+M_PI;
+  }
+
   // parameter d is the angular distance between lat/long #1 and #2
   static LatLonAlt interpolate_impl(const LatLonAlt& p1, const LatLonAlt& p2, double d, double f, double alt) {
     if (Constants::almost_equals_radian(d) ) {

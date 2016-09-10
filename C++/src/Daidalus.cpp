@@ -24,19 +24,24 @@
 #include "LossData.h"
 #include "format.h"
 #include "NoneUrgencyStrategy.h"
+#include "Constants.h"
 
 namespace larcfm {
 
 /**
- * Create a new Daidalus object. This object will default to using WCV_TAUMOD as state detector.
+ * Create a new Daidalus object such that
+ * - Alerting thresholds are unbuffered as defined by SC-228 MOPS.
+ * - Maneuver guidance logic assumes instantaneous maneuvers
+ * - Bands saturate at DMOD/ZTHR
  */
 Daidalus::Daidalus() : error("Daidalus") {
-  parameters = KinematicBandsParameters(KinematicBandsParameters::DefaultValues);
+  parameters = KinematicBandsParameters();
   urgency_strat_ = new NoneUrgencyStrategy();
   wind_vector_ = Velocity::ZEROV;
   current_time_ = 0;
   ownship_ = TrafficState::INVALID;
   traffic_ = std::vector<TrafficState>();
+  set_WC_SC_228_MOPS();
 }
 
 /**
@@ -67,6 +72,37 @@ Daidalus& Daidalus::operator=(const Daidalus& daa) {
   traffic_ = std::vector<TrafficState>();
   traffic_.insert(traffic_.end(),daa.traffic_.begin(),daa.traffic_.end());
   return *this;
+}
+
+/*
+ * Set Daidalus object such that
+ * - Alerting thresholds are unbuffered as defined by SC-228 MOPS.
+ * - Maneuver guidance logic assumes instantaneous maneuvers
+ * - Bands saturate at DMOD/ZTHR
+ */
+void Daidalus::set_WC_SC_228_MOPS() {
+  parameters.alertor = AlertLevels::WC_SC_228_Thresholds();
+  parameters.setInstantaneousBands();
+  parameters.setCollisionAvoidanceBands(false);
+  parameters.setMinHorizontalRecovery(0.66,"nmi");
+  parameters.setMinVerticalRecovery(450,"ft");
+}
+
+/*
+ * Set Daidalus object such that
+ * - Alerting thresholds are buffered
+ * - Maneuver guidance logic assumes kinematic maneuvers
+ * - Turn rate is set to 3 deg/s, when type is true, and to  1.5 deg/s
+ *   when type is false.
+ * - Bands don't saturate until NMAC
+ */
+void Daidalus::set_Buffered_WC_SC_228_MOPS(bool type) {
+  parameters.alertor = AlertLevels::Buffered_WC_SC_228_Thresholds();
+  parameters.setKinematicBands(true);
+  parameters.setCollisionAvoidanceBands(true);
+  parameters.setCollisionAvoidanceBandsFactor(0.2);
+  parameters.setMinHorizontalRecovery(1.0,"nmi");
+  parameters.setMinVerticalRecovery(450,"ft");
 }
 
 /**
@@ -281,8 +317,8 @@ void Daidalus::setCurrentTime(double time) {
 int Daidalus::alerting(int ac_idx, int turning, int accelerating, int climbing) {
   if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
     TrafficState ac = traffic_[ac_idx-1];
-    KinematicMultiBands kb = getKinematicMultiBands();
-    return kb.alerting(ac, turning, accelerating, climbing);
+    kinematicMultiBands(kb_);
+    return kb_.alerting(ac, turning, accelerating, climbing);
   } else {
     error.addError("alerting: aircraft index "+Fmi(ac_idx)+" is out of bounds");
     return -1;
@@ -343,18 +379,18 @@ double Daidalus::timeToViolation(int ac_idx) const {
 }
 
 /**
- * @return kinematic bands. Computation of bands is lazy, they are only compute when needed.
+ * Compute in bands the kinematic multi bands at current time. Computation of bands is lazy,
+ * they are only computed when needed.
  */
-KinematicMultiBands Daidalus::getKinematicMultiBands() const {
+void Daidalus::kinematicMultiBands(KinematicMultiBands& bands) const {
+  bands.clear();
   if (lastTrafficIndex() < 0) {
     error.addError("getKinematicBands: ownship has not been set");
-    return KinematicMultiBands();
   } else {
-    KinematicMultiBands bands = KinematicMultiBands(parameters);
+    bands.setKinematicBandsParameters(parameters);
     bands.setOwnship(ownship_);
     bands.setTraffic(traffic_);
     bands.setMostUrgentAircraft(mostUrgentAircraft());
-    return bands;
   }
 }
 
@@ -549,7 +585,8 @@ std::string Daidalus::toString() const {
 }
 
 std::string Daidalus::release() {
-  return "DAIDALUS++ V-"+KinematicBandsParameters::VERSION;
+  return "DAIDALUS++ V-"+KinematicBandsParameters::VERSION+
+      "-FormalATM-"+Constants::version+" (Sept-11-2016)";
 }
 
 }

@@ -102,6 +102,10 @@ namespace larcfm {
 		return /*super.toString()+" "+*/ p2d.toString()+" bot="+Fm2(bottom)+" top="+Fm2(top);
 	}
 	
+	bool Poly3D::contains(const Vect3& v) const {
+		if (v.z > top || v.z < bottom) return false;
+		return p2d.contains(v.vect2());
+	}
 
 	
 }

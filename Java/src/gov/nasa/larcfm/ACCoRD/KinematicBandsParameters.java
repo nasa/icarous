@@ -22,12 +22,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	/**
 	 * DAIDALUS version
 	 */
-	public static final String VERSION = "0.99n-Aug-31-2016";
-
-	/**
-	 * Default parameter values
-	 */
-	public static final KinematicBandsParameters DefaultValues = new KinematicBandsParameters();
+	public static final String VERSION = "1.a";
 
 	/**
 	 * Alertor
@@ -82,15 +77,16 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	private double contour_thr_; // Horizontal threshold, specified as an angle to the left/right of current aircraft direction,
 	// for computing horizontal contours. A value of 0 means only conflict contours. A value of pi means all contours.
 
+	/* NOTE: By default, no alert levels are configured */
 	public KinematicBandsParameters() {
 		// Bands
 		lookahead_time_ = 180; // [s]       
 		left_trk_ =  Math.PI; 
 		right_trk_ = Math.PI;
-		min_gs_ = 0;                   
-		max_gs_ = Units.from("knot",700); 
-		min_vs_ = Units.from("fpm",-5000);
-		max_vs_ = Units.from("fpm",5000); 
+		min_gs_  = Units.from("knot",0);  
+		max_gs_  = Units.from("knot",700);
+		min_vs_  = Units.from("fpm",-5000);
+		max_vs_  = Units.from("fpm",5000); 
 		min_alt_ = Units.from("ft",500);  
 		max_alt_ = Units.from("ft",50000);
 
@@ -100,14 +96,14 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 		vs_step_          = Units.from("fpm", 10.0); 
 		alt_step_         = Units.from("ft", 100.0); 
 		horizontal_accel_ = Units.from("m/s^2",2.0); 
-		vertical_accel_   = Units.from("m/s^2",2.0); 
-		turn_rate_        = Units.from("deg/s",3.0); 
+		vertical_accel_   = Units.from("G",0.25);    // Section 1.2.3, DAA MOPS V3.6
+		turn_rate_        = Units.from("deg/s",3.0); // Section 1.2.3, DAA MOPS V3.6
 		bank_angle_       = 0.0;    
-		vertical_rate_    = 0.0;                     
+		vertical_rate_    = Units.from("fpm",500);   // Section 1.2.3, DAA MOPS V3.6                     
 
 		// Recovery bands
-		horizontal_nmac_ = ACCoRDConfig.NMAC_D;
-		vertical_nmac_ = ACCoRDConfig.NMAC_H;
+		horizontal_nmac_ = ACCoRDConfig.NMAC_D;      // Defined in RTCA SC-147
+		vertical_nmac_ = ACCoRDConfig.NMAC_H;        // Defined in RTCA SC-147
 		recovery_stability_time_ = 2; // [s] 
 		min_horizontal_recovery_ = 0; 
 		min_vertical_recovery_   = 0; 
@@ -118,13 +114,13 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 		recovery_vs_   = true; 
 		recovery_alt_  = true; 
 		ca_bands_      = false; 
-		ca_factor_      = 0.2;
+		ca_factor_     = 0.2;
 
 		// Contours
 		contour_thr_ = Math.PI;
 
 		// Alert levels
-		alertor = new AlertLevels(AlertLevels.WC_SC_228());
+		alertor = new AlertLevels();
 	}
 
 	public KinematicBandsParameters(KinematicBandsParameters parameters) {
@@ -1189,6 +1185,20 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 		vertical_rate_ = 0;
 	}
 
+	/** 
+	 * Set kinematic bands.
+	 * Set turn rate to 3 deg/s, when type is true; set turn rate to  1.5 deg/s
+	 * when type is false;
+	 */
+	public void setKinematicBands(boolean type) {
+		// Section 1.2.3, DAA MOPS SC-228 V3.6
+		turn_rate_ = Units.from("deg/s",type ? 3.0 : 1/5); 
+		bank_angle_ = 0;
+		horizontal_accel_ = Units.from("m/s^2",2.0); 
+		vertical_accel_ = Units.from("G",0.25);
+		vertical_rate_ = Units.from("fpm",500);   
+	}
+	
 	/**
 	 *  Load parameters from file.
 	 */

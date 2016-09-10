@@ -34,6 +34,8 @@ private:
   static void add_blob(std::vector< std::vector<Position> >& blobs,
       std::deque<Position>& vin, std::deque<Position>& vout);
 
+  KinematicMultiBands kb_; // For internal computations of alerts
+
   /**
    * @return alerting time. If set to 0, returns lookahead time instead.
    */
@@ -47,14 +49,12 @@ public:
   KinematicBandsParameters parameters;
 
   /**
-   * Create a new Daidalus object. This object will default to using WCV_TAUMOD as state detector.
+   * Create a new Daidalus object such that
+   * - Alerting thresholds are unbuffered as defined by SC-228 MOPS.
+   * - Maneuver guidance logic assumes instantaneous maneuvers
+   * - Bands saturate at DMOD/ZTHR
    */
   Daidalus();
-
-  /**
-   * Create a new Daidalus object with the specified state detector. 
-   */
-  Daidalus(Detection3D* d);
 
   /**
    * Create a new Daidalus object and copy all configuration parameters and traffic information
@@ -66,6 +66,24 @@ public:
 
   // needed because of pointer
   Daidalus& operator=(const Daidalus& daa);
+
+  /*
+   * Set Daidalus object such that
+   * - Alerting thresholds are unbuffered as defined by SC-228 MOPS.
+   * - Maneuver guidance logic assumes instantaneous maneuvers
+   * - Bands saturate at DMOD/ZTHR
+   */
+  void set_WC_SC_228_MOPS();
+
+  /*
+   * Set Daidalus object such that
+   * - Alerting thresholds are buffered
+   * - Maneuver guidance logic assumes kinematic maneuvers
+   * - Turn rate is set to 3 deg/s, when type is true, and to  1.5 deg/s
+   *   when type is false.
+   * - Bands don't saturate until NMAC
+   */
+  void set_Buffered_WC_SC_228_MOPS(bool type);
 
   /**
    * Clear aircraft list, reset current time and wind vector.
@@ -216,10 +234,10 @@ public:
   TrafficState const & getAircraftState(int ac_idx) const;
 
   /**
-   * @return kinematic bands at current time. Computation of bands is lazy, they are only
-   * compute when needed.
+   * Compute in bands the kinematic multi bands at current time. Computation of bands is lazy,
+   * they are only computed when needed.
    */
-  KinematicMultiBands getKinematicMultiBands() const;
+  void kinematicMultiBands(KinematicMultiBands& bands) const;
 
   /**
    * @return reference to strategy for computing most urgent aircraft.

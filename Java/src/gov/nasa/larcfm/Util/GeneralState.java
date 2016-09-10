@@ -259,7 +259,7 @@ public class GeneralState {
 
 
 	public boolean checkLatLon(boolean ll) {
-		if (si == null || mp == null) {
+		if (si == null && mp == null) {
 			return true;
 		}
 		return ll == (si == null ? mp.isLatLon() : si.isLatLon());		

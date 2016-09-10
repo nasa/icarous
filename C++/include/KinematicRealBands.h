@@ -226,6 +226,12 @@ public:
 
 private:
 
+  /*
+   *  Returns true if the first interval extends to the last interval. This happens
+   *  when mod_ > 0, the low value is 0, and the max value is mod_.
+   */
+  bool rollover();
+
   double mod_val(double val) const;
 
   /**

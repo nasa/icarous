@@ -244,35 +244,51 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 		}
 	}
 
+	/*
+	 *  Returns true if the first interval extends to the last interval. This happens
+	 *  when mod_ > 0, the low value is 0, and the max value is mod_.  
+	 */
+	private boolean rollover() {
+		return mod_ > 0 && 
+				Util.almost_equals(ranges_.get(0).interval.low,0) &&
+				Util.almost_equals(ranges_.get(ranges_.size()-1).interval.up,mod_);
+	}
+
 	/** 
 	 * Return index where val is found, -1 if invalid input, >= length if not found 
 	 */
 	public int rangeOf(KinematicBandsCore core, double val) {
-		int i=-1;
 		if (check_input(core.ownship)) {
 			val = mod_val(val);
-			double min = min_val(core.ownship);
-			double max = max_val(core.ownship);
-			int zero_pos = -1;
-			for (i=0; i < length(core); ++i) {
-				boolean none = ranges_.get(i).region.isResolutionBand();
-				boolean lb_close = none || (!circular_ && Util.almost_equals(ranges_.get(i).interval.low,min));
-				boolean ub_close = none || (!circular_ && Util.almost_equals(ranges_.get(i).interval.up,max));
+			int last_index = length(core)-1;
+			boolean rov = rollover();
+			for (int i=0; i <= last_index; ++i) {
+				boolean none = ranges_.get(i).region.isResolutionBand();	
+				int order_i = ranges_.get(i).region.order();
+				boolean lb_close = none ||
+						(i > 0 && order_i <= ranges_.get(i-1).region.order()) ||
+						(i == 0 && rov && order_i <= ranges_.get(last_index).region.order());
+				boolean ub_close = none ||
+						(i < last_index && order_i <= ranges_.get(i+1).region.order()) ||
+						(i == last_index && rov && order_i <= ranges_.get(0).region.order());
 				if (ranges_.get(i).interval.in(val,lb_close,ub_close)) {
 					return i;
-				} else if (mod_ > 0 && Util.almost_equals(val,0)) {
-					if (none && Util.almost_equals(ranges_.get(i).interval.up,mod_)) {
-						return i;
-					} else if (Util.almost_equals(ranges_.get(i).interval.low,0)) {
-						zero_pos = i;
-					}
 				} 
 			}
-			if (zero_pos >= 0) {
-				i = zero_pos;
+			if (rov) {
+				if (Util.almost_equals(val,0)) {
+					return 0;
+				}
+			} else {
+				if (Util.almost_equals(val,min_val(core.ownship))) {
+					return 0;
+				}
+				if (Util.almost_equals(val,max_val(core.ownship))) {
+					return last_index;
+				}			
 			}
 		}
-		return i;
+		return -1;
 	}
 
 	/**
@@ -350,7 +366,7 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 
 	/**
 	 * Return time to recovery. Return NaN if bands are not saturated and negative infinity 
-	 * when bands are saturated but no recovery within late alerting time.
+	 * when bands are saturated but no recovery within early alerting time.
 	 */
 	public double timeToRecovery(KinematicBandsCore core) {   
 		update(core);
@@ -423,7 +439,7 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 		double recovery_time = Double.NEGATIVE_INFINITY;
 		int recovery_level = core.parameters.alertor.conflictAlertLevel();
 		Detection3D detector = core.parameters.alertor.getLevel(recovery_level).getDetector();
-		double T = core.parameters.alertor.getLevel(recovery_level).getLateAlertingTime();
+		double T = core.parameters.alertor.getLevel(recovery_level).getEarlyAlertingTime();
 		TrafficState repac = core.recovery_ac();
 		CDCylinder cd3d = CDCylinder.mk(core.parameters.getHorizontalNMAC(),core.parameters.getVerticalNMAC());
 		none_bands(noneset,cd3d,Detection3D.NoDetector,repac,core.epsilonH(),core.epsilonV(),0,T,core.ownship,alerting_set);
@@ -493,9 +509,13 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 			}
 		} else {
 			compute_none_bands(noneset,core,alert_level,core.criteria_ac());
-			if (noneset.isEmpty() && recovery_ && alert_level == core.parameters.alertor.conflictAlertLevel()) { 
+			if (recovery_ && alert_level == core.parameters.alertor.conflictAlertLevel()) {
 				// Compute recovery bands
-				return compute_recovery_bands(noneset,core,alerting_set);
+				if (noneset.isEmpty()) {
+					return compute_recovery_bands(noneset,core,alerting_set);
+				} else if (instantaneous_bands() && core.timeIntervalOfViolation(alert_level).low == 0) {
+					return 0;
+				}
 			}
 		}
 		return Double.NaN;
@@ -547,11 +567,10 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 					l = Double.NaN;
 					u = Double.NaN;
 					break;
-				}
-				if (noneset.getInterval(i).up < val) {
+				} else if (noneset.getInterval(i).up < val) {
 					if (i+1==noneset.size()) {
 						l = noneset.getInterval(i).up;
-						if (mod_ != 0) {
+						if (mod_ > 0) {
 							u = noneset.getInterval(0).low;
 						}
 						break;
@@ -562,7 +581,7 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 					}
 				} else if (val < noneset.getInterval(i).low) {
 					if (i==0) {
-						if (mod_ != 0) {
+						if (mod_ > 0) {
 							l = noneset.getInterval(noneset.size()-1).up;
 						}
 						u = noneset.getInterval(i).low;
@@ -608,21 +627,25 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 		double up = compute_resolution(core,alert_level,true);
 		double down = compute_resolution(core,alert_level,false);
 		double val = own_val(core.ownship);
-		return Double.isFinite(up) && Double.isFinite(down) &&
-				mod_val(up-val) <= mod_val(val-down);
+		if (!Double.isFinite(up)) {
+			return false;
+		} else if (!Double.isFinite(down)) {
+			return true;
+		}
+		return Util.almost_leq(mod_val(up-val),mod_val(val-down));
 	}
 
 	/**
 	 * Return last time to maneuver, in seconds, for ownship with respect to traffic
 	 * aircraft ac for conflict alert level. Return NaN if the ownship is not in conflict with aircraft ac within 
-	 * late alerting time. Return negative infinity if there is no time to maneuver.
+	 * early alerting time. Return negative infinity if there is no time to maneuver.
 	 * Note: 1 <= alert_level <= alertor.size()
 	 */
 	public double last_time_to_maneuver(KinematicBandsCore core, TrafficState ac) {
 		if (check_input(core.ownship)) {
 			int conflict_level = core.parameters.alertor.conflictAlertLevel();
 			Detection3D detector = core.parameters.alertor.getLevel(conflict_level).getDetector();
-			double T = core.parameters.alertor.getLevel(conflict_level).getLateAlertingTime();
+			double T = core.parameters.alertor.getLevel(conflict_level).getEarlyAlertingTime();
 			ConflictData det = detector.conflictDetection(core.own_s(),core.own_v(),ac.get_s(),ac.get_v(),0,T);
 			if (det.conflict()) {
 				double pivot_red = det.getTimeIn();
@@ -798,7 +821,7 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 				core.ownship,peripheral_acs_.get(alert_level-1));
 		IntervalSet noneset2 = new IntervalSet();
 		none_bands(noneset2,detector,Detection3D.NoDetector,repac,
-				core.epsilonH(),core.epsilonV(),0,core.parameters.alertor.getLevel(alert_level).getLateAlertingTime(),
+				core.epsilonH(),core.epsilonV(),0,core.parameters.alertor.getLevel(alert_level).getEarlyAlertingTime(),
 				core.ownship,core.conflictAircraft(alert_level)); 
 		noneset.almost_intersect(noneset2);
 	}

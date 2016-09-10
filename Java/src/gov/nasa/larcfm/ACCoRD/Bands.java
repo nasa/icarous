@@ -21,9 +21,8 @@ import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
 
-import gov.nasa.larcfm.Util.f;
-
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Objects of class "Bands" compute the conflict prevention 
@@ -105,12 +104,12 @@ public class Bands implements GenericDHStateBands {
   protected TrafficState ownship;
   protected int traffic;
 
-  protected ArrayList<Interval> trackArray;
-  protected ArrayList<BandsRegion> trackRegionArray;
-  protected ArrayList<Interval> groundArray;
-  protected ArrayList<BandsRegion> groundRegionArray;
-  protected ArrayList<Interval> verticalArray;
-  protected ArrayList<BandsRegion> verticalRegionArray;
+  protected List<Interval> trackArray;
+  protected List<BandsRegion> trackRegionArray;
+  protected List<Interval> groundArray;
+  protected List<BandsRegion> groundRegionArray;
+  protected List<Interval> verticalArray;
+  protected List<BandsRegion> verticalRegionArray;
 
   // [CAM] The following variables handle how stateless bands are recomputed
   protected boolean conflictBands; // Only compute conflict bands 
@@ -157,21 +156,31 @@ public class Bands implements GenericDHStateBands {
     init(D, dunit, H, hunit, T, tunit, max_gs, gsunit, max_vs, vsunit);
   }
 
-  @SuppressWarnings("unchecked")
   public Bands(Bands b) {
     red = new BandsCore(b.red);
     doTrk = b.doTrk;
     doGs = b.doGs;
     doVs = b.doVs;
+    
     computeTrk = b.computeTrk;
     computeGs = b.computeGs;
     computeVs = b.computeVs;
-    trackArray = (ArrayList<Interval>)b.trackArray.clone();
-    groundArray = (ArrayList<Interval>)b.groundArray.clone();
-    verticalArray = (ArrayList<Interval>)b.verticalArray.clone();
-    trackRegionArray = (ArrayList<BandsRegion>)b.trackRegionArray.clone();
-    groundRegionArray = (ArrayList<BandsRegion>)b.groundRegionArray.clone();
-    verticalRegionArray = (ArrayList<BandsRegion>)b.verticalRegionArray.clone();
+    
+    trackArray = new ArrayList<Interval>();
+    trackArray.addAll(b.trackArray);
+    trackRegionArray = new ArrayList<BandsRegion>();
+    trackRegionArray.addAll(b.trackRegionArray);
+    
+    groundArray = new ArrayList<Interval>();
+    groundArray.addAll(b.groundArray);
+    groundRegionArray = new ArrayList<BandsRegion>();
+    groundRegionArray.addAll(b.groundRegionArray);
+   
+    verticalArray = new ArrayList<Interval>();
+    verticalArray.addAll(b.verticalArray);
+    verticalRegionArray = new ArrayList<BandsRegion>();
+    verticalRegionArray.addAll(b.verticalRegionArray);
+
     conflictBands = b.conflictBands;
     ownship = b.ownship;
     traffic = b.traffic;
@@ -709,12 +718,12 @@ public class Bands implements GenericDHStateBands {
   }
 
   /* if n is empty, then this method returns an undefined value */
-  private static int order(ArrayList<Interval> arr, Interval n) {
+  private static int order(List<Interval> arr, Interval n) {
     if (arr.size() == 0) {
-      return 0; // add to empty ArrayList
+      return 0; // add to empty List
     }
     for (int i = 0; i < arr.size(); i++) {
-      if (n.low < arr.get(i).low || n.low == arr.get(i).low && n.up < arr.get(i).up) {
+      if (n.low < arr.get(i).low || (n.low == arr.get(i).low && n.up < arr.get(i).up)) {
         return i;
       }
     }
@@ -774,8 +783,8 @@ public class Bands implements GenericDHStateBands {
    * whose size is greater than or equal to a given tolerance. It returns -1 
    * if no such band exists. 
    */
-  private static int find_first_band(boolean eq, BandsRegion br, double tolerance,
-      ArrayList<Interval> arraylist, ArrayList<BandsRegion> regions) {
+  private static int find_first_explicit_band(boolean eq, BandsRegion br, double tolerance,
+      List<Interval> arraylist, List<BandsRegion> regions) {
     for (int i = 0; i < arraylist.size(); ++i) {
       if ((eq ? regions.get(i) == br : regions.get(i) != br) &&
           arraylist.get(i).up - arraylist.get(i).low >= tolerance) {
@@ -795,14 +804,14 @@ public class Bands implements GenericDHStateBands {
    * 
    */
   private static int find_first_implicit_none(double tolerance,
-      ArrayList<Interval> arraylist, ArrayList<BandsRegion> regions,      
+      List<Interval> arraylist, List<BandsRegion> regions,      
       double lb, double ub) {
     if (arraylist.size() == 0) {
       return 0;
     }
     for (int i = 0; i <= arraylist.size(); ++i) {
       if (i==0 ? arraylist.get(i).low - lb > tolerance :
-        i == arraylist.size() ? ub - arraylist.get(i-i).up > tolerance :
+        i == arraylist.size() ? ub - arraylist.get(i-1).up > tolerance :
           arraylist.get(i).low -arraylist.get(i-1).up > tolerance) {
         return i;
       }
@@ -821,12 +830,12 @@ public class Bands implements GenericDHStateBands {
    * band is NONE.
    */
   public int find_first_band(boolean eq, BandsRegion br, double tolerance,
-      ArrayList<Interval> arraylist, ArrayList<BandsRegion> regions, 
+      List<Interval> arraylist, List<BandsRegion> regions, 
       double lb, double ub) {
     if (conflictBands && br == BandsRegion.NONE && eq) {
       return find_first_implicit_none(tolerance,arraylist,regions,lb,ub);
     } else {
-      return find_first_band(eq,br,tolerance,arraylist,regions);
+      return find_first_explicit_band(eq,br,tolerance,arraylist,regions);
     }     
   }
 
@@ -882,14 +891,14 @@ public class Bands implements GenericDHStateBands {
   }
 
   protected static void toIntervalSet_fromIntervalArray(IntervalSet intervalset, 
-      ArrayList<Interval> intervalarray, ArrayList<BandsRegion> regions, BandsRegion br) {
+      List<Interval> intervalarray, List<BandsRegion> regions, BandsRegion br) {
     for (int i=0; i < intervalarray.size(); ++i) {
       if (regions.get(i) == br)
         intervalset.union(intervalarray.get(i));
     }
   } 
 
-  protected static void toArrays(ArrayList<Interval> intervalarray, ArrayList<BandsRegion> regions, 
+  protected static void toArrays(List<Interval> intervalarray, List<BandsRegion> regions, 
       IntervalSet red, IntervalSet green) {
     int i;
 
@@ -909,8 +918,8 @@ public class Bands implements GenericDHStateBands {
     }
   }
 
-  protected static void toIntervalArray_fromIntervalSet(ArrayList<Interval> intervalarray, 
-      ArrayList<BandsRegion> regions, IntervalSet intervalset) {
+  protected static void toIntervalArray_fromIntervalSet(List<Interval> intervalarray, 
+      List<BandsRegion> regions, IntervalSet intervalset) {
     intervalarray.clear();
     regions.clear();
     for (Interval n : intervalset) {
@@ -919,8 +928,8 @@ public class Bands implements GenericDHStateBands {
     }
   }
 
-  protected static void toIntervalArray_fromIntervalSet(ArrayList<Interval> intervalarray, 
-      ArrayList<BandsRegion> regions, IntervalSet intervalset, double lowBound, double upBound) {
+  protected static void toIntervalArray_fromIntervalSet(List<Interval> intervalarray, 
+      List<BandsRegion> regions, IntervalSet intervalset, double lowBound, double upBound) {
     IntervalSet green_bands = new IntervalSet();
 
     green_bands.union(new Interval(lowBound, upBound));
@@ -980,50 +989,22 @@ public class Bands implements GenericDHStateBands {
   }
 
   public String toString() {
-    //    String s;
-    //    s = getClass().getSimpleName()+"\n";
-    //    s+="D: "+getDistance()+" [nm], H: "+getHeight()+" [ft], T: "+getTime()+" [s]\n";
-    //    s+="maxgs: "+getMaxGroundSpeed()+" [knot] maxvs: "+getMaxVerticalSpeed()+" [fpm]\n";
-    //    s+="conlictBands: "+conflictBands+"\n";
-    //    s+="doTrk: "+doTrk+", doGs: "+doGs+", doVs: "+doVs+"\n";
-    //    s+="computeTrk: "+computeTrk+", computeGs: "+computeGs+", computeVs: "+computeVs+"\n";
-    //    s+="ownship: "+ownship+", traffic: "+traffic+"\n";
-    //    String units = isLatLon() ? "[deg,deg,ft]" : "[nm,nm,ft]";
-    //    if (ownship) {
-    //      s+="ownship so: ("+po.toString4NP()+") "+units+", vo: ("+vo.toString4NP()+") [deg,knot,fpm]\n";
-    //    }
-    //    s+="Track Bands [rad]:\n";
-    //    for (int i = 0; i < trackArray.size(); i++) {
-    //      s+=trackArray.get(i)+" "+trackRegionArray.get(i)+"\n";
-    //    }
-    //    s+="Ground Speed Bands [m/s]:\n";
-    //    for (int i = 0; i < groundArray.size(); i++) {
-    //      s+=groundArray.get(i)+" "+groundRegionArray.get(i)+"\n";
-    //    }
-    //    s+="Vertical Speed Bands [m/s]:\n";
-    //    for (int i = 0; i < verticalArray.size(); i++) {
-    //      s+=verticalArray.get(i)+" "+verticalRegionArray.get(i)+"\n";
-    //    }
-    //    s+="red: "+red.toString(); 
-    //    return s;
     return red.toString();
   }
 
-  public String strBands(String msg) {
-    String rtn = msg;
-    f.pln(" !!!!!!!!!!!!!! strBands: "+trackLength()+"  "+groundSpeedLength()+"  "+verticalSpeedLength());
-    rtn = rtn +"Type: "+getClass().getSimpleName();
+  public String strBands() {
+    String rtn = "";
     rtn = rtn +("\nTrack Bands [deg,deg]:"); 
     for (int i=0; i < trackLength(); ++i) {
-      rtn = rtn +("  "+track(i,"deg")+" "+trackRegion(i));
+      rtn = rtn +("  "+track(i,"deg").toString()+" "+trackRegion(i).toString());
     } 
     rtn = rtn +("\nGround Speed Bands [knot,knot]:");
     for (int i=0; i < groundSpeedLength(); ++i) {
-      rtn = rtn +("  "+groundSpeed(i,"kn")+" "+groundSpeedRegion(i));
+      rtn = rtn +("  "+groundSpeed(i,"kn").toString()+" "+groundSpeedRegion(i).toString());
     } 
     rtn = rtn +("\nVertical Speed Band [fpm,fpm]:");
     for (int i=0; i < verticalSpeedLength(); ++i) {
-      rtn = rtn +("  "+verticalSpeed(i,"fpm")+" "+ verticalSpeedRegion(i));
+      rtn = rtn +("  "+verticalSpeed(i,"fpm").toString()+" "+verticalSpeedRegion(i).toString());
     } 
     return rtn;
   }

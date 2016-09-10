@@ -115,8 +115,8 @@ namespace larcfm {
  */
 KinematicBands::KinematicBands(const Detection3D* detector) {
   setAlertor(AlertLevels::SingleBands(detector,
-          KinematicBandsParameters::DefaultValues.getLookaheadTime(),
-  KinematicBandsParameters::DefaultValues.getLookaheadTime()));
+      core_.parameters.getLookaheadTime(),
+      core_.parameters.getLookaheadTime()));
 }
 
 /**
@@ -125,8 +125,9 @@ KinematicBands::KinematicBands(const Detection3D* detector) {
  */
 KinematicBands::KinematicBands() {
   AlertLevels alertor = AlertLevels();
-  alertor.addLevel(AlertThresholds(new CDCylinder(),KinematicBandsParameters::DefaultValues.getLookaheadTime(),
-      KinematicBandsParameters::DefaultValues.getLookaheadTime(),BandsRegion::NEAR));
+  alertor.addLevel(AlertThresholds(new CDCylinder(),
+      core_.parameters.getLookaheadTime(),
+      core_.parameters.getLookaheadTime(),BandsRegion::NEAR));
   alertor.setConflictAlertLevel(1);
   setAlertor(alertor);
 }
@@ -145,7 +146,7 @@ void KinematicBands::setLookaheadTime(double t) {
   if (level > 0) {
     KinematicMultiBands::setLookaheadTime(t);
     AlertThresholds athr = core_.parameters.alertor.getLevel(level);
-    athr.setLateAlertingTime(t);
+    athr.setEarlyAlertingTime(t);
     core_.parameters.alertor.clear();
     core_.parameters.alertor.addLevel(athr);
     core_.parameters.alertor.setConflictAlertLevel(1);

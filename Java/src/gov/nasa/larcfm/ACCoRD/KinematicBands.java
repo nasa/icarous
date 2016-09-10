@@ -116,8 +116,8 @@ public class KinematicBands extends KinematicMultiBands {
 	 */
 	public KinematicBands(Detection3D detector) {
 		setAlertor(AlertLevels.SingleBands(detector, 
-				KinematicBandsParameters.DefaultValues.getLookaheadTime(),
-        KinematicBandsParameters.DefaultValues.getLookaheadTime()));
+				core_.parameters.getLookaheadTime(),
+        core_.parameters.getLookaheadTime()));
 	}
 
 	/** 
@@ -143,7 +143,7 @@ public class KinematicBands extends KinematicMultiBands {
 		if (level > 0) {
 			super.setLookaheadTime(t);
 			AlertThresholds athr = core_.parameters.alertor.getLevel(level);
-			athr.setLateAlertingTime(t);
+			athr.setEarlyAlertingTime(t);
 			core_.parameters.alertor.clear();
 			core_.parameters.alertor.addLevel(athr);
 			core_.parameters.alertor.setConflictAlertLevel(1);

@@ -94,6 +94,8 @@ class SimplePoly {
 
 	bool equals(const SimplePoly& p) const;
 
+    static SimplePoly make(const Poly3D& p3);
+
     static SimplePoly make(const Poly3D& p3, const EuclideanProjection& proj);
 
 
@@ -199,6 +201,10 @@ class SimplePoly {
 
 	/** return a aPolygon3D version of this */
 	Poly3D poly3D(const EuclideanProjection& proj) const;
+
+	bool contains(const Position& p) const;
+
+	bool contains2D(const Position& p) const;
 
 	/**
 	 * This moves the SimplePoly by the amount determined by the given (Euclidean) offset.

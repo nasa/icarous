@@ -208,6 +208,30 @@ public final class LatLonAlt {
 		return Units.to(units, alti);
 	}	
 	
+	
+	/** 
+	 * Perform a linear projection of the current Position with given velocity and time.  
+	 * A great circle route is followed and the velocity 
+	 * represents the initial velocity along the great circle.
+	 * 
+	 * Reminder: If this is used in a stepwise fashion over lat/lon, be careful when passing 
+	 * over or near the poles and keep the velocity track in mind.
+	 * 
+	 *  @param v the velocity
+	 *  @param time the time from the current point
+	 *  Note: using a negative time value is the same a velocity moving in the opposite direction (along the great circle, if appropriate)
+	 * @return linear projection of the position
+	 */
+	public LatLonAlt linear(Velocity v, double time) {
+		LatLonAlt current = new LatLonAlt(lati, longi, alti);
+		if (time == 0 || v.isZero()) {
+			return current;
+		} else {
+			return GreatCircle.linear_initial(current,v,time);
+		}
+	}
+
+	
 	/** Compute a new lat/lon that is offset by dn meters north and de meters east.
 	 * This is a computationally fast estimate, and only should be used for relatively short distances.
 	 * 
@@ -244,6 +268,10 @@ public final class LatLonAlt {
 
 	public double distanceH(LatLonAlt lla2) {
 		return GreatCircle.distance(this,lla2);
+	}
+	
+	public double chordDistance(LatLonAlt lla2) {
+		return GreatCircle.chord_distance(lat(), lon() ,lla2.lat(), lla2.lon());
 	}
 	
   /**

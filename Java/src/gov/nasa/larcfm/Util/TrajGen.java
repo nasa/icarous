@@ -560,7 +560,7 @@ public class TrajGen {
 					//f.pln(" $$$ generateTurnTCPsOver: vx = "+vx);        			      			
 					double omega = turnDir*vin.gs()/R;    // turnRate
 					//f.pln("  $$$ generateTurnTCPsOver: omega = "+omega);
-					NavPoint npBOT = np.makeBOT(np.position(),to, omega, vin);
+					NavPoint npBOT = np.makeBOT(np.position(),to, vin, turnDir*R );
 					NavPoint npEOT = np.makeEOT(eot_NP.position(),eot_NP.time(), v2);	
 
 					//f.pln(" $$$ generateTurnTCPsOver: remove j = "+j+" traj.point(j) = "+traj.point(i));
@@ -695,7 +695,9 @@ public class TrajGen {
 //		}
 		double trk2 = vin.trk() + omega * (tMOT-tBOT); // make vin track appropriate for each point
 		double trk3 = vin.trk() + omega * (tEOT-tBOT);
-		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos,tBOT, omega, vin).makeLabel(np2.label());   // only BOT has label from np2
+		//double signedRadius = Util.turnDir(vin.trk(), v2.trk())*R;
+		double signedRadius = vin.gs()/omega;
+		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos, tBOT, vin, signedRadius).makeLabel(np2.label());   // only BOT has label from np2
         //f.pln(" $$$ turnGenerator: npBOT = "+npBOT.toStringFull()+"  alpha = "+alpha+" turnTime = "+turnTime);
 		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT,vin.mkTrk(trk2)).makeLabel("");   
 		//f.pln(" $$$ turnGenerator: npMOT = "+npMOT.toStringFull());
@@ -730,7 +732,7 @@ public class TrajGen {
 			double turnDelta = Util.turnDelta(vf0.trk(), vi1.trk());
 			double gsIn = vf0.gs(); 
 			double turnTime;
-			double R = np2.getRadius();
+			double R = np2.turnRadius();
 			//f.pln(" $$>> generateTurnTCPs: i = "+i+" np2.getRadius() = "+Units.str("NM",np2.getRadius(),8));
 			if (Util.almost_equals(R, 0.0)) {
 			    R = Kinematics.turnRadius(gsIn, bank);
@@ -2178,7 +2180,7 @@ public class TrajGen {
 			NavPoint np1 = p.point(i);
 			NavPoint np2 = p.point(i+1);
 			NavPoint np3 = p.point(i+2);
-			if (!np2.isTCP() && np1.position().collinear(np2.position(), np3.position()) && pc.finalVelocity(i).almostEquals(pc.initialVelocity(i+1))) {
+			if (!np2.isTCP() && PositionUtil.collinear(np1.position(),np2.position(), np3.position()) && pc.finalVelocity(i).almostEquals(pc.initialVelocity(i+1))) {
 				p.remove(i+1);
 			} else {
 				i++;
@@ -2199,7 +2201,8 @@ public class TrajGen {
 			f.pln("Error in TrajGen.turnGenerator3: negative intersection time");
 		}
 		NavPoint src = new NavPoint(prSrc.first, t + prSrc.second);
-		NavPoint np1 = src.makeBOT(p1, t, omega, vo);
+		double radius = vo.gs()/omega;
+		NavPoint np1 = src.makeBOT(p1, t, vo, radius);
 		//NavPoint np2 = src.makeTurnMid(prMid.first, t+dt/2.0, omega, prMid.second);
 		NavPoint np2 = src.makePosition(prMid.first).makeTime(t+dt/2.0).makeVelocityIn(prMid.second);		
 
@@ -2279,7 +2282,8 @@ public class TrajGen {
 		boolean turnRight = Util.turnDir(trk1,  trk2) > 0;
 		Pair<Position,Velocity> MOT = ProjectedKinematics.turn(BOT, v1, turnTime/2, R, turnRight);
 		double omega = Kinematics.turnRateGoal(v1, trk2, bankAngle);
-		NavPoint npBOT = np2.makeBOT(BOT, botTime, omega, v1);
+		double radius = Util.turnDir(trk1,  trk2)*R;
+		NavPoint npBOT = np2.makeBOT(BOT, botTime, v1, radius);
 		//NavPoint npMOT = np2.makeTurnMid(MOT.first, botTime+turnTime/2, omega, v1.mkTrk(MOT.second.trk()));
         double tMOT = botTime+turnTime/2;
 		NavPoint npMOT = np2.makePosition(MOT.first).makeTime(tMOT).makeVelocityIn(v1.mkTrk(MOT.second.trk()));		
@@ -2409,7 +2413,8 @@ public class TrajGen {
 			Position center = BOT.linear(Velocity.make(v.PerpL().Hat()), R).position();
 			if (turnRight) center = BOT.linear(Velocity.make(v.PerpR().Hat()), R).position();
 			double rot = v.gs()/R*Util.turnDir(v.trk(), dtp.second.trk());
-			BOT = s2.makeBOT(BOT.position(), BOT.time(), rot, v);
+			double radius = R*Util.turnDir(v.trk(), dtp.second.trk());
+			BOT = s2.makeBOT(BOT.position(), BOT.time(), v, radius);
 			//			NavPoint MOT = new NavPoint(ProjectedKinematics.turn(BOT.position(), v, dt*0.5, R, turnRight).first,BOT.time()+dt*0.5);
 			//			MOT = s2.makeTurnMid(MOT.position(), MOT.time(), rot, v);
 			Pair<Position,Velocity> pr = ProjectedKinematics.turn(BOT.position(), v, dt, R, turnRight);

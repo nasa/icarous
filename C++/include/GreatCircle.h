@@ -147,6 +147,8 @@ namespace larcfm {
    */
   static double initial_course(LatLonAlt p1, LatLonAlt p2);
 
+  static double final_course(LatLonAlt p1, LatLonAlt p2);
+
   /**
    * A representative course (course relative to true north) for the entire
    * arc on the great circle route from lat/long #1 to lat/long #2. The value

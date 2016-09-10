@@ -14,6 +14,7 @@
 #define INTERVAL_H_
 
 #include <string>
+#include <vector>
 
 namespace larcfm {
 
@@ -26,6 +27,10 @@ namespace larcfm {
 class Interval { 
 
 public:
+
+	// This numeric type is used for index variables over vectors of Interval
+	typedef std::vector<Interval>::size_type nat;
+
 	/** The lower bound of this interval */
 	double low;
 	/** The upper bound of this interval */

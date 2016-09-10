@@ -16,7 +16,7 @@ public class AlertThresholds {
 	private double alerting_time_; // Alerting_time
 	// If alerting_time > 0, alert is based on detection
 	// If alerting_time = 0, alert is based on violation
-	private double late_alerting_time_; // Late alerting time (for maneuver guidance). If zero, same as alerting_time
+	private double early_alerting_time_; // Early alerting time (for maneuver guidance). If zero, same as alerting_time
 	private BandsRegion region_;  // Guidance region for this alert
 	private double spread_trk_; // Alert when track band within spread (non-negative value)
 	private double spread_gs_;  // Alert when ground speed band within spread (non-negative value)
@@ -26,14 +26,14 @@ public class AlertThresholds {
 	/** 
 	 * Creates an alert threholds object. Parameter det is a detector,
 	 * alerting_time is a non-negative alerting time (possibly positive infinity),
-	 * late_alerting_time is a late alerting time >= at (for maneuver guidance),
+	 * early_alerting_time is a early alerting time >= at (for maneuver guidance),
 	 * region is the type of guidance
 	 */
-	public AlertThresholds(Detection3D detector, double alerting_time, double late_alerting_time, 
+	public AlertThresholds(Detection3D detector, double alerting_time, double early_alerting_time, 
 			BandsRegion region) {
 		detector_ = detector.copy();
 		alerting_time_ = Math.abs(alerting_time);
-		late_alerting_time_ = Math.max(alerting_time_,late_alerting_time);
+		early_alerting_time_ = Math.max(alerting_time_,early_alerting_time);
 		region_ = region;
 		spread_trk_ = 0;
 		spread_gs_ = 0;
@@ -44,7 +44,7 @@ public class AlertThresholds {
 	public AlertThresholds(AlertThresholds athr) {
 		detector_ = athr.detector_.copy();
 		alerting_time_ = athr.alerting_time_;
-		late_alerting_time_ = athr.late_alerting_time_;
+		early_alerting_time_ = athr.early_alerting_time_;
 		region_ = athr.region_;
 		spread_trk_ = athr.spread_trk_;
 		spread_gs_ = athr.spread_gs_;
@@ -55,7 +55,7 @@ public class AlertThresholds {
 	private AlertThresholds() {
 		detector_ = null;
 		alerting_time_ = 0;
-		late_alerting_time_ = 0;
+		early_alerting_time_ = 0;
 		region_ = BandsRegion.UNKNOWN;
 		spread_trk_ = 0;
 		spread_gs_ = 0;
@@ -98,17 +98,17 @@ public class AlertThresholds {
 	}
 
 	/**
-	 * Return late alerting time in seconds.
+	 * Return early alerting time in seconds.
 	 */
-	public double getLateAlertingTime() {
-		return late_alerting_time_;
+	public double getEarlyAlertingTime() {
+		return early_alerting_time_;
 	}
 
 	/**
-	 * Set late alerting time in seconds. Late alerting time is a positive number >= alerting time
+	 * Set early alerting time in seconds. Early alerting time is a positive number >= alerting time
 	 */
-	public void setLateAlertingTime(double t) {
-		late_alerting_time_ = Math.abs(t);
+	public void setEarlyAlertingTime(double t) {
+		early_alerting_time_ = Math.abs(t);
 	}
 
 	/**
@@ -247,7 +247,7 @@ public class AlertThresholds {
 
 	public String toString() {
 		return detector_.toString()+", Alerting Time: "+f.Fm1(alerting_time_)+
-				" [s], Late Alerting Time: "+f.Fm1(late_alerting_time_)+
+				" [s], Early Alerting Time: "+f.Fm1(early_alerting_time_)+
 				" [s], Region: "+region_.toString()+
 				", Track Spread: "+f.Fm1(Units.to("deg",spread_trk_))+
 				" [deg] , Ground Speed Spread: "+f.Fm1(Units.to("knot",spread_gs_))+
@@ -259,7 +259,7 @@ public class AlertThresholds {
 	public String toPVS(int prec) {
 		return "(# wcv:= "+detector_.toPVS(prec)+
 				", alerting_time:= "+f.Fm1(alerting_time_)+
-				", late_alerting_time:= "+f.Fm1(late_alerting_time_)+
+				", early_alerting_time:= "+f.Fm1(early_alerting_time_)+
 				", region:= "+region_+
 				", spread_trk:= ("+f.FmPrecision(spread_trk_,prec)+","+f.FmPrecision(spread_trk_,prec)+")"+
 				", spread_gs:= ("+f.FmPrecision(spread_gs_,prec)+","+f.FmPrecision(spread_gs_,prec)+")"+

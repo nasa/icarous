@@ -86,8 +86,8 @@ public class Plan implements ErrorReporter, Cloneable {
 	private static boolean debug = false;
 	protected String note = "";
 
-	final static double minDt   = GreatCircle.minDt;  // points that are closer together in time than this are treated as the same point for velocity calculations
-	final static public String specPre = "$";         // special prefix for labels
+	public static final double minDt   = GreatCircle.minDt;  // points that are closer together in time than this are treated as the same point for velocity calculations
+	public static final String specPre = "$";         // special prefix for labels
 
 	
     
@@ -112,7 +112,6 @@ public class Plan implements ErrorReporter, Cloneable {
 		this.note = note;
 		init();
 	}
-
 
 	private void init() {
 		points = new ArrayList<NavPoint>(100);
@@ -569,14 +568,14 @@ public class Plan implements ErrorReporter, Cloneable {
 
 	/**
 	 * Return the segment number that contains 'time' in [s].  If the
-	 * time is not contained in the flight plan then -1 is returned.  If
+	 * time is not contained in the flight plan then -1 is returned.  
+	 * For example, if
 	 * the time for point 0 is 10.0 and the time for point 1 is 20.0, then
 	 * getSegment(10.0) will produce 0, getSegment(15.0) will produce 0,
 	 * and getSegment(20.0) will produce 1.
 	 */
 	public int getSegment(double time) {
 		int i = getIndex(time);
-		//f.pln(" ############# Plan.getSegment: i = "+i);
 		if (i == -1) return -1; // before plan
 		if (i >= 0) return i;	// hit point exactly
 		if (-i-2 == size()-1) return -1; // after plan
@@ -612,7 +611,11 @@ public class Plan implements ErrorReporter, Cloneable {
 
 
 	/**
-	 * This finds the last previous index where the TCP is of type tcp1 or tcp2
+	 * This finds the last index where the TCP type is BOT or EOT. If BOT or EOT
+	 * are never found, then return -1.
+	 * 
+	 * @param current the index of the point to begin the search
+	 * @return index before <i>current</i> which has a TCP type of BOT or EOT
 	 */
 	public int prevTrkTCP(int current) {
 		if (current < 0) {
@@ -620,7 +623,6 @@ public class Plan implements ErrorReporter, Cloneable {
 			return -1;
 		}
 		for (int j = current-1; j >=0; j--) {
-			//			if (points.get(j).tcp_trk==Trk_TCPType.BOT || points.get(j).tcp_trk==Trk_TCPType.EOT || points.get(j).tcp_trk==Trk_TCPType.EOTBOT ) {
 			if (points.get(j).isTrkTCP()) {
 				return j;
 			}
@@ -628,13 +630,19 @@ public class Plan implements ErrorReporter, Cloneable {
 		return -1;
 	}
 
+	/**
+	 * This finds the last index where the TCP type is BOT or EOT. If BOT or EOT
+	 * are never found, then return -1.
+	 * 
+	 * @param current the index of the point to begin the search
+	 * @return index after <i>current</i> which has a TCP type of BOT or EOT
+	 */
 	public int nextTrkTCP(int current) {
 		if (current < 0) {
 			addWarning("nextTrkTCP invalid starting index "+current);
 			return -1;
 		}
 		for (int j = current+1; j < size(); j++) {
-			//			if (points.get(j).tcp_trk==Trk_TCPType.BOT || points.get(j).tcp_trk==Trk_TCPType.EOT || points.get(j).tcp_trk==Trk_TCPType.EOTBOT ) {
 			if (points.get(j).isTrkTCP()) {
 				return j;
 			}
@@ -646,13 +654,12 @@ public class Plan implements ErrorReporter, Cloneable {
 	/**
 	 * This finds the last previous index where the TCP is of type tcp1 or tcp2
 	 */
-	private int prevGsTCP(int current) { // , NavPoint.Gs_TCPType tcp1, NavPoint.Gs_TCPType tcp2) {
+	private int prevGsTCP(int current) { 
 		if (current < 0) {
 			addWarning("prevGsTCP invalid starting index "+current);
 			return -1;
 		}
 		for (int j = current-1; j >=0; j--) {
-			//			if (points.get(j).tcp_gs==Gs_TCPType.BGS || points.get(j).tcp_gs==Gs_TCPType.EGS || points.get(j).tcp_gs==Gs_TCPType.EGSBGS) {
 			if (points.get(j).isGsTCP()) {
 				return j;
 			}
@@ -663,13 +670,12 @@ public class Plan implements ErrorReporter, Cloneable {
 	/**
 	 * This finds the last previous index where the TCP is of type tcp1 or tcp2
 	 */
-	private int nextGsTCP(int current) { // , NavPoint.Gs_TCPType tcp1, NavPoint.Gs_TCPType tcp2) {
+	private int nextGsTCP(int current) { 
 		if (current < 0) {
 			addWarning("nextGsTCP invalid starting index "+current);
 			return -1;
 		}
 		for (int j = current+1; j < size(); j++) {
-			//			if (points.get(j).tcp_gs==Gs_TCPType.BGS || points.get(j).tcp_gs==Gs_TCPType.EGS || points.get(j).tcp_gs==Gs_TCPType.EGSBGS) {
 			if (points.get(j).isGsTCP()) {
 				return j;
 			}
@@ -826,16 +832,8 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 
-	//	/**
-	//	 * This returns the index of the Beginning of Turn point <= the given index, or -1 if there is no such point.
-	//	 * This is generally intended to be used to find the beginning of an acceleration zone.
-	//	 */
-	//	public int prev_BOT(double t) {
-	//		return prevBOT(getSegment(t));
-	//	}
-
 	/**
-	 * This returns the index of the Beginning of Turn point that is less than or equal to the given 
+	 * This returns the index of the Beginning of Turn (BOT) point that is less than or equal to the given 
 	 * index, or -1 if there is no such point.
 	 * This is generally intended to be used to find the beginning of an acceleration zone.
 	 */
@@ -853,10 +851,6 @@ public class Plan implements ErrorReporter, Cloneable {
 		return -1;
 	}
 
-	//	public int next_EOT(double t) {
-	//		return nextEOT(getSegment(t));
-	//	}
-	//
 	/**
 	 * This returns the index of the End of Turn point >= the given index, or -1 if there is no such point.
 	 * This is generally intended to be used to find the end of an acceleration zone.
@@ -876,14 +870,6 @@ public class Plan implements ErrorReporter, Cloneable {
 		return -1;
 	}
 
-	//	/**
-	//	 * This returns the index of the Vertical Speed Change Begin point <= the given index, or -1 if there is no such point.
-	//	 * This is generally intended to be used to find the beginning of an acceleration zone.
-	//	 */
-	//	public int prev_BVS(double t) {
-	//		return prevBVS(getSegment(t));
-	//	}
-	//
 	/**
 	 * This returns the index of the Vertical Speed Change Begin point <= the given index, or -1 if there is no such point.
 	 * This is generally intended to be used to find the beginning of an acceleration zone.
@@ -903,14 +889,6 @@ public class Plan implements ErrorReporter, Cloneable {
 		return -1;
 	}
 
-	//	/**
-	//	 * This returns the index of the Ground Speed Change Begin point <= the given index, or -1 if there is no such point.
-	//	 * This is generally intended to be used to find the beginning of an acceleration zone.
-	//	 */
-	//	public int prev_BGS(double t) {
-	//		return prevBGS(getSegment(t));
-	//	}
-	//
 	public int prevBGS(int current) {
 		if (current < 0) {
 			addWarning("prevBGS invalid starting index "+current+" with TCP types BGS, EGSBGS");
@@ -1242,42 +1220,25 @@ public class Plan implements ErrorReporter, Cloneable {
 
 	/** This returns true if the given time is >= a BOT but before an EOT point */
 	public boolean inTrkChange(double t) {
-		//return inTrkChange(getSegment(t));
 		int i = getSegment(t);
-		int lastj = prevTrkTCP(i+1); // ,NavPoint.Trk_TCPType.BOT, NavPoint.Trk_TCPType.EOTBOT);
-		return lastj>=0 && !points.get(lastj).isEOT();
+		int lastj = prevTrkTCP(i+1); 
+		return lastj >= 0 && ! points.get(lastj).isEOT();
 	}
-
-	//	public boolean inTrkChange(int i) {
-	//		int lastj = prevTrkTCP(i); // ,NavPoint.Trk_TCPType.BOT, NavPoint.Trk_TCPType.EOTBOT);
-	//		return lastj>=0 && ! points.get(lastj).isEOT();
-	//	}
-
 
 	/** This returns true if the given time is >= a GSCBegin but before a GSCEnd point */
 	public boolean inGsChange(double t) {
-		//return inGsChange(getSegment(t));
 		int i = getSegment(t);
-		int lastj = prevGsTCP(i+1); // ,NavPoint.Gs_TCPType.BGS,NavPoint.Gs_TCPType.EGSBGS);
-		return lastj>=0 && ! points.get(lastj).isEGS();
+		int lastj = prevGsTCP(i+1); 
+//		/f.pln(" $$$ inGsChange: t = "+t+" lastj = "+lastj);
+		return lastj >= 0 && ! points.get(lastj).isEGS();
 	}
-
-	//	public boolean inGsChange(int i) {
-	//		int lastj = prevGsTCP(i); // ,NavPoint.Gs_TCPType.BGS,NavPoint.Gs_TCPType.EGSBGS);
-	//		return lastj>=0 && ! points.get(lastj).isEGS();
-	//	}
 
 	/** This returns true if the given time is >= a VSCBegin but before a VSCEnd point */
 	public boolean inVsChange(double t) {
-		//return inVsChange(getSegment(t));
 		int i = getSegment(t);
-		int lastj = prevVsTCP(i+1); // ,NavPoint.Vs_TCPType.BVS, NavPoint.Vs_TCPType.EVSBVS);
-		return lastj>=0 && ! points.get(lastj).isEVS();
+		int lastj = prevVsTCP(i+1); 
+		return lastj >= 0 && ! points.get(lastj).isEVS();
 	}
-
-	//	public boolean inVsChange(int i) {
-	//	}
-
 
 	/** Is the aircraft accelerating (either horizontally or vertically) at this time? 
 	 * @param t time to check for acceleration
@@ -1297,7 +1258,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			//return bot.position().distanceH(bot.turnCenter());
 			return bot.turnRadius();
 		} else {
-			return -1.0;
+			return 0.0;
 		}
 	}
 
@@ -1372,16 +1333,67 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 		NavPoint np1 = point(seg);
 		if (seg == size()-1 || np1.time() == t) {
-			//f.pln(" $$$$$ position: return EARLY!"+points.get(seg).position());
 			return np1.position();
 		} 			
 		if (linear) { 
 			double t1 = point(seg).time();
 			return point(seg).position().linear(initialVelocity(seg, linear),t-t1);
+		} else {
+			return accelZone(Velocity.ZERO, t, t).first;
 		}
-		return accelZone(Velocity.ZERO,t, t).first;
 	}
 
+	//TODO
+	/**  *** EXPERIMENTAL ***
+	 * Return the position associated with path distance from seg  
+	 * @param d distance from point seg.
+	 * @return position of the point
+	 */
+	public Position positionByDistance(int seg, double d) {
+		double pathd = pathDistance(seg);
+		if (d < 0 || d > pathd) return Position.INVALID;
+		if (seg == size()-1) return point(size()-1).position();
+		if (Util.almost_equals(d, 0)) return point(seg).position();
+		if (Util.almost_equals(d, pathd)) return point(seg+1).position();
+		double fract = d/pathd;
+		Position p1 = point(seg).position();
+		Position p2 = point(seg+1).position();
+		Position pos = p1.interpolate(p2, fract);
+		if (inTrkChange(getTime(seg))) {
+			int ixBOT = prevBOT(seg);
+			NavPoint bot = point(ixBOT);
+			Position center = bot.turnCenter();
+			double gsAt_d = initialVelocity(ixBOT).gs();  // TODO: assume not changing for now
+			pos = KinematicsPosition.turnByDist(point(seg).position(), center, d, gsAt_d).first;
+		}
+		if (inVsChange(getTime(seg))) {
+			double dt = (getTime(seg+1)-getTime(seg))*fract;
+			if (inGsChange(getTime(seg))) {
+				double vo = initialVelocity(seg).gs();
+				double a = point(prevBGS(seg)).gsAccel();
+				double t1 = Util.root(-0.5*a, -vo, d, 1);
+				double t2 = Util.root(-0.5*a, -vo, d, -1);
+				dt = Double.isNaN(t1) || t1 < 0 ? t2 : (Double.isNaN(t2) || t2 < 0 ? t1 : Math.min(t1, t2));
+			}
+			double dz = initialVelocity(seg).vs()*dt+0.5*point(prevBVS(seg)).vsAccel()*dt*dt;
+			pos.mkAlt(point(seg).alt()+dz);
+		}
+		return pos;
+	}
+	
+	//TODO  *** EXPERIMENTAL ***
+	public Position positionByDistance(double d) {
+		int i = 0;
+		double nextdist = pathDistance(0);
+		while (nextdist < d && d > 0 && i < size()-1) {
+			d -= nextdist;
+			nextdist = pathDistance(i);
+			i++;
+		}
+		if (i >= size()) return Position.INVALID;
+		return positionByDistance(i,d);
+	}
+	
 	public Position positionExtrapolate(double t) {
 		int seg = getSegment(t);
 		//f.pln(" $$$$$ position: t = "+t+" seg = "+seg+" getFirstTime = "+getFirstTime()+" getLastTime = "+getLastTime());
@@ -1400,12 +1412,18 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 
-	// v_linear is the linear (estimate) velocity from point i (before t1) to point i+1 (after t1)
-	//     Note: in a horizontal acceleration zone, only the vs component of v_linear (i.e. v_linear.vs()) is used
-	//           in a vertical acceleration zone, v_linear.vs is not used, it is computed and integrated with the horizontal components of v_linear
-	// t1 is the time of interest
-	// t2 is the time from which the velocity should be calculated (t1=t2 for initial/current velocity, t2=time of point i+1 for final velocity) 
-	private Pair<Position,Velocity> accelZone(Velocity v_linear, double t1, double t2) { // ***RWB*** Kchange
+	/**
+	 * Find the position of a point at time t1, then use t2 to compute a velocity from t1 to t2.
+	 * 
+	 * @param v_linear is the linear (estimate) velocity from point i (before t1) to point i+1 (after t1)
+	 *     Note: in a horizontal acceleration zone, only the vs component of v_linear (i.e. v_linear.vs()) is used
+	 *           in a vertical acceleration zone, v_linear.vs is not used, it is computed and integrated with the horizontal components of v_linear
+	 * @param t1 time of interest
+	 * @param t2 time from which the velocity should be calculated (t1=t2 for initial/current velocity, t2=time of point i+1 for final velocity) 
+	 * @return position and velocity of the
+	 */
+	private Pair<Position,Velocity> accelZone(Velocity v_linear, double t1, double t2) { 
+		//f.pln(" .......... ENTER accelZone t1 = "+t1+" t2 = "+t2+" "+inTrkChange(t1)+" "+inGsChange(t1));
 		//double t1 = points.get(i).time();
 		//double t2 = points.get(i+1).time();
 		int seg = getSegment(t1);
@@ -1413,6 +1431,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		NavPoint np2 = point(seg+1);
 		Position p = np1.position().linear(np1.initialVelocity(np2),t1-np1.time());
 		Velocity v = v_linear;
+		//TODO: this only works if GS accel segments are different than TRK accel segments
 		if (inTrkChange(t1)) {
 			NavPoint n1 = points.get(prevBOT(getSegment(t1)));
 			Position so = n1.position();
@@ -1422,7 +1441,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			p = pv.first.mkAlt(p.alt()); // need to treat altitude separately
 			//f.pln(" @@@@@@@@@  accelZone: p = "+p+"  np2="+np2+" t2="+t2);
 			v = pv.second.mkVs(v_linear.vs());
-			//f.pln(" ########## accelZone: inTurn adjustment: seg = "+seg+" t1 = "+t1+" t2 = "+t2+" v = "+v);
+		    //f.pln(" ########## accelZone: inTurn adjustment: seg = "+seg+" t1 = "+t1+" t2 = "+t2+" v = "+v);
 		} else if (inGsChange(t1)) {
 			NavPoint n1 = points.get(prevBGS(getSegment(t1)));
 			Position so = n1.position();
@@ -1443,9 +1462,131 @@ public class Plan implements ErrorReporter, Cloneable {
 			//f.pln(" ########## accelZone: inVSC adjustment in seg = "+seg+" dt = "+(t2-n1.time())+" n1.accel() = "+n1.accel());
 			//f.pln(" ########## accelZone: inVSC adjustment in seg = "+seg+" FROM v = "+v+" TO v2 = "+v2);
 		}
-		//f.pln(" ########## END accelZone: seg = "+seg+"): p = "+p+" v = "+v);
-		//Debug.halt();
 		return new Pair<Position,Velocity>(p,v);  
+	}
+
+	
+//	// distance from ix to ix+1
+//	public double distanceGeneral(int ix) {
+//		double rtn;
+//		if (ix < 0 || ix >= size()-1) return 0.0;
+//		double tmIx = getTime(ix);
+//		if (inTrkChange(tmIx)) {
+//			NavPoint bot = point(prevBOT(ix));
+//			double R = bot.signedRadius();
+//			double omega = bot.trkAccel();
+//			Velocity vin = bot.velocityIn();
+//			if (inGsChange(tmIx)) {
+//				
+//			} else {
+//				double dt = getTime(ix+1)-getTime(ix);
+//				double theta = Math.abs(omega)*dt;
+//				rtn = theta * R;
+//			}
+//		} else {
+//			rtn = point(ix).distanceH(point(ix+1));
+//		}
+//		return rtn;
+//	}
+
+	
+	public double gsAtSeg(int seg) {
+		NavPoint np1 = point(seg);
+		double gs;
+		if (np1.isBeginTCP()) {
+			gs = np1.velocityIn().gs();
+			//f.pln(" $$ gsAtSeg A: seg = "+seg+" gs = "+Units.str("kn",gs,8));           
+		} else {
+			if (seg == 0 || seg >= size()-1) {
+				if (seg == 0) {
+					gs = getDtVelocity(0).gs();
+				} else {
+					gs = getDtVelocity(size()-1).gs();
+				}
+				//f.pln(" $$ gsAtSeg B: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
+			} else {
+				double dist = pathDistance(seg,seg+1);
+				double dt = point(seg+1).time() - point(seg).time();
+				if (inGsChange(np1.time())) { 
+					double gsAccel = point(prevBGS(seg)).gsAccel();
+					gs = dist/dt - 0.5*gsAccel*dt;
+					//f.pln(" $$ gsAtSeg C: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
+				} else {				
+					gs = dist/dt;
+					//f.pln(" $$ gsAtSeg D: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
+				}
+			}
+		}
+		return gs;
+	}
+	
+	public double gsAtTime(double t) {
+		double rtn;
+		int seg = getSegment(t);
+		if (seg < 0) {
+			rtn = -1;
+		} else {
+			double gsAt = gsAtSeg(seg);
+			//f.pln(" $$ gsAt: seg = "+seg+" gsAt = "+Units.str("kn",gsAt,8));
+			if (inGsChange(t)) {
+				int ixPrev = prevBGS(seg);
+				double gsAccel = point(ixPrev).gsAccel();
+				double tAtBGS = point(ixPrev).time();
+				double dt = t - tAtBGS;
+				//f.pln(" $$########### gsAt = "+Units.str("kn",gsAt,8)+" dt = "+dt);
+				rtn = gsAt + gsAccel*dt;
+			} else {
+				rtn = gsAt;
+				//f.pln(" $$................. gsAt: rtn = = "+Units.str("kn",rtn));
+			}	
+		}
+		return rtn;
+	}
+
+
+	
+	// **** EXPERIMENTAL *****
+	private Pair<Position,Velocity> positionVelocity(double t) { 
+		int seg = getSegment(t);
+		NavPoint np1 = point(seg);
+		NavPoint np2 = point(seg+1);
+		Position p = np1.position().linear(np1.initialVelocity(np2),t-np1.time());
+		//Velocity vo = initialVelocity(seg);
+		Velocity vo;
+		if (np1.isTCP()) {
+			vo = np1.velocityIn();
+		} else {
+			if (seg == 0) {
+				vo = getDtVelocity(0);
+			} else {
+				vo = point(seg-1).finalVelocity(np1);
+			}
+		}
+		Position so = np1.position();
+		double d = 0;
+		double dt = t-np1.time();		
+		if (inGsChange(t)) {
+			double gsAccel = point(prevBGS(seg)).gsAccel();
+			d = vo.gs()*dt + 0.5*gsAccel*dt*dt;
+		} else {
+			d = vo.gs()*dt;
+		}
+		Position sNew;
+		
+		if (inTrkChange(t)) {
+			int ixPrevBOT = prevBOT(seg);
+			Position center = point(ixPrevBOT).turnCenter();
+			double gsAt_d = vo.gs();
+			Pair<Position,Velocity> tAtd = KinematicsPosition.turnByDist(so, center, d, gsAt_d);
+			sNew = tAtd.first;
+			Velocity vNew = tAtd.second;
+		} else {
+			Position sn = so.linear(vo,dt);
+		}
+		if (inVsChange(t)) {
+		}
+		Velocity vNew = vo;
+		return new Pair<Position,Velocity>(p,vNew);  
 	}
 
 	//	// v_linear is the linear (estimate) velocity from point i (before t1) to point i+1 (after t1)
@@ -1518,6 +1659,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		//f.pln(" $$$$ Plan.initialVelocity: ENTER with tm = "+tm);
 		if (tm > getLastTime()) {
 			addError("velocity: Attempt to get an initial velocity after the end of the Plan: "+f.Fm2(tm), size()-1);
+			//Debug.halt();
 			return Velocity.INVALID;
 		}
 		if (tm > getLastTime()-minDt) { // if almost at last time, move back a tiny bit
@@ -1543,9 +1685,10 @@ public class Plan implements ErrorReporter, Cloneable {
 			//f.pln(" $$$$$$  Plan.velocity USE FINAL VELOCITY INSTEAD !!!");
 			v = finalVelocity(i);
 		}
-		//f.pln(" $$$$ Plan.velocity: v = "+v );
+		//f.pln(" $$$$ Plan.velocity: BEFORE v = "+v );
 		if (linear) return v; 
 		v = accelZone(v,tm,tm).second;
+		//f.pln(" $$$$ Plan.velocity: AFTER v = "+v );
 		return v;
 	}
 
@@ -1590,18 +1733,18 @@ public class Plan implements ErrorReporter, Cloneable {
 		} else {
 			if (np.isBOT() || np.isBGS() || np.isBVS()) {
 				rtn = np.velocityIn();
-				//f.pln(" $$ initialVelocity0: velocityIn for i = "+i+" = "+rtn+" getDtVelocity(i) = "+getDtVelocity(i));
+				//f.pln(" $$ initialVelocity A: velocityIn for i = "+i+" = "+rtn+" getDtVelocity(i) = "+getDtVelocity(i));
 				if (rtn.isInvalid()) {
 					Debug.halt("\n !!!!!! Invalid velocityIn for "+name+" "+i+" this = "+toString());
 				}
 			} else if (inTrkChange(t) || inGsChange(t) || inVsChange(t) || (np.isTCP() && i == points.size()-1)) { // special case to also handle last point being in accel zone
 				rtn = velocity(t);
-				//f.pln(f.Fm0(i)+" $$$ initialVelocity1:  rtn = velocity("+f.Fm2(t)+") = "+ rtn.toString());
+				//f.pln(f.Fm0(i)+" $$$ initialVelocity B:  rtn = velocity("+f.Fm2(t)+") = "+ rtn.toString());
 				//			} else if (i == points.size()-1) {
 				//				rtn = finalVelocity(i-1);
 			} else {
 				rtn = getDtVelocity(i);
-				//f.pln(f.Fm0(i)+" $$$ initialVelocity2: rtn = getDtVelocity = "+ rtn.toString());
+				//f.pln(" $$$ initialVelocity C: i = "+f.Fm0(i)+" rtn = getDtVelocity = "+ rtn.toString());
 			}
 		}
 		//f.pln(" $$$ initialVelocity("+i+") rtn = "+rtn);
@@ -1676,9 +1819,9 @@ public class Plan implements ErrorReporter, Cloneable {
 
 	/** finalVelocity: compute velocity at the end of a segment,  Cannot be applied to last point in a plan
 	 * 
-	 * @param i
-	 * @param linear
-	 * @return
+	 * @param i         point of interest
+	 * @param linear    if true then ignore acceleration features and calculate as linear
+	 * @return          final velocity
 	 */
 	public Velocity finalVelocity(int i, boolean linear) { 
 		//f.pln(" $$ finalVelocity "+i+" "+getName());		
@@ -1702,15 +1845,11 @@ public class Plan implements ErrorReporter, Cloneable {
 		//f.pln(" $$### finalVelocity0: i = "+i+"  np1="+points.get(i)+" np2="+points.get(i+1));
 		Velocity v = finalLinearVelocity(i);
 		if (linear) return v; 
-		//f.pln(" $$$$$$$$$$$ ########## finalVelocity:    at i ="+i+" v = "+v);
+		//f.pln(" $$########## Plan.finalVelocity BEFORE ACCEL:    at i ="+i+" v = "+v);
 		double t1 = points.get(i).time();
 		double t2 = points.get(i+1).time();
 		v = accelZone(v,t1,t2).second;
-		//		// *************** DEBUG ONLY *****************
-		//		if (points.get(i).time() > getLastTime()-minDt) {
-		//			f.pln("\n $$............................. finalVelocity: return v = "+v);
-		//		}		
-		//f.pln(" $$### finalVelocity:    at i ="+i+" v = "+v);
+		//f.pln(" $$######### Plan.finalVelocity  AFTER ACCEL:     at i ="+i+" v = "+v);
 		return v;
 	}
 
@@ -1867,70 +2006,102 @@ public class Plan implements ErrorReporter, Cloneable {
 
 	/** 
 	 * Find the horizontal (curved) distance between points i and i+1 [meters]. 
+	 * 
+	 * @param i index of starting point
+	 * @return path distance (horizontal only)
 	 */
 	public double pathDistance(int i) {
 		return pathDistance(i, false);
 	}
 
 	/** 
-	 * Find the horizontal (curved) distance between points i and i+1 [meters]. 
+	 * Find the horizontal distance between points i and i+1 [meters]. 
+	 * 
+	 * @param i index of starting point
+	 * @param linear if true, measure the straight distance, if false measure the curved distance 
+	 * @return path distance (horizontal only)
 	 */
 	public double pathDistance(int i, boolean linear) {
-		if (i < 0 || i+1 > size()) {
-			return 0;
+		if (i < 0 || i >= size()) {
+			return 0.0;
 		}
-		// if in a turn, figure the arc distance
-		double tt = points.get(i).time();
-		if (!linear && inTrkChange(tt)) {
-			//double R = points.get(i).position().distanceH(points.get(i).turnCenter());
-			double R = turnRadius(tt);
-			//double distAB = points.get(i).position().distanceH(points.get(i+1).position());
-			//double alpha = 2*(Math.asin(distAB/(2*R))); 	
-			double dt = points.get(i+1).time() - tt;
-			double alpha = trkAccel(tt)*dt;					
-			//f.pln(i+" $$^^ pathDistance: R = "+Units.str("nm",R)+" dt = "+dt+" alpha = "+alpha);
-			return Math.abs(alpha*R);	    	
+
+		NavPoint p1 = points.get(i);
+		double tt = p1.time();
+		if ( ! linear && inTrkChange(tt)) { 
+			// if in a turn, figure the arc distance
+			NavPoint p2 = points.get(i+1);
+			NavPoint bot = points.get(prevBOT(i)); 
+			Position center = bot.turnCenter();
+			double R = bot.turnRadius();
+			double theta = PositionUtil.angle_between(p1.position(),center,p2.position());
+			return Math.abs(theta*R);	    	
 		} else {
 			// otherwise just use linear distance
 			return points.get(i).position().distanceH(points.get(i+1).position());
 		}
 	}
 
-	/**
-	 * Find the cumulative straight-line horizontal path distance for whole plan.
+	/** 
+	 * Find the horizontal distance between points i and (continuing the velocity) to time t. 
+	 * 
+	 * @param i index of starting point
+	 * @param t time
+	 * @param linear if true, measure the straight distance, if false measure the curved distance (if in a curved segement)
+	 * @return path distance (horizontal only)
 	 */
-	public double pathDistance() {
-		int i = 0;
-		int j = size()-1;
-		if (j <= 0) return 0;
-		return pathDistance(i,j, false);
-		//return pathDistance(false);
+	public double pathDistance(int i, double t, boolean linear) {
+		if (i < 0 || i >= size()) {
+			return 0.0;
+		}
+		NavPoint p1 = points.get(i);
+		NavPoint p2 = points.get(i+1);
+		double tt = p1.time();
+		if ( ! linear && inTrkChange(tt)) { 
+			// if in a turn, figure the arc distance
+			NavPoint bot = points.get(prevBOT(i)); 
+			Position center = bot.turnCenter();
+			double R = bot.turnRadius();
+			//TODO fix this?
+//			return p1.position().distanceH(p2.position(), center, R);
+			// from C++
+			double dt = points.get(i+1).time() - tt;
+			double alpha = trkAccel(tt)*dt;
+			return Math.abs(alpha*R);
+		} else {
+			// otherwise just use linear distance
+			return p1.position().distanceH(p2.position());
+		}
 	}
 
-//	public double pathDistance(boolean linear) {
-//		int i = 0;
-//		int j = size()-1;
-//		if (j <= 0) return 0;
-//		return pathDistance(i,j, linear);
-//	}
+	/**
+	 * Find the cumulative horizontal (curved) path distance for whole plan.
+	 */
+	public double pathDistance() {
+		return pathDistance(0, size(), false);
+	}
 
 	/** 
 	 * Find the cumulative horizontal (curved) path distance between points i and j [meters].
 	 */
 	public double pathDistance(int i, int j) {
-		return pathDistance(i,j, false);
+		return pathDistance(i, j, false);
 	}
 
 	/** 
-	 * Find the cumulative horizontal path distance between points i and j [meters]. If "linear" the
-	 * TCP turns are ignored.  Otherwise, the length of the circular turns are calculated.
+	 * Find the cumulative horizontal path distance between points i and j [meters].   
+	 * 
+	 * @param i beginning index
+	 * @param j ending index
+	 * @param linear if true, then TCP turns are ignored. Otherwise, the length of the circular turns are calculated.
+	 * @return cumulative path distance (horizontal only)
 	 */
 	public double pathDistance(int i, int j, boolean linear) {
 		if (i < 0) {
 			i = 0;
 		}
-		if (j > size()) {
-			j = size();
+		if (j >= size()) { // >= is correct, pathDistance(jj, linear) measures from jj to jj+1
+			j = size()-1; 
 		}
 		double total = 0.0; 
 		for (int jj = i; jj < j; jj++) {
@@ -2179,7 +2350,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 */
 	public boolean isWellFormed() {
 		//f.pln(" isWellFormed: size() = "+size());
-		return is_WellFormed() < 0;
+		return indexWellFormed() < 0;
 	}
 
 
@@ -2188,7 +2359,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * This returns -1 if the entire plan is "well formed", i.e. all acceleration zones have a matching beginning and end point.
 	 * Returns a nonnegative value to indicate the problem point
 	 */
-	public int is_WellFormed() {
+	public int indexWellFormed() {
 		//f.pln(" isWellFormed: size() = "+size());
 		for (int i = 0; i < size(); i++) {
 			NavPoint np = point(i);
@@ -2279,7 +2450,9 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * the plan has instanteous "jumps," it is not consistent.
 	 */
 	public boolean isConsistent() {
-		return isConsistent(false);
+		boolean silent = false;
+		boolean useProjection = true;
+		return isConsistent(silent, useProjection);
 	}
 
 
@@ -2287,7 +2460,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * This returns true if the entire plan produces reasonable accelerations. If
 	 * the plan has instanteous "jumps," it is not consistent.
 	 */
-	public boolean isConsistent(boolean silent) {	
+	public boolean isConsistent(boolean silent, boolean useProjection) {	
 		boolean rtn = true;
 		if ( ! isWellFormed()) {
 			if ( ! silent) {
@@ -2298,19 +2471,22 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 		for (int i = 0; i < size(); i++) {
 			if (point(i).isBGS()) {
-				if ( ! PlanUtil.gsConsistent(this, i, 0.00001, 0.07, silent))
+				if ( ! PlanUtil.gsConsistent(this, i, 0.00001, 0.07, silent)) {
 //					error.addWarning("isConsistent fail: "+i+" Not gs consistent!");
 					rtn = false;
+				}
 			}
 			if (point(i).isBVS()) {
-				if ( ! PlanUtil.vsConsistent(this, i, 0.00001, 0.00001, silent))
+				if ( ! PlanUtil.vsConsistent(this, i, 0.00001, 0.00001, silent)) {
 //					error.addWarning("isConsistent fail: "+i+" Not vs consistent!");
 					rtn = false;
+				}
 			}
 			if (point(i).isBOT()) {
-				if ( ! PlanUtil.turnConsistent(this, i, 0.02, 0.005, 1.2,  silent))
+				if ( ! PlanUtil.turnConsistent(this, i, 0.02, 0.005, 1.2,  silent, useProjection)) {
 //					error.addWarning("isConsistent fail: "+i+" Not turn consistent!");
 					rtn = false;
+				}
 			}
 			if (i > 0) {  
 				if (point(i).isTCP()) { 
@@ -2331,7 +2507,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * This returns true if the entire plan produces reasonable accelerations. If
 	 * the plan has instanteous "jumps," it is not consistent.
 	 */
-	public boolean isWeakConsistent(boolean silent) {	
+	public boolean isWeakConsistent(boolean silent, boolean useProjection) {	
 		boolean rtn = true;
 		if ( ! isWellFormed()) {
 			if ( ! silent) {
@@ -2342,7 +2518,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		for (int i = 0; i < size(); i++) {
 			rtn = rtn & PlanUtil.gsConsistent(this, i, 0.2, 0.1, silent);
 			rtn = rtn & PlanUtil.vsConsistent(this, i, 0.001, 0.005, silent);
-			rtn = rtn & PlanUtil.turnConsistent(this, i, 0.1, 0.3, 1.2, silent);
+			rtn = rtn & PlanUtil.turnConsistent(this, i, 0.1, 0.5, 1.2, silent, useProjection);
 			if (i > 0) {  
 				if (point(i).isTCP()) { 
 					if (! PlanUtil.isVelocityContinuous(this, i, 5.00, silent)) rtn = false;
@@ -2355,7 +2531,9 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 	public boolean isWeakConsistent() {
-		return isWeakConsistent(false);
+		boolean silent = false;
+		boolean useProjection = true;
+		return isWeakConsistent(silent, useProjection);
 	}
 
 

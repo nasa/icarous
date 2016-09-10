@@ -18,7 +18,7 @@ public class MovingPolygon3D {
     public double vspeed;
     public double minalt;
     public double maxalt;
-    private boolean morphing;
+//    private boolean morphing;
 
     public MovingPolygon3D() {
     	vspeed = 0;
@@ -32,7 +32,7 @@ public class MovingPolygon3D {
       this.vspeed = vspeed;
       this.minalt = minalt;
       this.maxalt = maxalt;
-      morphing = false;
+//      morphing = false;
     }
     
     public MovingPolygon3D(Poly3D p, Velocity v, double end) {
@@ -47,7 +47,7 @@ public class MovingPolygon3D {
 //f.pln("MovingPolygon3D "+i+" "+ps.get(i).toString()+" "+vs.get(i).toString());
       }
       horizpoly = new MovingPolygon2D(ps,vs,end);
-      morphing = false;
+//      morphing = false;
     }
 
     public MovingPolygon3D(Poly3D p, ArrayList<Velocity> v, double end) {
@@ -62,7 +62,7 @@ public class MovingPolygon3D {
   //f.pln("MovingPolygon3D "+i+" "+ps.get(i).toString()+" "+vs.get(i).toString());
         }
         horizpoly = new MovingPolygon2D(ps,vs,end);
-        morphing = true;
+//        morphing = true;
       }
     
     public MovingPolygon3D copy() {
@@ -103,9 +103,9 @@ public class MovingPolygon3D {
     	return new MovingPolygon3D(position(t), vlist, horizpoly.tend+t);
     }
     
-    public boolean isMorphing() {
-    	return morphing;
-    }
+//    public boolean isMorphing() {
+//    	return morphing;
+//    }
     
     public MovingPolygon2D movingPolygon2D(double t) {
     	return new MovingPolygon2D(horizpoly.position(t),horizpoly.polyvel, horizpoly.tend);

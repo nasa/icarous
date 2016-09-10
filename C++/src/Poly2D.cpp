@@ -116,7 +116,7 @@ void Poly2D::addVertex(const Vect2& v) {
 }
 
 
-bool Poly2D::contains(double a, double b) {
+bool Poly2D::contains(double a, double b) const {
 //	if (!boundingRectangleDefined) {
 //		boundingRect = BoundingRectangle(vertices);
 //		boundingRectangleDefined = true;
@@ -188,7 +188,7 @@ bool Poly2D::contains(double a, double b) {
 }
 
 
-bool Poly2D::contains(const Vect2& v) {
+bool Poly2D::contains(const Vect2& v) const {
 	return contains(v.x,v.y);
 }
 

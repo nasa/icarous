@@ -111,7 +111,7 @@ namespace larcfm {
 
 	int PolycarpAcceptablePolygon::counterclockwise_corner_index(const std::vector<Vect2>& p,int eps) {
 	    int windex = 0;
-	    for (int i = 0; i < (int) p.size()-1; i++) {
+	    for (int i = 0; i < (int) p.size(); i++) {
 	        if (PolycarpDoubleQuadratic::ae(p[windex].x,p[i].x) && p[windex].y>=p[i].y) windex = i;
 	        if (PolycarpDoubleQuadratic::ae(p[windex].x,p[i].x)) continue;
 	        if (eps*p[windex].x>eps*p[i].x) windex = i;

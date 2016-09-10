@@ -52,6 +52,10 @@ public:
    */
   KinematicMultiBands(const KinematicMultiBands& b);
 
+  ~KinematicMultiBands();
+
+  KinematicMultiBands& operator=(const KinematicMultiBands& b);
+
   /** Ownship and Traffic **/
 
   TrafficState const & getOwnship() const;
@@ -89,7 +93,7 @@ public:
   /**
    * Set bands parameters
    */
-  void setParameters(const KinematicBandsParameters& parameters);
+  void setKinematicBandsParameters(const KinematicBandsParameters& parameters);
 
   /**
    * @return recovery stability time in seconds. Recovery bands are computed at time of first green plus
@@ -773,6 +777,12 @@ public:
    *  Note: alert level are 1-indexed.
    */
   std::vector<TrafficState> const & conflictAircraft(int alert_level);
+
+  /**
+   * Return time interval of violation for given alert level
+   * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
+   */
+  Interval const & timeIntervalOfViolation(int alert_level);
 
   /**
    * @return the number of track band intervals, negative if the ownship has not been set

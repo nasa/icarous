@@ -17,36 +17,53 @@ package gov.nasa.larcfm.ACCoRD;
  * region of conflict prevention information.
  */
 public enum BandsRegion { 
-  /* UNKNOWN : Invalid band
-   * NONE: No band 
-   * RECOVERY: Band for violation recovery
-   * NEAR: Near conflict band 
-   * MID: Mid conflict bands 
-   * FAR: Far conflict band
-   */
+	/* UNKNOWN : Invalid band
+	 * NONE: No band 
+	 * RECOVERY: Band for violation recovery
+	 * NEAR: Near conflict band 
+	 * MID: Mid conflict bands 
+	 * FAR: Far conflict band
+	 */
 
-  UNKNOWN("UNKNOWN"), NONE("NONE"), RECOVERY("RECOVERY"), NEAR("NEAR"), MID("MID"), FAR("FAR");
+	UNKNOWN("UNKNOWN"), NONE("NONE"), RECOVERY("RECOVERY"), NEAR("NEAR"), MID("MID"), FAR("FAR");
 
-  private String name;
+	private String name;
 
-  BandsRegion(String nm) {
-   name = nm;
-  }
+	BandsRegion(String nm) {
+		name = nm;
+	}
 
-  public String toString() {
-    return name;
-  }
-  
-  boolean isValidBand() {
-    return this != UNKNOWN;
-  }
-  
-  boolean isResolutionBand() {
-    return this == NONE || this == RECOVERY;
-  }
+	public String toString() {
+		return name;
+	}
 
-  boolean isConflictBand() {
-    return isValidBand() && !isResolutionBand();  
-  }
-  
+	boolean isValidBand() {
+		return this != UNKNOWN;
+	}
+
+	boolean isResolutionBand() {
+		return this == NONE || this == RECOVERY;
+	}
+
+	boolean isConflictBand() {
+		return isValidBand() && !isResolutionBand();  
+	}
+
+	// RECOVERY=NONE < FAR < MID < NEAR
+	int order() {
+		if (isResolutionBand()) {
+			return 0;
+		}
+		if (this == FAR) {
+			return 1;
+		}
+		if (this == MID) {
+			return 2;
+		}
+		if (this == NEAR) {
+			return 3;
+		}
+		return -1;
+	}
+
 }

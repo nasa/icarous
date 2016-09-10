@@ -39,8 +39,8 @@ public final class VectFuns {
 	}
 
 	public static boolean collinear(Vect2 p0, Vect2 p1, Vect2 p2) {
-		// area of triangle is zero -- from Wolfram Mathworld
-		return p0.x*(p1.y-p2.y) + p1.x*(p2.y-p0.y) + p2.x*(p0.y-p1.y) == 0;
+		// area of triangle = 0? (same as det of sides = 0?)
+		return  p1.Sub(p0).det(p2.Sub(p0)) == 0;
 	}
 	
 	public static boolean collinear(Vect3 p0, Vect3 p1, Vect3 p2) {
@@ -73,13 +73,13 @@ public final class VectFuns {
 
 	
 	// This appears to use the right-hand rule to determine it returns the inside or outside angle
-	public static double angleBetween(Vect2 v1, Vect2 v2) {
+	public static double angle_between(Vect2 v1, Vect2 v2) {
 		Vect2 VV1 = v1.Scal(1.0/v1.norm());
 		Vect2 VV2 = v2.Scal(1.0/v2.norm());
 		return Util.atan2_safe(VV2.y,VV2.x)-Util.atan2_safe(VV1.y,VV1.x);
 	}
 
-	public static double angleBetween(Vect2 a, Vect2 b, Vect2 c) {
+	public static double angle_between(Vect2 a, Vect2 b, Vect2 c) {
 		Vect2 A = b.Sub(a);
 		Vect2 B = b.Sub(c);
 		return Util.acos_safe(A.dot(B)/(A.norm()*B.norm()));
@@ -187,7 +187,7 @@ public final class VectFuns {
      * @param v1 direction vector of line 2
      * @return Pair (2-dimensional point of intersection, relative time of intersection, relative to the so3)
      * Note the intersection may be in the past (i.e. negative time)
-     * If the lines are parallel, this returns the pair (0,NaN).
+     * If the lines are 2-D parallel, this returns the pair (0,NaN).
      */
 	public static Pair<Vect3,Double> intersection(Vect3 so3, Velocity vo3, Vect3 si3, Velocity vi3) {
 		Vect2 so = so3.vect2();
@@ -207,9 +207,27 @@ public final class VectFuns {
 		double minZ = Math.min(so3.z,si3.z);			
 		if (nZ > maxZ) nZ = maxZ;
 		if (nZ < minZ) nZ = minZ;	
-		return new Pair<Vect3,Double>(intersec,tt);
+		return new Pair<Vect3,Double>(intersec.mkZ(nZ),tt);
 	}
-	
+
+	/**
+	 * Intersection of 2 (2D) lines
+	 * @param so current position on line 1 
+	 * @param vo velocity of so along line 1
+	 * @param si current position on line 2
+	 * @param vi velocity of si on line 2
+	 * @return position and time along line 1, or (0,NaN) if there is no intersection.
+	 */
+	public static Pair<Vect2,Double> intersection(Vect2 so, Vect2 vo, Vect2 si, Vect2 vi) {
+		Vect2 ds = si.Sub(so);
+		if (vo.det(vi) == 0) {
+			return new Pair<Vect2,Double>(Vect2.ZERO, Double.NaN);
+		}
+		double tt = ds.det(vi)/vo.det(vi);
+		Vect2 intersec = so.Add(vo.Scal(tt));
+		return new Pair<Vect2,Double>(intersec,tt);
+	}
+
 	// returns intersection point and time of intersection relative to position so1
 	// for time return value, it assumes that aircraft travels from so1 to so2 in dto seconds and from si1 to si2 in dti seconds
 	// a negative time indicates that the intersection occurred in the past (relative to directions of travel of so1)
@@ -261,6 +279,12 @@ public final class VectFuns {
         return new Pair<Vect3,Double>(interSec.mkZ(nZ),iP.second); 
 	}
 
+	public static Pair<Vect2,Double> intersection(Vect2 so1, Vect2 so2, double dto, Vect2 si1, Vect2 si2) {
+		Vect2 vo = so2.Sub(so1).Scal(1/dto);
+		Vect2 vi = si2.Sub(si1).Scal(1/dto);
+		return intersection(so1,vo,si1,vi);
+	}
+
 	/**
 	 * returns the perpendicular time and distance between line defined by s,v and point q.
 	 * @param  s point on line
@@ -281,7 +305,7 @@ public final class VectFuns {
 	}
 	
 	/**
-	 * Return the closest (horizontal) point along line a-b to point so
+	 * Return the closest (preference to horizontal) point along line a-b to point so
 	 * EXPERIMENTAL
 	 */
 	public static Vect3 closestPoint(Vect3 a, Vect3 b, Vect3 so) {
@@ -290,7 +314,19 @@ public final class VectFuns {
 		Vect3 cp = intersection(so,s2,100,a,b).first;
 		return cp;
 	}
-	
+
+	/**
+	 * Return the closest (horizontal) point along line a-b to point so
+	 * EXPERIMENTAL
+	 */
+	public static Vect2 closestPoint(Vect2 a, Vect2 b, Vect2 so) {
+		if (collinear(a,b,so)) return so;
+		Vect2 v = a.Sub(b).PerpL().Hat(); // perpendicular vector to line
+		Vect2 s2 = so.AddScal(100, v);
+		Vect2 cp = intersection(so,s2,100,a,b).first;
+		return cp;
+	}
+
 	/**
 	 * Return the closest (horizontal) point on segment a-b to point so
 	 * EXPERIMENTAL
@@ -307,6 +343,25 @@ public final class VectFuns {
 		} else {
 			return b;
 		}
+	}
+	
+	public static Vect2 closestPointOnSegment(Vect2 a, Vect2 b, Vect2 so) {
+		Vect2 i = closestPoint(a,b,so);
+		// a, b, i are all on line
+		double d1 = a.distance(b);
+		double d2 = a.distance(i);
+		double d3 = b.distance(i);
+		if (d2 <= d1 && d3 <= d1) { // i is between a and b
+			return i;
+		} else if (d2 < d3) {
+			return a;
+		} else {
+			return b;
+		}
+	}
+
+	public static double distanceToSegment(Vect2 a, Vect2 b, Vect2 so) {
+		return so.distance(closestPointOnSegment(a,b,so));
 	}
 	
     /**

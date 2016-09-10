@@ -387,6 +387,18 @@ public final class Position implements OutputList {
       return s3.vect2().Sub(p.vect2()).norm(); 
     }
   }
+  
+  /** Return the curved horizontal distance between the current Position and the given Position
+   * 
+   * @param p position 2
+   * @param center the center of rotation
+   * @param radius the radius of curvature
+   * @return the curved horizontal distance
+   */
+  public double distanceH(Position p, Position center, double radius) {
+	  double theta = PositionUtil.angle_between(this,center,p);
+	  return Math.abs(theta*radius);	    	
+  }
 
   /** Return the vertical distance between the current Position and the given Position. 
    */
@@ -731,13 +743,6 @@ public final class Position implements OutputList {
     return (distH < D && distV < H);
   }
 
-  public boolean collinear(Position p1, Position p2) {
-    if (latlon) 
-      return GreatCircle.collinear(lla(),p1.lla(),p2.lla());
-    else
-      return VectFuns.collinear(point(),p1.point(),p2.point());
-  }
-
   /** Return a string representation */
   public String toString() {
     return toString(Constants.get_output_precision());
@@ -775,18 +780,18 @@ public final class Position implements OutputList {
       return "("+Units.str(xUnits,s3.x)+", "+Units.str(yUnits,s3.y)+", "+Units.str(zUnits,s3.z)+")";
   }
 
-  /** Return a string representation, with a user-specified digits of precision (0-15) and units without parentheses. 
-   * @param xlat x unit (if Euclidean) or latitude unit (if geodetic) 
-   * @param ylon y unit (if Euclidean) or longitude unit (if geodetic) 
-   * @param z altitude unit  
-   * @param precision degree of precision (fractional decimal places)
-   */
-  public String toStringNP(String xlat, String ylon, String z, int precision) {
-    if (latlon)
-      return ll.toStringNP(xlat, ylon, z, precision);
-    else
-      return s3.toStringNP(xlat, ylon, z, precision);
-  }
+//  /** Return a string representation, with a user-specified digits of precision (0-15) and units without parentheses. 
+//   * @param xlat x unit (if Euclidean) or latitude unit (if geodetic) 
+//   * @param ylon y unit (if Euclidean) or longitude unit (if geodetic) 
+//   * @param z altitude unit  
+//   * @param precision degree of precision (fractional decimal places)
+//   */
+//  public String toStringNP(String xlat, String ylon, String z, int precision) {
+//    if (latlon)
+//      return ll.toStringNP(xlat, ylon, z, precision);
+//    else
+//      return s3.toStringNP(xlat, ylon, z, precision);
+//  }
 
   /** Return a string representation, with a user-specified digits of precision (0-15) without parentheses. */
   public String toStringNP(int precision) {

@@ -34,6 +34,10 @@ public:
 
 	Velocity velocity(int i) const;
 
+	Velocity averageVelocity() const;
+
+	MovingPolygon3D linear(double t) const;
+
 	bool isStable() const;
 
 	int size() const;

@@ -141,7 +141,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 * Construct a KinematicMultiBands object with the default parameters and an empty list of detectors. 
 	 */
 	public KinematicMultiBands() {
-		this(KinematicBandsParameters.DefaultValues);
+		this(new KinematicBandsParameters());
 	}
 
 	/**
@@ -249,11 +249,13 @@ public class KinematicMultiBands implements GenericStateBands {
 
 		// Set Vertical Speed Bands
 		vs_band_.set_step(parameters.getVerticalSpeedStep()); 
+	  vs_band_.set_vertical_accel(parameters.getVerticalAcceleration());
 		vs_band_.set_recovery(parameters.isEnabledRecoveryVerticalSpeedBands());   
 
 		// Set Altitude Bands
 		alt_band_.set_step(parameters.getAltitudeStep()); 
 		alt_band_.set_vertical_rate(parameters.getVerticalRate()); 
+	  alt_band_.set_vertical_accel(parameters.getVerticalAcceleration());
 		alt_band_.set_recovery(parameters.isEnabledRecoveryAltitudeBands());   
 
 		reset();
@@ -1396,6 +1398,14 @@ public class KinematicMultiBands implements GenericStateBands {
 	public List<TrafficState> conflictAircraft(int alert_level) {
 		return core_.conflictAircraft(alert_level);
 	}
+	
+	/**
+	 * Return time interval of violation for given alert level
+	 * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
+	 */
+	public Interval timeIntervalOfViolation(int alert_level) {
+		return core_.timeIntervalOfViolation(alert_level);
+	}
 
 	/** 
 	 * @return the number of track band intervals, negative if the ownship has not been set
@@ -1459,7 +1469,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	}
 
 	/**
-	 * @return the region of a given track specified in internal units [rad]
+	 * @return the region of a given track specified in internal units [rad].
 	 * @param trk [rad]
 	 */
 	public BandsRegion regionOfTrack(double trk) {

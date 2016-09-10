@@ -101,6 +101,19 @@ bool SimplePoly::equals(const SimplePoly& p) const {
 	return ret;
 }
 
+// this uses euclidean coordinates
+SimplePoly SimplePoly::make(const Poly3D& p3) {
+	SimplePoly sp = SimplePoly();
+	sp.setBottom(p3.getBottom());
+	sp.setTop(p3.getTop());
+	for(int i = 0; i < p3.size(); i++) {
+		Position v = Position(Vect3(p3.getVertex(i),p3.getBottom()));
+		sp.addVertex(v);
+	}
+	return sp;
+}
+
+
 /**
  * Create a SimplePoly from a Poly3D.  This SimplePoly will use latlon coordinates if proj != null, otherwise it will use Euclidean coordinates.
  */
@@ -505,6 +518,29 @@ Poly3D SimplePoly::poly3D(const EuclideanProjection& proj) const {
 	return p3;
 }
 
+bool SimplePoly::contains(const Position& p) const {
+	EuclideanProjection proj = Projection::createProjection(p);
+	Poly3D poly = poly3D(proj);
+	if (p.isLatLon()) {
+		return poly.contains(Vect3::ZERO);
+	} else {
+		return poly.contains(p.point());
+	}
+
+}
+
+bool SimplePoly::contains2D(const Position& p) const {
+	EuclideanProjection proj = Projection::createProjection(p);
+	Poly2D poly = poly3D(proj).poly2D();
+	if (p.isLatLon()) {
+		return poly.contains(Vect2::ZERO);
+	} else {
+		return poly.contains(p.vect2());
+	}
+}
+
+
+
 
 /**
  * This moves the SimplePoly by the amount determined by the given (Euclidean) offset.
@@ -600,7 +636,7 @@ BoundingRectangle SimplePoly::getBoundingRectangle() const {
 string SimplePoly::toString() const {
 	string s = "";
 	for (int i = 0; i < size(); i++) {
-		s = s + getVertex(i).toString();
+		s = s + getVertex(i).toString()+" ";
 	}
 	return s;
 }

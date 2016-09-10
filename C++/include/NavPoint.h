@@ -55,20 +55,20 @@ private:
 	Vs_TCPType       tcp_vs;		        //
 	Position sourcePosition_p;
 	double sourceTime_d;
-	//double accel_d;                         // gsAccel if GS TCP
-	double   accel_trk;		    // omega (signed turn rate)
+	//double   accel_trk;		    // omega (signed turn rate)
+	double   sgnRadius;
 	double   accel_gs;            // signed gs-acceleration value
 	double   accel_vs;            // signed vs-acceleration value
 	Velocity velocityIn_v;
-	double radius;
+
 
 public:
 
 
     NavPoint(const Position& pp, double tt, WayType tty,
    		     const std::string& llabel, 	Trk_TCPType tcp_t, Gs_TCPType tcp_g, Vs_TCPType tcp_v,
-  			 double a_trk, double a_gs, double a_vs,
-  			 const Velocity& v_velocityIn, double rad, const Position& sourcePos, double sourceTime
+  			 double sRadius, double a_gs, double a_vs,
+  			 const Velocity& v_velocityIn, const Position& sourcePos, double sourceTime
    		     ) ;
 
     /** Construct a zero NavPoint */
@@ -89,8 +89,8 @@ public:
 
     static NavPoint makeFull(const Position& p, double t, WayType ty, const std::string& label,
     	      Trk_TCPType tcp_trk, Gs_TCPType tcp_gs, Vs_TCPType tcp_vs,
-    	      double accel_trk, double accel_gs, double accel_vs,
-    	      const Velocity& velocityIn, double rad, const Position& sourcePosition, double sourceTime);
+    	      double sgnRadius, double accel_gs, double accel_vs,
+    	      const Velocity& velocityIn, const Position& sourcePosition, double sourceTime);
 
 
     /**
@@ -271,13 +271,21 @@ public:
     /** String representation of the type */
     const std::string& strType() const;
 
-    double getRadius() const;
+    //double getRadius() const;
 
     /**
      * This returns the radius of the current turn.  If this is not a turn point or if the associated acceleration is 0.0, this returns
      * a radius of zero.
      */
     double turnRadius() const;
+
+
+    /**
+     * This returns the signed radius of the current turn.  If this is not a turn point or if the associated acceleration is 0.0, this returns
+     * a radius of zero.  The sign indicates the direction of the turn.
+     */
+    double signedRadius() const;
+
 
     /**
      * This returns a center of turn position with the same altitude as the current point.  If the current point is not a turn point,
@@ -388,13 +396,13 @@ public:
     const NavPoint makeLabel(const std::string& label) const;
     const NavPoint appendLabel(const std::string& label) const;
 	/** Make a new "beginning of turn" NavPoint at the given position and time where the current NavPoint is the "center of turn" */
-	const NavPoint makeBOT(const Position& p, double t, double d_turnRate, const Velocity& v_velocityIn) const;
+	const NavPoint makeBOT(const Position& p, double t,  const Velocity& v_velocityIn, double sRadius) const;
 //	/** Make a new "middle of turn" NavPoint at the given position and time where the current NavPoint is the "center of turn" */
 //	const NavPoint makeTurnMid(const Position& p, double t, double d_turnRate, const Velocity& v_velocityIn) const;
 	/** Make a new "end of turn" NavPoint at the given position and time where the current NavPoint is the "center of turn" */
 	const NavPoint makeEOT(const Position& p, double t, const Velocity& v_velocityIn) const;
 
-	const NavPoint makeEOTBOT(const Position& p , double t, double omega, const Velocity& v_velocityIn) const;
+	const NavPoint makeEOTBOT(const Position& p , double t, const Velocity& v_velocityIn, double sRadius) const;
 	/** Make a new "beginning of ground speed change" NavPoint at the given position and time where the current NavPoint is the "center of gsc" */
 	const NavPoint makeBGS(const Position& p, double t, double gsAccel, const Velocity& velocityIn) const;
 	/** Make a new "end of ground speed change" NavPoint at the given position and time where the current NavPoint is the "center of gsc" */

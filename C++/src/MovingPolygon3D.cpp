@@ -7,6 +7,7 @@
 
 #include <vector>
 #include"MovingPolygon3D.h"
+#include "Vect2.h"
 #include "format.h"
 
 namespace larcfm {
@@ -63,6 +64,22 @@ Poly3D MovingPolygon3D::position(double t) const {
 
 Velocity MovingPolygon3D::velocity(int i) const {
    	return Velocity::make(horizpoly.polyvel[i]).mkVs(vspeed);
+}
+
+Velocity MovingPolygon3D::averageVelocity() const {
+	Vect2 v = Vect2::ZERO;
+	for (int i = 0; i < size(); i++) {
+		v = v.Add(horizpoly.polyvel[i]);
+	}
+	return Velocity::make(Vect3(v.Scal(1.0/size()),vspeed));
+}
+
+MovingPolygon3D MovingPolygon3D::linear(double t) const {
+	std::vector<Velocity> vlist;
+	for (int i = 0; i < size(); i++) {
+		vlist.push_back(velocity(i));
+	}
+	return MovingPolygon3D(position(t), vlist, horizpoly.tend+t);
 }
 
 int MovingPolygon3D::size() const {

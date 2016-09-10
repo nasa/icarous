@@ -25,6 +25,7 @@ public:
   static bool isConflictBand(Region rt);
   static Region valueOf(const std::string& str);
   static std::string to_string(Region rt);
+  static int order(Region rt);
 };
 
 }

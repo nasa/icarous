@@ -21,6 +21,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 
+import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 import gov.nasa.larcfm.Util.LossData;
@@ -42,21 +43,25 @@ public class Daidalus implements ErrorReporter {
 	 */
 	public KinematicBandsParameters parameters; // Parameters
 
-	/**
-	 * Create a new Daidalus object. This object will default to using WCV_TAUMOD as state detector.  
-	 */
+  /**
+   * Create a new Daidalus object such that
+	 * - Alerting thresholds are unbuffered as defined by SC-228 MOPS.
+	 * - Maneuver guidance logic assumes instantaneous maneuvers
+	 * - Bands saturate at DMOD/ZTHR
+   */
 	public Daidalus() {
-		parameters = new KinematicBandsParameters(KinematicBandsParameters.DefaultValues);
+		parameters = new KinematicBandsParameters();
 		urgency_strat_ = new NoneUrgencyStrategy(); 
 		wind_vector_ = Velocity.ZERO;
 		current_time_ = 0;
 		ownship_ = TrafficState.INVALID;
 		traffic_ = new ArrayList<TrafficState>();
+		set_WC_SC_228_MOPS();
 	}
 
 	/**
-	 * Create a new Daidalus object and copy all configuration parameters and traffic information 
-	 * from another Daidalus object.
+	 * Create a new Daidalus object and copy all configuration parameters and 
+	 * traffic information from another Daidalus object.
 	 */
 	public Daidalus(Daidalus daa) {
 		parameters = new KinematicBandsParameters(daa.parameters);
@@ -67,7 +72,38 @@ public class Daidalus implements ErrorReporter {
 		traffic_ = new ArrayList<TrafficState>();
 		traffic_.addAll(daa.traffic_);
 	}
-
+	
+	/*  
+	 * Set Daidalus object such that 
+	 * - Alerting thresholds are unbuffered as defined by SC-228 MOPS.
+	 * - Maneuver guidance logic assumes instantaneous maneuvers
+	 * - Bands saturate at DMOD/ZTHR
+	 */
+	public void set_WC_SC_228_MOPS() {
+		parameters.alertor = AlertLevels.WC_SC_228_Thresholds();
+		parameters.setInstantaneousBands();
+		parameters.setCollisionAvoidanceBands(false);
+		parameters.setMinHorizontalRecovery(0.66,"nmi");
+		parameters.setMinVerticalRecovery(450,"ft");
+	}
+	
+	/*  
+	 * Set DAIDALUS object such that 
+	 * - Alerting thresholds are buffered 
+	 * - Maneuver guidance logic assumes kinematic maneuvers
+	 * - Turn rate is set to 3 deg/s, when type is true, and to  1.5 deg/s
+	 *   when type is false.
+	 * - Bands don't saturate until NMAC
+	 */
+	public void set_Buffered_WC_SC_228_MOPS(boolean type) {
+		parameters.alertor = AlertLevels.Buffered_WC_SC_228_Thresholds();
+		parameters.setKinematicBands(true);
+		parameters.setCollisionAvoidanceBands(true);
+		parameters.setCollisionAvoidanceBandsFactor(0.2);
+		parameters.setMinHorizontalRecovery(1.0,"nmi");
+		parameters.setMinVerticalRecovery(450,"ft");
+	}
+	
 	/**
 	 * Clear aircraft list, current time, and wind vector.
 	 */
@@ -550,7 +586,8 @@ public class Daidalus implements ErrorReporter {
 	}
 
 	public static String release() {
-		return "DAIDALUSj V-"+KinematicBandsParameters.VERSION; 
+		return "DAIDALUSj V-"+KinematicBandsParameters.VERSION+
+				"-FormalATM-"+Constants.version+" (Sept-11-2016)"; 
 	}
 
 	public boolean hasError() {

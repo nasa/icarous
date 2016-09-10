@@ -18,19 +18,15 @@ namespace larcfm {
 /**
  * DAIDALUS version
  */
-const std::string KinematicBandsParameters::VERSION = "0.99n-Aug-31-2016";
+const std::string KinematicBandsParameters::VERSION = "1.a";
 
-/**
- * Default parameter values
- */
-KinematicBandsParameters KinematicBandsParameters::DefaultValues = KinematicBandsParameters();
-
+/* NOTE: By default, no alert levels are configured */
 KinematicBandsParameters::KinematicBandsParameters() : error("DaidalusParameters") {
   // Bands
   lookahead_time_ = 180;              // [s] Lookahead time
   left_trk_ =  Pi;                     // Left track [0 - pi]
   right_trk_ = Pi;                    // Right track [0 - pi]
-  min_gs_ = 0;                        // Minimum ground speed
+  min_gs_ = Units::from("knot",0);;                        // Minimum ground speed
   max_gs_ = Units::from("knot",700);  // Maximum ground speed
   min_vs_ = Units::from("fpm",-5000); // Minimum vertical speed
   max_vs_ = Units::from("fpm",5000);  // Maximum vertical speed
@@ -38,15 +34,15 @@ KinematicBandsParameters::KinematicBandsParameters() : error("DaidalusParameters
   max_alt_ = Units::from("ft",50000); // Maximum altitude
 
   // Kinematic bands
-  trk_step_         = Units::from("deg", 1.0);  // Track step
+  trk_step_         = Units::from("deg",  1.0); // Track step
   gs_step_          = Units::from("knot", 1.0); // Ground speed step
   vs_step_          = Units::from("fpm", 10.0); // Vertical speed step
   alt_step_         = Units::from("ft", 100.0); // Altitude step
   horizontal_accel_ = Units::from("m/s^2",2.0); // Horizontal acceleration
-  vertical_accel_   = Units::from("m/s^2",2.0); // Vertical acceleration
-  turn_rate_        = Units::from("deg/s",3.0); // Turn rate
-  bank_angle_       = 0.0;    // Bank angles (only used when turn_rate is 0)
-  vertical_rate_    = 0.0;    // Vertical rate
+  vertical_accel_   = Units::from("G",0.25);    // Section 1.2.3, DAA MOPS V3.6
+  turn_rate_        = Units::from("deg/s",3.0); // Section 1.2.3, DAA MOPS V3.6
+  bank_angle_       = 0.0;
+  vertical_rate_    = Units::from("fpm",500);   // Section 1.2.3, DAA MOPS V3.6
 
   // Recovery bands
   horizontal_nmac_ = ACCoRDConfig::NMAC_D;
@@ -69,20 +65,19 @@ KinematicBandsParameters::KinematicBandsParameters() : error("DaidalusParameters
   contour_thr_ = Pi;
 
   // Alert levels
-  alertor = AlertLevels(AlertLevels::WC_SC_228());
+  alertor = AlertLevels();
 }
 
 KinematicBandsParameters::KinematicBandsParameters(const KinematicBandsParameters& parameters) : error("DaidalusParameters") {
   setKinematicBandsParameters(parameters);
 }
 
-// Needed because of pointers in alertor
+KinematicBandsParameters::~KinematicBandsParameters() {}
+
 KinematicBandsParameters& KinematicBandsParameters::operator=(const KinematicBandsParameters& parameters) {
   setKinematicBandsParameters(parameters);
   return *this;
 }
-
-KinematicBandsParameters::~KinematicBandsParameters() {}
 
 /**
  * Set kinematic bands parameters
@@ -1140,6 +1135,20 @@ void KinematicBandsParameters::setInstantaneousBands() {
   horizontal_accel_ = 0;
   vertical_accel_ = 0;
   vertical_rate_ = 0;
+}
+
+/**
+ * Set kinematic bands.
+ * Set turn rate to 3 deg/s, when type is true; set turn rate to  1.5 deg/s
+ * when type is false;
+ */
+void KinematicBandsParameters::setKinematicBands(bool type) {
+  // Section 1.2.3, DAA MOPS SC-228 V3.6
+  turn_rate_ = Units::from("deg/s",type ? 3.0 : 1/5);
+  bank_angle_ = 0;
+  horizontal_accel_ = Units::from("m/s^2",2.0);
+  vertical_accel_ = Units::from("G",0.25);
+  vertical_rate_ = Units::from("fpm",500);
 }
 
 /**

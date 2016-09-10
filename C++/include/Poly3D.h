@@ -58,6 +58,9 @@ public:
 
 	std::string toString() ;
 
+	bool contains(const Vect3& v) const;
+
+
 };
 
 

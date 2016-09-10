@@ -24,6 +24,7 @@ KinematicBandsCore::KinematicBandsCore(const KinematicBandsParameters& params) {
   parameters = KinematicBandsParameters(params);
   most_urgent_ac = TrafficState::INVALID;
   conflict_acs_ = std::vector< std::vector<TrafficState> >();
+  tiov_ = std::vector<Interval>();
   reset();
 }
 
@@ -50,6 +51,7 @@ void KinematicBandsCore::setKinematicBandsCore(const KinematicBandsCore core) {
   parameters = KinematicBandsParameters(core.parameters);
   most_urgent_ac = core.most_urgent_ac;
   conflict_acs_ = std::vector< std::vector<TrafficState> >();
+  tiov_ = std::vector<Interval>();
   reset();
 }
 
@@ -69,6 +71,7 @@ void KinematicBandsCore::reset() {
   outdated_ = true;
   epsh_ = 0;
   epsv_ = 0;
+  tiov_.clear();
 }
 
 /**
@@ -170,14 +173,21 @@ Velocity const & KinematicBandsCore::traffic_v(int i) const {
  */
 void KinematicBandsCore::conflict_aircraft(int alert_level) {
   Detection3D* detector = parameters.alertor.getLevel(alert_level).getDetectorRef();
-  double T = parameters.alertor.getLevel(alert_level).getAlertingTime();
-  for (int i = 0; i < (int) traffic.size(); ++i) {
+  double tin  = PINFINITY;
+  double tout = NINFINITY;
+  for (TrafficState::nat i = 0; i < traffic.size(); ++i) {
     TrafficState ac = traffic[i];
-    ConflictData det = detector->conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),0,T);
+    ConflictData det = detector->conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),
+        0,parameters.getLookaheadTime());
     if (det.conflict()) {
-      conflict_acs_[alert_level-1].push_back(ac);
+      if (det.getTimeIn() <= parameters.alertor.getLevel(alert_level).getAlertingTime()) {
+        conflict_acs_[alert_level-1].push_back(ac);
+      }
+      tin = std::min(tin,det.getTimeIn());
+      tout = std::max(tout,det.getTimeOut());
     }
   }
+  tiov_.push_back(Interval(tin,tout));
 }
 
 /**
@@ -190,6 +200,18 @@ std::vector<TrafficState> const & KinematicBandsCore::conflictAircraft(int alert
     return conflict_acs_[alert_level-1];
   }
   return TrafficState::INVALIDL;
+}
+
+/**
+ * Return time interval of violation for given alert level
+ * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
+ */
+Interval const & KinematicBandsCore::timeIntervalOfViolation(int alert_level) {
+  update();
+  if (alert_level >= 1 && alert_level <= parameters.alertor.mostSevereAlertLevel()) {
+      return tiov_[alert_level-1];
+  }
+  return Interval::EMPTY;
 }
 
 int KinematicBandsCore::epsilonH(const TrafficState& ownship, const TrafficState& ac) {
@@ -230,16 +252,20 @@ std::string KinematicBandsCore::toString() const {
   s+="most_urgent_ac_ = "+most_urgent_ac.getId()+"\n";
   s+="epsh_ = "+Fmi(epsh_)+"\n";
   s+="epsv_ = "+Fmi(epsv_)+"\n";
-  for (int i=0; i < conflict_acs_.size(); ++i) {
+  for (TrafficState::nat i=0; i < conflict_acs_.size(); ++i) {
     s+="conflict_acs_["+Fmi(i)+"]: "+
         TrafficState::listToString(conflict_acs_[i])+"\n";
+  }
+  for (Interval::nat i=0; i < tiov_.size(); ++i) {
+      s+="tiov_["+Fmi(i)+"]: "+
+              tiov_[i].toString(precision)+"\n";
   }
   s+="## Ownship and Traffic\n";
   s+="NAME sx sy sz vx vy vz time\n";
   s+="[none] [m] [m] [m] [m/s] [m/s] [m/s] [s]\n";
   s+=ownship.getId()+", "+ownship.get_s().formatXYZ(precision,"",", ","")+
       ", "+own_v().formatXYZ(precision,"",", ","")+", 0\n";
-  for (int i = 0; i < traffic.size(); i++) {
+  for (TrafficState::nat i = 0; i < traffic.size(); i++) {
     s+=traffic[i].getId()+", "+traffic_s(i).formatXYZ(precision,"",", ","")+
         ", "+traffic_v(i).formatXYZ(precision,"",", ","")+", 0\n";
   }

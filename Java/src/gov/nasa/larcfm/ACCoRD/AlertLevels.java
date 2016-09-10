@@ -45,7 +45,7 @@ public class AlertLevels implements ParameterAcceptor {
 	 * Well-clear volume (unbuffered) is defined by alerting level 2 (conflict_alerting_level)  
 	 * 
 	 */
-	static public AlertLevels WC_SC_228() {
+	static public AlertLevels WC_SC_228_Thresholds() {
 		WCVTable preventive = new WCVTable();
 		preventive.setDTHR(0.66,"nmi");
 		preventive.setZTHR(700,"ft");
@@ -80,7 +80,7 @@ public class AlertLevels implements ParameterAcceptor {
 	 * Well-clear volume (unbuffered) is defined by alerting level 2 (conflict_alerting_level)  
 	 * 
 	 */
-	static public AlertLevels SingleBands_WC_SC_228() {
+	static public AlertLevels SingleBands_WC_SC_228_Thresholds() {
 		WCVTable preventive = new WCVTable();
 		preventive.setDTHR(0.66,"nmi");
 		preventive.setZTHR(700,"ft");
@@ -116,7 +116,7 @@ public class AlertLevels implements ParameterAcceptor {
 	 * Well-clear volume (buffered) is defined by alerting level 2 (conflict_alerting_level)  
 	 * 
 	 */
-	static public AlertLevels Buffered_WC_SC_228() {
+	static public AlertLevels Buffered_WC_SC_228_Thresholds() {
 		WCVTable preventive = new WCVTable();
 		preventive.setDTHR(1.0,"nmi");
 		preventive.setZTHR(750,"ft");
@@ -309,7 +309,7 @@ public class AlertLevels implements ParameterAcceptor {
 			ParameterData pd = new ParameterData();
 			pd.set("detector", getLevel(i).getDetector().getIdentifier());
 			pd.setInternal("alerting_time", getLevel(i).getAlertingTime(), "s", precision);
-			pd.setInternal("late_alerting_time", getLevel(i).getLateAlertingTime(), "s", precision);
+			pd.setInternal("early_alerting_time", getLevel(i).getEarlyAlertingTime(), "s", precision);
 			pd.set("region", getLevel(i).getRegion().name());
 			pd.setInternal("spread_trk", getLevel(i).getTrackSpread(), "deg", precision);
 			pd.setInternal("spread_gs", getLevel(i).getGroundSpeedSpread(), "knot", precision);
@@ -341,9 +341,9 @@ public class AlertLevels implements ParameterAcceptor {
 			// build the alertlevel
 			Detection3D det = dmap.get(pdsub.getString("detector"));
 			double alertingTime = pdsub.getValue("alerting_time");
-			double lateAlertingTime = pdsub.getValue("late_alerting_time");
+			double earlyAlertingTime = pdsub.getValue("early_alerting_time");
 			BandsRegion br = BandsRegion.valueOf(pdsub.getString("region"));
-			AlertThresholds al = new AlertThresholds(det,alertingTime,lateAlertingTime,br);
+			AlertThresholds al = new AlertThresholds(det,alertingTime,earlyAlertingTime,br);
 			al.setTrackSpread(pdsub.getValue("spread_trk"));
 			al.setGroundSpeedSpread(pdsub.getValue("spread_gs"));
 			al.setVerticalSpeedSpread(pdsub.getValue("spread_vs"));

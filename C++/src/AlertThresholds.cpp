@@ -18,15 +18,15 @@ namespace larcfm {
 /**
  * Creates an alert threholds object. Parameter det is a detector,
  * alerting_time is a non-negative alerting time (possibly positive infinity),
- * late_alerting_time is a late alerting time >= at (for maneuver guidance),
+ * early_alerting_time is a early alerting time >= at (for maneuver guidance),
  * region is the type of guidance
  */
 AlertThresholds::AlertThresholds(const Detection3D* det,
-    double alerting_time, double late_alerting_time,
+    double alerting_time, double early_alerting_time,
     BandsRegion::Region region) {
   detector_ = det->copy();
   alerting_time_ = std::abs(alerting_time);
-  late_alerting_time_ = std::max(alerting_time_,late_alerting_time);
+  early_alerting_time_ = std::max(alerting_time_,early_alerting_time);
   region_ = region;
   spread_trk_ = 0;
   spread_gs_ = 0;
@@ -37,7 +37,7 @@ AlertThresholds::AlertThresholds(const Detection3D* det,
 AlertThresholds::AlertThresholds(const AlertThresholds& athr) {
   detector_ = athr.detector_->copy();
   alerting_time_ = athr.alerting_time_;
-  late_alerting_time_ = athr.late_alerting_time_;
+  early_alerting_time_ = athr.early_alerting_time_;
   region_ = athr.region_;
   spread_trk_ = athr.spread_trk_;
   spread_gs_ = athr.spread_gs_;
@@ -48,7 +48,7 @@ AlertThresholds::AlertThresholds(const AlertThresholds& athr) {
 AlertThresholds::AlertThresholds() {
   detector_ = NULL;
   alerting_time_ = 0;
-  late_alerting_time_ = 0;
+  early_alerting_time_ = 0;
   region_ = BandsRegion::UNKNOWN;
   spread_trk_ = 0;
   spread_gs_ = 0;
@@ -69,7 +69,7 @@ AlertThresholds::~AlertThresholds() {
 AlertThresholds& AlertThresholds::operator=(const AlertThresholds& athr) {
   detector_ = athr.detector_->copy();
   alerting_time_ = athr.alerting_time_;
-  late_alerting_time_ = athr.late_alerting_time_;
+  early_alerting_time_ = athr.early_alerting_time_;
   region_ = athr.region_;
   spread_trk_ = athr.spread_trk_;
   spread_gs_ = athr.spread_gs_;
@@ -108,17 +108,17 @@ void AlertThresholds::setAlertingTime(double val) {
 }
 
 /**
- * Return late alerting time in seconds.
+ * Return early alerting time in seconds.
  */
-double AlertThresholds::getLateAlertingTime() const {
-  return late_alerting_time_;
+double AlertThresholds::getEarlyAlertingTime() const {
+  return early_alerting_time_;
 }
 
 /**
- * Set late alerting time in seconds. Late alerting time is a positive number >= alerting time
+ * Set early alerting time in seconds. Early alerting time is a positive number >= alerting time
  */
-void AlertThresholds::setLateAlertingTime(double t) {
-  late_alerting_time_ = std::abs(t);
+void AlertThresholds::setEarlyAlertingTime(double t) {
+  early_alerting_time_ = std::abs(t);
 }
 
 /**
@@ -257,7 +257,7 @@ void AlertThresholds::setAltitudeSpread(double spread, const std::string& u) {
 
 std::string AlertThresholds::toString() const {
   return detector_->toString()+", Alerting Time: "+Fm1(alerting_time_)+
-      " [s], Late Alerting Time: "+Fm1(late_alerting_time_)+
+      " [s], Early Alerting Time: "+Fm1(early_alerting_time_)+
       " [s], Region: "+BandsRegion::to_string(region_)+
       ", Track Spread: "+Fm1(Units::to("deg",spread_trk_))+
       " [deg] , Ground Speed Spread: "+Fm1(Units::to("knot",spread_gs_))+
@@ -269,7 +269,7 @@ std::string AlertThresholds::toString() const {
 std::string AlertThresholds:: toPVS(int prec) const {
   return "(# wcv:= "+detector_->toPVS(prec)+
       ", alerting_time:= "+Fm1(alerting_time_)+
-      ", late_alerting_time:= "+Fm1(late_alerting_time_)+
+      ", early_alerting_time:= "+Fm1(early_alerting_time_)+
       ", region:= "+BandsRegion::to_string(region_)+
       ", spread_trk:= ("+FmPrecision(spread_trk_,prec)+","+FmPrecision(spread_trk_,prec)+")"+
       ", spread_gs:= ("+FmPrecision(spread_gs_,prec)+","+FmPrecision(spread_gs_,prec)+")"+

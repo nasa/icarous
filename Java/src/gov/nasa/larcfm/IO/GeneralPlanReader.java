@@ -469,10 +469,13 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 					try {
 						NavPoint.Trk_TCPType tcptrk = NavPoint.Trk_TCPType.valueOf(input.getColumnString(head[TCP_TRK]));
 						double acctrk = input.getColumn(head[ACC_TRK], "deg/s");
+						double radius = 0.0;
+						if (input.columnHasValue(head[RADIUS])) radius = input.getColumn(head[RADIUS], "NM");
+						if (Util.almost_equals(radius,0.0)) radius = vel.gs()/acctrk;
 						switch (tcptrk) {
-						case BOT: n = n.makeBOT(n.position(), n.time(), acctrk, vel); break;
+						case BOT: n = n.makeBOT(n.position(), n.time(), vel, radius); break;
 						case EOT: n = n.makeEOT(n.position(), n.time(), vel); break;
-						case EOTBOT: n = n.makeEOTBOT(n.position(), n.time(), acctrk, vel); break;
+						case EOTBOT: n = n.makeEOTBOT(n.position(), n.time(), vel, radius); break;
 						default: // no change
 						}
 					} catch (Exception e) {

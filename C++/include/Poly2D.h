@@ -28,10 +28,10 @@ private:
 //	bool boundingRectangleDefined;
 	static const double vertexPerturb;
 	static const double perturbAmount;
-	double minX;
-	double minY;
-	double maxX;
-	double maxY;
+	mutable double minX;
+	mutable double minY;
+	mutable double maxX;
+	mutable double maxY;
 
 public:
 
@@ -67,9 +67,9 @@ public:
 	 * @param b - y coordinate of the point
 	 * @return true if the Polygon contains the point (a, b), otherwise false
 	 */
-	bool contains(double a, double b);
+	bool contains(double a, double b) const;
 
-	bool contains(const Vect2& v);
+	bool contains(const Vect2& v) const;
 
 	void setVertex(int i, const Vect2& v);
 

@@ -33,14 +33,15 @@ KinematicMultiBands::KinematicMultiBands(const KinematicBandsParameters& paramet
  * Construct a KinematicMultiBands object with the default parameters and an empty list of detectors.
  */
 KinematicMultiBands::KinematicMultiBands() : error("KinematicMultiBands"),
-    core_(KinematicBandsCore(KinematicBandsParameters::DefaultValues)),
-    trk_band_(KinematicTrkBands(KinematicBandsParameters::DefaultValues)),
-    gs_band_(KinematicGsBands(KinematicBandsParameters::DefaultValues)),
-    vs_band_(KinematicVsBands(KinematicBandsParameters::DefaultValues)),
-    alt_band_(KinematicAltBands(KinematicBandsParameters::DefaultValues)) {}
+    core_(KinematicBandsCore(KinematicBandsParameters())),
+    trk_band_(KinematicTrkBands(core_.parameters)),
+    gs_band_(KinematicGsBands(core_.parameters)),
+    vs_band_(KinematicVsBands(core_.parameters)),
+    alt_band_(KinematicAltBands(core_.parameters)) {}
 
 /**
- * Construct a KinematicMultiBands object from an existing KinematicMultiBands object. This copies all traffic data.
+ * Construct a KinematicMultiBands object from an existing KinematicMultiBands object.
+ * This copies all traffic data.
  */
 KinematicMultiBands::KinematicMultiBands(const KinematicMultiBands& b) : error("KinematicMultiBands"),
     core_(KinematicBandsCore(b.core_.parameters)),
@@ -48,6 +49,18 @@ KinematicMultiBands::KinematicMultiBands(const KinematicMultiBands& b) : error("
     gs_band_(KinematicGsBands(b.core_.parameters)),
     vs_band_(KinematicVsBands(b.core_.parameters)),
     alt_band_(KinematicAltBands(b.core_.parameters)) {}
+
+KinematicMultiBands::~KinematicMultiBands() {}
+
+KinematicMultiBands& KinematicMultiBands::operator=(const KinematicMultiBands& b) {
+  core_ = KinematicBandsCore(b.core_.parameters);
+  trk_band_ = KinematicTrkBands(b.core_.parameters);
+  gs_band_ = KinematicGsBands(b.core_.parameters);
+  vs_band_ = KinematicVsBands(b.core_.parameters);
+  alt_band_ = KinematicAltBands(b.core_.parameters);
+  reset();
+  return *this;
+}
 
 /** Ownship and Traffic **/
 
@@ -128,7 +141,7 @@ void KinematicMultiBands::setAlertor(const AlertLevels& alertor) {
 /**
  * Set bands parameters
  */
-void KinematicMultiBands::setParameters(const KinematicBandsParameters& parameters) {
+void KinematicMultiBands::setKinematicBandsParameters(const KinematicBandsParameters& parameters) {
   core_.parameters.setKinematicBandsParameters(parameters);
 
   // Set Track Bands
@@ -144,11 +157,13 @@ void KinematicMultiBands::setParameters(const KinematicBandsParameters& paramete
 
   // Set Vertical Speed Bands
   vs_band_.set_step(parameters.getVerticalSpeedStep());
+  vs_band_.set_vertical_accel(parameters.getVerticalAcceleration());
   vs_band_.set_recovery(parameters.isEnabledRecoveryVerticalSpeedBands());
 
   // Set Altitude Bands
   alt_band_.set_step(parameters.getAltitudeStep());
   alt_band_.set_vertical_rate(parameters.getVerticalRate());
+  alt_band_.set_vertical_accel(parameters.getVerticalAcceleration());
   alt_band_.set_recovery(parameters.isEnabledRecoveryAltitudeBands());
 
   reset();
@@ -1279,6 +1294,14 @@ void KinematicMultiBands::reset() {
  */
 std::vector<TrafficState> const & KinematicMultiBands::conflictAircraft(int alert_level) {
   return core_.conflictAircraft(alert_level);
+}
+
+/**
+ * Return time interval of violation for given alert level
+ * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
+ */
+Interval const & KinematicMultiBands::timeIntervalOfViolation(int alert_level) {
+  return core_.timeIntervalOfViolation(alert_level);
 }
 
 /**

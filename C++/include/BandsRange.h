@@ -15,6 +15,10 @@ namespace larcfm {
 
 class BandsRange {
 public:
+
+  // This numeric type is used for index variables over vectors of BandsRange
+  typedef std::vector<BandsRange>::size_type nat;
+
   Interval    interval;
   BandsRegion::Region region;
   BandsRange(const Interval& i, BandsRegion::Region r);

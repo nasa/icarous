@@ -26,12 +26,12 @@ BandsRegion::Region BandsRegion::valueOf(const std::string& s) {
 }
 
 std::string BandsRegion::to_string(Region rt) {
-    if (rt == NONE) return "NONE";
-    if (rt == FAR) return "FAR";
-    if (rt == MID) return "MID";
-    if (rt == NEAR) return "NEAR";
-    if (rt == RECOVERY) return "RECOVERY";
-    return "UNKNOWN";
+  if (rt == NONE) return "NONE";
+  if (rt == FAR) return "FAR";
+  if (rt == MID) return "MID";
+  if (rt == NEAR) return "NEAR";
+  if (rt == RECOVERY) return "RECOVERY";
+  return "UNKNOWN";
 }
 
 bool BandsRegion::isValidBand(Region rt) {
@@ -44,6 +44,22 @@ bool BandsRegion::isResolutionBand(Region rt) {
 
 bool BandsRegion::isConflictBand(Region rt) {
   return isValidBand(rt) && !isResolutionBand(rt);
+}
+
+int BandsRegion::order(Region rt) {
+  if (isResolutionBand(rt)) {
+    return 0;
+  }
+  if (rt == FAR) {
+    return 1;
+  }
+  if (rt == MID) {
+    return 2;
+  }
+  if (rt == NEAR) {
+    return 3;
+  }
+  return -1;
 }
 
 }

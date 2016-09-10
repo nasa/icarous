@@ -74,11 +74,6 @@ public:
   static const std::string VERSION;
 
   /**
-   * Default parameter values
-   */
-  static KinematicBandsParameters DefaultValues;
-
-  /**
    * Alertor
    */
   AlertLevels alertor;
@@ -87,10 +82,9 @@ public:
 
   KinematicBandsParameters(const KinematicBandsParameters& parameters);
 
-  // Needed because of pointers in alertor
-  KinematicBandsParameters& operator=(const KinematicBandsParameters& parameters);
-
   ~KinematicBandsParameters();
+
+  KinematicBandsParameters& operator=(const KinematicBandsParameters& parameters);
 
   /**
    * Set kinematic bands parameters
@@ -732,6 +726,13 @@ public:
    * Set instantaneous bands.
    */
   void setInstantaneousBands() ;
+
+  /**
+   * Set kinematic bands.
+   * Set turn rate to 3 deg/s, when type is true; set turn rate to  1.5 deg/s
+   * when type is false;
+   */
+  void setKinematicBands(bool type);
 
   /**
    *  Load parameters for ParameterData.

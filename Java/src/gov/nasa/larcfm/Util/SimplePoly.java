@@ -1181,7 +1181,7 @@ public class SimplePoly {
 		if (p1.isLatLon()) {
 			ang = GreatCircle.angle_between(p0.lla(), p1.lla(), p2.lla());
 		} else {
-			ang = Util.to_2pi(VectFuns.angleBetween(p0.vect2(), p1.vect2(), p2.vect2()));
+			ang = Util.to_2pi(VectFuns.angle_between(p0.vect2(), p1.vect2(), p2.vect2()));
 		}
 		if (vertexConvex(p0,p1,p2)) {		
 			return ang;

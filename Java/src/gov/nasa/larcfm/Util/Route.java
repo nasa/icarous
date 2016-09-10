@@ -23,7 +23,6 @@ public class Route {
 		positions = new ArrayList<Position>();
 		names = new ArrayList<String>();
 		radius = new ArrayList<Double>();
-
 	}
 	
 	public Route(Route gsp) {

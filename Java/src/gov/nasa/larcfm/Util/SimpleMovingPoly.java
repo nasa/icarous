@@ -14,9 +14,9 @@ import java.util.List;
  * A "stateful" version of a SimplePoly that includes velocity.
  */
 public class SimpleMovingPoly {
-	SimplePoly poly;
-	List<Velocity> vlist;
-	boolean morphingPoly = true;
+	public SimplePoly poly;
+	public List<Velocity> vlist;
+	public boolean morphingPoly = true;
 	
 	public SimpleMovingPoly(SimplePoly start, List<Velocity> vs) {
 		poly = start;
@@ -108,7 +108,7 @@ public class SimpleMovingPoly {
 	 */
 	public static SimpleMovingPoly make(MovingPolygon3D p3, EuclideanProjection proj) {
 		Poly3D base = p3.position(0);
-		if (p3.isMorphing()) {
+		if (!p3.isStable()) {
 			ArrayList<Velocity> vs = new ArrayList<Velocity>();
 			for(int i = 0; i < p3.size(); i++) {
 				vs.add(proj.inverseVelocity(new Vect3(base.getVertex(i),0), Velocity.make(new Vect3(p3.horizpoly.polyvel.get(i),p3.vspeed)), true));

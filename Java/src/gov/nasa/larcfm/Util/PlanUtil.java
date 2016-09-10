@@ -32,16 +32,27 @@ public class PlanUtil {
 		return npc;
 	}
 
-
-	private static boolean gsConsistent(int i, NavPoint GSCBegin, NavPoint GSCEnd, double accelEpsilon, double distEpsilon,			
+    /**
+     * 
+     * @param i                      a Begin GS Change (BGS) point 
+     * @param BGS                    The BGS point
+     * @param EGS                    The next EGS point
+     * @param accelEpsilon
+     * @param distEpsilon
+     * @param vin                   velocity into BGS
+     * @param vout                  velocity out of nextEGS
+     * @param silent                controls print
+     * @return                      true if passes all tests
+     * 
+     */
+	private static boolean gsConsistent(int i, NavPoint BGS, NavPoint EGS, double accelEpsilon, double distEpsilon,			
 			Velocity vin, Velocity vout, boolean silent) {
-		//Velocity vout = p.initialVelocity(p.nextEGS(i));
 		boolean rtn = true;
-		double dt = GSCEnd.time() - GSCBegin.time();
-		double a = GSCBegin.gsAccel();	    
+		double dt = EGS.time() - BGS.time();
+		double a = BGS.gsAccel();	    
 		double acalc = (vout.gs() - vin.gs())/(dt); 
 		//f.pln("\n\n\n\n ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		//f.pln("\n $$$ gsConsistent: vin = "+vin+" vout = "+vout+" dt = "+dt+" a = "+a+" acalc = "+acalc);
+		f.pln("$$$ gsConsistent: at i = "+i+" vin = "+vin+" vout = "+vout+" dt = "+dt+" a = "+a+" acalc = "+acalc);
 		if (!Util.within_epsilon(a, acalc, accelEpsilon)) { // 0.00001)) {
 			double deltaAccel = Math.abs(a-acalc);
 			if (!silent) {
@@ -51,7 +62,7 @@ public class PlanUtil {
 			rtn = false;
 		}
 		double ds = vin.gs()*dt + 0.5*a*dt*dt;
-		double distH = 	GSCBegin.position().distanceH(GSCEnd.position());		
+		double distH = 	BGS.position().distanceH(EGS.position());		
 		double absDiff = Math.abs(ds-distH);
 		//f.pln(" ds = "+Units.str("nm",ds)+ " distH = "+Units.str("nm",distH)+" absDiff = "+Units.str15("m",absDiff));
 		if (!Util.within_epsilon(absDiff, distEpsilon)) { // See testGsSimple for worst case 0.07
@@ -67,7 +78,7 @@ public class PlanUtil {
 		//boolean rtn = true;
 		NavPoint GSCBegin = p.point(i);
 		NavPoint GSCEnd = p.point(p.nextEGS(i));
-		Velocity vin = vin = p.point(i).velocityIn();
+		Velocity vin = p.point(i).velocityIn();
 		//if (i == 0) vin = p.point(i).velocityIn();     // not sure if we should allow TCP as current point ??
 		//else vin = p.finalVelocity(i-1);
 		Velocity vout = p.initialVelocity(p.nextEGS(i));
@@ -128,16 +139,16 @@ public class PlanUtil {
 	}
 
 
-	public static boolean turnConsistent(int i, NavPoint BOT, NavPoint EOT, double timeEpsilon, double distH_Epsilon, double distV_Epsilon, 
-			Velocity vin, Velocity vout, boolean silent) {
-		Position vertex = BOT.sourcePosition();
-		//f.pln(" $$$$$ turnConsistent: vertex = "+vertex+" BOT = "+BOT);
-		EuclideanProjection proj = Projection.createProjection(vertex.lla().zeroAlt());  
-		return turnConsistent(i, BOT, EOT, timeEpsilon, distH_Epsilon, distV_Epsilon, vin, vout, silent, proj);
-	}
+//	public static boolean turnConsistent(int i, NavPoint BOT, NavPoint EOT, double timeEpsilon, double distH_Epsilon, double distV_Epsilon, 
+//			Velocity vin, Velocity vout, boolean silent, boolean useProjection) {
+//		Position vertex = BOT.sourcePosition();
+//		//f.pln(" $$$$$ turnConsistent: vertex = "+vertex+" BOT = "+BOT);
+//		EuclideanProjection proj = Projection.createProjection(vertex.lla().zeroAlt());  
+//		return turnConsistent(i, BOT, EOT, timeEpsilon, distH_Epsilon, distV_Epsilon, vin, vout, silent, proj, useProjection);
+//	}
 
 	public static boolean turnConsistent(int i, NavPoint BOT, NavPoint EOT, double timeEpsilon, double distH_Epsilon, double distV_Epsilon, 
-			Velocity vin, Velocity vout, boolean silent, EuclideanProjection proj) {
+			Velocity vin, Velocity vout, boolean silent, boolean useProjection) {
 		boolean rtn = true;
 		double finalTrack = vout.trk();
 		double dt = EOT.time() - BOT.time();
@@ -146,7 +157,15 @@ public class PlanUtil {
 		//f.pln(" $$>>>> turnConsistent: i = "+i+" vin = "+vin+" dt = "+f.Fm4(dt)+" omega = "+Units.str("deg/s",omega,4));
 		//f.pln(" $$>>>> turnConsistent: i = "+i+" vout = "+vout);	
 		//f.pln(" $$>>>> turnConsistent: i = "+i+" vin.trk() = "+Units.str("deg", vin.compassAngle())+" vout.trk() = "+Units.str("deg", vout.compassAngle()));
-		Position pos = (ProjectedKinematics.turnOmega(so, vin, dt, omega, proj).first).mkAlt(EOT.alt()); // need to treat altitude separately
+		Position pos;
+		if (useProjection) {
+			Position vertex = BOT.sourcePosition();
+			//f.pln(" $$$$$ turnConsistent: vertex = "+vertex+" BOT = "+BOT);
+			EuclideanProjection proj = Projection.createProjection(vertex.lla().zeroAlt());  
+		    pos = (ProjectedKinematics.turnOmega(so, vin, dt, omega, proj).first).mkAlt(EOT.alt()); // need to treat altitude separately
+		} else {
+			pos = (KinematicsPosition.turnOmega(so, vin, dt, omega).first).mkAlt(EOT.alt());
+		}
 		if (!EOT.position().almostEquals(pos,distH_Epsilon,distV_Epsilon)) { //       (p,0.005,1.2)) {  
 			double distanceH = EOT.position().distanceH(pos);
 			if (!silent) {
@@ -176,7 +195,8 @@ public class PlanUtil {
 
 
 
-	public static boolean turnConsistent(Plan p, int i, double timeEpsilon, double distH_Epsilon, double distV_Epsilon, boolean silent) {
+	public static boolean turnConsistent(Plan p, int i, double timeEpsilon, double distH_Epsilon, double distV_Epsilon, 
+			                             boolean silent, boolean useProjection) {
 		if ( ! p.point(i).isBOT()) return true;
 		NavPoint BOT = p.point(i);
 		int ixEOT = p.nextEOT(i);
@@ -185,7 +205,7 @@ public class PlanUtil {
 		Velocity vout = p.initialVelocity(ixEOT);
 		//f.pln(" $$$$>>>> turnConsistent  ixEOT = "+ixEOT+" EOT = "+EOT+" vout = "+vout);
 		//DebugSupport.dumpPlan(p,"_BUGBUG");
-		return turnConsistent(i, BOT, EOT, timeEpsilon, distH_Epsilon, distV_Epsilon, vin, vout, silent);
+		return turnConsistent(i, BOT, EOT, timeEpsilon, distH_Epsilon, distV_Epsilon, vin, vout, silent, useProjection);
 	}
 
 	
@@ -211,24 +231,27 @@ public class PlanUtil {
 //				rtn = false;  
 //			}
 //		}
-		double gsDelta = p.finalVelocity(i-1).gs() - p.initialVelocity(i).gs();
+		Velocity finalV =  p.finalVelocity(i-1);
+		Velocity initialV =  p.initialVelocity(i);
+		double gsDelta = finalV.gs() - initialV.gs();
+		//f.pln(" $$ isVelocityContinuous: at i = "+i+" p.finalVelocity(i-1).gs() = "+Units.str("kn",finalV.gs())+" p.initialVelocity(i).gs() = "+Units.str("kn",initialV.gs()));
 		if (Math.abs(gsDelta) > velEpsilon) {
-			f.pln(" $$ FAIL gsDelta = "+Units.str("kn",gsDelta));
+			f.pln(" $$ isVelocityContinuous: FAIL gsDelta = "+Units.str("kn",gsDelta));
 			rtn = false; 
 		}
-		double vsDelta = p.finalVelocity(i-1).vs() - p.initialVelocity(i).vs();
+		double vsDelta = finalV.vs() - initialV.vs();
 		if ( Math.abs(vsDelta) > velEpsilon) {
-			f.pln(" $$ FAIL vsDelta = "+Units.str("fpm",vsDelta));
+			f.pln(" $$ isVelocityContinuous: FAIL vsDelta = "+Units.str("fpm",vsDelta));
 			rtn = false; 
 		}	
 		if (! rtn) { // 2.6)) { // see testAces3, testRandom for worst cases
 			if (!silent) {
-				f.pln(" $$$ isVelocityContinuous: FAIL! continuity: finalVelocity("+(i-1)+") = "+p.finalVelocity(i-1).toStringUnits()						
-						+"\n                                        != initialVelocity("+i+") = "+p.initialVelocity(i).toStringUnits()
-						+" point "+(i-1)+" type "+p.point(i-1).tcpTypeString()+" point "+i+" type "+p.point(i).tcpTypeString()); 
-				Velocity DeltaV = p.finalVelocity(i-1).Sub(p.initialVelocity(i));
+				f.pln(" $$$ isVelocityContinuous: FAIL! continuity: finalVelocity("+(i-1)+") = "+finalV 						
+						+"\n                                        != initialVelocity("+i+") = "+initialV
+						+"\n                                             NOTE: point "+(i-1)+" type "+p.point(i-1).tcpTypeString()+" point "+i+" type "+p.point(i).tcpTypeString()); 
+				Velocity DeltaV = finalV.Sub(initialV);
 				if (DeltaV.norm() > 10*velEpsilon) {
-				     f.pln("   ....  DeltaV = "+DeltaV.toStringUnits()+" DeltaV.norm() = "+DeltaV.norm());
+				     f.pln("   ....  DeltaV = "+DeltaV+" DeltaV.norm() = "+f.Fm2(DeltaV.norm()));
 				}
 			}
 		} 
@@ -265,7 +288,8 @@ public class PlanUtil {
 		boolean rtn = true;
 		for (int i = 0; i < p.size(); i++) {
 			if (p.point(i).isBOT()) {
-				if ( ! PlanUtil.turnConsistent(p, i, timeEpsilon, distH_Epsilon, distV_Epsilon,  silent))
+				boolean useProjection = true;
+				if ( ! PlanUtil.turnConsistent(p, i, timeEpsilon, distH_Epsilon, distV_Epsilon,  silent, useProjection))
 					rtn = false;
 			}
 		}		
@@ -304,7 +328,8 @@ public class PlanUtil {
 					rtn = false;
 			}
 			if (p.point(i).isBOT()) {
-				if ( ! PlanUtil.turnConsistent(p, i, 0.02, 0.005, 1.2,  silent))
+				boolean useProjection = true;
+				if ( ! PlanUtil.turnConsistent(p, i, 0.02, 0.005, 1.2,  silent, useProjection))
 					rtn = false;
 			}
 			if (i > 0) {  
@@ -346,8 +371,6 @@ public class PlanUtil {
 	//		//f.pln(" $$$ turnConsistent: vin = "+vin+" dt = "+dt+" 	getVelocityIn() = "+BOT.getVelocityIn()+" rtn = "+rtn);
 	//		return rtn;
 	//	}
-
-
 
 	public static int insertVirtual(Plan ac, double time) {
 		if (time >= ac.getFirstTime() && (time <= ac.getLastTime()) && ac.getIndex(time) < 0) {
@@ -1831,7 +1854,7 @@ public class PlanUtil {
 				if (inGsAccel) gsType = NavPoint.Gs_TCPType.EGS;
 				if (inVsAccel) vsType = NavPoint.Vs_TCPType.EVS;             
 				NavPoint lastP = NavPoint.makeFull(newLastPt.position(), newLastPt.time(), NavPoint.WayType.Orig,  "", trkType,  gsType, vsType,
-						0.0, 0.0, 0.0, vout, 0.0, newLastPt.position(), newLastPt.time()).makeLabel("CutDownTo_lastP");
+						0.0, 0.0, 0.0, vout, newLastPt.position(), newLastPt.time()).makeLabel("CutDownTo_lastP");
 				nPlan.add(lastP);
 				//f.pln(" $$$$$$ cutDownTo ADD lastP = "+lastP+" vout = "+vout);
 			}			
@@ -2290,7 +2313,7 @@ public class PlanUtil {
 	 * 
 	 * @return
 	 */
-	public static Plan applyWindError(Plan p, List<Triple<Double,Velocity,String>> errors) {
+	public static Plan applyWindField(Plan p, List<Triple<Double,Velocity,String>> errors) {
 		GsPlan gsp = new GsPlan(p.getFirstTime());
 		// check errors list has all plan time points
 		for (int i = 0; i < p.size(); i++) {
@@ -2311,20 +2334,14 @@ public class PlanUtil {
 		}
 		Plan np = gsp.linearPlan();
 		np.setName(p.getName());
-		for (int i = 0; i < np.size(); i++) {
-			if (np.point(i).label().contains(GsPlan.virtualName)) {
-				np.set(i,np.point(i).makeVirtual());
-			}
-		}		
 		return np;
 	}
-
 
 	public static boolean checkMySolution(Plan solution, double currentTime, Position currentPos, Velocity currentVel) {
 		boolean ok = true;
 		if (!solution.position(currentTime).almostEquals(currentPos)) {
 			f.pln("\n---------------------------------------------------------------------------------");
-			f.pln(" ............... Stratway ERROR: moved location of current position! currentTime = "+currentTime+" .......");
+			f.pln(" ............... ERROR: moved location of current position! currentTime = "+currentTime+" .......");
 			f.pln(" ............... from "+currentPos+" to "+solution.position(currentTime));
 			f.pln("----------------------------------------------------------------------------------\n");
 			//PlanCollection pc = new PlanCollection(plans);
@@ -2336,7 +2353,7 @@ public class PlanUtil {
 		//f.pln(" Stratway: Velocity Test AT END "+mySolution.velocity(currentTime)+" "+currentVel);
 		if (!solution.velocity(currentTime).within_epsilon(currentVel,0.10)) {
 			f.pln("\n---------------------------------------------------------------------------------");
-			f.pln(" ............... Stratway ERROR: changed **velocity** of current position! currentTime = "+currentTime+" ....");
+			f.pln(" ............... ERROR: changed **velocity** of current position! currentTime = "+currentTime+" ....");
 			f.pln(" ............... from "+currentVel+ " to "+solution.velocity(currentTime));
 			f.pln("----------------------------------------------------------------------------------\n");
 			//PlanCollection pc = new PlanCollection(plans);
@@ -2347,7 +2364,7 @@ public class PlanUtil {
 		}
 		if (!solution.isWellFormed()) {
 			f.pln("\n---------------------------------------------------------------------------------");
-			f.pln(" ............... Stratway ERROR: solution is not wellFormed currentTime = "+currentTime+" ....");
+			f.pln(" ............... ERROR: solution is not wellFormed currentTime = "+currentTime+" ....");
 			f.pln(" ..............."+solution.strWellFormed());
 			f.pln(" mySolution = "+solution.toString());
 			f.pln("----------------------------------------------------------------------------------\n");
@@ -2355,6 +2372,8 @@ public class PlanUtil {
 		}
 		return ok;
 	}
+
+
 
 
 }

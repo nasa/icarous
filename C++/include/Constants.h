@@ -21,7 +21,7 @@ namespace larcfm {
 
 
 // these will all eventually be moved into the object initialization
-static const std::string _FormalATM_version = "v2.5.3";
+static const std::string _FormalATM_version = "v2.5.4";
 static const double _FormalATM_GPS_LIMIT_HORIZONTAL = Units::from("ft", 25.0); // in order to keep both versions tied to a single entry, this needs to be defined here.
 static const double _FormalATM_GPS_LIMIT_VERTICAL = Units::from("ft", 25.0); // in order to keep both versions tied to a single entry, this needs to be defined here.
 static const double _FormalATM_TIME_LIMIT_EPSILON = 1.0;// in order to keep both versions tied to a single entry, this needs to be defined here.
