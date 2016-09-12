@@ -22,7 +22,7 @@ vertical_rate = 1 [m/s]
 horizontal_nmac = 2 [m]
 vertical_nmac = 0.2 [m]
 # Recovery Bands Parameters
-recovery_stability_time = 2.000000 [s]
+recovery_stability_time = 0.000000 [s]
 # If min_horizontal_recovery is set to 0, TCAS RA HMD is used instead
 min_horizontal_recovery = 4 [m]
 # If min_vertical_recovery is set to 0, TCAS RA ZTHR is used instead
@@ -43,7 +43,7 @@ contour_thr = 180.000000 [deg]
 # Alert Levels
 alert_1_alerting_time = 30.000000 [s]
 alert_1_detector = det_1
-alert_1_late_alerting_time = 40.000000 [s]
+alert_1_early_alerting_time = 40.000000 [s]
 alert_1_region = NEAR
 alert_1_spread_alt = 0.000000 [ft]
 alert_1_spread_gs = 0.000000 [knot]
