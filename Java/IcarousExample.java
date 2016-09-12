@@ -39,6 +39,10 @@ public class IcarousExample{
 	daa.setOwnshipState("Ownship",so,vo,0.0);
 	daa.addTrafficState("Intruder",si,vi);
 
+	// Add wind 
+	Velocity wind = Velocity.makeTrkGsVs(90,"deg", 1,"knot", 0,"fpm");
+	daa.setWindField(wind);
+	
 	// Check time to violation
 	printTimeToViolation(daa);
 
