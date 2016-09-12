@@ -43,7 +43,7 @@ contour_thr = 180.000000 [deg]
 # Alert Levels
 alert_1_alerting_time = 30.000000 [s]
 alert_1_detector = det_1
-alert_1_late_alerting_time = 40.000000 [s]
+alert_1_early_alerting_time = 40.000000 [s]
 alert_1_region = NEAR
 alert_1_spread_alt = 0.000000 [ft]
 alert_1_spread_gs = 0.000000 [knot]
