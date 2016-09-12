@@ -11,7 +11,7 @@ lib: $(SRCS)
 	@echo 
 	@echo "** Building ICAROUS jar library"
 	$(JAVAC) -cp src src/gov/nasa/larcfm/IO/*.java src/gov/nasa/larcfm/Util/*.java src/gov/nasa/larcfm/ACCoRD/*.java
-	cd src; $(JAR) cvf ../lib/ICAROUS.jar gov
+	cd src; $(JAR) cvf ../lib/ICAROUS.jar gov/nasa/larcfm/IO/*.class gov/nasa/larcfm/Util/*.class gov/nasa/larcfm/ACCoRD/*.class
 
 example:
 	@echo 

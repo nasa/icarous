@@ -26,7 +26,6 @@ public class IcarousExample{
 
 	// Load parameters for a small UAS
 	daa.parameters.loadFromFile("DaidalusSmallUAS.txt");
-	daa.parameters.saveToFile("DD.txt");
 
 	// Position and velocity data for ownship
 	Position so = Position.makeLatLonAlt(37.102456,"deg", -76.387094,"deg", 16.4,"ft");	
