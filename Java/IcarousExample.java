@@ -12,8 +12,12 @@ import gov.nasa.larcfm.Util.*;
 import gov.nasa.larcfm.ACCoRD.*;
 import java.util.*;
 
-public class ICAROUSExample{
+public class IcarousExample{
     public static void main(String args[]){
+
+	System.out.println("##");
+	System.out.println("## ICAROUS");
+	System.out.println("##\n");
 
 	/** Detect and Avoid **/
 	
@@ -22,6 +26,7 @@ public class ICAROUSExample{
 
 	// Load parameters for a small UAS
 	daa.parameters.loadFromFile("DaidalusSmallUAS.txt");
+	daa.parameters.saveToFile("DD.txt");
 
 	// Position and velocity data for ownship
 	Position so = Position.makeLatLonAlt(37.102456,"deg", -76.387094,"deg", 16.4,"ft");	
@@ -161,6 +166,4 @@ public class ICAROUSExample{
 	
     }
 
-    
-    
 }
