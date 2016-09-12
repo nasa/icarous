@@ -241,22 +241,34 @@ public class KinematicMultiBands implements GenericStateBands {
 		trk_band_.set_turn_rate(parameters.getTurnRate()); 
 		trk_band_.set_bank_angle(parameters.getBankAngle()); 
 		trk_band_.set_recovery(parameters.isEnabledRecoveryTrackBands());
+		trk_band_.set_step(parameters.getTrackStep());
+		setLeftTrack(parameters.getLeftTrack());
+		setRightTrack(parameters.getRightTrack());
 
 		// Set Ground Speed Bands
 		gs_band_.set_step(parameters.getGroundSpeedStep());
 		gs_band_.set_horizontal_accel(parameters.getHorizontalAcceleration()); 
 		gs_band_.set_recovery(parameters.isEnabledRecoveryGroundSpeedBands());
-
+		gs_band_.set_step(parameters.getGroundSpeedStep());
+		setMinGroundSpeed(parameters.getMinGroundSpeed());
+		setMaxGroundSpeed(parameters.getMaxGroundSpeed());
+		
 		// Set Vertical Speed Bands
 		vs_band_.set_step(parameters.getVerticalSpeedStep()); 
 	  vs_band_.set_vertical_accel(parameters.getVerticalAcceleration());
 		vs_band_.set_recovery(parameters.isEnabledRecoveryVerticalSpeedBands());   
+		vs_band_.set_step(parameters.getVerticalSpeedStep());
+		setMinVerticalSpeed(parameters.getMinVerticalSpeed());
+		setMaxVerticalSpeed(parameters.getMaxVerticalSpeed());
 
 		// Set Altitude Bands
 		alt_band_.set_step(parameters.getAltitudeStep()); 
 		alt_band_.set_vertical_rate(parameters.getVerticalRate()); 
 	  alt_band_.set_vertical_accel(parameters.getVerticalAcceleration());
 		alt_band_.set_recovery(parameters.isEnabledRecoveryAltitudeBands());   
+		alt_band_.set_step(parameters.getAltitudeStep());
+		setMinAltitude(parameters.getMinAltitude());
+		setMaxAltitude(parameters.getMaxAltitude());
 
 		reset();
 	}

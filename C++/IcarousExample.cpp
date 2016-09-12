@@ -177,10 +177,17 @@ void printBands(Daidalus& daa, KinematicMultiBands& bands) {
 
 int main(int argc,char* argv[]){
 
-  // Create a DAIDALUS object
+  std::cout << "##" << std::endl;
+  std::cout << "## ICAROUS" << std::endl;
+  std::cout << "##" << std::endl;
+
+  /** Detect and Avoid **/
+
+  // Create an empty DAIDALUS object
   Daidalus daa;
   
-  daa.parameters.loadFromFile("../DaidalusConfigurations/DaidalusSmallUAS.txt");
+  // Load parameters for a small UAS
+  daa.parameters.loadFromFile("DaidalusSmallUAS.txt");
 
   // Position and velocity of ownship
   Position so = Position::makeLatLonAlt(37.102456,"deg", -76.387094,"deg", 16.4,"ft");
@@ -190,7 +197,7 @@ int main(int argc,char* argv[]){
   Position si = Position::makeLatLonAlt(37.102450,"deg", -76.386889,"deg", 16.4,"ft");
   Velocity vi = Velocity::makeTrkGsVs(270.0,"deg", 1.0,"kts", 0.0,"fpm");
 
-  // Add new plans
+  // Add ownship and traffic data to DAIDALUS object
   daa.setOwnshipState("ownship",so,vo,0.0);
   daa.addTrafficState("intruder",si,vi);
 
@@ -198,11 +205,14 @@ int main(int argc,char* argv[]){
   Velocity wind = Velocity::makeTrkGsVs(90,"deg", 1,"knot", 0,"fpm");
   daa.setWindField(wind);
 
+  // Check time to violation
   printDetection(daa);
 
+  // Compute resolution bands 
   KinematicMultiBands bands;
   daa.kinematicMultiBands(bands);
 
+  // Print track, ground speed, vertical speed and altitude bands
   printBands(daa,bands);
 
   // Add geofence

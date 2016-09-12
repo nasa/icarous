@@ -35,11 +35,11 @@ public class IcarousExample{
 	Position si = Position.makeLatLonAlt(37.102450,"deg", -76.386889,"deg", 16.4,"ft"); 
 	Velocity vi = Velocity.makeTrkGsVs(270.0,"deg", 1.0,"kts", 0.0,"fpm"); 
 
-	// Add ownship and inruder(s) data to DAIDALUS object
+	// Add ownship and traffic data to DAIDALUS object
 	daa.setOwnshipState("Ownship",so,vo,0.0);
 	daa.addTrafficState("Intruder",si,vi);
 
-	// Add wind 
+	// Set wind information
 	Velocity wind = Velocity.makeTrkGsVs(90,"deg", 1,"knot", 0,"fpm");
 	daa.setWindField(wind);
 	
@@ -47,26 +47,26 @@ public class IcarousExample{
 	printTimeToViolation(daa);
 
 	// Compute resolution bands 
-	KinematicMultiBands KMB = daa.getKinematicMultiBands();
+	KinematicMultiBands bands = daa.getKinematicMultiBands();
 
 	// Print track, ground speed, vertical speed and altitude bands
-	printBands(KMB);
+	printBands(bands);
 
 	// Track resolution
-	System.out.format("Track Resolution (right):%3.2f [deg]\n",KMB.trackResolution(true,"deg"));
-	System.out.format("Track Resolution (left):%3.2f [deg]\n",KMB.trackResolution(false,"deg"));
+	System.out.format("Track Resolution (right):%3.2f [deg]\n",bands.trackResolution(true,"deg"));
+	System.out.format("Track Resolution (left):%3.2f [deg]\n",bands.trackResolution(false,"deg"));
 
 	// Ground speed resoultion
-	System.out.format("Ground Speed Resolution (up):%3.2f [kn]\n",KMB.groundSpeedResolution(true,"kn"));
-	System.out.format("Ground Speed Resolution (down):%3.2f [kn]\n",KMB.groundSpeedResolution(false,"kn"));
+	System.out.format("Ground Speed Resolution (up):%3.2f [kn]\n",bands.groundSpeedResolution(true,"kn"));
+	System.out.format("Ground Speed Resolution (down):%3.2f [kn]\n",bands.groundSpeedResolution(false,"kn"));
 
 	// Vertical speed resolution
-	System.out.format("Vertical Speed Resolution (up):%3.2f [fpm]\n",KMB.verticalSpeedResolution(true,"fpm"));
-	System.out.format("Vertical Speed Resolution (down):%3.2f [fpm]\n",KMB.verticalSpeedResolution(false,"fpm"));
+	System.out.format("Vertical Speed Resolution (up):%3.2f [fpm]\n",bands.verticalSpeedResolution(true,"fpm"));
+	System.out.format("Vertical Speed Resolution (down):%3.2f [fpm]\n",bands.verticalSpeedResolution(false,"fpm"));
 
 	// Altitude resolution
-	System.out.format("Altitude Resolution (up):%3.2f [ft]\n",KMB.altitudeResolution(true,"ft"));
-	System.out.format("Altitude Resolution (down):%3.2f [ft]\n",KMB.altitudeResolution(false,"ft"));
+	System.out.format("Altitude Resolution (up):%3.2f [ft]\n",bands.altitudeResolution(true,"ft"));
+	System.out.format("Altitude Resolution (down):%3.2f [ft]\n",bands.altitudeResolution(false,"ft"));
 
 	/** Geofence **/
 	
@@ -138,33 +138,33 @@ public class IcarousExample{
 	
     }
     
-    static void printBands(KinematicMultiBands KMB){
+    static void printBands(KinematicMultiBands bands){
 	System.out.println("Track bands");
-	for (int i = 0; i < KMB.trackLength(); ++i ) {
-	    Interval iv            = KMB.track(i,"deg"); //i-th band region
+	for (int i = 0; i < bands.trackLength(); ++i ) {
+	    Interval iv            = bands.track(i,"deg"); //i-th band region
 	    System.out.format("[%3.2f,%3.2f]:",iv.low,iv.up);
-	    System.out.println(KMB.trackRegion(i).toString());
+	    System.out.println(bands.trackRegion(i).toString());
 	}
 
 	System.out.println("Ground speed bands");
-	for (int i = 0; i < KMB.groundSpeedLength(); ++i ) {
-	    Interval iv            = KMB.groundSpeed(i,"kn"); //i-th band region	
+	for (int i = 0; i < bands.groundSpeedLength(); ++i ) {
+	    Interval iv            = bands.groundSpeed(i,"kn"); //i-th band region	
 	    System.out.format("[%3.2f,%3.2f]:",iv.low,iv.up);
-	    System.out.println(KMB.groundSpeedRegion(i).toString());
+	    System.out.println(bands.groundSpeedRegion(i).toString());
 	}
 
 	System.out.println("Vertical speed bands");
-	for (int i = 0; i < KMB.verticalSpeedLength(); ++i ) {
-	    Interval iv            = KMB.verticalSpeed(i,"kn"); //i-th band region	
+	for (int i = 0; i < bands.verticalSpeedLength(); ++i ) {
+	    Interval iv            = bands.verticalSpeed(i,"kn"); //i-th band region	
 	    System.out.format("[%3.2f,%3.2f]:",iv.low,iv.up);
-	    System.out.println(KMB.verticalSpeedRegion(i).toString());
+	    System.out.println(bands.verticalSpeedRegion(i).toString());
 	}
 
 	System.out.println("Altitude bands");
-	for (int i = 0; i < KMB.altitudeLength(); ++i ) {
-	    Interval iv            = KMB.altitude(i,"kn"); //i-th band region	
+	for (int i = 0; i < bands.altitudeLength(); ++i ) {
+	    Interval iv            = bands.altitude(i,"kn"); //i-th band region	
 	    System.out.format("[%3.2f,%3.2f]:",iv.low,iv.up);
-	    System.out.println(KMB.altitudeRegion(i).toString());
+	    System.out.println(bands.altitudeRegion(i).toString());
 	}
 	
     }

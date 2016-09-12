@@ -1,6 +1,6 @@
 ICAROUS: Integrated Configurable Algorithms for Reliable Operations of Unmanned Systems
 -------------------------------------------------------------------------
-Version:  Java
+Version:  C++
 Release: 1.a0, September 11, 2016
 Authors: Cesar Munoz, George Hagen, Anthony Narkawicz
 Contact: Cesar A. Munoz (Cesar.A.Munoz@nasa.gov)
@@ -45,22 +45,22 @@ Description of Files
 --------------------
 
 README.txt : This file.
-src/: Directory of java code. 
-lib/: Directory of jar file. 
+src/: Directory of C++ code.
+include/: Directory of C++ headers.
+lib/: Directory of library file.
 doc/: Directory of documentation.
 DaidalusSmallUAS.txt: File of DAIDALUS configuration parameters and
 values for small UAS.
-IcarousExample.java: Example application.
+IcarousExample.cpp: Example application.
 Makefile: Unix make file to compile example application.
 
 Compiling example applications
 ------------------------------
 
-To compile example application in a Unix environment, type
+To produce binary files and compile example application
+in a Unix environment, type
 
-$ make 
-
-The code is compatible with Java development kit version 1.8.0_45.
+$ make
 
 Running example applications
 ----------------------------

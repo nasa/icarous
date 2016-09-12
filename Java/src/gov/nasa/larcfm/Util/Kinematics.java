@@ -392,14 +392,15 @@ public final class Kinematics {
    * @return Position/Velocity after t time
    */
   public static Pair<Vect3,Velocity> turnByDist(Vect3 s0, Vect3 center, double d, double gsAt_d) {
-	  double anySpeed = 100;
 	  double R = s0.distanceH(center);
-	  double omega = anySpeed/R;
-	  double t = d/anySpeed;
+	  //f.pln(" $$$$$ turnByDist: R = "+Units.str("nm",R));
+	  double omega = Util.sign(d)*gsAt_d/R;
+	  double dt = Math.abs(d/gsAt_d);
 	  Velocity vPerp = Velocity.make(s0.Sub(center));
 	  double currentTrk = vPerp.trk()+Util.sign(d)*Math.PI/2;
-	  Velocity vo = Velocity.mkTrkGsVs( currentTrk ,gsAt_d ,0.0);
-	  return turnOmega(s0,vo,t,omega);
+	  Velocity vo = Velocity.mkTrkGsVs( currentTrk , gsAt_d ,0.0);
+	  //f.pln(" $$$$$ turnByDist: vo = "+vo+" dt = "+dt+" currentTrk = "+Units.str("deg",currentTrk));
+	  return turnOmega(s0,vo,dt,omega);
   }
 
   public static Vect2 center(Vect3 s0, Velocity v0, double omega) {

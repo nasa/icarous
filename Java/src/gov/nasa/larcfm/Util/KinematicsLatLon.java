@@ -194,12 +194,13 @@ public class KinematicsLatLon {
 		//      respect to the center of the turn. This is different from having a constant track change rate
 		//      with respect to the ownship.  Effectively the track change rate will be variable throughout the 
 		//      turn, with this being more pronounced as one approaches the poles.
-		double radius = Math.abs(signedRadius);
-		LatLonAlt center = GreatCircle.linear_initial(so, perpTrk, radius);		
+		double radius = 1.00*Math.abs(signedRadius);
 //		LatLonAlt otherSide = GreatCircle.linear_initial(so, perpTrk, 2.0*radius);
 //		double chordRadius = so.chordDistance(otherSide)/2.0;	
+//		radius = chordRadius;
 //		f.pln("  turnRadius: radius = "+Units.str("m",signedRadius,8)+" chordRadius = "+Units.str("m",chordRadius,8));
-//		f.pln(" $$$ ratio = "+chordRadius/radius);
+//		f.pln(" $$$ ratio = "+radius/chordRadius);
+		LatLonAlt center = GreatCircle.linear_initial(so, perpTrk, radius);		
 		//double theta = omega*t;
 	    double pathDist = vo.gs()*t;	
 	    //f.pln(" $$$$$ turnRadius: pathDist = "+Units.str("nmi",pathDist));

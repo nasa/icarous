@@ -20,7 +20,7 @@ public class Constants {
 	/**
 	 * String indicating the FormalATM version
 	 */
-	public static final String version = "v2.5.4";
+	public static final String version = "v2.5.4a";
 	
 	public static final boolean allowDebugHalt = true; //TODO: set to false for distribution
 	

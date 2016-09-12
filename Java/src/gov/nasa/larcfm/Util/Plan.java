@@ -17,6 +17,8 @@ package gov.nasa.larcfm.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+//import gov.nasa.larcfm.IO.DebugSupport;
+
 
 /**
  * Manages a flight Plan as a sequence of 4D vectors (three dimensions
@@ -1394,6 +1396,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		return positionByDistance(i,d);
 	}
 	
+	// *** NOT USED *** 
 	public Position positionExtrapolate(double t) {
 		int seg = getSegment(t);
 		//f.pln(" $$$$$ position: t = "+t+" seg = "+seg+" getFirstTime = "+getFirstTime()+" getLastTime = "+getLastTime());
@@ -1489,7 +1492,7 @@ public class Plan implements ErrorReporter, Cloneable {
 //		return rtn;
 //	}
 
-	
+	// ********** EXPERIMENTAL (towards turn/gs overlap) ****************
 	public double gsAtSeg(int seg) {
 		NavPoint np1 = point(seg);
 		double gs;
@@ -1504,89 +1507,116 @@ public class Plan implements ErrorReporter, Cloneable {
 					gs = getDtVelocity(size()-1).gs();
 				}
 				//f.pln(" $$ gsAtSeg B: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
-			} else {
-				double dist = pathDistance(seg,seg+1);
-				double dt = point(seg+1).time() - point(seg).time();
+			} else {				
 				if (inGsChange(np1.time())) { 
-					double gsAccel = point(prevBGS(seg)).gsAccel();
-					gs = dist/dt - 0.5*gsAccel*dt;
+					int ixBGS = prevBGS(seg);
+					double dist = pathDistance(ixBGS,seg+1);	
+					double dt = point(seg+1).time() - point(ixBGS).time();
+					double gsAccel = point(ixBGS).gsAccel();
+					gs = dist/dt + 0.5*gsAccel*dt;
 					//f.pln(" $$ gsAtSeg C: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
-				} else {				
+				} else { // This may be inaccurate due to poor placement of vertical points in a turn
+					double dist = pathDistance(seg,seg+1);	
+					double dt = point(seg+1).time() - point(seg).time();			
 					gs = dist/dt;
-					//f.pln(" $$ gsAtSeg D: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
+					//f.pln(" $$ gsAtSeg D:seg = "+seg+" dt = "+f.Fm4(dt)+" dist = "+Units.str("ft",dist)+" gs = "+Units.str("kn",gs,8));  
 				}
 			}
 		}
 		return gs;
 	}
 	
+	// ********** EXPERIMENTAL ****************
 	public double gsAtTime(double t) {
-		double rtn;
+		double gs;
 		int seg = getSegment(t);
 		if (seg < 0) {
-			rtn = -1;
+			gs = -1;
 		} else {
 			double gsAt = gsAtSeg(seg);
 			//f.pln(" $$ gsAt: seg = "+seg+" gsAt = "+Units.str("kn",gsAt,8));
-			if (inGsChange(t)) {
-				int ixPrev = prevBGS(seg);
-				double gsAccel = point(ixPrev).gsAccel();
-				double tAtBGS = point(ixPrev).time();
-				double dt = t - tAtBGS;
-				//f.pln(" $$########### gsAt = "+Units.str("kn",gsAt,8)+" dt = "+dt);
-				rtn = gsAt + gsAccel*dt;
-			} else {
-				rtn = gsAt;
-				//f.pln(" $$................. gsAt: rtn = = "+Units.str("kn",rtn));
-			}	
+			double gsSeg = gsAtSeg(seg);
+			if (inGsChange(t)) { 
+				double dt = t - getTime(seg);
+				int ixBGS = prevBGS(seg);
+				double gsAccel = point(ixBGS).gsAccel();
+				gs = gsSeg + dt*gsAccel;
+				//f.pln(" $$ gsAtSeg A: dt = "+dt+" seg = "+seg+" gs = "+Units.str("kn",gs,8));  
+			} else {					
+				gs = gsSeg;
+				//f.pln(" $$ gsAtSeg B: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
+			}
 		}
-		return rtn;
+		return gs;
 	}
 
 
 	
 	// **** EXPERIMENTAL *****
-	private Pair<Position,Velocity> positionVelocity(double t) { 
+	public Pair<Position,Velocity> positionVelocity(double t) { 
 		int seg = getSegment(t);
 		NavPoint np1 = point(seg);
 		NavPoint np2 = point(seg+1);
-		Position p = np1.position().linear(np1.initialVelocity(np2),t-np1.time());
-		//Velocity vo = initialVelocity(seg);
-		Velocity vo;
-		if (np1.isTCP()) {
-			vo = np1.velocityIn();
-		} else {
-			if (seg == 0) {
-				vo = getDtVelocity(0);
-			} else {
-				vo = point(seg-1).finalVelocity(np1);
-			}
-		}
+		//f.pln(" $$$ positionVelocity: np1 = "+np1);
+		//f.pln(" $$$ positionVelocity: np2 = "+np2);
+		double gs0 = gsAtSeg(seg);
+		double gsAt_d = gsAtTime(t);
+		//f.pln(" $$$ positionVelocity: gs0 = "+Units.str("kn",gs0,4)+" gsAt_d = "+Units.str("kn",gsAt_d,4)); ;
 		Position so = np1.position();
-		double d = 0;
+		//f.pln(t+" $$$ positionVelocity: seg = "+seg+" t = "+f.Fm2(t)+" positionVelocity: so = "+so+" gs0 = "+Units.str("kn",gs0));
+		double distFromSo = 0;
 		double dt = t-np1.time();		
 		if (inGsChange(t)) {
 			double gsAccel = point(prevBGS(seg)).gsAccel();
-			d = vo.gs()*dt + 0.5*gsAccel*dt*dt;
+			distFromSo = gs0*dt + 0.5*gsAccel*dt*dt;
+			//f.pln(t+" $$$ positionVelocity(inGsChange A): dt = "+f.Fm2(dt)+" vo.gs() = "+Units.str("kn",gs0)+" distFromSo = "+Units.str("ft",distFromSo));
 		} else {
-			d = vo.gs()*dt;
+			distFromSo =gs0*dt;
+			//f.pln(t+" $$$ positionVelocity(inGsChange B): dt = "+dt+" distFromSo = "+Units.str("ft",distFromSo));
 		}
 		Position sNew;
-		
+		Velocity vNew;
 		if (inTrkChange(t)) {
 			int ixPrevBOT = prevBOT(seg);
 			Position center = point(ixPrevBOT).turnCenter();
-			double gsAt_d = vo.gs();
-			Pair<Position,Velocity> tAtd = KinematicsPosition.turnByDist(so, center, d, gsAt_d);
+			double signedRadius = point(ixPrevBOT).signedRadius();
+			//f.pln(t+" $$$ positionVelocity: signedRadius = "+Units.str("ft",signedRadius)+" center = "+center);
+			int dir = Util.sign(signedRadius);			
+			Pair<Position,Velocity> tAtd = KinematicsPosition.turnByDist(so, center, dir*distFromSo, gsAt_d);
 			sNew = tAtd.first;
-			Velocity vNew = tAtd.second;
+			vNew = tAtd.second;
+			//f.pln(" $$ %%%% positionVelocity A: vNew("+f.Fm2(t)+") = "+vNew);
+			//f.pln(" $$ %%%% positionVelocity A: sNew("+f.Fm2(t)+") = "+sNew);
 		} else {
-			Position sn = so.linear(vo,dt);
+			Velocity vo = np1.initialVelocity(np2);
+			vNew = vo.mkGs(gsAt_d);
+			sNew = so.linearDist(vNew.trk(),distFromSo);
+			//f.pln(" $$ %%%% positionVelocity B: vNew("+f.Fm2(t)+") = "+vNew);
+			//f.pln(" $$ %%%% positionVelocity B: sNew("+f.Fm2(t)+") = "+sNew);
 		}
 		if (inVsChange(t)) {
+			NavPoint n1 = points.get(prevBVS(seg));
+			Position soP = n1.position();
+			Velocity voP = n1.velocityIn();
+			Pair<Position,Velocity> pv =  KinematicsPosition.vsAccel(soP, voP, t-n1.time(), n1.vsAccel());
+			sNew = sNew.mkAlt(pv.first.alt());
+			vNew = vNew.mkVs(pv.second.vs());                   // merge Vertical VS with horizontal components
+            //f.pln(t+" $$$ positionVelocity(inVsChange): vNew = "+vNew);
+		} else {
+			double s1z = np1.z();
+			double s2z = np2.z();
+			double t1 = np1.time();
+			double t2 = np2.time();
+			double vZ = (s2z - s1z)/(t2-t1);
+			double sZ = s1z + vZ*dt;
+			//f.pln(" $$$$$$$$ m = "+m+" sZ = "+sZ);
+			sNew = sNew.mkAlt(sZ);
+			vNew = vNew.mkVs(vZ);
+			//f.pln(t+" $$$ positionVelocity(NOT inVsChange): vNew = "+vNew);
 		}
-		Velocity vNew = vo;
-		return new Pair<Position,Velocity>(p,vNew);  
+		//f.pln(" $$ %%%% positionVelocity RETURN: sNew("+f.Fm2(t)+") = "+sNew);
+		//f.pln(" $$ %%%% positionVelocity RETURN: vNew("+f.Fm2(t)+") = "+vNew);
+		return new Pair<Position,Velocity>(sNew,vNew);  
 	}
 
 	//	// v_linear is the linear (estimate) velocity from point i (before t1) to point i+1 (after t1)

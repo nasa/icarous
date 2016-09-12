@@ -19,7 +19,7 @@ example:
 	$(JAVAC) -cp lib/ICAROUS.jar IcarousExample.java
 	@echo 
 	@echo "** To run IcarousExample type:"
-	@echo "java -cp lib/ICAROUS.jar:. IcarousExample"
+	@echo "./IcarousExample"
 
 clean:
 	rm -f IcarousExample.class $(OBJS) lib/ICAROUS.jar

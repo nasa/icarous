@@ -526,7 +526,7 @@ public class NavPoint {
 	 * this returns an invalid position. 
 	 */
 	public Position turnCenter() {
-		double R = turnRadius();
+		double R = signedRadius();
 //		if (isTrkTCP()) {
 //			if (R > 0.0) {
 //				return p.linear(velocityIn.mkAddTrk(Util.sign(R)*Math.PI/2).Hat(),R).mkZ(p.z());
@@ -1089,7 +1089,8 @@ public class NavPoint {
 			if (s.isLatLon()) {
 				return GreatCircle.velocity_initial(p.lla(), s.p.lla(), dt);
 			} else {
-				return Velocity.make((s.p.point().Sub(p.point())).Scal(1.0/dt));
+				Velocity vel = Velocity.make((s.p.point().Sub(p.point())).Scal(1.0/dt));
+				return vel;
 			}
 		} else {
 			f.pln("WARNING: NavPoint INITIAL VELOCITY negative time!  Check the code here!");

@@ -1,8 +1,8 @@
 # V-1.a
 # Conflict Bands Parameters
-lookahead_time = 30.000000 [s]
-left_trk = 180.000000 [deg]
-right_trk = 180.000000 [deg]
+lookahead_time = 30.0 [s]
+left_trk = 180.0 [deg]
+right_trk = 180.0 [deg]
 min_gs = 0.0 [m/s]
 max_gs = 5.0 [m/s]
 min_vs = 0.0 [m/s]
@@ -16,13 +16,13 @@ vs_step = 1.0 [fpm]
 alt_step = 2.0 [ft]
 horizontal_accel = 1.0 [m/s^2]
 vertical_accel = 1.0 [m/s^2]
-turn_rate = 60.0 [deg/s]
-bank_angle = 60.0 [deg]
+turn_rate = 0 [deg/s]
+bank_angle = 0 [deg]
 vertical_rate = 1 [m/s]
 horizontal_nmac = 2 [m]
 vertical_nmac = 0.2 [m]
 # Recovery Bands Parameters
-recovery_stability_time = 0.000000 [s]
+recovery_stability_time = 0.0 [s]
 # If min_horizontal_recovery is set to 0, TCAS RA HMD is used instead
 min_horizontal_recovery = 4 [m]
 # If min_vertical_recovery is set to 0, TCAS RA ZTHR is used instead
@@ -36,20 +36,20 @@ recovery_alt = true
 # if ca_bands is true, keep computing recovery bands by reducing min horizontal/vertical recovery until NMAC
 ca_bands = true
 # ca_factor is the reduction factor, when computing CA bands
-ca_factor = 0.2000
+ca_factor = 0.2
 # Contours Parameters
 # If contour_thr is set to 0, only conflict contours are computed. Max value is 180 [deg]
-contour_thr = 180.000000 [deg]
+contour_thr = 180.0 [deg]
 # Alert Levels
-alert_1_alerting_time = 30.000000 [s]
+alert_1_alerting_time = 30.0 [s]
 alert_1_detector = det_1
-alert_1_early_alerting_time = 40.000000 [s]
+alert_1_early_alerting_time = 40.0 [s]
 alert_1_region = NEAR
-alert_1_spread_alt = 0.000000 [ft]
-alert_1_spread_gs = 0.000000 [knot]
-alert_1_spread_trk = 0.000000 [deg]
-alert_1_spread_vs = 0.000000 [fpm]
+alert_1_spread_alt = 0.0 [ft]
+alert_1_spread_gs = 0.0 [knot]
+alert_1_spread_trk = 0.0 [deg]
+alert_1_spread_vs = 0.0 [fpm]
 conflict_level = 1
-det_1_D = 10 [m]
-det_1_H = 1 [m]
+det_1_D = 10.0 [m]
+det_1_H = 1.0 [m]
 load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.CDCylinder

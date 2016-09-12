@@ -456,8 +456,9 @@ public final class Position implements OutputList {
 	  if (latlon) {
 		  return new Position(GreatCircle.linear_initial(ll,track,d));
 	  } else {
-		  double fakeGs = 100;
-		  Velocity v = Velocity.makeTrkGsVs(track,fakeGs,0.0);
+		  double fakeGs = 100;		 
+		  Velocity v = Velocity.mkTrkGsVs(track,fakeGs,0.0);
+		  //f.pln(" $$$$$$$$ linearDist: v = "+v);
 		  double dt = d/fakeGs;
 		  return new Position(s3.linear(v, dt)); 
 	  }

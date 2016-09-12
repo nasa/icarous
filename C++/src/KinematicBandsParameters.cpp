@@ -18,7 +18,7 @@ namespace larcfm {
 /**
  * DAIDALUS version
  */
-const std::string KinematicBandsParameters::VERSION = "1.a";
+const std::string KinematicBandsParameters::VERSION = "1.a0";
 
 /* NOTE: By default, no alert levels are configured */
 KinematicBandsParameters::KinematicBandsParameters() : error("DaidalusParameters") {

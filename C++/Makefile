@@ -1,4 +1,4 @@
-# Simple Makefile to build DAIDALUS library and example application
+# Simple Makefile to build ICAROUS library and example application
 
 SRCS   = $(wildcard src/*.cpp)
 OBJS   = $(SRCS:.cpp=.o)

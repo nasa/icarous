@@ -814,7 +814,7 @@ double NavPoint::signedRadius() const {
 
 
 Position NavPoint::turnCenter() const {
-	double R = turnRadius();
+	double R = signedRadius();
 //	if (isTrkTCP()) {
 //		if (R > 0.0) {
 //			return p.linear(velocityIn_v.mkAddTrk(Util::sign(accel_trk)*Pi/2).Hat(),R).mkZ(p.z());
