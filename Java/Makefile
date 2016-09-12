@@ -10,7 +10,7 @@ MISSIONSRC = $(wildcard src/gov/nasa/larcfm/MISSION/*.java)
 
 LAUNCHSRC  = $(wildcard src/gov/nasa/larcfm/*.java)
 
-LIB        = :lib/jssc-2.8.0.jar:lib/FormalATMj/FormalATM.jar
+LIB        = :lib/jssc-2.8.0.jar:lib/ICAROUS.jar
 
 CLASSPATH  = bin
 
