@@ -55,7 +55,6 @@ public class AircraftData{
 
     // Aircraft's current position (GPS)
     public AircraftState acState;
-
     
     //public FlightPlan NewFlightPlan;
     //public FlightPlan CurrentFlightPlan;
@@ -71,7 +70,6 @@ public class AircraftData{
     public List<GenericObject> missionObj;
     
     // List for traffic information
-
 
     // Flight plan specific data
     public double FP_maxHorizontalDeviation;

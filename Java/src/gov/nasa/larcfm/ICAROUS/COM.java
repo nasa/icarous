@@ -386,7 +386,7 @@ public class COM implements Runnable,ErrorReporter{
 
 	    msg_command_ack msgCommandAck = UAS.GetCmdError();
 	    if(msgCommandAck != null){
-		System.out.println("Received ack");
+		//System.out.println("Received ack");
 		comIntf.Write(msgCommandAck);
 	    }
 	}
