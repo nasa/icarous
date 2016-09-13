@@ -50,23 +50,7 @@ public class IcarousExample{
 	KinematicMultiBands bands = daa.getKinematicMultiBands();
 
 	// Print track, ground speed, vertical speed and altitude bands
-	printBands(bands);
-
-	// Track resolution
-	System.out.format("Track Resolution (right):%3.2f [deg]\n",bands.trackResolution(true,"deg"));
-	System.out.format("Track Resolution (left):%3.2f [deg]\n",bands.trackResolution(false,"deg"));
-
-	// Ground speed resoultion
-	System.out.format("Ground Speed Resolution (up):%3.2f [kn]\n",bands.groundSpeedResolution(true,"kn"));
-	System.out.format("Ground Speed Resolution (down):%3.2f [kn]\n",bands.groundSpeedResolution(false,"kn"));
-
-	// Vertical speed resolution
-	System.out.format("Vertical Speed Resolution (up):%3.2f [fpm]\n",bands.verticalSpeedResolution(true,"fpm"));
-	System.out.format("Vertical Speed Resolution (down):%3.2f [fpm]\n",bands.verticalSpeedResolution(false,"fpm"));
-
-	// Altitude resolution
-	System.out.format("Altitude Resolution (up):%3.2f [ft]\n",bands.altitudeResolution(true,"ft"));
-	System.out.format("Altitude Resolution (down):%3.2f [ft]\n",bands.altitudeResolution(false,"ft"));
+	System.out.print(bands.outputString());	
 
 	/** Geofence **/
 	
@@ -157,35 +141,6 @@ public class IcarousExample{
 	
     }
     
-    static void printBands(KinematicMultiBands bands){
-	System.out.println("Track bands [deg,deg]");
-	for (int i = 0; i < bands.trackLength(); ++i ) {
-	    Interval iv            = bands.track(i,"deg"); //i-th band region
-	    System.out.print(bands.trackRegion(i).toString());
-	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
-	}
-
-	System.out.println("Ground speed bands[knots,knots]");
-	for (int i = 0; i < bands.groundSpeedLength(); ++i ) {
-	    Interval iv            = bands.groundSpeed(i,"kn"); //i-th band region
-	    System.out.print(bands.groundSpeedRegion(i).toString());
-	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
-	}
-
-	System.out.println("Vertical speed bands[fpm,fpm]");
-	for (int i = 0; i < bands.verticalSpeedLength(); ++i ) {
-	    Interval iv            = bands.verticalSpeed(i,"fpm"); //i-th band region
-	    System.out.print(bands.verticalSpeedRegion(i).toString());
-	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
-	}
-
-	System.out.println("Altitude bands[ft,ft]");
-	for (int i = 0; i < bands.altitudeLength(); ++i ) {
-	    Interval iv            = bands.altitude(i,"ft"); //i-th band region
-	    System.out.print(bands.altitudeRegion(i).toString());
-	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
-	}
-	
-    }
+    
 
 }
