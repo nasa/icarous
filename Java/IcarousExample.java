@@ -139,32 +139,32 @@ public class IcarousExample{
     }
     
     static void printBands(KinematicMultiBands bands){
-	System.out.println("Track bands");
+	System.out.println("Track bands [deg,deg]");
 	for (int i = 0; i < bands.trackLength(); ++i ) {
 	    Interval iv            = bands.track(i,"deg"); //i-th band region
-	    System.out.format("[%3.2f,%3.2f]:",iv.low,iv.up);
-	    System.out.println(bands.trackRegion(i).toString());
+	    System.out.print(bands.trackRegion(i).toString());
+	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
 	}
 
-	System.out.println("Ground speed bands");
+	System.out.println("Ground speed bands[knots,knots]");
 	for (int i = 0; i < bands.groundSpeedLength(); ++i ) {
-	    Interval iv            = bands.groundSpeed(i,"kn"); //i-th band region	
-	    System.out.format("[%3.2f,%3.2f]:",iv.low,iv.up);
-	    System.out.println(bands.groundSpeedRegion(i).toString());
+	    Interval iv            = bands.groundSpeed(i,"kn"); //i-th band region
+	    System.out.print(bands.groundSpeedRegion(i).toString());
+	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
 	}
 
-	System.out.println("Vertical speed bands");
+	System.out.println("Vertical speed bands[fpm,fpm]");
 	for (int i = 0; i < bands.verticalSpeedLength(); ++i ) {
-	    Interval iv            = bands.verticalSpeed(i,"kn"); //i-th band region	
-	    System.out.format("[%3.2f,%3.2f]:",iv.low,iv.up);
-	    System.out.println(bands.verticalSpeedRegion(i).toString());
+	    Interval iv            = bands.verticalSpeed(i,"fpm"); //i-th band region
+	    System.out.print(bands.verticalSpeedRegion(i).toString());
+	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
 	}
 
-	System.out.println("Altitude bands");
+	System.out.println("Altitude bands[ft,ft]");
 	for (int i = 0; i < bands.altitudeLength(); ++i ) {
-	    Interval iv            = bands.altitude(i,"kn"); //i-th band region	
-	    System.out.format("[%3.2f,%3.2f]:",iv.low,iv.up);
-	    System.out.println(bands.altitudeRegion(i).toString());
+	    Interval iv            = bands.altitude(i,"ft"); //i-th band region
+	    System.out.print(bands.altitudeRegion(i).toString());
+	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
 	}
 	
     }
