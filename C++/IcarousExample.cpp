@@ -15,29 +15,30 @@
 #include "CDPolycarp.h"
 #include "PolycarpResolution.h"
 #include "Projection.h"
+#include "Constants.h"
 
 using namespace larcfm;
 
-void printDetection(Daidalus& daa) {
-	// Aircraft at index 0 is ownship
-	for (int ac_idx=1; ac_idx <= daa.lastTrafficIndex(); ++ac_idx) {
-		double t2los = daa.timeToViolation(ac_idx);
-		if (t2los >= 0) {
-			std::cout << "Predicted Time to Loss of Well Clear with " << daa.getAircraftState(ac_idx).getId() << ": " <<
-					Fm2(t2los) << " [s]" << std::endl;
-		}
-	}
+void printTimeToViolation(Daidalus& daa) {
+  // Aircraft at index 0 is ownship
+  for (int ac_idx=1; ac_idx <= daa.lastTrafficIndex(); ++ac_idx) {
+    double t2los = daa.timeToViolation(ac_idx);
+    if (t2los >= 0) {
+      std::cout << "Predicted time to violation with " << daa.getAircraftState(ac_idx).getId() << ": " <<
+	Fm2(t2los) << " [s]" << std::endl;
+    }
+  }
 }
 
 void printAlerts(Daidalus& daa) {
-	// Aircraft at index 0 is ownship
-	for (int ac_idx=1; ac_idx <= daa.lastTrafficIndex(); ++ac_idx) {
-		int alert = daa.alerting(ac_idx);
-		if (alert > 0) {
-			std::cout << "Alert Level " << alert << " with " <<
-					daa.getAircraftState(ac_idx).getId() << std::endl;
-		}
-	}
+  // Aircraft at index 0 is ownship
+  for (int ac_idx=1; ac_idx <= daa.lastTrafficIndex(); ++ac_idx) {
+    int alert = daa.alerting(ac_idx);
+    if (alert > 0) {
+      std::cout << "Alert Level " << alert << " with " <<
+	daa.getAircraftState(ac_idx).getId() << std::endl;
+    }
+  }
 }
 
 // Converts numbers, possible NaN or infinities, to string
@@ -75,10 +76,6 @@ void printBands(Daidalus& daa, KinematicMultiBands& bands) {
 		Interval ii = bands.track(i,"deg");
 		std::cout << "  " << BandsRegion::to_string(bands.trackRegion(i)) << ":\t" << ii.toString(2) << std::endl;
 	}
-	for (int alert_level = 1; alert_level <= daa.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
-		std::cout << "Peripheral " << trkstr << " Aircraft for Alert Level " << Fmi(alert_level) << ": " <<
-				TrafficState::listToString(bands.peripheralTrackAircraft(alert_level)) << std::endl;
-	}
 	std::cout << trkstr << " Resolution (right): " << num2str(bands.trackResolution(true,"deg"),"deg") << std::endl;
 	std::cout << trkstr << " Resolution (left): " << num2str(bands.trackResolution(false,"deg"),"deg") << std::endl;
 	std::cout << "Preferred "+trkstr+" Direction: ";
@@ -98,10 +95,6 @@ void printBands(Daidalus& daa, KinematicMultiBands& bands) {
 	for (int i=0; i < bands.groundSpeedLength(); ++i) {
 		Interval ii = bands.groundSpeed(i,"knot");
 		std::cout << "  " << BandsRegion::to_string(bands.groundSpeedRegion(i)) << ":\t" << ii.toString(2) << std::endl;
-	}
-	for (int alert_level = 1; alert_level <= daa.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
-		std::cout << "Peripheral " << gsstr << " Aircraft for Alert Level " << Fmi(alert_level) << ": " <<
-				TrafficState::listToString(bands.peripheralGroundSpeedAircraft(alert_level)) << std::endl;
 	}
 	std::cout << gsstr << " Resolution (up): " << num2str(bands.groundSpeedResolution(true,"knot"),"knot") << std::endl;
 	std::cout << gsstr << " Resolution (down): " << num2str(bands.groundSpeedResolution(false,"knot"),"knot") << std::endl;
@@ -123,10 +116,6 @@ void printBands(Daidalus& daa, KinematicMultiBands& bands) {
 		Interval ii = bands.verticalSpeed(i,"fpm");
 		std::cout << "  " << BandsRegion::to_string(bands.verticalSpeedRegion(i)) << ":\t" << ii.toString(2) << std::endl;
 	}
-	for (int alert_level = 1; alert_level <= daa.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
-		std::cout << "Peripheral Vertical Speed Aircraft for Alert Level " << Fmi(alert_level) << ": " <<
-				TrafficState::listToString(bands.peripheralVerticalSpeedAircraft(alert_level)) << std::endl;
-	}
 	std::cout << "Vertical Speed Resolution (up): " << num2str(bands.verticalSpeedResolution(true,"fpm"),"fpm") << std::endl;
 	std::cout << "Vertical Speed Resolution (down): " << num2str(bands.verticalSpeedResolution(false,"fpm"),"fpm") << std::endl;
 	std::cout << "Preferred Vertical Speed Direction: ";
@@ -147,10 +136,6 @@ void printBands(Daidalus& daa, KinematicMultiBands& bands) {
 		Interval ii = bands.altitude(i,"ft");
 		std::cout << "  " << BandsRegion::to_string(bands.altitudeRegion(i)) << ":\t" << ii.toString(2) << std::endl;
 	}
-	for (int alert_level = 1; alert_level <= daa.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
-		std::cout << "Peripheral Altitude Aircraft for Alert Level " << Fmi(alert_level) << ": " <<
-				TrafficState::listToString(bands.peripheralAltitudeAircraft(alert_level)) << std::endl;
-	}
 	std::cout << "Altitude Resolution (up): " << num2str(bands.altitudeResolution(true,"ft"),"ft") << std::endl;
 	std::cout << "Altitude Resolution (down): " << num2str(bands.altitudeResolution(false,"ft"),"ft") << std::endl;
 	std::cout << "Preferred Altitude Direction: ";
@@ -161,25 +146,13 @@ void printBands(Daidalus& daa, KinematicMultiBands& bands) {
 	}
 	std::cout << "Time to Altitude Recovery: " << num2str(bands.timeToAltitudeRecovery(),"s") << std::endl;
 	std::cout << std::endl;
-
-	// Last times to maneuver
-	for (int ac_idx=1; ac_idx <= daa.lastTrafficIndex(); ++ac_idx) {
-		TrafficState ac = daa.getAircraftState(ac_idx);
-		std::cout << "Last Times to Maneuver with Respect to " << ac.getId() << ":" << std::endl;
-		std::cout << "  "+trkstr+" Maneuver: "+num2str(bands.lastTimeToTrackManeuver(ac),"s") << std::endl;
-		std::cout << "  "+gsstr+" Maneuver: "+num2str(bands.lastTimeToGroundSpeedManeuver(ac),"s") << std::endl;
-		std::cout <<"  Vertical Speed Maneuver: "+num2str(bands.lastTimeToVerticalSpeedManeuver(ac),"s") << std::endl;
-		std::cout <<"  Altitude Maneuver: "+num2str(bands.lastTimeToAltitudeManeuver(ac),"s") << std::endl;
-	}
-	std::cout << std::endl;
-
 }
 
-int main(int argc,char* argv[]){
+int main(int argc,char* argv[]) {
 
   std::cout << "##" << std::endl;
-  std::cout << "## ICAROUS" << std::endl;
-  std::cout << "##" << std::endl;
+  std::cout << "## ICAROUS++@FormalATM" << Constants::version << std::endl;
+  std::cout << "##" << std::endl << std::endl;
 
   /** Detect and Avoid **/
 
@@ -205,9 +178,17 @@ int main(int argc,char* argv[]){
   Velocity wind = Velocity::makeTrkGsVs(90,"deg", 1,"knot", 0,"fpm");
   daa.setWindField(wind);
 
-  // Check time to violation
-  printDetection(daa);
+  // Print information about the Daidalus Object
+  std::cout << "Number of Aircraft: " << daa.numberOfAircraft() << std::endl;
+  std::cout << "Last Aircraft Index: " << daa.lastTrafficIndex() << std::endl;
+  std::cout <<  std::endl;
 
+  // Check time to violation
+  printTimeToViolation(daa);
+
+  // Call alerting logic for each traffic aircraft.
+  printAlerts(daa);
+  
   // Compute resolution bands 
   KinematicMultiBands bands;
   daa.kinematicMultiBands(bands);
@@ -234,24 +215,24 @@ int main(int argc,char* argv[]){
   Poly3D geoPoly3D1          = geoPolyLLA1.poly3D(proj);
 
   Vect3 so_3 = proj.project(so); // Project ownship position into local euclidean frame
-  if(geoPolyCarp.definitelyInside(so_3,geoPoly3D1)){
-    std::cout<<"Definitely inside keep in fence\n";
-  }else{
-    std::cout<<"Definitely outside keep in fence\n";
+  if (geoPolyCarp.definitelyInside(so_3,geoPoly3D1)) {
+    std::cout << "Definitely inside of keep in fence\n";
+  } else {
+    std::cout << "Definitely outside of keep in fence\n";
   }
 
   std::vector<Vect2> fenceVertices;
   fenceVertices.reserve(4);
 
-  for(int i=0;i<4;i++){
+  for(int i=0;i<4;i++) {
     fenceVertices.push_back(geoPoly3D1.getVertex(i));
   }
 
   //Check if ownship is near any edge (nearness is defined based on horizontal and vertical thresholds)
   double hthreshold = 1; // 1 m
   double vthreshold = 1; // 1 m	
-  if(geoPolyCarp.nearEdge(so_3,geoPoly3D1,hthreshold,vthreshold)){
-    std::cout<<"Ownship is near geofence edge";
+  if (geoPolyCarp.nearEdge(so_3,geoPoly3D1,hthreshold,vthreshold)) {
+    std::cout << "Ownship is near geofence edge";
     
     // Compute a safe point to goto
     double BUFF = 0.1; // Buffer used for numerical stability within polycarp
@@ -263,7 +244,7 @@ int main(int argc,char* argv[]){
     // Convert safe point from euclidean coordinates to Lat, Lon and Alt
     LatLonAlt LLA = proj.inverse(recpoint,so.alt());
     Position RecoveryPoint = Position::makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
-    std::cout<<RecoveryPoint.toString();
+    std::cout << RecoveryPoint.toString();
   }
 
   // Make a geofence with 4 vertices (keep out fence)
@@ -272,13 +253,12 @@ int main(int argc,char* argv[]){
   geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102017,"degree",-76.387266,"degree",0,"m"));
   geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102060,"degree",-76.386997,"degree",0,"m"));
   geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102256,"degree",-76.387010,"degree",0,"m"));
-  
-  
+   
   // Project geofence vertices to a local euclidean coordinate system to use with polycarp functions
-  Poly3D geoPoly3D2          = geoPolyLLA2.poly3D(proj);
-  if(geoPolyCarp.definitelyInside(so_3,geoPoly3D2)){
-    std::cout<<"Definitely inside keep out fence\n";
-  }else{
-    std::cout<<"Definitely outside keep out fence\n";
+  Poly3D geoPoly3D2 = geoPolyLLA2.poly3D(proj);
+  if (geoPolyCarp.definitelyInside(so_3,geoPoly3D2)) {
+    std::cout << "Definitely inside of keep out fence\n";
+  } else {
+    std::cout << "Definitely outside of keep out fence\n";
   }
 }
