@@ -308,7 +308,7 @@ public class COM implements Runnable,ErrorReporter{
 
 	    if(time - msgScheduler.sys_status >= 1/2.0){
 		comIntf.Write(RcvdMessages.GetSysStatus());
-		msgScheduler.gps_raw_int = time;
+		msgScheduler.sys_status = time;
 	    }
 
 	    if(time - msgScheduler.system_time >= 1/2.0){
