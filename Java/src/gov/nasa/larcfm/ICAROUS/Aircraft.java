@@ -323,12 +323,12 @@ public class Aircraft implements ErrorReporter{
 	
 	// Send flight plan to pixhawk
 	System.out.println("PREFLIGHT");
-	EnableDataStream(0);
+	//EnableDataStream(0);
 	//synchronized(apIntf){
-	    System.out.println("Starting mission");	    
-	    FlightData.SendFlightPlanToAP(apIntf);
-	    EnableDataStream(1);
-	    //}
+	//System.out.println("Starting mission");	    
+	//FlightData.SendFlightPlanToAP(apIntf);
+	//EnableDataStream(1);
+	//}
 	
 	return 1;
     }

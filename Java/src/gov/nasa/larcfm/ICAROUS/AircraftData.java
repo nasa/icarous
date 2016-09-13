@@ -163,7 +163,7 @@ public class AircraftData{
 
     
     // Function to send a flight plan to pixhawk
-    public void SendFlightPlanToAP(Interface Intf){
+    public msg_mission_ack SendFlightPlanToAP(Interface Intf){
 	SetPauseDAQ(true);
 	synchronized(Intf){
 	    FP_WRITE_AP state = FP_WRITE_AP.FP_CLR;
@@ -217,7 +217,7 @@ public class AircraftData{
 
 		case FP_CLR:
 		    Intf.Write(msgMissionClearAll);
-		    System.out.println("Cleared mission on AP");
+		    //System.out.println("Cleared mission on AP");
 		    state = FP_WRITE_AP.FP_CLR_ACK;
 		    count = 0;
 		    break;
@@ -247,7 +247,7 @@ public class AircraftData{
 		    msgMissionCount.count = CurrentFlightPlan.size();
 
 		    Intf.Write(msgMissionCount);
-		    System.out.println("Wrote mission count: "+msgMissionCount.count);
+		    //System.out.println("Wrote mission count: "+msgMissionCount.count);
 		    state = FP_WRITE_AP.FP_SEND_WP;
 		    break;
 	    
@@ -261,7 +261,7 @@ public class AircraftData{
 			int seq = msgMissionRequest.seq;
 			count   = seq;
 			
-			System.out.println("Received mission request: "+ seq );
+			//System.out.println("Received mission request: "+ seq );
 
 			msgMissionItem = InputFlightPlan.get(seq);
 			//msgMissionItem.seq     = seq;
@@ -290,8 +290,9 @@ public class AircraftData{
 		    
 			if(msgMissionAck2.type == 0){
 			    if(count == CurrentFlightPlan.size() - 1){
-				System.out.println("Waypoints sent successfully to AP");
+				//System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
+				return msgMissionAck2;
 			    }
 			
 			}
@@ -307,6 +308,8 @@ public class AircraftData{
 	    }//end of while
 	} // end of synchronization
 	SetPauseDAQ(false);
+
+	return null;
     }//end of function
 
     // Function to get flight plan

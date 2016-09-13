@@ -115,7 +115,7 @@ public class COM implements Runnable,ErrorReporter{
 		if(status == 1){
 		    error.addWarning("[" + timeLog + "] MSG: Got waypoints");
 		    UAS.EnableDataStream(0);
-		    FlightData.SendFlightPlanToAP(UAS.apIntf);
+		    comIntf.Write(FlightData.SendFlightPlanToAP(UAS.apIntf));
 		    UAS.EnableDataStream(1);
 		}
 	    }
@@ -139,35 +139,9 @@ public class COM implements Runnable,ErrorReporter{
 	    
 	    if(msgParamRequestList != null){
 		System.out.println("Handling parameter request list");		
-		UAS.EnableDataStream(0);
-		//synchronized(UAS.apIntf){		    
-		    UAS.apIntf.Write(msgParamRequestList);
-		    pauseDataStream = true;
-		    paramCount = 0;
-		    /*
-		    msg_param_value msgParamValue = null;		    
-		    while(msgParamValue  == null){
-			//UAS.apIntf.Read();
-			msgParamValue = RcvdMessages.GetParamValue();
-		    }
-		    int param_count1 = msgParamValue.param_count;		    
-		    double time_param_read_start  = UAS.timeCurrent;
-		    for(int i=0;i<param_count1;i++){
-			System.out.println("count:"+i);			
-			comIntf.Write(msgParamValue);		    
-			msgParamValue = FlightData.Inbox.GetParamValue();		    
-			if(i<param_count1-1){
-			    double time_elapsed = 0;			
-			    while(msgParamValue  == null){
-				//UAS.apIntf.Read();
-				msgParamValue = FlightData.Inbox.GetParamValue();
-			    }						
-			}
-			}*/
-		  
-		    //}
-		    //System.out.println("Updated parameter list");
-		UAS.EnableDataStream(1);
+		UAS.apIntf.Write(msgParamRequestList);
+		pauseDataStream = true;
+		paramCount = 0;		
 	    }
 
 	    // Handle parameter read requests
@@ -179,41 +153,27 @@ public class COM implements Runnable,ErrorReporter{
 	    // Handle parameter value
 	    msg_param_value msgParamValue = RcvdMessages.GetParamValue();
 	    if( msgParamValue != null){
-		// Handle parameter value
-
-		
-		
-		
+		// Handle parameter value						
 		//System.out.println("Handle parameter value");
 		if(msgParamValue.sysid == 1){
 		    //System.out.printf("Received parameter from AP");		    
 		    comIntf.Write(msgParamValue);
-
 		    paramCount++;
-
 		    if(paramCount == msgParamValue.param_count){
 			pauseDataStream = false;
-		    }
-		    
+		    }		    
 		}
 		else{
 		    UAS.apIntf.Write(msgParamValue);
 		    //System.out.println("Writing to AP");
-		}
-
-		
-		
+		}				
 	    }
 
 	    // Handle parameter set
 	    msg_param_set msgParamSet = RcvdMessages.GetParamSet();
 	    if( msgParamSet != null ){
-
-		String ID = new String(msgParamSet.param_id);
-		
-
-		ID = ID.replaceAll("\0","");
-		
+		String ID = new String(msgParamSet.param_id);		
+		ID = ID.replaceAll("\0","");		
 		msg_param_value msgParamValueIC = new msg_param_value();
 		boolean icarous_parm = false;
 
@@ -241,7 +201,6 @@ public class COM implements Runnable,ErrorReporter{
 		    break;
 		}
 		
-
 		if(icarous_parm){
 		    msgParamValueIC.param_id    =  msgParamSet.param_id;
 		    msgParamValueIC.param_value =  msgParamSet.param_value;
@@ -251,10 +210,8 @@ public class COM implements Runnable,ErrorReporter{
 
 	    // Handle commands
 	    msg_command_long msgCommandLong = RcvdMessages.GetCommandLong();
-	    if( msgCommandLong != null ){
-		
+	    if( msgCommandLong != null ){		
 		if(msgCommandLong.command == MAV_CMD.MAV_CMD_DO_FENCE_ENABLE){
-
 		    int status;
 		    status = FlightData.GetGeoFence(comIntf,msgCommandLong);
 		    if(status == 1){
@@ -271,7 +228,6 @@ public class COM implements Runnable,ErrorReporter{
 		    GenericObject obj = new GenericObject(0,(int)msgCommandLong.param1,
 							  msgCommandLong.param5,msgCommandLong.param6,msgCommandLong.param7,
 							  msgCommandLong.param2,msgCommandLong.param3,msgCommandLong.param4);
-
 		    synchronized(FlightData.traffic){
 			GenericObject.AddObject(FlightData.traffic,obj);
 		    }
@@ -279,17 +235,14 @@ public class COM implements Runnable,ErrorReporter{
 		}
 		else{
 		   UAS.apIntf.Write(msgCommandLong); 
-		}
-		
+		}		
 	    }
 	    	    
 	    //Handle mode changes
 	    msg_set_mode msgSetMode = RcvdMessages.GetSetMode();
 	    if(msgSetMode != null){
-
 		UAS.apIntf.Write(msgSetMode);
-	    }	    
-	    
+	    }	    	    
 	}
     }
 
@@ -432,7 +385,10 @@ public class COM implements Runnable,ErrorReporter{
 	    }
 
 	    msg_command_ack msgCommandAck = UAS.GetCmdError();
-	    comIntf.Write(msgCommandAck);
+	    if(msgCommandAck != null){
+		System.out.println("Received ack");
+		comIntf.Write(msgCommandAck);
+	    }
 	}
     }
     
