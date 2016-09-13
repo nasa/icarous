@@ -50,23 +50,7 @@ public class IcarousExample{
 	KinematicMultiBands bands = daa.getKinematicMultiBands();
 
 	// Print track, ground speed, vertical speed and altitude bands
-	printBands(bands);
-
-	// Track resolution
-	System.out.format("Track Resolution (right):%3.2f [deg]\n",bands.trackResolution(true,"deg"));
-	System.out.format("Track Resolution (left):%3.2f [deg]\n",bands.trackResolution(false,"deg"));
-
-	// Ground speed resoultion
-	System.out.format("Ground Speed Resolution (up):%3.2f [kn]\n",bands.groundSpeedResolution(true,"kn"));
-	System.out.format("Ground Speed Resolution (down):%3.2f [kn]\n",bands.groundSpeedResolution(false,"kn"));
-
-	// Vertical speed resolution
-	System.out.format("Vertical Speed Resolution (up):%3.2f [fpm]\n",bands.verticalSpeedResolution(true,"fpm"));
-	System.out.format("Vertical Speed Resolution (down):%3.2f [fpm]\n",bands.verticalSpeedResolution(false,"fpm"));
-
-	// Altitude resolution
-	System.out.format("Altitude Resolution (up):%3.2f [ft]\n",bands.altitudeResolution(true,"ft"));
-	System.out.format("Altitude Resolution (down):%3.2f [ft]\n",bands.altitudeResolution(false,"ft"));
+	System.out.print(bands.outputString());	
 
 	/** Geofence **/
 	
@@ -74,34 +58,34 @@ public class IcarousExample{
 	double floor     = 0;  // 0 m
 	double ceiling   = 10; // 10 m
 
-	// Make a geofence with 4 vertices
-	SimplePoly geoPolyLLA     = new SimplePoly(floor,ceiling);
-	geoPolyLLA.addVertex(Position.makeLatLonAlt(37.102545,"degree",-76.387213,"degree",0,"m"));
-	geoPolyLLA.addVertex(Position.makeLatLonAlt(37.102344,"degree",-76.387163,"degree",0,"m"));
-	geoPolyLLA.addVertex(Position.makeLatLonAlt(37.102351,"degree",-76.386844,"degree",0,"m"));
-	geoPolyLLA.addVertex(Position.makeLatLonAlt(37.102575,"degree",-76.386962,"degree",0,"m"));
+	// Make a geofence with 4 vertices (keep in fence)
+	SimplePoly geoPolyLLA1     = new SimplePoly(floor,ceiling);
+	geoPolyLLA1.addVertex(Position.makeLatLonAlt(37.102545,"degree",-76.387213,"degree",0,"m"));
+	geoPolyLLA1.addVertex(Position.makeLatLonAlt(37.102344,"degree",-76.387163,"degree",0,"m"));
+	geoPolyLLA1.addVertex(Position.makeLatLonAlt(37.102351,"degree",-76.386844,"degree",0,"m"));
+	geoPolyLLA1.addVertex(Position.makeLatLonAlt(37.102575,"degree",-76.386962,"degree",0,"m"));
 
 	// Polycarp objects for geofence containment detection and recovery point calculation
 	CDPolycarp geoPolyCarp    = new CDPolycarp();	
 	PolycarpResolution geoRes = new PolycarpResolution();
 
 	// Project geofence vertices to a local euclidean coordinate system to use with polycarp functions
-	EuclideanProjection proj  = Projection.createProjection(geoPolyLLA.getVertex(0));
-	Poly3D geoPoly3D          = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
+	EuclideanProjection proj  = Projection.createProjection(geoPolyLLA1.getVertex(0));
+	Poly3D geoPoly3D1         = geoPolyCarp.makeNicePolygon(geoPolyLLA1.poly3D(proj));
 	
 	// Check if ownship violates geofence (use definitelyInside(..) or definitelyOutside(..)
 	// based on geofence type [ keep in vs keep out] )
 	Vect3 so_3 = proj.project(so); // Project ownship position into local euclidean frame
-	if(geoPolyCarp.definitelyInside(so_3,geoPoly3D)){
-	    System.out.println("Definitely inside");
+	if(geoPolyCarp.definitelyInside(so_3,geoPoly3D1)){
+	    System.out.println("Definitely inside of keep in fence");
 	}else{
-	    System.out.println("Definitely outside");
+	    System.out.println("Definitely outside of keep out fence");
 	}
 	
 	//Check if ownship is near any edge (nearness is defined based on horizontal and vertical thresholds)
 	double hthreshold = 1; // 1 m
 	double vthreshold = 1; // 1 m	
-	if(geoPolyCarp.nearEdge(so_3,geoPoly3D,hthreshold,vthreshold)){
+	if(geoPolyCarp.nearEdge(so_3,geoPoly3D1,hthreshold,vthreshold)){
 	    System.out.println("Ownship is near geofence edge");
 
 	    // Compute a safe point to goto
@@ -110,7 +94,7 @@ public class IcarousExample{
 
 	    ArrayList<Vect2> fenceVertices = new ArrayList<Vect2>();
 	    for(int i=0;i<4;i++){
-		fenceVertices.add(geoPoly3D.getVertex(i)); // Euclidean 2D coordinates of fence vertices.
+		fenceVertices.add(geoPoly3D1.getVertex(i)); // Euclidean 2D coordinates of fence vertices.
 	    }
 
 	    // Compute safe point
@@ -121,7 +105,26 @@ public class IcarousExample{
 	    Position RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
 	    System.out.println(RecoveryPoint.toString());
 	}
+
+	// Make a geofence with 4 vertices (keep out fence)
+	SimplePoly geoPolyLLA2     = new SimplePoly(floor,ceiling);
+	geoPolyLLA2.addVertex(Position.makeLatLonAlt(37.102247,"degree",-76.387269,"degree",0,"m"));
+	geoPolyLLA2.addVertex(Position.makeLatLonAlt(37.102017,"degree",-76.387266,"degree",0,"m"));
+	geoPolyLLA2.addVertex(Position.makeLatLonAlt(37.102060,"degree",-76.386997,"degree",0,"m"));
+	geoPolyLLA2.addVertex(Position.makeLatLonAlt(37.102256,"degree",-76.387010,"degree",0,"m"));
+
 	
+	// Project geofence vertices to a local euclidean coordinate system to use with polycarp functions	
+	Poly3D geoPoly3D2         = geoPolyCarp.makeNicePolygon(geoPolyLLA2.poly3D(proj));
+	
+	// Check if ownship violates geofence (use definitelyInside(..) or definitelyOutside(..)
+	// based on geofence type [ keep in vs keep out] )
+	if(geoPolyCarp.definitelyInside(so_3,geoPoly3D2)){
+	    System.out.println("Definitely inside of keepout fence");
+	}else{
+	    System.out.println("Definitely outside of keepout fence");
+	}
+				
 	
     }
 
@@ -138,35 +141,6 @@ public class IcarousExample{
 	
     }
     
-    static void printBands(KinematicMultiBands bands){
-	System.out.println("Track bands [deg,deg]");
-	for (int i = 0; i < bands.trackLength(); ++i ) {
-	    Interval iv            = bands.track(i,"deg"); //i-th band region
-	    System.out.print(bands.trackRegion(i).toString());
-	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
-	}
-
-	System.out.println("Ground speed bands[knots,knots]");
-	for (int i = 0; i < bands.groundSpeedLength(); ++i ) {
-	    Interval iv            = bands.groundSpeed(i,"kn"); //i-th band region
-	    System.out.print(bands.groundSpeedRegion(i).toString());
-	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
-	}
-
-	System.out.println("Vertical speed bands[fpm,fpm]");
-	for (int i = 0; i < bands.verticalSpeedLength(); ++i ) {
-	    Interval iv            = bands.verticalSpeed(i,"fpm"); //i-th band region
-	    System.out.print(bands.verticalSpeedRegion(i).toString());
-	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
-	}
-
-	System.out.println("Altitude bands[ft,ft]");
-	for (int i = 0; i < bands.altitudeLength(); ++i ) {
-	    Interval iv            = bands.altitude(i,"ft"); //i-th band region
-	    System.out.print(bands.altitudeRegion(i).toString());
-	    System.out.format(":[%3.2f,%3.2f]\n",iv.low,iv.up);	    
-	}
-	
-    }
+    
 
 }
