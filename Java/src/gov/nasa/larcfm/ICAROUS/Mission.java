@@ -10,6 +10,8 @@
  */
 package gov.nasa.larcfm.ICAROUS;
 
+import gov.nasa.larcfm.Util.ErrorReporter;
+
 public interface Mission{
 
     public int Execute(Aircraft UAS);
