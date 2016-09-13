@@ -172,14 +172,14 @@ public class Interface{
     public synchronized byte[] SerialRead(){
 	byte[] buffer = null;		
 	try{
-	    buffer = serialPort.readBytes(100,Timeout);
+	    buffer = serialPort.readBytes();
 	}
 	catch(SerialPortException e){
 	    System.out.println(e);
 	}
-	catch(SerialPortTimeoutException e){
-	    //System.out.println(e);
-	}
+	//catch(SerialPortTimeoutException e){
+	//  System.out.println(e);
+	//}
 	return buffer;
     }
 

@@ -217,16 +217,14 @@ public class AircraftData{
 
 		case FP_CLR:
 		    Intf.Write(msgMissionClearAll);
-		    //System.out.println("Cleared mission on AP");
+		    System.out.println("Cleared mission on AP");
 		    state = FP_WRITE_AP.FP_CLR_ACK;
 		    count = 0;
 		    break;
 
 		case FP_CLR_ACK:
-
-		    Intf.SetTimeout(10);
-		    Intf.Read();
-		    Intf.SetTimeout(0);
+		    
+		    Intf.Read();		    
 		    
 		    msg_mission_ack msgMissionAck1 = Inbox.GetMissionAck();
 		    if(msgMissionAck1 != null){
@@ -249,7 +247,7 @@ public class AircraftData{
 		    msgMissionCount.count = CurrentFlightPlan.size();
 
 		    Intf.Write(msgMissionCount);
-		    //System.out.println("Wrote mission count: "+msgMissionCount.count);
+		    System.out.println("Wrote mission count: "+msgMissionCount.count);
 		    state = FP_WRITE_AP.FP_SEND_WP;
 		    break;
 	    
@@ -263,7 +261,7 @@ public class AircraftData{
 			int seq = msgMissionRequest.seq;
 			count   = seq;
 			
-			//System.out.println("Received mission request: "+ seq );
+			System.out.println("Received mission request: "+ seq );
 
 			msgMissionItem = InputFlightPlan.get(seq);
 			//msgMissionItem.seq     = seq;
@@ -292,7 +290,7 @@ public class AircraftData{
 		    
 			if(msgMissionAck2.type == 0){
 			    if(count == CurrentFlightPlan.size() - 1){
-				//System.out.println("Waypoints sent successfully to AP");
+				System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
 			    }
 			
