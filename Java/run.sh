@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODE=active
+MODE=passthrough
 EXEC=icarous.jar
 JSSCLIB=lib/jssc-2.8.0.jar
 DAIDALUS=lib/ICAROUS.jar

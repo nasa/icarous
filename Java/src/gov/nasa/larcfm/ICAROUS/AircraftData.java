@@ -290,6 +290,7 @@ public class AircraftData{
 			    if(count == CurrentFlightPlan.size() - 1){
 				//System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
+				SetPauseDAQ(false);
 				return msgMissionAck2;
 			    }
 			

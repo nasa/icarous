@@ -213,12 +213,12 @@ public class Aircraft implements ErrorReporter{
 	short status;
 
 	msg_command_ack msgCommandAck = null;
-		
-	while(msgCommandAck == null){
-	    //System.out.println("Checking for ack");
+
+	//System.out.println("Checking for ack for:"+command);
+	while(msgCommandAck == null){	    
 	    msgCommandAck = FlightData.Inbox.GetCommandAck(1);
 	    if(msgCommandAck != null){
-		//System.out.format("Got ack for %d = %d\n",command,msgCommandAck.result);
+		//System.out.format("Got ack for %d = %d\n",msgCommandAck.command,msgCommandAck.result);
 	    }
 	    if( (msgCommandAck != null) && (msgCommandAck.command != command)){
 		msgCommandAck = null;

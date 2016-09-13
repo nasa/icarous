@@ -115,6 +115,7 @@ public class COM implements Runnable,ErrorReporter{
 		if(status == 1){
 		    error.addWarning("[" + timeLog + "] MSG: Got waypoints");
 		    UAS.EnableDataStream(0);
+		    //FlightData.SendFlightPlanToAP(UAS.apIntf);
 		    comIntf.Write(FlightData.SendFlightPlanToAP(UAS.apIntf));
 		    UAS.EnableDataStream(1);
 		}

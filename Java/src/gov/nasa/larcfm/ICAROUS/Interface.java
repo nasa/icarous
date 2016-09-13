@@ -67,7 +67,7 @@ public class Interface{
 	}
 	
 	InitSocketInterface();
-	SetTimeout(500);
+	SetTimeout(100);
     }
 
     public Interface(int intType,String portName,AircraftData acData){
