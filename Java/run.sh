@@ -3,7 +3,7 @@
 MODE=active
 EXEC=icarous.jar
 JSSCLIB=lib/jssc-2.8.0.jar
-DAIDALUS=lib/FormalATMj/FormalATM.jar
+DAIDALUS=lib/ICAROUS.jar
 SITL_HOST=localhost
 SITL_INPUT_PORT=14551
 COM_HOST=localhost
