@@ -219,38 +219,38 @@ int main(int argc,char* argv[]){
   double floor     = 0;  // 0 m
   double ceiling   = 10; // 10 m
   
-  // Make a geofence with 4 vertices
-  SimplePoly geoPolyLLA(floor,ceiling);
-  geoPolyLLA.addVertex(Position::makeLatLonAlt(37.102545,"degree",-76.387213,"degree",0,"m"));
-  geoPolyLLA.addVertex(Position::makeLatLonAlt(37.102344,"degree",-76.387163,"degree",0,"m"));
-  geoPolyLLA.addVertex(Position::makeLatLonAlt(37.102351,"degree",-76.386844,"degree",0,"m"));
-  geoPolyLLA.addVertex(Position::makeLatLonAlt(37.102575,"degree",-76.386962,"degree",0,"m"));
+  // Make a geofence with 4 vertices (keep in fence)
+  SimplePoly geoPolyLLA1(floor,ceiling);
+  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102545,"degree",-76.387213,"degree",0,"m"));
+  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102344,"degree",-76.387163,"degree",0,"m"));
+  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102351,"degree",-76.386844,"degree",0,"m"));
+  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102575,"degree",-76.386962,"degree",0,"m"));
 
   CDPolycarp geoPolyCarp;
   PolycarpResolution geoRes;
   
   // Project geofence vertices to a local euclidean coordinate system to use with polycarp functions
-  EuclideanProjection proj  = Projection::createProjection(geoPolyLLA.getVertex(0));
-  Poly3D geoPoly3D          = geoPolyLLA.poly3D(proj);
+  EuclideanProjection proj  = Projection::createProjection(geoPolyLLA1.getVertex(0));
+  Poly3D geoPoly3D1          = geoPolyLLA1.poly3D(proj);
 
   Vect3 so_3 = proj.project(so); // Project ownship position into local euclidean frame
-  if(geoPolyCarp.definitelyInside(so_3,geoPoly3D)){
-    std::cout<<"Definitely inside\n";
+  if(geoPolyCarp.definitelyInside(so_3,geoPoly3D1)){
+    std::cout<<"Definitely inside keep in fence\n";
   }else{
-    std::cout<<"Definitely outside\n";
+    std::cout<<"Definitely outside keep in fence\n";
   }
 
   std::vector<Vect2> fenceVertices;
   fenceVertices.reserve(4);
 
   for(int i=0;i<4;i++){
-    fenceVertices.push_back(geoPoly3D.getVertex(i));
+    fenceVertices.push_back(geoPoly3D1.getVertex(i));
   }
 
   //Check if ownship is near any edge (nearness is defined based on horizontal and vertical thresholds)
   double hthreshold = 1; // 1 m
   double vthreshold = 1; // 1 m	
-  if(geoPolyCarp.nearEdge(so_3,geoPoly3D,hthreshold,vthreshold)){
+  if(geoPolyCarp.nearEdge(so_3,geoPoly3D1,hthreshold,vthreshold)){
     std::cout<<"Ownship is near geofence edge";
     
     // Compute a safe point to goto
@@ -264,5 +264,21 @@ int main(int argc,char* argv[]){
     LatLonAlt LLA = proj.inverse(recpoint,so.alt());
     Position RecoveryPoint = Position::makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
     std::cout<<RecoveryPoint.toString();
+  }
+
+  // Make a geofence with 4 vertices (keep out fence)
+  SimplePoly geoPolyLLA2(floor,ceiling);
+  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102247,"degree",-76.387269,"degree",0,"m"));
+  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102017,"degree",-76.387266,"degree",0,"m"));
+  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102060,"degree",-76.386997,"degree",0,"m"));
+  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102256,"degree",-76.387010,"degree",0,"m"));
+  
+  
+  // Project geofence vertices to a local euclidean coordinate system to use with polycarp functions
+  Poly3D geoPoly3D2          = geoPolyLLA2.poly3D(proj);
+  if(geoPolyCarp.definitelyInside(so_3,geoPoly3D2)){
+    std::cout<<"Definitely inside keep out fence\n";
+  }else{
+    std::cout<<"Definitely outside keep out fence\n";
   }
 }
