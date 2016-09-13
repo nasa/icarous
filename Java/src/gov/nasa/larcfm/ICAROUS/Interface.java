@@ -23,6 +23,7 @@ import com.MAVLink.common.*;
 import com.MAVLink.MAVLinkPacket;
 import jssc.SerialPort;
 import jssc.SerialPortException;
+import jssc.SerialPortTimeoutException;
 
 public class Interface{
 
@@ -44,6 +45,7 @@ public class Interface{
     private SerialPort serialPort = null;
     private Parser MsgParser      = new Parser();
     private MAVLinkMessages Inbox;
+    private int Timeout;
     
     public Interface(int intType,String hostname,int recvPort,int sendPort,AircraftData acData){
 
@@ -65,6 +67,7 @@ public class Interface{
 	}
 	
 	InitSocketInterface();
+	SetTimeout(500);
     }
 
     public Interface(int intType,String portName,AircraftData acData){
@@ -78,6 +81,7 @@ public class Interface{
 	}
 
 	InitSerialInterface();
+	SetTimeout(500);
     }
 
     public void InitSocketInterface(){
@@ -105,6 +109,9 @@ public class Interface{
 	    catch(SocketException e){
 		System.out.println(e);
 	    }
+	}
+	else{
+	    Timeout = timeout;
 	}
     }
     
@@ -165,10 +172,13 @@ public class Interface{
     public synchronized byte[] SerialRead(){
 	byte[] buffer = null;		
 	try{
-	    buffer = serialPort.readBytes(1);
+	    buffer = serialPort.readBytes(100,Timeout);
 	}
 	catch(SerialPortException e){
 	    System.out.println(e);
+	}
+	catch(SerialPortTimeoutException e){
+	    //System.out.println(e);
 	}
 	return buffer;
     }

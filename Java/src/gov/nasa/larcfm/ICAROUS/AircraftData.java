@@ -355,10 +355,8 @@ public class AircraftData{
 		    break;
 
 		case FP_WP_READ:
-
-		    Intf.SetTimeout(1000);
-		    Intf.Read();
-		    Intf.SetTimeout(0);
+		    
+		    Intf.Read();		    
 
 		    msg_mission_item msgMissionItem = Inbox.GetMissionItem();
 		    if(msgMissionItem != null){
@@ -432,10 +430,8 @@ public class AircraftData{
 		    break;
 	    
 		case FP_SEND_WP:
-
-		    Intf.SetTimeout(1000);
-		    Intf.Read();		
-		    Intf.SetTimeout(0);
+		   
+		    Intf.Read();				   
 		    
 		    msg_mission_request msgMissionRequest = Inbox.GetMissionRequest();
 		    if(msgMissionRequest != null){
@@ -541,11 +537,8 @@ public class AircraftData{
 		break;
 		
 	    case GF_READ:
-
-		Intf.SetTimeout(1000);
-		Intf.Read();		
-		Intf.SetTimeout(0);
-				
+		
+		Intf.Read();								
 		
 		msg_fence_point msgFencePoint = Inbox.GetFencePoint();
 		if(msgFencePoint != null){

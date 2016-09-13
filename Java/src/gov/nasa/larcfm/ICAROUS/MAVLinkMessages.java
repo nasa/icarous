@@ -801,8 +801,9 @@ public class MAVLinkMessages{
     }
     
     public synchronized msg_heartbeat GetHeartbeat_AP(){
-	if(listHeartbeat_AP.size()>0){	    
-	    return listHeartbeat_AP.remove(0);
+	if(listHeartbeat_AP.size()>0){
+	    int last = listHeartbeat_AP.size();
+	    return listHeartbeat_AP.remove(last-1);
 	}
 	else{
 	    return null;
