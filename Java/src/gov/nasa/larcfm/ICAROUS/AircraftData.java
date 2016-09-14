@@ -180,7 +180,8 @@ public class AircraftData{
 	    for(int i=0;i<InputFlightPlan.size();i++){
 		
 		msgMissionItem0 = InputFlightPlan.get(i);
-		if(msgMissionItem0.command == MAV_CMD.MAV_CMD_NAV_WAYPOINT){
+		if( (msgMissionItem0.command == MAV_CMD.MAV_CMD_NAV_WAYPOINT) ||
+		    (msgMissionItem0.command == MAV_CMD.MAV_CMD_NAV_SPLINE_WAYPOINT) ){
 		    double wptime= 0;
 		    Position nextWP = Position.makeLatLonAlt(msgMissionItem0.x,"degree",msgMissionItem0.y,"degree",msgMissionItem0.z,"m");
 		    if(i > 0 ){
