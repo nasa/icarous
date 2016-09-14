@@ -3,7 +3,7 @@
 MODE=active
 EXEC=icarous.jar
 JSSCLIB=lib/jssc-2.8.0.jar
-DAIDALUS=lib/ICAROUS.jar
+FORMALATM=lib/FormalATM.jar
 SITL_HOST=localhost
 SITL_INPUT_PORT=14551
 COM_HOST=localhost
@@ -20,7 +20,7 @@ RADIO_SOCKET_OUT=$COM_INPUT_PORT
 
 if [ "$1" == 'SITL' ];then
    echo "Launching ICAROUS with SITL"
-   $PRE java -cp $EXEC:$JSSCLIB:$DAIDALUS launch \
+   $PRE java -cp $EXEC:$JSSCLIB:$FORMALATM launch \
 	-v \
 	--sitl $SITL_HOST $SITL_INPUT_PORT \
 	--com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
@@ -31,13 +31,13 @@ elif [ "$1" == 'PX4' ];then
     
     if [ "$2" == "nohup" ];then
 	nohup java -cp $EXEC BB_SAFEGUARD $GPIO_PORT $COM_INPUT_PORT &
-	nohup java -cp $EXEC:$JSSCLIB:$DAIDALUS launch \
+	nohup java -cp $EXEC:$JSSCLIB:$FORMALATM launch \
 	 -v \
 	 --px4 $PX4_PORT \
 	 --com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
 	 --mode $MODE > pxout.txt &
     else
-	java -cp $EXEC:$JSSCLIB:$DAIDALUS launch \
+	java -cp $EXEC:$JSSCLIB:$FORMALATM launch \
 	 -v \
 	 --px4 $PX4_PORT \
 	 --com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
