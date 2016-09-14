@@ -178,24 +178,26 @@ public class AircraftData{
 
 	    msg_mission_item msgMissionItem0         = new msg_mission_item();
 	    for(int i=0;i<InputFlightPlan.size();i++){
-		msgMissionItem0 = InputFlightPlan.get(i);
-	    
-		double wptime= 0;
-		Position nextWP = Position.makeLatLonAlt(msgMissionItem0.x,"degree",msgMissionItem0.y,"degree",msgMissionItem0.z,"m");
-		if(i > 0 ){
-
-		    double vel = msgMissionItem0.param4;
-
-		    if(vel < 0.5){
-			vel = 1;
-		    }
 		
-		    double distance = CurrentFlightPlan.point(i - 1).position().distanceH(nextWP);
-		    wptime          = CurrentFlightPlan.getTime(i-1) + distance/vel;
-		    //System.out.println("Times:"+wptime);
-		}		     
+		msgMissionItem0 = InputFlightPlan.get(i);
+		if(msgMissionItem0.command == MAV_CMD.MAV_CMD_NAV_WAYPOINT){
+		    double wptime= 0;
+		    Position nextWP = Position.makeLatLonAlt(msgMissionItem0.x,"degree",msgMissionItem0.y,"degree",msgMissionItem0.z,"m");
+		    if(i > 0 ){
+
+			double vel = msgMissionItem0.param4;
+
+			if(vel < 0.5){
+			    vel = 1;
+			}
+		
+			double distance = CurrentFlightPlan.point(i - 1).position().distanceH(nextWP);
+			wptime          = CurrentFlightPlan.getTime(i-1) + distance/vel;
+			//System.out.println("Times:"+wptime);
+		    }		     
 	    
-		CurrentFlightPlan.add(new NavPoint(nextWP,wptime));
+		    CurrentFlightPlan.add(new NavPoint(nextWP,wptime));
+		}
 	    }
 
 	    FP_numWaypoints           = CurrentFlightPlan.size();
