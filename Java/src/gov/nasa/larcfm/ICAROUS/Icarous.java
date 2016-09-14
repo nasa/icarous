@@ -166,6 +166,10 @@ public class Icarous{
 	uasQuad.error.setConsoleOutput(verbose);
 	com_module.error.setConsoleOutput(verbose);
     }
+
+    public void SetDaidaludusConfig(String filename){
+	uasQuad.fsam.SetDaaConfig(filename);
+    }
     
     public void run(){
 	if(mode.equals("passthrough")){

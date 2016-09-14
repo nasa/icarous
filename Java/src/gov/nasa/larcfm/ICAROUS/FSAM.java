@@ -92,6 +92,7 @@ public class FSAM{
     private double lookahead;
     private double proximityfactor;
     private double standoff;
+    private String daidalusparam;
     
     public FSAM(Aircraft ac,Mission ms){
 	UAS                      = ac;
@@ -121,19 +122,25 @@ public class FSAM{
 	buffer            = UAS.pData.getValue("BUFFER");
 	lookahead         = UAS.pData.getValue("LOOKAHEAD");
 	proximityfactor   = UAS.pData.getValue("PROXFACTOR");
+	daidalusparam     = "params/DaidalusQuadConfig.txt";
 	
 	// Create an object of type Daidalus for a well-clear volume based on TAUMOD
 	daa = new Daidalus();
-
-	daa.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+	
+	daa.parameters.loadFromFile(daidalusparam);
 
 	daaLookahead = daa.parameters.getLookaheadTime("s");
 	// Kinematic bands			
 	daaTick = 0;
-	KMB = null;
-
-	
+	KMB = null;	
     }
+
+    public void SetDaaConfig(String filename){
+	daa.parameters.loadFromFile(filename);
+	daaLookahead = daa.parameters.getLookaheadTime("s");
+    }
+
+    
 
     static public AlertLevels AlertQuad(double radius,double height,double alerttime1,double alerttime2) {		
 	AlertLevels alertor = new AlertLevels();
