@@ -346,34 +346,44 @@ public class Aircraft implements ErrorReporter{
 
 	case TAKEOFF:
 
-	    int ack;
+	    if( Math.abs(currPosition.alt()) < 1 ){
+		int ack;
 	    
-	    // Set mode to guided
-	    error.addWarning("[" + timeLog + "] MODE:GUIDED");
-	    SetMode(4);
-	    apMode = AP_MODE.GUIDED;
+		// Set mode to guided
+		error.addWarning("[" + timeLog + "] MODE:GUIDED");
+		SetMode(4);
+		apMode = AP_MODE.GUIDED;
 	    
-	    // Arm the throttles
-	    error.addWarning("[" + timeLog + "] CMD:ARM");
-	    ack = SendCommand(0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,0,
-			1,0,0,0,0,0,0);
+		// Arm the throttles
+		error.addWarning("[" + timeLog + "] CMD:ARM");
+		ack = SendCommand(0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,0,
+				  1,0,0,0,0,0,0);
 
-	    error.addWarning("[" + timeLog + "] CMD:TAKEOFF");
-	    // Takeoff at current location
-	    error.addWarning("[ "+ timeLog + " ] ALT: "+targetAlt);
-	    ack = SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
-			1,0,0,0, (float) currPosition.latitude(),
-			(float) currPosition.longitude(),
-			targetAlt);
+		// Send takeoff command only if 
 	    
-	    if(ack == 0){
-		return -1;
-	    }
-	    else{
-		state = FLIGHT_STATE.TAKEOFF_CLIMB;
-	    }
+		error.addWarning("[" + timeLog + "] CMD:TAKEOFF");
+		// Takeoff at current location
+		error.addWarning("[ "+ timeLog + " ] ALT: "+targetAlt);
+		ack = SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
+				  1,0,0,0, (float) currPosition.latitude(),
+				  (float) currPosition.longitude(),
+				  targetAlt);
+	    
+	    
+		if(ack == 0){
+		    return -1;
+		}
+		else{
+		    state = FLIGHT_STATE.TAKEOFF_CLIMB;
+		}
 
 	    break;
+
+	    }else{
+		state = FLIGHT_STATE.CRUISE;
+		SetMode(3);
+		apMode = AP_MODE.AUTO;
+	    }
 
 	case TAKEOFF_CLIMB:
 

@@ -219,11 +219,9 @@ public class COM implements Runnable,ErrorReporter{
 			error.addWarning("[" + timeLog + "] MSG: Geo fence update, #fences:"+FlightData.fenceList.size());
 		    }
 		}
-		else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){
-		    if(msgCommandLong.param1 == 1){
-			FlightData.startMission = 1;
-			error.addWarning("[" + timeLog + "] MSG: Received Mission START");
-		    }
+		else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){		    
+		    FlightData.startMission = (int) msgCommandLong.param1;
+		    error.addWarning("[" + timeLog + "] MSG: Received Mission START");		    
 		}
 		else if(msgCommandLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_1){
 		    GenericObject obj = new GenericObject(0,(int)msgCommandLong.param1,

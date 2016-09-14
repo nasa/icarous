@@ -72,14 +72,26 @@ public class FMS implements Runnable{
 
 	    /* - Wait for mission start flag from ground station */
 	    
-	    if(UAS.FlightData.startMission == 1){
-		UAS.FlightData.startMission = -1;
+	    if(UAS.FlightData.startMission == 0){		
 		if(UAS.FlightData.InputFlightPlan.size() > 0){
 		    state = FMS_STATE.PREFLIGHT;
 		}
 		else{
 		    UAS.error.addError("[" + UAS.timeLog + "] MSG: No flight plan loaded");
 		}
+		UAS.FlightData.startMission = -1;
+	    }
+	    else if( UAS.FlightData.startMission > 0 && UAS.FlightData.startMission < UAS.FlightData.InputFlightPlan.size()){		
+		if(UAS.FlightData.InputFlightPlan.size() > 0){
+		    state = FMS_STATE.FLIGHT;
+		    UAS.state = Aircraft.FLIGHT_STATE.CRUISE;
+		    UAS.FlightData.FP_nextWaypoint = UAS.FlightData.startMission;
+		    UAS.error.addError("[" + UAS.timeLog + "] MSG: Starting mission to waypoint:"+UAS.FlightData.FP_nextWaypoint);
+		}
+		else{
+		    UAS.error.addError("[" + UAS.timeLog + "] MSG: No flight plan loaded");
+		}
+		UAS.FlightData.startMission = -1;
 	    }
 	    
 	    break;
