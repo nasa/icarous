@@ -874,7 +874,12 @@ public class FSAM{
 	    
 	}
 
-	CPP.add(FlightData.fenceList.get(0).geoPolyPath);
+	for(int i=0;i<FlightData.fenceList.size();i++){
+	    GeoFence GF = FlightData.fenceList.get(i);
+	    if(GF.Type == 0){
+		CPP.add(GF.geoPolyPath);
+	    }
+	}
 	
 	minTime = minTime - lookahead;
 	maxTime = maxTime + lookahead;
