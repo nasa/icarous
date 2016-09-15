@@ -24,7 +24,29 @@ collision, resolution, and recovery information for polygons. The
 intended applications of PolyCARP are related, but not limited, to
 safety critical systems in air traffic management.
 
+### Documentation
+
+The API document for v1.0 is still work in progress. In the meantime,
+please refer to the release notes and the examples files
+`IcarousExample.java` and `IcarousExample.cpp`.
+
+For technical information about the definitions and algorithms in this
+repository, visit [http://shemesh.larc.nasa.gov/ICAROUS](http://shemesh.larc.nasa.gov/fm/ICAROUS).
+
+### Current Release
+
+v1.a0 (September 11, 2016)
+
 ### License
 
 This code is released under NASA's Open Source Agreement. For more
-information see files in directory Licenses.
+information see files in directory LICENSES.
+
+### Contact
+
+[C&eacute;sar A. Mu&ntilde;oz](http://shemesh.larc.nasa.gov/people/cam) (cesar.a.munoz@nasa.gov), NASA Langley Research Center.
+
+## Logo
+
+The ICAROUS logo was designed by 
+[Mahyar Malekpour](http://shemesh.larc.nasa.gov/people/mrm/publications.htm#ETC), NASA Langley Research Center.
