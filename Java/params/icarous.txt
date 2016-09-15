@@ -1,5 +1,5 @@
 # SYS ID/ COMP ID
-SYS_ID = 2
+SYS_ID = 100
 COMP_ID = 0
 
 # ICAROUS heartbeat (Hz)
