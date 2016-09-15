@@ -31,7 +31,7 @@ please refer to the release notes and the examples files
 `IcarousExample.java` and `IcarousExample.cpp`.
 
 For technical information about the definitions and algorithms in this
-repository, visit [http://shemesh.larc.nasa.gov/ICAROUS](http://shemesh.larc.nasa.gov/fm/ICAROUS).
+repository, visit [http://shemesh.larc.nasa.gov/fm/ICAROUS](http://shemesh.larc.nasa.gov/fm/ICAROUS).
 
 ### Current Release
 
