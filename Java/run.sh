@@ -14,9 +14,10 @@ PX4_PORT=/dev/tty01
 GS_MASTER=127.0.0.1:$COM_OUTPUT_PORT
 #GS_MASTER=/dev/ttyUSB0
 GPIO_PORT=23
-RADIO_SERIAL_PORT=/dev/ttyUSB1
+RADIO_SERIAL_PORT=/dev/ttyUSB0
 RADIO_SOCKET_IN=$COM_OUTPUT_PORT
 RADIO_SOCKET_OUT=$COM_INPUT_PORT
+RADIO_BAUD=57600
 
 if [ "$1" == 'SITL' ];then
    echo "Launching ICAROUS with SITL"
@@ -50,7 +51,7 @@ elif [ "$1" == 'GS' ];then
 
 elif [ "$1" == 'RADIO' ];then
     echo "Launching radio module"
-    java -cp $EXEC:$JSSCLIB radio $RADIO_SOCKET_IN $RADIO_SOCKET_OUT $RADIO_SERIAL_PORT
+    java -cp $EXEC:$JSSCLIB radio $RADIO_SOCKET_IN $RADIO_SOCKET_OUT $RADIO_SERIAL_PORT $RADIO_BAUD
     
 elif [ "$1" == 'SAFE' ];then
     echo "Launching SAFEGUARD listener"

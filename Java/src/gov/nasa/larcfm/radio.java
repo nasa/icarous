@@ -7,7 +7,7 @@ public class radio{
 				      Integer.parseInt(args[0]),
 				      Integer.parseInt(args[1]),null);
 
-	Interface SERIAL  = new Interface(Interface.SERIAL,args[2],null);
+	Interface SERIAL  = new Interface(Interface.SERIAL,args[2],Integer.parseInt(args[3]),null);
 
 	while(true){
 	    Interface.PassThrough(SOCKET,SERIAL);

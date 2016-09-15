@@ -24,6 +24,8 @@ public class Icarous{
     private String comport;
     private String radioport;
     private String mode;
+    private int px4baud;
+    private int radiobaud;
     private int sitlport;
     private int bcastport;
     private int comportin;
@@ -49,6 +51,8 @@ public class Icarous{
 	comport    = null;
 	radioport  = null;
 	mode       = null;
+	px4baud   = 0;
+	radiobaud = 0;
 	sitlport   = 0;
 	bcastport  = 0;
 	comportin  = 0;
@@ -80,6 +84,7 @@ public class Icarous{
 
 	    else if(args[i].startsWith("--px4")){
 		px4port = args[++i];
+		px4baud = Integer.parseInt(args[++i]);
 	    }
 
 	    else if(args[i].startsWith("--sitl")){
@@ -95,6 +100,7 @@ public class Icarous{
 
 	    else if(args[i].startsWith("--radio")){
 		radioport = args[++i];
+		radiobaud = Integer.parseInt(args[++i]);
 	    }
 
 	    else if(args[i].startsWith("--bc")){
@@ -127,7 +133,7 @@ public class Icarous{
 
 	    
 	}else{	    
-	   APInt         =  new Interface(Interface.SERIAL,px4port,FlightData);
+	    APInt         =  new Interface(Interface.SERIAL,px4port,px4baud,FlightData);
 	}
 
 	
@@ -139,7 +145,7 @@ public class Icarous{
 				     FlightData);
 	}
 	else{
-	    COMInt   = new Interface(Interface.SERIAL,radioport, FlightData);
+	    COMInt   = new Interface(Interface.SERIAL,radioport,radiobaud,FlightData);
 	    
 	}
 

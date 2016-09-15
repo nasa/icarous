@@ -70,7 +70,7 @@ public class Interface{
 	SetTimeout(100);
     }
 
-    public Interface(int intType,String portName,AircraftData acData){
+    public Interface(int intType,String portName,int BAUDRATE,AircraftData acData){
 
 	interfaceType  = (short) intType;
 	serialPortName = portName;
@@ -80,7 +80,7 @@ public class Interface{
 	    Inbox           = acData.Inbox;
 	}
 
-	InitSerialInterface();
+	InitSerialInterface(BAUDRATE);
 	SetTimeout(500);
     }
 
@@ -115,13 +115,13 @@ public class Interface{
 	}
     }
     
-    public void InitSerialInterface(){
+    public void InitSerialInterface(int BAUDRATE){
 
 	serialPort = new SerialPort(serialPortName);
 
 	try {
 	    serialPort.openPort();
-	    serialPort.setParams(SerialPort.BAUDRATE_115200, 
+	    serialPort.setParams(BAUDRATE, 
 				 SerialPort.DATABITS_8,
 				 SerialPort.STOPBITS_1,
 				 SerialPort.PARITY_NONE);
