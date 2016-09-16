@@ -444,9 +444,10 @@ public class FSAM{
 	case AWAIT_COMPLETION:
 	    
 	    Position pos   = ResolutionPlan.point(currentResolutionWP).position();
-	    double dist    = pos.distanceH(UAS.FlightData.acState.positionLast());
-
-	    if(dist < 1){
+	    double distH   = pos.distanceH(UAS.FlightData.acState.positionLast());
+	    double distV   = pos.distanceV(UAS.FlightData.acState.positionLast());
+		
+	    if(distH < 1 && distV < 0.1){
 
 		currentResolutionWP = currentResolutionWP + 1;
 		if(currentResolutionWP < ResolutionPlan.size()){
@@ -833,6 +834,7 @@ public class FSAM{
 	
 	Plan CurrentFP;
 	double currentTime;
+	double altfence = 100;
 		
 	if(NominalPlan){
 	    CurrentFP = FlightData.CurrentFlightPlan;
@@ -846,8 +848,8 @@ public class FSAM{
 	double minTime = Double.MAX_VALUE;
 	double maxTime = 0.0;
 
-	ArrayList<PolyPath> LPP = new ArrayList<PolyPath>();
-	ArrayList<PolyPath> CPP = new ArrayList<PolyPath>();
+	ArrayList<PolyPath> LPP = new ArrayList<PolyPath>(); // List of keep out fences
+	ArrayList<PolyPath> CPP = new ArrayList<PolyPath>(); // List of keep in fences
 	WeatherUtil WU = new WeatherUtil();
 
 	Position RecoveryPoint = null;
@@ -864,6 +866,7 @@ public class FSAM{
 	   	    
 	    if(GF.entryTime <= minTime){
 		minTime = GF.entryTime;
+		altfence = GF.ceiling;
 	    }
 	    
 	    if(GF.exitTime >= maxTime){
@@ -921,15 +924,13 @@ public class FSAM{
 	    BR.add(CF.getVertex(i));
 	}	
 
-	// Get start and end positions based on conflicted parts of the original flight plan
-	
+	// Get start and end positions based on conflicted parts of the original flight plan	
 	NavPoint start = ConflictFP.point(0);
 	Position end   = ConflictFP.getLastPoint().position();
 
 	if(violation){
 	    start = new NavPoint(RecoveryPoint,0);
 	}
-
 	
 	// Instantiate a grid to search over
 	DensityGrid dg = new DensityGrid(BR,start,end,(int)buffer,gridsize,true);
@@ -950,8 +951,11 @@ public class FSAM{
 
 	// Perform A* seartch
 	List<Pair <Integer,Integer>> GridPath = dg.optimalPath();
-	Plan ResolutionPlan1 = new Plan();
-	Plan ResolutionPlan2 = new Plan();
+	Plan ResolutionPlan1 = new Plan(); // Go around plan
+	Plan ResolutionPlan2 = new Plan(); // Go above plan
+	double pathLength1 = Double.MAX_VALUE;
+	double pathLength2 = Double.MAX_VALUE;
+	
 	if(GridPath != null){	    		
 	    List<Position> PlanPosition = new ArrayList<Position>();
 	    double currHeading = 0.0;
@@ -998,27 +1002,45 @@ public class FSAM{
 
 		ResolutionPlan1.add(new NavPoint(pos,ETA));
 	    }
+
+	    pathLength1 = ResolutionPlan1.pathDistance();
 	}
-	
-	ResolutionPlan = ResolutionPlan1;
-	
-	/*
+			
 	//Compute go above plan
 	ResolutionPlan2.clear();
 	currentResolutionWP = 0;
 	double ETA   = 0.0;
-	ResolutionPlan2.add(ResolutionPlan1.point(0));
-	
-	Position pos = ResolutionPlan1.point(0).position();
-	
-	double distance = pos.distanceH(PlanPosition.get(i-1));
-	ETA      = ETA + distance/resolutionSpeed;
+	ResolutionPlan2.add(new NavPoint(start.position(),ETA));
 
-	ResolutionPlan1.add(new NavPoint(pos,ETA));
-	*/
+	// Second waypoint directly above starting point
+	Position wp2     = start.position().mkAlt(altfence+1);		
+	double distanceV = wp2.distanceV(start.position());
+	ETA              = ETA + distanceV/resolutionSpeed;
+	ResolutionPlan2.add(new NavPoint(wp2,ETA));
 
+	// Third waypoint directly above exit point
+	Position wp3 = end.mkAlt(altfence+1);
+	double distanceH = wp3.distanceH(wp2);
+	ETA              = ETA + distanceH/resolutionSpeed;
+	ResolutionPlan2.add(new NavPoint(wp3,ETA));
+
+	// Final waypoint is the exit point
+	distanceV = wp3.distanceV(end);
+	ETA       = ETA + distanceV/resolutionSpeed;
+	ResolutionPlan2.add(new NavPoint(end,ETA));
 	
+	pathLength2 = ResolutionPlan2.pathDistance();
 	
+	if(pathLength1 < pathLength2){
+	    ResolutionPlan = ResolutionPlan1;
+	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Using go around plan");		
+	}
+	else{
+	    ResolutionPlan = ResolutionPlan2;
+	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Using go above plan");		
+	}
+
+		
     }
 
     // Compute resolution for stand off distance violation
