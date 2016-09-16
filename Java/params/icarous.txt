@@ -15,7 +15,7 @@ STEPBACKTYPE = 0
 # Search parameters
 GRIDSIZE   = 0.5
 BUFFER     = 1
-LOOKAHEAD  = 4
+LOOKAHEAD  = 7
 PROXFACTOR = 3.0
 
 # Flight plan resolution parameters

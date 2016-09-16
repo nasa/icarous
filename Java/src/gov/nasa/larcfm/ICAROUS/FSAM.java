@@ -568,8 +568,10 @@ public class FSAM{
 	    planTime    =  UAS.FlightData.planTime;
 	}
 	else{
-	    CurrentPlan = ResolutionPlan;
-	    planTime    = GetResolutionTime();
+	    //CurrentPlan = ResolutionPlan;
+	    //planTime    = GetResolutionTime();
+	    StandoffConflict = false;
+	    return;
 	}		
 	Position PrevWP     = CurrentPlan.point(FlightData.FP_nextWaypoint - 1).position();
 	Position NextWP     = CurrentPlan.point(FlightData.FP_nextWaypoint).position();
@@ -826,6 +828,9 @@ public class FSAM{
     // Compute resolution for keep out conflicts
     public void ResolveKeepOutConflict(){
 
+	// Reroute flight plan
+	UAS.SetMode(4); // Set mode to guided for quadrotor to hover before replanning
+	
 	Plan CurrentFP;
 	double currentTime;
 		
@@ -900,13 +905,17 @@ public class FSAM{
 	// Get flight plan between start time and end time (with a 3 second buffer on both sides)
 	Plan ConflictFP = PlanUtil.cutDown(CurrentFP,minTime,maxTime);
 	
-	// Reroute flight plan
-	UAS.SetMode(4); // Set mode to guided for quadrotor to hover before replanning
-
+	
 	// Create a bounding box based on containment geofence
 	BoundingRectangle BR = new BoundingRectangle();
 
-	SimplePoly CF = FlightData.fenceList.get(0).geoPolyLLA;
+	SimplePoly CF = null;
+	for(int i=0;i<FlightData.fenceList.size();i++){
+	    GeoFence GF = FlightData.fenceList.get(i);
+	    if(GF.Type == 0){
+		CF = FlightData.fenceList.get(i).geoPolyLLA;
+	    }
+	}		
 
 	for(int i=0;i<CF.size();i++){
 	    BR.add(CF.getVertex(i));
@@ -929,60 +938,84 @@ public class FSAM{
 	// Set weights for the search space and obstacles
 	dg.setWeights(5.0);
 
-	for(int i=1;i<FlightData.fenceList.size();i++){
+	for(int i=0;i<FlightData.fenceList.size();i++){	    
 	    GeoFence GF = FlightData.fenceList.get(i);
-	    double hthreshold = UAS.pData.getValue("HTHRESHOLD");
-	    double vthreshold = UAS.pData.getValue("VTHRESHOLD");
-	    SimplePoly expfence = GF.pu.bufferedConvexHull(GF.geoPolyLLA,hthreshold,vthreshold);
-	    dg.setWeightsInside(expfence,100.0);
+	    if(GF.Type == 1){
+		double hthreshold = UAS.pData.getValue("HTHRESHOLD");
+		double vthreshold = UAS.pData.getValue("VTHRESHOLD");
+		SimplePoly expfence = GF.pu.bufferedConvexHull(GF.geoPolyLLA,hthreshold,vthreshold);
+		dg.setWeightsInside(expfence,100.0);
+	    }
 	}
 
 	// Perform A* seartch
 	List<Pair <Integer,Integer>> GridPath = dg.optimalPath();
+	Plan ResolutionPlan1 = new Plan();
+	Plan ResolutionPlan2 = new Plan();
+	if(GridPath != null){	    		
+	    List<Position> PlanPosition = new ArrayList<Position>();
+	    double currHeading = 0.0;
+	    double nextHeading = 0.0;
 
-	List<Position> PlanPosition = new ArrayList<Position>();
-	double currHeading = 0.0;
-	double nextHeading = 0.0;
+	    // Reduce number of waypoints based on heading
+	    PlanPosition.add(start.position());
+	    double startAlt = start.position().alt();
+	    PlanPosition.add(dg.getPosition(GridPath.get(0)).mkAlt(startAlt));
+	    currHeading = dg.getPosition(GridPath.get(0)).track(dg.getPosition(GridPath.get(1)));
 
-	// Reduce number of waypoints based on heading
-	PlanPosition.add(start.position());
-	double startAlt = start.position().alt();
-	PlanPosition.add(dg.getPosition(GridPath.get(0)).mkAlt(startAlt));
-	currHeading = dg.getPosition(GridPath.get(0)).track(dg.getPosition(GridPath.get(1)));
-
-	for(int i=1;i<GridPath.size();i++){
-	    Position pos1 = dg.getPosition(GridPath.get(i));
+	    for(int i=1;i<GridPath.size();i++){
+		Position pos1 = dg.getPosition(GridPath.get(i));
 	    	    	    
-	    if(i==GridPath.size()-1){
-		PlanPosition.add(pos1.mkAlt(startAlt));
-		break;
-	    }
-	    else{
-		Position pos2 = dg.getPosition(GridPath.get(i+1));
-
-		nextHeading = pos1.track(pos2);
-		
-		if(Math.abs(nextHeading - currHeading) > 0.01){		    		
+		if(i==GridPath.size()-1){
 		    PlanPosition.add(pos1.mkAlt(startAlt));
-		    currHeading = nextHeading;
+		    break;
 		}
-	    }
-	    
-	}
-	PlanPosition.add(end);
+		else{
+		    Position pos2 = dg.getPosition(GridPath.get(i+1));
 
-	// Create new flight plan based on waypoints
-	ResolutionPlan.clear();
+		    nextHeading = pos1.track(pos2);
+		
+		    if(Math.abs(nextHeading - currHeading) > 0.01){		    		
+			PlanPosition.add(pos1.mkAlt(startAlt));
+			currHeading = nextHeading;
+		    }
+		}
+	    
+	    }
+	    PlanPosition.add(end);
+
+	    
+	
+	    // Create new flight plan based on waypoints
+	    ResolutionPlan1.clear();
+	    currentResolutionWP = 0;
+	    double ETA   = 0.0;
+	    ResolutionPlan1.add(new NavPoint(PlanPosition.get(0),ETA));
+	    for(int i=1;i<PlanPosition.size();i++){
+		Position pos = PlanPosition.get(i);
+		double distance = pos.distanceH(PlanPosition.get(i-1));
+		ETA      = ETA + distance/resolutionSpeed;
+
+		ResolutionPlan1.add(new NavPoint(pos,ETA));
+	    }
+	}
+	
+	ResolutionPlan = ResolutionPlan1;
+	
+	/*
+	//Compute go above plan
+	ResolutionPlan2.clear();
 	currentResolutionWP = 0;
 	double ETA   = 0.0;
-	ResolutionPlan.add(new NavPoint(PlanPosition.get(0),ETA));
-	for(int i=1;i<PlanPosition.size();i++){
-	    Position pos = PlanPosition.get(i);
-	    double distance = pos.distanceH(PlanPosition.get(i-1));
-	    ETA      = ETA + distance/resolutionSpeed;
+	ResolutionPlan2.add(ResolutionPlan1.point(0));
+	
+	Position pos = ResolutionPlan1.point(0).position();
+	
+	double distance = pos.distanceH(PlanPosition.get(i-1));
+	ETA      = ETA + distance/resolutionSpeed;
 
-	    ResolutionPlan.add(new NavPoint(pos,ETA));
-	}
+	ResolutionPlan1.add(new NavPoint(pos,ETA));
+	*/
 
 	
 	
