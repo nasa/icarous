@@ -163,8 +163,7 @@ public class MAVLinkMessages{
     
     public msg_flightplan_info msgFlightplanInfo;
     public msg_geofence_info msgGeofenceInfo;
-    public msg_pointofinterest msgPointofinterest;
-    public msg_command_acknowledgement msgCommandAcknowledgement;
+    public msg_pointofinterest msgPointofinterest;    
     public msg_heartbeat_combox msgHeartbeatCombox;
     public msg_mission_start_stop msgMissionStartStop;
 
