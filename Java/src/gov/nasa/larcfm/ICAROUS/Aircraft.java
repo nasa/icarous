@@ -82,7 +82,8 @@ public class Aircraft implements ErrorReporter{
 			    float param4,
 			    float param5,
 			    float param6,
-			    float param7){
+			    float param7,
+			    boolean CheckACK){
 
 	msg_command_long CommandLong  = new msg_command_long();
 	
@@ -106,8 +107,12 @@ public class Aircraft implements ErrorReporter{
 	    System.out.println(e);
 	}
 
-	return CheckAcknowledgement(command);
-	//return 1;
+	if(CheckACK){
+	    return CheckAcknowledgement(command);
+	}
+	else{
+	    return 1;
+	}
     }
 
     // Yaw command
@@ -115,7 +120,7 @@ public class Aircraft implements ErrorReporter{
 
 	SendCommand(0,0,MAV_CMD.MAV_CMD_CONDITION_YAW,0,
 		    (float)heading,0,1,0,
-		    0,0,0);
+		    0,0,0,false);
 	
     }
 
@@ -175,15 +180,8 @@ public class Aircraft implements ErrorReporter{
 	msg.yaw              = 0;
 	msg.yaw_rate         = 0;
 
-	apIntf.Write(msg);
-
-	try{
-	    Thread.sleep(100);
-	}catch(InterruptedException e){
-	    System.out.println(e);
-	}
-
-	//return CheckAcknowledgement();
+	apIntf.Write(msg);	
+	
 	return 1;
     }
 
@@ -315,7 +313,7 @@ public class Aircraft implements ErrorReporter{
     public void SetSpeed(float speed){
 	
 	SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
-		    1,speed,0,0,0,0,0);
+		    1,speed,0,0,0,0,0,false);
 
     }
     
@@ -357,7 +355,7 @@ public class Aircraft implements ErrorReporter{
 		// Arm the throttles
 		error.addWarning("[" + timeLog + "] CMD:ARM");
 		ack = SendCommand(0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,0,
-				  1,0,0,0,0,0,0);
+				  1,0,0,0,0,0,0,true);
 
 		// Send takeoff command only if 
 	    
@@ -367,7 +365,7 @@ public class Aircraft implements ErrorReporter{
 		ack = SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
 				  1,0,0,0, (float) currPosition.latitude(),
 				  (float) currPosition.longitude(),
-				  targetAlt);
+				  targetAlt,true);
 	    
 	    
 		if(ack == 0){
@@ -449,7 +447,7 @@ public class Aircraft implements ErrorReporter{
 			    6.0f,0,0,0,
 			    (float) currPosition.latitude(),
 			    (float) currPosition.longitude(),
-			    (float) currPosition.alt());
+			    (float) currPosition.alt(),false);
 
 		landStart = true;
 	    
