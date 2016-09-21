@@ -135,7 +135,7 @@ public class Interface{
 
     }
 	
-    public synchronized byte[] UDPRead(){
+    public byte[] UDPRead(){
 	byte[] buffer = new byte[6+255+2];
 	byte[] buffer_data = null;	    
 	DatagramPacket input = new DatagramPacket(buffer, buffer.length);
@@ -158,7 +158,7 @@ public class Interface{
 	return buffer_data;
     }
 
-    public synchronized void UDPWrite(byte[] buffer){	
+    public void UDPWrite(byte[] buffer){	
 	try{
 	    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
 	    sock.send(output);
@@ -169,7 +169,7 @@ public class Interface{
 
     }   
 
-    public synchronized byte[] SerialRead(){
+    public byte[] SerialRead(){
 	byte[] buffer = null;		
 	try{
 	    buffer = serialPort.readBytes();
@@ -183,7 +183,7 @@ public class Interface{
 	return buffer;
     }
 
-    public synchronized void SerialWrite(byte[] buffer){
+    public void SerialWrite(byte[] buffer){
 	try{
 	    serialPort.writeBytes(buffer);
 	}
@@ -192,7 +192,7 @@ public class Interface{
 	}	
     }
 	
-    public synchronized void Read(){
+    public void Read(){
 
 	byte[] buffer = null;
 	if(interfaceType == SOCKET){
