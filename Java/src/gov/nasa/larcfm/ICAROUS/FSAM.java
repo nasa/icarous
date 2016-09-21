@@ -1055,7 +1055,7 @@ public class FSAM{
 	
 	if(StandoffConflict){
 
-	    if(crossTrackDeviation <= 2*standoff){
+	    if(Math.abs(crossTrackDeviation) <= 2*standoff){
 		double Vs = XtrkDevGain*crossTrackDeviation;
 		double V  = UAS.GetSpeed();
 
