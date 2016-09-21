@@ -162,8 +162,8 @@ public class AircraftData{
     
     // Function to send a flight plan to pixhawk
     public msg_mission_ack SendFlightPlanToAP(Interface Intf){
-	SetPauseDAQ(true);
-	synchronized(Intf){
+	//SetPauseDAQ(true);
+	//synchronized(Intf){
 	    FP_WRITE_AP state = FP_WRITE_AP.FP_CLR;
 	
 	    msg_mission_count msgMissionCount        = new msg_mission_count();
@@ -225,7 +225,7 @@ public class AircraftData{
 
 		case FP_CLR_ACK:
 		    
-		    Intf.Read();		    
+		    //Intf.Read();		    
 		    
 		    msg_mission_ack msgMissionAck1 = Inbox.GetMissionAck();
 		    if(msgMissionAck1 != null){
@@ -254,7 +254,7 @@ public class AircraftData{
 	    
 		case FP_SEND_WP:
 
-		    Intf.Read();		
+		    //Intf.Read();		
 
 		    msg_mission_request msgMissionRequest = Inbox.GetMissionRequest();
 		    if(msgMissionRequest != null){
@@ -308,8 +308,8 @@ public class AircraftData{
 		    }
 		} // end of switch case
 	    }//end of while
-	} // end of synchronization
-	SetPauseDAQ(false);
+	    //} // end of synchronization
+	//SetPauseDAQ(false);
 
 	return null;
     }//end of function
