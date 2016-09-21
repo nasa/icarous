@@ -46,6 +46,8 @@ public class FSAM{
     private long timeEvent1;
     private long timeElapsed;
     private long timeCurrent;
+    private double daaTimeElapsed;
+    private double daaTimeStart;
     private double logtime;
     
     private FSAM_OUTPUT output;
@@ -132,7 +134,8 @@ public class FSAM{
 	daaLookahead = daa.parameters.getLookaheadTime("s");
 	// Kinematic bands			
 	daaTick = 0;
-	KMB = null;	
+	KMB = null;
+	daaTimeStart = 0;
     }
 
     public void SetDaaConfig(String filename){
@@ -176,17 +179,17 @@ public class FSAM{
 	
 	// Get time of current position in nominal plan
 	UAS.FlightData.getPlanTime();
-		
-	// Check for geofence resolutions.
-	CheckGeoFences();
 	
-	// Check for deviation from prescribed flight profile only in the NOOP state.	
+	// Check for geofence resolutions.	
+	CheckGeoFences();	
+	
+	// Check for deviation from prescribed flight profile only in the NOOP state.
 	CheckStandoff();
-		    
+	
 	// Check for conflicts from DAIDALUS against other traffic.
 	if(FlightData.traffic.size() > 0){
 	    CheckTraffic();
-	}	
+	}
 		
 	// If conflicts are detected, initialize the state machine for the resolution function	
 	if(conflictList.size() != currentConflicts){
@@ -361,13 +364,7 @@ public class FSAM{
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Starting resolution");	    
 	    UAS.apMode = Aircraft.AP_MODE.GUIDED;
 	    UAS.SetMode(4);
-	    try{
-		Thread.sleep(500);
-	    }
-	    catch(InterruptedException e){
-		System.out.println(e);
-	    }
-	    
+	    	    
 	    currentResolutionWP = 0;
 	    executeState = EXECUTE_STATE.SEND_COMMAND;
 	    break;
@@ -376,7 +373,7 @@ public class FSAM{
 
 	    	    
 	    if(TrafficConflict){
-		
+		System.out.println("Setting velocities");
 		UAS.SetYaw(RefHeading1);		
 		UAS.SetVelocity(Vn1,Ve1,Vu1);
 		System.out.format("Traffic: Vn,Ve,Vu = %f,%f,%f\n",Vn1,Ve1,Vu1);
@@ -606,13 +603,14 @@ public class FSAM{
     }
 
     public void CheckTraffic(){
-	daaTick = daaTick+1;
+	//daaTick = daaTick+1;
+	daaTimeElapsed = (double)System.nanoTime()/1E9 - daaTimeStart;
 	Position so = FlightData.acState.positionLast();
 	Velocity vo = FlightData.acState.velocityLast();
 	
 	daa.reset();
 	daa.setOwnshipState("Ownship",so,vo,0.0);
-
+	
 	double dist = Double.MAX_VALUE;
 	for(int i=0;i<FlightData.traffic.size();++i){
 	    synchronized(FlightData.traffic){
@@ -629,7 +627,8 @@ public class FSAM{
 	    }
 	    
 	}	
-		
+
+	//System.out.println("Checking violation\n");
 	for (int ac=1; ac < daa.numberOfAircraft(); ac++) {
 	    double tlos = daa.timeToViolation(ac);
 	    if (tlos >= 0 && tlos <= daaLookahead ) {
@@ -643,22 +642,23 @@ public class FSAM{
 		KMB = daa.getKinematicMultiBands();
 		System.out.println(daa.toString());
 		System.out.println(KMB.outputString());
-		daaTick = 0;
+		daaTimeStart = (double)System.nanoTime()/1E9;
 
 		ResolveTrafficConflict();
 	    }
 
-	    /*
+	    
 	    if(TrafficConflict){				
 		List<TrafficState> TS = new ArrayList<TrafficState>();
 		TS.add(daa.getAircraftState(1));
 		System.out.println("size: "+TS.size()+","+daa.getOwnshipState().formattedTraffic(TS,0));
 	    }
-	    */
+	    
 	}
 
+	//System.out.println("daa ticks:"+daaTimeElapsed);
 	// Predict if traffic violations exist on the return path
-	if(daaTick > 60){
+	if(daaTimeElapsed > 10){
 	    if(TrafficConflict){
 		ResolveStandoffConflict(); // Call resolve standoff conflict here to get next heading to turn back to
 		daa.reset();
@@ -715,28 +715,28 @@ public class FSAM{
 			//System.out.println("low trk:"+lower_trk);
 			//System.out.println("upper trk:"+upper_trk);
 			if (regionType.toString() != "NONE" ){
-			    System.out.println("L:"+lower_trk);
-			    System.out.println("R:"+upper_trk);
-			    System.out.println("CurrentHeading:"+CurrentHeading);
-			    System.out.println("Ref heading:"+RefHeading2);
+			    //System.out.println("L:"+lower_trk);
+			    //System.out.println("R:"+upper_trk);
+			    //System.out.println("CurrentHeading:"+CurrentHeading);
+			    //System.out.println("Ref heading:"+RefHeading2);
 			    							    
 			    if(psi > 0){
 				if(rightTurn){
 				    if( (CurrentHeading < lower_trk) && (RefHeading2 > upper_trk ) ){
-					System.out.println("A");
+					//System.out.println("A");
 					TrafficConflict  = true;
 				    }else{
-					System.out.println("B");
+					//System.out.println("B");
 					TrafficConflict = false;
 				    }
 				}
 				else{
 				    if( (CurrentHeading > upper_trk) && (RefHeading2 < lower_trk ) ){
-					System.out.println("C");
+					//System.out.println("C");
 					TrafficConflict = true;
 				    }
 				    else{
-					System.out.println("D");
+					//System.out.println("D");
 					TrafficConflict = false;
 				    }
 				}
@@ -744,20 +744,20 @@ public class FSAM{
 			    else{
 				if(rightTurn){
 				    if( (CurrentHeading > upper_trk) && (RefHeading2 < lower_trk ) ){
-					System.out.println("E");
+					//System.out.println("E");
 					TrafficConflict = true;
 				    }
 				    else{
-					System.out.println("F");
+					//System.out.println("F");
 					TrafficConflict = false;
 				    }
 				}
 				else{
 				    if( (CurrentHeading < lower_trk) && (RefHeading2 > upper_trk ) ){
-					System.out.println("G");
+					//System.out.println("G");
 					TrafficConflict  = true;
 				    }else{
-					System.out.println("H");
+					//System.out.println("H");
 					TrafficConflict = false;
 				    }
 				}
@@ -765,12 +765,12 @@ public class FSAM{
 
 			    if( (CurrentHeading >= lower_trk) && (CurrentHeading <= upper_trk)){
 				TrafficConflict = true;
-				System.out.println("I1");
+				//System.out.println("I1");
 			    }
 
 			    if( (RefHeading2 >= lower_trk) && (RefHeading2 <= upper_trk)){
 				TrafficConflict = true;
-				System.out.println("I2");
+				//System.out.println("I2");
 			    }
 			}
 			
@@ -1111,6 +1111,9 @@ public class FSAM{
 		    RefHeading2 = 360 + RefHeading2;
 		}
 
+		//System.out.format("dn = %f, de = %f\n",dn,de);
+		//System.out.format("Offset:%f\n",crossTrackOffset);
+		System.out.format("Heading to next WP:%f\n",headingNextWP);
 		System.out.println("Closest point:"+cp.toString());
 		System.out.println("Ref heading in standoff resolution plan:"+RefHeading2);
 		ResolutionPlan.clear();
