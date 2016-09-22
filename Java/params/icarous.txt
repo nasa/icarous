@@ -2,6 +2,9 @@
 SYS_ID = 100
 COMP_ID = 0
 
+# AUTOPILOT ID
+AUTOPILOT_ID = 1
+
 # ICAROUS heartbeat (Hz)
 ICHBEAT = 5
 

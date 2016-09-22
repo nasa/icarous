@@ -64,6 +64,7 @@ public class COM implements Runnable,ErrorReporter{
     private TIMERS msgScheduler = new TIMERS();
     private boolean pauseDataStream;
     private int paramCount;
+    private int AP_ID;
             
     public COM(String name,Aircraft uas,ParameterData pdata){
 	threadName       = name;
@@ -75,29 +76,25 @@ public class COM implements Runnable,ErrorReporter{
 	pData            = pdata;
 	pauseDataStream  = false;
 	paramCount       = 0;
+	AP_ID            = pdata.getInt("AUTOPILOT_ID");
     }
 
     public void run(){
-
-	msg_heartbeat msghb = new msg_heartbeat();
-	
-	msghb.type      = MAV_TYPE.MAV_TYPE_FIXED_WING;
 	
 	comIntf.SetTimeout(1);
-
 	double time1 = UAS.timeCurrent;
-
-	int count = 0;
 	
 	while(true){	    
 	    
 	    double time2 = (float)System.nanoTime()/1E9;
-	    
+
+	    // Send messages to ground station (same as pixhawk output messages)
 	    sendMsg2Gs(time2);
-	    	    	    
+
+	    // Read data from COM interface
 	    comIntf.Read();
 	    	    
-	    String timeLog = UAS.timeLog;
+	    String timeLog = UAS.timeLog; // String of current time for logging
 
 	    // Handle messages from safeguard
 	    msg_safeguard msgSafeguard = RcvdMessages.GetSafeguard();
@@ -109,22 +106,19 @@ public class COM implements Runnable,ErrorReporter{
 
 	    // Handle mission waypoints points
 	    msg_mission_count msgMissionCount = RcvdMessages.GetMissionCount();	    
-	    if(msgMissionCount != null){		
-		System.out.println("Handling new waypoints");		
-		int status = FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);		
-		if(status == 1){
-		    error.addWarning("[" + timeLog + "] MSG: Got waypoints");
-		    UAS.EnableDataStream(0);
-		    //FlightData.SendFlightPlanToAP(UAS.apIntf);
-		    comIntf.Write(FlightData.SendFlightPlanToAP(UAS.apIntf));
-		    UAS.EnableDataStream(1);
-		}
+	    if(msgMissionCount != null){
+		    int status = FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);		
+		    if(status == 1){
+			error.addWarning("[" + timeLog + "] MSG: Got waypoints");
+			UAS.EnableDataStream(0);		
+			comIntf.Write(FlightData.SendFlightPlanToAP(UAS.apIntf));
+			UAS.EnableDataStream(1);
+		    }
 	    }
 
 	    // Handle mission request list
 	    msg_mission_request_list msgMissionRequestList = RcvdMessages.GetMissionRequestList();
 	    if(msgMissionRequestList != null){
-		System.out.println("Handling mission list request");
 		if(FlightData.InputFlightPlan.size() > 0){
 		    FlightData.SendWaypoints(comIntf,FlightData.InputFlightPlan);
 		}
@@ -132,14 +126,12 @@ public class COM implements Runnable,ErrorReporter{
 		    msg_mission_ack MsgMissionAck = new msg_mission_ack();
 		    MsgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_ERROR;
 		}
-		//error.addWarning("[" + timeLog + "] MSG: Sent waypoints");
 	    }
 
 	    // Handle parameter requests
-	    msg_param_request_list msgParamRequestList = RcvdMessages.GetParamRequestList();
-	    
+	    msg_param_request_list msgParamRequestList = RcvdMessages.GetParamRequestList();	    
 	    if(msgParamRequestList != null){
-		System.out.println("Handling parameter request list");		
+		error.addWarning("[" + timeLog + "] MSG: Handling parameter request list");
 		UAS.apIntf.Write(msgParamRequestList);
 		pauseDataStream = true;
 		paramCount = 0;		
@@ -154,10 +146,7 @@ public class COM implements Runnable,ErrorReporter{
 	    // Handle parameter value
 	    msg_param_value msgParamValue = RcvdMessages.GetParamValue();
 	    if( msgParamValue != null){
-		// Handle parameter value						
-		//System.out.println("Handle parameter value");
 		if(msgParamValue.sysid == 1){
-		    //System.out.printf("Received parameter from AP");		    
 		    comIntf.Write(msgParamValue);
 		    paramCount++;
 		    if(paramCount == msgParamValue.param_count){
@@ -166,7 +155,6 @@ public class COM implements Runnable,ErrorReporter{
 		}
 		else{
 		    UAS.apIntf.Write(msgParamValue);
-		    //System.out.println("Writing to AP");
 		}				
 	    }
 
@@ -176,8 +164,8 @@ public class COM implements Runnable,ErrorReporter{
 		String ID = new String(msgParamSet.param_id);		
 		ID = ID.replaceAll("\0","");		
 		msg_param_value msgParamValueIC = new msg_param_value();
-		boolean icarous_parm = false;
-
+		boolean icarous_parm = false;		
+		
 		switch (ID){
 
 		case "ICHBEAT":
