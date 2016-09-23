@@ -5,6 +5,8 @@ ICAROUS software architecture:
 <img src="Figures/ICAROUS_architecture.png" width="500">
 </p>
 
+![](Figures/ICAROUS_architecture.png)
+
 At the top level there are three core threads within ICAROUS:
 
 1. Data acquisition thread: The data acquisition thread (DAQ) is responsible for reading data from a specified input port (serial or socket). Data transfer is accomplished using MAVLink packets. The incoming MAVLink messages are stored in a shared data structure (class MAVLinkMessages) that can be accessed by all other threads. 
