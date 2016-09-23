@@ -1,11 +1,8 @@
 
 ICAROUS software architecture:
 ==================================
-<p align="center">
-<img src="Figures/ICAROUS_architecture.png" width="500">
-</p>
 
-![](Figures/ICAROUS_architecture.png)
+![](Figures/ICAROUS_architecture.png =500x300)
 
 At the top level there are three core threads within ICAROUS:
 
@@ -75,15 +72,13 @@ Finite State Machines
 -----------------------------
 
 Conflict detection and resolution is established using hierarchically structured finite state machines. The hierarchy is show in the following figure:
-<p align="center">
-<img src="Figures/Flow.png" width="200">
-</p>
+
+![](Figures/Flow.png =200x500)
 
 The above phase based state transition is implemented by the Aircraft class.
 
 The execution of a resolution is governed by the following state machine:
-<p align="center">
-<img src="Figures/Resolve.png" width="500">
-</p>
+
+![](Figures/Resolve.png =500x200)
 
 The intial state [S0] computes a resolution based on the available conflicts in the conflict queue. Some conflicts are resolved using a resolution maneuver [S1] (e.g. avoid traffic by a sequence of guided maneuvers) whereas some conflicts are resolved using an elaborate resolution flight plan [S2] (e.g. plotting a path to avoid an obstacle). After a resolution plan, state S3 computes an intermediate plan to join the original mission. State S4 resumes the original mission once the vehicle is back on the original flight plan. State S5 is a final state free of conflicts.
