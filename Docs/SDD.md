@@ -48,7 +48,7 @@ At the top level there are three core threads within ICAROUS:
 * Detected conflicts are added to the conflict queue.
 * The resolution function computes and executes a resolution in the form of a resolution plan or a manuever sequence.
 
-###Class Icarous
+###class Icarous
 * The main entry point for ICAROUS. Sets up all the relevant threads and ICAROUS operating modes (active/passive/passthrough).
 * In active mode, ICAROUS detects, logs and resolves conflicts
 * In passive mode, ICAROUS only detects and logs the conflicts. It does not interfere with the autopilot's operation.
