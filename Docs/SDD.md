@@ -1,6 +1,5 @@
 
-ICAROUS software architecture:
-==================================
+#ICAROUS software architecture
 
 ![](Figures/ICAROUS_architecture.png =500x300)
 
@@ -12,61 +11,60 @@ At the top level there are three core threads within ICAROUS:
 
 3. Flight management thread: The flight management thread is responsible for making all flight related decisions, monitoring flight conditions for conflicts and resolving conflicts if necessary. Conflict detection and resolution is established using hierarchical finite state machines.
 
-ICAROUS package summary
----------------------------
+##ICAROUS package summary
 
-__class Interface__
-- Enables communication over a serial port or socket.
-- Contains functions to read/write raw bytes and MAVLink packets.
-- Provides a function to pass data between two interfaces.
+###class Interface
+* Enables communication over a serial port or socket.
+* Contains functions to read/write raw bytes and MAVLink packets.
+* Provides a function to pass data between two interfaces.
 
-__class MAVLinkMessages__
-- A data structure to hold incoming MAVLinkMessages.
-- Contains synchronized functions to decode incoming MAVLink packets.
-- Functions to access to the latest MAVLink messages.
+###class MAVLinkMessages
+* A data structure to hold incoming MAVLinkMessages.
+* Contains synchronized functions to decode incoming MAVLink packets.
+* Functions to access to the latest MAVLink messages.
 
-__class AircraftData__
-- A data structure that holds relevant flight data such as aircraft state information, flight plan, geofence information and traffic information.
-- Contains additional helper functions to read/send flight plans, geofences to/from a ground station/pixhawk flight controller. 
+###class AircraftData
+* A data structure that holds relevant flight data such as aircraft state information, flight plan, geofence information and traffic information.
+* Contains additional helper functions to read/send flight plans, geofences to/from a ground station/pixhawk flight controller. 
 
-__class Aircraft__
-- Provides functions to send various commands to a pixhawk autopilot.
-- Implements a finite state machine that enables autonomous flight through takeoff,climb,cruise and land.
+###class Aircraft
+* Provides functions to send various commands to a pixhawk autopilot.
+* Implements a finite state machine that enables autonomous flight through takeoff,climb,cruise and land.
 
-__class GeoFence__
-- A data structure that holds geofence related information.
-- Contains member functions that make use of polycarp routines to determine containment for keep in/out geofences and determine recovery points.
+###class GeoFence
+* A data structure that holds geofence related information.
+* Contains member functions that make use of polycarp routines to determine containment for keep in/out geofences and determine recovery points.
 
-__class GenericObject__
-- A data structure to hold traffic/obstacle/mission related object information.
+###class GenericObject
+* A data structure to hold traffic/obstacle/mission related object information.
 
-__class Conflict__
-- A data structure that is used to capture conflict information.
-- Provides helper function to update and maintain a list of conflicts.
+###class Conflict
+* A data structure that is used to capture conflict information.
+* Provides helper function to update and maintain a list of conflicts.
 
-__class FSAM__
-- Provides conflict detection and resolution functions.
-- The monitor function checks for geofence, traffic and standoff distance related conflicts.
-- Detected conflicts are added to the conflict queue.
-- The resolution function computes and executes a resolution in the form of a resolution plan or a manuever sequence.
+###class FSAM
+* Provides conflict detection and resolution functions.
+* The monitor function checks for geofence, traffic and standoff distance related conflicts.
+* Detected conflicts are added to the conflict queue.
+* The resolution function computes and executes a resolution in the form of a resolution plan or a manuever sequence.
 
-__Class Icarous__
-- The main entry point for ICAROUS. Sets up all the relevant threads and ICAROUS operating modes (active/passive/passthrough).
-- In active mode, ICAROUS detects, logs and resolves conflicts
-- In passive mode, ICAROUS only detects and logs the conflicts. It does not interfere with the autopilot's operation.
-- In passthrough mode, ICAROUS simply passes packets between a ground station and the autpilot.
+###Class Icarous
+* The main entry point for ICAROUS. Sets up all the relevant threads and ICAROUS operating modes (active/passive/passthrough).
+* In active mode, ICAROUS detects, logs and resolves conflicts
+* In passive mode, ICAROUS only detects and logs the conflicts. It does not interfere with the autopilot's operation.
+* In passthrough mode, ICAROUS simply passes packets between a ground station and the autpilot.
 
-__class FMS__
-- Implements the flight management thread.
+###class FMS
+* Implements the flight management thread.
 
-__class DAQ__
-- Implements the data acquisition thread.
+###class DAQ
+* Implements the data acquisition thread.
 
-__class COM__
-- Implements the communication thread.
+###class COM
+* Implements the communication thread.
 
-__class BCAST__
-- Implements a broadcasting loop. This enables other onboard applications to obtained data from ICAROUS.
+###class BCAST
+* Implements a broadcasting loop. This enables other onboard applications to obtained data from ICAROUS.
 
 Finite State Machines
 -----------------------------
