@@ -1,4 +1,3 @@
-
 #ICAROUS software architecture
 
 ![](Figures/ICAROUS_architecture.png =500x300)
@@ -66,6 +65,9 @@ At the top level there are three core threads within ICAROUS:
 ###class BCAST
 * Implements a broadcasting loop. This enables other onboard applications to obtained data from ICAROUS.
 
+###interface Mission
+* Defines an interface that can be implemented by end users to perform mission specific operations.
+
 ##Finite State Machines
 
 Conflict detection and resolution is established using hierarchically structured finite state machines. The hierarchy is show in the following figure:
@@ -99,3 +101,29 @@ ICAROUS expects geofence inputs according to the following protocol:
 * On receipt of the MAV_CMD_DO_FENCE_ENABLE command, ICAROUS sends out a FENCE_FETCH_POINT message requesting a vertex.
 * Each geofence vertex must be encoded into the FENCE_POINT message and sent in response to the requested vertex.
 * After successfully receiving all the vertices, ICAROUS sends the MISSION_ACK message.
+
+##Traffic
+Traffic information can be send to ICAROUS via  the MAVLink command long message with the following parameters:
+
+* command: MAV_CMD_SPATIAL_USER_1
+* param1: Traffic id
+* param2: velocity - north component [m/s]
+* param3: velocity - east component [m/s]
+* param4: velocity - up component [m/s]
+* param5: lat [degrees]
+* param6: lon [degrees]
+* param7: alt [m]
+
+##Launching ICAROUS
+
+* Create an Icarous class. The class constructor takes a string of command line parameters and a class implementing the Mission interface as inputs.
+* Launch icarous using the run() method.
+* ICAROUS expects the following command line arguments:
+
+    * -v (flag enable warning/error message outputs to console)
+    * --sitl sitlhostaddress inputport (Not used if using --px4)
+    * --com comhostaddress inputport outputport 
+    * --mode [active/passive/passthrough]
+    * --px4 serialport baudrate (Not used if using --sitl)
+
+* Send the MAVLink command message MAV_CMD_MISSION_START with param1 set to 0 after the flight plan and required geofences have been input. ICAROUS will start monitoring the operations from takeoff to landing. 
