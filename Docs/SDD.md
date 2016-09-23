@@ -85,6 +85,7 @@ Flight plan inputs to ICAROUS must be consistent with the MAVLink waypoint proto
 
 ##Geofence
 ICAROUS expects geofence inputs according to the following protocol:
+
 * To begin geofence inputs, ICAROUS first expect a MAVLink command long message with the following parameters:
     * command: MAV_CMD_DO_FENCE_ENABLE
     * param1: 0 - on / 1 - off 
