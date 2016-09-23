@@ -2,7 +2,7 @@
 The ICAROUS software architecture:
 ==================================
 
-![](ICAROUS_architecture.png "")
+![](Figures/ICAROUS_architecture.png "")
 
 At the top level there are three core threads within ICAROUS:
 
