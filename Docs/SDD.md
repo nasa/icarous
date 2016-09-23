@@ -66,8 +66,7 @@ At the top level there are three core threads within ICAROUS:
 ###class BCAST
 * Implements a broadcasting loop. This enables other onboard applications to obtained data from ICAROUS.
 
-Finite State Machines
------------------------------
+##Finite State Machines
 
 Conflict detection and resolution is established using hierarchically structured finite state machines. The hierarchy is show in the following figure:
 
@@ -80,3 +79,21 @@ The execution of a resolution is governed by the following state machine:
 ![](Figures/Resolve.png =500x200)
 
 The intial state [S0] computes a resolution based on the available conflicts in the conflict queue. Some conflicts are resolved using a resolution maneuver [S1] (e.g. avoid traffic by a sequence of guided maneuvers) whereas some conflicts are resolved using an elaborate resolution flight plan [S2] (e.g. plotting a path to avoid an obstacle). After a resolution plan, state S3 computes an intermediate plan to join the original mission. State S4 resumes the original mission once the vehicle is back on the original flight plan. State S5 is a final state free of conflicts.
+
+##Flightplan
+Flight plan inputs to ICAROUS must be consistent with the MAVLink waypoint protocol. A detailed description of the waypoint protocol can be found at [ http://qgroundcontrol.org/mavlink/waypoint_protocol ](URL)
+
+##Geofence
+ICAROUS expects geofence inputs according to the following protocol:
+* To begin geofence inputs, ICAROUS first expect a MAVLink command long message with the following parameters:
+    * command: MAV_CMD_DO_FENCE_ENABLE
+    * param1: 0 - on / 1 - off 
+    * param2: geofence id
+    * param3: geofence type (0 - keepin/1 - keep out)
+    * param4: number of vertices
+    * param5: floor altitude (m)
+    * param6: ceiling altitude (m)
+
+* On receipt of the MAV_CMD_DO_FENCE_ENABLE command, ICAROUS sends out a FENCE_FETCH_POINT message requesting a vertex.
+* Each geofence vertex must be encoded into the FENCE_POINT message and sent in response to the requested vertex.
+* After successfully receiving all the vertices, ICAROUS sends the MISSION_ACK message.
