@@ -148,6 +148,9 @@ void KinematicRealBands::set_recovery(bool flag) {
   }
 }
 
+/**
+ * Return val modulo mod_, when mod_ > 0. Otherwise, returns val.
+ */
 double KinematicRealBands::mod_val(double val) const {
   return mod_ > 0 ? Util::modulo(val,mod_) : val;
 }
@@ -538,7 +541,7 @@ void KinematicRealBands::compute(KinematicBandsCore& core) {
       if (!ISNAN(recovery_time)) {
         recovery = true;
         recovery_time_ = recovery_time;
-        region = core.parameters.alertor.getLevel(core.parameters.alertor.lastGuidanceLevel()).getRegion();
+        region = core.parameters.alertor.getLevel(core.lastConflictAlertLevel()).getRegion();
       }
       none_sets.push_back(noneset);
       regions.push_back(region);
@@ -571,6 +574,9 @@ Interval KinematicRealBands::find_resolution(KinematicBandsCore& core, const Int
           l = noneset.getInterval(i).up;
           if (mod_ > 0) {
             u = noneset.getInterval(0).low;
+            if (Util::almost_geq(mod_val(u-val),mod_/2.0)) {
+              u = PINFINITY;
+            }
           }
           break;
         } else if (val < noneset.getInterval(i+1).low) {
@@ -582,6 +588,9 @@ Interval KinematicRealBands::find_resolution(KinematicBandsCore& core, const Int
         if (i==0) {
           if (mod_ > 0) {
             l = noneset.getInterval(noneset.size()-1).up;
+            if (Util::almost_geq(mod_val(val-l),mod_/2.0)) {
+              u = NINFINITY;
+            }
           }
           u = noneset.getInterval(i).low;
           break;
@@ -661,7 +670,8 @@ double KinematicRealBands::last_time_to_maneuver(KinematicBandsCore& core, const
         TrafficState intruder = ac.linearProjection(pivot);
         traffic.clear();
         traffic.push_back(intruder);
-        if (all_red(detector,NULL,core.criteria_ac(),0,0,0,T,ownship,traffic)) {
+        if (detector->violation(ownship.get_s(),ownship.get_v(),intruder.get_s(),intruder.get_v()) ||
+            all_red(detector,NULL,core.criteria_ac(),0,0,0,T,ownship,traffic)) {
           pivot_red = pivot;
         } else {
           pivot_green = pivot;
@@ -679,7 +689,7 @@ double KinematicRealBands::last_time_to_maneuver(KinematicBandsCore& core, const
 }
 
 int KinematicRealBands::maxdown(const TrafficState& ownship) const {
-  int down = (int)std::ceil(min_rel(ownship)/get_step())+1;
+  int down = (int)std::ceil(min_rel(ownship)/get_step());
   if (mod_ > 0 && Util::almost_greater(down*get_step(),mod_/2.0)) {
     --down;
   }
@@ -687,7 +697,7 @@ int KinematicRealBands::maxdown(const TrafficState& ownship) const {
 }
 
 int KinematicRealBands::maxup(const TrafficState& ownship) const {
-  int up = (int)std::ceil(max_rel(ownship)/get_step())+1;
+  int up = (int)std::ceil(max_rel(ownship)/get_step());
   if (mod_ > 0 && Util::almost_greater(up*get_step(),mod_/2.0)) {
     --up;
   }

@@ -169,10 +169,10 @@ namespace larcfm {
 
 
     /** A default value representing zero latitude, longitude, and altitude */
-  static const LatLonAlt ZERO;
+  static const LatLonAlt& ZERO();
 
   /** An invalid value, used for error reporting */
-  static const LatLonAlt INVALID;
+  static const LatLonAlt& INVALID();
 
 	  /** 
 	   * This parses a space or comma-separated string as a LatLonAlt (an inverse 

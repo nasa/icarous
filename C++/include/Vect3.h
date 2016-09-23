@@ -338,7 +338,7 @@ public:
 	bool isInvalid() const;
 
 	/** Return a zero vector */
-	static const Vect3 ZERO;
+	static const Vect3& ZERO();
 
 	/** An invalid vector, used for error reporting */
 	static const Vect3& INVALID();

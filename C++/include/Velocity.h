@@ -328,7 +328,7 @@ public:
 
 
 	/** Return a zero velocity vector */
-	static const Velocity ZEROV;
+	static const Velocity& ZEROV();
 
 	/** An invalid velocity, used for error reporting */
 	static const Velocity& INVALIDV();

@@ -179,7 +179,7 @@ void SimplePoly::calcCentroid() const {
 	double a = signedArea(dx, dy);
 	// if a point or line, use old method
 	if (a == 0) {
-		Vect2 v2 = Vect2::ZERO;
+		Vect2 v2 = Vect2::ZERO();
 		for (int i = 0; i < (signed)points.size(); i++) {
 			v2 = v2.Add(points[i].vect2());
 		}
@@ -522,7 +522,7 @@ bool SimplePoly::contains(const Position& p) const {
 	EuclideanProjection proj = Projection::createProjection(p);
 	Poly3D poly = poly3D(proj);
 	if (p.isLatLon()) {
-		return poly.contains(Vect3::ZERO);
+		return poly.contains(Vect3::ZERO());
 	} else {
 		return poly.contains(p.point());
 	}
@@ -533,7 +533,7 @@ bool SimplePoly::contains2D(const Position& p) const {
 	EuclideanProjection proj = Projection::createProjection(p);
 	Poly2D poly = poly3D(proj).poly2D();
 	if (p.isLatLon()) {
-		return poly.contains(Vect2::ZERO);
+		return poly.contains(Vect2::ZERO());
 	} else {
 		return poly.contains(p.vect2());
 	}

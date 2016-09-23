@@ -67,6 +67,7 @@ AlertThresholds::~AlertThresholds() {
 }
 
 AlertThresholds& AlertThresholds::operator=(const AlertThresholds& athr) {
+  delete detector_;
   detector_ = athr.detector_->copy();
   alerting_time_ = athr.alerting_time_;
   early_alerting_time_ = athr.early_alerting_time_;

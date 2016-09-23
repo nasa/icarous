@@ -54,7 +54,7 @@ LatLonAlt OrthographicProjection::xy2spherical(double x, double y, double alt) c
 
 OrthographicProjection::OrthographicProjection() {
 	projAlt = 0;
-	llaRef = LatLonAlt::ZERO;
+	llaRef = LatLonAlt::ZERO();
 }
 
 OrthographicProjection::OrthographicProjection(const LatLonAlt& lla) {

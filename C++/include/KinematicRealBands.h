@@ -232,6 +232,9 @@ private:
    */
   bool rollover();
 
+  /**
+   * Return val modulo mod_, when mod_ > 0. Otherwise, returns val.
+   */
   double mod_val(double val) const;
 
   /**

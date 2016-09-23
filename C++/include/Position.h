@@ -133,6 +133,7 @@ public:
 
 	static const Position& INVALID();
 
+
 	/**
 	 * Checks if two Positions are almost the same.
 	 *
@@ -258,6 +259,7 @@ public:
 	 */
 	const Position linearEst(const Velocity& vo, double time) const;
 
+	const std::pair<Position,Velocity> linearDist(const Velocity& v, double d) const;
 	/**
 	 * Return the mid point between the current position and the given position
 	 * @param p2 the other position

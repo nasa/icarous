@@ -374,7 +374,7 @@ public:
 
 
 	/** Return a zero vector */
-	static const Vect2 ZERO;
+	static const Vect2& ZERO();
 
 	/** Return an "invalid" vector */
 	static const Vect2& INVALID();

@@ -55,12 +55,8 @@ public final class KinematicsPosition {
 
 
 	/**
-<<<<<<< .mine
-	 * Position and velocity after t time units turning in direction "dir" with radius R.
-	 *  
-=======
-	 *  Position and velocity after t time units turning with rate omega 
->>>>>>> .r3730
+
+	 * Position and velocity after t time units turning with rate omega 
 	 * @param so  starting position
 	 * @param vo  initial velocity
 	 * @param t   time of turn [secs]
@@ -127,7 +123,7 @@ public final class KinematicsPosition {
 //	}
 		
 	/**  *** EXPERIMENTAL ***
-	 *  Position and velocity after turning a distance d
+	 *  Position and velocity after turning a distance d (does not compute altitude)
 	 * @param so  starting position
 	 * @param vo  initial velocity
 	 * @param R   turn radius
@@ -145,8 +141,6 @@ public final class KinematicsPosition {
 		}
 	}
 
-
-	
 	/**
 	 *  Position and velocity after turning at rate omega for t secs. 
 	 * @param so  starting position
@@ -249,6 +243,10 @@ public final class KinematicsPosition {
 		}          
 	}
 
+//	public static Pair<Position,Velocity> gsAccelDist(Position os, Velocity vo, double d, double a) {
+//		
+//	}
+	
 
 	/**
 	 *  Position and velocity after t time units accelerating horizontally. 

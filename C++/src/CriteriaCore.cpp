@@ -126,7 +126,7 @@ bool vertical_los(double sz, double H) {
 //  v = relative velocity
 bool CriteriaCore::horizontal_criterion_0(const Vect2& sp, int eps, const Vect2& v, double D) {
   Vect2 vv = v;  // copy?
-  if (Util::almost_equals(v.norm(),0.0,PRECISION13)) vv = Vect2::ZERO;        // criterion_3D's last term passes in nv - v which is exactly 0 for vertical solutions
+  if (Util::almost_equals(v.norm(),0.0,PRECISION13)) vv = Vect2::ZERO();        // criterion_3D's last term passes in nv - v which is exactly 0 for vertical solutions
   return horizontal_criterion(sp,vv,D,eps);
 }
 

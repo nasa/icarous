@@ -31,7 +31,7 @@ public:
 
 
 
-	StateVector(const Vect3& ss=Vect3::ZERO, const Velocity& vv=Velocity::ZEROV, const double tt=0);
+	StateVector(const Vect3& ss=Vect3::ZERO(), const Velocity& vv=Velocity::ZEROV(), const double tt=0);
 
     StateVector(const std::pair<Vect3,Velocity>& sv, double t );
 

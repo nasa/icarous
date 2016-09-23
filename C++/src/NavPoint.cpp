@@ -1029,7 +1029,7 @@ const NavPoint NavPoint::makeVelocityIn(const Velocity& vi) const {
 //  const NavPoint NavPoint::makeGoalGsIn(double gs) const {
 //		Velocity v = this->velocityIn_v;
 //		if (v.isInvalid()) {
-//			v = Velocity::ZEROV;
+//			v = Velocity::ZEROV();
 //		}
 //		if (gs < 0.0) {
 //			v = Velocity::INVALIDV();
@@ -1130,9 +1130,9 @@ const NavPoint NavPoint::makeEVSBVS(const Position& p , double t, double a, cons
 			this->sgnRadius,  this->accel_gs, a, v_velocityIn,  this->sourcePosition_p, this->sourceTime_d);
 }
 
-const NavPoint NavPoint::makeMidpoint(const Position& p, double t, const Velocity& v_velocityIn) const {
+const NavPoint NavPoint::makeMidpoint(const Position& p, double t) const {
 	return NavPoint(p, t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs,  this->tcp_vs,
-			this->sgnRadius, this->accel_gs , this->accel_vs, v_velocityIn, this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs , this->accel_vs, this->velocityIn_v, this->sourcePosition_p, this->sourceTime_d);
 }
 
 
@@ -1212,7 +1212,7 @@ Velocity NavPoint::initialVelocity(const NavPoint& s) const {
 	}
 	double dt = s.time() - t;
 	if (dt == 0) {
-		return Velocity::ZEROV;
+		return Velocity::ZEROV();
 	} else if (dt > 0) {
 		if (s.isLatLon()) {
 			return GreatCircle::velocity_initial(p.lla(), s.p.lla(), dt);
@@ -1234,7 +1234,7 @@ Velocity NavPoint::finalVelocity(const NavPoint& s) const {
 	}
 	double dt = s.time() - t;
 	if (dt == 0) {
-		return Velocity::ZEROV;
+		return Velocity::ZEROV();
 	} else if (dt > 0) {
 		if (s.isLatLon()) {
 			return GreatCircle::velocity_final(p.lla(), s.p.lla(), dt);
@@ -1262,7 +1262,7 @@ Velocity NavPoint::averageVelocity(const NavPoint& s) const {
 	}
 	double dt = s.time() - t;
 	if (dt == 0) {
-		return Velocity::ZEROV;
+		return Velocity::ZEROV();
 	} else if (dt > 0) {
 		if (s.isLatLon()) {
 			return GreatCircle::velocity_average(p.lla(), s.p.lla(), dt);

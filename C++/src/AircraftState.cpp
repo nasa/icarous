@@ -315,7 +315,7 @@ namespace larcfm {
 	
 
 	StateVector AircraftState::get(int i) {
-		if (i >= sz || i < 0) return StateVector(Vect3::ZERO,Velocity::ZEROV,0.0);
+		if (i >= sz || i < 0) return StateVector(Vect3::ZERO(),Velocity::ZEROV(),0.0);
 		updateProjection();
 		return StateVector(Vect3(projS2[i], projH[i]), Velocity::mkVxyz(projV2[i].x, projV2[i].y, projVZ[i]), time(i));
 	}
@@ -366,7 +366,7 @@ namespace larcfm {
 	}
 	
 	const Velocity& AircraftState::velocity(int i) const {
-		if (i >= sz || i < 0) return Velocity::ZEROV;
+		if (i >= sz || i < 0) return Velocity::ZEROV();
 		return v_list[ext2int(i)];
 	}
 
@@ -428,7 +428,7 @@ namespace larcfm {
 		if (position(0).isLatLon()) {
 			if ( ! projection_initialized) {
                 error.addWarning("No projection defined in updateProjection()");
-				sp = Projection::createProjection(LatLonAlt::ZERO);
+				sp = Projection::createProjection(LatLonAlt::ZERO());
 			}
 			for (int j = 0; j < sz; j++){                     // project all the points for aircraft id
 				Position s = position(j);

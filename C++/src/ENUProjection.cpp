@@ -98,7 +98,7 @@ namespace larcfm {
     ENUProjection::ENUProjection() {
       projAlt = 0;
       ref = Vect3();
-      llaRef = LatLonAlt::ZERO;
+      llaRef = LatLonAlt::ZERO();
     }
     
     ENUProjection::ENUProjection(const LatLonAlt& lla) {

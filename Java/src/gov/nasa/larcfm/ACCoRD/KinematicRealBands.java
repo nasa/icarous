@@ -150,6 +150,9 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 		}
 	}
 
+	/** 
+	 * Return val modulo mod_, when mod_ > 0. Otherwise, returns val. 
+	 */
 	private double mod_val(double val) {
 		return mod_ > 0 ? Util.modulo(val,mod_) : val;
 	}
@@ -539,7 +542,7 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 				if (!Double.isNaN(recovery_time)) {
 					recovery = true;
 					recovery_time_ = recovery_time;
-					region = core.parameters.alertor.getLevel(core.parameters.alertor.lastGuidanceLevel()).getRegion();
+					region = core.parameters.alertor.getLevel(core.lastConflictAlertLevel()).getRegion();
 				}	
 				none_sets.add(noneset);
 				regions.add(region);
@@ -572,6 +575,9 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 						l = noneset.getInterval(i).up;
 						if (mod_ > 0) {
 							u = noneset.getInterval(0).low;
+							if (Util.almost_geq(mod_val(u-val),mod_/2.0)) {
+								u = Double.POSITIVE_INFINITY; 
+							}
 						}
 						break;
 					} else if (val < noneset.getInterval(i+1).low) {
@@ -583,6 +589,9 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 					if (i==0) {
 						if (mod_ > 0) {
 							l = noneset.getInterval(noneset.size()-1).up;
+							if (Util.almost_geq(mod_val(val-l),mod_/2.0)) {
+								u = Double.NEGATIVE_INFINITY; 
+							}							
 						}
 						u = noneset.getInterval(i).low;
 						break;
@@ -651,7 +660,7 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 				double pivot_red = det.getTimeIn();
 				if (pivot_red == 0) {
 					return Double.NEGATIVE_INFINITY;
-				}
+				} 
 				TrafficState own = core.ownship;
 				List<TrafficState> traffic = new ArrayList<TrafficState>();
 				double pivot_green = 0;
@@ -661,7 +670,8 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 					TrafficState intruder = ac.linearProjection(pivot);
 					traffic.clear();
 					traffic.add(intruder);
-					if (all_red(detector,Detection3D.NoDetector,core.criteria_ac(),0,0,0,T,ownship,traffic)) {
+					if (detector.violation(ownship.get_s(),ownship.get_v(),intruder.get_s(),intruder.get_v()) ||
+							all_red(detector,Detection3D.NoDetector,core.criteria_ac(),0,0,0,T,ownship,traffic)) {
 						pivot_red = pivot;
 					} else {
 						pivot_green = pivot;
@@ -679,7 +689,7 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 	}
 
 	private int maxdown(TrafficState ownship) {
-		int down = (int)Math.ceil(min_rel(ownship)/get_step())+1;
+		int down = (int)Math.ceil(min_rel(ownship)/get_step());
 		if (mod_ > 0 && Util.almost_greater(down*get_step(),mod_/2.0)) {
 			--down;
 		}
@@ -687,7 +697,7 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 	}
 
 	private int maxup(TrafficState ownship) {
-		int up = (int)Math.ceil(max_rel(ownship)/get_step())+1;
+		int up = (int)Math.ceil(max_rel(ownship)/get_step());
 		if (mod_ > 0 && Util.almost_greater(up*get_step(),mod_/2.0)) {
 			--up;
 		}    

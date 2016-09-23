@@ -49,6 +49,8 @@ private:
   std::vector< std::vector<TrafficState> > conflict_acs_;
   /* Cached list of time intervals of violation per alert level */
   std::vector<Interval> tiov_; //
+  /* Last conflict level */
+  int last_conflict_level_;
 
   /**
    *  Update cached values
@@ -86,6 +88,11 @@ public:
    *  Reset cached values
    */
   void reset();
+
+  /**
+   * Returns most severe alert level where there is a conflict aircraft
+   */
+  int lastConflictAlertLevel();
 
   /**
    *  Returns horizontal epsilon for implicit coordination with respect to criteria ac

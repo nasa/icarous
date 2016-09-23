@@ -22,7 +22,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	/**
 	 * DAIDALUS version
 	 */
-	public static final String VERSION = "1.a0";
+	public static final String VERSION = "1.a2";
 
 	/**
 	 * Alertor
@@ -83,7 +83,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 		lookahead_time_ = 180; // [s]       
 		left_trk_ =  Math.PI; 
 		right_trk_ = Math.PI;
-		min_gs_  = Units.from("knot",0);  
+		min_gs_  = Units.from("knot",10);  
 		max_gs_  = Units.from("knot",700);
 		min_vs_  = Units.from("fpm",-5000);
 		max_vs_  = Units.from("fpm",5000); 
@@ -555,9 +555,10 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 
 	/** 
 	 * Set minimum ground speed to value in internal units [m/s].
+	 * Minimum ground speed must be greater than ground speed step.
 	 */
 	public boolean setMinGroundSpeed(double val) {
-		if (error.isNonNegative("setMinGroundSpeed",val)) {
+		if (error.isPositive("setMinGroundSpeed",val)) {
 			min_gs_ = val;
 			return true;
 		}
@@ -566,6 +567,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 
 	/** 
 	 * Set minimum ground speed to value in specified units [u].
+	 * Minimum ground speed must be greater than ground speed step.
 	 */
 	public boolean setMinGroundSpeed(double val, String u) {
 		return setMinGroundSpeed(Units.from(u,val));
@@ -1192,7 +1194,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 */
 	public void setKinematicBands(boolean type) {
 		// Section 1.2.3, DAA MOPS SC-228 V3.6
-		turn_rate_ = Units.from("deg/s",type ? 3.0 : 1/5); 
+		turn_rate_ = Units.from("deg/s",type ? 3.0 : 1.5); 
 		bank_angle_ = 0;
 		horizontal_accel_ = Units.from("m/s^2",2.0); 
 		vertical_accel_ = Units.from("G",0.25);

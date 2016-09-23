@@ -42,7 +42,7 @@ public:
 
 
 	/** Return a zero point vector */
-	static const Point ZEROP;
+	static const Point& ZEROP();
 
 	/** An invalid point, used for error reporting */
 	static const Point& INVALIDP();

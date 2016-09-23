@@ -175,14 +175,6 @@ public class KinematicsLatLon {
 
 	
 	
-	/**
-	 * Position/Velocity after turning t time units according to track rate omega
-	 * @param s0          starting position
-	 * @param v0          initial velocity
-	 * @param t           time into turn 
-	 * @param omega       rate of change of turn angle, sign indicates direction
-	 * @return Position/Velocity after t time
-	 */
 	public static Pair<LatLonAlt,Velocity> turnRadius(LatLonAlt so, Velocity vo, double t, double signedRadius) {
 		double currentTrk = vo.trk();
 		double dir = Util.sign(signedRadius);
@@ -194,7 +186,7 @@ public class KinematicsLatLon {
 		//      respect to the center of the turn. This is different from having a constant track change rate
 		//      with respect to the ownship.  Effectively the track change rate will be variable throughout the 
 		//      turn, with this being more pronounced as one approaches the poles.
-		double radius = 1.00*Math.abs(signedRadius);
+		double radius = Math.abs(signedRadius);
 //		LatLonAlt otherSide = GreatCircle.linear_initial(so, perpTrk, 2.0*radius);
 //		double chordRadius = so.chordDistance(otherSide)/2.0;	
 //		radius = chordRadius;
@@ -223,6 +215,29 @@ public class KinematicsLatLon {
 		return new Pair<LatLonAlt,Velocity>(sn,vn);
 	}
 
+	public static Pair<LatLonAlt,Velocity> turnRadiusAlt(LatLonAlt so, Velocity vo, double t, double signedRadius) {
+		double currentTrk = vo.trk();
+		double dir = Util.sign(signedRadius);
+		double perpTrk = currentTrk+dir*Math.PI/2;
+		double radius = Math.abs(signedRadius);
+		LatLonAlt center = GreatCircle.linear_initial(so, perpTrk, radius);		
+	    double pathDist = vo.gs()*t;	
+	    double radiusAngle = GreatCircle.angle_from_distance(radius,0.0);
+	    double pathDistAngle = GreatCircle.angle_from_distance(pathDist,0.0);
+	    Triple<Double,Double,Double>  trip = GreatCircle.side_angle_side(radiusAngle, Math.PI/2, pathDistAngle);	
+	    double theta = trip.second;	 
+		//theta = pathDist/radius;
+		//f.pln(" radius = "+radius+ "  theta="+Units.to("deg",theta));
+		double vFinalTrk = GreatCircle.initial_course(center,so);
+		double nTrk = vFinalTrk + dir*theta;
+		LatLonAlt sn = GreatCircle.linear_initial(center, nTrk, radius);
+		sn = sn.mkAlt(so.alt() + vo.z*t);
+		//double finalTrk = currentTrk+theta;                        
+		double final_course = GreatCircle.final_course(center,sn);   // TODO: THIS IS PROBABLY BETTER
+		double finalTrk = final_course + dir*Math.PI/2;				
+		Velocity vn = vo.mkTrk(finalTrk);  
+		return new Pair<LatLonAlt,Velocity>(sn,vn);
+	}
 
 	/**
 	 * Spherical turnOmega

@@ -201,7 +201,7 @@ namespace larcfm {
 	
 
 	void StateWriter::writeState(const std::string& name, double time, const Position& p) {
-		writeState(name,time,p,Velocity::ZEROV);
+		writeState(name,time,p,Velocity::ZEROV());
 	}
 	
 	void StateWriter::writeState(const std::string& name, double time, const std::pair<Position,Velocity>& pv) {

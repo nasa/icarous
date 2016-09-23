@@ -160,7 +160,7 @@ int main(int argc,char* argv[]) {
   Daidalus daa;
   
   // Load parameters for a small UAS
-  daa.parameters.loadFromFile("DaidalusSmallUAS.txt");
+  daa.parameters.loadFromFile("DaidalusQuadConfig.txt");
 
   // Position and velocity of ownship
   Position so = Position::makeLatLonAlt(37.102456,"deg", -76.387094,"deg", 16.4,"ft");
@@ -202,10 +202,10 @@ int main(int argc,char* argv[]) {
   
   // Make a geofence with 4 vertices (keep in fence)
   SimplePoly geoPolyLLA1(floor,ceiling);
-  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102545,"degree",-76.387213,"degree",0,"m"));
-  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102344,"degree",-76.387163,"degree",0,"m"));
-  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102351,"degree",-76.386844,"degree",0,"m"));
-  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102575,"degree",-76.386962,"degree",0,"m"));
+  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102545,"deg",-76.387213,"deg",0,"m"));
+  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102344,"deg",-76.387163,"deg",0,"m"));
+  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102351,"deg",-76.386844,"deg",0,"m"));
+  geoPolyLLA1.addVertex(Position::makeLatLonAlt(37.102575,"deg",-76.386962,"deg",0,"m"));
 
   CDPolycarp geoPolyCarp;
   PolycarpResolution geoRes;
@@ -249,10 +249,10 @@ int main(int argc,char* argv[]) {
 
   // Make a geofence with 4 vertices (keep out fence)
   SimplePoly geoPolyLLA2(floor,ceiling);
-  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102247,"degree",-76.387269,"degree",0,"m"));
-  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102017,"degree",-76.387266,"degree",0,"m"));
-  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102060,"degree",-76.386997,"degree",0,"m"));
-  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102256,"degree",-76.387010,"degree",0,"m"));
+  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102247,"deg",-76.387269,"deg",0,"m"));
+  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102017,"deg",-76.387266,"deg",0,"m"));
+  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102060,"deg",-76.386997,"deg",0,"m"));
+  geoPolyLLA2.addVertex(Position::makeLatLonAlt(37.102256,"deg",-76.387010,"deg",0,"m"));
    
   // Project geofence vertices to a local euclidean coordinate system to use with polycarp functions
   Poly3D geoPoly3D2 = geoPolyLLA2.poly3D(proj);

@@ -62,9 +62,15 @@ AlertLevels AlertLevels::WC_SC_228_Thresholds() {
 
   AlertLevels alertor = AlertLevels();
   alertor.setConflictAlertLevel(2);
-  alertor.addLevel(AlertThresholds(new WCV_TAUMOD(preventive),55,75,BandsRegion::NONE));
-  alertor.addLevel(AlertThresholds(new WCV_TAUMOD(corrective),55,75,BandsRegion::MID));
-  alertor.addLevel(AlertThresholds(new WCV_TAUMOD(warning),25,55,BandsRegion::NEAR));
+  Detection3D* cd = new WCV_TAUMOD(preventive);
+  alertor.addLevel(AlertThresholds(cd,55,75,BandsRegion::NONE));
+  delete cd;
+  cd = new WCV_TAUMOD(corrective);
+  alertor.addLevel(AlertThresholds(cd,55,75,BandsRegion::MID));
+  delete cd;
+  cd = new WCV_TAUMOD(warning);
+  alertor.addLevel(AlertThresholds(cd,25,55,BandsRegion::NEAR));
+  delete cd;
 
   return alertor;
 }
@@ -97,9 +103,15 @@ AlertLevels AlertLevels::SingleBands_WC_SC_228_Thresholds() {
 
   AlertLevels alertor = AlertLevels();
   alertor.setConflictAlertLevel(2);
-  alertor.addLevel(AlertThresholds(new WCV_TAUMOD(preventive),55,75,BandsRegion::NONE));
-  alertor.addLevel(AlertThresholds(new WCV_TAUMOD(corrective),55,75,BandsRegion::MID));
-  alertor.addLevel(AlertThresholds(new WCV_TAUMOD(warning),25,55,BandsRegion::NONE));
+  Detection3D* cd = new WCV_TAUMOD(preventive);
+  alertor.addLevel(AlertThresholds(cd,55,75,BandsRegion::NONE));
+  delete cd;
+  cd = new WCV_TAUMOD(corrective);
+  alertor.addLevel(AlertThresholds(cd,55,75,BandsRegion::MID));
+  delete cd;
+  cd = new WCV_TAUMOD(warning);
+  alertor.addLevel(AlertThresholds(cd,25,55,BandsRegion::NONE));
+  delete cd;
 
   return alertor;
 }
@@ -133,9 +145,15 @@ AlertLevels AlertLevels::Buffered_WC_SC_228_Thresholds() {
 
   AlertLevels alertor = AlertLevels();
   alertor.setConflictAlertLevel(2);
-  alertor.addLevel(AlertThresholds(new WCV_TAUMOD(preventive),60,75,BandsRegion::NONE));
-  alertor.addLevel(AlertThresholds(new WCV_TAUMOD(corrective),60,75,BandsRegion::MID));
-  alertor.addLevel(AlertThresholds(new WCV_TAUMOD(warning),30,55,BandsRegion::NEAR));
+  Detection3D* cd = new WCV_TAUMOD(preventive);
+  alertor.addLevel(AlertThresholds(cd,60,75,BandsRegion::NONE));
+  delete cd;
+  cd = new WCV_TAUMOD(corrective);
+  alertor.addLevel(AlertThresholds(cd,60,75,BandsRegion::MID));
+  delete cd;
+  cd = new WCV_TAUMOD(warning);
+  alertor.addLevel(AlertThresholds(cd,30,55,BandsRegion::NEAR));
+  delete cd;
 
   return alertor;
 }

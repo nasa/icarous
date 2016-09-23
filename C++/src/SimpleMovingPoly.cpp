@@ -26,8 +26,8 @@ SimpleMovingPoly::SimpleMovingPoly(const SimplePoly& start, const vector<Velocit
 	poly = start;
 	vlist = vs;
 	morphingPoly = true;
-	while (vlist.size() < start.size()) {
-		vlist.push_back(Velocity::ZEROV);
+	while (vlist.size() < (int) start.size()) {
+		vlist.push_back(Velocity::ZEROV());
 	}
 }
 
@@ -189,8 +189,8 @@ SimplePoly SimpleMovingPoly::position(double dt) const {
  */
 Velocity SimpleMovingPoly::averageVelocity() const {
 	if (morphingPoly) {
-		Velocity v = Velocity::ZEROV;
-		for (int i = 0; i < vlist.size(); i++) {
+		Velocity v = Velocity::ZEROV();
+		for (int i = 0; i < (int) vlist.size(); i++) {
 			v = v.Add(vlist[i]);
 		}
 		return Velocity::make(v.Scal(1.0/vlist.size()));

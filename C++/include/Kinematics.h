@@ -220,6 +220,8 @@ public:
 
 	static Vect2 center(const Vect3& s0, const Velocity& v0, double omega);
 
+	static std::pair<Vect3,Velocity> turnByDist(const Vect3& s0, const Vect3& center, double d, double gsAt_d);
+
 	/**
 	 * Position/Velocity after turning t time units according to track rate omega
 	 * @param sv0         initial position and velocity

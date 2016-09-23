@@ -416,7 +416,7 @@ public:
 
 	const NavPoint makeEVSBVS(const Position& p , double t, double a, const Velocity& v_velocityIn) const ;
 
-	const NavPoint makeMidpoint(const Position& p, double t, const Velocity& d_velocityIn) const;
+	const NavPoint makeMidpoint(const Position& p, double t) const;
 
     /** Makes a new NavPoint that is qualified as a "begin of turn" (with no other special information)  */
 	const NavPoint makeTCPTurnBegin() const;

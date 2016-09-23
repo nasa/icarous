@@ -303,9 +303,19 @@ public abstract class KinematicIntegerBands {
 		return -1;
 	}
 
+	private static boolean conflict(Detection3D det, Vect3 so, Velocity vo, Vect3 si, Velocity vi, 
+			double B, double T) {
+	 if (Util.almost_equals(B,T)) {
+		 Vect3 sot = vo.ScalAdd(B,so);
+		 Vect3 sit = vi.ScalAdd(B,si);
+		 return det.violation(sot,vo,sit,vi);
+	 }
+	 return det.conflict(so,vo,si,vi,B,T);
+	}
+	
 	private boolean cd_future_traj(Detection3D det, double B, double T, boolean trajdir, double t, 
 			TrafficState ownship, TrafficState ac) {
-		if (t > T || B >= T) return false;
+		if (t > T || B > T) return false;
 		Pair<Vect3,Velocity> sovot = trajectory(ownship,t,trajdir);
 		Vect3 sot = sovot.first;
 		Velocity vot = sovot.second;
@@ -313,12 +323,9 @@ public abstract class KinematicIntegerBands {
 		Velocity vi = ac.get_v();
 		Vect3 sit = vi.ScalAdd(t,si);
 		if (B > t) {
-			return det.conflict(sot, vot, sit, vi, B-t, T-t);
+			return conflict(det, sot, vot, sit, vi, B-t, T-t);
 		}
-		if (Util.almost_equals(T,t)) {
-			return det.violation(sot, vot, sit, vi);
-		}
-		return det.conflict(sot, vot, sit, vi, 0, T-t);
+		return conflict(det, sot, vot, sit, vi, 0, T-t);
 	}
 
 	public boolean any_conflict_aircraft(Detection3D det, double B, double T, boolean trajdir, double tsk, 

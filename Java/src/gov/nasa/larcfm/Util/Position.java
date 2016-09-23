@@ -78,6 +78,7 @@ public final class Position implements OutputList {
   /** An invalid position.  Note that this is not necessarily equal to other invalid positions -- use the isInvalid() test instead. */
   public static final Position INVALID = new Position(Point.mk(Vect3.INVALID));
 
+  public static final double minDist = 1E-9;    // TODO:  this should probably go into GreatCircle.initial_course
 
   /**
    * Creates a new lat/lon position with coordinates (<code>lat</code>,<code>lon</code>,<code>alt</code>).
@@ -452,9 +453,15 @@ public final class Position implements OutputList {
     return newNP;
   }
   
+  /** find Position distance d from this position in direction "track"
+   * 
+   * @param track    direction of linear projection
+   * @param d        distance of advance
+   * @return         new position distance "d" away from this position
+   */
   public Position linearDist(double track, double d) {
 	  if (latlon) {
-		  return new Position(GreatCircle.linear_initial(ll,track,d));
+		  return new Position(GreatCircle.linear_initial(ll,track,d));		  		  		  		  
 	  } else {
 		  double fakeGs = 100;		 
 		  Velocity v = Velocity.mkTrkGsVs(track,fakeGs,0.0);
@@ -463,6 +470,28 @@ public final class Position implements OutputList {
 		  return new Position(s3.linear(v, dt)); 
 	  }
   }
+  
+  
+  public Pair<Position,Velocity> linearDist(Velocity v, double d) {
+	  double track = v.trk();
+	  //f.pln(" $$$$$$ linearDist: v.track = "+Units.str("deg",v.compassAngle()));
+	  if (latlon) {
+		  LatLonAlt sEnd = GreatCircle.linear_initial(ll,track,d);
+		  double finalTrk = track;
+		  if (d > minDist) {  // final course has problems if no distance between points (USE 1E-9), 1E-10 NOT GOOD
+		     finalTrk = GreatCircle.final_course(ll, sEnd);
+		  }
+		  //f.pln(" $$$$$$ linearDist: v = "+v+" finalTrk = "+Units.str("deg",finalTrk)+" d = "+Units.str("ft",d));
+		  Velocity vEnd = v.mkTrk(finalTrk);
+		  return new Pair<Position,Velocity>(new Position(sEnd),vEnd);
+	  } else {
+		  //Velocity vEnd = Velocity.mkTrkGsVs(track,fakeGs,0.0);
+		  //f.pln(" $$$$$$$$ linearDist: v = "+v);
+		  double dt = d/v.gs();
+		  return new Pair<Position,Velocity>(new Position(s3.linear(v, dt)),v); 
+	  }
+  }
+
   
   /**
    * Perform a estimation of a linear projection of the current Position with the 

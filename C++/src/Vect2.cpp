@@ -70,7 +70,7 @@ Vect2 Vect2::Hat() const {
 	//return v;
 	double n = norm();
 	if ( n == 0.0) { // this is only checking the divide by zero case, so an exact comparison is correct.
-		return ZERO;
+		return ZERO();
 	}
 	return Vect2(x/n, y/n);
 }
@@ -321,7 +321,10 @@ bool Vect2::within_epsilon(const Vect2& v2, double epsilon) const {
 }
 
 
-const Vect2 Vect2::ZERO(0.0,0.0);
+const Vect2& Vect2::ZERO() {
+	static Vect2 *v = new Vect2(0, 0);
+	return *v;
+}
 
 const Vect2& Vect2::INVALID() {
 	static Vect2 *v = new Vect2(NaN, NaN);

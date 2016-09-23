@@ -12,14 +12,14 @@
  * Rights Reserved.
  */
 
-#include "ACCoRDConfig.h"
 #include "Horizontal.h"
-#include "Vertical.h"
+
+#include <algorithm>
 #include <cmath>
-#include <limits>
-#include "Kinematics.h"
-#include "VectFuns.h"
-//#include "Repulsion.h"
+
+#include "Util.h"
+#include "Consts.h"
+#include "Vertical.h"
 
 namespace larcfm {
 
@@ -126,7 +126,7 @@ Vect2 Horizontal::Vdir(const Vect2& s, const Vect2& v) {
 Vect2 Horizontal::W0(const Vect2& s, const double j) {
   if (!s.isZero())
     return s * (j/s.sqv());
-  return Vect2::ZERO;
+  return Vect2::ZERO();
 }
 
 /* Solve the following equation on k and l:
@@ -147,7 +147,7 @@ Horizontal Horizontal::gs_only_line(const Vect2& nv,const Vect2& vo,const Vect2&
 Horizontal Horizontal::gs_line(const Vect2& nv,const Vect2& vo,const Vect2& vi) {
   Horizontal gso = gs_only_line(nv,vo,vi);
   if (gso.k < 0) {
-    gso = Vect2::ZERO;
+    gso = Vect2::ZERO();
   }
   return gso;
 }
@@ -245,7 +245,7 @@ Horizontal Horizontal::trk_line_irt(const Vect2& nv,const Vect2& vo,const Vect2&
     const int irt) {
   Horizontal trko = trk_only_line_irt(nv,vo,vi,irt);
   if (trko.k < 0) {
-    trko = Horizontal(trko.k, Vect2::ZERO);
+    trko = Horizontal(trko.k, Vect2::ZERO());
     //trko.zero();
   }
   return trko;
@@ -440,7 +440,7 @@ Horizontal Horizontal::opt_line(const Vect2& nv,const Vect2& vo,const Vect2& vi)
   Horizontal opt = opt_trk_gs_line(nv,vo,vi);
   if (opt.k < 0) {
     //opt.zero();
-    opt = Vect2::ZERO;
+    opt = Vect2::ZERO();
   }
   return opt;
 }

@@ -34,6 +34,9 @@ protected:
 
 private:
 
+  static bool conflict(Detection3D* det, const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi,
+      double B, double T);
+
   int first_los_step(Detection3D* det, double tstep,bool trajdir,
       int min, int max, const TrafficState& ownship, const std::vector<TrafficState>& traffic) const;
 

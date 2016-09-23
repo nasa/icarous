@@ -39,7 +39,7 @@ namespace larcfm {
 
    EuclideanProjection Projection::createProjection(const Position& pos) {
 	  LatLonAlt lla = pos.lla().zeroAlt();
-	  if (!pos.isLatLon()) lla = LatLonAlt::ZERO;
+	  if (!pos.isLatLon()) lla = LatLonAlt::ZERO();
 	  return projection.makeNew(lla);
    }
 

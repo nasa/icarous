@@ -15,7 +15,7 @@
 #include "Vertical.h"
 #include "Horizontal.h"
 #include <limits>
-#include "CriteriaCore.h"
+//#include "CriteriaCore.h"
 #include "format.h"
 
 namespace larcfm {

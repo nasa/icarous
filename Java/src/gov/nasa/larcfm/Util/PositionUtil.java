@@ -29,6 +29,13 @@ public final class PositionUtil {
 	}
 	
 
+	/**
+	 * Return angle between P1-P2 and P2-P3
+	 * @param p1 point 1
+	 * @param p2 point 2 (intersection of two lines)
+	 * @param p3 point 3
+	 * @return angle between two lines
+	 */
 	public static double angle_between(Position p1, Position p2, Position p3) {
 		if (p1.isLatLon()) {
 			return GreatCircle.angle_between(p1.lla(), p2.lla(), p3.lla());

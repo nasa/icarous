@@ -437,6 +437,129 @@ public final class GreatCircle {
 
 
 	/**
+	 * Solve the spherical triangle when one has a side (in angular distance), another side, and an angle between sides.
+	 * The angle is <b>not</b> between the sides.  The sides are labeled a, b, and c.  The angles are labelled A, B, and
+	 * C.  Side a is opposite angle A, and so forth.<p>
+	 * 
+	 * Given these constraints, in some cases two solutions are possible.  To
+	 * get one solution set the parameter firstSolution to true, to get the other set firstSolution to false.  
+	 * A firstSolution == true
+	 * will return a smaller angle, B, than firstSolution == false.
+	 * 
+	 * @param b one side (in angular distance)
+	 * @param a another side (in angular distance)
+	 * @param A the angle opposite the side a 
+	 * @param firstSolution select which solution to use
+	 * @return a Triple of angles B and C, and the side c.
+	 */
+	public static Triple<Double,Double,Double> side_side_angle(double b, double a, double A, boolean firstSolution) {
+		// This function follows the convention of "Spherical Trigonometry" by Todhunter, Macmillan, 1886
+		//   Note, angles are labelled counter-clockwise a, b, c
+		
+		// Law of sines
+		double B = Util.asin_safe(Math.sin(b)*Math.sin(A)/Math.sin(a));  // asin returns [-pi/2,pi/2]
+		if ( ! firstSolution) {
+			B = Math.PI - B; 
+		}
+		
+		// one of Napier's analogies
+		double c = 2 * Util.atan2_safe(Math.sin(0.5*(a+b))*Math.cos(0.5*(A+B)),Math.cos(0.5*(a+b))*Math.cos(0.5*(A-B)));
+		
+		// Law of cosines
+		double C = Util.acos_safe(-Math.cos(A)*Math.cos(B)+Math.sin(A)*Math.sin(B)*Math.cos(c));
+		
+		if ( gauss_check(a,b,c,A,B,C)) {
+			return new Triple<Double,Double,Double>(Util.to_pi(B),C,Util.to_2pi(c));
+		} else {
+			return new Triple<Double,Double,Double>(0.0,0.0,0.0);
+		}
+	}
+
+	/**
+	 * Solve the spherical triangle when one has a side (in angular distance), and two angles.
+	 * The side is <b>not</b> between the angles.  The sides are labeled a, b, and c.  The angles are labelled A, B, and
+	 * C.  Side a is opposite angle A, and so forth.<p>
+	 * 
+	 * Given these constraints, in some cases two solutions are possible.  To
+	 * get one solution set the parameter firstSolution to true, to get the other set firstSolution to false.  A firstSolution == true
+	 * will return a smaller side, b, than firstSolution == false.
+	 * 
+	 * @param a one side (in angular distance)
+	 * @param A the angle opposite the side a 
+	 * @param B another angle
+	 * @param firstSolution select which solution to use
+	 * @return a Triple of side b, angle C, and the side c.
+	 */
+	public static Triple<Double,Double,Double> side_angle_angle(double a, double A, double B, boolean firstSolution) {
+		// This function follows the convention of "Spherical Trigonometry" by Todhunter, Macmillan, 1886
+		//   Note, angles are labelled counter-clockwise a, b, c
+		
+		// Law of sines
+		double b = Util.asin_safe(Math.sin(a)*Math.sin(B)/Math.sin(A));  // asin returns [-pi/2,pi/2]
+		if ( ! firstSolution) {
+			b = Math.PI - b;  
+		}
+		
+		// one of Napier's analogies
+		double c = 2 * Util.atan2_safe(Math.sin(0.5*(a+b))*Math.cos(0.5*(A+B)),Math.cos(0.5*(a+b))*Math.cos(0.5*(A-B)));
+		
+		// Law of cosines
+		double C = Util.acos_safe(-Math.cos(A)*Math.cos(B)+Math.sin(A)*Math.sin(B)*Math.cos(c));
+		
+		if ( gauss_check(a,b,c,A,B,C)) {
+			return new Triple<Double,Double,Double>(Util.to_2pi(b),Util.to_2pi(C),Util.to_2pi(c));
+		} else {
+			return new Triple<Double,Double,Double>(0.0,0.0,0.0);
+		}
+	}
+
+	/**
+	 * This implements the spherical cosine rule to complete a triangle on the unit sphere
+	 * @param a side a (angular distance)
+	 * @param C angle between sides a and b
+	 * @param b side b (angular distance)
+	 * @return triple of A,B,c (angle opposite a, angle opposite b, side opposite C)
+	 */
+	public static Triple<Double,Double,Double>side_angle_side(double a, double C, double b) {
+		double c = Util.acos_safe(Math.cos(a)*Math.cos(b)+Math.sin(a)*Math.sin(b)*Math.cos(C));
+		double cRatio = Math.sin(C)/Math.sin(c);
+		double A = Util.asin_safe(Math.sin(a)*cRatio);
+		double B = Util.asin_safe(Math.sin(b)*cRatio);
+		return new Triple<Double,Double,Double>(A,B,c);
+	}
+	
+	/**
+	 * This implements the supplemental (polar triangle) spherical cosine rule to complete a triangle on the unit sphere
+	 * @param A angle A
+	 * @param c side between A and B (angular distance
+	 * @param B angle B
+	 * @return triple of a,b,C (side opposite A, side opposite B, angle opposite c)
+	 */
+	public static Triple<Double,Double,Double>angle_side_angle(double A, double c, double B) {
+		double C = Util.acos_safe(-Math.cos(A)*Math.cos(B)+Math.sin(A)*Math.sin(B)*Math.cos(c));
+		double cRatio = Math.sin(c)/Math.sin(C);
+		double a = Util.asin_safe(Math.sin(A)*cRatio);
+		double b = Util.asin_safe(Math.sin(B)*cRatio);
+		return new Triple<Double,Double,Double>(a,b,C);
+	}
+	
+	private static boolean gauss_check(double a, double b, double c, double A, double B, double C) {
+		// This function follows the convention of "Spherical Trigonometry" by Todhunter, Macmillan, 1886
+		//   Note, angles are labelled counter-clockwise a, b, c
+		A = Util.to_pi(A);
+		B = Util.to_pi(B);
+		C = Util.to_pi(C);
+		a = Util.to_2pi(a);
+		b = Util.to_2pi(b);
+		c = Util.to_2pi(c);
+		if (A==0.0 || A==Math.PI || B==0.0 || B==Math.PI || C==0.0 || C==Math.PI) return false;
+		if (a==0.0 || b==0.0 || c==0.0) return false;
+//		f.pln("gauss "+Math.cos(0.5*(A+B))*Math.cos(0.5*c)+" "+Math.cos(0.5*(a+b))*Math.sin(0.5*C));
+		return Util.almost_equals(Math.cos(0.5*(A+B))*Math.cos(0.5*c),Math.cos(0.5*(a+b))*Math.sin(0.5*C),Util.PRECISION13);
+	}
+
+	
+	/**
 	 * Find a point on the great circle route from point #1 to point #2,
 	 * traveling at the given velocity (only ground speed and vertical speed,
 	 * not track angle) for the given amount of time. If points #1 and #2 are
@@ -606,128 +729,6 @@ public final class GreatCircle {
 		return null; // no valid solution
 	}
 
-	/**
-	 * Solve the spherical triangle when one has a side (in angular distance), another side, and an angle between sides.
-	 * The angle is <b>not</b> between the sides.  The sides are labeled a, b, and c.  The angles are labelled A, B, and
-	 * C.  Side a is opposite angle A, and so forth.<p>
-	 * 
-	 * Given these constraints, in some cases two solutions are possible.  To
-	 * get one solution set the parameter firstSolution to true, to get the other set firstSolution to false.  A firstSolution == true
-	 * will return a smaller angle, B, than firstSolution == false.
-	 * 
-	 * @param b one side (in angular distance)
-	 * @param a another side (in angular distance)
-	 * @param A the angle opposite the side a 
-	 * @param firstSolution select which solution to use
-	 * @return a Triple of angles B and C, and the side c.
-	 */
-	public static Triple<Double,Double,Double> side_side_angle(double b, double a, double A, boolean firstSolution) {
-		// This function follows the convention of "Spherical Trigonometry" by Todhunter, Macmillan, 1886
-		//   Note, angles are labelled counter-clockwise a, b, c
-		
-		// Law of sines
-		double B = Util.asin_safe(Math.sin(b)*Math.sin(A)/Math.sin(a));  // asin returns [-pi/2,pi/2]
-		if ( ! firstSolution) {
-			B = Math.PI - B; 
-		}
-		
-		// one of Napier's analogies
-		double c = 2 * Util.atan2_safe(Math.sin(0.5*(a+b))*Math.cos(0.5*(A+B)),Math.cos(0.5*(a+b))*Math.cos(0.5*(A-B)));
-		
-		// Law of cosines
-		double C = Util.acos_safe(-Math.cos(A)*Math.cos(B)+Math.sin(A)*Math.sin(B)*Math.cos(c));
-		
-		if ( gauss_check(a,b,c,A,B,C)) {
-			return new Triple<Double,Double,Double>(Util.to_pi(B),C,Util.to_2pi(c));
-		} else {
-			return new Triple<Double,Double,Double>(0.0,0.0,0.0);
-		}
-	}
-
-	/**
-	 * Solve the spherical triangle when one has a side (in angular distance), and two angles.
-	 * The side is <b>not</b> between the angles.  The sides are labeled a, b, and c.  The angles are labelled A, B, and
-	 * C.  Side a is opposite angle A, and so forth.<p>
-	 * 
-	 * Given these constraints, in some cases two solutions are possible.  To
-	 * get one solution set the parameter firstSolution to true, to get the other set firstSolution to false.  A firstSolution == true
-	 * will return a smaller side, b, than firstSolution == false.
-	 * 
-	 * @param a one side (in angular distance)
-	 * @param A the angle opposite the side a 
-	 * @param B another angle
-	 * @param firstSolution select which solution to use
-	 * @return a Triple of side b, angle C, and the side c.
-	 */
-	public static Triple<Double,Double,Double> side_angle_angle(double a, double A, double B, boolean firstSolution) {
-		// This function follows the convention of "Spherical Trigonometry" by Todhunter, Macmillan, 1886
-		//   Note, angles are labelled counter-clockwise a, b, c
-		
-		// Law of sines
-		double b = Util.asin_safe(Math.sin(a)*Math.sin(B)/Math.sin(A));  // asin returns [-pi/2,pi/2]
-		if ( ! firstSolution) {
-			b = Math.PI - b;  
-		}
-		
-		// one of Napier's analogies
-		double c = 2 * Util.atan2_safe(Math.sin(0.5*(a+b))*Math.cos(0.5*(A+B)),Math.cos(0.5*(a+b))*Math.cos(0.5*(A-B)));
-		
-		// Law of cosines
-		double C = Util.acos_safe(-Math.cos(A)*Math.cos(B)+Math.sin(A)*Math.sin(B)*Math.cos(c));
-		
-		if ( gauss_check(a,b,c,A,B,C)) {
-			return new Triple<Double,Double,Double>(Util.to_2pi(b),Util.to_2pi(C),Util.to_2pi(c));
-		} else {
-			return new Triple<Double,Double,Double>(0.0,0.0,0.0);
-		}
-	}
-
-	/**
-	 * This implements the spherical cosine rule to complete a triangle on the unit sphere
-	 * @param a side a (angular distance)
-	 * @param C angle between sides a and b
-	 * @param b side b (angular distance)
-	 * @return triple of A,B,c (angle opposite a, angle opposite b, side opposite C)
-	 */
-	public static Triple<Double,Double,Double>side_angle_side(double a, double C, double b) {
-		double c = Util.acos_safe(Math.cos(a)*Math.cos(b)+Math.sin(a)*Math.sin(b)*Math.cos(C));
-		double cRatio = Math.sin(C)/Math.sin(c);
-		double A = Util.asin_safe(Math.sin(a)*cRatio);
-		double B = Util.asin_safe(Math.sin(b)*cRatio);
-		return new Triple<Double,Double,Double>(A,B,c);
-	}
-	
-	/**
-	 * This implements the supplemental (polar triangle) spherical cosine rule to complete a triangle on the unit sphere
-	 * @param A angle A
-	 * @param c side between A and B (angular distance)
-	 * @param B angle B
-	 * @return triple of a,b,C (side opposite A, side opposite B, angle opposite c)
-	 */
-	public static Triple<Double,Double,Double>angle_side_angle(double A, double c, double B) {
-		double C = Util.acos_safe(-Math.cos(A)*Math.cos(B)+Math.sin(A)*Math.sin(B)*Math.cos(c));
-		double cRatio = Math.sin(c)/Math.sin(C);
-		double a = Util.asin_safe(Math.sin(A)*cRatio);
-		double b = Util.asin_safe(Math.sin(B)*cRatio);
-		return new Triple<Double,Double,Double>(a,b,C);
-	}
-	
-	private static boolean gauss_check(double a, double b, double c, double A, double B, double C) {
-		// This function follows the convention of "Spherical Trigonometry" by Todhunter, Macmillan, 1886
-		//   Note, angles are labeled counter-clockwise a, b, c
-		A = Util.to_pi(A);
-		B = Util.to_pi(B);
-		C = Util.to_pi(C);
-		a = Util.to_2pi(a);
-		b = Util.to_2pi(b);
-		c = Util.to_2pi(c);
-		if (A==0.0 || A==Math.PI || B==0.0 || B==Math.PI || C==0.0 || C==Math.PI) return false;
-		if (a==0.0 || b==0.0 || c==0.0) return false;
-//		f.pln("gauss "+Math.cos(0.5*(A+B))*Math.cos(0.5*c)+" "+Math.cos(0.5*(a+b))*Math.sin(0.5*C));
-		return Util.almost_equals(Math.cos(0.5*(A+B))*Math.cos(0.5*c),Math.cos(0.5*(a+b))*Math.sin(0.5*C),Util.PRECISION13);
-	}
-
-	
 	/**
 	 * Find a point from the given lat/lon when traveling along the great circle
 	 * with the given initial velocity for the given amount of time.
@@ -1149,6 +1150,7 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 	 * @return angle between two great circles
 	 */
 	public static double angle_between(LatLonAlt a, LatLonAlt b, LatLonAlt c) {
+		// Based on the spherical law of cosines
 		double a1 = angular_distance(c,b);
 		double b1 = angular_distance(a,c);
 		double c1 = angular_distance(b,a);
@@ -1157,6 +1159,7 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 		if (d == 0.0) {
 			return Math.PI;
 		}
+		//f.pln(" values ="+(Math.cos(b1)-Math.cos(c1)*Math.cos(a1))+"  "+d);
 		return Util.acos_safe( (Math.cos(b1)-Math.cos(c1)*Math.cos(a1)) / d );
 	}
 
@@ -1518,7 +1521,7 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 	 * @param so point on circle
 	 * @param center center of circle
 	 * @param angle angle of rotation around center (positive is clockwise)
-	 * @return
+	 * @return another position on the circle
 	 */
 	public static LatLonAlt small_circle_rotation(LatLonAlt so, LatLonAlt center, double angle) {
 		if (Util.almost_equals(angle, 0)) return so;
@@ -1528,7 +1531,7 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 		double A = ABc.first;
 		double c = distance_from_angle(ABc.third, 0.0);
 		double crs = initial_course(so, center);
-		if (crs > Math.PI) crs = Math.PI - crs;
+		if (crs > Math.PI) crs = crs-2*Math.PI;
 		double trk = Util.to_2pi(crs - A);
 		LatLonAlt ret = linear_initial(so, trk, c);
 //f.pln("angle="+(Util.to_pi(angle))+"  delta="+Math.abs(distance(so,center)-distance(ret,center)));		

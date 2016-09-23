@@ -15,6 +15,8 @@ package gov.nasa.larcfm.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+//import gov.nasa.larcfm.IO.DebugSupport;
+
 
 public class NavPoint {
 	public static enum WayType     {Orig, Virtual, AltPreserve};
@@ -869,7 +871,7 @@ public class NavPoint {
 	 * @return a new BOT NavPoint
 	 */
 	public NavPoint makeBOT(Position p, double t, Velocity velocityIn, double signedRadius) {
-		//f.pln("  $$$$$$$$$$$ NavPoint.makeBOT t = "+t+" velocityIn = "+velocityIn);
+		//f.pln("  $$$$$$$$$$$ NavPoint.makeBOT t = "+t+" velocityIn = "+velocityIn+" signedRadius = "+signedRadius);
 		return new NavPoint(p, t, this.ty,  this.label, Trk_TCPType.BOT,  this.tcp_gs, this.tcp_vs,
 				signedRadius, this.accel_gs, this.accel_vs, velocityIn,  this.sourcePosition, this.sourceTime);
 	}
@@ -942,9 +944,9 @@ public class NavPoint {
 	}
 
 	/** Makes a new NavPoint that is an intermediate "mid" added point */
-	public NavPoint makeMidpoint(Position p, double t, Velocity velocityIn) {
+	public NavPoint makeMidpoint(Position p, double t) {
 		return new NavPoint(p, t, this.ty,  this.label, this.tcp_trk,   this.tcp_gs, this.tcp_vs, 
-				this.radiusSigned, this.accel_gs, this.accel_vs, velocityIn,  this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn,  this.sourcePosition, this.sourceTime);
 	}
 
 
@@ -1069,6 +1071,39 @@ public class NavPoint {
 	}
 
 
+	/** 
+	 * Calculate and return the initial velocity between the current point and the given point 
+	 * This function is commutative: direction between points is always determined by the time ordering of the two points.
+	 * 
+	 * @param s2 the given NavPoint
+	 */ 
+	public static Velocity initialVelocity(NavPoint s1, NavPoint s2) {
+		if (debug && s1.isLatLon() != s2.isLatLon()) {
+			throw new RuntimeException("Incompatible geometries in velocity()");
+		}
+		double dt = s2.time() - s1.time();
+		//f.pln(" $$$$ NavPoint.initialVelocity: dt = "+dt+" s2 = "+s2);
+		if (dt==0) {
+			return Velocity.ZERO;
+		} else if (dt > 0) {			
+			if (s2.isLatLon()) {
+				return GreatCircle.velocity_initial(s1.p.lla(), s2.p.lla(), dt);
+			} else {
+				Velocity vel = Velocity.make((s2.p.point().Sub(s1.p.point())).Scal(1.0/dt));
+				return vel;
+			}
+		} else {
+			f.pln("WARNING: NavPoint INITIAL VELOCITY negative time!  Check the code here!");
+			f.pln("NavPoint.initialVelocity dt = "+dt+" this="+s1+" s="+s2);
+			//Debug.halt();
+			if (s2.isLatLon()) {
+				return GreatCircle.velocity_initial(s2.p.lla(), s1.p.lla(), -dt);
+			} else {
+				return Velocity.make((s1.p.point().Sub(s2.p.point())).Scal(1.0/-dt));
+			}			
+		}
+	}
+	
 	// ------------------------------------------------------------------------------------------------------
 	/** 
 	 * Calculate and return the initial velocity between the current point and the given point 
@@ -1077,33 +1112,8 @@ public class NavPoint {
 	 * @param s the given NavPoint
 	 */ 
 	public Velocity initialVelocity(NavPoint s) {
-		//TODO: revisit this as static 2 parameter function
-		if (debug && p.isLatLon() != s.isLatLon()) {
-			throw new RuntimeException("Incompatible geometries in velocity()");
-		}
-		double dt = s.time() - t;
-		//f.pln(" $$$$ NavPoint.initialVelocity: dt = "+dt);
-		if (dt==0) {
-			return Velocity.ZERO;
-		} else if (dt > 0) {			
-			if (s.isLatLon()) {
-				return GreatCircle.velocity_initial(p.lla(), s.p.lla(), dt);
-			} else {
-				Velocity vel = Velocity.make((s.p.point().Sub(p.point())).Scal(1.0/dt));
-				return vel;
-			}
-		} else {
-			f.pln("WARNING: NavPoint INITIAL VELOCITY negative time!  Check the code here!");
-			f.pln("NavPoint.initialVelocity this="+this+" s="+s);
-			//DebugSupport.halt();
-			if (s.isLatLon()) {
-				return GreatCircle.velocity_initial(s.p.lla(), p.lla(), -dt);
-			} else {
-				return Velocity.make((p.point().Sub(s.p.point())).Scal(1.0/-dt));
-			}			
-		}
+		return initialVelocity(this, s);
 	}
-	
 	
 	// ------------------------------------------------------------------------------------------------------
 	/** 

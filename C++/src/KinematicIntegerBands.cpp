@@ -297,9 +297,19 @@ int KinematicIntegerBands::first_nonvert_repul_step(double tstep, bool trajdir, 
   return -1;
 }
 
+bool KinematicIntegerBands::conflict(Detection3D* det, const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi,
+    double B, double T) {
+  if (Util::almost_equals(B,T)) {
+    Vect3 sot = vo.ScalAdd(B,so);
+    Vect3 sit = vi.ScalAdd(B,si);
+    return det->violation(sot,vo,sit,vi);
+  }
+  return det->conflict(so,vo,si,vi,B,T);
+}
+
 bool KinematicIntegerBands::cd_future_traj(Detection3D* det, double B, double T, bool trajdir, double t,
     const TrafficState& ownship, const TrafficState& ac) const {
-  if (t > T || B >= T) return false;
+  if (t > T || B > T) return false;
   std::pair<Vect3,Velocity> sovot = trajectory(ownship,t,trajdir);
   Vect3 sot = sovot.first;
   Velocity vot = sovot.second;
@@ -307,12 +317,9 @@ bool KinematicIntegerBands::cd_future_traj(Detection3D* det, double B, double T,
   Velocity vi = ac.get_v();
   Vect3 sit = vi.ScalAdd(t,si);
   if (B > t) {
-    return det->conflict(sot, vot, sit, vi, B-t, T-t);
+    return conflict(det, sot, vot, sit, vi, B-t, T-t);
   }
-  if (Util::almost_equals(T,t)) {
-    return det->violation(sot, vot, sit, vi);
-  }
-  return det->conflict(sot, vot, sit, vi, 0, T-t);
+  return conflict(det, sot, vot, sit, vi, 0, T-t);
 }
 
 bool KinematicIntegerBands::any_conflict_aircraft(Detection3D* det, double B, double T, bool trajdir, double tsk,

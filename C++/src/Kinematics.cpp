@@ -196,6 +196,28 @@ Vect2 Kinematics::center(const Vect3& s0, const Velocity& v0, double omega) {
 	return Vect2(s0.x + R*std::cos(theta),s0.y - R*std::sin(theta));
 }
 
+/**   *** EXPERIMENTAL ***
+ * Position/Velocity
+ * @param s0          starting position
+ * @param center
+ * @param d           distance into turn
+ * @param gsAt_d
+ * @return Position/Velocity after t time
+ */
+std::pair<Vect3,Velocity> Kinematics::turnByDist(const Vect3& s0, const Vect3& center, double d, double gsAt_d) {
+	  double R = s0.distanceH(center);
+	  //f.pln(" $$$$$ turnByDist: R = "+Units.str("nm",R));
+	  //double omega = Util.sign(d)*gsAt_d/R;
+	  double dt = std::abs(d/gsAt_d);
+	  Velocity vPerp = Velocity::make(s0.Sub(center));
+	  int dir = Util::sign(d);
+	  double currentTrk = vPerp.trk()+dir*M_PI/2;
+	  Velocity vo = Velocity::mkTrkGsVs( currentTrk , gsAt_d ,0.0);
+	  //f.pln(" $$$$$ turnByDist: vo = "+vo+" dt = "+dt+" currentTrk = "+Units.str("deg",currentTrk));
+	  return turn(s0, vo, dt, R, dir > 0);
+	  //return turnOmega(s0,vo,dt,omega);
+}
+
 
 std::pair<Vect3,Velocity> Kinematics::turnOmega(const std::pair<Vect3,Velocity>& sv0, double t, double omega) {
 	if (Util::almost_equals(omega,0))
@@ -679,7 +701,7 @@ std::pair<Vect3,Velocity> Kinematics::vsAccelUntil(const Vect3& so, const Veloci
 	double accelTime = vsAccelTime(vo,goalVs, vsAccel_d);
 	int sgn = 1;
 	if (goalVs < vo.vs()) sgn = -1;
-	Vect3 ns = Vect3::ZERO;
+	Vect3 ns = Vect3::ZERO();
 	if (t <= accelTime)
 		return vsAccel(so,vo,t,sgn*vsAccel_d);
 	else {
@@ -844,7 +866,7 @@ bool Kinematics::testLoSVs(const Vect3& so, const Velocity& vo, const Velocity& 
 //	a1 = vsDir1*std::abs(a1);
 //	a2 = vsDir2*std::abs(a2);
 //	Velocity nv = Velocity::ZEROV;
-//	Vect3    ns = Vect3::ZERO;
+//	Vect3    ns = Vect3::ZERO();
 //	if (t <= T1) {
 //		nv = v0.mkVs(voz + a1*t);
 //		ns = s0.linear(v0,t).mkZ(soz + antiDer1(voz,t,a1));

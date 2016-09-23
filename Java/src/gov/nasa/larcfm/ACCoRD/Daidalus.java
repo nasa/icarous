@@ -97,7 +97,7 @@ public class Daidalus implements ErrorReporter {
 	 */
 	public void set_Buffered_WC_SC_228_MOPS(boolean type) {
 		parameters.alertor = AlertLevels.Buffered_WC_SC_228_Thresholds();
-		parameters.setKinematicBands(true);
+		parameters.setKinematicBands(type);
 		parameters.setCollisionAvoidanceBands(true);
 		parameters.setCollisionAvoidanceBandsFactor(0.2);
 		parameters.setMinHorizontalRecovery(1.0,"nmi");
@@ -587,7 +587,7 @@ public class Daidalus implements ErrorReporter {
 
 	public static String release() {
 		return "DAIDALUSj V-"+KinematicBandsParameters.VERSION+
-				"-FormalATM-"+Constants.version+" (Sept-11-2016)"; 
+				"-FormalATM-"+Constants.version+" (Sept-23-2016)"; 
 	}
 
 	public boolean hasError() {

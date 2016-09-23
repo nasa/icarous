@@ -19,6 +19,8 @@ import java.util.List;
 
 //import gov.nasa.larcfm.IO.DebugSupport;
 
+//import gov.nasa.larcfm.IO.DebugSupport;
+
 
 /**
  * Manages a flight Plan as a sequence of 4D vectors (three dimensions
@@ -87,12 +89,9 @@ public class Plan implements ErrorReporter, Cloneable {
 	private BoundingRectangle bound;   // TODO: this bound only applies to added points, when points are deleted, this is not accommodated, or if points are updated, this is not accommodated
 	private static boolean debug = false;
 	protected String note = "";
-
 	public static final double minDt   = GreatCircle.minDt;  // points that are closer together in time than this are treated as the same point for velocity calculations
 	public static final String specPre = "$";         // special prefix for labels
-
-	
-    
+   
     
 	/** Create an empty Plan */
 	public Plan() {
@@ -278,7 +277,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 */
 	public NavPoint point(int i) {
 		if (i < 0 || i >= points.size()) {
-			addError("point: invalid index "+i, i);
+			addError("NavPoint.point: invalid index "+i, i);
 			//Debug.halt();
 			if (isLatLon()) {
 				return NavPoint.ZERO_LL;
@@ -414,7 +413,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 		return points.get(size()-1);
 	}
-
+	
 	/**
 	 * This returns the time for the first non-virtual point in the plan.
 	 * Usually this is the same as getFirstTime(), and this should only be called
@@ -584,7 +583,18 @@ public class Plan implements ErrorReporter, Cloneable {
 		return -i-2; // between point i and i+1
 	}
 
-
+	public int getSegmentDist(double d) {
+		if (d < 0) return -1;
+		double tdist = 0;
+		int i = 0;
+		while (tdist < d && i < size()) {
+			tdist += pathDistance(i);
+			i++;
+		}
+		if (tdist < d && i < size()) return i-1; // on segment i-1
+		return -1; // not found
+	}
+	
 	/**
 	 * Return the index of the point nearest to the provided time.
 	 * in the event two points are equidistant from the time, the earlier one
@@ -1306,167 +1316,312 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 
-	/**
-	 * Return an interpolation of the position at the given time.  An error is
-	 * set if the time is outside of the plan's times.
-	 *
-	 * @param tt time
-	 * @return interpolated position at time tt
-	 */
-	public Position position(double t) {
-		return position(t, false);
-	}
+
+//	/**
+//	 * Return an interpolation of the position at the given time.  An error is
+//	 * set if the time is outside of the plan's times.
+//	 * 
+//	 * @param t time
+//	 * @param linear if true, then use linear interpolation, otherwise use accelerations provided in this object 
+//	 * @return interpolated position at the given time.
+//	 */
+//	public Position positionOLD(double t, boolean linear) {
+//		int seg = getSegment(t);
+//		//f.pln(" $$$$$ position: t = "+t+" seg = "+seg+" getFirstTime = "+getFirstTime()+" getLastTime = "+getLastTime());
+//		if (seg < 0) {
+//			//f.pln(" $$>> position: time out of bounds "+f.Fm12(t)+" / "+f.Fm2(getFirstTime())+" to "+f.Fm2(getLastTime()));
+//			addError("position: time out of bounds "+f.Fm12(t)+" / "+f.Fm2(getFirstTime())+" to "+f.Fm2(getLastTime()),0);
+//			return Position.INVALID;
+//		}
+//		NavPoint np1 = point(seg);
+//		if (seg == size()-1 || np1.time() == t) {
+//			return np1.position();
+//		} 			
+//		if (linear) { 
+//			double t1 = point(seg).time();
+//			return point(seg).position().linear(initialVelocity(seg, linear),t-t1);
+//		} else {
+//			return accelZone(Velocity.ZERO, t, t).first;
+//		}
+//	}
 	
-	/**
-	 * Return an interpolation of the position at the given time.  An error is
-	 * set if the time is outside of the plan's times.
-	 * 
-	 * @param t time
-	 * @param linear if true, then use linear interpolation, otherwise use accelerations provided in this object 
-	 * @return interpolated position at the given time.
-	 */
+		
+//	/**
+//	 * Return an interpolation of the position at the given time.  An error is
+//	 * set if the time is outside of the plan's times.
+//	 *
+//	 * @param tt time
+//	 * @return interpolated position at time tt
+//	 */
+//	public Position positionOLD(double t) {
+//		return positionOLD(t, false);
+//	}
+//	
+//	/**  
+//	 * Estimate the initial velocity at the given time for this aircraft.   
+//	 * A time before the beginning of the plan returns a zero velocity.
+//	 */
+//	public Velocity velocityOLD(double tm) {
+//		return velocityOLD(tm, false);
+//	}
+
+	
+	// ******** EXPERIMENTAL ***************
 	public Position position(double t, boolean linear) {
-		int seg = getSegment(t);
-		//f.pln(" $$$$$ position: t = "+t+" seg = "+seg+" getFirstTime = "+getFirstTime()+" getLastTime = "+getLastTime());
-		if (seg < 0) {
-			//f.pln(" $$>> position: time out of bounds "+f.Fm12(t)+" / "+f.Fm2(getFirstTime())+" to "+f.Fm2(getLastTime()));
-			addError("position: time out of bounds "+f.Fm12(t)+" / "+f.Fm2(getFirstTime())+" to "+f.Fm2(getLastTime()),0);
-			return Position.INVALID;
-		}
-		NavPoint np1 = point(seg);
-		if (seg == size()-1 || np1.time() == t) {
-			return np1.position();
-		} 			
-		if (linear) { 
-			double t1 = point(seg).time();
-			return point(seg).position().linear(initialVelocity(seg, linear),t-t1);
-		} else {
-			return accelZone(Velocity.ZERO, t, t).first;
-		}
+		return positionVelocity(t, linear).first;
+	}
+	
+	// ******** EXPERIMENTAL ***************
+	public Position position(double t) {
+		return positionVelocity(t, false).first;
 	}
 
-	//TODO
-	/**  *** EXPERIMENTAL ***
-	 * Return the position associated with path distance from seg  
-	 * @param d distance from point seg.
-	 * @return position of the point
+	
+	/**  *********** EXPERIMENTAL **********
+	 * Estimate the initial velocity at the given time for this aircraft.   
+	 * A time before the beginning of the plan returns a zero velocity.
 	 */
-	public Position positionByDistance(int seg, double d) {
-		double pathd = pathDistance(seg);
-		if (d < 0 || d > pathd) return Position.INVALID;
-		if (seg == size()-1) return point(size()-1).position();
-		if (Util.almost_equals(d, 0)) return point(seg).position();
-		if (Util.almost_equals(d, pathd)) return point(seg+1).position();
-		double fract = d/pathd;
-		Position p1 = point(seg).position();
-		Position p2 = point(seg+1).position();
-		Position pos = p1.interpolate(p2, fract);
-		if (inTrkChange(getTime(seg))) {
-			int ixBOT = prevBOT(seg);
-			NavPoint bot = point(ixBOT);
-			Position center = bot.turnCenter();
-			double gsAt_d = initialVelocity(ixBOT).gs();  // TODO: assume not changing for now
-			pos = KinematicsPosition.turnByDist(point(seg).position(), center, d, gsAt_d).first;
-		}
-		if (inVsChange(getTime(seg))) {
-			double dt = (getTime(seg+1)-getTime(seg))*fract;
-			if (inGsChange(getTime(seg))) {
-				double vo = initialVelocity(seg).gs();
-				double a = point(prevBGS(seg)).gsAccel();
-				double t1 = Util.root(-0.5*a, -vo, d, 1);
-				double t2 = Util.root(-0.5*a, -vo, d, -1);
-				dt = Double.isNaN(t1) || t1 < 0 ? t2 : (Double.isNaN(t2) || t2 < 0 ? t1 : Math.min(t1, t2));
-			}
-			double dz = initialVelocity(seg).vs()*dt+0.5*point(prevBVS(seg)).vsAccel()*dt*dt;
-			pos.mkAlt(point(seg).alt()+dz);
-		}
-		return pos;
+	public Velocity velocity(double tm, boolean linear) {
+		return positionVelocity(tm, linear).second;
 	}
-	
-	//TODO  *** EXPERIMENTAL ***
-	public Position positionByDistance(double d) {
-		int i = 0;
-		double nextdist = pathDistance(0);
-		while (nextdist < d && d > 0 && i < size()-1) {
-			d -= nextdist;
-			nextdist = pathDistance(i);
-			i++;
-		}
-		if (i >= size()) return Position.INVALID;
-		return positionByDistance(i,d);
-	}
-	
-	// *** NOT USED *** 
-	public Position positionExtrapolate(double t) {
-		int seg = getSegment(t);
-		//f.pln(" $$$$$ position: t = "+t+" seg = "+seg+" getFirstTime = "+getFirstTime()+" getLastTime = "+getLastTime());
-		if (seg >= 0) {
-			return position(t);
-		}
-		if (size() == 0) {
-			return Position.INVALID;
-		}
-		NavPoint last = point(size()-1);
-		if (size() == 1) {
-			return last.position();
-		}
-		Velocity vlast = velocity(last.time());
-		return last.position().linear(vlast,t-last.time());
+
+	/**  *********** EXPERIMENTAL **********
+	 * Estimate the initial velocity at the given time for this aircraft.   
+	 * A time before the beginning of the plan returns a zero velocity.
+	 */
+	public Velocity velocity(double tm) {
+		return positionVelocity(tm, false).second;
 	}
 
 
-	/**
-	 * Find the position of a point at time t1, then use t2 to compute a velocity from t1 to t2.
+//	/**
+//	 * This method can be used to interpret a kinematic plan in a linear manner.
+//	 * @param tm
+//	 * @param type
+//	 * @return
+//	 */
+//	public Velocity velocityOLD(double tm, boolean linear) { 
+//		//f.pln(" $$$$ Plan.velocity: ENTER with tm = "+tm+" linear = "+linear);
+//		if (tm < getFirstTime()) {
+//			return Velocity.ZERO;
+//		}
+//		if (tm > getLastTime()) {
+//			addError("velocity: time "+f.Fm2(tm)+" is not in plan!", size()-1);
+//			//Debug.halt();
+//			return Velocity.INVALID;
+//		}
+//		if (tm > getLastTime()-minDt) { // if almost at last time, move back a tiny bit
+//			tm = getLastTime()-minDt;
+//		}
+//		int i = getSegment(tm);
+//		int j = i+1;
+//		NavPoint nextPt = points.get(j); 
+//		//f.pln(" $$$$ Plan.velocity A: i = "+i+" j = "+j+" nextPt.time() - points.get(i).time() = "+(nextPt.time() - points.get(i).time()));
+//		while (j < points.size() && nextPt.time() - points.get(i).time() < minDt) {
+//			nextPt = points.get(++j);
+//		}
+//		//f.pln(" $$$$ Plan.velocity B: i = "+i+" j = "+j);
+//		//  this generates an erroneous value if the time is very nearly to the next point
+//		if (nextPt.time() - tm < minDt) {
+//			tm = Math.max(getFirstTime(), nextPt.time() - 2.0*minDt);  // TODO: BUG was  Math.max(getFirstTime(), nextPt.time() - minDt)
+//			//f.pln(" $$$$$$$$$$$$$$$$$$$$$$$ tm = "+tm);
+//		}
+//		NavPoint np = new NavPoint(positionOLD(tm,linear), tm);   // TODO:  bug was position(tm)  --> did not have linear
+//		Velocity v = np.initialVelocity(nextPt);
+//		//f.pln(" $$$$$$ velocity np = "+np+" nextPt = "+nextPt+" dt = "+(nextPt.time() - np.time()));
+//		// ************ debug dump *********************
+//		//Plan dmp = new Plan();
+//		//dmp.add(np);
+//		//dmp.add(nextPt);
+//		//DebugSupport.dumpPlan(dmp,"DMP");
+//		// ********************************************
+//		//f.pln(" $$$$$$ velocity: tm = "+f.Fm2(tm)+" nextPt.time() = "+nextPt.time()+" v = "+v);
+//		// also can erroneously produce a zero velocity if very near next point, use the final velocity then
+//		if (v.isZero() && !nextPt.position().almostEquals(points.get(i).position())) {
+//			//f.pln(" $$$$$$  Plan.velocity USE FINAL VELOCITY INSTEAD !!!");
+//			v = finalVelocity(i);
+//			//Debug.halt();
+//		}
+//		//f.pln(" $$$$ ---------------------- Plan.velocity: BEFORE v = "+v );
+//		if (linear) return v; 
+//		v = accelZone(v,tm,tm).second;
+//		//f.pln(" $$$$ ---------------------- Plan.velocity: AFTER v = "+v );
+//		return v;
+//	}
+
+//	
+//	private Velocity velocityCalcNew(int i, double tm, Position sNew) {
+//		if (i == size()-1) return finalVelocity(i);
+//		int j = i+1;
+//		NavPoint nextPt = points.get(j); 
+//		while (j < points.size() && nextPt.time() - points.get(i).time() < minDt) {
+//			nextPt = points.get(++j);
+//		}
+//		//  this generates an erroneous value if the time is very nearly to the next point
+//		if (nextPt.time() - tm < minDt) {
+//			tm = Math.max(getFirstTime(), nextPt.time() - minDt);		
+//		}
+//		//f.pln(" $$$$$$ velocityCalc: tm = "+tm+"  i = "+i+" j = "+j+" nextPt.time() = "+nextPt.time());
+//		NavPoint np = new NavPoint(sNew,tm);
+//		Velocity v = np.initialVelocity(nextPt);
+//		//f.pln(" $$$$$$ velocityCalc: v = "+v);
+//		// also can erroneously produce a zero velocity if very near next point, use the final velocity then
+//		if (v.isZero() && !nextPt.position().almostEquals(points.get(i).position())) {
+//			//f.pln(" $$$$$$  Plan.velocityCalcNew USE FINAL VELOCITY INSTEAD !!!");
+//			v = finalVelocity(i);
+//		}
+//        return v;
+//	}
+
+	/** time required to cover distance "dist" if initial speed is "vo" and acceleration is "gsAccel"
 	 * 
-	 * @param v_linear is the linear (estimate) velocity from point i (before t1) to point i+1 (after t1)
-	 *     Note: in a horizontal acceleration zone, only the vs component of v_linear (i.e. v_linear.vs()) is used
-	 *           in a vertical acceleration zone, v_linear.vs is not used, it is computed and integrated with the horizontal components of v_linear
-	 * @param t1 time of interest
-	 * @param t2 time from which the velocity should be calculated (t1=t2 for initial/current velocity, t2=time of point i+1 for final velocity) 
-	 * @return position and velocity of the
+	 * @param gsAccel
+	 * @param vo
+	 * @param dist
+	 * @return
 	 */
-	private Pair<Position,Velocity> accelZone(Velocity v_linear, double t1, double t2) { 
-		//f.pln(" .......... ENTER accelZone t1 = "+t1+" t2 = "+t2+" "+inTrkChange(t1)+" "+inGsChange(t1));
-		//double t1 = points.get(i).time();
-		//double t2 = points.get(i+1).time();
-		int seg = getSegment(t1);
-		NavPoint np1 = point(seg);
-		NavPoint np2 = point(seg+1);
-		Position p = np1.position().linear(np1.initialVelocity(np2),t1-np1.time());
-		Velocity v = v_linear;
-		//TODO: this only works if GS accel segments are different than TRK accel segments
-		if (inTrkChange(t1)) {
-			NavPoint n1 = points.get(prevBOT(getSegment(t1)));
-			Position so = n1.position();
-			Velocity vo = n1.velocityIn();
-			//f.pln(" ##########>>>>>> accelZone:  seg = "+seg+" n1 = "+n1.toStringFull()+" dt = "+(t2-n1.time()));
-			Pair<Position,Velocity> pv = KinematicsPosition.turnOmega(so, vo, t2-n1.time(), n1.trkAccel());
-			p = pv.first.mkAlt(p.alt()); // need to treat altitude separately
-			//f.pln(" @@@@@@@@@  accelZone: p = "+p+"  np2="+np2+" t2="+t2);
-			v = pv.second.mkVs(v_linear.vs());
-		    //f.pln(" ########## accelZone: inTurn adjustment: seg = "+seg+" t1 = "+t1+" t2 = "+t2+" v = "+v);
-		} else if (inGsChange(t1)) {
-			NavPoint n1 = points.get(prevBGS(getSegment(t1)));
-			Position so = n1.position();
-			Velocity vo = n1.velocityIn();
-			Pair<Position,Velocity> pv = KinematicsPosition.gsAccel(so, vo, t2-n1.time(), n1.gsAccel());
-			p = pv.first.mkAlt(p.alt()); // need to treat altitude separately
-			v = pv.second.mkVs(v_linear.vs());
-			//f.pln(" ########## accelZone: inGSC adjustment: v = "+v+" p.alt() = "+p.alt());
-		}
-		if (inVsChange(t1)) {
-			NavPoint n1 = points.get(prevBVS(getSegment(t1)));
-			Position so = n1.position();
-			Velocity vo = n1.velocityIn();
-			Pair<Position,Velocity> pv =  KinematicsPosition.vsAccel(so, vo, t2-n1.time(), n1.vsAccel());
-			Velocity v2 = pv.second;
-			p = p.mkAlt(pv.first.alt());
-			v = v.mkVs(v2.vs());                   // merge Vertical VS with horizontal components
-			//f.pln(" ########## accelZone: inVSC adjustment in seg = "+seg+" dt = "+(t2-n1.time())+" n1.accel() = "+n1.accel());
-			//f.pln(" ########## accelZone: inVSC adjustment in seg = "+seg+" FROM v = "+v+" TO v2 = "+v2);
-		}
-		return new Pair<Position,Velocity>(p,v);  
+	static double timeFromGs(double vo, double gsAccel, double dist) {
+		//double vo = initialVelocity(seg).gs();
+		//double a = point(prevBGS(seg)).gsAccel();
+		double t1 = Util.root(0.5*gsAccel, vo, -dist, 1);
+		double t2 = Util.root(0.5*gsAccel, vo, -dist, -1);
+		double dt = Double.isNaN(t1) || t1 < 0 ? t2 : (Double.isNaN(t2) || t2 < 0 ? t1 : Math.min(t1, t2));
+		return dt;
 	}
+	
+
+//	//
+//	/**  *** EXPERIMENTAL ***
+//	 * Return the position associated with path distance from seg  
+//	 * @param d distance from point seg.
+//	 * @return position of the point
+//	 */
+//	public Position positionByDistance(int seg, double d) {
+//		double pathd = pathDistance(seg);
+//		if (d < 0 || d > pathd) return Position.INVALID;
+//		if (seg == size()-1) return point(size()-1).position();
+//		if (Util.almost_equals(d, 0)) return point(seg).position();
+//		if (Util.almost_equals(d, pathd)) return point(seg+1).position();
+//		double fract = d/pathd;
+//		Position p1 = point(seg).position();
+//		Position p2 = point(seg+1).position();
+//		Position pos = p1.interpolate(p2, fract);
+//		if (inTrkChange(getTime(seg))) {
+//			int ixBOT = prevBOT(seg);
+//			NavPoint bot = point(ixBOT);
+//			Position center = bot.turnCenter();
+//			double gsAt_d = initialVelocity(ixBOT).gs();  // assume not changing for now
+//			pos = KinematicsPosition.turnByDist(point(seg).position(), center, d, gsAt_d).first;
+//		}
+//		if (inVsChange(getTime(seg))) {
+//			double dt = (getTime(seg+1)-getTime(seg))*fract;
+//			if (inGsChange(getTime(seg))) {
+//				double vo = initialVelocity(seg).gs();
+//				double a = point(prevBGS(seg)).gsAccel();
+////				double t1 = Util.root(-0.5*a, -vo, d, 1);
+////				double t2 = Util.root(-0.5*a, -vo, d, -1);
+////				dt = Double.isNaN(t1) || t1 < 0 ? t2 : (Double.isNaN(t2) || t2 < 0 ? t1 : Math.min(t1, t2));
+//				dt = timeFromGs(vo,a,d);
+//			}
+//			double dz = initialVelocity(seg).vs()*dt+0.5*point(prevBVS(seg)).vsAccel()*dt*dt;
+//			pos.mkAlt(point(seg).alt()+dz);
+//		}
+//		return pos;
+//	}
+//	
+//	//  *** EXPERIMENTAL ***
+//	public Position positionByDistance(double d) {
+//		int i = 0;
+//		double nextdist = pathDistance(0);
+//		while (nextdist < d && d > 0 && i < size()-1) {
+//			d -= nextdist;
+//			nextdist = pathDistance(i);
+//			i++;
+//		}
+//		if (i >= size()) return Position.INVALID;
+//		return positionByDistance(i,d);
+//	}
+//	
+//	// *** NOT USED *** 
+//	public Position positionExtrapolate(double t) {
+//		int seg = getSegment(t);
+//		//f.pln(" $$$$$ position: t = "+t+" seg = "+seg+" getFirstTime = "+getFirstTime()+" getLastTime = "+getLastTime());
+//		if (seg >= 0) {
+//			return position(t);
+//		}
+//		if (size() == 0) {
+//			return Position.INVALID;
+//		}
+//		NavPoint last = point(size()-1);
+//		if (size() == 1) {
+//			return last.position();
+//		}
+//		Velocity vlast = velocity(last.time());
+//		return last.position().linear(vlast,t-last.time());
+//	}
+
+
+//	/**
+//	 * Find the position of a point at time t1, then use t2 to compute a velocity from t1 to t2.
+//	 * 
+//	 * @param v_linear is the linear (estimate) velocity from point i (before t1) to point i+1 (after t1)
+//	 *     Note: in a horizontal acceleration zone, only the vs component of v_linear (i.e. v_linear.vs()) is used
+//	 *           in a vertical acceleration zone, v_linear.vs is not used, it is computed and integrated with the horizontal components of v_linear
+//	 * @param t1 time of interest
+//	 * @param t2 time from which the velocity should be calculated (t1=t2 for initial/current velocity, t2=time of point i+1 for final velocity) 
+//	 * @return position and velocity of the
+//	 */
+//	private Pair<Position,Velocity> accelZone(Velocity v_linear, double t1, double t2) { 
+//		//double t1 = points.get(i).time();
+//		//double t2 = points.get(i+1).time();
+//		int seg = getSegment(t1);
+//		//f.pln(" .......... ENTER accelZone t1 = "+t1+" t2 = "+t2+" seg = "+seg+" "+inTrkChange(t1)+" "+inGsChange(t1));
+//		NavPoint np1 = point(seg);
+//		if (seg+1 > size()-1) {
+//			//f.pln("accelZone: EARLY EXIT: size = "+size()+" seg = "+seg);
+//			return new Pair<Position,Velocity>(np1.position(),v_linear);
+//		}
+//		NavPoint np2 = point(seg+1);
+//		//f.pln("\n -----size = "+size()+" seg = "+seg+"\n $$$ accelZone: np1 = "+np1);
+//		//f.pln(" $$$ accelZone: np2 = "+np2);
+//		//f.pln(" $$$ accelZone: t1 = "+t1+" "+getLastTime()+"  inGsChange(t1) = "+inGsChange(t1));
+//		Position p = np1.position().linear(np1.initialVelocity(np2),t1-np1.time());
+//		Velocity v = v_linear;
+//		//TODO: this only works if GS accel segments are different than TRK accel segments
+//		if (inTrkChange(t1)) {
+//			NavPoint n1 = points.get(prevBOT(getSegment(t1)));
+//			Position so = n1.position();
+//			Velocity vo = n1.velocityIn();
+//			//f.pln(" $$##########>>>>>> accelZone:  seg = "+seg+" n1 = "+n1.toStringFull()+" dt = "+(t2-n1.time()));
+//			//f.pln(" $$$$ accelZone signedRadius = "+Units.str("ft",n1.signedRadius(),4)+" vo = "+vo);
+//			Pair<Position,Velocity> pv = KinematicsPosition.turnOmega(so, vo, t2-n1.time(), n1.trkAccel());
+//			p = pv.first.mkAlt(p.alt()); // need to treat altitude separately
+//			v = pv.second.mkVs(v_linear.vs());
+//		    //f.pln(" $$########## accelZone: inTurn adjustment: seg = "+seg+" t1 = "+t1+" t2 = "+t2+" v = "+v);
+//		} else if (inGsChange(t1)) {
+//			NavPoint n1 = points.get(prevBGS(getSegment(t1)));
+//			Position so = n1.position();
+//			Velocity vo = n1.velocityIn();
+//			Pair<Position,Velocity> pv = KinematicsPosition.gsAccel(so, vo, t2-n1.time(), n1.gsAccel());
+//			p = pv.first.mkAlt(p.alt()); // need to treat altitude separately
+//			v = pv.second.mkVs(v_linear.vs());
+//			//f.pln(" $$########## accelZone: inGSC adjustment: v = "+v+" p.alt() = "+p.alt());
+//		}
+//		if (inVsChange(t1)) {
+//			NavPoint n1 = points.get(prevBVS(getSegment(t1)));
+//			Position so = n1.position();
+//			Velocity vo = n1.velocityIn();
+//			Pair<Position,Velocity> pv =  KinematicsPosition.vsAccel(so, vo, t2-n1.time(), n1.vsAccel());
+//			Velocity v2 = pv.second;
+//			p = p.mkAlt(pv.first.alt());
+//			v = v.mkVs(v2.vs());                   // merge Vertical VS with horizontal components
+//			//f.pln(" ########## accelZone: inVSC adjustment in seg = "+seg+" dt = "+(t2-n1.time())+" n1.accel() = "+n1.accel());
+//			//f.pln(" ########## accelZone: v = "+v+" v_linear = "+v_linear);
+//			//f.pln(" ########## accelZone: inVSC adjustment in seg = "+seg+" FROM v = "+v+" TO v2 = "+v2);
+//		}
+//		//f.pln(" $$########## accelZone: RETURN v = "+v);
+//		return new Pair<Position,Velocity>(p,v);  
+//	}
 
 	
 //	// distance from ix to ix+1
@@ -1493,12 +1648,12 @@ public class Plan implements ErrorReporter, Cloneable {
 //	}
 
 	// ********** EXPERIMENTAL (towards turn/gs overlap) ****************
-	public double gsAtSeg(int seg) {
+	public double gsAtSeg(int seg, boolean linear) {
 		NavPoint np1 = point(seg);
 		double gs;
-		if (np1.isBeginTCP()) {
+		if (!linear && np1.isBeginTCP() && !np1.isBVS()) {    // TODO: do not use vertical begins -- is that best?
 			gs = np1.velocityIn().gs();
-			//f.pln(" $$ gsAtSeg A: seg = "+seg+" gs = "+Units.str("kn",gs,8));           
+//f.pln(" $$ gsAtSeg A: seg = "+seg+" gs = "+Units.str("kn",gs,8));           
 		} else {
 			if (seg == 0 || seg >= size()-1) {
 				if (seg == 0) {
@@ -1506,117 +1661,149 @@ public class Plan implements ErrorReporter, Cloneable {
 				} else {
 					gs = getDtVelocity(size()-1).gs();
 				}
-				//f.pln(" $$ gsAtSeg B: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
+//f.pln(" $$ gsAtSeg B: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
 			} else {				
-				if (inGsChange(np1.time())) { 
+				if (! linear && inGsChange(np1.time())) { 
 					int ixBGS = prevBGS(seg);
-					double dist = pathDistance(ixBGS,seg+1);	
-					double dt = point(seg+1).time() - point(ixBGS).time();
+					double dist = pathDistance(ixBGS,seg);	
+					double dt = point(seg).time() - point(ixBGS).time();
 					double gsAccel = point(ixBGS).gsAccel();
 					gs = dist/dt + 0.5*gsAccel*dt;
-					//f.pln(" $$ gsAtSeg C: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
+//f.pln(" $$ gsAtSeg C: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
 				} else { // This may be inaccurate due to poor placement of vertical points in a turn
-					double dist = pathDistance(seg,seg+1);	
+					double dist = pathDistance(seg,linear);	
 					double dt = point(seg+1).time() - point(seg).time();			
 					gs = dist/dt;
-					//f.pln(" $$ gsAtSeg D:seg = "+seg+" dt = "+f.Fm4(dt)+" dist = "+Units.str("ft",dist)+" gs = "+Units.str("kn",gs,8));  
+//f.pln(" $$ gsAtSeg D:seg = "+seg+" dt = "+f.Fm4(dt)+" dist = "+Units.str("ft",dist)+" gs = "+Units.str("kn",gs,8));  
 				}
 			}
 		}
+//f.pln(" $$ gsAtSeg return: seg = "+seg+" gs = "+Units.str("kn",gs,4)); 
 		return gs;
 	}
 	
 	// ********** EXPERIMENTAL ****************
-	public double gsAtTime(double t) {
+	private double gsAtTime(int seg, double gsAtSeg, double t, boolean linear) {
+		//f.pln(" $$ gsAtTime: seg = "+seg+" gsAt = "+Units.str("kn",gsAt,8));
+		double gs;
+		if (!linear && inGsChange(t)) { 
+			double dt = t - getTime(seg);
+			int ixBGS = prevBGS(seg);
+			double gsAccel = point(ixBGS).gsAccel();
+			gs = gsAtSeg + dt*gsAccel;
+			//f.pln(" $$ gsAtTime A: gsAccel = "+gsAccel+" dt = "+f.Fm4(dt)+" seg = "+seg+" gs = "+Units.str("kn",gs,8));  
+		} else {					
+			gs = gsAtSeg;
+			//f.pln(" $$ gsAtTime B: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
+		}
+		return gs;
+	}
+
+	public double gsAtTime(double t, boolean linear) {
 		double gs;
 		int seg = getSegment(t);
 		if (seg < 0) {
 			gs = -1;
 		} else {
-			double gsAt = gsAtSeg(seg);
-			//f.pln(" $$ gsAt: seg = "+seg+" gsAt = "+Units.str("kn",gsAt,8));
-			double gsSeg = gsAtSeg(seg);
-			if (inGsChange(t)) { 
-				double dt = t - getTime(seg);
-				int ixBGS = prevBGS(seg);
-				double gsAccel = point(ixBGS).gsAccel();
-				gs = gsSeg + dt*gsAccel;
-				//f.pln(" $$ gsAtSeg A: dt = "+dt+" seg = "+seg+" gs = "+Units.str("kn",gs,8));  
-			} else {					
-				gs = gsSeg;
-				//f.pln(" $$ gsAtSeg B: seg = "+seg+" gs = "+Units.str("kn",gs,8));  
-			}
+			double gsSeg = gsAtSeg(seg, linear);
+			//f.pln(" $$ gsAtTime: seg = "+seg+" gsAt = "+Units.str("kn",gsAt,8));
+			gs = gsAtTime(seg, gsSeg, t, linear);
 		}
 		return gs;
 	}
-
-
 	
-	// **** EXPERIMENTAL *****
-	public Pair<Position,Velocity> positionVelocity(double t) { 
+	/** Compute position and velocity at time t
+	 * 
+	 * Note that the calculation proceeds in steps.  First, the 2D path is determined.  This gives a final position
+	 * and final track.   Then ground speed is computed.  Finally vertical speed is computed.
+	 * 
+	 * @param t    time of interest
+	 * @return
+	 */
+	public Pair<Position,Velocity> positionVelocity(double t, boolean linear) {
+		if (t < getFirstTime() || Double.isNaN(t) ) {
+			//f.pln(" $$$ positionVelocity: HERE I AM  t = "+t);
+			return new Pair<Position,Velocity>(Position.INVALID, Velocity.ZERO);
+		}
 		int seg = getSegment(t);
+		//f.pln("\n $$$$$ positionVelocity: ENTER t = "+t+" seg = "+seg);
+		Position sNew;
+		Velocity vNew;
 		NavPoint np1 = point(seg);
+		if (seg+1 > size()-1) {  // at Last Point
+			Velocity v = finalVelocity(seg-1);
+			//f.pln("\n -----size = "+size()+" seg = "+seg+"\n $$$ accelZone: np1 = "+np1+" v = "+v);
+			return new Pair<Position,Velocity>(np1.position(),v);
+		}
 		NavPoint np2 = point(seg+1);
-		//f.pln(" $$$ positionVelocity: np1 = "+np1);
+		//f.pln("\n ----------- seg = "+seg+"\n $$$ positionVelocity: np1 = "+np1);
 		//f.pln(" $$$ positionVelocity: np2 = "+np2);
-		double gs0 = gsAtSeg(seg);
-		double gsAt_d = gsAtTime(t);
-		//f.pln(" $$$ positionVelocity: gs0 = "+Units.str("kn",gs0,4)+" gsAt_d = "+Units.str("kn",gsAt_d,4)); ;
+		double gs0 = gsAtSeg(seg,linear);
+		//double gsAt_d = gsAtTime(t,linear);    // TODO; improve speed by passing in gs0 into gsAtTime
+		double gsAt_d = gsAtTime(seg, gs0, t, linear);			
+		//f.pln(" $$$ positionVelocity: seg = "+seg+" gs0 = "+Units.str("kn",gs0,4)+" gsAt_d = "+Units.str("kn",gsAt_d,4)); ;
 		Position so = np1.position();
 		//f.pln(t+" $$$ positionVelocity: seg = "+seg+" t = "+f.Fm2(t)+" positionVelocity: so = "+so+" gs0 = "+Units.str("kn",gs0));
 		double distFromSo = 0;
 		double dt = t-np1.time();		
-		if (inGsChange(t)) {
+		if (inGsChange(t) && ! linear) {
 			double gsAccel = point(prevBGS(seg)).gsAccel();
 			distFromSo = gs0*dt + 0.5*gsAccel*dt*dt;
-			//f.pln(t+" $$$ positionVelocity(inGsChange A): dt = "+f.Fm2(dt)+" vo.gs() = "+Units.str("kn",gs0)+" distFromSo = "+Units.str("ft",distFromSo));
+            //f.pln(" $$$ positionVelocity(inGsChange A): dt = "+f.Fm2(dt)+" vo.gs() = "+Units.str("kn",gs0)+" distFromSo = "+Units.str("ft",distFromSo));
 		} else {
-			distFromSo =gs0*dt;
-			//f.pln(t+" $$$ positionVelocity(inGsChange B): dt = "+dt+" distFromSo = "+Units.str("ft",distFromSo));
+			distFromSo = gs0*dt;
+            //f.pln(" $$$ positionVelocity(! inGsChange B): dt = "+f.Fm4(dt)+" gs0 = "+Units.str("kn",gs0)+" distFromSo = "+Units.str("ft",distFromSo));
 		}
-		Position sNew;
-		Velocity vNew;
-		if (inTrkChange(t)) {
+		if (inTrkChange(t) & !linear) {
 			int ixPrevBOT = prevBOT(seg);
 			Position center = point(ixPrevBOT).turnCenter();
 			double signedRadius = point(ixPrevBOT).signedRadius();
-			//f.pln(t+" $$$ positionVelocity: signedRadius = "+Units.str("ft",signedRadius)+" center = "+center);
+			//f.pln(t+" $$$ positionVelocity: signedRadius = "+Units.str("ft",signedRadius,4));
 			int dir = Util.sign(signedRadius);			
 			Pair<Position,Velocity> tAtd = KinematicsPosition.turnByDist(so, center, dir*distFromSo, gsAt_d);
 			sNew = tAtd.first;
 			vNew = tAtd.second;
-			//f.pln(" $$ %%%% positionVelocity A: vNew("+f.Fm2(t)+") = "+vNew);
-			//f.pln(" $$ %%%% positionVelocity A: sNew("+f.Fm2(t)+") = "+sNew);
+            //f.pln(" $$ %%%% positionVelocity A: vNew("+f.Fm2(t)+") = "+vNew);
+            //f.pln(" $$ %%%% positionVelocity A: sNew("+f.Fm2(t)+") = "+sNew);
 		} else {
-			Velocity vo = np1.initialVelocity(np2);
-			vNew = vo.mkGs(gsAt_d);
-			sNew = so.linearDist(vNew.trk(),distFromSo);
-			//f.pln(" $$ %%%% positionVelocity B: vNew("+f.Fm2(t)+") = "+vNew);
-			//f.pln(" $$ %%%% positionVelocity B: sNew("+f.Fm2(t)+") = "+sNew);
+			Velocity vo = np1.initialVelocity(np2);  
+			//f.pln(" $$ %%%% positionVelocity B1: t = "+t+" seg = "+seg+"  distFromSo = "+Units.str("ft",distFromSo)+" np1 = "+np1);
+			Pair<Position,Velocity> pv = so.linearDist(vo, distFromSo);
+			sNew = pv.first;				
+			vNew = pv.second.mkGs(gsAt_d);
+            //f.pln(" $$ %%%% positionVelocity B2: vNew("+f.Fm2(t)+") = "+vNew);
+            //f.pln(" $$ %%%% positionVelocity B: seg = "+seg+" sNew("+f.Fm2(t)+") = "+sNew);
 		}
-		if (inVsChange(t)) {
+		if (inVsChange(t) & !linear) {
 			NavPoint n1 = points.get(prevBVS(seg));
 			Position soP = n1.position();
 			Velocity voP = n1.velocityIn();
 			Pair<Position,Velocity> pv =  KinematicsPosition.vsAccel(soP, voP, t-n1.time(), n1.vsAccel());
 			sNew = sNew.mkAlt(pv.first.alt());
 			vNew = vNew.mkVs(pv.second.vs());                   // merge Vertical VS with horizontal components
-            //f.pln(t+" $$$ positionVelocity(inVsChange): vNew = "+vNew);
+			//f.pln(t+" $$$ positionVelocity(inVsChange) C: vNew = "+vNew);
 		} else {
-			double s1z = np1.z();
-			double s2z = np2.z();
-			double t1 = np1.time();
-			double t2 = np2.time();
-			double vZ = (s2z - s1z)/(t2-t1);
-			double sZ = s1z + vZ*dt;
-			//f.pln(" $$$$$$$$ m = "+m+" sZ = "+sZ);
-			sNew = sNew.mkAlt(sZ);
-			vNew = vNew.mkVs(vZ);
+			if (seg < size()-1) {   // otherwise np2 is not a valid future point
+				double s1z = np1.z();
+				double s2z = np2.z();
+				double t1 = np1.time();
+				double t2 = np2.time();
+				double vZ = (s2z - s1z)/(t2-t1);
+				double sZ = s1z + vZ*dt;
+				//f.pln(" $$$$$$$$ seg = "+seg+" dt = "+f.Fm2(dt)+" vZ = "+Units.str("fpm",vZ)+" sZ = "+Units.str("ft",sZ));
+				sNew = sNew.mkAlt(sZ);
+				vNew = vNew.mkVs(vZ);
+			}
 			//f.pln(t+" $$$ positionVelocity(NOT inVsChange): vNew = "+vNew);
 		}
-		//f.pln(" $$ %%%% positionVelocity RETURN: sNew("+f.Fm2(t)+") = "+sNew);
-		//f.pln(" $$ %%%% positionVelocity RETURN: vNew("+f.Fm2(t)+") = "+vNew);
+//f.pln(" $$ %%%% positionVelocity RETURN: sNew("+f.Fm2(t)+") = "+sNew);
+//f.pln(" $$ %%%% positionVelocity RETURN: vNew("+f.Fm2(t)+") = "+vNew);
+		//		}
 		return new Pair<Position,Velocity>(sNew,vNew);  
+	}
+	
+	public Pair<Position,Velocity> positionVelocity(double t) {
+	   return positionVelocity(t,false);
 	}
 
 	//	// v_linear is the linear (estimate) velocity from point i (before t1) to point i+1 (after t1)
@@ -1671,56 +1858,6 @@ public class Plan implements ErrorReporter, Cloneable {
 
 
 
-	/** 
-	 * Estimate the initial velocity at the given time for this aircraft.   
-	 * A time before the beginning of the plan returns a zero velocity.
-	 */
-	public Velocity velocity(double tm) {
-		return velocity(tm, false);
-	}
-
-	/**
-	 * This method can be used to interpret a kinematic plan in a linear manner.
-	 * @param tm
-	 * @param type
-	 * @return
-	 */
-	public Velocity velocity(double tm, boolean linear) { // ***RWB*** Kchange
-		//f.pln(" $$$$ Plan.initialVelocity: ENTER with tm = "+tm);
-		if (tm > getLastTime()) {
-			addError("velocity: Attempt to get an initial velocity after the end of the Plan: "+f.Fm2(tm), size()-1);
-			//Debug.halt();
-			return Velocity.INVALID;
-		}
-		if (tm > getLastTime()-minDt) { // if almost at last time, move back a tiny bit
-			tm = getLastTime()-minDt;
-		}
-		int i = getSegment(tm);
-		if (tm < getFirstTime()) {
-			return Velocity.ZERO;
-		}
-		int j = i+1;
-		NavPoint nextPt = points.get(j); 
-		while (j < points.size() && nextPt.time() - points.get(i).time() < minDt) {
-			nextPt = points.get(++j);
-		}
-		//  this generates an erroneous value if the time is very nearly to the next point
-		if (nextPt.time() - tm < minDt) {
-			tm = Math.max(getFirstTime(), nextPt.time() - minDt);
-		}
-		NavPoint np = new NavPoint(position(tm), tm);
-		Velocity v = np.initialVelocity(nextPt);
-		// also can erroneously produce a zero velocity if very near next point, use the final velocity then
-		if (v.isZero() && !nextPt.position().almostEquals(points.get(i).position())) {
-			//f.pln(" $$$$$$  Plan.velocity USE FINAL VELOCITY INSTEAD !!!");
-			v = finalVelocity(i);
-		}
-		//f.pln(" $$$$ Plan.velocity: BEFORE v = "+v );
-		if (linear) return v; 
-		v = accelZone(v,tm,tm).second;
-		//f.pln(" $$$$ Plan.velocity: AFTER v = "+v );
-		return v;
-	}
 
 
 	// estimate the velocity from point i to point i+1 (at point i).  
@@ -1734,14 +1871,12 @@ public class Plan implements ErrorReporter, Cloneable {
 		Position p = position(getLastTime()-10.0*minDt);
 		//f.pln(" $$$$$$$>>>>>>>>>>>>>>>>>>>>>>>. getDtVelocity SPECIAL CASE p = "+p);
 		//			Thread.dumpStack();
-		Velocity rtn = p.initialVelocity(points.get(size()-1).position(), 10.0*minDt);
-
-		
+		Velocity rtn = p.initialVelocity(points.get(size()-1).position(), 10.0*minDt);		
 		return rtn;
 	}
 	
 	public Velocity initialVelocity(int i, boolean linear) { 
-		//f.pln(" $$$$ Plan.initialVelocity: ENTER with i = "+i+" "+getName()+" "+type);
+		//f.pln("\n $$$$ Plan.initialVelocity: ENTER with i = "+i);
 		Velocity rtn =  Velocity.ZERO;
 		if (i > size()-1) {   // there is no velocity after the last point	
 			addWarning("initialVelocity(int): Attempt to get an initial velocity after the end of the Plan: "+i);
@@ -1777,7 +1912,7 @@ public class Plan implements ErrorReporter, Cloneable {
 				//f.pln(" $$$ initialVelocity C: i = "+f.Fm0(i)+" rtn = getDtVelocity = "+ rtn.toString());
 			}
 		}
-		//f.pln(" $$$ initialVelocity("+i+") rtn = "+rtn);
+		//f.pln(" $$$ RETURN initialVelocity("+i+") rtn = "+rtn);
 		return rtn;
 	}
 
@@ -1804,15 +1939,15 @@ public class Plan implements ErrorReporter, Cloneable {
 			}
 			NavPoint npi = points.get(i);
 			//Position npi = position(lastPt.time()-10.0*minDt);
-			//f.pln(" $$$$$$$>>>>>>>>>>>>>>>>>>>>>>>. getDtVelocity SPECIAL CASE p = "+p);
 			//double dt = 10.0*minDt;
-			return npi.finalVelocity(lastPt);
-			//return npi.position().initialVelocity(lastPt.position(), dt );
+			rtn = npi.finalVelocity(lastPt);
+			//f.pln(" $$ getDtVelocity: SPECIAL CASE rtn = "+rtn);
 		} else {
 		   rtn = points.get(i).initialVelocity(points.get(j));
 		   //f.pln(" $$ getDtVelocity: i = "+i+" j = "+j+" rtn = "+rtn);
-		   return rtn;
 		}
+		return rtn;
+
 	}
 
 
@@ -1847,12 +1982,43 @@ public class Plan implements ErrorReporter, Cloneable {
 		return finalVelocity(i, false);
 	}
 
-	/** finalVelocity: compute velocity at the end of a segment,  Cannot be applied to last point in a plan
-	 * 
-	 * @param i         point of interest
-	 * @param linear    if true then ignore acceleration features and calculate as linear
-	 * @return          final velocity
-	 */
+//	/** finalVelocity: compute velocity at the end of a segment,  Cannot be applied to last point in a plan
+//	 * 
+//	 * @param i         point of interest
+//	 * @param linear    if true then ignore acceleration features and calculate as linear
+//	 * @return          final velocity
+//	 */
+//	public Velocity finalVelocityOLD(int i, boolean linear) { 
+//		//f.pln(" $$ finalVelocity "+i+" "+getName());		
+//		if (i >= size()) {   // there is no "final" velocity after the last point (in general.  it happens to work for Euclidean, but not lla)
+//			addWarning("finalVelocity(int): Attempt to get a final velocity after the end of the Plan: "+i);
+//			//Debug.halt();
+//			return Velocity.INVALID;
+//		}
+//		if (i == size()-1) {// || points.get(i).time() > getLastTime()-minDt) {
+//			//f.pln(" $$ finalVelocity: name = "+name+" size() = "+size()+" Attempt to get a final velocity at end of the Plan: i = "+i);
+//			//f.pln(" $$ finalVelocity: "+points.get(i).time()+" >? "+(getLastTime()-minDt));
+//			addWarning("finalVelocity(int): Attempt to get a final velocity at end of the Plan: "+i);
+//			//			DebugSupport.halt();
+//			return Velocity.ZERO;
+//		}
+//		if (i < 0) {
+//			addWarning("finalVelocity(int): Attempt to get a final velocity before beginning of the Plan: "+i);
+//			//Debug.halt();
+//			return Velocity.ZERO;
+//		}
+//		//f.pln(" $$### finalVelocity0: i = "+i+"  np1="+points.get(i)+" np2="+points.get(i+1));
+//		Velocity v = finalLinearVelocity(i);
+//		if (linear) return v; 
+//		//f.pln(" $$########## Plan.finalVelocity BEFORE ACCEL:    at i ="+i+" v = "+v);
+//		double t1 = points.get(i).time();
+//		double t2 = points.get(i+1).time();
+//		v = accelZone(v,t1,t2).second;
+//		//f.pln(" $$######### Plan.finalVelocity  AFTER ACCEL:     at i ="+i+" v = "+v);
+//		return v;
+//	}
+
+	
 	public Velocity finalVelocity(int i, boolean linear) { 
 		//f.pln(" $$ finalVelocity "+i+" "+getName());		
 		if (i >= size()) {   // there is no "final" velocity after the last point (in general.  it happens to work for Euclidean, but not lla)
@@ -1861,8 +2027,6 @@ public class Plan implements ErrorReporter, Cloneable {
 			return Velocity.INVALID;
 		}
 		if (i == size()-1) {// || points.get(i).time() > getLastTime()-minDt) {
-			//f.pln(" $$ finalVelocity: name = "+name+" size() = "+size()+" Attempt to get a final velocity at end of the Plan: i = "+i);
-			//f.pln(" $$ finalVelocity: "+points.get(i).time()+" >? "+(getLastTime()-minDt));
 			addWarning("finalVelocity(int): Attempt to get a final velocity at end of the Plan: "+i);
 			//			DebugSupport.halt();
 			return Velocity.ZERO;
@@ -1872,15 +2036,9 @@ public class Plan implements ErrorReporter, Cloneable {
 			//Debug.halt();
 			return Velocity.ZERO;
 		}
-		//f.pln(" $$### finalVelocity0: i = "+i+"  np1="+points.get(i)+" np2="+points.get(i+1));
-		Velocity v = finalLinearVelocity(i);
-		if (linear) return v; 
-		//f.pln(" $$########## Plan.finalVelocity BEFORE ACCEL:    at i ="+i+" v = "+v);
-		double t1 = points.get(i).time();
+		//double t1 = points.get(i).time();
 		double t2 = points.get(i+1).time();
-		v = accelZone(v,t1,t2).second;
-		//f.pln(" $$######### Plan.finalVelocity  AFTER ACCEL:     at i ="+i+" v = "+v);
-		return v;
+        return positionVelocity(t2-2.0*minDt).second;
 	}
 
 
@@ -2065,6 +2223,9 @@ public class Plan implements ErrorReporter, Cloneable {
 			Position center = bot.turnCenter();
 			double R = bot.turnRadius();
 			double theta = PositionUtil.angle_between(p1.position(),center,p2.position());
+			//double theta = GreatCircle.side_side_angle(GreatCircle.angular_distance(p1.position().lla(),center.lla()),GreatCircle.angular_distance(p2.position().lla(),center.lla()),Math.PI/2,false).second;
+			//double theta = GreatCircle.angle_temp(p1.position().lla(),center.lla(),p2.position().lla());
+			//f.pln(" $$ Plan 2036:  R = "+Units.str("ft",R)+ "  theta="+Units.to("deg",theta)+"   bot="+bot+"  same="+p1.equals(bot));
 			return Math.abs(theta*R);	    	
 		} else {
 			// otherwise just use linear distance
@@ -2146,13 +2307,13 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * @param t  current time of interest   
 	 * @return   path distance
 	 */
-	public double partialPathDistance(double t) {
+	public double partialPathDistance(double t, boolean linear) {
 		if (t < getFirstTime() || t >= getLastTime()) {
 			return 0.0;
 		}
 		int seg = getSegment(t);
 		// if in a turn, figure the arc distance
-		if (inTrkChange(t)) {
+		if (inTrkChange(t) && !linear) {
 			//double R = points.get(i).position().distanceH(points.get(i).turnCenter());
 			double R = turnRadius(t);
 			//double distAB = points.get(i).position().distanceH(points.get(i+1).position());
@@ -2165,6 +2326,11 @@ public class Plan implements ErrorReporter, Cloneable {
 			// otherwise just use linear distance
 			return position(t).distanceH(points.get(seg+1).position());
 		}
+	}
+	
+	public double partialPathDistance(double t) {
+		boolean linear = false;
+		return partialPathDistance(t,linear);
 	}
 
 	/** calculate path distance from the current position at time t to point j

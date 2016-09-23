@@ -67,7 +67,7 @@ Velocity MovingPolygon3D::velocity(int i) const {
 }
 
 Velocity MovingPolygon3D::averageVelocity() const {
-	Vect2 v = Vect2::ZERO;
+	Vect2 v = Vect2::ZERO();
 	for (int i = 0; i < size(); i++) {
 		v = v.Add(horizpoly.polyvel[i]);
 	}

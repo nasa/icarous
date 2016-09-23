@@ -15,7 +15,6 @@
  */
 
 #include "Velocity.h"
-#include "GreatCircle.h"
 #include "Units.h"
 #include "Util.h" // NaN def
 #include "format.h"
@@ -252,12 +251,14 @@ std::string Velocity::toStringNP(int precision) const {
 	return FmPrecision(Units::to("deg", compassAngle()), precision)+", "+FmPrecision(Units::to("knot", gs()),precision)+", "+FmPrecision(Units::to("fpm", vs()),precision);
 }
 
-const Velocity Velocity::ZEROV(0.0,0.0,0.0);
+const Velocity& Velocity::ZEROV() {
+	static Velocity* v = new Velocity(0,0,0);
+	return *v;
+}
 
 const Velocity& Velocity::INVALIDV() {
 	static Velocity* v = new Velocity(NaN, NaN, NaN);
 	return *v;
-
 }
 
 /**
@@ -332,7 +333,7 @@ Velocity Velocity::Hat() const {
 	// but for efficiency, I am implementing it explicitly
 	double n = norm();
 	if ( n == 0.0) { // this is only checking the divide by zero case, so an exact comparison is correct.
-		return ZEROV;
+		return ZEROV();
 	}
 	return mkVxyz(x / n, y / n, z / n);
 }

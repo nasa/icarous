@@ -28,7 +28,10 @@ Point::Point(double x, double y, double z) : Vect3(x,y,z) {
 } 
 
 
-const Point Point::ZEROP(0.0,0.0,0.0);
+const Point& Point::ZEROP() {
+	static Point* p = new Point(0,0,0);
+	return *p;
+}
 
 const Point& Point::INVALIDP() {
 	static Point* p = new Point(NaN, NaN, NaN);

@@ -89,7 +89,7 @@ namespace larcfm {
     AziEquiProjection::AziEquiProjection() {
       projAlt = 0;
       ref = Vect3();
-      llaRef = LatLonAlt::ZERO;
+      llaRef = LatLonAlt::ZERO();
     }
     
     AziEquiProjection::AziEquiProjection(const LatLonAlt& lla) {
@@ -136,7 +136,7 @@ namespace larcfm {
     Vect2 AziEquiProjection::project2(const LatLonAlt& lla) const {
       Vect2 p =  sphere_to_plane(ref, spherical2xyz(lla.lat(),lla.lon()));
       if (p.norm() <= 0.0) {
-    	  return Vect2::ZERO;
+    	  return Vect2::ZERO();
       } else {
           return p.Scal(GreatCircle::distance(lla, llaRef)/p.norm());
       }

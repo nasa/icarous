@@ -18,15 +18,15 @@ namespace larcfm {
 /**
  * DAIDALUS version
  */
-const std::string KinematicBandsParameters::VERSION = "1.a0";
+const std::string KinematicBandsParameters::VERSION = "1.a2";
 
 /* NOTE: By default, no alert levels are configured */
 KinematicBandsParameters::KinematicBandsParameters() : error("DaidalusParameters") {
   // Bands
   lookahead_time_ = 180;              // [s] Lookahead time
-  left_trk_ =  Pi;                     // Left track [0 - pi]
+  left_trk_ =  Pi;                    // Left track [0 - pi]
   right_trk_ = Pi;                    // Right track [0 - pi]
-  min_gs_ = Units::from("knot",0);;                        // Minimum ground speed
+  min_gs_ = Units::from("knot",10);   // Minimum ground speed
   max_gs_ = Units::from("knot",700);  // Maximum ground speed
   min_vs_ = Units::from("fpm",-5000); // Minimum vertical speed
   max_vs_ = Units::from("fpm",5000);  // Maximum vertical speed
@@ -507,9 +507,10 @@ bool KinematicBandsParameters::setRightTrack(double val, const std::string& u) {
 
 /**
  * Set minimum ground speed to value in internal units [m/s]
+ * Minimum ground speed must be greater than ground speed step.
  */
 bool KinematicBandsParameters::setMinGroundSpeed(double val)  {
-  if (error.isNonNegative("setMinGroundSpeed",val))  {
+  if (error.isPositive("setMinGroundSpeed",val))  {
     min_gs_ = val;
     return true;
   }
@@ -518,6 +519,7 @@ bool KinematicBandsParameters::setMinGroundSpeed(double val)  {
 
 /**
  * Set minimum ground speed to value in specified units [u]
+ * Minimum ground speed must be greater than ground speed step.
  */
 bool KinematicBandsParameters::setMinGroundSpeed(double val, const std::string& u)  {
   return setMinGroundSpeed(Units::from(u,val));
@@ -1144,7 +1146,7 @@ void KinematicBandsParameters::setInstantaneousBands() {
  */
 void KinematicBandsParameters::setKinematicBands(bool type) {
   // Section 1.2.3, DAA MOPS SC-228 V3.6
-  turn_rate_ = Units::from("deg/s",type ? 3.0 : 1/5);
+  turn_rate_ = Units::from("deg/s",type ? 3.0 : 1.5);
   bank_angle_ = 0;
   horizontal_accel_ = Units::from("m/s^2",2.0);
   vertical_accel_ = Units::from("G",0.25);

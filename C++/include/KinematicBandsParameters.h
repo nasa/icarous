@@ -353,11 +353,13 @@ public:
 
   /**
    * Set minimum ground speed to value in internal units [m/s].
+   * Minimum ground speed must be greater than ground speed step.
    */
   bool setMinGroundSpeed(double val);
 
   /** 
    * Set minimum ground speed to value in specified units [u].
+   * Minimum ground speed must be greater than ground speed step.
    */
   bool setMinGroundSpeed(double val, const std::string& u);
 

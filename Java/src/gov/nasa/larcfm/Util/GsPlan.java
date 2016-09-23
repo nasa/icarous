@@ -214,6 +214,38 @@ public class GsPlan extends Route {
 		return lpc;
 	}
 
+//	// EXPERIMENTAL
+//	public void setGsChange(int bgsIndex, int egsIndex, double accel) {
+//		if (bgsIndex >= positions.size()-1) return;
+//		if (egsIndex < 0) return;
+//		if (egsIndex <= bgsIndex) return;
+//		
+//		double lastT = startTime;
+//		Position lastNp = positions.get(0);
+//		
+//		for (int i = 1; i < positions.size(); i++) {
+//			Position np = positions.get(i);
+//			double pathDist;
+//			if ( radius.get(i) != 0.0 ) { // in turn  // TODO assumes radius is something from BOT until every point excluding the EOT
+//				pathDist = 0.0; // TODO can't get this I need a center
+//			} else {
+//				pathDist = np.distanceH(lastNp);
+//			}
+//			double gs_i = gsAts.get(i-1);
+//			double dt = pathDist/gs_i;
+//			double t = lastT + dt;
+//			
+//			if ( bgsIndex < i && i <= egsIndex) {
+//				gsAts.set(i, gs_i+accel*dt);
+//				accelAt.set(i-1, accel);
+//			} else {
+//				accelAt.set(i-1, 0.0);
+//			}
+//			
+//			lastT = t;
+//			lastNp = np;
+//		}
+//	}
 
 	/** test equality of GsPlans
 	 */

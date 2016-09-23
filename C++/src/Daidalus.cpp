@@ -37,7 +37,7 @@ namespace larcfm {
 Daidalus::Daidalus() : error("Daidalus") {
   parameters = KinematicBandsParameters();
   urgency_strat_ = new NoneUrgencyStrategy();
-  wind_vector_ = Velocity::ZEROV;
+  wind_vector_ = Velocity::ZEROV();
   current_time_ = 0;
   ownship_ = TrafficState::INVALID;
   traffic_ = std::vector<TrafficState>();
@@ -65,6 +65,7 @@ Daidalus::~Daidalus() {
 
 Daidalus& Daidalus::operator=(const Daidalus& daa) {
   parameters = KinematicBandsParameters(daa.parameters);
+  delete urgency_strat_;
   urgency_strat_ = daa.urgency_strat_->copy();
   wind_vector_ = daa.wind_vector_;
   current_time_ = daa.current_time_;
@@ -98,7 +99,7 @@ void Daidalus::set_WC_SC_228_MOPS() {
  */
 void Daidalus::set_Buffered_WC_SC_228_MOPS(bool type) {
   parameters.alertor = AlertLevels::Buffered_WC_SC_228_Thresholds();
-  parameters.setKinematicBands(true);
+  parameters.setKinematicBands(type);
   parameters.setCollisionAvoidanceBands(true);
   parameters.setCollisionAvoidanceBandsFactor(0.2);
   parameters.setMinHorizontalRecovery(1.0,"nmi");
@@ -111,7 +112,7 @@ void Daidalus::set_Buffered_WC_SC_228_MOPS(bool type) {
 void Daidalus::reset() {
   ownship_ = TrafficState::INVALID;
   traffic_.clear();
-  wind_vector_ = Velocity::ZEROV;
+  wind_vector_ = Velocity::ZEROV();
   current_time_ = 0;
 }
 
@@ -428,6 +429,7 @@ UrgencyStrategy* Daidalus::getUrgencyStrategyRef() const {
  * Set strategy for computing most urgent aircraft.
  */
 void Daidalus::setUrgencyStrategy(const UrgencyStrategy* strat) {
+  delete urgency_strat_;
   urgency_strat_ = strat->copy();
 }
 
@@ -586,7 +588,7 @@ std::string Daidalus::toString() const {
 
 std::string Daidalus::release() {
   return "DAIDALUS++ V-"+KinematicBandsParameters::VERSION+
-      "-FormalATM-"+Constants::version+" (Sept-11-2016)";
+      "-FormalATM-"+Constants::version+" (Sept-23-2016)";
 }
 
 }

@@ -176,9 +176,15 @@ std::string LatLonAlt::toStringNP(int precision) const {
 }
 
 
-const LatLonAlt LatLonAlt::ZERO = LatLonAlt::make();
+const LatLonAlt& LatLonAlt::ZERO() {
+	static LatLonAlt* v = new LatLonAlt(0,0,0);
+	return *v;
+}
 
-const LatLonAlt LatLonAlt::INVALID = LatLonAlt::mk(std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN());
+const LatLonAlt& LatLonAlt::INVALID(){
+	static LatLonAlt* v = new LatLonAlt(std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN());
+	return *v;
+}
 
 
 const LatLonAlt LatLonAlt::parse(const std::string& str) {
@@ -193,7 +199,7 @@ const LatLonAlt LatLonAlt::parse(const std::string& str) {
 				Units::from(Units::clean(fields[3]),Util::parse_double(fields[2])),
 				Units::from(Units::clean(fields[5]),Util::parse_double(fields[4])));
 	}
-	return LatLonAlt::INVALID;
+	return LatLonAlt::INVALID();
 }
 
 

@@ -25,6 +25,7 @@ KinematicBandsCore::KinematicBandsCore(const KinematicBandsParameters& params) {
   most_urgent_ac = TrafficState::INVALID;
   conflict_acs_ = std::vector< std::vector<TrafficState> >();
   tiov_ = std::vector<Interval>();
+  last_conflict_level_ = 0;
   reset();
 }
 
@@ -52,6 +53,7 @@ void KinematicBandsCore::setKinematicBandsCore(const KinematicBandsCore core) {
   most_urgent_ac = core.most_urgent_ac;
   conflict_acs_ = std::vector< std::vector<TrafficState> >();
   tiov_ = std::vector<Interval>();
+  last_conflict_level_ = 0;
   reset();
 }
 
@@ -72,6 +74,7 @@ void KinematicBandsCore::reset() {
   epsh_ = 0;
   epsv_ = 0;
   tiov_.clear();
+  last_conflict_level_ = 0;
 }
 
 /**
@@ -79,6 +82,7 @@ void KinematicBandsCore::reset() {
  */
 void KinematicBandsCore::update() {
   if (outdated_) {
+    last_conflict_level_ = 0;
     for (int alert_level=1; alert_level <= parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
       if (alert_level-1 >= (int) conflict_acs_.size()) {
         conflict_acs_.push_back(std::vector<TrafficState>());
@@ -86,11 +90,22 @@ void KinematicBandsCore::update() {
         conflict_acs_[alert_level-1].clear();
       }
       conflict_aircraft(alert_level);
+      if (!conflict_acs_[alert_level-1].empty()) {
+        last_conflict_level_ = alert_level;
+      }
     }
     epsh_ = epsilonH(ownship,most_urgent_ac);
     epsv_ = epsilonV(ownship,most_urgent_ac);
     outdated_ = false;
   }
+}
+
+/**
+ * Returns most severe alert level where there is a conflict aircraft
+ */
+int KinematicBandsCore::lastConflictAlertLevel() {
+  update();
+  return last_conflict_level_;
 }
 
 /**
@@ -209,7 +224,7 @@ std::vector<TrafficState> const & KinematicBandsCore::conflictAircraft(int alert
 Interval const & KinematicBandsCore::timeIntervalOfViolation(int alert_level) {
   update();
   if (alert_level >= 1 && alert_level <= parameters.alertor.mostSevereAlertLevel()) {
-      return tiov_[alert_level-1];
+    return tiov_[alert_level-1];
   }
   return Interval::EMPTY;
 }
@@ -257,8 +272,8 @@ std::string KinematicBandsCore::toString() const {
         TrafficState::listToString(conflict_acs_[i])+"\n";
   }
   for (Interval::nat i=0; i < tiov_.size(); ++i) {
-      s+="tiov_["+Fmi(i)+"]: "+
-              tiov_[i].toString(precision)+"\n";
+    s+="tiov_["+Fmi(i)+"]: "+
+        tiov_[i].toString(precision)+"\n";
   }
   s+="## Ownship and Traffic\n";
   s+="NAME sx sy sz vx vy vz time\n";

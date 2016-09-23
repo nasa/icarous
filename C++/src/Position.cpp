@@ -27,6 +27,9 @@ using std::string;
 using std::cout;
 using std::endl;
 
+
+const double minDist = 1E-9;
+
 // the follow is to avoid the static initialization fiasco
 
 const Position& Position::INVALID() {
@@ -34,16 +37,16 @@ const Position& Position::INVALID() {
 	return *pos;
 }
 const Position& Position::ZERO_LL() {
-	static Position* pos = new Position(LatLonAlt::ZERO);
+	static Position* pos = new Position(LatLonAlt::ZERO());
 	return *pos;
 }
 const Position& Position::ZERO_XYZ() {
-	static Position* pos = new Position(Vect3::ZERO);
+	static Position* pos = new Position(Vect3::ZERO());
 	return *pos;
 }
 
 
-Position::Position() : ll(LatLonAlt::ZERO) , s3(Point::ZEROP) {
+Position::Position() : ll(LatLonAlt::ZERO()) , s3(Point::ZEROP()) {
 	latlon = true;
 }
 
@@ -289,6 +292,26 @@ const Position Position::linearEst(const Velocity& vo, double time) const {
 	return newNP;
 }
 
+const std::pair<Position,Velocity> Position::linearDist(const Velocity& v, double d) const {
+	  double track = v.trk();
+	  //f.pln(" $$$$$$ linearDist: v.track = "+Units.str("deg",v.compassAngle()));
+	  if (latlon) {
+		  LatLonAlt sEnd = GreatCircle::linear_initial(ll,track,d);
+		  double finalTrk = track;
+		  if (d > minDist) {  // final course has problems if no distance between points (USE 1E-9), 1E-10 NOT GOOD
+		     finalTrk = GreatCircle::final_course(ll, sEnd);
+		  }
+		  //f.pln(" $$$$$$ linearDist: v = "+v+" finalTrk = "+Units.str("deg",finalTrk)+" d = "+Units.str("ft",d));
+		  Velocity vEnd = v.mkTrk(finalTrk);
+		  return std::pair<Position,Velocity>(Position(sEnd),vEnd);
+	  } else {
+		  //Velocity vEnd = Velocity.mkTrkGsVs(track,fakeGs,0.0);
+		  //f.pln(" $$$$$$$$ linearDist: v = "+v);
+		  double dt = d/v.gs();
+		  return std::pair<Position,Velocity>(Position(s3.linear(v, dt)),v);
+	  }
+ }
+
 
 const Position Position::midPoint(const Position& p2) const{
 	if (latlon) {
@@ -325,7 +348,7 @@ double Position::track(const Position& p) const {
 
 Velocity Position::initialVelocity(const Position& p, double dt) const {
 	if (dt<=0) {
-		return Velocity::ZEROV;
+		return Velocity::ZEROV();
 	} else {
 		if (isLatLon()) {
 			return GreatCircle::velocity_initial(lla(), p.lla(), dt);
@@ -337,7 +360,7 @@ Velocity Position::initialVelocity(const Position& p, double dt) const {
 
 Velocity Position::finalVelocity(const Position& p, double dt) const {
 	if (dt<=0) {
-		return Velocity::ZERO;
+		return Velocity::ZERO();
 	} else {
 		if (isLatLon()) {
 			return GreatCircle::velocity_final(lla(), p.lla(), dt);
@@ -404,7 +427,7 @@ std::pair<Position,double> Position::intersection(const Position& so, const Posi
 //  Velocity Position::averageVelocity(const Position& p2, double speed) {
 //	  if (p2.latlon != latlon) {
 //		  fdln("Position.averageVelocity call given an inconsistent argument.");
-//		  return Velocity::ZEROV;
+//		  return Velocity::ZEROV();
 //	  }
 //	  if (latlon) {
 //		  return GreatCircle::velocity_average_speed(ll,p2.ll,speed);

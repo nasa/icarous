@@ -16,6 +16,8 @@ package gov.nasa.larcfm.Util;
 
 import java.util.ArrayList;
 
+//import gov.nasa.larcfm.IO.DebugSupport;
+
 /**
  * Trajectory generation functionality.  This class translates between Linear and Kinematic plans.  Note that the translations are 
  * not currently robust.
@@ -190,7 +192,8 @@ public class TrajGen {
 		if (lpc.size() < 2) {
 			ret = lpc;
 		} else {
-			//f.pln(" makeKinematicPlan: ENTER ----------------------------------- lpc = "+lpc.toStringTrk()+" "+repairTurn);	
+			//f.pln(" $$$ makeKinematicPlan: ENTER ----------------------------------- lpc = "+lpc.toString()+" "+repairTurn);
+			//DebugSupport.dumpPlan(lpc,"AGH");
             boolean addMiddle = true;
             boolean flyOver = false;
             //DebugSupport.dumpPlan(lpc, "makeKinematicPlan_lpc");
@@ -651,14 +654,18 @@ public class TrajGen {
 		Vect2 EOT = pt2.Add(wdota);
 		double gs1 = np1.groundSpeed(np2);
 		double distAB = BOT.Sub(EOT).norm();
-		double alpha = 2*(Math.asin(distAB/(2*R))); 
+		double sinTheta = distAB/(2*R);
+		double alpha;
+		if (Math.abs(sinTheta) > 1.0) alpha = 0;
+		else  alpha = 2*(Math.asin(sinTheta)); 
+		//f.pln(" $$$$$ TurnGenerator: gs1 = "+Units.str("kn",gs1)+" alpha = "+alpha+" distAB "+Units.str("ft",distAB)+" R = "+Units.str("ft",R));
 		double d2 = alpha*R;	//arc length
 		Velocity v1 = np1.initialVelocity(np2);
 		Velocity v2 = np2.initialVelocity(np3);
 		// make the time of the mot = the time of the middle vertex
 		double tMOT = np2.time();
 		double turnTime = d2/gs1;
-		//f.pln(" $$$$$ TurnGenerator: turnTime = "+turnTime+" alpha = "+Units.str("deg",alpha)+" gs1 = "+Units.str("kn",gs1));
+		//f.pln(" $$$$$ TurnGenerator: turnTime = "+turnTime+" tMOT = "+tMOT+" alpha = "+Units.str("deg",alpha)+" gs1 = "+Units.str("kn",gs1));
 		double tBOT = tMOT - turnTime/2;
 		double tEOT = tMOT + turnTime/2;
 		double vs1 = np1.initialVelocity(np2).vs();
@@ -689,18 +696,16 @@ public class TrajGen {
 		//f.pln(" $$$ vinTrk = "+Units.str8("deg",vinTrk)+" vinTrk2 = "+Units.str8("deg",vinTrk2));
 		//		double  voutTrk = new NavPoint(eotPos,tEOT).initialVelocity(np3).trk();
 		Velocity vin = v1.mkTrk(vinTrk);
-		double omega = vin.gs()/R*Util.turnDir(vin.trk(), v2.trk());    // turnRate
-//		if (tBOT < 0) {
-//		    f.pln(" $$$ turnGenerator tBOT = "+tBOT+" vin = "+vin);
-//		}
-		double trk2 = vin.trk() + omega * (tMOT-tBOT); // make vin track appropriate for each point
-		double trk3 = vin.trk() + omega * (tEOT-tBOT);
+		int dir = Util.turnDir(vin.trk(), v2.trk());
 		//double signedRadius = Util.turnDir(vin.trk(), v2.trk())*R;
-		double signedRadius = vin.gs()/omega;
+		double signedRadius = dir*R; // vin.gs()/omega;
 		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos, tBOT, vin, signedRadius).makeLabel(np2.label());   // only BOT has label from np2
         //f.pln(" $$$ turnGenerator: npBOT = "+npBOT.toStringFull()+"  alpha = "+alpha+" turnTime = "+turnTime);
-		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT,vin.mkTrk(trk2)).makeLabel("");   
+		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT).makeLabel(""); // ,vin.mkTrk(trk2)).makeLabel("");   
 		//f.pln(" $$$ turnGenerator: npMOT = "+npMOT.toStringFull());
+		double omega = dir*vin.gs()/R;    // TODO:  only used for EOT,  can calculate trkOut without this 
+//		double trk2 = vin.trk() + omega * (tMOT-tBOT); // make vin track appropriate for each point
+		double trk3 = vin.trk() + omega * (tEOT-tBOT);
 		NavPoint npEOT = np2.makeOriginal().makeEOT(eotPos,tEOT, vin.mkTrk(trk3)).makeLabel("");	
         //f.pln(" $$$ turnGenerator: npEOT = "+npEOT.toStringFull()+"  alpha = "+alpha+" turnTime = "+turnTime);
 		return new Triple<NavPoint,NavPoint, NavPoint>(npBOT,npMOT,npEOT);
@@ -770,6 +775,7 @@ public class TrajGen {
 				if (BOT.time() < kpc.getFirstTime()) {  // is this right?
 					botAlt = kpc.point(0).alt();
 				} else {
+					//f.pln(" $$$ BOT.time() = "+BOT.time());
 					botAlt = kpc.position(BOT.time()).alt();
 				}								
 				BOT = BOT.mkAlt(botAlt);
@@ -781,6 +787,7 @@ public class TrajGen {
 				if (EOT.time() > kpc.getLastTime()) {  // is this right?
 					EotAlt = kpc.getLastPoint().alt();
 				} else {
+					
 					EotAlt = kpc.position(EOT.time()).alt();
 				}
 				EOT = EOT.mkAlt(EotAlt);
@@ -1203,7 +1210,8 @@ public class TrajGen {
 				//f.pln(" $$$ $$ i = "+i+" np2 = "+np2.toStringFull());
 				String label = np2.label();
 				np2 = np2.makeStandardRetainSource(); // ***RWB*** KCHANGE
-               Velocity vin = traj.velocity(tbegin);				
+                Velocity vin = traj.velocity(tbegin);	
+                //f.pln(" $$$ traj = "+traj.toString());
 				NavPoint b = np2.makeBVS(traj.position(tbegin), tbegin, accel, vin).makeLabel(label); // .makeAdded();//.appendName(setName);
 				NavPoint e = np2.makeEVS(traj.position(tend), tend, traj.velocity(tend)); //.makeAdded();//.appendName(setName);
 				//f.pln(" $$ generateVsTCPs: i = "+i+" make EVS  point="+e.toStringFull());
@@ -1217,7 +1225,10 @@ public class TrajGen {
 				}
 				int bindex = traj.add(b);
 				int eindex = traj.add(e);
-				//f.pln(" $$$$$ generateVsTCPs: b = "+b.toStringFull()+"\n            e = "+e.toStringFull());
+//f.pln(" generateVsTCPs: bindex = "+bindex+"  eindex = "+eindex);
+//f.pln(" $$$$$ generateVsTCPs: vin = "+vin.toString()+"   vend="+traj.velocity(tend).toString());
+//f.pln(" $$$$$ generateVsTCPs: b = "+b.toStringFull()+"\n            e = "+e.toStringFull());
+//f.pln(" $$$$$ generateVsTCPs: traj = "+traj.toString());
 				if (bindex < 0) {
 					bindex = -bindex;   // There was an overlap
 				}
@@ -2314,7 +2325,7 @@ public class TrajGen {
 		return gs0*dt + 0.5*gsAccel*dt*dt;
 	}
 		
-	
+	// ***** EXPERIMENTAL ****
 	public static Plan addRTA(Plan fp, double currentTime, int ixRTA, double RTA, double minGs, double maxGs, 
 			double gsAccel, double maxOmega, boolean makeKin, double vsAccel) {		
 		int currentSeg = fp.getSegment(currentTime);
@@ -2345,7 +2356,8 @@ public class TrajGen {
 		return rtn;
 	}
 	
-	/** creates a new plan which is identical to "p" upto currentTime, but has constant gs after currentTime
+	/**  ++++++ EXPERIMENTAL ++++
+	 * Creates a new plan which is identical to "p" upto currentTime, but has constant gs after currentTime
 	 *  if "makeKin" is true, then the final section is regenerated as a kinematic plan.
 	 *  Otherwise, The end section is returned as linear plan.   
 	 *  

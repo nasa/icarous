@@ -141,7 +141,7 @@ std::pair<Vect3,double> VectFuns::intersection(const Vect3& so3, const Velocity&
 	Vect2 ds = si.Sub(so);
 	if (vo.det(vi) == 0) {
 		//f.pln(" $$$ intersection: lines are parallel");
-		return std::pair<Vect3,double>(Vect3::ZERO,  NaN);
+		return std::pair<Vect3,double>(Vect3::ZERO(),  NaN);
 	}
 	double tt = ds.det(vi)/vo.det(vi);
 	//f.pln(" $$$ intersection: tt = "+tt);
@@ -158,7 +158,7 @@ std::pair<Vect2,double> VectFuns::intersection(const Vect2& so, const Vect2& vo,
 	Vect2 ds = si.Sub(so);
 	if (vo.det(vi) == 0) {
 		//f.pln(" $$$ intersection: lines are parallel");
-		return std::pair<Vect2,double>(Vect2::ZERO,  NaN);
+		return std::pair<Vect2,double>(Vect2::ZERO(),  NaN);
 	}
 	double tt = ds.det(vi)/vo.det(vi);
 	Vect2 intersec = so.Add(vo.Scal(tt));

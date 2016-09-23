@@ -302,7 +302,11 @@ public final class Util {
     //	return z+(z*z*z)/6.0+(3.0*z*z*z*z*z)/40.0+(15.0*z*z*z*z*z*z*z)/336.0;
   }
 
-  /** a safe (won't return NaN or throw exceptions) version of arc-cosine */
+  /** a safe (won't return NaN or throw exceptions) version of arc-cosine
+   * 
+   * @param x
+   * @return the arc-cosine of x, between [0,pi)
+   */
   public static double acos_safe(double x) {
     return Math.acos(Math.max(-1.0,Math.min(x,1.0)));
   }

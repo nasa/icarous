@@ -79,6 +79,13 @@ public final class VectFuns {
 		return Util.atan2_safe(VV2.y,VV2.x)-Util.atan2_safe(VV1.y,VV1.x);
 	}
 
+	/**
+	 * Return angle between P1-P2 and P2-P3
+	 * @param a point 1
+	 * @param b point 2 (intersection of two lines)
+	 * @param c point 3
+	 * @return angle between two lines
+	 */	
 	public static double angle_between(Vect2 a, Vect2 b, Vect2 c) {
 		Vect2 A = b.Sub(a);
 		Vect2 B = b.Sub(c);

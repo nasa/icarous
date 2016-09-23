@@ -65,9 +65,6 @@ bool Vect3::within_epsilon(const Vect3& v2, double epsilon) const {
 	return true;
 }
 
-Vect3 Zero3() {
-	return Vect3();
-}
 
 Vect3 Vect3::operator + (const Vect3& v) const {
 	return this->Add(v);
@@ -104,7 +101,7 @@ Vect2 Vect3::vect2() const {
 Vect3 Vect3::Hat() const {
 	double n = norm();
 	if ( n == 0.0) { // this is only checking the divide by zero case, so an exact comparison is correct.
-		return ZERO;
+		return ZERO();
 	}
 	return Vect3(x/n, y/n, z/n);
 }
@@ -114,7 +111,7 @@ Vect3 Vect3::cross(const Vect3& v) const {
 }
 
 bool Vect3:: parallel(const Vect3& v) const {
-	return cross(v).almostEquals(Vect3::ZERO);
+	return cross(v).almostEquals(Vect3::ZERO());
 }
 
 Vect3 Vect3::Add(const Vect3& v) const{
@@ -209,7 +206,10 @@ bool Vect3::isInvalid() const {
 	return x != x || y != y || z != z;
 }
 
-const Vect3 Vect3::ZERO(0.0,0.0,0.0);
+const Vect3& Vect3::ZERO() {
+	static Vect3* v = new Vect3(0,0,0);
+	return *v;
+}
 
 const Vect3& Vect3::INVALID() {
 	static Vect3* v = new Vect3(NaN, NaN, NaN);

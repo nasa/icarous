@@ -1,7 +1,7 @@
 ICAROUS: Integrated Configurable Algorithms for Reliable Operations of Unmanned Systems
 -------------------------------------------------------------------------
 Version:  Java
-Release: 1.a0, September 11, 2016
+Release: FormalATM-v2.5.5, September 23, 2016
 Authors: Cesar Munoz, George Hagen, Anthony Narkawicz
 Contact: Cesar A. Munoz (Cesar.A.Munoz@nasa.gov)
 
@@ -48,8 +48,8 @@ README.txt : This file.
 src/: Directory of java code. 
 lib/: Directory of jar file. 
 doc/: Directory of documentation.
-DaidalusSmallUAS.txt: File of DAIDALUS configuration parameters and
-values for small UAS.
+DaidalusQuadConfig.txt: DAIDALUS configuration file for
+a small rotorcarft.
 IcarousExample.java: Example application.
 Makefile: Unix make file to compile example application.
 

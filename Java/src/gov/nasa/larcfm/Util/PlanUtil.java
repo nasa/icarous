@@ -52,7 +52,7 @@ public class PlanUtil {
 		double a = BGS.gsAccel();	    
 		double acalc = (vout.gs() - vin.gs())/(dt); 
 		//f.pln("\n\n\n\n ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-		f.pln("$$$ gsConsistent: at i = "+i+" vin = "+vin+" vout = "+vout+" dt = "+dt+" a = "+a+" acalc = "+acalc);
+		//f.pln("$$$ gsConsistent: at i = "+i+" vin = "+vin+" vout = "+vout+" dt = "+dt+" a = "+a+" acalc = "+acalc);
 		if (!Util.within_epsilon(a, acalc, accelEpsilon)) { // 0.00001)) {
 			double deltaAccel = Math.abs(a-acalc);
 			if (!silent) {
@@ -236,12 +236,12 @@ public class PlanUtil {
 		double gsDelta = finalV.gs() - initialV.gs();
 		//f.pln(" $$ isVelocityContinuous: at i = "+i+" p.finalVelocity(i-1).gs() = "+Units.str("kn",finalV.gs())+" p.initialVelocity(i).gs() = "+Units.str("kn",initialV.gs()));
 		if (Math.abs(gsDelta) > velEpsilon) {
-			f.pln(" $$ isVelocityContinuous: FAIL gsDelta = "+Units.str("kn",gsDelta));
+			if (!silent) f.pln(" $$ isVelocityContinuous: FAIL gsDelta = "+Units.str("kn",gsDelta));
 			rtn = false; 
 		}
 		double vsDelta = finalV.vs() - initialV.vs();
 		if ( Math.abs(vsDelta) > velEpsilon) {
-			f.pln(" $$ isVelocityContinuous: FAIL vsDelta = "+Units.str("fpm",vsDelta));
+			if (!silent) f.pln(" $$ isVelocityContinuous: FAIL vsDelta = "+Units.str("fpm",vsDelta));
 			rtn = false; 
 		}	
 		if (! rtn) { // 2.6)) { // see testAces3, testRandom for worst cases
@@ -1741,7 +1741,7 @@ public class PlanUtil {
 		if (endIx > plan.size()) endIx = plan.size() - 1;
 		Plan rtn = new Plan("");
 		for (int i = startIx; i <= endIx; i++) {
-			f.pln(" $$$ subPlan: ADD plan.point(i) = "+plan.point(i).toStringFull());
+			//f.pln(" $$$ subPlan: ADD plan.point(i) = "+plan.point(i).toStringFull());
 			rtn.add(plan.point(i));
 		}
 		return rtn;
@@ -2374,6 +2374,108 @@ public class PlanUtil {
 	}
 
 
+    public static double distanceBetween(Plan A, Plan B) {
+    	double rtn = 0;
+    	rtn = Math.abs(A.getFirstTime() - B.getFirstTime());
+    	rtn = rtn + Math.abs(A.getLastTime() - B.getLastTime());
+    	double maxStart = Math.max(A.getFirstTime(), B.getFirstTime());
+    	double minEnd   = Math.min(A.getLastTime(), B.getLastTime());
+    	double step = (minEnd - maxStart)/20;
+    	for (double t = maxStart; t <= minEnd; t = t + step) {
+    		double errH = A.position(t).distanceH(B.position(t));
+    		double errV = A.position(t).distanceV(B.position(t));
+    		rtn = rtn + errH + errV;
+    	}    	
+    	return rtn;
+    }
 
-
+    /** 
+     * 
+     * Note : assumes the advance by distance will not leave current segment
+     * 
+     * @param p                 plan of interest
+     * @param currentTime       currentTime  of so
+     * @param distFromSo
+     * @param linear
+     * @return
+     */
+    private static Position advanceDistanceInSeg(Plan p, double currentTime, double distFromSo, boolean linear) {
+    	int seg = p.getSegment(currentTime);
+    	Pair<Position, Velocity> positionVelocity = p.positionVelocity(currentTime);
+    	Position so = positionVelocity.first;
+    	Velocity vo = positionVelocity.second;
+    	Position sNew;  	
+    	if (p.inTrkChange(currentTime) & !linear) {
+    		int ixPrevBOT = p.prevBOT(seg);
+    		Position center = p.point(ixPrevBOT).turnCenter();
+    		double signedRadius = p.point(ixPrevBOT).signedRadius();
+    		int dir = Util.sign(signedRadius);		
+    		double gsAt_d = -1.0;             // THIS IS ONLY USED IN THE VELOCITY CALCULATION WHICH WE ARE NOT USING
+    		Pair<Position,Velocity> tAtd = KinematicsPosition.turnByDist(so, center, dir*distFromSo, gsAt_d);
+    		sNew = tAtd.first;
+     		//f.pln(" $$ %%%% advanceDistanceInSeg A: sNew("+f.Fm2(t)+") = "+sNew);
+    	} else {
+    		//f.pln(" $$ %%%% advanceDistanceInSeg B: t = "+t+" seg = "+seg+"  distFromSo = "+Units.str("ft",distFromSo)+" np1 = "+np1);
+    		double track = vo.trk();
+    		sNew = so.linearDist(track, distFromSo);
+    		//f.pln(" $$ %%%% advanceDistanceInSeg B: seg = "+seg+" sNew("+f.Fm2(t)+") = "+sNew);
+    	}
+    	return sNew;
+    }
+    
+    /** Beginning at location determined by current time find new position that is "advanceDist" ahead in plan
+     * 
+     * @param p
+     * @param currentTime
+     * @param advanceDist
+     * @return
+     */
+    public static Position advanceDistance(Plan p, double currentTime, double advanceDist, boolean linear) {
+    	Position sNew;
+    	int initSeg = p.getSegment(currentTime);
+    	//f.pln(" $$ advanceDistance: seg = "+initSeg+" p.size = "+p.size()+"  advanceDist = "+Units.str("ft",advanceDist));
+    	double distSoFar = p.partialPathDistance(currentTime,linear);
+     	if (advanceDist < distSoFar) {  //  new position remains in segment "seg"
+    		sNew = advanceDistanceInSeg(p, currentTime, advanceDist, linear);
+    		f.pln(" $$ advanceDistance A: sNew = "+sNew);
+     	} else {
+     		int j = initSeg+1;
+     		for (j = initSeg+1; j < p.size(); j++) {
+     			double nextDistSoFar = distSoFar + p.pathDistance(j,j+1);
+     			if (nextDistSoFar > advanceDist) break;
+     			distSoFar = nextDistSoFar;
+     		}
+     		f.pln(j+" $$ advanceDistance: distSoFar = "+Units.str("ft",distSoFar));
+     		double remainingDist = advanceDist - distSoFar;
+     		f.pln(" $$ advanceDistance: j = "+j+" remainingDist = "+Units.str("ft",remainingDist));
+    		// need to go remainingDist in segment j
+     		if (j > p.size()-1) j = p.size()-1;
+    		double t0 = p.getTime(j);
+    		//f.pln(" $$ advanceDistance: j = "+j+" t0 = "+t0+" remainingDist = "+Units.str("ft",remainingDist));
+    		sNew = advanceDistanceInSeg(p, t0, remainingDist, linear);  
+    		f.pln(j+" $$ advanceDistance B: sNew = "+sNew);
+    	}    	
+    	return sNew;
+    }
+    
+    public static void addBGS_EGS_pair(Plan p, double t, double deltaGs, double gsAccel) {
+    	if (t < p.getFirstTime() || t > p.getLastTime()) {
+    		p.addError("velocity: time "+f.Fm2(t)+" is not in plan!", p.size()-1);
+    	} else {
+    		Velocity vBGS = p.velocity(t);
+    		double dt = deltaGs/gsAccel;
+    		double distToEGS = vBGS.gs()*dt + 0.5*gsAccel*dt*dt;
+    		Position bgs = p.position(t);
+    		double tBGS = t;
+    		NavPoint tempBGS = new NavPoint(bgs,tBGS);
+    		NavPoint npBGS = tempBGS.makeBGS(bgs,tBGS,gsAccel,vBGS);  	        
+    		boolean linear = false;
+    		Position egs = advanceDistance(p, t, distToEGS, linear);
+       		double tEGS = tBGS + dt;
+       		NavPoint tempEGS = new NavPoint(egs,tEGS);
+       		NavPoint npEGS = tempEGS.makeEGS(egs,tEGS,vBGS); 
+       		p.add(npBGS);
+       		p.add(npEGS);       	 
+       	}
+    }
 }

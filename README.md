@@ -26,7 +26,7 @@ safety critical systems in air traffic management.
 
 ### Documentation
 
-The API document for v1.0 is still work in progress. In the meantime,
+The API document for ICAROUS is still work in progress. In the meantime,
 please refer to the release notes and the examples files
 `IcarousExample.java` and `IcarousExample.cpp`.
 
@@ -35,7 +35,7 @@ repository, visit [http://shemesh.larc.nasa.gov/fm/ICAROUS](http://shemesh.larc.
 
 ### Current Release
 
-v1.a0 (September 11, 2016)
+FormalATM-v2.5.5 (September 23, 2016) 
 
 ### License
 

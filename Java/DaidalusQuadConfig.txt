@@ -1,32 +1,29 @@
-# V-1.a
 # Conflict Bands Parameters
-lookahead_time = 30.0 [s]
+lookahead_time = 40.0 [s]
 left_trk = 180.0 [deg]
 right_trk = 180.0 [deg]
-min_gs = 0.0 [m/s]
+min_gs = 0.1 [m/s]
 max_gs = 5.0 [m/s]
-min_vs = 0.0 [m/s]
+min_vs = -2.0 [m/s]
 max_vs = 2.0 [m/s]
 min_alt = 0.0 [ft]
 max_alt = 500.0 [ft]
 # Kinematic Bands Parameters
 trk_step = 1.0 [deg]
-gs_step = 1.0 [knot]
+gs_step = 0.05 [m/s]
 vs_step = 1.0 [fpm]
-alt_step = 2.0 [ft]
+alt_step = 1.0 [ft]
 horizontal_accel = 1.0 [m/s^2]
 vertical_accel = 1.0 [m/s^2]
-turn_rate = 0 [deg/s]
-bank_angle = 0 [deg]
-vertical_rate = 1 [m/s]
-horizontal_nmac = 2 [m]
+turn_rate = 0.0 [deg/s]
+bank_angle = 0.0 [deg]
+vertical_rate = 1.0 [m/s]
+horizontal_nmac = 2.0 [m]
 vertical_nmac = 0.2 [m]
 # Recovery Bands Parameters
 recovery_stability_time = 0.0 [s]
-# If min_horizontal_recovery is set to 0, TCAS RA HMD is used instead
-min_horizontal_recovery = 4 [m]
-# If min_vertical_recovery is set to 0, TCAS RA ZTHR is used instead
-min_vertical_recovery = 2 [m]
+min_horizontal_recovery = 5.0 [m]
+min_vertical_recovery = 1.0 [m]
 conflict_crit = false
 recovery_crit = false
 recovery_trk = true

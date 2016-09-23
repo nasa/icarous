@@ -152,19 +152,16 @@ public class CDPolycarp implements DetectionPolygon {
 		return Polycarp3D.definitely_inside(so, si, buff, checkNice);
 	}
 
-	@Override
 	public boolean violation(Vect3 so, Velocity vo, Poly3D si) {
 		return !Polycarp3D.definitely_outside(so, si, buff, checkNice);
 	}
 
 
-	@Override
 	// note: T cannot be "near" Double.MAX_VALUE (or infinity)
 	public boolean conflict(Vect3 so, Velocity vo, MovingPolygon3D si, double B, double T) {
 		return Polycarp3D.entranceDetection(so, vo, si, B, T, buff, fac, checkNice);
 	}
 
-	@Override
 	// note: T cannot be "near" Double.MAX_VALUE (or infinity)
 	public boolean conflictDetection(Vect3 so, Velocity vo, MovingPolygon3D si, double B, double T) {
 		tin.clear();
@@ -244,34 +241,28 @@ public class CDPolycarp implements DetectionPolygon {
 //		return times.size() > 0;
 //	}
 
-	@Override
 	public List<Double> getTimesIn() {
 		return tin;
 	}
 
-	@Override
 	public List<Double> getTimesOut() {
 		return tout;
 	}
 
-	@Override
 	public List<Double> getCriticalTimesOfConflict() {
 		return tca;
 	}
 
-	@Override
 	public List<Double> getDistancesAtCriticalTimes() {
 		return tdist;
 	}
 
-	@Override
 	public ParameterData getParameters() {
 		ParameterData p = new ParameterData();
 		updateParameterData(p);
 		return p;
 	}
 
-	@Override
 	public void updateParameterData(ParameterData p) {
 		p.set("id", id);
 		p.setInternal("buff", buff, "m");
@@ -279,7 +270,6 @@ public class CDPolycarp implements DetectionPolygon {
 		p.set("checkNice", checkNice);
 	}
 
-	@Override
 	public void setParameters(ParameterData p) {
 		if (p.contains("id")) {
 			id = p.getString("id");
@@ -295,34 +285,28 @@ public class CDPolycarp implements DetectionPolygon {
 		}
 	}
 
-	@Override
 	public DetectionPolygon make() {
 		return new CDPolycarp(buff,fac,checkNice);
 	}
 
-	@Override
 	public DetectionPolygon copy() {
 		CDPolycarp cd = new CDPolycarp(buff,fac,checkNice);
 		cd.id = id;
 		return cd;
 	}
 
-	@Override
 	public String getClassName() {
 		return getClass().getCanonicalName(); // "gov.nasa.larcfm.ACCoRD.CDPolyIter"
 	}
 
-	@Override
 	public String getSimpleClassName() {
 		return getClass().getSimpleName();
 	}
 
-	@Override
 	public String getIdentifier() {
 		return id;
 	}
 
-	@Override
 	public void setIdentifier(String s) {
 		id = s;
 	}

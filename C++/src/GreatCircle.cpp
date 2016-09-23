@@ -430,7 +430,7 @@ namespace larcfm {
 			if (a < M_PI/2 && b < M_PI/2 && c < M_PI/2) {
 				return x;
 			}
-			return LatLonAlt::INVALID;
+			return LatLonAlt::INVALID();
 		}
 		if (p1.almostEquals(x) || Util::almost_equals(A, M_PI/2)) {
 			return p1.mkAlt(x.alt());
@@ -505,7 +505,7 @@ namespace larcfm {
 //			return linear_initial(p2,initial_course(p2,p1),distance_from_angle(b+d1,0)).mkAlt(x.alt());
 		}
 //f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
-		return LatLonAlt::INVALID; // weird triangle
+		return LatLonAlt::INVALID(); // weird triangle
     }
     
 
@@ -559,8 +559,8 @@ LatLonAlt GreatCircle::closest_point_segment(const LatLonAlt& p1, const LatLonAl
  	Vect3 vb = spherical2xyz(b1.lat(), b1.lon()).cross(spherical2xyz(b2.lat(), b2.lon()));
  	double r = GreatCircle::spherical_earth_radius;
  	Vect3 vavb = va.cross(vb);
- 	if (vavb.almostEquals(Vect3::ZERO)) {
- 		return LatLonAlt::INVALID;
+ 	if (vavb.almostEquals(Vect3::ZERO())) {
+ 		return LatLonAlt::INVALID();
  	}
  	Vect3 v1 = vavb.Scal(r / vavb.norm());
  	Vect3 v2 = vavb.Scal(-r / vavb.norm());
@@ -608,7 +608,7 @@ LatLonAlt GreatCircle::closest_point_segment(const LatLonAlt& p1, const LatLonAl
  	LatLonAlt si2 = linear_initial(si, vi, 1000);
  	LatLonAlt i = intersection(so, so2, si, si2);
  	if (checkBehind) {
-    	if (i.isInvalid() || behind(i, so,vo) || behind(i, si,vi)) return std::pair<LatLonAlt,double>(LatLonAlt::INVALID,-1.0); // collinear or (nearly) same position or cross in the past
+    	if (i.isInvalid() || behind(i, so,vo) || behind(i, si,vi)) return std::pair<LatLonAlt,double>(LatLonAlt::INVALID(),-1.0); // collinear or (nearly) same position or cross in the past
  	}
  	double dt = distance(so,i)/vo.gs();
  	if (behind(i, so, vo)) dt = -dt;   // ??? RWB ???
@@ -698,16 +698,16 @@ double GreatCircle::angle_between(const LatLonAlt& a, const LatLonAlt& b, const 
     if (std::abs(t) < minDt || Util::almost_equals(std::abs(t) + minDt, minDt,
 			      PRECISION7)) {
       // time is negative or very small (less than 1 ms)
-      return Velocity::ZEROV;
+      return Velocity::ZEROV();
     }
     double d = angular_distance(p1, p2);
     if (Constants::almost_equals_radian(d)) {
       if (Constants::almost_equals_alt(p1.alt(), p2.alt())) {
 	// If the two points are about 1 meter apart, then count them as
 	// the same.
-	return Velocity::ZEROV;
+	return Velocity::ZEROV();
       } else {
-	return Velocity::ZEROV.mkVs((p2.alt() - p1.alt()) / t);
+	return Velocity::ZEROV().mkVs((p2.alt() - p1.alt()) / t);
       }
     }
     double gs = GreatCircle::distance_from_angle(d, 0.0) / t;
