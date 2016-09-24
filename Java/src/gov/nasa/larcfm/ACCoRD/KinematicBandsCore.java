@@ -105,8 +105,10 @@ public class KinematicBandsCore {
 					conflict_acs_.add(new ArrayList<TrafficState>());
 				} else {
 					conflict_acs_.get(alert_level-1).clear();
+				}				
+				if (parameters.alertor.getLevel(alert_level).getRegion().isConflictBand()) {
+					conflict_aircraft(alert_level);
 				}
-				conflict_aircraft(alert_level);
 				if (!conflict_acs_.get(alert_level-1).isEmpty()) {
 					last_conflict_level_ = alert_level;
 				}

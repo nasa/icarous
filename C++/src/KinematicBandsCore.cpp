@@ -89,7 +89,9 @@ void KinematicBandsCore::update() {
       } else {
         conflict_acs_[alert_level-1].clear();
       }
-      conflict_aircraft(alert_level);
+      if (BandsRegion::isConflictBand(parameters.alertor.getLevel(alert_level).getRegion())) {
+        conflict_aircraft(alert_level);
+      }
       if (!conflict_acs_[alert_level-1].empty()) {
         last_conflict_level_ = alert_level;
       }
