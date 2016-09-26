@@ -1,0 +1,282 @@
+#include <errno.h>
+#include <fcntl.h> 
+#include <string.h>
+#include <termios.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdint.h>
+
+#define GROUP1_LEN 198
+int
+set_interface_attribs (int fd, int speed, int parity)
+{
+        struct termios tty;
+        memset (&tty, 0, sizeof tty);
+        if (tcgetattr (fd, &tty) != 0)
+        {
+	  printf("error in tcgetattr 1");
+	  return -1;
+        }
+
+        cfsetospeed (&tty, speed);
+        cfsetispeed (&tty, speed);
+
+        tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;     // 8-bit chars
+        // disable IGNBRK for mismatched speed tests; otherwise receive break
+        // as \000 chars
+        tty.c_iflag &= ~IGNBRK;         // disable break processing
+        tty.c_lflag = 0;                // no signaling chars, no echo,
+                                        // no canonical processing
+        tty.c_oflag = 0;                // no remapping, no delays
+        tty.c_cc[VMIN]  = 0;            // read doesn't block
+        tty.c_cc[VTIME] = 5;            // 0.5 seconds read timeout
+
+        tty.c_iflag &= ~(IXON | IXOFF | IXANY); // shut off xon/xoff ctrl
+
+        tty.c_cflag |= (CLOCAL | CREAD);// ignore modem controls,
+                                        // enable reading
+        tty.c_cflag &= ~(PARENB | PARODD);      // shut off parity
+        tty.c_cflag |= parity;
+        tty.c_cflag &= ~CSTOPB;
+        tty.c_cflag &= ~CRTSCTS;
+
+        if (tcsetattr (fd, TCSANOW, &tty) != 0)
+        {
+		printf("error from tcsetattr 2");
+                return -1;
+        }
+        return 0;
+}
+
+void
+set_blocking (int fd, int should_block)
+{
+        struct termios tty;
+        memset (&tty, 0, sizeof tty);
+        if (tcgetattr (fd, &tty) != 0)
+        {
+		printf("error from tcsetattr 3");
+                return;
+        }
+
+        tty.c_cc[VMIN]  = should_block ? 1 : 0;
+        tty.c_cc[VTIME] = 5;            // 0.5 seconds read timeout
+
+        if (tcsetattr (fd, TCSANOW, &tty) != 0)
+	  printf("error from tcsetattr 4");
+	
+}
+
+struct BinGroup1{
+  uint64_t TimeStartup; //8
+  uint64_t TimeGps;     //8
+  uint64_t TimeSyncIn;  //8
+  float YawPitchRoll[3];//12
+  float Quaternion[4];  //16
+  float AngularRate[3]; //12
+  double LLA[3];        //24
+  float Velocity[3];    //12
+  float Accel[3];       //12
+  float Imu[6];         //24
+  float MagPres[5];     //20
+  float DeltaThetaVel[7]; //28
+  uint16_t InsStatus;  //2
+  uint32_t SyncInCnt;  //4
+  uint64_t TimeGpsPps; //8
+};
+
+uint16_t calculateCRC(unsigned char data[], unsigned int length)
+{
+ unsigned int i;
+ uint16_t crc = 0;
+ for(i=0; i<length; i++){
+ crc = (unsigned char)(crc >> 8) | (crc << 8);
+ crc ^= data[i];
+ crc ^= (unsigned char)(crc & 0xff) >> 4;
+ crc ^= crc << 12;
+ crc ^= (crc & 0x00ff) << 5;
+ }
+
+ return crc;
+}
+
+void ComposeData(struct BinGroup1 *msg, uint8_t *payload){
+
+  uint8_t *p = payload+3;
+  memcpy(&(msg->TimeStartup),p,8);p = p+8;
+  memcpy(&(msg->TimeGps),p,8);p = p+8;
+  memcpy(&(msg->TimeSyncIn),p,8);p = p+8;
+  memcpy(&(msg->YawPitchRoll),p,12);p = p+12;
+  memcpy(&(msg->Quaternion),p,16);p = p+16;
+  memcpy(&(msg->AngularRate),p,12);p = p+12;
+  memcpy(&(msg->LLA),p,24);p = p+24;
+  memcpy(&(msg->Velocity),p,12);p = p+12;
+  memcpy(&(msg->Accel),p,12);p = p+12;
+  memcpy(&(msg->Imu),p,24);p = p+24;
+  memcpy(&(msg->MagPres),p,20);p = p+20;
+  memcpy(&(msg->DeltaThetaVel),p,28);p = p+28;
+  memcpy(&(msg->InsStatus),p,2);p = p+2;
+  memcpy(&(msg->SyncInCnt),p,4);p = p+4;
+  memcpy(&(msg->TimeGpsPps),p,8);
+  
+}
+
+int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg){
+
+  static int state = 0;
+  static int count = 0;
+  static uint16_t fieldSize = 0;
+  static uint16_t CRC = 0;  
+  static uint8_t payload[GROUP1_LEN];
+  static int packetsize = 0;
+  
+  uint8_t data[203];
+  uint16_t CRCV;
+  int8_t *p;
+  
+  switch(state){
+  case 0:       
+    // Checking for header
+    count     = 0;
+    fieldSize = 0;
+    p         = payload;
+    memset(payload,0,GROUP1_LEN);
+    memset(data,0,GROUP1_LEN+3+2);
+    if(c == 0xFA){
+      packetsize = 0;
+      packetsize++;
+      state = 1;
+      //printf("Received header\n");
+    }
+    break;
+
+  case 1:
+    // Groups active    
+    data[packetsize-1] = c;
+    packetsize++;
+    state = 2;
+    count = 0;
+    //printf("Group %02x is active\n",c);
+    
+    break;
+    
+  case 2:
+    // Active fields in each group
+    data[packetsize-1] = c;
+    packetsize++;
+    if(count == 0){
+      fieldSize = 0;
+      fieldSize = fieldSize | c;
+      count++;
+    }
+    else if(count == 1){
+      fieldSize = (fieldSize << 8) | c;
+      state = 3;
+      count = 0;
+      //printf("Received field size \n");
+    }
+
+    break;
+
+  case 3:
+    //Payload
+    data[packetsize-1] = c;
+    packetsize++;
+    p = p + 1;
+    memcpy(p,&c,1);
+    count++;
+    if(count == GROUP1_LEN){
+      //printf("Receive payload, count=%d\n",count);
+      state = 4;
+      count = 0;
+      
+    }
+
+    break;
+    
+  case 4:
+    //CRC
+    //printf("datasize = %d\n",packetsize);
+    data[packetsize-1] = c;
+    packetsize++;
+    if(count == 0){
+      CRC = 0;
+      CRC = CRC | c;
+      count++;
+    }
+    else if(count == 1){
+      CRC = (CRC << 8) | c;
+      state = 5;
+      count = 0;
+      //printf("Received checksum\n");
+    }
+
+    break;
+
+  case 5:
+    // Validate data    
+    CRCV = calculateCRC(data,203);
+    state = 0;
+    count = 0;
+    if(CRCV == 0x0000){
+      ComposeData(msg,data);
+      //printf("Valid data obtained\n");
+      return 1;
+    }
+    else{      
+      return 0;
+    }
+
+    break;
+  }//end of switch
+
+  return 0;
+}
+
+void InitVecNav(int fd){
+
+  // Pause ASCII output
+  char input1[] = "$VNWRG,06,0*XX\r\n";
+  write(fd,input1,sizeof(input1));
+
+  // Enable Binary group 1 output on serial port 1
+  char input2[] = "$VNWRG,75,1,16,01,FFFF*XX\r\n";
+  write(fd,input2,sizeof(input2));
+  
+}
+
+void main(){
+  char *portname = "/dev/ttyUSB0";
+  
+  int fd = open (portname, O_RDWR | O_NOCTTY | O_SYNC);
+  if (fd < 0)
+  {
+    printf("Error operning port");
+    return;
+  }
+  
+  set_interface_attribs (fd, B115200, 0);  // set speed to 115,200 bps, 8n1 (no parity)
+  set_blocking (fd, 1);                    // set no blocking
+  
+  char buf [1];
+
+  tcflush(fd,TCIOFLUSH);
+
+  InitVecNav(fd);
+
+  struct BinGroup1 msg;
+  memset(&msg,0,sizeof(msg));
+  
+  while(1){
+    uint8_t buf = 0;        
+    int n = read (fd, &buf, 1);    // read up to 100 characters if ready to read
+    //printf("%c",buf);
+    int status = ProcessGPSMessage(buf,&msg);
+
+    if(status == 1){            
+      printf("Yaw = %f, Pitch = %f, Roll = %f\n",msg.YawPitchRoll[0],msg.YawPitchRoll[1],msg.YawPitchRoll[2]);
+    }
+  }
+  return;
+}
+
