@@ -106,9 +106,7 @@ public class KinematicBandsCore {
 				} else {
 					conflict_acs_.get(alert_level-1).clear();
 				}				
-				if (parameters.alertor.getLevel(alert_level).getRegion().isConflictBand()) {
-					conflict_aircraft(alert_level);
-				}
+				conflict_aircraft(alert_level);
 				if (!conflict_acs_.get(alert_level-1).isEmpty()) {
 					last_conflict_level_ = alert_level;
 				}
@@ -206,20 +204,22 @@ public class KinematicBandsCore {
 	 * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
 	 */
 	private void conflict_aircraft(int alert_level) {
-		Detection3D detector = parameters.alertor.getLevel(alert_level).getDetector();
 		double tin  = Double.POSITIVE_INFINITY;
 		double tout = Double.NEGATIVE_INFINITY;
+	        boolean conflict_band = parameters.alertor.getLevel(alert_level).getRegion().isConflictBand();
+		Detection3D detector = parameters.alertor.getLevel(alert_level).getDetector();
 		for (int i = 0; i < traffic.size(); ++i) {
-			TrafficState ac = traffic.get(i);
-			ConflictData det = detector.conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),
-					0,parameters.getLookaheadTime());
-			if (det.conflict()) {
-				if (det.getTimeIn() <= parameters.alertor.getLevel(alert_level).getAlertingTime()) {
-					conflict_acs_.get(alert_level-1).add(ac);
-				} 
-				tin = Math.min(tin,det.getTimeIn());
-				tout = Math.max(tout,det.getTimeOut());
+		    TrafficState ac = traffic.get(i);
+		    ConflictData det = detector.conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),
+								  0,parameters.getLookaheadTime());
+		    if (det.conflict()) {
+			if (conflict_band &&
+			    det.getTimeIn() <= parameters.alertor.getLevel(alert_level).getAlertingTime()) {
+			    conflict_acs_.get(alert_level-1).add(ac);
 			} 
+			tin = Math.min(tin,det.getTimeIn());
+			tout = Math.max(tout,det.getTimeOut());
+		    } 
 		}
 		tiov_.add(new Interval(tin,tout));
 	}

@@ -89,9 +89,7 @@ void KinematicBandsCore::update() {
       } else {
         conflict_acs_[alert_level-1].clear();
       }
-      if (BandsRegion::isConflictBand(parameters.alertor.getLevel(alert_level).getRegion())) {
-        conflict_aircraft(alert_level);
-      }
+      conflict_aircraft(alert_level);
       if (!conflict_acs_[alert_level-1].empty()) {
         last_conflict_level_ = alert_level;
       }
@@ -189,16 +187,17 @@ Velocity const & KinematicBandsCore::traffic_v(int i) const {
  * Requires: 1 <= alert_level <= parameters.alertor.mostSevereAlertLevel()
  */
 void KinematicBandsCore::conflict_aircraft(int alert_level) {
-  Detection3D* detector = parameters.alertor.getLevel(alert_level).getDetectorRef();
   double tin  = PINFINITY;
   double tout = NINFINITY;
+  bool conflict_band = BandsRegion::isConflictBand(parameters.alertor.getLevel(alert_level).getRegion());
+  Detection3D* detector = parameters.alertor.getLevel(alert_level).getDetectorRef();
   for (TrafficState::nat i = 0; i < traffic.size(); ++i) {
     TrafficState ac = traffic[i];
     ConflictData det = detector->conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),
-        0,parameters.getLookaheadTime());
+						   0,parameters.getLookaheadTime());
     if (det.conflict()) {
-      if (det.getTimeIn() <= parameters.alertor.getLevel(alert_level).getAlertingTime()) {
-        conflict_acs_[alert_level-1].push_back(ac);
+      if (conflict_band && det.getTimeIn() <= parameters.alertor.getLevel(alert_level).getAlertingTime()) {
+	conflict_acs_[alert_level-1].push_back(ac);
       }
       tin = std::min(tin,det.getTimeIn());
       tout = std::max(tout,det.getTimeOut());

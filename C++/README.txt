@@ -1,7 +1,7 @@
 ICAROUS: Integrated Configurable Algorithms for Reliable Operations of Unmanned Systems
 -------------------------------------------------------------------------
 Version:  C++
-Release: FormalATM-v2.5.5, September 23, 2016
+Release: FormalATM-v2.5.5, September 26, 2016
 Authors: Cesar Munoz, George Hagen, Anthony Narkawicz
 Contact: Cesar A. Munoz (Cesar.A.Munoz@nasa.gov)
 

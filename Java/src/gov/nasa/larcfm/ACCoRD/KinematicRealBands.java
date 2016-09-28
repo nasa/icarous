@@ -20,7 +20,7 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 	private boolean outdated_; // Boolean to control re-computation of cached values
 	private int checked_;  // Cached status of input values. Negative unchecked, 0 unvalid, 1 valid
 	private List<List<TrafficState>> peripheral_acs_; // Cached list of peripheral aircraft per alert level
-	/* The length of conflict_acs_ is greater than or equal to the length of the alertor. */
+	/* The length of peripheral_acs_ is greater than or equal to the length of the alertor. */
 	private List<BandsRange> ranges_;     // Cached list of bands ranges
 	/* 
 	 * recovery_time_ is the time to recovery from violation. 
@@ -336,7 +336,7 @@ abstract public class KinematicRealBands extends KinematicIntegerBands {
 	}
 
 	/**
-	 * Put in conflict_acs_ the list of aircraft predicted to be in conflict for the given alert level 
+	 * Put in peripheral_acs_ the list of aircraft predicted to be in conflict for the given alert level 
 	 * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
 	 */
 	private void peripheral_aircraft(KinematicBandsCore core, int alert_level) {

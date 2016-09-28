@@ -35,7 +35,7 @@ repository, visit [http://shemesh.larc.nasa.gov/fm/ICAROUS](http://shemesh.larc.
 
 ### Current Release
 
-FormalATM-v2.5.5 (September 23, 2016) 
+FormalATM-v2.5.5 (September 26, 2016) 
 
 ### License
 

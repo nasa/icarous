@@ -587,7 +587,7 @@ public class Daidalus implements ErrorReporter {
 
 	public static String release() {
 		return "DAIDALUSj V-"+KinematicBandsParameters.VERSION+
-				"-FormalATM-"+Constants.version+" (Sept-23-2016)"; 
+				"-FormalATM-"+Constants.version+" (Sept-26-2016)"; 
 	}
 
 	public boolean hasError() {

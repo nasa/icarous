@@ -334,7 +334,7 @@ void KinematicRealBands::force_compute(KinematicBandsCore& core) {
 }
 
 /**
- * Put in conflict_acs_ the list of aircraft predicted to be in conflict for the given alert level
+ * Put in peripheral_acs_ the list of aircraft predicted to be in conflict for the given alert level
  * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
  */
 void KinematicRealBands::peripheral_aircraft(KinematicBandsCore& core, int alert_level) {
