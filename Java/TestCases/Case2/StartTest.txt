@@ -1,7 +1,6 @@
 #********************************************************************
-# Test case 1
-# This case demonstrates the geofence keep in and keep out resolution
-# capabilities of ICAROUS
+# Test case 2
+# This case demonstrates the traffic resolution capabilities of ICAROUS
 #
 # Instructions:
 # - run SITL application (use sim_vehicle.py -l 37.1021769,-76.3872069,5,0
@@ -12,16 +11,15 @@
 #
 #
 # Expected results:
-# Quadrotor should avoid keep out fence by rerouting itself around
-# the keep out fence. It should stop and step back when it encounters
-# the the keep in fence boundary.
+# Quadrotor should maneuver to avoid traffic and then get back on to
+# mission
 #********************************************************************
 
 # load mission flight plan
-wp load TestCases/Case1/flightplan1.txt
+wp load TestCases/Case2/flightplan1.txt
 
-# load keep in and keep out geofences
-geofence load TestCases/Case1/geofence.xml
+# load traffic
+traffic load 0 80 5 0 -0.5 0
 
 # start mission from the home position
 long MISSION_START 0

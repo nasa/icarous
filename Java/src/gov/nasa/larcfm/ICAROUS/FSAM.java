@@ -86,7 +86,7 @@ public class FSAM{
     private KinematicMultiBands KMB;
 
     private double daaLookahead;
-
+    private double daaAlertTime;
     private long pausetime_start;
     private double resolutionSpeed;
     private double gridsize;
@@ -124,6 +124,7 @@ public class FSAM{
 	buffer            = UAS.pData.getValue("BUFFER");
 	lookahead         = UAS.pData.getValue("LOOKAHEAD");
 	proximityfactor   = UAS.pData.getValue("PROXFACTOR");
+	
 	daidalusparam     = "params/DaidalusQuadConfig.txt";
 	
 	// Create an object of type Daidalus for a well-clear volume based on TAUMOD
@@ -176,7 +177,7 @@ public class FSAM{
 	Position wp         = FlightPlan.point(FlightData.FP_nextWaypoint).position();
 	Position currentPos = acState.positionLast();	
 	double distance2WP  = currentPos.distanceH(wp);
-	
+		
 	// Get time of current position in nominal plan
 	UAS.FlightData.getPlanTime();
 	
@@ -201,6 +202,7 @@ public class FSAM{
 	
 	if(resolveState == RESOLVE_STATE.NOOP){
 	    return FSAM_OUTPUT.NOOP;
+	    
 	}else{	    
 	    return FSAM_OUTPUT.CONFLICT;	    
 	}
@@ -1239,7 +1241,7 @@ public class FSAM{
 		}
 	    }	    
 	}			
-	//System.out.println("Ref heading:"+res_heading);
+	System.out.println("Ref heading:"+res_heading);
 	// If resolution heading angles available, compute Vn,Ve based on resolution heading
 	if(!Double.isNaN(res_heading)){	    
 	    //System.out.println("Resolution speed:"+V);
@@ -1251,7 +1253,17 @@ public class FSAM{
 	}
 	else{
 	    // If resolution heading unavailable, follow last know resolution heading
-	    res_heading = RefHeading1;	    
+	    if(!Double.isNaN(RefHeading1)){
+		res_heading = RefHeading1;
+	    }
+	    else{
+		double heading2WP   = CurrentPos.track(NextWP);
+		RefHeading1 = Math.toDegrees(heading2WP);
+		if(RefHeading1 < 0){
+		    RefHeading1 = 360 + RefHeading2;
+		}
+	    }
+	    
 	    Vn1 = V*Math.cos(Math.toRadians(res_heading));
 	    Ve1 = V*Math.sin(Math.toRadians(res_heading));
 	    System.out.println("resolution heading:"+res_heading);
