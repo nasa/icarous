@@ -1,5 +1,5 @@
 /**
- * ICAROUS Interface
+ * Broadcast module
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
  * 

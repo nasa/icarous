@@ -1,5 +1,5 @@
 /**
- * ICAROUS Interface
+ * MAVLinkMessages
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
  * 
