@@ -835,6 +835,7 @@ public class FSAM{
 	Plan CurrentFP;
 	double currentTime;
 	double altfence = 100;
+	double maxalt = 0.0;
 		
 	if(NominalPlan){
 	    CurrentFP = FlightData.CurrentFlightPlan;
@@ -886,6 +887,7 @@ public class FSAM{
 	    GeoFence GF = FlightData.fenceList.get(i);
 	    if(GF.Type == 0){
 		CPP.add(GF.geoPolyPath);
+		maxalt = GF.ceiling;
 	    }
 	}
 	
@@ -1030,7 +1032,11 @@ public class FSAM{
 	ResolutionPlan2.add(new NavPoint(end,ETA));
 	
 	pathLength2 = ResolutionPlan2.pathDistance();
-	
+
+	if( (maxalt - altfence) < 3 ){
+	    pathLength2 = Double.MAX_VALUE;
+	}
+		
 	if(pathLength1 < pathLength2){
 	    ResolutionPlan = ResolutionPlan1;
 	    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Using go around plan");		
