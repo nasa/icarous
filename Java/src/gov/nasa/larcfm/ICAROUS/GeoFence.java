@@ -35,24 +35,28 @@ public class GeoFence{
 
     public static final double BUFF= 0.1;
     
-    Position SafetyPoint      = null;
-    Position RecoveryPoint    = null;
-    boolean violation         = false;
-    boolean conflict          = false;
-    boolean isconvex          = false;
-
-    EuclideanProjection proj;
-    SimplePoly geoPolyLLA;
-    Poly3D geoPoly3D;
-    CDPolycarp geoPolyCarp;
-    PolyPath geoPolyPath;
-    CDIIPolygon cdp;
-    PolycarpResolution pcr;
-    PolyUtil pu;
-    ArrayList<Vect2> fenceVertices;
-    PolycarpDetection pcDet;
+    public Position SafetyPoint      = null;
+    public Position RecoveryPoint    = null;
+    public Position ClosestPoint     = null;
+    public boolean violation         = false;
+    public boolean conflict          = false;
+    public boolean isconvex          = false;
+    public Vect2 closestEdgeVector;
+    public EuclideanProjection proj;
+    public SimplePoly geoPolyLLA;
+    public SimplePoly geoPolyLLA2; // expanded or contracted based on type
+    public Poly3D geoPoly3D;
+    public CDPolycarp geoPolyCarp;
+    public PolyPath geoPolyPath;
+    public CDIIPolygon cdp;
+    public PolycarpResolution pcr;
+    public PolyUtil pu;
+    public ArrayList<Vect2> fenceVertices;
+    public ArrayList<Vect2> fenceVertices2;
+    public PolycarpDetection pcDet;
+    public PolycarpEdgeProximity pep;
     
-    ParameterData pData;
+    public ParameterData pData;
     public double entryTime;
     public double exitTime;
     
@@ -73,6 +77,7 @@ public class GeoFence{
 	pu             = new PolyUtil();
 	fenceVertices  = new ArrayList<Vect2>();
 	pcDet          = new PolycarpDetection();
+	pep            = new PolycarpEdgeProximity();
 	pData          = pdata;    		
 	
     }
@@ -84,13 +89,6 @@ public class GeoFence{
 	
 	if(geoPolyLLA.size() == numVertices){
 	    isconvex = geoPoly3D.poly2D().isConvex();
-
-	    // [TODO] This expansion doesn't work with CDIIPolygon.detection()
-	    // Expand fence if it is a keep out fence 
-	    //if(Type == 1){
-		//geoPolyLLA = pu.bufferedConvexHull(geoPolyLLA,hthreshold,vthreshold);
-	        
-	    //}
 	    
 	    proj       = Projection.createProjection(geoPolyLLA.getVertex(0));
 	    geoPoly3D  = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
@@ -100,8 +98,48 @@ public class GeoFence{
 	    for(int i=0;i<geoPoly3D.size();++i){
 		fenceVertices.add(geoPoly3D.getVertex(i));
 	    }
+
+	    // Expand or contract polygon based on type
+	    if(Type == 0){
+		fenceVertices2 = pcr.contract_polygon_2D(0.1,2,fenceVertices);		
+	    }
+	    else{
+		fenceVertices2 = pcr.expand_polygon_2D(0.1,2,fenceVertices);
+	    }
+	    
+	    Poly2D p2D     = new Poly2D(fenceVertices2);
+	    Poly3D p3D     = new Poly3D(p2D,floor,ceiling);
+	    geoPolyLLA2    = SimplePoly.make(p3D,proj);
+	    
+	}				    
+    }
+
+    public Position GetClosestPoint(Position pos){
+
+	double dist = Double.MAX_VALUE;
+	Position ClosestPoint = null;	
+	Vect3 so = proj.project(pos);
+	for(int i=0;i<numVertices;i++){
+	    Vect2 A = fenceVertices.get(i);
+	    Vect2 B;
+	    if(i< (numVertices - 1)){
+		B = fenceVertices.get(i+1);
+	    }
+	    else{
+		B = fenceVertices.get(0);
+	    }
+	    Vect2 C = so.vect2();
+	    Vect2 D = pep.closest_point(A,B,C,BUFF);
+	    double val = D.Sub(C).norm();
+	    if(val < dist){
+		dist = val;
+		LatLonAlt LLA = proj.inverse(D,pos.alt());
+		ClosestPoint  = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
+		closestEdgeVector = B.Sub(A);
+	    }
 	}
-				    
+
+	return ClosestPoint;
     }
 
     public void CheckViolation(AircraftState acState, double currentTime,Plan FP){
@@ -116,6 +154,8 @@ public class GeoFence{
 
 	SafetyPoint = GetSafetyPoint(acState);
 
+	GetClosestPoint(pos);
+	
 	double lookahead    = pData.getValue("LOOKAHEAD");	
 	double hthreshold   = pData.getValue("HTHRESHOLD");
 	double vthreshold   = pData.getValue("VTHRESHOLD");
@@ -127,49 +167,31 @@ public class GeoFence{
 	    if(geoPolyCarp.nearEdge(so,geoPoly3D,hthreshold,vthreshold)){
 		conflict  = true;				
 	    }else{
-		conflict = false;
-		
+		conflict = false;		
 	    }
 
 	    if(geoPolyCarp.definitelyInside(so,geoPoly3D)){
 		violation = false;		
 	    }else{
-
 		Vect2 so_2 = so.vect2();
-
-		Vect2 recpoint = pcr.inside_recovery_point(BUFF,hthreshold,fenceVertices,so_2);
-		
+		Vect2 recpoint = pcr.inside_recovery_point(BUFF,hthreshold,fenceVertices,so_2);		
 		LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
-		RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
-		
-	    }
-	    	   	    	    	    	    
+		RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());		
+	    }	    	   	    	    	    	    
 	}
 	//Keep out Geofence
 	else{
-
 	    Vect2 so_2 = so.vect2();
-
 	    Vect2 recpoint = pcr.outside_recovery_point(BUFF,hthreshold,fenceVertices,so_2);
-
 	    LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
-	    RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());
-
-
-	    
-	    cdp.detection(FP,geoPolyPath,0,FP.getLastTime());
-	    	    
-	    
-	    
-	    if(cdp.conflictBetween(currentTime,currentTime + lookahead)){
-		
-		
+	    RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());	    
+	    cdp.detection(FP,geoPolyPath,0,FP.getLastTime());	    	    	    	    
+	    if(cdp.conflictBetween(currentTime,currentTime + lookahead)){				
 		//System.out.println("Conflict size:"+cdp.size());
 		//System.out.println("FP last time:"+FP.getLastTime());
 		conflict = true;
 		entryTime = cdp.getTimeIn(0);
 		exitTime  = cdp.getTimeOut(0);
-
 		//System.out.println("entry:"+entryTime);
 		//System.out.println("exit:"+exitTime);
 	    }
@@ -181,9 +203,7 @@ public class GeoFence{
 		violation = true;		
 	    }else{
 		violation = false;
-	    }
-	    
-
+	    }	    
 	}
     }
         
