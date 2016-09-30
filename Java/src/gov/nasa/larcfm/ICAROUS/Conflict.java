@@ -103,7 +103,16 @@ public class Conflict{
 	return -1;
     }
 
-	    
+    public void printConflict(){
+	System.out.println("CONFLICT TYPE:"+conflictType)	;
+    }
+
+    public static void printConflictList(List<Conflict> conflictList){
+	for(int i=0;i<conflictList.size();i++){
+	    conflictList.get(i).printConflict();
+	}
+    }
+    
     public static void AddConflictToList(List<Conflict> conflictList, Conflict conf){
 
 	
