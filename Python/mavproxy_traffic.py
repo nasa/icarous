@@ -48,6 +48,7 @@ class TrafficModule(mp_module.MPModule):
         self.traffic_list = [];
         self.traffic_on_map = [];
         self.WCV = False;
+        self.radius = 10.0;
         
         
     def idle_task(self):
@@ -71,8 +72,8 @@ class TrafficModule(mp_module.MPModule):
         if(len(self.traffic_list) > 0):
             wcv_volume = mp_slipmap.SlipCircle("well_clear_volume", 3,\
                                                (self.module('map').lat,self.module('map').lon),\
-                                               10,\
-                                               (255, 0, 255), linewidth=2)                                                
+                                               self.radius,\
+                                               (0, 0, 255), linewidth=2)                                                
         
         
         self.mpstate.map.add_object(wcv_volume)               
@@ -98,6 +99,9 @@ class TrafficModule(mp_module.MPModule):
                                float(args[4]),float(args[5]),float(args[6]),start_time)
                 self.traffic_list.append(tffc)
                 print len(self.traffic_list)
+        elif args[0] == "radius":
+            if len(args) == 2:
+                self.radius = float(args[1]);
             
         
         else:
