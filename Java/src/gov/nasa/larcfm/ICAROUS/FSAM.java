@@ -760,13 +760,9 @@ public class FSAM{
 
 	UsePlan = true;
 	Plan CurrentFP;
-	double currentTime;
-	
-	
+	double currentTime;		
 	CurrentFP = FlightData.CurrentFlightPlan;
-	currentTime = UAS.FlightData.planTime;
-	
-	
+	currentTime = UAS.FlightData.planTime;		
 	GeoFence GF = null;
 	for(int i=0;i<conflictList.size();i++){
 	    Conflict CF = conflictList.get(i);
@@ -775,29 +771,15 @@ public class FSAM{
 		break;
 	    }
 	}
-	NavPoint wp = null;
-	System.out.println(GF.SafetyPoint.toString());
-	if(GF.violation){
-	    wp = new NavPoint(GF.RecoveryPoint,0);
-	}
-	else{
-	    wp = new NavPoint(GF.SafetyPoint,0);
-	    //System.out.println(GF.SafetyPoint.toString());
-	    if(wp == null){
-		//wp = new NavPoint(GF.RecoveryPoint,0);
-	    }
-	}       
-	
+	NavPoint wp = null;		
 	wp = new NavPoint(GF.RecoveryPoint,0);
 	ResolutionPlan.clear();
 	currentResolutionWP = 0;	
-	ResolutionPlan.add(wp);
-	
+	ResolutionPlan.add(wp);	
 	NavPoint nextWP = CurrentFP.point(FlightData.FP_nextWaypoint);
 	if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){
 	    GotoNextWP = true;
 	    FlightData.FP_nextWaypoint++;
-	    System.out.println("wp:"+FlightData.FP_nextWaypoint);
 	}else{
 	    GotoNextWP = false;
 	}	    	
