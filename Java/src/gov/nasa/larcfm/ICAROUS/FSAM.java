@@ -759,7 +759,14 @@ public class FSAM{
     public void ResolveKeepInConflict(){
 
 	UsePlan = true;
-	Plan CurrentFP = FlightData.CurrentFlightPlan;
+	Plan CurrentFP;
+	double currentTime;
+	
+	
+	CurrentFP = FlightData.CurrentFlightPlan;
+	currentTime = UAS.FlightData.planTime;
+	
+	
 	GeoFence GF = null;
 	for(int i=0;i<conflictList.size();i++){
 	    Conflict CF = conflictList.get(i);
@@ -769,14 +776,19 @@ public class FSAM{
 	    }
 	}
 	NavPoint wp = null;
+	System.out.println(GF.SafetyPoint.toString());
 	if(GF.violation){
 	    wp = new NavPoint(GF.RecoveryPoint,0);
 	}
 	else{
 	    wp = new NavPoint(GF.SafetyPoint,0);
-	}
-
+	    //System.out.println(GF.SafetyPoint.toString());
+	    if(wp == null){
+		//wp = new NavPoint(GF.RecoveryPoint,0);
+	    }
+	}       
 	
+	wp = new NavPoint(GF.RecoveryPoint,0);
 	ResolutionPlan.clear();
 	currentResolutionWP = 0;	
 	ResolutionPlan.add(wp);
@@ -784,11 +796,11 @@ public class FSAM{
 	NavPoint nextWP = CurrentFP.point(FlightData.FP_nextWaypoint);
 	if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){
 	    GotoNextWP = true;
-	    FlightData.FP_nextWaypoint++;	    	    
+	    FlightData.FP_nextWaypoint++;
+	    System.out.println("wp:"+FlightData.FP_nextWaypoint);
 	}else{
 	    GotoNextWP = false;
-	}	    
-	
+	}	    	
     }
 
     // Compute resolution for keep out conflicts

@@ -159,6 +159,7 @@ public class GeoFence{
 	double lookahead    = pData.getValue("LOOKAHEAD");	
 	double hthreshold   = pData.getValue("HTHRESHOLD");
 	double vthreshold   = pData.getValue("VTHRESHOLD");
+	double hstepback    = pData.getValue("HSTEPBACK");
 	
 	//System.out.println("Distance from edge:"+geoPoly3D.distanceFromEdge(so));
 	
@@ -172,12 +173,12 @@ public class GeoFence{
 
 	    if(geoPolyCarp.definitelyInside(so,geoPoly3D)){
 		violation = false;		
-	    }else{
-		Vect2 so_2 = so.vect2();
-		Vect2 recpoint = pcr.inside_recovery_point(BUFF,hthreshold,fenceVertices,so_2);		
-		LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
-		RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());		
-	    }	    	   	    	    	    	    
+	    }
+	    Vect2 so_2 = so.vect2();
+	    Vect2 recpoint = pcr.inside_recovery_point(BUFF,hstepback,fenceVertices,so_2);		
+	    LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
+	    RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());		
+	    	    	   	    	    	    	    
 	}
 	//Keep out Geofence
 	else{
