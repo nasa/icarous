@@ -534,7 +534,7 @@ public class AircraftData{
 
 		msgFenceFetchPoint.idx = (byte)count;		    		    
 		Intf.Write(msgFenceFetchPoint);					    		
-		//System.out.println("Wrote count:"+count);
+		System.out.println("Wrote count:"+count);
 		state = GF.GF_READ;	       
 		
 		break;
@@ -546,7 +546,7 @@ public class AircraftData{
 		msg_fence_point msgFencePoint = Inbox.GetFencePoint();
 		if(msgFencePoint != null){
 			
-		    //System.out.println("geofence point received:"+msgFencePoint.idx);
+		    System.out.println("geofence point received:"+msgFencePoint.idx);
 		    if(msgFencePoint.idx == count){
 
 			InputFence.add(msgFencePoint);
@@ -576,7 +576,7 @@ public class AircraftData{
 	    case GF_READ_COMPLETE:
 		    
 		readComplete = true;
-
+		System.out.println("Received fence");
 		if( fence1.ID >= fenceList.size() ){
 		    fenceList.add(fence1);
 		}

@@ -10,7 +10,7 @@ public class radio{
 	Interface SERIAL  = new Interface(Interface.SERIAL,args[2],Integer.parseInt(args[3]),null);
 
 	while(true){
-	    Interface.PassThrough(SOCKET,SERIAL);
+	    Interface.PassThroughMAVPackets(SOCKET,SERIAL);
 	}
     }    
 }

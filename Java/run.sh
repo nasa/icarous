@@ -9,8 +9,8 @@ SITL_INPUT_PORT=14551
 COM_HOST=localhost
 COM_INPUT_PORT=14552
 COM_OUTPUT_PORT=14553
-PX4_PORT=/dev/tty01
-PX4_BAUD=115200
+PX4_PORT=/dev/ttyACM1
+PX4_BAUD=57600
 #GS_MASTER=192.42.142.110:$COM_OUTPUT_PORT
 GS_MASTER=127.0.0.1:$COM_OUTPUT_PORT
 #GS_MASTER=/dev/ttyUSB0
@@ -45,6 +45,21 @@ elif [ "$1" == 'PX4' ];then
 	 --com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
 	 --mode $MODE
     fi
+elif [ "$1" == 'SITLR' ];then
+    echo "Launching ICAROUS with SITL and radio"
+    java -cp $EXEC:$JSSCLIB:$FORMALATM launch \
+	 -v \
+	 --sitl $SITL_HOST $SITL_INPUT_PORT \
+	 --radio $RADIO_SERIAL_PORT $RADIO_BAUD \
+	 --mode $MODE
+    
+elif [ "$1" == 'PX4R' ];then
+    echo "Launching ICAROUS with Pixhawk"
+    java -cp $EXEC:$JSSCLIB:$FORMALATM launch \
+	 -v \
+	 --px4 $PX4_PORT $PX4_BAUD\
+	 --radio $RADIO_SERIAL_PORT $RADIO_BAUD \
+	 --mode $MODE
     
 elif [ "$1" == 'GS' ];then
     echo "Launching Ground station test"

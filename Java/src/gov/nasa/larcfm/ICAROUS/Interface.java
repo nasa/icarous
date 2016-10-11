@@ -17,6 +17,7 @@ package gov.nasa.larcfm.ICAROUS;
 
 import java.io.*;
 import java.net.*;
+import java.util.*;
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.*;
 import com.MAVLink.common.*;
@@ -159,7 +160,8 @@ public class Interface{
     }
 
     public void UDPWrite(byte[] buffer){	
-	try{
+	try{	    
+	    
 	    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
 	    sock.send(output);
 	}
@@ -192,8 +194,10 @@ public class Interface{
 	}	
     }
 	
-    public void Read(){
+    public ArrayList<MAVLinkPacket> Read(){
 
+
+	ArrayList<MAVLinkPacket> packets = new ArrayList<MAVLinkPacket>();
 	byte[] buffer = null;
 	if(interfaceType == SOCKET){
 	    buffer = UDPRead();
@@ -205,19 +209,46 @@ public class Interface{
 	    System.out.println("Unknown interface");	    
 	}
 
+	
 	MAVLinkPacket RcvdPacket = null;
 	if(buffer != null){
 	    for(int i=0;i<buffer.length;++i){
 		RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer[i]);
-		Inbox.decode_message(RcvdPacket);	
+
+		if(Inbox != null){
+		    Inbox.decode_message(RcvdPacket);
+		}
+		
+		if(RcvdPacket != null){
+		    packets.add(RcvdPacket);
+		}
 	    }
-	}	
+	}
+
+	return packets;
     }
     
     public synchronized void Write(MAVLinkMessage msg2send){
 
 	if(msg2send != null){
 	    MAVLinkPacket raw_packet = msg2send.pack();
+	    raw_packet.sysid  = msg2send.sysid;
+	    raw_packet.compid = msg2send.compid;	    
+	    byte[] buffer            = raw_packet.encodePacket();	    	    
+	    if(interfaceType == SOCKET){
+		this.UDPWrite(buffer);
+	    }
+	    else if (interfaceType == SERIAL){
+		this.SerialWrite(buffer);
+	    }
+	}
+	
+    }
+
+    public synchronized void Write(MAVLinkPacket msg2send){
+
+	if(msg2send != null){
+	    MAVLinkPacket raw_packet = msg2send;
 	    raw_packet.sysid  = msg2send.sysid;
 	    raw_packet.compid = msg2send.compid;	    
 	    byte[] buffer            = raw_packet.encodePacket();	    	    
@@ -259,23 +290,42 @@ public class Interface{
 	
     }
 
+    public static void PassThroughMAVPackets(Interface AP, Interface GS){
+
+	ArrayList<MAVLinkPacket> AP_buffer;
+	ArrayList<MAVLinkPacket> GS_buffer;
+
+	AP_buffer =AP.Read();
+
+	if(AP_buffer != null){
+	    for(int i=0;i<AP_buffer.size();i++){
+		GS.Write(AP_buffer.get(i));
+	    }
+	}
+
+	GS_buffer = GS.Read();
+
+	if(GS_buffer != null){
+	    for(int i=0;i<GS_buffer.size();i++){
+		AP.Write(GS_buffer.get(i));
+	    }
+	}
+	
+    }
+
     public static void PassThrough(Interface AP, Interface GS){
 	byte[] AP_buffer = null;
 	byte[] GS_buffer = null;
 
-	AP.SetTimeout(1);
-	GS.SetTimeout(1);
+	//AP.SetTimeout(1);
+	//GS.SetTimeout(1);
 				
-
+	
 	// Read from AP
 	AP_buffer = AP.ReadBytes();
 	    
 	// Write to GS
 	GS.WriteBytes(AP_buffer);
-
-
-
-
 	
 	// Read from GS	
 	GS_buffer = GS.ReadBytes();
