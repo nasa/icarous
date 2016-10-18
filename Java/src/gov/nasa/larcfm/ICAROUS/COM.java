@@ -220,6 +220,15 @@ public class COM implements Runnable,ErrorReporter{
 		    }
 
 		}
+		else if(msgCommandLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_2){
+		    GenericObject obj = new GenericObject(1,(int)msgCommandLong.param1,
+							  msgCommandLong.param5,msgCommandLong.param6,msgCommandLong.param7,
+							  msgCommandLong.param2,msgCommandLong.param3,msgCommandLong.param4);
+		    synchronized(FlightData.missionObj){
+			GenericObject.AddObject(FlightData.missionObj,obj);
+		    }
+
+		}
 		else{
 		   UAS.apIntf.Write(msgCommandLong); 
 		}		
