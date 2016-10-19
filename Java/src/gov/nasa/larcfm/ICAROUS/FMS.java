@@ -86,7 +86,7 @@ public class FMS implements Runnable{
 		    state = FMS_STATE.FLIGHT;
 		    UAS.state = Aircraft.FLIGHT_STATE.CRUISE;
 		    UAS.FlightData.FP_nextWaypoint = UAS.FlightData.startMission;
-		    UAS.error.addError("[" + UAS.timeLog + "] MSG: Starting mission to waypoint:"+UAS.FlightData.FP_nextWaypoint);
+		    UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Starting mission to waypoint:"+UAS.FlightData.FP_nextWaypoint);
 		}
 		else{
 		    UAS.error.addError("[" + UAS.timeLog + "] MSG: No flight plan loaded");
