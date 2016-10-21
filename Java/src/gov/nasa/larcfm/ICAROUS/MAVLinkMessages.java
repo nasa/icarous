@@ -228,9 +228,9 @@ public class MAVLinkMessages{
 	case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
 	    msg_heartbeat msgHeartbeat = (msg_heartbeat) message.unpack();
 
-	    //if(msgHeartbeat.type == 2){		
-	    listHeartbeat_AP.add(msgHeartbeat);
-	    //}
+	    if(message.sysid == 1){		
+		listHeartbeat_AP.add(msgHeartbeat);
+	    }
 	    break;
 	    
 	case msg_sys_status.MAVLINK_MSG_ID_SYS_STATUS:
