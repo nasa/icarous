@@ -187,15 +187,17 @@ public class Icarous{
 	else{
 	    	    	    			    		
 	    daq_module.start();
-	    
-	    uasQuad.EnableDataStream(1);
-
+	    	    
 	    msg_heartbeat msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();	
 	    while(msgHeartbeatAP == null){
 		msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();
 	    }
+
+	    
 	    
 	    System.out.println("Received heartbeat from AP");
+
+	    uasQuad.EnableDataStream(1);
 		    	    
 	    com_module.start();
 
