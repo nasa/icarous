@@ -333,10 +333,9 @@ public class Aircraft implements ErrorReporter{
 
     public int Flight(){
 
-	float targetAlt        = (float)FlightData.CurrentFlightPlan.point(0).lla().alt();
+	float targetAlt        = (float)pData.getValue("TAKEOFF_ALT");
 	Position currPosition  = FlightData.acState.positionLast();
-	
-	
+		
 	timeLog                = String.format("%.3f",(double) (timeCurrent - timeStart)/1E9);
 	FSAM_OUTPUT status;
 	

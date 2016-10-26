@@ -8,6 +8,9 @@ AUTOPILOT_ID = 1
 # ICAROUS heartbeat (Hz)
 ICHBEAT = 5
 
+# Takeoff altitude
+TAKEOFF_ALT = 5
+
 # Geofence parameters
 HTHRESHOLD = 1.0
 VTHRESHOLD = 1.0
