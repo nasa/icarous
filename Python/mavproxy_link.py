@@ -209,8 +209,9 @@ class LinkModule(mp_module.MPModule):
             # this is fix time, not boot time
             return
 
-        """
+        
         msec = m.time_boot_ms
+        """
         if msec + 30000 < master.highest_msec:
             self.say('Time has wrapped')
             print('Time has wrapped', msec, master.highest_msec)
