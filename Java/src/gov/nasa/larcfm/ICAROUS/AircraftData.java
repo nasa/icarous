@@ -288,12 +288,12 @@ public class AircraftData{
 		    if(msgMissionAck2 != null){
 
 			//System.out.println("Received acknowledgement - type: "+Inbox.MissionAck().type);
-		    
+			SetPauseDAQ(false);
 			if(msgMissionAck2.type == 0){
 			    if(count == CurrentFlightPlan.size() - 1){
 				//System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
-				SetPauseDAQ(false);
+				
 				return msgMissionAck2;
 			    }
 			
