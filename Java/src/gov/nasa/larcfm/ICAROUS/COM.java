@@ -238,7 +238,13 @@ public class COM implements Runnable,ErrorReporter{
 	    msg_set_mode msgSetMode = RcvdMessages.GetSetMode();
 	    if(msgSetMode != null){
 		UAS.apIntf.Write(msgSetMode);
-	    }	    	    
+	    }
+
+	    // Handle GPS Inject RTCM messages
+	    msg_gps_inject_data msgGPSInjectData = RcvdMessages.GetGPSInjectData();
+	    if(msgGPSInjectData != null){
+		UAS.apIntf.Write(msgGPSInjectData);
+	    }
 	}
     }
 

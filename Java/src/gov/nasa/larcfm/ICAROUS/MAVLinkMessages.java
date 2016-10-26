@@ -184,6 +184,7 @@ public class MAVLinkMessages{
     public ArrayList<msg_fence_fetch_point> listFenceFetchPoint;
     public ArrayList<msg_set_mode> listSetMode;
     public ArrayList<msg_safeguard> listSafeguard;
+    public ArrayList<msg_gps_inject_data> listGPSInjectData;
     
     public MAVLinkMessages(){
 	
@@ -209,6 +210,7 @@ public class MAVLinkMessages{
 	listFenceFetchPoint    = new ArrayList<msg_fence_fetch_point>();
 	listSetMode            = new ArrayList<msg_set_mode>();
 	listSafeguard          = new ArrayList<msg_safeguard>();
+	listGPSInjectData      = new ArrayList<msg_gps_inject_data>();
     }
 
         
@@ -598,7 +600,7 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_gps_inject_data.MAVLINK_MSG_ID_GPS_INJECT_DATA:
-	    msgGpsInjectData = (msg_gps_inject_data) message.unpack();
+	    listGPSInjectData.add((msg_gps_inject_data) message.unpack());
 	    break;
 	    
 	case msg_gps2_raw.MAVLINK_MSG_ID_GPS2_RAW:
@@ -928,6 +930,15 @@ public class MAVLinkMessages{
     public synchronized msg_fence_fetch_point GetFenceFetchPoint(){
 	if(listFenceFetchPoint.size() > 0){
 	    return listFenceFetchPoint.remove(0);
+	}
+	else{
+	    return null;
+	}
+    }
+
+    public synchronized msg_gps_inject_data GetGPSInjectData(){
+	if(listGPSInjectData.size() > 0){
+	    return listGPSInjectData.remove(0);
 	}
 	else{
 	    return null;
