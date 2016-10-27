@@ -8,7 +8,7 @@ ICAROUSSRC = $(wildcard src/gov/nasa/larcfm/ICAROUS/*.java)
 
 MISSIONSRC = $(wildcard src/gov/nasa/larcfm/MISSION/*.java)
 
-LAUNCHSRC  = $(wildcard src/gov/nasa/larcfm/*.java)
+LAUNCHSRC  = $(wildcard src/*.java)
 
 LIB        = :lib/jssc-2.8.0.jar:lib/FormalATM.jar
 
