@@ -132,7 +132,7 @@ public class Aircraft implements ErrorReporter{
 	msg.time_boot_ms     = 0;
 	msg.target_system    = 0;
 	msg.target_component = 0;
-	msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
+	msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
 	msg.type_mask        = 0b0000111111111000;
 	msg.lat_int          = (int) (lat*1E7);
 	msg.lon_int          = (int) (lon*1E7);
@@ -153,7 +153,7 @@ public class Aircraft implements ErrorReporter{
 	}catch(InterruptedException e){
 	    System.out.println(e);
 	}
-
+		
 	//return CheckAcknowledgement();
 	return 1;
     }
@@ -161,16 +161,16 @@ public class Aircraft implements ErrorReporter{
     // Velocity command
     public int SetVelocity(double Vn,double Ve, double Vu){
 
-	msg_set_position_target_global_int msg= new msg_set_position_target_global_int();
+	msg_set_position_target_local_ned msg= new msg_set_position_target_local_ned();
 
 	msg.time_boot_ms     = 0;
 	msg.target_system    = 0;
 	msg.target_component = 0;
-	msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT;
+	msg.coordinate_frame = MAV_FRAME.MAV_FRAME_LOCAL_NED;	
 	msg.type_mask        = 0b0000111111000111;
-	msg.lat_int          = 0;
-	msg.lon_int          = 0;
-	msg.alt              = 0;
+	msg.x                = 0;
+	msg.y                = 0;
+	msg.z                = 0;
 	msg.vx               = (float)Vn;
 	msg.vy               = (float)Ve;
 	msg.vz               = (float)Vu;
@@ -180,7 +180,14 @@ public class Aircraft implements ErrorReporter{
 	msg.yaw              = 0;
 	msg.yaw_rate         = 0;
 
-	apIntf.Write(msg);	
+	apIntf.Write(msg);
+
+	try{
+	    Thread.sleep(100);
+	}
+	catch(InterruptedException e){
+	    System.out.println(e);
+	}
 	
 	return 1;
     }
@@ -343,44 +350,37 @@ public class Aircraft implements ErrorReporter{
 
 	case TAKEOFF:
 
-	    if( Math.abs(currPosition.alt()) < 1 ){
-		int ack;
+	    int ack;
 	    
-		// Set mode to guided
-		error.addWarning("[" + timeLog + "] MODE:GUIDED");
-		SetMode(4);
-		apMode = AP_MODE.GUIDED;
+	    // Set mode to guided
+	    error.addWarning("[" + timeLog + "] MODE:GUIDED");
+	    SetMode(4);
+	    apMode = AP_MODE.GUIDED;
 	    
-		// Arm the throttles
-		error.addWarning("[" + timeLog + "] CMD:ARM");
-		ack = SendCommand(0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,0,
-				  1,0,0,0,0,0,0,true);
-
-		// Send takeoff command only if 
+	    // Arm the throttles
+	    error.addWarning("[" + timeLog + "] CMD:ARM");
+	    ack = SendCommand(0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,0,
+			      1,0,0,0,0,0,0,true);
 	    
-		error.addWarning("[" + timeLog + "] CMD:TAKEOFF");
-		// Takeoff at current location
-		error.addWarning("[ "+ timeLog + " ] ALT: "+targetAlt);
-		ack = SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
-				  1,0,0,0, (float) currPosition.latitude(),
-				  (float) currPosition.longitude(),
-				  targetAlt,true);
+	    // Send takeoff command only if 
+	    
+	    error.addWarning("[" + timeLog + "] CMD:TAKEOFF");
+	    // Takeoff at current location
+	    error.addWarning("[ "+ timeLog + " ] ALT: "+targetAlt);
+	    ack = SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
+			      1,0,0,0, (float) currPosition.latitude(),
+			      (float) currPosition.longitude(),
+			      targetAlt,true);
 	    
 	    
-		if(ack == 0){
-		    return -1;
-		}
-		else{
-		    state = FLIGHT_STATE.TAKEOFF_CLIMB;
-		}
-
-	    break;
-
-	    }else{
-		state = FLIGHT_STATE.CRUISE;
-		SetMode(3);
-		apMode = AP_MODE.AUTO;
+	    if(ack == 0){
+		return -1;
 	    }
+	    else{
+		state = FLIGHT_STATE.TAKEOFF_CLIMB;
+	    }
+	    
+	    break;
 
 	case TAKEOFF_CLIMB:
 
