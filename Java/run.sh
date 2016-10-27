@@ -1,7 +1,7 @@
 #!/bin/bash
 
 MODE=active
-EXEC=icarous.jar
+EXEC=lib/icarous.jar
 JSSCLIB=lib/jssc-2.8.0.jar
 FORMALATM=lib/FormalATM.jar
 SITL_HOST=localhost

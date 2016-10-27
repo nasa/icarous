@@ -44,4 +44,4 @@ LAUNCH: PRE $(LAUNCHSRC)
 
 JAR:
 	@cd bin && jar -cvfm icarous.jar ../MANIFEST.mf gov com *.class
-	@mv bin/icarous.jar ./
+	@mv bin/icarous.jar ./lib/
