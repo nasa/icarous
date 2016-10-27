@@ -33,36 +33,55 @@ public class Demo implements Mission,ErrorReporter{
 
     boolean missionComplete;
     int status = 0;
+    int status2 = 0;
+    public double StartTime = 0;
     
     public Demo(){
 	stateMission = MISSION_STATE.IDLE;
 	missionComplete = false;
 	error = new ErrorLog("Mission ");
 	
+	
     }
 
     public int Execute(Aircraft UAS){
 
+	if(status2 == 0){
+	    StartTime = System.nanoTime()/1E9;
+	    status2 = 1;
+	}
+	
 	AircraftData FlightData = UAS.FlightData;
 	timeLog = UAS.timeLog;
 	double CurrentTime =  System.nanoTime()/1E9;
 	double ElapsedTime = 0;
 	double Targetheading;
-	double StartTime = 0; 
+
+	
+	ElapsedTime = CurrentTime - StartTime;
+	//System.out.format("Elapsed Time:%f\n",ElapsedTime);
 
 	/*
-	if(status == 0){
-	  UAS.SetMode(4);
-	    UAS.SetVelocity(-2.0,2.0,0.0);
-	    status = 1;
-	    StartTime = CurrentTime;
-	    }*/	
-       
-	ElapsedTime = CurrentTime - StartTime;
+	if(status == 0){	  
+	  if(ElapsedTime > 5){
+	      System.out.println("Taking control");
+	      UAS.SetMode(4);	     
+	      
+	      UAS.SetVelocity(1,1,0.0);
+	      status = 1;
+	      StartTime = CurrentTime;
+	  }
+	}	
 
-	if(ElapsedTime > 2){
-	    StartTime = CurrentTime;
+	if(status == 1 && ElapsedTime < 500){	    	    
+	    UAS.SetVelocity(1,1,0.0);	    	    
+	    //System.out.println("Setting velocities");
 	}
+	
+	*/
+	//if(ElapsedTime > 2){
+	//  StartTime = CurrentTime;
+	//}
 	
 	
 	if(FlightData.missionObj.size() > 0 && stateMission == MISSION_STATE.IDLE){
