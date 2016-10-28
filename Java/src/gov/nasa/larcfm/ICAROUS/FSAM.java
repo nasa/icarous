@@ -1010,7 +1010,7 @@ public class FSAM{
 
 	    if(Math.abs(crossTrackDeviation) <= 2*standoff){
 		double Vs = XtrkDevGain*crossTrackDeviation;
-		double V  = UAS.GetSpeed();
+		double V  = resolutionSpeed;
 
 		double sgn = 0;
 
