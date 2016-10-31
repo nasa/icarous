@@ -221,17 +221,8 @@ public class Icarous{
 		while(fms_module.isFMSrunning()){
 		    // DO nothing
 		}
-
-		System.out.println("Creating log file");
-		try{
-		    FileWriter writer = new FileWriter("SITLLog.log");
-		    writer.write(uasQuad.getMessage());
-		    writer.write(com_module.getMessage());		   
-		    writer.close();
-		}
-		catch(IOException e){
-		    System.out.println(e);
-		}
+		
+		
 	    } // end of mode else (passive)
 	}// end of mode else (passthrough)
     }// end of run
