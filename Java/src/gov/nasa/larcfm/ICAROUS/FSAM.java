@@ -369,11 +369,11 @@ public class FSAM{
 		//System.out.println("Setting velocities");
 		UAS.SetYaw(RefHeading1);		
 		UAS.SetVelocity(Vn1,Ve1,Vu1);
-		System.out.format("1: Vn,Ve,Vu = %f,%f,%f\n",Vn1,Ve1,Vu1);
+		//System.out.format("1: Vn,Ve,Vu = %f,%f,%f\n",Vn1,Ve1,Vu1);
 	    }else{
 		UAS.SetYaw(RefHeading2);
 		UAS.SetVelocity(Vn2,Ve2,Vu2);
-		System.out.format("2: Vn,Ve,Vu = %f,%f,%f\n",Vn2,Ve2,Vu2);
+		//System.out.format("2: Vn,Ve,Vu = %f,%f,%f\n",Vn2,Ve2,Vu2);
 	    }
 	    
 	    if(!StandoffConflict && !TrafficConflict){
@@ -541,7 +541,8 @@ public class FSAM{
 
     // Check standoff distance violation
     public void CheckStandoff(){
-	
+
+	standoff  = UAS.pData.getValue("STANDOFF");		
 	double heading   = FlightData.heading;	    
 	double heading_fp_pos;
 	Plan CurrentPlan = null;
@@ -787,7 +788,12 @@ public class FSAM{
 
     // Compute resolution for keep out conflicts
     public void ResolveKeepOutConflict(){
-		
+
+	gridsize          = UAS.pData.getValue("GRIDSIZE");
+	buffer            = UAS.pData.getValue("BUFFER");
+	lookahead         = UAS.pData.getValue("LOOKAHEAD");
+	proximityfactor   = UAS.pData.getValue("PROXFACTOR");
+	
 	// Reroute flight plan
 	UAS.SetMode(4); // Set mode to guided for quadrotor to hover before replanning
 	
@@ -1000,8 +1006,9 @@ public class FSAM{
     // Compute resolution for stand off distance violation
     public boolean ResolveStandoffConflict(){
 
-	double XtrkDevGain       = UAS.pData.getValue("XTRK_GAIN") ;
-
+	double XtrkDevGain       = UAS.pData.getValue("XTRK_GAIN");
+	resolutionSpeed          = (float) UAS.pData.getValue("RES_SPEED");
+	    
 	if(XtrkDevGain < 0){
 	    XtrkDevGain = - XtrkDevGain;
 	}
