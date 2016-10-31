@@ -57,6 +57,11 @@ public class FMS implements Runnable{
     public synchronized FMS_STATE getFMSstate(){
 	return state;
     }
+
+    public void Reset(){
+	state = FMS_STATE.IDLE;
+	UAS.Reset();
+    }
 	
     public void FlightManagement(){
 
@@ -65,6 +70,13 @@ public class FMS implements Runnable{
 	
 	UAS.FlightData.GetGPSdata();
 	UAS.FlightData.GetAttitude();
+
+	synchronized(UAS){
+	    if(UAS.IcarousReset){
+		UAS.IcarousReset = false;
+		Reset();
+	    }
+	}
 	
 	switch(state){
 
@@ -128,9 +140,7 @@ public class FMS implements Runnable{
 	    
 	    status = UAS.Terminate(); 
 	    
-	    if(status == 1){
-		FMSrunning = false;
-	    }	    
+	    
 	    break;
 
 	}	
