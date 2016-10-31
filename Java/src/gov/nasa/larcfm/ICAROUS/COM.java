@@ -20,6 +20,7 @@ import com.MAVLink.*;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 import gov.nasa.larcfm.Util.ParameterData;
+import java.io.*;
 
 public class COM implements Runnable,ErrorReporter{
 
@@ -65,6 +66,7 @@ public class COM implements Runnable,ErrorReporter{
     private boolean pauseDataStream;
     private int paramCount;
     private int AP_ID;
+    private int logCount;
             
     public COM(String name,Aircraft uas,ParameterData pdata){
 	threadName       = name;
@@ -77,6 +79,7 @@ public class COM implements Runnable,ErrorReporter{
 	pauseDataStream  = false;
 	paramCount       = 0;
 	AP_ID            = pdata.getInt("AUTOPILOT_ID");
+	logCount         = 1;
     }
 
     public void run(){
@@ -181,8 +184,9 @@ public class COM implements Runnable,ErrorReporter{
 		case "RES_SPEED":
 		case "XTRK_GAIN":
 		case "STANDOFF":
+		case "TAKEOFF_ALT":
 		    pData.set(ID,msgParamSet.param_value,pData.getUnit(ID));
-		    System.out.println(ID+": "+pData.getValue(ID));
+		    //System.out.println(ID+": "+pData.getValue(ID));
 		    icarous_parm  = true;
 		    break;
 		default:
@@ -229,6 +233,27 @@ public class COM implements Runnable,ErrorReporter{
 		    }
 
 		}
+		else if(msgCommandLong.command == MAV_CMD.MAV_CMD_USER_1){
+		    if(msgCommandLong.param1 == 1){
+			synchronized(UAS){
+			    error.addWarning("[" + timeLog + "] MSG: Resetting ICAROUS");
+			    UAS.IcarousReset = true;
+			}
+		    }
+		    if(msgCommandLong.param2 == 1){
+			try{
+			    error.addWarning("[" + timeLog + "] MSG: Dumping to log "+logCount);
+			    FileWriter writer = new FileWriter("FlightLog"+logCount+".log");
+			    writer.write(UAS.getMessage());
+			    writer.write(getMessage());		   
+			    writer.close();
+			    logCount++;
+			}
+			catch(IOException e){
+			    System.out.println(e);
+			}
+		    }
+		}		
 		else{
 		   UAS.apIntf.Write(msgCommandLong); 
 		}		
