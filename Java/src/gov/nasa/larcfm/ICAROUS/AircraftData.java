@@ -101,6 +101,17 @@ public class AircraftData{
 	pauseDAQ            = false;
     }
 
+    public void Reset(){
+	fenceList.clear();
+	obstacles.clear();
+	traffic.clear();
+	missionObj.clear();
+	InputFlightPlan.clear();
+	startMission = -1;
+	FP_nextWaypoint = 0;
+	pauseDAQ = false;
+    }
+
     public synchronized void SetPauseDAQ(boolean val){
 	pauseDAQ =  val;
     }

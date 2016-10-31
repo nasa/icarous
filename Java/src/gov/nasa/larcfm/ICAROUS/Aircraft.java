@@ -49,6 +49,7 @@ public class Aircraft implements ErrorReporter{
 
     private boolean landStart;
     public ParameterData pData;
+    public boolean IcarousReset;
 
     private ArrayList<msg_command_ack> CmdError;
     
@@ -69,6 +70,13 @@ public class Aircraft implements ErrorReporter{
 	MissionState     = 0;
 	CmdError         = new ArrayList<msg_command_ack>();
 	
+    }
+
+    public void Reset(){
+	state = FLIGHT_STATE.IDLE;
+	apMode = AP_MODE.ND;
+	landStart = false;
+	FlightData.Reset();
     }
 
     // Function to send commands to pixhawk
