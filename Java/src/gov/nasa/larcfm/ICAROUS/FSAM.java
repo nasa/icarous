@@ -795,7 +795,7 @@ public class FSAM{
 	proximityfactor   = UAS.pData.getValue("PROXFACTOR");
 	
 	// Reroute flight plan
-	UAS.SetMode(16); // Set mode to guided for quadrotor to hover before replanning
+	UAS.SetMode(4); // Set mode to guided for quadrotor to hover before replanning
 	
 	Plan CurrentFP;
 	double currentTime;
