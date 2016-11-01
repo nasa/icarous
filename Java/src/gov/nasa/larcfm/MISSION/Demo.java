@@ -82,12 +82,19 @@ public class Demo implements Mission,ErrorReporter{
 	//if(ElapsedTime > 2){
 	//  StartTime = CurrentTime;
 	//}
-	
-	
-	if(FlightData.missionObj.size() > 0 && stateMission == MISSION_STATE.IDLE){
-	    stateMission = MISSION_STATE.TURN1;
-	}
+		
+	synchronized(FlightData.missionObj){
+	    if(FlightData.missionObj.size() > 0 && stateMission == MISSION_STATE.IDLE){
 
+		if(FlightData.missionObj.get(0).id == 0){
+		    FlightData.missionObj.remove(0);
+		}
+		else{
+		    stateMission = MISSION_STATE.TURN1;
+		}
+	    }
+	}
+	
 	switch(stateMission){
 
 	case TURN1:
@@ -144,10 +151,12 @@ public class Demo implements Mission,ErrorReporter{
 	    
 	case CONTINUE:
 
-	    Iterator Itr = FlightData.missionObj.iterator();
-	    while(Itr.hasNext()){
-		GenericObject obj = (GenericObject) Itr.next();
-		Itr.remove();
+	    synchronized(FlightData.missionObj){
+		Iterator Itr = FlightData.missionObj.iterator();
+		while(Itr.hasNext()){
+		    GenericObject obj = (GenericObject) Itr.next();
+		    Itr.remove();
+		}
 	    }
 	    
 	    UAS.SetMode(3);
