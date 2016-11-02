@@ -228,12 +228,16 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:
-	    msg_heartbeat msgHeartbeat = (msg_heartbeat) message.unpack();
-
-	    if(message.sysid == 1){		
-		listHeartbeat_AP.add(msgHeartbeat);
+	    try{
+		msg_heartbeat msgHeartbeat = (msg_heartbeat) message.unpack();
+		
+		if(message.sysid == 1){		
+		    listHeartbeat_AP.add(msgHeartbeat);
+		}
+		break;
+	    }catch(IndexOutOfBoundsException e){
+		break;
 	    }
-	    break;
 	    
 	case msg_sys_status.MAVLINK_MSG_ID_SYS_STATUS:
 	    msgSysStatus = (msg_sys_status) message.unpack();
