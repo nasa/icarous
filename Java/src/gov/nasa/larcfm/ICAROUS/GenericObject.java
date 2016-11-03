@@ -64,6 +64,7 @@ public class GenericObject{
 
 	if(!inList){
 	    objectList.add(obj);
+	    System.out.println("Added object");
 	}
 	
     }
