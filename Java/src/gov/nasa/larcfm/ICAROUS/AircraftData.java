@@ -364,7 +364,7 @@ public class AircraftData{
 		    
 		    msgMissionRequest.seq = count;
 		    Intf.Write(msgMissionRequest);
-		    //System.out.println("wrote count:"+count);
+		    System.out.println("wrote count:"+count);
 		    state = FP_READ.FP_WP_READ;
 		    break;
 
@@ -375,7 +375,7 @@ public class AircraftData{
 		    msg_mission_item msgMissionItem = Inbox.GetMissionItem();
 		    if(msgMissionItem != null){
 			
-			//System.out.println("mission sequence received:"+msgMissionItem.seq);
+			System.out.println("mission sequence received:"+msgMissionItem.seq);
 			if(msgMissionItem.seq == count){
 			    mission.add(msgMissionItem);
 			    state = FP_READ.FP_ITEM_REQUEST;
@@ -389,10 +389,10 @@ public class AircraftData{
 			    time_start = (float)System.nanoTime()/1E9;
 			}
 			else{
-			    msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_INVALID_SEQUENCE;
-			    Intf.Write(msgMissionAck);
+			    //msgMissionAck.type = MAV_MISSION_RESULT.MAV_MISSION_INVALID_SEQUENCE;
+			    //Intf.Write(msgMissionAck);
 			    //System.out.println("Error receiving waypoints");
-			    return 0;
+			    //return 0;
 			}
 		    }
 
