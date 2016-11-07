@@ -7,6 +7,19 @@
 #include <stdint.h>
 
 #define GROUP1_LEN 198
+#define GROUP2_LEN 144
+
+#ifdef GROUP2_LEN
+  #define HEADER 5 // GROUP (1), GROUP FIELD(s) (2 for each field) 
+#else
+  #define HEADER 3 // GROUP (1), GROUP FIELD(s) (2 for each field) 
+#endif
+
+#define CRC_LEN 2
+
+#define PAYLOAD_LEN GROUP1_LEN + GROUP2_LEN
+#define DATA_LEN HEADER + PAYLOAD_LEN + CRC_LEN
+
 int
 set_interface_attribs (int fd, int speed, int parity)
 {
@@ -102,7 +115,9 @@ uint16_t calculateCRC(unsigned char data[], unsigned int length)
 
 void ComposeData(struct BinGroup1 *msg, uint8_t *payload){
 
-  uint8_t *p = payload+3;
+  uint8_t *p = payload+HEADER;
+
+  // extract group 1
   memcpy(&(msg->TimeStartup),p,8);p = p+8;
   memcpy(&(msg->TimeGps),p,8);p = p+8;
   memcpy(&(msg->TimeSyncIn),p,8);p = p+8;
@@ -119,18 +134,20 @@ void ComposeData(struct BinGroup1 *msg, uint8_t *payload){
   memcpy(&(msg->SyncInCnt),p,4);p = p+4;
   memcpy(&(msg->TimeGpsPps),p,8);
   
+  // extract group 2
 }
 
 int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg){
 
   static int state = 0;
   static int count = 0;
-  static uint16_t fieldSize = 0;
+  static uint16_t fieldSize1 = 0;
+  static uint16_t fieldSize2 = 0;
   static uint16_t CRC = 0;  
-  static uint8_t payload[GROUP1_LEN];
+  static uint8_t payload[PAYLOAD_LEN];
   static int packetsize = 0;
   
-  uint8_t data[203];
+  uint8_t data[DATA_LEN];
   uint16_t CRCV;
   int8_t *p;
   
@@ -141,7 +158,7 @@ int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg){
     fieldSize = 0;
     p         = payload;
     memset(payload,0,GROUP1_LEN);
-    memset(data,0,GROUP1_LEN+3+2);
+    memset(data,0,DATA_LEN);
     if(c == 0xFA){
       packetsize = 0;
       packetsize++;
@@ -165,15 +182,23 @@ int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg){
     data[packetsize-1] = c;
     packetsize++;
     if(count == 0){
-      fieldSize = 0;
-      fieldSize = fieldSize | c;
+      fieldSize1 = 0;
+      fieldSize1 = fieldSize1 | c;
       count++;
     }
     else if(count == 1){
-      fieldSize = (fieldSize << 8) | c;
+      fieldSize1 = (fieldSize1 << 8) | c;
+      count++;
+    }
+    else if(count == 2){
+      fieldSize2 = 0;
+      fieldSize2 = fieldSize2 | c;
+      count++;
+    }
+    else if(count == 3){
+      fieldSize2 = (fieldSize2 << 8) | c;
       state = 3;
       count = 0;
-      //printf("Received field size \n");
     }
 
     break;
@@ -185,7 +210,7 @@ int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg){
     p = p + 1;
     memcpy(p,&c,1);
     count++;
-    if(count == GROUP1_LEN){
+    if(count == PAYLOAD_LEN){
       //printf("Receive payload, count=%d\n",count);
       state = 4;
       count = 0;
@@ -215,7 +240,7 @@ int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg){
 
   case 5:
     // Validate data    
-    CRCV = calculateCRC(data,203);
+    CRCV = calculateCRC(data,DATA_LEN);
     state = 0;
     count = 0;
     if(CRCV == 0x0000){
