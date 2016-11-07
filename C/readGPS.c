@@ -98,6 +98,29 @@ struct BinGroup1{
   uint64_t TimeGpsPps; //8
 };
 
+struct BinGroup2{
+  //UTC
+  int8_t year;
+  uint8_t month;
+  uint8_t day;
+  uint8_t hour;
+  uint8_t min;
+  uint8_t sec;
+  uint16_t ms[2];
+  
+  uint64_t Tow;
+  uint16_t Week;
+  uint8_t NumSats;
+  uint8_t Fix;
+  double PosLla[3];
+  double PosEcef[3];
+  float VelNed[3];
+  float VelEcef[3];
+  float PosU[3];
+  float VelU;
+  uint32_t TimeU;
+}
+
 uint16_t calculateCRC(unsigned char data[], unsigned int length)
 {
  unsigned int i;
@@ -113,7 +136,7 @@ uint16_t calculateCRC(unsigned char data[], unsigned int length)
  return crc;
 }
 
-void ComposeData(struct BinGroup1 *msg, uint8_t *payload){
+void ExtractDataGroup1(struct BinGroup1 *msg, uint8_t *payload){
 
   uint8_t *p = payload+HEADER;
 
@@ -133,8 +156,28 @@ void ComposeData(struct BinGroup1 *msg, uint8_t *payload){
   memcpy(&(msg->InsStatus),p,2);p = p+2;
   memcpy(&(msg->SyncInCnt),p,4);p = p+4;
   memcpy(&(msg->TimeGpsPps),p,8);
-  
-  // extract group 2
+}
+
+void ExtractDataGroup2(Struct BinGroup2 *msg, uint8_t *payload){
+  uint8_t *p = payload + HEADER+GROUP1_LEN;
+  memcpy(&(msg->year),p,1); p = p+1;
+  memcpy(&(msg->month),p,1); p = p+1;
+  memcpy(&(msg->day),p,1); p = p+1;
+  memcpy(&(msg->hour),p,1); p = p+1;
+  memcpy(&(msg->min),p,1); p = p+1;
+  memcpy(&(msg->sec),p,1); p = p+1;
+  memcpy(&(msg->ms),p,2); p = p+2;
+  memcpy(&(msg->Tow),p,8); p = p+8;
+  memcpy(&(msg->Week),p,2); p = p+2;
+  memcpy(&(msg->NumSats),p,1); p = p+1;
+  memcpy(&(msg->Fix),p,1); p = p+1;
+  memcpy(&(msg->PosLla),p,24); p = p+24;
+  memcpy(&(msg->PosEcef),p,24); p = p+24;
+  memcpy(&(msg->VelNed),p,12); p = p+12;
+  memcpy(&(msg->VelEcef),p,12); p = p+12;
+  memcpy(&(msg->PosU),p,12); p = p+12;
+  memcpy(&(msg->VelU),p,4); p = p+4;
+  memcpy(&(msg->TimeU),p,4); p = p+4;
 }
 
 int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg){
