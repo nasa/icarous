@@ -119,7 +119,7 @@ struct BinGroup2{
   float PosU[3];
   float VelU;
   uint32_t TimeU;
-}
+};
 
 uint16_t calculateCRC(unsigned char data[], unsigned int length)
 {
@@ -136,7 +136,7 @@ uint16_t calculateCRC(unsigned char data[], unsigned int length)
  return crc;
 }
 
-void ExtractDataGroup1(struct BinGroup1 *msg, uint8_t *payload){
+void ExtractDataGroup1(uint8_t *payload, struct BinGroup1 *msg){
 
   uint8_t *p = payload+HEADER;
 
@@ -158,7 +158,7 @@ void ExtractDataGroup1(struct BinGroup1 *msg, uint8_t *payload){
   memcpy(&(msg->TimeGpsPps),p,8);
 }
 
-void ExtractDataGroup2(Struct BinGroup2 *msg, uint8_t *payload){
+void ExtractDataGroup2(uint8_t *payload, Struct BinGroup2 *msg){
   uint8_t *p = payload + HEADER+GROUP1_LEN;
   memcpy(&(msg->year),p,1); p = p+1;
   memcpy(&(msg->month),p,1); p = p+1;
@@ -180,7 +180,7 @@ void ExtractDataGroup2(Struct BinGroup2 *msg, uint8_t *payload){
   memcpy(&(msg->TimeU),p,4); p = p+4;
 }
 
-int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg){
+int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg1, struct BinGroup2* msg2){
 
   static int state = 0;
   static int count = 0;
@@ -200,7 +200,7 @@ int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg){
     count     = 0;
     fieldSize = 0;
     p         = payload;
-    memset(payload,0,GROUP1_LEN);
+    memset(payload,0,PAYLOAD_LEN);
     memset(data,0,DATA_LEN);
     if(c == 0xFA){
       packetsize = 0;
@@ -287,14 +287,15 @@ int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg){
     state = 0;
     count = 0;
     if(CRCV == 0x0000){
-      ComposeData(msg,data);
+      ExtractDataGroup1(data,msg1);
+      ExtractDataGroup2(data,msg2);
       //printf("Valid data obtained\n");
       return 1;
     }
     else{      
       return 0;
     }
-
+    
     break;
   }//end of switch
 
@@ -308,7 +309,8 @@ void InitVecNav(int fd){
   write(fd,input1,sizeof(input1));
 
   // Enable Binary group 1 output on serial port 1
-  char input2[] = "$VNWRG,75,1,16,01,FFFF*XX\r\n";
+
+  char input2[] = "$VNWRG,75,1,16,09,FFFF,FFFF*XX\r\n";
   write(fd,input2,sizeof(input2));
   
 }
@@ -332,17 +334,19 @@ void main(){
 
   InitVecNav(fd);
 
-  struct BinGroup1 msg;
-  memset(&msg,0,sizeof(msg));
+  struct BinGroup1 msg1;
+  struct BinGroup2 msg2;
+  memset(&msg1,0,sizeof(msg1));
+  memset(&msg2,0,sizeof(msg2));
   
   while(1){
     uint8_t buf = 0;        
     int n = read (fd, &buf, 1);    // read up to 100 characters if ready to read
     //printf("%c",buf);
-    int status = ProcessGPSMessage(buf,&msg);
+    int status = ProcessGPSMessage(buf,&msg1,&msg2);
 
     if(status == 1){            
-      printf("Yaw = %f, Pitch = %f, Roll = %f\n",msg.YawPitchRoll[0],msg.YawPitchRoll[1],msg.YawPitchRoll[2]);
+      printf("Yaw = %f, Pitch = %f, Roll = %f\n",msg1.YawPitchRoll[0],msg1.YawPitchRoll[1],msg1.YawPitchRoll[2]);
     }
   }
   return;
