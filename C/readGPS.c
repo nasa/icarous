@@ -399,13 +399,15 @@ void main(int argc, char *argv[]){
       printf("Num sats = %d\n",msg4.NumSats);
       printf("LLA2     = %lf, %lf, %lf\n",msg4.PosLla[0],msg4.PosLla[1],msg4.PosLla[2]);
       printf("ECEF     = %lf, %lf, %lf\n",msg4.PosEcef[0],msg4.PosEcef[1],msg4.PosEcef[2]);
+      printf("Pos Acc  = %lf, %lf, %lf\n",msg4.PosU[0],msg4.PosU[1],msg4.PosU[2]);
+      printf("Vel Acc  = %lf\n",msg4.VelU);
 
       printf("\n***   INS Msg    ***\n");
       printf("Ins Status.Mode   = %d\n",msg6.InsStatus & 0x03);
       printf("Ins Status.GpsFix = %d\n",msg6.InsStatus & 0x04);
       printf("Ins Status.Error  = %d\n",msg6.InsStatus & 0x08);      
       printf("VelNed = %lf, %lf, %lf\n",msg6.VelNed[0],msg6.VelNed[1],msg6.VelNed[2]);
-
+      
       
       printf("********************\n\n");
     }
