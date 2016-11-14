@@ -7,18 +7,13 @@
 #include <stdint.h>
 
 #define GROUP1_LEN 198
-#define GROUP2_LEN 144
-
-#ifdef GROUP2_LEN
-  #define HEADER 5 // GROUP (1), GROUP FIELD(s) (2 for each field) 
-#else
-  #define HEADER 3 // GROUP (1), GROUP FIELD(s) (2 for each field) 
-#endif
-
+#define GROUP4_LEN 112
+#define GROUP6_LEN 130
 #define CRC_LEN 2
+#define GROUPS 3
+#define HEADER (1+(2*GROUPS))
 
-#define PAYLOAD_LEN GROUP1_LEN + GROUP2_LEN
-#define DATA_LEN HEADER + PAYLOAD_LEN + CRC_LEN
+#define DATA_LEN HEADER+CRC_LEN+GROUP4_LEN+GROUP6_LEN+GROUP1_LEN
 
 int
 set_interface_attribs (int fd, int speed, int parity)
@@ -98,7 +93,7 @@ struct BinGroup1{
   uint64_t TimeGpsPps; //8
 };
 
-struct BinGroup2{
+struct BinGroup4{
   //UTC
   int8_t year;
   uint8_t month;
@@ -121,6 +116,20 @@ struct BinGroup2{
   uint32_t TimeU;
 };
 
+struct BinGroup6{
+  uint16_t InsStatus;
+  double PosLla[3];
+  double PosEcef[3];
+  float VelBody[3];
+  float VelNed[3];
+  float VelEcef[3];
+  float MagEcef[3];
+  float AccelEcef[3];
+  float LinearAccelEcef[3];
+  float PosU;
+  float VelU;
+};
+
 uint16_t calculateCRC(unsigned char data[], unsigned int length)
 {
  unsigned int i;
@@ -138,9 +147,8 @@ uint16_t calculateCRC(unsigned char data[], unsigned int length)
 
 void ExtractDataGroup1(uint8_t *payload, struct BinGroup1 *msg){
 
-  uint8_t *p = payload+HEADER;
-
   // extract group 1
+  uint8_t *p = payload;
   memcpy(&(msg->TimeStartup),p,8);p = p+8;
   memcpy(&(msg->TimeGps),p,8);p = p+8;
   memcpy(&(msg->TimeSyncIn),p,8);p = p+8;
@@ -158,8 +166,9 @@ void ExtractDataGroup1(uint8_t *payload, struct BinGroup1 *msg){
   memcpy(&(msg->TimeGpsPps),p,8);
 }
 
-void ExtractDataGroup2(uint8_t *payload, Struct BinGroup2 *msg){
-  uint8_t *p = payload + HEADER+GROUP1_LEN;
+void ExtractDataGroup4(uint8_t *payload, struct BinGroup4 *msg){
+
+  uint8_t *p = payload;
   memcpy(&(msg->year),p,1); p = p+1;
   memcpy(&(msg->month),p,1); p = p+1;
   memcpy(&(msg->day),p,1); p = p+1;
@@ -177,31 +186,44 @@ void ExtractDataGroup2(uint8_t *payload, Struct BinGroup2 *msg){
   memcpy(&(msg->VelEcef),p,12); p = p+12;
   memcpy(&(msg->PosU),p,12); p = p+12;
   memcpy(&(msg->VelU),p,4); p = p+4;
-  memcpy(&(msg->TimeU),p,4); p = p+4;
+  memcpy(&(msg->TimeU),p,4); 
 }
 
-int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg1, struct BinGroup2* msg2){
+void ExtractDataGroup6(uint8_t *payload, struct BinGroup6 *msg){
+
+  uint8_t *p = payload;
+  memcpy(&(msg->InsStatus),p,2); p = p+2;
+  memcpy(&(msg->PosLla),p,24); p = p+24;
+  memcpy(&(msg->PosEcef),p,24); p = p+24;
+  memcpy(&(msg->VelBody),p,12); p = p+12;
+  memcpy(&(msg->VelNed),p,12); p = p+12;
+  memcpy(&(msg->VelEcef),p,12); p = p+12;
+  memcpy(&(msg->MagEcef),p,12); p = p+12;
+  memcpy(&(msg->AccelEcef),p,12); p = p+12;
+  memcpy(&(msg->LinearAccelEcef),p,12); p = p+12;
+  memcpy(&(msg->PosU),p,4); p = p+4;
+  memcpy(&(msg->VelU),p,4);   
+}
+
+int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg1, struct BinGroup4* msg4, struct BinGroup6* msg6){
 
   static int state = 0;
   static int count = 0;
   static uint16_t fieldSize1 = 0;
   static uint16_t fieldSize2 = 0;
+  static uint16_t fieldSize3 = 0;
   static uint16_t CRC = 0;  
-  static uint8_t payload[PAYLOAD_LEN];
   static int packetsize = 0;
   
-  uint8_t data[DATA_LEN];
-  uint16_t CRCV;
-  int8_t *p;
+  static uint8_t data[600];
+  static uint16_t CRCV;
+  uint8_t *p = data;
   
   switch(state){
   case 0:       
     // Checking for header
-    count     = 0;
-    fieldSize = 0;
-    p         = payload;
-    memset(payload,0,PAYLOAD_LEN);
-    memset(data,0,DATA_LEN);
+    count     = 0;   
+    memset(data,0,600);
     if(c == 0xFA){
       packetsize = 0;
       packetsize++;
@@ -239,25 +261,33 @@ int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg1, struct BinGroup2* msg2)
       count++;
     }
     else if(count == 3){
-      fieldSize2 = (fieldSize2 << 8) | c;
-      state = 3;
+      fieldSize2 = (fieldSize2 << 8) | c;      
+      count++;
+    }
+    else if(count == 4){
+      fieldSize3 = 0;
+      fieldSize3 = fieldSize3 | c;
+      count++;
+    }
+    else if(count == 5){
+      fieldSize3 = (fieldSize3 << 8) | c;      
       count = 0;
+      state = 3;
     }
 
     break;
 
   case 3:
     //Payload
+    //printf("datasize = %d\n",packetsize);
     data[packetsize-1] = c;
     packetsize++;
-    p = p + 1;
-    memcpy(p,&c,1);
-    count++;
-    if(count == PAYLOAD_LEN){
+    count++;    
+    if(count == (DATA_LEN - HEADER - CRC_LEN)){      
       //printf("Receive payload, count=%d\n",count);
-      state = 4;
-      count = 0;
       
+      state = 4;
+      count = 0;      
     }
 
     break;
@@ -276,6 +306,7 @@ int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg1, struct BinGroup2* msg2)
       CRC = (CRC << 8) | c;
       state = 5;
       count = 0;
+      
       //printf("Received checksum\n");
     }
 
@@ -287,9 +318,16 @@ int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg1, struct BinGroup2* msg2)
     state = 0;
     count = 0;
     if(CRCV == 0x0000){
-      ExtractDataGroup1(data,msg1);
-      ExtractDataGroup2(data,msg2);
       //printf("Valid data obtained\n");
+      p = data + HEADER;
+      ExtractDataGroup1(p,msg1);
+      
+      p = data + HEADER + GROUP1_LEN;
+      ExtractDataGroup4(p,msg4);
+
+      p = data + HEADER + GROUP4_LEN;
+      ExtractDataGroup6(data,msg6);
+      
       return 1;
     }
     else{      
@@ -310,13 +348,14 @@ void InitVecNav(int fd){
 
   // Enable Binary group 1 output on serial port 1
 
-  char input2[] = "$VNWRG,75,1,16,09,FFFF,FFFF*XX\r\n";
+  //char input2[] = "$VNWRG,75,1,80,28,0FFF,07FF*XX\r\n";
+  char input2[] = "$VNWRG,75,1,80,29,FFFF,0FFF,07FF*XX\r\n";
   write(fd,input2,sizeof(input2));
   
 }
 
 void main(){
-  char *portname = "/dev/ttyUSB0";
+  char *portname = "/dev/ttyUSB2";
   
   int fd = open (portname, O_RDWR | O_NOCTTY | O_SYNC);
   if (fd < 0)
@@ -335,20 +374,37 @@ void main(){
   InitVecNav(fd);
 
   struct BinGroup1 msg1;
-  struct BinGroup2 msg2;
+  struct BinGroup4 msg4;
+  struct BinGroup6 msg6;
   memset(&msg1,0,sizeof(msg1));
-  memset(&msg2,0,sizeof(msg2));
+  memset(&msg4,0,sizeof(msg4));
+  memset(&msg6,0,sizeof(msg6));
+
+  
   
   while(1){
     uint8_t buf = 0;        
     int n = read (fd, &buf, 1);    // read up to 100 characters if ready to read
     //printf("%c",buf);
-    int status = ProcessGPSMessage(buf,&msg1,&msg2);
-
+    int status = ProcessGPSMessage(buf,&msg1,&msg4,&msg6);
+    
     if(status == 1){            
       printf("Yaw = %f, Pitch = %f, Roll = %f\n",msg1.YawPitchRoll[0],msg1.YawPitchRoll[1],msg1.YawPitchRoll[2]);
+      printf("LLA = %lf, %lf, %lf\n",msg1.LLA[0],msg1.LLA[1],msg1.LLA[2]);
+      printf("Year = %d, month = %d, day = %d\n",2000+msg4.year,msg4.month,msg4.day);
+      printf("Fix = %d\n",msg4.Fix);
+      printf("Num sats = %d\n",msg4.NumSats);
+      printf("LLA = %lf, %lf, %lf\n",msg4.PosLla[0],msg4.PosLla[1],msg4.PosLla[2]);
+      printf("ECEF = %lf, %lf, %lf\n",msg4.PosEcef[0],msg4.PosEcef[1],msg4.PosEcef[2]);
+      
+      printf("Ins Status.Mode   = %d\n",msg6.InsStatus & 0x03);
+      printf("Ins Status.GpsFix = %d\n",msg6.InsStatus & 0x04);
+      printf("Ins Status.Error  = %d\n",msg6.InsStatus & 0x08);      
+      printf("VelNed = %lf, %lf, %lf\n",msg6.VelNed[0],msg6.VelNed[1],msg6.VelNed[2]);
+
+      
+      printf("**** \n");
     }
   }
   return;
 }
-
