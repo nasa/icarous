@@ -326,7 +326,7 @@ int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg1, struct BinGroup4* msg4,
       ExtractDataGroup4(p,msg4);
 
       p = data + HEADER + GROUP4_LEN;
-      ExtractDataGroup6(data,msg6);
+      ExtractDataGroup6(p,msg6);
       
       return 1;
     }
