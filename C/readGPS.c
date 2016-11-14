@@ -354,8 +354,8 @@ void InitVecNav(int fd){
   
 }
 
-void main(){
-  char *portname = "/dev/ttyUSB2";
+void main(int argc, char *argv[]){
+  char *portname = argv[1];
   
   int fd = open (portname, O_RDWR | O_NOCTTY | O_SYNC);
   if (fd < 0)
@@ -388,22 +388,26 @@ void main(){
     //printf("%c",buf);
     int status = ProcessGPSMessage(buf,&msg1,&msg4,&msg6);
     
-    if(status == 1){            
-      printf("Yaw = %f, Pitch = %f, Roll = %f\n",msg1.YawPitchRoll[0],msg1.YawPitchRoll[1],msg1.YawPitchRoll[2]);
-      printf("LLA = %lf, %lf, %lf\n",msg1.LLA[0],msg1.LLA[1],msg1.LLA[2]);
-      printf("Year = %d, month = %d, day = %d\n",2000+msg4.year,msg4.month,msg4.day);
-      printf("Fix = %d\n",msg4.Fix);
+    if(status == 1){
+      printf("*** Attitude Msg ***\n");
+      printf("Yaw      = %f, Pitch = %f, Roll = %f\n",msg1.YawPitchRoll[0],msg1.YawPitchRoll[1],msg1.YawPitchRoll[2]);
+
+      printf("\n***   GPS Msg    ***\n");
+      printf("LLA      = %lf, %lf, %lf\n",msg1.LLA[0],msg1.LLA[1],msg1.LLA[2]);
+      printf("Year     = %d, month = %d, day = %d\n",2000+msg4.year,msg4.month,msg4.day);
+      printf("Fix      = %d\n",msg4.Fix);
       printf("Num sats = %d\n",msg4.NumSats);
-      printf("LLA = %lf, %lf, %lf\n",msg4.PosLla[0],msg4.PosLla[1],msg4.PosLla[2]);
-      printf("ECEF = %lf, %lf, %lf\n",msg4.PosEcef[0],msg4.PosEcef[1],msg4.PosEcef[2]);
-      
+      printf("LLA2     = %lf, %lf, %lf\n",msg4.PosLla[0],msg4.PosLla[1],msg4.PosLla[2]);
+      printf("ECEF     = %lf, %lf, %lf\n",msg4.PosEcef[0],msg4.PosEcef[1],msg4.PosEcef[2]);
+
+      printf("\n***   INS Msg    ***\n");
       printf("Ins Status.Mode   = %d\n",msg6.InsStatus & 0x03);
       printf("Ins Status.GpsFix = %d\n",msg6.InsStatus & 0x04);
       printf("Ins Status.Error  = %d\n",msg6.InsStatus & 0x08);      
       printf("VelNed = %lf, %lf, %lf\n",msg6.VelNed[0],msg6.VelNed[1],msg6.VelNed[2]);
 
       
-      printf("**** \n");
+      printf("********************\n\n");
     }
   }
   return;
