@@ -64,9 +64,11 @@ public class Icarous{
     private COM com_module;
     private BCAST bcast_module;
     private Mission Task;
+    private String version;
     
     public Icarous(String args[],Mission task){
 
+	version    = "1.0";
 	verbose    = false;
 	sitlhost   = null;
 	px4port    = null;
@@ -143,6 +145,7 @@ public class Icarous{
 	    
 	}
 
+	System.out.println("ICAROUS version: "+version);
 		
 	FlightData    = new AircraftData(pData);
 	
@@ -198,6 +201,10 @@ public class Icarous{
 
     public void SetDaidaludusConfig(String filename){
 	uasQuad.fsam.SetDaaConfig(filename);
+    }
+
+    public String GetVersion(){
+	return version;
     }
     
     public void run(){

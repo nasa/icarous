@@ -387,7 +387,7 @@ public class AircraftData{
 		    
 		    msgMissionRequest.seq = count;
 		    Intf.Write(msgMissionRequest);
-		    System.out.println("wrote count:"+count);
+		    //System.out.println("wrote count:"+count);
 		    state = FP_READ.FP_WP_READ;
 		    break;
 
@@ -398,7 +398,7 @@ public class AircraftData{
 		    msg_mission_item msgMissionItem = Inbox.GetMissionItem();
 		    if(msgMissionItem != null){
 			
-			System.out.println("mission sequence received:"+msgMissionItem.seq);
+			//System.out.println("mission sequence received:"+msgMissionItem.seq);
 			if(msgMissionItem.seq == count){
 			    mission.add(msgMissionItem);
 			    state = FP_READ.FP_ITEM_REQUEST;
@@ -462,7 +462,7 @@ public class AircraftData{
 		    msgMissionCount.count = mission.size();
 
 		    Intf.Write(msgMissionCount);
-		    System.out.println("Wrote mission count: "+msgMissionCount.count);
+		    //System.out.println("Wrote mission count: "+msgMissionCount.count);
 		    state = FP_WRITE_AP.FP_SEND_WP;
 		    break;
 	    
@@ -476,14 +476,14 @@ public class AircraftData{
 			int seq = msgMissionRequest.seq;
 			count   = seq;
 		    
-			System.out.println("Received mission request: "+ seq );
+			//System.out.println("Received mission request: "+ seq );
 
 			msgMissionItem = mission.get(seq);									
 			msgMissionItem.sysid   = 1;
 			msgMissionItem.compid  = 1;
 			
 			Intf.Write(msgMissionItem);
-			System.out.println("Wrote mission item:"+count);
+			//System.out.println("Wrote mission item:"+count);
 			//System.out.format("lat, lon, alt: %f,%f,%f\n",msgMissionItem.x,msgMissionItem.y,msgMissionItem.z);
 			
 		    }
@@ -491,11 +491,11 @@ public class AircraftData{
 		    msg_mission_ack msgMissionAck = Inbox.GetMissionAck();
 		    if(msgMissionAck != null){
 		    
-			System.out.println("Received acknowledgement - type: "+msgMissionAck.type);
+			//System.out.println("Received acknowledgement - type: "+msgMissionAck.type);
 		    
 			if(msgMissionAck.type == 0){
 			    if(count == mission.size() - 1){
-				System.out.println("Waypoints sent successfully to AP");
+				//System.out.println("Waypoints sent successfully to AP");
 				writeComplete = true;
 			    }
 			
