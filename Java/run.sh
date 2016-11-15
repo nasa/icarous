@@ -72,8 +72,9 @@ elif [ "$1" == 'RADIO' ];then
 elif [ "$1" == 'SAFE' ];then
     echo "Launching SAFEGUARD listener"
     java -cp $EXEC BB_SAFEGUARD $GPIO_PORT $COM_INPUT_PORT
-    
+elif [ "$1" == 'DaidalusPolyExample' ];then
+    java -cp $EXEC DaidalusPolyExample params/DaidalusQuadConfig.txt
 else
-    echo "run.sh [ SITL | PX4 | GS | RADIO | SAFE ]"    
+    echo "run.sh [ SITL | PX4 | GS | RADIO | SAFE | DaidalusPolyExample ]"    
 fi
 
