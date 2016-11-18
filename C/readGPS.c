@@ -325,7 +325,7 @@ int ProcessGPSMessage(uint8_t c, struct BinGroup1* msg1, struct BinGroup4* msg4,
       p = data + HEADER + GROUP1_LEN;
       ExtractDataGroup4(p,msg4);
 
-      p = data + HEADER + GROUP4_LEN;
+      p = data + HEADER + GROUP1_LEN + GROUP4_LEN;
       ExtractDataGroup6(p,msg6);
       
       return 1;
@@ -348,6 +348,7 @@ void InitVecNav(int fd){
 
   // Enable Binary group 1 output on serial port 1
 
+  
   //char input2[] = "$VNWRG,75,1,80,28,0FFF,07FF*XX\r\n";
   char input2[] = "$VNWRG,75,1,80,29,FFFF,0FFF,07FF*XX\r\n";
   write(fd,input2,sizeof(input2));
@@ -401,6 +402,7 @@ void main(int argc, char *argv[]){
       printf("ECEF     = %lf, %lf, %lf\n",msg4.PosEcef[0],msg4.PosEcef[1],msg4.PosEcef[2]);
       printf("Pos Acc  = %lf, %lf, %lf\n",msg4.PosU[0],msg4.PosU[1],msg4.PosU[2]);
       printf("Vel Acc  = %lf\n",msg4.VelU);
+      printf("TimeU    = %d\n",msg4.TimeU);
 
       printf("\n***   INS Msg    ***\n");
       printf("Ins Status.Mode   = %d\n",msg6.InsStatus & 0x03);
