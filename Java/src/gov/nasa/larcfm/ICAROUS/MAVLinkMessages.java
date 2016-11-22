@@ -203,6 +203,7 @@ public class MAVLinkMessages{
     public ArrayList<msg_mission_item_reached> listMissionItemReached;
     public ArrayList<msg_command_ack> listCommandAck;
     public ArrayList<msg_command_long> listCommandLong;
+    public ArrayList<msg_command_int> listCommandInt;
     public ArrayList<msg_fence_point> listFencePoint;
     public ArrayList<msg_fence_fetch_point> listFenceFetchPoint;
     public ArrayList<msg_set_mode> listSetMode;
@@ -229,6 +230,7 @@ public class MAVLinkMessages{
 	listMissionItemReached = new ArrayList<msg_mission_item_reached>();
 	listCommandAck         = new ArrayList<msg_command_ack>();
 	listCommandLong        = new ArrayList<msg_command_long>();
+	listCommandInt         = new ArrayList<msg_command_int>();
 	listFencePoint         = new ArrayList<msg_fence_point>();
 	listFenceFetchPoint    = new ArrayList<msg_fence_fetch_point>();
 	listSetMode            = new ArrayList<msg_set_mode>();
@@ -479,7 +481,7 @@ public class MAVLinkMessages{
 	    break;
 	    
 	case msg_command_int.MAVLINK_MSG_ID_COMMAND_INT:
-	    msgCommandInt = (msg_command_int) message.unpack();
+	    listCommandInt.add((msg_command_int) message.unpack());
 	    break;
 	    
 	case msg_command_long.MAVLINK_MSG_ID_COMMAND_LONG:
@@ -876,6 +878,15 @@ public class MAVLinkMessages{
     public synchronized msg_command_long GetCommandLong(){
 	if(listCommandLong.size()>0){	
 	    return listCommandLong.remove(0);	    
+	}
+	else{
+	    return null;
+	}	
+    }
+
+    public synchronized msg_command_int GetCommandInt(){
+	if(listCommandInt.size()>0){	
+	    return listCommandInt.remove(0);	    
 	}
 	else{
 	    return null;

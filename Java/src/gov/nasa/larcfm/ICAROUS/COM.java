@@ -279,7 +279,17 @@ public class COM implements Runnable,ErrorReporter{
 		}		
 		else{
 		   UAS.apIntf.Write(msgCommandLong); 
-		}		
+		}
+
+		msg_command_int msgCommandInt = RcvdMessages.GetCommandInt();
+		if(msgCommandInt.command == MAV_CMD.MAV_CMD_SPATIAL_USER_2){
+		    GenericObject obj = new GenericObject(1,(int)msgCommandInt.param1,
+							  (float) msgCommandInt.x*(float)1e-7, (float) msgCommandInt.y*(float)1e-7,msgCommandInt.z,
+							  msgCommandInt.param2,msgCommandInt.param3,msgCommandInt.param4);
+		    synchronized(FlightData.missionObj){
+			GenericObject.AddObject(FlightData.missionObj,obj);
+		    }
+		}
 	    }
 	    	    
 	    //Handle mode changes
