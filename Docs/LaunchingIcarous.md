@@ -11,7 +11,12 @@ Note that the nohup (no hang up) command enables the application to run as a bac
 
     $nohup ./run.sh RADIO > radioout.txt &
 
-Once the above two applications are launched, you should be able to receive data via the telemetry link connected to the ground station (e.g. mission planner/mavproxy)
+Once the above two applications are launched, you should be able to receive data via the telemetry link connected to the ground station (e.g. mission planner/mavproxy). When using radios with the SiK firmware, it is recommended that the firmware is configured with the following settings:
+
+* MAVLink - None (Raw data mode).
+* Op Resend - disabled.
+* ECC - disabled.
+The Sik radio firmware can be configured using Mission planner or APM Planner.
 
 We strongly recommend using MAVProxy as a ground station to communicate with ICAROUS. To simplify uploading geofence data to ICAROUS, additional modules are provided in `Python/CustomModules`. To setup these custom modules,\
 
@@ -43,5 +48,3 @@ Setup and launch the ardupilot SITL as described in http://ardupilot.org/dev/doc
     $./run.sh SITL
 
 While running ICAROUS in the SITL framework, it is possible to communicate with ICAROUS via a ground station using the UDP sockets instead of using a radio link. See `GS_MASTER` variable in the run.sh script to enable the ground station over a UDP socket.
-
-
