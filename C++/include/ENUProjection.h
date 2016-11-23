@@ -24,8 +24,8 @@ namespace larcfm {
 
 /**
  * This class creates a local Euclidean projection around a given point.  This projection may be used to
- * transform geodesic coordinates (LatLonAlt objects) into this Euclidean frame, using the project() method.  Also points
- * within this frame, may be found in geodesic coordinates with the inverse() method.   As long as the points are
+ * transform geodetic coordinates (LatLonAlt objects) into this Euclidean frame, using the project() method.  Also points
+ * within this frame, may be found in geodetic coordinates with the inverse() method.   As long as the points are
  * close to the projection point, the errors will be very small.
  * 
  * This is equivalent to a ENU (or geodetic tangent) projection (a form of orthographic projection).  It distorts distances from
@@ -84,6 +84,7 @@ namespace larcfm {
     /** Return a projection of a Position in Euclidean 3-space (if already in Euclidian coordinate, this is the identity function) */
 	Vect3 project(const Position& sip) const;
 
+    /** Return a projection of a Position in Euclidean 3-space (if already in Euclidian coordinate, this is the identity function) */
 	Point projectPoint(const Position& sip) const;
     
     /** Return a LatLonAlt value corresponding to the given Euclidean position */

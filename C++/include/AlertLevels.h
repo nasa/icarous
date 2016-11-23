@@ -14,6 +14,10 @@
 
 namespace larcfm {
 
+/** 
+ * It is assumed that for all alert level i >= 1: detection(i+1) => detection(i) and that there is at least one
+ * guidance level whose region is different from NONE. 
+ */
 class AlertLevels : public ParameterAcceptor {
 
 public:
@@ -123,9 +127,10 @@ public:
   AlertThresholds const & getLevel(int level) const;
 
 
-  /**
-   * Set alertor to the same values as the given parameter
-   */
+	/**
+	 * Copy alertor to the same values as the given parameter.
+	 * Detectors are deeply copied.
+	 */
   void copy(const AlertLevels& alertor);
 
   ParameterData getParameters() const;

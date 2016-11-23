@@ -89,7 +89,7 @@ public:
    * 
    * @return the discriminant of the intersection between the parametric line 
    * <code>s</code>+<i>t</i><code>v</code> and the circle of radius <code>D</code>. 
-   * If the discriminat is less than <code>0</code> the intersection doesn't exist;
+   * If the discriminant is less than <code>0</code> the intersection doesn't exist;
    * if it is <code>0</code> the line is tangent to the circle; otherwise, the line
    * intersects the circle in two different points. 
    */

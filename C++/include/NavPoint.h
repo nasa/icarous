@@ -59,7 +59,8 @@ private:
 	double   sgnRadius;
 	double   accel_gs;            // signed gs-acceleration value
 	double   accel_vs;            // signed vs-acceleration value
-	Velocity velocityIn_v;
+	Velocity velocityInit_v;
+	int linearIndex_i;
 
 
 public:
@@ -68,7 +69,8 @@ public:
     NavPoint(const Position& pp, double tt, WayType tty,
    		     const std::string& llabel, 	Trk_TCPType tcp_t, Gs_TCPType tcp_g, Vs_TCPType tcp_v,
   			 double sRadius, double a_gs, double a_vs,
-  			 const Velocity& v_velocityIn, const Position& sourcePos, double sourceTime
+	     const Velocity& v_velocityIn, const Position& sourcePos, double sourceTime,
+	     int linearIndex
    		     ) ;
 
     /** Construct a zero NavPoint */
@@ -90,7 +92,7 @@ public:
     static NavPoint makeFull(const Position& p, double t, WayType ty, const std::string& label,
     	      Trk_TCPType tcp_trk, Gs_TCPType tcp_gs, Vs_TCPType tcp_vs,
     	      double sgnRadius, double accel_gs, double accel_vs,
-    	      const Velocity& velocityIn, const Position& sourcePosition, double sourceTime);
+			     const Velocity& velocityIn, const Position& sourcePosition, double sourceTime);
 
 
     /**
@@ -119,16 +121,35 @@ public:
      */
     bool isInvalid() const;
 
+	/**
+	 * Can this point be merged with the given point p?  Merged points only apply to TCP points.
+	 * @param point the other point
+	 * @return true, if the points can be merged.
+	 */
     bool mergeable(const NavPoint& point) const;
 
-    /**
-     * Creates a new point that is the merger of the this point and the given
-     * point.  Assumes that mergeable() on the two points would return true, if
-     * not the orignal point is returned.
-     *
-     * @param point the other point
-     * @return a new point that is the merger of the two points.
-     */
+	/**
+	 * Creates a new point that is the merger of the this point and the given 
+	 * point.  Assumes that mergeable() on the two points would return true, if 
+	 * not, then approximately the original point is returned. <p>
+	 * 
+	 * Merging rules:
+	 * <ul>
+	 * <li> mergeTCPInfo() is commutative
+	 * <li> If both points are linear points, then the points are merged.
+	 * <li> If one point is a linear point (aka, not a TCP), then the TCP info (velocity and acceleration) 
+	 * from the TCP point is used.
+	 * <li> If both points are TCP (aka acceleration points) of different types (Trk, Gs, Vs), then the points
+	 * should merge without an issue, note: they are required to have the same "velocity in" 
+	 * <li> If both points are TCP (aka acceleration points) of the same type (Trk, Gs, or Vs), then the 
+	 * resulting point should be a combined point (e.g., EOTBOT), and the TCP information should be the information 
+	 * from the beginning point.
+	 * <li> If both points are TCP "begin" points, then a message is provided if they have different source positions
+	 * </ul> 
+	 * 
+	 * @param point the other point
+	 * @return a new point that is the merger of the two points.
+	 */
     NavPoint mergeTCPInfo(const NavPoint& point) const;
 
     
@@ -230,14 +251,11 @@ public:
 	 * It returns either the same point (if no significant data is in the label) or a fully reconstructed TCP type.
 	 * The reconstructed TCP will have a label field that does not contain any TCP metadata -- you will need to call name()
 	 * or tcpLabel() to retrieve the full string.
-	 * If this detects an old metadata format, it will return an invalid Navpoint.
+	 * If it is detected that this string uses the old metatdata format, this returns an invalid NavPoint.
 	 */
 	const NavPoint parseMetaDataLabel(const std::string& tlabel) const;
 	/**
-	 * Re-parse this point as a TCP, if its label describes it as such.
-	 * If this point is already a TCP or has no appropriate label, return unchanged.
-	 * If this detects an old metadata format, it will return an invalid Navpoint.
-	 * @return
+	 * If it is detected that this string uses the old metatdata format, this returns an invalid NavPoint.
 	 */
 	const NavPoint parseMetaDataLabel() const;
 
@@ -251,8 +269,9 @@ public:
     bool isLatLon() const;
     /** Is this point Virtual? */
     bool isVirtual() const;
-    /** Returns true if the point at index i is an added point, 
-     false otherwise.  0 <= i < size() */
+	/**
+	 * Is this an "added" point?
+	 */
     bool isAdded() const;
     /** Returns true if the point at index i is an unmodified original point, 
      false otherwise.  0 <= i < size() */
@@ -261,10 +280,10 @@ public:
 	/** Returns true if the point at index i is a modified point, 
 	   false otherwise.  0 <= i < size() */
     bool isAltPreserve() const;
-	/**
-	 * If there is a ground speed in constraint defined, return it (in internal units), otherwise return a negative value.
-	 * All TCP points will have this defined, at a minimum
-	 */
+//	/**
+//	 * If there is a ground speed in constraint defined, return it (in internal units), otherwise return a negative value.
+//	 * All TCP points will have this defined, at a minimum
+//	 */
   	//double goalGsIn() const;
 
 
@@ -273,24 +292,24 @@ public:
 
     //double getRadius() const;
 
-    /**
-     * This returns the radius of the current turn.  If this is not a turn point or if the associated acceleration is 0.0, this returns
-     * a radius of zero.
-     */
+	/**
+	 * This returns the radius of the current turn.  If this is not a turn point, it returns the stores radius value.  
+	 * If the associated acceleration is 0.0, this returns a radius of zero.
+	 */
     double turnRadius() const;
 
 
-    /**
-     * This returns the signed radius of the current turn.  If this is not a turn point or if the associated acceleration is 0.0, this returns
-     * a radius of zero.  The sign indicates the direction of the turn.
-     */
+	/**
+	 * This returns the radius of the current turn.  If this is not a turn point, it returns the stores radius value.  
+	 * If the associated acceleration is 0.0, this returns a radius of zero.
+	 */
     double signedRadius() const;
 
 
-    /**
-     * This returns a center of turn position with the same altitude as the current point.  If the current point is not a turn point,
-     * this returns an invalid position.
-     */
+	/**
+	 * This method returns a center of turn position with the same altitude as the current point.  If the current point is not a turn point, and has a zero stored radius,
+	 * this returns an invalid position. 
+	 */
     Position turnCenter() const;
 
     /** If associated with a trajectory change, returns the (original) time of the TCP, otherwise has no meaning. */
@@ -314,9 +333,17 @@ public:
 	bool isBGS() const;
 	bool isEGS() const;
 
+	/** Source time of point this was based on for any type except BVS. */
 	double sourceTime() const ;
 
+	/** Source time of point this was based on for any type except BVS. */
 	Position sourcePosition() const ;
+
+	/** linear index
+	 * 
+	 * @return
+	 */
+	int linearIndex() const ;
 
 	double hasSource() const;
 
@@ -344,7 +371,7 @@ public:
     const NavPoint mkAlt(const double alt) const;
     /** Make a new NavPoint from the current one with the Z coordinate changed */
     const NavPoint mkZ(const double z) const;  
-    /** Make a new NavPoint from the current one with the time changed */
+	/** Make a new NavPoint from the current one with the time changed, source time is not changed */
     const NavPoint makeTime(const double time) const;
 
     //const NavPoint makeTCP(TCPType x) const;
@@ -355,26 +382,36 @@ public:
 
     const NavPoint makeVsTCP(Vs_TCPType tcp) const;
 
+	/** Make a new NavPoint from the current one with the source time metadata changed */
     const NavPoint makeSource(const Position& sp, double st) const;
 
     const NavPoint makeSourceTime(double x) const;
     const NavPoint makeSourcePosition(const Position& x) const;
 //	/** Make a new NavPoint with current point's information as the "source" */
 //	const NavPoint makeSourceClear() const;
+    const NavPoint makeLinearIndex(int ix) const;
 
     const NavPoint makeRadius(double r) const;
 
+	/** Make a new NavPoint from the current one with the acceleration/turn rate metadata changed 
+	 *  VelocityIn must be defined before using this method.
+	 * 
+	 * */
 	const NavPoint makeTrkAccel(double omega) const;
+	/** Make a new NavPoint from the current one with the acceleration/turn rate metadata changed */
 	const NavPoint makeGsAccel(double ga) const;
+	/** Make a new NavPoint from the current one with the acceleration/turn rate metadata changed */
 	const NavPoint makeVsAccel(double va) const;
 
-    const NavPoint makeVelocityIn(const Velocity& x) const;
+    const NavPoint makeVelocityInit(const Velocity& x) const;
 //	/** Make a new NavPoint from the current one with the ground speed in metadata changed.  Set to -1 to remove the constraint. */
 //    const NavPoint makeGoalGsIn(double gs) const;
 
     /** Make a new NavPoint from the current that is "Virtual" */
     const NavPoint makeVirtual() const;
-    /** Make a new NavPoint from the current that is "Added" */
+	/**
+	 * Make an "added" point that does not include valid source info
+	 */
     const NavPoint makeAdded() const;
     /** Make a new NavPoint from the current that is "Original" */
     const NavPoint makeOriginal() const;
@@ -385,6 +422,7 @@ public:
 //	/** If the current point is "Virtual", make a new point that is "Added", otherwise return this point */
 //    const NavPoint makeVirtualAdded() const;
 
+	/** Makes a new NavPoint that is devoid of any "turn" or "ground speed" tags, but retains source position and time */
     const NavPoint makeStandardRetainSource() const;
 
     const NavPoint makeNewPoint() const;
@@ -396,45 +434,48 @@ public:
     const NavPoint makeLabel(const std::string& label) const;
     const NavPoint appendLabel(const std::string& label) const;
 	/** Make a new "beginning of turn" NavPoint at the given position and time where the current NavPoint is the "center of turn" */
-	const NavPoint makeBOT(const Position& p, double t,  const Velocity& v_velocityIn, double sRadius) const;
+	const NavPoint makeBOT(const Position& p, double t,  const Velocity& v_velocityIn, double sRadius, int linearIndex) const;
 //	/** Make a new "middle of turn" NavPoint at the given position and time where the current NavPoint is the "center of turn" */
 //	const NavPoint makeTurnMid(const Position& p, double t, double d_turnRate, const Velocity& v_velocityIn) const;
 	/** Make a new "end of turn" NavPoint at the given position and time where the current NavPoint is the "center of turn" */
-	const NavPoint makeEOT(const Position& p, double t, const Velocity& v_velocityIn) const;
+	const NavPoint makeEOT(const Position& p, double t, const Velocity& v_velocityIn, int linearIndex) const;
 
-	const NavPoint makeEOTBOT(const Position& p , double t, const Velocity& v_velocityIn, double sRadius) const;
+	const NavPoint makeEOTBOT(const Position& p , double t, const Velocity& v_velocityIn, double sRadius, int linearIndex) const;
 	/** Make a new "beginning of ground speed change" NavPoint at the given position and time where the current NavPoint is the "center of gsc" */
-	const NavPoint makeBGS(const Position& p, double t, double gsAccel, const Velocity& velocityIn) const;
-	/** Make a new "end of ground speed change" NavPoint at the given position and time where the current NavPoint is the "center of gsc" */
-	const NavPoint makeEGS(const Position& p, double t, const Velocity& velocityIn) const;
-	const NavPoint makeEGSBGS(const Position& p , double t, double a, const Velocity& v_velocityIn) const;
+	const NavPoint makeBGS(const Position& p, double t, double gsAccel, const Velocity& velocityIn, int linearIndex) const;
+	/** Make a new "end of gs change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+	 *  velocityIn is not well defined for this point, but should generally be the velocityIn for the corresponding BGCS point or the velocity at this point 
+	 */
+	const NavPoint makeEGS(const Position& p, double t, const Velocity& velocityIn, int linearIndex) const;
+	const NavPoint makeEGSBGS(const Position& p , double t, double a, const Velocity& v_velocityIn, int linearIndex) const;
 
 	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the current NavPoint is the "center of vsc" */
-	const NavPoint makeBVS(const Position& p, double t, double d_vsAccel, const Velocity& d_velocityIn) const;
+	const NavPoint makeBVS(const Position& p, double t, double d_vsAccel, const Velocity& d_velocityIn, int linearIndex) const;
 	/** Make a new "end of vertical speed change" NavPoint at the given position and time where the current NavPoint is the "center of vsc" */
-	const NavPoint makeEVS(const Position& p, double t, const Velocity& d_velocityIn) const;
+	const NavPoint makeEVS(const Position& p, double t, const Velocity& d_velocityIn, int linearIndex) const;
 
-	const NavPoint makeEVSBVS(const Position& p , double t, double a, const Velocity& v_velocityIn) const ;
+	const NavPoint makeEVSBVS(const Position& p , double t, double a, const Velocity& v_velocityIn, int linearIndex) const ;
 
-	const NavPoint makeMidpoint(const Position& p, double t) const;
+	/** Makes a new NavPoint that is an intermediate "mid" added point */
+	const NavPoint makeMidpoint(const Position& p, double t, int linearIndex) const;
 
-    /** Makes a new NavPoint that is qualified as a "begin of turn" (with no other special information)  */
-	const NavPoint makeTCPTurnBegin() const;
-    /** Makes a new NavPoint that is qualified as a "end of turn" (with no other special information)  */
-	const NavPoint makeTCPTurnEnd() const;    
-    /** Makes a new NavPoint that is qualified as a "middle of turn" (with no other special information) */
-	//const NavPoint makeTCPTurnMid() const;
-    /** Makes a new NavPoint that is qualified as a "begin of ground speed change" (with no other special information)  */
-	const NavPoint makeTCPGSCBegin() const;
-    /** Makes a new NavPoint that is qualified as a "end of ground speed change" (with no other special information)  */
-	const NavPoint makeTCPGSCEnd() const;
-    /** Makes a new NavPoint that is qualified as a "begin of vertical speed change" (with no other special information)  */
-	const NavPoint makeTCPVSCBegin() const;
-    /** Makes a new NavPoint that is qualified as a "end of vertical speed change" (with no other special information)  */
-	const NavPoint makeTCPVSCEnd() const;
+//    /** Makes a new NavPoint that is qualified as a "begin of turn" (with no other special information)  */
+//	//	const NavPoint makeTCPTurnBegin() const;
+//    /** Makes a new NavPoint that is qualified as a "end of turn" (with no other special information)  */
+//	//const NavPoint makeTCPTurnEnd() const;
+//    /** Makes a new NavPoint that is qualified as a "middle of turn" (with no other special information) */
+//	//const NavPoint makeTCPTurnMid() const;
+//    /** Makes a new NavPoint that is qualified as a "begin of ground speed change" (with no other special information)  */
+//	//const NavPoint makeTCPGSCBegin() const;
+//    /** Makes a new NavPoint that is qualified as a "end of ground speed change" (with no other special information)  */
+//	//const NavPoint makeTCPGSCEnd() const;
+//    /** Makes a new NavPoint that is qualified as a "begin of vertical speed change" (with no other special information)  */
+//	//const NavPoint makeTCPVSCBegin() const;
+//    /** Makes a new NavPoint that is qualified as a "end of vertical speed change" (with no other special information)  */
+//	//const NavPoint makeTCPVSCEnd() const;
 	/** Return a new NavPoint that shares all attributes with the specified NavPoint except Position and Time */
     const NavPoint makeMovedFrom(const NavPoint& o) const;
-    /** Return a new NavPoint that shares all attributes with this one except position */
+	/** Return a new NavPoint that shares all attributes with this one, except position */
     const NavPoint makePosition(const Position& p) const;
 
     //const NavPoint revertToSource(const Position& p) const;
@@ -443,10 +484,17 @@ public:
 	 * Calculate and return the initial velocity between the current point and the given point 
 	 * This function is commutative: direction between points is always determined by the time ordering of the two points.
 	 * 
+	 * @param s2 the given NavPoint
+	 */
+    static Velocity initialVelocity(const NavPoint& s1, const NavPoint& s2);
+    
+	/** 
+	 * Calculate and return the initial velocity between the current point and the given point 
+	 * This function is commutative: direction between points is always determined by the time ordering of the two points.
+	 * 
 	 * @param s the given NavPoint
 	 */
     Velocity initialVelocity(const NavPoint& s) const;
-    
 
 	/** 
 	 * Calculate and return the final velocity between the current point and the given point
@@ -493,7 +541,7 @@ public:
 
     
 	/**
-	 * return a new Navpoint between this Navpoint and np that corresponds to time by interpolation
+	 * return a new NavPoint between this NavPoint and np that corresponds to time by interpolation
 	 * This function is commutative with respect to the points: direction between points is always determined by the time ordering of the two points.
 	 * Negative time results in a velocity in the opposite direction (along the same great circle, if in latlon)
 	 * 
@@ -514,7 +562,7 @@ public:
 	/**
 	 * This function is commutative: direction between points is always determined by the time ordering of the two points.
 	 * @param np   next NavPoint
-	 * @return     ground speed between this Navpoint and np 
+	 * @return     ground speed between this NavPoint and np 
 	 */
     double groundSpeed(const NavPoint& np) const;
 
@@ -527,21 +575,23 @@ public:
 	 * If this is a TCP, return the velocity in metadata.  Otherwise return an invalid velocity.
 	 * Not that this value is only well-defined for two case: the beginning of acceleration points (BGSC, BVSC, BOT) and points with a fixed gs mutability (where trk and vs may still not be well-defined)
 	 */
-    Velocity velocityIn() const;
+    Velocity velocityInit() const;
 
 
 	/**
-	 * Return the associated (signed) acceleration, otherwise return 0.0.
+	 * Return the  (signed) turn rate (i.e., position 
+	 * acceleration in the "track" dimension) associated with this point. Turn rate is in rad/sec (positive 
+	 * is clockwise/right, negative is counterclockwise/left), otherwise return 0.0; 
 	 */
     double trkAccel() const;
 
-    /**
-	 * Return the associated (signed) acceleration, otherwise return 0.0.
+	/**
+	 * Return the associated (signed) ground speed rate of change (i.e, horizontal acceleration).
 	 */
     double gsAccel() const;
 
-    /**
-	 * Return the associated (signed) acceleration, otherwise return 0.0.
+	/**
+	 * Return the associated (signed) vertical acceleration.
 	 */
     double vsAccel() const;
 
@@ -564,9 +614,14 @@ public:
 
     /** Return a string representation that includes additional information */
     std::string toStringFull() const;
-    /** Return a string representation that is consistent with the PathReader input format. */
+	/**
+	 * This collapses any metadata into the label field
+	 */
     std::string toOutput() const;
-	/** Return a string representation that is consistent with the PathReader input format.  If extended = true, include all fields. (mutability + tcpinfo + label) */
+	/** Return a string representation that is consistent with the PathReader input format. 
+	 *  if tcp is true, explicily include all metadata as distinct columns.
+	 *  if tcp is false, collapse metadata, if any, into the "label" field 
+	 */
     std::string toOutput(int precision, bool tcp) const;
 
     static const std::string& toStringType(NavPoint::WayType ty);

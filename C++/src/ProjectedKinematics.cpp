@@ -15,6 +15,7 @@
 #include "Position.h"
 #include "Projection.h"
 #include "ProjectedKinematics.h"
+#include "KinematicsLatLon.h"
 #include "StateVector.h"
 #include "GreatCircle.h"
 #include "Kinematics.h"
@@ -71,7 +72,7 @@ bool ProjectedKinematics::clockwise(Position s1, Velocity v1, Position s2) {
 	if (s1.isLatLon()) {
 		trk2 = GreatCircle::velocity_initial(s1.lla(), s2.lla(), 1).trk();
 	} else {
-		trk2 = s2.point().Sub(s1.point()).vect2().track();
+		trk2 = s2.point().Sub(s1.point()).vect2().trk();
 	}
 	return Util::clockwise(trk1, trk2);
 }
@@ -106,15 +107,26 @@ bool ProjectedKinematics::clockwise(Position s1, Velocity v1, Position s2) {
 //	  return Velocity::mkTrkGsVs(trk, gs, vs);
 //}
 
-double ProjectedKinematics::closestTimeOnTurn(const Position& so, const Velocity& v1, double omega, const Position& s2) {
-	Vect3 s3 = so.point();
-	Vect3 x3 = s2.point();
-	if (so.isLatLon()) {
-		EuclideanProjection proj = Projection::createProjection(so.lla().zeroAlt());
-		s3 = proj.project(so);
-		x3 = proj.project(s2);
-	}
-	return Kinematics::closestTimeOnTurn(s3, v1, omega, x3);
+double ProjectedKinematics::closestTimeOnTurn(const Position& turnstart, const Velocity& v1, double omega, const Position& center, const Position& x, double endTime) {
+    Vect3 s3 = turnstart.point();
+    Vect3 x3 = x.point();
+    if (turnstart.isLatLon()) {
+//	      EuclideanProjection proj = Projection::createProjection(center.lla().zeroAlt());
+//	      s3 = proj.project(turnstart);
+//	      x3 = proj.project(x);
+//	      v1 = proj.projectVelocity(turnstart, v1);
+    	return KinematicsLatLon::closestTimeOnTurn(turnstart.lla(), v1, omega, x.lla(), endTime);
+    }
+    return Kinematics::closestTimeOnTurn(s3, v1, omega, x3, endTime);
+}
+
+double ProjectedKinematics::closestDistOnTurn(const Position& turnstart, const Velocity& v1, double R, int dir, const Position& center, const Position& x, double endDist) {
+    Vect3 s3 = turnstart.point();
+    Vect3 x3 = x.point();
+    if (turnstart.isLatLon()) {
+    	return KinematicsLatLon::closestDistOnTurn(turnstart.lla(), v1, R, dir, x.lla(), endDist);
+    }
+    return Kinematics::closestDistOnTurn(s3, v1, R, dir, x3, endDist);
 }
 
 std::pair<Position,Velocity> ProjectedKinematics::turn(const Position& so, const Velocity& vo, double t, double R, bool turnRight) {

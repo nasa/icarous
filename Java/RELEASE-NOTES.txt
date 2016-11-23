@@ -1,0 +1,10 @@
+ICAROUS: Integrated Configurable Algorithms for Reliable Operations of Unmanned Systems
+-------------------------------------------------------------------------
+Release: Java - 1.0, November 18, 2016
+Authors: Swee Balachadran, Cesar Munoz, George Hagen
+Contact: Cesar A. Munoz (Cesar.A.Munoz@nasa.gov)
+
+Release ICAROUS 1.0
+--------------------
+* First non-alpha Java release of ICAROUS. It includes DAIDALUS 1.0, PolyCARP,
+  Mavlink communication module, and basic decision making capabilities. 

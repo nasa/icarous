@@ -1072,7 +1072,7 @@ public final class Units {
     // unit = unit.substring(1, unit.length() - 1);
     // }
 
-    pair = (UnitPair) unitTable.get(unit);
+    pair = unitTable.get(unit);
 
     return pair;
   }
@@ -1085,22 +1085,35 @@ public final class Units {
   /**
    * Clean up the unit string that may contain brackets or extra space. For
    * instance, " [ feet]" becomes "feet". However, if the unit is "[  fred]"
-   * then "fred" will be returned.
+   * then "fred" will be returned (unlike the clean() method).
    */
   private static String cleanOnly(String unit) {
 	  StringBuilder sb = new StringBuilder(unit);
 	  String ut;
 	  trimBuilder(sb);
 
-	  ut = sb.toString();
-	  if (sb.length() > 2) {
-		  if (sb.charAt(0) == '[' && sb.charAt(sb.length() - 1) == ']') {
-			  sb.deleteCharAt(0);
-			  sb.deleteCharAt(sb.length() - 1);
-			  trimBuilder(sb);
-			  ut = sb.toString();
-		  }
+	  
+	  int start_idx = sb.indexOf("[");
+	  if (start_idx >= 0) {
+		  sb.replace(0,start_idx+1,"");		  
 	  }
+	  int end_idx = sb.indexOf("]");
+	  if (end_idx >= 0) {
+		  sb.replace(end_idx,sb.length()+1,"");		  
+	  }
+	  trimBuilder(sb);
+	  
+	  ut = sb.toString();
+	  
+	  
+//	  if (sb.length() > 2) {
+//		  if (sb.charAt(0) == '[' && sb.charAt(sb.length() - 1) == ']') {
+//			  sb.deleteCharAt(0);
+//			  sb.deleteCharAt(sb.length() - 1);
+//			  trimBuilder(sb);
+//			  ut = sb.toString();
+//		  }
+//	  }
 	  return ut;
   }
 
@@ -1176,7 +1189,7 @@ public final class Units {
    *                if it is invalid.
    */
   public static double getFactor(String unit) throws UnitException {
-    return ((UnitPair) getUnitPair(unit)).factor;
+    return (getUnitPair(unit)).factor;
   }
 
   /**
@@ -1390,7 +1403,7 @@ public final class Units {
    */
   public static synchronized String[] getCompatibleUnits(String unit)
       throws UnitException {
-    return (String[]) getUnitPair(unit).compatible.toArray(new String[0]);
+    return getUnitPair(unit).compatible.toArray(new String[0]);
   }
 
   /**
@@ -1877,7 +1890,9 @@ public final class Units {
 
   // This regex expression basically says is the string roughly in two parts, something that looks like a 
   // number and something that looks like a unit.
-  private static final Pattern numre = Pattern.compile("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-/^_a-zA-Z0-9\u00B0]*)\\s*\\]?\\s*$");
+  //private static final Pattern numre = Pattern.compile("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-/^_a-zA-Z0-9\u00B0]*)\\s*\\]?"); //\\s*$");
+  //private static final Pattern numre = Pattern.compile("\\s*([-+0-9\\.]+)\\s*([-\\[\\]\\/^_a-zA-Z0-9\u00B0]*).*"); //\\s*$");
+  private static final Pattern numre = Pattern.compile("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-\\/^_a-zA-Z0-9\\u00B0]*).*");
   /**
    * Parse a string, representing a value and a unit. 
    * If the string does not contain a unit, then the unit "unspecified" is returned.
@@ -1915,27 +1930,35 @@ public final class Units {
 	  Matcher m = numre.matcher(str);
 	  if (m.matches()) { 
 		  unit = Units.cleanOnly(m.group(2));
-		  //f.pln(" $$$ group 1: "+m.group(1)+"  group 2: "+m.group(2));
-		  if (Units.isUnit(unit)) {
-			  try {
-				  dbl = Double.parseDouble(m.group(1));
+		  //f.pln(" $$$ group 1: "+m.group(1)+"  group 2: "+m.group(2)+"  unit="+unit);
+		  
+		  // The logic here can be debated.  What should be returned when 
+		  // an invalid value or invalid unit is provided?  If parse("ft", "10 fjkdsj", 5)
+		  // is called, what should be returned? Units.from("ft", 10) or Units.from("ft", 5)?
+		  // I chose Units.from("ft", 10) because in the degenerate case of 
+		  // parse("10 jfkdjks", 5)--that is, with an implied default unit of "internal"--
+		  // returning 10 seems more correct than returning 5.
+		  //
+		  //   supplied                returned (aka converted) 
+		  //   value        unit       value          unit
+		  //   -----        ----       -----          ----
+		  //   valid        valid      suppliedvalue  suppliedunit
+		  //   valid        invalid    suppliedvalue  defunit
+		  //   invalid      valid      defvalue       defunit
+		  //   invalid      invalid    defvalue       defunit
+		  //   illformed               defvalue       defunit
+		  
+		  if (Util.is_double(m.group(1))) {
+			  dbl = Util.parse_double(m.group(1));
+			  if (Units.isUnit(unit)) {
 				  dbl = Units.from(unit, dbl);		   
-			  } catch (NumberFormatException e) {
-				  dbl = dv;
+			  } else {
+				  dbl = Units.from(defaultUnitsFrom, dbl);		
 			  }
 		  } else {
-			  try {
-				  dbl = Double.parseDouble(m.group(1));
-				  dbl = Units.from(defaultUnitsFrom, dbl);		
-				  // The logic here can be debated.  If parse("ft", "10 fjkdsj", 5)
-				  // is called, what should be returned? Units.from("ft", 10) or Units.from("ft", 5)?
-				  // I chose Units.from("ft", 10) because in the degenerate case of 
-				  // parse("10 jfkdjks", 5)--that is, with an implied default unit of "internal"--
-				  // returning 10 seems more correct than returning 5.
-			  } catch (NumberFormatException e) {
-				  dbl = dv;
-			  }
+			  dbl = dv;		
 		  }
+		  
 	  } else {
 		  dbl = dv;
 	  }

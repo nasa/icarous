@@ -16,7 +16,7 @@
 namespace larcfm {
 
 /**
- * This class differs from the Java version in that you need to explicitly register the types of detection classes you will be loading.
+ * This class contains static methods to read in Detection3D instance definitions from a ParameterData object in a format consistent with a ParameterData object created by DetectionParameterWriter.
  */
 class Detection3DParameterReader {
 private:

@@ -25,7 +25,7 @@ KinematicBandsCore::KinematicBandsCore(const KinematicBandsParameters& params) {
   most_urgent_ac = TrafficState::INVALID;
   conflict_acs_ = std::vector< std::vector<TrafficState> >();
   tiov_ = std::vector<Interval>();
-  last_conflict_level_ = 0;
+  current_alert_ = 0;
   reset();
 }
 
@@ -53,7 +53,7 @@ void KinematicBandsCore::setKinematicBandsCore(const KinematicBandsCore core) {
   most_urgent_ac = core.most_urgent_ac;
   conflict_acs_ = std::vector< std::vector<TrafficState> >();
   tiov_ = std::vector<Interval>();
-  last_conflict_level_ = 0;
+  current_alert_ = 0;
   reset();
 }
 
@@ -74,7 +74,7 @@ void KinematicBandsCore::reset() {
   epsh_ = 0;
   epsv_ = 0;
   tiov_.clear();
-  last_conflict_level_ = 0;
+  current_alert_ = 0;
 }
 
 /**
@@ -82,7 +82,7 @@ void KinematicBandsCore::reset() {
  */
 void KinematicBandsCore::update() {
   if (outdated_) {
-    last_conflict_level_ = 0;
+    current_alert_ = 0;
     for (int alert_level=1; alert_level <= parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
       if (alert_level-1 >= (int) conflict_acs_.size()) {
         conflict_acs_.push_back(std::vector<TrafficState>());
@@ -91,7 +91,7 @@ void KinematicBandsCore::update() {
       }
       conflict_aircraft(alert_level);
       if (!conflict_acs_[alert_level-1].empty()) {
-        last_conflict_level_ = alert_level;
+        current_alert_ = alert_level;
       }
     }
     epsh_ = epsilonH(ownship,most_urgent_ac);
@@ -101,11 +101,11 @@ void KinematicBandsCore::update() {
 }
 
 /**
- * Returns most severe alert level where there is a conflict aircraft
+ * Returns current alert level
  */
-int KinematicBandsCore::lastConflictAlertLevel() {
+int KinematicBandsCore::currentAlertLevel() {
   update();
-  return last_conflict_level_;
+  return current_alert_;
 }
 
 /**
@@ -194,10 +194,10 @@ void KinematicBandsCore::conflict_aircraft(int alert_level) {
   for (TrafficState::nat i = 0; i < traffic.size(); ++i) {
     TrafficState ac = traffic[i];
     ConflictData det = detector->conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),
-						   0,parameters.getLookaheadTime());
-    if (det.conflict()) {
-      if (conflict_band && det.getTimeIn() <= parameters.alertor.getLevel(alert_level).getAlertingTime()) {
-	conflict_acs_[alert_level-1].push_back(ac);
+        0,parameters.getLookaheadTime());
+    if (det.conflict() || detector->violation(own_s(),own_v(),ac.get_s(),ac.get_v())) {
+      if (conflict_band && det.getTimeIn() < parameters.alertor.getLevel(alert_level).getAlertingTime()) {
+        conflict_acs_[alert_level-1].push_back(ac);
       }
       tin = std::min(tin,det.getTimeIn());
       tout = std::max(tout,det.getTimeOut());

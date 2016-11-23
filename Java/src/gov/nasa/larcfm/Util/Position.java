@@ -389,6 +389,7 @@ public final class Position implements OutputList {
     }
   }
   
+  //TODO: unused?
   /** Return the curved horizontal distance between the current Position and the given Position
    * 
    * @param p position 2
@@ -459,30 +460,30 @@ public final class Position implements OutputList {
    * @param d        distance of advance
    * @return         new position distance "d" away from this position
    */
-  public Position linearDist(double track, double d) {
-	  if (latlon) {
-		  return new Position(GreatCircle.linear_initial(ll,track,d));		  		  		  		  
-	  } else {
-		  double fakeGs = 100;		 
-		  Velocity v = Velocity.mkTrkGsVs(track,fakeGs,0.0);
-		  //f.pln(" $$$$$$$$ linearDist: v = "+v);
-		  double dt = d/fakeGs;
-		  return new Position(s3.linear(v, dt)); 
-	  }
+  public Position linearDist(double track, double d) {	
+	  double fakeGs = 100;	
+	  Velocity v = Velocity.mkTrkGsVs(track,fakeGs,0.0);
+	  return linearDist(v,d).first;
   }
   
-  
+  /** This computes the horizontal position, the altitude is not computed!
+   * 
+   * @param v
+   * @param d
+   * @return
+   */
   public Pair<Position,Velocity> linearDist(Velocity v, double d) {
 	  double track = v.trk();
-	  //f.pln(" $$$$$$ linearDist: v.track = "+Units.str("deg",v.compassAngle()));
+	  //f.pln(" $$$$$$+++++++++++++++++++++++++ ENTER linearDist: v = "+v);
 	  if (latlon) {
 		  LatLonAlt sEnd = GreatCircle.linear_initial(ll,track,d);
 		  double finalTrk = track;
 		  if (d > minDist) {  // final course has problems if no distance between points (USE 1E-9), 1E-10 NOT GOOD
 		     finalTrk = GreatCircle.final_course(ll, sEnd);
 		  }
-		  //f.pln(" $$$$$$ linearDist: v = "+v+" finalTrk = "+Units.str("deg",finalTrk)+" d = "+Units.str("ft",d));
+		  //f.pln(" $$$$$$+++++++++++++++++++++++++++ linearDist: v = "+v+" finalTrk = "+Units.str("deg",finalTrk)+" d = "+Units.str("ft",d));
 		  Velocity vEnd = v.mkTrk(finalTrk);
+		  //f.pln(" $$$$$$+++++++++++++++++++++++++++ linearDist: vEnd = "+vEnd);
 		  return new Pair<Position,Velocity>(new Position(sEnd),vEnd);
 	  } else {
 		  //Velocity vEnd = Velocity.mkTrkGsVs(track,fakeGs,0.0);
@@ -624,21 +625,28 @@ public final class Position implements OutputList {
     }
   }
 
-  // returns intersection point and time of intersection relative to position so
-  // a negative time indicates that the intersection occurred in the past (relative to directions of travel of so1)
+  /** Given two great circles defined by so, vo and si, vi return the intersection point that is closest to so.
+   *  
+   * @param so           first point of line o 
+   * @param vo           velocity from point so
+   * @param si           first point of line i
+   * @param vi           velocity from point si
+   * @return Position and time of intersection. The returned altitude is so.alt().
+   * Note: a negative time indicates that the intersection occurred in the past (relative to directions of travel of so1)
+   */
   public static Pair<Position,Double> intersection(Position so, Velocity vo, Position si, Velocity vi) {
-    if (so.latlon != si.latlon) {
-      f.dln("Position.intersection call was given an inconsistent argument.");	
-      return new Pair<Position,Double>(Position.INVALID,-1.0);
-    }
-    if (so.latlon) {
-      boolean checkBehind = false;
-      Pair<LatLonAlt,Double> pgc = GreatCircle.intersection(so.lla(),vo, si.lla(),vi,checkBehind);
-      return new Pair<Position,Double>(new Position(pgc.first),pgc.second );
-    } else {
-      Pair<Vect3,Double> pvt = VectFuns.intersection(so.point(),vo,si.point(),vi);
-      return new Pair<Position,Double>(new Position(pvt.first),pvt.second );
-    }
+	  if (so.latlon != si.latlon) {
+		  f.dln("Position.intersection call was given an inconsistent argument.");	
+		  return new Pair<Position,Double>(Position.INVALID,-1.0);
+	  }
+	  if (so.latlon) {
+		  boolean checkBehind = false;
+		  Pair<LatLonAlt,Double> pgc = GreatCircle.intersection(so.lla(),vo, si.lla(),vi,checkBehind);
+		  return new Pair<Position,Double>(new Position(pgc.first),pgc.second );
+	  } else {
+		  Pair<Vect3,Double> pvt = VectFuns.intersection(so.point(),vo,si.point(),vi);
+		  return new Pair<Position,Double>(new Position(pvt.first),pvt.second );
+	  }
   }
 
 	/**
@@ -711,10 +719,10 @@ public final class Position implements OutputList {
       return new Pair<Position,Double>(Position.INVALID,-1.0);
     }
     if (so.latlon) {
-      Pair<LatLonAlt,Double> lgc = GreatCircle.intersection(so.lla(),so2.lla(), dto, si.lla(), si2.lla());
+      Pair<LatLonAlt,Double> lgc = GreatCircle.intersectionAvgAlt(so.lla(),so2.lla(), dto, si.lla(), si2.lla());
       return new Pair<Position,Double>(new Position(lgc.first),lgc.second);
     } else {
-      Pair<Vect3,Double> pvt = VectFuns.intersection(so.point(),so2.point(),dto,si.point(),si2.point());
+      Pair<Vect3,Double> pvt = VectFuns.intersectionAvgZ(so.point(),so2.point(),dto,si.point(),si2.point());
       return new Pair<Position,Double>(new Position(pvt.first),pvt.second );
     }
   }
@@ -795,6 +803,9 @@ public final class Position implements OutputList {
     }
   }
 
+	/**
+	 * Return a string representation using the given unit conversions (latitude and longitude, if appropriate, are always in degrees, so only the z unit is used in that case)
+	 */
   public String toStringUnits() {
     return toStringUnits("NM", "NM", "ft");
   }

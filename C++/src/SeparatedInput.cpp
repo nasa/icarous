@@ -17,6 +17,7 @@
 #include "format.h"
 #include "Quad.h"
 #include "SeparatedInput.h"
+#include "Constants.h"
 #include "string_util.h"
 #include <string>
 #include <iostream>
@@ -47,9 +48,10 @@ SeparatedInput::SeparatedInput() :
 	caseSensitive = true;
 	//parameters = map<string,Quad<std::string,double,std::string,bool> >();
 	parameters = ParameterData();
-	patternStr = " \t,;";
+	patternStr = Constants::wsPatternBase;
 	reader = 0;
 	linenum = 0;
+	fixed_width = false;
 }
 
 // fs must already be opened!!!
@@ -64,7 +66,8 @@ SeparatedInput::SeparatedInput(std::istream* ins) :
 	units_factor.reserve(10);
 	line_str.reserve(10);
 	linenum = 0;
-	patternStr = " \t,;";
+	patternStr = Constants::wsPatternBase;
+	fixed_width = false;
 
 	//parameters = map<string,Quad<std::string,double,std::string,bool> >();
 	parameters = ParameterData();
@@ -85,6 +88,7 @@ SeparatedInput::SeparatedInput(const SeparatedInput& x) :
 	linenum = x.linenum;
 	patternStr = x.patternStr;
 	parameters = x.parameters;
+	fixed_width = x.fixed_width;
 
 //    std::cout << "SeparatedInput copy constructor failure" << std::endl;
 //    exit(1);
@@ -104,12 +108,64 @@ SeparatedInput& SeparatedInput::operator=(const SeparatedInput& x) {
 	linenum = x.linenum;
 	patternStr = x.patternStr;
 	parameters = x.parameters;
+	fixed_width = x.fixed_width;
 
 	//std::cout << "SeparatedInput assignment operator failure" << std::endl;
 	//exit(1);
 	return *this;  // should never get here
 }
 
+
+  void SeparatedInput::setColumnDelimiters(const std::string& delim) {
+    patternStr = delim;
+  }
+
+
+  void SeparatedInput::setFixedColumn(const string& widths, const string& nameList, const string& unitList) {
+    try {
+      vector<string> fields = split(widths, ",");
+
+      width_int = vector<int>(fields.size());
+      for (unsigned int i = 0; i < fields.size(); i++) {
+	width_int[i] = parseInt(fields[i]);
+      }
+			
+      fields = split(nameList,",");
+      if (width_int.size() != fields.size()) {
+	throw 1;
+      }
+      header_str = vector<string>(fields.size());
+      for (unsigned int i = 0; i < fields.size(); i++) {
+	header_str[i] = fields[i];
+      }
+			
+      fields = split(unitList,",");
+      if (width_int.size() != fields.size()) {
+	throw 2;
+      }
+      units_str = vector<string>(fields.size());
+      units_factor = vector<double>(fields.size());
+      for (unsigned int i = 0; i < fields.size(); i++) {
+	if (Units::isUnit(fields[i])) {
+	  units_str[i] = fields[i];
+	  units_factor[i] = Units::getFactor(fields[i]);					
+	} else {
+	  units_str[i] = "unspecified";
+	  units_factor[i] = Units::unspecified;
+	}
+      }
+			
+      fixed_width = true;
+      header = true;
+      units = true;
+    } catch (int e) {
+      string outstr = "No exception";
+      if (e == 1) outstr = "In parsing fixed width file, number of names does not match number of widths";
+      if (e == 2) outstr = "In parsing fixed width file, number of units does not match number of widths";
+      error.addError(outstr);
+    }
+  }
+  
 ParameterData& SeparatedInput::getParametersRef() {
 	return parameters;
 }
@@ -128,7 +184,7 @@ string SeparatedInput::getHeading(int i) const {
 	return header_str[i];
 }
 
-int SeparatedInput::findHeading(const string& heading) const {
+  int SeparatedInput::findHeading(const std::string& heading) const {
 	int rtn = -1;
 	for (unsigned int i = 0; i < header_str.size(); i++) {
 		if (heading.compare(header_str[i]) == 0) {
@@ -166,83 +222,6 @@ double SeparatedInput::getUnitFactor(int i) const {
 	return units_factor[i];
 }
 
-//  void SeparatedInput::clearParameters() {
-//    parameters.clear();
-//  }
-//
-//  bool SeparatedInput::containsParameter(const string& str) const {
-//    string key = str;
-//    if (!caseSensitive) key = toLowerCase(str);
-//    return parameters.find(key) != parameters.end();
-//  }
-//
-//  string SeparatedInput::getParameterString(const string& str) const {
-//    string key = str;
-//    if (!caseSensitive) key = toLowerCase(str);
-//    if (parameters.find(key) == parameters.end()) {
-//      return "";
-//    } else {
-//      return parameters.find(key)->second.getFirst();
-//    }
-//  }
-//
-//  double SeparatedInput::getParameterValue(const string& str) const {
-//    string key = str;
-//    if (!caseSensitive) key = toLowerCase(str);
-//    if (parameters.find(key) == parameters.end()) {
-//      return 0.0;
-//    } else {
-//      return parameters.find(key)->second.getSecond();
-//    }
-//  }
-//
-//  double SeparatedInput::getParameterValue(const string& str, const string& defaultUnit) const {
-//    string key = str;
-//    if (!caseSensitive) key = toLowerCase(str);
-//    if ( ! containsParameter(key)) {
-//      return 0.0;
-//    }
-//    double val = getParameterValue(key);
-//    if (getParameterUnit(key) == "unspecified") {
-//      val = Units::from(defaultUnit,val);
-//    }
-//    return val;
-//  }
-//
-//  string SeparatedInput::getParameterUnit(const string& str) const {
-//    string key = str;
-//    if (!caseSensitive) key = toLowerCase(str);
-//    if (parameters.find(key) == parameters.end()) {
-//      return "unspecified";
-//    } else {
-//      return parameters.find(key)->second.getThird();
-//    }
-//  }
-//
-//  bool SeparatedInput::getParameterBool(const string& str) const {
-//    string key = str;
-//    if (!caseSensitive) key = toLowerCase(str);
-//    if (parameters.find(key) == parameters.end()) {
-//      return false;
-//    } else {
-//      return parameters.find(key)->second.getFourth();
-//    }
-//  }
-//
-//  void SeparatedInput::setParameter(const string& key, const string& value) {
-//    process_preamble(key+" = "+value);
-//  }
-//
-//  bool SeparatedInput::setParameter(const string& s) {
-//	  vector<string> fields = split(s, patternStr);
-//
-//      // parameter keys are lower case only
-//  	if (fields.size() >= 3 && (fields[1].compare("=") == 0)) {
-//  		process_preamble(s);
-//  		return true;
-//  	}
-//  	return false;
-//  }
 
 bool SeparatedInput::columnHasValue(int i) const {
 	return (i >= 0 && i < (int) line_str.size() && !equals(line_str[i], "")
@@ -349,61 +328,10 @@ int SeparatedInput::lineNumber() const {
 }
 
 bool SeparatedInput::process_preamble(string str) {
-//
-//	  vector<string> fields = split(str, patternStr);
-//
-//	  // parameter keys are lower case only
-//	  if (fields.size() >= 3 && (fields[1].compare("=") == 0  || fields[1].compare("==") == 0) && fields[0].length() > 0) {
-//		  string id = fields[0];
-//          if (!caseSensitive) id = toLowerCase(id);
-//
-//		  // string value
-//		  string strv = fields[2];
-//		  for (unsigned int i = 3; i < fields.size(); i++) {
-//			  strv += " " + fields[i];
-//		  } // values become a space-delineated list string
-//
-//		  // Double value
-//		  double dbl = 0.0;
-//		  string unit = "unspecified";
-//		  try {
-//			  dbl = getd(fields[2]);
-//			  if (fields.size() >= 4) {
-//				  unit = Units::clean(fields[3]);
-//				  dbl = Units::from(unit, dbl);
-//			  }
-//		  } catch (std::runtime_error e) {
-//			  dbl = 0.0;  // string is not a number so use a default value
-//		  }
-//
-//		  // Boolean value
-//		  bool bval = false;
-//		  if (equalsIgnoreCase(strv,"true") || equalsIgnoreCase(strv,"T")) {
-//			  bval = true;
-//		  }
-//		  string strv2 = str.substr(str.find(fields[2],str.find("=")));
-//		  trim(strv2);
-//		  Quad<string,double,string,bool> quad = Quad<string,double,string,bool>::make(strv2, dbl, unit, bval);
-//		  // Quad<string,double,string,bool> quad = Quad<string,double,string,bool>::make(strv, dbl, unit, bval);
-//
-//		  parameters[id]=quad;
-//
-//		  return false;
-//	  } else {
-//          if (!caseSensitive) {
-//            for (unsigned int i = 0; i < fields.size(); i++) fields[i] = toLowerCase(fields[i]);
-//          }
-//		  header_str = fields;
-//		  return true;
-//	  }
-//  }
-
-	vector<string> fields = split(str, "=");
-
+  vector<string> fields = split(str, "=");   // C++ version of split doesn't need the "-2" parameter that java needs.
+  
 	// parameter keys are lower case only
-	if (fields.size() >= 2
-			&& /*(fields[1].compare("=") == 0  || fields[1].compare("==") == 0) &&*/fields[0].length()
-					> 0) {
+	if (fields.size() >= 2	&& fields[0].length() > 0) {
 		string id = fields[0];
 		trim(id, " \t");
 		if ( ! caseSensitive)
@@ -415,36 +343,17 @@ bool SeparatedInput::process_preamble(string str) {
 			strv += "=" + fields[i];
 		} // values become a space-delineated list string
 
-//	  // Double value
-//	  double dbl = 0.0;
-//	  string unit = "unspecified";
-//	  try {
-//		  dbl = getd(fields[2]);
-//		  if (fields.size() >= 4) {
-//			  unit = Units::clean(fields[3]);
-//			  dbl = Units::from(unit, dbl);
-//		  }
-//	  } catch (std::runtime_error e) {
-//		  dbl = 0.0;  // string is not a number so use a default value
-//	  }
-//
-//	  // Boolean value
-//	  bool bval = false;
-//	  if (equalsIgnoreCase(strv,"true") || equalsIgnoreCase(strv,"T")) {
-//		  bval = true;
-//	  }
-//	  string strv2 = str.substr(str.find(fields[2],str.find("=")));
-//	  trim(strv2);
-//	  Quad<string,double,string,bool> quad = Quad<string,double,string,bool>::make(strv2, dbl, unit, bval);
-//	  // Quad<string,double,string,bool> quad = Quad<string,double,string,bool>::make(strv, dbl, unit, bval);
-//
-//	  parameters[id]=quad;
-
 		parameters.set(id, strv);
 
 		return false;
-	} else {
-		fields = split(str, patternStr);
+	} else if (fields.size() == 1 && contains(str,"=")) {
+	  string id = string(fields[0]);
+	  trim(id);
+    		parameters.set(id,"");
+    		return false;
+    	} else {
+	  //fields = split(str, patternStr);
+		fields = split_regex(str, patternStr);
 		if ( ! caseSensitive) {
 			for (unsigned int i = 0; i < fields.size(); i++) {
 				fields[i] = toLowerCase(fields[i]);
@@ -457,7 +366,8 @@ bool SeparatedInput::process_preamble(string str) {
 }
 
 bool SeparatedInput::process_units(const string& str) {
-	vector<string> fields = split(str, patternStr);
+  //vector<string> fields = split(str, patternStr);
+	vector<string> fields = split_regex(str, patternStr);
 
 	// if units are optional, we need to determine if any were read in...
 	// a unit line is considered true if AT LEASE HALF of the fields read in are interpreted as valid units
@@ -481,13 +391,32 @@ bool SeparatedInput::process_units(const string& str) {
 	return true;
 }
 
-void SeparatedInput::process_line(const string& str) {
-	vector<string> fields = split(str, patternStr);
-	for (int i = 0; i < (int) fields.size(); i++) {
-		trim(fields[i]);
+  void SeparatedInput::process_line(const string& str) {
+    //vector<string> fields = split(str, patternStr);
+    vector<string> fields;
+    if (fixed_width) {
+      unsigned int idx = 0;
+      fields = vector<string>(width_int.size());
+      for (unsigned int i = 0; i < width_int.size(); i++) {
+	unsigned int end = idx+width_int[i];
+	if (idx < str.length() && end <= str.length()) {
+	  fields[i] = substring(str, idx, idx+width_int[i]);					
+	} else if (idx < str.length() && end > str.length()) {
+	  fields[i] = substring(str, idx, str.length());										
+	} else {
+	  fields[i] = "";
 	}
-	line_str = fields;
-}
+	//fpln("process line i="+Fm2(i)+" field="+fields[i]);
+	idx = idx + width_int[i];
+      }
+    } else {
+      fields = split_regex(str, patternStr);
+      for (int i = 0; i < (int) fields.size(); i++) {
+	trim(fields[i]);
+      }
+    }
+      line_str = fields;
+  }
 
 string SeparatedInput::getLine() const {
 	string s = "";

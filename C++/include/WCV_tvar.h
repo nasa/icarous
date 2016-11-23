@@ -13,6 +13,7 @@
 #include "WCVTable.h"
 #include "ConflictData.h"
 #include "LossData.h"
+#include "WCV_Vertical.h"
 #include <string>
 
 namespace larcfm {
@@ -20,13 +21,16 @@ class WCV_tvar : public Detection3D {
 
 protected:
   WCVTable table;
+  WCV_Vertical* wcv_vertical;
   std::string id;
 
 public:
-  /** This returns a copy of the object's internal table */
-  WCVTable getWCVTable();
 
-  /** This sets the internal table to be a copy of the supplied one. */
+  virtual ~WCV_tvar();
+
+  /**
+   * Sets the internal table to be a copy of the supplied one.
+   **/
   void setWCVTable(const WCVTable& tables);
 
   double getDTHR() const;
@@ -68,6 +72,8 @@ public:
   LossData WCV3D(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
 
   LossData WCV_interval(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
+
+  bool containsTable(WCV_tvar* wcv) const;
 
   virtual std::string toString() const;
   virtual std::string toPVS(int prec) const;

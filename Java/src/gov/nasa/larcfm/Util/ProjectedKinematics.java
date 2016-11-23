@@ -66,6 +66,8 @@ public final class ProjectedKinematics {
     return Util.clockwise(trk1, trk2);
   }
 
+  
+  
 
 
   //	  /**
@@ -99,16 +101,6 @@ public final class ProjectedKinematics {
   //	
   //	  
 
-  public static double closestTimeOnTurn(Position so, Velocity v1, double omega, Position s2) {
-    Vect3 s3 = so.point();
-    Vect3 x3 = s2.point();
-    if (so.isLatLon()) {
-      EuclideanProjection proj = Projection.createProjection(so.lla().zeroAlt()); 
-      s3 = proj.project(so); 
-      x3 = proj.project(s2); 
-    } 
-    return Kinematics.closestTimeOnTurn(s3, v1, omega, x3);
-  }
 
   /**
    *  Position and velocity after t time units turning in direction "dir" with radius R.  This is a wrapper around turnPosition and
@@ -185,7 +177,7 @@ public final class ProjectedKinematics {
     Pair<Vect3,Velocity> resp = Kinematics.turnOmega(s3,vo,t,omega);
     Vect3 pres = resp.first;
     Velocity vres = resp.second;
-    //f.pln("ProjectedKinematics.turnOmega t = "+t+" so = "+so.toString4()+"  vo = "+vo+" omega = "+omega);	  
+    //f.pln("ProjectedKinematics.turnOmega t = "+t+" so = "+so.toString()+"  vo = "+vo+" omega = "+omega);	  
     if (so.isLatLon()) {
       return Projection.createProjection(so.lla().zeroAlt()).inverse(pres,vres,true);
     } else {

@@ -20,7 +20,11 @@
 #include "format.h"
 #include "string_util.h"
 #include <stdexcept>
-
+#if defined(_MSC_VER)
+#include <regex>
+#else
+#include <regex.h>
+#endif
 //#include <dirent.h>
 
 
@@ -329,17 +333,39 @@ double Util::turnDelta(double alpha, double beta, bool turnRight) {
 	return rtn;
 }
 
+ double Util::turnDelta(double alpha, double beta, int dir) {
+   return turnDelta(alpha, beta, dir > 0);
+ }
 
-bool Util::is_double(const string& str) {
-	std::istringstream stream;
-	stream.str(str);
-	double d;
-	stream >> d;
-	if (stream.fail()) {
-		return false;
-	}
-	return true;
-}
+
+
+#if defined(_MSC_VER)
+ bool Util::is_double(const string& str) {
+	 std::string sb(str);
+	 trim(sb," \t");
+	 std::regex numre("^-?[0-9]*(\\.[0-9]*)?$");
+	 return std::regex_match(sb, numre);
+ }
+
+#else
+ bool Util::is_double(const string& str) {
+
+	 string sb(str);
+	 regex_t regex;
+	 int reti;
+
+	 trim(sb," \t");
+
+	 reti = regcomp(&regex, "^-?[0-9]*(\\.[0-9]*)?$", REG_EXTENDED);
+	 if (reti != 0) {
+		 fdln("Could not compile regex\n");
+	 }
+
+	 /* Execute regular expression */
+	 reti = regexec(&regex, sb.c_str(), 0, NULL, 0);
+	 return !reti;
+ }
+#endif
 
 double Util::parse_double(const string& str) {
 	std::istringstream stream;
@@ -398,7 +424,7 @@ string Util::hoursMinutesSeconds(double t) {
 	int mins = rem / 60;
 	rem = rem - mins*60;
 	int secs = rem;
-	return ""+Fm0(hours)+":"+Fm0(mins)+":"+Fm0(secs);
+	return ""+FmLead(hours,1)+":"+FmLead(mins,2)+":"+FmLead(secs,2);
 }
 
 ///**

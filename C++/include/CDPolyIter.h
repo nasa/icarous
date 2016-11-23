@@ -18,7 +18,11 @@
 #include "MovingPolygon3D.h"
 
 namespace larcfm {
-  class CDPolyIter : public DetectionPolygon {
+   /**
+  * Polygon detection.
+  * Based on UNVERIFIED PVS code.
+  */
+class CDPolyIter : public DetectionPolygon {
   private:
 
     std::vector<double> timesin;

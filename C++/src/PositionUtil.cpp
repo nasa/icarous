@@ -63,10 +63,10 @@ namespace larcfm {
 
 	std::pair<Position,double> PositionUtil::intersection(const Position & so1, const Position & so2, double dto, const Position & si1, const Position & si2) {
 		if (so1.isLatLon()) {
-			std::pair<LatLonAlt, double> p = GreatCircle::intersection(so1.lla(), so2.lla(), dto, si1.lla(), si2.lla());
+			std::pair<LatLonAlt, double> p = GreatCircle::intersectionAvgAlt(so1.lla(), so2.lla(), dto, si1.lla(), si2.lla());
 			return std::pair<Position,double>( Position(p.first), p.second);
 		} else {
-			std::pair<Vect3, double> p = VectFuns::intersection(so1.point(), so2.point(), dto, si1.point(), si2.point());
+			std::pair<Vect3, double> p = VectFuns::intersectionAvgZ(so1.point(), so2.point(), dto, si1.point(), si2.point());
 			return std::pair<Position,double>( Position(p.first), p.second);
 		}
 	}

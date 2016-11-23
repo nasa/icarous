@@ -45,16 +45,16 @@ public:
 	 */
 	static int horizontalCoordination(const Vect2& s, const Vect2& v);
 
-	/**
-	 * Horizontal coordination.
-	 *
-	 * @param s the relative position
-	 * @param v the relative velocity
-	 *
-	 * @return the horizontal coordination sign
-	 *   -1 corresponds to turning right in the relative system
-	 *   +1 corresponds to turing left in the relative system
-	 */
+  /**
+   * Horizontal coordination.
+   * 
+   * @param s the relative position
+   * @param v the relative velocity
+   * 
+   * @return the horizontal coordination sign
+   *   -1 corresponds to turning right in the relative system
+   *   +1 corresponds to turning left in the relative system
+   */
 	static int horizontalCoordination(const Vect3& s, const Vect3& v);
 
 
@@ -198,8 +198,32 @@ public:
 	 */
 	static int dataTurnEpsilon(const Vect3& s, const Velocity& vo, const Velocity& vi, int epsh, double trackRate);
 
+  /** 
+   * [CAM] This method replaces horizontal_old_repulsive_criterion. This definition is independent 
+   * and coordinated for both state-based and iterative algorithms.  This method is intended to be used
+   * with kinematic solvers, that is it is called iteratively with nvo progressing with each iteration.
+   * 
+   * Checks whether a horizontal solution is repulsive or divergent in the turn direction indicated by nvo 
+   * (2D geometry). Derived from PVS predicate: repulsive.repulsive_criteria(s,v,eps)(nv): bool
+   *    @param s      relative position of the ownship
+   *    @param vo     velocity of the ownship aircraft
+   *    @param vi     velocity of the traffic aircraft
+   *    @param nvo    resolution velocity of the traffic aircraft
+   *    @param eps    CR3D.horizontalCoordination
+   */
     static bool horizontal_new_repulsive_criterion(const Vect3& s, const Vect3& vo, const Vect3& vi, const Vect3& nvo, int eps);
 
+  /** 
+   * [CAM] This method replaces vertical_old_repulsive_criterion. It's intended to be used for kinematic, 
+   * iterative maneuvers. This criterion is like vs_bound_crit? but removes the else branch that restricts 
+   * some vertical maneuvers.
+   * 
+   *    @param s      relative position of the ownship
+   *    @param vo     velocity of the ownship aircraft
+   *    @param vi     velocity of the traffic aircraft
+   *    @param nvo    resolution velocity of the traffic aircraft
+   *    @param eps    Vertical coordination
+   */
 	static bool vertical_new_repulsive_criterion(const Vect3& s, const Vect3& vo, const Vect3& vi, const Vect3& nvo, int eps);
 
     static int verticalCoordinationLoS(const Vect3& s, const Vect3& vo, const Vect3& vi, std::string ownship, std::string traffic);

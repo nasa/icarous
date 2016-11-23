@@ -4,8 +4,9 @@
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
-#include "WCV_tvar.h"
+
 #include "WCV_TCPA.h"
+#include "WCV_TCOA.h"
 #include "Vect3.h"
 #include "Velocity.h"
 #include "Horizontal.h"
@@ -18,11 +19,13 @@ namespace larcfm {
 
 /** Constructor that uses the default TCAS tables. */
 WCV_TCPA::WCV_TCPA() {
+  wcv_vertical = new WCV_TCOA();
   id = "";
 }
 
 /** Constructor that specifies a particular instance of the TCAS tables. */
 WCV_TCPA::WCV_TCPA(const WCVTable& tab) {
+  wcv_vertical = new WCV_TCOA();
   table.copyValues(tab);
   id = "";
 }
@@ -96,8 +99,7 @@ std::string WCV_TCPA::getSimpleClassName() const {
 
 bool WCV_TCPA::contains(const Detection3D* cd) const {
   if (larcfm::equals(getCanonicalClassName(), cd->getCanonicalClassName())) {
-    WCV_TCPA* d = (WCV_TCPA*)cd;
-    return table.contains(d->table);
+    return containsTable((WCV_tvar*)cd);
   }
   return false;
 }

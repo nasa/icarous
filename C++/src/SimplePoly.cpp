@@ -12,6 +12,7 @@
 #include "NavPoint.h"
 #include "EuclideanProjection.h"
 #include "Projection.h"
+#include "ErrorLog.h"
 #include <string>
 #include <vector>
 /**
@@ -584,45 +585,62 @@ SimplePoly SimplePoly::linear(const Velocity& v, double t) const {
 }
 
 bool SimplePoly::validate() {
+	return validate(NULL);
+}
+
+bool SimplePoly::validate(ErrorLog* error) {
 	// not a polygon
 	if (size() < 3)	return false;
 	for (int i = 0; i < (int) points.size(); i++) {
 		// invalid points
 		if (points[i].isInvalid()) return false;
-		int j;
-		for (j = 0; j < i; j++) {
+		for (int j = 0; j < i; j++) {
 			// duplicated points
-			if (points[i].distanceH(points[j]) < Constants::get_horizontal_accuracy()) return false;
+			if (points[i].distanceH(points[j]) < Constants::get_horizontal_accuracy()) {
+				if (error != NULL) error->addError("polygon has duplicated points at "+Fm0(i));
+				return false;
+			}
 			if (j < i-2) {
 				// check for intersections
 				if (isLatLon()) {
 					LatLonAlt a = points[j].lla();
 					LatLonAlt b = points[j+1].lla();
-					LatLonAlt c = points[j-1].lla();
+					LatLonAlt c = points[i-1].lla();
 					LatLonAlt d = points[i].lla();
-					double t = GreatCircle::intersection(a, b, 100.0, c, d).second;
-					if (t >= 0.0 && t <= 100.0) return false;
+					double t = GreatCircle::intersection(a, GreatCircle::velocity_initial(a, b, 100), c, GreatCircle::velocity_initial(c,d,100), true).second;
+					if (t >= 0 && t <= 100) {
+						if (error != NULL) error->addError("polygon has intersecting edges at "+Fm0(i-1)+"-"+Fm0(i)+" and "+Fm0(j)+"-"+Fm0(j+1)+" t="+Fm2(t));
+						return false;
+					}
 				} else {
 					Vect3 a = points[j].point();
 					Vect3 b = points[j+1].point();
-					Vect3 c = points[j-1].point();
+					Vect3 c = points[i-1].point();
 					Vect3 d = points[i].point();
-					double t = VectFuns::intersection(a, b, 100.0, c, d).second;
-					if (t >= 0.0 && t <= 100.0) return false;
+					double t = VectFuns::timeOfIntersection(a, Velocity::make(b.Sub(a).Scal(0.01)), c, Velocity::make(d.Sub(c).Scal(0.01)));
+					if (t >= 0 && t <= 100) {
+						if (error != NULL) error->addError("polygon has intersecting edges at "+Fm0(i-1)+"-"+Fm0(i)+" and "+Fm0(j)+"-"+Fm0(j+1));
+						return false;
+					}
 				}
 			}
 		}
 		if (i > 1) {
 			// redundant (consecutive collinear) points
 			if (isLatLon()) {
-				if (GreatCircle::collinear(points[i-2].lla(), points[j-1].lla(), points[i].lla())) return false;
+				if (GreatCircle::collinear(points[i-2].lla(), points[i-1].lla(), points[i].lla())) {
+					if (error != NULL) error->addWarning("polygon has redundant collinear points at "+Fm0(i));
+					return false;
+				}
 			} else {
-				if (VectFuns::collinear(points[i-2].vect2(), points[j-1].vect2(), points[i].vect2())) return false;
+				if (VectFuns::collinear(points[i-2].vect2(), points[i-1].vect2(), points[i].vect2())) {
+					if (error != NULL) error->addWarning("polygon has redundant collinear points at "+Fm0(i));
+					return false;
+				}
 			}
 		}
 	}
-	return true;
-}
+	return true;}
 
 BoundingRectangle SimplePoly::getBoundingRectangle() const {
 	BoundingRectangle br;

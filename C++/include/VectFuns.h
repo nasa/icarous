@@ -42,6 +42,15 @@ public:
 	 */
 	static bool rightOfLine(const Vect2& so, const Vect2& vo, const Vect2& si);
 
+	/**
+	 * Return if point p is to the right or left of the line from A to B
+	 * @param a point A
+	 * @param b point B
+	 * @param p point P
+	 * @return 1 if to the right or collinear, -1 if to the left.
+	 */
+	static int rightOfLinePoints(const Vect2& a, const Vect2& b, const Vect2& p);
+
 	static bool collinear(const Vect3& p0, const Vect3& p1, const Vect3& p2);
 
 	static bool collinear(const Vect2& p0, const Vect2& p1, const Vect2& p2);
@@ -116,9 +125,35 @@ public:
 
 	static std::pair<Vect2,double> intersection(const Vect2& so, const Vect2& vo, const Vect2& si, const Vect2& vi);
 
+	 /**
+     * Given two lines defined by so, so2 and si, si2 return the intersection point 
+     * Calculate altitude of intersection using the average of the altitudes of the two closests points to the
+     * intersection.
+     * 
+     * @param so1     first point of line A 
+     * @param so2    second point of line A 
+     * @param dto    the delta time between point so and point so2.
+     * @param si1     first point of line B
+     * @param si2    second point of line B 
+     * @return a pair: intersection point and the delta time from point "so" to the intersection, can be negative if intersect
+     *                 point is in the past
+     *                if intersection point is invalid then the returned delta time is -1
+     */
 	static double distanceH(const Vect3& soA, const Vect3& soB);
 
-	static std::pair<Vect3,double> intersection(const Vect3& so1, const Vect3& so2, double dto, const Vect3& si1, const Vect3& si2);
+	/**
+	 * Computes 2D intersection point of two lines, but also finds z component as average of the closest end point of each line)
+	 * This z-component is constrained to be within the z components of the defining points.
+	 * @param so1 starting point of line o
+	 * @param so2 ending point of line o
+	 * @param si1 starting point of line i
+	 * @param vi2 ending point of line i
+	 * @return Pair (2-dimensional point of intersection, relative time of intersection, relative to the so1)
+	 * This includes the average altitude between the *endpoints* closest to the point of intersection
+	 * Note the intersection may be in the past (i.e. negative time)
+	 * If the lines are parallel, this returns the pair (0,NaN).
+	 */
+	static std::pair<Vect3,double> intersectionAvgZ(const Vect3& so1, const Vect3& so2, double dto, const Vect3& si1, const Vect3& si2);
 
 	static std::pair<Vect2,double> intersection(const Vect2& so1, const Vect2& so2, double dto, const Vect2& si1, const Vect2& si2);
 
@@ -126,6 +161,10 @@ public:
 
 	static Vect3 closestPoint(const Vect3& a, const Vect3& b, const Vect3& so);
 
+	/**
+	 * Return the closest (horizontal) point along line a-b to point so
+	 * EXPERIMENTAL
+	 */
 	static Vect2 closestPoint(const Vect2& a, const Vect2& b, const Vect2& so);
 
 	static Vect3 closestPointOnSegment(const Vect3& a, const Vect3& b, const Vect3& so);

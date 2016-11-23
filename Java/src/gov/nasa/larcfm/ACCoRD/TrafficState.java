@@ -16,6 +16,7 @@ import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.f;
 
+/** Horizontal solution */
 public class TrafficState extends TrafficCoreState {
 
   private final Vect3    s_; // Projected position

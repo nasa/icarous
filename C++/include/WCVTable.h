@@ -23,8 +23,14 @@ public:
   double TTHR; // Time threshold
   double TCOA; // Time to co-altitude threshold
 
+  /**
+   * Table containing specified values (internal units)
+   */
   WCVTable(double dthr, double zthr, double tthr, double tcoa);
 
+  /**
+   * WCV table SARP concept
+   */
   WCVTable();
 
   /** Copy constructor */
@@ -35,15 +41,33 @@ public:
   /** copy values from t into this object */
   void copyValues(const WCVTable& t);
 
+  /**
+   * Return horizontal distance threshold DTHR in internal units
+   */
   double getDTHR() const;
+  /**
+   * Return horizontal distance threshold DTHR in u units
+   */
   double getDTHR(const std::string& u) const;
 
+  /**
+   * Return vertical distance threshold ZTHR in internal units
+   */
   double getZTHR() const;
+  /**
+   * Return vertical distance threshold ZTHR in u units
+   */
   double getZTHR(const std::string& u) const;
 
+  /**
+   * Return horizontal time threshold TTHR in seconds
+   */
   double getTTHR() const;
   double getTTHR(const std::string& u) const;
 
+  /**
+   * Return vertical time threshold TCOA in seconds
+   */
   double getTCOA() const;
   double getTCOA(const std::string& u) const;
 

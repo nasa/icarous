@@ -27,15 +27,19 @@ safety critical systems in air traffic management.
 ### Documentation
 
 The API document for ICAROUS is still work in progress. In the meantime,
-please refer to the release notes and the examples files
-`IcarousExample.java` and `IcarousExample.cpp`.
+please refer to [`Java/README.md`](Java/README.md) for instructions on running
+ICAROUS, to the directory `TestCases` for examples of Software in the Loop
+test cases, and to
+[`Java/IcarousExample.java`](Java/IcarousExample.java) for a simple
+example of ICAROUS' DAA (Detect and Avoid) and Geo-fencing
+capabilities. This later example is also available in [C++](C++/IcarousExample.java)
 
 For technical information about the definitions and algorithms in this
 repository, visit [http://shemesh.larc.nasa.gov/fm/ICAROUS](http://shemesh.larc.nasa.gov/fm/ICAROUS).
 
 ### Current Release
 
-FormalATM-v2.5.5 (September 26, 2016) 
+ICAROUS 1.0 (November 18, 2016) 
 
 ### License
 

@@ -15,8 +15,8 @@ package gov.nasa.larcfm.Util;
 
 
 import java.util.ArrayList;
-
 //import gov.nasa.larcfm.IO.DebugSupport;
+
 
 /**
  * Trajectory generation functionality.  This class translates between Linear and Kinematic plans.  Note that the translations are 
@@ -36,6 +36,8 @@ public class TrajGen {
 
 	static private boolean verbose = false;
 	private static double MIN_ACCEL_TIME = 1.0;  
+	private static double MIN_VS_CHANGE = Units.from("fpm",100);     // was 100
+	private static double MIN_VS_TIME = Units.from("s",30);          // was 30
 	final static String minorTrkChangeLabel = "::minorTrkChange:";
 //	private static double minVsChangeRecognizedDefault = 2.0; // Units.from("fpm", 50);
 	private static final double minorVfactor = 0.01; // used to differentiate "minor" vel change vs no vel change
@@ -47,7 +49,7 @@ public class TrajGen {
 	 * PRESERVE_RTAS: keep ground speeds the same as in the original plan except leading into time-fixed points, which keep the same times.
 	 * CONSTANT_GS: ground speed is always equal to the initial ground speed in the original plan.  Times are thrown out.
 	 */ 
-	static public enum GsMode {PRESERVE_GS, PRESERVE_TIMES, PRESERVE_RTAS};
+	//static public enum GsMode {PRESERVE_GS, PRESERVE_TIMES};
 
 	static public enum ErrType {NONE, UNKNOWN, TURN_INFEAS, TURN_OVERLAPS_B, TURN_OVERLAPS_E, GSACCEL_DIST, GS_ZERO, VSACCEL_DIST, REMOVE_FIXED, GSACCEL_OVERLAP};
 
@@ -102,13 +104,13 @@ public class TrajGen {
 	 *  @param constantGS if true, produces a constant ground speed kinematic plan with gs being average of linear plan
 	 */
 	public static Plan makeKinPlanFlyOver(Plan lpc, double bankAngle, double gsAccel, double vsAccel,
-			boolean repairTurn, boolean repairGs, boolean repairVs, GsMode gsm) {
+			boolean repairTurn, boolean repairGs, boolean repairVs) {
 		//Plan lpc = makeLinearPlan(fp);
 		if (lpc.size() < 2) return lpc;
 		//f.pln(" generateTCPs: ENTER ----------------------------------- lpc = "+lpc.toString()+" "+repairTurn);
 		final boolean flyOver = true;
 		final boolean addMiddle = true;
-		lpc = repairPlan( lpc, repairTurn, repairGs, repairVs, gsm, flyOver, addMiddle, bankAngle, gsAccel, vsAccel);
+		lpc = repairPlan( lpc, repairTurn, repairGs, repairVs, flyOver, addMiddle, bankAngle, gsAccel, vsAccel);
 		//f.pln(" generateTCPs: generateTurnTCPs ---------------------------------------------------------------------");
 		//DebugSupport.dumpPlan(lpc, "generateTCPs_lpc__repaired");
 		Plan kpc0 = markVsChanges(lpc);
@@ -124,7 +126,7 @@ public class TrajGen {
 			//f.pln("######## kpc2="+kpc2.toString());		
 			//DebugSupport.dumpPlan(kpc2, "generateTCPs_fixgs");
 			// ********************
-			Plan kpc3 = generateGsTCPs(kpc2, gsAccel, gsm, repairGs);
+			Plan kpc3 = generateGsTCPs(kpc2, gsAccel, repairGs);
 			//DebugSupport.dumpPlan(kpc3, "generateTCPs_gsTCPs");
 			//f.pln("########## kpc3 = "+kpc3);
 			if (kpc3.hasError()) {
@@ -155,7 +157,7 @@ public class TrajGen {
 
 	public static Plan makeKinPlanFlyOver(Plan fp, double bankAngle, double gsAccel, double vsAccel,boolean repair) {
 		//double minVsChangeRecognized = vsAccel*getMinTimeStep(); // this is the minimum change all
-		Plan traj = makeKinPlanFlyOver(fp,bankAngle, gsAccel, vsAccel, repair, repair, repair, GsMode.PRESERVE_GS);
+		Plan traj = makeKinPlanFlyOver(fp,bankAngle, gsAccel, vsAccel, repair, repair, repair);
 		return traj;
 	}
 
@@ -182,39 +184,30 @@ public class TrajGen {
 	 *  @return the resulting kinematic plan
 	 */
 	public static Plan makeKinematicPlan(Plan fp, double bankAngle, double gsAccel, double vsAccel,
-			boolean repairTurn, boolean repairGs, boolean repairVs, GsMode gsm) {
-		//f.pln(" $$$$ makeKinematicPlan: fp = "+fp.toStringTrk());
-		//f.pln(" $$$$ bankAngle = "+Units.str("deg",bankAngle)+" gsAccel = "+gsAccel+" vsAccel = "+vsAccel+"+"
-		//        + " minVsChangeRecognized = "+Units.str("fpm",minVsChangeRecognized)
-		//        + " repairTurn = "+repairTurn+" repairGs = "+repairGs+" repairVs = "+repairVs+" gsm = "+gsm);						
+			boolean repairTurn, boolean repairGs, boolean repairVs) {
+		//f.pln(" $$$$ makeKinematicPlan: ENTER fp = "+fp.toStringTrk());
+        //f.pln(" $$$$ bankAngle = "+Units.str("deg",bankAngle)+" gsAccel = "+gsAccel+" vsAccel = "+vsAccel+"+"+ " repairTurn = "+repairTurn+" repairGs = "+repairGs+" repairVs = "+repairVs+" gsm = "+gsm);						
 		Plan ret;
-		Plan lpc = fp;
+		Plan lpc = fp.copyWithIndex();  // set linearIndex for all points in linear plan
 		if (lpc.size() < 2) {
 			ret = lpc;
 		} else {
 			//f.pln(" $$$ makeKinematicPlan: ENTER ----------------------------------- lpc = "+lpc.toString()+" "+repairTurn);
-			//DebugSupport.dumpPlan(lpc,"AGH");
             boolean addMiddle = true;
             boolean flyOver = false;
             //DebugSupport.dumpPlan(lpc, "makeKinematicPlan_lpc");
-            lpc = repairPlan(lpc, repairTurn, repairGs, repairVs, gsm, flyOver, addMiddle, bankAngle, gsAccel, vsAccel);
+            lpc = repairPlan(lpc, repairTurn, repairGs, repairVs, flyOver, addMiddle, bankAngle, gsAccel, vsAccel);
   			//f.pln(" makeKinematicPlan: generateTurnTCPs ---------------------------------------------------------------------");
-			Plan kpc0 = markVsChanges(lpc);
-			Plan kpc = generateTurnTCPs(kpc0, bankAngle);
-			//f.pln(" $$>> makeKinematicPlan: kpc = "+kpc.toStringTrk());					
-			//DebugSupport.dumpPlan(kpc, "makeKinematicPlan_Turn");
-			if (kpc.hasError()) {
-				ret = kpc;
+			Plan kpc = markVsChanges(lpc);
+			Plan kpc2 = generateTurnTCPs(kpc, bankAngle);
+			//f.pln(" $$>> makeKinematicPlan: kpc2 = "+kpc2.toString());					
+			//DebugSupport.dumpPlan(kpc2, "makeKinematicPlan_Turn");
+			if (kpc2.hasError()) {
+				ret = kpc2;
 			} else {
 				//f.pln(" $$ makeKinematicPlan: fixGS ----------------------------------- "+kpc.isWellFormed());
-				Plan kpc2 = kpc;
-				if (gsm != GsMode.PRESERVE_TIMES) {
-					kpc2 = fixGS(lpc, kpc, gsAccel, gsm == GsMode.PRESERVE_RTAS);
-				}
-				//DebugSupport.dumpPlan(kpc2, "generateTCPs_fixgs");
 				//f.pln(" generateTCPs: generateGsTCPs ----------------------------------- "+kpc2.isWellFormed());
-				Plan kpc3 = generateGsTCPs(kpc2, gsAccel, gsm, repairGs);
-				//f.pln(" $$>> makeKinematicPlan: kpc3="+kpc3.toStringGs());					
+				Plan kpc3 = generateGsTCPs(kpc2, gsAccel, repairGs);
 				//DebugSupport.dumpPlan(kpc3, "generateTCPs_gsTCPs");
 				if (kpc3.hasError()) {
 					ret = kpc3;
@@ -225,27 +218,23 @@ public class TrajGen {
 					if (kpc4.hasError()) {
 						ret = kpc4;
 					} else {
-						//f.pln(" $$$$ isConsistent: After makeMarkedVsConstant: kpc4 "+kpc4.isConsistent());
-						//f.pln(" $$$$ isConsistent: After makeMarkedVsConstant: kpc4 = "+kpc4.toStringTrk());
 						//f.pln(" makeKinematicPlan: generateVsTCPs ----------------------------------- "+kpc4.isWellFormed());
 						Plan kpc5 = generateVsTCPs(kpc4, vsAccel);
 						//DebugSupport.dumpPlan(kpc5, "generateTCPs_VsTCPs");
-						//f.pln(" $$>> makeKinematicPlan: kpc5 = "+kpc5.toStringTrk());	
 						cleanPlan(kpc5);
-						//f.pln(" $$$$ isConsistent: After generateVsTCPs: kpc5 "+kpc5.isConsistent());
-						//f.pln(" $$$$ isConsistent: After generateVsTCPs: kpc5 ="+kpc5.toStringGs());
-						//kpc5.setPlanType(Plan.PlanType.KINEMATIC);
-						//f.pln(" generateTCPs: DONE ----------------------------------- "+kpc5.isWellFormed());
+						//f.pln(" $$>> makeKinematicPlan: kpc5 = "+kpc5.toStringTrk());	
+						//f.pln(" generateTCPs: DONE ----------------------------------- wellFormed = "+kpc5.isWellFormed());
 						ret = kpc5;
 					}
 				}
 			}
 		}
 		ret.setNote(fp.getNote());
+		//f.pln(" $$$$ makeKinematicPlan: END ret.size() = "+ret.size());
 		return new Plan(ret);
 	}
 
-	public static Plan repairPlan(Plan lpc, boolean repairTurn, boolean repairGs, boolean repairVs, GsMode gsm,
+	public static Plan repairPlan(Plan lpc, boolean repairTurn, boolean repairGs, boolean repairVs,
 			boolean flyOver, boolean addMiddle, double bankAngle, double gsAccel, double vsAccel) {
 		if (repairTurn) {	
 			//f.pln(" generateTCPs: linearRepairShortTurnLegs -----------------------------------");
@@ -255,12 +244,6 @@ public class TrajGen {
 		if (lpc.hasError()) {
 			//f.pln(" $$$0 generateTCPs: repair failed! "+lpc.getMessageNoClear());
 		} else {
-			// ***** THIS HAS BEEN REPLACED BY A BETTER METHOD IN makeKinematicPlan
-//			if (repairGs && gsm != GsMode.PRESERVE_TIMES)  {
-//				//lpc = (Plan) linearRepairShortGsLegs(lpc,gsAccel);
-//				//f.pln(" generateTCPs: linearRepairShortGsLegsNew -----------------------------------");
-//				lpc = (Plan) linearRepairShortGsLegsNew(lpc,gsAccel,gsm);
-//			}
             //f.pln("repairPlan gs :"+lpc.toString());		
 			if (lpc.hasError())  {
 				//f.pln(" $$$1 generateTCPs: repair failed! "+lpc.getMessageNoClear());
@@ -275,18 +258,12 @@ public class TrajGen {
 							lpc = removeInfeasibleTurnsOver(lpc,bankAngle);						
 						} else if(repairTurn) {
 							//f.pln(" generateTCPs: removeInfeasibleTurns -----------------------------------");
-							lpc = removeInfeasibleTurns(lpc,bankAngle);
+							boolean strict = false;
+							lpc = removeInfeasibleTurns(lpc,bankAngle,strict);
 						}
-						if (lpc.hasError()) {
-							//f.pln(" $$$3 generateTCPs: repair failed! "+lpc.getMessageNoClear());
-						} else {
-//							if (gsm == GsMode.CONSTANT_GS) { 
-//								lpc = PlanUtil.makeGSConstant_No_Verts(lpc);
-//							}
-							if (lpc.hasError()) {
-								//f.pln(" $$$4 generateTCPs: repair failed! "+lpc.getMessageNoClear());
-							}
-						}
+//						if (lpc.hasError()) {
+//							//f.pln(" $$$3 generateTCPs: repair failed! "+lpc.getMessageNoClear());
+//						}
 						//DebugSupport.dumpPlan(lpc, "generateTCPs_after_repair", 0.0);
 					}
 				}
@@ -296,13 +273,13 @@ public class TrajGen {
 	}
 	
 	
-	public static Plan repairShortLegs(Plan lpc, GsMode gsm,
+	public static Plan repairShortLegs(Plan lpc,
 			boolean flyOver, boolean addMiddle, double bankAngle, double gsAccel, double vsAccel) {
 		lpc = linearRepairShortTurnLegs(lpc, bankAngle, addMiddle);
 		if (!lpc.hasError()) {
-			if (gsm != GsMode.PRESERVE_TIMES)  {
-				lpc = (Plan) linearRepairShortGsLegs(lpc,gsAccel);
-			}
+//			if (gsm != GsMode.PRESERVE_TIMES)  {
+//				lpc = linearRepairShortGsLegs(lpc,gsAccel);
+//			}
 			if (!lpc.hasError())  {
 				lpc = linearRepairShortVsLegs(lpc,vsAccel);
 			}
@@ -311,30 +288,6 @@ public class TrajGen {
 	}
 
 
-	/**
-	 * 
-	 * The resulting PlanCore will be "clean" in that it will have all original points, with no history of deleted points. 
-	 *  Also all TCPs should reference points in a feasible plan. 
-	 *  If the trajectory is modified, it will have added, modified, or deleted points.
-	 *  If the conversion fails, the resulting plan will have one or more error messages (and may have a point labeled as "TCP_generation_failure_point").
-	 *	@param fp input plan (is linearized if not already so)
-	 *  @param bankAngle maximum allowed (and default) bank angle for turns
-	 *  @param gsAccel    maximum allowed (and default) ground speed acceleration (m/s^2)
-	 *  @param vsAccel    maximum allowed (and default) vertical speed acceleration (m/s^2)
-	 *  @param repairTurn attempt to repair infeasible turns as a preprocessing step
-	 *  @param repairGs attempt to repair infeasible gs accelerations as a preprocessing step
-	 *  @param repairVs attempt to repair infeasible vs accelerations as a preprocessing step
-	 *  @param constantGS if true, produces a constant ground speed kinematic plan with gs being average of linear plan
-	 */
-	public static Plan makeKinematicPlan(Plan fp, double bankAngle, double gsAccel, double vsAccel, 
-			boolean repairTurn, boolean repairGs, boolean repairVs) {
-		//double minVsChangeRecognized = vsAccel*getMinTimeStep(); // this is the minimum change all
-		//f.pln(" $$$ minVsChangeRecognized = "+minVsChangeRecognized);
-		//double minVsChangeRecognized =  minVsChangeRecognizedDefault;
-		GsMode gsm = GsMode.PRESERVE_GS;
-//		if (constantGS) gsm = GsMode.CONSTANT_GS;
-		return makeKinematicPlan(fp,bankAngle, gsAccel, vsAccel, repairTurn, repairGs, repairVs, gsm);
-	}
 
 
 	/** 
@@ -422,15 +375,25 @@ public class TrajGen {
 		return fp.size()-1;
 	}
 
-	/**
-	 * Returns true if turn at i can be inscribed in the available leg space. 
+	/** Returns true if turn at i can be inscribed in the available leg space.
+	 * 
+	 * @param lpc     source plan
+	 * @param i       vertex to be tested
+	 * @param BOT     Beginning of turn
+	 * @param EOT     End of turn
+	 * @param strict  if strict do not allow any interior waypoints in the turn
+	 * @return        true iff the BOT - EOT pair can be placed within vertex
 	 */
-	public static boolean turnIsFeas(Plan lpc, int i, NavPoint BOT, NavPoint EOT) {
+	private static boolean turnIsFeas(Plan lpc, int i, NavPoint BOT, NavPoint EOT, boolean strict) {
 		NavPoint np2 = lpc.point(i);
 		double d1new = BOT.distanceH(np2);
-		double d2new = np2.distanceH(EOT);				
-		int ipTC = prevTrackChange(lpc,i);
-		int inTC = nextTrackChange(lpc,i);
+		double d2new = np2.distanceH(EOT);
+		int ipTC = i-1;
+		int inTC = i+1;
+		if (! strict) {
+		    ipTC = prevTrackChange(lpc,i);
+		    inTC = nextTrackChange(lpc,i);
+		}
 		double d1old = lpc.point(ipTC).distanceH(np2);
 		double d2old = np2.distanceH(lpc.point(inTC));	
 		boolean rtn = true;
@@ -456,26 +419,22 @@ public class TrajGen {
 
 
 	/**
-	 * This takes a plancore lpc and returns a kinematic plan core that has all points with vertical changes as "AltPreserve" points, with all other points
+	 * This takes a Plan lpc and returns a kinematic plan that has all points with vertical changes as "AltPreserve" points, with all other points
 	 * being "Original" points.  Beginning and end points are always marked.
 	 * @param lpc source plan
 	 * @param minVsChangeRecognized minimum vs change recognized (m/s)
 	 * @return kinematic plan with marked points
 	 */
-	private static Plan markVsChanges(Plan lpc) {
+	public static Plan markVsChanges(Plan lpc) {
 		//f.pln(" markVsChanges: lpc = "+lpc);
 		String name = lpc.getName();
 		Plan kpc = new Plan(name);
 		if (lpc.size() < 2) {
 			kpc = new Plan(lpc);
 			kpc.addError("TrajGen.markVsChanges: Source plan "+name+" is too small for kinematic conversion");
-			//AugmentedPlan apc = new AugmentedPlan(kpc);
-			//apc.etype = ErrType.UNKNOWN;
-			//return apc;
 			return kpc;
 		}
 		kpc.add(lpc.point(0)); // first point need not be marked
-		//		double minVsChangeRecognized = maxVsAccel*getMinTimeStep(); // this is the minimum change all
 		for (int i = 1; i < lpc.size(); i++) {
 			NavPoint np = lpc.point(i);
 			double vs1 = lpc.initialVelocity(i-1).vs();
@@ -483,17 +442,17 @@ public class TrajGen {
 			if (Math.abs(vs1) > maxVs) {
 				kpc.addWarning("Input File has vertical speed exceeding "+Units.str("fpm",maxVs)+" at "+(i-1));
 			}
-			//f.pln("markVsChanges "+i+" original vs1="+vs1+" vs2="+vs2+" minvs="+minVsChangeRecognized);				
-			if (Util.within_epsilon(vs1, vs2, MIN_ACCEL_TIME)) {
-				//				if (np.isOriginal()) {
-				kpc.add(np);					
-				//				} else {
-				//					kpc.add(np.makeOriginal());
-				//				}
-			} else {
+			double deltaTm = 0;
+			if (i+1 < lpc.size()) deltaTm = lpc.getTime(i+1) - lpc.getTime(i);
+			//f.pln("markVsChanges "+i+" original vs1 = "+Units.str("fpm",vs1)+" vs2 = "+Units.str("fpm",vs2)+" deltaTm = "+deltaTm);	
+			if ( ! Util.within_epsilon(vs1, vs2, MIN_VS_CHANGE) || ( deltaTm >= MIN_VS_TIME)) {
 				//f.pln(" $$>> markVsChanges "+i+" marked ALT PRESERVE np = "+np.makeAltPreserve());				
 				kpc.add(np.makeAltPreserve());
+				//f.pln(" $$>> markVsChanges "+i+" NO mark at i = "+i);
+			} else {
+				kpc.add(np);	
 			}
+
 		}
 		//f.pln(" $$>> markVsChanges kpc = "+kpc.toString());
 		return kpc;
@@ -501,14 +460,18 @@ public class TrajGen {
 
 
 	/**
+	 * @deprecated
 	 * Kinematic generations pass that adds turn TCPs.  This defers ground speed changes until after the turn.
 	 * It only assumes legs are long enough to support the turns.
 	 * kpc will have marked vs changes (if any).
+	 * 
+	 * bank angle must be nonnegative!!!!!
+	 * 
 	 */
-	// bank angle must be nonnegative!!!!!
-	private static Plan generateTurnTCPsOver(Plan lpc, Plan kpc, double bankAngle) {
+	private static Plan generateTurnTCPsOver(Plan lpc, Plan kpc, double bankAngle) { // TODO: THIS NEEDS MASSIVE WORK
 		//f.pln(" $$>> generateTurnTCPsOver: bankAngle = "+Units.str("deg",bankAngle));
-		//f.pln(" $$>> generateTurnTCPsOver: kpc = "+kpc);
+		f.pln(" $$>> generateTurnTCPsOver: THIS IS BROKEN -- DON'T USE !!!");
+		System.exit(0);
 		Plan traj = new Plan(kpc); // the current trajectory based on working
 		int j = 1;
 		for (int i = 1; i+1 < kpc.size(); i++) {
@@ -563,8 +526,8 @@ public class TrajGen {
 					//f.pln(" $$$ generateTurnTCPsOver: vx = "+vx);        			      			
 					double omega = turnDir*vin.gs()/R;    // turnRate
 					//f.pln("  $$$ generateTurnTCPsOver: omega = "+omega);
-					NavPoint npBOT = np.makeBOT(np.position(),to, vin, turnDir*R );
-					NavPoint npEOT = np.makeEOT(eot_NP.position(),eot_NP.time(), v2);	
+					NavPoint npBOT = np.makeBOT(np.position(),to, vin, turnDir*R,i);
+					NavPoint npEOT = np.makeEOT(eot_NP.position(),eot_NP.time(), v2,i);	
 
 					//f.pln(" $$$ generateTurnTCPsOver: remove j = "+j+" traj.point(j) = "+traj.point(i));
 					traj.remove(j);
@@ -574,7 +537,7 @@ public class TrajGen {
 					Position motPos = traj.position(motTime);
 					//f.pln("### generateTurnTCPsOver: motPos = "+motPos);
 					//NavPoint npMOT = np.makeTurnMid(motPos,motTime, omega, v2);	
-					NavPoint npMOT = np.makePosition(motPos).makeTime(motTime).makeVelocityIn(v2);		
+					NavPoint npMOT = np.makePosition(motPos).makeTime(motTime).makeVelocityInit(v2);		
 					traj.add(npMOT);
 					//f.pln("### generateTurnTCPsOver: npBOT = "+npBOT.toStringFull());
 					//f.pln("### generateTurnTCPsOver: npEOT = "+npEOT.toStringFull());
@@ -600,136 +563,26 @@ public class TrajGen {
 	}
 
 	
-	/**
-	 * Return the BOT, MOT, and EOT TCPs for a turn. 
-	 * @param np1 Start point of the leg before the turn
-	 * @param np2 Vertex of the turn
-	 * @param np3 End point of the leg after the turn
-	 * @param R Radius of the turn
-	 * @return BOT,MOT,EOT triple.   
-	 * NOTE.   MOT.alt = np.alt()
-	 * velocity in metadata is set correctly for BOT, with track values modified to match the MOT and EOT points
-	 */
-	protected static Triple<NavPoint,NavPoint,NavPoint> turnGenerator(NavPoint np1, NavPoint np2, NavPoint np3, double R) {
-		Vect2 pt1;
-		Vect2 pt2;
-		Vect2 pt3;
-		Position p1 = np1.position();
-		//f.pln("\n >>>>>>>>>>>>>>>>>.. TurnGenerator: np1 = "+np1+" np2 = "+np2+" np3 = "+np3);
-		Position p2 = np2.position();
-		Position p3 = np3.position();
-		// convert the points to Euclidean vectors (if necessary)
-		EuclideanProjection proj = Projection.createProjection(p2.lla().lat(), p2.lla().lon(), 0); // preserves altitude
-		if (p2.isLatLon()) {  
-			double chkLen = Units.from("nm",10.0);
-			LatLonAlt p1lla = p1.lla();
-			if (p2.distanceH(p1) > chkLen) {
-				p1lla = GreatCircle.linear_gc(p2.lla(), p1.lla(), chkLen);
-				//f.pln(" $$ TurnGenerator is using p1lla "+p1lla+" instead of "+p1.lla());
-			}
-			LatLonAlt p3lla = p3.lla();
-			if (p2.distanceH(p3) > chkLen) {
-				p3lla = GreatCircle.linear_gc(p2.lla(), p3.lla(), chkLen);
-				//f.pln(" $$ TurnGenerator is using p3lla "+p3lla+" instead of "+p3.lla());
-			}
-			pt1 = proj.project2(p1lla);
-			pt2 = proj.project2(p2.lla());
-			pt3 = proj.project2(p3lla);
-		} else {
-			pt1 = p1.vect2();
-			pt2 = p2.vect2();
-			pt3 = p3.vect2();
-		}
-		Vect2 ao = pt3.Sub(pt2);
-		Vect2 bo = pt1.Sub(pt2);
-		Vect2 ahat = ao.Hat();
-		Vect2 bhat = bo.Hat();
-		Vect2 v = ahat.Add(bhat);
-		double k = R/Math.sqrt((v.sqv() - Util.sq(v.dot(ahat))));
-		Vect2 w = v.Scal(k);
-		Vect2 wdota = ahat.Scal(w.dot(ahat));
-		Vect2 wdotb = bhat.Scal(w.dot(bhat));
-		Vect2 Center = pt2.Add(w);
-		Vect2 BOT = pt2.Add(wdotb);
-		Vect2 EOT = pt2.Add(wdota);
-		double gs1 = np1.groundSpeed(np2);
-		double distAB = BOT.Sub(EOT).norm();
-		double sinTheta = distAB/(2*R);
-		double alpha;
-		if (Math.abs(sinTheta) > 1.0) alpha = 0;
-		else  alpha = 2*(Math.asin(sinTheta)); 
-		//f.pln(" $$$$$ TurnGenerator: gs1 = "+Units.str("kn",gs1)+" alpha = "+alpha+" distAB "+Units.str("ft",distAB)+" R = "+Units.str("ft",R));
-		double d2 = alpha*R;	//arc length
-		Velocity v1 = np1.initialVelocity(np2);
-		Velocity v2 = np2.initialVelocity(np3);
-		// make the time of the mot = the time of the middle vertex
-		double tMOT = np2.time();
-		double turnTime = d2/gs1;
-		//f.pln(" $$$$$ TurnGenerator: turnTime = "+turnTime+" tMOT = "+tMOT+" alpha = "+Units.str("deg",alpha)+" gs1 = "+Units.str("kn",gs1));
-		double tBOT = tMOT - turnTime/2;
-		double tEOT = tMOT + turnTime/2;
-		double vs1 = np1.initialVelocity(np2).vs();
-		double vs2 = np2.initialVelocity(np3).vs();
-		double altMOT = np2.alt();
-		double altBOT = altMOT - vs1*turnTime/2;
-		double altEOT = altMOT + vs2*turnTime/2;
-		// calculate MOT position
-		Vect2 vhat = pt2.Sub(Center).Hat();
-		Vect2 mot = Center.Add(vhat.Scal(R));
-		Vect3 v3BOT = new Vect3(BOT.x,BOT.y,altBOT);
-		Vect3 v3MOT = new Vect3(mot.x,mot.y,altMOT);
-		Vect3 v3EOT = new Vect3(EOT.x,EOT.y,altEOT);
-		Position motPos;
-		Position botPos;
-		Position eotPos;
-		if (p1.isLatLon()) {  
-			motPos = new Position(proj.inverse(v3MOT));
-			botPos = new Position(proj.inverse(v3BOT));
-			eotPos = new Position(proj.inverse(v3EOT));                         
-		} else {
-			motPos = new Position(v3MOT);
-			botPos = new Position(v3BOT);
-			eotPos = new Position(v3EOT);
-		}
-		//double  vinTrk2 = new NavPoint(botPos,tBOT).initialVelocity(np2).trk();
-		double vinTrk = pt2.Sub(BOT).trk();
-		//f.pln(" $$$ vinTrk = "+Units.str8("deg",vinTrk)+" vinTrk2 = "+Units.str8("deg",vinTrk2));
-		//		double  voutTrk = new NavPoint(eotPos,tEOT).initialVelocity(np3).trk();
-		Velocity vin = v1.mkTrk(vinTrk);
-		int dir = Util.turnDir(vin.trk(), v2.trk());
-		//double signedRadius = Util.turnDir(vin.trk(), v2.trk())*R;
-		double signedRadius = dir*R; // vin.gs()/omega;
-		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos, tBOT, vin, signedRadius).makeLabel(np2.label());   // only BOT has label from np2
-        //f.pln(" $$$ turnGenerator: npBOT = "+npBOT.toStringFull()+"  alpha = "+alpha+" turnTime = "+turnTime);
-		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT).makeLabel(""); // ,vin.mkTrk(trk2)).makeLabel("");   
-		//f.pln(" $$$ turnGenerator: npMOT = "+npMOT.toStringFull());
-		double omega = dir*vin.gs()/R;    // TODO:  only used for EOT,  can calculate trkOut without this 
-//		double trk2 = vin.trk() + omega * (tMOT-tBOT); // make vin track appropriate for each point
-		double trk3 = vin.trk() + omega * (tEOT-tBOT);
-		NavPoint npEOT = np2.makeOriginal().makeEOT(eotPos,tEOT, vin.mkTrk(trk3)).makeLabel("");	
-        //f.pln(" $$$ turnGenerator: npEOT = "+npEOT.toStringFull()+"  alpha = "+alpha+" turnTime = "+turnTime);
-		return new Triple<NavPoint,NavPoint, NavPoint>(npBOT,npMOT,npEOT);
-	}
 
 	/** 
 	 * Kinematic generator that adds turn TCPs.  This defers ground speed changes until after the turn.
 	 * It assumes legs are long enough to support the turns.
-	 * The kpc input will have marked vs changes (if any).
+	 * 
+	 * @param lpc               linear plan
+	 * @param defaultBankAngle  the default bank angle, if a radius is not present in the plan.  This must be non-zero, and its sign is not significant. 
+	 * @param continueGen       continue generation, even if an error is reached along the way.  Errors are typically situations where the geometry of the linear points in a plan restricts the insertion of a turn.
+	 * @param strict
+	 * @return                  a plan with BOTs and EOTs
 	 */
-	// bank angle must be nonnegative!!!!!
-	protected static Plan generateTurnTCPs(Plan kpc, double bankAngle) {
-		Plan traj = new Plan(kpc); // the current trajectory based on working
-		double bank = Math.abs(bankAngle);
-		if (bank == 0) {
-			traj.addError("ERROR in TrajGen.generateTurnTCPs: specified bank angle is 0");
-			bank = 0.001; // prevent divisions by 0.0
-		}
-		//f.pln(" $$>> generateTurnTCPs: kpc = "+kpc);
-		for (int i = 1; i+1 < kpc.size(); i++) {
-			NavPoint np2 = kpc.point(i);
-			Velocity vf0 = kpc.finalVelocity(i-1);
-			Velocity vi1 = kpc.initialVelocity(i);
-            //f.pln(" $$>> generateTurnTCPs:  i = "+i+" vf0 = "+vf0+" vi1 = "+vi1);
+	public static Plan generateTurnTCPs(Plan lpc, double defaultBankAngle, boolean continueGen, boolean strict) {
+		//f.pln(" $$>> generateTurnTCPs: lpc = "+lpc);
+		Plan traj = new Plan(lpc); // the current trajectory based on working
+		double bank = Math.abs(defaultBankAngle);
+		for (int i = lpc.size()-2; i > 0; i--) {   // Perform in reverse order so indexes match between lpc and traj
+			NavPoint np2 = lpc.point(i);
+			if (lpc.inAccelZone(i)) continue;      // skip over regions already generated (for now only BOT-EOT pairs)
+			Velocity vf0 = lpc.finalVelocity(i-1);
+			Velocity vi1 = lpc.initialVelocity(i);
 			if (Util.almost_equals(vi1.gs(),0.0)) {
 				printError("TrajGen.generateTurnTCPs ###### WARNING: Segment from point "+(i)+" to point "+(i+1)+" has zero ground speed!");
 				continue;
@@ -738,214 +591,258 @@ public class TrajGen {
 			double gsIn = vf0.gs(); 
 			double turnTime;
 			double R = np2.turnRadius();
-			//f.pln(" $$>> generateTurnTCPs: i = "+i+" np2.getRadius() = "+Units.str("NM",np2.getRadius(),8));
 			if (Util.almost_equals(R, 0.0)) {
+				if (bank == 0) {
+					traj.addError("ERROR in TrajGen.generateTurnTCPs: default bank angle is 0");
+					bank = Units.from("deg", 0.001); // prevent divisions by 0.0
+				}
 			    R = Kinematics.turnRadius(gsIn, bank);
-			    turnTime = Kinematics.turnTime(vf0.gs(),turnDelta, bank);
+			    turnTime = Kinematics.turnTime(gsIn, turnDelta, bank);
 			} else {
  			    turnTime = turnDelta*R/gsIn;
 			}
-            //f.pln(" $$>> generateTurnTCPs: i = "+i+" R = "+Units.str("NM",R)+" turnTime = "+f.Fm2(turnTime)+" >=? "+getMinTimeStep());
 			if (turnTime >= getMinTimeStep()) {
-				NavPoint np1 = kpc.point(i-1); // get the point in the traj that corresponds to the point BEFORE fp(i)!
-				NavPoint np3 = kpc.point(i + 1);
-				if (np3.time() - np2.time() < 0.1 && i+2 < kpc.size())  np3 = kpc.point(i + 2);
-				//f.pln(" $$>> generateTurnTCPs: t="+np2.time()+"   gs="+Units.to("knot", gs)+"   R = "+Units.str8("nm",R)+" omega = "+Units.str("deg/s",gs/R));
-				//f.pln(" $$>> generateTurnTCPs: np1 = "+np1+" np2 = "+np2+" np3 = "+np3);
-				NavPoint BOT; 
-				NavPoint MOT; 
-				NavPoint EOT; 
-				Triple<NavPoint,NavPoint,NavPoint> tg = turnGenerator(np1,np2,np3,R);	 
-				//Triple<NavPoint,NavPoint,NavPoint> tg = TurnGeneration.turnGenerator(np1,np2,np3,R);		 // $$$$$$$$$$$$$$$$ RWB NEW
-                //f.pln(" $$ generateTurnTCPs: tg.1="+tg.first.toString()+" tg.2="+tg.second.toString()+" tg.3="+tg.third.toString());
-				BOT = tg.getFirst(); //.appendName(setName);
-				MOT = tg.getSecond();//.appendName(setName);
-				EOT = tg.getThird(); //.appendName(setName);
-				// Calculate altitudes based on kpc, NOTE THAT these times may be out of range of kpc and INVALIDs will be produced
-				if (i > 1 && BOT.time() < np1.time()) { //only okay if ground speeds did not change, see test testJBU173
-					double gsInAtNp1 = traj.finalVelocity(i-2).gs();
-					double gsOutAtNp1 = traj.initialVelocity(i-1).gs();
-					if (Math.abs(gsOutAtNp1 - gsInAtNp1) > Units.from("kn",10.0)) {
-						//f.pln(" $$$ generateTurnTCPs: gsInAtNp1 = "+Units.str("kn",gsInAtNp1)+" gsOutAtNp1 = "+Units.str("kn",gsOutAtNp1));
-						traj.addError("ERROR in TrajGen.generateTurnTCPs: ground speed change in turn "+i+" at time "+f.Fm1(np1.time()),i);
-						return traj;
-					}
+				NavPoint np1 = lpc.point(i-1); // get the point in the traj that corresponds to the point BEFORE fp(i)!
+				NavPoint np3 = lpc.point(i+1);
+				if (np3.time() - np2.time() < 0.1 && i+2 < lpc.size()) {
+					np3 = lpc.point(i + 2);
 				}
-                double botAlt; 
-				if (BOT.time() < kpc.getFirstTime()) {  // is this right?
-					botAlt = kpc.point(0).alt();
-				} else {
-					//f.pln(" $$$ BOT.time() = "+BOT.time());
-					botAlt = kpc.position(BOT.time()).alt();
-				}								
-				BOT = BOT.mkAlt(botAlt);
-				//f.pln(" $$$$ generateTurnTCPs: BOT.time() = "+f.Fm2(BOT.time())+" np times = "+f.Fm2(np1.time())+", "+f.Fm2(np2.time())+", "+f.Fm2(np3.time()));
-				//f.pln(" $$$$ BOT.time() = "+BOT.time()+" botAlt = "+Units.str("ft", botAlt)+" kpc.getFirstTime() = "+kpc.getFirstTime());
-				MOT = MOT.mkAlt(kpc.position(MOT.time()).alt());
-				//f.pln(" $$>> generateTurnTCPs: MOT = "+MOT.toStringFull());
-				double EotAlt;
-				if (EOT.time() > kpc.getLastTime()) {  // is this right?
-					EotAlt = kpc.getLastPoint().alt();
-				} else {
-					
-					EotAlt = kpc.position(EOT.time()).alt();
-				}
-				EOT = EOT.mkAlt(EotAlt);
-				//f.pln(" $$ generateTurnTCPs: BOT = "+BOT+"\n                      EOT = "+EOT);
-				if (BOT.isInvalid() || MOT.isInvalid() || EOT.isInvalid()) {
-					String label = "";
-					if ( ! np2.label().equals("")) label = " ("+np2.label()+") ";
-					traj.addError("ERROR in TrajGen.generateTurnTCPs: turn points at "+i+label+" invalid.",i);
-					printError("ERROR in TrajGen.generateTurnTCPs: turn points at "+i+label+" invalid.");
-					//f.pln(" #### BOT = "+BOT+" kpc.getFirstTime() = "+kpc.getFirstTime());
-					//f.pln(" $$$ generateTurnTCPs: inValid TCPS: BOT = "+BOT+" EOT = "+EOT);
-					return traj;
-				}
-				if (!turnIsFeas(kpc, i, BOT, EOT)) {
-					//traj = new PlanCore(lpc); // revert to initial plan
-					String label = "";
-					if ( ! np2.label().equals("")) label = " ("+np2.label()+") ";
-					traj.addError("ERROR in TrajGen.generateTurnTCPs: cannot achieve turn at point "+i+label
-							      +" from surrounding points at time "+f.Fm2(kpc.point(i).time()),i);
-					printError("ERROR in TrajGen.generateTurnTCPs: cannot achieve turn "+i+label+" from surrounding points at "+i);
-					//f.pln(" $$ generateTurnTCPs: cannot achieve turn i = "+i);
-					return traj;
-				} else 	if (EOT.time() - BOT.time() > 2.0*getMinTimeStep()) { // ignore small changes TODO: is the 2.0 factor right?
-					String label = "";
-					if ( ! np2.label().equals("")) label = " ("+np2.label()+") ";
-					if (traj.inTrkChange(BOT.time())) {
-						traj.addError("ERROR in TrajGen.generateTurnTCPs: BOT in new turn overlaps existing turn in time at "+i+label,i);
-						printError("ERROR in TrajGen.generateTurnTCPs: BOT in new turn overlaps existing turn int time at "+i+label);
-						return traj;
-
-					} else if (traj.inTrkChange(EOT.time())) {
-						traj.addError("ERROR in TrajGen.generateTurnTCPs: EOT in new turn overlaps existing turn in time at "+i+label,i);
-						printError("ERROR in TrajGen.generateTurnTCPs: EOT in new turn overlaps existing turn int time at "+i+label);
-						return traj;
-					} 					
-					//f.pln("Creating turn at "+np2.time());
-					int jj_MOT = traj.getIndex(kpc.point(i).time());
-					if (traj.point(jj_MOT).isAltPreserve()) {
-						MOT = MOT.makeAltPreserve();
-					}
-					//f.pln(" $$>> generateTurnTCPs(2): MOT = "+MOT.toStringFull());
-					if (!kpc.point(i).isTCP()) {
-						//f.pln(" $$$ generateTurnTCPs: kpc.point("+i+").time() = "+kpc.point(i).time()+" jj = "+jj);
-						traj.remove(jj_MOT); 
-					}
-					int ixBOT = traj.add(BOT);
-					int ixMOT = traj.add(MOT);
-					int ixEOT = traj.add(EOT);
-					movePointsWithinTurn(traj,ixMOT);						
-					//f.pln(" $$>> at ixBOT = "+ixBOT+" traj.initialVelocity(ixBOT) "+traj.initialVelocity(ixBOT));
-					double courseInBOT = traj.finalVelocity(ixBOT-1).compassAngle();
-					double courseOutBOT = traj.initialVelocity(ixBOT).compassAngle();
-					//f.pln(" $$>> generateTurnTCPs: courseIn = "+Units.str("deg",courseIn)+" courseOut = "+Units.str("deg",courseOut));
-			        double turnDeltaBOT = Util.turnDelta(courseInBOT,courseOutBOT);
-			        //f.pln(" $$>> generateTurnTCPs: turnDelta = "+Units.str("deg",turnDelta));
-					if (turnDeltaBOT > Math.PI/10) { // error will be large ~ PI
-						traj.addError("ERROR in TrajGen.generateTurnTCPs:  track into BOT not equal to track out of BOT at "+ixBOT+label);
-						return traj;
-					}									
-					double courseInEOT = traj.finalVelocity(ixEOT-1).compassAngle();
-					double courseOutEOT = traj.initialVelocity(ixEOT).compassAngle();
-					//f.pln(" $$>> generateTurnTCPs: courseIn = "+Units.str("deg",courseIn)+" courseOut = "+Units.str("deg",courseOut));
-			        double turnDeltaEOT = Util.turnDelta(courseInEOT,courseOutEOT);
-					if (turnDeltaEOT > Math.PI/10) {  // See test case "test_SWA2013" and T002, T026
-				        //f.pln(" $$>> generateTurnTCPs: turnDeltaEOT = "+Units.str("deg",turnDeltaEOT));
-						traj.addError("ERROR in TrajGen.generateTurnTCPs:  track into EOT not equal to track out of EOT at "+ixEOT+label);
-						return traj;
-					}																					
-					//f.pln(" $$>> generateTurnTCPs: generate regular turn at i = "+i);
-				} else if (turnTime > getMinTimeStep()*minorVfactor) {
-					// mark points which have a detectable but minor turn
-					//traj.set(i, traj.point(i).makeLabel(traj.point(i).label()+minorTrkChangeLabel+f.Fm2(turnTime)));
-					//f.pln(" $$>> generateTurnTCPs: minor turn at point "+i+" minorVfactor = "+minorVfactor+" getMinTimeStep() = "+getMinTimeStep());					
-				} else {
-					//f.pln(" $$>> generateTurnTCPs: No turn at point "+i);					
-				}
+				insertTurnTcpsInTraj(traj, lpc, i, np1, np2, np3, R, strict);
+				if (traj.hasError() && ! continueGen) return traj;
+//				if (turnTime > getMinTimeStep()*minorVfactor) {
+//					// mark points which have a detectable but minor turn
+//					//traj.set(i, traj.point(i).makeLabel(traj.point(i).label()+minorTrkChangeLabel+f.Fm2(turnTime)));
+//					//f.pln(" $$>> generateTurnTCPs: minor turn at point "+i+" minorVfactor = "+minorVfactor+" getMinTimeStep() = "+getMinTimeStep());					
+//				} else {
+//					//f.pln(" $$>> generateTurnTCPs: No turn at point "+i);					
+//				}
 			} else {
 				//traj.set(i, traj.point(i).makeLabel(minorTrkChangeLabel+f.Fm2(turnTime)));
 			}
 		}//for
-		//f.pln(" $$>>>>>>>>> generateTurnTCPs: traj = "+traj.toStringGs());
 		return traj;
 	}
-		
-	/**
-	 * Alters point times in fp so that gs in return plan matches the gs in lpc
-	 * @param lpc
-	 * @param fp
-	 * @param gsAccel
-	 * @return
+	
+	public static Plan generateTurnTCPs(Plan lpc, double bankAngle) {
+		boolean continueGen = false;
+		boolean strict = false;
+		return generateTurnTCPs(lpc,bankAngle,continueGen,strict);
+	}
+
+	/** 
+	 * Kinematic generator that adds turn TCPs using the stored radius in the provided linear plan.  If the radius
+	 * field is empty, then this point is skipped.  This method defers ground speed changes until after the turn.
+	 * It assumes legs are long enough to support the turns.
+	 * 
+	 * @param lpc            linear plan
+	 * @param strict
+	 * @return               a plan with BOTs and EOTs
 	 */
-	private static Plan fixGS(Plan lpc, Plan fp, double gsAccel, boolean preserveRTAs) {
-		Plan traj = new Plan(fp);
-		//f.pln(" fixGS: ---------------------------  lpc = "+lpc.toOutput(false,0,15));
-		for (int i = traj.size()-1; i > 0; i--) {
-			if ( traj.point(i).isBOT() || (!traj.point(i).isTCP() && !traj.inTrkChange(traj.point(i).time())) ) {
-				int lpcSegment = lpc.getSegment(traj.getTime(i));
-				if (!traj.point(i).isBOT() && !traj.point(i).isBVS()) lpcSegment = lpcSegment -1;
-				//f.pln(" $$ fixGS: lpcSegment = "+lpcSegment+" traj.getTime(i) = "+traj.getTime(i)+" traj.point(i) = "+traj.point(i));
-				double targetGS = lpc.initialVelocity(lpcSegment).gs();
-				if (targetGS == 0.0) {
-					traj.addError("TrajGen.fixGS:  attempt to make ground speed 0 at i = "+i);
-					//f.pln(" TrajGen.fixGS: lpcSegment = "+lpcSegment);
-					//f.pln(" TrajGen.fixGS: lpc = "+lpc);
-					//f.pln(" TrajGen.fixGS: traj = "+traj);
-					return traj;
-				}
-				double nt = traj.linearCalcTimeGSin(i, targetGS);
-				double timeShift = nt - traj.point(i).time();
-				//f.pln(" #######>>>>> fixGS: for i = "+i+" targetGS = "+Units.str("kn",targetGS)+" timeShift = "+timeShift+" nt = "+nt);
-				traj.timeshiftPlan(i, timeShift, preserveRTAs);
+	public static Plan generateTurnTCPsRadius(Plan lpc, boolean strict) { 
+		Plan traj = new Plan(lpc); // the current trajectory based on working
+		for (int i = lpc.size()-2; i > 0; i--) {   // Perform in reverse order so indexes match between lpc and traj
+			NavPoint np2 = lpc.point(i);
+			Velocity vf0 = lpc.finalVelocity(i-1);
+			Velocity vi1 = lpc.initialVelocity(i);
+			if (Util.almost_equals(vi1.gs(),0.0)) {
+				printError("TrajGen.generateTurnTCPs ###### WARNING: Segment from point "+(i)+" to point "+(i+1)+" has zero ground speed!");
+				continue;
 			}
-
-		}
-		//f.pln(" fixGS: ---------------------------  traj = "+traj);
-		//printGs(traj);
+			double turnDelta = Util.turnDelta(vf0.trk(), vi1.trk());
+			double R = np2.turnRadius();           // R could be 0
+			double gsIn = vf0.gs(); 
+			double turnTime = turnDelta*R/gsIn;    // if R = 0 ==> do not process this point
+			if (turnTime >= getMinTimeStep()) {
+				NavPoint np1 = lpc.point(i-1); // get the point in the traj that corresponds to the point BEFORE fp(i)!
+				NavPoint np3 = lpc.point(i+1);
+				if (np3.time() - np2.time() < 0.1 && i+2 < lpc.size()) {
+					np3 = lpc.point(i + 2);
+				}
+				insertTurnTcpsInTraj(traj, lpc, i, np1, np2, np3, R, strict);
+				if (traj.hasError()) return traj;
+			}
+		}//for
 		return traj;
 	}
 
+	/** 
+	 * Kinematic generator that adds turn TCPs using the stored radius in the provided linear plan.  If the radius
+	 * field is empty, then this point is skipped.  This method defers ground speed changes until after the turn.
+	 * It assumes legs are long enough to support the turns.
+	 * 
+	 * @param lpc            linear plan
+	 * @return               a plan with BOTs and EOTs
+	 */
+	public static Plan generateTurnTCPsRadius(Plan lpc) {
+		boolean strict = false;
+		return generateTurnTCPsRadius(lpc, strict);
+	}
+	
+	/**
+	 * Insert a turn into the traj.  The location of the turn is point i in the lpc and involves navpoints np1, np2, and np3.
+	 * @param traj the plan to insert a turn into
+	 * @param lpc the linear plan where a turn is derived from
+	 * @param i   the index of where to insert a turn
+	 * @param np1 the first navpoint
+	 * @param np2 the second navpoint (the middle)
+	 * @param np3 the third navpoint
+	 * @param R  the turn radius
+	 * @param strict
+	 */
+	private static void insertTurnTcpsInTraj(Plan traj, Plan lpc, int i, NavPoint np1, NavPoint np2, NavPoint np3, double R, boolean strict) {
+		Velocity vf0 = lpc.finalVelocity(i-1);
+		Velocity vi1 = lpc.initialVelocity(i);
+		double gsIn = vf0.gs(); 
+		double targetGS = vi1.gs();
+		Triple<NavPoint,NavPoint,NavPoint> tg = TurnGeneration.turnGenerator(np1,np2,np3,R);		
+		// NOTE: times of BOT,MOT,EOT are not correct in an absolute sense 
+		NavPoint BOT = tg.getFirst(); 
+		NavPoint MOT = tg.getSecond();
+		NavPoint EOT = tg.getThird(); 
+		
+		// Calculate altitudes based on lpc, NOTE THAT these times may be out of range of lpc and INVALIDs will be produced
+		if (i > 1 && BOT.time() < np1.time()) { //only okay if ground speeds did not change, see test testJBU173
+			double gsInAtNp1 = traj.finalVelocity(i-2).gs();
+			double gsOutAtNp1 = traj.initialVelocity(i-1).gs();
+			if (Math.abs(gsOutAtNp1 - gsInAtNp1) > Units.from("kn",10.0)) {
+				traj.addError("ERROR in TrajGen.generateTurnTCPs: ground speed change within turn "+i+" at time "+f.Fm1(np1.time()),i);
+//				f.pln(" $$$$$$$$$ TrajGen.generateTurnTCPs: "+BOT.time()+" < "+np1.time()+" traj = "+traj);
+				return;
+			}
+		}
+		double botAlt; 
+		if (BOT.time() < lpc.getFirstTime()) {  // is this right?
+			botAlt = lpc.point(0).alt();
+		} else {
+			//f.pln(" $$$ BOT.time() = "+BOT.time());
+			botAlt = lpc.position(BOT.time()).alt();
+		}								
+		BOT = BOT.mkAlt(botAlt);
+		//f.pln(" $$$$ generateTurnTCPs: BOT.time() = "+f.Fm2(BOT.time())+" np times = "+f.Fm2(np1.time())+", "+f.Fm2(np2.time())+", "+f.Fm2(np3.time()));
+		//f.pln(" $$$$ BOT.time() = "+BOT.time()+" botAlt = "+Units.str("ft", botAlt)+" lpc.getFirstTime() = "+lpc.getFirstTime());
+		MOT = MOT.mkAlt(lpc.position(MOT.time()).alt());
+		//f.pln(" $$>> generateTurnTCPs: MOT = "+MOT.toStringFull());
+		double eotAlt;
+		if (EOT.time() > lpc.getLastTime()) { // is this right?
+			eotAlt = lpc.getLastPoint().alt();
+		} else {					
+			eotAlt = lpc.position(EOT.time()).alt();
+		}
+		EOT = EOT.mkAlt(eotAlt);
+		//f.pln(" $$ generateTurnTCPs: BOT = "+BOT+"\n                      EOT = "+EOT);
+		if (BOT.isInvalid() || MOT.isInvalid() || EOT.isInvalid()) {
+			String label = "";
+			if ( ! np2.label().equals("")) label = " ("+np2.label()+") ";
+			traj.addError("ERROR in TrajGen.generateTurnTCPs: turn points at "+i+label+" invalid.",i);
+			printError("ERROR in TrajGen.generateTurnTCPs: turn points at "+i+label+" invalid.");
+			//f.pln(" #### BOT = "+BOT+" lpc.getFirstTime() = "+lpc.getFirstTime());
+			//f.pln(" $$$ generateTurnTCPs: inValid TCPS: BOT = "+BOT+" EOT = "+EOT);
+			return;
+		}
+		if ( ! turnIsFeas(lpc, i, BOT, EOT, strict)) {
+			//traj = new PlanCore(lpc); // revert to initial plan
+			String label = "";
+			if ( ! np2.label().equals("")) label = " ("+np2.label()+") ";
+			traj.addError("ERROR in TrajGen.generateTurnTCPs: cannot achieve turn at point "+i+label
+					+" from surrounding points at time "+f.Fm2(lpc.point(i).time()),i);
+			printError("ERROR in TrajGen.generateTurnTCPs: cannot achieve turn "+i+label+" from surrounding points at "+i);
+			return;
+		} else if (EOT.time()-BOT.time() > 2.0*getMinTimeStep()) { // ignore small changes 
+			String label = "";
+			if ( ! np2.label().equals("")) label = " ("+np2.label()+") ";
+			if (traj.inTrkChange(BOT.time())) {
+				traj.addError("ERROR in TrajGen.generateTurnTCPs: BOT in new turn overlaps existing turn in time at "+i+label,i);
+				printError("ERROR in TrajGen.generateTurnTCPs: BOT in new turn overlaps existing turn int time at "+i+label);
+				return;
+
+			} else if (traj.inTrkChange(EOT.time())) {
+				traj.addError("ERROR in TrajGen.generateTurnTCPs: EOT in new turn overlaps existing turn in time at "+i+label,i);
+				printError("ERROR in TrajGen.generateTurnTCPs: EOT in new turn overlaps existing turn int time at "+i+label);
+				return;
+			} 					
+			//f.pln("Creating turn at "+np2.time());
+			int jj_MOT = i;   // traj.getIndex(lpc.point(i).time());   // Using "i" depends upon reverse order
+			if (traj.point(jj_MOT).isAltPreserve()) {
+				MOT = MOT.makeAltPreserve();
+			}
+			//f.pln(" $$>> generateTurnTCPs(2): MOT = "+MOT.toStringFull());
+			if ( ! lpc.point(i).isTCP()) {
+				//f.pln(" $$$ generateTurnTCPs: lpc.point("+i+").time() = "+lpc.point(i).time()+" REMOVE jj_MOT = "+jj_MOT);
+				traj.remove(jj_MOT); 
+			}
+			int ixBOT = traj.add(BOT);
+			int ixMOT = traj.add(MOT);
+			int ixEOT = traj.add(EOT);
+			if (ixBOT < 0 || ixMOT < 0 || ixEOT < 0 ) {
+				//f.pln("\n\n $$$$$$ TrajGen.generateTurnTCPs: NEGATIVE! ixBOT = "+ixBOT+" ixMOT = "+ixMOT+" ixEOT = "+ixEOT);
+				traj.addError("ERROR in TrajGen.generateTurnTCPs: BOT/EOT overlaps point ");
+				return;  
+			}
+			// ---------- move all points between BOT AND EOT onto curved path -----------
+			movePointsWithinTurn(traj,ixMOT);						
+			//f.pln(" $$>> at ixBOT = "+ixBOT+" traj.initialVelocity(ixBOT) "+traj.initialVelocity(ixBOT));
+			double courseInBOT = traj.finalVelocity(ixBOT-1).compassAngle();
+			double courseOutBOT = traj.initialVelocity(ixBOT).compassAngle();
+			//f.pln(" $$>> generateTurnTCPs: courseIn = "+Units.str("deg",courseIn)+" courseOut = "+Units.str("deg",courseOut));
+			double turnDeltaBOT = Util.turnDelta(courseInBOT,courseOutBOT);
+			//f.pln(" $$>> generateTurnTCPs: turnDelta = "+Units.str("deg",turnDelta));
+			if (turnDeltaBOT > Math.PI/10) { // error will be large ~ PI
+				traj.addError("ERROR in TrajGen.generateTurnTCPs:  track into BOT not equal to track out of BOT at "+ixBOT+label);
+				return;
+			}									
+			double courseInEOT = traj.finalVelocity(ixEOT-1).compassAngle();
+			double courseOutEOT = traj.initialVelocity(ixEOT).compassAngle();
+			//f.pln(" $$>> generateTurnTCPs: courseIn = "+Units.str("deg",courseIn)+" courseOut = "+Units.str("deg",courseOut));
+			double turnDeltaEOT = Util.turnDelta(courseInEOT,courseOutEOT);
+			if (turnDeltaEOT > Math.PI/10) {  // See test case "test_SWA2013" and T002, T026
+				//f.pln(" $$>> generateTurnTCPs: turnDeltaEOT = "+Units.str("deg",turnDeltaEOT));
+				traj.addError("ERROR in TrajGen.generateTurnTCPs:  track into EOT not equal to track out of EOT at "+ixEOT+label);
+				return;
+			}						
+			//f.pln(" $$>> generateTurnTCPs: at ixBOT = "+ixBOT+"  ixEOT = "+ixEOT+" gsIn = "+Units.str("kn",gsIn,4));
+			traj.mkGsInto(ixBOT, gsIn, false);
+			//f.pln(" $$>> traj = "+traj.toStringGs());
+			//double targetGS = vi1.gs();					
+			traj.mkGsInto(ixEOT+1, targetGS, false);					
+		} 
+	}
+
+	
 
 	/**
 	 * Re-aligns points that are within a newly generated turn at j
 	 */
-	private static void movePointsWithinTurn(Plan traj, int j) {
-		//f.pln(" ## movePointsWithinTurn: ------------------------------------ j = "+j+" traj = "+traj);
-		int ipTC = traj.prevBOT(j);
-		int inTC = traj.nextEOT(j);
-		//f.pln(" ## movePointsWithinTurn: j = "+j+" ipTC =  "+ipTC+" inTC = "+inTC);
-		for (int i = inTC-1; i > ipTC; i--) {            // delete in reverse order to preserve index          
-			NavPoint npi = traj.point(i);
-			//f.pln(" ## movePointsWithinTurn: npi("+i+") = "+npi.toStringFull());
-			traj.remove(i);
-			double iTm = npi.time();
-			Position iPos = traj.position(iTm).mkAlt(npi.alt());
-			//f.pln(" movePointsWithinTurn: move point at i = "+i+" iTm = "+iTm+" to iPos = "+iPos);
-			npi = new NavPoint(iPos,iTm).makeMovedFrom(npi);
-			//f.pln(" movePointsWithinTurn: npi("+i+") = "+npi.toStringFull());
-			traj.add(npi);
-			if (npi.isBVS()) {
-				NavPoint np = npi.makeVelocityIn(traj.finalVelocity(i-1));
+	private static void movePointsWithinTurn(Plan traj, int motIx) {
+		int botIx = traj.prevBOT(motIx);
+		int eotIx = traj.nextEOT(motIx);
+		for (int i = botIx+1; i < eotIx; i++) {  
+			if (i == motIx) continue;
+			NavPoint iNp = traj.point(i);
+			traj.remove(i); // this mucks up the indexes, but later on we add it back
+			double iTm = iNp.time();
+			Position iPos = traj.position(iTm).mkAlt(iNp.alt());
+			iNp = new NavPoint(iPos,iTm).makeMovedFrom(iNp);
+			traj.add(iNp);
+			if (iNp.isBVS()) {
+				NavPoint np = iNp.makeVelocityInit(traj.finalVelocity(i-1));
 				traj.set(i,np);				
 			}
 		}
 	}
 
-	// create GSC TCPS between np1 and np2 using vin from previous leg
 	/**
 	 * Generate gs acceleration zone between np1 and np2 
+	 * NOTE!!! This has been changed so the accel time is always returned, but if it is less than getMinTimeStep(), there is no region and this has to be handled by the calling program!!!
+	 * 
 	 * @param np1 start point of the acceleration segment/where the speed change occurs
 	 * @param np2 end point of the acceleration segment
 	 * @param targetGs target gs
 	 * @param vin velocity in
 	 * @param gsAccel non negative (horizontal) acceleration
 	 * @param gsm ground speed mode - preserve time and RTA may have a different result
-	 * @return third component: accel time, or negative if not feasible
-	 * NOTE!!! This has been changed so the accel time is always returned, but if it is less than getMinTimeStep(), there is no region and this has to be handled by the calling program!!!
+	 * @return BGS, EGS and accel time, accel time is negative if not feasible
 	 */
-	private static Triple<NavPoint,NavPoint,Double> gsAccelGenerator(NavPoint np1, NavPoint np2, double targetGs, Velocity vin, double gsAccel, GsMode gsm) {
+	private static Triple<NavPoint,NavPoint,Double> gsAccelGenerator(NavPoint np1, NavPoint np2, double targetGs, Velocity vin, double gsAccel) {
 		int sign = 1;
 		double gsIn = vin.gs();
 		//f.pln(" $$$ ----------------------------- gsAccelGenerator: gs1 = "+Units.str("kn",gs1)+" targetGs = "+Units.str("kn",targetGs));
@@ -964,26 +861,32 @@ public class TrajGen {
 		String label = np1.label();
 		NavPoint np1b = np1.makeStandardRetainSource();    // ***RWB*** KCHANGE
 		//f.pln(" gsAccelGenerator: make BGSC from TCP!! np1b.tcpSourceTime = "+np1b.tcpSourceTime());
-		NavPoint b = np1b.makeBGS(np1b.linear(vin, timeOffset).position(), t0+timeOffset, a, vin).makeLabel(label); // .makeAdded();//.appendName(setName);
+		int ix = np1.linearIndex();
+		NavPoint b = np1b.makeBGS(np1b.linear(vin, timeOffset).position(), t0+timeOffset, a, vin, ix).makeLabel(label); // .makeAdded();//.appendName(setName);
         NavPoint e;
-		if (gsm == GsMode.PRESERVE_TIMES) { // || (gsm == GsMode.PRESERVE_RTAS) && np2.isFixedTime())) {
-			double d = b.distanceH(np2);
-			double t = np2.time()-b.time();
-			Pair<Double,Double> p2 = Kinematics.gsAccelToRTA(gsIn, d, t, gsAccel);
-			//			double gs2 = p2.first;
-			//f.pln("gsAccelGenerator b="+b+" np2="+np2+" gs1="+gs1+" d="+b.distanceH(np2)+" gs2="+p2.first+" aTime="+p2.second);
-			accelTime = p2.second;
-			if (accelTime < 0) {
-				//f.pln("current gs = "+gs1+"  avg new gs ="+(d/t)+" over t="+t+"  a="+gsAccel);				
-				return new Triple<NavPoint,NavPoint,Double>(np1b,np2,-1.0); // cannot complete
-			} else if (accelTime < getMinTimeStep()) {
-				return new Triple<NavPoint,NavPoint,Double>(np1b,np2,accelTime); // minor vs change
-			}
-			Pair<Position,Velocity> pv = ProjectedKinematics.gsAccel(b.position(), vin, accelTime, a);
-			e = np1b.makeEGS(pv.first, accelTime+t0+timeOffset, vin); // .makeAdded();//.appendName(setName);
-		} else {
+//		if (gsm == GsMode.PRESERVE_TIMES) { // || (gsm == GsMode.PRESERVE_RTAS) && np2.isFixedTime())) { // TODO: GET RID OF THIS
+//			double d = b.distanceH(np2);
+//			double t = np2.time()-b.time();
+//			Pair<Double,Double> p2 = Kinematics.gsAccelToRTA(gsIn, d, t, gsAccel);
+//			//			double gs2 = p2.first;
+//			//f.pln("gsAccelGenerator b="+b+" np2="+np2+" gs1="+gs1+" d="+b.distanceH(np2)+" gs2="+p2.first+" aTime="+p2.second);
+//			accelTime = p2.second;
+//			if (accelTime < 0) {
+//				//f.pln("current gs = "+gs1+"  avg new gs ="+(d/t)+" over t="+t+"  a="+gsAccel);				
+//				return new Triple<NavPoint,NavPoint,Double>(np1b,np2,-1.0); // cannot complete
+//			} else if (accelTime < getMinTimeStep()) {
+//				return new Triple<NavPoint,NavPoint,Double>(np1b,np2,accelTime); // minor vs change
+//			}
+//			Pair<Position,Velocity> pv = ProjectedKinematics.gsAccel(b.position(), vin, accelTime, a);
+//			e = np1b.makeEGS(pv.first, accelTime+t0+timeOffset, vin, ix); // .makeAdded();//.appendName(setName);
+//		} else {
 			double d = b.distanceH(np2) - targetGs*getMinTimeStep();   // want at least getMinTimeStep after EGS			
-			accelTime = (targetGs - gsIn)/a;
+			accelTime = (targetGs - gsIn)/a;			
+			double deltaTime = (np2.time() - np1.time());
+			//f.pln(" $$ gsAccelGenerator: accelTime = "+accelTime+" deltaTime = "+deltaTime);
+			if (accelTime >= deltaTime) {
+				return new Triple<NavPoint,NavPoint,Double>(np1b,np2,-accelTime);
+			} 
 			double remainingDist = d - accelTime * (gsIn+targetGs)/2;
 			//f.pln("  $$$$ gsAccelGenerator:  d = "+Units.str("ft",d));
 			//f.pln(" $$$$ gsAccelGenerator: accelTime = "+accelTime+" remainingDist = "+Units.str("nm",remainingDist));
@@ -997,9 +900,9 @@ public class TrajGen {
 			}
 			// start moving in the current direction at the previous speed
 			Pair<Position,Velocity> pv = ProjectedKinematics.gsAccel(b.position(), vin, accelTime, a);
-			e = np1b.makeEGS(pv.first, accelTime+t0+timeOffset, vin); // .makeAdded();//.appendName(setName);
+			e = np1b.makeEGS(pv.first, accelTime+t0+timeOffset, vin, ix ); // .makeAdded();//.appendName(setName);
 			//f.pln(" gsAccelGenerator: make EGSC from TCP!! tcpSourceTime = "+np1b.tcpSourceTime()+" point="+e+" srctm="+e.tcpSourceTime());
-		}
+//		}
 		//f.pln(" $$$$$$$$$$$$$$$$$$ gsAccelGenerator: b = "+b.toStringFull()+"\n e = "+e.toStringFull());
 		return new Triple<NavPoint,NavPoint,Double>(b,e,accelTime);
 	}
@@ -1011,7 +914,7 @@ public class TrajGen {
 	 * @param repairGs
 	 * @return
 	 */
-	private static Plan generateGsTCPs(Plan fp, double gsAccel, GsMode gsm, boolean repairGs) {
+	public static Plan generateGsTCPs(Plan fp, double gsAccel, boolean repairGs) {
 		Plan traj = new Plan(fp); // the current trajectory based on working
 		//f.pln(" generateGsTCPs: ENTER ------------------------ fp =  "+fp.toStringGs());
 		for (int i = traj.size() - 2; i > 0; i--) {
@@ -1035,9 +938,10 @@ public class TrajGen {
 				continue; 
 			}	
 			//f.pln(i+" ##$$ generateGsTCPs: Accelerate FROM gs1 = "+Units.str("kn",vin.gs())+" TO targetGs = "+Units.str("kn",targetGS)+" -------------"+np2);
-			Triple<NavPoint,NavPoint,Double> tcpTriple =  gsAccelGenerator(np1, np2, targetGS, vin, gsAccel, gsm);
-			//f.pln(" generateGsTCPs: for i = "+i+" tcpTriple = "+tcpTriple);
-			if (tcpTriple.third >= getMinTimeStep()) {
+            int linearIndex = np1.linearIndex();
+			Triple<NavPoint,NavPoint,Double> tcpTriple =  gsAccelGenerator(np1, np2, targetGS, vin, gsAccel);
+			double accelTime = tcpTriple.third;
+			if (accelTime >= getMinTimeStep()) {
 				//f.pln(i+" #### generateGsTCPs: "+tcpTriple.third+" >= "+getMinTimeStep());
 					//f.pln(" $$## generateGsTCPs: gsIn ("+i+") = "+Units.str("kn",gsIn));
 				int j = i+2;               
@@ -1049,7 +953,7 @@ public class TrajGen {
 				}
 				if (!np1.isTCP()) {
 					//f.pln(" #### generateGsTCPs remove point at time "+np1.time()+" index="+traj.getIndex(np1.time()));
-					traj.remove(i);  // assumes times have not changed from lpc to kpc
+					traj.remove(i);  // assumes times have not changed from lpc to lpc
 					j = j - 1;
 				}
 				traj.add(GSCBegin);				
@@ -1058,19 +962,19 @@ public class TrajGen {
 				// GET THE GROUND SPEEDS BACK IN ORDER
 				double nt = traj.linearCalcTimeGSin(j+1, targetGS);
 				double timeShift = nt - traj.point(j+1).time();
-				if (gsm != GsMode.PRESERVE_TIMES) {
+				//if (gsm != GsMode.PRESERVE_TIMES) {
 	                //f.pln(" $$>> TrajGen.generateGsTCPs for j+1 = "+(j+1)+" targetGS = "+Units.str("kn",targetGS)+" timeShift = "+timeShift+" nt = "+nt);
-					traj.timeshiftPlan(j+1, timeShift, gsm == GsMode.PRESERVE_RTAS);
-				}
-			} else if (tcpTriple.third < 0) {	
+					traj.timeshiftPlan(j+1, timeShift); //, gsm == GsMode.PRESERVE_RTAS);
+				//}
+			} else if (accelTime < 0) {	
 				//DebugSupport.dumpPlan(traj, "traj_genGsTCPs_repair", 0.0);
 				printError(i+"TrajGen.generateGsTCPs ERROR:  we don't have time to accelerate to the next point i = "+i+": "+np2);
 				traj.addError("TrajGen.generateGsTCPs ERROR:  we don't have time to accelerate to the next point i = "+i+" at time "+f.Fm1(np2.time()),i);
- 			} else if (tcpTriple.third > getMinTimeStep()*minorVfactor) {
+ 			} //else if (tcpTriple.third > getMinTimeStep()*minorVfactor) {
 				// mark known GS shift points
 				//traj.set(i, traj.point(i).makeLabel("minorGsChange"));   //***** GETTING RID OF makeLabel CAUSES C++ INCONSISTENCY
 				//f.pln("### generateGsTCPs: NO GSC NEEDED: at point i = "+i);
-			}
+			//}
 		}
 		//f.pln(" generateGsTCPs: END traj = "+traj);				
 		return traj;
@@ -1098,7 +1002,7 @@ public class TrajGen {
 	 */
 	static Triple<Double,Double,Double> vsAccelGenerator(double t1, double t2, double tLast, double vs1, double vs2, double a) {
 		// we want the velocities around n2, so v1 is in the opposite direction, then reversed
-		//f.pln("\n------------------\n$$# vsAccelGenerator:  t1  = "+t1+" t2 = "+t2+" tLast = "+tLast);
+		//f.pln("\n------------------\n$$# vsAccelGenerator:  t1  = "+t1+" t2 = "+t2+" tLast = "+tLast+" a = "+a);
 		double rtn = Math.abs((vs2 - vs1)/a);
 		double tbegin = 0;
 		double tend = 0;
@@ -1106,7 +1010,8 @@ public class TrajGen {
 		if (rtn > 0) {
 			double dt = Kinematics.vsAccelTime(vs1, vs2, Math.abs(a));
 			tbegin = t2 - dt/2.0;
-			tend = tbegin + dt;			
+			tend = tbegin + dt;	
+			//f.pln("### vsAccelGenerator: dt = "+dt+" tbegin = "+tbegin);
 			if (tbegin < t1 || tend > tLast) {
 				rtn = -1;
 			} else {
@@ -1126,6 +1031,10 @@ public class TrajGen {
 	 *         may label point as minor vs as side effect	
 	 */
 	private static Triple<Double,Double,Double> calcVsTimes(int i, Plan traj, double vsAccel) {
+		if (vsAccel == 0) {
+			traj.addError("TrajGen.generateVsTCPs ERROR: vsAccel = "+vsAccel);
+			return new Triple<Double,Double,Double>(-1.0,-1.0,-1.0);
+		}
 		NavPoint np1 = traj.point(i-1);
 		NavPoint np2 = traj.point(i);
 		NavPoint np3 = traj.point(i+1);
@@ -1159,12 +1068,14 @@ public class TrajGen {
 			traj.addError("TrajGen.generateVsTCPs ERROR: Insufficient room i = "+i+" for vertical accel! tbegin = "+f.Fm1(vsTriple.first)+" prevEndTime = "+f.Fm1(prevEndTime));
 			printError("TrajGen.generateVsTCPs ERROR: Insufficient room at i = "+i+" for vertical accel! tbegin = "+f.Fm1(vsTriple.first)+" prevEndTime = "+f.Fm1(prevEndTime));
 			return new Triple<Double,Double,Double>(-1.0,-1.0,-1.0);
-		} else if (vsTriple.third > getMinTimeStep()*minorVfactor) {
+		} else if (vsTriple.third > getMinTimeStep()*minorVfactor*1.0) {
 			// we have a long enough accel time to recognize as a minor change, but not long enough for a full TCP
 			// mark a known minor vs shift here.  Note we still exit the loop and skip over the acceleration zone generation code below!
+			//f.pln(" $$$$ calcVsTimes: i = "+i+" we have a long enough accel time to recognize as a minor change but not long enough for a full TCP!");
 			return new Triple<Double,Double,Double>(-1.0,-1.0,-1.0);
 		} else {
 			// fallthrough -- no significant acceleration, so do nothing, counts as failure
+			//f.pln(" $$$$ calcVsTimes: i = "+i+" we have a long enough accel time to recognize as a minor change but not long enough for a full TCP!");
 			return new Triple<Double,Double,Double>(-1.0,-1.0,0.0);
 		}		
 	}
@@ -1177,10 +1088,10 @@ public class TrajGen {
 	 * @param vsAccel  vertical speed acceleration
 	 * @return
 	 */
-	private static Plan generateVsTCPs(Plan kpc, double vsAccel) {
+	public static Plan generateVsTCPs(Plan kpc, double vsAccel) {
 		Plan traj = new Plan(kpc);
 		//DebugSupport.dumpPlan(traj, "generateVsTCPs_traj");
-		//f.pln("$$>> generateVsTCPs:  traj = "+traj.toStringTrk());	
+		//f.pln("$$>> generateVsTCPs:  traj = "+traj);	
 		for (int i = 1; i < traj.size()-1; i++) {
 			//f.pln("\n $$>> generateVsTCPs: i = "+i+" traj = "+traj.toStringTrk());	
 			NavPoint np1 = traj.point(i-1);
@@ -1192,8 +1103,8 @@ public class TrajGen {
 			double tend = cboTrip.second;										
 			double accel = cboTrip.third;
 			boolean newTCPneeded = (tbegin >= 0 && tend >= 0 && !traj.inVsChange(tbegin)); 
-			//f.pln(i+" $$ generateVsTCPs: $$ generateVsTCPs: tbegin = "+f.Fm2(tbegin)+" tend = "+f.Fm2(tend)+" np1 = "+np1.time()+" np2 = "+np2.time() );
-			//f.pln(" traj.inVsChange(tbegin) = "+traj.inVsChange(tbegin)+" traj.inVsChange("+f.Fm2(tend)+") = "+traj.inVsChange(tend)+" newTCPneeded = "+newTCPneeded);
+			//f.pln("$$$$ generateVsTCPs: i = "+i+" tbegin = "+f.Fm2(tbegin)+" tend = "+f.Fm2(tend)+" np1 = "+np1.time()+" np2 = "+np2.time() );
+		    //f.pln("$$$$ generateVsTCPs: i = "+i+" traj.inVsChange(tbegin) = "+traj.inVsChange(tbegin)+" traj.inVsChange("+f.Fm2(tend)+") = "+traj.inVsChange(tend)+" newTCPneeded = "+newTCPneeded);
 			if (tbegin >= 0 && traj.inVsChange(tbegin)) {    // See testGen2
 				//f.pln(i+" $$!!!!!!!!!!!!! "+kpc.getName()+" generateVsTCPs:  traj.inVsChange("+f.Fm2(tbegin)+") = "+traj.inVsChange(tbegin)+"   traj.inVsChange("+f.Fm2(tend)+") = "+traj.inVsChange(tend));
                 traj.addError("Vertical Speed regions overlap at time "+tbegin);
@@ -1212,8 +1123,9 @@ public class TrajGen {
 				np2 = np2.makeStandardRetainSource(); // ***RWB*** KCHANGE
                 Velocity vin = traj.velocity(tbegin);	
                 //f.pln(" $$$ traj = "+traj.toString());
-				NavPoint b = np2.makeBVS(traj.position(tbegin), tbegin, accel, vin).makeLabel(label); // .makeAdded();//.appendName(setName);
-				NavPoint e = np2.makeEVS(traj.position(tend), tend, traj.velocity(tend)); //.makeAdded();//.appendName(setName);
+                int linearIndex = np2.linearIndex();
+				NavPoint b = np2.makeBVS(traj.position(tbegin), tbegin, accel, vin, linearIndex).makeLabel(label); // .makeAdded();//.appendName(setName);
+				NavPoint e = np2.makeEVS(traj.position(tend), tend, traj.velocity(tend), linearIndex); //.makeAdded();//.appendName(setName);
 				//f.pln(" $$ generateVsTCPs: i = "+i+" make EVS  point="+e.toStringFull());
 				//f.pln(" $$ i = "+i+" $$ tbegin = "+f.Fm4(tbegin)+" tend = "+f.Fm4(tend)+" traj.velocity(tend) = "+traj.velocity(tend));
 				// turns can use traj because ground speeds are already correct there -- they may not be in other sections!
@@ -1225,10 +1137,10 @@ public class TrajGen {
 				}
 				int bindex = traj.add(b);
 				int eindex = traj.add(e);
-//f.pln(" generateVsTCPs: bindex = "+bindex+"  eindex = "+eindex);
-//f.pln(" $$$$$ generateVsTCPs: vin = "+vin.toString()+"   vend="+traj.velocity(tend).toString());
-//f.pln(" $$$$$ generateVsTCPs: b = "+b.toStringFull()+"\n            e = "+e.toStringFull());
-//f.pln(" $$$$$ generateVsTCPs: traj = "+traj.toString());
+				//f.pln(" generateVsTCPs: bindex = "+bindex+"  eindex = "+eindex);
+				//f.pln(" $$$$$ generateVsTCPs: vin = "+vin.toString()+"   vend="+traj.velocity(tend).toString());
+				//f.pln(" $$$$$ generateVsTCPs: b = "+b.toStringFull()+"\n            e = "+e.toStringFull());
+				//f.pln(" $$$$$ generateVsTCPs: traj = "+traj.toString());
 				if (bindex < 0) {
 					bindex = -bindex;   // There was an overlap
 				}
@@ -1247,8 +1159,8 @@ public class TrajGen {
 					NavPoint newNp = traj.point(k).mkAlt(newAlt);
 					//f.pln(" $$^^^^^^^^^^ generateVsTCPs: traj.point("+k+") = "+traj.point(k).toStringFull());
 					if (newNp.isTCP()) {
-						//f.pln(" ^^^^^^^^^^ generateVsTCPs: dt2 = "+dt2+" accel = "+accel);
-						newNp = newNp.makeVelocityIn(newNp.velocityIn().mkVs(npair.second));
+						//f.pln(" ^^^^^^^^^^ generateVsTCPs:  i = "+i+" traj.getTime = "+traj.getTime(k)+" npair.second = "+Units.str("fpm",npair.second));
+						newNp = newNp.makeVelocityInit(newNp.velocityInit().mkVs(npair.second));
 					}
 					//f.pln(" ^^^^^^^^^^^^^ generateVsTCPs: traj.finalVelocity(k-1) = "+traj.finalVelocity(k-1));
 					//f.pln(" $$^^^^^^^^^ generateVsTCPs: SET newNp = "+newNp.toStringFull());
@@ -1309,8 +1221,8 @@ public class TrajGen {
 				double R1 = Kinematics.turnRadius(gs1,bank);
 				double gs2 = fp.initialVelocity(j).gs();
 				double R2 = Kinematics.turnRadius(gs2,bank);
-				Triple<NavPoint,NavPoint,NavPoint> turn1 = turnGenerator(p0, p1, p2, R1);
-				Triple<NavPoint,NavPoint,NavPoint> turn2 = turnGenerator(p1, p2, p3, R2);  // should this use R1 ~ gs1 ??
+				Triple<NavPoint,NavPoint,NavPoint> turn1 = TurnGeneration.turnGenerator(p0, p1, p2, R1);
+				Triple<NavPoint,NavPoint,NavPoint> turn2 = TurnGeneration.turnGenerator(p1, p2, p3, R2);  // should this use R1 ~ gs1 ??
 				NavPoint A = turn1.third;
 				NavPoint B = turn2.first;	
 				//f.pln(" $#########$$ A = "+A);
@@ -1358,7 +1270,7 @@ public class TrajGen {
 	 * @param bankAngle
 	 * @return
 	 */
-	private static Plan removeInfeasibleTurns(Plan fp, double bankAngle) {  // ***RWB*** KCHANGE
+	private static Plan removeInfeasibleTurns(Plan fp, double bankAngle, boolean strict) {  
 		Plan traj = fp.copy(); // the current trajectory based on working
 		//int j = 1; // traj index corresponding to i in fp
 		for (int i = fp.size() - 2; i > 0; i--) {
@@ -1375,7 +1287,7 @@ public class TrajGen {
 				double gs = vf0.gs(); 
 				double R = Kinematics.turnRadius(gs, bankAngle);
 				//f.pln(" $$>> generateTurnTCPs: t="+np2.time()+"   gs="+Units.to("knot", gs)+"   R = "+Units.str8("nm",R));
-				Triple<NavPoint,NavPoint,NavPoint> tg = turnGenerator(np1,np2,np3,R);	  
+				Triple<NavPoint,NavPoint,NavPoint> tg = TurnGeneration.turnGenerator(np1,np2,np3,R);	  
 				NavPoint BOT = tg.getFirst(); //.appendName(setName);
 				NavPoint MOT = tg.getSecond();//.appendName(setName);
 				NavPoint EOT = tg.getThird(); //.appendName(setName);
@@ -1386,7 +1298,7 @@ public class TrajGen {
 				BOT = BOT.mkAlt(lBOT.alt());
 				MOT = MOT.mkAlt(lMOT.alt());
 				EOT = EOT.mkAlt(lEOT.alt());				
-				if (!turnIsFeas(fp, i, BOT, EOT)) {
+				if (!turnIsFeas(fp, i, BOT, EOT, strict )) {
 					//f.pln(" $$$$ removeInfeasibleTurns: remove point i = "+i);
 					traj.remove(i);
 				}
@@ -1525,7 +1437,7 @@ public class TrajGen {
 	 * @param kpc
 	 * @return
 	 */
-	static protected Plan makeMarkedVsConstant(Plan kpc) {
+	static public Plan makeMarkedVsConstant(Plan kpc) {
 		Plan traj = new Plan(kpc);
 		int prevIndex = 0;
 		//f.pln(" makeMarkedVsConstant: kpc = "+kpc);
@@ -1546,7 +1458,7 @@ public class TrajGen {
 					np = np.mkAlt(newAlt);
 					if (np.isTCP()) {
 						//f.pln(" $$>> makeMarkedVsConstant: UPDATE vin: "+np.velocityIn().mkVs(constantVs));
-						np = np.makeVelocityIn(np.velocityIn().mkVs(constantVs));
+						np = np.makeVelocityInit(np.velocityInit().mkVs(constantVs));
 					}
 					//f.pln(" $$ makeMarkedVsConstant: np("+j+") = "+np.toString());
 					traj.set(j,np);
@@ -1554,7 +1466,7 @@ public class TrajGen {
 				// fix the final, fixed altitude point
 				prevIndex = i;
 				if (currFixedAlt.isTCP()) {
-					currFixedAlt = currFixedAlt.makeVelocityIn(currFixedAlt.velocityIn().mkVs(constantVs));
+					currFixedAlt = currFixedAlt.makeVelocityInit(currFixedAlt.velocityInit().mkVs(constantVs));
 				}
 			} 
 		}
@@ -1732,7 +1644,7 @@ public class TrajGen {
 			lpc = PlanUtil.revertTCPs(fp);
 		} 
 		Plan lpc2 = genDirectToLinear(lpc,so,vo,to,bankAngle,timeBeforeTurn);
-		Plan kpc = makeKinematicPlan(lpc2, bankAngle, gsAccel, vsAccel, false, true, true, GsMode.PRESERVE_GS);
+		Plan kpc = makeKinematicPlan(lpc2, bankAngle, gsAccel, vsAccel, false, true, true);
 		//f.pln("genDirectTo fp="+fp.getFirstTime()+" lpc="+lpc.getFirstTime()+" lpc2="+lpc2.getFirstTime()+" kpc="+kpc.getFirstTime());
 		// you need to guard initialVelocity() calls!
 		if (lpc2.size() < 2) {
@@ -2052,136 +1964,136 @@ public class TrajGen {
 	}
 
 
-	// This generates a mini kinimatic plan that consists of a ground speed change (while moving straight ahead)
-	public static Plan maneuverToGs(String name, Position so, Velocity vo, double to, double targetGS, double gsAccel, double delayBefore, double delayAfter) {
-		Plan kpc = new Plan(name);
-		//kpc.setPlanType(Plan.PlanType.KINEMATIC);
-		NavPoint np1 = new NavPoint (so,to);
-		if (delayBefore > 0) {
-			kpc.add(np1); // if there is a delay, add the initial point
-		}
-		np1 = np1.linear(vo, delayBefore);
-		NavPoint np2 = np1.linear(vo, 3600); // somewhere far away		
-		Triple<NavPoint,NavPoint,Double> tcpTriple =  gsAccelGenerator(np1, np2, targetGS, vo, gsAccel, GsMode.PRESERVE_GS);
-		if (tcpTriple.third >= getMinTimeStep()) {
-			np1 = tcpTriple.first;
-			np2 = tcpTriple.second;
-			kpc.add(np1);				
-			kpc.add(np2);
-		} else if (tcpTriple.third < 0) {
-			kpc.add(np1);
-			kpc.addError("TrajGen.maneuverToGs: insufficient time");
-		} else if (tcpTriple.third > getMinTimeStep()*minorVfactor) {
-			//np1 = np1.makeLabel("minorGsChange"); // makeMinorGsChange();
-			kpc.add(np1);
-		}
-		if (delayAfter > 0) {
-			NavPoint np3 = kpc.point(kpc.size()-1).linear(vo.mkGs(targetGS), delayAfter);
-			kpc.add(np3);
-		}
-		return kpc;
-	}
+//	// This generates a mini kinimatic plan that consists of a ground speed change (while moving straight ahead)
+//	public static Plan maneuverToGs(String name, Position so, Velocity vo, double to, double targetGS, double gsAccel, double delayBefore, double delayAfter) {
+//		Plan kpc = new Plan(name);
+//		//kpc.setPlanType(Plan.PlanType.KINEMATIC);
+//		NavPoint np1 = new NavPoint (so,to);
+//		if (delayBefore > 0) {
+//			kpc.add(np1); // if there is a delay, add the initial point
+//		}
+//		np1 = np1.linear(vo, delayBefore);
+//		NavPoint np2 = np1.linear(vo, 3600); // somewhere far away		
+//		Triple<NavPoint,NavPoint,Double> tcpTriple =  gsAccelGenerator(np1, np2, targetGS, vo, gsAccel, GsMode.PRESERVE_GS);
+//		if (tcpTriple.third >= getMinTimeStep()) {
+//			np1 = tcpTriple.first;
+//			np2 = tcpTriple.second;
+//			kpc.add(np1);				
+//			kpc.add(np2);
+//		} else if (tcpTriple.third < 0) {
+//			kpc.add(np1);
+//			kpc.addError("TrajGen.maneuverToGs: insufficient time");
+//		} else if (tcpTriple.third > getMinTimeStep()*minorVfactor) {
+//			//np1 = np1.makeLabel("minorGsChange"); // makeMinorGsChange();
+//			kpc.add(np1);
+//		}
+//		if (delayAfter > 0) {
+//			NavPoint np3 = kpc.point(kpc.size()-1).linear(vo.mkGs(targetGS), delayAfter);
+//			kpc.add(np3);
+//		}
+//		return kpc;
+//	}
 
-	// This generates a mini kinematic plan that involves reaching a given point (along my current path) as an RTA.
-	// This could follow a maneuverToPoint call, for example
-	public static Plan maneuverToTime(String name, Position so, Velocity vo, double to, Position goal, double rta, double gsAccel, double delay) {
-		Plan kpc = new Plan(name);
-		//kpc.setPlanType(Plan.PlanType.KINEMATIC);
-		if (rta < to) {
-			kpc.addError("TrajGen.maneuverToTime: RTA is before current time! "+rta+" < "+to);
-			return kpc;
-		}
-		NavPoint np1 = new NavPoint (so,to);
-		if (delay > 0) {
-			kpc.add(np1); // if there is a delay, add the initial point
-		}
-		np1 = np1.linear(vo, delay);
-		NavPoint np3 = new NavPoint(goal, rta);
-		kpc.add(np3);
-		Velocity v2 = np1.initialVelocity(np3).mkGs(vo.gs());
-		Pair<Double,Double> gst = Kinematics.gsAccelToRTA(vo.gs(), np1.distanceH(np3), rta-(to+delay), gsAccel);
-		if (gst.second < 0) { // not enough space to accelerate
-			kpc.add(np1);
-			kpc.addError("TrajGen.maneuverToTime: insufficient distance to acceleration to new gs");
-		} else if (gst.second < getMinTimeStep()) { 
-			//np1 = np1.makeLabel("makeMinorGsChange"); // makeMinorGsChange();
-			kpc.add(np1);
-		} else {
-			double a = gsAccel;
-			if (gst.first < vo.gs()) a = -gsAccel;
-			np1 = np1.makeBGS(np1.position(), np1.time(), a, v2);
-			NavPoint np2 = np1.makeEGS(ProjectedKinematics.gsAccel(so, v2, gst.second, a).first, gst.second+np1.time(), v2);
-			kpc.add(np1);
-			kpc.add(np2);
-		}
-		return kpc;
-	}
+//	// This generates a mini kinematic plan that involves reaching a given point (along my current path) as an RTA.
+//	// This could follow a maneuverToPoint call, for example
+//	public static Plan maneuverToTime(String name, Position so, Velocity vo, double to, Position goal, double rta, double gsAccel, double delay) {
+//		Plan kpc = new Plan(name);
+//		//kpc.setPlanType(Plan.PlanType.KINEMATIC);
+//		if (rta < to) {
+//			kpc.addError("TrajGen.maneuverToTime: RTA is before current time! "+rta+" < "+to);
+//			return kpc;
+//		}
+//		NavPoint np1 = new NavPoint (so,to);
+//		if (delay > 0) {
+//			kpc.add(np1); // if there is a delay, add the initial point
+//		}
+//		np1 = np1.linear(vo, delay);
+//		NavPoint np3 = new NavPoint(goal, rta);
+//		kpc.add(np3);
+//		Velocity v2 = np1.initialVelocity(np3).mkGs(vo.gs());
+//		Pair<Double,Double> gst = Kinematics.gsAccelToRTA(vo.gs(), np1.distanceH(np3), rta-(to+delay), gsAccel);
+//		if (gst.second < 0) { // not enough space to accelerate
+//			kpc.add(np1);
+//			kpc.addError("TrajGen.maneuverToTime: insufficient distance to acceleration to new gs");
+//		} else if (gst.second < getMinTimeStep()) { 
+//			//np1 = np1.makeLabel("makeMinorGsChange"); // makeMinorGsChange();
+//			kpc.add(np1);
+//		} else {
+//			double a = gsAccel;
+//			if (gst.first < vo.gs()) a = -gsAccel;
+//			np1 = np1.makeBGS(np1.position(), np1.time(), a, v2,-1);
+//			NavPoint np2 = np1.makeEGS(ProjectedKinematics.gsAccel(so, v2, gst.second, a).first, gst.second+np1.time(), v2,-1);
+//			kpc.add(np1);
+//			kpc.add(np2);
+//		}
+//		return kpc;
+//	}
 
-	// This generates a mini kinematic plan that involves reaching a given point (along my current path) as an RTA, with the given ground speed.
-	// This could follow a maneuverToPoint call, for example
-	public static Plan maneuverToTimeVelocity(String name, Position so, Velocity vo, double to, Position goal, double gsGoal, double rta, double gsAccel, double delay) {
-		Plan kpc = new Plan(name);
-		//kpc.setPlanType(Plan.PlanType.KINEMATIC);
-		if (rta < to) {
-			kpc.addError("maneuverToTimeVelocity: RTA is before current time! "+rta+" < "+to);
-			return kpc;
-		}
-		NavPoint np1 = new NavPoint(so,to);
-		NavPoint np2 = new NavPoint(goal,rta);
-		kpc.add(np1);
-		kpc.add(np2);
-		double d = so.distanceH(goal);
-		double t = rta-to;
-		if (Util.almost_equals(vo.gs(), gsGoal) && Util.almost_equals(gsGoal, d/t)) {
-			// nothing needs to be done
-			return kpc;
-		}
-		delay = Math.max(delay,MIN_ACCEL_TIME);
-		Position p1 = so.linear(vo, delay);
-		Position p2 = goal.linear(vo.mkGs(gsGoal), -delay);
-		t = rta - to - delay*2;
-		d = p1.distanceH(p2);
-		if (t < 0) {
-			kpc.addError("TrajGen.maneuverToTimeVelocity: insufficient time before goal point");
-			return kpc;
-		}
-		Pair<Triple<Double,Double,Double>,Triple<Double,Double,Double>> r = Kinematics.gsAccelToRTAV(vo.gs(), d, t, gsGoal, gsAccel);
-		double t1 = r.first.first;
-		double t2 = r.first.second;
-		double t3 = r.first.third;
-		double a1 = r.second.first;
-		double gs2 = r.second.second;
-		double a2 = r.second.third;
-		if (t1 > 0.0 && t2 > 0 && t3 > 0) {
-			NavPoint np3 = np1.makeBGS(p1, to+delay, a1, vo);
-			NavPoint np4 = np1.makeEGS(ProjectedKinematics.gsAccel(so, vo, t1, a1).first, to+delay+t1,  vo);
-			kpc.add(np3);
-			kpc.add(np4);
-			Velocity v2 = vo.mkGs(gs2);
-			Position p5 = np4.position().linear(v2,t2);
-			NavPoint np5 = np1.makeBGS(p5, to+delay+t1+t2, a2, v2);
-			NavPoint np6 = np1.makeEGS(ProjectedKinematics.gsAccel(p5, v2, t3, a2).first, to+delay+t1+t2+t3, v2);
-			kpc.add(np5);
-			kpc.add(np6);
-		} else if (Util.almost_equals(t1, 0)) {
-			Velocity v2 = vo.mkGs(gs2);
-			NavPoint np5 = np1.makeBGS(p1, to+delay+t1+t2, a2, v2);
-			NavPoint np6 = np1.makeEGS(ProjectedKinematics.gsAccel(p1, v2, t3, a2).first, to+delay+t1+t2+t3,  v2);
-			kpc.add(np5);
-			kpc.add(np6);
-		} else if (Util.almost_equals(t3, 0)) {
-			NavPoint np3 = np1.makeBGS(p1, to+delay, a1, vo);
-			NavPoint np4 = np1.makeEGS(ProjectedKinematics.gsAccel(so, vo, t1, a1).first, to+delay+t1,  vo);
-			kpc.add(np3);
-			kpc.add(np4);
-		} else if (Util.almost_equals(t2, 0)) {
-			kpc.addError("TrajGen.maneuverToTimeVelocity: case 2");			
-		} else {
-			// fail
-			kpc.addError("TrajGen.maneuverToTimeVelocity: cannot match RTA point");
-		}
-		return kpc;
-	}
+//	// This generates a mini kinematic plan that involves reaching a given point (along my current path) as an RTA, with the given ground speed.
+//	// This could follow a maneuverToPoint call, for example
+//	public static Plan maneuverToTimeVelocity(String name, Position so, Velocity vo, double to, Position goal, double gsGoal, double rta, double gsAccel, double delay) {
+//		Plan kpc = new Plan(name);
+//		//kpc.setPlanType(Plan.PlanType.KINEMATIC);
+//		if (rta < to) {
+//			kpc.addError("maneuverToTimeVelocity: RTA is before current time! "+rta+" < "+to);
+//			return kpc;
+//		}
+//		NavPoint np1 = new NavPoint(so,to);
+//		NavPoint np2 = new NavPoint(goal,rta);
+//		kpc.add(np1);
+//		kpc.add(np2);
+//		double d = so.distanceH(goal);
+//		double t = rta-to;
+//		if (Util.almost_equals(vo.gs(), gsGoal) && Util.almost_equals(gsGoal, d/t)) {
+//			// nothing needs to be done
+//			return kpc;
+//		}
+//		delay = Math.max(delay,MIN_ACCEL_TIME);
+//		Position p1 = so.linear(vo, delay);
+//		Position p2 = goal.linear(vo.mkGs(gsGoal), -delay);
+//		t = rta - to - delay*2;
+//		d = p1.distanceH(p2);
+//		if (t < 0) {
+//			kpc.addError("TrajGen.maneuverToTimeVelocity: insufficient time before goal point");
+//			return kpc;
+//		}
+//		Pair<Triple<Double,Double,Double>,Triple<Double,Double,Double>> r = Kinematics.gsAccelToRTAV(vo.gs(), d, t, gsGoal, gsAccel);
+//		double t1 = r.first.first;
+//		double t2 = r.first.second;
+//		double t3 = r.first.third;
+//		double a1 = r.second.first;
+//		double gs2 = r.second.second;
+//		double a2 = r.second.third;
+//		if (t1 > 0.0 && t2 > 0 && t3 > 0) {
+//			NavPoint np3 = np1.makeBGS(p1, to+delay, a1, vo,-1);
+//			NavPoint np4 = np1.makeEGS(ProjectedKinematics.gsAccel(so, vo, t1, a1).first, to+delay+t1,  vo,-1);
+//			kpc.add(np3);
+//			kpc.add(np4);
+//			Velocity v2 = vo.mkGs(gs2);
+//			Position p5 = np4.position().linear(v2,t2);
+//			NavPoint np5 = np1.makeBGS(p5, to+delay+t1+t2, a2, v2,-1);
+//			NavPoint np6 = np1.makeEGS(ProjectedKinematics.gsAccel(p5, v2, t3, a2).first, to+delay+t1+t2+t3, v2,-1);
+//			kpc.add(np5);
+//			kpc.add(np6);
+//		} else if (Util.almost_equals(t1, 0)) {
+//			Velocity v2 = vo.mkGs(gs2);
+//			NavPoint np5 = np1.makeBGS(p1, to+delay+t1+t2, a2, v2,-1);
+//			NavPoint np6 = np1.makeEGS(ProjectedKinematics.gsAccel(p1, v2, t3, a2).first, to+delay+t1+t2+t3,  v2,-1);
+//			kpc.add(np5);
+//			kpc.add(np6);
+//		} else if (Util.almost_equals(t3, 0)) {
+//			NavPoint np3 = np1.makeBGS(p1, to+delay, a1, vo,-1);
+//			NavPoint np4 = np1.makeEGS(ProjectedKinematics.gsAccel(so, vo, t1, a1).first, to+delay+t1,  vo,-1);
+//			kpc.add(np3);
+//			kpc.add(np4);
+//		} else if (Util.almost_equals(t2, 0)) {
+//			kpc.addError("TrajGen.maneuverToTimeVelocity: case 2");			
+//		} else {
+//			// fail
+//			kpc.addError("TrajGen.maneuverToTimeVelocity: cannot match RTA point");
+//		}
+//		return kpc;
+//	}
 	
 
 	public static Plan removeRedundantPoints(Plan pc) {
@@ -2213,11 +2125,12 @@ public class TrajGen {
 		}
 		NavPoint src = new NavPoint(prSrc.first, t + prSrc.second);
 		double radius = vo.gs()/omega;
-		NavPoint np1 = src.makeBOT(p1, t, vo, radius);
+		int ix = src.linearIndex();
+		NavPoint np1 = src.makeBOT(p1, t, vo, radius,ix);
 		//NavPoint np2 = src.makeTurnMid(prMid.first, t+dt/2.0, omega, prMid.second);
-		NavPoint np2 = src.makePosition(prMid.first).makeTime(t+dt/2.0).makeVelocityIn(prMid.second);		
+		NavPoint np2 = src.makePosition(prMid.first).makeTime(t+dt/2.0).makeVelocityInit(prMid.second);		
 
-		NavPoint np3 = src.makeEOT(prEnd.first, t+dt, prEnd.second);
+		NavPoint np3 = src.makeEOT(prEnd.first, t+dt, prEnd.second,ix);
 		return new Triple<NavPoint,NavPoint,NavPoint>(np1,np2,np3);
 	}
 
@@ -2247,16 +2160,16 @@ public class TrajGen {
 
 		NavPoint np0 = new NavPoint(so,t);
 		Triple<NavPoint,NavPoint,NavPoint> turn1 = turnGenerator3(np0,vo0,turnOmega,dt);
-		Velocity vo1 = turn1.third.velocityIn();
+		Velocity vo1 = turn1.third.velocityInit();
 		NavPoint np1 = turn1.third.linear(vo1, tA);
 		Triple<NavPoint,NavPoint,NavPoint> turn2 = turnGenerator3(np1,vo1,turnOmega,dt);
-		Velocity vo2 = turn2.third.velocityIn();
+		Velocity vo2 = turn2.third.velocityInit();
 		NavPoint np2 = turn2.third.linear(vo2, tB);
 		Triple<NavPoint,NavPoint,NavPoint> turn3 = turnGenerator3(np2,vo2,turnOmega,dt);
-		Velocity vo3 = turn3.third.velocityIn();
+		Velocity vo3 = turn3.third.velocityInit();
 		NavPoint np3 = turn3.third.linear(vo3, tA);
 		Triple<NavPoint,NavPoint,NavPoint> turn4 = turnGenerator3(np3,vo3,turnOmega,dt);
-		Velocity vo4 = turn4.third.velocityIn();
+		Velocity vo4 = turn4.third.velocityInit();
 		NavPoint np4 = turn4.third.linear(vo4, tB);
 
 		plan.add(turn1.first);
@@ -2276,125 +2189,100 @@ public class TrajGen {
 	}
 
 	
-	// here's an alternate:
-	protected static Triple<NavPoint,NavPoint,NavPoint> turnGenerator2_OLD(NavPoint np1, NavPoint np2, NavPoint np3, double bankAngle) {
-		Velocity v1 = np1.initialVelocity(np2);
-		Velocity v2 = np2.initialVelocity(np3);
-		double trk1 = v1.trk();
-		double trk2 = v2.trk();
-		double gs1 = v1.gs();
-		double theta = Util.turnDelta(trk1,  trk2); // turn angle
-		double R = Kinematics.turnRadius(gs1, bankAngle);
-		double distback = R*Math.sin(theta); // distance from corner on first leg
-		double botTime = np2.time() - distback/gs1; // note this could be before np1.time(), which indicates the initial leg was too short  
-		double turnTime = Kinematics.turnTime(gs1, theta, bankAngle);
-		Position BOT = np2.position().linear(v1.Neg().Hat(), distback);
-		Position EOT = np2.position().linear(v2.Hat(), distback);
-		boolean turnRight = Util.turnDir(trk1,  trk2) > 0;
-		Pair<Position,Velocity> MOT = ProjectedKinematics.turn(BOT, v1, turnTime/2, R, turnRight);
-		double omega = Kinematics.turnRateGoal(v1, trk2, bankAngle);
-		double radius = Util.turnDir(trk1,  trk2)*R;
-		NavPoint npBOT = np2.makeBOT(BOT, botTime, v1, radius);
-		//NavPoint npMOT = np2.makeTurnMid(MOT.first, botTime+turnTime/2, omega, v1.mkTrk(MOT.second.trk()));
-        double tMOT = botTime+turnTime/2;
-		NavPoint npMOT = np2.makePosition(MOT.first).makeTime(tMOT).makeVelocityIn(v1.mkTrk(MOT.second.trk()));		
-		NavPoint npEOT = np2.makeEOT(EOT, botTime+turnTime, v1.mkTrk(trk2));
-		// error states:
-		if (npBOT.time() < np1.time()) {
-			npBOT = NavPoint.INVALID; // error: initial leg was too short
-		}
-		if (distback > np2.distanceH(np3)) {
-			npEOT = NavPoint.INVALID; // error: second leg was too short
-		}
-		return new Triple<NavPoint,NavPoint, NavPoint>(npBOT,npMOT,npEOT);
-	}
-
+	/**
+	 * 
+	 * @param totalDist
+	 * @param dt
+	 * @param gs0
+	 * @param gsAccel
+	 * @return
+	 */
 	private static double accelTimeToRTA(double totalDist, double dt, double gs0, double gsAccel) {
 		double a = -0.5*gsAccel;
 		double b = gsAccel*dt;
 		double c = gs0*dt - totalDist;
 		double root1 = Util.root(a,b,c,1);
 		double root2 = Util.root(a,b,c,-1);
-		f.pln(" $$$ accelTimeToRTA: roots = "+root1+", "+root2);
+		//f.pln(" $$$ accelTimeToRTA: roots = "+root1+", "+root2);
 		if (Double.isNaN(root1) || root1 < 0) return root2;
 		if (Double.isNaN(root2) || root2 < 0) return root1;
 		return root1;
 	}
-	
+
 	private static double accelDistance(double dt, double gs0, double gsAccel) {
 		return gs0*dt + 0.5*gsAccel*dt*dt;
 	}
 		
 	// ***** EXPERIMENTAL ****
-	public static Plan addRTA(Plan fp, double currentTime, int ixRTA, double RTA, double minGs, double maxGs, 
+	/**
+	 * 
+	 * @param fp
+	 * @param tBGS       create BGS EGS pair starting at this time point in time
+	 * @param ixRTA      location of RTA
+	 * @param RTA        required time of arrival
+	 * @param minGs         
+	 * @param maxGs
+	 * @param gsAccel
+	 * @param maxOmega
+	 * @param makeKin
+	 * @param vsAccel
+	 * @return
+	 */
+	public static Plan addRTA(Plan fp, double tBGS, int ixRTA, double RTA, double minGs, double maxGs, 
 			double gsAccel, double maxOmega, boolean makeKin, double vsAccel) {		
-		int currentSeg = fp.getSegment(currentTime);
-		double pathDist = fp.pathDistanceFromTime(currentTime,ixRTA);
-		f.pln(" $$$ pathDist = "+Units.str("nmi",pathDist));
-		double dtAtRTA = RTA - currentTime;
+		int currentSeg = fp.getSegment(tBGS);
+		double pathDist = fp.pathDistanceFromTime(tBGS,ixRTA);
+		//f.pln(" $$$ pathDist = "+Units.str("nmi",pathDist));
+		double dtAtRTA = RTA - tBGS;
 		Velocity vin = fp.initialVelocity(currentSeg);
 		double gs0 = vin.gs();
 		double accelTime = TrajGen.accelTimeToRTA(pathDist, dtAtRTA, gs0, gsAccel);
-		f.pln(" $$$ accelTime = "+accelTime);
-		Position currentPos = fp.position(currentTime);
-		NavPoint currentNP = new NavPoint(currentPos,currentTime);
-		NavPoint bgs = currentNP.makeBGS(currentPos, currentTime, gsAccel, vin).makeLabel("BGS"); 
-		double accelDist = accelDistance(accelTime, gs0, gsAccel);
-		f.pln(" $$$ accelDist = "+Units.str("nmi",accelDist));
-		Position egsPos = currentPos.linearDist(vin.trk(),accelDist);
-		NavPoint eNp = new NavPoint(egsPos,currentTime+accelTime);
-		//Pair<Position,Velocity> pv = ProjectedKinematics.gsAccel(bgs.position(), vin, accelTime, gsAccel);
-		NavPoint egs = currentNP.makeEGS(egsPos, currentTime+accelTime, vin).makeLabel("EGS"); 
-		Plan rtn = fp.copy();
-		rtn.add(bgs);
-		int ixEGS = rtn.add(egs);
-		f.pln(" $$ ixEGS = "+ixEGS);
-		double gs1 = gs0 + gsAccel*accelTime;
-		f.pln(" $$$ gs1 = "+Units.str("kn",gs1));
-		double tmEGS = rtn.getTime(ixEGS);
-		rtn = makeGsConstant(rtn, tmEGS , gs1, makeKin, vsAccel);
-		return rtn;
+		//f.pln(" $$$ accelTime = "+accelTime);
+		double deltaGs = Units.from("kn",200);
+ 		Plan kpcGS = PlanUtil.add_BGS_EGS_pair(fp, tBGS , deltaGs, gsAccel);
+		
+		return kpcGS;
 	}
 	
-	/**  ++++++ EXPERIMENTAL ++++
-	 * Creates a new plan which is identical to "p" upto currentTime, but has constant gs after currentTime
-	 *  if "makeKin" is true, then the final section is regenerated as a kinematic plan.
-	 *  Otherwise, The end section is returned as linear plan.   
-	 *  
-	 *  Note: The radius of turns is preserved for the generation of turns with the same radius as before
-
-	 * 
-	 * @param p                 plan to be processed
-	 * @param currentTime       current time in plan
-	 * @param gs                target ground speed
-	 * @return                  new Plan with ground speeds equal to gs after currentTime
-	 */
-	public static Plan makeGsConstant(Plan p, double currentTime, double gs, boolean makeKin, double vsAccel) {
-		int wp1 = p.getSegment(currentTime)+1;
-		Plan priorPlan = PlanUtil.cutDown(p, p.getFirstTime(), currentTime);		
-		Position currentPos = p.position(currentTime);
-		Route rt = PlanUtil.toRoute(p,wp1);
-		rt.add(0,currentPos,Plan.specPre+"currentPosition",0.0);	
-		f.pln("\n $$$$$+++++++++++++++++++  makeGsConstant: rt = "+rt.toString());
-		Plan linPlan = rt.linearPlan(currentTime,gs); 
-		Plan rtn;
-		if (makeKin) {
-			double bankAngle = Units.from("deg", 0.00000000001);   // should not be needed !!! radius in NAvPoint
-			double gsAccel = 0.00000000000001;                     // There should not be any BGS - EGS zones needed
-			boolean repairTurn = false;
-			boolean repairGs = true;
-			boolean repairVs = false;
-			GsMode gsm = GsMode.PRESERVE_GS;
-			//f.pln(" $$$$$$$$$$$$$@@@@@@@ makeGsConstant: linPlan = "+linPlan.toStringGs());
-//			DebugSupport.dumpPlan(linPlan, "testGsSeq_linPlan");
-			Plan kpc = TrajGen.makeKinematicPlan(linPlan, bankAngle, gsAccel, vsAccel, repairTurn, repairGs, repairVs, gsm);	
-			rtn = priorPlan.append(kpc);
-			//f.pln(" $$$$$$$$$$$$$@@@@@@@ append kpc = "+kpc.toStringGs());
-		} else {
-		    rtn = priorPlan.append(linPlan);
-		}
-		return rtn;
-	}
+//	/**  ++++++ EXPERIMENTAL ++++
+//	 * Creates a new plan which is identical to "p" upto currentTime, but has constant gs after currentTime
+//	 *  if "makeKin" is true, then the final section is regenerated as a kinematic plan.
+//	 *  Otherwise, The end section is returned as linear plan.   
+//	 *  
+//	 *  Note: The radius of turns is preserved for the generation of turns with the same radius as before
+//
+//	 * 
+//	 * @param p                 plan to be processed
+//	 * @param currentTime       current time in plan
+//	 * @param gs                target ground speed
+//	 * @return                  new Plan with ground speeds equal to gs after currentTime
+//	 */
+//	public static Plan makeGsConstant(Plan p, double currentTime, double gs, boolean makeKin, double vsAccel) {
+//		int wp1 = p.getSegment(currentTime)+1;
+//		Plan priorPlan = PlanUtil.cutDown(p, p.getFirstTime(), currentTime);		
+//		Position currentPos = p.position(currentTime);
+//		Route rt = PlanUtil.toRoute(p,wp1);
+//		rt.add(0,currentPos,Plan.specPre+"currentPosition",0.0);	
+//		f.pln("\n $$$$$+++++++++++++++++++  makeGsConstant: rt = "+rt.toString());
+//		Plan linPlan = rt.linearPlan(currentTime,gs); 
+//		Plan rtn;
+//		if (makeKin) {
+//			double bankAngle = Units.from("deg", 0.00000000001);   // should not be needed !!! radius in NAvPoint
+//			double gsAccel = 0.00000000000001;                     // There should not be any BGS - EGS zones needed
+//			boolean repairTurn = false;
+//			boolean repairGs = true;
+//			boolean repairVs = false;
+//			GsMode gsm = GsMode.PRESERVE_GS;
+//			//f.pln(" $$$$$$$$$$$$$@@@@@@@ makeGsConstant: linPlan = "+linPlan.toStringGs());
+////			DebugSupport.dumpPlan(linPlan, "testGsSeq_linPlan");
+//			Plan kpc = TrajGen.makeKinematicPlan(linPlan, bankAngle, gsAccel, vsAccel, repairTurn, repairGs, repairVs, gsm);	
+//			rtn = priorPlan.append(kpc);
+//			//f.pln(" $$$$$$$$$$$$$@@@@@@@ append kpc = "+kpc.toStringGs());
+//		} else {
+//		    rtn = priorPlan.append(linPlan);
+//		}
+//		return rtn;
+//	}
 
 
 	
@@ -2422,16 +2310,17 @@ public class TrajGen {
 		}		
 		if (dt > 2.0) {
 			NavPoint s2 = BOT.linear(v, dt/2);
-			Position center = BOT.linear(Velocity.make(v.PerpL().Hat()), R).position();
-			if (turnRight) center = BOT.linear(Velocity.make(v.PerpR().Hat()), R).position();
+			Position center = BOT.linear(Velocity.make(v.PerpL().Hat2D()), R).position();
+			if (turnRight) center = BOT.linear(Velocity.make(v.PerpR().Hat2D()), R).position();
 			double rot = v.gs()/R*Util.turnDir(v.trk(), dtp.second.trk());
 			double radius = R*Util.turnDir(v.trk(), dtp.second.trk());
-			BOT = s2.makeBOT(BOT.position(), BOT.time(), v, radius);
+			int ix = s2.linearIndex();
+			BOT = s2.makeBOT(BOT.position(), BOT.time(), v, radius, ix);
 			//			NavPoint MOT = new NavPoint(ProjectedKinematics.turn(BOT.position(), v, dt*0.5, R, turnRight).first,BOT.time()+dt*0.5);
 			//			MOT = s2.makeTurnMid(MOT.position(), MOT.time(), rot, v);
 			Pair<Position,Velocity> pr = ProjectedKinematics.turn(BOT.position(), v, dt, R, turnRight);
 			NavPoint EOT = new NavPoint(pr.first,BOT.time()+dt);
-			EOT = s2.makeEOT(EOT.position(), EOT.time(), pr.second);
+			EOT = s2.makeEOT(EOT.position(), EOT.time(), pr.second, ix);
 			double d = EOT.position().distanceH(goal);
 			finalTime = d/v.gs()+EOT.time();
 			fp.add(BOT);
@@ -2468,7 +2357,7 @@ public class TrajGen {
 //	// attempt to gracefully reconnect to the provided plan.
 	public static Plan reconnectToPlan(Plan p, Position so, Velocity vo, double to, 
 			double bankAngle, double gsAccel, double vsAccel, double minVsChangeRecognized, double timeBeforeTurn, 
-			double timeIntervalNextTry, GsMode gsm) {
+			double timeIntervalNextTry) {
 		Plan kpc = p.copy(); 
 		f.pln(" !!!!!!!!!!!!!!!!!!! NOT YET PORTED TO NEW NavPoint Data Structure !!!!!!!!!!!!!!!!!!!!!!!");
 //		if (kpc.isLinear()) {
@@ -2551,13 +2440,11 @@ public class TrajGen {
 ////for (int i = 0; i < plist.size(); i++) {
 ////	f.pln(""+plist.get(i).toOutput());
 ////}
-//
-
-		
+//		
 		return kpc;
 	}
-
 }
+	
 
 //	//	static public enum ErrType {UNKNOWN, TURN_INFEAS, TURN_OVERLAPS_B, TURN_OVERLAPS_E, GSACCEL_DIST, GS_ZERO, VSACCEL_DIST, REMOVE_FIXED, GSACCEL_OVERLAP};
 //
@@ -2684,61 +2571,6 @@ public class TrajGen {
 
 
 
-//	/**
-//	 * Returns a new Plan that sets all points in a range to have a constant GS.
-//	 * THIS ASSUMES NO VERTICAL TCPS, but allows turns (turn omega metatdata may be altered -- maximum omega values are not tested for).
-//	 * The return plan type will be the same as the input plan type.
-//	 * The new gs is specified by the user.
-//	 * This will set an error status in the return plan if there are any vertical TCPs.
-//	 */
-//	public static AugmentedPlan makeGSConstant_NO_Verts(Plan p, double newGs) {
-//		//f.pln(" makeGSConstant: newGs = "+Units.str4("kn",newGs)+"  type = "+p.getType());
-//		Plan kpc = new Plan(p.name);
-//		kpc.setPlanType(p.getType());
-//		//double time0 = point(0).time();
-//		double lastTime = p.point(0).time();
-//		kpc.add(p.point(0));
-//		int j = 0;   // last point included in new file (note GS TCPs are removed)
-//		for (int i = 1; i < p.size(); i++) {
-//			NavPoint np = p.point(i);
-//			//f.pln(" $$$$ makeGSConstant: i = "+i+" np = "+np.toStringFull());
-//			// skip any GSC points (i.e. remove them)
-//			if (!np.isGSC()) {
-//				double d = p.pathDistance(j,i);
-//				double dt = d/newGs;
-//				double nt = lastTime + dt;
-//				//f.pln(" $$$$ makeGSConstant: d = "+Units.str("nm",d)+" dt = "+dt+" nt = "+nt);
-//				lastTime = nt;
-//				if (np.isTCP()) {        // assume only turn TCPs allowed
-//					if (!np.isTurn()) {
-//						//f.pln("makeGSConstant(TCP): start point within acceleration zone");
-//						p.addError("TrajGen.genGSConstant: start point within acceleration zone");
-//						return new AugmentedPlan(kpc, -1, i, ErrType.GSACCEL_OVERLAP);
-//					}
-//				    //f.pln(" $$$ makeGSConstant(TCP) for i = "+i+" BEFORE np.turnRadius = "+np.turnRadius());
-//                    double oldGs = np.velocityIn().gs();
-//                    double newVsIn = p.vertDistance(j,i)/dt;
-//					np = np.makeVelocityIn(np.velocityIn().mkGs(newGs).mkVs(newVsIn));  // modify gs,vs in for turns
-//					//f.pln(" makeGSConstant(TCP): make point i = "+i+" have velocityIn = "+Units.str4("kn",newGs));
-//					// calculate new acceleration: newAccel = oldAccel * oldTime/newTime
-//					double k = newGs/oldGs;
-//					double newAccel = np.accel() * k;
-//					//f.pln(" $$$ makeGSConstant(TCP) for i = "+i+" CHANGE accel from "+np.accel()+" to "+newAccel);
-//					np = np.makeAccel(newAccel); // modify turn omega to match new gs in
-//					//f.pln(" $$$ makeGSConstant(TCP) for i = "+i+" AFTER np.turnRadius = "+np.turnRadius());
-//					// NOTE: we need to recalculate times of MOT and BOT, we are preserving turn radius
-//				}
-//				NavPoint newNp = np.makeTime(nt);
-//				//f.pln(" $$$ makeGSConstant for i = "+i+" CHANGE time from "+p.point(i).time()+" to "+newNp.time());
-//				//f.pln(" $$$ makeGSConstant add "+newNp);
-//				kpc.add(newNp);
-//				j = i;
-//			}
-//		}
-//		return new AugmentedPlan(kpc);
-//	}
-//
-//
 
 //// EXPERIMENTAL
 //private static Plan linearRepairShortGsLegsNew(Plan fp, double gsAccel, GsMode gsm) {

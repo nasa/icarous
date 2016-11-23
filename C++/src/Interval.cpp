@@ -98,17 +98,11 @@ bool Interval::inOO(double x) const {
 	return low < x && x < up;
 }
 
-/** Is the element in this interval, where close/open conditions are given as parameters */
-bool Interval::in(double x, bool lb_close, bool ub_close) {
-	if (lb_close && ub_close) {
-		return low <= x && x <= up;
-	} else if (ub_close) {
-		return low < x && x <= up;
-	} else if (lb_close) {
-		return low <= x && x < up;
-	} else {
-		return low < x && x < up;
-	}
+/** Is the element (almost) in this interval, where close/open conditions are given as parameters */
+bool Interval::almost_in(double x, bool lb_close, bool ub_close) const {
+  	bool in_lb = low < x ? lb_close || !Util::almost_equals(low,x) : lb_close && Util::almost_equals(low,x);
+  	bool in_ub = x < up ? ub_close || !Util::almost_equals(up,x) : ub_close && Util::almost_equals(up,x);
+  	return in_lb && in_ub;
 }
 
 bool Interval::overlap(const Interval& r) const {

@@ -37,7 +37,7 @@ ParameterData::ParameterData() {
 	preserveUnits = false;
 	unitCompatibility = true;
 	parameters = map<std::string, Quad<std::string, double, std::string, bool>, stringCaseInsensitive >();
-	patternStr = Constants::wsPatternBase;
+	patternStr = Constants::wsPatternBaseNoRegex;
 }
 
 ParameterData ParameterData::copyWithPrefix(const std::string& prefix) const {

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<mavlink>
+        <include>common.xml</include>
+	<enums>
+	</enums>
+	<messages>
+
+	  <message id="228" name="HEARTBEAT_COMBOX">
+	    <description>Combox heartbeat</description>
+	    <field type="uint64_t" name="count">count</field>
+	  </message>
+
+	  <message id="220" name="POINTOFINTEREST">
+	    <description>Point in space (Waypoint/Vertex etc...)</description>
+	    <field type="int8_t" name="id">Identifier (0-Waypoint,1-geofence,2-Obstacle,3-Traffic,4-Others)</field>
+	    <field type="int8_t" name="subtype">Sub type</field>
+	    <field type="int8_t" name="index">Index (sequence number)</field>
+	    <field type="int8_t" name="geodesic">1 for lat/lon/alt,0 for NED</field> 
+	    <field type="float" name="latx">Latitude (deg)/Relative North (m)</field>
+	    <field type="float" name="lony">Longitude (deg)/Relative East (m)</field>
+	    <field type="float" name="altz">Altitude (deg)/Relative UP (m)</field>
+	    <field type="float" name="heading">Heading</field>
+	    <field type="float" name="vx">Velocity (north m/s)</field>
+	    <field type="float" name="vy">Velocity (east m/s)</field>
+	    <field type="float" name="vz">Velocity (down m/s)</field>
+	  </message>
+	  
+	  <message id="221" name="FLIGHTPLAN_INFO">
+	    <description>Flight plan information </description>
+	    <field type="uint8_t" name="msgType">Message type, 0-new flight plan, 1-update existing flight plan</field>
+	    <field type="float" name="standoffDist">Standoff distance</field>
+	    <field type="float" name="maxHorDev">Maximum horizontal deviation from flight plan</field>
+	    <field type="float" name="maxVerDev">Maximum vertical deviation from flight plan</field>
+	    <field type="int32_t" name="numWaypoints">Number of waypoints</field>
+	  </message>
+	  	  
+	  <message id="222" name="GEOFENCE_INFO">
+	    <description>Geo fence information</description>
+	    <field type="uint8_t" name="msgType">Flag, 0-new fence, 1-remove existing fence</field>
+	    <field type="uint8_t" name="fenceType">Flag, 0-keep in, 1-keep out</field>
+	    <field type="uint8_t" name="fenceID"> Geo-fence ID</field>
+	    <field type="float" name="fenceFloor"> Fence floor height </field>
+	    <field type="float" name="fenceCeiling"> Fence ceiling height </field>
+	    <field type="int32_t" name="numVertices"> Number of polygon verticies </field>
+	  </message>
+	  
+	  <message id="223" name="MISSION_START_STOP">
+	    <description>Flag to start/stop mission</description>
+	    <field type="uint8_t" name="missionStart"> mission start (true)/stop (false)</field>
+	  </message>
+
+	  <message id="224" name="SAFEGUARD">
+	    <description>Safeguard input</description>
+	    <field type="int8_t" name="value">1-success,0-failure</field>
+	  </message>	  	  
+	  
+	  <message id="225" name="AIRCRAFT_6DOF_STATE">
+	    <description>Aircraft state information</description>
+	    <field type="float" name="lat">latitude</field>
+	    <field type="float" name="lon">longitude</field>
+	    <field type="float" name="alt">altitude</field>
+	    <field type="float" name="roll">roll</field>
+	    <field type="float" name="pitch">pitch</field>
+	    <field type="float" name="yaw">yaw</field>
+	  </message>
+
+	 
+	  <message id="229" name="HEARTBEAT_ICAROUS">
+	    <description>ICAROUS heartbeat</description>
+	    <field type="int8_t" name="status">FMS state (0-idle, 1-Takeoff, 2-Climb, 3-Cruise, 4-Land)</field>
+	  </message>
+	  
+	  
+	</messages>
+</mavlink>

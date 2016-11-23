@@ -23,6 +23,12 @@
 namespace larcfm {
 
 bool PolycarpEdgeProximity::near_edge(const Vect2& segstart, const Vect2& segend, const Vect2& s, double BUFF) {
+  if (fabs(s.x-segstart.x)>2*BUFF && fabs(s.x-segend.x)>2*BUFF && sign(s.x-segend.x)==sign(s.x-segstart.x)) {
+      return false;
+          }
+  else if (fabs(s.y-segstart.y)>2*BUFF && fabs(s.y-segend.y)>2*BUFF && sign(s.y-segend.y)==sign(s.y-segstart.y)) {
+      return false;
+  }
   double ap = (segend.Sub(segstart)).sqv();
   double b = 2*((segstart.Sub(s)).dot(segend.Sub(segstart)));
   double c = (segstart.Sub(s)).sqv();
@@ -36,7 +42,24 @@ bool PolycarpEdgeProximity::near_edge(const Vect2& segstart, const Vect2& segend
 }
 
 bool PolycarpEdgeProximity::segments_2D_close(const Vect2& segstart1, const Vect2& segend1, const Vect2& segstart2, const Vect2& segend2, double BUFF) {
-  if (near_edge(segstart2,segend2,segstart1,BUFF)) return true;
+  double segStartXDiff    = segstart1.x - segstart2.x;
+  double segStartEndXDiff = segstart1.x - segend2.x;
+  double segStartYDiff    = segstart1.y - segstart2.y;
+  double segStartEndYDiff = segstart1.y - segend2.y;
+  double segEndXDiff      = segend1.x - segend2.x;
+  double segEndStartXDiff = segend1.x - segstart2.x;
+  double segEndYDiff      = segend1.y - segend2.y;
+  double segEndStartYDiff = segend1.y - segstart2.y;
+  bool segXApart  = (fabs(segStartXDiff)> 2*BUFF and fabs(segStartEndXDiff) > 2*BUFF and
+      fabs(segEndXDiff)> 2*BUFF and fabs(segEndStartXDiff) > 2*BUFF and
+      sign(segStartXDiff) == sign(segStartEndXDiff) and
+      sign(segEndXDiff) == sign(segEndStartXDiff) and sign(segStartXDiff) == sign(segEndXDiff));
+  bool segYApart  = (fabs(segStartYDiff) > 2*BUFF and fabs(segStartEndYDiff) > 2*BUFF and
+      fabs(segEndYDiff) > 2*BUFF and fabs(segEndStartYDiff) > 2*BUFF and
+          sign(segStartYDiff) == sign(segStartEndYDiff) and sign(segEndYDiff) == sign(segEndStartYDiff) and
+          sign(segStartYDiff) == sign(segEndYDiff));
+  if (segXApart or segYApart) return false;
+  else if (near_edge(segstart2,segend2,segstart1,BUFF)) return true;
   else if (near_edge(segstart2,segend2,segend1,BUFF)) return true;
   else if (near_edge(segstart1,segend1,segstart2,BUFF)) return true;
   else if (near_edge(segstart1,segend1,segend2,BUFF)) return true;

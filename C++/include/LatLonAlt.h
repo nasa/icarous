@@ -68,9 +68,11 @@ namespace larcfm {
 	/** Return altitude in internal units */
     double alt() const;
 
+    double distanceH(const LatLonAlt& lla2) const;
+	
     /** String representation with units of [deg,deg,ft] */
     std::string toString() const;
-	/** String representation with the given number of digits of precision */
+	/** String representation with units of [deg,deg,ft] */
     std::string toString(int precision) const;
 
 	/** Return a string representation consistent with StateReader or PlanReader with the global default precision */

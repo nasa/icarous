@@ -784,7 +784,7 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Return a truncated version of this path that ends at time t.  This will change a USER_VEL path into a USER_VEL_FINITE path.
 	 * @param t The time to halt the path.
-	 * @return A truncated path.  If t <= the path's start time, then return an empty path.  If t >= the path's end time, then return a copy of the original path.
+	 * @return A truncated path.  If t &le; the path's start time, then return an empty path.  If t &ge; the path's end time, then return a copy of the original path.
 	 */
 	public PolyPath truncate(double t) {
 		if (t >= getLastTime()) return copy();

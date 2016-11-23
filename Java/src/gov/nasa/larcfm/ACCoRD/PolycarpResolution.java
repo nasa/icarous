@@ -19,7 +19,7 @@ public class PolycarpResolution {
 	public static Vect2 proj_vect(Vect2 u, Vect2 v, Vect2 w, double BUFF) {
 		if (v.Sub(u).norm() <= BUFF || w.Sub(v).norm() <= BUFF) return new Vect2(1.0,1.0);
 		if (v.Sub(u).dot(w.Sub(v)) >= 0) return v.Sub(u).PerpR().Hat().Add(w.Sub(v).PerpR().Hat());
-		if (v.Sub(u).det(v.Sub(u)) <= 0) return v.Sub(u).Hat().Add(v.Sub(w).Hat());
+		if (w.Sub(v).det(v.Sub(u)) <= 0) return v.Sub(u).Hat().Add(v.Sub(w).Hat());
 		return u.Sub(v).Hat().Add(w.Sub(v).Hat());
 	}
 
@@ -81,22 +81,22 @@ public class PolycarpResolution {
 		Vect2 tv = recovery_test_point(BUFF,ResolBUFF,p,s,eps);
 		if (eps == 1 && PolycarpContain.definitely_outside(p,s,BUFF) &&
 				!(PolycarpContain.near_any_edge(p,s, ResolBUFF))) {
-			//System.out.println("hit 1");
+//			System.out.println("hit 1");
 			return s;
 		}
 		if (eps == -1 && PolycarpContain.definitely_inside(p,s, BUFF) &&
 				!(PolycarpContain.near_any_edge(p,s, ResolBUFF))) {
-			//System.out.println("hit 2");
+//			System.out.println("hit 2");
 			return s;
 		}
 		if (eps == 1 && PolycarpContain.definitely_outside(p,tv,BUFF) &&
 				!(PolycarpContain.near_any_edge(p, tv, ResolBUFF))) {
-			//System.out.println("hit 3");
+//			System.out.println("hit 3");
 			return tv;
 		}
 		if (eps == -1 && PolycarpContain.definitely_inside(p, tv, BUFF) &&
 				!(PolycarpContain.near_any_edge(p, tv, ResolBUFF))) {
-			//System.out.println("hit 4");
+//			System.out.println("hit 4");
 			return tv;
 		}
 		int i = closest_edge(p,BUFF,s);
@@ -116,8 +116,15 @@ public class PolycarpResolution {
 		if ((eps == 1 && leftturn) || eps == -1 && !leftturn) {
 			ans = p.get(neari).Add(pvnormed.Scal((eps*ResolBUFF)));
 		}
-		if (eps == 1 && PolycarpContain.definitely_outside(p,ans,BUFF)) return ans;
-		if (eps == -1 && PolycarpContain.definitely_inside(p,ans,BUFF)) return ans;
+		if (eps == 1 && PolycarpContain.definitely_outside(p,ans,BUFF)) {
+//			System.out.println("hit 5");
+			return ans;
+		}
+		if (eps == -1 && PolycarpContain.definitely_inside(p,ans,BUFF)) {
+//			System.out.println("hit 6");
+			return ans;
+		}
+//		System.out.println("hit 7");
 		return s;
 	}
 	

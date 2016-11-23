@@ -153,7 +153,7 @@ final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 	public void close() {
 		if (fw != null) {
 			try {
-				output.close();
+				//output.close();
 				fw.close();
 			} catch (IOException e) {
 				error.addError("Exception on close(): "+e.getMessage());

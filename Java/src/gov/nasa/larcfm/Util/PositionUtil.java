@@ -58,10 +58,10 @@ public final class PositionUtil {
 
 	public static Pair<Position,Double> intersection(Position so1, Position so2, double dto, Position si1, Position si2) {
 		if (so1.isLatLon()) {
-			Pair<LatLonAlt, Double> p = GreatCircle.intersection(so1.lla(), so2.lla(), dto, si1.lla(), si2.lla());
+			Pair<LatLonAlt, Double> p = GreatCircle.intersectionAvgAlt(so1.lla(), so2.lla(), dto, si1.lla(), si2.lla());
 			return Pair.make(new Position(p.first), p.second);
 		} else {
-			Pair<Vect3, Double> p = VectFuns.intersection(so1.point(), so2.point(), dto, si1.point(), si2.point());
+			Pair<Vect3, Double> p = VectFuns.intersectionAvgZ(so1.point(), so2.point(), dto, si1.point(), si2.point());
 			return Pair.make(new Position(p.first), p.second);
 		}
 	}

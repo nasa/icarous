@@ -85,9 +85,9 @@ public:
    */
   void set_Buffered_WC_SC_228_MOPS(bool type);
 
-  /**
-   * Clear aircraft list, reset current time and wind vector.
-   */
+	/**
+	 * Clear aircraft list, current time, and wind vector.
+	 */
   void reset();
 
   /**
@@ -169,9 +169,9 @@ public:
    */
   int aircraftIndex(const std::string& name) const;
 
-  /**
-   * @return current time.
-   */
+	/**
+	 * @return get current time, i.e., time of ownship aircraft.
+	 */
   double getCurrentTime() const;
 
   /**

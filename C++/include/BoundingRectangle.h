@@ -218,8 +218,15 @@ class BoundingRectangle {
 	 */
 	double getMaxZ() const;
 	
+	/**
+	 * Return center vector value for this BoundingRectangle
+	 */
 	Vect3 centerVect() const;
 
+	/**
+	 * Return center Position for this BoundingRectangle.
+	 * If any LatLonAlt values were input to the BoundingRectangle, this will be a normalized (within [-pi,+pi]) LatLonAlt position.
+	 */
 	Position centerPos()  const;
 
 	std::string toString() const;

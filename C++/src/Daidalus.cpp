@@ -588,7 +588,7 @@ std::string Daidalus::toString() const {
 
 std::string Daidalus::release() {
   return "DAIDALUS++ V-"+KinematicBandsParameters::VERSION+
-      "-FormalATM-"+Constants::version+" (Sept-26-2016)";
+      "-FormalATM-"+Constants::version+" (Nov-18-2016)";
 }
 
 }

@@ -73,19 +73,37 @@ namespace larcfm {
      */
     CDCylinder();
 
+  /**
+   * This specifies the internal table is a copy of the provided table
+   * @param tab
+   */
     CDCylinder(CD3DTable& tab);
 
     CDCylinder(double d, double h);
     CDCylinder(double d, const std::string& dunit, double h, const std::string& hunit);
 
+  /**
+   * Create a new state-based conflict detection object using specified units.
+   * 
+   * @param distance the minimum horizontal separation distance in specified units
+   * @param height the minimum vertical separation height in specified units.
+   */
     static CDCylinder make(double distance, const std::string& dUnits, double height, const std::string& hUnits);
 
+  /**
+   * Create a new state-based conflict detection object using internal units.
+   * 
+   * @param distance the minimum horizontal separation distance [m]
+   * @param height the minimum vertical separation height [m].
+   */
     static CDCylinder mk(double distance, double height);
 
-    /** Return a copy of the internal table */
+  /**
+   * Return a copy of this object's table
+   */
     CD3DTable getCD3DTable();
 
-    /** Set this object's table to be a copy of the supplied one */
+  /** Sets the internal table to be a copy of the supplied one */
     void setCD3DTable(const CD3DTable& tab);
 
     double getHorizontalSeparation() const;
@@ -114,7 +132,7 @@ namespace larcfm {
    * @param D the minimum horizontal distance
    * @param H the minimum vertical distance
    * @param B the the lower bound of the lookahead time (B >= 0)
-   * @param T the upper bound of the lookahead time (T < 0 means infinite lookahead time)
+   * @param T the upper bound of the lookahead time (B < T)
    * 
    * @return true, if the conflict time interval (t_in,t_out) is in [B,T].
    */
@@ -128,7 +146,7 @@ namespace larcfm {
    * @param vi the intruder's velocity
    * @param D the minimum horizontal distance
    * @param H the minimum vertical distance
-   * @param T the the lookahead time (T < 0 means infinite lookahead time)
+   * @param T the the lookahead time (T > 0)
    * 
    * @return true, if the conflict time interval (t_in,t_out) is in [0,T].
    */

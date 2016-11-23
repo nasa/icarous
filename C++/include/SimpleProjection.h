@@ -28,6 +28,11 @@ namespace larcfm {
  * within this frame, may be found in geodesic coordinates with the inverse() method.   As long as the points are
  * close to the projection point, the errors will be very small.
  * 
+ * This projection has the property that the Euclidean distance in the XY
+ * frame is equal to the great circle distance in the lat/lon frame. In
+ * addition, the course from the origin to the returned x,y point is the
+ * same as the course at the mid point on the great circle arc.
+ *
  * This projection has special code for when positions are near the poles.
  *  
  * Note: projection objects should never be made directly, and instead should be retrieved via Projection.getProjection()
@@ -85,6 +90,7 @@ namespace larcfm {
     /** Return a projection of a Position in Euclidean 3-space (if already in Euclidian coordinate, this is the identity function) */
 	Vect3 project(const Position& sip) const;
 
+    /** Return a projection of a Position in Euclidean 3-space (if already in Euclidian coordinate, this is the identity function) */
 	Point projectPoint(const Position& sip) const;
 
     /** Return a LatLonAlt value corresponding to the given Euclidean position */

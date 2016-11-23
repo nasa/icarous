@@ -15,12 +15,14 @@ public class WCV_TCPA extends WCV_tvar {
   
   /** Constructor that a default instance of the WCV tables. */
   public WCV_TCPA() {
-    super();
+    table = new WCVTable();
+    wcv_vertical = new WCV_TCOA();
   }
 
   /** Constructor that specifies a particular instance of the WCV tables. */
-  public WCV_TCPA(WCVTable tables) {
-    super(tables);
+  public WCV_TCPA(WCVTable tab) {
+  	table = tab.copy();
+  	wcv_vertical = new WCV_TCOA();
   }
 
   public double horizontal_tvar(Vect2 s, Vect2 v) {
@@ -76,15 +78,14 @@ public class WCV_TCPA extends WCV_tvar {
    * Returns a deep copy of this WCV_TCPA object, including any results that have been calculated.  
    */
   public WCV_TCPA copy() {
-    WCV_TCPA ret = new WCV_TCPA(table.copy());
+    WCV_TCPA ret = new WCV_TCPA(table);
     ret.id = id;
     return ret;
   }
   
   public boolean contains(Detection3D cd) {
     if (cd instanceof WCV_TCPA) {
-      WCV_TCPA d = (WCV_TCPA)cd;
-      return table.contains(d.table);
+      return containsTable((WCV_tvar)cd);
     }
     return false;
   }

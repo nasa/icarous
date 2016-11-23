@@ -15,12 +15,14 @@ public class WCV_TEP extends WCV_tvar {
 
   /** Constructor that a default instance of the WCV tables. */
   public WCV_TEP() {
-    super();
+    table = new WCVTable();
+    wcv_vertical = new WCV_TCOA();
   }
 
   /** Constructor that specifies a particular instance of the WCV tables. */
-  public WCV_TEP(WCVTable tables) {
-    super(tables);
+  public WCV_TEP(WCVTable tab) {
+  	table = tab.copy();
+  	wcv_vertical = new WCV_TCOA();
   }
 
   public double horizontal_tvar(Vect2 s, Vect2 v) {
@@ -69,26 +71,16 @@ public class WCV_TEP extends WCV_tvar {
    * Returns a deep copy of this WCV_TEP object, including any results that have been calculated.  
    */
   public WCV_TEP copy() {
-    WCV_TEP ret = new WCV_TEP(table.copy());
+    WCV_TEP ret = new WCV_TEP(table);
     ret.id = id;
     return ret;
   }
 
   public boolean contains(Detection3D cd) {
-    if (cd instanceof WCV_TEP) {
-      WCV_tvar d = (WCV_tvar)cd;
-      return table.contains(d.table);
-    }
-    if (cd instanceof WCV_TAUMOD) {
-      WCV_TAUMOD d = (WCV_TAUMOD)cd;
-      return table.contains(d.table);
-    }
-    if (cd instanceof WCV_TCPA) {
-      WCV_TCPA d = (WCV_TCPA)cd;
-      return table.contains(d.table);
+    if (cd instanceof WCV_TEP || cd instanceof WCV_TAUMOD || cd instanceof WCV_TCPA) {
+    	return containsTable((WCV_tvar)cd);
     }
     return false;
   }
-
 
 }

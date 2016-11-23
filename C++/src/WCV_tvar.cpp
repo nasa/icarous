@@ -19,10 +19,13 @@
 
 namespace larcfm {
 
-WCVTable WCV_tvar::getWCVTable() {
-  return table;
+WCV_tvar::~WCV_tvar() {
+  delete wcv_vertical;
 }
 
+/**
+ * Sets the internal table to be a copy of the supplied one.
+ **/
 void WCV_tvar::setWCVTable(const WCVTable& tab) {
   table.copyValues(tab);
 }
@@ -100,7 +103,7 @@ bool WCV_tvar::violation(const Vect3& so, const Velocity& vo, const Vect3& si, c
   Vect2 vi2 = vi.vect2();
   Vect2 v2 = vo2.Sub(vi2);
   return horizontal_WCV(s2,v2) &&
-      WCV_Vertical::vertical_WCV(table.getZTHR(),table.getTCOA(),so.z-si.z,vo.z-vi.z);
+      wcv_vertical->vertical_WCV(table.getZTHR(),table.getTCOA(),so.z-si.z,vo.z-vi.z);
 }
 
 bool WCV_tvar::conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const {
@@ -133,24 +136,27 @@ LossData WCV_tvar::WCV_interval(const Vect3& so, const Velocity& vo, const Vect3
   double sz = so.z-si.z;
   double vz = vo.z-vi.z;
 
-  WCV_Vertical wcvz;
-  wcvz.vertical_WCV_interval(table.getZTHR(),table.getTCOA(),B,T,sz,vz);
+  Interval ii = wcv_vertical->vertical_WCV_interval(table.getZTHR(),table.getTCOA(),B,T,sz,vz);
 
-  if (wcvz.time_in > wcvz.time_out) {
+  if (ii.low > ii.up) {
     return LossData(time_in,time_out);
   }
-  Vect2 step = v2.ScalAdd(wcvz.time_in,s2);
-  if (Util::almost_equals(wcvz.time_in,wcvz.time_out)) { // [CAM] Changed from == to almost_equals to mitigate numerical problems
+  Vect2 step = v2.ScalAdd(ii.low,s2);
+  if (Util::almost_equals(ii.low,ii.up)) { // [CAM] Changed from == to almost_equals to mitigate numerical problems
     if (horizontal_WCV(step,v2)) {
-      time_in = wcvz.time_in;
-      time_out = wcvz.time_out;
+      time_in = ii.low;
+      time_out = ii.up;
     }
     return LossData(time_in,time_out);
   }
-  LossData ld = horizontal_WCV_interval(wcvz.time_out-wcvz.time_in,step,v2);
-  time_in = ld.getTimeIn() + wcvz.time_in;
-  time_out = ld.getTimeOut() + wcvz.time_in;
+  LossData ld = horizontal_WCV_interval(ii.up-ii.low,step,v2);
+  time_in = ld.getTimeIn() + ii.low;
+  time_out = ld.getTimeOut() + ii.low;
   return LossData(time_in,time_out);
+}
+
+bool WCV_tvar::containsTable(WCV_tvar* wcv) const {
+  return table.contains(wcv->table);
 }
 
 std::string WCV_tvar::toString() const {

@@ -24,11 +24,16 @@
  
 namespace larcfm {
 
-  /** return a vector of strings, split from str based on the pattern */
+  /** return a vector of strings, split from str based on the pattern.  The pattern is not a regular expression, instead
+   * it is a list of single character delimiters.  If the delimiters are "abc", this function will behave as if
+   * the string was being split by the regular expression "[abc]+"  */
   std::vector<std::string> split(const std::string& str,const std::string& delimiters);
   
   /** return a vector of strings, split from str based on the pattern. Allows empty strings */
   std::vector<std::string> split_empty(const std::string& str,const std::string& delimiters);
+
+  /** return a vector of strings, split from str based on the pattern given as a regular expression. */
+  std::vector<std::string> split_regex(const std::string& str,const std::string& delimiters);
 
   /** a C++ substring method that behaves more like Java's String.subString method.
    * the beginning index is inclusive, and the ending index is exclusive. */
@@ -64,6 +69,9 @@ namespace larcfm {
 
   /** Does str end with the suffix? */
   bool endsWith(const std::string& str, const std::string& suffix);
+
+  /** parse a string into an integer */
+  int parseInt(const std::string& str);
 
 }
 

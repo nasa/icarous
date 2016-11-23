@@ -22,7 +22,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	/**
 	 * DAIDALUS version
 	 */
-	public static final String VERSION = "1.a2";
+	public static final String VERSION = "1.0";
 
 	/**
 	 * Alertor
@@ -85,15 +85,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 		right_trk_ = Math.PI;
 		min_gs_  = Units.from("knot",10);  
 		max_gs_  = Units.from("knot",700);
-		min_vs_  = Units.from("fpm",-5000);
-		max_vs_  = Units.from("fpm",5000); 
-		min_alt_ = Units.from("ft",500);  
+		min_vs_  = Units.from("fpm",-6000);
+		max_vs_  = Units.from("fpm",6000); 
+		min_alt_ = Units.from("ft",100);  
 		max_alt_ = Units.from("ft",50000);
 
 		// Kinematic bands
 		trk_step_         = Units.from("deg",  1.0); 
-		gs_step_          = Units.from("knot", 1.0); 
-		vs_step_          = Units.from("fpm", 10.0); 
+		gs_step_          = Units.from("knot", 5.0); 
+		vs_step_          = Units.from("fpm",100.0); 
 		alt_step_         = Units.from("ft", 100.0); 
 		horizontal_accel_ = Units.from("m/s^2",2.0); 
 		vertical_accel_   = Units.from("G",0.25);    // Section 1.2.3, DAA MOPS V3.6
@@ -1185,6 +1185,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 		horizontal_accel_ = 0;
 		vertical_accel_ = 0;
 		vertical_rate_ = 0;
+		recovery_stability_time_ = 0;
 	}
 
 	/** 
@@ -1199,6 +1200,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 		horizontal_accel_ = Units.from("m/s^2",2.0); 
 		vertical_accel_ = Units.from("G",0.25);
 		vertical_rate_ = Units.from("fpm",500);   
+		recovery_stability_time_ = 2;
 	}
 	
 	/**

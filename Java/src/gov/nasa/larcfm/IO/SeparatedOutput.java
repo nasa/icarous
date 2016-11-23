@@ -91,11 +91,11 @@ public final class SeparatedOutput implements ErrorReporter {
 //		init();
 //	}
 //
-	public void close() {
+//	public void close() {
 //		if (writer != null) {
 //			writer.close();
 //		}
-	}
+//	}
 
 	/** Return the heading for the given column */ 
 	public String getHeading(int i) {
@@ -255,8 +255,11 @@ public final class SeparatedOutput implements ErrorReporter {
 	}
     
     /**
-     * Sets the next column value equal to the given value. The value is in internal units.
-     */
+     * Sets the next column value equal to the given value. 
+	 * 
+	 * @param i the index of the column to add this value in
+	 * @param val the value (in internal units)
+	 */
 	public void setColumn(int i, double val) {
 		setColumn(i, f.FmPrecision(Units.to(getUnit(i), val),1));
 	}
@@ -264,7 +267,7 @@ public final class SeparatedOutput implements ErrorReporter {
     /**
      * Sets the next column value equal to the given value.  The value is in internal units.
      */
-	public void setColumn(double val) {
+	public void addColumn(double val) {
 		setColumn(++column_count, val);
     }
 
@@ -321,6 +324,14 @@ public final class SeparatedOutput implements ErrorReporter {
     */
    public void setColumnDelimiterSpace() {
 	   delim = ' ';
+   }
+   
+   /** 
+    * Sets the column delimiter to a space.  If a space is used as a 
+    * separator then the empty value should be set (see setEmptyValue).
+    */
+   public void setColumnDelimiterSemicolon() {
+	   delim = ';';
    }
    
    /** 

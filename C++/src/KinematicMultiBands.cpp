@@ -429,7 +429,7 @@ void KinematicMultiBands::disableRecoveryBands() {
 double KinematicMultiBands::getLeftTrack() {
   if (trk_band_.get_rel()) {
     return trk_band_.get_min();
-  } else if (trk_band_.check_input(core_.ownship)) {
+  } else if (trk_band_.check_input(core_)) {
     return -trk_band_.min_rel(core_.ownship);
   } else {
     return NaN;
@@ -449,7 +449,7 @@ double KinematicMultiBands::getLeftTrack(const std::string& u) {
 double KinematicMultiBands::getRightTrack() {
   if (trk_band_.get_rel()) {
     return trk_band_.get_max();
-  } else if (trk_band_.check_input(core_.ownship)) {
+  } else if (trk_band_.check_input(core_)) {
     return trk_band_.max_rel(core_.ownship);
   } else {
     return NaN;
@@ -655,7 +655,7 @@ void KinematicMultiBands::setRecoveryTrackBands(bool flag) {
  */
 double KinematicMultiBands::getMinGroundSpeed() {
   if (gs_band_.get_rel()) {
-    if (gs_band_.check_input(core_.ownship)) {
+    if (gs_band_.check_input(core_)) {
       return gs_band_.min_val(core_.ownship);
     } else {
       return NaN;
@@ -697,7 +697,7 @@ void KinematicMultiBands::setMinGroundSpeed(double val, const std::string& u) {
  */
 double KinematicMultiBands::getMaxGroundSpeed() {
   if (gs_band_.get_rel()) {
-    if (gs_band_.check_input(core_.ownship)) {
+    if (gs_band_.check_input(core_)) {
       return gs_band_.max_val(core_.ownship);
     } else {
       return NaN;
@@ -846,7 +846,7 @@ void KinematicMultiBands::setRecoveryGroundSpeedBands(bool flag) {
  */
 double KinematicMultiBands::getMinVerticalSpeed() {
   if (vs_band_.get_rel()) {
-    if (vs_band_.check_input(core_.ownship)) {
+    if (vs_band_.check_input(core_)) {
       return vs_band_.min_val(core_.ownship);
     } else {
       return NaN;
@@ -886,7 +886,7 @@ void KinematicMultiBands::setMinVerticalSpeed(double val, const std::string& u) 
  */
 double KinematicMultiBands::getMaxVerticalSpeed() {
   if (vs_band_.get_rel()) {
-    if (vs_band_.check_input(core_.ownship)) {
+    if (vs_band_.check_input(core_)) {
       return vs_band_.max_val(core_.ownship);
     } else {
       return NaN;
@@ -1038,7 +1038,7 @@ void KinematicMultiBands::setRecoveryVerticalSpeedBands(bool flag) {
  */
 double KinematicMultiBands::getMinAltitude() {
   if (alt_band_.get_rel()) {
-    if (alt_band_.check_input(core_.ownship)) {
+    if (alt_band_.check_input(core_)) {
       return alt_band_.min_val(core_.ownship);
     } else {
       return NaN;
@@ -1080,7 +1080,7 @@ void KinematicMultiBands::setMinAltitude(double val, const std::string& u) {
  */
 double KinematicMultiBands::getMaxAltitude() {
   if (alt_band_.get_rel()) {
-    if (alt_band_.check_input(core_.ownship)) {
+    if (alt_band_.check_input(core_)) {
       return alt_band_.max_val(core_.ownship);
     } else {
       return NaN;
@@ -2016,7 +2016,7 @@ bool KinematicMultiBands::check_thresholds(const AlertThresholds& athr,
     if (detector->violation(so,vo,si,vi)) {
       return true;
     }
-    ConflictData det = detector->conflictDetection(so,vo,si,vi,0,athr.getAlertingTime());
+    ConflictData det = detector->conflictDetection(so,vo,si,vi,0,alerting_time);
     if (det.conflict()) {
       return true;
     }

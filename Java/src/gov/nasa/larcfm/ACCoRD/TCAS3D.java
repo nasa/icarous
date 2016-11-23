@@ -24,12 +24,12 @@ public class TCAS3D implements Detection3D {
     table = tables.copy();
   }
 
-  /** This gets a COPY of the internal TCAS table */
+  /** This returns a copy of the internal TCAS table */
   public TCASTable getTCASTable() {
     return table.copy();
   }
 
-  /** This set the internal table to a COPY of the supplied one */
+  /** This sets the internal table to be a deep copy of the supplied one.  Any previous links will be broken. */
   public void setTCASTable(TCASTable tables) {
     table = tables.copy();
   }

@@ -106,6 +106,10 @@ Vect3 Vect3::Hat() const {
 	return Vect3(x/n, y/n, z/n);
 }
 
+Vect3 Vect3::Hat2D() const {
+	return Vect3(x,y,0.0).Hat();
+}
+
 Vect3 Vect3::cross(const Vect3& v) const {
 	return Vect3(this->y*v.z - this->z*v.y, this->z*v.x - this->x*v.z, this->x*v.y - this->y*v.x);
 }
@@ -149,6 +153,15 @@ Vect3 Vect3::PerpL() const {
 Vect3 Vect3::linear(const Vect3& v, double t) const {
 	return Vect3(x+v.x*t, y+v.y*t, z+v.z*t);
 }
+
+Vect3 Vect3::linearByDist(double track, double d) const {
+	double gs = 100;
+	//Velocity v = Velocity::mkTrkGsVs(track,gs,0.0);
+	Vect3 v = Vect3(gs*sin(track),gs*cos(track),0.0);
+	double dt = d/gs;
+	return linear(v,dt);
+ }
+
 
 double Vect3::dot(const double x, const double y, const double z) const {
 	return this->x*x + this->y*y + this->z*z;

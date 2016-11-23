@@ -38,6 +38,21 @@ public final class VectFuns {
 		return si.Sub(so).dot(vo.PerpR()) >= 0;
 	}
 
+	/**
+	 * Return if point p is to the right or left of the line from A to B
+	 * @param a point A
+	 * @param b point B
+	 * @param p point P
+	 * @return 1 if to the right or collinear, -1 if to the left.
+	 */	
+	public static int rightOfLinePoints(Vect2 a, Vect2 b, Vect2 p) {
+		Vect2 AB = b.Sub(a);
+		Vect2 AP = p.Sub(a);
+		//The calculation below is the 2-D cross product.
+		return Util.sign(AP.x()*AB.y() - AP.y()*AB.x());
+	}
+	
+
 	public static boolean collinear(Vect2 p0, Vect2 p1, Vect2 p2) {
 		// area of triangle = 0? (same as det of sides = 0?)
 		return  p1.Sub(p0).det(p2.Sub(p0)) == 0;
@@ -186,12 +201,12 @@ public final class VectFuns {
 	}
 	
     /**
-     * Computes 2D intersection point of two lines, but also finds z component (projected by time from line 1)
+     * Computes 2D intersection point of two lines, but also finds z component (projected by time from line o)
      * This z-component is constrained to be within the z components of the defining points.
-     * @param s0 starting point of line 1
-     * @param v0 direction vector for line 1
-     * @param s1 starting point of line 2
-     * @param v1 direction vector of line 2
+     * @param so3 starting point of line o
+     * @param vo3 direction vector for line o
+     * @param si3 starting point of line i
+     * @param vi3 direction vector of line i
      * @return Pair (2-dimensional point of intersection, relative time of intersection, relative to the so3)
      * Note the intersection may be in the past (i.e. negative time)
      * If the lines are 2-D parallel, this returns the pair (0,NaN).
@@ -214,6 +229,7 @@ public final class VectFuns {
 		double minZ = Math.min(so3.z,si3.z);			
 		if (nZ > maxZ) nZ = maxZ;
 		if (nZ < minZ) nZ = minZ;	
+       //f.pln("intersection nz="+nZ);		
 		return new Pair<Vect3,Double>(intersec.mkZ(nZ),tt);
 	}
 
@@ -259,30 +275,32 @@ public final class VectFuns {
 	
 	
     /**
-     * Computes 2D intersection point of two lines, but also finds z component (projected by time from line 1)
+     * Computes 2D intersection point of two lines, but also finds z component as average of the closest end point of each line)
      * This z-component is constrained to be within the z components of the defining points.
-     * @param so1 starting point of line 1
-     * @param so2 ending point of line 1
-     * @param si1 starting point of line 2
-     * @param vi2 ending point of line 2
+     * @param so1 starting point of line o
+     * @param so2 ending point of line o
+     * @param si1 starting point of line i
+     * @param vi2 ending point of line i
      * @return Pair (2-dimensional point of intersection, relative time of intersection, relative to the so1)
+     * This includes the average altitude between the *endpoints* closest to the point of intersection
      * Note the intersection may be in the past (i.e. negative time)
      * If the lines are parallel, this returns the pair (0,NaN).
      */
-	public static Pair<Vect3,Double> intersection(Vect3 so1, Vect3 so2, double dto, Vect3 si1, Vect3 si2) {
-		Velocity vo3 = Velocity.genVel(so1, so2, dto);
-		Velocity vi3 = Velocity.genVel(si1, si2, dto);      // its ok to use any time here,  all times are relative to so
-		Pair<Vect3,Double> iP = intersection(so1,vo3,si1,vi3);
+	public static Pair<Vect3,Double> intersectionAvgZ(Vect3 so1, Vect3 so2, double dto, Vect3 si1, Vect3 si2) {
+		Velocity vo3 = Velocity.genVel(so1, so2, dto); //along line 1
+		Velocity vi3 = Velocity.genVel(si1, si2, dto); //along line 2     // its ok to use any time here,  all times are relative to so
+		Pair<Vect3,Double> iP = intersection(so1,vo3,si1,vi3); // 2d intersection along line 1 (includes line 1 altitude)
 		Vect3 interSec = iP.first;
 		double do1 = distanceH(so1,interSec);
 		double do2 = distanceH(so2,interSec);
-		double alt_o = so1.z();
+		double alt_o = so1.z();                   // chose z from end point of line 1 closest to interSec
 		if (do2 < do1) alt_o = so2.z();
 		double di1 = distanceH(si1,interSec);
 		double di2 = distanceH(si2,interSec);
-		double alt_i = si1.z();
+		double alt_i = si1.z();                   //  chose z from end point of line 2 closest to interSec
 		if (di2 < di1) alt_i = si2.z();
 		double nZ = (alt_o + alt_i)/2.0;       
+//f.pln("intersection nz="+nZ);		
         return new Pair<Vect3,Double>(interSec.mkZ(nZ),iP.second); 
 	}
 
@@ -316,10 +334,11 @@ public final class VectFuns {
 	 * EXPERIMENTAL
 	 */
 	public static Vect3 closestPoint(Vect3 a, Vect3 b, Vect3 so) {
-		Vect3 v = a.Sub(b).PerpL().Hat(); // perpendicular vector to line
+		Vect3 v = a.Sub(b).PerpL().Hat2D(); // perpendicular vector to line
 		Vect3 s2 = so.AddScal(100, v);
-		Vect3 cp = intersection(so,s2,100,a,b).first;
-		return cp;
+		Pair<Vect3, Double> i = intersectionAvgZ(a,b,100,so,s2);
+		// need to fix altitude to be along the a-b line
+		return interpolate(a,b,i.second/100.0);
 	}
 
 	/**

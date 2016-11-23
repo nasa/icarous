@@ -40,9 +40,9 @@ public class KinematicBandsCore {
 	/* Cached list of conflict aircraft per alert level */
 	private List<List<TrafficState>> conflict_acs_; 
 	/* Cached list of time intervals of violation per alert level */
-	private List<Interval> tiov_; //
-	/* Last conflict level */
-	private int last_conflict_level_;
+	private List<Interval> tiov_; 
+	/* Current alert */
+	private int current_alert_;
 
 	public KinematicBandsCore(KinematicBandsParameters params) {
 		ownship = TrafficState.INVALID;
@@ -51,7 +51,7 @@ public class KinematicBandsCore {
 		most_urgent_ac = TrafficState.INVALID;
 		conflict_acs_ = new ArrayList<List<TrafficState>>();
 		tiov_ = new ArrayList<Interval>();
-		last_conflict_level_ = 0;
+		current_alert_ = 0;
 		reset();
 	}
 
@@ -70,7 +70,7 @@ public class KinematicBandsCore {
 		most_urgent_ac = core.most_urgent_ac;
 		conflict_acs_ = new ArrayList<List<TrafficState>>();
 		tiov_ = new ArrayList<Interval>();
-		last_conflict_level_ = 0;
+		current_alert_ = 0;
 		reset();	
 	}
 
@@ -91,7 +91,7 @@ public class KinematicBandsCore {
 		epsh_ = 0;
 		epsv_ = 0;
 		tiov_.clear();
-		last_conflict_level_ = 0;
+		current_alert_ = 0;
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class KinematicBandsCore {
 	 */
 	private void update() {
 		if (outdated_) {
-			last_conflict_level_ = 0;
+			current_alert_ = 0;
 			for (int alert_level=1; alert_level <= parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
 				if (alert_level-1 >= conflict_acs_.size()) {
 					conflict_acs_.add(new ArrayList<TrafficState>());
@@ -108,7 +108,7 @@ public class KinematicBandsCore {
 				}				
 				conflict_aircraft(alert_level);
 				if (!conflict_acs_.get(alert_level-1).isEmpty()) {
-					last_conflict_level_ = alert_level;
+					current_alert_ = alert_level;
 				}
 			}
 			epsh_ = epsilonH(ownship,most_urgent_ac);
@@ -118,11 +118,11 @@ public class KinematicBandsCore {
 	}
 
 	/** 
-	 * Returns most severe alert level where there is a conflict aircraft
+	 * Returns current alert level
 	 */
-	public int lastConflictAlertLevel() {
+	public int currentAlertLevel() {
 		update();
-		return last_conflict_level_;
+		return current_alert_;
 	}
 
 	/**
@@ -206,20 +206,19 @@ public class KinematicBandsCore {
 	private void conflict_aircraft(int alert_level) {
 		double tin  = Double.POSITIVE_INFINITY;
 		double tout = Double.NEGATIVE_INFINITY;
-	        boolean conflict_band = parameters.alertor.getLevel(alert_level).getRegion().isConflictBand();
+		boolean conflict_band = parameters.alertor.getLevel(alert_level).getRegion().isConflictBand();
 		Detection3D detector = parameters.alertor.getLevel(alert_level).getDetector();
 		for (int i = 0; i < traffic.size(); ++i) {
-		    TrafficState ac = traffic.get(i);
-		    ConflictData det = detector.conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),
-								  0,parameters.getLookaheadTime());
-		    if (det.conflict()) {
-			if (conflict_band &&
-			    det.getTimeIn() <= parameters.alertor.getLevel(alert_level).getAlertingTime()) {
-			    conflict_acs_.get(alert_level-1).add(ac);
+			TrafficState ac = traffic.get(i);
+			ConflictData det = detector.conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),
+					0,parameters.getLookaheadTime());
+			if (det.conflict() || detector.violation(own_s(),own_v(),ac.get_s(),ac.get_v())) {
+				if (conflict_band && det.getTimeIn() < parameters.alertor.getLevel(alert_level).getAlertingTime()) {
+					conflict_acs_.get(alert_level-1).add(ac);
+				} 
+				tin = Math.min(tin,det.getTimeIn());
+				tout = Math.max(tout,det.getTimeOut());
 			} 
-			tin = Math.min(tin,det.getTimeIn());
-			tout = Math.max(tout,det.getTimeOut());
-		    } 
 		}
 		tiov_.add(new Interval(tin,tout));
 	}

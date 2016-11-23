@@ -41,6 +41,7 @@ Vect2 OrthographicProjection::spherical2xy(double lat, double lon) const {
 LatLonAlt OrthographicProjection::xy2spherical(double x, double y, double alt) const {
 	double r = GreatCircle::spherical_earth_radius;
 	double p = Util::sqrt_safe(Util::sq(x)+Util::sq(y));
+	if (Util::almost_equals(p, 0.0)) return llaRef.mkAlt(alt);
 	double c = Util::asin_safe(p/r);
 	double lat = Util::asin_safe(std::cos(c)*std::sin(llaRef.lat()) + y*std::sin(c)*std::cos(llaRef.lat())/p);
 	double lon = llaRef.lon()+Util::atan2_safe(x*std::sin(c), p*std::cos(c)*std::cos(llaRef.lat())-y*std::sin(c)*std::sin(llaRef.lat()));

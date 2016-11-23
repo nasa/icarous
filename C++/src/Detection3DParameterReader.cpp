@@ -15,6 +15,7 @@
 #include "WCV_TAUMOD.h"
 #include "WCV_TCPA.h"
 #include "WCV_TEP.h"
+#include "WCV_HZ.h"
 #include "format.h"
 #include <vector>
 #include <string>
@@ -48,6 +49,10 @@ void Detection3DParameterReader::registerDefaults() {
     WCV_TCPA wcv_tcpa;
     registerDetection3D(&wcv_tcpa);
     registerDetection3D(&wcv_tcpa, "gov.nasa.larcfm.ACCoRD.WCV_TCPA"); // java name
+
+    WCV_HZ wcv_hz;
+    registerDetection3D(&wcv_hz);
+    registerDetection3D(&wcv_hz, "gov.nasa.larcfm.ACCoRD.WCV_HZ"); // java name
 
     registered = true;
   }

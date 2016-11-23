@@ -12,11 +12,21 @@
  */
 package gov.nasa.larcfm.Util;
 
+/**
+ * A library of functions to aid the computation of the kinematics of an aircraft.  This
+ * library is currently under development and is far from complete.  The majority of the functions
+ * handle constant velocity turns and movement with constant ground speed acceleration.<p>
+ * 
+ * Unless otherwise noted, all kinematics function parameters are in internal units -- angles are in radians,
+ * linear speeds are in m/s, distances are in meters, time is in seconds.
+ * 
+ */
 public class KinematicsLatLon {
 
 	/**
 	 * Linearly project the given position and velocity to a new position and velocity
-	 * @param sv0  initial position and velocity
+	 * @param so  initial position 
+	 * @param vo  initial velocity
 	 * @param t   time
 	 * @return linear projection of sv0 to time t
 	 */
@@ -45,8 +55,8 @@ public class KinematicsLatLon {
 	 * Return the beginning and end points and radius for a turn given 3 coordinates and a track in and track out
 	 * @param a point on gc before turn
 	 * @param b intersection point of two great circles
-	 * @Param c point on gc after turn
-	 * @Param trackIn
+	 * @param c point on gc after turn
+	 * @param trackIn
 	 * @param trackOut
 	 * @return (beginning of turn point, end of turn point) or (INVALID,INVALID) if the great circles are the same (0 or 180 degree "turns")
 	 */
@@ -68,6 +78,32 @@ public class KinematicsLatLon {
 		return Pair.make(bot, eot);
 	}
 
+	/** 
+	 * center of turn
+	 * @param s0 point on turn
+	 * @param trk track at point
+	 * @param radius radius of turn
+	 * @param dir +1 clockwise, -1 counterclockwise
+	 * @return turn center
+	 */
+	  public static LatLonAlt center(LatLonAlt s0, double trk, double radius, int dir) {
+		  return GreatCircle.linear_initial(s0, trk+dir*Math.PI/2, radius);
+	  }  
+
+	  /**
+	   * center of turn
+	   * @param s0 point on turn
+	   * @param v0 velocity at point
+	   * @param omega turn rate
+	   * @return turn center
+	   */
+	  public static LatLonAlt center(LatLonAlt s0, Velocity v0, double omega) {
+		  double v = v0.gs();
+	      double R = v/omega;
+	      return center(s0, v0.trk(), R, Util.sign(omega)); 		  
+	  }  
+
+	
 	public static Pair<LatLonAlt, LatLonAlt> turnEndPoints(LatLonAlt a, LatLonAlt b, double trackIn, double trackOut, double R, boolean right) {
 		LatLonAlt bot;
 		// special case where we are heading due north or south: approximate the BOT
@@ -121,7 +157,7 @@ public class KinematicsLatLon {
 	 * @return
 	 */
 	public static double turnRateRadius(double speed, double radius) {
-		double R = GreatCircle.chord_distance(radius*2.0)/2.0;
+		double R = GreatCircle.chord_distance(radius*2.0)/2.0;	//convert surface distance to distance in the small circle's plane
 		return Kinematics.turnRateRadius(speed,R);
 	}
 
@@ -132,8 +168,8 @@ public class KinematicsLatLon {
 	 * @return
 	 */
 	public static double turnRadiusByRate(double speed, double omega) {
-		double R = Kinematics.turnRadiusByRate(speed, omega);
-		return GreatCircle.surface_distance(R*2)/2.0;
+		double R = Kinematics.turnRadiusByRate(speed, omega);	// this is in the small circle's plane
+		return GreatCircle.surface_distance(R*2)/2.0;			// convert to surface of the earth distance
 	}
 
 	/**
@@ -153,13 +189,6 @@ public class KinematicsLatLon {
 			perpTrk = currentTrk-Math.PI/2;
 		}
 		double radius = Kinematics.turnRadiusByRate(vo.gs(), omega);
-		//Note: the above uses a chord radius.  It should use a great circle radius:
-		//		double r = Kinematics.turnRadiusByRate(vo.gs(), omega);
-		//		double radius = GreatCircle.distance_from_angle(Math.asin(r/GreatCircle.spherical_earth_radius), 0.0);
-		//Note: The other problem is that this assumes a constant speed and constant turn rate (omega) with 
-		//      respect to the center of the turn. This is different from having a constant track change rate
-		//      with respect to the ownship.  Effectively the track change rate will be variable throughout the 
-		//      turn, with this being more pronounced as one approaches the poles.
 		LatLonAlt center = GreatCircle.linear_initial(so, perpTrk, radius);
 		double theta = omega*t;
 		double vFinalTrk = GreatCircle.initial_course(center,so);
@@ -179,67 +208,27 @@ public class KinematicsLatLon {
 		double currentTrk = vo.trk();
 		double dir = Util.sign(signedRadius);
 		double perpTrk = currentTrk+dir*Math.PI/2;
-		//Note: the above uses a chord radius.  It should use a great circle radius:
-		//		double r = Kinematics.turnRadiusByRate(vo.gs(), omega);
-		//		double radius = GreatCircle.distance_from_angle(Math.asin(r/GreatCircle.spherical_earth_radius), 0.0);
-		//Note: The other problem is that this assumes a constant speed and constant turn rate (omega) with 
-		//      respect to the center of the turn. This is different from having a constant track change rate
-		//      with respect to the ownship.  Effectively the track change rate will be variable throughout the 
-		//      turn, with this being more pronounced as one approaches the poles.
 		double radius = Math.abs(signedRadius);
-//		LatLonAlt otherSide = GreatCircle.linear_initial(so, perpTrk, 2.0*radius);
-//		double chordRadius = so.chordDistance(otherSide)/2.0;	
-//		radius = chordRadius;
-//		f.pln("  turnRadius: radius = "+Units.str("m",signedRadius,8)+" chordRadius = "+Units.str("m",chordRadius,8));
-//		f.pln(" $$$ ratio = "+radius/chordRadius);
 		LatLonAlt center = GreatCircle.linear_initial(so, perpTrk, radius);		
-		//double theta = omega*t;
 	    double pathDist = vo.gs()*t;	
-	    //f.pln(" $$$$$ turnRadius: pathDist = "+Units.str("nmi",pathDist));
-	    //double radiusAngle = GreatCircle.angle_from_distance(radius,0.0);
-	    //double pathDistAngle = GreatCircle.angle_from_distance(pathDist,0.0);
-	    //Triple<Double,Double,Double>  trip = GreatCircle.side_angle_side(radiusAngle, Math.PI/2, pathDistAngle);	
-	    //double theta = trip.second;	    
-		//Triple<Double,Double,Double>  trip = GreatCircle.angle_side_angle(Math.PI/2, pathDistAngle , Math.PI/2);
-		//double theta = trip.third;
-		double theta = pathDist/radius;
-	    //f.pln(" $$$$$ turnRadius: t = "+f.Fm4(t)+" theta = "+Units.str("deg",theta));
+		double theta = pathDist/radius; //TODO: change to GreatCircle.small_circle_arc_angle(radius,pathDist);
+		//TODO: theta = pathDist/radius, assumes radius is a chord radius, when it is actually a great circle radius.
+		//      for small distances the difference is not that big, but still...
+		//Note: The other problem is that this assumes a constant speed and constant ground speed through the turn.
+		//      this may or may not be true.
 		double vFinalTrk = GreatCircle.initial_course(center,so);
 		double nTrk = vFinalTrk + dir*theta;
 		LatLonAlt sn = GreatCircle.linear_initial(center, nTrk, radius);
 		sn = sn.mkAlt(so.alt() + vo.z*t);
-		//double finalTrk = currentTrk+theta;                        
-		double final_course = GreatCircle.final_course(center,sn);   // TODO: THIS IS PROBABLY BETTER
+		double final_course = GreatCircle.final_course(center,sn);   
 		double finalTrk = final_course + dir*Math.PI/2;				
 		Velocity vn = vo.mkTrk(finalTrk);  
 		return new Pair<LatLonAlt,Velocity>(sn,vn);
 	}
 
-	public static Pair<LatLonAlt,Velocity> turnRadiusAlt(LatLonAlt so, Velocity vo, double t, double signedRadius) {
-		double currentTrk = vo.trk();
-		double dir = Util.sign(signedRadius);
-		double perpTrk = currentTrk+dir*Math.PI/2;
-		double radius = Math.abs(signedRadius);
-		LatLonAlt center = GreatCircle.linear_initial(so, perpTrk, radius);		
-	    double pathDist = vo.gs()*t;	
-	    double radiusAngle = GreatCircle.angle_from_distance(radius,0.0);
-	    double pathDistAngle = GreatCircle.angle_from_distance(pathDist,0.0);
-	    Triple<Double,Double,Double>  trip = GreatCircle.side_angle_side(radiusAngle, Math.PI/2, pathDistAngle);	
-	    double theta = trip.second;	 
-		//theta = pathDist/radius;
-		//f.pln(" radius = "+radius+ "  theta="+Units.to("deg",theta));
-		double vFinalTrk = GreatCircle.initial_course(center,so);
-		double nTrk = vFinalTrk + dir*theta;
-		LatLonAlt sn = GreatCircle.linear_initial(center, nTrk, radius);
-		sn = sn.mkAlt(so.alt() + vo.z*t);
-		//double finalTrk = currentTrk+theta;                        
-		double final_course = GreatCircle.final_course(center,sn);   // TODO: THIS IS PROBABLY BETTER
-		double finalTrk = final_course + dir*Math.PI/2;				
-		Velocity vn = vo.mkTrk(finalTrk);  
-		return new Pair<LatLonAlt,Velocity>(sn,vn);
-	}
 
 	/**
+	 * EXPERIMENTAL
 	 * Spherical turnOmega
 	 * @param so initial position
 	 * @param vo initial velocity
@@ -250,13 +239,17 @@ public class KinematicsLatLon {
 	public static Pair<LatLonAlt,Velocity> turnOmegaAlt(LatLonAlt so, Velocity vo, double t, double omega) {
 		double currentTrk = vo.trk();
 		double perpTrk;
-		if (omega > 0) perpTrk = currentTrk+Math.PI/2;
-		else perpTrk = currentTrk-Math.PI/2;
+		if (omega > 0.0) {
+			perpTrk = currentTrk+Math.PI/2;
+		} else {
+			perpTrk = currentTrk-Math.PI/2;
+		}
 		double radius = turnRadiusByRate(vo.gs(), omega);
 		LatLonAlt center = GreatCircle.linear_initial(so, perpTrk, radius);
+		//f.pln("center="+center);
 		LatLonAlt sn = GreatCircle.small_circle_rotation(so,center,omega*t).mkAlt(so.alt()+vo.z*t);
 		double finalPerpTrk = GreatCircle.initial_course(sn,center);
-		double nTrk = finalPerpTrk - Math.PI/2 * Math.signum(omega);
+		double nTrk = finalPerpTrk - Math.PI/2 * Util.sign(omega);
 		Velocity vn = vo.mkTrk(nTrk);  
 		return new Pair<LatLonAlt,Velocity>(sn,vn);		
 	}
@@ -278,57 +271,60 @@ public class KinematicsLatLon {
 		return turnOmega(s0,v0,t,omega);
 	}
 
-	/**
-	 * Position/Velocity after turning 
-	 * @param s0          starting position
-	 * @param v0          initial velocity
-	 * @param R           radius
-	 * @param d           distance into turn  (sign indicates direction)
-	 * @return Position/Velocity after turning distance d
-	 */
-	public static Pair<LatLonAlt,Velocity> turnByDist(LatLonAlt so, Velocity vo, double R, double d) {
-		double currentTrk = vo.trk();
-		double perpTrk;
-		if (R > 0) perpTrk = currentTrk+Math.PI/2;
-		else perpTrk = currentTrk-Math.PI/2;
-		LatLonAlt center = GreatCircle.linear_initial(so, perpTrk, R);
-		double alpha = d/R;
-		double vFinalTrk = GreatCircle.initial_course(center,so);
-		double nTrk = vFinalTrk + alpha;
-		LatLonAlt sn = GreatCircle.linear_initial(center, nTrk, R);
-		double t = d/vo.gs();
-		sn = sn.mkAlt(so.alt() + vo.z*t);	
-		double final_course = GreatCircle.final_course(center,sn);
-		//double finalTrk = currentTrk+alpha;
-		double finalTrk = final_course + Util.sign(d)*Math.PI/2;
-		Velocity vn = vo.mkTrk(finalTrk);  
-		return new Pair<LatLonAlt,Velocity>(sn,vn);
-	}
+//	/**
+//	 * Position/Velocity after turning 
+//	 * @param s0          starting position
+//	 * @param v0          initial velocity
+//	 * @param signedRadius           radius (sign indicates direction)
+//	 * @param d           distance into turn  
+//	 * @return Position/Velocity after turning distance d
+//	 */
+//	@Deprecated
+//	public static Pair<LatLonAlt,Velocity> turnByDist(LatLonAlt so, Velocity vo, double signedRadius, double d) {
+//		double currentTrk = vo.trk();
+//		double perpTrk;
+//		if (signedRadius > 0) perpTrk = currentTrk+Math.PI/2;
+//		else perpTrk = currentTrk-Math.PI/2;
+//		double radius = Math.abs(signedRadius);
+//		LatLonAlt center = GreatCircle.linear_initial(so, perpTrk, radius);
+//		double alpha = d/signedRadius;
+//		double vFinalTrk = GreatCircle.initial_course(center,so);
+//		double nTrk = vFinalTrk + alpha;
+//		LatLonAlt sn = GreatCircle.linear_initial(center, nTrk, radius);
+//		double t = d/vo.gs();
+//		sn = sn.mkAlt(so.alt() + vo.z*t);	
+//		double final_course = GreatCircle.final_course(center,sn);
+//		//double finalTrk = currentTrk+alpha;
+//		double finalTrk = final_course + Util.sign(d)*Math.PI/2;
+//		Velocity vn = vo.mkTrk(finalTrk);  
+//		return new Pair<LatLonAlt,Velocity>(sn,vn);
+//	}
 
 
 	/** 
 	 * Position/Velocity after turning (does not compute altitude!!)
 	 * 
 	 * Note: will be used in a context where altitude is computing subsequently
+	 * 
 	 * @param so          starting position
 	 * @param center      center of turn
 	 * @param R           radius
 	 * @param d           distance into turn (sign indicates direction)
 	 * @return Position/Velocity after turning distance d
 	 */
-	public static Pair<LatLonAlt,Velocity> turnByDist(LatLonAlt so, LatLonAlt center, double d, double gsAtd) {
+	public static Pair<LatLonAlt,Velocity> turnByDist(LatLonAlt so, LatLonAlt center, int dir, double d, double gsAtd) {
         double R = GreatCircle.distance(so, center);
-		double alpha = d/R;
-		double vFinalTrk = GreatCircle.initial_course(center,so);
-		double nTrk = vFinalTrk + alpha;
+		double alpha = dir*d/R;	//TODO: change to dir * GreatCircle.small_circle_arc_angle(R, d);
+		double trkFromCenter = GreatCircle.initial_course(center,so);
+		double nTrk = trkFromCenter + alpha;
 		LatLonAlt sn = GreatCircle.linear_initial(center, nTrk, R);
 		sn = sn.mkAlt(0.0);
 		double final_course = GreatCircle.final_course(center,sn);
-		double finalTrk = final_course + Util.sign(d)*Math.PI/2;
+		//f.pln(" $$ d = "+d+" final_course = "+final_course+" nTrk = "+nTrk);
+		double finalTrk = final_course + dir*Math.PI/2;
         Velocity vn = Velocity.mkTrkGsVs(finalTrk,gsAtd,0.0);
 		//double finalTrk = vo.trk()+alpha;
 		//double finalTrk = final_course + Util.sign(d)*Math.PI/2;		
-		//Velocity vn = vo.mkTrk(finalTrk);          // TODO:  THIS IS WRONG -- cannot assume gs is constant!!!!
 		return new Pair<LatLonAlt,Velocity>(sn,vn);
 	}
 
@@ -347,7 +343,7 @@ public class KinematicsLatLon {
 			return new Pair<LatLonAlt,Velocity>(s0,v0);   
 		int dir = -1;  
 		if (turnRight) dir = 1;
-		double omega = dir*v0.gs()/R;
+		double omega = dir*v0.gs()/R; //TODO: change to dir*GreatCircle.small_circle_arc_angle(radius,v0.gs());
 		return turnOmega(s0,v0,t,omega);
 	}
 
@@ -450,6 +446,66 @@ public class KinematicsLatLon {
 			tPair = linear(tPair,t-turnTime);
 		}
 		return tPair;
+	}
+
+	
+	/**
+	 * EXPERMENTAL
+	 * Calculate when during the turn we will be closest to the given point.
+	 * @param s0 turn start position
+	 * @param v0 turn start velocity
+	 * @param omega rate of turn (+ = right, - = left)
+	 * @param x point of interest
+	 * @param endTime time at which turn finishes.  If <= 0, assume a full turn is allowed.
+	 * @return time on turn when we are closest to the given point x (in seconds), or -1 if we are precisely at the turn's center
+	 * This will be bounded by [0,endTime]
+	 */
+	public static double closestTimeOnTurn(LatLonAlt s0, Velocity v0, double omega, LatLonAlt x, double endTime) {
+		LatLonAlt center = center(s0,v0,omega);
+		if (x.mkAlt(0).almostEquals(center.mkAlt(0))) return -1.0;
+		double ang1 = GreatCircle.initial_course(center,s0);
+		double ang2 = GreatCircle.initial_course(center,x);		
+		double delta = Util.turnDelta(ang1, ang2, Util.sign(omega));
+		double t = Math.abs(delta/omega);
+		if (endTime > 0 && (t < 0 || t > endTime)) {
+			double maxTime = 2*Math.PI/Math.abs(omega);
+			if (t > (maxTime + endTime) / 2) {
+				return 0.0;
+			} else {
+				return endTime;
+			}
+		}
+		return t;
+	}
+
+	/**
+	 * EXPERMENTAL
+	 * Calculate when during the turn we will be closest to the given point.
+	 * @param s0 turn start position
+	 * @param v0 turn start velocity
+	 * @param R radius
+	 * @param dir direction of turn
+	 * @param x point of interest
+	 * @param maxDist time at which turn finishes.  If <= 0, assume a full turn is allowed.
+	 * @return dist on turn when we are closest to the given point x, or -1 if we are precisely at the turn's center
+	 * This will be bounded by [0,maxDist]
+	 */
+	public static double closestDistOnTurn(LatLonAlt s0, Velocity v0, double R, int dir, LatLonAlt x, double maxDist) {
+		LatLonAlt center = center(s0, v0.trk(), R, dir);
+		if (x.mkAlt(0).almostEquals(center.mkAlt(0))) return -1.0;
+		double ang1 = GreatCircle.initial_course(center,s0);
+		double ang2 = GreatCircle.initial_course(center,x);		
+		double delta = Util.turnDelta(ang1, ang2, dir);
+		double t = GreatCircle.small_circle_arc_length(R, delta);
+		if (maxDist > 0 && (t < 0 || t > maxDist)) {
+			double maxD = 2*Math.PI*R;
+			if (t > (maxD + maxDist) / 2) {
+				return 0.0;
+			} else {
+				return maxDist;
+			}
+		}
+		return t;
 	}
 
 	// ****************************** Ground Speed KINEMATIC CALCULATIONS *******************************  

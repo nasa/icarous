@@ -1,0 +1,30 @@
+# SYS ID/ COMP ID
+SYS_ID = 100
+COMP_ID = 0
+
+# AUTOPILOT ID
+AUTOPILOT_ID = 1
+
+# ICAROUS heartbeat (Hz)
+ICHBEAT = 5
+
+# Takeoff altitude
+TAKEOFF_ALT = 5
+
+# Geofence parameters
+HTHRESHOLD = 1.0
+VTHRESHOLD = 1.0
+HSTEPBACK  = 2.0
+VSTEPBACK  = 2.0
+STEPBACKTYPE = 0
+
+# Search parameters
+GRIDSIZE   = 0.5
+BUFFER     = 1
+LOOKAHEAD  = 3
+PROXFACTOR = 3.0
+
+# Flight plan resolution parameters
+RES_SPEED = 0.5
+XTRK_GAIN = 0.6
+STANDOFF  = 2.0

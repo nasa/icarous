@@ -19,20 +19,7 @@
 namespace larcfm {
 
 /**
- * A basic polygon that describes a volume.  This volume has a flat bottom and top
- * (specified as altitude values).  Points describe the cross-section area vertices in
- * a consistently clockwise (or consistently counter-clockwise) manner.  The cross-section
- * need not be convex, but an "out of order" listing of the vertices will result in edges
- * that cross, and will cause several calculations to fail (with no warning).
- *
- * A SimplePoly sets the altitude for all its points to be the _bottom_ altitude,
- * while the top is stored elsewhere as a single value.  The exact position for "top"
- * vertices is computed on demand.
- *
- * Point indices are based on the order they are added.
- *
- * Note: polygon support is experimental and the interface is subject to change!
- *
+ * A "stateful" version of a SimplePoly that includes velocity.
  */
 class SimpleMovingPoly {
   public:
@@ -47,10 +34,27 @@ class SimpleMovingPoly {
 
 	SimpleMovingPoly();
 
+	/**
+	 * Constructor for a SimplePoly with predefined top and bottom altitudes.
+	 * 
+	 * @param b Bottom altitude
+	 * @param t Top Altitude
+	 */
 	SimpleMovingPoly(double b, double t);
 
+	/**
+	 * Constructor for a SimplePoly with predefined top and bottom altitudes.
+	 * 
+	 * @param b Bottom altitude
+	 * @param t Top Altitude
+	 */
 	SimpleMovingPoly(double b, double t, const std::string& units);
 
+	/**
+	 * Create a deep copy of a SimplePoly
+	 * 
+	 * @param p Source poly.
+	 */
 	SimpleMovingPoly(const SimpleMovingPoly& p);
 
 	SimpleMovingPoly copy() const;
@@ -63,24 +67,45 @@ class SimpleMovingPoly {
 
 	void setBottom(double bot);
 
+	/**
+	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use latlon coordinates.
+	 */
 	static SimpleMovingPoly make(const MovingPolygon3D& p3, const EuclideanProjection& proj);
 
+	/**
+	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use Euclidean coordinates.
+	 */
 	static SimpleMovingPoly make(const MovingPolygon3D& p3);
 
 	bool isLatLon() const;
 
+	/**
+	 * Return the polygon projected to be at time dt (dt = 0 returns a copy of the base polygon)
+	 */
 	SimplePoly position(double dt) const;
 
+	/**
+	 * Return the average Velocity (at time 0).
+	 */
 	Velocity averageVelocity() const;
 
 	SimpleMovingPoly linear(double dt) const;
 
+	  /**
+	   * This will return a moving polygon that starts at point i and ends at point i+1
+	   * @param i
+	   * @param proj
+	   * @return
+	   */
 	MovingPolygon3D getMovingPolygon(double time, const EuclideanProjection& proj) const;
 
 	MovingPolygon3D getMovingPolygon(const EuclideanProjection& proj) const;
 
 	int size() const;
 
+	/**
+	 * Return true if point p is within the polygon at time dt from now.
+	 */
 	bool contains(const Position& p, double dt) const;
 
 //	std::vector<std::string> toStringList(int vertex, bool trkgsvs, int precision) const;

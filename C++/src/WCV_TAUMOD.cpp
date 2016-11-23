@@ -4,9 +4,10 @@
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
-#include "WCV_tvar.h"
+
 #include "WCV_TAUMOD.h"
 #include "WCV_TCPA.h"
+#include "WCV_TCOA.h"
 #include "Vect3.h"
 #include "Velocity.h"
 #include "Horizontal.h"
@@ -19,11 +20,13 @@ namespace larcfm {
 
 /** Constructor that uses the default TCAS tables. */
 WCV_TAUMOD::WCV_TAUMOD() {
+  wcv_vertical = new WCV_TCOA();
   id = "";
 }
 
 /** Constructor that specifies a particular instance of the TCAS tables. */
 WCV_TAUMOD::WCV_TAUMOD(const WCVTable& tab) {
+  wcv_vertical = new WCV_TCOA();
   table.copyValues(tab);
   id = "";
 }
@@ -86,13 +89,9 @@ std::string WCV_TAUMOD::getSimpleClassName() const {
 }
 
 bool WCV_TAUMOD::contains(const Detection3D* cd) const {
-  if (larcfm::equals(getCanonicalClassName(), cd->getCanonicalClassName())) {
-    WCV_TAUMOD* d = (WCV_TAUMOD*)cd;
-    return table.contains(d->table);
-  }
-  if (larcfm::equals("gov.nasa.larcfm.ACCoRD.WCV_TCPA", cd->getCanonicalClassName())) {
-    WCVTable tab = ((WCV_TCPA*)cd)->getWCVTable();
-    return table.contains(tab);
+  if (larcfm::equals(getCanonicalClassName(), cd->getCanonicalClassName()) ||
+      larcfm::equals("gov.nasa.larcfm.ACCoRD.WCV_TCPA", cd->getCanonicalClassName())) {
+    return containsTable((WCV_tvar*)cd);
   }
   return false;
 }

@@ -98,7 +98,7 @@ public class WeatherUtil {
 				if (rrPlan.size() > 0) {
 					rrPlan.add(currentPos);
 					rrPlan.add(finalPos);
-					rrPlan.setTimeGSin(rrPlan.size()-1, nPlan.initialVelocity(0).gs(), 1.0);
+					rrPlan.setTimeGSin(rrPlan.size()-1, nPlan.initialVelocity(0).gs());
 					//f.pln(" $$$$ reRoute: rrPlan = "+rrPlan+" "+localParams.unZigReroute);
 					solution = rrPlan;
 				} else {

@@ -17,6 +17,17 @@ import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
 
+/** 
+ * 
+ * This class is used to determine if one aircraft has priority over another aircraft.  It 
+ * is an encapsulation of the "right of way" rules.<p>
+ * 
+ * Disclaimer: The current rules have been verified to have certain safety and
+ * liveness properties, but they have not been validated, that is, they may not 
+ * behave "naturally."  As we learn more about what is expected, these rules
+ * may evolve in the future.
+ * 
+ */
 public class TargetUrgency {
 
   /**

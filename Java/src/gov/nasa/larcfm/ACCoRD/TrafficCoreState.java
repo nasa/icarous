@@ -10,6 +10,7 @@ import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Units;
 import gov.nasa.larcfm.Util.Velocity;
 
+/** Horizontal solution */
 public class TrafficCoreState {
   
   private final String id_;

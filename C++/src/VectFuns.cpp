@@ -31,6 +31,13 @@ bool VectFuns::rightOfLine(const Vect2& so, const Vect2& vo, const Vect2& si) {
 	return si.Sub(so).dot(vo.PerpR()) >= 0;
 }
 
+int VectFuns::rightOfLinePoints(const Vect2& a, const Vect2& b, const Vect2& p) {
+	Vect2 AB = b.Sub(a);
+	Vect2 AP = p.Sub(a);
+	//The calculation below is the 2-D cross product.
+	return Util::sign(AP.x*AB.y - AP.y*AB.x);
+}
+
 bool VectFuns::collinear(const Vect3& p0, const Vect3& p1, const Vect3& p2) {
 	Vect3 v01 = p0.Sub(p1);
 	Vect3 v02 = p1.Sub(p2);
@@ -170,12 +177,7 @@ double VectFuns::distanceH(const Vect3& soA, const Vect3& soB) {
 	return soA.Sub(soB).vect2().norm();
 }
 
-
-
-// returns intersection point and time of intersection relative to position so1
-// for time return value, it assumes that aircraft travels from so1 to so2 in dto seconds and from si1 to si2 in dti seconds
-// a negative time indicates that the intersection occurred in the past (relative to directions of travel of so1)
-std::pair<Vect3,double> VectFuns::intersection(const Vect3& so1, const Vect3& so2, double dto, const Vect3& si1, const Vect3& si2) {
+std::pair<Vect3,double> VectFuns::intersectionAvgZ(const Vect3& so1, const Vect3& so2, double dto, const Vect3& si1, const Vect3& si2) {
 	Velocity vo3 = Velocity::genVel(so1, so2, dto);
 	Velocity vi3 = Velocity::genVel(si1, si2, dto);      // its ok to use any time here,  all times are relative to so
 	std::pair<Vect3,double> iP = intersection(so1,vo3,si1,vi3);
@@ -201,10 +203,11 @@ std::pair<Vect2,double> VectFuns::intersection(const Vect2& so1, const Vect2& so
 
 
 Vect3 VectFuns::closestPoint(const Vect3& a, const Vect3& b, const Vect3& so) {
-	Vect3 v = a.Sub(b).PerpL().Hat(); // perpendicular vector to line
+	Vect3 v = a.Sub(b).PerpL().Hat2D(); // perpendicular vector to line
 	Vect3 s2 = so.AddScal(100, v);
-	Vect3 cp = intersection(so,s2,100,a,b).first;
-	return cp;
+	std::pair<Vect3, double> i = intersectionAvgZ(a,b,100,so,s2);
+	// need to fix altitude to be along the a-b line
+	return interpolate(a,b,i.second/100.0);
 }
 
 Vect2 VectFuns::closestPoint(const Vect2& a, const Vect2& b, const Vect2& so) {
@@ -274,7 +277,7 @@ double  VectFuns::timeOfIntersection(const Vect3& so3, const Velocity& vo3, cons
  * Returns true if x is "behind" so , that is, x is within the region behind the perpendicular line to vo through so.
  */
 bool VectFuns::behind(const Vect2& x, const Vect2& so, const Vect2& vo) {
-	return Util::turnDelta(vo.track(), x.Sub(so).track()) > M_PI/2.0;
+	return Util::turnDelta(vo.trk(), x.Sub(so).trk()) > M_PI/2.0;
 }
 
 /**

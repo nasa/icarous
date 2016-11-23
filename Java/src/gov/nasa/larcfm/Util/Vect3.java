@@ -228,7 +228,7 @@ public class Vect3 {
    * @return the dot product of <code>this</code> vector with itself.
    */
   public double sqv() {
-    return dot(x,y,z);
+    return dot(x,y,z); // dot product of this vector with itself
   }
 
   /**
@@ -252,6 +252,10 @@ public class Vect3 {
     return new Vect3(x/n, y/n, z/n);
   }
 
+  public Vect3 Hat2D() {
+	  return mkZ(0.0).Hat();
+  }
+  
   /**
    * Cross product.
    * 
@@ -370,6 +374,20 @@ public class Vect3 {
   public Vect3 linear(Vect3 v, double t) {
     return new Vect3(x+v.x*t, y+v.y*t, z+v.z*t);
   }
+  
+  /**
+   * Calculates position after t time units in direction and magnitude of velocity v
+   * @param track  
+   * @param t       time
+   * @return the new position (horizontal only)
+   */
+  public Vect3 linearByDist(double track, double d) {
+	double anySpeed = 100;
+	Velocity v = Velocity.mkTrkGsVs(track,anySpeed,0.0);
+	double dt = d/anySpeed;
+	return linear(v,dt);
+  }
+
 
   /** 3-D time of closest point of approach 
    * if time is negative or velocities are parallel returns 0
@@ -446,6 +464,7 @@ public class Vect3 {
     return toString(Constants.get_output_precision());
   }
 
+	/** A string representation of this vector */
   public String toString(int precision) {
     return formatXYZ(precision,"(",", ",")");
   }
