@@ -28,11 +28,11 @@ safety critical systems in air traffic management.
 
 The API document for ICAROUS is still work in progress. In the meantime,
 please refer to [`Java/README.md`](Java/README.md) for instructions on running
-ICAROUS, to the directory `TestCases` for examples of Software in the Loop
-test cases, and to
+ICAROUS, to the directory [`TestCases`][TestCases] for examples of
+Software in the Loop (SITL) test cases, and to
 [`Java/IcarousExample.java`](Java/IcarousExample.java) for a simple
-example of ICAROUS' DAA (Detect and Avoid) and Geo-fencing
-capabilities. This later example is also available in [C++](C++/IcarousExample.java)
+example of ICAROUS' DAA (Detect and Avoid) and geo-fencing
+capabilities. This later example is also available in [C++](C++/IcarousExample.cpp).
 
 For technical information about the definitions and algorithms in this
 repository, visit [http://shemesh.larc.nasa.gov/fm/ICAROUS](http://shemesh.larc.nasa.gov/fm/ICAROUS).
