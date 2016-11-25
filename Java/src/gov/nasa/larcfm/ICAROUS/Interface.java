@@ -44,6 +44,7 @@ import java.util.*;
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.*;
 import com.MAVLink.common.*;
+import com.MAVLink.enums.*;
 import com.MAVLink.MAVLinkPacket;
 import jssc.SerialPort;
 import jssc.SerialPortException;
@@ -357,6 +358,14 @@ public class Interface{
 	// Write to AP
 	AP.WriteBytes(GS_buffer);
 	
+    }
+
+    public void SendStatusText(String Text){
+
+	msg_statustext status = new msg_statustext();
+	status.severity = MAV_SEVERITY.MAV_SEVERITY_INFO;
+	status.text     = Arrays.copyOf(Text.getBytes(),50);
+	Write(status);
     }
         
 }

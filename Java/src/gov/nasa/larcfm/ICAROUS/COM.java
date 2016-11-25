@@ -83,8 +83,8 @@ public class COM implements Runnable,ErrorReporter{
 	
 	while(true){	    
 	    
-	    double time2 = (float)System.nanoTime()/1E9;
-	    	    
+	    double time2 = (float)System.nanoTime()/1E9;	    
+	    
 	    // Read data from COM interface
 	    comIntf.Read();
 	    	    
@@ -94,7 +94,7 @@ public class COM implements Runnable,ErrorReporter{
 	    msg_safeguard msgSafeguard = RcvdMessages.GetSafeguard();
 	    if(msgSafeguard != null){
 		if( msgSafeguard.value == 1){
-		    error.addWarning("[" + timeLog + "] MSG: Got SAFEGUARD flag");
+		    error.addWarning("[" + timeLog + "] MSG: Got SAFEGUARD flag");		    
 		}
 	    }
 
@@ -103,7 +103,7 @@ public class COM implements Runnable,ErrorReporter{
 	    if(msgMissionCount != null){
 		    int status = FlightData.GetWaypoints(comIntf,0,0,msgMissionCount.count,FlightData.InputFlightPlan);		
 		    if(status == 1){
-			error.addWarning("[" + timeLog + "] MSG: Got waypoints");
+			error.addWarning("[" + timeLog + "] MSG: Got waypoints");			
 			UAS.EnableDataStream(0);		
 			comIntf.Write(FlightData.SendFlightPlanToAP(UAS.apIntf));
 			UAS.EnableDataStream(1);
@@ -223,6 +223,7 @@ public class COM implements Runnable,ErrorReporter{
 		    if(msgCommandLong.param1 == 1){
 			synchronized(UAS){
 			    error.addWarning("[" + timeLog + "] MSG: Resetting ICAROUS");
+			    comIntf.SendStatusText("Resetting ICAROUS");
 			    UAS.IcarousReset = true;
 			}
 		    }

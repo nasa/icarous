@@ -358,7 +358,7 @@ public class Aircraft implements ErrorReporter{
     public int PreFlight(){
 	
 	// Send flight plan to pixhawk
-	System.out.println("PREFLIGHT");
+	//System.out.println("PREFLIGHT");
 	//EnableDataStream(0);
 	//synchronized(apIntf){
 	//System.out.println("Starting mission");	    
@@ -384,7 +384,7 @@ public class Aircraft implements ErrorReporter{
 	    int ack;
 	    
 	    // Set mode to guided
-	    error.addWarning("[" + timeLog + "] MODE:GUIDED");
+	    error.addWarning("[" + timeLog + "] MODE:GUIDED");	    
 	    SetMode(4);
 	    apMode = AP_MODE.GUIDED;
 	    
@@ -396,6 +396,7 @@ public class Aircraft implements ErrorReporter{
 	    // Send takeoff command only if 
 	    
 	    error.addWarning("[" + timeLog + "] CMD:TAKEOFF");
+	    comIntf.SendStatusText("Taking off");
 	    // Takeoff at current location
 	    error.addWarning("[ "+ timeLog + " ] ALT: "+targetAlt);
 	    ack = SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
@@ -449,6 +450,7 @@ public class Aircraft implements ErrorReporter{
 	    if(CheckMissionItemReached()){
 		Plan CurrentFlightPlan = FlightData.CurrentFlightPlan;
 		error.addWarning("[" + timeLog + "] MSG: Reached waypoint");
+		comIntf.SendStatusText("Reached waypoint");
 		FlightData.FP_nextWaypoint++;
 		
 		if(FlightData.FP_nextWaypoint < FlightData.FP_numWaypoints){
@@ -469,6 +471,7 @@ public class Aircraft implements ErrorReporter{
 	    if(!landStart){
 		// Set mode to guided
 		error.addWarning("[" + timeLog + "] MSG: Landing started");
+		comIntf.SendStatusText("Landing");
 		error.addWarning("[" + timeLog + "] MODE:GUIDED");
 		SetMode(4);
 		apMode = AP_MODE.GUIDED;
