@@ -39,8 +39,9 @@
 
 #include "Interface.h"
 
-Interface::Interface(){
+Interface::Interface(MAVLinkInbox* msgs){
     pthread_mutex_init(&lock, NULL);
+    RcvdMessages = msgs;
 }
 
 void Interface::GetMAVLinkMsg(){
@@ -62,7 +63,8 @@ void Interface::GetMAVLinkMsg(){
 }
 
 
-SerialInterface::SerialInterface(char* name,int brate,int pbit){
+SerialInterface::SerialInterface(char name[],int brate,int pbit,MAVLinkInbox *msgs)
+:Interface(msgs){
 
   portname = name;
   baudrate = brate;

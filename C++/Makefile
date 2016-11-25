@@ -12,9 +12,12 @@ test:
 	@echo $(SRCS)
 	@echo $(OBJS)
 
-$(MAIN): $(OBJS)
+$(MAIN): PRE $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
-./obj/ICAROUS/%.o:./src/ICAROUS/%.cpp
+./obj/ICAROUS/%.o:./src/ICAROUS/%.cpp	
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+PRE:
+	@test -d obj/ICAROUS || (mkdir obj && mkdir obj/ICAROUS)
 

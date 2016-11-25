@@ -56,7 +56,7 @@ class Interface{
   pthread_mutex_t  lock;
 
  public:
-  Interface();
+  Interface(MAVLinkInbox *msgs);
   void GetMAVLinkMsg();
   void SendMAVLinkMsg();
   
@@ -66,13 +66,13 @@ class Interface{
 
 class SerialInterface: public Interface{
  private:
-  char* portname;
+  char *portname;
   int baudrate;
   int fd;
   int parity;
 
  public:
-  SerialInterface(char *pname, int brate, int pbit); 
+  SerialInterface(char pname[], int brate, int pbit,MAVLinkInbox *msgs); 
   int set_interface_attribs();
   void set_blocking (int should_block);
   int ReadData();
