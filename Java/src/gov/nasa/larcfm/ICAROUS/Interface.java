@@ -70,6 +70,7 @@ public class Interface{
     private Parser MsgParser      = new Parser();
     private MAVLinkMessages Inbox;
     private int Timeout;
+    public byte[] buffer_data     = null;
     
     public Interface(int intType,String hostname,int recvPort,int sendPort,AircraftData acData){
 
@@ -161,7 +162,7 @@ public class Interface{
 	
     public byte[] UDPRead(){
 	byte[] buffer = new byte[6+255+2];
-	byte[] buffer_data = null;	    
+	buffer_data = null;	    
 	DatagramPacket input = new DatagramPacket(buffer, buffer.length);
 	try{
 	    sock.receive(input);
@@ -195,9 +196,9 @@ public class Interface{
     }   
 
     public byte[] SerialRead(){
-	byte[] buffer = null;		
+	buffer_data = null;		
 	try{
-	    buffer = serialPort.readBytes();
+	    buffer_data = serialPort.readBytes();
 	}
 	catch(SerialPortException e){
 	    System.out.println(e);
@@ -205,7 +206,7 @@ public class Interface{
 	//catch(SerialPortTimeoutException e){
 	//  System.out.println(e);
 	//}
-	return buffer;
+	return buffer_data;
     }
 
     public void SerialWrite(byte[] buffer){

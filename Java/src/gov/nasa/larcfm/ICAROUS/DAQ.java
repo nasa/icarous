@@ -47,20 +47,20 @@ public class DAQ implements Runnable{
     public AircraftData FlightData;
     public Interface icarousAP;
     private ParameterData pData;
+    private Aircraft uas;
     
     public DAQ(String name,Aircraft UAS,ParameterData pdata){
 	threadName   = name;
+	uas          = UAS;
 	FlightData   = UAS.FlightData;
 	icarousAP    = UAS.apIntf;
 	pData        = pdata;
     }
 
     public void run(){
-	while(true){
-
-	    if(!FlightData.GetPauseDAQ()){		
-		icarousAP.Read();		
-	    }
+	while(true){	    
+	    icarousAP.Read();		
+	    uas.comIntf.WriteBytes(icarousAP.buffer_data);
 	}
     }
 
