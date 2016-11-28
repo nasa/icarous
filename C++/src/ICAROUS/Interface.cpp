@@ -44,7 +44,7 @@ Interface::Interface(MAVLinkInbox* msgs){
     RcvdMessages = msgs;
 }
 
-void Interface::GetMAVLinkMsg(){
+int Interface::GetMAVLinkMsg(){
 
     int n = ReadData();
     mavlink_message_t message;
@@ -60,11 +60,17 @@ void Interface::GetMAVLinkMsg(){
             RcvdMessages->DecodeMessage(message);
         }
     }
+
+    return n;
 }
 
 void Interface::SendMAVLinkMsg(mavlink_message_t msg){
     uint16_t len = mavlink_msg_to_send_buffer(sendbuffer, &msg);
     WriteData(sendbuffer,len);
+}
+
+uint8_t* Interface::GetRecvBuffer(){
+    return recvbuffer;
 }
 
 

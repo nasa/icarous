@@ -1,9 +1,7 @@
 /**
- * Interface
+ * Data acquisition
  * 
- * This is a class that will enable establishing a socket or
- * a serial interface between ICAROUS and any component that can
- * stream MAVLink messages
+ * This class contains functions to constantly collect data from the pixhawk.
  *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
@@ -37,71 +35,22 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#ifndef INTERFACES_H_
-#define INTERFACES_H_
+#include "DAQ.h"
 
-#include <stdio.h>   // Standard input/output definitions
-#include <unistd.h>  // UNIX standard function definitions
-#include <fcntl.h>   // File control definitions
-#include <termios.h> // POSIX terminal control definitions
-#include <pthread.h> // This uses POSIX Threads
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdlib.h>
-#include <time.h>
+ DataAcquisition::DataAcquisition(Interface* fromIntf, Interface* toIntf,MAVLinkInbox *msgs){
+     recvIntf     = fromIntf;
+     sendIntf     = toIntf;
+     RcvdMessages = msgs;
+ }
 
-#include "MAVLinkInbox.h"
+ void DataAcquisition::RunDAQ(){
+     while(true){
+         // Get data from the pixhawk
+         int n = recvIntf->GetMAVLinkMsg();
+         
+         // Send the raw data in the recv buffer to the send interface
+         sendIntf->WriteData(recvIntf->GetRecvBuffer(),n);
+     }
+ }
 
-#define BUFFER_LENGTH 500
-
-class Interface{
-
- protected:
-  uint8_t recvbuffer[BUFFER_LENGTH];
-  uint8_t sendbuffer[BUFFER_LENGTH];
-  MAVLinkInbox *RcvdMessages;
-  pthread_mutex_t  lock;
-
- public:
-  Interface(MAVLinkInbox *msgs);
-  int GetMAVLinkMsg();
-  void SendMAVLinkMsg(mavlink_message_t msg);
-  uint8_t* GetRecvBuffer();
-  virtual int ReadData(){return 0;};
-  virtual void WriteData(uint8_t buffer[], uint16_t len){return;};
-};
-
-class SerialInterface: public Interface{
- private:
-  char *portname;
-  int baudrate;
-  int fd;
-  int parity;
-
- public:
-  SerialInterface(char pname[], int brate, int pbit,MAVLinkInbox *msgs); 
-  int set_interface_attribs();
-  void set_blocking (int should_block);
-  int ReadData();
-  void WriteData(uint8_t buffer[], uint16_t len);
-};
-
-class SocketInterface: public Interface{
-  private:
-    
-    int sock;
-    struct sockaddr_in locAddr; 
-    struct sockaddr_in targetAddr; 
-    socklen_t recvlen;
-    
-  public:
-    SocketInterface(char targetip[], int inportno, int outportno,MAVLinkInbox *msgs);
-    int ReadData();
-    void WriteData(uint8_t buffer[], uint16_t len);
-
-};
-
-
-#endif
+ 
