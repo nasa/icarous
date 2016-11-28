@@ -48,25 +48,29 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <stdlib.h>
 #include <time.h>
 
 #include "MAVLinkInbox.h"
 
+#define BUFFER_LENGTH 500
+
 class Interface{
 
  protected:
-  char databuffer[300];
+  uint8_t recvbuffer[BUFFER_LENGTH];
+  uint8_t sendbuffer[BUFFER_LENGTH];
   MAVLinkInbox *RcvdMessages;
   pthread_mutex_t  lock;
 
  public:
   Interface(MAVLinkInbox *msgs);
   void GetMAVLinkMsg();
-  void SendMAVLinkMsg();
+  void SendMAVLinkMsg(mavlink_message_t msg);
   
   virtual int ReadData(){return 0;};
-  virtual void WriteData(){return;};
+  virtual void WriteData(uint8_t buffer[], uint16_t len){return;};
 };
 
 class SerialInterface: public Interface{
@@ -81,7 +85,7 @@ class SerialInterface: public Interface{
   int set_interface_attribs();
   void set_blocking (int should_block);
   int ReadData();
-  void WriteData(char* buffer, int len);
+  void WriteData(uint8_t buffer[], uint16_t len);
 };
 
 class SocketInterface: public Interface{
@@ -90,14 +94,14 @@ class SocketInterface: public Interface{
     int sock;
     struct sockaddr_in locAddr; 
     struct sockaddr_in targetAddr; 
-    socklen_t fromlen;
+    socklen_t recvlen;
     
   public:
-    SocketInterface();
+    SocketInterface(char targetip[], int inportno, int outportno,MAVLinkInbox *msgs);
     int ReadData();
-    void WriteData(char* buffer, int len);
+    void WriteData(uint8_t buffer[], uint16_t len);
 
-}
+};
 
 
 #endif

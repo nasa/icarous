@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -Wno-write-strings
 INCLUDES = -I./libs/mavlink -I./include/ACCoRD -I./include/ICAROUS
 LIBS = -lpthread -lm
 SRCS = $(wildcard ./src/ICAROUS/*.cpp)
@@ -21,3 +21,5 @@ $(MAIN): PRE $(OBJS)
 PRE:
 	@test -d obj/ICAROUS || (mkdir obj && mkdir obj/ICAROUS)
 
+clean:
+	rm obj/ICAROUS/*

@@ -53,13 +53,18 @@ void Interface::GetMAVLinkMsg(){
     bool msgReceived = false;
 
     for(int i=0;i<n;i++){
-        char cp = databuffer[i];
+        uint8_t cp = recvbuffer[i];
         msgReceived = mavlink_parse_char(MAVLINK_COMM_1, cp, &message, &status);
 
         if(msgReceived){
             RcvdMessages->DecodeMessage(message);
         }
     }
+}
+
+void Interface::SendMAVLinkMsg(mavlink_message_t msg){
+    uint16_t len = mavlink_msg_to_send_buffer(sendbuffer, &msg);
+    WriteData(sendbuffer,len);
 }
 
 
@@ -146,13 +151,13 @@ int SerialInterface::ReadData(){
     int n = 0;
     pthread_mutex_lock(&lock);
     n = read (fd, &buf, 1);
-    databuffer[0] = buf;
+    recvbuffer[0] = buf;
     pthread_mutex_lock(&lock);
 
     return n;
 }
 
-void SerialInterface::WriteData(char* buffer, int len){
+void SerialInterface::WriteData(uint8_t buffer[],uint16_t len){
 
     pthread_mutex_lock(&lock);
     write(fd,buffer,len);
@@ -161,7 +166,8 @@ void SerialInterface::WriteData(char* buffer, int len){
 
 
 // Socet interface class definition
-SocketInterface::SocketInterface(char[] targetip, int inportno, int outportno){
+SocketInterface::SocketInterface(char targetip[], int inportno, int outportno,MAVLinkInbox *msgs)
+:Interface(msgs){
 
     sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
@@ -178,14 +184,29 @@ SocketInterface::SocketInterface(char[] targetip, int inportno, int outportno){
     } 
     
     if (fcntl(sock, F_SETFL, O_NONBLOCK | FASYNC) < 0){
-      printf("error setting nonblocking: %s\n");
+      printf("error setting nonblocking\n");
       close(sock);
       exit(EXIT_FAILURE);
     }
     
-    memset(&tagetAddr, 0, sizeof(targetAddr));
+    memset(&targetAddr, 0, sizeof(targetAddr));
     targetAddr.sin_family      = AF_INET;
     targetAddr.sin_addr.s_addr = inet_addr(targetip);
     targetAddr.sin_port        = htons(outportno);
     
+}
+
+int SocketInterface::ReadData(){
+    memset(recvbuffer, 0, BUFFER_LENGTH);
+    int n = 0;
+    pthread_mutex_lock(&lock);
+    n = recvfrom(sock, (void *)recvbuffer, BUFFER_LENGTH, 0, (struct sockaddr *)&targetAddr, &recvlen);
+    pthread_mutex_unlock(&lock);
+    return n;
+}
+
+void SocketInterface::WriteData(uint8_t buffer[],uint16_t len){
+    pthread_mutex_lock(&lock);
+    sendto(sock, buffer, len, 0, (struct sockaddr*)&targetAddr, sizeof (struct sockaddr_in));
+    pthread_mutex_unlock(&lock);
 }

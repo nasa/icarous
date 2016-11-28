@@ -48,7 +48,7 @@
 
         case MAVLINK_MSG_ID_HEARTBEAT:
         {
-            printf("MAVLINK_MSG_ID_HEARTBEAT\n");
+            //printf("MAVLINK_MSG_ID_HEARTBEAT\n");
             mavlink_msg_heartbeat_decode(&message, &heartbeat);
             break;
         }
