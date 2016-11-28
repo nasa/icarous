@@ -45,6 +45,11 @@
 #include <fcntl.h>   // File control definitions
 #include <termios.h> // POSIX terminal control definitions
 #include <pthread.h> // This uses POSIX Threads
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "MAVLinkInbox.h"
 
@@ -78,6 +83,21 @@ class SerialInterface: public Interface{
   int ReadData();
   void WriteData(char* buffer, int len);
 };
+
+class SocketInterface: public Interface{
+  private:
+    
+    int sock;
+    struct sockaddr_in locAddr; 
+    struct sockaddr_in targetAddr; 
+    socklen_t fromlen;
+    
+  public:
+    SocketInterface();
+    int ReadData();
+    void WriteData(char* buffer, int len);
+
+}
 
 
 #endif
