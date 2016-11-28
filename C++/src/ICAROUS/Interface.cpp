@@ -158,3 +158,34 @@ void SerialInterface::WriteData(char* buffer, int len){
     write(fd,buffer,len);
     pthread_mutex_unlock(&lock);
 }
+
+
+// Socet interface class definition
+SocketInterface::SocketInterface(char[] targetip, int inportno, int outportno){
+
+    sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+    memset(&locAddr, 0, sizeof(locAddr));
+    locAddr.sin_family      = AF_INET;
+    locAddr.sin_addr.s_addr = INADDR_ANY;
+    locAddr.sin_port        = htons(inportno);
+    
+    /* Bind the socket to port 14551 - necessary to receive packets from qgroundcontrol */ 
+    if (-1 == bind(sock,(struct sockaddr *)&locAddr, sizeof(struct sockaddr))){
+      printf("error: bind failed");
+      close(sock);
+      exit(EXIT_FAILURE);
+    } 
+    
+    if (fcntl(sock, F_SETFL, O_NONBLOCK | FASYNC) < 0){
+      printf("error setting nonblocking: %s\n");
+      close(sock);
+      exit(EXIT_FAILURE);
+    }
+    
+    memset(&tagetAddr, 0, sizeof(targetAddr));
+    targetAddr.sin_family      = AF_INET;
+    targetAddr.sin_addr.s_addr = inet_addr(targetip);
+    targetAddr.sin_port        = htons(outportno);
+    
+}
