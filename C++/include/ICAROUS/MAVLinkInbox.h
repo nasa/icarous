@@ -41,13 +41,26 @@
 #include <stdio.h>
 #include <pthread.h> // This uses POSIX Threads
 #include "common/mavlink.h"
+#include <queue>
 
 class MAVLinkInbox{
 
     private:
-
-        mavlink_heartbeat_t heartbeat;
         pthread_mutex_t lock;
+        mavlink_heartbeat_t heartbeat;
+        mavlink_gps_raw_int_t gpsRawInt;
+        mavlink_gps_inject_data_t gpsInjectData;
+
+        // Message queues
+        std::queue<mavlink_mission_count_t> listMissionCount;
+        std::queue<mavlink_mission_request_list_t> listMissionRequestList;
+        std::queue<mavlink_param_request_list_t> listParamRequestList;
+        std::queue<mavlink_param_request_read_t> listParamRequestRead;
+        std::queue<mavlink_param_set_t> listParamSet;
+        std::queue<mavlink_command_long_t> listCommandLong;
+        std::queue<mavlink_command_int_t> listCommandInt;
+        std::queue<mavlink_set_mode_t> listSetMode;
+         
 
     public:
 

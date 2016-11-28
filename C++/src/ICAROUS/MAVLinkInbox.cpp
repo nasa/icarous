@@ -52,6 +52,72 @@
             mavlink_msg_heartbeat_decode(&message, &heartbeat);
             break;
         }
+
+        case MAVLINK_MSG_ID_MISSION_COUNT:
+        {
+            mavlink_mission_count_t msg;
+            mavlink_msg_mission_count_decode(&message, &msg);
+            listMissionCount.push(msg);
+            break;
+        }
+
+        case MAVLINK_MSG_ID_MISSION_REQUEST_LIST:
+        {
+            mavlink_mission_request_list_t msg;
+            mavlink_msg_mission_request_list_decode(&message, &msg);
+            listMissionRequestList.push(msg);
+            break;
+        }
+
+        case MAVLINK_MSG_ID_PARAM_REQUEST_LIST:
+        {
+            mavlink_param_request_list_t msg;
+            mavlink_msg_param_request_list_decode(&message, &msg);
+            listParamRequestList.push(msg);
+            break;
+        }
+
+        case MAVLINK_MSG_ID_PARAM_REQUEST_READ:
+        {
+            mavlink_param_request_read_t msg;
+            mavlink_msg_param_request_read_decode(&message, &msg);
+            listParamRequestRead.push(msg);
+            break;
+        }
+
+        case MAVLINK_MSG_ID_PARAM_SET:
+        {
+            mavlink_param_set_t msg;
+            mavlink_msg_param_set_decode(&message, &msg);
+            listParamSet.push(msg);
+            break;
+        }
+
+        case MAVLINK_MSG_ID_COMMAND_LONG:
+        {
+            mavlink_command_long_t msg;
+            mavlink_msg_command_long_decode(&message, &msg);
+            listCommandLong.push(msg);
+            break;
+        }
+
+        case MAVLINK_MSG_ID_COMMAND_INT:
+        {
+            mavlink_command_int_t msg;
+            mavlink_msg_command_int_decode(&message, &msg);
+            listCommandInt.push(msg);
+            break;
+        }
+
+        case MAVLINK_MSG_ID_SET_MODE:
+        {
+            mavlink_set_mode_t msg;
+            mavlink_msg_set_mode_decode(&message, &msg);
+            listSetMode.push(msg);
+            break;
+        }
+
+
     }
     pthread_mutex_unlock(&lock);
  }

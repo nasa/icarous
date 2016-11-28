@@ -50,7 +50,7 @@
 
     public:
         DataAcquisition(Interface* fromIntf, Interface* toIntf,MAVLinkInbox *msgs);
-        void RunDAQ();
+        void GetPixhawkData();
  };
 
  #endif

@@ -16,7 +16,7 @@ int main(int argc,char* argv[]){
 
     DataAcquisition DAQ(&SITL,&COM,&RcvdMessages);
 
-    DAQ.RunDAQ();
+    DAQ.GetPixhawkData();
 
     return 0;
 }

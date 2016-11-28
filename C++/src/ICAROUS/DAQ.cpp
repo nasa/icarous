@@ -43,7 +43,8 @@
      RcvdMessages = msgs;
  }
 
- void DataAcquisition::RunDAQ(){
+// Get data from pixhawk
+ void DataAcquisition::GetPixhawkData(){
      while(true){
          // Get data from the pixhawk
          int n = recvIntf->GetMAVLinkMsg();
@@ -53,4 +54,11 @@
      }
  }
 
+/*
+// Get data from ground station
+ void DataAcquisition::GetGSData(){
+
+
+ }
+*/
  
