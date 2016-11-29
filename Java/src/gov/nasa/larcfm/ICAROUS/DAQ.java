@@ -39,6 +39,7 @@ package gov.nasa.larcfm.ICAROUS;
 
 import com.MAVLink.*;
 import gov.nasa.larcfm.Util.ParameterData;
+import java.util.*;
 
 public class DAQ implements Runnable{
 
@@ -47,9 +48,11 @@ public class DAQ implements Runnable{
     public AircraftData FlightData;
     public Interface icarousAP;
     private ParameterData pData;
+    private Aircraft uas;
     
     public DAQ(String name,Aircraft UAS,ParameterData pdata){
 	threadName   = name;
+	uas          = UAS;
 	FlightData   = UAS.FlightData;
 	icarousAP    = UAS.apIntf;
 	pData        = pdata;
@@ -57,9 +60,11 @@ public class DAQ implements Runnable{
 
     public void run(){
 	while(true){
+	    ArrayList<MAVLinkPacket> packets;
+	    packets = icarousAP.Read();
 
-	    if(!FlightData.GetPauseDAQ()){		
-		icarousAP.Read();		
+	    for(int i=0;i<packets.size();i++){
+		uas.comIntf.Write(packets.get(i));
 	    }
 	}
     }

@@ -175,6 +175,8 @@ public class Icarous{
 	    
 	}
 
+	COMInt.SendStatusText("ICAROUS version: "+String.valueOf(version));
+	
 	// Create broad cast thread if necessary
 	if(bcastport > 0){
 
@@ -197,6 +199,8 @@ public class Icarous{
 
 	uasQuad.error.setConsoleOutput(verbose);
 	com_module.error.setConsoleOutput(verbose);
+
+	COMInt.SendStatusText("DAQ, FMS, COM Initialized");
     }
 
     public void SetDaidaludusConfig(String filename){
@@ -222,10 +226,9 @@ public class Icarous{
 	    while(msgHeartbeatAP == null){
 		msgHeartbeatAP = FlightData.Inbox.GetHeartbeat_AP();
 	    }
-
-	    
-	    
+	    	    
 	    System.out.println("Received heartbeat from AP");
+	    COMInt.SendStatusText("Connected to Pixhawk");
 
 	    uasQuad.EnableDataStream(1);
 		    	    
@@ -238,6 +241,7 @@ public class Icarous{
 	    if(mode.equals("passive")){
 
 		System.out.println("ICAROUS passive mode");
+		COMInt.SendStatusText("ICAROUS is passive");
 		while(true){
 		    uasQuad.FlightData.GetGPSdata();
 		    uasQuad.FlightData.GetAttitude();
@@ -246,13 +250,12 @@ public class Icarous{
 	    }
 	    else{
 		System.out.println("ICAROUS active mode");
+		COMInt.SendStatusText("ICAROUS is active");
 		fms_module.start();
 
 		while(fms_module.isFMSrunning()){
 		    // DO nothing
-		}
-		
-		
+		}				
 	    } // end of mode else (passive)
 	}// end of mode else (passthrough)
     }// end of run

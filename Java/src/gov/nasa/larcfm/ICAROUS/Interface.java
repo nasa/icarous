@@ -44,6 +44,7 @@ import java.util.*;
 import com.MAVLink.Parser;
 import com.MAVLink.Messages.*;
 import com.MAVLink.common.*;
+import com.MAVLink.enums.*;
 import com.MAVLink.MAVLinkPacket;
 import jssc.SerialPort;
 import jssc.SerialPortException;
@@ -70,6 +71,7 @@ public class Interface{
     private Parser MsgParser      = new Parser();
     private MAVLinkMessages Inbox;
     private int Timeout;
+    public byte[] buffer_data     = null;
     
     public Interface(int intType,String hostname,int recvPort,int sendPort,AircraftData acData){
 
@@ -161,7 +163,7 @@ public class Interface{
 	
     public byte[] UDPRead(){
 	byte[] buffer = new byte[6+255+2];
-	byte[] buffer_data = null;	    
+	buffer_data = null;	    
 	DatagramPacket input = new DatagramPacket(buffer, buffer.length);
 	try{
 	    sock.receive(input);
@@ -195,9 +197,9 @@ public class Interface{
     }   
 
     public byte[] SerialRead(){
-	byte[] buffer = null;		
+	buffer_data = null;		
 	try{
-	    buffer = serialPort.readBytes();
+	    buffer_data = serialPort.readBytes();
 	}
 	catch(SerialPortException e){
 	    System.out.println(e);
@@ -205,7 +207,7 @@ public class Interface{
 	//catch(SerialPortTimeoutException e){
 	//  System.out.println(e);
 	//}
-	return buffer;
+	return buffer_data;
     }
 
     public void SerialWrite(byte[] buffer){
@@ -356,6 +358,14 @@ public class Interface{
 	// Write to AP
 	AP.WriteBytes(GS_buffer);
 	
+    }
+
+    public void SendStatusText(String Text){
+
+	msg_statustext status = new msg_statustext();
+	status.severity = MAV_SEVERITY.MAV_SEVERITY_INFO;
+	status.text     = Arrays.copyOf(Text.getBytes(),50);
+	Write(status);
     }
         
 }
