@@ -1,12 +1,18 @@
 REQUIREMENTS
--
+==============
 
 ICAROUS requires the Java library [JSSC](https://github.com/scream3r/java-simple-serial-connector). This library is available under the license [`LGPL v. 3.0`](https://www.gnu.org/licenses/lgpl-3.0.txt).
 
 To compile ICAROUS using the provided [`Makefile`](Makefile) the Jar file [`jssc-2.8.0.jar`](http://central.maven.org/maven2/org/scream3r/jssc/2.8.0/jssc-2.8.0.jar) is expected in the directory [`lib`](lib).
 
+
+COMPILING ICAROUS
+==============
+
+To compie ICAROUS, use the provided [`Makefile`](Makefile).
+
 LAUNCHING ICAROUS
-=================
+==============
 
 The various parameters that control the behavior of ICAROUS can be found in `Java/params/icarous.txt`. The default parameters found in icarous.txt were selected after several flight tests to yield acceptable performances. For convenience, a script (run.sh) is provided to launch ICAROUS and other supporting applications. The run script also helps configure several port options.
 
