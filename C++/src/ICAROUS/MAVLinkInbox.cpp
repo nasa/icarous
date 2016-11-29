@@ -55,9 +55,19 @@
 
         case MAVLINK_MSG_ID_MISSION_COUNT:
         {
+            printf("MAVLINK_MSG_ID_MISSION_COUNT\n");
             mavlink_mission_count_t msg;
             mavlink_msg_mission_count_decode(&message, &msg);
             listMissionCount.push(msg);
+            break;
+        }
+
+        case MAVLINK_MSG_ID_MISSION_ITEM:
+        {
+             printf("MAVLINK_MSG_ID_MISSION_ITEM\n");
+            mavlink_mission_item_t msg;
+            mavlink_msg_mission_item_decode(&message, &msg);
+            listMissionItem.push(msg);
             break;
         }
 
@@ -120,4 +130,26 @@
 
     }
     pthread_mutex_unlock(&lock);
+ }
+
+ bool MAVLinkInbox::GetMissionCount(mavlink_mission_count_t& msg){
+     if(!listMissionCount.empty()){
+         msg = listMissionCount.front();
+         listMissionCount.pop();
+         return true;
+     }
+     else{
+         return false;
+     }   
+ }
+
+ bool MAVLinkInbox::GetMissionItem(mavlink_mission_item_t& msg){
+     if(!listMissionItem.empty()){
+         msg = listMissionItem.front();
+         listMissionItem.pop();
+         return true;
+     }
+     else{
+         return false;
+     }   
  }

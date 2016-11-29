@@ -37,28 +37,73 @@
 
 #include "DAQ.h"
 
- DataAcquisition::DataAcquisition(Interface* fromIntf, Interface* toIntf,MAVLinkInbox *msgs){
-     recvIntf     = fromIntf;
-     sendIntf     = toIntf;
-     RcvdMessages = msgs;
+ DataAcquisition::DataAcquisition(Interface* px4int, Interface* gsint,AircraftData *fdata){
+     px4Intf      = px4int;
+     gsIntf       = gsint;
+     FlightData   = fdata;
+     RcvdMessages = fdata->RcvdMessages;
+     WPcount      = 0;                     // total waypoint count
+     WPloaded     = 0;                     // waypoints loaded
  }
 
 // Get data from pixhawk
  void DataAcquisition::GetPixhawkData(){
      while(true){
          // Get data from the pixhawk
-         int n = recvIntf->GetMAVLinkMsg();
+         px4Intf->GetMAVLinkMsg();
          
-         // Send the raw data in the recv buffer to the send interface
-         sendIntf->WriteData(recvIntf->GetRecvBuffer(),n);
+         // Send the raw data in the queue to the send interface
+         while(!px4Intf->msgQueue.empty()){
+            gsIntf->SendMAVLinkMsg(px4Intf->msgQueue.front());
+            px4Intf->msgQueue.pop();
+         }
      }
  }
 
-/*
+
 // Get data from ground station
  void DataAcquisition::GetGSData(){
 
+     
+     while(true){
+         gsIntf->GetMAVLinkMsg();
+         // Handle mission count
+         MissionCountHandler();
+
+         // Mission item handler
+         MissionItemHandler();
+     }
+     
 
  }
-*/
+
  
+ void DataAcquisition::MissionCountHandler(){
+
+     mavlink_mission_count_t msg;
+     bool have_msg = RcvdMessages->GetMissionCount(msg);
+     if(have_msg){
+         mavlink_message_t msg2send;
+         mavlink_msg_mission_count_encode(255,0,&msg2send,&msg);
+         px4Intf->SendMAVLinkMsg(msg2send);
+         WPcount = msg.count;
+     }
+
+ }
+
+ void DataAcquisition::MissionItemHandler(){
+
+     mavlink_mission_item_t msg;
+     bool have_msg = RcvdMessages->GetMissionItem(msg);
+     if(have_msg){
+         mavlink_message_t msg2send;
+         mavlink_msg_mission_item_encode(255,0,&msg2send,&msg);
+         px4Intf->SendMAVLinkMsg(msg2send);
+         if(msg.seq == WPloaded){
+             printf("Added wp %d to list\n",WPloaded);
+             FlightData->AddMissionItem(msg);
+             WPloaded++;
+         }
+     }
+
+ }

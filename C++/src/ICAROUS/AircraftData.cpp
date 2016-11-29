@@ -1,7 +1,7 @@
 /**
- * MAVLink message decoder
+ * Aircraft data
  * 
- * This is a class that will decode MAVLink messages
+ * Shared data structure containing all flight relevent data and functions
  *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
@@ -35,40 +35,18 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#ifndef MAVLINKINBOX_H_
-#define MAVLINKINBOX_H_
+ #include "AircraftData.h"
 
-#include <stdio.h>
-#include <pthread.h> // This uses POSIX Threads
-#include "common/mavlink.h"
-#include <queue>
 
-class MAVLinkInbox{
+ AircraftData::AircraftData(MAVLinkInbox* Msgs){
+     pthread_mutex_init(&lock, NULL);
+     RcvdMessages = Msgs;
+ }
 
-    private:
-        pthread_mutex_t lock;
-        mavlink_heartbeat_t heartbeat;
-        mavlink_gps_raw_int_t gpsRawInt;
-        mavlink_gps_inject_data_t gpsInjectData;
+ void AircraftData::AddMissionItem(mavlink_mission_item_t msg){
 
-        // Message queues
-        std::queue<mavlink_mission_count_t> listMissionCount;
-        std::queue<mavlink_mission_item_t> listMissionItem;
-        std::queue<mavlink_mission_request_list_t> listMissionRequestList;
-        std::queue<mavlink_param_request_list_t> listParamRequestList;
-        std::queue<mavlink_param_request_read_t> listParamRequestRead;
-        std::queue<mavlink_param_set_t> listParamSet;
-        std::queue<mavlink_command_long_t> listCommandLong;
-        std::queue<mavlink_command_int_t> listCommandInt;
-        std::queue<mavlink_set_mode_t> listSetMode;
-         
+     pthread_mutex_lock(&lock);
+     listMissionItem.push_back(msg);
+     pthread_mutex_unlock(&lock);
+ }
 
-    public:
-
-        MAVLinkInbox();
-        void DecodeMessage(mavlink_message_t message);
-        bool GetMissionCount(mavlink_mission_count_t& msg);
-        bool GetMissionItem(mavlink_mission_item_t& msg);
-};
-
-#endif

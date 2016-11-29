@@ -39,9 +39,10 @@
 
 #include "Interface.h"
 
-Interface::Interface(MAVLinkInbox* msgs){
+
+Interface::Interface(AircraftData *fData){
     pthread_mutex_init(&lock, NULL);
-    RcvdMessages = msgs;
+    FlightData = fData;
 }
 
 int Interface::GetMAVLinkMsg(){
@@ -55,9 +56,11 @@ int Interface::GetMAVLinkMsg(){
     for(int i=0;i<n;i++){
         uint8_t cp = recvbuffer[i];
         msgReceived = mavlink_parse_char(MAVLINK_COMM_1, cp, &message, &status);
-
+        
+        
         if(msgReceived){
-            RcvdMessages->DecodeMessage(message);
+            msgQueue.push(message);
+            FlightData->RcvdMessages->DecodeMessage(message);
         }
     }
 
@@ -74,8 +77,8 @@ uint8_t* Interface::GetRecvBuffer(){
 }
 
 
-SerialInterface::SerialInterface(char name[],int brate,int pbit,MAVLinkInbox *msgs)
-:Interface(msgs){
+SerialInterface::SerialInterface(char name[],int brate,int pbit,AircraftData *fData)
+:Interface(fData){
 
   portname = name;
   baudrate = brate;
@@ -172,8 +175,8 @@ void SerialInterface::WriteData(uint8_t buffer[],uint16_t len){
 
 
 // Socet interface class definition
-SocketInterface::SocketInterface(char targetip[], int inportno, int outportno,MAVLinkInbox *msgs)
-:Interface(msgs){
+SocketInterface::SocketInterface(char targetip[], int inportno, int outportno,AircraftData* fData)
+:Interface(fData){
 
     sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 

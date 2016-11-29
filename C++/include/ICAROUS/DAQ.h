@@ -44,13 +44,18 @@
  class DataAcquisition{
 
     private:
-        Interface* recvIntf;
-        Interface* sendIntf;
+        Interface* px4Intf;
+        Interface* gsIntf;
         MAVLinkInbox *RcvdMessages;
+        AircraftData* FlightData;
+        int WPcount, WPloaded;
 
     public:
-        DataAcquisition(Interface* fromIntf, Interface* toIntf,MAVLinkInbox *msgs);
+        DataAcquisition(Interface* px4int, Interface* gsint,AircraftData *fdata);
         void GetPixhawkData();
+        void GetGSData();
+        void MissionCountHandler();
+        void MissionItemHandler();
  };
 
  #endif
