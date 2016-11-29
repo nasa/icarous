@@ -55,20 +55,30 @@ class MAVLinkInbox{
         std::queue<mavlink_mission_count_t> listMissionCount;
         std::queue<mavlink_mission_item_t> listMissionItem;
         std::queue<mavlink_mission_request_list_t> listMissionRequestList;
+        std::queue<mavlink_mission_request_t> listMissionRequest;
         std::queue<mavlink_param_request_list_t> listParamRequestList;
         std::queue<mavlink_param_request_read_t> listParamRequestRead;
         std::queue<mavlink_param_set_t> listParamSet;
+        std::queue<mavlink_param_value_t> listParamValue;
         std::queue<mavlink_command_long_t> listCommandLong;
         std::queue<mavlink_command_int_t> listCommandInt;
         std::queue<mavlink_set_mode_t> listSetMode;
-         
-
+        
     public:
-
+        
         MAVLinkInbox();
         void DecodeMessage(mavlink_message_t message);
         bool GetMissionCount(mavlink_mission_count_t& msg);
         bool GetMissionItem(mavlink_mission_item_t& msg);
+        bool GetMissionRequestList(mavlink_mission_request_list_t& msg);
+        bool GetMissionRequest(mavlink_mission_request_t& msg);
+        bool GetParamRequestList(mavlink_param_request_list_t& msg);
+        bool GetParamSet(mavlink_param_set_t& msg);
+        bool GetParamValue(mavlink_param_value_t& msg);
+        bool GetParamRequestRead(mavlink_param_request_read_t& msg);
+        bool GetSetMode(mavlink_set_mode_t& msg);
+        bool GetCommandLong(mavlink_command_long_t& msg);
+        bool GetCommandInt(mavlink_command_int_t& msg);
 };
 
 #endif

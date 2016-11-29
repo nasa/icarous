@@ -56,6 +56,13 @@
         void GetGSData();
         void MissionCountHandler();
         void MissionItemHandler();
+        void MissionRequestListHandler();
+        void MissionRequestHandler();
+        void ParamRequestListHandler();
+        void ParamRequestReadHandler();
+        void ParamSetHandler();
+        void ParamValueHandler();
+        void SetModeHandler();
  };
 
  #endif

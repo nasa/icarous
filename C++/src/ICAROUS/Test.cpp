@@ -13,7 +13,6 @@ int main(int argc,char* argv[]){
     AircraftData FlightData(&RcvdMessages);
 
     //Interface apPort = SerialInterface("/dev/ttyO1",B57600,0,&RcvdMessages);
-    
     SocketInterface SITL("127.0.0.1",14550,0,&FlightData);
     SocketInterface COM("127.0.0.1",14552,14553,&FlightData);
 

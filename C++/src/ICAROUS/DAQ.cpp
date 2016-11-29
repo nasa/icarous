@@ -67,11 +67,32 @@
      
      while(true){
          gsIntf->GetMAVLinkMsg();
+         
+         
          // Handle mission count
          MissionCountHandler();
 
          // Mission item handler
          MissionItemHandler();
+
+         // Handle mission list request
+         MissionRequestListHandler();
+
+         //  Handle mission request
+         MissionRequestHandler();
+
+         // Handle parameter request list
+         ParamRequestListHandler();
+
+         // Handle parameter request read
+         ParamRequestReadHandler();
+
+         // Handle parameter set
+         ParamSetHandler();
+
+         // Handle set mode
+         SetModeHandler();
+
      }
      
 
@@ -79,31 +100,99 @@
 
  
  void DataAcquisition::MissionCountHandler(){
-
      mavlink_mission_count_t msg;
      bool have_msg = RcvdMessages->GetMissionCount(msg);
-     if(have_msg){
+     if(have_msg && msg.target_system == 1){
          mavlink_message_t msg2send;
          mavlink_msg_mission_count_encode(255,0,&msg2send,&msg);
          px4Intf->SendMAVLinkMsg(msg2send);
          WPcount = msg.count;
+         
      }
 
  }
 
  void DataAcquisition::MissionItemHandler(){
-
      mavlink_mission_item_t msg;
      bool have_msg = RcvdMessages->GetMissionItem(msg);
-     if(have_msg){
+     if(have_msg && msg.target_system == 1){
          mavlink_message_t msg2send;
          mavlink_msg_mission_item_encode(255,0,&msg2send,&msg);
          px4Intf->SendMAVLinkMsg(msg2send);
          if(msg.seq == WPloaded){
-             printf("Added wp %d to list\n",WPloaded);
+             //printf("Added wp %d to list\n",WPloaded);
              FlightData->AddMissionItem(msg);
              WPloaded++;
          }
      }
+ }
 
+ void DataAcquisition::MissionRequestHandler(){
+     mavlink_mission_request_t msg;
+     bool have_msg = RcvdMessages->GetMissionRequest(msg);
+     if(have_msg && msg.target_system == 1){
+         mavlink_message_t msg2send;
+         mavlink_msg_mission_request_encode(255,0,&msg2send,&msg);
+         px4Intf->SendMAVLinkMsg(msg2send);
+     }
+ }
+
+ void DataAcquisition::MissionRequestListHandler(){
+     mavlink_mission_request_list_t msg;
+     bool have_msg = RcvdMessages->GetMissionRequestList(msg);
+     if(have_msg && msg.target_system == 1){
+         mavlink_message_t msg2send;
+         mavlink_msg_mission_request_list_encode(255,0,&msg2send,&msg);
+         px4Intf->SendMAVLinkMsg(msg2send);
+     }
+ }
+
+ void DataAcquisition::ParamRequestListHandler(){
+     mavlink_param_request_list_t msg;
+     bool have_msg = RcvdMessages->GetParamRequestList(msg);
+     if(have_msg){
+         mavlink_message_t msg2send;
+         mavlink_msg_param_request_list_encode(255,0,&msg2send,&msg);
+         px4Intf->SendMAVLinkMsg(msg2send);
+     }
+ }
+
+ void DataAcquisition::ParamRequestReadHandler(){
+     mavlink_param_request_read_t msg;
+     bool have_msg = RcvdMessages->GetParamRequestRead(msg);
+     if(have_msg && msg.target_system == 1){
+         mavlink_message_t msg2send;
+         mavlink_msg_param_request_read_encode(255,0,&msg2send,&msg);
+         px4Intf->SendMAVLinkMsg(msg2send);
+     }
+ }
+
+ void DataAcquisition::ParamSetHandler(){
+     mavlink_param_set_t msg;
+     bool have_msg = RcvdMessages->GetParamSet(msg);
+     if(have_msg && msg.target_system == 1){
+         mavlink_message_t msg2send;
+         mavlink_msg_param_set_encode(255,0,&msg2send,&msg);
+         px4Intf->SendMAVLinkMsg(msg2send);
+     }
+ }
+
+  void DataAcquisition::ParamValueHandler(){
+     mavlink_param_value_t msg;
+     bool have_msg = RcvdMessages->GetParamValue(msg);
+     if(have_msg){
+         mavlink_message_t msg2send;
+         mavlink_msg_param_value_encode(255,0,&msg2send,&msg);
+         
+     }
+ }
+
+  void DataAcquisition::SetModeHandler(){
+     mavlink_set_mode_t msg;
+     bool have_msg = RcvdMessages->GetSetMode(msg);
+     if(have_msg && msg.target_system == 1){
+         mavlink_message_t msg2send;
+         mavlink_msg_set_mode_encode(255,0,&msg2send,&msg);
+         px4Intf->SendMAVLinkMsg(msg2send);
+     }
  }
