@@ -73,6 +73,7 @@ class Interface{
   Interface(AircraftData *fData);
   int GetMAVLinkMsg();
   void SendMAVLinkMsg(mavlink_message_t msg);
+  void EnableDataStream(int option);
   uint8_t* GetRecvBuffer();
   virtual int ReadData(){return 0;};
   virtual void WriteData(uint8_t buffer[], uint16_t len){return;};

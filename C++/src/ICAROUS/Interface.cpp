@@ -76,6 +76,18 @@ uint8_t* Interface::GetRecvBuffer(){
     return recvbuffer;
 }
 
+void Interface::EnableDataStream(int option){
+	
+	mavlink_message_t msg1,msg2;
+    mavlink_msg_heartbeat_pack(255, 0, &msg1, MAV_TYPE_ONBOARD_CONTROLLER, 
+                                MAV_AUTOPILOT_GENERIC, 0, 0, 0);
+    
+    mavlink_msg_request_data_stream_pack(255,0,&msg1,1,0,MAV_DATA_STREAM_ALL,10,option);
+    
+	SendMAVLinkMsg(msg1);
+    SendMAVLinkMsg(msg2);
+}
+
 
 SerialInterface::SerialInterface(char name[],int brate,int pbit,AircraftData *fData)
 :Interface(fData){
