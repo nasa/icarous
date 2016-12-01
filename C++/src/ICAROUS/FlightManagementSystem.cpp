@@ -57,19 +57,19 @@ void FlightManagementSystem::RunFMS(){
                 break;
 
             case _climb_:
-                CLIMB();
+                //CLIMB();
                 break;
 
             case _cruise_:
-                CRUISE();
+                //CRUISE();
                 break;
 
             case _descend_:
-                DESCEND();
+                //DESCEND();
                 break;
 
             case _land_:
-                LAND();
+                //LAND();
                 break;
         }
      }
@@ -130,4 +130,68 @@ void FlightManagementSystem::SetSpeed(float speed){
 	
 	SendCommand(0,0,MAV_CMD_DO_CHANGE_SPEED,0,
 		        1,speed,0,0,0,0,0);
+}
+
+void FlightManagementSystem::SendStatusText(char buffer[]){
+    mavlink_message_t msg;
+    mavlink_msg_statustext_pack(255,0,&msg,MAV_SEVERITY_INFO,buffer);
+    px4Intf->SendMAVLinkMsg(msg);
+}
+
+void FlightManagementSystem::ArmThrottles(bool arm){
+
+    uint8_t c;
+
+    if(arm){
+        c = 1;
+    }else{
+        c = 0;
+    }
+
+    SendCommand(0,0,MAV_CMD_COMPONENT_ARM_DISARM,0,
+			         (float)c,0,0,0,0,0,0);
+}
+
+void FlightManagementSystem::StartTakeoff(float alt){
+    SendCommand(0,0,MAV_CMD_NAV_TAKEOFF,0,
+			    1,0,0,0,0,0,alt);
+}
+
+bool FlightManagementSystem::CheckAck(MAV_CMD command){
+    bool have_msg = true;
+    bool status = false;
+    mavlink_command_ack_t msg;
+
+    while(have_msg){
+       have_msg = RcvdMessages->GetCommandAck(msg);
+       if(msg.command == command && msg.result == 0){
+           status = true;
+           return status;
+       }
+    }
+    return status;
+}
+
+uint8_t FlightManagementSystem::IDLE(){
+
+    int start  = FlightData->GetStartMissionFlag();
+    int fpsize = FlightData->GetFlightPlanSize(); 
+    if( start == 0){
+        if( fpsize > 0){
+            fmsState = _takeoff_;
+            return 1; 
+        }
+        else{
+            SendStatusText("No flightplan uploaded");
+            return 0;
+        }
+    }
+    else if(start > 0 && start < fpsize ){
+        fmsState           = _cruise_;
+        FlightData->nextWP = start;
+        SendStatusText("Flying to waypoint");
+        return 1;
+    }
+
+    return 0;
 }

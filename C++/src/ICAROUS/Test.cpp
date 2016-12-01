@@ -2,6 +2,7 @@
 #include <thread>
 #include "Interface.h"
 #include "DAQ.h"
+#include "FlightManagementSystem.h"
 
 using namespace std;
 
@@ -18,11 +19,15 @@ int main(int argc,char* argv[]){
 
     DataAcquisition DAQ(&SITL,&COM,&FlightData);
 
+    QuadFMS FMS(&SITL,&COM,&FlightData);
+
     std::thread thread1(&DataAcquisition::GetPixhawkData,&DAQ);
     std::thread thread2(&DataAcquisition::GetGSData,&DAQ);
+    std::thread thread3(&FlightManagementSystem::RunFMS,&FMS);
     
     thread1.join();
     thread2.join();
+    thread3.join();
     
 
     return 0;

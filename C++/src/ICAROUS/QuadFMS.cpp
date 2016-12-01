@@ -1,7 +1,7 @@
 /**
- * Aircraft data
+ * Flight Management System
  * 
- * Shared data structure containing all flight relevent data and functions
+ * Core flight management functions
  *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
@@ -35,29 +35,34 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#ifndef AIRCRAFT_DATA_H
-#define AIRCRAFT_DATA_H
-#include <list>
-#include "MAVLinkInbox.h"
+ #include "FlightManagementSystem.h"
 
+ QuadFMS::QuadFMS(Interface *px4int, Interface *gsint,AircraftData* fData):
+ FlightManagementSystem(px4int,gsint,fData){
+     takeoffComplete = false;
+ }
 
-class AircraftData{
-    private:
-        pthread_mutex_t lock;
-        std::list<mavlink_mission_item_t> listMissionItem;
-        uint8_t startMission;
+uint8_t QuadFMS::TAKEOFF(){
+
+    if(!takeoffComplete){
+        // Set mode to guided
+        SetMode(GUIDED);
+
+        // Arm throttles
+        ArmThrottles(true);
         
+        // Send Takeoff with target altitude
+        StartTakeoff(5.0f);
 
-    public:
-        uint16_t nextWP;
-        MAVLinkInbox* RcvdMessages;
-        AircraftData(MAVLinkInbox* Msgs);
-        void AddMissionItem(mavlink_mission_item_t msg);
-        uint8_t GetStartMissionFlag();
-        void SetStartMissionFlag(uint8_t flag);
-        uint16_t GetFlightPlanSize();
-        
-};
+        // Sleep (micro seconds)
+        usleep(5000); 
 
+        if(CheckAck(MAV_CMD_NAV_TAKEOFF)){
+            takeoffComplete = true;
+            
+        }
+    }
 
- #endif
+    return 0; 
+
+}

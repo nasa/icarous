@@ -39,7 +39,7 @@
  #define DAQ_H_
 
  #include "Interface.h"
- 
+ #include "ardupilotmega/ardupilotmega.h"
 
  class DataAcquisition{
 
@@ -63,6 +63,8 @@
         void ParamSetHandler();
         void ParamValueHandler();
         void SetModeHandler();
+        void CommandLongHandler();
+        void CommandIntHandler();
  };
 
  #endif

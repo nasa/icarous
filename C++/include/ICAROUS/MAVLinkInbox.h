@@ -63,6 +63,7 @@ class MAVLinkInbox{
         std::queue<mavlink_command_long_t> listCommandLong;
         std::queue<mavlink_command_int_t> listCommandInt;
         std::queue<mavlink_set_mode_t> listSetMode;
+        std::queue<mavlink_command_ack_t> listCommandAck;
         
     public:
         
@@ -79,6 +80,7 @@ class MAVLinkInbox{
         bool GetSetMode(mavlink_set_mode_t& msg);
         bool GetCommandLong(mavlink_command_long_t& msg);
         bool GetCommandInt(mavlink_command_int_t& msg);
+        bool GetCommandAck(mavlink_command_ack_t& msg);
 };
 
 #endif

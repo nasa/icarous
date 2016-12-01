@@ -39,6 +39,8 @@
 
  MAVLinkInbox::MAVLinkInbox(){
      pthread_mutex_init(&lock, NULL);
+     uint16_t vl = listCommandAck.size();
+     vl = 0;
  }
 
  void MAVLinkInbox::DecodeMessage(mavlink_message_t message){
@@ -142,6 +144,15 @@
             mavlink_set_mode_t msg;
             mavlink_msg_set_mode_decode(&message, &msg);
             listSetMode.push(msg);
+            break;
+        }
+
+        case MAVLINK_MSG_ID_COMMAND_ACK:
+        {
+            printf("MAVLINK_MSG_ID_COMMAND_ACK\n");
+            mavlink_command_ack_t msg;
+            mavlink_msg_command_ack_decode(&message, &msg);
+            listCommandAck.push(msg);
             break;
         }
 
@@ -325,4 +336,20 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
      }
      pthread_mutex_unlock(&lock);
      return val;  
+ }
+
+ bool MAVLinkInbox::GetCommandAck(mavlink_command_ack_t& msg){
+     bool val;
+     pthread_mutex_lock(&lock);
+     if(!listCommandAck.empty()){
+         msg = listCommandAck.front();
+         listCommandAck.pop();
+         val = true;
+     }
+     else{
+         val = false;
+     }
+     pthread_mutex_unlock(&lock);
+     return val;  
+
  }

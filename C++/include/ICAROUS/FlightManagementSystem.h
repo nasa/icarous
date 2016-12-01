@@ -91,13 +91,31 @@ class FlightManagementSystem{
         void SetVelocity(double Vn,double Ve,double Vu);
         void SetMode(control_mode_t mode);
         void SetSpeed(float speed);
+        void SendStatusText(char buffer[]);
+        void ArmThrottles(bool arm);
+        void StartTakeoff(float alt);
+        bool CheckAck(MAV_CMD command);
 
-        virtual uint8_t IDLE(){return 0;};
+        uint8_t IDLE();
         virtual uint8_t TAKEOFF(){return 0;};
-        virtual uint8_t CLIMB(){return 0;};
-        virtual uint8_t CRUISE(){return 0;};
-        virtual uint8_t DESCEND(){return 0;};
-        virtual uint8_t LAND(){return 0;};
+        //virtual uint8_t CLIMB(){return 0;};
+        //virtual uint8_t CRUISE(){return 0;};
+        //virtual uint8_t DESCEND(){return 0;};
+        //virtual uint8_t LAND(){return 0;};
+};
+
+class QuadFMS:public FlightManagementSystem{
+
+    private:
+        bool takeoffComplete;
+
+    public:
+        QuadFMS(Interface *px4int, Interface *gsint,AircraftData* fData);
+        uint8_t TAKEOFF();
+        //uint8_t CLIMB();
+        //uint8_t CRUISE();
+        //uint8_t DESCEND();
+        //uint8_t LAND();
 };
 
 

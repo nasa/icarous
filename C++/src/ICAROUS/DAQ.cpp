@@ -93,6 +93,9 @@
          // Handle set mode
          SetModeHandler();
 
+         // Handle long commands
+         CommandLongHandler();
+
      }
      
 
@@ -194,5 +197,21 @@
          mavlink_message_t msg2send;
          mavlink_msg_set_mode_encode(255,0,&msg2send,&msg);
          px4Intf->SendMAVLinkMsg(msg2send);
+     }
+ }
+
+ void DataAcquisition::CommandLongHandler(){
+     mavlink_command_long_t msg;
+     bool have_msg = RcvdMessages->GetCommandLong(msg);
+     if(have_msg && msg.command == MAV_CMD_MISSION_START){
+         FlightData->SetStartMissionFlag((uint8_t)msg.param1);
+     }
+ }
+
+ void DataAcquisition::CommandIntHandler(){
+     mavlink_command_int_t msg;
+     bool have_msg = RcvdMessages->GetCommandInt(msg);
+     if(have_msg){
+         
      }
  }

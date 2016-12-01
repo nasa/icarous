@@ -41,6 +41,8 @@
  AircraftData::AircraftData(MAVLinkInbox* Msgs){
      pthread_mutex_init(&lock, NULL);
      RcvdMessages = Msgs;
+     startMission = -1;
+     nextWP       = 0;
  }
 
  void AircraftData::AddMissionItem(mavlink_mission_item_t msg){
@@ -50,3 +52,25 @@
      pthread_mutex_unlock(&lock);
  }
 
+uint8_t AircraftData::GetStartMissionFlag(){
+    int var;
+    pthread_mutex_lock(&lock);
+    var = startMission;
+    startMission = -1;
+    pthread_mutex_unlock(&lock);
+    return var;
+}
+
+void AircraftData::SetStartMissionFlag(uint8_t flag){
+    pthread_mutex_lock(&lock);
+    startMission = flag;
+    pthread_mutex_unlock(&lock);
+}
+
+uint16_t AircraftData::GetFlightPlanSize(){
+    int size;
+    pthread_mutex_lock(&lock);
+    size = listMissionItem.size();
+    pthread_mutex_unlock(&lock);
+    return size;
+}
