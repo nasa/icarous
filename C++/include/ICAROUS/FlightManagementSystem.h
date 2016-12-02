@@ -109,7 +109,6 @@ class FlightManagementSystem{
 class QuadFMS:public FlightManagementSystem{
 
     private:
-        bool takeoffComplete;
         float targetAlt;
 
     public:
