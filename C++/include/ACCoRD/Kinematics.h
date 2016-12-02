@@ -84,19 +84,19 @@ public:
    */
 	static double bankAngleRadius(double R, double speed);
 
-	  /**
-	   * Calculates the bank angle used for a given turn radius and ground speed.   Assumes
-	   * sea-level gravity.
-	   * @param speed ground speed (speed >= 0.0)
-	   * @param  R     radius (R > 0.0)
-	   * @return       bank angle (positive = turn right, negative = turn left)
-	   */
+  /** 
+   * Calculates the bank angle used for a given turn radius and ground speed.   Assumes 
+   * sea-level gravity.  
+   * @param speed ground speed (speed &ge; 0.0)
+   * @param  R     radius (R &gt; 0.0)
+   * @return       bank angle (positive = turn right, negative = turn left)
+   */
 	  static double bankAngleRadius(double speed, double R, bool turnRight);
 
   /**
    * Returns the calculated bank angle for a turn that has specified turnRate. Assumes 
    * sea-level gravity.
-   * @param speed ground speed (speed >= 0.0)
+   * @param speed ground speed (speed &ge; 0.0)
    * @param turnRate (positive is a right turn)
    * @return bank angle (positive = turn right, negative = turn left)
    */
@@ -220,7 +220,7 @@ public:
 
 	static Vect2 center(const Vect3& s0, const Velocity& v0, double omega);
 
-	static std::pair<Vect3,Velocity> turnByDist(const Vect3& s0, const Vect3& center, double d, double gsAt_d);
+	static std::pair<Vect3,Velocity> turnByDist(const Vect3& so, const Vect3& center, int dir, double d, double gsAt_d);
 
 	/**
 	 * Position/Velocity after turning t time units according to track rate omega
@@ -386,7 +386,9 @@ public:
 	 * @param x point of interest
 	 * @return time on turn when we are closest to the given point x (in seconds)
 	 */
-	static double closestTimeOnTurn(const Vect3& s0, const Velocity& v0, double omega, const Vect3& x);
+	static double closestTimeOnTurn(const Vect3& s0, const Velocity& v0, double omega, const Vect3& x, double endTime);
+
+	static double closestDistOnTurn(const Vect3& s0, const Velocity& v0, double R, int dir, const Vect3& x, double maxDist);
 
 
 	/**

@@ -26,22 +26,23 @@
 
 namespace larcfm {
 
-  /**
-   * This class contains common formulas used for Great Circle calculations. All
-   * of these calculations assume a spherical earth. Much of this is based on the
-   * Aviation Formulary (v1.44) by Ed Williams.
-   * <p>
-   * 
-   * Notes:
-   * <ul>
-   * <li>The Earth does not rotate. This may change.
-   * <li>Positive latitude is north and positive longitude is east.
-   * <li>All course angles (i.e., desired track angles) are in radians clockwise
-   * from true north.
-   * <li>When the returned value is in lat/long and it is a Vect2, latitude is in
-   * the "x" position and longitude is in the "y" position.
-   * </ul>
-   */
+/**
+ * This class contains common formulas used for Great Circle calculations. All
+ * of these calculations assume a spherical earth. Much of this is based on the
+ * Aviation Formulary (v1.44) by Ed Williams.
+ * <p>
+ * 
+ * Notes:
+ * <ul>
+ * <li>The Earth does not rotate. This may change.
+ * <li>Positive latitude is north and positive longitude is east.
+ * <li>All course angles (i.e., desired track angles) are in radians clockwise
+ * from true north.
+ * <li>When the returned value is in lat/long and it is a Vect2, latitude is in
+ * the "x" position and longitude is in the "y" position.
+ * <li>Great circles cannot be defined by antipodal points
+ * </ul>
+ */
   class GreatCircle {
   public:
 
@@ -51,7 +52,8 @@ namespace larcfm {
 	/**
 	 * Convert an angle in degrees/minutes/seconds into internal units
 	 * (radians). The flag indicates if this angle is north (latitude) or east
-	 * (longitude).  <p>
+	 * (longitude).  If the angle does not represent a latitude/longitude (it
+	 * is only an angle), then set the north_east flag tbo true.<p>
 	 * 
 	 * If the degrees is negative (representing 
 	 * south or west), then the flag is ignored.
@@ -184,6 +186,14 @@ namespace larcfm {
   static LatLonAlt interpolate(const LatLonAlt& p1, const LatLonAlt& p2, double f);
   
   // This is a fast but crude way of interpolating between relatively close geodesic points
+	/**
+	 * This is a fast but crude way of interpolating between relatively close geodesic points
+	 * 
+	 * @param p1
+	 * @param p2
+	 * @param f
+	 * @return
+	 */
   static LatLonAlt interpolateEst(const LatLonAlt& p1, const LatLonAlt& p2, double f);
 
   /**
@@ -236,28 +246,34 @@ namespace larcfm {
    */
   static LatLonAlt linear_rhumb(const LatLonAlt& s, const Velocity& v, double t);
 
-  /**
-   * Find a point from the given lat/lon at an angle of 'track' at a distance of 'dist'.
-   * This calculation follows the rhumb line (loxodrome or line of constant track).<p>
-   *
-   * Modern aircraft (and most ships) usually travel great circles not rhumb lines,
-   * therefore linear_initial() is usually the preferred over this function.<p>
-   *
-   * At "normal" latitudes, rhumb lines are usually within a few percent of the
-   * great circle route.  However, near the poles the behavior of rhumb lines is
-   * not intuitive: if the destination is a point near the pole, then the rhumb line
-   * may spiral around the pole to get to the destination.  In fact, if you maintain
-   * a constant track angle along a rhumb line for a long enough distance, gradually
-   * the line will spiral in towards one of the poles.
-   * <p>
-   * 
-   * Rhumb lines are not defined at the exact north and south poles, therefore if
-   * the origin or destination is precisely at a pole, this function will choose a
-   * point near the pole.<p>
-   *
-   * This calculation is approximate: small errors (typically less than
-   * 0.5%) will be introduced at typical aircraft altitudes.
-   */
+	/**
+	 * Find a point from the given lat/lon at an angle of 'track' at a distance
+	 * of 'dist'. This calculation follows the rhumb line (loxodrome or line of
+	 * constant track).
+	 * <p>
+	 * 
+	 * Modern aircraft (and most ships) usually travel great circles not rhumb
+	 * lines, therefore linear_initial() is usually preferred over this
+	 * function.
+	 * <p>
+	 * 
+	 * At "normal" latitudes, rhumb lines are usually within a few percent of
+	 * the great circle route. However, near the poles the behavior of rhumb
+	 * lines is not intuitive: if the destination is a point near the pole, then
+	 * the rhumb line may spiral around the pole to get to the destination. In
+	 * fact, if you maintain a constant track angle along a rhumb line for a
+	 * long enough distance, gradually the line will spiral in towards one of
+	 * the poles.
+	 * <p>
+	 * 
+	 * Rhumb lines are not defined at the exact north and south poles, therefore
+	 * if the origin or destination is precisely at a pole, this function will
+	 * choose a point near the pole.
+	 * <p>
+	 * 
+	 * This calculation is approximate: small errors (typically less than 0.5%)
+	 * will be introduced at typical aircraft altitudes.
+	 */
   static LatLonAlt linear_rhumb(const LatLonAlt& s, double track, double dist);
 
 
@@ -328,7 +344,7 @@ public:
   static LatLonAlt linear_initial(const LatLonAlt& s, const Velocity& v, double t);
 
 	/**
-	 * Find a point from the given lat/lon at an angle of 'track' at a distance
+	 * Find a point from the given lat/lon with an initial angle of 'track' at a distance
 	 * of 'dist'. This calculation follows the great circle.
 	 * <p>
 	 * 
@@ -338,7 +354,9 @@ public:
 	 * @param s     a position
 	 * @param track the second point to define the great circle
 	 * @param dist  distance from point #1 [m]
-     * @return a new position that is distance d from point #1
+	 * @return a new position that is distance d from point #1
+	 * 
+	 * Note: this method does not compute an accurate altitude
 	 * 
 	 */
   static LatLonAlt linear_initial(const LatLonAlt& s, double track, double dist);
@@ -366,44 +384,50 @@ public:
      */
     static bool collinear(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3);
 
-    /**
-     * This returns the point on the great circle that running through p1 and p2 that is closest to point x.
-     * This uses Napier's rules for right spherical triangles for the non-collinear case. 
-     * The altitude of the output is the same as x.<p>
-     * If p1 and p2 are the same point, then every great circle runs through them, thus x is on one of these great circles.  In this case, x will be returned.  
-     * This assumes any 2 points will be within 90 degrees of each other (angular distance).
-     * @param p1 the starting point of the great circle
-     * @param p2 another point on the great circle
-     * @param x point to determine closest segment point to.
-     * @return the LatLonAlt point on the segment that is closest (horizontally) to x
-     */
+	/**
+	 * This returns the point on the great circle running through p1 and p2 that is closest to point x.
+	 * The altitude of the output is the same as x.<p>
+	 * If p1 and p2 are the same point, then every great circle runs through them, thus x is on one of these great circles.  In this case, x will be returned.  
+	 * @param p1 the starting point of the great circle
+	 * @param p2 another point on the great circle
+	 * @param x point to determine closest segment point to.
+	 * @return the LatLonAlt point on the segment that is closest (horizontally) to x
+	 */
     static LatLonAlt closest_point_circle(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& x);
 
   private:
     static LatLonAlt closest_point_circle(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& x, double a, double b, double c, double A, double B, double C);
   public:
     
-    /**
-     * This returns the point on the great circle segment running through p1 and p2 that is closest to point x.
-     * This will return either p1 or p2 if the actual closest point is outside the segment.
-     * This uses Napier's rules for right spherical triangles for the non-collinear case.
-     * This assumes any 2 points will be within 90 degrees of each other (angular distance).
-     * @param p1 the starting point of the great circle
-     * @param p2 another point on the great circle
-     * @param x point to determine closest segment point to.
-     * @return the LatLonAlt point on the segment that is closest (horizontally) to x
-     */
+	/**
+	 * This returns the point on the great circle segment running through p1 and p2 that is closest to point x.
+	 * This will return either p1 or p2 if the actual closest point is outside the segment.
+	 * @param p1 the starting point of the great circle
+	 * @param p2 another point on the great circle
+	 * @param x point to determine closest segment point to.
+	 * @return the LatLonAlt point on the segment that is closest (horizontally) to x
+	 */
     static LatLonAlt closest_point_segment(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& x);
     
-    /**
-     * Given two great circles defined by a1,a2 and b1,b2, return the intersection poin that is closest a1.  Use LatLonAlt.antipode() to get the other value.
-     * This assumes that the arc distance between a1,a2 < 90 and b1,b2 < 90
-     * This returns an INVALID value if both segments are collinear
-     * EXPERIMENTAL
-     */
+	/**
+	 * Given two great circles defined by a1,a2 and b1,b2, return the intersection point that is closest a1.  Use LatLonAlt.antipode() to get the other value.
+	 * This assumes that the arc distance between a1,a2 &lt; 90 and b1,b2 &lt; 90
+	 * The altitude of the return value is equal to a1.alt()
+	 * This returns an INVALID value if both segments are collinear
+	 * EXPERIMENTAL
+	 * 
+	 * @param a1 point #1 to form great circle #1
+	 * @param a2 point #2 to form great circle #1
+	 * @param b1 point #1 to form great circle #2
+	 * @param b2 point #2 to form great circle #2
+	 * @return the point that interesects the two great circles
+	 */
     static LatLonAlt intersection(const LatLonAlt& a1, const LatLonAlt& a2, const LatLonAlt& b1, const LatLonAlt& b2);
 
-    static std::pair<LatLonAlt,double> intersection(const LatLonAlt& so, const LatLonAlt& so2, double dto, const LatLonAlt& si, const LatLonAlt& si2);
+    static std::pair<LatLonAlt,double> intersectionExtrapAlt(const LatLonAlt& so, const LatLonAlt& so2, double dto, const LatLonAlt& si, const LatLonAlt& si2);
+
+    static std::pair<LatLonAlt,double>  intersectionAvgAlt(const LatLonAlt& so, const LatLonAlt& so2, double dto, const LatLonAlt& si, const LatLonAlt& si2);
+
 
     static std::pair<LatLonAlt,double> intersection(const LatLonAlt& so, const Velocity& vo, const LatLonAlt& si, const Velocity& vi, bool checkBehind);
 
@@ -420,7 +444,7 @@ public:
 	 * @param a point on gc1
 	 * @param b intersection of gc1 and gc2
 	 * @param c point on gc2
-	 * @return
+	 * @return angle between two great circles
 	 */
     static double angle_between(const LatLonAlt& a, const LatLonAlt& b, const LatLonAlt& c);
 
@@ -519,27 +543,88 @@ public:
   static Velocity velocity_final(const LatLonAlt& p1, const LatLonAlt& p2, double t);
 
 
-    /**
-     * Transforms a lat/lon position to a point on in R3 (on a sphere)
-     * This is an Earth-Centered, Earth-Fixed translation (assuming earth-surface altitude).
-     * From Wikipedia http://en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
-     * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0. 
-     * @param lat Latitude
-     * @param lon Longitude
-     * @return point in R3 on surface of the earth
-     */
+	/**
+	 * Transforms a lat/lon position to a point in R3 (on a sphere)
+	 * This is an Earth-Centered, Earth-Fixed translation (assuming earth-surface altitude).
+	 * From Wikipedia http://en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
+	 * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0. 
+	 * 
+	 * The x-axis intersects the sphere of the earth at 0 latitude (the equator) and 0 longitude (Greenwich). 
+	 * 
+	 * 
+	 * @param lat Latitude
+	 * @param lon Longitude
+	 * @return point in R3 on surface of the earth
+	 */
   static Vect3 spherical2xyz(double lat, double lon);
 
-    /**
-     * Transforms a R3 position on the earth surface into lat/lon coordinates
-     * This is an Earth-Centered, Earth-Fixed translation (assuming earth-surface altitude).
-     * From Wikipedia http://en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
-     * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0. 
-     * @param v position in R3, with ECEF origin
-     * @return LatLonAlt point on surface of the earth (zero altitude)
-     */
+  static Vect3 spherical2xyz(const LatLonAlt& lla);
+
+	/**
+	 * Transforms a R3 position on the earth surface into lat/lon coordinates
+	 * This is an Earth-Centered, Earth-Fixed translation (assuming earth-surface altitude).
+	 * From Wikipedia http://en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
+	 * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0. 
+	 * @param v position in R3, with ECEF origin
+	 * @return LatLonAlt point on surface of the earth (zero altitude)
+	 */
   static LatLonAlt xyz2spherical(const Vect3& v) ;
 
+
+  	/**
+	 * Return the straight-line chord distance (through a spherical earth) from 
+	 * two points on the surface of the earth. 
+	 * 
+	 * @param lat1 latitude of first point
+	 * @param lon1 longitude of first point
+	 * @param lat2 latitude of second point
+	 * @param lon2 longitude of second point
+	 * @return the chord distance
+	 */
+  static double chord_distance(double lat1, double lon1, double lat2, double lon2);
+ 
+	/**
+	 * Return the chord distance (through the earth) corresponding to a given surface distance (at the nominal earth radius)
+	 * @param surface_dist
+	 * @return
+	 */
+	static double chord_distance(double surface_dist);
+	
+	/**
+	 * Return the surface distance (at the nominal earth radius) corresponding to a given chord distance (through the earth) 
+	 * @param chord_distance
+	 * @return
+	 */
+	static double surface_distance(double chord_distance);
+	
+
+		/**
+	 * EXPERIMENTAL
+	 * Given a small circle, rotate a point
+	 * @param so point on circle
+	 * @param center center of circle
+	 * @param angle angle of rotation around center (positive is clockwise)
+	 * @return another position on the circle
+	 */
+	static LatLonAlt small_circle_rotation(const LatLonAlt& so, const LatLonAlt& center, double angle);
+
+	/**
+	 * Accurately calculate the linear distance of an arc on a small circle (turn) on the sphere.
+	 * @param radius along-surface radius of small circle
+	 * @param arcAngle angular (radian) length of the arc.  This is the angle between two great circles that intersect at the small circle's center.
+	 * @return linear distance of the small circle arc
+	 * Note: A 100 km radius turn over 60 degrees produces about 4.3 m error.
+	 */
+	static double small_circle_arc_length(double radius, double arcAngle);
+
+	/**
+	 * Accurately calculate the angular distance of an arc on a small circle (turn) on the sphere.
+	 * @param radius along-surface radius of small circle
+	 * @param arcLength linear (m) length of the arc.  This is the along-line length of the arc.
+	 * @return Angular distance of the arc around the small circle (from 0 o 2pi)
+	 * Note: A 100 km radius turn over 100 km of turn produces about 0.0024 degrees of error.
+	 */
+	static double small_circle_arc_angle(double radius, double arcLength);
 
 
 private:

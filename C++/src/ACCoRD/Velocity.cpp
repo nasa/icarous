@@ -72,7 +72,7 @@ Velocity Velocity::makeTrkGsVs(const double trk, const std::string& utrk,
 }
 
 
-Velocity Velocity::makeVel(const Vect3& p1,const Vect3& p2, double speed) {
+Velocity Velocity::mkVel(const Vect3& p1,const Vect3& p2, double speed) {
 	return make(p2.Sub(p1).Hat().Scal(speed));
 }
 
@@ -107,7 +107,7 @@ double Velocity::angle(const std::string& uangle) const {
 }
 
 double Velocity::trk() const {
-	return vect2().track();
+	return vect2().trk();
 }
 
 double Velocity::track(const std::string& utrk) const {
@@ -336,6 +336,10 @@ Velocity Velocity::Hat() const {
 		return ZEROV();
 	}
 	return mkVxyz(x / n, y / n, z / n);
+}
+
+Velocity Velocity::Hat2D() const {
+	return mkVs(0.0).Hat();
 }
 
 Velocity Velocity::Neg() const {

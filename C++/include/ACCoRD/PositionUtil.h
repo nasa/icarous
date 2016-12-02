@@ -14,6 +14,9 @@
 namespace larcfm {
 
 
+/**
+ * GreatCircle and VectFuns functions lifted to Positions
+ */
 class PositionUtil {
 
 public:
@@ -21,6 +24,13 @@ public:
 
 	static Position interpolate(const Position & v1, const Position & v2, double f);
 
+	/**
+	 * Return angle between P1-P2 and P2-P3
+	 * @param p1 point 1
+	 * @param p2 point 2 (intersection of two lines)
+	 * @param p3 point 3
+	 * @return angle between two lines
+	 */
 	static double angle_between(const Position & p1, const Position & p2, const Position & p3);
 
 	static std::pair<Position,double> intersection(const Position & so, const Velocity & vo, const Position & si, const Velocity & vi);

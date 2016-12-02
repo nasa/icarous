@@ -184,13 +184,13 @@ double Vect2::angle() const {
 
 // Track is clockwise angle in (-pi,pi] wrt north,
 // i.e., track = pi/2 - angle()
-double Vect2::track() const {
+double Vect2::trk() const {
 	return atan2_safe(x,y);
 }
 
 // Compass angle = track in [0,2pi)
 double Vect2::compassAngle() const {
-	return to_2pi(track());
+	return to_2pi(trk());
 }
 
 // Compass angle = track in [0,2pi)

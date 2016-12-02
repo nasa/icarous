@@ -396,15 +396,63 @@ namespace larcfm {
     }
 
 
+	/**
+	 * This returns the point on the great circle running through p1 and p2 that is closest to point x.
+	 * The altitude of the output is the same as x.<p>
+	 * If p1 and p2 are the same point, then every great circle runs through them, thus x is on one of these great circles.  In this case, x will be returned.
+	 * This assumes any 2 points will be within 90 degrees of each other (angular distance).
+	 * @param p1 the starting point of the great circle
+	 * @param p2 another point on the great circle
+	 * @param x point to determine closest segment point to.
+	 * @return the LatLonAlt point on the segment that is closest (horizontally) to x
+	 */
   LatLonAlt GreatCircle::closest_point_circle(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& x) {
-		double a = angular_distance(x,p2);
-		double b = angular_distance(p1,p2);
-		double c = angular_distance(p1,x);
-		double A = angle_between(p2,p1,x);
-		double B = angle_between(p1,x,p2);
-		double C = angle_between(x,p2,p1);
-		return closest_point_circle(p1,p2,x,a,b,c,A,B,C);
-  }
+		// almost same point or antipode:
+		if ((Util::almost_equals(p1.lat(),p2.lat()) && Util::almost_equals(p1.lon(),p2.lon())) ||
+			(Util::almost_equals(p1.lat(),-p2.lat()) && Util::almost_equals(p1.lon(),Util::to_pi(p2.lon()+Pi)))) return x;
+		Vect3 a = spherical2xyz(p1.lat(), p1.lon());
+		Vect3 b = spherical2xyz(p2.lat(), p2.lon());
+		if (a.almostEquals(b) ||a.almostEquals(b.Neg())) return x;
+		Vect3 c = a.cross(b);
+		Vect3 p = spherical2xyz(x.lat(), x.lon());
+		Vect3 g = p.Sub(c.Scal(p.dot(c)/c.sqv()));
+		double v = spherical_earth_radius/g.norm();
+		return xyz2spherical(g.Scal(v)).mkAlt(x.alt()); // return to x's altitude
+	}
+
+	/**
+	 * This returns the point on the great circle segment running through p1 and p2 that is closest to point x.
+	 * This will return either p1 or p2 if the actual closest point is outside the segment.
+	 * @param p1 the starting point of the great circle
+	 * @param p2 another point on the great circle
+	 * @param x point to determine closest segment point to.
+	 * @return the LatLonAlt point on the segment that is closest (horizontally) to x
+	 */
+	LatLonAlt GreatCircle::closest_point_segment(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& x) {
+		LatLonAlt c = closest_point_circle(p1,p2,x);
+		double d12 = distance(p1,p2);
+		double d1c = distance(p1,c);
+		double d2c = distance(p2,c);
+		if (d1c < d12 && d2c < d12) {
+			return c;
+		}
+		if (d1c < d2c) {
+			return p1;
+		} else {
+			return p2;
+		}
+	}
+
+
+//  LatLonAlt GreatCircle::closest_point_circle(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& x) {
+//		double a = angular_distance(x,p2);
+//		double b = angular_distance(p1,p2);
+//		double c = angular_distance(p1,x);
+//		double A = angle_between(p2,p1,x);
+//		double B = angle_between(p1,x,p2);
+//		double C = angle_between(x,p2,p1);
+//		return closest_point_circle(p1,p2,x,a,b,c,A,B,C);
+//  }
 
   LatLonAlt GreatCircle::closest_point_circle(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& x, double a, double b, double c, double A, double B, double C) {
 		//       x (B)
@@ -510,43 +558,43 @@ namespace larcfm {
     
 
 
-LatLonAlt GreatCircle::closest_point_segment(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& x) {
-	double a = angular_distance(x,p2);
-	double b = angular_distance(p1,p2);
-	double c = angular_distance(p1,x);
-	double A = angle_between(p2,p1,x);
-	double B = angle_between(p1,x,p2);
-	double C = angle_between(x,p2,p1);
-
-	// collinear
-	if (Util::within_epsilon(A, 0.000001) || Util::within_epsilon(C, 0.000001) || Util::within_epsilon(M_PI-A, 0.000001) || Util::within_epsilon(M_PI-C, 0.000001)) {
-//		if (Util.almost_equals(A, 0.0) || Util.almost_equals(C, 0.0) || Util.almost_equals(A, Math.PI) || Util.almost_equals(C, Math.PI)) {
-		if (b >= a && b >= c) {
-			return x;
-		} else if (a >= b && a >= c) {
-			return p1;
-		} else {
-			return p2;
-		}
-	}
-
-	if (A <= M_PI/2 && C <= M_PI/2) {
-		//   B
-		//  / \
-		// A---C
-		return closest_point_circle(p1,p2,x,a,b,c,A,B,C);
-	} else if (A <= M_PI/2 && C > M_PI/2) {
-		//    -- B
-		//  /   /
-		// A---C
-		return p2;
-	} else {
-		// B--
-		//  \   \
-		//   A---C
-		return p1;
-	}
-}
+//LatLonAlt GreatCircle::closest_point_segment(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& x) {
+//	double a = angular_distance(x,p2);
+//	double b = angular_distance(p1,p2);
+//	double c = angular_distance(p1,x);
+//	double A = angle_between(p2,p1,x);
+//	double B = angle_between(p1,x,p2);
+//	double C = angle_between(x,p2,p1);
+//
+//	// collinear
+//	if (Util::within_epsilon(A, 0.000001) || Util::within_epsilon(C, 0.000001) || Util::within_epsilon(M_PI-A, 0.000001) || Util::within_epsilon(M_PI-C, 0.000001)) {
+////		if (Util.almost_equals(A, 0.0) || Util.almost_equals(C, 0.0) || Util.almost_equals(A, Math.PI) || Util.almost_equals(C, Math.PI)) {
+//		if (b >= a && b >= c) {
+//			return x;
+//		} else if (a >= b && a >= c) {
+//			return p1;
+//		} else {
+//			return p2;
+//		}
+//	}
+//
+//	if (A <= M_PI/2 && C <= M_PI/2) {
+//		//   B
+//		//  / \
+//		// A---C
+//		return closest_point_circle(p1,p2,x,a,b,c,A,B,C);
+//	} else if (A <= M_PI/2 && C > M_PI/2) {
+//		//    -- B
+//		//  /   /
+//		// A---C
+//		return p2;
+//	} else {
+//		// B--
+//		//  \   \
+//		//   A---C
+//		return p1;
+//	}
+//}
 
  /**
   * Given two great circles defined by a1,a2 and b1,b2, return the intersection poin that is closest a1.  Use LatLonAlt.antipode() to get the other value.
@@ -573,35 +621,61 @@ LatLonAlt GreatCircle::closest_point_segment(const LatLonAlt& p1, const LatLonAl
  	}
  }
 
- /**
-  * Given two great circles defined by so, so2 and si, si2 return the intersection point that is closest to so.
-  * Calculate altitude of intersection using time dt = delta time from "so" to "so2"
-  *
-  * @param so
-  * @param so2
-  * @param dto
-  * @param si
-  * @param si2
-  * @return a pair: intersection point and the delta time from point "so" to the intersection, can be negative if intersect pt. in the past
-  *              if intersection point is invalid then the returned delta time is -1
-  */
- std::pair<LatLonAlt,double>  GreatCircle::intersection(const LatLonAlt& so, const LatLonAlt& so2, double dto, const LatLonAlt& si, const LatLonAlt& si2) {
+	/**
+	 * Given two great circles defined by so, so2 and si, si2 return the intersection point that is closest to so.
+	 * (Note. because on a sphere there are two intersection points)
+	 *  Calculate altitude of intersection using linear extrapolation from line (so,so2)
+	 *
+	 * @param so     first point of line o
+	 * @param so2    second point of line o
+	 * @param dto    the delta time between point so and point so2.
+	 * @param si     first point of line i
+	 * @param si2    second point of line i
+	 * @return a pair: intersection point and the delta time from point "so" to the intersection, can be negative if intersect
+	 *                 point is in the past. If intersection point is invalid then the returned delta time is -1
+	 */
+ std::pair<LatLonAlt,double>  GreatCircle::intersectionExtrapAlt(const LatLonAlt& so, const LatLonAlt& so2, double dto, const LatLonAlt& si, const LatLonAlt& si2) {
  	LatLonAlt lgc = GreatCircle::intersection(so, so2, si, si2);
-    	//f.pln(" %%% GreatCircle.intersection: lgc = "+lgc.toString(15));
  	if (lgc.isInvalid()) return std::pair<LatLonAlt,double>(lgc,-1.0);
  	double gso = distance(so,so2)/dto;
  	double intTm = distance(so,lgc)/gso;  // relative to so
- 	//f.pln(" ## gso = "+Units.str("kn", gso)+" distance(so,lgc) = "+Units.str("nm",distance(so,lgc)));
- 	bool behind = GreatCircle::behind(lgc, so, GreatCircle::velocity_average(so, so2, 1.0));
+  	bool behind = GreatCircle::behind(lgc, so, GreatCircle::velocity_average(so, so2, 1.0));
  	if (behind) intTm = -intTm;
  	// compute a better altitude
  	double vs = (so2.alt() - so.alt())/dto;
  	double nAlt = so.alt() + vs*(intTm);
- 	//f.pln(" $$ LatLonAlt.intersection: intTm = "+intTm+" vs = "+Units.str("fpm",vs)+" nAlt = "+Units.str("ft",nAlt)+" "+behind);
  	LatLonAlt pgc = LatLonAlt::mk(lgc.lat(),lgc.lon(),nAlt);
  	return std::pair<LatLonAlt,double>(pgc,intTm);
  }
 
+ std::pair<LatLonAlt,double>  GreatCircle::intersectionAvgAlt(const LatLonAlt& so, const LatLonAlt& so2, double dto, const LatLonAlt& si, const LatLonAlt& si2) {
+		LatLonAlt interSec = GreatCircle::intersection(so, so2, si, si2);
+		//f.pln(" %%% GreatCircle.intersection: lgc = "+lgc.toString(15));
+		if (interSec.isInvalid()) return std::pair<LatLonAlt,double>(interSec,-1.0);
+		double gso = distance(so,so2)/dto;
+		double intTm = distance(so,interSec)/gso;  // relative to so
+		//f.pln(" ## gso = "+Units.str("kn", gso)+" distance(so,lgc) = "+Units.str("NM",distance(so,lgc)));
+		bool behind = GreatCircle::behind(interSec, so, GreatCircle::velocity_average(so, so2, 1.0)); //TODO: initial?
+//		f.pln("behind="+behind+" interSec="+interSec+" so="+so+" vo="+GreatCircle.velocity_average(so, so2, 1.0));
+		if (behind) intTm = -intTm;
+		// compute a better altitude using average of near points
+		double do1 = distance(so,interSec);
+		double do2 = distance(so2,interSec);
+		double alt_o = so.alt();
+		if (do2 < do1) alt_o = so2.alt();
+		double di1 = distance(si,interSec);
+		double di2 = distance(si2,interSec);
+		double alt_i = si.alt();
+		if (di2 < di1) alt_i = si2.alt();
+		double nAlt = (alt_o + alt_i)/2.0;
+		//    	f.pln(" $$ LatLonAlt.intersection: so.alt() = "+Units.str("ft",so.alt())+" so2.alt() = "+Units.str("ft",so2.alt())+
+		//    			" si.alt() = "+Units.str("ft",si.alt())+" si2.alt() = "+Units.str("ft",si2.alt())+
+		//    			" nAlt() = "+Units.str("ft",nAlt));
+		//f.pln(" $$ LatLonAlt.intersection: intTm = "+intTm+" vs = "+Units.str("fpm",vs)+" nAlt = "+Units.str("ft",nAlt)+" "+behind);
+		LatLonAlt pgc = LatLonAlt::mk(interSec.lat(),interSec.lon(),nAlt);
+		return std::pair<LatLonAlt,double>(pgc,intTm);
+
+ }
 
  std::pair<LatLonAlt,double> GreatCircle::intersection(const LatLonAlt& so, const Velocity& vo, const LatLonAlt& si, const Velocity& vi, bool checkBehind) {
  	LatLonAlt so2 = linear_initial(so, vo, 1000);
@@ -746,42 +820,93 @@ double GreatCircle::angle_between(const LatLonAlt& a, const LatLonAlt& b, const 
   }
 
 
-  /**
-   * Transforms a lat/lon position to a point on in R3 (on a sphere)
-   * This is an Earth-Centered, Earth-Fixed translation (assuming earth-surface altitude).
-   * From Wikipedia http://en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
-   * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0.
-   * @param lat Latitude
-   * @param lon Longitude
-   * @return point in R3 on surface of the earth
-   */
+
   Vect3 GreatCircle::spherical2xyz(double lat, double lon) {
   	double r = GreatCircle::spherical_earth_radius;
   	// convert latitude to 0-PI
   	double theta = M_PI/2 - lat;
-  	double phi = M_PI - lon;
+  	double phi = lon; //M_PI - lon;
   	double x = r*std::sin(theta)*std::cos(phi);
   	double y = r*std::sin(theta)*std::sin(phi);
   	double z = r*std::cos(theta);
   	return Vect3(x,y,z);
   }
 
-  /**
-   * Transforms a R3 position on the earth surface into lat/lon coordinates
-   * This is an Earth-Centered, Earth-Fixed translation (assuming earth-surface altitude).
-   * From Wikipedia http://en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
-   * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0.
-   * @param v position in R3, with ECEF origin
-   * @return LatLonAlt point on surface of the earth (zero altitude)
-   */
+  Vect3 GreatCircle::spherical2xyz(const LatLonAlt& lla) {
+    return spherical2xyz(lla.lat(), lla.lon());
+  }
+
   LatLonAlt GreatCircle::xyz2spherical(const Vect3& v) {
   	double r = GreatCircle::spherical_earth_radius;
   	double theta = Util::acos_safe(v.z/r);
   	double phi = Util::atan2_safe(v.y, v.x);
   	double lat = M_PI/2 - theta;
-  	double lon = Util::to_pi(M_PI - phi);
+  	double lon = Util::to_pi(phi); //M_PI - phi);
   	return LatLonAlt::mk(lat, lon, 0);
   }
 
+
+
+  
+	double GreatCircle::chord_distance(double lat1, double lon1, double lat2, double lon2) {
+		Vect3 v1 = spherical2xyz(lat1,lon1);
+		Vect3 v2 = spherical2xyz(lat2,lon2);
+		return v1.Sub(v2).norm();
+	}
+
+
+	double GreatCircle::chord_distance(double surface_dist) {
+		double theta = angle_from_distance(surface_dist,0.0);
+		return 2.0*sin(theta/2.0)*GreatCircle::spherical_earth_radius;
+	}
+	
+
+  double GreatCircle::surface_distance(double chord_distance) {
+    double theta = 2.0*Util::asin_safe(chord_distance*0.5 / GreatCircle::spherical_earth_radius);
+		return distance_from_angle(theta,0.0);
+	}
+
+
+  LatLonAlt GreatCircle::small_circle_rotation(const LatLonAlt& so, const LatLonAlt& center, double angle) {
+    if (Util::almost_equals(angle, 0)) return so;
+    double R = angular_distance(so, center);
+    Triple<double,double,double>ABc = side_angle_side(R, angle, R);
+    double A = ABc.first;
+    double c = distance_from_angle(ABc.third, 0.0);
+    double crs = initial_course(so, center);
+    if (crs > M_PI) crs = crs-2*M_PI;
+    double trk = Util::to_2pi(crs - A);
+    LatLonAlt ret = linear_initial(so, trk, c);
+    return ret;
+  }
+
+	/**
+	 * Accurately calculate the linear distance of an arc on a small circle (turn) on the sphere.
+	 * @param radius along-surface radius of small circle
+	 * @param arcAngle angular (radian) length of the arc.  This is the angle between two great circles that intersect at the small circle's center.
+	 * @return linear distance of the small circle arc
+	 * Note: A 100 km radius turn over 60 degrees produces about 4.3 m error.
+	 */
+	double GreatCircle::small_circle_arc_length(double radius, double arcAngle) {
+		// use the chord of the diameter to determine the radius in the ECEF Euclidean frame
+		double r2 = chord_distance(radius*2)/2;
+		// because this is a circle in a Euclidean frame, use the normal calculations
+		return arcAngle*r2;
+	}
+
+	/**
+	 * Accurately calculate the angular distance of an arc on a small circle (turn) on the sphere.
+	 * @param radius along-surface radius of small circle
+	 * @param arcLength linear (m) length of the arc.  This is the along-line length of the arc.
+	 * @return Angular distance of the arc around the small circle (from 0 o 2pi)
+	 * Note: A 100 km radius turn over 100 km of turn produces about 0.0024 degrees of error.
+	 */
+	double GreatCircle::small_circle_arc_angle(double radius, double arcLength) {
+		// use the chord of the diameter to determine the radius in the ECEF Euclidean frame
+		double r2 = chord_distance(radius*2)/2;
+		if (r2 == 0.0) return 0.0;
+		// because this is a circle in a Euclidean frame, use the normal calculations
+		return arcLength/r2;
+	}
 
 }

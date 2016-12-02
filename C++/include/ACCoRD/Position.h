@@ -50,7 +50,7 @@ public:
 
 	/** Construct a new Position object from a LatLonAlt object. The position will be a Lat/Lon position. */
 	Position(const LatLonAlt& lla);
-	/** Construct a new Position object from a Vect3 object.  The position will be a Euclidean position. */
+  /** Construct a new Position object from a Point object.  The position will be a Euclidean position. */
 	Position(const Vect3& v);
 
 	Position(const Position& p);
@@ -190,9 +190,9 @@ public:
 	double longitude() const;
 	/** Return the altitude in feet */
 	double altitude() const;
-	/** Return the x coordinate in [nmi] */
+  /** Return the x coordinate in [NM] */
 	double xCoordinate() const;
-	/** Return the y coordinate in [nmi] */
+  /** Return the y coordinate in [NM] */
 	double yCoordinate() const;
 	/** Return the z coordinate in [ft] */
 	double zCoordinate() const;
@@ -213,6 +213,7 @@ public:
 	/** Make a new Position from the current one with the altitude changed (internal units) */
 	const Position mkAlt(const double alt) const;
 
+  /** Make a new Position from the current one with an altitude of zero */
 	const Position zeroAlt() const;
 
 	/** Return the horizontal distance between the current Position and the given Position */
@@ -240,13 +241,12 @@ public:
 	 */
 	const Position linear(const Velocity& v, double time) const;
 
-	/**
-	 * Perform a estimation of a linear projection of the current Position with the
-	 * given velocity and time.
-	 * @param dn  offset in north direction (m)
-	 * @param de  offset in east direction  (m)
-	 * @return linear projection of the position
-	 */
+  /**
+   * Calculate a new position that is offset from the current position by (dn,de)
+   * @param dn  offset in north direction (m)
+   * @param de  offset in east direction  (m)
+   * @return linear projection of the position
+   */
 	const Position linearEst(double dn, double de) const;
 
 
@@ -341,7 +341,7 @@ public:
 	/** This interprets a string as a LatLonAlt position with units in deg/deg/ft or the specified units (inverse of toString()) */
 	static const Position parseLL(const std::string& s);
 
-	/** This interprets a string as a XYZ position with units in nmi/nmi/ft or the specified units (inverse of toString()) */
+  /** This interprets a string as a XYZ position with units in NM/NM/ft or the specified units (inverse of toString()) */
 	static const Position parseXYZ(const std::string& s);
 
 	/**

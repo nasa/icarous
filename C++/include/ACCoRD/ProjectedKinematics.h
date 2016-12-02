@@ -42,17 +42,18 @@ public:
 	   */
 	 static bool clockwise(Position s1, Velocity v1, Position s2);
 
-	  /**
-	   * Turn velocity at point s1, given addition position s2 on turn at relative time t 
-	   * @param s1 position to take tangent
-	   * @param s2 additional position on turn
-	   * @param C center of circle of rotation
-	   * @param t time to get from s1 to s2 (negative if s1 after s2)
-	   * @return velocity at point s1
-	   */
+//	  /**
+//	   * Turn velocity at point s1, given addition position s2 on turn at relative time t
+//	   * @param s1 position to take tangent
+//	   * @param s2 additional position on turn
+//	   * @param C center of circle of rotation
+//	   * @param t time to get from s1 to s2 (negative if s1 after s2)
+//	   * @return velocity at point s1
+//	   */
 	//static Velocity turnVelocity(Position s1, Position s2, Position C, double t);
 
-	static double closestTimeOnTurn(const Position& so, const Velocity& v1, double omega, const Position& s2);
+		static double closestTimeOnTurn(const Position& so, const Velocity& v1, double omega, const Position& s2, const Position& x, double endTime);
+		static double closestDistOnTurn(const Position& turnstart, const Velocity& v1, double R, int dir, const Position& center, const Position& x, double endDist);
 
 	static std::pair<Position,Velocity> turn(const Position& so, const Velocity& vo, double t, double R, bool turnRight);
 	static std::pair<Position,Velocity> gsAccel(const Position& so, const Velocity& vo, double t, double accel);

@@ -126,9 +126,9 @@ double Kinematics::turnTime(double groundSpeed, double deltaTrack, double bankAn
 	return std::abs(deltaTrack/omega);
 }
 
-double Kinematics::turnTime(double deltaTrack, double trackRate) {
-	if (trackRate == 0) return MAXDOUBLE;
-	return std::abs(deltaTrack/trackRate);
+double Kinematics::turnTime(double deltaTrack, double omega) {
+	if (omega == 0) return MAXDOUBLE;
+	return std::abs(deltaTrack/omega);
 }
 
 bool Kinematics::turnRight(const Velocity& v0, double goalTrack) {
@@ -196,7 +196,30 @@ Vect2 Kinematics::center(const Vect3& s0, const Velocity& v0, double omega) {
 	return Vect2(s0.x + R*std::cos(theta),s0.y - R*std::sin(theta));
 }
 
-/**   *** EXPERIMENTAL ***
+///**   *** EXPERIMENTAL ***
+// * Position/Velocity
+// * @param s0          starting position
+// * @param center
+// * @param d           distance into turn
+// * @param gsAt_d
+// * @return Position/Velocity after t time
+// */
+//std::pair<Vect3,Velocity> Kinematics::turnByDist(const Vect3& s0, const Vect3& center, int dir, double d, double gsAt_d) {
+//	  double R = s0.distanceH(center);
+//	  //f.pln(" $$$$$ turnByDist: R = "+Units.str("nm",R));
+//	  //double omega = Util.sign(d)*gsAt_d/R;
+//	  double dt = std::abs(d/gsAt_d);
+//	  Velocity vPerp = Velocity::make(s0.Sub(center));
+//	  //int dir = Util::sign(d);
+//	  double currentTrk = vPerp.trk()+dir*M_PI/2;
+//	  Velocity vo = Velocity::mkTrkGsVs( currentTrk , gsAt_d ,0.0);
+//	  //f.pln(" $$$$$ turnByDist: vo = "+vo+" dt = "+dt+" currentTrk = "+Units.str("deg",currentTrk));
+//	  return turn(s0, vo, dt, R, dir > 0);
+//	  //return turnOmega(s0,vo,dt,omega);
+//}
+
+
+/**
  * Position/Velocity
  * @param s0          starting position
  * @param center
@@ -204,19 +227,28 @@ Vect2 Kinematics::center(const Vect3& s0, const Velocity& v0, double omega) {
  * @param gsAt_d
  * @return Position/Velocity after t time
  */
-std::pair<Vect3,Velocity> Kinematics::turnByDist(const Vect3& s0, const Vect3& center, double d, double gsAt_d) {
-	  double R = s0.distanceH(center);
-	  //f.pln(" $$$$$ turnByDist: R = "+Units.str("nm",R));
-	  //double omega = Util.sign(d)*gsAt_d/R;
-	  double dt = std::abs(d/gsAt_d);
-	  Velocity vPerp = Velocity::make(s0.Sub(center));
-	  int dir = Util::sign(d);
-	  double currentTrk = vPerp.trk()+dir*M_PI/2;
-	  Velocity vo = Velocity::mkTrkGsVs( currentTrk , gsAt_d ,0.0);
-	  //f.pln(" $$$$$ turnByDist: vo = "+vo+" dt = "+dt+" currentTrk = "+Units.str("deg",currentTrk));
-	  return turn(s0, vo, dt, R, dir > 0);
-	  //return turnOmega(s0,vo,dt,omega);
+std::pair<Vect3,Velocity> Kinematics::turnByDist(const Vect3& so, const Vect3& center, int dir, double d, double gsAt_d) {
+	//f.pln(" $$$$ turnByDist: so = "+so+" center = "+center);
+    //double R = GreatCircle.distance(so, center);
+    double R = so.distanceH(center);
+	double alpha = dir*d/R;
+	//double vFinalTrk = GreatCircle.initial_course(center,so);
+	double trkFromCenter = Velocity::mkVel(center, so, 100.0).trk();
+	double nTrk = trkFromCenter + alpha;
+	//Vect3 sn = GreatCircle.linear_initial(center, nTrk, R);
+	Vect3 sn = center.linearByDist(nTrk, R);
+	//f.pln(" $$$$ turnByDist: sn = "+sn);
+	sn = sn.mkZ(0.0);
+	//double final_course = GreatCircle.final_course(center,sn);
+	//f.pln(" $$ d = "+d+" final_course = "+final_course+" nTrk = "+nTrk);
+	double finalTrk = nTrk + dir*M_PI/2;
+    Velocity vn = Velocity::mkTrkGsVs(finalTrk,gsAt_d,0.0);
+	//double finalTrk = vo.trk()+alpha;
+	//double finalTrk = final_course + Util.sign(d)*Math.PI/2;
+	return std::pair<Vect3,Velocity>(sn,vn);
+
 }
+
 
 
 std::pair<Vect3,Velocity> Kinematics::turnOmega(const std::pair<Vect3,Velocity>& sv0, double t, double omega) {
@@ -320,13 +352,40 @@ Vect3 Kinematics::positionAfterTurn(const Vect3& so, const Velocity& vo, double 
 }
 
 
-double Kinematics::closestTimeOnTurn(const Vect3& s0, const Velocity& v0, double omega, const Vect3& x) {
+double Kinematics::closestTimeOnTurn(const Vect3& s0, const Velocity& v0, double omega, const Vect3& x, double endTime) {
 	Vect2 center2 = center(s0,v0,omega);
-	if (x.vect2().almostEquals(center2)) return 0.0;
-	double trk1 = s0.vect2().Sub(center2).track();
-	double trk2 = x.vect2().Sub(center2).track();
+	if (x.vect2().almostEquals(center2)) return -1.0;
+	double trk1 = s0.vect2().Sub(center2).trk();
+	double trk2 = x.vect2().Sub(center2).trk();
 	double delta = Util::turnDelta(trk1, trk2, Util::sign(omega));
-	return std::abs(delta/omega);
+	double t = std::abs(delta/omega);
+	if (endTime > 0 && (t < 0 || t > endTime)) {
+		double maxTime = 2*M_PI/std::abs(omega);
+		if (t > (maxTime + endTime) / 2) {
+			return 0.0;
+		} else {
+			return endTime;
+		}
+	}
+	return t;
+}
+
+double Kinematics::closestDistOnTurn(const Vect3& s0, const Velocity& v0, double R, int dir, const Vect3& x, double maxDist) {
+	Vect2 center = centerOfTurn(s0.vect2(), v0.vect2(), R, dir);
+	if (x.vect2().almostEquals(center)) return -1.0;
+	double trk1 = s0.vect2().Sub(center).trk();
+	double trk2 = x.vect2().Sub(center).trk();
+	double delta = Util::turnDelta(trk1, trk2, dir);
+	double d = delta*R;
+	if (maxDist > 0 && (d < 0 || d > maxDist)) {
+		double maxD = 2*M_PI*R;
+		if (d > (maxD + maxDist) / 2) {
+			return 0.0;
+		} else {
+			return maxDist;
+		}
+	}
+	return d;
 }
 
 
@@ -391,7 +450,7 @@ Quad<Vect3,Velocity,double,int> Kinematics::directToPoint(const Vect3& so, const
 	//double R = Math.abs(vo.gs()/omega);
 	Vect2 EOT = directTo(so.vect2(),vo.vect2(),wp.vect2(),R).first;
 	if (EOT.isInvalid()) return Quad<Vect3,Velocity,double,int>(Vect3::INVALID(), Velocity::INVALIDV(), -1.0, 0);
-	double finalTrack = wp.vect2().Sub(EOT).track();
+	double finalTrack = wp.vect2().Sub(EOT).trk();
 	//f.pln(" $$ directToPoint: finalTrack = "+Units.str("deg", finalTrack) );
 	// this should not be based on final track direction, but rather on the actual turn taken.
 	//		double turnDelta = Util.signedTurnDelta(vo.trk(),finalTrack);
@@ -670,14 +729,12 @@ std::pair<Vect3,Velocity> Kinematics::vsAccel(const std::pair<Vect3,Velocity>& s
 
 
 double Kinematics::vsAccelTime(const Velocity& vo,double goalVs, double vsAccel) {
-	double deltaVs = std::abs(vo.vs() - goalVs);
-	double rtn = deltaVs/vsAccel;
-	return rtn;
+	return vsAccelTime(vo.vs(),goalVs, vsAccel);;
 }
 
 double Kinematics::vsAccelTime(double vs, double goalVs, double vsAccel) {
-	double deltaVs = std::abs(vs - goalVs);
-	double rtn = deltaVs/vsAccel;
+	double deltaVs = vs - goalVs;
+	double rtn = std::abs(deltaVs/vsAccel);
 	//f.pln("#### vsAccelTime: vs() = "+Units.str("fpm",vs)+" deltaVs = "+Units.str("fpm",deltaVs)+" rtn = "+rtn);
 	return rtn;
 }
