@@ -1,17 +1,32 @@
 #include <stdio.h>
 #include <thread>
+#include <fstream>
 #include "Interface.h"
 #include "DAQ.h"
 #include "FlightManagementSystem.h"
+#include "ParameterData.h"
+#include "SeparatedInput.h"
+
 
 using namespace std;
+using namespace larcfm;
 
 int main(int argc,char* argv[]){
     
     
     printf("Testing interfaces\n");
+    
+    // Read parameters from file and get the parameter data container
+    ifstream ConfigFile;
+    SeparatedInput sepInputReader(&ConfigFile);
+    ParameterData paramData;
+
+    ConfigFile.open("params/icarous.txt");
+    sepInputReader.readLine();
+    paramData = sepInputReader.getParameters();
+
     MAVLinkInbox RcvdMessages;
-    AircraftData FlightData(&RcvdMessages);
+    AircraftData FlightData(&RcvdMessages,&paramData);
 
     //Interface apPort = SerialInterface("/dev/ttyO1",B57600,0,&RcvdMessages);
     SocketInterface SITL("127.0.0.1",14550,0,&FlightData);
@@ -20,6 +35,8 @@ int main(int argc,char* argv[]){
     DataAcquisition DAQ(&SITL,&COM,&FlightData);
 
     QuadFMS FMS(&SITL,&COM,&FlightData);
+
+    FMS.SendStatusText("Starting ICAROUS");
 
     std::thread thread1(&DataAcquisition::GetPixhawkData,&DAQ);
     std::thread thread2(&DataAcquisition::GetGSData,&DAQ);

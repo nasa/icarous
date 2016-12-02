@@ -206,6 +206,11 @@
      if(have_msg && msg.command == MAV_CMD_MISSION_START){
          FlightData->SetStartMissionFlag((uint8_t)msg.param1);
      }
+     else if(have_msg){
+    	 mavlink_message_t msg2send;
+		 mavlink_msg_command_long_encode(255,0,&msg2send,&msg);
+    	 px4Intf->SendMAVLinkMsg(msg2send);
+     }
  }
 
  void DataAcquisition::CommandIntHandler(){

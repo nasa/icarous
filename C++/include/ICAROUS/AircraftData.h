@@ -39,7 +39,11 @@
 #define AIRCRAFT_DATA_H
 #include <list>
 #include "MAVLinkInbox.h"
+#include "ParameterData.h"
+#include "Position.h"
+#include "Velocity.h"
 
+using namespace larcfm;
 
 class AircraftData{
     private:
@@ -51,7 +55,10 @@ class AircraftData{
     public:
         uint16_t nextWP;
         MAVLinkInbox* RcvdMessages;
-        AircraftData(MAVLinkInbox* Msgs);
+        ParameterData* paramData;
+        Position currentPos;
+        Velocity currentVel;
+        AircraftData(MAVLinkInbox* Msgs,ParameterData* pData);
         void AddMissionItem(mavlink_mission_item_t msg);
         uint8_t GetStartMissionFlag();
         void SetStartMissionFlag(uint8_t flag);

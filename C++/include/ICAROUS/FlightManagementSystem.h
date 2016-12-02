@@ -38,6 +38,7 @@
  #ifndef FMS_H
  #define FMS_H
 
+ #include "math.h"
  #include "Interface.h"
  #include "common/mavlink.h"
  #include "ardupilotmega/ardupilotmega.h"
@@ -94,12 +95,13 @@ class FlightManagementSystem{
         void SendStatusText(char buffer[]);
         void ArmThrottles(bool arm);
         void StartTakeoff(float alt);
+        void GetLatestAircraftData();
         bool CheckAck(MAV_CMD command);
 
         uint8_t IDLE();
         virtual uint8_t TAKEOFF(){return 0;};
-        //virtual uint8_t CLIMB(){return 0;};
-        //virtual uint8_t CRUISE(){return 0;};
+        virtual uint8_t CLIMB(){return 0;};
+        virtual uint8_t CRUISE(){return 0;};
         //virtual uint8_t DESCEND(){return 0;};
         //virtual uint8_t LAND(){return 0;};
 };
@@ -108,12 +110,13 @@ class QuadFMS:public FlightManagementSystem{
 
     private:
         bool takeoffComplete;
+        float targetAlt;
 
     public:
         QuadFMS(Interface *px4int, Interface *gsint,AircraftData* fData);
         uint8_t TAKEOFF();
-        //uint8_t CLIMB();
-        //uint8_t CRUISE();
+        uint8_t CLIMB();
+        uint8_t CRUISE();
         //uint8_t DESCEND();
         //uint8_t LAND();
 };

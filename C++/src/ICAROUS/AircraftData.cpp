@@ -38,11 +38,12 @@
  #include "AircraftData.h"
 
 
- AircraftData::AircraftData(MAVLinkInbox* Msgs){
+ AircraftData::AircraftData(MAVLinkInbox* Msgs,ParameterData* pData){
      pthread_mutex_init(&lock, NULL);
      RcvdMessages = Msgs;
      startMission = -1;
      nextWP       = 0;
+     paramData    = pData;
  }
 
  void AircraftData::AddMissionItem(mavlink_mission_item_t msg){

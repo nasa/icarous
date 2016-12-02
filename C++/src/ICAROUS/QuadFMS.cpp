@@ -40,29 +40,56 @@
  QuadFMS::QuadFMS(Interface *px4int, Interface *gsint,AircraftData* fData):
  FlightManagementSystem(px4int,gsint,fData){
      takeoffComplete = false;
+     targetAlt       = 0.0f;
  }
 
 uint8_t QuadFMS::TAKEOFF(){
 
     if(!takeoffComplete){
         // Set mode to guided
+
+    	targetAlt = (float) FlightData->paramData->getValue("TAKEOFF_ALT");
+
         SetMode(GUIDED);
 
         // Arm throttles
         ArmThrottles(true);
         
         // Send Takeoff with target altitude
-        StartTakeoff(5.0f);
+        StartTakeoff(targetAlt);
 
-        // Sleep (micro seconds)
-        usleep(5000); 
+        // Sleep
+        sleep(1);
 
         if(CheckAck(MAV_CMD_NAV_TAKEOFF)){
             takeoffComplete = true;
-            
+            fmsState = _climb_;
+            SendStatusText("Starting climb");
+            return 1;
         }
     }
 
     return 0; 
 
+}
+
+uint8_t QuadFMS::CLIMB(){
+
+	double currentAlt = FlightData->currentPos.alt();
+	double alt_error  = fabs(currentAlt - targetAlt);
+
+	if( alt_error < 0.5 ){
+		SetMode(AUTO);
+		SetSpeed(1.0f);
+		fmsState = _cruise_;
+		SendStatusText("Starting cruise");
+		return 1;
+	}
+
+	return 0;
+}
+
+uint8_t QuadFMS::CRUISE(){
+
+	return 0;
 }

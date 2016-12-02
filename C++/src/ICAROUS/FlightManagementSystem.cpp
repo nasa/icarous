@@ -47,6 +47,9 @@ FlightManagementSystem::FlightManagementSystem(Interface *px4int, Interface *gsi
 
 void FlightManagementSystem::RunFMS(){
      while(true){
+
+    	GetLatestAircraftData();
+
         switch(fmsState){
             case _idle_:
                 IDLE();
@@ -57,11 +60,11 @@ void FlightManagementSystem::RunFMS(){
                 break;
 
             case _climb_:
-                //CLIMB();
+                CLIMB();
                 break;
 
             case _cruise_:
-                //CRUISE();
+                CRUISE();
                 break;
 
             case _descend_:
@@ -134,8 +137,8 @@ void FlightManagementSystem::SetSpeed(float speed){
 
 void FlightManagementSystem::SendStatusText(char buffer[]){
     mavlink_message_t msg;
-    mavlink_msg_statustext_pack(255,0,&msg,MAV_SEVERITY_INFO,buffer);
-    px4Intf->SendMAVLinkMsg(msg);
+    mavlink_msg_statustext_pack(1,0,&msg,MAV_SEVERITY_INFO,buffer);
+    gsIntf->SendMAVLinkMsg(msg);
 }
 
 void FlightManagementSystem::ArmThrottles(bool arm){
@@ -170,6 +173,24 @@ bool FlightManagementSystem::CheckAck(MAV_CMD command){
        }
     }
     return status;
+}
+
+void FlightManagementSystem::GetLatestAircraftData(){
+
+	// Get aircraft position data
+	double lat,lon,abs_alt,rel_alt,vx,vy,vz;
+	RcvdMessages->GetGlobalPositionInt(lat,lon,abs_alt,rel_alt,vx,vy,vz);
+	FlightData->currentPos = Position::makeLatLonAlt(lat,"degree",lon,"degree",rel_alt,"m");
+	FlightData->currentVel = Velocity::makeVxyz(vy,vx,"m/s",vz,"m/s");
+
+	// Get aircraft attitude data
+	double roll, pitch, yaw, heading;
+	RcvdMessages->GetAttitude(roll,pitch,yaw);
+
+	heading = FlightData->currentVel.track("degree");
+	if(heading < 0){
+		heading = 360 + heading;
+	}
 }
 
 uint8_t FlightManagementSystem::IDLE(){

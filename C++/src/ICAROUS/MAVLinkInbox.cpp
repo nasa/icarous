@@ -39,8 +39,6 @@
 
  MAVLinkInbox::MAVLinkInbox(){
      pthread_mutex_init(&lock, NULL);
-     uint16_t vl = listCommandAck.size();
-     vl = 0;
  }
 
  void MAVLinkInbox::DecodeMessage(mavlink_message_t message){
@@ -58,7 +56,7 @@
         
         case MAVLINK_MSG_ID_MISSION_COUNT:
         {
-            printf("MAVLINK_MSG_ID_MISSION_COUNT\n");
+            //printf("MAVLINK_MSG_ID_MISSION_COUNT\n");
             mavlink_mission_count_t msg;
             mavlink_msg_mission_count_decode(&message, &msg);
             listMissionCount.push(msg);
@@ -67,7 +65,7 @@
 
         case MAVLINK_MSG_ID_MISSION_ITEM:
         {
-            printf("MAVLINK_MSG_ID_MISSION_ITEM\n");
+            //printf("MAVLINK_MSG_ID_MISSION_ITEM\n");
             mavlink_mission_item_t msg;
             mavlink_msg_mission_item_decode(&message, &msg);
             listMissionItem.push(msg);
@@ -76,7 +74,7 @@
 
         case MAVLINK_MSG_ID_MISSION_REQUEST_LIST:
         {
-            printf("MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
+            //printf("MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
             mavlink_mission_request_list_t msg;
             mavlink_msg_mission_request_list_decode(&message, &msg);
             listMissionRequestList.push(msg);
@@ -86,7 +84,7 @@
         
         case MAVLINK_MSG_ID_PARAM_REQUEST_LIST:
         {
-            printf("MAVLINK_MSG_ID_PARAM_REQUEST_LIST\n");
+            //printf("MAVLINK_MSG_ID_PARAM_REQUEST_LIST\n");
             mavlink_param_request_list_t msg;
             mavlink_msg_param_request_list_decode(&message, &msg);
             listParamRequestList.push(msg);
@@ -122,7 +120,7 @@
 
         case MAVLINK_MSG_ID_COMMAND_LONG:
         {
-            printf("MAVLINK_MSG_ID_COMMAND_LONG\n");
+            //printf("MAVLINK_MSG_ID_COMMAND_LONG\n");
             mavlink_command_long_t msg;
             mavlink_msg_command_long_decode(&message, &msg);
             listCommandLong.push(msg);
@@ -131,7 +129,7 @@
 
         case MAVLINK_MSG_ID_COMMAND_INT:
         {
-            printf("MAVLINK_MSG_ID_COMMAND_INT\n");
+            //printf("MAVLINK_MSG_ID_COMMAND_INT\n");
             mavlink_command_int_t msg;
             mavlink_msg_command_int_decode(&message, &msg);
             listCommandInt.push(msg);
@@ -140,7 +138,7 @@
 
         case MAVLINK_MSG_ID_SET_MODE:
         {
-            printf("MAVLINK_MSG_ID_SET_MODE\n");
+            //printf("MAVLINK_MSG_ID_SET_MODE\n");
             mavlink_set_mode_t msg;
             mavlink_msg_set_mode_decode(&message, &msg);
             listSetMode.push(msg);
@@ -149,12 +147,26 @@
 
         case MAVLINK_MSG_ID_COMMAND_ACK:
         {
-            printf("MAVLINK_MSG_ID_COMMAND_ACK\n");
+            //printf("MAVLINK_MSG_ID_COMMAND_ACK\n");
             mavlink_command_ack_t msg;
             mavlink_msg_command_ack_decode(&message, &msg);
             listCommandAck.push(msg);
             break;
         }
+
+        case MAVLINK_MSG_ID_GPS_RAW_INT:
+		{
+			//printf("MAVLINK_MSG_ID_GPS_RAW_INT\n");
+			mavlink_msg_gps_raw_int_decode(&message,&gpsRawInt);
+			break;
+		}
+
+        case MAVLINK_MSG_ID_GLOBAL_POSITION_INT:
+		{
+			//printf("MAVLINK_MSG_ID_GLOBAL_POSITION_INT\n");
+			mavlink_msg_global_position_int_decode(&message,&globalPositionInt);
+			break;
+		}
 
 
     }
@@ -352,4 +364,36 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
      pthread_mutex_unlock(&lock);
      return val;  
 
+ }
+
+ void MAVLinkInbox::GetGPSRawInt(double& lat, double& lon, double& abs_alt){
+
+	 pthread_mutex_lock(&lock);
+	 lat    = (double) gpsRawInt.lat/1E7;
+	 lon    = (double) gpsRawInt.lon/1E7;
+	 abs_alt = (double) gpsRawInt.lon/1E3;
+	 pthread_mutex_unlock(&lock);
+
+ }
+
+ void MAVLinkInbox::GetGlobalPositionInt(double& lat, double& lon, double& abs_alt, double& rel_alt,
+		  	  	  	  	  	  	  	  	  double& vx, double& vy, double& vz){
+	 pthread_mutex_lock(&lock);
+	 lat    = (double) globalPositionInt.lat/1E7;
+	 lon    = (double) globalPositionInt.lon/1E7;
+	 abs_alt = (double) globalPositionInt.alt/1E3;
+	 rel_alt = (double) globalPositionInt.relative_alt/1E3;
+	 vx = (double) globalPositionInt.vx/1E2;
+	 vy = (double) globalPositionInt.vy/1E2;
+	 vz = (double) globalPositionInt.vz/1E2;
+	 pthread_mutex_unlock(&lock);
+ }
+
+ void MAVLinkInbox::GetAttitude(double& roll,double& pitch,double& yaw){
+
+	 pthread_mutex_lock(&lock);
+	 roll  = (double) attitude.roll;
+	 pitch = (double) attitude.pitch;
+	 yaw   = (double) attitude.yaw;
+	 pthread_mutex_unlock(&lock);
  }

@@ -50,6 +50,8 @@ class MAVLinkInbox{
         mavlink_heartbeat_t heartbeat;
         mavlink_gps_raw_int_t gpsRawInt;
         mavlink_gps_inject_data_t gpsInjectData;
+        mavlink_global_position_int_t globalPositionInt;
+        mavlink_attitude_t attitude;
 
         // Message queues
         std::queue<mavlink_mission_count_t> listMissionCount;
@@ -81,6 +83,10 @@ class MAVLinkInbox{
         bool GetCommandLong(mavlink_command_long_t& msg);
         bool GetCommandInt(mavlink_command_int_t& msg);
         bool GetCommandAck(mavlink_command_ack_t& msg);
+        void GetGPSRawInt(double& lat, double& lon, double& alt);
+        void GetGlobalPositionInt(double& lat, double& lon, double& absalt, double& relalt,
+        						  double& vx, double& vy, double& vz);
+        void GetAttitude(double& roll,double& pitch,double& yaw);
 };
 
 #endif
