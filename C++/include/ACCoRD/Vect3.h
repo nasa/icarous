@@ -169,25 +169,25 @@ public:
 	/** Is any component not exactly equal */
 	bool operator != (const Vect3& v) const;
 
-	/**
-	 * Scalar multiplication of this vector and add it to the vector parameter. Compute: k*<code>this</code> + v
-	 *
-	 * @param k Real value
-	 * @param v Vector
-	 *
-	 * @return the scalar multiplication <code>this</code> vector and <code>k</code>, followed by an
-	 * addition to vector <code>v</code>.
-	 */
+  /**
+   * Scalar and addition multiplication. Compute: k*<code>this</code> + v
+   * 
+   * @param k Real value
+   * @param v Vector
+   * 
+   * @return the scalar multiplication <code>this</code> vector and <code>k</code>, followed by an
+   * addition to vector <code>v</code>.
+   */
 	Vect3  ScalAdd(const double k, const Vect3& v) const;
 
-	/**
-	 * Add the scalar multiplication of the vector parameter.  Compute: this + k*<code>v</code>;
-	 *
-	 * @param k real value
-	 * @param v vector
-	 *
-	 * @return the addition of <code>this</code> vector to <code>v</code> scaled by <code>k</code>.
-	 */
+  /**
+   * Addition and scalar multiplication.  Compute: this + k*<code>v</code>;
+   * 
+   * @param k real value
+   * @param v vector
+   * 
+   * @return the addition of <code>this</code> vector to <code>v</code> scaled by <code>k</code>.
+   */
 	Vect3 AddScal(double k, const Vect3& v) const;
 
 
@@ -214,6 +214,14 @@ public:
 	Vect3 linear(const Vect3& v, double t) const;
 
 	/**
+	  * Calculates position after t time units in direction and magnitude of velocity v
+	  * @param track
+	  * @param t       time
+	  * @return the new position (horizontal only)
+	  */
+	 Vect3 linearByDist(double track, double d) const;
+
+	/**
 	 * 2-Dimensional projection.
 	 *
 	 * @return the 2-dimensional projection of <code>this</code>.
@@ -225,6 +233,8 @@ public:
 	 * @return the unit vector
 	 */
 	Vect3 Hat() const ;
+
+	Vect3 Hat2D() const;
 
 	/**
 	 * Cross product.

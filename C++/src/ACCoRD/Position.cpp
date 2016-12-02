@@ -416,10 +416,10 @@ std::pair<Position,double> Position::intersection(const Position& so, const Posi
 		return std::pair<Position,double>(Position::INVALID(),-1.0);
 	}
 	if (so.latlon) {
-		std::pair<LatLonAlt,double> lgc = GreatCircle::intersection(so.lla(),so2.lla(), dto, si.lla(),si2.lla());
+		std::pair<LatLonAlt,double> lgc = GreatCircle::intersectionAvgAlt(so.lla(),so2.lla(), dto, si.lla(),si2.lla());
 		return std::pair<Position,double>(Position(lgc.first),lgc.second);
 	} else {
-		std::pair<Vect3,double> pvt = VectFuns::intersection(so.point(),so2.point(),dto,si.point(),si2.point());
+		std::pair<Vect3,double> pvt = VectFuns::intersectionAvgZ(so.point(),so2.point(),dto,si.point(),si2.point());
 		return std::pair<Position,double>(Position(pvt.first),pvt.second);
 	}
 }

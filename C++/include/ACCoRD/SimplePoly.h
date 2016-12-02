@@ -12,6 +12,7 @@
 #include "Position.h"
 #include "EuclideanProjection.h"
 #include "BoundingRectangle.h"
+#include "ErrorLog.h"
 #include "Poly3D.h"
 
 namespace larcfm {
@@ -26,6 +27,13 @@ namespace larcfm {
  * A SimplePoly sets the altitude for all its points to be the _bottom_ altitude,
  * while the top is stored elsewhere as a single value.  The exact position for "top"
  * vertices is computed on demand.
+ * 
+ * The cross-section must be a simple polygon, that is it allows for non-convex areas, but
+ * vertices and edges may not overlap or cross.  Vertices may be ordered in either a clockwise
+ * or counterclockwise manner.
+ * 
+ * (A vertex-complete polygon allows for vertices and edges to overlap but not cross, while
+ * a general polygon allows for edges to cross.)
  * 
  * Point indices are based on the order they are added.
  * 
@@ -57,7 +65,7 @@ class SimplePoly {
     Position maxDistPair(const Position& p) const;
 
 	/**
-	 * Return the area (in m^2) of this SimplePoly.
+	 * Return the area (in m^2 or rad^2) of this SimplePoly.
 	 */
 	double signedArea(double dx, double dy) const;
 	
@@ -94,8 +102,14 @@ class SimplePoly {
 
 	bool equals(const SimplePoly& p) const;
 
+	/**
+	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use Euclidean coordinates .
+	 */
     static SimplePoly make(const Poly3D& p3);
 
+	/**
+	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use latlon coordinates .
+	 */
     static SimplePoly make(const Poly3D& p3, const EuclideanProjection& proj);
 
 
@@ -115,10 +129,15 @@ class SimplePoly {
 		
 	/**
 	 * Return this centroid of this volume.
+	 * Note: if sides are small (less than about 10^-5 in internal units), there may be errors in the centroid calculations
 	 * @return The centroid position of this volume.
 	 */
 	Position centroid() const;
 	
+	/**
+	 * Return the average of all vertices.  Note this is not the same as the centroid!  This will, however, have the nice property of having
+	 * a constant velocity when dealing with a morphing polygon. 
+	 */
 	Position averagePoint() const;
 
     double apBoundingRadius();
@@ -129,6 +148,7 @@ class SimplePoly {
 	 */
 	Position boundingCircleCenter() const;
 	
+	/** Returns true if this polygon is convex */
 	  bool isConvex();
 
 	/**
@@ -141,9 +161,10 @@ class SimplePoly {
 	 */
 	double maxRadius() const;
 
-	/**
-	 * Add a new point to the SimplePoly.  Points should be added in a consistently clockwise or consistently counter-clockwise manner.
+	/** 
+	 * Add a new point to the SimplePoly.  Points should be added in a consistently clockwise or consistently counter-clockwise manner. 
 	 * This currently does NOT set the Z component of the point (unless it is the first point)
+	 * Returns false if an error is detected (duplicate or invalid vertex), true otherwise. 
 	 */
 	bool addVertex(const Position& p);
 
@@ -156,7 +177,8 @@ class SimplePoly {
 
 	/**
 	 * Change the position of a point already added to the SimplePoly, indicated by its index. 
-	 * This currently does NOT set the Z component of the point. 
+	 * This currently does NOT set the Z component of the point.
+	 * Returns false if an invalid vertex is detected, true otherwise 
 	 */
 	bool setVertex(int n, Position p);
 
@@ -199,11 +221,17 @@ class SimplePoly {
 	 */
 	SimplePoly copy() const;
 
-	/** return a aPolygon3D version of this */
+	/** return a aPolygon3D version of this.  proj is ignored if this is Euclidean */
 	Poly3D poly3D(const EuclideanProjection& proj) const;
 
+	/**
+	 * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD detection algorithms.
+	 */
 	bool contains(const Position& p) const;
 
+	/**
+	 * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD detection algorithms.
+	 */
 	bool contains2D(const Position& p) const;
 
 	/**
@@ -215,6 +243,8 @@ class SimplePoly {
 	SimplePoly linear(const Velocity& v, double t) const;
 
 	bool validate();
+
+	bool validate(ErrorLog* error);
 
 	BoundingRectangle getBoundingRectangle() const;
 

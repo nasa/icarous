@@ -266,14 +266,14 @@ public:
 	 */
 	double angle() const;
 
-	/**
-	 * Track angle.
-	 *
-	 * @return the track angle of <code>this</code> vector in the range
-	 * (-<code>pi</code>, <code>pi</code>]. The track angle is the clockwise angle
-	 * with respect to north, i.e., <code>v.track() = pi/2 - v.angle()</code>.
-	 */
-	double track() const;
+  /**
+   * Track angle.
+   * 
+   * @return the track angle of <code>this</code> vector in the range 
+   * (-<code>pi</code>, <code>pi</code>]. The track angle is the clockwise angle
+   * with respect to north, i.e., <code>v.track() = pi/2 - v.angle()</code>.
+   */
+	double trk() const;
 
 	/**
 	 * Compass angle.
@@ -293,13 +293,15 @@ public:
 	double compassAngle(const Vect2& v2) const;
 
 
-	/**
-	 * Construct a Vect2 from a track angle and ground speed
-	 *
-	 * @param trk    track angle
-	 * @param gs     ground speed
-	 *
-	 */
+  /**
+   * Construct a Vect2 from a track angle and ground speed.  This is
+   * a vector of length gs pointed in the direction of track angle of trk.
+   *
+   * @param trk    track angle
+   * @param gs     ground speed
+   * @return a vector in with the given length and with the direction of track angle
+   *
+   */
 	static Vect2 mkTrkGs(double trk, double gs);
 
 	/**
@@ -316,7 +318,7 @@ public:
 	/** Returns true if the current vector has an "invalid" value */
 	bool isInvalid() const;
 
-	/** Return a string representing this vector */
+  /** A string representation of this vector */
 	std::string toString() const;
 
 	/** A string representation of this vector */
@@ -381,6 +383,12 @@ public:
 
 	//    static Vect2& makeInvalid();
 
+  /**
+   * Returns true if x components and y components of both vectors are within the given bounds
+   * @param v2
+   * @param epsilon
+   * @return
+   */
 	bool within_epsilon(const Vect2& v2, double epsilon) const;
 
 

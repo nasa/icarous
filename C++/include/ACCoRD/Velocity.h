@@ -51,22 +51,22 @@ public:
 
 	Velocity(const Vect3& v3);
 
-	/**
-	 * Angle in radians in the range [-<code>Math.PI</code>, <code>Math.PI</code>].
-	 * Convention is counter-clockwise with respect to east.
-	 *
-	 * @return the track angle [rad]
-	 */
+  /**
+   * Angle in explicit units in corresponding range [-<code>Math.PI</code>, <code>Math.PI</code>].
+   * Convention is counter-clockwise with respect to east.
+   * 
+   * @param uangle the explicit units of track angle
+   * 
+   * @return the track angle [rad]
+   */
 	double angle(const std::string& uangle) const;
 
-	/**
-	 * Angle in explicit units in corresponding range [-<code>Math.PI</code>, <code>Math.PI</code>].
-	 * Convention is counter-clockwise with respect to east.
-	 *
-	 * @param uangle the explicit units of track angle
-	 *
-	 * @return the track angle [rad]
-	 */
+  /**
+   * Angle in radians in the range [-<code>Math.PI</code>, <code>Math.PI</code>].
+   * Convention is counter-clockwise with respect to east.
+   * 
+   * @return the track angle [rad]
+   */
 	double angle() const;
 
 	/**
@@ -166,6 +166,9 @@ public:
 	/** String representation (trk,gs,vs) with the given units */
 	std::string toStringUnits(const std::string& trkUnits, const std::string& gsUnits, const std::string& vsUnits) const;
 
+  /**
+   * Euclidean vector representation to arbitrary precision, in [knot,knot,fpm]
+   */
 	std::string toStringXYZ() const;
 
 	std::string toStringXYZ(int prec) const;
@@ -238,15 +241,15 @@ public:
 	static Velocity mkVxyz(const double vx, const double vy, const double vz);
 
 
-	/**
-	 * New velocity from Euclidean coordinates in "conventional" units.
-	 *
-	 * @param vx the x-velocity [kn]
-	 * @param vy the y-velocity [kn]
-	 * @param vz the z-velocity [fpm]
-	 *
-	 * @return the velocity
-	 */
+  /**
+   * New velocity from Euclidean coordinates in "conventional" units.
+   *
+   * @param vx the x-velocity [knot]
+   * @param vy the y-velocity [knot]
+   * @param vz the z-velocity [fpm]
+   *
+   * @return the velocity
+   */
 	static Velocity makeVxyz(const double vx, const double vy, const double vz);
 
 
@@ -277,16 +280,16 @@ public:
 	static Velocity mkTrkGsVs(const double trk, const double gs, const double vs);
 
 
-	/**
-	 * New velocity from Track, Ground Speed, and Vertical speed in explicit units.
-	 * Note that this uses trigonometric functions, and may introduce numeric instability.
-	 * 
-	 * @param trk the track angle [deg]
-	 * @param gs the ground speed [kn]
-	 * @param vs the vertical speed [fpm]
-	 * 
-	 * @return the velocity
-	 */
+  /**
+   * New velocity from Track, Ground Speed, and Vertical speed in explicit units.
+   * Note that this uses trigonometric functions, and may introduce numeric instability.
+   * 
+   * @param trk the track angle [deg]
+   * @param gs the ground speed [knot]
+   * @param vs the vertical speed [fpm]
+   * 
+   * @return the velocity
+   */
 	static Velocity makeTrkGsVs(const double trk, const double gs, const double vs);
 
 
@@ -307,23 +310,25 @@ public:
 			const double gs, const std::string& ugs,
 			const double vs, const std::string& uvs);
 
-	static Velocity makeVel(const Vect3& p1,const Vect3& p2, double speed);
+	static Velocity mkVel(const Vect3& p1,const Vect3& p2, double speed);
 
-	/**
-	 * Return the velocity along the line from p1 to p2 at the given speed
-	 * @param p1 first point
-	 * @param p2 second point
-	 * @param speed speed [internal units]
-	 * @return the velocity
-	 */
+  /**
+   * Return the velocity if moving from p1 to p2 over the given time
+   * @param p1 first point
+   * @param p2 second point
+   * @param dt time 
+   * @return the velocity
+   */
 	static Velocity genVel(const Vect3& p1, const Vect3& p2, double dt) ;
 
 
-	/**
-	 * New velocity from existing velocity, changing only the track
-	 * @param trk track angle [rad]
-	 * @return new velocity
-	 */
+  /**
+   * New velocity from existing velocity by adding the given track angle to this 
+   * vector's track angle.  Essentially, this rotates the vector, a positive
+   * angle means a clockwise rotation.
+   * @param trk track angle [rad]
+   * @return new velocity
+   */
 	Velocity mkAddTrk(double trk) const;
 
 
@@ -401,6 +406,11 @@ public:
 	 * Returns a unit velocity vector in the direction of the original velocity
 	 */
 	Velocity Hat() const;
+
+  /**
+   * Returns a unit velocity vector in the direction of the original velocity in the XY plane
+   */
+	Velocity Hat2D() const;
 
 	Velocity Neg() const;
 

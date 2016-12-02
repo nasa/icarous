@@ -64,24 +64,26 @@ const std::string NavPoint::EGS_STR = "EGS";
 const std::string NavPoint::EGSBGS_STR = "EGSBGS";
 
 NavPoint::NavPoint(const Position& pp, double tt, WayType tty,
-		const std::string& llabel, 	Trk_TCPType tcp_t, Gs_TCPType tcp_g, Vs_TCPType tcp_v,
-		double sRadius, double a_gs, double a_vs,
-		const Velocity& v_velocityIn,  const Position& sourcePos, double sourceTime
-) :
+		   const std::string& llabel, 	Trk_TCPType tcp_t, Gs_TCPType tcp_g, Vs_TCPType tcp_v,
+		   double sRadius, double a_gs, double a_vs,
+		   const Velocity& v_velocityIn,  const Position& sourcePos, double sourceTime,
+		   int linearIndex) :
+  
     				 p(pp),
-					 t(tt),
-					 ty(tty),
-					 label_s(llabel),
-					 tcp_trk(tcp_t),
-					 tcp_gs(tcp_g),
-					 tcp_vs(tcp_v),
-					 sourcePosition_p(sourcePos),
-					 sourceTime_d(sourceTime),
-					 //accel_d(d_accel),
-					 sgnRadius(sRadius),		// signed radius
-					 accel_gs(a_gs),            // signed gs-acceleration value
-					 accel_vs(a_vs),            // signed vs-acceleration value
-					 velocityIn_v(v_velocityIn)
+				 t(tt),
+				 ty(tty),
+				 label_s(llabel),
+				 tcp_trk(tcp_t),
+				 tcp_gs(tcp_g),
+				 tcp_vs(tcp_v),
+				 sourcePosition_p(sourcePos),
+				 sourceTime_d(sourceTime),
+				 //accel_d(d_accel),
+				 sgnRadius(sRadius),		// signed radius
+				 accel_gs(a_gs),            // signed gs-acceleration value
+				 accel_vs(a_vs),            // signed vs-acceleration value
+				 velocityInit_v(v_velocityIn),
+				 linearIndex_i(linearIndex)
 { }
 
 
@@ -102,7 +104,8 @@ NavPoint::NavPoint() :
 					sgnRadius(0.0),		      // signed radius
 					accel_gs(0.0),            // signed gs-acceleration value
 					accel_vs(0.0),            // signed vs-acceleration value
-					velocityIn_v(Velocity::INVALIDV())
+					velocityInit_v(Velocity::INVALIDV()),
+                    linearIndex_i(-1)
 { }
 
 NavPoint::NavPoint(const Position& pp, double tt) :
@@ -119,7 +122,8 @@ NavPoint::NavPoint(const Position& pp, double tt) :
 					sgnRadius(0.0),           // signed radius
 					accel_gs(0.0),            // signed gs-acceleration value
 					accel_vs(0.0),            // signed vs-acceleration value
-					velocityIn_v(Velocity::INVALIDV())
+					velocityInit_v(Velocity::INVALIDV()),
+					linearIndex_i(-1)
 { }
 
 NavPoint::NavPoint(const Position& pp, double tt, const string& llabel) :
@@ -136,15 +140,16 @@ NavPoint::NavPoint(const Position& pp, double tt, const string& llabel) :
 					sgnRadius(0.0),           // signed radius
 					accel_gs(0.0),            // signed gs-acceleration value
 					accel_vs(0.0),            // signed vs-acceleration value
-					velocityIn_v(Velocity::INVALIDV())
+					velocityInit_v(Velocity::INVALIDV()),
+					linearIndex_i(-1)
 { }
 
 
 NavPoint NavPoint::makeFull(const Position& p, double t, WayType ty, const std::string& label,
 	      Trk_TCPType tcp_trk, Gs_TCPType tcp_gs, Vs_TCPType tcp_vs,
 	      double sRadius, double accel_gs, double accel_vs,
-	      const Velocity& velocityIn, const Position& sourcePosition, double sourceTime) {
-     return NavPoint(p, t, ty, label, tcp_trk, tcp_gs, tcp_vs, sRadius,  accel_gs,  accel_vs,  velocityIn, sourcePosition,  sourceTime);
+			    const Velocity& velocityIn, const Position& sourcePosition, double sourceTime) {
+  return NavPoint(p, t, ty, label, tcp_trk, tcp_gs, tcp_vs, sRadius,  accel_gs,  accel_vs,  velocityIn, sourcePosition,  sourceTime, -1);
  }
 
 
@@ -177,7 +182,7 @@ bool NavPoint::mergeable(const NavPoint& point) const {
 	bool r3 = r2 && ((this->tcp_vs == NavPoint::NONEv || point.tcp_vs == NavPoint::NONEv)
 			|| (this->tcp_vs == NavPoint::BVS && point.tcp_vs == NavPoint::EVS)
 			|| (this->tcp_vs == NavPoint::EVS && point.tcp_vs == NavPoint::BVS));
-	return r3 && this->t == point.t && this->p == point.p && (this->velocityIn_v.isInvalid() || point.velocityIn_v.isInvalid() ||  this->velocityIn_v == point.velocityIn_v);
+	return r3 && this->t == point.t && this->p == point.p && (this->velocityInit_v.isInvalid() || point.velocityInit_v.isInvalid() ||  this->velocityInit_v == point.velocityInit_v);
 }
 
 
@@ -230,28 +235,27 @@ NavPoint NavPoint::mergeTCPInfo(const NavPoint& point) const {
 
 			Velocity my_velocityIn;
 			if (this->isBeginTCP()) {
-				my_velocityIn = this->velocityIn_v;
+				my_velocityIn = this->velocityInit_v;
 			} else {
-				my_velocityIn = point.velocityIn_v;
+				my_velocityIn = point.velocityInit_v;
 			}
 
 			Position my_sourcePosition;
 			double my_sourceTime;
+			int my_linearIndex;
 			if (this->isBeginTCP()) {  // checking if point.sourceTime is NaN
 				my_sourcePosition = this->sourcePosition_p;
 				my_sourceTime = this->sourceTime_d;
+				my_linearIndex = this->linearIndex_i;
 			} else {
 				my_sourcePosition = point.sourcePosition_p;
 				my_sourceTime = point.sourceTime_d;
+				my_linearIndex = point.linearIndex_i;
 			}
 
 
-//			return new NavPoint(this->p, this->t, ty, label, tcp_trk, tcp_gs, tcp_vs,
-//					accel_trk, accel_gs, accel_vs, velocityIn, sourcePosition, sourceTime);
-
-
 	return NavPoint(this->p, this->t, my_ty, my_label, my_tcp_trk, my_tcp_gs, my_tcp_vs,
-			my_radius, my_accel_gs, my_accel_vs, my_velocityIn, my_sourcePosition, my_sourceTime);
+			my_radius, my_accel_gs, my_accel_vs, my_velocityIn, my_sourcePosition, my_sourceTime, my_linearIndex);
 }
 
 //	/**
@@ -506,8 +510,8 @@ std::string NavPoint::metaDataLabel(int precision) const {
 			tlabel = tlabel + "AVS:"+FmPrecision(accel_vs,precision)+":";
 		}
 	}
-	if (!velocityIn_v.isInvalid()) {
-		std::string v = velocityIn_v.toStringNP(precision);
+	if (!velocityInit_v.isInvalid()) {
+		std::string v = velocityInit_v.toStringNP(precision);
 		replace(v, ',', '_');
 		replace(v, ' ', '_');
 		tlabel = tlabel + "VEL:"+v+":";
@@ -582,7 +586,7 @@ const NavPoint NavPoint::parseMetaDataLabel(const std::string& tlabel) const {
 		std::string s = tlabel.substr(i+5, j);
 		replace(s, '_', ' ');
 		Velocity v = Velocity::parse(s);
-		point = point.makeVelocityIn(v);
+		point = point.makeVelocityInit(v);
 	}
 	for (int iter = 0; iter <= 4; iter++) {
 		Trk_TCPType tt = toTrkTCP(iter);
@@ -821,7 +825,9 @@ Position NavPoint::turnCenter() const {
 //		}
 //	} else
 	if (R != 0.0) {
-		return p.linear(velocityIn_v.mkAddTrk(Util::sign(R)*Pi/2).Hat(),std::abs(R)).mkZ(p.z());
+		//return p.linear(velocityInit_v.mkAddTrk(Util::sign(R)*Pi/2).Hat(),std::abs(R)).mkZ(p.z());
+		Velocity vHat = velocityInit_v.mkAddTrk(Util::sign(R)*Pi/2).Hat2D();
+		return p.linear(vHat, std::abs(R)).mkZ(p.z());
 	}
 	return Position::INVALID();
 }
@@ -833,6 +839,10 @@ double NavPoint::sourceTime() const {
 
 Position NavPoint::sourcePosition() const {
 	return sourcePosition_p;
+}
+
+int NavPoint::linearIndex() const {
+	return linearIndex_i;
 }
 
 double NavPoint::hasSource() const {
@@ -901,18 +911,13 @@ const NavPoint NavPoint::copy(const Position& p) const {
 		//      ty = Modified;
 	//    }
 	return NavPoint(p, this->t, ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v, this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v, this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
 const NavPoint NavPoint::copy(WayType ty) const {
 	return NavPoint(this->p, this->t, ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v, this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v, this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
-
-//  const NavPoint NavPoint::copy(const PointMutability& mut) const {
-//    return NavPoint(this->p, this->t, this->ty, mut, this->label, this->tcp,
-//    		this->sourcePosition, this->sourceTime, this->accel_d, this->velocityIn_v, this->minorV_i);
-//  }
 
 const NavPoint NavPoint::mkLat(double lat) const {
 	if (NavPoint_DEBUG && ! p.isLatLon()) {
@@ -959,43 +964,49 @@ const NavPoint NavPoint::makeTime(double time) const {
 	//      ty = Modified;
 	//    }
 	return NavPoint(this->p, time, ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
 const NavPoint NavPoint::makeTrkTCP(Trk_TCPType tcp) const {
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, tcp, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
 const NavPoint NavPoint::makeGsTCP(Gs_TCPType tcp) const {
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, tcp, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v, this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v, this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
 const NavPoint NavPoint::makeVsTCP(Vs_TCPType tcp) const {
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, tcp,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v, this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v, this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
 const NavPoint NavPoint::makeSource(const Position& sp, double st) const {
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  sp, st);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  sp, st,  this->linearIndex_i);
 }
 
 
 const NavPoint NavPoint::makeSourcePosition(const Position& sp) const {
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  sp, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  sp, this->sourceTime_d,  this->linearIndex_i);
 }
 
+  
 const NavPoint NavPoint::makeSourceTime(double st) const {
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, st);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, st,  this->linearIndex_i);
+}
+
+const NavPoint NavPoint::makeLinearIndex(int ix) const {
+	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d, ix);
 }
 
 const NavPoint NavPoint::makeRadius(double r) const {
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			r, this->accel_gs, this->accel_vs, this->velocityIn_v, this->sourcePosition_p, this->sourceTime_d);
+			r, this->accel_gs, this->accel_vs, this->velocityInit_v, this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
 
@@ -1006,24 +1017,24 @@ const NavPoint NavPoint::makeRadius(double r) const {
 //	}
 
 const NavPoint NavPoint::makeTrkAccel(double omega) const {
-	double radius = this->velocityIn_v.gs()/omega;
+	double radius = this->velocityInit_v.gs()/omega;
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			radius, this->accel_gs, this->accel_vs, this->velocityIn_v, this->sourcePosition_p, this->sourceTime_d);
+			radius, this->accel_gs, this->accel_vs, this->velocityInit_v, this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
 const NavPoint NavPoint::makeGsAccel(double ga) const {
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, ga, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, ga, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
 const NavPoint NavPoint::makeVsAccel(double va) const {
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, va, this->velocityIn_v, this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, va, this->velocityInit_v, this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
-const NavPoint NavPoint::makeVelocityIn(const Velocity& vi) const {
+const NavPoint NavPoint::makeVelocityInit(const Velocity& vi) const {
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, vi, this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, vi, this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
 //  const NavPoint NavPoint::makeGoalGsIn(double gs) const {
@@ -1048,7 +1059,7 @@ const NavPoint NavPoint::makeVirtual() const {
 const NavPoint NavPoint::makeAdded() const {
 	//    if (isAdded()) return *this;
 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  Position::INVALID(), -1.0);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  Position::INVALID(), -1.0,  -1);
 }
 
 const NavPoint NavPoint::makeOriginal() const {
@@ -1075,113 +1086,113 @@ const NavPoint NavPoint::makeAltPreserve() const {
 
 const NavPoint NavPoint::makeLabel(const std::string& label) const {
 	return NavPoint(this->p, this->t, this->ty,  label, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
 const NavPoint NavPoint::appendLabel(const std::string& label) const {
 	return NavPoint(this->p, this->t, this->ty,  this->label_s+label, this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d,  this->linearIndex_i);
 }
 
 const NavPoint NavPoint::makeBOT(const Position& p, double t,
-		const Velocity& v_velocityIn, double sRadius) const {
+				 const Velocity& v_velocityIn, double sRadius, int ix) const {
 	return NavPoint(p, t, this->ty,  this->label_s, BOT, this->tcp_gs, this->tcp_vs,
-			sRadius, this->accel_gs, this->accel_vs, v_velocityIn, this->sourcePosition_p, this->sourceTime_d);
+			sRadius, this->accel_gs, this->accel_vs, v_velocityIn, this->sourcePosition_p, this->sourceTime_d, ix);
 }
 
-const NavPoint NavPoint::makeEOT(const Position& p, double t, const Velocity& v_velocityIn) const {
+  const NavPoint NavPoint::makeEOT(const Position& p, double t, const Velocity& v_velocityIn, int ix) const {
 	return NavPoint(p, t, this->ty,  this->label_s, EOT, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, v_velocityIn, this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, v_velocityIn, this->sourcePosition_p, this->sourceTime_d, ix);
 }
 
-const NavPoint NavPoint::makeEOTBOT(const Position& p , double t, const Velocity& v_velocityIn, double sRadius) const {
+  const NavPoint NavPoint::makeEOTBOT(const Position& p , double t, const Velocity& v_velocityIn, double sRadius, int ix) const {
 	return NavPoint(p, t, this->ty,  this->label_s, EOTBOT, this->tcp_gs, this->tcp_vs,
-			sRadius, this->accel_gs, this->accel_vs, v_velocityIn, this->sourcePosition_p, this->sourceTime_d);
+			sRadius, this->accel_gs, this->accel_vs, v_velocityIn, this->sourcePosition_p, this->sourceTime_d, ix);
 }
 
-const NavPoint NavPoint::makeBGS(const Position& p, double t,  double d_gsAccel, const Velocity& v_velocityIn) const {
+  const NavPoint NavPoint::makeBGS(const Position& p, double t,  double d_gsAccel, const Velocity& v_velocityIn, int ix) const {
 	return NavPoint(p, t, this->ty,  this->label_s, this->tcp_trk, BGS,  this->tcp_vs,
-			this->sgnRadius, d_gsAccel, this->accel_vs, v_velocityIn,  this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, d_gsAccel, this->accel_vs, v_velocityIn,  this->sourcePosition_p, this->sourceTime_d, ix);
 }
 
-const NavPoint NavPoint::makeEGS(const Position& p, double t, const Velocity& v_velocityIn) const {
+  const NavPoint NavPoint::makeEGS(const Position& p, double t, const Velocity& v_velocityIn, int ix) const {
 	return NavPoint(p, t, this->ty,  this->label_s, this->tcp_trk, EGS,  this->tcp_vs,
-			this->sgnRadius, this->accel_gs , this->accel_vs, v_velocityIn,  this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs , this->accel_vs, v_velocityIn,  this->sourcePosition_p, this->sourceTime_d, ix);
 }
 
-const NavPoint NavPoint::makeEGSBGS(const Position& p , double t, double a, const Velocity& v_velocityIn) const {
+  const NavPoint NavPoint::makeEGSBGS(const Position& p , double t, double a, const Velocity& v_velocityIn, int ix) const {
 	return NavPoint(p, t, this->ty,  this->label_s, this->tcp_trk, EGSBGS, this->tcp_vs,
-			this->sgnRadius, a, this->accel_vs, v_velocityIn,  this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, a, this->accel_vs, v_velocityIn,  this->sourcePosition_p, this->sourceTime_d, ix);
 }
 
 
-const NavPoint NavPoint::makeBVS(const Position& p, double t, double d_vsAccel, const Velocity& v_velocityIn) const {
+  const NavPoint NavPoint::makeBVS(const Position& p, double t, double d_vsAccel, const Velocity& v_velocityIn, int ix) const {
 	return NavPoint(p, t, this->ty,  this->label_s,  this->tcp_trk, this->tcp_gs, BVS,
-			this->sgnRadius, this->accel_gs, d_vsAccel, v_velocityIn, this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, d_vsAccel, v_velocityIn, this->sourcePosition_p, this->sourceTime_d, ix);
 }
 
-const NavPoint NavPoint::makeEVS(const Position& p, double t, const Velocity& v_velocityIn) const {
+  const NavPoint NavPoint::makeEVS(const Position& p, double t, const Velocity& v_velocityIn, int ix) const {
 	return NavPoint(p, t, this->ty,  this->label_s,  this->tcp_trk, this->tcp_gs, EVS,
-			this->sgnRadius, this->accel_gs, this->accel_vs, v_velocityIn, this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, v_velocityIn, this->sourcePosition_p, this->sourceTime_d, ix);
 }
 
-const NavPoint NavPoint::makeEVSBVS(const Position& p , double t, double a, const Velocity& v_velocityIn) const {
+  const NavPoint NavPoint::makeEVSBVS(const Position& p , double t, double a, const Velocity& v_velocityIn, int ix) const {
 	return NavPoint(p, t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, EVSBVS,
-			this->sgnRadius,  this->accel_gs, a, v_velocityIn,  this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius,  this->accel_gs, a, v_velocityIn,  this->sourcePosition_p, this->sourceTime_d, ix);
 }
 
-const NavPoint NavPoint::makeMidpoint(const Position& p, double t) const {
+  const NavPoint NavPoint::makeMidpoint(const Position& p, double t, int ix) const {
 	return NavPoint(p, t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs,  this->tcp_vs,
-			this->sgnRadius, this->accel_gs , this->accel_vs, this->velocityIn_v, this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs , this->accel_vs, this->velocityInit_v, this->sourcePosition_p, this->sourceTime_d, ix);
 }
 
 
-const NavPoint NavPoint::makeTCPTurnBegin() const {
-	return NavPoint(this->p, this->t, this->ty,  this->label_s, BOT, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
-}
-
-const NavPoint NavPoint::makeTCPTurnEnd() const {
-	return NavPoint(this->p, this->t, this->ty,  this->label_s, EOT, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
-}
-
-const NavPoint NavPoint::makeTCPGSCBegin() const {
-	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, BGS, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
-}
-
-const NavPoint NavPoint::makeTCPGSCEnd() const {
-	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, EGS, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
-}
-
-//  const NavPoint NavPoint::makeTCPTurnMid() const {
-	//	    return NavPoint(this->p, this->t, this->ty,  this->label_s, TMID,
-//	  		      this->sgnRadius this->accel_gs, this->accel_vs, this->velocityIn_v, this->sourcePosition_p, this->sourceTime_d);
+// const NavPoint NavPoint::makeTCPTurnBegin() const {
+// 	return NavPoint(this->p, this->t, this->ty,  this->label_s, BOT, this->tcp_gs, this->tcp_vs,
+// 			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d);
 // }
 
+// const NavPoint NavPoint::makeTCPTurnEnd() const {
+// 	return NavPoint(this->p, this->t, this->ty,  this->label_s, EOT, this->tcp_gs, this->tcp_vs,
+// 			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d);
+// }
+
+// const NavPoint NavPoint::makeTCPGSCBegin() const {
+// 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, BGS, this->tcp_vs,
+// 			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d);
+// }
+
+// const NavPoint NavPoint::makeTCPGSCEnd() const {
+// 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, EGS, this->tcp_vs,
+// 			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d);
+// }
+
+// //  const NavPoint NavPoint::makeTCPTurnMid() const {
+// 	//	    return NavPoint(this->p, this->t, this->ty,  this->label_s, TMID,
+// //	  		      this->sgnRadius this->accel_gs, this->accel_vs, this->velocityIn_v, this->sourcePosition_p, this->sourceTime_d);
+// // }
 
 
-const NavPoint NavPoint::makeTCPVSCBegin() const {
-	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, BVS,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
-}
 
-const NavPoint NavPoint::makeTCPVSCEnd() const {
-	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, EVS,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
-}
+// const NavPoint NavPoint::makeTCPVSCBegin() const {
+// 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, BVS,
+// 			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d);
+// }
+
+// const NavPoint NavPoint::makeTCPVSCEnd() const {
+// 	return NavPoint(this->p, this->t, this->ty,  this->label_s, this->tcp_trk, this->tcp_gs, EVS,
+// 			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d);
+// }
 
 const NavPoint NavPoint::makeStandardRetainSource() const {
 	return NavPoint(this->p, this->t, Orig, "", NONE, NONEg, NONEv,
-			0.0, 0.0, 0.0, Velocity::INVALIDV(), this->sourcePosition_p, this->sourceTime_d);
+			0.0, 0.0, 0.0, Velocity::INVALIDV(), this->sourcePosition_p, this->sourceTime_d, this->linearIndex_i);
 }
 
 /** Makes a new NavPoint that is devoid of any "turn" or "ground speed" tags. */
 const NavPoint NavPoint::makeNewPoint() const {
 	return NavPoint(this->p, this->t, Orig, "", NONE, NONEg, NONEv,
-			0.0, 0.0, 0.0, Velocity::INVALIDV(), this->p, this->t);
+			0.0, 0.0, 0.0, Velocity::INVALIDV(), this->p, this->t, -1);
 }
 
 //
@@ -1193,39 +1204,48 @@ const NavPoint NavPoint::makeNewPoint() const {
 
 const NavPoint NavPoint::makeMovedFrom(const NavPoint& o) const {
 	return NavPoint(this->p, this->t, o.ty, o.label_s, o.tcp_trk, o.tcp_gs, o.tcp_vs,
-			o.sgnRadius, o.accel_gs, o.accel_vs, o.velocityIn_v, o.sourcePosition_p, o.sourceTime_d);
+			o.sgnRadius, o.accel_gs, o.accel_vs, o.velocityInit_v, o.sourcePosition_p, o.sourceTime_d, o.linearIndex_i);
 
 }
 
 const NavPoint NavPoint::makePosition(const Position& p) const {
 	return NavPoint(p, this->t, this->ty,  this->label_s,  this->tcp_trk, this->tcp_gs, this->tcp_vs,
-			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityIn_v,  this->sourcePosition_p, this->sourceTime_d);
+			this->sgnRadius, this->accel_gs, this->accel_vs, this->velocityInit_v,  this->sourcePosition_p, this->sourceTime_d, this->linearIndex_i);
 }
 
 //  const NavPoint NavPoint::revertToSource(const Position& p) const {
 //	    return NavPoint(this->sourcePosition, this->sourceTime, this->ty,  this->label_s);
 //  }
 
-Velocity NavPoint::initialVelocity(const NavPoint& s) const {
-	if (NavPoint_DEBUG && p.isLatLon() != s.isLatLon()) {
+
+
+  
+  Velocity NavPoint::initialVelocity(const NavPoint& s1, const NavPoint& s2) {
+	if (NavPoint_DEBUG && s1.isLatLon() != s2.isLatLon()) {
 		throw runtime_error("Incompatible geometries in velocity()");
 	}
-	double dt = s.time() - t;
+	double dt = s2.time() - s1.time();
 	if (dt == 0) {
 		return Velocity::ZEROV();
 	} else if (dt > 0) {
-		if (s.isLatLon()) {
-			return GreatCircle::velocity_initial(p.lla(), s.p.lla(), dt);
+		if (s2.isLatLon()) {
+			return GreatCircle::velocity_initial(s1.p.lla(), s2.p.lla(), dt);
 		} else {
-			return Velocity::make((s.p.point().Sub(p.point())).Scal(1.0/dt));
+			return Velocity::make((s2.p.point().Sub(s1.p.point())).Scal(1.0/dt));
 		}
 	} else {
-		if (s.isLatLon()) {
-			return GreatCircle::velocity_initial(s.p.lla(), p.lla(), -dt);
+		if (s2.isLatLon()) {
+			return GreatCircle::velocity_initial(s2.p.lla(), s1.p.lla(), -dt);
 		} else {
-			return Velocity::make((p.point().Sub(s.p.point())).Scal(1.0/-dt));
+			return Velocity::make((s1.p.point().Sub(s2.p.point())).Scal(1.0/-dt));
 		}
 	}
+}
+
+  
+  
+Velocity NavPoint::initialVelocity(const NavPoint& s) const {
+  return initialVelocity(*this, s);
 }
 
 Velocity NavPoint::finalVelocity(const NavPoint& s) const {
@@ -1301,9 +1321,9 @@ double NavPoint::groundSpeed(const NavPoint& np) const {
 	return initialVelocity(np).gs();
 }
 
-Velocity NavPoint::velocityIn() const {
+Velocity NavPoint::velocityInit() const {
 	//if (isTCP()) {
-	return velocityIn_v;
+	return velocityInit_v;
 	//}
 	//return Velocity::INVALIDV();
 }
@@ -1314,7 +1334,7 @@ Velocity NavPoint::velocityIn() const {
 double NavPoint::trkAccel() const {
 	//	return accel_trk;
 	if (std::abs(sgnRadius) > 0) {
-		return velocityIn_v.gs()/sgnRadius;
+		return velocityInit_v.gs()/sgnRadius;
 	} else {
 		return 0.0;
 	}
@@ -1369,7 +1389,7 @@ std::vector<std::string> NavPoint::toStringList(int precision, bool tcp) const {
 	ret.push_back(FmPrecision(t,precision)); // time (4)
 	if (tcp) {
 		ret.push_back(strType()); // type (string) (5)
-		vec = velocityIn_v.toStringList(precision);
+		vec = velocityInit_v.toStringList(precision);
 		ret.insert(ret.end(),vec.begin(),vec.end()); // vin (6-8) DO NOT CHANGE THIS -- POLYGONS EXPECT VEL TO BE HERE
 		ret.push_back(toStringTrkTCP(tcp_trk)); // tcp trk (string) (9)
 		ret.push_back(FmPrecision(Units::to("deg/s",trkAccel()),precision)); // trk accel (10)
@@ -1425,19 +1445,19 @@ std::string NavPoint::toStringFull() const {
 			sb << " accVs = " << Fm4(Units::to("m/s^2", accel_vs));
 		}
 	}
-	if (!velocityIn_v.isInvalid()) sb << " vin = " << velocityIn_v.toStringUnits();
+	if (!velocityInit_v.isInvalid()) sb << " vin = " << velocityInit_v.toStringUnits();
 	if (sgnRadius != 0.0) {
 		sb << " sgnRadius = " << Fm4(Units::to("NM", sgnRadius));
 	}
-	if (sourceTime_d >= 0) {
-		sb << " srcTime = " << Fm2(sourceTime_d);
-		if (!sourcePosition_p.isInvalid()) {
-			sb << " srcPos = " << sourcePosition_p.toStringUnits();
-		}
-	} else {
-		sb << " ADDED";
-	}
-
+//	if (sourceTime_d >= 0) {
+//		sb << " srcTime = " << Fm2(sourceTime_d);
+//		if (!sourcePosition_p.isInvalid()) {
+//			sb << " srcPos = " << sourcePosition_p.toStringUnits();
+//		}
+//	} else {
+//		sb << " ADDED";
+//	}
+    sb << "<" << Fm0(linearIndex_i) << ">";
 	sb << "]";
 	sb << " " << label();
 	return sb.str();
@@ -1484,7 +1504,8 @@ NavPoint NavPoint::parseLL(const std::string& s) {
 		Position sp = Position(slla);
 		double st = Util::parse_double(fields[18]);
 		std::string lab = fields[19];
-		return NavPoint(pos, time, wt, lab,	trkty, gsty, vsty, radius, gsacc, vsacc, vv, sp, st);
+		int linearIndex = -1;   // need to fix this !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return NavPoint(pos, time, wt, lab, trkty, gsty, vsty, radius, gsacc, vsacc, vv, sp, st, linearIndex);
 	} else {
 		return NavPoint(pos, time);
 	}
@@ -1512,7 +1533,8 @@ NavPoint NavPoint::parseXYZ(const std::string& s) {
 		Position sp = Position::makeXYZ(sv.x, sv.y, sv.z);
 		double st = Util::parse_double(fields[18]);
 		std::string lab = fields[19];
-		return NavPoint(pos, time, wt, lab,	trkty, gsty, vsty, radius, gsacc, vsacc, vv, sp, st);
+		int linearIndex = -1;   // need to fix this !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return NavPoint(pos, time, wt, lab, trkty, gsty, vsty, radius, gsacc, vsacc, vv, sp, st, linearIndex);
 	} else {
 		return NavPoint(pos, time);
 	}}
