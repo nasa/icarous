@@ -252,15 +252,18 @@ public class FSAM{
 		}
 	    }
 	    else if(FenceKeepInConflict){
-		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for keep in conflict");		    
+		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for keep in conflict");
+		UAS.apIntf.SendStatusText("Keep in conflict");
 		ResolveKeepInConflict();		
 	    }
 	    else if(FenceKeepOutConflict){
-		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for keep out conflict");		    
+		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for keep out conflict");
+		UAS.apIntf.SendStatusText("Keep out conflict");
 		ResolveKeepOutConflict();
 	    }
 	    else if(StandoffConflict){
-		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for stand off conflict");	    
+		UAS.error.addWarning("[" + UAS.timeLog + "] MSG: Computing resolution for stand off conflict");
+		UAS.apIntf.SendStatusText("Stand off conflict");
 		UsePlan = ResolveStandoffConflict();
 	    }
 	    else{
