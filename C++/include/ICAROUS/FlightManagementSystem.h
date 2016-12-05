@@ -97,13 +97,16 @@ class FlightManagementSystem{
         void StartTakeoff(float alt);
         void GetLatestAircraftData();
         bool CheckAck(MAV_CMD command);
+        bool CheckWaypointReached();
 
         uint8_t IDLE();
+        uint8_t PREFLIGHT();
         virtual uint8_t TAKEOFF(){return 0;};
         virtual uint8_t CLIMB(){return 0;};
         virtual uint8_t CRUISE(){return 0;};
-        //virtual uint8_t DESCEND(){return 0;};
-        //virtual uint8_t LAND(){return 0;};
+        virtual uint8_t DESCEND(){return 0;};
+        virtual uint8_t APPROACH(){return 0;};
+        virtual uint8_t LAND(){return 0;};
 };
 
 class QuadFMS:public FlightManagementSystem{
@@ -116,8 +119,10 @@ class QuadFMS:public FlightManagementSystem{
         uint8_t TAKEOFF();
         uint8_t CLIMB();
         uint8_t CRUISE();
-        //uint8_t DESCEND();
-        //uint8_t LAND();
+        uint8_t DESCEND();
+        uint8_t LAND();
+        uint8_t Monitor();
+        uint8_t Resolve();
 };
 
 

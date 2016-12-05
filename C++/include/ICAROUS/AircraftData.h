@@ -42,6 +42,7 @@
 #include "ParameterData.h"
 #include "Position.h"
 #include "Velocity.h"
+#include "Plan.h"
 
 using namespace larcfm;
 
@@ -58,11 +59,13 @@ class AircraftData{
         ParameterData* paramData;
         Position currentPos;
         Velocity currentVel;
+        Plan FlightPlan;
         AircraftData(MAVLinkInbox* Msgs,ParameterData* pData);
         void AddMissionItem(mavlink_mission_item_t msg);
         uint8_t GetStartMissionFlag();
         void SetStartMissionFlag(uint8_t flag);
         uint16_t GetFlightPlanSize();
+        void ConstructPlan();
         
 };
 

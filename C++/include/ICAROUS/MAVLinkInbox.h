@@ -41,6 +41,7 @@
 #include <stdio.h>
 #include <pthread.h> // This uses POSIX Threads
 #include "common/mavlink.h"
+#include "ardupilotmega/ardupilotmega.h"
 #include <queue>
 
 class MAVLinkInbox{
@@ -56,6 +57,7 @@ class MAVLinkInbox{
         // Message queues
         std::queue<mavlink_mission_count_t> listMissionCount;
         std::queue<mavlink_mission_item_t> listMissionItem;
+        std::queue<mavlink_mission_item_reached_t> listMissionItemReached;
         std::queue<mavlink_mission_request_list_t> listMissionRequestList;
         std::queue<mavlink_mission_request_t> listMissionRequest;
         std::queue<mavlink_param_request_list_t> listParamRequestList;
@@ -73,6 +75,7 @@ class MAVLinkInbox{
         void DecodeMessage(mavlink_message_t message);
         bool GetMissionCount(mavlink_mission_count_t& msg);
         bool GetMissionItem(mavlink_mission_item_t& msg);
+        bool GetMissionItemReached(mavlink_mission_item_reached_t& msg);
         bool GetMissionRequestList(mavlink_mission_request_list_t& msg);
         bool GetMissionRequest(mavlink_mission_request_t& msg);
         bool GetParamRequestList(mavlink_param_request_list_t& msg);

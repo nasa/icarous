@@ -75,3 +75,32 @@ uint16_t AircraftData::GetFlightPlanSize(){
     pthread_mutex_unlock(&lock);
     return size;
 }
+
+void AircraftData::ConstructPlan(){
+	// Create a Plan object with the available mission items
+	FlightPlan.clear();
+	std::list<mavlink_mission_item_t>::iterator it;
+	int ic;
+	for(it = listMissionItem.begin(),ic = 0;
+		it != listMissionItem.end(); ++it,++ic){
+		if(it->command == MAV_CMD_NAV_WAYPOINT ||
+		   it->command == MAV_CMD_NAV_SPLINE_WAYPOINT ){
+			Position WP = Position::makeLatLonAlt(it->x,"degree",it->y,"degree",it->z,"m");
+			double wptime = 0;
+			if(ic > 0){
+
+				double vel = it->param4;
+
+				if(vel < 0.5){
+					vel = 1;
+				}
+
+				double distance = FlightPlan.point(ic - 1).position().distanceH(WP);
+				wptime   = FlightPlan.getTime(ic-1) + distance/vel;
+			}
+
+			NavPoint navPoint(WP,wptime);
+			FlightPlan.add(navPoint);
+		}
+	}
+}

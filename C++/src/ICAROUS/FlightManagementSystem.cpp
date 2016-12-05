@@ -49,6 +49,7 @@ void FlightManagementSystem::RunFMS(){
      while(true){
 
     	GetLatestAircraftData();
+    	CheckWaypointReached();
 
         switch(fmsState){
             case _idle_:
@@ -199,7 +200,9 @@ uint8_t FlightManagementSystem::IDLE(){
     int fpsize = FlightData->GetFlightPlanSize(); 
     if( start == 0){
         if( fpsize > 0){
+        	PREFLIGHT();
             fmsState = _takeoff_;
+            FlightData->nextWP = 0;
             return 1; 
         }
         else{
@@ -208,6 +211,7 @@ uint8_t FlightManagementSystem::IDLE(){
         }
     }
     else if(start > 0 && start < fpsize ){
+    	PREFLIGHT();
         fmsState           = _cruise_;
         FlightData->nextWP = start;
         SendStatusText("Flying to waypoint");
@@ -215,4 +219,23 @@ uint8_t FlightManagementSystem::IDLE(){
     }
 
     return 0;
+}
+
+bool FlightManagementSystem::CheckWaypointReached(){
+
+	mavlink_mission_item_reached_t msg;
+	bool val;
+	val = RcvdMessages->GetMissionItemReached(msg);
+
+	if(val){
+		FlightData->nextWP++;
+	}
+
+	return val;
+}
+
+uint8_t FlightManagementSystem::PREFLIGHT(){
+
+	FlightData->ConstructPlan();
+	return 0;
 }

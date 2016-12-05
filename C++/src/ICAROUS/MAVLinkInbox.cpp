@@ -72,6 +72,15 @@
             break;
         }
 
+        case MAVLINK_MSG_ID_MISSION_ITEM_REACHED:
+		{
+			//printf("MAVLINK_MSG_ID_MISSION_ITEM_REACHED\n");
+			mavlink_mission_item_reached_t msg;
+			mavlink_msg_mission_item_reached_decode(&message, &msg);
+			listMissionItemReached.push(msg);
+			break;
+		}
+
         case MAVLINK_MSG_ID_MISSION_REQUEST_LIST:
         {
             //printf("MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
@@ -396,4 +405,19 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
 	 pitch = (double) attitude.pitch;
 	 yaw   = (double) attitude.yaw;
 	 pthread_mutex_unlock(&lock);
+ }
+
+ bool MAVLinkInbox::GetMissionItemReached(mavlink_mission_item_reached_t& msg){
+	 bool val;
+	 pthread_mutex_lock(&lock);
+	 if(!listMissionItemReached.empty()){
+		 msg = listMissionItemReached.front();
+		 listMissionItemReached.pop();
+		 val = true;
+	 }
+	 else{
+		 val = false;
+	 }
+	 pthread_mutex_unlock(&lock);
+	 return val;
  }
