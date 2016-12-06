@@ -129,7 +129,7 @@
 
         case MAVLINK_MSG_ID_COMMAND_LONG:
         {
-            //printf("MAVLINK_MSG_ID_COMMAND_LONG\n");
+            printf("MAVLINK_MSG_ID_COMMAND_LONG\n");
             mavlink_command_long_t msg;
             mavlink_msg_command_long_decode(&message, &msg);
             listCommandLong.push(msg);
@@ -179,7 +179,7 @@
 
         case MAVLINK_MSG_ID_FENCE_POINT:
         {
-        	//printf("MAVLINK_MSG_ID_FENCE_POINT\n");
+        	printf("MAVLINK_MSG_ID_FENCE_POINT\n");
         	mavlink_fence_point_t msg;
 			mavlink_msg_fence_point_decode(&message,&msg);
 			listFencePoint.push(msg);

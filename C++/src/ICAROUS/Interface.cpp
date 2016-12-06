@@ -55,9 +55,18 @@ int Interface::GetMAVLinkMsg(){
 
     for(int i=0;i<n;i++){
         uint8_t cp = recvbuffer[i];
-        msgReceived = mavlink_parse_char(MAVLINK_COMM_1, cp, &message, &status);
+
+        msgReceived = mavlink_parse_char(MAVLINK_COMM_0, cp, &message, &status);
         
-        
+        /*
+        if ( (lastStatus.packet_rx_drop_count != status.packet_rx_drop_count) )
+		{
+			printf("ERROR: DROPPED %d PACKETS\n", status.packet_rx_drop_count);
+
+		}
+		lastStatus = status;
+		*/
+
         if(msgReceived){
             msgQueue.push(message);
             RcvdMessages->DecodeMessage(message);
@@ -190,27 +199,28 @@ void SerialInterface::WriteData(uint8_t buffer[],uint16_t len){
 SocketInterface::SocketInterface(char targetip[], int inportno, int outportno,MAVLinkInbox *msgInbox)
 :Interface(msgInbox){
 
-    sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    sock = socket(AF_INET, SOCK_DGRAM, 0);
 
-    memset(&locAddr, 0, sizeof(locAddr));
+    bzero((char *) &locAddr, sizeof(locAddr));
     locAddr.sin_family      = AF_INET;
-    locAddr.sin_addr.s_addr = INADDR_ANY;
-    locAddr.sin_port        = htons(inportno);
+    locAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    locAddr.sin_port        = htons((unsigned short)inportno);
     
     /* Bind the socket to port 14551 - necessary to receive packets from qgroundcontrol */ 
-    if (-1 == bind(sock,(struct sockaddr *)&locAddr, sizeof(struct sockaddr))){
+    if (bind(sock,(struct sockaddr *)&locAddr, sizeof(locAddr)) == -1){
       printf("error: bind failed");
       close(sock);
       exit(EXIT_FAILURE);
     } 
     
+
     if (fcntl(sock, F_SETFL, O_NONBLOCK | FASYNC) < 0){
       printf("error setting nonblocking\n");
       close(sock);
       exit(EXIT_FAILURE);
     }
     
-    memset(&targetAddr, 0, sizeof(targetAddr));
+    bzero((char *) &targetAddr, sizeof(targetAddr));
     targetAddr.sin_family      = AF_INET;
     targetAddr.sin_addr.s_addr = inet_addr(targetip);
     targetAddr.sin_port        = htons(outportno);
@@ -218,9 +228,12 @@ SocketInterface::SocketInterface(char targetip[], int inportno, int outportno,MA
 }
 
 int SocketInterface::ReadData(){
-    memset(recvbuffer, 0, BUFFER_LENGTH);
+
     int n = 0;
+    struct sockaddr_in clientAddr;
+    socklen_t msglen;
     pthread_mutex_lock(&lock);
+    memset(recvbuffer, 0, BUFFER_LENGTH);
     n = recvfrom(sock, (void *)recvbuffer, BUFFER_LENGTH, 0, (struct sockaddr *)&targetAddr, &recvlen);
     pthread_mutex_unlock(&lock);
     return n;

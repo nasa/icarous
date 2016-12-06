@@ -40,7 +40,7 @@
 
  #include "Interface.h"
  #include "AircraftData.h"
- #include "ardupilotmega/ardupilotmega.h"
+ #include "ardupilotmega/mavlink.h"
 
  class DataAcquisition{
 

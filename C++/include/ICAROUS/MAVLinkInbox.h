@@ -40,8 +40,7 @@
 
 #include <stdio.h>
 #include <pthread.h> // This uses POSIX Threads
-#include "common/mavlink.h"
-#include "ardupilotmega/ardupilotmega.h"
+#include "ardupilotmega/mavlink.h"
 #include <queue>
 
 class MAVLinkInbox{

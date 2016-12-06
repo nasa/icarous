@@ -41,8 +41,7 @@
  #include "math.h"
  #include "Interface.h"
  #include "AircraftData.h"
- #include "common/mavlink.h"
- #include "ardupilotmega/ardupilotmega.h"
+ #include "ardupilotmega/mavlink.h"
 
 enum fms_state_t {_idle_,_takeoff_,_climb_,_cruise_,_descend_,_land_};
 

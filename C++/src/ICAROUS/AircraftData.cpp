@@ -122,11 +122,13 @@ void AircraftData::GetGeofence(Interface *gsIntf,mavlink_command_long_t msgIn){
 	time(&starttime);
 
 	while(!readComplete){
+
+
 		time(&polltime);
 		seconds   = difftime(starttime,polltime);
 
-		if(seconds > 3){
-			break;
+		if(seconds > 10){
+			//break;
 		}
 
 		switch(state){
@@ -135,14 +137,18 @@ void AircraftData::GetGeofence(Interface *gsIntf,mavlink_command_long_t msgIn){
 
 			mavlink_msg_fence_fetch_point_pack(1,1,&msg,255,0,count);
 			gsIntf->SendMAVLinkMsg(msg);
+			printf("Wrote fence fetch point\n");
 			state = 1;
 			break;
 
 		case 1:
+			gsIntf->GetMAVLinkMsg();
+			//printf("waiting for data\n");
 			mavlink_fence_point_t msgFencePoint;
-			bool val;
-			val = RcvdMessages->GetFencePoint(msgFencePoint);
-			if(val){
+			bool have_msg;
+			have_msg = RcvdMessages->GetFencePoint(msgFencePoint);
+			if(have_msg){
+				printf("Got fence point\n");
 				if(msgFencePoint.idx == count){
 					fence.AddVertex(msgFencePoint.idx,msgFencePoint.lat,msgFencePoint.lng);
 					count++;
@@ -156,7 +162,7 @@ void AircraftData::GetGeofence(Interface *gsIntf,mavlink_command_long_t msgIn){
 			}
 			break;
 
-		case 3:
+		case 2:
 			readComplete = true;
 
 			if(fenceList.size() >= fence.GetID()){

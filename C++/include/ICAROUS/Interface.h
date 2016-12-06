@@ -55,7 +55,7 @@
 
 #include "MAVLinkInbox.h"
 
-#define BUFFER_LENGTH 500
+#define BUFFER_LENGTH 300
 
 class Interface{
 
@@ -64,6 +64,7 @@ class Interface{
   uint8_t sendbuffer[BUFFER_LENGTH];
   MAVLinkInbox *RcvdMessages;
   pthread_mutex_t  lock;
+  mavlink_status_t lastStatus;
   
 
  public:
