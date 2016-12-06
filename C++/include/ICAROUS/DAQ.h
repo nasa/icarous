@@ -39,6 +39,7 @@
  #define DAQ_H_
 
  #include "Interface.h"
+ #include "AircraftData.h"
  #include "ardupilotmega/ardupilotmega.h"
 
  class DataAcquisition{

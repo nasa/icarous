@@ -40,9 +40,9 @@
 #include "Interface.h"
 
 
-Interface::Interface(AircraftData *fData){
+Interface::Interface(MAVLinkInbox *msgInbox){
     pthread_mutex_init(&lock, NULL);
-    FlightData = fData;
+    RcvdMessages = msgInbox;
 }
 
 int Interface::GetMAVLinkMsg(){
@@ -60,7 +60,7 @@ int Interface::GetMAVLinkMsg(){
         
         if(msgReceived){
             msgQueue.push(message);
-            FlightData->RcvdMessages->DecodeMessage(message);
+            RcvdMessages->DecodeMessage(message);
         }
     }
 
@@ -89,8 +89,8 @@ void Interface::EnableDataStream(int option){
 }
 
 
-SerialInterface::SerialInterface(char name[],int brate,int pbit,AircraftData *fData)
-:Interface(fData){
+SerialInterface::SerialInterface(char name[],int brate,int pbit,MAVLinkInbox *msgInbox)
+:Interface(msgInbox){
 
   portname = name;
   baudrate = brate;
@@ -187,8 +187,8 @@ void SerialInterface::WriteData(uint8_t buffer[],uint16_t len){
 
 
 // Socet interface class definition
-SocketInterface::SocketInterface(char targetip[], int inportno, int outportno,AircraftData* fData)
-:Interface(fData){
+SocketInterface::SocketInterface(char targetip[], int inportno, int outportno,MAVLinkInbox *msgInbox)
+:Interface(msgInbox){
 
     sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 

@@ -29,8 +29,8 @@ int main(int argc,char* argv[]){
     AircraftData FlightData(&RcvdMessages,&paramData);
 
     //Interface apPort = SerialInterface("/dev/ttyO1",B57600,0,&RcvdMessages);
-    SocketInterface SITL("127.0.0.1",14550,0,&FlightData);
-    SocketInterface COM("127.0.0.1",14552,14553,&FlightData);
+    SocketInterface SITL("127.0.0.1",14550,0,&RcvdMessages);
+    SocketInterface COM("127.0.0.1",14552,14553,&RcvdMessages);
 
     DataAcquisition DAQ(&SITL,&COM,&FlightData);
 

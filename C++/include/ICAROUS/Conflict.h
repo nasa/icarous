@@ -1,7 +1,7 @@
- /**
- * Geofence
+/**
+ * Conflict
  *
- * Class to store geofence, detect geofence conflicts and resolve them.
+ * Conflict class
  *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  *
@@ -28,70 +28,38 @@
  * Waiver and Indemnity:
  *   RECIPIENT AGREES TO WAIVE ANY AND ALL CLAIMS AGAINST THE UNITED STATES GOVERNMENT,
  *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT.  IF RECIPIENT'S USE OF THE SUBJECT SOFTWARE
- *   RESULTS IN ANY LIABILITIES, DEMANDS, DAMAGES,s
+ *   RESULTS IN ANY LIABILITIES, DEMANDS, DAMAGES,
  *   EXPENSES OR LOSSES ARISING FROM SUCH USE, INCLUDING ANY DAMAGES FROM PRODUCTS BASED ON, OR RESULTING FROM,
  *   RECIPIENT'S USE OF THE SUBJECT SOFTWARE, RECIPIENT SHALL INDEMNIFY AND HOLD HARMLESS THE UNITED STATES GOVERNMENT,
  *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT, TO THE EXTENT PERMITTED BY LAW.
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#ifndef _GEOFENCE_H_
-#define _GEOFENCE_H_
+#ifndef CONFLICT_H_
+#define CONFLICT_H_
 
-#include <vector>
-#include "Position.h"
-#include "Velocity.h"
-#include "Vect2.h"
-#include "Vect3.h"
-#include "AircraftState.h"
-#include "EuclideanProjection.h"
-#include "ParameterData.h"
-#include "SimplePoly.h"
-#include "Poly3D.h"
-#include "CDPolycarp.h"
-#include "PolycarpDetection.h"
-#include "PolycarpResolution.h"
-#include "math.h"
+#include <list>
+#include "Geofence.h"
 
-using namespace larcfm;
 
-enum FENCE_TYPE {KEEP_IN = 0,KEEP_OUT = 1};
 
-class Geofence{
-
+class Conflict{
 private:
 
-	FENCE_TYPE fenceType;
-	uint16_t id;
-	uint16_t nVertices;
-	double floor;
-	double ceiling;
-	const double BUFF = 0.1;
-	ParameterData* params;
-	bool violation;
-	bool conflict;
-	bool projectedViolation;
-	EuclideanProjection proj;
-	SimplePoly geoPoly0;          // Original polygon in lat,lon
-	SimplePoly geoPoly1;          // Expanded/Contracted polygon in lat,lon
-	Poly3D geoPoly3D;             // 3D polygon in cartesian coordinates
-	CDPolycarp geoPolyCarp;
-	PolycarpResolution geoPolyResolution;
-	PolycarpDetection geoPolyDetect;
-	std::vector<Vect2> fenceVertices0; // Cartesian coordinates of vertices of geoPoly0
-	std::vector<Vect2> fenceVertices1; //Cartesian coordinates of vertices of geoPoly1
-	Position recoveryPoint;
-
-
+	std::list<Geofence> geofenceConflicts;
+	std::list<Geofence>::iterator itGeofence;
 public:
-	Geofence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling,ParameterData* pData);
-	void AddVertex(int index, double lat, double lon);
-	void CheckViolation(AircraftState acState);
-	bool CollisionDetection(Position pos, Vect2 v,double startTime, double stopTime);
-	bool CheckWPFeasibility(Position current, Position nextWP);
-	uint16_t GetID();
+	bool keepinConflict;
+	bool keepoutConflict;
+	bool stanodffConflict;
+	Conflict();
+	void AddConflict(Geofence gf);
+	void RemoveConflict(Geofence gf);
+	bool isEqual(Geofence gf);
+
+
 };
 
 
 
-#endif /* _GEOFENCE_H_ */
+#endif /* CONFLICT_H_ */

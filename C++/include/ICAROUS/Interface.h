@@ -53,7 +53,7 @@
 #include <time.h>
 #include <queue>
 
-#include "AircraftData.h"
+#include "MAVLinkInbox.h"
 
 #define BUFFER_LENGTH 500
 
@@ -62,7 +62,7 @@ class Interface{
  protected:
   uint8_t recvbuffer[BUFFER_LENGTH];
   uint8_t sendbuffer[BUFFER_LENGTH];
-  AircraftData *FlightData;
+  MAVLinkInbox *RcvdMessages;
   pthread_mutex_t  lock;
   
 
@@ -70,7 +70,7 @@ class Interface{
 
   
   std::queue<mavlink_message_t> msgQueue;
-  Interface(AircraftData *fData);
+  Interface(MAVLinkInbox *msgInbox);
   int GetMAVLinkMsg();
   void SendMAVLinkMsg(mavlink_message_t msg);
   void EnableDataStream(int option);
@@ -87,7 +87,7 @@ class SerialInterface: public Interface{
   int parity;
 
  public:
-  SerialInterface(char pname[], int brate, int pbit,AircraftData *fData); 
+  SerialInterface(char pname[], int brate, int pbit,MAVLinkInbox *msgInbox);
   int set_interface_attribs();
   void set_blocking (int should_block);
   int ReadData();
@@ -103,7 +103,7 @@ class SocketInterface: public Interface{
     socklen_t recvlen;
     
   public:
-    SocketInterface(char targetip[], int inportno, int outportno,AircraftData *fData);
+    SocketInterface(char targetip[], int inportno, int outportno,MAVLinkInbox *msgInbox);
     int ReadData();
     void WriteData(uint8_t buffer[], uint16_t len);
 

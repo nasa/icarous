@@ -177,6 +177,16 @@
 			break;
 		}
 
+        case MAVLINK_MSG_ID_FENCE_POINT:
+        {
+        	//printf("MAVLINK_MSG_ID_FENCE_POINT\n");
+        	mavlink_fence_point_t msg;
+			mavlink_msg_fence_point_decode(&message,&msg);
+			listFencePoint.push(msg);
+			break;
+
+        }
+
 
     }
     pthread_mutex_unlock(&lock);
@@ -375,6 +385,21 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
 
  }
 
+ bool MAVLinkInbox::GetFencePoint(mavlink_fence_point_t& msg){
+	  bool val;
+	  pthread_mutex_lock(&lock);
+	  if(!listFencePoint.empty()){
+		  msg = listFencePoint.front();
+		  listFencePoint.pop();
+		  val = true;
+	  }
+	  else{
+		  val = false;
+	  }
+	  pthread_mutex_unlock(&lock);
+	  return val;
+ }
+
  void MAVLinkInbox::GetGPSRawInt(double& lat, double& lon, double& abs_alt){
 
 	 pthread_mutex_lock(&lock);
@@ -385,9 +410,10 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
 
  }
 
- void MAVLinkInbox::GetGlobalPositionInt(double& lat, double& lon, double& abs_alt, double& rel_alt,
+ void MAVLinkInbox::GetGlobalPositionInt(double &time,double& lat, double& lon, double& abs_alt, double& rel_alt,
 		  	  	  	  	  	  	  	  	  double& vx, double& vy, double& vz){
 	 pthread_mutex_lock(&lock);
+	 time   = (double) globalPositionInt.time_boot_ms/1E6;
 	 lat    = (double) globalPositionInt.lat/1E7;
 	 lon    = (double) globalPositionInt.lon/1E7;
 	 abs_alt = (double) globalPositionInt.alt/1E3;

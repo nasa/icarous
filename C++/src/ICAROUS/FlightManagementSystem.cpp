@@ -179,16 +179,18 @@ bool FlightManagementSystem::CheckAck(MAV_CMD command){
 void FlightManagementSystem::GetLatestAircraftData(){
 
 	// Get aircraft position data
-	double lat,lon,abs_alt,rel_alt,vx,vy,vz;
-	RcvdMessages->GetGlobalPositionInt(lat,lon,abs_alt,rel_alt,vx,vy,vz);
-	FlightData->currentPos = Position::makeLatLonAlt(lat,"degree",lon,"degree",rel_alt,"m");
-	FlightData->currentVel = Velocity::makeVxyz(vy,vx,"m/s",vz,"m/s");
+	double lat,lon,abs_alt,rel_alt,vx,vy,vz,time;
+	RcvdMessages->GetGlobalPositionInt(time,lat,lon,abs_alt,rel_alt,vx,vy,vz);
+	Position currentPos = Position::makeLatLonAlt(lat,"degree",lon,"degree",rel_alt,"m");
+	Velocity currentVel = Velocity::makeVxyz(vy,vx,"m/s",vz,"m/s");
+
+	FlightData->acState.add(currentPos,currentVel,time);
 
 	// Get aircraft attitude data
 	double roll, pitch, yaw, heading;
 	RcvdMessages->GetAttitude(roll,pitch,yaw);
 
-	heading = FlightData->currentVel.track("degree");
+	heading = currentVel.track("degree");
 	if(heading < 0){
 		heading = 360 + heading;
 	}

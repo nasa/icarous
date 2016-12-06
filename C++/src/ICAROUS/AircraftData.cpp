@@ -104,3 +104,78 @@ void AircraftData::ConstructPlan(){
 		}
 	}
 }
+
+void AircraftData::GetGeofence(Interface *gsIntf,mavlink_command_long_t msgIn){
+	bool readComplete = false;
+	uint16_t nVertices     = (int) msgIn.param4;
+
+	Geofence fence((int)msgIn.param2,(FENCE_TYPE)msgIn.param3,(int)msgIn.param4,
+					msgIn.param5,msgIn.param6,paramData);
+
+	time_t starttime;
+	time_t polltime;
+	double seconds;
+	uint8_t state = 0;
+	uint16_t count = 0;
+	mavlink_message_t msg;
+
+	time(&starttime);
+
+	while(!readComplete){
+		time(&polltime);
+		seconds   = difftime(starttime,polltime);
+
+		if(seconds > 3){
+			break;
+		}
+
+		switch(state){
+
+		case 0:
+
+			mavlink_msg_fence_fetch_point_pack(1,1,&msg,255,0,count);
+			gsIntf->SendMAVLinkMsg(msg);
+			state = 1;
+			break;
+
+		case 1:
+			mavlink_fence_point_t msgFencePoint;
+			bool val;
+			val = RcvdMessages->GetFencePoint(msgFencePoint);
+			if(val){
+				if(msgFencePoint.idx == count){
+					fence.AddVertex(msgFencePoint.idx,msgFencePoint.lat,msgFencePoint.lng);
+					count++;
+					time(&starttime);
+					state = 0;
+				}
+			}
+
+			if(count == nVertices){
+				state = 2;
+			}
+			break;
+
+		case 3:
+			readComplete = true;
+
+			if(fenceList.size() >= fence.GetID()){
+				fenceList.push_back(fence);
+			}
+			else{
+				std::list<Geofence>::iterator it;
+				for(it = fenceList.begin(); it != fenceList.end(); ++it){
+					if(it->GetID() == fence.GetID()){
+						it = fenceList.erase(it);
+						fenceList.insert(it,fence);
+						break;
+					}
+				}
+			}
+			mavlink_msg_command_ack_pack(1,0,&msg,MAV_CMD_DO_FENCE_ENABLE,1);
+			gsIntf->SendMAVLinkMsg(msg);
+			break;
+		}
+
+	}
+}

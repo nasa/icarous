@@ -40,6 +40,7 @@
 
  #include "math.h"
  #include "Interface.h"
+ #include "AircraftData.h"
  #include "common/mavlink.h"
  #include "ardupilotmega/ardupilotmega.h"
 

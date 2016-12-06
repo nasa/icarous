@@ -70,7 +70,7 @@ uint8_t QuadFMS::TAKEOFF(){
 
 uint8_t QuadFMS::CLIMB(){
 
-	double currentAlt = FlightData->currentPos.alt();
+	double currentAlt = FlightData->acState.positionLast().alt();
 	double alt_error  = fabs(currentAlt - targetAlt);
 
 	if( alt_error < 0.5 ){

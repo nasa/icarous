@@ -40,11 +40,16 @@
 #include <list>
 #include "MAVLinkInbox.h"
 #include "ParameterData.h"
+#include "AircraftState.h"
 #include "Position.h"
 #include "Velocity.h"
 #include "Plan.h"
+#include "Geofence.h"
+#include "time.h"
+#include "Interface.h"
 
 using namespace larcfm;
+
 
 class AircraftData{
     private:
@@ -57,15 +62,16 @@ class AircraftData{
         uint16_t nextWP;
         MAVLinkInbox* RcvdMessages;
         ParameterData* paramData;
-        Position currentPos;
-        Velocity currentVel;
+        AircraftState acState;
         Plan FlightPlan;
+        std::list<Geofence> fenceList;
         AircraftData(MAVLinkInbox* Msgs,ParameterData* pData);
         void AddMissionItem(mavlink_mission_item_t msg);
         uint8_t GetStartMissionFlag();
         void SetStartMissionFlag(uint8_t flag);
         uint16_t GetFlightPlanSize();
         void ConstructPlan();
+        void GetGeofence(Interface *gsIntf,mavlink_command_long_t msg);
         
 };
 

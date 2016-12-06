@@ -68,6 +68,7 @@ class MAVLinkInbox{
         std::queue<mavlink_command_int_t> listCommandInt;
         std::queue<mavlink_set_mode_t> listSetMode;
         std::queue<mavlink_command_ack_t> listCommandAck;
+        std::queue<mavlink_fence_point_t> listFencePoint;
         
     public:
         
@@ -86,10 +87,12 @@ class MAVLinkInbox{
         bool GetCommandLong(mavlink_command_long_t& msg);
         bool GetCommandInt(mavlink_command_int_t& msg);
         bool GetCommandAck(mavlink_command_ack_t& msg);
+        bool GetFencePoint(mavlink_fence_point_t& msg);
         void GetGPSRawInt(double& lat, double& lon, double& alt);
-        void GetGlobalPositionInt(double& lat, double& lon, double& absalt, double& relalt,
+        void GetGlobalPositionInt(double& time,double& lat, double& lon, double& absalt, double& relalt,
         						  double& vx, double& vy, double& vz);
         void GetAttitude(double& roll,double& pitch,double& yaw);
+
 };
 
 #endif
