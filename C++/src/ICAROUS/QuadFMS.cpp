@@ -44,12 +44,11 @@
      maneuverState     = IDLE_m;
      trajectoryState   = IDLE_t;
      planType          = MISSION;
+     resumeMission     = true;
 
  }
 
- //QuadFMS_t::~QuadFMS_t(){
-
- //}
+ QuadFMS_t::~QuadFMS_t(){}
 
 uint8_t QuadFMS_t::TAKEOFF(){
 
@@ -96,6 +95,9 @@ uint8_t QuadFMS_t::CLIMB(){
 
 uint8_t QuadFMS_t::CRUISE(){
 
+	Monitor();
+
+	Resolve();
 	return 0;
 }
 
@@ -143,20 +145,53 @@ uint8_t QuadFMS_t::Monitor(){
 
 uint8_t QuadFMS_t::Resolve(){
 
+	uint8_t status;
 
 	switch(resolutionState){
 
 	case COMPUTE_r:
-		// Do something
+		printf("Computing resolution\n");
+		if(Conflict.keepin){
+			ResolveKeepInConflict();
+		}
+
+		if(planType == TRAJECTORY){
+			resolutionState = TRAJECTORY_r;
+			trajectoryState = START_t;
+		}
+		else if(planType == MANEUVER){
+			resolutionState = MANEUVER_r;
+		}
+
 		break;
 	case MANEUVER_r:
 		// Do something
 		break;
+
 	case TRAJECTORY_r:
 		// Fly trajectory
+
+		status = FlyTrajectory();
+
+		if(status == 1){
+			if(resumeMission){
+				resolutionState = IDLE_r;
+			}
+			else{
+				resolutionState = RESUME_r;
+			}
+		}
+
 		break;
+
 	case RESUME_r:
 		// Resume mission
+		ComputeInterceptCourse();
+		resolutionState = TRAJECTORY_r;
+		trajectoryState = START_t;
+		Conflict.clear();
+		conflictSize = Conflict.size();
+
 		break;
 	case IDLE_r:
 		break;
@@ -165,10 +200,86 @@ uint8_t QuadFMS_t::Resolve(){
 	return 0;
 }
 
+uint8_t QuadFMS_t::FlyTrajectory(){
+
+	uint8_t status = 0;
+	float resolutionSpeed;
+	NavPoint wp;
+	Position current, next;
+	double distH,distV;
+
+	switch(trajectoryState){
+
+	case START_t:
+		printf("executing trajectory resolution\n");
+		resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
+		SetMode(GUIDED);
+		//SetSpeed(resolutionSpeed);
+		trajectoryState = FIX_t;
+		break;
+
+	case FIX_t:
+		wp = FlightData->ResolutionPlan.point(FlightData->nextResolutionWP);
+		SetGPSPos(wp.lla().latitude(),wp.lla().longitude(),wp.lla().alt());
+		trajectoryState = ENROUTE_t;
+		//printf("Sent command\n");
+		break;
+
+	case ENROUTE_t:
+		current = FlightData->acState.positionLast();
+		next    = FlightData->ResolutionPlan.point(FlightData->nextResolutionWP).position();
+		distH     = current.distanceH(next);
+		distV     = current.distanceV(next);
+		//printf("distH,V = %f,%f\n",distH,distV);
+		if(distH < 1 && distV < 0.5){
+			FlightData->nextResolutionWP++;
+			if(FlightData->nextResolutionWP >= FlightData->ResolutionPlan.size()){
+				trajectoryState = STOP_t;
+				FlightData->nextResolutionWP = 0;
+			}
+		}
+		else{
+			trajectoryState = FIX_t;
+		}
+		break;
+
+	case STOP_t:
+		FlightData->nextResolutionWP = 0;
+		FlightData->ResolutionPlan.clear();
+		trajectoryState = IDLE_t;
+		status = 1;
+		break;
+
+	case IDLE_t:
+		break;
+	}
+
+	return status;
+}
+
+void QuadFMS_t::ComputeInterceptCourse(){
+	Position current = FlightData->acState.positionLast();
+	Position next    = FlightData->MissionPlan.point(FlightData->nextMissionWP).position();
+
+	double distH = current.distanceH(next);
+	float speed  = FlightData->paramData->getValue("RES_SPEED");
+	double ETA   = distH/speed;
+
+	NavPoint wp1(current,0);
+	NavPoint wp2(next,ETA);
+	FlightData->ResolutionPlan.add(wp1);
+	FlightData->ResolutionPlan.add(wp2);
+	FlightData->nextResolutionWP = 0;
+	planType      = TRAJECTORY;
+	resumeMission = true;
+}
+
 void QuadFMS_t::ResolveKeepInConflict(){
-	planType = RESOLUTION;
+	planType        = TRAJECTORY;
+	resumeMission   = false;
 	Geofence_t fence = Conflict.GetKeepInConflict();
 	NavPoint wp(fence.GetRecoveryPoint(),0);
+	std::cout<<wp.position().toStringUnits("degree","degree","m")<<std::endl;
 	NavPoint next_wp = FlightData->MissionPlan.point(FlightData->nextMissionWP);
 	FlightData->ResolutionPlan.clear();
 	FlightData->ResolutionPlan.add(wp);

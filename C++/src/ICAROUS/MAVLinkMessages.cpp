@@ -39,6 +39,7 @@
 
  MAVLinkMessages_t::MAVLinkMessages_t(){
      pthread_mutex_init(&lock, NULL);
+     memset(&globalPositionInt,0,sizeof(mavlink_global_position_int_t));
  }
 
  void MAVLinkMessages_t::DecodeMessage(mavlink_message_t message){
@@ -129,7 +130,7 @@
 
         case MAVLINK_MSG_ID_COMMAND_LONG:
         {
-            printf("MAVLINK_MSG_ID_COMMAND_LONG\n");
+            //printf("MAVLINK_MSG_ID_COMMAND_LONG\n");
             mavlink_command_long_t msg;
             mavlink_msg_command_long_decode(&message, &msg);
             listCommandLong.push(msg);
@@ -179,7 +180,7 @@
 
         case MAVLINK_MSG_ID_FENCE_POINT:
         {
-        	printf("MAVLINK_MSG_ID_FENCE_POINT\n");
+        	//printf("MAVLINK_MSG_ID_FENCE_POINT\n");
         	mavlink_fence_point_t msg;
 			mavlink_msg_fence_point_decode(&message,&msg);
 			listFencePoint.push(msg);

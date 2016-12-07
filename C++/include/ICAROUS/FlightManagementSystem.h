@@ -84,7 +84,7 @@ class FlightManagementSystem_t{
     public:
 
         FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData);
-        virtual ~FlightManagementSystem_t()=0;
+        virtual ~FlightManagementSystem_t(){};
         void RunFMS();
 
         void SendCommand(uint8_t target_system,uint8_t target_component,uint16_t command,uint8_t confirmation,

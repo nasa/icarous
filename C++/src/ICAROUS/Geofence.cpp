@@ -56,11 +56,13 @@ void Geofence_t::AddVertex(int index, double lat,double lon){
 	double ResolBUFF = params->getValue("HTRHESHOLD"); // expansion/contraction amount
 
 	if(geoPoly0.size() == nVertices){
+		geoPoly0.setBottom(floor);
+		geoPoly0.setTop(ceiling);
 		proj = Projection::createProjection(geoPoly0.getVertex(0));
 		geoPoly3D = geoPoly0.poly3D(proj);
 
 		for(int i=0;i<nVertices;++i){
-			fenceVertices0.push_back(geoPoly3D.getVertex(0));
+			fenceVertices0.push_back(geoPoly3D.getVertex(i));
 		}
 
 		if(fenceType == KEEP_IN){

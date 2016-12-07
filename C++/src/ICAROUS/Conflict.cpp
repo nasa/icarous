@@ -66,10 +66,13 @@ bool Conflict_t::isEqual(Geofence_t gf){
 
 void Conflict_t::AddConflict(Geofence_t gf){
 	if(!isEqual(gf)){
-		if(gf.GetType() == KEEP_IN)
+		if(gf.GetType() == KEEP_IN){
 			keepInGeofence.push_back(gf);
-		else
+			printf("Keep in conflict\n");
+		}
+		else{
 			keepOutGeofence.push_back(gf);
+		}
 	}
 }
 
@@ -100,4 +103,9 @@ uint8_t Conflict_t::size(){
 Geofence_t Conflict_t::GetKeepInConflict(){
 	itGeofence = keepInGeofence.begin();
 	return *itGeofence;
+}
+
+void Conflict_t::clear(){
+	keepInGeofence.clear();
+	keepOutGeofence.clear();
 }

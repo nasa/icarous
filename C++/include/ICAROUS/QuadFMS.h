@@ -45,7 +45,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
 	enum resolve_state_t {IDLE_r, COMPUTE_r, MANEUVER_r, TRAJECTORY_r, RESUME_r};
 	enum trajectory_state_t {IDLE_t, START_t, FIX_t, ENROUTE_t, STOP_t};
 	enum maneuver_state_t {IDLE_m, START_m,GUIDE_m,STOP_m};
-	enum plan_type_t {MISSION,RESOLUTION};
+	enum plan_type_t {MISSION,TRAJECTORY,MANEUVER};
 
 
     private:
@@ -54,10 +54,11 @@ class QuadFMS_t:public FlightManagementSystem_t{
         trajectory_state_t trajectoryState;
         maneuver_state_t maneuverState;
         plan_type_t planType;
+        bool resumeMission;
 
     public:
         QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData);
-        //~QuadFMS_t();
+        ~QuadFMS_t();
         uint8_t TAKEOFF();
         uint8_t CLIMB();
         uint8_t CRUISE();
@@ -67,6 +68,8 @@ class QuadFMS_t:public FlightManagementSystem_t{
         uint8_t Resolve();
 
         void ResolveKeepInConflict();
+        uint8_t FlyTrajectory();
+        void ComputeInterceptCourse();
 
 };
 

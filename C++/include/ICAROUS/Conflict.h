@@ -60,6 +60,7 @@ public:
 	Geofence_t GetKeepInConflict();
 	bool isEqual(Geofence_t gf);
 	uint8_t size();
+	void clear();
 
 
 };
