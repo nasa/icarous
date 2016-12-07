@@ -44,13 +44,14 @@ FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interfac
     FlightData   = fData;
     RcvdMessages = fData->RcvdMessages; 
     fmsState     = _idle_;
+    conflictSize = 0;
 }
 
 void FlightManagementSystem_t::RunFMS(){
      while(true){
 
     	GetLatestAircraftData();
-    	CheckWaypointReached();
+    	CheckMissionWaypointReached();
 
         switch(fmsState){
             case _idle_:
@@ -205,7 +206,7 @@ uint8_t FlightManagementSystem_t::IDLE(){
         if( fpsize > 0){
         	PREFLIGHT();
             fmsState = _takeoff_;
-            FlightData->nextWP = 0;
+            FlightData->nextMissionWP = 0;
             return 1; 
         }
         else{
@@ -216,7 +217,7 @@ uint8_t FlightManagementSystem_t::IDLE(){
     else if(start > 0 && start < fpsize ){
     	PREFLIGHT();
         fmsState           = _cruise_;
-        FlightData->nextWP = start;
+        FlightData->nextMissionWP = start;
         SendStatusText("Flying to waypoint");
         return 1;
     }
@@ -224,14 +225,14 @@ uint8_t FlightManagementSystem_t::IDLE(){
     return 0;
 }
 
-bool FlightManagementSystem_t::CheckWaypointReached(){
+bool FlightManagementSystem_t::CheckMissionWaypointReached(){
 
 	mavlink_mission_item_reached_t msg;
 	bool val;
 	val = RcvdMessages->GetMissionItemReached(msg);
 
 	if(val){
-		FlightData->nextWP++;
+		FlightData->nextMissionWP++;
 	}
 
 	return val;

@@ -44,6 +44,9 @@ Geofence_t::Geofence_t(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor,
 	floor     = infloor;
 	ceiling   = inCeiling;
 	params    = pData;
+	conflict = false;
+	violation = false;
+	projectedViolation = false;
 }
 
 void Geofence_t::AddVertex(int index, double lat,double lon){

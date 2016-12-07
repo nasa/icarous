@@ -59,11 +59,13 @@ class AircraftData_t{
         
 
     public:
-        uint16_t nextWP;
+        uint16_t nextMissionWP;
+        uint16_t nextResolutionWP;
         MAVLinkMessages_t* RcvdMessages;
         ParameterData* paramData;
         AircraftState acState;
-        Plan FlightPlan;
+        Plan MissionPlan;
+        Plan ResolutionPlan;
         std::list<Geofence_t> fenceList;
         std::list<Geofence_t>::iterator fenceListIt;
         AircraftData_t(MAVLinkMessages_t* Msgs,ParameterData* pData);

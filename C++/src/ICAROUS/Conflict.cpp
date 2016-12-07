@@ -44,10 +44,21 @@ Conflict_t::Conflict_t(){
 }
 
 bool Conflict_t::isEqual(Geofence_t gf){
-	for(itGeofence = geofenceConflicts.begin();
-		itGeofence != geofenceConflicts.end();++itGeofence){
-		if(gf.GetID() == itGeofence->GetID()){
-			return true;
+
+	if(gf.GetType() == KEEP_IN){
+		for(itGeofence = keepInGeofence.begin();
+			itGeofence != keepInGeofence.end();++itGeofence){
+			if(gf.GetID() == itGeofence->GetID()){
+				return true;
+			}
+		}
+	}
+	else{
+		for(itGeofence = keepOutGeofence.begin();
+			itGeofence != keepOutGeofence.end();++itGeofence){
+			if(gf.GetID() == itGeofence->GetID()){
+				return true;
+			}
 		}
 	}
 	return false;
@@ -55,19 +66,38 @@ bool Conflict_t::isEqual(Geofence_t gf){
 
 void Conflict_t::AddConflict(Geofence_t gf){
 	if(!isEqual(gf)){
-		geofenceConflicts.push_back(gf);
+		if(gf.GetType() == KEEP_IN)
+			keepInGeofence.push_back(gf);
+		else
+			keepOutGeofence.push_back(gf);
 	}
 }
 
 void Conflict_t::RemoveConflict(Geofence_t gf){
-	for(itGeofence = geofenceConflicts.begin();
-		itGeofence != geofenceConflicts.end();++itGeofence){
-		if(gf.GetID() == itGeofence->GetID()){
-			itGeofence = geofenceConflicts.erase(itGeofence);
+	if(gf.GetType() == KEEP_IN){
+		for(itGeofence = keepInGeofence.begin();
+			itGeofence != keepInGeofence.end();++itGeofence){
+			if(gf.GetID() == itGeofence->GetID()){
+				itGeofence = keepInGeofence.erase(itGeofence);
+			}
+		}
+	}
+	else{
+		for(itGeofence = keepOutGeofence.begin();
+			itGeofence != keepOutGeofence.end();++itGeofence){
+			if(gf.GetID() == itGeofence->GetID()){
+				itGeofence = keepOutGeofence.erase(itGeofence);
+			}
 		}
 	}
 }
 
 uint8_t Conflict_t::size(){
-	return geofenceConflicts.size();
+	return keepInGeofence.size()+
+			keepOutGeofence.size();
+}
+
+Geofence_t Conflict_t::GetKeepInConflict(){
+	itGeofence = keepInGeofence.begin();
+	return *itGeofence;
 }

@@ -78,7 +78,7 @@ uint16_t AircraftData_t::GetFlightPlanSize(){
 
 void AircraftData_t::ConstructPlan(){
 	// Create a Plan object with the available mission items
-	FlightPlan.clear();
+	MissionPlan.clear();
 	std::list<mavlink_mission_item_t>::iterator it;
 	int ic;
 	for(it = listMissionItem.begin(),ic = 0;
@@ -95,12 +95,12 @@ void AircraftData_t::ConstructPlan(){
 					vel = 1;
 				}
 
-				double distance = FlightPlan.point(ic - 1).position().distanceH(WP);
-				wptime   = FlightPlan.getTime(ic-1) + distance/vel;
+				double distance = MissionPlan.point(ic - 1).position().distanceH(WP);
+				wptime   = MissionPlan.getTime(ic-1) + distance/vel;
 			}
 
 			NavPoint navPoint(WP,wptime);
-			FlightPlan.add(navPoint);
+			MissionPlan.add(navPoint);
 		}
 	}
 }

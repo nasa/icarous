@@ -46,7 +46,8 @@
 class Conflict_t{
 private:
 
-	std::list<Geofence_t> geofenceConflicts;
+	std::list<Geofence_t> keepInGeofence;
+	std::list<Geofence_t> keepOutGeofence;
 	std::list<Geofence_t>::iterator itGeofence;
 
 public:
@@ -56,6 +57,7 @@ public:
 	Conflict_t();
 	void AddConflict(Geofence_t gf);
 	void RemoveConflict(Geofence_t gf);
+	Geofence_t GetKeepInConflict();
 	bool isEqual(Geofence_t gf);
 	uint8_t size();
 

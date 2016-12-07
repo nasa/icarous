@@ -43,6 +43,7 @@
  #include "Interface.h"
  #include "AircraftData.h"
  #include "Conflict.h"
+ #include "NavPoint.h"
 
 enum fms_state_t {_idle_,_takeoff_,_climb_,_cruise_,_descend_,_land_};
 
@@ -78,10 +79,12 @@ class FlightManagementSystem_t{
         MAVLinkMessages_t* RcvdMessages;
         fms_state_t fmsState;
         Conflict_t Conflict;
+        uint8_t conflictSize;
 
     public:
 
         FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData);
+        virtual ~FlightManagementSystem_t()=0;
         void RunFMS();
 
         void SendCommand(uint8_t target_system,uint8_t target_component,uint16_t command,uint8_t confirmation,
@@ -98,7 +101,7 @@ class FlightManagementSystem_t{
         void StartTakeoff(float alt);
         void GetLatestAircraftData();
         bool CheckAck(MAV_CMD command);
-        bool CheckWaypointReached();
+        bool CheckMissionWaypointReached();
 
         uint8_t IDLE();
         uint8_t PREFLIGHT();

@@ -39,7 +39,12 @@
 
  QuadFMS_t::QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData):
  FlightManagementSystem_t(px4int,gsint,fData){
-     targetAlt       = 0.0f;
+     targetAlt         = 0.0f;
+     resolutionState   = IDLE;
+     maneuverState     = IDLE;
+     trajectoryState   = IDLE;
+     planType          = MISSION;
+
  }
 
 uint8_t QuadFMS_t::TAKEOFF(){
@@ -76,7 +81,7 @@ uint8_t QuadFMS_t::CLIMB(){
 	if( alt_error < 0.5 ){
 		SetMode(AUTO);
 		SetSpeed(1.0f);
-		FlightData->nextWP++;
+		FlightData->nextMissionWP++;
 		fmsState = _cruise_;
 		SendStatusText("Starting cruise");
 		return 1;
@@ -124,10 +129,50 @@ uint8_t QuadFMS_t::Monitor(){
 		}
 	}
 
-	return Conflict.size();
+	if(Conflict.size() != conflictSize){
+		conflictSize = Conflict.size();
+		resolutionState = COMPUTE;
+	}
+
+	return conflictSize;
 }
 
 uint8_t QuadFMS_t::Resolve(){
 
+
+	switch(resolutionState){
+
+	case COMPUTE:
+		// Do something
+		break;
+	case MANEUVER:
+		// Do something
+		break;
+	case TRAJECTORY:
+		// Fly trajectory
+		break;
+	case RESUME:
+		// Resume mission
+		break;
+	case IDLE:
+		break;
+	}
+
 	return 0;
+}
+
+void QuadFMS_t::ResolveKeepInConflict(){
+	planType = RESOLUTION;
+	Geofence_t fence = Conflict.GetKeepInConflict();
+	NavPoint wp(fence.GetRecoveryPoint(),0);
+	NavPoint next_wp = FlightData->MissionPlan.point(FlightData->nextMissionWP);
+	FlightData->ResolutionPlan.clear();
+	FlightData->ResolutionPlan.add(wp);
+	FlightData->nextResolutionWP = 0;
+
+	if(fence.CheckWPFeasibility(wp.position(),next_wp.position())){
+		FlightData->nextMissionWP++;
+	}
+
+	return;
 }
