@@ -35,15 +35,15 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#ifndef MAVLINKINBOX_H_
-#define MAVLINKINBOX_H_
+#ifndef MAVLINKMESSAGES_H_
+#define MAVLINKMESSAGES_H_
 
 #include <stdio.h>
 #include <pthread.h> // This uses POSIX Threads
 #include "ardupilotmega/mavlink.h"
 #include <queue>
 
-class MAVLinkInbox{
+class MAVLinkMessages_t{
 
     private:
         pthread_mutex_t lock;
@@ -71,7 +71,7 @@ class MAVLinkInbox{
         
     public:
         
-        MAVLinkInbox();
+        MAVLinkMessages_t();
         void DecodeMessage(mavlink_message_t message);
         bool GetMissionCount(mavlink_mission_count_t& msg);
         bool GetMissionItem(mavlink_mission_item_t& msg);

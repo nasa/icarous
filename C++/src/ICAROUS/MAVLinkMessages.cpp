@@ -35,13 +35,13 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
- #include "MAVLinkInbox.h"
+ #include "MAVLinkMessages.h"
 
- MAVLinkInbox::MAVLinkInbox(){
+ MAVLinkMessages_t::MAVLinkMessages_t(){
      pthread_mutex_init(&lock, NULL);
  }
 
- void MAVLinkInbox::DecodeMessage(mavlink_message_t message){
+ void MAVLinkMessages_t::DecodeMessage(mavlink_message_t message){
     pthread_mutex_lock(&lock);
 
     switch (message.msgid){
@@ -193,7 +193,7 @@
  }
 
 
- bool MAVLinkInbox::GetMissionCount(mavlink_mission_count_t& msg){
+ bool MAVLinkMessages_t::GetMissionCount(mavlink_mission_count_t& msg){
 
      bool val;
      pthread_mutex_lock(&lock);
@@ -209,7 +209,7 @@
      return val;   
  }
 
- bool MAVLinkInbox::GetMissionItem(mavlink_mission_item_t& msg){
+ bool MAVLinkMessages_t::GetMissionItem(mavlink_mission_item_t& msg){
 
      bool val;
      pthread_mutex_lock(&lock);
@@ -225,7 +225,7 @@
      return val;   
  }
 
- bool MAVLinkInbox::GetMissionRequestList(mavlink_mission_request_list_t& msg){
+ bool MAVLinkMessages_t::GetMissionRequestList(mavlink_mission_request_list_t& msg){
 
      bool val;
      pthread_mutex_lock(&lock);
@@ -241,7 +241,7 @@
      return val;  
  }
 
- bool MAVLinkInbox::GetMissionRequest(mavlink_mission_request_t& msg){
+ bool MAVLinkMessages_t::GetMissionRequest(mavlink_mission_request_t& msg){
 
      bool val;
      pthread_mutex_lock(&lock);
@@ -257,7 +257,7 @@
      return val;  
  }
 
- bool MAVLinkInbox::GetParamRequestList(mavlink_param_request_list_t& msg){
+ bool MAVLinkMessages_t::GetParamRequestList(mavlink_param_request_list_t& msg){
 
      bool val;
      pthread_mutex_lock(&lock);
@@ -273,7 +273,7 @@
      return val;  
  }
 
-bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
+bool MAVLinkMessages_t::GetParamSet(mavlink_param_set_t& msg){
 
      bool val;
      pthread_mutex_lock(&lock);
@@ -289,7 +289,7 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
      return val;  
  }
 
- bool MAVLinkInbox::GetParamValue(mavlink_param_value_t& msg){
+ bool MAVLinkMessages_t::GetParamValue(mavlink_param_value_t& msg){
 
      bool val;
      pthread_mutex_lock(&lock);
@@ -305,7 +305,7 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
      return val;  
  }
 
- bool MAVLinkInbox::GetParamRequestRead(mavlink_param_request_read_t& msg){
+ bool MAVLinkMessages_t::GetParamRequestRead(mavlink_param_request_read_t& msg){
 
      bool val;
      pthread_mutex_lock(&lock);
@@ -321,7 +321,7 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
      return val;  
  }
 
- bool MAVLinkInbox::GetSetMode(mavlink_set_mode_t& msg){
+ bool MAVLinkMessages_t::GetSetMode(mavlink_set_mode_t& msg){
 
      bool val;
      pthread_mutex_lock(&lock);
@@ -337,7 +337,7 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
      return val;  
  }
 
- bool MAVLinkInbox::GetCommandLong(mavlink_command_long_t& msg){
+ bool MAVLinkMessages_t::GetCommandLong(mavlink_command_long_t& msg){
 
      bool val;
      pthread_mutex_lock(&lock);
@@ -353,7 +353,7 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
      return val;  
  }
 
- bool MAVLinkInbox::GetCommandInt(mavlink_command_int_t& msg){
+ bool MAVLinkMessages_t::GetCommandInt(mavlink_command_int_t& msg){
 
      bool val;
      pthread_mutex_lock(&lock);
@@ -369,7 +369,7 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
      return val;  
  }
 
- bool MAVLinkInbox::GetCommandAck(mavlink_command_ack_t& msg){
+ bool MAVLinkMessages_t::GetCommandAck(mavlink_command_ack_t& msg){
      bool val;
      pthread_mutex_lock(&lock);
      if(!listCommandAck.empty()){
@@ -385,7 +385,7 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
 
  }
 
- bool MAVLinkInbox::GetFencePoint(mavlink_fence_point_t& msg){
+ bool MAVLinkMessages_t::GetFencePoint(mavlink_fence_point_t& msg){
 	  bool val;
 	  pthread_mutex_lock(&lock);
 	  if(!listFencePoint.empty()){
@@ -400,7 +400,7 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
 	  return val;
  }
 
- void MAVLinkInbox::GetGPSRawInt(double& lat, double& lon, double& abs_alt){
+ void MAVLinkMessages_t::GetGPSRawInt(double& lat, double& lon, double& abs_alt){
 
 	 pthread_mutex_lock(&lock);
 	 lat    = (double) gpsRawInt.lat/1E7;
@@ -410,7 +410,7 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
 
  }
 
- void MAVLinkInbox::GetGlobalPositionInt(double &time,double& lat, double& lon, double& abs_alt, double& rel_alt,
+ void MAVLinkMessages_t::GetGlobalPositionInt(double &time,double& lat, double& lon, double& abs_alt, double& rel_alt,
 		  	  	  	  	  	  	  	  	  double& vx, double& vy, double& vz){
 	 pthread_mutex_lock(&lock);
 	 time   = (double) globalPositionInt.time_boot_ms/1E6;
@@ -424,7 +424,7 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
 	 pthread_mutex_unlock(&lock);
  }
 
- void MAVLinkInbox::GetAttitude(double& roll,double& pitch,double& yaw){
+ void MAVLinkMessages_t::GetAttitude(double& roll,double& pitch,double& yaw){
 
 	 pthread_mutex_lock(&lock);
 	 roll  = (double) attitude.roll;
@@ -433,7 +433,7 @@ bool MAVLinkInbox::GetParamSet(mavlink_param_set_t& msg){
 	 pthread_mutex_unlock(&lock);
  }
 
- bool MAVLinkInbox::GetMissionItemReached(mavlink_mission_item_reached_t& msg){
+ bool MAVLinkMessages_t::GetMissionItemReached(mavlink_mission_item_reached_t& msg){
 	 bool val;
 	 pthread_mutex_lock(&lock);
 	 if(!listMissionItemReached.empty()){

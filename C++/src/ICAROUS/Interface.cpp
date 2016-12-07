@@ -40,12 +40,12 @@
 #include "Interface.h"
 
 
-Interface::Interface(MAVLinkInbox *msgInbox){
+Interface_t::Interface_t(MAVLinkMessages_t *msgInbox){
     pthread_mutex_init(&lock, NULL);
     RcvdMessages = msgInbox;
 }
 
-int Interface::GetMAVLinkMsg(){
+int Interface_t::GetMAVLinkMsg(){
 
     int n = ReadData();
     mavlink_message_t message;
@@ -76,16 +76,16 @@ int Interface::GetMAVLinkMsg(){
     return n;
 }
 
-void Interface::SendMAVLinkMsg(mavlink_message_t msg){
+void Interface_t::SendMAVLinkMsg(mavlink_message_t msg){
     uint16_t len = mavlink_msg_to_send_buffer(sendbuffer, &msg);
     WriteData(sendbuffer,len);
 }
 
-uint8_t* Interface::GetRecvBuffer(){
+uint8_t* Interface_t::GetRecvBuffer(){
     return recvbuffer;
 }
 
-void Interface::EnableDataStream(int option){
+void Interface_t::EnableDataStream(int option){
 	
 	mavlink_message_t msg1,msg2;
     mavlink_msg_heartbeat_pack(255, 0, &msg1, MAV_TYPE_ONBOARD_CONTROLLER, 
@@ -98,8 +98,8 @@ void Interface::EnableDataStream(int option){
 }
 
 
-SerialInterface::SerialInterface(char name[],int brate,int pbit,MAVLinkInbox *msgInbox)
-:Interface(msgInbox){
+SerialInterface_t::SerialInterface_t(char name[],int brate,int pbit,MAVLinkMessages_t *msgInbox)
+:Interface_t(msgInbox){
 
   portname = name;
   baudrate = brate;
@@ -117,7 +117,7 @@ SerialInterface::SerialInterface(char name[],int brate,int pbit,MAVLinkInbox *ms
 
 }
 
-int SerialInterface::set_interface_attribs()
+int SerialInterface_t::set_interface_attribs()
 {
     struct termios tty;
     memset (&tty, 0, sizeof tty);
@@ -157,7 +157,7 @@ int SerialInterface::set_interface_attribs()
     return 0;
 }
 
-void SerialInterface::set_blocking (int should_block)
+void SerialInterface_t::set_blocking (int should_block)
 {
     struct termios tty;
     memset (&tty, 0, sizeof tty);
@@ -175,7 +175,7 @@ void SerialInterface::set_blocking (int should_block)
 	
 }
 
-int SerialInterface::ReadData(){
+int SerialInterface_t::ReadData(){
     
     char buf;
     int n = 0;
@@ -187,7 +187,7 @@ int SerialInterface::ReadData(){
     return n;
 }
 
-void SerialInterface::WriteData(uint8_t buffer[],uint16_t len){
+void SerialInterface_t::WriteData(uint8_t buffer[],uint16_t len){
 
     pthread_mutex_lock(&lock);
     write(fd,buffer,len);
@@ -196,8 +196,8 @@ void SerialInterface::WriteData(uint8_t buffer[],uint16_t len){
 
 
 // Socet interface class definition
-SocketInterface::SocketInterface(char targetip[], int inportno, int outportno,MAVLinkInbox *msgInbox)
-:Interface(msgInbox){
+SocketInterface_t::SocketInterface_t(char targetip[], int inportno, int outportno,MAVLinkMessages_t *msgInbox)
+:Interface_t(msgInbox){
 
     sock = socket(AF_INET, SOCK_DGRAM, 0);
 
@@ -227,11 +227,9 @@ SocketInterface::SocketInterface(char targetip[], int inportno, int outportno,MA
     
 }
 
-int SocketInterface::ReadData(){
+int SocketInterface_t::ReadData(){
 
     int n = 0;
-    struct sockaddr_in clientAddr;
-    socklen_t msglen;
     pthread_mutex_lock(&lock);
     memset(recvbuffer, 0, BUFFER_LENGTH);
     n = recvfrom(sock, (void *)recvbuffer, BUFFER_LENGTH, 0, (struct sockaddr *)&targetAddr, &recvlen);
@@ -239,7 +237,7 @@ int SocketInterface::ReadData(){
     return n;
 }
 
-void SocketInterface::WriteData(uint8_t buffer[],uint16_t len){
+void SocketInterface_t::WriteData(uint8_t buffer[],uint16_t len){
     pthread_mutex_lock(&lock);
     sendto(sock, buffer, len, 0, (struct sockaddr*)&targetAddr, sizeof (struct sockaddr_in));
     pthread_mutex_unlock(&lock);

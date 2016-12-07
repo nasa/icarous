@@ -40,13 +40,14 @@
 
 #include "FlightManagementSystem.h"
 
-class QuadFMS:public FlightManagementSystem{
+class QuadFMS_t:public FlightManagementSystem_t{
 
     private:
         float targetAlt;
 
+
     public:
-        QuadFMS(Interface *px4int, Interface *gsint,AircraftData* fData);
+        QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData);
         uint8_t TAKEOFF();
         uint8_t CLIMB();
         uint8_t CRUISE();

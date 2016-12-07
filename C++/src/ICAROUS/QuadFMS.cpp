@@ -35,14 +35,14 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
- #include "FlightManagementSystem.h"
+ #include "QuadFMS.h"
 
- QuadFMS::QuadFMS(Interface *px4int, Interface *gsint,AircraftData* fData):
- FlightManagementSystem(px4int,gsint,fData){
+ QuadFMS_t::QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData):
+ FlightManagementSystem_t(px4int,gsint,fData){
      targetAlt       = 0.0f;
  }
 
-uint8_t QuadFMS::TAKEOFF(){
+uint8_t QuadFMS_t::TAKEOFF(){
 
 	targetAlt = (float) FlightData->paramData->getValue("TAKEOFF_ALT");
 
@@ -68,7 +68,7 @@ uint8_t QuadFMS::TAKEOFF(){
 	}
 }
 
-uint8_t QuadFMS::CLIMB(){
+uint8_t QuadFMS_t::CLIMB(){
 
 	double currentAlt = FlightData->acState.positionLast().alt();
 	double alt_error  = fabs(currentAlt - targetAlt);
@@ -85,25 +85,25 @@ uint8_t QuadFMS::CLIMB(){
 	return 0;
 }
 
-uint8_t QuadFMS::CRUISE(){
+uint8_t QuadFMS_t::CRUISE(){
 
 	return 0;
 }
 
-uint8_t QuadFMS::DESCEND(){
+uint8_t QuadFMS_t::DESCEND(){
 	return 0;
 }
 
-uint8_t QuadFMS::LAND(){
+uint8_t QuadFMS_t::LAND(){
 	return 0;
 }
 
-uint8_t QuadFMS::Monitor(){
+uint8_t QuadFMS_t::Monitor(){
 
 	return 0;
 }
 
-uint8_t QuadFMS::Resolve(){
+uint8_t QuadFMS_t::Resolve(){
 
 	return 0;
 }

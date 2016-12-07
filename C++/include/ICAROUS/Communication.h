@@ -1,5 +1,5 @@
 /**
- * Data acquisition
+ * COMMUNICATION
  * 
  * This class contains functions to constantly collect data from the pixhawk.
  *
@@ -35,24 +35,24 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
- #ifndef DAQ_H_
- #define DAQ_H_
+ #ifndef COMMUNICATION_H_
+ #define COMMUNICATION_H_
 
  #include "Interface.h"
  #include "AircraftData.h"
  #include "ardupilotmega/mavlink.h"
 
- class DataAcquisition{
+ class Communication_t{
 
     private:
-        Interface* px4Intf;
-        Interface* gsIntf;
-        MAVLinkInbox *RcvdMessages;
-        AircraftData* FlightData;
+        Interface_t* px4Intf;
+        Interface_t* gsIntf;
+        MAVLinkMessages_t *RcvdMessages;
+        AircraftData_t* FlightData;
         int WPcount, WPloaded;
 
     public:
-        DataAcquisition(Interface* px4int, Interface* gsint,AircraftData *fdata);
+        Communication_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata);
         void GetPixhawkData();
         void GetGSData();
         void MissionCountHandler();

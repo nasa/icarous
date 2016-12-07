@@ -37,7 +37,7 @@
 
 #include "Geofence.h"
 
-Geofence::Geofence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling,ParameterData* pData){
+Geofence_t::Geofence_t(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling,ParameterData* pData){
 	fenceType = ftype;
 	id        = ID;
 	nVertices = nVert;
@@ -46,7 +46,7 @@ Geofence::Geofence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, dou
 	params    = pData;
 }
 
-void Geofence::AddVertex(int index, double lat,double lon){
+void Geofence_t::AddVertex(int index, double lat,double lon){
 	Position pos = Position::makeLatLonAlt(lat,"degree",lon,"degree",0,"m");
 	geoPoly0.addVertex(pos);
 
@@ -73,7 +73,7 @@ void Geofence::AddVertex(int index, double lat,double lon){
 	}
 }
 
-void Geofence::CheckViolation(AircraftState acState){
+void Geofence_t::CheckViolation(AircraftState acState){
 	double hdist;
 	double vdist;
 	double alt;
@@ -123,7 +123,7 @@ void Geofence::CheckViolation(AircraftState acState){
 
 }
 
-bool Geofence::CollisionDetection(Position pos,Vect2 v,double startTime,double stopTime){
+bool Geofence_t::CollisionDetection(Position pos,Vect2 v,double startTime,double stopTime){
 	Vect2 currentPos = proj.project(pos).vect2();
 	Vect2 polygonVel(0,0);
 	bool insideBad = false;
@@ -138,7 +138,7 @@ bool Geofence::CollisionDetection(Position pos,Vect2 v,double startTime,double s
 	return val;
 }
 
-bool Geofence::CheckWPFeasibility(Position currentPos,Position nextWP){
+bool Geofence_t::CheckWPFeasibility(Position currentPos,Position nextWP){
 	double heading2WP = currentPos.track(nextWP);
 
 	// Velocity components assuming speed is 1 m/s
@@ -151,6 +151,6 @@ bool Geofence::CheckWPFeasibility(Position currentPos,Position nextWP){
 	return val;
 }
 
-uint16_t Geofence::GetID(){
+uint16_t Geofence_t::GetID(){
 	return id;
 }

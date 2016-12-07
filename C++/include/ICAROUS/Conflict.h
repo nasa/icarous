@@ -43,19 +43,19 @@
 
 
 
-class Conflict{
+class Conflict_t{
 private:
 
-	std::list<Geofence> geofenceConflicts;
-	std::list<Geofence>::iterator itGeofence;
+	std::list<Geofence_t> geofenceConflicts;
+	std::list<Geofence_t>::iterator itGeofence;
 public:
 	bool keepinConflict;
 	bool keepoutConflict;
 	bool stanodffConflict;
-	Conflict();
-	void AddConflict(Geofence gf);
-	void RemoveConflict(Geofence gf);
-	bool isEqual(Geofence gf);
+	Conflict_t();
+	void AddConflict(Geofence_t gf);
+	void RemoveConflict(Geofence_t gf);
+	bool isEqual(Geofence_t gf);
 
 
 };

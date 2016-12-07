@@ -37,7 +37,7 @@
 
  #include "FlightManagementSystem.h"
 
-FlightManagementSystem::FlightManagementSystem(Interface *px4int, Interface *gsint,AircraftData* fData){
+FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData){
     px4Intf      = px4int;
     gsIntf       = gsint;
     FlightData   = fData;
@@ -45,7 +45,7 @@ FlightManagementSystem::FlightManagementSystem(Interface *px4int, Interface *gsi
     fmsState     = _idle_;
 }
 
-void FlightManagementSystem::RunFMS(){
+void FlightManagementSystem_t::RunFMS(){
      while(true){
 
     	GetLatestAircraftData();
@@ -79,7 +79,7 @@ void FlightManagementSystem::RunFMS(){
      }
  }
 
- void FlightManagementSystem::
+ void FlightManagementSystem_t::
  SendCommand(uint8_t target_system,uint8_t target_component,
              uint16_t command,uint8_t confirmation,
              float param1, float param2, float param3,float param4, 
@@ -93,13 +93,13 @@ void FlightManagementSystem::RunFMS(){
     px4Intf->SendMAVLinkMsg(msg);
 }
 
-void FlightManagementSystem::SetYaw(double heading){
+void FlightManagementSystem_t::SetYaw(double heading){
     SendCommand(0,0,MAV_CMD_CONDITION_YAW,0,
 		       (float)heading,0,1,0,
 		       0,0,0);
 }
 
-void FlightManagementSystem::SetGPSPos(double lat,double lon, double alt){
+void FlightManagementSystem_t::SetGPSPos(double lat,double lon, double alt){
     mavlink_message_t msg;
     mavlink_msg_set_position_target_global_int_pack(255, 0, &msg,0,1,0, 
                                                     MAV_FRAME_GLOBAL_RELATIVE_ALT_INT, 
@@ -109,7 +109,7 @@ void FlightManagementSystem::SetGPSPos(double lat,double lon, double alt){
     px4Intf->SendMAVLinkMsg(msg);
 }
 
-void FlightManagementSystem::SetVelocity(double Vn,double Ve,double Vu){
+void FlightManagementSystem_t::SetVelocity(double Vn,double Ve,double Vu){
     mavlink_message_t msg;
     mavlink_msg_set_position_target_local_ned_pack(255, 0, &msg,0,1,0, 
                                                     MAV_FRAME_LOCAL_NED, 
@@ -122,7 +122,7 @@ void FlightManagementSystem::SetVelocity(double Vn,double Ve,double Vu){
     px4Intf->SendMAVLinkMsg(msg);
 }
 
-void FlightManagementSystem::SetMode(control_mode_t mode){
+void FlightManagementSystem_t::SetMode(control_mode_t mode){
     mavlink_message_t msg;
     mavlink_msg_set_mode_pack(255,0,&msg,
                               0,1,mode);
@@ -130,19 +130,19 @@ void FlightManagementSystem::SetMode(control_mode_t mode){
     px4Intf->SendMAVLinkMsg(msg);
 }
 
-void FlightManagementSystem::SetSpeed(float speed){
+void FlightManagementSystem_t::SetSpeed(float speed){
 	
 	SendCommand(0,0,MAV_CMD_DO_CHANGE_SPEED,0,
 		        1,speed,0,0,0,0,0);
 }
 
-void FlightManagementSystem::SendStatusText(char buffer[]){
+void FlightManagementSystem_t::SendStatusText(char buffer[]){
     mavlink_message_t msg;
     mavlink_msg_statustext_pack(1,0,&msg,MAV_SEVERITY_INFO,buffer);
     gsIntf->SendMAVLinkMsg(msg);
 }
 
-void FlightManagementSystem::ArmThrottles(bool arm){
+void FlightManagementSystem_t::ArmThrottles(bool arm){
 
     uint8_t c;
 
@@ -156,12 +156,12 @@ void FlightManagementSystem::ArmThrottles(bool arm){
 			         (float)c,0,0,0,0,0,0);
 }
 
-void FlightManagementSystem::StartTakeoff(float alt){
+void FlightManagementSystem_t::StartTakeoff(float alt){
     SendCommand(0,0,MAV_CMD_NAV_TAKEOFF,0,
 			    1,0,0,0,0,0,alt);
 }
 
-bool FlightManagementSystem::CheckAck(MAV_CMD command){
+bool FlightManagementSystem_t::CheckAck(MAV_CMD command){
     bool have_msg = true;
     bool status = false;
     mavlink_command_ack_t msg;
@@ -176,7 +176,7 @@ bool FlightManagementSystem::CheckAck(MAV_CMD command){
     return status;
 }
 
-void FlightManagementSystem::GetLatestAircraftData(){
+void FlightManagementSystem_t::GetLatestAircraftData(){
 
 	// Get aircraft position data
 	double lat,lon,abs_alt,rel_alt,vx,vy,vz,time;
@@ -196,7 +196,7 @@ void FlightManagementSystem::GetLatestAircraftData(){
 	}
 }
 
-uint8_t FlightManagementSystem::IDLE(){
+uint8_t FlightManagementSystem_t::IDLE(){
 
     int start  = FlightData->GetStartMissionFlag();
     int fpsize = FlightData->GetFlightPlanSize(); 
@@ -223,7 +223,7 @@ uint8_t FlightManagementSystem::IDLE(){
     return 0;
 }
 
-bool FlightManagementSystem::CheckWaypointReached(){
+bool FlightManagementSystem_t::CheckWaypointReached(){
 
 	mavlink_mission_item_reached_t msg;
 	bool val;
@@ -236,7 +236,7 @@ bool FlightManagementSystem::CheckWaypointReached(){
 	return val;
 }
 
-uint8_t FlightManagementSystem::PREFLIGHT(){
+uint8_t FlightManagementSystem_t::PREFLIGHT(){
 
 	FlightData->ConstructPlan();
 	return 0;

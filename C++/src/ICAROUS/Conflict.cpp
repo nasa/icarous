@@ -37,13 +37,13 @@
 #include "Geofence.h"
 #include "Conflict.h"
 
-Conflict::Conflict(){
+Conflict_t::Conflict_t(){
 	keepinConflict   = false;
 	keepoutConflict  = false;
 	stanodffConflict = false;
 }
 
-bool Conflict::isEqual(Geofence gf){
+bool Conflict_t::isEqual(Geofence_t gf){
 	for(itGeofence = geofenceConflicts.begin();
 		itGeofence != geofenceConflicts.end();++itGeofence){
 		if(gf.GetID() == itGeofence->GetID()){
@@ -53,13 +53,13 @@ bool Conflict::isEqual(Geofence gf){
 	return false;
 }
 
-void Conflict::AddConflict(Geofence gf){
+void Conflict_t::AddConflict(Geofence_t gf){
 	if(!isEqual(gf)){
 		geofenceConflicts.push_back(gf);
 	}
 }
 
-void Conflict::RemoveConflict(Geofence gf){
+void Conflict_t::RemoveConflict(Geofence_t gf){
 	for(itGeofence = geofenceConflicts.begin();
 		itGeofence != geofenceConflicts.end();++itGeofence){
 		if(gf.GetID() == itGeofence->GetID()){

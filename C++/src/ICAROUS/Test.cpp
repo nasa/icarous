@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <thread>
 #include <fstream>
+
+#include "Communication.h"
 #include "Interface.h"
-#include "DAQ.h"
-#include "FlightManagementSystem.h"
+#include "QuadFMS.h"
 #include "ParameterData.h"
 #include "SeparatedInput.h"
 
@@ -25,22 +26,22 @@ int main(int argc,char* argv[]){
     sepInputReader.readLine();
     paramData = sepInputReader.getParameters();
 
-    MAVLinkInbox RcvdMessages;
-    AircraftData FlightData(&RcvdMessages,&paramData);
+    MAVLinkMessages_t RcvdMessages;
+    AircraftData_t FlightData(&RcvdMessages,&paramData);
 
-    //Interface apPort = SerialInterface("/dev/ttyO1",B57600,0,&RcvdMessages);
-    SocketInterface SITL("127.0.0.1",14550,0,&RcvdMessages);
-    SocketInterface COM("127.0.0.1",14552,14553,&RcvdMessages);
+    //SerialInterface_t apPort = SerialInterface("/dev/ttyO1",B57600,0,&RcvdMessages);
+    SocketInterface_t SITL("127.0.0.1",14550,0,&RcvdMessages);
+    SocketInterface_t COM("127.0.0.1",14552,14553,&RcvdMessages);
 
-    DataAcquisition DAQ(&SITL,&COM,&FlightData);
+    Communication_t DAQ(&SITL,&COM,&FlightData);
 
-    QuadFMS FMS(&SITL,&COM,&FlightData);
+    QuadFMS_t FMS(&SITL,&COM,&FlightData);
 
     FMS.SendStatusText("Starting ICAROUS");
 
-    std::thread thread1(&DataAcquisition::GetPixhawkData,&DAQ);
-    std::thread thread2(&DataAcquisition::GetGSData,&DAQ);
-    std::thread thread3(&FlightManagementSystem::RunFMS,&FMS);
+    std::thread thread1(&Communication_t::GetPixhawkData,&DAQ);
+    std::thread thread2(&Communication_t::GetGSData,&DAQ);
+    std::thread thread3(&FlightManagementSystem_t::RunFMS,&FMS);
     
     //thread1.join();
     thread2.join();

@@ -35,9 +35,9 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#include "DAQ.h"
+#include "Communication.h"
 
- DataAcquisition::DataAcquisition(Interface* px4int, Interface* gsint,AircraftData *fdata){
+ Communication_t::Communication_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata){
      px4Intf      = px4int;
      gsIntf       = gsint;
      FlightData   = fdata;
@@ -47,7 +47,7 @@
  }
 
 // Get data from pixhawk
- void DataAcquisition::GetPixhawkData(){
+ void Communication_t::GetPixhawkData(){
      while(true){
          // Get data from the pixhawk
          px4Intf->GetMAVLinkMsg();
@@ -62,7 +62,7 @@
 
 
 // Get data from ground station
- void DataAcquisition::GetGSData(){
+ void Communication_t::GetGSData(){
 
      
      while(true){
@@ -102,7 +102,7 @@
  }
 
  
- void DataAcquisition::MissionCountHandler(){
+ void Communication_t::MissionCountHandler(){
      mavlink_mission_count_t msg;
      bool have_msg = RcvdMessages->GetMissionCount(msg);
      if(have_msg && msg.target_system == 1){
@@ -115,7 +115,7 @@
 
  }
 
- void DataAcquisition::MissionItemHandler(){
+ void Communication_t::MissionItemHandler(){
      mavlink_mission_item_t msg;
      bool have_msg = RcvdMessages->GetMissionItem(msg);
      if(have_msg && msg.target_system == 1){
@@ -130,7 +130,7 @@
      }
  }
 
- void DataAcquisition::MissionRequestHandler(){
+ void Communication_t::MissionRequestHandler(){
      mavlink_mission_request_t msg;
      bool have_msg = RcvdMessages->GetMissionRequest(msg);
      if(have_msg && msg.target_system == 1){
@@ -140,7 +140,7 @@
      }
  }
 
- void DataAcquisition::MissionRequestListHandler(){
+ void Communication_t::MissionRequestListHandler(){
      mavlink_mission_request_list_t msg;
      bool have_msg = RcvdMessages->GetMissionRequestList(msg);
      if(have_msg && msg.target_system == 1){
@@ -150,7 +150,7 @@
      }
  }
 
- void DataAcquisition::ParamRequestListHandler(){
+ void Communication_t::ParamRequestListHandler(){
      mavlink_param_request_list_t msg;
      bool have_msg = RcvdMessages->GetParamRequestList(msg);
      if(have_msg){
@@ -160,7 +160,7 @@
      }
  }
 
- void DataAcquisition::ParamRequestReadHandler(){
+ void Communication_t::ParamRequestReadHandler(){
      mavlink_param_request_read_t msg;
      bool have_msg = RcvdMessages->GetParamRequestRead(msg);
      if(have_msg && msg.target_system == 1){
@@ -170,7 +170,7 @@
      }
  }
 
- void DataAcquisition::ParamSetHandler(){
+ void Communication_t::ParamSetHandler(){
      mavlink_param_set_t msg;
      bool have_msg = RcvdMessages->GetParamSet(msg);
      if(have_msg && msg.target_system == 1){
@@ -180,7 +180,7 @@
      }
  }
 
-  void DataAcquisition::ParamValueHandler(){
+  void Communication_t::ParamValueHandler(){
      mavlink_param_value_t msg;
      bool have_msg = RcvdMessages->GetParamValue(msg);
      if(have_msg){
@@ -190,7 +190,7 @@
      }
  }
 
-  void DataAcquisition::SetModeHandler(){
+  void Communication_t::SetModeHandler(){
      mavlink_set_mode_t msg;
      bool have_msg = RcvdMessages->GetSetMode(msg);
      if(have_msg && msg.target_system == 1){
@@ -200,7 +200,7 @@
      }
  }
 
- void DataAcquisition::CommandLongHandler(){
+ void Communication_t::CommandLongHandler(){
      mavlink_command_long_t msg;
      bool have_msg = RcvdMessages->GetCommandLong(msg);
      if(have_msg && msg.command == MAV_CMD_MISSION_START){
@@ -216,7 +216,7 @@
      }
  }
 
- void DataAcquisition::CommandIntHandler(){
+ void Communication_t::CommandIntHandler(){
      mavlink_command_int_t msg;
      bool have_msg = RcvdMessages->GetCommandInt(msg);
      if(have_msg){

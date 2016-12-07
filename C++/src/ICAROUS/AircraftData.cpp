@@ -38,7 +38,7 @@
  #include "AircraftData.h"
 
 
- AircraftData::AircraftData(MAVLinkInbox* Msgs,ParameterData* pData){
+ AircraftData_t::AircraftData_t(MAVLinkMessages_t* Msgs,ParameterData* pData){
      pthread_mutex_init(&lock, NULL);
      RcvdMessages = Msgs;
      startMission = -1;
@@ -46,14 +46,14 @@
      paramData    = pData;
  }
 
- void AircraftData::AddMissionItem(mavlink_mission_item_t msg){
+ void AircraftData_t::AddMissionItem(mavlink_mission_item_t msg){
 
      pthread_mutex_lock(&lock);
      listMissionItem.push_back(msg);
      pthread_mutex_unlock(&lock);
  }
 
-uint8_t AircraftData::GetStartMissionFlag(){
+uint8_t AircraftData_t::GetStartMissionFlag(){
     int var;
     pthread_mutex_lock(&lock);
     var = startMission;
@@ -62,13 +62,13 @@ uint8_t AircraftData::GetStartMissionFlag(){
     return var;
 }
 
-void AircraftData::SetStartMissionFlag(uint8_t flag){
+void AircraftData_t::SetStartMissionFlag(uint8_t flag){
     pthread_mutex_lock(&lock);
     startMission = flag;
     pthread_mutex_unlock(&lock);
 }
 
-uint16_t AircraftData::GetFlightPlanSize(){
+uint16_t AircraftData_t::GetFlightPlanSize(){
     int size;
     pthread_mutex_lock(&lock);
     size = listMissionItem.size();
@@ -76,7 +76,7 @@ uint16_t AircraftData::GetFlightPlanSize(){
     return size;
 }
 
-void AircraftData::ConstructPlan(){
+void AircraftData_t::ConstructPlan(){
 	// Create a Plan object with the available mission items
 	FlightPlan.clear();
 	std::list<mavlink_mission_item_t>::iterator it;
@@ -105,11 +105,11 @@ void AircraftData::ConstructPlan(){
 	}
 }
 
-void AircraftData::GetGeofence(Interface *gsIntf,mavlink_command_long_t msgIn){
+void AircraftData_t::GetGeofence(Interface_t *gsIntf,mavlink_command_long_t msgIn){
 	bool readComplete = false;
 	uint16_t nVertices     = (int) msgIn.param4;
 
-	Geofence fence((int)msgIn.param2,(FENCE_TYPE)msgIn.param3,(int)msgIn.param4,
+	Geofence_t fence((int)msgIn.param2,(FENCE_TYPE)msgIn.param3,(int)msgIn.param4,
 					msgIn.param5,msgIn.param6,paramData);
 
 	time_t starttime;
@@ -169,7 +169,7 @@ void AircraftData::GetGeofence(Interface *gsIntf,mavlink_command_long_t msgIn){
 				fenceList.push_back(fence);
 			}
 			else{
-				std::list<Geofence>::iterator it;
+				std::list<Geofence_t>::iterator it;
 				for(it = fenceList.begin(); it != fenceList.end(); ++it){
 					if(it->GetID() == fence.GetID()){
 						it = fenceList.erase(it);

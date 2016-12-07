@@ -53,16 +53,16 @@
 #include <time.h>
 #include <queue>
 
-#include "MAVLinkInbox.h"
+#include "MAVLinkMessages.h"
 
 #define BUFFER_LENGTH 300
 
-class Interface{
+class Interface_t{
 
  protected:
   uint8_t recvbuffer[BUFFER_LENGTH];
   uint8_t sendbuffer[BUFFER_LENGTH];
-  MAVLinkInbox *RcvdMessages;
+  MAVLinkMessages_t *RcvdMessages;
   pthread_mutex_t  lock;
   mavlink_status_t lastStatus;
   
@@ -71,7 +71,7 @@ class Interface{
 
   
   std::queue<mavlink_message_t> msgQueue;
-  Interface(MAVLinkInbox *msgInbox);
+  Interface_t(MAVLinkMessages_t *msgInbox);
   int GetMAVLinkMsg();
   void SendMAVLinkMsg(mavlink_message_t msg);
   void EnableDataStream(int option);
@@ -80,7 +80,7 @@ class Interface{
   virtual void WriteData(uint8_t buffer[], uint16_t len){return;};
 };
 
-class SerialInterface: public Interface{
+class SerialInterface_t: public Interface_t{
  private:
   char *portname;
   int baudrate;
@@ -88,14 +88,14 @@ class SerialInterface: public Interface{
   int parity;
 
  public:
-  SerialInterface(char pname[], int brate, int pbit,MAVLinkInbox *msgInbox);
+  SerialInterface_t(char pname[], int brate, int pbit,MAVLinkMessages_t *msgInbox);
   int set_interface_attribs();
   void set_blocking (int should_block);
   int ReadData();
   void WriteData(uint8_t buffer[], uint16_t len);
 };
 
-class SocketInterface: public Interface{
+class SocketInterface_t: public Interface_t{
   private:
     
     int sock;
@@ -104,7 +104,7 @@ class SocketInterface: public Interface{
     socklen_t recvlen;
     
   public:
-    SocketInterface(char targetip[], int inportno, int outportno,MAVLinkInbox *msgInbox);
+    SocketInterface_t(char targetip[], int inportno, int outportno,MAVLinkMessages_t *msgInbox);
     int ReadData();
     void WriteData(uint8_t buffer[], uint16_t len);
 

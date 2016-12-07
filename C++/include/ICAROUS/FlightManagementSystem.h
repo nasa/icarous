@@ -67,20 +67,20 @@ enum control_mode_t {
     GUIDED_NOGPS = 20,  // guided mode but only accepts attitude and altitude
 };
 
-class FlightManagementSystem{
+class FlightManagementSystem_t{
 
     protected:
         
-        Interface *px4Intf;
-        Interface *gsIntf;
-        AircraftData* FlightData;
-        MAVLinkInbox* RcvdMessages;
+        Interface_t *px4Intf;
+        Interface_t *gsIntf;
+        AircraftData_t* FlightData;
+        MAVLinkMessages_t* RcvdMessages;
         fms_state_t fmsState;
         bool conflict;
 
     public:
 
-        FlightManagementSystem(Interface *px4int, Interface *gsint,AircraftData* fData);
+        FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData);
         void RunFMS();
 
         void SendCommand(uint8_t target_system,uint8_t target_component,uint16_t command,uint8_t confirmation,

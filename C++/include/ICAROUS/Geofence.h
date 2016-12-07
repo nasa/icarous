@@ -57,7 +57,7 @@ using namespace larcfm;
 
 enum FENCE_TYPE {KEEP_IN = 0,KEEP_OUT = 1};
 
-class Geofence{
+class Geofence_t{
 
 private:
 
@@ -84,7 +84,7 @@ private:
 
 
 public:
-	Geofence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling,ParameterData* pData);
+	Geofence_t(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling,ParameterData* pData);
 	void AddVertex(int index, double lat, double lon);
 	void CheckViolation(AircraftState acState);
 	bool CollisionDetection(Position pos, Vect2 v,double startTime, double stopTime);
