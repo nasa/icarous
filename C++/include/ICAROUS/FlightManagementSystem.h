@@ -109,21 +109,6 @@ class FlightManagementSystem{
         virtual uint8_t LAND(){return 0;};
 };
 
-class QuadFMS:public FlightManagementSystem{
-
-    private:
-        float targetAlt;
-
-    public:
-        QuadFMS(Interface *px4int, Interface *gsint,AircraftData* fData);
-        uint8_t TAKEOFF();
-        uint8_t CLIMB();
-        uint8_t CRUISE();
-        uint8_t DESCEND();
-        uint8_t LAND();
-        uint8_t Monitor();
-        uint8_t Resolve();
-};
 
 
  #endif
