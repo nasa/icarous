@@ -35,7 +35,8 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
- #include "FlightManagementSystem.h"
+#include "FlightManagementSystem.h"
+
 
 FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData){
     px4Intf      = px4int;

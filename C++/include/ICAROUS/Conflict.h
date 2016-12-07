@@ -48,14 +48,16 @@ private:
 
 	std::list<Geofence_t> geofenceConflicts;
 	std::list<Geofence_t>::iterator itGeofence;
+
 public:
-	bool keepinConflict;
-	bool keepoutConflict;
-	bool stanodffConflict;
+	bool keepin;
+	bool keepout;
+	bool stanodff;
 	Conflict_t();
 	void AddConflict(Geofence_t gf);
 	void RemoveConflict(Geofence_t gf);
 	bool isEqual(Geofence_t gf);
+	uint8_t size();
 
 
 };

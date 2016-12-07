@@ -90,6 +90,11 @@ public:
 	bool CollisionDetection(Position pos, Vect2 v,double startTime, double stopTime);
 	bool CheckWPFeasibility(Position current, Position nextWP);
 	uint16_t GetID();
+	Position GetRecoveryPoint();
+	bool GetConflictStatus();
+	bool GetProjectedStatus();
+	bool GetViolationStatus();
+	FENCE_TYPE GetType();
 };
 
 

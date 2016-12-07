@@ -154,3 +154,23 @@ bool Geofence_t::CheckWPFeasibility(Position currentPos,Position nextWP){
 uint16_t Geofence_t::GetID(){
 	return id;
 }
+
+Position Geofence_t::GetRecoveryPoint(){
+	return recoveryPoint;
+}
+
+bool Geofence_t::GetConflictStatus(){
+	return conflict;
+}
+
+bool Geofence_t::GetProjectedStatus(){
+	return projectedViolation;
+}
+
+bool Geofence_t::GetViolationStatus(){
+	return violation;
+}
+
+FENCE_TYPE Geofence_t::GetType(){
+	return fenceType;
+}

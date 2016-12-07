@@ -39,9 +39,10 @@
  #define FMS_H
 
  #include "math.h"
+ #include "ardupilotmega/mavlink.h"
  #include "Interface.h"
  #include "AircraftData.h"
- #include "ardupilotmega/mavlink.h"
+ #include "Conflict.h"
 
 enum fms_state_t {_idle_,_takeoff_,_climb_,_cruise_,_descend_,_land_};
 
@@ -76,7 +77,7 @@ class FlightManagementSystem_t{
         AircraftData_t* FlightData;
         MAVLinkMessages_t* RcvdMessages;
         fms_state_t fmsState;
-        bool conflict;
+        Conflict_t Conflict;
 
     public:
 

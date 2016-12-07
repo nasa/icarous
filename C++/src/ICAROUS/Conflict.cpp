@@ -38,9 +38,9 @@
 #include "Conflict.h"
 
 Conflict_t::Conflict_t(){
-	keepinConflict   = false;
-	keepoutConflict  = false;
-	stanodffConflict = false;
+	keepin   = false;
+	keepout  = false;
+	stanodff = false;
 }
 
 bool Conflict_t::isEqual(Geofence_t gf){
@@ -66,4 +66,8 @@ void Conflict_t::RemoveConflict(Geofence_t gf){
 			itGeofence = geofenceConflicts.erase(itGeofence);
 		}
 	}
+}
+
+uint8_t Conflict_t::size(){
+	return geofenceConflicts.size();
 }

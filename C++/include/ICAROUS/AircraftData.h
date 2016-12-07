@@ -65,6 +65,7 @@ class AircraftData_t{
         AircraftState acState;
         Plan FlightPlan;
         std::list<Geofence_t> fenceList;
+        std::list<Geofence_t>::iterator fenceListIt;
         AircraftData_t(MAVLinkMessages_t* Msgs,ParameterData* pData);
         void AddMissionItem(mavlink_mission_item_t msg);
         uint8_t GetStartMissionFlag();

@@ -100,7 +100,31 @@ uint8_t QuadFMS_t::LAND(){
 
 uint8_t QuadFMS_t::Monitor(){
 
-	return 0;
+	Position CurrentPos = FlightData->acState.positionLast();
+	Velocity CurrentVel = FlightData->acState.velocityLast();
+
+	Conflict.keepin = false;
+	Conflict.keepout = false;
+
+	// Check for geofence violation
+	for(FlightData->fenceListIt = FlightData->fenceList.begin();
+		FlightData->fenceListIt != FlightData->fenceList.end();
+		++FlightData->fenceListIt){
+		Geofence_t fence = *FlightData->fenceListIt;
+		fence.CheckViolation(FlightData->acState);
+
+		if(fence.GetProjectedStatus() || fence.GetConflictStatus() || fence.GetViolationStatus()){
+			Conflict.AddConflict(fence);
+			if(fence.GetType() == KEEP_IN){
+				Conflict.keepin = true;
+			}
+			else{
+				Conflict.keepout = true;
+			}
+		}
+	}
+
+	return Conflict.size();
 }
 
 uint8_t QuadFMS_t::Resolve(){
