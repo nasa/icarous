@@ -40,12 +40,16 @@
  QuadFMS_t::QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData):
  FlightManagementSystem_t(px4int,gsint,fData){
      targetAlt         = 0.0f;
-     resolutionState   = IDLE;
-     maneuverState     = IDLE;
-     trajectoryState   = IDLE;
+     resolutionState   = IDLE_r;
+     maneuverState     = IDLE_m;
+     trajectoryState   = IDLE_t;
      planType          = MISSION;
 
  }
+
+ //QuadFMS_t::~QuadFMS_t(){
+
+ //}
 
 uint8_t QuadFMS_t::TAKEOFF(){
 
@@ -131,7 +135,7 @@ uint8_t QuadFMS_t::Monitor(){
 
 	if(Conflict.size() != conflictSize){
 		conflictSize = Conflict.size();
-		resolutionState = COMPUTE;
+		resolutionState = COMPUTE_r;
 	}
 
 	return conflictSize;
@@ -142,19 +146,19 @@ uint8_t QuadFMS_t::Resolve(){
 
 	switch(resolutionState){
 
-	case COMPUTE:
+	case COMPUTE_r:
 		// Do something
 		break;
-	case MANEUVER:
+	case MANEUVER_r:
 		// Do something
 		break;
-	case TRAJECTORY:
+	case TRAJECTORY_r:
 		// Fly trajectory
 		break;
-	case RESUME:
+	case RESUME_r:
 		// Resume mission
 		break;
-	case IDLE:
+	case IDLE_r:
 		break;
 	}
 

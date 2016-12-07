@@ -42,7 +42,8 @@
      pthread_mutex_init(&lock, NULL);
      RcvdMessages = Msgs;
      startMission = -1;
-     nextWP       = 0;
+     nextMissionWP = 0;
+     nextResolutionWP = 0;
      paramData    = pData;
  }
 
