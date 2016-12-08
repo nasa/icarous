@@ -47,6 +47,7 @@ Geofence_t::Geofence_t(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor,
 	conflict = false;
 	violation = false;
 	projectedViolation = false;
+	geoCDIIPolygon = CDIIPolygon(&geoPolyDetect);
 }
 
 void Geofence_t::AddVertex(int index, double lat,double lon){
@@ -75,10 +76,13 @@ void Geofence_t::AddVertex(int index, double lat,double lon){
 		Poly2D p2D(fenceVertices1);
 		Poly3D p3D(p2D,floor,ceiling);
 		geoPoly1 = SimplePoly::make(p3D,proj);
+
+		Velocity vel = Velocity::makeTrkGsVs(0,0,0);
+		geoPolyPath.addPolygon(geoPoly1,vel,0);
 	}
 }
 
-void Geofence_t::CheckViolation(AircraftState acState){
+void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp){
 	double hdist;
 	double vdist;
 	double alt;
@@ -122,10 +126,18 @@ void Geofence_t::CheckViolation(AircraftState acState){
 		recoveryPoint = Position::makeLatLonAlt(LLA.latitude(),"degree",
 												LLA.longitude(),"degree",
 												LLA.altitude(),"ft");
+
+
+	    geoCDIIPolygon.detection(fp,geoPolyPath,0,fp.getLastTime());
+	    if(geoCDIIPolygon.conflictBetween(elapsedTime,elapsedTime + lookahead)){
+	    	conflict = true;
+	    	entryTime = geoCDIIPolygon.getTimeIn(0);
+	    	exitTime  = geoCDIIPolygon.getTimeOut(0);
+	    }
+	    else{
+	    	conflict = false;
+	    }
 	}
-
-
-
 }
 
 bool Geofence_t::CollisionDetection(Position pos,Vect2 v,double startTime,double stopTime){
@@ -178,4 +190,9 @@ bool Geofence_t::GetViolationStatus(){
 
 FENCE_TYPE Geofence_t::GetType(){
 	return fenceType;
+}
+
+void Geofence_t::GetEntryExitTime(double& in, double &out){
+	in = entryTime;
+	out = exitTime;
 }

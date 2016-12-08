@@ -67,10 +67,11 @@ class QuadFMS_t:public FlightManagementSystem_t{
         uint8_t Monitor();
         uint8_t Resolve();
 
-        void ResolveKeepInConflict();
         uint8_t FlyTrajectory();
         void ComputeInterceptCourse();
 
+        void ResolveKeepInConflict();
+        void ResolveKeepOutConflict();
 };
 
 

@@ -102,6 +102,7 @@ class FlightManagementSystem_t{
         void GetLatestAircraftData();
         bool CheckAck(MAV_CMD command);
         bool CheckMissionWaypointReached();
+        double GetApproxElapsedPlanTime(Plan fp, int nextWP);
 
         uint8_t IDLE();
         uint8_t PREFLIGHT();

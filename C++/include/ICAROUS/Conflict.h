@@ -46,11 +46,11 @@
 class Conflict_t{
 private:
 
+public:
 	std::list<Geofence_t> keepInGeofence;
 	std::list<Geofence_t> keepOutGeofence;
 	std::list<Geofence_t>::iterator itGeofence;
 
-public:
 	bool keepin;
 	bool keepout;
 	bool stanodff;

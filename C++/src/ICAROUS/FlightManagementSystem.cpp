@@ -243,3 +243,14 @@ uint8_t FlightManagementSystem_t::PREFLIGHT(){
 	FlightData->ConstructPlan();
 	return 0;
 }
+
+double FlightManagementSystem_t::GetApproxElapsedPlanTime(Plan fp,int nextWP){
+
+	Position pos          = FlightData->acState.positionLast();
+	double legDistance    = fp.pathDistance(nextWP - 1);
+	double legTime        = fp.getTime(nextWP) - fp.getTime(nextWP-1);
+	double lastWPDistance = fp.point(nextWP-1).position().distanceH(pos);
+	double currentTime    = fp.getTime(nextWP-1) + legTime/legDistance * lastWPDistance;
+
+	return currentTime;
+}

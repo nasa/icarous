@@ -47,10 +47,13 @@
 #include "EuclideanProjection.h"
 #include "ParameterData.h"
 #include "SimplePoly.h"
+#include "PolyPath.h"
 #include "Poly3D.h"
 #include "CDPolycarp.h"
+#include "CDIIPolygon.h"
 #include "PolycarpDetection.h"
 #include "PolycarpResolution.h"
+#include "Plan.h"
 #include "math.h"
 
 using namespace larcfm;
@@ -67,6 +70,8 @@ private:
 	double floor;
 	double ceiling;
 	const double BUFF = 0.1;
+	double entryTime;
+	double exitTime;
 	ParameterData* params;
 	bool violation;
 	bool conflict;
@@ -76,8 +81,10 @@ private:
 	SimplePoly geoPoly1;          // Expanded/Contracted polygon in lat,lon
 	Poly3D geoPoly3D;             // 3D polygon in cartesian coordinates
 	CDPolycarp geoPolyCarp;
+	PolyPath geoPolyPath;
 	PolycarpResolution geoPolyResolution;
 	PolycarpDetection geoPolyDetect;
+	CDIIPolygon geoCDIIPolygon;
 	std::vector<Vect2> fenceVertices0; // Cartesian coordinates of vertices of geoPoly0
 	std::vector<Vect2> fenceVertices1; //Cartesian coordinates of vertices of geoPoly1
 	Position recoveryPoint;
@@ -86,7 +93,7 @@ private:
 public:
 	Geofence_t(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling,ParameterData* pData);
 	void AddVertex(int index, double lat, double lon);
-	void CheckViolation(AircraftState acState);
+	void CheckViolation(AircraftState acState,double elapsedTime,Plan fp);
 	bool CollisionDetection(Position pos, Vect2 v,double startTime, double stopTime);
 	bool CheckWPFeasibility(Position current, Position nextWP);
 	uint16_t GetID();
@@ -95,6 +102,7 @@ public:
 	bool GetProjectedStatus();
 	bool GetViolationStatus();
 	FENCE_TYPE GetType();
+	void GetEntryExitTime(double& in, double& out);
 };
 
 

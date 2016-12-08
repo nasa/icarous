@@ -276,8 +276,6 @@ void QuadFMS_t::ComputeInterceptCourse(){
 }
 
 void QuadFMS_t::ResolveKeepInConflict(){
-	planType        = TRAJECTORY;
-	resumeMission   = false;
 	Geofence_t fence = Conflict.GetKeepInConflict();
 	NavPoint wp(fence.GetRecoveryPoint(),0);
 	std::cout<<wp.position().toStringUnits("degree","degree","m")<<std::endl;
@@ -290,5 +288,32 @@ void QuadFMS_t::ResolveKeepInConflict(){
 		FlightData->nextMissionWP++;
 	}
 
+	planType        = TRAJECTORY;
+	resumeMission   = false;
 	return;
+}
+
+void QuadFMS_t::ResolveKeepOutConflict(){
+	double gridsize          = FlightData->paramData->getValue("GRIDSIZE");
+	double buffer            = FlightData->paramData->getValue("BUFFER");
+	double lookahead         = FlightData->paramData->getValue("LOOKAHEAD");
+	double proximityfactor   = FlightData->paramData->getValue("PROXFACTOR");
+
+	// Reroute flight plan
+	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+
+	double elapsedTime;
+	double altfence = 100;
+	double maxalt = 0.0;
+
+	Plan CurrentFP;
+
+	if(planType == MISSION){
+		CurrentFP = FlightData->MissionPlan;
+		elapsedTime = GetApproxElapsedPlanTime(CurrentFP,FlightData->nextMissionWP);
+	}
+	else{
+		CurrentFP = FlightData->ResolutionPlan;
+		elapsedTime = GetApproxElapsedPlanTime(CurrentFP,FlightData->nextResolutionWP);
+	}
 }
