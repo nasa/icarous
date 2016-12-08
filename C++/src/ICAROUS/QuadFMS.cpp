@@ -213,8 +213,8 @@ uint8_t QuadFMS_t::FlyTrajectory(){
 	case START_t:
 		printf("executing trajectory resolution\n");
 		resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
-		SetMode(GUIDED);
-		//SetSpeed(resolutionSpeed);
+		SetMode(GUIDED); sleep(1);
+		SetSpeed(resolutionSpeed);  usleep(5000);
 		trajectoryState = FIX_t;
 		break;
 
@@ -237,10 +237,11 @@ uint8_t QuadFMS_t::FlyTrajectory(){
 				trajectoryState = STOP_t;
 				FlightData->nextResolutionWP = 0;
 			}
+			else{
+				trajectoryState = FIX_t;
+			}
 		}
-		else{
-			trajectoryState = FIX_t;
-		}
+
 		break;
 
 	case STOP_t:
