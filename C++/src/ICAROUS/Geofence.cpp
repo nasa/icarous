@@ -47,7 +47,7 @@ Geofence_t::Geofence_t(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor,
 	conflict = false;
 	violation = false;
 	projectedViolation = false;
-	geoCDIIPolygon = CDIIPolygon(&geoPolyDetect);
+    geoCDIIPolygon = CDIIPolygon(&geoPolyCarp);
 }
 
 void Geofence_t::AddVertex(int index, double lat,double lon){

@@ -53,7 +53,7 @@ public:
 
 	bool keepin;
 	bool keepout;
-	bool stanodff;
+	bool flightPlanDeviation;
 	Conflict_t();
 	void AddConflict(Geofence_t gf);
 	void RemoveConflict(Geofence_t gf);

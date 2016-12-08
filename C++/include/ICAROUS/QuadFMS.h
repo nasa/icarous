@@ -44,7 +44,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
 
 	enum resolve_state_t {IDLE_r, COMPUTE_r, MANEUVER_r, TRAJECTORY_r, RESUME_r};
 	enum trajectory_state_t {IDLE_t, START_t, FIX_t, ENROUTE_t, STOP_t};
-	enum maneuver_state_t {IDLE_m, START_m,GUIDE_m,STOP_m};
+	enum maneuver_state_t {START_m,GUIDE_m,IDLE_m};
 	enum plan_type_t {MISSION,TRAJECTORY,MANEUVER};
 
 
@@ -68,10 +68,14 @@ class QuadFMS_t:public FlightManagementSystem_t{
         uint8_t Resolve();
 
         uint8_t FlyTrajectory();
+        uint8_t FlyManuever();
         void ComputeInterceptCourse();
 
+        void CheckGeofence();
+        void CheckFlightPlanDeviation();
         void ResolveKeepInConflict();
         void ResolveKeepOutConflict();
+        void ResolveFlightPlanDeviation();
 };
 
 

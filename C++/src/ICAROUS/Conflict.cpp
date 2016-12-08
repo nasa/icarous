@@ -40,7 +40,7 @@
 Conflict_t::Conflict_t(){
 	keepin   = false;
 	keepout  = false;
-	stanodff = false;
+	flightPlanDeviation = false;
 }
 
 bool Conflict_t::isEqual(Geofence_t gf){
@@ -97,7 +97,7 @@ void Conflict_t::RemoveConflict(Geofence_t gf){
 
 uint8_t Conflict_t::size(){
 	return keepInGeofence.size()+
-			keepOutGeofence.size();
+			keepOutGeofence.size()+(int)flightPlanDeviation;
 }
 
 Geofence_t Conflict_t::GetKeepInConflict(){

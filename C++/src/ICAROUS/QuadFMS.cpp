@@ -111,33 +111,17 @@ uint8_t QuadFMS_t::LAND(){
 
 uint8_t QuadFMS_t::Monitor(){
 
-	Position CurrentPos = FlightData->acState.positionLast();
-	Velocity CurrentVel = FlightData->acState.velocityLast();
+	//Monitor geofences
+	CheckGeofence();
 
-	Conflict.keepin = false;
-	Conflict.keepout = false;
-
-	// Check for geofence violation
-	for(FlightData->fenceListIt = FlightData->fenceList.begin();
-		FlightData->fenceListIt != FlightData->fenceList.end();
-		++FlightData->fenceListIt){
-		Geofence_t fence = *FlightData->fenceListIt;
-		fence.CheckViolation(FlightData->acState);
-
-		if(fence.GetProjectedStatus() || fence.GetConflictStatus() || fence.GetViolationStatus()){
-			Conflict.AddConflict(fence);
-			if(fence.GetType() == KEEP_IN){
-				Conflict.keepin = true;
-			}
-			else{
-				Conflict.keepout = true;
-			}
-		}
-	}
+	//Check flight plan deviaiton
+	CheckFlightPlanDeviation();
 
 	if(Conflict.size() != conflictSize){
 		conflictSize = Conflict.size();
-		resolutionState = COMPUTE_r;
+		if(conflictSize > 0){
+			resolutionState = COMPUTE_r;
+		}
 	}
 
 	return conflictSize;
@@ -154,6 +138,9 @@ uint8_t QuadFMS_t::Resolve(){
 		if(Conflict.keepin){
 			ResolveKeepInConflict();
 		}
+		else if(Conflict.flightPlanDeviation){
+			ResolveFlightPlanDeviation();
+		}
 
 		if(planType == TRAJECTORY){
 			resolutionState = TRAJECTORY_r;
@@ -161,11 +148,17 @@ uint8_t QuadFMS_t::Resolve(){
 		}
 		else if(planType == MANEUVER){
 			resolutionState = MANEUVER_r;
+			maneuverState = START_m;
 		}
 
 		break;
 	case MANEUVER_r:
 		// Do something
+		status = FlyManuever();
+		if(status == 1){
+			resolutionState = IDLE_r;
+			SetMode(AUTO);
+		}
 		break;
 
 	case TRAJECTORY_r:
@@ -176,6 +169,7 @@ uint8_t QuadFMS_t::Resolve(){
 		if(status == 1){
 			if(resumeMission){
 				resolutionState = IDLE_r;
+				SetMode(AUTO);
 			}
 			else{
 				resolutionState = RESUME_r;
@@ -258,6 +252,41 @@ uint8_t QuadFMS_t::FlyTrajectory(){
 	return status;
 }
 
+uint8_t QuadFMS_t::FlyManuever(){
+	uint8_t status = 0;
+	float resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
+
+	switch(maneuverState){
+
+	case START_m:
+		SetMode(GUIDED);
+		SetSpeed(resolutionSpeed);
+		maneuverState = GUIDE_m;
+		break;
+
+	case GUIDE_m:
+		if(Conflict.flightPlanDeviation){
+			ResolveFlightPlanDeviation();
+			SetYaw(FlightData->manueverHeading);
+			SetVelocity(FlightData->manueverVn,FlightData->manueverVe,FlightData->manueverVu);
+		}
+
+		if(!Conflict.flightPlanDeviation){
+			maneuverState = IDLE_m;
+			Conflict.clear();
+			conflictSize = Conflict.size();
+		}
+		break;
+
+	case IDLE_m:
+		status = 1;
+		break;
+
+	}
+
+	return status;
+}
+
 void QuadFMS_t::ComputeInterceptCourse(){
 	Position current = FlightData->acState.positionLast();
 	Position next    = FlightData->MissionPlan.point(FlightData->nextMissionWP).position();
@@ -275,45 +304,3 @@ void QuadFMS_t::ComputeInterceptCourse(){
 	resumeMission = true;
 }
 
-void QuadFMS_t::ResolveKeepInConflict(){
-	Geofence_t fence = Conflict.GetKeepInConflict();
-	NavPoint wp(fence.GetRecoveryPoint(),0);
-	std::cout<<wp.position().toStringUnits("degree","degree","m")<<std::endl;
-	NavPoint next_wp = FlightData->MissionPlan.point(FlightData->nextMissionWP);
-	FlightData->ResolutionPlan.clear();
-	FlightData->ResolutionPlan.add(wp);
-	FlightData->nextResolutionWP = 0;
-
-	if(fence.CheckWPFeasibility(wp.position(),next_wp.position())){
-		FlightData->nextMissionWP++;
-	}
-
-	planType        = TRAJECTORY;
-	resumeMission   = false;
-	return;
-}
-
-void QuadFMS_t::ResolveKeepOutConflict(){
-	double gridsize          = FlightData->paramData->getValue("GRIDSIZE");
-	double buffer            = FlightData->paramData->getValue("BUFFER");
-	double lookahead         = FlightData->paramData->getValue("LOOKAHEAD");
-	double proximityfactor   = FlightData->paramData->getValue("PROXFACTOR");
-
-	// Reroute flight plan
-	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
-
-	double elapsedTime;
-	double altfence = 100;
-	double maxalt = 0.0;
-
-	Plan CurrentFP;
-
-	if(planType == MISSION){
-		CurrentFP = FlightData->MissionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(CurrentFP,FlightData->nextMissionWP);
-	}
-	else{
-		CurrentFP = FlightData->ResolutionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(CurrentFP,FlightData->nextResolutionWP);
-	}
-}

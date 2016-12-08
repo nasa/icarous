@@ -59,6 +59,14 @@ class AircraftData_t{
         
 
     public:
+
+        //member variables
+        double roll, pitch, yaw, heading;
+		double crossTrackDeviation;
+		double crossTrackOffset;
+		double manueverVn,manueverVe,manueverVu;
+		double manueverHeading;
+
         uint16_t nextMissionWP;
         uint16_t nextResolutionWP;
         MAVLinkMessages_t* RcvdMessages;
@@ -68,6 +76,8 @@ class AircraftData_t{
         Plan ResolutionPlan;
         std::list<Geofence_t> fenceList;
         std::list<Geofence_t>::iterator fenceListIt;
+
+        //Member functions
         AircraftData_t(MAVLinkMessages_t* Msgs,ParameterData* pData);
         void AddMissionItem(mavlink_mission_item_t msg);
         uint8_t GetStartMissionFlag();

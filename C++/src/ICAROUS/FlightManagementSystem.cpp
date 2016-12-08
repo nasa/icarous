@@ -196,6 +196,11 @@ void FlightManagementSystem_t::GetLatestAircraftData(){
 	if(heading < 0){
 		heading = 360 + heading;
 	}
+
+	FlightData->roll = roll;
+	FlightData->pitch = pitch;
+	FlightData->yaw = yaw;
+	FlightData->heading = heading;
 }
 
 uint8_t FlightManagementSystem_t::IDLE(){
