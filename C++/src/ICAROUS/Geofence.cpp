@@ -192,6 +192,14 @@ FENCE_TYPE Geofence_t::GetType(){
 	return fenceType;
 }
 
+SimplePoly Geofence_t::GetPoly(){
+	return geoPoly1;
+}
+
+EuclideanProjection Geofence_t::GetProjection(){
+	return proj;
+}
+
 void Geofence_t::GetEntryExitTime(double& in, double &out){
 	in = entryTime;
 	out = exitTime;

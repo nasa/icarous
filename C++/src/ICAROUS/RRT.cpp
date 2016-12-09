@@ -1,0 +1,413 @@
+/*
+ * RRT.cpp
+ *
+ *  Created on: Dec 9, 2016
+ *      Author: research133
+ */
+
+
+#include <list>
+#include <Geofence.h>
+#include "EuclideanProjection.h"
+#include "math.h"
+#include "Poly3D.h"
+#include "CDPolycarp.h"
+#include "Position.h"
+#include "Vect3.h"
+#include <vector>
+#include <string.h>
+
+struct node_t{
+	int id;
+	Vect3 pos;
+	Vect3 vel;
+	std::vector<Vect3> trafficPos;
+	std::vector<Vect3> trafficVel;
+
+	bool goal;
+	double g,h;
+	std::list<node_t> children;
+	std::list<node_t> parent;
+};
+
+
+class RRT_t{
+
+public:
+	std::list<Geofence_t> fenceList;
+	Poly3D boundingBox;
+	std::list<Poly3D> obstacleList;
+	std::list<node_t> nodeList;
+	std::list<node_t>::iterator ndit;
+	EuclideanProjection proj;
+	CDPolycarp geoPolycarp;
+	int nodeCount;
+	node_t root;
+	int trafficSize;
+
+	RRT_t();
+	RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
+			std::vector<Vect3> trafficPos,std::vector<Vect3> trafficVel);
+
+	void Initialize(Vect3 Pos,Vect3 Vel,
+			std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel);
+
+	node_t MotionModel(Vect3 X, Vect3 V,
+			std::vector<Vect3> trafficPos,std::vector<Vect3> trafficList, double U[]);
+
+	void F(double X[], double U[],double Y[]);
+	bool CheckCollision(Vect3 qPos);
+	void GetInput(node_t nn, node_t qn,double U[]);
+	node_t FindNearest(node_t query);
+	double NodeDistance(node_t A,node_t B);
+	void RRTStep();
+	bool CheckGoal(node_t goal);
+};
+
+RRT_t::RRT_t(){
+	nodeCount = 0;
+	trafficSize = 0;
+}
+
+RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
+		std::vector<Vect3> trafficPos,std::vector<Vect3> trafficVel){
+
+	std::list<Geofence_t>::iterator it;
+
+	for(it = fenceList.begin();it != fenceList.end(); ++it){
+		if(it->GetType() == KEEP_IN){
+			proj = fenceList.front().GetProjection();
+			boundingBox = it->GetPoly().poly3D(proj);
+			break;
+		}
+
+	}
+
+	for(it = fenceList.begin();it != fenceList.end(); ++it){
+		if(it->GetType() != KEEP_IN){
+			obstacleList.push_back((it->GetPoly().poly3D(proj)));
+		}
+	}
+
+	Vect3 initPosR3 = proj.project(initialPos);
+
+	nodeCount = 0;
+	root.id = nodeCount;
+	root.pos = initPosR3;
+	root.vel = Vect3(initialVel.x,initialVel.y,initialVel.z);
+	root.trafficPos = trafficPos;
+	root.trafficVel = trafficVel;
+
+	trafficSize = trafficPos.size();
+	nodeList.push_back(root);
+
+}
+
+bool RRT_t::CheckCollision(Vect3 qPos){
+	std::list<Poly3D>::iterator it;;
+	for(it = obstacleList.begin();it != obstacleList.end(); ++it){
+		if(geoPolycarp.definitelyInside(qPos,*it)){
+			return true;
+		}
+	}
+	return false;
+}
+
+double RRT_t::NodeDistance(node_t A, node_t B){
+	return sqrt(pow((A.pos.x - B.pos.x),2) + pow((A.pos.y - B.pos.y),2));
+}
+
+void RRT_t::GetInput(node_t nn, node_t qn,double U[]){
+	double dx, dy, dz;
+	double norm;
+
+	dx = qn.pos.x - nn.pos.x;
+	dy = qn.pos.y - nn.pos.y;
+	dz = qn.pos.z - nn.pos.z;
+
+	norm = sqrt(pow(dx,2) + pow(dy,2) + pow(dz,2));
+
+	if (norm > 1){
+		U[0] = dx/norm;
+		U[1] = dy/norm;
+		U[2] = dz/norm;
+	}
+	else{
+		U[0] = dx;
+		U[1] = dy;
+		U[2] = dz;
+	}
+}
+
+node_t RRT_t::FindNearest(node_t query){
+	double minDist = 10000;
+	double dist;
+	node_t nearest;
+
+	if ( nodeList.size() == 0 ){
+		nearest = query;
+	}
+	else{
+		for(ndit = nodeList.begin();ndit != nodeList.end(); ++ndit){
+			dist = NodeDistance(*ndit,query);
+
+			if(dist < minDist){
+				minDist = dist;
+				nearest = *ndit;
+			}
+		}
+	}
+
+	return nearest;
+}
+
+void RRT_t::F(double X[], double U[],double Y[]){
+
+	double Kc = 0.3;
+
+	Y[0] = X[1];
+	Y[1] = -Kc*(X[1] - U[0]);
+	Y[2] = X[3];
+	Y[3] = -Kc*(X[3] - U[1]);
+	Y[4] = X[5];
+	Y[5] = -Kc*(X[5] - U[2]);
+
+	// Constant velocity for traffic
+	for(int i=0;i<trafficSize;++i){
+		Y[6+(6*i)+0]   = X[6+(6*i)+1];
+		Y[6+(6*i)+1]   = 0;
+		Y[6+(6*i)+2]   = X[6+(6*i)+3];
+		Y[6+(6*i)+3]   = 0;
+		Y[6+(6*i)+4]   = X[6+(6*i)+5];
+		Y[6+(6*i)+5]   = 0;
+	}
+}
+
+node_t RRT_t::MotionModel(Vect3 pos, Vect3 vel,
+							std::vector<Vect3> trafficPos, std::vector<Vect3> trafficVel, double U[]){
+	int Tstep = 5;
+	double dT = 1;
+
+	int Xsize = 6+trafficSize*6;
+
+	double *X   = new double[Xsize];
+	double *X_p = new double[Xsize];
+	double *Y   = new double[Xsize];
+	double *k1  = new double[Xsize];
+	double *k2  = new double[Xsize];
+
+	memset(Y,0,sizeof(double)*Xsize);
+	memset(k1,0,sizeof(double)*Xsize);
+	memset(k2,0,sizeof(double)*Xsize);
+
+	X[0] = pos.x;
+	X[1] = vel.x;
+	X[2] = pos.y;
+	X[3] = vel.y;
+	X[4] = pos.z;
+	X[5] = vel.z;
+
+	std::vector<Vect3>::iterator vecItP;
+	std::vector<Vect3>::iterator vecItV;
+	int i=0;
+	for(vecItP = trafficPos.begin(),vecItV = trafficVel.begin();
+		vecItP != trafficPos.end(),vecItV != trafficVel.end();
+		++vecItP,++vecItV){
+		X[6+(6*i)+0] =  vecItP->x;
+		X[6+(6*i)+1] =  vecItV->x;
+		X[6+(6*i)+2] =  vecItP->y;
+		X[6+(6*i)+3] =  vecItV->y;
+		X[6+(6*i)+4] =  vecItP->z;
+		X[6+(6*i)+5] =  vecItV->z;
+		i++;
+	}
+
+	for(int i=0;i<Tstep;++i){
+		F(X,U,Y);
+
+		for(int j=0;j<Xsize;j++){
+			k1[j] = Y[j]*dT;
+			X_p[j] = X[j] + k1[j];
+		}
+
+		F(X_p,U,Y);
+		for(int j=0;j<Xsize;j++){
+			k2[j] = Y[j]*dT;
+		}
+
+		for(int j=0;j<Xsize;j++){
+			X[j] = X[j] + 0.5*(k1[j] + k2[j]);
+		}
+
+		Vect3 newPos(X[0],X[2],X[4]);
+
+		if(CheckCollision(newPos)){
+			node_t newNode;
+			newNode.id = -1;
+			return newNode;
+		}
+	}
+
+	Vect3 newPos(X[0],X[2],X[4]);
+	Vect3 newVel(X[1],X[3],X[5]);
+
+	std::vector<Vect3> newTrafficPos;
+
+	for(int i=0;i<trafficSize;++i){
+		Vect3 newTraffic(X[6+(6*i)+0],X[6+(6*i)+2],X[6+(6*i)+4]);
+		newTrafficPos.push_back(newTraffic);
+	}
+
+
+	node_t newNode;
+	nodeCount++;
+	newNode.id  = nodeCount;
+	newNode.pos = newPos;
+	newNode.vel = newVel;
+	newNode.trafficPos = newTrafficPos;
+	newNode.trafficVel = trafficVel;
+
+	delete[] X;
+	delete[] X_p;
+	delete[] Y;
+	delete[] k1;
+	delete[] k2;
+	return newNode;
+}
+
+void RRT_t::Initialize(Vect3 Pos,Vect3 Vel,
+						std::vector<Vect3> TrafficPos,std::vector<Vect3> TrafficVel){
+	root.pos = Pos;
+	root.vel = Vel;
+	root.trafficPos = TrafficPos;
+	root.trafficVel = TrafficVel;
+	root.id = nodeCount;
+
+	nodeList.push_back(root);
+	nodeCount++;
+	trafficSize = TrafficPos.size();
+}
+
+void RRT_t::RRTStep(){
+
+	double X[2];
+	// Generate random number
+	X[0] = rand() % 100;
+	X[1] = rand() % 100;
+
+	node_t rd;
+	rd.pos.x = X[0];
+	rd.pos.y = X[1];
+	rd.pos.z = 0;
+
+	node_t nearest = FindNearest(rd);
+
+	double U[3];
+	GetInput(nearest,rd,U);
+
+
+	node_t newNode = MotionModel(nearest.pos,nearest.vel,
+								 nearest.trafficPos,nearest.trafficVel,U);
+
+	if(newNode.id < 0){
+		return;
+	}
+
+	nearest.children.push_back(newNode);
+	newNode.parent.push_back(nearest);
+
+	nodeList.push_back(newNode);
+
+}
+
+bool RRT_t::CheckGoal(node_t goal){
+
+	node_t lastNode = nodeList.back();
+
+	Vect3 diff = lastNode.pos.Sub(goal.pos);
+	if( diff.norm() < 10 ){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+int main(int argc,char* argv[]){
+
+	srand(time(NULL));
+
+	RRT_t RRT;
+
+	// create bounding box
+
+	Poly2D box;
+	box.addVertex(0,0);
+	box.addVertex(100,0);
+	box.addVertex(100,100);
+	box.addVertex(0,100);
+
+	Poly3D bbox(box,0,100);
+	RRT.boundingBox = bbox;
+
+	// obstacles
+	Poly2D obs2D;
+	obs2D.addVertex(30,30);
+	obs2D.addVertex(60,30);
+	obs2D.addVertex(60,60);
+	obs2D.addVertex(30,60);
+	Poly3D obs1(obs2D,-100,100);
+
+	//Poly2D obs2D_2;
+	//obs2D_2.addVertex(30,0);
+	//obs2D_2.addVertex(60,0);
+	//obs2D_2.addVertex(60,30);
+	//obs2D_2.addVertex(30,30);
+	//Poly3D obs2(obs2D_2,-100,100);
+
+	RRT.obstacleList.push_back(obs1);
+	//RRT.obstacleList.push_back(obs2);
+
+	int Nsteps = 500;
+
+	Vect3 pos(0,0,0);
+	Vect3 vel(0,0,0);
+	Vect3 trafficPos1(200,200,0);
+	Vect3 trafficVel1(0,0,0);
+
+	std::vector<Vect3> TrafficPos;
+	std::vector<Vect3> TrafficVel;
+
+	TrafficPos.push_back(trafficPos1);
+	TrafficVel.push_back(trafficVel1);
+
+	Vect3 gpos(90,90,0);
+	node_t goal;
+	goal.pos = gpos;
+
+
+	RRT.Initialize(pos,vel,TrafficPos,TrafficVel);
+
+	for(int i=0;i<Nsteps;i++){
+		RRT.RRTStep();
+
+		if(RRT.CheckGoal(goal)){
+			printf("%f,%f\n",0,0);
+			break;
+		}
+	}
+
+	node_t node = RRT.nodeList.back();
+	node_t parent;
+	while(!node.parent.empty()){
+		printf("%f,%f\n",node.pos.x,node.pos.y);
+		//printf("parent: %f,%f\n",node.parent.front().pos.x,node.parent.front().pos.y);
+		parent = node.parent.front();
+		node = parent;
+	}
+
+
+
+}
+
+
+

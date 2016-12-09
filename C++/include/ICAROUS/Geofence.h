@@ -103,6 +103,8 @@ public:
 	bool GetViolationStatus();
 	FENCE_TYPE GetType();
 	void GetEntryExitTime(double& in, double& out);
+	SimplePoly GetPoly();
+	EuclideanProjection GetProjection();
 };
 
 
