@@ -305,6 +305,48 @@ bool RRT_t::CheckGoal(node_t goal){
 	}
 }
 
+bool RRT_t::CheckGoal(Position goal){
+
+	node_t goalnode;
+	goalnode.pos = proj.project(goal);
+	return CheckGoal(goalnode);
+}
+
+Plan RRT_t::GetPlan(){
+
+	double speed = 1;
+	node_t node = nodeList.back();
+	node_t parent;
+	std::list<node_t> path;
+	while(!node.parent.empty()){
+		parent = node.parent.front();
+		path.push_front(parent);
+		node = parent;
+	}
+
+	std::list<node_t>::iterator nodeIt;
+	Plan newRoute;
+	int count = 0;
+	double ETA;
+	for(nodeIt = nodeList.begin(); nodeIt != nodeList.end(); ++nodeIt){
+		Position wp = proj.inverse(nodeIt->pos);
+		if(count == 0){
+			ETA = 0;
+		}
+		else{
+			Position prevWP = newRoute.point(count-1).position();
+			double distH    = wp.distanceH(prevWP);
+			ETA             = distH/speed;
+		}
+
+		NavPoint np(wp,ETA);
+		newRoute.add(np);
+		count++;
+	}
+
+	return newRoute;
+}
+
 /*
 int main(int argc,char* argv[]){
 

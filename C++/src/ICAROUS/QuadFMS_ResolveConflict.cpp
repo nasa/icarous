@@ -37,49 +37,6 @@
 
 #include "QuadFMS.h"
 
-void QuadFMS_t::ResolveKeepInConflict(){
-	Geofence_t fence = Conflict.GetKeepInConflict();
-	NavPoint wp(fence.GetRecoveryPoint(),0);
-	std::cout<<wp.position().toStringUnits("degree","degree","m")<<std::endl;
-	NavPoint next_wp = FlightData->MissionPlan.point(FlightData->nextMissionWP);
-	FlightData->ResolutionPlan.clear();
-	FlightData->ResolutionPlan.add(wp);
-	FlightData->nextResolutionWP = 0;
-
-	if(fence.CheckWPFeasibility(wp.position(),next_wp.position())){
-		FlightData->nextMissionWP++;
-	}
-
-	planType        = TRAJECTORY;
-	resumeMission   = false;
-	return;
-}
-
-void QuadFMS_t::ResolveKeepOutConflict(){
-	double gridsize          = FlightData->paramData->getValue("GRIDSIZE");
-	double buffer            = FlightData->paramData->getValue("BUFFER");
-	double lookahead         = FlightData->paramData->getValue("LOOKAHEAD");
-	double proximityfactor   = FlightData->paramData->getValue("PROXFACTOR");
-
-	// Reroute flight plan
-	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
-
-	double elapsedTime;
-	double altfence = 100;
-	double maxalt = 0.0;
-
-	Plan CurrentFP;
-
-	if(planType == MISSION){
-		CurrentFP = FlightData->MissionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(CurrentFP,FlightData->nextMissionWP);
-	}
-	else{
-		CurrentFP = FlightData->ResolutionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(CurrentFP,FlightData->nextResolutionWP);
-	}
-}
-
 void QuadFMS_t::ResolveFlightPlanDeviation(){
 
 	double xtrkDevGain ;
@@ -162,5 +119,59 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 		resumeMission = false;
 	}
 }
+
+void QuadFMS_t::ResolveKeepInConflict(){
+	Geofence_t fence = Conflict.GetKeepInConflict();
+	NavPoint wp(fence.GetRecoveryPoint(),0);
+	std::cout<<wp.position().toStringUnits("degree","degree","m")<<std::endl;
+	NavPoint next_wp = FlightData->MissionPlan.point(FlightData->nextMissionWP);
+	FlightData->ResolutionPlan.clear();
+	FlightData->ResolutionPlan.add(wp);
+	FlightData->nextResolutionWP = 0;
+
+	if(fence.CheckWPFeasibility(wp.position(),next_wp.position())){
+		FlightData->nextMissionWP++;
+	}
+
+	planType        = TRAJECTORY;
+	resumeMission   = false;
+	return;
+}
+
+void QuadFMS_t::ResolveKeepOutConflict(){
+	double gridsize          = FlightData->paramData->getValue("GRIDSIZE");
+	double buffer            = FlightData->paramData->getValue("BUFFER");
+	double lookahead         = FlightData->paramData->getValue("LOOKAHEAD");
+	double proximityfactor   = FlightData->paramData->getValue("PROXFACTOR");
+
+	// Reroute flight plan
+	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+
+	std::vector<Vect3> TrafficPos;
+	std::vector<Vect3> TrafficVel;
+
+	Position currentPos = FlightData->acState.positionLast();
+	Velocity currentVel = FlightData->acState.velocityLast();
+
+	RRT_t RRT(FlightData->fenceList,currentPos,currentVel,TrafficPos,TrafficVel);
+
+	Position nextWP = FlightData->MissionPlan.point(FlightData->nextMissionWP).position();
+	int Nsteps = 500;
+
+	for(int i=0;i<Nsteps;i++){
+		RRT.RRTStep();
+		if(RRT.CheckGoal(nextWP)){
+			break;
+		}
+	}
+
+	FlightData->ResolutionPlan = RRT.GetPlan();
+	planType        = TRAJECTORY;
+	resumeMission   = false;
+	return;
+
+}
+
+
 
 

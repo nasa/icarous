@@ -1,7 +1,7 @@
 /**
- * Quad Flight Management System
+ * RRT
  *
- * Core flight management functions
+ * RRT search
  *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  *
@@ -28,57 +28,78 @@
  * Waiver and Indemnity:
  *   RECIPIENT AGREES TO WAIVE ANY AND ALL CLAIMS AGAINST THE UNITED STATES GOVERNMENT,
  *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT.  IF RECIPIENT'S USE OF THE SUBJECT SOFTWARE
- *   RESULTS IN ANY LIABILITIES, DEMANDS, DAMAGES,
+ *   RESULTS IN ANY LIABILITIES, DEMANDS, DAMAGES,s
  *   EXPENSES OR LOSSES ARISING FROM SUCH USE, INCLUDING ANY DAMAGES FROM PRODUCTS BASED ON, OR RESULTING FROM,
  *   RECIPIENT'S USE OF THE SUBJECT SOFTWARE, RECIPIENT SHALL INDEMNIFY AND HOLD HARMLESS THE UNITED STATES GOVERNMENT,
  *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT, TO THE EXTENT PERMITTED BY LAW.
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#ifndef QUADFMS_H_
-#define QUADFMS_H_
+#ifndef RRT_H_
+#define RRT_H_
 
-#include "FlightManagementSystem.h"
-#include "RRT.h"
+#include <list>
+#include <Geofence.h>
+#include "EuclideanProjection.h"
+#include "math.h"
+#include "Poly3D.h"
+#include "CDPolycarp.h"
+#include "Position.h"
+#include "Vect3.h"
+#include "Plan.h"
+#include <vector>
+#include <string.h>
 
-class QuadFMS_t:public FlightManagementSystem_t{
+struct node_t{
+	int id;
+	Vect3 pos;
+	Vect3 vel;
+	std::vector<Vect3> trafficPos;
+	std::vector<Vect3> trafficVel;
 
-	enum resolve_state_t {IDLE_r, COMPUTE_r, MANEUVER_r, TRAJECTORY_r, RESUME_r};
-	enum trajectory_state_t {IDLE_t, START_t, FIX_t, ENROUTE_t, STOP_t};
-	enum maneuver_state_t {START_m,GUIDE_m,IDLE_m};
-	enum plan_type_t {MISSION,TRAJECTORY,MANEUVER};
+	bool goal;
+	double g,h;
+	std::list<node_t> children;
+	std::list<node_t> parent;
+};
 
 
-    private:
-        float targetAlt;
-        resolve_state_t resolutionState;
-        trajectory_state_t trajectoryState;
-        maneuver_state_t maneuverState;
-        plan_type_t planType;
-        bool resumeMission;
+class RRT_t{
 
-    public:
-        QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData);
-        ~QuadFMS_t();
-        uint8_t TAKEOFF();
-        uint8_t CLIMB();
-        uint8_t CRUISE();
-        uint8_t DESCEND();
-        uint8_t LAND();
-        uint8_t Monitor();
-        uint8_t Resolve();
+public:
+	std::list<Geofence_t> fenceList;
+	Poly3D boundingBox;
+	std::list<Poly3D> obstacleList;
+	std::list<node_t> nodeList;
+	std::list<node_t>::iterator ndit;
+	EuclideanProjection proj;
+	CDPolycarp geoPolycarp;
+	int nodeCount;
+	node_t root;
+	int trafficSize;
 
-        uint8_t FlyTrajectory();
-        uint8_t FlyManuever();
-        void ComputeInterceptCourse();
+	RRT_t();
+	RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
+			std::vector<Vect3> trafficPos,std::vector<Vect3> trafficVel);
 
-        void CheckGeofence();
-        void CheckFlightPlanDeviation();
-        void ResolveKeepInConflict();
-        void ResolveKeepOutConflict();
-        void ResolveFlightPlanDeviation();
+	void Initialize(Vect3 Pos,Vect3 Vel,
+			std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel);
+
+	node_t MotionModel(Vect3 X, Vect3 V,
+			std::vector<Vect3> trafficPos,std::vector<Vect3> trafficList, double U[]);
+
+	void F(double X[], double U[],double Y[]);
+	bool CheckCollision(Vect3 qPos);
+	void GetInput(node_t nn, node_t qn,double U[]);
+	node_t FindNearest(node_t query);
+	double NodeDistance(node_t A,node_t B);
+	void RRTStep();
+	bool CheckGoal(node_t goal);
+	bool CheckGoal(Position goal);
+	Plan GetPlan();
 };
 
 
 
-#endif /* QUADFMS_H_ */
+
+#endif /* RRT_H_ */
