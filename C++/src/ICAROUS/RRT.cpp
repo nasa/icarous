@@ -91,7 +91,9 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 
 
 	for(it = fenceList.begin();it != fenceList.end(); ++it){
-		obstacleList.push_back((it->GetPoly().poly3D(proj)));
+		if(it->GetType() != KEEP_IN){
+			obstacleList.push_back((it->GetPoly().poly3D(proj)));
+		}
 	}
 
 	Vect3 initPosR3 = proj.project(initialPos);
@@ -115,6 +117,11 @@ bool RRT_t::CheckCollision(Vect3 qPos){
 			return true;
 		}
 	}
+
+	if(!geoPolycarp.definitelyInside(qPos,boundingBox)){
+		return true;
+	}
+
 	return false;
 }
 
