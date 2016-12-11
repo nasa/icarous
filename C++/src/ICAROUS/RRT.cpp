@@ -46,11 +46,15 @@ RRT_t::RRT_t(){
 	ymax = 0;
 	zmin = 0;
 	zmax = 0;
+	Tstep = 5;
+	dT = 0.5;
 }
 
 RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
-		std::vector<Vect3> trafficPos,std::vector<Vect3> trafficVel){
+		std::vector<Vect3> trafficPos,std::vector<Vect3> trafficVel,int stepT,double dt){
 
+	Tstep = stepT;
+	dT    = dt;
 	std::list<Geofence_t>::iterator it;
 
 	for(it = fenceList.begin();it != fenceList.end(); ++it){
@@ -197,8 +201,6 @@ void RRT_t::F(double X[], double U[],double Y[]){
 
 node_t RRT_t::MotionModel(Vect3 pos, Vect3 vel,
 							std::vector<Vect3> trafficPos, std::vector<Vect3> trafficVel, double U[]){
-	int Tstep = 5;
-	double dT = 1;
 
 	int Xsize = 6+trafficSize*6;
 

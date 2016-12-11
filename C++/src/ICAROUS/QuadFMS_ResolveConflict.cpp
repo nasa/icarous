@@ -153,7 +153,7 @@ void QuadFMS_t::ResolveKeepOutConflict(){
 	Position currentPos = FlightData->acState.positionLast();
 	Velocity currentVel = FlightData->acState.velocityLast();
 
-	RRT_t RRT(FlightData->fenceList,currentPos,currentVel,TrafficPos,TrafficVel);
+	RRT_t RRT(FlightData->fenceList,currentPos,currentVel,TrafficPos,TrafficVel,5,1);
 
 	Position nextWP = FlightData->MissionPlan.point(FlightData->nextMissionWP).position();
 	int Nsteps = 500;

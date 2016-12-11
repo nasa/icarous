@@ -70,6 +70,8 @@ public:
 	int16_t xmax, xmin;
 	int16_t ymax, ymin;
 	int16_t zmax, zmin;
+	int Tstep;
+	double dT;
 	std::list<Geofence_t> fenceList;
 	Poly3D boundingBox;
 	std::list<Poly3D> obstacleList;
@@ -83,7 +85,7 @@ public:
 
 	RRT_t();
 	RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
-			std::vector<Vect3> trafficPos,std::vector<Vect3> trafficVel);
+			std::vector<Vect3> trafficPos,std::vector<Vect3> trafficVel,int stepT,double dt);
 
 	void Initialize(Vect3 Pos,Vect3 Vel,
 			std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel);
