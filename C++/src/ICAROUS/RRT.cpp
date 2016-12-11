@@ -40,6 +40,12 @@
 RRT_t::RRT_t(){
 	nodeCount = 0;
 	trafficSize = 0;
+	xmin = 0;
+	xmax = 0;
+	ymin = 0;
+	ymax = 0;
+	zmin = 0;
+	zmax = 0;
 }
 
 RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
@@ -56,10 +62,36 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 
 	}
 
-	for(it = fenceList.begin();it != fenceList.end(); ++it){
-		if(it->GetType() != KEEP_IN){
-			obstacleList.push_back((it->GetPoly().poly3D(proj)));
+	zmin = boundingBox.getBottom();
+	zmax = boundingBox.getTop();
+
+	xmax = -INT16_MAX;
+	ymax = -INT16_MAX;
+
+	xmin = -xmax;
+	ymin = -ymax;
+
+	for(int i=0;i<boundingBox.size();i++){
+		if( boundingBox.getVertex(i).x > xmax ){
+			xmax = boundingBox.getVertex(i).x;
 		}
+
+		if( boundingBox.getVertex(i).y > ymax ){
+			ymax = boundingBox.getVertex(i).y;
+		}
+
+		if( boundingBox.getVertex(i).x < xmin ){
+			xmin = boundingBox.getVertex(i).x;
+		}
+
+		if( boundingBox.getVertex(i).y < ymin ){
+			ymin = boundingBox.getVertex(i).y;
+		}
+	}
+
+
+	for(it = fenceList.begin();it != fenceList.end(); ++it){
+		obstacleList.push_back((it->GetPoly().poly3D(proj)));
 	}
 
 	Vect3 initPosR3 = proj.project(initialPos);
@@ -259,14 +291,24 @@ void RRT_t::Initialize(Vect3 Pos,Vect3 Vel,
 	nodeList.push_back(root);
 	nodeCount++;
 	trafficSize = TrafficPos.size();
+
+	xmin = 0;
+	xmax = 100;
+	ymin = 0;
+	ymax = 100;
+	zmin = 0;
+	zmax = 100;
 }
 
 void RRT_t::RRTStep(){
 
 	double X[2];
 	// Generate random number
-	X[0] = rand() % 100;
-	X[1] = rand() % 100;
+	int rangeX = xmax - xmin;
+	int rangeY = ymax - ymin;
+
+	X[0] = (rand() % rangeX) - rangeX/2;
+	X[1] = (rand() % rangeY) - rangeY/2;
 
 	node_t rd;
 	rd.pos.x = X[0];
@@ -346,6 +388,7 @@ Plan RRT_t::GetPlan(){
 
 	return newRoute;
 }
+
 
 /*
 int main(int argc,char* argv[]){

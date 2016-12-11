@@ -67,6 +67,9 @@ struct node_t{
 class RRT_t{
 
 public:
+	int16_t xmax, xmin;
+	int16_t ymax, ymin;
+	int16_t zmax, zmin;
 	std::list<Geofence_t> fenceList;
 	Poly3D boundingBox;
 	std::list<Poly3D> obstacleList;
