@@ -47,6 +47,8 @@
 #include "Position.h"
 #include "Vect3.h"
 #include "Plan.h"
+#include "Daidalus.h"
+#include "KinematicMultiBands.h"
 #include <vector>
 #include <string.h>
 
@@ -83,8 +85,11 @@ public:
 	node_t root;
 	int trafficSize;
 	double closestDist;
+	double daaLookAhead;
 	node_t closestNode;
 	node_t goalNode;
+	Daidalus DAA;
+	KinematicMultiBands KMB;
 
 	RRT_t();
 	RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
@@ -97,7 +102,9 @@ public:
 			std::vector<Vect3> trafficPos,std::vector<Vect3> trafficList, double U[]);
 
 	void F(double X[], double U[],double Y[]);
-	bool CheckCollision(Vect3 qPos);
+	bool CheckFenceCollision(Vect3 qPos);
+	bool CheckTrafficCollision(Vect3 qPos,Vect3 qVel,
+			    std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel);
 	void GetInput(node_t nn, node_t qn,double U[]);
 	node_t FindNearest(node_t query);
 	double NodeDistance(node_t A,node_t B);

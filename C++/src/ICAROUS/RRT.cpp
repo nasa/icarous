@@ -49,6 +49,8 @@ RRT_t::RRT_t(){
 	Tstep = 5;
 	dT = 1;
 	closestDist = MAXDOUBLE;
+	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+	daaLookAhead = DAA.parameters.getLookaheadTime("s");
 }
 
 RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
@@ -115,12 +117,11 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 
 	closestDist = MAXDOUBLE;
 
-	printf("xmin,xmax = %d,%d\n",xmin,xmax);
-	printf("ymin,ymax = %d,%d\n",ymin,ymax);
-
+	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+	daaLookAhead = DAA.parameters.getLookaheadTime("s");
 }
 
-bool RRT_t::CheckCollision(Vect3 qPos){
+bool RRT_t::CheckFenceCollision(Vect3 qPos){
 	std::list<Poly3D>::iterator it;;
 	for(it = obstacleList.begin();it != obstacleList.end(); ++it){
 		if(geoPolycarp.definitelyInside(qPos,*it)){
@@ -130,6 +131,50 @@ bool RRT_t::CheckCollision(Vect3 qPos){
 
 	if(!geoPolycarp.definitelyInside(qPos,boundingBox)){
 		return true;
+	}
+
+	return false;
+}
+
+bool RRT_t::CheckTrafficCollision(Vect3 qPos,Vect3 qVel,
+	    std::vector<Vect3> TrafficPos,std::vector<Vect3> TrafficVel){
+
+	DAA.reset();
+	Position so = Position::makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
+	Velocity vo = Velocity::makeVxyz(qVel.x,qVel.y,"m/s",qVel.z,"m/s");
+	DAA.setOwnshipState("Ownship",so,vo,0);
+
+	std::vector<Vect3>::iterator itP;
+	std::vector<Vect3>::iterator itV;
+	int i=0;
+	for(itP = TrafficPos.begin(),itV = TrafficVel.begin();
+		itP != TrafficPos.end(),itV != TrafficVel.end();
+		++itP,++itV){
+		Position si = Position::makeXYZ(itP->x,"m",itP->y,"y",itP->z,"z");
+		Velocity vi = Velocity::makeVxyz(itV->x,itV->y,"m/s",itV->z,"m");
+		char name[10];
+		sprintf(name,"Traffic%d",i);i++;
+		DAA.addTrafficState(name,si,vi);
+	}
+
+	double qHeading = vo.track("degree");
+
+	for(int ac = 1;ac<DAA.numberOfAircraft();ac++){
+		double tlos = DAA.timeToViolation(ac);
+		if(tlos >=0 && tlos <= daaLookAhead){
+			DAA.kinematicMultiBands(KMB);
+			for(int ib=0;ib<KMB.trackLength();++ib){
+				if(KMB.trackRegion(ib) != larcfm::BandsRegion::NONE ){
+					Interval ii = KMB.track(ib,"deg");
+					if(qHeading < ii.low && qHeading > ii.up){
+						return true;
+					}
+				}
+			}
+		}
+		else{
+			return false;
+		}
 	}
 
 	return false;
@@ -261,7 +306,7 @@ node_t RRT_t::MotionModel(Vect3 pos, Vect3 vel,
 
 		Vect3 newPos(X[0],X[2],X[4]);
 
-		if(CheckCollision(newPos)){
+		if(CheckFenceCollision(newPos)){
 			node_t newNode;
 			newNode.id = -1;
 			return newNode;
@@ -276,6 +321,13 @@ node_t RRT_t::MotionModel(Vect3 pos, Vect3 vel,
 	for(int i=0;i<trafficSize;++i){
 		Vect3 newTraffic(X[6+(6*i)+0],X[6+(6*i)+2],X[6+(6*i)+4]);
 		newTrafficPos.push_back(newTraffic);
+	}
+
+	if(trafficSize > 0){
+		CheckTrafficCollision(newPos,newVel,newTrafficPos,trafficVel);
+		node_t newNode;
+		newNode.id = -1;
+		return newNode;
 	}
 
 
@@ -417,7 +469,7 @@ Plan RRT_t::GetPlan(){
 }
 
 
-/*
+
 int main(int argc,char* argv[]){
 
 	srand(time(NULL));
@@ -431,20 +483,20 @@ int main(int argc,char* argv[]){
 
 	Poly2D box;
 	box.addVertex(0,0);
-	box.addVertex(50,3.815);
-	box.addVertex(54.768718,-36.0304);
-	box.addVertex(5.409,-40.2694);
+	box.addVertex(100,0);
+	box.addVertex(100,100);
+	box.addVertex(0,100);
 
 	Poly3D bbox(box,0,100);
 	RRT.boundingBox = bbox;
 
 	// obstacles
 	Poly2D obs2D;
-	obs2D.addVertex(34.4838,-5.08);
-	obs2D.addVertex(32.455,-13.56);
-	obs2D.addVertex(41.9216,-11.867);
+	//obs2D.addVertex(34.4838,-5.08);
+	//obs2D.addVertex(32.455,-13.56);
+	//obs2D.addVertex(41.9216,-11.867);
 	//obs2D.addVertex(30,60);
-	Poly3D obs1(obs2D,-100,100);
+	//Poly3D obs1(obs2D,-100,100);
 
 	//Poly2D obs2D_2;
 	//obs2D_2.addVertex(30,0);
@@ -453,23 +505,23 @@ int main(int argc,char* argv[]){
 	//obs2D_2.addVertex(30,30);
 	//Poly3D obs2(obs2D_2,-100,100);
 
-	RRT.obstacleList.push_back(obs1);
+	//RRT.obstacleList.push_back(obs1);
 	//RRT.obstacleList.push_back(obs2);
 
-	int Nsteps = 5000;
+	int Nsteps = 1000;
 
 	Vect3 pos(59,-10,2);
 	Vect3 vel(0,0,0);
-	Vect3 trafficPos1(200,200,0);
-	Vect3 trafficVel1(0,0,0);
+	Vect3 trafficPos1(90,90,0);
+	Vect3 trafficVel1(-0.5,-0.5,0);
 
 	std::vector<Vect3> TrafficPos;
 	std::vector<Vect3> TrafficVel;
 
-	//TrafficPos.push_back(trafficPos1);
-	//TrafficVel.push_back(trafficVel1);
+	TrafficPos.push_back(trafficPos1);
+	TrafficVel.push_back(trafficVel1);
 
-	Vect3 gpos(50,-6,0);
+	Vect3 gpos(90,90,0);
 	node_t goal;
 	goal.pos = gpos;
 
@@ -477,10 +529,10 @@ int main(int argc,char* argv[]){
 	RRT.Initialize(pos,vel,TrafficPos,TrafficVel);
 
 	RRT.xmin = 0;
-	RRT.xmax = 60;
-	RRT.ymin = -50;
-	RRT.ymax = 10;
-	RRT.zmin = -100;
+	RRT.xmax = 100;
+	RRT.ymin = 0;
+	RRT.ymax = 100;
+	RRT.zmin = -10;
 	RRT.zmax = 100;
 
 	for(int i=0;i<Nsteps;i++){
@@ -495,7 +547,8 @@ int main(int argc,char* argv[]){
 	node_t node = RRT.nodeList.back();
 	node_t parent;
 	while(!node.parent.empty()){
-		printf("%f,%f\n",node.pos.x,node.pos.y);
+		printf("%f,%f,%f,%f\n",node.pos.x,node.pos.y,
+				node.trafficPos.front().x,node.trafficPos.front().y);
 		//printf("parent: %f,%f\n",node.parent.front().pos.x,node.parent.front().pos.y);
 		parent = node.parent.front();
 		node = parent;
@@ -504,6 +557,4 @@ int main(int argc,char* argv[]){
 
 
 }
-
-*/
 
