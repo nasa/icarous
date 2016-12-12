@@ -143,6 +143,8 @@ void QuadFMS_t::ResolveKeepOutConflict(){
 	double buffer            = FlightData->paramData->getValue("BUFFER");
 	double lookahead         = FlightData->paramData->getValue("LOOKAHEAD");
 	double proximityfactor   = FlightData->paramData->getValue("PROXFACTOR");
+	double resolutionSpeed   = FlightData->paramData->getValue("RES_SPEED");
+	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
 
 	// Reroute flight plan
 	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
@@ -161,6 +163,7 @@ void QuadFMS_t::ResolveKeepOutConflict(){
 	Plan currentFP;
 	Position prevWP;
 	Position nextWP;
+	Position start = currentPos;
 
 	if(planType == MISSION){
 		currentFP = FlightData->MissionPlan;
@@ -184,12 +187,15 @@ void QuadFMS_t::ResolveKeepOutConflict(){
 		if(entrytime <= minTime){
 			minTime  = entrytime;
 			altFence = it->GetCeiling();
+
+			if(it->GetViolationStatus()){
+				start = it->GetRecoveryPoint();
+			}
 		}
 
 		if(exittime >= maxTime){
 			maxTime = exittime;
 		}
-
 	}
 
 	if(planType == MISSION){
@@ -202,7 +208,7 @@ void QuadFMS_t::ResolveKeepOutConflict(){
 	int Nsteps = 1000;
 	int Tstep  = 5;
 	double dT  = 1;
-	RRT_t RRT(FlightData->fenceList,currentPos,currentVel,TrafficPos,TrafficVel,5,1);
+	RRT_t RRT(FlightData->fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT);
 
 	for(int i=0;i<Nsteps;i++){
 		RRT.RRTStep();
@@ -212,11 +218,58 @@ void QuadFMS_t::ResolveKeepOutConflict(){
 		}
 	}
 
-	FlightData->ResolutionPlan = RRT.GetPlan();
+	Plan ResolutionPlan1 = RRT.GetPlan();
+	Plan ResolutionPlan2 = ComputeGoAbovePlan(start,goal,altFence,resolutionSpeed);
+
+	double length1 = ResolutionPlan1.pathDistance();
+	double length2 = ResolutionPlan2.pathDistance();
+
+	if( (altFence > maxAlt) ){
+		length2 = MAXDOUBLE;
+	}
+
+	if(length1 < length2){
+		FlightData->ResolutionPlan = ResolutionPlan1;
+	}else{
+		FlightData->ResolutionPlan = ResolutionPlan2;
+	}
+
 	planType        = TRAJECTORY;
 	resumeMission   = false;
 	return;
 
+}
+
+Plan QuadFMS_t::ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed){
+	// Compute go above plan
+	Plan ResolutionPlan2;
+	double ETA = 0;
+	double distH,distV;
+
+	NavPoint nvpt1(start,ETA);
+	ResolutionPlan2.add(nvpt1);
+
+	// Second waypoint directly above WP1
+	Position wp2 = start.mkAlt(altFence+1);
+	distV = wp2.distanceV(start);
+	ETA = ETA + distV/rSpeed;
+	NavPoint nvpt2(wp2,ETA);
+	ResolutionPlan2.add(nvpt2);
+
+	// Third waypoint directly above exit point
+	Position wp3 = goal.mkAlt(altFence+1);
+	distH = wp3.distanceH(wp2);
+	ETA = ETA + distH/rSpeed;
+	NavPoint nvpt3(wp3,ETA);
+	ResolutionPlan2.add(nvpt3);
+
+	// Final waypoint
+	distV = goal.distanceH(wp3);
+	ETA = ETA + distV/rSpeed;
+	NavPoint nvpt4(goal,ETA);
+	ResolutionPlan2.add(nvpt4);
+
+	return ResolutionPlan2;
 }
 
 

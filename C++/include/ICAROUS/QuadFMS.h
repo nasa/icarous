@@ -77,6 +77,8 @@ class QuadFMS_t:public FlightManagementSystem_t{
         void ResolveKeepInConflict();
         void ResolveKeepOutConflict();
         void ResolveFlightPlanDeviation();
+        Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
+
 };
 
 
