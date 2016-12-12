@@ -129,7 +129,6 @@ public final class OrthographicProjection implements EuclideanProjection {
 
     /** Return a LatLonAlt value corresponding to the given Euclidean position */
     public LatLonAlt inverse(Vect2 xy, double alt) {
-    	
 		return xy2spherical(xy.x(), xy.y(), alt+projAlt);
     }
 
@@ -186,6 +185,7 @@ public final class OrthographicProjection implements EuclideanProjection {
     private LatLonAlt xy2spherical(double x, double y, double alt) {
     	double r = GreatCircle.spherical_earth_radius;
     	double p = Util.sqrt_safe(Util.sq(x)+Util.sq(y));
+    	if (Util.almost_equals(p, 0.0)) return llaRef.mkAlt(alt);
     	double c = Util.asin_safe(p/r);
     	double lat = Util.asin_safe(Math.cos(c)*Math.sin(llaRef.lat()) + y*Math.sin(c)*Math.cos(llaRef.lat())/p);
     	double lon = llaRef.lon()+Util.atan2_safe(x*Math.sin(c), p*Math.cos(c)*Math.cos(llaRef.lat())-y*Math.sin(c)*Math.sin(llaRef.lat()));

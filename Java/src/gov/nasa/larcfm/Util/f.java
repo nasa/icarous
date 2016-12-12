@@ -26,7 +26,6 @@ import java.util.Map;
 /** Various printout operations, used in testing and debugging. */   
 final public class f {
 
-
 	/** Given a list of names that may include files or directories,
 	 * return a list of files that contains (1) all of the files in
 	 * the original list and (2) all files ending with ".txt" in
@@ -613,6 +612,16 @@ final public class f {
 			}
 		}
 		return sb.toString();
+	}
+	
+	/**
+	 * Converts Unix line separators to platform line separator.  Most of the time, Java handles
+	 * this seamlessly, but there are some places where this is needed.
+	 * @param str the string with Unix separators (\n)
+	 * @return a string with Unix separators replaced with the platform-specific separators
+	 */
+	public static String toPlatform(String str) {
+		return str.replaceAll("\n",nl);
 	}
 
 	public static String double2PVS(double val, int prec) {

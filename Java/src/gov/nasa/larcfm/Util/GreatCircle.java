@@ -437,6 +437,8 @@ public final class GreatCircle {
 
 
 	/**
+	 * @deprecated
+	 * @Deprecated
 	 * Solve the spherical triangle when one has a side (in angular distance), another side, and an angle between sides.
 	 * The angle is <b>not</b> between the sides.  The sides are labeled a, b, and c.  The angles are labelled A, B, and
 	 * C.  Side a is opposite angle A, and so forth.<p>
@@ -475,7 +477,10 @@ public final class GreatCircle {
 		}
 	}
 
+	
+	//TODO: consider if this should be deprecated
 	/**
+	 * 
 	 * Solve the spherical triangle when one has a side (in angular distance), and two angles.
 	 * The side is <b>not</b> between the angles.  The sides are labeled a, b, and c.  The angles are labelled A, B, and
 	 * C.  Side a is opposite angle A, and so forth.<p>
@@ -513,6 +518,7 @@ public final class GreatCircle {
 		}
 	}
 
+	//TODO consider if this should be deprecated
 	/**
 	 * This implements the spherical cosine rule to complete a triangle on the unit sphere
 	 * @param a side a (angular distance)
@@ -529,6 +535,8 @@ public final class GreatCircle {
 	}
 	
 	/**
+	 * @deprecated
+	 * @Deprecated
 	 * This implements the supplemental (polar triangle) spherical cosine rule to complete a triangle on the unit sphere
 	 * @param A angle A
 	 * @param c side between A and B (angular distance
@@ -837,204 +845,251 @@ public final class GreatCircle {
 		return Util.within_epsilon(cross_track_distance(p1,p2,p3),epsilon);
 	}
 
-	//TODO Fix for obtuse angle cases
+	
 	/**
-	 * WARNING!!!! THIS FUNCTION MAY HAVE ERRORS IN THE GENERAL CASE!  It may not work if the triangle created contains obtuse angles.
-	 * 
-	 * This returns the point on the great circle that running through p1 and p2 that is closest to point x.
-	 * This uses Napier's rules for right spherical triangles for the non-collinear case. 
+	 * This returns the point on the great circle running through p1 and p2 that is closest to point x.
 	 * The altitude of the output is the same as x.<p>
 	 * If p1 and p2 are the same point, then every great circle runs through them, thus x is on one of these great circles.  In this case, x will be returned.  
-	 * This assumes any 2 points will be within 90 degrees of each other (angular distance).
 	 * @param p1 the starting point of the great circle
 	 * @param p2 another point on the great circle
 	 * @param x point to determine closest segment point to.
 	 * @return the LatLonAlt point on the segment that is closest (horizontally) to x
 	 */
 	public static LatLonAlt closest_point_circle(LatLonAlt p1, LatLonAlt p2, LatLonAlt x) {
-//		f.pln("GreatCircle.closest_point_circle p1="+p1+" p2="+p2+" x="+x);
-//		f.pln("GreatCircle.closest_point_circle dist a="+distance(x,p2)+" b="+distance(p1,p2)+" c="+distance(p1,x));
-//		f.pln("GreatCircle.closest_point_circle trk A="+Util.turnDelta(initial_course(p1,p2), initial_course(p1,x))+" trk B="+Util.turnDelta(initial_course(x,p1), initial_course(x,p2))+" trk C="+Util.turnDelta(initial_course(p2,x), initial_course(p2,p1)));
-		double a = angular_distance(x,p2);
-		double b = angular_distance(p1,p2);
-		double c = angular_distance(p1,x);
-		double A = angle_between(p2,p1,x);
-		double B = angle_between(p1,x,p2);
-		double C = angle_between(x,p2,p1);
-		return closest_point_circle(p1,p2,x,a,b,c,A,B,C);
+		// almost same point or antipode:
+		if ((Util.almost_equals(p1.lat(),p2.lat()) && Util.almost_equals(p1.lon(),p2.lon())) || 
+			(Util.almost_equals(p1.lat(),-p2.lat()) && Util.almost_equals(p1.lon(),Util.to_pi(p2.lon()+Math.PI)))) return x; 
+		Vect3 a = spherical2xyz(p1.lat(), p1.lon());
+		Vect3 b = spherical2xyz(p2.lat(), p2.lon());
+		Vect3 c = a.cross(b);
+		Vect3 p = spherical2xyz(x.lat(), x.lon());
+		Vect3 g = p.Sub(c.Scal(p.dot(c)/c.sqv()));
+		double v = spherical_earth_radius/g.norm();
+		return xyz2spherical(g.Scal(v)).mkAlt(x.alt()); // return to x's altitude
 	}
 	
-
-	// angular distances a,b,c, angles A,B,C
-	private static LatLonAlt closest_point_circle(LatLonAlt p1, LatLonAlt p2, LatLonAlt x, double a, double b, double c, double A, double B, double C) {
-		//       x (B)
-		//      / \
-		// (A) p1--p2 (C)
-//		double a = angular_distance(x,p2);
-//		double b = angular_distance(p1,p2);
-//		double c = angular_distance(p1,x);
-//		double A = angle_between(p2,p1,x);
-//		double B = angle_between(p1,x,p2);
-//		double C = angle_between(x,p2,p1);
-		
-//		if (Util.almost_equals(A, 0.0) || Util.almost_equals(C, 0.0) || Util.almost_equals(A, Math.PI) || Util.almost_equals(C, Math.PI)) {			// collinear
-		// collinear check
-		if (Util.within_epsilon(A, 0.000001) || Util.within_epsilon(C, 0.000001) || Util.within_epsilon(Math.PI-A, 0.000001) || Util.within_epsilon(Math.PI-C, 0.000001) || collinear(p1,p2,x)) {
-			return x;
-		} 
-		if (Util.almost_equals(b,0.0)) {
-			return x;   // if p1==p2, every great circle runs through them, thus x is on one of these great circles  
-		}
-		// invalid triangles
-		if (A+B+C < Math.PI || A+B+C >= Math.PI*3) {
-			// if the triangle is relatively small, it is probably collinear
-			if (a < Math.PI/2 && b < Math.PI/2 && c < Math.PI/2) { 
-				return x;
-			}
-			//f.pln(" $$ GreatCircle.closestPoint ERROR: not a triangle p1="+p1+"p2="+p2+"x="+x+" A+B+C="+(A+B+C)+" = "+Units.to("deg", A+B+C)+" deg");
-			return LatLonAlt.INVALID;
-		}
-		if (p1.almostEquals(x) || Util.almost_equals(A, Math.PI/2)) {
-			return p1.mkAlt(x.alt());
-		}
-		if (p2.almostEquals(x) || Util.almost_equals(C, Math.PI/2)) {
-			return p2.mkAlt(x.alt());
-		}
-
-		// general case p1 @ A, x @ B, p2 @ C
-//		double d1 = 0;
-//f.pln("GreatCircle.closest_point_circle DEG A="+Units.to("deg", A)+" B="+Units.to("deg", B)+" C="+Units.to("deg", C)+" / a="+Units.to("deg", a)+" b="+Units.to("deg", b)+" c="+Units.to("deg", c));		
-//f.pln("GreatCircle.closest_point_circle RAD A="+A+" B="+B+" C="+C+" / a="+a+" b="+b+" c="+c);		
-//f.pln("GreatCircle.closest_point_circle A/a="+(Math.sin(A)/Math.sin(a))+" B/b="+(Math.sin(B)/Math.sin(b))+" C/c="+(Math.sin(C)/Math.sin(c)));
-		if (A <= Math.PI/2 && C <= Math.PI/2) {
-			//   B       C1
-			//  / \     / |
-			// A---C   B1-A1
-			if (A < C) {
-				double a1 = c;
-				double A1 = Math.PI/2;
-				double B1 = A;
-				Triple<Double, Double, Double> b1C1c1 = side_angle_angle(a1,A1,B1, true);
-				double c1 = b1C1c1.third;
-				double ff = (c1/b);
-//f.pln("GreatCircle.closest_point_circle a1) ff="+ff);				
-				return interpolate(p1,p2,ff);
-			} else {
-				//   B     C1
-				//  / \    | \
-				// A---C   A1-B1
-				double a1 = a;
-				double A1 = Math.PI/2;
-				double B1 = C;
-				Triple<Double, Double, Double> b1C1c1 = side_angle_angle(a1,A1,B1, true);
-				double c1 = b1C1c1.third;
-				double ff = (c1/b);
-//f.pln("GreatCircle.closest_point_circle a2) ff="+ff);				
-				return interpolate(p2,p1,ff);
-			}
-			
-//			d1 = side_angle_angle(a,Math.PI/2,C,true).third;
-//f.pln("GreatCircle.closest_point_circle #1 d1="+d1+" "+Units.to("deg", d1)+Units.degreeStr);			
-//			double ff = 1-(d1/b);
-//f.pln("GreatCircle.closest_point_circle p1="+p1+" p2="+p2+" ff="+ff);			
-//			return interpolate(p1, p2, ff);
-		} else if (A <= Math.PI/2 && C > Math.PI/2) {
-			//    -- B    C1
-			//  /   /    / |
-			// A---C    B1-A1
-			double a1 = a;
-			double A1 = Math.PI/2;
-			double B1 = Math.PI-C;
-			Triple<Double, Double, Double> b1C1c1 = side_angle_angle(a1,A1,B1, true);
-			double c1 = b1C1c1.third;
-			double ff = 1+(c1/b);
-//f.pln("GreatCircle.closest_point_circle b) ff="+ff);				
-			return interpolate(p1,p2,ff);
-			
-//			d1 = side_angle_angle(a,Math.PI/2,Math.PI-C,true).third;
-//f.pln("GreatCircle.closest_point_circle #2 d="+d1+" "+Units.to("deg", d1)+Units.degreeStr);			
-//			return linear_initial(p1,initial_course(p1,p2),distance_from_angle(b+d1,0)).mkAlt(x.alt());
-		} else if (A > Math.PI/2 && C <= Math.PI/2) {
-			// B--		  C1
-			//  \   \	  | \
-			//   A---C	  A1-B1
-			double a1 = c;
-			double A1 = Math.PI/2;
-			double B1 = Math.PI-A;
-			Triple<Double, Double, Double> b1C1c1 = side_angle_angle(a1,A1,B1, true);
-			double c1 = b1C1c1.third;
-			double ff = 1+(c1/b);
-//f.pln("GreatCircle.closest_point_circle c) ff="+ff);				
-			return interpolate(p2,p1,ff);
-//			d1 = side_angle_angle(a,Math.PI/2,Math.PI-A,true).third;
-//f.pln("GreatCircle.closest_point_circle #3 d="+d1+" "+Units.to("deg", d1)+Units.degreeStr);			
-//			return linear_initial(p2,initial_course(p2,p1),distance_from_angle(b+d1,0)).mkAlt(x.alt());
-		}
-f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");			
-		return LatLonAlt.INVALID; // weird triangle
-	}
-
 	/**
 	 * This returns the point on the great circle segment running through p1 and p2 that is closest to point x.
 	 * This will return either p1 or p2 if the actual closest point is outside the segment.
-	 * This uses Napier's rules for right spherical triangles for the non-collinear case.
-	 * This assumes any 2 points will be within 90 degrees of each other (angular distance).
 	 * @param p1 the starting point of the great circle
 	 * @param p2 another point on the great circle
 	 * @param x point to determine closest segment point to.
 	 * @return the LatLonAlt point on the segment that is closest (horizontally) to x
 	 */
 	public static LatLonAlt closest_point_segment(LatLonAlt p1, LatLonAlt p2, LatLonAlt x) {
-		double a = angular_distance(x,p2);
-		double b = angular_distance(p1,p2);
-		double c = angular_distance(p1,x);
-		double A = angle_between(p2,p1,x);
-		double B = angle_between(p1,x,p2);
-		double C = angle_between(x,p2,p1);
-
-		// collinear
-		if (Util.within_epsilon(A, 0.000001) || Util.within_epsilon(C, 0.000001) || Util.within_epsilon(Math.PI-A, 0.000001) || Util.within_epsilon(Math.PI-C, 0.000001)) {
-//		if (Util.almost_equals(A, 0.0) || Util.almost_equals(C, 0.0) || Util.almost_equals(A, Math.PI) || Util.almost_equals(C, Math.PI)) {
-			if (b >= a && b >= c) {
-				return x;
-			} else if (a >= b && a >= c) {
-				return p1;
-			} else {
-				return p2;
-			}
+		LatLonAlt c = closest_point_circle(p1,p2,x);
+		double d12 = distance(p1,p2);
+		double d1c = distance(p1,c);
+		double d2c = distance(p2,c);
+		if (d1c < d12 && d2c < d12) {
+			return c;
 		}
-		
-		if (A <= Math.PI/2 && C <= Math.PI/2) {
-			//   B 
-			//  / \
-			// A---C
-			return closest_point_circle(p1,p2,x,a,b,c,A,B,C);
-		} else if (A <= Math.PI/2 && C > Math.PI/2) {
-			//    -- B 
-			//  /   / 
-			// A---C
-			return p2;
-		} else {
-			// B-- 
-			//  \   \
-			//   A---C
+		if (d1c < d2c) {
 			return p1;
+		} else {
+			return p2;
 		}
-		
 	}
+	
+//	//TODO Fix for obtuse angle cases
+//	/**
+//	 * @deprecated
+//	 * WARNING!!!! THIS FUNCTION MAY HAVE ERRORS IN THE GENERAL CASE!  It may not work if the triangle created contains obtuse angles.
+//	 * 
+//	 * This returns the point on the great circle that running through p1 and p2 that is closest to point x.
+//	 * This uses Napier's rules for right spherical triangles for the non-collinear case. 
+//	 * The altitude of the output is the same as x.<p>
+//	 * If p1 and p2 are the same point, then every great circle runs through them, thus x is on one of these great circles.  In this case, x will be returned.  
+//	 * This assumes any 2 points will be within 90 degrees of each other (angular distance).
+//	 * @param p1 the starting point of the great circle
+//	 * @param p2 another point on the great circle
+//	 * @param x point to determine closest segment point to.
+//	 * @return the LatLonAlt point on the segment that is closest (horizontally) to x
+//	 */
+//	public static LatLonAlt closest_point_circle_old(LatLonAlt p1, LatLonAlt p2, LatLonAlt x) {
+////		f.pln("GreatCircle.closest_point_circle p1="+p1+" p2="+p2+" x="+x);
+////		f.pln("GreatCircle.closest_point_circle dist a="+distance(x,p2)+" b="+distance(p1,p2)+" c="+distance(p1,x));
+////		f.pln("GreatCircle.closest_point_circle trk A="+Util.turnDelta(initial_course(p1,p2), initial_course(p1,x))+" trk B="+Util.turnDelta(initial_course(x,p1), initial_course(x,p2))+" trk C="+Util.turnDelta(initial_course(p2,x), initial_course(p2,p1)));
+//		double a = angular_distance(x,p2);
+//		double b = angular_distance(p1,p2);
+//		double c = angular_distance(p1,x);
+//		double A = angle_between(p2,p1,x);
+//		double B = angle_between(p1,x,p2);
+//		double C = angle_between(x,p2,p1);
+//		return closest_point_circle(p1,p2,x,a,b,c,A,B,C);
+//	}
+	
+
+//	// angular distances a,b,c, angles A,B,C
+//	private static LatLonAlt closest_point_circle(LatLonAlt p1, LatLonAlt p2, LatLonAlt x, double a, double b, double c, double A, double B, double C) {
+//		//       x (B)
+//		//      / \
+//		// (A) p1--p2 (C)
+////		double a = angular_distance(x,p2);
+////		double b = angular_distance(p1,p2);
+////		double c = angular_distance(p1,x);
+////		double A = angle_between(p2,p1,x);
+////		double B = angle_between(p1,x,p2);
+////		double C = angle_between(x,p2,p1);
+//		
+////		if (Util.almost_equals(A, 0.0) || Util.almost_equals(C, 0.0) || Util.almost_equals(A, Math.PI) || Util.almost_equals(C, Math.PI)) {			// collinear
+//		// collinear check
+//		if (Util.within_epsilon(A, 0.000001) || Util.within_epsilon(C, 0.000001) || Util.within_epsilon(Math.PI-A, 0.000001) || Util.within_epsilon(Math.PI-C, 0.000001) || collinear(p1,p2,x)) {
+//			return x;
+//		} 
+//		if (Util.almost_equals(b,0.0)) {
+//			return x;   // if p1==p2, every great circle runs through them, thus x is on one of these great circles  
+//		}
+//		// invalid triangles
+//		if (A+B+C < Math.PI || A+B+C >= Math.PI*3) {
+//			// if the triangle is relatively small, it is probably collinear
+//			if (a < Math.PI/2 && b < Math.PI/2 && c < Math.PI/2) { 
+//				return x;
+//			}
+//			//f.pln(" $$ GreatCircle.closestPoint ERROR: not a triangle p1="+p1+"p2="+p2+"x="+x+" A+B+C="+(A+B+C)+" = "+Units.to("deg", A+B+C)+" deg");
+//			return LatLonAlt.INVALID;
+//		}
+//		if (p1.almostEquals(x) || Util.almost_equals(A, Math.PI/2)) {
+//			return p1.mkAlt(x.alt());
+//		}
+//		if (p2.almostEquals(x) || Util.almost_equals(C, Math.PI/2)) {
+//			return p2.mkAlt(x.alt());
+//		}
+//
+//		// general case p1 @ A, x @ B, p2 @ C
+////		double d1 = 0;
+////f.pln("GreatCircle.closest_point_circle DEG A="+Units.to("deg", A)+" B="+Units.to("deg", B)+" C="+Units.to("deg", C)+" / a="+Units.to("deg", a)+" b="+Units.to("deg", b)+" c="+Units.to("deg", c));		
+////f.pln("GreatCircle.closest_point_circle RAD A="+A+" B="+B+" C="+C+" / a="+a+" b="+b+" c="+c);		
+////f.pln("GreatCircle.closest_point_circle A/a="+(Math.sin(A)/Math.sin(a))+" B/b="+(Math.sin(B)/Math.sin(b))+" C/c="+(Math.sin(C)/Math.sin(c)));
+//		if (A <= Math.PI/2 && C <= Math.PI/2) {
+//			//   B       C1
+//			//  / \     / |
+//			// A---C   B1-A1
+//			if (A < C) {
+//				double a1 = c;
+//				double A1 = Math.PI/2;
+//				double B1 = A;
+//				Triple<Double, Double, Double> b1C1c1 = side_angle_angle(a1,A1,B1, true);
+//				double c1 = b1C1c1.third;
+//				double ff = (c1/b);
+////f.pln("GreatCircle.closest_point_circle a1) ff="+ff);				
+//				return interpolate(p1,p2,ff);
+//			} else {
+//				//   B     C1
+//				//  / \    | \
+//				// A---C   A1-B1
+//				double a1 = a;
+//				double A1 = Math.PI/2;
+//				double B1 = C;
+//				Triple<Double, Double, Double> b1C1c1 = side_angle_angle(a1,A1,B1, true);
+//				double c1 = b1C1c1.third;
+//				double ff = (c1/b);
+////f.pln("GreatCircle.closest_point_circle a2) ff="+ff);				
+//				return interpolate(p2,p1,ff);
+//			}
+//			
+////			d1 = side_angle_angle(a,Math.PI/2,C,true).third;
+////f.pln("GreatCircle.closest_point_circle #1 d1="+d1+" "+Units.to("deg", d1)+Units.degreeStr);			
+////			double ff = 1-(d1/b);
+////f.pln("GreatCircle.closest_point_circle p1="+p1+" p2="+p2+" ff="+ff);			
+////			return interpolate(p1, p2, ff);
+//		} else if (A <= Math.PI/2 && C > Math.PI/2) {
+//			//    -- B    C1
+//			//  /   /    / |
+//			// A---C    B1-A1
+//			double a1 = a;
+//			double A1 = Math.PI/2;
+//			double B1 = Math.PI-C;
+//			Triple<Double, Double, Double> b1C1c1 = side_angle_angle(a1,A1,B1, true);
+//			double c1 = b1C1c1.third;
+//			double ff = 1+(c1/b);
+////f.pln("GreatCircle.closest_point_circle b) ff="+ff);				
+//			return interpolate(p1,p2,ff);
+//			
+////			d1 = side_angle_angle(a,Math.PI/2,Math.PI-C,true).third;
+////f.pln("GreatCircle.closest_point_circle #2 d="+d1+" "+Units.to("deg", d1)+Units.degreeStr);			
+////			return linear_initial(p1,initial_course(p1,p2),distance_from_angle(b+d1,0)).mkAlt(x.alt());
+//		} else if (A > Math.PI/2 && C <= Math.PI/2) {
+//			// B--		  C1
+//			//  \   \	  | \
+//			//   A---C	  A1-B1
+//			double a1 = c;
+//			double A1 = Math.PI/2;
+//			double B1 = Math.PI-A;
+//			Triple<Double, Double, Double> b1C1c1 = side_angle_angle(a1,A1,B1, true);
+//			double c1 = b1C1c1.third;
+//			double ff = 1+(c1/b);
+////f.pln("GreatCircle.closest_point_circle c) ff="+ff);				
+//			return interpolate(p2,p1,ff);
+////			d1 = side_angle_angle(a,Math.PI/2,Math.PI-A,true).third;
+////f.pln("GreatCircle.closest_point_circle #3 d="+d1+" "+Units.to("deg", d1)+Units.degreeStr);			
+////			return linear_initial(p2,initial_course(p2,p1),distance_from_angle(b+d1,0)).mkAlt(x.alt());
+//		}
+//f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");			
+//		return LatLonAlt.INVALID; // weird triangle
+//	}
+
+//	/**
+//	 * @deprecated
+//	 * This returns the point on the great circle segment running through p1 and p2 that is closest to point x.
+//	 * This will return either p1 or p2 if the actual closest point is outside the segment.
+//	 * This uses Napier's rules for right spherical triangles for the non-collinear case.
+//	 * This assumes any 2 points will be within 90 degrees of each other (angular distance).
+//	 * @param p1 the starting point of the great circle
+//	 * @param p2 another point on the great circle
+//	 * @param x point to determine closest segment point to.
+//	 * @return the LatLonAlt point on the segment that is closest (horizontally) to x
+//	 */
+//	public static LatLonAlt closest_point_segment_old(LatLonAlt p1, LatLonAlt p2, LatLonAlt x) {
+//		double a = angular_distance(x,p2);
+//		double b = angular_distance(p1,p2);
+//		double c = angular_distance(p1,x);
+//		double A = angle_between(p2,p1,x);
+//		double B = angle_between(p1,x,p2);
+//		double C = angle_between(x,p2,p1);
+//
+//		// collinear
+//		if (Util.within_epsilon(A, 0.000001) || Util.within_epsilon(C, 0.000001) || Util.within_epsilon(Math.PI-A, 0.000001) || Util.within_epsilon(Math.PI-C, 0.000001)) {
+////		if (Util.almost_equals(A, 0.0) || Util.almost_equals(C, 0.0) || Util.almost_equals(A, Math.PI) || Util.almost_equals(C, Math.PI)) {
+//			if (b >= a && b >= c) {
+//				return x;
+//			} else if (a >= b && a >= c) {
+//				return p1;
+//			} else {
+//				return p2;
+//			}
+//		}
+//		
+//		if (A <= Math.PI/2 && C <= Math.PI/2) {
+//			//   B 
+//			//  / \
+//			// A---C
+//			return closest_point_circle(p1,p2,x,a,b,c,A,B,C);
+//		} else if (A <= Math.PI/2 && C > Math.PI/2) {
+//			//    -- B 
+//			//  /   / 
+//			// A---C
+//			return p2;
+//		} else {
+//			// B-- 
+//			//  \   \
+//			//   A---C
+//			return p1;
+//		}
+//		
+//	}
 
 	/**
 	 * Given two great circles defined by a1,a2 and b1,b2, return the intersection point that is closest a1.  Use LatLonAlt.antipode() to get the other value.
 	 * This assumes that the arc distance between a1,a2 &lt; 90 and b1,b2 &lt; 90
 	 * The altitude of the return value is equal to a1.alt()
 	 * This returns an INVALID value if both segments are collinear
-	 * EXPERIMENTAL
 	 * 
 	 * @param a1 point #1 to form great circle #1
 	 * @param a2 point #2 to form great circle #1
 	 * @param b1 point #1 to form great circle #2
 	 * @param b2 point #2 to form great circle #2
-	 * @return the point that interesects the two great circles
+	 * @return the point that intersects the two great circles
 	 */
 	public static LatLonAlt intersection(LatLonAlt a1, LatLonAlt a2, LatLonAlt b1, LatLonAlt b2) {
 		// define 2 planes based on the GCs
@@ -1050,7 +1105,6 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 		Vect3 v2 = vavb.Scal(-r / vavb.norm());
 		LatLonAlt x1 = xyz2spherical(v1).mkAlt(a1.alt());
 		LatLonAlt x2 = xyz2spherical(v2).mkAlt(a1.alt());
-
 		// return the closest point to a1
 		if (distance(a1,x1) < distance(a1,x2)) {
 			return x1;
@@ -1066,23 +1120,23 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 	 * Calculate altitude of intersection using the average of the altitudes of the two closests points to the
 	 * intersection.
 	 * 
-	 * @param so     first point of line 1 
-	 * @param so2    second point of line 1 
+	 * @param so     first point of line o 
+	 * @param so2    second point of line o
 	 * @param dto    the delta time between point so and point so2.
-	 * @param si     first point of line 2
-	 * @param si2    second point of line 2 
+	 * @param si     first point of line i
+	 * @param si2    second point of line i 
 	 * @return a pair: intersection point and the delta time from point "so" to the intersection, can be negative if intersect
-	 *                 point is in the past
-	 *                if intersection point is invalid then the returned delta time is -1
+	 *                 point is in the past. If intersection point is invalid then the returned delta time is -1
 	 */
-	public static Pair<LatLonAlt,Double> intersection(LatLonAlt so, LatLonAlt so2, double dto, LatLonAlt si, LatLonAlt si2) {
+	public static Pair<LatLonAlt,Double> intersectionAvgAlt(LatLonAlt so, LatLonAlt so2, double dto, LatLonAlt si, LatLonAlt si2) {
 		LatLonAlt interSec = GreatCircle.intersection(so, so2, si, si2);
 		//f.pln(" %%% GreatCircle.intersection: lgc = "+lgc.toString(15));       
 		if (interSec.isInvalid()) return new Pair<LatLonAlt,Double>(interSec,-1.0);
 		double gso = distance(so,so2)/dto;
 		double intTm = distance(so,interSec)/gso;  // relative to so 
 		//f.pln(" ## gso = "+Units.str("kn", gso)+" distance(so,lgc) = "+Units.str("NM",distance(so,lgc)));
-		boolean behind = GreatCircle.behind(interSec, so, GreatCircle.velocity_average(so, so2, 1.0));
+		boolean behind = GreatCircle.behind(interSec, so, GreatCircle.velocity_average(so, so2, 1.0)); //TODO: initial?
+//		f.pln("behind="+behind+" interSec="+interSec+" so="+so+" vo="+GreatCircle.velocity_average(so, so2, 1.0));
 		if (behind) intTm = -intTm;			
 		// compute a better altitude using average of near points        
 		double do1 = distance(so,interSec);
@@ -1102,16 +1156,41 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 		return new Pair<LatLonAlt,Double>(pgc,intTm);
 	}
 
-
-
 	/**
+	 * Given two great circles defined by so, so2 and si, si2 return the intersection point that is closest to so.
+	 * (Note. because on a sphere there are two intersection points)
+	 *  Calculate altitude of intersection using linear extrapolation from line (so,so2)
 	 * 
-	 * @param so
-	 * @param vo
-	 * @param si
-	 * @param vi
-	 * @param checkBehind if true, returns a negative time if no intersection
-	 * @return Position and time of intersection.
+	 * @param so     first point of line o 
+	 * @param so2    second point of line o
+	 * @param dto    the delta time between point so and point so2.
+	 * @param si     first point of line i
+	 * @param si2    second point of line i 
+	 * @return a pair: intersection point and the delta time from point "so" to the intersection, can be negative if intersect
+	 *                 point is in the past. If intersection point is invalid then the returned delta time is -1
+	 */
+	public static Pair<LatLonAlt,Double> intersectionExtrapAlt(LatLonAlt so, LatLonAlt so2, double dto, LatLonAlt si, LatLonAlt si2) {
+		LatLonAlt lgc = GreatCircle.intersection(so, so2, si, si2);
+		if (lgc.isInvalid()) return new Pair<LatLonAlt,Double>(lgc,-1.0);
+		double gso = distance(so,so2)/dto;
+		double intTm = distance(so,lgc)/gso;  // relative to so
+		boolean behind = GreatCircle.behind(lgc, so, GreatCircle.velocity_average(so, so2, 1.0));
+		if (behind) intTm = -intTm;
+		// compute a better altitude
+		double vs = (so2.alt() - so.alt())/dto;
+		double nAlt = so.alt() + vs*(intTm);
+		LatLonAlt pgc = LatLonAlt.mk(lgc.lat(),lgc.lon(),nAlt);
+		return new Pair<LatLonAlt,Double>(pgc,intTm);
+	}
+		
+	/** Given two great circles defined by so, vo and si, vi return the intersection point that is closest to so.
+	 *  
+	 * @param so           first point of line o 
+	 * @param vo           velocity from point so
+	 * @param si           first point of line i
+	 * @param vi           velocity from point si
+	 * @param checkBehind  if true, returns a negative time if no intersection
+	 * @return Position and time of intersection. The returned altitude is so.alt().
 	 */
 	public static Pair<LatLonAlt,Double> intersection(LatLonAlt so, Velocity vo, LatLonAlt si, Velocity vi, boolean checkBehind) {
 		LatLonAlt so2 = linear_initial(so, vo, 1000);
@@ -1330,10 +1409,14 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 
 
 	/**
-	 * Transforms a lat/lon position to a point on in R3 (on a sphere)
+	 * Transforms a lat/lon position to a point in R3 (on a sphere)
 	 * This is an Earth-Centered, Earth-Fixed translation (assuming earth-surface altitude).
 	 * From Wikipedia http://en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
 	 * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0. 
+	 * 
+	 * The x-axis intersects the sphere of the earth at 0 latitude (the equator) and 0 longitude (Greenwich). 
+	 * 
+	 * 
 	 * @param lat Latitude
 	 * @param lon Longitude
 	 * @return point in R3 on surface of the earth
@@ -1342,11 +1425,15 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 		double r = GreatCircle.spherical_earth_radius;
 		// convert latitude to 0-PI
 		double theta = Math.PI/2 - lat;
-		double phi = Math.PI - lon;
+		double phi = lon; //Math.PI + lon;
 		double x = r*Math.sin(theta)*Math.cos(phi);
 		double y = r*Math.sin(theta)*Math.sin(phi);
 		double z = r*Math.cos(theta);
 		return new Vect3(x,y,z);
+	}
+
+	public static Vect3 spherical2xyz(LatLonAlt lla) {
+		return spherical2xyz(lla.lat(), lla.lon());
 	}
 
 	/**
@@ -1362,11 +1449,25 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 		double theta = Util.acos_safe(v.z/r);
 		double phi = Util.atan2_safe(v.y, v.x);
 		double lat = Math.PI/2 - theta;
-		double lon = Util.to_pi(Math.PI - phi);
-		return LatLonAlt.mk(lat, lon, 0);
+		double lon = Util.to_pi(phi); //Math.PI + phi);
+		return LatLonAlt.mk(lat, lon, 0.0);
 	}
 
 
+	/**
+	 * Return if point p is to the right or left of the line from A to B
+	 * @param a point A
+	 * @param b point B
+	 * @param p point P
+	 * @return 1 if to the right or collinear, -1 if to the left.
+	 */	
+	public static int rightOfLinePoints(LatLonAlt a, LatLonAlt b, LatLonAlt p) {
+		Vect3 v1 = spherical2xyz(a);
+		Vect3 v2 = spherical2xyz(b);
+		Vect3 v3 = spherical2xyz(p);
+		return -Util.sign(v3.dot(v1.cross(v2)));
+	}
+	
 	/**
 	 * Return the straight-line chord distance (through a spherical earth) from 
 	 * two points on the surface of the earth. 
@@ -1488,24 +1589,24 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 		return interpolate(lla2,lla1,c/abdist);
 	}
 	
-	// same as above, just calls the established subfunctions instead of doing it piecemeal 
-	public static LatLonAlt tangent2(LatLonAlt lla1, LatLonAlt lla2, double track) {
-		double PI = Math.PI;
-		boolean firstSoln = true;
-		double trk = Util.to_2pi(track);
-		if (trk > PI) {
-			trk = 2*PI-trk;
-			firstSoln = false;
-		}
-		LatLonAlt np = LatLonAlt.mk(PI/2,0,0);
-		double A = angle_between(lla1, lla2, np); 
-		double b = PI/2 - lla2.lat(); // dist from pole to b
-		double B = trk;
-		Triple<Double,Double,Double> tr = side_angle_angle(b,B,A,firstSoln);
-		double abdist = angular_distance(lla1,lla2);
-		double c = tr.third;
-		return interpolate(lla2,lla1,c/abdist);
-	}
+//	// same as above, just calls the established subfunctions instead of doing it piecemeal 
+//	public static LatLonAlt tangent2(LatLonAlt lla1, LatLonAlt lla2, double track) {
+//		double PI = Math.PI;
+//		boolean firstSoln = true;
+//		double trk = Util.to_2pi(track);
+//		if (trk > PI) {
+//			trk = 2*PI-trk;
+//			firstSoln = false;
+//		}
+//		LatLonAlt np = LatLonAlt.mk(PI/2,0,0);
+//		double A = angle_between(lla1, lla2, np); 
+//		double b = PI/2 - lla2.lat(); // dist from pole to b
+//		double B = trk;
+//		Triple<Double,Double,Double> tr = side_angle_angle(b,B,A,firstSoln);
+//		double abdist = angular_distance(lla1,lla2);
+//		double c = tr.third;
+//		return interpolate(lla2,lla1,c/abdist);
+//	}
 
 	
 	/**
@@ -1538,4 +1639,34 @@ f.pln("GreatCircle.closest_point_circle INVALID: weird triangle");
 		return ret;
 	}
 
+	/**
+	 * Accurately calculate the linear distance of an arc on a small circle (turn) on the sphere.
+	 * @param radius along-surface radius of small circle
+	 * @param arcAngle angular (radian) length of the arc.  This is the angle between two great circles that intersect at the small circle's center.
+	 * @return linear distance of the small circle arc
+	 * Note: A 100 km radius turn over 60 degrees produces about 4.3 m error.
+	 */
+	public static double small_circle_arc_length(double radius, double arcAngle) {
+		// use the chord of the diameter to determine the radius in the ECEF Euclidean frame
+		double r2 = chord_distance(radius*2)/2;
+		// because this is a circle in a Euclidean frame, use the normal calculations
+		return arcAngle*r2;
+	}
+
+	/**
+	 * Accurately calculate the angular distance of an arc on a small circle (turn) on the sphere.
+	 * @param radius along-surface radius of small circle
+	 * @param arcLength linear (m) length of the arc.  This is the along-line length of the arc.
+	 * @return Angular distance of the arc around the small circle (from 0 o 2pi)
+	 * Note: A 100 km radius turn over 100 km of turn produces about 0.0024 degrees of error.
+	 */
+	public static double small_circle_arc_angle(double radius, double arcLength) {
+		// use the chord of the diameter to determine the radius in the ECEF Euclidean frame
+		double r2 = chord_distance(radius*2)/2;
+		if (r2 == 0.0) return 0.0;
+		// because this is a circle in a Euclidean frame, use the normal calculations
+		return arcLength/r2;
+	}
+
+	
 }

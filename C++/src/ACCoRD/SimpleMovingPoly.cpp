@@ -26,7 +26,7 @@ SimpleMovingPoly::SimpleMovingPoly(const SimplePoly& start, const vector<Velocit
 	poly = start;
 	vlist = vs;
 	morphingPoly = true;
-	while (vlist.size() < (int) start.size()) {
+	while ((int) vlist.size() < (int) start.size()) {
 		vlist.push_back(Velocity::ZEROV());
 	}
 }

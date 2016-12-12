@@ -55,6 +55,8 @@ public:
 
 	static bool velocityContinuous(const Plan& p, int i, double velEpsilon, bool silent);
 
+	static bool okWithinTurn(const Plan& p, int i, double distH_Epsilon, bool silent);
+
 	static Plan applyWindField(const Plan& pin, const Velocity& v);
 
 	// from Aviation Formulary

@@ -326,4 +326,13 @@ public class DensityGridAStarSearch implements DensityGridSearch, DensityGridTim
 	//		return astarT(dg, end.first, end.second, gs, fringe, searched, timeBefore, timeAfter, interval);
 	//	}
 
+	public List<Pair<Integer,Integer>> optimalPath(DensityGrid dg) {
+		return search(dg, dg.startPoint(), dg.endPoint());
+	}
+
+	public List<Pair<Integer,Integer>> optimalPath(DensityGridTimed dg) {
+		return search(dg, dg.startPoint(), dg.endPoint(), dg.startTime(), dg.getGroundSpeed());
+	}
+
+	
 }

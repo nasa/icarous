@@ -172,17 +172,11 @@ bool NavPoint::isInvalid() const {
  * @return true, if the points can be merged.
  */
 bool NavPoint::mergeable(const NavPoint& point) const {
-	//f.pln(" $$ mergeable this = "+this.toStringFull()+" p = "+p.toStringFull());
-	bool r1 = (this->tcp_trk == NavPoint::NONE || point.tcp_trk == NavPoint::NONE)
-								|| (this->tcp_trk == NavPoint::BOT && point.tcp_trk == NavPoint::EOT)
-								|| (this->tcp_trk == NavPoint::EOT && point.tcp_trk == NavPoint::BOT);
-	bool r2 = r1 && ((this->tcp_gs == NavPoint::NONEg || point.tcp_gs == NavPoint::NONEg)
-			|| (this->tcp_gs == NavPoint::BGS && point.tcp_gs == NavPoint::EGS)
-			|| (this->tcp_gs == NavPoint::EGS && point.tcp_gs == NavPoint::BGS));
-	bool r3 = r2 && ((this->tcp_vs == NavPoint::NONEv || point.tcp_vs == NavPoint::NONEv)
-			|| (this->tcp_vs == NavPoint::BVS && point.tcp_vs == NavPoint::EVS)
-			|| (this->tcp_vs == NavPoint::EVS && point.tcp_vs == NavPoint::BVS));
-	return r3 && this->t == point.t && this->p == point.p && (this->velocityInit_v.isInvalid() || point.velocityInit_v.isInvalid() ||  this->velocityInit_v == point.velocityInit_v);
+	// these are bad!!!
+	bool r1 = (isBOT() && point.isBOT()) || (isEOT() && point.isEOT());
+	bool r2 = (isBGS() && point.isBGS()) || (isEGS() && point.isEGS());
+	bool r3 = (isBVS() && point.isBVS()) || (isEVS() && point.isEVS());
+	return !r1 && !r2 && !r3;
 }
 
 

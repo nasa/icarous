@@ -34,7 +34,8 @@ double Constants::TIME_ACCURACY       = 1E-7; // Constants::TIME_LIMIT_EPSILON;
 int Constants::OUTPUT_PRECISION = 6;
 
 const std::string Constants::separatorPattern = ",;";
-const std::string Constants::wsPatternBase = " \t,;";
+const std::string Constants::wsPatternBaseNoRegex = " \t,;";
+const std::string Constants::wsPatternBase = "[\t ,;]+"; //"[\\t ,;]+";
 const std::string Constants::wsPatternParens = "() \t,;";
 const std::string Constants::wsPatternBraces = "[] \t,;";
 

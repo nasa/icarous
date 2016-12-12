@@ -21,10 +21,11 @@
 #include <limits>
 #include <vector>
 
-#if defined(_MSC_VER) /*********** MSC++ ****************/
+#if defined(_MSC_VER) /* ********** MSC++ *************** */
 
 #include <float.h>
 #include "stdint.h" // you may need to download this header file to use with MS Visual Studio
+#include <algorithm>
 
 typedef long long INT64FM;
 static const double Pi  = 3.141592653589793;
@@ -36,6 +37,7 @@ const unsigned long lnan[2]={0xffffffff, 0x7fffffff};
 #define NINFINITY -std::numeric_limits<double>::infinity()
 //#define MAXDOUBLE numeric_limits<double>::max()
 #define MAXDOUBLE DBL_MAX
+#define MAXINTEGER std::numeric_limits<int>::max();
 #define ISNAN _isnan
 #define ISINF !_finite
 
@@ -43,7 +45,7 @@ const unsigned long lnan[2]={0xffffffff, 0x7fffffff};
 #define SIGNaN std::numeric_limits<double>::signaling_NaN()
 
 
-#else /*********** GCC ****************/
+#else /* ********** GCC *************** */
 
 #include <inttypes.h>
 typedef int64_t INT64FM;
@@ -58,7 +60,7 @@ typedef int64_t INT64FM;
 // this is a "signaling NaN" that may throw a fp exception, but this is implementation dependent (and the flag can be set by other libraries).  In general, don't use this.
 #define SIGNaN std::numeric_limits<double>::signaling_NaN()
 
-#endif /***************************/
+#endif /* ************************* */
 
 #define ISFINITE(d) (!ISNAN(d) && !ISINF(d))
 #define ISPINF(d) (ISINF(d) && d > 0)
@@ -211,7 +213,11 @@ public:
 	static double atan2_safe(const double y, const double x);
 	/** a safe (won't return NaN or throw exceptions) version of arc-sine */
 	static double asin_safe(double x);
-	/** a safe (won't return NaN or throw exceptions) version of arc-cosine */
+  /** a safe (won't return NaN or throw exceptions) version of arc-cosine
+   * 
+   * @param x
+   * @return the arc-cosine of x, between [0,pi)
+   */
 	static double acos_safe(double x);
 	/** Discriminant of a quadratic */
 	static double discr(const double a, const double b, const double c);
@@ -219,7 +225,10 @@ public:
 	static double root(const double a, const double b, const double c, int eps);
 	/** root2b(a,b,c,eps) = root(a,2*b,c,eps) , eps = -1 or +1*/
 	static double root2b(const double a, const double b, const double c, const int eps);
-	/** Returns +1 if the argument is positive or 0, -1 otherwise */
+  /** 
+   * Returns +1 if the argument is positive or 0, -1 otherwise.  Note:
+   * This is not the classic signum function from mathematics that 
+   * returns 0 when a 0 is supplied. */
 	static int    sign(const double x);
 
 	/**
@@ -227,15 +236,16 @@ public:
 	 */
 	static double modulo(double val, double mod);
 
-	/**
-	 * Converts <code>rad</code> radians to the range
-	 * (-<code>pi</code>, <code>pi</code>].
-	 *
-	 * @param rad Radians
-	 *
-	 * @return <code>rad</code> in the range
-	 * [-<code>pi</code>, <code>pi</code>].
-	 */
+  /**
+   * Converts <code>rad</code> radians to the range
+   * (-<code>pi</code>, <code>pi</code>].
+   * <p>Note: this should not be used for argument reduction for trigonometric functions (Math.sin(to_pi(x))
+   *
+   * @param rad Radians
+   *
+   * @return <code>rad</code> in the range
+   * (-<code>pi</code>, <code>pi</code>].
+   */
 	static double to_pi(double rad);
 
 	/**
@@ -248,15 +258,16 @@ public:
 	 */
 	static double to_360(double deg);
 
-	/**
-	 * Converts <code>rad</code> radians to the range
-	 * [<code>0</code>, <code>2*pi</code>].
-	 *
-	 * @param rad Radians
-	 *
-	 * @return <code>rad</code> in the range
-	 * [-<code>0</code>, <code>2*pi</code>).
-	 */
+  /**
+   * Converts <code>rad</code> radians to the range
+   * [<code>0</code>, <code>2*pi</code>]. 
+   * <p>Note: this should not be used for argument reduction for trigonometric functions (Math.sin(to_2pi(x))
+   *
+   * @param rad Radians
+   *
+   * @return <code>rad</code> in the range
+   * [<code>0</code>, <code>2*pi</code>).
+   */
 	static double to_2pi(double rad);
 
 	/**
@@ -317,8 +328,23 @@ public:
 	 */
 	static double turnDelta(double alpha, double beta, bool turnRight);
 
+  /**
+   * Returns the angle between two tracks when turning in direction indicated by turnRight flag [0,2PI]
+   * Note: this function can return an angle larger than PI!
+   * 
+   * @param dir = +/- 1 + right, - left
+   */
+	static double turnDelta(double alpha, double beta, int dir);
+
 	static bool is_double(const std::string& str);
 
+	  /**
+	   * Returns a double value which is a representation of the given string.  If the string does
+	   * not represent a number, an arbitrary value is returned.
+	   * In many cases, but not all, if the string is not a number then 0.0 is returned.  However,
+	   * on some platforms, "1abc" will return 1.  If one wants to know
+	   * the fact that the string is not a number, then use Util.is_double() method.
+	   */
 	static double parse_double(const std::string& str);
 
 	/** @param degMinSec  Lat/Lon String of the form "46:55:00"  or "-111:57:00"
@@ -330,13 +356,16 @@ public:
 	 * Otherwise, string must be a single decimal number
 	 *
 	 */
+  /** Reads in a clock string and converts it to seconds.  
+   * Accepts hh:mm:ss, mm:ss, and ss.
+   */
 	static double parse_time(const std::string& s);
 
-	/**
-	 *
-	 * @param t time in seconds
-	 * @return String of hours:mins:secs
-	 */
+  /**
+   * Convert the decimal time (in seconds) into a 0:00:00 string.
+   * @param t time in seconds
+   * @return String of hours:mins:secs
+   */
 	static std::string hoursMinutesSeconds(double t);
 
 	/**

@@ -29,6 +29,9 @@
 
 /**
  * A static holding class for universal projection information.  All projection objects should be retrieved from this class.
+ * 
+ * Remember that the given projection point becomes the origin of the Euclidean space, so to preserve absolute altitude (above 
+ * sea level) information in the Euclidean space, it may be necessary to make the projection point's altitude zero.
  */
 class Projection {
    private:
@@ -37,10 +40,26 @@ class Projection {
    public:
 	   /**
 	    * Returns a new projection for the current type with the given reference point.
+	    * 
+	    * Note that in the projected Euclidean frame, if two points are made using the 
+	    * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
+	    * altitudes may have changed (the reference point is subtracted).  If you need 
+	    * to have the same absolute altitude values in the geodetic and Euclidean frames, 
+	    * the reference point should have a zero altitude.
 	    */
 	   static EuclideanProjection createProjection(double lat, double lon, double alt);
 	   /**
 	    * Returns a new projection for the current type with the given reference point.
+	    * 
+	    * Note that in the projected Euclidean frame, if two points are made using the 
+	    * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
+	    * altitudes may have changed (the reference point is subtracted).  If you need 
+	    * to have the same absolute altitude values in the geodetic and Euclidean frames, 
+	    * the reference point should have a zero altitude.
+	    * 
+	    * For example, if you call p2 = Projection.createProjection(p1).project(p1), p2 will 
+	    * have an altitude of zero.  If you instead call p2 = Projection.createProjection(p1.zeroAlt(0)).project(p1),
+	    * p2 will have the same altitude as p1.
 	    */
 	   static EuclideanProjection createProjection(const LatLonAlt& lla);
 
@@ -48,6 +67,16 @@ class Projection {
 	    * Returns a new projection for the current type with the given reference point.
 	    * This will return an altitude-preserving projection against the given Position if it is lat/lon.
 	    * If it is Euclidean, the projection will be against the LatLonAlt.ZERO point.
+	    * 
+	    * Note that in the projected Euclidean frame, if two points are made using the 
+	    * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
+	    * altitudes may have changed (the reference point is subtracted).  If you need 
+	    * to have the same absolute altitude values in the geodetic and Euclidean frames, 
+	    * the reference point should have a zero altitude.
+	    * 
+	    * For example, if you call p2 = Projection.createProjection(p1).project(p1), p2 will 
+	    * have an altitude of zero.  If you instead call p2 = Projection.createProjection(p1.zeroAlt(0)).project(p1),
+	    * p2 will have the same altitude as p1.
 	    */
 	  static EuclideanProjection createProjection(const Position& pos);
 

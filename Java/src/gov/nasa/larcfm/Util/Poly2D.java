@@ -407,7 +407,7 @@ public class Poly2D implements Serializable {
 					c = p.getVertex(size()-1);
 					d = p.getVertex(0);
 				}
-				double t = VectFuns.intersection(new Vect3(a,0), new Vect3(b,0), 100.0, new Vect3(c,0), new Vect3(d,0)).second;
+				double t = VectFuns.intersectionAvgZ(new Vect3(a,0), new Vect3(b,0), 100.0, new Vect3(c,0), new Vect3(d,0)).second;
 				if (t >= 0 && t <= 100.0) return false;
 			}
 		}

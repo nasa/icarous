@@ -20,7 +20,7 @@ package gov.nasa.larcfm.Util;
  * Remember that the given projection point becomes the origin of the Euclidean space, so to preserve absolute altitude (above 
  * sea level) information in the Euclidean space, it may be necessary to make the projection point's altitude zero.
  */
-public class Projection {
+public final class Projection {
 
       public enum ProjectionType {UNKNOWN_PROJECTION, SIMPLE, SIMPLE_NO_POLAR, ENU, AZIEQUI, FLATEARTH, STEREO, FAST, ORTHO};
 

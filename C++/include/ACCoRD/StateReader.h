@@ -27,36 +27,50 @@
 namespace larcfm {
 
 /**
- * This reads in and stores a set of aircraft states, possibly over time, (and parameters) from a file
- * The Aircraft states are stored in an ArrayList<AircraftState>.
+ * This reads in and stores a set of aircraft states, possibly over time, (and
+ * parameters) from a file The aircraft states are stored in an
+ * ArrayList&lt;AircraftState&gt;. A state file consists of comma or
+ * space-separated values, with one position and velocity per line. Required
+ * columns include aircraft name, 3 position columns (either x[NM]/y[NM]/z[ft]
+ * or latitude[deg]/longitude[deg]/altitude[ft]) and 3 velocity columns (either
+ * vx[kn]/vy[kn]/vz[fpm] or track[deg]/gs[kn]/vs[fpm]).
+ * All empty lines or comment lines (starting with a hash sign (#)) are ignored.
+ * <p>
  *
- * State files consist of comma or space-separated values, with one point per line.
- * Required columns include aircraft name, 3 position columns (either x[nmi]/y[nmi]/z[ft] or 
- * latitude[deg]/longitude[deg]/altitude[ft]) and
- * 3 velocity columns (either vx[kn]/vy[kn]/vz[fpm] or track[deg]/gs[kn]/vs[fpm]).
+ * An optional column is time [s]. If it is included, a "history" will be build
+ * if an aircraft has more than one entry. If it is not included, only the last
+ * entry for an aircraft will be stored. If multiple aircraft and time are
+ * included (a fairly conventional case) then all the table must be organized
+ * with all the data for one aircraft listed consecutively. Thus, all the data
+ * for the first aircraft must be grouped together, then all the data for the
+ * second aircraft, etc. If consecutive position and velocity lines are for the
+ * same aircraft, subsequent name fields may be replaced with a double quotation
+ * mark (&quot). The aircraft name is case sensitive, so US54A != Us54a !=
+ * us54a.
+ * <p>
  *
- * An optional column is time [s].  If it is included, a "history" will be build if an aircraft has more than one entry.
- * If it is not included, only the last entry for an aircraft will be stored.
+ * It is necessary to include a header line that defines the column ordering.
+ * The column definitions are not case sensitive. There is also an optional
+ * header line, immediately following the column definition, that defines the
+ * unit type for each column (the defaults are listed above).
+ * <p>
  *
- * It is necessary to include a header line that defines the column ordering.  The column definitions are not case sensitive.
- * There is also an optional header line, immediately following the column definition, that defines the unit type for each
- * column (the defaults are listed above).
+ * Files may also include parameter definitions prior to other data. Parameter
+ * definitions are of the form &lt;key&gt; = &lt;value&gt;, one per line, where
+ * &lt;key&gt; is a case-insensitive alphanumeric word and &lt;value&gt; is
+ * either a numeral or string. The &lt;value&gt; may include a unit, such as
+ * "dist = 50 [m]". Note that parameters require a space on either side of the
+ * equals sign. Note that it is possible to also update the stored parameter
+ * values (or store additional ones) through API calls.
+ * Parameters can be interpreted as double values, strings, or Boolean values,
+ * and the user is required to know which parameter is interpreted as which
+ * type.  However, something reasonable will come out, for instance a double 
+ * value read as a string will come out as the string representation of the value.
+ * <p>
  *
- * If points are consecutive for the same aircraft, subsequent name fields may be replaced with a double quotation mark (&quot).
- * The aircraft name is case sensitive, so US54A != Us54a != us54a.
- *
- * Any empty line or any line starting with a hash sign (#) is ignored.
- *
- * Files may also include parameter definitions prior to other data.  Parameter definitions are of the form &lt;key&gt; = &lt;value&gt;,
- * one per line, where &lt;key&gt; is a case-insensitive alphanumeric word and &lt;value&gt; is either a numeral or string.  The &lt;value&gt;
- * may include a unit, such as "dist = 50 [m]".  Note that parameters require a space on either side of the equals sign.
- * Note that it is possible to also update the stored parameter values (or store additional ones) through API calls.
- *
- * Parameters can be interpreted as double values, strings, or Boolean values, and the user is required to know which parameter is
- * interpreted as which type.
- *
- * If the optional parameter "filetype" is specified, its value must be "state" or "history" (no quotes) for this reader to accept the 
- * file without error.
+ * If the optional parameter "filetype" is specified, its value must be "state"
+ * or "history" (no quotes) for this reader to accept the file without error.
+ * <p>
  *
  */
 class StateReader: public ErrorReporter, public ParameterReader, public ParameterProvider {
@@ -86,12 +100,19 @@ protected:
 	int altHeadings(const std::string& s1, const std::string& s2,
 			const std::string& s3) const;
 	int altHeadings(const std::string& s1, const std::string& s2) const;
+	/**
+	 * Return the string as a single value in seconds.   If the column is labeled "clock," then
+	 * it is expected in a "HH:MM:SS" format.  If the column is labeled "time" then just read
+	 * it as a value.  If the string cannot be parsed, return 0.0;
+	 * @param s the string to be parsed
+	 * @return
+	 */
 	double parseClockTime(const std::string& s) const;
 	int getIndex(const std::string& s) const;
 
 public:
 
-	/** A new, empty StateReader.  This may be used to store parameters, but nothing else. */
+    /** A new, empty StateReader. After you have a StateReader object then use the open() method. */
 	StateReader();
 
 	/** Read a new file into an existing StateReader.  Parameters are preserved if they are not specified in the file. */

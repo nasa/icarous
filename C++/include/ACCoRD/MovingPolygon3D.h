@@ -13,6 +13,10 @@
 #include "Velocity.h"
 
 namespace larcfm {
+/**
+ * Polygon detection.
+ * Based on UNVERIFIED PVS code.
+ */
 class MovingPolygon3D {
 
 public:
@@ -32,8 +36,16 @@ public:
 
 	Poly3D position(double t) const;
 
+    /**
+     * Initial velocity for vertex i
+     * @param i
+     * @return
+     */
 	Velocity velocity(int i) const;
 
+	/**
+	 * Return the average Velocity (at time 0).
+	 */
 	Velocity averageVelocity() const;
 
 	MovingPolygon3D linear(double t) const;

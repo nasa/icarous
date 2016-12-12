@@ -22,6 +22,7 @@
 #include "Position.h"
 #include "Velocity.h"
 #include "LatLonAlt.h"
+#include "BoundingRectangle.h"
 #include <string>
 #include <fstream>
 #include <vector>
@@ -92,7 +93,6 @@ const int maxWpts = 1000;              //  Maximum number of points
 class Plan : public ErrorReporter {
 
 protected:
-	static const double minDt;  // points that are closer together in time than this are treated as the same point
 	typedef std::vector<NavPoint> navPointVector;
 	typedef navPointVector::iterator navPointIterator;
 
@@ -103,10 +103,13 @@ protected:
 	mutable int errorLocation;
 	std::string  note;
 	static bool debug;
+	BoundingRectangle bound;
 
 
 
 public:
+	static const double minDt;  // points that are closer together in time than this are treated as the same point
+
 	//static const double revertGsTurnConnectionTime;
 
 	/** Create an empty Plan */
@@ -160,6 +163,8 @@ public:
 	 * Clear all virtual points in a plan.
 	 */
 	void clearVirtuals();
+
+	BoundingRectangle getBound() const;
 
 	/** If size() == 0 then this is a "null" plan.  */
 	int size() const;
@@ -321,7 +326,7 @@ private:
 	 */
 	Velocity linearVelocityOut(int i) const;
 
-	Velocity finalLinearVelocity(int i) const;
+//	Velocity finalLinearVelocity(int i) const;
 
 public:
 
@@ -463,29 +468,25 @@ public:
 	/**
 	 * If time t is in a turn, this returns the radius, otherwise returns a negative value.
 	 */
-	double turnRadius(double t) const;
+	double turnRadiusAtTime(double t) const;
 
 	/**
 	 * Return the turn rate (i.e., position acceleration in the "track" dimension) 
 	 * associated with the point at time t.
 	 */
-	double trkAccel(double t) const;
+	double trkAccelAtTime(double t) const;
 
 	/**
 	 * Return the ground speed rate of change (i.e., position acceleration in the 
 	 * "ground speed" dimension) associated with the point at time t.
 	 */
-	double gsAccel(double t) const;
+	double gsAccelAtTime(double t) const;
 
 	/**
 	 * Return the vertical speed rate of change (i.e., acceleration in the vertical dimension)
 	 * associated with the point at time t.
 	 */
-	double vsAccel(double t) const ;
-
-	double calcVertAccel(int i) const ;
-
-	double calcGsAccel(int i) const;
+	double vsAccelAtTime(double t) const;
 
 
 
@@ -557,6 +558,19 @@ public:
 
 	//    Velocity averageVelocity(double tm) const;
 
+	// estimate the velocity from point i to point i+1 (at point i+1).  This is not defined for the last point of the plan.
+	Velocity finalVelocity(int i) const;
+
+	Velocity finalVelocity(int i, bool linear) const;
+
+	Velocity dtFinalVelocity(int i, bool linear) const;
+
+
+	double trkOut(int seg, bool linear) const;
+
+	double trkOut(int seg) const;
+
+	double trkFinal(int seg, bool linear) const;
 
 	/**  ground speed out of point "seg"
 	 * 
@@ -564,21 +578,21 @@ public:
 	 * @param linear      If true, then interpret plan in a linear manner
 	 * @return
 	 */
-	double gsOut(int seg, bool linear) const;
+	double gsOut(int i, bool linear) const;
 
-	/**  ground speed at the end of segment "seg"
+	/**  ground speed at the end of segment "i"
 	 * 
 	 *   Note.  if there is no acceleration, this will be the same as gsOut
 	 * 
-	 * @param seg         The index of the point of interest
+	 * @param i           The index of the point of interest
 	 * @param linear      If true, then interpret plan in a linear manner
 	 * @return
 	 */
-	double gsFinal(int seg, bool linear) const;
+	double gsFinal(int i, bool linear) const;
 
 	/**  ground speed into point "seg"
 	 * 
-	 * @param seg         The index of the point of interest
+	 * @param i           The index of the point of interest
 	 * @param linear      If true, then interpret plan in a linear manner
 	 * @return
 	 */
@@ -613,23 +627,23 @@ public:
 	double gsAtTime(double t, bool linear) const;
 
 
-	/**  vertical speed out of point "seg"
+	/**  vertical speed out of point "i"
 	 * 
-	 * @param seg         The index of the point of interest
+	 * @param i         The index of the point of interest
 	 * @param linear      If true, then interpret plan in a linear manner
 	 * @return
 	 */
-	double vsOut(int seg, bool linear) const;
+	double vsOut(int i, bool linear) const;
 
-	/**  vertical speed at the end of segment "seg"
+	/**  vertical speed at the end of segment "i"
 	 * 
 	 *   Note.  if there is no acceleration, this will be the same as vsOut
 	 * 
-	 * @param seg         The index of the point of interest
+	 * @param i          The index of the point of interest
 	 * @param linear      If true, then interpret plan in a linear manner
 	 * @return
 	 */
-	double vsFinal(int seg, bool linear) const;
+	double vsFinal(int i, bool linear) const;
 
 	/** vertical speed into point "seg"
 	 * 
@@ -682,10 +696,6 @@ public:
 
 	std::pair<Position,Velocity> positionVelocity(double t) const;
 
-	// estimate the velocity from point i to point i+1 (at point i+1).  This is not defined for the last point of the plan.
-	Velocity finalVelocity(int i) const;
-
-	Velocity finalVelocity(int i, bool linear) const;
 
 	double calcVertAccel(int i) ;
 
@@ -778,6 +788,8 @@ public:
 	 * Find the cumulative vertical distance between points i and j [meters].
 	 */
 	double vertDistance(int i, int j) const;
+
+	double averageGroundSpeed() const;
 
 	// calculate vertical speed from point i to point i+1 (at point i).
 	/** 
@@ -943,7 +955,7 @@ public:
 	 */
 	Plan cut(int firstIx, int lastIx) const;
 
-	void cleanAndIndex(double minDt);
+	void mergeClosePoints(double minDt);
 
 	/** String representation of the entire plan */
 	std::string toString() const;

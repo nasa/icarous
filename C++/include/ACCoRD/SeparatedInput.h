@@ -111,7 +111,11 @@ namespace larcfm {
 
     /** Assignment Operator. */
     SeparatedInput& operator=(const SeparatedInput& x);
-	
+
+    void setColumnDelimiters(const std::string& delim);
+
+    void setFixedColumn(const std::string& widths, const std::string& nameList, const std::string& unitList);
+      
     /** Return the heading for the given column */ 
     std::string getHeading(int i) const;
  
@@ -177,6 +181,7 @@ namespace larcfm {
     /** Returns the number of the most recently read in line */
     int lineNumber() const;
 
+	/** Return the last line read as a comma-delineated string */
     std::string getLine() const;
 
     // ErrorReporter Interface Methods
@@ -205,7 +210,10 @@ namespace larcfm {
     std::vector<std::string> units_str;     // Units type
     std::vector<double> units_factor;  // Units conversion value
     std::vector<std::string> line_str;      // raw line
-    
+
+    bool fixed_width;    // Instead of using a delimiter, use fixed width columns
+    std::vector<int> width_int;        // The width of columns
+
     int linenum;
     
     bool caseSensitive;

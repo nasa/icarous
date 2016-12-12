@@ -166,7 +166,7 @@ public final class Velocity extends Vect3 implements OutputList {
    * Return the velocity along the line from p1 to p2 at the given speed
    * @param p1 first point
    * @param p2 second point
-   * @param speed speed [internal units]
+   * @param speed speed [internal units] (composite 3 dimensional speed, Not ground or vertical speed!)
    * @return the velocity
    */
   public static Velocity mkVel(Vect3 p1, Vect3 p2, double speed) {
@@ -283,6 +283,13 @@ public final class Velocity extends Vect3 implements OutputList {
     return mkVxyz(x / n, y / n, z / n);
   }
 
+  /**
+   * Returns a unit velocity vector in the direction of the original velocity in the XY plane
+   */
+  public Velocity Hat2D() {
+	  return mkVs(0).Hat();
+  }
+  
   public Velocity Neg() {
     return mkVxyz(-x, -y, -z);
   }

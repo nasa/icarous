@@ -18,6 +18,13 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+#include <string.h>
+#if defined(_MSC_VER)
+#include <regex>
+#else
+#include <regex.h>
+#endif
+
 
 namespace larcfm {
   
@@ -58,6 +65,83 @@ namespace larcfm {
       }
       return tokens;
     }
+
+
+#if defined(_MSC_VER)
+    vector<string> split_regex(const string& s, const string& rgx_str) {
+        std::vector<std::string> elems;
+
+        std::regex rgx(rgx_str);
+        std::sregex_token_iterator iter(s.begin(), s.end(), rgx, -1);
+        std::sregex_token_iterator end;
+
+        while (iter != end)  {
+            elems.push_back(*iter);
+            ++iter;
+        }
+
+        return elems;
+
+    }
+#else
+    vector<string> split_regex(const string& s, const string& rgx_str) {
+    	std::vector<std::string> elems;
+
+    	int reti;
+    	regex_t rgx;
+    	reti = regcomp(&rgx, rgx_str.c_str(), REG_EXTENDED);
+    	if (reti != 0) {
+    		fdln("Could not compile regex\n");
+    	}
+
+    	/* Execute regular expression */
+		char between[100];
+		int numchars;
+    	regmatch_t matchptr[1];
+    	int count = 0;
+    	const int length = s.size();
+		const char* cstr = s.c_str();
+		//fpln("regex str="+rgx_str);
+		//fpln("split_regex s.size()="+Fm2(length));
+    	while (count < length) {
+    		string m2(cstr+count);
+    		//fpln("str = "+m2);
+    		//fpln("count = "+Fm2(count));
+        	reti = regexec(&rgx, cstr+count, 1, matchptr, 0);
+    		if (!reti) {
+    			numchars = matchptr[0].rm_so;
+            	//fpln("l2 numchars="+Fm2(numchars));
+    			strncpy(between,cstr+count,numchars);
+    			between[numchars] = '\0';
+    			string m1(between);
+    			elems.push_back(m1);
+    			//fpln("match1="+m1);
+
+    			count = count + matchptr[0].rm_eo;
+    		} else if (reti == REG_NOMATCH) {
+    			numchars = length - count;
+    			strncpy(between,cstr+count,numchars);
+    			between[numchars] = '\0';
+    			string m1(between);
+    			elems.push_back(m1);
+    			//fpln("match2="+m1);
+
+    			count = s.size();
+    		} else {
+    		    regerror(reti, &rgx, between, sizeof(between));
+    		    string m1(between);
+    		    //fdln("Regex match failed: "+m1);
+    		}
+
+    	}
+
+		//fpln("split_regex done!");
+    	regfree(&rgx);
+    	return elems;
+
+    }
+
+#endif
 
     string substring(const string& s, int begin, int end){
     	end = (end < (int) s.length()) ? end : s.length();
@@ -120,5 +204,12 @@ namespace larcfm {
   }
 
 
+  int parseInt(const std::string& str) {
+	  //the C++11 version: return std::stoi(str);
+	  std::istringstream buffer(str);
+	  int value;
+	  buffer >> value;
+	  return value;
+  }
 
 }

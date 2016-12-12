@@ -21,7 +21,7 @@ namespace larcfm {
 
 
 // these will all eventually be moved into the object initialization
-static const std::string _FormalATM_version = "v2.5.5";
+static const std::string _FormalATM_version = "v2.6.1";
 static const double _FormalATM_GPS_LIMIT_HORIZONTAL = Units::from("ft", 25.0); // in order to keep both versions tied to a single entry, this needs to be defined here.
 static const double _FormalATM_GPS_LIMIT_VERTICAL = Units::from("ft", 25.0); // in order to keep both versions tied to a single entry, this needs to be defined here.
 static const double _FormalATM_TIME_LIMIT_EPSILON = 1.0;// in order to keep both versions tied to a single entry, this needs to be defined here.
@@ -44,6 +44,11 @@ static const double _FormalATM_NO_TIME = -1;
 	  	 * Default pattern string representing whitespace in input files.  This does not include parentheses or braces.
 	  	 */
 	  	static const std::string wsPatternBase;
+
+	  	/**
+	  	 * Default pattern string representing whitespace in input files.  This does not include parentheses or braces.
+	  	 */
+	  	static const std::string wsPatternBaseNoRegex;
 	  	/**
 	  	 * Default pattern string representing whitespace in input files.  This includes parentheses.
 	  	 */
@@ -102,13 +107,14 @@ static const double _FormalATM_NO_TIME = -1;
 	  	   * are within this value of each other are considered the same [m].
 	  	   */
 	  	static void set_vertical_accuracy(double acc);
-	  	  /** Return the time accuracy value */
+	/** Return the time accuracy value (in seconds) */
 	  	static double get_time_accuracy();
-	  	  /** Return the horizontal accuracy value */
+	/** Return the horizontal accuracy value (in meters) */
 	  	static double get_horizontal_accuracy();
-	  	  /** Return the vertical accuracy value */
+	/** Return the vertical accuracy value (in meters) */
 	  	static double get_vertical_accuracy();
 
+	/** Return the horizontal accuracy value (in radians) */
 	  	static double get_latlon_accuracy();
 
 	  	/** return default precision for output values */

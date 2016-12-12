@@ -19,4 +19,6 @@ public interface DensityGridSearch {
 	 * @return
 	 */
 	public List<Pair<Integer,Integer>> search(DensityGrid dg, Position startPos, Position endPos);
+	
+	public List<Pair<Integer,Integer>> optimalPath(DensityGrid dg);
 }

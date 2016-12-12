@@ -116,6 +116,23 @@ public class ParameterData {
 		return p;		
 	}
 
+	/**
+	 * Return a new ParameterData object that is a subset of this object
+	 * @param key the key to be included
+	 * @return new ParameterData object that is a subset of this object, only containing the element of this object that matches key
+	 * If key is not in this object, they will not be included in the returned subset.
+	 */
+	public ParameterData subset(String key) {
+		ParameterData p = new ParameterData();
+		p.preserveUnits = preserveUnits;
+		p.unitCompatibility = unitCompatibility;
+		p.patternStr = patternStr;
+		if (contains(key)) {
+			p.parameters.put(key, parameters.get(key));
+		}
+		return p;		
+	}
+
 
 	/**
 	 * Return a list of parameters that have the same values in both this object and p
