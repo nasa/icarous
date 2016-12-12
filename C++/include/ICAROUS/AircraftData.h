@@ -50,6 +50,17 @@
 
 using namespace larcfm;
 
+struct Object_t{
+	int id;
+	double x;
+	double y;
+	double z;
+	double vx;
+	double vy;
+	double vz;
+	double heading;
+};
+
 
 class AircraftData_t{
     private:
@@ -76,6 +87,8 @@ class AircraftData_t{
         Plan ResolutionPlan;
         std::list<Geofence_t> fenceList;
         std::list<Geofence_t>::iterator fenceListIt;
+        std::list<Object_t> trafficList;
+        std::list<Object_t> missionObjList;
 
         //Member functions
         AircraftData_t(MAVLinkMessages_t* Msgs,ParameterData* pData);
@@ -85,7 +98,7 @@ class AircraftData_t{
         uint16_t GetFlightPlanSize();
         void ConstructPlan();
         void GetGeofence(Interface_t *gsIntf,mavlink_command_long_t msg);
-        
+        void AddTraffic(int id,double x,double y,double z,double vx,double vy,double vz);
 };
 
 

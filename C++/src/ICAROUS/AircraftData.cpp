@@ -183,3 +183,32 @@ void AircraftData_t::GetGeofence(Interface_t *gsIntf,mavlink_command_long_t msgI
 
 	}
 }
+
+void AircraftData_t::AddTraffic(int id,double x,double y,double z,double vx,double vy,double vz){
+
+	pthread_mutex_lock(&lock);
+	std::list<Object_t>::iterator it;
+	bool present = false;
+	if(!trafficList.empty()){
+		for(it = trafficList.begin(); it != trafficList.end(); ++it){
+			if(it->id == id){
+				it->x = x;
+				it->y = y;
+				it->z = z;
+				it->vx = vx;
+				it->vy = vy;
+				it->vz = vz;
+				present = true;
+				break;
+			}
+
+
+		}
+	}
+
+	if(!present){
+		Object_t newTraffic = {id,x,y,z,vx,vy,vz,0};
+		trafficList.push_back(newTraffic);
+	}
+	pthread_mutex_unlock(&lock);
+}

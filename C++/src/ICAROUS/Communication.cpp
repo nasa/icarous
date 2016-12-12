@@ -209,6 +209,10 @@
      else if(have_msg && msg.command == MAV_CMD_DO_FENCE_ENABLE){
     	 FlightData->GetGeofence(gsIntf,msg);
      }
+     else if(have_msg && msg.command == MAV_CMD_SPATIAL_USER_1){
+    	 FlightData->AddTraffic((int)msg.param1,msg.param5,msg.param6,msg.param7,
+    			 	 	 	 	msg.param2,msg.param3,msg.param4);
+     }
      else if(have_msg){
     	 mavlink_message_t msg2send;
 		 mavlink_msg_command_long_encode(255,0,&msg2send,&msg);
