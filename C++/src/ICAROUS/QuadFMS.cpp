@@ -45,7 +45,9 @@
      trajectoryState   = IDLE_t;
      planType          = MISSION;
      resumeMission     = true;
-
+     DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+     time(&daaTimeStart);
+     daaLookAhead = DAA.parameters.getLookaheadTime("s");
  }
 
  QuadFMS_t::~QuadFMS_t(){}

@@ -78,6 +78,7 @@ class AircraftData_t{
 		double manueverVn,manueverVe,manueverVu;
 		double manueverHeading;
 
+
         uint16_t nextMissionWP;
         uint16_t nextResolutionWP;
         MAVLinkMessages_t* RcvdMessages;
@@ -99,6 +100,7 @@ class AircraftData_t{
         void ConstructPlan();
         void GetGeofence(Interface_t *gsIntf,mavlink_command_long_t msg);
         void AddTraffic(int id,double x,double y,double z,double vx,double vy,double vz);
+        void GetTraffic(int id,Position &pos,Velocity &vel);
 };
 
 

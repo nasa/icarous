@@ -97,7 +97,9 @@ void Conflict_t::RemoveConflict(Geofence_t gf){
 
 uint8_t Conflict_t::size(){
 	return keepInGeofence.size()+
-			keepOutGeofence.size()+(int)flightPlanDeviation;
+			keepOutGeofence.size()+
+				(int)flightPlanDeviation+
+					(int)traffic;
 }
 
 Geofence_t Conflict_t::GetKeepInConflict(){

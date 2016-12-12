@@ -128,6 +128,44 @@ void QuadFMS_t::CheckFlightPlanDeviation(){
 
 }
 
+void QuadFMS_t::CheckTraffic(){
+
+	time_t currentTime    = time(&currentTime);
+	time_t daaTimeElapsed = difftime(currentTime,daaTimeStart);
+
+	Position so = FlightData->acState.positionLast();
+	Velocity vo = FlightData->acState.velocityLast();
+
+	DAA.reset();
+	DAA.setOwnshipState("Ownship",so,vo,0.0);
+
+	for(int i=0;i<FlightData->trafficList.size();i++){
+		Position si;
+		Velocity vi;
+		FlightData->GetTraffic(i,si,vi);
+		char name[10];
+		sprintf(name,"Traffic%d",i);
+		DAA.addTrafficState(name,si,vi);
+	}
+
+	bool daaViolation = false;
+	for(int ac = 1;ac<DAA.numberOfAircraft();ac++){
+		double tlos = DAA.timeToViolation(ac);
+		if(tlos >=0 && tlos <= daaLookAhead){
+			Conflict.traffic = true;
+			DAA.kinematicMultiBands(KMB);
+			time(&daaTimeStart);
+			daaViolation = true;
+		}
+	}
+
+	if(daaTimeElapsed > 10){
+		if(!daaViolation){
+			Conflict.traffic = false;
+		}
+	}
+}
+
 
 
 

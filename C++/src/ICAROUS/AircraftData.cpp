@@ -201,14 +201,25 @@ void AircraftData_t::AddTraffic(int id,double x,double y,double z,double vx,doub
 				present = true;
 				break;
 			}
-
-
 		}
 	}
 
 	if(!present){
 		Object_t newTraffic = {id,x,y,z,vx,vy,vz,0};
 		trafficList.push_back(newTraffic);
+	}
+	pthread_mutex_unlock(&lock);
+}
+
+void AircraftData_t::GetTraffic(int id,Position& pos,Velocity& vel){
+	pthread_mutex_lock(&lock);
+	std::list<Object_t>::iterator it;
+	for(it = trafficList.begin(); it != trafficList.end(); ++it){
+		if(it->id == id){
+			pos = Position::makeLatLonAlt(it->x,"degree",it->y,"degree",it->z,"m");
+			vel = Velocity::makeVxyz(it->vy,it->vx,"m/s",it->vz,"m/s");
+			break;
+		}
 	}
 	pthread_mutex_unlock(&lock);
 }
