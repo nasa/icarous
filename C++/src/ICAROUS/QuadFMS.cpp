@@ -134,11 +134,17 @@ uint8_t QuadFMS_t::Resolve(){
 	switch(resolutionState){
 
 	case COMPUTE_r:
-		printf("Computing resolution\n");
+
 		if(Conflict.keepin){
+			printf("Computing keep in resolution\n");
 			ResolveKeepInConflict();
 		}
+		else if(Conflict.keepout){
+			printf("Computing keep out resolution\n");
+			ResolveKeepOutConflict();
+		}
 		else if(Conflict.flightPlanDeviation){
+			printf("Computing standoff deviation\n");
 			ResolveFlightPlanDeviation();
 		}
 

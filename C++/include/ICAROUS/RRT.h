@@ -82,6 +82,9 @@ public:
 	int nodeCount;
 	node_t root;
 	int trafficSize;
+	double closestDist;
+	node_t closestNode;
+	node_t goalNode;
 
 	RRT_t();
 	RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,

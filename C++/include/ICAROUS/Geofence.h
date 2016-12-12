@@ -105,6 +105,7 @@ public:
 	void GetEntryExitTime(double& in, double& out);
 	SimplePoly GetPoly();
 	EuclideanProjection GetProjection();
+	double GetCeiling();
 };
 
 

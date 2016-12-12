@@ -44,6 +44,7 @@
  #include "AircraftData.h"
  #include "Conflict.h"
  #include "NavPoint.h"
+ #include "PlanUtil.h"
 
 enum fms_state_t {_idle_,_takeoff_,_climb_,_cruise_,_descend_,_land_};
 

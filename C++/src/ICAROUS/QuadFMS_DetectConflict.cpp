@@ -62,7 +62,7 @@ void QuadFMS_t::CheckGeofence(){
 		Geofence_t fence = *FlightData->fenceListIt;
 		fence.CheckViolation(FlightData->acState,elapsedTime,CurrentFP);
 
-		if(fence.GetProjectedStatus() || fence.GetConflictStatus() || fence.GetViolationStatus()){
+		if(fence.GetConflictStatus() || fence.GetViolationStatus()){
 			Conflict.AddConflict(fence);
 			if(fence.GetType() == KEEP_IN){
 				Conflict.keepin = true;
@@ -84,10 +84,16 @@ void QuadFMS_t::CheckFlightPlanDeviation(){
 	Plan CurrentFP;
 	Position prevWP,nextWP,currentPos;
 
-	CurrentFP = FlightData->MissionPlan;
-	elapsedTime = GetApproxElapsedPlanTime(CurrentFP,FlightData->nextMissionWP);
-	prevWP = CurrentFP.point(FlightData->nextMissionWP - 1).position();
-	nextWP = CurrentFP.point(FlightData->nextMissionWP).position();
+	if(planType == MISSION){
+		CurrentFP = FlightData->MissionPlan;
+		elapsedTime = GetApproxElapsedPlanTime(CurrentFP,FlightData->nextMissionWP);
+		prevWP = CurrentFP.point(FlightData->nextMissionWP - 1).position();
+		nextWP = CurrentFP.point(FlightData->nextMissionWP).position();
+	}
+	else{
+		Conflict.flightPlanDeviation = false;
+		return;
+	}
 
 	currentPos   = FlightData->acState.positionLast();
 	psi1         = prevWP.track(nextWP) * 180/M_PI;

@@ -153,14 +153,61 @@ void QuadFMS_t::ResolveKeepOutConflict(){
 	Position currentPos = FlightData->acState.positionLast();
 	Velocity currentVel = FlightData->acState.velocityLast();
 
-	RRT_t RRT(FlightData->fenceList,currentPos,currentVel,TrafficPos,TrafficVel,5,1);
+	double elapsedTime;
+	double altFence;
+	double minTime = MAXDOUBLE;
+	double maxTime = 0;
 
-	Position nextWP = FlightData->MissionPlan.point(FlightData->nextMissionWP).position();
-	int Nsteps = 500;
+	Plan currentFP;
+	Position prevWP;
+	Position nextWP;
+
+	if(planType == MISSION){
+		currentFP = FlightData->MissionPlan;
+		elapsedTime = GetApproxElapsedPlanTime(currentFP,FlightData->nextMissionWP);
+		prevWP = currentFP.point(FlightData->nextMissionWP - 1).position();
+		nextWP = currentFP.point(FlightData->nextMissionWP).position();
+	}
+	else if(planType == TRAJECTORY){
+		currentFP = FlightData->ResolutionPlan;
+		elapsedTime = GetApproxElapsedPlanTime(currentFP,FlightData->nextResolutionWP);
+		prevWP = currentFP.point(FlightData->nextResolutionWP - 1).position();
+		nextWP = currentFP.point(FlightData->nextResolutionWP).position();
+	}
+
+	std::list<Geofence_t>::iterator it;
+	for(it=Conflict.keepOutGeofence.begin();
+		it!=Conflict.keepOutGeofence.end();++it){
+		double entrytime, exittime;
+		it->GetEntryExitTime(entrytime,exittime);
+
+		if(entrytime <= minTime){
+			minTime  = entrytime;
+			altFence = it->GetCeiling();
+		}
+
+		if(exittime >= maxTime){
+			maxTime = exittime;
+		}
+
+	}
+
+	if(planType == MISSION){
+		FlightData->nextMissionWP = FlightData->MissionPlan.getSegment(maxTime) + 1;
+	}
+
+	Plan conflictFP = PlanUtil::cutDown(currentFP,minTime,maxTime);
+	Position goal = conflictFP.getLastPoint().position();
+
+	int Nsteps = 1000;
+	int Tstep  = 5;
+	double dT  = 1;
+	RRT_t RRT(FlightData->fenceList,currentPos,currentVel,TrafficPos,TrafficVel,5,1);
 
 	for(int i=0;i<Nsteps;i++){
 		RRT.RRTStep();
-		if(RRT.CheckGoal(nextWP)){
+		if(RRT.CheckGoal(goal)){
+			printf("Goal found\n");
 			break;
 		}
 	}

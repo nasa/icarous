@@ -15,7 +15,7 @@ using namespace larcfm;
 
 int main(int argc,char* argv[]){
     
-    
+
     printf("Testing interfaces\n");
     
     // Read parameters from file and get the parameter data container
@@ -44,12 +44,13 @@ int main(int argc,char* argv[]){
     std::thread thread2(&Communication_t::GetGSData,&DAQ);
     std::thread thread3(&FlightManagementSystem_t::RunFMS,&FMS);
     
-    //thread1.join();
+    thread1.join();
     thread2.join();
-    //thread3.join();
+    thread3.join();
     
 
     return 0;
+
 }
 
 

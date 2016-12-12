@@ -47,7 +47,8 @@ RRT_t::RRT_t(){
 	zmin = 0;
 	zmax = 0;
 	Tstep = 5;
-	dT = 0.5;
+	dT = 1;
+	closestDist = MAXDOUBLE;
 }
 
 RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
@@ -111,6 +112,11 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 
 	trafficSize = trafficPos.size();
 	nodeList.push_back(root);
+
+	closestDist = MAXDOUBLE;
+
+	printf("xmin,xmax = %d,%d\n",xmin,xmax);
+	printf("ymin,ymax = %d,%d\n",ymin,ymax);
 
 }
 
@@ -316,13 +322,14 @@ void RRT_t::RRTStep(){
 	int rangeX = xmax - xmin;
 	int rangeY = ymax - ymin;
 
-	X[0] = (rand() % rangeX) - rangeX/2;
-	X[1] = (rand() % rangeY) - rangeY/2;
+	X[0] = xmin + (rand() % rangeX);
+	X[1] = ymin + (rand() % rangeY);
+
 
 	node_t rd;
 	rd.pos.x = X[0];
 	rd.pos.y = X[1];
-	rd.pos.z = 0;
+	rd.pos.z = 5;    // should  be set appropriately for 3D plans
 
 	node_t nearest = FindNearest(rd);
 
@@ -349,7 +356,14 @@ bool RRT_t::CheckGoal(node_t goal){
 	node_t lastNode = nodeList.back();
 
 	Vect3 diff = lastNode.pos.Sub(goal.pos);
-	if( diff.norm() < 10 ){
+	double mag = diff.norm();
+
+	if(mag < closestDist){
+		closestDist = mag;
+		closestNode = lastNode;
+	}
+
+	if( mag < 2 ){
 		return true;
 	}else{
 		return false;
@@ -358,19 +372,21 @@ bool RRT_t::CheckGoal(node_t goal){
 
 bool RRT_t::CheckGoal(Position goal){
 
-	node_t goalnode;
-	goalnode.pos = proj.project(goal);
-	return CheckGoal(goalnode);
+	goalNode.pos = proj.project(goal);
+	return CheckGoal(goalNode);
 }
 
 Plan RRT_t::GetPlan(){
 
 	double speed = 1;
-	node_t node = nodeList.back();
+	node_t node = closestNode;
 	node_t parent;
 	std::list<node_t> path;
+	printf("Closest dist: %f\n",closestDist);
+	printf("x,y:%f,%f\n",goalNode.pos.x,goalNode.pos.y);
 	while(!node.parent.empty()){
 		parent = node.parent.front();
+		printf("x,y:%f,%f\n",parent.pos.x,parent.pos.y);
 		path.push_front(parent);
 		node = parent;
 	}
@@ -379,21 +395,23 @@ Plan RRT_t::GetPlan(){
 	Plan newRoute;
 	int count = 0;
 	double ETA;
-	for(nodeIt = nodeList.begin(); nodeIt != nodeList.end(); ++nodeIt){
-		Position wp = proj.inverse(nodeIt->pos);
+	for(nodeIt = path.begin(); nodeIt != path.end(); ++nodeIt){
+		Position wp(proj.inverse(nodeIt->pos));
 		if(count == 0){
 			ETA = 0;
 		}
 		else{
 			Position prevWP = newRoute.point(count-1).position();
 			double distH    = wp.distanceH(prevWP);
-			ETA             = distH/speed;
+			ETA             = ETA + distH/speed;
 		}
 
 		NavPoint np(wp,ETA);
 		newRoute.add(np);
 		count++;
 	}
+
+	//std::cout<<newRoute.toString()<<std::endl;
 
 	return newRoute;
 }
@@ -406,23 +424,26 @@ int main(int argc,char* argv[]){
 
 	RRT_t RRT;
 
+
+
+
 	// create bounding box
 
 	Poly2D box;
 	box.addVertex(0,0);
-	box.addVertex(100,0);
-	box.addVertex(100,100);
-	box.addVertex(0,100);
+	box.addVertex(50,3.815);
+	box.addVertex(54.768718,-36.0304);
+	box.addVertex(5.409,-40.2694);
 
 	Poly3D bbox(box,0,100);
 	RRT.boundingBox = bbox;
 
 	// obstacles
 	Poly2D obs2D;
-	obs2D.addVertex(30,30);
-	obs2D.addVertex(60,30);
-	obs2D.addVertex(60,60);
-	obs2D.addVertex(30,60);
+	obs2D.addVertex(34.4838,-5.08);
+	obs2D.addVertex(32.455,-13.56);
+	obs2D.addVertex(41.9216,-11.867);
+	//obs2D.addVertex(30,60);
 	Poly3D obs1(obs2D,-100,100);
 
 	//Poly2D obs2D_2;
@@ -435,9 +456,9 @@ int main(int argc,char* argv[]){
 	RRT.obstacleList.push_back(obs1);
 	//RRT.obstacleList.push_back(obs2);
 
-	int Nsteps = 500;
+	int Nsteps = 5000;
 
-	Vect3 pos(0,0,0);
+	Vect3 pos(59,-10,2);
 	Vect3 vel(0,0,0);
 	Vect3 trafficPos1(200,200,0);
 	Vect3 trafficVel1(0,0,0);
@@ -445,15 +466,22 @@ int main(int argc,char* argv[]){
 	std::vector<Vect3> TrafficPos;
 	std::vector<Vect3> TrafficVel;
 
-	TrafficPos.push_back(trafficPos1);
-	TrafficVel.push_back(trafficVel1);
+	//TrafficPos.push_back(trafficPos1);
+	//TrafficVel.push_back(trafficVel1);
 
-	Vect3 gpos(90,90,0);
+	Vect3 gpos(50,-6,0);
 	node_t goal;
 	goal.pos = gpos;
 
 
 	RRT.Initialize(pos,vel,TrafficPos,TrafficVel);
+
+	RRT.xmin = 0;
+	RRT.xmax = 60;
+	RRT.ymin = -50;
+	RRT.ymax = 10;
+	RRT.zmin = -100;
+	RRT.zmax = 100;
 
 	for(int i=0;i<Nsteps;i++){
 		RRT.RRTStep();
@@ -476,6 +504,6 @@ int main(int argc,char* argv[]){
 
 
 }
-*/
 
+*/
 

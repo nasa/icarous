@@ -48,6 +48,8 @@ Geofence_t::Geofence_t(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor,
 	violation = false;
 	projectedViolation = false;
     geoCDIIPolygon = CDIIPolygon(&geoPolyCarp);
+    entryTime = 0;
+    exitTime = 0;
 }
 
 void Geofence_t::AddVertex(int index, double lat,double lon){
@@ -99,6 +101,7 @@ void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp
 	if(fenceType == KEEP_IN){
 		if(geoPolyCarp.nearEdge(currentPosR3,geoPoly3D,hthreshold,vthreshold)){
 			conflict = true;
+			//printf("Conflict keep in fence\n");
 		}
 		else{
 			conflict = false;
@@ -110,6 +113,7 @@ void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp
 			violation = false;
 		}else{
 			violation = true;
+			//printf("violation keep in fence\n");
 		}
 
 		Vect2 recPointR2 = geoPolyResolution.inside_recovery_point(BUFF,hstepback,
@@ -133,6 +137,7 @@ void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp
 	    	conflict = true;
 	    	entryTime = geoCDIIPolygon.getTimeIn(0);
 	    	exitTime  = geoCDIIPolygon.getTimeOut(0);
+	    	//printf("Conflict keep out fence\n");
 	    }
 	    else{
 	    	conflict = false;
@@ -203,4 +208,8 @@ EuclideanProjection Geofence_t::GetProjection(){
 void Geofence_t::GetEntryExitTime(double& in, double &out){
 	in = entryTime;
 	out = exitTime;
+}
+
+double Geofence_t::GetCeiling(){
+	return ceiling;
 }
