@@ -20,6 +20,8 @@ public interface DensityGridTimedSearch {
 	 */
 	public List<Pair<Integer,Integer>> search(DensityGridTimed dg, Position startPos, Position endPos, double startTime, double gs);
 
+	public List<Pair<Integer,Integer>> optimalPath(DensityGridTimed dg);
+	
 //	/**
 //	 * Perform a search on the given timed density grid assuming a constant groundspeed.  Polygons may be static or moving.  
 //	 * This search includes a user-specified time buffer around the given path, meaning the path will be will be clear not only 

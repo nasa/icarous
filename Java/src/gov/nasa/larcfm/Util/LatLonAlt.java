@@ -13,6 +13,8 @@ package gov.nasa.larcfm.Util;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.ArrayList;
 
 /**
@@ -39,13 +41,13 @@ public final class LatLonAlt {
 	}
 
 	public static final LatLonAlt ZERO = new LatLonAlt(0.0,0.0,0.0);
-	
+
 	/** An invalid LatLonAlt.  Note that this is not necessarily equal to other invalid LatLonAlts -- use the isInvalid() instead */
 	public static final LatLonAlt INVALID = new LatLonAlt(Double.NaN,Double.NaN,Double.NaN);
 
 	public static final LatLonAlt NORTHPOLE = new LatLonAlt(Math.PI, 0.0, 0.0);
 	public static final LatLonAlt SOUTHPOLE = new LatLonAlt(-Math.PI, 0.0, 0.0);
-	
+
 	/**
 	 * Creates a new position that is a copy of <code>v</code>.
 	 * 
@@ -94,7 +96,7 @@ public final class LatLonAlt {
 	public static LatLonAlt mk(double lat, double lon, double alt) {
 		return new LatLonAlt(lat, lon, alt);
 	}
-	
+
 	/**
 	 * Creates a new LatLonAlt with only altitude changed
 	 * 
@@ -103,7 +105,7 @@ public final class LatLonAlt {
 	public LatLonAlt mkAlt(double alt) {
 		return new LatLonAlt(lati, longi, alt);
 	}
-	
+
 	/**
 	 * Creates a new LatLonAlt with only altitude changed
 	 * 
@@ -113,9 +115,9 @@ public final class LatLonAlt {
 		return new LatLonAlt(lati, longi, Units.from("ft",alt));
 	}
 
-//	public boolean equals(LatLonAlt a) {
-//		return a.lati == lati && a.longi == longi && a.alti == alti;
-//	}
+	//	public boolean equals(LatLonAlt a) {
+	//		return a.lati == lati && a.longi == longi && a.alti == alti;
+	//	}
 
 	@Override
 	public int hashCode() {
@@ -152,8 +154,8 @@ public final class LatLonAlt {
 		return true;
 	}
 
-	
-	
+
+
 	/** Are these two LatLonAlt almost equal? */
 	public boolean almostEquals(LatLonAlt a) {
 		return GreatCircle.almost_equals(this.lat(), this.lon(), a.lat(), a.lon())
@@ -177,7 +179,7 @@ public final class LatLonAlt {
 	public LatLonAlt zeroAlt() {
 		return new LatLonAlt(lati,longi,0.0);
 	}
-	
+
 	/** Return latitude in degrees north */
 	public double latitude() {
 		return Util.to_180(Units.to(Units.deg, lati));
@@ -202,13 +204,13 @@ public final class LatLonAlt {
 	public double altitude() {
 		return Units.to(Units.ft, alti);
 	}	
-	
+
 	/** Return altitude in the given units */
 	public double altitude(String units) {
 		return Units.to(units, alti);
 	}	
-	
-	
+
+
 	/** 
 	 * Perform a linear projection of the current Position with given velocity and time.  
 	 * A great circle route is followed and the velocity 
@@ -231,7 +233,7 @@ public final class LatLonAlt {
 		}
 	}
 
-	
+
 	/** Compute a new lat/lon that is offset by dn meters north and de meters east.
 	 * This is a computationally fast estimate, and only should be used for relatively short distances.
 	 * 
@@ -243,7 +245,7 @@ public final class LatLonAlt {
 	public LatLonAlt linearEst(double dn, double de) {
 		//f.pln(" lat = "+Units.str("deg",lati)+" lon = "+Units.str("deg",longi));
 		double R = 6378137;                   // diameter earth in meters
-       //TODO:  switch to		 R = GreatCircle.spherical_earth_radius;
+		//TODO:  switch to		 R = GreatCircle.spherical_earth_radius;
 		double nLat = lati + dn/R;
 		double nLon = longi + de/(R*Math.cos(lati));
 		//f.pln(" nLat = "+Units.str("deg",nLat)+" nLon = "+Units.str("deg",nLon));
@@ -269,23 +271,19 @@ public final class LatLonAlt {
 	public double distanceH(LatLonAlt lla2) {
 		return GreatCircle.distance(this,lla2);
 	}
-	
-	public double chordDistance(LatLonAlt lla2) {
-		return GreatCircle.chord_distance(lat(), lon() ,lla2.lat(), lla2.lon());
-	}
-	
-  /**
-    * Returns true if the current LatLonAlt has an "invalid" value
-    */
-	  public boolean isInvalid() {
-		  return Double.isNaN(lati) || Double.isNaN(longi) || Double.isNaN(alti);
-	  }
 
-	  /** return the antipodal point corresponding to this LatLonAlt */
+	/**
+	 * Returns true if the current LatLonAlt has an "invalid" value
+	 */
+	public boolean isInvalid() {
+		return Double.isNaN(lati) || Double.isNaN(longi) || Double.isNaN(alti);
+	}
+
+	/** return the antipodal point corresponding to this LatLonAlt */
 	public LatLonAlt antipode() {
 		return LatLonAlt.mk(-lati, Util.to_pi(longi+Math.PI), alti);
 	}
-	
+
 	/** Return latitude in internal units */
 	public double lat() {
 		return lati;
@@ -298,13 +296,13 @@ public final class LatLonAlt {
 	public double alt() {
 		return alti;
 	}
-	
-    /** String representation with units of [deg,deg,ft] */
+
+	/** String representation with units of [deg,deg,ft] */
 	public String toString() {
 		return toString(Constants.get_output_precision());
 	}
 
-    /** String representation with units of [deg,deg,ft] */
+	/** String representation with units of [deg,deg,ft] */
 	public String toString(int precision) {
 		StringBuffer sb = new StringBuffer(30);
 		sb.append('(');
@@ -336,8 +334,8 @@ public final class LatLonAlt {
 		sb.append(Units.str("ft", alt(), precision));
 		return sb.toString();
 	}
-	
-    /** String representation */
+
+	/** String representation */
 	public List<String> toStringList(int precision) {
 		ArrayList<String> ret = new ArrayList<String>(3);
 		ret.add(f.FmPrecision(latitude(), precision));
@@ -350,20 +348,20 @@ public final class LatLonAlt {
 	public String toStringNP(String latunit, String lonunit, String zunit, int precision) {
 		return f.FmPrecision(f.fm_nz(Units.to(latunit, lati), precision+1),precision) + ", " + f.FmPrecision(f.fm_nz(Units.to(lonunit, longi),precision+1), precision) + ", " 	+ f.FmPrecision(Units.to(zunit, alti), precision);
 	}
-	
+
 	/** Return a string representation consistent with StateReader or PlanReader with user-specified precision */
 	public String toStringNP(int p) {
 		return toStringNP("deg", "deg", "ft", p);
 	}
-	
+
 	/** Return a string representation consistent with StateReader or PlanReader with the global default precision */
 	public String toStringNP() {
 		return toStringNP("deg", "deg", "ft", Constants.get_output_precision());
 	}
 
-	/** Return a string representation consistent with StateReader or PlanReader with the global default precision */
-	
-	
+//	/** Return a string representation consistent with StateReader or PlanReader with the global default precision */
+
+
 	/**
 	 * Provide a string representation of this object in the 'Degree, Decimal Minutes' convention.
 	 * Example: 39 degrees, 20.01 minutes north latitude, 85 degrees, 10.53 minutes west longitude is represented as N392001W0851053 (with a precision = 2)
@@ -375,12 +373,12 @@ public final class LatLonAlt {
 		if (precision < 0 || precision > 10) {
 			precision = 0; // decimal minutes
 		}
-		
+
 		StringBuilder sb = new StringBuilder(100);
-	
+
 		double deg_lat = latitude();
 		double deg_lon = longitude();
-		
+
 		if (deg_lat >= 0.0) {
 			sb.append("N");
 		} else {
@@ -393,8 +391,8 @@ public final class LatLonAlt {
 		double min_lat = Math.round((deg_lat - Math.floor(deg_lat)) * 60 * Math.pow(10.0, precision));
 		sb.append(f.FmLead((int)Math.floor(min_lat),2+precision));
 
-		
-		
+
+
 		if (deg_lon >= 0.0) {
 			sb.append("E");
 		} else {
@@ -410,7 +408,7 @@ public final class LatLonAlt {
 		return sb.toString();
 	}
 
-	
+
 	/**
 	 * parse the lat/lon from the name assuming the degrees, decimal minutes representation
 	 * @param name
@@ -428,19 +426,19 @@ public final class LatLonAlt {
 		double lonDegrees = 0.0;
 		double lonMinutes = 0.0;
 		double lonDecimalMinutes = 0.0;
-		
+
 		// return invalid LatLon if the input is not in the expected form (latitude first, both lat and lon, minimum degrees defined)
 		if ( (name.charAt(0)!='N' && name.charAt(0)!='S') || (name.indexOf('W')==-1 && name.indexOf('E')==-1) || name.length()<7 ) {
-		//	f.pln(" $$$$$$$$$$$ "+name.charAt(0)+" index = "+name.indexOf('W')); 
+			//	f.pln(" $$$$$$$$$$$ "+name.charAt(0)+" index = "+name.indexOf('W')); 
 			return LatLonAlt.INVALID;
 		}
-		
+
 		// find the starting position for the longitude definition
 		indexToLon = name.indexOf('W');
 		if (indexToLon==-1) {
 			indexToLon = name.indexOf('E');
 		}
-		
+
 		// parse the latitude
 		lat = name.substring(0, indexToLon);
 		latDirection = lat.charAt(0);
@@ -449,7 +447,7 @@ public final class LatLonAlt {
 		if (lat.length()>5)  latDecimalMinutes = Util.parse_double(lat.substring(5, lat.length()))*Math.pow(10, -(lat.length()-5));
 		latDegrees += (latMinutes + latDecimalMinutes) / 60.0;		// add the decimal degrees from the minutes data
 		if (latDirection=='S') latDegrees = -1.0 * latDegrees;
-		
+
 		//parse the longitude
 		lon = name.substring(indexToLon, name.length());
 		lonDirection = lon.charAt(0);
@@ -458,88 +456,129 @@ public final class LatLonAlt {
 		if (lon.length()>6)  lonDecimalMinutes = Util.parse_double(lon.substring(6, lon.length()))*Math.pow(10, -(lon.length()-6));
 		lonDegrees += (lonMinutes + lonDecimalMinutes) / 60.0;		// add the decimal degrees from the minutes data
 		if (lonDirection=='W') lonDegrees = -1.0 * lonDegrees;
-				
+
 		// compose the location and return
 		return LatLonAlt.make(latDegrees, lonDegrees, 0.0);
 	}
-	
-	  /** 
-	   * This parses a space or comma-separated string as a LatLonAlt (an inverse 
-	   * to the toString method).  If three bare values are present, then it is interpreted as deg/deg/ft.
-	   * If there are 3 value/unit pairs then each values is interpreted with regard 
-	   * to the appropriate unit.  If the string cannot be parsed, an INVALID value is
-	   * returned. 
-	   * */
-	  public static LatLonAlt parse(String str) {
-			String[] fields = str.split(Constants.wsPatternParens);
-			if (fields[0].equals("")) {
-				fields = Arrays.copyOfRange(fields,1,fields.length);
+
+
+	/**
+	 * This parses a string in degree, minutes, seconds format into a decimal degree value.
+	 * @param name this must be one or more groups of numbers separated by a direction character (NSEW), a space, the degree sign (\u00B0), ' (min), or " (sec).  The values are read in degrees, minutes, seconds order regardless of the separations used.
+	 * A value containing S or W will return a negative value, as will values that explicitly contain a negative sign (e.g. -5N returns -5, as does 5W or -5W) 
+	 * @return decimal degree value, or NaN if an error is encountered (unexpected character or a degree or second value outside the (0-60] range).
+	 * The following strings evaluate to the same value: 
+	 * -37\u00B022'5.3"
+	 * 37W22'5.3"
+	 * 37 22 5.3
+	 */
+	public static double parseDegreesMinutesSecondsToDecimal(String name) {
+		double degrees = 0.0;
+		double minutes = 0.0;
+		double seconds = 0.0;
+
+		try {
+			String[] vals = name.trim().split("[NSEWnsew \u00B0\\\'\\\"]+");
+			if (vals.length > 0) degrees = Double.parseDouble(vals[0]);
+			if (vals.length > 1) minutes = Double.parseDouble(vals[1]);
+			if (vals.length > 2) seconds = Double.parseDouble(vals[2]);
+			//
+		} catch (Exception e) {
+			return Double.NaN;
+		}
+		
+		if (minutes < 0 || seconds < 0 || minutes >= 60 || seconds >= 60) {
+			return Double.NaN;
+		}
+		
+		double deg = degrees+minutes/60.0+seconds/3600.0;
+		
+		if (name.indexOf('S') >= 0 || name.indexOf('s') >= 0 || name.indexOf('W') >= 0 || name.indexOf('w') >= 0) {
+			deg = -Math.abs(deg);
+		}
+		
+		return deg;
+	}
+
+
+
+	/** 
+	 * This parses a space or comma-separated string as a LatLonAlt (an inverse 
+	 * to the toString method).  If three bare values are present, then it is interpreted as deg/deg/ft.
+	 * If there are 3 value/unit pairs then each values is interpreted with regard 
+	 * to the appropriate unit.  If the string cannot be parsed, an INVALID value is
+	 * returned. 
+	 * */
+	public static LatLonAlt parse(String str) {
+		String[] fields = str.split(Constants.wsPatternParens);
+		if (fields[0].equals("")) {
+			fields = Arrays.copyOfRange(fields,1,fields.length);
+		}
+		try {
+			if (fields.length == 3) {
+				return LatLonAlt.make(Double.parseDouble(fields[0]),Double.parseDouble(fields[1]),Double.parseDouble(fields[2]));
+			} else if (fields.length == 6) {
+				return LatLonAlt.mk(Units.from(Units.clean(fields[1]),Double.parseDouble(fields[0])),
+						Units.from(Units.clean(fields[3]),Double.parseDouble(fields[2])),
+						Units.from(Units.clean(fields[5]),Double.parseDouble(fields[4])));
 			}
-			try {
-				if (fields.length == 3) {
-					return LatLonAlt.make(Double.parseDouble(fields[0]),Double.parseDouble(fields[1]),Double.parseDouble(fields[2]));
-				} else if (fields.length == 6) {
-					return LatLonAlt.mk(Units.from(Units.clean(fields[1]),Double.parseDouble(fields[0])),
-							Units.from(Units.clean(fields[3]),Double.parseDouble(fields[2])),
-							Units.from(Units.clean(fields[5]),Double.parseDouble(fields[4])));
-				}
-			} catch (Exception e) {}
-			return LatLonAlt.INVALID;
-	  }
-	  
-	  
-	  /**
-	   * Normalizes the given latitude and longitude values to conventional spherical angles.  Thus
-	   * values over the pole (95 degrees of latitude) convert to 85 degrees and the longitude 180 degrees different.
-	   * 
-	   * @param lat latitude
-	   * @param lon longitude
-	   * @param alt altitude
-	   * @return normalized LatLonAlt value
-	   */
-	  public static LatLonAlt normalize(double lat, double lon, double alt) {
-		  double nlat, nlon;
-		  nlon = Util.to_pi(lon);
-		  lat = Util.to_pi(lat);
-		  nlat = Util.to_pi2_cont(lat);
-		  if (lat != nlat) {
-			  nlon = Util.to_pi(nlon + Math.PI);
-		  }
-		  return LatLonAlt.mk(nlat, nlon, alt);
-	  }
+		} catch (Exception e) {}
+		return LatLonAlt.INVALID;
+	}
 
-	  /**
-	   * Normalizes the given latitude and longitude values to conventional spherical angles.  Thus
-	   * values over the pole (95 degrees of latitude) convert to 85 degrees and the longitude 180 degrees different.
-	   * The altitude is assumed to be zero.
-	   * 
-	   * @param lat latitude
-	   * @param lon longitude
-	   * @return normalized LatLonAlt value
-	   */
-	  public static LatLonAlt normalize(double lat, double lon) {
-		  return normalize(lat, lon, 0.0);
-	  }
 
-	  /**
-	   * Creates a new LatLonAlt object from the current LatLonAlt object so that latitude and longitude values are 
-	   * conventional spherical angles.  Thus
-	   * values over the pole (95 degrees of latitude) convert to 85 degrees and the longitude 180 degrees different.
-	   * 
-	   * @return normalized LatLonAlt value
-	   */
-	  public LatLonAlt normalize() {
-		  return normalize(lat(), lon(), alt());
-	  }
+	/**
+	 * Normalizes the given latitude and longitude values to conventional spherical angles.  Thus
+	 * values over the pole (95 degrees of latitude) convert to 85 degrees and the longitude 180 degrees different.
+	 * 
+	 * @param lat latitude
+	 * @param lon longitude
+	 * @param alt altitude
+	 * @return normalized LatLonAlt value
+	 */
+	public static LatLonAlt normalize(double lat, double lon, double alt) {
+		double nlat, nlon;
+		nlon = Util.to_pi(lon);
+		lat = Util.to_pi(lat);
+		nlat = Util.to_pi2_cont(lat);
+		if (lat != nlat) {
+			nlon = Util.to_pi(nlon + Math.PI);
+		}
+		return LatLonAlt.mk(nlat, nlon, alt);
+	}
 
-	  /**
-	   * Return true if this point is (locally) west of the given point.
-	   * @param a reference point
-	   * @return true if this point is to the west of the reference point within a hemisphere they share.
-	   */
-	  public boolean isWest(LatLonAlt a) {
-		  // this uses the same calculations as Util.clockwise:
-		  return Util.clockwise(a.lon(), lon());
-	  }
+	/**
+	 * Normalizes the given latitude and longitude values to conventional spherical angles.  Thus
+	 * values over the pole (95 degrees of latitude) convert to 85 degrees and the longitude 180 degrees different.
+	 * The altitude is assumed to be zero.
+	 * 
+	 * @param lat latitude
+	 * @param lon longitude
+	 * @return normalized LatLonAlt value
+	 */
+	public static LatLonAlt normalize(double lat, double lon) {
+		return normalize(lat, lon, 0.0);
+	}
+
+	/**
+	 * Creates a new LatLonAlt object from the current LatLonAlt object so that latitude and longitude values are 
+	 * conventional spherical angles.  Thus
+	 * values over the pole (95 degrees of latitude) convert to 85 degrees and the longitude 180 degrees different.
+	 * 
+	 * @return normalized LatLonAlt value
+	 */
+	public LatLonAlt normalize() {
+		return normalize(lat(), lon(), alt());
+	}
+
+	/**
+	 * Return true if this point is (locally) west of the given point.
+	 * @param a reference point
+	 * @return true if this point is to the west of the reference point within a hemisphere they share.
+	 */
+	public boolean isWest(LatLonAlt a) {
+		// this uses the same calculations as Util.clockwise:
+		return Util.clockwise(a.lon(), lon());
+	}
 
 }

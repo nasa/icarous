@@ -454,6 +454,10 @@ public class DensityGrid {
 		return endPoint;
 	}
 
+	public double startTime() {
+		return startTime;
+	}
+
 	private boolean validPair(Pair<Integer,Integer>  p) {
 		if (p.first == -1) return false;
 		if (p.second == -1) return false;
@@ -496,14 +500,14 @@ public class DensityGrid {
 		}	
 	}
 
-	public List<Pair<Integer,Integer>> optimalPath() {
-		DensityGridSearch dgs = new DensityGridAStarSearch();
-		return dgs.search(this, this.startPoint, this.endPoint);
-	}
-
-	public List<Pair<Integer,Integer>> optimalPath(DensityGridSearch dgs) {
-		return dgs.search(this, this.startPoint, this.endPoint);
-	}
+//	public List<Pair<Integer,Integer>> optimalPath() {
+//		DensityGridSearch dgs = new DensityGridAStarSearch();
+//		return dgs.search(this, this.startPoint, this.endPoint);
+//	}
+//
+//	public List<Pair<Integer,Integer>> optimalPath(DensityGridSearch dgs) {
+//		return dgs.search(this, this.startPoint, this.endPoint);
+//	}
 
 	//	public double cost(List<Pair<Integer,Integer>> gPath) {
 	//		for (int i = 0; i < gPath.size(); i++) {
@@ -637,72 +641,72 @@ public class DensityGrid {
 	}
 
 
-	public void setProximityWeightsOld(List<Pair<Integer,Integer>> gPath, Double factor, boolean applyToUndefined) {
-		double[][] myWeights = new double[sz_x][sz_y];	
-		for (int i = 0; i < sz_x; i++) {
-			for (int j = 0; j < sz_y; j++) {
-				Pair<Integer,Integer> pij = Pair.make(i,j);
-				if (gPath.contains(pij))  myWeights[i][j] = -1.0;
-				else myWeights[i][j] = 0.0;
-			}
-		}
-		for (int i = 0; i < sz_x; i++) {
-			double currentVal = sz_y*factor;
-			for (int j = 0; j < sz_y; j++) {
-				if (myWeights[i][j] < 0.0) {
-					currentVal = factor;
-				} else {
-					myWeights[i][j] = currentVal;
-					//f.pln(" $$1  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
-					currentVal = currentVal + factor;
-				}
-			}
-			currentVal = sz_y*factor;
-			for (int j = sz_y-1; j >= 0 ; j--) {
-				if (myWeights[i][j] < 0.0) {
-					currentVal = factor;
-				}
-				else {
-					myWeights[i][j] = Math.min(currentVal,myWeights[i][j]);
-					//f.pln(" $$2  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
-					currentVal = currentVal + factor;
-				}
-			}
-		}
-		for (int j = 0; j < sz_y; j++) {
-			double currentVal = sz_x*factor;
-			for (int i = 0; i < sz_x; i++) {
-				if (myWeights[i][j] < 0.0) {
-					currentVal = factor;
-				} else {
-					myWeights[i][j] = Math.min(currentVal,myWeights[i][j]);
-					//f.pln(" $$3  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
-					currentVal= currentVal + factor;
-				}
-			}
-			currentVal = sz_x*factor;
-			for (int i = sz_x-1; i >= 0 ; i--) {
-				if (myWeights[i][j] < 0.0) {
-					currentVal = factor;
-				}
-				else {
-					myWeights[i][j] = Math.min(currentVal,myWeights[i][j]);
-					//f.pln(" $$4  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
-					currentVal= currentVal + factor;
-				}
-			}
-		}		
-		for (int x = 0; x < sz_x; x++) {
-			for (int y = 0; y < sz_y; y++) { 
-				if (applyToUndefined || this.weights.containsKey(Pair.make(x, y))) {
-					if (myWeights[x][y] >= 0) setWeight(x,y,myWeights[x][y]);
-					else setWeight(x,y,0.0);
-				}
-			}
-		}         
-	}
+//	public void setProximityWeightsOld(List<Pair<Integer,Integer>> gPath, double factor, boolean applyToUndefined) {
+//		double[][] myWeights = new double[sz_x][sz_y];	
+//		for (int i = 0; i < sz_x; i++) {
+//			for (int j = 0; j < sz_y; j++) {
+//				Pair<Integer,Integer> pij = Pair.make(i,j);
+//				if (gPath.contains(pij))  myWeights[i][j] = -1.0;
+//				else myWeights[i][j] = 0.0;
+//			}
+//		}
+//		for (int i = 0; i < sz_x; i++) {
+//			double currentVal = sz_y*factor;
+//			for (int j = 0; j < sz_y; j++) {
+//				if (myWeights[i][j] < 0.0) {
+//					currentVal = factor;
+//				} else {
+//					myWeights[i][j] = currentVal;
+//					//f.pln(" $$1  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
+//					currentVal = currentVal + factor;
+//				}
+//			}
+//			currentVal = sz_y*factor;
+//			for (int j = sz_y-1; j >= 0 ; j--) {
+//				if (myWeights[i][j] < 0.0) {
+//					currentVal = factor;
+//				}
+//				else {
+//					myWeights[i][j] = Math.min(currentVal,myWeights[i][j]);
+//					//f.pln(" $$2  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
+//					currentVal = currentVal + factor;
+//				}
+//			}
+//		}
+//		for (int j = 0; j < sz_y; j++) {
+//			double currentVal = sz_x*factor;
+//			for (int i = 0; i < sz_x; i++) {
+//				if (myWeights[i][j] < 0.0) {
+//					currentVal = factor;
+//				} else {
+//					myWeights[i][j] = Math.min(currentVal,myWeights[i][j]);
+//					//f.pln(" $$3  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
+//					currentVal= currentVal + factor;
+//				}
+//			}
+//			currentVal = sz_x*factor;
+//			for (int i = sz_x-1; i >= 0 ; i--) {
+//				if (myWeights[i][j] < 0.0) {
+//					currentVal = factor;
+//				}
+//				else {
+//					myWeights[i][j] = Math.min(currentVal,myWeights[i][j]);
+//					//f.pln(" $$4  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
+//					currentVal= currentVal + factor;
+//				}
+//			}
+//		}		
+//		for (int x = 0; x < sz_x; x++) {
+//			for (int y = 0; y < sz_y; y++) { 
+//				if (applyToUndefined || this.weights.containsKey(Pair.make(x, y))) {
+//					if (myWeights[x][y] >= 0) setWeight(x,y,myWeights[x][y]);
+//					else setWeight(x,y,0.0);
+//				}
+//			}
+//		}         
+//	}
 
-	public void setProximityWeights(List<Pair<Integer,Integer>> gPath, Double factor, boolean applyToUndefined) {
+	public void setProximityWeights(List<Pair<Integer,Integer>> gPath, double factor, boolean applyToUndefined) {
 		double[][] myWeights = new double[sz_x][sz_y];	
 		for (int i = 0; i < sz_x; i++) {
 			for (int j = 0; j < sz_y; j++) {
@@ -737,7 +741,7 @@ public class DensityGrid {
 	 * @param p
 	 * @param factor
 	 */
-	public void setProximityWeights(Plan p, Double factor, boolean applyToUndefined) {
+	public void setProximityWeights(Plan p, double factor, boolean applyToUndefined) {
 		double[][] myWeights = new double[sz_x][sz_y];	
 		for (int i = 0; i < sz_x; i++) {
 			for (int j = 0; j < sz_y; j++) {

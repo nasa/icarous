@@ -27,8 +27,9 @@ namespace larcfm {
  * The IntervalSet class represents a set of "double" values.  Ranges
  * of doubles are maintained as intervals (Interval).  These Intervals
  * are ordered consecutively from lowest to highest. Standard set
- * operations of <tt>in</tt> (membership), <tt>unions</tt> (set
- * union), and <tt>diff</tt> (set difference) are provided.<p>
+ * operations of <code>in</code> (membership), <code>union</code> (set union), 
+ * <code>intersect</code> (set intersection), and <code>diff</code> (set difference) 
+ * are provided.<p>
  *
  * Within the IntervalSet, intervals are generally considered closed (including end-points), and the
  * results off operations are closed intervals.  This implies that the interval difference
@@ -37,15 +38,15 @@ namespace larcfm {
  * The intervals are numbered 0 to size()-1.  To cycle through the
  * intervals one may:<p>
  *
- * <pre>
+ * <code>
  * IntervalSet set;
  *
- * for( int i = 0; i < set.size(); i++) {
+ * for( int i = 0; i &lt; set.size(); i++) {
  *   Interval r;
  *   r = set.getInterval(i);
  *   ... work with r ...
  * }
- * </pre>
+ * </code>
  *
  * The current implementation does not allocate any dynamic (heap) memory.
  */

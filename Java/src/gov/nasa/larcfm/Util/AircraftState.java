@@ -144,7 +144,10 @@ public final class AircraftState implements ErrorReporter {
 	 * If the parameter ll matches the current latlon (true for lat/lon/alt, false 
 	 * for Euclidean) value, then return true.  If there are
 	 * no positions in this object, then true is always returned. 
-	 */
+     * 
+     * @param ll value to check lat/lon status against
+     * @return if ll agrees with the lat/lon status of this object 
+     */
 	public boolean checkLatLon(boolean ll) {
 		if (size() == 0) {
 			return true;
@@ -152,11 +155,17 @@ public final class AircraftState implements ErrorReporter {
 		return ll == s_list[oldest].isLatLon();		
 	}
 	
+	/**
+	 * 
+	 * @return is lat/lon
+	 */
 	public boolean isLatLon() {
 		return checkLatLon(true);
 	}
 	
-    /** return a deep copy of this object */
+    /** return a deep copy of this object 
+     * @return the copy
+     * */
     public AircraftState copy() {
     	AircraftState a = new AircraftState(id, bufferSize);
     	System.arraycopy(s_list, 0, a.s_list, 0, bufferSize);
@@ -190,6 +199,7 @@ public final class AircraftState implements ErrorReporter {
      * Return the maximum number of elements that can be stored.  
      * This value is always greater or equal to size().  
      * There is deliberately no method setBufferSize() 
+     * @return
      * */
     public int getBufferSize() {
     	return bufferSize;
@@ -205,6 +215,9 @@ public final class AircraftState implements ErrorReporter {
     /** 
      * Return the index of the given time.  A negative index
      * is returned if the time doesn't exist.
+     * 
+     * @param time
+     * @return
      */
     public int find(double time) {
     	for (int i = 0; i < size; i++) {
@@ -219,7 +232,9 @@ public final class AircraftState implements ErrorReporter {
     	return -size-1;
     }
     
-    /** Return the number of data elements */
+    /** Return the number of data elements 
+     * @return size
+     * */
     public int size() {
     	return size;
     }
@@ -294,6 +309,9 @@ public final class AircraftState implements ErrorReporter {
 	 * projection set by the setProjection() method.
 	 * If the index is out of range (less than zero or greater than size()),
 	 * then a zero position and velocity are returned.
+	 * 
+	 * @param i
+	 * @return
 	 */
 	public StateVector get(int i) {
 		if (i >= size || i < 0) return new StateVector(Vect3.ZERO, Velocity.ZERO,0.0);//null;
@@ -305,6 +323,7 @@ public final class AircraftState implements ErrorReporter {
 	 * Return a Euclidean position and velocity for the latest time in this object.
 	 * The position and velocity are projected into a Euclidean frame by the
 	 * projection set by the setProjection() method.
+	 * @return
 	 */
 	public StateVector getLast() {
 	    return get(size() - 1);
@@ -350,6 +369,9 @@ public final class AircraftState implements ErrorReporter {
 	 * The position for the given index.  An index of 0 corresponds to the
 	 * earliest time in this object; and index of size()-1 corresponds to 
 	 * the latest time.  This method returns a "zero" position for an out of bounds index 
+	 * 
+	 * @param i
+	 * @return
 	 */
 	public Position position(int i) {
 		if (i >= size || i < 0) return checkLatLon(true) ? Position.ZERO_LL : Position.ZERO_XYZ; //{throw new RuntimeException("why?");} //return null;
@@ -360,6 +382,9 @@ public final class AircraftState implements ErrorReporter {
 	 * The velocity for the given index.  An index of 0 corresponds to the
 	 * earliest time in this object; and index of size()-1 corresponds to 
 	 * the latest time.  This method returns a zero velocity for an out of bounds index 
+	 * 
+	 * @param i
+	 * @return
 	 */
 	public Velocity velocity(int i) {
 		if (i >= size || i < 0) return Velocity.ZERO; //null;
@@ -370,6 +395,9 @@ public final class AircraftState implements ErrorReporter {
 	 * The time of the given index.  An index of 0 corresponds to the
 	 * earliest time in this object; and index of size()-1 corresponds to 
 	 * the latest time.  This method returns a negative time for an out of bounds index 
+	 * 
+	 * @param i
+	 * @return
 	 */
 	public double time(int i) {
 		if (i >= size || i < 0) return -1.0;
@@ -380,6 +408,8 @@ public final class AircraftState implements ErrorReporter {
 	 * The latest (i.e., last) position in this object.
 	 * Note that this may not be synchronized with data from other aircraft!
 	 * It is generally better to use positionLinear(tm) for traffic aircraft. 
+	 * 
+	 * @return
 	 */
 	public Position positionLast() {
 		return position(size-1);
@@ -389,6 +419,8 @@ public final class AircraftState implements ErrorReporter {
 	 * The latest (i.e., last) velocity in this object.
 	 * Note that this may not be synchronized with data from other aircraft!
 	 * It is generally better to use velocityBefore(tm) for traffic aircraft. 
+	 * 
+	 * @return
 	 */
 	public Velocity velocityLast() {
 		return velocity(size-1);

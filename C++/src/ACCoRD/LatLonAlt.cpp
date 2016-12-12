@@ -88,6 +88,10 @@ double LatLonAlt::alt() const {
 	return alti;
 }
 
+  double LatLonAlt::distanceH(const LatLonAlt& lla2) const {
+    return GreatCircle::distance(*this,lla2);
+  }
+  
 const LatLonAlt LatLonAlt::make() {
 	return LatLonAlt(0.0, 0.0, 0.0);
 }

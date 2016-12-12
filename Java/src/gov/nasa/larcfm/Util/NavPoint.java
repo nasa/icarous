@@ -15,9 +15,15 @@ package gov.nasa.larcfm.Util;
 import java.util.ArrayList;
 import java.util.List;
 
-//import gov.nasa.larcfm.IO.DebugSupport;
-
-
+/** An immutable class representing a position at a time. 
+ * Possible types of points.  
+ * "Orig" are from the original plan with no change
+ * "Virtual" are temporary points, generally interpolated points (long legs are broken into segments).  Virtual points will be silently over-written, and never register as overlapping with other points.  Virtual points may be deleted unexpectedly.  Not for general use.
+ * "Added" are new points added by strategies.
+ * "Modified" are original points that have been moved.
+ * "AltPreserve" are marked points used in trajectory generation
+ * Virtual points are internal to Stratway and not expected to be returned to the pilot or plane's automation.
+ */
 public class NavPoint {
 	public static enum WayType     {Orig, Virtual, AltPreserve};
 	public static enum Trk_TCPType {NONE, BOT, EOT, EOTBOT};
@@ -37,13 +43,14 @@ public class NavPoint {
 	private final Trk_TCPType tcp_trk;	        // 
 	private final Gs_TCPType  tcp_gs;		    // 
 	private final Vs_TCPType  tcp_vs;		    // 
-	private final double   radiusSigned;		    // signed turn radius, positive values indicate right turn, negative values indicate left turn, zero indicates no specified radius
+	private final double   radiusSigned;		// signed turn radius, positive values indicate right turn, negative values indicate left turn, zero indicates no specified radius
 	private final double   accel_gs;            // signed gs-acceleration value
 	private final double   accel_vs;            // signed vs-acceleration value
-	private final Velocity velocityIn;		    // velocity in to the acceleration zone.  
+	private final Velocity velocityInit;		// the initial velocity at the start of an acceleration zone.  
 	private final Position sourcePosition;      // source position
 	private final double   sourceTime;		    // source time (if < 0, no valid source)
-
+	private final int      linearIndex;	        // in a kinematic plan provides index to original linear plan
+	
 	/** A zero in Latitude/Longitude */
 	public static final NavPoint ZERO_LL  = new NavPoint(Position.ZERO_LL, 0.0, "ZERO_LL");
 	/** A zero in Euclidean space */
@@ -54,8 +61,7 @@ public class NavPoint {
 	private NavPoint(Position p, double t, WayType ty, String label,
 			Trk_TCPType tcp_trk, Gs_TCPType tcp_gs, Vs_TCPType tcp_vs,
 			double signedRadius, double accel_gs, double accel_vs,
-			Velocity velocityIn, Position sourcePosition, double sourceTime) {
-		super();
+			Velocity velocityIn, Position sourcePosition, double sourceTime, int linearIndex) {
 		this.p = p;
 		this.t = t;
 		this.ty = ty;
@@ -67,14 +73,19 @@ public class NavPoint {
 		this.radiusSigned = signedRadius;
 		this.accel_gs = accel_gs;
 		this.accel_vs = accel_vs;
-		this.velocityIn = velocityIn;
+		this.velocityInit = velocityIn;
 		this.sourcePosition = sourcePosition;
 		this.sourceTime = sourceTime;
+		this.linearIndex = linearIndex;
 		//this.minorV = minorV;
 	}
 
 
 
+	/**
+	 * Construction a non-TCP NavPoint piecemeal
+	 * If a NavPoint is derived from an existing NavPoint, use one or more of the "make" factory functions instead.
+	 */
 	public NavPoint(Position p, double t, String label) {
 		super();
 		this.p = p;
@@ -87,13 +98,18 @@ public class NavPoint {
 		//this.accel_trk = 0.0;
 		this.accel_gs =  0.0;
 		this.accel_vs =  0.0;
-		this.velocityIn = Velocity.INVALID;
+		this.velocityInit = Velocity.INVALID;
 		this.sourceTime = t;
 		this.sourcePosition = p;
 		this.radiusSigned = 0;
+		this.linearIndex = -1;
 		//this.minorV = 0;
 	}
 
+	/**
+	 * Construct a new NavPoint from a position and a time.
+	 * If a NavPoint is derived from an existing NavPoint, use one or more of the "make" factory functions instead.
+	 */
 	public NavPoint(Position p, double t) {
 		super();
 		this.p = p;
@@ -106,10 +122,11 @@ public class NavPoint {
 //		this.accel_trk = 0.0;
 		this.accel_gs =  0.0;
 		this.accel_vs =  0.0;
-		this.velocityIn = Velocity.INVALID;
+		this.velocityInit = Velocity.INVALID;
 		this.sourceTime = t;
 		this.sourcePosition = p;
 		this.radiusSigned = 0;
+		this.linearIndex = -1;
 		//this.minorV = 0;
 	}
 
@@ -118,7 +135,7 @@ public class NavPoint {
 			Trk_TCPType tcp_trk, Gs_TCPType tcp_gs, Vs_TCPType tcp_vs,
 			double sgnRadius, double accel_gs, double accel_vs,
 			Velocity velocityIn, Position sourcePosition, double sourceTime) {
-		return new NavPoint(p, t, ty, label, tcp_trk, tcp_gs, tcp_vs, sgnRadius,  accel_gs,  accel_vs,  velocityIn, sourcePosition,  sourceTime);
+		return new NavPoint(p, t, ty, label, tcp_trk, tcp_gs, tcp_vs, sgnRadius,  accel_gs,  accel_vs,  velocityIn, sourcePosition,  sourceTime, -1);
 	}
 
 
@@ -206,17 +223,11 @@ public class NavPoint {
 	 * @return true, if the points can be merged.
 	 */
 	public boolean mergeable(NavPoint point) {
-		//f.pln(" $$ mergeable this = "+this.toStringFull()+" p = "+p.toStringFull());
-		boolean r1 = (this.tcp_trk == Trk_TCPType.NONE || point.tcp_trk == Trk_TCPType.NONE) 
-				|| (this.tcp_trk == Trk_TCPType.BOT && point.tcp_trk == Trk_TCPType.EOT) 
-				|| (this.tcp_trk == Trk_TCPType.EOT && point.tcp_trk == Trk_TCPType.BOT);
-		boolean r2 = r1 && ((this.tcp_gs == Gs_TCPType.NONE || point.tcp_gs == Gs_TCPType.NONE) 
-				|| (this.tcp_gs == Gs_TCPType.BGS && point.tcp_gs == Gs_TCPType.EGS) 
-				|| (this.tcp_gs == Gs_TCPType.EGS && point.tcp_gs == Gs_TCPType.BGS));
-		boolean r3 = r2 && ((this.tcp_vs == Vs_TCPType.NONE || point.tcp_vs == Vs_TCPType.NONE) 
-				|| (this.tcp_vs == Vs_TCPType.BVS && point.tcp_vs == Vs_TCPType.EVS) 
-				|| (this.tcp_vs == Vs_TCPType.EVS && point.tcp_vs == Vs_TCPType.BVS));
-		return r3 && this.t == point.t && this.p.equals(point.p) && (this.velocityIn.isInvalid() || point.velocityIn.isInvalid() ||  this.velocityIn.equals(point.velocityIn));
+		// these are bad!!!
+		boolean r1 = (this.isBOT() && point.isBOT()) || (this.isEOT() && point.isEOT());
+		boolean r2 = (this.isBGS() && point.isBGS()) || (this.isEGS() && point.isEGS());
+		boolean r3 = (this.isBVS() && point.isBVS()) || (this.isEVS() && point.isEVS());
+		return !r1 && !r2 && !r3;
 	}
 
 
@@ -271,12 +282,14 @@ public class NavPoint {
 		
 		double accel_gs = (this.tcp_gs == Gs_TCPType.BGS || this.tcp_gs == Gs_TCPType.EGSBGS) ? this.accel_gs : point.accel_gs; 
 		double accel_vs = (this.tcp_vs == Vs_TCPType.BVS || this.tcp_vs == Vs_TCPType.EVSBVS) ? this.accel_vs : point.accel_vs; 
-		Velocity velocityIn = (this.isBeginTCP()) ? this.velocityIn : point.velocityIn; 
+		Velocity velocityIn = (this.isBeginTCP()) ? this.velocityInit : point.velocityInit; 
 		Position sourcePosition = (this.isBeginTCP()) ? this.sourcePosition : point.sourcePosition; 
+
 		double sourceTime = (this.isBeginTCP()) ? this.sourceTime : point.sourceTime; 
+		int linearIndex = (this.isBeginTCP()) ? this.linearIndex : point.linearIndex; 
 
 		return new NavPoint(this.p, this.t, ty, label, tcp_trk, tcp_gs, tcp_vs,
-				radius, accel_gs, accel_vs, velocityIn, sourcePosition, sourceTime);
+				radius, accel_gs, accel_vs, velocityIn, sourcePosition, sourceTime, linearIndex);
 
 		//		
 		//		
@@ -408,8 +421,6 @@ public class NavPoint {
 		return ty == WayType.Orig;
 	}
 
-	/** Returns true if the point at index i is a modified point, 
-	   false otherwise.  0 <= i < size() */
 	public boolean isAltPreserve() {
 		return ty == WayType.AltPreserve;
 	}
@@ -492,26 +503,12 @@ public class NavPoint {
 		return p.z();
 	}
 
-//	/**
-//	 * 
-//	 * @return the radius field, if 0 => not applicable.
-//	 */
-//	public double getRadius() {
-//		return sgnRadius;
-//	}
-	
 	/**
 	 * This returns the radius of the current turn.  If this is not a turn point, it returns the stores radius value.  
 	 * If the associated acceleration is 0.0, this returns a radius of zero.
 	 */
 	public double turnRadius() {
 		return Math.abs(radiusSigned);
-//		if (tcp_trk == Trk_TCPType.NONE) {
-//			return radius;
-//		} else if (isTrkTCP() && accel_trk != 0.0) {
-//			return Math.abs(velocityIn.gs()/accel_trk);
-//		}
-//		return 0.0;
 	}
 
 	
@@ -535,20 +532,32 @@ public class NavPoint {
 //			}
 //		} else 
 		if (R != 0) {
-			return p.linear(velocityIn.mkAddTrk(Util.sign(R)*Math.PI/2).Hat(),Math.abs(R)).mkZ(p.z());			
+			Velocity vHat = velocityInit.mkAddTrk(Util.sign(R)*Math.PI/2).Hat2D();
+			return p.linear(vHat, Math.abs(R)).mkZ(p.z());			
 		}
 		return Position.INVALID;
 	}
 
 	/** Source time of point this was based on for any type except BVS. */
+	//@Deprecated
 	public double sourceTime() {
 		return sourceTime;
 	}
 
 	/** Source time of point this was based on for any type except BVS. */
+	//@Deprecated
 	public Position sourcePosition() {
 		return sourcePosition;
 	}
+	
+	/** linear index
+	 * 
+	 * @return
+	 */
+	public int linearIndex() {
+		return linearIndex;
+	}
+
 
 	public NavPoint sourceNavPoint() {
 		return new NavPoint(sourcePosition,sourceTime);
@@ -562,8 +571,8 @@ public class NavPoint {
 	 * If this is a TCP, return the velocity in metadata.  Otherwise return an invalid velocity.
 	 * Not that this value is only well-defined for two case: the beginning of acceleration points (BGSC, BVSC, BOT) and points with a fixed gs mutability (where trk and vs may still not be well-defined)
 	 */
-	public Velocity velocityIn() {
-		return velocityIn;
+	public Velocity velocityInit() {
+		return velocityInit;
 	}
 
 	/**
@@ -575,7 +584,7 @@ public class NavPoint {
 		//return accel_trk;
 		double rtn = 0.0;
 		if (Math.abs(radiusSigned) > 0) {
-		    rtn = velocityIn.gs()/radiusSigned;
+		    rtn = velocityInit.gs()/radiusSigned;
 		} 
 		//f.pln(" $$$ trkAccel: radiusSigned = "+Units.str("NM",radiusSigned)+" rtn = "+Units.str("deg/s",rtn));
 		return rtn;
@@ -657,17 +666,16 @@ public class NavPoint {
 	// Make new points from old ones
 	//
 
-
 	private NavPoint copy(Position p) {
 		//		if (p.equals(this.p)) return this;
 		return new NavPoint(p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn,  this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit,  this.sourcePosition, this.sourceTime, this.linearIndex);
 	}
 
 	private NavPoint copy(WayType ty) {
 		//		if (ty == this.ty) return this;
 		return new NavPoint(this.p, this.t, ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);
 
 	}
 
@@ -717,14 +725,14 @@ public class NavPoint {
 	public NavPoint makeTime(double time) {
 		//		if (time == this.t) return this;
 		return new NavPoint(this.p, time, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);
 	}
 
 	/** Make a new NavPoint from the current one with the time changed, source time is the new time */
 	public NavPoint makeTimeNew(double time) {
 		//		if (time == this.t) return this;
 		return new NavPoint(this.p, time, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, time);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, time, this.linearIndex);
 	}
 
 
@@ -732,53 +740,58 @@ public class NavPoint {
 	public NavPoint makeTrkTCP(Trk_TCPType trktype) {
 		//		if (trktype == this.tcp_trk) return this;
 		return new NavPoint(this.p, this.t, this.ty,  this.label, trktype,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);
 	}
 
 	/** Make a new NavPoint from the current one with the TCP label metadata changed */
 	public NavPoint makeGsTCP(Gs_TCPType gstype) {
 		//		if (gstype == this.tcp_gs) return this;
 		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  gstype, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);
 	}
 
 	/** Make a new NavPoint from the current one with the TCP label metadata changed */
 	public NavPoint makeVsTCP(Vs_TCPType vstype) {
 		//		if (vstype == this.tcp_vs) return this;
 		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, vstype,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);
 	}
 
 	/** Make a new NavPoint from the current one with the source time metadata changed */
 	public NavPoint makeSource(Position sp, double st) {
 		//		if (st == this.sourceTime && sp.equals(this.sourcePosition)) return this;
 		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, sp, st);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, sp, st, this.linearIndex);
 	}
 
 	public NavPoint makeSourcePosition(Position sp) {
 		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, sp, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, sp, this.sourceTime, this.linearIndex);
 	}
 
 	public NavPoint makeSourceTime(double st) {
 		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, st);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, st, this.linearIndex);
 	}
 
 	public NavPoint makeRadius(double r) {
 		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				r, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, this.sourceTime);	  
+				r, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);	  
+	}
+	
+	public NavPoint makeLinearIndex(int ix) {
+		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, ix);	  
 	}
 
-	/**
-	 * Make an "added" point that does not include valid source info
-	 */
-	public NavPoint makeAdded() {
-		//		if (this.sourceTime < 0 && this.sourcePosition.isInvalid()) return this;
-		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, Position.INVALID, -1.0);		
-	}
+//	/**
+//	 * Make an "added" point that does not include valid source info
+//	 */
+//	public NavPoint makeAdded() {
+//		//		if (this.sourceTime < 0 && this.sourcePosition.isInvalid()) return this;
+//		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
+//				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, Position.INVALID, -1.0, this.linearIndex);		
+//	}
 
 	/** Make a new NavPoint from the current one with the acceleration/turn rate metadata changed 
 	 *  VelocityIn must be defined before using this method.
@@ -786,33 +799,33 @@ public class NavPoint {
 	 * */
 	public NavPoint makeTrkAccel(double omega) {
 		//		if (ta == this.accel_trk) return this;
-		double radius = velocityIn.gs()/omega;	
+		double radius = velocityInit.gs()/omega;	
 		//f.pln(" $$$ makeTrkAccel: velocityIn = "+this.velocityIn+" radius = "+radius);
 		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				radius, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, this.sourceTime);
+				radius, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);
 	}
 
 	/** Make a new NavPoint from the current one with the acceleration/turn rate metadata changed */
 	public NavPoint makeGsAccel(double ga) {
 		//		if (ga == this.accel_gs) return this;
 		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, ga, this.accel_vs, this.velocityIn, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, ga, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);
 	}
 
 	/** Make a new NavPoint from the current one with the acceleration/turn rate metadata changed */
 	public NavPoint makeVsAccel(double va) {
 		//		if (va == this.accel_vs) return this;
 		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, va, this.velocityIn, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, va, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);
 	}
 
 	/** Make a new NavPoint from the current one with the velocity in metadata changed.
 	 *  This must be the correct value for points defining the entry into acceleration zones (BOT, BGSC, BVSC).
 	 */
-	public NavPoint makeVelocityIn(Velocity v) {
+	public NavPoint makeVelocityInit(Velocity v) {
 		//		if (v.equals(this.velocityIn)) return this;
 		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, v, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, v, this.sourcePosition, this.sourceTime, this.linearIndex);
 	}
 
 	/** Make a new NavPoint from the current that is "Virtual" */
@@ -834,19 +847,19 @@ public class NavPoint {
 	/** Makes a new NavPoint that is devoid of any "turn" or "ground speed" tags, but retains source position and time */
 	public NavPoint makeStandardRetainSource() {
 		return new NavPoint(this.p, this.t, WayType.Orig, "", Trk_TCPType.NONE, Gs_TCPType.NONE, Vs_TCPType.NONE,
-				0.0, 0.0, 0.0, Velocity.INVALID, this.sourcePosition, this.sourceTime);			
+				0.0, 0.0, 0.0, Velocity.INVALID, this.sourcePosition, this.sourceTime, this.linearIndex);			
 	}
 
 	public NavPoint makeNewPoint() {
 		return new NavPoint(this.p, this.t, WayType.Orig, this.label, Trk_TCPType.NONE, Gs_TCPType.NONE, Vs_TCPType.NONE,
-				0.0, 0.0, 0.0, Velocity.INVALID, this.p, this.t);			
+				0.0, 0.0, 0.0, Velocity.INVALID, this.p, this.t, this.linearIndex);			
 	}
 
 	/** Make a new NavPoint from the current with the given name */
 	public NavPoint makeLabel(String label) {
 		if (label.equals(this.label)) return this;
 		return new NavPoint(this.p, this.t, this.ty,  label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);
 	}
 
 	public boolean isNamedWayPoint(String specPre) {
@@ -858,7 +871,13 @@ public class NavPoint {
 	public NavPoint appendLabel(String label) {
 		if (label.equals("")) return this; // do nothing
 		return new NavPoint(this.p, this.t, this.ty,  this.label+label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);
+	}
+	
+	public NavPoint appendLabelNoDuplication(String label) {	
+		if (this.label.contains(label) ||		// do nothing if this string is already in the label
+				(!this.label.startsWith("$") && this.label().length()==4)) return this;		// do nothing if this is a 4-character airport label
+		return appendLabel(label);
 	}
 
 	/** Make a new "beginning of turn" NavPoint at the given position and time where the source of the current NavPoint is the "source"
@@ -870,18 +889,18 @@ public class NavPoint {
 	 * @param signedRadius right turns have a positive radius, left turns have a negative radius
 	 * @return a new BOT NavPoint
 	 */
-	public NavPoint makeBOT(Position p, double t, Velocity velocityIn, double signedRadius) {
+	public NavPoint makeBOT(Position p, double t, Velocity velocityIn, double signedRadius, int linearIndex) {
 		//f.pln("  $$$$$$$$$$$ NavPoint.makeBOT t = "+t+" velocityIn = "+velocityIn+" signedRadius = "+signedRadius);
 		return new NavPoint(p, t, this.ty,  this.label, Trk_TCPType.BOT,  this.tcp_gs, this.tcp_vs,
-				signedRadius, this.accel_gs, this.accel_vs, velocityIn,  this.sourcePosition, this.sourceTime);
+				signedRadius, this.accel_gs, this.accel_vs, velocityIn,  this.sourcePosition, this.sourceTime, linearIndex);
 	}
 	
 	/** Make a new "end of turn" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
 	 *  velocityIn is not well defined for this point, but should generally be the velocityIn for the corresponding BOT point or the velocity at this point 
 	 */
-	public NavPoint makeEOT(Position p, double t, Velocity velocityIn) {
+	public NavPoint makeEOT(Position p, double t, Velocity velocityIn, int linearIndex) {
 		return new NavPoint(p, t, this.ty,  this.label, Trk_TCPType.EOT,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, velocityIn, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, velocityIn, this.sourcePosition, this.sourceTime, linearIndex);
 	}
 
 	/**
@@ -892,61 +911,61 @@ public class NavPoint {
 	 * @param signedRadius
 	 * @return
 	 */
-	public NavPoint makeEOTBOT(Position p, double t, Velocity velocityIn, double signedRadius) {
+	public NavPoint makeEOTBOT(Position p, double t, Velocity velocityIn, double signedRadius, int linearIndex) {
 		return new NavPoint(p, t, this.ty,  this.label, Trk_TCPType.EOTBOT,  this.tcp_gs, this.tcp_vs,
-				signedRadius, this.accel_gs, this.accel_vs, velocityIn, this.sourcePosition, this.sourceTime);
+				signedRadius, this.accel_gs, this.accel_vs, velocityIn, this.sourcePosition, this.sourceTime, linearIndex);
 	}
 
 
 	/** Make a new "beginning of gs change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
 	 *  velocityIn must be properly calculated for this point. 
 	 */
-	public NavPoint makeBGS(Position p, double t, double a, Velocity velocityIn) {
+	public NavPoint makeBGS(Position p, double t, double a, Velocity velocityIn, int linearIndex) {
 		return new NavPoint(p, t, this.ty,  this.label, this.tcp_trk,  Gs_TCPType.BGS, this.tcp_vs,
-				this.radiusSigned, a, this.accel_vs, velocityIn,  this.sourcePosition, this.sourceTime);
+				this.radiusSigned, a, this.accel_vs, velocityIn,  this.sourcePosition, this.sourceTime, linearIndex);
 	}
 
 	/** Make a new "end of gs change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
 	 *  velocityIn is not well defined for this point, but should generally be the velocityIn for the corresponding BGCS point or the velocity at this point 
 	 */
-	public NavPoint makeEGS(Position p, double t, Velocity velocityIn) {
+	public NavPoint makeEGS(Position p, double t, Velocity velocityIn, int linearIndex) {
 		return new NavPoint(p, t, this.ty,  this.label, this.tcp_trk,  Gs_TCPType.EGS, this.tcp_vs,
-				 this.radiusSigned, this.accel_gs, this.accel_vs, velocityIn, this.sourcePosition, this.sourceTime);
+				 this.radiusSigned, this.accel_gs, this.accel_vs, velocityIn, this.sourcePosition, this.sourceTime, linearIndex);
 	}
 
-	public NavPoint makeEGSBGS(Position p, double t, double a, Velocity velocityIn) {
+	public NavPoint makeEGSBGS(Position p, double t, double a, Velocity velocityIn, int linearIndex) {
 		return new NavPoint(p, t, this.ty,  this.label, this.tcp_trk,  Gs_TCPType.EGSBGS, this.tcp_vs,
-				 this.radiusSigned, a, this.accel_vs, velocityIn, this.sourcePosition, this.sourceTime);
+				 this.radiusSigned, a, this.accel_vs, velocityIn, this.sourcePosition, this.sourceTime, linearIndex);
 	}
 
 
 	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
 	 *  velocityIn must be properly calculated for this point. 
 	 */
-	public NavPoint makeBVS(Position p, double t, double a, Velocity velocityIn) {
+	public NavPoint makeBVS(Position p, double t, double a, Velocity velocityIn, int linearIndex) {
 		//f.pln(" $$$$$ NavPoint.makeBVS t = "+t+"   velocityIn = "+velocityIn);  
 		return new NavPoint(p, t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs,  Vs_TCPType.BVS,
-				this.radiusSigned, this.accel_gs, a, velocityIn,  this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, a, velocityIn,  this.sourcePosition, this.sourceTime, linearIndex);
 	}
 
 
 	/** Make a new "end of vs change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
 	 *  velocityIn is not well defined for this point, but should generally be the velocityIn for the corresponding BGCS point or the velocity at this point 
 	 */
-	public NavPoint makeEVS(Position p, double t, Velocity velocityIn) {
+	public NavPoint makeEVS(Position p, double t, Velocity velocityIn, int linearIndex) {
 		return new NavPoint(p, t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, Vs_TCPType.EVS,
-				this.radiusSigned, this.accel_gs, this.accel_vs, velocityIn,  this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, velocityIn,  this.sourcePosition, this.sourceTime, linearIndex);
 	}
 
-	public NavPoint makeEVSBVS(Position p, double t, double a, Velocity velocityIn) {
+	public NavPoint makeEVSBVS(Position p, double t, double a, Velocity velocityIn, int linearIndex) {
 		return new NavPoint(p, t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs,  Vs_TCPType.EVSBVS,
-				this.radiusSigned, this.accel_gs, a, velocityIn,  this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, a, velocityIn,  this.sourcePosition, this.sourceTime, linearIndex);
 	}
 
 	/** Makes a new NavPoint that is an intermediate "mid" added point */
-	public NavPoint makeMidpoint(Position p, double t) {
+	public NavPoint makeMidpoint(Position p, double t, int linearIndex) {
 		return new NavPoint(p, t, this.ty,  this.label, this.tcp_trk,   this.tcp_gs, this.tcp_vs, 
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn,  this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit,  this.sourcePosition, this.sourceTime, linearIndex);
 	}
 
 
@@ -954,7 +973,7 @@ public class NavPoint {
 	public NavPoint makeTrkTCPClear() {
 		if (isTrkTCP()) {
 			return new NavPoint(this.p, this.t, this.ty,  this.label, Trk_TCPType.NONE, this.tcp_gs, this.tcp_vs,
-					0.0, this.accel_gs, this.accel_vs, velocityIn, this.sourcePosition, this.sourceTime);			
+					0.0, this.accel_gs, this.accel_vs, velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);			
 		} else {
 			return this;
 		}
@@ -964,7 +983,7 @@ public class NavPoint {
 	public NavPoint makeGsTCPClear() {
 		if (isGsTCP()) {
 			return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk, Gs_TCPType.NONE, this.tcp_vs,
-					 this.radiusSigned, 0.0, this.accel_vs, velocityIn, this.sourcePosition, this.sourceTime);			
+					 this.radiusSigned, 0.0, this.accel_vs, velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);			
 		} else {
 			return this;
 		}
@@ -974,7 +993,7 @@ public class NavPoint {
 	public NavPoint makeVsTCPClear() {
 		if (isVsTCP()) {
 			return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk, this.tcp_gs, Vs_TCPType.NONE,
-					this.radiusSigned, this.accel_gs, 0.0, velocityIn,  this.sourcePosition, this.sourceTime);			
+					this.radiusSigned, this.accel_gs, 0.0, velocityInit,  this.sourcePosition, this.sourceTime, this.linearIndex);			
 		} else {
 			return this;
 		}
@@ -984,7 +1003,7 @@ public class NavPoint {
 	/** Return a new NavPoint that shares all attributes with the specified NavPoint except Position and Time */
 	public NavPoint makeMovedFrom(NavPoint o) {
 		return new NavPoint(this.p, this.t, o.ty,  o.label, o.tcp_trk,  o.tcp_gs, o.tcp_vs,
-				o.radiusSigned, o.accel_gs, o.accel_vs, o.velocityIn, o.sourcePosition, o.sourceTime);
+				o.radiusSigned, o.accel_gs, o.accel_vs, o.velocityInit, o.sourcePosition, o.sourceTime, o.linearIndex);
 
 	}
 
@@ -992,83 +1011,83 @@ public class NavPoint {
 	public NavPoint makePosition(Position p) {
 		if (p.equals(this.p)) return this;
 		return new NavPoint(p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
-				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityIn, this.sourcePosition, this.sourceTime);
+				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, this.sourcePosition, this.sourceTime, this.linearIndex);
 	}
 
-	// ----- Static Constructors With No Source Info --------------------------------------------------------
-
-	/** Make a new "beginning of turn" NavPoint at the given position and time where the source of the current NavPoint is the "source"
-	 *  velocityIn must be properly calculated for this point. 
-	 */
-	public static NavPoint mkBOT(Position p, double t, double omega, Velocity velocityIn) {
-		//f.pln("  $$$$$$$$$$$ NavPoint.makeBOT t = "+t+" velocityIn = "+velocityIn);
-		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.BOT,  Gs_TCPType.NONE, Vs_TCPType.NONE,
-				0.0, 0.0, 0.0, velocityIn,  Position.INVALID, -1.0);
-	}
-
-	/** Make a new "end of turn" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
-	 *  velocityIn is not well defined for this point, but should generally be the velocityIn for the corresponding BOT point or the velocity at this point 
-	 */
-	public static NavPoint mkEOT(Position p, double t, Velocity velocityIn) {
-		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.EOT,  Gs_TCPType.NONE, Vs_TCPType.NONE,
-				0.0, 0.0, 0.0, velocityIn,  Position.INVALID, -1.0);
-	}
-
-	public static NavPoint mkEOTBOT(Position p, double t, double omega, Velocity velocityIn) {
-		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.EOTBOT,  Gs_TCPType.NONE, Vs_TCPType.NONE,
-				omega,0.0, 0.0, velocityIn,  Position.INVALID, -1.0);
-	}
-
-
-	/** Make a new "beginning of gs change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
-	 *  velocityIn must be properly calculated for this point. 
-	 */
-	public static NavPoint mkBGS(Position p, double t, double a, Velocity velocityIn) {
-		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.BGS, Vs_TCPType.NONE,
-				0.0, a, 0.0, velocityIn, Position.INVALID, -1.0);
-	}
-
-	/** Make a new "end of gs change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
-	 *  velocityIn is not well defined for this point, but should generally be the velocityIn for the corresponding BGCS point or the velocity at this point 
-	 */
-	public static  NavPoint mkEGS(Position p, double t, Velocity velocityIn) {
-		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.EGS, Vs_TCPType.NONE,
-				0.0,0.0, 0.0, velocityIn, Position.INVALID, -1.0);
-	}
-
-	public static NavPoint mkEGSBGS(Position p, double t, double a, Velocity velocityIn) {
-		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.EGSBGS, Vs_TCPType.NONE,
-				0.0, a, 0.0, velocityIn, Position.INVALID, -1.0);
-	}
-
-
-	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
-	 *  velocityIn must be properly calculated for this point. 
-	 */
-	public static NavPoint mkBVS(Position p, double t, double a, Velocity velocityIn) {
-		//f.pln(" $$$$$ NavPoint.makeBVS t = "+t+"   velocityIn = "+velocityIn);  
-		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.NONE,  Vs_TCPType.BVS,
-				0.0,0.0, a, velocityIn, Position.INVALID, -1.0);
-	}
-
-	/** Make a new "end of vs change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
-	 *  velocityIn is not well defined for this point, but should generally be the velocityIn for the corresponding BGCS point or the velocity at this point 
-	 */
-	public static NavPoint mkEVS(Position p, double t, Velocity velocityIn) {
-		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.NONE, Vs_TCPType.EVS,
-				0.0,0.0,0.0, velocityIn, Position.INVALID, -1.0);
-	}
-
-	public static NavPoint mkEVSBVS(Position p, double t, double a, Velocity velocityIn) {
-		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.NONE,  Vs_TCPType.EVSBVS,
-				0.0, 0.0, a, velocityIn, Position.INVALID, -1.0);
-	}
-
-	/** Makes a new NavPoint that is an intermediate "mid" added point */
-	public static NavPoint mkMidpoint(Position p, double t, Velocity velocityIn) {
-		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,   Gs_TCPType.NONE, Vs_TCPType.NONE, 
-				0.0,0.0, 0.0, velocityIn, Position.INVALID, -1.0);
-	}
+//	// ----- Static Constructors With No Source Info --------------------------------------------------------
+//
+//	/** Make a new "beginning of turn" NavPoint at the given position and time where the source of the current NavPoint is the "source"
+//	 *  velocityIn must be properly calculated for this point. 
+//	 */
+//	public static NavPoint mkBOT(Position p, double t, double omega, Velocity velocityIn, int linearIndex) {
+//		//f.pln("  $$$$$$$$$$$ NavPoint.makeBOT t = "+t+" velocityIn = "+velocityIn);
+//		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.BOT,  Gs_TCPType.NONE, Vs_TCPType.NONE,
+//				0.0, 0.0, 0.0, velocityIn,  Position.INVALID, -1.0, linearIndex);
+//	}
+//
+//	/** Make a new "end of turn" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+//	 *  velocityIn is not well defined for this point, but should generally be the velocityIn for the corresponding BOT point or the velocity at this point 
+//	 */
+//	public static NavPoint mkEOT(Position p, double t, Velocity velocityIn, int linearIndex) {
+//		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.EOT,  Gs_TCPType.NONE, Vs_TCPType.NONE,
+//				0.0, 0.0, 0.0, velocityIn,  Position.INVALID, -1.0, linearIndex );
+//	}
+//
+//	public static NavPoint mkEOTBOT(Position p, double t, double omega, Velocity velocityIn, int linearIndex) {
+//		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.EOTBOT,  Gs_TCPType.NONE, Vs_TCPType.NONE,
+//				omega,0.0, 0.0, velocityIn,  Position.INVALID, -1.0, linearIndex);
+//	}
+//
+//
+//	/** Make a new "beginning of gs change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+//	 *  velocityIn must be properly calculated for this point. 
+//	 */
+//	public static NavPoint mkBGS(Position p, double t, double a, Velocity velocityIn, int linearIndex) {
+//		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.BGS, Vs_TCPType.NONE,
+//				0.0, a, 0.0, velocityIn, Position.INVALID, -1.0, linearIndex);
+//	}
+//
+//	/** Make a new "end of gs change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+//	 *  velocityIn is not well defined for this point, but should generally be the velocityIn for the corresponding BGCS point or the velocity at this point 
+//	 */
+//	public static  NavPoint mkEGS(Position p, double t, Velocity velocityIn, int linearIndex) {
+//		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.EGS, Vs_TCPType.NONE,
+//				0.0,0.0, 0.0, velocityIn, Position.INVALID, -1.0, linearIndex);
+//	}
+//
+//	public static NavPoint mkEGSBGS(Position p, double t, double a, Velocity velocityIn, int linearIndex) {
+//		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.EGSBGS, Vs_TCPType.NONE,
+//				0.0, a, 0.0, velocityIn, Position.INVALID, -1.0, linearIndex);
+//	}
+//
+//
+//	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+//	 *  velocityIn must be properly calculated for this point. 
+//	 */
+//	public static NavPoint mkBVS(Position p, double t, double a, Velocity velocityIn, int linearIndex) {
+//		//f.pln(" $$$$$ NavPoint.makeBVS t = "+t+"   velocityIn = "+velocityIn);  
+//		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.NONE,  Vs_TCPType.BVS,
+//				0.0,0.0, a, velocityIn, Position.INVALID, -1.0, linearIndex);
+//	}
+//
+//	/** Make a new "end of vs change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+//	 *  velocityIn is not well defined for this point, but should generally be the velocityIn for the corresponding BGCS point or the velocity at this point 
+//	 */
+//	public static NavPoint mkEVS(Position p, double t, Velocity velocityIn, int linearIndex) {
+//		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.NONE, Vs_TCPType.EVS,
+//				0.0,0.0,0.0, velocityIn, Position.INVALID, -1.0, linearIndex);
+//	}
+//
+//	public static NavPoint mkEVSBVS(Position p, double t, double a, Velocity velocityIn, int linearIndex) {
+//		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,  Gs_TCPType.NONE,  Vs_TCPType.EVSBVS,
+//				0.0, 0.0, a, velocityIn, Position.INVALID, -1.0, linearIndex);
+//	}
+//
+//	/** Makes a new NavPoint that is an intermediate "mid" added point */
+//	public static NavPoint mkMidpoint(Position p, double t, Velocity velocityIn, int linearIndex) {
+//		return new NavPoint(p, t, WayType.Orig,  "", Trk_TCPType.NONE,   Gs_TCPType.NONE, Vs_TCPType.NONE, 
+//				0.0,0.0, 0.0, velocityIn, Position.INVALID, -1.0, linearIndex);
+//	}
 
 
 	/** 
@@ -1082,19 +1101,20 @@ public class NavPoint {
 			throw new RuntimeException("Incompatible geometries in velocity()");
 		}
 		double dt = s2.time() - s1.time();
-		//f.pln(" $$$$ NavPoint.initialVelocity: dt = "+dt+" s2 = "+s2);
+		//f.pln(" $$$$ NavPoint.initialVelocity: dt = "+dt+" s1 = "+s1+"  s2 = "+s2);
 		if (dt==0) {
 			return Velocity.ZERO;
 		} else if (dt > 0) {			
 			if (s2.isLatLon()) {
+				//double distH = s1.lla().distanceH(s2.lla());
+				//f.pln(" $$$ NavPoint.initialVelocity: distH = "+Units.str("ft",distH,14));
 				return GreatCircle.velocity_initial(s1.p.lla(), s2.p.lla(), dt);
 			} else {
 				Velocity vel = Velocity.make((s2.p.point().Sub(s1.p.point())).Scal(1.0/dt));
 				return vel;
 			}
 		} else {
-			f.pln("WARNING: NavPoint INITIAL VELOCITY negative time!  Check the code here!");
-			f.pln("NavPoint.initialVelocity dt = "+dt+" this="+s1+" s="+s2);
+			//f.pln("WARNING: NavPoint INITIAL VELOCITY negative time! dt = "+dt+" this="+s1+" s="+s2);
 			//Debug.halt();
 			if (s2.isLatLon()) {
 				return GreatCircle.velocity_initial(s2.p.lla(), s1.p.lla(), -dt);
@@ -1117,9 +1137,9 @@ public class NavPoint {
 	
 	// ------------------------------------------------------------------------------------------------------
 	/** 
-	 * Calculate and return the initial velocity between the current point and the given point 
+	 * Calculate and return the final velocity between the current point and the given point
 	 * This function is commutative: direction between points is always determined by the time ordering of the two points.
-	 * 
+	 *
 	 * @param s the given NavPoint
 	 */ 
 	public Velocity finalVelocity(NavPoint s) {
@@ -1253,21 +1273,6 @@ public class NavPoint {
 		return np2.position().distanceH(this.position());
 	}
 
-	//	public static NavPoint intersection(NavPoint s1, NavPoint s2, NavPoint p1, NavPoint p2) {
-	//		Plan lpc = new Plan();
-	//		lpc.add(s1);
-	//		lpc.add(s2);
-	//		lpc.add(p1);
-	//		lpc.add(p2);
-	//	  	DebugSupport.dumpAsUnitTest(lpc);
-	//		double dto  = s2.time() - s1.time(); 
-	//		Pair<Position,Double> interSec = Position.intersection(s1.position(), s2.position(), dto, p1.position(), p2.position());
-	//		//f.pln(" "+s1.time()+" "+s2.time()+" "+p1.time()+" "+p2.time()+"  interSec.second = "+interSec.second);
-	//		NavPoint rtn = new NavPoint(interSec.first,s1.time()+interSec.second,"intersectionPt");
-	//        return rtn;
-	//	}
-
-
 	/** Vertical distance */
 	public double distanceV(NavPoint np2) {
 		return np2.position().distanceV(this.position());
@@ -1280,8 +1285,8 @@ public class NavPoint {
 		if (!Util.almost_equals(t,p.t)) {
 			f.pln(" points at index i = "+i+" have different times! "+t+" != "+p.t);			
 		}
-		if (!velocityIn().almostEquals(p.velocityIn())) {
-			f.pln(" points at index i = "+i+" have different velocityIn fields "+velocityIn+" != "+p.velocityIn);
+		if (!velocityInit().almostEquals(p.velocityInit())) {
+			f.pln(" points at index i = "+i+" have different velocityIn fields "+velocityInit+" != "+p.velocityInit);
 		}
 		if (tcp_trk != p.tcp_trk || tcp_gs != p.tcp_gs || tcp_vs != p.tcp_vs) {
 			f.pln(" points at index i = "+i+" have different tcp_* fields");
@@ -1332,8 +1337,8 @@ public class NavPoint {
 				tlabel = tlabel + "AVS:"+f.FmPrecision(accel_vs,precision)+":";
 			}
 		}
-		if (velocityIn != null && !velocityIn.isInvalid()) {
-			String v = velocityIn.toStringNP(precision).replaceAll("[, ]+", "_");
+		if (velocityInit != null && !velocityInit.isInvalid()) {
+			String v = velocityInit.toStringNP(precision).replaceAll("[, ]+", "_");
 			tlabel = tlabel + "VEL:"+v+":";
 		}
 		if (sourceTime < 0) { // MOT or other added points
@@ -1418,7 +1423,7 @@ public class NavPoint {
 			lowIndex = Math.min(i, lowIndex);
 			j = tlabel.indexOf(":",i+5);
 			Velocity v = Velocity.parse(tlabel.substring(i+5, j).replaceAll("_", " "));
-			point = point.makeVelocityIn(v);
+			point = point.makeVelocityInit(v);
 		}
 		i = tlabel.indexOf(":ATRK:"); // acceleration
 		if (i >= 0) {
@@ -1504,7 +1509,7 @@ public class NavPoint {
 
 	/** String representation, using the give precision */
 	public String toString(int precision) {
-		return p.toStringNP(precision) + ", " + f.FmPrecision(t,precision) +" TCP:"+tcpTypeString()+" "+label;
+		return p.toStringNP(precision) + ", " + f.FmPrecision(t,precision) +" TCP:"+tcpTypeString()+" "+f.padRight(label,4);
 	}
 
 
@@ -1537,18 +1542,19 @@ public class NavPoint {
 				sb.append(" accVs = "+f.Fm4(Units.to("m/s^2", accel_vs)));
 			}
 		}
-		if (!velocityIn.isInvalid()) sb.append(" vin = "+velocityIn.toStringUnits());
+		if (!velocityInit.isInvalid()) sb.append(" vin = "+velocityInit.toStringUnits());
 		if (!Util.almost_equals(radiusSigned,0.0)) {
 			sb.append(" sgnRadius = "+f.Fm4(Units.to("NM",radiusSigned)));
 		}
-		if (sourceTime >= 0) {
-			sb.append(" srcTime = "+f.Fm2(sourceTime));
-			if (!sourcePosition.isInvalid()) {
-				sb.append(" srcPos = "+sourcePosition.toStringUnits()); 		
-			}
-		} else {
-			sb.append(" ADDED");
-		}
+//		if (sourceTime >= 0) {
+//			sb.append(" srcTime = "+f.Fm2(sourceTime));
+//			if (!sourcePosition.isInvalid()) {
+//				sb.append(" srcPos = "+sourcePosition.toStringUnits()); 		
+//			}
+//		} else {
+//			sb.append(" ADDED");
+//		}
+		sb.append("<"+linearIndex+">");
 		sb.append("]");
 		sb.append(" "+label());
 		return sb.toString();
@@ -1562,7 +1568,7 @@ public class NavPoint {
 		ret.add(f.FmPrecision(t,precision)); // time (4)
 		if (tcp) {
 			ret.add(ty.toString()); // type (string) (5)
-			ret.addAll(velocityIn.toStringList(precision)); // vin (6-8) DO NOT CHANGE THIS -- POLYGONS EXPECT VEL TO BE HERE
+			ret.addAll(velocityInit.toStringList(precision)); // vin (6-8) DO NOT CHANGE THIS -- POLYGONS EXPECT VEL TO BE HERE
 			ret.add(tcp_trk.toString()); // tcp trk (string) (9)			
 			ret.add(f.FmPrecision(Units.to("deg/s", trkAccel()),precision)); // trk accel (10)
 			ret.add(tcp_gs.toString()); // tcp gs (string) (11)
@@ -1626,7 +1632,7 @@ public class NavPoint {
 			Position sp = new Position(slla);
 			double st = Util.parse_double(fields[18]);
 			String lab = fields[19];
-			return new NavPoint(pos, time, wt, lab,	trkty, gsty, vsty, radius, gsacc, vsacc, vv, sp, st);
+			return new NavPoint(pos, time, wt, lab,	trkty, gsty, vsty, radius, gsacc, vsacc, vv, sp, st, -1);
 		} else {
 			return new NavPoint(pos, time);
 		}
@@ -1655,7 +1661,7 @@ public class NavPoint {
 			Position sp = Position.makeXYZ(sv.x, sv.y, sv.z);
 			double st = Util.parse_double(fields[18]);
 			String lab = fields[19];
-			return new NavPoint(pos, time, wt, lab,	trkty, gsty, vsty, radius, gsacc, vsacc, vv, sp, st);
+			return new NavPoint(pos, time, wt, lab,	trkty, gsty, vsty, radius, gsacc, vsacc, vv, sp, st, -1);
 		} else {
 			return new NavPoint(pos, time);
 		}
@@ -1687,7 +1693,7 @@ public class NavPoint {
 		temp = Double.doubleToLongBits(sourceTime);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result
-				+ ((velocityIn == null) ? 0 : velocityIn.hashCode());
+				+ ((velocityInit == null) ? 0 : velocityInit.hashCode());
 		return result;
 	}
 
@@ -1712,9 +1718,9 @@ public class NavPoint {
 		if (Double.doubleToLongBits(accel_vs) != Double
 				.doubleToLongBits(other.accel_vs))
 			return false;
-		if (Double.doubleToLongBits(sourceTime) != Double
-				.doubleToLongBits(other.sourceTime))
-			return false;
+//		if (Double.doubleToLongBits(sourceTime) != Double
+//				.doubleToLongBits(other.sourceTime))
+//			return false;
 		if (label == null) {
 			if (other.label != null)
 				return false;
@@ -1735,13 +1741,13 @@ public class NavPoint {
 			return false;
 		if (ty != other.ty)
 			return false;
-		if (Double.doubleToLongBits(sourceTime) != Double
-				.doubleToLongBits(other.sourceTime))
-			return false;
-		if (velocityIn == null) {
-			if (other.velocityIn != null)
+//		if (Double.doubleToLongBits(sourceTime) != Double
+//				.doubleToLongBits(other.sourceTime))
+//			return false;
+		if (velocityInit == null) {
+			if (other.velocityInit != null)
 				return false;
-		} else if (!velocityIn.equals(other.velocityIn))
+		} else if (!velocityInit.equals(other.velocityInit))
 			return false;
 		return true;
 	}

@@ -229,6 +229,9 @@ public:
     */
    void addComment(const std::string& c);
    
+	/**
+	 * Writes a line of the output.  The first call to writeLine will write the column headings, units, etc.
+	 */
 	void writeLine();
     
 private:

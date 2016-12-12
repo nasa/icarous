@@ -126,7 +126,6 @@ namespace larcfm {
     while ( ! input.readLine()) {
       // look for each possible heading
       if ( ! hasRead) {
-        
         // process heading
         latlon = (altHeadings("lat", "lon", "long", "latitude") >= 0);
         clock = (altHeadings("clock", "") >= 0);
@@ -249,7 +248,7 @@ namespace larcfm {
     Constants::set_horizontal_accuracy(h);
     Constants::set_vertical_accuracy(v);
     Constants::set_time_accuracy(t);
-    
+
   }
   
   int StateReader::altHeadings(const string& s1, const string& s2, const string& s3, const string& s4) const {

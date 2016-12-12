@@ -245,7 +245,8 @@ public final class Util {
    * a and b values in question, then this is essentially the same as ==.  Epsilon must be positive.
    */
   public static boolean within_epsilon(double a, double b, double epsilon) {
-    return Math.abs(a-b) < epsilon;
+	  //f.pln(" $$$$$$ within_epsilon: "+ Math.abs(a-b)+" < "+epsilon);
+      return Math.abs(a-b) < epsilon;
   }
 
   /**
@@ -346,8 +347,15 @@ public final class Util {
     }     
   }
 
-  /** Returns +1 if the argument is positive or 0, -1 otherwise */
+  /** 
+   * Returns +1 if the argument is positive or 0, -1 otherwise.  Note:
+   * This is not the classic signum function from mathematics that 
+   * returns 0 when a 0 is supplied. */
   public static int sign(double x) {
+	 // A true signum could be implemented in C++ as below.
+	 // template <typename T> int sgn(T val) {
+	 //   return (T(0) < val) - (val < T(0));
+     //}
     if (x >= 0)
       return 1;
     return -1;
@@ -572,8 +580,10 @@ public final class Util {
 
   /**
    * Returns a double value which is a representation of the given string.  If the string does 
-   * not represent a number, a zero is returned.  If one wants to know
-   * the fact that the string is not a number, then use Util.isDouble() method.
+   * not represent a number, an arbitrary value is returned. 
+   * In many cases, but not all, if the string is not a number then 0.0 is returned.  However,
+   * on some platforms, "1abc" will return 1.  If one wants to know
+   * the fact that the string is not a number, then use Util.is_double() method.
    */ 
   public static double parse_double(String s) {
     try {
@@ -711,10 +721,10 @@ public final class Util {
 
   }
 
-  private static int cnt = 0;
-  public static int nextCount() { // a generic system-wide counter
-    return cnt++;
-  }
+//  private static int cnt = 0;
+//  public static int nextCount() { // a generic system-wide counter
+//    return cnt++;
+//  }
 
   /**
    * The behavior of the x%y operator is different between Java and C++ if either x or y is negative.  Use this to always return a value between 0 and y. 

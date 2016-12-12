@@ -273,6 +273,9 @@ public:
 	//	 */
 	//    const Position relativeProjection(const Position& si) const;
 
+	Position interpolate(const Position& p2, double f) const;
+
+
 	/** Return the track angle of the vector from the current Position to the given Position, based on initial course */
 	double track(const Position& p) const;
 

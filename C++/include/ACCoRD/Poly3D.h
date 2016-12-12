@@ -17,6 +17,12 @@
 
 namespace larcfm {
 
+/**
+ * Euclidean space representation of polygon with height info.
+ * This extends Vect3 (temporarily) in order to take advantage to polymorphism of detection algorithms.
+ * If treated as a normal Vect3 point, this ignores the polygon information.
+ * Only functions that are aware of Poly3Ds will have access to its full definition.
+ */
 class Poly3D {
 
 private:
@@ -58,6 +64,9 @@ public:
 
 	std::string toString() ;
 
+	/**
+	 * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD detection algorithms.
+	 */
 	bool contains(const Vect3& v) const;
 
 

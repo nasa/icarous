@@ -417,6 +417,12 @@ public /*final*/ class Vect2 {
     return new Vect2(-y,x);
   }
 
+	/**
+	 * Calculates position after t time units in direction and magnitude of velocity v
+	 * @param v    velocity
+	 * @param t    time
+	 * @return the new position
+	 */
   public Vect2 linear(Vect2 v, double t) {
     return new Vect2(x + v.x*t,y + v.y*t);
   }
@@ -537,6 +543,7 @@ public /*final*/ class Vect2 {
     return toString(Constants.get_output_precision());
   }
 
+	/** A string representation of this vector */
   public String toString(int precision) {
     return formatXY(precision,"(",", ",")");
   }

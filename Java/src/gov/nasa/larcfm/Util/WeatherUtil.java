@@ -98,7 +98,7 @@ public class WeatherUtil {
 				if (rrPlan.size() > 0) {
 					rrPlan.add(currentPos);
 					rrPlan.add(finalPos);
-					rrPlan.setTimeGSin(rrPlan.size()-1, nPlan.initialVelocity(0).gs(), 1.0);
+					rrPlan.setTimeGSin(rrPlan.size()-1, nPlan.initialVelocity(0).gs());
 					//f.pln(" $$$$ reRoute: rrPlan = "+rrPlan+" "+localParams.unZigReroute);
 					solution = rrPlan;
 				} else {
@@ -210,7 +210,8 @@ public class WeatherUtil {
 			//	dg.setProximityWeights(ownship, factor, false);
 		} 
 		//dg.setProximityWeights(ownship, factor);
-		List<Pair<Integer,Integer>> gPath = dg.optimalPath();
+		DensityGridAStarSearch dgs = new DensityGridAStarSearch();
+		List<Pair<Integer,Integer>> gPath = dgs.optimalPath(dg);
 //dg.printSearchedWeights();		
 		if (gPath == null) {
 			//f.pln(" $$$$$ reRouteWithAstar: optimal path not found !!!");
@@ -252,6 +253,9 @@ public class WeatherUtil {
     }
 
 
+//	static public List<Pair<Integer,Integer>> optimalPath(DensityGrid dg, DensityGridSearch dgs) {
+//		return dgs.search(dg, dg.startPoint, dg.endPoint);
+//	}
 
 	
 }

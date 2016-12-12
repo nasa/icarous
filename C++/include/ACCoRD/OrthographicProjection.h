@@ -25,14 +25,17 @@ namespace larcfm {
 
 /**
  * This class creates a local Euclidean projection around a given point.  This projection may be used to
- * transform geodesic coordinates (LatLonAlt objects) into this Euclidean frame, using the project() method.  Also points
- * within this frame, may be found in geodesic coordinates with the inverse() method.   As long as the points are
+ * transform geodetic coordinates (LatLonAlt objects) into this Euclidean frame, using the project() method.  Also points
+ * within this frame, may be found in geodetic coordinates with the inverse() method.   As long as the points are
  * close to the projection point, the errors will be very small.
  * 
- * This is functionally equivalent to a ENU (or geodetic tangent) projection but uses different formulas.  It distorts distances from
- * the tangent point, compressing them more as the distance increases (similar to a picture of a planet from distant space).  
+ * This is a standard orthographic projection, and is functionally similar to the ENU projection (it uses different calculations).  
+ * It distorts distances from  the tangent point, compressing them more as the distance increases (similar to a picture of a 
+ * planet from distant space).  
  * Note that this  projection should be considered to have a hard limit of GreatCircle.spherical_earth_radius as the maximum allowed 
  * distance from the tangent reference point, and significant distortion may occur at much smaller distances.
+ * 
+ * These formulas are taken from https://en.wikipedia.org/wiki/Orthographic_projection_in_cartography
  * 
  * Note: projection objects should never be made directly, and instead should be retrieved via Projection.getProjection() 
  * 
@@ -41,6 +44,13 @@ namespace larcfm {
   private:
     double projAlt;
     LatLonAlt llaRef;
+    /**
+     * Transforms a lat/lon position to a point on in R3 (on a sphere)
+     * From Wikipedia https://en.wikipedia.org/wiki/Orthographic_projection_in_cartography
+     * @param lat Latitude
+     * @param lon Longitude
+     * @return point in R2
+     */
     Vect2 spherical2xy(double lat, double lon) const;
     LatLonAlt xy2spherical(double x, double y, double alt) const;
 
@@ -87,6 +97,7 @@ namespace larcfm {
     /** Return a projection of a Position in Euclidean 3-space (if already in Euclidian coordinate, this is the identity function) */
 	Vect3 project(const Position& sip) const;
 
+    /** Return a projection of a Position in Euclidean 3-space (if already in Euclidian coordinate, this is the identity function) */
 	Point projectPoint(const Position& sip) const;
     
     /** Return a LatLonAlt value corresponding to the given Euclidean position */

@@ -191,6 +191,16 @@ static double _FormalATM_pound_force() {
 	return ans;
 }
 
+static double _FormalATM_joule() {
+	static double ans = _FormalATM_newton() * _FormalATM_m();
+	return ans;
+}
+static double _FormalATM_foot_pound_force() {
+	static double ans = _FormalATM_ft() * _FormalATM_pound_force();
+	return ans;
+}
+
+
 static double _FormalATM_pascal() {
 	static double ans = _FormalATM_newton() / (_FormalATM_m() * _FormalATM_m());
 	return ans;
@@ -323,6 +333,11 @@ double Units::getFactor(const std::string& symbolp) {
 	} else if (symbol == "lbf") {
 		return _FormalATM_pound_force();
 
+	} else if (symbol == "J") {
+		return _FormalATM_joule();
+	} else if (symbol == "ft-lbf") {
+		return _FormalATM_foot_pound_force();
+
 	} else if (symbol == "atm") {
 		return _FormalATM_atm();
 	} else if (symbol == "Pa") {
@@ -426,6 +441,11 @@ const std::string Units::canonical(const std::string& unit) {
 	if (unit == "lbf" || unit == "pound_force")
 		return "lbf";
 
+	if (unit == "joule" || unit == "J")
+		return "J";
+	if (unit == "foot_pound_force" || unit == "ft-lbf")
+		return "ft-lbf";
+
 	if (unit == "atm")
 		return "atm";
 	if (unit == "pascal" || unit == "Pa")
@@ -525,17 +545,26 @@ static void trimBuilder(std::string& sb) {
 	sb.erase(notwhite + 1);
 }
 
-std::string Units::clean(const std::string& unit) {
+std::string Units::cleanOnly(const std::string& unit) {
+
 	std::string sb(unit);
 	trimBuilder(sb);
 
-	if (sb.length() > 2) {
-		if (sb[0] == '[' && sb[sb.length() - 1] == ']') {
-			sb.erase(0, 1);
-			sb.erase(sb.length() - 1, 1);
-			trimBuilder(sb);
-		}
-	}
+	  int start_idx = sb.find_first_of("[");
+	  if (start_idx >= 0) {
+		  sb.erase(0,start_idx+1);
+	  }
+	  int end_idx = sb.find_first_of("]");
+	  if (end_idx >= 0) {
+		  sb.erase(end_idx);
+	  }
+	  trimBuilder(sb);
+
+	return sb;
+}
+
+std::string Units::clean(const std::string& unit) {
+	std::string sb(cleanOnly(unit));
 
 	if (isUnit(sb)) {
 		return sb;
@@ -547,6 +576,14 @@ std::string Units::clean(const std::string& unit) {
 double Units::parse(const std::string& s) {
 	return parse(s,0.0);
 }
+
+double Units::parse(const string& str, double default_value) {
+	  	return parse("internal", str, default_value);
+}
+
+double Units::parse(const std::string& defaultUnitsFrom, const std::string& str) {
+	  return parse(defaultUnitsFrom, str, 0.0);
+  }
 
 
 #if defined(_MSC_VER)
@@ -563,26 +600,57 @@ double getd(string str, double def) {
 }
 
 
-double Units::parse(const std::string& s, double default_value) {
+double Units::parse(const string& defaultUnitsFrom, const std::string& s, double default_value) {
+	double ret = 0.0;
 	std::smatch m;
 	std::regex numre("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([/^_a-zA-Z0-9]*)\\s*\\]?\\s*$"); //(.*)");   We want to add this unicode character \u00B0 (the degree symbol) to the units part
+	//Java: Pattern.compile("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-\\/^_a-zA-Z0-9\\u00B0]*).*");
 
 	std::regex_match(s, m, numre);
 	std::smatch group(m);
-	if (group.size() > 0) {
-		double dbl = getd(group[1],0.0);
-		std::string unit = Units::clean(group[2]);
-		dbl = Units::from(unit, dbl);
-		return dbl;
-	} else {
-		return default_value;
+	if (group.size() > 0) { // should always be two groups if the regex was matched at all!
+		std::string m1(group[1]);
+		std::string unit = Units::cleanOnly(group[2]);
+
+		// The logic here can be debated.  What should be returned when
+		// an invalid value or invalid unit is provided?  If parse("ft", "10 fjkdsj", 5)
+		// is called, what should be returned? Units.from("ft", 10) or Units.from("ft", 5)?
+		// I chose Units.from("ft", 10) because in the degenerate case of
+		// parse("10 jfkdjks", 5)--that is, with an implied default unit of "internal"--
+		// returning 10 seems more correct than returning 5.
+		//
+		//   supplied                returned (aka converted)
+		//   value        unit       value          unit
+		//   -----        ----       -----          ----
+		//   valid        valid      suppliedvalue  suppliedunit
+		//   valid        invalid    suppliedvalue  defunit
+		//   invalid      valid      defvalue       defunit
+		//   invalid      invalid    defvalue       defunit
+		//   illformed               defvalue       defunit
+
+		if (Util::is_double(m1)) {
+			ret = Util::parse_double(m1));
+			if (Units::isUnit(unit)) {
+				ret = Units::from(unit, dbl);
+			} else {
+				ret = Units::from(defaultUnitsFrom, dbl);
+			}
+		} else {  // no value
+			ret = Units::from(defaultUnitsFrom, default_value);
+		}
+
+	} else { // no match
+		ret = Units::from(defaultUnitsFrom, default_value);
 	}
+
+	return ret;
 }
 
 std::string Units::parseUnits(const std::string& s) {
 	std::string unit = "unspecified";
 	std::smatch m;
 	std::regex numre("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([/^_a-zA-Z0-9]*)\\s*\\]?\\s*$"); //(.*)");   We want to add this unicode character \u00B0 (the degree symbol) to the units part
+	//Java: Pattern.compile("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-\\/^_a-zA-Z0-9\\u00B0]*).*");
 	std::regex_match(s, m, numre);
 	std::smatch group(m);
 	if (group.size() > 0) {
@@ -593,23 +661,22 @@ std::string Units::parseUnits(const std::string& s) {
 
 #else
 
-double Units::parse(const std::string& s, double default_value) {
-	double ret = default_value;
+double Units::parse(const string& defaultUnitsFrom, const std::string& s, double default_value) {
+	double ret = Units::from(defaultUnitsFrom,default_value);
 	regex_t regex;
 	int reti;
 	char msgbuf[100];
 
 	/* Compile regular expression, use C regular expression library */
-	reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([-/^_a-zA-Z0-9]*)[[:blank:]]*\\]?(.*)", REG_EXTENDED);
+	reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([-\\/^_a-zA-Z0-9]*).*", REG_EXTENDED); //[[:blank:]]*\\]?(.*)", REG_EXTENDED);
+	//Java: Pattern.compile("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-\\/^_a-zA-Z0-9\\u00B0]*).*");
 	if (reti != 0) {
 		fdln("Could not compile regex\n");
-//		DebugSupport::halt();
+		//		DebugSupport::halt();
 	}
 
 	/* Execute regular expression */
 	regmatch_t matchptr[4];
-
-	//fpln("input X"+s+"X");
 	reti = regexec(&regex, s.c_str(), 4, matchptr, 0);
 	if (!reti) {
 		char match[100];
@@ -620,30 +687,52 @@ double Units::parse(const std::string& s, double default_value) {
 		strncpy(match,s.c_str()+matchptr[1].rm_so,numchars);
 		match[numchars] = '\0';
 		string m1(match);
-		double dbl;
-		if (Util::is_double(m1)) {
-			dbl = Util::parse_double(m1);
-		} else {
-			dbl = default_value;
-		}
-		//fpln("match1 "+m1+"  "+Fm12(dbl));
+		//fpln("match="+m1);
 
 		// Match #2
 		numchars = (int)matchptr[2].rm_eo - (int)matchptr[2].rm_so;
 		strncpy(match,s.c_str()+matchptr[2].rm_so,numchars);
 		match[numchars] = '\0';
 		string m2(match);
-		std::string unit = Units::clean(m2);
-		//fpln("match2 "+m2+" "+unit);
+		//fpln("match2="+m2);
+		std::string unit = Units::cleanOnly(m2);
+		//fpln("match22="+unit);
 
-		ret = Units::from(unit, dbl);
+		// The logic here can be debated.  What should be returned when
+		// an invalid value or invalid unit is provided?  If parse("ft", "10 fjkdsj", 5)
+		// is called, what should be returned? Units.from("ft", 10) or Units.from("ft", 5)?
+		// I chose Units.from("ft", 10) because in the degenerate case of
+		// parse("10 jfkdjks", 5)--that is, with an implied default unit of "internal"--
+		// returning 10 seems more correct than returning 5.
+		//
+		//   supplied                returned (aka converted)
+		//   value        unit       value          unit
+		//   -----        ----       -----          ----
+		//   valid        valid      suppliedvalue  suppliedunit
+		//   valid        invalid    suppliedvalue  defunit
+		//   invalid      valid      defvalue       defunit
+		//   invalid      invalid    defvalue       defunit
+		//   illformed               defvalue       defunit
+
+		if (Util::is_double(m1)) {
+			double dbl = Util::parse_double(m1);
+			if (Units::isUnit(unit)) {
+				ret = Units::from(unit, dbl);
+			} else {
+				ret = Units::from(defaultUnitsFrom, dbl);
+			}
+		} else {
+			//return the default value
+		}
+
+
 		//fpln("ret "+Fm12(ret));
 	} else if (reti == REG_NOMATCH) {
 		// no match, return default value
 	} else {
 		regerror(reti, &regex, msgbuf, sizeof(msgbuf));
-		fprintf(stderr, "Regex match failed: %s\n", msgbuf);
-//		DebugSupport::halt();
+		string m1(msgbuf);
+		fdln("Regex match failed: "+m1);
 	}
 
 	/* Free compiled regular expression if you want to use the regex_t again */
@@ -658,7 +747,8 @@ std::string Units::parseUnits(const std::string& s) {
 	char msgbuf[100];
 
 	/* Compile regular expression */
-	reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([/^_a-zA-Z0-9]*)[[:blank:]]*\\]?(.*)", REG_EXTENDED);
+	//reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([/^_a-zA-Z0-9]*)[[:blank:]]*\\]?(.*)", REG_EXTENDED);
+	reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([-\\/^_a-zA-Z0-9]*).*", REG_EXTENDED); //[[:blank:]]*\\]?(.*)", REG_EXTENDED);
 	if (reti != 0) {
 		fdln("$$$ERROR$$$: Could not compile regex\n");
 //		DebugSupport::halt();

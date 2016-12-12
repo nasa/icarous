@@ -333,6 +333,14 @@ const Position Position::midPoint(const Position& p2) const{
 //    }
 //  }
 
+Position Position::interpolate(const Position& p2, double f) const {
+  if (latlon) {
+    return Position(GreatCircle::interpolate(ll,p2.lla(),f));
+  } else {
+    return Position(Point::mk(VectFuns::interpolate(s3,Point::mk(p2.point()),f)));
+  }
+}
+
 double Position::track(const Position& p) const {
 	if (p.latlon != latlon) {
 		fdln("Position.track call given an inconsistent argument.");

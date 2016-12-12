@@ -78,8 +78,8 @@ public:
 	bool inOC(double x) const;
 	/** Is the element in this open/open interval? */
 	bool inOO(double x) const;
-	/** Is the element in this interval, where close/open conditions are given as parameters */
-	bool in(double x, bool lb_close, bool ub_close);
+	/** Is the element (almost) in this interval, where close/open conditions are given as parameters */
+	bool almost_in(double x, bool lb_close, bool ub_close) const;
 
 	/**
 	 * Does the given Interval overlap with this Interval.  Intervals that only

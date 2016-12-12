@@ -55,23 +55,23 @@ double _FormalATM_P0();
  * double speed = distance / time;
  * 
  * // Outputting Quantities
- * System.out.println(&quot;The distance in kilometers is &quot; + Units.to(&quot;km&quot;, distance)); // about
- * // 2.6
- * System.out.println(&quot;The distance in miles is &quot; + Units.to(&quot;mi&quot;, distance)); // about
- * // 1.6
- * System.out.println(&quot;The distance in feet is &quot; + Units.to(&quot;ft&quot;, distance)); // about
- * // 8560
- * System.out.println(&quot;The speed in miles/hour is &quot; + Units.to(&quot;mph&quot;, speed)); // about
- * // 1.6
- * System.out.println(&quot;The speed in m/s is &quot; + Units.to(&quot;m/s&quot;, speed)); // about
- * // 0.72
+ * // should be about 2.6:
+ * System.out.println(&quot;The distance in kilometers is &quot; + Units.to(&quot;km&quot;, distance)); 
+ * // should be about 1.6:
+ * System.out.println(&quot;The distance in miles is &quot; + Units.to(&quot;mi&quot;, distance)); 
+ * // should be about 8560:
+ * System.out.println(&quot;The distance in feet is &quot; + Units.to(&quot;ft&quot;, distance)); 
+ * // should be about 1.6
+ * System.out.println(&quot;The speed in miles/hour is &quot; + Units.to(&quot;mph&quot;, speed)); 
+ * // should be about 0.72
+ * System.out.println(&quot;The speed in m/s is &quot; + Units.to(&quot;m/s&quot;, speed)); 
  * </pre>
  * <p>
  * 
  * One important consideration when using the Units class is that the Units
  * class performs <b>NO</b> consistency checks. The Units class trusts that the
- * user will use units with a consistent dimension. This was a delibrate design
- * decision because of the performance penality associated with checking
+ * user will use units with a consistent dimension. This was a deliberate design
+ * decision because of the performance penalty associated with checking
  * consistency. An example of this inconsistency is:
  * <p>
  * 
@@ -145,7 +145,7 @@ double _FormalATM_P0();
  * 
  * <li>The above examples (using either strings or factors) are the preferred
  * use of the Units class; however, this notation can become
- * cumbersome--especially when specifing values inside code. An alternate use of
+ * cumbersome--especially when specifying values inside code. An alternate use of
  * the Units class is to multiply by the conversion factor when specifying
  * constants. For example:
  * <p>
@@ -158,7 +158,7 @@ double _FormalATM_P0();
  * <p>
  * 
  * The "to" and "from" methods are preferred, because some conversions are not
- * simply multipling a factor, but involve an offset also. Those that involve an
+ * simply multiplying a factor, but involve an offset also. Those that involve an
  * offset (currently only degreeC and degreeF), must use the "to" and "from"
  * methods. Forms such as <tt>double temp = 32.0 * degreeF;</tt> are
  * <i>always</i> wrong.
@@ -192,7 +192,7 @@ double _FormalATM_P0();
  * <tt>a = Math.cos(right_angle);</tt>
  * <p>
  * 
- * <li>The units for thermodynamic temperature are degreeC, degreeF, degreeK,
+ * <li>The units for thermodynamic temperature are degreeC, degreeF, K,
  * and degreeR, representing Celsius, Farenheit, Kelvin, and Rankin.
  * <p>
  * 
@@ -278,7 +278,7 @@ double _FormalATM_P0();
  * occur automatically.
  * <p>
  * 
- * <li>The purpose of this class is geared to modelling large engineered systems
+ * <li>The purpose of this class is geared to modeling large engineered systems
  * such as airplanes. As such, many units useful in other disciplines are not
  * defined (such as the "carat" or a "bushel"). However, they may be defined in
  * future versions of this class.
@@ -291,9 +291,9 @@ double _FormalATM_P0();
  * 
  * <li>Much care was used in defining each of these conversion factors. The full
  * precision from appropriate standards documents was used. However, some units
- * are defined as the arithmetic relationship between "more fundamental"
- * quantities. In these cases, the conversion factors are limited in resolution
- * to the double precision operations in Java. For most engineering purposes
+ * are defined as the arithmetic relationship between 'more fundamental'
+ * quantities. In these cases, the conversion factors are limited to the resolution
+ * of double precision operations. For most engineering purposes
  * (see the point above) this is more than good enough; however, someone working
  * with very precise quantities (> 12 significant digits), should be aware of
  * the possibility of differences.
@@ -489,15 +489,30 @@ public:
 	 */
 	static std::string clean(const std::string& unit);
 
-	/**
-	 * Parse a string, including an optional units identifier, as a double value.
-	 * If the string does not contain a unit, then the value is interpreted as an "unspecified" unit.
-	 * @param s string to parse
-	 * @return value
-	 */
-	static double parse(const std::string& s, double default_val);
+private:
+  /**
+   * Clean up the unit string that may contain brackets or extra space. For
+   * instance, " [ feet]" becomes "feet". However, if the unit is "[  fred]"
+   * then "fred" will be returned (unlike the clean() method).
+   */
+	static std::string cleanOnly(const std::string& unit);
+public:
+
+	static double parse(const std::string& defaultUnitsFrom, const std::string& s, double default_val);
 
 	static double parse(const std::string& s);
+
+  /**
+   * Parse a string, including an optional units identifier, as a double value.
+   * If the string does not contain a (valid) unit, then the value is interpreted as an "unspecified" unit. This version does not
+   * parse numbers in exponential notation, e.g., "10e-4".  
+   * @param str string to parse
+   * @param default_value if the string is not recognized as a valid value, the result to be returned 
+   * @return value
+   */
+	static double parse(const std::string& str, double default_value);
+
+	static double parse(const std::string&, const std::string& str);
 
 	/**
 	 * Parse a string, representing a value and a unit.

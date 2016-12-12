@@ -140,19 +140,31 @@ class AircraftState : public ErrorReporter {
 
     ~AircraftState();
     
-    /** Return the name of this object */
+    /** Return the name of this object 
+     * 
+     * @return name
+     */
     std::string name() const;
     
-	/**
-	 * If the parameter ll matches the current latlon (true for lat/lon/alt, false
+	/**  
+	 * If the parameter ll matches the current latlon (true for lat/lon/alt, false 
 	 * for Euclidean) value, then return true.  If there are
-	 * no positions in this object, then true is always returned.
-	 */
+	 * no positions in this object, then true is always returned. 
+     * 
+     * @param ll value to check lat/lon status against
+     * @return if ll agrees with the lat/lon status of this object 
+     */
 	bool checkLatLon(bool ll) const;
 
+	/**
+	 * 
+	 * @return is lat/lon
+	 */
 	bool isLatLon() const;
 
-    /** return a deep copy of this object */
+    /** return a deep copy of this object 
+     * @return the copy
+     * */
     AircraftState copy() const;
     
             
@@ -160,6 +172,7 @@ class AircraftState : public ErrorReporter {
      * Return the maximum number of elements that can be stored.  
      * This value is always greater or equal to size().  
      * There is deliberately no method setBufferSize() 
+     * @return
      * */
     int getBufferSize() const;
 
@@ -169,10 +182,15 @@ class AircraftState : public ErrorReporter {
     /** 
      * Return the index of the given time.  A negative index
      * is returned if the time doesn't exist.
+     * 
+     * @param time
+     * @return
      */
     int find(double time) const;
     
-    /** Return the number of data elements */
+    /** Return the number of data elements 
+     * @return size
+     * */
     int size() const;
 
 
@@ -197,6 +215,9 @@ class AircraftState : public ErrorReporter {
 	 * projection set by the setProjection() method.
 	 * If the index is out of range (less than zero or greater than size()),
 	 * then a zero position and velocity are returned.
+	 * 
+	 * @param i
+	 * @return
 	 */
 	StateVector get(int i);
 
@@ -204,6 +225,7 @@ class AircraftState : public ErrorReporter {
 	 * Return a Euclidean position and velocity for the latest time in this object.
 	 * The position and velocity are projected into a Euclidean frame by the
 	 * projection set by the setProjection() method.
+	 * @return
 	 */
 	StateVector getLast();
 
@@ -226,7 +248,10 @@ class AircraftState : public ErrorReporter {
 	/** 
 	 * The time of the given index.  An index of 0 corresponds to the
 	 * earliest time in this object; and index of size()-1 corresponds to 
-	 * the latest time.  This method returns a negative time for an out of bounds index
+	 * the latest time.  This method returns a negative time for an out of bounds index 
+	 * 
+	 * @param i
+	 * @return
 	 */
 	double time(int i) const;
 
@@ -234,6 +259,8 @@ class AircraftState : public ErrorReporter {
 	 * The latest (i.e., last) position in this object.
 	 * Note that this may not be synchronized with data from other aircraft!
 	 * It is generally better to use positionLinear(tm) for traffic aircraft. 
+	 * 
+	 * @return
 	 */
 	Position positionLast() const;
 
@@ -241,6 +268,8 @@ class AircraftState : public ErrorReporter {
 	 * The latest (i.e., last) velocity in this object.
 	 * Note that this may not be synchronized with data from other aircraft!
 	 * It is generally better to use velocityBefore(tm) for traffic aircraft. 
+	 * 
+	 * @return
 	 */
 	Velocity velocityLast() const;
 

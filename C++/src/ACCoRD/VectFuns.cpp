@@ -203,19 +203,35 @@ std::pair<Vect2,double> VectFuns::intersection(const Vect2& so1, const Vect2& so
 
 
 Vect3 VectFuns::closestPoint(const Vect3& a, const Vect3& b, const Vect3& so) {
-	Vect3 v = a.Sub(b).PerpL().Hat2D(); // perpendicular vector to line
-	Vect3 s2 = so.AddScal(100, v);
-	std::pair<Vect3, double> i = intersectionAvgZ(a,b,100,so,s2);
-	// need to fix altitude to be along the a-b line
-	return interpolate(a,b,i.second/100.0);
+	if (a.almostEquals(b)) return Vect3::INVALID();
+	Vect2 c = closestPoint(a.vect2(), b.vect2(), so.vect2());
+	Vect3 v = b.Sub(a);
+	double d1 = v.vect2().norm();
+	double d2 = c.Sub(a.vect2()).norm();
+	double d3 = c.Sub(b.vect2()).norm();
+	double f = d2/d1;
+	if (d3 > d1 && d3 > d2) { // negative direction
+		f = -f;
+	}
+	return a.AddScal(f, v);
+
+
+//	Vect3 v = a.Sub(b).PerpL().Hat2D(); // perpendicular vector to line
+//	Vect3 s2 = so.AddScal(100, v);
+//	std::pair<Vect3, double> i = intersectionAvgZ(a,b,100,so,s2);
+//	// need to fix altitude to be along the a-b line
+//	return interpolate(a,b,i.second/100.0);
 }
 
 Vect2 VectFuns::closestPoint(const Vect2& a, const Vect2& b, const Vect2& so) {
-	if (collinear(a,b,so)) return so;
-	Vect2 v = a.Sub(b).PerpL().Hat(); // perpendicular vector to line
-	Vect2 s2 = so.AddScal(100, v);
-	Vect2 cp = intersection(so,s2,100,a,b).first;
-	return cp;
+	// translate a to origin, then project so onto the line defined by ab, then translate back to a
+	Vect2 ab = b.Sub(a);
+	return ab.Scal(so.Sub(a).dot(ab)/ab.dot(ab)).Add(a);
+//	if (collinear(a,b,so)) return so;
+//	Vect2 v = a.Sub(b).PerpL().Hat(); // perpendicular vector to line
+//	Vect2 s2 = so.AddScal(100, v);
+//	Vect2 cp = intersection(so,s2,100,a,b).first;
+//	return cp;
 }
 
 

@@ -86,6 +86,7 @@ Plan::Plan(const Plan& fp) : error("Plan") {
 	error = fp.error;
 	errorLocation = fp.errorLocation;
 	debug = fp.debug;
+	bound = BoundingRectangle(fp.bound);
 }
 
 Plan::~Plan() {
@@ -163,6 +164,7 @@ void Plan::setStaticDebug(bool d) {
 void Plan::clear() {
 	points.clear();
 	getMessage();
+	bound.clear();
 }
 
 void Plan::clearVirtuals() {
@@ -180,6 +182,12 @@ void Plan::clearVirtuals() {
 int Plan::size() const {
 	return points.size();
 }
+
+/** Get an approximation of the bounding rectangle around this plan */
+BoundingRectangle Plan::getBound() const {
+	return bound;
+}
+
 
 bool Plan::isLatLon() const {
 	if (points.size() > 0) {
@@ -390,6 +398,9 @@ int Plan::add(const NavPoint& p) {
 		i = -i-1;  // where the point should be inserted
 		insert(i, p);
 	}
+
+	bound.add(p.position());
+
 	return i;
 }
 
@@ -931,7 +942,7 @@ bool Plan::inVsChangeByDistance(double d) const { //fixed
 	return j1 >= 0 && j1 >= j2;
 }
 
-double Plan::turnRadius(double t) const {
+double Plan::turnRadiusAtTime(double t) const {
 	if (inTrkChange(t)) {
 		NavPoint bot = points[prevBOT(getSegment(t)+1)];//fixed
 		//return bot.position().distanceH(bot.turnCenter());
@@ -941,7 +952,7 @@ double Plan::turnRadius(double t) const {
 	}
 }
 
-double Plan::trkAccel(double t) const {
+double Plan::trkAccelAtTime(double t) const {
 	if (inTrkChange(t)) {
 		int b = prevBOT(getSegment(t)+1);//fixed
 		return point(b).trkAccel();
@@ -951,7 +962,7 @@ double Plan::trkAccel(double t) const {
 }
 
 
-double Plan::gsAccel(double t) const {
+double Plan::gsAccelAtTime(double t) const {
 	if (inGsChange(t)) {
 		int b = prevBGS(getSegment(t)+1);//fixed
 		return point(b).gsAccel();
@@ -959,7 +970,7 @@ double Plan::gsAccel(double t) const {
 		return 0.0;
 	}
 }
-double Plan::vsAccel(double t) const {
+double Plan::vsAccelAtTime(double t) const {
 	if (inVsChange(t)) {
 		int b = prevBVS(getSegment(t)+1);//fixed
 		return point(b).vsAccel();
@@ -968,23 +979,23 @@ double Plan::vsAccel(double t) const {
 	}
 }
 
-double Plan::calcVertAccel(int i) const {
-	if (i < 1 || i+1 > size()-1) return 0;
-	double acalc = (initialVelocity(i+1).vs() - finalVelocity(i-1).vs())/(point(i+1).time() - point(i).time());
-	if (point(i).isBVS()) {
-		double dt = getTime(nextEVS(i)) - point(i).time();//fixed
-		acalc = (initialVelocity(nextEVS(i)).vs() - finalVelocity(i-1).vs())/dt;//fixed
-	}
-	//fpln(" calcVertAccel:   acalc = "+acalc);
-	return acalc;
-}
-
-double Plan::calcGsAccel(int i) const {
-	if (i < 1 || i+1 > size()-1) return 0;
-	double acalc = (initialVelocity(i+1).gs() - finalVelocity(i-1).gs())/(point(i+1).time() - point(i).time());
-	//fpln(" calcVertAccel:   acalc = "+acalc);
-	return acalc;
-}
+//double Plan::calcVertAccel(int i) const {
+//	if (i < 1 || i+1 > size()-1) return 0;
+//	double acalc = (initialVelocity(i+1).vs() - finalVelocity(i-1).vs())/(point(i+1).time() - point(i).time());
+//	if (point(i).isBVS()) {
+//		double dt = getTime(nextEVS(i)) - point(i).time();//fixed
+//		acalc = (initialVelocity(nextEVS(i)).vs() - finalVelocity(i-1).vs())/dt;//fixed
+//	}
+//	//fpln(" calcVertAccel:   acalc = "+acalc);
+//	return acalc;
+//}
+//
+//double Plan::calcGsAccel(int i) const {
+//	if (i < 1 || i+1 > size()-1) return 0;
+//	double acalc = (initialVelocity(i+1).gs() - finalVelocity(i-1).gs())/(point(i+1).time() - point(i).time());
+//	//fpln(" calcVertAccel:   acalc = "+acalc);
+//	return acalc;
+//}
 //
 //Position Plan::positionOLD(double t) const {
 //	return positionOLD(t, false);
@@ -1063,7 +1074,7 @@ double Plan::timeFromDistance(int seg, double rdist) const {
 	if (seg < 0 || seg > size()-1 || rdist < 0 || rdist > pathDistance(seg)) return -1;
 	double gs0 = initialVelocity(seg).gs();
 	if (Util::almost_equals(gs0, 0.0)) return 0;
-	if (inGsChangeByDistance(seg)) {
+	if (inGsChange(getTime(seg))) {
 		double a = point(prevBGS(seg+1)).gsAccel();//fixed
 		return timeFromGs(gs0, a, rdist);
 	} else {
@@ -1081,32 +1092,114 @@ double Plan::timeFromDistance(double dist) const {
 }
 
 
-double Plan::gsOut(int seg, bool linear) const {
-	if (seg < 0 || seg > size()-1) return -1;
-	if (seg == size()-1) return gsFinal(seg-1);
-	double dist = pathDistance(seg,linear);
-	double dt = getTime(seg+1) - getTime(seg);
+double Plan::trkOut(int seg, bool linear) const {
+	//f.pln(" $$$ trkOut: ENTER seg = "+seg+" linear = "+linear);
+	if (seg < 0 || seg > size()-1) {
+		addError("trkOut: invalid index "+Fm0(seg), 0);
+		return -1;
+	}
+	if (seg == size()-1) {
+		return trkFinal(seg-1,linear);
+	}
+	Velocity vNew;
+	if (inTrkChange(point(seg).time()) && ! linear) {
+		int ixBOT = prevBOT(seg+1);
+		double d = pathDistance(ixBOT,seg);
+		Position center = point(ixBOT).turnCenter();
+		double signedRadius = point(ixBOT).signedRadius();
+		int dir = Util::sign(signedRadius);
+		//f.pln(" $$$ trkOut (inTurn): d = "+Units.str("ft",d)+"  signedRadius = "+Units.str("ft",signedRadius)+" ixBOT = "+ixBOT);
+		double gsAt_d = 1000.0; // not used here -- don't use 0.0 because will lose track info
+		Position so = point(ixBOT).position();
+		vNew = KinematicsPosition::turnByDist(so, center, dir, d, gsAt_d).second;
+		//f.pln(" $$$ trkOut: vNew = "+vNew);
+		return vNew.trk();
+	} else {
+		//NavPoint np2 = point(seg+1);
+		//vNew = linearVelocityOut(seg);
+		vNew = point(seg).initialVelocity(point(seg+1));
+		//f.pln(" $$$ trkOut (linear): seg = "+seg+" vNew = "+vNew);
+        return vNew.trk();
+	}
+}
+
+double Plan::trkOut(int seg) const { return trkOut(seg,false); }
+
+
+double Plan::trkFinal(int seg, bool linear) const {
+	//f.pln("$$$ trkFinal: ENTER: seg = "+seg+" linear = "+linear);
+	if (seg < 0 || seg >= size()-1) {
+		addError("trkFinal: invalid index "+Fm0(seg), 0);
+		return -1;
+	}
+	NavPoint np1 = point(seg);
+	if (inTrkChange(point(seg).time()) && ! linear) {
+		int ixBOT = prevBOT(seg+1);
+		double d = pathDistance(ixBOT,seg+1);
+		double signedRadius = point(ixBOT).signedRadius();
+		int dir = Util::sign(signedRadius);
+		Position center = point(ixBOT).turnCenter();
+		//f.pln("$$$ trkFinal AA: d = "+Units.str("NM",d)+"  signedRadius = "+Units.str("ft",signedRadius)+" ixBOT = "+ixBOT);
+		double gsAt_d = 1000.0; // not used here -- don't use 0.0 because will lose track info
+		Position so = point(ixBOT).position();
+		Velocity vFinal = KinematicsPosition::turnByDist(so, center, dir, d, gsAt_d).second;
+		//f.pln("$$$ trkFinal AA: seg = "+seg+" vFinal = "+vFinal);
+		return vFinal.trk();
+	} else {
+		if (isLatLon()) {
+			//double d = pathDistance(seg,seg+1);
+			double trk = GreatCircle::final_course(point(seg).lla(), point(seg+1).lla());
+			//f.pln("$$$ trkFinal BB: seg = "+seg+" trk = "+Units.str("deg",trk));
+			return trk;
+		} else {
+			Velocity vo = point(seg).finalVelocity(point(seg+1));
+			//f.pln("$$$ trkFinal CC: seg = "+seg+" vo = "+vo);
+			return vo.trk();
+		}
+	}
+}
+
+
+double Plan::gsOut(int i, bool linear) const {
+	if (i < 0 || i > size()-1) {
+		addError("gsOut: invalid index "+Fm0(i), 0);
+		return -1;
+	}
+	if (i == size()-1) return gsFinal(i-1);
+	int j = i+1;
+//	while (j < size()-1 && getTime(j) - getTime(i) < minDt) { // collapse next point(s) if very close
+//		j++;
+//	}
+	double dist = pathDistance(i,j,linear);
+	double dt = getTime(j) - getTime(i);
 	double a = 0.0;
-	if (inGsChange(point(seg).time()) && ! linear) {
-		int ixBGS = prevBGS(seg+1);//fixed
+	if (inGsChange(getTime(j-1)) && ! linear) {
+		int ixBGS = prevBGS(i+1);//fixed
 		a = point(ixBGS).gsAccel();
 	}
 	double rtn = dist/dt - 0.5*a*dt;
 	//f.pln(" $$>>>>>> gsOut: rtn = "+Units.str("kn",rtn,8)+" a = "+a+" seg = "+seg+" dt = "+f.Fm4(dt)+" dist = "+Units.str("ft",dist));
 	if (rtn <= 0) {
 		//fpln(" ### gsOut: has encountered an ill-structured plan resulting in a negative ground speed!!");
-		rtn = 0.0001;
+		rtn = 0.000001;
 	}
 	return rtn;
 }
 
-double Plan::gsFinal(int seg, bool linear) const {
-	if (seg < 0 || seg > size()-1) return -1;
-	double dist = pathDistance(seg,linear);
-	double dt = getTime(seg+1) - getTime(seg);
+double Plan::gsFinal(int i, bool linear) const {
+	if (i < 0 || i > size()-1) {
+		addError("gsFinal: invalid index "+Fm0(i), 0);
+		return -1;
+	}
+	int j = i+1;
+//	while (i > 0 && getTime(j) - getTime(i) < minDt) { // collapse next point(s) if very close
+//		i--;
+//	}
+	double dist = pathDistance(i,j,linear);
+	double dt = getTime(j) - getTime(i);
 	double a = 0.0;
-	if (inGsChange(point(seg).time()) && ! linear) {
-		int ixBGS = prevBGS(seg+1);//fixed
+	if (inGsChange(point(i).time()) && ! linear) {
+		int ixBGS = prevBGS(i+1);//fixed
 		a = point(ixBGS).gsAccel();
 	}
 	return dist/dt + 0.5*a*dt;
@@ -1184,14 +1277,21 @@ double Plan::gsAtTime(double t, bool linear) const {
 
 
 
-double Plan::vsOut(int seg, bool linear) const {
-	if (seg < 0 || seg > size()-1) return -1;
-	if (seg == size()-1) return vsFinal(seg-1);
-	double dist = point(seg+1).alt() - point(seg).alt();
-	double dt = getTime(seg+1) - getTime(seg);
+double Plan::vsOut(int i, bool linear) const {
+	if (i < 0 || i > size()-1) {
+		addError("vsOut: invalid index "+Fm0(i), 0);
+		return -1;
+	}
+	if (i == size()-1) return vsFinal(i-1);
+	int j = i+1;
+//	while (j < size()-1 && getTime(j) - getTime(i) < minDt) { // skip next point(s) if very close
+//		j++;
+//	}
+	double dist = point(j).alt() - point(i).alt();
+	double dt = getTime(j) - getTime(i);
 	double a = 0.0;
-	if (inVsChange(point(seg).time()) && ! linear) {
-		int ixBVS = prevBVS(seg+1);//fixed
+	if (inVsChange(getTime(j-1)) && ! linear) {  // use getTime(j-1) rather than getTime(i) in case j-1 point is an EGS
+		int ixBVS = prevBVS(i+1);//fixed
 		a = point(ixBVS).vsAccel();
 	}
 	double rtn = dist/dt - 0.5*a*dt;
@@ -1199,13 +1299,20 @@ double Plan::vsOut(int seg, bool linear) const {
 	return rtn;
 }
 
-double Plan::vsFinal(int seg, bool linear) const {
-	if (seg < 0 || seg > size()-1) return -1;
-	double dist = point(seg+1).alt() - point(seg).alt();
-	double dt = getTime(seg+1) - getTime(seg);
+double Plan::vsFinal(int i, bool linear) const {
+	if (i < 0 || i > size()-1) {
+		addError("vsFinal: invalid index "+Fm0(i), 0);
+		return -1;
+	}
+	int j = i+1;
+//	while (i > 0 && getTime(j) - getTime(i) < minDt) { // collapse next point(s) if very close
+//		i--;
+//	}
+	double dist = point(j).alt() - point(i).alt();
+	double dt = getTime(i+1) - getTime(i);
 	double a = 0.0;
-	if (inVsChange(point(seg).time()) && ! linear) {
-		int ixBvs = prevBVS(seg+1);//fixed
+	if (inVsChange(point(i).time()) && ! linear) {
+		int ixBvs = prevBVS(i+1);//fixed
 		a = point(ixBvs).vsAccel();
 	}
 	return dist/dt + 0.5*a*dt;
@@ -1484,46 +1591,50 @@ Velocity Plan::initialVelocity(int i) const {
 	return initialVelocity(i, false);
 }
 
+//Velocity Plan::initialVelocity(int i, bool linear) const {
+//	//fpln("\n $$$$ Plan.initialVelocity: ENTER with i = "+Fm0(i)+" "+getName()+" linear = "+Fm0(linear));
+//	Velocity rtn =  Velocity::ZEROV();
+//	//	if (size() > 1 && i == size()-1) {
+//	//		return finalVelocity(size()-2);
+//	//	}
+//	if (i > size()-1) {   // there is no velocity after the last point
+//		addWarning("initialVelocity(int): Attempt to get an initial velocity after the end of the Plan: "+Fm0(i));
+//		return Velocity::ZEROV();
+//	}
+//	if (i < 0) {
+//		addWarning("initialVelocity(int): Attempt to get an initial velocity before beginning of the Plan: "+Fm0(i));
+//		return Velocity::ZEROV();
+//	}
+//	if (size() == 1) {
+//		return Velocity::ZEROV();
+//	}
+//	NavPoint np = points[i];
+//	double t = np.time();
+//	if (linear) {
+//		//return np.initialVelocity(points[i+1]);
+//		rtn = linearVelocityOut(i);
+//		//fpln(Fm0(i)+" $$$$$ initialVelocity0: ******************* linear, rtn = "+rtn.toString());
+//	} else {
+//		if (np.isBOT()) { // || np.isBGS() || np.isBVS()) {
+//			rtn = np.velocityInit();
+//			//fpln(Fm0(i)+" $$$$$ initialVelocity0:  rtn = np.velocityIn("+Fm0(i)+") = "+ np.velocityIn().toString());
+//		} else if (inTrkChange(t) || inGsChange(t) || inVsChange(t) || (np.isTCP() && i == (int) points.size()-1)) { // special case to also handle last point being in accel zone
+//			rtn = velocity(t);
+//			//fpln(Fm0(i)+" $$$$$ initialVelocity B:  rtn = velocity("+Fm2(t)+") = "+ rtn.toString());
+//			//		} else if (i > 0 && i == points.size()-1) {
+//			//			rtn = finalVelocity(i-1);
+//		} else {
+//			//rtn =  np.initialVelocity(points[i+1]);
+//			rtn = linearVelocityOut(i);
+//			//fpln(Fm0(i)+" $$$$$ initialVelocity2: rtn = getDtVelocity = "+ rtn.toString());
+//		}
+//	}
+//	//fpln(" $$#### initialVelocity("+Fm0(i)+") rtn = "+rtn.toString());
+//	return rtn;
+//}
+
 Velocity Plan::initialVelocity(int i, bool linear) const {
-	//fpln("\n $$$$ Plan.initialVelocity: ENTER with i = "+Fm0(i)+" "+getName()+" linear = "+Fm0(linear));
-	Velocity rtn =  Velocity::ZEROV();
-	//	if (size() > 1 && i == size()-1) {
-	//		return finalVelocity(size()-2);
-	//	}
-	if (i > size()-1) {   // there is no velocity after the last point
-		addWarning("initialVelocity(int): Attempt to get an initial velocity after the end of the Plan: "+Fm0(i));
-		return Velocity::ZEROV();
-	}
-	if (i < 0) {
-		addWarning("initialVelocity(int): Attempt to get an initial velocity before beginning of the Plan: "+Fm0(i));
-		return Velocity::ZEROV();
-	}
-	if (size() == 1) {
-		return Velocity::ZEROV();
-	}
-	NavPoint np = points[i];
-	double t = np.time();
-	if (linear) {
-		//return np.initialVelocity(points[i+1]);
-		rtn = linearVelocityOut(i);
-		//fpln(Fm0(i)+" $$$$$ initialVelocity0: ******************* linear, rtn = "+rtn.toString());
-	} else {
-		if (np.isBOT()) { // || np.isBGS() || np.isBVS()) {
-			rtn = np.velocityInit();
-			//fpln(Fm0(i)+" $$$$$ initialVelocity0:  rtn = np.velocityIn("+Fm0(i)+") = "+ np.velocityIn().toString());
-		} else if (inTrkChange(t) || inGsChange(t) || inVsChange(t) || (np.isTCP() && i == (int) points.size()-1)) { // special case to also handle last point being in accel zone
-			rtn = velocity(t);
-			//fpln(Fm0(i)+" $$$$$ initialVelocity B:  rtn = velocity("+Fm2(t)+") = "+ rtn.toString());
-			//		} else if (i > 0 && i == points.size()-1) {
-			//			rtn = finalVelocity(i-1);
-		} else {
-			//rtn =  np.initialVelocity(points[i+1]);
-			rtn = linearVelocityOut(i);
-			//fpln(Fm0(i)+" $$$$$ initialVelocity2: rtn = getDtVelocity = "+ rtn.toString());
-		}
-	}
-	//fpln(" $$#### initialVelocity("+Fm0(i)+") rtn = "+rtn.toString());
-	return rtn;
+		return Velocity::mkTrkGsVs(trkOut(i,linear), gsOut(i,linear), vsOut(i,linear));
 }
 
 /** This function computes the velocity at point i in a strictly linear manner.  If i is an
@@ -1539,10 +1650,10 @@ Velocity Plan::initialVelocity(int i, bool linear) const {
 Velocity Plan::linearVelocityOut(int i) const {
 	Velocity rtn;
 	int j = i+1;
-	while (j < (int) points.size() && points[j].time()-points[i].time() < minDt) { // collapse next point(s) if very close
+	while (j < (int) size() && getTime(j) - getTime(i) < minDt) { // collapse next point(s) if very close
 		j++;
 	}
-	if (j >= (int) points.size()) { // special case, back up a bit
+	if (j >= (int) size()) { // special case, back up a bit
 		//Position p = position(getLastTime()-10*minDt);
 		//return p.initialVelocity(points[size()-1].position(), 10*minDt);
 		NavPoint lastPt = points[size()-1];
@@ -1556,63 +1667,53 @@ Velocity Plan::linearVelocityOut(int i) const {
 	return rtn;
 }
 
-Velocity Plan::finalLinearVelocity(int ii) const {
-	int i = ii;
-	Velocity v;
-	int j = i+1; //goal point for velocity in
-	while(i > 0 && points[j].time()-points[i].time() < minDt) {
-		i--;
-	}
-	if (i == 0 && points[j].time()-points[i].time() < minDt) {
-		while (j < size()-1 && points[j].time()-points[i].time() < minDt) {
-			j++;
-		}
-		v = points[i].initialVelocity(points[j]);
-	}
-	NavPoint np = points[i];
-	if (isLatLon()) {
-		LatLonAlt p1 = np.lla();
-		LatLonAlt p2 = point(j).lla();
-		double dt = points[j].time()-np.time();
-		v = GreatCircle::velocity_final(p1,p2,dt);
-		//f.pln(" $$$ finalLinearVelocity: p1 = "+p1+" p2 = "+p2+" dt = "+dt+" v = "+v);
-	} else {
-		v = np.initialVelocity(points[j]);
-	}
-	//f.pln(" $$ finalLinearVelocity: dt = "+(points.get(i+1).time()-points.get(i).time()));
-	return v;
-}
+//Velocity Plan::finalLinearVelocity(int ii) const {
+//	int i = ii;
+//	Velocity v;
+//	int j = i+1; //goal point for velocity in
+//	while(i > 0 && points[j].time()-points[i].time() < minDt) {
+//		i--;
+//	}
+//	if (i == 0 && points[j].time()-points[i].time() < minDt) {
+//		while (j < size()-1 && points[j].time()-points[i].time() < minDt) {
+//			j++;
+//		}
+//		v = points[i].initialVelocity(points[j]);
+//	}
+//	NavPoint np = points[i];
+//	if (isLatLon()) {
+//		LatLonAlt p1 = np.lla();
+//		LatLonAlt p2 = point(j).lla();
+//		double dt = points[j].time()-np.time();
+//		v = GreatCircle::velocity_final(p1,p2,dt);
+//		//f.pln(" $$$ finalLinearVelocity: p1 = "+p1+" p2 = "+p2+" dt = "+dt+" v = "+v);
+//	} else {
+//		v = np.initialVelocity(points[j]);
+//	}
+//	//f.pln(" $$ finalLinearVelocity: dt = "+(points.get(i+1).time()-points.get(i).time()));
+//	return v;
+//}
 
 // estimate the velocity from point i to point i+1 (at point i+1).
 Velocity Plan::finalVelocity(int i) const {
 	return finalVelocity(i, false);
 }
 
-//Velocity Plan::finalVelocity(int i, bool linear) const {
-//	if (i >= (int) size()) {   // there is no "final" velocity after the last point (in general.  it happens to work for Euclidean, but not lla)
-//		addWarning("finalVelocity(int): Attempt to get a final velocity after the end of the Plan: "+Fm0(i));
-//		return Velocity::INVALIDV();
-//	}
-//	if (i == (int) size()-1) {// || points[i].time() > getLastTime()-minDt) {
-//		addWarning("finalVelocity(int): Attempt to get a final velocity at end of the Plan: "+Fm0(i));
-//		return Velocity::ZEROV();
-//	}
-//	if (i < 0) {
-//		addWarning("finalVelocity(int): Attempt to get a final velocity before beginning of the Plan: "+Fm0(i));
-//		return Velocity::ZEROV();
-//	}
-//	//fpln(" ########## finalVelocity0:   np1="+points[i]+" np2="+points[i+1]);
-//	Velocity v = finalLinearVelocity(i);
-//	//fpln(" "+t1+" "+t2+"  ########## finalVelocity1:    at i ="+Fm0(i)+" v = "+v);
-//	if (linear) return v;
-//	double t1 = points[i].time();
-//	double t2 = points[i+1].time();
-//	v = accelZone(v,t1,t2).second;
-//	//fpln(" ########## finalVelocity2:    at i ="+Fm0(i)+" v = "+v.toString());
-//	return v;
-//}
 
 Velocity Plan::finalVelocity(int i, bool linear) const {
+	if (i >= size()) {
+		addWarning("finalVelocity(int): Attempt to get a final velocity after the end of the Plan: "+Fm0(i));
+		//Debug.halt();
+		return Velocity::INVALIDV();
+	}
+	if (i == (int) size()-1) {// || points[i].time() > getLastTime()-minDt) {
+		addWarning("finalVelocity(int): Attempt to get a final velocity at end of the Plan: "+Fm0(i));
+		return Velocity::ZEROV();
+	}
+	return Velocity::mkTrkGsVs(trkFinal(i,linear), gsFinal(i,linear), vsFinal(i,linear));
+}
+
+Velocity Plan::dtFinalVelocity(int i, bool linear) const {
 	if (i >= (int) size()) {   // there is no "final" velocity after the last point (in general.  it happens to work for Euclidean, but not lla)
 		addWarning("finalVelocity(int): Attempt to get a final velocity after the end of the Plan: "+Fm0(i));
 		return Velocity::INVALIDV();
@@ -1631,23 +1732,23 @@ Velocity Plan::finalVelocity(int i, bool linear) const {
 }
 
 
-double Plan::calcVertAccel(int i) {
-	if (i < 1 || i+1 > size()-1) return 0;
-	double acalc = (initialVelocity(i+1).vs() - finalVelocity(i-1).vs())/(point(i+1).time() - point(i).time());
-	if (point(i).isBVS()) {
-		double dt = getTime(nextEVS(i)) - point(i).time();
-		acalc = (initialVelocity(nextEVS(i)).vs() - finalVelocity(i-1).vs())/dt;
-
-	}
-	return acalc;
-}
-
-double Plan::calcGsAccel(int i) {
-	if (i < 1 || i+1 > size()-1) return 0;
-	double acalc = (initialVelocity(i+1).gs() - finalVelocity(i-1).gs())/(point(i+1).time() - point(i).time());
-	//f.pln(" calcGsAccel: $$$$ vin = "+finalVelocity(i-1)+" vout = "+initialVelocity(i+1)+" dt = "+(point(i+1).time() - point(i).time()));
-	return acalc;
-}
+//double Plan::calcVertAccel(int i) {
+//	if (i < 1 || i+1 > size()-1) return 0;
+//	double acalc = (initialVelocity(i+1).vs() - finalVelocity(i-1).vs())/(point(i+1).time() - point(i).time());
+//	if (point(i).isBVS()) {
+//		double dt = getTime(nextEVS(i)) - point(i).time();
+//		acalc = (initialVelocity(nextEVS(i)).vs() - finalVelocity(i-1).vs())/dt;
+//
+//	}
+//	return acalc;
+//}
+//
+//double Plan::calcGsAccel(int i) {
+//	if (i < 1 || i+1 > size()-1) return 0;
+//	double acalc = (initialVelocity(i+1).gs() - finalVelocity(i-1).gs())/(point(i+1).time() - point(i).time());
+//	//f.pln(" calcGsAccel: $$$$ vin = "+finalVelocity(i-1)+" vout = "+initialVelocity(i+1)+" dt = "+(point(i+1).time() - point(i).time()));
+//	return acalc;
+//}
 
 double Plan::calcTimeGSin(int i, double gs) const {
 	if (i < 1 || i >= size()) {
@@ -1713,6 +1814,7 @@ void Plan::mkGsInto(int ix, double gs) {
 }
 
 
+
 /**
  *  Change the ground speed at ix to be gs -- all other ground speeds remain the same
  *  NOTE:  This assumes that there are no BVS - EVS segments in the area
@@ -1731,7 +1833,9 @@ void Plan::mkGsOut(int ix, double gs) {
 	NavPoint np = point(ix);
 	if (np.isBeginTCP()) {
 		Velocity vin = np.velocityInit();
-		NavPoint npNew = np.makeVelocityInit(vin.mkGs(gs));
+		double vs_out = vsOut(ix);
+		vin = Velocity::mkTrkGsVs(vin.trk(),gs,vs_out);
+		NavPoint npNew = np.makeVelocityInit(vin);
 		//f.pln(" $$ makeGsOut: vin = "+vin+" npNew = "+npNew.toStringFull());
 		set(ix,npNew);
 	}
@@ -1881,6 +1985,12 @@ double Plan::vertDistance(int i, int j) const {
 	}
 	return total;
 }
+
+double Plan::averageGroundSpeed() const {
+	if (size() < 2) return 0.0;
+	return pathDistance() / (getLastTime() - getFirstTime());
+}
+
 
 // calculate vertical speed from point i to point i+1 (at point i).
 double Plan::verticalSpeed(int i) const {
@@ -2148,6 +2258,7 @@ bool Plan::isWellFormed() const {
  * Returns a nonnegative value to indicate the problem point
  */
 int Plan::indexWellFormed() const {
+	double lastTm = -1;
 	for (int i = 0; i < size(); i++) {
 		NavPoint np = point(i);
 		if (np.isBOT()) {
@@ -2180,6 +2291,17 @@ int Plan::indexWellFormed() const {
 			int j2 = prevEVS(i);
 			if (!(j1 >= 0 && j1 >= j2)) return i;
 		}
+		double tm_i = getTime(i);
+		if (i > 0) {
+			double dt = std::abs(tm_i-lastTm);
+			if (dt < minDt) {
+				fpln("$$ isWellFormed: Delta time into i = "+Fm0(i)+" is less than minDt = "+Fm8(minDt));
+				return i;
+			}
+			lastTm = tm_i;
+		}
+
+
 	}
 	return -1;
 }
@@ -2577,23 +2699,32 @@ Plan Plan::cut(int firstIx, int lastIx) const {
 }
 
 
-void  Plan::cleanAndIndex(double minDt) {
-	//f.pln(" $$$$$$ clean "+getName()+" minDt  = "+minDt);
-	for (int i = 0; i < size(); i++) {
-		if (minDt > 0 && i < size()-1) {
+void  Plan::mergeClosePoints(double minDt) {
+	//f.pln(" $$$$$$ mergeClosePoints "+getName()+" minDt  = "+minDt);
+	for (int i = size()-2; i >= 0; i--) {
+		if (minDt > 0) {
 			NavPoint npi = point(i);
 			NavPoint npip1 = point(i+1);
 			double ti = npi.time();
 			double tip1 = npip1.time();
 			if (tip1-ti < minDt) {
-				if (! npip1.isTCP() ) remove(i+1);
-				else if ( !npi.isTCP()) remove(i);
-				// TODO: else merge ??
+				int ixDelete = i+1;
+				if (i == size()-1) ixDelete = i;
+				else if (i == 0) ixDelete = 1;
+				else if (!npi.isBeginTCP() && npip1.isBeginTCP()) ixDelete = i;
+				// save attributes of "ixDelete"
+				NavPoint npDelete = point(ixDelete);
+				remove(ixDelete);
+				// the index of the remaining point is "i"
+				NavPoint newNpi = point(i).mergeTCPInfo(npDelete);
+				set(i,newNpi);
+				//f.pln(" $$$$$ mergeClosePoints: DELETE point ixDelete = "+ixDelete);
 			}
 		}
-		NavPoint npi = point(i);
-		set(i,npi.makeLinearIndex(i));
+		//NavPoint npi = point(i);
+		//set(i,npi.makeLinearIndex(i));
 	}
+
 }
 
 

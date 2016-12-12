@@ -227,7 +227,7 @@ bool PlanUtil::vsConsistent(const Plan& p, int i,  double accelEpsilon, double d
 
 
 bool PlanUtil::turnConsistent(const Plan& p, int i, double timeEpsilon, double distH_Epsilon, double distV_Epsilon, bool silent, bool useProjection) {
-	//bool rtn = true;
+	bool rtn = okWithinTurn(p,i,distH_Epsilon,silent);
 	if ( ! p.point(i).isBOT()) return true;
 	NavPoint BOT = p.point(i);
 	int ixEOT = p.nextEOT(i);//fixed
@@ -238,7 +238,6 @@ bool PlanUtil::turnConsistent(const Plan& p, int i, double timeEpsilon, double d
 	//f.pln(" $$$$>>>> turnConsistent  ixBOT = "+ixEOT+" BOT = "+BOT);
 	//f.pln(" $$$$>>>> turnConsistent  ixEOT = "+ixEOT+" EOT = "+EOT+" pathDist = "+Units.str("ft",pathDist));
 	//DebugSupport.dumpPlan(p,"_BUGBUG");
-	bool rtn = true;
 	//f.pln(" $$>>>> turnConsistent: i = "+i+" vinit.trk() = "+Units.str("deg", vInit.compassAngle())+" vout.trk() = "+Units.str("deg", vout.compassAngle()));
 	double signedRadius = BOT.signedRadius();
 	Position center = BOT.turnCenter();
@@ -269,37 +268,6 @@ bool PlanUtil::turnConsistent(const Plan& p, int i, double timeEpsilon, double d
 
 bool PlanUtil::velocityContinuous(const Plan& p, int i, double velEpsilon, bool silent) {
 	bool rtn = true;
-	std::string label = p.point(i).label();
-////	bool checkTurn = (label.find("$minorTrkChange:") != std::string::npos);
-////	//bool checkTurn = ! label.contains("$minorTrkChange:");
-////	if (checkTurn) {
-////		double turnDelta = Util::turnDelta(p.finalVelocity(i-1).trk(),p.initialVelocity(i).trk());
-////		if (turnDelta > velEpsilon) {
-////			fpln(" $$ FAIL: turnDelta = "+Units::str("deg",turnDelta));
-////			rtn = false;
-////		}
-////	}
-//	double gsDelta = p.finalVelocity(i-1).gs() - p.initialVelocity(i).gs();
-//	if (std::abs(gsDelta) > velEpsilon) {
-//		fpln(" $$ FAIL gsDelta = "+Units::str("kn",gsDelta));
-//		rtn = false;
-//	}
-//	double vsDelta = p.finalVelocity(i-1).vs() - p.initialVelocity(i).vs();
-//	if (std::abs(vsDelta) > velEpsilon) {
-//		fpln(" $$ FAIL vsDelta = "+Units::str("fpm",vsDelta));
-//		rtn = false;
-//	}
-//	if (! rtn) { // 2.6)) { // see testAces3, testRandom for worst cases
-//		if (!silent) {
-//			fpln("\n ----------------------------------------------");
-//			fpln(" $$$ isConsistent: FAIL! continuity: finalVelocity("+Fm0(i-1)+") = "+p.finalVelocity(i-1).toStringNP(4)
-//						+" != initialVelocity("+Fm0(i)+") = "+p.initialVelocity(i).toStringNP(4));
-//			Velocity DeltaV = p.finalVelocity(i-1).Sub(p.initialVelocity(i));
-//			if (DeltaV.norm() > 10*velEpsilon) {fp(" turnConsistent: ********************************");
-//			fpln("           ....  DeltaV = "+DeltaV.toStringNP(4)+" DeltaV.norm() = "+Fm2(DeltaV.norm()));
-//			}
-//		}
-//	}
 	double gsIn =  p.gsIn(i); //  p.finalVelocity(i-1).gs();
 	double gsOut = p.gsOut(i); // ) p.initialVelocity(i).gs();
 	double gsDelta = gsIn - gsOut;
@@ -331,6 +299,26 @@ bool PlanUtil::velocityContinuous(const Plan& p, int i, double velEpsilon, bool 
 	return rtn;
 
 }
+
+bool PlanUtil::okWithinTurn(const Plan& p, int i, double distH_Epsilon, bool silent) {
+	bool rtn = true;
+	if (p.inTrkChange(p.point(i).time())) {
+		int ixBOT = p.prevBOT(i+1);
+		Position center = p.point(ixBOT).turnCenter();
+		double distanceFromCenter = p.point(i).position().distanceH(center);
+		double turnRadius = p.point(ixBOT).turnRadius();
+		double deltaRadius = distanceFromCenter - turnRadius;
+		if (std::abs(distanceFromCenter - turnRadius) > distH_Epsilon) {
+			if ( ! silent) {
+				fpln(" >>> checkWithinTurn: "+p.getName()+" POINT OFF CIRCLE at i = "+Fm0(i)+" deltaRadius = "+Units::str("NM",deltaRadius));
+			}
+			rtn = false;
+		}
+	}
+	return rtn;
+
+}
+
 
 Plan PlanUtil::applyWindField(const Plan& pin, const Velocity& v) {
 	Plan p = pin;

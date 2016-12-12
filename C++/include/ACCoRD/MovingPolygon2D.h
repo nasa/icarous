@@ -12,6 +12,10 @@
 #include "Poly2D.h"
 
 namespace larcfm {
+/**
+ * Polygon detection.
+ * Based on UNVERIFIED PVS code.
+ */
 class MovingPolygon2D {
 
 
@@ -33,10 +37,15 @@ public:
 
 	Poly2D position(double t) const;
 
+  /** return true if this polygon is "stable", i.e., all vector velocities are the same */
 	bool isStable() const;
 
 	int size() const ;
 
+	/**
+	 * Reverse order of vertices
+	 * @return
+	 */
 	MovingPolygon2D reverseOrder() const;
 
 

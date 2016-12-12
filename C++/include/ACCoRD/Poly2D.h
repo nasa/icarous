@@ -20,6 +20,12 @@
 
 namespace larcfm {
 
+/**
+ * Encapsulates a geometric polygon. The polygon is defined in terms of its vertex coordinates. 
+ * This implementation assumes a simply connected polygon. The Polygon is otherwise quite general allowing multiply
+ * connected regions. The class provides a containment test for points and uses bounding rectangles
+ * to speed up computations.
+ */
 class Poly2D {
 
 private:
@@ -62,7 +68,8 @@ public:
 
 	/**
 	 * Determines if the supplied point lies within this polygon. Uses the "crossing number" algorithm
-	 *
+	 * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD detection algorithms.
+	 * 
 	 * @param a - x coordinate of the point
 	 * @param b - y coordinate of the point
 	 * @return true if the Polygon contains the point (a, b), otherwise false
@@ -73,6 +80,11 @@ public:
 
 	void setVertex(int i, const Vect2& v);
 
+	/**
+	 * Return vertex, or INVALID if out of bounds.
+	 * @param i
+	 * @return
+	 */
 	Vect2 getVertex(int i) const;
 
 	std::vector<Vect2> getVertices() const;
@@ -90,6 +102,9 @@ public:
 	 */
 	double signedArea() const ;
 
+	/**
+	 * Return the horizontal area (in m^2) of this Poly3D.
+	 */
 	double area();   // not const !!
 
 	/**
@@ -97,6 +112,11 @@ public:
 	 */
 	Vect2 centroid() const;
 
+	/**
+	 * Return the average of all vertices.  Note this is not the same as the centroid, and will be weighted 
+	 * towards concentrations of vertices instead of concentrations of area/mass.  This will, however, have the nice property of having
+	 * a constant linear velocity between two polygons, even if they morph shape. 
+	 */
 	Vect2 averagePoint() const;
 
 	// area and centroid courtesy of Paul Bourke (1988) http://paulbourke.net/geometry/polyarea/
@@ -111,6 +131,10 @@ public:
 
 	double outerDiameter() const;
 
+	/**
+	 * Distance from averagePoint to farthest vertex
+	 * @return
+	 */
 	double apBoundingRadius() const;
 
 

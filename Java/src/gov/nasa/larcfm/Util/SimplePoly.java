@@ -1270,7 +1270,7 @@ public class SimplePoly {
 						LatLonAlt c = points.get(i-1).lla();
 						LatLonAlt d = points.get(i).lla();
 						double t = GreatCircle.intersection(a, GreatCircle.velocity_initial(a, b, 100), c, GreatCircle.velocity_initial(c,d,100), true).second;
-						if (t > 1 && t < 99) {
+						if (t >= 0 && t <= 100) {
 							if (error != null) error.addError("polygon has intersecting edges at "+(i-1)+"-"+i+" and "+j+"-"+(j+1)+" t="+t);
 							return false;
 						}
@@ -1280,7 +1280,7 @@ public class SimplePoly {
 						Vect3 c = points.get(i-1).point();
 						Vect3 d = points.get(i).point();
 						double t = VectFuns.timeOfIntersection(a, Velocity.make(b.Sub(a).Scal(0.01)), c, Velocity.make(d.Sub(c).Scal(0.01)));
-						if (t > 1 && t < 99) {
+						if (t >= 0 && t <= 100) {
 							if (error != null) error.addError("polygon has intersecting edges at "+(i-1)+"-"+i+" and "+j+"-"+(j+1));
 							return false;
 						}

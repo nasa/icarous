@@ -83,13 +83,9 @@ public class DensityGridTimed extends DensityGrid {
 	
 	
 	
-	public double startTime() {
-		return startTime;
-	}
-
-	public List<Pair<Integer,Integer>> optimalPath() {
-		return optimalPath(this.gs);
-	}
+//	public List<Pair<Integer,Integer>> optimalPath() {
+//		return optimalPath(this.gs);
+//	}
 
 //	// too inefficient
 //	public List<Pair<Integer,Integer>> optimalPathDuration(double endT) {
@@ -98,10 +94,14 @@ public class DensityGridTimed extends DensityGrid {
 //		return r; 
 //	}
 
-	public List<Pair<Integer,Integer>> optimalPath(double gs) {
-		DensityGridTimedSearch dgs = new DensityGridAStarSearch();
-		return dgs.search(this, this.startPoint, this.endPoint, this.startTime, gs);
-	}
+//	public List<Pair<Integer,Integer>> optimalPath(double gs) {
+//		DensityGridTimedSearch dgs = new DensityGridAStarSearch();
+//		return dgs.search(this, this.startPoint, this.endPoint, this.startTime, gs);
+//	}
 
+	
+	public double getGroundSpeed() {
+		return gs;
+	}
 
 }

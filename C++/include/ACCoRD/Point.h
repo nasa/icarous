@@ -186,13 +186,13 @@ public:
 	 */
 	std::string toStringNP(int precision, const std::string& xUnits, const std::string& yUnits, const std::string& zUnits) const;
 
-	/**
-	 * This parses a space or comma-separated string as a Point (an inverse to the tostd::string
-	 * method).  If three bare values are present, then it is interpreted as the default units for
-	 * a point: [NM,NM,ft].  If there are 3 value/unit pairs then each values is interpreted with regard
-	 * to the appropriate unit.  If the string cannot be parsed, an INVALID value is
-	 * returned.
-	 */
+	  /** 
+	   * This parses a space or comma-separated string as a Point (an inverse to the toString 
+	   * method).  If three bare values are present, then it is interpreted as the default units for 
+	   * a point: [NM,NM,ft].  If there are 3 value/unit pairs then each values is interpreted with regard 
+	   * to the appropriate unit.  If the string cannot be parsed, an INVALID value is
+	   * returned. 
+	   */
 	static Point parse(const std::string& str);
 
 };
