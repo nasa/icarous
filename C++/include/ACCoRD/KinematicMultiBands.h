@@ -24,6 +24,100 @@
 namespace larcfm {
 
 
+/**
+ * Objects of class "KinematicMultiBands" compute the conflict bands using 
+ * kinematic single-maneuver projections of the ownship and linear preditions 
+ * of (multiple) traffic aircraft positions. The bands consist of ranges of 
+ * guidance maneuvers: track angles, ground speeds, vertical
+ * speeds, and altitude.<p> 
+ * 
+ * An assumption of the bands information is that the traffic aircraft
+ * do not maneuver. If the ownship immediately executes a NONE
+ * guidance maneuver, then the new path is conflict free (within a
+ * lookahead time of the parameter).  If the ownship immediately executes a
+ * NEAR/MID/FAR guidance maneuver and no traffic aircraft maneuvers, then
+ * there will corresponding alert within the corresponding alerting level thresholds.<p>
+ *
+ * If recovery bands are set via setRecoveryBands() and the ownship is in
+ * a violation path, loss of separation recovery bands and recovery times are
+ * computed for each type of maneuver. If the ownship immediately executes a 
+ * RECOVERY guidance maneuver, then the new path is conflict-free after the
+ * recovery time. Furthermore, the recovery time is the minimum time for which 
+ * there exists a kinematic conflict-free maneuver in the future. <p>
+ *
+ * Note that in the case of geodetic coordinates this version of bands
+ * performs an internal projection of the coordinates and velocities
+ * into the Euclidean frame (see Util/Projection).  Accuracy may be 
+ * reduced if the traffic plans involve any segments longer than
+ * Util.Projection.projectionConflictRange(lat,acc), and an error will
+ * be logged if the distance between traffic and ownship exceeds 
+ * Util.Projection.projectionMaxRange() at any point in the lookahead
+ * range.<p>
+ *
+ * Disclaimers: The formal proofs of the core algorithms use real numbers,
+ * however these implementations use floating point
+ * numbers, so numerical differences could result. In addition, the
+ * geodetic computations include certain inaccuracies, especially near
+ * the poles.<p>
+ *
+ * The basic usage is
+ * <pre>
+ * KinematicMultiBands b = new KinematicMultiBands();
+ * ...
+ * b.clear();
+ * b.setOwnship(position of ownship, velocity of ownship);
+ * b.addTraffic(position of (one) traffic aircraft, velocity of traffic);
+ * b.addTraffic(position of (another) traffic aircraft, velocity of traffic);
+ * ...add other traffic aircraft...
+ *
+ * for (int i = 0; i < b.trackLength(); i++ ) {  
+ *    intrval = b.track(i);
+ *    lower_ang = intrval.low;
+ *    upper_ang = intrval.up;
+ *    regionType = b.trackRegion(i);
+ *    ..do something with this information..
+ * } 
+ *
+ * ...similar for ground speed and vertical speed...
+ * </pre>
+ *
+ * When any "parameter" to this class is set (separation distance,
+ * lookahead time, positions in latitude/longitude, etc.), all
+ * previous bands information is cleared, though unlike 
+ * instantaneous-maneuver bands, ownship and traffic state data is 
+ * preserved in KineamaticBands unless explicitly cleared.  
+ * For more complete example usage see the file <tt>Batch.java</tt>.  <p>
+ *
+ * Kinematic bands also have a set of "step size" parameters that determine 
+ * the granularity of the search.  TrackStep indicates the maximum track 
+ * resolution, GroundSpeedStep for ground speed, and VerticalSpeedStep for 
+ * vertical speed.  These determine the output granularity, for 
+ * example, if TrackStep is set to 1 degree, bands will be in 1 degree 
+ * increments.<p>
+ *
+ * If the detection calculations discover a maneuver will cause the ownship to
+ * enter an intruder's protected zone (e.g. a loss of separation, RA), then
+ * all further maneuvers in that direction will be marked with a "near" band.
+ * An example of this is if the ownship is moving with a track of 20 deg, and
+ * a turn to the right would cause a loss of separation at the 50 deg point, 
+ * then the "near" bands for track will at least contain the range of approximately 
+ * 50-200 degrees (current track +180 deg, +/- the trackStep).<p>
+ * 
+ * Note that Bands outputs hold within a given (constant) frame of reference, with the default being
+ * against a stationary Earth (i.e. GPS coordinates and velocities).  This means that
+ * if bands are instead given wind-oriented input data (airspeed and  yaw-heading) for 
+ * all aircraft, then the output maneuvers will be in the same frame of reference:
+ * "groundSpeed" bands should then be read as "airSpeed" bands, and "track" should be
+ * read as "heading".<p>
+ *
+ * Altitude bands assume assume an immediate maneuver to a given vertical speed, 
+ * with a level off maneuver to various altitudes (based on altitudeStep, for example, 
+ * every 500 ft). "NONE" bands here indicate no conflict during or immediately following 
+ * such a maneuver, assuming all traffic aircraft continue at a constant velocity.  "NEAR"
+ * bands indicate either a loss of separation during the climb/descent or a conflict after leveling 
+ * off to that altitude.
+ *
+ */
 class KinematicMultiBands : public ErrorReporter, public GenericStateBands {
 
 protected:
@@ -48,7 +142,7 @@ public:
   KinematicMultiBands();
 
   /**
-   * Construct a KinematicMultiBands object from an existing KinematicMultiBands object. This copies all traffic data.
+   * Construct a KinematicMultiBands object from an existing object. This copies all traffic data.
    */
   KinematicMultiBands(const KinematicMultiBands& b);
 
@@ -83,7 +177,7 @@ public:
 
   void addTraffic(const Position& pi, const Velocity& vi);
 
-  /** General Settings **/
+  /* General Settings */
 
   /**
    * Set alert thresholds
@@ -108,7 +202,7 @@ public:
   void setRecoveryStabilityTime(double t);
 
   /**
-   * @return minimum horizontal separation for recovery bands in internal units [m]
+   * @return minimum horizontal separation for recovery bands in internal units [m].
    */
   double getMinHorizontalRecovery() const;
 
@@ -118,27 +212,27 @@ public:
   double getMinHorizontalRecovery(const std::string& u) const;
 
   /**
-   * Sets minimum horizontal separation for recovery bands in internal units [m]
+   * Sets minimum horizontal separation for recovery bands in internal units [m].
    */
   void setMinHorizontalRecovery(double val);
 
   /**
-   * Set minimum horizontal separation for recovery bands in specified units [u]
+   * Set minimum horizontal separation for recovery bands in specified units [u].
    */
   void setMinHorizontalRecovery(double val, const std::string& u);
 
   /**
-   * @return minimum vertical separation for recovery bands in internal units [m]
+   * @return minimum vertical separation for recovery bands in internal units [m].
    */
   double getMinVerticalRecovery() const;
 
   /**
-   * Return minimum vertical separation for recovery bands in specified units [u]
+   * Return minimum vertical separation for recovery bands in specified units [u].
    */
   double getMinVerticalRecovery(const std::string& u) const;
 
   /**
-   * Sets minimum vertical separation for recovery bands in internal units [m]
+   * Sets minimum vertical separation for recovery bands in internal units [m].
    */
   void setMinVerticalRecovery(double val);
 
@@ -257,11 +351,11 @@ public:
   void enableRecoveryBands();
 
   /**
-   * Disables recovery bands for track, ground speed, and vertical speed.
+   * Disable recovery bands for track, ground speed, and vertical speed.
    */
   void disableRecoveryBands();
 
-  /** Track Bands Settings **/
+  /* Track Bands Settings */
 
   /**
    * @return left track in radians [0 - pi] [rad] from current ownship's track
@@ -316,7 +410,7 @@ public:
   void setMinMaxTrack(double min, double max, const std::string& u);
 
   /**
-   * @return step size for track bands in internal units [rad]
+   * @return step size for track bands in internal units [rad].
    */
   double getTrackStep() const;
 
@@ -326,7 +420,7 @@ public:
   double getTrackStep(const std::string& u) const;
 
   /**
-   * Sets step size for track bands in internal units [rad]
+   * Sets step size for track bands in internal units [rad].
    */
   void setTrackStep(double val);
 
@@ -336,7 +430,7 @@ public:
   void setTrackStep(double val, const std::string& u);
 
   /**
-   * @return bank angle in internal units [rad]
+   * @return bank angle in internal units [rad].
    */
   double getBankAngle() const;
 
@@ -346,7 +440,7 @@ public:
   double getBankAngle(const std::string& u) const;
 
   /**
-   * Sets bank angle for track bands to value in internal units [rad] As a side effect, this method
+   * Sets bank angle for track bands to value in internal units [rad]. As a side effect, this method
    * resets the turn rate.
    */
   void setBankAngle(double val);
@@ -358,7 +452,7 @@ public:
   void setBankAngle(double val, const std::string& u);
 
   /**
-   * @return turn rate in internal units [rad/s]
+   * @return turn rate in internal units [rad/s].
    */
   double getTurnRate() const;
 
@@ -389,10 +483,10 @@ public:
    */
   void setRecoveryTrackBands(bool flag);
 
-  /** Ground Speed Bands Settings **/
+  /* Ground Speed Bands Settings */
 
   /**
-   * @return minimum ground speed for ground speed bands in internal units [m/s]
+   * @return minimum ground speed for ground speed bands in internal units [m/s].
    */
   double getMinGroundSpeed();
 
@@ -402,7 +496,7 @@ public:
   double getMinGroundSpeed(const std::string& u);
 
   /**
-   * Sets minimum ground speed for ground speed bands to value in internal units [m/s]
+   * Sets minimum ground speed for ground speed bands to value in internal units [m/s].
    */
   void setMinGroundSpeed(double val);
 
@@ -412,7 +506,7 @@ public:
   void setMinGroundSpeed(double val, const std::string& u);
 
   /**
-   * @return maximum ground speed for ground speed bands in internal units [m/s]
+   * @return maximum ground speed for ground speed bands in internal units [m/s].
    */
   double getMaxGroundSpeed();
 
@@ -422,7 +516,7 @@ public:
   double getMaxGroundSpeed(const std::string& u);
 
   /**
-   * Sets maximum ground speed for ground speed bands to value in internal units [m/s]
+   * Sets maximum ground speed for ground speed bands to value in internal units [m/s].
    */
   void setMaxGroundSpeed(double val);
 
@@ -446,7 +540,7 @@ public:
   void setBelowAboveGroundSpeed(double below, double above, const std::string& u);
 
   /**
-   * @return step size for ground speed bands in internal units [m/s]
+   * @return step size for ground speed bands in internal units [m/s].
    */
   double getGroundSpeedStep() const;
 
@@ -456,7 +550,7 @@ public:
   double getGroundSpeedStep(const std::string& u) const;
 
   /**
-   * Sets step size for ground speed bands to value in internal units [m/s]
+   * Sets step size for ground speed bands to value in internal units [m/s].
    */
   void setGroundSpeedStep(double val);
 
@@ -466,7 +560,7 @@ public:
   void setGroundSpeedStep(double val, const std::string& u);
 
   /**
-   * @return horizontal acceleration for ground speed bands to value in internal units [m/s^2]
+   * @return horizontal acceleration for ground speed bands to value in internal units [m/s^2].
    */
   double getHorizontalAcceleration() const;
 
@@ -476,7 +570,7 @@ public:
   double getHorizontalAcceleration(const std::string& u) const;
 
   /**
-   * Sets horizontal acceleration for ground speed bands to value in internal units [m/s^2]
+   * Sets horizontal acceleration for ground speed bands to value in internal units [m/s^2].
    */
   void setHorizontalAcceleration(double val);
 
@@ -495,10 +589,10 @@ public:
    */
   void setRecoveryGroundSpeedBands(bool flag);
 
-  /** Vertical Speed Bands Settings **/
+  /* Vertical Speed Bands Settings */
 
   /**
-   * @return minimum vertical speed for vertical speed bands in internal units [m/s]
+   * @return minimum vertical speed for vertical speed bands in internal units [m/s].
    */
   double getMinVerticalSpeed();
 
@@ -508,7 +602,7 @@ public:
   double getMinVerticalSpeed(const std::string& u);
 
   /**
-   * Sets minimum vertical speed for vertical speed bands to value in internal units [m/s]
+   * Sets minimum vertical speed for vertical speed bands to value in internal units [m/s].
    */
   void setMinVerticalSpeed(double val);
 
@@ -518,7 +612,7 @@ public:
   void setMinVerticalSpeed(double val, const std::string& u);
 
   /**
-   * @return maximum vertical speed for vertical speed bands in internal units [m/s]
+   * @return maximum vertical speed for vertical speed bands in internal units [m/s].
    */
   double getMaxVerticalSpeed();
 
@@ -528,7 +622,7 @@ public:
   double getMaxVerticalSpeed(const std::string& u);
 
   /**
-   * Sets maximum vertical speed for vertical speed bands to value in internal units [m/s]
+   * Sets maximum vertical speed for vertical speed bands to value in internal units [m/s].
    */
   void setMaxVerticalSpeed(double val);
 
@@ -552,7 +646,7 @@ public:
   void setBelowAboveVerticalSpeed(double below, double above, const std::string& u);
 
   /**
-   * @return step size for vertical speed bands in internal units [m/s]
+   * @return step size for vertical speed bands in internal units [m/s].
    */
   double getVerticalSpeedStep() const;
 
@@ -562,7 +656,7 @@ public:
   double getVerticalSpeedStep(const std::string& u) const;
 
   /**
-   * Sets step size for vertical speed bands to value in internal units [m/s]
+   * Sets step size for vertical speed bands to value in internal units [m/s].
    */
   void setVerticalSpeedStep(double val);
 
@@ -572,8 +666,8 @@ public:
   void setVerticalSpeedStep(double val, const std::string& u);
 
   /**
-   * @return constant vertical acceleration for vertical speed and altitude bands in internal
-   * units [m/s^2]
+   * @return constant vertical acceleration for vertical speed and altitude bands in internal [m/s^2]
+   * units
    */
   double getVerticalAcceleration() const;
 
@@ -605,7 +699,7 @@ public:
    */
   void setRecoveryVerticalSpeedBands(bool flag);
 
-  /** Altitude Bands Settings **/
+  /* Altitude Bands Settings */
 
   /**
    * @return minimum altitude for altitude bands in internal units [m]
@@ -751,7 +845,7 @@ public:
    */
   void setRecoveryAltitudeBands(bool flag);
 
-  /** Utility methods **/
+  /* Utility methods */
 
   /**
    *  Clear ownship and traffic data from this object.
@@ -770,7 +864,7 @@ private:
 
 public:
 
-  /** Main interface methods **/
+  /* Main interface methods */
 
   /**
    *  Return list of conflict aircraft for a given alert level.
@@ -828,7 +922,7 @@ public:
   int trackRangeOf(double trk, const std::string& u);
 
   /**
-   * @return the region of a given track specified in internal units [rad]
+   * @return the region of a given track specified in internal units [rad].
    * @param trk [rad]
    */
   BandsRegion::Region regionOfTrack(double trk);
@@ -870,7 +964,7 @@ public:
   double trackResolution(bool dir, int alert_level);
 
   /**
-   * Compute track resolution maneuver for given alert level.
+   * Compute track resolution maneuver for conflict alert level.
    * @parameter dir is right (true)/left (false) of ownship current track
    * @parameter u units
    * @return track resolution in specified units [u] in specified direction.
@@ -1178,7 +1272,7 @@ public:
   bool preferredVerticalSpeedDirection();
 
   /**
-   * @return the number of altitude band intervals, negative if the ownship has not been set
+   * @return the number of altitude band intervals, negative if the ownship has not been set.
    */
   int altitudeLength();
 
@@ -1208,7 +1302,7 @@ public:
   BandsRegion::Region altitudeRegion(int i);
 
   /**
-   * @return the range index of a given altitude specified in internal units [m]
+   * @return the range index of a given altitude specified internal units [m]
    * @param alt [m]
    */
   int altitudeRangeOf(double alt);

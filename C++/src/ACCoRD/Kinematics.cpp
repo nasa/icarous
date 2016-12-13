@@ -729,12 +729,14 @@ std::pair<Vect3,Velocity> Kinematics::vsAccel(const std::pair<Vect3,Velocity>& s
 
 
 double Kinematics::vsAccelTime(const Velocity& vo,double goalVs, double vsAccel) {
-	return vsAccelTime(vo.vs(),goalVs, vsAccel);;
+	double deltaVs = std::abs(vo.vs() - goalVs);
+	double rtn = deltaVs/vsAccel;
+	return rtn;
 }
 
 double Kinematics::vsAccelTime(double vs, double goalVs, double vsAccel) {
-	double deltaVs = vs - goalVs;
-	double rtn = std::abs(deltaVs/vsAccel);
+	double deltaVs = std::abs(vs - goalVs);
+	double rtn = deltaVs/vsAccel;
 	//f.pln("#### vsAccelTime: vs() = "+Units.str("fpm",vs)+" deltaVs = "+Units.str("fpm",deltaVs)+" rtn = "+rtn);
 	return rtn;
 }

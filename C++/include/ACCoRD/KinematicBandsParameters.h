@@ -621,14 +621,14 @@ public:
    */
   bool isEnabledRecoveryGroundSpeedBands() const;
 
-  /**
-   * @return recovery bands flag for vertical speed bands.
-   */
+	/**
+	 * @return true if recovery bands for vertical speed bands is enabled. 
+	 */
   bool isEnabledRecoveryVerticalSpeedBands() const;
 
-  /**
-   * @return recovery bands flag for altitude bands.
-   */
+	/**
+	 * @return true if recovery bands for altitude bands is enabled. 
+	 */
   bool isEnabledRecoveryAltitudeBands() const;
 
   /**
@@ -710,18 +710,18 @@ public:
    */
   double getHorizontalContourThreshold(const std::string& u) const;
 
-  /**
-   * Set horizontal contour threshold, specified in internal units [rad] as an angle to
-   * the left/right of current aircraft direction. A value of 0 means only conflict contours.
-   * A value of pi means all contours.
-   */
+	/** 
+	 * Set horizontal contour threshold, specified in internal units [rad] [0 - pi] as an angle to 
+	 * the left/right of current aircraft direction. A value of 0 means only conflict contours. 
+	 * A value of pi means all contours.
+	 */
   bool setHorizontalContourThreshold(double val);
 
-  /**
-   * Set horizontal contour threshold, specified in given units [u] as an angle to
-   * the left/right of current aircraft direction. A value of 0 means only conflict contours.
-   * A value of pi means all contours.
-   */
+	/** 
+	 * Set horizontal contour threshold, specified in given units [u] [0 - pi] as an angle to 
+	 * the left/right of current aircraft direction. A value of 0 means only conflict contours. 
+	 * A value of pi means all contours.
+	 */
   bool setHorizontalContourThreshold(double val, const std::string& u);
 
   /**

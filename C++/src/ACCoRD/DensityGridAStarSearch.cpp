@@ -117,7 +117,7 @@ bool DensityGridAStarSearch::contains(const std::vector<Triple<int,int,int> >& g
 							Position pos1 = dg.center(c.x,c.y);
 							Position pos2 = dg.center(cell2);
 							double dist = pos1.distanceH(pos2);
-							if (!isnan(dist)) { // dist == NaN if either position is invalid (i.e. center cannot be calculated)
+							if (!std::isnan(dist)) { // dist == NaN if either position is invalid (i.e. center cannot be calculated)
 								double dt = dist/gs;
 								double t = c.t + dt;
 								Triple<int,int,int> searchedcell3 = Triple<int,int,int>(c.x+x, c.y+y, 0); // do not allow revisiting cells, eventually change this to a pair?

@@ -18,7 +18,7 @@ namespace larcfm {
 /**
  * DAIDALUS version
  */
-const std::string KinematicBandsParameters::VERSION = "1.a2";
+const std::string KinematicBandsParameters::VERSION = "1.0";
 
 /* NOTE: By default, no alert levels are configured */
 KinematicBandsParameters::KinematicBandsParameters() : error("DaidalusParameters") {
@@ -28,15 +28,15 @@ KinematicBandsParameters::KinematicBandsParameters() : error("DaidalusParameters
   right_trk_ = Pi;                    // Right track [0 - pi]
   min_gs_ = Units::from("knot",10);   // Minimum ground speed
   max_gs_ = Units::from("knot",700);  // Maximum ground speed
-  min_vs_ = Units::from("fpm",-5000); // Minimum vertical speed
-  max_vs_ = Units::from("fpm",5000);  // Maximum vertical speed
-  min_alt_ = Units::from("ft",500);   // Minimum altitude
+  min_vs_ = Units::from("fpm",-6000); // Minimum vertical speed
+  max_vs_ = Units::from("fpm",6000);  // Maximum vertical speed
+  min_alt_ = Units::from("ft",100);   // Minimum altitude
   max_alt_ = Units::from("ft",50000); // Maximum altitude
 
   // Kinematic bands
   trk_step_         = Units::from("deg",  1.0); // Track step
-  gs_step_          = Units::from("knot", 1.0); // Ground speed step
-  vs_step_          = Units::from("fpm", 10.0); // Vertical speed step
+  gs_step_          = Units::from("knot", 5.0); // Ground speed step
+  vs_step_          = Units::from("fpm",100.0); // Vertical speed step
   alt_step_         = Units::from("ft", 100.0); // Altitude step
   horizontal_accel_ = Units::from("m/s^2",2.0); // Horizontal acceleration
   vertical_accel_   = Units::from("G",0.25);    // Section 1.2.3, DAA MOPS V3.6
@@ -1137,6 +1137,7 @@ void KinematicBandsParameters::setInstantaneousBands() {
   horizontal_accel_ = 0;
   vertical_accel_ = 0;
   vertical_rate_ = 0;
+  recovery_stability_time_ = 0;
 }
 
 /**
@@ -1151,6 +1152,7 @@ void KinematicBandsParameters::setKinematicBands(bool type) {
   horizontal_accel_ = Units::from("m/s^2",2.0);
   vertical_accel_ = Units::from("G",0.25);
   vertical_rate_ = Units::from("fpm",500);
+  recovery_stability_time_ = 2;
 }
 
 /**

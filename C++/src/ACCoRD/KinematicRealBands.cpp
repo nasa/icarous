@@ -197,11 +197,13 @@ double KinematicRealBands::max_rel(const TrafficState& ownship) const {
   return rel_ ? max_ : mod_val(max_ - own_val(ownship));
 }
 
-bool KinematicRealBands::check_input(const TrafficState& ownship) {
+bool KinematicRealBands::check_input(const KinematicBandsCore& core) {
   if (checked_ < 0) {
     checked_ = 0;
-    if (ownship.isValid() && step_ > 0 && ISFINITE(min_) && ISFINITE(max_)) {
-      double val = own_val(ownship);
+    int level = core.parameters.alertor.conflictAlertLevel();
+    if (core.ownship.isValid() && step_ > 0 && ISFINITE(min_) && ISFINITE(max_)&&
+        BandsRegion::isConflictBand(core.parameters.alertor.getLevel(level).getRegion())) {
+      double val = own_val(core.ownship);
       if (rel_ ? min_ <= 0.0 && max_ >= 0.0 :
           min_ <= val && val <= max_) {
         if (mod_ >= 0.0 && (mod_ == 0.0 ||
@@ -220,7 +222,7 @@ bool KinematicRealBands::kinematic_conflict(KinematicBandsCore& core, const Traf
     Detection3D* detector, double alerting_time) {
   std::vector<TrafficState> alerting_set = std::vector<TrafficState>();
   alerting_set.push_back(ac);
-  return check_input(core.ownship) &&
+  return check_input(core) &&
       any_red(detector,NULL,core.criteria_ac(),core.epsilonH(),core.epsilonV(),
           0,alerting_time,core.ownship,alerting_set);
 }
@@ -259,7 +261,7 @@ bool KinematicRealBands::rollover() {
  * Return index where val is found, -1 if invalid input, >= length if not found
  */
 int KinematicRealBands::rangeOf(KinematicBandsCore& core, double val) {
-  if (check_input(core.ownship)) {
+  if (check_input(core)) {
     val = mod_val(val);
     int last_index = length(core)-1;
     bool rov = rollover();
@@ -272,7 +274,7 @@ int KinematicRealBands::rangeOf(KinematicBandsCore& core, double val) {
       bool ub_close = none ||
           (i < last_index && order_i <= BandsRegion::order(ranges_[i+1].region)) ||
           (i == last_index && rov && order_i <= BandsRegion::order(ranges_[0].region));
-      if (ranges_[i].interval.in(val,lb_close,ub_close)) {
+      if (ranges_[i].interval.almost_in(val,lb_close,ub_close)) {
         return i;
       }
     }
@@ -318,7 +320,7 @@ void KinematicRealBands::update(KinematicBandsCore& core) {
         peripheral_aircraft(core,alert_level);
       }
     }
-    if (check_input(core.ownship)) {
+    if (check_input(core)) {
       compute(core);
     }
     outdated_ = false;
@@ -541,7 +543,10 @@ void KinematicRealBands::compute(KinematicBandsCore& core) {
       if (!ISNAN(recovery_time)) {
         recovery = true;
         recovery_time_ = recovery_time;
-        region = core.parameters.alertor.getLevel(core.lastConflictAlertLevel()).getRegion();
+        int cal = core.currentAlertLevel();
+        if (cal > alert_level) {
+            region = core.parameters.alertor.getLevel(cal).getRegion();
+        }
       }
       none_sets.push_back(noneset);
       regions.push_back(region);
@@ -564,7 +569,7 @@ Interval KinematicRealBands::find_resolution(KinematicBandsCore& core, const Int
     // There is a resolution
     double val = own_val(core.ownship);
     for (int i=0; i < noneset.size(); ++i) {
-      if (noneset.getInterval(i).inCC(val)) {
+      if (noneset.getInterval(i).almost_in(val,true,true)) {
         // There is no conflict
         l = NaN;
         u = NaN;
@@ -589,7 +594,7 @@ Interval KinematicRealBands::find_resolution(KinematicBandsCore& core, const Int
           if (mod_ > 0) {
             l = noneset.getInterval(noneset.size()-1).up;
             if (Util::almost_geq(mod_val(val-l),mod_/2.0)) {
-              u = NINFINITY;
+              l = NINFINITY;
             }
           }
           u = noneset.getInterval(i).low;
@@ -651,7 +656,7 @@ bool KinematicRealBands::preferred_direction(KinematicBandsCore& core, int alert
  * Note: 1 <= alert_level <= alertor.size()
  */
 double KinematicRealBands::last_time_to_maneuver(KinematicBandsCore& core, const TrafficState& ac) {
-  if (check_input(core.ownship)) {
+  if (check_input(core)) {
     int conflict_level = core.parameters.alertor.conflictAlertLevel();
     Detection3D* detector = core.parameters.alertor.getLevel(conflict_level).getDetectorRef();
     double T = core.parameters.alertor.getLevel(conflict_level).getEarlyAlertingTime();

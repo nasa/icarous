@@ -101,26 +101,36 @@ public:
 
   void set_recovery(bool flag);
 
-  /**
-   * Returned value is in [0,mod_]. When mod_ == 0, min_val() <= max_val().
-   * When mod_ > 0, it is not always true that min_val() <= max_val()
-   */
+	/** 
+	 * When mod_ == 0, min_val <= max_val. When mod_ > 0, min_val is a value is in [0,mod_]. 
+	 * In this case, it is not always true that min_val <= max_val
+	 */
   double min_val(const TrafficState& ownship) const;
 
   /*
    * Return a positive number in [0,mod_/2]
    */
+	/** 
+	 * Positive distance from current value to minimum value. When mod_ > 0, min_rel is a value in [0,mod_/2]
+	 */
   double min_rel(const TrafficState& ownship) const;
 
   /*
    * Returned value is in [0,mod_]. When mod_ == 0, min_val() <= max_val().
    * When mod_ > 0, it is not always true that min_val() <= max_val()
    */
+	/** 
+	 * When mod_ == 0, min_val <= max_val. When mod_ > 0, max_val is a value in [0,mod_]. 
+	 * In this case, it is not always true that min_val <= max_val
+	 */
   double max_val(const TrafficState& ownship) const;
 
+	/**
+	 * Positive distance from current value to maximum value. When mod_ > 0, max_rel is a value in [0,mod_/2]
+	 */
   double max_rel(const TrafficState& ownship) const;
 
-  bool check_input(const TrafficState& ownship);
+  bool check_input(const KinematicBandsCore& core);
 
   bool kinematic_conflict(KinematicBandsCore& core, const TrafficState& ac,
       Detection3D* detector, double alerting_time);
@@ -153,10 +163,10 @@ public:
    */
   std::vector<TrafficState> const & peripheralAircraft(KinematicBandsCore& core, int alert_level);
 
-  /**
-   * Return time to recovery. Return NaN if bands are not saturated and negative infinity
-   * when bands are saturated but no recovery within max_recovery_time.
-   */
+	/**
+	 * Return time to recovery. Return NaN if bands are not saturated and negative infinity 
+	 * when bands are saturated but no recovery within early alerting time.
+	 */
   double timeToRecovery(KinematicBandsCore& core);
 
   /**
@@ -175,18 +185,18 @@ public:
    */
   double compute_resolution(KinematicBandsCore& core, int alert_level, bool dir);
 
-  /**
-   * Compute preferred direction base on resolution that is closer
-   * to current value.
-   */
+	/**
+	 * Compute preferred direction, for given alert level, based on resolution that is closer
+	 * to current value.
+	 */
   bool preferred_direction(KinematicBandsCore& core, int alert_level);
 
-  /**
-   * Return last time to maneuver, in seconds, for ownship with respect to traffic
-   * aircraft ac for conflict alert level. Return NaN if the ownship is not in conflict with aircraft ac within
-   * late alerting time. Return negative infinity if there is no time to maneuver.
-   * Note: 1 <= alert_level <= alertor.size()
-   */
+	/**
+	 * Return last time to maneuver, in seconds, for ownship with respect to traffic
+	 * aircraft ac for conflict alert level. Return NaN if the ownship is not in conflict with aircraft ac within 
+	 * early alerting time. Return negative infinity if there is no time to maneuver.
+	 * Note: 1 <= alert_level <= alertor.size()
+	 */
   double last_time_to_maneuver(KinematicBandsCore& core, const TrafficState& ac);
 
   /**
@@ -248,10 +258,11 @@ private:
    */
   void peripheral_aircraft(KinematicBandsCore& core, int alert_level);
 
-  /**
-   * Ensure that the intervals are "complete", filling in missing intervals and ensuring the
-   * bands end at the  proper bounds. The parameters bands is a set of no-conflict bands.
-   */
+	/** 
+	 * Ensure that the intervals are "complete", filling in missing intervals and ensuring the 
+	 * bands end at the  proper bounds. 
+	 * Requires none_sets to be a non-empty list and size(none_sets) == size(regions)
+	 */
   void color_bands(const std::vector<IntervalSet> & none_sets, const std::vector<BandsRegion::Region>& regions,
       KinematicBandsCore & core, bool recovery);
 
