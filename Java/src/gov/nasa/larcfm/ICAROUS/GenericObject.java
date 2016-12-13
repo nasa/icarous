@@ -39,73 +39,69 @@ import com.MAVLink.icarous.*;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Velocity;
 
-public class GenericObject{
+public class GenericObject {
 
-    public int id;
-    public int type;
-    public Position pos;
-    public Velocity vel;
-    public double orientation;
+	public int id;
+	public int type;
+	public Position pos;
+	public Velocity vel;
+	public double orientation;
 
-    public GenericObject(int type_in,int id_in,
-			 float lat_in, float lon_in, float altmsl_in,			 
-			 float vx_in, float vy_in,float vz_in){
-	id   = id_in;
-	type = type_in;
-	pos  = Position.makeLatLonAlt(lat_in,"degree",lon_in,"degree",altmsl_in,"m");
-	vel  = Velocity.makeVxyz(vy_in,vx_in,"m/s",vz_in,"m/s");		
-	orientation = vel.trk();
-	
-    }
+	public GenericObject(int type_in, int id_in, float lat_in, float lon_in, float altmsl_in, float vx_in, float vy_in,
+			float vz_in) {
+		id = id_in;
+		type = type_in;
+		pos = Position.makeLatLonAlt(lat_in, "degree", lon_in, "degree", altmsl_in, "m");
+		vel = Velocity.makeVxyz(vy_in, vx_in, "m/s", vz_in, "m/s");
+		orientation = vel.trk();
 
-    public boolean isEqual(GenericObject obj,boolean update){
-
-	if(id == obj.id){
-	    if(update){
-		pos = obj.pos.copy();
-		vel = obj.vel.mkAddTrk(0);
-		orientation = obj.orientation;
-	    }
-	    return true;
-	}else{
-	    return false;
-	}
-	
-    }
-	
-    
-
-    public static void AddObject(List<GenericObject> objectList,GenericObject obj){
-
-	boolean inList = false;
-	for(int i=0;i<objectList.size();i++){
-	    if( objectList.get(i).isEqual(obj,true)){ 
-		inList = true;
-		break;
-	    }
 	}
 
-	if(!inList){
-	    objectList.add(obj);
-	    System.out.println("Added object");
-	}
-	
-    }
+	public boolean isEqual(GenericObject obj, boolean update) {
 
-    public static void RemoveObject(List<GenericObject> objectList, int id){
+		if (id == obj.id) {
+			if (update) {
+				pos = obj.pos.copy();
+				vel = obj.vel.mkAddTrk(0);
+				orientation = obj.orientation;
+			}
+			return true;
+		} else {
+			return false;
+		}
 
-	GenericObject obj;
-	Iterator Itr = objectList.iterator();
-	
-	while(Itr.hasNext()){
-	    obj = (GenericObject) Itr.next();
-	    
-	    if(obj.id == id){
-		Itr.remove();		
-		break;   
-	    }
 	}
-    }
-    
+
+	public static void AddObject(List<GenericObject> objectList, GenericObject obj) {
+
+		boolean inList = false;
+		for (int i = 0; i < objectList.size(); i++) {
+			if (objectList.get(i).isEqual(obj, true)) {
+				inList = true;
+				break;
+			}
+		}
+
+		if (!inList) {
+			objectList.add(obj);
+			System.out.println("Added object");
+		}
+
+	}
+
+	public static void RemoveObject(List<GenericObject> objectList, int id) {
+
+		GenericObject obj;
+		Iterator Itr = objectList.iterator();
+
+		while (Itr.hasNext()) {
+			obj = (GenericObject) Itr.next();
+
+			if (obj.id == id) {
+				Itr.remove();
+				break;
+			}
+		}
+	}
+
 }
-

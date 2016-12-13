@@ -37,167 +37,159 @@ import java.util.*;
 import java.lang.*;
 import gov.nasa.larcfm.Util.Position;
 
-enum CONFLICT_TYPE{
-	NONE,KEEP_IN, KEEP_OUT, TRAFFIC, OBSTACLE, EXAMINE, FLIGHTPLAN
+enum CONFLICT_TYPE {
+	NONE, KEEP_IN, KEEP_OUT, TRAFFIC, OBSTACLE, EXAMINE, FLIGHTPLAN
 }
 
-enum PRIORITY_LEVEL{
-    LOW, MEDIUM, HIGH;
+enum PRIORITY_LEVEL {
+	LOW, MEDIUM, HIGH;
 }
 
-public class Conflict{   
+public class Conflict {
 
-    CONFLICT_TYPE conflictType;
-    PRIORITY_LEVEL priority;
+	CONFLICT_TYPE conflictType;
+	PRIORITY_LEVEL priority;
 
-    GeoFence fence;
-    GenericObject object;
-    Position place;
+	GeoFence fence;
+	GenericObject object;
+	Position place;
 
-    public Conflict(PRIORITY_LEVEL level, CONFLICT_TYPE ctype,GeoFence GF,Position pos){
-	priority     = level;
-	conflictType = ctype;
-	fence        = GF;
-	place        = pos;
-    }
+	public Conflict(PRIORITY_LEVEL level, CONFLICT_TYPE ctype, GeoFence GF, Position pos) {
+		priority = level;
+		conflictType = ctype;
+		fence = GF;
+		place = pos;
+	}
 
-    public Conflict(PRIORITY_LEVEL level, CONFLICT_TYPE ctype,GenericObject OB){
-	priority     = level;
-	conflictType = ctype;
-        object       = OB;
-    }
+	public Conflict(PRIORITY_LEVEL level, CONFLICT_TYPE ctype, GenericObject OB) {
+		priority = level;
+		conflictType = ctype;
+		object = OB;
+	}
 
-    public Conflict(PRIORITY_LEVEL level, CONFLICT_TYPE ctype){
-	priority     = level;
-	conflictType = ctype;
-    }
+	public Conflict(PRIORITY_LEVEL level, CONFLICT_TYPE ctype) {
+		priority = level;
+		conflictType = ctype;
+	}
 
-    
+	public void SetPriority(PRIORITY_LEVEL level) {
+		priority = level;
+	}
 
-    public void SetPriority(PRIORITY_LEVEL level){
-	priority = level;
-    }
+	public int IsEqual(Conflict conf) {
 
-    public int IsEqual(Conflict conf){
+		int val = 0; // -1 - not equal, 0-equal, 1-equal/diff priority
+		if (conflictType == conf.conflictType) {
 
-	int val = 0; // -1 - not equal, 0-equal, 1-equal/diff priority
-	if(conflictType == conf.conflictType){
+			switch (conflictType) {
 
-	    switch(conflictType){
-		
-	    case FLIGHTPLAN:
-		return 1;
-		
-	    case KEEP_IN:
-		if (fence.ID == conf.fence.ID){
-		    double distance = place.distanceH(conf.place);
-		    if(distance < 5){
-			return 1;
-		    }
-		    else{
-			return 0;
-		    }
-		}else{
-		    return 0;
+			case FLIGHTPLAN:
+				return 1;
+
+			case KEEP_IN:
+				if (fence.ID == conf.fence.ID) {
+					double distance = place.distanceH(conf.place);
+					if (distance < 5) {
+						return 1;
+					} else {
+						return 0;
+					}
+				} else {
+					return 0;
+				}
+
+			case KEEP_OUT:
+				if (fence.ID == conf.fence.ID) {
+					return 1;
+				} else {
+					return 0;
+				}
+
+			case TRAFFIC:
+				return 1;
+
+			case OBSTACLE:
+			case EXAMINE:
+
+				if (object.id == conf.object.id) {
+					return 0;
+				} else {
+					return 1;
+				}
+
+			} // switch
+
+		} // if
+		return -1;
+	}
+
+	public void printConflict() {
+		System.out.println("CONFLICT TYPE:" + conflictType);
+	}
+
+	public static void printConflictList(List<Conflict> conflictList) {
+		for (int i = 0; i < conflictList.size(); i++) {
+			conflictList.get(i).printConflict();
 		}
-		
-	    case KEEP_OUT:
-		if (fence.ID == conf.fence.ID){		    
-			return 1;
-		}else{
-		    return 0;
+	}
+
+	public static void AddConflictToList(List<Conflict> conflictList, Conflict conf) {
+
+		if (conflictList.size() > 0) {
+			boolean inList = false;
+			for (int i = 0; i < conflictList.size(); i++) {
+
+				Conflict con = (Conflict) conflictList.get(i);
+
+				int check = con.IsEqual(conf);
+
+				if (check > 0) {
+					inList = true;
+				}
+
+			}
+
+			if (!inList) {
+				conflictList.add(conf);
+				System.out.println("adding conflict");
+			}
+		} else {
+			conflictList.add(conf);
+			System.out.println("adding conflict");
 		}
-		
-	    case TRAFFIC:
-		return 1;
-		
-	    case OBSTACLE:		
-	    case EXAMINE:
 
-		if (object.id == conf.object.id){		    
-			return 0;
-		}else{
-			return 1;
-		}					    
-	    
-	    } // switch
-   
-	} // if
-	return -1;
-    }
-
-    public void printConflict(){
-	System.out.println("CONFLICT TYPE:"+conflictType)	;
-    }
-
-    public static void printConflictList(List<Conflict> conflictList){
-	for(int i=0;i<conflictList.size();i++){
-	    conflictList.get(i).printConflict();
 	}
-    }
-    
-    public static void AddConflictToList(List<Conflict> conflictList, Conflict conf){
 
-	
-	if(conflictList.size() > 0){
-	    boolean inList = false;
-	    for(int i=0;i<conflictList.size();i++){
+	public static void RemoveTrafficConflict(List<Conflict> conflictList) {
 
-		Conflict con = (Conflict) conflictList.get(i);
+		for (int i = 0; i < conflictList.size(); i++) {
+			Conflict conf = conflictList.get(i);
 
-		int check = con.IsEqual(conf);
-
-		if(check > 0){
-		    inList = true;
+			if (conf.conflictType == CONFLICT_TYPE.TRAFFIC) {
+				conflictList.remove(i);
+			}
 		}
-			
-	    }
 
-	    if(!inList){
-		conflictList.add(conf);
-		System.out.println("adding conflict");
-	    }
 	}
-	else{
-	    conflictList.add(conf);
-	    System.out.println("adding conflict");
-	}
-	
-    }
 
-    public static void RemoveTrafficConflict(List<Conflict> conflictList){
-
-	for(int i=0;i<conflictList.size();i++){
-	    Conflict conf = conflictList.get(i);
-
-	    if(conf.conflictType == CONFLICT_TYPE.TRAFFIC){
-		conflictList.remove(i);
-	    }
-	}
-	
-    }
-
-    
-    /*
-    public static void RemoveConflict(List<Conflict> conflictList, Conflict conf){
-	if(conflictList.size() > 0){
-	    boolean inList = false;
-	    for(int i=0;i<conflictList.size();i++){
-
-		Conflict con = (Conflict) conflictList.get(i);
-
-		int check = con.IsEqual(conf,true);
-
-		if(check > 0){
-		    conflictList.remove(i);
-		    System.out.println("Removing conflict");
-		    System.out.println("Conflict size:"+conflictList.size());
-		}
-			
-	    }
-	    
-	}
-	
-	}*/
+	/*
+	 * public static void RemoveConflict(List<Conflict> conflictList, Conflict
+	 * conf){ if(conflictList.size() > 0){ boolean inList = false; for(int
+	 * i=0;i<conflictList.size();i++){
+	 * 
+	 * Conflict con = (Conflict) conflictList.get(i);
+	 * 
+	 * int check = con.IsEqual(conf,true);
+	 * 
+	 * if(check > 0){ conflictList.remove(i);
+	 * System.out.println("Removing conflict");
+	 * System.out.println("Conflict size:"+conflictList.size()); }
+	 * 
+	 * }
+	 * 
+	 * }
+	 * 
+	 * }
+	 */
 
 }

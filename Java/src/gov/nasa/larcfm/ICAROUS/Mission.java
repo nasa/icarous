@@ -35,12 +35,12 @@ package gov.nasa.larcfm.ICAROUS;
 
 import gov.nasa.larcfm.Util.ErrorReporter;
 
-public interface Mission{
+public interface Mission {
 
-    public int Execute(Aircraft UAS);
+	public int Execute(Aircraft UAS);
 
-    public boolean isMissionComplete();
+	public boolean isMissionComplete();
 
-    public int GetMissionState();
+	public int GetMissionState();
 
 }

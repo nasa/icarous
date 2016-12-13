@@ -38,57 +38,54 @@ import gov.nasa.larcfm.Util.ParameterData;
 import com.MAVLink.icarous.*;
 import java.io.*;
 
+public class BCAST implements Runnable {
 
-public class BCAST implements Runnable{
+	public Thread t;
+	public String threadName;
+	public Aircraft UAS;
+	public AircraftData FlightData;
+	public Interface Intf;
+	ParameterData pData;
 
-    public Thread t;
-    public String threadName;
-    public Aircraft UAS;
-    public AircraftData FlightData;
-    public Interface Intf;
-    ParameterData pData;
-    
-    public BCAST(String name,Aircraft uas,Interface bcastIntf,ParameterData pdata){
-	threadName       = name;
-	UAS              = uas;               
-	FlightData       = UAS.FlightData;
-	Intf             = bcastIntf;
-	pData            = pdata;
-	
-	
-    }
-
-    public void run(){
-
-	msg_heartbeat_icarous ICAROUSstate = new msg_heartbeat_icarous();
-	double ic_hz                       = pData.getValue("ICHBEAT");
-
-	double timeStart                   = (double) (System.nanoTime()/1E9);
-	double timeCurrent,timeElapsed;                 
-	while(true){	    	    	    	   
-	    ic_hz                       = pData.getValue("ICHBEAT");
-	    
-	    timeCurrent = (double) (System.nanoTime()/1E9);
-
-	    timeElapsed = timeCurrent - timeStart;
-
-	    if(timeElapsed > 1/ic_hz){
-		ICAROUSstate.status = (byte) UAS.GetAircraftState();
-	    
-		// Broadcast messages here
-		Intf.Write(ICAROUSstate);
-		
-		timeStart = timeCurrent;
-	    }
-
+	public BCAST(String name, Aircraft uas, Interface bcastIntf, ParameterData pdata) {
+		threadName = name;
+		UAS = uas;
+		FlightData = UAS.FlightData;
+		Intf = bcastIntf;
+		pData = pdata;
 
 	}
-    }
 
-    public void start(){
-	System.out.println("Starting "+threadName);
-	t = new Thread(this,threadName);
-	t.start();
-    }
-    
+	public void run() {
+
+		msg_heartbeat_icarous ICAROUSstate = new msg_heartbeat_icarous();
+		double ic_hz = pData.getValue("ICHBEAT");
+
+		double timeStart = (double) (System.nanoTime() / 1E9);
+		double timeCurrent, timeElapsed;
+		while (true) {
+			ic_hz = pData.getValue("ICHBEAT");
+
+			timeCurrent = (double) (System.nanoTime() / 1E9);
+
+			timeElapsed = timeCurrent - timeStart;
+
+			if (timeElapsed > 1 / ic_hz) {
+				ICAROUSstate.status = (byte) UAS.GetAircraftState();
+
+				// Broadcast messages here
+				Intf.Write(ICAROUSstate);
+
+				timeStart = timeCurrent;
+			}
+
+		}
+	}
+
+	public void start() {
+		System.out.println("Starting " + threadName);
+		t = new Thread(this, threadName);
+		t.start();
+	}
+
 }
