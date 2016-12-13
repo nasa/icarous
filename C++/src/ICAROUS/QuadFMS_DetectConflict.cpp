@@ -152,10 +152,15 @@ void QuadFMS_t::CheckTraffic(){
 	for(int ac = 1;ac<DAA.numberOfAircraft();ac++){
 		double tlos = DAA.timeToViolation(ac);
 		if(tlos >=0 && tlos <= daaLookAhead){
-			Conflict.traffic = true;
 			DAA.kinematicMultiBands(KMB);
-			time(&daaTimeStart);
-			daaViolation = true;
+			for(int ib=0;ib<KMB.trackLength();++ib){
+				if(KMB.trackRegion(ib) != larcfm::BandsRegion::NONE ){
+					Conflict.traffic = true;
+					time(&daaTimeStart);
+					daaViolation = true;
+					//printf("traffic Conflict\n");
+				}
+			}
 		}
 	}
 

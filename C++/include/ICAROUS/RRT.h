@@ -45,6 +45,7 @@
 #include "Poly3D.h"
 #include "CDPolycarp.h"
 #include "Position.h"
+#include "Velocity.h"
 #include "Vect3.h"
 #include "Plan.h"
 #include "Daidalus.h"
@@ -93,7 +94,7 @@ public:
 
 	RRT_t();
 	RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
-			std::vector<Vect3> trafficPos,std::vector<Vect3> trafficVel,int stepT,double dt);
+			std::vector<Position> trafficPos,std::vector<Velocity> trafficVel,int stepT,double dt);
 
 	void Initialize(Vect3 Pos,Vect3 Vel,
 			std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel);

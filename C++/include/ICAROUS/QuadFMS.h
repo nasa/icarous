@@ -42,6 +42,7 @@
 #include "RRT.h"
 #include "Daidalus.h"
 #include "KinematicMultiBands.h"
+#include <time.h>
 
 class QuadFMS_t:public FlightManagementSystem_t{
 
@@ -61,6 +62,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
         Daidalus DAA;
         KinematicMultiBands KMB;
         double daaLookAhead;
+        time_t trafficResolutionTime;
 
     public:
         QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData);
@@ -83,6 +85,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
         void ResolveKeepInConflict();
         void ResolveKeepOutConflict();
         void ResolveFlightPlanDeviation();
+        void ResolveTrafficConflict();
         Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
         time_t daaTimeStart;
 };

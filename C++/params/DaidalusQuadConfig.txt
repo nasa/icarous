@@ -1,5 +1,5 @@
 # Conflict Bands Parameters
-lookahead_time = 20.0 [s]
+lookahead_time = 30.0 [s]
 left_trk = 180.0 [deg]
 right_trk = 180.0 [deg]
 min_gs = 0.1 [m/s]
@@ -38,9 +38,9 @@ ca_factor = 0.2
 # If contour_thr is set to 0, only conflict contours are computed. Max value is 180 [deg]
 contour_thr = 180.0 [deg]
 # Alert Levels
-alert_1_alerting_time = 10.0 [s]
+alert_1_alerting_time = 20.0 [s]
 alert_1_detector = det_1
-alert_1_early_alerting_time = 20.0 [s]
+alert_1_early_alerting_time = 25.0 [s]
 alert_1_region = NEAR
 alert_1_spread_alt = 0.0 [ft]
 alert_1_spread_gs = 0.0 [knot]

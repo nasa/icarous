@@ -48,6 +48,8 @@
      DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
      time(&daaTimeStart);
      daaLookAhead = DAA.parameters.getLookaheadTime("s");
+     trafficResolutionTime = 0;
+
  }
 
  QuadFMS_t::~QuadFMS_t(){}
@@ -119,6 +121,21 @@ uint8_t QuadFMS_t::Monitor(){
 	//Check flight plan deviaiton
 	CheckFlightPlanDeviation();
 
+	//Check traffic
+	if(FlightData->trafficList.size() > 0){
+		CheckTraffic();
+
+		time_t currentTime;
+		time(&currentTime);
+		double diff = difftime(currentTime,trafficResolutionTime);
+
+		if( (Conflict.traffic == true) && (diff > 10) ){
+			resolutionState = COMPUTE_r;
+			printf("diff %f\n",diff);
+			printf("resetting resolution to compute\n");
+		}
+	}
+
 	if(Conflict.size() != conflictSize){
 		conflictSize = Conflict.size();
 		if(conflictSize > 0){
@@ -133,11 +150,18 @@ uint8_t QuadFMS_t::Resolve(){
 
 	uint8_t status;
 
+
+
 	switch(resolutionState){
 
 	case COMPUTE_r:
 
-		if(Conflict.keepin){
+		if(Conflict.traffic){
+			printf("Computing traffic resolution\n");
+			ResolveTrafficConflict();
+			time(&trafficResolutionTime);
+		}
+		else if(Conflict.keepin){
 			printf("Computing keep in resolution\n");
 			ResolveKeepInConflict();
 		}

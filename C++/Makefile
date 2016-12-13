@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -Wall -g -Wno-write-strings -std=c++11
+CFLAGS = -g -Wno-write-strings -std=c++11
 INCLUDES = -I./libs/mavlink -I./include/ACCoRD -I./include/ICAROUS
 LIBS = -lpthread -lm
 SRCS = $(wildcard ./src/ICAROUS/*.cpp)
