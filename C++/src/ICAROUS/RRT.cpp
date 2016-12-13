@@ -420,13 +420,17 @@ void RRT_t::RRTStep(){
 	rd.pos.z = 5;    // should  be set appropriately for 3D plans
 
 	node_t nearest = FindNearest(rd);
-
-	double U[3];
-	GetInput(nearest,rd,U);
-
-
-	node_t newNode = MotionModel(nearest.pos,nearest.vel,
-								 nearest.trafficPos,nearest.trafficVel,U);
+	node_t newNode;
+	if(!CheckDirectPath2Goal(nearest)){;
+		double U[3];
+		GetInput(nearest,rd,U);
+		newNode = MotionModel(nearest.pos,nearest.vel,
+									 nearest.trafficPos,nearest.trafficVel,U);
+	}else{
+		nodeCount++;
+		newNode = goalNode;
+		newNode.id = nodeCount;
+	}
 
 	if(newNode.id < 0){
 		return;
@@ -439,11 +443,23 @@ void RRT_t::RRTStep(){
 
 }
 
-bool RRT_t::CheckGoal(node_t goal){
+bool RRT_t::CheckDirectPath2Goal(node_t nearest){
+	//TODO: add check against fences also
+	// TODO: add velocity towards goal
+	if(CheckTrafficCollision(nearest.pos,nearest.vel,nearest.trafficPos,nearest.trafficVel)){
+		return false;
+	}
+	else{
+		return true;
+	}
+
+}
+
+bool RRT_t::CheckGoal(){
 
 	node_t lastNode = nodeList.back();
 
-	Vect3 diff = lastNode.pos.Sub(goal.pos);
+	Vect3 diff = lastNode.pos.Sub(goalNode.pos);
 	double mag = diff.norm();
 
 	if(mag < closestDist){
@@ -458,10 +474,12 @@ bool RRT_t::CheckGoal(node_t goal){
 	}
 }
 
-bool RRT_t::CheckGoal(Position goal){
-
+void RRT_t::SetGoal(Position goal){
 	goalNode.pos = proj.project(goal);
-	return CheckGoal(goalNode);
+}
+
+void RRT_t::SetGoal(node_t goal){
+	goalNode = goal;
 }
 
 Plan RRT_t::GetPlan(){

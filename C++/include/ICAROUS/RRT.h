@@ -110,9 +110,11 @@ public:
 	node_t FindNearest(node_t query);
 	double NodeDistance(node_t A,node_t B);
 	void RRTStep();
-	bool CheckGoal(node_t goal);
-	bool CheckGoal(Position goal);
+	bool CheckGoal();
 	Plan GetPlan();
+	void SetGoal(Position goal);
+	void SetGoal(node_t goal);
+	bool CheckDirectPath2Goal(node_t nearest);
 };
 
 

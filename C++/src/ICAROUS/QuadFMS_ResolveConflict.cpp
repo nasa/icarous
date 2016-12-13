@@ -209,10 +209,11 @@ void QuadFMS_t::ResolveKeepOutConflict(){
 	int Tstep  = 5;
 	double dT  = 1;
 	RRT_t RRT(FlightData->fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT);
+	RRT.SetGoal(goal);
 
 	for(int i=0;i<Nsteps;i++){
 		RRT.RRTStep();
-		if(RRT.CheckGoal(goal)){
+		if(RRT.CheckGoal()){
 			printf("Goal found\n");
 			break;
 		}
@@ -318,10 +319,11 @@ void QuadFMS_t::ResolveTrafficConflict(){
 	int Tstep  = 5;
 	double dT  = 1;
 	RRT_t RRT(FlightData->fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT);
+	RRT.SetGoal(goal);
 
 	for(int i=0;i<Nsteps;i++){
 		RRT.RRTStep();
-		if(RRT.CheckGoal(goal)){
+		if(RRT.CheckGoal()){
 			//printf("Goal found\n");
 			break;
 		}
