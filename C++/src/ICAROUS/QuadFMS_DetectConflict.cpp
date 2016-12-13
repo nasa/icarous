@@ -148,6 +148,8 @@ void QuadFMS_t::CheckTraffic(){
 		DAA.addTrafficState(name,si,vi);
 	}
 
+	double qHeading = vo.track("degree");
+
 	bool daaViolation = false;
 	for(int ac = 1;ac<DAA.numberOfAircraft();ac++){
 		double tlos = DAA.timeToViolation(ac);
@@ -155,10 +157,13 @@ void QuadFMS_t::CheckTraffic(){
 			DAA.kinematicMultiBands(KMB);
 			for(int ib=0;ib<KMB.trackLength();++ib){
 				if(KMB.trackRegion(ib) != larcfm::BandsRegion::NONE ){
-					Conflict.traffic = true;
-					time(&daaTimeStart);
-					daaViolation = true;
-					//printf("traffic Conflict\n");
+					Interval ii = KMB.track(ib,"deg");
+					if(qHeading > ii.low && qHeading < ii.up){
+						Conflict.traffic = true;
+						time(&daaTimeStart);
+						daaViolation = true;
+						//printf("traffic Conflict\n");
+					}
 				}
 			}
 		}

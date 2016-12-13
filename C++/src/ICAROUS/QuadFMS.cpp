@@ -129,7 +129,7 @@ uint8_t QuadFMS_t::Monitor(){
 		time(&currentTime);
 		double diff = difftime(currentTime,trafficResolutionTime);
 
-		if( (Conflict.traffic == true) && (diff > 10) ){
+		if( (Conflict.traffic == true) && (diff > 20) ){
 			resolutionState = COMPUTE_r;
 			printf("diff %f\n",diff);
 			printf("resetting resolution to compute\n");
@@ -291,6 +291,7 @@ uint8_t QuadFMS_t::FlyManuever(){
 	switch(maneuverState){
 
 	case START_m:
+		printf("executing maneuver resolution\n");
 		SetMode(GUIDED);
 		SetSpeed(resolutionSpeed);
 		maneuverState = GUIDE_m;
@@ -304,6 +305,7 @@ uint8_t QuadFMS_t::FlyManuever(){
 		}
 
 		if(!Conflict.flightPlanDeviation){
+			printf("finished maneuver resolution\n");
 			maneuverState = IDLE_m;
 			Conflict.clear();
 			conflictSize = Conflict.size();

@@ -171,6 +171,8 @@ bool RRT_t::CheckTrafficCollision(Vect3 qPos,Vect3 qVel,
 	std::vector<Vect3>::iterator itP;
 	std::vector<Vect3>::iterator itV;
 	int i=0;
+	double trafficDist = MAXDOUBLE;
+
 	for(itP = TrafficPos.begin(),itV = TrafficVel.begin();
 		itP != TrafficPos.end(),itV != TrafficVel.end();
 		++itP,++itV){
@@ -179,6 +181,16 @@ bool RRT_t::CheckTrafficCollision(Vect3 qPos,Vect3 qVel,
 		char name[10];
 		sprintf(name,"Traffic%d",i);i++;
 		DAA.addTrafficState(name,si,vi);
+
+		double distH = so.distanceH(si);
+
+		if(distH < trafficDist){
+			trafficDist = distH;
+		}
+	}
+
+	if(trafficDist < 5){
+		return true;
 	}
 
 	double qHeading = vo.track("degree");
