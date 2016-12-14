@@ -112,7 +112,6 @@
          WPcount = msg.count;
          
      }
-
  }
 
  void Communication_t::MissionItemHandler(){
@@ -138,6 +137,7 @@
          mavlink_msg_mission_request_encode(255,0,&msg2send,&msg);
          px4Intf->SendMAVLinkMsg(msg2send);
      }
+
  }
 
  void Communication_t::MissionRequestListHandler(){

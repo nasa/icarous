@@ -129,7 +129,7 @@ uint8_t QuadFMS_t::Monitor(){
 		time(&currentTime);
 		double diff = difftime(currentTime,trafficResolutionTime);
 
-		if( (Conflict.traffic == true) && (diff > 20) ){
+		if( (Conflict.traffic == true) && (diff > 10) ){ //TODO: remove hard coded value
 			resolutionState = COMPUTE_r;
 			printf("diff %f\n",diff);
 			printf("resetting resolution to compute\n");

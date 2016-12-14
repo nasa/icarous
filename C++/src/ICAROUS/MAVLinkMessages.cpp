@@ -91,6 +91,15 @@
             break;
         }
 
+        case MAVLINK_MSG_ID_MISSION_REQUEST:
+        {
+			//printf("MAVLINK_MSG_ID_MISSION_REQUEST\n");
+			mavlink_mission_request_t msg;
+			mavlink_msg_mission_request_decode(&message, &msg);
+			listMissionRequest.push(msg);
+			break;
+		}
+
         
         case MAVLINK_MSG_ID_PARAM_REQUEST_LIST:
         {
