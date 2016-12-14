@@ -105,11 +105,12 @@ public:
 	void F(double X[], double U[],double Y[]);
 	bool CheckFenceCollision(Vect3 qPos);
 	bool CheckTrafficCollision(Vect3 qPos,Vect3 qVel,
-			    std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel);
+			    std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel,Vect3 oldVel);
+	bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
 	void GetInput(node_t nn, node_t qn,double U[]);
 	node_t FindNearest(node_t query);
 	double NodeDistance(node_t A,node_t B);
-	void RRTStep();
+	void RRTStep(int i);
 	bool CheckGoal();
 	Plan GetPlan();
 	void SetGoal(Position goal);
