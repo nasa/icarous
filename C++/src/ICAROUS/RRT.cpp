@@ -116,6 +116,242 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 	daaLookAhead = DAA.parameters.getLookaheadTime("s");
 }
 
+void RRT_t::Initialize(Vect3 Pos,Vect3 Vel,
+						std::vector<Vect3> TrafficPos,std::vector<Vect3> TrafficVel){
+	root.pos = Pos;
+	root.vel = Vel;
+	root.trafficPos = TrafficPos;
+	root.trafficVel = TrafficVel;
+	root.id = nodeCount;
+
+	nodeList.push_back(root);
+	trafficSize = TrafficPos.size();
+
+	xmin = 0;
+	xmax = 100;
+	ymin = 0;
+	ymax = 100;
+	zmin = 0;
+	zmax = 100;
+}
+
+double RRT_t::NodeDistance(node_t A, node_t B){
+	return sqrt(pow((A.pos.x - B.pos.x),2) + pow((A.pos.y - B.pos.y),2));
+}
+
+void RRT_t::GetInput(node_t nn, node_t qn,double U[]){
+	double dx, dy, dz;
+	double norm;
+
+	dx = qn.pos.x - nn.pos.x;
+	dy = qn.pos.y - nn.pos.y;
+	dz = qn.pos.z - nn.pos.z;
+
+	norm = sqrt(pow(dx,2) + pow(dy,2) + pow(dz,2));
+
+	if (norm > 1){
+		U[0] = dx/norm;
+		U[1] = dy/norm;
+		U[2] = dz/norm;
+	}
+	else{
+		U[0] = dx;
+		U[1] = dy;
+		U[2] = dz;
+	}
+}
+
+node_t RRT_t::FindNearest(node_t query){
+	double minDist = 10000;
+	double dist;
+	node_t nearest;
+
+	if ( nodeList.size() == 0 ){
+		nearest = query;
+	}
+	else{
+		for(ndit = nodeList.begin();ndit != nodeList.end(); ++ndit){
+			dist = NodeDistance(*ndit,query);
+
+			if(dist < minDist){
+				minDist = dist;
+				nearest = *ndit;
+			}
+		}
+	}
+
+	return nearest;
+}
+
+void RRT_t::F(double X[], double U[],double Y[]){
+
+	double Kc = 0.3;
+
+	Y[0] = X[1];
+	Y[1] = -Kc*(X[1] - U[0]);
+	Y[2] = X[3];
+	Y[3] = -Kc*(X[3] - U[1]);
+	Y[4] = X[5];
+	Y[5] = -Kc*(X[5] - U[2]);
+
+	// Constant velocity for traffic
+	for(int i=0;i<trafficSize;++i){
+		Y[6+(6*i)+0]   = X[6+(6*i)+1];
+		Y[6+(6*i)+1]   = 0;
+		Y[6+(6*i)+2]   = X[6+(6*i)+3];
+		Y[6+(6*i)+3]   = 0;
+		Y[6+(6*i)+4]   = X[6+(6*i)+5];
+		Y[6+(6*i)+5]   = 0;
+	}
+}
+
+node_t RRT_t::MotionModel(Vect3 pos, Vect3 vel,
+							std::vector<Vect3> trafficPos, std::vector<Vect3> trafficVel, double U[]){
+
+	int Xsize = 6+trafficSize*6;
+
+	double *X   = new double[Xsize];
+	double *X_p = new double[Xsize];
+	double *Y   = new double[Xsize];
+	double *k1  = new double[Xsize];
+	double *k2  = new double[Xsize];
+
+	memset(Y,0,sizeof(double)*Xsize);
+	memset(k1,0,sizeof(double)*Xsize);
+	memset(k2,0,sizeof(double)*Xsize);
+
+	X[0] = pos.x;
+	X[1] = vel.x;
+	X[2] = pos.y;
+	X[3] = vel.y;
+	X[4] = pos.z;
+	X[5] = vel.z;
+
+	std::vector<Vect3>::iterator vecItP;
+	std::vector<Vect3>::iterator vecItV;
+	int i=0;
+	for(vecItP = trafficPos.begin(),vecItV = trafficVel.begin();
+		vecItP != trafficPos.end(),vecItV != trafficVel.end();
+		++vecItP,++vecItV){
+		X[6+(6*i)+0] =  vecItP->x;
+		X[6+(6*i)+1] =  vecItV->x;
+		X[6+(6*i)+2] =  vecItP->y;
+		X[6+(6*i)+3] =  vecItV->y;
+		X[6+(6*i)+4] =  vecItP->z;
+		X[6+(6*i)+5] =  vecItV->z;
+		i++;
+	}
+
+	for(int i=0;i<Tstep;++i){
+		F(X,U,Y);
+
+		for(int j=0;j<Xsize;j++){
+			k1[j] = Y[j]*dT;
+			X_p[j] = X[j] + k1[j];
+		}
+
+		F(X_p,U,Y);
+		for(int j=0;j<Xsize;j++){
+			k2[j] = Y[j]*dT;
+		}
+
+		for(int j=0;j<Xsize;j++){
+			X[j] = X[j] + 0.5*(k1[j] + k2[j]);
+		}
+
+		Vect3 newPos(X[0],X[2],X[4]);
+
+		if(CheckFenceCollision(newPos)){
+			node_t newNode;
+			newNode.id = -1;
+			return newNode;
+		}
+	}
+
+	Vect3 newPos(X[0],X[2],X[4]);
+	Vect3 newVel(X[1],X[3],X[5]);
+
+	std::vector<Vect3> newTrafficPos;
+
+	for(int i=0;i<trafficSize;++i){
+		Vect3 newTraffic(X[6+(6*i)+0],X[6+(6*i)+2],X[6+(6*i)+4]);
+		newTrafficPos.push_back(newTraffic);
+	}
+
+
+	if(trafficSize > 0){
+		bool checkTurn = true;
+		if(CheckTrafficCollision(checkTurn,newPos,newVel,newTrafficPos,trafficVel,vel)){
+			node_t newNode;
+			newNode.id = -1;
+			return newNode;
+		}
+	}
+
+
+	node_t newNode;
+	nodeCount++;
+	newNode.id  = nodeCount;
+	newNode.pos = newPos;
+	newNode.vel = newVel;
+	newNode.trafficPos = newTrafficPos;
+	newNode.trafficVel = trafficVel;
+
+	delete[] X;
+	delete[] X_p;
+	delete[] Y;
+	delete[] k1;
+	delete[] k2;
+	return newNode;
+}
+
+
+
+void RRT_t::RRTStep(int i){
+
+	double X[2];
+	// Generate random number
+	int rangeX = xmax - xmin;
+	int rangeY = ymax - ymin;
+
+	X[0] = xmin + (rand() % rangeX);
+	X[1] = ymin + (rand() % rangeY);
+
+
+	node_t rd;
+	rd.pos.x = X[0];
+	rd.pos.y = X[1];
+	rd.pos.z = 5;    // should  be set appropriately for 3D plans
+
+	node_t nearest = FindNearest(rd);
+	node_t newNode;
+
+	bool directPath = false;
+
+	double U[3];
+	GetInput(nearest,rd,U);
+	newNode = MotionModel(nearest.pos,nearest.vel,
+								 nearest.trafficPos,nearest.trafficVel,U);
+
+
+	if(CheckDirectPath2Goal(nearest)){
+		newNode = goalNode;
+		nodeCount++;
+		newNode.id = nodeCount;
+	}
+
+
+	if(newNode.id < 0){
+		return;
+	}
+
+
+	nearest.children.push_back(newNode);
+	newNode.parent.push_back(nearest);
+	nodeList.push_back(newNode);
+
+}
+
 bool RRT_t::CheckFenceCollision(Vect3 qPos){
 	std::list<Poly3D>::iterator it;
 	for(it = obstacleList.begin();it != obstacleList.end(); ++it){
@@ -330,239 +566,7 @@ bool RRT_t::CheckTurnConflict(double low,double high,double newHeading,double ol
 	return false;
 }
 
-double RRT_t::NodeDistance(node_t A, node_t B){
-	return sqrt(pow((A.pos.x - B.pos.x),2) + pow((A.pos.y - B.pos.y),2));
-}
 
-void RRT_t::GetInput(node_t nn, node_t qn,double U[]){
-	double dx, dy, dz;
-	double norm;
-
-	dx = qn.pos.x - nn.pos.x;
-	dy = qn.pos.y - nn.pos.y;
-	dz = qn.pos.z - nn.pos.z;
-
-	norm = sqrt(pow(dx,2) + pow(dy,2) + pow(dz,2));
-
-	if (norm > 1){
-		U[0] = dx/norm;
-		U[1] = dy/norm;
-		U[2] = dz/norm;
-	}
-	else{
-		U[0] = dx;
-		U[1] = dy;
-		U[2] = dz;
-	}
-}
-
-node_t RRT_t::FindNearest(node_t query){
-	double minDist = 10000;
-	double dist;
-	node_t nearest;
-
-	if ( nodeList.size() == 0 ){
-		nearest = query;
-	}
-	else{
-		for(ndit = nodeList.begin();ndit != nodeList.end(); ++ndit){
-			dist = NodeDistance(*ndit,query);
-
-			if(dist < minDist){
-				minDist = dist;
-				nearest = *ndit;
-			}
-		}
-	}
-
-	return nearest;
-}
-
-void RRT_t::F(double X[], double U[],double Y[]){
-
-	double Kc = 0.3;
-
-	Y[0] = X[1];
-	Y[1] = -Kc*(X[1] - U[0]);
-	Y[2] = X[3];
-	Y[3] = -Kc*(X[3] - U[1]);
-	Y[4] = X[5];
-	Y[5] = -Kc*(X[5] - U[2]);
-
-	// Constant velocity for traffic
-	for(int i=0;i<trafficSize;++i){
-		Y[6+(6*i)+0]   = X[6+(6*i)+1];
-		Y[6+(6*i)+1]   = 0;
-		Y[6+(6*i)+2]   = X[6+(6*i)+3];
-		Y[6+(6*i)+3]   = 0;
-		Y[6+(6*i)+4]   = X[6+(6*i)+5];
-		Y[6+(6*i)+5]   = 0;
-	}
-}
-
-node_t RRT_t::MotionModel(Vect3 pos, Vect3 vel,
-							std::vector<Vect3> trafficPos, std::vector<Vect3> trafficVel, double U[]){
-
-	int Xsize = 6+trafficSize*6;
-
-	double *X   = new double[Xsize];
-	double *X_p = new double[Xsize];
-	double *Y   = new double[Xsize];
-	double *k1  = new double[Xsize];
-	double *k2  = new double[Xsize];
-
-	memset(Y,0,sizeof(double)*Xsize);
-	memset(k1,0,sizeof(double)*Xsize);
-	memset(k2,0,sizeof(double)*Xsize);
-
-	X[0] = pos.x;
-	X[1] = vel.x;
-	X[2] = pos.y;
-	X[3] = vel.y;
-	X[4] = pos.z;
-	X[5] = vel.z;
-
-	std::vector<Vect3>::iterator vecItP;
-	std::vector<Vect3>::iterator vecItV;
-	int i=0;
-	for(vecItP = trafficPos.begin(),vecItV = trafficVel.begin();
-		vecItP != trafficPos.end(),vecItV != trafficVel.end();
-		++vecItP,++vecItV){
-		X[6+(6*i)+0] =  vecItP->x;
-		X[6+(6*i)+1] =  vecItV->x;
-		X[6+(6*i)+2] =  vecItP->y;
-		X[6+(6*i)+3] =  vecItV->y;
-		X[6+(6*i)+4] =  vecItP->z;
-		X[6+(6*i)+5] =  vecItV->z;
-		i++;
-	}
-
-	for(int i=0;i<Tstep;++i){
-		F(X,U,Y);
-
-		for(int j=0;j<Xsize;j++){
-			k1[j] = Y[j]*dT;
-			X_p[j] = X[j] + k1[j];
-		}
-
-		F(X_p,U,Y);
-		for(int j=0;j<Xsize;j++){
-			k2[j] = Y[j]*dT;
-		}
-
-		for(int j=0;j<Xsize;j++){
-			X[j] = X[j] + 0.5*(k1[j] + k2[j]);
-		}
-
-		Vect3 newPos(X[0],X[2],X[4]);
-
-		if(CheckFenceCollision(newPos)){
-			node_t newNode;
-			newNode.id = -1;
-			return newNode;
-		}
-	}
-
-	Vect3 newPos(X[0],X[2],X[4]);
-	Vect3 newVel(X[1],X[3],X[5]);
-
-	std::vector<Vect3> newTrafficPos;
-
-	for(int i=0;i<trafficSize;++i){
-		Vect3 newTraffic(X[6+(6*i)+0],X[6+(6*i)+2],X[6+(6*i)+4]);
-		newTrafficPos.push_back(newTraffic);
-	}
-
-
-	if(trafficSize > 0){
-		bool checkTurn = true;
-		if(CheckTrafficCollision(checkTurn,newPos,newVel,newTrafficPos,trafficVel,vel)){
-			node_t newNode;
-			newNode.id = -1;
-			return newNode;
-		}
-	}
-
-
-	node_t newNode;
-	nodeCount++;
-	newNode.id  = nodeCount;
-	newNode.pos = newPos;
-	newNode.vel = newVel;
-	newNode.trafficPos = newTrafficPos;
-	newNode.trafficVel = trafficVel;
-
-	delete[] X;
-	delete[] X_p;
-	delete[] Y;
-	delete[] k1;
-	delete[] k2;
-	return newNode;
-}
-
-void RRT_t::Initialize(Vect3 Pos,Vect3 Vel,
-						std::vector<Vect3> TrafficPos,std::vector<Vect3> TrafficVel){
-	root.pos = Pos;
-	root.vel = Vel;
-	root.trafficPos = TrafficPos;
-	root.trafficVel = TrafficVel;
-	root.id = nodeCount;
-
-	nodeList.push_back(root);
-	trafficSize = TrafficPos.size();
-
-	xmin = 0;
-	xmax = 100;
-	ymin = 0;
-	ymax = 100;
-	zmin = 0;
-	zmax = 100;
-}
-
-void RRT_t::RRTStep(int i){
-
-	double X[2];
-	// Generate random number
-	int rangeX = xmax - xmin;
-	int rangeY = ymax - ymin;
-
-	X[0] = xmin + (rand() % rangeX);
-	X[1] = ymin + (rand() % rangeY);
-
-
-	node_t rd;
-	rd.pos.x = X[0];
-	rd.pos.y = X[1];
-	rd.pos.z = 5;    // should  be set appropriately for 3D plans
-
-	node_t nearest = FindNearest(rd);
-	node_t newNode;
-
-	bool directPath = false;
-
-	double U[3];
-	GetInput(nearest,rd,U);
-	newNode = MotionModel(nearest.pos,nearest.vel,
-								 nearest.trafficPos,nearest.trafficVel,U);
-
-
-	if(CheckDirectPath2Goal(nearest)){
-		newNode = goalNode;
-		nodeCount++;
-		newNode.id = nodeCount;
-	}
-
-
-	if(newNode.id < 0){
-		return;
-	}
-
-
-	nearest.children.push_back(newNode);
-	newNode.parent.push_back(nearest);
-	nodeList.push_back(newNode);
-
-}
 
 bool RRT_t::CheckDirectPath2Goal(node_t qnode){
 	//TODO: add check against fences also
@@ -630,6 +634,48 @@ void RRT_t::SetGoal(node_t goal){
 	goalNode = goal;
 }
 
+
+bool RRT_t::LinePlanIntersection(Vect2 A,Vect2 B,double floor,double ceiling,Vect3 CurrPos,Vect3 NextWP){
+
+	double x1 = A.x;
+	double y1 = A.y;
+	double z1 = floor;
+
+	double x2 = B.x;
+	double y2 = B.y;
+	double z2 = ceiling;
+
+	Vect3 l0 = Vect3(CurrPos.x, CurrPos.y, CurrPos.z);
+	Vect3 p0 = Vect3(x1, y1, z1);
+
+	Vect3 n = Vect3(-(z2 - z1) * (y2 - y1), (z2 - z1) * (x2 - x1), 0);
+	Vect3 l = Vect3(NextWP.x - CurrPos.x, NextWP.y - CurrPos.y, NextWP.z - CurrPos.z);
+
+	double d = (p0.Sub(l0).dot(n)) / (l.dot(n));
+
+	Vect3 PntI = l0.Add(l.Scal(d));
+
+
+	Vect3 OA = Vect3(x2 - x1, y2 - y1, 0);
+	Vect3 OB = Vect3(0, 0, z2 - z1);
+	Vect3 OP = PntI.Sub(p0);
+	Vect3 CN = NextWP.Sub(CurrPos);
+	Vect3 CP = PntI.Sub(CurrPos);
+
+	double proj1 = OP.dot(OA) / pow(OA.norm(), 2);
+	double proj2 = OP.dot(OB) / pow(OB.norm(), 2);
+	double proj3 = CP.dot(CN) / pow(CN.norm(), 2);
+
+	if (proj1 >= 0 && proj1 <= 1) {
+		if (proj2 >= 0 && proj2 <= 1) {
+			if (proj3 >= 0 && proj3 <= 1)
+				return true;
+		}
+	}
+
+	return false;
+}
+
 Plan RRT_t::GetPlan(){
 
 	double speed = 1;
@@ -674,48 +720,6 @@ Plan RRT_t::GetPlan(){
 
 	return newRoute;
 }
-
-bool RRT_t::LinePlanIntersection(Vect2 A,Vect2 B,double floor,double ceiling,Vect3 CurrPos,Vect3 NextWP){
-
-	double x1 = A.x;
-	double y1 = A.y;
-	double z1 = floor;
-
-	double x2 = B.x;
-	double y2 = B.y;
-	double z2 = ceiling;
-
-	Vect3 l0 = Vect3(CurrPos.x, CurrPos.y, CurrPos.z);
-	Vect3 p0 = Vect3(x1, y1, z1);
-
-	Vect3 n = Vect3(-(z2 - z1) * (y2 - y1), (z2 - z1) * (x2 - x1), 0);
-	Vect3 l = Vect3(NextWP.x - CurrPos.x, NextWP.y - CurrPos.y, NextWP.z - CurrPos.z);
-
-	double d = (p0.Sub(l0).dot(n)) / (l.dot(n));
-
-	Vect3 PntI = l0.Add(l.Scal(d));
-
-
-	Vect3 OA = Vect3(x2 - x1, y2 - y1, 0);
-	Vect3 OB = Vect3(0, 0, z2 - z1);
-	Vect3 OP = PntI.Sub(p0);
-	Vect3 CN = NextWP.Sub(CurrPos);
-	Vect3 CP = PntI.Sub(CurrPos);
-
-	double proj1 = OP.dot(OA) / pow(OA.norm(), 2);
-	double proj2 = OP.dot(OB) / pow(OB.norm(), 2);
-	double proj3 = CP.dot(CN) / pow(CN.norm(), 2);
-
-	if (proj1 >= 0 && proj1 <= 1) {
-		if (proj2 >= 0 && proj2 <= 1) {
-			if (proj3 >= 0 && proj3 <= 1)
-				return true;
-		}
-	}
-
-	return false;
-}
-
 
 /*
 int main(int argc,char* argv[]){
