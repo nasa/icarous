@@ -77,6 +77,10 @@ uint16_t AircraftData_t::GetFlightPlanSize(){
     return size;
 }
 
+void AircraftData_t::ClearMissionList(){
+	listMissionItem.clear();
+}
+
 void AircraftData_t::ConstructPlan(){
 	// Create a Plan object with the available mission items
 	MissionPlan.clear();

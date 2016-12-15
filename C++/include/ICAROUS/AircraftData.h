@@ -101,6 +101,7 @@ class AircraftData_t{
         void GetGeofence(Interface_t *gsIntf,mavlink_command_long_t msg);
         void AddTraffic(int id,double x,double y,double z,double vx,double vy,double vz);
         void GetTraffic(int id,Position &pos,Velocity &vel);
+        void ClearMissionList();
 };
 
 

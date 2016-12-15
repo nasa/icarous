@@ -110,7 +110,8 @@
          mavlink_msg_mission_count_encode(255,0,&msg2send,&msg);
          px4Intf->SendMAVLinkMsg(msg2send);
          WPcount = msg.count;
-         
+         FlightData->ClearMissionList();
+         WPloaded = 0;
      }
  }
 

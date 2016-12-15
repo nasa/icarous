@@ -53,7 +53,7 @@ RRT_t::RRT_t(){
 	Tstep = 5;
 	dT = 1;
 	closestDist = MAXDOUBLE;
-	if(!DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt")){
+	if(!DAA.parameters.loadFromFile("params/DaidalusQuadConfig2.txt")){
 		printf("error:no file found\n");
 	}
 	daaLookAhead = DAA.parameters.getLookaheadTime("s");
@@ -112,7 +112,7 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 	closestDist = MAXDOUBLE;
 	closestNode = root;
 
-	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+	DAA.parameters.loadFromFile("params/DaidalusQuadConfig2.txt");
 	daaLookAhead = DAA.parameters.getLookaheadTime("s");
 }
 
