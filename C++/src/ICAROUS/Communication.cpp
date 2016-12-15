@@ -1,7 +1,7 @@
 /**
- * Data acquisition
+ * Communication
  * 
- * This class contains functions to constantly collect data from the pixhawk.
+ * This class contains functions to constantly collect data from the pixhawk and ground station.
  *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 

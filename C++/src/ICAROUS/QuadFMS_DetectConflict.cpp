@@ -1,7 +1,7 @@
 /**
  * Quad Flight Management System
  *
- * Core flight management functions
+ * Core flight management functions for quadrotors
  *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  *

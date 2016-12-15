@@ -1,7 +1,7 @@
 /**
  * RRT
  *
- * RRT search
+ * RRT search algorithm
  *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  *

@@ -1,7 +1,7 @@
 /**
  * Aircraft data
  * 
- * Shared data structure containing all flight relevent data and functions
+ * Shared data structure containing all flight relevant data and functions
  *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
