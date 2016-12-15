@@ -109,7 +109,7 @@ uint8_t QuadFMS_t::CRUISE(){
 		mission->Execute(this);
 	}
 
-	if(FlightData->nextMissionWP > FlightData->MissionPlan.size()){
+	if(FlightData->nextMissionWP >= FlightData->MissionPlan.size()){
 		fmsState = _land_;
 	}
 

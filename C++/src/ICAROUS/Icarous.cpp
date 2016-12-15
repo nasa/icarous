@@ -189,6 +189,11 @@ void Icarous_t::Run(){
 	Communication_t DAQ(AP,COM,&FlightData);
 	QuadFMS_t FMS(AP,COM,&FlightData,mission);
 
+	if(verbose){
+		DAQ.log.setConsoleOutput(true);
+		FMS.log.setConsoleOutput(true);
+	}
+
 	FMS.SendStatusText("Starting ICAROUS");
 
 	std::thread thread1(&Communication_t::GetPixhawkData,&DAQ);
