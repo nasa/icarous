@@ -38,8 +38,11 @@
  #ifndef COMMUNICATION_H_
  #define COMMUNICATION_H_
 
+ #include <string>
  #include "Interface.h"
  #include "AircraftData.h"
+ #include "ErrorLog.h"
+
  #include "ardupilotmega/mavlink.h"
 
  class Communication_t{
@@ -52,7 +55,9 @@
         int WPcount, WPloaded;
 
     public:
-        Communication_t(){};
+
+        ErrorLog log;
+        Communication_t():log("COM"){};
         Communication_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata);
         void GetPixhawkData();
         void GetGSData();

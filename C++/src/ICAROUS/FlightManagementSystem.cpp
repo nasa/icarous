@@ -38,13 +38,15 @@
 #include "FlightManagementSystem.h"
 
 
-FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData){
+FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t *task):log("FMS"){
     px4Intf      = px4int;
     gsIntf       = gsint;
     FlightData   = fData;
     RcvdMessages = fData->RcvdMessages; 
     fmsState     = _idle_;
     conflictSize = 0;
+    mission      = task;
+    deviationApproved = false;
 }
 
 void FlightManagementSystem_t::RunFMS(){
@@ -258,4 +260,16 @@ double FlightManagementSystem_t::GetApproxElapsedPlanTime(Plan fp,int nextWP){
 	double currentTime    = fp.getTime(nextWP-1) + legTime/legDistance * lastWPDistance;
 
 	return currentTime;
+}
+
+void FlightManagementSystem_t::CheckReset(){
+
+	if(FlightData->reset){
+		FlightData->reset = false;
+		Reset();
+	}
+}
+
+void FlightManagementSystem_t::SetDeviationApproved(bool status){
+	deviationApproved = status;
 }

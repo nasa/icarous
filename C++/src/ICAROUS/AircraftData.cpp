@@ -54,6 +54,7 @@
      maneuverVe = 0;
      maneuverVn = 0;
      maneuverVu = 0;
+     reset = false;
  }
 
  void AircraftData_t::AddMissionItem(mavlink_mission_item_t msg){
@@ -235,4 +236,54 @@ void AircraftData_t::GetTraffic(int id,Position& pos,Velocity& vel){
 		}
 	}
 	pthread_mutex_unlock(&lock);
+}
+
+void AircraftData_t::AddMissionObject(int id,double x,double y,double z,double vx,double vy,double vz){
+	pthread_mutex_lock(&lock);
+	Object_t obj={id,x,y,z,vx,vy,vz,0};
+	bool present = false;
+	std::list<Object_t>::iterator it;
+	for(it = missionObjList.begin(); it != missionObjList.end(); ++it ){
+		if(it->id == id){
+			it->x = x;
+			it->y = y;
+			it->z = z;
+			it->vx = vx;
+			it->vy = vy;
+			it->vz = vz;
+			present = true;
+		}
+
+	}
+	if(!present){
+		missionObjList.push_back(obj);
+	}
+	pthread_mutex_unlock(&lock);
+
+}
+
+void AircraftData_t::AddTrackingObject(int id,double x,double y,double z,double vx,double vy,double vz){
+	pthread_mutex_lock(&lock);
+	Object_t obj = {id,x,y,z,vx,vy,vz,0};
+	TrackingObject = obj;
+	pthread_mutex_unlock(&lock);
+}
+
+void AircraftData_t::Reset(){
+	 pthread_mutex_lock(&lock);
+	 startMission = -1;
+	 nextMissionWP = 0;
+	 nextResolutionWP = 0;
+	 crossTrackDeviation = 0;
+	 crossTrackOffset = 0;
+	 heading = 0;
+	 roll = 0;
+	 pitch = 0;
+	 yaw = 0;
+	 maneuverHeading = 0;
+	 maneuverVe = 0;
+	 maneuverVn = 0;
+	 maneuverVu = 0;
+	 reset = true;
+	 pthread_mutex_unlock(&lock);
 }

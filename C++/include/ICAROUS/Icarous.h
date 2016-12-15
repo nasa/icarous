@@ -19,6 +19,7 @@
 #include "QuadFMS.h"
 #include "ParameterData.h"
 #include "SeparatedInput.h"
+#include "Mission.h"
 
 using namespace std;
 using namespace larcfm;
@@ -36,10 +37,11 @@ private:
 	int sitlin =0,sitlout =0;
 	int gsin =0,gsout = 0;
 	ParameterData paramData;
-
+	char version[5]="1.0";
+	Mission_t* mission;
 
 public:
-	Icarous_t(int argc,char* argv[]);
+	Icarous_t(int argc,char* argv[],Mission_t* task);
 	void GetOptions(int argc,char* argv[]);
 	void Run();
 

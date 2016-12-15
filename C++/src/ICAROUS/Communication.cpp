@@ -37,7 +37,7 @@
 
 #include "Communication.h"
 
- Communication_t::Communication_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata){
+ Communication_t::Communication_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata):log("COM"){
      px4Intf      = px4int;
      gsIntf       = gsint;
      FlightData   = fdata;
@@ -106,6 +106,7 @@
      mavlink_mission_count_t msg;
      bool have_msg = RcvdMessages->GetMissionCount(msg);
      if(have_msg && msg.target_system == 1){
+    	 log.addWarning("Receiving waypoints");
          mavlink_message_t msg2send;
          mavlink_msg_mission_count_encode(255,0,&msg2send,&msg);
          px4Intf->SendMAVLinkMsg(msg2send);
@@ -205,14 +206,22 @@
      mavlink_command_long_t msg;
      bool have_msg = RcvdMessages->GetCommandLong(msg);
      if(have_msg && msg.command == MAV_CMD_MISSION_START){
+    	 log.addWarning("Received mission start command");
          FlightData->SetStartMissionFlag((uint8_t)msg.param1);
      }
      else if(have_msg && msg.command == MAV_CMD_DO_FENCE_ENABLE){
+    	 log.addWarning("Receiving geofence");
     	 FlightData->GetGeofence(gsIntf,msg);
      }
      else if(have_msg && msg.command == MAV_CMD_SPATIAL_USER_1){
     	 FlightData->AddTraffic((int)msg.param1,msg.param5,msg.param6,msg.param7,
     			 	 	 	 	msg.param2,msg.param3,msg.param4);
+     }
+     else if(have_msg && msg.command == MAV_CMD_USER_1){
+    	 if(msg.param1 == 0){
+    		 log.addWarning("Received reset command");
+    		 FlightData->Reset();
+    	 }
      }
      else if(have_msg){
     	 mavlink_message_t msg2send;
@@ -224,7 +233,7 @@
  void Communication_t::CommandIntHandler(){
      mavlink_command_int_t msg;
      bool have_msg = RcvdMessages->GetCommandInt(msg);
-     if(have_msg){
+     if(have_msg && msg.command == MAV_CMD_SPATIAL_USER_2){
          
      }
  }

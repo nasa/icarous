@@ -77,7 +77,7 @@ class AircraftData_t{
 		double crossTrackOffset;
 		double maneuverVn,maneuverVe,maneuverVu;
 		double maneuverHeading;
-
+		bool reset;
 
         uint16_t nextMissionWP;
         uint16_t nextResolutionWP;
@@ -90,6 +90,7 @@ class AircraftData_t{
         std::list<Geofence_t>::iterator fenceListIt;
         std::list<Object_t> trafficList;
         std::list<Object_t> missionObjList;
+        Object_t TrackingObject;
 
         //Member functions
         AircraftData_t(){};
@@ -103,6 +104,9 @@ class AircraftData_t{
         void AddTraffic(int id,double x,double y,double z,double vx,double vy,double vz);
         void GetTraffic(int id,Position &pos,Velocity &vel);
         void ClearMissionList();
+        void Reset();
+        void AddTrackingObject(int id,double x,double y,double z,double vx,double vy,double vz);
+        void AddMissionObject(int id,double x,double y,double z,double vx,double vy,double vz);
 };
 
 

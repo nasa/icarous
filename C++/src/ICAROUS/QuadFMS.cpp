@@ -37,8 +37,8 @@
 
  #include "QuadFMS.h"
 
- QuadFMS_t::QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData):
- FlightManagementSystem_t(px4int,gsint,fData){
+ QuadFMS_t::QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task):
+ FlightManagementSystem_t(px4int,gsint,fData,task){
      targetAlt         = 0.0f;
      resolutionState   = IDLE_r;
      maneuverState     = IDLE_m;
@@ -49,7 +49,6 @@
      time(&daaTimeStart);
      daaLookAhead = DAA.parameters.getLookaheadTime("s");
      trafficResolutionTime = 0;
-
  }
 
 QuadFMS_t::~QuadFMS_t(){}
@@ -99,9 +98,17 @@ uint8_t QuadFMS_t::CLIMB(){
 
 uint8_t QuadFMS_t::CRUISE(){
 
-	Monitor();
+	int confSize;
 
-	Resolve();
+	confSize = Monitor();
+
+	if(confSize > 0){
+		Resolve();
+	}
+	else{
+		mission->Execute(this);
+	}
+
 	return 0;
 }
 
@@ -119,7 +126,9 @@ uint8_t QuadFMS_t::Monitor(){
 	CheckGeofence();
 
 	//Check flight plan deviaiton
-	CheckFlightPlanDeviation();
+	if(!deviationApproved){
+		CheckFlightPlanDeviation();
+	}
 
 	//Check traffic
 	if(FlightData->trafficList.size() > 0){
@@ -336,5 +345,12 @@ void QuadFMS_t::ComputeInterceptCourse(){
 	FlightData->nextResolutionWP = 0;
 	planType      = TRAJECTORY;
 	resumeMission = true;
+}
+
+void QuadFMS_t::Reset(){
+	fmsState = _idle_;
+	planType = MISSION;
+	conflictSize = 0;
+	Conflict.clear();
 }
 

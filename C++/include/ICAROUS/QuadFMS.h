@@ -65,8 +65,9 @@ class QuadFMS_t:public FlightManagementSystem_t{
         time_t trafficResolutionTime;
 
     public:
+        time_t daaTimeStart;
         QuadFMS_t(){};
-        QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData);
+        QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);
         ~QuadFMS_t();
         uint8_t TAKEOFF();
         uint8_t CLIMB();
@@ -88,7 +89,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
         void ResolveFlightPlanDeviation();
         void ResolveTrafficConflict();
         Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
-        time_t daaTimeStart;
+        void Reset();
 };
 
 

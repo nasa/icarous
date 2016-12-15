@@ -7,8 +7,9 @@
 
 #include "Icarous.h"
 
-Icarous_t::Icarous_t(int argc,char* argv[]){
+Icarous_t::Icarous_t(int argc,char* argv[],Mission_t* task){
 
+	printf("Icarous version %s\n",version);
 	GetOptions(argc,argv);
 
 	// Read parameters from file and get the parameter data container
@@ -18,6 +19,7 @@ Icarous_t::Icarous_t(int argc,char* argv[]){
 	ConfigFile.open("params/icarous.txt");
 	sepInputReader.readLine();
 	paramData = sepInputReader.getParameters();
+	mission = task;
 
 }
 
@@ -63,57 +65,57 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 		case 'b':
 		  //printf ("option -c with value `%s'\n", optarg);
 		  strcpy(px4port,optarg);
-		  printf("Connecting to pixhawk at %s\n",px4port);
+		  //printf("Connecting to pixhawk at %s\n",px4port);
 		  break;
 
 		case 'c':
 		  px4baud = atoi(optarg);
-		  printf("pixhawk port baud rate %d\n",px4baud);
+		  //printf("pixhawk port baud rate %d\n",px4baud);
 		  break;
 
 		case 'd':
 		  strcpy(sitlhost,optarg);
-		  printf("Connecting to host: %s\n",sitlhost);
+		  //printf("Connecting to SITL host: %s\n",sitlhost);
 		  break;
 
 		case 'e':
 		  sitlin = atoi(optarg);
-		  printf("SITL host input at port: %d\n",sitlin);
+		  //printf("SITL host input at port: %d\n",sitlin);
 		  break;
 
 		case 'f':
 		  sitlout = atoi(optarg);
-		  printf("SITL host output at port: %d\n",sitlout);
+		  //printf("SITL host output at port: %d\n",sitlout);
 		  break;
 
 		case 'g':
 		  strcpy(gshost,optarg);
-		  printf("Ground station host: %s\n",gshost);
+		  //printf("Ground station host: %s\n",gshost);
 		  break;
 
 		case 'h':
 		  gsin = atoi(optarg);
-		  printf("Ground station host input at port:%d\n",gsin);
+		  //printf("Ground station host input at port:%d\n",gsin);
 		  break;
 
 		case 'i':
 		  gsout = atoi(optarg);
-		  printf("Ground station host output at port:%d\n",gsout);
+		  //printf("Ground station host output at port:%d\n",gsout);
 		  break;
 
 		case 'j':
 		  strcpy(gsradio,optarg);
-		  printf("Connecting to radio on port %s\n",gsradio);
+		  //printf("Connecting to radio on port %s\n",gsradio);
 		  break;
 
 		case 'k':
 		  radiobaud = atoi(optarg);
-		  printf("Radio baud rate %d\n",radiobaud);
+		  //printf("Radio baud rate %d\n",radiobaud);
 		  break;
 
 		case 'l':
 		  strcpy(mode,optarg);
-		  printf("Launching ICAROUS in %s mode\n",mode);
+		  //printf("Launching ICAROUS in %s mode\n",mode);
 		  break;
 
 		case '?':
@@ -156,7 +158,7 @@ void Icarous_t::Run(){
 	}
 
 	Communication_t DAQ(AP,COM,&FlightData);
-	QuadFMS_t FMS(AP,COM,&FlightData);
+	QuadFMS_t FMS(AP,COM,&FlightData,mission);
 
 	FMS.SendStatusText("Starting ICAROUS");
 

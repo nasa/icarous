@@ -45,6 +45,8 @@
  #include "Conflict.h"
  #include "NavPoint.h"
  #include "PlanUtil.h"
+ #include "ErrorLog.h"
+ #include "Mission.h"
 
 enum fms_state_t {_idle_,_takeoff_,_climb_,_cruise_,_descend_,_land_};
 
@@ -81,10 +83,14 @@ class FlightManagementSystem_t{
         fms_state_t fmsState;
         Conflict_t Conflict;
         uint8_t conflictSize;
+        Mission_t* mission;
+        bool deviationApproved;
 
     public:
-        FlightManagementSystem_t(){};
-        FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData);
+
+        ErrorLog log;
+        FlightManagementSystem_t():log("FMS"){};
+        FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);
         virtual ~FlightManagementSystem_t(){};
         void RunFMS();
 
@@ -104,6 +110,8 @@ class FlightManagementSystem_t{
         bool CheckAck(MAV_CMD command);
         bool CheckMissionWaypointReached();
         double GetApproxElapsedPlanTime(Plan fp, int nextWP);
+        void CheckReset();
+        void SetDeviationApproved(bool status);
 
         uint8_t IDLE();
         uint8_t PREFLIGHT();
@@ -113,6 +121,7 @@ class FlightManagementSystem_t{
         virtual uint8_t DESCEND(){return 0;};
         virtual uint8_t APPROACH(){return 0;};
         virtual uint8_t LAND(){return 0;};
+        virtual void Reset(){return;};
 };
 
 
