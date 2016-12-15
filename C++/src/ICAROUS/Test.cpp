@@ -30,13 +30,15 @@ int main(int argc,char* argv[]){
     MAVLinkMessages_t RcvdMessages;
     AircraftData_t FlightData(&RcvdMessages,&paramData);
 
-    //SerialInterface_t apPort = SerialInterface("/dev/ttyO1",B57600,0,&RcvdMessages);
-    SocketInterface_t SITL("127.0.0.1",14550,0,&RcvdMessages);
+    SerialInterface_t apPort("/dev/ttyACM0",B57600,0,&RcvdMessages);
+    //SocketInterface_t SITL("127.0.0.1",14550,0,&RcvdMessages);
     SocketInterface_t COM("127.0.0.1",14552,14553,&RcvdMessages);
 
-    Communication_t DAQ(&SITL,&COM,&FlightData);
+    //Communication_t DAQ(&SITL,&COM,&FlightData);
+    Communication_t DAQ(&apPort,&COM,&FlightData);
 
-    QuadFMS_t FMS(&SITL,&COM,&FlightData);
+    //QuadFMS_t FMS(&SITL,&COM,&FlightData);
+    QuadFMS_t FMS(&apPort,&COM,&FlightData);
 
     FMS.SendStatusText("Starting ICAROUS");
 

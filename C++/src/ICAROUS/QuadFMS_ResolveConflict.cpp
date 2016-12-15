@@ -83,13 +83,13 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 		Vf = sqrt(pow(V,2) - pow(Vs,2));
 
 		Trk = prevWP.track(nextWP);
-		FlightData->manueverVn = Vf*cos(Trk) - Vs*sin(Trk);
-		FlightData->manueverVe = Vf*sin(Trk) + Vs*cos(Trk);
-		FlightData->manueverVu = 0;
+		FlightData->maneuverVn = Vf*cos(Trk) - Vs*sin(Trk);
+		FlightData->maneuverVe = Vf*sin(Trk) + Vs*cos(Trk);
+		FlightData->maneuverVu = 0;
 
-		FlightData->manueverHeading = atan2(FlightData->manueverVe,FlightData->manueverVn)*180/M_PI;
-		if(FlightData->manueverHeading < 0){
-			FlightData->manueverHeading = 360 + FlightData->manueverHeading;
+		FlightData->maneuverHeading = atan2(FlightData->maneuverVe,FlightData->maneuverVn)*180/M_PI;
+		if(FlightData->maneuverHeading < 0){
+			FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
 		}
 
 		planType = MANEUVER;
@@ -102,9 +102,9 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 
 		cp = prevWP.linearEst(dn,de); // closest point on path
 
-		FlightData->manueverHeading = currentPos.track(cp);
-		if(FlightData->manueverHeading < 0){
-			FlightData->manueverHeading = 360 + FlightData->manueverHeading;
+		FlightData->maneuverHeading = currentPos.track(cp);
+		if(FlightData->maneuverHeading < 0){
+			FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
 		}
 
 		double distance = currentPos.distanceH(cp);

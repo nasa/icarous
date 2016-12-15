@@ -75,8 +75,8 @@ class AircraftData_t{
         double roll, pitch, yaw, heading;
 		double crossTrackDeviation;
 		double crossTrackOffset;
-		double manueverVn,manueverVe,manueverVu;
-		double manueverHeading;
+		double maneuverVn,maneuverVe,maneuverVu;
+		double maneuverHeading;
 
 
         uint16_t nextMissionWP;

@@ -45,6 +45,16 @@
      nextMissionWP = 0;
      nextResolutionWP = 0;
      paramData    = pData;
+     crossTrackDeviation = 0;
+     crossTrackOffset = 0;
+     heading = 0;
+     roll = 0;
+     pitch = 0;
+     yaw = 0;
+     maneuverHeading = 0;
+     maneuverVe = 0;
+     maneuverVn = 0;
+     maneuverVu = 0;
  }
 
  void AircraftData_t::AddMissionItem(mavlink_mission_item_t msg){

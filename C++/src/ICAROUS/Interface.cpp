@@ -182,7 +182,7 @@ int SerialInterface_t::ReadData(){
     pthread_mutex_lock(&lock);
     n = read (fd, &buf, 1);
     recvbuffer[0] = buf;
-    pthread_mutex_lock(&lock);
+    pthread_mutex_unlock(&lock);
 
     return n;
 }
