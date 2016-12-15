@@ -47,6 +47,7 @@ FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interfac
     conflictSize = 0;
     mission      = task;
     deviationApproved = false;
+    landStarted  = false;
 }
 
 void FlightManagementSystem_t::RunFMS(){
@@ -73,11 +74,11 @@ void FlightManagementSystem_t::RunFMS(){
                 break;
 
             case _descend_:
-                //DESCEND();
+                DESCEND();
                 break;
 
             case _land_:
-                //LAND();
+                LAND();
                 break;
         }
      }
@@ -164,6 +165,12 @@ void FlightManagementSystem_t::StartTakeoff(float alt){
     SendCommand(0,0,MAV_CMD_NAV_TAKEOFF,0,
 			    1,0,0,0,0,0,alt);
 }
+
+void FlightManagementSystem_t::StartLand(){
+    SendCommand(0,0,MAV_CMD_NAV_LAND,0,
+			    0,0,0,0,0,0,0);
+}
+
 
 bool FlightManagementSystem_t::CheckAck(MAV_CMD command){
     bool have_msg = true;

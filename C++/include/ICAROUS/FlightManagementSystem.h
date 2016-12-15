@@ -85,6 +85,7 @@ class FlightManagementSystem_t{
         uint8_t conflictSize;
         Mission_t* mission;
         bool deviationApproved;
+        bool landStarted;
 
     public:
 
@@ -106,6 +107,7 @@ class FlightManagementSystem_t{
         void SendStatusText(char buffer[]);
         void ArmThrottles(bool arm);
         void StartTakeoff(float alt);
+        void StartLand();
         void GetLatestAircraftData();
         bool CheckAck(MAV_CMD command);
         bool CheckMissionWaypointReached();

@@ -109,6 +109,10 @@ uint8_t QuadFMS_t::CRUISE(){
 		mission->Execute(this);
 	}
 
+	if(FlightData->nextMissionWP > FlightData->MissionPlan.size()){
+		fmsState = _land_;
+	}
+
 	return 0;
 }
 
@@ -117,6 +121,13 @@ uint8_t QuadFMS_t::DESCEND(){
 }
 
 uint8_t QuadFMS_t::LAND(){
+
+	if(!landStarted){
+		log.addWarning("Landing");
+		SetMode(GUIDED);
+		StartLand();
+		landStarted = true;
+	}
 	return 0;
 }
 
@@ -352,5 +363,6 @@ void QuadFMS_t::Reset(){
 	planType = MISSION;
 	conflictSize = 0;
 	Conflict.clear();
+	landStarted = false;
 }
 
