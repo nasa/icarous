@@ -1,11 +1,6 @@
-
-
 #include "Icarous.h"
+#include "Demo.h"
 
-class Demo_t:public Mission_t{
-public:
-	void Execute(FlightManagementSystem_t* fms){};
-};
 
 int main(int argc,char* argv[]){
     
