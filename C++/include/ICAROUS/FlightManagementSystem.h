@@ -83,7 +83,7 @@ class FlightManagementSystem_t{
         uint8_t conflictSize;
 
     public:
-
+        FlightManagementSystem_t(){};
         FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData);
         virtual ~FlightManagementSystem_t(){};
         void RunFMS();

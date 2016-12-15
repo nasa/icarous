@@ -65,6 +65,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
         time_t trafficResolutionTime;
 
     public:
+        QuadFMS_t(){};
         QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData);
         ~QuadFMS_t();
         uint8_t TAKEOFF();

@@ -37,7 +37,6 @@
 
  #include "AircraftData.h"
 
-
  AircraftData_t::AircraftData_t(MAVLinkMessages_t* Msgs,ParameterData* pData){
      pthread_mutex_init(&lock, NULL);
      RcvdMessages = Msgs;

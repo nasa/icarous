@@ -69,7 +69,7 @@ private:
 	uint16_t nVertices;
 	double floor;
 	double ceiling;
-	const double BUFF = 0.1;
+	double BUFF = 0.1;
 	double entryTime;
 	double exitTime;
 	ParameterData* params;
@@ -91,6 +91,7 @@ private:
 
 
 public:
+	Geofence_t(){};
 	Geofence_t(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling,ParameterData* pData);
 	void AddVertex(int index, double lat, double lon);
 	void CheckViolation(AircraftState acState,double elapsedTime,Plan fp);

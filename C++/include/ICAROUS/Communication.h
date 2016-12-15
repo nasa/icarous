@@ -52,6 +52,7 @@
         int WPcount, WPloaded;
 
     public:
+        Communication_t(){};
         Communication_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata);
         void GetPixhawkData();
         void GetGSData();

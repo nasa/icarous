@@ -92,6 +92,7 @@ class AircraftData_t{
         std::list<Object_t> missionObjList;
 
         //Member functions
+        AircraftData_t(){};
         AircraftData_t(MAVLinkMessages_t* Msgs,ParameterData* pData);
         void AddMissionItem(mavlink_mission_item_t msg);
         uint8_t GetStartMissionFlag();

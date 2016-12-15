@@ -52,7 +52,7 @@
 
  }
 
- QuadFMS_t::~QuadFMS_t(){}
+QuadFMS_t::~QuadFMS_t(){}
 
 uint8_t QuadFMS_t::TAKEOFF(){
 
@@ -300,8 +300,8 @@ uint8_t QuadFMS_t::FlyManuever(){
 	case GUIDE_m:
 		if(Conflict.flightPlanDeviation){
 			ResolveFlightPlanDeviation();
-			SetYaw(FlightData->manueverHeading);
-			SetVelocity(FlightData->manueverVn,FlightData->manueverVe,FlightData->manueverVu);
+			SetYaw(FlightData->maneuverHeading);
+			SetVelocity(FlightData->maneuverVn,FlightData->maneuverVe,FlightData->maneuverVu);
 		}
 
 		if(!Conflict.flightPlanDeviation){

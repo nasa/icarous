@@ -200,7 +200,7 @@ SocketInterface_t::SocketInterface_t(char targetip[], int inportno, int outportn
 :Interface_t(msgInbox){
 
     sock = socket(AF_INET, SOCK_DGRAM, 0);
-
+    recvlen = 0;
     bzero((char *) &locAddr, sizeof(locAddr));
     locAddr.sin_family      = AF_INET;
     locAddr.sin_addr.s_addr = htonl(INADDR_ANY);

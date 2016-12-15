@@ -71,7 +71,9 @@ class Interface_t{
 
   
   std::queue<mavlink_message_t> msgQueue;
+  Interface_t(){};
   Interface_t(MAVLinkMessages_t *msgInbox);
+  virtual ~Interface_t(){};
   int GetMAVLinkMsg();
   void SendMAVLinkMsg(mavlink_message_t msg);
   void EnableDataStream(int option);
@@ -88,6 +90,7 @@ class SerialInterface_t: public Interface_t{
   int parity;
 
  public:
+  SerialInterface_t(){};
   SerialInterface_t(char pname[], int brate, int pbit,MAVLinkMessages_t *msgInbox);
   int set_interface_attribs();
   void set_blocking (int should_block);
@@ -104,6 +107,7 @@ class SocketInterface_t: public Interface_t{
     socklen_t recvlen;
     
   public:
+    SocketInterface_t(){};
     SocketInterface_t(char targetip[], int inportno, int outportno,MAVLinkMessages_t *msgInbox);
     int ReadData();
     void WriteData(uint8_t buffer[], uint16_t len);
