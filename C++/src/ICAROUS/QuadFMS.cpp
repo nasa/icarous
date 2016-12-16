@@ -187,7 +187,7 @@ uint8_t QuadFMS_t::Resolve(){
 		}
 		else if(Conflict.keepout){
 			printf("Computing keep out resolution\n");
-			ResolveKeepOutConflict();
+			ResolveKeepOutConflict_Astar();
 		}
 		else if(Conflict.flightPlanDeviation){
 			printf("Computing standoff deviation\n");
@@ -258,6 +258,7 @@ uint8_t QuadFMS_t::FlyTrajectory(){
 
 	case START_t:
 		printf("executing trajectory resolution\n");
+		FlightData->nextResolutionWP = 0;
 		resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
 		SetMode(GUIDED); sleep(1);
 		SetSpeed(resolutionSpeed);  usleep(5000);

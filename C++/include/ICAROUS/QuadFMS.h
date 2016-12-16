@@ -42,6 +42,9 @@
 #include "RRT.h"
 #include "Daidalus.h"
 #include "KinematicMultiBands.h"
+#include "BoundingRectangle.h"
+#include "DensityGrid.h"
+#include "DensityGridAStarSearch.h"
 #include <time.h>
 
 class QuadFMS_t:public FlightManagementSystem_t{
@@ -85,7 +88,8 @@ class QuadFMS_t:public FlightManagementSystem_t{
         void CheckFlightPlanDeviation();
         void CheckTraffic();
         void ResolveKeepInConflict();
-        void ResolveKeepOutConflict();
+        void ResolveKeepOutConflict_Astar();
+        void ResolveKeepOutConflict_RRT();
         void ResolveFlightPlanDeviation();
         void ResolveTrafficConflict();
         Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);

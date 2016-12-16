@@ -98,6 +98,8 @@ public:
 	bool CollisionDetection(Position pos, Vect2 v,double startTime, double stopTime);
 	bool CheckWPFeasibility(Position current, Position nextWP);
 	uint16_t GetID();
+	uint16_t GetSize();
+	Poly3D GetPoly3D();
 	Position GetRecoveryPoint();
 	bool GetConflictStatus();
 	bool GetProjectedStatus();

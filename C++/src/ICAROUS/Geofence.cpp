@@ -177,6 +177,11 @@ uint16_t Geofence_t::GetID(){
 	return id;
 }
 
+uint16_t Geofence_t::GetSize(){
+	return nVertices;
+}
+
+
 Position Geofence_t::GetRecoveryPoint(){
 	return recoveryPoint;
 }
@@ -199,6 +204,10 @@ FENCE_TYPE Geofence_t::GetType(){
 
 SimplePoly Geofence_t::GetPoly(){
 	return geoPoly1;
+}
+
+Poly3D Geofence_t::GetPoly3D(){
+	return geoPoly3D;
 }
 
 EuclideanProjection Geofence_t::GetProjection(){

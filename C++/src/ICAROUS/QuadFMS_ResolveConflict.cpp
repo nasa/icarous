@@ -138,7 +138,197 @@ void QuadFMS_t::ResolveKeepInConflict(){
 	return;
 }
 
-void QuadFMS_t::ResolveKeepOutConflict(){
+void QuadFMS_t::ResolveKeepOutConflict_Astar(){
+
+	double gridsize          = FlightData->paramData->getValue("GRIDSIZE");
+	double buffer            = FlightData->paramData->getValue("BUFFER");
+	double lookahead         = FlightData->paramData->getValue("LOOKAHEAD");
+	double proximityfactor   = FlightData->paramData->getValue("PROXFACTOR");
+	double resolutionSpeed   = FlightData->paramData->getValue("RES_SPEED");
+	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
+
+	// Reroute flight plan
+	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+
+	Position currentPos = FlightData->acState.positionLast();
+	Velocity currentVel = FlightData->acState.velocityLast();
+
+	double elapsedTime;
+	double altFence;
+	double minTime = MAXDOUBLE;
+	double maxTime = 0;
+
+	Plan currentFP;
+	Position prevWP;
+	Position nextWP;
+	Position start = currentPos;
+
+	if(planType == MISSION){
+		currentFP = FlightData->MissionPlan;
+		elapsedTime = GetApproxElapsedPlanTime(currentFP,FlightData->nextMissionWP);
+		prevWP = currentFP.point(FlightData->nextMissionWP - 1).position();
+		nextWP = currentFP.point(FlightData->nextMissionWP).position();
+	}
+	else if(planType == TRAJECTORY){
+		currentFP = FlightData->ResolutionPlan;
+		elapsedTime = GetApproxElapsedPlanTime(currentFP,FlightData->nextResolutionWP);
+		prevWP = currentFP.point(FlightData->nextResolutionWP - 1).position();
+		nextWP = currentFP.point(FlightData->nextResolutionWP).position();
+	}
+
+
+	std::list<Geofence_t>::iterator it;
+	for(it=Conflict.keepOutGeofence.begin();
+			it!=Conflict.keepOutGeofence.end();++it){
+		double entrytime, exittime;
+		it->GetEntryExitTime(entrytime,exittime);
+
+		if(entrytime <= minTime){
+			minTime  = entrytime;
+			altFence = it->GetCeiling();
+
+			if(it->GetViolationStatus()){
+				start = it->GetRecoveryPoint();
+			}
+		}
+
+		if(exittime >= maxTime){
+			maxTime = exittime;
+		}
+
+		if(it->GetViolationStatus()){
+			start = it->GetRecoveryPoint();
+		}
+	}
+
+	minTime = minTime - lookahead;
+	maxTime = maxTime + lookahead;
+
+	if (minTime < elapsedTime) {
+		minTime = elapsedTime + 0.1;
+	}
+
+	if (maxTime > currentFP.getLastTime()) {
+		maxTime = currentFP.getLastTime() - 0.1;
+	}
+
+	if(planType == MISSION){
+		FlightData->nextMissionWP = FlightData->MissionPlan.getSegment(maxTime) + 1;
+	}
+
+	Plan conflictFP = PlanUtil::cutDown(currentFP,minTime,maxTime);
+	Position goal = conflictFP.getLastPoint().position();
+
+	BoundingRectangle BR;
+	for(it=FlightData->fenceList.begin();
+			it!=FlightData->fenceList.end();++it){
+		if(it->GetType() == KEEP_IN){
+			for(int i=0;i<it->GetSize();++i){
+				BR.add(it->GetPoly3D().getVertex(i));
+			}
+			break;
+		}
+	}
+
+	NavPoint initpos(start,0);
+	DensityGrid DG(BR,initpos,goal,(int)buffer,gridsize,true);
+	DG.snapToStart();
+	DG.setWeights(5.0);
+
+	for(it=FlightData->fenceList.begin();
+			it!=FlightData->fenceList.end();++it){
+		if(it->GetType() == KEEP_OUT){
+			DG.setWeightsInside(it->GetPoly(),100.0);
+		}
+	}
+
+	DensityGridAStarSearch DGAstar;
+	std::vector<std::pair<int,int>> GridPath = DGAstar.optimalPath(DG);
+	std::vector<std::pair<int,int>>::iterator gpit;
+
+	Plan ResolutionPlan1;
+	//Create a plan out of the grid points
+	if(!GridPath.empty()){
+		std::list<Position> PlanPosition;
+		double currHeading = 0.0;
+		double nextHeading = 0.0;
+
+		// Reduce the waypoints based on heading
+		PlanPosition.push_back(start);
+		double startAlt = start.alt();
+
+		for(gpit = GridPath.begin(); gpit != GridPath.end(); ++ gpit){
+			Position pos1 = DG.getPosition(*gpit);
+
+			if(gpit == GridPath.begin()){
+				gpit++;
+				Position pos2 = DG.getPosition(*gpit);gpit--;
+				currHeading = pos1.track(pos2);
+			}
+
+			if( gpit++ == GridPath.end() ){
+				gpit--;
+				PlanPosition.push_back(pos1.mkAlt(startAlt));
+				break;
+			}
+			else{
+				Position pos2 = DG.getPosition(*gpit);gpit--;
+				nextHeading = pos1.track(pos2);
+				if(fabs(nextHeading - currHeading) > 0.01){
+					PlanPosition.push_back(pos1.mkAlt(startAlt));
+					currHeading = nextHeading;
+				}
+			}
+
+		}
+		PlanPosition.push_back(goal);
+
+		Plan ResolutionPlan1;
+		double ETA = 0.0;
+		NavPoint wp0(PlanPosition.front(),0);
+		ResolutionPlan1.add(wp0);
+
+		int count = 0;
+		std::list<Position>::iterator it;
+		for(PlanPosition.begin();it != PlanPosition.end();++it){
+			Position pos = *it;
+			if(count == 0){
+				ETA = 0;
+			}
+			else{
+				Position prevWP = ResolutionPlan1.point(count-1).position();
+				double distH    = pos.distanceH(prevWP);
+				ETA             = ETA + distH/resolutionSpeed;
+			}
+			NavPoint np(pos,ETA);
+			ResolutionPlan1.add(np);
+			count++;
+		}
+	}
+
+	Plan ResolutionPlan2 = ComputeGoAbovePlan(start,goal,altFence,resolutionSpeed);
+
+	double length1 = ResolutionPlan1.pathDistance();
+	double length2 = ResolutionPlan2.pathDistance();
+
+	if( (altFence > maxAlt) ){
+		length2 = MAXDOUBLE;
+	}
+
+	FlightData->ResolutionPlan.clear();
+	if(length1 < length2){
+		FlightData->ResolutionPlan = ResolutionPlan1;
+	}else{
+		FlightData->ResolutionPlan = ResolutionPlan2;
+	}
+
+	planType        = TRAJECTORY;
+	resumeMission   = false;
+	return;
+
+}
+
+void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 	double gridsize          = FlightData->paramData->getValue("GRIDSIZE");
 	double buffer            = FlightData->paramData->getValue("BUFFER");
 	double lookahead         = FlightData->paramData->getValue("LOOKAHEAD");
