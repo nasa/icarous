@@ -409,12 +409,19 @@ void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 	RRT_t RRT(FlightData->fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT);
 	RRT.SetGoal(goal);
 
-	for(int i=0;i<Nsteps;i++){
+	int i;
+	for(i=0;i<Nsteps;i++){
 		RRT.RRTStep(i);
 		if(RRT.CheckGoal()){
 			printf("Goal found\n");
 			break;
 		}
+	}
+
+	printf("iteration count = %d\n",i);
+
+	if(!RRT.goalreached){
+		Conflict.clear();
 	}
 
 	Plan ResolutionPlan1 = RRT.GetPlan();
@@ -423,7 +430,7 @@ void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 	double length1 = ResolutionPlan1.pathDistance();
 	double length2 = ResolutionPlan2.pathDistance();
 
-	if( (altFence > maxAlt) ){
+	if( (altFence >= maxAlt) ){
 		length2 = MAXDOUBLE;
 	}
 
@@ -526,6 +533,10 @@ void QuadFMS_t::ResolveTrafficConflict(){
 			//printf("Goal found\n");
 			break;
 		}
+	}
+
+	if(!RRT.goalreached){
+		Conflict.clear();
 	}
 
 	FlightData->ResolutionPlan.clear();

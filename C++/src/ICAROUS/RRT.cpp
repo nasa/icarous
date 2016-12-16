@@ -614,14 +614,17 @@ bool RRT_t::CheckGoal(){
 
 		if(nodeCount > 2 && CheckDirectPath2Goal(closestNode)){
 			printf("found direct path to goal\n");
+			goalreached = true;
 			return true;
 		}
 	}
 
-	if( mag < 10 ){
+	if( mag < 3 ){
 		printf("found goal\n");
+		goalreached = true;
 		return true;
 	}else{
+		goalreached = false;
 		return false;
 	}
 }
@@ -685,6 +688,13 @@ Plan RRT_t::GetPlan(){
 	printf("Node count:%d\n",nodeCount);
 	printf("Closest dist: %f\n",closestDist);
 	printf("x,y:%f,%f\n",goalNode.pos.x,goalNode.pos.y);
+
+	if(!goalreached){
+		node = goalNode;
+		node.parent.push_back(closestNode);
+		path.push_front(node);
+	}
+
 	while(!node.parent.empty()){
 		parent = node.parent.front();
 		printf("x,y:%f,%f\n",parent.pos.x,parent.pos.y);

@@ -2,7 +2,7 @@
 TAKEOFF_ALT =5
 
 # Resolution speed
-RES_SPEED = 1.0
+RES_SPEED = 0.5
 
 #Geofence parameters
 HTHRESHOLD = 1
@@ -12,7 +12,10 @@ HSTEPBACK = 4
 # Xtrack resolution parameters
 XTRK_DEV = 2.0
 XTRK_GAIN = 0.5
-MAX_CEILING = 100;
+MAX_CEILING = 50;
+
+#Keep-out resolution type (0-Astar, 1-RRT)
+SEARCH_TYPE 0
 
 #Astar search parameters
 LOOKAHEAD = 2

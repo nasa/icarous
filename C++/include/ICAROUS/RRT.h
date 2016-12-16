@@ -91,6 +91,7 @@ public:
 	node_t goalNode;
 	Daidalus DAA;
 	KinematicMultiBands KMB;
+	bool goalreached;
 
 	RRT_t();
 	RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,

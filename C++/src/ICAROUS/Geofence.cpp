@@ -56,7 +56,7 @@ void Geofence_t::AddVertex(int index, double lat,double lon){
 	Position pos = Position::makeLatLonAlt(lat,"degree",lon,"degree",0,"m");
 	geoPoly0.addVertex(pos);
 
-	double ResolBUFF = params->getValue("HTRHESHOLD"); // expansion/contraction amount
+	double ResolBUFF = params->getValue("HTHRESHOLD"); // expansion/contraction amount
 
 	if(geoPoly0.size() == nVertices){
 		geoPoly0.setBottom(floor);
