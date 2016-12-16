@@ -41,6 +41,7 @@ Conflict_t::Conflict_t(){
 	keepin   = false;
 	keepout  = false;
 	flightPlanDeviation = false;
+	traffic = false;
 }
 
 bool Conflict_t::isEqual(Geofence_t gf){

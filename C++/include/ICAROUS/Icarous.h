@@ -67,7 +67,7 @@ private:
 	int sitlin =0,sitlout =0;
 	int gsin =0,gsout = 0;
 	ParameterData paramData;
-	char version[5]="1.0";
+	char version[5];
 	Mission_t* mission;
 
 public:

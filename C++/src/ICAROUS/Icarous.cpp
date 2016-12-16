@@ -38,6 +38,7 @@
 
 Icarous_t::Icarous_t(int argc,char* argv[],Mission_t* task){
 
+	strcpy(version,"1.0");
 	printf("Icarous version %s\n",version);
 	GetOptions(argc,argv);
 
@@ -49,6 +50,7 @@ Icarous_t::Icarous_t(int argc,char* argv[],Mission_t* task){
 	sepInputReader.readLine();
 	paramData = sepInputReader.getParameters();
 	mission = task;
+
 
 }
 
