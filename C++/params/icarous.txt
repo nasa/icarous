@@ -1,9 +1,21 @@
+# Takeoff alt
 TAKEOFF_ALT =5
-LOOKAHEAD = 2
+
+# Resolution speed
+RES_SPEED = 1.0
+
+#Geofence parameters
 HTHRESHOLD = 1
 VTHRESHOLD = 1
 HSTEPBACK = 4
-RES_SPEED = 1.0
+
+# Xtrack resolution parameters
 XTRK_DEV = 2.0
 XTRK_GAIN = 0.5
 MAX_CEILING = 100;
+
+#Astar search parameters
+LOOKAHEAD = 2
+GRIDSIZE = 0.5
+BUFFER = 1
+PROXFACTOR = 3.0

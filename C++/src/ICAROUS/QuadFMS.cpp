@@ -102,7 +102,14 @@ uint8_t QuadFMS_t::CRUISE(){
 
 	confSize = Monitor();
 
-	if(confSize > 0){
+	if(confSize != conflictSize){
+		conflictSize = confSize;
+		if(conflictSize > 0){
+			resolutionState = COMPUTE_r;
+		}
+	}
+
+	if(resolutionState != IDLE_r){
 		Resolve();
 	}
 	else{
@@ -156,14 +163,7 @@ uint8_t QuadFMS_t::Monitor(){
 		}
 	}
 
-	if(Conflict.size() != conflictSize){
-		conflictSize = Conflict.size();
-		if(conflictSize > 0){
-			resolutionState = COMPUTE_r;
-		}
-	}
-
-	return conflictSize;
+	return Conflict.size();
 }
 
 uint8_t QuadFMS_t::Resolve(){
@@ -257,7 +257,7 @@ uint8_t QuadFMS_t::FlyTrajectory(){
 	switch(trajectoryState){
 
 	case START_t:
-		printf("executing trajectory resolution\n");
+		printf("executing trajectory resolution of size\n");
 		FlightData->nextResolutionWP = 0;
 		resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
 		SetMode(GUIDED); sleep(1);
@@ -279,6 +279,7 @@ uint8_t QuadFMS_t::FlyTrajectory(){
 		distV     = current.distanceV(next);
 		//printf("distH,V = %f,%f\n",distH,distV);
 		if(distH < 1 && distV < 0.5){
+
 			FlightData->nextResolutionWP++;
 			if(FlightData->nextResolutionWP >= FlightData->ResolutionPlan.size()){
 				trajectoryState = STOP_t;

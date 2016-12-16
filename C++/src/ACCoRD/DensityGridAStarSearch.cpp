@@ -150,7 +150,7 @@ bool DensityGridAStarSearch::contains(const std::vector<Triple<int,int,int> >& g
 		std::vector<std::pair<int,int> > searched = std::vector<std::pair<int,int> >();
 		searched.push_back(start);
 		double firstWeight = dg.getWeight(start);
-		if (std::isfinite(firstWeight)) return std::vector<std::pair<int,int> >(); // first cell is invalid, abort search
+		if (!std::isfinite(firstWeight)) return std::vector<std::pair<int,int> >(); // first cell is invalid, abort search
 		fringe.push_back(FringeEntry(start, 1, dg.getWeight(start)));
 		return astar(dg, end.first, end.second, fringe, searched);
 	}

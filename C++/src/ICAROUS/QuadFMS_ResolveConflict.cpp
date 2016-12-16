@@ -223,8 +223,9 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 	for(it=FlightData->fenceList.begin();
 			it!=FlightData->fenceList.end();++it){
 		if(it->GetType() == KEEP_IN){
+			maxAlt = it->GetPoly3D().getTop();
 			for(int i=0;i<it->GetSize();++i){
-				BR.add(it->GetPoly3D().getVertex(i));
+				BR.add(it->GetPoly().getVertex(i));
 			}
 			break;
 		}
@@ -234,6 +235,9 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 	DensityGrid DG(BR,initpos,goal,(int)buffer,gridsize,true);
 	DG.snapToStart();
 	DG.setWeights(5.0);
+
+	std::pair<int,int> p1 = DG.gridPosition(start);
+	std::pair<int,int> p2 = DG.gridPosition(goal);
 
 	for(it=FlightData->fenceList.begin();
 			it!=FlightData->fenceList.end();++it){
@@ -246,6 +250,9 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 	std::vector<std::pair<int,int>> GridPath = DGAstar.optimalPath(DG);
 	std::vector<std::pair<int,int>>::iterator gpit;
 
+	std::pair<int,int> p3(103,63);
+	Position pos2 = DG.getPosition(p3);
+
 	Plan ResolutionPlan1;
 	//Create a plan out of the grid points
 	if(!GridPath.empty()){
@@ -257,22 +264,23 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 		PlanPosition.push_back(start);
 		double startAlt = start.alt();
 
-		for(gpit = GridPath.begin(); gpit != GridPath.end(); ++ gpit){
+		for(gpit = GridPath.begin(); gpit != GridPath.end(); ++gpit){
 			Position pos1 = DG.getPosition(*gpit);
 
 			if(gpit == GridPath.begin()){
-				gpit++;
-				Position pos2 = DG.getPosition(*gpit);gpit--;
+				++gpit;
+				Position pos2 = DG.getPosition(*gpit);--gpit;
 				currHeading = pos1.track(pos2);
+				continue;
 			}
 
-			if( gpit++ == GridPath.end() ){
-				gpit--;
+			if( ++gpit == GridPath.end() ){
+				--gpit;
 				PlanPosition.push_back(pos1.mkAlt(startAlt));
 				break;
 			}
 			else{
-				Position pos2 = DG.getPosition(*gpit);gpit--;
+				Position pos2 = DG.getPosition(*gpit);--gpit;
 				nextHeading = pos1.track(pos2);
 				if(fabs(nextHeading - currHeading) > 0.01){
 					PlanPosition.push_back(pos1.mkAlt(startAlt));
@@ -283,14 +291,14 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 		}
 		PlanPosition.push_back(goal);
 
-		Plan ResolutionPlan1;
+
 		double ETA = 0.0;
 		NavPoint wp0(PlanPosition.front(),0);
 		ResolutionPlan1.add(wp0);
 
 		int count = 0;
 		std::list<Position>::iterator it;
-		for(PlanPosition.begin();it != PlanPosition.end();++it){
+		for(it = PlanPosition.begin();it != PlanPosition.end();++it){
 			Position pos = *it;
 			if(count == 0){
 				ETA = 0;
@@ -311,7 +319,7 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 	double length1 = ResolutionPlan1.pathDistance();
 	double length2 = ResolutionPlan2.pathDistance();
 
-	if( (altFence > maxAlt) ){
+	if( (altFence >= maxAlt) ){
 		length2 = MAXDOUBLE;
 	}
 
