@@ -177,6 +177,8 @@ uint8_t QuadFMS_t::Resolve(){
 
 	case COMPUTE_r:
 
+
+
 		if(Conflict.traffic){
 			printf("Computing traffic resolution\n");
 			ResolveTrafficConflict();
@@ -187,9 +189,15 @@ uint8_t QuadFMS_t::Resolve(){
 			ResolveKeepInConflict();
 		}
 		else if(Conflict.keepout){
+			int search_type = FlightData->paramData->getInt("SEARCH_TYPE");
 			printf("Computing keep out resolution\n");
 			time(&startTime);
-			ResolveKeepOutConflict_RRT();
+			if(search_type == 0){
+				ResolveKeepOutConflict_Astar();
+			}
+			else{
+				ResolveKeepOutConflict_RRT();
+			}
 			time(&stopTime);
 			printf("Time to compute solution %f\n",difftime(stopTime,startTime));
 		}
