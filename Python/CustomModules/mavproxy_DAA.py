@@ -1,5 +1,5 @@
 """
-    MAVProxy geofence module
+    MAVProxy DAA module
 """
 #import os, time, platform, math
 from pymavlink import mavutil
@@ -12,19 +12,19 @@ from MAVProxy.modules.lib.mp_menu import *  # popup menus
 if mp_util.has_wxpython:
     from MAVProxy.modules.lib.mp_menu import *
 
-class Traffic:
+class DAA:
     def __init__(self):
 
         self.open = False;		#flag indicating if a device is loaded
 
 
-class TrafficModule(mp_module.MPModule):
+class DAAModule(mp_module.MPModule):
     def __init__(self, mpstate):
-        super(TrafficModule, self).__init__(mpstate, "traffic", "traffic management", public = True)
+        super(DAAModule, self).__init__(mpstate, "DAA", "DAA management", public = True)
         
 
-        self.add_command('traffic', self.load_traffic_dev,
-                         "start traffic dev",
+        self.add_command('DAA', self.load_traffic_dev,
+                         "open traffic dev",
                          ["dev device"])
  
         self.menu_added_console = False
@@ -97,6 +97,10 @@ class TrafficModule(mp_module.MPModule):
 
             self.mav = mavutil.mavlink_connection(args[1], source_system=255, dialect="ardupilotmega", input = True)
 	    self.open = True
+
+        elif args[0] == "radius":
+            if len(args) == 2:
+                self.radius = float(args[1]);
         else:
             print 'usage: traffic dev "address of mav"'
 
@@ -105,7 +109,7 @@ class TrafficModule(mp_module.MPModule):
     def Update_traffic(self):
         '''Update traffic icon on map'''
 
-        #place info in local variable becuase map.set_position will not accept is otherwise
+        #place info in local variable becuase map.set_position will not accept it otherwise
         i_lat = self.intr_lat;
         i_lon = self.intr_lon;
         i_hdg = self.intr_hdg;
@@ -151,4 +155,4 @@ class TrafficModule(mp_module.MPModule):
 
 def init(mpstate):
     '''initialise module'''
-    return TrafficModule(mpstate)
+    return DAAModule(mpstate)
