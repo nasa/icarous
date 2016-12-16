@@ -420,6 +420,10 @@ void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 
 	printf("iteration count = %d\n",i);
 
+	if(!RRT.goalreached){
+		Conflict.clear();
+	}
+
 	Plan ResolutionPlan1 = RRT.GetPlan();
 	Plan ResolutionPlan2 = ComputeGoAbovePlan(start,goal,altFence,resolutionSpeed);
 
@@ -529,6 +533,10 @@ void QuadFMS_t::ResolveTrafficConflict(){
 			//printf("Goal found\n");
 			break;
 		}
+	}
+
+	if(!RRT.goalreached){
+		Conflict.clear();
 	}
 
 	FlightData->ResolutionPlan.clear();
