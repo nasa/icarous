@@ -189,7 +189,7 @@ uint8_t QuadFMS_t::Resolve(){
 		else if(Conflict.keepout){
 			printf("Computing keep out resolution\n");
 			time(&startTime);
-			ResolveKeepOutConflict_Astar();
+			ResolveKeepOutConflict_RRT();
 			time(&stopTime);
 			printf("Time to compute solution %f\n",difftime(stopTime,startTime));
 		}
