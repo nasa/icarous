@@ -170,7 +170,8 @@ uint8_t QuadFMS_t::Resolve(){
 
 	uint8_t status;
 
-
+	time_t startTime;
+	time_t stopTime;
 
 	switch(resolutionState){
 
@@ -187,7 +188,10 @@ uint8_t QuadFMS_t::Resolve(){
 		}
 		else if(Conflict.keepout){
 			printf("Computing keep out resolution\n");
+			time(&startTime);
 			ResolveKeepOutConflict_Astar();
+			time(&stopTime);
+			printf("Time to compute solution %f\n",difftime(stopTime,startTime));
 		}
 		else if(Conflict.flightPlanDeviation){
 			printf("Computing standoff deviation\n");
