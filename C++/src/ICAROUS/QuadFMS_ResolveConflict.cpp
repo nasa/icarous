@@ -102,6 +102,10 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 
 		cp = prevWP.linearEst(dn,de); // closest point on path
 
+		if(prevWP.alt() < 2){
+			cp = cp.mkAlt(nextWP.alt());
+		}
+
 		FlightData->maneuverHeading = currentPos.track(cp);
 		if(FlightData->maneuverHeading < 0){
 			FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
@@ -115,6 +119,7 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 		FlightData->ResolutionPlan.add(wp1);
 		FlightData->ResolutionPlan.add(wp2);
 
+		std::cout<<FlightData->ResolutionPlan.toString()<<std::endl;
 		planType      = TRAJECTORY;
 		resumeMission = false;
 	}
