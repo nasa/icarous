@@ -12,6 +12,8 @@
 #include "Plan.h"
 #include "Util.h"
 #include "Constants.h"
+#include "BoundingRectangle.h"
+#include "Triple.h"
 #include "format.h"
 #include "string_util.h"
 #include <vector>
@@ -162,31 +164,43 @@ PolyPath PolyPath::copy() const {
 
 // builds a Plan based on this PolyPath
 // this will probably change to an arraylist in the future
-Plan PolyPath::buildPlan() const {
+Triple<Plan,double,double> PolyPath::buildPlan() const {
 	Plan p = Plan(name);
+	if (size() < 1) return Triple<Plan,double,double>(p, 0.0, 0.0);
+
 	double maxH = 0;
 	double maxD = 0;
-	for (int i = 0; i < (signed)times.size(); i++) {
+	for (int i = 0; i < times.size(); i++) {
 		SimplePoly poly = polyList[i];
+		if (poly.size() < 2) {
+			// TODO: needed for vstrat to function properly, check this
+			return Triple<Plan,double,double>(p, 0.0, 0.0);
+		}
 		double time = times[i];
 		NavPoint np = NavPoint(poly.boundingCircleCenter(),time);
 		p.add(np);
-		if (std::abs(poly.getTop()-poly.getBottom()) > maxH)
+		if (std::abs(poly.getTop()-poly.getBottom()) > maxH) {
 			maxH = std::abs(poly.getTop()-poly.getBottom());
-		if (poly.boundingCircleRadius() > maxD)
+		}
+		if (poly.boundingCircleRadius() > maxD) {
 			maxD = poly.boundingCircleRadius();
+		}
 	}
 
-	// static poly
+	// static poly or USER_VEL
 	if (times.size() == 1) {
 		SimplePoly poly = polyList[0];
 		NavPoint np = NavPoint(poly.boundingCircleCenter(),DBL_MAX);
+		if (isUserVel()) {
+			if (vlist[0].isInvalid()) {
+				error.addError("USER_VEL path has invalid velocity");
+			} else {
+				np = NavPoint(poly.boundingCircleCenter().linear(vlist[0], 36000), times[0]+36000);
+			}
+		}
 		p.add(np);
 	}
-
-	//	p.setProtectionDistance(maxD);
-	//	p.setProtectionHeight(maxH/2);
-	return p;
+	return Triple<Plan,double,double>(p, maxD, maxH/2);
 }
 
 bool PolyPath::isLatLon() const {
@@ -774,6 +788,7 @@ MovingPolygon3D PolyPath::getMovingPolygon(double time, const EuclideanProjectio
 }
 
 
+
 string PolyPath::toString() const {
 	string s = "POLY " + name +" mode="+pathModeToString(mode)+ "\n";
 	for (int i = 0; i < (signed)size(); i++) {
@@ -839,6 +854,36 @@ string PolyPath::toOutput(int precision, bool tcpColumns) const {
 }
 
 
+bool PolyPath::contains (const Position& p, double t) const {
+	return t >= getFirstTime() && t <= getLastTime() && position(t).contains(p);
+}
+
+bool PolyPath::contains2D (const Position& p, double t) const {
+	return t >= getFirstTime() && t <= getLastTime() && position(t).contains2D(p);
+}
+
+
+
+BoundingRectangle PolyPath::getBoundingRectangle() const {
+	BoundingRectangle br;
+	for (int i = 0; i < polyList.size()-1; i++) {
+		br.add(polyList[i].getBoundingRectangle());
+	}
+	if (mode == USER_VEL && !vlist[size()-1].isZero()) {
+		// add last poly
+		br.add(polyList[size()-1].getBoundingRectangle());
+		// add poly 20 hours from now
+		br.add(position(times[size()-1]+72000).getBoundingRectangle());
+	} else if (mode == USER_VEL_FINITE) {
+		// do not add last poly
+		br.add(position(getLastTime()).getBoundingRectangle());
+	} else {
+		// add last poly
+		br.add(polyList[size()-1].getBoundingRectangle());
+	}
+
+	return br;
+}
 
 
 

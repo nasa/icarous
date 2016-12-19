@@ -238,6 +238,11 @@ double Plan::getLastTime() const {
 	return points[size()-1].time();
 }
 
+bool Plan::timeInPlan(double t) const {
+	return getFirstTime() <= t && t <= getLastTime();
+}
+
+
 NavPoint Plan::getLastPoint() const {
 	if (size() == 0) {
 		addError("getLastTime: Empty plan", 0);
@@ -433,7 +438,7 @@ void Plan::insertWithTimeshift(int i, const NavPoint& v) {
 	NavPoint np0 = closestPoint(v1.position()); // closest point, if in accel zone
 	//double dt0 = 0;
 	bool in_Accel = false;
-	bool onPlan = np0.distanceH(v) < std::min(pathDistance()*0.001, 1.0);  // within 1 meter of plan (or 1/1000 of a short plan)
+	bool onPlan = np0.distanceH(v) < Util::min(pathDistance()*0.001, 1.0);  // within 1 meter of plan (or 1/1000 of a short plan)
 	if (i > 0) {
 		d0 = point(i-1).distanceH(v);
 		if (inAccel(getTime(i-1))) {
@@ -1062,7 +1067,7 @@ double Plan::timeFromGs(double vo, double gsAccel, double dist) {
 	//double a = point(prevBGS(seg)).gsAccel();
 	double t1 = Util::root(0.5*gsAccel, vo, -dist, 1);
 	double t2 = Util::root(0.5*gsAccel, vo, -dist, -1);
-	double dt = ISNAN(t1) || t1 < 0 ? t2 : (ISNAN(t2) || t2 < 0 ? t1 : std::min(t1, t2));
+	double dt = ISNAN(t1) || t1 < 0 ? t2 : (ISNAN(t2) || t2 < 0 ? t1 : Util::min(t1, t2));
 	return dt;
 }
 
@@ -1547,7 +1552,7 @@ std::pair<Position,Velocity> Plan::positionVelocity(double t) const {
 //	}
 //	//  this generates an erroneous value if the time is very nearly to the next point
 //	if (nextPt.time() - tm < minDt) {
-//		tm = std::max(getFirstTime(), nextPt.time() - 2.0*minDt);
+//		tm = Util::max(getFirstTime(), nextPt.time() - 2.0*minDt);
 //	}
 //	NavPoint np = NavPoint(positionOLD(tm,linear), tm);
 //	Velocity v = np.initialVelocity(nextPt);
@@ -1799,6 +1804,17 @@ void Plan::setTimeGSin(int i, double gs) {
 }
 
 
+void Plan::setAltVSin(int i, double vs, bool preserve) {
+	if (i <= 0)
+		return;
+	double dt = point(i).time() - point(i - 1).time();
+	double newAlt = point(i - 1).alt() + dt * vs;
+	NavPoint tempv = points[i].mkAlt(newAlt);
+	if (preserve)
+		tempv = tempv.makeAltPreserve();
+	set(i, tempv);
+}
+
 
 /** change the ground speed into ix to be gs -- all other ground speeds remain the same
  *
@@ -2027,7 +2043,10 @@ void Plan::structRevertTurnTCP(int ix, bool addBackMidPoints, bool killNextGsTCP
 			}
 		}
 		Velocity vin;
-		if (ix == 0) vin = point(ix).velocityInit();     // not sure if we should allow TCP as current point ??
+		if (ix == 0) {
+			//vin = point(ix).velocityInit();     // not sure if we should allow TCP as current point ??
+			vin = initialVelocity(0);
+		}
 		else vin = finalVelocity(ix-1);
 		double gsin = vin.gs();
 		//fpln(" $$$$ structRevertTurnTCP: gsin = "+Units::str("kn",gsin,8));
@@ -2109,8 +2128,8 @@ void Plan::structRevertTurnTCP(int ix, bool addBackMidPoints, bool killNextGsTCP
 // will not remove first or last point
 void Plan::removeRedundantPoints(int from, int to) {
 	double velEpsilon = 1.0;
-	int ixLast = std::min(size() - 2, to);
-	int ixFirst = std::max(1, from);
+	int ixLast = Util::min(size() - 2, to);
+	int ixFirst = Util::max(1, from);
 	for (int i = ixLast; i >= ixFirst; i--) {
 		NavPoint p = point(i);
 		Velocity vin = finalVelocity(i-1);

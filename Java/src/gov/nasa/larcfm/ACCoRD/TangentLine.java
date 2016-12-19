@@ -32,7 +32,7 @@ public class TangentLine extends Vect2 {
     eps = v.eps;
   }
   
-  /** Q function */
+  /** Q function (relative tangent line) */
   public static Vect2 Q(Vect2 s, double D, int eps) {
     double sq_s = s.sqv();
     double sq_D = Util.sq(D);

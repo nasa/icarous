@@ -468,8 +468,8 @@ public final class Position implements OutputList {
   
   /** This computes the horizontal position, the altitude is not computed!
    * 
-   * @param v
-   * @param d
+   * @param v    velocity
+   * @param d    distance
    * @return
    */
   public Pair<Position,Velocity> linearDist(Velocity v, double d) {

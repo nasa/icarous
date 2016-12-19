@@ -85,10 +85,10 @@ namespace larcfm {
 	 */
 	void BoundingRectangle::add(double x, double y) {
 		//fpln("min "+x+" "+xMin);
-		xMin = std::min(x,xMin);
-		yMin = std::min(y,yMin);
-		xMax = std::max(x,xMax);
-		yMax = std::max(y,yMax);
+		xMin = Util::min(x,xMin);
+		yMin = Util::min(y,yMin);
+		xMax = Util::max(x,xMax);
+		yMax = Util::max(y,yMax);
 	}
 
 	/**
@@ -110,8 +110,8 @@ namespace larcfm {
 	 */
 	void BoundingRectangle::add(double x, double y, double z) {
 		add(x,y);
-		zMin = std::min(z,zMin);
-		zMax = std::max(z,zMax);
+		zMin = Util::min(z,zMin);
+		zMax = Util::max(z,zMax);
 	}
 
 	/**

@@ -117,12 +117,12 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 
 	//  /** Sets the minimum horizontal separation distance. The distance must be greater than 0. */
 	//  public void setDistance(double distance) {
-	//    cdss.setDistance(Math.max(distance, 1e-6));
+	//    cdss.setDistance(Util.max(distance, 1e-6));
 	//  }
 	//
 	//  /** Sets the minimum vertical separation distance.  The height must be greater than 0.  */
 	//  public void setHeight(double height) {
-	//    cdss.setHeight(Math.max(height, 1e-6));
+	//    cdss.setHeight(Util.max(height, 1e-6));
 	//  }
 
 
@@ -394,8 +394,8 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue;
 			} else { // normal case
-				HT = Math.max(0.0, Math.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
-				BT = Math.max(0.0, B + t0 - t_base);
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				BT = Util.max(0.0, B + t0 - t_base);
 				NT = cont ? HT : T + t0 - t_base;
 				//NT = HT;
 
@@ -490,8 +490,8 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue; // leave loop
 			} else { // normal case
-				HT = Math.max(0.0, Math.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
-				BT = Math.max(0.0, B + t0 - t_base);
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				BT = Util.max(0.0, B + t0 - t_base);
 				NT = cont ? HT : T + t0 - t_base;      
 				//      Velocity vop = vo;
 				//      Velocity vip = intent.initialVelocity(t_base);
@@ -597,11 +597,11 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue;
 			} else { // normal case
-				HT = Math.max(0.0, Math.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
-				BT = Math.max(0.0, B + t0 - t_base);
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				BT = Util.max(0.0, B + t0 - t_base);
 				NT = T + t0 - t_base;
 				if (NT >= 0) {
-					if (cdsscore.conflict(sop, vo, sip, intent.initialVelocity(j, linear), BT, Math.min(NT, HT)) ) return true;
+					if (cdsscore.conflict(sop, vo, sip, intent.initialVelocity(j, linear), BT, Util.min(NT, HT)) ) return true;
 				}
 				t_base = intent.getTime(j+1);        
 			}
@@ -642,13 +642,13 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue; // leave loop
 			} else { // normal case
-				HT = Math.max(0.0, Math.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
-				BT = Math.max(0.0, B + t0 - t_base);
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				BT = Util.max(0.0, B + t0 - t_base);
 				NT = T + t0 - t_base;      
 				Velocity vop = proj.projectVelocity(so2p, vo);  //CHANGED!!!
 				Velocity vip = proj.projectVelocity(sip, intent.velocity(t_base, linear));
 				if (NT >= 0) {
-					if ( cdsscore.conflict(so3, vop, si3, vip, BT, Math.min(NT, HT)) ) return true;
+					if ( cdsscore.conflict(so3, vop, si3, vip, BT, Util.min(NT, HT)) ) return true;
 				}
 				t_base = intent.getTime(j+1);        
 			}
@@ -696,8 +696,8 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue;
 			} else { // normal case
-				HT = Math.max(0.0, Math.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
-				BT = Math.max(0.0, B + t0 - t_base);
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				BT = Util.max(0.0, B + t0 - t_base);
 				NT = cont ? HT : T + t0 - t_base;
 				if (NT >= 0) {
 					cdsscore.detectionBetween(sop, vo, sip, intent.initialVelocity(j, linear), BT, NT, HT);
@@ -748,8 +748,8 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue; // leave loop
 			} else { // normal case
-				HT = Math.max(0.0, Math.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
-				BT = Math.max(0.0, B + t0 - t_base);
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				BT = Util.max(0.0, B + t0 - t_base);
 				NT = cont ? HT : T + t0 - t_base;      
 				Velocity vop = proj.projectVelocity(so2p, vo);  //CHANGED!!!
 				Velocity vip = proj.projectVelocity(sip, intent.velocity(t_base, linear));

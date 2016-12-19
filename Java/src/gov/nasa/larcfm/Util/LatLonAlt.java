@@ -245,7 +245,8 @@ public final class LatLonAlt {
 	public LatLonAlt linearEst(double dn, double de) {
 		//f.pln(" lat = "+Units.str("deg",lati)+" lon = "+Units.str("deg",longi));
 		double R = 6378137;                   // diameter earth in meters
-		//TODO:  switch to		 R = GreatCircle.spherical_earth_radius;
+		//double R = GreatCircle.spherical_earth_radius;
+		//f.pln(" $$$$ R = "+Units.str("NM",R,12)+" R2 = "+Units.str("NM",R2,12));
 		double nLat = lati + dn/R;
 		double nLon = longi + de/(R*Math.cos(lati));
 		//f.pln(" nLat = "+Units.str("deg",nLat)+" nLon = "+Units.str("deg",nLon));

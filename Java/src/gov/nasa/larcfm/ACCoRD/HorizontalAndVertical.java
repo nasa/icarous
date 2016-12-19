@@ -14,6 +14,7 @@
 
 package gov.nasa.larcfm.ACCoRD;
 
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect2;
 import gov.nasa.larcfm.Util.Vect3;
 
@@ -48,7 +49,7 @@ public class HorizontalAndVertical extends Vect3  {
     Vect2 vo2 = vo.vect2();
     double det_vo_v = vo2.det(nv);
     if (det_vo_v != 0) {
-      double l = Math.max(0,vi.det(nv) / det_vo_v);
+      double l = Util.max(0,vi.det(nv) / det_vo_v);
       double k = vi.det(vo2) / det_vo_v;
       if (k > 0 && l > 0) {
         HorizontalAndVertical gso = new HorizontalAndVertical(vo.Scal(l));

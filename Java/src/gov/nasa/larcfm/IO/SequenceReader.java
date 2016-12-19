@@ -17,6 +17,7 @@ import gov.nasa.larcfm.Util.LatLonAlt;
 import gov.nasa.larcfm.Util.Pair;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Quad;
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
 
@@ -390,7 +391,7 @@ public class SequenceReader extends StateReader {
 		}
 		Double[] ar = arl.toArray(new Double[0]);
 		Arrays.sort(ar);
-		ar = Arrays.copyOfRange(ar, Math.max(ar.length-n,0), ar.length);
+		ar = Arrays.copyOfRange(ar, Util.max(ar.length-n,0), ar.length);
 		arl = new ArrayList<Double>(Arrays.asList(ar));
 		return arl;
 	}

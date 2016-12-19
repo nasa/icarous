@@ -6,6 +6,7 @@
  */
 #include "AlertThresholds.h"
 #include "Vect3.h"
+#include "Util.h"
 #include "Velocity.h"
 #include "Detection3D.h"
 #include "ConflictData.h"
@@ -26,7 +27,7 @@ AlertThresholds::AlertThresholds(const Detection3D* det,
     BandsRegion::Region region) {
   detector_ = det->copy();
   alerting_time_ = std::abs(alerting_time);
-  early_alerting_time_ = std::max(alerting_time_,early_alerting_time);
+  early_alerting_time_ = Util::max(alerting_time_,early_alerting_time);
   region_ = region;
   spread_trk_ = 0;
   spread_gs_ = 0;

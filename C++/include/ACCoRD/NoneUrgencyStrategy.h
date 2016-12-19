@@ -21,6 +21,9 @@ namespace larcfm {
 class NoneUrgencyStrategy : public UrgencyStrategy {
 
 public:
+  /**
+   * @return INVALID aircraft
+   */
   TrafficState mostUrgentAircraft(Detection3D* detector, const TrafficState& ownship, const std::vector<TrafficState>& traffic, double T);
   UrgencyStrategy* copy() const;
 };

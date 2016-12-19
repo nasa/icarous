@@ -69,8 +69,8 @@ public class CD3D {
       double vz = vo.z-vi.z;
       if (vo2.almostEquals(vi2) && Horizontal.almost_horizontal_los(s2,D)) {
         if (!Util.almost_equals(vo.z,vi.z)) {
-          t_in  = Math.min(Math.max(Vertical.Theta_H(s.z,vz,Entry,H),B),T);
-          t_out = Math.max(Math.min(Vertical.Theta_H(s.z,vz,Exit,H),T),B);
+          t_in  = Util.min(Util.max(Vertical.Theta_H(s.z,vz,Entry,H),B),T);
+          t_out = Util.max(Util.min(Vertical.Theta_H(s.z,vz,Exit,H),T),B);
         } else if (Vertical.almost_vertical_los(s.z,H)) {
           t_in  = B;
           t_out = T;
@@ -81,13 +81,13 @@ public class CD3D {
           double td1 = Horizontal.Theta_D(s2,v2,Entry,D);
           double td2 = Horizontal.Theta_D(s2,v2,Exit,D);
           if (!Util.almost_equals(vo.z,vi.z)) {
-            double tin  = Math.max(td1,Vertical.Theta_H(s.z,vz,Entry,H));
-            double tout = Math.min(td2,Vertical.Theta_H(s.z,vz,Exit,H));
-            t_in  = Math.min(Math.max(tin,B),T);
-            t_out = Math.max(Math.min(tout,T),B);
+            double tin  = Util.max(td1,Vertical.Theta_H(s.z,vz,Entry,H));
+            double tout = Util.min(td2,Vertical.Theta_H(s.z,vz,Exit,H));
+            t_in  = Util.min(Util.max(tin,B),T);
+            t_out = Util.max(Util.min(tout,T),B);
           } else if (Vertical.almost_vertical_los(s.z,H) ) {
-            t_in  = Math.min(Math.max(td1,B),T);
-            t_out = Math.max(Math.min(td2,T),B);
+            t_in  = Util.min(Util.max(td1,B),T);
+            t_out = Util.max(Util.min(td2,T),B);
           }
         } 
       }
@@ -127,8 +127,8 @@ public class CD3D {
         double td1 = Horizontal.Theta_D(s2,v2,Entry,D);
         double td2 = Horizontal.Theta_D(s2,v2,Exit,D);
         if (!Util.almost_equals(vo.z,vi.z)) {
-          t_in  = Math.max(td1,Vertical.Theta_H(s.z,vz,Entry,H));
-          t_out = Math.min(td2,Vertical.Theta_H(s.z,vz,Exit,H));
+          t_in  = Util.max(td1,Vertical.Theta_H(s.z,vz,Entry,H));
+          t_out = Util.min(td2,Vertical.Theta_H(s.z,vz,Exit,H));
         } else if (Vertical.almost_vertical_los(s.z,H) ) {
           t_in  = td1; 
           t_out = td2; 
@@ -160,8 +160,8 @@ public class CD3D {
       return CD2D.cd2d(s.vect2(),vo2,vi2,D,B,T);
     }
     double vz = vo.z - vi.z;
-    double m1 = Math.max(-H-Util.sign(vz)*s.z,B*Math.abs(vz));
-    double m2 = Math.min(H-Util.sign(vz)*s.z,T*Math.abs(vz));
+    double m1 = Util.max(-H-Util.sign(vz)*s.z,B*Math.abs(vz));
+    double m2 = Util.min(H-Util.sign(vz)*s.z,T*Math.abs(vz));
     if (!Util.almost_equals(vo.z,vi.z) && m1 < m2) {
       return CD2D.cd2d(s2.Scal(Math.abs(vz)),
           vo2,vi2,D*Math.abs(vz),m1,m2);
@@ -271,7 +271,7 @@ public class CD3D {
    */
   public static double tccpa(Vect3 s, Vect3 vo, Vect3 vi, double D, double H,  double B, double T) {
     double tau = tccpa(s,vo,vi,D,H);
-    return Math.min(Math.max(B,tau),T);
+    return Util.min(Util.max(B,tau),T);
   }
 
   /**

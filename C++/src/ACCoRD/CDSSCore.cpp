@@ -19,6 +19,7 @@
 
 #include "CDSSCore.h"
 #include "Units.h"
+#include "Util.h"
 #include "format.h"
 #include "Detection3D.h"
 #include "EuclideanProjection.h"
@@ -130,7 +131,7 @@ bool CDSSCore::detectionEver(const Vect3& so, const Velocity& vo, const Vect3& s
 
 bool CDSSCore::detectionBetween(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) {
   bool conflict = detectionEver(so,vo,si,vi);
-  tca = std::max(B,tca);
+  tca = Util::max(B,tca);
   Vect3 v = vo-vi;
   stca = v.ScalAdd(tca,so.Sub(si));
   return conflict && t_in < T && t_out >= B;
@@ -143,7 +144,7 @@ bool CDSSCore::detectionBetween(const Vect3& so, const Velocity& vo, const Vect3
   t_in = det.getTimeIn();
   t_out = det.getTimeOut();
   bool conflict = det.conflict(filter);
-  tca = timeHorizon < 0 ? std::max(B,tca) : std::min(std::max(B,tca),timeHorizon);
+  tca = timeHorizon < 0 ? Util::max(B,tca) : Util::min(Util::max(B,tca),timeHorizon);
   Vect3 v = vo.Sub(vi);
   stca = v.ScalAdd(tca,so.Sub(si));
   dtca = det.getDistanceAtCriticalTime();

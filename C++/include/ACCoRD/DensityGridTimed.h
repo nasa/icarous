@@ -31,15 +31,17 @@ class DensityGridTimed : public DensityGrid {
 
 	DensityGridTimed(const Plan& p, int buffer, double squareSize);
 
+	virtual ~DensityGridTimed();
+
 	double getLookaheadEndTime() const;
 
 	void setLookaheadEndTime(double t);
 
-	double getWeightT(int x, int y, double t) const;
+	virtual double getWeightT(int x, int y, double t) const;
 
-	double getWeightT(const std::pair<int,int>& xy, double t) const;
+	virtual double getWeightT(const std::pair<int,int>& xy, double t) const;
 
-	double getWeightT(const Triple<int,int,int>& pii) const;
+	virtual double getWeightT(const Triple<int,int,int>& pii) const;
 
 	double getGroundSpeed() const;
 

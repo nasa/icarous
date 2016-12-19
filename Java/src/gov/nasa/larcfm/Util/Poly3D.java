@@ -130,7 +130,7 @@ public class Poly3D { // extends Point {
 			double dist = v3.distanceH(cl);
 			for (int i = 0; i < size()-1; i++) {
 				cl = VectFuns.closestPointOnSegment(new Vect3(getVertex(i),bottom), new Vect3(getVertex(i+1),bottom), v3);
-				dist = Math.min(v3.distanceH(cl), dist);				
+				dist = Util.min(v3.distanceH(cl), dist);				
 			}
 			return dist;
 	}

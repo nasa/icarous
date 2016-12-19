@@ -283,7 +283,7 @@ public final class Util {
 
   /** a safe (won't return NaN or throw exceptions) version of square root */
   public static double sqrt_safe(double x) {
-    return Math.sqrt(Math.max(x, 0));
+    return Math.sqrt(Util.max(x, 0));
   }
 
   /** a safe (won't return NaN or throw exceptions) version of arc-tangent */
@@ -295,9 +295,9 @@ public final class Util {
 
   /** a safe (won't return NaN or throw exceptions) version of arc-sine */
   public static double asin_safe(double x) {
-    return Math.asin(Math.max(-1.0,Math.min(x,1.0)));
+    return Math.asin(Util.max(-1.0,Util.min(x,1.0)));
 
-    //	double z = Math.max(-1.0,Math.min(x,1.0));
+    //	double z = Util.max(-1.0,Util.min(x,1.0));
     //	//return Math.atan2(z,Math.sqrt(1-z*z));
     //	  
     //	return z+(z*z*z)/6.0+(3.0*z*z*z*z*z)/40.0+(15.0*z*z*z*z*z*z*z)/336.0;
@@ -309,7 +309,7 @@ public final class Util {
    * @return the arc-cosine of x, between [0,pi)
    */
   public static double acos_safe(double x) {
-    return Math.acos(Math.max(-1.0,Math.min(x,1.0)));
+    return Math.acos(Util.max(-1.0,Util.min(x,1.0)));
   }
 
   /** Discriminant of a quadratic */
@@ -374,7 +374,40 @@ public final class Util {
       return true;
     return false;
   }
+  
+  public static double min(double x, double y) {
+	  return Math.min(x, y);
+  }
 
+  public static float min(float x, float y) {
+	  return Math.min(x, y);
+  }
+
+  public static int min(int x, int y) {
+	  return Math.min(x, y);
+  }
+
+  public static long min(long x, long y) {
+	  return Math.min(x, y);
+  }
+
+  public static double max(double x, double y) {
+	  return Math.max(x, y);
+  }
+
+  public static float max(float x, float y) {
+	  return Math.max(x, y);
+  }
+
+  public static int max(int x, int y) {
+	  return Math.max(x, y);
+  }
+
+  public static long max(long x, long y) {
+	  return Math.max(x, y);
+  }
+
+  
   private static final double twopi = 2 * Math.PI;
 
   /**

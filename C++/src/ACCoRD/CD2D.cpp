@@ -13,13 +13,14 @@
  */
 
 #include "CD2D.h"
+#include "Util.h"
 
 namespace larcfm {
 
 // tau_vv = tau*v^2 [defined such that it's continuous everywhere]
 double tau_vv(const Vect2& s, const Vect2& v,
     const double B, const double T) {
-  return std::min(std::max(B*v.sqv(),-(s*v)),T*v.sqv());
+  return Util::min(Util::max(B*v.sqv(),-(s*v)),T*v.sqv());
 }
 
 // omega_vv = omega*v^2 - D^2*v^2 [defined such that it's continuous everywhere]
@@ -57,8 +58,8 @@ LossData CD2D::detection(const Vect2& s, const Vect2& vo, const Vect2& vi,
       if (Horizontal::Delta(s,v,D) > 0) {
         double tin  = Horizontal::Theta_D(s,v,larcfm::Entry,D);
         double tout = Horizontal::Theta_D(s,v,larcfm::Exit,D);
-        t_in  = std::min(std::max(tin,B),T);
-        t_out = std::max(std::min(tout,T),B);
+        t_in  = Util::min(Util::max(tin,B),T);
+        t_out = Util::max(Util::min(tout,T),B);
       } 
     }
   }
@@ -125,7 +126,7 @@ double CD2D::tcpa(const Vect2& s, const Vect2& vo, const Vect2& vi,  const doubl
   else {
     Vect2 v = vo-vi;
     double tau = -(s.dot(v))/v.sqv();
-    return std::min(T,std::max(B,tau));
+    return Util::min(T,Util::max(B,tau));
   }
 }
 

@@ -11,6 +11,7 @@ import gov.nasa.larcfm.Util.EuclideanProjection;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Projection;
 import gov.nasa.larcfm.Util.Units;
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect2;
 import gov.nasa.larcfm.Util.Velocity;
 
@@ -224,7 +225,7 @@ public class SafetyBuffers {
   static double psi(double relDist, double relV, double ao, double ai, double bo, double bi, double lambda, double T) {
     try { 
       double l = (relDist + ao + ai + lambda * (relV + bo + bi))/(relV-bo-bi);
-      double rtn = ao + ai + (Math.min(T,l) + lambda)*(bo+bi);
+      double rtn = ao + ai + (Util.min(T,l) + lambda)*(bo+bi);
       if (Double.isInfinite(rtn) || Double.isNaN(rtn)) return -1.0;
       return rtn;
     } catch (Exception e) {
@@ -248,9 +249,9 @@ public class SafetyBuffers {
    */
   static double psiH(Vect2 sm, Vect2 vm, double ao, double ai, double bo, double bi, double lambda, double T) {
     try { 
-      double l = Math.max(-sm.dot(vm), 0.0) / ((vm.norm()-bo-bi)*(vm.norm()-bo-bi)) +
+      double l = Util.max(-sm.dot(vm), 0.0) / ((vm.norm()-bo-bi)*(vm.norm()-bo-bi)) +
                  ((ao+ai)*vm.norm() + (sm.norm()+ao+ai)*(bo+bi))/(vm.norm()-bo-bi)*(vm.norm()-bo-bi);
-      double rtn = ao + ai + (Math.min(T,l) + lambda)*(bo+bi);
+      double rtn = ao + ai + (Util.min(T,l) + lambda)*(bo+bi);
       if (Double.isInfinite(rtn) || Double.isNaN(rtn)) return -1.0;
       return rtn;
     } catch (Exception e) {

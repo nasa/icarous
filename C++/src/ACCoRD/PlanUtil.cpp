@@ -142,9 +142,9 @@ bool PlanUtil::vsConsistent(const Plan& p, int i,  double accelEpsilon, double d
 	// must be a BVS
 	NavPoint VSCBegin = p.point(i);
 	NavPoint VSCEnd = p.point(p.nextEVS(i));//fixed
-	Velocity vin = p.point(i).velocityInit();
-//	if (i == 0) vin = p.point(i).velocityIn();     // not sure if we should allow TCP as current point ??
-//	else vin = p.finalVelocity(i-1);
+	Velocity vin; // = p.point(i).velocityInit();
+    if (i == 0) vin = p.initialVelocity(0);     // not sure if we should allow TCP as current point ??
+    else vin = p.finalVelocity(i-1);
 	Velocity vout = p.initialVelocity(p.nextEVS(i));
 	return PlanUtil::vsConsistent(i, VSCBegin, VSCEnd, accelEpsilon, distEpsilon, vin, vout, silent);
 }
@@ -320,6 +320,36 @@ bool PlanUtil::okWithinTurn(const Plan& p, int i, double distH_Epsilon, bool sil
 }
 
 
+/**  timeShift points in plan by "dt" starting at index "start"
+ *   Note: This will drop any points that become negative or that become out of order using a negative dt
+ *   See also Plan.timeShiftPlan for equivalent method
+ *
+ * @param p       plan
+ * @param start   starting index
+ * @param dt      delta time
+ * @return        time-shifted plan
+ */
+Plan PlanUtil::timeShift(const Plan& p, int start, double dt) {
+	Plan np = Plan(p.getName());
+	double lastTime = -1; // ensure overlapping points are not included; also fixes start=0 and dt=0 problem
+	for (int i = 0; i < p.size(); i++) {
+		if (i < start) {
+			np.add(p.point(i));
+			lastTime = p.point(i).time();
+		} else {
+			double t = p.getTime(i) + dt;
+			NavPoint nav = p.point(i).makeTime(t);
+			if (t >= 0 && t > lastTime) {
+				np.add(nav);
+				lastTime = t;
+			}
+		}
+	}
+	return np;
+}
+
+
+
 Plan PlanUtil::applyWindField(const Plan& pin, const Velocity& v) {
 	Plan p = pin;
 	NavPoint np0 = p.point(0);
@@ -334,6 +364,33 @@ Plan PlanUtil::applyWindField(const Plan& pin, const Velocity& v) {
 		p.set(j, np2);
 	}
 	return p;
+}
+
+bool PlanUtil::checkMySolution(const Plan& solution, double currentTime, const Position& currentPos, const Velocity& currentVel) {
+	bool ok = true;
+	if (!solution.position(currentTime).almostEquals(currentPos)) {
+		std::cout << "\n---------------------------------------------------------------------------------" << std::endl;
+		std::cout << " ............... ERROR: moved location of current position! currentTime = "<<currentTime<<" ......." << std::endl;
+		std::cout << " ............... from " << currentPos.toString() <<" to "<<solution.position(currentTime).toString()<<std::endl;
+		std::cout << "----------------------------------------------------------------------------------\n" << std::endl;
+		ok = false;
+	}
+	if (!solution.velocity(currentTime).within_epsilon(currentVel,0.10)) {
+		std::cout << "\n---------------------------------------------------------------------------------" << std::endl;
+		std::cout << " ............... ERROR: changed **velocity** of current position! currentTime = "<<currentTime<<" ...." << std::endl;
+		std::cout << " ............... from " << currentVel.toString() << " to " << solution.velocity(currentTime).toString()<<std::endl;
+		std::cout << "----------------------------------------------------------------------------------\n" << std::endl;
+		ok = false;
+	}
+	if (!solution.isWellFormed()) {
+		std::cout << "\n---------------------------------------------------------------------------------" << std::endl;
+		std::cout << " ............... ERROR: solution is not wellFormed currentTime = "<<currentTime<<" ...." << std::endl;
+		std::cout << " ..............."<<solution.strWellFormed() << std::endl;
+		std::cout << " mySolution = "<<solution.toString() << std::endl;
+		std::cout << "----------------------------------------------------------------------------------\n" << std::endl;
+		ok = false;
+	}
+	return ok;
 }
 
 
@@ -430,7 +487,7 @@ int PlanUtil::insertVirtual(Plan& ac, double time) {
 }
 
 double PlanUtil::getLegDist(const Plan& ac, int i, double accuracy, double mindist) {
-	double lat = std::max(std::abs(ac.point(i).lat()),
+	double lat = Util::max(std::abs(ac.point(i).lat()),
 			std::abs(ac.point(i+1).lat()));
 	double maxdist = Projection::projectionConflictRange(lat, accuracy);
 	// necessary due to hard limits on number of wp
@@ -457,7 +514,7 @@ void PlanUtil::interpolateVirtuals(Plan& ac, double accuracy, double startTm, do
 			//				if (!ac.isLinear()) {
 			//					Plan kpc = ac;
 			//					if (kpc.point(i).isTurnBegin() || kpc.point(i).isTurnMid()) {
-			//						legDist = std::min(legDist, dist/3.0);
+			//						legDist = Util::min(legDist, dist/3.0);
 			//					}
 			//				}
 			if (dist > legDist) {
@@ -487,7 +544,7 @@ void PlanUtil::interpolateVirtuals(Plan& ac, double accuracy, double startTm, do
 						tmIncr = legDist/gs;
 					}
 				}
-				i = std::max(i,j-1); // possibly take back last increment
+				i = Util::max(i,j-1); // possibly take back last increment
 			}
 			i++;
 		}

@@ -359,7 +359,7 @@ public class CriteriaCore {
     if (eps*vz <= 0)
       rtn = minrelvs;
     else
-      rtn = Math.max(minrelvs,Math.abs(vz));
+      rtn = Util.max(minrelvs,Math.abs(vz));
     return rtn;
   }
 

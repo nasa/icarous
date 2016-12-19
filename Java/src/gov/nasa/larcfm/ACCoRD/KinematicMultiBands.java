@@ -220,7 +220,7 @@ public class KinematicMultiBands implements GenericStateBands {
 		addTraffic("AC_"+(core_.traffic.size()+1),pi,vi);
 	}
 
-	/** General Settings **/
+	/* General Settings */
 
 	/**
 	 * Set alert thresholds
@@ -252,10 +252,10 @@ public class KinematicMultiBands implements GenericStateBands {
 		gs_band_.set_step(parameters.getGroundSpeedStep());
 		setMinGroundSpeed(parameters.getMinGroundSpeed());
 		setMaxGroundSpeed(parameters.getMaxGroundSpeed());
-		
+
 		// Set Vertical Speed Bands
 		vs_band_.set_step(parameters.getVerticalSpeedStep()); 
-	  vs_band_.set_vertical_accel(parameters.getVerticalAcceleration());
+		vs_band_.set_vertical_accel(parameters.getVerticalAcceleration());
 		vs_band_.set_recovery(parameters.isEnabledRecoveryVerticalSpeedBands());   
 		vs_band_.set_step(parameters.getVerticalSpeedStep());
 		setMinVerticalSpeed(parameters.getMinVerticalSpeed());
@@ -264,7 +264,7 @@ public class KinematicMultiBands implements GenericStateBands {
 		// Set Altitude Bands
 		alt_band_.set_step(parameters.getAltitudeStep()); 
 		alt_band_.set_vertical_rate(parameters.getVerticalRate()); 
-	  alt_band_.set_vertical_accel(parameters.getVerticalAcceleration());
+		alt_band_.set_vertical_accel(parameters.getVerticalAcceleration());
 		alt_band_.set_recovery(parameters.isEnabledRecoveryAltitudeBands());   
 		alt_band_.set_step(parameters.getAltitudeStep());
 		setMinAltitude(parameters.getMinAltitude());
@@ -524,7 +524,7 @@ public class KinematicMultiBands implements GenericStateBands {
 		setRecoveryBands(false);
 	}
 
-	/** Track Bands Settings **/
+	/* Track Bands Settings */
 
 	/** 
 	 * @return left track in radians [0 - pi] [rad] from current ownship's track
@@ -532,7 +532,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	public double getLeftTrack() {
 		if (trk_band_.get_rel()) {
 			return trk_band_.get_min();
-		} else if (trk_band_.check_input(core_.ownship)) {
+		} else if (trk_band_.check_input(core_)) {
 			return -trk_band_.min_rel(core_.ownship);
 		} else {
 			return Double.NaN;
@@ -552,7 +552,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	public double getRightTrack() {
 		if (trk_band_.get_rel()) {
 			return trk_band_.get_max();
-		} else if (trk_band_.check_input(core_.ownship)) {
+		} else if (trk_band_.check_input(core_)) {
 			return trk_band_.max_rel(core_.ownship);
 		} else {
 			return Double.NaN;
@@ -751,14 +751,14 @@ public class KinematicMultiBands implements GenericStateBands {
 		reset();
 	}
 
-	/** Ground Speed Bands Settings **/
+	/* Ground Speed Bands Settings */
 
 	/** 
 	 * @return minimum ground speed for ground speed bands in internal units [m/s].
 	 */
 	public double getMinGroundSpeed() {
 		if (gs_band_.get_rel()) {
-			if (gs_band_.check_input(core_.ownship)) {
+			if (gs_band_.check_input(core_)) {
 				return gs_band_.min_val(core_.ownship);
 			} else {
 				return Double.NaN;
@@ -800,7 +800,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */
 	public double getMaxGroundSpeed() {
 		if (gs_band_.get_rel()) {
-			if (gs_band_.check_input(core_.ownship)) {
+			if (gs_band_.check_input(core_)) {
 				return gs_band_.max_val(core_.ownship);
 			} else {
 				return Double.NaN;
@@ -942,14 +942,14 @@ public class KinematicMultiBands implements GenericStateBands {
 		reset();
 	}
 
-	/** Vertical Speed Bands Settings **/
+	/* Vertical Speed Bands Settings */
 
 	/** 
 	 * @return minimum vertical speed for vertical speed bands in internal units [m/s].
 	 */
 	public double getMinVerticalSpeed() {
 		if (vs_band_.get_rel()) {
-			if (vs_band_.check_input(core_.ownship)) {
+			if (vs_band_.check_input(core_)) {
 				return vs_band_.min_val(core_.ownship);
 			} else {
 				return Double.NaN;
@@ -989,7 +989,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */
 	public double getMaxVerticalSpeed() {
 		if (vs_band_.get_rel()) {
-			if (vs_band_.check_input(core_.ownship)) {
+			if (vs_band_.check_input(core_)) {
 				return vs_band_.max_val(core_.ownship);
 			} else {
 				return Double.NaN;
@@ -1134,14 +1134,14 @@ public class KinematicMultiBands implements GenericStateBands {
 		reset();
 	}
 
-	/** Altitude Bands Settings **/
+	/* Altitude Bands Settings */
 
 	/** 
 	 * @return minimum altitude for altitude bands in internal units [m]
 	 */
 	public double getMinAltitude() {
 		if (alt_band_.get_rel()) {
-			if (alt_band_.check_input(core_.ownship)) {
+			if (alt_band_.check_input(core_)) {
 				return alt_band_.min_val(core_.ownship);
 			} else {
 				return Double.NaN;
@@ -1183,7 +1183,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	 */
 	public double getMaxAltitude() {
 		if (alt_band_.get_rel()) {
-			if (alt_band_.check_input(core_.ownship)) {
+			if (alt_band_.check_input(core_)) {
 				return alt_band_.max_val(core_.ownship);
 			} else {
 				return Double.NaN;
@@ -1383,7 +1383,7 @@ public class KinematicMultiBands implements GenericStateBands {
 		reset();
 	}
 
-	/** Utility methods **/
+	/* Utility methods */
 
 	/**
 	 *  Clear ownship and traffic data from this object.   
@@ -1401,7 +1401,7 @@ public class KinematicMultiBands implements GenericStateBands {
 		alt_band_.reset();
 	}
 
-	/** Main interface methods **/
+	/* Main interface methods */
 
 	/**
 	 *  Return list of conflict aircraft for a given alert level.
@@ -1410,7 +1410,7 @@ public class KinematicMultiBands implements GenericStateBands {
 	public List<TrafficState> conflictAircraft(int alert_level) {
 		return core_.conflictAircraft(alert_level);
 	}
-	
+
 	/**
 	 * Return time interval of violation for given alert level
 	 * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
@@ -2118,7 +2118,7 @@ public class KinematicMultiBands implements GenericStateBands {
 			if (detector.violation(so,vo,si,vi)) {
 				return true;
 			}
-			ConflictData det = detector.conflictDetection(so,vo,si,vi,0,athr.getAlertingTime());
+			ConflictData det = detector.conflictDetection(so,vo,si,vi,0,alerting_time);
 			if (det.conflict()) {
 				return true;
 			}

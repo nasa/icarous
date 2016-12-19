@@ -21,6 +21,9 @@ namespace larcfm {
 
 class DCPAUrgencyStrategy : public UrgencyStrategy {
 public:
+  /**
+   * @return most urgent traffic aircraft given for ownship, traffic and lookahead time T
+   */
   TrafficState mostUrgentAircraft(Detection3D* detector, const TrafficState& ownship, const std::vector<TrafficState>& traffic, double T);
   UrgencyStrategy* copy() const;
 };

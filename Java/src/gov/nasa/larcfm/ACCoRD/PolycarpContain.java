@@ -89,7 +89,7 @@ public class PolycarpContain {
 				total=total-2;
 			}
 		}
-		return (int)Math.floor(total/4.0+0.5);
+		return total/4;
 	}
 
 	public static ArrayList<Vect2> fix_polygon(ArrayList<Vect2> p,Vect2 s,double BUFF) {

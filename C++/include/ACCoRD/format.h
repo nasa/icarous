@@ -11,6 +11,7 @@
 #include <string>
 #include "Vect2.h"
 #include "Vect3.h"
+#include "Triple.h"
 
 namespace larcfm {
   /** Format an int with 0 decimal places */
@@ -55,7 +56,7 @@ namespace larcfm {
   /** Format a vector */
   std::string FmVec(Vect3 v);
 
-  /** Return a string 'n' long with 's' left-justified */
+    /** Return a string 'n' long with 's' left-justified */
   std::string padLeft(std::string s, int n);
   /** Return a string 'n' long with 's' right-justified */
   std::string padRight(std::string s, int n);
@@ -106,9 +107,18 @@ namespace larcfm {
 	/** Format a velocity vector as a polar velocity */
   std::string fvStr2(const Vect3& v);
 
+  std::string FmPair(const std::pair<int,int>& p);
+  std::string FmPair(const std::pair<double,double>& p);
+  std::string FmTriple(const Triple<int,int,int>& p);
+  std::string FmTriple(const Triple<double,double,double>& p);
+
   std::string Fobj(const std::vector<int>& v);
   std::string Fobj(const std::vector<double>& v);
   std::string Fobj(const std::vector<std::string>& v);
+  std::string Fobj(const std::vector<std::pair<int,int> >& v);
+  std::string Fobj(const std::vector<std::pair<double,double> >& v);
+  std::string Fobj(const std::vector<Triple<int,int,int> >& v);
+  std::string Fobj(const std::vector<Triple<double, double, double> >& v);
 
   std::string list2str(const std::vector<std::string>& l, const std::string& delimiter);
 

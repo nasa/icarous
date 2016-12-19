@@ -17,6 +17,7 @@
 #include "CD3D.h"
 #include "format.h"
 #include "LossData.h"
+#include "Util.h"
 #include "Vect2.h"
 #include "Vect3.h"
 #include "Velocity.h"
@@ -43,8 +44,8 @@ LossData CD3D::detection(const Vect3& s, const Vect3& vo, const Vect3& vi,
     double vz = vo.z-vi.z;
     if (vo2.almostEquals(vi2) && Horizontal::almost_horizontal_los(s2,D)) {
       if (!Util::almost_equals(vo.z,vi.z)) {
-        t_in  = std::min(std::max(Vertical::Theta_H(s.z,vz,larcfm::Entry,H),B),T);
-        t_out = std::max(std::min(Vertical::Theta_H(s.z,vz,larcfm::Exit,H),T),B);
+        t_in  = Util::min(Util::max(Vertical::Theta_H(s.z,vz,larcfm::Entry,H),B),T);
+        t_out = Util::max(Util::min(Vertical::Theta_H(s.z,vz,larcfm::Exit,H),T),B);
       } else if (Vertical::almost_vertical_los(s.z,H)) {
         t_in  = B;
         t_out = T;
@@ -55,13 +56,13 @@ LossData CD3D::detection(const Vect3& s, const Vect3& vo, const Vect3& vi,
         double td1 = Horizontal::Theta_D(s2,v2,larcfm::Entry,D);
         double td2 = Horizontal::Theta_D(s2,v2,larcfm::Exit,D);
         if (!Util::almost_equals(vo.z,vi.z)) {
-          double tin  = std::max(td1,Vertical::Theta_H(s.z,vz,larcfm::Entry,H));
-          double tout = std::min(td2,Vertical::Theta_H(s.z,vz,larcfm::Exit,H));
-          t_in  = std::min(std::max(tin,B),T);
-          t_out = std::max(std::min(tout,T),B);
+          double tin  = Util::max(td1,Vertical::Theta_H(s.z,vz,larcfm::Entry,H));
+          double tout = Util::min(td2,Vertical::Theta_H(s.z,vz,larcfm::Exit,H));
+          t_in  = Util::min(Util::max(tin,B),T);
+          t_out = Util::max(Util::min(tout,T),B);
         } else if (Vertical::almost_vertical_los(s.z,H)) {
-          t_in  = std::min(std::max(td1,B),T);
-          t_out = std::max(std::min(td2,T),B);
+          t_in  = Util::min(Util::max(td1,B),T);
+          t_out = Util::max(Util::min(td2,T),B);
         }
       }
     }
@@ -91,8 +92,8 @@ LossData CD3D::detectionActual(const Vect3& s, const Vect3& vo, const Vect3& vi,
       double td1 = Horizontal::Theta_D(s2,v2,larcfm::Entry,D);
       double td2 = Horizontal::Theta_D(s2,v2,larcfm::Exit,D);
       if (!Util::almost_equals(vo.z,vi.z)) {
-        t_in  = std::max(td1,Vertical::Theta_H(s.z,vz,larcfm::Entry,H));
-        t_out = std::min(td2,Vertical::Theta_H(s.z,vz,larcfm::Exit,H));
+        t_in  = Util::max(td1,Vertical::Theta_H(s.z,vz,larcfm::Entry,H));
+        t_out = Util::min(td2,Vertical::Theta_H(s.z,vz,larcfm::Exit,H));
        } else if (Vertical::almost_vertical_los(s.z,H)) {
         t_in  = td1;
         t_out = td2;
@@ -113,8 +114,8 @@ bool CD3D::cd3d(const Vect3& s, const Vect3& vo, const Vect3& vi,
     return CD2D::cd2d(s.vect2(),vo2,vi2,D,B,T);
   }
   double vz = vo.z - vi.z;
-  double m1 = std::max(-H-sign(vz)*s.z,B*std::abs(vz));
-  double m2 = std::min(H-sign(vz)*s.z,T*std::abs(vz));
+  double m1 = Util::max(-H-sign(vz)*s.z,B*std::abs(vz));
+  double m2 = Util::min(H-sign(vz)*s.z,T*std::abs(vz));
   if (!Util::almost_equals(vo.z,vi.z) && m1 < m2) {
     return CD2D::cd2d(s2*std::abs(vz),vo2,vi2,D*std::abs(vz),m1,m2);
   } else {
@@ -177,7 +178,7 @@ double CD3D::tccpa(const Vect3& s, const Vect3& vo, const Vect3& vi, const doubl
 double CD3D::tccpa(const Vect3& s, const Vect3& vo, const Vect3& vi,
     const double D, const double H, const double B, const double T) {
   double tau = tccpa(s,vo,vi,D,H);
-  return std::min(std::max(B,tau),T);
+  return Util::min(Util::max(B,tau),T);
 }
 
 double CD3D::tccpa(const Vect3& s, const Vect3& vo, const Vect3& vi,

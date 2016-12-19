@@ -117,7 +117,7 @@ public class PolycarpAcceptablePolygon {
 	public static boolean acceptable_polygon_2D(ArrayList<Vect2> p,double BUFF) {
 	    if (p.size()<=2) return false;
 	    for (int i = 0; i < p.size(); i++) {
-	        for (int j = 0; j < p.size(); j++) {
+	        for (int j = i; j < p.size(); j++) {
 	            int mi = i<p.size()-1 ? i+1 : 0;
 	            int mj = j<p.size()-1 ? j+1 : 0;
 	            Vect2 pj = p.get(j);

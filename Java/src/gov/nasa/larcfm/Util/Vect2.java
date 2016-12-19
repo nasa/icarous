@@ -463,7 +463,7 @@ public /*final*/ class Vect2 {
     Vect2 v = vo.Sub(vi);
     double nv = v.sqv();
     if (nv > 0) 
-      t = Math.max(0,-s.dot(v)/nv);
+      t = Util.max(0,-s.dot(v)/nv);
     else 
       t = 0;
     return t;
@@ -483,7 +483,7 @@ public /*final*/ class Vect2 {
    * distance at time of closest approach within time bound [0,T]
    */
   public static double dcpa (Vect2 so, Vect2 vo, Vect2 si, Vect2 vi, double T) {
-    double t = Math.min(tcpa(so,vo,si,vi),T);
+    double t = Util.min(tcpa(so,vo,si,vi),T);
     Vect2 s = so.Sub(si);
     Vect2 v = vo.Sub(vi);
     Vect2 st = s.AddScal(t,v);

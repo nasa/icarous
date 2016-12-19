@@ -791,9 +791,9 @@ public final class GreatCircle {
 		// force any polar latitudes to be "near" the pole
 
 		final double eps = 1e-15;
-		double s_lat = Math.max(Math.min(s.lat(), pi / 2 - eps), -pi / 2 + eps);
+		double s_lat = Util.max(Util.min(s.lat(), pi / 2 - eps), -pi / 2 + eps);
 		double lat = s_lat + d * Math.cos(track);
-		lat = Math.max(Math.min(lat, pi / 2 - eps), -pi / 2 + eps);
+		lat = Util.max(Util.min(lat, pi / 2 - eps), -pi / 2 + eps);
 
 		double q;
 		if (Constants.almost_equals_radian(lat, s_lat)) {

@@ -344,8 +344,8 @@ public class DensityGrid {
 		if (corners.containsKey(Pair.make(x,y)) && d >= 0) {
 			searchedWeights.put(Pair.make(x, y), d);
 			if (Double.isFinite(d)) {
-				minSearchedWeightValue = Math.min(d, minSearchedWeightValue);
-				maxSearchedWeightValue = Math.max(d, maxSearchedWeightValue);
+				minSearchedWeightValue = Util.min(d, minSearchedWeightValue);
+				maxSearchedWeightValue = Util.max(d, maxSearchedWeightValue);
 			}
 		}
 	}
@@ -551,7 +551,7 @@ public class DensityGrid {
 	List<Pair<Integer,Integer>> thin(List<Pair<Integer,Integer>> gPath) {
 		ArrayList<Pair<Integer,Integer>> rtn = new ArrayList<Pair<Integer,Integer>>(10);
 		Pair<Integer,Integer> lastPair = gPath.get(0);
-		Direction lastDirection = direction(Pair.make(0, 0),lastPair);
+		Direction lastDirection = Direction.undef;
 		rtn.add(lastPair);
 		for (int i = 1; i < gPath.size(); i++) {
 			Pair<Integer,Integer> pp = gPath.get(i);
@@ -584,8 +584,6 @@ public class DensityGrid {
 		} else {
 			gPath2 = thin(gPath);
 		}
-//f.pln("gridPathToPlan after thinning");
-//printGridPath(gPath);
 		Plan p =  new Plan();
 		NavPoint np0 = new NavPoint(startPoint,startTime);
 		p.add(np0);
@@ -594,7 +592,6 @@ public class DensityGrid {
 		double lastAlt = np0.alt();
 		for (int i = 1; i < gPath2.size()-1; i++) {   // don't add first or last pair
 			Position cntr = center(gPath2.get(i));
-//f.pln("gridPathToPlan "+i+" coord="+gPath.get(i)+" pos="+cntr);			
 			double dist = cntr.distanceH(lastCenter);
 			double dt = dist/gs;
 			double time = lastTime + dt;
@@ -667,7 +664,7 @@ public class DensityGrid {
 //					currentVal = factor;
 //				}
 //				else {
-//					myWeights[i][j] = Math.min(currentVal,myWeights[i][j]);
+//					myWeights[i][j] = Util.min(currentVal,myWeights[i][j]);
 //					//f.pln(" $$2  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
 //					currentVal = currentVal + factor;
 //				}
@@ -679,7 +676,7 @@ public class DensityGrid {
 //				if (myWeights[i][j] < 0.0) {
 //					currentVal = factor;
 //				} else {
-//					myWeights[i][j] = Math.min(currentVal,myWeights[i][j]);
+//					myWeights[i][j] = Util.min(currentVal,myWeights[i][j]);
 //					//f.pln(" $$3  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
 //					currentVal= currentVal + factor;
 //				}
@@ -690,7 +687,7 @@ public class DensityGrid {
 //					currentVal = factor;
 //				}
 //				else {
-//					myWeights[i][j] = Math.min(currentVal,myWeights[i][j]);
+//					myWeights[i][j] = Util.min(currentVal,myWeights[i][j]);
 //					//f.pln(" $$4  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
 //					currentVal= currentVal + factor;
 //				}
@@ -721,7 +718,7 @@ public class DensityGrid {
 			for (int x = 0; x < sz_x; x++) {
 				for (int y = 0; y < sz_y; y++) {
 					double dist = Math.sqrt((x-x1)*(x-x1)+(y-y1)*(y-y1));
-					myWeights[x][y] = Math.min(myWeights[x][y], dist*factor);
+					myWeights[x][y] = Util.min(myWeights[x][y], dist*factor);
 				}
 			}         			
 		}
@@ -756,7 +753,7 @@ public class DensityGrid {
 				for (int y = 0; y < sz_y; y++) {
 					double thisweight = ((new Vect2(x0,y0)).Sub(new Vect2(x, y)).norm()+p.size()-1-i)*factor;
 					if (applyToUndefined || this.weights.containsKey(Pair.make(x, y))) {
-						myWeights[x][y] = Math.min(myWeights[x][y], thisweight);
+						myWeights[x][y] = Util.min(myWeights[x][y], thisweight);
 					}
 				}
 			}

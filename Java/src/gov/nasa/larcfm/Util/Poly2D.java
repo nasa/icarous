@@ -52,10 +52,10 @@ public class Poly2D implements Serializable {
 		for (int i = 0; i < verts.size(); i++) {  // copy
 			//vertices.set(i,new Vect2(verts.get(i).x,verts.get(i).y));
 			vertices.add(new Vect2(verts.get(i).x,verts.get(i).y));
-			maxX = Math.max(verts.get(i).x, maxX);
-			maxY = Math.max(verts.get(i).y, maxY);
-			minX = Math.min(verts.get(i).x, minX);
-			minY = Math.min(verts.get(i).y, minY);
+			maxX = Util.max(verts.get(i).x, maxX);
+			maxY = Util.max(verts.get(i).y, maxY);
+			minX = Util.min(verts.get(i).x, minX);
+			minY = Util.min(verts.get(i).y, minY);
 		}
 //		if (vertices.size() > 0) {
 //	    	boundingRect = new BoundingRectangle(vertices);
@@ -139,10 +139,10 @@ public class Poly2D implements Serializable {
 		
 		if (minX == Double.MAX_VALUE) {
 			for (int i = 0; i < vertices.size(); i++) {  // copy
-				maxX = Math.max(vertices.get(i).x, maxX);
-				maxY = Math.max(vertices.get(i).y, maxY);
-				minX = Math.min(vertices.get(i).x, minX);
-				minY = Math.min(vertices.get(i).y, minY);
+				maxX = Util.max(vertices.get(i).x, maxX);
+				maxY = Util.max(vertices.get(i).y, maxY);
+				minX = Util.min(vertices.get(i).x, minX);
+				minY = Util.min(vertices.get(i).y, minY);
 			}
 		}
 		if (a > maxX || a < minX || b > maxY || b < minY) {

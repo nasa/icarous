@@ -10,6 +10,7 @@
 #include "Vertical.h"
 #include "MovingPolygon2D.h"
 #include "CDPolyIter2D.h"
+#include "Util.h"
 #include "format.h"
 #include <vector>
 #include <string>
@@ -83,7 +84,7 @@ namespace larcfm {
       if (thout < B || thin > T) {
         return noDetection;
       } else {
-        return  std::pair<double,double>(std::max(B,std::min(T,thin)), std::max(B,std::min(T,thout)));
+        return  std::pair<double,double>(Util::max(B,Util::min(T,thin)), Util::max(B,Util::min(T,thout)));
       }
     }
   }

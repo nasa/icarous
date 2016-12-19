@@ -444,6 +444,42 @@ std::pair<Position,double> Position::intersection(const Position& so, const Posi
 //	  }
 //}
 
+/** Return the average velocity between the current position and the given position, with the given speed [internal units]. */
+Velocity Position::averageVelocity(const Position& p2, double speed) const {
+  if (p2.latlon != latlon) {
+	fpln("Position.averageVelocity call given an inconsistent argument.");
+    return Velocity::ZEROV();
+  }
+  if (latlon) {
+    return GreatCircle::velocity_average_speed(ll,p2.ll,speed);
+  } else {
+    return Velocity::mkVel(s3,p2.s3,speed);
+  }
+}
+
+/** Return the average velocity between the current position and the given position, with the given delta time dt. */
+Velocity Position::avgVelocity(const Position& p2, double dt) const {
+  if (p2.latlon != latlon) {
+    fpln("Position.averageVelocity call given an inconsistent argument.");
+    return Velocity::ZEROV();
+  }
+  if (latlon) {
+    return GreatCircle::velocity_average(ll,p2.ll,dt);
+  } else {
+    return Velocity::genVel(s3,p2.s3,dt);
+  }
+
+}
+
+bool Position::isWest(const Position& a) const {
+	  if (isLatLon()) {
+		  return lla().isWest(a.lla());
+	  } else {
+		  return x() < a.x();
+	  }
+}
+
+
 bool Position::LoS(const Position& p2, double D, double H) {
 	if (p2.latlon != latlon) {
 		fdln("Position.LoS call given an inconsistent argument: "+toString()+" "+p2.toString());

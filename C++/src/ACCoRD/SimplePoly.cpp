@@ -13,6 +13,8 @@
 #include "EuclideanProjection.h"
 #include "Projection.h"
 #include "ErrorLog.h"
+#include "Util.h"
+#include "VectFuns.h"
 #include <string>
 #include <vector>
 /**
@@ -46,6 +48,7 @@ SimplePoly::SimplePoly() {
 	maxRad = -1.0;
 	bRad = -1.0;
 	cPos = Position::ZERO_LL();
+	clockwiseSum = 0;
 }
 
 SimplePoly::SimplePoly(double b, double t) {
@@ -59,6 +62,7 @@ SimplePoly::SimplePoly(double b, double t) {
 	maxRad = -1.0;
 	bRad = -1.0;
 	cPos = Position::ZERO_LL();
+	clockwiseSum = 0;
 }
 
 SimplePoly::SimplePoly(double b, double t, const std::string& units) {
@@ -132,6 +136,21 @@ SimplePoly SimplePoly::make(const Poly3D& p3, const EuclideanProjection& proj) {
 	return sp;
 }
 
+bool SimplePoly::isClockwise() const {
+	if (Util::almost_equals(clockwiseSum, 0.0)) {
+		for (int i = 0; i < points.size(); i++) {
+			int h = i-1;
+			int j = i+1;
+			if (h < 0) h = points.size()-1;
+			if (j == points.size()) j = 0;
+			double trk1 = points[h].finalVelocity(points[i], 100).trk();
+			double trk2 = points[i].initialVelocity(points[j], 100).trk();
+			double angle = Util::to_pi(Util::turnDelta(trk1, trk2, true));
+			clockwiseSum += angle;
+		}
+	}
+	return clockwiseSum > 0.0;
+}
 
 bool SimplePoly::isLatLon() const {
 	return points.size() > 0 && points[0].isLatLon();
@@ -289,6 +308,44 @@ Position SimplePoly::centroid() const {
 	return cPos;
 }
 
+Position SimplePoly::avgPos(const std::vector<Position>& points, const std::vector<double>& wgts) const {
+	// there can be numeric problems with these calculations if sides are small (multiplying small numbers loses precision)
+	// shift points to around the origin (and then back) in an attempt to alleviate these.
+	Position bbcent = getBoundingRectangle().centerPos();
+	double dx = bbcent.x();
+	double dy = bbcent.y();
+	double x = 0;
+	double y = 0;
+	double xorig = points[0].x()-dx;
+	double tot = 0;
+	for (int i = 0; i < points.size(); i++) {
+		double x0 = points[i].x()-dx;
+		double y0 = points[i].y()-dy;
+		// correct for date line wrap around
+		if (isLatLon()) {
+			if (x0-xorig > Pi) {
+				x0 = x0 - 2*Pi;
+			} else if (x0-xorig < -Pi) {
+				x0 = x0 + 2*Pi;
+			}
+		}
+		double w = 1.0;
+		if (wgts.size() == points.size()) {
+			w = wgts[i];
+		}
+		x += x0 * w;
+		y += y0 * w;
+		tot += w;
+	}
+	tot = tot == 0.0 ? 1.0 : tot;
+	if (isLatLon()) {
+		x = Util::to_pi(x);
+	}
+	Position myaPos = points[0].mkX(dx+x/tot).mkY(dy+y/tot);
+	return myaPos;
+}
+
+
 // note: this may fail over poles!
 Position SimplePoly::averagePoint() const {
 	if (!averagePointDefined) {
@@ -382,6 +439,7 @@ bool SimplePoly::addVertex(const Position& p) {
 	//		 if (points[i] == p) return false;
 	//	 }
 
+	clockwiseSum = 0;
 	centroidDefined = false;
 	boundingCircleDefined = false;
 	averagePointDefined = false;
@@ -414,7 +472,7 @@ void SimplePoly::remove(int n) {
 	averagePointDefined = false;
 	maxRad = -1.0;
 	bRad = -1.0;
-
+	clockwiseSum = 0;
 	if (n >= 0 && n < (signed)points.size()) {
 		points.erase(points.begin()+n);
 	}
@@ -430,7 +488,7 @@ bool SimplePoly::setVertex(int n, Position p) {
 	for (int i = 0; i < (int) points.size(); i++) {
 		if (points[i] == pb) return false;
 	}
-
+	clockwiseSum = 0;
 	centroidDefined = false;
 	boundingCircleDefined = false;
 	averagePointDefined = false;
@@ -480,6 +538,10 @@ Position SimplePoly::getVertex(int n) const {
 		return points[n];
 	}
 	return centroid();
+}
+
+std::vector<Position> SimplePoly::getVertices()  const {
+	return points;
 }
 
 // on invalid n, this returns the centroid!
@@ -650,6 +712,87 @@ BoundingRectangle SimplePoly::getBoundingRectangle() const {
 	return br;
 }
 
+int SimplePoly::maxInRange(const Position& p, double a1, double a2) const {
+	double maxD = 0.0;
+	int idx = -1;
+	for (int i = 0; i < points.size(); i++) {
+		double d = points[i].distanceH(p);
+		double a = p.initialVelocity(points[i], 100).compassAngle();
+		if (d > maxD && a1 <= a && a < a2) {
+			idx = i;
+			maxD = d;
+		}
+	}
+	return idx;
+}
+
+
+/**
+ * Return the angle that is perpendicular to the middle of the edge from vertex i to i+1, facing outward.
+ * Return NaN if i is out of bounds or vertex i overlaps vertex i+1.
+ */
+double SimplePoly::perpSide(int i) const {
+	if (i < 0 || i >= points.size()) return NaN;
+	Position p1 = points[i];
+	Position p2;
+	if (i == points.size()-1) {
+		p2 = points[0];
+	} else {
+		p2 = points[i+1];
+	}
+	if (p1.almostEquals(p2)) return NaN;
+	double trk = p1.avgVelocity(p2, 100).trk() - Pi/2.0;
+	if (isClockwise()) {
+		return Util::to_2pi(trk);
+	} else {
+		return Util::to_2pi(trk+Pi);
+	}
+}
+
+bool SimplePoly::vertexConvex(const Position& p0, const Position& p1, const Position& p2) const {
+	std::vector<Position> pts;
+	std::vector<double> wgts;
+	pts.push_back(p0);
+	pts.push_back(p1);
+	pts.push_back(p2);
+	wgts.push_back(1.0);
+	wgts.push_back(100.0);
+	wgts.push_back(1.0);
+	Position avg = avgPos(pts, wgts);
+	return contains2D(avg);
+}
+
+
+double SimplePoly::vertexAngle(int i) const {
+	if (i < 0 || i >= points.size()) return NaN;
+	Position p1 = points[i];
+	Position p2;
+	Position p0;
+	if (i == points.size()-1) {
+		p2 = points[0];
+	} else {
+		p2 = points[i+1];
+	}
+	if (i == 0) {
+		p0 = points[points.size()-1];
+	} else {
+		p0 = points[i-1];
+	}
+	if (p1.almostEquals(p2) || p1.almostEquals(p0) || p0.almostEquals(p2)) return NaN;
+	double ang;
+	if (p1.isLatLon()) {
+		ang = GreatCircle::angle_between(p0.lla(), p1.lla(), p2.lla());
+	} else {
+		ang = Util::to_2pi(VectFuns::angle_between(p0.vect2(), p1.vect2(), p2.vect2()));
+	}
+	if (vertexConvex(p0,p1,p2)) {
+		return ang;
+	} else {
+		return 2*Pi - ang;
+	}
+}
+
+
 
 string SimplePoly::toString() const {
 	string s = "";
@@ -658,5 +801,7 @@ string SimplePoly::toString() const {
 	}
 	return s;
 }
+
+
 
 } // namespace 

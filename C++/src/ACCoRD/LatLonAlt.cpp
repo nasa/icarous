@@ -138,6 +138,8 @@ bool LatLonAlt::isInvalid() const {
 const LatLonAlt LatLonAlt::linearEst(double dn, double de) const {
 	//f.pln(" lat = "+Units.str("deg",lati)+" lon = "+Units.str("deg",longi));
 	double R = 6378137;                   // diameter earth in meters
+	//double R = GreatCircle::spherical_earth_radius;
+			//f.pln(" $$$$ R = "+Units.str("NM",R,12)+" R2
 	double nLat = lati + dn/R;
 	double nLon = longi + de/(R*cos(lati));
 	//f.pln(" nLat = "+Units.str("deg",nLat)+" nLon = "+Units.str("deg",nLon));
@@ -226,4 +228,10 @@ const LatLonAlt LatLonAlt::parse(const std::string& str) {
 		  return normalize(lat(), lon(), alt());
 	  }
   
+
+		bool LatLonAlt::isWest(const LatLonAlt& a) const {
+			// this uses the same calculations as Util.clockwise:
+			return Util::clockwise(a.lon(), lon());
+		}
+
 }

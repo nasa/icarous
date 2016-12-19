@@ -10,6 +10,7 @@
 #include "format.h"
 #include "CD2D.h"
 #include "CDPolyIter2D.h"
+#include "Util.h"
 #include "MovingPolygon2D.h"
 #include "MovingPolygon3D.h"
 
@@ -142,7 +143,7 @@ double CDPolyIter2D::poly2D_detection_micro(const MovingPolygon2D& mpi, const Ve
 //fpln(" $$$ poly2DIter_detection T="+Fm4(T)+" ENTER: so = "+so.toString()+" vo="+vo.toString()+" tStep="+Fm4(tStep));
         Poly2D mpiStart = Poly2D(mpi.polystart);
         double tend = mpi.tend;
-        double tSeg = std::min(tend, T);
+        double tSeg = Util::min(tend, T);
 //fpln(" CDPolyIter2D::poly2D_detection: tSeg = "+Fm1(tSeg)+" mpi = "+mpi.toString());
         Poly2D mpiEnd = mpiStart.linear(mpi.polyvel,tSeg);
         timesin = std::vector<double>();
@@ -153,7 +154,7 @@ double CDPolyIter2D::poly2D_detection_micro(const MovingPolygon2D& mpi, const Ve
         Vect2 vi = centerEnd.Sub(centerStart).Scal(1/tSeg);
         double outerRadStart = mpiStart.apBoundingRadius();
         double outerRadEnd = mpiEnd.apBoundingRadius();
-        double outerRadius = std::max(outerRadStart,outerRadEnd);
+        double outerRadius = Util::max(outerRadStart,outerRadEnd);
         CD2D cd = CD2D();
         LossData det = cd.detection(so.Sub(centerStart), vo, vi, outerRadius, T);
         if (!det.conflict()) {

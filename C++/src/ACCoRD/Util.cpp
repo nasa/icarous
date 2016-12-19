@@ -178,7 +178,7 @@ double Util::sq(const double x) {
 }
 
 double Util::sqrt_safe(const double x) {
-	return sqrt(std::max(x,0.0));
+	return sqrt(Util::max(x,0.0));
 }
 
 double Util::atan2_safe(const double y, const double x) {
@@ -188,11 +188,11 @@ double Util::atan2_safe(const double y, const double x) {
 }
 
 double Util::asin_safe(double x) {
-	return asin(std::max(-1.0,std::min(x,1.0)));
+	return asin(Util::max(-1.0,Util::min(x,1.0)));
 }
 
 double Util::acos_safe(double x) {
-	return acos(std::max(-1.0,std::min(x,1.0)));
+	return acos(Util::max(-1.0,Util::min(x,1.0)));
 }
 
 double Util::discr(const double a, const double b, const double c){
@@ -231,6 +231,46 @@ int Util::sign(const double x) {
 	if (x >= 0.0)
 		return 1;
 	return -1;
+}
+
+const double& Util::min(const double& x, const double& y) {
+	if (std::isnan(y)) return y;
+	if (x == 0.0 && y == 0.0 && std::signbit(y)) return y; // if y is -0, return y
+	return std::min(x,y);
+}
+
+const float& Util::min(const float& x, const float& y) {
+	if (std::isnan(y)) return y;
+	if (x == 0.0 && y == 0.0 &&  std::signbit(y)) return y; // if y is -0, return y
+	return std::min(x,y);
+}
+
+const int& Util::min(const int& x, const int& y) {
+	return (x < y)? x : y;
+}
+
+const long& Util::min(const long& x, const long& y) {
+	return (x < y)? x : y;
+}
+
+const double& Util::max(const double& x, const double& y) {
+	if (std::isnan(y)) return y;
+	if (x == 0.0 && y == 0.0 &&  std::signbit(x)) return y; // if x is -0, return y
+	return std::max(x,y);
+}
+
+const float& Util::max(const float& x, const float& y) {
+	if (std::isnan(y)) return y;
+	if (x == 0.0 && y == 0.0 &&  std::signbit(x)) return y; // if x is -0, return y
+	return std::max(x,y);
+}
+
+const int& Util::max(const int& x, const int& y) {
+	return (x > y)? x : y;
+}
+
+const long& Util::max(const long& x, const long& y) {
+	return (x > y)? x : y;
 }
 
 /**
@@ -336,7 +376,6 @@ double Util::turnDelta(double alpha, double beta, bool turnRight) {
  double Util::turnDelta(double alpha, double beta, int dir) {
    return turnDelta(alpha, beta, dir > 0);
  }
-
 
 
 #if defined(_MSC_VER)
@@ -453,7 +492,7 @@ double sq(const double x) {
 }
 
 double sqrt_safe(const double x) {
-	return sqrt(std::max(x,0.0));
+	return sqrt(Util::max(x,0.0));
 }
 
 double atan2_safe(const double y, const double x) {

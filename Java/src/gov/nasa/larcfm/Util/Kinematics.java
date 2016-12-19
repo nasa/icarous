@@ -413,21 +413,22 @@ public final class Kinematics {
 	 * 
 	 * @param so          starting position
 	 * @param center      center of turn
-	 * @param R           radius
+	 * @param dir         direction of turnb
 	 * @param d           distance into turn (sign indicates direction)
 	 * @return Position/Velocity after turning distance d
 	 */
 	public static Pair<Vect3,Velocity> turnByDist(Vect3 so, Vect3 center, int dir, double d, double gsAtd) {
 		//f.pln(" $$$$ turnByDist: so = "+so+" center = "+center);
         //double R = GreatCircle.distance(so, center);
-        double R = so.distanceH(center);
+        double R = so.distanceH(center);    // TODO: should we test for 0?
+        if (R==0.0) return new Pair<Vect3,Velocity>(so,Velocity.INVALID);
 		double alpha = dir*d/R;
 		//double vFinalTrk = GreatCircle.initial_course(center,so);
 		double trkFromCenter = Velocity.mkVel(center, so, 100.0).trk();
 		double nTrk = trkFromCenter + alpha;
 		//Vect3 sn = GreatCircle.linear_initial(center, nTrk, R);
 		Vect3 sn = center.linearByDist(nTrk, R);
-		//f.pln(" $$$$ turnByDist: sn = "+sn);
+		//f.pln(" $$$$ turnByDist: sn = "+sn);bb
 		sn = sn.mkZ(0.0);
 		//double final_course = GreatCircle.final_course(center,sn);
 		//f.pln(" $$ d = "+d+" final_course = "+final_course+" nTrk = "+nTrk);
@@ -517,7 +518,7 @@ public final class Kinematics {
   // *** EXPERIMENTAL ***
   public static Pair<Vect3,Velocity> ApproxTurnOmegaWithRoll(Pair<Vect3,Velocity> sv0, double t, double omega, double rollTime) {
 		double delay = rollTime/2.0;
-		double t1 = Math.min(t,delay);
+		double t1 = Util.min(t,delay);
 		Pair<Vect3,Velocity> nsv = linear(sv0, t1); 
 		return turnOmega(nsv, t-t1, omega);
   }
@@ -712,13 +713,13 @@ public final class Kinematics {
 			rollTime = turnTm/2;
 		}
 		double turnTime = (int) turnTime(v0,goalTrack,maxBank,turnRight)-rollTime;
-		double iterT = Math.min(t,rollTime);
+		double iterT = Util.min(t,rollTime);
 		Pair<Vect3,Velocity> svEnd = RollInOut(new Pair<Vect3,Velocity>(s0,v0) ,iterT,maxBank, turnRight, rollTime,true);  // roll OUT
 		double rollInStartTm = turnTime+rollTime;
 		if (t > rollTime) {  // --------------------------------------- constant turn
 			//f.pln(" T = "+T+" turnTime = "+f.Fm1(turnTime)+" rollTime = "+rollTime);
 			double R = Kinematics.turnRadius(v0.gs(),maxBank);
-			double tmTurning = Math.min(t-rollTime,turnTime);
+			double tmTurning = Util.min(t-rollTime,turnTime);
 			svEnd = turn(svEnd, tmTurning, R , turnRight);
 		}
 		if (t > rollInStartTm) {
@@ -726,14 +727,14 @@ public final class Kinematics {
 			double delta = t-rollInStartTm;
 			//f.pln(T+" nv.track() = "+Units.str("deg",nv.track())+" goalTrack =" +Units.str("deg",goalTrack));
 			//double estRollTime = (int) turnTime(nv,goalTrack,maxBank,turnRight);
-			double iterTm = Math.min(delta,rollTime);
+			double iterTm = Util.min(delta,rollTime);
 			svEnd = RollInOut(svEnd, iterTm,maxBank, turnRight, rollTime,false);   // roll in
 			double turnRemainingTm = 0.0;
 			if (t > rollInStartTm+rollTime) {                  // ---------- we usually come up a little short
 				double lastBank = Units.from("deg",5);
 				double trnTm = turnTime(svEnd.second,goalTrack, lastBank ,turnRight);
 				if (trnTm < rollTime) {  // have not gone past goal track yet
-					turnRemainingTm = Math.min(delta-rollTime, trnTm);
+					turnRemainingTm = Util.min(delta-rollTime, trnTm);
 					double Rlast= Kinematics.turnRadius(v0.gs(), lastBank);
 					svEnd = turn(svEnd, turnRemainingTm, Rlast , turnRight);
 					//f.pln(T+" In turnRemainingTm :  nv = "+nv+" turnRemainingTm = "+turnRemainingTm+" trnTm = "+trnTm);
@@ -765,11 +766,11 @@ public final class Kinematics {
 			rollTime = turnTm/2;
 		}
 		double delay = rollTime/2.0;
-		double t1 = Math.min(t,delay);
+		double t1 = Util.min(t,delay);
 		Pair<Vect3,Velocity> nsv = linear(new Pair<Vect3,Velocity>(s0,v0), t1); 
 		double turnTime = (int) turnTime(v0,goalTrack,maxBank,turnRight);
 		if (t > delay) {
-			double t2 = Math.min(t-delay,turnTime);
+			double t2 = Util.min(t-delay,turnTime);
 			double R = Kinematics.turnRadius(v0.gs(),maxBank);
 			nsv = turn(nsv, t2, R, turnRight);
 		}
@@ -862,16 +863,16 @@ public final class Kinematics {
 	  }
 	  Velocity vo = svo.second;
 	  double R = Kinematics.turnRadius(vo.gs(),maxBank);
-	  double tOut = Math.min(t,rollTime);
+	  double tOut = Util.min(t,rollTime);
 	  double tMid = -1;
 	  double tIn = -1;
 	  Pair<Vect3,Velocity> svPair = RollInOut(svo,tOut,maxBank, turnRight, rollTime,true);   // rollOut
 	  if (t > rollTime) {
-		  tMid = Math.min(t-rollTime,turnTime - 2*rollTime);     // amount of time for middle section
+		  tMid = Util.min(t-rollTime,turnTime - 2*rollTime);     // amount of time for middle section
 		  //f.pln("turnTimeWithRoll: t = "+t+" tMid = "+tMid);
 		  svPair = turn(svPair, tMid , R , turnRight);
 		  if (t > turnTime - rollTime) {
-			  tIn = Math.min(t - (turnTime - rollTime),rollTime);
+			  tIn = Util.min(t - (turnTime - rollTime),rollTime);
 			  svPair = RollInOut(svPair,tIn,maxBank, turnRight, rollTime,false);   // rollIn
 		  }
 		  if (t > turnTime) 
@@ -896,10 +897,10 @@ public final class Kinematics {
 	public static Pair<Vect3,Velocity> approxTurnTimeWithRoll(Vect3 s0, Velocity v0, double t, double turnTime, double maxBank, boolean turnRight, double rollTime) {
        //double rollRate = maxBank/rollTime;
 		double delay = rollTime/2.0;
-		double t1 = Math.min(t,delay);
+		double t1 = Util.min(t,delay);
 		Pair<Vect3,Velocity> nsv = linear(new Pair<Vect3,Velocity>(s0,v0), t1); 
 		if (t > delay) {
-			double t2 = Math.min(t-delay,turnTime-2*delay);
+			double t2 = Util.min(t-delay,turnTime-2*delay);
 			double R = Kinematics.turnRadius(v0.gs(),maxBank);
 			nsv = turn(nsv, t2, R, turnRight);
 		}
@@ -1357,7 +1358,7 @@ public final class Kinematics {
 
 	// ********* EXPERIMENTAL ***** USES LINEAR APPROXIMATION *****************
 	public static Pair<Vect3,Velocity> gsAccelUntilWithRamp(Pair<Vect3,Velocity> sv0, double t, double goalGs, double gsAccel, double rampTime) {
-		double rmpTm = Math.min(t, rampTime/2.0);
+		double rmpTm = Util.min(t, rampTime/2.0);
 		Pair<Vect3,Velocity> nsv = linear(sv0,rmpTm);
 		return gsAccelUntil(nsv, t-rmpTm, goalGs, gsAccel);
 	}
@@ -1438,7 +1439,7 @@ public final class Kinematics {
 	
 	private static Pair<Boolean, Double> gsAccelToRTA_possible(double gsIn, double dist, double rta, double a) {
 		if (a>0) return new Pair<Boolean, Double>(gsIn*rta + 0.5*a*rta*rta >= dist, rta);
-		 double T = Math.min(rta, -gsIn/a);
+		 double T = Util.min(rta, -gsIn/a);
 		 return new Pair<Boolean, Double>(gsIn*rta+0.5*a*rta*rta<=dist, T);
 		
 	}
@@ -1871,7 +1872,7 @@ public final class Kinematics {
 	// ***** EXPERIMENTAL ******
 	public static Pair<Vect3,Velocity> approxVsAccelWithRampUp(Pair<Vect3,Velocity> sv0, double t, double vsAccel, double tRamp) {
 		double delay = tRamp/2.0;
-		double t1 = Math.min(t,delay);
+		double t1 = Util.min(t,delay);
 		Pair<Vect3,Velocity> nsv = linear(sv0, t1); 
 		return vsAccel(nsv, t-t1, vsAccel);
 	}
@@ -1985,7 +1986,7 @@ public final class Kinematics {
 		int altDir = -1;
 		if (targetAlt >= s0z) altDir = 1;
 	    climbRate = altDir*Math.abs(climbRate);
-		if (allowClimbRateChange) climbRate = altDir*(Math.max(Math.abs(climbRate), Math.abs(v0z)));
+		if (allowClimbRateChange) climbRate = altDir*(Util.max(Math.abs(climbRate), Math.abs(v0z)));
 	    double S = targetAlt-s0z;
 		double a1 = acceldown;
 		if (climbRate>=v0z) a1 = accelup;
@@ -2007,7 +2008,7 @@ public final class Kinematics {
 			if (root1<0)  T1 = root2;
 			else if (root2<0) T1 = root1;
 			else
-			T1= Math.min(root1, root2);
+			T1= Util.min(root1, root2);
 			//f.pln("times1 case2");
 			return new Tuple5<Double, Double,Double,Double,Double>(T1, T1, T1+T3(V1(v0z, a1, T1), a2),a1,a2);
 		}
@@ -2439,7 +2440,7 @@ public final class Kinematics {
 //
 //  boolean ret = false;
 //  double stepSize = 1.0;
-//  stepSize = Math.min(stepSize, turnTime/2.0); // need at least 2 steps
+//  stepSize = Util.min(stepSize, turnTime/2.0); // need at least 2 steps
 //  while (time < turnTime) {
 //	  ret = (time >= turnTime/2);
 //	  if (!ret && bank < maxBank) {
@@ -2479,7 +2480,7 @@ public final class Kinematics {
 //
 //	public static Pair<Vect3,Velocity> turnWithRoll(Pair<Vect3,Velocity> sv0, double T, double maxBank, boolean turnRight, double rollRate) {
 //		double rollTime = maxBank/rollRate;
-//		double iterT = Math.min(T,rollTime);
+//		double iterT = Util.min(T,rollTime);
 //		Velocity v0 = sv0.second;
 //		Pair<Vect3,Velocity> rPair = RollInOut(sv0,iterT,maxBank, turnRight, rollTime, true);
 //		if (T > rollTime) {

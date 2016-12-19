@@ -21,16 +21,15 @@
 
 namespace larcfm {
 
+DensityGridTimed::~DensityGridTimed() {}
 
-DensityGridTimed::DensityGridTimed(const BoundingRectangle& b, const NavPoint& start, const Position& end, double startT, double groundSpeed, int buffer, double sqSz, bool ll) {
-	init(b, start, end, buffer, sqSz, ll);
+DensityGridTimed::DensityGridTimed(const BoundingRectangle& b, const NavPoint& start, const Position& end, double startT, double groundSpeed, int buffer, double sqSz, bool ll) : DensityGrid(b, start, end, buffer, sqSz, ll) {
 	startTime_ = startT;
 	lookaheadEndTime = -1.0;
 	gs = groundSpeed;
 }
 
-DensityGridTimed::DensityGridTimed(const Plan& p, int buffer, double squareSize) {
-	init(p.getBound(), p.point(0), p.point(p.size()-1).position(), buffer, squareSize, p.isLatLon());
+DensityGridTimed::DensityGridTimed(const Plan& p, int buffer, double squareSize) : DensityGrid(p, buffer, squareSize) {
 	startTime_ = p.getFirstTime();
 	gs = p.averageGroundSpeed();
 	lookaheadEndTime = -1.0;

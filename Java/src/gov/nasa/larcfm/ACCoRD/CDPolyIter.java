@@ -96,7 +96,7 @@ import gov.nasa.larcfm.Util.f;
 			 if (thout < B || thin > T) {
 				 return noDetection;
 			 } else {
-				 return new Pair<Double,Double>(Math.max(B,Math.min(T,thin)), Math.max(B,Math.min(T,thout)));
+				 return new Pair<Double,Double>(Util.max(B,Util.min(T,thin)), Util.max(B,Util.min(T,thout)));
 			 }
 		 }
 	 }

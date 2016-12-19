@@ -58,6 +58,8 @@ class SimplePoly {
 	mutable double maxRad;
 	mutable double bRad;
 
+	mutable double clockwiseSum;
+
     void init();
     
     void calcCentroid() const;
@@ -112,6 +114,7 @@ class SimplePoly {
 	 */
     static SimplePoly make(const Poly3D& p3, const EuclideanProjection& proj);
 
+    bool isClockwise() const;
 
 	/**
 	 *  
@@ -134,6 +137,12 @@ class SimplePoly {
 	 */
 	Position centroid() const;
 	
+  private:
+
+	Position avgPos(const std::vector<Position>& points, const std::vector<double>& wgts) const;
+
+  public:
+
 	/**
 	 * Return the average of all vertices.  Note this is not the same as the centroid!  This will, however, have the nice property of having
 	 * a constant velocity when dealing with a morphing polygon. 
@@ -210,6 +219,8 @@ class SimplePoly {
 	 */
 	Position getVertex(int n) const;
 
+	std::vector<Position> getVertices() const;
+
 	/**
 	 * Returns the position of the top point with index n.
 	 * If n is not a valid index, this returns the centroid position.
@@ -247,6 +258,16 @@ class SimplePoly {
 	bool validate(ErrorLog* error);
 
 	BoundingRectangle getBoundingRectangle() const;
+
+	int maxInRange(const Position& p, double a1, double a2) const;
+
+	double perpSide(int i) const;
+
+  private:
+	bool vertexConvex(const Position& p0, const Position& p1, const Position& p2) const;
+
+  public:
+	double vertexAngle(int i) const;
 
 	/**
 	 * String representation of this SimplePoly.

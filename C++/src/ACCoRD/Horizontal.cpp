@@ -71,7 +71,7 @@ double Horizontal::hmd(const Vect2& s, const Vect2& v, double T) {
   double t = 0;
   if (s.dot(v) < 0) {
     // aircraft are horizontally converging
-    t = std::min(tcpa(s,v),T);
+    t = Util::min(tcpa(s,v),T);
   }
   return v.ScalAdd(t,s).norm();
 }
@@ -135,7 +135,7 @@ Vect2 Horizontal::W0(const Vect2& s, const double j) {
 Horizontal Horizontal::gs_only_line(const Vect2& nv,const Vect2& vo,const Vect2& vi) {
   double det_vo_v = vo.det(nv);
   if (det_vo_v != 0) {
-    double l = std::max(0.0,vi.det(nv)/det_vo_v);
+    double l = Util::max(0.0,vi.det(nv)/det_vo_v);
     double k = vi.det(vo)/det_vo_v;
     Horizontal gso = Horizontal(vo*l);
     gso.k = k;
@@ -200,7 +200,7 @@ Horizontal Horizontal::gs_only_circle(const Vect2& s, const Vect2& vo, const Vec
   double c = w.sqv()-sq(D);
   double l = root2b(a,b,c,irt);
   if (! ISNAN(l)) {
-    Vect2 nvo = vo*std::max(l,0.0);
+    Vect2 nvo = vo*Util::max(l,0.0);
     if (horizontal_dir_at(s,nvo-vi,t,dir))
       return Horizontal(nvo);
   }

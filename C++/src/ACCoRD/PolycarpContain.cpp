@@ -68,7 +68,7 @@ namespace larcfm {
 				total=total-2;
 			}
 		}
-		return (int)std::floor(total/4.0+0.5);
+		return total/4;
 	}
 
 	std::vector<Vect2> PolycarpContain::fix_polygon(const std::vector<Vect2>& p,const Vect2& s,double BUFF) {

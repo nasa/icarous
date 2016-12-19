@@ -412,7 +412,7 @@ using std::string;
 		Vect3 n2 = normalvect(r,q,p);
 		Vect3 n1xn2 = n1.cross(n2);
 		double Rp = Rprime(TurnRad);
-		if (std::abs(n1xn2.x)>=std::max(std::abs(n1xn2.y),std::abs(n1xn2.z))) {
+		if (std::abs(n1xn2.x)>=Util::max(std::abs(n1xn2.y),std::abs(n1xn2.z))) {
 			double a=n1.y;
 			double b=n1.z;
 			double c=n2.y;

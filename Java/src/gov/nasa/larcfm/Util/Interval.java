@@ -165,7 +165,7 @@ public final class Interval {
       return EMPTY;
     }
 
-    return new Interval(Math.max(low, r.low), Math.min(up, r.up));
+    return new Interval(Util.max(low, r.low), Util.min(up, r.up));
   }
 
   /** 

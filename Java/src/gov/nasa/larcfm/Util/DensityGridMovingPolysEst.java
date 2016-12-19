@@ -28,12 +28,12 @@ public class DensityGridMovingPolysEst extends DensityGridTimed {
 				// static plans have already been handled in StratwayCore with a call to setWeightsWithin()
 				if (!containment.get(i).isStatic()) {
 					Triple<Plan,Double,Double> cc = containment.get(i).buildPlan();
-					contains.contains(cc);
+					contains.add(cc);
 				}
 			}
 		}
 		startTime = p.getFirstTime();
-		double endT = -1.0; 
+//		double endT = -1.0; 
 		this.gs = gs;
 	}
 
@@ -105,11 +105,11 @@ public class DensityGridMovingPolysEst extends DensityGridTimed {
 
 
 
-	public double getWeight(int x, int y, double t) {
-if (Double.isNaN(t)) {
-Thread.dumpStack();
-f.pln("DensityGridMovingPolysEst getWeight x="+x+" y="+y+" t="+t);	
-}
+	public double getWeightT(int x, int y, double t) {
+//if (Double.isNaN(t)) {
+//Thread.dumpStack();
+//f.pln("DensityGridMovingPolysEst getWeight x="+x+" y="+y+" t="+t);	
+//}
 		if (lookaheadEndTime > 0 && t > lookaheadEndTime) {
 //f.pln("--DensityGridMovingPolysEst getWeight out of time = 0");
 			return 0.0;
@@ -204,8 +204,8 @@ f.pln("DensityGridMovingPolysEst getWeight x="+x+" y="+y+" t="+t);
 	}
 
 
-	public double getWeight(Triple<Integer,Integer,Integer> pii) {
-		return getWeight(pii.first,pii.second, pii.third);
+	public double getWeightT(Triple<Integer,Integer,Integer> pii) {
+		return getWeightT(pii.first,pii.second, pii.third);
 	}
 
 	@Override

@@ -163,6 +163,7 @@ public class WeatherUtil {
 		}
 		Pair<Plan,DensityGrid> pr = reRouteWx(own, npaths, gridSize, buffer, factor, T_p, containment, fastPolygonReroute, reduceGridPath, timeOfCurrentPosition, reRouteLeadIn);
 		Plan ret = pr.first;
+//f.pln("reRouteWx ret1="+ret.toString());		
 		if (reRouteReduction && ret != null) {
 			double incr = 10.0;
 			double gs = own.initialVelocity(0).gs();
@@ -172,6 +173,7 @@ public class WeatherUtil {
 			}
             //f.pln("reduced plan="+ret);		
 		}
+//f.pln("reRouteWx ret2="+ret.toString());		
 		return Pair.make(ret, pr.second);
 	}
 
@@ -211,8 +213,8 @@ public class WeatherUtil {
 		} 
 		//dg.setProximityWeights(ownship, factor);
 		DensityGridAStarSearch dgs = new DensityGridAStarSearch();
-		List<Pair<Integer,Integer>> gPath = dgs.optimalPath(dg);
-//dg.printSearchedWeights();		
+		List<Pair<Integer,Integer>> gPath = dgs.optimalPathT(dg);
+		//dg.printSearchedWeights();		
 		if (gPath == null) {
 			//f.pln(" $$$$$ reRouteWithAstar: optimal path not found !!!");
 			return Pair.make(new Plan(),(DensityGrid)dg);

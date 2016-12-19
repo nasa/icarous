@@ -10,6 +10,7 @@ import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.LossData;
 import gov.nasa.larcfm.Util.Poly2D;
 import gov.nasa.larcfm.Util.MovingPolygon2D;
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect2;
 import gov.nasa.larcfm.Util.f;
 
@@ -176,7 +177,7 @@ public class CDPolyIter2D {
         Poly2D mpiStart = new Poly2D(mpi.polystart);    
         //Vect2 vi = mpi.polyvel.get(0);    
         double tend = mpi.tend;
-        double tSeg = Math.min(tend, T); 
+        double tSeg = Util.min(tend, T); 
 //f.pln(" CDPolyIter2D::poly2D_detection: tSeg = "+f.Fm1(tSeg)+" mpi = "+mpi.toString());
         Poly2D mpiEnd = mpiStart.linear(mpi.polyvel,tSeg);                
         timesin = new ArrayList<Double>();
@@ -187,7 +188,7 @@ public class CDPolyIter2D {
         Vect2 vi = centerEnd.Sub(centerStart).Scal(1/tSeg);      
         double outerRadStart = mpiStart.apBoundingRadius();
         double outerRadEnd = mpiEnd.apBoundingRadius();
-        double outerRadius = Math.max(outerRadStart,outerRadEnd);
+        double outerRadius = Util.max(outerRadStart,outerRadEnd);
 //f.pln("poly2DIter_detection D = "+outerRadius+" so="+so+" si="+centerStart+" T="+T);        
         CD2D cd = new CD2D();
         LossData det = cd.detection(so.Sub(centerStart), vo, vi, outerRadius, T);
@@ -198,7 +199,7 @@ public class CDPolyIter2D {
         double tmin = det.getTimeIn();
         double tmout = det.getTimeOut();
         boolean prevInside = false;
-//        double tStep2 = Math.max(tStep, (tmout-tmin)/100.0);
+//        double tStep2 = Util.max(tStep, (tmout-tmin)/100.0);
 //f.pln("poly2D_detection tmin="+tmin+" tmout="+tmout);
         for (double t = tmin; t <= tmout; t = t + tStep) { 
           Vect2 soAtTm = so.linear(vo,t);

@@ -66,6 +66,7 @@ public final class KinematicsPosition {
 	 * @param turnRight true iff only turn direction is to the right
 	 * @return Position and Velocity after t time
 	 */
+	@Deprecated
 	public static Pair<Position,Velocity> turn(Position so, Velocity vo, double t, double R,  boolean turnRight) {
 		if (so.isLatLon()) {
 			Pair<LatLonAlt,Velocity> resp = KinematicsLatLon.turn(so.lla(),vo,t,R,turnRight);
@@ -192,6 +193,7 @@ public final class KinematicsPosition {
 	 * @param turnRight true iff only turn direction is to the right
 	 * @return Position and Velocity after t time
 	 */
+	@Deprecated  // ONLY USED IN KinematicsPositionTest
 	public static Pair<Position,Velocity> turnUntil(Position so, Velocity vo, double t, double goalTrack, double bankAngle) {
 		if (so.isLatLon()) {
 			Pair<LatLonAlt,Velocity> resp = KinematicsLatLon.turnUntil(so.lla(),vo,t,goalTrack,bankAngle);
@@ -202,6 +204,7 @@ public final class KinematicsPosition {
 		}
 	}
 
+	@Deprecated  // NOT USED
 	public static Pair<Position,Velocity> turnUntil(Pair<Position,Velocity> sv, double t, double goalTrack, double bankAngle) {
 		return turnUntil(sv.first, sv.second,t, goalTrack, bankAngle);
 	}
@@ -239,6 +242,7 @@ public final class KinematicsPosition {
 	 * @param turnRight true iff only turn direction is to the right
 	 * @return Position and Velocity after t time
 	 */
+	@Deprecated
 	public static Pair<Position,Velocity> turnUntilTime(Position so, Velocity vo, double t, double turnTime, double R, boolean turnRight) {
 		if (so.isLatLon()) {
 			Pair<LatLonAlt,Velocity> resp = KinematicsLatLon.turnUntilTimeRadius(new Pair<LatLonAlt,Velocity>(so.lla(),vo),t,turnTime,R,turnRight);

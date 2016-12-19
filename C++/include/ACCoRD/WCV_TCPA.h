@@ -21,21 +21,17 @@ class WCV_TCPA : public WCV_tvar {
 
 public:
   
-  /** Constructor that uses the default TCAS tables. */
+  /** Constructor that a default instance of the WCV tables. */
   WCV_TCPA();
 
   /** Constructor that specifies a particular instance of the WCV tables. */
   WCV_TCPA(const WCVTable& tab);
 
+  virtual ~WCV_TCPA() {};
+
   double horizontal_tvar(const Vect2& s, const Vect2& v) const;
 
   LossData horizontal_WCV_interval(double T, const Vect2& s, const Vect2& v) const ;
-
-//  bool conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
-
-//  // The semantics of this function is "Time of Minimum Modified Tau"
-//  double timeOfClosestApproach(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
-
 
   Detection3D* make() const;
 

@@ -64,9 +64,9 @@ public:
 	// f should be between 0 and 1 to interpolate
 	static Velocity interpolateVelocity(const Velocity& v1, const Velocity& v2, double f);
 
-	static double angleBetween(const Vect2& v1, const Vect2& v2);
+	static double angle_between(const Vect2& v1, const Vect2& v2);
 
-	static double angleBetween(const Vect2& v1, const Vect2& v2, const Vect2& v3);
+	static double angle_between(const Vect2& v1, const Vect2& v2, const Vect2& v3);
 
 	/**
 	 * determines if divergent and relative speed is greater than a specified minimum relative speed

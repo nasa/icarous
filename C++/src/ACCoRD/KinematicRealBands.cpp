@@ -473,7 +473,7 @@ double KinematicRealBands::compute_recovery_bands(IntervalSet& noneset, Kinemati
           pivot = (pivot_red+pivot_green)/2.0;
         }
         if (pivot_green <= T) {
-          recovery_time = std::min(T,pivot_green+core.parameters.getRecoveryStabilityTime());
+          recovery_time = Util::min(T,pivot_green+core.parameters.getRecoveryStabilityTime());
         } else {
           recovery_time = pivot_red;
         }
@@ -721,8 +721,8 @@ void KinematicRealBands::toIntervalSet(IntervalSet& noneset, const std::vector<I
     double lb = scal*ii.lb+add;
     double ub = scal*ii.ub+add;
     if (mod_ == 0)  {
-      lb = std::max(min,lb);
-      ub = std::min(max,ub);
+      lb = Util::max(min,lb);
+      ub = Util::min(max,ub);
       noneset.almost_add(lb,ub);
     } else {
       lb = mod_val(lb);
@@ -736,7 +736,7 @@ void KinematicRealBands::toIntervalSet(IntervalSet& noneset, const std::vector<I
           noneset.almost_add(0,max);
         }
       } else if (min <= max && lb <= ub) {
-        noneset.almost_add(std::max(min,lb),std::min(max,ub));
+        noneset.almost_add(Util::max(min,lb),Util::min(max,ub));
       } else if (min <= max) {
         Interval mm(min,max);
         Interval lbmax = Interval(lb,mod_).intersect(mm);
@@ -750,8 +750,8 @@ void KinematicRealBands::toIntervalSet(IntervalSet& noneset, const std::vector<I
         noneset.almost_add(lbmax.low,lbmax.up);
         noneset.almost_add(minub.low,minub.up);
       } else {
-        noneset.almost_add(std::max(min,lb),mod_);
-        noneset.almost_add(0,std::min(max,ub));
+        noneset.almost_add(Util::max(min,lb),mod_);
+        noneset.almost_add(0,Util::min(max,ub));
       }
     }
   }

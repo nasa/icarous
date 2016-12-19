@@ -43,10 +43,10 @@ Poly2D::Poly2D(const std::vector<Vect2>& verts) {
 	vertices.resize(verts.size());
 	for (int i = 0; i < (int) verts.size(); i++) {  // copy
 		vertices[i] = Vect2(verts[i].x,verts[i].y);
-		maxX = std::max(verts[i].x, maxX);
-		maxY = std::max(verts[i].y, maxY);
-		minX = std::min(verts[i].x, minX);
-		minY = std::min(verts[i].y, minY);
+		maxX = Util::max(verts[i].x, maxX);
+		maxY = Util::max(verts[i].y, maxY);
+		minX = Util::min(verts[i].x, minX);
+		minY = Util::min(verts[i].y, minY);
 	}
 //	if (vertices.size() > 0) {
 //		boundingRect = BoundingRectangle(vertices);
@@ -126,10 +126,10 @@ bool Poly2D::contains(double a, double b) const {
 //	}
 	if (minX == MAXDOUBLE) {
 		for (int i = 0; i < (int) vertices.size(); i++) {  // copy
-			maxX = std::max(vertices[i].x, maxX);
-			maxY = std::max(vertices[i].y, maxY);
-			minX = std::min(vertices[i].x, minX);
-			minY = std::min(vertices[i].y, minY);
+			maxX = Util::max(vertices[i].x, maxX);
+			maxY = Util::max(vertices[i].y, maxY);
+			minX = Util::min(vertices[i].x, minX);
+			minY = Util::min(vertices[i].y, minY);
 		}
 	}
 	if (a > maxX || a < minX || b > maxY || b < minY) {

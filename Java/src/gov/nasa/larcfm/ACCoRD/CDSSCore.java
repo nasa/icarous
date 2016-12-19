@@ -20,7 +20,7 @@ import gov.nasa.larcfm.Util.*;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class CDSS.
+ * The Class CDSSCore.
  */
 public class CDSSCore implements Detection3DAcceptor {  
 
@@ -180,7 +180,7 @@ public class CDSSCore implements Detection3DAcceptor {
    */
   public boolean detectionBetween(Vect3 so, Velocity vo, Vect3 si, Velocity vi, double B, double T) {
     boolean conflict = detectionEver(so,vo,si,vi);
-    tca = Math.max(B,tca);
+    tca = Util.max(B,tca);
     Vect3 v = vo.Sub(vi);
     stca = v.ScalAdd(tca,so.Sub(si));
     return conflict && t_in < T && t_out >= B;    
@@ -202,7 +202,7 @@ public class CDSSCore implements Detection3DAcceptor {
     t_in = det.getTimeIn();
     t_out = det.getTimeOut();
     boolean conflict = det.conflict(filter);
-    tca = Math.min(Math.max(B,tca),time_horizon);
+    tca = Util.min(Util.max(B,tca),time_horizon);
     Vect3 v = vo.Sub(vi);
     stca = v.ScalAdd(tca,so.Sub(si));
     dtca = det.getDistanceAtCriticalTime();
@@ -396,6 +396,14 @@ public class CDSSCore implements Detection3DAcceptor {
     return Units.to(ut,tca);
   }
 
+  /**
+   * Cylindrical distance at time of closest approach.
+   *
+   * @return the cylindrical distance at time of closest approach. This distance normalizes
+   * horizontal and vertical distances. Therefore, it is unitless. It has the property that
+   * the value is less than 1 if and only if the aircraft are in loss of separation. The value is 1
+   * if the ownship is at the boundary of the intruder's protected zone.
+   */
   public double distanceAtCriticalTime() {
     return dtca;
   }

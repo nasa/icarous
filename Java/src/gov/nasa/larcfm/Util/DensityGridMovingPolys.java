@@ -72,7 +72,7 @@ public class DensityGridMovingPolys extends DensityGridTimed {
 	//	}
 
 
-	public double getWeight(int x, int y, double t) {
+	public double getWeightT(int x, int y, double t) {
 //f.pln("DensityGridMovingPoly getWeight x="+x+" y="+y+" t="+t);		
 		if (lookaheadEndTime > 0 && t > lookaheadEndTime) {
 //			f.pln("--DensityGridMovingPoly getWeight out of time = 0");
@@ -108,8 +108,8 @@ public class DensityGridMovingPolys extends DensityGridTimed {
 		return w + cost;
 	}
 
-	public double getWeight(Triple<Integer,Integer,Integer> pii) {
-		return getWeight(pii.first,pii.second, pii.third);
+	public double getWeightT(Triple<Integer,Integer,Integer> pii) {
+		return getWeightT(pii.first,pii.second, pii.third);
 	}
 
 

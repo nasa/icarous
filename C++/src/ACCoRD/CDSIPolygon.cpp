@@ -241,14 +241,14 @@ namespace larcfm {
         if (j < intent.size()-1) {
             tend = intent.getTime(j+1) - t_base;
         }
-        HT = std::max(0.0, std::min(state_horizon - (t_base - t0), tend));
-        BT = std::max(0.0, B + t0 - t_base);
+        HT = Util::max(0.0, Util::min(state_horizon - (t_base - t0), tend));
+        BT = Util::max(0.0, B + t0 - t_base);
         NT = cont ? HT : T + t0 - t_base;
 //fpln(" $$>> CDSIPolygon.detectionXYZ: bleh");
         if (NT >= 0) {
           MovingPolygon3D mpg = intent.getMovingPolygon(t_base, proj);
 //         fpln(" $$>> CDSIPolygon.detectionXYZ: mpg = "+mpg.toString()+" BT = "+Fm2(BT)+" NT = "+Fm2(NT)+" HT = "+Fm2(HT));
-          bool cdssRtn = cdss->conflictDetection(sop, vo, mpg, BT, std::min(NT, HT));
+          bool cdssRtn = cdss->conflictDetection(sop, vo, mpg, BT, Util::min(NT, HT));
 //fpln(" $$>> CDSIPolygon.detectionXYZ: j = "+Fmi(j)+" cdssRtn = "+Fmb(cdssRtn));
           if ( cdssRtn ) {
 //for (int i = 0; i < intent.getPoly(0).size(); i++) fpln("ui_reference_point_"+Util::nextCount()+" = "+intent.getPoly(0).getPoint(i).toString8());
@@ -329,8 +329,8 @@ namespace larcfm {
         if (j < intent.size()-1) {
             tend = intent.getTime(j+1) - t_base;
         }
-        HT = std::max(0.0, std::min(state_horizon - (t_base - t0), tend));
-        BT = std::max(0.0, B + t0 - t_base);
+        HT = Util::max(0.0, Util::min(state_horizon - (t_base - t0), tend));
+        BT = Util::max(0.0, B + t0 - t_base);
         NT = cont ? HT : T + t0 - t_base;
         Velocity vop = proj.projectVelocity(so2p, vo);  //CHANGED!!!
         //Velocity vip = proj.projectVelocity(sip.centroid(), intent.velocity(t_base));
@@ -338,14 +338,14 @@ namespace larcfm {
         if (NT >= 0) {
           MovingPolygon3D mpg = intent.getMovingPolygon(t_base, proj);
 //fpln(" $$>> CDSIPolygon.detectionLL: mpg = "+mpg.toString()+" BT = "+Fm1(BT)+" NT = "+Fm1(NT)+" HT = "+Fm1(HT));
-          bool cdssRtn = cdss->conflictDetection(so3, vop, mpg, BT, std::min(NT, HT));
+          bool cdssRtn = cdss->conflictDetection(so3, vop, mpg, BT, Util::min(NT, HT));
 //          fpln(" $$>> CDSIPolygon.detectionLL: j = "+j+" cdssRtn = "+cdssRtn);
           if (cdssRtn ) {  // CHANGED!!!
             // filter out when the start time for searching is the the end time of the conflict
             for (int i = 0; i < (int) cdss->getTimesIn().size(); i++) {
               if (std::abs((t0+B) - (cdss->getTimesOut()[i]+t_base)) > 0.0000001) {
                 captureOutput(t_base, i, cdss);
-//fpln("CDSIPoly: i="+i+" cdss so3="+so3+" vop="+vop+" mpg= ---"+" B="+BT+" T="+(std::min(NT,HT)));
+//fpln("CDSIPoly: i="+i+" cdss so3="+so3+" vop="+vop+" mpg= ---"+" B="+BT+" T="+(Util::min(NT,HT)));
 //fpln("CDSIPoly: i="+i+" tin="+(cdss.getTimesIn().get(i))+" tout="+(cdss.getTimesOut().get(i))+" end="+(T)+" horiz="+(state_horizon));
               }
             }

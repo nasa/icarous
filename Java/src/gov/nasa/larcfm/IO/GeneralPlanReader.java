@@ -464,7 +464,7 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 							error.addWarning("Invalid velocity data for NavPoint "+thisName+" at "+myTime);
 						}
 					}
-					n = n.makeVelocityIn(vel);
+					n = n.makeVelocityInit(vel);
 
 					try {
 						NavPoint.Trk_TCPType tcptrk = NavPoint.Trk_TCPType.valueOf(input.getColumnString(head[TCP_TRK]));
@@ -472,10 +472,11 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 						double radius = 0.0;
 						if (input.columnHasValue(head[RADIUS])) radius = input.getColumn(head[RADIUS], "NM");
 						if (Util.almost_equals(radius,0.0)) radius = vel.gs()/acctrk;
+						// TODO: linearIndex
 						switch (tcptrk) {
-						case BOT: n = n.makeBOT(n.position(), n.time(), vel, radius); break;
-						case EOT: n = n.makeEOT(n.position(), n.time(), vel); break;
-						case EOTBOT: n = n.makeEOTBOT(n.position(), n.time(), vel, radius); break;
+						case BOT: n = n.makeBOT(n.position(), n.time(), vel, radius,-1); break;
+						case EOT: n = n.makeEOT(n.position(), n.time(), vel,-1); break;
+						case EOTBOT: n = n.makeEOTBOT(n.position(), n.time(), vel, radius,-1); break;
 						default: // no change
 						}
 					} catch (Exception e) {
@@ -484,10 +485,11 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 					try {
 						NavPoint.Gs_TCPType tcpgs = NavPoint.Gs_TCPType.valueOf(input.getColumnString(head[TCP_GS]));
 						double accgs = input.getColumn(head[ACC_GS], "m/s^2");
+						// TODO: linearIndex
 						switch (tcpgs) {
-						case BGS: n = n.makeBGS(n.position(), n.time(), accgs, vel); break;
-						case EGS: n = n.makeEGS(n.position(), n.time(), vel); break;
-						case EGSBGS: n = n.makeEGSBGS(n.position(), n.time(), accgs, vel); break;
+						case BGS: n = n.makeBGS(n.position(), n.time(), accgs, vel,-1); break;
+						case EGS: n = n.makeEGS(n.position(), n.time(), vel,-1); break;
+						case EGSBGS: n = n.makeEGSBGS(n.position(), n.time(), accgs, vel,-1); break;
 						default: // no change
 						}
 					} catch (Exception e) {
@@ -496,10 +498,11 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 					try {
 						NavPoint.Vs_TCPType tcpvs = NavPoint.Vs_TCPType.valueOf(input.getColumnString(head[TCP_VS]));
 						double accvs = input.getColumn(head[ACC_VS], "m/s^2");
+						// TODO: linearIndex
 						switch (tcpvs) {
-						case BVS: n = n.makeBVS(n.position(), n.time(), accvs, vel); break;
-						case EVS: n = n.makeEVS(n.position(), n.time(), vel); break;
-						case EVSBVS: n = n.makeEVSBVS(n.position(), n.time(), accvs, vel); break;
+						case BVS: n = n.makeBVS(n.position(), n.time(), accvs, vel,-1); break;
+						case EVS: n = n.makeEVS(n.position(), n.time(), vel,-1); break;
+						case EVSBVS: n = n.makeEVSBVS(n.position(), n.time(), accvs, vel,-1); break;
 						default: // no change
 						}
 					} catch (Exception e) {

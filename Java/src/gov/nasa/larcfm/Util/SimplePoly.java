@@ -566,6 +566,10 @@ public class SimplePoly {
 		return centroid();
 	}
 
+	public ArrayList<Position> getVertices() {
+		return points;
+	}
+	
 	/**
 	 * Returns the position of the top point with index n.
 	 * If n is not a valid index, this returns the centroid position.
@@ -617,7 +621,7 @@ public class SimplePoly {
 			double dist = GreatCircle.distance(ll, cl);
 			for (int i = 0; i < size()-1; i++) {
 				cl = GreatCircle.closest_point_segment(getVertex(i).lla(), getVertex(i+1).lla(), ll);
-				dist = Math.min(GreatCircle.distance(ll, cl), dist);				
+				dist = Util.min(GreatCircle.distance(ll, cl), dist);				
 			}
 			return dist;
 		} else {
@@ -626,7 +630,7 @@ public class SimplePoly {
 			double dist = v3.distanceH(cl);
 			for (int i = 0; i < size()-1; i++) {
 				cl = VectFuns.closestPointOnSegment(getVertex(i).point(), getVertex(i+1).point(), v3);
-				dist = Math.min(v3.distanceH(cl), dist);				
+				dist = Util.min(v3.distanceH(cl), dist);				
 			}
 			return dist;
 		}
@@ -634,9 +638,9 @@ public class SimplePoly {
 
 	public double distanceV(Position p) {
 		if (p.isLatLon()) {
-			return Math.min(Math.abs(p.alt()-top), Math.abs(p.alt()-bottom));
+			return Util.min(Math.abs(p.alt()-top), Math.abs(p.alt()-bottom));
 		} else {
-			return Math.min(Math.abs(p.z()-top), Math.abs(p.z()-bottom));
+			return Util.min(Math.abs(p.z()-top), Math.abs(p.z()-bottom));
 		}
 
 	}

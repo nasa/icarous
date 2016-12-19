@@ -94,7 +94,7 @@ public class Horizontal extends Vect2  {
     double t = 0;
     if (s.dot(v) < 0) {
       // aircraft are horizontally converging
-      t = Math.min(tcpa(s,v),T);
+      t = Util.min(tcpa(s,v),T);
     }
     return v.ScalAdd(t,s).norm();
   }
@@ -179,7 +179,7 @@ public class Horizontal extends Vect2  {
   public static Horizontal gs_only_line(Vect2 nv,Vect2 vo,Vect2 vi) {
     double det_vo_v = vo.det(nv);
     if (det_vo_v != 0) {
-      double l = Math.max(0,vi.det(nv) / det_vo_v);
+      double l = Util.max(0,vi.det(nv) / det_vo_v);
       double k = vi.det(vo) / det_vo_v;
       Horizontal gso = new Horizontal(vo.Scal(l));
       gso.k = k;
@@ -255,7 +255,7 @@ public class Horizontal extends Vect2  {
     double c = w.sqv()-Util.sq(D);
     double l = Util.root2b(a,b,c,irt);
     if (!Double.isNaN(l)) {
-      Vect2 nvo = vo.Scal(Math.max(l,0));
+      Vect2 nvo = vo.Scal(Util.max(l,0));
       if (horizontal_dir_at(s,nvo.Sub(vi),t,dir))
         return new Horizontal(nvo);
     }

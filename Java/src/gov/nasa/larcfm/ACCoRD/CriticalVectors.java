@@ -31,8 +31,8 @@ public class CriticalVectors {
     if (Util.almost_equals(vo.z,vi.z) && Math.abs(s.z) < H) {
       return CriticalVectors2D.tracks(s2,vo2,vi2,D,B,T);
     } else if (!Util.almost_equals(vo.z,vi.z)) {
-      double b = Math.max(Vertical.Theta_H(s.z,vo.z-vi.z,Entry,H),B);
-      double t = Math.min(Vertical.Theta_H(s.z,vo.z-vi.z,Exit,H),T);
+      double b = Util.max(Vertical.Theta_H(s.z,vo.z-vi.z,Entry,H),B);
+      double t = Util.min(Vertical.Theta_H(s.z,vo.z-vi.z,Exit,H),T);
       if (b < t) {
         return CriticalVectors2D.tracks(s2,vo2,vi2,D,b,t); 
       }
@@ -54,8 +54,8 @@ public class CriticalVectors {
     if (Util.almost_equals(vo.z,vi.z) && Math.abs(s.z) < H) {
       return CriticalVectors2D.groundSpeeds(s2,vo2,vi2,D,B,T);
     } else if (!Util.almost_equals(vo.z,vi.z)) {
-      double b = Math.max(Vertical.Theta_H(s.z,vo.z-vi.z,Entry,H),B);
-      double t = Math.min(Vertical.Theta_H(s.z,vo.z-vi.z,Exit,H),T);
+      double b = Util.max(Vertical.Theta_H(s.z,vo.z-vi.z,Entry,H),B);
+      double t = Util.min(Vertical.Theta_H(s.z,vo.z-vi.z,Exit,H),T);
       if (b < t) {
         return CriticalVectors2D.groundSpeeds(s2,vo2,vi2,D,b,t); 
       }
@@ -104,8 +104,8 @@ public class CriticalVectors {
     } else {
       Vect2 v2 = vo2.Sub(vi2);
       if (Horizontal.Delta(s2,v2,D) > 0) {
-        double b = Math.max(Horizontal.Theta_D(s2,v2,Entry,D),B);
-        double t = Math.min(Horizontal.Theta_D(s2,v2,Exit,D),T);
+        double b = Util.max(Horizontal.Theta_D(s2,v2,Entry,D),B);
+        double t = Util.min(Horizontal.Theta_D(s2,v2,Exit,D),T);
 //f.pln("CriticalVectors.verticalSpeeds 2 "+verticalSpeeds1D(s.z,vi.z,H,b,t)+" b="+b+" t="+t);      
         if (b < t) {
 //f.pln("CriticalVectors.verticalSpeeds 3 "+verticalSpeeds1D(s.z,vi.z,H,b,t));      

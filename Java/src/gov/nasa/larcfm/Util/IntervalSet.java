@@ -275,8 +275,8 @@ public class IntervalSet implements Iterable<Interval> {//, ErrorReporter {
           union(ii);
         } else if (Util.almost_leq(ii.low,l) && Util.almost_leq(l,ii.up) ||
             Util.almost_leq(l,ii.low) && Util.almost_leq(ii.low,u)) {
-          l = Math.min(ii.low,l);
-          u = Math.max(ii.up,u);
+          l = Util.min(ii.low,l);
+          u = Util.max(ii.up,u);
         } else if (Util.almost_less(u,ii.low)) {
           union(new Interval(l,u));
           union(ii);

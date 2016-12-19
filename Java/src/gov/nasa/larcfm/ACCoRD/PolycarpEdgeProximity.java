@@ -19,6 +19,12 @@ import static gov.nasa.larcfm.ACCoRD.PolycarpQuadMinmax.quad_min_le_D_int;
 public class PolycarpEdgeProximity {
 
 	public static boolean near_edge(Vect2 segstart, Vect2 segend, Vect2 s, double BUFF) {
+	    if (Math.abs(s.x-segstart.x)>2*BUFF && Math.abs(s.x-segend.x)>2*BUFF && Util.sign(s.x-segend.x)==Util.sign(s.x-segstart.x)) {
+	    	return false;
+	    		}
+	    else if (Math.abs(s.y-segstart.y)>2*BUFF && Math.abs(s.y-segend.y)>2*BUFF && Util.sign(s.y-segend.y)==Util.sign(s.y-segstart.y)) {
+	    	return false;
+		}
 		double ap = (segend.Sub(segstart)).sqv();
 		double b = 2*((segstart.Sub(s)).dot(segend.Sub(segstart)));
 		double c = (segstart.Sub(s)).sqv();
@@ -32,7 +38,24 @@ public class PolycarpEdgeProximity {
 	}
 
 	public static boolean segments_2D_close(Vect2 segstart1,Vect2 segend1,Vect2 segstart2,Vect2 segend2,double BUFF) {
-		if (near_edge(segstart2,segend2,segstart1,BUFF)) return true; 
+		double segStartXDiff    = segstart1.x - segstart2.x;
+		double segStartEndXDiff = segstart1.x - segend2.x;
+		double segStartYDiff    = segstart1.y - segstart2.y;
+		double segStartEndYDiff = segstart1.y - segend2.y;
+		double segEndXDiff      = segend1.x - segend2.x;
+		double segEndStartXDiff = segend1.x - segstart2.x;
+		double segEndYDiff      = segend1.y - segend2.y;
+		double segEndStartYDiff = segend1.y - segstart2.y;
+		boolean segXApart  = (Math.abs(segStartXDiff)> 2*BUFF && Math.abs(segStartEndXDiff) > 2*BUFF &&
+			      Math.abs(segEndXDiff)> 2*BUFF && Math.abs(segEndStartXDiff) > 2*BUFF &&
+			      Util.sign(segStartXDiff) == Util.sign(segStartEndXDiff) &&
+			      Util.sign(segEndXDiff) == Util.sign(segEndStartXDiff) && Util.sign(segStartXDiff) == Util.sign(segEndXDiff));
+		boolean segYApart  = (Math.abs(segStartYDiff) > 2*BUFF && Math.abs(segStartEndYDiff) > 2*BUFF &&
+			      Math.abs(segEndYDiff) > 2*BUFF && Math.abs(segEndStartYDiff) > 2*BUFF &&
+			          Util.sign(segStartYDiff) == Util.sign(segStartEndYDiff) && Util.sign(segEndYDiff) == Util.sign(segEndStartYDiff) &&
+			          Util.sign(segStartYDiff) == Util.sign(segEndYDiff));
+		if (segXApart || segYApart) return false;
+		else if (near_edge(segstart2,segend2,segstart1,BUFF)) return true; 
 		else if (near_edge(segstart2,segend2,segend1,BUFF)) return true;
 		else if (near_edge(segstart1,segend1,segstart2,BUFF)) return true;
 		else if (near_edge(segstart1,segend1,segend2,BUFF)) return true;

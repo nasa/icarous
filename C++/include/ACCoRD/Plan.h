@@ -215,6 +215,8 @@ public:
 	 */
 	double getLastTime() const;
 
+	bool timeInPlan(double t) const;
+
 	/**
 	 * Return the last point in the plan.
 	 */
@@ -716,6 +718,8 @@ public:
 	 *  Note:  This does not leave speeds after this point unchanged
 	 */
 	void setTimeGSin(int i, double gs);
+
+	void setAltVSin(int i, double vs, bool preserve);
 
 	void mkGsInto(int ix, double gs);
 

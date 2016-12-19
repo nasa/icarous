@@ -87,10 +87,10 @@ public final class BoundingRectangle {
 	 */
 	public void add(double x, double y) {
 		//f.pln("min "+x+" "+xMin);
-		xMin = Math.min(x,xMin);
-		yMin = Math.min(y,yMin);
-		xMax = Math.max(x,xMax);
-		yMax = Math.max(y,yMax);
+		xMin = Util.min(x,xMin);
+		yMin = Util.min(y,yMin);
+		xMax = Util.max(x,xMax);
+		yMax = Util.max(y,yMax);
 	}
 
 	/**
@@ -112,8 +112,8 @@ public final class BoundingRectangle {
 	 */
 	public void add(double x, double y, double z) {
 		add(x,y);
-		zMin = Math.min(z,zMin);
-		zMax = Math.max(z,zMax);
+		zMin = Util.min(z,zMin);
+		zMax = Util.max(z,zMax);
 	}
 
 	/**

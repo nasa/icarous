@@ -1,3 +1,5 @@
+dry=--dry-run
+
 ACCORDSRC  = $(wildcard src/gov/nasa/larcfm/IO/*.java \
 			src/gov/nasa/larcfm/Util/*.java \
 			src/gov/nasa/larcfm/ACCoRD/*.java)
@@ -50,5 +52,11 @@ JAR:
 	@cd bin && jar -cvf icarous.jar gov com *.class
 	@mv bin/icarous.jar ./lib/
 
+sync:
+	rsync -avz $(dry) --exclude '*test*' --exclude '*Test*' --exclude 'ProjectionAccuracyLimits*' --exclude 'ThreadedMC*' ~/src/Util/Java/src/gov/ src/gov/
+	rsync -avz $(dry) --exclude '*test*' --exclude '*Test*' --exclude '*Stress*' --exclude 'CDBatch*' --exclude 'bBands*' --exclude 'bCRSS*' --exclude 'BasicStateDetectionBatch*' --exclude 'BasicStateDetectionGUI*' --exlcude 'vBands' ~/src/ACCoRD/Java/src/gov/ src/gov/
+	@echo "Try make sync -e dry="
+
+
 clean:
-	rm -rf bin/* lib/icarous.jar
+	-@rm -rf bin/* lib/icarous.jar

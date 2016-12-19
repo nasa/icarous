@@ -14,39 +14,21 @@ import gov.nasa.larcfm.Util.*;
 
 public abstract class WCV_tvar implements Detection3D {
 
-  WCVTable table;
+  protected WCVTable table;
+  protected WCV_Vertical wcv_vertical;
 
   protected String id = "";
-
-  /** Constructor that a default instance of the WCV tables. */
-  public WCV_tvar() {
-    table = new WCVTable();
-  }
-
-  /**
-   * Create a new object with a copy of the provided table
-   * @param tab
-   */
-  public WCV_tvar(WCVTable tab) {
-    table = tab.copy();
-  }
-
+  
   public abstract WCV_tvar copy();
+  
+  public abstract WCV_tvar make();
 
   /** 
-   * Return a copy of the internal table for this object
-   */
-  public WCVTable getWCVTable() {
-    return table.copy();
-  }
-
-  /**
-   * Set the internal parameter table to be a deep copy of tab.  This breaks an previous external links.
-   */
+   * Sets the internal table to be a copy of the supplied one. 
+   **/
   public void setWCVTable(WCVTable tab) {
     table = tab.copy();
   }
-
 
   public double getDTHR()  {
     return table.getDTHR();
@@ -86,8 +68,8 @@ public abstract class WCV_tvar implements Detection3D {
 
   public void setDTHR(double val, String u) {
     table.setDTHR(val,u);
-  }
-
+  }   
+  
   public void setZTHR(double val) {
     table.setZTHR(val);
   }
@@ -115,7 +97,7 @@ public abstract class WCV_tvar implements Detection3D {
   abstract public double horizontal_tvar(Vect2 s, Vect2 v);
 
   abstract public LossData horizontal_WCV_interval(double T, Vect2 s, Vect2 v);
-
+  
   public boolean horizontal_WCV(Vect2 s, Vect2 v) {
     if (s.norm() <= table.DTHR) return true;
     if (Horizontal.dcpa(s,v) <= table.DTHR) {
@@ -133,7 +115,7 @@ public abstract class WCV_tvar implements Detection3D {
     Vect2 vi2 = vi.vect2();
     Vect2 v2 = vo2.Sub(vi2);
     return horizontal_WCV(s2,v2) &&
-        WCV_Vertical.vertical_WCV(table.ZTHR,table.TCOA,so.z-si.z,vo.z-vi.z);
+        wcv_vertical.vertical_WCV(table.ZTHR,table.TCOA,so.z-si.z,vo.z-vi.z);
   }
 
   public boolean conflict(Vect3 so, Velocity vo, Vect3 si, Velocity vi, double B, double T) {
@@ -165,24 +147,27 @@ public abstract class WCV_tvar implements Detection3D {
     double sz = so.z-si.z;
     double vz = vo.z-vi.z;
 
-    WCV_Vertical wcvz = new WCV_Vertical();
-    wcvz.vertical_WCV_interval(table.ZTHR,table.TCOA,B,T,sz,vz);
+    Interval ii = wcv_vertical.vertical_WCV_interval(table.ZTHR,table.TCOA,B,T,sz,vz);
 
-    if (wcvz.time_in > wcvz.time_out) {
+    if (ii.low > ii.up) {
       return new LossData(time_in, time_out);
     }
-    Vect2 step = v2.ScalAdd(wcvz.time_in,s2);
-    if (Util.almost_equals(wcvz.time_in,wcvz.time_out)) { // [CAM] Changed from == to almost_equals to mitigate numerical problems
+    Vect2 step = v2.ScalAdd(ii.low,s2);
+    if (Util.almost_equals(ii.low,ii.up)) { // [CAM] Changed from == to almost_equals to mitigate numerical problems
       if (horizontal_WCV(step,v2)) {
-        time_in = wcvz.time_in;
-        time_out = wcvz.time_out;
+        time_in = ii.low;
+        time_out = ii.up;
       }
       return new LossData(time_in, time_out);
     }
-    LossData ld = horizontal_WCV_interval(wcvz.time_out-wcvz.time_in,step,v2);
-    time_in = ld.getTimeIn() + wcvz.time_in;
-    time_out = ld.getTimeOut() + wcvz.time_in;
+    LossData ld = horizontal_WCV_interval(ii.up-ii.low,step,v2);
+    time_in = ld.getTimeIn() + ii.low;
+    time_out = ld.getTimeOut() + ii.low;
     return new LossData(time_in, time_out);
+  }
+  
+  public boolean containsTable(WCV_tvar wcv) {
+    return table.contains(wcv.table);
   }
 
   public String toString() {

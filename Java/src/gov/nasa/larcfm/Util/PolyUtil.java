@@ -58,9 +58,9 @@ public class PolyUtil {
 			Position p = center.linear(v, dist);
 			double rr = 2 + Math.abs(rand.nextGaussian()*10);
 			double radius = Units.from("nmi", rr);
-			//			 radius = Math.min(radius, range/4);
+			//			 radius = Util.min(radius, range/4);
 			int sides = rand.nextInt(22)+3;
-			double tp = Units.from("ft", bottom) + Math.max(5000, 20000+rand.nextGaussian()*10000);
+			double tp = Units.from("ft", bottom) + Util.max(5000, 20000+rand.nextGaussian()*10000);
 			double top = Units.from("ft", tp);
 			PolyPath pp = randomUserPath("poly"+(basenum+i), startTime, baseV, p, radius, sides, bottom, top);
 			paths.add(pp.simplify(Units.from("nmi", 2.0)));
@@ -154,8 +154,8 @@ public class PolyUtil {
 		double b = Double.MAX_VALUE;
 		for (int i = 0; i < p.size(); i++) {
 			ps.addAll(p.get(i).points);
-			t = Math.max(t, p.get(i).top);
-			b = Math.min(b, p.get(i).bottom);
+			t = Util.max(t, p.get(i).top);
+			b = Util.min(b, p.get(i).bottom);
 		}
 		return convexHull(ps, b, t);
 	}
@@ -251,7 +251,7 @@ public class PolyUtil {
 	//			return p.copy();
 	//		}
 
-	public SimplePoly simplify2(SimplePoly p, double buffer) {
+	public static SimplePoly simplify2(SimplePoly p, double buffer) {
 		if (p.size() <= 3) {
 			f.pln("Simplify size too small"); 
 			return p.copy();
@@ -617,8 +617,8 @@ public class PolyUtil {
 		BoundingRectangle br1 = p.getBound();
 		BoundingRectangle br2 = pp.getBoundingRectangle();
 		if (!br1.intersects(br2)) return rtn;
-		double start = Math.max(B, Math.max(p.getFirstTime(), pp.getFirstTime()));
-		double end = Math.min(T, Math.min(p.getLastTime(), pp.getLastTime()));
+		double start = Util.max(B, Util.max(p.getFirstTime(), pp.getFirstTime()));
+		double end = Util.min(T, Util.min(p.getLastTime(), pp.getLastTime()));
 		//f.pln(" $$ PolyUtil.intersectsPolygon2D p="+p.getName()+" path="+pp.getName()+" start="+start+" end="+end+" CLEAR");
 		for (double t = start; t <= end; t += incr) {
 			SimplePoly sp = pp.position(t);
@@ -781,7 +781,7 @@ public class PolyUtil {
 //					}
 //				}
 //			}
-//			SimplePoly res = new SimplePoly(Math.min(a.getBottom(),b.getBottom()), Math.max(a.getTop(), b.getTop()));
+//			SimplePoly res = new SimplePoly(Util.min(a.getBottom(),b.getBottom()), Util.max(a.getTop(), b.getTop()));
 //			for (int i = 0; i < a.size(); i++) {
 //				if (!rma.contains(i)) {
 //					res.addVertex(a.getVertex(i));

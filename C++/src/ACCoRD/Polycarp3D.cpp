@@ -27,6 +27,7 @@
 #include "IntervalSet.h"
 #include "Interval.h"
 #include "Units.h"
+#include "Util.h"
 #include "format.h"
 
 #include <vector>
@@ -140,14 +141,14 @@ bool Polycarp3D::entranceDetection(const Vect3& so, const Velocity& vo, const Mo
   double sz = so.z - (mp.maxalt+mp.minalt)/2.0;
   double vz = vo.z - mp.vspeed;
   // times cannot be too big!  limit to 100 days for now
-  double b = std::max(0.0, std::min(B, Units::from("day",100.0)));
-  double t = std::max(0.0, std::min(T, Units::from("day",100.0)));
+  double b = Util::max(0.0, Util::min(B, Units::from("day",100.0)));
+  double t = Util::max(0.0, Util::min(T, Units::from("day",100.0)));
   if (vz != 0.0) {
     double h = (mp.maxalt-mp.minalt)/2.0;
     double vb = Vertical::Theta_H(sz, vz, -1, h);
     double vt = Vertical::Theta_H(sz, vz, +1, h);
-    b = std::max(B, vb);
-    t = std::min(T, vt);
+    b = Util::max(B, vb);
+    t = Util::min(T, vt);
   } else if (so.z < mp.minalt || so.z > mp.maxalt) {
     return false;
   }
@@ -180,14 +181,14 @@ bool Polycarp3D::entranceDetection(const Vect3& so, const Velocity& vo, const Mo
 bool Polycarp3D::exitDetection(const Vect3& so, const Velocity& vo, const MovingPolygon3D& mp, double B, double T, double buff, double fac, bool checkNice) {
   double sz = so.z - (mp.maxalt+mp.minalt)/2.0;
   double vz = vo.z - mp.vspeed;
-  double b = std::max(0.0, std::min(B, Units::from("day",100.0)));
-  double t = std::max(0.0, std::min(T, Units::from("day",100.0)));
+  double b = Util::max(0.0, Util::min(B, Units::from("day",100.0)));
+  double t = Util::max(0.0, Util::min(T, Units::from("day",100.0)));
   if (vz != 0.0) {
     double h = (mp.maxalt-mp.minalt)/2.0;
     double vb = Vertical::Theta_H(sz, vz, -1, h);
     double vt = Vertical::Theta_H(sz, vz, +1, h);
-    b = std::max(B, vb);
-    t = std::min(T, vt);
+    b = Util::max(B, vb);
+    t = Util::min(T, vt);
   } else if (so.z < mp.minalt || so.z > mp.maxalt) {
     return true;
   }
@@ -220,15 +221,15 @@ bool Polycarp3D::exitDetection(const Vect3& so, const Velocity& vo, const Moving
 IntervalSet Polycarp3D::conflictTimes(const Vect3& so, const Velocity& vo, const MovingPolygon3D& mp, double B, double T, double buff, double fac, bool avoid, bool checkNice) {
   double sz = so.z - (mp.maxalt+mp.minalt)/2.0;
   double vz = vo.z - mp.vspeed;
-  double b = std::max(0.0, std::min(B, Units::from("day",100.0)));
-  double t = std::max(0.0, std::min(T, Units::from("day",100.0)));
+  double b = Util::max(0.0, Util::min(B, Units::from("day",100.0)));
+  double t = Util::max(0.0, Util::min(T, Units::from("day",100.0)));
   IntervalSet ret;
   if (vz != 0.0) {
     double h = (mp.maxalt-mp.minalt)/2.0;
     double vb = Vertical::Theta_H(sz, vz, -1, h);
     double vt = Vertical::Theta_H(sz, vz, +1, h);
-    b = std::max(B, vb);
-    t = std::min(T, vt);
+    b = Util::max(B, vb);
+    t = Util::min(T, vt);
   } else if (so.z < mp.minalt || so.z > mp.maxalt) {
     return ret;
   }

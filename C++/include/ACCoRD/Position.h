@@ -301,6 +301,15 @@ public:
 	 */
 	static std::pair<Position,double> intersection(const Position& so, const Position& so2, double dto, const Position& si, const Position& si2);
 
+	/** Return the average velocity between the current position and the given position, with the given speed [internal units]. */
+	Velocity averageVelocity(const Position& p2, double speed) const;
+
+	/** Return the average velocity between the current position and the given position, with the given delta time dt. */
+	Velocity avgVelocity(const Position& p2, double dt) const;
+
+	bool isWest(const Position& a) const;
+
+
 	/** Determine if a loss of separation has occured (using either geodesic or Euclidean calculations)
 	 *
 	 * @param p2 the position of the other aircraft

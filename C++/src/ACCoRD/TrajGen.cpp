@@ -701,7 +701,7 @@ Triple<double,double,double> TrajGen::calcVsTimes(int i, Plan& traj, double vsAc
 	double a = vsAccel_d*sign;
 	double prevEndTime = traj.getFirstTime();
 	int ixEVS =  traj.prevEVS(i);
-	if (ixEVS >= 0) prevEndTime = std::max(prevEndTime,traj.getTime(ixEVS));
+	if (ixEVS >= 0) prevEndTime = Util::max(prevEndTime,traj.getTime(ixEVS));
 	Triple<double,double,double> vsTriple = vsAccelGenerator(prevEndTime, np2.time(), nextVsChangeTm, vs1, vs2, a);
 	double dt = vsTriple.third ;
 	// we have a long enough accel time and it is calculated properly
@@ -1077,7 +1077,7 @@ double TrajGen::directToContinueTime(const Plan& lpc, const Position& so, const 
 	fpln(" #### genDirectTo nominalTime = "+Fm1(nominalTime)+" deltaTrack = "+Units::str("deg",deltaTrack)+" estTurnTime  = "+Fm1(estTurnTime));
 	//double deltaGs = std::abs(vin.gs() - gs2);
 	double dt = np0.time() - to;
-	double continueTm = std::min(estTurnTime+extraProjTime,dt/2);
+	double continueTm = Util::min(estTurnTime+extraProjTime,dt/2);
 	return continueTm;
 }
 
@@ -1225,7 +1225,7 @@ Plan TrajGen::buildDirectTo(std::string id, const NavPoint& s, const Velocity& v
 	bool done = false;
 	double tt = base.getFirstTime();
 	double range = base.getLastTime()-s.time();
-	double stepSize = std::max(minTimeStep, range/20.0);
+	double stepSize = Util::max(minTimeStep, range/20.0);
 	double minGsDiff = Units::from("kts", 10.0);
 	double bestTime = base.getLastTime();
 	double bestdgs = MAXDOUBLE;

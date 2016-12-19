@@ -55,7 +55,7 @@ public class DensityGridTimed extends DensityGrid {
 	}
 	
 	//TODO: this implements the lookahead time by shortcuttting weight lookup
-	public double getWeight(int x, int y, double t) {
+	public double getWeightT(int x, int y, double t) {
 		if (lookaheadEndTime > 0 && t > lookaheadEndTime) return 0.0;
 		if (!weights.containsKey(Pair.make(x,y))) return Double.POSITIVE_INFINITY;
 		return weights.get(Pair.make(x,y));
@@ -67,18 +67,18 @@ public class DensityGridTimed extends DensityGrid {
 //		
 //		double cost = -1.0;
 //		for (double tt = t; Double.isFinite(cost) && tt <= endT; tt += 1.0) {
-//			cost = Math.max(cost, getWeight(x,y,tt));
+//			cost = Util.max(cost, getWeight(x,y,tt));
 //		}
 //		return cost;
 //	}
 
 	
-	public double getWeight(Pair<Integer,Integer> xy, double t) {
-		return getWeight(xy.first,xy.second,t);
+	public double getWeightT(Pair<Integer,Integer> xy, double t) {
+		return getWeightT(xy.first,xy.second,t);
 	}
 
-	public double getWeight(Triple<Integer,Integer,Integer> pii) {
-		return getWeight(pii.first,pii.second, pii.third);
+	public double getWeightT(Triple<Integer,Integer,Integer> pii) {
+		return getWeightT(pii.first,pii.second, pii.third);
 	}
 	
 	

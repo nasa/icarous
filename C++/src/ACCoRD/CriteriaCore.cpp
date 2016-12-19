@@ -244,7 +244,7 @@ double CriteriaCore::min_rel_vert_speed(double sz, double vz, int eps, double mi
   if (eps*vz <= 0)
     rtn = minrelvs;
   else
-    rtn = std::max(minrelvs,std::abs(vz));
+    rtn = Util::max(minrelvs,std::abs(vz));
   //fpln(">>>>> min_rel_vert_speed: rtn = "+Units::str("fpm",rtn));
   return rtn;
 }

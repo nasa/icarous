@@ -103,16 +103,15 @@ public:
   static LossData detection(const Vect3& s, const Vect3& vo, const Vect3& vi, const double D, const double H, const double B, const double T);
 
   /**
-   * Computes the conflict time interval in [B,T].
-   *
+   * Computes the actual conflict times 
+   * 
    * @param s the relative position of the aircraft
    * @param vo the ownship's velocity
    * @param vi the intruder's velocity
    * @param D the minimum horizontal distance
    * @param H the minimum vertical distance
-   *
+   * 
    * @return true, if there is a conflict time interval (t_in,t_out)
-   *
    */
   static LossData detectionActual(const Vect3& s, const Vect3& vo, const Vect3& vi, const double D, const double H);
 
@@ -161,14 +160,14 @@ public:
 
   /**
    * Computes the time to cylindrical closest point of approach for the interval [0,...).
-   *
+   * 
    * @param s the relative position of the aircraft
    * @param vo the ownship's velocity
    * @param vi the intruder's velocity
    * @param D the minimum horizontal distance
    * @param H the minimum vertical distance
-   *
-   * @return the to cylindrical closest point of approach for the interval [0,...).
+   * 
+   * @return the time to cylindrical closest point of approach for the interval [0,...).
    */
   static double tccpa(const Vect3& s, const Vect3& vo, const Vect3& vi,
       const double D, const double H);

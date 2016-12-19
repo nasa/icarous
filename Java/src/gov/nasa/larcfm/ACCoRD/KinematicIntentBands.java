@@ -683,13 +683,13 @@ public final class KinematicIntentBands extends IntentBands implements GenericIn
     double D = red.getDistance();
     double H = red.getHeight();
 
-    double maxTime = Math.max(Kinematics.gsAccelTime(vo, 0, gsAccel), Kinematics.gsAccelTime(vo, red.getMaxGroundSpeed(), gsAccel));
+    double maxTime = Util.max(Kinematics.gsAccelTime(vo, 0, gsAccel), Kinematics.gsAccelTime(vo, red.getMaxGroundSpeed(), gsAccel));
     ArrayList<Plan> relevantTraffic = buildRelevantTraffic(D, H, maxTime, red.getMaxGroundSpeed(), vo.vs());
 
     // now start to slow down and speed up. 
     boolean goFast = true;
     boolean goSlow = true;
-    double limit = Math.max(vo.gs(), red.getMaxGroundSpeed()-vo.gs());
+    double limit = Util.max(vo.gs(), red.getMaxGroundSpeed()-vo.gs());
     for (double gs = 0; gs <= limit; gs += gsStep) {
       double gs1 = vo.gs()+gs;
       double gs2 = vo.gs()-gs;
@@ -734,13 +734,13 @@ public final class KinematicIntentBands extends IntentBands implements GenericIn
     double D = red.getDistance();
     double H = red.getHeight();
 
-    double maxTime = Math.max(Kinematics.vsAccelTime(vo, red.getMaxVerticalSpeed(), vsAccel), Kinematics.vsAccelTime(vo, -red.getMaxVerticalSpeed(), vsAccel));
+    double maxTime = Util.max(Kinematics.vsAccelTime(vo, red.getMaxVerticalSpeed(), vsAccel), Kinematics.vsAccelTime(vo, -red.getMaxVerticalSpeed(), vsAccel));
     ArrayList<Plan> relevantTraffic = buildRelevantTraffic(D, H, maxTime, vo.gs(), red.getMaxVerticalSpeed());
 
     // now start to slow down and speed up. 
     boolean goUp = true;
     boolean goDown = true;
-    double limit = Math.max(vo.vs()-red.getMaxVerticalSpeed(), red.getMaxVerticalSpeed()-vo.vs());
+    double limit = Util.max(vo.vs()-red.getMaxVerticalSpeed(), red.getMaxVerticalSpeed()-vo.vs());
     for (double vs = 0; vs <= limit; vs += trkStep) {
       double vs1 = vo.vs()+vs;
       double vs2 = vo.vs()-vs;

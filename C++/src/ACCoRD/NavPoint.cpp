@@ -539,20 +539,20 @@ const NavPoint NavPoint::parseMetaDataLabel(const std::string& tlabel) const {
 	}
 	i = tlabel.find(":VIRT:");
 	if (i >= 0) {
-		lowIndex = std::min(i, lowIndex);
+		lowIndex = Util::min(i, lowIndex);
 		point = point.makeVirtual();
 	}
 
 	i = tlabel.find(":ADDED:");
 	if (i >= 0) {
-		lowIndex = std::min(i, lowIndex);
+		lowIndex = Util::min(i, lowIndex);
 		point = point.makeSource(Position::INVALID(),-1.0);
 	} else {
 		Position sp = p;
 		double st = t;
 		i = tlabel.find(":SRC:");
 		if (i >= 0) {
-			lowIndex = std::min(i, lowIndex);
+			lowIndex = Util::min(i, lowIndex);
 			j = tlabel.find(":",i+5);
 			std::string s = tlabel.substr(i+5, j);
 			replace(s, '_', ' ');
@@ -567,7 +567,7 @@ const NavPoint NavPoint::parseMetaDataLabel(const std::string& tlabel) const {
 		}
 		i = tlabel.find(":STM:");
 		if (i >= 0) {
-			lowIndex = std::min(i, lowIndex);
+			lowIndex = Util::min(i, lowIndex);
 			j = tlabel.find(":",i+5);
 			st = Util::parse_double(tlabel.substr(i+5,j));
 		}
@@ -575,7 +575,7 @@ const NavPoint NavPoint::parseMetaDataLabel(const std::string& tlabel) const {
 	}
 	i = tlabel.find(":VEL:"); // velocity in
 	if (i >= 0) {
-		lowIndex = std::min(i, lowIndex);
+		lowIndex = Util::min(i, lowIndex);
 		j = tlabel.find(":",i+5);
 		std::string s = tlabel.substr(i+5, j);
 		replace(s, '_', ' ');
@@ -586,7 +586,7 @@ const NavPoint NavPoint::parseMetaDataLabel(const std::string& tlabel) const {
 		Trk_TCPType tt = toTrkTCP(iter);
 		i = tlabel.find(":"+toStringTrkTCP(tt)+":");
 		if (i >= 0) {
-			lowIndex = std::min(i, lowIndex);
+			lowIndex = Util::min(i, lowIndex);
 			point = point.makeTrkTCP(tt);
 		}
 	}
@@ -594,7 +594,7 @@ const NavPoint NavPoint::parseMetaDataLabel(const std::string& tlabel) const {
 		Gs_TCPType tt = toGsTCP(iter);
 		i = tlabel.find(":"+toStringGsTCP(tt)+":");
 		if (i >= 0) {
-			lowIndex = std::min(i, lowIndex);
+			lowIndex = Util::min(i, lowIndex);
 			point = point.makeGsTCP(tt);
 		}
 	}
@@ -602,27 +602,27 @@ const NavPoint NavPoint::parseMetaDataLabel(const std::string& tlabel) const {
 		Vs_TCPType tt = toVsTCP(iter);
 		i = tlabel.find(":"+toStringVsTCP(tt)+":");
 		if (i >= 0) {
-			lowIndex = std::min(i, lowIndex);
+			lowIndex = Util::min(i, lowIndex);
 			point = point.makeVsTCP(tt);
 		}
 	}
 	i = tlabel.find(":ATRK:"); // acceleration
 	if (i >= 0) {
-		lowIndex = std::min(i, lowIndex);
+		lowIndex = Util::min(i, lowIndex);
 		j = tlabel.find(":",i+6);
 		double a = Util::parse_double(tlabel.substr(i+6,j));
 		point = point.makeTrkAccel(a);
 	}
 	i = tlabel.find(":AGS:"); // acceleration
 	if (i >= 0) {
-		lowIndex = std::min(i, lowIndex);
+		lowIndex = Util::min(i, lowIndex);
 		j = tlabel.find(":",i+5);
 		double a = Util::parse_double(tlabel.substr(i+5,j));
 		point = point.makeGsAccel(a);
 	}
 	i = tlabel.find(":AVS:"); // acceleration
 	if (i >= 0) {
-		lowIndex = std::min(i, lowIndex);
+		lowIndex = Util::min(i, lowIndex);
 		j = tlabel.find(":",i+5);
 		double a = Util::parse_double(tlabel.substr(i+5,j));
 		point = point.makeVsAccel(a);

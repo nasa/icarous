@@ -4,13 +4,15 @@
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
-#include "WCV_tvar.h"
+
 #include "WCV_TCPA.h"
+#include "WCV_TCOA.h"
 #include "Vect3.h"
 #include "Velocity.h"
 #include "Horizontal.h"
 #include "WCVTable.h"
 #include "LossData.h"
+#include "Util.h"
 #include "format.h"
 #include "string_util.h"
 
@@ -18,11 +20,13 @@ namespace larcfm {
 
 /** Constructor that uses the default TCAS tables. */
 WCV_TCPA::WCV_TCPA() {
+  wcv_vertical = new WCV_TCOA();
   id = "";
 }
 
 /** Constructor that specifies a particular instance of the TCAS tables. */
 WCV_TCPA::WCV_TCPA(const WCVTable& tab) {
+  wcv_vertical = new WCV_TCOA();
   table.copyValues(tab);
   id = "";
 }
@@ -52,7 +56,7 @@ LossData WCV_TCPA::horizontal_WCV_interval(double T, const Vect2& s, const Vect2
     return LossData(time_in,time_out);
   if (sqs <= sqD) {
     time_in = 0;
-    time_out = std::min(T,Horizontal::Theta_D(s,v,1,table.getDTHR()));
+    time_out = Util::min(T,Horizontal::Theta_D(s,v,1,table.getDTHR()));
     return LossData(time_in,time_out);
   }
   if (sdotv > 0)
@@ -64,15 +68,15 @@ LossData WCV_TCPA::horizontal_WCV_interval(double T, const Vect2& s, const Vect2
   if (Delta < 0 && tcpa - table.getTTHR() > T)
     return LossData(time_in,time_out);
   if (Delta < 0) {
-    time_in = std::max(0.0,tcpa-table.getTTHR());
-    time_out = std::min(T,tcpa);
+    time_in = Util::max(0.0,tcpa-table.getTTHR());
+    time_out = Util::min(T,tcpa);
     return LossData(time_in,time_out);
   }
-  double tmin = std::min(Horizontal::Theta_D(s,v,-1,table.getDTHR()),tcpa-table.getTTHR());
+  double tmin = Util::min(Horizontal::Theta_D(s,v,-1,table.getDTHR()),tcpa-table.getTTHR());
   if (tmin > T)
     return LossData(time_in,time_out);
-  time_in = std::max(0.0,tmin);
-  time_out = std::min(T,Horizontal::Theta_D(s,v,1,table.getDTHR()));
+  time_in = Util::max(0.0,tmin);
+  time_out = Util::min(T,Horizontal::Theta_D(s,v,1,table.getDTHR()));
   return LossData(time_in,time_out);
 }
 
@@ -96,8 +100,7 @@ std::string WCV_TCPA::getSimpleClassName() const {
 
 bool WCV_TCPA::contains(const Detection3D* cd) const {
   if (larcfm::equals(getCanonicalClassName(), cd->getCanonicalClassName())) {
-    WCV_TCPA* d = (WCV_TCPA*)cd;
-    return table.contains(d->table);
+    return containsTable((WCV_tvar*)cd);
   }
   return false;
 }

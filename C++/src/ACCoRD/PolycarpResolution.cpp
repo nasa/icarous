@@ -19,6 +19,7 @@
 #include "Vect2.h"
 #include "PolycarpEdgeProximity.h"
 #include "PolycarpContain.h"
+#include "format.h"
 #include <vector>
 
 namespace larcfm {
@@ -26,7 +27,7 @@ namespace larcfm {
  Vect2 PolycarpResolution::proj_vect(const Vect2& u, const Vect2& v, const Vect2& w, double BUFF) {
     if (v.Sub(u).norm() <= BUFF || w.Sub(v).norm() <= BUFF) return Vect2(1.0,1.0);
     if (v.Sub(u).dot(w.Sub(v)) >= 0) return v.Sub(u).PerpR().Hat().Add(w.Sub(v).PerpR().Hat());
-    if (v.Sub(u).det(v.Sub(u)) <= 0) return v.Sub(u).Hat().Add(v.Sub(w).Hat());
+    if (w.Sub(v).det(v.Sub(u)) <= 0) return v.Sub(u).Hat().Add(v.Sub(w).Hat());
     return u.Sub(v).Hat().Add(w.Sub(v).Hat());
 }
 
@@ -87,13 +88,25 @@ namespace larcfm {
  Vect2 PolycarpResolution::recovery_point(double BUFF, double ResolBUFF, const std::vector<Vect2>& p, const Vect2& s, int eps) {
     Vect2 tv = recovery_test_point(BUFF,ResolBUFF,p,s,eps);
     if (eps == 1 && PolycarpContain::definitely_outside(p,s,BUFF) &&
-        !PolycarpContain::near_any_edge(p,s,ResolBUFF)) return s;
+        !PolycarpContain::near_any_edge(p,s,ResolBUFF)) {
+//      fpln("hit 1");
+      return s;
+    }
     if (eps == -1 && PolycarpContain::definitely_inside(p,s, BUFF) &&
-        !PolycarpContain::near_any_edge(p,s,ResolBUFF)) return s;
+        !PolycarpContain::near_any_edge(p,s,ResolBUFF)) {
+//      fpln("hit 2");
+      return s;
+    }
     if (eps == 1 && PolycarpContain::definitely_outside(p,tv,BUFF) &&
-        !PolycarpContain::near_any_edge(p,tv,ResolBUFF)) return tv;
+        !PolycarpContain::near_any_edge(p,tv,ResolBUFF)) {
+//      fpln("hit 3");
+      return tv;
+    }
     if (eps == -1 && PolycarpContain::definitely_inside(p,tv, BUFF) &&
-        !PolycarpContain::near_any_edge(p,tv,ResolBUFF)) return tv;
+        !PolycarpContain::near_any_edge(p,tv,ResolBUFF)) {
+//      fpln("hit 4");
+      return tv;
+    }
     int i = closest_edge(p,BUFF,s);
     int nexti = i < (int) p.size()-1 ? i+1 : 0;
     int neari = s.Sub(p[i]).sqv() <= s.Sub(p[nexti]).sqv() ? i : nexti;
@@ -112,12 +125,15 @@ namespace larcfm {
         ans = p[neari].Add(pvnormed.Scal((eps*ResolBUFF)));
     }
     if (eps == 1 && PolycarpContain::definitely_outside(p,ans,BUFF)) {
+//      fpln("hit 5");
       return ans;
     }
     if (eps == -1 && PolycarpContain::definitely_inside(p,ans,BUFF)) {
+//      fpln("hit 6");
       return ans;
     }
-    return ans;
+//    fpln("hit 7");
+    return s;
 }
 
  Vect2 PolycarpResolution::outside_recovery_point(double BUFF, double ResolBUFF, const std::vector<Vect2>& p, const Vect2& s) {

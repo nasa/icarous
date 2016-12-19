@@ -129,7 +129,7 @@ Interval Interval::intersect(const Interval& r) const {
 		return Interval();   // empty region
 	}
 
-	return Interval(std::max(low, r.low), std::min(up, r.up));
+	return Interval(Util::max(low, r.low), Util::min(up, r.up));
 }
 
 std::string Interval::toPVS(int precision) const {

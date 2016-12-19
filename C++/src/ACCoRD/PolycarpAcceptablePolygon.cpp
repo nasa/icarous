@@ -88,7 +88,7 @@ namespace larcfm {
 	bool PolycarpAcceptablePolygon::acceptable_polygon_2D(const std::vector<Vect2>& p,double BUFF) {
 	    if (p.size()<=2) return false;
 	    for (int i = 0; i < (int) p.size(); i++) {
-	        for (int j = 0; j < (int) p.size(); j++) {
+	        for (int j = i; j < (int) p.size(); j++) {
 	            int mi = i < (int) p.size()-1 ? i+1 : 0;
 	            int mj = j < (int) p.size()-1 ? j+1 : 0;
 	            Vect2 pj = p[j];

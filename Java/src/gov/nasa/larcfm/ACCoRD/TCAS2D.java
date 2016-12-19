@@ -34,7 +34,7 @@ public class TCAS2D {
   static double nominal_tau(double B, double T, Vect2 s, Vect2 v, double rr) {
     if (v.isZero())
       return B;
-    return Math.max(B,Math.min(T,-s.dot(v) / v.sqv()-rr/2));
+    return Util.max(B,Util.min(T,-s.dot(v) / v.sqv()-rr/2));
   }
 
   public static double time_of_min_tau(double DMOD, double B, double T, Vect2 s, Vect2 v) {

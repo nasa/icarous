@@ -57,7 +57,21 @@ public:
 
 	static bool okWithinTurn(const Plan& p, int i, double distH_Epsilon, bool silent);
 
+
+	/**  timeShift points in plan by "dt" starting at index "start"
+	 *   Note: This will drop any points that become negative or that become out of order using a negative dt
+	 *   See also Plan.timeShiftPlan for equivalent method
+	 *
+	 * @param p       plan
+	 * @param start   starting index
+	 * @param dt      delta time
+	 * @return        time-shifted plan
+	 */
+	static Plan timeShift(const Plan& p, int start, double dt);
+
 	static Plan applyWindField(const Plan& pin, const Velocity& v);
+
+	static bool checkMySolution(const Plan& solution, double currentTime, const Position& currentPos, const Velocity& currentVel);
 
 	// from Aviation Formulary
 	// longitude sign is reversed from the formulary!

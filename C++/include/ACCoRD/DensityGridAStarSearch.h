@@ -31,6 +31,8 @@ public:
 	double dirWeight; //1.0
 	double distWeight; //1.0
 
+	DensityGridAStarSearch();
+
 	class FringeEntry {
 	public:
 		int x;
@@ -109,6 +111,7 @@ private:
 	bool contains(const std::vector<Triple<int,int,int> >& gPath, const Triple<int,int,int>& pii) const;
 
 public:
+
 
 	bool sameDirection(FringeEntry c, std::pair<int,int> cell2) const;
 

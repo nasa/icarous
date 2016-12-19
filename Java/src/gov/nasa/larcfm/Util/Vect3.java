@@ -398,7 +398,7 @@ public class Vect3 {
     Vect3 v = vo.Sub(vi);
     double nv = v.sqv();
     if (nv > 0) 
-      t = Math.max(0,-s.dot(v)/nv);
+      t = Util.max(0,-s.dot(v)/nv);
     else 
       t = 0;
     return t;
@@ -429,7 +429,7 @@ public class Vect3 {
    * 1 when <code>this</code> is at the boundaries of the cylinder. 
    */
   public double cyl_norm(double d, double h) {
-    return Math.max(vect2().sqv()/Util.sq(d),Util.sq(z/h));
+    return Util.max(vect2().sqv()/Util.sq(d),Util.sq(z/h));
   }
 
   /**

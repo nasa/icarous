@@ -1383,20 +1383,20 @@ public class NavPoint {
 		int j;
 		i = tlabel.indexOf(":VIRT:");
 		if (i >= 0) {
-			lowIndex = Math.min(i, lowIndex);
+			lowIndex = Util.min(i, lowIndex);
 			point = point.makeVirtual();
 		}
 
 		i = tlabel.indexOf(":ADDED:");
 		if (i >= 0) {
-			lowIndex = Math.min(i, lowIndex);
+			lowIndex = Util.min(i, lowIndex);
 			point = point.makeSource(Position.INVALID,-1.0);
 		} else {
 			Position sp = p;
 			double st = t;
 			i = tlabel.indexOf(":SRC:");
 			if (i >= 0) {
-				lowIndex = Math.min(i, lowIndex);
+				lowIndex = Util.min(i, lowIndex);
 				j = tlabel.indexOf(":",i+5);
 				// first try general parse, then coordinate-specific if that fails
 				sp = Position.parse(tlabel.substring(i+5, j).replaceAll("_", " "));
@@ -1410,7 +1410,7 @@ public class NavPoint {
 			}
 			i = tlabel.indexOf(":STM:");
 			if (i >= 0) {
-				lowIndex = Math.min(i, lowIndex);
+				lowIndex = Util.min(i, lowIndex);
 				j = tlabel.indexOf(":",i+5);
 				st = Double.parseDouble(tlabel.substring(i+5,j));
 			}
@@ -1420,28 +1420,28 @@ public class NavPoint {
 
 		i = tlabel.indexOf(":VEL:"); // velocity in
 		if (i >= 0) {
-			lowIndex = Math.min(i, lowIndex);
+			lowIndex = Util.min(i, lowIndex);
 			j = tlabel.indexOf(":",i+5);
 			Velocity v = Velocity.parse(tlabel.substring(i+5, j).replaceAll("_", " "));
 			point = point.makeVelocityInit(v);
 		}
 		i = tlabel.indexOf(":ATRK:"); // acceleration
 		if (i >= 0) {
-			lowIndex = Math.min(i, lowIndex);
+			lowIndex = Util.min(i, lowIndex);
 			j = tlabel.indexOf(":",i+6);
 			double a = Double.parseDouble(tlabel.substring(i+6,j));
 			point = point.makeTrkAccel(a);
 		}
 		i = tlabel.indexOf(":AGS:"); // acceleration
 		if (i >= 0) {
-			lowIndex = Math.min(i, lowIndex);
+			lowIndex = Util.min(i, lowIndex);
 			j = tlabel.indexOf(":",i+5);
 			double a = Double.parseDouble(tlabel.substring(i+5,j));
 			point = point.makeGsAccel(a);
 		}
 		i = tlabel.indexOf(":AVS:"); // acceleration
 		if (i >= 0) {
-			lowIndex = Math.min(i, lowIndex);
+			lowIndex = Util.min(i, lowIndex);
 			j = tlabel.indexOf(":",i+5);
 			double a = Double.parseDouble(tlabel.substring(i+5,j));
 			point = point.makeVsAccel(a);
@@ -1449,21 +1449,21 @@ public class NavPoint {
 		for (Trk_TCPType t : Trk_TCPType.values()) {
 			i = tlabel.indexOf(":"+t+":");
 			if (i >= 0) {
-				lowIndex = Math.min(i, lowIndex);
+				lowIndex = Util.min(i, lowIndex);
 				point = point.makeTrkTCP(t);
 			}
 		}
 		for (Gs_TCPType t : Gs_TCPType.values()) {
 			i = tlabel.indexOf(":"+t+":");
 			if (i >= 0) {
-				lowIndex = Math.min(i, lowIndex);
+				lowIndex = Util.min(i, lowIndex);
 				point = point.makeGsTCP(t);
 			}
 		}
 		for (Vs_TCPType t : Vs_TCPType.values()) {
 			i = tlabel.indexOf(":"+t+":");
 			if (i >= 0) {
-				lowIndex = Math.min(i, lowIndex);
+				lowIndex = Util.min(i, lowIndex);
 				point = point.makeVsTCP(t);
 			}
 		}

@@ -97,15 +97,13 @@ public class PolyReader extends PlanReader { //implements ParameterReader, Error
 	private final int PLAN = 1;
 
 
-	//private boolean interpretUnits;
-	//String file;
 	/** Create a new PolyReader reading the specified file. */
 	public PolyReader(String filename) {
-		//file = filename;		
 		head = new int[NavPoint.TCP_OUTPUT_COLUMNS+3]; // +name +polytop +endtime
 		open(filename);
 	}
 	
+	/** Create a new PolyReader. */
 	public PolyReader() {
 		head = new int[NavPoint.TCP_OUTPUT_COLUMNS+3]; // +name +polytop + endtime
 	}
@@ -117,10 +115,9 @@ public class PolyReader extends PlanReader { //implements ParameterReader, Error
 			error.addError("Empty file name.");
 			return;
 		}
-		SeparatedInput si;
 		try {
 			FileReader fr = new FileReader(filename);
-			si = new SeparatedInput(fr);
+			open(fr);
 		} catch (FileNotFoundException e) {
 			input = new SeparatedInput();
 			error.addError("File "+filename+" read protected or not found");
@@ -129,21 +126,20 @@ public class PolyReader extends PlanReader { //implements ParameterReader, Error
 			if (containment != null) containment.clear();
 			return;
 		}
-		input = si;
-		loadfile();
 	}
 
-	public PolyReader(SeparatedInput si) {
-		head = new int[10];
-		error = new ErrorLog("PolyReader(SeparatedInput)");
-		if (si == null) {
-			return;
+	
+	public void open(Reader fr) {
+		if (error == null) {
+			error = new ErrorLog("PolyReader(no name)");		
 		}
+		
+		SeparatedInput si;
+		si = new SeparatedInput(fr);
 		input = si;
 		loadfile();
 	}
-
-	// open(Reader r) is inherited from PlanReader
+	
 	
 	private void loadfile() {
 		boolean hasRead = false;
@@ -508,7 +504,7 @@ public class PolyReader extends PlanReader { //implements ParameterReader, Error
 							error.addWarning("Invalid velocity data for NavPoint "+thisName+" at "+myTime);
 						}
 					}
-					n = n.makeVelocityIn(vel);
+					n = n.makeVelocityInit(vel);
 				
 					try {
 						NavPoint.Trk_TCPType tcptrk = NavPoint.Trk_TCPType.valueOf(input.getColumnString(head[TCP_TRK]));
@@ -516,10 +512,11 @@ public class PolyReader extends PlanReader { //implements ParameterReader, Error
 						double sRadius = 0.0;
 						if (input.columnHasValue(head[RADIUS])) sRadius = input.getColumn(head[RADIUS], "NM");
 						if (Util.almost_equals(sRadius,0.0)) sRadius = vel.gs()/acctrk;
+						// TODO: linearIndex
 						switch (tcptrk) {
-						case BOT: n = n.makeBOT(n.position(), n.time(), vel, sRadius); break;
-						case EOT: n = n.makeEOT(n.position(), n.time(), vel); break;
-						case EOTBOT: n = n.makeEOTBOT(n.position(), n.time(), vel, sRadius); break;
+						case BOT: n = n.makeBOT(n.position(), n.time(), vel, sRadius,-1); break;
+						case EOT: n = n.makeEOT(n.position(), n.time(), vel,-1); break;
+						case EOTBOT: n = n.makeEOTBOT(n.position(), n.time(), vel, sRadius,-1); break;
 						default: // no change
 						}
 					} catch (Exception e) {
@@ -528,10 +525,11 @@ public class PolyReader extends PlanReader { //implements ParameterReader, Error
 					try {
 						NavPoint.Gs_TCPType tcpgs = NavPoint.Gs_TCPType.valueOf(input.getColumnString(head[TCP_GS]));
 						double accgs = input.getColumn(head[ACC_GS], "m/s^2");
+						// TODO: linearIndex
 						switch (tcpgs) {
-						case BGS: n = n.makeBGS(n.position(), n.time(), accgs, vel); break;
-						case EGS: n = n.makeEGS(n.position(), n.time(), vel); break;
-						case EGSBGS: n = n.makeEGSBGS(n.position(), n.time(), accgs, vel); break;
+						case BGS: n = n.makeBGS(n.position(), n.time(), accgs, vel,-1); break;
+						case EGS: n = n.makeEGS(n.position(), n.time(), vel,-1); break;
+						case EGSBGS: n = n.makeEGSBGS(n.position(), n.time(), accgs, vel,-1); break;
 						default: // no change
 						}
 					} catch (Exception e) {
@@ -540,16 +538,16 @@ public class PolyReader extends PlanReader { //implements ParameterReader, Error
 					try {
 						NavPoint.Vs_TCPType tcpvs = NavPoint.Vs_TCPType.valueOf(input.getColumnString(head[TCP_VS]));
 						double accvs = input.getColumn(head[ACC_VS], "m/s^2");
+						// TODO: linearIndex
 						switch (tcpvs) {
-						case BVS: n = n.makeBVS(n.position(), n.time(), accvs, vel); break;
-						case EVS: n = n.makeEVS(n.position(), n.time(), vel); break;
-						case EVSBVS: n = n.makeEVSBVS(n.position(), n.time(), accvs, vel); break;
+						case BVS: n = n.makeBVS(n.position(), n.time(), accvs, vel,-1); break;
+						case EVS: n = n.makeEVS(n.position(), n.time(), vel,-1); break;
+						case EVSBVS: n = n.makeEVSBVS(n.position(), n.time(), accvs, vel,-1); break;
 						default: // no change
 						}
 					} catch (Exception e) {
 						error.addError("Unrecognized Vs_TCPType: "+input.getColumnString(head[TCP_VS]));
 					}
-
 				}
 
 				plans.get(planIndex).add(n);

@@ -4,15 +4,17 @@
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
-#include "WCV_tvar.h"
+
 #include "WCV_TEP.h"
 #include "WCV_TAUMOD.h"
 #include "WCV_TCPA.h"
+#include "WCV_TCOA.h"
 #include "Vect3.h"
 #include "Velocity.h"
 #include "Horizontal.h"
 #include "WCVTable.h"
 #include "LossData.h"
+#include "Util.h"
 #include "format.h"
 #include "string_util.h"
 
@@ -20,11 +22,13 @@ namespace larcfm {
 
 /** Constructor that uses the default TCAS tables. */
 WCV_TEP::WCV_TEP() {
+  wcv_vertical = new WCV_TCOA();
   id = "";
 }
 
 /** Constructor that specifies a particular instance of the TCAS tables. */
 WCV_TEP::WCV_TEP(const WCVTable& tab) {
+  wcv_vertical = new WCV_TCOA();
   table.copyValues(tab);
   id = "";
 }
@@ -54,7 +58,7 @@ LossData WCV_TEP::horizontal_WCV_interval(double T, const Vect2& s, const Vect2&
     return LossData(time_in,time_out);
   if (sqs <= sqD) {
     time_in = 0;
-    time_out = std::min(T,Horizontal::Theta_D(s,v,1,table.getDTHR()));
+    time_out = Util::min(T,Horizontal::Theta_D(s,v,1,table.getDTHR()));
     return LossData(time_in,time_out);
   }
   if (sdotv > 0 || Horizontal::Delta(s,v,table.getDTHR()) < 0)
@@ -62,8 +66,8 @@ LossData WCV_TEP::horizontal_WCV_interval(double T, const Vect2& s, const Vect2&
   double tep = Horizontal::Theta_D(s,v,-1,table.getDTHR());
   if (tep-table.getTTHR() > T)
     return LossData(time_in,time_out);
-  time_in = std::max(0.0,tep-table.getTTHR());
-  time_out = std::min(T,Horizontal::Theta_D(s,v,1,table.getDTHR()));
+  time_in = Util::max(0.0,tep-table.getTTHR());
+  time_out = Util::min(T,Horizontal::Theta_D(s,v,1,table.getDTHR()));
   return LossData(time_in,time_out);
 }
 
@@ -86,21 +90,13 @@ std::string WCV_TEP::getSimpleClassName() const {
 }
 
 bool WCV_TEP::contains(const Detection3D* cd) const {
-  if (larcfm::equals(getCanonicalClassName(), cd->getCanonicalClassName())) {
-    WCV_TEP* d = (WCV_TEP*)cd;
-    return table.contains(d->table);
-  }
-  if (larcfm::equals("gov.nasa.larcfm.ACCoRD.WCV_TAUMOD", cd->getCanonicalClassName())) {
-    WCVTable tab = ((WCV_TAUMOD*)cd)->getWCVTable();
-    return table.contains(tab);
-  }
-  if (larcfm::equals("gov.nasa.larcfm.ACCoRD.WCV_TCPA", cd->getCanonicalClassName())) {
-    WCVTable tab = ((WCV_TCPA*)cd)->getWCVTable();
-    return table.contains(tab);
+  if (larcfm::equals(getCanonicalClassName(), cd->getCanonicalClassName()) ||
+      larcfm::equals("gov.nasa.larcfm.ACCoRD.WCV_TAUMOD", cd->getCanonicalClassName()) ||
+      larcfm::equals("gov.nasa.larcfm.ACCoRD.WCV_TCPA", cd->getCanonicalClassName())) {
+    return containsTable((WCV_tvar*)cd);
   }
   return false;
 }
-
 
 }
 

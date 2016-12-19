@@ -116,11 +116,12 @@ public class PlanUtil {
 		NavPoint VSCBegin = p.point(idxBegin);
 		NavPoint VSCEnd = p.point(idxEnd);
 		Velocity vin;
-		//if (idxBegin == 0) {
-		vin = p.point(idxBegin).velocityInit();     // not sure if we should allow TCP as current point ??
-		//} else {
-		//	vin = p.finalVelocity(idxBegin-1);
-		//}
+		if (idxBegin == 0) {
+		   //vin = p.point(idxBegin).velocityInit();     // not sure if we should allow TCP as current point ??
+		   vin = p.initialVelocity(0);
+		} else {
+		   vin = p.finalVelocity(idxBegin-1);
+		}
 		Velocity vout = p.initialVelocity(idxEnd);
 		return vsConsistent(idxBegin, VSCBegin, VSCEnd, accelEpsilon, distEpsilon, vin, vout, silent);
 	}
@@ -347,7 +348,7 @@ public class PlanUtil {
 
 
 	private static double getLegDist(Plan ac, int i, double accuracy, double mindist) {
-		double lat = Math.max(Math.abs(ac.point(i).lat()),
+		double lat = Util.max(Math.abs(ac.point(i).lat()),
 				Math.abs(ac.point(i+1).lat()));
 		double maxdist = Projection.projectionConflictRange(lat, accuracy);
 		// necessary due to hard limits on number of wp
@@ -382,7 +383,7 @@ public class PlanUtil {
 						insertVirtual(ac,(t2+t1)/2.0);
 						i++;
 					} else {
-						i += Math.max(0, interpolateVirtualsAccelHalf(ac,haccuracy, vaccuracy, minDt, t1, t2, 0)-1); // add on the number of additional points, -1, if 2 or more added
+						i += Util.max(0, interpolateVirtualsAccelHalf(ac,haccuracy, vaccuracy, minDt, t1, t2, 0)-1); // add on the number of additional points, -1, if 2 or more added
 					}
 				}
 			}
@@ -406,7 +407,7 @@ public class PlanUtil {
 				//				if (!ac.isLinear()) {
 				//					Plan kpc = ac;
 				//					if (kpc.point(i).isTurnBegin() || kpc.point(i).isTurnMid()) {
-				//						legDist = Math.min(legDist, dist/3.0);
+				//						legDist = Util.min(legDist, dist/3.0);
 				//					}
 				//				}
 				if (dist > legDist) {
@@ -437,7 +438,7 @@ public class PlanUtil {
 							tmIncr = legDist/gs;
 						}
 					}
-					i = Math.max(i,j-1); // possibly take back last increment
+					i = Util.max(i,j-1); // possibly take back last increment
 				} // dist < legdist    
 				i++;
 			} //while
@@ -857,7 +858,7 @@ public class PlanUtil {
 			rtnPln.add(p.point(i)); 
 		}
 		//  -------------- process indices [wp1+1,wp2]  ----------------------------------
-		double lastTime = p.getTime(wp1); // p.getTime(Math.min(3, p.size()-1));
+		double lastTime = p.getTime(wp1); // p.getTime(Util.min(3, p.size()-1));
 		for (int i = wp1; i < wp2; i++) {
 			double dt = p.pathDistance(i,i+1)/gs;
 			//f.pln(" $$$ lastTime = "+lastTime);
@@ -1114,7 +1115,7 @@ public class PlanUtil {
 		int i = -1;
 		i = oldLabel.indexOf(":BOT:"); // velocity in
 		if (i >= 0) {
-			first = Math.min(first,i);
+			first = Util.min(first,i);
 			newLabel += "BOT:";
 			i = oldLabel.indexOf(":ACC:"); // acceleration
 			if (i >= 0) {
@@ -1124,7 +1125,7 @@ public class PlanUtil {
 		}
 		i = oldLabel.indexOf(":BGSC:"); // velocity in
 		if (i >= 0) {
-			first = Math.min(first,i);
+			first = Util.min(first,i);
 			newLabel += "BGS:";
 			i = oldLabel.indexOf(":ACC:"); // acceleration
 			if (i >= 0) {
@@ -1134,7 +1135,7 @@ public class PlanUtil {
 		}
 		i = oldLabel.indexOf(":BVSC:"); // velocity in
 		if (i >= 0) {
-			first = Math.min(first,i);
+			first = Util.min(first,i);
 			newLabel += "BVS:";
 			i = oldLabel.indexOf(":ACC:"); // acceleration
 			if (i >= 0) {
@@ -1144,27 +1145,27 @@ public class PlanUtil {
 		}
 		i = oldLabel.indexOf(":EOT:"); // velocity in
 		if (i >= 0) {
-			first = Math.min(first,i);
+			first = Util.min(first,i);
 			newLabel += "EOT:";
 		}
 		i = oldLabel.indexOf(":EGSC:"); // velocity in
 		if (i >= 0) {
-			first = Math.min(first,i);
+			first = Util.min(first,i);
 			newLabel += "EGS:";
 		}
 		i = oldLabel.indexOf(":EVSC:"); // velocity in
 		if (i >= 0) {
-			first = Math.min(first,i);
+			first = Util.min(first,i);
 			newLabel += "EVS:";
 		}
 		i = oldLabel.indexOf(":TMID:"); // becomes ADDED
 		if (i >= 0) {
-			first = Math.min(first,i);
+			first = Util.min(first,i);
 			newLabel += "ADDED:";
 		} else { // add source, if present
 			i = oldLabel.indexOf(":SRC:");
 			if (i >= 0) {
-				first = Math.min(first,i);
+				first = Util.min(first,i);
 				j = oldLabel.indexOf(":",i+5);
 				newLabel += oldLabel.substring(i+1, j+1);
 				i = oldLabel.indexOf(":",j+1);
@@ -1175,7 +1176,7 @@ public class PlanUtil {
 		}
 		i = oldLabel.indexOf(":VEL:"); // velocity in
 		if (i >= 0) {
-			first = Math.min(first,i);
+			first = Util.min(first,i);
 			j = oldLabel.indexOf(":",i+5);
 			newLabel += oldLabel.substring(i+1, j+1);
 		}
@@ -1183,7 +1184,7 @@ public class PlanUtil {
 
 		i = oldLabel.indexOf(":mV:"); // minor -- just copy for now
 		if (i >= 0) {
-			first = Math.min(first,i);
+			first = Util.min(first,i);
 			j = oldLabel.indexOf(":",i+4);
 			newLabel += oldLabel.substring(i,j+1);
 		}
@@ -1624,8 +1625,8 @@ public class PlanUtil {
 	}
 
 	public static double crudeMinDistanceBetween(Plan p, Plan q) {
-		double maxFirstTime = Math.max(p.getFirstTime(), q.getFirstTime());
-		double minLastTime = Math.min(p.getLastTime(), q.getLastTime());
+		double maxFirstTime = Util.max(p.getFirstTime(), q.getFirstTime());
+		double minLastTime = Util.min(p.getLastTime(), q.getLastTime());
 		if (minLastTime < maxFirstTime) return Double.MAX_VALUE;
 		double minDistBetween = p.position(minLastTime).distanceH(q.position(minLastTime));
 		for (double t = maxFirstTime; t <= minLastTime; t = t + 1800) {
@@ -1837,8 +1838,8 @@ public class PlanUtil {
 		double rtn = 0;
 		rtn = Math.abs(A.getFirstTime() - B.getFirstTime());
 		rtn = rtn + Math.abs(A.getLastTime() - B.getLastTime());
-		double maxStart = Math.max(A.getFirstTime(), B.getFirstTime());
-		double minEnd   = Math.min(A.getLastTime(), B.getLastTime());
+		double maxStart = Util.max(A.getFirstTime(), B.getFirstTime());
+		double minEnd   = Util.min(A.getLastTime(), B.getLastTime());
 		double step = (minEnd - maxStart)/20;
 		for (double t = maxStart; t <= minEnd; t = t + step) {
 			double errH = A.position(t).distanceH(B.position(t));
@@ -1965,7 +1966,7 @@ public class PlanUtil {
 		//double a = point(prevBGS(seg)).gsAccel();
 		double t1 = Util.root(0.5*gsAccel, gsInit, -dist, 1);
 		double t2 = Util.root(0.5*gsAccel, gsInit, -dist, -1);
-		double dt = Double.isNaN(t1) || t1 < 0 ? t2 : (Double.isNaN(t2) || t2 < 0 ? t1 : Math.min(t1, t2));
+		double dt = Double.isNaN(t1) || t1 < 0 ? t2 : (Double.isNaN(t2) || t2 < 0 ? t1 : Util.min(t1, t2));
 		return dt;
 	}
 	
@@ -2290,7 +2291,7 @@ public class PlanUtil {
 //			if (fp.point(i).isBVS()) {
 //				f.pln(" $$$$$$$$ removeVsTCPs: i = "+i);
 //			    int j = fp.nextEVS(i);
-//			    upto = Math.max(upto, j);
+//			    upto = Util.max(upto, j);
 //			    double t1 = fp.point(i).time();
 //			    double v1 = fp.point(i).velocityIn().z;
 //			    double v2 = fp.point(j).velocityIn().z;

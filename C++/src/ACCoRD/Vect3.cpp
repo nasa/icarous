@@ -180,7 +180,7 @@ double Vect3::norm() const {
 }
 
 double Vect3::cyl_norm(const double d, const double h) const {
-	return std::max(vect2().sqv()/sq(d),sq(z/h));
+	return Util::max(vect2().sqv()/sq(d),sq(z/h));
 }
 
 double Vect3::distanceH(const Vect3& w) const {

@@ -7,19 +7,22 @@
 #ifndef WCV_VERTICAL_H_
 #define WCV_VERTICAL_H_
 
+#include "Interval.h"
+
 namespace larcfm {
+
 class WCV_Vertical {
 
 
 public:
-  double time_in;
-  double time_out;
 
-
-  WCV_Vertical();
-  static bool vertical_WCV(double ZTHR, double TCOA, double sz, double vz);
-  void vertical_WCV_interval(double ZTHR, double TCOA, double B, double T, double sz, double vz);
+  virtual ~WCV_Vertical() = 0;
+  virtual bool vertical_WCV(double ZTHR, double TTHR, double sz, double vz) const = 0;
+  virtual Interval vertical_WCV_interval(double ZTHR, double TTHR, double B, double T, double sz, double vz) const = 0;
 
 };
+
+inline WCV_Vertical::~WCV_Vertical(){}
+
 }
 #endif

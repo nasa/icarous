@@ -51,11 +51,6 @@ namespace larcfm {
  *<li> cd2d      : Check for predicted conflict
  *</ul>
  * 
- * Global variables (modified by detection)<br>
- *<ul>
- *<li> t_in  : Time to loss of separation
- *<li> t_out : Time to recovery from loss of separation
- * </ul>
  */
 class CD2D {
 public:

@@ -904,7 +904,7 @@ public final class AircraftState implements ErrorReporter {
 		double tmLast = 0;
 		int n = size();
 		int numPts = 5;    // typical rollin time
-		int startI = Math.max(0,n - numPts);
+		int startI = Util.max(0,n - numPts);
 		for (int i = startI; i < n && i >= 0; i++){                      // i = 0 is oldest, i = size() -1 is newest
 			StateVector svt = get(i);
             //f.pln(" $$$ svt = "+svt);
@@ -937,7 +937,7 @@ public final class AircraftState implements ErrorReporter {
 	public double avgTrackRate(int numPtsTrkRateCalc) {
 		int n = size();
 		if (numPtsTrkRateCalc < 2) numPtsTrkRateCalc = 2;
-		int numPts = Math.min(numPtsTrkRateCalc,n);
+		int numPts = Util.min(numPtsTrkRateCalc,n);
 		double trkLast = 0;
 		double tmLast = 0;
 		double trackRateSum = 0.0;
@@ -971,7 +971,7 @@ public final class AircraftState implements ErrorReporter {
 	public double avgVsRate(int numPtsVsRateCalc) {
 		int n = size();
 		if (numPtsVsRateCalc < 2) numPtsVsRateCalc = 2;
-		int numPts = Math.min(numPtsVsRateCalc,n);
+		int numPts = Util.min(numPtsVsRateCalc,n);
 		double vsLast = 0;
 		double tmLast = 0;
 		double vsRateSum = 0.0;

@@ -188,7 +188,7 @@ namespace larcfm {
    * when B might be within a loss of separation region.
    */
   bool CDIIPolygon::detectionExtended(const Plan& ownship, const PolyPath& traffic, double B, double T) {
-    if (!detection(ownship, traffic, std::max(ownship.getFirstTime(), traffic.getFirstTime()), std::min(ownship.getLastTime(), traffic.getLastTime()))) {
+    if (!detection(ownship, traffic, Util::max(ownship.getFirstTime(), traffic.getFirstTime()), Util::min(ownship.getLastTime(), traffic.getLastTime()))) {
       return false;
     }
     int i = 0;
@@ -219,9 +219,9 @@ namespace larcfm {
    */
   bool CDIIPolygon::detectionXYZ(const Plan& ownship, const PolyPath& traffic, double B, double T) {
     bool cont = false;                     // what is this?
-    int start = B > ownship.getLastTime() ? ownship.size()-1 : std::max(0,ownship.getSegment(B));
+    int start = B > ownship.getLastTime() ? ownship.size()-1 : Util::max(0,ownship.getSegment(B));
     // calculated end segment.  Only continue search if we are currently in a conflict
-    int end = T > ownship.getLastTime() ? ownship.size()-1 : std::max(0,ownship.size()-1);
+    int end = T > ownship.getLastTime() ? ownship.size()-1 : Util::max(0,ownship.size()-1);
     for (int i = start; i < ownship.size(); i++){
       // truncate the search at Tend if not in a conflict
       if (i <= end || cont) {
@@ -236,7 +236,7 @@ namespace larcfm {
           nextTime = ownship.getTime(i + 1);  // if in the plan, set to the end of leg
         }
         double HT = nextTime - t_base;        
-        double BT = std::max(0.0,B - t_base); // std::max(0,B-(t_base - t0));
+        double BT = Util::max(0.0,B - t_base); // Util::max(0,B-(t_base - t0));
         double NT = cont ? HT : T - t_base; // - (t_base - t0); 
 
         if (NT < 0.0) {
@@ -268,9 +268,9 @@ namespace larcfm {
   bool CDIIPolygon::detectionLL(const Plan& ownship, const PolyPath& traffic, double B, double T) {
     bool cont = false;
 //fpln(" $$ CDIIPolygon.detectionLL ownship="+ownship.toString()+" traffic="+traffic.toString()+" B = "+Fm1(B)+" T= "+Fm1(T));
-    int start = B > ownship.getLastTime() ? ownship.size()-1 : std::max(0,ownship.getSegment(B));
+    int start = B > ownship.getLastTime() ? ownship.size()-1 : Util::max(0,ownship.getSegment(B));
     // calculated end segment.  Only continue search if we are currently in a conflict
-    int end = T > ownship.getLastTime() ? ownship.size()-1 : std::max(0,ownship.size()-1);
+    int end = T > ownship.getLastTime() ? ownship.size()-1 : Util::max(0,ownship.size()-1);
     for (int i = start; i < ownship.size(); i++){ 
       // truncate the search at Tend if not in a conflict
       if (i <= end || cont) {
@@ -283,7 +283,7 @@ namespace larcfm {
           nextTime = ownship.getTime(i + 1);  
         }
         double HT = nextTime - t_base;      // state-based time horizon (relative time)
-        double BT = std::max(0.0,B - t_base); // begin time to look for conflicts (relative time)
+        double BT = Util::max(0.0,B - t_base); // begin time to look for conflicts (relative time)
         double NT = cont ? HT : T - t_base; // end time to look for conflicts (relative time)
         if (NT < 0.0) {
           continue;

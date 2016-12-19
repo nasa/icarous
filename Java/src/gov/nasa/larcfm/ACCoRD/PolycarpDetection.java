@@ -67,7 +67,7 @@ public class PolycarpDetection {
 		if (in.up<in.low || in.up<0 || in.low>T) {
 			return new Interval(T,0);
 		} else {
-			return new Interval(Math.max(in.low,0),Math.min(in.up,T));
+			return new Interval(Util.max(in.low,0),Util.min(in.up,T));
 		}
 	}
 
@@ -90,40 +90,40 @@ public class PolycarpDetection {
 		Interval P = dot_nneg_spec(T,w,v,a.PerpR(),b.PerpR(),-1,1,Fac); //[P.low,P.up]
 		Interval Pnx = dot_nneg_spec(T,w,v,a.PerpR(),b.PerpR(),1,-1,Fac); //[Pnx.low,Pnx.up]
 		Interval Px = dot_nneg_spec(T,w,v,a.PerpR(),b.PerpR(),1,1,Fac); //[Px.low,Px.up]
-		double Vlb1 = Math.max(V.low,Vn.low);
-		double Vub1 = Math.min(V.up,Vn.up);
-		double Vlb2 = Math.max(V.low,Vnx.low);
-		double Vub2 = Math.min(V.up,Vnx.up);
-		double Vlb3 = Math.max(Vx.low,Vn.low);
-		double Vub3 = Math.min(Vx.up,Vn.up);
-		double Vlb4 = Math.max(Vx.low,Vnx.low);
-		double Vub4 = Math.min(Vx.up,Vnx.up);
-		double Plb1 = Math.max(P.low,Pn.low);
-		double Pub1 = Math.min(P.up,Pn.up);
-		double Plb2 = Math.max(P.low,Pnx.low);
-		double Pub2 = Math.min(P.up,Pnx.up);
-		double Plb3 = Math.max(Px.low,Pn.low);
-		double Pub3 = Math.min(Px.up,Pn.up);
-		double Plb4 = Math.max(Px.low,Pnx.low);
-		double Pub4 = Math.min(Px.up,Pnx.up);
+		double Vlb1 = Util.max(V.low,Vn.low);
+		double Vub1 = Util.min(V.up,Vn.up);
+		double Vlb2 = Util.max(V.low,Vnx.low);
+		double Vub2 = Util.min(V.up,Vnx.up);
+		double Vlb3 = Util.max(Vx.low,Vn.low);
+		double Vub3 = Util.min(Vx.up,Vn.up);
+		double Vlb4 = Util.max(Vx.low,Vnx.low);
+		double Vub4 = Util.min(Vx.up,Vnx.up);
+		double Plb1 = Util.max(P.low,Pn.low);
+		double Pub1 = Util.min(P.up,Pn.up);
+		double Plb2 = Util.max(P.low,Pnx.low);
+		double Pub2 = Util.min(P.up,Pnx.up);
+		double Plb3 = Util.max(Px.low,Pn.low);
+		double Pub3 = Util.min(Px.up,Pn.up);
+		double Plb4 = Util.max(Px.low,Pnx.low);
+		double Pub4 = Util.min(Px.up,Pnx.up);
 
 		//f.pln("edge_detect_simple "+f.Fm4(V.low)+" "+f.Fm4(Vn.low)+" "+f.Fm4(P.low)+" "+f.Fm4(Pn.low)+" "+f.Fm4(V.up)+" "+f.Fm4(Vn.up)+" "+f.Fm4(P.up)+" "+f.Fm4(Pn.up));
-		if (Math.max(Vlb1,Plb1)<=Math.min(Vub1,Pub1)) return true;
-		if (Math.max(Vlb1,Plb2)<=Math.min(Vub1,Pub2)) return true;
-		if (Math.max(Vlb1,Plb3)<=Math.min(Vub1,Pub3)) return true;
-		if (Math.max(Vlb1,Plb4)<=Math.min(Vub1,Pub4)) return true;
-		if (Math.max(Vlb2,Plb1)<=Math.min(Vub2,Pub1)) return true;
-		if (Math.max(Vlb2,Plb2)<=Math.min(Vub2,Pub2)) return true;
-		if (Math.max(Vlb2,Plb3)<=Math.min(Vub2,Pub3)) return true;
-		if (Math.max(Vlb2,Plb4)<=Math.min(Vub2,Pub4)) return true;
-		if (Math.max(Vlb3,Plb1)<=Math.min(Vub3,Pub1)) return true;
-		if (Math.max(Vlb3,Plb2)<=Math.min(Vub3,Pub2)) return true;
-		if (Math.max(Vlb3,Plb3)<=Math.min(Vub3,Pub3)) return true;
-		if (Math.max(Vlb3,Plb4)<=Math.min(Vub3,Pub4)) return true;
-		if (Math.max(Vlb4,Plb1)<=Math.min(Vub4,Pub1)) return true;
-		if (Math.max(Vlb4,Plb2)<=Math.min(Vub4,Pub2)) return true;
-		if (Math.max(Vlb4,Plb3)<=Math.min(Vub4,Pub3)) return true;
-		if (Math.max(Vlb4,Plb4)<=Math.min(Vub4,Pub4)) return true;
+		if (Util.max(Vlb1,Plb1)<=Util.min(Vub1,Pub1)) return true;
+		if (Util.max(Vlb1,Plb2)<=Util.min(Vub1,Pub2)) return true;
+		if (Util.max(Vlb1,Plb3)<=Util.min(Vub1,Pub3)) return true;
+		if (Util.max(Vlb1,Plb4)<=Util.min(Vub1,Pub4)) return true;
+		if (Util.max(Vlb2,Plb1)<=Util.min(Vub2,Pub1)) return true;
+		if (Util.max(Vlb2,Plb2)<=Util.min(Vub2,Pub2)) return true;
+		if (Util.max(Vlb2,Plb3)<=Util.min(Vub2,Pub3)) return true;
+		if (Util.max(Vlb2,Plb4)<=Util.min(Vub2,Pub4)) return true;
+		if (Util.max(Vlb3,Plb1)<=Util.min(Vub3,Pub1)) return true;
+		if (Util.max(Vlb3,Plb2)<=Util.min(Vub3,Pub2)) return true;
+		if (Util.max(Vlb3,Plb3)<=Util.min(Vub3,Pub3)) return true;
+		if (Util.max(Vlb3,Plb4)<=Util.min(Vub3,Pub4)) return true;
+		if (Util.max(Vlb4,Plb1)<=Util.min(Vub4,Pub1)) return true;
+		if (Util.max(Vlb4,Plb2)<=Util.min(Vub4,Pub2)) return true;
+		if (Util.max(Vlb4,Plb3)<=Util.min(Vub4,Pub3)) return true;
+		if (Util.max(Vlb4,Plb4)<=Util.min(Vub4,Pub4)) return true;
 		return false;
 	}
 

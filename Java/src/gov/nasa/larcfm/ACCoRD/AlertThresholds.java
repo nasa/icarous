@@ -33,7 +33,7 @@ public class AlertThresholds {
 			BandsRegion region) {
 		detector_ = detector.copy();
 		alerting_time_ = Math.abs(alerting_time);
-		early_alerting_time_ = Math.max(alerting_time_,early_alerting_time);
+		early_alerting_time_ = Util.max(alerting_time_,early_alerting_time);
 		region_ = region;
 		spread_trk_ = 0;
 		spread_gs_ = 0;

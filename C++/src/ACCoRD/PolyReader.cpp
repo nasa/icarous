@@ -594,7 +594,7 @@ Plan PolyReader::getCombinedPlan(int i) const {
 		return plans[i];
 	} else {
 		int j = i-plans.size();
-		return paths[j].buildPlan();
+		return paths[j].buildPlan().first;
 	}
 }
 

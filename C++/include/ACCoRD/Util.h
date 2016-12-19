@@ -232,6 +232,32 @@ public:
 	static int    sign(const double x);
 
 	/**
+	 * A minimum function that has the same behavior as the Java Math.min function:
+	 * NaN is propagated for both x and y, and -0.0 is "less than" +0.0
+	 * Note that std::min(double,double) does NOT have the same behavior, especially if NaN is involved!
+	 */
+	static const double& min(const double& x, const double& y);
+
+	static const float& min(const float& x, const float& y);
+
+	static const int& min(const int& x, const int& y);
+
+	static const long& min(const long& x, const long& y);
+
+	/**
+	 * A maximum function that has the same behavior as the Java Math.max function:
+	 * NaN is propagated for both x and y, and -0.0 is "less than" +0.0
+	 * Note that std::max(double,double) does NOT have the same behavior, especially if NaN is involved!
+	 */
+	static const double& max(const double& x, const double& y);
+
+	static const float& max(const float& x, const float& y);
+
+	static const int& max(const int& x, const int& y);
+
+	static const long& max(const long& x, const long& y);
+
+	/**
 	 * Computes the modulo of val and mod. The returned value is in the range [0,mod)
 	 */
 	static double modulo(double val, double mod);
@@ -290,6 +316,7 @@ public:
 	 * @return <code>deg</code> in the range (<code>-180</code>, <code>180</code>].
 	 */
 	static double to_180(double deg);
+
 
 	/** Returns true if string s1 is less than or equal to string s2. */
 	static bool less_or_equal(std::string s1, std::string s2);
@@ -409,10 +436,6 @@ double sq(const double x);
  * \deprecated {Use Util:: version.}
  * return the absolute value */
 INT64FM llabs(const INT64FM x);
-//  /** return the minimum of these two numbers */
-//  double min(const double a, const double b);
-//  /** return the maximum of these two numbers */
-//  double max(const double a, const double b);
 /**
  * \deprecated {Use Util:: version.}
  * a safe (won't return NaN or throw exceptions) of square root */

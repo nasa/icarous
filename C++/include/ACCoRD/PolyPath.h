@@ -15,6 +15,8 @@
 #include "SimplePoly.h"
 #include "MovingPolygon3D.h"
 #include "EuclideanProjection.h"
+#include "BoundingRectangle.h"
+#include "Triple.h"
 
 
 namespace larcfm{
@@ -102,14 +104,7 @@ public:
    */
   PolyPath copy() const;
   
-  // builds a Plan based on this PolyPath
-  // this will probably change to an arraylist in the future
-	/**
-	 * Returns a Plan based on this PolyPath.  This may change to return a set of plans in the future.
-	 * NOTE: This does NOT currently work properly for USER_VEL or USER_VEL_FINITE plans
-	 * @return new Plan, radius, height
-	 */
-  Plan buildPlan() const;
+  Triple<Plan,double,double> buildPlan() const;
   
   /**
    * Return true if this path contains any geodetic points.
@@ -360,6 +355,12 @@ public:
 
   std::string toOutput(int precision, bool tcpColumns) const;
 
+  bool contains (const Position& p, double t) const;
+
+  bool contains2D (const Position& p, double t) const;
+
+
+  BoundingRectangle getBoundingRectangle() const;
 
 	// ErrorReporter Interface Methods
 

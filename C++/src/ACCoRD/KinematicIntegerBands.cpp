@@ -28,14 +28,14 @@ int KinematicIntegerBands::first_los_search_index(Detection3D* conflict_det, Det
     double B, double T, double B2, double T2, bool trajdir, int max,
     const TrafficState& ownship, const std::vector<TrafficState>& traffic) const {
   int FirstLosK = (int)std::ceil(B/tstep); // first k such that k*ts>=B
-  int FirstLosN = std::min((int)std::floor(T/tstep),max); // last k<=MaxN such that k*ts<=T
+  int FirstLosN = Util::min((int)std::floor(T/tstep),max); // last k<=MaxN such that k*ts<=T
   int FirstLosK2 = (int)std::ceil(B2/tstep);
-  int FirstLosN2 = std::min((int)std::floor(T2/tstep),max);
+  int FirstLosN2 = Util::min((int)std::floor(T2/tstep),max);
   int FirstLosInit = recovery_det != NULL ? first_los_step(recovery_det,tstep,trajdir,FirstLosK2,FirstLosN2,ownship,traffic) : -1;
   int FirstLos = first_los_step(conflict_det,tstep,trajdir,FirstLosK,FirstLosN,ownship,traffic);
   int LosInitIndex = FirstLosInit < 0 ? max+1 : FirstLosInit;
   int LosIndex = FirstLos < 0 ? max+1 : FirstLos;
-  return std::min(LosInitIndex,LosIndex);
+  return Util::min(LosInitIndex,LosIndex);
 }
 
 int KinematicIntegerBands::bands_search_index(Detection3D* conflict_det, Detection3D* recovery_det, double tstep,
@@ -48,11 +48,11 @@ int KinematicIntegerBands::bands_search_index(Detection3D* conflict_det, Detecti
   int FirstNonHRep = !usehcrit || FirstLos == 0 ? FirstLos :
       first_nonrepulsive_step(tstep,trajdir,FirstLos-1,ownship,repac,epsh);
   int FirstProbHcrit = FirstNonHRep < 0 ? max+1 : FirstNonHRep;
-  int FirstProbHL = std::min(FirstLos,FirstProbHcrit);
+  int FirstProbHL = Util::min(FirstLos,FirstProbHcrit);
   int FirstNonVRep = !usevcrit || FirstProbHL == 0 ? FirstProbHL :
       first_nonvert_repul_step(tstep,trajdir,FirstProbHL-1,ownship,repac,epsv);
   int FirstProbVcrit = FirstNonVRep < 0 ? max+1 : FirstNonVRep;
-  return std::min(FirstProbHL,FirstProbVcrit);
+  return Util::min(FirstProbHL,FirstProbVcrit);
 }
 
 bool KinematicIntegerBands::no_conflict(Detection3D* conflict_det, Detection3D* recovery_det, double B, double T, double B2, double T2,

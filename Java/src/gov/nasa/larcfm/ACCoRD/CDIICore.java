@@ -336,8 +336,8 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 	 */
 	public boolean detectionExtended(Plan ownship, Plan traffic, double B, double T) {
 		if (!detection(ownship, traffic,
-				Math.max(ownship.getFirstTime(), traffic.getFirstTime()),
-				Math.min(ownship.getLastTime(), traffic.getLastTime()))) {
+				Util.max(ownship.getFirstTime(), traffic.getFirstTime()),
+				Util.min(ownship.getLastTime(), traffic.getLastTime()))) {
 			return false;
 		}
 		int i = 0;
@@ -476,10 +476,10 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 //f.pln("cdiicore.detectionXYZ B="+B+" T="+T);		
 		boolean cont = false; // what is this?
 		boolean linear = true;     // was Plan.PlanType.LINEAR);
-		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.getSegment(B));
+		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.getSegment(B));
 		// calculated end segment. Only continue search if we are currently in a
 		// conflict
-		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.size() - 1);
+		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.size() - 1);
 		for (int i = start; i < ownship.size(); i++) {
 			// truncate the search at Tend if not in a conflict
 			if (i <= end || cont) {
@@ -499,7 +499,7 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 														// the end of leg
 				}
 				double HT = nextTime - t_base;
-				double BT = Math.max(0, B - t_base); // Math.max(0,B-(t_base - t0));
+				double BT = Util.max(0, B - t_base); // Util.max(0,B-(t_base - t0));
 //f.pln("cdiicore.detectionXYZ B="+B+" t_base="+t_base+" BT="+BT);				
 				double NT = cont ? HT : T - t_base; // - (t_base - t0);
 				if (NT < 0.0) {
@@ -558,10 +558,10 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 		// double d = getDistance();
 		// double h = getHeight();
 
-		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.getSegment(B));
+		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.getSegment(B));
 		// calculated end segment. Only continue search if we are currently in a
 		// conflict
-		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.size() - 1);
+		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.size() - 1);
 		for (int i = start; i < ownship.size(); i++) {
 			// truncate the search at Tend if not in a conflict
 			if (i <= end || cont) {
@@ -581,7 +581,7 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 				}
 				double HT = nextTime - t_base; // state-based time horizon
 												// (relative time)
-				double BT = Math.max(0, B - t_base); // begin time to look for
+				double BT = Util.max(0, B - t_base); // begin time to look for
 														// conflicts (relative
 														// time)
 				double NT = cont ? HT : T - t_base; // end time to look for
@@ -672,9 +672,9 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 
 	private boolean conflictXYZ(Plan ownship, Plan traffic, double B, double T) {
 		boolean linear = true;     // was Plan.PlanType.LINEAR);
-		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Math.max(
+		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util.max(
 				0, ownship.getSegment(B));
-		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0,
+		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0,
 				ownship.size() - 1);
 		for (int i = start; i < ownship.size(); i++) {
 			if (i <= end) {
@@ -689,7 +689,7 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 														// the end of leg
 				}
 				double HT = nextTime - t_base;
-				double BT = Math.max(0, B - t_base); // Math.max(0,B-(t_base -
+				double BT = Util.max(0, B - t_base); // Util.max(0,B-(t_base -
 				double NT = T - t_base; // - (t_base - t0);
 				if (NT < 0.0) {
 					continue;
@@ -702,9 +702,9 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 
 	private boolean conflictLL(Plan ownship, Plan traffic, double B, double T) {
 		boolean linear = true;     // was Plan.PlanType.LINEAR);
-		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Math.max(
+		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util.max(
 				0, ownship.getSegment(B));
-		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0,
+		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0,
 				ownship.size() - 1);
 		for (int i = start; i < ownship.size(); i++) {
 			if (i <= end) {
@@ -717,7 +717,7 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 					nextTime = ownship.getTime(i + 1);
 				}
 				double HT = nextTime - t_base; // state-based time horizon
-				double BT = Math.max(0, B - t_base); // begin time to look for
+				double BT = Util.max(0, B - t_base); // begin time to look for
 				double NT = T - t_base; // end time to look for
 				if (NT < 0.0) {
 					continue;
@@ -737,8 +737,8 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 		boolean cont = false;
 		boolean linear = true;     // was Plan.PlanType.LINEAR);
 
-		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.getSegment(B));
-		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.size() - 1);
+		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.getSegment(B));
+		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.size() - 1);
 		
 		Pair<Double,Double> best = Pair.make(-1.0, Double.MAX_VALUE);
 		
@@ -758,7 +758,7 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 					nextTime = ownship.getTime(i + 1);
 				}
 				double HT = nextTime - t_base;
-				double BT = Math.max(0, B - t_base);
+				double BT = Util.max(0, B - t_base);
 				double NT = cont ? HT : T - t_base;
 				if (NT < 0.0) {
 					continue;

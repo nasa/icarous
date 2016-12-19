@@ -6,6 +6,7 @@
  */
 #include "KinematicAltBands.h"
 #include "Vect3.h"
+#include "Util.h"
 #include "Velocity.h"
 #include "Position.h"
 #include "Interval.h"
@@ -129,9 +130,9 @@ bool KinematicAltBands::conflict_free_traj_step(Detection3D* conflict_det, Detec
       }
     }
     if ((tsqj2>=B &&
-        any_conflict_aircraft(conflict_det,B,std::min(T,tsqj2),trajdir,std::max(tsqj1,0.0),ownship,traffic)) ||
+        any_conflict_aircraft(conflict_det,B,Util::min(T,tsqj2),trajdir,Util::max(tsqj1,0.0),ownship,traffic)) ||
         (recovery_det != NULL && tsqj2>=B2 &&
-            any_conflict_aircraft(recovery_det,B2,std::min(T2,tsqj2),trajdir,std::max(tsqj1,0.0),ownship,traffic))) {
+            any_conflict_aircraft(recovery_det,B2,Util::min(T2,tsqj2),trajdir,Util::max(tsqj1,0.0),ownship,traffic))) {
       return false;
     }
     for (int i=(int)std::ceil(tsqj2/tstep); i<=std::floor(tsqj3/tstep);++i) {
@@ -142,7 +143,7 @@ bool KinematicAltBands::conflict_free_traj_step(Detection3D* conflict_det, Detec
         return false;
       }
     }
-    return no_conflict(conflict_det,recovery_det,B,T,B2,T2,trajdir,std::max(tsqj3,0.0),ownship,traffic);
+    return no_conflict(conflict_det,recovery_det,B,T,B2,T2,trajdir,Util::max(tsqj3,0.0),ownship,traffic);
   }
 }
 

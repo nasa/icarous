@@ -18,9 +18,9 @@ public interface DensityGridTimedSearch {
 	 * @param gs ground speed of aircraft
 	 * @return List of grid coordinates for a successful path, or null if no path found.
 	 */
-	public List<Pair<Integer,Integer>> search(DensityGridTimed dg, Position startPos, Position endPos, double startTime, double gs);
+	public List<Pair<Integer,Integer>> searchT(DensityGridTimed dg, Position startPos, Position endPos, double startTime, double gs);
 
-	public List<Pair<Integer,Integer>> optimalPath(DensityGridTimed dg);
+	public List<Pair<Integer,Integer>> optimalPathT(DensityGridTimed dg);
 	
 //	/**
 //	 * Perform a search on the given timed density grid assuming a constant groundspeed.  Polygons may be static or moving.  

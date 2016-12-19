@@ -8,6 +8,7 @@
 #include "KinematicBandsCore.h"
 #include "KinematicBandsParameters.h"
 #include "Constants.h"
+#include "Util.h"
 #include "string_util.h"
 #include "format.h"
 #include "CriteriaCore.h"
@@ -131,7 +132,7 @@ double KinematicBandsCore::minHorizontalRecovery() const {
   double min_horizontal_recovery = parameters.getMinHorizontalRecovery();
   if (min_horizontal_recovery > 0)
     return min_horizontal_recovery;
-  int sl = !hasOwnship() ? 3 : std::max(3,TCASTable::getSensitivityLevel(ownship.getPosition().alt()));
+  int sl = !hasOwnship() ? 3 : Util::max(3,TCASTable::getSensitivityLevel(ownship.getPosition().alt()));
   return RA.getHMD(sl);
 }
 
@@ -142,7 +143,7 @@ double KinematicBandsCore::minVerticalRecovery() const {
   double min_vertical_recovery = parameters.getMinVerticalRecovery();
   if (min_vertical_recovery > 0)
     return min_vertical_recovery;
-  int sl = !hasOwnship() ? 3 : std::max(3,TCASTable::getSensitivityLevel(ownship.getPosition().alt()));
+  int sl = !hasOwnship() ? 3 : Util::max(3,TCASTable::getSensitivityLevel(ownship.getPosition().alt()));
   return RA.getZTHR(sl);
 }
 
@@ -199,8 +200,8 @@ void KinematicBandsCore::conflict_aircraft(int alert_level) {
       if (conflict_band && det.getTimeIn() < parameters.alertor.getLevel(alert_level).getAlertingTime()) {
         conflict_acs_[alert_level-1].push_back(ac);
       }
-      tin = std::min(tin,det.getTimeIn());
-      tout = std::max(tout,det.getTimeOut());
+      tin = Util::min(tin,det.getTimeIn());
+      tout = Util::max(tout,det.getTimeOut());
     }
   }
   tiov_.push_back(Interval(tin,tout));

@@ -217,6 +217,14 @@ namespace larcfm {
 	   */
   LatLonAlt normalize() const;
   
+
+	/**
+	 * Return true if this point is (locally) west of the given point.
+	 * @param a reference point
+	 * @return true if this point is to the west of the reference point within a hemisphere they share.
+	 */
+	bool isWest(const LatLonAlt& a) const;
+
   };
 
 

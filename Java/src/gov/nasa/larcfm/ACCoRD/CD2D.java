@@ -86,7 +86,7 @@ public class CD2D {
 
   // tau_vv = tau*v^2 [defined such that it's continuous everywhere]
   private static double tau_vv(Vect2 s, Vect2 v, double B, double T) {
-    return Math.min(Math.max(B*v.sqv(),-(s.dot(v))),T*v.sqv());
+    return Util.min(Util.max(B*v.sqv(),-(s.dot(v))),T*v.sqv());
   }
 
   // omega_vv = omega*v^2 - D^2*v^2 [defined such that it's continuous everywhere]
@@ -123,8 +123,8 @@ public class CD2D {
         if (Horizontal.Delta(s,v,D) > 0) {
           double tin  = Horizontal.Theta_D(s,v,Entry,D);
           double tout = Horizontal.Theta_D(s,v,Exit,D);
-          t_in  = Math.min(Math.max(tin,B),T);
-          t_out = Math.max(Math.min(tout,T),B);
+          t_in  = Util.min(Util.max(tin,B),T);
+          t_out = Util.max(Util.min(tout,T),B);
         } 
       }
     } 
@@ -187,7 +187,7 @@ public class CD2D {
     else {
       Vect2 v = vo.Sub(vi);
       double tau = -(s.dot(v))/v.sqv();
-      return Math.min(T,Math.max(B,tau)); 
+      return Util.min(T,Util.max(B,tau)); 
     }
   }
 

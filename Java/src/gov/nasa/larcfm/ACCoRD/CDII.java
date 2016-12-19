@@ -116,6 +116,10 @@ public final class CDII implements ErrorReporter, Detection3DAcceptor {
   }
 
 
+     /**
+       * Create a new conflict detection (intent information for both the ownship
+       * and traffic) object.
+       */
   public CDII() {
     cdiicore = new CDIICore();
     error = new ErrorLog("CDII");

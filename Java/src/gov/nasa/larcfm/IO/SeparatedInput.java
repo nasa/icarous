@@ -129,6 +129,8 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
         //parameters.setCaseSensitive(caseSensitive);
         //parameters = new HashMap<String,Quad<String, Double, String, Boolean>>();
         patternStr = Constants.wsPatternBase;
+        fixed_width = false;
+        header_str = new String[0];
      }
     
 	/** Create a new SeparatedInput from the given reader */
@@ -142,6 +144,8 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
         //parameters.setCaseSensitive(caseSensitive);
         //parameters = new HashMap<String,Quad<String, Double, String, Boolean>>();
         patternStr = Constants.wsPatternBase;
+        fixed_width = false;
+        header_str = new String[0];
 	}
 	
 	/** Return the heading for the given column */ 

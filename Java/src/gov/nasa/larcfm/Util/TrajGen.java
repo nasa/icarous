@@ -16,8 +16,6 @@ package gov.nasa.larcfm.Util;
 
 import java.util.ArrayList;
 
-import gov.nasa.larcfm.IO.DebugSupport;
-
 
 /**
  * Trajectory generation functionality.  This class translates between Linear and Kinematic plans.  Note that the translations are 
@@ -1541,7 +1539,7 @@ public class TrajGen {
 		f.pln(" #### genDirectTo nominalTime = "+f.Fm1(nominalTime)+" deltaTrack = "+Units.str("deg",deltaTrack)+" estTurnTime  = "+f.Fm1(estTurnTime));
 		//double deltaGs = Math.abs(vin.gs() - gs2);
 		double dt = np0.time() - to;
-		double continueTm = Math.min(estTurnTime+extraProjTime,dt/2);
+		double continueTm = Util.min(estTurnTime+extraProjTime,dt/2);
 		return continueTm;
 	}
 
@@ -1758,7 +1756,7 @@ public class TrajGen {
 		boolean done = false;
 		double tt = base.getFirstTime();
 		double range = base.getLastTime()-s.time();
-		double stepSize = Math.max(minTimeStep, range/20.0);
+		double stepSize = Util.max(minTimeStep, range/20.0);
 		double minGsDiff = Units.from("kts", 10.0);
 		double bestTime = base.getLastTime();
 		double bestdgs = Double.MAX_VALUE;
@@ -1922,7 +1920,7 @@ public class TrajGen {
 
 
 
-	///TODO
+	///TODO:  NOT CURRENTLY USED
 
 	// This generates a mini kinimatic plan that consists of a track (and possibly VS) change going from state direct to (through) goal at constant gs.
 	// This only needs a goal position, not a goal plan, unlike directTo, above
@@ -2079,7 +2077,7 @@ public class TrajGen {
 //			// nothing needs to be done
 //			return kpc;
 //		}
-//		delay = Math.max(delay,MIN_ACCEL_TIME);
+//		delay = Util.max(delay,MIN_ACCEL_TIME);
 //		Position p1 = so.linear(vo, delay);
 //		Position p2 = goal.linear(vo.mkGs(gsGoal), -delay);
 //		t = rta - to - delay*2;
@@ -2186,8 +2184,8 @@ public class TrajGen {
 		}
 		Velocity vo0 = vo.mkVs(0); // level flight
 		double dt = Math.abs((Math.PI/2.0)/turnOmega); 
-		double tA = Math.max(MIN_ACCEL_TIME, legDistA/vo.gs());
-		double tB = Math.max(MIN_ACCEL_TIME, legDistB/vo.gs());
+		double tA = Util.max(MIN_ACCEL_TIME, legDistA/vo.gs());
+		double tB = Util.max(MIN_ACCEL_TIME, legDistB/vo.gs());
 
 		NavPoint np0 = new NavPoint(so,t);
 		Triple<NavPoint,NavPoint,NavPoint> turn1 = turnGenerator3(np0,vo0,turnOmega,dt);
@@ -2404,7 +2402,7 @@ public class TrajGen {
 //		//	f.pln(""+kpc);
 //		//}
 //
-//		double t = Math.max(to,closest.time()) + timeBeforeTurn*2;
+//		double t = Util.max(to,closest.time()) + timeBeforeTurn*2;
 //
 //		if (t >= p.getLastTime()) {
 //

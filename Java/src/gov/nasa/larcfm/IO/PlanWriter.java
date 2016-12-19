@@ -1,5 +1,5 @@
 /* 
- * StateWriter
+ * PlanWriter
  *
  * Contact: Jeff Maddalon
  * 
@@ -15,6 +15,7 @@ import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.Util.Plan;
+import gov.nasa.larcfm.Util.f;
 
 import java.io.Writer;
 import java.io.FileWriter;
@@ -74,7 +75,7 @@ public class PlanWriter implements ErrorReporter, Closeable {
 	public void close() {
 		if (fw != null) {
 			try {
-				output.close();
+				//output.close();
 				fw.close();
 			} catch (IOException e) {
 				error.addError("Exception on close(): "+e.getMessage());
@@ -143,6 +144,7 @@ public class PlanWriter implements ErrorReporter, Closeable {
 	}
 	
 	public void writePlan(Plan p, boolean tcpColumnsLocal) {
+		//f.pln(" $$$ writePlan: p.size() = "+p.size());
 		if (first_line) {
 			tcpColumns = tcpColumnsLocal;
 			latlon = p.isLatLon();

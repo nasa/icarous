@@ -73,13 +73,13 @@ Velocity VectFuns::interpolateVelocity(const Velocity& v1, const Velocity& v2, d
 
 
 // This appears to use the right-hand rule to determine it returns the inside or outside angle
-double VectFuns::angleBetween(const Vect2& v1, const Vect2& v2) {
+double VectFuns::angle_between(const Vect2& v1, const Vect2& v2) {
 	Vect2 VV1 = v1.Scal(1.0/v1.norm());
 	Vect2 VV2 = v2.Scal(1.0/v2.norm());
 	return Util::atan2_safe(VV2.y,VV2.x)-Util::atan2_safe(VV1.y,VV1.x);
 }
 
-double VectFuns::angleBetween(const Vect2& a, const Vect2& b, const Vect2& c) {
+double VectFuns::angle_between(const Vect2& a, const Vect2& b, const Vect2& c) {
 	Vect2 A = b.Sub(a);
 	Vect2 B = b.Sub(c);
 	return Util::acos_safe(A.dot(B)/(A.norm()*B.norm()));
@@ -154,8 +154,8 @@ std::pair<Vect3,double> VectFuns::intersection(const Vect3& so3, const Velocity&
 	//f.pln(" $$$ intersection: tt = "+tt);
 	Vect3 intersec = so3.Add(vo3.Scal(tt));
 	double nZ = intersec.z;
-	double maxZ = std::max(so3.z,si3.z);
-	double minZ = std::min(so3.z,si3.z);
+	double maxZ = Util::max(so3.z,si3.z);
+	double minZ = Util::min(so3.z,si3.z);
 	if (nZ > maxZ) nZ = maxZ;
 	if (nZ < minZ) nZ = minZ;
 	return std::pair<Vect3,double>(intersec.mkZ(nZ),tt);

@@ -70,7 +70,7 @@ Interval PolycarpDetection::dot_nneg_linear_2D_alg(double T, const Vect2& w, con
   if (in.up<in.low || in.up<0 || in.low>T) {
     return Interval(T,0);
   } else {
-    return Interval(std::max(in.low,0.0),std::min(in.up,T));
+    return Interval(Util::max(in.low,0.0),Util::min(in.up,T));
   }
 }
 
@@ -93,41 +93,41 @@ bool PolycarpDetection::edge_detect_simple(double T, const Vect2& w, const Vect2
   Interval P = dot_nneg_spec(T,w,v,a.PerpR(),b.PerpR(),-1,1,Fac); //[P.low,P.up]
   Interval Pnx = dot_nneg_spec(T,w,v,a.PerpR(),b.PerpR(),1,-1,Fac); //[Pnx.low,Pnx.up]
   Interval Px = dot_nneg_spec(T,w,v,a.PerpR(),b.PerpR(),1,1,Fac); //[Px.low,Px.up]
-  double Vlb1 = std::max(V.low,Vn.low);
-  double Vub1 = std::min(V.up,Vn.up);
-  double Vlb2 = std::max(V.low,Vnx.low);
-  double Vub2 = std::min(V.up,Vnx.up);
-  double Vlb3 = std::max(Vx.low,Vn.low);
-  double Vub3 = std::min(Vx.up,Vn.up);
-  double Vlb4 = std::max(Vx.low,Vnx.low);
-  double Vub4 = std::min(Vx.up,Vnx.up);
-  double Plb1 = std::max(P.low,Pn.low);
-  double Pub1 = std::min(P.up,Pn.up);
-  double Plb2 = std::max(P.low,Pnx.low);
-  double Pub2 = std::min(P.up,Pnx.up);
-  double Plb3 = std::max(Px.low,Pn.low);
-  double Pub3 = std::min(Px.up,Pn.up);
-  double Plb4 = std::max(Px.low,Pnx.low);
-  double Pub4 = std::min(Px.up,Pnx.up);
+  double Vlb1 = Util::max(V.low,Vn.low);
+  double Vub1 = Util::min(V.up,Vn.up);
+  double Vlb2 = Util::max(V.low,Vnx.low);
+  double Vub2 = Util::min(V.up,Vnx.up);
+  double Vlb3 = Util::max(Vx.low,Vn.low);
+  double Vub3 = Util::min(Vx.up,Vn.up);
+  double Vlb4 = Util::max(Vx.low,Vnx.low);
+  double Vub4 = Util::min(Vx.up,Vnx.up);
+  double Plb1 = Util::max(P.low,Pn.low);
+  double Pub1 = Util::min(P.up,Pn.up);
+  double Plb2 = Util::max(P.low,Pnx.low);
+  double Pub2 = Util::min(P.up,Pnx.up);
+  double Plb3 = Util::max(Px.low,Pn.low);
+  double Pub3 = Util::min(Px.up,Pn.up);
+  double Plb4 = Util::max(Px.low,Pnx.low);
+  double Pub4 = Util::min(Px.up,Pnx.up);
 
   //  fpln("edge_detect_simple "+Fm4(V.low)+" "+Fm4(Vn.low)+" "+Fm4(P.low)+" "+Fm4(Pn.low)+" "+Fm4(V.up)+" "+Fm4(Vn.up)+" "+Fm4(P.up)+" "+Fm4(Pn.up));
 
-  if (std::max(Vlb1,Plb1)<=std::min(Vub1,Pub1)) return true;
-  if (std::max(Vlb1,Plb2)<=std::min(Vub1,Pub2)) return true;
-  if (std::max(Vlb1,Plb3)<=std::min(Vub1,Pub3)) return true;
-  if (std::max(Vlb1,Plb4)<=std::min(Vub1,Pub4)) return true;
-  if (std::max(Vlb2,Plb1)<=std::min(Vub2,Pub1)) return true;
-  if (std::max(Vlb2,Plb2)<=std::min(Vub2,Pub2)) return true;
-  if (std::max(Vlb2,Plb3)<=std::min(Vub2,Pub3)) return true;
-  if (std::max(Vlb2,Plb4)<=std::min(Vub2,Pub4)) return true;
-  if (std::max(Vlb3,Plb1)<=std::min(Vub3,Pub1)) return true;
-  if (std::max(Vlb3,Plb2)<=std::min(Vub3,Pub2)) return true;
-  if (std::max(Vlb3,Plb3)<=std::min(Vub3,Pub3)) return true;
-  if (std::max(Vlb3,Plb4)<=std::min(Vub3,Pub4)) return true;
-  if (std::max(Vlb4,Plb1)<=std::min(Vub4,Pub1)) return true;
-  if (std::max(Vlb4,Plb2)<=std::min(Vub4,Pub2)) return true;
-  if (std::max(Vlb4,Plb3)<=std::min(Vub4,Pub3)) return true;
-  if (std::max(Vlb4,Plb4)<=std::min(Vub4,Pub4)) return true;
+  if (Util::max(Vlb1,Plb1)<=Util::min(Vub1,Pub1)) return true;
+  if (Util::max(Vlb1,Plb2)<=Util::min(Vub1,Pub2)) return true;
+  if (Util::max(Vlb1,Plb3)<=Util::min(Vub1,Pub3)) return true;
+  if (Util::max(Vlb1,Plb4)<=Util::min(Vub1,Pub4)) return true;
+  if (Util::max(Vlb2,Plb1)<=Util::min(Vub2,Pub1)) return true;
+  if (Util::max(Vlb2,Plb2)<=Util::min(Vub2,Pub2)) return true;
+  if (Util::max(Vlb2,Plb3)<=Util::min(Vub2,Pub3)) return true;
+  if (Util::max(Vlb2,Plb4)<=Util::min(Vub2,Pub4)) return true;
+  if (Util::max(Vlb3,Plb1)<=Util::min(Vub3,Pub1)) return true;
+  if (Util::max(Vlb3,Plb2)<=Util::min(Vub3,Pub2)) return true;
+  if (Util::max(Vlb3,Plb3)<=Util::min(Vub3,Pub3)) return true;
+  if (Util::max(Vlb3,Plb4)<=Util::min(Vub3,Pub4)) return true;
+  if (Util::max(Vlb4,Plb1)<=Util::min(Vub4,Pub1)) return true;
+  if (Util::max(Vlb4,Plb2)<=Util::min(Vub4,Pub2)) return true;
+  if (Util::max(Vlb4,Plb3)<=Util::min(Vub4,Pub3)) return true;
+  if (Util::max(Vlb4,Plb4)<=Util::min(Vub4,Pub4)) return true;
   return false;
 }
 

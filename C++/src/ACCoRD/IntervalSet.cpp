@@ -129,8 +129,8 @@ void IntervalSet::almost_add(double l, double u) {
 				unions(ii);
 			} else if ((Util::almost_leq(ii.low,l) && Util::almost_leq(l,ii.up)) ||
 					(Util::almost_leq(l,ii.low) && Util::almost_leq(ii.low,u))) {
-				l = std::min(ii.low,l);
-				u = std::max(ii.up,u);
+				l = Util::min(ii.low,l);
+				u = Util::max(ii.up,u);
 			} else if (Util::almost_less(u,ii.low)) {
 				unions(Interval(l,u));
 				unions(ii);

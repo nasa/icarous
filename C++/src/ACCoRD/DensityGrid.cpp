@@ -422,15 +422,15 @@ namespace larcfm {
 
 
 	std::vector<std::pair<int,int> > DensityGrid::thin(const std::vector<std::pair<int,int> >& gPath) {
-		std::vector<std::pair<int,int> > rtn = std::vector<std::pair<int,int> >(10);
+		std::vector<std::pair<int,int> > rtn = std::vector<std::pair<int,int> >();
 		std::pair<int,int> lastPair = gPath[0];
-		Direction lastDirection = direction(std::pair<int,int>(0, 0),lastPair);
+		Direction lastDirection = undef;
 		rtn.push_back(lastPair);
 		for (int i = 1; i < gPath.size(); i++) {
 			std::pair<int,int> pp = gPath[i];
 			Direction dir = direction(lastPair,pp);
 			if (dir == lastDirection) {
-				rtn.erase(rtn.end()-1);
+				rtn.erase(rtn.begin()+rtn.size()-1);
 			}
 			rtn.push_back(pp);
 			lastPair = pp;
@@ -529,7 +529,7 @@ namespace larcfm {
 			for (int x = 0; x < sz_x; x++) {
 				for (int y = 0; y < sz_y; y++) {
 					double dist = std::sqrt((x-x1)*(x-x1)+(y-y1)*(y-y1));
-					myWeights[x][y] = std::min(myWeights[x][y], dist*factor);
+					myWeights[x][y] = Util::min(myWeights[x][y], dist*factor);
 				}
 			}
 		}
@@ -564,7 +564,7 @@ namespace larcfm {
 				for (int y = 0; y < sz_y; y++) {
 					double thisweight = ((Vect2(x0,y0)).Sub(Vect2(x, y)).norm()+p.size()-1-i)*factor;
 					if (applyToUndefined || weights.find(std::pair<int,int>(x,y)) != weights.end()) {
-						myWeights[x][y] = std::min(myWeights[x][y], thisweight);
+						myWeights[x][y] = Util::min(myWeights[x][y], thisweight);
 					}
 				}
 			}

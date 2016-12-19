@@ -261,7 +261,7 @@ double Vect2::tcpa (const Vect2& so, const Vect2& vo, const Vect2& si, const Vec
 	Vect2 v = vo.Sub(vi);
 	double nv = v.sqv();
 	if (nv > 0)
-		t = std::max(0.0,-s.dot(v)/nv);
+		t = Util::max(0.0,-s.dot(v)/nv);
 	else
 		t = 0;
 	return t;

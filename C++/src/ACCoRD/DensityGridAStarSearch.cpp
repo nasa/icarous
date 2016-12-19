@@ -16,14 +16,11 @@
 namespace larcfm {
 
 
-//	class FringeCompare implements Comparator<FringeEntry> {
-//		@Override
-//		int compare(FringeEntry c1, FringeEntry c2) {
-//			return Double.compare(c1.cost, c2.cost);
-//		}
-//	}
-//
-//	FringeCompare comp = FringeCompare();
+DensityGridAStarSearch::DensityGridAStarSearch() {
+	dirWeight = 1.0;
+	distWeight = 1.0;
+
+}
 
 bool DensityGridAStarSearch::contains(const std::vector<std::pair<int,int> >& gPath, const std::pair<int,int>& pii) const {
 	for (int i = 0; i < gPath.size(); i++) {
@@ -102,7 +99,6 @@ bool DensityGridAStarSearch::contains(const std::vector<Triple<int,int,int> >& g
 
 	// in this one, searched includes x, y, and source square (as
 	std::vector<std::pair<int,int> > DensityGridAStarSearch::astarT(DensityGridTimed& dg, int endx, int endy, double gs, std::vector<FringeEntry>& fringe, std::vector<Triple<int,int,int> >& searched) const {
-//		double basedt =  dg.center(0,0).distanceH(dg.center(0,1))/gs; // base time to move one square n/s
 		while (fringe.size() > 0) {
 			std::sort(fringe.begin(), fringe.end());
 			FringeEntry c = fringe[0];
@@ -171,7 +167,7 @@ bool DensityGridAStarSearch::contains(const std::vector<Triple<int,int,int> >& g
 		std::vector<Triple<int,int,int> > searched = std::vector<Triple<int,int,int> >();
 		searched.push_back(Triple<int,int,int>(start.first, start.second, 0));
 		double firstWeight = dg.getWeight(start);
-		if (std::isfinite(firstWeight)) return std::vector<std::pair<int,int> >(); // first cell is invalid, abort search
+		if (!std::isfinite(firstWeight)) return std::vector<std::pair<int,int> >(); // first cell is invalid, abort search
 		fringe.push_back(FringeEntry(start, startTime, dg.getWeight(start)));
 		return astarT(dg, end.first, end.second, gs, fringe, searched);
 	}

@@ -45,9 +45,10 @@ namespace larcfm {
 
   double GreatCircle::angular_distance(double lat1, double lon1, double lat2, double lon2) {
 //	  if (Util::almost_equals(lat1,lat2) && Util::almost_equals(lon1,lon2)) return 0.0;
-    return asin_safe(sqrt_safe(sq(sin((lat1 - lat2) / 2))
+    double rtn= asin_safe(sqrt_safe(sq(sin((lat1 - lat2) / 2))
 				    + cos(lat1) * cos(lat2)
 				    * sq(sin((lon1 - lon2) / 2)))) * 2.0;
+    return rtn;
   }
 
   double GreatCircle::angular_distance(const LatLonAlt& p1, const LatLonAlt& p2) {
@@ -203,9 +204,9 @@ namespace larcfm {
 	//    force any polar latitudes to be "near" the pole
 
 	static const double eps = 1e-15;
-	double s_lat = std::max(std::min(s.lat(), Pi/2-eps), -Pi/2+eps);
+	double s_lat = Util::max(Util::min(s.lat(), Pi/2-eps), -Pi/2+eps);
 	double lat = s_lat + d * cos(track);
-	lat = std::max(std::min(lat, Pi/2-eps), -Pi/2+eps);
+	lat = Util::max(Util::min(lat, Pi/2-eps), -Pi/2+eps);
 
 	double q;
 	if ( Constants::almost_equals_radian(lat, s_lat) ) {

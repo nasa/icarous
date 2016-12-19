@@ -196,14 +196,14 @@ public class KinematicsLatLon {
 		LatLonAlt sn = GreatCircle.linear_initial(center, nTrk, radius);
 		sn = sn.mkAlt(so.alt() + vo.z*t);
 		//double finalTrk = currentTrk+theta;                        
-		double final_course = GreatCircle.final_course(center,sn);   // TODO: THIS IS PROBABLY BETTER
+		double final_course = GreatCircle.final_course(center,sn);   
 		double finalTrk = final_course + Util.sign(omega)*Math.PI/2;				
 		Velocity vn = vo.mkTrk(finalTrk);  
 		return new Pair<LatLonAlt,Velocity>(sn,vn);
 	}
 
 	
-	
+	@Deprecated
 	public static Pair<LatLonAlt,Velocity> turnRadius(LatLonAlt so, Velocity vo, double t, double signedRadius) {
 		double currentTrk = vo.trk();
 		double dir = Util.sign(signedRadius);
@@ -339,6 +339,7 @@ public class KinematicsLatLon {
 	 * @param turnRight   true iff only turn direction is to the right
 	 * @return Position/Velocity after t time
 	 */
+	@Deprecated
 	public static Pair<LatLonAlt,Velocity> turn(LatLonAlt s0, Velocity v0, double t, double R, boolean turnRight) {
 		if (Util.almost_equals(R,0))
 			return new Pair<LatLonAlt,Velocity>(s0,v0);   
@@ -356,6 +357,7 @@ public class KinematicsLatLon {
 	 * @param turnRight   true iff only turn direction is to the right
 	 * @return Position/Velocity pair after t time
 	 */
+	@Deprecated
 	public static Pair<LatLonAlt,Velocity> turn(Pair<LatLonAlt,Velocity> sv0, double t, double R, boolean turnRight) {
 		return turn(sv0.first,sv0.second,t,R,turnRight);
 	}
@@ -406,6 +408,7 @@ public class KinematicsLatLon {
 	 * @param maxBank    the maximum bank angle of the aircraft, must be in (0,pi/2)
 	 * @return Position and Velocity after time t
 	 */
+	@Deprecated  // ONLY USED IN UNIT TESTS
 	public static Pair<LatLonAlt,Velocity> turnUntil(Pair<LatLonAlt,Velocity> svo, double t, double goalTrack, double maxBank) {
 		double omega = Kinematics.turnRateGoal(svo.second, goalTrack, maxBank);
 		double turnTime = Kinematics.turnTime(svo.second, goalTrack, maxBank);		
@@ -423,6 +426,7 @@ public class KinematicsLatLon {
 	 * @param maxBank    the bank angle of the aircraft making the turn (positive)
 	 * @return Position/Velocity after time t
 	 */
+	@Deprecated  // ONLY USED IN TESTS
 	public static Pair<LatLonAlt,Velocity> turnUntil(LatLonAlt so, Velocity vo, double t, double goalTrack, double maxBank) {
 		return turnUntil(new Pair<LatLonAlt,Velocity>(so,vo), t, goalTrack, maxBank);
 	}
@@ -438,6 +442,7 @@ public class KinematicsLatLon {
 	 * @param turnRight  true iff only turn direction is to the right
 	 * @return Position/Velocity after time t
 	 */
+	@Deprecated
 	public static Pair<LatLonAlt,Velocity> turnUntilTimeRadius(Pair<LatLonAlt,Velocity> svo, double t, double turnTime, double R, boolean turnRight) {
 		Pair<LatLonAlt,Velocity> tPair;
 		if (t <= turnTime) {

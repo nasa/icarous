@@ -669,7 +669,7 @@ namespace larcfm {
 	double AircraftState::avgTrackRate(int numPtsTrkRateCalc) {
 		int n = size();
 		if (numPtsTrkRateCalc < 2) numPtsTrkRateCalc = 2;
-		int numPts = std::min(numPtsTrkRateCalc,n);
+		int numPts = Util::min(numPtsTrkRateCalc,n);
 		double trkLast = 0;
 		double tmLast = 0;
 		//double maxTrackRate = 0.0;
@@ -705,7 +705,7 @@ namespace larcfm {
 	double AircraftState::avgVsRate(int numPtsVsRateCalc) {
 		int n = size();
 		if (numPtsVsRateCalc < 2) numPtsVsRateCalc = 2;
-		int numPts = std::min(numPtsVsRateCalc,n);
+		int numPts = Util::min(numPtsVsRateCalc,n);
 		double vsLast = 0;
 		double tmLast = 0;
 		double vsRateSum = 0.0;

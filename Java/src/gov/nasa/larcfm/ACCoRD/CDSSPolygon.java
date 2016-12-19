@@ -231,7 +231,7 @@ public class CDSSPolygon implements DetectionPolygonAcceptor {
     t_out.clear();
     tca.clear();
     dtca.clear();
-    double endT = Math.min(T,time_horizon);
+    double endT = Util.min(T,time_horizon);
     boolean det = cd.conflictDetection(so, vo, mp, B, endT);
     tca = cd.getCriticalTimesOfConflict();
     t_in = cd.getTimesIn();
@@ -342,7 +342,7 @@ public class CDSSPolygon implements DetectionPolygonAcceptor {
    * @return the duration of conflict. Zero means that there is not conflict.
    */
   public double conflictDuration(int i) {
-    return Math.max(0,t_out.get(i) - t_in.get(i));
+    return Util.max(0,t_out.get(i) - t_in.get(i));
   }
 
   /**

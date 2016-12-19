@@ -49,7 +49,7 @@ public:
   TCASTable(const TCASTable& t);
 
   /* Return SL-2 from alt, which is provided in internal units */
-  /** Return sensitivity level from alt, which is provided in internal units */
+  /** Return sensitivity level from alt, specified in internal units */
   static int getSensitivityLevel(double alt);
 
   /**
@@ -59,34 +59,49 @@ public:
 
   void setDefaultRAThresholds(bool ra);
   /**
-   * Returns TAU threshold for sensitivity level sl, in internal units.
+   * Returns TAU threshold for sensitivity level sl in seconds
    */
   double getTAU(int sl) const;
   double getTAU(int sl, const std::string& u) const;
+  /**
+   * Returns TCOA threshold for sensitivity level sl in seconds
+   */
   double getTCOA(int sl) const;
   double getTCOA(int sl, const std::string& u) const;
   /**
-   * Returns DMOD for sensitivity level sl, in internal units.
+   * Returns DMOD for sensitivity level sl in internal units.
    */
   double getDMOD(int sl) const;
+  /**
+   * Returns DMOD for sensitivity level sl in u units.
+   */
   double getDMOD(int sl, const std::string& u) const;
   /**
-   * Returns Z threshold for sensitivity level sl, in internal units.
+   * Returns Z threshold for sensitivity level sl in internal units.
    */
   double getZTHR(int sl) const;
+  /**
+   * Returns Z threshold for sensitivity level sl in u units.
+   */
   double getZTHR(int sl, const std::string& u) const;
   /**
-   * Returns HMD for sensitivity level sl, in internal units.
+   * Returns HMD for sensitivity level sl in internal units.
    */
   double getHMD(int sl) const;
+  /**
+   * Returns HMD for sensitivity level sl in u units.
+   */
   double getHMD(int sl, const std::string& u) const;
   /** Modify the value of Tau Threshold for a given sensitivity level (2-8)
-   * Parameter val is given in seconds (internal units)
+   * Parameter val is given in seconds 
    */
   void setTAU(int sl, double val);
   void setTAU(int sl, double val, const std::string& u);
   void setTAU(double val, const std::string& u);
 
+  /** Modify the value of TCOA Threshold for a given sensitivity level (2-8)
+   * Parameter val is given in seconds 
+   */
   void setTCOA(int sl, double val);
   void setTCOA(int sl, double val, const std::string& u);
   void setTCOA(double val, const std::string& u);
@@ -94,20 +109,39 @@ public:
    * Parameter val is given in internal units
    */
   void setDMOD(int sl, double val);
+  /** Modify the value of DMOD for a given sensitivity level (2-8)
+   * Parameter val is given in u units
+   */
   void setDMOD(int sl, double val, const std::string& u);
+  /** 
+   * Modify the value of DMOD for all sensitivity levels 
+   */
   void setDMOD(double val, const std::string& u);
   /** Modify the value of ZTHR for a given sensitivity level (2-8)
    * Parameter val is given in internal units
    */
   void setZTHR(int sl, double val);
+  /** Modify the value of ZTHR for a given sensitivity level (2-8)
+   * Parameter val is given in u units
+   */
   void setZTHR(int sl, double val, const std::string& u);
+  /** 
+   * Modify the value of ZTHR for all sensitivity levels 
+   */
   void setZTHR(double val, const std::string& u);
   /** 
    * Modify the value of HMD for a given sensitivity level (2-8)
    * Parameter val is given in internal units
    */
   void setHMD(int sl, double val);
+  /** 
+   * Modify the value of HMD for a given sensitivity level (2-8)
+   * Parameter val is given in u units
+   */
   void setHMD(int sl, double val, const std::string& u);
+  /** 
+   * Modify the value of HMD for all sensitivity levels 
+   */
   void setHMD(double val, const std::string& u);
   void setHMDFilter(bool flag);
   bool getHMDFilter() const;

@@ -247,8 +247,8 @@ public final class VectFuns {
 		//f.pln(" $$$ intersection: tt = "+tt);
 		Vect3 intersec = so3.Add(vo3.Scal(tt));
 		double nZ = intersec.z();
-		double maxZ = Math.max(so3.z,si3.z);
-		double minZ = Math.min(so3.z,si3.z);			
+		double maxZ = Util.max(so3.z,si3.z);
+		double minZ = Util.min(so3.z,si3.z);			
 		if (nZ > maxZ) nZ = maxZ;
 		if (nZ < minZ) nZ = minZ;	
 		//f.pln("intersection nz="+nZ);		
@@ -496,7 +496,7 @@ public final class VectFuns {
 		if ((A.x >= 0 && B.x <= 0) || (A.x <= 0 && B.x >= 0)) {
 			if (A.x == B.x) {
 				if (A.y >= 0 || B.y >= 0) {
-					return Math.max(0.0, Math.min(A.y, B.y)); // first point of intersection
+					return Util.max(0.0, Util.min(A.y, B.y)); // first point of intersection
 				}
 			} else if (A.y == B.y) {
 				if (A.y >= 0) {

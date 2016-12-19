@@ -17,6 +17,7 @@ import gov.nasa.larcfm.Util.Pair;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.ProjectedKinematics;
 import gov.nasa.larcfm.Util.Tuple5;
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
 
@@ -114,9 +115,9 @@ public class KinematicAltBands extends KinematicRealBands {
 				}
 			}
 			if ((tsqj2>=B && 
-					any_conflict_aircraft(conflict_det,B,Math.min(T,tsqj2),trajdir,Math.max(tsqj1,0),ownship,traffic)) || 
+					any_conflict_aircraft(conflict_det,B,Util.min(T,tsqj2),trajdir,Util.max(tsqj1,0),ownship,traffic)) || 
 					(recovery_det.isPresent() && tsqj2>=B2 && 
-					any_conflict_aircraft(recovery_det.get(),B2,Math.min(T2,tsqj2),trajdir,Math.max(tsqj1,0),ownship,traffic))) {
+					any_conflict_aircraft(recovery_det.get(),B2,Util.min(T2,tsqj2),trajdir,Util.max(tsqj1,0),ownship,traffic))) {
 				return false;
 			}
 			for (int i=(int)Math.ceil(tsqj2/tstep); i<=Math.floor(tsqj3/tstep);++i) {
@@ -127,7 +128,7 @@ public class KinematicAltBands extends KinematicRealBands {
 					return false;
 				}
 			}
-			return no_conflict(conflict_det,recovery_det,B,T,B2,T2,trajdir,Math.max(tsqj3,0),ownship,traffic);
+			return no_conflict(conflict_det,recovery_det,B,T,B2,T2,trajdir,Util.max(tsqj3,0),ownship,traffic);
 		}
 	}
 
