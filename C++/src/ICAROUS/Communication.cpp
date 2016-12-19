@@ -173,14 +173,64 @@
  }
 
  void Communication_t::ParamSetHandler(){
-     mavlink_param_set_t msg;
-     bool have_msg = RcvdMessages->GetParamSet(msg);
-     if(have_msg && msg.target_system == 1){
-         mavlink_message_t msg2send;
-         mavlink_msg_param_set_encode(255,0,&msg2send,&msg);
-         px4Intf->SendMAVLinkMsg(msg2send);
-     }
+	 mavlink_param_set_t msg;
+	 bool have_msg = RcvdMessages->GetParamSet(msg);
+	 if(have_msg && msg.target_system == 1){
+
+		 bool icarous_parm;
+
+		 if(!strcmp(msg.param_id,"ICHBEAT"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"HTHRESHOLD"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"VTHRESHOLD"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"HSTEPBACK"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"VSTEPBACK"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"STEPBACKTYPE"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"GRIDSIZE"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"BUFFER"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"LOOKAHEAD"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"PROXFACTOR"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"RES_SPEED"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"XTRK_GAIN"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"XTRK_DEV"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"TAKEOFF_ALT"))
+			 icarous_parm = true;
+		 else
+			 icarous_parm = false;
+
+
+		 if(icarous_parm){
+			 FlightData->paramData->set(msg.param_id, msg.param_value, FlightData->paramData->getUnit(msg.param_id));
+			 //printf("received %s\n",msg.param_id);
+			 mavlink_message_t msg2send;
+			 mavlink_param_value_t paramValue;
+			 strcpy(paramValue.param_id,msg.param_id);
+			 paramValue.param_value = msg.param_value;
+			 mavlink_msg_param_value_encode(1,0,&msg2send,&paramValue);
+			 gsIntf->SendMAVLinkMsg(msg2send);
+		 }
+		 else{
+
+			 mavlink_message_t msg2send;
+			 mavlink_msg_param_set_encode(255,0,&msg2send,&msg);
+			 px4Intf->SendMAVLinkMsg(msg2send);
+		 }
+
+	 }
  }
+
 
   void Communication_t::ParamValueHandler(){
      mavlink_param_value_t msg;
