@@ -1076,6 +1076,10 @@ public class FSAM {
                 double de = crossTrackOffset * Math.sin(headingNextWP);
 
                 Position cp = PrevWP.linearEst(dn, de);
+                
+                if(cp.alt()< 0){
+                	cp = cp.mkAlt(NextWP.alt());
+                }
 
                 RefHeading2 = Math.toDegrees(CurrentPos.track(cp));
 
