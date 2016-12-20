@@ -931,7 +931,8 @@ public class FSAM {
         }
 
         // Perform A* seartch
-        List<Pair<Integer, Integer>> GridPath = dg.optimalPath();
+        DensityGridAStarSearch DGAstar = new DensityGridAStarSearch();
+        List<Pair<Integer, Integer>> GridPath = DGAstar.optimalPath(dg);
         Plan ResolutionPlan1 = new Plan(); // Go around plan
         Plan ResolutionPlan2 = new Plan(); // Go above plan
         double pathLength1 = Double.MAX_VALUE;
