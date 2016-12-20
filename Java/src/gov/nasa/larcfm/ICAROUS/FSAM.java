@@ -1077,7 +1077,7 @@ public class FSAM {
 
                 Position cp = PrevWP.linearEst(dn, de);
                 
-                if(cp.alt()< 0){
+                if(cp.alt()< 2){
                 	cp = cp.mkAlt(NextWP.alt());
                 }
 
