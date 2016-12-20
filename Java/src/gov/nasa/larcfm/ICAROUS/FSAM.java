@@ -243,6 +243,7 @@ public class FSAM {
                 // prioritization/scheduling to handle multiple conflicts
 
                 if (TrafficConflict) {
+		    UAS.SetMode(4);
                     if (FenceKeepInConflict || FenceKeepOutConflict) {
                         UAS.error.addWarning(
                                 "[" + UAS.timeLog + "] MSG: Computing resolution for traffic & geofence conflict");
@@ -655,7 +656,7 @@ public class FSAM {
 
         // System.out.println("daa ticks:"+daaTimeElapsed);
         // Predict if traffic violations exist on the return path
-        if (daaTimeElapsed > 10) {
+        if (daaTimeElapsed > 8) {
             if (TrafficConflict) {
                 ResolveStandoffConflict(); // Call resolve standoff conflict
                 // here to get next heading to turn
@@ -1141,11 +1142,13 @@ public class FSAM {
         double Vres1 = KMB.groundSpeedResolution(true);
         double Vres2 = KMB.groundSpeedResolution(false);
         // System.out.println("Vres:"+Vres);
+
+	/*
         if (!Double.isNaN(Vres1) && !Double.isInfinite(Vres1)) {
             V = Math.ceil(Vres1);
         } else if (!Double.isNaN(Vres2) && !Double.isInfinite(Vres2)) {
             V = Math.ceil(Vres2);
-        }
+	    }*/
 
         // Get vertical speed from DAA resolution - use 0 if unavailable
         double Dres = KMB.verticalSpeedResolution(true);
