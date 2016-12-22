@@ -37,15 +37,15 @@ public enum BandsRegion {
 		return name;
 	}
 
-	boolean isValidBand() {
+	public boolean isValidBand() {
 		return this != UNKNOWN;
 	}
 
-	boolean isResolutionBand() {
+	public boolean isResolutionBand() {
 		return this == NONE || this == RECOVERY;
 	}
 
-	boolean isConflictBand() {
+	public boolean isConflictBand() {
 		return isValidBand() && !isResolutionBand();  
 	}
 

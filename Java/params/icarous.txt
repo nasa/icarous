@@ -27,4 +27,4 @@ PROXFACTOR = 3.0
 # Flight plan resolution parameters
 RES_SPEED = 0.5
 XTRK_GAIN = 0.6
-STANDOFF  = 2.0
+STANDOFF  = 50.0

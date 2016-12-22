@@ -627,6 +627,10 @@ public class FSAM {
             }
         }
 
+        //KMB = daa.getKinematicMultiBands();
+        //TrafficConflict = KMB.regionOfTrack(daa.getOwnshipState().track()).isConflictBand();
+        
+        
         // System.out.println("Checking violation\n");
         for (int ac = 1; ac < daa.numberOfAircraft(); ac++) {
             double tlos = daa.timeToViolation(ac);
@@ -641,6 +645,8 @@ public class FSAM {
                 // System.out.println(daa.toString());
                 // System.out.println(KMB.outputString());
                 daaTimeStart = (double) System.nanoTime() / 1E9;
+                
+                System.out.println(KMB.outputString());
 
                 ResolveTrafficConflict();
             }
@@ -653,6 +659,12 @@ public class FSAM {
             }
 
         }
+        
+        /*
+        if(TrafficConflict){
+        	ResolveTrafficConflict();
+        	System.out.println(KMB.outputString());
+        }*/
 
         // System.out.println("daa ticks:"+daaTimeElapsed);
         // Predict if traffic violations exist on the return path
