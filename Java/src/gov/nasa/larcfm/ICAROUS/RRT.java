@@ -66,7 +66,7 @@ public class RRT {
 		closestDist = Double.MAX_VALUE;
 		
 		DAA = new Daidalus();
-		if(!DAA.parameters.loadFromFile("params/DaidalusQuadConfig2.txt")){
+		if(!DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt")){
 			System.out.print("error:no file found\n");
 		}
 		daaLookAhead = DAA.parameters.getLookaheadTime("s");
@@ -328,21 +328,22 @@ public class RRT {
 		node_t nearest = FindNearest(rd);
 		node_t newNode;
 
-		double U[] = new double[3];
-		GetInput(nearest,rd,U);
-		newNode = MotionModel(nearest.pos,nearest.vel,
-									 nearest.trafficPos,nearest.trafficVel,U);
-
-		if(CheckDirectPath2Goal(nearest)){
+		if(nodeCount > 0 && CheckDirectPath2Goal(nearest)){
 			newNode = goalNode;
 			nodeCount++;
 			newNode.id = nodeCount;
 		}
-
-		if(newNode.id < 0){
-			return;
+		else{
+			double U[] = new double[3];
+			GetInput(nearest,rd,U);
+			newNode = MotionModel(nearest.pos,nearest.vel,
+					nearest.trafficPos,nearest.trafficVel,U);
+			
+			if(newNode.id < 0){
+				return;
+			}
 		}
-
+		
 		nearest.children.add(newNode);
 		newNode.parent= nearest;
 		nodeList.add(newNode);
@@ -358,9 +359,11 @@ public class RRT {
 			}
 		}
 
-		if(boundingBox.size() > 2){
-			if(!geoPolycarp.definitelyInside(qPos,boundingBox)){
-				return true;
+		if(boundingBox != null){
+			if(boundingBox.size() > 2){
+				if(!geoPolycarp.definitelyInside(qPos,boundingBox)){
+					return true;
+				}
 			}
 		}
 		return false;
@@ -409,7 +412,7 @@ public class RRT {
 			Vect3 pos = TrafficPos.get(i);
 			Vect3 vel = TrafficVel.get(i);
 			Position si = Position.makeXYZ(pos.x,"m",pos.y,"m",pos.z,"m");
-			Velocity vi = Velocity.makeVxyz(pos.x,pos.y,"m/s",pos.z,"m/s");
+			Velocity vi = Velocity.makeVxyz(vel.x,vel.y,"m/s",vel.z,"m/s");
 			DAA.addTrafficState("Traffic"+i,si,vi);
 
 			//printf("Traffic pos:%f,%f\n",itP->x,itP->y);
@@ -436,71 +439,55 @@ public class RRT {
 
 		KMB = DAA.getKinematicMultiBands();
 		
-		if(KMB.regionOfTrack(DAA.getOwnshipState().track()).){
-			
+		if(KMB.regionOfTrack(DAA.getOwnshipState().track()).isConflictBand()){
+			return true;
 		}
-		
-		// Check collision with traffic based on current heading
-		for(int ac = 1;ac<DAA.numberOfAircraft();ac++){
-			double tlos = DAA.timeToViolation(ac);
-			if(tlos >=0 && tlos <= daaLookAhead){
-				KMB = DAA.getKinematicMultiBands();
-				for(int ib=0;ib<KMB.trackLength();++ib){
-					if(KMB.trackRegion(ib) != BandsRegion.NONE ){
-						Interval ii = KMB.track(ib,"deg");
-						if(qHeading > ii.low && qHeading < ii.up){
-							//printf("RRT:collision warning %f in [%f,%f]\n",qHeading,ii.low,ii.up);
-							return true;
-						}
-						else{
-							if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
-								//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-								return true;
-							}
-						}
-					}
+			
+		for(int ib=0;ib<KMB.trackLength();++ib){
+			if(KMB.trackRegion(ib) != BandsRegion.NONE ){
+				Interval ii = KMB.track(ib,"deg");
+				if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
+						//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
+						return true;
 				}
 			}
 		}
+		
+		
 
 		if(CheckTurn){
-			// Check collision with traffic based on direct heading to
+			// Check collision with traffic based on direct heading to traffic
 			// ensure turning to newHeading from oldHeading is conflict free
 			for(int i=0;i<TrafficPos.size();++i){
-				DAA.reset();
+				double timeElapsed2 = (double)System.nanoTime()/1E9 - startTime;
 				Vect3 pos = TrafficPos.get(i);
 				Vect3 vel = TrafficVel.get(i);
-				so          = Position.makeXYZ(pos.x,"m",pos.y,"m",pos.z,"m");
+				so          = Position.makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
 				Position si = Position.makeXYZ(pos.x,"m",pos.y,"m",pos.z,"m");
 				Velocity vi = Velocity.makeVxyz(vel.x,vel.y,"m/s",vel.z,"m/s");
 				Vect3 AB    = new Vect3(pos.x - qPos.x,pos.y - qPos.y,pos.z - qPos.z);
 				AB          = AB.Scal(1/AB.norm()); //TODO: scale this vector by resolution speed
 				vo          = Velocity.makeVxyz(AB.x,AB.y,"m/s",AB.z,"m/s");
 
-				DAA.setOwnshipState("Ownship",so,vo,0);
+				DAA.setOwnshipState("Ownship",so,vo,timeElapsed2);
 				DAA.addTrafficState("Traffic"+i,si,vi);
-
-				double tlos = DAA.timeToViolation(1);
-				if(tlos >=0 && tlos <= daaLookAhead){
-					KMB = DAA.getKinematicMultiBands();
-					for(int ib=0;ib<KMB.trackLength();++ib){
-						if(KMB.trackRegion(ib) != BandsRegion.NONE ){
-							Interval ii = KMB.track(ib,"deg");
-							if(qHeading >= ii.low && qHeading <= ii.up){
-								//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-								return true;
-							}
-							if(oldHeading >= ii.low && oldHeading <= ii.up){
-								//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-								//return true;
-							}
-							else if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
-								//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-								return true;
-							}
+				
+				KMB = DAA.getKinematicMultiBands();
+				for(int ib=0;ib<KMB.trackLength();++ib){
+					if(KMB.trackRegion(ib).isConflictBand()){
+						Interval ii = KMB.track(ib,"deg");
+						if(qHeading >= ii.low && qHeading <= ii.up){
+							return true;
+						}
+						if(oldHeading >= ii.low && oldHeading <= ii.up){
+							//
+						}
+						else if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
+							return true;
 						}
 					}
 				}
+
 
 			}
 		}
@@ -688,7 +675,7 @@ public class RRT {
 			System.out.format("x,y:%f,%f,",node.pos.x,node.pos.y);
 			System.out.println(CheckDirectPath2Goal(node));
 			if(node.parent != null && trafficSize > 0){
-				CheckTrafficCollision(true,node.pos,node.vel,node.trafficPos,node.trafficVel,node.parent.vel);
+				//CheckTrafficCollision(true,node.pos,node.vel,node.trafficPos,node.trafficVel,node.parent.vel);
 			}
 			path.add(node);
 			node = node.parent;

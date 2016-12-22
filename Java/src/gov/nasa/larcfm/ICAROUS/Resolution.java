@@ -49,6 +49,7 @@ public class Resolution {
 			FlightData.nextMissionWP++;
 		}
 		
+		FMS.GoalReached = true;
 		FMS.planType = plan_type_t.TRAJECTORY;
 		FMS.resumeMission = false;
 
@@ -179,7 +180,8 @@ public class Resolution {
 		}
 
 		// Perform A* seartch
-		List<Pair <Integer,Integer>> GridPath = dg.optimalPath();
+		DensityGridAStarSearch DGAstar = new DensityGridAStarSearch();
+		List<Pair <Integer,Integer>> GridPath = DGAstar.optimalPath(dg);
 		Plan ResolutionPlan1 = new Plan(); // Go around plan
 		Plan ResolutionPlan2 = new Plan(); // Go above plan
 		double pathLength1 = Double.MAX_VALUE;
@@ -247,7 +249,7 @@ public class Resolution {
 		}
 		
 		
-		System.out.println("FP last time:"+FlightData.ResolutionPlan.getLastTime());
+		FMS.GoalReached = true;
 		FMS.planType = plan_type_t.TRAJECTORY;
 		FMS.resumeMission = false;
 	}
@@ -473,6 +475,7 @@ public class Resolution {
 			double ETA      = distance/resolutionSpeed;
 			FlightData.ResolutionPlan.add(new NavPoint(cp,ETA));
 			
+			FMS.GoalReached = true;
 			FMS.planType = plan_type_t.TRAJECTORY;
 			FMS.resumeMission = false;
 		}
@@ -491,8 +494,8 @@ public class Resolution {
 
 		
 		for(int i=0;i<FlightData.traffic.size();++i){
-			Position tPos = TrafficPos.get(i);
-			Velocity tVel = TrafficVel.get(i);
+			Position tPos = FlightData.traffic.get(i).pos;
+			Velocity tVel = FlightData.traffic.get(i).vel;
 			TrafficPos.add(tPos);
 			TrafficVel.add(tVel);
 		}

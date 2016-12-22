@@ -58,6 +58,7 @@ public class ConflictDetection{
 	private Daidalus DAA;
 	private KinematicMultiBands KMB;
 	double daaLookAhead;
+	double timeStart;
 	
 	public ConflictDetection(QuadFMS fms){
 		FMS = fms;
@@ -66,6 +67,7 @@ public class ConflictDetection{
 		DAA = new Daidalus();
 		DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
 		daaLookAhead = DAA.parameters.getLookaheadTime("s");
+		timeStart    = (double)System.nanoTime()/1E9;
 	}
 
 	public int Size(){
@@ -191,13 +193,15 @@ public class ConflictDetection{
 	}
 
 	public void CheckTraffic(){
+		
+		double simTime = (double)System.nanoTime()/1E9 - timeStart;
 		daaTimeElapsed = (double)System.nanoTime()/1E9 - daaTimeStart;
 
+		
 		Position so = FlightData.acState.positionLast();
 		Velocity vo = FlightData.acState.velocityLast();
 
-		DAA.reset();
-		DAA.setOwnshipState("Ownship",so,vo,0.0);
+		DAA.setOwnshipState("Ownship",so,vo,simTime);
 
 		for(int i=0;i<FlightData.traffic.size();i++){
 			Position si = FlightData.traffic.get(i).pos;
@@ -205,25 +209,15 @@ public class ConflictDetection{
 			DAA.addTrafficState("Traffic"+i,si,vi);
 		}
 
-		double qHeading = vo.track("degree");
 
-		boolean daaViolation = false;
-		for(int ac = 1;ac<DAA.numberOfAircraft();ac++){
-			double tlos = DAA.timeToViolation(ac);
-			if(tlos >=0 && tlos <= daaLookAhead){
-				KMB = DAA.getKinematicMultiBands();
-				for(int ib=0;ib<KMB.trackLength();++ib){
-					if(KMB.trackRegion(ib) != BandsRegion.NONE ){
-						Interval ii = KMB.track(ib,"deg");
-						if(qHeading > ii.low && qHeading < ii.up){
-							trafficConflict = true;
-							daaTimeStart = (double)System.nanoTime()/1E9;
-							daaViolation = true;
-						}
-					}
-				}
-			}
+		boolean daaViolation = false;		
+		KMB = DAA.getKinematicMultiBands();
+		if(KMB.regionOfTrack(DAA.getOwnshipState().track()).isConflictBand()){
+			trafficConflict = true;
+			daaTimeStart = (double)System.nanoTime()/1E9;
+			daaViolation = true;
 		}
+	
 
 		if(daaTimeElapsed > 10){
 			if(!daaViolation){

@@ -38,7 +38,7 @@ ca_factor = 0.2
 # If contour_thr is set to 0, only conflict contours are computed. Max value is 180 [deg]
 contour_thr = 180.0 [deg]
 # Alert Levels
-alert_1_alerting_time = 5.0 [s]
+alert_1_alerting_time = 10.0 [s]
 alert_1_detector = det_1
 alert_1_early_alerting_time = 15.0 [s]
 alert_1_region = NEAR
