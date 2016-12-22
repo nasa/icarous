@@ -50,7 +50,7 @@ public enum BandsRegion {
 	}
 
 	// RECOVERY=NONE < FAR < MID < NEAR
-	int order() {
+	public int order() {
 		if (isResolutionBand()) {
 			return 0;
 		}
