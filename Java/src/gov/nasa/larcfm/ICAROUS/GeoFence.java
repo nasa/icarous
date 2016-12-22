@@ -112,7 +112,7 @@ public class GeoFence {
             proj = Projection.createProjection(geoPolyLLA.getVertex(0));
             geoPoly3D = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
             Velocity v = Velocity.makeTrkGsVs(0.0, 0.0, 0.0);
-            geoPolyPath.addPolygon(geoPolyLLA, v, 0);
+            
 
             for (int i = 0; i < geoPoly3D.size(); ++i) {
                 fenceVertices.add(geoPoly3D.getVertex(i));
@@ -128,7 +128,7 @@ public class GeoFence {
             Poly2D p2D = new Poly2D(fenceVertices2);
             Poly3D p3D = new Poly3D(p2D, floor, ceiling);
             geoPolyLLA2 = SimplePoly.make(p3D, proj);
-
+            geoPolyPath.addPolygon(geoPolyLLA2, v, 0);
         }
     }
 

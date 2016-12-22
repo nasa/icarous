@@ -939,7 +939,7 @@ public class FSAM {
                 double hthreshold = UAS.pData.getValue("HTHRESHOLD");
                 double vthreshold = UAS.pData.getValue("VTHRESHOLD");
                 SimplePoly expfence = GF.pu.bufferedConvexHull(GF.geoPolyLLA, hthreshold, vthreshold);
-                dg.setWeightsInside(expfence, 100.0);
+                dg.setWeightsInside(GF.geoPolyLLA2, 100.0);
             }
         }
 
