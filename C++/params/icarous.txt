@@ -15,7 +15,7 @@ XTRK_GAIN = 0.5
 MAX_CEILING = 50;
 
 #Keep-out resolution type (0-Astar, 1-RRT)
-SEARCH_TYPE=0
+SEARCH_TYPE=1
 
 #Astar search parameters
 LOOKAHEAD = 2

@@ -63,11 +63,11 @@ elif [ "$1" == 'PX4R' ];then
     
 elif [ "$1" == 'GS' ];then
     echo "Launching Ground station test"
-    mavproxy.py --master=$GS_MASTER --map --console --load-module geofence
+    mavproxy.py --master=$GS_MASTER --map --console --load-module geofence --mav10
 
 elif [ "$1" == 'RADIO' ];then
     echo "Launching radio module"
-    java -cp $EXEC:$JSSCLIB radio $RADIO_SOCKET_IN $RADIO_SOCKET_OUT $RADIO_SERIAL_PORT $RADIO_BAUD
+    java -cp $EXEC:$JSSCLIB radio $RADIO_SOCKET_IN $RADIO_SOCKET_OUT $RADIO_SERIAL_PORT $RADIO_BAUD 
     
 elif [ "$1" == 'SAFE' ];then
     echo "Launching SAFEGUARD listener"
