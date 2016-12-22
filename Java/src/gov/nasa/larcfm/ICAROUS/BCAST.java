@@ -1,34 +1,34 @@
 /**
  * Broadcast module
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
- *
- *
+ * 
+ * 
  * Copyright (c) 2011-2016 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
- *
+ * 
  * Notices:
- *  Copyright 2016 United States Government as represented by the Administrator of the National Aeronautics and Space Administration.
+ *  Copyright 2016 United States Government as represented by the Administrator of the National Aeronautics and Space Administration. 
  *  All rights reserved.
- *
+ *     
  * Disclaimers:
- *  No Warranty: THE SUBJECT SOFTWARE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY OF ANY KIND, EITHER EXPRESSED,
+ *  No Warranty: THE SUBJECT SOFTWARE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY OF ANY KIND, EITHER EXPRESSED, 
  *  IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY THAT THE SUBJECT SOFTWARE WILL CONFORM TO SPECIFICATIONS, ANY
- *  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR FREEDOM FROM INFRINGEMENT,
- *  ANY WARRANTY THAT THE SUBJECT SOFTWARE WILL BE ERROR FREE, OR ANY WARRANTY THAT DOCUMENTATION, IF PROVIDED,
- *  WILL CONFORM TO THE SUBJECT SOFTWARE. THIS AGREEMENT DOES NOT, IN ANY MANNER, CONSTITUTE AN ENDORSEMENT BY GOVERNMENT
- *  AGENCY OR ANY PRIOR RECIPIENT OF ANY RESULTS, RESULTING DESIGNS, HARDWARE, SOFTWARE PRODUCTS OR ANY OTHER APPLICATIONS
- *  RESULTING FROM USE OF THE SUBJECT SOFTWARE.  FURTHER, GOVERNMENT AGENCY DISCLAIMS ALL WARRANTIES AND
+ *  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR FREEDOM FROM INFRINGEMENT, 
+ *  ANY WARRANTY THAT THE SUBJECT SOFTWARE WILL BE ERROR FREE, OR ANY WARRANTY THAT DOCUMENTATION, IF PROVIDED, 
+ *  WILL CONFORM TO THE SUBJECT SOFTWARE. THIS AGREEMENT DOES NOT, IN ANY MANNER, CONSTITUTE AN ENDORSEMENT BY GOVERNMENT 
+ *  AGENCY OR ANY PRIOR RECIPIENT OF ANY RESULTS, RESULTING DESIGNS, HARDWARE, SOFTWARE PRODUCTS OR ANY OTHER APPLICATIONS 
+ *  RESULTING FROM USE OF THE SUBJECT SOFTWARE.  FURTHER, GOVERNMENT AGENCY DISCLAIMS ALL WARRANTIES AND 
  *  LIABILITIES REGARDING THIRD-PARTY SOFTWARE, IF PRESENT IN THE ORIGINAL SOFTWARE, AND DISTRIBUTES IT "AS IS."
  *
- * Waiver and Indemnity:
- *   RECIPIENT AGREES TO WAIVE ANY AND ALL CLAIMS AGAINST THE UNITED STATES GOVERNMENT,
- *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT.  IF RECIPIENT'S USE OF THE SUBJECT SOFTWARE
+ * Waiver and Indemnity:  
+ *   RECIPIENT AGREES TO WAIVE ANY AND ALL CLAIMS AGAINST THE UNITED STATES GOVERNMENT, 
+ *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT.  IF RECIPIENT'S USE OF THE SUBJECT SOFTWARE 
  *   RESULTS IN ANY LIABILITIES, DEMANDS, DAMAGES,
- *   EXPENSES OR LOSSES ARISING FROM SUCH USE, INCLUDING ANY DAMAGES FROM PRODUCTS BASED ON, OR RESULTING FROM,
- *   RECIPIENT'S USE OF THE SUBJECT SOFTWARE, RECIPIENT SHALL INDEMNIFY AND HOLD HARMLESS THE UNITED STATES GOVERNMENT,
- *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT, TO THE EXTENT PERMITTED BY LAW.
+ *   EXPENSES OR LOSSES ARISING FROM SUCH USE, INCLUDING ANY DAMAGES FROM PRODUCTS BASED ON, OR RESULTING FROM, 
+ *   RECIPIENT'S USE OF THE SUBJECT SOFTWARE, RECIPIENT SHALL INDEMNIFY AND HOLD HARMLESS THE UNITED STATES GOVERNMENT, 
+ *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT, TO THE EXTENT PERMITTED BY LAW.  
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 package gov.nasa.larcfm.ICAROUS;
@@ -38,54 +38,57 @@ import gov.nasa.larcfm.Util.ParameterData;
 import com.MAVLink.icarous.*;
 import java.io.*;
 
-public class BCAST implements Runnable {
+/*
+public class BCAST implements Runnable{
 
-    public Thread t;
-    public String threadName;
-    public Aircraft UAS;
-    public AircraftData FlightData;
-    public Interface Intf;
-    ParameterData pData;
+	public Thread t;
+	public String threadName;
+	public Aircraft UAS;
+	public AircraftData FlightData;
+	public Interface Intf;
+	ParameterData pData;
 
-    public BCAST(String name, Aircraft uas, Interface bcastIntf, ParameterData pdata) {
-        threadName = name;
-        UAS = uas;
-        FlightData = UAS.FlightData;
-        Intf = bcastIntf;
-        pData = pdata;
+	public BCAST(String name,Aircraft uas,Interface bcastIntf,ParameterData pdata){
+		threadName       = name;
+		UAS              = uas;               
+		FlightData       = UAS.FlightData;
+		Intf             = bcastIntf;
+		pData            = pdata;
 
-    }
 
-    public void run() {
+	}
 
-        msg_heartbeat_icarous ICAROUSstate = new msg_heartbeat_icarous();
-        double ic_hz = pData.getValue("ICHBEAT");
+	public void run(){
 
-        double timeStart = (double) (System.nanoTime() / 1E9);
-        double timeCurrent, timeElapsed;
-        while (true) {
-            ic_hz = pData.getValue("ICHBEAT");
+		msg_heartbeat_icarous ICAROUSstate = new msg_heartbeat_icarous();
+		double ic_hz                       = pData.getValue("ICHBEAT");
 
-            timeCurrent = (double) (System.nanoTime() / 1E9);
+		double timeStart                   = (double) (System.nanoTime()/1E9);
+		double timeCurrent,timeElapsed;                 
+		while(true){	    	    	    	   
+			ic_hz                       = pData.getValue("ICHBEAT");
 
-            timeElapsed = timeCurrent - timeStart;
+			timeCurrent = (double) (System.nanoTime()/1E9);
 
-            if (timeElapsed > 1 / ic_hz) {
-                ICAROUSstate.status = (byte) UAS.GetAircraftState();
+			timeElapsed = timeCurrent - timeStart;
 
-                // Broadcast messages here
-                Intf.Write(ICAROUSstate);
+			if(timeElapsed > 1/ic_hz){
+				ICAROUSstate.status = (byte) UAS.GetAircraftState();
 
-                timeStart = timeCurrent;
-            }
+				// Broadcast messages here
+				Intf.Write(ICAROUSstate);
 
-        }
-    }
+				timeStart = timeCurrent;
+			}
 
-    public void start() {
-        System.out.println("Starting " + threadName);
-        t = new Thread(this, threadName);
-        t.start();
-    }
 
-}
+		}
+	}
+
+	public void start(){
+		System.out.println("Starting "+threadName);
+		t = new Thread(this,threadName);
+		t.start();
+	}
+
+}*/
