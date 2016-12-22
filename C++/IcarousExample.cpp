@@ -162,40 +162,45 @@ int main(int argc,char* argv[]) {
   // Load parameters for a small UAS
   daa.parameters.loadFromFile("DaidalusQuadConfig.txt");
 
-  // Position and velocity of ownship
-  Position so = Position::makeLatLonAlt(37.102456,"deg", -76.387094,"deg", 16.4,"ft");
-  Velocity vo = Velocity::makeTrkGsVs(90.0,"deg", 2.5,"kts", 0.0,"fpm");
+  double t = 0.0;
+  // for all times t (in this example, only one time step is illustrated)
+    // Add ownship state at time t
+    Position so = Position::makeLatLonAlt(37.102456,"deg", -76.387094,"deg", 16.4,"ft");	
+    Velocity vo = Velocity::makeTrkGsVs(90.0,"deg", 2.5,"kts", 0.0,"fpm");
+    daa.setOwnshipState("ownship",so,vo,t);
+    
+    // Add all traffic states at time t
+    // ... some traffic ...
+    Position si = Position::makeLatLonAlt(37.102450,"deg", -76.386889,"deg", 16.4,"ft"); 
+    Velocity vi = Velocity::makeTrkGsVs(270.0,"deg", 1.0,"kts", 0.0,"fpm"); 
+    daa.addTrafficState("ith-intruder",si,vi);
+    // ... more traffic ...
+ 
+    // Set wind information
+    Velocity wind = Velocity::makeTrkGsVs(90,"deg", 1,"knot", 0,"fpm");
+    daa.setWindField(wind);
 
-  // Position and velocity of intruder
-  Position si = Position::makeLatLonAlt(37.102450,"deg", -76.386889,"deg", 16.4,"ft");
-  Velocity vi = Velocity::makeTrkGsVs(270.0,"deg", 1.0,"kts", 0.0,"fpm");
+    // Print information about the Daidalus Object
+    std::cout << "Number of Aircraft: " << daa.numberOfAircraft() << std::endl;
+    std::cout << "Last Aircraft Index: " << daa.lastTrafficIndex() << std::endl;
+    std::cout <<  std::endl;
 
-  // Add ownship and traffic data to DAIDALUS object
-  daa.setOwnshipState("ownship",so,vo,0.0);
-  daa.addTrafficState("intruder",si,vi);
+    // Check time to violation
+    printTimeToViolation(daa);
 
-  // Set wind information
-  Velocity wind = Velocity::makeTrkGsVs(90,"deg", 1,"knot", 0,"fpm");
-  daa.setWindField(wind);
-
-  // Print information about the Daidalus Object
-  std::cout << "Number of Aircraft: " << daa.numberOfAircraft() << std::endl;
-  std::cout << "Last Aircraft Index: " << daa.lastTrafficIndex() << std::endl;
-  std::cout <<  std::endl;
-
-  // Check time to violation
-  printTimeToViolation(daa);
-
-  // Call alerting logic for each traffic aircraft.
-  printAlerts(daa);
+    // Call alerting logic for each traffic aircraft.
+    printAlerts(daa);
   
-  // Compute resolution bands 
-  KinematicMultiBands bands;
-  daa.kinematicMultiBands(bands);
+    // Compute resolution bands 
+    KinematicMultiBands bands;
+    daa.kinematicMultiBands(bands);
 
-  // Print track, ground speed, vertical speed and altitude bands
-  printBands(daa,bands);
+    // Print track, ground speed, vertical speed and altitude bands
+    printBands(daa,bands);
+  // continue with next time step  
 
+  /** Geofencing **/
+    
   // Add geofence
   double floor     = 0;  // 0 m
   double ceiling   = 10; // 10 m

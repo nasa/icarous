@@ -10,18 +10,18 @@ all: lib example
 lib: $(OBJS)
 	@echo 
 	@echo "** Building ICAROUS binary library"
-	ar -cr lib/ICAROUS.a $(OBJS) && ranlib lib/ICAROUS.a #&& rm *.o
+	ar -cr lib/icarous.a $(OBJS) && ranlib lib/icarous.a #&& rm *.o
 	@echo 
 
 example:
 	@echo
 	@echo "** Building DaidalusExample application"
-	$(CXX) -o IcarousExample $(CXXFLAGS) IcarousExample.cpp lib/ICAROUS.a
+	$(CXX) -o IcarousExample $(CXXFLAGS) IcarousExample.cpp lib/icarous.a
 	@echo 
 	@echo "** To run IcarousExample type:"
 	@echo "./IcarousExample"
 
 clean:
-	rm -f IcarousExample $(OBJS) lib/ICAROUS.a
+	rm -f IcarousExample $(OBJS) lib/icarous.a
 
 .PHONY: all lib example

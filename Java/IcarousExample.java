@@ -27,48 +27,51 @@ public class IcarousExample{
 	// Load parameters for a small UAS
 	daa.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
 
-	// Position and velocity data for ownship
-	Position so = Position.makeLatLonAlt(37.102456,"deg", -76.387094,"deg", 16.4,"ft");	
-	Velocity vo = Velocity.makeTrkGsVs(90.0,"deg", 2.5,"kts", 0.0,"fpm");
+	double t = 0.0;
+	// for all times t (in this example, only one time step is illustrated)
+	  // Add ownship state at time t
+	  Position so = Position.makeLatLonAlt(37.102456,"deg", -76.387094,"deg", 16.4,"ft");	
+	  Velocity vo = Velocity.makeTrkGsVs(90.0,"deg", 2.5,"kts", 0.0,"fpm");
+	  daa.setOwnshipState("ownship",so,vo,t);
 
-	// Position and velocity data for intruder(s)
-	Position si = Position.makeLatLonAlt(37.102450,"deg", -76.386889,"deg", 16.4,"ft"); 
-	Velocity vi = Velocity.makeTrkGsVs(270.0,"deg", 1.0,"kts", 0.0,"fpm"); 
+	  // Add all traffic states at time t
+	  // ... some traffic ...
+	  Position si = Position.makeLatLonAlt(37.102450,"deg", -76.386889,"deg", 16.4,"ft"); 
+	  Velocity vi = Velocity.makeTrkGsVs(270.0,"deg", 1.0,"kts", 0.0,"fpm"); 
+	  daa.addTrafficState("ith-intruder",si,vi);
+	  // ... more traffic ...
 
-	// Add ownship and traffic data to DAIDALUS object
-	daa.setOwnshipState("ownship",so,vo,0.0);
-	daa.addTrafficState("intruder",si,vi);
-
-	// Set wind information
-	Velocity wind = Velocity.makeTrkGsVs(90,"deg", 1,"knot", 0,"fpm");
-	daa.setWindField(wind);
+	  // Set wind information
+	  Velocity wind = Velocity.makeTrkGsVs(90,"deg", 1,"knot", 0,"fpm");
+	  daa.setWindField(wind);
 	
-	// Print information about the Daidalus Object
-	System.out.println("Number of Aircraft: "+daa.numberOfAircraft());
-	System.out.println("Last Aircraft Index: "+daa.lastTrafficIndex());
-	System.out.println();
+	  // Print information about the Daidalus Object
+	  System.out.println("Number of Aircraft: "+daa.numberOfAircraft());
+	  System.out.println("Last Aircraft Index: "+daa.lastTrafficIndex());
+	  System.out.println();
 	
-	// Check time to violation
-	printTimeToViolation(daa);
+	  // Check time to violation
+	  printTimeToViolation(daa);
 
-	// Call alerting logic for each traffic aircraft.
-	printAlerts(daa);
+	  // Call alerting logic for each traffic aircraft.
+	  printAlerts(daa);
 
-	// Compute resolution bands 
-	KinematicMultiBands bands = daa.getKinematicMultiBands();
+	  // Compute resolution bands 
+	  KinematicMultiBands bands = daa.getKinematicMultiBands();
 
-	// Print track, ground speed, vertical speed and altitude bands
-	printBands(daa,bands);
+	  // Print track, ground speed, vertical speed and altitude bands
+	  printBands(daa,bands);
+        // continue with next time step
 
-	/** Geofence **/
+        /** Geofencing **/
 	
-	// Add geofence
-	double floor     = 0;  // 0 m
-	double ceiling   = 10; // 10 m
+        // Add geofence
+        double floor     = 0;  // 0 m
+        double ceiling   = 10; // 10 m
 
-	// Make a geofence with 4 vertices (keep in fence)
-	SimplePoly geoPolyLLA1     = new SimplePoly(floor,ceiling);
-	geoPolyLLA1.addVertex(Position.makeLatLonAlt(37.102545,"deg",-76.387213,"deg",0,"m"));
+        // Make a geofence with 4 vertices (keep in fence)
+        SimplePoly geoPolyLLA1     = new SimplePoly(floor,ceiling);
+        geoPolyLLA1.addVertex(Position.makeLatLonAlt(37.102545,"deg",-76.387213,"deg",0,"m"));
 	geoPolyLLA1.addVertex(Position.makeLatLonAlt(37.102344,"deg",-76.387163,"deg",0,"m"));
 	geoPolyLLA1.addVertex(Position.makeLatLonAlt(37.102351,"deg",-76.386844,"deg",0,"m"));
 	geoPolyLLA1.addVertex(Position.makeLatLonAlt(37.102575,"deg",-76.386962,"deg",0,"m"));
