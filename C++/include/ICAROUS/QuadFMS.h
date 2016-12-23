@@ -66,6 +66,9 @@ class QuadFMS_t:public FlightManagementSystem_t{
         KinematicMultiBands KMB;
         double daaLookAhead;
         time_t trafficResolutionTime;
+        Position NextGoal;
+        bool goalReached;
+        time_t timeStart;
 
     public:
         time_t daaTimeStart;

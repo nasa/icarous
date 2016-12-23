@@ -57,6 +57,8 @@ RRT_t::RRT_t(){
 		printf("error:no file found\n");
 	}
 	daaLookAhead = DAA.parameters.getLookaheadTime("s");
+	goalreached = false;
+	time(&startTime);
 }
 
 RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
@@ -81,6 +83,8 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 	ymax = 100;
 	zmin = -1;
 	zmax = 10;
+
+	goalreached = false;
 
 	for(it = fenceList.begin();it != fenceList.end(); ++it){
 		if(it->GetType() != KEEP_IN){
@@ -114,6 +118,7 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 
 	DAA.parameters.loadFromFile("params/DaidalusQuadConfig2.txt");
 	daaLookAhead = DAA.parameters.getLookaheadTime("s");
+	time(&startTime);
 }
 
 void RRT_t::Initialize(Vect3 Pos,Vect3 Vel,
@@ -330,19 +335,18 @@ void RRT_t::RRTStep(int i){
 
 	double U[3];
 	GetInput(nearest,rd,U);
-	newNode = MotionModel(nearest.pos,nearest.vel,
-								 nearest.trafficPos,nearest.trafficVel,U);
-
 
 	if(CheckDirectPath2Goal(nearest)){
 		newNode = goalNode;
 		nodeCount++;
 		newNode.id = nodeCount;
-	}
+	}else{
+		newNode = MotionModel(nearest.pos,nearest.vel,
+				nearest.trafficPos,nearest.trafficVel,U);
 
-
-	if(newNode.id < 0){
-		return;
+		if(newNode.id < 0){
+			return;
+		}
 	}
 
 
@@ -398,11 +402,15 @@ bool RRT_t::CheckProjectedFenceConflict(node_t qnode,node_t goal){
 bool RRT_t::CheckTrafficCollision(bool CheckTurn,Vect3 qPos,Vect3 qVel,
 	    std::vector<Vect3> TrafficPos,std::vector<Vect3> TrafficVel,Vect3 oldVel){
 
-	DAA.reset();
+
+	time_t currentTime;
+	time(&currentTime);
+	double elapsedTime = difftime(currentTime,startTime);
+
 	Position so  = Position::makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
 	Velocity vo  = Velocity::makeVxyz(qVel.x,qVel.y,"m/s",qVel.z,"m/s");
 	Velocity vo0 = Velocity::makeVxyz(oldVel.x,oldVel.y,"m/s",oldVel.z,"m/s");
-	DAA.setOwnshipState("Ownship",so,vo,0);
+	DAA.setOwnshipState("Ownship",so,vo,elapsedTime);
 
 	std::vector<Vect3>::iterator itP;
 	std::vector<Vect3>::iterator itV;
@@ -440,36 +448,34 @@ bool RRT_t::CheckTrafficCollision(bool CheckTurn,Vect3 qPos,Vect3 qVel,
 	//printf("curr heading:%f\n",qHeading);
 	//printf("old heading:%f\n",oldHeading);
 
+	DAA.kinematicMultiBands(KMB);
+	if( BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()))){
+		return true;
+	}
+
 	// Check collision with traffic based on current heading
-	for(int ac = 1;ac<DAA.numberOfAircraft();ac++){
-		double tlos = DAA.timeToViolation(ac);
-		if(tlos >=0 && tlos <= daaLookAhead){
-			DAA.kinematicMultiBands(KMB);
-			for(int ib=0;ib<KMB.trackLength();++ib){
-				if(KMB.trackRegion(ib) != larcfm::BandsRegion::NONE ){
-					Interval ii = KMB.track(ib,"deg");
-					if(qHeading > ii.low && qHeading < ii.up){
-						//printf("RRT:collision warning %f in [%f,%f]\n",qHeading,ii.low,ii.up);
-						return true;
-					}
-					else{
-						if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
-							//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-							return true;
-						}
-					}
-				}
+	for(int ib=0;ib<KMB.trackLength();++ib){
+		if(KMB.trackRegion(ib) != larcfm::BandsRegion::NONE ){
+			Interval ii = KMB.track(ib,"deg");
+
+			if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
+				//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
+				return true;
 			}
 		}
 	}
 
 	if(CheckTurn){
-		// Check collision with traffic based on direct heading to
+
+
+		// Check collision with traffic based on direct heading to traffic
 		// ensure turning to newHeading from oldHeading is conflict free
 		for(itP = TrafficPos.begin(),itV = TrafficVel.begin();
 			itP != TrafficPos.end(),itV != TrafficVel.end();
 			++itP,++itV){
-			DAA.reset();
+
+			time(&currentTime);
+			elapsedTime = difftime(currentTime,startTime);
 
 			so          = Position::makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
 			Position si = Position::makeXYZ(itP->x,"m",itP->y,"m",itP->z,"m");
@@ -478,32 +484,32 @@ bool RRT_t::CheckTrafficCollision(bool CheckTurn,Vect3 qPos,Vect3 qVel,
 			AB          = AB.Scal(1/AB.norm()); //TODO: scale this vector by resolution speed
 			vo          = Velocity::makeVxyz(AB.x,AB.y,"m/s",AB.z,"m/s");
 
-			DAA.setOwnshipState("Ownship",so,vo,0);
+			DAA.setOwnshipState("Ownship",so,vo,elapsedTime);
 			char name[10];
 			sprintf(name,"Traffic%d",1);
 			DAA.addTrafficState(name,si,vi);
 
-			double tlos = DAA.timeToViolation(1);
-			if(tlos >=0 && tlos <= daaLookAhead){
-				DAA.kinematicMultiBands(KMB);
-				for(int ib=0;ib<KMB.trackLength();++ib){
-					if(KMB.trackRegion(ib) != larcfm::BandsRegion::NONE ){
-						Interval ii = KMB.track(ib,"deg");
-						if(qHeading >= ii.low && qHeading <= ii.up){
-							//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-							return true;
-						}
-						if(oldHeading >= ii.low && oldHeading <= ii.up){
-							//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-							//return true;
-						}
-						else if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
-							//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-							return true;
-						}
+
+			DAA.kinematicMultiBands(KMB);
+
+			for(int ib=0;ib<KMB.trackLength();++ib){
+				if(BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()))){
+					Interval ii = KMB.track(ib,"deg");
+					if(qHeading >= ii.low && qHeading <= ii.up){
+						//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
+						return true;
+					}
+					if(oldHeading >= ii.low && oldHeading <= ii.up){
+						//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
+
+					}
+					else if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
+						//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
+						return true;
 					}
 				}
 			}
+
 
 		}
 	}

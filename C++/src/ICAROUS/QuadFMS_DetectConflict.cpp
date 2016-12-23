@@ -131,13 +131,14 @@ void QuadFMS_t::CheckFlightPlanDeviation(){
 void QuadFMS_t::CheckTraffic(){
 
 	time_t currentTime    = time(&currentTime);
-	time_t daaTimeElapsed = difftime(currentTime,daaTimeStart);
+	double daaTimeElapsed = difftime(currentTime,daaTimeStart);
+	double elapsedTime    = difftime(currentTime,timeStart);
 
 	Position so = FlightData->acState.positionLast();
 	Velocity vo = FlightData->acState.velocityLast();
 
 	DAA.reset();
-	DAA.setOwnshipState("Ownship",so,vo,0.0);
+	DAA.setOwnshipState("Ownship",so,vo,elapsedTime);
 
 	for(int i=0;i<FlightData->trafficList.size();i++){
 		Position si;
@@ -150,24 +151,15 @@ void QuadFMS_t::CheckTraffic(){
 
 	double qHeading = vo.track("degree");
 
-	bool daaViolation = false;
-	for(int ac = 1;ac<DAA.numberOfAircraft();ac++){
-		double tlos = DAA.timeToViolation(ac);
-		if(tlos >=0 && tlos <= daaLookAhead){
-			DAA.kinematicMultiBands(KMB);
-			for(int ib=0;ib<KMB.trackLength();++ib){
-				if(KMB.trackRegion(ib) != larcfm::BandsRegion::NONE ){
-					Interval ii = KMB.track(ib,"deg");
-					if(qHeading > ii.low && qHeading < ii.up){
-						Conflict.traffic = true;
-						time(&daaTimeStart);
-						daaViolation = true;
-						//printf("traffic Conflict\n");
-					}
-				}
-			}
-		}
+
+	DAA.kinematicMultiBands(KMB);
+	bool daaViolation = BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()));
+
+	if(daaViolation){
+		Conflict.traffic = true;
+		time(&daaTimeStart);
 	}
+
 
 	if(daaTimeElapsed > 10){
 		if(!daaViolation){

@@ -376,9 +376,11 @@ public class QuadFMS extends FlightManagementSystem{
 		NavPoint wp1,wp2;
 		if(GoalReached){
 			next    = FlightData.MissionPlan.point(FlightData.nextMissionWP).position();
+			resumeMission = true;
 		}
 		else{
 			next    = NextGoal;
+			resumeMission = false;
 		}
 		
 		distH = current.distanceH(next);
@@ -391,6 +393,6 @@ public class QuadFMS extends FlightManagementSystem{
 		FlightData.ResolutionPlan.add(wp2);
 		FlightData.nextResolutionWP = 0;
 		planType      = plan_type_t.TRAJECTORY;
-		resumeMission = true;
+		
 	}
 }

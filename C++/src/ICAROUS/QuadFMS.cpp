@@ -49,6 +49,8 @@
      time(&daaTimeStart);
      daaLookAhead = DAA.parameters.getLookaheadTime("s");
      trafficResolutionTime = 0;
+     time(&timeStart);
+     goalReached = true;
  }
 
 QuadFMS_t::~QuadFMS_t(){}
@@ -357,7 +359,16 @@ uint8_t QuadFMS_t::FlyManuever(){
 
 void QuadFMS_t::ComputeInterceptCourse(){
 	Position current = FlightData->acState.positionLast();
-	Position next    = FlightData->MissionPlan.point(FlightData->nextMissionWP).position();
+	Position next;
+
+	if(goalReached){
+		next    = FlightData->MissionPlan.point(FlightData->nextMissionWP).position();
+		resumeMission = true;
+	}
+	else{
+		next = NextGoal;
+		resumeMission = false;
+	}
 
 	double distH = current.distanceH(next);
 	float speed  = FlightData->paramData->getValue("RES_SPEED");
@@ -369,7 +380,7 @@ void QuadFMS_t::ComputeInterceptCourse(){
 	FlightData->ResolutionPlan.add(wp2);
 	FlightData->nextResolutionWP = 0;
 	planType      = TRAJECTORY;
-	resumeMission = true;
+
 }
 
 void QuadFMS_t::Reset(){

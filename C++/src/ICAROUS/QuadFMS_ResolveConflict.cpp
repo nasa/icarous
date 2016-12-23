@@ -122,6 +122,7 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 		std::cout<<FlightData->ResolutionPlan.toString()<<std::endl;
 		planType      = TRAJECTORY;
 		resumeMission = false;
+		goalReached   = true;
 	}
 }
 
@@ -140,6 +141,7 @@ void QuadFMS_t::ResolveKeepInConflict(){
 
 	planType        = TRAJECTORY;
 	resumeMission   = false;
+	goalReached     = true;
 	return;
 }
 
@@ -337,6 +339,7 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 
 	planType        = TRAJECTORY;
 	resumeMission   = false;
+	goalReached     = true;
 	return;
 
 }
@@ -425,9 +428,7 @@ void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 
 	printf("iteration count = %d\n",i);
 
-	if(!RRT.goalreached){
-		Conflict.clear();
-	}
+	goalReached = RRT.goalreached;
 
 	Plan ResolutionPlan1 = RRT.GetPlan();
 	Plan ResolutionPlan2 = ComputeGoAbovePlan(start,goal,altFence,resolutionSpeed);
@@ -540,9 +541,7 @@ void QuadFMS_t::ResolveTrafficConflict(){
 		}
 	}
 
-	if(!RRT.goalreached){
-		Conflict.clear();
-	}
+	goalReached = RRT.goalreached;
 
 	FlightData->ResolutionPlan.clear();
 	FlightData->ResolutionPlan = RRT.GetPlan();

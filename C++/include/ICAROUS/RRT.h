@@ -92,6 +92,7 @@ public:
 	Daidalus DAA;
 	KinematicMultiBands KMB;
 	bool goalreached;
+	time_t startTime;
 
 	RRT_t();
 	RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
