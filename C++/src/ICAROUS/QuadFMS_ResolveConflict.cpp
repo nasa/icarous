@@ -42,7 +42,6 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 	double xtrkDevGain ;
 	double resolutionSpeed;
 	double allowedDev;
-	double elapsedTime;
 	double Vs,Vf,V,sgn;
 	double Trk;
 	double headingNextWP;
@@ -57,7 +56,6 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 	currentPos = FlightData->acState.positionLast();
 
 	currentFP = FlightData->MissionPlan;
-	elapsedTime = GetApproxElapsedPlanTime(currentFP,FlightData->nextMissionWP);
 	prevWP = currentFP.point(FlightData->nextMissionWP - 1).position();
 	nextWP = currentFP.point(FlightData->nextMissionWP).position();
 
@@ -150,7 +148,6 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 	double gridsize          = FlightData->paramData->getValue("GRIDSIZE");
 	double buffer            = FlightData->paramData->getValue("BUFFER");
 	double lookahead         = FlightData->paramData->getValue("LOOKAHEAD");
-	double proximityfactor   = FlightData->paramData->getValue("PROXFACTOR");
 	double resolutionSpeed   = FlightData->paramData->getValue("RES_SPEED");
 	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
 
@@ -242,9 +239,6 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 	DensityGrid DG(BR,initpos,goal,(int)buffer,gridsize,true);
 	DG.snapToStart();
 	DG.setWeights(5.0);
-
-	std::pair<int,int> p1 = DG.gridPosition(start);
-	std::pair<int,int> p2 = DG.gridPosition(goal);
 
 	for(it=FlightData->fenceList.begin();
 			it!=FlightData->fenceList.end();++it){
@@ -345,10 +339,7 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 }
 
 void QuadFMS_t::ResolveKeepOutConflict_RRT(){
-	double gridsize          = FlightData->paramData->getValue("GRIDSIZE");
-	double buffer            = FlightData->paramData->getValue("BUFFER");
-	double lookahead         = FlightData->paramData->getValue("LOOKAHEAD");
-	double proximityfactor   = FlightData->paramData->getValue("PROXFACTOR");
+
 	double resolutionSpeed   = FlightData->paramData->getValue("RES_SPEED");
 	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
 
@@ -361,7 +352,6 @@ void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 	Position currentPos = FlightData->acState.positionLast();
 	Velocity currentVel = FlightData->acState.velocityLast();
 
-	double elapsedTime;
 	double altFence;
 	double minTime = MAXDOUBLE;
 	double maxTime = 0;
@@ -373,13 +363,11 @@ void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 
 	if(planType == MISSION){
 		currentFP = FlightData->MissionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(currentFP,FlightData->nextMissionWP);
 		prevWP = currentFP.point(FlightData->nextMissionWP - 1).position();
 		nextWP = currentFP.point(FlightData->nextMissionWP).position();
 	}
 	else if(planType == TRAJECTORY){
 		currentFP = FlightData->ResolutionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(currentFP,FlightData->nextResolutionWP);
 		prevWP = currentFP.point(FlightData->nextResolutionWP - 1).position();
 		nextWP = currentFP.point(FlightData->nextResolutionWP).position();
 	}
@@ -429,6 +417,9 @@ void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 	printf("iteration count = %d\n",i);
 
 	goalReached = RRT.goalreached;
+	if(!goalReached){
+		NextGoal = goal;
+	}
 
 	Plan ResolutionPlan1 = RRT.GetPlan();
 	Plan ResolutionPlan2 = ComputeGoAbovePlan(start,goal,altFence,resolutionSpeed);
@@ -510,17 +501,15 @@ void QuadFMS_t::ResolveTrafficConflict(){
 	Position prevWP;
 	Position nextWP;
 	Position start = currentPos;
-	double elapsedTime;
+
 
 	if(planType == MISSION){
 		currentFP = FlightData->MissionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(currentFP,FlightData->nextMissionWP);
 		prevWP = currentFP.point(FlightData->nextMissionWP - 1).position();
 		nextWP = currentFP.point(FlightData->nextMissionWP).position();
 	}
 	else if(planType == TRAJECTORY){
 		currentFP = FlightData->ResolutionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(currentFP,FlightData->nextResolutionWP);
 		prevWP = currentFP.point(FlightData->nextResolutionWP - 1).position();
 		nextWP = currentFP.point(FlightData->nextResolutionWP).position();
 	}
@@ -542,6 +531,9 @@ void QuadFMS_t::ResolveTrafficConflict(){
 	}
 
 	goalReached = RRT.goalreached;
+	if(!goalReached){
+		NextGoal = goal;
+	}
 
 	FlightData->ResolutionPlan.clear();
 	FlightData->ResolutionPlan = RRT.GetPlan();

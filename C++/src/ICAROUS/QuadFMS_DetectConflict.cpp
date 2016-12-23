@@ -76,9 +76,6 @@ void QuadFMS_t::CheckGeofence(){
 
 void QuadFMS_t::CheckFlightPlanDeviation(){
 	double allowedDev = FlightData->paramData->getValue("XTRK_DEV");
-	double heading      = FlightData->heading;
-	double heading2FpPos;
-	double elapsedTime;
 	double psi1,psi2,sgn;
 	double bearing,dist;
 	Plan CurrentFP;
@@ -86,7 +83,6 @@ void QuadFMS_t::CheckFlightPlanDeviation(){
 
 	if(planType == MISSION){
 		CurrentFP = FlightData->MissionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(CurrentFP,FlightData->nextMissionWP);
 		prevWP = CurrentFP.point(FlightData->nextMissionWP - 1).position();
 		nextWP = CurrentFP.point(FlightData->nextMissionWP).position();
 	}
@@ -140,7 +136,7 @@ void QuadFMS_t::CheckTraffic(){
 	DAA.reset();
 	DAA.setOwnshipState("Ownship",so,vo,elapsedTime);
 
-	for(int i=0;i<FlightData->trafficList.size();i++){
+	for(unsigned int i=0;i<FlightData->trafficList.size();i++){
 		Position si;
 		Velocity vi;
 		FlightData->GetTraffic(i,si,vi);
@@ -148,9 +144,6 @@ void QuadFMS_t::CheckTraffic(){
 		sprintf(name,"Traffic%d",i);
 		DAA.addTrafficState(name,si,vi);
 	}
-
-	double qHeading = vo.track("degree");
-
 
 	DAA.kinematicMultiBands(KMB);
 	bool daaViolation = BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()));

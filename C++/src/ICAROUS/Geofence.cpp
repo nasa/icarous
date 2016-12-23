@@ -85,9 +85,6 @@ void Geofence_t::AddVertex(int index, double lat,double lon){
 }
 
 void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp){
-	double hdist;
-	double vdist;
-	double alt;
 
 	Position currentPosLLA = acState.positionLast();
 	Velocity currentVel    = acState.velocityLast();

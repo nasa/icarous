@@ -331,8 +331,6 @@ void RRT_t::RRTStep(int i){
 	node_t nearest = FindNearest(rd);
 	node_t newNode;
 
-	bool directPath = false;
-
 	double U[3];
 	GetInput(nearest,rd,U);
 
@@ -521,11 +519,10 @@ bool RRT_t::CheckTurnConflict(double low,double high,double newHeading,double ol
 	// Get direction of turn
 	double psi   = newHeading - oldHeading;
 	double psi_c = 360 - fabs(psi);
-	bool leftTurn = false;
 	bool rightTurn = false;
 	if(psi > 0){
 		if(fabs(psi) > fabs(psi_c)){
-			leftTurn = true;
+			rightTurn = false;
 		}
 		else{
 			rightTurn = true;
@@ -535,7 +532,7 @@ bool RRT_t::CheckTurnConflict(double low,double high,double newHeading,double ol
 			rightTurn = true;
 		}
 		else{
-			leftTurn = true;
+			rightTurn = false;
 		}
 	}
 
@@ -577,8 +574,7 @@ bool RRT_t::CheckTurnConflict(double low,double high,double newHeading,double ol
 bool RRT_t::CheckDirectPath2Goal(node_t qnode){
 	//TODO: add check against fences also
 	//TODO: add velocity towards goal
-	//TODO: change speed to a parameter
-	double speed = 1;
+
 	Vect3 A = qnode.pos;
 	Vect3 B = goalNode.pos;
 	Vect3 AB = B.Sub(A);
