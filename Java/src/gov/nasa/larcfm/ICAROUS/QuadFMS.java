@@ -188,11 +188,12 @@ public class QuadFMS extends FlightManagementSystem{
 		switch(resolveState){
 
 		case COMPUTE:
+			SetMode(ARDUPILOT_MODES.GUIDED);
 			// Call the relevant resolution functions to resolve conflicts
 			if(Detector.trafficConflict){
 				log.addWarning("MSG: Computing resolution for traffic conflict");
 				gsIntf.SendStatusText("Traffic conflict");
-				Resolver.ResolveTrafficConflict();
+				Resolver.ResolveTrafficConflictDAA();
 			}
 			else if(Detector.keepInConflict){
 				log.addWarning("MSG: Computing resolution for keep in conflict");
@@ -242,7 +243,9 @@ public class QuadFMS extends FlightManagementSystem{
 
 			if(status == 1){
 				if(resumeMission){
+					System.out.println("Resuming mission\n");
 					resolveState = resolve_state_t.IDLE;
+					planType = plan_type_t.MISSION;
 					SetMode(ARDUPILOT_MODES.AUTO);
 				}
 				else{

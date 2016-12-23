@@ -55,10 +55,10 @@ public class ConflictDetection{
 	public GeoFence keepOutFence;
 	public int numConflicts;
 
-	private Daidalus DAA;
-	private KinematicMultiBands KMB;
-	double daaLookAhead;
-	double timeStart;
+	public Daidalus DAA;
+	public KinematicMultiBands KMB;
+	public double daaLookAhead;
+	public double timeStart;
 	
 	public ConflictDetection(QuadFMS fms){
 		FMS = fms;
@@ -150,24 +150,33 @@ public class ConflictDetection{
 
 		double allowedDev   = FlightData.pData.getValue("XTRK_DEV");	//TODO: change parameter name in param file	
 		Plan CurrentPlan = null;
-		double elapsedTime = 0;
 		int nextWP;
-
-		if(FMS.planType == QuadFMS.plan_type_t.MISSION ){
-			CurrentPlan =  FlightData.MissionPlan;	
-			elapsedTime = FMS.getApproxElapsedPlanTime(CurrentPlan,FlightData.nextMissionWP);
-			nextWP      = FlightData.nextMissionWP;
+		CurrentPlan =  FlightData.MissionPlan;	
+		nextWP      = FlightData.nextMissionWP;
+		Position CurrentPos = FlightData.acState.positionLast();
+		double stats[] = ComputeCrossTrackDev(CurrentPos,CurrentPlan,nextWP);
+		FlightData.crossTrackDeviation = stats[0];
+		FlightData.crossTrackOffset    = stats[1];
+		if(Math.abs(FlightData.crossTrackDeviation) > allowedDev){
+			System.out.println(FlightData.crossTrackDeviation);
+			flightPlanDeviationConflict = true;
+		}else if(Math.abs(FlightData.crossTrackDeviation) < (allowedDev)/3){
+			flightPlanDeviationConflict = false;
 		}
-		else{
+		
+		if(FMS.planType == QuadFMS.plan_type_t.TRAJECTORY){
 			flightPlanDeviationConflict = false;
 			return;
 		}
-
+	}
+	
+	public double[] ComputeCrossTrackDev(Position pos,Plan fp,int nextWP){
+		Plan CurrentPlan =  fp;	
+		
 		Position PrevWP     = CurrentPlan.point(nextWP - 1).position();
 		Position NextWP     = CurrentPlan.point(nextWP).position();
-		Position CurrentPos = FlightData.acState.positionLast();
 		double psi1         = PrevWP.track(NextWP) * 180/Math.PI;
-		double psi2         = PrevWP.track(CurrentPos) * 180/Math.PI;
+		double psi2         = PrevWP.track(pos) * 180/Math.PI;
 		double sgn          = 0;	
 		if( (psi1 - psi2) >= 0){
 			sgn = 1;              // Vehicle left of the path
@@ -182,14 +191,15 @@ public class ConflictDetection{
 			sgn = 1;              // Vehicle left of path
 		}
 		double bearing = Math.abs(psi1 - psi2);
-		double dist = PrevWP.distanceH(CurrentPos);
-		FlightData.crossTrackDeviation = sgn*dist*Math.sin(Math.toRadians(bearing));
-		FlightData.crossTrackOffset    = dist*Math.cos(Math.toRadians(bearing));
-		if(Math.abs(FlightData.crossTrackDeviation) > allowedDev){
-			flightPlanDeviationConflict = true;
-		}else if(Math.abs(FlightData.crossTrackDeviation) < (allowedDev)/3){
-			flightPlanDeviationConflict = false;
-		}
+		double dist = PrevWP.distanceH(pos);
+		double crossTrackDeviation = sgn*dist*Math.sin(Math.toRadians(bearing));
+		double crossTrackOffset    = dist*Math.cos(Math.toRadians(bearing));
+		
+		double stats[] = new double[2];
+		stats[0] = crossTrackDeviation;
+		stats[1] = crossTrackOffset;
+		
+		return stats;
 	}
 
 	public void CheckTraffic(){
@@ -219,7 +229,8 @@ public class ConflictDetection{
 		}
 	
 
-		if(daaTimeElapsed > 10){
+		//TODO: this parameter depends on how long it takes to compute a resolution + start executing that resolution
+		if(daaTimeElapsed > 5){
 			if(!daaViolation){
 				trafficConflict = false;
 			}

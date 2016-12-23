@@ -447,16 +447,7 @@ public class Resolution {
 		else{
 	
 			Position CurrentPos   = FlightData.acState.positionLast();
-			double headingNextWP  = prevWP.track(nextWP);
-
-			double dn             = FlightData.crossTrackOffset*Math.cos(headingNextWP);
-			double de             = FlightData.crossTrackOffset*Math.sin(headingNextWP);
-
-			Position cp           = prevWP.linearEst(dn,de);
-
-			if(cp.alt() <= 0){
-				cp = cp.mkAlt(nextWP.alt());
-			}
+			Position cp = GetPointOnPlan(FlightData.crossTrackOffset,FlightData.MissionPlan,FlightData.nextMissionWP);
 			
 			FlightData.maneuverHeading = Math.toDegrees(CurrentPos.track(cp));
 
@@ -481,8 +472,99 @@ public class Resolution {
 		}
 		
 	}
+	
+	public Position GetPointOnPlan(double offset,Plan fp,int next){
+		
+		Position nextWP       = fp.point(next).position();
+		Position prevWP       = fp.point(next-1).position();
+		double headingNextWP  = prevWP.track(nextWP);;
+		double dn             = offset*Math.cos(headingNextWP);
+		double de             = offset*Math.sin(headingNextWP);
+		Position cp           = prevWP.linearEst(dn, de);
+		
+		if(cp.alt() <= 0){
+			cp = cp.mkAlt(nextWP.alt());
+		}
+		
+		return cp;
+		
+	}
+	
+	public void ResolveTrafficConflictDAA(){
+		
+		// Track based resolutions
+		
+		boolean prefDirection = FMS.Detector.KMB.preferredTrackDirection(); 
+		double prefHeading = FMS.Detector.KMB.trackResolution(prefDirection);
+		Interval conflictInterval = FMS.Detector.KMB.timeIntervalOfViolation(1);
+		double conflictEndTime = conflictInterval.up;
+		double resolutionSpeed = FMS.FlightData.pData.getValue("RES_SPEED");
+		
+		Position currentPos = FlightData.acState.positionLast();
+		Velocity currentVel = FlightData.acState.velocityLast();
+		Position goal       = null;
+		Position nextPos    = currentPos.linearDist(prefHeading, Units.from(Units.meter, 10));
+		Velocity nextVel;
+		boolean returnPathConflict = true;
+		double nextHeading;
+		
+		Daidalus DAA = new Daidalus();
+		KinematicBandsParameters bParams = new KinematicBandsParameters();
+		bParams.loadFromFile("params/DaidalusQuadConfig.txt");
+		double distance = bParams.alertor.getLevel(1).getDetector().getParameters().getValue("D", "m");
+		double height   = bParams.alertor.getLevel(1).getDetector().getParameters().getValue("H", "m");
+		bParams.alertor.getLevel(1).setDetector(new CDCylinder(distance*2, "m", height, "m"));
+		
+		
+		// Get a point in the provided heading roughly 1 m ahead of current position.
+		double len = 0;
+		double alertTime = 0;
+		while(returnPathConflict){
+			len++;
+			nextPos     = currentPos.linearDist(prefHeading, Units.from(Units.meter, len));
+			
+			nextHeading = nextPos.track(goal);
+			alertTime   = nextPos.distanceH(goal)/resolutionSpeed;
+			
+			bParams.alertor.getLevel(1).setAlertingTime(alertTime);
+			bParams.alertor.getLevel(1).setEarlyAlertingTime(alertTime + 5);
+			DAA.parameters = bParams;
+			
+			DAA.setOwnshipState("ProjectedOwnship", nextPos, currentVel, 0);
+			for(int i=0;i<FMS.FlightData.traffic.size();++i){
+				Velocity trafficVel = FMS.FlightData.traffic.get(i).vel;
+				Position trafficPos = FMS.FlightData.traffic.get(i).pos.linear(trafficVel, len/resolutionSpeed);
+				DAA.addTrafficState("ResTraffic"+i, trafficPos, trafficVel);
+			}
+			
+			
+			KinematicMultiBands KMB = DAA.getKinematicMultiBands();
+			returnPathConflict = KMB.regionOfTrack(nextHeading).isConflictBand();
+		}
+		
+		
+		Position start = currentPos.linearDist(prefHeading, 0.25);
+		double ETA2    = start.distanceH(nextPos)/resolutionSpeed;
+		double ETA3    = ETA2 + nextPos.distanceH(goal)/resolutionSpeed;
+		NavPoint wp1   = new NavPoint(start,0);
+		NavPoint wp2   = new NavPoint(nextPos,ETA2);
+		NavPoint wp3   = new NavPoint(goal,ETA3);
+		
+		FMS.FlightData.ResolutionPlan.clear();
+		FMS.FlightData.ResolutionPlan.add(wp1);
+		FMS.FlightData.ResolutionPlan.add(wp2);
+		//FMS.FlightData.ResolutionPlan.add(wp3);
+		
+		FMS.GoalReached = true;
+		FMS.planType = plan_type_t.TRAJECTORY;
+		FMS.resumeMission = true;
+		
+		FMS.Detector.Clear();
+		FMS.Detector.numConflicts = 0;
+		
+	}
 
-	public void ResolveTrafficConflict(){
+	public void ResolveTrafficConflictRRT(){
 		// Reroute flight plan
 		FMS.SetMode(ARDUPILOT_MODES.GUIDED); // Set mode to guided for quadrotor to hover before replanning
 
