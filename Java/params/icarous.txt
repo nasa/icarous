@@ -11,6 +11,9 @@ ICHBEAT = 5
 # Takeoff altitude
 TAKEOFF_ALT = 5
 
+#Maximum ceiling
+MAX_CEILING = 30
+
 # Geofence parameters
 HTHRESHOLD = 1.0
 VTHRESHOLD = 1.0

@@ -18,11 +18,11 @@ vertical_accel = 1.0 [m/s^2]
 turn_rate = 0.0 [deg/s]
 bank_angle = 0.0 [deg]
 vertical_rate = 1.0 [m/s]
-horizontal_nmac = 2.0 [m]
-vertical_nmac = 0.2 [m]
+horizontal_nmac = 1.0 [m]
+vertical_nmac = 0.5 [m]
 # Recovery Bands Parameters
 recovery_stability_time = 0.0 [s]
-min_horizontal_recovery = 3.0 [m]
+min_horizontal_recovery = 2.0 [m]
 min_vertical_recovery = 1.0 [m]
 conflict_crit = false
 recovery_crit = false
@@ -31,22 +31,22 @@ recovery_gs = true
 recovery_vs = true
 recovery_alt = true
 # if ca_bands is true, keep computing recovery bands by reducing min horizontal/vertical recovery until NMAC
-ca_bands = true
+ca_bands = false
 # ca_factor is the reduction factor, when computing CA bands
 ca_factor = 0.2
 # Contours Parameters
 # If contour_thr is set to 0, only conflict contours are computed. Max value is 180 [deg]
 contour_thr = 180.0 [deg]
 # Alert Levels
-alert_1_alerting_time = 20.0 [s]
+alert_1_alerting_time = 10.0 [s]
 alert_1_detector = det_1
-alert_1_early_alerting_time = 25.0 [s]
+alert_1_early_alerting_time = 15.0 [s]
 alert_1_region = NEAR
 alert_1_spread_alt = 0.0 [ft]
 alert_1_spread_gs = 0.0 [knot]
 alert_1_spread_trk = 0.0 [deg]
 alert_1_spread_vs = 0.0 [fpm]
 conflict_level = 1
-det_1_D = 10.0 [m]
-det_1_H = 1.0 [m]
+det_1_D = 3.0 [m]
+det_1_H = 10.0 [m]
 load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.CDCylinder
