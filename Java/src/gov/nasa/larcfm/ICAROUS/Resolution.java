@@ -519,15 +519,19 @@ public class Resolution {
 		// Get a point in the provided heading roughly 1 m ahead of current position.
 		double len = 0;
 		double alertTime = 0;
+		KinematicMultiBands KMB;
 		while(returnPathConflict){
 			len++;
 			nextPos     = currentPos.linearDist(prefHeading, Units.from(Units.meter, len));
 			
+			double crossStats[] = FMS.Detector.ComputeCrossTrackDev(nextPos, FlightData.MissionPlan, FlightData.nextMissionWP);
+			goal = GetPointOnPlan(crossStats[1], FlightData.MissionPlan,FlightData.nextMissionWP);
+			
 			nextHeading = nextPos.track(goal);
 			alertTime   = nextPos.distanceH(goal)/resolutionSpeed;
 			
-			bParams.alertor.getLevel(1).setAlertingTime(alertTime);
-			bParams.alertor.getLevel(1).setEarlyAlertingTime(alertTime + 5);
+			bParams.alertor.getLevel(1).setAlertingTime(alertTime+5+5);
+			bParams.alertor.getLevel(1).setEarlyAlertingTime(alertTime + 5+5);
 			DAA.parameters = bParams;
 			
 			DAA.setOwnshipState("ProjectedOwnship", nextPos, currentVel, 0);
@@ -538,8 +542,10 @@ public class Resolution {
 			}
 			
 			
-			KinematicMultiBands KMB = DAA.getKinematicMultiBands();
+			KMB = DAA.getKinematicMultiBands();
 			returnPathConflict = KMB.regionOfTrack(nextHeading).isConflictBand();
+			//System.out.println(KMB.outputString());
+			//System.out.println(returnPathConflict);
 		}
 		
 		
@@ -553,7 +559,7 @@ public class Resolution {
 		FMS.FlightData.ResolutionPlan.clear();
 		FMS.FlightData.ResolutionPlan.add(wp1);
 		FMS.FlightData.ResolutionPlan.add(wp2);
-		//FMS.FlightData.ResolutionPlan.add(wp3);
+		FMS.FlightData.ResolutionPlan.add(wp3);
 		
 		FMS.GoalReached = true;
 		FMS.planType = plan_type_t.TRAJECTORY;

@@ -158,7 +158,7 @@ public class ConflictDetection{
 		FlightData.crossTrackDeviation = stats[0];
 		FlightData.crossTrackOffset    = stats[1];
 		if(Math.abs(FlightData.crossTrackDeviation) > allowedDev){
-			System.out.println(FlightData.crossTrackDeviation);
+			//System.out.println(FlightData.crossTrackDeviation);
 			flightPlanDeviationConflict = true;
 		}else if(Math.abs(FlightData.crossTrackDeviation) < (allowedDev)/3){
 			flightPlanDeviationConflict = false;
