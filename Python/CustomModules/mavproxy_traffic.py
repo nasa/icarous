@@ -12,6 +12,33 @@ from MAVProxy.modules.lib.mp_menu import *  # popup menus
 if mp_util.has_wxpython:
     from MAVProxy.modules.lib.mp_menu import *
 
+class SlipEllipse(mp_slipmap.SlipObject):
+    def __init__(self, key, layer, center, axes, angle, startAngle, endAngle, colour, linewidth, popup_menu=None):
+        mp_slipmap.SlipObject.__init__(self, key, layer, popup_menu=popup_menu)
+        self.center = center
+        self.axes = axes
+        self.angle = angle
+        self.startAngle = startAngle
+        self.endAngle = endAngle
+        self.colour = colour
+        self.linewidth = linewidth
+        self._pix_points = []
+
+    def bounds(self):
+        '''return bounding box'''
+        if self.hidden:
+            return None
+        return (self.center[0],self.center[1],0,0)
+
+    def draw(self, img, pixmapper, bounds):
+        '''draw a polygon on the image'''
+        if self.hidden:
+            return
+
+        center = pixmapper(self.center)
+        mp_slipmap.cv.Ellipse(img,center,self.axes,self.angle,self.startAngle,self.endAngle,self.colour,self.linewidth)
+
+
 class Traffic:
     def __init__(self,x,y,z,vx,vy,vz,tstart):
         self.x0 = x;
@@ -49,6 +76,12 @@ class TrafficModule(mp_module.MPModule):
         self.traffic_on_map = [];
         self.WCV = False;
         self.radius = 10.0;
+
+
+        self.numBands = 0;
+        self.Bands = [];
+
+
         
         
     def idle_task(self):
@@ -67,22 +100,83 @@ class TrafficModule(mp_module.MPModule):
         '''handle and incoming mavlink packet'''                        
 
         
-        self.Update_traffic();                        
+        self.Update_traffic()
 
         if(len(self.traffic_list) > 0):
             wcv_volume = mp_slipmap.SlipCircle("well_clear_volume", 3,\
                                                (self.module('map').lat,self.module('map').lon),\
                                                self.radius,\
-                                               (0, 0, 255), linewidth=2)                                                
+                                               (0, 0, 255), linewidth=2)
         
-        
-        self.mpstate.map.add_object(wcv_volume)               
-        
+            self.mpstate.map.add_object(wcv_volume)
+
+            self.numBands = 1
+
+            if self.numBands > 0:
+                colour = (0,255,0,100)
+                center = (self.module('map').lat,self.module('map').lon)
+                axes = (50,50)
+                angle = -90
+                startAngle = 0
+                stopAngle = 270
+                thickness = -1
+                band_guidance = SlipEllipse("band",1,center,axes,angle,startAngle,stopAngle,colour,thickness)
+                self.mpstate.map.add_object(band_guidance)
                 
         if m.get_type() == "TRAFFIC_INFO":
-            print m.breach_status                    
-        
-                    
+            print m.breach_status
+
+        if m.get_type() == "SPATIAL_USER_1":
+            self.numBands = m.param1
+
+            numBands = 0
+            numBands = numBands + 1
+
+            self.Bands = []
+
+            if(numBands <= self.numBands):
+                low    = (float)(m.params2/10000)/10
+                high   = (float)(m.params2%10000)/10
+                bands = [low,high]
+                self.Bands.append(bands)
+                numBands = numBands + 1
+
+            if (numBands <= self.numBands):
+                low = (float)(m.params3 / 10000) / 10
+                high = (float)(m.params3 % 10000) / 10
+                bands = [low, high]
+                self.Bands.append(bands)
+                numBands = numBands + 1
+
+            if (numBands <= self.numBands):
+                low = (float)(m.params4 / 10000) / 10
+                high = (float)(m.params4 % 10000) / 10
+                bands = [low, high]
+                self.Bands.append(bands)
+                numBands = numBands + 1
+
+            if (numBands <= self.numBands):
+                low = (float)(m.params5 / 10000) / 10
+                high = (float)(m.params5 % 10000) / 10
+                bands = [low, high]
+                self.Bands.append(bands)
+                numBands = numBands + 1
+
+            if (numBands <= self.numBands):
+                low = (float)(m.params6 / 10000) / 10
+                high = (float)(m.params6 % 10000) / 10
+                bands = [low, high]
+                self.Bands.append(bands)
+                numBands = numBands + 1
+
+            if (numBands <= self.numBands):
+                low = (float)(m.params7 / 10000) / 10
+                high = (float)(m.params7 % 10000) / 10
+                bands = [low, high]
+                self.Bands.append(bands)
+                numBands = numBands + 1
+
+
     def load_traffic(self, args):
         '''fence commands'''
         if len(args) < 1:
@@ -98,6 +192,8 @@ class TrafficModule(mp_module.MPModule):
                 tffc = Traffic(float(args[1]),float(args[2]),float(args[3]), \
                                float(args[4]),float(args[5]),float(args[6]),start_time)
                 self.traffic_list.append(tffc)
+                self.start_lat = self.module('map').lat
+                self.start_lon = self.module('map').lon
                 print len(self.traffic_list)
         elif args[0] == "radius":
             if len(args) == 2:
@@ -126,8 +222,8 @@ class TrafficModule(mp_module.MPModule):
                                                                 trail=mp_slipmap.SlipTrail()))
                 self.traffic_on_map.append(vehicle)
                                                         
-            self.traffic_list[i].get_pos(t);
-            (lat, lon) = mp_util.gps_offset(37.1021769,-76.3872069, self.traffic_list[i].y, self.traffic_list[i].x)
+            self.traffic_list[i].get_pos(t)
+            (lat, lon) = mp_util.gps_offset(self.start_lat,self.start_lon, self.traffic_list[i].y, self.traffic_list[i].x)
             heading = math.degrees(math.atan2(self.traffic_list[i].vy0, self.traffic_list[i].vx0))            
             self.mpstate.map.set_position(vehicle, (lat, lon), rotation=heading)
 
