@@ -33,6 +33,7 @@
  */
 package gov.nasa.larcfm.ICAROUS;
 import com.MAVLink.enums.*;
+import com.MAVLink.icarous.msg_kinematic_bands;
 import com.MAVLink.common.*;
 
 import gov.nasa.larcfm.Util.ErrorLog;
@@ -307,7 +308,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 
 		//System.out.println("Checking for ack for:"+command);
 		while(msgCommandAck == null){	    
-			msgCommandAck = RcvdMessages.GetCommandAck(1);
+			msgCommandAck = RcvdMessages.GetCommandAck();
 			if(msgCommandAck != null){
 				//System.out.format("Got ack for %d = %d\n",msgCommandAck.command,msgCommandAck.result);
 			}

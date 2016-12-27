@@ -38,6 +38,7 @@ package gov.nasa.larcfm.ICAROUS;
 
 import com.MAVLink.common.*;
 import com.MAVLink.enums.*;
+import com.MAVLink.icarous.msg_kinematic_bands;
 import com.MAVLink.*;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
@@ -111,6 +112,9 @@ public class COM implements Runnable,ErrorReporter{
 
 			//Handle GPS inject
 			HandleGPSInjectData();
+			
+			//Handle kinematic bands
+			HandleKinematicBands();
 
 		}
 	}
@@ -302,6 +306,14 @@ public class COM implements Runnable,ErrorReporter{
 		msg_gps_inject_data msgGPSInjectData = RcvdMessages.GetGPSInjectData();
 		if(msgGPSInjectData != null){
 			apIntf.Write(msgGPSInjectData);
+		}
+	}
+	
+	public void HandleKinematicBands(){
+		// Handle kinematic band messages
+		msg_kinematic_bands msgKinematicBands = RcvdMessages.GetKinematicBands();
+		if(msgKinematicBands != null){
+			gsIntf.Write(msgKinematicBands);
 		}
 	}
 

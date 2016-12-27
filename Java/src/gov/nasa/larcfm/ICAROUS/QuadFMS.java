@@ -124,6 +124,8 @@ public class QuadFMS extends FlightManagementSystem{
 
 	@Override
 	public void CRUISE(){
+		
+		
 		// Check for conflicts and determine mode
 		int confSize = Monitor();
 

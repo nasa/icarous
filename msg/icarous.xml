@@ -24,7 +24,12 @@
 	    <field type="float" name="min5">min angle (degrees)</field>
 	    <field type="float" name="max5">max angle (degrees)</field>
 	  </message>
-	 
+
+	  <message id="224" name="SAFEGUARD">
+	    <description>Safeguard input</description>
+	    <field type="int8_t" name="value">1-success,0-failure</field>
+	  </message>
+	  
 	  <message id="229" name="HEARTBEAT_ICAROUS">
 	    <description>ICAROUS heartbeat</description>
 	    <field type="int8_t" name="status">FMS state (0-idle, 1-Takeoff, 2-Climb, 3-Cruise, 4-Land)</field>

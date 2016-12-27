@@ -184,31 +184,26 @@ public class MAVLinkMessages{
 	public msg_hwstatus msgHwstatus;
 	public msg_sensor_offsets msgSensorOffsets;
 
-	public msg_flightplan_info msgFlightplanInfo;
-	public msg_geofence_info msgGeofenceInfo;
-	public msg_pointofinterest msgPointofinterest;    
-	public msg_heartbeat_combox msgHeartbeatCombox;
-	public msg_mission_start_stop msgMissionStartStop;
-
-	public ArrayList<msg_heartbeat> listHeartbeat_AP;
-	public ArrayList<msg_param_request_read> listParamRequestRead;
-	public ArrayList<msg_param_request_list> listParamRequestList;
-	public ArrayList<msg_param_value> listParamValue;
-	public ArrayList<msg_param_set> listParamSet;
-	public ArrayList<msg_mission_item> listMissionItem;
-	public ArrayList<msg_mission_count> listMissionCount;
-	public ArrayList<msg_mission_ack> listMissionAck;
-	public ArrayList<msg_mission_request_list> listMissionRequestList;
-	public ArrayList<msg_mission_request> listMissionRequest;   
-	public ArrayList<msg_mission_item_reached> listMissionItemReached;
-	public ArrayList<msg_command_ack> listCommandAck;
-	public ArrayList<msg_command_long> listCommandLong;
-	public ArrayList<msg_command_int> listCommandInt;
-	public ArrayList<msg_fence_point> listFencePoint;
-	public ArrayList<msg_fence_fetch_point> listFenceFetchPoint;
-	public ArrayList<msg_set_mode> listSetMode;
-	public ArrayList<msg_safeguard> listSafeguard;
-	public ArrayList<msg_gps_inject_data> listGPSInjectData;
+	public Queue<msg_heartbeat> listHeartbeat_AP;
+	public Queue<msg_param_request_read> listParamRequestRead;
+	public Queue<msg_param_request_list> listParamRequestList;
+	public Queue<msg_param_value> listParamValue;
+	public Queue<msg_param_set> listParamSet;
+	public Queue<msg_mission_item> listMissionItem;
+	public Queue<msg_mission_count> listMissionCount;
+	public Queue<msg_mission_ack> listMissionAck;
+	public Queue<msg_mission_request_list> listMissionRequestList;
+	public Queue<msg_mission_request> listMissionRequest;   
+	public Queue<msg_mission_item_reached> listMissionItemReached;
+	public Queue<msg_command_ack> listCommandAck;
+	public Queue<msg_command_long> listCommandLong;
+	public Queue<msg_command_int> listCommandInt;
+	public Queue<msg_fence_point> listFencePoint;
+	public Queue<msg_fence_fetch_point> listFenceFetchPoint;
+	public Queue<msg_set_mode> listSetMode;
+	public Queue<msg_safeguard> listSafeguard;
+	public Queue<msg_gps_inject_data> listGPSInjectData;
+	public Queue<msg_kinematic_bands> listKinematicBands;
 
 	public MAVLinkMessages(){
 
@@ -217,25 +212,26 @@ public class MAVLinkMessages{
 		msgGlobalPositionInt   = new msg_global_position_int();
 		msgMissionCurrent      = new msg_mission_current();
 
-		listHeartbeat_AP       = new ArrayList<msg_heartbeat>();
-		listParamValue         = new ArrayList<msg_param_value>();
-		listParamRequestRead   = new ArrayList<msg_param_request_read>();
-		listParamRequestList   = new ArrayList<msg_param_request_list>();
-		listParamSet           = new ArrayList<msg_param_set>();
-		listMissionItem        = new ArrayList<msg_mission_item>();
-		listMissionCount       = new ArrayList<msg_mission_count>();
-		listMissionAck         = new ArrayList<msg_mission_ack>();
-		listMissionRequestList = new ArrayList<msg_mission_request_list>();
-		listMissionRequest     = new ArrayList<msg_mission_request>();
-		listMissionItemReached = new ArrayList<msg_mission_item_reached>();
-		listCommandAck         = new ArrayList<msg_command_ack>();
-		listCommandLong        = new ArrayList<msg_command_long>();
-		listCommandInt         = new ArrayList<msg_command_int>();
-		listFencePoint         = new ArrayList<msg_fence_point>();
-		listFenceFetchPoint    = new ArrayList<msg_fence_fetch_point>();
-		listSetMode            = new ArrayList<msg_set_mode>();
-		listSafeguard          = new ArrayList<msg_safeguard>();
-		listGPSInjectData      = new ArrayList<msg_gps_inject_data>();
+		listHeartbeat_AP       = new LinkedList<msg_heartbeat>();
+		listParamValue         = new LinkedList<msg_param_value>();
+		listParamRequestRead   = new LinkedList<msg_param_request_read>();
+		listParamRequestList   = new LinkedList<msg_param_request_list>();
+		listParamSet           = new LinkedList<msg_param_set>();
+		listMissionItem        = new LinkedList<msg_mission_item>();
+		listMissionCount       = new LinkedList<msg_mission_count>();
+		listMissionAck         = new LinkedList<msg_mission_ack>();
+		listMissionRequestList = new LinkedList<msg_mission_request_list>();
+		listMissionRequest     = new LinkedList<msg_mission_request>();
+		listMissionItemReached = new LinkedList<msg_mission_item_reached>();
+		listCommandAck         = new LinkedList<msg_command_ack>();
+		listCommandLong        = new LinkedList<msg_command_long>();
+		listCommandInt         = new LinkedList<msg_command_int>();
+		listFencePoint         = new LinkedList<msg_fence_point>();
+		listFenceFetchPoint    = new LinkedList<msg_fence_fetch_point>();
+		listSetMode            = new LinkedList<msg_set_mode>();
+		listSafeguard          = new LinkedList<msg_safeguard>();
+		listGPSInjectData      = new LinkedList<msg_gps_inject_data>();
+		listKinematicBands     = new LinkedList<msg_kinematic_bands>();
 	}
 
 
@@ -833,7 +829,7 @@ public class MAVLinkMessages{
 	public synchronized msg_heartbeat GetHeartbeat_AP(){
 		if(listHeartbeat_AP.size()>0){
 			int last = listHeartbeat_AP.size();
-			return listHeartbeat_AP.remove(last-1);
+			return listHeartbeat_AP.remove();
 		}
 		else{
 			return null;
@@ -842,7 +838,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_mission_ack GetMissionAck(){
 		if(listMissionAck.size()>0){
-			return listMissionAck.remove(0);
+			return listMissionAck.remove();
 		}
 		else{
 			return null;
@@ -853,22 +849,9 @@ public class MAVLinkMessages{
 		return msgGlobalPositionInt;
 	}      
 
-	public synchronized msg_command_ack GetCommandAck(int i){
-		if(i == 0){
-			if(listCommandAck.size()>0){
-				return listCommandAck.remove(0);
-			}
-			else{
-				return null;
-			}
-		}
-		else if(i==1){
-			if(listCommandAck.size()>0){	
-				return listCommandAck.remove(listCommandAck.size()-1);	    
-			}
-			else{
-				return null;
-			}
+	public synchronized msg_command_ack GetCommandAck(){
+		if(listCommandAck.size()>0){
+			return listCommandAck.remove();
 		}
 		else{
 			return null;
@@ -877,7 +860,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_command_long GetCommandLong(){
 		if(listCommandLong.size()>0){	
-			return listCommandLong.remove(0);	    
+			return listCommandLong.remove();	    
 		}
 		else{
 			return null;
@@ -886,7 +869,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_command_int GetCommandInt(){
 		if(listCommandInt.size()>0){	
-			return listCommandInt.remove(0);	    
+			return listCommandInt.remove();	    
 		}
 		else{
 			return null;
@@ -896,7 +879,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_mission_request GetMissionRequest(){
 		if(listMissionRequest.size() > 0){	   
-			return listMissionRequest.remove(0);
+			return listMissionRequest.remove();
 		}
 		else{
 			return null;
@@ -905,7 +888,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_mission_request_list GetMissionRequestList(){
 		if(listMissionRequestList.size() > 0){
-			return listMissionRequestList.remove(0);
+			return listMissionRequestList.remove();
 		}
 		else{
 			return null;
@@ -914,7 +897,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_mission_item_reached GetMissionItemReached(){
 		if(listMissionItemReached.size() > 0){
-			return listMissionItemReached.remove(0);
+			return listMissionItemReached.remove();
 		}
 		else{
 			return null;
@@ -923,7 +906,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_param_request_list GetParamRequestList(){
 		if(listParamRequestList.size() > 0){
-			return listParamRequestList.remove(0);	    
+			return listParamRequestList.remove();	    
 		}
 		else{
 			return null;
@@ -932,7 +915,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_param_set GetParamSet(){
 		if(listParamSet.size() > 0){
-			return listParamSet.remove(0);	    
+			return listParamSet.remove();	    
 		}
 		else{
 			return null;
@@ -941,7 +924,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_param_request_read GetParamRequestRead(){
 		if(listParamRequestRead.size() > 0){	    
-			return listParamRequestRead.remove(0);
+			return listParamRequestRead.remove();
 		}else{
 			return null;
 		}
@@ -949,7 +932,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_mission_item GetMissionItem(){
 		if(listMissionItem.size() > 0){
-			return listMissionItem.remove(0);
+			return listMissionItem.remove();
 		}
 		else{
 			return null;
@@ -958,7 +941,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_fence_point GetFencePoint(){
 		if(listFencePoint.size() > 0){
-			return listFencePoint.remove(0);
+			return listFencePoint.remove();
 		}
 		else{
 			return null;
@@ -967,7 +950,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_fence_fetch_point GetFenceFetchPoint(){
 		if(listFenceFetchPoint.size() > 0){
-			return listFenceFetchPoint.remove(0);
+			return listFenceFetchPoint.remove();
 		}
 		else{
 			return null;
@@ -976,7 +959,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_gps_inject_data GetGPSInjectData(){
 		if(listGPSInjectData.size() > 0){
-			return listGPSInjectData.remove(0);
+			return listGPSInjectData.remove();
 		}
 		else{
 			return null;
@@ -997,7 +980,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_param_value GetParamValue(){
 		if(listParamValue.size() > 0){
-			return listParamValue.remove(0);
+			return listParamValue.remove();
 		}
 		else{
 			return null;
@@ -1006,7 +989,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_mission_count GetMissionCount(){
 		if(listMissionCount.size() > 0){
-			return listMissionCount.remove(0);
+			return listMissionCount.remove();
 		}
 		else{
 			return null;
@@ -1015,11 +998,24 @@ public class MAVLinkMessages{
 
 	public synchronized msg_set_mode GetSetMode(){
 		if(listSetMode.size() > 0){
-			return listSetMode.remove(0);
+			return listSetMode.remove();
 		}
 		else{
 			return null;
 		}
+	}
+	
+	public synchronized msg_kinematic_bands GetKinematicBands(){
+		if(listKinematicBands.size() > 0){
+			return listKinematicBands.remove();
+		}
+		else{
+			return null;
+		}
+	}
+	
+	public synchronized void AddKinematicBands(msg_kinematic_bands msg){
+		listKinematicBands.add(msg);
 	}
 
 	public synchronized msg_sys_status GetSysStatus(){
@@ -1112,7 +1108,7 @@ public class MAVLinkMessages{
 
 	public synchronized msg_safeguard GetSafeguard(){
 		if(listSafeguard.size() > 0){
-			return listSafeguard.remove(0);
+			return listSafeguard.remove();
 		}
 		else{
 			return null;

@@ -63,7 +63,7 @@ elif [ "$1" == 'PX4R' ];then
     
 elif [ "$1" == 'GS' ];then
     echo "Launching Ground station test"
-    mavproxy.py --master=$GS_MASTER --map --console --load-module geofence,traffic --mav10
+    mavproxy.py --master=$GS_MASTER --map --console --load-module geofence,traffic --mav10 --dialect=icarous
 
 elif [ "$1" == 'RADIO' ];then
     echo "Launching radio module"
@@ -77,4 +77,3 @@ elif [ "$1" == 'DaidalusPolyExample' ];then
 else
     echo "run.sh [ SITL | PX4 | GS | RADIO | SAFE | DaidalusPolyExample ]"    
 fi
-

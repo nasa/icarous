@@ -34,6 +34,9 @@
 package gov.nasa.larcfm.ICAROUS;
 
 import java.util.*;
+
+import com.MAVLink.icarous.msg_kinematic_bands;
+
 import java.lang.*;
 
 import gov.nasa.larcfm.ACCoRD.*;
@@ -235,7 +238,123 @@ public class ConflictDetection{
 				trafficConflict = false;
 			}
 		}
+		
+		msg_kinematic_bands msg = new msg_kinematic_bands();
+		msg.sysid = 1;
+		msg.numBands = (byte)KMB.trackLength();
+		
+		for(int i=0;i<msg.numBands;++i){
+			Interval iv = KMB.track(i,"deg");
+			BandsRegion br = KMB.trackRegion(i);
+			int type = 0;
+			if(br.toString() == "NONE"){
+				type = 0;
+			}
+			else if(br.toString() == "NEAR"){
+				type = 1;
+			}
+			 
+			if(i==0){
+				msg.type1 = (byte) type;
+				msg.min1 = (float) iv.low;
+				msg.max1 = (float) iv.up;
+			}else if(i==1){
+				msg.type2 = (byte) type;
+				msg.min2 = (float) iv.low;
+				msg.max2 = (float) iv.up;
+			}else if(i==2){
+				msg.type3 = (byte) type;
+				msg.min3 = (float) iv.low;
+				msg.max3 = (float) iv.up;
+			}else if(i==3){
+				msg.type4 = (byte) type;
+				msg.min4 = (float) iv.low;
+				msg.max4 = (float) iv.up;
+			}else{
+				msg.type5 = (byte) type;
+				msg.min5 = (float) iv.low;
+				msg.max5 = (float) iv.up;
+			}
+		}
+		
+		if(msg.numBands > 0){
+			FlightData.RcvdMessages.AddKinematicBands(msg);
+		}
 	}
+	
+	public boolean CheckTurnConflict(double low,double high,double newHeading,double oldHeading){
+
+		// Get direction of turn
+		double psi   = newHeading - oldHeading;
+		double psi_c = 360 - Math.abs(psi);
+		boolean leftTurn = false;
+		boolean rightTurn = false;
+		if(psi > 0){
+			if(Math.abs(psi) > Math.abs(psi_c)){
+				leftTurn = true;
+			}
+			else{
+				rightTurn = true;
+			}
+		}else{
+			if(Math.abs(psi) > Math.abs(psi_c)){
+				rightTurn = true;
+			}
+			else{
+				leftTurn = true;
+			}
+		}
+		
+		double A,B,X,Y,diff;
+		if(rightTurn){
+			diff = oldHeading;
+			A = oldHeading - diff;
+			B = newHeading - diff;
+			X = low - diff;
+			Y = high - diff;
+			
+			if(B < 0){
+				B = 360 + B;
+			}
+			
+			if(X < 0){
+				X = 360 + X;
+			}
+			
+			if(Y < 0){
+				Y = 360 + Y;
+			}
+			
+			if(A < X && B > Y){
+				return true;
+			}
+		}else{
+			diff = 360 - oldHeading;
+			A    = oldHeading + diff;
+			B    = newHeading + diff;
+			X = low + diff;
+			Y = high + diff;
+			
+			if(B > 360){
+				B = B - 360;
+			}
+			
+			if(X > 360){
+				X = X - 360;
+			}
+			
+			if(Y > 360){
+				Y = Y - 360;
+			}
+			
+			if(A > Y && B < X){
+				return true;
+			}	
+		}
+		
+		return false;
+	}
+
 
 
 }

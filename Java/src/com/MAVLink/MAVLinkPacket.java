@@ -14,6 +14,7 @@ import com.MAVLink.common.*;
 import com.MAVLink.ardupilotmega.*;
 import com.MAVLink.icarous.*;
 
+
 /**
 * Common interface for all MAVLink Messages
 * Packet Anatomy
@@ -155,6 +156,9 @@ public class MAVLinkPacket implements Serializable {
                          
             case msg_kinematic_bands.MAVLINK_MSG_ID_KINEMATIC_BANDS:
                 return  new msg_kinematic_bands(this);
+                 
+            case msg_safeguard.MAVLINK_MSG_ID_SAFEGUARD:
+                return  new msg_safeguard(this);
                  
             case msg_heartbeat_icarous.MAVLINK_MSG_ID_HEARTBEAT_ICAROUS:
                 return  new msg_heartbeat_icarous(this);
