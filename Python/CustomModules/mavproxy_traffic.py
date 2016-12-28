@@ -92,6 +92,7 @@ class TrafficModule(mp_module.MPModule):
         self.numBands = 0;
         self.oldNumBands = 0;
         self.Bands = [];
+        self.kmbMsgCounter = 0;
 
 
         
@@ -129,6 +130,7 @@ class TrafficModule(mp_module.MPModule):
         self.Update_traffic()
 
         if(len(self.traffic_list) > 0):
+            self.kmbMsgCounter = self.kmbMsgCounter+1;
             wcv_volume = mp_slipmap.SlipCircle("well_clear_volume", 3,\
                                                (self.module('map').lat,self.module('map').lon),\
                                                self.radius,\
@@ -136,8 +138,11 @@ class TrafficModule(mp_module.MPModule):
         
             self.mpstate.map.add_object(wcv_volume)
 
+            if(self.kmbMsgCounter == 95):
+                self.Bands = []
 
             if m.get_type() == "KINEMATIC_BANDS":
+                self.kmbMsgCounter = 0;
                 self.oldNumBands = self.numBands;
                 self.numBands = m.numBands;
                 numBands = 0
@@ -181,7 +186,7 @@ class TrafficModule(mp_module.MPModule):
                     self.Bands.append(bands)
                     numBands = numBands + 1
 
-            if (self.oldNumBands > self.numBands):
+            if (self.oldNumBands > self.numBands) or self.kmbMsgCounter == 100:
                 for i in range(self.oldNumBands):
                     self.mpstate.map.remove_object("band" + str(i))
 

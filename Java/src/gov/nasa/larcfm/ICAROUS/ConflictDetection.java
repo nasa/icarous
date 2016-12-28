@@ -216,10 +216,15 @@ public class ConflictDetection{
 
 		DAA.setOwnshipState("Ownship",so,vo,simTime);
 
+		double dist2traffic = Double.MAX_VALUE;
 		for(int i=0;i<FlightData.traffic.size();i++){
 			Position si = FlightData.traffic.get(i).pos;
 			Velocity vi = FlightData.traffic.get(i).vel;
 			DAA.addTrafficState("Traffic"+i,si,vi);
+			double dist = so.distanceH(si);
+			if(dist < dist2traffic){
+				dist2traffic = dist;
+			}
 		}
 
 		boolean daaViolation = false;		
@@ -278,7 +283,15 @@ public class ConflictDetection{
 		}
 		
 		if(msg.numBands > 0){
-			FlightData.RcvdMessages.AddKinematicBands(msg);
+			if(dist2traffic < 20){
+				FlightData.RcvdMessages.AddKinematicBands(msg);
+			}
+			else if(msg.numBands == 1 && msg.type1 == 0){
+				// Don't send if we only have one type 0 band
+				// This is to save bandwidth
+			}else{
+				FlightData.RcvdMessages.AddKinematicBands(msg);
+			}
 		}
 	}
 	

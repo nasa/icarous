@@ -354,7 +354,6 @@ public class QuadFMS extends FlightManagementSystem{
 				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
 			}		
 			else if(Detector.flightPlanDeviationConflict){
-				System.out.println("flightplan deviaiton conflict");
 				Resolver.ResolveFlightPlanDeviationConflict();
 				SetYaw(FlightData.maneuverHeading);
 				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
