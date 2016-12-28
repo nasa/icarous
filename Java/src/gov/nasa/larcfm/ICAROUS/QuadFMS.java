@@ -190,7 +190,6 @@ public class QuadFMS extends FlightManagementSystem{
 		switch(resolveState){
 
 		case COMPUTE:
-			SetMode(ARDUPILOT_MODES.GUIDED);
 			// Call the relevant resolution functions to resolve conflicts
 			if(Detector.trafficConflict){
 				log.addWarning("MSG: Computing resolution for traffic conflict");
@@ -344,18 +343,23 @@ public class QuadFMS extends FlightManagementSystem{
 		case START:
 			System.out.print("executing maneuver resolution\n");
 			SetMode(ARDUPILOT_MODES.GUIDED);
-			SetSpeed(resolutionSpeed);
 			maneuverState = maneuver_state_t.GUIDE;
 			break;
 
 		case GUIDE:
-			if(Detector.flightPlanDeviationConflict){
+			
+			if(Detector.trafficConflict){
+				Resolver.ResolveTrafficConflictDAA();
+				SetYaw(FlightData.maneuverHeading);
+				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
+			}		
+			else if(Detector.flightPlanDeviationConflict){
+				System.out.println("flightplan deviaiton conflict");
 				Resolver.ResolveFlightPlanDeviationConflict();
 				SetYaw(FlightData.maneuverHeading);
 				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
 			}
-
-			if(!Detector.flightPlanDeviationConflict){
+			else{
 				System.out.print("finished maneuver resolution\n");
 				maneuverState = maneuver_state_t.IDLE;
 				Detector.Clear();

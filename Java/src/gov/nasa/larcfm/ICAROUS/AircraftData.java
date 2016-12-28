@@ -71,6 +71,7 @@ public class AircraftData{
 	public double pitch;
 	public double yaw;
 	public double heading;
+	public double speed;
 
 	public double maneuverHeading;
 	public double maneuverVn,maneuverVe,maneuverVu;
@@ -127,6 +128,7 @@ public class AircraftData{
 		reset               = false;
 		MissionPlan         = new Plan();
 		ResolutionPlan      = new Plan();
+		speed               = 1;
 	}
 
 	// Function to get flight plan

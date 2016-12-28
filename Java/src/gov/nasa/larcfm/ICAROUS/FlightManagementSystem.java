@@ -160,7 +160,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		vx       = (double) (GPS.vx)/1E2;
 		vy       = (double) (GPS.vy)/1E2;
 		vz       = (double) (GPS.vz)/1E2;
-
+		
 		Velocity V = Velocity.makeVxyz(vy,vx,"m/s",vz,"m/s");
 		Position P = Position.makeLatLonAlt(lat,"degree",lon,"degree",alt,"m");	
 		FlightData.acState.add(P,V,bootTime);
@@ -394,6 +394,8 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	public void SetSpeed(float speed){
 		SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
 				1,speed,0,0,0,0,0);
+		
+		FlightData.speed = speed;
 	}
 
 	public boolean CheckMissionWaypointReached(){

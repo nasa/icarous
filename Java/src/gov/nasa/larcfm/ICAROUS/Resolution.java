@@ -22,11 +22,16 @@ public class Resolution {
 	private double lookahead;
 	private double allowedDev;
 	private double xtrkDevGain;
+	private Velocity lastVelocity;
+	
+	public boolean returnPathConflict;
 	
 	public Resolution(QuadFMS fms){
 		FMS = fms;
 		FlightData = FMS.FlightData;
 		resolutionSpeed = 1.0;
+		returnPathConflict = false;
+		lastVelocity = null;
 	}
 
 	public void ResolveKeepInConflict(){
@@ -493,118 +498,90 @@ public class Resolution {
 	public void ResolveTrafficConflictDAA(){
 		
 		// Track based resolutions
-		//TODO: change 0.1 based on pref direction
-		boolean prefDirection = FMS.Detector.KMB.preferredTrackDirection(); 
-		double prefHeading = FMS.Detector.KMB.trackResolution(prefDirection)+0.1;
-		Interval conflictInterval = FMS.Detector.KMB.timeIntervalOfViolation(1);
-		double conflictEndTime = conflictInterval.up;
-		double resolutionSpeed = FMS.FlightData.pData.getValue("RES_SPEED");
-		
+		//TODO: add eps to preferred heading
 		Position currentPos = FlightData.acState.positionLast();
 		Velocity currentVel = FlightData.acState.velocityLast();
-		Position goal       = null;
-		Position nextPos    = currentPos.linearDist(prefHeading, Units.from(Units.meter, 10));
-		Velocity nextVel;
-		boolean returnPathConflict = true;
-		boolean currentPathConflict = true;
-		double nextHeading;
+		double speed = FlightData.speed;
 		
-		Daidalus DAA = new Daidalus();
-		KinematicBandsParameters bParams = new KinematicBandsParameters();
-		bParams.loadFromFile("params/DaidalusQuadConfig.txt");
-		double distance = bParams.alertor.getLevel(1).getDetector().getParameters().getValue("D", "m");
-		double height   = bParams.alertor.getLevel(1).getDetector().getParameters().getValue("H", "m");
-		bParams.alertor.getLevel(1).setDetector(new CDCylinder(distance*3, "m", height, "m"));
 		
-		System.out.println("***");
-		System.out.println(FMS.Detector.KMB.outputString());
-		// Get a point in the provided heading roughly 1 m ahead of current position.
-		double len = 4;
-		double alertTime = 0;
-		KinematicMultiBands KMB;
-		while(returnPathConflict || currentPathConflict){
-			len++;
-			nextPos     = currentPos.linearDist(prefHeading, Units.from(Units.meter, len));
-			//nextVel     = Velocity.makeTrkGsVs(Units.convert(Units.rad, Units.deg, prefHeading), Units.convert(Units.meter_per_second, Units.knot, resolutionSpeed), 0);
-			double crossStats[] = FMS.Detector.ComputeCrossTrackDev(nextPos, FlightData.MissionPlan, FlightData.nextMissionWP);
-			goal = GetPointOnPlan(crossStats[1], FlightData.MissionPlan,FlightData.nextMissionWP);
-			
-			nextHeading = nextPos.track(goal);
-			nextVel     = Velocity.makeTrkGsVs(Units.convert(Units.rad, Units.deg, nextHeading), Units.convert(Units.meter_per_second, Units.knot, resolutionSpeed), 0);
-			alertTime   = nextPos.distanceH(goal)/resolutionSpeed;
-			
-			bParams.alertor.getLevel(1).setAlertingTime(alertTime+5+5);
-			bParams.alertor.getLevel(1).setEarlyAlertingTime(alertTime + 5+5);
-			DAA.parameters = bParams;
-			
-			DAA.setOwnshipState("ProjectedOwnship", nextPos, nextVel, 0);
-			Position trafficPos = null;
-			Velocity trafficVel = null;
-			for(int i=0;i<FMS.FlightData.traffic.size();++i){
-				trafficVel = FMS.FlightData.traffic.get(i).vel;
-				trafficPos = FMS.FlightData.traffic.get(i).pos.linear(trafficVel, len/resolutionSpeed);
-				DAA.addTrafficState("ResTraffic"+i, trafficPos, trafficVel);
-			}
-			
-			
-			KMB = DAA.getKinematicMultiBands();
-			returnPathConflict  = KMB.regionOfTrack(nextHeading).isConflictBand();
-			currentPathConflict = KMB.regionOfTrack(prefHeading).isConflictBand();
-			
-			if(!returnPathConflict){
-				returnPathConflict = (KMB.regionOfTrack(nextHeading) == BandsRegion.RECOVERY);
-			}
-			
-			int count = 0;
-			for(int i=0;i<KMB.trackLength();++i){
-				Interval iv = KMB.track(i, "deg"); // i-th band region
-	            double lower_trk = iv.low; // [deg]
-	            double upper_trk = iv.up; // [deg]
-	            BandsRegion regionType = KMB.trackRegion(i);
-	            if (regionType.toString() != "NONE") {
-	            	if(FMS.Detector.CheckTurnConflict(lower_trk, upper_trk, Units.convert(Units.rad, Units.deg, nextHeading),  Units.convert(Units.rad, Units.deg, prefHeading))){
-	            		count++;
-	            	}
-	            }
-			}
-			
-			if(count>0){
-				returnPathConflict = true;
-			}
-			
-			//System.out.println(KMB.outputString());
-			//System.out.println(returnPathConflict);
-			System.out.println("len:"+len);
-			if(len <= 1){
-				System.out.println(DAA.toString());
-			}
-			System.out.println(KMB.outputString());
-			System.out.println(KMB.core_.ownship.get_eprj().project(currentPos).toString());
-			System.out.println(KMB.core_.ownship.get_eprj().project(nextPos).toString());
-			System.out.println(nextVel.toString());
-			System.out.println(KMB.core_.ownship.get_eprj().project(goal).toString());
-			System.out.println(KMB.core_.ownship.get_eprj().project(trafficPos).toString());
+		if(Math.abs(currentVel.groundSpeed("m/s") - speed) > 0.2){
+			currentVel = lastVelocity;
+			// Note: The speed can drop to 0 because of setting mode to guided. 
+			// We need to avoid this transience. Hence, store the last know velocity 
+			// whose speed is > 0.5
+		}
+		
+		returnPathConflict = true;
+		double resolutionSpeed = FlightData.speed;
+		
+		double crossStats[] = FMS.Detector.ComputeCrossTrackDev(currentPos, FlightData.MissionPlan, FlightData.nextMissionWP);
+		Position goal = GetPointOnPlan(crossStats[1], FlightData.MissionPlan,FlightData.nextMissionWP);
+		
+        Daidalus DAA = new Daidalus();
+        DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+        
+        double currentHeading = currentVel.trk();
+        double nextHeading = currentPos.track(goal);
+		Velocity nextVel   = Velocity.makeTrkGsVs(Units.convert(Units.rad, Units.deg, nextHeading), Units.convert(Units.meter_per_second, Units.knot, resolutionSpeed), 0);
+		double alertTime   = currentPos.distanceH(goal)/resolutionSpeed;
+		
+		DAA.setOwnshipState("Ownship", currentPos, currentVel, 0);
+		for(int i=0;i<FMS.FlightData.traffic.size();++i){
+			Position trafficPos = FlightData.traffic.get(i).pos;
+			Velocity trafficVel = FlightData.traffic.get(i).vel;
+			DAA.addTrafficState("ResTraffic"+i, trafficPos, trafficVel);
+		}
+		
+		KinematicMultiBands KMB = DAA.getKinematicMultiBands();
+		returnPathConflict  = KMB.regionOfTrack(nextHeading).isConflictBand();
+		
+		boolean prefDirection = KMB.preferredTrackDirection(); 
+		double prefHeading    = KMB.trackResolution(prefDirection);
+		
+		int count = 0;
+		for(int i=0;i<KMB.trackLength();++i){
+			Interval iv = KMB.track(i, "deg"); // i-th band region
+            double lower_trk = iv.low; // [deg]
+            double upper_trk = iv.up; // [deg]
+            BandsRegion regionType = KMB.trackRegion(i);
+            if (regionType.toString() != "NONE") {
+            	boolean val =FMS.Detector.CheckTurnConflict(lower_trk, upper_trk, Units.convert(Units.rad, Units.deg, nextHeading),  Units.convert(Units.rad, Units.deg, currentHeading));
+            	System.out.println("****");
+            	System.out.println(Units.convert(Units.rad, Units.deg, nextHeading));
+            	System.out.println(Units.convert(Units.rad, Units.deg, prefHeading));
+            	System.out.println(lower_trk);
+            	System.out.println(upper_trk);
+            	if(val){
+            		count++;
+            	}
+            }
+		}
+		
+		if(count>0){
+			returnPathConflict = true;
 		}
 		
 		
-		Position start = currentPos.linearDist(prefHeading, 0.25);
-		double ETA2    = start.distanceH(nextPos)/resolutionSpeed;
-		double ETA3    = ETA2 + nextPos.distanceH(goal)/resolutionSpeed;
-		NavPoint wp1   = new NavPoint(start,0);
-		NavPoint wp2   = new NavPoint(nextPos,ETA2);
-		NavPoint wp3   = new NavPoint(goal,ETA3);
+		if(!Double.isNaN(prefHeading)){
+			FlightData.maneuverVn = resolutionSpeed * Math.cos(prefHeading);
+	        FlightData.maneuverVe = resolutionSpeed * Math.sin(prefHeading);
+			FlightData.maneuverHeading = Math.toDegrees(Math.atan2(FlightData.maneuverVe,FlightData.maneuverVn));
+		}
+
+		if(FlightData.maneuverHeading < 0){
+			FlightData.maneuverHeading = 360 + FlightData.maneuverHeading;
+		}
 		
-		FMS.FlightData.ResolutionPlan.clear();
-		FMS.FlightData.ResolutionPlan.add(wp1);
-		FMS.FlightData.ResolutionPlan.add(wp2);
-		FMS.FlightData.ResolutionPlan.add(wp3);
+		lastVelocity = currentVel;
+		FMS.planType = plan_type_t.MANEUVER;
 		
-		FMS.GoalReached = true;
-		FMS.planType = plan_type_t.TRAJECTORY;
-		FMS.resumeMission = true;
-		
-		FMS.Detector.Clear();
-		FMS.Detector.numConflicts = 0;
+		System.out.println("Resolution");
+		System.out.println(KMB.outputString());
+		System.out.println(KMB.core_.ownship.get_eprj().project(currentPos).toString());
+		System.out.println(currentVel.toStringUnits("degree", "m/s", "m/s"));
+		System.out.println(KMB.core_.ownship.get_eprj().project(KMB.getTraffic().get(0).getPosition()).toString());
+		System.out.format("%f,%f,%f,%f\n",resolutionSpeed,prefHeading,FlightData.maneuverVn,FlightData.maneuverVe);
+		System.out.println(returnPathConflict);
 		
 	}
 

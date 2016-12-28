@@ -222,7 +222,6 @@ public class ConflictDetection{
 			DAA.addTrafficState("Traffic"+i,si,vi);
 		}
 
-
 		boolean daaViolation = false;		
 		KMB = DAA.getKinematicMultiBands();
 		if(KMB.regionOfTrack(DAA.getOwnshipState().track()).isConflictBand()){
@@ -235,10 +234,11 @@ public class ConflictDetection{
 		//TODO: this parameter depends on how long it takes to compute a resolution + start executing that resolution
 		if(daaTimeElapsed > 5){
 			if(!daaViolation){
-				trafficConflict = false;
+				trafficConflict = FMS.Resolver.returnPathConflict;
 			}
 		}
 		
+		// Construct kinematic bands message to send to ground station
 		msg_kinematic_bands msg = new msg_kinematic_bands();
 		msg.sysid = 1;
 		msg.numBands = (byte)KMB.trackLength();
