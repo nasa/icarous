@@ -546,11 +546,6 @@ public class Resolution {
             BandsRegion regionType = KMB.trackRegion(i);
             if (regionType.toString() != "NONE") {
             	boolean val =FMS.Detector.CheckTurnConflict(lower_trk, upper_trk, Units.convert(Units.rad, Units.deg, nextHeading),  Units.convert(Units.rad, Units.deg, currentHeading));
-            	System.out.println("****");
-            	System.out.println(Units.convert(Units.rad, Units.deg, nextHeading));
-            	System.out.println(Units.convert(Units.rad, Units.deg, prefHeading));
-            	System.out.println(lower_trk);
-            	System.out.println(upper_trk);
             	if(val){
             		count++;
             	}
@@ -575,13 +570,13 @@ public class Resolution {
 		lastVelocity = currentVel;
 		FMS.planType = plan_type_t.MANEUVER;
 		
-		System.out.println("Resolution");
-		System.out.println(KMB.outputString());
-		System.out.println(KMB.core_.ownship.get_eprj().project(currentPos).toString());
-		System.out.println(currentVel.toStringUnits("degree", "m/s", "m/s"));
-		System.out.println(KMB.core_.ownship.get_eprj().project(KMB.getTraffic().get(0).getPosition()).toString());
-		System.out.format("%f,%f,%f,%f\n",resolutionSpeed,prefHeading,FlightData.maneuverVn,FlightData.maneuverVe);
-		System.out.println(returnPathConflict);
+		//System.out.println("Resolution");
+		//System.out.println(KMB.outputString());
+		//System.out.println(KMB.core_.ownship.get_eprj().project(currentPos).toString());
+		//System.out.println(currentVel.toStringUnits("degree", "m/s", "m/s"));
+		//System.out.println(KMB.core_.ownship.get_eprj().project(KMB.getTraffic().get(0).getPosition()).toString());
+		//System.out.format("%f,%f,%f,%f\n",resolutionSpeed,prefHeading,FlightData.maneuverVn,FlightData.maneuverVe);
+		//System.out.println(returnPathConflict);
 		
 	}
 
