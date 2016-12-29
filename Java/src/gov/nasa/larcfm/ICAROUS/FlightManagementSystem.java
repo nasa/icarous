@@ -79,6 +79,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	protected Interface gsIntf;
 	public ErrorLog log;
 	public AircraftData FlightData;
+	public boolean devAllowed;
 
 	public FlightManagementSystem(String name,AircraftData fData,Interface ap, Interface gs){
 		threadName       = name;
@@ -89,6 +90,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		log              = new ErrorLog("FMS");
 		apIntf           = ap;
 		gsIntf           = gs;
+		devAllowed       = false;
 	}
 
 	public void run(){	
@@ -465,6 +467,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	public void CRUISE(){};
 	public void DESCEND(){};
 	public void LAND(){};
+	public void TRACKING(Position target){};
 	public void Reset(){};
 
 	@Override

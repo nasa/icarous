@@ -35,12 +35,7 @@ package gov.nasa.larcfm.ICAROUS;
 import com.MAVLink.enums.*;
 import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
-import gov.nasa.larcfm.Util.Plan;
-import gov.nasa.larcfm.Util.Position;
-import gov.nasa.larcfm.Util.ErrorLog;
-import gov.nasa.larcfm.Util.ErrorReporter;
-import gov.nasa.larcfm.Util.NavPoint;
-import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larcfm.Util.*;
 import java.util.*;
 
 public class QuadFMS extends FlightManagementSystem{
@@ -178,9 +173,13 @@ public class QuadFMS extends FlightManagementSystem{
 
 		Detector.CheckGeoFences();
 		
-		Detector.CheckFlightPlanDeviation();
+		if(!devAllowed){
+			Detector.CheckFlightPlanDeviation();
+		}
 
-		Detector.CheckTraffic();
+		if(FlightData.traffic.size() > 0){
+			Detector.CheckTraffic();
+		}
 
 		return Detector.Size();
 	}
@@ -403,4 +402,76 @@ public class QuadFMS extends FlightManagementSystem{
 		planType      = plan_type_t.TRAJECTORY;
 		
 	}
+	
+	@Override
+	public void TRACKING(Position Target){
+		
+		// Get coordinates of object to track
+		Position CurrentPos = FlightData.acState.positionLast();
+		
+		// Get tracking position
+		// This is determined by parameters - distance and heading
+		double heading = FlightData.pData.getValue("TRACKING_HEADING");
+		double distH   = FlightData.pData.getValue("TRACKING_DISTH");
+		double distV   = FlightData.pData.getValue("TRACKING_DISTV");   
+
+		double distHx  = distH*Math.sin(Math.toRadians(heading)); // Heading is measured from North
+		double distHy  = distH*Math.cos(Math.toRadians(heading));
+
+		double Kx_trk = 0.5;
+		double Ky_trk = 0.5;
+		double Kz_trk = 0.5;
+
+		Vect3 delPos   = new Vect3(distHx,distHy,distV);
+			
+		// Project from LatLonAlt to cartesian coordinates
+		
+		EuclideanProjection proj = Projection.createProjection(CurrentPos.mkAlt(0));
+		Vect3 vecCP  =  proj.project(CurrentPos);
+		Vect3 vecTP  =  proj.project(Target);
+
+		Vect3 vecTPf =  vecTP.Add(delPos);
+		
+		// Relative vector to object
+		Vect3 Rel    = vecTPf.Sub(vecCP);
+			
+		// Compute velocity commands that will enure smooth tracking of object
+		double dx = Rel.x();
+		double dy = Rel.y();
+		double dz = Rel.z();
+
+		// Velocity is proportional to distance from object.
+		double Vx = SaturateVelocity(Kx_trk * dx,2.0);
+		double Vy = SaturateVelocity(Ky_trk * dy,2.0);
+		double Vz = SaturateVelocity(Kz_trk * dz,2.0);
+
+		//System.out.println(vecCP.toString());
+		//System.out.println(vecTPf.toString());
+		//System.out.format("dx,dy,dz = %f,%f,%f\n",dx,dy,dz);
+		//System.out.format("Heading = %f, Velocities %1.3f, %1.3f, %1.3f\n",heading,Vx,Vy,Vz);
+
+		// Vn, Ve, Vd
+		SetVelocity(Vy,Vx,-Vz);
+
+		double RefHeading = Math.toDegrees(Math.atan2(Vx,Vy));
+
+		if(RefHeading < 0){
+		    RefHeading = 360 + RefHeading;
+		}
+
+		if(Rel.norm() > 0.3){
+			SetYaw(RefHeading);
+		}
+		
+	}
+	
+	public double SaturateVelocity(double V, double Vsat){
+		if(Math.abs(V) > Vsat){
+			return Math.signum(V)*Vsat;
+		}
+		else{
+			return V;
+		}
+	}
+
 }
