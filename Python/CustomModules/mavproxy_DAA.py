@@ -1,7 +1,7 @@
 """
     MAVProxy DAA module
 """
-#import os, time, platform, math
+import os, time, platform, math
 from pymavlink import mavutil
 from MAVProxy.modules.lib import mp_util
 from MAVProxy.modules.lib import mp_module
