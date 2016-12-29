@@ -590,13 +590,15 @@ public class Resolution {
 		lastVelocity = currentVel;
 		FMS.planType = plan_type_t.MANEUVER;
 		
-		//System.out.println("Resolution");
-		//System.out.println(KMB.outputString());
-		//System.out.println(KMB.core_.ownship.get_eprj().project(currentPos).toString());
-		//System.out.println(currentVel.toStringUnits("degree", "m/s", "m/s"));
-		//System.out.println(KMB.core_.ownship.get_eprj().project(KMB.getTraffic().get(0).getPosition()).toString());
-		//System.out.format("%f,%f,%f,%f\n",resolutionSpeed,prefHeading,FlightData.maneuverVn,FlightData.maneuverVe);
-		//System.out.println(returnPathConflict);
+		if(FMS.debugDAA){
+			System.out.println("******** DAA resolution debug output ********");
+			System.out.println("KMB output:"+KMB.outputString());
+			System.out.println("Ownship pos:"+KMB.core_.ownship.get_eprj().project(currentPos).toString());
+			System.out.println("Ownship vel"+currentVel.toStringUnits("degree", "m/s", "m/s"));
+			System.out.println("Traffic pos"+KMB.core_.ownship.get_eprj().project(KMB.getTraffic().get(0).getPosition()).toString());
+			System.out.format("Heading = %f,Vn = %f,Ve = %f\n",prefHeading,FlightData.maneuverVn,FlightData.maneuverVe);
+			System.out.println("Return path conflict:"+returnPathConflict);
+		}
 		
 	}
 

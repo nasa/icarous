@@ -44,7 +44,7 @@ import java.util.*;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 
-public class Demo implements Mission,ErrorReporter{
+public class InspectObjectMission implements Mission,ErrorReporter{
 
 	public enum MISSION_STATE{
 		IDLE, TURN1, TURN2, EXAMINE, CONTINUE;
@@ -61,7 +61,7 @@ public class Demo implements Mission,ErrorReporter{
 	int status2 = 0;
 	public double StartTime = 0;
 
-	public Demo(){
+	public InspectObjectMission(){
 		stateMission = MISSION_STATE.IDLE;
 		missionComplete = false;
 		error = new ErrorLog("Mission ");
@@ -84,30 +84,7 @@ public class Demo implements Mission,ErrorReporter{
 
 
 		ElapsedTime = CurrentTime - StartTime;
-		//System.out.format("Elapsed Time:%f\n",ElapsedTime);
-
-		/*
-	if(status == 0){	  
-	  if(ElapsedTime > 5){
-	      System.out.println("Taking control");
-	      UAS.SetMode(4);	     
-
-	      UAS.SetVelocity(1,1,0.0);
-	      status = 1;
-	      StartTime = CurrentTime;
-	  }
-	}	
-
-	if(status == 1 && ElapsedTime < 500){	    	    
-	    UAS.SetVelocity(1,1,0.0);	    	    
-	    //System.out.println("Setting velocities");
-	}
-
-		 */
-		//if(ElapsedTime > 2){
-		//  StartTime = CurrentTime;
-		//}
-
+		
 		synchronized(FlightData.missionObj){
 			if(FlightData.missionObj.size() > 0 && stateMission == MISSION_STATE.IDLE){
 

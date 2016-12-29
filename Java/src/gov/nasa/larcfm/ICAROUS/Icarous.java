@@ -64,11 +64,13 @@ public class Icarous{
 	//private BCAST bcast_module;
 	private Mission Task;
 	private String version;
+	private boolean debugDAA;
 
 	public Icarous(String args[],Mission task){
 
 		version    = "1.0";
 		verbose    = false;
+		debugDAA   = false;
 		sitlhost   = null;
 		px4port    = null;
 		bcastgroup = null;
@@ -135,11 +137,16 @@ public class Icarous{
 			else if(args[i].startsWith("--mode")){
 				mode = args[++i];
 			}
+			
+			else if(args[i].startsWith("--debug")){
+				debugDAA = true;
+			}
 
 			else if(args[i].startsWith("-")) {
 				System.out.println("Invalid option "+args[i]);
 				System.exit(0);
 			}
+			
 
 
 		}
@@ -176,14 +183,13 @@ public class Icarous{
 
 		COMInt.SendStatusText("ICAROUS version: "+String.valueOf(version));
 
-
-
 		fms_module  = new QuadFMS(APInt,COMInt,FlightData,Task,pData);
 		daq_module  = new DAQ("Data acquisition",FlightData,APInt,COMInt);
 		com_module  = new COM("Communications",APInt,COMInt,FlightData,pData);
 
 		fms_module.log.setConsoleOutput(verbose);
 		com_module.log.setConsoleOutput(verbose);
+		fms_module.debugDAA = debugDAA;
 
 		COMInt.SendStatusText("DAQ, FMS, COM Initialized");
 	}

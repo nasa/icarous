@@ -38,8 +38,8 @@ import gov.nasa.larcfm.MISSION.*;
 public class launch{
 	
     public static void main(String args[]){
-	//Demo test = new Demo();
-    TrkMission test = new TrkMission();
+	InspectObjectMission test = new InspectObjectMission();
+    //TrackingMission test = new TrackingMission();
 	Icarous IcarousMain = new Icarous(args,test);
 	IcarousMain.run();
     }// end of main    

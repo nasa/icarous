@@ -6,13 +6,13 @@ import gov.nasa.larcfm.Util.Position;
 
 import java.util.*;
 
-public class TrkMission implements Mission {
+public class TrackingMission implements Mission {
 	
 	public enum mission_state_t {START, EXECUTE, STOP};
 	
 	public mission_state_t state;
 	
-	public TrkMission(){
+	public TrackingMission(){
 		state = mission_state_t.START;
 	}
 	

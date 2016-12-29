@@ -80,7 +80,8 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	public ErrorLog log;
 	public AircraftData FlightData;
 	public boolean devAllowed;
-
+	public boolean debugDAA;
+	
 	public FlightManagementSystem(String name,AircraftData fData,Interface ap, Interface gs){
 		threadName       = name;
 		FMSrunning       = true;
@@ -91,6 +92,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		apIntf           = ap;
 		gsIntf           = gs;
 		devAllowed       = false;
+		debugDAA         = false;
 	}
 
 	public void run(){	
