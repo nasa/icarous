@@ -452,7 +452,7 @@ public class Resolution {
 		else{
 	
 			Position CurrentPos   = FlightData.acState.positionLast();
-			Position cp = GetPointOnPlan(FlightData.crossTrackOffset,FlightData.MissionPlan,FlightData.nextMissionWP);
+			Position cp = GetPointOnPlan(FlightData.crossTrackOffset+1,FlightData.MissionPlan,FlightData.nextMissionWP); // Adding a meter to offset
 			
 			FlightData.maneuverHeading = Math.toDegrees(CurrentPos.track(cp));
 
