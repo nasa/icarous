@@ -12,6 +12,44 @@ from MAVProxy.modules.lib.mp_menu import *  # popup menus
 if mp_util.has_wxpython:
     from MAVProxy.modules.lib.mp_menu import *
 
+class SlipEllipse(mp_slipmap.SlipObject):
+    def __init__(self, key, layer, center, axes, angle, startAngle, endAngle, colour, linewidth, popup_menu=None):
+        mp_slipmap.SlipObject.__init__(self, key, layer, popup_menu=popup_menu)
+        self.center = center
+        self.axes = axes
+        self.angle = angle
+        self.startAngle = startAngle
+        self.endAngle = endAngle
+        self.colour = colour
+        self.linewidth = linewidth
+        self._pix_points = []
+
+    def bounds(self):
+        '''return bounding box'''
+        if self.hidden:
+            return None
+        return (self.center[0],self.center[1],0,0)
+
+    def draw(self, img, pixmapper, bounds):
+        '''draw a polygon on the image'''
+        if self.hidden:
+            return
+
+        center = pixmapper(self.center)
+        # figure out pixels per meter
+        ref_pt = (self.center[0] + 1.0, self.center[1])
+        dis = mp_util.gps_distance(self.center[0], self.center[1], ref_pt[0], ref_pt[1])
+        ref_px = pixmapper(ref_pt)
+        dis_px = math.sqrt(float(center[1] - ref_px[1]) ** 2.0)
+        pixels_per_meter = dis_px / dis
+
+
+        axes0 = int(self.axes[0]*pixels_per_meter)
+        axes1 = int(self.axes[1]*pixels_per_meter)
+        axes  = (axes0,axes1)
+        mp_slipmap.cv.Ellipse(img,center,axes,self.angle,self.startAngle,self.endAngle,self.colour,self.linewidth)
+
+    
 class DAA:
     def __init__(self):
 
@@ -34,6 +72,10 @@ class DAAModule(mp_module.MPModule):
         self.WCV = False;
         self.radius = 10.0;
 
+        self.numBands = 0;
+        self.oldNumBands = 0;
+        self.Bands = [];
+        self.kmbMsgCounter = 0;
         
     def idle_task(self):
         '''called on idle'''
@@ -67,27 +109,96 @@ class DAAModule(mp_module.MPModule):
             if self.open is True:
                 self.Update_traffic();
 
+    def AddBand(self,i,bands):
+
+        if bands[2] == 0:
+            colour = (0,255,0,100)
+        elif bands[2] == 1:
+            colour = (255,0,0,100)
         
+        center = (self.module('map').lat,self.module('map').lon)
+        axes = (self.radius,self.radius)
+        angle = -90
+        startAngle = bands[0]
+        stopAngle = bands[1]
+        thickness = -1
+        band_guidance = SlipEllipse("band"+str(i),1,center,axes,angle,startAngle,stopAngle,colour,thickness)
+        self.mpstate.map.add_object(band_guidance)
             
                                 
     def mavlink_packet(self, m):
         '''handle and incoming mavlink packet'''                        
 
-        #self.Update_traffic();                        
-
         if(self.open is True):
+            self.kmbMsgCounter = self.kmbMsgCounter+1;
             wcv_volume = mp_slipmap.SlipCircle("well_clear_volume", 3,\
                                                (self.module('map').lat,self.module('map').lon),\
                                                self.radius,\
                                                (0, 0, 255), linewidth=2)                                                
         
         
-        self.mpstate.map.add_object(wcv_volume)               
+            self.mpstate.map.add_object(wcv_volume)               
+
+            if(self.kmbMsgCounter == 95):
+                self.Bands = []
+
+            if m.get_type() == "KINEMATIC_BANDS":
+                self.kmbMsgCounter = 0;
+                self.oldNumBands = self.numBands;
+                self.numBands = m.numBands;
+                numBands = 0
+                numBands = numBands + 1
+
+                self.Bands = []
+
+                if(numBands <= self.numBands):
+                    low    = m.min1
+                    high   = m.max1
+                    bands  = [low,high,m.type1]
+                    self.Bands.append(bands)
+                    numBands = numBands + 1
+                
+
+                if (numBands <= self.numBands):
+                    low = m.min2
+                    high = m.max2
+                    bands = [low, high,m.type2]
+                    self.Bands.append(bands)
+                    numBands = numBands + 1
+
+                if (numBands <= self.numBands):
+                    low = m.min3
+                    high = m.max3
+                    bands = [low, high,m.type3]
+                    self.Bands.append(bands)
+                    numBands = numBands + 1
+
+                if (numBands <= self.numBands):
+                    low = m.min4
+                    high = m.max4
+                    bands = [low, high,m.type4]
+                    self.Bands.append(bands)
+                    numBands = numBands + 1
+
+                if (numBands <= self.numBands):
+                    low = m.min5
+                    high = m.max5
+                    bands = [low, high,m.type5]
+                    self.Bands.append(bands)
+                    numBands = numBands + 1
+
+            if (self.oldNumBands > self.numBands) or self.kmbMsgCounter == 100:
+                for i in range(self.oldNumBands):
+                    self.mpstate.map.remove_object("band" + str(i))
+
+            for i,kmb in enumerate(self.Bands):
+                self.AddBand(i,kmb)
+
         
         if m.get_type() == "TRAFFIC_INFO":
             print m.breach_status                    
 
-
+            
 
 
 
