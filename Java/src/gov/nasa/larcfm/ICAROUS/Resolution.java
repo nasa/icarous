@@ -545,6 +545,19 @@ public class Resolution {
 		boolean prefDirection = KMB.preferredTrackDirection(); 
 		double prefHeading    = KMB.trackResolution(prefDirection);
 		
+		//TODO: verify with Cesar that angles are represented within -pi to pi
+		if(prefDirection){
+			prefHeading = prefHeading + Units.convert(Units.deg, Units.rad, 2);
+			if(prefHeading > Math.PI){
+				prefHeading = prefHeading - 2*Math.PI;
+			}
+		}else{
+			prefHeading = prefHeading - Units.convert(Units.deg, Units.rad, 2);
+			if(prefHeading < -Math.PI){
+				prefHeading = 2*Math.PI + prefHeading;
+			}
+		}
+		
 		int count = 0;
 		for(int i=0;i<KMB.trackLength();++i){
 			Interval iv = KMB.track(i, "deg"); // i-th band region
