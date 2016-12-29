@@ -524,6 +524,13 @@ public class Resolution {
         double nextHeading = currentPos.track(goal);
 		Velocity nextVel   = Velocity.makeTrkGsVs(Units.convert(Units.rad, Units.deg, nextHeading), Units.convert(Units.meter_per_second, Units.knot, resolutionSpeed), 0);
 		double alertTime   = currentPos.distanceH(goal)/resolutionSpeed;
+		double alertTime0  = DAA.parameters.alertor.getLevel(1).getAlertingTime();
+		
+		//Use new alert time if it is greater than existing alert time
+		if(alertTime > alertTime0){
+			DAA.parameters.alertor.getLevel(1).setAlertingTime(alertTime);
+			DAA.parameters.alertor.getLevel(1).setEarlyAlertingTime(alertTime);
+		}
 		
 		DAA.setOwnshipState("Ownship", currentPos, currentVel, 0);
 		for(int i=0;i<FMS.FlightData.traffic.size();++i){
