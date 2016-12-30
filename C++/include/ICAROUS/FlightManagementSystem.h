@@ -90,6 +90,7 @@ class FlightManagementSystem_t{
     public:
 
         ErrorLog log;
+        bool debugDAA;
         FlightManagementSystem_t():log("FMS"){};
         FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);
         virtual ~FlightManagementSystem_t(){};
@@ -123,6 +124,7 @@ class FlightManagementSystem_t{
         virtual uint8_t DESCEND(){return 0;};
         virtual uint8_t APPROACH(){return 0;};
         virtual uint8_t LAND(){return 0;};
+        virtual uint8_t TRACKING(Position target){return 0;};
         virtual void Reset(){return;};
 };
 

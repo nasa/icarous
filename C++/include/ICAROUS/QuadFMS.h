@@ -69,6 +69,8 @@ class QuadFMS_t:public FlightManagementSystem_t{
         Position NextGoal;
         bool goalReached;
         time_t timeStart;
+        bool returnPathConflict;
+        Velocity lastVelocity;
 
     public:
         time_t daaTimeStart;
@@ -82,6 +84,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
         uint8_t LAND();
         uint8_t Monitor();
         uint8_t Resolve();
+        uint8_t TRACKING(Position target);
 
         uint8_t FlyTrajectory();
         uint8_t FlyManuever();
@@ -90,13 +93,16 @@ class QuadFMS_t:public FlightManagementSystem_t{
         void CheckGeofence();
         void CheckFlightPlanDeviation();
         void ComputeCrossTrackDev(Position pos,Plan fp,int nextWP,double stats[]);
+        Position GetPointOnPlan(double offset,Plan fp,int next);
         bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
         void CheckTraffic();
         void ResolveKeepInConflict();
         void ResolveKeepOutConflict_Astar();
         void ResolveKeepOutConflict_RRT();
         void ResolveFlightPlanDeviation();
-        void ResolveTrafficConflict();
+        void ResolveTrafficConflictRRT();
+        void ResolveTrafficConflictDAA();
+        double SaturateVelocity(double V, double Vsat);
         Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
         void Reset();
 };

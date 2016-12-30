@@ -210,6 +210,34 @@
 			 icarous_parm = true;
 		 else if(!strcmp(msg.param_id,"TAKEOFF_ALT"))
 			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"CHEAP_DAA"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"CHEAP_SEARCH"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"MAX_CEILING"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"TRACKING_HEADING"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"TRACKING_DISTH"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"TRACKING_DISTV"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"CYL_RADIUS"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"CYL_HEIGHT"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"ALERT_TIME"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"EARLY_ALERT_TIME"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"DAA_LOOKAHEAD"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"SYS_ID"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"COMP_ID"))
+			 icarous_parm = true;
+		 else if(!strcmp(msg.param_id,"AUTOPILOT_ID"))
+			 icarous_parm = true;
 		 else
 			 icarous_parm = false;
 

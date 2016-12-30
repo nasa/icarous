@@ -58,6 +58,7 @@ class Icarous_t{
 
 private:
 	bool verbose = false;
+	bool debug = false;
 	char px4port[100];
 	char sitlhost[100];
 	char gshost[100];

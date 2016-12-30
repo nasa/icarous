@@ -51,6 +51,7 @@
      trafficResolutionTime = 0;
      time(&timeStart);
      goalReached = true;
+     returnPathConflict = false;
  }
 
 QuadFMS_t::~QuadFMS_t(){}
@@ -179,19 +180,27 @@ uint8_t QuadFMS_t::Resolve(){
 
 	case COMPUTE_r:
 
-
-
 		if(Conflict.traffic){
 			printf("Computing traffic resolution\n");
-			ResolveTrafficConflict();
+			SendStatusText("traffic conflict");
+			int search_type = FlightData->paramData->getInt("CHEAP_DAA");
+			if(search_type == 0){
+				ResolveTrafficConflictRRT();
+			}
+			else{
+				ResolveTrafficConflictDAA();
+			}
 			time(&trafficResolutionTime);
 		}
 		else if(Conflict.keepin){
+			SendStatusText("keep in conflict");
 			printf("Computing keep in resolution\n");
 			ResolveKeepInConflict();
 		}
 		else if(Conflict.keepout){
-			int search_type = FlightData->paramData->getInt("SEARCH_TYPE");
+			SetMode(GUIDED);
+			SendStatusText("keep out conflict");
+			int search_type = FlightData->paramData->getInt("CHEAP_SEARCH");
 			printf("Computing keep out resolution\n");
 			time(&startTime);
 			if(search_type == 0){
@@ -204,6 +213,7 @@ uint8_t QuadFMS_t::Resolve(){
 			printf("Time to compute solution %f\n",difftime(stopTime,startTime));
 		}
 		else if(Conflict.flightPlanDeviation){
+			SendStatusText("flight plan deviation");
 			printf("Computing standoff deviation\n");
 			ResolveFlightPlanDeviation();
 		}
@@ -334,13 +344,17 @@ uint8_t QuadFMS_t::FlyManuever(){
 		break;
 
 	case GUIDE_m:
-		if(Conflict.flightPlanDeviation){
+		if(Conflict.traffic){
+			ResolveTrafficConflictDAA();
+			SetYaw(FlightData->maneuverHeading);
+			SetVelocity(FlightData->maneuverVn,FlightData->maneuverVe,FlightData->maneuverVu);
+		}
+		else if(Conflict.flightPlanDeviation){
 			ResolveFlightPlanDeviation();
 			SetYaw(FlightData->maneuverHeading);
 			SetVelocity(FlightData->maneuverVn,FlightData->maneuverVe,FlightData->maneuverVu);
 		}
-
-		if(!Conflict.flightPlanDeviation){
+		else{
 			printf("finished maneuver resolution\n");
 			maneuverState = IDLE_m;
 			Conflict.clear();
@@ -383,6 +397,80 @@ void QuadFMS_t::ComputeInterceptCourse(){
 
 }
 
+uint8_t QuadFMS_t::TRACKING(Position target){
+
+
+	// Get coordinates of object to track
+	Position CurrentPos = FlightData->acState.positionLast();
+
+	// Get tracking position
+	// This is determined by parameters - distance and heading
+	double heading = FlightData->paramData->getValue("TRACKING_HEADING");
+	double distH   = FlightData->paramData->getValue("TRACKING_DISTH");
+	double distV   = FlightData->paramData->getValue("TRACKING_DISTV");
+
+	double distHx  = distH*sin(heading*M_PI/180); // Heading is measured from North
+	double distHy  = distH*cos(heading*M_PI/180);
+
+	double Kx_trk = 0.5;
+	double Ky_trk = 0.5;
+	double Kz_trk = 0.5;
+
+	Vect3 delPos(distHx,distHy,distV);
+
+	// Project from LatLonAlt to cartesian coordinates
+
+	EuclideanProjection proj = Projection::createProjection(CurrentPos.mkAlt(0));
+	Vect3 vecCP  =  proj.project(CurrentPos);
+	Vect3 vecTP  =  proj.project(target);
+
+	Vect3 vecTPf =  vecTP.Add(delPos);
+
+	// Relative vector to object
+	Vect3 Rel    = vecTPf.Sub(vecCP);
+
+	// Compute velocity commands that will enure smooth tracking of object
+	double dx = Rel.x;
+	double dy = Rel.y;
+	double dz = Rel.z;
+
+	// Velocity is proportional to distance from object.
+	double Vx = SaturateVelocity(Kx_trk * dx,2.0);
+	double Vy = SaturateVelocity(Ky_trk * dy,2.0);
+	double Vz = SaturateVelocity(Kz_trk * dz,2.0);
+
+	//System.out.println(vecCP.toString());
+	//System.out.println(vecTPf.toString());
+	//System.out.format("dx,dy,dz = %f,%f,%f\n",dx,dy,dz);
+	//System.out.format("Heading = %f, Velocities %1.3f, %1.3f, %1.3f\n",heading,Vx,Vy,Vz);
+
+	// Vn, Ve, Vd
+	SetVelocity(Vy,Vx,-Vz);
+
+	double RefHeading = atan2(Vx,Vy)*180/M_PI;
+
+	if(RefHeading < 0){
+		RefHeading = 360 + RefHeading;
+	}
+
+	if(Rel.norm() > 0.3){
+		SetYaw(RefHeading);
+	}
+
+	return 0;
+
+}
+
+double QuadFMS_t::SaturateVelocity(double V, double Vsat){
+	if(abs(V) > Vsat){
+		return sign(V)*Vsat;
+	}
+	else{
+		return V;
+	}
+}
+
+
 void QuadFMS_t::Reset(){
 	fmsState = _idle_;
 	planType = MISSION;
@@ -390,4 +478,6 @@ void QuadFMS_t::Reset(){
 	Conflict.clear();
 	landStarted = false;
 }
+
+
 

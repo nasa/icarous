@@ -75,6 +75,7 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 		  {"radio",    required_argument, 0, 'j'},
 		  {"radiobaud",required_argument, 0, 'k'},
 		  {"mode",     required_argument, 0, 'l'},
+		  {"debug",          no_argument, 0, 'm'},
 		  {0,                          0, 0,   0}
 	  };
 
@@ -149,6 +150,10 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 		  //printf("Launching ICAROUS in %s mode\n",mode);
 		  break;
 
+		case 'm':
+		  debug = true;
+		  break;
+
 		case '?':
 
 		  break;
@@ -196,6 +201,7 @@ void Icarous_t::Run(){
 		FMS.log.setConsoleOutput(true);
 	}
 
+	FMS.debugDAA = debug;
 	FMS.SendStatusText("Starting ICAROUS");
 
 	std::thread thread1(&Communication_t::GetPixhawkData,&DAQ);

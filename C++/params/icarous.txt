@@ -1,24 +1,46 @@
-# Takeoff alt
-TAKEOFF_ALT =5
+# SYS ID/ COMP ID
+SYS_ID = 100
+COMP_ID = 0
 
-# Resolution speed
-RES_SPEED = 0.5
+# AUTOPILOT ID
+AUTOPILOT_ID = 1
 
-#Geofence parameters
-HTHRESHOLD = 1
-VTHRESHOLD = 1
-HSTEPBACK = 4
+# ICAROUS heartbeat (Hz)
+ICHBEAT = 5
 
-# Xtrack resolution parameters
-XTRK_DEV = 2.0
-XTRK_GAIN = 0.5
-MAX_CEILING = 50;
+# Takeoff altitude
+TAKEOFF_ALT = 5
 
-#Keep-out resolution type (0-Astar, 1-RRT)
-SEARCH_TYPE=1
+#Maximum ceiling
+MAX_CEILING = 30
 
-#Astar search parameters
-LOOKAHEAD = 2
-GRIDSIZE = 0.5
-BUFFER = 1
+# Geofence parameters
+HTHRESHOLD = 1.0
+VTHRESHOLD = 1.0
+HSTEPBACK  = 2.0
+VSTEPBACK  = 2.0
+
+# Search parameters
+CHEAP_SEARCH = 0
+GRIDSIZE   = 0.5
+BUFFER     = 1
+LOOKAHEAD  = 3
 PROXFACTOR = 3.0
+
+# Flight plan resolution parameters
+RES_SPEED = 0.5
+XTRK_GAIN = 0.6
+XTRK_DEV  = 1.0
+
+#Tracking
+TRACKING_HEADING = 270
+TRACKING_DISTH = 3
+TRACKING_DISTV = 0
+
+#DAA parameters
+CHEAP_DAA = 1
+CYL_RADIUS = 3
+CYL_HEIGHT = 10
+ALERT_TIME = 8
+EARLY_ALERT_TIME = 10
+DAA_LOOKAHEAD = 20

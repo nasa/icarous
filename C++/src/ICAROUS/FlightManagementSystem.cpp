@@ -139,6 +139,8 @@ void FlightManagementSystem_t::SetSpeed(float speed){
 	
 	SendCommand(0,0,MAV_CMD_DO_CHANGE_SPEED,0,
 		        1,speed,0,0,0,0,0);
+
+	FlightData->speed = speed;
 }
 
 void FlightManagementSystem_t::SendStatusText(char buffer[]){

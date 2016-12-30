@@ -94,23 +94,11 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 
 	}
 	else{
-		headingNextWP = prevWP.track(nextWP);
-		dn = FlightData->crossTrackOffset*cos(headingNextWP);
-		de = FlightData->crossTrackOffset*sin(headingNextWP);
 
-		cp = prevWP.linearEst(dn,de); // closest point on path
-
-		if(prevWP.alt() < 2){
-			cp = cp.mkAlt(nextWP.alt());
-		}
-
-		FlightData->maneuverHeading = currentPos.track(cp);
-		if(FlightData->maneuverHeading < 0){
-			FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
-		}
-
+		Position cp = GetPointOnPlan(FlightData->crossTrackOffset,currentFP,FlightData->nextMissionWP);
 		double distance = currentPos.distanceH(cp);
 		double ETA      = distance/resolutionSpeed;
+
 		NavPoint wp1(currentPos,0);
 		NavPoint wp2(cp,ETA);
 		FlightData->ResolutionPlan.clear();
@@ -476,8 +464,135 @@ Plan QuadFMS_t::ComputeGoAbovePlan(Position start,Position goal,double altFence,
 	return ResolutionPlan2;
 }
 
+Position QuadFMS_t::GetPointOnPlan(double offset,Plan fp,int next){
 
-void QuadFMS_t::ResolveTrafficConflict(){
+	Position nextWP       = fp.point(next).position();
+	Position prevWP       = fp.point(next-1).position();
+	double headingNextWP  = prevWP.track(nextWP);;
+	double dn             = offset*cos(headingNextWP);
+	double de             = offset*sin(headingNextWP);
+	Position cp           = prevWP.linearEst(dn, de);
+
+	if(cp.alt() <= 0){
+		cp = cp.mkAlt(nextWP.alt());
+	}
+
+	return cp;
+
+}
+
+void QuadFMS_t::ResolveTrafficConflictDAA(){
+	// Track based resolutions
+	//TODO: add eps to preferred heading
+	Position currentPos = FlightData->acState.positionLast();
+	Velocity currentVel = FlightData->acState.velocityLast();
+	double speed = FlightData->speed;
+
+
+	if(abs(currentVel.groundSpeed("m/s") - speed) > 0.2){
+		currentVel = lastVelocity;
+		// Note: The speed can drop to 0 because of setting mode to guided.
+		// We need to avoid this transience. Hence, store the last know velocity
+		// whose speed is > 0.5
+	}
+
+	returnPathConflict = true;
+	double resolutionSpeed = FlightData->speed;
+
+	double crossStats[2];
+	ComputeCrossTrackDev(currentPos, FlightData->MissionPlan, FlightData->nextMissionWP,crossStats);
+	Position goal = GetPointOnPlan(crossStats[1], FlightData->MissionPlan,FlightData->nextMissionWP);
+
+	Daidalus DAA;
+	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+
+	double currentHeading = currentVel.trk();
+	double nextHeading = currentPos.track(goal);
+	Velocity nextVel   = Velocity::makeTrkGsVs(nextHeading,"radians",resolutionSpeed,"m/s",0,"m/s");
+	double alertTime   = currentPos.distanceH(goal)/resolutionSpeed;
+	double alertTime0  = DAA.parameters.alertor.getLevel(1).getAlertingTime();
+
+	//Use new alert time if it is greater than existing alert time
+	if(alertTime > alertTime0){
+		AlertThresholds alertor = DAA.parameters.alertor.getLevel(1);
+		alertor.setAlertingTime(alertTime);
+		alertor.setEarlyAlertingTime(alertTime);
+		DAA.parameters.alertor.setLevel(1,alertor);
+	}
+
+	DAA.setOwnshipState("Ownship", currentPos, currentVel, 0);
+	std::list<Object_t>::iterator it;
+	int count = 0;
+	for(it = FlightData->trafficList.begin();it != FlightData->trafficList.end();it++){
+		Position tPos = Position::makeLatLonAlt(it->x,"degree",it->y,"degree",it->z,"m");
+		Velocity tVel = Velocity::makeVxyz(it->vy,it->vx,"m/s",it->vz,"m/s");
+		char name[10];
+		sprintf(name,"ResTraffic%d",count);count++;
+		DAA.addTrafficState(name, tPos, tVel);
+	}
+
+	KinematicMultiBands KMB;
+	DAA.kinematicMultiBands(KMB);
+	returnPathConflict  = BandsRegion::isConflictBand(KMB.regionOfTrack(nextHeading));
+
+	bool prefDirection = KMB.preferredTrackDirection();
+	double prefHeading    = KMB.trackResolution(prefDirection);
+
+	//TODO: verify with Cesar that angles are represented within -pi to pi
+	if(prefDirection){
+		prefHeading = prefHeading + 2*M_PI/180;
+		if(prefHeading > M_PI){
+			prefHeading = prefHeading - 2*M_PI;
+		}
+	}else{
+		prefHeading = prefHeading - 2*M_PI/180;
+		if(prefHeading < -M_PI){
+			prefHeading = 2*M_PI + prefHeading;
+		}
+	}
+
+	count = 0;
+	for(int i=0;i<KMB.trackLength();++i){
+		Interval iv = KMB.track(i, "deg"); // i-th band region
+		double lower_trk = iv.low; // [deg]
+		double upper_trk = iv.up; // [deg]
+		if (KMB.trackRegion(i) == BandsRegion::NONE) {
+			bool val = CheckTurnConflict(lower_trk, upper_trk, nextHeading*180/M_PI,  currentHeading*180/M_PI);
+			if(val){
+				count++;
+			}
+		}
+	}
+
+	if(count>0){
+		returnPathConflict = true;
+	}
+
+	if(!isnanf(prefHeading)){
+		FlightData->maneuverVn = resolutionSpeed * cos(prefHeading);
+		FlightData->maneuverVe = resolutionSpeed * sin(prefHeading);
+		FlightData->maneuverHeading = atan2(FlightData->maneuverVe,FlightData->maneuverVn)*180/M_PI;
+	}
+
+	if(FlightData->maneuverHeading < 0){
+		FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
+	}
+
+	lastVelocity = currentVel;
+	planType = MANEUVER;
+
+	if(debugDAA){
+		printf("******** DAA resolution debug output ********");
+		printf("KMB output:%s\n",KMB.outputString());
+		printf("Ownship pos:%s\n",KMB.core_.ownship.get_eprj().project(currentPos).toString());
+		printf("Ownship vel:%s\n",currentVel.toStringUnits("degree", "m/s", "m/s"));
+		printf("Heading = %f,Vn = %f,Ve = %f\n",prefHeading,FlightData->maneuverVn,FlightData->maneuverVe);
+		printf("Return path conflict:"+returnPathConflict);
+	}
+
+}
+
+void QuadFMS_t::ResolveTrafficConflictRRT(){
 
 	// Reroute flight plan
 	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
