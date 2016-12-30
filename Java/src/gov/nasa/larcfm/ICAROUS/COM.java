@@ -215,13 +215,13 @@ public class COM implements Runnable,ErrorReporter{
 			case "XTRK_DEV":
 			case "TAKEOFF_ALT":
 			case "MAX_CEILING":
-			case "TRACKING_HEADING":
-			case "TRACKING_DISTH":
-			case "TRACKING_DISTV":
+			case "TRK_HEADING":
+			case "TRK_DISTH":
+			case "TRK_DISTV":
 			case "CYL_RADIUS":
 			case "CYL_HEIGHT":
 			case "ALERT_TIME":
-			case "EARLY_ALERT_TIME":
+			case "EALERT_TIME":
 			case "DAA_LOOKAHEAD":
 			case "CHEAP_DAA":
 			case "CHEAP_SEARCH":

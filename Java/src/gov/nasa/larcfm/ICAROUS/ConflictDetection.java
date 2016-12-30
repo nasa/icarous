@@ -212,7 +212,7 @@ public class ConflictDetection{
  		double distance  = FlightData.pData.getValue("CYL_RADIUS");
  		double height    = FlightData.pData.getValue("CYL_HEIGHT");
  		double alertTime = FlightData.pData.getValue("ALERT_TIME");
- 		double earlyAlertTime = FlightData.pData.getValue("EARLY_ALERT_TIME");
+ 		double earlyAlertTime = FlightData.pData.getValue("EALERT_TIME");
  		double lookAheadTime = FlightData.pData.getValue("DAA_LOOKAHEAD");
  		
  		kbParams.alertor.getLevel(1).setDetector(new CDCylinder(distance, "m", height, "m"));

@@ -421,9 +421,9 @@ public class QuadFMS extends FlightManagementSystem{
 		
 		// Get tracking position
 		// This is determined by parameters - distance and heading
-		double heading = FlightData.pData.getValue("TRACKING_HEADING");
-		double distH   = FlightData.pData.getValue("TRACKING_DISTH");
-		double distV   = FlightData.pData.getValue("TRACKING_DISTV");   
+		double heading = FlightData.pData.getValue("TRK_HEADING");
+		double distH   = FlightData.pData.getValue("TRK_DISTH");
+		double distV   = FlightData.pData.getValue("TRK_DISTV");   
 
 		double distHx  = distH*Math.sin(Math.toRadians(heading)); // Heading is measured from North
 		double distHy  = distH*Math.cos(Math.toRadians(heading));
