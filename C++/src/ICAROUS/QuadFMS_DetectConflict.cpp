@@ -214,7 +214,7 @@ void QuadFMS_t::CheckTraffic(){
 	double radius = FlightData->paramData->getValue("CYL_RADIUS");
 	double height = FlightData->paramData->getValue("CYL_HEIGHT");
 	double alertTime = FlightData->paramData->getValue("ALERT_TIME");
-	double earlyAlertTime = FlightData->paramData->getValue("EARLY_ALERT_TIME");
+	double earlyAlertTime = FlightData->paramData->getValue("EALERT_TIME");
 	CDCylinder cd = CDCylinder(radius,"m",height,"m");
 	AlertThresholds alertor(&cd,alertTime,earlyAlertTime,BandsRegion::NEAR);
 	DAA.parameters.alertor.setLevel(1,alertor);

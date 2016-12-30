@@ -216,11 +216,11 @@
 			 icarous_parm = true;
 		 else if(!strcmp(msg.param_id,"MAX_CEILING"))
 			 icarous_parm = true;
-		 else if(!strcmp(msg.param_id,"TRACKING_HEADING"))
+		 else if(!strcmp(msg.param_id,"TRK_HEADING"))
 			 icarous_parm = true;
-		 else if(!strcmp(msg.param_id,"TRACKING_DISTH"))
+		 else if(!strcmp(msg.param_id,"TRK_DISTH"))
 			 icarous_parm = true;
-		 else if(!strcmp(msg.param_id,"TRACKING_DISTV"))
+		 else if(!strcmp(msg.param_id,"TRK_DISTV"))
 			 icarous_parm = true;
 		 else if(!strcmp(msg.param_id,"CYL_RADIUS"))
 			 icarous_parm = true;
@@ -228,7 +228,7 @@
 			 icarous_parm = true;
 		 else if(!strcmp(msg.param_id,"ALERT_TIME"))
 			 icarous_parm = true;
-		 else if(!strcmp(msg.param_id,"EARLY_ALERT_TIME"))
+		 else if(!strcmp(msg.param_id,"EALERT_TIME"))
 			 icarous_parm = true;
 		 else if(!strcmp(msg.param_id,"DAA_LOOKAHEAD"))
 			 icarous_parm = true;
@@ -244,7 +244,7 @@
 
 		 if(icarous_parm){
 			 FlightData->paramData->set(msg.param_id, msg.param_value, FlightData->paramData->getUnit(msg.param_id));
-			 //printf("received %s\n",msg.param_id);
+			 printf("received %s\n",msg.param_id);
 			 mavlink_message_t msg2send;
 			 mavlink_param_value_t paramValue;
 			 strcpy(paramValue.param_id,msg.param_id);

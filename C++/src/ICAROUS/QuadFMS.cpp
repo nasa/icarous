@@ -405,9 +405,9 @@ uint8_t QuadFMS_t::TRACKING(Position target){
 
 	// Get tracking position
 	// This is determined by parameters - distance and heading
-	double heading = FlightData->paramData->getValue("TRACKING_HEADING");
-	double distH   = FlightData->paramData->getValue("TRACKING_DISTH");
-	double distV   = FlightData->paramData->getValue("TRACKING_DISTV");
+	double heading = FlightData->paramData->getValue("TRK_HEADING");
+	double distH   = FlightData->paramData->getValue("TRK_DISTH");
+	double distV   = FlightData->paramData->getValue("TRK_DISTV");
 
 	double distHx  = distH*sin(heading*M_PI/180); // Heading is measured from North
 	double distHy  = distH*cos(heading*M_PI/180);
