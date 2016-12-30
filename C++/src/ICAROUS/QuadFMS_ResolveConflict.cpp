@@ -44,8 +44,6 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 	double allowedDev;
 	double Vs,Vf,V,sgn;
 	double Trk;
-	double headingNextWP;
-	double dn,de;
 	Position prevWP,nextWP,currentPos,cp;
 	Plan currentFP;
 
@@ -583,11 +581,11 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 
 	if(debugDAA){
 		printf("******** DAA resolution debug output ********");
-		printf("KMB output:%s\n",KMB.outputString());
-		printf("Ownship pos:%s\n",KMB.core_.ownship.get_eprj().project(currentPos).toString());
-		printf("Ownship vel:%s\n",currentVel.toStringUnits("degree", "m/s", "m/s"));
+		std::cout<<"KMB output:\n"<<KMB.outputString()<<std::endl;
+		std::cout<<"Ownship pos:\n"<<KMB.core_.ownship.get_eprj().project(currentPos).toString()<<std::endl;
+		std::cout<<"Ownship vel:%s\n"<<currentVel.toStringUnits("degree", "m/s", "m/s")<<std::endl;
 		printf("Heading = %f,Vn = %f,Ve = %f\n",prefHeading,FlightData->maneuverVn,FlightData->maneuverVe);
-		printf("Return path conflict:"+returnPathConflict);
+		printf("Return path conflict:%d",returnPathConflict);
 	}
 
 }

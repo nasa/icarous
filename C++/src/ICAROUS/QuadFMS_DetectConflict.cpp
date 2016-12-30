@@ -106,8 +106,6 @@ void QuadFMS_t::ComputeCrossTrackDev(Position pos,Plan fp,int nextWP,double stat
 
 void QuadFMS_t::CheckFlightPlanDeviation(){
 	double allowedDev = FlightData->paramData->getValue("XTRK_DEV");
-	double psi1,psi2,sgn;
-	double bearing,dist;
 	Plan CurrentFP;
 	Position prevWP,nextWP,currentPos;
 
@@ -139,11 +137,10 @@ bool QuadFMS_t::CheckTurnConflict(double low,double high,double newHeading,doubl
 	// Get direction of turn
 	double psi   = newHeading - oldHeading;
 	double psi_c = 360 - abs(psi);
-	bool leftTurn = false;
 	bool rightTurn = false;
 	if(psi > 0){
 		if(abs(psi) > abs(psi_c)){
-			leftTurn = true;
+			rightTurn = false;
 		}
 		else{
 			rightTurn = true;
@@ -153,7 +150,7 @@ bool QuadFMS_t::CheckTurnConflict(double low,double high,double newHeading,doubl
 			rightTurn = true;
 		}
 		else{
-			leftTurn = true;
+			rightTurn = false;
 		}
 	}
 
