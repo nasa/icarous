@@ -52,14 +52,15 @@ class ICParamModule(mp_module.MPModule):
                     print("Failed to open file '%s'" % args[1])
 
                 for line in f:
+                    line = line.replace('=',' ')
                     line = line.strip()
                     if not line or line[0] == "#":
                         continue
                     a = line.split()
-                    if len(a) != 3:
+                    if len(a) < 1:
                         print("Invalid line: %s" % line)
                         continue
-                    self.mav_param.mavset(self.master,a[0],a[2])
+                    self.mav_param.mavset(self.master,a[0],a[1])
             
         
         else:
