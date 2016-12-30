@@ -12,8 +12,7 @@ V-0.a (June, 2016)
 This code is released under NASA's Open Source Agreement. For more
 information see files in directory Licenses.
 
-REQUIRED PACKAGES
-=================
+### REQUIRED PACKAGES
 
 The following repositories are required to run icarous. 
 
@@ -21,8 +20,7 @@ The following repositories are required to run icarous.
 - mavlink (https://github.com/ArduPilot/mavlink.git)
 - MAVProxy (https://github.com/ArduPilot/MAVProxy.git)
 
-BEFORE LAUNCHING ICAROUS
-========================
+### BEFORE LAUNCHING ICAROUS
 
 ICAROUS uses several messages that are not part of the common/ardupilotmega MAVlink message set. To ensure that the MAVProxy ground station can receive these custom messages, perform the following steps:
 
@@ -40,8 +38,7 @@ ICAROUS uses several messages that are not part of the common/ardupilotmega MAVl
     $bash SetuMavProxy.sh <Location of MAVProxy/>
 ```
 
-LAUNCHING ICAROUS
-=================
+### LAUNCHING ICAROUS
 
 The various parameters that control the behavior of ICAROUS can be found in `params/icarous.txt` under Java or C++. The default parameters found in icarous.txt were selected after several flight tests to yield acceptable performances. For convenience, a script (run.sh) is provided to launch ICAROUS and other supporting applications. The run script also helps configure several port options.
 
@@ -77,8 +74,8 @@ Once waypoints and geofence are uploaded, the mission can be started from MAVPro
     long MISSION_START
 
 
-Running ICAROUS with the ardupilot SITL
----------------------------------------
+### Running ICAROUS with the ardupilot SITL
+
 
 Setup and launch the ardupilot SITL as described in <http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html>. Specify the SITL host address in the run script. By default, the ardupilot SITL is configured to output packets to udp port 14551. Launch ICAROUS in the SITL mode as follows:
 
