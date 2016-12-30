@@ -89,6 +89,8 @@ class QuadFMS_t:public FlightManagementSystem_t{
 
         void CheckGeofence();
         void CheckFlightPlanDeviation();
+        void ComputeCrossTrackDev(Position pos,Plan fp,int nextWP,double stats[]);
+        bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
         void CheckTraffic();
         void ResolveKeepInConflict();
         void ResolveKeepOutConflict_Astar();

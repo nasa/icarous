@@ -39,7 +39,7 @@
  #define FMS_H
 
  #include "math.h"
- #include "ardupilotmega/mavlink.h"
+ #include "icarous/mavlink.h"
  #include "Interface.h"
  #include "AircraftData.h"
  #include "Conflict.h"

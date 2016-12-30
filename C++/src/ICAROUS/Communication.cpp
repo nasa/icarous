@@ -96,6 +96,9 @@
          // Handle long commands
          CommandLongHandler();
 
+         // Handle kinematic bands
+         KinematicBandsHandler();
+
      }
      
 
@@ -286,4 +289,14 @@
      if(have_msg && msg.command == MAV_CMD_SPATIAL_USER_2){
          
      }
+ }
+
+ void Communication_t::KinematicBandsHandler(){
+	 mavlink_kinematic_bands_t msg;
+	 bool have_msg = RcvdMessages->GetKinematicBands(msg);
+	 if(have_msg){
+	     mavlink_message_t msg2send;
+	     mavlink_msg_kinematic_bands_encode(1,0,&msg2send,&msg);
+	     gsIntf->SendMAVLinkMsg(msg2send);
+	 }
  }

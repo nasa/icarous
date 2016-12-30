@@ -43,7 +43,7 @@
  #include "AircraftData.h"
  #include "ErrorLog.h"
 
- #include "ardupilotmega/mavlink.h"
+ #include "icarous/mavlink.h"
 
  class Communication_t{
 
@@ -72,6 +72,7 @@
         void SetModeHandler();
         void CommandLongHandler();
         void CommandIntHandler();
+        void KinematicBandsHandler();
  };
 
  #endif

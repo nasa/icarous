@@ -456,3 +456,24 @@ bool MAVLinkMessages_t::GetParamSet(mavlink_param_set_t& msg){
 	 pthread_mutex_unlock(&lock);
 	 return val;
  }
+
+ bool MAVLinkMessages_t::GetKinematicBands(mavlink_kinematic_bands_t& msg){
+	 bool val;
+	 pthread_mutex_lock(&lock);
+	 if(!listKinematicBands.empty()){
+		 msg = listKinematicBands.front();
+		 listKinematicBands.pop();
+		 val = true;
+	 }
+	 else{
+		 val = false;
+	 }
+	 pthread_mutex_unlock(&lock);
+	 return val;
+ }
+
+ void MAVLinkMessages_t::AddKinematicBands(mavlink_kinematic_bands_t msg){
+	 pthread_mutex_lock(&lock);
+	 listKinematicBands.push(msg);
+	 pthread_mutex_unlock(&lock);
+ }

@@ -518,54 +518,72 @@ bool RRT_t::CheckTurnConflict(double low,double high,double newHeading,double ol
 
 	// Get direction of turn
 	double psi   = newHeading - oldHeading;
-	double psi_c = 360 - fabs(psi);
+	double psi_c = 360 - abs(psi);
+	bool leftTurn = false;
 	bool rightTurn = false;
 	if(psi > 0){
-		if(fabs(psi) > fabs(psi_c)){
-			rightTurn = false;
+		if(abs(psi) > abs(psi_c)){
+			leftTurn = true;
 		}
 		else{
 			rightTurn = true;
 		}
 	}else{
-		if(fabs(psi) > fabs(psi_c)){
+		if(abs(psi) > abs(psi_c)){
 			rightTurn = true;
 		}
 		else{
-			rightTurn = false;
+			leftTurn = true;
 		}
 	}
 
-	// Check if turning requires crossing a conflict band
-	if(psi > 0){
-		if(rightTurn){
-			if(oldHeading < low && newHeading > high){
-				return true;
-			}else{
-				return false;
-			}
-		}else{
-			if(oldHeading > high && newHeading < low){
-				return true;
-			}else{
-				return false;
-			}
+	double A,B,X,Y,diff;
+	if(rightTurn){
+		diff = oldHeading;
+		A = oldHeading - diff;
+		B = newHeading - diff;
+		X = low - diff;
+		Y = high - diff;
+
+		if(B < 0){
+			B = 360 + B;
+		}
+
+		if(X < 0){
+			X = 360 + X;
+		}
+
+		if(Y < 0){
+			Y = 360 + Y;
+		}
+
+		if(A < X && B > Y){
+			return true;
 		}
 	}else{
-		if(rightTurn){
-			if(oldHeading > high && newHeading < low){
-				return true;
-			}else{
-				return false;
-			}
-		}else{
-			if(oldHeading < low && newHeading > high){
-				return true;
-			}else{
-				return false;
-			}
+		diff = 360 - oldHeading;
+		A    = oldHeading + diff;
+		B    = newHeading + diff;
+		X = low + diff;
+		Y = high + diff;
+
+		if(B > 360){
+			B = B - 360;
+		}
+
+		if(X > 360){
+			X = X - 360;
+		}
+
+		if(Y > 360){
+			Y = Y - 360;
+		}
+
+		if(A > Y && B < X){
+			return true;
 		}
 	}
+
 	return false;
 }
 

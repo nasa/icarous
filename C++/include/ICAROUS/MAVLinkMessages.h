@@ -40,7 +40,7 @@
 
 #include <stdio.h>
 #include <pthread.h> // This uses POSIX Threads
-#include "ardupilotmega/mavlink.h"
+#include "icarous/mavlink.h"
 #include <queue>
 
 class MAVLinkMessages_t{
@@ -68,6 +68,7 @@ class MAVLinkMessages_t{
         std::queue<mavlink_set_mode_t> listSetMode;
         std::queue<mavlink_command_ack_t> listCommandAck;
         std::queue<mavlink_fence_point_t> listFencePoint;
+        std::queue<mavlink_kinematic_bands_t> listKinematicBands;
         
     public:
         
@@ -91,6 +92,8 @@ class MAVLinkMessages_t{
         void GetGlobalPositionInt(double& time,double& lat, double& lon, double& absalt, double& relalt,
         						  double& vx, double& vy, double& vz);
         void GetAttitude(double& roll,double& pitch,double& yaw);
+        void AddKinematicBands(mavlink_kinematic_bands_t msg);
+        bool GetKinematicBands(mavlink_kinematic_bands_t& msg);
 
 };
 

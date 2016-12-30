@@ -1,9 +1,12 @@
 /** @file
- *	@brief MAVLink comm protocol built from ardupilotmega.xml
- *	@see http://mavlink.org
+ *  @brief MAVLink comm protocol built from ardupilotmega.xml
+ *  @see http://mavlink.org
  */
+#pragma once
 #ifndef MAVLINK_H
 #define MAVLINK_H
+
+#define MAVLINK_PRIMARY_XML_IDX 1
 
 #ifndef MAVLINK_STX
 #define MAVLINK_STX 254
@@ -23,10 +26,6 @@
 
 #ifndef MAVLINK_COMMAND_24BIT
 #define MAVLINK_COMMAND_24BIT 0
-#endif
-
-#ifndef MAVLINK_PACKED
-#define MAVLINK_PACKED __attribute__((__packed__))
 #endif
 
 #include "version.h"
