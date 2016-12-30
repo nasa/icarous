@@ -73,6 +73,9 @@ Once waypoints and geofence are uploaded, the mission can be started from MAVPro
 
     long MISSION_START
 
+Update Icarous parameters as follows:
+
+    icparams load params/icarous.txt
 
 ### Running ICAROUS with the ardupilot SITL
 
