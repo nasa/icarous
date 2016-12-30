@@ -244,7 +244,7 @@
 
 		 if(icarous_parm){
 			 FlightData->paramData->set(msg.param_id, msg.param_value, FlightData->paramData->getUnit(msg.param_id));
-			 printf("received %s\n",msg.param_id);
+			 //printf("received %s\n",msg.param_id);
 			 mavlink_message_t msg2send;
 			 mavlink_param_value_t paramValue;
 			 strcpy(paramValue.param_id,msg.param_id);

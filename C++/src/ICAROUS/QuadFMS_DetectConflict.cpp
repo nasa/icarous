@@ -111,15 +111,10 @@ void QuadFMS_t::CheckFlightPlanDeviation(){
 	Plan CurrentFP;
 	Position prevWP,nextWP,currentPos;
 
-	if(planType == MISSION){
-		CurrentFP = FlightData->MissionPlan;
-		prevWP = CurrentFP.point(FlightData->nextMissionWP - 1).position();
-		nextWP = CurrentFP.point(FlightData->nextMissionWP).position();
-	}
-	else{
-		Conflict.flightPlanDeviation = false;
-		return;
-	}
+	currentPos = FlightData->acState.positionLast();
+	CurrentFP = FlightData->MissionPlan;
+	prevWP = CurrentFP.point(FlightData->nextMissionWP - 1).position();
+	nextWP = CurrentFP.point(FlightData->nextMissionWP).position();
 
 	double stats[2];
 	ComputeCrossTrackDev(currentPos,CurrentFP,FlightData->nextMissionWP,stats);
@@ -128,9 +123,14 @@ void QuadFMS_t::CheckFlightPlanDeviation(){
 
 	if(fabs(FlightData->crossTrackDeviation) > allowedDev){
 		Conflict.flightPlanDeviation = true;
-		//printf("Standoff conflict\n");
+		//printf("Standoff conflict %f,%f\n",stats[0],stats[1]);
 	}else if(fabs(FlightData->crossTrackDeviation) < (allowedDev)/2){
 		Conflict.flightPlanDeviation = false;
+	}
+
+	if(planType == TRAJECTORY){
+		Conflict.flightPlanDeviation = false;
+
 	}
 }
 
