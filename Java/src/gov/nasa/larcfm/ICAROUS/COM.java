@@ -196,7 +196,10 @@ public class COM implements Runnable,ErrorReporter{
 			boolean icarous_parm = false;		
 
 			switch (ID){
-
+			
+			case "SYS_ID":
+			case "COMP_ID":
+			case "AUTOPILOT_ID":
 			case "ICHBEAT":
 			case "HTHRESHOLD":
 			case "VTHRESHOLD":
@@ -209,8 +212,19 @@ public class COM implements Runnable,ErrorReporter{
 			case "PROXFACTOR":
 			case "RES_SPEED":
 			case "XTRK_GAIN":
-			case "STANDOFF":
+			case "XTRK_DEV":
 			case "TAKEOFF_ALT":
+			case "MAX_CEILING":
+			case "TRACKING_HEADING":
+			case "TRACKING_DISTH":
+			case "TRACKING_DISTV":
+			case "CYL_RADIUS":
+			case "CYL_HEIGHT":
+			case "ALERT_TIME":
+			case "EARLY_ALERT_TIME":
+			case "DAA_LOOKAHEAD":
+			case "CHEAP_DAA":
+			case "CHEAP_SEARCH":
 				pData.set(ID,msgParamSet.param_value,pData.getUnit(ID));
 				//System.out.println(ID+": "+pData.getValue(ID));
 				icarous_parm  = true;

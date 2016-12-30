@@ -193,7 +193,12 @@ public class QuadFMS extends FlightManagementSystem{
 			if(Detector.trafficConflict){
 				log.addWarning("MSG: Computing resolution for traffic conflict");
 				gsIntf.SendStatusText("Traffic conflict");
-				Resolver.ResolveTrafficConflictDAA();
+				int cheapDAA = FlightData.pData.getInt("CHEAP_DAA");
+				if(cheapDAA == 1){
+					Resolver.ResolveTrafficConflictDAA();
+				}else{
+					Resolver.ResolveTrafficConflictRRT();
+				}
 			}
 			else if(Detector.keepInConflict){
 				log.addWarning("MSG: Computing resolution for keep in conflict");
@@ -204,7 +209,12 @@ public class QuadFMS extends FlightManagementSystem{
 				SetMode(ARDUPILOT_MODES.GUIDED);
 				log.addWarning("MSG: Computing resolution for keep out conflict");
 				gsIntf.SendStatusText("Keep out conflict");
-				Resolver.ResolveKeepOutConflictRRT();
+				int cheapSearch = FlightData.pData.getInt("CHEAP_SEARCH");
+				if(cheapSearch == 1){
+					Resolver.ResolveKeepOutConflictRRT();
+				}else{
+					Resolver.ResolveKeepOutConflictAstar();
+				}
 			}
 			else if(Detector.flightPlanDeviationConflict){
 				log.addWarning("MSG: Computing resolution for stand off conflict");
