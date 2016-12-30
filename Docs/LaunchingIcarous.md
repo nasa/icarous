@@ -1,7 +1,35 @@
+REQUIRED PACKAGES
+=================
+
+The following repositories are required to run icarous. 
+
+- Ardupilot (https://github.com/ArduPilot/ardupilot.git)
+- mavlink (https://github.com/ArduPilot/mavlink.git)
+- MAVProxy (https://github.com/ArduPilot/MAVProxy.git)
+
+BEFORE LAUNCHING ICAROUS
+========================
+
+ICAROUS uses several messages that are not part of the common/ardupilotmega MAVlink message set. To ensure that the MAVProxy ground station can receive these custom messages, perform the following steps:
+
+- copy icarous.xml in the `msg/` folder in the icarous repository to `mavlink/message_definitions/v1.0`
+- (re)install pymavlink library to incorporate the new dialect (icarous.xml). To do this, goto `mavlink/pymavlink` and run:
+
+```
+    $python setup.py install
+```
+
+- Install the custom modules provided as part of the ICAROUS repository:
+
+```
+    $cd Python/CustomModules
+    $bash SetuMavProxy.sh <Location of MAVProxy/>
+```
+
 LAUNCHING ICAROUS
 =================
 
-The various parameters that control the behavior of ICAROUS can be found in `Java/params/icarous.txt`. The default parameters found in icarous.txt were selected after several flight tests to yield acceptable performances. For convenience, a script (run.sh) is provided to launch ICAROUS and other supporting applications. The run script also helps configure several port options.
+The various parameters that control the behavior of ICAROUS can be found in `params/icarous.txt` under Java or C++. The default parameters found in icarous.txt were selected after several flight tests to yield acceptable performances. For convenience, a script (run.sh) is provided to launch ICAROUS and other supporting applications. The run script also helps configure several port options.
 
 To run ICAROUS on a companion computer for Ardupilot, first make sure that the pixhawk port and baud rate settings in the run script are the same as the telemetry port settings on the pixhawk. First lauch the ICAROUS application as follows:
 
@@ -18,12 +46,7 @@ Once the above two applications are launched, you should be able to receive data
 * ECC - disabled.
 The Sik radio firmware can be configured using Mission planner or APM Planner.
 
-We strongly recommend using MAVProxy as a ground station to communicate with ICAROUS. To simplify uploading geofence data to ICAROUS, additional modules are provided in `Python/CustomModules`. To setup these custom modules,\
-
-    $cd Python/CustomModules
-    $bash SetupMavoProxy.sh <Location of MAVProxy/>
-
-Once the custom modules are installed, the MAVProxy ground station can be lauched using the run script:
+We strongly recommend using MAVProxy as a ground station to communicate with ICAROUS. To simplify uploading geofence data to ICAROUS, additional modules are provided in `Python/CustomModules`. The MAVProxy ground station can be lauched using the run script:
 
     $./run.sh GS
 
@@ -43,7 +66,7 @@ Once waypoints and geofence are uploaded, the mission can be started from MAVPro
 Running ICAROUS with the ardupilot SITL
 ---------------------------------------
 
-Setup and launch the ardupilot SITL as described in http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html. Specify the SITL host address in the run script. By default, the ardupilot SITL is configured to output packets to udp port 14551. Launch ICAROUS in the SITL mode as follows:
+Setup and launch the ardupilot SITL as described in <http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html>. Specify the SITL host address in the run script. By default, the ardupilot SITL is configured to output packets to udp port 14551. Launch ICAROUS in the SITL mode as follows:
 
     $./run.sh SITL
 
