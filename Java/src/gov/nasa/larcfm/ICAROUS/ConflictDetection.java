@@ -311,6 +311,14 @@ public class ConflictDetection{
 	}
 	
 	public boolean CheckTurnConflict(double low,double high,double newHeading,double oldHeading){
+		
+		if(newHeading < 0){
+			newHeading = 360 + newHeading;
+		}
+		
+		if(oldHeading < 0){
+			oldHeading = 360 + oldHeading;
+		}
 
 		// Get direction of turn
 		double psi   = newHeading - oldHeading;
