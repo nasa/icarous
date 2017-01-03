@@ -50,6 +50,7 @@ public class RRT {
 	public boolean goalreached;
 	public Random RD;
 	double startTime;
+	double maxD;
 	
 	public RRT(){
 		nodeCount = 0;
@@ -79,6 +80,7 @@ public class RRT {
 		goalNode     = new node_t();
 		
 		RD           = new Random();
+		maxD         = DAA.parameters.alertor.getParameters().getValue("D", "m");
 	}
 	
 	public RRT(List<GeoFence> fences,Position initialPos,Velocity initialVel,
@@ -126,7 +128,7 @@ public class RRT {
 		root.pos = initPosR3;
 		root.vel = new Vect3(initialVel.x,initialVel.y,initialVel.z);
 		closestNode = root;
-		
+		root.parent = null;
 		
 		for(int i=0;i<trafficPos.size();++i){
 			Vect3 tPos = proj.project(trafficPos.get(i));
@@ -150,6 +152,9 @@ public class RRT {
 		DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
 		daaLookAhead = DAA.parameters.getLookaheadTime("s");
 		startTime =  (double)System.nanoTime()/1E9;
+		maxD = DAA.parameters.alertor.getLevel(1).getDetector().getParameters().getValue("D", "m");
+		maxD = Units.to(Units.m, maxD);
+		
 	}
 	
 	public double NodeDistance(node_t A, node_t B){
@@ -223,9 +228,14 @@ public class RRT {
 		}
 	}
 	
-	public node_t MotionModel(Vect3 pos, Vect3 vel,
-			ArrayList<Vect3> trafficPos, ArrayList<Vect3> trafficVel, double U[]){
+	public node_t MotionModel(node_t nearest, double U[]){
 
+		
+		Vect3 pos = nearest.pos;
+		Vect3 vel = nearest.vel;
+		ArrayList<Vect3> trafficPos = nearest.trafficPos;
+		ArrayList<Vect3> trafficVel = nearest.trafficVel;
+		
 		int Xsize = 6+trafficSize*6;
 
 		double X[]   = new double[Xsize];
@@ -290,7 +300,13 @@ public class RRT {
 
 
 		if(trafficSize > 0){
-			boolean checkTurn = true;
+			boolean checkTurn;
+			if(nearest.id > 0){
+				checkTurn = true;
+			}
+			else{
+				checkTurn = false;
+			}
 			if(CheckTrafficCollision(checkTurn,newPos,newVel,newTrafficPos,trafficVel,vel)){
 				node_t newNode = new node_t();
 				newNode.id = -1;
@@ -321,14 +337,14 @@ public class RRT {
 		X[1] = ymin + RD.nextDouble() * rangeY;
 		X[2] = 5;
 
-		//TODO: configure hard coded value fo z dimension 
+		//TODO: configure hard coded value for z dimension 
 		node_t rd = new node_t();
 		rd.pos = new Vect3(X[0],X[1],X[2]);
 		
 		node_t nearest = FindNearest(rd);
 		node_t newNode;
 
-		if(nodeCount > 0 && CheckDirectPath2Goal(nearest)){
+		if(CheckDirectPath2Goal(nearest)){
 			newNode = goalNode;
 			nodeCount++;
 			newNode.id = nodeCount;
@@ -336,8 +352,7 @@ public class RRT {
 		else{
 			double U[] = new double[3];
 			GetInput(nearest,rd,U);
-			newNode = MotionModel(nearest.pos,nearest.vel,
-					nearest.trafficPos,nearest.trafficVel,U);
+			newNode = MotionModel(nearest,U);
 			
 			if(newNode.id < 0){
 				return;
@@ -403,7 +418,7 @@ public class RRT {
 		
 		Position so  = Position.makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
 		Velocity vo  = Velocity.makeVxyz(qVel.x,qVel.y,"m/s",qVel.z,"m/s");
-		Velocity vo0 = Velocity.makeVxyz(oldVel.x,oldVel.y,"m/s",oldVel.z,"m/s");
+		
 		DAA.setOwnshipState("Ownship",so,vo,timeElapsed1);
 
 		double trafficDist = Double.MAX_VALUE;
@@ -425,36 +440,44 @@ public class RRT {
 			}
 		}
 
-		//TODO: change this number to a parameter
-		if(trafficDist < 8){
+		if(trafficDist < maxD){
 			System.out.print("In cylinder\n");
 			return true;
 		}
 
 		double qHeading = vo.track("degree");
-		double oldHeading = vo0.track("degree");
-
+		
 		//printf("curr heading:%f\n",qHeading);
 		//printf("old heading:%f\n",oldHeading);
 
 		KMB = DAA.getKinematicMultiBands();
 		
 		if(KMB.regionOfTrack(DAA.getOwnshipState().track()).isConflictBand()){
+			//Check if current heading is in conflict band
 			return true;
 		}
+		else if(CheckTurn){
+			Velocity vo0 = Velocity.makeVxyz(oldVel.x,oldVel.y,"m/s",oldVel.z,"m/s");
+			double oldHeading = vo0.track("degree");
+			if(KMB.regionOfTrack(vo0.trk()).isConflictBand()){
+				// Check if old heading lies in current conflict band
+				return true;
+			}
 			
-		for(int ib=0;ib<KMB.trackLength();++ib){
-			if(KMB.trackRegion(ib) != BandsRegion.NONE ){
-				Interval ii = KMB.track(ib,"deg");
-				if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
-						//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-						return true;
+			// Check if turning crosses a conflict band
+			for(int ib=0;ib<KMB.trackLength();++ib){
+				if(KMB.trackRegion(ib) != BandsRegion.NONE ){
+					Interval ii = KMB.track(ib,"deg");
+					if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
+							//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
+							return true;
+					}
 				}
 			}
 		}
 		
 		
-
+		/*
 		if(CheckTurn){
 			// Check collision with traffic based on direct heading to traffic
 			// ensure turning to newHeading from oldHeading is conflict free
@@ -490,12 +513,21 @@ public class RRT {
 
 
 			}
-		}
+		}*/
 		return false;
 	}
 
 	public boolean CheckTurnConflict(double low,double high,double newHeading,double oldHeading){
 
+		
+		if(newHeading < 0){
+			newHeading = 360 + newHeading;
+		}
+		
+		if(oldHeading < 0){
+			oldHeading = 360 + oldHeading;
+		}
+		
 		// Get direction of turn
 		double psi   = newHeading - oldHeading;
 		double psi_c = 360 - Math.abs(psi);
@@ -540,6 +572,7 @@ public class RRT {
 			if(A < X && B > Y){
 				return true;
 			}
+			
 		}else{
 			diff = 360 - oldHeading;
 			A    = oldHeading + diff;
@@ -586,10 +619,14 @@ public class RRT {
 			return false;
 		}
 
-		if(trafficSize > 0 && qnode.parent != null){
+		if(trafficSize > 0){
 			node_t parent = qnode.parent;
 			boolean CheckTurn = false;
-			if(CheckTrafficCollision(CheckTurn,qnode.pos,AB,qnode.trafficPos,qnode.trafficVel,parent.vel)){
+			Vect3 vel = new Vect3(0,0,0);
+			if(parent != null){
+				vel = parent.vel;
+			}
+			if(CheckTrafficCollision(CheckTurn,qnode.pos,AB,qnode.trafficPos,qnode.trafficVel,vel)){
 				return false;
 			}
 			else{
