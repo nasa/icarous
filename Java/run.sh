@@ -74,6 +74,8 @@ elif [ "$1" == 'SAFE' ];then
     java -cp $EXEC BB_SAFEGUARD $GPIO_PORT $COM_INPUT_PORT
 elif [ "$1" == 'DaidalusPolyExample' ];then
     java -cp $EXEC DaidalusPolyExample params/DaidalusQuadConfig.txt
+elif [ "$1" == 'RRTtest' ];then
+    java -cp $EXEC RRTtest 
 else
     echo "run.sh [ SITL | PX4 | GS | RADIO | SAFE | DaidalusPolyExample ]"    
 fi
