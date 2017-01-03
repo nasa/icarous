@@ -59,6 +59,7 @@ RRT_t::RRT_t(){
 	daaLookAhead = DAA.parameters.getLookaheadTime("s");
 	goalreached = false;
 	time(&startTime);
+	maxD = DAA.parameters.alertor.getLevel(1).getDetectorRef()->getParameters().getValue("D");
 }
 
 RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
@@ -109,6 +110,7 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 		root.trafficPos.push_back(tPos);
 		root.trafficVel.push_back(tVel);
 	}
+	root.parent = NULL;
 
 	trafficSize = trafficPos.size();
 	nodeList.push_back(root);
@@ -119,6 +121,8 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
 	daaLookAhead = DAA.parameters.getLookaheadTime("s");
 	time(&startTime);
+	maxD = DAA.parameters.alertor.getLevel(1).getDetectorRef()->getParameters().getValue("D");
+	//maxD = maxD;
 }
 
 void RRT_t::Initialize(Vect3 Pos,Vect3 Vel,
@@ -128,6 +132,7 @@ void RRT_t::Initialize(Vect3 Pos,Vect3 Vel,
 	root.trafficPos = TrafficPos;
 	root.trafficVel = TrafficVel;
 	root.id = nodeCount;
+	root.parent = NULL;
 
 	nodeList.push_back(root);
 	trafficSize = TrafficPos.size();
@@ -166,24 +171,20 @@ void RRT_t::GetInput(node_t nn, node_t qn,double U[]){
 	}
 }
 
-node_t RRT_t::FindNearest(node_t query){
+node_t* RRT_t::FindNearest(node_t query){
 	double minDist = 10000;
 	double dist;
-	node_t nearest;
+	node_t* nearest;
 
-	if ( nodeList.size() == 0 ){
-		nearest = query;
-	}
-	else{
-		for(ndit = nodeList.begin();ndit != nodeList.end(); ++ndit){
-			dist = NodeDistance(*ndit,query);
+	for(ndit = nodeList.begin();ndit != nodeList.end(); ++ndit){
+		dist = NodeDistance(*ndit,query);
 
-			if(dist < minDist){
-				minDist = dist;
-				nearest = *ndit;
-			}
+		if(dist < minDist){
+			minDist = dist;
+			nearest = &(*ndit);
 		}
 	}
+
 
 	return nearest;
 }
@@ -210,8 +211,12 @@ void RRT_t::F(double X[], double U[],double Y[]){
 	}
 }
 
-node_t RRT_t::MotionModel(Vect3 pos, Vect3 vel,
-							std::vector<Vect3> trafficPos, std::vector<Vect3> trafficVel, double U[]){
+node_t RRT_t::MotionModel(node_t nearest, double U[]){
+
+	Vect3 pos = nearest.pos;
+	Vect3 vel = nearest.vel;
+	std::vector<Vect3> trafficPos = nearest.trafficPos;
+	std::vector<Vect3> trafficVel = nearest.trafficVel;
 
 	int Xsize = 6+trafficSize*6;
 
@@ -285,7 +290,13 @@ node_t RRT_t::MotionModel(Vect3 pos, Vect3 vel,
 
 
 	if(trafficSize > 0){
-		bool checkTurn = true;
+		bool checkTurn;
+		if(nearest.id > 0){
+			checkTurn = true;
+		}
+		else{
+			checkTurn = false;
+		}
 		if(CheckTrafficCollision(checkTurn,newPos,newVel,newTrafficPos,trafficVel,vel)){
 			node_t newNode;
 			newNode.id = -1;
@@ -328,19 +339,18 @@ void RRT_t::RRTStep(int i){
 	rd.pos.y = X[1];
 	rd.pos.z = 5;    // should  be set appropriately for 3D plans
 
-	node_t nearest = FindNearest(rd);
+	node_t *nearest = FindNearest(rd);
 	node_t newNode;
 
 	double U[3];
-	GetInput(nearest,rd,U);
+	GetInput(*nearest,rd,U);
 
-	if(CheckDirectPath2Goal(nearest)){
+	if(CheckDirectPath2Goal(*nearest)){
 		newNode = goalNode;
 		nodeCount++;
 		newNode.id = nodeCount;
 	}else{
-		newNode = MotionModel(nearest.pos,nearest.vel,
-				nearest.trafficPos,nearest.trafficVel,U);
+		newNode = MotionModel(*nearest,U);
 
 		if(newNode.id < 0){
 			return;
@@ -348,8 +358,8 @@ void RRT_t::RRTStep(int i){
 	}
 
 
-	nearest.children.push_back(newNode);
-	newNode.parent.push_back(nearest);
+	nearest->children.push_back(newNode);
+	newNode.parent = nearest;
 	nodeList.push_back(newNode);
 
 }
@@ -407,7 +417,7 @@ bool RRT_t::CheckTrafficCollision(bool CheckTurn,Vect3 qPos,Vect3 qVel,
 
 	Position so  = Position::makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
 	Velocity vo  = Velocity::makeVxyz(qVel.x,qVel.y,"m/s",qVel.z,"m/s");
-	Velocity vo0 = Velocity::makeVxyz(oldVel.x,oldVel.y,"m/s",oldVel.z,"m/s");
+
 	DAA.setOwnshipState("Ownship",so,vo,elapsedTime);
 
 	std::vector<Vect3>::iterator itP;
@@ -435,13 +445,13 @@ bool RRT_t::CheckTrafficCollision(bool CheckTurn,Vect3 qPos,Vect3 qVel,
 	}
 
 	//TODO: change this number to a parameter
-	if(trafficDist < 8){
+	if(trafficDist < maxD){
 		printf("In cylinder\n");
 		return true;
 	}
 
 	double qHeading = vo.track("degree");
-	double oldHeading = vo0.track("degree");
+
 
 	//printf("curr heading:%f\n",qHeading);
 	//printf("old heading:%f\n",oldHeading);
@@ -450,19 +460,26 @@ bool RRT_t::CheckTrafficCollision(bool CheckTurn,Vect3 qPos,Vect3 qVel,
 	if( BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()))){
 		return true;
 	}
+	else if(CheckTurn){
+		Velocity vo0 = Velocity::makeVxyz(oldVel.x,oldVel.y,"m/s",oldVel.z,"m/s");
+		double oldHeading = vo0.track("degree");
+		if(BandsRegion::isConflictBand(KMB.regionOfTrack(vo0.trk()))){
+			return true;
+		}
+		// Check collision with traffic based on current heading
+		for(int ib=0;ib<KMB.trackLength();++ib){
+			if(KMB.trackRegion(ib) != larcfm::BandsRegion::NONE ){
+				Interval ii = KMB.track(ib,"deg");
 
-	// Check collision with traffic based on current heading
-	for(int ib=0;ib<KMB.trackLength();++ib){
-		if(KMB.trackRegion(ib) != larcfm::BandsRegion::NONE ){
-			Interval ii = KMB.track(ib,"deg");
-
-			if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
-				//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-				return true;
+				if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
+					//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
+					return true;
+				}
 			}
 		}
 	}
 
+	/*
 	if(CheckTurn){
 
 
@@ -510,11 +527,20 @@ bool RRT_t::CheckTrafficCollision(bool CheckTurn,Vect3 qPos,Vect3 qVel,
 
 
 		}
-	}
+	}*/
+
 	return false;
 }
 
 bool RRT_t::CheckTurnConflict(double low,double high,double newHeading,double oldHeading){
+
+	if(newHeading < 0){
+		newHeading = 360 + newHeading;
+	}
+
+	if(oldHeading < 0){
+		oldHeading = 360 + oldHeading;
+	}
 
 	// Get direction of turn
 	double psi   = newHeading - oldHeading;
@@ -604,10 +630,16 @@ bool RRT_t::CheckDirectPath2Goal(node_t qnode){
 		return false;
 	}
 
-	if(trafficSize > 0 && !qnode.parent.empty()){
-		node_t parent = qnode.parent.front();
+	if(trafficSize > 0){
+
+		Vect3 vel(0,0,0);
+		if(qnode.parent != NULL){
+			node_t *parent = qnode.parent;
+			vel = parent->vel;
+		}
+
 		bool CheckTurn = false;
-		if(CheckTrafficCollision(CheckTurn,qnode.pos,AB,qnode.trafficPos,qnode.trafficVel,parent.vel)){
+		if(CheckTrafficCollision(CheckTurn,qnode.pos,AB,qnode.trafficPos,qnode.trafficVel,vel)){
 			return false;
 		}
 		else{
@@ -631,7 +663,7 @@ bool RRT_t::CheckGoal(){
 		closestDist = mag;
 		closestNode = lastNode;
 
-		if(nodeCount > 2 && CheckDirectPath2Goal(closestNode)){
+		if(CheckDirectPath2Goal(closestNode)){
 			printf("found direct path to goal\n");
 			goalreached = true;
 			return true;
@@ -701,7 +733,7 @@ bool RRT_t::LinePlanIntersection(Vect2 A,Vect2 B,double floor,double ceiling,Vec
 Plan RRT_t::GetPlan(){
 
 	double speed = 1;
-	node_t node = closestNode;
+	node_t *node = &closestNode;
 	node_t parent;
 	std::list<node_t> path;
 	printf("Node count:%d\n",nodeCount);
@@ -709,20 +741,20 @@ Plan RRT_t::GetPlan(){
 	printf("x,y:%f,%f\n",goalNode.pos.x,goalNode.pos.y);
 
 	if(!goalreached){
-		node = goalNode;
-		node.parent.push_back(closestNode);
-		path.push_front(node);
+		node = &goalNode;
+		node->parent = &closestNode;
+		path.push_front(*node);
 	}
 
-	while(!node.parent.empty()){
-		parent = node.parent.front();
-		printf("x,y:%f,%f\n",parent.pos.x,parent.pos.y);
-		if(!parent.parent.empty()){
-			CheckTrafficCollision(true,parent.pos,parent.vel,parent.trafficPos,parent.trafficVel,parent.parent.front().vel);
+	while(node != NULL){
+
+		printf("x,y:%f,%f\n",node->pos.x,node->pos.y);
+		if(node->parent != NULL){
+			CheckTrafficCollision(true,node->pos,node->vel,node->trafficPos,node->trafficVel,node->parent->vel);
 			printf("%d\n",CheckDirectPath2Goal(parent));
 		}
-		path.push_front(parent);
-		node = parent;
+		path.push_front(*node);
+		node = node->parent;
 	}
 
 	std::list<node_t>::iterator nodeIt;

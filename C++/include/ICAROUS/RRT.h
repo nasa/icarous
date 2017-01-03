@@ -63,7 +63,7 @@ struct node_t{
 	bool goal;
 	double g,h;
 	std::list<node_t> children;
-	std::list<node_t> parent;
+	node_t* parent;
 };
 
 
@@ -87,6 +87,7 @@ public:
 	int trafficSize;
 	double closestDist;
 	double daaLookAhead;
+	double maxD;
 	node_t closestNode;
 	node_t goalNode;
 	Daidalus DAA;
@@ -101,8 +102,7 @@ public:
 	void Initialize(Vect3 Pos,Vect3 Vel,
 			std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel);
 
-	node_t MotionModel(Vect3 X, Vect3 V,
-			std::vector<Vect3> trafficPos,std::vector<Vect3> trafficList, double U[]);
+	node_t MotionModel(node_t nearest, double U[]);
 
 	void F(double X[], double U[],double Y[]);
 	bool CheckFenceCollision(Vect3 qPos);
@@ -110,7 +110,7 @@ public:
 			    std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel,Vect3 oldVel);
 	bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
 	void GetInput(node_t nn, node_t qn,double U[]);
-	node_t FindNearest(node_t query);
+	node_t* FindNearest(node_t query);
 	double NodeDistance(node_t A,node_t B);
 	void RRTStep(int i);
 	bool CheckGoal();
