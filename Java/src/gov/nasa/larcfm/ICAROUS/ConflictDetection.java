@@ -267,10 +267,10 @@ public class ConflictDetection{
 			Interval iv = KMB.track(i,"deg");
 			BandsRegion br = KMB.trackRegion(i);
 			int type = 0;
-			if(br.toString() == "NONE"){
+			if(br == BandsRegion.NONE){
 				type = 0;
 			}
-			else if(br.toString() == "NEAR"){
+			else if(br == BandsRegion.NEAR){
 				type = 1;
 			}
 			 
@@ -297,17 +297,19 @@ public class ConflictDetection{
 			}
 		}
 		
-		if(msg.numBands > 0){
-			if(dist2traffic < 20){
-				FlightData.RcvdMessages.AddKinematicBands(msg);
-			}
-			else if(msg.numBands == 1 && msg.type1 == 0){
-				// Don't send if we only have one type 0 band
-				// This is to save bandwidth
-			}else{
-				FlightData.RcvdMessages.AddKinematicBands(msg);
-			}
-		}
+		//if(msg.numBands > 0){
+		//if(dist2traffic < 20){
+		// FlightData.RcvdMessages.AddKinematicBands(msg);
+		//}
+		if(KMB.trackLength() > 1 || (KMB.trackLength() == 1 && KMB.trackRegion(0).isValidBand() &&
+					     KMB.trackRegion(0) != BandsRegion.NONE)) { // .msg.numBands == 1 && msg.type1 == 0){
+		    FlightData.RcvdMessages.AddKinematicBands(msg);
+		    // Don't send if we only have one type 0 band
+		    // This is to save bandwidth
+		}//else{
+		    // FlightData.RcvdMessages.AddKinematicBands(msg);
+		//}
+		//}
 	}
 	
 	public boolean CheckTurnConflict(double low,double high,double newHeading,double oldHeading){

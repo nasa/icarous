@@ -42,6 +42,9 @@ import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Velocity;
+import gov.nasa.larcfm.Util.f;
+import java.util.*;
+import java.io.*;
 
 public class FlightManagementSystem implements Runnable,ErrorReporter{
 
@@ -81,7 +84,8 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	public AircraftData FlightData;
 	public boolean devAllowed;
 	public boolean debugDAA;
-	
+        public PrintWriter debugIO;
+    
 	public FlightManagementSystem(String name,AircraftData fData,Interface ap, Interface gs){
 		threadName       = name;
 		FMSrunning       = true;
@@ -93,6 +97,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		gsIntf           = gs;
 		devAllowed       = false;
 		debugDAA         = false;
+		debugIO          = null;
 	}
 
 	public void run(){	
@@ -157,7 +162,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		double bootTime;
 
 		msg_global_position_int GPS = RcvdMessages.GetGlobalPositionInt();
-		bootTime = (double) (GPS.time_boot_ms)/1E6;
+		bootTime = (double) (GPS.time_boot_ms)/1E3;
 		lat      = (double) (GPS.lat)/1.0E7;
 		lon      = (double) (GPS.lon)/1.0E7;
 		alt      = (double) (GPS.relative_alt)/1.0E3;
@@ -182,6 +187,8 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		if(FlightData.heading < 0){
 			FlightData.heading = 360 + FlightData.heading;
 		}
+
+		FlightData.acTime = bootTime;
 	}
 
 	// Function to send commands to pixhawk
