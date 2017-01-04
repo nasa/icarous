@@ -578,6 +578,7 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		debugIO<<KMB.outputString()<<std::endl;
 		debugIO<<"Vn,Ve"<<FlightData->maneuverVn<<FlightData->maneuverVe<<std::endl;
 		debugIO<<"Return path conflict:"<<returnPathConflict<<std::endl;
+		debugIO<<"######################"<<std::endl;
 	}
 
 }

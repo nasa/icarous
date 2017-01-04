@@ -205,7 +205,7 @@ void Icarous_t::Run(){
 	FMS.debugDAA = debug;
 
 	if(debug){
-		char            fmt[64], buf[64];
+		char            fmt[64];
 		struct timeval  tv;
 		struct tm       *tm;
 		gettimeofday(&tv, NULL);
