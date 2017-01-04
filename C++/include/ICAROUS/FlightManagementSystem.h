@@ -115,6 +115,7 @@ class FlightManagementSystem_t{
         double GetApproxElapsedPlanTime(Plan fp, int nextWP);
         void CheckReset();
         void SetDeviationApproved(bool status);
+        void SetMissionItem(uint8_t nextWP);
 
         uint8_t IDLE();
         uint8_t PREFLIGHT();

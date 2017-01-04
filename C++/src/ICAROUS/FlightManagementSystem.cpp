@@ -135,6 +135,12 @@ void FlightManagementSystem_t::SetMode(control_mode_t mode){
     px4Intf->SendMAVLinkMsg(msg);
 }
 
+void FlightManagementSystem_t::SetMissionItem(uint8_t nextWP){
+	mavlink_message_t msg;
+	mavlink_msg_mission_set_current_pack(255,0,&msg,1,0,nextWP);
+	px4Intf->SendMAVLinkMsg(msg);
+}
+
 void FlightManagementSystem_t::SetSpeed(float speed){
 	
 	SendCommand(0,0,MAV_CMD_DO_CHANGE_SPEED,0,
@@ -240,6 +246,8 @@ uint8_t FlightManagementSystem_t::IDLE(){
 
     return 0;
 }
+
+
 
 bool FlightManagementSystem_t::CheckMissionWaypointReached(){
 

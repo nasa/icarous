@@ -245,6 +245,7 @@ uint8_t QuadFMS_t::Resolve(){
 		if(status == 1){
 			if(resumeMission){
 				resolutionState = IDLE_r;
+				SetMissionItem(FlightData->nextMissionWP);
 				SetMode(AUTO);
 			}
 			else{
