@@ -665,7 +665,7 @@ bool RRT_t::CheckGoal(){
 
 		if(CheckDirectPath2Goal(closestNode)){
 			printf("found direct path to goal\n");
-			goalreached = true;
+			//goalreached = true;
 			return true;
 		}
 	}
@@ -751,7 +751,7 @@ Plan RRT_t::GetPlan(){
 		printf("x,y:%f,%f\n",node->pos.x,node->pos.y);
 		if(node->parent != NULL){
 			CheckTrafficCollision(true,node->pos,node->vel,node->trafficPos,node->trafficVel,node->parent->vel);
-			printf("%d\n",CheckDirectPath2Goal(parent));
+			//printf("%d\n",CheckDirectPath2Goal(parent));
 		}
 		path.push_front(*node);
 		node = node->parent;
