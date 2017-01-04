@@ -46,6 +46,8 @@
      planType          = MISSION;
      resumeMission     = true;
      DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+     DAAresolution.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+     alertTime0 = DAAresolution.parameters.alertor.getLevel(1).getAlertingTime();
      time(&daaTimeStart);
      daaLookAhead = DAA.parameters.getLookaheadTime("s");
      trafficResolutionTime = 0;

@@ -501,24 +501,19 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 	ComputeCrossTrackDev(currentPos, FlightData->MissionPlan, FlightData->nextMissionWP,crossStats);
 	Position goal = GetPointOnPlan(crossStats[1], FlightData->MissionPlan,FlightData->nextMissionWP);
 
-	Daidalus DAA;
-	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
-
 	double currentHeading = currentVel.trk();
 	double nextHeading = currentPos.track(goal);
 	Velocity nextVel   = Velocity::makeTrkGsVs(nextHeading,"radians",resolutionSpeed,"m/s",0,"m/s");
 	double alertTime   = currentPos.distanceH(goal)/resolutionSpeed;
-	double alertTime0  = DAA.parameters.alertor.getLevel(1).getAlertingTime();
-
 	//Use new alert time if it is greater than existing alert time
-	if(alertTime > alertTime0){
-		AlertThresholds alertor = DAA.parameters.alertor.getLevel(1);
-		alertor.setAlertingTime(alertTime);
-		alertor.setEarlyAlertingTime(alertTime);
-		DAA.parameters.alertor.setLevel(1,alertor);
-	}
+	alertTime = Util::max(alertTime,alertTime0);
 
-	DAA.setOwnshipState("Ownship", currentPos, currentVel, 0);
+	AlertThresholds alertor = DAAresolution.parameters.alertor.getLevel(1);
+	alertor.setAlertingTime(alertTime);
+	alertor.setEarlyAlertingTime(alertTime);
+	DAAresolution.parameters.alertor.setLevel(1,alertor);
+
+	DAAresolution.setOwnshipState("Ownship", currentPos, currentVel, FlightData->acTime);
 	std::list<Object_t>::iterator it;
 	int count = 0;
 	for(it = FlightData->trafficList.begin();it != FlightData->trafficList.end();it++){
@@ -526,17 +521,16 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		Velocity tVel = Velocity::makeVxyz(it->vy,it->vx,"m/s",it->vz,"m/s");
 		char name[10];
 		sprintf(name,"ResTraffic%d",count);count++;
-		DAA.addTrafficState(name, tPos, tVel);
+		DAAresolution.addTrafficState(name, tPos, tVel);
 	}
 
 	KinematicMultiBands KMB;
-	DAA.kinematicMultiBands(KMB);
+	DAAresolution.kinematicMultiBands(KMB);
 	returnPathConflict  = BandsRegion::isConflictBand(KMB.regionOfTrack(nextHeading));
 
 	bool prefDirection = KMB.preferredTrackDirection();
 	double prefHeading    = KMB.trackResolution(prefDirection);
 
-	//TODO: verify with Cesar that angles are represented within -pi to pi
 	if(prefDirection){
 		prefHeading = prefHeading + 2*M_PI/180;
 		if(prefHeading > M_PI){
@@ -576,16 +570,13 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
 	}
 
-	lastVelocity = currentVel;
 	planType = MANEUVER;
 
 	if(debugDAA){
-		printf("******** DAA resolution debug output ********");
-		std::cout<<"KMB output:\n"<<KMB.outputString()<<std::endl;
-		std::cout<<"Ownship pos:\n"<<KMB.core_.ownship.get_eprj().project(currentPos).toString()<<std::endl;
-		std::cout<<"Ownship vel:%s\n"<<currentVel.toStringUnits("degree", "m/s", "m/s")<<std::endl;
-		printf("Heading = %f,Vn = %f,Ve = %f\n",prefHeading,FlightData->maneuverVn,FlightData->maneuverVe);
-		printf("Return path conflict:%d",returnPathConflict);
+		debugIO<<"**********"<<FlightData->acTime<<"**********"<<std::endl;
+		debugIO<<KMB.outputString()<<std::endl;
+		debugIO<<"Vn,Ve"<<FlightData->maneuverVn<<FlightData->maneuverVe<<std::endl;
+		debugIO<<"Return path conflict:"<<returnPathConflict<<std::endl;
 	}
 
 }

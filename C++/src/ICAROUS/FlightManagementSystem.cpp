@@ -204,6 +204,7 @@ void FlightManagementSystem_t::GetLatestAircraftData(){
 	Velocity currentVel = Velocity::makeVxyz(vy,vx,"m/s",vz,"m/s");
 
 	FlightData->acState.add(currentPos,currentVel,time);
+	FlightData->acTime = time;
 
 	// Get aircraft attitude data
 	double roll, pitch, yaw, heading;

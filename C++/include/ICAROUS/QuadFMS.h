@@ -63,6 +63,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
         plan_type_t planType;
         bool resumeMission;
         Daidalus DAA;
+        Daidalus DAAresolution;
         KinematicMultiBands KMB;
         double daaLookAhead;
         time_t trafficResolutionTime;
@@ -71,6 +72,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
         time_t timeStart;
         bool returnPathConflict;
         Velocity lastVelocity;
+        double alertTime0;
 
     public:
         time_t daaTimeStart;

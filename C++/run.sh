@@ -22,14 +22,14 @@ if [ "$1" == 'SITL' ];then
    $PRE ./icarous --verbose \
 	--sitlhost $SITL_HOST --sitlin $SITL_INPUT_PORT \
 	--gshost $COM_HOST --gsin $COM_INPUT_PORT --gsout $COM_OUTPUT_PORT \
-	--mode $MODE ${POST}
+	--mode $MODE $2 ${POST}
    
 elif [ "$1" == 'PX4' ];then
     echo "Launching ICAROUS with Pixhawk"
        ./icarous --verbose \
 	--px4 $PX4_PORT --px4baud $PX4_BAUD \
 	--gshost $COM_HOST --gsin $COM_INPUT_PORT --gsout $COM_OUTPUT_PORT \
-	--mode $MODE
+	--mode $2 $MODE
         
 elif [ "$1" == 'PX4R' ];then
     echo "Launching ICAROUS with Pixhawk and Radio"

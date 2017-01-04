@@ -422,7 +422,7 @@ bool MAVLinkMessages_t::GetParamSet(mavlink_param_set_t& msg){
  void MAVLinkMessages_t::GetGlobalPositionInt(double &time,double& lat, double& lon, double& abs_alt, double& rel_alt,
 		  	  	  	  	  	  	  	  	  double& vx, double& vy, double& vz){
 	 pthread_mutex_lock(&lock);
-	 time   = (double) globalPositionInt.time_boot_ms/1E6;
+	 time   = (double) globalPositionInt.time_boot_ms/1E3;
 	 lat    = (double) globalPositionInt.lat/1E7;
 	 lon    = (double) globalPositionInt.lon/1E7;
 	 abs_alt = (double) globalPositionInt.alt/1E3;

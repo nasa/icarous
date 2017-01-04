@@ -47,6 +47,8 @@
  #include "PlanUtil.h"
  #include "ErrorLog.h"
  #include "Mission.h"
+ #include <fstream>
+ #include <iostream>
 
 enum fms_state_t {_idle_,_takeoff_,_climb_,_cruise_,_descend_,_land_};
 
@@ -91,6 +93,7 @@ class FlightManagementSystem_t{
 
         ErrorLog log;
         bool debugDAA;
+        std::ofstream debugIO;
         FlightManagementSystem_t():log("FMS"){};
         FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);
         virtual ~FlightManagementSystem_t(){};

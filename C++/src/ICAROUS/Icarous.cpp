@@ -35,6 +35,7 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 #include "Icarous.h"
+#include <sys/time.h>
 
 Icarous_t::Icarous_t(int argc,char* argv[],Mission_t* task){
 
@@ -202,6 +203,18 @@ void Icarous_t::Run(){
 	}
 
 	FMS.debugDAA = debug;
+
+	if(debug){
+		char            fmt[64], buf[64];
+		struct timeval  tv;
+		struct tm       *tm;
+		gettimeofday(&tv, NULL);
+		tm = localtime(&tv.tv_sec);
+		strftime(fmt, sizeof fmt, "Icarous-%Y-%m-%d-%H:%M:%S", tm);
+		strcat(fmt,".log");
+		FMS.debugIO.open(fmt);
+	}
+
 	FMS.SendStatusText("Starting ICAROUS");
 
 	std::thread thread1(&Communication_t::GetPixhawkData,&DAQ);

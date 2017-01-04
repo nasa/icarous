@@ -79,6 +79,7 @@ class AircraftData_t{
 		double maneuverHeading;
 		bool reset;
 		double speed;
+		double acTime;
 
         uint16_t nextMissionWP;
         uint16_t nextResolutionWP;
