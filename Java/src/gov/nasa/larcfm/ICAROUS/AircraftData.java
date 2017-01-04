@@ -66,6 +66,8 @@ public class AircraftData{
 
 	public MAVLinkMessages RcvdMessages;
 
+        public double acTime;
+    
 	// Aircraft attitude
 	public double roll;
 	public double pitch;

@@ -11,8 +11,8 @@ COM_INPUT_PORT=14552
 COM_OUTPUT_PORT=14553
 PX4_PORT=/dev/ttyO1
 PX4_BAUD=57600
-GS_MASTER=192.42.142.83:$COM_OUTPUT_PORT
-#GS_MASTER=127.0.0.1:$COM_OUTPUT_PORT
+#GS_MASTER=192.42.142.83:$COM_OUTPUT_PORT
+GS_MASTER=127.0.0.1:$COM_OUTPUT_PORT
 #GS_MASTER=/dev/ttyUSB0
 GPIO_PORT=23
 RADIO_SERIAL_PORT=/dev/ttyUSB0
@@ -26,7 +26,7 @@ if [ "$1" == 'SITL' ];then
 	-v \
 	--sitl $SITL_HOST $SITL_INPUT_PORT \
 	--com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
-	--mode $MODE ${POST}
+	--mode $MODE $2 ${POST}
    
 elif [ "$1" == 'PX4' ];then
     echo "Launching ICAROUS with Pixhawk"
@@ -43,7 +43,7 @@ elif [ "$1" == 'PX4' ];then
 	 -v \
 	 --px4 $PX4_PORT $PX4_BAUD\
 	 --com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
-	 --mode $MODE
+	 --mode $2 $MODE
     fi
 elif [ "$1" == 'SITLR' ];then
     echo "Launching ICAROUS with SITL and radio"

@@ -37,6 +37,10 @@ import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.IO.SeparatedInput;
 import com.MAVLink.common.*;
 import java.io.*;
+import java.util.*;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class Icarous{
 
@@ -199,6 +203,17 @@ public class Icarous{
 	}
 
 	public void run(){
+	        if (fms_module.debugDAA) {
+		    try {
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = new Date();
+			fms_module.debugIO = new PrintWriter(new BufferedWriter(new FileWriter("icarous-"+df.format(date)+".log")),true);
+		    }
+		    catch (Exception e) {
+			fms_module.debugDAA = false;
+			System.out.println("ERROR: "+e);
+		    }    
+	        }
 		if(mode.equals("passthrough")){
 			System.out.println("ICAROUS pass through mode");
 			while(true){
