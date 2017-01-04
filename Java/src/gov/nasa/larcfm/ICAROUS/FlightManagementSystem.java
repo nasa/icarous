@@ -302,6 +302,14 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 
 		return 1;
 	}
+	
+	public void SetMissionItem(int nextWP){
+		msg_mission_set_current msgMission = new msg_mission_set_current();
+        msgMission.target_system = 1;
+        msgMission.target_component = 0;
+        msgMission.seq = nextWP;
+        apIntf.Write(msgMission);
+	}
 
 	// Check acknowledgement
 	public int CheckAcknowledgement(int command){

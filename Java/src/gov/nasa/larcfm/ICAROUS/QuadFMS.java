@@ -259,6 +259,7 @@ public class QuadFMS extends FlightManagementSystem{
 					System.out.println("Resuming mission\n");
 					resolveState = resolve_state_t.IDLE;
 					planType = plan_type_t.MISSION;
+					SetMissionItem(FlightData.nextMissionWP);
 					SetMode(ARDUPILOT_MODES.AUTO);
 				}
 				else{
@@ -398,8 +399,6 @@ public class QuadFMS extends FlightManagementSystem{
 		if(GoalReached){
 			next    = FlightData.MissionPlan.point(FlightData.nextMissionWP).position();
 			resumeMission = true;
-			System.out.println("next:"+FlightData.nextMissionWP);
-			System.out.println("total:"+FlightData.numMissionWP);
 		}
 		else{
 			next    = NextGoal;
