@@ -261,6 +261,7 @@ uint8_t QuadFMS_t::Resolve(){
 		trajectoryState = START_t;
 		Conflict.clear();
 		conflictSize = Conflict.size();
+		goalReached = true;
 
 		break;
 	case IDLE_r:

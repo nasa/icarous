@@ -276,6 +276,7 @@ public class QuadFMS extends FlightManagementSystem{
 			ComputeInterceptCourse();
 			resolveState = resolve_state_t.TRAJECTORY;
 			trajectoryState = trajectory_state_t.START;
+			GoalReached = true;
 			
 			break;
 
@@ -397,6 +398,8 @@ public class QuadFMS extends FlightManagementSystem{
 		if(GoalReached){
 			next    = FlightData.MissionPlan.point(FlightData.nextMissionWP).position();
 			resumeMission = true;
+			System.out.println("next:"+FlightData.nextMissionWP);
+			System.out.println("total:"+FlightData.numMissionWP);
 		}
 		else{
 			next    = NextGoal;
