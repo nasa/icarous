@@ -640,24 +640,18 @@ public class RRT {
 	}
 
 	public boolean CheckGoal(){
-
 		node_t lastNode = nodeList.get(nodeList.size()-1);
-
 		Vect3 diff = lastNode.pos.Sub(goalNode.pos);
 		double mag = diff.norm();
-
 		if(mag <= closestDist){
 			closestDist = mag;
 			closestNode = lastNode;
-
-			
 			if(CheckDirectPath2Goal(closestNode)){
-			        //System.out.print("found direct path to goal\n");
-			        //goalreached = true;
+				//System.out.print("found direct path to goal\n");
+				//goalreached = true;
 				return true;
 			}
 		}
-
 		if( mag < 3 ){
 			System.out.print("found goal\n");
 			goalreached = true;

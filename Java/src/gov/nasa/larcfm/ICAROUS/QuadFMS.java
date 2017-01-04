@@ -210,14 +210,14 @@ public class QuadFMS extends FlightManagementSystem{
 				log.addWarning("MSG: Computing resolution for keep out conflict");
 				gsIntf.SendStatusText("Keep out conflict");
 				int cheapSearch = FlightData.pData.getInt("CHEAP_SEARCH");
-				if(cheapSearch == 1){
-					double tstart1 = (double)System.nanoTime()/1E9;
-					Resolver.ResolveKeepOutConflictRRT();
-					double tstart2 = (double)System.nanoTime()/1E9;
-					System.out.format("RRT time:%f\n",(tstart2 - tstart1));
+				double tstart1 = (double)System.nanoTime()/1E9;
+				if(cheapSearch == 1){					
+					Resolver.ResolveKeepOutConflictRRT();					
 				}else{
 					Resolver.ResolveKeepOutConflictAstar();
 				}
+				double tstart2 = (double)System.nanoTime()/1E9;
+				System.out.format("RRT time:%f\n",(tstart2 - tstart1));
 			}
 			else if(Detector.flightPlanDeviationConflict){
 				log.addWarning("MSG: Computing resolution for stand off conflict");
