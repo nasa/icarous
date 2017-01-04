@@ -228,6 +228,10 @@ public class ConflictDetection{
 		
 		Position so = FlightData.acState.positionLast();
 		Velocity vo = FlightData.acState.velocityLast();
+		
+		if(Math.abs(vo.gs() - FMS.FlightData.speed) < 0.2){
+			FMS.lastVelocity = vo;
+		}
 
 		DAA.setOwnshipState("Ownship",so,vo,simTime);
 

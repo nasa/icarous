@@ -53,6 +53,7 @@ public class QuadFMS extends FlightManagementSystem{
 	trajectory_state_t trajectoryState;
 	maneuver_state_t maneuverState;
 
+	Velocity lastVelocity;
 	ConflictDetection Detector;
 	Resolution Resolver;
 	Mission mission;
