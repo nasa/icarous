@@ -650,12 +650,12 @@ public class RRT {
 			closestDist = mag;
 			closestNode = lastNode;
 
-			/*
-			if(nodeCount > 2 && CheckDirectPath2Goal(closestNode)){
-				System.out.print("found direct path to goal\n");
-				goalreached = true;
+			
+			if(CheckDirectPath2Goal(closestNode)){
+			        //System.out.print("found direct path to goal\n");
+			        //goalreached = true;
 				return true;
-			}*/
+			}
 		}
 
 		if( mag < 3 ){
