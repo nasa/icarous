@@ -270,7 +270,7 @@ public class AircraftData{
 		return speed;
 	}
 
-	public void Reset(){
+	public synchronized void Reset(){
 		fenceList.clear();
 		obstacles.clear();
 		traffic.clear();

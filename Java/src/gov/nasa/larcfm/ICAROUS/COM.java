@@ -279,7 +279,7 @@ public class COM implements Runnable,ErrorReporter{
 					synchronized(FlightData){
 						log.addWarning("MSG: Resetting ICAROUS");
 						gsIntf.SendStatusText("Resetting ICAROUS");
-						FlightData.reset = true;
+						FlightData.Reset();
 					}
 				}
 
