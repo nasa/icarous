@@ -205,9 +205,9 @@ public class Icarous{
 	public void run(){
 	        if (fms_module.debugDAA) {
 		    try {
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd-hh:mm:ss");
 			Date date = new Date();
-			fms_module.debugIO = new PrintWriter(new BufferedWriter(new FileWriter("icarous-"+df.format(date)+".log")),true);
+			fms_module.debugIO = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".log")),true);
 		    }
 		    catch (Exception e) {
 			fms_module.debugDAA = false;

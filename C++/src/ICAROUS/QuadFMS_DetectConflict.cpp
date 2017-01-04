@@ -122,7 +122,7 @@ void QuadFMS_t::CheckFlightPlanDeviation(){
 	if(fabs(FlightData->crossTrackDeviation) > allowedDev){
 		Conflict.flightPlanDeviation = true;
 		//printf("Standoff conflict %f,%f\n",stats[0],stats[1]);
-	}else if(fabs(FlightData->crossTrackDeviation) < (allowedDev)/2){
+	}else if(fabs(FlightData->crossTrackDeviation) < (allowedDev)/3){
 		Conflict.flightPlanDeviation = false;
 	}
 

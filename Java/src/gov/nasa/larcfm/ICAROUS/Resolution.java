@@ -535,11 +535,7 @@ public class Resolution {
 			Velocity trafficVel = FlightData.traffic.get(i).vel;
 			DAA.addTrafficState("Traffic"+i,trafficPos, trafficVel);
 		}
-		if(FMS.debugDAA){
-			FMS.debugIO.println("*** Current Time: "+DAA.getCurrentTime());
-			FMS.debugIO.println(DAA.toString());
-		}
-
+		
 		KinematicMultiBands KMB = DAA.getKinematicMultiBands();
 		returnPathConflict  = KMB.regionOfTrack(nextHeading).isConflictBand();
 
@@ -578,12 +574,12 @@ public class Resolution {
 		FMS.planType = plan_type_t.MANEUVER;
 
 		if(FMS.debugDAA){
-			FMS.debugIO.println(KMB.toString());
+			FMS.debugIO.println("*** Current Time: "+DAA.getCurrentTime());
+			FMS.debugIO.println(DAA.toString());
 			FMS.debugIO.println(KMB.outputString());
-			FMS.debugIO.println(KMB.toString());
-			FMS.debugIO.printf("Heading = %f,Vn = %f,Ve = %f\n",prefHeading,FlightData.maneuverVn,FlightData.maneuverVe);
+			FMS.debugIO.printf("Vn = %f,Ve = %f\n",FlightData.maneuverVn,FlightData.maneuverVe);
 			FMS.debugIO.println("Return path conflict:"+returnPathConflict);
-			FMS.debugIO.println("\n\n");
+			FMS.debugIO.println("######################");
 		}
 
 	}

@@ -61,7 +61,7 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 		xtrkDevGain = -xtrkDevGain;
 	}
 
-	if(fabs(FlightData->crossTrackDeviation) <= 3*allowedDev){
+	if(fabs(FlightData->crossTrackDeviation) <= 2*allowedDev){
 		Vs = xtrkDevGain*FlightData->crossTrackDeviation;
 		V  = resolutionSpeed;
 
@@ -520,7 +520,7 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		Position tPos = Position::makeLatLonAlt(it->x,"degree",it->y,"degree",it->z,"m");
 		Velocity tVel = Velocity::makeVxyz(it->vy,it->vx,"m/s",it->vz,"m/s");
 		char name[10];
-		sprintf(name,"ResTraffic%d",count);count++;
+		sprintf(name,"Traffic%d",count);count++;
 		DAAresolution.addTrafficState(name, tPos, tVel);
 	}
 
@@ -573,7 +573,8 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 	planType = MANEUVER;
 
 	if(debugDAA){
-		debugIO<<"**********"<<FlightData->acTime<<"**********"<<std::endl;
+		debugIO<<"*** Current Time:"<<FlightData->acTime<<std::endl;
+		debugIO<<DAAresolution.toString()<<std::endl;
 		debugIO<<KMB.outputString()<<std::endl;
 		debugIO<<"Vn,Ve"<<FlightData->maneuverVn<<FlightData->maneuverVe<<std::endl;
 		debugIO<<"Return path conflict:"<<returnPathConflict<<std::endl;
