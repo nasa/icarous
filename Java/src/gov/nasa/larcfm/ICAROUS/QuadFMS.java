@@ -113,7 +113,7 @@ public class QuadFMS extends FlightManagementSystem{
 			SetMode(ARDUPILOT_MODES.AUTO);
 			// Set speed
 			FlightData.nextMissionWP++;
-			float speed = FlightData.GetFlightPlanSpeed(FlightData.MissionPlan,FlightData.nextMissionWP);			        
+			float speed = FlightData.GetFlightPlanSpeed(FlightData.MissionPlan,FlightData.nextMissionWP);
 			SetSpeed(speed);
 		}
 	}

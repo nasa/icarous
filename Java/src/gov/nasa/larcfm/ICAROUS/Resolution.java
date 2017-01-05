@@ -531,9 +531,9 @@ public class Resolution {
 		double prefHeading    = KMB.trackResolution(prefDirection);
 
 		if(prefDirection){
-			prefHeading = prefHeading + Units.convert(Units.deg, Units.rad, 2);
+			prefHeading = prefHeading + Units.convert(Units.deg, Units.rad, 5);
 		}else{
-			prefHeading = prefHeading - Units.convert(Units.deg, Units.rad, 2);
+			prefHeading = prefHeading - Units.convert(Units.deg, Units.rad, 5);
 		}
 
 		for(int i=0;i<KMB.trackLength();++i){
