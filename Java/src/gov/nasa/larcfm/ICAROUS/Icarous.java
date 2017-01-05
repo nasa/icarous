@@ -210,7 +210,6 @@ public class Icarous{
 			fms_module.debugIO = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".log")),true);
 		    }
 		    catch (Exception e) {
-			fms_module.debugDAA = false;
 			System.out.println("ERROR: "+e);
 		    }    
 	        }

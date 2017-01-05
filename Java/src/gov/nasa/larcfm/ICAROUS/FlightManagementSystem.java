@@ -97,7 +97,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		gsIntf           = gs;
 		devAllowed       = false;
 		debugDAA         = false;
-		debugIO          = null;
+		debugIO          = new PrintWriter(System.out);
 	}
 
 	public void run(){	
