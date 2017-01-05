@@ -342,10 +342,16 @@ uint8_t QuadFMS_t::FlyManuever(){
 
 	case START_m:
 		printf("executing maneuver resolution\n");
+		FlightData->maneuverHeading = 0.0;
+		FlightData->maneuverVe      = 0.0;
+		FlightData->maneuverVn      = 0.0;
+		FlightData->maneuverVu      = 0.0;
 		SetMode(GUIDED);
 		SetSpeed(resolutionSpeed);
 		maneuverState = GUIDE_m;
-		break;
+		usleep(100);
+		//Removed break : Goto GUIDE state immediately after START without waiting for the next cycle
+		//break;
 
 	case GUIDE_m:
 		if(Conflict.traffic){

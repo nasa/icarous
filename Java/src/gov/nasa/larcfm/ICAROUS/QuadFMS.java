@@ -357,9 +357,22 @@ public class QuadFMS extends FlightManagementSystem{
 
 		case START:
 			System.out.print("executing maneuver resolution\n");
+			
+			FlightData.maneuverVe      = 0.0;
+			FlightData.maneuverVn      = 0.0;
+			FlightData.maneuverVu      = 0.0;
+			FlightData.maneuverHeading = 0.0;
 			SetMode(ARDUPILOT_MODES.GUIDED);
 			maneuverState = maneuver_state_t.GUIDE;
-			break;
+			//Sleep here to allow mode change before sending commands
+			try{
+				Thread.sleep(100);
+			}
+			catch(InterruptedException e){
+				System.out.println(e);
+			}
+			// Avoid break here to goto GUIDE state immediately without waiting for next cycle
+			//break;
 
 		case GUIDE:
 			

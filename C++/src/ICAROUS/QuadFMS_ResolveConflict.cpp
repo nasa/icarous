@@ -484,16 +484,6 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 	//TODO: add eps to preferred heading
 	Position currentPos = FlightData->acState.positionLast();
 	Velocity currentVel = FlightData->acState.velocityLast();
-	double speed = FlightData->speed;
-
-
-	if(abs(currentVel.groundSpeed("m/s") - speed) > 0.2){
-		currentVel = lastVelocity;
-		// Note: The speed can drop to 0 because of setting mode to guided.
-		// We need to avoid this transience. Hence, store the last know velocity
-		// whose speed is > 0.5
-	}
-
 	returnPathConflict = true;
 	double resolutionSpeed = FlightData->speed;
 
@@ -564,10 +554,10 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		FlightData->maneuverVn = resolutionSpeed * cos(prefHeading);
 		FlightData->maneuverVe = resolutionSpeed * sin(prefHeading);
 		FlightData->maneuverHeading = atan2(FlightData->maneuverVe,FlightData->maneuverVn)*180/M_PI;
-	}
 
-	if(FlightData->maneuverHeading < 0){
-		FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
+		if(FlightData->maneuverHeading < 0){
+			FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
+		}
 	}
 
 	planType = MANEUVER;

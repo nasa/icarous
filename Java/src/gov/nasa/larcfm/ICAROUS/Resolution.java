@@ -501,20 +501,8 @@ public class Resolution {
 	public void ResolveTrafficConflictDAA(){
 
 		// Track based resolutions
-		//TODO: add eps to preferred heading
 		Position currentPos = FlightData.acState.positionLast();
 		Velocity currentVel = FlightData.acState.velocityLast();
-		double speed = FlightData.speed;
-
-
-
-		if(Math.abs(currentVel.gs() - speed) > 0.2){
-			currentVel = FMS.lastVelocity;
-			// Note: The speed can drop to 0 because of setting mode to guided. 
-			// We need to avoid this transience. Hence, store the last know velocity 
-			// whose speed is > 0.5
-		}
-
 		returnPathConflict = true;
 		double resolutionSpeed = FlightData.speed;
 
@@ -535,7 +523,7 @@ public class Resolution {
 			Velocity trafficVel = FlightData.traffic.get(i).vel;
 			DAA.addTrafficState("Traffic"+i,trafficPos, trafficVel);
 		}
-		
+
 		KinematicMultiBands KMB = DAA.getKinematicMultiBands();
 		returnPathConflict  = KMB.regionOfTrack(nextHeading).isConflictBand();
 
@@ -556,8 +544,9 @@ public class Resolution {
 			if (regionType.isConflictBand()) {
 				boolean val =FMS.Detector.CheckTurnConflict(lower_trk, upper_trk, Units.convert(Units.rad, Units.deg, nextHeading),  Units.convert(Units.rad, Units.deg, currentHeading));
 				if(val){
-					returnPathConflict = true;				}
-				break;
+					returnPathConflict = true;				
+					break;
+				}
 			}
 		}
 
@@ -565,10 +554,10 @@ public class Resolution {
 			FlightData.maneuverVn = resolutionSpeed * Math.cos(prefHeading);
 			FlightData.maneuverVe = resolutionSpeed * Math.sin(prefHeading);
 			FlightData.maneuverHeading = Math.toDegrees(Math.atan2(FlightData.maneuverVe,FlightData.maneuverVn));
-		}
-
-		if(FlightData.maneuverHeading < 0){
-			FlightData.maneuverHeading = 360 + FlightData.maneuverHeading;
+			
+			if(FlightData.maneuverHeading < 0){
+				FlightData.maneuverHeading = 360 + FlightData.maneuverHeading;
+			}
 		}
 
 		FMS.planType = plan_type_t.MANEUVER;

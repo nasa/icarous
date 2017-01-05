@@ -229,10 +229,6 @@ public class ConflictDetection{
 		Position so = FlightData.acState.positionLast();
 		Velocity vo = FlightData.acState.velocityLast();
 		
-		if(Math.abs(vo.gs() - FMS.FlightData.speed) < 0.2){
-			FMS.lastVelocity = vo;
-		}
-
 		DAA.setOwnshipState("Ownship",so,vo,simTime);
 
 		double dist2traffic = Double.MAX_VALUE;
@@ -301,19 +297,11 @@ public class ConflictDetection{
 			}
 		}
 		
-		//if(msg.numBands > 0){
-		//if(dist2traffic < 20){
-		// FlightData.RcvdMessages.AddKinematicBands(msg);
-		//}
+		
 		if(KMB.trackLength() > 1 || (KMB.trackLength() == 1 && KMB.trackRegion(0).isValidBand() &&
-					     KMB.trackRegion(0) != BandsRegion.NONE)) { // .msg.numBands == 1 && msg.type1 == 0){
+					     KMB.trackRegion(0) != BandsRegion.NONE)) { 
 		    FlightData.RcvdMessages.AddKinematicBands(msg);
-		    // Don't send if we only have one type 0 band
-		    // This is to save bandwidth
-		}//else{
-		    // FlightData.RcvdMessages.AddKinematicBands(msg);
-		//}
-		//}
+		}
 	}
 	
 	public boolean CheckTurnConflict(double low,double high,double newHeading,double oldHeading){

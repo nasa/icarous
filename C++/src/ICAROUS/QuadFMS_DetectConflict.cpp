@@ -233,18 +233,7 @@ void QuadFMS_t::CheckTraffic(){
 	Position so = FlightData->acState.positionLast();
 	Velocity vo = FlightData->acState.velocityLast();
 
-	if(abs(vo.groundSpeed("m/s") - FlightData->speed) < 0.2){
-			lastVelocity = vo;
-			// Note: The speed can drop to 0 because of setting mode to guided.
-			// We need to avoid this transience. Hence, store the last know velocity
-			// whose speed is > 0.5
-	}
-
-	DAA.reset();
 	DAA.setOwnshipState("Ownship",so,vo,elapsedTime);
-
-
-
 	double dist2traffic = MAXDOUBLE;
 	for(unsigned int i=0;i<FlightData->trafficList.size();i++){
 		Position si;
