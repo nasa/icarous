@@ -484,21 +484,24 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 			FlightData.reset = false;
 			Reset();
 			if (debugDAA) {	
-				PrintWriter debug_in = new PrintWriter(System.out);
-				PrintWriter debug_out = new PrintWriter(System.out);
+				PrintWriter debug_fin = new PrintWriter(System.out);
+				PrintWriter debug_fout = new PrintWriter(System.out);
 				try {
+					System.out.println("Writing to file");
 					DateFormat df = new SimpleDateFormat("yyyy-MM-dd-hh:mm:ss");
 					Date date = new Date();
-					debug_in = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".login")));
-					debug_out = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".logout")));
+					debug_fin = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".login")));
+					debug_fout = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".logout")));
 				}
 				catch (Exception e) {
 					System.out.println("ERROR: "+e);
 				}
-				debug_in.print(debug_in);
-				debug_in.close();
-				debug_out.print(debug_out);
-				debug_out.close();
+				debug_fin.print(debug_in);
+				debug_fin.close();
+				debug_fout.print(debug_out);
+				debug_fout.close();
+				debug_in = "";
+				debug_out = "";
 			}
 		}
 	}
