@@ -84,8 +84,9 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	public AircraftData FlightData;
 	public boolean devAllowed;
 	public boolean debugDAA;
-        public PrintWriter debugIO;
-    
+	public String debug_in;
+	public String debug_out;
+   
 	public FlightManagementSystem(String name,AircraftData fData,Interface ap, Interface gs){
 		threadName       = name;
 		FMSrunning       = true;
@@ -97,7 +98,8 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		gsIntf           = gs;
 		devAllowed       = false;
 		debugDAA         = false;
-		debugIO          = new PrintWriter(System.out);
+		debug_in         = "";
+		debug_out 	     = "";
 	}
 
 	public void run(){	
@@ -151,7 +153,10 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		case _LAND_:
 			LAND();
 			break;
-		}	
+		
+		case _TERMINATE_: // [CAM] Added this case since it was missing
+			break;
+		}
 	}
 
 	public void UpdateAircraftData(){

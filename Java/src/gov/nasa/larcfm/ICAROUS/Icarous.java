@@ -141,7 +141,7 @@ public class Icarous{
 			else if(args[i].startsWith("--mode")){
 				mode = args[++i];
 			}
-			
+
 			else if(args[i].startsWith("--debug")){
 				debugDAA = true;
 			}
@@ -150,7 +150,7 @@ public class Icarous{
 				System.out.println("Invalid option "+args[i]);
 				System.exit(0);
 			}
-			
+
 
 
 		}
@@ -203,16 +203,6 @@ public class Icarous{
 	}
 
 	public void run(){
-	        if (fms_module.debugDAA) {
-		    try {
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd-hh:mm:ss");
-			Date date = new Date();
-			fms_module.debugIO = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".log")),true);
-		    }
-		    catch (Exception e) {
-			System.out.println("ERROR: "+e);
-		    }    
-	        }
 		if(mode.equals("passthrough")){
 			System.out.println("ICAROUS pass through mode");
 			while(true){
@@ -252,11 +242,28 @@ public class Icarous{
 				System.out.println("ICAROUS active mode");
 				COMInt.SendStatusText("ICAROUS is active");
 				fms_module.start();
-
 				while(fms_module.isFMSrunning()){
 					// DO nothing
-				}				
+				}					
 			} // end of mode else (passive)
-		}// end of mode else (passthrough)
+		} // end of mode else (passthrough)
+		// [CAM] Printing debug information
+		if (fms_module.debugDAA) {	
+			PrintWriter debug_in = new PrintWriter(System.out);
+			PrintWriter debug_out = new PrintWriter(System.out);
+			try {
+				DateFormat df = new SimpleDateFormat("yyyy-MM-dd-hh:mm:ss");
+				Date date = new Date();
+				debug_in = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".login")));
+				debug_out = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".logout")));
+			}
+			catch (Exception e) {
+				System.out.println("ERROR: "+e);
+			}
+			debug_in.print(fms_module.debug_in);
+			debug_in.close();
+			debug_out.print(fms_module.debug_out);
+			debug_out.close();
+		}
 	}// end of run
 }// end of class

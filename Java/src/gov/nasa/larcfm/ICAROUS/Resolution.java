@@ -563,12 +563,12 @@ public class Resolution {
 		FMS.planType = plan_type_t.MANEUVER;
 
 		if(FMS.debugDAA){
-			FMS.debugIO.println("*** Current Time: "+DAA.getCurrentTime());
-			FMS.debugIO.println(DAA.toString());
-			FMS.debugIO.println(KMB.outputString());
-			FMS.debugIO.printf("Vn = %f,Ve = %f\n",FlightData.maneuverVn,FlightData.maneuverVe);
-			FMS.debugIO.println("Return path conflict:"+returnPathConflict);
-			FMS.debugIO.println("######################");
+			FMS.debug_in += "********************** Current Time: "+DAA.getCurrentTime()+"\n";
+			FMS.debug_in += DAA.toString()+"\n";
+			FMS.debug_out += "********************** Current Time: "+DAA.getCurrentTime()+"\n";
+			FMS.debug_out += KMB.outputString()+"\n";
+			FMS.debug_out += "Vn = "+FlightData.maneuverVn+", Ve = "+FlightData.maneuverVe+"\n";
+			FMS.debug_out += "Return path conflict:"+returnPathConflict+"\n";
 		}
 
 	}
