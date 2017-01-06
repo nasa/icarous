@@ -36,7 +36,7 @@
  */
 
 #include "FlightManagementSystem.h"
-
+#include <sys/time.h>
 
 FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t *task):log("FMS"){
     px4Intf      = px4int;
@@ -48,6 +48,8 @@ FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interfac
     mission      = task;
     deviationApproved = false;
     landStarted  = false;
+    debug_in     = "";
+    debug_out    = "";
 }
 
 void FlightManagementSystem_t::RunFMS(){
@@ -285,6 +287,36 @@ void FlightManagementSystem_t::CheckReset(){
 	if(FlightData->reset){
 		FlightData->reset = false;
 		Reset();
+		if(debugDAA){
+			std::ofstream debug_inf;
+			std::ofstream debug_outf;
+			char            fmt1[64],fmt2[64];
+			struct timeval  tv;
+			struct tm       *tm;
+			gettimeofday(&tv, NULL);
+			tm = localtime(&tv.tv_sec);
+			strftime(fmt1, sizeof fmt1, "Icarous-%Y-%m-%d-%H:%M:%S", tm);
+			strftime(fmt2, sizeof fmt2, "Icarous-%Y-%m-%d-%H:%M:%S", tm);
+			strcat(fmt1,".login");
+			strcat(fmt2,".logout");
+			debug_inf.open(fmt1);
+			debug_outf.open(fmt2);
+
+			if(debug_inf.is_open()){
+				debug_inf<<debug_in;
+			}else{
+				std::cout<<debug_in;
+			}
+
+			if(debug_outf.is_open()){
+				debug_outf<<debug_out;
+			}else{
+				std::cout<<debug_out;
+			}
+
+			debug_inf.close();
+			debug_outf.close();
+		}
 	}
 }
 

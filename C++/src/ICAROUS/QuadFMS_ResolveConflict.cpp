@@ -563,12 +563,12 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 	planType = MANEUVER;
 
 	if(debugDAA){
-		debugIO<<"*** Current Time:"<<FlightData->acTime<<std::endl;
-		debugIO<<DAAresolution.toString()<<std::endl;
-		debugIO<<KMB.outputString()<<std::endl;
-		debugIO<<"Vn,Ve"<<FlightData->maneuverVn<<FlightData->maneuverVe<<std::endl;
-		debugIO<<"Return path conflict:"<<returnPathConflict<<std::endl;
-		debugIO<<"######################"<<std::endl;
+		debug_in.append("*** Current Time:"+std::to_string(FlightData->acTime)+"\n");
+		debug_in.append(DAAresolution.toString()+"\n");
+		debug_out.append("*** Current Time:"+std::to_string(FlightData->acTime)+"\n");
+		debug_out.append(KMB.outputString()+"\n");
+		debug_out.append("Vn,Ve"+std::to_string(FlightData->maneuverVn)+std::to_string(FlightData->maneuverVe)+"\n");
+		debug_out.append("Return path conflict:"+std::to_string(returnPathConflict)+"\n");
 	}
 
 }

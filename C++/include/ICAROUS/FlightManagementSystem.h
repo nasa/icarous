@@ -93,7 +93,9 @@ class FlightManagementSystem_t{
 
         ErrorLog log;
         bool debugDAA;
-        std::ofstream debugIO;
+        std::string debug_in;
+        std::string debug_out;
+
         FlightManagementSystem_t():log("FMS"){};
         FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);
         virtual ~FlightManagementSystem_t(){};
