@@ -45,6 +45,8 @@ import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.f;
 import java.util.*;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class FlightManagementSystem implements Runnable,ErrorReporter{
 
@@ -481,6 +483,23 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		if(FlightData.reset){
 			FlightData.reset = false;
 			Reset();
+			if (debugDAA) {	
+				PrintWriter debug_in = new PrintWriter(System.out);
+				PrintWriter debug_out = new PrintWriter(System.out);
+				try {
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd-hh:mm:ss");
+					Date date = new Date();
+					debug_in = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".login")));
+					debug_out = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".logout")));
+				}
+				catch (Exception e) {
+					System.out.println("ERROR: "+e);
+				}
+				debug_in.print(debug_in);
+				debug_in.close();
+				debug_out.print(debug_out);
+				debug_out.close();
+			}
 		}
 	}
 
