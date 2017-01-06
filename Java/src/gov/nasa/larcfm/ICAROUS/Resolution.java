@@ -566,7 +566,7 @@ public class Resolution {
 			FMS.debug_in += "********************** Current Time: "+DAA.getCurrentTime()+"\n";
 			FMS.debug_in += DAA.toString()+"\n";
 			FMS.debug_out += "********************** Current Time: "+DAA.getCurrentTime()+"\n";
-			FMS.debug_out += KMB.outputString()+"\n";
+			FMS.debug_out += KMB.toString()+"\n";
 			FMS.debug_out += "Vn = "+FlightData.maneuverVn+", Ve = "+FlightData.maneuverVe+"\n";
 			FMS.debug_out += "Return path conflict:"+returnPathConflict+"\n";
 		}

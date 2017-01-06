@@ -566,7 +566,7 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		debug_in.append("*** Current Time:"+std::to_string(FlightData->acTime)+"\n");
 		debug_in.append(DAAresolution.toString()+"\n");
 		debug_out.append("*** Current Time:"+std::to_string(FlightData->acTime)+"\n");
-		debug_out.append(KMB.outputString()+"\n");
+		debug_out.append(KMB.toString()+"\n");
 		debug_out.append("Vn,Ve"+std::to_string(FlightData->maneuverVn)+std::to_string(FlightData->maneuverVe)+"\n");
 		debug_out.append("Return path conflict:"+std::to_string(returnPathConflict)+"\n");
 	}
