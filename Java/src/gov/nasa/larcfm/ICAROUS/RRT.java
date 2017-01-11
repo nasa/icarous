@@ -51,6 +51,7 @@ public class RRT {
 	public Random RD;
 	double startTime;
 	double maxD;
+	double maxInputNorm;
 	
 	public RRT(){
 		nodeCount = 0;
@@ -63,6 +64,7 @@ public class RRT {
 		zmax = 0;
 		Tstep = 5;
 		dT = 1;
+		maxInputNorm = 1;
 		RD = new Random();
 		closestDist = Double.MAX_VALUE;
 		
@@ -84,7 +86,7 @@ public class RRT {
 	}
 	
 	public RRT(List<GeoFence> fences,Position initialPos,Velocity initialVel,
-			 ArrayList<Position> trafficPos,ArrayList<Velocity> trafficVel,int stepT,double dt){
+			 ArrayList<Position> trafficPos,ArrayList<Velocity> trafficVel,int stepT,double dt,double inputNormMax){
 
 		obstacleList = new ArrayList<Poly3D>();
 		nodeList     = new ArrayList<node_t>();
@@ -112,6 +114,7 @@ public class RRT {
 		ymax = 100;
 		zmin = -1;
 		zmax = 10;
+		maxInputNorm = inputNormMax;
 
 		for(int i = 0;i<fenceList.size();++i){
 			GeoFence GF = fenceList.get(i);
@@ -170,11 +173,10 @@ public class RRT {
 		dz = qn.pos.z - nn.pos.z;
 
 		norm = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2) + Math.pow(dz,2));
-
-		if (norm > 1){
-			U[0] = dx/norm;
-			U[1] = dy/norm;
-			U[2] = dz/norm;
+		if (norm > maxInputNorm){
+			U[0] = dx/norm*maxInputNorm;
+			U[1] = dy/norm*maxInputNorm;
+			U[2] = dz/norm*maxInputNorm;
 		}
 		else{
 			U[0] = dx;
@@ -335,7 +337,7 @@ public class RRT {
 
 		X[0] = xmin + RD.nextDouble() * rangeX;
 		X[1] = ymin + RD.nextDouble() * rangeY;
-		X[2] = 5;
+		X[2] = root.pos.z;
 
 		//TODO: configure hard coded value for z dimension 
 		node_t rd = new node_t();
@@ -451,7 +453,6 @@ public class RRT {
 		//printf("old heading:%f\n",oldHeading);
 
 		KMB = DAA.getKinematicMultiBands();
-		
 		if(KMB.regionOfTrack(DAA.getOwnshipState().track()).isConflictBand()){
 			//Check if current heading is in conflict band
 			return true;
@@ -606,13 +607,14 @@ public class RRT {
 		//TODO: add check against fences also
 		//TODO: add velocity towards goal
 		//TODO: change speed to a parameter
-		double speed = 1;
+		double speed = maxInputNorm;
 		Vect3 A = qnode.pos;
 		Vect3 B = goalNode.pos;
 		Vect3 AB = B.Sub(A);
+		AB = AB.mkZ(0);
 		double norm = AB.norm();
 		if(norm > 0){
-			AB = AB.Scal(1/norm);
+			AB = AB.Scal(speed/norm);
 		}
 
 		if(CheckProjectedFenceConflict(qnode,goalNode)){
@@ -647,7 +649,7 @@ public class RRT {
 			closestDist = mag;
 			closestNode = lastNode;
 			if(CheckDirectPath2Goal(closestNode)){
-				//System.out.print("found direct path to goal\n");
+				System.out.print("found direct path to goal\n");
 				//goalreached = true;
 				return true;
 			}
@@ -714,14 +716,20 @@ public class RRT {
 
 	public Plan GetPlan(){
 
-		double speed = 1;
+		double speed = maxInputNorm;
 		node_t node = closestNode;
 		node_t parent;
 		ArrayList<node_t> path = new ArrayList<node_t>();
 		
 		while(node != null){
 			
-			System.out.format("x,y:%f,%f,",node.pos.x,node.pos.y);
+			System.out.format("x,y:%f,%f",node.pos.x,node.pos.y);
+			if(node.trafficPos.size()>0){
+				System.out.format("|%f,%f\n",node.trafficPos.get(0).x,node.trafficPos.get(0).y);
+			}
+			else{
+				System.out.format("|0,0\n");
+			}
 			System.out.println(CheckDirectPath2Goal(node));
 			if(node.parent != null && trafficSize > 0){
 				//CheckTrafficCollision(true,node.pos,node.vel,node.trafficPos,node.trafficVel,node.parent.vel);

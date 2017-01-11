@@ -140,7 +140,6 @@ public class QuadFMS extends FlightManagementSystem{
 			mission.Execute(this);
 		}
 
-
 		if((FlightData.nextMissionWP >= FlightData.numMissionWP)){
 			fmsState = FMS_STATE_t._LAND_;
 		}
@@ -198,7 +197,10 @@ public class QuadFMS extends FlightManagementSystem{
 				if(cheapDAA == 1){
 					Resolver.ResolveTrafficConflictDAA();
 				}else{
+					double tstart1 = (double)System.nanoTime()/1E9;
 					Resolver.ResolveTrafficConflictRRT();
+					double tstart2 = (double)System.nanoTime()/1E9;
+					System.out.format("RRT time:%f\n",(tstart2 - tstart1));
 				}
 			}
 			else if(Detector.keepInConflict){
@@ -359,7 +361,7 @@ public class QuadFMS extends FlightManagementSystem{
 			System.out.print("executing maneuver resolution\n");
 			SetMode(ARDUPILOT_MODES.GUIDED);
 			maneuverState = maneuver_state_t.GUIDE;
-			//Sleep here to allow mode change before sending commands
+			//This sleep may not be necessary - there is a 200 ms sleep within SetMode
 			try{
 				Thread.sleep(100);
 			}

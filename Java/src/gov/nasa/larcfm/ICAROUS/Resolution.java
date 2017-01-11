@@ -330,7 +330,8 @@ public class Resolution {
 		int Nsteps = 1000;
 		int Tstep  = 5;
 		double dT  = 1;
-		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT);
+		double maxInputNorm = 1;
+		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,maxInputNorm);
 		rrt.SetGoal(goal);
 
 		int i;
@@ -575,7 +576,12 @@ public class Resolution {
 
 	public void ResolveTrafficConflictRRT(){
 		// Reroute flight plan
-		FMS.SetMode(ARDUPILOT_MODES.GUIDED); // Set mode to guided for quadrotor to hover before replanning
+		
+		// Remove set guided mode here
+		// GUIDED brings the aircraft to a stop.
+		// Since the aircraft and traffic positions are projected by current velocity
+		// this is not necessary
+		//FMS.SetMode(ARDUPILOT_MODES.GUIDED); // Set mode to guided for quadrotor to hover before replanning
 
 		ArrayList<Position> TrafficPos = new ArrayList<Position>();
 		ArrayList<Velocity> TrafficVel = new ArrayList<Velocity>();
@@ -583,10 +589,12 @@ public class Resolution {
 		Position currentPos = FlightData.acState.positionLast();
 		Velocity currentVel = FlightData.acState.velocityLast();
 
+		double computationTime = 1;
 
 		for(int i=0;i<FlightData.traffic.size();++i){
-			Position tPos = FlightData.traffic.get(i).pos;
 			Velocity tVel = FlightData.traffic.get(i).vel;
+			Position tPos = FlightData.traffic.get(i).pos.linear(tVel,computationTime);
+			
 			TrafficPos.add(tPos);
 			TrafficVel.add(tVel);
 		}
@@ -594,9 +602,9 @@ public class Resolution {
 		Plan currentFP;
 		Position prevWP = null;
 		Position nextWP = null;
-		Position start = currentPos;
+		Position start = currentPos.linear(currentVel, computationTime);
 		double elapsedTime;
-
+		
 		if(FMS.planType == plan_type_t.MISSION){
 			currentFP = FlightData.MissionPlan;
 			elapsedTime = FMS.getApproxElapsedPlanTime(currentFP,FlightData.nextMissionWP);
@@ -615,15 +623,19 @@ public class Resolution {
 		int Nsteps = 500;
 		int Tstep  = 5;
 		double dT  = 1;
-		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT);
+		double maxInputNorm = 1;
+		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,maxInputNorm);
 		rrt.SetGoal(goal);
 
 		for(int i=0;i<Nsteps;i++){
 			rrt.RRTStep(i);
 			if(rrt.CheckGoal()){
-				//printf("Goal found\n");
+				//System.out.println("Goal found\n");
+				System.out.format("Number of iteration %d, nodes explored %d\n",i,rrt.nodeCount);
 				break;
 			}
+			
+			//TODO: Add condition to terminate if time elapsed is more than the allowed computation time
 		}
 
 		FMS.GoalReached = rrt.goalreached;

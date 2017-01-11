@@ -302,6 +302,8 @@ public class ConflictDetection{
 					     KMB.trackRegion(0) != BandsRegion.NONE)) { 
 		    FlightData.RcvdMessages.AddKinematicBands(msg);
 		}
+		
+		//System.out.println(KMB.outputString());
 	}
 	
 	public boolean CheckTurnConflict(double low,double high,double newHeading,double oldHeading){
