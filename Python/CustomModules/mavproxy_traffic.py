@@ -51,14 +51,14 @@ class SlipEllipse(mp_slipmap.SlipObject):
 
 
 class Traffic:
-    def __init__(self,x,y,z,vx,vy,vz,tstart):
-        self.x0 = x;
-        self.y0 = y;
+    def __init__(self,distH,bearing,z,S,H,V,tstart):
+        self.x0 = distH*math.sin((90 - bearing)*3.142/180);
+        self.y0 = distH*math.cos((90 - bearing)*3.142/180);
         self.z0 = z;
 
-        self.vx0 = vx;
-        self.vy0 = vy;
-        self.vz0 = vz;
+        self.vx0 = S*math.sin((90 - H)*3.142/180);
+        self.vy0 = S*math.cos((90 - H)*3.142/180);
+        self.vz0 = V;
 
         self.x = self.x0;
         self.y = self.y0;
@@ -93,8 +93,8 @@ class TrafficModule(mp_module.MPModule):
         self.oldNumBands = 0;
         self.Bands = [];
         self.kmbMsgCounter = 0;
-
-
+        self.gotStart = False;
+        
         
         
     def idle_task(self):
@@ -211,8 +211,10 @@ class TrafficModule(mp_module.MPModule):
                 tffc = Traffic(float(args[1]),float(args[2]),float(args[3]), \
                                float(args[4]),float(args[5]),float(args[6]),start_time)
                 self.traffic_list.append(tffc)
-                self.start_lat = self.module('map').lat
-                self.start_lon = self.module('map').lon
+                if not self.gotStart:
+                    self.start_lat = self.module('map').lat
+                    self.start_lon = self.module('map').lon
+                    self.gotStart = True
                 print len(self.traffic_list)
         elif args[0] == "radius":
             if len(args) == 2:
@@ -238,7 +240,7 @@ class TrafficModule(mp_module.MPModule):
                 icon = self.mpstate.map.icon(colour + vehicle_type + '.png')
                 
                 self.mpstate.map.add_object(mp_slipmap.SlipIcon(vehicle, (0,0), icon, layer=3, rotation=0, follow=False, \
-                                                                trail=mp_slipmap.SlipTrail()))
+                                                                trail=mp_slipmap.SlipTrail(colour=(0,255,0))))
                 self.traffic_on_map.append(vehicle)
                                                         
             self.traffic_list[i].get_pos(t)
@@ -261,7 +263,7 @@ class TrafficModule(mp_module.MPModule):
             
 
     def print_usage(self):
-        print("usage: traffic load x y z vx vy vz")
+        print("usage: traffic load range bearing height speed heading verticalspeed")
         
 
 def init(mpstate):
