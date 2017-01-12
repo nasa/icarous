@@ -88,6 +88,8 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	public boolean debugDAA;
 	public String debug_in;
 	public String debug_out;
+	public int currentMode;
+	public boolean icarousActive;
    
 	public FlightManagementSystem(String name,AircraftData fData,Interface ap, Interface gs){
 		threadName       = name;
@@ -102,6 +104,8 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		debugDAA         = false;
 		debug_in         = "";
 		debug_out 	     = "";
+		currentMode      = 0;
+		icarousActive    = true;
 	}
 
 	public void run(){	
@@ -129,6 +133,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		UpdateAircraftData();
 		CheckMissionWaypointReached();
 		CheckResetFlag();
+		GetCurrentMode();
 
 		switch(fmsState){
 
@@ -415,6 +420,16 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		req.target_component = 0;
 
 		apIntf.Write(req);
+	}
+	
+	public void GetCurrentMode(){
+		msg_heartbeat msg = FlightData.RcvdMessages.GetHeartbeat_AP();
+		currentMode =  (int)msg.custom_mode;
+		
+		if( (currentMode == ARDUPILOT_MODES.ALT_HOLD) || 
+			(currentMode == ARDUPILOT_MODES.POSHOLD)){
+			icarousActive = false;
+		}
 	}
 
 	public void SetSpeed(float speed){

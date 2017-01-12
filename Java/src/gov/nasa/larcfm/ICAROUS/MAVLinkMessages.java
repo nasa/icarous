@@ -253,7 +253,7 @@ public class MAVLinkMessages{
 				msg_heartbeat msgHeartbeat = (msg_heartbeat) message.unpack();
 
 				if(message.sysid == 1){		
-					listHeartbeat_AP.add(msgHeartbeat);
+					msgHeartbeat_AP = msgHeartbeat;
 				}
 				break;
 			}catch(IndexOutOfBoundsException e){
@@ -827,9 +827,8 @@ public class MAVLinkMessages{
 	}
 
 	public synchronized msg_heartbeat GetHeartbeat_AP(){
-		if(listHeartbeat_AP.size()>0){
-			int last = listHeartbeat_AP.size();
-			return listHeartbeat_AP.remove();
+		if(msgHeartbeat_AP != null){
+			return msgHeartbeat_AP;
 		}
 		else{
 			return null;

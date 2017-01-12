@@ -133,8 +133,13 @@ public class QuadFMS extends FlightManagementSystem{
 			}
 		}
 
-		if(resolveState != resolve_state_t.IDLE){
+		if(resolveState != resolve_state_t.IDLE && icarousActive){
 			Resolve();
+		}
+		else if(!icarousActive){
+			resolveState = resolve_state_t.IDLE;
+			trajectoryState = trajectory_state_t.IDLE;
+			maneuverState = maneuver_state_t.IDLE;
 		}
 		else{
 			mission.Execute(this);
@@ -143,7 +148,6 @@ public class QuadFMS extends FlightManagementSystem{
 		if((FlightData.nextMissionWP >= FlightData.numMissionWP)){
 			fmsState = FMS_STATE_t._LAND_;
 		}
-
 	}
 
 	@Override
@@ -174,7 +178,7 @@ public class QuadFMS extends FlightManagementSystem{
 		Detector.CheckGeoFences();
 		
 		if(!devAllowed){
-			Detector.CheckFlightPlanDeviation();
+				Detector.CheckFlightPlanDeviation();
 		}
 
 		if(FlightData.traffic.size() > 0){
