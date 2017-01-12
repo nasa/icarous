@@ -245,6 +245,14 @@ public class RRT {
 		double Y[]   = new double[Xsize];
 		double k1[]  = new double[Xsize];
 		double k2[]  = new double[Xsize];
+		
+		boolean fenceConflict = false;
+		boolean trafficConflict = false;
+		
+		ArrayList<Vect3> newTrafficPos = null;
+		
+		Vect3 newPos = new Vect3(0,0,0);
+		Vect3 newVel = new Vect3(0,0,0);
 	
 		X[0] = pos.x;
 		X[1] = vel.x;
@@ -281,26 +289,33 @@ public class RRT {
 				X[j] = X[j] + 0.5*(k1[j] + k2[j]);
 			}
 
-			Vect3 newPos = new Vect3(X[0],X[2],X[4]);
-
+			newPos = new Vect3(X[0],X[2],X[4]);
+			newVel = new Vect3(X[1],X[3],X[5]);
+			
+			newTrafficPos = new ArrayList<Vect3>();
+			for(int j=0;j<trafficSize;++j){
+				Vect3 newTraffic = new Vect3(X[6+(6*j)+0],X[6+(6*j)+2],X[6+(6*j)+4]);
+				newTrafficPos.add(newTraffic);
+			}
+			
 			if(CheckFenceCollision(newPos)){
+				fenceConflict = true;
+			}
+			
+			if(trafficSize > 0){
+				trafficConflict = CheckTrafficCollision(newPos, newVel, newTrafficPos, trafficVel);
+			}
+			
+			if(fenceConflict || trafficConflict){
 				node_t newNode = new node_t();
 				newNode.id = -1;
 				return newNode;
 			}
 		}
 
-		Vect3 newPos = new Vect3(X[0],X[2],X[4]);
-		Vect3 newVel = new Vect3(X[1],X[3],X[5]);
-
-		ArrayList<Vect3> newTrafficPos = new ArrayList<Vect3>();
-
-		for(int i=0;i<trafficSize;++i){
-			Vect3 newTraffic = new Vect3(X[6+(6*i)+0],X[6+(6*i)+2],X[6+(6*i)+4]);
-			newTrafficPos.add(newTraffic);
-		}
-
-
+		// This part is computing bands to detect conflicts
+		// This is not necessary if traffic conflicts are detected pointwise in the above loop
+		/*
 		if(trafficSize > 0){
 			boolean checkTurn;
 			if(nearest.id > 0){
@@ -309,12 +324,13 @@ public class RRT {
 			else{
 				checkTurn = false;
 			}
-			if(CheckTrafficCollision(checkTurn,newPos,newVel,newTrafficPos,trafficVel,vel)){
+			if(CheckTrafficCollisionWithBands(checkTurn,newPos,newVel,newTrafficPos,trafficVel,vel)){
 				node_t newNode = new node_t();
 				newNode.id = -1;
 				return newNode;
 			}
 		}
+		*/
 
 
 		node_t newNode = new node_t();
@@ -412,7 +428,36 @@ public class RRT {
 		return false;
 	}
 	
-	public boolean CheckTrafficCollision(boolean CheckTurn,Vect3 qPos,Vect3 qVel,
+	public boolean CheckTrafficCollision(Vect3 qPos,Vect3 qVel,ArrayList<Vect3> TrafficPos,ArrayList<Vect3> TrafficVel){
+		
+		double timeElapsed1 = (double)System.nanoTime()/1E9 - startTime;
+		
+		Position so  = Position.makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
+		Velocity vo  = Velocity.makeVxyz(qVel.x,qVel.y,"m/s",qVel.z,"m/s");
+		
+		DAA.setOwnshipState("Ownship",so,vo,timeElapsed1);
+
+		double violationTime;
+		double alertTime = DAA.parameters.alertor.getLevel(1).getAlertingTime();
+		
+		for(int i=0;i<TrafficPos.size();++i){
+			Vect3 pos = TrafficPos.get(i);
+			Vect3 vel = TrafficVel.get(i);
+			Position si = Position.makeXYZ(pos.x,"m",pos.y,"m",pos.z,"m");
+			Velocity vi = Velocity.makeVxyz(vel.x,vel.y,"m/s",vel.z,"m/s");
+			DAA.addTrafficState("Traffic"+i,si,vi);
+
+			violationTime = DAA.timeToViolation(i);
+			
+			if(Double.isFinite(violationTime) && violationTime < alertTime){
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	public boolean CheckTrafficCollisionWithBands(boolean CheckTurn,Vect3 qPos,Vect3 qVel,
 		    ArrayList<Vect3> TrafficPos,ArrayList<Vect3> TrafficVel,Vect3 oldVel){
 
 		
@@ -477,44 +522,6 @@ public class RRT {
 			}
 		}
 		
-		
-		/*
-		if(CheckTurn){
-			// Check collision with traffic based on direct heading to traffic
-			// ensure turning to newHeading from oldHeading is conflict free
-			for(int i=0;i<TrafficPos.size();++i){
-				double timeElapsed2 = (double)System.nanoTime()/1E9 - startTime;
-				Vect3 pos = TrafficPos.get(i);
-				Vect3 vel = TrafficVel.get(i);
-				so          = Position.makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
-				Position si = Position.makeXYZ(pos.x,"m",pos.y,"m",pos.z,"m");
-				Velocity vi = Velocity.makeVxyz(vel.x,vel.y,"m/s",vel.z,"m/s");
-				Vect3 AB    = new Vect3(pos.x - qPos.x,pos.y - qPos.y,pos.z - qPos.z);
-				AB          = AB.Scal(1/AB.norm()); //TODO: scale this vector by resolution speed
-				vo          = Velocity.makeVxyz(AB.x,AB.y,"m/s",AB.z,"m/s");
-
-				DAA.setOwnshipState("Ownship",so,vo,timeElapsed2);
-				DAA.addTrafficState("Traffic"+i,si,vi);
-				
-				KMB = DAA.getKinematicMultiBands();
-				for(int ib=0;ib<KMB.trackLength();++ib){
-					if(KMB.trackRegion(ib).isConflictBand()){
-						Interval ii = KMB.track(ib,"deg");
-						if(qHeading >= ii.low && qHeading <= ii.up){
-							return true;
-						}
-						if(oldHeading >= ii.low && oldHeading <= ii.up){
-							//
-						}
-						else if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
-							return true;
-						}
-					}
-				}
-
-
-			}
-		}*/
 		return false;
 	}
 
@@ -628,7 +635,7 @@ public class RRT {
 			if(parent != null){
 				vel = parent.vel;
 			}
-			if(CheckTrafficCollision(CheckTurn,qnode.pos,AB,qnode.trafficPos,qnode.trafficVel,vel)){
+			if(CheckTrafficCollisionWithBands(CheckTurn,qnode.pos,AB,qnode.trafficPos,qnode.trafficVel,vel)){
 				return false;
 			}
 			else{
@@ -732,7 +739,7 @@ public class RRT {
 			}
 			System.out.println(CheckDirectPath2Goal(node));
 			if(node.parent != null && trafficSize > 0){
-				//CheckTrafficCollision(true,node.pos,node.vel,node.trafficPos,node.trafficVel,node.parent.vel);
+				//CheckTrafficCollisionWithBands(true,node.pos,node.vel,node.trafficPos,node.trafficVel,node.parent.vel);
 			}
 			path.add(node);
 			node = node.parent;
