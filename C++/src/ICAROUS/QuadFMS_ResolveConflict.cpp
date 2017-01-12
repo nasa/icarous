@@ -388,7 +388,7 @@ void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 	int Nsteps = 1000;
 	int Tstep  = 5;
 	double dT  = 1;
-	RRT_t RRT(FlightData->fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT);
+	RRT_t RRT(FlightData->fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,resolutionSpeed);
 	RRT.SetGoal(goal);
 
 	int i;
@@ -575,8 +575,12 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 
 void QuadFMS_t::ResolveTrafficConflictRRT(){
 
+	double maxInputNorm = FlightData->paramData->getValue("RES_SPEED");
+
 	// Reroute flight plan
-	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	if(maxInputNorm < 2){
+		SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	}
 
 	std::vector<Position> TrafficPos;
 	std::vector<Velocity> TrafficVel;
@@ -584,11 +588,14 @@ void QuadFMS_t::ResolveTrafficConflictRRT(){
 	Position currentPos = FlightData->acState.positionLast();
 	Velocity currentVel = FlightData->acState.velocityLast();
 
+	double computationTime = 1;
+
 	std::list<Object_t>::iterator it;
 	for(it=FlightData->trafficList.begin();
 		it!=FlightData->trafficList.end();++it){
-		Position tPos = Position::makeLatLonAlt(it->x,"degree",it->y,"degree",it->z,"m");
 		Velocity tVel = Velocity::makeVxyz(it->vy,it->vx,"m/s",it->vz,"m/s");
+		Position tPos = Position::makeLatLonAlt(it->x,"degree",it->y,"degree",it->z,"m");
+		tPos.linear(tVel,computationTime);
 		TrafficPos.push_back(tPos);
 		TrafficVel.push_back(tVel);
 	}
@@ -596,7 +603,7 @@ void QuadFMS_t::ResolveTrafficConflictRRT(){
 	Plan currentFP;
 	Position prevWP;
 	Position nextWP;
-	Position start = currentPos;
+	Position start = currentPos.linear(currentVel,computationTime);
 
 
 	if(planType == MISSION){
@@ -615,7 +622,7 @@ void QuadFMS_t::ResolveTrafficConflictRRT(){
 	int Nsteps = 500;
 	int Tstep  = 5;
 	double dT  = 1;
-	RRT_t RRT(FlightData->fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT);
+	RRT_t RRT(FlightData->fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,maxInputNorm);
 	RRT.SetGoal(goal);
 
 	for(int i=0;i<Nsteps;i++){

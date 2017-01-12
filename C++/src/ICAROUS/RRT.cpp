@@ -51,6 +51,7 @@ RRT_t::RRT_t(){
 	zmin = 0;
 	zmax = 0;
 	Tstep = 5;
+	maxInputNorm = 1;
 	dT = 1;
 	closestDist = MAXDOUBLE;
 	if(!DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt")){
@@ -63,7 +64,7 @@ RRT_t::RRT_t(){
 }
 
 RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
-		std::vector<Position> trafficPos,std::vector<Velocity> trafficVel,int stepT,double dt){
+		std::vector<Position> trafficPos,std::vector<Velocity> trafficVel,int stepT,double dt,double inputNormMax){
 
 	Tstep = stepT;
 	dT    = dt;
@@ -84,6 +85,8 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 	ymax = 100;
 	zmin = -1;
 	zmax = 10;
+
+	maxInputNorm = inputNormMax;
 
 	goalreached = false;
 
@@ -159,10 +162,10 @@ void RRT_t::GetInput(node_t nn, node_t qn,double U[]){
 
 	norm = sqrt(pow(dx,2) + pow(dy,2) + pow(dz,2));
 
-	if (norm > 1){
-		U[0] = dx/norm;
-		U[1] = dy/norm;
-		U[2] = dz/norm;
+	if (norm > maxInputNorm){
+		U[0] = dx/norm * maxInputNorm;
+		U[1] = dy/norm * maxInputNorm;
+		U[2] = dz/norm * maxInputNorm;
 	}
 	else{
 		U[0] = dx;
@@ -337,7 +340,7 @@ void RRT_t::RRTStep(int i){
 	node_t rd;
 	rd.pos.x = X[0];
 	rd.pos.y = X[1];
-	rd.pos.z = 5;    // should  be set appropriately for 3D plans
+	rd.pos.z = root.pos.z;    // should  be set appropriately for 3D plans
 
 	node_t *nearest = FindNearest(rd);
 	node_t newNode;
@@ -479,56 +482,6 @@ bool RRT_t::CheckTrafficCollision(bool CheckTurn,Vect3 qPos,Vect3 qVel,
 		}
 	}
 
-	/*
-	if(CheckTurn){
-
-
-		// Check collision with traffic based on direct heading to traffic
-		// ensure turning to newHeading from oldHeading is conflict free
-		for(itP = TrafficPos.begin(),itV = TrafficVel.begin();
-			itP != TrafficPos.end(),itV != TrafficVel.end();
-			++itP,++itV){
-
-			time(&currentTime);
-			elapsedTime = difftime(currentTime,startTime);
-
-			so          = Position::makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
-			Position si = Position::makeXYZ(itP->x,"m",itP->y,"m",itP->z,"m");
-			Velocity vi = Velocity::makeVxyz(itV->x,itV->y,"m/s",itV->z,"m/s");
-			Vect3 AB    = Vect3(itP->x - qPos.x,itP->y - qPos.y,itP->z - qPos.z);
-			AB          = AB.Scal(1/AB.norm()); //TODO: scale this vector by resolution speed
-			vo          = Velocity::makeVxyz(AB.x,AB.y,"m/s",AB.z,"m/s");
-
-			DAA.setOwnshipState("Ownship",so,vo,elapsedTime);
-			char name[10];
-			sprintf(name,"Traffic%d",1);
-			DAA.addTrafficState(name,si,vi);
-
-
-			DAA.kinematicMultiBands(KMB);
-
-			for(int ib=0;ib<KMB.trackLength();++ib){
-				if(BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()))){
-					Interval ii = KMB.track(ib,"deg");
-					if(qHeading >= ii.low && qHeading <= ii.up){
-						//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-						return true;
-					}
-					if(oldHeading >= ii.low && oldHeading <= ii.up){
-						//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-
-					}
-					else if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
-						//printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
-						return true;
-					}
-				}
-			}
-
-
-		}
-	}*/
-
 	return false;
 }
 
@@ -615,15 +568,13 @@ bool RRT_t::CheckTurnConflict(double low,double high,double newHeading,double ol
 
 
 bool RRT_t::CheckDirectPath2Goal(node_t qnode){
-	//TODO: add check against fences also
-	//TODO: add velocity towards goal
 
 	Vect3 A = qnode.pos;
 	Vect3 B = goalNode.pos;
 	Vect3 AB = B.Sub(A);
 	double norm = AB.norm();
 	if(norm > 0){
-		AB = AB.Scal(1/norm);
+		AB = AB.Scal(maxInputNorm/norm);
 	}
 
 	if(CheckProjectedFenceConflict(qnode,goalNode)){
@@ -732,7 +683,7 @@ bool RRT_t::LinePlanIntersection(Vect2 A,Vect2 B,double floor,double ceiling,Vec
 
 Plan RRT_t::GetPlan(){
 
-	double speed = 1;
+	double speed = maxInputNorm;
 	node_t *node = &closestNode;
 	node_t parent;
 	std::list<node_t> path;

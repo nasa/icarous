@@ -94,10 +94,11 @@ public:
 	KinematicMultiBands KMB;
 	bool goalreached;
 	time_t startTime;
+	double maxInputNorm;
 
 	RRT_t();
 	RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initialVel,
-			std::vector<Position> trafficPos,std::vector<Velocity> trafficVel,int stepT,double dt);
+			std::vector<Position> trafficPos,std::vector<Velocity> trafficVel,int stepT,double dt,double inputNormMax);
 
 	void Initialize(Vect3 Pos,Vect3 Vel,
 			std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel);
