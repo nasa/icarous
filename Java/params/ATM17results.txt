@@ -13,8 +13,8 @@
 # Start mission
 #        long MISSION_START
 #####################################################################
-wp load ATM17fp.txt
-geofence load ATM17fence.xml
+wp load params/ATM17fp.txt
+geofence load params/ATM17fence.xml
 traffic radius 10
 traffic load 123.3 122.1 5 1 300 0
 traffic load 215.9 66.7 5 0.7 210 0
