@@ -577,11 +577,8 @@ public class Resolution {
 	public void ResolveTrafficConflictRRT(){
 		// Reroute flight plan
 		
-		// Remove set guided mode here
-		// GUIDED brings the aircraft to a stop.
-		// Since the aircraft and traffic positions are projected by current velocity
-		// this is not necessary
-		//FMS.SetMode(ARDUPILOT_MODES.GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	
+		FMS.SetMode(ARDUPILOT_MODES.GUIDED); 
 
 		ArrayList<Position> TrafficPos = new ArrayList<Position>();
 		ArrayList<Velocity> TrafficVel = new ArrayList<Velocity>();
@@ -602,7 +599,11 @@ public class Resolution {
 		Plan currentFP;
 		Position prevWP = null;
 		Position nextWP = null;
-		Position start = currentPos.linear(currentVel, computationTime);
+		double dist = currentVel.gs()*computationTime;
+		boolean prefDirection = FMS.Detector.KMB.preferredTrackDirection();
+		double prefHeading = FMS.Detector.KMB.trackResolution(prefDirection);
+		Position start = currentPos.linearDist(prefHeading, dist);
+		FMS.SetGPSPos(start.latitude(), start.longitude(), start.alt());
 		double elapsedTime;
 		
 		if(FMS.planType == plan_type_t.MISSION){

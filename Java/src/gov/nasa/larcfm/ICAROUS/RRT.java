@@ -439,6 +439,7 @@ public class RRT {
 
 		double violationTime;
 		double alertTime = DAA.parameters.alertor.getLevel(1).getAlertingTime();
+		double trafficDist = Double.MAX_VALUE;
 		
 		for(int i=0;i<TrafficPos.size();++i){
 			Vect3 pos = TrafficPos.get(i);
@@ -447,11 +448,29 @@ public class RRT {
 			Velocity vi = Velocity.makeVxyz(vel.x,vel.y,"m/s",vel.z,"m/s");
 			DAA.addTrafficState("Traffic"+i,si,vi);
 
-			violationTime = DAA.timeToViolation(i);
+			KMB = DAA.getKinematicMultiBands();
+			
+			if(!KMB.timeIntervalOfViolation(1).isEmpty()){
+				violationTime = KMB.timeIntervalOfViolation(1).low;
+			}else{
+				violationTime = Double.NaN;
+			}
+			
+			double distH = so.distanceH(si);
+
+			if(distH < trafficDist){
+				trafficDist = distH;
+			}
+			
 			
 			if(Double.isFinite(violationTime) && violationTime < alertTime){
 				return true;
 			}
+		}
+		
+		if(trafficDist < maxD){
+			//System.out.print("In cylinder\n");
+			//return true;
 		}
 
 		return false;
