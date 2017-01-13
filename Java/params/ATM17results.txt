@@ -1,0 +1,8 @@
+wp load ATM2017fp.txt
+geofence load ATMfence.xml
+traffic radius 10
+traffic load 123.3 122.1 5 1 300 0
+traffic load 215.9 66.7 5 0.7 210 0
+traffic load 286.2 139.7 5 1.0 333.0 0
+
+
