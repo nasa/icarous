@@ -255,6 +255,12 @@ node_t RRT_t::MotionModel(node_t nearest, double U[]){
 		i++;
 	}
 
+	Vect3 newPos;
+	Vect3 newVel;
+	std::vector<Vect3> newTrafficPos;
+	bool fenceConflict = false;
+	bool trafficConflict = false;
+
 	for(int i=0;i<Tstep;++i){
 		F(X,U,Y);
 
@@ -272,26 +278,31 @@ node_t RRT_t::MotionModel(node_t nearest, double U[]){
 			X[j] = X[j] + 0.5*(k1[j] + k2[j]);
 		}
 
-		Vect3 newPos(X[0],X[2],X[4]);
+		newPos.x = X[0]; newPos.y = X[2]; newPos.z = X[4];
+		newVel.x = X[1]; newVel.y = X[3]; newVel.z = X[5];
 
 		if(CheckFenceCollision(newPos)){
+			fenceConflict = true;
+		}
+
+		newTrafficPos.clear();
+		for(int j=0;j<trafficSize;++j){
+			Vect3 newTraffic(X[6+(6*j)+0],X[6+(6*j)+2],X[6+(6*j)+4]);
+			newTrafficPos.push_back(newTraffic);
+		}
+
+		if(trafficSize > 0){
+			trafficConflict = CheckTrafficCollision(newPos,newVel,newTrafficPos,trafficVel);
+		}
+
+		if(fenceConflict || trafficConflict){
 			node_t newNode;
 			newNode.id = -1;
 			return newNode;
 		}
 	}
 
-	Vect3 newPos(X[0],X[2],X[4]);
-	Vect3 newVel(X[1],X[3],X[5]);
-
-	std::vector<Vect3> newTrafficPos;
-
-	for(int i=0;i<trafficSize;++i){
-		Vect3 newTraffic(X[6+(6*i)+0],X[6+(6*i)+2],X[6+(6*i)+4]);
-		newTrafficPos.push_back(newTraffic);
-	}
-
-
+	/*
 	if(trafficSize > 0){
 		bool checkTurn;
 		if(nearest.id > 0){
@@ -300,12 +311,12 @@ node_t RRT_t::MotionModel(node_t nearest, double U[]){
 		else{
 			checkTurn = false;
 		}
-		if(CheckTrafficCollision(checkTurn,newPos,newVel,newTrafficPos,trafficVel,vel)){
+		if(CheckTrafficCollisionWithBands(checkTurn,newPos,newVel,newTrafficPos,trafficVel,vel)){
 			node_t newNode;
 			newNode.id = -1;
 			return newNode;
 		}
-	}
+	}*/
 
 
 	node_t newNode;
@@ -410,7 +421,58 @@ bool RRT_t::CheckProjectedFenceConflict(node_t qnode,node_t goal){
 	return false;
 }
 
-bool RRT_t::CheckTrafficCollision(bool CheckTurn,Vect3 qPos,Vect3 qVel,
+bool RRT_t::CheckTrafficCollision(Vect3 qPos,Vect3 qVel,std::vector<Vect3> TrafficPos,std::vector<Vect3> TrafficVel){
+	time_t currentTime;
+	time(&currentTime);
+	double elapsedTime = difftime(currentTime,startTime);
+
+	Position so  = Position::makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
+	Velocity vo  = Velocity::makeVxyz(qVel.x,qVel.y,"m/s",qVel.z,"m/s");
+
+	DAA.setOwnshipState("Ownship",so,vo,elapsedTime);
+
+
+	std::vector<Vect3>::iterator itP;
+	std::vector<Vect3>::iterator itV;
+	int i=0;
+	double trafficDist = MAXDOUBLE;
+	double violationTime;
+	double alertTime = DAA.parameters.alertor.getLevel(1).getAlertingTime();
+	for(itP = TrafficPos.begin(),itV = TrafficVel.begin();
+			itP != TrafficPos.end(),itV != TrafficVel.end();
+			++itP,++itV){
+		Position si = Position::makeXYZ(itP->x,"m",itP->y,"m",itP->z,"m");
+		Velocity vi = Velocity::makeVxyz(itV->x,itV->y,"m/s",itV->z,"m/s");
+		char name[10];
+		sprintf(name,"Traffic%d",i);i++;
+		DAA.addTrafficState(name,si,vi);
+
+		//printf("Traffic pos:%f,%f\n",itP->x,itP->y);
+		//printf("Traffic heading:%f\n",vi.track("degree"));
+
+		double distH = so.distanceH(si);
+
+		if(distH < trafficDist){
+			trafficDist = distH;
+		}
+
+		DAA.kinematicMultiBands(KMB);
+		if(!KMB.timeIntervalOfViolation(1).isEmpty()){
+			violationTime = KMB.timeIntervalOfViolation(1).low;
+		}
+		else{
+			violationTime = NAN;
+		}
+
+		if(finite(violationTime) && violationTime <= alertTime){
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool RRT_t::CheckTrafficCollisionWithBands(bool CheckTurn,Vect3 qPos,Vect3 qVel,
 	    std::vector<Vect3> TrafficPos,std::vector<Vect3> TrafficVel,Vect3 oldVel){
 
 
@@ -590,7 +652,7 @@ bool RRT_t::CheckDirectPath2Goal(node_t qnode){
 		}
 
 		bool CheckTurn = false;
-		if(CheckTrafficCollision(CheckTurn,qnode.pos,AB,qnode.trafficPos,qnode.trafficVel,vel)){
+		if(CheckTrafficCollisionWithBands(CheckTurn,qnode.pos,AB,qnode.trafficPos,qnode.trafficVel,vel)){
 			return false;
 		}
 		else{
@@ -701,7 +763,7 @@ Plan RRT_t::GetPlan(){
 
 		printf("x,y:%f,%f\n",node->pos.x,node->pos.y);
 		if(node->parent != NULL){
-			CheckTrafficCollision(true,node->pos,node->vel,node->trafficPos,node->trafficVel,node->parent->vel);
+			// CheckTrafficCollision(true,node->pos,node->vel,node->trafficPos,node->trafficVel,node->parent->vel);
 			//printf("%d\n",CheckDirectPath2Goal(parent));
 		}
 		path.push_front(*node);

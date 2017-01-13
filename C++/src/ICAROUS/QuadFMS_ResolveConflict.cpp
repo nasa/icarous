@@ -578,9 +578,8 @@ void QuadFMS_t::ResolveTrafficConflictRRT(){
 	double maxInputNorm = FlightData->paramData->getValue("RES_SPEED");
 
 	// Reroute flight plan
-	if(maxInputNorm < 2){
-		SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
-	}
+
+	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
 
 	std::vector<Position> TrafficPos;
 	std::vector<Velocity> TrafficVel;
@@ -603,8 +602,12 @@ void QuadFMS_t::ResolveTrafficConflictRRT(){
 	Plan currentFP;
 	Position prevWP;
 	Position nextWP;
-	Position start = currentPos.linear(currentVel,computationTime);
-
+	double dist = currentVel.gs()*computationTime;
+	bool prefDirection = KMB.preferredTrackDirection();
+	double prefHeading = KMB.trackResolution(prefDirection);
+	Velocity projVel   = Velocity::makeTrkGsVs(prefHeading,currentVel.gs(),0);
+	Position start = currentPos.linearDist(projVel, dist).first;
+	SetGPSPos(start.latitude(), start.longitude(), start.alt());
 
 	if(planType == MISSION){
 		currentFP = FlightData->MissionPlan;

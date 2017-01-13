@@ -107,7 +107,8 @@ public:
 
 	void F(double X[], double U[],double Y[]);
 	bool CheckFenceCollision(Vect3 qPos);
-	bool CheckTrafficCollision(bool CheckTurn,Vect3 qPos,Vect3 qVel,
+	bool CheckTrafficCollision(Vect3 qPos,Vect3 qVel,std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel);
+	bool CheckTrafficCollisionWithBands(bool CheckTurn,Vect3 qPos,Vect3 qVel,
 			    std::vector<Vect3> TrafficPos,std::vector<Vect3> trafficVel,Vect3 oldVel);
 	bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
 	void GetInput(node_t nn, node_t qn,double U[]);
