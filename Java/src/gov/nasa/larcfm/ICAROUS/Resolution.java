@@ -24,6 +24,8 @@ public class Resolution {
 	private double xtrkDevGain;
 	private Daidalus DAA;
 	private double alertTime0;
+	private int gotoNextWP;
+	private double diffAlertTime;
 
 	public boolean returnPathConflict;
 
@@ -35,6 +37,7 @@ public class Resolution {
 		DAA = new Daidalus();
 		DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
 		alertTime0 = DAA.parameters.alertor.getLevel(1).getAlertingTime();
+		diffAlertTime = DAA.parameters.alertor.getLevel(1).getEarlyAlertingTime() - alertTime0;
 	}
 
 	public void ResolveKeepInConflict(){
@@ -504,11 +507,19 @@ public class Resolution {
 		// Track based resolutions
 		Position currentPos = FlightData.acState.positionLast();
 		Velocity currentVel = FlightData.acState.velocityLast();
+		gotoNextWP  = FlightData.pData.getInt("GOTO_NEXTWP");
 		returnPathConflict = true;
 		double resolutionSpeed = FlightData.speed;
 
 		double crossStats[] = FMS.Detector.ComputeCrossTrackDev(currentPos, FlightData.MissionPlan, FlightData.nextMissionWP);
-		Position goal = GetPointOnPlan(crossStats[1], FlightData.MissionPlan,FlightData.nextMissionWP);
+		Position goal;
+		
+		if(gotoNextWP == 0){
+			goal = GetPointOnPlan(crossStats[1], FlightData.MissionPlan,FlightData.nextMissionWP);
+		}else{
+			//System.out.println("Goal set to nextWP");
+			goal = FlightData.MissionPlan.point(FlightData.nextMissionWP).position();
+		}
 
 		double currentHeading = currentVel.trk();
 		double nextHeading = currentPos.track(goal);
@@ -517,7 +528,7 @@ public class Resolution {
 		//Use new alert time if it is greater than existing alert time
 		alertTime = Util.max(alertTime,alertTime0);
 		DAA.parameters.alertor.getLevel(1).setAlertingTime(alertTime);
-		DAA.parameters.alertor.getLevel(1).setEarlyAlertingTime(alertTime);
+		DAA.parameters.alertor.getLevel(1).setEarlyAlertingTime(alertTime+diffAlertTime);
 		DAA.setOwnshipState("Ownship", currentPos, currentVel, FlightData.acTime);
 		for(int i=0;i<FMS.FlightData.traffic.size();++i){
 			Position trafficPos = FlightData.traffic.get(i).pos;
@@ -553,13 +564,30 @@ public class Resolution {
 
 		if(Double.isFinite(prefHeading)){
 			FlightData.maneuverVn = resolutionSpeed * Math.cos(prefHeading);
-			FlightData.maneuverVe = resolutionSpeed * Math.sin(prefHeading);
-			FlightData.maneuverHeading = Math.toDegrees(Math.atan2(FlightData.maneuverVe,FlightData.maneuverVn));
+			FlightData.maneuverVe = resolutionSpeed * Math.sin(prefHeading);	
+		}
+		
+		if(!returnPathConflict && gotoNextWP == 1){
+			double heading2nextWP = currentPos.track(goal);
+			FlightData.maneuverVn = resolutionSpeed * Math.cos(heading2nextWP);
+			FlightData.maneuverVe = resolutionSpeed * Math.sin(heading2nextWP);
 			
-			if(FlightData.maneuverHeading < 0){
-				FlightData.maneuverHeading = 360 + FlightData.maneuverHeading;
+			returnPathConflict = true;
+			double distH = currentPos.distanceH(goal);
+			if(distH < 1){
+				returnPathConflict = false;
 			}
 		}
+		
+		
+		FlightData.maneuverHeading = Math.toDegrees(Math.atan2(FlightData.maneuverVe,FlightData.maneuverVn));
+		
+		if(FlightData.maneuverHeading < 0){
+			FlightData.maneuverHeading = 360 + FlightData.maneuverHeading;
+		}
+		
+		
+		
 
 		FMS.planType = plan_type_t.MANEUVER;
 

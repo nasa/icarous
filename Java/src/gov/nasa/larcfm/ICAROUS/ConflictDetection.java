@@ -214,6 +214,7 @@ public class ConflictDetection{
  		double alertTime = FlightData.pData.getValue("ALERT_TIME");
  		double earlyAlertTime = FlightData.pData.getValue("EALERT_TIME");
  		double lookAheadTime = FlightData.pData.getValue("DAA_LOOKAHEAD");
+ 		double daaConflictHold = FlightData.pData.getValue("CONFLICT_HOLD");
  		
  		kbParams.alertor.getLevel(1).setDetector(new CDCylinder(distance, "m", height, "m"));
  		kbParams.alertor.getLevel(1).setAlertingTime(alertTime);
@@ -252,7 +253,7 @@ public class ConflictDetection{
 	
 
 		//TODO: this parameter depends on how long it takes to compute a resolution + start executing that resolution
-		if(daaTimeElapsed > 5){
+		if(daaTimeElapsed > daaConflictHold){
 			if(!daaViolation){
 				trafficConflict = FMS.Resolver.returnPathConflict;
 			}

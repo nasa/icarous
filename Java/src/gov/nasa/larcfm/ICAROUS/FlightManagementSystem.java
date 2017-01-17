@@ -429,6 +429,8 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		if( (currentMode == ARDUPILOT_MODES.ALT_HOLD) || 
 			(currentMode == ARDUPILOT_MODES.POSHOLD)){
 			icarousActive = false;
+		}else{
+			icarousActive = true;
 		}
 	}
 
