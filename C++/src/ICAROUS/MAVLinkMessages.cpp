@@ -40,6 +40,7 @@
  MAVLinkMessages_t::MAVLinkMessages_t(){
      pthread_mutex_init(&lock, NULL);
      memset(&globalPositionInt,0,sizeof(mavlink_global_position_int_t));
+     memset(&heartbeat,0,sizeof(mavlink_heartbeat_t));
  }
 
  void MAVLinkMessages_t::DecodeMessage(mavlink_message_t message){
@@ -50,7 +51,9 @@
         case MAVLINK_MSG_ID_HEARTBEAT:
         {
             //printf("MAVLINK_MSG_ID_HEARTBEAT\n");
-            mavlink_msg_heartbeat_decode(&message, &heartbeat);
+        	if(message.sysid == 1){
+        		mavlink_msg_heartbeat_decode(&message, &heartbeat);
+        	}
             break;
         }
 
@@ -201,6 +204,12 @@
     pthread_mutex_unlock(&lock);
  }
 
+ bool MAVLinkMessages_t::GetHeartbeat(mavlink_heartbeat_t& msg){
+	 pthread_mutex_lock(&lock);
+	 msg = heartbeat;
+	 pthread_mutex_unlock(&lock);
+	 return true;
+ }
 
  bool MAVLinkMessages_t::GetMissionCount(mavlink_mission_count_t& msg){
 

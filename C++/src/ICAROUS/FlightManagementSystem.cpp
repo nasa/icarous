@@ -50,6 +50,9 @@ FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interfac
     landStarted  = false;
     debug_in     = "";
     debug_out    = "";
+    icarousActive = true;
+    currentMode   = AUTO;
+    debugDAA      = false;
 }
 
 void FlightManagementSystem_t::RunFMS(){
@@ -195,6 +198,17 @@ bool FlightManagementSystem_t::CheckAck(MAV_CMD command){
        }
     }
     return status;
+}
+
+void FlightManagementSystem_t::GetCurrentMode(){
+	mavlink_heartbeat_t msg;
+	RcvdMessages->GetHeartbeat(msg);
+	currentMode = (control_mode_t) msg.custom_mode;
+	if( (currentMode == ALT_HOLD) || (currentMode == POSHOLD) ){
+		icarousActive = false;
+	}else{
+		icarousActive = true;
+	}
 }
 
 void FlightManagementSystem_t::GetLatestAircraftData(){

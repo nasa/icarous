@@ -214,18 +214,15 @@ bool QuadFMS_t::CheckTurnConflict(double low,double high,double newHeading,doubl
 }
 
 void QuadFMS_t::CheckTraffic(){
-
-
-	//TODO: Set latest daa parameters
 	double radius = FlightData->paramData->getValue("CYL_RADIUS");
 	double height = FlightData->paramData->getValue("CYL_HEIGHT");
 	double alertTime = FlightData->paramData->getValue("ALERT_TIME");
 	double earlyAlertTime = FlightData->paramData->getValue("EALERT_TIME");
+	double holdConflictTime = FlightData->paramData->getValue("CONFLICT_HOLD");
 	CDCylinder cd = CDCylinder(radius,"m",height,"m");
 	AlertThresholds alertor(&cd,alertTime,earlyAlertTime,BandsRegion::NEAR);
 	DAA.parameters.alertor.setLevel(1,alertor);
 	DAA.parameters.setLookaheadTime(FlightData->paramData->getValue("DAA_LOOKAHEAD"));
-
 	time_t currentTime    = time(&currentTime);
 	double daaTimeElapsed = difftime(currentTime,daaTimeStart);
 	double elapsedTime    = difftime(currentTime,timeStart);
@@ -257,7 +254,7 @@ void QuadFMS_t::CheckTraffic(){
 	}
 
 
-	if(daaTimeElapsed > 5){
+	if(daaTimeElapsed > holdConflictTime){
 		if(!daaViolation){
 			Conflict.traffic = returnPathConflict;
 		}
@@ -313,7 +310,3 @@ void QuadFMS_t::CheckTraffic(){
 		}
 	}
 }
-
-
-
-

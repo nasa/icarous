@@ -88,6 +88,7 @@ class FlightManagementSystem_t{
         Mission_t* mission;
         bool deviationApproved;
         bool landStarted;
+        bool icarousActive;
 
     public:
 
@@ -95,6 +96,7 @@ class FlightManagementSystem_t{
         bool debugDAA;
         std::string debug_in;
         std::string debug_out;
+        control_mode_t currentMode;
 
         FlightManagementSystem_t():log("FMS"){};
         FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);
@@ -121,6 +123,7 @@ class FlightManagementSystem_t{
         void CheckReset();
         void SetDeviationApproved(bool status);
         void SetMissionItem(uint8_t nextWP);
+        void GetCurrentMode();
 
         uint8_t IDLE();
         uint8_t PREFLIGHT();

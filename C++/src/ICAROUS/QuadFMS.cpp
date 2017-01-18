@@ -114,8 +114,13 @@ uint8_t QuadFMS_t::CRUISE(){
 		}
 	}
 
-	if(resolutionState != IDLE_r){
+	if(resolutionState != IDLE_r && icarousActive){
 		Resolve();
+	}
+	else if(!icarousActive){
+		resolutionState = IDLE_r;
+		trajectoryState = IDLE_t;
+		maneuverState   = IDLE_m;
 	}
 	else{
 		mission->Execute(this);

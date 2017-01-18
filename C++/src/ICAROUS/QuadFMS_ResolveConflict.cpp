@@ -486,10 +486,17 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 	Velocity currentVel = FlightData->acState.velocityLast();
 	returnPathConflict = true;
 	double resolutionSpeed = FlightData->speed;
+	int gotoNextWP = FlightData->paramData->getInt("GOTO_NEXTWP");
 
 	double crossStats[2];
 	ComputeCrossTrackDev(currentPos, FlightData->MissionPlan, FlightData->nextMissionWP,crossStats);
-	Position goal = GetPointOnPlan(crossStats[1], FlightData->MissionPlan,FlightData->nextMissionWP);
+	Position goal;
+
+	if(gotoNextWP == 0){
+		goal = GetPointOnPlan(crossStats[1], FlightData->MissionPlan,FlightData->nextMissionWP);
+	}else{
+		goal = FlightData->MissionPlan.point(FlightData->nextMissionWP).position();
+	}
 
 	double currentHeading = currentVel.trk();
 	double nextHeading = currentPos.track(goal);
@@ -517,23 +524,21 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 	KinematicMultiBands KMB;
 	DAAresolution.kinematicMultiBands(KMB);
 	returnPathConflict  = BandsRegion::isConflictBand(KMB.regionOfTrack(nextHeading));
-
 	bool prefDirection = KMB.preferredTrackDirection();
 	double prefHeading    = KMB.trackResolution(prefDirection);
 
 	if(prefDirection){
-		prefHeading = prefHeading + 2*M_PI/180;
+		prefHeading = prefHeading + 5*M_PI/180;
 		if(prefHeading > M_PI){
 			prefHeading = prefHeading - 2*M_PI;
 		}
 	}else{
-		prefHeading = prefHeading - 2*M_PI/180;
+		prefHeading = prefHeading - 5*M_PI/180;
 		if(prefHeading < -M_PI){
 			prefHeading = 2*M_PI + prefHeading;
 		}
 	}
 
-	count = 0;
 	for(int i=0;i<KMB.trackLength();++i){
 		Interval iv = KMB.track(i, "deg"); // i-th band region
 		double lower_trk = iv.low; // [deg]
@@ -541,27 +546,35 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		if (KMB.trackRegion(i) == BandsRegion::NONE) {
 			bool val = CheckTurnConflict(lower_trk, upper_trk, nextHeading*180/M_PI,  currentHeading*180/M_PI);
 			if(val){
-				count++;
+				returnPathConflict = true;
+				break;
 			}
 		}
-	}
-
-	if(count>0){
-		returnPathConflict = true;
 	}
 
 	if(!isnanf(prefHeading)){
 		FlightData->maneuverVn = resolutionSpeed * cos(prefHeading);
 		FlightData->maneuverVe = resolutionSpeed * sin(prefHeading);
-		FlightData->maneuverHeading = atan2(FlightData->maneuverVe,FlightData->maneuverVn)*180/M_PI;
+	}
 
-		if(FlightData->maneuverHeading < 0){
-			FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
+	if(!returnPathConflict && gotoNextWP == 1){
+		double heading2nextWP = currentPos.track(goal);
+		FlightData->maneuverVn = resolutionSpeed * cos(heading2nextWP);
+		FlightData->maneuverVe = resolutionSpeed * sin(heading2nextWP);
+
+		returnPathConflict = true;
+		double distH = currentPos.distanceH(goal);
+		if(distH < 1){
+			returnPathConflict = false;
 		}
 	}
 
-	planType = MANEUVER;
+	FlightData->maneuverHeading = atan2(FlightData->maneuverVe,FlightData->maneuverVn)*180/M_PI;
+	if(FlightData->maneuverHeading < 0){
+		FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
+	}
 
+	planType = MANEUVER;
 	if(debugDAA){
 		debug_in.append("*** Current Time:"+std::to_string(FlightData->acTime)+"\n");
 		debug_in.append(DAAresolution.toString()+"\n");
@@ -570,7 +583,6 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		debug_out.append("Vn,Ve"+std::to_string(FlightData->maneuverVn)+std::to_string(FlightData->maneuverVe)+"\n");
 		debug_out.append("Return path conflict:"+std::to_string(returnPathConflict)+"\n");
 	}
-
 }
 
 void QuadFMS_t::ResolveTrafficConflictRRT(){

@@ -74,6 +74,7 @@ class MAVLinkMessages_t{
         
         MAVLinkMessages_t();
         void DecodeMessage(mavlink_message_t message);
+        bool GetHeartbeat(mavlink_heartbeat_t& msg);
         bool GetMissionCount(mavlink_mission_count_t& msg);
         bool GetMissionItem(mavlink_mission_item_t& msg);
         bool GetMissionItemReached(mavlink_mission_item_reached_t& msg);
