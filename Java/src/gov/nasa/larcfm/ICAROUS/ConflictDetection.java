@@ -268,11 +268,14 @@ public class ConflictDetection{
 			Interval iv = KMB.track(i,"deg");
 			BandsRegion br = KMB.trackRegion(i);
 			int type = 0;
-			if(br.isResolutionBand()){
+			if(br == BandsRegion.NONE){
 				type = 0;
 			}
 			else if(br.isConflictBand()){
 				type = 1;
+			}
+			else if(br == BandsRegion.RECOVERY){
+				type = 2;
 			}
 			 
 			if(i==0){

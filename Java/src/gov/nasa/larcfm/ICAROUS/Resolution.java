@@ -504,10 +504,25 @@ public class Resolution {
 
 	public void ResolveTrafficConflictDAA(){
 
+		KinematicBandsParameters kbParams = new KinematicBandsParameters();
+ 		kbParams.loadFromFile("params/DaidalusQuadConfig.txt");
+		
 		// Track based resolutions
 		Position currentPos = FlightData.acState.positionLast();
 		Velocity currentVel = FlightData.acState.velocityLast();
 		gotoNextWP  = FlightData.pData.getInt("GOTO_NEXTWP");
+ 		double distance  = FlightData.pData.getValue("CYL_RADIUS");
+ 		double height    = FlightData.pData.getValue("CYL_HEIGHT");
+ 		double alertTime0 = FlightData.pData.getValue("ALERT_TIME");
+ 		double earlyAlertTime = FlightData.pData.getValue("EALERT_TIME");
+ 		double lookAheadTime = FlightData.pData.getValue("DAA_LOOKAHEAD");
+ 		
+ 		kbParams.alertor.getLevel(1).setDetector(new CDCylinder(distance, "m", height, "m"));
+ 		kbParams.alertor.getLevel(1).setAlertingTime(alertTime0);
+ 		kbParams.alertor.getLevel(1).setEarlyAlertingTime(earlyAlertTime);
+ 		kbParams.setLookaheadTime(lookAheadTime);
+ 		DAA.parameters = kbParams;
+ 		
 		returnPathConflict = true;
 		double resolutionSpeed = FlightData.speed;
 
@@ -526,10 +541,10 @@ public class Resolution {
 		Velocity nextVel   = Velocity.mkTrkGsVs(nextHeading, resolutionSpeed, 0);
 		double alertTime   = currentPos.distanceH(goal)/resolutionSpeed;
 		//Use new alert time if it is greater than existing alert time
-		alertTime = Util.max(alertTime,alertTime0);
-		//DAA.parameters.alertor.getLevel(1).setAlertingTime(alertTime);
-		//DAA.parameters.alertor.getLevel(1).setEarlyAlertingTime(alertTime+diffAlertTime);
-		DAA.setOwnshipState("Ownship", currentPos, currentVel, FlightData.acTime);
+		alertTime = Math.min(alertTime, 5);
+		DAA.parameters.alertor.getLevel(1).setAlertingTime(alertTime);
+		DAA.parameters.alertor.getLevel(1).setEarlyAlertingTime(alertTime);
+		DAA.setOwnshipState("Ownship", currentPos, nextVel, FlightData.acTime);
 		for(int i=0;i<FMS.FlightData.traffic.size();++i){
 			Position trafficPos = FlightData.traffic.get(i).pos;
 			Velocity trafficVel = FlightData.traffic.get(i).vel;
@@ -539,8 +554,8 @@ public class Resolution {
 		KinematicMultiBands KMB = DAA.getKinematicMultiBands();
 		returnPathConflict  = KMB.regionOfTrack(nextHeading).isConflictBand();
 
-		boolean prefDirection = KMB.preferredTrackDirection(); 
-		double prefHeading    = KMB.trackResolution(prefDirection);
+		boolean prefDirection = FMS.Detector.KMB.preferredTrackDirection(); 
+		double prefHeading    = FMS.Detector.KMB.trackResolution(prefDirection);
 
 		if(prefDirection){
 			prefHeading = prefHeading + Units.convert(Units.deg, Units.rad, 5);
@@ -585,17 +600,14 @@ public class Resolution {
 		if(FlightData.maneuverHeading < 0){
 			FlightData.maneuverHeading = 360 + FlightData.maneuverHeading;
 		}
-		
-		
-		
 
 		FMS.planType = plan_type_t.MANEUVER;
 
 		if(FMS.debugDAA){
-			FMS.debug_in += "********************** Current Time: "+DAA.getCurrentTime()+"\n";
-			FMS.debug_in += DAA.toString()+"\n";
-			FMS.debug_out += "********************** Current Time: "+DAA.getCurrentTime()+"\n";
-			FMS.debug_out += KMB.outputString()+"\n";
+			FMS.debug_in += "********************** Current Time: "+FMS.Detector.DAA.getCurrentTime()+"\n";
+			FMS.debug_in += FMS.Detector.DAA.toString()+"\n";
+			FMS.debug_out += "********************** Current Time: "+FMS.Detector.DAA.getCurrentTime()+"\n";
+			FMS.debug_out += FMS.Detector.KMB.toString()+"\n";
 			FMS.debug_out += "Vn = "+FlightData.maneuverVn+", Ve = "+FlightData.maneuverVe+"\n";
 			FMS.debug_out += "Return path conflict:"+returnPathConflict+"\n";
 		}

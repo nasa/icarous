@@ -113,7 +113,9 @@ class TrafficModule(mp_module.MPModule):
             colour = (0,255,0,100)
         elif bands[2] == 1:
             colour = (255,0,0,100)
-        
+        elif bands[2] == 2:
+            colour = (255,255,0,100)
+            
         center = (self.module('map').lat,self.module('map').lon)
         axes = (self.radius,self.radius)
         angle = -90
