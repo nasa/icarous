@@ -69,7 +69,7 @@ public class ConflictDetection{
 		numConflicts = 0;
 		DAA = new Daidalus();
 		DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
-		daaLookAhead = DAA.parameters.getLookaheadTime("s");
+		daaLookAhead = DAA.parameters.getLookaheadTime();
 		timeStart    = (double)System.nanoTime()/1E9;
 	}
 
@@ -268,10 +268,10 @@ public class ConflictDetection{
 			Interval iv = KMB.track(i,"deg");
 			BandsRegion br = KMB.trackRegion(i);
 			int type = 0;
-			if(br == BandsRegion.NONE){
+			if(br.isResolutionBand()){
 				type = 0;
 			}
-			else if(br == BandsRegion.NEAR){
+			else if(br.isConflictBand()){
 				type = 1;
 			}
 			 
