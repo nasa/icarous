@@ -177,14 +177,10 @@ public class QuadFMS extends FlightManagementSystem{
 
 		Detector.CheckGeoFences();
 		
-		if(!devAllowed){
-				Detector.CheckFlightPlanDeviation();
-		}
-
-		if(FlightData.traffic.size() > 0){
-			Detector.CheckTraffic();
-		}
-
+		Detector.CheckFlightPlanDeviation(devAllowed);
+		
+		Detector.CheckTraffic();
+		
 		return Detector.Size();
 	}
 

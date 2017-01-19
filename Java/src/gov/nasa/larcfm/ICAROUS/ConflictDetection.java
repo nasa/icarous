@@ -149,9 +149,14 @@ public class ConflictDetection{
 
 
 	//Check standoff distance violation
-	public void CheckFlightPlanDeviation(){
-
-		double allowedDev   = FlightData.pData.getValue("XTRK_DEV");	//TODO: change parameter name in param file	
+	public void CheckFlightPlanDeviation(boolean devAllowed){
+		
+		flightPlanDeviationConflict = false;
+		if(devAllowed){
+			return;
+		}
+		
+		double allowedDev   = FlightData.pData.getValue("XTRK_DEV");
 		Plan CurrentPlan = null;
 		int nextWP;
 		CurrentPlan =  FlightData.MissionPlan;	
@@ -206,6 +211,11 @@ public class ConflictDetection{
 	}
 
 	public void CheckTraffic(){
+		
+		trafficConflict = false;
+		if(FlightData.traffic.size() == 0){
+			return;
+		}
 		
 		KinematicBandsParameters kbParams = new KinematicBandsParameters();
  		kbParams.loadFromFile("params/DaidalusQuadConfig.txt");
