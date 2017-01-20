@@ -1,6 +1,6 @@
-/* ICAROUS Example implementation:
- *   - Using DAIDALUS for detect and avoid.
- *   - Using Polycarp for geofence containment checks.
+/* DAA and Geofencing Example example integrating
+ *   - DAIDALUS for detect and avoid.
+ *   - Polycarp for geofence containment checks.
  * 
  * Copyright (c) 2011-2016 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
@@ -12,11 +12,11 @@ import gov.nasa.larcfm.Util.*;
 import gov.nasa.larcfm.ACCoRD.*;
 import java.util.*;
 
-public class IcarousExample{
+public class DAAGeofencingExample{
     public static void main(String args[]) {
 
 	System.out.println("##");
-	System.out.println("## ICAROUSj@FormalATM"+Constants.version);
+	System.out.println("## DAA and Geofencing Provided by ICAROUSj@FormalATM"+Constants.version);
 	System.out.println("##\n");
 
 	/** Detect and Avoid **/

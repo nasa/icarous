@@ -52,10 +52,10 @@ JAR:
 
 EXAMPLE:
 	@echo
-	@echo "Compiling IcarousExample"
-	@$(JAVAC) -cp lib/icarous.jar IcarousExample.java
-	@echo "** To run IcarousExample type:"
-	@echo "./IcarousExample"
+	@echo "Compiling DAAGeofencingExample"
+	@$(JAVAC) -cp lib/icarous.jar DAAGeofencingExample.java
+	@echo "** To run DAAGeofencingExample type:"
+	@echo "./DAAGeofencingExample"
 
 clean:
 	rm -rf bin/* lib/icarous.jar

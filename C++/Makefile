@@ -16,12 +16,12 @@ lib: $(OBJS)
 example:
 	@echo
 	@echo "** Building DaidalusExample application"
-	$(CXX) -o IcarousExample $(CXXFLAGS) IcarousExample.cpp lib/icarous.a
+	$(CXX) -o DAAGeofencingExample $(CXXFLAGS) DAAGeofencingExample.cpp lib/ICAROUS.a
 	@echo 
-	@echo "** To run IcarousExample type:"
-	@echo "./IcarousExample"
+	@echo "** To run DAAGeofencingExample type:"
+	@echo "./DAAGeofencingExample"
 
 clean:
-	rm -f IcarousExample $(OBJS) lib/icarous.a
+	rm -f DAAGeofencingExample $(OBJS) lib/ICAROUS.a
 
 .PHONY: all lib example

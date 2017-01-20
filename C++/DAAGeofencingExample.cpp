@@ -1,6 +1,6 @@
-/* ICAROUS Example implementation:
- *   - Using DAIDALUS for detect and avoid.
- *   - Using Polycarp for geofence containment checks.
+/* DAA and Geofencing Example example integrating
+ *   - DAIDALUS for detect and avoid.
+ *   - Polycarp for geofence containment checks.
  * 
  * Copyright (c) 2011-2016 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
@@ -151,7 +151,7 @@ void printBands(Daidalus& daa, KinematicMultiBands& bands) {
 int main(int argc,char* argv[]) {
 
   std::cout << "##" << std::endl;
-  std::cout << "## ICAROUS++@FormalATM" << Constants::version << std::endl;
+  std::cout << "## DAA and Geofencing Provided by ICAROUS++@FormalATM" << Constants::version << std::endl;
   std::cout << "##" << std::endl << std::endl;
 
   /** Detect and Avoid **/

@@ -50,7 +50,7 @@ lib/: Directory of library file.
 doc/: Directory of documentation.
 DaidalusQuadConfig.txt: DAIDALUS configuration file for
 a small rotorcarft.
-IcarousExample.cpp: Example application.
+DAAGeofencingExample.cpp: Example application.
 Makefile: Unix make file to compile example application.
 
 Compiling example applications
