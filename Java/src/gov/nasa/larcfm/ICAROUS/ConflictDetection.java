@@ -212,7 +212,7 @@ public class ConflictDetection{
 
 	public void CheckTraffic(){
 		
-		trafficConflict = false;
+		
 		if(FlightData.traffic.size() == 0){
 			return;
 		}
