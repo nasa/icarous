@@ -40,13 +40,13 @@ contour_thr = 180.0 [deg]
 # Alert Levels
 alert_1_alerting_time = 10.0 [s]
 alert_1_detector = det_1
-alert_1_early_alerting_time = 10.0 [s]
+alert_1_early_alerting_time = 15.0 [s]
 alert_1_region = NEAR
 alert_1_spread_alt = 0.0 [ft]
 alert_1_spread_gs = 0.0 [knot]
 alert_1_spread_trk = 0.0 [deg]
 alert_1_spread_vs = 0.0 [fpm]
 conflict_level = 1
-det_1_D = 4.0 [m]
+det_1_D = 3.0 [m]
 det_1_H = 10.0 [m]
 load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.CDCylinder

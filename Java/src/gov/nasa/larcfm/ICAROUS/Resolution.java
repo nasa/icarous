@@ -539,11 +539,9 @@ public class Resolution {
 		double currentHeading = currentVel.trk();
 		double nextHeading = currentPos.track(goal);
 		Velocity nextVel   = Velocity.mkTrkGsVs(nextHeading, resolutionSpeed, 0);
-		double alertTime   = currentPos.distanceH(goal)/resolutionSpeed;
-		//Use new alert time if it is greater than existing alert time
-		alertTime = Math.min(alertTime, 5);
-		DAA.parameters.alertor.getLevel(1).setAlertingTime(alertTime);
-		DAA.parameters.alertor.getLevel(1).setEarlyAlertingTime(alertTime);
+		//double alertTime   = currentPos.distanceH(goal)/resolutionSpeed;
+		//DAA.parameters.alertor.getLevel(1).setAlertingTime(alertTime);
+		//DAA.parameters.alertor.getLevel(1).setEarlyAlertingTime(alertTime);
 		DAA.setOwnshipState("Ownship", currentPos, nextVel, FlightData.acTime);
 		for(int i=0;i<FMS.FlightData.traffic.size();++i){
 			Position trafficPos = FlightData.traffic.get(i).pos;
@@ -582,7 +580,7 @@ public class Resolution {
 			FlightData.maneuverVe = resolutionSpeed * Math.sin(prefHeading);	
 		}
 		
-		if(!returnPathConflict && gotoNextWP == 1){
+		if( !returnPathConflict && (gotoNextWP == 1)){
 			double heading2nextWP = currentPos.track(goal);
 			FlightData.maneuverVn = resolutionSpeed * Math.cos(heading2nextWP);
 			FlightData.maneuverVe = resolutionSpeed * Math.sin(heading2nextWP);
@@ -609,6 +607,8 @@ public class Resolution {
 			FMS.debug_out += "********************** Current Time: "+FMS.Detector.DAA.getCurrentTime()+"\n";
 			FMS.debug_out += FMS.Detector.KMB.toString()+"\n";
 			FMS.debug_out += "Vn = "+FlightData.maneuverVn+", Ve = "+FlightData.maneuverVe+"\n";
+			FMS.debug_out += "resolutionSpeed ="+resolutionSpeed+"\n";
+			FMS.debug_out += "Heading ="+FlightData.maneuverHeading+",prefHeading ="+Math.toDegrees(prefHeading)+"\n";
 			FMS.debug_out += "Return path conflict:"+returnPathConflict+"\n";
 		}
 
