@@ -505,7 +505,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 				PrintWriter debug_fout = new PrintWriter(System.out);
 				try {
 					System.out.println("Writing to file");
-					DateFormat df = new SimpleDateFormat("yyyy-MM-dd-hh:mm:ss");
+					DateFormat df = new SimpleDateFormat("yyyy-MM-dd-hh_mm_ss");
 					Date date = new Date();
 					debug_fin = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".login")));
 					debug_fout = new PrintWriter(new BufferedWriter(new FileWriter("Icarous-"+df.format(date)+".logout")));
