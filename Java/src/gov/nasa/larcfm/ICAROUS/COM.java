@@ -282,6 +282,9 @@ public class COM implements Runnable,ErrorReporter{
 						FlightData.Reset();
 					}
 				}
+				else if(msgCommandLong.param1 == 10){ // Safeguards gpio outputs
+					System.out.println(msgCommandLong.param2);
+				}
 
 			}		
 			else{
