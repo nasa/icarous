@@ -32,9 +32,11 @@ import java.io.*;
 import java.nio.file.*;
 import java.net.*;
 import com.MAVLink.*;
+import com.MAVLink.common.msg_command_int;
+import com.MAVLink.common.msg_command_long;
 import com.MAVLink.icarous.*;
 
-public class BB_SAFEGUARDREADER{
+public class BeagleBone_SafeguardReader{
 
     public static void main(String args[]){
 
@@ -97,25 +99,26 @@ public class BB_SAFEGUARDREADER{
 		input2  = Files.readAllBytes(GPIO_value2) ;
 				
 		// Constuct MAVLink message
-		msg_safeguard msgSafeguard = new msg_safeguard();
+		msg_command_long msgSafeguard = new msg_command_long();
 
+		msgSafeguard.param1 = 10;
 		if((int) input1[0] == 48 ){
 
 		    if((int) input2[0] == 48 ){
-			msgSafeguard.value         = 0;
+			msgSafeguard.param2         = 0;
 		    }
 		    else{
-			msgSafeguard.value         = 2;
+			msgSafeguard.param2         = 2;
 		    }
 		    
 		}
 		else{
 
 		    if((int) input2[0] == 48 ){
-			msgSafeguard.value         = 1;
+			msgSafeguard.param2        = 1;
 		    }
 		    else{
-			msgSafeguard.value         = 3;
+			msgSafeguard.param2        = 3;
 		    }
 		}
 								
