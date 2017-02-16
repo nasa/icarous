@@ -1,2 +1,14 @@
-Release Notes
--------------
+Integrated Configurable Algorithms for Reliable Operation of Unmanned Systems (ICAROUS)
+======================================================================================
+
+v1.0: Release Notes
+-------------------
+- ICAROUS runs on a companion computer with the pixhawk flight controller. ICAROUS has been
+  extensively tested using the Ardupilot flight stack.
+- C++ and Java implementations of ICAROUS are available.
+- Baseline ICAROUS functionalities for simple waypoint missions:
+  - Prevent keep-in geofence violation (Bounce back and continue to next feasible waypoint).
+  - Prevent keep-out geofence violation (Replan flight plan to avoid keep-out fence).
+  - Detect and Avoid functionality (Autonomously avoid traffic and geofences).
+  - Flight plan deviation monitoring (Autonomously returns back to nearest point on flightplan).
+- Track a user defined object.
