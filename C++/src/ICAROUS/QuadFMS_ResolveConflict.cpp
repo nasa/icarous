@@ -501,14 +501,14 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 	double currentHeading = currentVel.trk();
 	double nextHeading = currentPos.track(goal);
 	Velocity nextVel   = Velocity::makeTrkGsVs(nextHeading,"radians",resolutionSpeed,"m/s",0,"m/s");
-	double alertTime   = currentPos.distanceH(goal)/resolutionSpeed;
+	//double alertTime   = currentPos.distanceH(goal)/resolutionSpeed;
 	//Use new alert time if it is greater than existing alert time
-	alertTime = Util::max(alertTime,alertTime0);
+	//alertTime = Util::max(alertTime,alertTime0);
 
-	AlertThresholds alertor = DAAresolution.parameters.alertor.getLevel(1);
-	alertor.setAlertingTime(alertTime);
-	alertor.setEarlyAlertingTime(alertTime);
-	DAAresolution.parameters.alertor.setLevel(1,alertor);
+	//AlertThresholds alertor = DAAresolution.parameters.alertor.getLevel(1);
+	//alertor.setAlertingTime(alertTime);
+	//alertor.setEarlyAlertingTime(alertTime);
+	//DAAresolution.parameters.alertor.setLevel(1,alertor);
 
 	DAAresolution.setOwnshipState("Ownship", currentPos, currentVel, FlightData->acTime);
 	std::list<Object_t>::iterator it;
