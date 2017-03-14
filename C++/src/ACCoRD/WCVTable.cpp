@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2016 United States Government as represented by
+ * Copyright (c) 2012-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -17,32 +17,59 @@ WCVTable::WCVTable() {
   ZTHR = Units::from("ft",450);
   TTHR = 35; // [s]
   TCOA = 0;  // [s]
+  units_["WCV_DTHR"] = "nmi";
+  units_["WCV_ZTHR"] = "ft";
+  units_["WCV_TTHR"] = "s";
+  units_["WCV_TCOA"] = "s";
 }
 
 /** Copy constructor */
-WCVTable::WCVTable(const WCVTable& t) {
-  DTHR = t.DTHR;
-  ZTHR = t.ZTHR;
-  TTHR = t.TTHR;
-  TCOA = t.TCOA;
+WCVTable::WCVTable(const WCVTable& tab) {
+  copyValues(tab);
 }
 
 WCVTable::WCVTable(double dthr, double zthr, double tthr, double tcoa) {
-  DTHR = dthr;
-  ZTHR = zthr;
-  TTHR = tthr;
-  TCOA = tcoa;
+  DTHR = std::abs(dthr);
+  ZTHR = std::abs(zthr);
+  TTHR = std::abs(tthr);
+  TCOA = std::abs(tcoa);
+  units_["WCV_DTHR"] = "m";
+  units_["WCV_ZTHR"] = "m";
+  units_["WCV_TTHR"] = "s";
+  units_["WCV_TCOA"] = "s";
+}
+
+/**
+ * Table containing specified values (specified units)
+ */
+WCVTable::WCVTable(double dthr, const std::string& udthr, double zthr, const std::string& uzthr,
+    double tthr, const std::string& utthr, double tcoa, const std::string& utcoa) {
+  DTHR = Units::from(udthr,std::abs(dthr));
+  ZTHR = Units::from(uzthr,std::abs(zthr));
+  TTHR = Units::from(utthr,std::abs(tthr));
+  TCOA = Units::from(utcoa,std::abs(tcoa));
+  units_["WCV_DTHR"] = udthr;
+  units_["WCV_ZTHR"] = uzthr;
+  units_["WCV_TTHR"] = utthr;
+  units_["WCV_TCOA"] = utcoa;
 }
 
 WCVTable WCVTable::copy() const {
-  return WCVTable(DTHR, ZTHR, TTHR, TCOA);
+  WCVTable tab;
+  tab.DTHR = DTHR;
+  tab.ZTHR = ZTHR;
+  tab.TTHR = TTHR;
+  tab.TCOA = TCOA;
+  tab.units_ = units_;
+  return tab;
 }
 
-void WCVTable::copyValues(const WCVTable& t) {
-  DTHR = t.DTHR;
-  ZTHR = t.ZTHR;
-  TTHR = t.TTHR;
-  TCOA = t.TCOA;
+void WCVTable::copyValues(const WCVTable& tab) {
+  DTHR = tab.DTHR;
+  ZTHR = tab.ZTHR;
+  TTHR = tab.TTHR;
+  TCOA = tab.TCOA;
+  units_ = tab.units_;
 }
 
 double WCVTable::getDTHR() const {
@@ -74,61 +101,76 @@ double WCVTable::getTCOA(const std::string& u) const {
 }
 
 void WCVTable::setDTHR(double val) {
-  DTHR = val;
+  DTHR = std::abs(val);
 }
+
 void WCVTable::setDTHR(double val, const std::string& u) {
-  DTHR = Units::from(u,val);
+  setDTHR(Units::from(u,val));
+  units_["WCV_DTHR"] = u;
 }
 
 void WCVTable::setZTHR(double val) {
-  ZTHR = val;
+  ZTHR = std::abs(val);
 }
 void WCVTable::setZTHR(double val, const std::string& u) {
-  ZTHR = Units::from(u,val);
+  setZTHR(Units::from(u,val));
+  units_["WCV_ZTHR"] = u;
 }
 
 void WCVTable::setTTHR(double val) {
-  TTHR = val;
+  TTHR =std::abs(val);
 }
 void WCVTable::setTTHR(double val, const std::string& u) {
-  TTHR = Units::from(u,val);
+  setTTHR(Units::from(u,val));
+  units_["WCV_TTHR"] = u;
 }
 
 void WCVTable::setTCOA(double val) {
-  TCOA = val;
+  TCOA = std::abs(val);
 }
 void WCVTable::setTCOA(double val, const std::string& u) {
-  TCOA = Units::from(u,val);
+  setTCOA(Units::from(u,val));
+  units_["WCV_TCOA"] = u;
 }
 
 ParameterData WCVTable::getParameters() const {
   ParameterData p;
   updateParameterData(p);
   return p;
-
 }
 
 void WCVTable::updateParameterData(ParameterData& p) const {
-  p.setInternal("WCV_DTHR",DTHR,"nmi",4);
-  p.setInternal("WCV_ZTHR",ZTHR,"ft",4);
-  p.setInternal("WCV_TTHR",TTHR,"s",4);
-  p.setInternal("WCV_TCOA",TCOA,"s",4);
+  p.setInternal("WCV_DTHR",DTHR,getUnits("WCV_DTHR"));
+  p.setInternal("WCV_ZTHR",ZTHR,getUnits("WCV_ZTHR"));
+  p.setInternal("WCV_TTHR",TTHR,getUnits("WCV_TTHR"));
+  p.setInternal("WCV_TCOA",TCOA,getUnits("WCV_TCOA"));
 }
-
 
 void WCVTable::setParameters(const ParameterData& p) {
   if (p.contains("WCV_DTHR")) {
-    DTHR = p.getValue("WCV_DTHR");
+    setDTHR(p.getValue("WCV_DTHR"));
+    units_["WCV_DTHR"] = p.getUnit("WCV_DTHR");
   }
   if (p.contains("WCV_ZTHR")) {
-    ZTHR = p.getValue("WCV_ZTHR");
+    setZTHR(p.getValue("WCV_ZTHR"));
+    units_["WCV_ZTHR"] = p.getUnit("WCV_ZTHR");
   }
   if (p.contains("WCV_TTHR")) {
-    TTHR = p.getValue("WCV_TTHR");
+    setTTHR(p.getValue("WCV_TTHR"));
+    units_["WCV_TTHR"] = p.getUnit("WCV_TTHR");
   }
   if (p.contains("WCV_TCOA")) {
-    TCOA = p.getValue("WCV_TCOA");
+    setTCOA(p.getValue("WCV_TCOA"));
+    units_["WCV_TCOA"] = p.getUnit("WCV_TCOA");
   }
+}
+
+std::string WCVTable::getUnits(const std::string& key) const {
+  std::map<std::string,std::string>::const_iterator got = units_.find(key);
+  if (got == units_.end()) {
+    return "unspecified";
+  }
+  return got->second;
 }
 
 bool WCVTable::equals(const WCVTable& t) const {
@@ -140,8 +182,10 @@ bool WCVTable::equals(const WCVTable& t) const {
 }
 
 std::string WCVTable::toString() const {
-  return "DTHR: "+Units::str("NM",DTHR)+"; ZTHR: "+Units::str("ft",ZTHR)+"; TTHR: "+
-      Units::str("s",TTHR)+"; TCOA: "+Units::str("s",TCOA);
+  return "WCV_DTHR = "+Units::str(getUnits("WCV_DTHR"),DTHR)+
+      ", WCV_ZTHR = "+Units::str(getUnits("WCV_ZTHR"),ZTHR)+
+      ", WCV_TTHR = "+Units::str(getUnits("WCV_TTHR"),TTHR)+
+      ", WCV_TCOA = "+Units::str(getUnits("WCV_TCOA"),TCOA);
 }
 
 std::string WCVTable::toPVS(int prec) const {

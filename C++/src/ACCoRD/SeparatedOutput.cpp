@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -373,6 +373,11 @@ namespace larcfm {
 	   }
    }
 
+   void SeparatedOutput::setParameter(const std::string& key, const std::string& value) {
+	   params.push_back(key+" = "+value);
+   }
+
+
    void SeparatedOutput::clearParameters() {
 	   params.clear();
    }
@@ -419,7 +424,7 @@ namespace larcfm {
 			column_count = -1;
 //		}
 //		catch (IOException e) {
-//          error.addError("*** An IO exeception has occured: "+e.getMessage());
+//          error.addError("*** An IO exception has occurred: "+e.getMessage());
 //		}
 	}
     
@@ -429,7 +434,7 @@ namespace larcfm {
     	}
     	fp(writer, vals[0]);
     	for (int i = 1; i < (int) vals.size(); ++i) {
-    		fp(writer, delim+space+vals[i]);
+        	fp(writer, delim+space+vals[i]);
     	}
     	fpln(writer,"");
     	++size_l;

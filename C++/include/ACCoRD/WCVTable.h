@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2016 United States Government as represented by
+ * Copyright (c) 2012-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -13,10 +13,15 @@
 #include "ParameterTable.h"
 #include "ParameterData.h"
 #include <string>
+#include <map>
 
 namespace larcfm {
 
 class WCVTable : public ParameterTable {
+
+private:
+  std::map<std::string,std::string> units_;
+
 public:
   double DTHR; // Distance threshold
   double ZTHR; // Vertical threshold
@@ -29,17 +34,23 @@ public:
   WCVTable(double dthr, double zthr, double tthr, double tcoa);
 
   /**
+   * Table containing specified values (specified units)
+   */
+  WCVTable(double dthr, const std::string& udthr, double zthr, const std::string& uzthr,
+      double tthr, const std::string& utthr, double tcoa, const std::string& utcoa);
+
+  /**
    * WCV table SARP concept
    */
   WCVTable();
 
   /** Copy constructor */
-  WCVTable(const WCVTable& t);
+  WCVTable(const WCVTable& tab);
 
   WCVTable copy() const;
 
   /** copy values from t into this object */
-  void copyValues(const WCVTable& t);
+  void copyValues(const WCVTable& tab);
 
   /**
    * Return horizontal distance threshold DTHR in internal units
@@ -86,6 +97,8 @@ public:
   ParameterData getParameters() const;
   void updateParameterData(ParameterData& p) const;
   void setParameters(const ParameterData& p);
+
+  std::string getUnits(const std::string& key) const;
 
   bool equals(const WCVTable& t2) const;
 

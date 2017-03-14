@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -133,12 +133,12 @@ public:
 
   /**
    * Return true if the given position and velocity are in violation with the intent aircraft at time tm.
-   * If tm is outisde the intent information, return false;
+   * If tm is outisde the intent information, return false; 
    * @param so
    * @param vo
    * @param intent
    * @param tm
-   * @return
+   * @return true if violation
    */
   bool violation(const Position& so, const Velocity& vo, const PolyPath& intent, double tm) const;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -25,6 +25,8 @@ namespace larcfm {
 class KinematicRealBands : public KinematicIntegerBands {
 
 private:
+  static const INT64FM ALMOST_;
+
   bool outdated_; // Boolean to control re-computation of cached values
   int checked_;  // Cached status of input values. Negative unchecked, 0 unvalid, 1 valid
   std::vector< std::vector<TrafficState> > peripheral_acs_; //  Cached list of peripheral aircraft per alert level

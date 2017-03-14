@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -138,7 +138,7 @@ private:
    * @param ownship
    * @param traffic
    * @param tm
-   * @return
+   * @return true if violation
    */
   bool violation(const Plan& ownship, const PolyPath& traffic, double tm) const;
 

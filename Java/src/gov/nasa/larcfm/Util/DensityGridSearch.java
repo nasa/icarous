@@ -6,7 +6,6 @@
  */
 package gov.nasa.larcfm.Util;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface DensityGridSearch {
@@ -16,7 +15,7 @@ public interface DensityGridSearch {
 	 * @param dg density grid with polygon and initial weight information.  Polygons must be static.
 	 * @param startPos Start position for search.
 	 * @param endPos Ending Position for search.
-	 * @return
+	 * @return points
 	 */
 	public List<Pair<Integer,Integer>> search(DensityGrid dg, Position startPos, Position endPos);
 	

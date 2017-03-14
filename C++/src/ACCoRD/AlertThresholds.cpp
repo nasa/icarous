@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -22,10 +22,10 @@ namespace larcfm {
  * early_alerting_time is a early alerting time >= at (for maneuver guidance),
  * region is the type of guidance
  */
-AlertThresholds::AlertThresholds(const Detection3D* det,
+AlertThresholds::AlertThresholds(const Detection3D* detector,
     double alerting_time, double early_alerting_time,
     BandsRegion::Region region) {
-  detector_ = det->copy();
+  detector_ = detector == NULL ? NULL :detector->copy();
   alerting_time_ = std::abs(alerting_time);
   early_alerting_time_ = Util::max(alerting_time_,early_alerting_time);
   region_ = region;
@@ -33,10 +33,16 @@ AlertThresholds::AlertThresholds(const Detection3D* det,
   spread_gs_ = 0;
   spread_vs_ = 0;
   spread_alt_ = 0;
+  units_["alerting_time"] = "s";
+  units_["early_alerting_time"] = "s";
+  units_["spread_trk"] = "deg";
+  units_["spread_gs"] = "knot";
+  units_["spread_vs"] = "fpm";
+  units_["spread_alt"] = "ft";
 }
 
 AlertThresholds::AlertThresholds(const AlertThresholds& athr) {
-  detector_ = athr.detector_->copy();
+  detector_ = athr.isValid() ? athr.detector_->copy() : NULL;
   alerting_time_ = athr.alerting_time_;
   early_alerting_time_ = athr.early_alerting_time_;
   region_ = athr.region_;
@@ -44,6 +50,7 @@ AlertThresholds::AlertThresholds(const AlertThresholds& athr) {
   spread_gs_ = athr.spread_gs_;
   spread_vs_ = athr.spread_vs_;
   spread_alt_ = athr.spread_alt_;
+  units_ = athr.units_;
 }
 
 AlertThresholds::AlertThresholds() {
@@ -55,6 +62,12 @@ AlertThresholds::AlertThresholds() {
   spread_gs_ = 0;
   spread_vs_ = 0;
   spread_alt_ = 0;
+  units_["alerting_time"] = "s";
+  units_["early_alerting_time"] = "s";
+  units_["spread_trk"] = "deg";
+  units_["spread_gs"] = "m/s";
+  units_["spread_vs"] = "m/s";
+  units_["spread_alt"] = "m";
 }
 
 const AlertThresholds AlertThresholds::INVALID = AlertThresholds();
@@ -69,7 +82,7 @@ AlertThresholds::~AlertThresholds() {
 
 AlertThresholds& AlertThresholds::operator=(const AlertThresholds& athr) {
   delete detector_;
-  detector_ = athr.detector_->copy();
+  detector_ = athr.isValid() ? athr.detector_->copy() : NULL;
   alerting_time_ = athr.alerting_time_;
   early_alerting_time_ = athr.early_alerting_time_;
   region_ = athr.region_;
@@ -77,6 +90,7 @@ AlertThresholds& AlertThresholds::operator=(const AlertThresholds& athr) {
   spread_gs_ = athr.spread_gs_;
   spread_vs_ = athr.spread_vs_;
   spread_alt_ = athr.spread_alt_;
+  units_ = athr.units_;
   return *this;
 }
 
@@ -92,7 +106,7 @@ Detection3D* AlertThresholds::getDetectorRef() const {
  */
 void AlertThresholds::setDetector(const Detection3D* det) {
   delete detector_;
-  detector_ = det->copy();
+  detector_ = det != NULL ? det->copy() : NULL;
 }
 
 /**
@@ -103,10 +117,25 @@ double AlertThresholds::getAlertingTime() const {
 }
 
 /**
+ * Return alerting time in specified units.
+ */
+double AlertThresholds::getAlertingTime(const std::string& u) const {
+  return Units::to(u,alerting_time_);
+}
+
+/**
  * Set alerting time in seconds. Alerting time is non-negative number.
  */
 void AlertThresholds::setAlertingTime(double val) {
   alerting_time_ = std::abs(val);
+}
+
+/**
+ * Set alerting time in specified units. Alerting time is non-negative number.
+ */
+void AlertThresholds::setAlertingTime(double t, const std::string& u) {
+  setAlertingTime(Units::from(u,t));
+  units_["alerting_time"] = u;
 }
 
 /**
@@ -117,10 +146,25 @@ double AlertThresholds::getEarlyAlertingTime() const {
 }
 
 /**
+ * Return early alerting time in specified units.
+ */
+double AlertThresholds::getEarlyAlertingTime(const std::string& u) const {
+  return Units::to(u,early_alerting_time_);
+}
+
+/**
  * Set early alerting time in seconds. Early alerting time is a positive number >= alerting time
  */
 void AlertThresholds::setEarlyAlertingTime(double t) {
   early_alerting_time_ = std::abs(t);
+}
+
+/**
+ * Set early alerting time in specified units. Early alerting time is a positive number >= alerting time
+ */
+void AlertThresholds::setEarlyAlertingTime(double t, const std::string& u) {
+  setEarlyAlertingTime(Units::from(u,t));
+  units_["early_alerting_time"] = u;
 }
 
 /**
@@ -148,7 +192,7 @@ double AlertThresholds::getTrackSpread() const {
  * Get track spread in given units [u]. Spread is relative to ownship's track
  */
 double AlertThresholds::getTrackSpread(const std::string& u) const {
-  return Units::to(u,getTrackSpread());
+  return Units::to(u,spread_trk_);
 }
 
 /**
@@ -165,6 +209,7 @@ void AlertThresholds::setTrackSpread(double spread) {
  */
 void AlertThresholds::setTrackSpread(double spread, const std::string& u) {
   setTrackSpread(Units::from(u,spread));
+  units_["spread_trk"] = u;
 }
 
 /**
@@ -178,7 +223,7 @@ double AlertThresholds::getGroundSpeedSpread() const {
  * Get ground speed spread in given units. Spread is relative to ownship's ground speed
  */
 double AlertThresholds::getGroundSpeedSpread(const std::string& u) const {
-  return Units::to(u,getGroundSpeedSpread());
+  return Units::to(u,spread_gs_);
 }
 
 /**
@@ -195,6 +240,7 @@ void AlertThresholds::setGroundSpeedSpread(double spread) {
  */
 void AlertThresholds::setGroundSpeedSpread(double spread, const std::string& u) {
   setGroundSpeedSpread(Units::from(u,spread));
+  units_["spread_gs"] = u;
 }
 
 /**
@@ -208,7 +254,7 @@ double AlertThresholds::getVerticalSpeedSpread() const {
  * Get vertical speed spread in given units. Spread is relative to ownship's vertical speed
  */
 double AlertThresholds::getVerticalSpeedSpread(const std::string& u) const {
-  return Units::to(u,getVerticalSpeedSpread());
+  return Units::to(u,spread_vs_);
 }
 
 /**
@@ -225,6 +271,7 @@ void AlertThresholds::setVerticalSpeedSpread(double spread) {
  */
 void AlertThresholds::setVerticalSpeedSpread(double spread, const std::string& u) {
   setVerticalSpeedSpread(Units::from(u,spread));
+  units_["spread_vs"] = u;
 }
 
 /**
@@ -238,7 +285,7 @@ double AlertThresholds::getAltitudeSpread() const {
  * Get altitude spread in given units. Spread is relative to ownship's altitude
  */
 double AlertThresholds::getAltitudeSpread(const std::string& u) const {
-  return Units::to(u,getAltitudeSpread());
+  return Units::to(u,spread_alt_);
 }
 
 /**
@@ -255,21 +302,22 @@ void AlertThresholds::setAltitudeSpread(double spread) {
  */
 void AlertThresholds::setAltitudeSpread(double spread, const std::string& u) {
   setAltitudeSpread(Units::from(u,spread));
+  units_["spread_alt"] = u;
 }
 
 std::string AlertThresholds::toString() const {
-  return detector_->toString()+", Alerting Time: "+Fm1(alerting_time_)+
-      " [s], Early Alerting Time: "+Fm1(early_alerting_time_)+
-      " [s], Region: "+BandsRegion::to_string(region_)+
-      ", Track Spread: "+Fm1(Units::to("deg",spread_trk_))+
-      " [deg] , Ground Speed Spread: "+Fm1(Units::to("knot",spread_gs_))+
-      " [knot], Vertical Speed Spread: "+Fm1(Units::to("fpm",spread_vs_))+
-      " [fpm], Altitude Spread: "+Fm1(Units::to("ft",spread_alt_))+
-      " [ft]";
+  return  (detector_ == NULL ? "INVALID_DETECTOR" : detector_->toString())+
+      ", alerting_time = "+Units::str(getUnits("alerting_time"),alerting_time_)+
+      ", early_alerting_time = "+Units::str(getUnits("early_alerting_time"),early_alerting_time_)+
+      ", region = "+BandsRegion::to_string(region_)+
+      ", spread_trk = "+Units::str(getUnits("spread_trk"),spread_trk_)+
+      ", spread_gs = "+Units::str(getUnits("spread_gs"),spread_gs_)+
+      ", spread_vs = "+Units::str(getUnits("spread_vs"),spread_vs_)+
+      ", spread_alt = "+Units::str(getUnits("spread_alt"),spread_alt_);
 }
 
 std::string AlertThresholds:: toPVS(int prec) const {
-  return "(# wcv:= "+detector_->toPVS(prec)+
+  return "(# wcv:= "+(detector_ == NULL ? "INVALID_DETECTOR" :detector_->toPVS(prec))+
       ", alerting_time:= "+Fm1(alerting_time_)+
       ", early_alerting_time:= "+Fm1(early_alerting_time_)+
       ", region:= "+BandsRegion::to_string(region_)+
@@ -278,6 +326,63 @@ std::string AlertThresholds:: toPVS(int prec) const {
       ", spread_vs:= ("+FmPrecision(spread_vs_,prec)+","+FmPrecision(spread_vs_,prec)+")"+
       ", spread_alt:= ("+FmPrecision(spread_alt_,prec)+","+FmPrecision(spread_alt_,prec)+")"+
       " #)";
+}
+
+ParameterData AlertThresholds::getParameters() const {
+  ParameterData p;
+  updateParameterData(p);
+  return p;
+}
+
+void AlertThresholds::updateParameterData(ParameterData& p) const {
+  p.set("region",BandsRegion::to_string(region_));
+  if (detector_ != NULL) {
+    p.set("detector",detector_->getIdentifier());
+  }
+  p.setInternal("alerting_time",alerting_time_,getUnits("alerting_time"));
+  p.setInternal("early_alerting_time",early_alerting_time_,getUnits("early_alerting_time"));
+  p.setInternal("spread_trk",spread_trk_,getUnits("spread_trk"));
+  p.setInternal("spread_gs",spread_gs_,getUnits("spread_gs"));
+  p.setInternal("spread_vs",spread_vs_,getUnits("spread_vs"));
+  p.setInternal("spread_alt",spread_alt_,getUnits("spread_alt"));
+}
+
+void AlertThresholds::setParameters(const ParameterData& p) {
+  if (p.contains("region")) {
+    setRegion(BandsRegion::valueOf(p.getString("region")));
+  }
+  if (p.contains("alerting_time")) {
+    setAlertingTime(p.getValue("alerting_time"));
+    units_["alerting_time"] = p.getUnit("alerting_time");
+  }
+  if (p.contains("early_alerting_time")) {
+    setEarlyAlertingTime(p.getValue("early_alerting_time"));
+    units_["early_alerting_time"] = p.getUnit("early_alerting_time");
+  }
+  if (p.contains("spread_trk")) {
+    setTrackSpread(p.getValue("spread_trk"));
+    units_["spread_trk"] = p.getUnit("spread_trk");
+  }
+  if (p.contains("spread_gs")) {
+    setGroundSpeedSpread(p.getValue("spread_gs"));
+    units_["spread_gs"] = p.getUnit("spread_gs");
+  }
+  if (p.contains("spread_vs")) {
+    setVerticalSpeedSpread(p.getValue("spread_vs"));
+    units_["spread_vs"] = p.getUnit("spread_vs");
+  }
+  if (p.contains("spread_alt")) {
+    setAltitudeSpread(p.getValue("spread_alt"));
+    units_["spread_alt"] = p.getUnit("spread_alt");
+  }
+}
+
+std::string AlertThresholds::getUnits(const std::string& key) const {
+  std::map<std::string,std::string>::const_iterator got = units_.find(key);
+  if (got == units_.end()) {
+    return "unspecified";
+  }
+  return got->second;
 }
 
 }

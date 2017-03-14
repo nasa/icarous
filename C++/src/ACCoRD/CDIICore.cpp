@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -258,7 +258,7 @@ bool CDIICore::detectionXYZ(const Plan& ownship, const Plan& traffic, double B, 
     if (i <= end || cont) {
       Vect3 so = ownship.point(i).point();
       Velocity vo = ownship.initialVelocity(i, linear);
-      double t_base = ownship.getTime(i);
+      double t_base = ownship.time(i);
       // GEH : special case!!!
       if (t_base < B) {
           so = so.AddScal(B-t_base, vo);
@@ -268,7 +268,7 @@ bool CDIICore::detectionXYZ(const Plan& ownship, const Plan& traffic, double B, 
       if (i == ownship.size() - 1) {
         nextTime = 0.0;
       } else {
-        nextTime = ownship.getTime(i + 1);
+        nextTime = ownship.time(i + 1);
       }
       double HT = nextTime - t_base;
       double BT = Util::max(0.0,B - t_base); // Math.max(0,B-(t_base - t0));
@@ -338,7 +338,7 @@ bool CDIICore::detectionLL(const Plan& ownship, const Plan& traffic, double B, d
       //double lato = lla.latitudeInternal(); //Units.from(Units.deg, ownship.getLatitude(i));
       //double lono = lla.longitudeInternal(); //Units.from(Units.deg, ownship.getLongitude(i));
       //double alto = lla.altitudeInternal(); //Units.from(Units.ft, ownship.getAltitude(i));
-      double t_base = ownship.getTime(i);
+      double t_base = ownship.time(i);
       // GEH : special case!!!
       if (t_base < B) {
           llo = ownship.position(B,linear).lla();
@@ -349,7 +349,7 @@ bool CDIICore::detectionLL(const Plan& ownship, const Plan& traffic, double B, d
       if (i == ownship.size() - 1) {
         nextTime = 0.0;
       } else {
-        nextTime = ownship.getTime(i + 1);  // ownship.getTime(ownship.nextReal(i));  // stop on virtual pts?
+        nextTime = ownship.time(i + 1);  // ownship.getTime(ownship.nextReal(i));  // stop on virtual pts?
       }
       double HT = nextTime - t_base;
       double BT = Util::max(0.0,B - t_base); // Math.max(0,B-(t_base - t0));

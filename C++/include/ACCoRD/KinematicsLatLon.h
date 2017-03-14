@@ -1,7 +1,7 @@
 /*
  * KinematicsLatLon.h
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -53,11 +53,11 @@ public:
 	 */
 	static std::pair<LatLonAlt,Velocity> linear(std::pair<LatLonAlt,Velocity> sv0, double t);
 
-		/**
+	/**
 	 * Determine the earth-surface radius of a turn given the ground speed and omega (angular velocity).
 	 * @param speed
 	 * @param omega
-	 * @return
+	 * @return turn radius
 	 */
 	static double turnRadiusByRate(double speed, double omega);
 
@@ -114,7 +114,7 @@ public:
 	 * @param d           distance into turn (sign indicates direction)
 	 * @return Position/Velocity after turning distance d
 	 */
-	static std::pair<LatLonAlt,Velocity> turnByDist(const LatLonAlt& so, const LatLonAlt& center, int dir, double d, double gsAtd);
+	static std::pair<LatLonAlt,Velocity> turnByDist2D(const LatLonAlt& so, const LatLonAlt& center, int dir, double d, double gsAtd);
 
 	/**
 	 * Position/Velocity after turning t time units right or left with radius R in the direction turnRight
@@ -198,9 +198,47 @@ public:
 	 */
 	static std::pair<LatLonAlt,Velocity> turnUntilTimeRadius(const std::pair<LatLonAlt,Velocity>& svo, double t, double turnTime, double R, bool turnRight);
 
+	/** 
+	 * center of turn
+	 * @param s0 point on turn
+	 * @param trk track at point
+	 * @param radius radius of turn
+	 * @param dir +1 clockwise, -1 counterclockwise
+	 * @return turn center
+	 */
 	static LatLonAlt center(const LatLonAlt& s0, double trk, double radius, int dir);
+	  /**
+	   * center of turn
+	   * @param s0 point on turn
+	   * @param v0 velocity at point
+	   * @param omega turn rate
+	   * @return turn center
+	   */
 	static LatLonAlt center(const LatLonAlt& s0, const Velocity& v0, double omega);
+	/**
+	 * EXPERMENTAL
+	 * Calculate when during the turn we will be closest to the given point.
+	 * @param s0 turn start position
+	 * @param v0 turn start velocity
+	 * @param omega rate of turn (+ = right, - = left)
+	 * @param x point of interest
+	 * @param endTime time at which turn finishes.  If <= 0, assume a full turn is allowed.
+	 * @return time on turn when we are closest to the given point x (in seconds), or -1 if we are precisely at the turn's center
+	 * This will be bounded by [0,endTime]
+	 */
 	static double closestTimeOnTurn(const LatLonAlt& s0, const Velocity& v0, double omega, const LatLonAlt& x, double endTime);
+	/**
+	 * EXPERMENTAL
+	 * Calculate when during the turn we will be closest to the given point.
+	 * @param s0 turn start position
+	 * @param v0 turn start velocity
+	 * @param R radius
+	 * @param dir direction of turn
+	 * @param x point of interest
+	 * @param maxDist time at which turn finishes.  If <= 0, assume a full turn is allowed.
+	 * @return dist on turn when we are closest to the given point x, or -1 if we are precisely at the turn's center
+	 * This will be bounded by [0,maxDist]
+	 */
 	static double closestDistOnTurn(const LatLonAlt& s0, const Velocity& v0, double R, int dir, const LatLonAlt& x, double maxDist);
 
 

@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -15,6 +15,7 @@
 
 #include <string>
 #include <vector>
+#include "Util.h"
 
 namespace larcfm {
 
@@ -80,6 +81,8 @@ public:
 	bool inOO(double x) const;
 	/** Is the element (almost) in this interval, where close/open conditions are given as parameters */
 	bool almost_in(double x, bool lb_close, bool ub_close) const;
+	/** Is the element (almost) in this interval, where close/open conditions are given as parameters */
+	bool almost_in(double x, bool lb_close, bool ub_close, INT64FM maxUlps) const;
 
 	/**
 	 * Does the given Interval overlap with this Interval.  Intervals that only

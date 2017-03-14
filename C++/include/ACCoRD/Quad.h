@@ -6,7 +6,7 @@
  *
  * a four element tuple
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -18,7 +18,13 @@
 
 namespace larcfm {
 
-/** A 4-dimensional tuple */
+/** A 4-dimensional tuple 
+ * 
+ * @param <T1> generic type, first element
+ * @param <T2> generic type, second element
+ * @param <T3> generic type, third element
+ * @param <T4> generic type, fourth element
+ */
 template <typename T1, typename T2, typename T3, typename T4> 
 class Quad {
 
@@ -35,22 +41,30 @@ public:
   Quad(const T1& first, const T2& second, const T3& third, const T4& fourth) : first(first), second(second), third(third), fourth(fourth) {
   }
  
-  /** Return the first element of this Quad */
+    /** Return the first element of this Quad 
+     * @return first element
+     * */
   T1 getFirst() const {
     return first;
     }
  
-  /** Return the second element of this Quad */
+    /** Return the second element of this Quad 
+     * @return second element
+     * */
   T2 getSecond() const {
     return second;
     }
  
-  /** Return the third element of this Quad */
+    /** Return the third element of this Quad 
+     * @return third element
+     * */
   T3 getThird() const {
     return third;
   }
  
-  /** Return the fourth element of this Quad */
+    /** Return the fourth element of this Quad 
+     * @return forth element
+     * */
   T4 getFourth() const {
     return fourth;
   }

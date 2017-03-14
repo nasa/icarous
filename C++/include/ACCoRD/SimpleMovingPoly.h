@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -92,10 +92,10 @@ class SimpleMovingPoly {
 	SimpleMovingPoly linear(double dt) const;
 
 	  /**
-	   * This will return a moving polygon that starts at point i and ends at point i+1
-	   * @param i
-	   * @param proj
-	   * @return
+	   * This will return a moving polygon that starts at a time
+	   * @param time start time
+	   * @param proj relevant projection
+	   * @return moving polygon
 	   */
 	MovingPolygon3D getMovingPolygon(double time, const EuclideanProjection& proj) const;
 
@@ -111,6 +111,8 @@ class SimpleMovingPoly {
 //	std::vector<std::string> toStringList(int vertex, bool trkgsvs, int precision) const;
 
 	std::string toString() const;
+
+	std::vector<std::string> toStringList(int vertex, bool trkgsvs, int precision) const;
 
 }; //class
 

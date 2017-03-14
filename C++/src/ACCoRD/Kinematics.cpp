@@ -7,7 +7,7 @@
  *           Anthony Narkawicz         NASA Langley Research Center
  *           Aaron Dutle               NASA Langley Research Center
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -227,7 +227,7 @@ Vect2 Kinematics::center(const Vect3& s0, const Velocity& v0, double omega) {
  * @param gsAt_d
  * @return Position/Velocity after t time
  */
-std::pair<Vect3,Velocity> Kinematics::turnByDist(const Vect3& so, const Vect3& center, int dir, double d, double gsAt_d) {
+std::pair<Vect3,Velocity> Kinematics::turnByDist2D(const Vect3& so, const Vect3& center, int dir, double d, double gsAt_d) {
 	//f.pln(" $$$$ turnByDist: so = "+so+" center = "+center);
     //double R = GreatCircle.distance(so, center);
     double R = so.distanceH(center);
@@ -237,7 +237,7 @@ std::pair<Vect3,Velocity> Kinematics::turnByDist(const Vect3& so, const Vect3& c
 	double trkFromCenter = Velocity::mkVel(center, so, 100.0).trk();
 	double nTrk = trkFromCenter + alpha;
 	//Vect3 sn = GreatCircle.linear_initial(center, nTrk, R);
-	Vect3 sn = center.linearByDist(nTrk, R);
+	Vect3 sn = center.linearByDist2D(nTrk, R);
 	//f.pln(" $$$$ turnByDist: sn = "+sn);
 	sn = sn.mkZ(0.0);
 	//double final_course = GreatCircle.final_course(center,sn);

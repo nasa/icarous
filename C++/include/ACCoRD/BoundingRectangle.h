@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -51,10 +51,14 @@ class BoundingRectangle {
 	BoundingRectangle();
 	
 	/** Create a bounding rectangle with the list of given points.
+	 * 
+	 * @param vertices list of vertices
 	 */
 	BoundingRectangle(const std::vector<Vect2>& vertices);
  
 	/** Copy a bounding rectangle from an existing bounding rectangle
+	 * 
+	 * @param br rectangle to copy
 	 */
 	BoundingRectangle(const BoundingRectangle& br);
 
@@ -65,8 +69,8 @@ class BoundingRectangle {
 
 	/**
 	 * Add a point to this bounding rectangle.
-	 * @param x
-	 * @param y
+	 * @param x x coordinate
+	 * @param y y coordinate
 	 */
 	void add(double x, double y);
 
@@ -80,16 +84,16 @@ class BoundingRectangle {
 	/**
 	 * Add a point to this bounding rectangle.
 	 * 
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @param z z coordinate
 	 */
 	void add(double x, double y, double z);
 
 	/**
 	 * Add a point to this bounding rectangle.
 	 * 
-	 * @param v
+	 * @param v vector
 	 */
 	void add(const Vect3& v);
 	
@@ -109,7 +113,7 @@ class BoundingRectangle {
 	 * Add a point to this bounding rectangle.
 	 * Note that when adding LatLonAlt points, great circle paths may fall outside the defined bounding rectangle!
 	 * 
-	 * @param lla
+	 * @param lla point
 	 */
 	void add(const LatLonAlt& lla);
 	
@@ -117,7 +121,7 @@ class BoundingRectangle {
 	 * Add a point to this bounding rectangle.
 	 * Note that when adding LatLonAlt points, great circle paths may fall outside the defined bounding rectangle!
 	 * 
-	 * @param p
+	 * @param p point
 	 */
 	void add(const Position& p);
 	
@@ -184,6 +188,9 @@ class BoundingRectangle {
 
 	/**
 	 * Return true if any point in rect is within buffer of any point in this bounding rectangle. Only two dimensions are used
+	 * 
+	 * @param rect    another rectangle
+	 * @param buffer  maximum distance and still considered an overlap
 	 * @return true, if the supplied BoundingRectangle intersects this one
 	 */
 	bool intersects(const BoundingRectangle& rect, double buffer) const;
@@ -220,12 +227,14 @@ class BoundingRectangle {
 	
 	/**
 	 * Return center vector value for this BoundingRectangle
+	 * @return center
 	 */
 	Vect3 centerVect() const;
 
 	/**
 	 * Return center Position for this BoundingRectangle.
 	 * If any LatLonAlt values were input to the BoundingRectangle, this will be a normalized (within [-pi,+pi]) LatLonAlt position.
+	 * @return center
 	 */
 	Position centerPos()  const;
 

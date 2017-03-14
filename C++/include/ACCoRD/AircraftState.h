@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -172,7 +172,7 @@ class AircraftState : public ErrorReporter {
      * Return the maximum number of elements that can be stored.  
      * This value is always greater or equal to size().  
      * There is deliberately no method setBufferSize() 
-     * @return
+     * @return maximum number of elements
      * */
     int getBufferSize() const;
 
@@ -184,7 +184,7 @@ class AircraftState : public ErrorReporter {
      * is returned if the time doesn't exist.
      * 
      * @param time
-     * @return
+     * @return an index
      */
     int find(double time) const;
     
@@ -217,7 +217,7 @@ class AircraftState : public ErrorReporter {
 	 * then a zero position and velocity are returned.
 	 * 
 	 * @param i
-	 * @return
+	 * @return position and velocity at index i
 	 */
 	StateVector get(int i);
 
@@ -225,7 +225,7 @@ class AircraftState : public ErrorReporter {
 	 * Return a Euclidean position and velocity for the latest time in this object.
 	 * The position and velocity are projected into a Euclidean frame by the
 	 * projection set by the setProjection() method.
-	 * @return
+	 * @return last position and velocity
 	 */
 	StateVector getLast();
 
@@ -251,7 +251,7 @@ class AircraftState : public ErrorReporter {
 	 * the latest time.  This method returns a negative time for an out of bounds index 
 	 * 
 	 * @param i
-	 * @return
+	 * @return time
 	 */
 	double time(int i) const;
 
@@ -260,7 +260,7 @@ class AircraftState : public ErrorReporter {
 	 * Note that this may not be synchronized with data from other aircraft!
 	 * It is generally better to use positionLinear(tm) for traffic aircraft. 
 	 * 
-	 * @return
+	 * @return last position
 	 */
 	Position positionLast() const;
 
@@ -269,18 +269,22 @@ class AircraftState : public ErrorReporter {
 	 * Note that this may not be synchronized with data from other aircraft!
 	 * It is generally better to use velocityBefore(tm) for traffic aircraft. 
 	 * 
-	 * @return
+	 * @return last velocity
 	 */
 	Velocity velocityLast() const;
 
 	/** 
 	 * The latest (i.e., last) time in this object.
+	 * @return last time
+	 * 
 	 */
 	double timeLast() const;
 	
 
 
-    /** remove oldest n entries */
+    /** remove oldest n entries 
+     * @param n 
+     * */
     void remove(int n);
 
     /** remove any data older than the given time */
@@ -371,8 +375,8 @@ class AircraftState : public ErrorReporter {
 	static bool closeEnough(Velocity v1, Velocity v2);
 
 	/** Last time when track rate was near zero
-	 *
-	 * @return
+	 * 
+	 * @return time
 	 */
 	double lastStraightTime() const;
 
@@ -386,7 +390,7 @@ class AircraftState : public ErrorReporter {
 	/** EXPERIMENTAL
 	 * returns time when track rate was near zero.  This method cannot return a value older than bufferSize. The companion
 	 * method lastStraightTime is not as limited.
-	 * @return
+	 * @return time
 	 */
 	double timeLastZeroTrackRate();
 

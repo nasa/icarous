@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -119,7 +119,16 @@ void IntervalSet::unions(const IntervalSet& n) {
  * This method uses "almost" inequalities to compute the addition.
  */
 void IntervalSet::almost_add(double l, double u) {
-	if (Util::almost_less(l,u)) {
+	almost_add(l,u,PRECISION_DEFAULT);
+}
+
+/**
+ * Add the given interval into this set. If this interval overlaps any
+ * interval in the set, then the intervals are merged.
+ * This method uses "almost" inequalities to compute the addition.
+ */
+void IntervalSet::almost_add(double l, double u, INT64FM maxUlps) {
+	if (Util::almost_less(l,u,maxUlps)) {
 		IntervalSet m = IntervalSet(*this);
 		clear();
 		bool go = false;
@@ -127,11 +136,11 @@ void IntervalSet::almost_add(double l, double u) {
 			Interval ii = m.getInterval(i);
 			if (go) {
 				unions(ii);
-			} else if ((Util::almost_leq(ii.low,l) && Util::almost_leq(l,ii.up)) ||
-					(Util::almost_leq(l,ii.low) && Util::almost_leq(ii.low,u))) {
+			} else if ((Util::almost_leq(ii.low,l,maxUlps) && Util::almost_leq(l,ii.up,maxUlps)) ||
+					(Util::almost_leq(l,ii.low,maxUlps) && Util::almost_leq(ii.low,u,maxUlps))) {
 				l = Util::min(ii.low,l);
 				u = Util::max(ii.up,u);
-			} else if (Util::almost_less(u,ii.low)) {
+			} else if (Util::almost_less(u,ii.low,maxUlps)) {
 				unions(Interval(l,u));
 				unions(ii);
 				go = true;
@@ -150,6 +159,14 @@ void IntervalSet::almost_add(double l, double u) {
  * unmodified. This method uses "almost" inequalities to compute the intersection.
  */
 void IntervalSet::almost_intersect(const IntervalSet& n) {
+	almost_intersect(n,PRECISION_DEFAULT);
+}
+
+/**
+ * Intersect the given IntervalSet into the current IntervalSet. Set n is
+ * unmodified. This method uses "almost" inequalities to compute the intersection.
+ */
+void IntervalSet::almost_intersect(const IntervalSet& n, INT64FM maxUlps) {
 	IntervalSet m = IntervalSet(*this);
 	clear();
 	if (!m.isEmpty() && !n.isEmpty()) {
@@ -158,27 +175,27 @@ void IntervalSet::almost_intersect(const IntervalSet& n) {
 		while (i < m.size() && j < n.size()) {
 			Interval ii = m.getInterval(i);
 			Interval jj = n.getInterval(j);
-			if (Util::almost_leq(jj.low,ii.low) &&
-					Util::almost_less(ii.low,jj.up)) {
-				if (Util::almost_leq(ii.up,jj.up)) {
+			if (Util::almost_leq(jj.low,ii.low,maxUlps) &&
+					Util::almost_less(ii.low,jj.up,maxUlps)) {
+				if (Util::almost_leq(ii.up,jj.up,maxUlps)) {
 					unions(ii);
 					++i;
 				} else {
 					unions(Interval(ii.low,jj.up));
 					++j;
 				}
-			} else if (Util::almost_leq(ii.low,jj.low) &&
-					Util::almost_less(jj.low,ii.up)) {
-				if (Util::almost_leq(jj.up,ii.up)) {
+			} else if (Util::almost_leq(ii.low,jj.low,maxUlps) &&
+					Util::almost_less(jj.low,ii.up,maxUlps)) {
+				if (Util::almost_leq(jj.up,ii.up,maxUlps)) {
 					unions(jj);
 					++j;
 				} else {
 					unions(Interval(jj.low,ii.up));
 					++i;
 				}
-			} else if (Util::almost_leq(ii.up,jj.low)){
+			} else if (Util::almost_leq(ii.up,jj.low,maxUlps)){
 				++i;
-			} else if (Util::almost_leq(jj.up,ii.low)){
+			} else if (Util::almost_leq(jj.up,ii.low,maxUlps)){
 				++j;
 			}
 		}

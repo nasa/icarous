@@ -786,7 +786,7 @@ Plan RRT_t::GetPlan(){
 		}
 
 		NavPoint np(wp,ETA);
-		newRoute.add(np);
+		newRoute.addNavPoint(np);
 		count++;
 	}
 

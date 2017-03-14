@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -7,11 +7,13 @@
 
 #include "Debug.h"
 #include "string_util.h"
+#include <stdlib.h>
 #include <string>
 #include <iostream>
-//#ifdef __GLIBC__
-//#include <execinfo.h>
-//#endif
+
+#ifdef __GNUC__
+#include <execinfo.h>
+#endif
 
 
 namespace larcfm {
@@ -39,6 +41,25 @@ namespace larcfm {
 	  }
   }
   
+  void Debug::halt() {
+#ifdef __GNUC__
+	  cout << "Debug::halt() called.  Compiling with the DEBUG=-g option _may_ make outputs more readable" << endl;
+	  int sz = 10;
+	  size_t size;
+	  void *array[sz];
+	  size = backtrace(array, sz);
+	  char **strings = backtrace_symbols(array,size);
+	  for (int i = 0; i < sz; i++) {
+		  cout << strings[i] << endl;
+	  }
+#else
+	  cout << "Debug::halt() called.  Backtrace is a glibc (gcc) function" << endl;
+#endif
+	  exit(1);
+ }
+
+
+
 //  void Debug::pln(const string& msg)
 //  {
 //#ifdef __GLIBC__

@@ -8,11 +8,9 @@ package gov.nasa.larcfm.ACCoRD;
 
 import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.Interval;
-import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect2;
 import gov.nasa.larcfm.Util.Vect3;
-import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.f;
 
 import java.util.ArrayList;
@@ -277,11 +275,14 @@ public class KinematicBandsCore {
 		s+="NAME sx sy sz vx vy vz time\n";
 		s+="[none] [m] [m] [m] [m/s] [m/s] [m/s] [s]\n";
 		s+=ownship.getId()+", "+ownship.get_s().formatXYZ(precision,"",", ","")+
-				", "+ownship.get_v().formatXYZ(precision,"",", ","")+", 0\n";
+				", "+ownship.get_v().formatXYZ(precision,"",", ","")+", "+
+				f.FmPrecision(ownship.getTime(),precision)+"\n";
 		for (int i = 0; i < traffic.size(); i++) {
 			s+=traffic.get(i).getId()+", "+traffic.get(i).get_s().formatXYZ(precision,"",", ","")+
-					", "+traffic.get(i).get_v().formatXYZ(precision,"",", ","")+", 0\n";
+					", "+traffic.get(i).get_v().formatXYZ(precision,"",", ","")+
+					", "+f.FmPrecision(traffic.get(i).getTime(),precision)+"\n";
 		}
+		s+="##\n";
 		return s;
 	}
 

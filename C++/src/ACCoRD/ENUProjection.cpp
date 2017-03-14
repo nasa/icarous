@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -41,8 +41,9 @@ namespace larcfm {
     // convert latitude to 0-PI
     double theta = Pi/2 - lat;
     double phi = Pi - lon;
-    double x = r*std::sin(theta)*std::cos(phi);
-    double y = r*std::sin(theta)*std::sin(phi);
+    double rsintheta = r*std::sin(theta);
+    double x = rsintheta*std::cos(phi);
+    double y = rsintheta*std::sin(phi);
     double z = r*std::cos(theta);
     return Vect3(x,y,z);
   }

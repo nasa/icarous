@@ -5,7 +5,7 @@
  *
  * Contact:  Cesar Munoz               NASA Langley Research Center
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -154,7 +154,7 @@ void Daidalus::setWindField(const Velocity& wind) {
   if (lastTrafficIndex() >= 0) {
     Velocity delta_wind = wind_vector_.Sub(wind);
     ownship_ = TrafficState::makeOwnship(ownship_.getId(),ownship_.getPosition(),
-        ownship_.getVelocity().Add(delta_wind));
+        ownship_.getVelocity().Add(delta_wind),ownship_.getTime());
     for (TrafficState::nat i=0; i < traffic_.size(); ++i) {
       TrafficState ac = traffic_[i];
       traffic_[i] = ownship_.makeIntruder(ac.getId(),ac.getPosition(),
@@ -169,7 +169,7 @@ void Daidalus::setWindField(const Velocity& wind) {
  */
 void Daidalus::setOwnshipState(const std::string& id, const Position& pos, const Velocity& vel, double time) {
   traffic_.clear();
-  ownship_ = TrafficState::makeOwnship(id,pos,vel.Sub(wind_vector_));
+  ownship_ = TrafficState::makeOwnship(id,pos,vel.Sub(wind_vector_),time);
   current_time_ = time;
 }
 
@@ -237,14 +237,14 @@ int Daidalus::addTrafficState(const TrafficState& ac) {
 void Daidalus::resetOwnship(int ac_idx) {
   if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
     int ac = ac_idx-1;
-    TrafficState new_own = TrafficState::makeOwnship(traffic_[ac].getId(),traffic_[ac].getPosition(),traffic_[ac].getVelocity());
-    TrafficState old_own = new_own.makeIntruder(ownship_.getId(),ownship_.getPosition(),ownship_.getVelocity());
+    TrafficState new_own = TrafficState::makeOwnship(traffic_[ac]);
+    TrafficState old_own = new_own.makeIntruder(ownship_);
     ownship_ = new_own;
     for (TrafficState::nat i = 0; i < traffic_.size(); ++i) {
       if (i == (TrafficState::nat)ac) {
         traffic_[i] = old_own;
       } else {
-        traffic_[i] = ownship_.makeIntruder(traffic_[i].getId(),traffic_[i].getPosition(),traffic_[i].getVelocity());
+        traffic_[i] = ownship_.makeIntruder(traffic_[i]);
       }
     }
   } else {
@@ -290,7 +290,7 @@ void Daidalus::setCurrentTime(double time) {
     double dt = time-current_time_;
     Velocity vo = ownship_.getVelocity().Add(wind_vector_); // Original ground velocity
     Position po = ownship_.getPosition().linear(vo,dt);
-    ownship_ = TrafficState::makeOwnship(ownship_.getId(),po,ownship_.getVelocity());
+    ownship_ = TrafficState::makeOwnship(ownship_.getId(),po,ownship_.getVelocity(),time);
     for (TrafficState::nat i=0; i < traffic_.size(); ++i) {
       TrafficState ac = traffic_[i];
       Velocity vi = ac.getVelocity().Add(wind_vector_); // Original ground velocity
@@ -337,7 +337,7 @@ int Daidalus::alerting(int ac_idx) {
 
 /**
  * Detects conflict with aircraft at index ac_idx for given alert level.
- * Conflict data provides time to first violation and time to last violation
+ * Conflict data provides time to violation and time to end of violation
  * within lookahead time.
  */
 ConflictData Daidalus::detection(int ac_idx, int alert_level) const {
@@ -354,7 +354,7 @@ ConflictData Daidalus::detection(int ac_idx, int alert_level) const {
 
 /**
  * Detects conflict with aircraft at index ac_idx for conflict alert level.
- * Conflict data provides time to first violation and time to last violation
+ * Conflict data provides time to violation and time to end of violation
  * within lookahead time.
  */
 ConflictData Daidalus::detection(int ac_idx) const {
@@ -363,8 +363,8 @@ ConflictData Daidalus::detection(int ac_idx) const {
 
 /**
  * @return time to violation, in seconds, between ownship and aircraft at index ac_idx, for the
- * lookahead time. The returned time is relative to current time. NaN means no
- * conflict within lookahead time or aircraft index is out of range.
+ * lookahead time. The returned time is relative to current time. PINFINITY means no
+ * conflict within lookahead time. NaN means that aircraft index is out of range.
  */
 double Daidalus::timeToViolation(int ac_idx) const {
   if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
@@ -372,11 +372,12 @@ double Daidalus::timeToViolation(int ac_idx) const {
     if (det.conflict()) {
       return det.getTimeIn();
     }
+    return PINFINITY;
   }
   else {
     error.addError("timeToViolation: aircraft index "+Fmi(ac_idx)+" is out of bounds");
+    return NaN;
   }
-  return NaN;
 }
 
 /**
@@ -576,19 +577,33 @@ std::string Daidalus::aircraftListToPVS(int prec) const {
   return ownship_.listToPVSAircraftList(traffic_,prec);
 }
 
+std::string Daidalus::outputStringAircraftStates() const {
+  std::string ualt = parameters.getUnits("alt_step");
+  std::string ugs = parameters.getUnits("gs_step");
+  std::string uvs = parameters.getUnits("vs_step");
+  std::string uxy = "m";
+  if (Units::isCompatible(ugs,"knot")) {
+    uxy = "nmi";
+  } else if (Units::isCompatible(ugs,"fpm")) {
+    uxy = "ft";
+  } else if (Units::isCompatible(ugs,"kph")) {
+    uxy = "km";
+  }
+  return ownship_.formattedTraffic(traffic_,uxy,ualt,ugs,uvs);
+}
+
 std::string Daidalus::toString() const {
   std::string s = "Daidalus Object\n";
-  s += "Alertor:\n"+parameters.alertor.toString();
-  s += "Parameters:\n"+parameters.toString();
-  if (traffic_.size() > 0) {
-    s += "###\nAircraft:\n"+ownship_.formattedTraffic(traffic_,current_time_);
+  s += parameters.toString();
+  if (ownship_.isValid()) {
+    s += "###\nAircraft States:\n"+outputStringAircraftStates();
   }
   return s;
 }
 
 std::string Daidalus::release() {
   return "DAIDALUS++ V-"+KinematicBandsParameters::VERSION+
-      "-FormalATM-"+Constants::version+" (Nov-18-2016)";
+      "-FormalATM-"+Constants::version+" (March-18-2017)";
 }
 
 }

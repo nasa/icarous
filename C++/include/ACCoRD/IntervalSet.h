@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -16,6 +16,7 @@
 #include "Interval.h"
 #include "ErrorReporter.h"
 #include "ErrorLog.h"
+#include "Util.h"
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -38,7 +39,7 @@ namespace larcfm {
  * The intervals are numbered 0 to size()-1.  To cycle through the
  * intervals one may:<p>
  *
- * <code>
+ * <pre><code>
  * IntervalSet set;
  *
  * for( int i = 0; i &lt; set.size(); i++) {
@@ -46,7 +47,7 @@ namespace larcfm {
  *   r = set.getInterval(i);
  *   ... work with r ...
  * }
- * </code>
+ * </code></pre><p>
  *
  * The current implementation does not allocate any dynamic (heap) memory.
  */
@@ -59,7 +60,9 @@ public:
 public:
 	/** Construct an empty IntervalSet */
 	IntervalSet();
-	/** Copy the IntervalSet into a new set */ 
+	/** Copy the IntervalSet into a new set 
+	 * @param l IntervalSet to copy
+	 * */ 
 	IntervalSet(const IntervalSet& l);
 
 	/** Build an IntervalSet from the given vector */
@@ -80,12 +83,18 @@ public:
 	 * @param i the index of the desired Interval.
 	 */
 	const Interval& getInterval(int i) const;
-	/** Return the total number of intervals */
+	/** Return the total number of intervals 
+	 * @return number of intervals
+	 * */
 	int size() const;
 
 	bool isEmpty() const;
 
-	/** Is the given value a member of this set? */
+	/** Is the given value a member of this set? 
+	 * 
+	 * @param x value
+	 * @return true, if in set
+	 * */
 	bool in(double x) const;
 
 
@@ -104,39 +113,73 @@ public:
 
 	/**
 	 * Add the given interval into this set. If this interval overlaps any
-	 * interval in the set, then the intervals are merged.
+	 * interval in the set, then the intervals are merged. 
 	 * This method uses "almost" inequalities to compute the addition.
+	 * 
+	 * @param l lower bound of interval
+	 * @param u upper bound of interval
 	 */
 	void almost_add(double l, double u);
 
 	/**
+	 * Add the given interval into this set. If this interval overlaps any
+	 * interval in the set, then the intervals are merged. 
+	 * This method uses "almost" inequalities to compute the addition.
+	 * 
+	 * @param l lower bound of interval
+	 * @param u upper bound of interval
+	 * @param maxUlps units of least precision
+	 */
+	void almost_add(double l, double u, INT64FM maxUlps);
+
+	/**
 	 * Intersect the given IntervalSet into the current IntervalSet. Set n is
 	 * unmodified. This method uses "almost" inequalities to compute the intersection.
+	 * 
+	 * @param n set
 	 */
 	void almost_intersect(const IntervalSet& n);
+
+	/**
+	 * Intersect the given IntervalSet into the current IntervalSet. Set n is
+	 * unmodified. This method uses "almost" inequalities to compute the intersection.
+	 * 
+	 * @param n set
+	 * @param maxUlps units of least precision
+	 */
+	void almost_intersect(const IntervalSet& n, INT64FM maxUlps);
 
 	/**
 	 * Remove the given open interval from the given set of closed intervals.
 	 * Note: the semantics of this method mean that [1,2] - (1,2) = [1,1] and
 	 * [2,2]. To get rid of the extraneous singletons use methods like
 	 * removeSingle() or sweepSingle().
+	 * 
+	 * @param rn interval
 	 */
 	void diff(const Interval& rn);
-	/**
+	/** 
 	 * Perform a set difference between these two IntervalSets.  The
 	 * parameter is interpreted as a set of open intervals.
+	 * 
+	 * @param n set
 	 */
 	void diff(const IntervalSet& n);
 
 	/**
 	 * Remove the single-valued interval x from this IntervalSet.  If x is
 	 * not a single-valued interval (of width or less), then this method does nothing.
+	 * 
+	 * @param x value
+	 * @param width space around value
 	 */
 	void removeSingle(double x, double width);
 
 	/**
 	 * Remove the single-valued interval x from this IntervalSet.  If x is
 	 * not a single-valued interval, then this method does nothing.
+	 * 
+	 * @param x value
 	 */
 	void removeSingle(double x);
 
@@ -147,11 +190,15 @@ public:
 
 	/**
 	 * Remove all the single-valued intervals (of width or less) from this IntervalSet.
+	 * 
+	 * @param width space around single values
 	 */
 	void sweepSingle(double width);
 
 	/**
 	 * Remove all breaks of less than width from this IntervalSet
+	 * 
+	 * @param width max open space to remove
 	 */
 	void sweepBreaks(double width);
 

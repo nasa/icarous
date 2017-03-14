@@ -30,22 +30,27 @@ package gov.nasa.larcfm.Util;
  */
 public final class AziEquiProjection implements EuclideanProjection {
 
-
-//    private double projAlt;
-	
     private final double projAlt;
  	private final Vect3 ref;
  	private final LatLonAlt llaRef;
 
     
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point.
+ 	 * 
+ 	 * @param lla reference point
+ 	 */
     public AziEquiProjection(LatLonAlt lla) {
         projAlt = lla.alt();
         ref = spherical2xyz(lla.lat(), lla.lon());
         llaRef = lla;
     }
  
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point.
+     * 
+     * @param lat latitude of reference point
+     * @param lon longitude of reference point
+     * @param alt altitude of reference point
+     */
     public AziEquiProjection(double lat, double lon, double alt) {
         projAlt = alt;
         ref = spherical2xyz(lat, lon);

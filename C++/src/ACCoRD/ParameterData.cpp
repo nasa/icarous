@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -10,7 +10,6 @@
 #include "ErrorLog.h"
 #include "ErrorReporter.h"
 #include "format.h"
-#include "Quad.h"
 #include "string_util.h"
 #include "Constants.h"
 #include <string>
@@ -18,25 +17,19 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <map>
 #include <stdexcept>
 #include <algorithm>
 
 namespace larcfm {
 
-//using string_util;
-using std::map;
-
 const std::string ParameterData::parenPattern = "[()]+";
 const std::string ParameterData::defaultEntrySeparator = "?";
-
-
 
 ParameterData::ParameterData() {
 	caseSensitive = true;
 	preserveUnits = false;
 	unitCompatibility = true;
-	parameters = map<std::string, Quad<std::string, double, std::string, bool>, stringCaseInsensitive >();
+	parameters = paramtype();
 	patternStr = Constants::wsPatternBaseNoRegex;
 }
 
@@ -59,7 +52,7 @@ ParameterData ParameterData::extractPrefix(const std::string& prefix) const {
 	p.preserveUnits = preserveUnits;
 	p.unitCompatibility = unitCompatibility;
 	p.patternStr = patternStr;
-	for (map<std::string, Quad<std::string, double, std::string, bool>, stringCaseInsensitive >::const_iterator pos = parameters.begin(); pos != parameters.end(); ++pos) {
+	for (paramtype::const_iterator pos = parameters.begin(); pos != parameters.end(); ++pos) {
 		std::string key = pos->first;
 		std::string keylc = toLowerCase(key);
 		if (keylc.find(prefixlc) == 0) {
@@ -93,12 +86,12 @@ void ParameterData::setUnitCompatibility(bool v) {
 }
 
 
-int ParameterData::size() {
+int ParameterData::size() const {
 	return parameters.size();
 }
 
 std::vector<std::string> ParameterData::getList() const {
-	paramtype::const_iterator pos;  //aaaarrrrggggg!!!
+	paramtype::const_iterator pos;
 	std::vector<std::string> v;
 	// TODO: check for empty entries in this list
 	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
@@ -111,7 +104,6 @@ std::vector<std::string> ParameterData::getListFull() const {
 	std::vector<std::string> list = getList();
 	for (int i = 0; i < (int) list.size(); i++) {
 		std::string s = list[i];
-		//list[i] = list[i] + " = " + this->getString(list[i]);
 		list[i] = list[i] + " = " + getString(s);
 	}
 	return list;
@@ -122,22 +114,10 @@ void ParameterData::clear() {
 }
 
 bool ParameterData::contains(const std::string& key) const {
-//	std::string key;
-//	if (!caseSensitive) {
-//		key = toLowerCase(str);
-//	} else {
-//		key = str;
-//	}
 	return parameters.find(key) != parameters.end();
 }
 
 std::vector<std::string> ParameterData::matchList(const std::string& substr2) const {
-//	std::string substr2;
-//	if (!caseSensitive) {
-//		substr2 = toLowerCase(substr);
-//	} else {
-//		substr2 = substr;
-//	}
 	std::vector<std::string> ret;
 	std::vector<std::string> plist = getList();
 	for (int i = 0; i < (int) plist.size(); i++) {
@@ -149,80 +129,42 @@ std::vector<std::string> ParameterData::matchList(const std::string& substr2) co
 }
 
 std::string ParameterData::getString(const std::string& key) const {
-//	std::string key;
-//	if (!caseSensitive) {
-//		key = toLowerCase(str);
-//	} else {
-//		key = str;
-//	}
-	std::map<std::string, Quad<std::string, double, std::string, bool>, stringCaseInsensitive >::const_iterator q =
-			parameters.find(key);
-
+	paramtype::const_iterator q = parameters.find(key);
 	if (q == parameters.end()) {
 		return "";
 	} else {
-		return q->second.getFirst();
+		return q->second.sval;
 	}
 }
 
 double ParameterData::getValue(const std::string& key) const {
-//	std::string key;
-//	if (!caseSensitive) {
-//		key = toLowerCase(str);
-//	} else {
-//		key = str;
-//	}
-	std::map<std::string, Quad<std::string, double, std::string, bool>, stringCaseInsensitive >::const_iterator q =
-			parameters.find(key);
-
+	paramtype::const_iterator q = parameters.find(key);
 	if (q == parameters.end()) {
 		return 0.0;
 	} else {
-		return q->second.getSecond();
+		return q->second.dval;
 	}
 }
 
-double ParameterData::getValue(const std::string& key,
-		const std::string& defaultUnit) const {
-	double val = getValue(key);
-	//fpln("getValue_default "+key+" "+getUnit(key)+" "+defaultUnit);
-	if (getUnit(key) == "unspecified") {
-		val = Units::from(defaultUnit, val);
-	}
-	return val;
+double ParameterData::getValue(const std::string& key,const std::string& defaultUnit) const {
+	return Units::fromInternal(defaultUnit, getUnit(key), getValue(key));
 }
 
 std::string ParameterData::getUnit(const std::string& key) const {
-//	std::string key;
-//	if (!caseSensitive) {
-//		key = toLowerCase(str);
-//	} else {
-//		key = str;
-//	}
-	std::map<std::string, Quad<std::string, double, std::string, bool>, stringCaseInsensitive >::const_iterator q =
-			parameters.find(key);
-
+	paramtype::const_iterator q = parameters.find(key);
 	if (q == parameters.end()) {
 		return "unspecified";
 	} else {
-		return q->second.getThird();
+		return q->second.units;
 	}
 }
 
 bool ParameterData::getBool(const std::string& key) const {
-//	std::string key;
-//	if (!caseSensitive) {
-//		key = toLowerCase(str);
-//	} else {
-//		key = str;
-//	}
-	std::map<std::string, Quad<std::string, double, std::string, bool>, stringCaseInsensitive >::const_iterator q =
-			parameters.find(key);
-
+	paramtype::const_iterator q = parameters.find(key);
 	if (q == parameters.end()) {
 		return false;
 	} else {
-		return q->second.getFourth();
+		return q->second.bval;
 	}
 }
 
@@ -236,8 +178,6 @@ long ParameterData::getLong(const std::string& key) const {
 
 bool ParameterData::parse_parameter_string(const std::string& str) {
 	int loc = str.find('=');
-	//f.pln("PD "+str+" XX "+loc);
-
 	if (loc > 0) {
 		std::string id(substring(str,0,loc));
 		trim(id);
@@ -246,109 +186,40 @@ bool ParameterData::parse_parameter_string(const std::string& str) {
 		}
 		std::string value(substring(str,loc+1));
 		trim(value);
-		//parameters[id] = parse_parameter_value(value);
 		return putParam(id, parse_parameter_value(value));
 	} else {
 		return false;
 	}
 }
 
-//bool ParameterData::parse_parameter_string(const std::string& str) {
-//
-//	std::vector<std::string> fields = split(str, patternStr);
-//
-//	// parameter keys are lower case only
-//	if (fields.size() >= 3
-//			&& (fields[1].compare("=") == 0 || fields[1].compare("==") == 0)
-//			&& fields[0].length() > 0) {
-//		std::string id = fields[0];
-//		if (!caseSensitive)
-//			id = toLowerCase(id);
-//
-//		// string value
-//		std::string strv = fields[2];
-//		for (unsigned int i = 3; i < fields.size(); i++) {
-//			strv += " " + fields[i];
-//		} // values become a space-delineated list string
-//
-//		// Double value
-//		double dbl = 0.0;
-//		std::string unit = "unspecified";
-//		try {
-//			dbl = getd(fields[2]);
-//			if (fields.size() >= 4) {
-//				unit = Units::clean(fields[3]);
-//				dbl = Units::from(unit, dbl);
-//			}
-//		}
-//		catch (std::runtime_error e) {
-//			dbl = 0.0;  // string is not a number so use a default value
-//		}
-//
-//		// Boolean value
-//		bool bval = false;
-//		if (equalsIgnoreCase(strv, "true") || equalsIgnoreCase(strv, "T")) {
-//			bval = true;
-//		}
-//		std::string strv2 = str.substr(str.find(fields[2], str.find("=")));
-//		trim(strv2);
-//		Quad<std::string, double, std::string, bool> quad = Quad<std::string,
-//				double, std::string, bool>::make(strv2, dbl, unit, bval);
-//		//Quad<string,double,string,bool> quad = Quad<string,double,string,bool>::make(strv, dbl, unit, bval);
-//
-//		parameters[id] = quad;
-//
-//		return true;
-//	} else {
-//		return false;
-//	}
-//}
-
-
-
-
-
-//void ParameterData::putParam(std::string ikey, Quad<std::string, double, std::string, bool> newEntry) {
-//	std::string key(ikey);
-//	if ( ! caseSensitive) {
-//		key = toLowerCase(ikey);
-//	}
-//	if (preserveUnits && contains(key)) {
-//		Quad<std::string, double, std::string, bool> oldEntry = parameters[key];
-//		if ( oldEntry.third != "unspecified") {
-//			newEntry = Quad<std::string, double, std::string, bool>(newEntry.first,newEntry.second,oldEntry.third,newEntry.fourth);
-//		}
-//	}
-//	parameters[key] = newEntry;
-//}
-
-bool ParameterData::putParam(const std::string& ikey, const std::pair<bool, Quad<std::string, double, std::string, bool> >& entry) {
-	//f.pln("ParameterData.putParam "+key+" "+newEntry);
+bool ParameterData::putParam(const std::string& ikey, const std::pair<bool, ParameterEntry>& entry) {
 	std::string key(ikey);
-	bool preserve_string = entry.first;
-	Quad<std::string, double, std::string, bool> newEntry = entry.second;
-//	if ( ! caseSensitive) {
-//		key = toLowerCase(key);
-//	}
+	bool perform_conversion = entry.first;
+	ParameterEntry newEntry = entry.second;
 
 	bool compatible = true;
 	if (contains(key)) {
-		Quad<std::string, double, std::string, bool> oldEntry = parameters[key];
-		if ( ! Units::isCompatible(newEntry.third,oldEntry.third)) {
+		ParameterEntry oldEntry = parameters[key];
+		if (!Units::isCompatible(newEntry.units,oldEntry.units)) {
 			compatible = false;
 		} else {
-			if (newEntry.third == "unspecified" && ! preserve_string) {
-				std::string units = oldEntry.third;
-				double convert = Units::from(units,newEntry.second);
-				newEntry = Quad<std::string, double, std::string, bool>(Units::strX(units,newEntry.second),convert,units,newEntry.fourth);
-			} else if (isPreserveUnits()) { // newEntry.third != "unspecified"
-				if ( oldEntry.third != "unspecified") {
-					newEntry = Quad<std::string, double, std::string, bool>(newEntry.first,newEntry.second,oldEntry.third,newEntry.fourth);
+			if (newEntry.units == "unspecified") {
+				if (perform_conversion) {
+					std::string units = oldEntry.units;
+					double convert = Units::from(units,newEntry.dval);
+					newEntry.dval = convert;
+					newEntry.units = units;
+					newEntry.set_sval();
+				} else {
+					newEntry.units = oldEntry.units;
+				}
+			} else if (isPreserveUnits()) { // newEntry.units != "unspecified"
+				if ( oldEntry.units != "unspecified") {
+					newEntry.units = oldEntry.units;
 				}
 			}
 		}
 	}
-
 	if (compatible || ! unitCompatibility) {
 		parameters[key] = newEntry;
 		return true;
@@ -357,22 +228,12 @@ bool ParameterData::putParam(const std::string& ikey, const std::pair<bool, Quad
 	}
 }
 
-
-
-
-//Quad<std::string, double, std::string, bool> ParameterData::parse_parameter_value(const std::string& value) {
-//	double dbl = Units::parse(value);
-//	std::string unit = Units::parseUnits(value);
-//	bool b = toLowerCase(value) == "true" || toLowerCase(value) == "T";
-//	Quad<std::string, double, std::string, bool> quad(value,dbl,unit,b);
-//	return quad;
-//}
-/** Doesn't do error checking, string should be "trimmed." this should always return a Quad */
-std::pair<bool, Quad<std::string, double, std::string, bool> > ParameterData::parse_parameter_value(const std::string& value) {
-	bool preserve_string = false;
+/** Doesn't do error checking, string should be "trimmed." this should always return a ParameterEntry */
+std::pair<bool, ParameterEntry> ParameterData::parse_parameter_value(const std::string& value) {
+	bool perform_conversion = true;
 	double dbl = Units::parse(value,-123456.78);
 	if (dbl == -123456.78) {
-		preserve_string = true;
+		perform_conversion = true;
 		dbl = 0.0;
 	}
 	std::string unit = Units::parseUnits(value);
@@ -380,104 +241,187 @@ std::pair<bool, Quad<std::string, double, std::string, bool> > ParameterData::pa
 	if (equalsIgnoreCase(value, "true") || equalsIgnoreCase(value, "T")) {
 		boolx = true;
 	}
-	Quad<std::string, double, std::string, bool> quad = Quad<std::string, double, std::string, bool>(value,dbl,unit,boolx);
-	return std::pair<bool, Quad<std::string, double, std::string, bool> >(preserve_string,quad);
+	ParameterEntry quad(value,dbl,unit,boolx,"",-1);
+	return std::pair<bool,ParameterEntry>(perform_conversion,quad);
 }
-
-
-
 
 bool ParameterData::set(const std::string& s) {
 	return parse_parameter_string(s);
 }
 
 bool ParameterData::set(const std::string& key, char* value) {
-	//fpln("char Param set "+key+" "+value);
 	return set(key, std::string(value));
 }
+
 bool ParameterData::set(const std::string& key, const char* value) {
-	//fpln("char Param set "+key+" "+value);
 	return set(key, std::string(value));
 }
+
 bool ParameterData::set(const std::string& key, const std::string& value) {
-	//fpln("Param set "+key+" "+value);
 	return parse_parameter_string(key + " = " + value);
 }
 
-bool ParameterData::set(const std::string& key, double value,
-		const std::string& units) {
-	//set(key, Fm12(value) + " [" + units + "]");
-	Quad<std::string, double, std::string, bool> newEntry(Fm8(value) + " [" + units +"]",Units::from(units,value),units,false);
-	return putParam(key, std::pair<bool, Quad<std::string, double, std::string, bool> >(false,newEntry));
+bool ParameterData::setBool(const std::string& key, bool value) {
+	ParameterEntry newEntry = ParameterEntry::makeBoolEntry(value);
+	return putParam(key,std::pair<bool, ParameterEntry>(false,newEntry));
+}
+
+bool ParameterData::setTrue(const std::string& key) {
+	return setBool(key,true);
+}
+
+bool ParameterData::setFalse(const std::string& key) {
+	return setBool(key,false);
+}
+
+bool ParameterData::setInt(const std::string& key, int value) {
+	ParameterEntry newEntry = ParameterEntry::makeIntEntry(value);
+	return putParam(key,std::pair<bool, ParameterEntry>(false,newEntry));
+}
+
+bool ParameterData::set(const std::string& key, double value, const std::string& units) {
+	std::string u = Units::clean(units);
+	ParameterEntry newEntry = ParameterEntry::makeDoubleEntry(Units::from(u,value),u,Constants::get_output_precision());
+	return putParam(key, std::pair<bool, ParameterEntry>(true,newEntry));
 }
 
 bool ParameterData::setInternal(const std::string& key, double value,
 		const std::string& units) {
-	//set(key, Units::strX(units, value));
-  Quad<std::string, double, std::string, bool> newEntry(Units::str(units,value,8),value,units,false);
-	return putParam(key, std::pair<bool, Quad<std::string, double, std::string, bool> >(false,newEntry));
+	return setInternal(key, value, units, Constants::get_output_precision());
 }
 
 bool ParameterData::setInternal(const std::string& key, double value,
 		const std::string& units, int prec) {
-	//set(key, Units::strX(units, value));
-  Quad<std::string, double, std::string, bool> newEntry(Units::str(units,value,prec),value,units,false);
-	return putParam(key, std::pair<bool, Quad<std::string, double, std::string, bool> >(false,newEntry));
+	std::string u = Units::clean(units);
+	ParameterEntry newEntry = ParameterEntry::makeDoubleEntry(value,u,prec);
+	return putParam(key, std::pair<bool, ParameterEntry>(false,newEntry));
 }
 
-bool ParameterData::setTrue(const std::string& key) {
-	set(key, "true");
-	Quad<std::string, double, std::string, bool> newEntry("true",0.0,"unitless",true);
-	return putParam(key, std::pair< bool, Quad<std::string, double, std::string, bool> >(true,newEntry));
-
-}
-bool ParameterData::setFalse(const std::string& key) {
-	set(key, "false");
-	Quad<std::string, double, std::string, bool> newEntry("false",0.0,"unitless",false);
-	return putParam(key, std::pair< bool, Quad<std::string, double, std::string, bool> >(true,newEntry));
-
-}
-
-bool ParameterData::setBool(const std::string& key, bool val) {
-	if (val) {
-		return setTrue(key);
+/**
+ * Updates the unit for an entry. This ignores the setPreservedUnits() flag.
+ *
+ * @param key name of parameter
+ * @param unit unit for this parameter
+ * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+ */
+bool ParameterData::updateUnit(const std::string& key, const std::string& unit) {
+	paramtype::iterator entry = parameters.find(key);
+	if (Units::isUnit(unit) && entry != parameters.end() &&
+			Units::isCompatible(entry->second.units,unit) &&
+			unit !="unitless" && unit != "unspecified") {
+		entry->second.units = unit;
+		entry->second.set_sval();
+		return true;
 	} else {
-		return setFalse(key);
+		return false;
 	}
 }
 
+/**
+ * Updates entry's comment
+ *
+ * @param key name of parameter
+ * @param msg the new comment of the parameter
+ * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+ */
+bool ParameterData::updateComment(const std::string& key, const std::string& msg) {
+	paramtype::iterator entry = parameters.find(key);
+	if (entry != parameters.end()) {
+		entry->second.comment = msg;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * Updates entry's string
+ *
+ * @param key name of parameter
+ * @param str the new string of the parameter
+ * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+ */
+bool ParameterData::updateStr(const std::string& key, const std::string& str) {
+	paramtype::iterator entry = parameters.find(key);
+	if (entry != parameters.end()) {
+		entry->second.sval = str;
+		entry->second.dval = 0;
+		entry->second.bval = false;
+		entry->second.units = "unitless";
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/** Updates entry's double value
+ *
+ * @param key the name of the parameter
+ * @param val the new double value of the parameter in INTERNAL units
+ * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+ */
+bool ParameterData::updateDouble(const std::string& key, double val) {
+	paramtype::iterator entry = parameters.find(key);
+	if (entry != parameters.end()) {
+		entry->second.dval = val;
+		if (entry->second.precision == 0) {
+			entry->second.precision = -1;
+		}
+		entry->second.set_sval();
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool ParameterData::updateBool(const std::string& key, bool val) {
+	paramtype::iterator entry = parameters.find(key);
+	if (entry != parameters.end()) {
+		entry->second.sval = val ? "true" : "false";
+		entry->second.bval = val;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool ParameterData::updateInt(const std::string& key, int val) {
+	paramtype::iterator entry = parameters.find(key);
+	if (entry != parameters.end()) {
+		entry->second.precision = 0;
+		entry->second.dval = val;
+		entry->second.set_sval();
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool ParameterData::updatePrecision(const std::string& key, int p) {
+	paramtype::iterator entry = parameters.find(key);
+	if (entry != parameters.end()) {
+		entry->second.precision = p;
+		entry->second.set_sval();
+		return true;
+	} else {
+		return false;
+	}
+}
 
 std::vector<std::string> ParameterData::unrecognizedParameters(
 		std::vector<std::string> v) const {
-//	if (!caseSensitive) {
-//		ArrayList < String > c2 = new ArrayList<String>(c.size());
-//		Iterator < String > it = c.iterator();
-//		while (it.hasNext()) {
-//			c2.add(it.next().toLowerCase());
-//		}
-//		c = c2;
-//	}
-//	ArrayList < String > p = new ArrayList<String>(parameters.keySet());
-//	p.removeAll(c);
-//	return p.toArray(new String[p.size()]);
-//}
-//
-  std::vector<std::string> p = getList();
-  std::vector<std::string>::iterator pos;
-  unsigned int i = 0;
-  while (i < v.size()) {
-//      if (!caseSensitive) {
-//      	v[i] = toLowerCase(v[i]);
-//      }
-      pos = find(p.begin(), p.end(), v[i]);
-      if (pos != p.end()) {
-      	p.erase(pos);
-      } else {
-      	i++;
-      }
-  }
-
-  return p;
+	std::vector<std::string> p = getList();
+	std::vector<std::string>::iterator pos;
+	unsigned int i = 0;
+	while (i < v.size()) {
+		pos = find(p.begin(), p.end(), v[i]);
+		if (pos != p.end()) {
+			p.erase(pos);
+		} else {
+			i++;
+		}
+	}
+	return p;
 }
 
 std::vector<std::string> ParameterData::validateParameters(
@@ -486,17 +430,17 @@ std::vector<std::string> ParameterData::validateParameters(
 	return unrecognizedParameters(c);
 }
 
-
-
-
-void ParameterData::copy(ParameterData p, bool overwrite) {
-	std::vector<std::string> plist = p.getList();
+void ParameterData::listCopy(const ParameterData& p, const std::vector<std::string>& plist, bool overwrite) {
 	for (int i = 0; i < (int) plist.size(); i++) {
 		std::string key = plist[i];
 		if (overwrite || ! contains(key)) {
 			set(key, p.getString(key));
 		}
 	}
+}
+
+void ParameterData::copy(const ParameterData& p, bool overwrite) {
+	listCopy(p,p.getList(),overwrite);
 }
 
 /**
@@ -515,7 +459,6 @@ void ParameterData::removeAll(const std::vector<std::string>& keys) {
 		remove(keys[i]);
 	}
 }
-
 
 std::string ParameterData::toParameterList(const std::string& separator) const {
 	std::string sep = separator;
@@ -552,46 +495,46 @@ bool ParameterData::parseParameterList(const std::string& separator,  std::strin
 }
 
 std::vector<std::string> ParameterData::getListString(const std::string& key) const {
-	std::map<std::string, Quad<std::string, double, std::string, bool>, stringCaseInsensitive >::const_iterator q =
+	paramtype::const_iterator q =
 			parameters.find(key);
 
 	if (q == parameters.end()) {
 		return std::vector<std::string>();
 	} else {
-		return stringList(q->second.getFirst());
+		return stringList(q->second.sval);
 	}
 }
 
 std::vector<int> ParameterData::getListInteger(const std::string& key) const {
-	std::map<std::string, Quad<std::string, double, std::string, bool>, stringCaseInsensitive >::const_iterator q =
+	paramtype::const_iterator q =
 			parameters.find(key);
 
 	if (q == parameters.end()) {
 		return std::vector<int>();
 	} else {
-		return intList(q->second.getFirst());
+		return intList(q->second.sval);
 	}
 }
 
 std::vector<double> ParameterData::getListDouble(const std::string& key) const {
-	std::map<std::string, Quad<std::string, double, std::string, bool>, stringCaseInsensitive >::const_iterator q =
+	paramtype::const_iterator q =
 			parameters.find(key);
 
 	if (q == parameters.end()) {
 		return std::vector<double>();
 	} else {
-		return doubleList(q->second.getFirst());
+		return doubleList(q->second.sval);
 	}
 }
 
 std::vector<bool> ParameterData::getListBool(const std::string& key) const {
-	std::map<std::string, Quad<std::string, double, std::string, bool>, stringCaseInsensitive >::const_iterator q =
+	paramtype::const_iterator q =
 			parameters.find(key);
 
 	if (q == parameters.end()) {
 		return std::vector<bool>();
 	} else {
-		return boolList(q->second.getFirst());
+		return boolList(q->second.sval);
 	}
 }
 
@@ -639,22 +582,114 @@ bool ParameterData::setListBool(const std::string& key, const std::vector<bool>&
 	return set(key,s);
 }
 
+/**
+ * Returns true if the stored value for key is likely a boolean
+ * @param key parameter name
+ * @return true if key exists and the value is true/false/t/f, false otherwise
+ */
+bool ParameterData::isBoolean(const std::string& key) const {
+	if (parameters.find(key) == parameters.end()) {
+		return false;
+	} else {
+		return Util::is_boolean(parameters.find(key)->second.sval);
+	}
+}
+
+/**
+ * Returns true if the stored value for key is likely a number
+ * @param key parameter name
+ * @return true if key exists and the value is a parsable number
+ */
+bool ParameterData::isNumber(const std::string& key) const {
+	if (parameters.find(key) == parameters.end()) {
+		return false;
+	} else {
+		std::string s = parameters.find(key)->second.sval;
+		std::vector<std::string> fields = split(s, patternStr);
+		if (fields.size() == 1) {
+			return Util::is_double(fields[0]);
+		} else if (fields.size() == 2) {
+			return Util::is_double(fields[0]) && !Util::is_double(fields[1]); // if both numbers, probably a list
+		} else {
+			return false; // probably a list
+		}
+	}
+}
+
+/**
+ * Returns true if the stored value for key is likely a string (or list).  Note,
+ * the getString() method will always return a string (assuming a valid key
+ * is provided).  This method returns a more narrow definition of a string,
+ * that is, something that is not a number or a boolean.
+ * @param key parameter name
+ * @return true if key exists and the value is not a parse-able number
+ */
+bool ParameterData::isString(const std::string& key) const {
+	if (parameters.find(key) == parameters.end()) {
+		return false;
+	} else {
+		return !isNumber(key) && !isBoolean(key);
+	}
+}
+
+std::string ParameterData::listToString(const std::vector<std::string>& keys) const {
+	std::string s = "";
+	for (int i = 0; i < (int) keys.size(); i++) {
+		std::string key = keys[i];
+		paramtype::const_iterator val = parameters.find(key);
+		if (val != parameters.end()) {
+			if (val->second.comment != "") {
+				s += "# "+val->second.comment+"\n";
+			}
+			s += key+" = "+val->second.sval+"\n";
+		}
+	}
+	return s;
+}
 
 std::string ParameterData::toString() const {
-	std::string s = "";
 	std::vector<std::string> keys;
 	paramtype::const_iterator pos;
 	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
 		keys.push_back(pos->first);
 	}
 	std::sort(keys.begin(), keys.end());
+	return listToString(keys);
+}
+
+std::string ParameterData::listToString(const std::vector<std::string>& keys, const std::string& separator) const {
+	std::string s = "";
+	bool first = true;
 	for (int i = 0; i < (int) keys.size(); i++) {
 		std::string key = keys[i];
-		pos = parameters.find(key);
-		std::string val = pos->second.first;
-		s = s+key+" = "+val+"\n";
+		paramtype::const_iterator val = parameters.find(key);
+		if (val != parameters.end()) {
+			if (first) {
+				first = false;
+			} else {
+				s += separator;
+			}
+			s += key+"="+val->second.sval;
+		}
 	}
 	return s;
+}
+
+/**
+ * Returns a string listing all parameters in keys
+ *
+ * @param keys list of parameter entries
+ * @parame separator
+ * @return string
+ */
+std::string ParameterData::toString(const std::string& separator) const {
+	std::vector<std::string> keys;
+	paramtype::const_iterator pos;
+	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
+		keys.push_back(pos->first);
+	}
+	std::sort(keys.begin(), keys.end());
+	return listToString(keys,separator);
 }
 
 bool ParameterData::equals(const ParameterData& pd) const {

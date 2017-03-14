@@ -168,10 +168,17 @@ public class KinematicMultiBands implements GenericStateBands {
 		core_.ownship = own;
 	}
 
+  // This function clears the traffic
 	public void setOwnship(String id, Position p, Velocity v) {
-		setOwnship(TrafficState.makeOwnship(id,p,v));
+		setOwnship(id,p,v,0.0);
+	}
+	
+  // This function clears the traffic
+	public void setOwnship(String id, Position p, Velocity v, double time) {
+		setOwnship(TrafficState.makeOwnship(id,p,v,time));
 	}
 
+  // This function clears the traffic
 	public void setOwnship(Position p, Velocity v) {
 		setOwnship("Ownship",p,v);
 	}
@@ -2227,8 +2234,19 @@ public class KinematicMultiBands implements GenericStateBands {
 
 	public String outputStringInfo() {
 		String s="";
-		s+="Ownship Aircraft: "+core_.ownship.getId()+"\n";
-		s+="Traffic Aircraft: "+TrafficState.listToString(core_.traffic)+"\n";
+		String ualt = core_.parameters.getUnits("alt_step");
+		String ugs = core_.parameters.getUnits("gs_step");
+		String uvs = core_.parameters.getUnits("vs_step");
+		String uxy = "m";
+		if (Units.isCompatible(ugs,"knot")) {
+			uxy = "nmi";
+		} else if (Units.isCompatible(ugs,"fpm")) {
+			uxy = "ft";
+		} else if (Units.isCompatible(ugs,"kph")) {
+			uxy = "km";
+		}
+		s+="Time: "+Units.str("s",core_.ownship.getTime())+"\n";
+		s += core_.ownship.formattedTraffic(core_.traffic,uxy, ualt, ugs, uvs);
 		s+="Conflict Criteria: "+(core_.parameters.isEnabledConflictCriteria()?"Enabled":"Disabled")+"\n";
 		s+="Recovery Criteria: "+(core_.parameters.isEnabledRecoveryCriteria()?"Enabled":"Disabled")+"\n";
 		s+="Most Urgent Aircraft: "+core_.most_urgent_ac.getId()+"\n";

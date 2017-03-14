@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -46,7 +46,7 @@ KinematicBandsCore::~KinematicBandsCore() {
 /**
  * Set kinematic bands core
  */
-void KinematicBandsCore::setKinematicBandsCore(const KinematicBandsCore core) {
+void KinematicBandsCore::setKinematicBandsCore(const KinematicBandsCore& core) {
   ownship = core.ownship;
   traffic = std::vector<TrafficState>();
   traffic.insert(traffic.end(),core.traffic.begin(),core.traffic.end());
@@ -132,7 +132,7 @@ double KinematicBandsCore::minHorizontalRecovery() const {
   double min_horizontal_recovery = parameters.getMinHorizontalRecovery();
   if (min_horizontal_recovery > 0)
     return min_horizontal_recovery;
-  int sl = !hasOwnship() ? 3 : Util::max(3,TCASTable::getSensitivityLevel(ownship.getPosition().alt()));
+  int sl = !hasOwnship() ? 3 : Util::max(3,TCASTable::getSensitivityLevel(ownship.altitude()));
   return RA.getHMD(sl);
 }
 
@@ -143,7 +143,7 @@ double KinematicBandsCore::minVerticalRecovery() const {
   double min_vertical_recovery = parameters.getMinVerticalRecovery();
   if (min_vertical_recovery > 0)
     return min_vertical_recovery;
-  int sl = !hasOwnship() ? 3 : Util::max(3,TCASTable::getSensitivityLevel(ownship.getPosition().alt()));
+  int sl = !hasOwnship() ? 3 : Util::max(3,TCASTable::getSensitivityLevel(ownship.altitude()));
   return RA.getZTHR(sl);
 }
 
@@ -159,30 +159,6 @@ bool KinematicBandsCore::hasTraffic() const {
   return traffic.size() > 0;
 }
 
-Position const & KinematicBandsCore::trafficPosition(int i) const {
-  return traffic[i].getPosition();
-}
-
-Velocity const & KinematicBandsCore::trafficVelocity(int i) const {
-  return traffic[i].getVelocity();
-}
-
-Vect3 const & KinematicBandsCore::own_s() const {
-  return ownship.get_s();
-}
-
-Velocity const & KinematicBandsCore::own_v() const {
-  return ownship.get_v();
-}
-
-Vect3 const & KinematicBandsCore::traffic_s(int i) const {
-  return traffic[i].get_s();
-}
-
-Velocity const & KinematicBandsCore::traffic_v(int i) const {
-  return traffic[i].get_v();
-}
-
 /**
  * Put in conflict_acs_ the list of aircraft predicted to be in conflict for the given alert level.
  * Requires: 1 <= alert_level <= parameters.alertor.mostSevereAlertLevel()
@@ -192,12 +168,15 @@ void KinematicBandsCore::conflict_aircraft(int alert_level) {
   double tout = NINFINITY;
   bool conflict_band = BandsRegion::isConflictBand(parameters.alertor.getLevel(alert_level).getRegion());
   Detection3D* detector = parameters.alertor.getLevel(alert_level).getDetectorRef();
+  double alerting_time = Util::min(parameters.getLookaheadTime(),
+      parameters.alertor.getLevel(alert_level).getAlertingTime());
   for (TrafficState::nat i = 0; i < traffic.size(); ++i) {
     TrafficState ac = traffic[i];
-    ConflictData det = detector->conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),
+    ConflictData det = detector->conflictDetection(ownship.get_s(),ownship.get_v(),ac.get_s(),ac.get_v(),
         0,parameters.getLookaheadTime());
-    if (det.conflict() || detector->violation(own_s(),own_v(),ac.get_s(),ac.get_v())) {
-      if (conflict_band && det.getTimeIn() < parameters.alertor.getLevel(alert_level).getAlertingTime()) {
+    bool lowc = detector->violation(ownship.get_s(),ownship.get_v(),ac.get_s(),ac.get_v());
+    if (lowc || det.conflict()) {
+      if (conflict_band && (lowc || det.getTimeIn() < alerting_time)) {
         conflict_acs_[alert_level-1].push_back(ac);
       }
       tin = Util::min(tin,det.getTimeIn());
@@ -281,11 +260,14 @@ std::string KinematicBandsCore::toString() const {
   s+="NAME sx sy sz vx vy vz time\n";
   s+="[none] [m] [m] [m] [m/s] [m/s] [m/s] [s]\n";
   s+=ownship.getId()+", "+ownship.get_s().formatXYZ(precision,"",", ","")+
-      ", "+own_v().formatXYZ(precision,"",", ","")+", 0\n";
+      ", "+ownship.get_v().formatXYZ(precision,"",", ","")+", "+
+      FmPrecision(ownship.getTime(),precision)+"\n";
   for (TrafficState::nat i = 0; i < traffic.size(); i++) {
-    s+=traffic[i].getId()+", "+traffic_s(i).formatXYZ(precision,"",", ","")+
-        ", "+traffic_v(i).formatXYZ(precision,"",", ","")+", 0\n";
+    s+=traffic[i].getId()+", "+traffic[i].get_s().formatXYZ(precision,"",", ","")+
+        ", "+traffic[i].get_v().formatXYZ(precision,"",", ","")+
+        ", "+FmPrecision(traffic[i].getTime(),precision)+"\n";
   }
+  s+="##\n";
   return s;
 
 }

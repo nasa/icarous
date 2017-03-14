@@ -1,7 +1,7 @@
 /*
  * Kinematics.h
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -26,20 +26,35 @@ namespace larcfm {
  */
 class ProjectedKinematics {
 public:
-	  /**
-	   * Calculate the angle of a constant-radius turn from two points and the radius
-	   */
+	/**
+	 * Calculate the angle of a constant-radius turn from two points and the radius
+	 * 
+	 * @param s1
+	 * @param s2
+	 * @param R
+	 * @return the turn angle
+	 */
 	static double turnAngle(Position s1, Position s2, double R);
 
-	/**
-	 * Horizontal distance covered in a turn
-	 */
+  /**
+   * Horizontal distance covered in a turn
+   * 
+   * @param s1
+   * @param s2
+   * @param R
+   * @return the turn distance
+   */
 	static double turnDistance(Position s1, Position s2, double R);
 
-	  /**
-	   * Given two points on a turn and the velocity (direction) at the first point, determine the direction for the shortest turn going through the second point,
-	   * returning true if that relative direction is to the right
-	   */
+  /**
+   * Given two points on a turn and the velocity (direction) at the first point, determine the direction for the shortest turn going through the second point,
+   * returning true if that relative direction is to the right
+   * 
+   * @param s1
+   * @param v1
+   * @param s2
+   * @return true if clockwise turn
+   */
 	 static bool clockwise(Position s1, Velocity v1, Position s2);
 
 //	  /**

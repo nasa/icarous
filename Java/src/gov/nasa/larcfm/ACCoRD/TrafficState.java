@@ -27,6 +27,7 @@ public class TrafficState {
 	private final Velocity vel_;
 	private final Position posxyz_; // Projected position
 	private final Velocity velxyz_; // Projected velocity
+	private final double time_;     // Time (for information purpose only)
 
 	public TrafficState() {
 		id_ = "_NoAc_";
@@ -35,13 +36,15 @@ public class TrafficState {
 		posxyz_ = Position.INVALID;
 		velxyz_ = Velocity.INVALID;
 		eprj_ = Projection.createProjection(Position.ZERO_LL);
+		time_ = 0.0;
 	}
 
 	public static final TrafficState INVALID = new TrafficState();
 
 	public static final List<TrafficState> INVALIDL = new ArrayList<TrafficState>();
 
-	private TrafficState(String id, Position pos, Velocity vel, EuclideanProjection eprj) {
+	private TrafficState(String id, Position pos, Velocity vel, double time,
+			EuclideanProjection eprj) {
 		id_ = id;
 		pos_ = pos;
 		vel_ = vel;
@@ -54,19 +57,36 @@ public class TrafficState {
 			posxyz_ = pos;
 			velxyz_ = vel;
 		}  
+		time_ = time;
 		eprj_ = eprj;
 	}
 
+	public double getTime() {
+		return time_;
+	}
+
+	public static TrafficState makeOwnship(TrafficState ac) {
+		return makeOwnship(ac.id_,ac.pos_,ac.vel_,ac.time_);
+	}
+
 	public static TrafficState makeOwnship(String id, Position pos, Velocity vel) {
-		return new TrafficState(id,pos,vel,pos.isLatLon()?Projection.createProjection(pos.lla().zeroAlt()):
+		return makeOwnship(id,pos,vel,0.0);
+	}
+	
+	public static TrafficState makeOwnship(String id, Position pos, Velocity vel, double time) {
+		return new TrafficState(id,pos,vel,time,pos.isLatLon()?Projection.createProjection(pos.lla().zeroAlt()):
 			Projection.createProjection(Position.ZERO_LL));
+	}
+
+	public TrafficState makeIntruder(TrafficState ac) {
+		return makeIntruder(ac.id_,ac.pos_,ac.vel_);
 	}
 
 	public TrafficState makeIntruder(String id, Position pos, Velocity vel) {
 		if (pos_.isLatLon() != pos.isLatLon()) { 
 			return INVALID;
 		}
-		return new TrafficState(id,pos,vel,eprj_);
+		return new TrafficState(id,pos,vel,time_,eprj_);
 	}
 
 	public Vect3 get_s() {
@@ -104,7 +124,7 @@ public class TrafficState {
 	}
 
 	public TrafficState linearProjection(double offset) {
-		return new TrafficState(getId(),pos_.linear(vel_,offset),vel_,eprj_);
+		return new TrafficState(getId(),pos_.linear(vel_,offset),vel_,time_+offset,eprj_);
 	}
 
 	public static TrafficState findAircraft(List<TrafficState> traffic, String id) {
@@ -132,32 +152,48 @@ public class TrafficState {
 		return s+"}";
 	}
 
-	public String formattedTraffic(List<TrafficState> traffic, double time,
-			String uxy, String ualt, String ugs, String uvs) {
+	public String formattedHeader(String uxy, String ualt, String ugs, String uvs) {
 		String s="";
 		if (pos_.isLatLon()) {
 			s += "NAME lat lon alt trk gs vs time\n";
 			s += "[none] [deg] [deg] ["+ualt+"] [deg] ["+ugs+"] ["+uvs+"] [s]\n";
-			s += getId()+", "+pos_.lla().toStringNP(ualt,Constants.get_output_precision());
 		} else {
 			s += "NAME sx sy sz trk gs vs time\n";
 			s += "[none] ["+uxy+"] ["+uxy+"] ["+ualt+"] [deg] ["+ugs+"] ["+uvs+"] [s]\n";
-			s += getId()+", "+pos_.point().toStringNP(Constants.get_output_precision(),uxy,uxy,ualt);
-		}
-		s += ", "+vel_.toStringNP("deg",ugs,uvs,Constants.get_output_precision())+", "+
-				f.FmPrecision(time,Constants.get_output_precision())+"\n";
-		for (TrafficState ac : traffic) {
-			s += ac.getId()+", ";
-			if (pos_.isLatLon()) {
-				s += ac.pos_.lla().toStringNP(ualt,Constants.get_output_precision());
-			} else {
-				s += ac.pos_.point().toStringNP(Constants.get_output_precision(),uxy,uxy,ualt);
-			}
-			s += ", "+ac.vel_.toStringNP("deg",ugs,uvs,Constants.get_output_precision())+", "+
-					f.FmPrecision(time,Constants.get_output_precision())+"\n";
 		}
 		return s;
 	}
+
+	public String formattedTrafficState(String uxy, String ualt, String ugs, String uvs) {
+		String s="";
+		if (pos_.isLatLon()) {
+			s += getId()+", "+pos_.lla().toStringNP(ualt,Constants.get_output_precision());
+		} else {
+			s += getId()+", "+pos_.point().toStringNP(Constants.get_output_precision(),uxy,uxy,ualt);
+		}
+		s += ", "+vel_.toStringNP("deg",ugs,uvs,Constants.get_output_precision())+", "+
+				f.FmPrecision(time_,Constants.get_output_precision())+"\n";
+		return s;
+	}
+
+	public static String formattedTrafficList(List<TrafficState> traffic, 
+			String uxy, String ualt, String ugs, String uvs) {
+		String s="";
+		for (TrafficState ac : traffic) {
+			s += ac.formattedTrafficState(uxy, ualt, ugs, uvs);
+		}
+		return s;
+	}
+
+	public String formattedTraffic(List<TrafficState> traffic,
+			String uxy, String ualt, String ugs, String uvs) {
+		String s="";
+		s += formattedHeader(uxy,ualt,ugs,uvs);
+		s += formattedTrafficState(uxy,ualt,ugs,uvs);
+		s += formattedTrafficList(traffic,uxy,ualt,ugs,uvs);
+		return s;
+	}
+	
 
 	public String toPVS(int prec) {
 		return "(# id := \"" + getId() + "\", s := "+get_s().toPVS(prec)+", v := "+get_v().toPVS(prec)+" #)";   

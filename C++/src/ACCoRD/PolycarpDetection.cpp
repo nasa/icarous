@@ -3,7 +3,7 @@
  *
  * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)
  *
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -170,7 +170,7 @@ bool PolycarpDetection::Collision_Detector(double B, double T, const MovingPolyg
 }
 
 
-bool PolycarpDetection::Static_Collision_Detector(double B, double T, const std::vector<Vect2>& p, const Vect2 pv, const Vect2& s, const Vect2& v, double BUFF, bool insideBad) {
+bool PolycarpDetection::Static_Collision_Detector(double B, double T, const std::vector<Vect2>& p, const Vect2& pv, const Vect2& s, const Vect2& v, double BUFF, bool insideBad) {
   if (insideBad) {
     if (!PolycarpContain::definitely_outside(polygon_2D_at(p,pv,B),s.AddScal(B, v),BUFF)) {
       return true;

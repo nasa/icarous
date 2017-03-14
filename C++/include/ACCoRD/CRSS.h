@@ -7,7 +7,7 @@
  * 
  * Conflict resolution between an ownship and traffic aircraft using state information.
  *   
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -195,7 +195,7 @@ namespace larcfm {
    * @param vi      the intruder's velocity
    * @param ownship the ownship id 
    * @param traffic the traffic id
-   * @return
+   * @return type of resolution
    */
      int resolution(const Vect3& s, const Velocity& vo, const Velocity& vi, std::string ownship, std::string traffic);
 

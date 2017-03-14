@@ -7,9 +7,6 @@
 
 package gov.nasa.larcfm.Util;
 
-import gov.nasa.larcfm.Util.*;
-
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,9 +40,6 @@ public class PolyPath implements ErrorReporter {
 	private ErrorLog error = new ErrorLog("PolyPath");
 	private PathMode mode = PathMode.MORPHING;
 
-	//  boolean morphingPolys = true;
-	//  boolean calcVelocities = true; // if true, ignore the vlist values (the default value), otherwise use them
-
 
 	/**
 	 * Constructor
@@ -64,7 +58,9 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Make a PolyPlan for a non-dynamic area p.
 	 * This defaults to MORPHING mode.
-	 * @param p
+	 * 
+	 * @param id identifier
+	 * @param p polygon
 	 */
 	public PolyPath(String id, SimplePoly p) {
 		name = id;
@@ -79,6 +75,10 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Construct a new (dynamic) path including polygon p at time t
 	 * This defaults to MORPHING mode.
+	 * 
+	 * @param id identifier
+	 * @param p polygon
+	 * @param t time
 	 */
 	public PolyPath(String id, SimplePoly p, double t) {
 		name = id;
@@ -92,6 +92,11 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * This defaults to USER_VEL mode.
+	 * 
+	 * @param id identifier
+	 * @param p polygon
+	 * @param v velocity
+	 * @param t time
 	 */
 	public PolyPath(String id, SimplePoly p, Velocity v, double t) {
 		name = id;
@@ -106,6 +111,8 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Construct a new path using a set of SimplePolies and associated times.  ps and ts must both have the same length.
 	 * This defaults to MORPHING mode.
+	 * 
+	 * @param id identifier
 	 * @param ps array of SimplePolys
 	 * @param ts array of times.
 	 */
@@ -140,10 +147,13 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Return a one-step finite PolyPath consisting of the given SimplePoly moving in the indicated direction
 	 * This defaults to AVG_VEL mode.
+	 * 
+	 * @param name name
 	 * @param p initial polygon
 	 * @param v velocity of movement (as measured by each vertex)
 	 * @param tstart start time of path (absolute)
 	 * @param tend end time of path (absolute)
+	 * @return path of polygon
 	 */
 	public static PolyPath pathFromState(String name, SimplePoly p, Velocity v, double tstart, double tend) {
 		SimplePoly ep = p.linear(v, tend-tstart);
@@ -159,10 +169,13 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Return a one-step finite LatLon PolyPath consisting of the given MovingPolygon3D
 	 * This defaults to AVG_VEL mode.
+	 * 
+	 * @param name name
 	 * @param p initial polygon
 	 * @param proj projection to be used
 	 * @param tstart start time of path (absolute)
 	 * @param tend end time of path (absolute)
+	 * @return path of polygon
 	 */
 	public static PolyPath pathFromState(String name, MovingPolygon3D p, EuclideanProjection proj, double tstart, double tend) {
 		SimplePoly sp = SimplePoly.make(p.position(0), proj);
@@ -182,9 +195,12 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Return a one-step finite Euclidean PolyPath consisting of the given MovingPolygon3D
 	 * This defaults to AVG_VEL mode.
+	 * 
+	 * @param name name
 	 * @param p initial polygon
 	 * @param tstart start time of path (absolute)
 	 * @param tend end time of path (absolute)
+	 * @return path of polygon
 	 */
 	public static PolyPath pathFromState(String name, MovingPolygon3D p, double tstart, double tend) {
 		SimplePoly sp = SimplePoly.make(p.position(0));
@@ -204,6 +220,9 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * This defaults to MORPHING mode.
+	 * 
+	 * @param p polygon
+	 * @param time time
 	 */
 	public void addPolygon(SimplePoly p, double time) {
 		int i = 0;
@@ -253,6 +272,8 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Return a deep copy of this path.
+	 * 
+	 * @return path of polygon
 	 */
 	public PolyPath copy() {
 		return new PolyPath(this);
@@ -305,47 +326,10 @@ public class PolyPath implements ErrorReporter {
 		return Triple.make(p, maxD, maxH/2);
 	}
 
-	//  /**
-	//   * Returns a set of Plans covering the given PolyPath
-	//   * @return new list of Plans
-	//   */
-	//  public ArrayList<Plan> buildPlans() {
-	//	  ArrayList<Plan> plist = new ArrayList<Plan>();
-	//	  for (int j = 0; j < polyList.get(0).size(); j++) {
-	//		  Plan p = new Plan(name);
-	//		  double maxH = 0;
-	//		  double maxD = 0;
-	//		  for (int i = 0; i < times.size(); i++) {
-	//			  SimplePoly poly = polyList.get(i);
-	//			  NavPoint pt = new NavPoint(poly.getVertex(i),1.0);
-	//			  NavPoint c = new NavPoint(poly.centroid(), 0.0);
-	//			  double r = c.position().distanceH(pt.position());
-	//			  Velocity v = c.initialVelocity(pt);
-	//			  double time = times.get(i);
-	//			  NavPoint np = new NavPoint(poly.centroid().linear(v, 0.5),time);
-	//			  p.add(np);
-	//			  if (Math.abs(poly.getTop()-poly.getBottom()) > maxH) 
-	//				  maxH = Math.abs(poly.getTop()-poly.getBottom());
-	//			  if (r > maxD) 
-	//				  maxD = r;
-	//		  }
-	//		  
-	//		  // static poly
-	//		  if (times.size() == 1) {
-	//			  //SimplePoly poly = polyList.get(0);
-	//			  NavPoint np = p.point(0).makeTime(Double.MAX_VALUE);
-	//			  p.add(np);
-	//		  }
-	//		  
-	//		  p.setProtectionDistance(maxD);
-	//		  p.setProtectionHeight(maxH/2);
-	//		  plist.add(p);
-	//	  }
-	//	  return plist;
-	//  }
 
 	/**
 	 * Return true if this path contains any geodetic points.
+	 * @return true, if lat/lon
 	 */
 	public boolean isLatLon() {
 		return polyList.size() > 0 && polyList.get(0).isLatLon();
@@ -354,6 +338,7 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Return true if this PolyPath is static (it always exists in a fixed location).
 	 * This is the case if there is only one step in the path and the mode is not USER_VEL 
+	 * @return true, if static
 	 */
 	public boolean isStatic() {
 		return polyList.size() == 1 && mode != PathMode.USER_VEL;
@@ -362,6 +347,7 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Return true if this PolyPath continues to exist past the defined path (it has a velocity, which may be zero, and no definite end point)
 	 * This is the case if mode is USER_VEL or if there is only one step in the path. 
+	 * @return true, if continuing
 	 */
 	public boolean isContinuing() {
 		return polyList.size() == 1 || mode == PathMode.USER_VEL;
@@ -370,8 +356,11 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Get the mode for this path.
 	 *  MORPHING: all polygons must have the same number of vertices.  Velocities are calculated by vertex between consecutive steps.
-	 *  AVG_VEL: Velocities are calculated between the average points of consecutive steps.  Polygons do not need to have the same number of vertices at each step.
-	 *  USER_VEL: Velocities are user-specified and applied to all vertices.  Polygons do not need to have the same number of vertices at each step.  The last step will have an infinitely continuing velocity.
+	 *  AVG_VEL: Velocities are calculated between the average points of consecutive steps.  Polygons do not need to have the same 
+	 *  number of vertices at each step.
+	 *  USER_VEL: Velocities are user-specified and applied to all vertices.  Polygons do not need to have the same number of 
+	 *  vertices at each step.  The last step will have an infinitely continuing velocity.
+	 *  @return path mode
 	 */
 	public PathMode getPathMode() {
 		return mode;
@@ -379,6 +368,7 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Helper function to combine the 2 user vel modes 
+	 * @return true, if user velocity
 	 */
 	private boolean isUserVel() {
 		return mode == PathMode.USER_VEL || mode == PathMode.USER_VEL_FINITE;
@@ -392,6 +382,7 @@ public class PolyPath implements ErrorReporter {
 	 *  Changing away from USER_VEL will erase any stored velocity information.  Changing to USER_VEL will populate the path with the same values
 	 *  as AVG_VEL (the last step will have a zero velocity). 
 	 *  USER_VEL_FINITE: as USER_VEL
+	 *  @param m path mode
 	 */
 	public void setPathMode(PathMode m) {
 		if (m == PathMode.MORPHING) {
@@ -432,40 +423,11 @@ public class PolyPath implements ErrorReporter {
 		mode = m;
 	}
 
-	//  /**
-	//   * If true, polygon velocities will be calculated based on frames at either end of the segment (averagePoint).
-	//   * If false, polygon velocities are user-defined
-	//   * If polygons are morphing, this value is always true.
-	//   */
-	//  public boolean isCalculateVelocities() {
-	//	  return morphingPolys || calcVelocities;
-	//  }
-	//  
-	//  /**
-	//   * If true, polygon vertices will have individual velocities.
-	//   * If false, all polygon vertices will have the same velocity (either user-defined or based off the relative averagePoint positions).
-	//   * Changing this value from true to false will replace all stored velocities with the interpolated values, with the last being zero (these can then be modified individually)
-	//   * if polygons are morphing, setting this to false will generate a warning.
-	//   */
-	//  public void setCalculateVelocities(boolean b) {
-	//	  if (!b && morphingPolys) {
-	//		  error.addWarning("setCalculateVelocities cannot be set to false when isMorphingPolygons is true");
-	//	  }
-	//	  if (!b && calcVelocities) {
-	//		  
-	//		  for (int i = 0; i < vlist.size()-1; i++) {
-	//			  vlist.set(i, initialVelocity(i));
-	//		  }
-	//		  if (vlist.size() > 0) {
-	//			  vlist.set(vlist.size()-1, Velocity.ZERO);
-	//		  }
-	//	  }
-	//	  calcVelocities = b;
-	//  }
 
 
 	/**
 	 * Returns the name associated with this path
+	 * @return name
 	 */
 	public String getName() {
 		return name;
@@ -473,6 +435,7 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Sets the name to be associated with this path.
+	 * @param n new name
 	 */
 	public void setName(String n) {
 		name = n;
@@ -480,6 +443,7 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Returns the number of time points in this path.  Static paths will have a size of 1.
+	 * @return size
 	 */
 	public int size() {
 		return polyList.size();
@@ -489,6 +453,7 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Remove a poly from this path, by step index.
+	 * @param n index
 	 */
 	public void remove(int n) {
 		polyList.remove(n);
@@ -498,6 +463,7 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Returns the start time of this path.  Static paths have a start time of 0.
+	 * @return first time
 	 */
 	public double getFirstTime() {
 		if (times.size() > 1) return times.get(0);
@@ -506,6 +472,7 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Returns the end time of this path.  Static paths have an end time of 0.  Continuing paths have an end time of POSITIVE_INFINITY
+	 * @return last time
 	 */
 	public double getLastTime() {
 		if (isContinuing()) return Double.POSITIVE_INFINITY;
@@ -515,6 +482,9 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Returns an interpolated poly from an arbitrary time on this path.
+	 * 
+	 * @param time time
+	 * @return polygon
 	 */
 	public SimplePoly interpolate(double time) {
 		//f.pln("A mode="+mode+" size="+size());	  
@@ -599,6 +569,8 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Returns the initial velocity of this path, starting from a given step index.
+	 * @param n index
+	 * @return velocity
 	 */
 	public Velocity initialVelocity(int n) {
 //f.pln(" $$ initialVelocity "+n+": polyList.size() = "+polyList.size());
@@ -648,6 +620,8 @@ public class PolyPath implements ErrorReporter {
 	 * -1 indicates a time before the path begins. -x indicates a time after point (x-1), so a time between points 1 and 2 will return index -2. 
 	 * A time after the path will return -size-1.
 	 * 
+	 * @param time time
+	 * @return index
 	 */
 	public int getIndex(double time) {
 		if (polyList.size() == 1) return 0;
@@ -666,6 +640,9 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Returns the poly at step index n (reference).
+	 * 
+	 * @param n index
+	 * @return polygon
 	 */
 	public SimplePoly getPolyRef(int n) {
 		if (times.size() == 1) return polyList.get(0);
@@ -678,6 +655,9 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Returns a copy of the poly at step index n.
+	 * 
+	 * @param n index
+	 * @return polygon
 	 */
 	public SimplePoly getPoly(int n) {
 		if (times.size() == 1) return polyList.get(0);
@@ -690,6 +670,9 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Returns the time for a given step index.
+	 * 
+	 * @param n index
+	 * @return time
 	 */
 	public double getTime(int n) {
 		if (times.size() == 1) return times.get(0);
@@ -701,6 +684,9 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Sets the time t for a given step n.  The order of times must be preserved. 
+	 * 
+	 * @param n index
+	 * @param t time
 	 */
 	public void setTime(int n, double t) {
 		if (t >= 0 && n >= 0 && n < size()) {
@@ -714,6 +700,9 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Set the polygon at index i to be a copy of p
+	 * 
+	 * @param i index
+	 * @param p polygon
 	 */
 	public void setPolygon(int i, SimplePoly p) {
 		if (i < 0 || i >= times.size()) {

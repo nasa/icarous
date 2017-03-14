@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -50,10 +50,18 @@ namespace larcfm {
     /** Default constructor. */
     SimpleProjection();
 
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point. 
+	 * 
+	 * @param lla reference point
+	 */
     SimpleProjection(const LatLonAlt& lla);
     
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point.
+	 * 
+	 * @param lat latitude of reference point
+	 * @param lon longitude of reference point
+	 * @param alt altitude of reference point
+	 */
     SimpleProjection(double lat, double lon, double alt);
     
     /** Destructor */
@@ -78,7 +86,10 @@ namespace larcfm {
 	/** Get the projection point for this projection */
 	LatLonAlt getProjectionPoint() const;
 
-    /** Is the reference point near a pole? */    
+    /** Is the reference point near a pole? 
+     * 
+     * @return true, if reference point near a pole
+     */    
     bool isPolar() const;
     
     /** Return a projection of a lat/lon(/alt) point in Euclidean 2-space */
@@ -117,48 +128,69 @@ namespace larcfm {
     /** String representation */
     std::string toString() const { return "SimpleProjection "+to_string(projLat)+" "+to_string(projLon)+" "+to_string(projAlt);}
   
-    /**
-     * This method performs a particular projection from a spherical Earth
-     * latitude/longitude coordinate system to Euclidean (XY) one. Lat/long #0
-     * are placed at the origin of the XY coordinate system. The returned value
-     * is an XY position of point #1 relative to point #0.
-     * <p>
-     *
-     * This projection has the property that the Euclidean distance in the XY
-     * frame is equal to the great circle distance in the lat/lon frame. In
-     * addition, the course from the origin to the returned x,y point is the
-     * same as the course at the mid point on the great circle arc.
-     * <p>
-     *
-     * This transform has a symmetric correspondence, that is, it doesn't matter
-     * which point is the origin: <tt>projectXY(lat0,lon0,lat1,lon1) =
-     * -projectXY(lat1,lon1,lat0,lon0)</tt>
-     */
+	/**
+	 * This method performs a particular projection from a spherical Earth
+	 * latitude/longitude coordinate system to Euclidean (XY) one. Lat/long #0
+	 * are placed at the origin of the XY coordinate system. The returned value
+	 * is an XY position of point #1 relative to point #0.
+	 * <p>
+	 * 
+	 * This projection has the property that the Euclidean distance in the XY
+	 * frame is equal to the great circle distance in the lat/lon frame. In
+	 * addition, the course from the origin to the returned x,y point is the
+	 * same as the course at the mid point on the great circle arc.
+	 * <p>
+	 * 
+	 * This transform has a symmetric correspondence, that is, it doesn't matter
+	 * which point is the origin: <tt>projectXY(lat0,lon0,lat1,lon1) =
+	 * -projectXY(lat1,lon1,lat0,lon0)</tt>
+	 * 
+	 * @param lat0 latitude of first point
+	 * @param lon0 longitude of first point
+	 * @param lat1 latitude of second point
+	 * @param lon1 longitude of second point
+	 * @return point in projected space
+	 */
     static Vect2 projectXY(double lat0, double lon0, double lat1, double lon1);
     
-    /**
-     * This method performs a particular projection from a spherical Earth
-     * latitude/longitude coordinate system to Euclidean (XYZ) one. Lat/long #0
-     * are placed at the origin of the Euclidean coordinate system. The returned value
-     * is the position of point #1 relative to point #0.
-     * <p>
-     *
-     * This projection has the property that the Euclidean distance in the XY
-     * frame is equal to the great circle distance in the lat/lon frame. In
-     * addition, the course from the origin to the returned x,y point is the
-     * same as the course at the mid point on the great circle arc.
-     * <p>
-     *
-     * This transform has a symmetric correspondence, that is, it doesn't matter
-     * which point is the origin: <tt>projectXY(lat0,lon0,lat1,lon1) =
-     * -projectXY(lat1,lon1,lat0,lon0)</tt>
-     */
+	/**
+	 * This method performs a particular projection from a spherical Earth
+	 * latitude/longitude coordinate system to Euclidean (XYZ) one. Lat/long #0
+	 * are placed at the origin of the Euclidean coordinate system. The returned value
+	 * is the position of point #1 relative to point #0.
+	 * <p>
+	 * 
+	 * This projection has the property that the Euclidean distance in the XY
+	 * frame is equal to the great circle distance in the lat/lon frame. In
+	 * addition, the course from the origin to the returned x,y point is the
+	 * same as the course at the mid point on the great circle arc.
+	 * <p>
+	 * 
+	 * This transform has a symmetric correspondence, that is, it doesn't matter
+	 * which point is the origin: <tt>projectXY(lat0,lon0,lat1,lon1) =
+	 * -projectXY(lat1,lon1,lat0,lon0)</tt>
+	 * 
+	 * @param p0 position one
+	 * @param p1 position two
+	 * @return position in projected space
+	 */
     static Vect3 projectXYZ(const LatLonAlt& p0, const LatLonAlt& p1);
 
-    /** Return a projection with the pole as a reference point. */
+    /** Return a projection with the pole as a reference point. 
+	 * 
+	 * @param lla   geodetic position
+	 * @param north true, if north pole
+	 * @return position in projected space
+	 */
     static Vect2 polar_xy(const LatLonAlt& lla, bool north);
 
-    /** Invert a projection, using the pole as a reference point. */
+    /** Invert a projection, using the pole as a reference point.
+	 * 
+	 * @param v   point in projected space
+	 * @param alt altitude in projected space
+	 * @param north true, if north pole
+	 * @return geodetic position
+	 */
     static LatLonAlt polar_inverse(const Vect2& v, double alt, bool north);
 
   };

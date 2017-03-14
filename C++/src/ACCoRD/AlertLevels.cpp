@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -12,7 +12,6 @@
 #include "Detection3D.h"
 #include "BandsRegion.h"
 #include "WCV_TAUMOD.h"
-#include "Constants.h"
 
 #include <vector>
 #include <map>
@@ -298,7 +297,7 @@ ParameterData AlertLevels::getParameters() const {
 
 void AlertLevels::updateParameterData(ParameterData& p) const {
   Detection3DParameterReader::registerDefaults();
-  p.set("conflict_level",Fmi(conflict_level_));
+  p.setInt("conflict_level",conflict_level_);
   // get list of detectors that are in the alerts
   std::vector<Detection3D*> dlist;
   std::vector<std::string> idlist;
@@ -316,18 +315,10 @@ void AlertLevels::updateParameterData(ParameterData& p) const {
   for (int i = 0; i < (int) idlist.size(); i++) {
     pdmain.remove(idlist[i]);
   }
-  int precision = Constants::get_output_precision();
   // add parameters for each alerter, ensuring they have an ordered set of identifiers
   for (int i = 1; i <= mostSevereAlertLevel(); i++) {
     ParameterData pd;
-    pd.set("detector", getLevel(i).getDetectorRef()->getIdentifier());
-    pd.setInternal("alerting_time", getLevel(i).getAlertingTime(), "s", precision);
-    pd.setInternal("early_alerting_time", getLevel(i).getEarlyAlertingTime(), "s", precision);
-    pd.set("region", BandsRegion::to_string(getLevel(i).getRegion()));
-    pd.setInternal("spread_trk", getLevel(i).getTrackSpread(), "deg", precision);
-    pd.setInternal("spread_gs", getLevel(i).getGroundSpeedSpread(), "knot", precision);
-    pd.setInternal("spread_vs", getLevel(i).getVerticalSpeedSpread(), "fpm", precision);
-    pd.setInternal("spread_alt", getLevel(i).getAltitudeSpread(), "ft", precision);
+    getLevel(i).updateParameterData(pd);
     //make sure each instance has a unique, ordered name
     std::string prefix = "alert_"+Fmi(i)+"_";
     pdmain.copy(pd.copyWithPrefix(prefix), true);
@@ -336,7 +327,9 @@ void AlertLevels::updateParameterData(ParameterData& p) const {
 
 void AlertLevels::setParameters(const ParameterData& p) {
   Detection3DParameterReader::registerDefaults();
-  if (p.contains("conflict_level")) conflict_level_ = p.getInt("conflict_level");
+  if (p.contains("conflict_level")) {
+    setConflictAlertLevel(p.getInt("conflict_level"));
+  }
   // read in all detector information
   std::vector<Detection3D*> dlist = Detection3DParameterReader::readCoreDetection(p).first;
   // put in map for easy lookup
@@ -353,16 +346,11 @@ void AlertLevels::setParameters(const ParameterData& p) {
   }
   while (pdsub.size() > 0) {
     // build the alertlevel
+    AlertThresholds al;
     Detection3D* det = dmap[pdsub.getString("detector")];
-    double alertingTime = pdsub.getValue("alerting_time");
-    double earlyAlertingTime = pdsub.getValue("early_alerting_time");
-    BandsRegion::Region br = BandsRegion::valueOf(pdsub.getString("region"));
-    AlertThresholds al = AlertThresholds(det,alertingTime,earlyAlertingTime,br);
+    al.setDetector(det);
     delete det; // al has a new copy, clean up the old one
-    al.setTrackSpread(pdsub.getValue("spread_trk"));
-    al.setGroundSpeedSpread(pdsub.getValue("spread_gs"));
-    al.setVerticalSpeedSpread(pdsub.getValue("spread_vs"));
-    al.setAltitudeSpread(pdsub.getValue("spread_alt"));
+    al.setParameters(pdsub);
     // modify or add the alertlevel (this cannot remove levels)
     if (counter <= (int) alertor_.size()) {
       setLevel(counter,al);

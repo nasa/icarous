@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -37,14 +37,16 @@ public:
 
 	Poly2D position(double t) const;
 
-  /** return true if this polygon is "stable", i.e., all vector velocities are the same */
+  /** return true if this polygon is "stable", i.e., all vector velocities are the same 
+   * @return true, if stable
+   * */
 	bool isStable() const;
 
 	int size() const ;
 
 	/**
 	 * Reverse order of vertices
-	 * @return
+	 * @return new polygon
 	 */
 	MovingPolygon2D reverseOrder() const;
 

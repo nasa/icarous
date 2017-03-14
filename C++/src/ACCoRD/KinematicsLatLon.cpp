@@ -4,7 +4,7 @@
  *           George Hagen              NASA Langley Research Center
  *           Jeff Maddalon             NASA Langley Research Center
   *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -138,7 +138,7 @@ std::pair<LatLonAlt,Velocity> KinematicsLatLon::turnOmega(std::pair<LatLonAlt,Ve
 		return std::pair<LatLonAlt,Velocity>(sn,vn);
 	}
   
-std::pair<LatLonAlt,Velocity> KinematicsLatLon::turnByDist(const LatLonAlt& so, const LatLonAlt& center, int dir, double d, double gsAtd) {
+std::pair<LatLonAlt,Velocity> KinematicsLatLon::turnByDist2D(const LatLonAlt& so, const LatLonAlt& center, int dir, double d, double gsAtd) {
     double R = GreatCircle::distance(so, center);
 	double alpha = dir*d/R;
 	double vFinalTrk = GreatCircle::initial_course(center,so);

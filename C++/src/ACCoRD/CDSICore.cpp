@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -213,8 +213,8 @@ bool CDSICore::detectionXYZ(const Vect3& so, const Velocity& vo, double t0, doub
   double NT = 0.0;
   double HT = 0.0;
 
-  if (t0 < intent.getTime(0)) {
-    t_base = intent.getTime(0);
+  if (t0 < intent.time(0)) {
+    t_base = intent.time(0);
     start_seg = 0;
   } else {
     t_base = t0;
@@ -243,7 +243,7 @@ bool CDSICore::detectionXYZ(const Vect3& so, const Velocity& vo, double t0, doub
     if (j == intent.size() - 1) { // extend
       continue; // leave loop
     } else { // normal case
-      HT = Util::max(0.0, Util::min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+      HT = Util::max(0.0, Util::min(state_horizon - (t_base - t0), intent.time(j+1) - t_base));
       BT = Util::max(0.0, B + t0 - t_base);
       NT = cont ? HT : T + t0 - t_base;
 
@@ -264,7 +264,7 @@ bool CDSICore::detectionXYZ(const Vect3& so, const Velocity& vo, double t0, doub
         }
       }
       cont = size() > 0 ? tout[(int)tout.size()-1] == HT + t_base : false;
-      t_base = intent.getTime(j+1);
+      t_base = intent.time(j+1);
     }
   }
 
@@ -298,8 +298,8 @@ bool CDSICore::detectionLL(const LatLonAlt& so, const Velocity& vo, double t0, d
   double NT = 0.0;
   double HT = 0.0;
 
-  if (t0 < intent.getTime(0)) {
-    t_base = intent.getTime(0);
+  if (t0 < intent.time(0)) {
+    t_base = intent.time(0);
     start_seg = 0;
   } else {
     t_base = t0;
@@ -334,7 +334,7 @@ bool CDSICore::detectionLL(const LatLonAlt& so, const Velocity& vo, double t0, d
     if (j == intent.size() - 1) {
       continue; // leave loop
     } else { // normal case
-      HT = Util::max(0.0, Util::min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+      HT = Util::max(0.0, Util::min(state_horizon - (t_base - t0), intent.time(j+1) - t_base));
       BT = Util::max(0.0, B + t0 - t_base);
       NT = cont ? HT : T + t0 - t_base;
 
@@ -362,7 +362,7 @@ bool CDSICore::detectionLL(const LatLonAlt& so, const Velocity& vo, double t0, d
       }
     }
     cont = size() > 0 ? tout[(int)tout.size()-1] == HT + t_base : false;
-    t_base = intent.getTime(j+1);
+    t_base = intent.time(j+1);
   }
 
 

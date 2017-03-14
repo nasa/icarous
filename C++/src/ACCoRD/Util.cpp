@@ -5,7 +5,7 @@
  *
  * Utility functions.
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -181,6 +181,35 @@ double Util::sqrt_safe(const double x) {
 	return sqrt(Util::max(x,0.0));
 }
 
+///**
+// * Fast inverse square root approximation, as presented in https://en.wikipedia.org/wiki/Fast_inverse_square_root
+// * (Initial testing did not show noteworthy performance improvements for daidalus.)
+// */
+//double Util::Q_rsqrt(const double number) {
+//	double x2 = number * 0.5;
+//	double y = number;
+//	std::int64_t i  = * (std::int64_t *) &y;	// ensure right number of bits
+//	i = 0x5fe6eb50c7b537a9 - ( i >> 1 );		// magic number to approximate sqrt
+//	y = * ( double * ) &i;
+//	y = y * ( 1.5 - ( x2 * y * y ) );   // 1st iteration of Newton's Method to refine number
+////	y = y * ( 1.5 - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+//
+//	return y;
+//}
+//
+//double invsqrtQuake( double number )
+//  {
+//      double y = number;
+//      double x2 = y * 0.5;
+//      std::int64_t i = *(std::int64_t *) &y;
+//      // The magic number is for doubles is from https://cs.uwaterloo.ca/~m32rober/rsqrt.pdf
+//      i = 0x5fe6eb50c7b537a9 - (i >> 1);
+//      y = *(double *) &i;
+//      y = y * (1.5 - (x2 * y * y));   // 1st iteration
+//      //      y  = y * ( 1.5 - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+//      return y;
+//  }
+
 double Util::atan2_safe(const double y, const double x) {
 	if (y == 0 && x == 0)
 		return 0;
@@ -241,7 +270,7 @@ const double& Util::min(const double& x, const double& y) {
 
 const float& Util::min(const float& x, const float& y) {
 	if (std::isnan(y)) return y;
-	if (x == 0.0 && y == 0.0 &&  std::signbit(y)) return y; // if y is -0, return y
+	if (x == 0.0 && y == 0.0 && std::signbit(y)) return y; // if y is -0, return y
 	return std::min(x,y);
 }
 
@@ -255,13 +284,13 @@ const long& Util::min(const long& x, const long& y) {
 
 const double& Util::max(const double& x, const double& y) {
 	if (std::isnan(y)) return y;
-	if (x == 0.0 && y == 0.0 &&  std::signbit(x)) return y; // if x is -0, return y
+	if (x == 0.0 && y == 0.0 && std::signbit(x)) return y; // if x is -0, return y
 	return std::max(x,y);
 }
 
 const float& Util::max(const float& x, const float& y) {
 	if (std::isnan(y)) return y;
-	if (x == 0.0 && y == 0.0 &&  std::signbit(x)) return y; // if x is -0, return y
+	if (x == 0.0 && y == 0.0 && std::signbit(x)) return y; // if x is -0, return y
 	return std::max(x,y);
 }
 
@@ -415,6 +444,15 @@ double Util::parse_double(const string& str) {
 		return 0.0;
 	}
 	return d;
+}
+
+/**
+ * Returns true if the stored value for key is likely a boolean
+ * @param s name
+ * @return true if string value is true/false/t/f, false otherwise
+ */
+bool Util::is_boolean(const std::string& s) {
+	  return (equalsIgnoreCase(s, "true") || equalsIgnoreCase(s, "T") || equalsIgnoreCase(s, "false") || equalsIgnoreCase(s, "F"));
 }
 
 

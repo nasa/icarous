@@ -289,9 +289,9 @@ double FlightManagementSystem_t::GetApproxElapsedPlanTime(Plan fp,int nextWP){
 
 	Position pos          = FlightData->acState.positionLast();
 	double legDistance    = fp.pathDistance(nextWP - 1);
-	double legTime        = fp.getTime(nextWP) - fp.getTime(nextWP-1);
+	double legTime        = fp.time(nextWP) - fp.time(nextWP-1);
 	double lastWPDistance = fp.point(nextWP-1).position().distanceH(pos);
-	double currentTime    = fp.getTime(nextWP-1) + legTime/legDistance * lastWPDistance;
+	double currentTime    = fp.time(nextWP-1) + legTime/legDistance * lastWPDistance;
 
 	return currentTime;
 }

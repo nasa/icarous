@@ -1,7 +1,7 @@
 /*
  * Kinematics.h
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -88,7 +88,8 @@ public:
    * Calculates the bank angle used for a given turn radius and ground speed.   Assumes 
    * sea-level gravity.  
    * @param speed ground speed (speed &ge; 0.0)
-   * @param  R     radius (R &gt; 0.0)
+   * @param R     radius (R &gt; 0.0)
+   * @param turnRight true, if a right turn is desired
    * @return       bank angle (positive = turn right, negative = turn left)
    */
 	  static double bankAngleRadius(double speed, double R, bool turnRight);
@@ -220,7 +221,7 @@ public:
 
 	static Vect2 center(const Vect3& s0, const Velocity& v0, double omega);
 
-	static std::pair<Vect3,Velocity> turnByDist(const Vect3& so, const Vect3& center, int dir, double d, double gsAt_d);
+	static std::pair<Vect3,Velocity> turnByDist2D(const Vect3& so, const Vect3& center, int dir, double d, double gsAt_d);
 
 	/**
 	 * Position/Velocity after turning t time units according to track rate omega
@@ -384,10 +385,23 @@ public:
 	 * @param v0 turn start velocity
 	 * @param omega rate of turn (+ = right, - = left)
 	 * @param x point of interest
-	 * @return time on turn when we are closest to the given point x (in seconds)
+	 * @param endTime time at which turn finishes.  If <= 0, assume a full turn is allowed.
+	 * @return time on turn when we are closest to the given point x (in seconds), or -1 if we are precisely at the turn's center
+	 * This will be bounded by [0,endTime]
 	 */
 	static double closestTimeOnTurn(const Vect3& s0, const Velocity& v0, double omega, const Vect3& x, double endTime);
 
+	/**
+	 * Calculate when during the turn we will be closest to the given point.
+	 * @param s0 turn start position
+	 * @param v0 turn start velocity
+	 * @param R turn radius
+	 * @param dir direction of turn
+	 * @param x point of interest
+	 * @param maxDist distance at which turn finishes.  If <= 0, assume a full turn is allowed.
+	 * @return distance on turn when we are closest to the given point x, or -1 if we are precisely at the turn's center
+	 * This will be bounded by [0,maxDist]
+	 */
 	static double closestDistOnTurn(const Vect3& s0, const Velocity& v0, double R, int dir, const Vect3& x, double maxDist);
 
 
@@ -438,7 +452,7 @@ public:
 
 
 	/** Test for LoS(D,H) between two aircraft when only ownship turns, compute trajectories up to time stopTime
-	 *
+	 * 
 	 * @param so    initial position of ownship
 	 * @param vo    initial velocity of ownship
 	 * @param nvo   the target velocity of ownship (i.e. after turn maneuver complete)
@@ -447,6 +461,8 @@ public:
 	 * @param bankAngleOwn       the bank angle of the ownship
 	 * @param turnRightOwn     the turn direction of ownship
 	 * @param stopTime         the duration of the turns
+	 * @param D     horizontal distance
+	 * @param H     vertical distance
 	 * @return                 minimum distance data packed in a Vect4
 	 */
 	static bool testLoSTrk(const Vect3& so, const Velocity& vo, const Velocity& nvo, const Vect3& si, const Velocity& vi,
@@ -523,7 +539,7 @@ public:
 
 
 	/** Test for LoS(D,H) between two aircraft when only ownship gs accelerates, compute trajectories up to time stopTime
-	 *
+	 * 
 	 * @param so    initial position of ownship
 	 * @param vo    initial velocity of ownship
 	 * @param nvo   the target velocity of ownship (i.e. after turn maneuver complete)
@@ -531,6 +547,8 @@ public:
 	 * @param vi    initial velocity of traffic
 	 * @param gsAccelOwn    ground speed acceleration of the ownship
 	 * @param stopTime         the duration of the turns
+	 * @param D     horizontal distance
+	 * @param H     vertical distance
 	 * @return                 minimum distance data packed in a Vect4
 	 */
 	static bool testLoSGs(const Vect3& so, const Velocity& vo, const Velocity& nvo, const Vect3& si, const Velocity& vi,
@@ -543,6 +561,7 @@ public:
 
 	/**
 	 * Return the elevation angle (alternatively the negative glide-slope angle) for a climb (descent)
+	 * @param v velocity
 	 * @return elevation angle [radians]
 	 */
 	static double elevationAngle(Velocity v);

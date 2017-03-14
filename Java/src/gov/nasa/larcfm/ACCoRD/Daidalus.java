@@ -153,7 +153,7 @@ public class Daidalus implements ErrorReporter {
 		if (lastTrafficIndex() >= 0) {
 			Velocity delta_wind = wind_vector_.Sub(wind);
 			ownship_ = TrafficState.makeOwnship(ownship_.getId(),ownship_.getPosition(),
-					ownship_.getVelocity().Add(delta_wind));
+					ownship_.getVelocity().Add(delta_wind),ownship_.getTime());
 			for (int i=0; i < traffic_.size(); ++i) {
 				TrafficState ac = traffic_.get(i);
 				traffic_.set(i,ownship_.makeIntruder(ac.getId(),ac.getPosition(),
@@ -169,7 +169,7 @@ public class Daidalus implements ErrorReporter {
 	 */
 	public void setOwnshipState(String id, Position pos, Velocity vel, double time) {
 		traffic_.clear();
-		ownship_ = TrafficState.makeOwnship(id,pos,vel.Sub(wind_vector_));
+		ownship_ = TrafficState.makeOwnship(id,pos,vel.Sub(wind_vector_),time);
 		current_time_ = time;
 	}
 
@@ -238,14 +238,14 @@ public class Daidalus implements ErrorReporter {
 	public void resetOwnship(int ac_idx) {
 		if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
 			int ac = ac_idx-1;
-			TrafficState new_own = TrafficState.makeOwnship(traffic_.get(ac).getId(),traffic_.get(ac).getPosition(),traffic_.get(ac).getVelocity());
-			TrafficState old_own = new_own.makeIntruder(ownship_.getId(),ownship_.getPosition(),ownship_.getVelocity());
+			TrafficState new_own = TrafficState.makeOwnship(traffic_.get(ac));
+			TrafficState old_own = new_own.makeIntruder(ownship_);
 			ownship_ = new_own;
 			for (int i = 0; i < traffic_.size(); ++i) {
 				if (i == ac) {
 					traffic_.set(i,old_own);
 				} else {
-					traffic_.set(i,ownship_.makeIntruder(traffic_.get(i).getId(),traffic_.get(i).getPosition(),traffic_.get(i).getVelocity()));
+					traffic_.set(i,ownship_.makeIntruder(traffic_.get(i)));
 				}
 			}
 		} else {
@@ -291,7 +291,7 @@ public class Daidalus implements ErrorReporter {
 			double dt = time-current_time_;
 			Velocity vo = ownship_.getVelocity().Add(wind_vector_); // Original ground velocity
 			Position po = ownship_.getPosition().linear(vo,dt);   
-			ownship_ = TrafficState.makeOwnship(ownship_.getId(),po,ownship_.getVelocity());
+			ownship_ = TrafficState.makeOwnship(ownship_.getId(),po,ownship_.getVelocity(),time);
 			for (int i=0; i < traffic_.size(); ++i) {
 				TrafficState ac = traffic_.get(i);
 				Velocity vi = ac.getVelocity().Add(wind_vector_); // Original ground velocity
@@ -588,8 +588,7 @@ public class Daidalus implements ErrorReporter {
 		} else if (Units.isCompatible(ugs,"kph")) {
 			uxy = "km";
 		}
-		return ownship_.formattedTraffic(traffic_,current_time_,
-				uxy,ualt,ugs,uvs);
+		return ownship_.formattedTraffic(traffic_, uxy, ualt, ugs, uvs);
 	}
 
 	public String toString() {

@@ -37,14 +37,22 @@ public final class ENUProjection implements EuclideanProjection {
 
     public static final double tranLat = Units.from("deg", 85.0);   
     
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point. 
+     * 
+     * @param lla reference point
+     */
     public ENUProjection(LatLonAlt lla) {
         projAlt = lla.alt();
         ref = spherical2xyz(lla.lat(), lla.lon());
         llaRef = lla;
     }
  
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point. 
+     * 
+     * @param lat latitude of reference point
+     * @param lon longitude of reference point
+     * @param alt altitude of reference point
+     */
     public ENUProjection(double lat, double lon, double alt) {
         projAlt = alt;
         ref = spherical2xyz(lat, lon);

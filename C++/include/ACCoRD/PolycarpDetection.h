@@ -3,7 +3,7 @@
  *
  * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)
  *
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -29,7 +29,7 @@ public:
   static bool edge_detect_simple(double T, const Vect2& w, const Vect2& v, const Vect2& a, const Vect2& b, double Fac);
   static bool edge_detect(double T, const Vect2& s, const Vect2& v, const Vect2& segstart, const Vect2& segend, const Vect2& startvel, const Vect2& endvel, double Fac);
   static bool Collision_Detector(double B, double T, const MovingPolygon2D& mp, const Vect2& s, const Vect2& v, double BUFF, double Fac, bool insideBad);
-  static bool Static_Collision_Detector(double B, double T, const std::vector<Vect2>& p, const Vect2 pv, const Vect2& s, const Vect2& v, double BUFF, bool insideBad);
+  static bool Static_Collision_Detector(double B, double T, const std::vector<Vect2>& p, const Vect2& pv, const Vect2& s, const Vect2& v, double BUFF, bool insideBad);
   static std::vector<double> collisionTimesInOut(double B, double T, const MovingPolygon2D& mp, const Vect2& s, const Vect2& v, double BUFF, double Fac);
   static bool nice_moving_polygon_2D(double B, double T, const MovingPolygon2D& mp, double BUFF, double Fac);
 

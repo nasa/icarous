@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017 United States Government as represented by
+ * the National Aeronautics and Space Administration.  No copyright
+ * is claimed in the United States under Title 17, U.S.Code. All Other
+ * Rights Reserved.
+ */
 #include "DensityGrid.h"
 #include "Util.h"
 #include "GreatCircle.h"
@@ -376,7 +382,7 @@ namespace larcfm {
 	}
 
 	void DensityGrid::printGridPath(const std::vector<std::pair<int,int> >& gPath) {
-		for (int i = 0; i < gPath.size(); i++) {
+		for (int i = 0; i < (int) gPath.size(); i++) {
 			std::pair<int,int> ijPair = gPath[i];
 			fpln("printGridPath i = "+Fm0(i)+" ijPair = "+Fm0(ijPair.first)+","+Fm0(ijPair.second));
 		}
@@ -426,7 +432,7 @@ namespace larcfm {
 		std::pair<int,int> lastPair = gPath[0];
 		Direction lastDirection = undef;
 		rtn.push_back(lastPair);
-		for (int i = 1; i < gPath.size(); i++) {
+		for (int i = 1; i < (int) gPath.size(); i++) {
 			std::pair<int,int> pp = gPath[i];
 			Direction dir = direction(lastPair,pp);
 			if (dir == lastDirection) {
@@ -458,18 +464,18 @@ namespace larcfm {
 		}
 		Plan p =  Plan();
 		NavPoint np0 = NavPoint(startPoint_,startTime_);
-		p.add(np0);
+		p.addNavPoint(np0);
 		Position lastCenter = startPoint_;
 		double lastTime = startTime_;
 		double lastAlt = np0.alt();
-		for (int i = 1; i < gPath2.size()-1; i++) {   // don't add first or last pair
+		for (int i = 1; i < (int) gPath2.size()-1; i++) {   // don't add first or last pair
 			Position cntr = center(gPath2[i]);
 			double dist = cntr.distanceH(lastCenter);
 			double dt = dist/gs;
 			double time = lastTime + dt;
 			double newAlt = lastAlt + vs*dt;
 			cntr = cntr.mkAlt(newAlt);
-			p.add(NavPoint(cntr, time));
+			p.addNavPoint(NavPoint(cntr, time));
 			lastTime = time;
 			lastCenter = cntr;
 			lastAlt = newAlt;
@@ -484,7 +490,7 @@ namespace larcfm {
 			NavPoint nearest = p.closestPoint(pivot); // this will be the breakpoint, if it's not already in the plan
 			p.remove(p.size()-1);
 			if (p.point(p.size()-1).distanceH(nearest) > squareDist) {
-				p.add(nearest);
+				p.addNavPoint(nearest);
 			}
 			lastCenter = p.point(p.size()-1).position();
 		}
@@ -492,14 +498,14 @@ namespace larcfm {
 		double dist = lastCenter.distanceH(endPoint_);
 		double dt = dist/gs;
 		NavPoint last = NavPoint(endPoint_,lastTime+dt);
-		p.add(last);
+		p.addNavPoint(last);
 		return p;
 	}
 
 
 
 	bool DensityGrid::contains(const std::vector<std::pair<int,int> >& gPath, const std::pair<int,int>& pii) const {
-		for (int i = 0; i < gPath.size()-1; i++) {   // don't do last pair
+		for (int i = 0; i < (int) gPath.size()-1; i++) {   // don't do last pair
 			if (gPath[i] == pii) {
 				return true;
 			}
@@ -522,7 +528,7 @@ namespace larcfm {
 				}
 			}
 		}
-		for (int i = 0; i < gPath.size(); i++) {
+		for (int i = 0; i < (int) gPath.size(); i++) {
 			std::pair<int,int> xy = gPath[i];
 			int x1 = xy.first;
 			int y1 = xy.second;
@@ -556,7 +562,7 @@ namespace larcfm {
 				myWeights[i][j] = DBL_MAX;
 			}
 		}
-		for (int i = 1; i < p.size(); i++) {
+		for (int i = 1; i < (int) p.size(); i++) {
 			std::pair<int,int> pr = gridPosition(p.point(i).position());
 			int x0 = pr.first;
 			int y0 = pr.second;
@@ -580,7 +586,7 @@ namespace larcfm {
 	}
 
 	void DensityGrid::setPolyWeights(double time, const std::vector<PolyPath>& path) {
-		for (int i = 0; i < path.size(); i++) {
+		for (int i = 0; i < (int) path.size(); i++) {
 			PolyPath pp = path[i];
 			SimplePoly poly = pp.position(time);
 			//f.pln(" $$$ poly = "+poly);

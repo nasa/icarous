@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -26,36 +26,40 @@
 #include <map>
 
 namespace larcfm {
+/**
+ * Utilities to operate on Plans
+ * 
+ */
 class PlanUtil {
 
 public:
 
-//	static void savePlan(const Plan& plan, std::string str) ;
+	static bool gsConsistent(const Plan& p, int ixBGS, double distEpsilon,	 bool silent);
 
-//	static bool isConsistent(const Plan& plan, bool silent) ;
-
-	//static bool gsConsistent(int i, const NavPoint& GSCBegin, const NavPoint& GSCEnd, double accelEpsilon, double distEpsilon, double gsIn, double gsOut, bool silent) ;
-
-	static bool gsConsistent(const Plan& p, int i, double accelEpsilon, double distEpsilon,	 bool silent);
-
-	static bool vsConsistent(int i, const NavPoint& VSCBegin, const NavPoint& VSCEnd,  double accelEpsilon, double distEpsilon, const Velocity& vin, const Velocity& vout,  bool silent);
-
-	static bool vsConsistent(const Plan& p, int i,  double accelEpsilon, double distEpsilon, bool silent);
+	static bool vsConsistent(const Plan& p, int ixBVS,  double distEpsilon, double a, bool silent);
 
 	static bool turnConsistent(int i, const NavPoint& BOT, const NavPoint& EOT, const Velocity& vin, double finalTrack, bool silent) ;
 
-	static bool turnConsistent(const Plan& p, int i, double timeEpsilon, double distH_Epsilon, double distV_Epsilon, bool silent, bool useProjection);
-
-//    static bool turnConsistent(int i, const NavPoint& BOT, const NavPoint& EOT, double timeEpsilon, double distH_Epsilon, double distV_Epsilon,
-//		const Velocity& vin, const Velocity& vout, bool silent, bool useProjection);
-
-//    static bool turnConsistent(int i, const NavPoint& BOT, const NavPoint& EOT, double timeEpsilon, double distH_Epsilon, double distV_Epsilon,
-//    		const Velocity& vin, const Velocity& vout, bool silent, const EuclideanProjection& proj);
+	static bool turnConsistent(const Plan& p, int i, double distH_Epsilon, bool silent);
 
 
-	static bool velocityContinuous(const Plan& p, int i, double velEpsilon, bool silent);
+	static bool isTrkContinuous(const Plan& p, int i, double trkEpsilon, bool silent) ;
 
-	static bool okWithinTurn(const Plan& p, int i, double distH_Epsilon, bool silent);
+	static bool isGsContinuous(const Plan& p, int i, double gsEpsilon, bool silent) ;
+
+	static bool isVsContinuous(const Plan& p, int i, double velEpsilon, bool silent);
+
+//	static bool isVelocityContinuous(const Plan& p, int i, double velEpsilon, bool silent);
+
+	/** Checks to make sure that turnCenter, radius and location of BOT is consistent
+	 * 
+	 * @param p                plan
+	 * @param i                index point
+	 * @param distH_Epsilon    error bound
+	 * @param silent
+	 * @return
+	 */
+	static bool turnCenterConsistent(const Plan& p, int i, double distH_Epsilon, bool silent);
 
 
 	/**  timeShift points in plan by "dt" starting at index "start"
@@ -68,6 +72,34 @@ public:
 	 * @return        time-shifted plan
 	 */
 	static Plan timeShift(const Plan& p, int start, double dt);
+
+	static Plan makeSourceNew(const Plan& lpc);
+
+private:
+    /** Advance forward in plan "p"  starting at time "curTm" a distance of "advDistance" within a single segment
+     * 
+     * Note : assumes the advance by distance will not leave current segment
+     * Note : this can be used before there is a ground speed profile -- it does not depend upon correct velocities
+     * 
+     * @param p            plan of interest
+     * @param curTm        currentTime  of so
+     * @param advDistance  distance to advance
+     * @param linear       if true, treat plan as a linear plan (i.e. path is not curved)
+     * @return             Position "advDistance" ahead of "curTm"
+     */
+	static Position advanceDistanceInSeg(const Plan& p, double curTm, double advDistance, bool linear);
+public:
+	static std::pair<Position,int> advanceDistance(const Plan& p, double currentTime, double advanceDist, bool linear);
+
+
+	/** time required to cover distance "dist" if initial speed is "gsInit" and acceleration is "gsAccel"
+	 * 
+	 * @param gsAccel   ground speed acceleration
+	 * @param gsInit    initial ground speed
+	 * @param dist      distance travelled
+	 * @return
+	 */
+	static double timeFromGs(double gsInit, double gsAccel, double dist);
 
 	static Plan applyWindField(const Plan& pin, const Velocity& v);
 
@@ -104,38 +136,62 @@ public:
 
 
 	/**
-	 * Returns a Plan with all TCPs removed. Points are returned to their original source points and times 
-	 * (if the proper metadata is available).  
+	 * Returns a Plan with TCPs removed between start and upto.  If it was a kinematic plan, this will attempt to regress the TCPs to 
+	 * their original source points and times (if the proper metadata is available).  
 	 * 
-	 * Note.  If a subset of points need to be reverted, See Plan.revertGroupOfTCPs which uses sourcePosition but not sourceTimes.  
+	 * Note.  No check is made to insure that start or upto is not in the middle of a TCP.
+	 * Note.  See also Plan.revertGroupOfTCPs which uses sourcePosition but not sourceTimes.  It seeks to retain ground speeds.
+	 * 
+	 * Warning:  The reversion of points later in a plan without reverting earlier points can lead to strange ground speeds, because
+	 *           the source times correspond to longer paths (without turns).
 	 * 
 	 */
 	static Plan revertTCPs(const Plan& fp) ;
 
 
-	/** *********** UNDER DEVELOPMENT *************
+	/** 
 	 * Revert the TCP pair in a plan structurally.  Properly relocate all points between TCP pair.
 	 *
 	 * Note.  No check is made to insure that start or upto is not in the middle of a TCP.
+	 * 
+	 * @param pln plan
+	 * @param ix  index
 	 */
 	static void structRevertTCP(Plan& pln, int ix);
 
 	static void structRevertTCPs(Plan& pln, bool removeRedPoints);
 
-	/** structurally revert all TCPS that create acceleration zones containing ix
+	/** Structurally revert all TCPS that create acceleration zones containing ix
 	 *  if the point is a not a TCP do nothing.  Note that this function will timeshift the points after ix to regain 
 	 *  original ground speed into the point after ix.  
 	 *  
-	 *  NOTE This method does not depend upon source time!!
+	 *  NOTE This method does not depend upon source time or source position
 	 * 
+	 * @param pln plan
 	 * @param ix  The index of one of the TCPs created together that should be reverted
+	 * @param killAllOthersInside
 	 * @return index of the reverted point
 	 */
 	static int structRevertGroupOfTCPs(Plan& pln, int ix, bool killAllOthersInside);
 
+	/** if "ix" is a BGS, then it reverts the BGS-EGS pair back to a single linear point
+	 *  Note: It (does not depend upon source time or source position!)
+	 *  
+	 * @param pln                  plan
+	 * @param ix                   index of BGS
+	 * @param revertPreviousTurn   if true then if this GS segment is right after a turn then revert the turn as well  
+	 * @return                     index of reverted point
+	 */
 	static int structRevertGsTCP(Plan& pln, int ix, bool revertPreviousTurn);
 
-
+	/**
+	 * change ground speed to newGs, starting at startIx 
+	 * @param p
+	 * @param newGs
+	 * @param startIx
+	 * @return a new Plan
+	 */
+	static Plan makeGsConstant(const Plan& p, double newGs, int startIx);
 
 
 
@@ -152,7 +208,9 @@ public:
 	static Plan cutDown(const Plan& plan, double startTime, double endTime);
 
 
-	/** This method cuts a Plan so that the acceleration information after intentThreshold is discarded.  The plan
+	/** 
+	 * Cut down a plan so that it only contains points between timeOfCurrentPosition and intentThreshold.
+	 * This method cuts a Plan so that the acceleration information after intentThreshold is discarded.  The plan
 	 *  is continued linearly to time tExtend.  The first time point of the new plan is the 
 	 *  NavPoint before timeOfCurrentPosition in the plan.  The  intentThreshold and tExtend times are absolute.
 	 * 
@@ -164,7 +222,8 @@ public:
 	 */
 	static Plan cutDownTo(const Plan& plan, double timeOfCurrentPosition, double intentThreshold, double tExtend);
 
-	static Plan cutDownTo(const Plan& plan, double timeOfCurrentPosition, double intentThreshold) ;
+	static Plan cutDownTo(const Plan& plan, double timeOfCurrentPosition, double intentThreshold);
+
 
 	//	/**
 	//	 * Cut a Plan down to contain "numTCPs" future TCPS past the current time (i.e. timeOfCurrentPosition). If tExtend
@@ -200,7 +259,7 @@ public:
 	 * 
 	 * @return
 	 */
-	static Plan cutDownToByCount(const Plan& plan, int numTCPs, double timeOfCurrentPosition, double tExtend);
+//	static Plan cutDownToByCount(const Plan& plan, int numTCPs, double timeOfCurrentPosition, double tExtend);
 
 	static std::pair<bool,double> enoughDistanceForAccel(const Plan& p, int ix, double maxAccel, double M);
 
@@ -229,23 +288,23 @@ public:
 
 	static Plan removeCollinearTrk(const Plan& pp, double sameTrackBound);
 
-	/**
-	 *
-	 * Returns a new Plan that sets all points in a range to have a constant GS.
-	 * THIS ASSUMES NO VERTICAL TCPS.
-	 *
-	 * NOTE.  First remove Vertical TCPS then re-generate Vertical TCPs
-	 * */
-	static Plan makeGSConstant_NO_Verts(const Plan& p, double newGs);
-
-	/**
-	 * Returns a new Plan that sets all points in a range to have a constant GS.
-	 * THIS ASSUMES NO VERTICAL TCPS, but allows turns (turn omega metatdata may be altered -- maximum omega values are not tested for).
-	 * The return plan type will be the same as the input plan type.
-	 * The new gs is an average over the whole plan.  End time should be preserved.
-	 * This will set an error status in the return plan if there are any vertical TCPs.
-	 */
-	static Plan makeGSConstant_No_Verts(const Plan& p) ;
+//	/**
+//	 *
+//	 * Returns a new Plan that sets all points in a range to have a constant GS.
+//	 * THIS ASSUMES NO VERTICAL TCPS.
+//	 *
+//	 * NOTE.  First remove Vertical TCPS then re-generate Vertical TCPs
+//	 * */
+//	static Plan makeGSConstant_NO_Verts(const Plan& p, double newGs);
+//
+//	/**
+//	 * Returns a new Plan that sets all points in a range to have a constant GS.
+//	 * THIS ASSUMES NO VERTICAL TCPS, but allows turns (turn omega metatdata may be altered -- maximum omega values are not tested for).
+//	 * The return plan type will be the same as the input plan type.
+//	 * The new gs is an average over the whole plan.  End time should be preserved.
+//	 * This will set an error status in the return plan if there are any vertical TCPs.
+//	 */
+//	static Plan makeGSConstant_No_Verts(const Plan& p) ;
 
 	// This methods assumes plan is linear
 	/**
@@ -261,18 +320,32 @@ public:
 	 *    0 ----- 1 ----- 2 ----- 3 ----- 4 ----- 5
 	 * 
 	 *    Note that if wp1 == wp2 no change is made.
+	 *    
+	 * 
+	 * @param p
+	 * @param wp1
+	 * @param wp2
+	 * @param gs
+	 * @return a new plan
 	 */
 	static Plan linearMakeGSConstant(const Plan& p, int wp1, int wp2, double gs);
 
 	/**
 	 * Make ground speed constant gs for entire plan.
 	 * Assumes input plan is linear.
+	 * 
+	 * @param p plan
+	 * @param gs ground speed
+	 * @return a new plan
 	 */
 	static Plan linearMakeGSConstant(const Plan& p, double gs);
 
 	/**
 	 * Make ground speed constant gs between wp1 and wp2.
 	 * Assumes input plan is linear.
+	 * 
+	 * @param p a plan
+	 * @return a new plan with constant ground speed
 	 */
 	static Plan linearMakeGSConstant(const Plan& p);
 
@@ -280,6 +353,11 @@ public:
 	/**
 	 * Make ground speed constant between wp1 and wp2 as an average of the total distance and time travelled.
 	 * Assumes input plan is linear.
+	 * 
+	 * @param p   
+	 * @param wp1
+	 * @param wp2
+	 * @return
 	 */
 	static Plan linearMakeGSConstant(const Plan& p, int wp1, int wp2) ;
 
@@ -313,6 +391,8 @@ public:
 	static void linearMakeVsConstant(Plan& p, double vs);
 
 	static void linearMakeGsInto(Plan& p, int ix, double gs);
+
+
 
 
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -321,8 +321,9 @@ void fp(const string& str) {
 }
 
 void fpln(ostream* os, const string& str) {
+	std::string newline = "\n";
 	os->write(str.c_str(),str.size());
-	os->write("\n",1);
+	os->write(newline.c_str(),newline.size());
 }
 
 void fp(ostream* os, const string& str) {

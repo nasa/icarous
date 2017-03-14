@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -60,7 +60,7 @@ std::pair<Plan,DensityGrid> WeatherUtil::reRouteWx(const Plan& own, const std::v
 	// cut down working plan to startTime
 	if (paths.size() == 0) {
 		solution = own;
-	} else if (own.timeInPlan(startTime) && own.timeInPlan(endTime)) {
+	} else if (own.isTimeInPlan(startTime) && own.isTimeInPlan(endTime)) {
 		nPlan = PlanUtil::cutDown(own, startTime, endTime);
 		double gs = nPlan.initialVelocity(0).gs();
 		if (gs <= 0) {
@@ -79,8 +79,8 @@ std::pair<Plan,DensityGrid> WeatherUtil::reRouteWx(const Plan& own, const std::v
 		if (rrPlan.size() > 0) {
 			rrPlan = setAltitudes(rrPlan,currentVel.vs());
 			if (rrPlan.size() > 0) {
-				rrPlan.add(currentPos);
-				rrPlan.add(finalPos);
+				rrPlan.addNavPoint(currentPos);
+				rrPlan.addNavPoint(finalPos);
 				rrPlan.setTimeGSin(rrPlan.size()-1, nPlan.initialVelocity(0).gs());
 				//f.pln(" $$$$ reRoute: rrPlan = "+rrPlan+" "+localParams.unZigReroute);
 				solution = rrPlan;
@@ -113,7 +113,7 @@ std::pair<Plan,DensityGrid> WeatherUtil::reRouteWx(const Plan& own, const std::v
 		double timeOfCurrentPosition, double reRouteLeadIn, bool expandPolygons, double timeBefore, double timeAfter,
 		bool reRouteReduction) {
 	std::vector<PolyPath> npaths = std::vector<PolyPath>();
-	for (int i = 0; i < paths.size(); i++) {
+	for (int i = 0; i < (int) paths.size(); i++) {
 		PolyPath exp = PolyUtil::stretchOverTime(paths[i], timeBefore, timeAfter);
 		if (expandPolygons) {
 			// expand by 1/2 diagonal of grid size to ensure no missed sections.
@@ -153,7 +153,7 @@ std::pair<Plan,DensityGrid> WeatherUtil::reRouteWithAstar(const std::vector<Poly
 	std::vector<std::pair<int,int> > origpath = dg->gridPath(ownship);
 	bool noContainment = true;
 	if (containment.size() > 0) {
-		for (int i = 0; i < containment.size(); i++) {
+		for (int i = 0; i < (int) containment.size(); i++) {
 			if (containment[i].isStatic()) {
 				dg->setWeightsInside(containment[i].getPoly(0), 1.0);
 				noContainment = false;

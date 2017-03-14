@@ -4,13 +4,14 @@
  *           George Hagen              NASA Langley Research Center
  *           Jeff Maddalon             NASA Langley Research Center
   *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
 
 #include "KinematicsPosition.h"
+#include "GreatCircle.h"
 #include "Quad.h"
 #include "Tuple5.h"
 #include "format.h"
@@ -100,22 +101,35 @@ namespace larcfm {
 	}
 
 
-	/**
-	 *  Position and velocity after turning a distance d
-	 * @param so  starting position
-	 * @param vo  initial velocity
-	 * @param R   turn radius
-	 * @param t   time of turn [secs]
-	 * @param turnRight true iff only turn direction is to the right
-	 * @return Position and Velocity after t time
-	 */
-	std::pair<Position,Velocity> KinematicsPosition::turnByDist(const Position& so, const Position& center, int dir, double d, double gsAt_d) {
+	std::pair<Position,Velocity> KinematicsPosition::turnByDist2D(const Position& so, const Position& center, int dir, double d, double gsAt_d) {
 		if (so.isLatLon()) {
-			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::turnByDist(so.lla(), center.lla(), dir, d, gsAt_d);
+			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::turnByDist2D(so.lla(), center.lla(), dir, d, gsAt_d);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::turnByDist(so.point(), center.point(), dir, d, gsAt_d);
+			std::pair<Vect3,Velocity> resp = Kinematics::turnByDist2D(so.point(), center.point(), dir, d, gsAt_d);
 			return  std::pair<Position,Velocity>(Position(resp.first), resp.second);
+		}
+	}
+
+	Position KinematicsPosition::turnByDist2D(const Position& so, const Position& center, int dir, double d) {
+		if (so.isLatLon()) {
+			double R = GreatCircle::distance(so.lla(), center.lla());
+			double alpha = dir*d/R;
+			double trkFromCenter = GreatCircle::initial_course(center.lla(),so.lla());
+			double nTrk = trkFromCenter + alpha;
+			LatLonAlt sn = GreatCircle::linear_initial(center.lla(), nTrk, R);
+			sn = sn.mkAlt(0.0);
+			return Position(sn);
+		} else {
+			double R = so.distanceH(center);
+			if (R==0.0) return so;
+			double alpha = dir*d/R;
+			double trkFromCenter = Velocity::mkVel(center.point(), so.point(), 100.0).trk();
+			double nTrk = trkFromCenter + alpha;
+			Vect3 sn = center.point().linearByDist2D(nTrk, R);
+			sn = sn.mkZ(0.0);
+			return Position(sn);
+
 		}
 	}
 
@@ -339,6 +353,18 @@ namespace larcfm {
 	}
 
 
+	Position KinematicsPosition::centerFromRadius(const Position& bot, double signedRadius, double trkIn) {
+		int dir = Util::sign(signedRadius);
+		double radius = dir*signedRadius;
+			double trkToCenter = trkIn + dir*M_PI/2;
+			if (bot.isLatLon()) {
+				LatLonAlt center = GreatCircle::linear_initial(bot.lla(), trkToCenter, radius);
+				return Position(center);
+			} else {
+				Vect3 center = bot.point().linearByDist2D(trkToCenter, radius);
+				return Position(center);
+			}
+	}
 
 
 }

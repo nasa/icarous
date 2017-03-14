@@ -4,7 +4,7 @@
  * Contact: Cesar Munoz
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -69,14 +69,20 @@ TrafficState const & KinematicMultiBands::getOwnship() const {
 }
 
 // This function clears the traffic
-void KinematicMultiBands::setOwnship(TrafficState own) {
+void KinematicMultiBands::setOwnship(const TrafficState& own) {
   clear();
   core_.ownship = own;
 }
 
 // This function clears the traffic
 void KinematicMultiBands::setOwnship(const std::string& id, const Position& p, const Velocity& v) {
-  setOwnship(TrafficState::makeOwnship(id,p,v));
+  setOwnship(id,p,v,0.0);
+}
+
+// This function clears the traffic
+void KinematicMultiBands::setOwnship(const std::string& id, const Position& p, const Velocity& v,
+    double time) {
+  setOwnship(TrafficState::makeOwnship(id,p,v,time));
 }
 
 // This function clears the traffic
@@ -190,11 +196,28 @@ double KinematicMultiBands::getRecoveryStabilityTime()  const {
 }
 
 /**
+ * @return recovery stability time in specified units. Recovery bands are computed at time of first green plus
+ * this time.
+ */
+double KinematicMultiBands::getRecoveryStabilityTime(const std::string& u) const {
+  return core_.parameters.getRecoveryStabilityTime(u);
+}
+
+/**
  * Sets recovery stability time in seconds. Recovery bands are computed at time of first green plus
  * this time.
  */
 void KinematicMultiBands::setRecoveryStabilityTime(double t) {
   core_.parameters.setRecoveryStabilityTime(t);
+  reset();
+}
+
+/**
+ * Sets recovery stability time in seconds. Recovery bands are computed at time of first green plus
+ * this time.
+ */
+void KinematicMultiBands::setRecoveryStabilityTime(double t, const std::string& u) {
+  core_.parameters.setRecoveryStabilityTime(t,u);
   reset();
 }
 
@@ -209,7 +232,7 @@ double KinematicMultiBands::getMinHorizontalRecovery()  const {
  * Return minimum horizontal separation for recovery bands in specified units [u]
  */
 double KinematicMultiBands::getMinHorizontalRecovery(const std::string& u)  const {
-  return Units::to(u,getMinHorizontalRecovery());
+  return core_.parameters.getMinHorizontalRecovery(u);
 }
 
 /**
@@ -224,7 +247,8 @@ void KinematicMultiBands::setMinHorizontalRecovery(double val) {
  * Set minimum horizontal separation for recovery bands in specified units [u].
  */
 void KinematicMultiBands::setMinHorizontalRecovery(double val, const std::string& u) {
-  setMinHorizontalRecovery(Units::from(u,val));
+  core_.parameters.setMinHorizontalRecovery(val,u);
+  reset();
 }
 
 /**
@@ -238,7 +262,7 @@ double KinematicMultiBands::getMinVerticalRecovery()  const {
  * Return minimum vertical separation for recovery bands in specified units [u]
  */
 double KinematicMultiBands::getMinVerticalRecovery(const std::string& u)  const {
-  return Units::to(u,getMinVerticalRecovery());
+  return core_.parameters.getMinVerticalRecovery(u);
 }
 
 /**
@@ -253,7 +277,7 @@ void KinematicMultiBands::setMinVerticalRecovery(double val) {
  * Set minimum vertical separation for recovery bands in units
  */
 void KinematicMultiBands::setMinVerticalRecovery(double val, const std::string& u) {
-  setMinVerticalRecovery(Units::from(u,val));
+  core_.parameters.setMinVerticalRecovery(val,u);
   reset();
 }
 
@@ -467,14 +491,12 @@ double KinematicMultiBands::getRightTrack(const std::string& u) {
  * Set left track to value in internal units [rad]. Value is expected to be in [0 - pi]
  */
 void KinematicMultiBands::setLeftTrack(double val) {
-  val = -std::abs(val);
-  if (error.isBetween("setLeftTrack",val,-Pi,0)) {
-    if (!trk_band_.get_rel()) {
-      trk_band_.set_rel(true);
-    }
-    trk_band_.set_min(val);
-    reset();
+  val = -std::abs(Util::to_pi(val));
+  if (!trk_band_.get_rel()) {
+    trk_band_.set_rel(true);
   }
+  trk_band_.set_min(val);
+  reset();
 }
 
 /**
@@ -488,14 +510,12 @@ void KinematicMultiBands::setLeftTrack(double val, const std::string& u) {
  * Set right track to value in internal units [rad]. Value is expected to be in [0 - pi]
  */
 void KinematicMultiBands::setRightTrack(double val) {
-  val = std::abs(val);
-  if (error.isBetween("setRightTrack",val,0,Pi)) {
-    if (!trk_band_.get_rel()) {
-      trk_band_.set_rel(true);
-    }
-    trk_band_.set_max(val);
-    reset();
+  val = std::abs(Util::to_pi(val));
+  if (!trk_band_.get_rel()) {
+    trk_band_.set_rel(true);
   }
+  trk_band_.set_max(val);
+  reset();
 }
 
 /**
@@ -510,15 +530,17 @@ void KinematicMultiBands::setRightTrack(double val, const std::string& u) {
  * Values are expected to be in [0 - 2pi]
  */
 void KinematicMultiBands::setMinMaxTrack(double min, double max) {
-  if (error.isBetween("setMinMaxTrack",min,0,2*Pi) &&
-      error.isBetween("setMinMaxTrack",max,0,2*Pi)) {
-    if (trk_band_.get_rel()) {
-      trk_band_.set_rel(false);
-    }
-    trk_band_.set_min(min);
-    trk_band_.set_max(max);
-    reset();
+  min = Util::to_2pi(min);
+  max = Util::to_2pi(max);
+  if (max == 0) {
+    max = 2*Pi;
   }
+  if (trk_band_.get_rel()) {
+    trk_band_.set_rel(false);
+  }
+  trk_band_.set_min(min);
+  trk_band_.set_max(max);
+  reset();
 }
 
 /**
@@ -533,33 +555,32 @@ void KinematicMultiBands::setMinMaxTrack(double min, double max, const std::stri
  * @return step size for track bands in internal units [rad]
  */
 double KinematicMultiBands::getTrackStep()  const {
-  return trk_band_.get_step();
+  return core_.parameters.getTrackStep();
 }
 
 /**
  * @return step size for track bands in specified units [u].
  */
 double KinematicMultiBands::getTrackStep(const std::string& u)  const {
-  return core_.parameters.getTrackStep();
+  return core_.parameters.getTrackStep(u);
 }
 
 /**
  * Sets step size for track bands in internal units [rad]
  */
 void KinematicMultiBands::setTrackStep(double val) {
-  if (error.isPositive("setTrackStep",val) &&
-      error.isLessThan("setTrackStep",val,Pi)) {
-    trk_band_.set_step(val);
-    core_.parameters.setTrackStep(val);
-    reset();
-  }
+  core_.parameters.setTrackStep(val);
+  trk_band_.set_step(core_.parameters.getTrackStep());
+  reset();
 }
 
 /**
  * Sets step size for track bands in specified units [u].
  */
 void KinematicMultiBands::setTrackStep(double val, const std::string& u) {
-  setTrackStep(Units::from(u,val));
+  core_.parameters.setTrackStep(val,u);
+  trk_band_.set_step(core_.parameters.getTrackStep());
+  reset();
 }
 
 /**
@@ -573,7 +594,7 @@ double KinematicMultiBands::getBankAngle()  const {
  * @return bank angle in specified units [u].
  */
 double KinematicMultiBands::getBankAngle(const std::string& u)  const {
-  return Units::to(u,getBankAngle());
+  return core_.parameters.getBankAngle(u);
 }
 
 /**
@@ -581,12 +602,10 @@ double KinematicMultiBands::getBankAngle(const std::string& u)  const {
  * resets the turn rate.
  */
 void KinematicMultiBands::setBankAngle(double val) {
-  if (error.isNonNegative("setBankAngle",val)) {
-    trk_band_.set_bank_angle(val);
-    trk_band_.set_turn_rate(0);
-    core_.parameters.setBankAngle(val);
-    reset();
-  }
+  core_.parameters.setBankAngle(val);
+  trk_band_.set_bank_angle(core_.parameters.getBankAngle());
+  trk_band_.set_turn_rate(0);
+  reset();
 }
 
 /**
@@ -594,7 +613,10 @@ void KinematicMultiBands::setBankAngle(double val) {
  * resets the turn rate.
  */
 void KinematicMultiBands::setBankAngle(double val, const std::string& u) {
-  setBankAngle(Units::from(u,val));
+  core_.parameters.setBankAngle(val,u);
+  trk_band_.set_bank_angle(core_.parameters.getBankAngle());
+  trk_band_.set_turn_rate(0);
+  reset();
 }
 
 /**
@@ -608,7 +630,7 @@ double KinematicMultiBands::getTurnRate()  const {
  * @return turn rate in specified units [u].
  */
 double KinematicMultiBands::getTurnRate(const std::string& u)  const {
-  return Units::to(u,getTurnRate());
+  return core_.parameters.getTurnRate(u);
 }
 
 /**
@@ -616,20 +638,21 @@ double KinematicMultiBands::getTurnRate(const std::string& u)  const {
  * resets the bank angle.
  */
 void KinematicMultiBands::setTurnRate(double val) {
-  if (error.isNonNegative("setTurnRate",val)) {
-    trk_band_.set_turn_rate(val);
-    trk_band_.set_bank_angle(0);
-    core_.parameters.setTurnRate(val);
-    reset();
-  }
+  core_.parameters.setTurnRate(val);
+  trk_band_.set_turn_rate(core_.parameters.getTurnRate());
+  trk_band_.set_bank_angle(0);
+  reset();
 }
 
 /**
  * Sets turn rate for track bands to value in specified units [u]. As a side effect, this method
  * resets the bank angle.
  */
-void KinematicMultiBands::setTurnRate(double rate, const std::string& u) {
-  setTurnRate(Units::from(u,rate));
+void KinematicMultiBands::setTurnRate(double val, const std::string& u) {
+  core_.parameters.setTurnRate(val,u);
+  trk_band_.set_turn_rate(core_.parameters.getTurnRate());
+  trk_band_.set_bank_angle(0);
+  reset();
 }
 
 /**
@@ -770,25 +793,25 @@ double KinematicMultiBands::getGroundSpeedStep()  const {
  * @return step size for ground speed bands in specified units [u].
  */
 double KinematicMultiBands::getGroundSpeedStep(const std::string& u)  const {
-  return Units::to(u,getGroundSpeedStep());
+  return core_.parameters.getGroundSpeedStep(u);
 }
 
 /**
  * Sets step size for ground speed bands to value in internal units [m/s]
  */
 void KinematicMultiBands::setGroundSpeedStep(double val) {
-  if (error.isPositive("setGroundSpeedStep",val)) {
-    gs_band_.set_step(val);
-    core_.parameters.setGroundSpeedStep(val);
-    reset();
-  }
+  core_.parameters.setGroundSpeedStep(val);
+  gs_band_.set_step(core_.parameters.getGroundSpeedStep());
+  reset();
 }
 
 /**
  * Sets step size for ground speed bands to value in specified units [u].
  */
 void KinematicMultiBands::setGroundSpeedStep(double val, const std::string& u) {
-  setGroundSpeedStep(Units::from(u,val));
+  core_.parameters.setGroundSpeedStep(val,u);
+  gs_band_.set_step(core_.parameters.getGroundSpeedStep());
+  reset();
 }
 
 /**
@@ -802,25 +825,25 @@ double KinematicMultiBands::getHorizontalAcceleration()  const {
  * @return horizontal acceleration for ground speed bands to value in specified units [u].
  */
 double KinematicMultiBands::getHorizontalAcceleration(const std::string& u)  const {
-  return Units::to(u,getHorizontalAcceleration());
+  return core_.parameters.getHorizontalAcceleration(u);
 }
 
 /**
  * Sets horizontal acceleration for ground speed bands to value in internal units [m/s^2]
  */
 void KinematicMultiBands::setHorizontalAcceleration(double val) {
-  if (error.isNonNegative("setHorizontalAcceleration",val)) {
-    gs_band_.set_horizontal_accel(val);
-    core_.parameters.setHorizontalAcceleration(val);
-    reset();
-  }
+  core_.parameters.setHorizontalAcceleration(val);
+  gs_band_.set_horizontal_accel(core_.parameters.getHorizontalAcceleration());
+  reset();
 }
 
 /**
  * Sets horizontal acceleration for ground speed bands to value in specified units [u].
  */
 void KinematicMultiBands::setHorizontalAcceleration(double val, const std::string& u) {
-  setHorizontalAcceleration(Units::from(u,val));
+  core_.parameters.setHorizontalAcceleration(val,u);
+  gs_band_.set_horizontal_accel(core_.parameters.getHorizontalAcceleration());
+  reset();
 }
 
 /**
@@ -957,25 +980,25 @@ double KinematicMultiBands::getVerticalSpeedStep()  const {
  * @return step size for vertical speed bands in specified units [u].
  */
 double KinematicMultiBands::getVerticalSpeedStep(const std::string& u)  const {
-  return Units::to(u,getVerticalSpeedStep());
+  return core_.parameters.getVerticalSpeedStep(u);
 }
 
 /**
  * Sets step size for vertical speed bands to value in internal units [m/s]
  */
 void KinematicMultiBands::setVerticalSpeedStep(double val) {
-  if (error.isPositive("setVerticalSpeedStep",val)) {
-    vs_band_.set_step(val);
-    core_.parameters.setVerticalSpeedStep(val);
-    reset();
-  }
+  core_.parameters.setVerticalSpeedStep(val);
+  vs_band_.set_step(core_.parameters.getVerticalSpeedStep());
+  reset();
 }
 
 /**
  * Sets step size for vertical speed bands to value in specified units [u].
  */
 void KinematicMultiBands::setVerticalSpeedStep(double val, const std::string& u) {
-  setVerticalSpeedStep(Units::from(u,val));
+  core_.parameters.setVerticalSpeedStep(val,u);
+  vs_band_.set_step(core_.parameters.getVerticalSpeedStep());
+  reset();
 }
 
 /**
@@ -991,7 +1014,7 @@ double KinematicMultiBands::getVerticalAcceleration()  const {
  * units
  */
 double KinematicMultiBands::getVerticalAcceleration(const std::string& u)  const {
-  return Units::to(u,getVerticalAcceleration());
+  return core_.parameters.getVerticalAcceleration(u);
 }
 
 /**
@@ -999,12 +1022,10 @@ double KinematicMultiBands::getVerticalAcceleration(const std::string& u)  const
  * to value in internal units [m/s^2]
  */
 void KinematicMultiBands::setVerticalAcceleration(double val) {
-  if (error.isNonNegative("setVerticalAcceleration",val)) {
-    vs_band_.set_vertical_accel(val);
-    alt_band_.set_vertical_accel(val);
-    core_.parameters.setVerticalAcceleration(val);
-    reset();
-  }
+  core_.parameters.setVerticalAcceleration(val);
+  vs_band_.set_vertical_accel(core_.parameters.getVerticalAcceleration());
+  alt_band_.set_vertical_accel(core_.parameters.getVerticalAcceleration());
+  reset();
 }
 
 /**
@@ -1012,7 +1033,10 @@ void KinematicMultiBands::setVerticalAcceleration(double val) {
  * to value in specified units [u].
  */
 void KinematicMultiBands::setVerticalAcceleration(double val, const std::string& u) {
-  setVerticalAcceleration(Units::from(u,val));
+  core_.parameters.setVerticalAcceleration(val,u);
+  vs_band_.set_vertical_accel(core_.parameters.getVerticalAcceleration());
+  alt_band_.set_vertical_accel(core_.parameters.getVerticalAcceleration());
+  reset();
 }
 
 /**
@@ -1153,25 +1177,25 @@ double KinematicMultiBands::getAltitudeStep()  const {
  * @return step size for altitude bands in specified units [u].
  */
 double KinematicMultiBands::getAltitudeStep(const std::string& u)  const {
-  return Units::to(u,getAltitudeStep());
+  return core_.parameters.getAltitudeStep(u);
 }
 
 /**
  * Sets step size for altitude bands to value in internal units [m]
  */
 void KinematicMultiBands::setAltitudeStep(double val) {
-  if (error.isPositive("setAltitudeStep",val)) {
-    alt_band_.set_step(val);
-    core_.parameters.setAltitudeStep(val);
-    reset();
-  }
+  core_.parameters.setAltitudeStep(val);
+  alt_band_.set_step(core_.parameters.getAltitudeStep());
+  reset();
 }
 
 /**
  * Sets step size for altitude bands to value in specified units [u].
  */
 void KinematicMultiBands::setAltitudeStep(double val, const std::string& u) {
-  setAltitudeStep(Units::from(u,val));
+  core_.parameters.setAltitudeStep(val,u);
+  alt_band_.set_step(core_.parameters.getAltitudeStep());
+  reset();
 }
 
 /**
@@ -1185,25 +1209,25 @@ double KinematicMultiBands::getVerticalRate()  const {
  * @return the vertical climb/descend rate for altitude bands in specified units [u].
  */
 double KinematicMultiBands::getVerticalRate(const std::string& u)  const {
-  return Units::to(u,getVerticalRate());
+  return core_.parameters.getVerticalRate(u);
 }
 
 /**
  * Sets vertical rate for altitude bands to value in internal units [m/s]
  */
 void KinematicMultiBands::setVerticalRate(double val) {
-  if (error.isNonNegative("setVerticalRate",val)) {
-    alt_band_.set_vertical_rate(val);
-    core_.parameters.setVerticalRate(val);
-    reset();
-  }
+  core_.parameters.setVerticalRate(val);
+  alt_band_.set_vertical_rate(core_.parameters.getVerticalRate());
+  reset();
 }
 
 /**
  * Sets vertical rate for altitude bands to value in specified units [u].
  */
-void KinematicMultiBands::setVerticalRate(double rate, const std::string& u) {
-  setVerticalRate(Units::from(u,rate));
+void KinematicMultiBands::setVerticalRate(double val, const std::string& u) {
+  core_.parameters.setVerticalRate(val,u);
+  alt_band_.set_vertical_rate(core_.parameters.getVerticalRate());
+  reset();
 }
 
 /**
@@ -1217,7 +1241,7 @@ double KinematicMultiBands::getHorizontalNMAC() const {
  * @return horizontal NMAC distance in specified units [u].
  */
 double KinematicMultiBands::getHorizontalNMAC(const std::string& u) const {
-  return Units::to(u,getHorizontalNMAC());
+  return core_.parameters.getHorizontalNMAC(u);
 }
 
 /**
@@ -1231,7 +1255,7 @@ double KinematicMultiBands::getVerticalNMAC() const {
  * @return vertical NMAC distance in specified units [u].
  */
 double KinematicMultiBands::getVerticalNMAC(const std::string& u) const {
-  return Units::to(u,getVerticalNMAC());
+  return core_.parameters.getVerticalNMAC(u);
 }
 
 /**
@@ -1246,7 +1270,8 @@ void KinematicMultiBands::setHorizontalNMAC(double val) {
  * Set horizontal NMAC distance to value in specified units [u].
  */
 void KinematicMultiBands::setHorizontalNMAC(double val, const std::string& u) {
-  setHorizontalNMAC(Units::from(u,val));
+  core_.parameters.setHorizontalNMAC(val,u);
+  reset();
 }
 
 /**
@@ -1261,7 +1286,8 @@ void KinematicMultiBands::setVerticalNMAC(double val) {
  * Set vertical NMAC distance to value in specified units [u].
  */
 void KinematicMultiBands::setVerticalNMAC(double val, const std::string& u) {
-  setVerticalNMAC(Units::from(u,val));
+  core_.parameters.setVerticalNMAC(val,u);
+  reset();
 }
 
 /**
@@ -2011,7 +2037,7 @@ bool KinematicMultiBands::check_thresholds(const AlertThresholds& athr,
     Vect3 si = ac.get_s();
     Velocity vi = ac.get_v();
     Detection3D* detector = athr.getDetectorRef();
-    double alerting_time = athr.getAlertingTime();
+    double alerting_time = Util::min(core_.parameters.getLookaheadTime(),athr.getAlertingTime());
 
     if (detector->violation(so,vo,si,vi)) {
       return true;
@@ -2027,7 +2053,7 @@ bool KinematicMultiBands::check_thresholds(const AlertThresholds& athr,
         trk_band.set_rel(true);
         trk_band.set_min(turning <= 0 ? -athr.getTrackSpread() : 0);
         trk_band.set_max(turning >= 0 ? athr.getTrackSpread() : 0);
-        if (trk_band.kinematic_conflict(core_,ac,detector,athr.getAlertingTime())) {
+        if (trk_band.kinematic_conflict(core_,ac,detector,alerting_time)) {
           return true;
         }
       }
@@ -2101,10 +2127,21 @@ std::string KinematicMultiBands::toString() const {
   return s;
 }
 
-std::string KinematicMultiBands::outputString() {
+std::string KinematicMultiBands::outputStringInfo() {
   std::string s="";
-  s+="Ownship Aircraft: "+core_.ownship.getId()+"\n";
-  s+="Traffic Aircraft: "+TrafficState::listToString(core_.traffic)+"\n";
+  std::string ualt = core_.parameters.getUnits("alt_step");
+  std::string ugs = core_.parameters.getUnits("gs_step");
+  std::string uvs = core_.parameters.getUnits("vs_step");
+  std::string uxy = "m";
+  if (Units::isCompatible(ugs,"knot")) {
+    uxy = "nmi";
+  } else if (Units::isCompatible(ugs,"fpm")) {
+    uxy = "ft";
+  } else if (Units::isCompatible(ugs,"kph")) {
+    uxy = "km";
+  }
+  s+="Time: "+Units::str("s",core_.ownship.getTime())+"\n";
+  s+= core_.ownship.formattedTraffic(core_.traffic,uxy, ualt, ugs, uvs);
   s+="Conflict Criteria: ";
   if (core_.parameters.isEnabledConflictCriteria()) {
     s+="Enabled";
@@ -2122,108 +2159,144 @@ std::string KinematicMultiBands::outputString() {
   s+="Most Urgent Aircraft: "+core_.most_urgent_ac.getId()+"\n";
   s+="Horizontal Epsilon: "+Fmi(core_.epsilonH())+"\n";
   s+="Vertical Epsilon: "+Fmi(core_.epsilonV())+"\n";
+  return s;
+}
+
+std::string KinematicMultiBands::outputStringAlerting() {
+  std::string s="";
   for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
     s+="Conflict Aircraft (alert level "+Fmi(alert_level)+"): "+
         TrafficState::listToString(conflictAircraft(alert_level))+"\n";
   }
-  // Track
-  double val = core_.ownship.track("deg");
-  s+="Ownship Track: "+Fm2(val)+" [deg]\n";
-  s+="Region of Current Track: "+BandsRegion::to_string(regionOfTrack(val,"deg"))+"\n";
-  s+="Track Bands [deg,deg]:\n";
+  return s;
+}
+
+std::string KinematicMultiBands::outputStringTrackBands() {
+  std::string s="";
+  std::string u = core_.parameters.getUnits("trk_step");
+  double val = core_.ownship.track();
+  s+="Ownship Track: "+Units::str(u,val)+"\n";
+  s+="Region of Current Track: "+BandsRegion::to_string(regionOfTrack(val))+"\n";
+  s+="Track Bands ["+u+","+u+"]:\n";
   for (int i=0; i < trackLength(); ++i) {
-    s+="  "+track(i, "deg").toString(2)+" "+BandsRegion::to_string(trackRegion(i))+"\n";
+    s+="  "+track(i,u).toString()+" "+BandsRegion::to_string(trackRegion(i))+"\n";
   }
   for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
     s+="Peripheral Track Aircraft (alert level "+Fmi(alert_level)+"): "+
         TrafficState::listToString(peripheralTrackAircraft(alert_level))+"\n";
   }
-  s+="Track Resolution (right): "+Fm2(trackResolution(true,"deg"))+" [deg]\n";
-  s+="Track Resolution (left): "+Fm2(trackResolution(false,"deg"))+" [deg]\n";
+  s+="Track Resolution (right): "+Units::str(u,trackResolution(true))+"\n";
+  s+="Track Resolution (left): "+Units::str(u,trackResolution(false))+"\n";
   s+="Preferred Track Direction: ";
   if (preferredTrackDirection()) {
     s+="right\n";
   } else {
     s+="left\n";
   }
-  s+="Time to Track Recovery: "+Fm2(timeToTrackRecovery())+" [s]\n";
+  s+="Time to Track Recovery: "+Units::str("s",timeToTrackRecovery())+"\n";
+  return s;
+}
 
-  // Ground Speed
-  val = core_.ownship.groundSpeed("knot");
-  s+="Ownship Ground Speed: "+Fm2(val)+" [knot]\n";
-  s+="Region of Current Ground Speed: "+BandsRegion::to_string(regionOfGroundSpeed(val,"knot"))+"\n";
-  s+="Ground Speed Bands [knot,knot]:\n";
+std::string KinematicMultiBands::outputStringGroundSpeedBands() {
+  std::string s="";
+  std::string u = core_.parameters.getUnits("gs_step");
+  double val = core_.ownship.groundSpeed();
+  s+="Ownship Ground Speed: "+Units::str(u,val)+"\n";
+  s+="Region of Current Ground Speed: "+BandsRegion::to_string(regionOfGroundSpeed(val))+"\n";
+  s+="Ground Speed Bands ["+u+","+u+"]:\n";
   for (int i=0; i < groundSpeedLength(); ++i) {
-    s+="  "+groundSpeed(i, "kn").toString(2)+" "+BandsRegion::to_string(groundSpeedRegion(i))+"\n";
+      s+="  "+groundSpeed(i,u).toString()+" "+BandsRegion::to_string(groundSpeedRegion(i))+"\n";
   }
   for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
-    s+="Peripheral Ground Speed Aircraft (alert level "+Fmi(alert_level)+"): "+
-        TrafficState::listToString(peripheralGroundSpeedAircraft(alert_level))+"\n";
+      s+="Peripheral Ground Speed Aircraft (alert level "+Fmi(alert_level)+"): "+
+              TrafficState::listToString(peripheralGroundSpeedAircraft(alert_level))+"\n";
   }
-  s+="Ground Speed Resolution (up): "+Fm2(groundSpeedResolution(true,"kn"))+" [kn]\n";
-  s+="Ground Speed Resolution (down): "+Fm2(groundSpeedResolution(false,"kn"))+" [kn]\n";
+  s+="Ground Speed Resolution (up): "+Units::str(u,groundSpeedResolution(true))+"\n";
+  s+="Ground Speed Resolution (down): "+Units::str(u,groundSpeedResolution(false))+"\n";
   s+="Preferred Ground Speed Direction: ";
   if (preferredGroundSpeedDirection()) {
-    s+="up\n";
+      s+="up\n";
   } else {
-    s+="down\n";
+      s+="down\n";
   }
-  s+="Time to Ground Speed Recovery: "+Fm2(timeToGroundSpeedRecovery())+" [s]\n";
+  s+="Time to Ground Speed Recovery: "+Units::str("s",timeToGroundSpeedRecovery())+"\n";
+  return s;
+}
 
-  // Vertical Speed
-  val = core_.ownship.verticalSpeed("fpm");
-  s+="Ownship Vertical Speed: "+Fm2(val)+" [fpm]\n";
-  s+="Region of Current Vertical Speed: "+BandsRegion::to_string(regionOfVerticalSpeed(val,"fpm"))+"\n";
-  s+="Vertical Speed Bands [fpm,fpm]:\n";
+std::string KinematicMultiBands::outputStringVerticalSpeedBands() {
+  std::string s="";
+  std::string u = core_.parameters.getUnits("vs_step");
+  double val = core_.ownship.verticalSpeed();
+  s+="Ownship Vertical Speed: "+Units::str(u,val)+"\n";
+  s+="Region of Current Vertical Speed: "+BandsRegion::to_string(regionOfVerticalSpeed(val))+"\n";
+  s+="Vertical Speed Bands ["+u+","+u+"]:\n";
   for (int i=0; i < verticalSpeedLength(); ++i) {
-    s+="  "+verticalSpeed(i, "fpm").toString(2)+" "+ BandsRegion::to_string(verticalSpeedRegion(i))+"\n";
+      s+="  "+verticalSpeed(i,u).toString()+" "+ BandsRegion::to_string(verticalSpeedRegion(i))+"\n";
   }
   for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
-    s+="Peripheral Vertical Speed Aircraft (alert level "+Fmi(alert_level)+"): "+
-        TrafficState::listToString(peripheralVerticalSpeedAircraft(alert_level))+"\n";
+      s+="Peripheral Vertical Speed Aircraft (alert level "+Fmi(alert_level)+"): "+
+              TrafficState::listToString(peripheralVerticalSpeedAircraft(alert_level))+"\n";
   }
-  s+="Vertical Speed Resolution (up): "+Fm2(verticalSpeedResolution(true,"fpm"))+" [fpm]\n";
-  s+="Vertical Speed Resolution (down): "+Fm2(verticalSpeedResolution(false,"fpm"))+" [fpm]\n";
+  s+="Vertical Speed Resolution (up): "+Units::str(u,verticalSpeedResolution(true))+"\n";
+  s+="Vertical Speed Resolution (down): "+Units::str(u,verticalSpeedResolution(false))+"\n";
   s+="Preferred Vertical Speed Direction: ";
   if (preferredVerticalSpeedDirection()) {
-    s+="up\n";
+      s+="up\n";
   } else {
-    s+="down\n";
+      s+="down\n";
   }
-  s+="Time to Vertical Speed Recovery: "+Fm2(timeToVerticalSpeedRecovery())+" [s]\n";
+  s+="Time to Vertical Speed Recovery: "+Units::str("s",timeToVerticalSpeedRecovery())+"\n";
+  return s;
+}
 
-  // Altitude
-  val = core_.ownship.altitude("ft");
-  s+="Ownship Altitude: "+Fm2(val)+" [ft]\n";
-  s+="Region of Current Altitude: "+BandsRegion::to_string(regionOfAltitude(val,"ft"))+"\n";
-  s+="Altitude Bands [ft,ft]:\n";
+std::string KinematicMultiBands::outputStringAltitudeBands() {
+  std::string s="";
+  std::string u = core_.parameters.getUnits("alt_step");
+  double val = core_.ownship.altitude();
+  s+="Ownship Altitude: "+Units::str(u,val)+"\n";
+  s+="Region of Current Altitude: "+BandsRegion::to_string(regionOfAltitude(val))+"\n";
+  s+="Altitude Bands ["+u+","+u+"]:\n";
   for (int i=0; i < altitudeLength(); ++i) {
-    s+="  "+altitude(i, "ft").toString(2)+" "+ BandsRegion::to_string(altitudeRegion(i))+"\n";
+      s+="  "+altitude(i,u).toString()+" "+ BandsRegion::to_string(altitudeRegion(i))+"\n";
   }
   for (int alert_level=1; alert_level <= core_.parameters.alertor.mostSevereAlertLevel(); ++alert_level) {
-    s+="Peripheral Altitude Aircraft (alert level "+Fmi(alert_level)+"): "+
-        TrafficState::listToString(peripheralAltitudeAircraft(alert_level))+"\n";
+      s+="Peripheral Altitude Aircraft (alert level "+Fmi(alert_level)+"): "+
+              TrafficState::listToString(peripheralAltitudeAircraft(alert_level))+"\n";
   }
-  s+="Altitude Resolution (up): "+Fm2(altitudeResolution(true,"ft"))+" [ft]\n";
-  s+="Altitude Resolution (down): "+Fm2(altitudeResolution(false,"ft"))+" [ft]\n";
+  s+="Altitude Resolution (up): "+Units::str(u,altitudeResolution(true))+"\n";
+  s+="Altitude Resolution (down): "+Units::str(u,altitudeResolution(false))+"\n";
   s+="Preferred Altitude Direction: ";
   if (preferredAltitudeDirection()) {
-    s+="up\n";
+      s+="up\n";
   } else {
-    s+="down\n";
+      s+="down\n";
   }
-  s+="Time to Altitude Recovery: "+Fm2(timeToAltitudeRecovery())+" [s]\n";
+  s+="Time to Altitude Recovery: "+Units::str("s",timeToAltitudeRecovery())+"\n";
+  return s;
+}
 
-
-  // Last Time to Maneuver
+std::string KinematicMultiBands::outputStringLastTimeToManeuver() {
+  std::string s="";
   for (TrafficState::nat i=0; i < core_.traffic.size(); ++i) {
     TrafficState ac = core_.traffic[i];
     s+="Last Times to Maneuver with Respect to "+ac.getId()+"\n";
-    s+="  Track Maneuver: "+Fm2(lastTimeToTrackManeuver(ac))+" [s]\n";
-    s+="  Ground Speed Maneuver: "+Fm2(lastTimeToGroundSpeedManeuver(ac))+" [s]\n";
-    s+="  Vertical Speed Maneuver: "+Fm2(lastTimeToVerticalSpeedManeuver(ac))+" [s]\n";
-    s+="  Altitude Maneuver: "+Fm2(lastTimeToAltitudeManeuver(ac))+" [s]\n";
+    s+="  Last Time to Track Maneuver: "+Units::str("s",lastTimeToTrackManeuver(ac))+"\n";
+    s+="  Last Time to Ground Speed Maneuver: "+Units::str("s",lastTimeToGroundSpeedManeuver(ac))+"\n";
+    s+="  Last Time to Vertical Speed Maneuver: "+Units::str("s",lastTimeToVerticalSpeedManeuver(ac))+"\n";
+    s+="  Last Time to Altitude Maneuver: "+Units::str("s",lastTimeToAltitudeManeuver(ac))+"\n";
   }
+  return s;
+}
+
+std::string KinematicMultiBands::outputString() {
+  std::string s="";
+  s+=outputStringInfo();
+  s+=outputStringAlerting();
+  s+=outputStringTrackBands();
+  s+=outputStringGroundSpeedBands();
+  s+=outputStringVerticalSpeedBands();
+  s+=outputStringAltitudeBands();
+  s+=outputStringLastTimeToManeuver();
   return s;
 }
 

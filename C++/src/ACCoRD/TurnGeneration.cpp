@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,89 +14,19 @@
 namespace larcfm {
 using std::string;
   
-  Triple<NavPoint,NavPoint,NavPoint> TurnGeneration::turnGenerator(const NavPoint& np1, const NavPoint& np2, const NavPoint& np3, double radius) {
-//		Triple<Position,Position,Position> points = turnGenerator(np1.position(), np2.position(), np3.position(), radius);
-//		Position botPos = points.first;
-//		Position motPos = points.second;	
-//		Position eotPos = points.third;	
-//		Position botPos;
-//		Position motPos;
-//		Position eotPos;
-//		if (np2.isLatLon()) {
-//			//TODO: Alternatives
-//			//double genRadius = radius;
-//			//radius = 0.9996*radius;     // TODO:  THIS improves things -- why?
-//			Triple<LatLonAlt,LatLonAlt,LatLonAlt> tgP =  turnGeneratorLLA(np1.lla(),np2.lla(),np3.lla(),radius);
-//			//Triple<LatLonAlt,LatLonAlt,LatLonAlt> tgP =  turnGeneratorLLA_Alt(np1.lla(),np2.lla(),np3.lla(),radius);
-//			//Triple<LatLonAlt,LatLonAlt,LatLonAlt> tgP =  turnGeneratorLLA_Alt3(np1.lla(),np2.lla(),np3.lla(),radius);
-//			botPos = Position(tgP.first);
-//			motPos = Position(tgP.second);
-//			eotPos = Position(tgP.third);
-//
-//		} else {
-//			Triple<Vect3,Vect3,Vect3> tgP =  turnGeneratorEucl(np1.point(),np2.point(),np3.point(),radius);
-//			botPos = Position(tgP.first);
-//			motPos = Position(tgP.second);
-//			eotPos = Position(tgP.third);
-//		}
-//		Velocity vin = NavPoint::initialVelocity(np1,np2);
-//		Velocity vout = NavPoint::initialVelocity(np2,np3);
-//		Velocity vin2 = botPos.initialVelocity(np2.position(),100);
-//	    int dir = Util::turnDir(vin.trk(),vout.trk());
-//	    vin = vin.mkTrk(vin2.trk());
-//		//Velocity vout2 = eotPos.initialVelocity(np3.position(),100);
-//		Velocity vout2 = eotPos.initialVelocity(np2.position(),100);
-//		vout = vout.mkTrk(vout2.trk()+M_PI);
-//		//fpln(" $$$$$ TurnGenerator: vin = "+vin+" vout = "+vout);
-//		double gs1 = vin.gs();
-//		// make the time of the mot = the time of the middle vertex
-//		double tMOT = np2.time();
-//		double arcLength;
-//		if (np2.isLatLon()) {
-//			arcLength = arcLengthLLA(botPos.lla(),np2.lla(),radius);
-//		} else {
-//			arcLength = Util::turnDelta(vin.trk(),vout.trk())*radius;
-//		}
-//		//fpln(" $$$ TurnGenerator 241: arcLength= "+Units::str("ft",arcLength,6)+"  radius="+Units::str("ft",radius,6));
-//		double turnTime = arcLength/gs1;
-//		//fpln(" $$$$$ TurnGenerator: turnTime = "+turnTime);
-//		double tBOT = tMOT - turnTime/2;
-//		double tEOT = tMOT + turnTime/2;
-//		double vs1 = NavPoint::initialVelocity(np1,np2).vs();
-//		double vs2 = NavPoint::initialVelocity(np2,np3).vs();
-//		double altMOT = np2.alt();
-//		double altBOT = altMOT - vs1*turnTime/2;
-//		double altEOT = altMOT + vs2*turnTime/2;
-//        botPos = botPos.mkAlt(altBOT);
-//        motPos = motPos.mkAlt(altMOT);
-//        eotPos = eotPos.mkAlt(altEOT);
-//        //double omega =  dir*gs1/radius;
-//		//fpln(" $$$$$ TurnGenerator: turnTime = "+turnTime+" omega = "+Units::str("deg",omega,4)+" gs1 = "+Units::str("kn",gs1,4));
-//		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos,tBOT, vin, dir*radius);
-//        //fpln(" $$$ turnGenerator: npBOT = "+npBOT.toStringFull()+" alpha = "+alpha+" turnTime = "+turnTime);
-//		//NavPoint npMOT = np2.makeMidpoint(motPos,tMOT,vin.mkTrk(trk2));
-//		NavPoint npEOT = np2.makeOriginal().makeEOT(eotPos,tEOT, vout);
-////		Position MOT = KinematicsPosition::turnOmega(npBOT.position(), vin, turnTime/2, omega).first;
-////		NavPoint npMOT(motPos,tMOT); // .makeLabel("MOT");
-//		//double trk2 = vin.trk() + omega * (tMOT-tBOT);
-//		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT); // ,vin.mkTrk(trk2));
-//		//fpln(" $$$ turnGenerator: npBOT = "+npBOT.toStringFull()+"\n          npEOT = "+npEOT.toStringFull());
-//		return Triple<NavPoint,NavPoint,NavPoint>(npBOT, npMOT, npEOT);
-//
-
-
-
+  Tuple5<NavPoint,NavPoint,NavPoint, int, Position> TurnGeneration::turnGenerator(const NavPoint& np1, const NavPoint& np2, int linearIndex, const NavPoint& np3, double radius) {
 
 		if (np1.time() > np2.time() || np2.time() > np3.time() || radius < 0.0) {
-			return Triple<NavPoint,NavPoint,NavPoint>(NavPoint::INVALID(), NavPoint::INVALID(), NavPoint::INVALID());
+			return Tuple5<NavPoint,NavPoint,NavPoint,int,Position>(NavPoint::INVALID(), NavPoint::INVALID(), NavPoint::INVALID(), 0, Position::INVALID());
 		}
 
-		Tuple5<Position,Position,Position,int,double> turn = turnGenerator(np1.position(), np2.position(), np3.position(), radius);
+		Tuple6<Position,Position,Position,int,double,Position> turn = turnGenerator(np1.position(), np2.position(), np3.position(), radius);
 		Position botPos = turn.first;
 		Position motPos = turn.second;
 		Position eotPos = turn.third;
 		int dir = turn.fourth;
 		double arcLength = turn.fifth;
+		Position center = turn.sixth;
 
 		Velocity vin = NavPoint::initialVelocity(np1,np2);  // used to set gs and vs
 		Velocity vout = NavPoint::initialVelocity(np2,np3); // used to set gs and vs
@@ -122,23 +52,27 @@ using std::string;
 		motPos = motPos.mkAlt(altMOT);
 		eotPos = eotPos.mkAlt(altEOT);	
 
-		int linearIndex = np2.linearIndex();
-		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos, tBOT, vin, dir*radius, linearIndex);  // only BOT retains label
-		NavPoint npEOT = np2.makeOriginal().makeLabel("").makeEOT(eotPos, tEOT, vout, linearIndex);
-		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT, linearIndex).makeLabel("");
-		return Triple<NavPoint,NavPoint,NavPoint>(npBOT, npMOT, npEOT);
+//		int linearIndex = np2.linearIndex();
+//		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos, tBOT, vin, dir*radius, linearIndex);  // only BOT retains label
+//		NavPoint npEOT = np2.makeOriginal().makeLabel("").makeEOT(eotPos, tEOT, vout, linearIndex);
+//		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT, linearIndex).makeLabel("");
+		NavPoint npBOT = NavPoint(botPos, tBOT);
+		NavPoint npEOT = NavPoint(eotPos,tEOT).makeLabel("");
+		NavPoint npMOT = NavPoint(motPos,tMOT).makeLabel("");
+		return Tuple5<NavPoint,NavPoint,NavPoint, int, Position>(npBOT, npMOT, npEOT, dir, center);
 	}
 	
 	
-	Tuple5<Position,Position,Position,int,double> TurnGeneration::turnGenerator(const Position& np1, const Position& np2, const Position& np3, double radius) {
+	Tuple6<Position,Position,Position,int, double,Position> TurnGeneration::turnGenerator(const Position& np1, const Position& np2, const Position& np3, double radius) {
 		//Triple<Position,Position,Position> tgP = turnGeneratorPosition(np1.position(), np2.position(), np3.position(), radius);
 		Position botPos;
 		Position motPos;	
 		Position eotPos;	
 		int direction;
 		double distance;
+		Position centerPos;
 		if (np2.isLatLon()) { 			
-			Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,double> points = turnGeneratorLLA(np1.lla(),np2.lla(),np3.lla(),radius);
+			Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt> points = turnGeneratorLLA(np1.lla(),np2.lla(),np3.lla(),radius);
 			//Triple<LatLonAlt,LatLonAlt,LatLonAlt> points = turnGeneratorLLA_Alt(np1.lla(),np2.lla(),np3.lla(),radius);
 			//Triple<LatLonAlt,LatLonAlt,LatLonAlt> points = turnGeneratorLLA_Alt3(np1.lla(),np2.lla(),np3.lla(),radius);
 			botPos = Position(points.first);
@@ -146,21 +80,23 @@ using std::string;
 			eotPos = Position(points.third);
 			direction = points.fourth;
 			distance = points.fifth;
+			centerPos = Position(points.sixth);
 		} else {
-			Tuple5<Vect3,Vect3,Vect3,int,double> points = turnGeneratorEucl(np1.point(),np2.point(),np3.point(),radius);
+			Tuple6<Vect3,Vect3,Vect3,int,double,Vect3> points = turnGeneratorEucl(np1.point(),np2.point(),np3.point(),radius);
 			botPos = Position(points.first);
 			motPos = Position(points.second);	
 			eotPos = Position(points.third);		
 			direction = points.fourth;
 			distance = points.fifth;
+			centerPos = Position(points.sixth);
 		}
-		return Tuple5<Position,Position,Position,int,double>(botPos,motPos,eotPos,direction,distance);
+		return Tuple6<Position,Position,Position,int,double,Position>(botPos,motPos,eotPos,direction,distance,centerPos);
 	}
 
 	
 	
 
-	Tuple5<Vect2,Vect2,Vect2,int,double> TurnGeneration::turnGeneratorEucl(const Vect2& pt1, const Vect2& pt2, const Vect2& pt3, double radius) {
+	Tuple6<Vect2,Vect2,Vect2,int,double,Vect2> TurnGeneration::turnGeneratorEucl(const Vect2& pt1, const Vect2& pt2, const Vect2& pt3, double radius) {
 		//fpln(" $$ turnGenerator: R = "+Units::str("NM",R));
 		//fpln(" $$ turnGenerator: pt0 = "+pt0+" pt1 = "+pt1+"  pt2 = "+pt2+"  pt3 = "+pt3);		
 		Vect2 ao = pt3.Sub(pt2);
@@ -185,14 +121,14 @@ using std::string;
 		Vect2 MOT = center.Add(vhat.Scal(radius));
 		//fpln(" $$$$$ turnGeneratorEucl: MOT = "+MOT);
 		//double dist_B2 = w.dot(ahat);  // also = w.dot(bhat)
-		return Tuple5<Vect2,Vect2,Vect2,int,double>(BOT,MOT,EOT,dir,arcLength);
+		return Tuple6<Vect2,Vect2,Vect2,int,double,Vect2>(BOT,MOT,EOT,dir,arcLength,center);
 	}
 
 	
 
-	Tuple5<Vect3,Vect3,Vect3,int,double> TurnGeneration::turnGeneratorEucl(const Vect3& p1, const Vect3& p2, const Vect3& p3, double radius) {
+	Tuple6<Vect3,Vect3,Vect3,int,double,Vect3> TurnGeneration::turnGeneratorEucl(const Vect3& p1, const Vect3& p2, const Vect3& p3, double radius) {
 		//fpln(" $$ turnGenerator: R = "+Units::str("nm",R));
-		Tuple5<Vect2,Vect2,Vect2,int,double> tge = turnGeneratorEucl(p1.vect2(), p2.vect2(), p3.vect2(), radius);
+		Tuple6<Vect2,Vect2,Vect2,int,double,Vect2> tge = turnGeneratorEucl(p1.vect2(), p2.vect2(), p3.vect2(), radius);
 		Vect2 BOT = tge.first;
 		Vect2 MOT = tge.second;
 		Vect2 EOT = tge.third;
@@ -201,12 +137,13 @@ using std::string;
         double altEOT = p1.z; //Double.NaN;
 		Vect3 BOTv3(BOT.x, BOT.y, altBOT);	
 		Vect3 MOTv3(MOT.x, MOT.y, altMOT);	
-		Vect3 EOTv3(EOT.x, EOT.y, altEOT);			
-		return Tuple5<Vect3,Vect3,Vect3,int,double>(BOTv3,MOTv3,EOTv3,tge.fourth,tge.fifth);
+		Vect3 EOTv3(EOT.x, EOT.y, altEOT);
+		Vect3 center(tge.sixth, altMOT);
+		return Tuple6<Vect3,Vect3,Vect3,int,double,Vect3>(BOTv3,MOTv3,EOTv3,tge.fourth,tge.fifth,center);
 	}
 
 
-	Triple<NavPoint,NavPoint,NavPoint> TurnGeneration::turnGeneratorProjected(const NavPoint& np1, const NavPoint& np2, const NavPoint& np3, double R) {
+	Quad<NavPoint,NavPoint,NavPoint, int> TurnGeneration::turnGeneratorProjected(const NavPoint& np1, const NavPoint& np2, int linearIndex, const NavPoint& np3, double R) {
 		Vect2 pt1;
 		Vect2 pt2;
 		Vect2 pt3;
@@ -248,7 +185,7 @@ using std::string;
 		Vect2 Center = pt2.Add(w);
 		Vect2 BOT = pt2.Add(wdotb);
 		Vect2 EOT = pt2.Add(wdota);
-		double gs1 = np1.groundSpeed(np2);
+		double gs1 = np1.initialVelocity(np2).gs();
 		double distAB = BOT.Sub(EOT).norm();
 		double sinTheta = distAB/(2*R);
 		double alpha;
@@ -294,65 +231,55 @@ using std::string;
 		Velocity vin = v1.mkTrk(vinTrk);
 		int dir = Util::turnDir(vin.trk(), v2.trk());
 		//double signedRadius = Util::turnDir(vin.trk(), v2.trk())*R;
-		double signedRadius = dir*R; // vin.gs()/omega;
-		int linearIndex = np2.linearIndex();
-		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos, tBOT, vin, signedRadius, linearIndex).makeLabel(np2.label());   // only BOT has label from np2
-        //fpln(" $$$ turnGenerator: npBOT = "+npBOT.toStringFull()+"  alpha = "+alpha+" turnTime = "+turnTime);
-		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT, linearIndex).makeLabel(""); // ,vin.mkTrk(trk2)).makeLabel("");   
-		//fpln(" $$$ turnGenerator: npMOT = "+npMOT.toStringFull());
-		double omega = dir*vin.gs()/R;    // TODO:  only used for EOT,  can calculate trkOut without this 
-//		double trk2 = vin.trk() + omega * (tMOT-tBOT); // make vin track appropriate for each point
-		double trk3 = vin.trk() + omega * (tEOT-tBOT);
-		NavPoint npEOT = np2.makeOriginal().makeEOT(eotPos,tEOT, vin.mkTrk(trk3), linearIndex).makeLabel("");	
+//		double signedRadius = dir*R; // vin.gs()/omega;
+////		int linearIndex = np2.linearIndex();
+//		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos, tBOT, vin, signedRadius, linearIndex).makeLabel(np2.label());   // only BOT has label from np2
+//        //fpln(" $$$ turnGenerator: npBOT = "+npBOT.toStringFull()+"  alpha = "+alpha+" turnTime = "+turnTime);
+//		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT, linearIndex).makeLabel(""); // ,vin.mkTrk(trk2)).makeLabel("");
+//		//fpln(" $$$ turnGenerator: npMOT = "+npMOT.toStringFull());
+//		double omega = dir*vin.gs()/R;    // TODO:  only used for EOT,  can calculate trkOut without this
+////		double trk2 = vin.trk() + omega * (tMOT-tBOT); // make vin track appropriate for each point
+//		double trk3 = vin.trk() + omega * (tEOT-tBOT);
+//		NavPoint npEOT = np2.makeOriginal().makeEOT(eotPos,tEOT, vin.mkTrk(trk3), linearIndex).makeLabel("");
         //fpln(" $$$ turnGenerator: npEOT = "+npEOT.toStringFull()+"  alpha = "+alpha+" turnTime = "+turnTime);
-		return Triple<NavPoint,NavPoint, NavPoint>(npBOT,npMOT,npEOT);
+
+		NavPoint npBOT = NavPoint(botPos, tBOT).makeLabel(np2.label());
+		NavPoint npMOT = NavPoint(motPos, tMOT).makeLabel("");
+		NavPoint npEOT = NavPoint(eotPos, tEOT).makeLabel("");
+
+
+		return Quad<NavPoint,NavPoint, NavPoint, int>(npBOT,npMOT,npEOT,dir);
 	}
 	
 
-	Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,double> TurnGeneration::turnGeneratorLLA(const LatLonAlt& p2, double trkIn, double trkOut, double radius) {
-//        //fpln(" $$$$ turnGeneratorLLA: p2 = "+p2+" trkIn = "+Units::str("deg", trkIn)+" trkOut = "+Units::str("deg", trkOut)+" radius = "+Units::str("ft", radius));
-//        double deltaTrack = Util::turnDelta(trkIn,trkOut);
-//		int dir = Util::turnDir(trkIn,trkOut);
-//		//fpln(" $$$$ turnGeneratorLLA: deltaTrack = "+Units::str("deg", deltaTrack)+" dir = "+dir);
-//		double distance = radius*std::tan(deltaTrack/2.0);               // TODO ************* EUCLIDEAN ****************
-//        //fpln("turnGeneratorLLA distance = "+distance+" distance2="+distance2+" delta="+(distance-distance2));
-//		LatLonAlt botPos =  GreatCircle::linear_initial(p2, trkIn, -distance);
-//		LatLonAlt eotPos =  GreatCircle::linear_initial(p2, trkOut, distance);
-//		double cLineDist = radius/std::cos(deltaTrack/2.0) - radius;
-//		double cTrk = trkIn + dir*(deltaTrack + M_PI)/2.0;
-//		//fpln("  $$$$ turnGeneratorLLA:  cTrk = "+Units::str("deg", cTrk)+" cLineDist = "+cLineDist);
-//	    //double foo = Util::to_2pi(trkIn+M_PI);
-//	    //fpln(" $$$$ turnGeneratorLLA: "+Units::str("deg", foo)+"  "+Units::str("deg", trkOut)+" cTrk = "+Units::str("deg", Util::to_2pi(cTrk)));
-//		LatLonAlt motPos =  GreatCircle::linear_initial(p2, cTrk, cLineDist);  // TODO: ????
-//		//fpln(" $$ turnGeneratorLLA: botPos = "+botPos);
-//		//fpln(" $$$$ turnGeneratorLLA: distance = "+Units::str("ft",distance));
-//		return Quad<LatLonAlt,LatLonAlt,LatLonAlt,double>(botPos,motPos,eotPos,distance);
-
+	Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt> TurnGeneration::turnGeneratorLLA(const LatLonAlt& p2, double trkIn, double trkOut, double radius) {
         double deltaTrack = Util::turnDelta(trkIn,trkOut);
 		int dir = Util::turnDir(trkIn,trkOut);
-		double distance = radius*std::tan(deltaTrack/2.0);               // TODO ************* EUCLIDEAN ****************
+		double theta = deltaTrack/2.0;
+		double distance = radius*std::tan(theta);               // TODO ************* EUCLIDEAN ****************
 		LatLonAlt botPos =  GreatCircle::linear_initial(p2, trkIn, -distance);
 		LatLonAlt eotPos =  GreatCircle::linear_initial(p2, trkOut, distance);
-		double cLineDist = radius/std::cos(deltaTrack/2.0) - radius;
+		double cLineDist = radius/std::cos(theta);
 		double cTrk = trkIn + dir*(deltaTrack + M_PI)/2.0;
-		LatLonAlt motPos =  GreatCircle::linear_initial(p2, cTrk, cLineDist);
+		LatLonAlt motPos =  GreatCircle::linear_initial(p2, cTrk, cLineDist-radius);
 		double arcLength = deltaTrack*radius;                            // TODO: ****** EUCLIDEAN *********
-		//double arcLength = arcLengthLLA(botPos, p2, radius);
-		return Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,double>(botPos,motPos,eotPos,dir,arcLength);
+		LatLonAlt center = GreatCircle::linear_initial(p2, cTrk, cLineDist);
+		//fpln(" $$$ turnGeneratorLLA (DEEP): center = "+center.toString());
+		return Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt>(botPos,motPos,eotPos,dir,arcLength,center);
 	}
 	
 
-	Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,double> TurnGeneration::turnGeneratorLLA(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3, double radius) {
+	Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt> TurnGeneration::turnGeneratorLLA(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3, double radius) {
 		double trkIn = GreatCircle::final_course(p1, p2);
 		double trkOut = GreatCircle::initial_course(p2, p3);
-		Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,double> tG = turnGeneratorLLA(p2, trkIn, trkOut, radius);
+		Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt> tG = turnGeneratorLLA(p2, trkIn, trkOut, radius);
 		double altBOT = p1.alt();
 		double altMOT = p1.alt(); 
 		double altEOT = p1.alt(); 
 		LatLonAlt botPos = tG.first.mkAlt(altBOT);
 		LatLonAlt motPos = tG.second.mkAlt(altMOT);              
 		LatLonAlt eotPos = tG.third.mkAlt(altEOT);
-		return Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,double>(botPos,motPos,eotPos,tG.fourth,tG.fifth);
+		return Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt>(botPos,motPos,eotPos,tG.fourth,tG.fifth,tG.sixth);
 	}
 	
 

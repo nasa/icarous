@@ -5,7 +5,7 @@
  *
  * General Constants
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -92,48 +92,94 @@ static const double _FormalATM_NO_TIME = -1;
 	  	  static const double NO_TIME_LIMIT_EPSILON;
 
 	  	  static const double NO_TIME;
-	  	  /**
-	  	   * Set the time accuracy value.  This value means any two times that
-	  	   * are within this value of each other are considered the same [s].
-	  	   */
+	/**
+	 * Set the time accuracy value.  This value means any two times that
+	 * are within this value of each other are considered the same [s].
+	 * 
+	 * @param acc accuracy
+	 */
 	  	static void set_time_accuracy(double acc);
-	  	  /**
-	  	   * Set the horizontal accuracy value.  This value means any two positions that
-	  	   * are within this value of each other are considered the same [m].
-	  	   */
+	/**
+	 * Set the horizontal accuracy value.  This value means any two positions that
+	 * are within this value of each other are considered the same [m].
+	 * @param acc accuracy
+	 */
 	  	static void set_horizontal_accuracy(double acc);
-	  	  /**
-	  	   * Set the vertical accuracy value.  This value means any two positions that
-	  	   * are within this value of each other are considered the same [m].
-	  	   */
+	/**
+	 * Set the vertical accuracy value.  This value means any two positions that
+	 * are within this value of each other are considered the same [m].
+	 * @param acc accuracy
+	 */
 	  	static void set_vertical_accuracy(double acc);
-	/** Return the time accuracy value (in seconds) */
+	/** Return the time accuracy value (in seconds) 
+	 * @return time accuracy
+	 * */
 	  	static double get_time_accuracy();
-	/** Return the horizontal accuracy value (in meters) */
+	/** Return the horizontal accuracy value (in meters) 
+	 * @return horizontal accuracy
+	 * */
 	  	static double get_horizontal_accuracy();
-	/** Return the vertical accuracy value (in meters) */
+	/** Return the vertical accuracy value (in meters) 
+	 * @return vertical accuracy
+	 * */
 	  	static double get_vertical_accuracy();
 
-	/** Return the horizontal accuracy value (in radians) */
+	/** Return the horizontal accuracy value (in radians) 
+	 * @return horizontal accuracy
+	 * */
 	  	static double get_latlon_accuracy();
 
-	  	/** return default precision for output values */
+	/** return default precision for output values 
+	 * @return number of digits of precision
+	 * */
 	  	static int get_output_precision();
 
-	  	/** set default precision for output values (0-16) */
+	/** set default precision for output values (0-16) 
+	 * @param i number of digits of precision
+	 * */
 	  	static void set_output_precision(int i);
 
-	  	  /** Return true, if these two times are within the time accuracy of each other */
+	/** Return true, if these two times are within the time accuracy of each other 
+	 * 
+	 * @param t1 a time
+	 * @param t2 another time
+	 * @return true, if almost equals
+	 */
 	  	static bool almost_equals_time(double t1, double t2);
-	  	  /** Return true, if these two positions [m] within the horizontal accuracy of each other */
+	/** Return true, if these two positions [m] within the horizontal accuracy of each other 
+	 * 
+	 * @param x1 x coordinate for first value
+	 * @param y1 y coordinate for first value
+	 * @param x2 x coordinate for second value
+	 * @param y2 y coordinate for second value
+	 * @return true, if xy values are almost equals
+	 */
 	  	static bool almost_equals_xy(double x1, double y1, double x2, double y2);
-	  	  /** Return true, if this distance [m] is within the horizontal accuracy of zero */
+	/** Return true, if this distance [m] is within the horizontal accuracy of zero 
+	 * 
+	 * @param d
+	 * @return true, if almost equals
+	 */
 	  	static bool almost_equals_distance(double d);
-	  	  /** Return true, if these two angles [rad] are within the horizontal accuracy of each other */
+	/** Return true, if these two angles [rad] are within the horizontal accuracy of each other 
+	 * 
+	 * @param d1 a distance
+	 * @param d2 another distance
+	 * @return true, if almost equals
+	 */
 	  	static bool almost_equals_radian(double d1, double d2);
-	  	  /** Return true, if this angle [rad] is within the horizontal accuracy of zero */
+	/** Return true, if this angle [rad] is within the horizontal accuracy of zero 
+	 * 
+	 * @param d distance
+	 * @return true, if almost equals
+	 */
 	  	static bool almost_equals_radian(double d);
-	  	  /** Return true, if these two altitudes are within the vertical accuracy of each other */
+	/** Return true, if these two altitudes are within the vertical accuracy of each other 
+	 * 
+	 * @param a1 an altitude
+	 * @param a2 another altitude
+	 * @return true, if almost equals
+	 */
 	  	static bool almost_equals_alt(double a1, double a2);
   };
 

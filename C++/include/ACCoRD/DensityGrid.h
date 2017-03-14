@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -62,19 +62,39 @@ private:
 	static double distEstLatLon(double lat1, double lat2);
 
 public:
+	/**
+	 * Approximate size of square, in either meters (if Euclidean) or radians (if latlon)
+	 * @return size
+	 */
 	double getNativeSquareDist() const;
 
+	/**
+	 * Approximate size of square, in meters
+	 * @return size
+	 */
 	double getSquareDist() const;
 
 
+	/**
+	 * Adjust all grid corner coordinates so that the start point it in the center of its grid.
+	 */
 	void snapToStart();
 
 	std::pair<int,int> gridPosition(Position p) const;
 
 	bool containsCell(const std::pair<int,int>& xy) const;
 
+	/**
+	 * Note: the grid size should be 1 larger than expected (to allow for the first point to be in the middle of the square)
+	 * The SW corner of the plan bounding box should be in square (buffer,buffer)
+	 * @return size
+	 */
 	int sizeX() const;
 
+	/**
+	 * Note: the grid size should be 1 larger than expected (to allow for the first point to be in the middle of the square)
+	 * @return size
+	 */
 	int sizeY() const;
 
 	Position getPosition(int x, int y) const;
@@ -113,12 +133,35 @@ public:
 //
 //	void clearMarks();
 
+	/**
+	 * Set all weights to d in grid cells minX to maxX and minY to maxY, inclusive
+	 * 
+	 * @param minX minimum x
+	 * @param minY minimum y
+	 * @param maxX maximum x
+	 * @param maxY maximum y
+	 * @param d weight
+	 */
 	void setWeights(int minX, int minY, int maxX, int maxY, double d);
 
+	/**
+	 * Set all weights to d
+	 * 
+	 * @param d weight
+	 */
 	void setWeights(double d);
 
+	/**
+	 * Clear all weights of grid squares whose center is outside the given (static) polygon.
+	 * @param poly
+	 */
 	void clearWeightsOutside(SimplePoly poly);
 
+	/**
+	 * set all weights of grid squares whose center is inside the given (static) polygon.
+	 * @param poly polygon
+	 * @param d weight
+	 */
 	void setWeightsInside(SimplePoly poly, double d);
 
 
@@ -163,6 +206,12 @@ public:
 
 	void setProximityWeights(const std::vector<std::pair<int,int> >& gPath, double factor, bool applyToUndefined);
 
+	/**
+	 * Weight against plan points.
+	 * @param p  plan
+	 * @param factor factor
+	 * @param applyToUndefined true, if should be applied to undefined points
+	 */
 	void setProximityWeights(const Plan& p, double factor, bool applyToUndefined);
 
 	void setPolyWeights(double time, const std::vector<PolyPath>& path);

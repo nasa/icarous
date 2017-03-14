@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -85,9 +85,9 @@ public:
    */
   void set_Buffered_WC_SC_228_MOPS(bool type);
 
-	/**
-	 * Clear aircraft list, current time, and wind vector.
-	 */
+  /**
+   * Clear aircraft list, current time, and wind vector.
+   */
   void reset();
 
   /**
@@ -169,9 +169,9 @@ public:
    */
   int aircraftIndex(const std::string& name) const;
 
-	/**
-	 * @return get current time, i.e., time of ownship aircraft.
-	 */
+  /**
+   * @return get current time, i.e., time of ownship aircraft.
+   */
   double getCurrentTime() const;
 
   /**
@@ -204,22 +204,22 @@ public:
 
   /**
    * Detects conflict with aircraft at index ac_idx for given alert level.
-   * Conflict data provides time to first violation and time to last violation
+   * Conflict data provides time to violation and time to end of violation
    * within lookahead time.
    */
   ConflictData detection(int ac_idx, int alert_level) const;
 
   /**
    * Detects conflict with aircraft at index ac_idx for conflict alert level.
-   * Conflict data provides time to first violation and time to last violation
+   * Conflict data provides time to violation and time to end of violation
    * within lookahead time.
    */
   ConflictData detection(int ac_idx) const;
 
   /**
    * @return time to violation, in seconds, between ownship and aircraft at index ac_idx, for the
-   * lookahead time. The returned time is relative to current time. NaN means no
-   * conflict within lookahead time or aircraft index is out of range.
+   * lookahead time. The returned time is relative to current time. PINFINITY means no
+   * conflict within lookahead time. NaN means that aircraft index is out of range.
    */
   double timeToViolation(int ac_idx) const;
 
@@ -278,6 +278,8 @@ public:
   void horizontalContours(std::vector< std::vector<Position> >& blobs, int ac_idx);
 
   std::string aircraftListToPVS(int prec) const;
+
+  std::string outputStringAircraftStates() const;
 
   std::string toString() const;
 

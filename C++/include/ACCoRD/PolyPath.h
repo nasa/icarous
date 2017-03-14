@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,6 +14,7 @@
 #include "Plan.h"
 #include "SimplePoly.h"
 #include "MovingPolygon3D.h"
+#include "SimpleMovingPoly.h"
 #include "EuclideanProjection.h"
 #include "BoundingRectangle.h"
 #include "Triple.h"
@@ -54,6 +55,7 @@ public:
   
 	/**
 	 * Helper function to combine the 2 user vel modes 
+	 * @return true, if user velocity
 	 */
   bool isUserVel() const;
 
@@ -99,35 +101,43 @@ public:
   virtual ~PolyPath() {};
 
   // deep copy
-  /**
-   * Return a deep copy of this path.
-   */
+	/**
+	 * Return a deep copy of this path.
+	 * 
+	 * @return path of polygon
+	 */
   PolyPath copy() const;
   
   Triple<Plan,double,double> buildPlan() const;
   
-  /**
-   * Return true if this path contains any geodetic points.
-   */
+	/**
+	 * Return true if this path contains any geodetic points.
+	 * @return true, if lat/lon
+	 */
   bool isLatLon() const;
   
 	/**
 	 * Return true if this PolyPath is static (it always exists in a fixed location).
 	 * This is the case if there is only one step in the path and the mode is not USER_VEL 
+	 * @return true, if static
 	 */
   bool isStatic() const;
 
 	/**
 	 * Return true if this PolyPath continues to exist past the defined path (it has a velocity, which may be zero, and no definite end point)
 	 * This is the case if mode is USER_VEL or if there is only one step in the path. 
+	 * @return true, if continuing
 	 */
    bool isContinuing() const;
 
 	/**
 	 * Get the mode for this path.
 	 *  MORPHING: all polygons must have the same number of vertices.  Velocities are calculated by vertex between consecutive steps.
-	 *  AVG_VEL: Velocities are calculated between the average points of consecutive steps.  Polygons do not need to have the same number of vertices at each step.
-	 *  USER_VEL: Velocities are user-specified and applied to all vertices.  Polygons do not need to have the same number of vertices at each step.  The last step will have an infinitely continuing velocity.
+	 *  AVG_VEL: Velocities are calculated between the average points of consecutive steps.  Polygons do not need to have the same 
+	 *  number of vertices at each step.
+	 *  USER_VEL: Velocities are user-specified and applied to all vertices.  Polygons do not need to have the same number of 
+	 *  vertices at each step.  The last step will have an infinitely continuing velocity.
+	 *  @return path mode
 	 */
    PathMode getPathMode() const;
 
@@ -139,6 +149,7 @@ public:
 	 *  Changing away from USER_VEL will erase any stored velocity information.  Changing to USER_VEL will populate the path with the same values
 	 *  as AVG_VEL (the last step will have a zero velocity). 
 	 *  USER_VEL_FINITE: as USER_VEL
+	 *  @param m path mode
 	 */
    void setPathMode(PathMode m);
 
@@ -147,23 +158,29 @@ public:
 //   void setCalculateVelocities(bool b);
 
 
-  /**
-   * Returns the name associated with this path
-   */
+	/**
+	 * Returns the name associated with this path
+	 * @return name
+	 */
   std::string getName() const;
   
-  /**
-   * Sets the name to be associated with this path.
-   */
+	/**
+	 * Sets the name to be associated with this path.
+	 * @param n new name
+	 */
   void setName(const std::string& n);
   
-  /**
-   * Returns the number of time points in this path.  Static paths will have a size of 1.
-   */
+	/**
+	 * Returns the number of time points in this path.  Static paths will have a size of 1.
+	 * @return size
+	 */
   int size() const;
 
 	/**
 	 * This defaults to MORPHING mode.
+	 * 
+	 * @param p polygon
+	 * @param time time
 	 */
   void addPolygon(const SimplePoly& p, double time);
 
@@ -176,29 +193,37 @@ public:
 	 */
   void addPolygon(const SimplePoly& p, const Velocity& v, double time);
   
-  /**
-   * Remove a poly from this path, by step index.
-   */
+	/**
+	 * Remove a poly from this path, by step index.
+	 * @param n index
+	 */
   void remove(int n);
   
-  /**
-   * Returns the start time of this path.  Static paths have a start time of 0.
-   */
+	/**
+	 * Returns the start time of this path.  Static paths have a start time of 0.
+	 * @return first time
+	 */
   double getFirstTime() const;
 
 	/**
 	 * Returns the end time of this path.  Static paths have an end time of 0.  Continuing paths have an end time of POSITIVE_INFINITY
+	 * @return last time
 	 */
   double getLastTime() const;
 
-  /**
-   * Returns an interpolated poly from an arbitrary time on this path.
-   */
+	/**
+	 * Returns an interpolated poly from an arbitrary time on this path.
+	 * 
+	 * @param time time
+	 * @return polygon
+	 */
   SimplePoly interpolate(double time) const;
   
-  /**
-   * Returns the initial velocity of this path, starting from a given step index.
-   */
+	/**
+	 * Returns the initial velocity of this path, starting from a given step index.
+	 * @param n index
+	 * @return velocity
+	 */
   Velocity initialVelocity(int n) const;
   
   Velocity initialVertexVelocity(int vert, int n) const;
@@ -209,15 +234,18 @@ public:
 	 * the time for point 1 is 10.0 and the time for point 2 is 20.0, then
 	 * getSegment(10.0) will produce 0, getSegment(15.0) will produce 0,
 	 * and getSegment(20.0) will produce 1.
+	 * 
+	 * @param tm time
+	 * @return segment number
 	 */
 	int getSegment(double tm) const;
 
-  /**
-   * Interpolate the poly at the given time
-   * If time is outside the path's limit, return null.
-   * @param time
-   * @return
-   */
+	/**
+	 * Interpolate the poly at the given time
+	 * If time is outside the path's limit, return null.
+	 * @param time
+	 * @return polygon
+	 */
   SimplePoly position(double time) const;
 
 
@@ -226,35 +254,52 @@ public:
 	 * -1 indicates a time before the path begins. -x indicates a time after point (x-1), so a time between points 1 and 2 will return index -2. 
 	 * A time after the path will return -size-1.
 	 * 
+	 * @param time time
+	 * @return index
 	 */
   int getIndex(double time) const;
   
   SimplePoly& getPolyRef(int n);
 
-  /**
-   * Returns a copy of the poly at step index n.
-   */
+	/**
+	 * Returns a copy of the poly at step index n.
+	 * 
+	 * @param n index
+	 * @return polygon
+	 */
   SimplePoly getPoly(int n) const;
   
-  /**
-   * Returns the time for a given step index.
-   */
+	/**
+	 * Returns the time for a given step index.
+	 * 
+	 * @param n index
+	 * @return time
+	 */
   double getTime(int n) const;
 
-  /**
-   * Sets the time t for a given step n.  The order of times must be preserved.
-   */
+	/**
+	 * Sets the time t for a given step n.  The order of times must be preserved. 
+	 * 
+	 * @param n index
+	 * @param t time
+	 */
   void setTime(int n, double t);
 
-  /**
-    * Set the polygon at index i to be a copy of p
-    */
+	/**
+	 * Set the polygon at index i to be a copy of p
+	 * 
+	 * @param i index
+	 * @param p polygon
+	 */
    void setPolygon(int i, const SimplePoly& p);
 
-   /**
-    * Set the user velocity at index i to be v
-    * This only has effect if isCalculatedVelocities() is false.
-    */
+	/**
+	 * Set the user velocity at index i to be v
+	 * This only has effect if isCalculatedVelocities() is false.
+	 * 
+	 * @param i index
+	 * @param v velocity
+	 */
    void setVelocity(int i, const Velocity& v);
 
 
@@ -263,6 +308,8 @@ public:
 	/**
 	 * Returns true if the polypath follows expected behaviors (i.e. increasing times and same size for each MORPHING poly).
 	 * Otherwise this sets error messages.
+	 * 
+	 * @return true, if polypath performs expected behaviors
 	 */
   bool validate() const;
   
@@ -288,13 +335,15 @@ public:
 	/**
 	 * This adds a vertex to every polygon on this path.  The vertex will be added relative to the centroid in each case, so other polygons may
 	 * need to be modified to match.
-	 * @param p
+	 * 
+	 * @param n index
+	 * @param p position
 	 */
   void addVertex(int n, const Position& p);
 
 	/**
 	 * Remove the nth vertex from all polygons on the path.
-	 * @param n index of vertex to be removed.
+	 * @param vert index of vertex to be removed.
 	 */
   void removeVertex(int vert);
 
@@ -315,7 +364,7 @@ public:
 	 * Interpolate the averagePoint velocity at the given time
 	 * If time is outside the path's limit, return invalid velocity.
 	 * @param time
-	 * @return
+	 * @return velocity
 	 */
   Velocity velocity(double time) const;
 
@@ -325,17 +374,21 @@ public:
 
   Velocity finalVertexVelocity(int vert, int i) const;
 
-  /**
-   * This will return a moving polygon that starts at point i and ends at point i+1
-   * @param i
-   * @param proj
-   * @return
-   */
+	/**
+	 * This will return a moving polygon that starts at point i and ends at point i+1
+	 * @param i    index
+	 * @param proj projection
+	 * @return polygon
+	 */
   MovingPolygon3D getInitialMovingPolygon(int i, const EuclideanProjection& proj) const;
 
-  /**
-   * This will return a moving polygon that STARTS at time t (relative time 0) and ends at its segment end time.
-   */
+	/**
+	 * This will return a moving polygon that STARTS at time t (relative time 0) and ends at its segment end time.
+	 * 
+	 * @param time
+	 * @param proj
+	 * @return
+	 */
   MovingPolygon3D getMovingPolygon(double time, const EuclideanProjection& proj) const;
 
   static std::string pathModeToString(PathMode m);
@@ -354,6 +407,13 @@ public:
   std::string toOutput() const;
 
   std::string toOutput(int precision, bool tcpColumns) const;
+
+  std::vector<std::string> toStringList(int i, int j, int precision, bool tcpColumns) const;
+
+  SimpleMovingPoly getSimpleMovingPoly(int i) const;
+
+  SimpleMovingPoly getSimpleMovingPoly(double t) const;
+
 
   bool contains (const Position& p, double t) const;
 

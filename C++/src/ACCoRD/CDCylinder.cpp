@@ -6,7 +6,7 @@
  * NASA LaRC
  * http://shemesh.larc.nasa.gov/people/cam/ACCoRD
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -172,7 +172,6 @@ void CDCylinder::setParameters(const ParameterData& p) {
   if (p.contains("id")) {
     id = p.getString("id");
   }
-
 }
 
 std::string CDCylinder::getSimpleClassName() const {
@@ -180,7 +179,7 @@ std::string CDCylinder::getSimpleClassName() const {
 }
 
 std::string CDCylinder::toString() const {
-  return (id == "" ? "" : id+" = ")+getSimpleClassName()+": {"+table.toString()+"}";
+  return (id == "" ? "" : id+" : ")+getSimpleClassName()+" = {"+table.toString()+"}";
 }
 
 std::string CDCylinder::toPVS(int prec) const {

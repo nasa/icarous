@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -100,8 +100,15 @@ bool Interval::inOO(double x) const {
 
 /** Is the element (almost) in this interval, where close/open conditions are given as parameters */
 bool Interval::almost_in(double x, bool lb_close, bool ub_close) const {
-  	bool in_lb = low < x ? lb_close || !Util::almost_equals(low,x) : lb_close && Util::almost_equals(low,x);
-  	bool in_ub = x < up ? ub_close || !Util::almost_equals(up,x) : ub_close && Util::almost_equals(up,x);
+	return almost_in(x,lb_close,ub_close,PRECISION_DEFAULT);
+}
+
+/** Is the element (almost) in this interval, where close/open conditions are given as parameters */
+bool Interval::almost_in(double x, bool lb_close, bool ub_close, INT64FM maxUlps) const {
+  	bool in_lb = low < x ? lb_close || !Util::almost_equals(low,x,maxUlps) :
+  			lb_close && Util::almost_equals(low,x,maxUlps);
+  	bool in_ub = x < up ? ub_close || !Util::almost_equals(up,x,maxUlps) :
+  			ub_close && Util::almost_equals(up,x,maxUlps);
   	return in_lb && in_ub;
 }
 

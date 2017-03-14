@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -11,6 +11,7 @@
 #include "ParameterAcceptor.h"
 #include "ErrorReporter.h"
 #include "AlertLevels.h"
+#include <map>
 
 namespace larcfm {
 
@@ -63,8 +64,13 @@ private:
   double contour_thr_; // Horizontal threshold, specified as an angle to the left/right of current aircraft direction,
   // for computing horizontal contours. A value of 0 means only conflict contours. A value of pi means all contours.
 
+  std::map<std::string,std::string> units_;
+  std::vector<std::string> keys_; // List of key values
   bool set_turn_rate(double val);
   bool set_bank_angle(double val);
+  void addKeyDouble(const std::string& key, double val, const std::string& units, const std::string& msg="");
+  void addKeyBoolean(const std::string& key, bool val, const std::string& msg="");
+
 
 public:
 
@@ -737,11 +743,6 @@ public:
   void setKinematicBands(bool type);
 
   /**
-   *  Load parameters for ParameterData.
-   */
-  void loadFromParameterData(const ParameterData& parameters);
-
-  /**
    *  Load parameters from file.
    */
   bool loadFromFile(const std::string& file);
@@ -750,8 +751,6 @@ public:
    *  Write parameters to file.
    */
   bool saveToFile(const std::string& file) const;
-
-  static std::string val_unit(double val, const std::string& u);
 
   std::string toString() const;
 
@@ -762,6 +761,8 @@ public:
   void updateParameterData(ParameterData& parameters) const;
 
   void setParameters(const ParameterData& parameters);
+
+  std::string getUnits(const std::string& key) const;
 
   bool hasError() const;
 

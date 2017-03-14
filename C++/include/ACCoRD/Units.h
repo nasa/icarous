@@ -6,7 +6,7 @@
  *
  * Conversion to internal units: meters, seconds, radians.
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -41,30 +41,22 @@ double _FormalATM_P0();
  * facilitate that type of use.
  * <p>
  * 
- * For example:
+ * For example, note there are no unit conversions in the equations:
  * <p>
  * 
  * <pre>
- * // Specifying Quantities
  * double one_mile = Units.from(&quot;mi&quot;, 1.0);
  * double one_km = Units.from(&quot;km&quot;, 1.0);
  * double time = Units.from(&quot;hour&quot;, 1.0);
  * 
- * // &quot;The Program&quot; (note, there are no unit conversions)
  * double distance = one_mile + one_km;
  * double speed = distance / time;
  * 
- * // Outputting Quantities
- * // should be about 2.6:
- * System.out.println(&quot;The distance in kilometers is &quot; + Units.to(&quot;km&quot;, distance)); 
- * // should be about 1.6:
- * System.out.println(&quot;The distance in miles is &quot; + Units.to(&quot;mi&quot;, distance)); 
- * // should be about 8560:
- * System.out.println(&quot;The distance in feet is &quot; + Units.to(&quot;ft&quot;, distance)); 
- * // should be about 1.6
- * System.out.println(&quot;The speed in miles/hour is &quot; + Units.to(&quot;mph&quot;, speed)); 
- * // should be about 0.72
- * System.out.println(&quot;The speed in m/s is &quot; + Units.to(&quot;m/s&quot;, speed)); 
+ * System.out.println(&quot;The distance should be 2.6 and in kilometers is &quot; + Units.to(&quot;km&quot;, distance)); 
+ * System.out.println(&quot;The distance should be 1.6 and in miles is &quot; + Units.to(&quot;mi&quot;, distance)); 
+ * System.out.println(&quot;The distance should be 8560 in feet is &quot; + Units.to(&quot;ft&quot;, distance)); 
+ * System.out.println(&quot;The speed should be 1.6 and in miles/hour is &quot; + Units.to(&quot;mph&quot;, speed)); 
+ * System.out.println(&quot;The speed should be 0.72 and in m/s is &quot; + Units.to(&quot;m/s&quot;, speed)); 
  * </pre>
  * <p>
  * 
@@ -132,7 +124,6 @@ double _FormalATM_P0();
  * <p>
  * 
  * <pre>
- * // Specifying Quantities
  * double one_mile = Units.from(Units.mile, 1.0);
  * double one_km = Units.from(Units.kilometer, 1.0);
  * double time = Units.from(Units.hour, 1.0);
@@ -295,7 +286,7 @@ double _FormalATM_P0();
  * quantities. In these cases, the conversion factors are limited to the resolution
  * of double precision operations. For most engineering purposes
  * (see the point above) this is more than good enough; however, someone working
- * with very precise quantities (> 12 significant digits), should be aware of
+ * with very precise quantities (&gt; 12 significant digits), should be aware of
  * the possibility of differences.
  * <p>
  * 
@@ -306,10 +297,10 @@ double _FormalATM_P0();
  * <p>
  * 
  * <li>The Units class is not <i>immutable</i>. However modification of this
- * class is limited. Specifically, there is no mechanism to "delete" a unit from
- * the Units class, nor is there any ability to "change" a conversion factor of
+ * class is limited. Specifically, there is no mechanism to <i>delete</i> a unit from
+ * the Units class, nor is there any ability to <i>change</i> a conversion factor of
  * a unit. These restrictions allow the user to be confident that once a unit is
- * in the Units class, its definition will never change. The unit "A" will
+ * in the Units class, its definition will never change. The unit <b>A</b> will
  * always be an ampere, it will never become an angstrom.
  * <p>
  * 
@@ -461,7 +452,9 @@ public:
 
 	/** Get the unit conversion factor for the given string unit */
 	static double getFactor(const std::string& unit);
-	/** Determine if the given string is a valid unit */
+  /** Determine if the given string is a valid unit
+   * @param unit string representation of a unit
+   * @return true, if this string is known as a unit in the database of units */
 	static bool isUnit(const std::string& unit);
 
 	/**
@@ -482,11 +475,13 @@ public:
 	/** Make a string representation of the value in internal units to the given units */
 	static std::string str(const std::string& symbol, double value, int precision);
 
-	/**
-	 * Clean up the unit string that may contain brackets or extra space. For
-	 * instance, " [ feet]" becomes "feet". If the string in brackets is not a
-	 * recognized, then "unspecified" is returned.
-	 */
+  /**
+   * Clean up the unit string that may contain brackets or extra space. For
+   * instance, " [ feet]" becomes "feet". If the string in brackets is not a
+   * recognized, then "unspecified" is returned.
+   * @param unit a "dirty" string
+   * @return a cleaned-up unit string
+   */
 	static std::string clean(const std::string& unit);
 
 private:

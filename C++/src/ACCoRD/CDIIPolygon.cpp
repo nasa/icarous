@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -228,12 +228,12 @@ namespace larcfm {
         Vect3 so = ownship.point(i).point();
         bool linear = true;
         Velocity vo = ownship.initialVelocity(i, linear);
-        double t_base = ownship.getTime(i);   // ownship start of leg
+        double t_base = ownship.time(i);   // ownship start of leg
         double nextTime;                      // ownship end of range
         if (i == ownship.size() - 1) {
           nextTime = 0.0;                   // set to 0
         } else {
-          nextTime = ownship.getTime(i + 1);  // if in the plan, set to the end of leg
+          nextTime = ownship.time(i + 1);  // if in the plan, set to the end of leg
         }
         double HT = nextTime - t_base;        
         double BT = Util::max(0.0,B - t_base); // Util::max(0,B-(t_base - t0));
@@ -275,12 +275,12 @@ namespace larcfm {
       // truncate the search at Tend if not in a conflict
       if (i <= end || cont) {
         LatLonAlt llo = ownship.point(i).lla();
-        double t_base = ownship.getTime(i);
+        double t_base = ownship.time(i);
         double nextTime;
         if (i == ownship.size() - 1) {
           nextTime = 0.0;
         } else {
-          nextTime = ownship.getTime(i + 1);  
+          nextTime = ownship.time(i + 1);  
         }
         double HT = nextTime - t_base;      // state-based time horizon (relative time)
         double BT = Util::max(0.0,B - t_base); // begin time to look for conflicts (relative time)

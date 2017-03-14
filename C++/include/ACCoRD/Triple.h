@@ -6,7 +6,7 @@
  *
  * a three element tuple
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -17,7 +17,12 @@
 
 namespace larcfm {
 
-  /** A class representing a three member tuple */
+/** A class representing a three member tuple 
+ *
+ * @param <L> Type of the first element of the tuple
+ * @param <C> Type of the second element of the tuple
+ * @param <R> Type of the third element of the tuple
+ */
 template <typename L, typename C, typename R> 
 class Triple {
  public:
@@ -35,33 +40,45 @@ class Triple {
  Triple(const L& left, const C& center, const R& right) : first(left), second(center), third(right) {
     }
 
-    /** The left-most element */ 
+    /** The left-most element 
+     * @return first, or leftmost, element of tuple
+     * */ 
     L getLeft() const {
         return first;
     }
  
-    /** The center element */
+    /** The center element 
+     * @return second, or center, element of tuple
+     * */
     C getCenter() const {
          return second;
     }
  
-    /** The rightmost element */
+    /** The rightmost element 
+     * @return third, or right most, element of tuple
+     * */
     R getRight() const {
          return third;
     }
 
 
-    /** The first (or leftmost) element */
+    /** The first (or leftmost) element 
+     * @return first, or leftmost, element of tuple
+     * */
     L getFirst() const {
         return first;
     }
  
-    /** The second (or center) element */
+    /** The second (or center) element 
+     * @return second, or center, element of tuple
+     * */
     C getSecond() const {
          return second;
     }
  
-    /** The third (or rightmost) element */
+    /** The third (or rightmost) element 
+     * @return third, or right most, element of tuple
+     * */
     R getThird() const {
          return third;
     }
@@ -71,7 +88,13 @@ class Triple {
     Triple(const Triple<L1,C1, R1>& t): first(t.left), second(t.center), third(t.right) {}
  };
 
-/** Make a Triple */
+    /** Make a Triple 
+     * 
+     * @param left first element of tuple
+     * @param center second element of tuple
+     * @param right third element of tuple
+     * @return new triple
+     */
  template <typename L, typename C, typename R> 
  Triple<L, C, R> make(const L& left, const C& center, const R& right) {
    return new Triple<L, C, R>(left, center, right);

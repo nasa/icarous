@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -10,7 +10,9 @@
 
 #include "Units.h"
 #include "Triple.h"
+#include "Quad.h"
 #include "Tuple5.h"
+#include "Tuple6.h"
 #include "ErrorLog.h"
 #include "NavPoint.h"
 #include "Position.h"
@@ -28,8 +30,8 @@ namespace larcfm {
 class TurnGeneration {
 
 public:
-  static Triple<NavPoint,NavPoint,NavPoint> turnGenerator(const NavPoint& np1, const NavPoint& np2, const NavPoint& np3, double radius);
-  static Tuple5<Position,Position,Position,int,double> turnGenerator(const Position& np1, const Position& np2, const Position& np3, double radius);
+  static Tuple5<NavPoint,NavPoint,NavPoint, int, Position> turnGenerator(const NavPoint& np1, const NavPoint& np2, int linearIndex, const NavPoint& np3, double radius);
+  static Tuple6<Position,Position,Position,int,double,Position> turnGenerator(const Position& np1, const Position& np2, const Position& np3, double radius);
  	
 	/**
 	 * Return the BOT and EOT trajectory change points for a turn (Horizontal Components Only)
@@ -41,7 +43,7 @@ public:
 	 * NOTE: The altitudes are not computed!!
 	 * velocity in metadata is set correctly for BOT, with track values modified to match the MOT and EOT points
 	 */
-  static Tuple5<Vect2,Vect2,Vect2,int,double> turnGeneratorEucl(const Vect2& pt1, const Vect2& pt2, const Vect2& pt3, double radius);
+  static Tuple6<Vect2,Vect2,Vect2,int,double,Vect2> turnGeneratorEucl(const Vect2& pt1, const Vect2& pt2, const Vect2& pt3, double radius);
  
 	
 	/**
@@ -54,7 +56,7 @@ public:
 	 * NOTE: The altitudes are NOT computed
 	 * velocity in metadata is set correctly for BOT, with track values modified to match the MOT and EOT points
 	 */
-  static Tuple5<Vect3,Vect3,Vect3,int,double> turnGeneratorEucl(const Vect3& p1, const Vect3& p2, const Vect3& p3, double radius);
+  static Tuple6<Vect3,Vect3,Vect3,int,double,Vect3> turnGeneratorEucl(const Vect3& p1, const Vect3& p2, const Vect3& p3, double radius);
  
 	/**
 	 * Return the BOT, MOT, and EOT TCPs for a turn. 
@@ -66,7 +68,7 @@ public:
 	 * NOTE.   MOT.alt = np.alt()
 	 * velocity in metadata is set correctly for BOT, with track values modified to match the MOT and EOT points
 	 */
-  static Triple<NavPoint,NavPoint,NavPoint> turnGeneratorProjected(const NavPoint& np1, const NavPoint& np2, const NavPoint& np3, double R);
+  static Quad<NavPoint,NavPoint,NavPoint,int> turnGeneratorProjected(const NavPoint& np1, const NavPoint& np2, int linearIndex, const NavPoint& np3, double R);
  	
 	/**
 	 * does NOT calculate an accurate altitude
@@ -77,7 +79,7 @@ public:
 	 * @param radius
 	 * @return returns BOT, MOT, EOT and distance from BOT to p2 = distance from EOT to p2
 	 */
-  static Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,double> turnGeneratorLLA(const LatLonAlt& p2, double trkIn, double trkOut, double radius);
+  static Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt> turnGeneratorLLA(const LatLonAlt& p2, double trkIn, double trkOut, double radius);
  	
 	/**
 	 * Altitudes are not set.
@@ -87,7 +89,7 @@ public:
 	 * @param radius
 	 * @return
 	 */
-  static Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,double> turnGeneratorLLA(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3, double radius);
+  static Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt> turnGeneratorLLA(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3, double radius);
  	
 	/**
 	 * Altitudes are not set.

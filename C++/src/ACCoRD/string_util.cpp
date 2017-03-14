@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Cesar Munoz, George Hagen
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -161,6 +161,12 @@ namespace larcfm {
       s.erase(0,s.find_first_not_of(drop));
     }
   
+    std::string trimCopy(const string& s,const string& drop){
+    	std::string tmp(s);
+    	trim(tmp, drop);
+    	return tmp;
+    }
+
   string toLowerCase(const string& strToConvert) {//change each element of the string to lower case
     string nstr;
     nstr.resize(strToConvert.size());
@@ -172,6 +178,17 @@ namespace larcfm {
     
   }
   
+  string toUpperCase(const string& strToConvert) {//change each element of the string to upper case
+    string nstr;
+    nstr.resize(strToConvert.size());
+
+    for(unsigned int i=0;i<strToConvert.size();i++)  {
+      nstr[i] = toupper(strToConvert[i]);
+    }
+    return nstr;  //return the converted string
+
+  }
+
   bool equals(const string& s1, const string& s2) {
     return (s1.compare(s2) == 0);
   }

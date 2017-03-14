@@ -8,7 +8,7 @@
  * NOTES: 
  * Track is True North/clockwise
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -51,22 +51,22 @@ public:
 
 	Velocity(const Vect3& v3);
 
-  /**
-   * Angle in explicit units in corresponding range [-<code>Math.PI</code>, <code>Math.PI</code>].
-   * Convention is counter-clockwise with respect to east.
-   * 
-   * @param uangle the explicit units of track angle
-   * 
-   * @return the track angle [rad]
-   */
+	/**
+	 * Angle in explicit units in corresponding range [-<code>Math.PI</code>, <code>Math.PI</code>].
+	 * Convention is counter-clockwise with respect to east.
+	 *
+	 * @param uangle the explicit units of track angle
+	 *
+	 * @return the track angle [rad]
+	 */
 	double angle(const std::string& uangle) const;
 
-  /**
-   * Angle in radians in the range [-<code>Math.PI</code>, <code>Math.PI</code>].
-   * Convention is counter-clockwise with respect to east.
-   * 
-   * @return the track angle [rad]
-   */
+	/**
+	 * Angle in radians in the range [-<code>Math.PI</code>, <code>Math.PI</code>].
+	 * Convention is counter-clockwise with respect to east.
+	 *
+	 * @return the track angle [rad]
+	 */
 	double angle() const;
 
 	/**
@@ -137,8 +137,14 @@ public:
 	 */
 	double verticalSpeed(const std::string& uvs) const;
 
-	/** compare Velocities: return true iff delta is within specified limits
+	/**
+	 * Compare Velocities: return true iff delta is within specified limits
 	 *
+	 * @param v       the other velocity
+	 * @param maxTrk
+	 * @param maxGs
+	 * @param maxVs
+	 * @return true, if the velocities compare correctly
 	 */
 	bool compare(const Velocity& v, double maxTrk, double maxGs, double maxVs);
 
@@ -160,15 +166,24 @@ public:
 	 */
 	std::string toString(int prec) const;
 
-	/** String representation of the velocity in polar coordinates (compass angle and groundspeed) */
+	/** String representation of the velocity in polar coordinates (compass angle and groundspeed)
+	 * @return a string representation
+	 * */
 	std::string toStringUnits() const;
 
-	/** String representation (trk,gs,vs) with the given units */
+	/** String representation (trk,gs,vs) with the given units
+	 *
+	 * @param trkUnits
+	 * @param gsUnits
+	 * @param vsUnits
+	 * @return a string representation
+	 */
 	std::string toStringUnits(const std::string& trkUnits, const std::string& gsUnits, const std::string& vsUnits) const;
 
-  /**
-   * Euclidean vector representation to arbitrary precision, in [knot,knot,fpm]
-   */
+	/**
+	 * Euclidean vector representation to arbitrary precision, in [knot,knot,fpm]
+	 * @return a string representation
+	 */
 	std::string toStringXYZ() const;
 
 	std::string toStringXYZ(int prec) const;
@@ -200,15 +215,27 @@ public:
 	 */
 	std::vector<std::string> toStringXYZList(int precision) const;
 
-	/** String representation, default number of decimal places, without parentheses */
+	/** String representation, default number of decimal places, without parentheses
+	 * @return a string representation
+	 * */
 	std::string toStringNP() const;
 
 	/**
 	 * String representation, with user-specified precision
 	 * @param precision number of decimal places (0-15)
-	 * @return
+	 * @return a string representation
 	 */
 	std::string toStringNP(int precision) const;
+
+	/**
+	 * String representation, with user-specified precision
+	 * @param precision number of decimal places (0-15)
+	 * @param utrk units of track
+	 * @param ugs units of ground speed
+	 * @param uvs units of vertical speed
+	 * @return a string representation
+	 */
+	std::string toStringNP(const std::string& utrk, const std::string& ugs, const std::string& uvs, int precision) const;
 
 	/**
 	 * New velocity from Vect3 in internal units.
@@ -241,15 +268,15 @@ public:
 	static Velocity mkVxyz(const double vx, const double vy, const double vz);
 
 
-  /**
-   * New velocity from Euclidean coordinates in "conventional" units.
-   *
-   * @param vx the x-velocity [knot]
-   * @param vy the y-velocity [knot]
-   * @param vz the z-velocity [fpm]
-   *
-   * @return the velocity
-   */
+	/**
+	 * New velocity from Euclidean coordinates in "conventional" units.
+	 *
+	 * @param vx the x-velocity [knot]
+	 * @param vy the y-velocity [knot]
+	 * @param vz the z-velocity [fpm]
+	 *
+	 * @return the velocity
+	 */
 	static Velocity makeVxyz(const double vx, const double vy, const double vz);
 
 
@@ -280,16 +307,16 @@ public:
 	static Velocity mkTrkGsVs(const double trk, const double gs, const double vs);
 
 
-  /**
-   * New velocity from Track, Ground Speed, and Vertical speed in explicit units.
-   * Note that this uses trigonometric functions, and may introduce numeric instability.
-   * 
-   * @param trk the track angle [deg]
-   * @param gs the ground speed [knot]
-   * @param vs the vertical speed [fpm]
-   * 
-   * @return the velocity
-   */
+	/**
+	 * New velocity from Track, Ground Speed, and Vertical speed in explicit units.
+	 * Note that this uses trigonometric functions, and may introduce numeric instability.
+	 *
+	 * @param trk the track angle [deg]
+	 * @param gs the ground speed [knot]
+	 * @param vs the vertical speed [fpm]
+	 *
+	 * @return the velocity
+	 */
 	static Velocity makeTrkGsVs(const double trk, const double gs, const double vs);
 
 
@@ -310,25 +337,32 @@ public:
 			const double gs, const std::string& ugs,
 			const double vs, const std::string& uvs);
 
+	/**
+	 * Return the velocity along the line from p1 to p2 at the given speed
+	 * @param p1 first point
+	 * @param p2 second point
+	 * @param speed speed [internal units] (composite 3 dimensional speed, Not ground or vertical speed!)
+	 * @return the velocity
+	 */
 	static Velocity mkVel(const Vect3& p1,const Vect3& p2, double speed);
 
-  /**
-   * Return the velocity if moving from p1 to p2 over the given time
-   * @param p1 first point
-   * @param p2 second point
-   * @param dt time 
-   * @return the velocity
-   */
+	/**
+	 * Return the velocity if moving from p1 to p2 over the given time
+	 * @param p1 first point
+	 * @param p2 second point
+	 * @param dt time
+	 * @return the velocity
+	 */
 	static Velocity genVel(const Vect3& p1, const Vect3& p2, double dt) ;
 
 
-  /**
-   * New velocity from existing velocity by adding the given track angle to this 
-   * vector's track angle.  Essentially, this rotates the vector, a positive
-   * angle means a clockwise rotation.
-   * @param trk track angle [rad]
-   * @return new velocity
-   */
+	/**
+	 * New velocity from existing velocity by adding the given track angle to this
+	 * vector's track angle.  Essentially, this rotates the vector, a positive
+	 * angle means a clockwise rotation.
+	 * @param trk track angle [rad]
+	 * @return new velocity
+	 */
 	Velocity mkAddTrk(double trk) const;
 
 
@@ -342,18 +376,30 @@ public:
 	/** Return the x component of velocity given the track and ground
 	 * speed.  The track angle is assumed to use the radians from true
 	 * North-clockwise convention.
+	 *
+	 * @param trk
+	 * @param gs
+	 * @return x component of velocity
 	 */
 	static double trkgs2vx(double trk, double gs);
 
 	/** Return the y component of velocity given the track and ground
 	 *	speed.  The track angle is assumed to use the radians from
 	 *	true North-clockwise convention.
+	 *
+	 * @param trk
+	 * @param gs
+	 * @return y component of velocity
 	 */
 	static double trkgs2vy(double trk, double gs);
 
 	/** Return the 2-dimensional Euclidean vector for velocity given the track and ground
 	 *	speed.  The track angle is assumed to use the radians from
 	 *	true North-clockwise convention.
+	 *
+	 * @param trk
+	 * @param gs
+	 * @return 2-D velocity
 	 */
 	static Vect2 trkgs2v(double trk, double gs);
 
@@ -407,9 +453,9 @@ public:
 	 */
 	Velocity Hat() const;
 
-  /**
-   * Returns a unit velocity vector in the direction of the original velocity in the XY plane
-   */
+	/**
+	 * Returns a unit velocity vector in the direction of the original velocity in the XY plane
+	 */
 	Velocity Hat2D() const;
 
 	Velocity Neg() const;
@@ -425,7 +471,11 @@ public:
 
 	/** This parses a space or comma-separated string as a XYZ Velocity (an inverse to the toStringXYZ method).  If three bare values are present, then it is interpreted as internal units.
 	 * If there are 3 value/unit pairs then each values is interpreted wrt the appropriate unit.  If the string cannot be parsed, an INVALID value is
-	 * returned. */
+	 * returned.
+	 *
+	 * @param str string to parse
+	 * @return Velocity object
+	 */
 	static Velocity parseXYZ(const std::string& str);
 
 	/** This parses a space or comma-separated string as a Trk/Gs/Vs Velocity (an inverse to the toString method).  If three bare values are

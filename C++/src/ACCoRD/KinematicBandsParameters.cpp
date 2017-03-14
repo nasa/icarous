@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -9,7 +9,6 @@
 #include "ParameterData.h"
 #include "StateReader.h"
 #include "Units.h"
-#include "format.h"
 #include "AlertLevels.h"
 #include "ACCoRDConfig.h"
 
@@ -18,63 +17,150 @@ namespace larcfm {
 /**
  * DAIDALUS version
  */
-const std::string KinematicBandsParameters::VERSION = "1.0";
+const std::string KinematicBandsParameters::VERSION = "1.0.1";
 
 /* NOTE: By default, no alert levels are configured */
 KinematicBandsParameters::KinematicBandsParameters() : error("DaidalusParameters") {
-  // Bands
-  lookahead_time_ = 180;              // [s] Lookahead time
-  left_trk_ =  Pi;                    // Left track [0 - pi]
-  right_trk_ = Pi;                    // Right track [0 - pi]
-  min_gs_ = Units::from("knot",10);   // Minimum ground speed
-  max_gs_ = Units::from("knot",700);  // Maximum ground speed
-  min_vs_ = Units::from("fpm",-6000); // Minimum vertical speed
-  max_vs_ = Units::from("fpm",6000);  // Maximum vertical speed
-  min_alt_ = Units::from("ft",100);   // Minimum altitude
-  max_alt_ = Units::from("ft",50000); // Maximum altitude
 
-  // Kinematic bands
-  trk_step_         = Units::from("deg",  1.0); // Track step
-  gs_step_          = Units::from("knot", 5.0); // Ground speed step
-  vs_step_          = Units::from("fpm",100.0); // Vertical speed step
-  alt_step_         = Units::from("ft", 100.0); // Altitude step
-  horizontal_accel_ = Units::from("m/s^2",2.0); // Horizontal acceleration
-  vertical_accel_   = Units::from("G",0.25);    // Section 1.2.3, DAA MOPS V3.6
-  turn_rate_        = Units::from("deg/s",3.0); // Section 1.2.3, DAA MOPS V3.6
-  bank_angle_       = 0.0;
-  vertical_rate_    = Units::from("fpm",500);   // Section 1.2.3, DAA MOPS V3.6
+  // Bands Parameters
+  lookahead_time_ = 180.0; // [s]
+  keys_.push_back("lookahead_time");
+  units_["lookahead_time"] = "s";
 
-  // Recovery bands
-  horizontal_nmac_ = ACCoRDConfig::NMAC_D;
-  vertical_nmac_   = ACCoRDConfig::NMAC_H;
-  recovery_stability_time_ = 2; // Recovery stability time
-  min_horizontal_recovery_ = 0; // Horizontal distance protected during recovery. TCAS RA DMOD is used this value is 0
-  min_vertical_recovery_ = 0; // Vertical distance protected during recovery. TCAS RA ZTHR is used when this value is 0
-  conflict_crit_ = false;
-  recovery_crit_ = false;
-  /* Compute recovery bands */
+  left_trk_  = Units::from("deg",180.0);
+  keys_.push_back("left_trk");
+  units_["left_trk"] = "deg";
+
+  right_trk_ = Units::from("deg",180.0);
+  keys_.push_back("right_trk");
+  units_["right_trk"] = "deg";
+
+  min_gs_  = Units::from("knot",10.0);
+  keys_.push_back("min_gs");
+  units_["min_gs"] = "knot";
+
+  max_gs_  = Units::from("knot",700.0);
+  keys_.push_back("max_gs");
+  units_["max_gs"] = "knot";
+
+  min_vs_  = Units::from("fpm",-6000.0);
+  keys_.push_back("min_vs");
+  units_["min_vs"] = "fpm";
+
+  max_vs_  = Units::from("fpm",6000.0);
+  keys_.push_back("max_vs");
+  units_["max_vs"] = "fpm";
+
+  min_alt_ = Units::from("ft",100.0);
+  keys_.push_back("min_alt");
+  units_["min_alt"] = "ft";
+
+  max_alt_ = Units::from("ft",50000.0);
+  keys_.push_back("max_alt");
+  units_["max_alt"] = "ft";
+
+  // Kinematic Parameters
+  trk_step_ = Units::from("deg",1.0);
+  keys_.push_back("trk_step");
+  units_["trk_step"] = "deg";
+
+  gs_step_ = Units::from("knot",5.0);
+  keys_.push_back("gs_step");
+  units_["gs_step"] = "knot";
+
+  vs_step_ = Units::from("fpm",100.0);
+  keys_.push_back("vs_step");
+  units_["vs_step"] = "fpm";
+
+  alt_step_ = Units::from("ft", 100.0);
+  keys_.push_back("alt_step");
+  units_["alt_step"] = "ft";
+
+  horizontal_accel_ = Units::from("m/s^2",2.0);
+  keys_.push_back("horizontal_accel");
+  units_["horizontal_accel"] = "m/s^2";
+
+  vertical_accel_ = Units::from("G",0.25);    // Section 1.2.3, DAA MOPS V3.6
+  keys_.push_back("vertical_accel");
+  units_["vertical_accel"] = "G";
+
+  turn_rate_ = Units::from("deg/s",3.0); // Section 1.2.3, DAA MOPS V3.6
+  keys_.push_back("turn_rate");
+  units_["turn_rate"] = "deg/s";
+
+  bank_angle_ = 0.0;
+  keys_.push_back("bank_angle");
+  units_["bank_angle"] = "deg";
+
+  vertical_rate_ = Units::from("fpm",500.0);   // Section 1.2.3, DAA MOPS V3.6
+  keys_.push_back("vertical_rate");
+  units_["vertical_rate"] = "fpm";
+
+  // Recovery Bands Parameters
+  recovery_stability_time_ = 2.0; // [s]
+  keys_.push_back("recovery_stability_time");
+  units_["recovery_stability_time"] = "s";
+
+  min_horizontal_recovery_ = 0.0;
+  keys_.push_back("min_horizontal_recovery");
+  units_["min_horizontal_recovery"] = "nmi";
+
+  min_vertical_recovery_ = 0.0;
+  keys_.push_back("min_vertical_recovery");
+  units_["min_vertical_recovery"] = "ft";
+
   recovery_trk_ = true;
-  recovery_gs_  = true;
-  recovery_vs_  = true;
+  keys_.push_back("recovery_trk");
+
+  recovery_gs_ = true;
+  keys_.push_back("recovery_gs");
+
+  recovery_vs_ = true;
+  keys_.push_back("recovery_vs");
+
   recovery_alt_ = true;
-  /* Compute collision avoidance bands */
-  ca_bands_     = false;
-  ca_factor_    = 0.2;
+  keys_.push_back("recovery_alt");
 
-  // Contours
-  contour_thr_ = Pi;
+  // Collision Avoidance Bands Parameters
+  ca_bands_ = false;
+  keys_.push_back("ca_bands");
 
-  // Alert levels
+  ca_factor_ = 0.2;
+  keys_.push_back("ca_factor");
+
+  horizontal_nmac_ = ACCoRDConfig::NMAC_D;      // Defined in RTCA SC-147
+  keys_.push_back("horizontal_nmac");
+  units_["horizontal_nmac"] = "ft";
+
+  vertical_nmac_ = ACCoRDConfig::NMAC_H;        // Defined in RTCA SC-147
+  keys_.push_back("vertical_nmac");
+  units_["vertical_nmac"] = "ft";
+
+  // Implicit Coordination Parameters
+  conflict_crit_ = false;
+  keys_.push_back("conflict_crit");
+
+  recovery_crit_ = false;
+  keys_.push_back("recovery_crit");
+
+  // Horizontal Contour Threshold
+  contour_thr_ = Units::from("deg",180.0);
+  keys_.push_back("contour_thr");
+  units_["contour_thr"] = "deg";
+
+  // Alert Levels
   alertor = AlertLevels();
 }
 
 KinematicBandsParameters::KinematicBandsParameters(const KinematicBandsParameters& parameters) : error("DaidalusParameters") {
+  keys_ = parameters.keys_;
   setKinematicBandsParameters(parameters);
 }
 
 KinematicBandsParameters::~KinematicBandsParameters() {}
 
 KinematicBandsParameters& KinematicBandsParameters::operator=(const KinematicBandsParameters& parameters) {
+  keys_ = parameters.keys_;
   setKinematicBandsParameters(parameters);
   return *this;
 }
@@ -83,6 +169,8 @@ KinematicBandsParameters& KinematicBandsParameters::operator=(const KinematicBan
  * Set kinematic bands parameters
  */
 void KinematicBandsParameters::setKinematicBandsParameters(const KinematicBandsParameters& parameters) {
+  units_ = parameters.units_;
+
   // Bands
   lookahead_time_ = parameters.lookahead_time_;
   left_trk_ = parameters.left_trk_;
@@ -453,17 +541,15 @@ double KinematicBandsParameters::getMinVerticalRecovery(const std::string& u)  c
  * Set lookahead time to value in seconds.
  */
 bool KinematicBandsParameters::setLookaheadTime(double val)  {
-  if (error.isPositive("setLookaheadTime",val))  {
-    lookahead_time_ = val;
-    return true;
-  }
-  return false;
+  lookahead_time_ = std::abs(val);
+  return error.isPositive("setLookaheadTime",val);
 }
 
 /**
  * Set lookahead time to value in specified units [u]
  */
 bool KinematicBandsParameters::setLookaheadTime(double val, const std::string& u)  {
+  units_["lookahead_time"] = u;
   return setLookaheadTime(Units::from(u,val));
 }
 
@@ -471,18 +557,15 @@ bool KinematicBandsParameters::setLookaheadTime(double val, const std::string& u
  * Set left track to value in internal units [rad]. Value is expected to be in [0 - pi]
  */
 bool KinematicBandsParameters::setLeftTrack(double val) {
-  val = std::abs(val);
-  if (error.isBetween("setLeftTrack",val,0,Pi)) {
-    left_trk_ = val;
-    return true;
-  }
-  return false;
+  left_trk_ = std::abs(Util::to_pi(val));
+  return error.isBetween("setLeftTrack",val,0,Pi);
 }
 
 /**
  * Set left track to value in specified units [u]. Value is expected to be in [0 - pi]
  */
 bool KinematicBandsParameters::setLeftTrack(double val, const std::string& u) {
+  units_["left_trk"] = u;
   return setLeftTrack(Units::from(u,val));
 }
 
@@ -490,18 +573,15 @@ bool KinematicBandsParameters::setLeftTrack(double val, const std::string& u) {
  * Set right track to value in internal units [rad]. Value is expected to be in [0 - pi]
  */
 bool KinematicBandsParameters::setRightTrack(double val) {
-  val = std::abs(val);
-  if (error.isBetween("setRightTrack",val,0,Pi)) {
-    right_trk_ = val;
-    return true;
-  }
-  return false;
+  right_trk_ = std::abs(Util::to_pi(val));
+  return error.isBetween("setRightTrack",val,0,Pi);
 }
 
 /**
  * Set right track to value in specified units [u]. Value is expected to be in [0 - pi]
  */
 bool KinematicBandsParameters::setRightTrack(double val, const std::string& u) {
+  units_["right_trk"] = u;
   return setRightTrack(Units::from(u,val));
 }
 
@@ -510,11 +590,8 @@ bool KinematicBandsParameters::setRightTrack(double val, const std::string& u) {
  * Minimum ground speed must be greater than ground speed step.
  */
 bool KinematicBandsParameters::setMinGroundSpeed(double val)  {
-  if (error.isPositive("setMinGroundSpeed",val))  {
-    min_gs_ = val;
-    return true;
-  }
-  return false;
+  min_gs_ = std::abs(val);
+  return error.isPositive("setMinGroundSpeed",val);
 }
 
 /**
@@ -522,6 +599,7 @@ bool KinematicBandsParameters::setMinGroundSpeed(double val)  {
  * Minimum ground speed must be greater than ground speed step.
  */
 bool KinematicBandsParameters::setMinGroundSpeed(double val, const std::string& u)  {
+  units_["min_gs"] = u;
   return setMinGroundSpeed(Units::from(u,val));
 }
 
@@ -529,17 +607,15 @@ bool KinematicBandsParameters::setMinGroundSpeed(double val, const std::string& 
  * Set maximum ground speed to value in internal units [m/s]
  */
 bool KinematicBandsParameters::setMaxGroundSpeed(double val)  {
-  if (error.isPositive("setMaxGroundSpeed",val))  {
-    max_gs_ = val;
-    return true;
-  }
-  return false;
+  max_gs_ = std::abs(val);
+  return error.isPositive("setMaxGroundSpeed",val);
 }
 
 /**
  * Set maximum ground speed to value in specified units [u]
  */
 bool KinematicBandsParameters::setMaxGroundSpeed(double val, const std::string& u)  {
+  units_["max_gs"] = u;
   return setMaxGroundSpeed(Units::from(u,val));
 }
 
@@ -555,6 +631,7 @@ bool KinematicBandsParameters::setMinVerticalSpeed(double val)  {
  * Set minimum vertical speed to value in specified units [u]
  */
 bool KinematicBandsParameters::setMinVerticalSpeed(double val, const std::string& u)  {
+  units_["min_vs"] = u;
   return setMinVerticalSpeed(Units::from(u,val));
 }
 
@@ -570,6 +647,7 @@ bool KinematicBandsParameters::setMaxVerticalSpeed(double val)  {
  * Set maximum vertical speed to value in specified units [u]
  */
 bool KinematicBandsParameters::setMaxVerticalSpeed(double val, const std::string& u)  {
+  units_["max_vs"] = u;
   return setMaxVerticalSpeed(Units::from(u,val));
 }
 
@@ -577,17 +655,15 @@ bool KinematicBandsParameters::setMaxVerticalSpeed(double val, const std::string
  * Set minimum altitude to value in internal units [m]
  */
 bool KinematicBandsParameters::setMinAltitude(double val)  {
-  if (error.isNonNegative("setMinAltitude",val))  {
-    min_alt_ = val;
-    return true;
-  }
-  return false;
+  min_alt_ = std::abs(val);
+  return error.isNonNegative("setMinAltitude",val);
 }
 
 /**
  * Set minimum altitude to value in specified units [u]
  */
 bool KinematicBandsParameters::setMinAltitude(double val, const std::string& u)  {
+  units_["min_alt"] = u;
   return setMinAltitude(Units::from(u,val));
 }
 
@@ -595,17 +671,15 @@ bool KinematicBandsParameters::setMinAltitude(double val, const std::string& u) 
  * Set maximum altitude to value in internal units [m]
  */
 bool KinematicBandsParameters::setMaxAltitude(double val)  {
-  if (error.isPositive("setMaxAltitude",val))  {
-    max_alt_ = val;
-    return true;
-  }
-  return false;
+  max_alt_ = std::abs(val);
+  return error.isPositive("setMaxAltitude",val);
 }
 
 /**
  * Set maximum altitude to value in specified units [u]
  */
 bool KinematicBandsParameters::setMaxAltitude(double val, const std::string& u)  {
+  units_["max_alt"] = u;
   return setMaxAltitude(Units::from(u,val));
 }
 
@@ -613,18 +687,16 @@ bool KinematicBandsParameters::setMaxAltitude(double val, const std::string& u) 
  * Set track step to value in internal units [rad]
  */
 bool KinematicBandsParameters::setTrackStep(double val)  {
-  if (error.isPositive("setTrackStep",val) &&
-      error.isLessThan("setTrackStep",val,Pi))  {
-    trk_step_ = val;
-    return true;
-  }
-  return false;
+  trk_step_ = std::abs(Util::to_pi(val));
+  return error.isPositive("setTrackStep",val) &&
+      error.isLessThan("setTrackStep",val,Pi);
 }
 
 /**
  * Set track step to value in specified units [u]
  */
 bool KinematicBandsParameters::setTrackStep(double val, const std::string& u)  {
+  units_["trk_step"] = u;
   return setTrackStep(Units::from(u,val));
 }
 
@@ -632,17 +704,15 @@ bool KinematicBandsParameters::setTrackStep(double val, const std::string& u)  {
  * Set ground speed step to value in internal units [m/s]
  */
 bool KinematicBandsParameters::setGroundSpeedStep(double val)  {
-  if (error.isPositive("setGroundSpeedStep",val))  {
-    gs_step_ = val;
-    return true;
-  }
-  return false;
+  gs_step_ = std::abs(val);
+  return error.isPositive("setGroundSpeedStep",val);
 }
 
 /**
  * Set ground speed step to value in specified units [u]
  */
 bool KinematicBandsParameters::setGroundSpeedStep(double val, const std::string& u)  {
+  units_["gs_step"] = u;
   return setGroundSpeedStep(Units::from(u,val));
 }
 
@@ -650,17 +720,15 @@ bool KinematicBandsParameters::setGroundSpeedStep(double val, const std::string&
  * Set vertical speed step to value in internal units [m/s]
  */
 bool KinematicBandsParameters::setVerticalSpeedStep(double val)  {
-  if (error.isPositive("setVerticalSpeedStep",val))  {
-    vs_step_ = val;
-    return true;
-  }
-  return false;
+  vs_step_ = std::abs(val);
+  return error.isPositive("setVerticalSpeedStep",val);
 }
 
 /**
  * Set vertical speed step to value in specified units [u]
  */
 bool KinematicBandsParameters::setVerticalSpeedStep(double val, const std::string& u)  {
+  units_["vs_step"] = u;
   return setVerticalSpeedStep(Units::from(u,val));
 }
 
@@ -668,17 +736,15 @@ bool KinematicBandsParameters::setVerticalSpeedStep(double val, const std::strin
  * Set altitude step to value in internal units [m]
  */
 bool KinematicBandsParameters::setAltitudeStep(double val)  {
-  if (error.isPositive("setAltitudeStep",val))  {
-    alt_step_ = val;
-    return true;
-  }
-  return false;
+  alt_step_ = std::abs(val);
+  return error.isPositive("setAltitudeStep",val);
 }
 
 /**
  * Set altitude step to value in specified units [u]
  */
 bool KinematicBandsParameters::setAltitudeStep(double val, const std::string& u)  {
+  units_["alt_step"] = u;
   return setAltitudeStep(Units::from(u,val));
 }
 
@@ -686,17 +752,15 @@ bool KinematicBandsParameters::setAltitudeStep(double val, const std::string& u)
  * Set horizontal acceleration to value in internal units [m/s^2]
  */
 bool KinematicBandsParameters::setHorizontalAcceleration(double val)  {
-  if (error.isNonNegative("setHorizontalAcceleration",val))  {
-    horizontal_accel_ = val;
-    return true;
-  }
-  return false;
+  horizontal_accel_ = std::abs(val);
+  return error.isNonNegative("setHorizontalAcceleration",val);
 }
 
 /**
  * Set horizontal acceleration to value in specified units [u]
  */
 bool KinematicBandsParameters::setHorizontalAcceleration(double val, const std::string& u)  {
+  units_["horizontal_accel"] = u;
   return setHorizontalAcceleration(Units::from(u,val));
 }
 
@@ -704,26 +768,26 @@ bool KinematicBandsParameters::setHorizontalAcceleration(double val, const std::
  * Set vertical acceleration to value in internal units [m/s^2]
  */
 bool KinematicBandsParameters::setVerticalAcceleration(double val)  {
-  if (error.isNonNegative("setVerticalAcceleration",val))  {
-    vertical_accel_ = val;
-    return true;
-  }
-  return false;
+  vertical_accel_ = std::abs(val);
+  return error.isNonNegative("setVerticalAcceleration",val);
 }
 
 /**
  * Set vertical acceleration to value in specified units [u]
  */
 bool KinematicBandsParameters::setVerticalAcceleration(double val, const std::string& u)  {
+  units_["vertical_accel"] = u;
   return setVerticalAcceleration(Units::from(u,val));
 }
 
 bool KinematicBandsParameters::set_turn_rate(double val) {
-  if (error.isNonNegative("setTurnRate",val)) {
-    turn_rate_ = val;
-    return true;
-  }
-  return false;
+  turn_rate_ = std::abs(val);
+  return error.isNonNegative("setTurnRate",val);
+}
+
+bool KinematicBandsParameters::set_bank_angle(double val) {
+  bank_angle_ = std::abs(val);
+  return error.isNonNegative("setBankAngle",val);
 }
 
 /**
@@ -731,11 +795,8 @@ bool KinematicBandsParameters::set_turn_rate(double val) {
  * resets the bank angle.
  */
 bool KinematicBandsParameters::setTurnRate(double val)  {
-  if (set_turn_rate(val)) {
-    bank_angle_ = 0.0;
-    return true;
-  }
-  return false;
+  set_bank_angle(0.0);
+  return set_turn_rate(val);
 }
 
 /**
@@ -743,27 +804,18 @@ bool KinematicBandsParameters::setTurnRate(double val)  {
  * resets the bank angle.
  */
 bool KinematicBandsParameters::setTurnRate(double val, const std::string& u)  {
+  units_["turn_rate"] = u;
   return setTurnRate(Units::from(u,val));
 }
 
-bool KinematicBandsParameters::set_bank_angle(double val) {
-  if (error.isNonNegative("setBankAngle",val)) {
-    bank_angle_ = val;
-    return true;
-  }
-  return false;
-}
 
 /**
  * Set bank angle to value in internal units [rad] As a side effect, this method
  * resets the turn rate.
  */
 bool KinematicBandsParameters::setBankAngle(double val)  {
-  if (set_bank_angle(val)) {
-    turn_rate_ = 0.0;
-    return true;
-  }
-  return false;
+  set_turn_rate(0.0);
+  return set_bank_angle(val);
 }
 
 /**
@@ -771,6 +823,7 @@ bool KinematicBandsParameters::setBankAngle(double val)  {
  * resets the turn rate.
  */
 bool KinematicBandsParameters::setBankAngle(double val, const std::string& u)  {
+  units_["bank_angle"] = u;
   return setBankAngle(Units::from(u,val));
 }
 
@@ -778,17 +831,15 @@ bool KinematicBandsParameters::setBankAngle(double val, const std::string& u)  {
  * Set vertical rate to value in internal units [m/s]
  */
 bool KinematicBandsParameters::setVerticalRate(double val)  {
-  if (error.isNonNegative("setVerticalRate",val))  {
-    vertical_rate_ = val;
-    return true;
-  }
-  return false;
+  vertical_rate_ = std::abs(val);
+  return error.isNonNegative("setVerticalRate",val);
 }
 
 /**
  * Set vertical rate to value in specified units [u]
  */
 bool KinematicBandsParameters::setVerticalRate(double val, const std::string& u)  {
+  units_["vertical_rate"] = u;
   return setVerticalRate(Units::from(u,val));
 }
 
@@ -796,17 +847,15 @@ bool KinematicBandsParameters::setVerticalRate(double val, const std::string& u)
  * Set horizontal NMAC distance to value in internal units [m].
  */
 bool KinematicBandsParameters::setHorizontalNMAC(double val) {
-  if (error.isNonNegative("setHorizontalNMAC",val)) {
-    horizontal_nmac_ = val;
-    return true;
-  }
-  return false;
+  horizontal_nmac_ = std::abs(val);
+  return error.isNonNegative("setHorizontalNMAC",val);
 }
 
 /**
  * Set horizontal NMAC distance to value in specified units [u].
  */
 bool KinematicBandsParameters::setHorizontalNMAC(double val, const std::string& u){
+  units_["horizontal_nmac"] = u;
   return setHorizontalNMAC(Units::from(u,val));
 }
 
@@ -814,17 +863,15 @@ bool KinematicBandsParameters::setHorizontalNMAC(double val, const std::string& 
  * Set vertical NMAC distance to value in internal units [m].
  */
 bool KinematicBandsParameters::setVerticalNMAC(double val) {
-  if (error.isNonNegative("setVerticalNMAC",val)) {
-    vertical_nmac_ = val;
-    return true;
-  }
-  return false;
+  vertical_nmac_ = std::abs(val);
+  return error.isNonNegative("setVerticalNMAC",val);
 }
 
 /**
  * Set vertical NMAC distance to value in specified units [u].
  */
 bool KinematicBandsParameters::setVerticalNMAC(double val, const std::string& u) {
+  units_["vertical_nmac"] = u;
   return setVerticalNMAC(Units::from(u,val));
 }
 
@@ -832,17 +879,15 @@ bool KinematicBandsParameters::setVerticalNMAC(double val, const std::string& u)
  * Set recovery stability time to value in seconds.
  */
 bool KinematicBandsParameters::setRecoveryStabilityTime(double val)  {
-  if (error.isNonNegative("setRecoveryStabilityTime",val))  {
-    recovery_stability_time_ = val;
-    return true;
-  }
-  return false;
+  recovery_stability_time_ = std::abs(val);
+  return error.isNonNegative("setRecoveryStabilityTime",val);
 }
 
 /**
  * Set recovery stability time to value in specified units [u]
  */
 bool KinematicBandsParameters::setRecoveryStabilityTime(double val, const std::string& u)  {
+  units_["recovery_stability_time"] = u;
   return setRecoveryStabilityTime(Units::from(u,val));
 }
 
@@ -850,17 +895,15 @@ bool KinematicBandsParameters::setRecoveryStabilityTime(double val, const std::s
  * Set minimum recovery horizontal distance to value in internal units [m]
  */
 bool KinematicBandsParameters::setMinHorizontalRecovery(double val)  {
-  if (error.isNonNegative("setMinHorizontalRecovery",val))  {
-    min_horizontal_recovery_ = val;
-    return true;
-  }
-  return false;
+  min_horizontal_recovery_ = std::abs(val);
+  return error.isNonNegative("setMinHorizontalRecovery",val);
 }
 
 /**
  * Set minimum recovery horizontal distance to value in specified units [u]
  */
 bool KinematicBandsParameters::setMinHorizontalRecovery(double val, const std::string& u)  {
+  units_["min_horizontal_recovery"] = u;
   return setMinHorizontalRecovery(Units::from(u,val));
 }
 
@@ -868,17 +911,15 @@ bool KinematicBandsParameters::setMinHorizontalRecovery(double val, const std::s
  * Set minimum recovery vertical distance to value in internal units [m]
  */
 bool KinematicBandsParameters::setMinVerticalRecovery(double val)  {
-  if (error.isNonNegative("setMinVerticalRecovery",val)) {
-    min_vertical_recovery_ = val;
-    return true;
-  }
-  return false;
+  min_vertical_recovery_ = std::abs(val);
+  return error.isNonNegative("setMinVerticalRecovery",val);
 }
 
 /**
  * Set minimum recovery vertical distance to value in specified units [u]
  */
 bool KinematicBandsParameters::setMinVerticalRecovery(double val, const std::string& u)  {
+  units_["min_vertical_recovery"] = u;
   return setMinVerticalRecovery(Units::from(u,val));
 }
 
@@ -992,10 +1033,10 @@ bool KinematicBandsParameters::isEnabledRecoveryAltitudeBands()  const {
  * Enable/disable recovery bands for track, ground speed, vertical speed, and altitude.
  */
 void KinematicBandsParameters::setRecoveryBands(bool flag) {
-  recovery_trk_ = flag;
-  recovery_gs_ = flag;
-  recovery_vs_ = flag;
-  recovery_alt_ = flag;
+  setRecoveryTrackBands(flag);
+  setRecoveryGroundSpeedBands(flag);
+  setRecoveryVerticalSpeedBands(flag);
+  setRecoveryAltitudeBands(flag);
 }
 
 /**
@@ -1079,12 +1120,9 @@ double KinematicBandsParameters::getCollisionAvoidanceBandsFactor() const {
  * @return set factor for computing collision avoidance bands. Factor value is in (0,1]
  */
 bool KinematicBandsParameters::setCollisionAvoidanceBandsFactor(double val) {
-  if (error.isPositive("setCollisionAvoidanceBandsFactor",val) &&
-      error.isLessThan("setCollisionAvoidanceBandsFactor", val,1)) {
-    ca_factor_ = val;
-    return true;
-  }
-  return false;
+  ca_factor_ = std::abs(val);
+  return error.isPositive("setCollisionAvoidanceBandsFactor",val) &&
+      error.isLessThan("setCollisionAvoidanceBandsFactor", val,1);
 }
 
 /**
@@ -1111,12 +1149,8 @@ double KinematicBandsParameters::getHorizontalContourThreshold(const std::string
  * A value of pi means all contours.
  */
 bool KinematicBandsParameters::setHorizontalContourThreshold(double val) {
-  val = std::abs(val);
-  if (error.isBetween("setHorizontalContourThreshold",val,0,Pi)) {
-    contour_thr_ = val;
-    return true;
-  }
-  return false;
+  contour_thr_ = std::abs(Util::to_pi(val));
+  return error.isBetween("setHorizontalContourThreshold",val,0,Pi);
 }
 
 /**
@@ -1125,6 +1159,7 @@ bool KinematicBandsParameters::setHorizontalContourThreshold(double val) {
  * A value of pi means all contours.
  */
 bool KinematicBandsParameters::setHorizontalContourThreshold(double val, const std::string& u) {
+  units_["contour_thr"] = u;
   return setHorizontalContourThreshold(Units::from(u,val));
 }
 
@@ -1132,12 +1167,12 @@ bool KinematicBandsParameters::setHorizontalContourThreshold(double val, const s
  * Set instantaneous bands.
  */
 void KinematicBandsParameters::setInstantaneousBands() {
-  turn_rate_ = 0;
-  bank_angle_ = 0;
-  horizontal_accel_ = 0;
-  vertical_accel_ = 0;
-  vertical_rate_ = 0;
-  recovery_stability_time_ = 0;
+  set_turn_rate(0.0);
+  set_bank_angle(0.0);
+  setHorizontalAcceleration(0.0);
+  setVerticalAcceleration(0.0);
+  setVerticalRate(0.0);
+  setRecoveryStabilityTime(0.0);
 }
 
 /**
@@ -1147,19 +1182,11 @@ void KinematicBandsParameters::setInstantaneousBands() {
  */
 void KinematicBandsParameters::setKinematicBands(bool type) {
   // Section 1.2.3, DAA MOPS SC-228 V3.6
-  turn_rate_ = Units::from("deg/s",type ? 3.0 : 1.5);
-  bank_angle_ = 0;
-  horizontal_accel_ = Units::from("m/s^2",2.0);
-  vertical_accel_ = Units::from("G",0.25);
-  vertical_rate_ = Units::from("fpm",500);
-  recovery_stability_time_ = 2;
-}
-
-/**
- *  Load parameters for kinematic bands from file.
- */
-void KinematicBandsParameters::loadFromParameterData(const ParameterData& parameters) {
-  setParameters(parameters);
+  setTurnRate(type ? 3.0 : 1.5,"deg/s");
+  setHorizontalAcceleration(2.0,"m/s^2");
+  setVerticalAcceleration(0.25,"G");
+  setVerticalRate(500.0,"fpm");
+  setRecoveryStabilityTime(2.0,"s");
 }
 
 /**
@@ -1168,7 +1195,8 @@ void KinematicBandsParameters::loadFromParameterData(const ParameterData& parame
 bool KinematicBandsParameters::loadFromFile(const std::string& file) {
   StateReader reader;
   reader.open(file);
-  ParameterData parameters = reader.getParametersRef();
+  ParameterData parameters;
+  reader.updateParameterData(parameters);
   setParameters(parameters);
   return !reader.hasError();
 }
@@ -1188,56 +1216,15 @@ bool KinematicBandsParameters::saveToFile(const std::string& file) const {
   return true;
 }
 
-std::string KinematicBandsParameters::val_unit(double val, const std::string& u) {
-  return FmPrecision(Units::to(u,val))+" ["+u+"]";
-}
-
 std::string KinematicBandsParameters::toString() const {
   std::string s = "# V-"+VERSION+"\n";
-  s+="# Conflict Bands Parameters\n";
-  s+="lookahead_time = "+val_unit(lookahead_time_,"s")+"\n";
-  s+="left_trk = "+val_unit(left_trk_,"deg")+"\n";
-  s+="right_trk = "+val_unit(right_trk_,"deg")+"\n";
-  s+="min_gs = "+val_unit(min_gs_,"knot")+"\n";
-  s+="max_gs = "+val_unit(max_gs_,"knot")+"\n";
-  s+="min_vs = "+val_unit(min_vs_,"fpm")+"\n";
-  s+="max_vs = "+val_unit(max_vs_,"fpm")+"\n";
-  s+="min_alt = "+val_unit(min_alt_,"ft")+"\n";
-  s+="max_alt = "+val_unit(max_alt_,"ft")+"\n";
-  s+="# Kinematic Bands Parameters\n";
-  s+="trk_step = "+val_unit(trk_step_,"deg")+"\n";
-  s+="gs_step = "+val_unit(gs_step_,"knot")+"\n";
-  s+="vs_step = "+val_unit(vs_step_,"fpm")+"\n";
-  s+="alt_step = "+val_unit(alt_step_,"ft")+"\n";
-  s+="horizontal_accel = "+val_unit(horizontal_accel_,"m/s^2")+"\n";
-  s+="vertical_accel = "+val_unit(vertical_accel_,"m/s^2")+"\n";
-  s+="turn_rate = "+val_unit(turn_rate_,"deg/s")+"\n";
-  s+="bank_angle = "+val_unit(bank_angle_,"deg")+"\n";
-  s+="vertical_rate = "+val_unit(vertical_rate_,"fpm")+"\n";
-  s+="horizontal_nmac = "+val_unit(horizontal_nmac_,"ft")+"\n";
-  s+="vertical_nmac = "+val_unit(vertical_nmac_,"ft")+"\n";
-  s+="# Recovery Bands Parameters\n";
-  s+="recovery_stability_time = "+val_unit(recovery_stability_time_,"s")+"\n";
-  s+="# If min_horizontal_recovery is set to 0, TCAS RA HMD is used instead\n";
-  s+="min_horizontal_recovery = "+val_unit(min_horizontal_recovery_,"nmi")+"\n";
-  s+="# If min_vertical_recovery is set to 0, TCAS RA ZTHR is used instead\n";
-  s+="min_vertical_recovery = "+val_unit(min_vertical_recovery_,"ft")+"\n";
-  s+="conflict_crit = "+Fmb(conflict_crit_)+"\n";
-  s+="recovery_crit = "+Fmb(recovery_crit_)+"\n";
-  s+="recovery_trk = "+Fmb(recovery_trk_)+"\n";
-  s+="recovery_gs = "+Fmb(recovery_gs_)+"\n";
-  s+="recovery_vs = "+Fmb(recovery_vs_)+"\n";
-  s+="recovery_alt = "+Fmb(recovery_alt_)+"\n";
-  s+="# if ca_bands is true, keep computing recovery bands by reducing min horizontal/vertical recovery until NMAC\n";
-  s+="ca_bands = "+Fmb(ca_bands_)+"\n";
-  s+="# ca_factor is the reduction factor, when computing CA bands\n";
-  s+="ca_factor = "+Fm4(ca_factor_)+"\n";
-  s+="# Contours Parameters\n";
-  s+="# If contour_thr is set to 0, only conflict contours are computed. Max value is 180 [deg]\n";
-  s+="contour_thr = "+val_unit(contour_thr_,"deg")+"\n";
+  ParameterData p;
+  updateParameterData(p);
+  s+=p.listToString(keys_);
   s+="# Alert Levels\n";
-  ParameterData p = alertor.getParameters();
-  s+=p.toString();
+  ParameterData q;
+  alertor.updateParameterData(q);
+  s+=q.toString();
   return s;
 }
 
@@ -1288,145 +1275,181 @@ ParameterData KinematicBandsParameters::getParameters() const {
 }
 
 void KinematicBandsParameters::updateParameterData(ParameterData& p) const {
-  // Bands
-  p.setInternal("lookahead_time", lookahead_time_, "s");
-  p.setInternal("left_trk", left_trk_, "deg");
-  p.setInternal("right_trk", right_trk_, "deg");
-  p.setInternal("min_gs", min_gs_, "kts");
-  p.setInternal("max_gs", max_gs_, "kts");
-  p.setInternal("min_vs", min_vs_, "fpm");
-  p.setInternal("max_vs", max_vs_, "fpm");
-  p.setInternal("min_alt", min_alt_, "ft");
-  p.setInternal("max_alt", max_alt_, "ft");
+  // Bands Parameters
+  p.setInternal("lookahead_time", lookahead_time_, getUnits("lookahead_time"));
+  p.updateComment("lookahead_time","Bands Parameters");
 
-  // Kinematic bands
-  p.setInternal("trk_step", trk_step_, "deg");
-  p.setInternal("gs_step", gs_step_, "kts");
-  p.setInternal("vs_step", vs_step_, "fpm");
-  p.setInternal("alt_step", alt_step_, "ft");
-  p.setInternal("horizontal_accel", horizontal_accel_, "m/s^2");
-  p.setInternal("vertical_accel", vertical_accel_, "m/s^2");
-  p.setInternal("turn_rate", turn_rate_, "deg/s");
-  p.setInternal("bank_angle", bank_angle_, "deg");
-  p.setInternal("vertical_rate", vertical_rate_, "fpm");
-  p.setInternal("horizontal_nmac",horizontal_nmac_,"ft");
-  p.setInternal("vertical_nmac",vertical_nmac_,"ft");
+  p.setInternal("left_trk", left_trk_, getUnits("left_trk"));
+  p.setInternal("right_trk", right_trk_, getUnits("right_trk"));
+  p.setInternal("min_gs", min_gs_, getUnits("min_gs"));
+  p.setInternal("max_gs", max_gs_, getUnits("max_gs"));
+  p.setInternal("min_vs", min_vs_, getUnits("min_vs"));
+  p.setInternal("max_vs", max_vs_, getUnits("max_vs"));
+  p.setInternal("min_alt", min_alt_, getUnits("min_alt"));
+  p.setInternal("max_alt", max_alt_, getUnits("max_alt"));
 
-  // Recovery bands
-  p.setInternal("recovery_stability_time", recovery_stability_time_, "s");
-  p.setInternal("min_horizontal_recovery", min_horizontal_recovery_, "nmi");
-  p.setInternal("min_vertical_recovery", min_vertical_recovery_, "ft");
-  p.setBool("conflict_crit", conflict_crit_);
-  p.setBool("recovery_crit", recovery_crit_);
+  // Kinematic Parameters
+  p.setInternal("trk_step", trk_step_, getUnits("trk_step"));
+  p.updateComment("trk_step","Kinematic Parameters");
+
+  p.setInternal("gs_step", gs_step_, getUnits("gs_step"));
+  p.setInternal("vs_step", vs_step_, getUnits("vs_step"));
+  p.setInternal("alt_step", alt_step_, getUnits("alt_step"));
+  p.setInternal("horizontal_accel", horizontal_accel_, getUnits("horizontal_accel"));
+  p.setInternal("vertical_accel", vertical_accel_, getUnits("vertical_accel"));
+  p.setInternal("turn_rate", turn_rate_, getUnits("turn_rate"));
+  p.setInternal("bank_angle", bank_angle_, getUnits("bank_angle"));
+  p.setInternal("vertical_rate", vertical_rate_, getUnits("vertical_rate"));
+
+  // Recovery Bands Parameters
+  p.setInternal("recovery_stability_time", recovery_stability_time_, getUnits("recovery_stability_time"));
+  p.updateComment("recovery_stability_time","Recovery Bands Parameters");
+
+  p.setInternal("min_horizontal_recovery", min_horizontal_recovery_, getUnits("min_horizontal_recovery"));
+  p.setInternal("min_vertical_recovery", min_vertical_recovery_, getUnits("min_vertical_recovery"));
   p.setBool("recovery_trk", recovery_trk_);
   p.setBool("recovery_gs", recovery_gs_);
   p.setBool("recovery_vs", recovery_vs_);
   p.setBool("recovery_alt", recovery_alt_);
-  p.setBool("ca_bands", ca_bands_);
-  p.setInternal("ca_factor", ca_factor_, "unitless");
 
-  // Contours
-  p.setInternal("contour_thr", contour_thr_, "deg");
+  // Collision Avoidance Bands Parameters
+  p.setBool("ca_bands", ca_bands_);
+  p.updateComment("ca_bands","Collision Avoidance Bands Parameters");
+
+  p.setInternal("ca_factor", ca_factor_, "unitless");
+  p.setInternal("horizontal_nmac",horizontal_nmac_, getUnits("horizontal_nmac"));
+  p.setInternal("vertical_nmac",vertical_nmac_, getUnits("vertical_nmac"));
+
+  // Implicit Coordination Parameters
+  p.setBool("conflict_crit", conflict_crit_);
+  p.updateComment("conflict_crit","Implicit Coordination Parameters");
+  p.setBool("recovery_crit", recovery_crit_);
+
+  // Horizontal Contour Threshold
+  p.setInternal("contour_thr", contour_thr_, getUnits("contour_thr"));
+  p.updateComment("contour_thr","Horizontal Contour Threshold");
 
   // Alertor
   alertor.updateParameterData(p);
 }
 
 void KinematicBandsParameters::setParameters(const ParameterData& p) {
-  // Bands
   if (p.contains("lookahead_time")) {
     setLookaheadTime(p.getValue("lookahead_time"));
+    units_["lookahead_time"] = p.getUnit("lookahead_time");
   }
   if (p.contains("left_trk")) {
     setLeftTrack(p.getValue("left_trk"));
+    units_["left_trk"] = p.getUnit("left_trk");
   }
   if (p.contains("right_trk")) {
     setRightTrack(p.getValue("right_trk"));
+    units_["right_trk"] = p.getUnit("right_trk");
   }
   if (p.contains("min_gs")) {
     setMinGroundSpeed(p.getValue("min_gs"));
+    units_["min_gs"] = p.getUnit("min_gs");
   }
   if (p.contains("max_gs")) {
     setMaxGroundSpeed(p.getValue("max_gs"));
+    units_["max_gs"] = p.getUnit("max_gs");
   }
   if (p.contains("min_vs")) {
     setMinVerticalSpeed(p.getValue("min_vs"));
+    units_["min_vs"] = p.getUnit("min_vs");
   }
   if (p.contains("max_vs")) {
     setMaxVerticalSpeed(p.getValue("max_vs"));
+    units_["max_vs"] = p.getUnit("max_vs");
   }
   if (p.contains("min_alt")) {
     setMinAltitude(p.getValue("min_alt"));
+    units_["min_alt"] = p.getUnit("min_alt");
   }
   if (p.contains("max_alt")) {
     setMaxAltitude(p.getValue("max_alt"));
+    units_["max_alt"] = p.getUnit("max_alt");
   }
   // Kinematic bands
   if (p.contains("trk_step")) {
     setTrackStep(p.getValue("trk_step"));
+    units_["trk_step"] = p.getUnit("trk_step");
   }
   if (p.contains("gs_step")) {
     setGroundSpeedStep(p.getValue("gs_step"));
+    units_["gs_step"] = p.getUnit("gs_step");
   }
   if (p.contains("vs_step")) {
     setVerticalSpeedStep(p.getValue("vs_step"));
+    units_["vs_step"] = p.getUnit("vs_step");
   }
   if (p.contains("alt_step")) {
     setAltitudeStep(p.getValue("alt_step"));
+    units_["alt_step"] = p.getUnit("alt_step");
   }
   if (p.contains("horizontal_accel")) {
     setHorizontalAcceleration(p.getValue("horizontal_accel"));
+    units_["horizontal_accel"] = p.getUnit("horizontal_accel");
   }
   if (p.contains("vertical_accel")) {
     setVerticalAcceleration(p.getValue("vertical_accel"));
+    units_["vertical_accel"] = p.getUnit("vertical_accel");
   }
   if (p.contains("turn_rate")) {
     set_turn_rate(p.getValue("turn_rate"));
+    units_["turn_rate"] = p.getUnit("turn_rate");
   }
   if (p.contains("bank_angle")) {
     set_bank_angle(p.getValue("bank_angle"));
+    units_["bank_angle"] = p.getUnit("bank_angle");
   }
   if (p.contains("vertical_rate")) {
     setVerticalRate(p.getValue("vertical_rate"));
+    units_["vertical_rate"] = p.getUnit("vertical_rate");
   }
   if (p.contains("horizontal_nmac")) {
     setHorizontalNMAC(p.getValue("horizontal_nmac"));
+    units_["horizontal_nmac"] = p.getUnit("horizontal_nmac");
   }
   if (p.contains("vertical_nmac")) {
     setVerticalNMAC(p.getValue("vertical_nmac"));
+    units_["vertical_nmac"] = p.getUnit("vertical_nmac");
   }
   // Recovery bands
   if (p.contains("recovery_stability_time")) {
     setRecoveryStabilityTime(p.getValue("recovery_stability_time"));
+    units_["recovery_stability_time"] = p.getUnit("recovery_stability_time");
   }
   if (p.contains("min_horizontal_recovery")) {
     setMinHorizontalRecovery(p.getValue("min_horizontal_recovery"));
+    units_["min_horizontal_recovery"] = p.getUnit("min_horizontal_recovery");
   }
   if (p.contains("min_vertical_recovery")) {
     setMinVerticalRecovery(p.getValue("min_vertical_recovery"));
+    units_["min_vertical_recovery"] = p.getUnit("min_vertical_recovery");
   }
   // Criteria parameters
   if (p.contains("conflict_crit")) {
-    conflict_crit_ = p.getBool("conflict_crit");
+    setConflictCriteria(p.getBool("conflict_crit"));
   }
   if (p.contains("recovery_crit")) {
-    recovery_crit_ = p.getBool("recovery_crit");
+    setRecoveryCriteria(p.getBool("recovery_crit"));
   }
   // Recovery parameters
   if (p.contains("recovery_trk")) {
-    recovery_trk_ = p.getBool("recovery_trk");
+    setRecoveryTrackBands(p.getBool("recovery_trk"));
   }
   if (p.contains("recovery_gs")) {
-    recovery_gs_ = p.getBool("recovery_gs");
+    setRecoveryGroundSpeedBands(p.getBool("recovery_gs"));
   }
   if (p.contains("recovery_vs")) {
-    recovery_vs_ = p.getBool("recovery_vs");
+    setRecoveryVerticalSpeedBands(p.getBool("recovery_vs"));
   }
   if (p.contains("recovery_alt")) {
-    recovery_alt_ = p.getBool("recovery_alt");
+    setRecoveryAltitudeBands(p.getBool("recovery_alt"));
   }
   if (p.contains("ca_bands")) {
-    ca_bands_ = p.getBool("ca_bands");
+    setCollisionAvoidanceBands(p.getBool("ca_bands"));
   }
   if (p.contains("ca_factor")) {
     setCollisionAvoidanceBandsFactor(p.getValue("ca_factor"));
@@ -1434,9 +1457,18 @@ void KinematicBandsParameters::setParameters(const ParameterData& p) {
   // Contours
   if (p.contains("contour_thr")) {
     setHorizontalContourThreshold(p.getValue("contour_thr"));
+    units_["contour_thr"] = p.getUnit("contour_thr");
   }
   // Alertor
   alertor.setParameters(p);
+}
+
+std::string KinematicBandsParameters::getUnits(const std::string& key) const {
+  std::map<std::string,std::string>::const_iterator got = units_.find(key);
+  if (got == units_.end()) {
+    return "unspecified";
+  }
+  return got->second;
 }
 
 bool KinematicBandsParameters::hasError() const {

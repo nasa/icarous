@@ -5,7 +5,7 @@
  * NASA LaRC
  * http://shemesh.larc.nasa.gov/people/cam/ACCoRD
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -32,8 +32,8 @@ namespace larcfm {
     std::list<Vect2> lst;
 
     for(int i = 0; i < fp.size()-1; i++) {
-      double fi_st = fp.getTime(i);
-      double fi_et = fp.getTime(i+1);
+      double fi_st = fp.time(i);
+      double fi_et = fp.time(i+1);
       if(fi_et > B+to && fi_st < T+to) {
         bool linear = true;
         Vect3 vi = fp.initialVelocity(i, linear);
@@ -58,8 +58,8 @@ namespace larcfm {
     std::list<Vect2> lst;
     
     for(int i = 0; i < fp.size()-1; i++) {
-      double fi_st = fp.getTime(i);
-      double fi_et = fp.getTime(i+1);
+      double fi_st = fp.time(i);
+      double fi_et = fp.time(i+1);
       if(fi_et > B+to && fi_st < T+to) {
         bool linear = true;
         Vect3 vi = fp.initialVelocity(i, linear);
@@ -83,8 +83,8 @@ namespace larcfm {
     std::list<double> lst;
     
     for(int i = 0; i < fp.size()-1; i++) {
-      double fi_st = fp.getTime(i);
-      double fi_et = fp.getTime(i+1);
+      double fi_st = fp.time(i);
+      double fi_et = fp.time(i+1);
       if(fi_et > B+to && fi_st < T+to) {
         bool linear = true;
         Vect3 vi = fp.initialVelocity(i, linear);
@@ -114,8 +114,8 @@ namespace larcfm {
     Velocity vop = proj.projectVelocity(so,vo);
 
     for(int i = 0; i < fp.size()-1; i++) {
-      double fi_st = fp.getTime(i);
-      double fi_et = fp.getTime(i+1);
+      double fi_st = fp.time(i);
+      double fi_et = fp.time(i+1);
       if(fi_et > B+to && fi_st < T+to) {
         bool linear = true;
         Velocity vi = fp.initialVelocity(i, linear);
@@ -156,8 +156,8 @@ namespace larcfm {
     Velocity vop = proj.projectVelocity(so,vo);
   
     for(int i = 0; i < fp.size()-1; i++) {
-      double fi_st = fp.getTime(i);
-      double fi_et = fp.getTime(i+1);
+      double fi_st = fp.time(i);
+      double fi_et = fp.time(i+1);
       if(fi_et > B+to && fi_st < T+to) {
         bool linear = true;
         Velocity vi = fp.initialVelocity(i, linear);
@@ -196,8 +196,8 @@ namespace larcfm {
     Velocity vop = proj.projectVelocity(so,vo);
     
     for(int i = 0; i < fp.size()-1; i++) {
-      double fi_st = fp.getTime(i);
-      double fi_et = fp.getTime(i+1);
+      double fi_st = fp.time(i);
+      double fi_et = fp.time(i+1);
       if(fi_et > B+to && fi_st < T+to) {
         bool linear = true;
         Velocity vi = fp.initialVelocity(i, linear);

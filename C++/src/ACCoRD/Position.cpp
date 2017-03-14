@@ -3,7 +3,7 @@
  *
  * a position, either Geodesic or Euclidean.
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -113,6 +113,13 @@ bool Position::almostEquals(const Position& pp, double epsilon_horiz, double eps
 	}
 }
 
+bool Position::almostEquals2D(const Position& pp, double epsilon_horiz) const {
+	if (latlon) {
+		return lla().almostEquals2D(pp.lla(),epsilon_horiz);
+	} else {
+		return s3.almostEquals2D(pp.point(),epsilon_horiz);
+	}
+}
 
 
 
@@ -292,8 +299,28 @@ const Position Position::linearEst(const Velocity& vo, double time) const {
 	return newNP;
 }
 
-const std::pair<Position,Velocity> Position::linearDist(const Velocity& v, double d) const {
-	  double track = v.trk();
+//const std::pair<Position,Velocity> Position::linearDist2D(const Velocity& v, double d) const {
+//	  double track = v.trk();
+//	  //f.pln(" $$$$$$ linearDist: v.track = "+Units.str("deg",v.compassAngle()));
+//	  if (latlon) {
+//		  LatLonAlt sEnd = GreatCircle::linear_initial(ll,track,d);
+//		  //sEnd = sEnd.mkAlt(altAtd);
+//		  double finalTrk = track;
+//		  if (d > minDist) {  // final course has problems if no distance between points (USE 1E-9), 1E-10 NOT GOOD
+//		     finalTrk = GreatCircle::final_course(ll, sEnd);
+//		  }
+//		  //f.pln(" $$$$$$ linearDist: v = "+v+" finalTrk = "+Units.str("deg",finalTrk)+" d = "+Units.str("ft",d));
+//		  Velocity vEnd = v.mkTrk(finalTrk);
+//		  return std::pair<Position,Velocity>(Position(sEnd),vEnd);
+//	  } else {
+//		  //Velocity vEnd = Velocity.mkTrkGsVs(track,fakeGs,0.0);
+//		  Vect3 sNew = s3.linearByDist2D(track,d);
+//		  //sNew = sNew.mkZ(altAtd);
+//		  return std::pair<Position,Velocity>(Position(sNew),v);
+//	  }
+// }
+
+const std::pair<Position,Velocity> Position::linearDist2D(double track, double d, double gsAt_d) const {
 	  //f.pln(" $$$$$$ linearDist: v.track = "+Units.str("deg",v.compassAngle()));
 	  if (latlon) {
 		  LatLonAlt sEnd = GreatCircle::linear_initial(ll,track,d);
@@ -302,15 +329,25 @@ const std::pair<Position,Velocity> Position::linearDist(const Velocity& v, doubl
 		     finalTrk = GreatCircle::final_course(ll, sEnd);
 		  }
 		  //f.pln(" $$$$$$ linearDist: v = "+v+" finalTrk = "+Units.str("deg",finalTrk)+" d = "+Units.str("ft",d));
-		  Velocity vEnd = v.mkTrk(finalTrk);
+		  Velocity vEnd = Velocity::mkTrkGsVs(finalTrk,gsAt_d,0.0);
 		  return std::pair<Position,Velocity>(Position(sEnd),vEnd);
 	  } else {
-		  //Velocity vEnd = Velocity.mkTrkGsVs(track,fakeGs,0.0);
-		  //f.pln(" $$$$$$$$ linearDist: v = "+v);
-		  double dt = d/v.gs();
-		  return std::pair<Position,Velocity>(Position(s3.linear(v, dt)),v);
+		  Vect3 sNew = s3.linearByDist2D(track,d);
+		  Velocity vNew = Velocity::mkTrkGsVs(track,gsAt_d,0.0);
+		  return std::pair<Position,Velocity>(Position(sNew),vNew);
 	  }
- }
+
+}
+
+const Position Position::linearDist2D(double track, double d) const {
+	  if (latlon) {
+		  LatLonAlt sEnd = GreatCircle::linear_initial(ll,track,d);
+		  return Position(sEnd);
+	  } else {
+	      Vect3 sEnd = s3.linearByDist2D(track, d);
+	      return Position(sEnd);
+	  }
+}
 
 
 const Position Position::midPoint(const Position& p2) const{
@@ -508,6 +545,14 @@ std::string Position::toString(int prec) const {
 	else
 		return "("+Units::str("NM",s3.x,prec)+", "+Units::str("NM",s3.y,prec)+", "+Units::str("ft",s3.z,prec)+")";
 }
+
+std::string Position::toString2D(int prec) const {
+	if (latlon)
+		return "("+Units::str("deg",ll.lat(),prec)+", "+Units::str("deg",ll.lon(),prec)+")";
+	else
+		return "("+Units::str("NM",s3.x,prec)+", "+Units::str("NM",s3.y,prec)+")";
+}
+
 
 /**
  * Return a string representation using the given unit conversions (latitude and longitude,

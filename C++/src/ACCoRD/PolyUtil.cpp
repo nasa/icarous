@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -32,7 +32,7 @@ SimplePoly PolyUtil::convexHull(const std::vector<Position>& plist, double botto
 	std::vector<Triple<Position,int,double> > elems = std::vector<Triple<Position,int,double> >(); // vertex position, vertex index in original polygon, angle from origin point
 	int origin = 0;
 	// pick origin point
-	for (int i = 1; i < plist.size(); i++) {
+	for (int i = 1; i < (int) plist.size(); i++) {
 		Position po = plist[origin];
 		Position pi = plist[i];
 		if (pi.y() > po.y() || (pi.y() == po.y() && pi.isWest(po))) {
@@ -40,7 +40,7 @@ SimplePoly PolyUtil::convexHull(const std::vector<Position>& plist, double botto
 		}
 	}
 	// order all other points relative to origin
-	for (int i = 0; i < plist.size(); i++) {
+	for (int i = 0; i < (int) plist.size(); i++) {
 		if (i != origin) {
 			Position po = plist[origin];
 			Position pi = plist[i];
@@ -52,9 +52,9 @@ SimplePoly PolyUtil::convexHull(const std::vector<Position>& plist, double botto
 	elems.insert(elems.begin(),Triple<Position,int,double>(plist[origin],origin,std::numeric_limits<double>::infinity()));
 	// delete any points that have a left-hand turn
 	int i = 1;
-	while (i < elems.size()) {
+	while (i < (int) elems.size()) {
 		int j = i+1;
-		if (j == elems.size()) j = 0; // last point
+		if (j == (int) elems.size()) j = 0; // last point
 		Position a = elems[i-1].first;
 		Position b = elems[i].first;
 		Position c = elems[j].first;
@@ -68,7 +68,7 @@ SimplePoly PolyUtil::convexHull(const std::vector<Position>& plist, double botto
 		}
 	}
 	SimplePoly p2 = SimplePoly(bottom, top);
-	for (i = 0; i < elems.size(); i++) {
+	for (i = 0; i < (int) elems.size(); i++) {
 		p2.addVertex(elems[i].first);
 	}
 	return p2;
@@ -83,7 +83,7 @@ SimplePoly PolyUtil::convexHull(const std::vector<SimplePoly>& p) {
 	std::vector<Position> ps = std::vector<Position>();
 	double t = -DBL_MAX;
 	double b = DBL_MAX;
-	for (int i = 0; i < p.size(); i++) {
+	for (int i = 0; i < (int) p.size(); i++) {
 		std::vector<Position> pts = p[i].getVertices();
 		ps.insert(ps.end(), pts.begin(), pts.end());
 		t = Util::max(t, p[i].getTop());
@@ -310,7 +310,7 @@ PolyPath PolyUtil::stretchOverTime(const PolyPath& pbase, double timeBefore, dou
 SimplePoly PolyUtil::bufferedConvexHull(const SimplePoly& p, double hbuff, double vbuff) {
 	std::vector<Position> points = std::vector<Position>();
 	std::vector<Position> p_points = p.getVertices();
-	for (int i = 0; i < p_points.size(); i++) {
+	for (int i = 0; i < (int) p_points.size(); i++) {
 		Position pos = p_points[i];
 		double ang = p.vertexAngle(i);
 		double ang2 = ang/2.0;
@@ -414,8 +414,8 @@ Plan PolyUtil::reducePlanAgainstPolys(const Plan& plan, double gs, const std::ve
 		int i = 1;
 		while (i < curr.size()-1) {
 			tmp = Plan(curr);
-			double start = tmp.getTime(i-1);
-			double end = tmp.getTime(i+1);
+			double start = tmp.time(i-1);
+			double end = tmp.time(i+1);
 			tmp.remove(i);
 			tmp = PlanUtil::linearMakeGSConstant(tmp,gs);
 			if (isPlanInConflictWx(tmp, paths, start, end, incr).first < 0) {
@@ -429,7 +429,7 @@ Plan PolyUtil::reducePlanAgainstPolys(const Plan& plan, double gs, const std::ve
 }
 
 std::pair<double,string> PolyUtil::isPlanInConflictWx(const Plan& plan, const std::vector<PolyPath>& paths, double start, double end, double incr) {
-	for (int i = 0; i < paths.size(); i++) {
+	for (int i = 0; i < (int) paths.size(); i++) {
 		std::pair<double,string> ip2D = intersectsPolygon2D(plan, paths[i], start, end, incr);
 		double tmOfIntersection = ip2D.first;
 		if (tmOfIntersection >= 0) {
@@ -445,7 +445,7 @@ std::pair<double,string>  PolyUtil::isPlanInConflictWx(const Plan& plan, const s
 
 std::pair<double,string> PolyUtil::isPlanInConflictWx(const Plan& plan, const std::vector<PolyPath>& paths, double incr, double fromTime) {
 	if (paths.size() > 0) {
-		for (int i = 0; i < paths.size(); i++) {
+		for (int i = 0; i < (int) paths.size(); i++) {
 			std::pair<double,string> ip2D = intersectsPolygon2D(plan, paths[i], fromTime, plan.getLastTime(), incr);
 			double tmOfIntersection = ip2D.first;
 			if (tmOfIntersection >= 0) {

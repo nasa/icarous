@@ -6,7 +6,7 @@
  *
  * 2-D vectors.
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -284,12 +284,13 @@ public:
 	double compassAngle() const;
 
 
-	/**
-	 * Compass angle from this position to v2
-	 *
-	 * @return the track angle of <code>v2-this</code> vector in the range
-	 * [<code>0</code>, <code>2*Math.PI</code>). Convention is clockwise with respect to north.
-	 */
+  /**
+   * Compass angle from this position to v2
+   * 
+   * @param v2 vector
+   * @return the track angle of <code>v2-this</code> vector in the range 
+   * [<code>0</code>, <code>2*Math.PI</code>). Convention is clockwise with respect to north.
+   */
 	double compassAngle(const Vect2& v2) const;
 
 
@@ -315,13 +316,19 @@ public:
 	 */
 	bool   leq(const Vect2& v, const Vect2& vo) const;
 
-	/** Returns true if the current vector has an "invalid" value */
+  /**
+   * Returns true if the current vector has an "invalid" value
+   * @return true if invalid
+   */
 	bool isInvalid() const;
 
   /** A string representation of this vector */
 	std::string toString() const;
 
-	/** A string representation of this vector */
+	/** A string representation of this vector 
+	 * @param precision number of digits of precision
+	 * @return string representation
+	 * */
 	std::string toString(int precision) const;
 
 	/** A string representation of this vector */
@@ -341,24 +348,32 @@ public:
 	 */
 	static double tcpa (const Vect2& so, const Vect2& vo, const Vect2& si, const Vect2& vi);
 
-	/** distance at time of closest point of approach
-	 **/
+  /** distance at time of closest point of approach
+   * 
+   * @param so position of ownship
+   * @param vo velocity of ownship
+   * @param si position of intruder
+   * @param vi velocity of intruder
+   * @return distance at time of closest point of approach
+   */
 	static double dcpa(const Vect2& so, const Vect2& vo, const Vect2& si, const Vect2& vi);
 
-	/**
-	 * returns the perpendicular distance between line defined by s,v and point q.
-	 * @param s point on line
-	 * @param v direction vector of line
-	 * @param q a point not on the line
-	 */
+  /**
+   * returns the perpendicular distance between line defined by s,v and point q.
+   * @param s point on line
+   * @param v direction vector of line
+   * @param q a point not on the line
+   * @return perpendicular distance
+   */
 	static double distPerp(const Vect2& s, const Vect2& v, const Vect2& q);
 
-	/**
-	 * returns the longitudinal distance between line defined by s,v and point q.
-	 * @param s point on line
-	 * @param v direction vector of line
-	 * @param q a point not on the line
-	 */
+  /**
+   * returns the longitudinal distance between line defined by s,v and point q.
+   * @param s point on line
+   * @param v direction vector of line
+   * @param q a point not on the line
+   * @return longitudinal distance
+   */
 	static double distAlong(const Vect2& s, const Vect2& v, const Vect2& q);
 
 
@@ -387,7 +402,7 @@ public:
    * Returns true if x components and y components of both vectors are within the given bounds
    * @param v2
    * @param epsilon
-   * @return
+   * @return true if vector is within bounds
    */
 	bool within_epsilon(const Vect2& v2, double epsilon) const;
 

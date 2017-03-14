@@ -8,7 +8,7 @@
  *
  * Computes a vector that is tangent to the protected zone.
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -35,7 +35,7 @@ public:
   /** Epsilon value */
   int  get_eps() const;
 
-  /** Q function */
+  /** Q function (relative tangent line) */
   static Vect2 Q(const Vect2& s, const double D, const int eps);
 
 private:

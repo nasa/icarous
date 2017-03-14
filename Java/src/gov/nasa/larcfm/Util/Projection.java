@@ -28,32 +28,40 @@ public final class Projection {
 	  private static EuclideanProjection projection = new ENUProjection(0,0,0);
 	  private static ProjectionType ptype = ProjectionType.ENU;
 	  
-	   /**
-	    * Returns a new projection for the current type with the given reference point.
-	    * 
-	    * Note that in the projected Euclidean frame, if two points are made using the 
-	    * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
-	    * altitudes may have changed (the reference point is subtracted).  If you need 
-	    * to have the same absolute altitude values in the geodetic and Euclidean frames, 
-	    * the reference point should have a zero altitude.
-	    */
+	  /**
+	   * Returns a new projection for the current type with the given reference point.
+	   * 
+	   * Note that in the projected Euclidean frame, if two points are made using the 
+	   * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
+	   * altitudes may have changed (the reference point is subtracted).  If you need 
+	   * to have the same absolute altitude values in the geodetic and Euclidean frames, 
+	   * the reference point should have a zero altitude.
+	   * 
+	   * @param lat latitude of reference point
+	   * @param lon longitude of reference point
+	   * @param alt altitude of reference point
+	   * @return new projection
+	   */
 	  public static EuclideanProjection createProjection(double lat, double lon, double alt) {
 		  return projection.makeNew(lat, lon, alt);
 	  }
 
-	   /**
-	    * Returns a new projection for the current type with the given reference point.
-	    * 
-	    * Note that in the projected Euclidean frame, if two points are made using the 
-	    * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
-	    * altitudes may have changed (the reference point is subtracted).  If you need 
-	    * to have the same absolute altitude values in the geodetic and Euclidean frames, 
-	    * the reference point should have a zero altitude.
-	    * 
-	    * For example, if you call p2 = Projection.createProjection(p1).project(p1), p2 will 
-	    * have an altitude of zero.  If you instead call p2 = Projection.createProjection(p1.zeroAlt(0)).project(p1),
-	    * p2 will have the same altitude as p1.
-	    */
+	  /**
+	   * Returns a new projection for the current type with the given reference point.
+	   * 
+	   * Note that in the projected Euclidean frame, if two points are made using the 
+	   * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
+	   * altitudes may have changed (the reference point is subtracted).  If you need 
+	   * to have the same absolute altitude values in the geodetic and Euclidean frames, 
+	   * the reference point should have a zero altitude.
+	   * 
+	   * For example, if you call p2 = Projection.createProjection(p1).project(p1), p2 will 
+	   * have an altitude of zero.  If you instead call p2 = Projection.createProjection(p1.zeroAlt(0)).project(p1),
+	   * p2 will have the same altitude as p1.
+	   * 
+	   * @param lla reference point
+	   * @return new projection
+	   */
 	  public static EuclideanProjection createProjection(LatLonAlt lla) {
 		  //f.pln(" @@@@@@@@@@@@@@@@@@@@@@@ EuclideanProjection.getProjection: lla = "+lla);
 		  //f.pln(" @@@@@@@@@@@@@@@@@@@@@@@ ptype = "+ptype);
@@ -61,21 +69,24 @@ public final class Projection {
 		  return projection.makeNew(lla);
 	  }
 
-	   /**
-	    * Returns a new projection for the current type with the given reference point.
-	    * This will return an altitude-preserving projection against the given Position if it is lat/lon.
-	    * If it is Euclidean, the projection will be against the LatLonAlt.ZERO point.
-	    * 
-	    * Note that in the projected Euclidean frame, if two points are made using the 
-	    * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
-	    * altitudes may have changed (the reference point is subtracted).  If you need 
-	    * to have the same absolute altitude values in the geodetic and Euclidean frames, 
-	    * the reference point should have a zero altitude.
-	    * 
-	    * For example, if you call p2 = Projection.createProjection(p1).project(p1), p2 will 
-	    * have an altitude of zero.  If you instead call p2 = Projection.createProjection(p1.zeroAlt(0)).project(p1),
-	    * p2 will have the same altitude as p1.
-	    */
+	  /**
+	   * Returns a new projection for the current type with the given reference point.
+	   * This will return an altitude-preserving projection against the given Position if it is lat/lon.
+	   * If it is Euclidean, the projection will be against the LatLonAlt.ZERO point.
+	   * 
+	   * Note that in the projected Euclidean frame, if two points are made using the 
+	   * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
+	   * altitudes may have changed (the reference point is subtracted).  If you need 
+	   * to have the same absolute altitude values in the geodetic and Euclidean frames, 
+	   * the reference point should have a zero altitude.
+	   * 
+	   * For example, if you call p2 = Projection.createProjection(p1).project(p1), p2 will 
+	   * have an altitude of zero.  If you instead call p2 = Projection.createProjection(p1.zeroAlt(0)).project(p1),
+	   * p2 will have the same altitude as p1.
+	   * 
+	   * @param pos reference point
+	   * @return new projection
+	   */
 	  public static EuclideanProjection createProjection(Position pos) {
 		  LatLonAlt lla = pos.lla().zeroAlt();
 		  if (!pos.isLatLon()) lla = LatLonAlt.ZERO;
@@ -113,7 +124,9 @@ public final class Projection {
 
 	   /**
 	    * Set the projection to a new type.  This is a global change.
-	    */
+	   * 
+	   * @param t type of projection
+	   */
 	  public static void setProjectionType(ProjectionType t) {
 		  ptype = t;
 		  switch(t) {
@@ -129,9 +142,12 @@ public final class Projection {
 		  }
 	  }
 
-	   /**
-	    * Given a string representation of a ProjectionType, return the ProjectionType
-	    */
+	  /**
+	   * Given a string representation of a ProjectionType, return the ProjectionType
+	   * 
+	   * @param s name of projection type
+	   * @return projection type
+	   */
 	  public static ProjectionType getProjectionTypeFromString(String s) {
 		  try {
 		    return Projection.ProjectionType.valueOf(s.toUpperCase());
@@ -140,9 +156,11 @@ public final class Projection {
 		  }
 	  }
 
-	   /**
-	    * Return the current ProjectionType
-	    */
+	  /**
+	   * Return the current ProjectionType
+	   * 
+	   * @return type of projection
+	   */
 	  public static ProjectionType getProjectionType() {
 		  return ptype;
 	  }

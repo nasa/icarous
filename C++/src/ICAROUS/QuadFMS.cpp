@@ -401,8 +401,8 @@ void QuadFMS_t::ComputeInterceptCourse(){
 
 	NavPoint wp1(current,0);
 	NavPoint wp2(next,ETA);
-	FlightData->ResolutionPlan.add(wp1);
-	FlightData->ResolutionPlan.add(wp2);
+	FlightData->ResolutionPlan.addNavPoint(wp1);
+	FlightData->ResolutionPlan.addNavPoint(wp2);
 	FlightData->nextResolutionWP = 0;
 	planType      = TRAJECTORY;
 

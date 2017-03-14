@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,6 +14,7 @@
 #include "Poly3D.h"
 #include "SimpleMovingPoly.h"
 #include "Velocity.h"
+#include "format.h"
 
 namespace larcfm {
 
@@ -294,6 +295,22 @@ bool SimpleMovingPoly::contains(const Position& p, double dt) const {
 std::string SimpleMovingPoly::toString() const {
 	return poly.toString();
 }
+
+std::vector<std::string> SimpleMovingPoly::toStringList(int vertex, bool trkgsvs, int precision) const {
+	std::vector<std::string> ret;
+    Velocity v = vlist[vertex];
+    std::vector<std::string> polystr = poly.toStringList(vertex,  precision);
+    ret.insert(ret.end(), polystr.begin(), polystr.end());
+    if (trkgsvs) {
+    	std::vector<std::string> vstr = v.toStringList(precision);
+    	ret.insert(ret.end(), vstr.begin(), vstr.end());
+    } else {
+    	std::vector<std::string> vstr = v.toStringXYZList(precision);
+    	ret.insert(ret.end(), vstr.begin(), vstr.end());
+    }
+    return ret;
+}
+
 
 } // namespace
 

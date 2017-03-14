@@ -41,7 +41,10 @@ public final class SimpleProjection implements EuclideanProjection {
 
 	public static final double tranLat = Units.from("deg", 85.0);   
 
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point. 
+	 * 
+	 * @param lla reference point
+	 */
 	public SimpleProjection(LatLonAlt lla) {
 		projLat = lla.lat();
 		projLon = lla.lon();
@@ -49,7 +52,12 @@ public final class SimpleProjection implements EuclideanProjection {
 		projNorth = projLat >= 0.0;
 	}
 
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point.
+	 * 
+	 * @param lat latitude of reference point
+	 * @param lon longitude of reference point
+	 * @param alt altitude of reference point
+	 */
 	public SimpleProjection(double lat, double lon, double alt) {
 		projLat = lat;
 		projLon = lon;
@@ -116,16 +124,20 @@ public final class SimpleProjection implements EuclideanProjection {
         return LatLonAlt.mk(projLat, projLon, projAlt);
     }
 
-    /** Is the reference point near a pole? */
+    /** Is the reference point near a pole? 
+     * 
+     * @return true, if reference point near a pole
+     */
 	public boolean isPolar() {
 		return (Math.abs(projLat) >  tranLat);
 	}
 
-	//    public void setAltitude(double alt) {
-	//    	projAlt = alt;
-	//    }
-
-    /** Return a projection with the pole as a reference point. */
+    /** Return a projection with the pole as a reference point. 
+	 * 
+	 * @param lla   geodetic position
+	 * @param north true, if north pole
+	 * @return position in projected space
+	 */
 	public static Vect2 polar_xy(LatLonAlt lla, boolean north) {
 		int sgn = 1;
 		if (! north) sgn = -1;
@@ -136,7 +148,13 @@ public final class SimpleProjection implements EuclideanProjection {
 		return new Vect2(r*Math.sin(lla.lon()),r*Math.cos(lla.lon()));
 	}
 
-    /** Invert a projection, using the pole as a reference point. */
+    /** Invert a projection, using the pole as a reference point.
+	 * 
+	 * @param v   point in projected space
+	 * @param alt altitude in projected space
+	 * @param north true, if north pole
+	 * @return geodetic position
+	 */
 	public static LatLonAlt polar_inverse(Vect2 v, double alt, boolean north) {
 		double lon = Util.to_pi(v.compassAngle());
 		double d = v.norm();
@@ -289,6 +307,12 @@ public final class SimpleProjection implements EuclideanProjection {
 	 * This transform has a symmetric correspondence, that is, it doesn't matter
 	 * which point is the origin: <tt>projectXY(lat0,lon0,lat1,lon1) =
 	 * -projectXY(lat1,lon1,lat0,lon0)</tt>
+	 * 
+	 * @param lat0 latitude of first point
+	 * @param lon0 longitude of first point
+	 * @param lat1 latitude of second point
+	 * @param lon1 longitude of second point
+	 * @return point in projected space
 	 */
 	public static Vect2 projectXY(double lat0, double lon0, double lat1, double lon1) {
 		double ad = GreatCircle.angular_distance(lat0, lon0, lat1, lon1);
@@ -329,6 +353,10 @@ public final class SimpleProjection implements EuclideanProjection {
 	 * This transform has a symmetric correspondence, that is, it doesn't matter
 	 * which point is the origin: <tt>projectXY(lat0,lon0,lat1,lon1) =
 	 * -projectXY(lat1,lon1,lat0,lon0)</tt>
+	 * 
+	 * @param p0 position one
+	 * @param p1 position two
+	 * @return position in projected space
 	 */
 	public static Vect3 projectXYZ(LatLonAlt p0, LatLonAlt p1) {
 		Vect2 r = projectXY(p0.lat(), p0.lon(), p1.lat(), p1.lon());

@@ -6,7 +6,7 @@
  *
  * 3-D vectors.
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -109,6 +109,8 @@ public:
 	 * to <code>v</code>.
 	 */
 	bool almostEquals(const Vect3& v) const;
+
+	bool almostEquals2D(const Vect3& v, double horizEps) const;
 
 	/**
 	 * Checks if vectors are almost equal.
@@ -213,13 +215,12 @@ public:
 	 */
 	Vect3 linear(const Vect3& v, double t) const;
 
-	/**
-	  * Calculates position after t time units in direction and magnitude of velocity v
-	  * @param track
-	  * @param t       time
-	  * @return the new position (horizontal only)
-	  */
-	 Vect3 linearByDist(double track, double d) const;
+  /** Calculates position after moving distance d in the direction "track"
+    * @param track   the direction
+    * @param d       distance
+    * @return the new position (horizontal only)
+   */
+	 Vect3 linearByDist2D(double track, double d) const;
 
 	/**
 	 * 2-Dimensional projection.

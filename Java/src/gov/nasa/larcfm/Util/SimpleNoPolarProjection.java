@@ -33,14 +33,22 @@ public final class SimpleNoPolarProjection implements EuclideanProjection {
     private final double projAlt;
 
 
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point.
+     * 
+     * @param lla reference point
+     */
     public SimpleNoPolarProjection(LatLonAlt lla) {
         projLat = lla.lat();
         projLon = lla.lon();
         projAlt = lla.alt();
     }
  
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point.
+     * 
+     * @param lat latitude of reference point
+     * @param lon longitude of reference point
+     * @param alt altitude of reference point
+     */
     public SimpleNoPolarProjection(double lat, double lon, double alt) {
         projLat = lat;
         projLon = lon;
@@ -151,18 +159,12 @@ public final class SimpleNoPolarProjection implements EuclideanProjection {
            double d = xy.norm();
            //f.pln(" a = "+Units.to("deg",a)+" d = "+Units.to("nm",d));
     	   LatLonAlt origin = LatLonAlt.mk(projLat, projLon, alt + projAlt);
-//           return GreatCircle.linear_rhumb(origin,a,d);
            return GreatCircle.linear_initial(origin,a,d);
     }
 
     
 
-//    public Vect2 project(double lat, double lon) {
-//    	LatLonAlt lla = LatLonAlt.make(lat,lon,0.0); 
-//    	return project(lla);
-//    }
-    
-    private static final double TIME_STEP = 10.0;
+    //private static final double TIME_STEP = 10.0;
       
     /** Given a velocity from a point in geodetic coordinates, return a projection of this velocity in Euclidean 3-space */
     public Velocity projectVelocity(LatLonAlt lla, Velocity v) {

@@ -1,12 +1,11 @@
 /*
-u * Copyright (c) 2011-2016 United States Government as represented by
+u * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
 
 #include "Plan.h"
-//#include "UnitSymbols.h"
 #include "Vect3.h"
 #include "NavPoint.h"
 #include "GreatCircle.h"
@@ -46,16 +45,16 @@ using std::vector;
 		Velocity v = GreatCircle::velocity_initial(start, end, flightTime);
 		NavPoint np1(Position(start),0.0);
 		NavPoint np2(Position(end), flightTime);
-		pc.add(np1);
-		pc.add(np2);
+		pc.addNavPoint(np1);
+		pc.addNavPoint(np2);
 		double climbTime = std::abs((cruiseAlt-start.alt())/vs);
 		LatLonAlt lla3 = GreatCircle::linear_gcgs(start, end, v, climbTime).mkAlt(cruiseAlt);
 		NavPoint np3(Position(lla3),climbTime);
-		pc.add(np3);
+		pc.addNavPoint(np3);
 		double descentTime = std::abs((cruiseAlt-end.alt())/vs);
 		LatLonAlt lla4 = GreatCircle::linear_gcgs(start, end, v, flightTime-descentTime).mkAlt(cruiseAlt);
 		NavPoint np4(Position(lla4), flightTime-descentTime);
-		pc.add(np4);
+		pc.addNavPoint(np4);
 		//fpln(" makeLPC: pc = "+pc.toOutput());
 		return pc;
 	}
@@ -78,20 +77,20 @@ using std::vector;
 		NavPoint npMid(Position(midPerp),flightTime/2.0);
 		NavPoint np1(Position(start),0.0);
 		NavPoint np2(Position(end), flightTime);
-		pc.add(np1);
-		pc.add(np2);
-		pc.add(npMid);
+		pc.addNavPoint(np1);
+		pc.addNavPoint(np2);
+		pc.addNavPoint(npMid);
 		double climbTime = std::abs((cruiseAlt-start.alt())/vs);
 		Velocity v = GreatCircle::velocity_average(start, midPerp, flightTime/2);
 		LatLonAlt lla3 = GreatCircle::linear_gcgs(start, midPerp, v, climbTime).mkAlt(cruiseAlt);
 		NavPoint np3(Position(lla3),climbTime);
-		pc.add(np3);
+		pc.addNavPoint(np3);
 		double descentTime = std::abs((cruiseAlt-end.alt())/vs);
 		//fpln(" flightTime = "+flightTime+" descentTime = "+descentTime);
 		v = GreatCircle::velocity_average(midPerp, end, flightTime/2);
 		LatLonAlt lla4 = GreatCircle::linear_gcgs(midPerp, end, v, flightTime/2-descentTime).mkAlt(cruiseAlt);
 		NavPoint np4(Position(lla4), flightTime-descentTime);
-		pc.add(np4);
+		pc.addNavPoint(np4);
 		//fpln(" makeLPC: pc = -------------------\n"+pc.toOutput());
 		return pc;
 	}
@@ -111,15 +110,15 @@ using std::vector;
 		Velocity v = GreatCircle::velocity_initial(start, end, flightTime);
 		NavPoint np1(Position(start),0.0);
 		NavPoint np2(Position(end), flightTime);
-		pc.add(np1);
-		pc.add(np2);
+		pc.addNavPoint(np1);
+		pc.addNavPoint(np2);
 		LatLonAlt lla3 = GreatCircle::linear_gcgs(start, end, v, flightTime/2.0).mkAlt(start.alt());
 		NavPoint np3(Position(lla3),flightTime/2.0);
-		pc.add(np3);
+		pc.addNavPoint(np3);
 		double FLC_Time = std::abs((end.alt()-start.alt())/vs);
 		LatLonAlt lla4 = GreatCircle::linear_gcgs(lla3, end, v, FLC_Time).mkAlt(end.alt());
 		NavPoint np4(Position(lla4), flightTime/2.0+FLC_Time);
-		pc.add(np4);
+		pc.addNavPoint(np4);
 		//fpln(" makeLPC: pc = "+pc.toOutput());
 		return pc;
 	}
@@ -152,21 +151,21 @@ using std::vector;
 		
 		double np3Time = npc.getFirstTime()+climbTime;
 		NavPoint np3(npc.position(np3Time).mkAlt(cruiseAlt),np3Time);
-		npc.add(np3);
+		npc.addNavPoint(np3);
 		
 		double descentTime = std::abs((cruiseAlt-end.alt())/vs);
 		double np4Time = npc.getLastTime()-descentTime;
 		NavPoint np4(npc.position(np4Time).mkAlt(cruiseAlt),np4Time);
-		npc.add(np4);
+		npc.addNavPoint(np4);
 		if (climbTime > 10.0) {  // add lead in
 			double np5Time = npc.getFirstTime()+10.0;
 			NavPoint np5(npc.position(np5Time).mkAlt(0.0),np5Time);
-			npc.add(np5);
+			npc.addNavPoint(np5);
 		}
 		if (descentTime > 10.0) {
 			double np6Time = npc.getLastTime()-10.0;
 			NavPoint np6(npc.position(np6Time).mkAlt(0.0),np6Time);
-			npc.add(np6);
+			npc.addNavPoint(np6);
 		}
 		//fpln(" $$$$$ addClimbDescent5: npc = "+npc);
 		return npc;

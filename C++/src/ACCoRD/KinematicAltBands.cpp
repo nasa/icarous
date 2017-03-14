@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -63,7 +63,7 @@ void KinematicAltBands::set_vertical_accel(double val) {
 }
 
 double KinematicAltBands::own_val(const TrafficState& ownship) const {
-  return ownship.altitude();
+  return ownship.getPositionXYZ().alt();
 }
 
 double KinematicAltBands::time_step(const TrafficState& ownship) const {
@@ -74,15 +74,15 @@ std::pair<Vect3, Velocity> KinematicAltBands::trajectory(const TrafficState& own
   double target_alt = min_val(ownship)+j_step_*get_step();
   std::pair<Position,Velocity> posvel;
   if (instantaneous_bands()) {
-    posvel = std::pair<Position,Velocity>(ownship.getPosition().mkZ(target_alt),ownship.getVelocity().mkVs(0));
+    posvel = std::pair<Position,Velocity>(ownship.getPositionXYZ().mkZ(target_alt),ownship.getVelocityXYZ().mkVs(0));
   } else {
-    double tsqj = ProjectedKinematics::vsLevelOutTime(ownship.getPosition(),ownship.getVelocity(),vertical_rate_,
+    double tsqj = ProjectedKinematics::vsLevelOutTime(ownship.getPositionXYZ(),ownship.getVelocityXYZ(),vertical_rate_,
         target_alt,vertical_accel_)+time_step(ownship);
     if (time <= tsqj) {
-      posvel = ProjectedKinematics::vsLevelOut(ownship.getPosition(), ownship.getVelocity(), time, vertical_rate_, target_alt, vertical_accel_);
+      posvel = ProjectedKinematics::vsLevelOut(ownship.getPositionXYZ(), ownship.getVelocityXYZ(), time, vertical_rate_, target_alt, vertical_accel_);
     } else {
-      Position npo = ownship.getPosition().linear(ownship.getVelocity(),time);
-      posvel = std::pair<Position,Velocity>(npo.mkZ(target_alt),ownship.getVelocity().mkVs(0));
+      Position npo = ownship.getPositionXYZ().linear(ownship.getVelocityXYZ(),time);
+      posvel = std::pair<Position,Velocity>(npo.mkZ(target_alt),ownship.getVelocityXYZ().mkVs(0));
     }
   }
   return std::pair<Vect3,Velocity>(ownship.pos_to_s(posvel.first),ownship.vel_to_v(posvel.first,posvel.second));
@@ -116,7 +116,7 @@ bool KinematicAltBands::conflict_free_traj_step(Detection3D* conflict_det, Detec
   } else {
     double tstep = time_step(ownship);
     double target_alt = min_val(ownship)+j_step_*get_step();
-    Tuple5<double,double,double,double,double> tsqj = Kinematics::vsLevelOutTimes(ownship.altitude(),ownship.verticalSpeed(),
+    Tuple5<double,double,double,double,double> tsqj = Kinematics::vsLevelOutTimes(ownship.getPositionXYZ().alt(),ownship.getVelocityXYZ().vs(),
         vertical_rate_,target_alt,vertical_accel_,-vertical_accel_,true);
     double tsqj1 = tsqj.first+0;
     double tsqj2 = tsqj.second+0;
@@ -196,9 +196,9 @@ int KinematicAltBands::first_band_alt_generic(Detection3D* conflict_det, Detecti
     double B, double T, double B2, double T2,
     const TrafficState& ownship, const std::vector<TrafficState>& traffic, bool dir, bool green) {
   int upper = (int)(dir ? std::floor((max_val(ownship)-min_val(ownship))/get_step())+1 :
-      std::floor((ownship.altitude()-min_val(ownship))/get_step()));
-  int lower = dir ? (int)(std::ceil(ownship.altitude()-min_val(ownship))/get_step()) : 0;
-  if (ownship.altitude() < min_val(ownship) || ownship.altitude() > max_val(ownship)) {
+      std::floor((ownship.getPositionXYZ().alt()-min_val(ownship))/get_step()));
+  int lower = dir ? (int)(std::ceil(ownship.getPositionXYZ().alt()-min_val(ownship))/get_step()) : 0;
+  if (ownship.getPositionXYZ().alt() < min_val(ownship) || ownship.getPositionXYZ().alt() > max_val(ownship)) {
     return -1;
   } else {
     return first_nat(lower,upper,dir,conflict_det,recovery_det,B,T,B2,T2,ownship,traffic,green);

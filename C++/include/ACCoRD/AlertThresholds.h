@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,10 +14,13 @@
 #include "Interval.h"
 #include "TrafficState.h"
 #include "BandsRegion.h"
+#include "ParameterData.h"
+#include "ParameterTable.h"
+#include <map>
 
 namespace larcfm {
 
-class AlertThresholds {
+class AlertThresholds : public ParameterTable {
 
 private:
   Detection3D* detector_; // State-based detector
@@ -30,14 +33,15 @@ private:
   double spread_gs_;  // Alert when ground speed band within spread (non-negative value)
   double spread_vs_;  // Alert when vertical speed band within speed (non-negative value)
   double spread_alt_; // Alert when altitude  band within spread (non-negative value)
-
-  AlertThresholds();
+  std::map<std::string,std::string> units_;
 
 public:
 
   static const AlertThresholds INVALID;
 
   bool isValid() const;
+
+  AlertThresholds();
 
   /**
    * Creates an alert threholds object. Parameter det is a detector,
@@ -72,9 +76,19 @@ public:
   double getAlertingTime() const;
 
   /**
+   * Return alerting time in specified units.
+   */
+  double getAlertingTime(const std::string& u) const;
+
+  /**
    * Set alerting time in seconds. Alerting time is non-negative number.
    */
   void setAlertingTime(double val);
+
+  /**
+   * Set alerting time in specified units. Alerting time is non-negative number.
+   */
+  void setAlertingTime(double val, const std::string& u);
 
   /**
    * Return early alerting time in seconds.
@@ -82,9 +96,19 @@ public:
   double getEarlyAlertingTime() const;
 
   /**
+   * Return early alerting time in specified units.
+   */
+  double getEarlyAlertingTime(const std::string& u) const;
+
+  /**
    * Set early alerting time in seconds. Early alerting time is a positive number >= alerting time
    */
   void setEarlyAlertingTime(double val);
+
+  /**
+   * Set early alerting time in specified units. Early alerting time is a positive number >= alerting time
+   */
+  void setEarlyAlertingTime(double val, const std::string& u);
 
   /**
    * Return guidance region.
@@ -187,6 +211,14 @@ public:
   std::string toString() const;
 
   std::string toPVS(int prec) const;
+
+  ParameterData getParameters() const;
+
+  void updateParameterData(ParameterData& p) const;
+
+  void setParameters(const ParameterData& p);
+
+  std::string getUnits(const std::string& key) const;
 
 };
 }

@@ -80,7 +80,9 @@ public class MovingPolygon2D {
 	  return new Poly2D(vs);
   }
 
-  /** return true if this polygon is "stable", i.e., all vector velocities are the same */
+  /** return true if this polygon is "stable", i.e., all vector velocities are the same 
+   * @return true, if stable
+   * */
   public boolean isStable() {
 	  if (polyvel.size() < 2) return true;
 	  if (knownStable) return true;
@@ -122,7 +124,7 @@ public class MovingPolygon2D {
   
 	/**
 	 * Reverse order of vertices
-	 * @return
+	 * @return new polygon
 	 */
 	public MovingPolygon2D reverseOrder() {
 		  ArrayList<Vect2> p = new ArrayList<Vect2>();

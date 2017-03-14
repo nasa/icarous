@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -82,8 +82,8 @@ public:
 
 	/**
 	 * Return vertex, or INVALID if out of bounds.
-	 * @param i
-	 * @return
+	 * @param i index
+	 * @return vertex
 	 */
 	Vect2 getVertex(int i) const;
 
@@ -104,6 +104,7 @@ public:
 
 	/**
 	 * Return the horizontal area (in m^2) of this Poly3D.
+	 * @return area
 	 */
 	double area();   // not const !!
 
@@ -116,6 +117,8 @@ public:
 	 * Return the average of all vertices.  Note this is not the same as the centroid, and will be weighted 
 	 * towards concentrations of vertices instead of concentrations of area/mass.  This will, however, have the nice property of having
 	 * a constant linear velocity between two polygons, even if they morph shape. 
+	 * 
+	 * @return point
 	 */
 	Vect2 averagePoint() const;
 
@@ -133,7 +136,7 @@ public:
 
 	/**
 	 * Distance from averagePoint to farthest vertex
-	 * @return
+	 * @return radius
 	 */
 	double apBoundingRadius() const;
 

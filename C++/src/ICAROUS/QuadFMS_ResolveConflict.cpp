@@ -100,8 +100,8 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 		NavPoint wp1(currentPos,0);
 		NavPoint wp2(cp,ETA);
 		FlightData->ResolutionPlan.clear();
-		FlightData->ResolutionPlan.add(wp1);
-		FlightData->ResolutionPlan.add(wp2);
+		FlightData->ResolutionPlan.addNavPoint(wp1);
+		FlightData->ResolutionPlan.addNavPoint(wp2);
 
 		std::cout<<FlightData->ResolutionPlan.toString()<<std::endl;
 		planType      = TRAJECTORY;
@@ -116,7 +116,7 @@ void QuadFMS_t::ResolveKeepInConflict(){
 	std::cout<<wp.position().toStringUnits("degree","degree","m")<<std::endl;
 	NavPoint next_wp = FlightData->MissionPlan.point(FlightData->nextMissionWP);
 	FlightData->ResolutionPlan.clear();
-	FlightData->ResolutionPlan.add(wp);
+	FlightData->ResolutionPlan.addNavPoint(wp);
 	FlightData->nextResolutionWP = 0;
 
 	if(fence.CheckWPFeasibility(wp.position(),next_wp.position())){
@@ -281,7 +281,7 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 
 		double ETA = 0.0;
 		NavPoint wp0(PlanPosition.front(),0);
-		ResolutionPlan1.add(wp0);
+		ResolutionPlan1.addNavPoint(wp0);
 
 		int count = 0;
 		std::list<Position>::iterator it;
@@ -296,7 +296,7 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 				ETA             = ETA + distH/resolutionSpeed;
 			}
 			NavPoint np(pos,ETA);
-			ResolutionPlan1.add(np);
+			ResolutionPlan1.addNavPoint(np);
 			count++;
 		}
 	}
@@ -437,27 +437,27 @@ Plan QuadFMS_t::ComputeGoAbovePlan(Position start,Position goal,double altFence,
 	double distH,distV;
 
 	NavPoint nvpt1(start,ETA);
-	ResolutionPlan2.add(nvpt1);
+	ResolutionPlan2.addNavPoint(nvpt1);
 
 	// Second waypoint directly above WP1
 	Position wp2 = start.mkAlt(altFence+1);
 	distV = wp2.distanceV(start);
 	ETA = ETA + distV/rSpeed;
 	NavPoint nvpt2(wp2,ETA);
-	ResolutionPlan2.add(nvpt2);
+	ResolutionPlan2.addNavPoint(nvpt2);
 
 	// Third waypoint directly above exit point
 	Position wp3 = goal.mkAlt(altFence+1);
 	distH = wp3.distanceH(wp2);
 	ETA = ETA + distH/rSpeed;
 	NavPoint nvpt3(wp3,ETA);
-	ResolutionPlan2.add(nvpt3);
+	ResolutionPlan2.addNavPoint(nvpt3);
 
 	// Final waypoint
 	distV = goal.distanceH(wp3);
 	ETA = ETA + distV/rSpeed;
 	NavPoint nvpt4(goal,ETA);
-	ResolutionPlan2.add(nvpt4);
+	ResolutionPlan2.addNavPoint(nvpt4);
 
 	return ResolutionPlan2;
 }
@@ -616,9 +616,10 @@ void QuadFMS_t::ResolveTrafficConflictRRT(){
 	Position nextWP;
 	double dist = currentVel.gs()*computationTime;
 	bool prefDirection = KMB.preferredTrackDirection();
+
 	double prefHeading = KMB.trackResolution(prefDirection);
-	Velocity projVel   = Velocity::makeTrkGsVs(prefHeading,currentVel.gs(),0);
-	Position start = currentPos.linearDist(projVel, dist).first;
+
+	Position start = currentPos.linearDist2D(prefHeading, dist);
 	SetGPSPos(start.latitude(), start.longitude(), start.alt());
 
 	if(planType == MISSION){

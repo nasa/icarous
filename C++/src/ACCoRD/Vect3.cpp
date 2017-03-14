@@ -6,7 +6,7 @@
  *
  * 3-D vectors.
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -58,6 +58,10 @@ bool Vect3::almostEquals(const Vect3& v, INT64FM maxUlps) const {
 	return Util::almost_equals(x,v.x,maxUlps) && Util::almost_equals(y,v.y,maxUlps) && Util::almost_equals(z,v.z,maxUlps);
 }
 
+bool Vect3::almostEquals2D(const Vect3& v, double horizEps) const {
+	  return (vect2().Sub(v.vect2())).norm() < horizEps;
+}
+
 bool Vect3::within_epsilon(const Vect3& v2, double epsilon) const {
 	if (std::abs(x - v2.x) > epsilon) return false;
 	if (std::abs(y - v2.y) > epsilon) return false;
@@ -94,16 +98,20 @@ bool Vect3::operator != (const Vect3& v) const {  // strict disequality
 	return x!=v.x || y!=v.y || z!=v.z;
 }
 
-Vect2 Vect3::vect2() const {
-	return Vect2(x,y);
-}
-
 Vect3 Vect3::Hat() const {
 	double n = norm();
 	if ( n == 0.0) { // this is only checking the divide by zero case, so an exact comparison is correct.
 		return ZERO();
 	}
 	return Vect3(x/n, y/n, z/n);
+
+	// initial tests indicate this is not significantly faster than the above
+//	double sq = sqv();
+//	if (sq == 0.0) {
+//		return ZERO();
+//	}
+//	double n_inv = Util::Q_rsqrt(sq);
+//	return Vect3(x*n_inv, y*n_inv, z*n_inv);
 }
 
 Vect3 Vect3::Hat2D() const {
@@ -117,6 +125,17 @@ Vect3 Vect3::cross(const Vect3& v) const {
 bool Vect3:: parallel(const Vect3& v) const {
 	return cross(v).almostEquals(Vect3::ZERO());
 }
+
+
+/**
+  * 2-Dimensional projection.
+  *
+  * @return the 2-dimensional projection of <code>this</code>.
+  */
+ Vect2 Vect3::vect2() const {
+   return Vect2(x,y);
+ }
+
 
 Vect3 Vect3::Add(const Vect3& v) const{
 	return Vect3(x+v.x, y+v.y, z+v.z);
@@ -154,13 +173,9 @@ Vect3 Vect3::linear(const Vect3& v, double t) const {
 	return Vect3(x+v.x*t, y+v.y*t, z+v.z*t);
 }
 
-Vect3 Vect3::linearByDist(double track, double d) const {
-	double gs = 100;
-	//Velocity v = Velocity::mkTrkGsVs(track,gs,0.0);
-	Vect3 v = Vect3(gs*sin(track),gs*cos(track),0.0);
-	double dt = d/gs;
-	return linear(v,dt);
- }
+Vect3 Vect3::linearByDist2D(double track, double d) const {
+	  return Vect3(x+d*sin(track), y+d*cos(track), z);
+}
 
 
 double Vect3::dot(const double x, const double y, const double z) const {
@@ -176,8 +191,9 @@ double Vect3::sqv() const {
 }
 
 double Vect3::norm() const {
-	return sqrt_safe(sqv());
+	return Util::sqrt_safe(sqv());
 }
+
 
 double Vect3::cyl_norm(const double d, const double h) const {
 	return Util::max(vect2().sqv()/sq(d),sq(z/h));

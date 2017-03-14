@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -12,8 +12,8 @@
 #include "ErrorLog.h"
 #include "ErrorReporter.h"
 #include "format.h"
-#include "Quad.h"
 #include "string_util.h"
+#include "ParameterEntry.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -27,8 +27,8 @@
 namespace larcfm {
 
 struct stringCaseInsensitive {
-  bool operator() (const std::string& lhs, const std::string& rhs) const
-  {return toLowerCase(lhs)<toLowerCase(rhs);}
+	bool operator() (const std::string& lhs, const std::string& rhs) const
+	{return toLowerCase(lhs)<toLowerCase(rhs);}
 };
 
 /**
@@ -44,7 +44,7 @@ class ParameterData {
 
 public:
 	static const std::string parenPattern;
-    static const std::string defaultEntrySeparator;
+	static const std::string defaultEntrySeparator;
 
 
 	ParameterData();
@@ -84,7 +84,11 @@ public:
 	 */
 	void setUnitCompatibility(bool v);
 
-	int size();
+	/** Number of parameters in this object
+	 * 
+	 * @return number of parameters
+	 */
+	int size() const;
 	/**
 	 * Returns an array of parameter strings encountered.
 	 */
@@ -99,6 +103,9 @@ public:
 	void clear();
 	/**
 	 * Returns true if the parameter key was defined.
+	 * 
+	 * @param key parameter key to check if it is in database
+	 * @return true, if parameter is in database
 	 */
 	bool contains(const std::string& key) const;
 
@@ -109,7 +116,7 @@ public:
 	 * This is intended to create a unique ParameterData object representing the parameters of a particular 
 	 * instance (of many) of an object, that can then be collected along with others into a larger ParameterData object representing the containing object.
 	 * @param prefix
-	 * @return
+	 * @return copy of ParameterData with changes
 	 */
 	ParameterData copyWithPrefix(const std::string& prefix) const;
 
@@ -120,7 +127,7 @@ public:
 	 * The resulting ParameterData object will include an empty string parameter if a key exactly matches the prefix.
 	 * 
 	 * @param prefix
-	 * @return
+	 * @return copy of ParameterData with changes
 	 */
 	ParameterData extractPrefix(const std::string& prefix) const;
 
@@ -128,6 +135,9 @@ public:
 	 * Returns the string value of the given parameter key. This may be a
 	 * space-delimited list. If the key is not present, return the empty string.
 	 * Parameter keys may be case-sensitive.
+	 * 
+	 * @param key parameter name
+	 * @return string representation of parameter
 	 */
 	std::string getString(const std::string& key) const;
 
@@ -135,48 +145,67 @@ public:
 	 * Returns the double-precision value of the given parameter key in internal
 	 * units. If the key is not present or if the value is not a numeral, then
 	 * return 0. Parameter keys may be case-sensitive.
+	 * 
+	 * @param key parameter name
+	 * @return value of parameter (internal units)
 	 */
 	double getValue(const std::string& key) const;
 	/**
 	 * Returns the double-precision value of the given parameter key in internal
-	 * units. Only in the case when units were not specified in the file, will
+	 * units. Only in the case when units were not specified in the database, will
 	 * the defaultUnit parameter be used. If the key is not present or if the
 	 * value is not a numeral, then return 0. Parameter keys may be
 	 * case-sensitive.
+	 * 
+	 * @param key name of parameter
+	 * @param defaultUnit units to use if no units are in database
+	 * @return value of parameter (internal units)
 	 */
 	double getValue(const std::string& key, const std::string& defaultUnit) const;
 	/**
 	 * Returns the string representation of the specified unit of the given
 	 * parameter key. If the key is not present or no unit was specified, return
 	 * "unspecified". Parameter keys may be case-sensitive.
+	 * 
+	 * @param key name of parameter
+	 * @return units of parameter
 	 */
 	std::string getUnit(const std::string& key) const;
 	/**
 	 * Returns the Boolean value of the given parameter key. If the key is not
 	 * present, or not representation of "true", return the empty string.
 	 * Parameter keys may be case-sensitive.
+	 * 
+	 * @param key name of parameter
+	 * @return boolean representation of parameter
 	 */
 	bool getBool(const std::string& key) const;
-    /**
-     * Returns the integer value of the given parameter key in internal units.
-     * If no units were specified in the file, then the defaultUnit parameter is used.
-     * If the key is not present or if the 
-     * value is not a numeral, then return 0.  This value is an integer version of the 
-     * double value (see the related getParameterValue() method).  If the double value is 
-     * larger than an integer, behavior is undefined.
-     * Parameter keys may be case-sensitive.
-     */
-    int getInt(const std::string& key) const;
-    /**
-     * Returns the long value of the given parameter key in internal units.
-     * If no units were specified in the file, then the defaultUnit parameter is used.
-     * If the key is not present or if the 
-     * value is not a numeral, then return 0.  This value is an integer version of the 
-     * double value (see the related getParameterValue() method).  If the double value is 
-     * larger than an long, behavior is undefined.  
-     * Parameter keys may be case-sensitive.
-     */
-    long getLong(const std::string& key) const;
+	/**
+	 * Returns the integer value of the given parameter key in internal units.
+	 * If no units were specified in the file, then the defaultUnit parameter is used.
+	 * If the key is not present or if the 
+	 * value is not a numeral, then return 0.  This value is an integer version of the 
+	 * double value (see the related getParameterValue() method).  If the double value is 
+	 * larger than an integer, behavior is undefined.
+	 * Parameter keys may be case-sensitive.
+	 * 
+	 * @param key name of parameter
+	 * @return integer representation of parameter
+	 */
+	int getInt(const std::string& key) const;
+	/**
+	 * Returns the long value of the given parameter key in internal units.
+	 * If no units were specified in the file, then the defaultUnit parameter is used.
+	 * If the key is not present or if the 
+	 * value is not a numeral, then return 0.  This value is an integer version of the 
+	 * double value (see the related getParameterValue() method).  If the double value is 
+	 * larger than an long, behavior is undefined.  
+	 * Parameter keys may be case-sensitive.
+	 * 
+	 * @param key name of parameter
+	 * @return long representation of parameter
+	 */
+	long getLong(const std::string& key) const;
 	/**
 	 * Parses the given string as a parameter assignment. If successful, returns
 	 * a true value and adds the parameter. Otherwise returns a false value and
@@ -192,7 +221,7 @@ public:
 	 * </ul>
 	 * 
 	 * @param s the given string to parse
-	 * @return true if the database was updated, false otherwise.  The database may not
+	 * @return true, if the database was updated, false otherwise.  The database may not
 	 * be updated because of an invalid parameter string was given, or incompatible units, etc.
 	 */
 	bool set(const std::string& s);
@@ -204,45 +233,141 @@ public:
 	 */
 	bool set(const std::string& key, const std::string& value);
 	bool set(const std::string& key, char* value);
+	/**
+	 * @deprecated Replaced by {@link #setBool(String key, boolean value)}
+	 */
+	bool set(const std::string& key, const char* value);
+
 	/** Associates a boolean value with a parameter key. 
 	 * 
-	 * @return true if the database was updated, false otherwise.  The database may not
+	 * @param key name of parameter
+	 * @param value boolean representation of parameter
+	 * @return true, if the database was updated, false otherwise.  The database may not
 	 * be updated because of incompatible units, etc.
-	 * */
-	bool set(const std::string& key, const char* value);
-    /** Associates a bool value with a parameter key. */
+	 */
+	bool setBool(const std::string& key, bool value);
+
+	/** Associates true value with a parameter key.
+	 *
+	 * @param key name of parameter
+	 * @return true, if the database was updated, false otherwise.  The database may not
+	 * be updated because of incompatible units, etc.
+	 */
 	bool setTrue(const std::string& key);
+
+	/** Associates false value with a parameter key.
+	 *
+	 * @param key name of parameter
+	 * @return true, if the database was updated, false otherwise.  The database may not
+	 * be updated because of incompatible units, etc.
+	 */
 	bool setFalse(const std::string& key);
-	bool setBool(const std::string& key, bool val);
 
-	// WARNING: DO NOT add this method to C++, bool's in C++ are integers and will
-	// capture some calls to .set with integer (and some pointer) parameters. For
-	// the case with integer parameters, the desired behavior is to go to the set(string,double,string) version.
-    //void set(const std::string& key, bool value);
+	/** Associates an integer value with a parameter key.
+	 *
+	 * @param key name of parameter
+	 * @param value integer representation of parameter
+	 * @return true, if the database was updated, false otherwise.  The database may not
+	 * be updated because of incompatible units, etc.
+	 */
+	bool setInt(const std::string& key, int value);
 
-	/** Associates a value (in the given units) with a parameter key. */
+	/** Associates a value (in the given units) with a parameter key. If the supplied units
+	 * are "unspecified," then the units in the database are used to interpret the value
+	 * given.  How the units in the database
+	 * are updated depends on the value of the setPreserveUnits() parameter.
+	 *
+	 *
+	 * @param key    the name of the parameter
+	 * @param value  the value of the parameter in EXTERNAL units
+	 * @param units  the units of the given parameter
+	 * @return true, if the database was updated, false otherwise.  The database may not
+	 * be updated because of incompatible units, etc.
+	 */
 	bool set(const std::string& key, double value, const std::string& unit);
+
 	/** Associates a value (in internal units) with a parameter key. How the units in the database
 	 * are updated, depends on the value of the setPreserveUnits() parameter.
 	 * 
 	 * @param key   the name of the parameter
 	 * @param value the value of the parameter in INTERNAL units
-	 * @param units the typical units of the value (but no conversion takes place)
-	 * @return true if the database was updated, false otherwise.  The database may not
+	 * @param units the typical units of the value (but no conversion takes place, if "unspecified" any old value is preserved)
+	 * @return true, if the database was updated, false otherwise.  The database may not
 	 * be updated because of incompatible units, etc.
 	 */
 	bool setInternal(const std::string& key, double value, const std::string& units);
+
 	/** Associates a value (in internal units) with a parameter key. How the units in the database
 	 * are updated, depends on the value of the setPreserveUnits() parameter.
 	 * 
 	 * @param key   the name of the parameter
 	 * @param value the value of the parameter in INTERNAL units
-	 * @param units the typical units of the value (but no conversion takes place)
+	 * @param units the typical units of the value (but no conversion takes place, if "unspecified" any old value is preserved)
 	 * @param prec  precision 
-	 * @return true if the database was updated, false otherwise.  The database may not
+	 * @return true, if the database was updated, false otherwise.  The database may not
 	 * be updated because of incompatible units, etc.
 	 */
 	bool setInternal(const std::string& key, double value, const std::string& units, int prec);
+
+	/**
+	 * Updates the unit for an entry. This ignores the setPreservedUnits() flag.
+	 *
+	 * @param key name of parameter
+	 * @param unit unit for this parameter
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	bool updateUnit(const std::string& key, const std::string& unit);
+
+	/**
+	 * Updates entry's comment
+	 *
+	 * @param key name of parameter
+	 * @param msg the new comment of the parameter
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	bool updateComment(const std::string& key, const std::string& msg);
+
+	/**
+	 * Updates entry's string
+	 *
+	 * @param key name of parameter
+	 * @param str the new string of the parameter
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	bool updateStr(const std::string& key, const std::string& str);
+
+	/** Updates entry's double value
+	 *
+	 * @param key the name of the parameter
+	 * @param val the new double value of the parameter in INTERNAL units
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	bool updateDouble(const std::string& key, double val);
+
+	/** Updates entry's boolean value
+	 *
+	 * @param key the name of the parameter
+	 * @param val the new boolean value of the parameter
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	bool updateBool(const std::string& key, bool val);
+
+	/** Updates entry's integer value
+	 *
+	 * @param key the name of the parameter
+	 * @param val the new integer value of the parameter
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	bool updateInt(const std::string& key, int val);
+
+	/**
+	 * Updates entry's precision
+	 *
+	 * @param key name of parameter
+	 * @param p the new precision of the parameter
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	bool updatePrecision(const std::string& key, int p);
 
 	/** Associates a value (in the given units) with a parameter key.
 	 * If the parameter was already defined with a specified unit than
@@ -270,25 +395,32 @@ public:
 
 
 
-//	bool setValueOnly(const std::string& key, double value);
-//	bool setDefaultUnit(const std::string& key, const std::string& unit);
+	//	bool setValueOnly(const std::string& key, double value);
+	//	bool setDefaultUnit(const std::string& key, const std::string& unit);
 
 	/**
 	 * Checks the parameters against the supplied list, and returns a list of
 	 * unrecognized parameters that have been read, possible empty
 	 */
 	std::vector<std::string> unrecognizedParameters(std::vector<std::string> c) const;
+
 	/**
 	 * Checks the parameters against the supplied list, and returns a list
 	 * of unrecognized parameters.
 	 */
 	std::vector<std::string> validateParameters(std::vector<std::string> c);
+
+	/**
+	 * Copy parameter entries from list of keys
+	 */
+	void listCopy(const ParameterData& p, const std::vector<std::string>& plist, bool overwrite);
+
 	/**
 	 * Copy a ParameterData object into this object.  That is, A.copy(B,true) means A &lt;--- B.
 	 * @param p source ParameterData
 	 * @param overwrite if a parameter key exists in both this object and p, if overwrite is true then p's value will be used, otherwise this object's value will be used
 	 */
-	void copy(ParameterData p, bool overwrite);
+	void copy(const ParameterData& p, bool overwrite);
 
 	/**
 	 * Remove the given key from this database.  If the key does not exist, do nothing.
@@ -317,9 +449,57 @@ public:
 	bool parseParameterList(const std::string& separator, std::string line);
 
 	/**
-	 * Returns a string listing all parameters and their (original string) values
+	 * Returns true if the stored value for key is likely a boolean
+	 * @param key parameter name
+	 * @return true if key exists and the value is true/false/t/f, false otherwise
+	 */
+	bool isBoolean(const std::string& key) const;
+
+	/**
+	 * Returns true if the stored value for key is likely a number
+	 * @param key parameter name
+	 * @return true if key exists and the value is a parsable number
+	 */
+	bool isNumber(const std::string& key) const;
+
+	/**
+	 * Returns true if the stored value for key is likely a string (or list).  Note,
+	 * the getString() method will always return a string (assuming a valid key
+	 * is provided).  This method returns a more narrow definition of a string,
+	 * that is, something that is not a number or a boolean.
+	 * @param key parameter name
+	 * @return true if key exists and the value is not a parse-able number
+	 */
+	bool isString(const std::string& key) const;
+
+	/**
+	 * Returns a string listing all parameters in keys and their (original string) values
+	 * 
+	 * @param keys list of parameter entries
+	 * @return multi-line string
+	 */
+	std::string listToString(const std::vector<std::string>& keys) const;
+
+	/**
+	 * Returns a multi-line string listing all parameters and their (original string) values
 	 */
 	std::string toString() const;
+
+	/**
+	 * Returns a string listing all parameters in keys 
+	 * 
+	 * @param keys list of parameter entries
+	 * @param separator the separator (e.g., a comma) to separate each key
+	 * @return string
+	 */
+	std::string listToString(const std::vector<std::string>& keys, const std::string& separator) const;
+
+	/**
+	 * Returns a string listing all parameters
+	 * @param separator the separator (e.g., a comma) to separate each key
+	 * @return A separated string of all parameters
+	 */
+	std::string toString(const std::string& separator) const;
 
 	bool equals(const ParameterData& pd) const;
 
@@ -343,9 +523,15 @@ private:
 	 */
 	bool parse_parameter_string(const std::string& str);
 
-	bool putParam(const std::string& key, const std::pair<bool, Quad<std::string, double, std::string, bool> >& entry);
+	/**
+	 * Put entry in parameter map
+	 * @param key
+	 * @param entry
+	 * @return true, if parameter was added successfully
+	 */
+	bool putParam(const std::string& key, const std::pair<bool, ParameterEntry>& entry);
 
-	std::pair<bool, Quad<std::string, double, std::string, bool> > parse_parameter_value(const std::string& value);
+	std::pair<bool, ParameterEntry> parse_parameter_value(const std::string& value);
 
 	static std::vector<std::string> stringList(const std::string& instring);
 	static std::vector<int> intList(const std::string& instring);
@@ -357,8 +543,8 @@ private:
 	bool preserveUnits;
 	bool unitCompatibility;
 	std::string patternStr;
-    typedef std::map<std::string, Quad<std::string,double,std::string,bool>, stringCaseInsensitive > paramtype;
-    paramtype parameters;
+	typedef std::map<std::string, ParameterEntry, stringCaseInsensitive> paramtype;
+	paramtype parameters;
 
 
 };

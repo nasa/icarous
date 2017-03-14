@@ -6,7 +6,7 @@
  *
  * 2-D vectors.
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -73,6 +73,13 @@ Vect2 Vect2::Hat() const {
 		return ZERO();
 	}
 	return Vect2(x/n, y/n);
+
+//	double sq = sqv();
+//	if (sq == 0.0) {
+//		return ZERO();
+//	}
+//	double n_inv = Util::Q_rsqrt(sq);
+//	return Vect2(x*n_inv, y*n_inv);
 }
 
 Vect2 Vect2::Add(const Vect2& v) const {

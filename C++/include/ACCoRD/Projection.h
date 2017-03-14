@@ -3,7 +3,7 @@
  *
  * Holding area for universal projection information.  All projection objects should be retrieved using these functions.
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -38,46 +38,57 @@ class Projection {
 	   static EuclideanProjection projection;
 	   static ProjectionType ptype;
    public:
-	   /**
-	    * Returns a new projection for the current type with the given reference point.
-	    * 
-	    * Note that in the projected Euclidean frame, if two points are made using the 
-	    * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
-	    * altitudes may have changed (the reference point is subtracted).  If you need 
-	    * to have the same absolute altitude values in the geodetic and Euclidean frames, 
-	    * the reference point should have a zero altitude.
-	    */
+	  /**
+	   * Returns a new projection for the current type with the given reference point.
+	   * 
+	   * Note that in the projected Euclidean frame, if two points are made using the 
+	   * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
+	   * altitudes may have changed (the reference point is subtracted).  If you need 
+	   * to have the same absolute altitude values in the geodetic and Euclidean frames, 
+	   * the reference point should have a zero altitude.
+	   * 
+	   * @param lat latitude of reference point
+	   * @param lon longitude of reference point
+	   * @param alt altitude of reference point
+	   * @return new projection
+	   */
 	   static EuclideanProjection createProjection(double lat, double lon, double alt);
-	   /**
-	    * Returns a new projection for the current type with the given reference point.
-	    * 
-	    * Note that in the projected Euclidean frame, if two points are made using the 
-	    * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
-	    * altitudes may have changed (the reference point is subtracted).  If you need 
-	    * to have the same absolute altitude values in the geodetic and Euclidean frames, 
-	    * the reference point should have a zero altitude.
-	    * 
-	    * For example, if you call p2 = Projection.createProjection(p1).project(p1), p2 will 
-	    * have an altitude of zero.  If you instead call p2 = Projection.createProjection(p1.zeroAlt(0)).project(p1),
-	    * p2 will have the same altitude as p1.
-	    */
+	  /**
+	   * Returns a new projection for the current type with the given reference point.
+	   * 
+	   * Note that in the projected Euclidean frame, if two points are made using the 
+	   * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
+	   * altitudes may have changed (the reference point is subtracted).  If you need 
+	   * to have the same absolute altitude values in the geodetic and Euclidean frames, 
+	   * the reference point should have a zero altitude.
+	   * 
+	   * For example, if you call p2 = Projection.createProjection(p1).project(p1), p2 will 
+	   * have an altitude of zero.  If you instead call p2 = Projection.createProjection(p1.zeroAlt(0)).project(p1),
+	   * p2 will have the same altitude as p1.
+	   * 
+	   * @param lla reference point
+	   * @return new projection
+	   */
 	   static EuclideanProjection createProjection(const LatLonAlt& lla);
 
-	   /**
-	    * Returns a new projection for the current type with the given reference point.
-	    * This will return an altitude-preserving projection against the given Position if it is lat/lon.
-	    * If it is Euclidean, the projection will be against the LatLonAlt.ZERO point.
-	    * 
-	    * Note that in the projected Euclidean frame, if two points are made using the 
-	    * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
-	    * altitudes may have changed (the reference point is subtracted).  If you need 
-	    * to have the same absolute altitude values in the geodetic and Euclidean frames, 
-	    * the reference point should have a zero altitude.
-	    * 
-	    * For example, if you call p2 = Projection.createProjection(p1).project(p1), p2 will 
-	    * have an altitude of zero.  If you instead call p2 = Projection.createProjection(p1.zeroAlt(0)).project(p1),
-	    * p2 will have the same altitude as p1.
-	    */
+	  /**
+	   * Returns a new projection for the current type with the given reference point.
+	   * This will return an altitude-preserving projection against the given Position if it is lat/lon.
+	   * If it is Euclidean, the projection will be against the LatLonAlt.ZERO point.
+	   * 
+	   * Note that in the projected Euclidean frame, if two points are made using the 
+	   * same projection, their _relative_ altitudes will be consistent, but their _absolute_ 
+	   * altitudes may have changed (the reference point is subtracted).  If you need 
+	   * to have the same absolute altitude values in the geodetic and Euclidean frames, 
+	   * the reference point should have a zero altitude.
+	   * 
+	   * For example, if you call p2 = Projection.createProjection(p1).project(p1), p2 will 
+	   * have an altitude of zero.  If you instead call p2 = Projection.createProjection(p1.zeroAlt(0)).project(p1),
+	   * p2 will have the same altitude as p1.
+	   * 
+	   * @param pos reference point
+	   * @return new projection
+	   */
 	  static EuclideanProjection createProjection(const Position& pos);
 
 	  /**
@@ -107,17 +118,24 @@ class Projection {
 
 	   /**
 	    * Set the projection to a new type.  This is a global change.
-	    */
+	   * 
+	   * @param t type of projection
+	   */
 	   static void setProjectionType(ProjectionType t);
 
-	   /**
-	    * Given a string representation of a ProjectionType, return the ProjectionType
-	    */
+	  /**
+	   * Given a string representation of a ProjectionType, return the ProjectionType
+	   * 
+	   * @param s name of projection type
+	   * @return projection type
+	   */
 	   static ProjectionType getProjectionTypeFromString(std::string s);
 
-	   /**
-	    * Return the current ProjectionType
-	    */
+	  /**
+	   * Return the current ProjectionType
+	   * 
+	   * @return type of projection
+	   */
 	   static ProjectionType getProjectionType();
    };
 

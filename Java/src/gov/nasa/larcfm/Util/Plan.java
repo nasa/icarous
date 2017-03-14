@@ -4025,10 +4025,10 @@ public class Plan implements ErrorReporter, Cloneable {
 	/** Structurally calculate vertex of turn from BOT and EOT.  If altMid >=0 THEN
 	 *  use it for the altitude.  Otherwise search for a middle point to get altitude.
 	 * 
-	 * @param ixBOT
-	 * @param ixEOT
-	 * @param altMid
-	 * @return
+	 * @param ixBOT   index of Beginning of Turn (BOT)
+	 * @param ixEOT   index of End of Turn (BOT)
+	 * @param altMid  altitude at middle point of turn
+	 * @return        vertex of the turn
 	 */
 	public Position vertexFromTurnTcps(int ixBOT, int ixEOT, double altMid) {
 		//f.pln(" $$ vertexFromTurnTcps: ixBOT = "+ixBOT+" ixEOT = "+ixEOT);
@@ -4386,8 +4386,6 @@ public class Plan implements ErrorReporter, Cloneable {
 				}
 			}
 			// fix ground speed after
-			// f.pln(" $$$$ structRevertTurnTCP: ixNextPt = "+ixNextPt+"
-			// gsInNext = "+Units.str("kn", gsInNext));
 			double tmNextSeg = time(ixNextPt);
 			if (tmNextSeg > 0) { // if reverted last point, no need to timeshift
 				// points after dSeg
@@ -4397,8 +4395,7 @@ public class Plan implements ErrorReporter, Cloneable {
 				// f.pln(" $$$$$$$$ structRevertTurnTCP: dt2 = "+dt2);
 				timeShiftPlan(newNextSeg, dt2);
 			}
-			// f.pln(" $$$$ structRevertTurnTCP: initialVelocity("+ixNextPt+") =
-			// "+initialVelocity(ixNextPt));
+			// f.pln(" $$$$ structRevertTurnTCP: initialVelocity("+ixNextPt+") = "+initialVelocity(ixNextPt));
 			removeRedundantPoints(getIndex(tBOT), getIndex(tEOT));
 		}
 	}
@@ -4454,7 +4451,8 @@ public class Plan implements ErrorReporter, Cloneable {
 	/**
 	 * Revert all BGS-EGS pairs in range "start" to "end"
 	 * 
-	 * @param start  starting index
+	 * @param start        starting index
+	 * @param storeAccel   if true store acceleration in reverted point        
 	 */
 	public void revertGsTCPs(int start, boolean storeAccel) {
 		//f.pln(" $$$ revertGsTCPs start = "+start+" size = "+size());
@@ -4466,8 +4464,6 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 	
-	
-	// assumes ix > 0 AND ix < size()
 	/**
 	 * Revert BVS at ix
 	 * 
@@ -4517,10 +4513,10 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * where t1 < t < t2
 	 * 
 	 * @param t    time point of interest
-	 * @param t1
-	 * @param alt1
-	 * @param t2
-	 * @param alt2
+	 * @param t1   time 1
+	 * @param alt1 altitude 1
+	 * @param t2   time 2 
+	 * @param alt2 altitude 2
 	 * @return    interpolated altitude
 	 */
 	double interpolateAlts(double t, double t1, double alt1, double t2, double alt2) {
@@ -4533,27 +4529,27 @@ public class Plan implements ErrorReporter, Cloneable {
 		return newAlt;
 	}
 	
-	// assumes ix > 0 AND ix < size()
-	double structRevertVsTCP_OLD(int ix) {
- 		if (isBVS(ix)) {
-			NavPoint BVS = point(ix);
-			int nextEVSix = nextEVS(ix);//fixed
-			NavPoint EVS = point(nextEVSix);
-	        NavPoint pp = point(ix-1);
-			//NavPoint qq = point(nextEVSix+1);
-			double vsin = (BVS.z() - pp.z())/(BVS.time() - pp.time());
-			double dt = EVS.time() - BVS.time();
-			double tVertex = BVS.time() + dt/2.0;
-			double zVertex = BVS.z() + vsin*dt/2.0;
-			Position pVertex = position(tVertex);
-			NavPoint vertex = new NavPoint(pVertex.mkAlt(zVertex),tVertex);
-			remove(nextEVSix);
-			remove(ix);
-			addNavPoint(vertex);
-			return zVertex;
-		}
-		return -1;
-	}
+//	// assumes ix > 0 AND ix < size()
+//	double structRevertVsTCP_OLD(int ix) {
+// 		if (isBVS(ix)) {
+//			NavPoint BVS = point(ix);
+//			int nextEVSix = nextEVS(ix);//fixed
+//			NavPoint EVS = point(nextEVSix);
+//	        NavPoint pp = point(ix-1);
+//			//NavPoint qq = point(nextEVSix+1);
+//			double vsin = (BVS.z() - pp.z())/(BVS.time() - pp.time());
+//			double dt = EVS.time() - BVS.time();
+//			double tVertex = BVS.time() + dt/2.0;
+//			double zVertex = BVS.z() + vsin*dt/2.0;
+//			Position pVertex = position(tVertex);
+//			NavPoint vertex = new NavPoint(pVertex.mkAlt(zVertex),tVertex);
+//			remove(nextEVSix);
+//			remove(ix);
+//			addNavPoint(vertex);
+//			return zVertex;
+//		}
+//		return -1;
+//	}
 
 	/**
 	 * Revert all BVS-EVS pairs
@@ -4581,7 +4577,10 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 	}
 	
-	
+	/**
+	 * Revert TCP at index "ix"
+	 * @param ix  index point of TCP
+	 */
 	public void revertTCP(int ix) {
 		if (ix < 0) return;
 		if (isBOT(ix)) {
@@ -4596,6 +4595,9 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 	} 
 	
+	/** 
+	 * revert all TCPs in the plan
+	 */
 	public void revertAllTcps() {
 		int nx = nextBeginTCP(0);
 		while (nx >= 0) {
@@ -4624,7 +4626,14 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 	}
 	
-	// return ix if removed, -1 otherwise
+	/** Remove point from plan if it passes all specified tests (indicated by flags
+	 * 
+	 * @param ix    index of interest
+	 * @param trkF  track flag: perform track continuity test
+	 * @param gsF   ground speed flag: perform ground speed continuity test
+	 * @param vsF   vertical speed flag: perform vertical speed continuity test
+	 * @return      ix if point is removed, -1 otherwise
+	 */
 	public int removeIfRedundant(int ix, boolean trkF, boolean gsF, boolean vsF) {
 		//f.pln(" $$$$$ removeIfRedundant: ENTER ix = "+ix);
 		if (ix < 0 || ix >= size()-1) return -1;   // should not remove last point 

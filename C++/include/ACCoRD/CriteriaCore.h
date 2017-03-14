@@ -4,7 +4,7 @@
  *
  * State-based Implicit Criteria
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -175,27 +175,27 @@ public:
      */
 	static int vsSearchDirection(int epsv);
 
-	/** Return the horizontal epsilon that corresponds to the direction the traffic aircraft is currently turning indicated by sign of trackRate
-	 *
-	 * @param s             relative position
-	 * @param vo            velocity of ownship
-	 * @param vi            velocity of intruder
-	 * @param epsh          horizontal epsilon
-	 * @param trackRate     trackRate of traffic
-	 * @return
-	 */
+  /** Return the horizontal epsilon that corresponds to the direction the traffic aircraft is currently turning indicated by sign of trackRate
+   * 
+   * @param s             relative position
+   * @param vo            velocity of ownship
+   * @param vi            velocity of intruder
+   * @param epsh          horizontal epsilon
+   * @param trackRate     trackRate of traffic
+   * @return horizontal epsilon
+   */
 	static int dataVsRateEpsilon(const Vect3& s, const Velocity& vo, const Velocity& vi, int epsv, double vsRate);
 
 
-	/** Return the horizontal epsilon that corresponds to the direction the traffic aircraft is currently turning indicated by sign of trackRate
-	 *
-	 * @param s             relative position
-	 * @param vo            velocity of ownship
-	 * @param vi            velocity of intruder
-	 * @param epsh          horizontal epsilon
-	 * @param trackRate     trackRate of traffic
-	 * @return
-	 */
+  /** Return the horizontal epsilon that corresponds to the direction the traffic aircraft is currently turning indicated by sign of trackRate
+   * 
+   * @param s             relative position
+   * @param vo            velocity of ownship
+   * @param vi            velocity of intruder
+   * @param epsh          horizontal epsilon
+   * @param trackRate     trackRate of traffic
+   * @return horizontal epsilon
+   */
 	static int dataTurnEpsilon(const Vect3& s, const Velocity& vo, const Velocity& vi, int epsh, double trackRate);
 
   /** 

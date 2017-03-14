@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,6 +14,8 @@
 #include "ColoredValue.h"
 
 namespace larcfm {
+
+const INT64FM KinematicRealBands::ALMOST_ = PRECISION5;
 
 KinematicRealBands::KinematicRealBands() {
   outdated_ = true;
@@ -207,10 +209,10 @@ bool KinematicRealBands::check_input(const KinematicBandsCore& core) {
       if (rel_ ? min_ <= 0.0 && max_ >= 0.0 :
           min_ <= val && val <= max_) {
         if (mod_ >= 0.0 && (mod_ == 0.0 ||
-            (Util::almost_leq(max_-min_,mod_) &&
-                (rel_ ? Util::almost_leq(max_,mod_/2.0): Util::almost_leq(max_,mod_))))) {
+            (Util::almost_leq(max_-min_,mod_,ALMOST_) &&
+                (rel_ ? Util::almost_leq(max_,mod_/2.0,ALMOST_): Util::almost_leq(max_,mod_,ALMOST_))))) {
           checked_ = 1;
-          circular_ = mod_ > 0 && Util::almost_equals(max_-min_,mod_);
+          circular_ = mod_ > 0 && Util::almost_equals(max_-min_,mod_,ALMOST_);
         }
       }
     }
@@ -253,8 +255,8 @@ BandsRegion::Region KinematicRealBands::region(KinematicBandsCore& core, int i) 
  */
 bool KinematicRealBands::rollover() {
   return mod_ > 0 &&
-      Util::almost_equals(ranges_[0].interval.low,0) &&
-      Util::almost_equals(ranges_[ranges_.size()-1].interval.up,mod_);
+      Util::almost_equals(ranges_[0].interval.low,0,ALMOST_) &&
+      Util::almost_equals(ranges_[ranges_.size()-1].interval.up,mod_,ALMOST_);
 }
 
 /**
@@ -274,19 +276,19 @@ int KinematicRealBands::rangeOf(KinematicBandsCore& core, double val) {
       bool ub_close = none ||
           (i < last_index && order_i <= BandsRegion::order(ranges_[i+1].region)) ||
           (i == last_index && rov && order_i <= BandsRegion::order(ranges_[0].region));
-      if (ranges_[i].interval.almost_in(val,lb_close,ub_close)) {
+      if (ranges_[i].interval.almost_in(val,lb_close,ub_close,ALMOST_)) {
         return i;
       }
     }
     if (rov) {
-      if (Util::almost_equals(val,0)) {
+      if (Util::almost_equals(val,0,ALMOST_)) {
         return 0;
       }
     } else {
-      if (Util::almost_equals(val,min_val(core.ownship))) {
+      if (Util::almost_equals(val,min_val(core.ownship),ALMOST_)) {
         return 0;
       }
-      if (Util::almost_equals(val,max_val(core.ownship))) {
+      if (Util::almost_equals(val,max_val(core.ownship),ALMOST_)) {
         return last_index;
       }
     }
@@ -341,11 +343,12 @@ void KinematicRealBands::force_compute(KinematicBandsCore& core) {
  */
 void KinematicRealBands::peripheral_aircraft(KinematicBandsCore& core, int alert_level) {
   Detection3D* detector = core.parameters.alertor.getLevel(alert_level).getDetectorRef();
-  double T = core.parameters.alertor.getLevel(alert_level).getAlertingTime();
+  double alerting_time = Util::min(core.parameters.getLookaheadTime(),
+          core.parameters.alertor.getLevel(alert_level).getAlertingTime());
   for (int i = 0; i < (int) core.traffic.size(); ++i) {
     TrafficState ac = core.traffic[i];
-    ConflictData det = detector->conflictDetection(core.own_s(),core.own_v(),ac.get_s(),ac.get_v(),0,T);
-    if (!det.conflict() && kinematic_conflict(core,ac,detector,T)) {
+    ConflictData det = detector->conflictDetection(core.ownship.get_s(),core.ownship.get_v(),ac.get_s(),ac.get_v(),0,alerting_time);
+    if (!det.conflict() && kinematic_conflict(core,ac,detector,alerting_time)) {
       peripheral_acs_[alert_level-1].push_back(ac);
     }
   }
@@ -443,7 +446,8 @@ double KinematicRealBands::compute_recovery_bands(IntervalSet& noneset, Kinemati
   double recovery_time = NINFINITY;
   int recovery_level = core.parameters.alertor.conflictAlertLevel();
   Detection3D* detector = core.parameters.alertor.getLevel(recovery_level).getDetectorRef();
-  double T = core.parameters.alertor.getLevel(recovery_level).getEarlyAlertingTime();
+  double T = Util::min(core.parameters.getLookaheadTime(),
+      core.parameters.alertor.getLevel(recovery_level).getEarlyAlertingTime());
   TrafficState repac = core.recovery_ac();
   CDCylinder cd3d = CDCylinder::mk(core.parameters.getHorizontalNMAC(),core.parameters.getVerticalNMAC());
   none_bands(noneset,&cd3d,NULL,repac,core.epsilonH(),core.epsilonV(),0,T,core.ownship,alerting_set);
@@ -506,10 +510,10 @@ double KinematicRealBands::compute_level(IntervalSet& noneset, KinematicBandsCor
       core.conflictAircraft(alert_level).begin(),core.conflictAircraft(alert_level).end());
   if (alerting_set.empty()) {
     if (mod_ == 0 || min <= max) {
-      noneset.almost_add(min,max);
+      noneset.almost_add(min,max,ALMOST_);
     } else {
-      noneset.almost_add(min, mod_);
-      noneset.almost_add(0,max);
+      noneset.almost_add(min, mod_,ALMOST_);
+      noneset.almost_add(0,max,ALMOST_);
     }
   } else {
     compute_none_bands(noneset,core,alert_level,core.criteria_ac());
@@ -569,7 +573,7 @@ Interval KinematicRealBands::find_resolution(KinematicBandsCore& core, const Int
     // There is a resolution
     double val = own_val(core.ownship);
     for (int i=0; i < noneset.size(); ++i) {
-      if (noneset.getInterval(i).almost_in(val,true,true)) {
+      if (noneset.getInterval(i).almost_in(val,true,true,ALMOST_)) {
         // There is no conflict
         l = NaN;
         u = NaN;
@@ -579,7 +583,7 @@ Interval KinematicRealBands::find_resolution(KinematicBandsCore& core, const Int
           l = noneset.getInterval(i).up;
           if (mod_ > 0) {
             u = noneset.getInterval(0).low;
-            if (Util::almost_geq(mod_val(u-val),mod_/2.0)) {
+            if (Util::almost_geq(mod_val(u-val),mod_/2.0,ALMOST_)) {
               u = PINFINITY;
             }
           }
@@ -593,7 +597,7 @@ Interval KinematicRealBands::find_resolution(KinematicBandsCore& core, const Int
         if (i==0) {
           if (mod_ > 0) {
             l = noneset.getInterval(noneset.size()-1).up;
-            if (Util::almost_geq(mod_val(val-l),mod_/2.0)) {
+            if (Util::almost_geq(mod_val(val-l),mod_/2.0,ALMOST_)) {
               l = NINFINITY;
             }
           }
@@ -646,7 +650,7 @@ bool KinematicRealBands::preferred_direction(KinematicBandsCore& core, int alert
   } else if (!ISFINITE(down)) {
     return true;
   }
-  return Util::almost_leq(mod_val(up-val),mod_val(val-down));
+  return Util::almost_leq(mod_val(up-val),mod_val(val-down),ALMOST_);
 }
 
 /**
@@ -659,8 +663,9 @@ double KinematicRealBands::last_time_to_maneuver(KinematicBandsCore& core, const
   if (check_input(core)) {
     int conflict_level = core.parameters.alertor.conflictAlertLevel();
     Detection3D* detector = core.parameters.alertor.getLevel(conflict_level).getDetectorRef();
-    double T = core.parameters.alertor.getLevel(conflict_level).getEarlyAlertingTime();
-    ConflictData det = detector->conflictDetection(core.own_s(),core.own_v(),ac.get_s(),ac.get_v(),0,T);
+    double T = Util::min(core.parameters.getLookaheadTime(),
+        core.parameters.alertor.getLevel(conflict_level).getEarlyAlertingTime());
+    ConflictData det = detector->conflictDetection(core.ownship.get_s(),core.ownship.get_v(),ac.get_s(),ac.get_v(),0,T);
     if (det.conflict()) {
       double pivot_red = det.getTimeIn();
       if (pivot_red == 0) {
@@ -695,7 +700,7 @@ double KinematicRealBands::last_time_to_maneuver(KinematicBandsCore& core, const
 
 int KinematicRealBands::maxdown(const TrafficState& ownship) const {
   int down = (int)std::ceil(min_rel(ownship)/get_step());
-  if (mod_ > 0 && Util::almost_greater(down*get_step(),mod_/2.0)) {
+  if (mod_ > 0 && Util::almost_greater(down*get_step(),mod_/2.0,ALMOST_)) {
     --down;
   }
   return down;
@@ -703,7 +708,7 @@ int KinematicRealBands::maxdown(const TrafficState& ownship) const {
 
 int KinematicRealBands::maxup(const TrafficState& ownship) const {
   int up = (int)std::ceil(max_rel(ownship)/get_step());
-  if (mod_ > 0 && Util::almost_greater(up*get_step(),mod_/2.0)) {
+  if (mod_ > 0 && Util::almost_greater(up*get_step(),mod_/2.0,ALMOST_)) {
     --up;
   }
   return up;
@@ -723,35 +728,35 @@ void KinematicRealBands::toIntervalSet(IntervalSet& noneset, const std::vector<I
     if (mod_ == 0)  {
       lb = Util::max(min,lb);
       ub = Util::min(max,ub);
-      noneset.almost_add(lb,ub);
+      noneset.almost_add(lb,ub,ALMOST_);
     } else {
       lb = mod_val(lb);
       ub = mod_val(ub);
-      if (Util::almost_equals(lb,ub)) {
+      if (Util::almost_equals(lb,ub,ALMOST_)) {
         // In this case the range is the whole interval
         if (min <= max) {
-          noneset.almost_add(min,max);
+          noneset.almost_add(min,max,ALMOST_);
         } else {
-          noneset.almost_add(min,mod_);
-          noneset.almost_add(0,max);
+          noneset.almost_add(min,mod_,ALMOST_);
+          noneset.almost_add(0,max,ALMOST_);
         }
       } else if (min <= max && lb <= ub) {
-        noneset.almost_add(Util::max(min,lb),Util::min(max,ub));
+        noneset.almost_add(Util::max(min,lb),Util::min(max,ub),ALMOST_);
       } else if (min <= max) {
         Interval mm(min,max);
         Interval lbmax = Interval(lb,mod_).intersect(mm);
         Interval minub = Interval(0,ub).intersect(mm);
-        noneset.almost_add(lbmax.low,lbmax.up);
-        noneset.almost_add(minub.low,minub.up);
+        noneset.almost_add(lbmax.low,lbmax.up,ALMOST_);
+        noneset.almost_add(minub.low,minub.up,ALMOST_);
       } else if (lb <= ub) {
         Interval lbub(lb,ub);
         Interval lbmax = Interval(0,max).intersect(lbub);
         Interval minub = Interval(min,mod_).intersect(lbub);
-        noneset.almost_add(lbmax.low,lbmax.up);
-        noneset.almost_add(minub.low,minub.up);
+        noneset.almost_add(lbmax.low,lbmax.up,ALMOST_);
+        noneset.almost_add(minub.low,minub.up,ALMOST_);
       } else {
-        noneset.almost_add(Util::max(min,lb),mod_);
-        noneset.almost_add(0,Util::min(max,ub));
+        noneset.almost_add(Util::max(min,lb),mod_,ALMOST_);
+        noneset.almost_add(0,Util::min(max,ub),ALMOST_);
       }
     }
   }
@@ -828,14 +833,16 @@ double KinematicRealBands::resolution(Detection3D* conflict_det, Detection3D* re
 
 void KinematicRealBands::compute_none_bands(IntervalSet& noneset, KinematicBandsCore& core, int alert_level, const TrafficState& repac) {
   Detection3D* detector = core.parameters.alertor.getLevel(alert_level).getDetectorRef();
-  none_bands(noneset,detector,NULL,repac,
-      core.epsilonH(),core.epsilonV(),0,core.parameters.alertor.getLevel(alert_level).getAlertingTime(),
+  double alerting_time = Util::min(core.parameters.getLookaheadTime(),
+          core.parameters.alertor.getLevel(alert_level).getAlertingTime());
+  double early_time = Util::min(core.parameters.getLookaheadTime(),
+          core.parameters.alertor.getLevel(alert_level).getEarlyAlertingTime());
+  none_bands(noneset,detector,NULL,repac,core.epsilonH(),core.epsilonV(),0,alerting_time,
       core.ownship,peripheral_acs_[alert_level-1]);
   IntervalSet noneset2 = IntervalSet();
-  none_bands(noneset2,detector,NULL,repac,
-      core.epsilonH(),core.epsilonV(),0,core.parameters.alertor.getLevel(alert_level).getEarlyAlertingTime(),
+  none_bands(noneset2,detector,NULL,repac,core.epsilonH(),core.epsilonV(),0,early_time,
       core.ownship,core.conflictAircraft(alert_level));
-  noneset.almost_intersect(noneset2);
+  noneset.almost_intersect(noneset2,ALMOST_);
 }
 
 std::string KinematicRealBands::toString() const {

@@ -3,7 +3,7 @@
  * 
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -11,7 +11,6 @@
 
 #include "LatLonAlt.h"
 #include "Units.h"
-//#include "UnitSymbols.h"
 #include "GreatCircle.h"
 #include "string_util.h"
 #include "format.h"
@@ -20,25 +19,25 @@
 namespace larcfm {
 
 LatLonAlt::LatLonAlt(double x, double y, double z) :
-    		lati(x),
-			longi(y),
-			alti(z) {
+    				lati(x),
+					longi(y),
+					alti(z) {
 }
 
 LatLonAlt::LatLonAlt() :
-    		lati(0),
-			longi(0),
-			alti(0) {
+    				lati(0),
+					longi(0),
+					alti(0) {
 }
 
-  LatLonAlt& LatLonAlt::operator= (const LatLonAlt& lla) {
-    lati = lla.lati;
-    longi = lla.longi;
-    alti = lla.alti;
-    
-    return *this;
-  }
-  
+LatLonAlt& LatLonAlt::operator= (const LatLonAlt& lla) {
+	lati = lla.lati;
+	longi = lla.longi;
+	alti = lla.alti;
+
+	return *this;
+}
+
 bool LatLonAlt::operator == (const LatLonAlt& v) const {
 	return lati == v.lati && longi == v.longi && alti == v.alti;
 }
@@ -56,13 +55,13 @@ bool LatLonAlt::almostEquals(const LatLonAlt& a) const {
 	&& Constants::almost_equals_alt(this->alt(), a.alt());
 }
 
-bool LatLonAlt::almostEquals(const LatLonAlt& a, double horizdist, double vertdist) const {
-	return GreatCircle::almost_equals(this->lat(), this->lon(), a.lat(), a.lon(), horizdist)
-	&& Util::within_epsilon(this->alt(), a.alt(), vertdist);
+bool LatLonAlt::almostEquals(const LatLonAlt& a, double horizEps, double vertEps) const {
+	return GreatCircle::almost_equals(this->lat(), this->lon(), a.lat(), a.lon(), horizEps)
+	&& Util::within_epsilon(this->alt(), a.alt(), vertEps);
 }
 
-bool LatLonAlt::almostEqualsHoriz(const LatLonAlt& a) const {
-	return GreatCircle::almost_equals(this->lat(), this->lon(), a.lat(), a.lon());
+bool LatLonAlt::almostEquals2D(const LatLonAlt& a, double horizEps) const {
+	return GreatCircle::almost_equals(this->lat(), this->lon(), a.lat(), a.lon(), horizEps);
 }
 
 
@@ -88,10 +87,10 @@ double LatLonAlt::alt() const {
 	return alti;
 }
 
-  double LatLonAlt::distanceH(const LatLonAlt& lla2) const {
-    return GreatCircle::distance(*this,lla2);
-  }
-  
+double LatLonAlt::distanceH(const LatLonAlt& lla2) const {
+	return GreatCircle::distance(*this,lla2);
+}
+
 const LatLonAlt LatLonAlt::make() {
 	return LatLonAlt(0.0, 0.0, 0.0);
 }
@@ -137,9 +136,7 @@ bool LatLonAlt::isInvalid() const {
 
 const LatLonAlt LatLonAlt::linearEst(double dn, double de) const {
 	//f.pln(" lat = "+Units.str("deg",lati)+" lon = "+Units.str("deg",longi));
-	double R = 6378137;                   // diameter earth in meters
-	//double R = GreatCircle::spherical_earth_radius;
-			//f.pln(" $$$$ R = "+Units.str("NM",R,12)+" R2
+	double R = GreatCircle::spherical_earth_radius; //6378137;                   // diameter earth in meters
 	double nLat = lati + dn/R;
 	double nLon = longi + de/(R*cos(lati));
 	//f.pln(" nLat = "+Units.str("deg",nLat)+" nLon = "+Units.str("deg",nLon));
@@ -177,10 +174,17 @@ std::string LatLonAlt::toStringNP(const std::string& latunit, const std::string&
 	return temp.str();
 }
 
+std::string LatLonAlt::toStringNP(const std::string& zunit, int precision) const {
+	std::stringstream temp;
+	temp <<  FmPrecision(Units::to("deg",lati),std::max(8,precision)) << ", "
+			<< FmPrecision(Units::to("deg",longi),std::max(8,precision)) << ", "
+			<< FmPrecision(Units::to(zunit,alti),precision);
+	return temp.str();
+}
+
 std::string LatLonAlt::toStringNP(int precision) const {
 	return toStringNP("deg","deg","ft",precision);
 }
-
 
 const LatLonAlt& LatLonAlt::ZERO() {
 	static LatLonAlt* v = new LatLonAlt(0,0,0);
@@ -209,29 +213,29 @@ const LatLonAlt LatLonAlt::parse(const std::string& str) {
 }
 
 
-  LatLonAlt LatLonAlt::normalize(double lat, double lon, double alt) {
-		  double nlat, nlon;
-		  nlon = Util::to_pi(lon);
-		  lat = Util::to_pi(lat);
-		  nlat = Util::to_pi2_cont(lat);
-		  if (lat != nlat) {
-		    nlon = Util::to_pi(nlon + Pi);
-		  }
-		  return LatLonAlt::mk(nlat, nlon, alt);
-	  }
+LatLonAlt LatLonAlt::normalize(double lat, double lon, double alt) {
+	double nlat, nlon;
+	nlon = Util::to_pi(lon);
+	lat = Util::to_pi(lat);
+	nlat = Util::to_pi2_cont(lat);
+	if (lat != nlat) {
+		nlon = Util::to_pi(nlon + Pi);
+	}
+	return LatLonAlt::mk(nlat, nlon, alt);
+}
 
-	  LatLonAlt LatLonAlt::normalize(double lat, double lon) {
-		  return normalize(lat, lon, 0.0);
-	  }
+LatLonAlt LatLonAlt::normalize(double lat, double lon) {
+	return normalize(lat, lon, 0.0);
+}
 
-	  LatLonAlt LatLonAlt::normalize() const {
-		  return normalize(lat(), lon(), alt());
-	  }
-  
+LatLonAlt LatLonAlt::normalize() const {
+	return normalize(lat(), lon(), alt());
+}
 
-		bool LatLonAlt::isWest(const LatLonAlt& a) const {
-			// this uses the same calculations as Util.clockwise:
-			return Util::clockwise(a.lon(), lon());
-		}
+
+bool LatLonAlt::isWest(const LatLonAlt& a) const {
+	// this uses the same calculations as Util.clockwise:
+	return Util::clockwise(a.lon(), lon());
+}
 
 }

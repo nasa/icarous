@@ -8,7 +8,7 @@
  * NOTES: 
  * Track is True North/clockwise
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -73,7 +73,9 @@ Velocity Velocity::makeTrkGsVs(const double trk, const std::string& utrk,
 
 
 Velocity Velocity::mkVel(const Vect3& p1,const Vect3& p2, double speed) {
-	return make(p2.Sub(p1).Hat().Scal(speed));
+	Velocity rtn = make(p2.Sub(p1).Hat().Scal(speed));
+	//fpln(" $$ mkVel: rtn = "+rtn.toString());
+	return rtn;
 }
 
 Velocity Velocity::genVel(const Vect3& p1, const Vect3& p2, double dt) {
@@ -249,6 +251,10 @@ std::string Velocity::toStringNP() const {
 
 std::string Velocity::toStringNP(int precision) const {
 	return FmPrecision(Units::to("deg", compassAngle()), precision)+", "+FmPrecision(Units::to("knot", gs()),precision)+", "+FmPrecision(Units::to("fpm", vs()),precision);
+}
+
+std::string Velocity::toStringNP(const std::string& utrk, const std::string& ugs, const std::string& uvs, int precision) const {
+    return FmPrecision(Units::to(utrk, compassAngle()), precision)+", "+FmPrecision(Units::to(ugs, gs()), precision)+", "+FmPrecision(Units::to(uvs, vs()), precision);
 }
 
 const Velocity& Velocity::ZEROV() {

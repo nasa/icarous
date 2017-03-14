@@ -1,52 +1,52 @@
-# Conflict Bands Parameters
-lookahead_time = 20.0 [s]
-left_trk = 180.0 [deg]
-right_trk = 180.0 [deg]
-min_gs = 0.1 [m/s]
-max_gs = 5.0 [m/s]
-min_vs = -2.0 [m/s]
-max_vs = 2.0 [m/s]
-min_alt = 0.0 [ft]
-max_alt = 500.0 [ft]
-# Kinematic Bands Parameters
-trk_step = 1.0 [deg]
-gs_step = 0.05 [m/s]
-vs_step = 1.0 [fpm]
-alt_step = 1.0 [ft]
-horizontal_accel = 1.0 [m/s^2]
-vertical_accel = 1.0 [m/s^2]
-turn_rate = 0 [deg/s]
-bank_angle = 0.0 [deg]
-vertical_rate = 1.0 [m/s]
-horizontal_nmac = 1.0 [m]
-vertical_nmac = 0.5 [m]
+# V-1.0.1
+# Bands Parameters
+lookahead_time = 20.000000 [s]
+left_trk = 180.000000 [deg]
+right_trk = 180.000000 [deg]
+min_gs = 0.100000 [m/s]
+max_gs = 5.000000 [m/s]
+min_vs = -2.000000 [fpm]
+max_vs = 2.000000 [fpm]
+min_alt = 0.000000 [ft]
+max_alt = 500.000000 [ft]
+# Kinematic Parameters
+trk_step = 1.000000 [deg]
+gs_step = 0.050000 [m/s]
+vs_step = 0.500000 [fpm]
+alt_step = 1.000000 [m]
+horizontal_accel = 0.000000 [m/s^2]
+vertical_accel = 0.000000 [m/s^2]
+turn_rate = 0.000000 [deg/s]
+bank_angle = 0.000000 [deg]
+vertical_rate = 0.000000 [m/s]
 # Recovery Bands Parameters
-recovery_stability_time = 0.0 [s]
-min_horizontal_recovery = 2.0 [m]
-min_vertical_recovery = 1.0 [m]
+recovery_stability_time = 0.000000 [s]
+min_horizontal_recovery = 2.000000 [m]
+min_vertical_recovery = 1.000000 [m]
+recovery_trk = true
+recovery_gs = false
+recovery_vs = false
+recovery_alt = false
+# Collision Avoidance Bands Parameters
+ca_bands = true
+ca_factor = 0.200000
+horizontal_nmac = 1.000000 [m]
+vertical_nmac = 0.500000 [m]
+# Implicit Coordination Parameters
 conflict_crit = false
 recovery_crit = false
-recovery_trk = true
-recovery_gs = true
-recovery_vs = true
-recovery_alt = true
-# if ca_bands is true, keep computing recovery bands by reducing min horizontal/vertical recovery until NMAC
-ca_bands = false
-# ca_factor is the reduction factor, when computing CA bands
-ca_factor = 0.2
-# Contours Parameters
-# If contour_thr is set to 0, only conflict contours are computed. Max value is 180 [deg]
-contour_thr = 180.0 [deg]
+# Horizontal Contour Threshold
+contour_thr = 180.000000 [deg]
 # Alert Levels
-alert_1_alerting_time = 10.0 [s]
+alert_1_alerting_time = 10.000000 [s]
 alert_1_detector = det_1
-alert_1_early_alerting_time = 15.0 [s]
+alert_1_early_alerting_time = 15.000000 [s]
 alert_1_region = NEAR
-alert_1_spread_alt = 0.0 [ft]
-alert_1_spread_gs = 0.0 [knot]
-alert_1_spread_trk = 0.0 [deg]
-alert_1_spread_vs = 0.0 [fpm]
+alert_1_spread_alt = 0.000000 [m]
+alert_1_spread_gs = 0.000000 [m/s]
+alert_1_spread_trk = 0.000000 [deg]
+alert_1_spread_vs = 0.000000 [fpm]
 conflict_level = 1
-det_1_D = 5.0 [m]
-det_1_H = 10.0 [m]
+det_1_D = 5.000000 [m]
+det_1_H = 10.000000 [m]
 load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.CDCylinder

@@ -1,10 +1,11 @@
-/* Copyright (c) 2011-2016 United States Government as represented by
+/* Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
 
 #include "DebugSupport.h"
+#include "PlanIO.h"
 #include "string_util.h"
 #include <string>
 #include <iostream>
@@ -35,36 +36,27 @@ namespace larcfm {
 	  return "DebugSupport::getNameNoPath: NOT YET IMPLENTED";
   }
 
-  void DebugSupport::dumpPlan(const Plan& plan, std::string str) {
 
-	  std::string  dumpFileName = "1dump_"+str+".txt";
+  void DebugSupport::dumpPlan(const Plan& plan, std::string str) {
+	  std::string dumpFileName = "1dump_"+str+".txt";
 	  std::ofstream pw;
 	  pw.open(dumpFileName.c_str(),std::ofstream::out);
 	  if (!pw) {
 		  cout << "Error opening file " << dumpFileName << endl;
 	  }
-
-
-//	  PrintWriter dumpFile;
-//
-//	  try {
-//		  // Create the output stream.
-//		  dumpFile = new PrintWriter(new FileWriter(dumpFileName));
-//	  }
-//	  catch (IOException e) {
-//		  System.out.println("Can't open file " + dumpFileName + "!");
-//		  System.out.println("Error: " + e);
-//		  return;        // End the program.
-//	  }
-
 	  pw << plan.getOutputHeader(true) << std::endl;
-
-	  //Plan plan2 = plan.copy();
-	  //plan2.setName(str);
 	  pw << plan.toOutput(0, 12, true, false);
 	  pw.close();
 	  fpln(" ............. dumpPlan: created file "+dumpFileName);
   }
+
+
+
+//  void DebugSupport::dumpPlan(const Plan& plan, std::string str) {
+//	  std::string  dumpFileName = "1dump_"+str+".txt";
+//	  PlanIO::savePlan(plan, dumpFileName);
+//	  fpln(" ............. dumpPlan: created file "+dumpFileName);
+//  }
 
   void DebugSupport::dumpAsUnitTest(const Plan& plan) {
 	  for (int j = 0; j < plan.size(); j++) {
@@ -91,25 +83,25 @@ namespace larcfm {
 	  for (int j = 0; j < plan.size(); j++) {
 		  NavPoint npj = plan.point(j);
 		  fpln("assertEquals("+Units::str("ft",plan.point(j).alt())+",plan.point("+Fm0(j)+").alt(), 0.001);");
-		  if (npj.isBOT()) {
+		  if (plan.isBOT(j)) {
 			  fpln("EXPECT_TRUE(plan.point("+Fm0(j)+").isTurnBegin());");
 		  }
 //		  if (npj.isTurnMid()) {
 //			  fpln("EXPECT_TRUE(plan.point("+Fm0(j)+").isTurnMid());");
 //		  }
-		  if (npj.isEOT()) {
+		  if (plan.isEOT(j)) {
 			  fpln("EXPECT_TRUE(plan.point("+Fm0(j)+").isTurnEnd());");
 		  }
-		  if (npj.isBGS()) {
+		  if (plan.isBGS(j)) {
 			  fpln("EXPECT_TRUE(plan.point("+Fm0(j)+").isGSCBegin());");
 		  }
-		  if (npj.isEGS()) {
+		  if (plan.isEGS(j)) {
 			  fpln("EXPECT_TRUE(plan.point("+Fm0(j)+").isGSCEnd());");
 		  }
-		  if (npj.isBVS()) {
+		  if (plan.isBVS(j)) {
 			  fpln("EXPECT_TRUE(plan.point("+Fm0(j)+").isVSCBegin());");
 		  }
-		  if (npj.isEVS()) {
+		  if (plan.isEVS(j)) {
 			  fpln("EXPECT_TRUE(plan.point("+Fm0(j)+").isVSCEnd());");
 		  }
 

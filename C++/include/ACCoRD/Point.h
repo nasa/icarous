@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -173,12 +173,21 @@ public:
 	 */
 	std::vector<std::string> toStringList() const;
 
-	/** String representation, 4 decimal places, without parentheses */
+	/** String representation, 4 decimal places, without parentheses 
+	 * @return a string representing this point
+	 * */
 	std::string toStringNP() const;
 
 	/**
 	 * String representation, with user-specified precision
-	 * @param prec precision (0-15)
+	 * @param precision precision (0-15)
+	 * @return a string representing this point
+	 */
+	std::string toStringNP(int precision) const;
+
+	/**
+	 * String representation, with user-specified precision
+	 * @param precision precision (0-15)
 	 * @param xUnits units for the x value
 	 * @param yUnits units for the y value
 	 * @param zUnits units for the z value
@@ -186,13 +195,13 @@ public:
 	 */
 	std::string toStringNP(int precision, const std::string& xUnits, const std::string& yUnits, const std::string& zUnits) const;
 
-	  /** 
-	   * This parses a space or comma-separated string as a Point (an inverse to the toString 
-	   * method).  If three bare values are present, then it is interpreted as the default units for 
-	   * a point: [NM,NM,ft].  If there are 3 value/unit pairs then each values is interpreted with regard 
-	   * to the appropriate unit.  If the string cannot be parsed, an INVALID value is
-	   * returned. 
-	   */
+	/**
+	 * This parses a space or comma-separated string as a Point (an inverse to the toString
+	 * method).  If three bare values are present, then it is interpreted as the default units for
+	 * a point: [NM,NM,ft].  If there are 3 value/unit pairs then each values is interpreted with regard
+	 * to the appropriate unit.  If the string cannot be parsed, an INVALID value is
+	 * returned.
+	 */
 	static Point parse(const std::string& str);
 
 };

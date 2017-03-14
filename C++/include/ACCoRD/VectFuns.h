@@ -1,7 +1,7 @@
 /*
  * VectFuns.h
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -88,6 +88,12 @@ public:
 
 	/**
 	 * Return if two aircraft in the given state are divergent in a 3D sense
+	 * 
+	 * @param so ownship position
+	 * @param vo ownship velocity
+	 * @param si intruder position
+	 * @param vi intruder velocity
+	 * @return true, if divergent
 	 */
 	static bool divergent(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi);
 
@@ -126,18 +132,11 @@ public:
 	static std::pair<Vect2,double> intersection(const Vect2& so, const Vect2& vo, const Vect2& si, const Vect2& vi);
 
 	 /**
-     * Given two lines defined by so, so2 and si, si2 return the intersection point 
-     * Calculate altitude of intersection using the average of the altitudes of the two closests points to the
-     * intersection.
+     * Calculate the horizontal distance between two points.
      * 
-     * @param so1     first point of line A 
-     * @param so2    second point of line A 
-     * @param dto    the delta time between point so and point so2.
-     * @param si1     first point of line B
-     * @param si2    second point of line B 
-     * @return a pair: intersection point and the delta time from point "so" to the intersection, can be negative if intersect
-     *                 point is in the past
-     *                if intersection point is invalid then the returned delta time is -1
+     * @param soA   point A 
+     * @param soB   point B 
+     * @return horizontal distance between points.
      */
 	static double distanceH(const Vect3& soA, const Vect3& soB);
 
@@ -173,19 +172,24 @@ public:
 
 	static double distanceToSegment(const Vect2& a, const Vect2& b, const Vect2& so);
 
-    /**
-     * Computes 2D intersection point of two lines, but also finds z component (projected by time from line 1)
-     * @param s0 starting point of line 1
-     * @param v0 direction vector for line 1
-     * @param s1 starting point of line 2
-     * @param v1 direction vector of line 2
-     * @return time the OWNSHIP (so3) will reach the point.  Note that the intruder (si3) may have already passed this point.
-     * If the lines are parallel, this returns NaN.
-     */
+	/**
+	 * Computes 2D intersection point of two lines, but also finds z component (projected by time from line 1)
+	 * @param so3 starting point of line 1
+	 * @param vo3 direction vector for line 1
+	 * @param si3 starting point of line 2
+	 * @param vi3 direction vector of line 2
+	 * @return time the OWNSHIP (so3) will reach the point.  Note that the intruder (si3) may have already passed this point.
+	 * If the lines are parallel, this returns NaN.
+	 */
 	static double timeOfIntersection(const Vect3& so3, const Velocity& vo3, const Vect3& si3, const Velocity& vi3);
 
 	/**
-	 * Returns true if x is "behind" so , that is, x is within the region behind the perpendicular line to vo through so.
+	 * Returns true if x is "behind" so , that is, x is within the region behind the perpendicular line to vo through so.  
+	 * 
+	 * @param x   a position
+	 * @param so  aircraft position
+	 * @param vo  aircraft velocity
+	 * @return true, if x is behind so
 	 */
     static bool behind(const Vect2& x, const Vect2& so, const Vect2& vo);
 

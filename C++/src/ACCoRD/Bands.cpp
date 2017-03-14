@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -757,7 +757,7 @@ int Bands::firstVerticalSpeedBand(bool eq, BandsRegion::Region br, double vs) {
       -red.getMaxVerticalSpeed(),red.getMaxVerticalSpeed());
 }
 void Bands::toIntervalSet_fromIntervalArray(IntervalSet& intervalset,
-    const std::vector<Interval>& intervalarray, const std::vector<BandsRegion::Region> regions,
+    const std::vector<Interval>& intervalarray, const std::vector<BandsRegion::Region>& regions,
     BandsRegion::Region br) {
   for (Interval::nat i=0; i < intervalarray.size(); ++i) {
     if (regions[i] == br)

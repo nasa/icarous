@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -155,10 +155,13 @@ public:
   TrafficState const & getOwnship() const;
 
   // This function clears the traffic
-  void setOwnship(TrafficState own);
+  void setOwnship(const TrafficState& own);
 
   // This function clears the traffic
   void setOwnship(const std::string& id, const Position& p, const Velocity& v);
+
+  // This function clears the traffic
+  void setOwnship(const std::string& id, const Position& p, const Velocity& v, double time);
 
   // This function clears the traffic
   void setOwnship(const Position& p, const Velocity& v);
@@ -196,10 +199,22 @@ public:
   double getRecoveryStabilityTime() const;
 
   /**
+   * @return recovery stability time in specified units. Recovery bands are computed at time of first green plus
+   * this time.
+   */
+  double getRecoveryStabilityTime(const std::string& u) const;
+
+  /**
    * Sets recovery stability time in seconds. Recovery bands are computed at time of first green plus
    * this time.
    */
   void setRecoveryStabilityTime(double t);
+
+  /**
+   * Sets recovery stability time in specified units. Recovery bands are computed at time of first green plus
+   * this time.
+   */
+  void setRecoveryStabilityTime(double t, const std::string& u);
 
   /**
    * @return minimum horizontal separation for recovery bands in internal units [m].
@@ -471,7 +486,7 @@ public:
    * Sets turn rate for track bands to value in specified units [u]. As a side effect, this method
    * resets the bank angle.
    */
-  void setTurnRate(double rate, const std::string& u);
+  void setTurnRate(double val, const std::string& u);
 
   /**
    * @return true if recovery track bands are enabled.
@@ -793,7 +808,7 @@ public:
   /**
    * Sets vertical rate for altitude bands to value in specified units [u].
    */
-  void setVerticalRate(double rate, const std::string& u);
+  void setVerticalRate(double val, const std::string& u);
 
   /**
    * @return horizontal NMAC distance in internal units [m].
@@ -1418,6 +1433,20 @@ public:
   int alerting(const TrafficState& ac, int turning, int accelerating, int climbing);
 
   std::string toString() const;
+
+  std::string outputStringInfo();
+
+  std::string outputStringAlerting();
+
+  std::string outputStringTrackBands();
+
+  std::string outputStringGroundSpeedBands();
+
+  std::string outputStringVerticalSpeedBands();
+
+  std::string outputStringAltitudeBands();
+
+  std::string outputStringLastTimeToManeuver();
 
   std::string outputString();
 

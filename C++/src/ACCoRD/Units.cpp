@@ -6,7 +6,7 @@
  *
  * Conversion to internal units: meters, kilogrames, seconds, radians, ...
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,6 +14,7 @@
 
 #include "Units.h"
 #include "Util.h"
+#include "Constants.h"
 #include "format.h"
 #include "string_util.h"
 //#include "DebugSupport.h"
@@ -308,7 +309,7 @@ double Units::getFactor(const std::string& symbolp) {
 	} else if (symbol == "slug") {
 		return _FormalATM_slug();
 
-	} else if (symbol == "kph") {
+	} else if (symbol == "km/h") {
 		return _FormalATM_kph();
 	} else if (symbol == "kn") {
 		return _FormalATM_kn();
@@ -415,8 +416,8 @@ const std::string Units::canonical(const std::string& unit) {
 	if (unit == "slug")
 		return "slug";
 
-	if (unit == "kph")
-		return unit;
+	if (unit == "kph" || unit == "km/h" || unit == "kilometer_per_hour" || unit == "kilometre_per_hour")
+		return "km/h";
 	if (unit == "knot" || unit == "kn" || unit == "kts")
 		return "kn";
 	if (unit == "fpm" || unit == "ft/min" || unit == "foot/min"
@@ -520,7 +521,7 @@ double Units::fromInternal(const std::string& defaultUnits, const std::string& u
 }
 
 std::string Units::str(const std::string& symbol, double value) {
-	return str(symbol,value,2);
+	return str(symbol,value,Constants::get_output_precision());
 }
 
 std::string Units::strX(const std::string& symbol, double value) {

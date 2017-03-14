@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -23,7 +23,7 @@ DensityGridAStarSearch::DensityGridAStarSearch() {
 }
 
 bool DensityGridAStarSearch::contains(const std::vector<std::pair<int,int> >& gPath, const std::pair<int,int>& pii) const {
-	for (int i = 0; i < gPath.size(); i++) {
+	for (int i = 0; i < (int) gPath.size(); i++) {
 		if (gPath[i] == pii) {
 			return true;
 		}
@@ -32,7 +32,7 @@ bool DensityGridAStarSearch::contains(const std::vector<std::pair<int,int> >& gP
 }
 
 bool DensityGridAStarSearch::contains(const std::vector<Triple<int,int,int> >& gPath, const Triple<int,int,int>& pii) const {
-	for (int i = 0; i < gPath.size(); i++) {
+	for (int i = 0; i < (int) gPath.size(); i++) {
 		if (gPath[i] == pii) {
 			return true;
 		}

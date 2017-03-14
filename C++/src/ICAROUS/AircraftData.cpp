@@ -111,11 +111,11 @@ void AircraftData_t::ConstructPlan(){
 				}
 
 				double distance = MissionPlan.point(ic - 1).position().distanceH(WP);
-				wptime   = MissionPlan.getTime(ic-1) + distance/vel;
+				wptime   = MissionPlan.time(ic-1) + distance/vel;
 			}
 
 			NavPoint navPoint(WP,wptime);
-			MissionPlan.add(navPoint);
+			MissionPlan.addNavPoint(navPoint);
 		}
 	}
 }

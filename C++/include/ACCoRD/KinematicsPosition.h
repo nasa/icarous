@@ -1,7 +1,7 @@
 /*
  * KinematicsPosition.h
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -78,16 +78,26 @@ public:
 	 */
 	static std::pair<Position,Velocity> turnOmegaAlt(const Position& so, const Velocity& vo, double t, double omega);
 	
-	/**
-	 *  Position and velocity after turning a distance d
-	 * @param so  starting position
-	 * @param vo  initial velocity
-	 * @param R   turn radius
-	 * @param t   time of turn [secs]
-	 * @param turnRight true iff only turn direction is to the right
-	 * @return Position and Velocity after t time
+	/** Advance in turn starting at "s0" by distance "d"
+	 *
+	 * @param so        starting position
+	 * @param center    center of turn
+	 * @param dir       direction of turn
+	 * @param d         distance to turn
+	 * @return          position and velocity after turning distance "d"
 	 */
-	static std::pair<Position,Velocity> turnByDist(const Position& so, const Position& center, int dir, double d, double gsAt_d);
+	static std::pair<Position,Velocity> turnByDist2D(const Position& so, const Position& center, int dir, double d, double gsAt_d);
+
+	/** Advance in turn starting at "so" by distance "d" 
+	 * 
+	 * @param so        starting position
+	 * @param center    center of turn
+	 * @param dir       direction of turn
+	 * @param d         distance to turn
+	 * @return          position after turning distance "d"
+	 */
+	static Position turnByDist2D(const Position& so, const Position& center, int dir, double d);
+
 
 	/**
 	 *  Position and velocity after t time units turning in direction "dir" with radius R.
@@ -204,6 +214,7 @@ public:
 			double targetAlt, double a);
 
 
+	   static Position centerFromRadius(const Position& bot, double signedRadius, double trkIn);
 
 
 private:

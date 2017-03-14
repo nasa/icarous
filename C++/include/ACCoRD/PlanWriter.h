@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -18,6 +18,7 @@
 #include "SeparatedOutput.h"
 #include "ParameterData.h"
 #include "Plan.h"
+#include "PolyPath.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -35,10 +36,13 @@ private:
 	bool first_line;
 	bool display_units;
 	bool tcpColumns;
+	bool polyColumns;
+	bool trkgsvs;
 	int precision;
 	int lines;
 	std::string fname;
-	//std::ofstream fw;
+	std::ofstream fw;
+	PolyPath::PathMode mode;
 
 public:
     /** A new PlanWriter. */
@@ -54,6 +58,10 @@ public:
 
 	void setPrecision(int precision);
 
+
+	void setPolyPathMode(PolyPath::PathMode m);
+
+	void clearPolyPathMode();
 
 	/** 
 	 * Sets the column delimiter to a tab.  This method can only be used before the first "writeState" method.
@@ -84,6 +92,7 @@ public:
 
 	void writePlan(const Plan& p, bool tcpColumnsLocal);
 
+	void writePolyPath(const PolyPath& p, bool tcpColumnsLocal);
 	
 	/** Return the number of states added to the file */
 	int size() const;

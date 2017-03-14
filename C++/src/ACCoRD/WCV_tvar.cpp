@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -160,7 +160,7 @@ bool WCV_tvar::containsTable(WCV_tvar* wcv) const {
 }
 
 std::string WCV_tvar::toString() const {
-  return (id == "" ? "" : id+" = ")+getSimpleClassName()+": {"+table.toString()+"}";
+  return (id == "" ? "" : id+" : ")+getSimpleClassName()+" = {"+table.toString()+"}";
 }
 
 std::string WCV_tvar::toPVS(int prec) const {

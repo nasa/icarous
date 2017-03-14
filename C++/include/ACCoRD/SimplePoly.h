@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -261,18 +261,29 @@ class SimplePoly {
 
 	int maxInRange(const Position& p, double a1, double a2) const;
 
+	/**
+	 * Return the angle that is perpendicular to the middle of the edge from vertex i to i+1, facing outward.
+	 * Return NaN if i is out of bounds or vertex i overlaps vertex i+1. 
+	 */
 	double perpSide(int i) const;
 
   private:
 	bool vertexConvex(const Position& p0, const Position& p1, const Position& p2) const;
 
   public:
+	/**
+	 * Return the internal angle of vertex i.
+	 * Return NaN if i is out of bounds or vertex i overlaps with an adjacent vertex. 
+	 */
 	double vertexAngle(int i) const;
 
 	/**
 	 * String representation of this SimplePoly.
 	 */
 	std::string toString() const;
+
+	std::vector<std::string> toStringList(int vertex, int precision) const;
+
 
 }; //class
 

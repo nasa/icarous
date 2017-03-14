@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -9,6 +9,7 @@
 #include "NavPoint.h"
 #include "Velocity.h"
 #include "SimplePoly.h"
+#include "SimpleMovingPoly.h"
 #include "Plan.h"
 #include "Util.h"
 #include "Constants.h"
@@ -170,7 +171,7 @@ Triple<Plan,double,double> PolyPath::buildPlan() const {
 
 	double maxH = 0;
 	double maxD = 0;
-	for (int i = 0; i < times.size(); i++) {
+	for (int i = 0; i < (int) times.size(); i++) {
 		SimplePoly poly = polyList[i];
 		if (poly.size() < 2) {
 			// TODO: needed for vstrat to function properly, check this
@@ -178,7 +179,7 @@ Triple<Plan,double,double> PolyPath::buildPlan() const {
 		}
 		double time = times[i];
 		NavPoint np = NavPoint(poly.boundingCircleCenter(),time);
-		p.add(np);
+		p.addNavPoint(np);
 		if (std::abs(poly.getTop()-poly.getBottom()) > maxH) {
 			maxH = std::abs(poly.getTop()-poly.getBottom());
 		}
@@ -198,7 +199,7 @@ Triple<Plan,double,double> PolyPath::buildPlan() const {
 				np = NavPoint(poly.boundingCircleCenter().linear(vlist[0], 36000), times[0]+36000);
 			}
 		}
-		p.add(np);
+		p.addNavPoint(np);
 	}
 	return Triple<Plan,double,double>(p, maxD, maxH/2);
 }
@@ -820,38 +821,63 @@ string PolyPath::toOutput(int precision, bool tcpColumns) const {
 	for (int i = 0; i < (signed)times.size(); i++) {
 		SimplePoly poly = polyList[i];
 		for (int j = 0; j < poly.size(); j++) {
-			std::vector<std::string> ret;
-
-			ret.push_back(name);  // name is (0)
-			std::vector<std::string> vstr = poly.getVertex(j).toStringList(precision);
-			ret.insert(ret.end(), vstr.begin(), vstr.end()); //vertex 1-3
-			ret.push_back(FmPrecision(times[i],precision)); // time 4
-			if (tcpColumns) {
-				ret.push_back("-"); // type
-				int start = 5;
-				if (isUserVel()) {
-					vstr = initialVelocity(j).toStringList();
-					ret.insert(ret.end(), vstr.begin(), vstr.end()); // vel 6-8
-					start = 8;
-				}
-				for (int k = start; k < NavPoint::TCP_OUTPUT_COLUMNS; k++) {
-					ret.push_back("-");
-				}
-			} else {
-				ret.push_back("-"); // label
-				if (isUserVel()) {
-					vstr = initialVelocity(j).toStringList();
-					ret.insert(ret.end(), vstr.begin(), vstr.end()); // vel 6-8
-				}
-			}
-			ret.push_back(FmPrecision(Units::to("ft",poly.getTop()),precision));
-
+			std::vector<std::string> ret = toStringList(i,j,precision,tcpColumns);
 			sb << list2str(ret, ", ") << endl;
 		}
 	}
 
 	return sb.str();
 }
+
+std::vector<std::string> PolyPath::toStringList(int i, int j, int precision, bool tcpColumns) const {
+	SimplePoly poly = polyList[i];
+	std::vector<std::string> ret;
+	ret.push_back(name);  // name is (0)
+	std::vector<std::string> vertices = poly.getVertex(j).toStringList(precision);
+	ret.insert(ret.end(), vertices.begin(), vertices.end()); //vertex 1-3
+	ret.push_back(FmPrecision(times[i],precision)); // time 4
+	if (tcpColumns) {
+		int start = 4;
+		for (int k = start; k < TcpData::TCP_OUTPUT_COLUMNS; k++) {
+			ret.push_back("-"); // label
+		}
+	} else {
+		ret.push_back("-"); // label
+	}
+	ret.push_back(FmPrecision(Units::to("ft", poly.getTop()),precision));
+	if (isUserVel()) {
+		std::vector<std::string> vels = initialVelocity(j).toStringList();
+		ret.insert(ret.end(), vels.begin(), vels.end()); // vel 6-8
+	}
+	return ret;
+}
+
+SimpleMovingPoly PolyPath::getSimpleMovingPoly(int i) const {
+	SimplePoly poly = getPoly(i);
+	if (mode == PolyPath::MORPHING) {
+		std::vector<Velocity> vvlist;
+		for (int j = 0; j < poly.size(); j++) {
+			vvlist.push_back(initialVertexVelocity(j,i));
+		}
+		return SimpleMovingPoly(poly,vvlist);
+	} else {
+		return SimpleMovingPoly(poly,initialVelocity(i));
+	}
+}
+
+SimpleMovingPoly PolyPath::getSimpleMovingPoly(double t) const {
+	SimplePoly poly = interpolate(t);
+	if (mode == PolyPath::MORPHING) {
+		std::vector<Velocity> vvlist;
+		for (int j = 0; j < poly.size(); j++) {
+			vvlist.push_back(vertexVelocity(j,t));
+		}
+		return SimpleMovingPoly(poly,vvlist);
+	} else {
+		return SimpleMovingPoly(poly,velocity(t));
+	}
+}
+
 
 
 bool PolyPath::contains (const Position& p, double t) const {
@@ -866,7 +892,7 @@ bool PolyPath::contains2D (const Position& p, double t) const {
 
 BoundingRectangle PolyPath::getBoundingRectangle() const {
 	BoundingRectangle br;
-	for (int i = 0; i < polyList.size()-1; i++) {
+	for (int i = 0; i < (int) polyList.size()-1; i++) {
 		br.add(polyList[i].getBoundingRectangle());
 	}
 	if (mode == USER_VEL && !vlist[size()-1].isZero()) {

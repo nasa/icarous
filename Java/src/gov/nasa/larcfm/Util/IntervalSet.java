@@ -62,7 +62,9 @@ public class IntervalSet implements Iterable<Interval> {
 		return size()==0; 
 	}
 
-	/** Copy the IntervalSet into a new set */
+	/** Copy the IntervalSet into a new set 
+	 * @param l IntervalSet to copy
+	 * */
 	public IntervalSet(IntervalSet l) {
 		length = l.length;
 		r = new Interval[l.length];
@@ -72,6 +74,7 @@ public class IntervalSet implements Iterable<Interval> {
 
 	/**
 	 * Build an IntervalSet containing copies of the first sz intervals in the given ArrayList.
+	 * @param ar list of intervals
 	 */
 	public IntervalSet(ArrayList<Interval> ar) {
 		r = new Interval[ar.size()];
@@ -175,6 +178,7 @@ public class IntervalSet implements Iterable<Interval> {
 	 * 
 	 * @param i
 	 *            the index of the desired Interval.
+	 * @return interval
 	 */
 	public Interval getInterval(int i) {
 		if (i >= length || i < 0) {
@@ -185,12 +189,18 @@ public class IntervalSet implements Iterable<Interval> {
 		return r[i];
 	}
 
-	/** Return the total number of intervals */
+	/** Return the total number of intervals 
+	 * @return number of intervals
+	 * */
 	public int size() {
 		return length;
 	}
 
-	/** Is the given value a member of this set? */
+	/** Is the given value a member of this set? 
+	 * 
+	 * @param x value
+	 * @return true, if in set
+	 * */
 	public boolean in(double x) {
 		return order(x) >= 0;
 	}
@@ -198,6 +208,8 @@ public class IntervalSet implements Iterable<Interval> {
 	/**
 	 * Add the given interval into this set. If this interval overlaps any
 	 * interval in the set, then the intervals are merged.
+	 * 
+	 * @param rn interval
 	 */
 	public void union(Interval rn) {
 		if (rn.isEmpty()) {
@@ -234,6 +246,8 @@ public class IntervalSet implements Iterable<Interval> {
 	/**
 	 * Union the given IntervalSet into the current IntervalSet. Set s is
 	 * unmodified.
+	 * 
+	 * @param s set
 	 */
 	public void union(IntervalSet s) {
 		for (int i = 0; i < s.length; i++) {
@@ -245,6 +259,9 @@ public class IntervalSet implements Iterable<Interval> {
 	 * Add the given interval into this set. If this interval overlaps any
 	 * interval in the set, then the intervals are merged. 
 	 * This method uses "almost" inequalities to compute the addition.
+	 * 
+	 * @param l lower bound of interval
+	 * @param u upper bound of interval
 	 */
 	public void almost_add(double l, double u) { 
 		almost_add(l,u,Util.PRECISION_DEFAULT);
@@ -254,6 +271,10 @@ public class IntervalSet implements Iterable<Interval> {
 	 * Add the given interval into this set. If this interval overlaps any
 	 * interval in the set, then the intervals are merged. 
 	 * This method uses "almost" inequalities to compute the addition.
+	 * 
+	 * @param l lower bound of interval
+	 * @param u upper bound of interval
+	 * @param maxUlps units of least precision
 	 */
 	public void almost_add(double l, double u, long maxUlps) {   
 		if (Util.almost_less(l,u,maxUlps)) {
@@ -285,6 +306,8 @@ public class IntervalSet implements Iterable<Interval> {
 	/**
 	 * Intersect the given IntervalSet into the current IntervalSet. Set n is
 	 * unmodified. This method uses "almost" inequalities to compute the intersection.
+	 * 
+	 * @param n set
 	 */
 	public void almost_intersect(IntervalSet n) {   
 		almost_intersect(n,Util.PRECISION_DEFAULT);
@@ -293,6 +316,9 @@ public class IntervalSet implements Iterable<Interval> {
 	/**
 	 * Intersect the given IntervalSet into the current IntervalSet. Set n is
 	 * unmodified. This method uses "almost" inequalities to compute the intersection.
+	 * 
+	 * @param n set
+	 * @param maxUlps units of least precision
 	 */
 	public void almost_intersect(IntervalSet n, long maxUlps) {   
 		IntervalSet m = new IntervalSet(this);
@@ -335,6 +361,8 @@ public class IntervalSet implements Iterable<Interval> {
 	 * Note: the semantics of this method mean that [1,2] - (1,2) = [1,1] and
 	 * [2,2]. To get rid of the extraneous singletons use methods like
 	 * removeSingle() or sweepSingle().
+	 * 
+	 * @param rn interval
 	 */
 	public void diff(Interval rn) {
 		if (rn.isEmpty()) {
@@ -379,6 +407,8 @@ public class IntervalSet implements Iterable<Interval> {
 	/** 
 	 * Perform a set difference between these two IntervalSets.  The
 	 * parameter is interpreted as a set of open intervals.
+	 * 
+	 * @param n set
 	 */
 	public void diff(IntervalSet n) {
 		for (int i = 0; i < n.length; i++) {
@@ -389,6 +419,9 @@ public class IntervalSet implements Iterable<Interval> {
 	/**
 	 * Remove the single-valued interval x from this IntervalSet.  If x is
 	 * not a single-valued interval (of width or less), then this method does nothing.
+	 * 
+	 * @param x value
+	 * @param width space around value
 	 */
 	public void removeSingle(double x, double width) {
 		int i = order(x);
@@ -400,12 +433,17 @@ public class IntervalSet implements Iterable<Interval> {
 	/**
 	 * Remove the single-valued interval x from this IntervalSet.  If x is
 	 * not a single-valued interval, then this method does nothing.
+	 * 
+	 * @param x value
 	 */
 	public void removeSingle(double x) {
 		removeSingle(x, 0.0);
 	}
 
-	/** Remove all intervals less than given with */
+	/** Remove all intervals less than given width 
+	 * 
+	 * @param width maximum space to remove
+	 * */
 	public void removeLessThan(double width) {
 		if (width == 0) return;
 		int i = 0;
@@ -420,6 +458,8 @@ public class IntervalSet implements Iterable<Interval> {
 
 	/**
 	 * Remove all the single-valued intervals (of width or less) from this IntervalSet.
+	 * 
+	 * @param width space around single values
 	 */
 	public void sweepSingle(double width) {
 		int i = 0;
@@ -441,6 +481,8 @@ public class IntervalSet implements Iterable<Interval> {
 
 	/**
 	 * Remove all breaks of less than width from this IntervalSet
+	 * 
+	 * @param width max open space to remove
 	 */
 	public void sweepBreaks(double width) {
 		int i = 0; 

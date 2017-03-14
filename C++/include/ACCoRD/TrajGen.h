@@ -1,5 +1,5 @@
 /*
-u * Copyright (c) 2011-2016 United States Government as represented by
+u * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -20,6 +20,7 @@ u * Copyright (c) 2011-2016 United States Government as represented by
 #include "Constants.h"
 #include "string_util.h"
 #include "Triple.h"
+#include "Tuple5.h"
 #include <iostream>
 #include <sstream>
 #include <cctype>
@@ -62,10 +63,12 @@ public:
 
 private:
 	static bool verbose; // = false;
-
+	static bool method2; // = false;
 public:
 
     static const double MIN_ACCEL_TIME;
+    static const double MIN_TURN_BUFFER;
+
     static const double MIN_VS_CHANGE;
     static const double MIN_VS_TIME;
     static const double minorVfactor; // = 0.01; // used to differentiate "minor" vel change vs no vel change
@@ -97,17 +100,21 @@ public:
 	 */
 	static int nextTrackChange(const Plan& fp, int iNow);
 
-	/**
-	 * Returns true if turn at i can be inscribed in the available leg space. 
+	/** Returns true if turn at i can be inscribed in the available leg space.
+	 * 
+	 * @param lpc     source plan
+	 * @param i       vertex to be tested
+	 * @param BOT     Beginning of turn
+	 * @param EOT     End of turn
+	 * @return        true iff the BOT - EOT pair can be placed within vertex
 	 */
-	static bool turnIsFeas(const Plan& lpc, int i, const NavPoint& BOT, const NavPoint& EOT, bool strict) ;
+	static bool turnIsFeas(const Plan& lpc, int i, const NavPoint& BOT, const NavPoint& EOT) ;
 
 	
 	/**
-	 * This takes a Plan lpc and returns a kinematic plan that has all points with vertical changes as "AltPreserve" points, with all other points
+	 * This takes a Plan lpc and returns a plan that has all points with vertical changes as "AltPreserve" points, with all other points
 	 * being "Original" points.  Beginning and end points are always marked.
 	 * @param lpc source plan
-	 * @param minVsChangeRecognized minimum vs change recognized (m/s)
 	 * @return kinematic plan with marked points
 	 */
 	static Plan markVsChanges(const Plan& lpc);
@@ -121,16 +128,47 @@ public:
 	 * It only assumes legs are long enough to support the turns.
 	 * kpc will have marked vs changes (if any).
 	 */
-	static Plan generateTurnTCPs(const Plan& kpc, double bankAngle, bool continueGen, bool strict) ;
+	static Plan generateTurnTCPs(const Plan& kpc, double bankAngle, bool continueGen) ;
 
 	static Plan generateTurnTCPs(const Plan& kpc, double bankAngle) ;
 
-	static void insertTurnTcpsInTraj(Plan& traj, const Plan& lpc, int i, const NavPoint& np1, const NavPoint& np2, const NavPoint& np3, double R, bool strict);
+	/** 
+	 * Kinematic generator that adds turn TCPs.  This defers ground speed changes until after the turn.
+	 * It assumes legs are long enough to support the turns.
+	 * 
+	 * @param lpc        linear plan
+	 * @param strict     if strict do not allow any interior waypoints in the turn
+	 * @return           a plan with BOTs and EOTs
+	 */
+	static Plan generateTurnTCPsRadius(const Plan& lpc);
+
+	/** 
+	 * Kinematic generator that adds turn TCPs.  This defers ground speed changes until after the turn.
+	 * It assumes legs are long enough to support the turns.
+	 * 
+	 * @param lpc        linear plan
+	 * @param continueGen continue generation, even with problems
+	 * @return           a plan with BOTs and EOTs
+	 */
+	static Plan generateTurnTCPsRadius(const Plan& lpc, bool continueGen);
+
+	static bool trackContinuousAt(const Plan& traj, int ix, double maxDelta);
+	/**
+	 * 
+	 * @param traj          trajectory under construction
+	 * @param lpc           original lpc
+	 * @param ixNp2         index of np2 in plan
+	 * @param R             unsigned radius
+	 * @param continueGen   continue generation, even with problems
+	 */
+	static void insertTurnTcpsInTraj(Plan& traj, const Plan& lpc, int ixNp2, double R, bool continueGen);
+
+
 
 	/**
 	 * Re-aligns points that are within a newly generated turn at j
 	 */
-	static void movePointsWithinTurn(Plan& traj, int j);
+	static int movePointsWithinTurn(Plan& traj,int ixBOT, int ixNp2, int ixEOT,  double gsIn);
  
 	// create GSC TCPS between np1 and np2 using vin from previous leg
 	/**
@@ -138,12 +176,29 @@ public:
 	 * @param np2 end point of the acceleration segment
 	 * @param targetGs target gs
 	 * @param vin velocity in
-	 * @param gsAccel non negative (horizontal) acceleration
+	 * @param a    signed (horizontal) acceleration
 	 * @return third component: accel time, or negative if not feasible
 	 * NOTE!!! This has been changed so the accel time is always returned, but if it is less than getMinTimeStep(), there is no region and this has to be handled by the calling program!!!
 	 */
-	static Triple<NavPoint,NavPoint,double> gsAccelGenerator(const NavPoint& np1, const NavPoint& np2, double targetGs, const Velocity& vin, double gsAccel) ;
+	static Triple<NavPoint,NavPoint,double> gsAccelGenerator(const Plan& traj, int i, double gsIn, double targetGs, double a, double timeOffset, bool allowOverlap) ;
 	
+	static void generateGsTCPsAt(Plan& traj, int i, double gsAccel,  double targetGs, double timeOffset);
+
+	static void generateGsTCPsAt(Plan& traj, int i, double gsAccel,  double targetGs, double timeOffset,  bool allowOverlap);
+
+	/** remove all points that will fall within distance to new EGS (distToEGS)
+	 * 
+	 * @param traj       the plan file of interest
+	 * @param ixBGS      index of BGS 
+	 * @param aBGS       acceleration value
+	 * @param distToEGS  distance from BGS to new EGS point
+	 */
+	static void adjustGsInsideAccel(Plan& traj, int ixBGS, double aBGS, double distToEGS, double timeOffset, bool isAltPreserve);
+
+	static TcpData makeBGS(const TcpData& tcp1, double a, double timeOffset, bool isAltPreserve);
+
+	static TcpData makeEGS(const TcpData& tcp1);
+
 	/** Generates ground speed TCPs
 	 * 
 	 * @param fp
@@ -151,30 +206,7 @@ public:
 	 * @param repairGs
 	 * @return
 	 */
-	static Plan generateGsTCPs(const Plan& fp, double gsAccel, bool repairGs);
-
-	static Plan linearRepairShortGsLegsNew(const Plan& fp, double gsAccel);
-
-//	static Plan fixGS(const Plan& lpc, const Plan& fp, double gsAccel);
-
-
-//	static NavPoint origNp(const NavPoint& n1) ;
-
-	
-//	static int constantVsEnd(const Plan& fp, int start, double vsAccel) ;
-
-//	/**
-//	 * Returns either the same time or one that is nearby that does not overlap
-//	 * @param kpc
-//	 * @param tbegin
-//	 * @return
-//	 */
-//	static double CheckBeginPointOverlap(const Plan& kpc, double tbegin);
-//
-//	/**
-//	 * Returns either the same time or one that is nearby that does not overlap
-//	 */
-//	static double CheckEndPointOverlap(const Plan& kpc, double tend);
+	static Plan generateGsTCPs(const Plan& fp, double gsAccel, bool repairGs, bool useOffset);
 
 
 	static Triple<double,double,double> calcVsTimes(int i, Plan& traj, double vsAccel);
@@ -186,7 +218,7 @@ public:
 	 * @param vsAccel  vertical speed acceleration
 	 * @return
 	 */
-	static Plan generateVsTCPs(const Plan& kpc, double vsAccel) ;
+	static Plan generateVsTCPs(const Plan& kpc, double vsAccel, bool continueGen) ;
 
 	/**       Generate vertical speed tcps centered around np2.  Compute the absolute times of BVS and EVS
 	 * @param t1 = previous point's time (will not place tbegin before this point)
@@ -304,20 +336,23 @@ public:
 			bool flyOver, bool addMiddle, double bankAngle, double gsAccel, double vsAccel);
 	
 
-	/**
+	/** TODO
 	 * 
-	 * The resulting PlanCore will be "clean" in that it will have all original points, with no history of deleted points. 
+	 * The resulting Plan will be "clean" in that it will have all original points, with no history of deleted points. 
 	 *  Also all TCPs should reference points in a feasible plan. 
 	 *  If the trajectory is modified, it will have added, modified, or deleted points.
 	 *  If the conversion fails, the resulting plan will have one or more error messages (and may have a point labeled as "TCP_generation_failure_point").
+	 *  Note: This method seeks to preserve ground speeds of legs.  The time at a waypoint is assumed to be not important
+	 *        compared to the original ground speed.
+	 *  Note. If a turn vertex NavPoint has a non-zero "radius", then that value is used rather than "bankAngle"
 	 *	@param fp input plan (is linearized if not already so)
-	 *  @param bankAngle maximum allowed (and default) bank angle for turns
+	 *  @param bankAngle  maximum allowed (and default) bank angle for turns
 	 *  @param gsAccel    maximum allowed (and default) ground speed acceleration (m/s^2)
 	 *  @param vsAccel    maximum allowed (and default) vertical speed acceleration (m/s^2)
 	 *  @param repairTurn attempt to repair infeasible turns as a preprocessing step
-	 *  @param repairGs attempt to repair infeasible gs accelerations as a preprocessing step
-	 *  @param repairVs attempt to repair infeasible vs accelerations as a preprocessing step
-	 *  @param constantGS if true, produces a constant ground speed kinematic plan with gs being average of linear plan
+	 *  @param repairGs attempt to repair infeasible ground speed accelerations
+	 *  @param repairVs attempt to repair infeasible vertical speed accelerations as a preprocessing step
+	 *  @return the resulting kinematic plan
 	 */
 	static Plan makeKinematicPlan(const Plan& fp, double bankAngle, double gsAccel, double vsAccel,
 			                                          bool repairTurn, bool repairGs, bool repairVs);
@@ -372,7 +407,7 @@ public:
 
 	/**
 	 * Constructs a new linear plan that connects current state to existing linear plan lpc (in 2-D).
-	 * @param lpc    a linear plan that needs to be connected to at point 0
+	 * @param fp     a linear plan that needs to be connected to at point 0
 	 * @param so     current position
 	 * @param vo     current velocity
 	 * @param to     current time

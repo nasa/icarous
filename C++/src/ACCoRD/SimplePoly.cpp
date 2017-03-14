@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -15,6 +15,7 @@
 #include "ErrorLog.h"
 #include "Util.h"
 #include "VectFuns.h"
+#include "format.h"
 #include <string>
 #include <vector>
 /**
@@ -138,11 +139,11 @@ SimplePoly SimplePoly::make(const Poly3D& p3, const EuclideanProjection& proj) {
 
 bool SimplePoly::isClockwise() const {
 	if (Util::almost_equals(clockwiseSum, 0.0)) {
-		for (int i = 0; i < points.size(); i++) {
+		for (int i = 0; i < (int) points.size(); i++) {
 			int h = i-1;
 			int j = i+1;
 			if (h < 0) h = points.size()-1;
-			if (j == points.size()) j = 0;
+			if (j == (int) points.size()) j = 0;
 			double trk1 = points[h].finalVelocity(points[i], 100).trk();
 			double trk2 = points[i].initialVelocity(points[j], 100).trk();
 			double angle = Util::to_pi(Util::turnDelta(trk1, trk2, true));
@@ -318,7 +319,7 @@ Position SimplePoly::avgPos(const std::vector<Position>& points, const std::vect
 	double y = 0;
 	double xorig = points[0].x()-dx;
 	double tot = 0;
-	for (int i = 0; i < points.size(); i++) {
+	for (int i = 0; i < (int) points.size(); i++) {
 		double x0 = points[i].x()-dx;
 		double y0 = points[i].y()-dy;
 		// correct for date line wrap around
@@ -715,7 +716,7 @@ BoundingRectangle SimplePoly::getBoundingRectangle() const {
 int SimplePoly::maxInRange(const Position& p, double a1, double a2) const {
 	double maxD = 0.0;
 	int idx = -1;
-	for (int i = 0; i < points.size(); i++) {
+	for (int i = 0; i < (int) points.size(); i++) {
 		double d = points[i].distanceH(p);
 		double a = p.initialVelocity(points[i], 100).compassAngle();
 		if (d > maxD && a1 <= a && a < a2) {
@@ -732,10 +733,10 @@ int SimplePoly::maxInRange(const Position& p, double a1, double a2) const {
  * Return NaN if i is out of bounds or vertex i overlaps vertex i+1.
  */
 double SimplePoly::perpSide(int i) const {
-	if (i < 0 || i >= points.size()) return NaN;
+	if (i < 0 || i >= (int) points.size()) return NaN;
 	Position p1 = points[i];
 	Position p2;
-	if (i == points.size()-1) {
+	if (i == (int) points.size()-1) {
 		p2 = points[0];
 	} else {
 		p2 = points[i+1];
@@ -764,11 +765,11 @@ bool SimplePoly::vertexConvex(const Position& p0, const Position& p1, const Posi
 
 
 double SimplePoly::vertexAngle(int i) const {
-	if (i < 0 || i >= points.size()) return NaN;
+	if (i < 0 || i >= (int) points.size()) return NaN;
 	Position p1 = points[i];
 	Position p2;
 	Position p0;
-	if (i == points.size()-1) {
+	if (i == (int) points.size()-1) {
 		p2 = points[0];
 	} else {
 		p2 = points[i+1];
@@ -802,6 +803,18 @@ string SimplePoly::toString() const {
 	return s;
 }
 
+std::vector<std::string> SimplePoly::toStringList(int vertex, int precision) const {
+	std::vector<std::string> ret;
+	Position p = getVertex(vertex);
+	std::vector<std::string> plist = p.toStringList(precision);
+	ret.insert(ret.end(), plist.begin(), plist.end());
+	if (p.isInvalid()) {
+		ret.push_back("-");
+	} else {
+		ret.push_back(FmPrecision(Units::to("ft",top),precision));
+	}
+	return ret;
+}
 
 
 } // namespace 

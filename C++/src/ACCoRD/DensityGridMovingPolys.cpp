@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -41,7 +41,7 @@ double DensityGridMovingPolys::getWeightT(int x, int y, double t) const {
 	double w = weights.find(xy)->second;
 	double cost = 0;
 	Position cent = center(x,y);
-	for (int i = 0; i < paths.size(); i++) {
+	for (int i = 0; i < (int) paths.size(); i++) {
 		if (paths[i].contains2D(cent, t)) {
 			cost = std::numeric_limits<double>::infinity();
 			break;
@@ -49,7 +49,7 @@ double DensityGridMovingPolys::getWeightT(int x, int y, double t) const {
 	}
 	if (contains.size() > 0) {
 		bool within = (contains.size() == 0); // no containment is vacuously fulfilled
-		for (int i = 0; i < contains.size(); i++) {
+		for (int i = 0; i < (int) contains.size(); i++) {
 			if (contains[i].contains2D(cent, t)) {
 				within = true;
 				break;

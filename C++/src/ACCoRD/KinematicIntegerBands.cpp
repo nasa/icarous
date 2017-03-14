@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -77,7 +77,7 @@ void KinematicIntegerBands::traj_conflict_only_bands(std::vector<Integerval>& l,
       d = k;
     }
   }
-  if (d >= 0) {
+  if (d >= 0 && d != max) {
     l.push_back(Integerval(d,max));
   }
 }
@@ -438,7 +438,7 @@ void KinematicIntegerBands::instantaneous_bands(std::vector<Integerval>& l, Dete
       d = k;
     }
   }
-  if (d >= 0) {
+  if (d >= 0 && d != max) {
     l.push_back(Integerval(d,max));
   }
 }

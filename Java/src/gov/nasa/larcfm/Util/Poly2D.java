@@ -5,10 +5,10 @@
  * Rights Reserved.
  */
 package gov.nasa.larcfm.Util;
+
 import java.awt.geom.GeneralPath;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Encapsulates a geometric polygon. The polygon is defined in terms of its vertex coordinates. 
@@ -218,8 +218,8 @@ public class Poly2D implements Serializable {
 
 	/**
 	 * Return vertex, or INVALID if out of bounds.
-	 * @param i
-	 * @return
+	 * @param i index
+	 * @return vertex
 	 */
 	public Vect2 getVertex(int i) {
 		if (i < 0 || i >= vertices.size()) {
@@ -233,14 +233,6 @@ public class Poly2D implements Serializable {
 	public ArrayList<Vect2> getVertices() {
 		return vertices;
 	}
-
-//	public BoundingRectangle getBoundingRectangle() {
-//		return boundingRect;
-//	}
-//
-//	public void setBoundingRectangle(BoundingRectangle boundingRect) {
-//		this.boundingRect = boundingRect;
-//	}
 
 
 	/**
@@ -270,6 +262,7 @@ public class Poly2D implements Serializable {
 	// this calculation assumes that point 0 = point n (or the start point is counted twice)
 	/**
 	 * Return the horizontal area (in m^2) of this Poly3D.
+	 * @return area
 	 */
 	public double area() {
 		double dx = (minX+maxX)/2.0;
@@ -285,7 +278,7 @@ public class Poly2D implements Serializable {
 
 	/**
 	 * Distance from centroid to closest vertex
-	 * @return
+	 * @return radius
 	 */
 	public double innerRadius() {
 		Vect2 cpos = centroid();
@@ -300,7 +293,7 @@ public class Poly2D implements Serializable {
 	
 	/**
 	 * Distance from centroid to farthest vertex
-	 * @return
+	 * @return radius
 	 */
 	public double outerRadius() {
 		Vect2 cpos = centroid();
@@ -315,7 +308,7 @@ public class Poly2D implements Serializable {
 	
 	/**
 	 * Distance from averagePoint to farthest vertex
-	 * @return
+	 * @return radius
 	 */
 	public double apBoundingRadius() {
 		Vect2 cpos = averagePoint();
@@ -369,6 +362,8 @@ public class Poly2D implements Serializable {
 	 * Return the average of all vertices.  Note this is not the same as the centroid, and will be weighted 
 	 * towards concentrations of vertices instead of concentrations of area/mass.  This will, however, have the nice property of having
 	 * a constant linear velocity between two polygons, even if they morph shape. 
+	 * 
+	 * @return point
 	 */
 	public Vect2 averagePoint() {
 		double dx = (minX+maxX)/2.0;
@@ -387,8 +382,8 @@ public class Poly2D implements Serializable {
 	 * Return true if p is a subset of this polygon.
 	 * This determines if the starting point of p is within this polygon, and if any edges intersect with this polygon.
 	 * This does not explicitly use ACCoRD detection algorithms.
-	 * @param p
-	 * @return
+	 * @param p polygon
+	 * @return true, if polygon contains
 	 */
 	public boolean contains(Poly2D p) {
 		if (size() == 0 || p.size() == 0) return false;
@@ -547,7 +542,7 @@ public class Poly2D implements Serializable {
 	
 	/**
 	 * Reverse order of vertices
-	 * @return
+	 * @return polygon
 	 */
 	public Poly2D reverseOrder() {
 		Poly2D np = new Poly2D();

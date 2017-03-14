@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Cesar Munoz, George Hagen
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -46,9 +46,15 @@ namespace larcfm {
   /** remove specified characters from beginning & end of string s */
   void trim(std::string& s,const std::string& drop = " \t\r\n");
   
+  /** remove specified characters from beginning & end of string s */
+  std::string trimCopy(const std::string& s,const std::string& drop = " \t\r\n");
+
   /** return an all lower case copy of str */
   std::string toLowerCase(const std::string& str);
   
+  /** return an all upper case copy of str */
+  std::string toUpperCase(const std::string& str);
+
   /** return true if two strings are the same values */
   bool equals(const std::string&, const std::string&);
   

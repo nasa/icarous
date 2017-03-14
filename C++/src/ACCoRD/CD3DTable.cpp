@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -13,30 +13,44 @@ namespace larcfm {
 
 CD3DTable::CD3DTable() {
   D = Units::from("nmi", 5.0);
-  H = Units::from("ft",  1000.0);
+  H = Units::from("ft", 1000.0);
+  units_["D"] = "nmi";
+  units_["H"] = "ft";
 }
 
 CD3DTable::CD3DTable(double d, double h) {
-  D = d;
-  H = h;
+  D = std::abs(d);
+  H = std::abs(h);
+  units_["D"] = "m";
+  units_["H"] = "m";
 }
 
 CD3DTable::CD3DTable(double d, const std::string& dunit, double h, const std::string& hunit) {
-  D = Units::from(dunit, d);
-  H = Units::from(hunit, h);
+  D = Units::from(dunit, std::abs(d));
+  H = Units::from(hunit, std::abs(h));
+  units_["D"] = dunit;
+  units_["H"] = hunit;
 }
 
 /**
  * Copy constructor -- returns a fresh copy.
  */
 CD3DTable::CD3DTable(const CD3DTable& tab) {
-  D = tab.D;
-  H = tab.H;
+  copyValues(tab);
+}
+
+CD3DTable CD3DTable::copy() const {
+  CD3DTable tab;
+  tab.D = D;
+  tab.H = H;
+  tab.units_ = units_;
+  return tab;
 }
 
 void CD3DTable::copyValues(const CD3DTable& tab) {
   D = tab.D;
   H = tab.H;
+  units_ = tab.units_;
 }
 
 double CD3DTable::getHorizontalSeparation() const {
@@ -44,7 +58,7 @@ double CD3DTable::getHorizontalSeparation() const {
 }
 
 void CD3DTable::setHorizontalSeparation(double d) {
-  D = d;
+  D = std::abs(d);
 }
 
 double CD3DTable::getVerticalSeparation() const {
@@ -52,25 +66,26 @@ double CD3DTable::getVerticalSeparation() const {
 }
 
 void CD3DTable::setVerticalSeparation(double h) {
-  H = h;
+  H = std::abs(h);
 }
 
-double CD3DTable::getHorizontalSeparation(const std::string& unit) const {
-  return Units::to(unit, D);
+double CD3DTable::getHorizontalSeparation(const std::string& u) const {
+  return Units::to(u, D);
 }
 
-void CD3DTable::setHorizontalSeparation(double d, const std::string& unit) {
-  D = Units::from(unit, d);
+void CD3DTable::setHorizontalSeparation(double d, const std::string& u) {
+  setHorizontalSeparation(Units::from(u,d));
+  units_["D"] = u;
 }
 
-double CD3DTable::getVerticalSeparation(const std::string& unit) const {
-  return Units::to(unit, H);
+double CD3DTable::getVerticalSeparation(const std::string& u) const {
+  return Units::to(u, H);
 }
 
-void CD3DTable::setVerticalSeparation(double h, const std::string& unit) {
-  H = Units::from(unit, h);
+void CD3DTable::setVerticalSeparation(double h, const std::string& u) {
+  setVerticalSeparation(Units::from(u,h));
+  units_["H"] = u;
 }
-
 
 ParameterData CD3DTable::getParameters() const {
   ParameterData p;
@@ -78,19 +93,28 @@ ParameterData CD3DTable::getParameters() const {
   return p;
 }
 
-
 void CD3DTable::updateParameterData(ParameterData& p) const {
-  p.setInternal("D",D,"nmi",4);
-  p.setInternal("H",H,"ft",4);
+  p.setInternal("D",D,getUnits("D"));
+  p.setInternal("H",H,getUnits("H"));
 }
 
 void CD3DTable::setParameters(const ParameterData& p) {
   if (p.contains("D")) {
-    D = p.getValue("D");
+    setHorizontalSeparation(p.getValue("D"));
+    units_["D"] = p.getUnit("D");
   }
   if (p.contains("H")) {
-    H = p.getValue("H");
+    setVerticalSeparation(p.getValue("H"));
+    units_["H"] = p.getUnit("H");
   }
+}
+
+std::string CD3DTable::getUnits(const std::string& key) const {
+  std::map<std::string,std::string>::const_iterator got = units_.find(key);
+  if (got == units_.end()) {
+    return "unspecified";
+  }
+  return got->second;
 }
 
 bool CD3DTable::equals(const CD3DTable& t2) const {
@@ -98,7 +122,7 @@ bool CD3DTable::equals(const CD3DTable& t2) const {
 }
 
 std::string CD3DTable::toString() const {
-  return "D: "+Units::str("NM",D)+"; H: "+Units::str("ft",H);
+  return "D = "+Units::str(getUnits("D"),D)+", H = "+Units::str(getUnits("H"),H);
 }
 
 std::string CD3DTable::toPVS(int prec) const {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -77,7 +77,7 @@ public:
   /**
    * Set kinematic bands core
    */
-  void setKinematicBandsCore(const KinematicBandsCore core);
+  void setKinematicBandsCore(const KinematicBandsCore& core);
 
   /**
    *  Clear ownship and traffic data from this object.
@@ -124,18 +124,6 @@ public:
   TrafficState intruder(const std::string& id) const;
 
   bool hasTraffic() const;
-
-  Position const & trafficPosition(int i) const;
-
-  Velocity const & trafficVelocity(int i) const;
-
-  Vect3 const & own_s() const;
-
-  Velocity const & own_v() const;
-
-  Vect3 const & traffic_s(int i) const;
-
-  Velocity const & traffic_v(int i) const;
 
   /**
    * Return list of conflict aircraft for a given alert level.

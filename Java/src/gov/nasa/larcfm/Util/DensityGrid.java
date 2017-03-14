@@ -143,7 +143,7 @@ public class DensityGrid {
 
 	/**
 	 * Approximate size of square, in either meters (if Euclidean) or radians (if latlon)
-	 * @return
+	 * @return size
 	 */
 	public double getNativeSquareDist() {
 		return squareSize;
@@ -151,6 +151,7 @@ public class DensityGrid {
 
 	/**
 	 * Approximate size of square, in meters
+	 * @return size
 	 */
 	public double getSquareDist() {
 		return squareDist;
@@ -175,48 +176,6 @@ public class DensityGrid {
 		}
 	}
 
-	//	public void mark(int x, int y) {
-	//		marked.add(Pair.make(x,y));
-	//	}
-	//
-	//	public void mark(Pair<Integer,Integer> xy) {
-	//		marked.add(xy);
-	//	}
-	//
-	//	public boolean isMarked(int x, int y) {
-	//		return marked.contains(Pair.make(x, y));
-	//	}
-	//	
-	//	public boolean isMarked(int x, int y) {
-	//		return marked.contains(Pair.make(x, y));
-	//	}
-	//
-	//	public void clearMarks() {
-	//		marked.clear();
-	//	}
-	//	
-
-	//	public int gridXPosition(Position p) {
-	//		if (bounds.contains(p)) {
-	//			double x = p.x();
-	//			if (latLon) {
-	//				x = p.lon();
-	//			}
-	//			return (int)Math.floor((x - bounds.getMinX())/squareSize);
-	//		}
-	//		return -1;
-	//	}
-	//
-	//	public int gridYPosition(Position p) {
-	//		if (bounds.contains(p)) {
-	//			double y = p.y();
-	//			if (latLon) {
-	//				y = p.lat();
-	//			}
-	//			return (int)Math.floor((y - bounds.getMinY())/squareSize);			
-	//		}
-	//		return -1;
-	//	}
 
 	public Pair<Integer,Integer> gridPosition(Position p) {
 		if (bounds.contains(p)) {
@@ -236,34 +195,14 @@ public class DensityGrid {
 	}
 
 
-	//	// iterating through the grid, return null if out of bounds
-	//	public Pair<Integer,Integer>cell(int i) {
-	//		if (i < 0 || i >= sz_x*sz_y) return null;
-	//		return Pair.make(i/sz_x, i%sz_x);
-	//	}
-
-	//	public int cellNum(int x, int y) {
-	//		if (x < 0 || y < 0 || x >= sz_x || y >= sz_y) return -1;
-	//		return x * sz_x | y;
-	//	}
-	//
-	//	public int cellNum(Pair<Integer,Integer> xy) {
-	//		return cellNum(xy.first, xy.second);
-	//	}
-
 	public boolean containsCell(Pair<Integer,Integer> xy) {
 		return corners.containsKey(xy);
 	}
 
-	//	public boolean containsCell(int x, int y) {
-	//		return containsCell(Pair.make(x,y));
-	//	}
-
-
 	/**
 	 * Note: the grid size should be 1 larger than expected (to allow for the first point to be in the middle of the square)
 	 * The SW corner of the plan bounding box should be in square (buffer,buffer)
-	 * @return
+	 * @return size
 	 */
 	public int sizeX() {
 		return sz_x;
@@ -271,7 +210,7 @@ public class DensityGrid {
 
 	/**
 	 * Note: the grid size should be 1 larger than expected (to allow for the first point to be in the middle of the square)
-	 * @return
+	 * @return size
 	 */
 	public int sizeY() {
 		return sz_y;
@@ -331,9 +270,9 @@ public class DensityGrid {
 
 	/**
 	 * Return weight determined by search, or -Infinity if not set by search 
-	 * @param x
-	 * @param y
-	 * @return
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @return weight
 	 */
 	public double getSearchedWeight(int x, int y) {
 		if (!searchedWeights.containsKey(Pair.make(x,y))) return Double.NEGATIVE_INFINITY;
@@ -390,6 +329,12 @@ public class DensityGrid {
 
 	/**
 	 * Set all weights to d in grid cells minX to maxX and minY to maxY, inclusive
+	 * 
+	 * @param minX minimum x
+	 * @param minY minimum y
+	 * @param maxX maximum x
+	 * @param maxY maximum y
+	 * @param d weight
 	 */
 	public void setWeights(int minX, int minY, int maxX, int maxY, double d) {
 		for (int x = minX; x <= maxX; x++) {
@@ -401,6 +346,8 @@ public class DensityGrid {
 
 	/**
 	 * Set all weights to d
+	 * 
+	 * @param d weight
 	 */
 	public void setWeights(double d) {
 		for (int x = 0; x < sz_x; x++) {
@@ -427,7 +374,8 @@ public class DensityGrid {
 
 	/**
 	 * set all weights of grid squares whose center is inside the given (static) polygon.
-	 * @param poly
+	 * @param poly polygon
+	 * @param d weight
 	 */
 	public void setWeightsInside(SimplePoly poly, double d) {
 		for (int x = 0; x < sz_x; x++) {
@@ -468,7 +416,7 @@ public class DensityGrid {
 		ArrayList<Pair<Integer,Integer>> rtn = new ArrayList<Pair<Integer,Integer>>(10);
 		if (p.size() < 1) return rtn;
 		NavPoint p0 = p.point(0);
-		Pair<Integer,Integer> gpPair0 = gridPosition(p0.position());
+		//Pair<Integer,Integer> gpPair0 = gridPosition(p0.position());
 		//rtn.add(gpPair0);
 		if (p.size() < 2) return rtn;
 		NavPoint pN = p.getLastPoint();
@@ -569,8 +517,8 @@ public class DensityGrid {
 
 	/**
 	 * Note: This method is overridden in some subclasses.  It will produce a (possibly smaller) set of points whose path should remain within the given gridpath.
-	 * @param gp
-	 * @return
+	 * @param gp grid path
+	 * @return set of points
 	 */
 	public List<Pair<Integer,Integer>> reduceGridPath(List<Pair<Integer,Integer>> gp) {
 		return thin(gp);
@@ -638,70 +586,6 @@ public class DensityGrid {
 	}
 
 
-//	public void setProximityWeightsOld(List<Pair<Integer,Integer>> gPath, double factor, boolean applyToUndefined) {
-//		double[][] myWeights = new double[sz_x][sz_y];	
-//		for (int i = 0; i < sz_x; i++) {
-//			for (int j = 0; j < sz_y; j++) {
-//				Pair<Integer,Integer> pij = Pair.make(i,j);
-//				if (gPath.contains(pij))  myWeights[i][j] = -1.0;
-//				else myWeights[i][j] = 0.0;
-//			}
-//		}
-//		for (int i = 0; i < sz_x; i++) {
-//			double currentVal = sz_y*factor;
-//			for (int j = 0; j < sz_y; j++) {
-//				if (myWeights[i][j] < 0.0) {
-//					currentVal = factor;
-//				} else {
-//					myWeights[i][j] = currentVal;
-//					//f.pln(" $$1  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
-//					currentVal = currentVal + factor;
-//				}
-//			}
-//			currentVal = sz_y*factor;
-//			for (int j = sz_y-1; j >= 0 ; j--) {
-//				if (myWeights[i][j] < 0.0) {
-//					currentVal = factor;
-//				}
-//				else {
-//					myWeights[i][j] = Util.min(currentVal,myWeights[i][j]);
-//					//f.pln(" $$2  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
-//					currentVal = currentVal + factor;
-//				}
-//			}
-//		}
-//		for (int j = 0; j < sz_y; j++) {
-//			double currentVal = sz_x*factor;
-//			for (int i = 0; i < sz_x; i++) {
-//				if (myWeights[i][j] < 0.0) {
-//					currentVal = factor;
-//				} else {
-//					myWeights[i][j] = Util.min(currentVal,myWeights[i][j]);
-//					//f.pln(" $$3  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
-//					currentVal= currentVal + factor;
-//				}
-//			}
-//			currentVal = sz_x*factor;
-//			for (int i = sz_x-1; i >= 0 ; i--) {
-//				if (myWeights[i][j] < 0.0) {
-//					currentVal = factor;
-//				}
-//				else {
-//					myWeights[i][j] = Util.min(currentVal,myWeights[i][j]);
-//					//f.pln(" $$4  SET weights["+i+"]["+j+"] = "+ weights[i][j]);
-//					currentVal= currentVal + factor;
-//				}
-//			}
-//		}		
-//		for (int x = 0; x < sz_x; x++) {
-//			for (int y = 0; y < sz_y; y++) { 
-//				if (applyToUndefined || this.weights.containsKey(Pair.make(x, y))) {
-//					if (myWeights[x][y] >= 0) setWeight(x,y,myWeights[x][y]);
-//					else setWeight(x,y,0.0);
-//				}
-//			}
-//		}         
-//	}
 
 	public void setProximityWeights(List<Pair<Integer,Integer>> gPath, double factor, boolean applyToUndefined) {
 		double[][] myWeights = new double[sz_x][sz_y];	
@@ -735,8 +619,9 @@ public class DensityGrid {
 
 	/**
 	 * Weight against plan points.
-	 * @param p
-	 * @param factor
+	 * @param p  plan
+	 * @param factor factor
+	 * @param applyToUndefined true, if should be applied to undefined points
 	 */
 	public void setProximityWeights(Plan p, double factor, boolean applyToUndefined) {
 		double[][] myWeights = new double[sz_x][sz_y];	

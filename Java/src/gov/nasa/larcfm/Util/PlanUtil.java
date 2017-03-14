@@ -1121,6 +1121,21 @@ public class PlanUtil {
 	}
 
 	/**
+	 * Return a string consisting of both the navpoint label and the tcpdata information for a point.  
+	 * If either is nonempty they will be separated by a slash (so "KEEHO/", "/$vertpt, and "KEEHO/$vertpt" are all possibilities).
+	 * If both are empty, return the empty string.
+	 * @param p plan
+	 * @param i point index
+	 * @return string of label/info or empty string
+	 */
+	public static String getLabelAndInfoString(Plan p, int i) {
+		if (p.point(i).label().length() > 0 || p.getInfo(i).length() > 0) {
+			return  p.point(i).label()+"/"+p.getInfo(i);
+		}
+		return "";
+	}
+
+	/**
 	 * Convert from OLD NavPoint TCP data string to NEW NavPoint metadata string.
 	 * Should work in most cases, though the old vin data (which may be incorrect) is preserved
 	 */
