@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -38,10 +38,10 @@ public final class Point extends Vect3 implements OutputList {
 
 	/** A zero point */
 	public final static Point ZERO = new Point(0.0,0.0,0.0);
-	
+
 	/** An invalid point.  Note that this is not necessarily equal to other invalid point -- use the isInvalid() test instead. */
 	public final static Point INVALID = new Point(Double.NaN,Double.NaN,Double.NaN);
-	
+
 	/**
 	 * New point from Vect3.
 	 * 
@@ -90,15 +90,15 @@ public final class Point extends Vect3 implements OutputList {
 		return new Point(x,y,z);
 	}     
 
-  /**
-   * New point from Euclidean coordinates in conventional units.
-   *
-   * @param x the x-point [NM]
-   * @param y the y-point [NM]
-   * @param z the z-point [ft]
-   *
-   * @return the point
-   */
+	/**
+	 * New point from Euclidean coordinates in conventional units.
+	 *
+	 * @param x the x-point [NM]
+	 * @param y the y-point [NM]
+	 * @param z the z-point [ft]
+	 *
+	 * @return the point
+	 */
 	public static Point make(double x, double y, double z) {
 		return make(x,"NM",y,"NM",z,"ft");
 	}     
@@ -155,12 +155,12 @@ public final class Point extends Vect3 implements OutputList {
 			return this;
 		}
 		return mk(x / n, y / n, z / n);
-	  }
+	}
 
 	public Point Neg() {
 		return mk(-x, -y, -z);
 	}
-	
+
 	public Point Add(Point v) {
 		return mk(x+v.x, y+v.y, z+v.z);
 	}
@@ -168,7 +168,7 @@ public final class Point extends Vect3 implements OutputList {
 	public Point Sub(Point v) {
 		return mk(x-v.x, y-v.y, z-v.z);
 	}
-	
+
 	public Point Scal(double k) {
 		//	    Vect3 u = new Vect3(x,y,z);
 		//	    u.scal(k);
@@ -185,18 +185,18 @@ public final class Point extends Vect3 implements OutputList {
 	public Point linear(Velocity v, double t) {
 		return mk(x + v.x*t,y + v.y*t,z +v.z*t);
 	}
-	
+
 	// 
 	// output methods
 	//
-	
-    /** String representation of the point in [NM, NM, ft] */
+
+	/** String representation of the point in [NM, NM, ft] */
 	public String toString() {
 		return toString(Constants.get_output_precision(),"NM","NM","ft");
 	}
 
 	/**
-     * String representation of the point in the given units
+	 * String representation of the point in the given units
 	 * @param prec precision (0-15)
 	 * @param xUnits units for the x value
 	 * @param yUnits units for the y value
@@ -228,7 +228,7 @@ public final class Point extends Vect3 implements OutputList {
 		ret.add(Double.toString(Units.to("ft", z())));	
 		return ret;
 	}
-	
+
 	/**
 	 * Return an array of string representing each value of the point in the units [NM,NM,ft]
 	 * @return array of strings
@@ -240,8 +240,8 @@ public final class Point extends Vect3 implements OutputList {
 		ret.add(f.FmPrecision(Units.to("ft", z()), precision));	
 		return ret;
 	}
-	
-    /** String representation, 4 decimal places, without parentheses */
+
+	/** String representation, 4 decimal places, without parentheses */
 	public String toStringNP() {
 		return toStringNP(15,"NM","NM","ft");
 	}
@@ -261,14 +261,14 @@ public final class Point extends Vect3 implements OutputList {
 	public String toStringNP(int precision, String xUnits, String yUnits, String zUnits) {
 		return f.FmPrecision(Units.to(xUnits, x()), precision)+", "+f.FmPrecision(Units.to(yUnits, y()), precision)+", "+f.FmPrecision(Units.to(zUnits, z()), precision);	
 	}
-	
-	  /** 
-	   * This parses a space or comma-separated string as a Point (an inverse to the toString 
-	   * method).  If three bare values are present, then it is interpreted as the default units for 
-	   * a point: [NM,NM,ft].  If there are 3 value/unit pairs then each values is interpreted with regard 
-	   * to the appropriate unit.  If the string cannot be parsed, an INVALID value is
-	   * returned. 
-	   */
+
+	/** 
+	 * This parses a space or comma-separated string as a Point (an inverse to the toString 
+	 * method).  If three bare values are present, then it is interpreted as the default units for 
+	 * a point: [NM,NM,ft].  If there are 3 value/unit pairs then each values is interpreted with regard 
+	 * to the appropriate unit.  If the string cannot be parsed, an INVALID value is
+	 * returned. 
+	 */
 	public static Point parse(String str) {
 		String[] fields = str.split(Constants.wsPatternParens);
 		if (fields[0].equals("")) {
@@ -289,5 +289,5 @@ public final class Point extends Vect3 implements OutputList {
 		} catch (Exception e) {}
 		return mk(Vect3.INVALID);	
 	}
-	
+
 }

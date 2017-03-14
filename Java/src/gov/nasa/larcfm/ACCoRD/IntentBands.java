@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon, Rick Butler and George Hagen
  * Organization: NASA/Langley Research Center
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -200,9 +200,9 @@ public class IntentBands implements GenericIntentBands, ErrorReporter {
     if (isLatLon()) {
       // error checking
       double T = red.getTime();
-      for (int i = 0; i < fp.size()-1 && fp.getTime(i) <= to+T; i++) {
-        if (fp.getTime(i+1) >= to) {
-          double dt = fp.getTime(i) - to;
+      for (int i = 0; i < fp.size()-1 && fp.time(i) <= to+T; i++) {
+        if (fp.time(i+1) >= to) {
+          double dt = fp.time(i) - to;
           LatLonAlt so2 = GreatCircle.linear_initial(so.lla(), vo, dt);
           if (GreatCircle.distance(so2, fp.point(i).lla()) > Projection.projectionMaxRange()) {
             error.addError("Distances are too great for this projection");

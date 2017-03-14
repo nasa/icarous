@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2016 United States Government as represented by
+ * Copyright (c) 2012-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -171,7 +171,7 @@ public abstract class WCV_tvar implements Detection3D {
   }
 
   public String toString() {
-    return (id.equals("") ? "" : id+" = ")+getSimpleClassName()+": {"+table.toString()+"}";
+    return (id.equals("") ? "" : id+" : ")+getSimpleClassName()+" = {"+table.toString()+"}";
   }
 
   public String toPVS(int prec) {
@@ -186,19 +186,11 @@ public abstract class WCV_tvar implements Detection3D {
 
   public  void updateParameterData(ParameterData p) {
     table.updateParameterData(p);
-    //    p.set("WCV_name",name);
-    //    p.set("WCV_username",username);
     p.set("id",id);
   }
 
   public void setParameters(ParameterData p) {
     table.setParameters(p);
-    //    if (p.contains("WCV_name")) {
-    //      name = p.getString("WCV_name");
-    //    }
-    //    if (p.contains("WCV_username")) {
-    //      username = p.getString("WCV_username");
-    //    }
     if (p.contains("id")) {
       id = p.getString("id");
     }

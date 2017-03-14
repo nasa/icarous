@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -29,6 +29,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The class includes a collection of utilities that aid debugging.  In
+ * general, these methods should not be called in "production" code.
+ *
+ */
 public final class DebugSupport {
 
 	// THIS SHOULD NOT CONTAIN ANY REFERENCES TO SWING OR AWT CLASSES, EVEN INDIRECTLY.  THOSE GO IN "GuiUtil.java".
@@ -41,7 +46,14 @@ public final class DebugSupport {
 		f.pln(" ............. dumpPlan: created file "+dumpFileName);
 	}
 
-	/** Write the plans to the given file */
+	/** Write the plans to the given file 
+	 * 
+	 * @param own  ownship plan
+	 * @param traffic traffic aircraft plan
+	 * @param fileName file name
+	 * @param D horizontal distance
+	 * @param H vertical distance
+	 */
 	public static void dumpPlans(Plan own, Plan traffic, String fileName, double D, double H) { //TODO: use PlanWriter
 		PrintWriter dumpFile;
 		fileName = "1dump_"+fileName;
@@ -83,11 +95,10 @@ public final class DebugSupport {
 		for (int y = dGrid.sizeY()-1; y >= 0; y--) {
 			for (int x=0; x < dGrid.sizeX(); x++) {
 				Position pxy = dGrid.getPosition(x, y);
-				NavPoint np = new NavPoint(pxy,time);
-				np = np.makeLabel(""+dGrid.getWeight(x, y));
+				NavPoint np = new NavPoint(pxy,time,""+dGrid.getWeight(x, y));
 				time++;
 				//f.pln(" $$$$ dumpDensityGrid: ADD np = "+np);
-				p.add(np);
+				p.addNavPoint(np);
 			}
 		}		
 		pw.writePlan(p,true);
@@ -113,9 +124,8 @@ public final class DebugSupport {
 				//                p.add(np);
 
 				Position pxy2 = dGrid.center(x, y);
-				NavPoint np2 = new NavPoint(pxy2,time+0.5);
-				np2 = np2.makeLabel(""+dGrid.getSearchedWeight(x, y));
-				p.add(np2);              
+				NavPoint np2 = new NavPoint(pxy2,time+0.5,""+dGrid.getSearchedWeight(x, y));
+				p.addNavPoint(np2);              
 				time++;
 			}
 		}		
@@ -145,7 +155,7 @@ public final class DebugSupport {
 		s += ", Time, ";
 		s += "Label";
 		s += headerAlt2+"\n";
-		s = s  + p.toOutput(str, 4, false);
+		s = s  + p.toOutput(str, 4, 0);
 		return s;
 	}
 
@@ -274,7 +284,14 @@ public final class DebugSupport {
 
 
 
-	/** Write the plan to the given file */
+	/** Write the plan to the given file 
+	 * 
+	 * @param sop position of ownship
+	 * @param vop velocity of ownship
+	 * @param sip position of traffic aircraft
+	 * @param vip velocity of traffic aircraft
+	 * @param dumpFileName filename
+	 */
 	public static void dumpConflictState(Position sop, Velocity vop, Position sip, Velocity vip, String dumpFileName) {//TODO: use PlanWriter
 		PrintWriter dumpFile;
 		try {
@@ -298,17 +315,6 @@ public final class DebugSupport {
 
 
 
-
-
-	private static List<String> get_header(SeparatedInput si) {
-		ArrayList<String> ret = new ArrayList<String>(si.size()*2);
-		for (int i = 0; i < si.size(); i++) {
-			ret.add(si.getHeading(i).toUpperCase());
-			ret.add(si.getUnit(i));
-		}
-		return ret;
-	}
-
 	private static List<String> get_line(SeparatedInput si) {
 		ArrayList<String> ret = new ArrayList<String>(si.size());
 		for (int i = 0; i < si.size(); i++) {
@@ -320,6 +326,11 @@ public final class DebugSupport {
 	/** 
 	 * Reads in a plan file stored in file "fileName" and creates a new file with just the data for
 	 *  aircraft "aircraftName".  The output file name is  "dump_"+aircraftName+str+".txt".
+	 * 
+	 * @param fileName name of file
+	 * @param aircraftName name of aircraft
+	 * @param str extra string to add to file name
+	 * @param sorted if true, then output is sorted
 	 */
 	public static void dumpAircraftFromFile(String fileName, String aircraftName, String str, boolean sorted) {		
 		FileReader inFile;
@@ -413,6 +424,7 @@ public final class DebugSupport {
 	/** 
 	 * Reads in a plan file from the file "fileName" and creates a new file with an estimate of the 
 	 * velocity at each point.  The output file name is  fileName+"Vel.txt".
+	 * @param fileName file name (actually prefix of filename)
 	 */
 	public static void dumpFileWithVelocities(String fileName) {
 		FileReader inFile;
@@ -524,7 +536,7 @@ public final class DebugSupport {
 	public static void main(String[] args) {
 		String inFileName = GuiUtil.getFilenameDialog();
 		//f.pln(" inFileName = "+inFileName);
-		PolyReader pr = new PolyReader();
+		PlanReader pr = new PlanReader();
 		pr.open(inFileName);
 		if (pr.size() > 0) {
 			Plan p0 = pr.getPlan(0);                        // CAN CHANGE THIS TO GET DIFFERENT ONES

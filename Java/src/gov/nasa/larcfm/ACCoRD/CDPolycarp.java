@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -267,7 +267,7 @@ public class CDPolycarp implements DetectionPolygon {
 		p.set("id", id);
 		p.setInternal("buff", buff, "m");
 		p.setInternal("fac",fac, "unitless");
-		p.set("checkNice", checkNice);
+		p.setBool("checkNice", checkNice);
 	}
 
 	public void setParameters(ParameterData p) {

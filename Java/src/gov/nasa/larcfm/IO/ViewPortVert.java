@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -16,6 +16,7 @@ import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.PolyPath;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.SimplePoly;
+import gov.nasa.larcfm.Util.TcpData;
 import gov.nasa.larcfm.Util.Units;
 import gov.nasa.larcfm.Util.Vect2;
 import gov.nasa.larcfm.Util.Velocity;
@@ -447,11 +448,12 @@ public abstract class ViewPortVert extends ViewPort {
 			if (i == 0 && dots) drawPt(g,plan.point(0).position());
 			NavPoint np0 = plan.point(i);
 			NavPoint np = plan.point(i+1);
+			TcpData tcp = plan.getTcpData(i+1);
 			if (onUserScreen(np0.position(), np.position(), 10)) {
-				if (np.isTrkTCP()) g.setColor(Turn_Point_Color);
+				if (plan.isTrkTCP(i+1)) g.setColor(Turn_Point_Color);
 				//if (iFP.point(j).isTurnMid()) ptColor = TCPTurnPointColor;
-				if (np.isVsTCP()) g.setColor(VSC_Point_Color);
-				if (np.isGsTCP()) g.setColor(GSC_Point_Color);
+				if (plan.isVsTCP(i+1)) g.setColor(VSC_Point_Color);
+				if (plan.isGsTCP(i+1)) g.setColor(GSC_Point_Color);
 				if (dots) drawPt(g,plan.point(i+1).position(), pointRadius);
 				if (names) {
 					if ( ! np.label().contains("$")) {
@@ -459,7 +461,7 @@ public abstract class ViewPortVert extends ViewPort {
 					}
 				}
 				g.setColor(ptColor);
-				drawSegArrow(g,plan,plan.getTime(i),plan.getTime(i+1),arrows,curves);
+				drawSegArrow(g,plan,plan.time(i),plan.time(i+1),arrows,curves);
 			}
 		}
 		g.setColor(tmp);

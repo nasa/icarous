@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -9,13 +9,15 @@ package gov.nasa.larcfm.Util;
 import java.util.ArrayList;
 
 
-/* Tools for creating a Route, that is a sequence of 3D positions
+/** 
+ * A class (and tools) for creating a Route, that is, a sequence of 3D positions.
+ * Routes can be converted into Plans and vice versa.
  * 
  */
-
 public class Route {
 
 	private ArrayList<String>   names;    
+	private ArrayList<String>   info;    
 	private ArrayList<Position> positions;
 	private ArrayList<Double> radius;                               // optional information about turn
 	public static final String virtualName = "$virtual";
@@ -23,12 +25,14 @@ public class Route {
 	public Route() {
 		positions = new ArrayList<Position>();
 		names = new ArrayList<String>();
+		info = new ArrayList<String>();
 		radius = new ArrayList<Double>();
 	}
 	
 	public Route(Route gsp) {
 		positions = new ArrayList<Position>(gsp.positions);
 		names = new ArrayList<String>(gsp.names);
+		info = new ArrayList<String>(gsp.info);
 		radius = new ArrayList<Double>(gsp.radius);
 	}
 
@@ -43,10 +47,11 @@ public class Route {
 		if (end >= lpc.size()) end = lpc.size()-1;
 		positions = new ArrayList<Position>();
 		names = new ArrayList<String>();
+		info = new ArrayList<String>();
 		radius = new ArrayList<Double>();
 		for (int i = start; i <= end; i++) {
 			NavPoint np = lpc.point(i);
-			add(np.position(),np.label());
+			add(np.position(),np.label(),lpc.getInfo(i));
 		}
 	}
 	
@@ -60,7 +65,9 @@ public class Route {
 
 	/** Create a route from a linear plan and calculate radii using "radius"
 	 * 
-	 * @param lpc      linear plan
+	 * @param fp       linear plan
+	 * @param start    starting index
+	 * @param end      ending index
 	 * @param radius   this radius value is inserted at all vertex points (used in path distance calculations)
 	 * @return         route generated from linear plan
 	 */
@@ -70,7 +77,7 @@ public class Route {
 		Route rt = new Route();
 		for (int i = start; i <= end; i++) {
 			NavPoint np = fp.point(i);
-			rt.add(np.position(),np.label(),radius);
+			rt.add(np.position(),np.label(),fp.getInfo(i),radius);
 		}
 		return rt;
 	}
@@ -85,7 +92,7 @@ public class Route {
 		for (int i = 0; i < fp.size(); i++) {
 			NavPoint np = fp.point(i);
 			if (! np.label().equals("")) {
-			    rt.add(np.position(),np.label());
+			    rt.add(np.position(),np.label(),fp.getInfo(i));
 			}
 		}
 		return rt;
@@ -95,7 +102,7 @@ public class Route {
 	 * 
 	 * @param fp       source plan
 	 * @param radius   radius to be used at every vertex (for path distance calculations)
-	 * @return
+	 * @return new route
 	 */
 	public static Route mkRoute(Plan fp, double radius) {
 	     return mkRoute(fp,0,fp.size()-1,radius);
@@ -104,21 +111,19 @@ public class Route {
 	
 	/** Create a route from a linear plan and calculate radii using "bankAngle"
 	 * 
-	 * @param lpc         linear plan
+	 * @param fp          source plan
 	 * @param bankAngle   bank angle used to calculate radii values (used in path distance calculations)
 	 * @return            Route generated from a linear plan fp,
 	 *                    
 	 */
 	public static Route mkRouteBankAngle(Plan fp, double bankAngle) {
 		Plan lpc = fp.copyWithIndex();
-		//Plan kpc = TrajGen.generateTurnTCPs(lpc, bankAngle);
 		boolean continueGen = true;
-		boolean strict = false;
 		//f.pln(" $$$ mkRouteBankAngle: lpc = "+lpc.toStringGs());
-		Plan kpc = TrajGen.generateTurnTCPs(lpc,bankAngle,continueGen,strict);
+		Plan kpc = TrajGen.generateTurnTCPs(lpc,bankAngle,continueGen);
 		//f.pln(" $$$ mkRouteBankAngle: kpc = "+kpc);
 		if (kpc.hasError()) {
-			f.pln(" WARNING: mkRouteBankAngle: "+kpc.getMessageNoClear());
+			f.pln("WARNING: Route.mkRouteBankAngle: "+kpc.getMessageNoClear());
 		}
 		Route rt = new Route();
 	    double radius = 0.0;
@@ -127,33 +132,40 @@ public class Route {
 		for (int j = 0; j < kpc.size(); j++) {
 		    NavPoint np = kpc.point(j);
 		    //f.pln(" $$$>>>>>>>>>>>>>>>>>>>>>>>>>.. makeRoute: np = "+np);
-		    if (np.isBOT()) {
-		    	radius = np.signedRadius();
+		    if (kpc.isBOT(j)) {
+		    	radius = kpc.signedRadius(j);
 		    	labelBOT = np.label();
-		    } else if (np.isEOT()) {
+		    } else if (kpc.isEOT(j)) {
 		    	radius = 0.0;
 		    	labelBOT = "";
 		    } else {
 		    	String label = np.label();
 		    	if (radius != 0) label = labelBOT;
-		    	int linIndex = np.linearIndex();
+		    	int linIndex = kpc.getTcpData(j).getLinearIndex();
 		    	//f.pln(" $$$>>>>>>>>>>>>>>>>>>>>>>>>>.. makeRoute: linIndex = "+linIndex+" lastLinIndex = "+lastLinIndex);
 		    	if (linIndex != lastLinIndex) { 
 		    		NavPoint np_lpc = lpc.point(linIndex);
+		    		String data = lpc.getInfo(linIndex);
 			    	//f.pln(" $$$>>>>>>>>>>>>>>>>>>>>>>>>> radius = "+Units.str("NM",radius));
-		    	    rt.add(np_lpc.position(),label,radius);
+		    	    rt.add(np_lpc.position(),label,data,radius);
 		    	    lastLinIndex = linIndex;
 		    	}
 		    }
 		}
+		if (rt.size() != fp.size()) {
+			f.pln("WARNING: Route.mkRouteBankAngle: route size "+rt.size()+" != plan size "+fp.size());
+			f.pln("plan="+fp);
+			f.pln("route="+rt);
+		}
 		return rt;
 	}
 
-	/** Create a route from a linear plan and make all radii have the value "radius"
+	/** Create a route which is a subset of the given route (from the starting index, to the ending index)
 	 * 
-	 * @param fp       source plan
-	 * @param radius   radius to be used at every vertex (for path distance calculations)
-	 * @return
+	 * @param fp       source route
+	 * @param start    starting index
+	 * @param end      ending index
+	 * @return         new route
 	 */
 	public static Route mkRouteCut(Route fp, int start, int end) {
 		if (start < 0) start = 0;
@@ -161,7 +173,7 @@ public class Route {
 		Route rt = new Route();
 		for (int i = start; i <= end; i++) {
 			//f.pln(" $$ mkRouteCut: i = "+i+" fp.position(i) = "+fp.position(i)+" fp.name(i) = "+fp.name(i));
-			rt.add(fp.position(i),fp.name(i),fp.radius(i));
+			rt.add(fp.position(i),fp.name(i),fp.info(i),fp.radius(i));
 		}
 		return rt;
 
@@ -190,7 +202,7 @@ public class Route {
 	public Position positionByDistance(int i, double dist, boolean linear) {
         double anyGs = Units.from("kts",300);
 		Plan p = linearPlan(0,anyGs);
-		double startTime = p.getTime(i);
+		double startTime = p.time(i);
 		if ( ! linear) {
 			p = TrajGen.generateTurnTCPsRadius(p); //, 0.0);
 		}
@@ -201,7 +213,12 @@ public class Route {
 		if (i < 0 || i >= size()) return "<INVALID>";
 		else return names.get(i);
 	}
-	
+
+	public String info(int i) {
+		if (i < 0 || i >= size()) return "<INVALID>";
+		else return info.get(i);
+	}
+
 	public double radius(int i) {
 		if (i < 0 || i >= size()) return 0;
 		else return radius.get(i);
@@ -209,48 +226,65 @@ public class Route {
 
 	
 	/**
-	 * 
+	 * Add a position
 	 * @param pos position
 	 * @param label label for point -- if this equals Route.virtualName, then this will become a virtual point when make into a linear plan
+	 * @param data  data field for a point
 	 */
-	public void add(Position pos, String label) {
-		positions.add(pos);
-		names.add(label);
-		radius.add(0.0);
+	public void add(Position pos, String label, String data) {
+		add(pos, label, data, 0.0);
 	}
 	
 	/**
-	 * 
+	 * Add a position
 	 * @param pos position
 	 * @param label label for point -- if this equals Route.virtualName, then this will become a virtual point when make into a linear plan
+	 * @param data  data field for a point
+	 * @param rad     radius
 	 */
-	public void add(Position pos,  String label, double rad) {
+	public void add(Position pos, String label, String data, double rad) {
 		//f.pln(" ################### Route.add: "+pos+" "+label+" radius = "+Units.str("nm",rad));
 		positions.add(pos);
 		names.add(label);
+		info.add(data);
 		radius.add(rad);
 	}
 
 	/**
+	 * Add a position 
 	 * 
+	 * @param ix    index
 	 * @param pos position
 	 * @param label label for point -- if this equals Route.virtualName, then this will become a virtual point when make into a linear plan
+	 * @param data  data field for a point
+	 * @param rad     radius
 	 */
-	public void add(int ix, Position pos,  String label, double rad) {
+	public void add(int ix, Position pos, String label, String data, double rad) {
 		positions.add(ix,pos);
 		names.add(ix,label);
+		info.add(ix,data);
 		radius.add(ix,rad);
 	}
+	
+	public void set(int ix, Position pos, String label, String data, double rad) {
+		positions.set(ix,pos);
+		names.set(ix,label);
+		info.add(data);
+		radius.set(ix,rad);
+	}
+
 		
 	public void remove(int i) {
 		positions.remove(i);
 		names.remove(i);
+		info.remove(i);
 		radius.remove(i);
 	}
 	
 	public void removeFirst() {
 		positions.remove(0);
 		names.remove(0);
+		info.remove(0);
 		radius.remove(0);
 	}
 
@@ -263,12 +297,14 @@ public class Route {
 	public void add(Route p, int ix) {
 		positions.add(p.positions.get(ix));
 		names.add(p.names.get(ix));
+		info.add(p.info.get(ix));
 		radius.add(p.radius.get(ix));
 	}
 	
 	public void addAll(Route p) {
 		positions.addAll(p.positions);
 		names.addAll(p.names);
+		info.addAll(p.info);
 		radius.addAll(p.radius);
 	}
 	
@@ -290,9 +326,10 @@ public class Route {
 	/**
 	 * Return the index of first point that has a label equal to the given string -1 if there are no matches.
 	 * 
-	 *  @param label      String to match
+	 *  @param nm      String to match
+	 *  @param startIx index to begin searching
+	 *  @return index of matching label
 	 */
-
 	public int findName(String nm, int startIx) {
 		for (int i = startIx; i < positions.size(); i++) {
 			String name = names.get(i);
@@ -304,19 +341,39 @@ public class Route {
 	/**
 	 * Return the index of first point that has a label equal to the given string -1 if there are no matches.
 	 * 
-	 *  @param label      String to match
+	 *  @param nm      String to match
+	 *  @return index of matching label
 	 */
-
 	public int findName(String nm) {
 		return findName(nm, 0);
 	}
 
-	
+
 	public void setName(int i, String name) {
 		if (i < 0 || i >= size()) {
 			f.pln(" $$$ ERROR: Route.setName: index out of range");
 		} else {
 			names.set(i,name);
+		}
+	}
+
+	public int findInfo(String nm, int startIx) {
+		for (int i = startIx; i < positions.size(); i++) {
+			//String name = names.get(i);
+			if (info.get(i).equals(nm)) return i;
+		}
+		return -1;
+	}
+	
+	public int findInfo(String nm) {
+		return findInfo(nm, 0);
+	}
+
+	public void setInfo(int i, String data) {
+		if (i < 0 || i >= size()) {
+			f.pln(" $$$ ERROR: Route.setInfo: index out of range");
+		} else {
+			info.set(i,data);
 		}
 	}
 	
@@ -339,16 +396,22 @@ public class Route {
 	public Route copy() {
 		Route rtn = new Route();
 		for (int i = 0; i < positions.size(); i++) {
-             rtn.add(positions.get(i), names.get(i), radius.get(i));
+             rtn.add(positions.get(i), names.get(i), info.get(i), radius.get(i));
 		}
 		return rtn;
+	}
+	
+	public double pathDistance(int i, int j) {
+		boolean linear = false;
+		return pathDistance(i,j,linear);
 	}
 	
 	/**
 	 * Find the path distance between the given starting and ending indexes
 	 * @param i    starting index
 	 * @param j    ending index
-	 * @return
+	 * @param linear if true, use linear distance
+	 * @return distance from i to j; returns -1 if the Route is ill-formed
 	 */
 	public double pathDistance(int i, int j, boolean linear) {
 		//f.pln(" $$ pathDistance: ENTER ============================== i = "+i+" j = "+j);
@@ -380,16 +443,22 @@ public class Route {
 		    	//f.pln(" $$ Route.pathDistance: ................... kpc = "+kpc.toString());
 		    	ArrayList<Integer> iAl = kpc.findLinearIndex(i);
 		    	//f.pln(" iAl = "+iAl);
-		    	if (iAl.size() == 0) return -1;
-		    	if (kpc.point(iAl.get(0)).isBOT()) {
+		    	if (iAl.size() == 0) {
+		    		f.pln(" $$ ERROR: oute.pathDistance("+i+","+j+"): iAl.size() == 0");
+		    		return -1;
+		    	}
+		    	if (kpc.isBOT(iAl.get(0))) {
 		    		kix = iAl.get(1);
 		    	} else {
 		    		kix = iAl.get(0);
 		    	}			
 		    	ArrayList<Integer> jAl = kpc.findLinearIndex(j);
 		    	//f.pln(" j="+j+"  jAl = "+jAl);
-		    	if (jAl.size() == 0) return -1;
-		    	if (kpc.point(jAl.get(0)).isBOT()) {
+		    	if (jAl.size() == 0) {
+		    		f.pln(" $$ ERROR: Route.pathDistance("+i+","+j+"): jAl.size() == 0");
+		    		return -1;
+		    	}
+		    	if (kpc.isBOT(jAl.get(0))) {
 		    		kjx = jAl.get(1);
 		    	} else {
 		    		kjx = jAl.get(0);
@@ -397,8 +466,7 @@ public class Route {
 		    }
 		}
 		double rtn = kpc.pathDistance(kix,kjx,linear);
-		//f.pln(" $$ Route.pathDistance: kix = "+kix+"  kjx="+kjx+" rtn = "+Units.str("NM",rtn));	
-		//f.pln(" $$ pathDistance: EXIT ============================== i = "+i+" j = "+j+" rtn = "+Units.str("NM",rtn));
+		//f.pln(" $$>>>>>>>> Route.pathDistance("+i+","+j+") = kpc.pathDist("+kix+","+kjx+"): rtn = "+Units.str("NM",rtn));
 		return rtn;
 	}
 	
@@ -452,62 +520,30 @@ public class Route {
 		if (positions.size() < 1) return lpc;
 		double lastT = startTime;
 		Position lastNp = positions.get(0);
-		lpc.add(new NavPoint(lastNp,startTime).makeLinearIndex(0).makeLabel(names.get(0)));
+		NavPoint nvp = new NavPoint(lastNp,startTime).makeLabel(names.get(0)); //TODO: no INFO
+		TcpData  tcp = TcpData.makeSource(nvp).setLinearIndex(0);
+		lpc.add(nvp,tcp);
 		for (int i = 1; i < positions.size(); i++) {
 			Position np = positions.get(i);
 			double pathDist = np.distanceH(lastNp);
 			double t = lastT + pathDist/gs;
 			double rad = radius.get(i);
 			//f.pln(" $$$ linearPlan: gs = "+Units.str("kn",gs)+" t = "+t+" rad = "+Units.str("ft",rad));
-			NavPoint nvp = new NavPoint(np,t).makeRadius(rad).makeLinearIndex(i).makeLabel(names.get(i));
-			if (names.get(i).equals(virtualName)) nvp = nvp.makeVirtual();
-			lpc.add(nvp);
+			nvp = new NavPoint(np,t).makeLabel(names.get(i)); //TODO: no INFO
+			tcp = TcpData.makeSource(nvp).setRadiusSigned(rad).setLinearIndex(i).setInformation(info.get(i));
+			//NavPt navP = new NavPt(nvp,tcp);
+			if (info.get(i).equals(virtualName)) tcp = tcp.setVirtual();
+			lpc.add(nvp,tcp);
 			lastT = t;
 			lastNp = np;
 		}
 		return lpc;
 	}
 	
-	// TODO: NMG method to avoid assuming a groundspeed (assume linear increasing index time)
-	public Plan path2D() {
-		Plan pathPlan = new Plan("");
-		if (positions.size() < 1) return pathPlan;
-		double t = 0.0;
-		pathPlan.add(new NavPoint(positions.get(0),t).makeLinearIndex(0).makeLabel(names.get(0)));
-		for (int i = 1; i < positions.size(); i++) {
-			Position np = positions.get(i);
-			double rad = radius.get(i);
-			// no radius or end of route point
-			if (Util.almost_equals(0.0,rad) || i==positions.size()-1) {		
-				t+=1.0;
-				NavPoint nvp = new NavPoint(np,t).makeRadius(rad).makeLinearIndex(i).makeLabel(names.get(i));
-				if (names.get(i).equals(virtualName)) nvp = nvp.makeVirtual();
-				pathPlan.add(nvp);
-				continue;
-			}
-			// insert BOT point
-			t+=1.0;
-			double trkIn = GreatCircle.velocity_initial(np.lla(), positions.get(i-1).lla(), 1.0).trk() + Math.PI;
-			double trkOut = GreatCircle.velocity_initial(np.lla(), positions.get(i+1).lla(), 1.0).trk();
-			double theta = Util.turnDelta(trkIn, trkOut);
-			double distBOT = rad * Math.tan(theta/2);
-			LatLonAlt BOTLLA = GreatCircle.linear_initial(np.lla(), trkIn+Math.PI/2, distBOT);
-			Position BOTpos = new Position(BOTLLA);
-			NavPoint BOT = new NavPoint(BOTpos,t).makeBOT(BOTpos, t, Velocity.makeTrkGsVs(trkIn, 0.0, 0.0), Util.turnDir(trkIn, trkOut)*rad, i).makeLabel(names.get(i));
-			if (names.get(i).equals(virtualName)) BOT = BOT.makeVirtual();
-			pathPlan.add(BOT);
-			// insert EOT point
-			t+=1.0;
-			double distEOT = distBOT;
-			LatLonAlt EOTLLA = GreatCircle.linear_initial(np.lla(), trkOut, distEOT);
-			Position EOTpos = new Position(EOTLLA);
-			NavPoint EOT = new NavPoint(EOTpos,t).makeBOT(EOTpos, t, Velocity.makeTrkGsVs(trkOut, 0.0, 0.0), Util.turnDir(trkIn, trkOut)*rad, i);
-			pathPlan.add(EOT);
-		}
-		return pathPlan;
-	}
 	
 	/** test equality of GsPlans
+	 * @param fp another route
+	 * @return true, if equal
 	 */
 	public boolean equals(Route fp) {
 		for (int i = 0; i < fp.size(); i++) {                // Unchanged
@@ -524,8 +560,8 @@ public class Route {
 		String rtn = "PrePlan size = "+positions.size()+"\n";
 		double dist = 0;
 		for (int i = 0; i < positions.size(); i++) {
-			rtn += " "+f.padLeft(""+i,2)+" "+positions.get(i)+" "+f.padRight(names.get(i),15);
-			if (radius(i) != 0.0) rtn += " radius = "+Units.str("NM",radius(i));
+			rtn += " "+f.padLeft(""+i,2)+" "+positions.get(i).toString2D(6)+" "+f.padRight(names.get(i)+info.get(i),15);
+			if (radius(i) != 0.0) rtn += " radius = "+Units.str("NM",radius(i),4);
 			if (i > 0) dist += pathDistance(i-1,i, false);
 			rtn += " dist="+Units.str("NM",dist);
 			rtn += "\n";

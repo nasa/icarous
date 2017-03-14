@@ -3,7 +3,7 @@
  * 
  * 2-D vectors.
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -47,17 +47,22 @@ public /*final*/ class Vect2 {
 
   /**
    * Zero constant.
+   * @return zero vector
    */
   public static Vect2 Zero() {
     return new Vect2();
   }
 
-  /** The x component */
+  /** The x component 
+   * @return x component
+   * */
   public double x() {
     return x;
   }
 
-  /** the y component */
+  /** the y component 
+   * @return y component
+   * */
   public double y() {
     return y;
   }
@@ -231,6 +236,7 @@ public /*final*/ class Vect2 {
   /**
    * Compass angle from this position to v2
    * 
+   * @param v2 vector
    * @return the track angle of <code>v2-this</code> vector in the range 
    * [<code>0</code>, <code>2*Math.PI</code>). Convention is clockwise with respect to north.
    */
@@ -265,8 +271,11 @@ public /*final*/ class Vect2 {
   /**
    * Determine if vop is to the right or to the left of vo.
    * Returns 1 if vop is to the right, -1 if vop is to the left.
-   *  
-   **/
+   * 
+   * @param vo   first vector
+   * @param vop  second vector
+   * @return 1 if vop is to the right, -1 if vop is to the left
+   */
   public static int right_or_left(Vect2 vo, Vect2 vop) {
     return Util.sign(vop.det(vo));
   }  
@@ -433,6 +442,7 @@ public /*final*/ class Vect2 {
 
   /**
    * Returns true if the current vector has an "invalid" value
+   * @return true if invalid
    */
   public boolean isInvalid() {
     return Double.isNaN(x) || Double.isNaN(y);
@@ -440,6 +450,12 @@ public /*final*/ class Vect2 {
 
   /** 
    * Return actual time of closest point approach (return negative infinity if parallel)
+   * 
+   * @param so position of ownship
+   * @param vo velocity of ownship
+   * @param si position of intruder
+   * @param vi velocity of intruder
+   * @return time of closest point of approach
    */
   public static double actual_tcpa (Vect2 so, Vect2 vo, Vect2 si, Vect2 vi) {
     double rtn;
@@ -456,6 +472,12 @@ public /*final*/ class Vect2 {
 
   /** Return time to closest point of approach 
    * if time is negative or velocities are parallel returns 0
+   * 
+   * @param so position of ownship
+   * @param vo velocity of ownship
+   * @param si position of intruder
+   * @param vi velocity of intruder
+   * @return time of closest point of approach
    */
   public static double tcpa(Vect2 so, Vect2 vo, Vect2 si, Vect2 vi) {
     double t;
@@ -470,7 +492,13 @@ public /*final*/ class Vect2 {
   }
 
   /** distance at time of closest point of approach
-   **/
+   * 
+   * @param so position of ownship
+   * @param vo velocity of ownship
+   * @param si position of intruder
+   * @param vi velocity of intruder
+   * @return distance at time of closest point of approach
+   */
   public static double dcpa(Vect2 so, Vect2 vo, Vect2 si, Vect2 vi) {
     double t = tcpa(so,vo,si,vi);
     Vect2 s = so.Sub(si);
@@ -481,6 +509,13 @@ public /*final*/ class Vect2 {
 
   /**
    * distance at time of closest approach within time bound [0,T]
+   * 
+   * @param so position of ownship
+   * @param vo velocity of ownship
+   * @param si position of intruder
+   * @param vi velocity of intruder
+   * @param T time bound
+   * @return distance at time of closest point of approach
    */
   public static double dcpa (Vect2 so, Vect2 vo, Vect2 si, Vect2 vi, double T) {
     double t = Util.min(tcpa(so,vo,si,vi),T);
@@ -495,6 +530,7 @@ public /*final*/ class Vect2 {
    * @param s point on line
    * @param v direction vector of line
    * @param q a point not on the line
+   * @return perpendicular distance
    */
   public static double distPerp(Vect2 s, Vect2 v, Vect2 q) {
     double tp = q.Sub(s).dot(v)/v.sqv();
@@ -506,6 +542,7 @@ public /*final*/ class Vect2 {
    * @param s point on line
    * @param v direction vector of line
    * @param q a point not on the line
+   * @return longitudinal distance
    */
   public static double distAlong(Vect2 s, Vect2 v, Vect2 q) {
     double tp = q.Sub(s).dot(v)/v.sqv();
@@ -543,7 +580,10 @@ public /*final*/ class Vect2 {
     return toString(Constants.get_output_precision());
   }
 
-	/** A string representation of this vector */
+	/** A string representation of this vector 
+	 * @param precision number of digits of precision
+	 * @return string representation
+	 * */
   public String toString(int precision) {
     return formatXY(precision,"(",", ",")");
   }
@@ -564,7 +604,7 @@ public /*final*/ class Vect2 {
    * Returns true if x components and y components of both vectors are within the given bounds
    * @param v2
    * @param epsilon
-   * @return
+   * @return true if vector is within bounds
    */
   public boolean within_epsilon(Vect2 v2, double epsilon) {
     if (Math.abs(x - v2.x) > epsilon) return false;

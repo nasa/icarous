@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -7,12 +7,16 @@
 package gov.nasa.larcfm.IO;
 
 /**
- * Classes implementing this interface communicate with one or more Receiver objects.
+ * Classes implementing this interface communicate with one or more specific Receiver objects.  
+ * Generally a Transmitter and Receiver are created as a coupled pair.
+ * A Transmitter may only communicate with a specific type of Receiver and vice versa, which share a common communication medium and encoding method.
+ * It is not necessary for a Transmitter to be able to speak with arbitrary Receivers.
  * 
- * Over the communication medium, it should allow three main types of message:
- * - subscription request
- * - data push OR (update status query AND data request)  
+ * Over the communication medium, it should allow two main types of message:
+ * - subscription request: client attempts to request data based on a given keyword.  If it is a recognized keyword, register the client, otherwise close the connection.
+ * - data transfer: this data may be automatically pushed out to all subscribers on the server's timeframe, or subscribers may explicitly request data on their timeframes,
  * 
+ * The details of how these are accomplished are determined by a particular Transmitter/Receiver matched pair.
  */
 public interface Transmitter {
 	/**
@@ -22,6 +26,10 @@ public interface Transmitter {
 	 */
 	public void publish(String address, String keyword);
 	
+	/**
+	 * Publisher removes a certain keyword from its publishing list.
+	 * @param keyword Keywords to remove
+	 */
 	public void unpublish(String keyword);
 	
 	/**
@@ -38,4 +46,10 @@ public interface Transmitter {
 	 * @return
 	 */
 	public boolean hasSubscribers(String keyword);
+	
+	/**
+	 * Attempts to cleanly shuts down this transmitter, releasing any associated resources.  This does not "unpublish" the transmitter. 
+	 * @return true if shut down successfully.
+	 */
+	public boolean shutdown();
 }

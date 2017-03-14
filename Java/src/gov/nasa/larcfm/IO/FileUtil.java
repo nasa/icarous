@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -29,7 +29,7 @@ public final class FileUtil {
 	  /**
 	   * Given a file name return the path of this name.
 	   * This also converts backward slashes to forward slashes.
-	   * @filename the name of the file
+	   * @param filename the name of the file
 	   * @return the path of the file, if no path, then an empty string is returned.
 	   */
 	  public static String get_path(String filename) {
@@ -38,7 +38,7 @@ public final class FileUtil {
 	  
 	  /**
 	   * Given a file name return the extension of this name.
-	   * @filename the name of the file
+	   * @param filename the name of the file
 	   * @return the extension--part of filename after last period (.)
 	   */
 	  public static String get_extension(String filename) {
@@ -48,7 +48,7 @@ public final class FileUtil {
 	  /**
 	   * Given a file name return the Java version of this name.
 	   * This converts backward slashes to forward slashes.
-	   * @filename the name of the file
+	   * @param filename the name of the file
 	   * @return the Java-native version of the filename
 	   */
 	  public static String unifyFileName(String filename) {

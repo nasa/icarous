@@ -2,7 +2,7 @@
  *
  * Contact: George Hagen
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -21,6 +21,7 @@ import gov.nasa.larcfm.Util.SimpleMovingPoly;
 import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
+import gov.nasa.larcfm.Util.f;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -86,47 +87,6 @@ public class GeneralSequenceReader extends GeneralStateReader {
 		fname = "";
 	}
 
-//	public GeneralSequenceReader(String filename) {
-//		fname = filename;
-//		error = new ErrorLog("SequenceReader("+filename+")");
-//		if (filename == null || filename.equals("")) {
-//			error.addError("No file specified");
-//			return;
-//		}
-//		SeparatedInput si;
-//		try {    
-//			si = new SeparatedInput(new FileReader(filename));
-//		} catch (FileNotFoundException e) {
-//			error.addError("File "+filename+" read protected or not found");
-//			return;
-//		}
-//        input = si;
-//		input.setCaseSensitive(false);            // headers & parameters are lower case
-//		loadfile();
-//	}
-
-//	/** Read a new file into an existing StateReader.  Parameters are preserved if they are not specified in the file. */
-//	public void open(Reader r) {
-//		if (r == null) {
-//			error.addError("Null Reader provided to GeneralStateReader");
-//			return;
-//		}
-//		fname = "<none>";
-//		SeparatedInput si;
-//		si = new SeparatedInput(r);
-//		si.setCaseSensitive(false);            // headers & parameters are lower case
-//		List<String> params = input.getParametersRef().getList();
-//		for (String p: params) {
-//			si.getParametersRef().set(p, input.getParametersRef().getString(p));
-//		}
-//		for (int i = 0; i < head.length; i++) {
-//			head[i] = -1;
-//		}
-//		input = si;
-//		loadfile();
-//	}
-
-	// open(Reader r) inherited from GeneralStateReader
 	
 	/** Read a new file into an existing StateReader.  Parameters are preserved if they are not specified in the file. */
 	public void open(String filename) {
@@ -156,7 +116,27 @@ public class GeneralSequenceReader extends GeneralStateReader {
 		loadfile();
 	}
 
-	
+	/** Read a new file into an existing StateReader.  Parameters are preserved if they are not specified in the file. */
+	public void open(Reader r) {
+		if (r == null) {
+			error.addError("Null Reader provided to GeneralSequenceReader");
+			return;
+		}
+		fname = "<none>";
+		SeparatedInput si;
+		si = new SeparatedInput(r);
+		si.setCaseSensitive(false);            // headers & parameters are lower case
+		List<String> params = input.getParametersRef().getList();
+		for (String p: params) {
+			si.getParametersRef().set(p, input.getParametersRef().getString(p));
+		}
+		for (int i = 0; i < head.length; i++) {
+			head[i] = -1;
+		}
+		input = si;
+		loadfile();
+	}
+
 	private void loadfile() {
 		hasRead = false;
 		clock = true;
@@ -174,7 +154,7 @@ public class GeneralSequenceReader extends GeneralStateReader {
         double h = Constants.get_horizontal_accuracy();
         double v = Constants.get_vertical_accuracy();
         double t = Constants.get_time_accuracy();
-      
+
 
 		while ( ! input.readLine()) {
 			// look for each possible heading
@@ -213,7 +193,7 @@ public class GeneralSequenceReader extends GeneralStateReader {
               if (getParametersRef().contains("filetype")) {
             	  String sval = getParametersRef().getString("filetype");
                   if (!sval.equalsIgnoreCase("state") && !sval.equalsIgnoreCase("history") && !sval.equalsIgnoreCase("sequence")) {
-            	    error.addError("Wrong filetype: "+sval);
+            	    error.addError("Wrong filetype: "+sval);            	    
             	    break;
                   }
               }
@@ -265,7 +245,6 @@ public class GeneralSequenceReader extends GeneralStateReader {
 				tm = parseClockTime(input.getColumnString(head[TM_CLK]));
 			}
 
-			
 			Map<String, GeneralState >  sequenceEntry;
 			if (sequenceTable.containsKey(tm)) {
 				sequenceEntry = sequenceTable.get(tm);
@@ -433,13 +412,9 @@ public class GeneralSequenceReader extends GeneralStateReader {
 	 *  Returns a sorted list of all sequence keys
 	 */
 	public ArrayList<Double> sequenceKeys() {
-		ArrayList<Double> arl = new ArrayList<Double>();
-		for (Iterator<Double> e = sequenceTable.keySet().iterator(); e.hasNext();) {
-			arl.add(e.next());
-		}
-		Double[] ar = arl.toArray(new Double[0]);
+		Double[] ar = sequenceTable.keySet().toArray(new Double[0]);
 		Arrays.sort(ar);
-		arl = new ArrayList<Double>(Arrays.asList(ar));
+		ArrayList<Double>arl = new ArrayList<Double>(Arrays.asList(ar));
 		return arl;
 	}
 
@@ -537,10 +512,10 @@ public class GeneralSequenceReader extends GeneralStateReader {
 
 	/** Returns a (deep) copy of all GeneralStates (at all times) in the file */
 	public ArrayList<GeneralState> getGeneralStateList() {
-		ArrayList<GeneralState> s = new ArrayList<GeneralState>(states.size());
+		ArrayList<GeneralState> s = new ArrayList<GeneralState>();
 		for (double key : sequenceKeys()) {
 			setActive(key);
-			s.addAll(super.getGeneralStateList());
+			s.addAll(states);
 		}
 		return s;
 	}

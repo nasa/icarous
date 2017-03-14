@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -11,9 +11,7 @@ import gov.nasa.larcfm.Util.PolyPath.PathMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Hashtable;
 import java.util.Random;
-import java.util.TreeSet;
 
 public class PolyUtil {
 
@@ -82,8 +80,10 @@ public class PolyUtil {
 	 * For purposes of this algorithm, we only consider x, y values of positions (since all calculations are relative and no points are moved).
 	 * This uses the NE-most point as the origin, to allow for our track computations (0 is north) and proceeds in a clockwise fashion
 	 * This assumes that the resulting hull will not include the north or south poles (for lat lon positions)
-	 * @param p
-	 * @return
+	 * @param plist list of positions
+	 * @param bottom lower altitude
+	 * @param top top altitude
+	 * @return SimplePoly
 	 */
 	public static SimplePoly convexHull(ArrayList<Position> plist, double bottom, double top) {
 		ArrayList<Triple<Position,Integer,Double>> elems = new ArrayList<Triple<Position,Integer,Double>>(); // vertex position, vertex index in original polygon, angle from origin point
@@ -136,11 +136,6 @@ public class PolyUtil {
 	 * This assumes that the resulting hull will not include the north or south poles.
 	 */
 	public static SimplePoly convexHull(SimplePoly p) {
-//		// fails if polygon contains either pole
-//		if (p.isLatLon() && (p.contains(new Position(LatLonAlt.NORTHPOLE)) || p.contains(new Position(LatLonAlt.SOUTHPOLE)))) {
-//			f.pln("ERROR: SimplePoly.convexHull cannot process polygons including either of the poles");
-//			return null;
-//		}
 		return convexHull(p.points, p.bottom, p.top);
 	}
 
@@ -655,8 +650,8 @@ public class PolyUtil {
 			int i = 1;
 			while (i < curr.size()-1) {
 				tmp = curr.copy();
-				double start = tmp.getTime(i-1);
-				double end = tmp.getTime(i+1);
+				double start = tmp.time(i-1);
+				double end = tmp.time(i+1);
 				tmp.remove(i);
 				tmp = PlanUtil.linearMakeGSConstant(tmp,gs);
 				if (isPlanInConflictWx(tmp, paths, start, end, incr).first < 0) {
@@ -691,6 +686,13 @@ public class PolyUtil {
 		return new Pair<Double,String>(-1.0,"");
 	}
 
+	/** 
+	 * 
+	 * @param plan     Plan
+	 * @param paths    polygon paths
+	 * @param incr     the step size for the search 
+	 * @return         time of conflict with weather or -1, string containing name of polygon 
+	 */
 	public static Pair<Double,String>  isPlanInConflictWx(Plan plan, ArrayList<PolyPath> paths, double incr) {
 		 return isPlanInConflictWx(plan,paths,incr,plan.getFirstTime());
 	}

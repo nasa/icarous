@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -12,6 +12,7 @@ import static gov.nasa.larcfm.Util.f.Fm2;
 import static gov.nasa.larcfm.Util.f.Fm3;
 import gov.nasa.larcfm.Util.NavPoint;
 import gov.nasa.larcfm.Util.Plan;
+import gov.nasa.larcfm.Util.TcpData;
 import gov.nasa.larcfm.Util.Units;
 import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.f;
@@ -205,7 +206,7 @@ public class NavPointViewer extends JFrame {
 				double lastTime = -1;
 				int foundK = -1;
 				for (int k = 0; k < acPlan.size(); k++) {
-					double time_k = acPlan.getTime(k);
+					double time_k = acPlan.time(k);
 					if (lastTime <= newT && newT <= time_k) {
 						foundK = k;
 						f.pln(" %%%%%%%%%%%%%%%%% foundK = "+foundK);
@@ -546,17 +547,18 @@ public class NavPointViewer extends JFrame {
 				}
 				
 				NavPoint np = iFP.point(pick); 
+				TcpData tcp = iFP.getTcpData(pick);
 				
-				if (np.isTCP()) {
-					msg = "src=("+np.sourcePosition().toStringNP(2)+","+Fm2(np.sourceTime())+")";
-					if (np.isBOT()) {
-						msg += " R="+Fm2(Units.to(unitsHDist, np.trkAccel()))+unitsHDist;						
-					} else if (np.isBGS()) {
-							msg += Fm2(Units.to(unitsHDist, np.gsAccel()))+unitsHDist;						
-					} else if (np.isBVS()) {
-						msg += Fm2(Units.to(unitsHDist, np.vsAccel()))+unitsHDist;						
+				if (tcp.isTCP()) {
+					msg = "src=("+tcp.getSourcePosition().toStringNP(2)+","+Fm2(tcp.getSourceTime())+")";
+					if (tcp.isBOT()) {
+						msg += " R="+Fm2(Units.to(unitsHDist, iFP.turnRadius(pick)))+unitsHDist;						
+					} else if (tcp.isBGS()) {
+							msg += Fm2(Units.to(unitsHDist, iFP.gsAccel(pick)))+unitsHDist;						
+					} else if (tcp.isBVS()) {
+						msg += Fm2(Units.to(unitsHDist, iFP.vsAccel(pick)))+unitsHDist;						
 					}
-					msg += " Vin=("+np.velocityInit().toStringNP(2)+")";
+					//msg += " Vin=("+iFP.velocityInit(pick).toStringNP(2)+")";
 				}
 
 				if (isLatLon()) {

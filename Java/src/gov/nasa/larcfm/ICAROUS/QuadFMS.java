@@ -422,8 +422,8 @@ public class QuadFMS extends FlightManagementSystem{
 		wp1 = new NavPoint(current,0);
 		wp2 = new NavPoint(next,ETA);
 
-		FlightData.ResolutionPlan.add(wp1);
-		FlightData.ResolutionPlan.add(wp2);
+		FlightData.ResolutionPlan.addNavPoint(wp1);
+		FlightData.ResolutionPlan.addNavPoint(wp2);
 		FlightData.nextResolutionWP = 0;
 		planType      = plan_type_t.TRAJECTORY;
 		

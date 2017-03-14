@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -20,22 +20,22 @@ import java.util.ArrayList;
 public class GsPlan { //extends Route {
 
 	private Route rt;
-	private ArrayList<Double>  gsInits;                  // initial ground speeds
-	public String id;                                   // name of the GsPlan
+	private ArrayList<Double>  gsOuts;                   // ground speeds out
+	public String id;                                    // name of the GsPlan
 	private double startTime;                            // start time 
 	public static final String virtualName = "$virtual";
 		
 	public GsPlan(double startTime) {
 		rt = new Route();
 		id = "";
-		gsInits  = new ArrayList<Double>();
+		gsOuts  = new ArrayList<Double>();
 		this.startTime = startTime;
 	}
 
 	public GsPlan(String s) {
 		rt = new Route();
 		id = s;
-		gsInits  = new ArrayList<Double>();
+		gsOuts  = new ArrayList<Double>();
 		this.startTime = 0.0;
 	}
 
@@ -50,16 +50,17 @@ public class GsPlan { //extends Route {
 	 * 
 	 */
 	public GsPlan(Plan lpc, int start, int end) {
+		//f.pln(" $$$$ GsPlan Constructor: start = "+start+" end = "+end+" lpc = "+lpc.toStringGs());
 		if (start < 0) start = 0;
 		if (end >= lpc.size()) end = lpc.size()-1;
 		rt = new Route();
 		id = lpc.getName();
-		gsInits  = new ArrayList<Double>();
+		gsOuts  = new ArrayList<Double>();
 		for (int i = start; i <= end ; i++) {
 			NavPoint np = lpc.point(i);
-			Velocity vel = lpc.initialVelocity(i);
-			//f.pln(" $$$ GsPlan: i = "+i+"  "+np.tcpTypeString()+" gsInitial() = "+Units.str("kn",vel.gs()));
-			add(np.position(),np.label(),vel.gs());
+			double gsOut_i = lpc.gsOut(i);  
+			//f.pln(" $$$ GsPlan: i = "+i+" gsOut_i() = "+Units.str("kn",gsOut_i));
+			add(np.position(),np.label(),lpc.getInfo(i),gsOut_i);
 		}
 		startTime = lpc.getFirstTime();
 	}
@@ -80,7 +81,7 @@ public class GsPlan { //extends Route {
 	public GsPlan(GsPlan gsp) {
 		rt = new Route(gsp.rt);
 		id = gsp.id;
-		gsInits  = new ArrayList<Double>(gsp.gsInits);
+		gsOuts  = new ArrayList<Double>(gsp.gsOuts);
 		startTime = gsp.startTime;
 	}
 	
@@ -94,9 +95,9 @@ public class GsPlan { //extends Route {
 	public GsPlan(Route rt, String name, double startTime, double gsAll) {
 		this.rt = rt;
 		id = name;
-		gsInits  = new ArrayList<Double>();
+		gsOuts  = new ArrayList<Double>();
 		for (int j = 0; j < rt.size(); j++) {		
-			gsInits.add(gsAll);
+			gsOuts.add(gsAll);
 		}
  		this.startTime = startTime;
 	}
@@ -105,7 +106,7 @@ public class GsPlan { //extends Route {
 	 * 
 	 * @param gsp      The source GsPlan
 	 * @param gsNew    the ground speed used on every segment
-	 * @return
+	 * @return a new GsPlan
 	 */
 	public static GsPlan makeGsPlanConstant(GsPlan gsp, double gsNew) {
 		GsPlan gspNew = new GsPlan(gsp);
@@ -121,13 +122,14 @@ public class GsPlan { //extends Route {
 	 * 
 	 * @param lpc         linear plan
 	 * @param bankAngle   bank angle used for turn generation
-	 * @return
+	 * @return a new GsPlan
 	 */
 	public static GsPlan mkGsPlanBankAngle(Plan lpc, double bankAngle) {
 		Route rt = Route.mkRouteBankAngle(lpc,bankAngle);
 		GsPlan gsp = new GsPlan(rt, lpc.getName(), lpc.getFirstTime(), 0.0);
-		for (int j = 0; j < lpc.size(); j++) {
-			gsp.gsInits.set(j,lpc.gsOut(j));
+		f.pln(lpc.size()+" "+gsp.size());
+		for (int j = 0; j < rt.size(); j++) {
+			gsp.gsOuts.set(j,lpc.gsOut(j));
 		}
         return gsp;
 	}
@@ -145,38 +147,59 @@ public class GsPlan { //extends Route {
 	}
 	
 	public double gs(int i) {
-		return gsInits.get(i);
+		return gsOuts.get(i);
 	}
 	
 	/** Provide a copy of the route in this GsPlan
 	 * 
-	 * @return
+	 * @return route
 	 */
 	public Route route() {
 		return new Route(rt);
 	}
 	
 	/**
-	 * 
+	 * Add a position
 	 * @param pos position
 	 * @param label label for point -- if this equals GsPlan.virtualName, then this will become a virtual point when make into a linear plan
-	 * @param gsInitial grounds speed
+	 * @param info  information for a point
+	 * @param gsOut grounds speed
+	 * @param radius radius of turn
 	 */
-	public void add(Position pos, String label, double gsInitial, double rad) {
+	public void add(Position pos, String label, String info, double gsOut, double radius) {
 		//f.pln(" $$###>>>>> GsPlan.add: "+pos+" "+label+" gsin = "+Units.str("kn",gsin)+" radius = "+Units.str("nm",rad));
-		rt.add(pos, label, rad);
-			gsInits.add(gsInitial);
+		rt.add(pos, label, info, radius);
+		gsOuts.add(gsOut);
 	}
 	
+	
 	/**
-	 * 
+	 * Sets a point
+	 * @param ix  index of the point
 	 * @param pos position
 	 * @param label label for point -- if this equals GsPlan.virtualName, then this will become a virtual point when make into a linear plan
-	 * @param gsInitial grounds speed
+	 * @param info  information for a point
+	 * @param gsOut ground speed out of "ix"
 	 */
-	public void add(Position pos, String label, double gsInitial) {
-		rt.add(pos, label, 0.0);
-		gsInits.add(gsInitial);
+	public void set(int ix, Position pos, String label, String info, double gsOut) {
+		//f.pln(" $$###>>>>> GsPlan.set: ix = "+ix+" ps = "+pos+" "+label+" gsin = "+Units.str("kn",gsOut));
+        double radius = 0.0;
+		rt.set(ix, pos, label, info, radius);
+	    gsOuts.set(ix, gsOut);
+	}
+
+	
+	/**
+	 * Add a position 
+	 * @param pos position
+	 * @param label label for point -- if this equals GsPlan.virtualName, then this will become a virtual point when make into a linear plan
+	 * @param info  information for a point
+	 * @param gsOut ground speed out 
+	 */
+	public void add(Position pos, String label, String info, double gsOut) {
+        double radius = 0.0;
+		rt.add(pos, label, info, radius);
+		gsOuts.add(gsOut);
 	}
 
 	
@@ -185,70 +208,30 @@ public class GsPlan { //extends Route {
 	 *  It makes the ground speed the same as the last one, if there is a previous point, otherwise -1.0
 	 * 
 	 */
-	public void add(Position pos, String label) {
-		rt.add(pos, label, 0.0);
-		if (gsInits.size() > 0) {
-		   gsInits.add(gsInits.get(gsInits.size()-1));
+	public void add(Position pos, String label, String info) {
+		rt.add(pos, label, info, 0.0);
+		if (gsOuts.size() > 0) {
+		   gsOuts.add(gsOuts.get(gsOuts.size()-1));
 		} else {
-		   gsInits.add(-1.0);
+		   gsOuts.add(-1.0);
 		}
 	}
 	
 	
-//	/** This method is primarily added to prevent accidental use of lower level Route method
-//	 * 
-//	 *  It makes the ground speed equal to defaultGroundSpeed
-//	 * 
-//	 */
-//	void add(Position pos, String label) {
-//		positions.add(pos);
-//		names.add(label);
-//		gsAts.add(defaultGroundSpeed);
-//	}
-
-
-	public Position position(int i) {
-		return rt.position(i);				
-	}
-	
-	public Position last() {
-		return rt.position(size()-1);
-	}
-	
-	public String name(int i) {
-		return rt.name(i);
-	}
-	
-	public double radius(int i) {
-		return rt.radius(i);
-	}
-	
-	public void setRadius(int i, double rad) {
-		if (i < 0 || i >= size()) {
-			f.pln(" $$$ ERROR: Route.setName: index out of range");
-		} else {
-			rt.setRadius(i,rad);
-		}
-	}
-
-	public ArrayList<Double> getGsInits() {
-		return gsInits;
-	}
-
 	/** add point "ix" from GsPlan "p"
 	 * 
 	 * @param p
 	 * @param ix
 	 */
 	public void add(GsPlan p, int ix) {
-		rt.add(p.position(ix),p.name(ix),p.radius(ix));
-		gsInits.add(p.gsInits.get(ix));
+		rt.add(p.position(ix),p.name(ix),p.info(ix),p.radius(ix));
+		gsOuts.add(p.gsOuts.get(ix));
 		//f.pln(" $$ GsPlan add "+p.names.get(ix));
 	}
 
 	public void addAll(GsPlan p) {
 		rt.addAll(p.rt);
-		gsInits.addAll(p.gsInits);
+		gsOuts.addAll(p.gsOuts);
 	}
 	
 	/** Create a new GsPlan that is a copy of this one, then add all the elements from p2 to this new GsPlan 
@@ -265,12 +248,44 @@ public class GsPlan { //extends Route {
 	
 	public void remove(int i) {
 		rt.remove(i);
-		gsInits.remove(i);
+		gsOuts.remove(i);
 	}
 
 
+	public Position position(int i) {
+		return rt.position(i);				
+	}
+	
+	public Position last() {
+		return rt.position(size()-1);
+	}
+	
+	public String name(int i) {
+		return rt.name(i);
+	}
+	
+	public String info(int i) {
+		return rt.info(i);
+	}
+	
+	public double radius(int i) {
+		return rt.radius(i);
+	}
+	
+	public void setRadius(int i, double rad) {
+		if (i < 0 || i >= size()) {
+			f.pln(" $$$ ERROR: Route.setName: index out of range");
+		} else {
+			rt.setRadius(i,rad);
+		}
+	}
+
+	public ArrayList<Double> getGsInits() {
+		return gsOuts;
+	}
+
 	public void setGs(int i, double gsin) {
-	     gsInits.set(i,gsin);
+	     gsOuts.set(i,gsin);
 	}
 	
 	public double startTime() {
@@ -296,6 +311,10 @@ public class GsPlan { //extends Route {
 	 */
 	public int findName(String nm) {
 		return rt.findName(nm);
+	}
+
+	public int findInfo(String nm) {
+		return rt.findInfo(nm);
 	}
 
 	
@@ -336,17 +355,21 @@ public class GsPlan { //extends Route {
 		if (rt.size() < 1) return lpc;
 		double lastT = startTime;
 		Position lastNp = position(0);
-		lpc.add(new NavPoint(lastNp,startTime).makeLabel(name(0)));
+		//f.pln(" $$$ GsPlan.linearPlan: lastNp = "+lastNp);
+		lpc.addNavPoint(new NavPoint(lastNp,startTime).makeLabel(name(0)));
 		for (int i = 1; i < rt.size(); i++) {
 			Position np = position(i);
 			double pathDist = np.distanceH(lastNp);
-			double gs_i = gsInits.get(i-1);
+			double gs_i = gsOuts.get(i-1);
 			double t = lastT + pathDist/gs_i;
 			//f.pln(" $$$ linearPlan: gs = "+Units.str("kn",gs_i)+" t = "+t);
-			NavPoint nvp = new NavPoint(np,t).makeRadius(radius(i)).makeLabel(name(i));
-			if (name(i).equals(virtualName)) nvp = nvp.makeVirtual();
+			NavPoint nvp = new NavPoint(np,t).makeLabel(name(i));
+			//f.pln(" $$$ GsPlan.linearPlan: i = "+i+" nvp = "+nvp);
+			TcpData tcp = TcpData.makeSource(nvp).setRadiusSigned(radius(i));
+			//NavPt nvPair= new NavPt(nvp,tcp);
+			if (name(i).equals(Route.virtualName)) tcp = tcp.setVirtual();
 			//f.pln(" $$$$$ GsPlan.linearPlan: nvp = "+nvp.toStringFull());
-			lpc.add(nvp);
+			lpc.add(nvp,tcp);
 			lastT = t;
 			lastNp = np;
 		}
@@ -400,7 +423,7 @@ public class GsPlan { //extends Route {
 	 * Position at distance
 	 * @param dist distance to query
 	 * @param defaultBank default bank angle for turns (overridden by radius)
-	 * @param linear flse to generate turns
+	 * @param linear flag to generate turns
 	 * @return position at horizontal distance (does not incorporate vertical or ground speed accelerations)
 	 */
 	public Position positionFromDistance(double dist, double defaultBank, boolean linear) {
@@ -462,7 +485,7 @@ public class GsPlan { //extends Route {
 		for (int i = 0; i < rt.size(); i++) {
 			rtn += " "+i+" "+position(i)+" "+name(i);
 			if (radius(i) != 0.0) rtn += " radius ="+radius(i);
-			rtn += " gsInit = "+Units.str("kn",gsInits.get(i));
+			rtn += " gsInit = "+Units.str("kn",gsOuts.get(i));
 			rtn += "\n";
 		}
 		return rtn;

@@ -3,7 +3,7 @@
  * 
  * 3-D vectors.
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -187,6 +187,11 @@ public class Vect3 {
     return Util.almost_equals(x, v.x, maxUlps) && Util.almost_equals(y, v.y, maxUlps) && 
         Util.almost_equals(z, v.z, maxUlps);
   }
+  
+  public boolean almostEquals2D(Vect3 v, double horizEps) {
+      return (this.vect2().Sub(v.vect2())).norm() < horizEps;
+  }
+
 
   public boolean within_epsilon(Vect3 v2, double epsilon) {
     //f.pln(" $$$ Vect3.within_epsilon: v1 = "+(new Vect3(x,y,z))+ " v2 = "+v2+" epsilon = "+epsilon );
@@ -208,7 +213,8 @@ public class Vect3 {
   public double dot(Vect3 v) {
     return dot(v.x,v.y,v.z);
   }
-
+  
+ 
   /**
    * Dot product.
    * 
@@ -252,9 +258,6 @@ public class Vect3 {
     return new Vect3(x/n, y/n, z/n);
   }
 
-  public Vect3 Hat2D() {
-	  return mkZ(0.0).Hat();
-  }
   
   /**
    * Cross product.
@@ -266,7 +269,7 @@ public class Vect3 {
   public Vect3 cross(Vect3 v) {
     return new Vect3(this.y*v.z - this.z*v.y, this.z*v.x - this.x*v.z, this.x*v.y - this.y*v.x);
   }
-
+  
   public boolean parallel(Vect3 v) {
     return cross(v).almostEquals(Vect3.ZERO); 
   }
@@ -375,18 +378,28 @@ public class Vect3 {
     return new Vect3(x+v.x*t, y+v.y*t, z+v.z*t);
   }
   
-  /**
-   * Calculates position after t time units in direction and magnitude of velocity v
-   * @param track  
-   * @param t       time
-   * @return the new position (horizontal only)
+//  /**
+//   * Calculates position after t time units in direction and magnitude of velocity v
+//   * @param track  
+//   * @param t       time
+//   * @return the new position (horizontal only)
+//   */
+//  public Vect3 linearByDist(double track, double d) {
+//	double anySpeed = 100;
+//	Velocity v = Velocity.mkTrkGsVs(track,anySpeed,0.0);
+//	double dt = d/anySpeed;
+//	return linear(v,dt);
+//  }
+  
+  /** Calculates position after moving distance d in the direction "track"
+    * @param track   the direction
+    * @param d       distance
+    * @return the new position (horizontal only)
    */
-  public Vect3 linearByDist(double track, double d) {
-	double anySpeed = 100;
-	Velocity v = Velocity.mkTrkGsVs(track,anySpeed,0.0);
-	double dt = d/anySpeed;
-	return linear(v,dt);
+  public Vect3 linearByDist2D(double track, double d) {
+	  return new Vect3(x+d*Math.sin(track), y+d*Math.cos(track), z);
   }
+
 
 
   /** 3-D time of closest point of approach 
@@ -504,4 +517,34 @@ public class Vect3 {
     return Vect3.INVALID;
   }
 
+  
+  /*
+   * Two dimensional calculations on Vect3s.  z components will be ignored or set to zero.
+   */
+  
+  public double det2D(Vect3 v) {
+	  return this.x*v.y - this.y*v.x;
+  }
+
+  public double dot2D(Vect3 v) {
+	  return this.x*v.x + this.y*v.y;
+  }
+
+  public double sqv2D() {
+	  return x*x+y*y;
+  }
+  
+  public double norm2D() {
+	  return Util.sqrt_safe(sqv2D());
+  }
+
+  public Vect3 Hat2D() {
+	    double n = norm2D();
+	    if (n == 0.0) { // this is only checking the divide by zero case, so an exact comparison is correct.
+	      return this;
+	    }
+	    return new Vect3(x/n, y/n, 0.0);
+  }
+
+  
 }

@@ -489,9 +489,9 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 
 		Position pos          =  FlightData.acState.positionLast();
 		double legDistance    = FP.pathDistance(nextWP - 1);
-		double legTime        = FP.getTime(nextWP) - FP.getTime(nextWP-1);
+		double legTime        = FP.time(nextWP) - FP.time(nextWP-1);
 		double lastWPDistance = FP.point(nextWP-1).position().distanceH(pos);
-		double currentTime    = FP.getTime(nextWP-1) + legTime/legDistance * lastWPDistance;
+		double currentTime    = FP.time(nextWP-1) + legTime/legDistance * lastWPDistance;
 
 		return currentTime;
 	}

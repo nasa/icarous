@@ -1,7 +1,7 @@
 /*
  * VectFuns.java 
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -139,6 +139,12 @@ public final class VectFuns {
 
 	/**
 	 * Return if two aircraft in the given state are divergent in the horizontal plane
+	 * 
+	 * @param so ownship position
+	 * @param vo ownship velocity
+	 * @param si intruder position
+	 * @param vi intruder velocity
+	 * @return true, if divergent
 	 */
 	public static boolean divergent(Vect2 so, Vect2 vo, Vect2 si, Vect2 vi) {
 		return so.Sub(si).dot(vo.Sub(vi)) > 0;
@@ -147,6 +153,12 @@ public final class VectFuns {
 
 	/**
 	 * Return if two aircraft in the given state are divergent in a 3D sense
+	 * 
+	 * @param so ownship position
+	 * @param vo ownship velocity
+	 * @param si intruder position
+	 * @param vi intruder velocity
+	 * @return true, if divergent
 	 */
 	public static boolean divergent(Vect3 so, Velocity vo, Vect3 si, Velocity vi) {
 		return so.Sub(si).dot(vo.Sub(vi)) > 0;
@@ -273,24 +285,15 @@ public final class VectFuns {
 		return new Pair<Vect2,Double>(intersec,tt);
 	}
 
-	// returns intersection point and time of intersection relative to position so1
-	// for time return value, it assumes that aircraft travels from so1 to so2 in dto seconds and from si1 to si2 in dti seconds
-	// a negative time indicates that the intersection occurred in the past (relative to directions of travel of so1)
-	/**
-	 * Given two lines defined by so, so2 and si, si2 return the intersection point 
-	 * Calculate altitude of intersection using the average of the altitudes of the two closests points to the
-	 * intersection.
-	 * 
-	 * @param so1     first point of line A 
-	 * @param so2    second point of line A 
-	 * @param dto    the delta time between point so and point so2.
-	 * @param si1     first point of line B
-	 * @param si2    second point of line B 
-	 * @return a pair: intersection point and the delta time from point "so" to the intersection, can be negative if intersect
-	 *                 point is in the past
-	 *                if intersection point is invalid then the returned delta time is -1
-	 */
 
+
+	 /**
+     * Calculate the horizontal distance between two points.
+     * 
+     * @param soA   point A 
+     * @param soB   point B 
+     * @return horizontal distance between points.
+     */
 	public static double distanceH(Vect3 soA, Vect3 soB) {
 		return soA.Sub(soB).vect2().norm();
 	}
@@ -301,8 +304,9 @@ public final class VectFuns {
 	 * This z-component is constrained to be within the z components of the defining points.
 	 * @param so1 starting point of line o
 	 * @param so2 ending point of line o
+	 * @param dto delta time
 	 * @param si1 starting point of line i
-	 * @param vi2 ending point of line i
+	 * @param si2 ending point of line i
 	 * @return Pair (2-dimensional point of intersection, relative time of intersection, relative to the so1)
 	 * This includes the average altitude between the *endpoints* closest to the point of intersection
 	 * Note the intersection may be in the past (i.e. negative time)
@@ -354,6 +358,11 @@ public final class VectFuns {
 	/**
 	 * Return the closest point along line a-b to point so
 	 * EXPERIMENTAL
+	 * 
+	 * @param a
+	 * @param b
+	 * @param so
+	 * @return the closest point
 	 */
 	public static Vect3 closestPoint3(Vect3 a, Vect3 b, Vect3 so) {
 		// translate a to origin, then project so onto the line defined by ab, then translate back to a
@@ -365,6 +374,11 @@ public final class VectFuns {
 	/**
 	 * Return the closest (preference to horizontal) point along line a-b to point so
 	 * EXPERIMENTAL
+	 * 
+	 * @param a
+	 * @param b
+	 * @param so
+	 * @return closest point
 	 */
 	public static Vect3 closestPoint(Vect3 a, Vect3 b, Vect3 so) {
 		if (a.almostEquals(b)) return Vect3.INVALID;
@@ -440,10 +454,10 @@ public final class VectFuns {
 
 	/**
 	 * Computes 2D intersection point of two lines, but also finds z component (projected by time from line 1)
-	 * @param s0 starting point of line 1
-	 * @param v0 direction vector for line 1
-	 * @param s1 starting point of line 2
-	 * @param v1 direction vector of line 2
+	 * @param so3 starting point of line 1
+	 * @param vo3 direction vector for line 1
+	 * @param si3 starting point of line 2
+	 * @param vi3 direction vector of line 2
 	 * @return time the OWNSHIP (so3) will reach the point.  Note that the intruder (si3) may have already passed this point.
 	 * If the lines are parallel, this returns NaN.
 	 */
@@ -516,6 +530,11 @@ public final class VectFuns {
 
 	/**
 	 * Returns true if x is "behind" so , that is, x is within the region behind the perpendicular line to vo through so.  
+	 * 
+	 * @param x   a position
+	 * @param so  aircraft position
+	 * @param vo  aircraft velocity
+	 * @return true, if x is behind so
 	 */
 	public static boolean behind(Vect2 x, Vect2 so, Vect2 vo) {
 		return Util.turnDelta(vo.trk(), x.Sub(so).trk()) > Math.PI/2.0;
@@ -567,18 +586,12 @@ public final class VectFuns {
 
 
 
-	//	public String strPair(Pair<Vect3,Velocity> pp) {
-	//		return " "+pp.first.toStringNP()+" "+pp.second.toStringNP();
-	//	}
-
-
-
 	/**
 	 * Calculate the normal (perpendicular vector) of a plane defined by 3 points.  This is not necessarily a unit vector.
 	 * @param a point 1
 	 * @param b point 2 
 	 * @param c point 3
-	 * @return
+	 * @return the normal vector
 	 */
 	public static Vect3 planeNormal(Vect3 a, Vect3 b, Vect3 c) {
 		Vect3 ab = a.Sub(b);
@@ -590,6 +603,11 @@ public final class VectFuns {
 	/**
 	 * Return the side (+1 right, -1 left) of the ray s(point),v(velocity) that point p is on.
 	 * If value is zero, p is on the line (given no floating point issues)
+	 * 
+	 * @param s
+	 * @param v
+	 * @param p
+	 * @return (+1 right, -1 left)
 	 */
 	public static int onSide(Vect2 s, Vect2 v, Vect2 p) {
 		return Util.sign(p.Sub(s).det(v));

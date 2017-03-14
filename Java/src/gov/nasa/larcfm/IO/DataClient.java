@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,6 +19,12 @@ import java.util.Hashtable;
 import java.util.List;
 
 /**
+ * This class represents a wrapper for a collection of Receiver objects that represents a client's behavior.
+ * The client subscribes to one or more servers that produce plan, state, and/or parameter data.
+ * The user is intended to ask for an update of any data associated with a given keyword.
+ * Data will be gathered from all available Receivers that support that keyword.
+ * The particulars of any communication will depend on the provided Transmitters.
+ *
  * Known keywords:
  * GeneralState, GeneralPlan, ParameterData
  */

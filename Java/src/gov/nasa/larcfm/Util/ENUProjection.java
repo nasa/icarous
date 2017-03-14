@@ -4,7 +4,7 @@
  * 
  * project spherical coordinates (lat/lon) into a Euclidean frame and the inverse.
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -187,8 +187,9 @@ public final class ENUProjection implements EuclideanProjection {
     	// convert latitude to 0-PI
     	double theta = Math.PI/2 - lat;
     	double phi = Math.PI - lon;
-    	double x = r*Math.sin(theta)*Math.cos(phi);
-    	double y = r*Math.sin(theta)*Math.sin(phi);
+    	double rsintheta = r*Math.sin(theta);
+    	double x = rsintheta*Math.cos(phi);
+    	double y = rsintheta*Math.sin(phi);
     	double z = r*Math.cos(theta);
     	return new Vect3(x,y,z);
     }

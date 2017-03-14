@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -16,6 +16,12 @@ package gov.nasa.larcfm.Util;
 
 import java.util.ArrayList;
 import java.util.List;
+
+
+
+
+//import gov.nasa.larcfm.IO.DebugSupport;
+
 
 /**
  * Manages a flight Plan as a sequence of 4D vectors (three dimensions of space
@@ -80,73 +86,30 @@ import java.util.List;
  * </ol>
  */
 
+
+
+
 public class Plan implements ErrorReporter, Cloneable {
+
 	protected String name;
 	protected ArrayList<NavPoint> points;
 	protected ErrorLog error;
 	protected int errorLocation;
-	private BoundingRectangle bound; // TODO: this bound only applies to added
-										// points, when points are deleted, this is not accommodated, or if points are
-										// updated, this is not accommodated
+	private BoundingRectangle bound; // TODO: this bound only applies to added points, when points are deleted, this
+	// is not accommodated, or if points are updated, this is not accommodated
 	private static boolean debug = false;
 	protected String note = "";
 	public static final double minDt = GreatCircle.minDt; // points that are closer together in time than this are treated as
-														  // the same point for velocity calculations, mergeClosePoints merges points
-	                                                      // closer together in time than this parameter.
+	public static final double nearlyZeroGs = 1E-10;;
+	// the same point for velocity calculations, mergeClosePoints merges points
+	// closer together in time than this parameter.
 	public static final String specPre = "$";             // special prefix for labels
-	// static final double revertGsTurnConnectionTime = 5; // if a turn segment and GS segment are this close in time, then assume they are related
-
-	public static enum WayType {
-		Orig, Virtual, AltPreserve
-	};
-
-	public static enum TrkTcpType {
-		NONE, BOT, EOT, EOTBOT
-	};
-	public static enum GsTcpType  {
-		NONE, BGS, EGS, EGSBGS
-	};
-	public static enum VsTcpType  {
-		NONE, BVS, EVS, EVSBVS
-	};
 
 	public static final int TCP_OUTPUT_COLUMNS = 20; // total number of output columns for full TCP not including aircraft name)
-	public static final int MIN_OUTPUT_COLUMNS = 5; // total number of output
-													// columns for linear (not
-													// including aircraft name)
-
-	// TCP META DATA:
-	private class TcpData {
-		WayType    ty;              // type of point
-		TrkTcpType tcpTrk;	        // Trk TCP type
-		GsTcpType  tcpGs;		    // Gs TCP type
-		VsTcpType  tcpVs;		    // Vs TCP type
-		double     radiusSigned;	// signed turn radius, positive values indicate right turn, negative values indicate left turn, zero indicates no specified radius
-		double     accelGs;         // signed gs-acceleration value
-		double     accelVs;         // signed vs-acceleration value
-		Velocity   velocityInit;	// the initial velocity at the start of an acceleration zone.  
-		Position   sourcePosition;  // source position
-		double     sourceTime;		// source time (if < 0, no valid source)
-		int        linearIndex;	    // in a kinematic plan provides index to original linear plan
-		String     information;
-		
-		TcpData(NavPoint p) {
-			ty = WayType.Orig;
-			tcpTrk = TrkTcpType.NONE;
-			tcpGs = GsTcpType.NONE;
-			tcpVs = VsTcpType.NONE;
-			radiusSigned = 0.0;	
-			accelGs = 0.0;       
-			accelVs = 0.0;       
-			velocityInit = Velocity.INVALID;	  
-			sourcePosition = p.position(); 
-			sourceTime = p.time();		
-			linearIndex = -1;	
-			information = "";			
-		}
-	}
+	public static final int MIN_OUTPUT_COLUMNS = 5; // total number of output columns for linear (not including aircraft name)
 
 	protected ArrayList<TcpData> data;
+
 
 	/** Create an empty Plan */
 	public Plan() {
@@ -169,6 +132,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		init();
 	}
 
+	/** initialize class variables */
 	private void init() {
 		points = new ArrayList<NavPoint>(100);
 		data = new ArrayList<TcpData>(100);
@@ -179,14 +143,17 @@ public class Plan implements ErrorReporter, Cloneable {
 		bound = new BoundingRectangle();
 	}
 
-	/** Construct a new object that is a deep copy of the supplied object */
+	/** Construct a new object that is a deep copy of the supplied object 
+	 * 
+	 * @param fp plan to copy
+	 */
 	public Plan(Plan fp) {
 		points = new ArrayList<NavPoint>(100);
 		data = new ArrayList<TcpData>(100);
 		// deletedPoints = new ArrayList<NavPoint>(fp.deletedPoints);
 		for (int j = 0; j < fp.points.size(); j++) {
 			points.add(fp.points.get(j));
-			data.add(fp.data.get(j));
+			data.add(fp.getTcpData(j)); // making a copy of TcpData
 		}
 		name = fp.name;
 		note = fp.note;
@@ -195,13 +162,18 @@ public class Plan implements ErrorReporter, Cloneable {
 		bound = new BoundingRectangle(fp.bound);
 	}
 
+	boolean validIndex(int i) {
+		if (i >= 0 && i < size()) return true;
+		else return false;
+	}
+
 	/** search plan to see if there are any TCPs
 	 * 
 	 * @return  true if the plan does not contain any TCPs 
 	 */
 	public boolean isLinear() {
 		for (int j = 0; j < points.size(); j++) {
-			boolean isTcp = points.get(j).isTCP();
+			boolean isTcp = isTCP(j);
 			// f.pln(j+" $$$$$$$$$$$$$$$ points.get(j).isTCP() = "+isTcp);
 			if (isTcp)
 				return false;
@@ -217,8 +189,10 @@ public class Plan implements ErrorReporter, Cloneable {
 		// deletedPoints = new ArrayList<NavPoint>(fp.deletedPoints);
 		Plan lpc = new Plan(name, note);
 		for (int j = 0; j < size(); j++) {
-			lpc.add(point(j).makeLinearIndex(j));
+			//f.pln(" $$$copyWithIndex: point(j) = "+point(j));
+			lpc.add(point(j), getTcpData(j).setSource(point(j)).setLinearIndex(j));  
 		}
+		//f.pln(" $$$copyWithIndex: EXIT, lpc = "+lpc.toStringFull());
 		return lpc;
 	}
 
@@ -239,21 +213,25 @@ public class Plan implements ErrorReporter, Cloneable {
 						ixDelete = i;
 					else if (i == 0)
 						ixDelete = 1;
-					else if (!npi.isBeginTCP() && npip1.isBeginTCP())
+					else if (!isBeginTCP(i) && isBeginTCP(i+1))
 						ixDelete = i;
 					// save attributes of "ixDelete"
-					NavPoint npDelete = point(ixDelete);
+					NavPoint npDelete2 = point(ixDelete);
+					TcpData npDelete = getTcpData(ixDelete);
 					remove(ixDelete);
+
 					// the index of the remaining point is "i"
-					NavPoint newNpi = point(i).mergeTCPInfo(npDelete);
-					set(i, newNpi);
-					// f.pln(" $$$$$ mergeClosePoints: DELETE point ixDelete =
-					// "+ixDelete);
+					//NavPoint newNpi = point(i).mergeTCPInfo(npDelete);
+					TcpData newData = getTcpData(i).mergeTCPInfo(npDelete).appendInformation(npDelete.getInformation());
+					NavPoint newNpi = point(i).appendLabel(npDelete2.label());
+					set(i, newNpi, newData);
 				}
 			}
-			// NavPoint npi = point(i);
-			// set(i,npi.makeLinearIndex(i));
 		}
+	}
+	
+	public void mergeClosePoints() {
+		mergeClosePoints(minDt); 
 	}
 
 	/**
@@ -261,13 +239,12 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * "instance" of linear index "ix"
 	 * 
 	 * @param ix        linear index
-	 * @param instance  n-th copy of the linear index (this parameter should always be at least 1)
 	 * @return kinematic index
 	 */
 	public ArrayList<Integer> findLinearIndex(int ix) {
 		ArrayList<Integer> al = new ArrayList<Integer>();
 		for (int i = 0; i < size(); i++) {
-			int linearIx = point(i).linearIndex();
+			int linearIx = getTcpData(i).getLinearIndex();
 			if (linearIx == ix)
 				al.add(i);
 		}
@@ -283,12 +260,12 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * 
 	 * @param firstIx  first index
 	 * @param lastIx   last index
-	 * @return
+	 * @return new cut down plan
 	 */
 	public Plan cut(int firstIx, int lastIx) {
 		Plan lpc = new Plan(getName(), getNote());
 		for (int i = firstIx; i <= lastIx; i++) {
-			NavPoint np = point(i);
+			Pair<NavPoint,TcpData> np = get(i);			
 			lpc.add(np);
 		}
 		return lpc;
@@ -305,7 +282,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			return rtn;
 		}
 		for (int j = 0; j < pEnd.size(); j++) {
-			rtn.add(pEnd.point(j));
+			rtn.add(pEnd.get(j));
 		}
 		return rtn;
 	}
@@ -318,7 +295,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * @param v          Initial velocity of aircraft (if pos in in lat/lon, then this assumes a great circle initial heading)
 	 * @param startTime  Time of initial state
 	 * @param endTime    Final time when projection ends
-	 * @return new Plan, with a Fixed starting point. If endTime <= startTime, returns an empty Plan.
+	 * @return new Plan, with a Fixed starting point. If endTime &lt;= startTime, returns an empty Plan.
 	 */
 	static public Plan planFromState(String id, Position pos, Velocity v, double startTime, double endTime) {
 		Plan p = new Plan(id);
@@ -326,8 +303,8 @@ public class Plan implements ErrorReporter, Cloneable {
 			return p;
 		}
 		NavPoint np = new NavPoint(pos, startTime);
-		p.add(np);
-		p.add(np.linear(v, endTime - startTime));
+		p.addNavPoint(np);
+		p.addNavPoint(np.linear(v, endTime - startTime));
 		return p;
 	}
 
@@ -361,7 +338,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			r = r && points.get(j).equals(fp.points.get(j)) && data.get(j).equals(fp.data.get(j));
 		}
 		return r && name.equalsIgnoreCase(fp.name); // && type == fp.type; // &&
-													// numTCPs == fp.numTCPs;
+		// numTCPs == fp.numTCPs;
 	}
 
 	/** determines if plans are almost equals (not exactly equal because of floating point calculations
@@ -374,11 +351,11 @@ public class Plan implements ErrorReporter, Cloneable {
 		for (int i = 0; i < size(); i++) { // Unchanged
 			if (!point(i).almostEqualsPosition(p.point(i))) {
 				rtn = false;
-				f.pln("almostEquals: point i = " + i + " does not match: " + point(i) + "  !=   " + p.point(i));
+				//f.pln("almostEquals: point i = " + i + " does not match: " + point(i) + "  !=   " + p.point(i));
 			}
-			if (Math.abs(getTime(i) - p.getTime(i)) > 0.0000001) {
+			if (Math.abs(time(i) - p.time(i)) > 0.0000001) {
 				rtn = false;
-				f.pln("almostEquals: time i = " + i + " does not match: " + getTime(i) + "  !=   " + p.getTime(i));
+				//f.pln("almostEquals: time i = " + i + " does not match: " + time(i) + "  !=   " + p.time(i));
 			}
 		}
 		return rtn;
@@ -392,18 +369,18 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * @param p              Plan to compare with
 	 * @param epsilon_horiz  allowable horizontal deviation [m]
 	 * @param epsilon_vert   allowable vertical deviation [m]
-	 * @return
+	 * @return true if almost equal in location and time
 	 */
 	public boolean almostEquals(Plan p, double epsilon_horiz, double epsilon_vert) {
 		boolean rtn = true;
 		for (int i = 0; i < size(); i++) { // Unchanged
 			if (!point(i).almostEqualsPosition(p.point(i), epsilon_horiz, epsilon_vert)) {
 				rtn = false;
-				f.pln("almostEquals: point i = " + i + " does not match: " + point(i) + "  !=   " + p.point(i)
-						+ " epsilon_horiz = " + epsilon_horiz);
+				//f.pln("almostEquals: point i = " + i + " does not match: " + point(i) + "  !=   " + p.point(i)
+				//+ " epsilon_horiz = " + epsilon_horiz);
 			}
 			if (!point(i).label().equals(p.point(i).label())) {
-				f.pln("almostEquals: point i = " + i + " labels do not match.");
+				//f.pln("almostEquals: point i = " + i + " labels do not match.");
 				return false;
 			}
 		}
@@ -417,14 +394,18 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * @return    the time at point i
 
 	 */
-	public double getTime(int i) {
+	public double time(int i) {
 		if (i < 0 || i >= size()) {
-			addError("getTime: invalid point index of " + i + " sz=" + size(), i);
+			addError("time: invalid point index of " + i + " sz=" + size(), i);
 			// f.pln(" $$!! invalid point index of "+i+" in getTime()");
-			// Debug.halt();
+			//Debug.halt();
 			return 0.0;
 		}
 		return points.get(i).time();
+	}
+
+	public Position getPos(int i) {
+		return point(i).position();
 	}
 
 	/**
@@ -436,8 +417,8 @@ public class Plan implements ErrorReporter, Cloneable {
 	public NavPoint point(int i) {
 		if (i < 0 || i >= points.size()) {
 			addError("Plan.point: invalid index " + i, i);
-			// f.pln("$$$ Plan.point: invalid index "+i);
-			// Debug.halt();
+			//f.pln("$$$ Plan.point: invalid index "+i);
+			//Debug.halt();
 			if (isLatLon()) {
 				return NavPoint.ZERO_LL;
 			} else {
@@ -446,6 +427,216 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 		return points.get(i);
 	}
+
+	private TcpData getTcpDataRef(int i) {
+		if (i < 0 || i >= data.size()) {
+			addError("getTcpDataRef.point: invalid index " + i, i);
+			f.pln(" $$ Plan.getTcpDataRef.point: invalid index " + i);
+			//Debug.halt();
+			return TcpData.makeInvalid();
+		}
+		return data.get(i);
+	}
+
+	public TcpData getTcpData(int i) {
+		return new TcpData(getTcpDataRef(i));
+	}
+
+	public Pair<NavPoint,TcpData> get(int i) {
+		return new Pair<NavPoint,TcpData>(point(i) ,getTcpData(i));
+	}
+
+
+	/** Returns true if the point at index i is an unmodified original point, 
+	   false otherwise.  0 &lt;= i &lt; size() */
+
+	public boolean  isOriginal(int i) { return getTcpData(i).isOriginal();}	
+	public boolean  isAltPreserve(int i) { return getTcpData(i).isAltPreserve();}	
+
+	public double  signedRadius(int i) {return getTcpData(i).signedRadius(); }
+	public double  turnRadius(int i) { return getTcpData(i).turnRadius();}	
+	public boolean isVirtual(int i)  { return getTcpData(i).isVirtual();}
+	public boolean hasSource(int i)  { return getTcpData(i).hasSource();}
+
+
+	public double  trkAccel(int i) {
+		//return accel_trk;
+		double rtn = 0.0;
+		if (Math.abs(signedRadius(i)) > 0) {
+			rtn = gsOut(i)/signedRadius(i);
+		} 
+		//f.pln(" $$$ trkAccel: radiusSigned = "+Units.str("NM",radiusSigned)+" rtn = "+Units.str("deg/s",rtn));
+		return rtn;
+	}
+
+	public double  gsAccel(int i) {return getTcpData(i).gsAccel(); }
+	public double  vsAccel(int i) {return getTcpData(i).vsAccel(); }
+
+	//	public Velocity  velocityInit(int i) {return getTcpData(i).velocityInit(); }
+
+
+	/** true if this point is the start of a turn */
+	public boolean isTrkTCP(int i) {return getTcpData(i).isTrkTCP(); }	
+	/** true if this point is the start of a turn */
+	public boolean isBOT(int i)   {return getTcpData(i).isBOT(); }
+	public boolean isEOT(int i)   {return getTcpData(i).isEOT(); }
+	public boolean isGsTCP(int i) {return getTcpData(i).isGsTCP(); }
+	public boolean isBGS(int i)   {return getTcpData(i).isBGS(); }
+	public boolean isEGS(int i)   {return getTcpData(i).isEGS(); }
+	public boolean isVsTCP(int i) {return getTcpData(i).isVsTCP(); }
+	public boolean isBVS(int i)   {return getTcpData(i).isBVS(); }
+	public boolean isEVS(int i)   {return getTcpData(i).isEVS(); }
+	public boolean isBeginTCP(int i) {return getTcpData(i).isBeginTCP(); }
+	public boolean isEndTCP(int i)   {return getTcpData(i).isEndTCP(); }
+
+	public boolean isTCP(int i)  { return getTcpData(i).isTCP();}
+
+	public NavPoint sourceNavPoint(int i) {
+		return new NavPoint(getTcpData(i).getSourcePosition(), getTcpData(i).getSourceTime());
+	}
+
+	//	public static Pair<NavPoint,TcpData> makeTrkAccel(NavPoint src, TcpData srcTCP, double omega) {
+	//		double radius = srcTCP.velocityInit().gs()/omega;	
+	//		//f.pln(" $$$ makeTrkAccel: velocityIn = "+this.velocityIn+" radius = "+radius);
+	//		//this.radiusSigned, this.accel_gs, a, velocityIn,  this.sourcePosition, this.sourceTime, linearIndex);
+	//        TcpData tcp = srcTCP.setRadiusSigned(radius);
+	//        return  new Pair<NavPoint,TcpData>(src,tcp);
+	//	}
+
+	/** Make a new NavPoint from the current one with the acceleration/turn rate metadata changed */
+	public static Pair<NavPoint,TcpData> makeGsAccel(NavPoint src, TcpData srcTCP, double ga) {
+		TcpData tcp = srcTCP.setGsAccel(ga);
+		return  new Pair<NavPoint,TcpData>(src,tcp);
+
+	}
+
+	/** Make a new NavPoint from the current one with the acceleration/turn rate metadata changed */
+	public static Pair<NavPoint,TcpData> makeVsAccel(NavPoint src, TcpData srcTCP, double va) {
+		TcpData tcp = srcTCP.setVsAccel(va);
+		return  new Pair<NavPoint,TcpData>(src,tcp);
+	}
+
+	/** Make a new NavPoint from the current that is "Original" */
+	public static Pair<NavPoint,TcpData> makeOriginal(Pair<NavPoint,TcpData> src) {
+		TcpData tcp = src.second.copy().setOriginal();    // copy is necessary 
+		return new Pair<NavPoint,TcpData>(src.first,tcp);		
+	}
+
+	/** Make a new NavPoint from the current that is "AltPreserve" */
+	public static Pair<NavPoint,TcpData> makeAltPreserve(Pair<NavPoint,TcpData> src) {
+		TcpData tcp = src.second.copy().setAltPreserve();    // copy is necessary 
+		return new Pair<NavPoint,TcpData>(src.first,tcp);		
+	}
+
+
+	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+	 *  velocityIn must be properly calculated for this point. 
+	 */
+	public static Pair<NavPoint,TcpData> makeBOT(NavPoint src, Position p, double t,  double signedRadius, Position center, int linearIndex) {
+		//f.pln(" $$$$$ NavPoint.makeBOT t = "+t+"   center = "+center);  
+		NavPoint np = new NavPoint(p,t).makeLabel(src.label()); 
+		TcpData tcp = TcpData.makeSource(src).setBOT( signedRadius, center, linearIndex); 
+		return new Pair<NavPoint,TcpData>(np,tcp);		
+	}
+
+	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+	 *  velocityIn must be properly calculated for this point. 
+	 */
+	public static Pair<NavPoint,TcpData> makeEOT(NavPoint src, Position p, double t,  int linearIndex) {
+		//f.pln(" $$$$$ NavPoint.makeEOT t = "+t+"   velocityIn = "+velocityIn);  
+		NavPoint np = new NavPoint(p,t);
+		TcpData tcp = TcpData.makeSource(src).setEOT(linearIndex);
+		return new Pair<NavPoint,TcpData>(np,tcp);		
+	}
+
+	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+	 *  velocityIn must be properly calculated for this point. 
+	 */
+	public static Pair<NavPoint,TcpData> makeEOTBOT(NavPoint src, Position p, double t,   double signedRadius, Position center, int linearIndex) {
+		//f.pln(" $$$$$ NavPoint.makeBOT t = "+t+"   velocityIn = "+velocityIn);  
+		NavPoint np = new NavPoint(p,t);
+		TcpData tcp = TcpData.makeSource(src).setEOTBOT( signedRadius, center, linearIndex); 
+		return new Pair<NavPoint,TcpData>(np,tcp);		
+	}
+
+
+	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+	 *  velocityIn must be properly calculated for this point. 
+	 */
+	public static Pair<NavPoint,TcpData> makeBGS(NavPoint src, Position p, double t, double a,  int linearIndex) {
+		//f.pln(" $$$$$ NavPoint.makeBGS t = "+t+"   velocityIn = "+velocityIn);  
+		NavPoint np = new NavPoint(p,t).makeLabel(src.label()); 
+		TcpData tcp = TcpData.makeSource(src).setBGS(a,linearIndex); 
+		return new Pair<NavPoint,TcpData>(np,tcp);		
+	}
+
+
+	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+	 *  velocityIn must be properly calculated for this point. 
+	 */
+	public static Pair<NavPoint,TcpData> makeEGS(NavPoint src, Position p, double t,  int linearIndex) {
+		//f.pln(" $$$$$ NavPoint.makeEGS t = "+t+"   velocityIn = "+velocityIn);  
+		NavPoint np = new NavPoint(p,t); 
+		TcpData tcp = TcpData.makeSource(src).setEGS(linearIndex); 
+		return new Pair<NavPoint,TcpData>(np,tcp);		
+	}
+
+	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+	 *  velocityIn must be properly calculated for this point. 
+	 */
+	public static Pair<NavPoint,TcpData> makeEGSBGS(NavPoint src, Position p, double t, double a,  int linearIndex) {
+		//f.pln(" $$$$$ NavPoint.makeBGS t = "+t+"   velocityIn = "+velocityIn);  
+		NavPoint np = new NavPoint(p,t); 
+		TcpData tcp = TcpData.makeSource(src).setEGSBGS(a,linearIndex); 
+		return new Pair<NavPoint,TcpData>(np,tcp);		
+	}
+
+
+	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+	 *  velocityIn must be properly calculated for this point. 
+	 */
+	public static Pair<NavPoint,TcpData> makeBVS(NavPoint src, Position p, double t, double a,  int linearIndex) {
+		//f.pln(" $$$$$ NavPoint.makeBVS t = "+t+"   velocityIn = "+velocityIn);  
+		NavPoint np = new NavPoint(p,t).makeLabel(src.label()); 
+		TcpData tcp = TcpData.makeSource(src).setBVS(a,linearIndex);
+		return new Pair<NavPoint,TcpData>(np,tcp);		
+	}
+
+	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+	 *  velocityIn must be properly calculated for this point. 
+	 */
+	public static Pair<NavPoint,TcpData> makeEVS(NavPoint src, Position p, double t,  int linearIndex) {
+		//f.pln(" $$$$$ NavPoint.makeEVS t = "+t+"   velocityIn = "+velocityIn);  
+		NavPoint np = new NavPoint(p,t);
+		TcpData tcp = TcpData.makeSource(src).setEVS(linearIndex); 
+		return new Pair<NavPoint,TcpData>(np,tcp);		
+	}
+
+	/** Make a new "beginning of vertical speed change" NavPoint at the given position and time where the source of the current NavPoint is the "source" 
+	 *  velocityIn must be properly calculated for this point. 
+	 */
+	public static Pair<NavPoint,TcpData> makeEVSBVS(NavPoint src, Position p, double t, double a,  int linearIndex) {
+		//f.pln(" $$$$$ NavPoint.makeBVS t = "+t+"   velocityIn = "+velocityIn);  
+		NavPoint np = new NavPoint(p,t); 
+		TcpData tcp = TcpData.makeSource(src).setEVSBVS(a,linearIndex); 
+		return new Pair<NavPoint,TcpData>(np,tcp);		
+	}
+
+	/** Makes a new NavPoint that is an intermediate "mid" added point */
+	public static Pair<NavPoint,TcpData> makeMidpoint(NavPoint src, TcpData tcp, Position p, double t, int linearIndex) {
+		NavPoint np = new NavPoint(p,t); 
+		tcp = tcp.copy().setSource(src).setLinearIndex(linearIndex); 
+		return new Pair<NavPoint,TcpData>(np,tcp);		
+	}
+
+
+	//	/** Make a new NavPoint from the current one with the source time metadata changed */
+	//	public NavPoint makeSource(Position sp, double st) {
+	//		//		if (st == this.sourceTime && sp.equals(this.sourcePosition)) return this;
+	//		return new NavPoint(this.p, this.t, this.ty,  this.label, this.tcp_trk,  this.tcp_gs, this.tcp_vs,
+	//				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit, sp, st, this.linearIndex);
+	//	}
+
 
 	public void setDebug(boolean d) {
 		debug = d;
@@ -470,7 +661,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	public void clearVirtuals() {
 		int i = 0;
 		while (i < size()) {
-			if (points.get(i).isVirtual()) {
+			if (isVirtual(i)) {
 				points.remove(i);
 				data.remove(i);
 			} else {
@@ -560,7 +751,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		return points.get(size() - 1).time();
 	}
 
-	public boolean timeInPlan(double t) {
+	public boolean isTimeInPlan(double t) {
 		return getFirstTime() <= t && t <= getLastTime();
 	}
 
@@ -585,7 +776,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	public double getFirstRealTime() {
 		int i = 0;
 		while (i < size()) {
-			if (!points.get(i).isVirtual())
+			if (!isVirtual(i))
 				return points.get(i).time();
 			i++;
 		}
@@ -632,7 +823,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		return indexSearch(tm, 0, points.size() - 1);
 	}
 
-	
+
 	/**
 	 * Return the first point that has a name containing the given string at or
 	 * after time t, or -1 if there are no matches.
@@ -644,12 +835,12 @@ public class Plan implements ErrorReporter, Cloneable {
 	public int getIndexContaining(String str, double t) {
 		for (int i = 0; i < points.size() - 1; i++) {
 			NavPoint np = points.get(i);
-			if (np.time() >= t && np.fullLabel().contains(str))
+			if (np.time() >= t && TcpData.fullLabel(np,getTcpDataRef(i)).contains(str))
 				return i;
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Return the first point that has a name containing the given string, or -1
 	 * if there are no matches.
@@ -666,7 +857,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * @param label     String to match
 	 * @param withWrap  if true, go through whole list
 	 */
-	public int findLabel(String label, int startIx, boolean withWrap) {
+	public int findLabel(String name, int startIx, boolean withWrap) {
 		if (startIx >= points.size()) {
 			if (withWrap)
 				startIx = 0;
@@ -675,13 +866,13 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 		for (int i = startIx; i < points.size(); i++) {
 			NavPoint np = points.get(i);
-			if (np.label().equals(label))
+			if (np.label().equals(name))
 				return i;
 		}
 		if (withWrap) {
 			for (int i = 0; i < startIx; i++) {
 				NavPoint np = points.get(i);
-				if (np.label().equals(label))
+				if (np.label().equals(name))
 					return i;
 			}
 		}
@@ -694,7 +885,6 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * 
 	 * @param label    String to match
 	 */
-
 	public int findLabel(String label) {
 		for (int i = 0; i < points.size(); i++) {
 			NavPoint np = points.get(i);
@@ -703,8 +893,57 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 		return -1;
 	}
+	
+	public void clearLabel(int ix) { //TODO rename clearPointName
+		NavPoint np = point(ix);
+		TcpData  tcp = getTcpDataRef(ix);
+		set(ix,np.makeLabel(""),tcp);
+	}
+	
+	public String label(int ix) { //TODO rename to pointName (confused with plan name)
+		return point(ix).label();
+	}
+
+	public int findInfo(String info, int startIx, boolean withWrap) {
+		if (startIx >= points.size()) {
+			if (withWrap)
+				startIx = 0;
+			else
+				return -1;
+		}
+		for (int i = startIx; i < points.size(); i++) {
+			TcpData tcp = getTcpDataRef(i);
+			if (tcp.getInformation().equals(info))
+				return i;
+		}
+		if (withWrap) {
+			for (int i = 0; i < startIx; i++) {
+				TcpData tcp = getTcpDataRef(i);
+				if (tcp.getInformation().equals(info))
+					return i;
+			}
+		}
+		return -1;
+	}
 
 
+	public int findInfo(String info) {
+		for (int i = 0; i < points.size(); i++) {
+			TcpData tcp = getTcpDataRef(i);
+			if (tcp.getInformation().equals(info))
+				return i;
+		}
+		return -1;
+	}
+	
+	public void clearInfo(int ix) {
+		NavPoint np = point(ix);
+		TcpData  tcp = getTcpDataRef(ix);
+		set(ix,np,tcp.setInformation(""));
+	}
+	
+
+	
 	// This performs a binary search instead of a linear one, for improved
 	// performance
 	// It explicitly checks the the low (i1) and high (i2) bounds, as well as
@@ -777,16 +1016,16 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 	/**
-	 * Return segment that is distance "d" from the beggining of plan
+	 * Return segment that is distance "d" from segment startIx
 	 * 
 	 * @param d    distance of interest
 	 * @return     segment number
 	 */
-	public int getSegmentByDistance(double d) {
+	public int getSegmentByDistance(int startIx, double d) {
 		if (d < 0)
 			return -1;
 		double tdist = 0;
-		int i = 0;
+		int i = startIx;
 		while (tdist <= d && i < size()) {
 			tdist += pathDistance(i);
 			i++;
@@ -796,6 +1035,17 @@ public class Plan implements ErrorReporter, Cloneable {
 		if (Util.within_epsilon(d, tdist, 0.01) && i == size())
 			return size() - 1;
 		return -1; // not found
+	}
+	
+	/**
+	 * Return segment that is distance "d" from beginning of plan
+	 * 
+	 * @param d    distance of interest
+	 * @return     segment number
+	 */
+
+	public int getSegmentByDistance(double d) {
+		return getSegmentByDistance(0,d);
 	}
 
 	/** Find location that is path distance "d" from the start.  Return index of the segment that this location is in.
@@ -858,7 +1108,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			addError("getInfo: invalid point index of " + i + " size=" + size());
 			return "";
 		}
-		return data.get(i).information;
+		return data.get(i).getInformation();
 	}
 
 	public void setInfo(int i, String info) {
@@ -866,104 +1116,47 @@ public class Plan implements ErrorReporter, Cloneable {
 			addError("setInfo: invalid point index of " + i + " size=" + size());
 		}
 		TcpData d = data.get(i);
-		d.information = info;
+		d.setInformation(info);
 		data.set(i, d);
 	}
 
-	/** Is this point Virtual? */
-	public boolean isVirtual(int i) {
-		if (i < 0 || i >= size()) {
-			addError("isVirtual: invalid point index of "+i+" size="+size());
-			return false;
-		}	
-		return data.get(i).ty == WayType.Virtual;
-	}
-	
 	public void setVirtual(int i) {
 		if (i < 0 || i >= size()) {
 			addError("setVirtual: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.ty = WayType.Virtual;
+		d.setVirtual();  //setType(TcpData.WayType.Virtual);
 		data.set(i, d);
 	}
-	
 
-	/** Returns true if the point at index i is an unmodified original point, 
-	   false otherwise.  0 <= i < size() */
-	public boolean isOriginal(int i) {
-		if (i < 0 || i >= size()) {
-			addError("isOriginal: invalid point index of "+i+" size="+size());
-			return false;
-		}	
-		return data.get(i).ty == WayType.Orig;
-	}
 
+	/** Returns true if the point at index i is an unmodified original point,
+	   false otherwise.  0 &lt;= i &lt; size() */
 	public void setOriginal(int i) {
 		if (i < 0 || i >= size()) {
 			addError("setOriginal: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.ty = WayType.Orig;
+		d.setOriginal(); //setType(TcpData.WayType.Orig);
 		data.set(i, d);
 	}
-	
-	/** AltPreserve is used by TrajGen.generateVsTCPs to create a vertical profile that is a function
-	 *  of locations (rather than time which is very fluid).  The TrajGen method "markVsChanges" marks points
-	 *  with a significant vertical speed change as "AltPreserve".
-	 * 
-	 * @param i    index of point to be tested
-	 * @return
-	 */
-	public boolean isAltPreserve(int i) {
-		if (i < 0 || i >= size()) {
-			addError("isAltPreserve: invalid point index of "+i+" size="+size());
-			return false;
-		}	
-		return data.get(i).ty == WayType.AltPreserve;
-	}
-	
+
 	/** AltPreserve is used by TrajGen.generateVsTCPs to create a vertical profile that is a function
 	 *  of locations (rather than time which is very fluid).  The TrajGen method "markVsChanges" marks points
 	 *  with a significant vertical speed change as "AltPreserve".
 	 * 
 	 * @param i    index of point set as "AltPReserve"
-	 * @return
 	 */
 	public void setAltPreserve(int i) {
 		if (i < 0 || i >= size()) {
 			addError("setAltPreserve: invalid point index of "+i+" size="+size());
+			f.pln("$$ setAltPreserve: invalid point index of i = "+i);
 		}	
 		TcpData d = data.get(i);
-		d.ty = WayType.AltPreserve;
+		d.setAltPreserve(); //setType(TcpData.WayType.AltPreserve);
 		data.set(i, d);
 	}
-	
-	/**
-	 * This returns the radius of the current turn. If this is not a turn point,
-	 * it returns the stores radius value. If the associated acceleration is
-	 * 0.0, this returns a radius of zero.
-	 */
-	public double turnRadius(int i) {
-		if (i < 0 || i >= size()) {
-			addError("turnRadius: invalid point index of " + i + " size=" + size());
-			return 0.0;
-		}
-		return Math.abs(data.get(i).radiusSigned);
-	}
 
-	/**
-	 * This returns the radius of the current turn. If this is not a turn point,
-	 * it returns the stores radius value. If the associated acceleration is
-	 * 0.0, this returns a radius of zero.
-	 */
-	public double signedRadius(int i) {
-		if (i < 0 || i >= size()) {
-			addError("signedRadius: invalid point index of " + i + " size=" + size());
-			return 0.0;
-		}
-		return data.get(i).radiusSigned;
-	}
 
 	/** Sets the radius of point i
 	 *  
@@ -975,10 +1168,30 @@ public class Plan implements ErrorReporter, Cloneable {
 			addError("setRadius: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.radiusSigned = radius;
+		d.setRadiusSigned(radius);
 		data.set(i, d);
 	}
-	
+
+	//	/**
+	//	 * This method returns a center of turn position with the same altitude as
+	//	 * the current point. If the current point is not a turn point, and has a
+	//	 * zero stored radius, this returns an invalid position.
+	//	 */
+	//	public Position turnCenter(int i) {
+	//		if (i < 0 || i >= size()) {
+	//			addError("turnCenter: invalid point index of " + i + " size=" + size());
+	//			return Position.INVALID;
+	//		}
+	//		double R = signedRadius(i);
+	//		if (R != 0) {
+	//			Velocity vHat = data.get(i).getVelocityInit().mkAddTrk(Util.sign(R) * Math.PI / 2).Hat2D();
+	//			Position pos = point(i).position();
+	//			return pos.linear(vHat, Math.abs(R)).mkZ(pos.z());
+	//		}
+	//		return Position.INVALID;
+	//	}
+
+
 	/**
 	 * This method returns a center of turn position with the same altitude as
 	 * the current point. If the current point is not a turn point, and has a
@@ -989,13 +1202,9 @@ public class Plan implements ErrorReporter, Cloneable {
 			addError("turnCenter: invalid point index of " + i + " size=" + size());
 			return Position.INVALID;
 		}
-		double R = signedRadius(i);
-		if (R != 0) {
-			Velocity vHat = data.get(i).velocityInit.mkAddTrk(Util.sign(R) * Math.PI / 2).Hat2D();
-			Position pos = point(i).position();
-			return pos.linear(vHat, Math.abs(R)).mkZ(pos.z());
-		}
-		return Position.INVALID;
+		Position center = getTcpData(i).turnCenter();
+		//f.pln(" $$ turnCenter: center = "+center);
+		return center;
 	}
 
 	/** Source time of point this was based on for any type except BVS. */
@@ -1005,19 +1214,19 @@ public class Plan implements ErrorReporter, Cloneable {
 			addError("sourceTime: invalid point index of " + i + " size=" + size());
 			return 0.0;
 		}
-		return data.get(i).sourceTime;
+		return data.get(i).getSourceTime();
 	}
-	
+
 	// @Deprecated
 	public void setSourceTime(int i, double time) {
 		if (i < 0 || i >= size()) {
 			addError("setSourceTime: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.sourceTime = time;
+		d.setSourceTime(time);
 		data.set(i, d);
 	}
-	
+
 
 
 	/** Source time of point this was based on for any type except BVS. */
@@ -1027,9 +1236,9 @@ public class Plan implements ErrorReporter, Cloneable {
 			addError("sourcePosition: invalid point index of " + i + " size=" + size());
 			return Position.INVALID;
 		}
-		return data.get(i).sourcePosition;
+		return data.get(i).getSourcePosition();
 	}
-	
+
 	// @Deprecated
 	public void setSourcePosition(int i, Position pos) {
 		if (i < 0 || i >= size()) {
@@ -1037,26 +1246,19 @@ public class Plan implements ErrorReporter, Cloneable {
 			return;
 		}
 		TcpData d = data.get(i);
-		d.sourcePosition = pos;
+		d.setSourcePosition(pos);
+		//f.pln(" $$$$ setSourcePosition: d = "+d);
 		data.set(i, d);
 	}
 
-//	public NavPoint sourceNavPoint(int i) {
-//		if (i < 0 || i >= size()) {
-//			addError("sourceNavPoint: invalid point index of " + i + " size=" + size());
-//			return NavPoint.INVALID;
-//		}
-//		return new NavPoint(data.get(i).sourcePosition, data.get(i).sourceTime);
-//	}
+	public void resetSource(int i) {
+		setSource(i,point(i));
+	}
 
-//	public boolean hasSource(int i) {
-//		if (i < 0 || i >= size()) {
-//			addError("hasSource: invalid point index of " + i + " size=" + size());
-//			return false;
-//		}
-//		return data.get(i).sourceTime >= 0;
-//	}
-
+	public void setSource(int i, NavPoint npi) {
+		setSourceTime(i,npi.time());
+		setSourcePosition(i,npi.position());
+	}
 
 	/** Often a kinematic plan is generated from a linear plan.  See TrajGen.makeKinematicPlan.  This function
 	 *  maps the index of a point back to the linear plan from which it was generated.
@@ -1068,7 +1270,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			addError("linearIndex: invalid point index of "+i+" size="+size());
 			return 0;
 		}	
-		return data.get(i).linearIndex;
+		return data.get(i).getLinearIndex();
 	}
 
 	public void setLinearIndex(int i, int index) {
@@ -1076,286 +1278,130 @@ public class Plan implements ErrorReporter, Cloneable {
 			addError("setLinearIndex: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.linearIndex = index;
-		data.set(i, d);
+		d.setLinearIndex(index);
+		//data.set(i, d);
 	}
-	
 
 
 
-	/**
-	 * If this is a TCP, return the initial velocity at point "i". Otherwise return an
-	 * invalid velocity. Not that this value is only well-defined for "begin" TCPs: (BGSC, BVSC, BOT)
-	 * 
-	 * Note:  If there is a speed discontinuity at point "i", velocityInit correspond to (TrkOut(i), gsOut(i), vsOut(i))
-	 */
-	public Velocity velocityInit(int i) {
-		if (i < 0 || i >= size()) {
-			addError("velocityInit: invalid point index of " + i + " size=" + size());
-			return Velocity.INVALID;
-		}
-		return data.get(i).velocityInit;
-	}
+
+	//	/** Set the "velocityInit" field to "vel" fro point "i"
+	//	 * 
+	//	 * @param i
+	//	 * @param vel
+	//	 */
+	//	public void setVelocityInit(int i, Velocity vel) {
+	//		if (i < 0 || i >= size()) {
+	//			addError("setVelocityInit: invalid point index of "+i+" size="+size());
+	//		}	
+	//		TcpData d = data.get(i);
+	//		//d.setVelocityInit(vel);
+	//		data.set(i, d);
+	//	}
 
 	/** Set the "velocityInit" field to "vel" fro point "i"
-	 * 
+	 *
 	 * @param i
 	 * @param vel
 	 */
-	public void setVelocityInit(int i, Velocity vel) {
-		if (i < 0 || i >= size()) {
-			addError("setVelocityInit: invalid point index of "+i+" size="+size());
-		}	
-		TcpData d = data.get(i);
-		d.velocityInit = vel;
-		data.set(i, d);
-	}
-	
-	/**
-	 * Return the (signed) turn rate (i.e., position acceleration in the "track"
-	 * dimension) associated with this point. Turn rate is in rad/sec (positive
-	 * is clockwise/right, negative is counterclockwise/left), otherwise return
-	 * 0.0;
-	 */
-	public double trkAccel(int i) {
-		if (i < 0 || i >= size()) {
-			addError("trkAccel: invalid point index of " + i + " size=" + size());
-			return 0.0;
-		}
-		// return accel_trk;
-		double rtn = 0.0;
-		double radius = data.get(i).radiusSigned;
-		if (Math.abs(radius) > 0) {
-			rtn = data.get(i).velocityInit.gs() / radius;
-		}
-		return rtn;
-	}
-
-	/**
-	 * Return the associated (signed) ground speed rate of change (i.e, horizontal acceleration).
-	 */
-	public double gsAccel(int i) {
-		if (i < 0 || i >= size()) {
-			addError("gsAccel: invalid point index of " + i + " size=" + size());
-			return 0.0;
-		}
-		return data.get(i).accelGs;
-	}
-	
 	public void setGsAccel(int i, double accel) {
 		if (i < 0 || i >= size()) {
 			addError("setGsAccel: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.accelGs = accel;
+		d.setGsAccel(accel);
 		data.set(i, d);
 	}
 
 
-	/**
-	 * Return the associated (signed) vertical acceleration.
-	 */
-	public double vsAccel(int i) {
-		if (i < 0 || i >= size()) {
-			addError("vsAccel: invalid point index of " + i + " size=" + size());
-			return 0.0;
-		}
-		return data.get(i).accelVs;
-	}
-	
 	public void setVsAccel(int i, double accel) {
 		if (i < 0 || i >= size()) {
 			addError("setVsAccel: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.accelVs = accel;
-		data.set(i, d);
+		d.setVsAccel(accel);
+		//data.set(i, d);
 	}
 
-	public void setBOT(int i) {
+	public void setBOT(int i, double signedRadius, Position center, int linearIndex) {
 		if (i < 0 || i >= size()) {
 			addError("setBOT: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.tcpTrk = TrkTcpType.BOT;
-		data.set(i, d);
+		d.setBOT(signedRadius, center, linearIndex);
+		//data.set(i, d);
 	}
 
-	public void setEOT(int i) {
+	public void setEOT(int i, int idx) {
 		if (i < 0 || i >= size()) {
 			addError("setEOT: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.tcpTrk = TrkTcpType.EOT;
-		data.set(i, d);
+		d.setEOT(idx);
+		//data.set(i, d);
 	}
 
-	public void setEOTBOT(int i) {
+	public void setEOTBOT(int i, double signedRadius, Position center, int linearIndex) {
 		if (i < 0 || i >= size()) {
 			addError("setEOTBOT: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.tcpTrk = TrkTcpType.EOTBOT;
-		data.set(i, d);
+		d.setEOTBOT(signedRadius, center, linearIndex);
+		//data.set(i, d);
 	}
 
-	public void setBGS(int i) {
+	public void setBGS(int i, double acc, Velocity v, int idx) {
 		if (i < 0 || i >= size()) {
 			addError("setBGS: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.tcpGs = GsTcpType.BGS;
-		data.set(i, d);
+		d.setBGS(acc, idx);
+		//data.set(i, d);
 	}
 
-	public void setEGS(int i) {
+	public void setEGS(int i, Velocity v, int idx) {
 		if (i < 0 || i >= size()) {
 			addError("setEGS: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.tcpGs = GsTcpType.EGS;
-		data.set(i, d);
+		d.setEGS(idx);
+		//data.set(i, d);
 	}
 
-	public void setEGSBGS(int i) {
+	public void setEGSBGS(int i, double acc, Velocity v, int idx) {
 		if (i < 0 || i >= size()) {
 			addError("setEGSBGS: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.tcpGs = GsTcpType.EGSBGS;
-		data.set(i, d);
+		d.setEGSBGS(acc, idx);
+		//data.set(i, d);
 	}
 
-	public void setBVS(int i) {
+	public void setBVS(int i, double acc, Velocity v, int idx) {
 		if (i < 0 || i >= size()) {
 			addError("setBVS: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.tcpVs = VsTcpType.BVS;
-		data.set(i, d);
+		d.setBVS(acc, idx);
+		//data.set(i, d);
 	}
 
-	public void setEVS(int i) {
+	public void setEVS(int i, Velocity v, int idx) {
 		if (i < 0 || i >= size()) {
 			addError("setEVS: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.tcpVs = VsTcpType.EVS;
-		data.set(i, d);
+		d.setEVS(i);
+		//data.set(i, d);
 	}
 
-	public void setEVSBVS(int i) {
+	public void setEVSBVS(int i, double acc, Velocity v, int idx) {
 		if (i < 0 || i >= size()) {
 			addError("setEVSBVS: invalid point index of "+i+" size="+size());
 		}	
 		TcpData d = data.get(i);
-		d.tcpVs = VsTcpType.EVSBVS;
-		data.set(i, d);
-	}
-
-	/** true if this point is a TCP */
-	public boolean isTCP(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpTrk != TrkTcpType.NONE || d.tcpGs != GsTcpType.NONE || d.tcpVs != VsTcpType.NONE;
-	}
-
-	/** true if this point is part of a turn */
-	public boolean isTrkTCP(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpTrk != TrkTcpType.NONE;
-	}
-
-	/** true if this point is the start of a turn */
-	public boolean isBOT(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpTrk == TrkTcpType.BOT || d.tcpTrk == TrkTcpType.EOTBOT;
-	}
-
-	/** true if this point is the end of a turn */
-	public boolean isEOT(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpTrk == TrkTcpType.EOT || d.tcpTrk == TrkTcpType.EOTBOT;
-	}
-
-	public boolean isGsTCP(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpGs != GsTcpType.NONE;
-	}
-
-	public boolean isBGS(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpGs == GsTcpType.BGS || d.tcpGs == GsTcpType.EGSBGS;
-	}
-
-	public boolean isEGS(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpGs == GsTcpType.EGS || d.tcpGs == GsTcpType.EGSBGS;
-	}
-
-	/** true if this point is part of a vs change */
-	public boolean isVsTCP(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpVs != VsTcpType.NONE;
-	}
-
-	/** true if this point is the start of a vs change */
-	public boolean isBVS(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpVs == VsTcpType.BVS || d.tcpVs == VsTcpType.EVSBVS;
-	}
-
-	/** true if this point is the end of a vs change */
-	public boolean isEVS(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpVs == VsTcpType.EVS || d.tcpVs == VsTcpType.EVSBVS;
-	}
-
-	public boolean isBeginTCP(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpTrk == TrkTcpType.BOT || d.tcpGs == GsTcpType.BGS || d.tcpVs == VsTcpType.BVS ||
-				d.tcpTrk == TrkTcpType.EOTBOT || d.tcpGs == GsTcpType.EGSBGS || d.tcpVs == VsTcpType.EVSBVS;
-	}
-
-	public boolean isEndTCP(int i) {
-		if (i < 0 || i >= size()) {
-			return false;
-		}
-		TcpData d = data.get(i);
-		return d.tcpTrk == TrkTcpType.EOT || d.tcpGs == GsTcpType.EGS || d.tcpVs == VsTcpType.EVS ||
-				d.tcpTrk == TrkTcpType.EOTBOT || d.tcpGs == GsTcpType.EGSBGS || d.tcpVs == VsTcpType.EVSBVS;
+		d.setEVSBVS(acc, idx);
+		//data.set(i, d);
 	}
 
 	/**
@@ -1368,13 +1414,27 @@ public class Plan implements ErrorReporter, Cloneable {
 			return -1;
 		}
 		for (int j = current + 1; j < points.size(); j++) {
-			if (points.get(j).isEGS()) {
+			if (isEGS(j)) {
 				return j;
 			}
 		}
 		return -1;
 	}
 
+	public int nextBeginTCP(int current) { // fixed
+		if (current < 0 || current > size() - 1) {
+			addWarning("nextBGS invalid starting index " + current);
+			return -1;
+		}
+		for (int j = current + 1; j < points.size(); j++) {
+			if (isBeginTCP(j)) {
+				return j;
+			}
+		}
+		return -1;
+	}
+
+	
 	/**
 	 * This returns the index of the Ground Speed Change Begin point greater than the given index, or -1 if there is no such point. 
 	 * This is generally intended to be used to find the end of an acceleration zone.
@@ -1385,7 +1445,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			return -1;
 		}
 		for (int j = current + 1; j < points.size(); j++) {
-			if (points.get(j).isBGS()) {
+			if (isBGS(j)) {
 				return j;
 			}
 		}
@@ -1393,7 +1453,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 	/**
-	 * This returns the index of the ground speed end point <= the given index,
+	 * This returns the index of the ground speed end point less than or equal to the given index,
 	 * or -1 if there is no such point. This is generally intended to be used to
 	 * find the beginning of an acceleration zone.
 	 * 
@@ -1413,7 +1473,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		for (int j = current - 1; j >= 0; j--) {
 			// if (points.get(j).tcp_vs==NavPoint.Vs_TCPType.BVS ||
 			// points.get(j).tcp_vs==NavPoint.Vs_TCPType.EVSBVS) {
-			if (points.get(j).isEGS()) {
+			if (isEGS(j)) {
 				return j;
 			}
 		}
@@ -1431,7 +1491,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			return -1;
 		}
 		for (int j = current + 1; j < points.size(); j++) {
-			if (points.get(j).isEVS()) {
+			if (isEVS(j)) {
 				return j;
 			}
 		}
@@ -1439,7 +1499,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 	/**
-	 * This returns the index of the vertical speed end point <= the given
+	 * This returns the index of the vertical speed end point less than or equal to the given
 	 * index, or -1 if there is no such point. This is generally intended to be
 	 * used to find the beginning of an acceleration zone.
 	 * 
@@ -1459,7 +1519,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		for (int j = current - 1; j >= 0; j--) {
 			// if (points.get(j).tcp_vs==NavPoint.Vs_TCPType.BVS ||
 			// points.get(j).tcp_vs==NavPoint.Vs_TCPType.EVSBVS) {
-			if (points.get(j).isEVS()) {
+			if (isEVS(j)) {
 				return j;
 			}
 		}
@@ -1477,7 +1537,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			return -1;
 		}
 		for (int j = current + 1; j < points.size(); j++) {
-			if (points.get(j).isBVS()) {
+			if (isBVS(j)) {
 				return j;
 			}
 		}
@@ -1503,7 +1563,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		for (int j = current - 1; j >= 0; j--) {
 			// if (points.get(j).tcp_trk==Trk_TCPType.BOT ||
 			// points.get(j).tcp_trk==Trk_TCPType.EOTBOT ) {
-			if (points.get(j).isBOT()) {
+			if (isBOT(j)) {
 				return j;
 			}
 		}
@@ -1523,7 +1583,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		for (int j = current + 1; j < points.size(); j++) {
 			// if (points.get(j).tcp_trk==NavPoint.Trk_TCPType.EOT ||
 			// points.get(j).tcp_trk==NavPoint.Trk_TCPType.EOTBOT) {
-			if (points.get(j).isBOT()) {
+			if (isBOT(j)) {
 				return j;
 			}
 		}
@@ -1531,7 +1591,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 	/**
-	 * This returns the index of the End of Turn point > the given index, or -1
+	 * This returns the index of the End of Turn point greater than the given index, or -1
 	 * if there is no such point. This is generally intended to be used to find
 	 * the end of an acceleration zone.
 	 */
@@ -1543,7 +1603,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		for (int j = current + 1; j < points.size(); j++) {
 			// if (points.get(j).tcp_trk==NavPoint.Trk_TCPType.EOT ||
 			// points.get(j).tcp_trk==NavPoint.Trk_TCPType.EOTBOT) {
-			if (points.get(j).isEOT()) {
+			if (isEOT(j)) {
 				return j;
 			}
 		}
@@ -1551,7 +1611,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 	/**
-	 * This returns the index of the turn end point < the given index, or -1 if
+	 * This returns the index of the turn end point less than the given index, or -1 if
 	 * there is no such point. This is generally intended to be used to find the
 	 * beginning of an acceleration zone.
 	 * 
@@ -1569,7 +1629,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		for (int j = current - 1; j >= 0; j--) {
 			// if (points.get(j).tcp_vs==NavPoint.Vs_TCPType.BVS ||
 			// points.get(j).tcp_vs==NavPoint.Vs_TCPType.EVSBVS) {
-			if (points.get(j).isEOT()) {
+			if (isEOT(j)) {
 				return j;
 			}
 		}
@@ -1577,7 +1637,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 	/**
-	 * This returns the index of the Vertical Speed Change Begin point < the
+	 * This returns the index of the Vertical Speed Change Begin point less than the
 	 * given index, or -1 if there is no such point. This is generally intended
 	 * to be used to find the beginning of an acceleration zone.
 	 * 
@@ -1597,7 +1657,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		for (int j = current - 1; j >= 0; j--) {
 			// if (points.get(j).tcp_vs==NavPoint.Vs_TCPType.BVS ||
 			// points.get(j).tcp_vs==NavPoint.Vs_TCPType.EVSBVS) {
-			if (points.get(j).isBVS()) {
+			if (isBVS(j)) {
 				return j;
 			}
 		}
@@ -1605,7 +1665,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 	/**
-	 * This returns the index of the Ground Speed Change Begin point < the given
+	 * This returns the index of the Ground Speed Change Begin point less than the given
 	 * index, or -1 if there is no such point. This is generally intended to be
 	 * used to find the beginning of an acceleration zone.
 	 * 
@@ -1621,7 +1681,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			return -1;
 		}
 		for (int j = current - 1; j >= 0; j--) {
-			if (points.get(j).isBGS()) {
+			if (isBGS(j)) {
 				// f.pln(" $$>> prevBGS: return j = "+j);
 				return j;
 			}
@@ -1645,7 +1705,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 		for (int j = current - 1; j >= 0; j--) {
 			// f.pln(" $$$ prevTCP: points.get("+j+") = "+points.get(j).toStringFull());
-			if (points.get(j).isTrkTCP() || points.get(j).isGsTCP() || points.get(j).isVsTCP()) {
+			if (isTrkTCP(j) || isGsTCP(j) || isVsTCP(j)) {
 				return j;
 			}
 		}
@@ -1656,52 +1716,61 @@ public class Plan implements ErrorReporter, Cloneable {
 	// Point addition and set methods
 	//
 
-	/**
-	 * Adds a point to the plan. If the new point has negative time or the same
-	 * time as an existing non-Virtual point, it will generate an error.
-	 * <p>
+	/** Add a Navpoint to the plan that does not have any associated TCP information.  Once this point is added to the plan a set of default
+	 * TCP information will be used for this point.
 	 * 
-	 * @param p  the point to add
-	 * @return  the (non-negative) index of the point if the point is added without problems, otherwise it will return a negative value.
+	 * @param p the point to add
+	 * @return the (non-negative) index of the point if the point is added without problems, otherwise it will return a negative value.
 	 */
-	public int add(NavPoint p) {
-		return add(p, new TcpData(NavPoint.INVALID)); // TODO do something with the tcp metadata
+	public int addNavPoint(NavPoint p) {
+		TcpData d = new TcpData();
+		d.setSource(p); // this better matches the semantics of the original NavPoint (with internal TcpData)
+		return add(p, d);
 	}
-	
-	public int addFull(NavPoint p, double radiusSigned, double accel_gs, double accel_vs, 
-			Velocity velocityInit, NavPoint source, int linearIndex,	
-			String information) {
-		
-		TcpData d = new TcpData(source);
-		//d.ty = WayType  ty;             
-		//d.tcp_trk = Trk_TCPType tcp_trk;	 
-		//d.tcp_gs = Gs_TCPType  tcp_gs;		 
-		//d.tcp_vs = Vs_TCPType  tcp_vs;		
-		d.radiusSigned = radiusSigned;
-		d.accelGs = accel_gs;
-		d.accelVs = accel_vs;
-		d.velocityInit = velocityInit;
-		d.linearIndex = linearIndex;	
-		d.information = information;
-		
-		return add(p,d);
-	}
-	
 
-	private int add(NavPoint p, TcpData d) {
+	public int add(Position p, double time) {
+		NavPoint np = new NavPoint(p,time);
+		return addNavPoint(np);
+	}
+	
+	public int add(Position p, double time, String nm) {
+		NavPoint np = new NavPoint(p,time,nm);
+		return addNavPoint(np);
+	}
+
+
+
+	public int add(Pair<NavPoint,TcpData> p) {
+		return add(p.first, p.second);
+	}
+
+	/**
+	 * 
+	 * @param p
+	 * @param tcpdata
+	 * @return
+	 */
+	public int add(NavPoint p, TcpData tcpdata) {
+		TcpData d;
+		if (tcpdata == null) {
+			d = new TcpData(); // use default values
+		} else {
+			d = new TcpData(tcpdata);
+		}
+
 		if (p == null) {
 			addError("add: Attempt to add null NavPoint", 0);
 			return -1;
 		}
 		if (p.isInvalid()) {
 			addError("add: Attempt to add invalid NavPoint", 0);
-			f.pln(" Plan.add(" + name + "): error invalid NavPoint p = " + p.toStringFull());
+			f.pln(" Plan.add(" + name + "): error invalid NavPoint p = " + p.toString());
 			Debug.halt();
 			return -1;
 		}
 		if (Double.isInfinite(p.time())) {
 			addError("add: Attempt to add NavPoint with infinite time", 0);
-			f.pln(" Plan.add(" + name + "): error infinite NavPoint p = " + p.toStringFull());
+			f.pln(" Plan.add(" + name + "): error infinite NavPoint p = " + p.toString());
 			Debug.halt();
 			return -1;
 		}
@@ -1715,18 +1784,20 @@ public class Plan implements ErrorReporter, Cloneable {
 			addError("add: Attempted to add NavPoint with wrong geometry", 0);
 			return -1;
 		}
+
 		int i = getIndex(p.time());
 		if (i >= 0) { // exact match in time
-			//f.pln(" $$$ Plan.add: point(i).mergeable(p) = "+point(i).mergeable(p));
-			if (!point(i).isVirtual()) {
-				if (point(i).mergeable(p)) {
-					NavPoint np = point(i).mergeTCPInfo(p);
+			//f.pln(" $$$ Plan.add: getTcpData(i).mergeable(d) = "+getTcpData(i).mergeable(d));
+			if (!isVirtual(i)) {
+				if (getTcpData(i).mergeable(d)) {
+					NavPoint np2 = point(i).appendLabel(p.label());
+					TcpData np = getTcpData(i).mergeTCPInfo(d).appendInformation(tcpdata.getInformation());
 					//f.pln(" $$$ Plan.add: np = "+np);
-					points.set(i, np);
-					data.set(i, d);
+					points.set(i, np2);
+					data.set(i, np);
 				} else {
 					addWarning("Attempt to merge a point at time " + f.Fm4(p.time())
-							+ " that already has an incompatible point, no point added.");
+					+ " that already has an incompatible point, no point added.");
 					// f.pln(" $$$$$ plan.add Attempt to add a point at time
 					// "+f.Fm4(p.time())+" that already has an incompatible
 					// point. ");
@@ -1734,13 +1805,14 @@ public class Plan implements ErrorReporter, Cloneable {
 					return -points.size() - 1;
 				}
 			} else { // just replace the virtual
-				// f.pln(" $$ NavPoint.add: set at i = "+i+" p = "+p);
+				//f.pln(" $$ NavPoint.add: set at i = "+i+" p = "+p);
 				points.set(i, p);
 				data.set(i, d);
 			}
 		} else {
 			// insert
 			i = -i - 1; // where the point should be inserted
+			//f.pln(" $$$ Plan.add: insert i = "+i+" p = "+p+" d = "+d.toString());
 			insert(i, p, d);
 		}
 		bound.add(p.position());
@@ -1753,8 +1825,9 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * result in inconsistencies between implied and stored ground and vertical
 	 * speeds for TCP points.
 	 * 
-	 * @param i
-	 * @param v
+	 * @param i the index to place the new point
+	 * @param v the new NavPoint
+	 * @param d the new TcpData associated with this NavPoint
 	 */
 	private void insert(int i, NavPoint v, TcpData d) {
 		if (i < 0 || i > points.size()) {
@@ -1774,7 +1847,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		Position mp = position(t);
 		NavPoint np = new NavPoint(mp, t, "insertedPt");
 		// f.pln(" $$ Plan.insert: add np = "+np.toStringFull());
-		int rtn = add(np);
+		int rtn = addNavPoint(np);
 		return rtn;
 	}
 
@@ -1818,7 +1891,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * Remove the first point with label "name" that occurs after index
 	 * "startIx".) if there is no match, do not alter plan
 	 */
-	public void remove(String name, int startIx) {
+	public void removeByName(String name, int startIx) {
 		boolean withWrap = false;
 		int ix = findLabel(name, startIx, withWrap);
 		if (ix >= 0) {
@@ -1826,34 +1899,108 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 	}
 
+	public void removeByInfo(String info, int startIx) {
+		boolean withWrap = false;
+		int ix = findInfo(info, startIx, withWrap);
+		if (ix >= 0) {
+			remove(ix);
+		}
+	}
+
 	/**
 	 * Attempt to replace the i-th point with the given NavPoint. If successful,
-	 * this removes the point currently at index i and adds the new point. This
+	 * this returns the index of the new point (which may change because of
+	 * a new time relative to the old point). This method
 	 * returns an error if the given index is out of bounds or a warning if the
 	 * new point overlaps with (and replaces) a different existing point.
 	 * 
 	 * @param i  the index of the point to be replaced
 	 * @param v  the new point to replace it with
+	 * @param d the new TcpData to replace
 	 * @return the actual index of the new point
 	 */
-	public int set(int i, NavPoint v) {
+	public int set(int i, NavPoint v, TcpData d) {
 		if (i < 0 || i >= points.size()) {
 			addError("set: invalid index " + i, i);
 			return -1;
 		}
 		// f.pln(" $$ Plan.set: i = "+i+" v = "+v+" toString = "+toString());
 		remove(i);
-		return add(v);
+		return add(v, d);
 	}
 
-	// note: if you change the time of a point its index may change
+	/**
+	 * Attempt to replace the i-th point with the given NavPoint/TcpData. If successful,
+	 * this returns the index of the new point (which may change because of
+	 * a new time relative to the old point). This method
+	 * returns an error if the given index is out of bounds or a warning if the
+	 * new point overlaps with (and replaces) a different existing point.
+	 * 
+	 * @param i  the index of the point to be replaced
+	 * @param npt  the new NavPoint and TcpData to replace it with
+	 * @return the actual index of the new point
+	 */
+	public int set(int i, Pair<NavPoint,TcpData> npt) {
+		return set(i, npt.first, npt.second);
+	}
+
+	/**
+	 * Attempt to replace the i-th point with the given NavPoint. The TcpData from the 
+	 * old point is retained.  If successful,
+	 * this returns the index of the new point (which may change because of
+	 * a new time relative to the old point). This method
+	 * returns -1 and sets an error if the given index is out of bounds or a warning if the
+	 * new point overlaps with (and replaces) a different existing point.
+	 * 
+	 * @param i  the index of the point to be replaced
+	 * @param v  the new NavPoint to replace it with
+	 * @return the actual index of the new point
+	 */
+	public int setNavPoint(int i, NavPoint v) {
+		if (i < 0 || i >= points.size()) {
+			addError("setNavPoint: invalid index " + i, i);
+			return -1;
+		}
+		TcpData tcp = getTcpData(i);
+		remove(i);
+		return add(v,tcp);
+	}
+
+	/**
+	 * Attempt to replace the i-th point's tcp data  with the given data. The navpoint from the 
+	 * old point is retained.  If successful,
+	 * this returns the index of the new point. This method
+	 * returns -1 and sets an error if the given index is out of bounds.
+	 * 
+	 * @param i  the index of the point to be replaced
+	 * @param v  the new TcpData to replace it with
+	 * @return the actual index of the new point
+	 */
+	public int setTcpData(int i, TcpData v) {
+		if (i < 0 || i >= points.size()) {
+			addError("setTcpData: invalid index " + i, i);
+			return -1;
+		}
+		NavPoint np = point(i);
+		remove(i);
+		return add(np, v);
+	}
+
+	/**
+	 * Set the time of the given point to the given value.  Note
+	 * the index of the point may change due to a new time.
+	 * 
+	 * @param i the index of the point to change
+	 * @param t the new time
+	 */
 	public void setTime(int i, double t) {
 		if (t < 0) {
 			addError("setTime: invalid time " + f.Fm4(t), i);
 			return;
 		}
 		NavPoint tempv = points.get(i).makeTime(t);
-		set(i, tempv);
+		TcpData  tcp = getTcpData(i);
+		set(i, tempv, tcp);
 	}
 
 	/** Set altitude of point "i" to "alt"
@@ -1861,16 +2008,21 @@ public class Plan implements ErrorReporter, Cloneable {
 	 */
 	public void setAlt(int i, double alt) {
 		NavPoint tempv = points.get(i).mkAlt(alt);
-		set(i, tempv);
+		setNavPoint(i, tempv);
 	}
+	
 
-    // currently only used in "TurnPlanTest"
+	// currently only used in "TurnPlanTest"
 	public void updateWithDefaultRadius(double radius) {
 		for (int i = 0; i < points.size(); i++) {
-			NavPoint np = points.get(i);
-			if ((np.isBOT() || !np.isTCP()) && np.turnRadius() == 0.0) {
-				np = np.makeRadius(radius);
-				points.set(i, np);
+			TcpData d = getTcpDataRef(i);
+			if ((d.isBOT() || ! d.isTCP()) && d.turnRadius() == 0.0) {
+				NavPoint np = point(i);
+				//f.pln("update radius");
+				TcpData tcp = TcpData.makeSource(np).setRadiusSigned(radius);
+				set(i, np, tcp);
+				d.setRadiusSigned(radius);				
+				//data.set(i, d);
 			}
 		}
 	}
@@ -1887,20 +2039,21 @@ public class Plan implements ErrorReporter, Cloneable {
 		if (start >= this.size() || st == 0.0)
 			return this.copy();
 		for (int j = 0; j < start; j++) {
-			newKPC.add(this.point(j));
+			newKPC.add(get(j));
 			// f.pln("0 add newKPC.point("+j+") = "+newKPC.point(j));
 
 		}
 		double ft = 0.0; // time of point before start
 		if (start > 0) {
-			ft = this.getTime(start - 1);
+			ft = this.time(start - 1);
 		}
 		for (int i = start; i < this.size(); i++) {
-			double t = this.getTime(i) + st; // adjusted time for this point
+			double t = this.time(i) + st; // adjusted time for this point
 			// f.pln(">>>> timeshiftPlan: t = "+ t+" ft = "+ft);
 			if (t > ft && t >= 0.0) {
 				// double newSourceTime = this.point(i).sourceTime() + st;
-				newKPC.add(this.point(i).makeTime(t));
+				Pair<NavPoint, TcpData> pair = get(i);
+				newKPC.add(pair.first.makeTime(t),pair.second);
 				// f.pln(" add newKPC.point("+i+") = "+newKPC.point(i));
 			} else {
 				// f.pln(">>>> copyTimeShift: do not add i = "+i);
@@ -1918,7 +2071,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * @param dt         amount to shift time (can be positive or negative
 	 * @return           true, if successful
 	 */
-	public boolean timeshiftPlan(int start_ix, double dt) {
+	public boolean timeShiftPlan(int start_ix, double dt) {
 		if (Double.isNaN(dt) || start_ix < 0) {
 			if (debug) Debug.halt();
 			return false;
@@ -1928,34 +2081,32 @@ public class Plan implements ErrorReporter, Cloneable {
 		if (dt < 0) {
 			double ft = 0.0; // time of point before start
 			if (start_ix > 0) {
-				ft = getTime(start_ix - 1);
+				ft = time(start_ix - 1);
 			}
 			for (int i = start_ix; i < size(); i++) {
-				double t = getTime(i) + dt; // adjusted time for this point
+				double t = time(i) + dt; // adjusted time for this point
 				// f.pln(">>>> timeshiftPlan: t = "+t+" getTime(i) =
 				// "+getTime(i)+" getTime(i-1) = "+getTime(i-1));
 				if (t > ft && t >= 0.0) {
-					// f.pln(">>>> timeshiftPlan: setTime(i,t)! i = "+i+" t =
-					// "+t);
+					// f.pln(">>>> timeshiftPlan: setTime(i,t)! i = "+i+" t =  "+t);
 					setTime(i, t);
 				} else {
-					// f.pln(">>>> timeshiftPlan: remove i = "+i);
+					//f.pln(">>>> timeshiftPlan: remove i = "+i);
 					remove(i);
 					i--;
 				}
 			}
 		} else {
 			for (int i = size() - 1; i >= start_ix; i--) {
-				// f.pln(">>>> timeshiftPlan: setTime(i,getTime(i)+st! i = "+i+"
-				// st = "+st);
-				setTime(i, getTime(i) + dt);
+				// f.pln(">>>> timeshiftPlan: setTime(i,getTime(i)+st! i = "+i+"  st = "+st);
+				setTime(i, time(i) + dt);
 			}
 		}
 		return true;
 	}
 
 	/**
-	 * This returns true if the given time is >= a BOT but before an EOT point
+	 * This returns true if the given time is greater than or equal to a BOT but before an EOT point
 	 */
 	public boolean inTrkChange(double t) { // fixed
 		int i = getSegment(t);
@@ -1965,7 +2116,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 	/**
-	 * This returns true if the given time is >= a GSCBegin but before a GSCEnd
+	 * This returns true if the given time is greater than or equal to a GSCBegin but before a GSCEnd
 	 * point
 	 */
 	public boolean inGsChange(double t) {// fixed
@@ -1976,7 +2127,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	}
 
 	/**
-	 * This returns true if the given time is >= a VSCBegin but before a VSCEnd
+	 * This returns true if the given time is greater than or equal to a VSCBegin but before a VSCEnd
 	 * point
 	 */
 	public boolean inVsChange(double t) {
@@ -2028,7 +2179,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * 
 	 */
 	public boolean inAccelZone(int ix) {
-		return point(ix).isTCP() || inAccel(getTime(ix));
+		return isTCP(ix) || inAccel(time(ix));
 	}
 
 	/**
@@ -2037,26 +2188,15 @@ public class Plan implements ErrorReporter, Cloneable {
 	 */
 	public double turnRadiusAtTime(double t) {
 		if (inTrkChange(t)) {
-			NavPoint bot = points.get(prevBOT(getSegment(t) + 1));
+			int ixBOT = prevBOT(getSegment(t) + 1);
+			//NavPoint bot = points.get(ixBOT);
 			// return bot.position().distanceH(bot.turnCenter());
-			return bot.turnRadius();
+			return getTcpData(ixBOT).turnRadius();
 		} else {
 			return 0.0;
 		}
 	}
 
-	/**
-	 * Return the turn rate (i.e., position acceleration in the "track"
-	 * dimension) associated with the point at time t.
-	 */
-	public double trkAccelAtTime(double t) {
-		if (inTrkChange(t)) {
-			int b = prevBOT(getSegment(t) + 1);
-			return point(b).trkAccel();
-		} else {
-			return 0.0;
-		}
-	}
 
 	/**
 	 * Return the ground speed rate of change (i.e., position acceleration in
@@ -2065,7 +2205,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	public double gsAccelAtTime(double t) {
 		if (inGsChange(t)) {
 			int b = prevBGS(getSegment(t) + 1);// fixed
-			return point(b).gsAccel();
+			return gsAccel(b);
 		} else {
 			return 0.0;
 		}
@@ -2078,13 +2218,21 @@ public class Plan implements ErrorReporter, Cloneable {
 	public double vsAccelAtTime(double t) {
 		if (inVsChange(t)) {
 			int b = prevBVS(getSegment(t) + 1);
-			return point(b).vsAccel();
+			return vsAccel(b);
 		} else {
 			return 0.0;
 		}
 	}
 
-	//
+	
+
+	/**
+	 * Return the position at the given time. 
+	 *
+	 * @param t       time
+	 * @param linear  if true, ignore accelerations
+	 * @return    Interpolated position at time t
+	 */	
 	public Position position(double t, boolean linear) {
 		return positionVelocity(t, linear).first;
 	}
@@ -2095,46 +2243,40 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * position is extrapolated after the end of the plan. An error is set if
 	 * the time is before the beginning of the plan.
 	 *
-	 * @param tt
+	 * @param t
 	 *            time
-	 * @return linear interpolated position at time tt
+	 * @return linear interpolated position at time t
 	 */
 	public Position position(double t) {
 		return positionVelocity(t, false).first;
 	}
 
-	/**
-	 * Estimate the initial velocity at the given time for this aircraft. A time
-	 * before the beginning of the plan returns a zero velocity.
+	/** 
+	 * Estimate the initial velocity at the given time for this aircraft.   
+	 * A time before the beginning of the plan returns a zero velocity.
 	 */
 	public Velocity velocity(double tm, boolean linear) {
 		return positionVelocity(tm, linear).second;
-	}
-
-	/**
-	 * Estimate the initial velocity at the given time for this aircraft. A time
-	 * before the beginning of the plan returns a zero velocity.
-	 */
-	public Velocity velocity(double tm) {
+	}	public Velocity velocity(double tm) {
 		return positionVelocity(tm, false).second;
 	}
 
 	/**
-	 * time required to cover distance "dist" if initial speed is "vo" and acceleration is "gsAccel"
+	 * The time required to cover distance "dist" if initial speed is "gs" and acceleration is "gsAccel"
 	 *
+	 * @param gs       initial ground speed
 	 * @param gsAccel  ground speed acceleration
-	 * @param vo       initial velocity
 	 * @param dist     distance
 	 * @return time required to cover distance
 	 */
-	static double timeFromGs(double vo, double gsAccel, double dist) {
-		double t1 = Util.root(0.5 * gsAccel, vo, -dist, 1);
-		double t2 = Util.root(0.5 * gsAccel, vo, -dist, -1);
+	static double timeFromDistance(double gs, double gsAccel, double dist) {
+		double t1 = Util.root(0.5 * gsAccel, gs, -dist, 1);
+		double t2 = Util.root(0.5 * gsAccel, gs, -dist, -1);
 		double dt = Double.isNaN(t1) || t1 < 0 ? t2 : (Double.isNaN(t2) || t2 < 0 ? t1 : Util.min(t1, t2));
 		return dt;
 	}
 
-	/** Return the time that corresponds to the point that is path distance "rdist" from the start of segment "seg"
+	/** Return the delta time that corresponds to the point that is path distance "rdist" from the start of segment "seg"
 	 * 
 	 * @param seg    segment of interest
 	 * @param rdist  distance from "seg"
@@ -2142,15 +2284,15 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * 
 	 * Note: if there is a gs0=0 segment, return the time of the start of the segment return -1 on out of bounds input
 	 */
-	public double timeFromDistance(int seg, double rdist) {
+	public double timeFromDistanceWithinSeg(int seg, double rdist) {
 		if (seg < 0 || seg > size() - 1 || rdist < 0 || rdist > pathDistance(seg))
 			return -1;
 		double gs0 = initialVelocity(seg).gs();
 		if (Util.almost_equals(gs0, 0.0))
 			return 0;
-		if (inGsChange(getTime(seg))) {
-			double a = point(prevBGS(seg + 1)).gsAccel();
-			return timeFromGs(gs0, a, rdist);
+		if (inGsChange(time(seg))) {
+			double a = gsAccel(prevBGS(seg + 1));
+			return timeFromDistance(gs0, a, rdist);
 		} else {
 			return rdist / gs0;
 		}
@@ -2158,8 +2300,8 @@ public class Plan implements ErrorReporter, Cloneable {
 
 	/** Return the time that corresponds to the point that is path distance "rdist" from the start of plan
 	 * 
-	 * @param rdist  distance from start of plan
-	 * @return       time of point that is "rdist" distance from start of plan
+	 * @param dist  distance from start of plan
+	 * @return      time of point that is "rdist" distance from start of plan
 	 * 
 	 */
 	public double timeFromDistance(double dist) {
@@ -2167,13 +2309,33 @@ public class Plan implements ErrorReporter, Cloneable {
 		if (seg < 0 || seg > size() - 1)
 			return -1;
 		double dd = dist - pathDistance(0, seg);
-		return timeFromDistance(seg, dd) + getTime(seg);
+		return timeFromDistanceWithinSeg(seg, dd) + time(seg);
 	}
+	
+	/** Return the absolute time that corresponds to the point that is path distance "dist" from startSeg
+	 * 
+	 * @param dist  distance from start of plan
+	 * @return      time of point that is "rdist" distance from start of plan
+	 * 
+	 */
+	public double timeFromDistance(int startSeg, double dist) {	
+		//f.pln(" $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ startSeg = "+startSeg+"\n this = "+this);
+		int seg = getSegmentByDistance(startSeg,dist);
+		//f.pln(" $$$$$$$ timeFromDistance: seg = "+seg);
+		if (seg < 0 || seg > size() - 1) return -1;
+		double pd = pathDistance(startSeg,seg);
+		double distWithinLastSeg = dist - pd;
+		//f.pln(" $$$$$$$ timeFromDistance: distWithinLastSeg = "+Units.str("ft",distWithinLastSeg));
+		double tmWithin = timeFromDistanceWithinSeg(seg, distWithinLastSeg);
+		//f.pln(" $$$$$$$ timeFromDistance: tmWithin = "+tmWithin+" time(seg) = "+time(seg));
+		return tmWithin + time(seg);
+	}
+
 
 	/** Return the velocity of the point that is path distance "rdist" from the start of plan
 	 * 
-	 * @param rdist  distance from start of plan
-	 * @return       velocity of point that is "rdist" distance from start of plan
+	 * @param d     distance from start of plan
+	 * @return      velocity of point that is "rdist" distance from start of plan
 	 * 
 	 */
 	public Velocity velocityByDistance(double d) {
@@ -2183,7 +2345,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	/**
 	 * Calculate track angle out of point "i"
 	 * 
-	 * @param i        The index of the point of interest
+	 * @param seg      The index of the point of interest
 	 * @param linear   If true, then interpret plan in a linear manner
 	 * @return         track angle out of point "i"
 	 */
@@ -2200,22 +2362,22 @@ public class Plan implements ErrorReporter, Cloneable {
 		if (inTrkChange(point(seg).time()) && !linear) {
 			int ixBOT = prevBOT(seg + 1);
 			double distFrom = pathDistance(ixBOT, seg);
-			Position center = point(ixBOT).turnCenter();
-			double signedRadius = point(ixBOT).signedRadius();
+			Position center = turnCenter(ixBOT);
+			double signedRadius = signedRadius(ixBOT);
 			int dir = Util.sign(signedRadius);
-		    //f.pln(" $$$ trkOut (inTurn): distFrom = "+Units.str("ft",distFrom)+" signedRadius = "+Units.str("ft",signedRadius)+" ixBOT = "+ixBOT);
+			//f.pln(" $$$ trkOut (inTurn): distFrom = "+Units.str("ft",distFrom)+" signedRadius = "+Units.str("ft",signedRadius)+" ixBOT = "+ixBOT);
 			double gsAt_d = 1000.0; // not used here -- don't use 0.0 because
-									// will lose track info
+			// will lose track info
 			Position so = point(ixBOT).position();
-			vNew = KinematicsPosition.turnByDist(so, center, dir, distFrom, gsAt_d).second;
-		   //f.pln(" $$$ trkOut: vNew = "+vNew);
+			vNew = KinematicsPosition.turnByDist2D(so, center, dir, distFrom, gsAt_d).second;
+			//f.pln(" $$$ trkOut: vNew = "+vNew);
 			return vNew.trk();
 		} else {
-			double distH = point(seg).distanceH(point(seg+1));
-			//f.pln(" $$$ NavPoint.initialVelocity: distH = "+Units.str("ft",distH,14));
-			vNew = point(seg).initialVelocity(point(seg+1));
-		    //f.pln(" $$$ trkOut (linear): seg = "+seg+" vNew = "+vNew);
-			return vNew.trk();
+			if (isLatLon()) {
+				return GreatCircle.initial_course(point(seg).lla(), point(seg+1).lla());
+			} else {
+				return point(seg).initialVelocity(point(seg+1)).trk();	
+			}
 		}
 	}
 
@@ -2223,10 +2385,14 @@ public class Plan implements ErrorReporter, Cloneable {
 		return trkOut(seg, false);
 	}
 
+	public double trkIn(int seg) {
+		return trkFinal(seg - 1, false);
+	}
+
 	/**
 	 * Calculate track angle at the end of segment "i"
 	 * 
-	 * @param i        The index of the point of interest
+	 * @param seg      The index of the point of interest
 	 * @param linear   If true, then interpret plan in a linear manner
 	 * @return         track angle at the end of segment "i"
 	 */
@@ -2239,26 +2405,26 @@ public class Plan implements ErrorReporter, Cloneable {
 		if (inTrkChange(point(seg).time()) && !linear) {
 			int ixBOT = prevBOT(seg + 1);
 			double d = pathDistance(ixBOT, seg + 1);
-			double signedRadius = point(ixBOT).signedRadius();
+			double signedRadius = signedRadius(ixBOT);
 			int dir = Util.sign(signedRadius);
-			Position center = point(ixBOT).turnCenter();
+			Position center = turnCenter(ixBOT);
 			// f.pln("$$$ trkFinal AA: d = "+Units.str("NM",d)+" signedRadius =
 			// "+Units.str("NM",signedRadius)+" ixBOT = "+ixBOT);
 			double gsAt_d = 1000.0; // not used here -- don't use 0.0 because will lose track info
 			Position so = point(ixBOT).position();
-			Velocity vFinal = KinematicsPosition.turnByDist(so, center, dir, d, gsAt_d).second;
+			Velocity vFinal = KinematicsPosition.turnByDist2D(so, center, dir, d, gsAt_d).second;
 			// f.pln("$$$ trkFinal AA: ixBOT = "+ixBOT+" seg = "+seg+" vFinal =
 			// "+vFinal);
 			return vFinal.trk();
 		} else {
+			//f.pln("$$$ trkFinal: point(seg) = "+point(seg)+" point(seg + 1) = "+point(seg + 1));
 			if (isLatLon()) {
 				// double d = pathDistance(seg,seg+1);
 				double trk = GreatCircle.final_course(point(seg).lla(), point(seg + 1).lla());
-				// f.pln("$$$ trkFinal BB: seg = "+seg+" trk =
-				// "+Units.str("deg",trk));
+				//f.pln("$$$ trkFinal BB: seg = "+seg+" trk = "+Units.str("deg",trk));
 				return trk;
 			} else {
-				Velocity vo = point(seg).finalVelocity(point(seg + 1));
+				Velocity vo = NavPoint.finalVelocity(point(seg), point(seg + 1));
 				// f.pln("$$$ trkFinal CC: seg = "+seg+" vo = "+vo);
 				return vo.trk();
 			}
@@ -2270,7 +2436,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * 
 	 * @param i       The index of the point of interest
 	 * @param linear  If true, then interpret plan in a linear manner
-	 * @return
+	 * @return ground speed
 	 */
 	public double gsOut(int i, boolean linear) {
 		if (i < 0 || i > size() - 1) {
@@ -2280,25 +2446,23 @@ public class Plan implements ErrorReporter, Cloneable {
 		if (i == size() - 1)
 			return gsFinal(i - 1);
 		int j = i + 1;
-		// while (j < size()-1 && getTime(j) - getTime(i) < minDt) { // skip
-		// next point(s) if very close
+		// while (j < size()-1 && getTime(j) - getTime(i) < minDt) { // skip next point(s) if very close 
 		// j++;
 		// }
 		double dist = pathDistance(i, j, linear);
-		double dt = getTime(j) - getTime(i);
+		double dt = time(j) - time(i);
 		double a = 0.0;
-		if (inGsChange(getTime(j-1)) && !linear) { // use getTime(j-1) rather  than getTime(i) in case j-1 point is an EGS
+		if (inGsChange(time(j-1)) && !linear) { // use getTime(j-1) rather  than getTime(i) in case j-1 point is an EGS
 			int ixBGS = prevBGS(i + 1);
-			a = point(ixBGS).gsAccel();
+			a =gsAccel(ixBGS);
 		}
 		double rtn = dist / dt - 0.5 * a * dt;
-		// f.pln("gsOut seg="+seg+" a="+a+" dist="+dist+" dt="+dt+" gs="+rtn);
-		// f.pln("$$>>>>>> gsOut: rtn = "+Units.str("kn",rtn,8)+" a = "+a+" i = "+i+" j = "+j+" dt = "+f.Fm4(dt)+" dist = "+Units.str("NM",dist)+"size = "+size());
+		//f.pln("gsOut i="+i+" a="+a+" dist="+dist+" dt="+dt+" gs="+rtn);
+		//f.pln("$$>>>>>> gsOut: rtn = "+Units.str("kn",rtn,8)+" a = "+a+" i = "+i+" j = "+j+" dt = "+f.Fm4(dt)+" dist = "+Units.str("NM",dist)+"size = "+size());
 		if (rtn <= 0) {
 			// f.pln(" ### WARNING gsOut: has encountered an ill-structured plan resulting in a negative ground speed!!");
-			rtn = 0.000001; // do not set to 0 because it will lose track info, this can occur if dist = 0.0 or if "a" is larger
-							// than it should be
-			// Debug.halt();
+			rtn = nearlyZeroGs; // do not set to 0 because it will lose track info, this can occur if dist = 0.0 or if "a" is larger
+			// than it should be
 		}
 		return rtn;
 	}
@@ -2310,7 +2474,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * 
 	 * @param i        The index of the point of interest
 	 * @param linear   If true, then interpret plan in a linear manner
-	 * @return
+	 * @return ground speed
 	 */
 	public double gsFinal(int i, boolean linear) {
 		if (i < 0 || i > size() - 1) {
@@ -2323,11 +2487,12 @@ public class Plan implements ErrorReporter, Cloneable {
 		// i--;
 		// }
 		double dist = pathDistance(i, j, linear);
-		double dt = getTime(j) - getTime(i);
+		double dt = time(j) - time(i);
 		double a = 0.0;
+		//f.pln(" $$ gsFinal: i = "+i+" dist = "+Units.str("nm",dist));
 		if (inGsChange(point(i).time()) && !linear) {
 			int ixBGS = prevBGS(i + 1);
-			a = point(ixBGS).gsAccel();
+			a = gsAccel(ixBGS);
 		}
 		return dist / dt + 0.5 * a * dt;
 	}
@@ -2339,7 +2504,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 *            The index of the point of interest
 	 * @param linear
 	 *            If true, then interpret plan in a linear manner
-	 * @return
+	 * @return ground speed
 	 */
 	public double gsIn(int seg, boolean linear) {
 		return gsFinal(seg - 1, linear);
@@ -2370,9 +2535,9 @@ public class Plan implements ErrorReporter, Cloneable {
 		// f.pln(" $$ gsAtTime: seg = "+seg+" gsAtSeg = "+Units.str("kn",gsAtSeg,8));
 		double gs;
 		if (!linear && inGsChange(t)) {
-			double dt = t - getTime(seg);
+			double dt = t - time(seg);
 			int ixBGS = prevBGS(seg + 1);
-			double gsAccel = point(ixBGS).gsAccel();
+			double gsAccel =gsAccel(ixBGS);
 			gs = gsAtSeg + dt * gsAccel;
 			// f.pln(" $$ gsAtTime A: gsAccel = "+gsAccel+" dt = "+f.Fm4(dt)+" seg = "+seg+" gs = "+Units.str("kn",gs,8));
 		} else {
@@ -2414,7 +2579,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 *            The index of the point of interest
 	 * @param linear
 	 *            If true, then interpret plan in a linear manner
-	 * @return
+	 * @return vertical speed
 	 */
 	public double vsOut(int i, boolean linear) {
 		if (i < 0 || i > size() - 1) {
@@ -2430,15 +2595,17 @@ public class Plan implements ErrorReporter, Cloneable {
 		// }
 		// f.pln(" $$>>>>>> vsOut: i = "+i+" j = "+j);
 		double dist = point(j).alt() - point(i).alt();
-		double dt = getTime(j) - getTime(i);
+		double dt = time(j) - time(i);
+		//f.pln(" $$$ vsOut("+i+","+j+"): point(i) = "+point(i)+" point(j) "+point(j));
 		double a = 0.0;
-		if (inVsChange(getTime(j - 1)) && !linear) { // use getTime(j-1) rather than getTime(i) in case j-1 point is an EGS
+		//f.pln(" $$$ vsOut: getTime(j - 1) = "+getTime(j - 1));
+		if (inVsChange(time(j - 1)) && !linear) { // use getTime(j-1) rather than getTime(i) in case j-1 point is an EGS
 			int ixBVS = prevBVS(i + 1);
-			a = point(ixBVS).vsAccel();
+			a = vsAccel(ixBVS);
 		}
+		//f.pln(" $$$ vsOut: a = "+a);
 		double rtn = dist / dt - 0.5 * a * dt;
-		// f.pln(" $$>>>>>> vsOut: rtn = "+Units.str("fpm",rtn,8)+" a = "+a+" i
-		// = "+i+" dt = "+f.Fm4(dt)+" dist = "+Units.str("ft",dist));
+		// f.pln(" $$>>>>>> vsOut: rtn = "+Units.str("fpm",rtn,8)+" a = "+a+" i = "+i+" dt = "+f.Fm4(dt)+" dist = "+Units.str("ft",dist));
 		return rtn;
 	}
 
@@ -2451,7 +2618,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 *            The index of the point of interest
 	 * @param linear
 	 *            If true, then interpret plan in a linear manner
-	 * @return
+	 * @return vertical speed
 	 */
 	public double vsFinal(int i, boolean linear) {
 		// f.pln("\n $$>>>>>> vsFinal: seg = "+seg+" linear = "+linear);
@@ -2467,11 +2634,11 @@ public class Plan implements ErrorReporter, Cloneable {
 		// i--;
 		// }
 		double dist = point(j).alt() - point(i).alt();
-		double dt = getTime(j) - getTime(i);
+		double dt = time(j) - time(i);
 		double a = 0.0;
 		if (inVsChange(point(i).time()) && !linear) {
 			int ixBvs = prevBVS(i + 1);
-			a = point(ixBvs).vsAccel();
+			a = vsAccel(ixBvs);
 			// f.pln(" $$>>>>>> vsFinal: IN VS ACCEL: a = "+a);
 		}
 		// f.pln(" $$>>>>>> vsFinal: a = "+a+" seg = "+seg+" dt = "+f.Fm4(dt)+"
@@ -2488,7 +2655,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 *            The index of the point of interest
 	 * @param linear
 	 *            If true, then interpret plan in a linear manner
-	 * @return
+	 * @return vertical speed
 	 */
 	public double vsIn(int seg, boolean linear) {
 		return vsFinal(seg - 1, linear);
@@ -2517,15 +2684,15 @@ public class Plan implements ErrorReporter, Cloneable {
 	 *            time of interest
 	 * @param linear
 	 *            If true, then interpret plan in a linear manner
-	 * @return
+	 * @return vertical speed
 	 */
 	private double vsAtTime(int seg, double vsAtSeg, double t, boolean linear) {
 		// f.pln(" $$ vsAtTime: seg = "+seg+" vsAt = "+Units.str("kn",vsAt,8));
 		double vs;
 		if (!linear && inVsChange(t)) {
-			double dt = t - getTime(seg);
+			double dt = t - time(seg);
 			int ixBvs = prevBVS(seg + 1);
-			double vsAccel = point(ixBvs).vsAccel();
+			double vsAccel = vsAccel(ixBvs);
 			vs = vsAtSeg + dt * vsAccel;
 			// f.pln(" $$ vsAtTime A: vsAccel = "+vsAccel+" dt = "+f.Fm4(dt)+"
 			// seg = "+seg+" vs = "+Units.str("kn",vs,8));
@@ -2544,7 +2711,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 *            time of interest
 	 * @param linear
 	 *            If true, then interpret plan in a linear manner
-	 * @return
+	 * @return vertical speed
 	 */
 	public double vsAtTime(double t, boolean linear) {
 		double vs;
@@ -2560,30 +2727,178 @@ public class Plan implements ErrorReporter, Cloneable {
 		return vs;
 	}
 
-	/**
-	 * Calculate the distance from the Navpoint at "seq" to plan position at time "t"
+	/** distanceFromTime()
+	 * Calculate the distance from the Navpoint at "seq" to plan position at absolute time "t"
 	 * 
 	 * @param seg    starting position
-	 * @param t      time of stopping position
+	 * @param t      time of stopping position (must be in segment "seg")
 	 * @param linear If true, then interpret plan in a linear manner
-	 * @return
+	 * @return distance from NavPoint
 	 */
 	public double distFromPointToTime(int seg, double t, boolean linear) {
-		NavPoint np1 = point(seg);
 		double distFromSo = 0;
 		double gs0 = gsOut(seg, linear);
-		double dt = t - np1.time();
+		double dt = t - time(seg);
 		if (inGsChange(t) && !linear) {
-			double gsAccel = point(prevBGS(seg + 1)).gsAccel(); 
-			distFromSo = gs0 * dt + 0.5 * gsAccel * dt * dt;
-			// f.pln(" $$$ positionVelocity(inGsChange A): dt = "+f.Fm2(dt)+" vo.gs() = "+Units.str("kn",gs0)+" distFromSo = "+Units.str("ft",distFromSo));
+			double a = gsAccel(prevBGS(seg + 1)); 
+			distFromSo = gs0 * dt + 0.5 * a * dt * dt;
+			// f.pln(" $$$ distFromPointToTime(inGsChange A): dt = "+f.Fm2(dt)+" vo.gs() = "+Units.str("kn",gs0)+" distFromSo = "+Units.str("ft",distFromSo));
 		} else {
 			distFromSo = gs0 * dt;
-			// f.pln(" $$$ positionVelocity(! inGsChange B): dt = "+f.Fm4(dt)+" gs0 = "+Units.str("kn",gs0)+" distFromSo = "+Units.str("ft",distFromSo));
+			// f.pln(" $$$ distFromPointToTime(! inGsChange B): dt = "+f.Fm4(dt)+" gs0 = "+Units.str("kn",gs0)+" distFromSo = "+Units.str("ft",distFromSo));
 		}
 		return distFromSo;
 	}
 
+	/** Advance forward in a plan by distance (does not compute altitude)
+	 * 
+	 * @param seg           starting point index
+	 * @param distFromSeg   distance to advance from starting point
+	 * @param linear        if linear, use straight segments only
+	 * @param gsAt_d        ground speed at destination
+	 * @return
+	 */
+	public Pair<Position, Velocity> advanceDistanceWithinSeg2D(int seg, double distFromSeg, boolean linear, double gsAt_d) {
+		NavPoint np1 = point(seg);
+        Position so = np1.position();
+        Pair<Position,Velocity> pv;
+        double tSeg = point(seg).time();
+		if ( ! linear && inTrkChange(tSeg)) {
+			int ixPrevBOT = prevBOT(seg + 1);
+			Position center = turnCenter(ixPrevBOT);
+			//f.pln(" $$$ advanceDistanceWithinSeg: center = "+center);
+			double signedRadius = signedRadius(ixPrevBOT);
+			int dir = Util.sign(signedRadius);
+			pv = KinematicsPosition.turnByDist2D(so, center, dir, distFromSeg, gsAt_d);
+			// f.pln(" $$ %%%% advanceDistanceWithinSeg A: vNew("+f.Fm2(t)+") = "+vNew);
+			// f.pln(" $$ %%%% advanceDistanceWithinSeg A: sNew("+f.Fm2(t)+") = "+sNew);
+		} else {
+			NavPoint np2 = point(seg+1);
+			Velocity vo = np1.initialVelocity(np2);
+			pv = so.linearDist2D(vo.trk(), distFromSeg, gsAt_d);
+		}
+		return pv;
+	}
+
+	
+	/** Advance forward in a plan by distance (within a segment only) (does not compute altitude)
+	 * 
+	 * @param seg           starting point index
+	 * @param distFromSeg   distance to advance from starting point
+	 * @param linear        if linear, use straight segments only
+	 * @return
+	 */
+	public Position advanceDistanceWithinSeg2D(int seg, double distFromSeg, boolean linear) {
+		NavPoint np1 = point(seg);
+        Position so = np1.position();
+        Position pv;
+        double tSeg = point(seg).time();
+		if ( ! linear && inTrkChange(tSeg)) {
+			int ixPrevBOT = prevBOT(seg + 1);
+			Position center = turnCenter(ixPrevBOT);
+			int dir = Util.sign(signedRadius(ixPrevBOT));
+			pv = KinematicsPosition.turnByDist2D(so, center, dir, distFromSeg);
+		} else {
+			Velocity vo = np1.initialVelocity(point(seg+1));
+			pv = so.linearDist2D(vo.trk(), distFromSeg);
+		}
+		return pv;
+	}
+
+	/** starting with point at seg advance "distanceFromSeg" in Plan
+	 * NOTE do not use non-positive value for gsAt_d
+	 * 
+	 * @param seg             starting segment
+	 * @param distFromSeg     distance to advance from start of segment "seg"
+	 * @param linear          if linear, then use straight lines only
+	 * @return
+	 */
+	public Pair<Position,Integer> advanceDistance2D(int seg, double distFromSeg, boolean linear) {
+		double remainingDist = distFromSeg;
+		for (int i = seg; i < size(); i++) {
+			double pathDist_i = pathDistance(i);
+			if (remainingDist < pathDist_i) {
+				 Position newPos = advanceDistanceWithinSeg2D(i, remainingDist, linear);
+				 return new Pair<Position,Integer>(newPos,i);
+			} else {
+				remainingDist = remainingDist - pathDist_i;
+			}
+		}
+		addWarning("advanceDistance: distance exceeded length of plan!");
+		int ixLast = size() - 1;
+		return  new Pair<Position, Integer>(points.get(ixLast).position(), ixLast);
+	}
+	
+//	public Pair<Position,Integer> advanceDistance(int seg, double distFromSeg, boolean linear) {
+//		Pair<Position,Integer> posSeg = advanceDistance2D(seg, distFromSeg, linear);
+//		double t = timeFromDistance(seg, distFromSeg);
+//		double alt = position(t).alt();
+//		//double deltaAlt = posSeg.first.alt() - alt;
+//		//f.pln(" $$$$ advanceDistance: deltaAlt = "+deltaAlt);
+//		Position altPos = posSeg.first.mkAlt(alt);
+//		return new Pair<Position,Integer>(altPos,posSeg.second);
+//	}
+	
+	
+	public Pair<Position,Integer> advanceDistance(int seg, double distFromSeg, boolean linear) {
+		double remainingDist = distFromSeg;
+		for (int i = seg; i < size(); i++) {
+			double pathDist_i = pathDistance(i);
+			if (remainingDist < pathDist_i) {
+				 Position newPos = advanceDistanceWithinSeg2D(i, remainingDist, linear);
+				 double t = timeFromDistance(i, remainingDist);
+				 double alt = position(t).alt();
+				 Position altPos = newPos.mkAlt(alt);
+				 return new Pair<Position,Integer>(altPos,i);
+			} else {
+				remainingDist = remainingDist - pathDist_i;
+			}
+		}
+		addWarning("advanceDistance: distance exceeded length of plan!");
+		int ixLast = size() - 1;
+		return  new Pair<Position, Integer>(points.get(ixLast).position(), ixLast);
+	}
+
+	
+	/** Assumes seg = getSegment(t)
+	 * 
+	 * @param t         time of interest
+	 * @param linear    If true, then interpret plan in a linear manner
+	 * @param gsAt_d    ground speed at time t
+	 * @return          position and velocity at time t
+	 */
+	public Pair<Position, Velocity> posVelWithinSeg2D(int seg, double t, boolean linear, double gsAt_d) {
+		NavPoint np1 = point(seg);
+        Position so = np1.position();
+        Pair<Position,Velocity> pv;
+		if ( ! linear && inTrkChange(t)) {
+			int ixPrevBOT = prevBOT(seg + 1);
+			Position center = turnCenter(ixPrevBOT);
+			double signedRadius = signedRadius(ixPrevBOT);
+			int dir = Util.sign(signedRadius);
+			double distFromSo;
+			boolean method1 = true; // starting position could be either the current segment or the previous BOT
+			if (method1) {
+				distFromSo = distFromPointToTime(seg, t, linear); // starting position is the current segment
+			} else {
+				so = point(ixPrevBOT).position(); // // starting position is the previous BOT
+				distFromSo = distFromPointToTime(ixPrevBOT, t, linear);
+			}
+			pv = KinematicsPosition.turnByDist2D(so, center, dir, distFromSo, gsAt_d);
+			// f.pln(" $$ %%%% posVelWithinSeg A: vNew("+f.Fm2(t)+") = "+vNew);
+			// f.pln(" $$ %%%% posVelWithinSeg A: sNew("+f.Fm2(t)+") = "+sNew);
+		} else {
+			NavPoint np2 = point(seg+1);
+			Velocity vo = np1.initialVelocity(np2);
+			double distFromSo = distFromPointToTime(seg, t, linear);
+//			Pair<Position, Velocity> pv = so.linearDist2D(vo, distFromSo);
+//			vNew = pv.second.mkGs(gsAt_d);
+			pv = so.linearDist2D(vo.trk(), distFromSo, gsAt_d);
+		}
+		return pv;
+	}
+	
+	
 	/**
 	 * Compute position and velocity at time t
 	 * 
@@ -2600,87 +2915,24 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 		int seg = getSegment(t);
 		// f.pln("\n $$$$$ positionVelocity: ENTER t = "+t+" seg = "+seg);
-		Position sNew;
-		Velocity vNew;
 		NavPoint np1 = point(seg);
 		if (seg + 1 > size() - 1) { // at Last Point
 			Velocity v = finalVelocity(seg - 1);
-			// f.pln("\n -----size = "+size()+" seg = "+seg+"\n $$$ accelZone:
-			// np1 = "+np1+" v = "+v);
+			// f.pln("\n -----size = "+size()+" seg = "+seg+"\n $$$ accelZone: np1 = "+np1+" v = "+v);
 			return new Pair<Position, Velocity>(np1.position(), v);
 		}
-		NavPoint np2 = point(seg + 1);
-		// f.pln("\n ----------- seg = "+seg+" $$$ positionVelocity: np1 =
-		// "+np1+" np2 = "+np2);
+		// f.pln("\n ----------- seg = "+seg+" $$$ positionVelocity: np1 = "+np1+" np2 = "+np2);
 		double gs0 = gsOut(seg, linear);
 		double gsAt_d = gsAtTime(seg, gs0, t, linear);
-		Position so = np1.position();
-		// f.pln(t+" $$$ positionVelocity: seg = "+seg+" t = "+f.Fm2(t)+"
-		// positionVelocity: so = "+so+" gs0 = "+Units.str("kn",gs0));
-
-		if (inTrkChange(t) & !linear) {
-			int ixPrevBOT = prevBOT(seg + 1);
-			Position center = point(ixPrevBOT).turnCenter();
-			double signedRadius = point(ixPrevBOT).signedRadius();
-			int dir = Util.sign(signedRadius);
-			double distFromSo;
-			boolean method1 = true; // starting position could be either the
-									// current segment or the previous BOT
-			if (method1) {
-				distFromSo = distFromPointToTime(seg, t, linear); // starting position is the current segment
-			} else {
-				so = point(ixPrevBOT).position(); // // starting position is the
-													// previous BOT
-				distFromSo = distFromPointToTime(ixPrevBOT, t, linear);
-			}
-			Pair<Position, Velocity> tAtd = KinematicsPosition.turnByDist(so, center, dir, distFromSo, gsAt_d);
-			sNew = tAtd.first;
-			vNew = tAtd.second;
-			// f.pln(" $$ %%%% positionVelocity A: vNew("+f.Fm2(t)+") = "+vNew);
-			// f.pln(" $$ %%%% positionVelocity A: sNew("+f.Fm2(t)+") = "+sNew);
-		} else {
-			Velocity vo = np1.initialVelocity(np2);
-			double distFromSo = distFromPointToTime(seg, t, linear);
-			// f.pln(" $$ %%%% positionVelocity B1: t = "+t+" seg = "+seg+"
-			// distFromSo = "+Units.str("ft",distFromSo)+" np2 = "+np2);
-			// f.pln(" $$ %%%% positionVelocity B0: t = "+t+" seg = "+seg+" vo =
-			// "+vo);
-			Pair<Position, Velocity> pv = so.linearDist(vo, distFromSo);
-			// f.pln(" $$ %%%% positionVelocity B1:pv.second = "+pv.second+"
-			// gsAt_d = "+gsAt_d);
-			sNew = pv.first;
-			vNew = pv.second.mkGs(gsAt_d);
-			// f.pln(" $$ %%%% positionVelocity B2: seg = "+seg+"
-			// sNew("+f.Fm2(t)+") = "+sNew);
-			// f.pln(" $$ %%%% positionVelocity B3: vNew("+f.Fm2(t)+") =
-			// "+vNew);
-		}
-		if (inVsChange(t) & !linear) {
-			NavPoint n1 = points.get(prevBVS(seg + 1));
-			Position soP = n1.position();
-			// double voPvs = n1.velocityInit().vs();
-			double voPvs = vsAtTime(n1.time(), linear);
-			// Pair<Position,Velocity> pv = KinematicsPosition.vsAccel(soP, voP,
-			// t-n1.time(), n1.vsAccel());
-			Pair<Double, Double> pv = KinematicsPosition.vsAccelZonly(soP, voPvs, t - n1.time(), n1.vsAccel());
-			sNew = sNew.mkAlt(pv.first);
-			vNew = vNew.mkVs(pv.second); // merge Vertical VS with horizontal
-											// components
-			// f.pln(t+" $$$ positionVelocity(inVsChange) C: vNew = "+vNew);
-		} else {
-			if (seg < size() - 1) { // otherwise np2 is not a valid future point
-				double dt = t - np1.time();
-				double vZ = (np2.z() - np1.z()) / (np2.time() - np1.time());
-				double sZ = np1.z() + vZ * dt;
-				// f.pln(" $$$$$$$$ seg = "+seg+" dt = "+f.Fm2(dt)+" vZ =
-				// "+Units.str("fpm",vZ)+" sZ = "+Units.str("ft",sZ));
-				sNew = sNew.mkAlt(sZ);
-				vNew = vNew.mkVs(vZ);
-			}
-		}
+		// f.pln(t+" $$$ positionVelocity: seg = "+seg+" t = "+f.Fm2(t)+" positionVelocity: so = "+so+" gs0 = "+Units.str("kn",gs0));
+		Pair<Position, Velocity> adv = posVelWithinSeg2D(seg, t, linear, gsAt_d);
+		Position sNew = adv.first;
+		Velocity vNew = adv.second;
+		Pair<Double,Double> altPair = interpolateAltVs(seg, t-time(seg), linear);
+		sNew = sNew.mkAlt(altPair.first);
+		vNew = vNew.mkVs(altPair.second); 
 		// f.pln(" $$ %%%% positionVelocity RETURN: sNew("+f.Fm2(t)+") = "+sNew);
 		// f.pln(" $$ %%%% positionVelocity RETURN: vNew("+f.Fm2(t)+") = "+vNew);
-		// }
 		return new Pair<Position, Velocity>(sNew, vNew);
 	}
 
@@ -2688,111 +2940,62 @@ public class Plan implements ErrorReporter, Cloneable {
 		return positionVelocity(t, false);
 	}
 
-	// public Velocity initialVelocityLastPointLinear(){
-	// //int i = size()-1;
-	// //Velocity rtn = getDtVelocity(i);
-	// Position p = position(getLastTime()-10.0*minDt);
-	// //f.pln(" $$$$$$$>>>>>>>>>>>>>>>>>>>>>>>. getDtVelocity SPECIAL CASE p =
-	// "+p);
-	// // Thread.dumpStack();
-	// Velocity rtn = p.initialVelocity(points.get(size()-1).position(),
-	// 10.0*minDt);
-	// return rtn;
-	// }
-
-	// estimate the velocity from point i to point i+1 (at point i).
+	/** estimate the velocity from point i to point i+1 (at point i).
+	 * 
+	 * @param i index of point
+	 * @return velocity at point i
+	 */
 	public Velocity initialVelocity(int i) {
 		return initialVelocity(i, false);
-	}
-
-	@Deprecated
-	public Velocity initialVelocityOLD(int i, boolean linear) {
-		// f.pln("\n $$$$ Plan.initialVelocity: ENTER with i = "+i);
-		Velocity rtn = Velocity.ZERO;
-		if (i > size() - 1) { // there is no velocity after the last point
-			addWarning("initialVelocity(int): Attempt to get an initial velocity after the end of the Plan: " + i);
-			// Debug.halt();
-			return Velocity.ZERO;
-		}
-		if (i < 0) {
-			addWarning("initialVelocity(int): Attempt to get an initial velocity before beginning of the Plan: " + i);
-			return Velocity.ZERO;
-		}
-		if (size() == 1) {
-			return Velocity.ZERO;
-		}
-		NavPoint np = points.get(i);
-		double t = np.time();
-		if (linear) {
-			rtn = linearVelocityOut(i);
-			// f.pln(f.Fm0(i)+" $$$$$ initialVelocity0: *******************
-			// linear, rtn = "+rtn.toString());
-		} else {
-			// if (np.isBOT()) || np.isBGS() || np.isBVS()) { 
-			if (np.isBOT()) { // || np.isBGS() || np.isBVS()) { 
-				rtn = np.velocityInit();
-				// f.pln(" $$ initialVelocity A: velocityIn for i = "+i+" rtn =
-				// "+rtn);
-				if (rtn.isInvalid()) {
-					Debug.halt("\n !!!!!! Invalid velocityIn for " + name + " " + i + " this = " + toString());
-				}
-			} else if (inTrkChange(t) || inGsChange(t) || inVsChange(t) || (np.isTCP() && i == points.size() - 1)) { 
-				rtn = velocity(t);
-				// f.pln(f.Fm0(i)+" $$$ initialVelocity B: rtn =
-				// velocity("+f.Fm2(t)+") = "+ rtn.toString());
-			} else {
-				rtn = linearVelocityOut(i);
-				// f.pln(" $$$ initialVelocity C: i = "+f.Fm0(i)+" rtn =
-				// getDtVelocity = "+ rtn.toString());
-			}
-		}
-		// f.pln("---------------------------------------------\n $$$ RETURN
-		// initialVelocity("+i+") rtn = "+rtn);
-
-		// ********************** TEMPORARY TEST STUFF ***********************
-		// double trkOut = trkOut(i,linear);
-		// double deltaTrk = Util.turnDelta(rtn.trk(),trkOut);
-		// if (deltaTrk > 0.00001) {
-		// f.pln("\n initialVelocity: TEST: i = "+i+" rtn.trk() =
-		// "+Units.str("deg",rtn.trk()));
-		// f.pln(" initialVelocity: TEST: trkOut = "+Units.str("deg",trkOut));
-		// f.pln(" initialVelocity: TEST: deltaTrk =
-		// "+Units.str("deg",deltaTrk));
-		// //DebugSupport.dumpPlan(this, "initialVelocityTrk");
-		// //f.pln(" $$$ this = "+this.toStringTrk());
-		// //Debug.halt();
-		// }
-		// double gsOut = gsOut(i,linear);
-		// double deltaGs = Math.abs(rtn.gs()-gsOut);
-		// if (deltaGs > 1.0) {
-		// f.pln("\n initialVelocity: TEST: i = "+i+" rtn.gs() =
-		// "+Units.str("kn",rtn.gs()));
-		// f.pln(" initialVelocity: TEST: gsOut = "+Units.str("kn",gsOut));
-		// f.pln(" initialVelocity: TEST: deltags = "+Units.str("kn",deltaGs));
-		// //DebugSupport.dumpPlan(this, "initialVelocityGs");
-		// //f.pln(" $$$ this = "+this.toStringGs());
-		// //Debug.halt();
-		// }
-		// double vsOut = vsOut(i,linear);
-		// double deltaVs = Math.abs(rtn.vs()-vsOut);
-		// if (deltaVs > 1.0) {
-		// f.pln("\n initialVelocity: TEST: i = "+i+" rtn.vs() =
-		// "+Units.str("fpm",rtn.vs()));
-		// f.pln(" initialVelocity: TEST: vsOut = "+Units.str("fpm",vsOut));
-		// f.pln(" initialVelocity: TEST: deltavs = "+Units.str("fpm",deltaVs));
-		// //DebugSupport.dumpPlan(this, "initialVelocityVs");
-		// //f.pln(" $$$ this = "+this.toStringVs());
-		// //Debug.halt();
-		// }
-		// ******************************************************************
-
-		return rtn;
 	}
 
 	public Velocity initialVelocity(int i, boolean linear) {
 		return Velocity.mkTrkGsVs(trkOut(i, linear), gsOut(i, linear), vsOut(i, linear));
 	}
 
+	/** 
+	 *  Return interpolated altitude in this segment at absolute time t
+	 * 
+	 * @param seg     getSegment(t)
+	 * @param dt      relative time from start of seg
+	 * @param linear  linear flag
+	 * @return        altitude and velocity at time dt greater than the time of segment "seg
+	 */
+	public Pair<Double,Double> interpolateAltVs(int seg, double dt, boolean linear) {
+		//f.pln("\n $$$................. interpolateAltVs: seg = "+seg+" dt = "+dt);
+		double vsAccel = 0.0;
+		double tSeg = time(seg);
+		//double t = tSeg + dt;
+		if ( ! linear && inVsChange(tSeg)) {
+			int ixBVS = prevBVS(seg+1);
+			vsAccel = vsAccel(ixBVS);
+		}
+		//f.pln("\n $$$................. interpolateAltVs: seg = "+seg+" vsAccel = "+vsAccel);
+		double alt1 = point(seg).alt();
+		double vsInit = vsOut(seg,linear);	
+		double newAlt = alt1 + vsInit*dt + 0.5 * vsAccel*dt*dt;; // interpolateAlt(vsInit, vsAccel,  alt1,  t1,  t);
+		//f.pln(" $$$ interpolateAltVs: dt = "+dt+" vsInit = "+Units.str("fpm",vsInit,4)+" alt1 = "+Units.str("ft",alt1,4));
+		double newVs = vsInit + vsAccel*dt;
+		//f.pln(" $$$ interpolateAltVs: dt = "+dt+" newVs = "+Units.str("fpm",newVs,4)+" newAlt = "+Units.str("ft",newAlt,4));
+		return new Pair<Double,Double>(newAlt,newVs);
+	}
+
+//	//	public Pair<Double,Double> interpolateAltVs(double t, boolean linear) {
+//	//		int seg = getSegment(t);
+//	//		return interpolateAltVs(seg,t,linear);
+//	//	}
+//
+//	private double interpolateAlt(double vsInit, double vsAccel, double alt1, double t1, double t) {		 
+//		double rtn;
+//		if (t < t1) { // vsAccel is assumed to be defined for t > t1
+//			rtn = alt1;
+//		} else {
+//			double dt = t-t1;
+//			rtn = alt1 + vsInit*dt + 0.5 * vsAccel*dt*dt;
+//		}
+//		return rtn;
+//	}
+	
 	/**
 	 * This function computes the velocity out at point i in a strictly linear
 	 * manner. If i is an inner point it uses the next point to construct the
@@ -2818,9 +3021,7 @@ public class Plan implements ErrorReporter, Cloneable {
 				i--;
 			}
 			NavPoint npi = points.get(i);
-			// Position npi = position(lastPt.time()-10.0*minDt);
-			// double dt = 10.0*minDt;
-			rtn = npi.finalVelocity(lastPt);
+			rtn = NavPoint.finalVelocity(npi, lastPt);
 			// f.pln(" $$ linearVelocityOut: SPECIAL CASE rtn = "+rtn);
 		} else {
 			rtn = points.get(i).initialVelocity(points.get(j));
@@ -2894,7 +3095,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			return Velocity.INVALID;
 		}
 		if (i == size() - 1) {// || points.get(i).time() > getLastTime()-minDt)
-								// {
+			// {
 			addWarning("finalVelocity(int): Attempt to get a final velocity at end of the Plan: " + i);
 			// DebugSupport.halt();
 			return Velocity.ZERO;
@@ -2918,7 +3119,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 */
 	public double verticalSpeed(int i) {
 		if (i < 0 || i >= size() - 1) { // there is no velocity after the last
-										// point
+			// point
 			addWarning("verticalSpeed: Attempt to get a vertical speed outside of the Plan: " + i);
 			return 0;
 		}
@@ -2938,134 +3139,12 @@ public class Plan implements ErrorReporter, Cloneable {
 			addWarning("averageVelocity(int): Attempt to get an average velocity before beginning of the Plan: " + i);
 			return Velocity.ZERO;
 		}
-		return points.get(i).averageVelocity(points.get(i + 1));
+		return NavPoint.averageVelocity(points.get(i),points.get(i + 1));
 		// return velocity((t2-t1)/2.0+t1);
 	}
-
-	/**
-	 * calculate delta time for point i to make ground speed into it = gs
-	 * 
-	 * @param i
-	 * @param gs
-	 * @return
-	 */
-	public double calcDtGsin(int i, double gs) {
-		if (i < 1 || i >= size()) {
-			addError("calcTimeGSin: invalid index " + i, 0); // must have a prev
-																// wPt
-			return -1;
-		}
-		if (gs <= 0) {
-			addError("calcTimeGSIn: invalid gs=" + f.Fm2(gs), i);
-			return -1;
-		}
-		if (inGsChange(points.get(i).time()) && !points.get(i).isBGS()) {
-			// f.pln("#### points.get(i) = "+points.get(i));
-			double dist = pathDistance(i - 1, i);
-			double initGs = initialVelocity(i - 1).gs();
-			int ixBGS = prevBGS(i);
-			double gsAccel = point(ixBGS).gsAccel();
-			double deltaGs = gs - initGs;
-			double dt = deltaGs / gsAccel;
-			double acceldist = dt * (gs + initGs) / 2;
-			if (acceldist > dist) {
-				// f.pln("#### calcTimeGSin: insufficient distance to achieve
-				// new ground speed");
-				addError("calcTimeGSin " + f.Fm0(i) + " insufficient distance to achieve new ground speed", i);
-				return -1;
-			}
-			dt = dt + (dist - acceldist) / gs;
-			// f.pln("#### calcTimeGSin: dist = "+Units.str("nm",dist)+" deltaGs
-			// = "+Units.str("kn",deltaGs)+" dt = "+dt);
-			return dt;
-		} else {
-			double dist = pathDistance(i - 1, i);
-			double dt = dist / gs;
-			// f.pln("#### calcTimeGSin: i = "+i+" dist =
-			// "+Units.str("nm",dist)+" dt = "+f.Fm4(dt)+"
-			// points.get(i-1).time() = "+points.get(i-1).time());
-			return dt;
-		}
-	}
-
-	/**
-	 * calculate time at a waypoint such that the ground speed into that
-	 * waypoint is "gs". If i or gs is invalid, this returns -1. If i is in a
-	 * turn, this returns the current point time.
-	 * 
-	 * Note: parameter maxGsAccel is not used on a linear segment
-	 */
-	public double calcTimeGSin(int i, double gs) {
-		return points.get(i - 1).time() + calcDtGsin(i, gs);
-	}
-
-	/**
-	 * change the ground speed into ix to be gs -- all other ground speeds
-	 * remain the same
-	 * 
-	 * @param p   Plan of interest
-	 * @param ix  index
-	 * @param gs  new ground speed
-	 * @return    revised plan
-	 */
-	public void mkGsInto(int ix, double gs, boolean updateTCP) {
-		if (ix > size() - 1)
-			return;
-		double tmIx = calcTimeGSin(ix, gs);
-		timeshiftPlan(ix, tmIx - point(ix).time());
-		if (updateTCP) {
-			NavPoint np = point(ix);
-			if (np.isBeginTCP()) {
-				Velocity vin = np.velocityInit();
-				NavPoint npNew = np.makeVelocityInit(vin.mkGs(gs));
-				set(ix, npNew);
-			}
-		}
-	}
-
-	/**
-	 * Change the ground speed at ix to be gs -- all other ground speeds remain
-	 * the same NOTE: This assumes that there are no BVS - EVS segments in the
-	 * area
-	 *
-	 * Note: If point is a begin TCP, we need to update the velocityIn
-	 * 
-	 * @param p
-	 *            Plan of interest
-	 * @param ix
-	 *            index
-	 * @param gs
-	 *            new ground speed
-	 * @return revised plan
-	 */
-	public void mkGsOut(int ix, double gs) {
-		if (ix >= size() - 1)
-			return;
-		double dt = calcTimeGSin(ix + 1, gs);
-		// f.pln("\n $$ makeGsOut: ix = "+ix+" dt = "+f.Fm4(dt)+" gs =
-		// "+Units.str("kn",gs));
-		// f.pln(" $$$$ ix = "+ix+" BEFORE vsOut =
-		// "+Units.str("fpm",vsOut(ix)));
-		timeshiftPlan(ix + 1, dt - getTime(ix + 1));
-		NavPoint np = point(ix);
-		if (np.isBeginTCP()) {
-			Velocity vin = np.velocityInit();
-			// vin = vin.mkGs(gs);
-			double vsOut = vsOut(ix);
-			vin = Velocity.mkTrkGsVs(vin.trk(), gs, vsOut);
-			NavPoint npNew = np.makeVelocityInit(vin);
-			// f.pln(" $$ makeGsOut: vin = "+vin+" npNew =
-			// "+npNew.toStringFull());
-			set(ix, npNew);
-			// f.pln(" $$$$ ix = "+ix+" AFTER vsOut =
-			// "+Units.str("fpm",vsOut(ix)));
-		}
-		// f.pln(" $$$$ makeGsOut: point(ix) = "+point(ix).toStringFull());
-		// f.pln(" $$$$ makeGsOut: EXIT gsOut = "+Units.str("kn",gsOut(ix),6));
-		// f.pln(" $$$$ p = "+toStringGs());
-	}
-
-	// return time needed at waypoint i in order for ground speed in to be gs
+	
+	// return absolute time needed at waypoint i in order for ground speed in to be gs
+	// assumes that path from (i-1) to (i) is not in a turn 
 	public double linearCalcTimeGSin(int i, double gs) {
 		if (i > 0 && i < size()) {
 			double dist = point(i - 1).distanceH(point(i));
@@ -3077,6 +3156,119 @@ public class Plan implements ErrorReporter, Cloneable {
 			return -1;
 		}
 	}
+	
+
+	/**
+	 * calculate time at a waypoint such that the ground speed into that
+	 * waypoint is "gs". If i or gs is invalid, this returns -1. If i is in a
+	 * turn, this returns the current point time.
+	 * 
+	 * Note: parameter maxGsAccel is not used on a linear segment
+	 */
+	public double calcTimeGSin(int i, double gs) {
+		return points.get(i - 1).time() + calcDtGsin(i, gs);
+	}
+	
+	/**
+	 * calculate delta time for point i to make ground speed into it = gs
+	 * 
+	 * @param i         index of interest
+	 * @param gs        target ground speed
+	 * @return          delta time needed  
+	 */
+	public double calcDtGsin(int i, double gs) {
+		if (i < 1 || i >= size()) {
+			addError("calcTimeGSin: invalid index " + i, 0); // must have a prev
+			// wPt
+			return -1;
+		}
+		if (gs <= 0) {
+			addError("calcTimeGSIn: invalid gs=" + f.Fm2(gs), i);
+			return -1;
+		}
+		if (inGsChange(points.get(i-1).time()) && !isBGS(i)) { // TODO:  does this work for an EGS?
+			// f.pln("#### points.get(i) = "+points.get(i));
+//			double dist = pathDistance(i - 1, i);
+//			double initGs = gsOut(i - 1);
+//			int ixBGS = prevBGS(i);
+//			double gsAccel = gsAccel(ixBGS);
+//			double deltaGs = gs - initGs;
+//			double dt = deltaGs / gsAccel;
+//			double acceldist = dt * (gs + initGs) / 2;
+//			if (acceldist > dist) {
+//				// f.pln("#### calcTimeGSin: insufficient distance to achieve new ground speed");
+//				addError("calcTimeGSin " + f.Fm0(i) + " insufficient distance to achieve new ground speed", i);
+//				return -1;
+//			}
+//			dt = dt + (dist - acceldist) / gs;
+//			f.pln("####>>> calcTimeGSin: dist = "+Units.str("nm",dist)+" deltaGs = "+Units.str("kn",deltaGs)+" dt = "+dt);
+//			Debug.halt();
+			addError(" calcDtGsin:  attempt to change point "+i+"'s time which is inside a ground speed acceleration!");
+			return 0;
+		} else {
+			double dist = pathDistance(i - 1, i);
+			if (dist < 1E-12) {
+				f.pln("+++++++++++++++++++++++++++++++++++++++++++ ### calcDtGsin WARNING: dist = "+dist);
+			}
+			double dt = dist / gs;
+			//f.pln("#### calcTimeGSin: i = "+i+" dist = "+Units.str("ft",dist,10)+" dt = "+f.Fm4(dt)+" points.get(i-1).time() = "+points.get(i-1).time());
+			return dt;
+		}
+	}
+
+
+
+	/**
+	 * change the ground speed into ix to be gs -- all other ground speeds remain the same
+	 * 
+	 * 
+	 * @param ix  index
+	 * @param gs  new ground speed
+	 * @param updateTCP
+	 */
+	public void mkGsIn(int ix, double gs) {
+		if (ix > size() - 1)
+			return;
+		double tmIx = calcTimeGSin(ix, gs);
+		double dt = tmIx - point(ix).time();
+		//double delta = (point(ix).time()-point(ix-1).time());
+		//if (dt < 0 && -dt > delta) f.pln(" $$ mkGsIn: tmIx = "+tmIx+" dt = "+dt+" delta = "+delta);
+		timeShiftPlan(ix, dt);
+	}
+
+	/**
+	 * Change the ground speed at ix to be gs -- all other ground speeds remain
+	 * the same NOTE: This assumes that there are no BVS - EVS segments in the
+	 * area
+	 *
+	 * Note: If point is a begin TCP, we need to update the velocityIn
+	 * 
+	 * @param ix
+	 *            index
+	 * @param gs
+	 *            new ground speed
+	 */
+	public void mkGsOut(int ix, double gs) {
+		if (ix >= size() - 1)
+			return;
+		double newT = calcTimeGSin(ix + 1, gs);
+		//f.pln("\n $$ makeGsOut: ix = "+ix+" newT = "+f.Fm4(newT)+" gs = "+Units.str("kn",gs));
+		double dt = newT - time(ix + 1);
+		timeShiftPlan(ix + 1, dt);
+		NavPoint np = point(ix);
+		if (isBeginTCP(ix)) {
+			//Velocity vin = velocityInit(ix);
+			Velocity vin = initialVelocity(ix);
+			double vsOut = vsOut(ix);
+			vin = Velocity.mkTrkGsVs(vin.trk(), gs, vsOut);
+			TcpData np_tcp = getTcpData(ix);
+			//f.pln(" $$ makeGsOut: vin = "+vin+" npNew = "+npNew.toStringFull());
+			set(ix,np, np_tcp);
+			// f.pln(" $$$$ ix = "+ix+" AFTER vsOut = "+Units.str("fpm",vsOut(ix)));
+		}
+		//f.pln(" $$$$ makeGsOut: EXIT gsOut = "+Units.str("kn",gsOut(ix),6));
+	}
+
 
 	/**
 	 * set the time at a waypoint such that the ground speed into that waypoint
@@ -3102,25 +3294,87 @@ public class Plan implements ErrorReporter, Cloneable {
 		// f.pln(" $$$$$ setAltVSin: dt = "+dt+" newAlt =
 		// "+Units.str("ft",newAlt));
 		// setAlt(i,newAlt,preserve);
-		NavPoint tempv = points.get(i).mkAlt(newAlt);
+		//		NavPt tempv = NavPt.mkAlt(get(i),newAlt);
+		NavPoint tempv = point(i).mkAlt(newAlt);
+		TcpData tcp = getTcpData(i);
 		if (preserve)
-			tempv = tempv.makeAltPreserve();
-		set(i, tempv);
+			tcp = tcp.setAltPreserve();
+		setNavPoint(i, tempv);
 	}
 
-	public boolean isVelocityContinuous() {
+//	public boolean isVelocityContinuous() {
+//		for (int i = 0; i < size(); i++) {
+//			if (i > 0) {
+//				if (isTCP(i)) {
+//					if (!finalVelocity(i - 1).compare(initialVelocity(i), Units.from("deg", 10.0), Units.from("kn", 20),
+//							Units.from("fpm", 100))) { // see testAces3, testRandom for worst cases
+//						// f.pln(" $$$ isVelocityContinuous: FAIL! continuity: finalVelocity("+(i-1)+") = "+finalVelocity(i-1).toString4NP()+" != initialVelocity("+i+") = "+initialVelocity(i).toString4NP());
+//						return false;
+//					}
+//				}
+//			}
+//		}
+//		return true;
+//	}
+
+	
+//	public boolean isVelocityContinuous(boolean silent) {		
+//		boolean rtn = true;
+//		for (int i = 0; i < size(); i++) {
+//			if (i > 0) {
+//				if (isTCP(i)) {
+//					if (!PlanUtil.isVelocityContinuous(this, i, 0.5, silent)) {
+//						rtn = false;
+//					}
+//				}
+//			}
+//		}
+//		return rtn;
+//	}
+	
+	public boolean isVelocityContinuous() { return isVelocityContinuous(true); }
+	
+	public boolean isVelocityContinuous(boolean silent) {
 		for (int i = 0; i < size(); i++) {
 			if (i > 0) {
-				if (point(i).isTCP()) {
-					if (!finalVelocity(i - 1).compare(initialVelocity(i), Units.from("deg", 10.0), Units.from("kn", 20),
-							Units.from("fpm", 100))) { // see testAces3, testRandom for worst cases
-						// f.pln(" $$$ isVelocityContinuous: FAIL! continuity: finalVelocity("+(i-1)+") = "+finalVelocity(i-1).toString4NP()+" != initialVelocity("+i+") = "+initialVelocity(i).toString4NP());
-						return false;
-					}
+				if (isTCP(i)) {
+					if (!PlanUtil.isTrkContinuous(this, i, Units.from("deg", 5.0), silent)) return false;
+					if (!PlanUtil.isGsContinuous(this, i, Units.from("kn", 10), silent)) return false;
+					if (!PlanUtil.isVsContinuous(this, i, Units.from("fpm", 100), silent)) return false;
 				}
 			}
 		}
 		return true;
+	}
+	
+	public boolean isWeakVelocityContinuous(boolean silent) {
+		for (int i = 0; i < size(); i++) {
+			if (i > 0) {
+				if (isTCP(i)) {
+					if (!PlanUtil.isTrkContinuous(this, i, Units.from("deg", 10.0), silent)) return false;
+					if (!PlanUtil.isGsContinuous(this, i, Units.from("kn", 20), silent)) return false;
+					if (!PlanUtil.isVsContinuous(this, i, Units.from("fpm", 300), silent)) return false;
+				}
+			}
+		}
+		return true;
+	}
+
+
+	
+	public boolean isGsContinuous(boolean silent) {
+		boolean rtn = true;
+		for (int i = 0; i < size(); i++) {
+			if (i > 0) {
+				if (isTCP(i)) {
+					double maxGsDelta = Units.from("kn",5.05399568);
+					if (!PlanUtil.isGsContinuous(this, i, maxGsDelta, silent)) {
+						rtn = false;
+					}
+				}
+			}
+		}
+		return rtn;
 	}
 
 	/**
@@ -3144,22 +3398,24 @@ public class Plan implements ErrorReporter, Cloneable {
 		if (i < 0 || i + 1 >= size()) {
 			return 0.0;
 		}
-		NavPoint p1 = points.get(i);
-		double tt = p1.time();
-		if (!linear && inTrkChange(tt)) {
-			// if in a turn, figure the arc distance
-			NavPoint p2 = points.get(i + 1);
-			NavPoint bot = points.get(prevBOT(i + 1));
-			Position center = bot.turnCenter();
-			double R = bot.turnRadius();
-			double theta = PositionUtil.angle_between(p1.position(), center, p2.position());
-			// double theta =  GreatCircle.side_side_angle(GreatCircle.angular_distance(p1.position().lla(),center.lla()),GreatCircle.angular_distance(p2.position().lla(),center.lla()),Math.PI/2,false).second;
-			// double theta =  GreatCircle.angle_temp(p1.position().lla(),center.lla(),p2.position().lla());
-			//f.pln(" $$ pathDistance: R = "+Units.str("NM",R,12)+ "  theta="+Units.str("deg",theta,12)+" bot="+bot+" center="+center);
-			return Math.abs(theta * R); // TODO is this right for spherical coordinates???
-		} else {
-			// otherwise just use linear distance
-			return points.get(i).position().distanceH(points.get(i + 1).position());
+		Position p1 = points.get(i).position();
+		Position p2 = points.get(i+1).position();
+		boolean inTurn = inTrkChange(time(i));
+		//f.pln(" $$ pathDistance: i = "+i+" inTurn = "+inTurn+" linear = "+linear);
+		if (!linear && inTurn) {
+			// if in a turn, figure the arc distance			
+			int ixBOT = prevBOT(i + 1);
+			Position center = turnCenter(ixBOT);
+			//f.pln(" $$ pathDistance: i = "+i+" center = "+center);
+			double R = getTcpData(ixBOT).turnRadius();
+			double theta = PositionUtil.angle_between(p1, center, p2);
+			double rtn = Math.abs(theta * R); // TODO is this right for spherical coordinates???
+			//f.pln(" $$ Plan.pathDistance("+i+"): R = "+Units.str("NM",R,5)+" rtn = "+Units.str("NM",rtn,5));
+			return rtn;
+		} else { // otherwise just use linear distance
+			double rtn = p1.distanceH(p2);
+			//f.pln(" $$ Plan.pathDistance("+i+"): LINEAR SEGMENT: rtn = "+Units.str("NM",rtn,5));
+			return rtn;
 		}
 	}
 
@@ -3193,8 +3449,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		if (i < 0) {
 			i = 0;
 		}
-		if (j >= size()) { // >= is correct, pathDistance(jj, linear) measures
-							// from jj to jj+1
+		if (j >= size()) { // >= is correct, pathDistance(jj, linear) measures from jj to jj+1
 			j = size() - 1;
 		}
 		double total = 0.0;
@@ -3202,7 +3457,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			total = total + pathDistance(jj, linear);
 			// f.pln(" $$ pathDistance: i = "+i+" jj = "+jj+" dist = "+Units.str("NM",pathDistance(jj, linear)));
 		}
-		// f.pln(" $$ Plan.pathDistance: i = "+i+" j = "+j+" total = "+Units.str("NM",total));
+		//f.pln(" $$ Plan.pathDistance: i = "+i+" j = "+j+" total = "+Units.str("NM",total));
 		return total;
 	}
 
@@ -3220,20 +3475,15 @@ public class Plan implements ErrorReporter, Cloneable {
 		int seg = getSegment(t);
 		Position currentPosition = position(t);
 		// f.pln("\n $$$ partialPathDistance: seg = "+seg);
-		// if in a turn, figure the arc distance
 		if (inTrkChange(t) && !linear) {
-			NavPoint bot = points.get(prevBOT(getSegment(t) + 1));
-			double R = bot.turnRadius();
-			Position center = bot.turnCenter();
-			// double distAB = points.get(i).position().distanceH(points.get(i+1).position());
-			// double alpha = 2*(Math.asin(distAB/(2*R)));
-			// double dt = points.get(seg+1).time() - t;
-			// double alpha = points.get(seg).trkAccel()*dt;
+			int ixBOT = prevBOT(getSegment(t) + 1);
+			//NavPoint bot = points.get(ixBOT);
+			double R = turnRadius(ixBOT);
+			Position center = turnCenter(ixBOT);
 			double alpha = PositionUtil.angle_between(currentPosition, center, points.get(seg + 1).position());
 			// f.pln(" $$$$ alpha = "+Units.str("deg",alpha));
 			double rtn = Math.abs(alpha * R);
-			// f.pln(" $$$$+++++ partialPathDistance: rtn =
-			// "+Units.str("nm",rtn));
+			// f.pln(" $$$$+++++ partialPathDistance: rtn = "+Units.str("nm",rtn));
 			return rtn;
 		} else {
 			// otherwise just use linear distance
@@ -3246,7 +3496,7 @@ public class Plan implements ErrorReporter, Cloneable {
 
 	/**
 	 * return the path distance from the location at time t until the next waypoint
-    */
+	 */
 	public double partialPathDistance(double t) {
 		boolean linear = false;
 		return partialPathDistance(t, linear);
@@ -3336,7 +3586,9 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * end points.  Also requires that there are no points closer together than Plan.minDt.
 	 */
 	public boolean isWellFormed() {				
-		return indexWellFormed() < 0;
+		int rtn = indexWellFormed(); 
+		//f.pln(" $$$$ isWellFormed: rtn = "+rtn);
+		return rtn < 0;
 	}
 
 	/**
@@ -3347,48 +3599,47 @@ public class Plan implements ErrorReporter, Cloneable {
 	public int indexWellFormed() {
 		double lastTm = -1;
 		for (int i = 0; i < size(); i++) {
-			NavPoint np = point(i);
-			if (np.isBOT()) {
+			if (isBOT(i)) {
 				int j1 = nextBOT(i);
 				int j2 = nextEOT(i);
 				if (j2 < 0 || (j1 > 0 && j1 < j2))
 					return i;
 			}
-			if (np.isEOT()) {
+			if (isEOT(i)) {
 				int j1 = prevBOT(i);
 				int j2 = prevEOT(i);
 				if (!(j1 >= 0 && j1 >= j2))
 					return i;
 			}
-			if (np.isBGS()) {
+			if (isBGS(i)) {
 				int j1 = nextBGS(i);
 				int j2 = nextEGS(i);
 				if (j2 < 0 || (j1 > 0 && j1 < j2))
 					return i;
 			}
-			if (np.isEGS()) {
+			if (isEGS(i)) {
 				int j1 = prevBGS(i);
 				int j2 = prevEGS(i);
 				if (!(j1 >= 0 && j1 >= j2))
 					return i;
 			}
-			if (np.isBVS()) {
+			if (isBVS(i)) {
 				int j1 = nextBVS(i);
 				int j2 = nextEVS(i);
 				if (j2 < 0 || (j1 > 0 && j1 < j2))
 					return i;
 			}
-			if (np.isEVS()) {
+			if (isEVS(i)) {
 				int j1 = prevBVS(i);
 				int j2 = prevEVS(i);
 				if (!(j1 >= 0 && j1 >= j2))
 					return i;
 			}
-			double tm_i = getTime(i);
+			double tm_i = time(i);
 			if (i > 0) {
 				double dt = Math.abs(tm_i-lastTm);
 				if (dt < minDt) {
-					f.pln("$$ isWellFormed: Delta time into i = "+i+" is less than minDt = "+minDt);
+					f.pln("$$ Plan.indexWellFormed: Delta time into i = "+i+" is "+dt+" which is less than minDt = "+minDt);
 					return i;
 				}			
 				lastTm = tm_i;
@@ -3408,41 +3659,37 @@ public class Plan implements ErrorReporter, Cloneable {
 		for (int i = 0; i < size(); i++) {
 			NavPoint np = point(i);
 			// not well formed if GSC overlaps with other accel zones
-			// if ((np.isTurn() || np.isVSC()) &&
-			// inGroundSpeedChange(np.time())) rtn = false;
-			// if (np.isGSC() && (inTurn(np.time()) ||
-			// inVerticalSpeedChange(np.time()))) rtn = false;
-			if (np.isBOT()) {
+			if (isBOT(i)) {
 				int j1 = nextBOT(i);
 				int j2 = nextEOT(i);
 				if (j2 < 0 || (j1 > 0 && j1 < j2))
 					return "BOT at i " + i + " NOT FOLLOWED BY EOT!";
 			}
-			if (np.isEOT()) {
+			if (isEOT(i)) {
 				int j1 = prevBOT(i);
 				int j2 = prevEOT(i);
 				if (!(j1 >= 0 && j1 >= j2))
 					return "EOT at i " + i + " NOT PRECEEDED BY BOT!";
 			}
-			if (np.isBGS()) {
+			if (isBGS(i)) {
 				int j1 = nextBGS(i);
 				int j2 = nextEGS(i);
 				if (j2 < 0 || (j1 > 0 && j1 < j2))
 					return "BGS at i " + i + " NOT FOLLOWED BY EGS!";
 			}
-			if (np.isEGS()) {
+			if (isEGS(i)) {
 				int j1 = prevBGS(i);
 				int j2 = prevEGS(i);
 				if (!(j1 >= 0 && j1 >= j2))
 					return "EGS at i " + i + " NOT PRECEEDED BY BGS!";
 			}
-			if (np.isBVS()) {
+			if (isBVS(i)) {
 				int j1 = nextBVS(i);
 				int j2 = nextEVS(i);
 				if (j2 < 0 || (j1 > 0 && j1 < j2))
 					return "BVS at i " + i + " NOT FOLLOWED BY EVS!";
 			}
-			if (np.isEVS()) {
+			if (isEVS(i)) {
 				int j1 = prevBVS(i);
 				int j2 = prevEVS(i);
 				if (!(j1 >= 0 && j1 >= j2))
@@ -3452,7 +3699,7 @@ public class Plan implements ErrorReporter, Cloneable {
 				rtn = rtn + "  Overlap FAIL at i = " + i;
 			}
 			// f.pln(" isWellFormed: i = "+i+" OK");
-			double tm_i = getTime(i);
+			double tm_i = time(i);
 			if (i > 0) {
 				double dt = Math.abs(tm_i-lastTm);
 				if (dt < minDt) {
@@ -3464,65 +3711,11 @@ public class Plan implements ErrorReporter, Cloneable {
 		return rtn;
 	}
 
-	/**
-	 * This returns true if the entire plan produces reasonable accelerations.
-	 * If the plan has instanteous "jumps," it is not consistent.
-	 */
 	public boolean isConsistent() {
-		boolean silent = false;
-		boolean useProjection = false;
-		return isConsistent(silent, useProjection);
+		return isConsistent(true);
 	}
+	
 
-	/**
-	 * This returns true if the entire plan produces reasonable accelerations.
-	 * If the plan has instanteous "jumps," it is not consistent.
-	 */
-	public boolean isConsistent(boolean silent, boolean useProjection) {
-		boolean rtn = true;
-		if (!isWellFormed()) {
-			if (!silent) {
-				f.pln("  >>> isConsistent FAIL! not WellFormed!! " + strWellFormed());
-			}
-			error.addError("  >>> isConsistent FAIL! not WellFormed!! " + strWellFormed());
-			return false;
-		}
-		for (int i = 0; i < size(); i++) {
-			if (point(i).isBGS()) {
-				if (!PlanUtil.gsConsistent(this, i, 0.00005, 0.07, silent)) {
-					// error.addWarning("isConsistent fail: "+i+" Not gs
-					// consistent!");
-					rtn = false;
-				}
-			}
-			if (point(i).isBVS()) {
-				if (!PlanUtil.vsConsistent(this, i, 0.00001, 0.00001, silent)) {
-					// error.addWarning("isConsistent fail: "+i+" Not vs
-					// consistent!");
-					rtn = false;
-				}
-			}
-			if (point(i).isBOT()) {
-				if (!PlanUtil.turnConsistent(this, i, 0.02, 0.01, 1.2, silent, useProjection)) {
-					// error.addWarning("isConsistent fail: "+i+" Not turn
-					// consistent!");
-					rtn = false;
-				}
-			}
-			if (i > 0) {
-				if (point(i).isTCP()) {
-					if (!PlanUtil.isVelocityContinuous(this, i, 2.6, silent)) {
-						// error.addWarning("isConsistent fail: "+i+" Not
-						// continuous!");
-						rtn = false;
-					}
-				}
-			}
-		}
-		// f.pln("KinPlan.consistency: "+toOutput());
-		// f.pln(" $$$ isConsistent: rtn = "+rtn );
-		return rtn;
-	}
 
 	public boolean isTurnConsistent(boolean silent) {
 		boolean rtn = true;
@@ -3534,16 +3727,18 @@ public class Plan implements ErrorReporter, Cloneable {
 			return false;
 		}
 		for (int i = 0; i < size(); i++) {
-			if (point(i).isBOT()) {
-				if (!PlanUtil.turnConsistent(this, i, 0.02, 0.01, 1.2, silent, false)) {
-					// error.addWarning("isConsistent fail: "+i+" Not turn
-					// consistent!");
+			if (isBOT(i)) {
+				if (!PlanUtil.turnConsistent(this, i, 0.01, silent)) {
+					// error.addWarning("isConsistent fail: "+i+" Not turn  consistent!");
 					rtn = false;
 				}
 			}
 		}
 		return rtn;
 	}
+	
+	public boolean isTurnConsistent() { return isTurnConsistent(false);}
+
 
 	public boolean isVsConsistent(boolean silent) {
 		boolean rtn = true;
@@ -3555,8 +3750,8 @@ public class Plan implements ErrorReporter, Cloneable {
 			return false;
 		}
 		for (int i = 0; i < size(); i++) {
-			if (point(i).isBVS()) {
-				if (!PlanUtil.vsConsistent(this, i, 0.00001, 0.00001, silent)) {
+			if (isBVS(i)) {
+				if (!PlanUtil.vsConsistent(this, i, 0.00001, silent)) {
 					// error.addWarning("isConsistent fail: "+i+" Not vs
 					// consistent!");
 					rtn = false;
@@ -3566,57 +3761,80 @@ public class Plan implements ErrorReporter, Cloneable {
 		return rtn;
 	}
 
+	public boolean isVsConsistent() { return isVsConsistent(false);}
+
+	
+	public boolean isConsistent(double maxTrkDist, double maxGsDist, double maxVsDist, boolean silent) {
+		boolean rtn = true;
+		if (!isWellFormed()) {
+			if (!silent) {
+				f.pln("  >>> isConsistent FAIL! not WellFormed!! " + strWellFormed());
+			}
+			error.addError("  >>> isConsistent FAIL! not WellFormed!! " + strWellFormed());
+			return false;
+		}
+		for (int i = 0; i < size(); i++) {
+			if (isBOT(i)) {
+				if (!PlanUtil.turnConsistent(this, i, maxTrkDist, silent)) {
+					//error.addWarning("isConsistent: turn " + i + " not consistent");
+					rtn = false;
+				}
+			}
+			if (isBGS(i)) {
+				if (!PlanUtil.gsConsistent(this, i, maxGsDist, silent)) {
+					//error.addWarning("isConsistent: GS " + i + " not consistent");
+					rtn = false;
+				}
+			}
+			if (isBVS(i)) {
+				if (!PlanUtil.vsConsistent(this, i, maxVsDist, silent)) {
+					//error.addWarning("isConsistent: VS " + i + " not consistent");
+					rtn = false;
+				}
+			}
+		}
+		return rtn;
+	}
+	
+	public boolean isConsistent(boolean silent) {
+		return isConsistent(0.01, 0.007, 0.00001,silent);
+	}
+
 	/**
 	 * This returns true if the entire plan produces reasonable accelerations.
 	 * If the plan has instanteous "jumps," it is not consistent.
 	 */
-	public boolean isWeakConsistent(boolean silent, boolean useProjection) {
-		// f.pln(" >>> isWeakConsistent silent = "+silent+" useProjection = "+useProjection);
-		boolean rtn = true;
-		if (!isWellFormed()) {
-			error.addError("isWeakConsistent: not well formed");
-			if (!silent) {
-				f.pln("  >>> isConsistent FAIL! not WellFormed!! " + strWellFormed());
-			}
-			return false;
-		}
-		for (int i = 0; i < size(); i++) {
-			if (point(i).isBGS()) {
-				if (!PlanUtil.gsConsistent(this, i, 0.2, 0.1, silent)) {
-					error.addWarning("isWeakConsistent: GS " + i + " not consistent");
-					rtn = false;
-				}
-			}
-			if (point(i).isBVS()) {
-				if (!PlanUtil.vsConsistent(this, i, 0.001, 0.05, silent)) {
-					error.addWarning("isWeakConsistent: VS " + i + " not consistent");
-					rtn = false;
-				}
-			}
-			if (point(i).isBOT()) {
-				if (!PlanUtil.turnConsistent(this, i, 0.5, 1.1, 1.2, silent, useProjection)) {
-					error.addWarning("isWeakConsistent: turn " + i + " not consistent");
-					rtn = false;
-				}
-			}
-			if (i > 0) {
-				if (point(i).isTCP()) {
-					if (!PlanUtil.isVelocityContinuous(this, i, 5.0, silent)) {
-						error.addWarning("isWeakConsistent: velocity at point " + i + " is not consistent");
-						rtn = false;
-					}
-				}
-			}
-		}
-		// f.pln(" $$$ isWeakConsistent: rtn = "+rtn );
-		return rtn;
+	public boolean isWeakConsistent(boolean silent) {
+		return isConsistent(0.05,0.05,0.01,silent);
 	}
 
-	public boolean isWeakConsistent() {
-		boolean silent = false;
-		boolean useProjection = false;
-		return isWeakConsistent(silent, useProjection);
+
+	public boolean isFlyable(boolean silent) {
+		return isConsistent(silent) && isVelocityContinuous(silent);
 	}
+	
+	/**
+	 * This returns true if the entire plan produces reasonable accelerations. If
+	 * the plan has instanteous "jumps," it is not consistent.
+	 */
+	public boolean isFlyable() {
+		boolean silent = false;
+		return isFlyable(silent);
+	}
+	
+	/**
+	 * This returns true if the entire plan produces reasonable accelerations. If
+	 * the plan has instanteous "jumps," it is not consistent.
+	 */
+	public boolean isWeakFlyable(boolean silent) {
+		return isWeakConsistent(silent) && isWeakVelocityContinuous(silent);
+	}
+
+	public boolean isWeakFlyable() {
+		boolean silent = false;
+		return isWeakFlyable(silent);
+	}
+
 
 	/**
 	 * This removes the acceleration tags on points that appear "unbalanced."
@@ -3640,8 +3858,8 @@ public class Plan implements ErrorReporter, Cloneable {
 			return NavPoint.INVALID;
 		}
 		double d = 0;
-		double t1 = getTime(seg);
-		double dt = getTime(seg + 1) - t1;
+		double t1 = time(seg);
+		double dt = time(seg + 1) - t1;
 		NavPoint np = points.get(seg);
 		NavPoint np2 = points.get(seg + 1);
 		if (pathDistance(seg) <= 0.0) {
@@ -3660,7 +3878,7 @@ public class Plan implements ErrorReporter, Cloneable {
 				ret = np2;
 			} else if (inVsChange(t1)) {
 				double vs1 = initialVelocity(seg).vs();
-				double a = point(prevBVS(seg + 1)).vsAccel();
+				double a = vsAccel(prevBVS(seg + 1));
 				double tm = KinematicsDist.gsTimeConstantAccelFromDist(vs1, a, p.alt() - np.alt());
 				ret = new NavPoint(position(tm), tm);
 			} else {
@@ -3670,78 +3888,36 @@ public class Plan implements ErrorReporter, Cloneable {
 				ret = new NavPoint(position(tm), tm);
 			}
 		} else if (inTrkChange(t1)) {
-			NavPoint bot = points.get(prevBOT(seg + 1));
-			Position center = bot.turnCenter();
+			int ixBOT = prevBOT(seg + 1);
+			//NavPoint bot = points.get(ixBOT);			
+			Position center = turnCenter(ixBOT);
 			double endD = pathDistance(seg);
-			double d2 = KinematicsPosition.closestDistOnTurn(np.position(), initialVelocity(seg), bot.turnRadius(),
-					Util.sign(bot.signedRadius()), center, p, endD);
+			double d2 = KinematicsPosition.closestDistOnTurn(np.position(), initialVelocity(seg), getTcpData(ixBOT).turnRadius(),
+					Util.sign(signedRadius(ixBOT)), center, p, endD);
 			if (Util.almost_equals(d2, 0.0)) {
 				ret = np;
 			} else if (Util.almost_equals(d2, endD)) {
 				ret = np2;
 			} else {
-				double segDt = timeFromDistance(seg, d2);
+				double segDt = timeFromDistanceWithinSeg(seg, d2);
 				ret = new NavPoint(position(t1 + segDt), t1 + segDt);
 			}
 		} else if (isLatLon()) {
 			LatLonAlt lla = GreatCircle.closest_point_segment(points.get(seg).lla(), points.get(seg + 1).lla(),
 					p.lla());
 			d = GreatCircle.distance(points.get(seg).lla(), lla);
-			double segDt = timeFromDistance(seg, d);
+			double segDt = timeFromDistanceWithinSeg(seg, d);
 			ret = new NavPoint(position(t1 + segDt), t1 + segDt);
 		} else {
 			Vect3 cp = VectFuns.closestPointOnSegment(points.get(seg).point(), points.get(seg + 1).point(), p.point());
 			d = points.get(seg).point().distanceH(cp);
-			double segDt = timeFromDistance(seg, d);
+			double segDt = timeFromDistanceWithinSeg(seg, d);
 			ret = new NavPoint(position(t1 + segDt), t1 + segDt);
 		}
 		return ret;
 	}
 
-	// /** experimental
-	// * find the closest point on the current plan to position p between two
-	// times.
-	// */
-	// public NavPoint closestPoint(double start, double end, Position p) {
-	// start = Util.min(Util.max(getFirstTime(), start), getLastTime());
-	// end = Util.max(Util.min(getLastTime(), end), getFirstTime());
-	// int s = getSegment(start);
-	// int e = getSegment(end)+1;
-	// if (end == getLastTime()) e = size()-1;
-	// if (s < 0 || e < 0) {
-	// addError("closestPoint invalid start or end time");
-	// return NavPoint.INVALID;
-	// }
-	// NavPoint sp = NavPoint.INVALID;
-	// NavPoint ep = NavPoint.INVALID;
-	// NavPoint tmp = new NavPoint(position(start),start);
-	// if (start == end) return tmp; // out of bounds
-	// int i = overlaps(tmp,true);
-	// if (i < 0) {
-	// sp = tmp.makeVirtual();
-	// s = add(sp);
-	// e++;
-	// }
-	// tmp = new NavPoint(position(end),end);
-	// int j = overlaps(tmp,true);
-	// if (j < 0) {
-	// ep = tmp.makeVirtual();
-	// e = add(ep);
-	// }
-	// NavPoint ret = closestPoint(s,e,p);
-	// // clean up the virtual point(s), if added
-	// if (j >= 0 && points.get(e).isVirtual()) {
-	// remove(e);
-	// }
-	// if (i >= 0 && i < j && points.get(s).isVirtual()) {
-	// remove(s);
-	// }
-	// if (getFirstTime() > ret.time()) {
-	// f.pln("closestPoint(ffp)");
-	// }
-	//
-	// return ret;
-	// }
+
 
 	/**
 	 * Experimental This returns a NavPoint on the plan that is closest to the
@@ -3750,9 +3926,8 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * and vertical distances, the first is returned.
 	 * 
 	 * @param p
-	 * @return
+	 * @return closest point
 	 */
-	// experimental
 	public NavPoint closestPoint(Position p) {
 		return closestPoint(0, points.size() - 1, p, false, 0.0);
 	}
@@ -3766,7 +3941,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * range that is closest to the given position. If more than one point are
 	 * closest horizontally, the closer vertically is returned. If more than one
 	 * have the same horizontal and vertical distances, the first is returned.
-	 * If start >= end, this returns an INVALID point
+	 * If start &gt;= end, this returns an INVALID point
 	 * 
 	 * @param start  start point
 	 * @param end    end point
@@ -3778,7 +3953,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * @param maxHdist
 	 *            only used if horizOnly is false: compare vertical distances if
 	 *            candidate points are within this range of each other
-	 * @return
+	 * @return closest point
 	 */
 	public NavPoint closestPoint(int start, int end, Position p, boolean horizOnly, double maxHdist) {
 		double minhdist = Double.MAX_VALUE;
@@ -3807,16 +3982,331 @@ public class Plan implements ErrorReporter, Cloneable {
 			f.pln(p.toOutput(0, 4, false, true));
 		}
 		for (int i = 0; i < p.size(); i++) {
-			this.point(i).diff(i, p.point(i));
+			NavPoint np1 = point(i);
+			TcpData tcp1 = getTcpData(i);
+			NavPoint np2 = p.point(i);
+			TcpData tcp2 = p.getTcpData(i);
+
+			if ( ! np1.almostEquals(np2)) {
+				f.pln(" points at index i = "+i+" have different positions!");
+			}
+			if ( ! Util.almost_equals(np1.time(),np2.time())) {
+				f.pln(" points at index i = "+i+" have different times! "+np1.time()+" != "+np2.time());			
+			}
+			//			if ( ! tcp1.velocityInit().almostEquals(tcp2.velocityInit())) {
+			//				f.pln(" points at index i = "+i+" have different velocityIn fields "+tcp1.velocityInit()+" != "+tcp2.velocityInit());
+			//			}
+			if ( ! tcp1.getTrkTypeString().equals(tcp2.getTrkTypeString()) || ! tcp1.getGsTypeString().equals(tcp2.getGsTypeString()) || ! tcp1.getVsTypeString().equals(tcp2.getVsTypeString())) {
+				f.pln(" points at index i = "+i+" have different tcp_* fields");
+			}
+			if ( tcp1.isBOT() && tcp1.getRadiusSigned() != tcp2.getRadiusSigned()) {
+				f.pln(" points at index i = "+i+" have different accel_trk fields "+tcp1.getRadiusSigned()+" != "+tcp2.getRadiusSigned());
+			}
+			if ( tcp1.isBGS() && tcp1.gsAccel() != tcp2.gsAccel()) {
+				f.pln(" points at index i = "+i+" have different accel_gs fields "+tcp1.gsAccel()+" != "+tcp2.gsAccel());
+			}
+			if ( tcp1.isBVS() && tcp1.vsAccel() != tcp2.vsAccel()) {
+				f.pln(" points at index i = "+i+" have different accel_vs fields "+tcp1.vsAccel()+" != "+tcp2.vsAccel());
+			}
+			if ( ! tcp1.getSourcePosition().almostEquals(tcp2.getSourcePosition())) {
+				f.pln(" points at index i = "+i+" have different source positions!");
+			}
+			if (!Util.almost_equals(tcp1.getSourceTime(), tcp2.getSourceTime())) {
+				f.pln(" points at index i = "+i+" have different source times!");						
+			}
+
 		}
+	}
+
+//	Position vertexFromTurnTcps(int ixBOT, int ixEOT) {
+//		return vertexFromTurnTcps(ixBOT, ixEOT, -1);
+//	}
+
+	/** Structurally calculate vertex of turn from BOT and EOT.  If altMid >=0 THEN
+	 *  use it for the altitude.  Otherwise search for a middle point to get altitude.
+	 * 
+	 * @param ixBOT
+	 * @param ixEOT
+	 * @param altMid
+	 * @return
+	 */
+	public Position vertexFromTurnTcps(int ixBOT, int ixEOT, double altMid) {
+		//f.pln(" $$ vertexFromTurnTcps: ixBOT = "+ixBOT+" ixEOT = "+ixEOT);
+		if (!validIndex(ixBOT) || !validIndex(ixEOT)) return Position.INVALID;
+		double radius = turnRadius(ixBOT);
+		Position center = turnCenter(ixBOT);
+		//f.pln(" $$ vertexFromTurnTcps: center = "+center.toString());
+		Position botPos = getPos(ixBOT);
+		Position eotPos = getPos(ixEOT);
+		double trkIn_d = trkOut(ixBOT);
+		double trkOut_d = trkOut(ixEOT);
+		int dir = Util.turnDir(trkIn_d,trkOut_d);	
+		//f.pln(" $$ vertexFromTurnTcps: trkIn = "+Units.str("deg",trkIn)+" trkOut = "+Units.str("deg",trkOut)+" dir = "+dir);
+		// ---------- recover altitude ---------
+		if (altMid < 0) {
+		   int ixMOT = findMOT(ixBOT,ixEOT);
+		   if (ixMOT < 0) ixMOT = ixEOT-1;
+		   altMid = point(ixMOT).alt();
+		}
+		//f.pln(" $$ vertexFromTurnTcps: botPos = "+botPos+" center = "+center+" eotPos = "+eotPos);
+		return vertexFromTurnTcps(botPos, eotPos, radius, dir, center, altMid);
+	}
+
+	NavPoint vertexPointTurnTcps(int ixBOT, int ixEOT, double altMid) {
+		Position vertex = vertexFromTurnTcps(ixBOT, ixEOT, altMid);
+		double gsIn = gsIn(ixBOT);
+		Position botPos = getPos(ixBOT);
+		double distToVertex = botPos.distanceH(vertex);
+		double gsAccel = 0.0;
+		double tmBOT = time(ixBOT);
+		if (inGsChange(tmBOT)) {
+			int ixBGS = prevBGS(ixBOT+1);
+			gsAccel = gsAccel(ixBGS);
+		}
+		double dt = timeFromDistance(gsIn, gsAccel, distToVertex);
+		return new NavPoint(vertex,tmBOT+dt);
+	}
+	
+	/**
+	 * 
+	 * @param botPos   position of turn beginning
+	 * @param eotPos   position of end of turn
+	 * @param radius   radius of turn 
+	 * @param dir      direction +1 = right, -1 = left
+	 * @param center   center position
+	 * @param altMid   altitude at middle of turn
+	 * @return         vertex of turn
+	 */
+	public static Position vertexFromTurnTcps(Position botPos, Position eotPos, double radius, int dir, Position center, double altMid) {
+		double theta = PositionUtil.angle_between(botPos, center, eotPos);
+		double cos_theta2 = Math.cos(theta/2);
+		double distance = 100.0;
+		if (cos_theta2 != 0.0) {
+			distance = radius/cos_theta2;
+		}
+		Position vertex;		
+		//f.pln(" $$ vertexFromTurnTcps: theta = "+Units.str("deg",theta)+" distance = "+Units.str("NM",distance));
+		if (botPos.isLatLon()) {
+			double centerToBOT_trk = GreatCircle.initial_course(center.lla(),botPos.lla());			
+			double cLineTrk = centerToBOT_trk + dir*theta/2;	
+			//f.pln(" $$ vertexFromTurnTcps: centerToBOT_trk = "+Units.str("deg",centerToBOT_trk));
+			vertex = new Position(GreatCircle.linear_initial(center.lla(), cLineTrk, distance));
+		} else {
+			double centerToBOT_trk = Velocity.mkVel(center.point(), botPos.point(), 100.0).trk();
+			//double centerToEOT_trk = Velocity.mkVel(center.point(), eotPos.point(), 100.0).trk();
+			double cLineTrk = centerToBOT_trk + dir*theta/2;
+			Vect3 sn = center.point().linearByDist2D(cLineTrk, distance);
+			//f.pln(" $$ vertexFromTurnTcps: centerToBOT_trk = "+Units.str("deg",centerToBOT_trk)+" cLineTrk = "+Units.str("deg",cLineTrk));
+			vertex = new Position(sn);
+		}
+		vertex = vertex.mkAlt(altMid);  
+		return vertex;		
+	}
+	
+	/**
+	 * 
+	 * @param botPos   position of turn beginning
+	 * @param eotPos   position of end of turn
+	 * @param signedRadius   signed radius of turn: +1 = right, -1 = left
+	 * @param trkInit  initial track at botPos
+	 * @param altMid   altitude at middle of turn
+	 * @return         vertex of turn
+	 */
+	public static Position vertexFromTurnTcps(Position botPos, Position eotPos, double signedRadius, double trkInit, double altMid) {
+		int dir = Util.sign(signedRadius);
+		double radius = Math.abs(signedRadius);
+		Position center = KinematicsPosition.centerFromRadius(botPos, signedRadius, trkInit);
+		return vertexFromTurnTcps(botPos, eotPos, radius, dir, center, altMid);
+	}
+
+    int findMOT(int ixBOT, int ixEOT) {
+    	if (ixEOT == ixBOT +2) {
+    		//f.pln(" $$ findMOT ("+ixBOT+","+ixEOT+"): AA return (ixBOT+1) = "+(ixBOT+1));
+    		return ixBOT+1;
+    	} else {
+    		int linIx = linearIndex(ixBOT);
+    		if (linIx >= 0) {
+    			for (int ixMOT = ixBOT; ixMOT < ixEOT; ixMOT++) {
+    				if (linearIndex(ixMOT) == linIx) {
+    					//f.pln(" $$ findMOT ("+ixBOT+","+ixEOT+"): BB return via linearIndex = "+(ixMOT));
+    					return ixMOT;
+    				}
+    			}
+    		}
+     	}
+     	double pathDistBOT2EOT = pathDistance(ixBOT,ixEOT);
+    	double target = 0.49*pathDistBOT2EOT;
+    	for (int ixMOT = ixBOT; ixMOT < ixEOT; ixMOT++) {
+    		if (pathDistance(ixBOT,ixMOT) >= target) {
+    			//f.pln(" $$ findMOT("+ixBOT+","+ixEOT+"): CC return via 1/2 pathDistance = "+(ixMOT));
+    			return ixMOT;
+    		}
+    	}
+    	//f.pln(" $$ findMOT("+ixBOT+","+ixEOT+"): DD return -1");
+    	//DebugSupport.dumpPlan(this,"LAST_RESORT");
+    	//Debug.halt();
+    	return -1;
+    }
+    
+    int findNextMOT(int i) {
+    	int ixBOT = nextBOT(i);
+    	int ixEOT = nextEOT(ixBOT);
+    	return findMOT(ixBOT,ixEOT);
+    }
+    
+    // Quad(distanceTo, altAt, gsIn, label)
+    private ArrayList<Tuple5<Double,Double,Double,String,String>> buildDistList(int ixBOT, int ixEOT, double ratio) {
+       	ArrayList<Tuple5<Double,Double,Double,String,String>> distList = new ArrayList<Tuple5<Double,Double,Double,String,String>>();
+       	for (int i = ixBOT; i < ixEOT; i++) {
+       		double d_i = ratio*pathDistance(ixBOT,i);
+       		double alt_i = point(i).alt();
+       		double gsIn_i = gsOut(i);
+       		String label_i = point(i).label();
+       		String info_i = getInfo(i);
+       		Tuple5<Double,Double,Double,String,String> trip_i = new Tuple5<Double,Double,Double,String,String>(d_i,alt_i,gsIn_i,label_i,info_i);
+       		distList.add(trip_i);
+       	}
+    	return distList;
+    }
+    
+    /** build a list of (distanceTo, altAt, gsIn, label) from ixBOT to ixEOT
+     *  Vertex is used to calculate the distance compression ratio
+     * 
+     * @param ixBOT
+     * @param ixEOT
+     * @param vertex
+     * @return
+     */
+    private ArrayList<Tuple5<Double,Double,Double,String,String>> buildDistList(int ixBOT, int ixEOT, Position vertex) {
+     	double turnDist = pathDistance(ixBOT,ixEOT);
+     	double vertexDist = point(ixBOT).position().distanceH(vertex) + point(ixEOT).position().distanceH(vertex);
+     	double ratio = vertexDist/turnDist;
+     	return buildDistList(ixBOT, ixEOT, ratio);
+    }
+    
+	/**
+	 * Structurally revert TCP at ix: (does not depend upon source time or
+	 * source position!!) This private method assumes ix &gt; 0 AND ix &lt;
+	 * pln.size(). If ix is not a BOT, then nothing is done
+	 * 
+	 * @param ixBOT    index of point to be reverted
+	 * @param addBackMidPoints
+	 *            if addBackMidPoints = true, then if there are extra points
+	 *            between the BOT and EOT, make sure they are moved to the
+	 *            correct place in the new linear sections. Do this by distance
+	 *            not time.
+	 * @param killNextGsTCPs
+	 *            if true, then if there is a BGS-EGS pair after the turn (i.e. creat by TrajGen), then 
+	 *            remove these points
+	 * @param zVertex
+	 *            if non-negative, then assigned reverted vertex this altitude
+	 */
+	public void structRevertTurnTCP(int ixBOT, boolean addBackMidPoints, boolean killNextGsTCPs) {
+		// f.pln(" $$$$$ structRevertTurnTCP: ix = "+ix+" isBOT = "+pln.point(ix).isBOT());
+		if (!isBOT(ixBOT)) return;
+		NavPoint BOT = point(ixBOT);
+		int BOTlinIndex = getTcpData(ixBOT).getLinearIndex();
+		String name = BOT.label();
+		int ixEOT = nextEOT(ixBOT);
+		double dist2Mid = pathDistance(ixBOT,ixEOT)/2.0;
+		//f.pln(" $$$ structRevertTurnTCP: dist2Mid = "+Units.str("ft",dist2Mid));
+		boolean linear = false;
+		double tMid = timeFromDistance(ixBOT, dist2Mid);
+		//f.pln(" $$$ structRevertTurnTCP: timeFromDistance =  "+timeFromDistance(ixBOT, dist2Mid));
+		Position posMid = position(tMid);
+		double altMid = posMid.alt();
+		//f.pln(" $$$ structRevertTurnTCP: tMid = "+tMid+" altMid = "+Units.str("ft",altMid));
+		double gsOutMid = velocity(tMid).gs();
+		//f.pln(" $$$ structRevertTurnTCP: gsOutMid = "+Units.str("kn",gsOutMid));
+		NavPoint vertex =  vertexPointTurnTcps(ixBOT,ixEOT,altMid);
+		//f.pln(" $$$ structRevertTurnTCP: ixMOT = "+ixMOT+" vertex = "+vertex);
+		//f.pln(" $$$$$$$ ixBOT = "+ixBOT+" ixEOT = "+ixEOT);
+		ArrayList<Tuple5<Double,Double,Double,String,String>> distList = buildDistList(ixBOT, ixEOT, vertex.position());
+		// ======================== No Changes To Plan Before This Point ================================
+		if (killNextGsTCPs & ixEOT + 1 < size()) {  // remove BGS-EGS pair 1 sec after EOT (created by TrajGen)
+			TcpData tcpAfter = getTcpData(ixEOT + 1);
+			if (tcpAfter.isBGS() && (tcpAfter.getLinearIndex() == BOTlinIndex)) {
+				int ixEGS = nextEGS(ixEOT);
+				// f.pln(" $$$$$ let's KILL TWO GS points AT  "+(ixEOT+1)+" and ixEGS = "+ixEGS+" dt = "+dt);
+				remove(ixEGS);
+				remove(ixEOT + 1);
+			}
+		}
+		double gsInEOT = gsIn(ixEOT);
+		double gsOutEOT = gsOut(ixEOT);
+		//double gsOutMOT = gsOut(ixMOT);
+		double gsOutBOT = gsOut(ixBOT);
+		// ========================= Kill all points between ix and ixEOT =============================
+		for (int k = ixEOT-1; k > ixBOT; k--) {
+			// f.pln(" $$$$ structRevertTurnTCP: remove point k = "+k+" "+point(k).toStringFull());
+			remove(k);
+		}
+		addNavPoint(vertex.makeLabel(name)); //TODO: INFO?
+		double tmBOT = point(ixBOT).time();
+		GsPlan gsp = new GsPlan(tmBOT);
+		/*
+		 *  ********************************************************************************
+		 *  NOTE: this code currently strips out the info field when converting to a gsplan! 
+		 *  ********************************************************************************
+		 * 
+		 */
+		if (addBackMidPoints) {		
+			boolean vertexAdded = false;
+			for (int i = 0; i < distList.size(); i++) {  // reverse order to preserve indexes
+				Tuple5<Double,Double,Double,String,String> trip_i = distList.get(i);
+				double d_i = trip_i.first;
+				double alt_i = trip_i.second;
+				double gsIn_i = trip_i.third;
+				String label_i = trip_i.fourth;
+				String info_i = trip_i.fifth;
+				double deltaToMid = Math.abs(d_i - dist2Mid);
+				if (deltaToMid < 20) {  // close to where vertex will be (probably MOT)	
+					//f.pln(" $$$$$$  GSP SKIP VERTEX i = "+i);
+				} else if (!vertexAdded && d_i > deltaToMid) {
+					gsp.add(vertex.position(),vertex.label(),"",gsOutMid); //TODO: GEH does this have info?
+					//f.pln("  GSP ADD VERTEX i = "+i);
+					vertexAdded = true;
+				} else {
+					linear = true;
+					Pair<Position, Integer> adv = advanceDistance2D(ixBOT, d_i, linear);
+					Position pos_i = adv.first.mkAlt(alt_i);
+					gsp.add(pos_i,label_i,info_i,gsIn_i);
+				}
+				//f.pln(" $$ structRevertTurnTCP: gsp ADD i = "+i+"  gsIn_i_i = "+Units.str("kn",gsIn_i));
+			}
+			if (!vertexAdded) {
+				//f.pln("  GSP ADD VERTEX i AT END");
+				gsp.add(vertex.position(),vertex.label(),"",gsOutMid); //TODO: GEH does this have info?
+			}
+
+			//gsp.set(ixMOT-ixBOT,vertex.position(),vertex.label(),gsOutMid); // replace MOT with vertex
+		} else {
+			gsp.add(point(ixBOT).position(),"","",gsOutBOT); //TODO: GEH does this have info?
+			gsp.add(vertex.position(),vertex.label(),"",gsOutMid); //TODO: GEH does this have info?
+		}
+		//f.pln(" $$$ structRevertTurnTCP: AFTER gsp = "+gsp);
+		ixEOT = nextEOT(ixBOT);   // EOT may now have new index
+		Plan pMids = gsp.linearPlan();
+		getTcpDataRef(ixBOT).clearBOT();
+		clearLabel(ixBOT);
+		getTcpDataRef(ixEOT).clearEOT();
+		// ======================== fix ground speeds ============================
+		remove(ixBOT+1);   // remove vertex because it is now in the gsPlan
+		for (int j = 1; j < pMids.size(); j++) {  // note we start with 1, i.e. do not add ixBOT
+			addNavPoint(pMids.point(j));
+		}
+		mkGsIn(ixEOT, gsInEOT);
+		mkGsOut(ixEOT, gsOutEOT);
+		removeIfRedundant(ixEOT);    // remove this one first to preserve indexes
+		removeIfRedundant(ixBOT);
+		mergeClosePoints();
 	}
 
 	/**
 	 * Structurally revert TCP at ix: (does not depend upon source time or
-	 * source position!!) This private method assumes ix > 0 AND ix <
+	 * source position!!) This private method assumes ix &gt; 0 AND ix &lt;
 	 * pln.size(). If ix is not a BOT, then nothing is done
 	 * 
-	 * @param pln   plan
 	 * @param ix    index of point to be reverted
 	 * @param addBackMidPoints
 	 *            if addBackMidPoints = true, then if there are extra points
@@ -3829,25 +4319,24 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * @param zVertex
 	 *            if non-negative, then assigned reverted vertex this altitude
 	 */
-	public void structRevertTurnTCP(int ix, boolean addBackMidPoints, boolean killNextGsTCPs, double zVertex) {
-		// f.pln(" $$$$$ structRevertTurnTCP: ix = "+ix+" isBOT =
-		// "+pln.point(ix).isBOT());
+	public void structRevertTurnTCP_OLD(int ix, boolean addBackMidPoints, boolean killNextGsTCPs) {
+		// f.pln(" $$$$$ structRevertTurnTCP: ix = "+ix+" isBOT = "+pln.point(ix).isBOT());
 		// f.pln(" $$$$$ structRevertTurnTCP: pln = "+pln);
-		if (point(ix).isBOT()) {
+		if (isBOT(ix)) {
 			// f.pln(" $$$$$ structRevertTurnTCP: ix = "+ix);
 			NavPoint BOT = point(ix);
-			int BOTlinIndex = BOT.linearIndex();
+			int BOTlinIndex = getTcpData(ix).getLinearIndex();
 			String label = BOT.label();
 			double tBOT = BOT.time();
-			int nextEOTix = nextEOT(ix);
-			NavPoint EOT = point(nextEOTix);
+			int ixEOT = nextEOT(ix);
+			NavPoint EOT = point(ixEOT);
 			double tEOT = EOT.time();
-			ArrayList<NavPoint> betweenPoints = new ArrayList<NavPoint>(4);
+			ArrayList<Pair<NavPoint,TcpData>> betweenPoints = new ArrayList<Pair<NavPoint,TcpData>>(4);
 			ArrayList<Double> betweenPointDists = new ArrayList<Double>(4);
-			if (addBackMidPoints) { // add back mid points that are not TCPs
-				for (int j = ix + 1; j < nextEOTix; j++) {
-					NavPoint np = point(j);
-					if (!np.isTCP()) {
+			if (addBackMidPoints) { // save add back mid points that are not TCPs
+				for (int j = ix + 1; j < ixEOT; j++) {
+					Pair<NavPoint,TcpData> np = get(j);
+					if ( ! isTCP(j)) {
 						// f.pln(" >>>>> structRevertTurnTCP: SAVE MID point("+j+") = "+point(j).toStringFull());
 						betweenPoints.add(np);
 						double distance_j = pathDistance(ix, j);
@@ -3857,79 +4346,41 @@ public class Plan implements ErrorReporter, Cloneable {
 			}
 			Velocity vin;
 			if (ix == 0)
-				//vin = point(ix).velocityInit(); // not sure if we should allow  TCP as first point ??
-			    vin = initialVelocity(0);
+				vin = initialVelocity(ix);
 			else
 				vin = finalVelocity(ix - 1);
-			double gsin = vin.gs();
-			// f.pln(" $$$$ structRevertTurnTCP: gsin = "+Units.str("kn",gsin,8));
-			Velocity vout = initialVelocity(nextEOTix);
-			Pair<Position, Double> interSec = Position.intersection(BOT.position(), vin, EOT.position(), vout);
-			double distToIntersec = interSec.first.distanceH(BOT.position());
-			double tmInterSec = tBOT + distToIntersec / gsin;
-			NavPoint vertex;
-			if (tmInterSec >= tEOT) { // use BOT position, if vertex angle is too small
-				double tMid = (tBOT + tEOT) / 2.0;
-				Position posMid = position(tMid);
-				// f.pln(" $$$$ structRevertTurnTCP: use BOT position, if vertex
-				// angle is too small posMid = "+posMid);
-				vertex = new NavPoint(posMid, tMid);
-			} else {
-				vertex = new NavPoint(interSec.first, tmInterSec);
-				// f.pln(" $$$$ structRevertTurnTCP: interSec.first =
-				// "+interSec.first);
-			}
-			if (vertex.isInvalid()) {
-				addError(" structRevertTurnTCP: reversion of point " + ix + " failed!");
-				return;
-			}
-			if (zVertex >= 0) {
-				vertex = vertex.mkAlt(zVertex); // a better value for altitude
-												// obtained from previous
-												// internal BVS-EVS pair
-			}
+			Velocity vout = initialVelocity(ixEOT);			
+			NavPoint vertex =  vertexPointTurnTcps(ix,ixEOT,-1);			
 			// ======================== No Changes To Plan Before This Point ================================
 			double gsInNext = vout.gs();
-			// TODO this may be wrong if there are combined EOT+BGS points
-			if (killNextGsTCPs & nextEOTix + 1 < size()) {
-				NavPoint npAfter = point(nextEOTix + 1);
-				// double dt = getTime(nextEOTix+1) - getTime(nextEOTix);
-				// f.pln(" $$$$ structRevertTurnTCP: npAfter =
-				// "+npAfter.toStringFull()+" dt = "+dt);
-				// if (npAfter.isBGS() && dt < Plan.revertGsTurnConnectionTime)
-				// { // note that makeKinematicPlan always makes it 1 sec after
-				// the EOT
-				if (npAfter.isBGS() && (npAfter.linearIndex() == BOTlinIndex)) {
-					int ixEGS = nextEGS(nextEOTix);
+			if (killNextGsTCPs & ixEOT + 1 < size()) {  // remove BGS-EGS pair 1 sec after EOT (created by TrajGen)
+				TcpData tcpAfter = getTcpData(ixEOT + 1);
+				if (tcpAfter.isBGS() && (tcpAfter.getLinearIndex() == BOTlinIndex)) {
+					int ixEGS = nextEGS(ixEOT);
 					vout = initialVelocity(ixEGS);
 					gsInNext = vout.gs();
-					// f.pln(" $$$$$ let's KILL TWO GS points AT
-					// "+(nextEOTix+1)+" and ixEGS = "+ixEGS+" dt = "+dt);
-					// f.pln(" $$$$$ KILL "+point(ixEGS).toStringFull());
-					// f.pln(" $$$$$ KILL "+point(nextEOTix+1).toStringFull());
+					// f.pln(" $$$$$ let's KILL TWO GS points AT  "+(ixEOT+1)+" and ixEGS = "+ixEGS+" dt = "+dt);
 					remove(ixEGS);
-					remove(nextEOTix + 1);
+					remove(ixEOT + 1);
 				}
 			}
-			// Kill all points between ix and nextEOTix
-			// f.pln(" $$$$$ structRevertTurnTCP: ix = "+ix+" nextEOTix =
-			// "+nextEOTix);
-			for (int k = nextEOTix; k >= ix; k--) {
-				// f.pln(" $$$$ structRevertTurnTCP: remove point k = "+k+"
-				// "+point(k).toStringFull());
+			// f.pln(" $$$$$ structRevertTurnTCP: ix = "+ix+" ixEOT = "+ixEOT);
+			// ------------ Kill all points between ix and ixEOT ----------------
+			for (int k = ixEOT; k >= ix; k--) {
+				// f.pln(" $$$$ structRevertTurnTCP: remove point k = "+k+" "+point(k).toStringFull());
 				remove(k);
 			}
 			// f.pln(" $$$$ structRevertTurnTCP: ADD vertex = "+vertex);
-			int ixAdd = add(vertex.makeLabel(label));
+			int ixAdd = addNavPoint(vertex.makeLabel(label)); //TODO: INFO?
 			int ixNextPt = ixAdd + 1;
-			// add back all removed points with revised position and time
+			// ---------- add back all removed points with revised position and time ------
 			if (addBackMidPoints) {
 				for (int i = 0; i < betweenPointDists.size(); i++) {
 					double newTime = BOT.time() + betweenPointDists.get(i) / vin.gs();
 					Position newPosition = position(newTime);
-					NavPoint savePt = betweenPoints.get(i);
-					NavPoint np = savePt.makePosition(newPosition).makeTime(newTime).mkAlt(savePt.alt());
-					add(np);
+					Pair<NavPoint,TcpData> savePt = betweenPoints.get(i);
+					NavPoint np = savePt.first.makePosition(newPosition).makeTime(newTime).mkAlt(savePt.first.alt());
+					add(np,savePt.second);
 					// f.pln(" $$$$ structRevertTurnTCP: ADD BACK np = "+np);
 					ixNextPt++;
 				}
@@ -3937,14 +4388,14 @@ public class Plan implements ErrorReporter, Cloneable {
 			// fix ground speed after
 			// f.pln(" $$$$ structRevertTurnTCP: ixNextPt = "+ixNextPt+"
 			// gsInNext = "+Units.str("kn", gsInNext));
-			double tmNextSeg = getTime(ixNextPt);
+			double tmNextSeg = time(ixNextPt);
 			if (tmNextSeg > 0) { // if reverted last point, no need to timeshift
-									// points after dSeg
+				// points after dSeg
 				int newNextSeg = getSegment(tmNextSeg);
 				double newNextSegTm = linearCalcTimeGSin(newNextSeg, gsInNext);
 				double dt2 = newNextSegTm - tmNextSeg;
 				// f.pln(" $$$$$$$$ structRevertTurnTCP: dt2 = "+dt2);
-				timeshiftPlan(newNextSeg, dt2);
+				timeShiftPlan(newNextSeg, dt2);
 			}
 			// f.pln(" $$$$ structRevertTurnTCP: initialVelocity("+ixNextPt+") =
 			// "+initialVelocity(ixNextPt));
@@ -3952,132 +4403,153 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 	}
 
+
 	/**
 	 * Structurally revert BGS-EGS pair at index "ix"
-	 * 
-	 * @param pln  plan
-	 * @param ix   index
-	 * @return index of reverted BGS
-	 * 
 	 *         Note: it assumes that BGS-EGS pairs will be removed in ascending
 	 *         order
+	 * 
+	 * @param ixBGS   index
+	 * @return value of revert gs acceleration
 	 */
-	public void structRevertGsTCP(int ix) {
-		if (point(ix).isBGS()) {
-			// f.pln("\n\n $$$$>>>>>>>>>>>>>>>>>>>>>> structRevertGsTCP:
-			// point("+ix+") = "+point(ix).toStringFull());
-			int nextEGSix = nextEGS(ix);
-			NavPoint BGS = point(ix);
-			NavPoint EGS = point(nextEGSix);
-			if (nextEGSix < 0) {
+	public void structRevertGsTCP(int ixBGS, boolean saveAccel) {
+		if (isBGS(ixBGS)) {
+			//f.pln("\n\n $$$$>>>>>>>>>>>>>>>>>>>>>> structRevertGsTCP:  point("+ix+") = "+point(ix).toString());
+			int ixEGS = nextEGS(ixBGS);
+			if (ixEGS < 0) {
+				//f.pln(" $$$$---------------------- structRevertGsTCP : ERROR nextEGSix = "+nextEGSix);
 				addError(" structRevertGsTCP: Ill-formed BGS-EGS structure: no EGS found!");
 				return;
 			}
-			double gsOutEGS = gsOut(nextEGSix);
-			NavPoint newPoint = BGS.makeNewPoint();
-			// f.pln(" $$$$ ix = "+ix+" nextEGSix = "+nextEGSix+" gsOutEGS =
-			// "+Units.str("kn",gsOutEGS));
-			if (EGS.isBGS()) { // i.e. it is a EGSBGS
-				// f.pln(" $$$$---------------------- structRevertGsTCP AA: pln
-				// = "+toStringGs());
-				String label_EGSBGS = EGS.label();
-				NavPoint newBGS = BGS.makeBGS(EGS.position(), EGS.time(), EGS.gsAccel(), EGS.velocityInit(), EGS.linearIndex())
-						.makeLabel(label_EGSBGS);
-				remove(nextEGSix); // remove EGSBGS
-				int ixNewBGS = add(newBGS); // make EGSBGS just a BGS
-				// f.pln(" $$$$ VIRTUAL: ixNewBGS = "+ixNewBGS+" gsOutEGS =
-				// "+Units.str("kn",gsOutEGS));
-				if (ixNewBGS >= 0) {
-					mkGsOut(ixNewBGS, gsOutEGS);
-				}
-			} else {
-				// f.pln(" $$$$---------------------- structRevertGsTCP BB: pln
-				// = "+toStringGs());
-				remove(nextEGSix);
-			}
-			// make the BGS a normal point
-			remove(ix);
-			int iNew = add(newPoint);
-			// f.pln(" $$$ structRevertGsTCP: add newPoint = "+newPoint+" iNew =
-			// "+iNew);
-			if (iNew >= 0) { // && nextEGSix < size()-1) {
-				mkGsOut(iNew, gsOutEGS);
-			}
+			double gsOutEGS = gsOut(ixEGS);
+			double gsOutBGS = gsOut(ixBGS);
+			//f.pln(" $$$$ structRevertGsTCP: ixBGS = "+ixBGS+" gsOutBGS = "+Units.str("kn",gsOutBGS)+" gsOutEGS = "+Units.str("kn",gsOutEGS));
+			TcpData tcpEGS= getTcpDataRef(ixEGS);
+			tcpEGS.clearEGS();	
+			TcpData tcpBGS = getTcpDataRef(ixBGS);
+			tcpBGS.clearBGS();
+			if (!saveAccel) tcpBGS.setGsAccel(0.0); 
+			mkGsOut(ixBGS, gsOutBGS);       // to make removeIfVsConstant test legitimate
+			//f.pln(" $$$$ structRevertGsTCP: AT ixBGS = "+ixBGS+" make gsOutBGS = "+Units.str("kn",gsOutBGS));
+			//f.pln("\n $$$$**************** structRevertGsTCP: this = "+this.toStringGs());
+			removeIfVsConstant(ixEGS);
+			//f.pln(" $$$ structRevertGsTCP: add newPoint = "+newPoint+" iNew =  "+iNew);
+			//f.pln(" $$$$ structRevertGsTCP: AT ixBGS = "+ixBGS+" make gsOut = gsOutEGS = "+Units.str("kn",gsOutEGS));
+			mkGsOut(ixBGS, gsOutEGS);
 		}
-		// f.pln(" $$$ structRevertGsTCP EE: pln = "+toStringGs());
-		return;
 	}
 
 	/**
 	 * Revert all BGS-EGS pairs
 	 * 
-	 * @param pln  plan file
 	 * @return     reverted plan containing no ground speed TCPS
 	 */
 
 	public void revertGsTCPs() {
-		revertGsTCPs(0);
+		int start = 0;
+		boolean storeAccel = true;
+		revertGsTCPs(start,storeAccel);
 	}
 
 	/**
 	 * Revert all BGS-EGS pairs in range "start" to "end"
 	 * 
-	 * @param pln    plan file
 	 * @param start  starting index
-	 * @param end    ending index
-	 * @return reverted plan containing no ground speed TCPS in specified range
 	 */
-	public void revertGsTCPs(int start) {
-		// f.pln(" $$$ revertGsTCPs start = "+start+" end = "+end);
-		if (start < 0)
-			start = 0;
+	public void revertGsTCPs(int start, boolean storeAccel) {
+		//f.pln(" $$$ revertGsTCPs start = "+start+" size = "+size());
+		if (start < 0) start = 0;
 		for (int j = start; j < size(); j++) {
-			// f.pln(" $$$ REVERT GS AT j = "+j+" np_ix = "+point(j));
-			// boolean revertPreviousTurn = false;
-			structRevertGsTCP(j); // ,revertPreviousTurn);
+			//f.pln(" $$$ REVERT GS AT j = "+j+" np_ix = "+point(j));
+			structRevertGsTCP(j, storeAccel); 
 		}
 	}
 
+	
+	
+	// assumes ix > 0 AND ix < size()
 	/**
 	 * Revert BVS at ix
 	 * 
-	 * @param pln   plan file
-	 * @param ix    index of a BVS point
-	 * @return reverted plan containing no vertical TCPS
+	 * @param ixBVS    index of a BVS point
+	 * @return 
 	 */
-	protected double structRevertVsTCP(int ix) {
-		if (point(ix).isBVS()) {
-			// f.pln(" $$$$>>>>>>>>> structRevertVsTCP: point("+ix+") =
-			// "+point(ix).toStringFull());
-			NavPoint BVS = point(ix);
-			int nextEVSix = nextEVS(ix); 
-			// if (nextEVSix == size()-1) {
-			// f.pln(" $$$$ structRevertVerticalTCP: ERROR EVS cannot be last
-			// point! ");
-			// }
+	double structRevertVsTCP(int ixBVS) {
+		if (isBVS(ixBVS)) {
+			NavPoint BVS = point(ixBVS);
+			int nextEVSix = nextEVS(ixBVS);//fixed
 			NavPoint EVS = point(nextEVSix);
-			NavPoint pp = point(ix - 1);
+			NavPoint pp = point(ixBVS - 1);
 			double vsin = (BVS.z() - pp.z()) / (BVS.time() - pp.time());
 			double dt = EVS.time() - BVS.time();
-			double tVertex = BVS.time() + dt / 2.0;
-			double zVertex = BVS.z() + vsin * dt / 2.0;
-			// f.pln(" $$$$ structRevertVsTCP: zVertex =
-			// "+Units.str("ft",zVertex));
+			double tVertex = BVS.time() + dt/2.0;
+			double zVertex = BVS.z() + vsin*dt/2.0;
 			Position pVertex = position(tVertex);
-			NavPoint vertex = new NavPoint(pVertex.mkAlt(zVertex), tVertex);
-			// Note: if the vertical TCP is in a turn then the horizontal
-			// position will be different than source
-			// if (BVS.hasSource()) {
-			// Position sourcePos = BVS.sourcePosition();
-			// double distV = sourcePos.distanceV(vertex.position());
-			// f.pln(" $$$$ structRevertVsTCP: distV =
-			// "+Units.str("ft",distV,8));
-			// f.pln(" $$$$ structRevertVsTCP: sourcePos = "+sourcePos+" vertex
-			// = "+vertex);
-			// }
+			String label = point(ixBVS).label();
+			NavPoint vertex = new NavPoint(pVertex.mkAlt(zVertex), tVertex).makeLabel(label); //TODO: INFO?
+			// f.pln(" $$$$ structRevertVsTCP: sourcePos = "+sourcePos+" vertex = "+vertex);
+			for (int j = ixBVS+1; j < nextEVSix; j++) {
+				double t = time(j);
+				double newAlt;
+				if (t < tVertex) {
+					newAlt = interpolateAlts(t, BVS.time(), BVS.alt(), tVertex, zVertex); 
+				} else {  // if (t > tVertex) {
+					newAlt = interpolateAlts(t, tVertex, zVertex, EVS.time(), EVS.alt()); 
+				}
+				NavPoint np_j = point(j).mkAlt(newAlt);
+				TcpData  tcp_j = getTcpData(j);
+				set(j,np_j,tcp_j);
+			}	            
+			getTcpDataRef(ixBVS).clearBVS();
+			clearLabel(ixBVS);
+			getTcpDataRef(nextEVSix).clearEVS();
+			removeIfRedundant(nextEVSix);
+			removeIfRedundant(ixBVS);				
+			int ixVertex = addNavPoint(vertex);
+			setAltPreserve(ixVertex);
+			mergeClosePoints();
+			return zVertex;
+		}
+		return -1;
+	}
+
+	/** Given two vertical points (t1,alt1) and (t2,alt2)  find altitude by linear interpolation at t 
+	 * where t1 < t < t2
+	 * 
+	 * @param t    time point of interest
+	 * @param t1
+	 * @param alt1
+	 * @param t2
+	 * @param alt2
+	 * @return    interpolated altitude
+	 */
+	double interpolateAlts(double t, double t1, double alt1, double t2, double alt2) {
+		if (t2 <= t1) return -1;
+		if (t > t2) t = t2;
+		if (t < t1) t = t1;
+		double vs = (alt2-alt1)/(t2-t1);
+		double dt = t-t1;
+		double newAlt = alt1 + dt*vs;
+		return newAlt;
+	}
+	
+	// assumes ix > 0 AND ix < size()
+	double structRevertVsTCP_OLD(int ix) {
+ 		if (isBVS(ix)) {
+			NavPoint BVS = point(ix);
+			int nextEVSix = nextEVS(ix);//fixed
+			NavPoint EVS = point(nextEVSix);
+	        NavPoint pp = point(ix-1);
+			//NavPoint qq = point(nextEVSix+1);
+			double vsin = (BVS.z() - pp.z())/(BVS.time() - pp.time());
+			double dt = EVS.time() - BVS.time();
+			double tVertex = BVS.time() + dt/2.0;
+			double zVertex = BVS.z() + vsin*dt/2.0;
+			Position pVertex = position(tVertex);
+			NavPoint vertex = new NavPoint(pVertex.mkAlt(zVertex),tVertex);
 			remove(nextEVSix);
 			remove(ix);
-			add(vertex);
+			addNavPoint(vertex);
 			return zVertex;
 		}
 		return -1;
@@ -4086,8 +4558,6 @@ public class Plan implements ErrorReporter, Cloneable {
 	/**
 	 * Revert all BVS-EVS pairs
 	 * 
-	 * @param pln  plan file
-	 * @return     reverted plan containing no vertical TCPS
 	 */
 	public void revertVsTCPs() {
 		revertVsTCPs(0, size() - 1);
@@ -4096,10 +4566,8 @@ public class Plan implements ErrorReporter, Cloneable {
 	/**
 	 * Revert all BVS-EVS pairs in range "start" to "end"
 	 * 
-	 * @param pln    plan file
 	 * @param start  starting index
 	 * @param end    ending index
-	 * @return reverted plan containing no vertical TCPS in specified range
 	 */
 	public void revertVsTCPs(int start, int end) {
 		// f.pln(" $$## revertVsTCPs: start = "+start+" end = "+end);
@@ -4112,21 +4580,84 @@ public class Plan implements ErrorReporter, Cloneable {
 			structRevertVsTCP(j);
 		}
 	}
+	
+	
+	public void revertTCP(int ix) {
+		if (ix < 0) return;
+		if (isBOT(ix)) {
+			boolean addBackMidPoints = true;
+			boolean killNextGsTCPs = true;
+			structRevertTurnTCP(ix, addBackMidPoints, killNextGsTCPs);
+		} else if (isBGS(ix)) {
+			boolean storeAccel = true;
+			structRevertGsTCP(ix,storeAccel);
+		} else if (isBVS(ix)) {
+			structRevertVsTCP(ix);
+		}
+	} 
+	
+	public void revertAllTcps() {
+		int nx = nextBeginTCP(0);
+		while (nx >= 0) {
+			revertTCP(nx);
+			nx = nextBeginTCP(0);
+			revertTCP(nx);
+		}	
+	}
 
-	// will not remove first or last point
+	/** revert all TCPS back to its original linear point which have the same sourceTime as the point at index dSeg
+	 *  if the point is a not a TCP do nothing.  Note that this function will timeshift the points to
+	 *  regain the original ground speed into the first reverted point of the group and all points after it.
+	 *  If checkSource is true, this function checks to make sure that the source position is reasonably close to the 
+	 *  current position,  and if not, it reverts to the current position of "dSeg".
+	 *  
+	 *  Note.  This method restores the sourcePosition, but essentially ignores the sourceTimes
+	 * 
+	 * @param dSeg  The index of one of the TCPs created together that should be reverted
+	 * @return index of the point that replaces all the other points
+	 */
 	public void removeRedundantPoints(int from, int to) {
-		double velEpsilon = 1.0;
 		int ixLast = Util.min(size() - 2, to);
 		int ixFirst = Util.max(1, from);
 		for (int i = ixLast; i >= ixFirst; i--) {
-			NavPoint p = point(i);
-			Velocity vin = finalVelocity(i - 1);
-			Velocity vout = initialVelocity(i);
-			if (!p.isTCP() && vin.within_epsilon(vout, velEpsilon)) { // 2.6))  see testAces3, testRandom for worst cases
-				// f.pln(" $$$$$ removeRedundantPoints: REMOVE i = "+i);
-				remove(i);
-			}
+			removeIfRedundant(i);
 		}
+	}
+	
+	// return ix if removed, -1 otherwise
+	public int removeIfRedundant(int ix, boolean trkF, boolean gsF, boolean vsF) {
+		//f.pln(" $$$$$ removeIfRedundant: ENTER ix = "+ix);
+		if (ix < 0 || ix >= size()-1) return -1;   // should not remove last point 
+		Velocity vin = finalVelocity(ix - 1);
+		Velocity vout = initialVelocity(ix);
+		//f.pln(" $$$$$ removeIfRedundant: ix = "+ix+" vin = "+vin+" vout = "+vout);
+		double deltaTrk = Util.turnDelta(vin.trk(),vout.trk());
+		double deltaGs = Math.abs(vin.gs()-vout.gs());
+		double deltaVs = Math.abs(vin.vs()-vout.vs());
+		//f.pln(" $$$$$ removeIfRedundant: ix = "+ix+" deltaTrk = "+ Units.str("deg",deltaTrk)+" deltaGs = "+Units.str("kn",deltaGs));
+ 		if ( ! isTCP(ix)                                   && 
+			 ( ! trkF || deltaTrk < Units.from("deg",1.0)) && 
+			 ( ! gsF  || deltaGs < Units.from("kn",5.0))   &&
+			 ( ! vsF  || deltaVs < Units.from("fpm",100.0))     ) {
+			//f.pln(" $$$$$ removeIfRedundant: REMOVE i = "+ix);
+			remove(ix);
+			return ix;
+		}
+ 		return -1;
+	}
+	
+	public int removeIfRedundant(int ix) {
+		boolean trkF = true;
+		boolean gsF = true; 
+		boolean vsF = false;
+		return removeIfRedundant(ix,trkF, gsF, vsF);
+	}
+	
+	public int removeIfVsConstant(int ix) {
+		boolean trkF = true;
+		boolean gsF = false; 
+		boolean vsF = true;
+		return removeIfRedundant(ix,trkF, gsF, vsF);
 	}
 
 	public void removeRedundantPoints() {
@@ -4152,15 +4683,46 @@ public class Plan implements ErrorReporter, Cloneable {
 			sb.append("<empty>");
 		} else {
 			for (int j = 0; j < size(); j++) {
-				sb.append("Waypoint " + j + ": " + point(j).toStringFull());
+				sb.append("Waypoint " + j + ": " + toStringFull(j));
 				sb.append(nl);
 			}
 		}
 		return sb.toString();
 	}
 
+
+	public String toStringFull() {
+		return toStringFull(false);		
+	}
+
 	/** String representation of the entire plan */
-	private String toString(int velField) {
+	public String toStringFull(boolean showSource) {
+		StringBuffer sb = new StringBuffer(100);
+		// sb.append(planTypeName()+" Plan for aircraft: ");
+		sb.append(" Plan for aircraft: ");
+		sb.append(name);
+		if (error.hasMessage()) {
+			sb.append(" error.message = " + error.getMessageNoClear());
+		}
+		sb.append(nl);
+		if (note.length() > 0) {
+			sb.append("Note=" + note + nl);
+		}
+		if (size() == 0) {
+			sb.append("<empty>");
+		} else {
+			for (int j = 0; j < size(); j++) {
+				sb.append("Waypoint " + j + ": " + toStringFull(j,showSource));	
+				sb.append(nl);
+
+			}
+		}
+		return sb.toString();
+	}
+
+
+	/** String representation of the entire plan */
+	private String toStringV(int velField) {
 		StringBuffer sb = new StringBuffer(100);
 		sb.append(" Plan for aircraft: ");
 		sb.append(name);
@@ -4176,7 +4738,8 @@ public class Plan implements ErrorReporter, Cloneable {
 		} else {
 			for (int j = 0; j < size(); j++) {
 				sb.append("Waypoint " + j + ": " + point(j).toString());
-				sb.append(" linearIndex = " + point(j).linearIndex());
+				sb.append(" TCP:"+getTcpData(j).tcpTypeString());
+				sb.append(" linearIndex = " + getTcpData(j).getLinearIndex());
 				if (j < size()) {
 					if (velField == 0)
 						sb.append("  TRK: " + Units.str("deg", trkOut(j), 4));
@@ -4193,10 +4756,14 @@ public class Plan implements ErrorReporter, Cloneable {
 						// "+Units.str("m/s^2",point(j).gsAccel(),4));
 					}
 					if (velField == 2) {
-						if (point(j).isAltPreserve())
+						if (isAltPreserve(j))
 							sb.append(", *AltPreserve*");
 						sb.append(",  vsOut: " + Units.str("fpm", vsOut(j), 4));
 					}
+					if (velField == 3) {
+					   sb.append(",  pathDist " + Units.str("NM", pathDistance(0,j), 4));
+					}
+
 				}
 				sb.append(nl);
 			}
@@ -4206,18 +4773,24 @@ public class Plan implements ErrorReporter, Cloneable {
 
 	/** String representation of the entire plan */
 	public String toStringTrk() {
-		return toString(0);
+		return toStringV(0);
 	}
 
 	/** String representation of the entire plan */
 	public String toStringGs() {
-		return toString(1);
+		return toStringV(1);
 	}
 
 	/** String representation of the entire plan */
 	public String toStringVs() {
-		return toString(2);
+		return toStringV(2);
 	}
+	
+	/** String representation of the entire plan */
+	public String toStringPd() {
+		return toStringV(3);
+	}
+
 
 	/** String representation of the entire plan */
 	public String toStringShort(int precision) {
@@ -4234,15 +4807,15 @@ public class Plan implements ErrorReporter, Cloneable {
 		} else {
 			for (int j = 0; j < size(); j++) {
 				sb.append("Waypoint " + j + ": " + point(j).toString(precision));
-				sb.append(" " + point(j).tcpTypeString());
+				sb.append(" " + getTcpData(j).tcpTypeString());
 				// if (point(j).isBOT() || point(j).isBGS() || point(j).isBVS())
 				// sb.append(" vin = "+point(j).velocityIn());
-				if (point(j).isBOT())
-					sb.append(" radius = " + Units.str("nm", point(j).turnRadius()));
-				if (point(j).isBGS())
-					sb.append(" gsAccel = " + Units.str("m/s^2", point(j).gsAccel()));
-				if (point(j).isBVS())
-					sb.append(" vsAccel = " + Units.str("m/s^2", point(j).vsAccel()));
+				if (isBOT(j))
+					sb.append(" radius = " + Units.str("nm", getTcpData(j).turnRadius()));
+				if (isBGS(j))
+					sb.append(" gsAccel = " + Units.str("m/s^2", gsAccel(j)));
+				if (isBVS(j))
+					sb.append(" vsAccel = " + Units.str("m/s^2", vsAccel(j)));
 				sb.append(nl);
 			}
 		}
@@ -4279,13 +4852,18 @@ public class Plan implements ErrorReporter, Cloneable {
 		}
 		s += ", Time, ";
 		if (tcpcolumns) {
-			s += "type, trk, gs, vs, tcp_trk, accel_trk, tcp_gs, accel_gs, tcp_vs, accel_vs, radius, ";
+			s += "type, tcp_trk, tcp_gs, tcp_vs, radius, accel_gs, accel_vs,  ";
 			if (isLatLon()) {
 				s += "src_lat, src_lon, src_alt, ";
 			} else {
 				s += "src_x, src_y, src_z, ";
 			}
 			s += "src_time, ";
+			if (isLatLon()) {
+                s += "center_lat, center_lon, center_alt, ";
+			} else {
+				s += "center_x, center_y, center_z";
+			}
 		}
 		s += "Label";
 		return s;
@@ -4334,14 +4912,14 @@ public class Plan implements ErrorReporter, Cloneable {
 	public String toOutput(int extraspace, int precision, boolean tcpColumns, boolean includeVirtuals) {
 		StringBuffer sb = new StringBuffer(100);
 		for (int i = 0; i < size(); i++) {
-			if (includeVirtuals || !point(i).isVirtual()) {
+			if (includeVirtuals || !isVirtual(i)) {
 				if (name.length() == 0) {
 					sb.append("Aircraft");
 				} else {
 					sb.append(name);
 				}
 				sb.append(", ");
-				sb.append(point(i).toOutput(precision, tcpColumns));
+				sb.append(toOutput(i,precision, tcpColumns));
 				for (int j = 0; j < extraspace; j++) {
 					sb.append(", -");
 				}
@@ -4351,12 +4929,173 @@ public class Plan implements ErrorReporter, Cloneable {
 		return sb.toString();
 	}
 
+
+
+
+
+
+	public String toString(int i, int precision) {
+		NavPoint p = point(i);
+		TcpData d = getTcpDataRef(i);
+		return p.position().toStringNP(precision) + ", " + f.FmPrecision(p.time(),precision) +" TCP:"+d.tcpTypeString()+" "+f.padRight(p.label(),4);
+	}
+
+	public String toStringFull(int i) {
+		return toStringFull(i,false);
+	}
+
+	public String toStringFull(int i, boolean showSource) {
+		NavPoint p = point(i);
+		TcpData d = getTcpDataRef(i);
+		return toStringFull(p,d,showSource);
+	}
+
+
+	/** Return a string representation that includes additional information */
+	public static String toStringFull(NavPoint p, TcpData d) {
+		boolean showSource = false;
+		return toStringFull(p,d,showSource);
+	}
+
+	/** Return a string representation that includes additional information */
+	public static String toStringFull(NavPoint p, TcpData d, boolean showSource) {	
+		StringBuffer sb = new StringBuffer(100);
+		sb.append("[(");
+		if (p.isLatLon()) sb.append("LL: ");
+		sb.append(p.toStringShort(4));
+		sb.append("), ");
+		sb.append(d.getTypeString());
+		if (d.isTrkTCP()) {
+			sb.append(", "+d.getTrkTypeString());
+			//		if (isBOT()) {
+			//			sb.append(" signedRadius = "+f.Fm4(Units.to("NM", radius)));
+			//		}
+			//			if (d.isBOT()) {
+			//				sb.append(" accTrk = "+f.Fm4(Units.to("deg/s", d.trkAccel())));
+			//			}
+		}
+		if (d.isGsTCP()) {
+			sb.append(", "+d.getGsTypeString());
+			if (d.isBGS()) {
+				sb.append(" accGs = "+f.Fm4(Units.to("m/s^2", d.getGsAccel())));
+			}
+		}
+		if (d.isVsTCP()) {
+			sb.append(", "+d.getVsTypeString());
+			if (d.isBVS()) {
+				sb.append(" accVs = "+f.Fm4(Units.to("m/s^2", d.getVsAccel())));
+			}
+		}
+		//f.pln(" $$ toStringFull: d = "+d);
+		//		if ( ! d.getVelocityInit().isInvalid()) sb.append(" vin = "+d.getVelocityInit().toStringUnits());
+		if (!Util.almost_equals(d.getRadiusSigned(),0.0)) {
+			sb.append(" sgnRadius = "+f.Fm4(Units.to("NM",d.getRadiusSigned())));
+			Position center = d.turnCenter();
+			if (!center.isInvalid()) sb.append(" center = "+center.toString2D(4));
+		}
+		if (showSource) {
+			if (d.getSourceTime() >= 0) {
+				sb.append(" srcTime = "+f.Fm2(d.getSourceTime()));
+				if (!d.getSourcePosition().isInvalid()) {
+					sb.append(" srcPos = "+d.getSourcePosition().toStringUnits()); 		
+				}
+			}
+		}
+		//if (d.isAltPreserve()) sb.append(" <*AltPre*> ");
+		sb.append("<"+d.getLinearIndex()+">");
+		sb.append("]");
+		sb.append(" "+p.label()+" "+d.getInformation());
+		return sb.toString();
+	}
+
+	/**
+	 * Return a list of string representing each field (position, time, etc.).  (tcpinfo + label) 
+	 * This DOES include the the Plan name as the first field 
+	 * @param i
+	 * @param precision
+	 * @param tcp
+	 * @return
+	 */
 	public List<String> toStringList(int i, int precision, boolean tcp) {
-		List<String> ret = new ArrayList<String>(NavPoint.TCP_OUTPUT_COLUMNS + 1);
+		List<String> ret = new ArrayList<String>(TcpData.TCP_OUTPUT_COLUMNS + 1);
 		ret.add(name);
-		ret.addAll(point(i).toStringList(precision, tcp));
+		ret.addAll(toStringList(point(i), getTcpDataRef(i), precision, tcp));
 		return ret;
 	}
+
+	/** 
+	 * Return a list of string representing each field (position, time, etc.).  (tcpinfo + label) 
+	 * This does NOT include the Plan name as the first field.
+	 * */
+	public static List<String> toStringList(NavPoint p, TcpData d, int precision, boolean tcp) {
+		//NOTE:  update TCP_OUTPUT_COLUMNS if this changes!!!
+
+		ArrayList<String> ret = new ArrayList<String>(10);  // name is (0) -- not counted in TCP_OUTPUT_COLUMNS
+		ret.addAll(p.position().toStringList(precision)); // position (1-3)
+		ret.add(f.FmPrecision(p.time(),precision)); // time (4)
+		if (tcp) {
+			ret.add(d.getTypeString().toString()); // type (string) (5)
+			ret.add(d.getTrkTypeString()); // tcp trk (string) (6)
+			ret.add(d.getGsTypeString()); // tcp gs (string) (7)
+			ret.add(d.getVsTypeString()); // tcp vs (string) (8)
+			ret.add(f.FmPrecision(Units.to("NM", d.getRadiusSigned()), precision)); // radius (9)
+			ret.add(f.FmPrecision(Units.to("m/s^2", d.getGsAccel()),precision)); // gs accel (10)
+			ret.add(f.FmPrecision(Units.to("m/s^2", d.getVsAccel()),precision)); // vs accel (11)
+			ret.addAll(d.getSourcePosition().toStringList(precision)); // source position (12-14)
+			ret.add(f.FmPrecision(d.getSourceTime(),precision)); // source time (15)
+			ret.addAll(d.turnCenter().toStringList(precision)); // turn center (16-18)
+			if (d.getInformation().length() > 0) {
+				ret.add(d.getInformation()); // info (string) (19)
+			} else {
+				ret.add("-");
+			}
+			if (p.label().length() > 0) {
+				ret.add(p.label()); // label (string) (20)
+			} else {
+				ret.add("-");
+			}
+		} else {
+			String fl = TcpData.fullLabel(p,d); 
+			if (fl.length() > 0) {
+				ret.add(fl); // label (string) (5)
+			} else {
+				ret.add("-");
+			}
+		}
+		return ret;
+	}
+
+
+	/**
+	 * This collapses any metadata into the label field
+	 */
+	public String toOutput(int i) {
+		return toOutput(i, Constants.get_output_precision(),false);
+	}
+
+	/** Return a string representation that is consistent with the PathReader input format. 
+	 *  if tcp is true, explicily include all metadata as distinct columns.
+	 *  if tcp is false, collapse metadata, if any, into the "label" field 
+	 */
+	public String toOutput(int i, int precision, boolean tcp) {
+		NavPoint p = point(i);
+		TcpData d = getTcpDataRef(i);
+
+		return toOutput(p,d,precision, tcp);
+	}
+
+
+	public static String toOutput(NavPoint p, TcpData d, int precision, boolean tcp) {
+		return f.list2str(toStringList(p,d,precision,tcp),", ");
+	}
+
+	/** Return a string including both the point name (if set) and any tcp metadata (if any).  If neither exists, return the empty string. */
+	public String fullLabel(int i) {
+		NavPoint p = point(i);
+		TcpData d = getTcpDataRef(i);
+		return TcpData.fullLabel(p,d);
+	}
+
 
 	/**
 	 * This fills in the specified plan with the details provided in the string
@@ -4374,7 +5113,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			for (int j = 2; j < fields.length; j++) {
 				np = np + " " + fields[j];
 			}
-			base.add(NavPoint.parseLL(np));
+			base.add(TcpData.parseLL(np));
 		}
 	}
 
@@ -4390,7 +5129,7 @@ public class Plan implements ErrorReporter, Cloneable {
 		for (int i = 0; i < lines.length; i++) {
 			String[] fields = lines[i].split(Constants.wsPatternParens);
 			base.setName(fields[0]);
-			base.add(NavPoint.parseXYZ(s));
+			base.add(TcpData.parseXYZ(s));
 		}
 	}
 
@@ -4435,114 +5174,3 @@ public class Plan implements ErrorReporter, Cloneable {
 		return error.getMessageNoClear();
 	}
 }
-
-// /** Revert all TCPS back to its original linear point which have the same
-// sourceTime as the point at index dSeg.
-// * If the point is a not a TCP do nothing. Note that this function will
-// timeshift the points to
-// * regain the original ground speed into the first reverted point of the
-// group and all points after it.
-// * If checkSource is true, this function checks to make sure that the
-// source position is reasonably close to the
-// * current position, and if not, it reverts to the current position of
-// "dSeg".
-// *
-// * Note. This method restores the sourcePosition, but essentially ignores
-// the sourceTimes
-// *
-// * @param dSeg The index of one of the TCPs created together that should
-// be reverted
-// * @return index of the point that replaces all the other points
-// */
-// //@Deprecated
-// public int revertGroupOfTCPs(int dSeg, boolean checkSource) {
-// //f.pln(" $$$ revertGroupOfTCPs: BEFORE dSeg = "+dSeg);
-// //PlanUtil.savePlan(this, "1dump_revertGroupOfTCPs");
-// final double maxDistH = Units.from("NM", 15.0);
-// final double maxDistV = Units.from("ft", 5000.0);
-// if (dSeg < 0 || dSeg >= size()) {
-// addError(".. revertGroupOfTCPs: invalid index "+dSeg, 0);
-// return -1;
-// }
-// NavPoint origDsegPt = point(dSeg);
-// if (!origDsegPt.isTCP()) {
-// //f.pln(" $$ revertGroupOfTCPs: point "+dSeg+" is not a TCP, do
-// nothing!");
-// return dSeg;
-// }
-// double sourceTm = origDsegPt.sourceTime();
-// //int dSeg = getSegment(sourceTm);
-// //f.pln("\n $$$ revertGroupOfTCPs: point(dSeg).time =
-// "+point(dSeg).time() +" sourceTm = "+sourceTm);
-// int firstInGroup = -1; // index of first TCP in the group
-// int lastInGroup = size()-1; // index of the last TCP in the group
-// for (int j = 0; j < size(); j++) {
-// if (Constants.almost_equals_time(point(j).sourceTime(),sourceTm)) {
-// if (firstInGroup == -1) firstInGroup = j;
-// lastInGroup = j;
-// }
-// }
-// // save speed into the first point of the group to be reverted
-// double gsInFirst = finalVelocity(firstInGroup-1).gs();
-// int nextSeg = lastInGroup+1;
-// double tmNextSeg = getTime(nextSeg);
-// double gsInNext = finalVelocity(nextSeg-1).gs();
-// //f.pln(" $$$$ revertGroupOfTCPs: point(dSeg) =
-// "+point(dSeg).toStringFull()+" "+point(dSeg).hasSource());
-// NavPoint revertedLinearPt = new
-// NavPoint(point(dSeg).sourcePosition(),point(dSeg).sourceTime());
-// // remove kinematic points from lastInGroup to firstInGroup in reverse
-// order
-// int lastii = -1;
-// for (int ii = lastInGroup; ii >= firstInGroup; ii--) {
-// if (Constants.almost_equals_time(point(ii).sourceTime(),sourceTm)) {
-// //f.pln(" $$$ remove point ii = "+ii+" point(i).time() =
-// "+point(ii).time()+" point(i).tcpSourceTime() =
-// "+point(ii).tcpSourceTime());
-// if (point(ii).hasSource()) {
-// revertedLinearPt = new
-// NavPoint(point(ii).sourcePosition(),point(ii).sourceTime());
-// //f.pln(" $$$$ ii = "+ii+" revertGroupOfTCPs: revertedLinearPt =
-// "+revertedLinearPt.toStringFull());
-// }
-// remove(ii);
-// lastii = ii;
-// }
-// }
-// // safety check in case there is a invalid source position
-// double distH = origDsegPt.distanceH(revertedLinearPt);
-// double distV = origDsegPt.distanceV(revertedLinearPt);
-// if (checkSource && (distH > maxDistH || distV > maxDistV)) {
-// //f.pln(" $$$$ revertGroupOfTCPs: for dSeg = "+dSeg+" distH =
-// "+Units.str("nm", distH));
-// //f.pln(" $$$$ revertGroupOfTCPs: for dSeg = "+dSeg+" distV =
-// "+Units.str("ft", distV));
-// revertedLinearPt = origDsegPt.makeNewPoint();
-// //f.pln(" $$$$ revertGroupOfTCPs: origDsegPt =
-// "+origDsegPt.toStringFull());
-// }
-// //f.pln(" $$$$ revertGroupOfTCPs: revertedLinearPt =
-// "+revertedLinearPt.toStringFull());
-// // ------- add the reverted point ------------------------
-// add(revertedLinearPt);
-// // timeshift points to restore time into nextSeg
-// if (tmNextSeg > 0) { // if reverted last point, no need to timeshift
-// points after dSeg
-// int newNextSeg = getSegment(tmNextSeg);
-// double newNextSegTm = linearCalcTimeGSin(newNextSeg, gsInNext);
-// double dt2 = newNextSegTm - tmNextSeg;
-// timeshiftPlan(newNextSeg, dt2);
-// }
-// // timeshift plan to regain original ground speed into the first reverted
-// point of the group
-// if (firstInGroup < lastInGroup) {
-// int segNewLinearPt = getSegment(revertedLinearPt.time());
-// double newTm = linearCalcTimeGSin(segNewLinearPt, gsInFirst);
-// double dt = newTm - revertedLinearPt.time();
-// //f.pln(" $$$ revertGroupOfTCPs: TIMESHIFT dt = "+dt);
-// timeshiftPlan(segNewLinearPt, dt);
-// }
-// //f.pln(" $$$ revertGroupOfTCPs: lastii = "+lastii);
-// return lastii;
-// }
-

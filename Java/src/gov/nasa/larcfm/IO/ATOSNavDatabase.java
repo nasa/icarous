@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon
  *
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -31,7 +31,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
+ * A database of various Navigation information.  Uses the file format
+ * from the Air Traffic Operation Simulation (ATOS)
  * 
  */
 public class ATOSNavDatabase implements ParameterProvider, ErrorReporter {
@@ -72,6 +73,9 @@ public class ATOSNavDatabase implements ParameterProvider, ErrorReporter {
 	 * 
 	 * @param fix_filename   database of navigation fixes and navigation aids
 	 * @param aw_filename    airway database
+	 * @param ap_filename    filename of airport database
+	 * @param sids_filename  filename of SIDS database
+	 * @param stars_filename filename of STARS database
 	 */
 	public void open(String fix_filename, String aw_filename, String ap_filename, String sids_filename, String stars_filename) {
 		error = new ErrorLog("ATOSNavDatabase("+fix_filename+")");
@@ -411,7 +415,9 @@ public class ATOSNavDatabase implements ParameterProvider, ErrorReporter {
 		}
 	}
 	
-	/** Return the number of plans in the file */
+	/** Return the number of plans in the file 
+	 * @return size
+	 * */
 	public int size() {
 		return fix_db.size();
 	}
@@ -482,16 +488,18 @@ public class ATOSNavDatabase implements ParameterProvider, ErrorReporter {
 	}
 
 	/**
-	 * <Route Type> - has ordinal values 1-6 taken from the CIFP data file where:
-	 * 1. Indicates a STAR enroute transition
-	 * 2. Indicates a STAR common route
-	 * 3. Indicates a STAR runway transition
-	 * 4. Indicates a RNAV STAR enroute transition
-	 * 5. Indicates a RNAV STAR common route
-	 * 6. Indicates a RNAV STAR runway transition
+	 * Return a map for a standard arrival route procedure at an airport.<p>
+	 * 
+	 * Route Type - has ordinal values 1-6 taken from the CIFP data file where:<p>
+	 * 1. Indicates a STAR enroute transition<br>
+	 * 2. Indicates a STAR common route<br>
+	 * 3. Indicates a STAR runway transition<br>
+	 * 4. Indicates a RNAV STAR enroute transition<br>
+	 * 5. Indicates a RNAV STAR common route<br>
+	 * 6. Indicates a RNAV STAR runway transition<br>
 	 * @param airport
 	 * @param procedureName
-	 * @return Quad<Type (see above), Array of fixes, Array of altitude constraints, Array of speed constraints>
+	 * @return A map, mapping a route to a 4-Tuple of route type (see description above), Array of fixes, Array of altitude constraints, Array of speed constraints
 	 */
 	public HashMap<String, Quad<String, ArrayList<String>, ArrayList<String>, ArrayList<String>>> getStarTransition(String airport, String procedureName) {
 		HashMap<String, HashMap<String, Quad<String, ArrayList<String>, ArrayList<String>, ArrayList<String>>>> airport_star;
@@ -546,6 +554,8 @@ public class ATOSNavDatabase implements ParameterProvider, ErrorReporter {
 	/**
 	 * Return the airport code that is closest horizontally to the given point, or the empty string if there are none.
 	 * This will be a slow search.
+	 * @param p position
+	 * @return closest airport
 	 */
 	public String closestAirport(LatLonAlt p) {
 		double dist = Double.MAX_VALUE;
@@ -565,6 +575,8 @@ public class ATOSNavDatabase implements ParameterProvider, ErrorReporter {
 	/**
 	 * Return the fix that is closest horizontally to the given point, or the empty string if there are none.
 	 * This will be a slow search.
+	 * @param p position
+	 * @return fix
 	 */
 	public String closestFix(LatLonAlt p) {
 		double dist = Double.MAX_VALUE;
@@ -585,7 +597,7 @@ public class ATOSNavDatabase implements ParameterProvider, ErrorReporter {
 	 * 
 	 * @param p 
 	 * @param dist
-	 * @return
+	 * @return a list of fixes
 	 */
 	public List<String> findNearestNamedFixes(LatLonAlt p, double dist) {
 		ArrayList<String> l = new ArrayList<String>(10);
@@ -633,7 +645,7 @@ public class ATOSNavDatabase implements ParameterProvider, ErrorReporter {
 	 * 
 	 * @param p 
 	 * @param n
-	 * @return
+	 * @return list of fixes
 	 */
 	public List<String> findNearestNNamedFixes(LatLonAlt p, int n) {
 		ArrayList<String> l = new ArrayList<String>(n);
@@ -648,6 +660,8 @@ public class ATOSNavDatabase implements ParameterProvider, ErrorReporter {
 	/**
 	 * Return the named fix that is closest horizontally to the given point, or the empty string if there are none.
 	 * This will be a slow search.
+	 * @param p position
+	 * @return named fix
 	 */
 	public String closestNamedFix(LatLonAlt p) {
 		double dist = Double.MAX_VALUE;
@@ -668,6 +682,8 @@ public class ATOSNavDatabase implements ParameterProvider, ErrorReporter {
 	/**
 	 * Return the closest airport or fix (both named and unnamed) to the given point, or an empty string if there are none.
 	 * This will be a slow search.
+	 * @param p position
+	 * @return airport
 	 */
 	public String closestPoint(LatLonAlt p) {
 		String s1 = closestAirport(p);
@@ -717,7 +733,8 @@ public class ATOSNavDatabase implements ParameterProvider, ErrorReporter {
 	
 	/**
 	 * Return a subset of a larger database, restricted by the given bounds
-	 * @return
+	 * @param rect geographic boundaries
+	 * @return a database limited by geographic boundaries
 	 */
 	public ATOSNavDatabase subrange(BoundingRectangle rect) {
 		ATOSNavDatabase db = new ATOSNavDatabase();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -298,7 +298,7 @@ public class GuiUtil {
 	 * @param plans may be null
 	 * @param paths may be null
 	 * @param states may be null
-	 * @return
+	 * @return new ViewFrame for plans
 	 */
 	public static ViewFrame makePlanWindow(String frameTitle, List<Plan> plans, List<PolyPath> paths, List<Triple<String,Position,Velocity>> states) {
 		BasicViewHoriz panel = new BasicViewHoriz();
@@ -337,7 +337,7 @@ public class GuiUtil {
 	}
 
 	public static void showPlanFile(String filename) {
-		PolyReader reader = new PolyReader();
+		PlanReader reader = new PlanReader();
 		reader.open(filename);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

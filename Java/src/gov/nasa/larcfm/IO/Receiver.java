@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -7,7 +7,18 @@
 package gov.nasa.larcfm.IO;
 
 /**
- * Classes implementing this interface communicate with a Publisher object.  A consumer will have one Receiver per Publisher.
+ * Classes implementing this interface communicate with a specific Transmitter object.  
+ * Generally a Transmitter and Receiver are created as a coupled pair.
+ * A Transmitter may only communicate with a specific type of Receiver and vice versa, which share a common communication medium and encoding method.
+ * It is not necessary for a Transmitter to be able to speak with arbitrary Receivers.
+ * 
+ * Over the communication medium, it should allow two main types of message:
+ * - subscription request: client attempts to request data based on a given keyword.  If it is a recognized keyword, register the client, otherwise close the connection.
+ * - data transfer: this data may be automatically pushed out to all subscribers on the server's timeframe, or subscribers may explicitly request data on their timeframes,
+ * 
+ * The details of how these are accomplished are determined by a particular Transmitter/Receiver matched pair.
+ * 
+ * A consumer will have one Receiver per Transmitter (server) it wishes to collect data from.
  */
 public interface Receiver {
 	
