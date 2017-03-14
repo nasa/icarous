@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -11,7 +11,6 @@
 
 package gov.nasa.larcfm.IO;
 
-import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 import gov.nasa.larcfm.Util.GeneralPlan;
@@ -25,16 +24,15 @@ import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Closeable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * This object writes a set of aircraft states, possibly over time, (and parameters) from a file
- * The Aircraft states are stored in an ArrayList<AircraftState>.
+ * The Aircraft states are stored in an ArrayList&lt;AircraftState&gt;.
  *
  * State files consist of comma or space-separated values, with one point per line.
- * Required columns include aircraft name, 3 position columns (either x[nmi]/y[nmi]/z[ft] or 
+ * Required columns include aircraft name, 3 position columns (either x[NM]/y[NM]/z[ft] or 
  * latitude[deg]/longitude[deg]/altitude[ft]) and
  * 3 velocity columns (either vx[knot]/vy[knot]/vz[fpm] or track[deg]/gs[knot]/vs[fpm]).
  *
@@ -45,7 +43,7 @@ import java.util.stream.Collectors;
  * There is also an optional header line, immediately following the column definition, that defines the unit type for each
  * column (the defaults are listed above).
  *
- * If points are consecutive for the same aircraft, subsequent name fields may be replaced with a double quotation mark (&quot).
+ * If points are consecutive for the same aircraft, subsequent name fields may be replaced with a double quotation mark (&quot;).
  * The aircraft name is case sensitive, so US54A != Us54a != us54a.
  *
  * Any empty line or any line starting with a hash sign (#) is ignored.
@@ -65,7 +63,6 @@ import java.util.stream.Collectors;
 final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 	private ErrorLog error;
 	private SeparatedOutput output;
-	private boolean velocity;
 	private boolean latlon;
 	private boolean trkgsvs;
 	private boolean display_time;
@@ -78,49 +75,26 @@ final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 	private int lines;
 	private int num;
 	private String fname;
-	private final double default_time = 0.0;
 	private Writer fw;
-
-	
-	protected final int NAME = 0;
-	protected final int LAT_SX = 1;
-	protected final int LON_SY = 2;
-	protected final int SZ = 3;
-	protected final int TIME = 4; // or clock
-	protected final int LABEL = 5; // optional
-	protected final int TYPE = 6;	// optional
-	protected final int TCP_TRK = 7;
-	protected final int TCP_GS = 8;
-	protected final int TCP_VS = 9;
-	protected final int ACC_TRK = 10;
-	protected final int ACC_GS = 11;
-	protected final int ACC_VS = 12;
-	protected final int TRK = 13;
-	protected final int GS = 14;
-	protected final int VS = 15;
-	protected final int SRC_LAT_SX = 16;
-	protected final int SRC_LON_SY = 17;
-	protected final int SRC_ALT = 18;
-	protected final int SRC_TIME = 19;
-	protected final int SZ2 = 20;
-	protected final int TIME2 = 21; // this is an "activation time" after which the plan goes live
-	protected final int RADIUS = 22;
+	private PolyPath.PathMode mode;
 
 	
 	/** A new GeneralStateWriter. */
 	public GeneralPlanWriter() {
 		error = new ErrorLog("GeneralPlanWriter");
 		trkgsvs = true;
-		velocity = true;
 		display_time = true;
 		display_units = true;
 		polygons = true;
 		source = true;
 		time2 = true;
 		precision = 6;
+		mode = null;
 	}
 
-	/** A new GeneralStateWriter based on the given file. */
+	/** A new GeneralStateWriter based on the given file. 
+	 * @param filename name of file
+	 * */
 	public void open(String filename) {
 		fname = filename;
 		if (filename == null || filename.equals("")) {
@@ -192,22 +166,30 @@ final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 		this.precision = precision;
 	}
 
-	/** Will the time be added to the file */
+	/** Will the time be added to the file 
+	 * @return true, if the time is to be output to the file
+	 * */
 	public boolean isOutputTime() {
 		return display_time;
 	}
 
-	/** Should the time be added to the file */
+	/** Should the time be added to the file 
+	 * @param display_time true, if the time is to be output to the file
+	 */
 	public void setOutputTime(boolean display_time) {
 		this.display_time = display_time;
 	}
 
-	/** Will the units be displayed? */
+	/** Will the units be displayed? 
+	 * @return true, if the units are to be displayed in output
+	 * */
 	public boolean isOutputUnits() {
 		return display_units;
 	}
 
-	/** Should the units be displayed? */
+	/** Should the units be displayed? 
+	 * @param display_units true, if the units are to be displayed in output
+	 * */
 	public void setOutputUnits(boolean display_units) {
 		this.display_units = display_units;
 	}
@@ -242,6 +224,7 @@ final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 
 	/** 
 	 * Adds a comment line to the file.
+	 * @param comment comment string
 	 */
 	public void addComment(String comment) {
 		output.addComment(comment);
@@ -249,31 +232,33 @@ final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 
 	/** 
 	 * Set parameters.  Use all the parameters in the reader.
+	 * @param pr parameters
 	 */
 	public void setParameters(ParameterData pr) {
 		output.setParameters(pr);
 	}
 	
-	public void setParameterPathMode(PolyPath.PathMode mode) {
-		output.setParameter("pathmode", mode.toString());
+	/**
+	 * Specify a polygon PathMode.  If this is not set ahead of time, this will default to the first written item's path mode if it is a PolyPath or MORPHING if it is not.
+	 * Whatever the stored PathMode, all polygons written will be converted to that type.
+	 * @param m
+	 */
+	public void setPolyPathMode(PolyPath.PathMode m) {
+		mode = m;
 	}
 
-	public void setParameterPathMode(PolyPath path) {
-		output.setParameter("pathmode", path.getPathMode().toString());
+	/**
+	 * Clear any set polygon PathMode.  The PathMode will default to the first written item's path mode if it is a PolyPath or MORPHING if it is not.
+	 * Whatever the stored PathMode, all polygons written will be converted to that type.
+	 * @param m
+	 */
+	public void clearPolyPathMode() {
+		mode = null;
 	}
 
-	public void setParameterPathMode(String s) {
-		output.setParameter("pathmode", s);
-	}
-
-	public void setParameterHorizontalAccuracy(String unit, double d) {
-		output.setParameter("horizontalAccuracy", d+"["+unit+"]");
-	}
-
-	public void setParameterVerticalAccuracy(String unit, double d) {
-		output.setParameter("verticalAccuracy", d+"["+unit+"]");
-	}
-
+	/**
+	 * If necessary, this must be called before the first write call
+	 */
 	public void setParameterContainment(List<GeneralPlan> list) {
 		List<GeneralPlan> pplist = list.stream().filter(x -> x.isContainment()).collect(Collectors.toList());
 		String s = "";
@@ -291,17 +276,22 @@ final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 	}
 
 	public void writePlan(GeneralPlan gp, double activation_time) {
-		String name = gp.getName();
 		if (first_line) {
 			latlon = gp.isLatLon();
 			output.setOutputUnits(display_units);
 			if (gp.hasPolyPath()) {
 				polygons = true;
+				if (mode == null) {
+					mode = gp.getPolyPath().getPathMode();
+				}
+			}
+			
+			if (mode != null) {
+				output.setParameter("PathMode", mode.toString());
 			}
 
 			// Comments and parameters are handled by SeparatedOutput
-
-		
+			
 			output.addHeading("name", "unitless");//0
 			if (latlon) {
 				output.addHeading("lat",  "deg");//1
@@ -316,24 +306,12 @@ final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 				output.addHeading("time", "s");//4		
 			}
 			output.addHeading("type","unitless");//5
-			if (velocity) {
-				if (trkgsvs) {
-					output.addHeading("trk", "deg");//6
-					output.addHeading("gs",  "knot");//7
-					output.addHeading("vs",  "fpm");//8
-				} else {
-					output.addHeading("vx",  "knot");//6
-					output.addHeading("vy",  "knot");//7
-					output.addHeading("vz",  "fpm");//8
-				}
-			}
 			output.addHeading("tcp_trk","unitless");//9
-			output.addHeading("accel_trk", "deg/s");//10
 			output.addHeading("tcp_gs","unitless");//11
-			output.addHeading("accel_gs", "m/s^2");//12
 			output.addHeading("tcp_vs","unitless");//13
-			output.addHeading("accel_vs", "m/s^2");//14
 			output.addHeading("radius", "NM");
+			output.addHeading("accel_gs", "m/s^2");//12
+			output.addHeading("accel_vs", "m/s^2");//14
 			if (source) {
 				if (latlon) {
 					output.addHeading("src_lat",  "deg");//15
@@ -346,9 +324,32 @@ final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 				}
 				output.addHeading("src_time", "s");//18
 			}
+			if (latlon) {
+				output.addHeading("center_lat", "deg");
+				output.addHeading("center_lon", "deg");
+				output.addHeading("center_alt",  "ft");
+			} else {
+				output.addHeading("center_x",   "NM");
+				output.addHeading("center_y",   "NM");
+				output.addHeading("center_z",   "ft");
+			}
+			output.addHeading("info", "unitless");//20
 			output.addHeading("label", "unitless");//19
 			if (polygons) {
-				output.addHeading("alt2", "ft");//20
+				if (latlon) {
+					output.addHeading("alt2", "ft");//21
+				} else {
+					output.addHeading("sz2", "ft");//21
+				}
+				if (trkgsvs) {
+					output.addHeading("trk", "deg");//6
+					output.addHeading("gs",  "knot");//7
+					output.addHeading("vs",  "fpm");//8
+				} else {
+					output.addHeading("vx",  "knot");//6
+					output.addHeading("vy",  "knot");//7
+					output.addHeading("vz",  "fpm");//8
+				}
 			}
 			if (time2) {
 				output.addHeading("active_time", "s");//21
@@ -358,9 +359,17 @@ final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 
 		if (gp.hasPolyPath()) {
 			PolyPath pp = gp.getPolyPath();
+			if (mode != null && mode != pp.getPathMode()) {
+				pp.setPathMode(mode);
+			}
 			for (int i = 0; i < pp.size(); i++) {
 				for (int j = 0; j < pp.getPolyRef(i).size(); j++) {
 					output.addColumn(pp.toStringList(i, j, 6, true));
+					if (pp.getPathMode() == PolyPath.PathMode.MORPHING || pp.getPathMode() == PolyPath.PathMode.AVG_VEL) {
+						output.addColumn("-"); // trk
+						output.addColumn("-"); // gs
+						output.addColumn("-"); // vs						
+					}
 					output.addColumn(f.Fm6(activation_time));
 					lines++;
 					output.writeLine();
@@ -371,6 +380,9 @@ final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 			for (int i = 0; i < p.size(); i++) {
 				output.addColumn(p.toStringList(i, 6, true));
 				output.addColumn("-"); // alt2
+				output.addColumn("-"); // trk
+				output.addColumn("-"); // gs
+				output.addColumn("-"); // vs
 				output.addColumn(f.Fm6(activation_time));
 				lines++;
 				output.writeLine();
@@ -400,13 +412,16 @@ final public class GeneralPlanWriter implements ErrorReporter, Closeable {
 	}
 
 
-	/** Return the number of states added to the file */
+	/** Return the number of states added to the file 
+	 * @return number of states
+	 * */
 	public int size() {
 		return num;
 	}
 
 	/**
 	 * Return number of lines added
+	 * @return number of lines
 	 */
 	public int lines() {
 		return lines;

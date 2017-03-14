@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -105,7 +105,7 @@ public class BasicViewHoriz extends ViewPortHoriz {
 			Plan ac = aclist.get(i);
 			Color plColor = getColor(i+aclistBaseColor);
 			drawPlan(g, plColor, ac);
-			if (ac.timeInPlan(simTime)) {
+			if (ac.isTimeInPlan(simTime)) {
 				Position pos = ac.position(simTime);
 				Velocity vel = ac.velocity(simTime);	        	       
 				drawAircraft(g, ac.getName(), pos, vel,simTime, false, plColor);

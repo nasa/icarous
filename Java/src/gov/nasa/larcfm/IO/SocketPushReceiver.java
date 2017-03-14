@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -25,7 +25,10 @@ import java.util.LinkedList;
 
 /**
  * This class signs up with a SocketPushTransmitter and locally caches any data sent to it.
+ * Data is cached on the client side.
  * This is intended for applications where the client updates more frequently than the server. 
+ * This works by sending raw string representations of the data that are identical to FormalATM plan or state files.
+ * More efficient communication protocols are certainly possible.
  */
 public class SocketPushReceiver implements Receiver {
 	Hashtable<String,ClientThread> clients; // address, client

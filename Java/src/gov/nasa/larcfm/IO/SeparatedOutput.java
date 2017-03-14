@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -27,7 +27,9 @@ import java.util.ArrayList;
 
 /**
  * A class to writes a separated value file (separated by commas, spaces, or tabs).<p>
- * only one file can be created from an object.
+ * only one file can be created from an object.<p>
+ * 
+ * TODO Future: handle a memory buffer, standard output/error, file, socket?
  */
 public final class SeparatedOutput implements ErrorReporter {
 	private PrintWriter writer;

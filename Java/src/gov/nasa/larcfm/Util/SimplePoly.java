@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -760,7 +760,7 @@ public class SimplePoly {
 		for (int i = 0; i < size(); i = i + K) {
 			s.addVertex(getVertex(i));
 		}
-		f.pln(" $$ buildContainingPoly: s.size = "+s.size());
+		//f.pln(" $$ buildContainingPoly: s.size = "+s.size());
 		ArrayList<Integer> lv = new ArrayList<Integer>(10);
 		for (int i = 0; i < size(); i++) {
 			if (i % K != 0) { 
@@ -771,7 +771,7 @@ public class SimplePoly {
 				}
 			}
 		}	
-		f.pln(" $$ buildContainingPoly: lv.size = "+lv.size());
+		//f.pln(" $$ buildContainingPoly: lv.size = "+lv.size());
 
 		SimplePoly q = new SimplePoly();
 		for (int i = 0; i < size(); i++) {
@@ -1194,21 +1194,21 @@ public class SimplePoly {
 		}
 	}
 
-	public String toOutput(String name, int precision, boolean tcpColumns) {
+	public String toOutput(String name, int precision, int numberTcpColumns) {
 		StringBuffer sb = new StringBuffer(100);
 		for (int j = 0; j < size(); j++) {
-			ArrayList<String> ret = new ArrayList<String>(NavPoint.TCP_OUTPUT_COLUMNS+2);
+			ArrayList<String> ret = new ArrayList<String>(numberTcpColumns+2);
 			ret.add(name);  // name is (0)
 			ret.addAll(getVertex(j).toStringList(precision)); //vertex 1-3
 			ret.add(f.FmPrecision(0.0)); // time 4
-			if (tcpColumns) {
+			if (numberTcpColumns > 0) {
 				ret.add("-"); // type
 				int start = 5;
 				//						if (mode == PathMode.USER_VEL) {
 				//							ret.addAll(initialVelocity(j).toStringList()); // vel 6-8
 				//							start = 8;
 				//						}
-				for (int k = start; k < NavPoint.TCP_OUTPUT_COLUMNS; k++) {
+				for (int k = start; k < numberTcpColumns; k++) {
 					ret.add("-");
 				}
 			} else {

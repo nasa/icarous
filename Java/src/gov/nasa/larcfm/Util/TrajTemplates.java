@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -44,16 +44,16 @@ public class TrajTemplates {
 		Velocity v = GreatCircle.velocity_initial(start, end, flightTime);
 		NavPoint np1 = new NavPoint(new Position(start),0.0);
 		NavPoint np2 = new NavPoint(new Position(end), flightTime);
-		pc.add(np1);
-		pc.add(np2);
+		pc.addNavPoint(np1);
+		pc.addNavPoint(np2);
 		double climbTime = Math.abs((cruiseAlt-start.alt())/vs);
 		LatLonAlt lla3 = GreatCircle.linear_gcgs(start, end, v, climbTime).mkAlt(cruiseAlt);
 		NavPoint np3 = new NavPoint(new Position(lla3),climbTime);
-		pc.add(np3);
+		pc.addNavPoint(np3);
 		double descentTime = Math.abs((cruiseAlt-end.alt())/vs);
 		LatLonAlt lla4 = GreatCircle.linear_gcgs(start, end, v, flightTime-descentTime).mkAlt(cruiseAlt);
 		NavPoint np4 = new NavPoint(new Position(lla4), flightTime-descentTime);
-		pc.add(np4);
+		pc.addNavPoint(np4);
 		//f.pln(" makeLPC: pc = "+pc.toOutput());
 		return pc;
 	}
@@ -76,20 +76,20 @@ public class TrajTemplates {
 		NavPoint npMid = new NavPoint(new Position(midPerp),flightTime/2.0);
 		NavPoint np1 = new NavPoint(new Position(start),0.0);
 		NavPoint np2 = new NavPoint(new Position(end), flightTime);
-		pc.add(np1);
-		pc.add(np2);
-		pc.add(npMid);
+		pc.addNavPoint(np1);
+		pc.addNavPoint(np2);
+		pc.addNavPoint(npMid);
 		double climbTime = Math.abs((cruiseAlt-start.alt())/vs);
 		Velocity v = GreatCircle.velocity_average(start, midPerp, flightTime/2);
 		LatLonAlt lla3 = GreatCircle.linear_gcgs(start, midPerp, v, climbTime).mkAlt(cruiseAlt);
 		NavPoint np3 = new NavPoint(new Position(lla3),climbTime);
-		pc.add(np3);
+		pc.addNavPoint(np3);
 		double descentTime = Math.abs((cruiseAlt-end.alt())/vs);
 		//f.pln(" flightTime = "+flightTime+" descentTime = "+descentTime);
 		v = GreatCircle.velocity_average(midPerp, end, flightTime/2);
 		LatLonAlt lla4 = GreatCircle.linear_gcgs(midPerp, end, v, flightTime/2-descentTime).mkAlt(cruiseAlt);
 		NavPoint np4 = new NavPoint(new Position(lla4), flightTime-descentTime);
-		pc.add(np4);
+		pc.addNavPoint(np4);
 		//f.pln(" makeLPC: pc = -------------------\n"+pc.toOutput());
 		return pc;
 	}
@@ -102,13 +102,13 @@ public class TrajTemplates {
         return kpc;
 	}
 	
-	public static Plan makeKPC_Turn_Over(LatLonAlt start, LatLonAlt end, double gs, double vs, double cruiseAlt) {
-		Plan lpc = makeLPC_Turn(start,end,gs,vs,cruiseAlt);
-		boolean repair = true;
-		Plan kpc = TrajGen.makeKinPlanFlyOver(lpc, bankAngle, gsAccel, vsAccel, repair);
-		//f.pln(kpc.toOutput());
-        return kpc;
-	}
+//	public static Plan makeKPC_Turn_Over(LatLonAlt start, LatLonAlt end, double gs, double vs, double cruiseAlt) {
+//		Plan lpc = makeLPC_Turn(start,end,gs,vs,cruiseAlt);
+//		boolean repair = true;
+//		Plan kpc = TrajGen.makeKinPlanFlyOver(lpc, bankAngle, gsAccel, vsAccel, repair);
+//		//f.pln(kpc.toOutput());
+//        return kpc;
+//	}
 
 	
 	public static Plan makeLPC_FLC(LatLonAlt start, LatLonAlt end, double gs, double vs) {
@@ -118,15 +118,15 @@ public class TrajTemplates {
 		Velocity v = GreatCircle.velocity_initial(start, end, flightTime);
 		NavPoint np1 = new NavPoint(new Position(start),0.0);
 		NavPoint np2 = new NavPoint(new Position(end), flightTime);
-		pc.add(np1);
-		pc.add(np2);
+		pc.addNavPoint(np1);
+		pc.addNavPoint(np2);
 		LatLonAlt lla3 = GreatCircle.linear_gcgs(start, end, v, flightTime/2.0).mkAlt(start.alt());
 		NavPoint np3 = new NavPoint(new Position(lla3),flightTime/2.0);
-		pc.add(np3);
+		pc.addNavPoint(np3);
 		double FLC_Time = Math.abs((end.alt()-start.alt())/vs);
 		LatLonAlt lla4 = GreatCircle.linear_gcgs(lla3, end, v, FLC_Time).mkAlt(end.alt());
 		NavPoint np4 = new NavPoint(new Position(lla4), flightTime/2.0+FLC_Time);
-		pc.add(np4);
+		pc.addNavPoint(np4);
 		//f.pln(" makeLPC: pc = "+pc.toOutput());
 		return pc;
 	}
@@ -159,21 +159,21 @@ public class TrajTemplates {
 		
 		double np3Time = npc.getFirstTime()+climbTime;
 		NavPoint np3 = new NavPoint(npc.position(np3Time).mkAlt(cruiseAlt),np3Time);
-		npc.add(np3);
+		npc.addNavPoint(np3);
 		
 		double descentTime = Math.abs((cruiseAlt-end.alt())/vs);
 		double np4Time = npc.getLastTime()-descentTime;
 		NavPoint np4 = new NavPoint(npc.position(np4Time).mkAlt(cruiseAlt),np4Time);
-		npc.add(np4);
+		npc.addNavPoint(np4);
 		if (climbTime > 10.0) {  // add lead in
 			double np5Time = npc.getFirstTime()+10.0;
 			NavPoint np5 = new NavPoint(npc.position(np5Time).mkAlt(0.0),np5Time);
-			npc.add(np5);
+			npc.addNavPoint(np5);
 		}
 		if (descentTime > 10.0) {
 			double np6Time = npc.getLastTime()-10.0;
 			NavPoint np6 = new NavPoint(npc.position(np6Time).mkAlt(0.0),np6Time);
-			npc.add(np6);
+			npc.addNavPoint(np6);
 		}
 		//f.pln(" $$$$$ addClimbDescent5: npc = "+npc);
 		return npc;

@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -147,8 +147,15 @@ public final class Interval {
 
   /** Is the element (almost) in this interval, where close/open conditions are given as parameters */
   public boolean almost_in(double x, boolean lb_close, boolean ub_close) {
-  	boolean in_lb = low < x ? lb_close || !Util.almost_equals(low,x) : lb_close && Util.almost_equals(low,x); 
-  	boolean in_ub = x < up ? ub_close || !Util.almost_equals(up,x) : ub_close && Util.almost_equals(up,x); 
+	  return almost_in(x,lb_close,ub_close,Util.PRECISION_DEFAULT);
+  }
+  
+  /** Is the element (almost) in this interval, where close/open conditions are given as parameters */
+  public boolean almost_in(double x, boolean lb_close, boolean ub_close, long maxUlps) {
+  	boolean in_lb = low < x ? lb_close || !Util.almost_equals(low,x, maxUlps) : 
+  		lb_close && Util.almost_equals(low,x,maxUlps); 
+  	boolean in_ub = x < up ? ub_close || !Util.almost_equals(up,x,maxUlps) : 
+  		ub_close && Util.almost_equals(up,x,maxUlps); 
   	return in_lb && in_ub;
   }
   

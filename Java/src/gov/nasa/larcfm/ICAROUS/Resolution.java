@@ -53,7 +53,7 @@ public class Resolution {
 
 		FMS.FlightData.ResolutionPlan.clear();
 		FMS.FlightData.nextResolutionWP = 0;
-		FMS.FlightData.ResolutionPlan.add(wp);
+		FMS.FlightData.ResolutionPlan.addNavPoint(wp);
 
 		NavPoint nextWP = CurrentPlan.point(nextWPind);
 		if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){
@@ -230,13 +230,13 @@ public class Resolution {
 			ResolutionPlan1.clear();
 			FlightData.nextResolutionWP = 0;
 			double ETA   = 0.0;
-			ResolutionPlan1.add(new NavPoint(PlanPosition.get(0),ETA));
+			ResolutionPlan1.addNavPoint(new NavPoint(PlanPosition.get(0),ETA));
 			for(int i=1;i<PlanPosition.size();i++){
 				Position pos = PlanPosition.get(i);
 				double distance = pos.distanceH(PlanPosition.get(i-1));
 				ETA      = ETA + distance/resolutionSpeed;
 
-				ResolutionPlan1.add(new NavPoint(pos,ETA));
+				ResolutionPlan1.addNavPoint(new NavPoint(pos,ETA));
 			}
 			pathLength1 = ResolutionPlan1.pathDistance();
 		}
@@ -383,27 +383,27 @@ public class Resolution {
 		double distH,distV;
 
 		NavPoint nvpt1 = new NavPoint(start,ETA);
-		ResolutionPlan2.add(nvpt1);
+		ResolutionPlan2.addNavPoint(nvpt1);
 
 		// Second waypoint directly above WP1
 		Position wp2 = start.mkAlt(altFence+1);
 		distV = wp2.distanceV(start);
 		ETA = ETA + distV/rSpeed;
 		NavPoint nvpt2 = new NavPoint(wp2,ETA);
-		ResolutionPlan2.add(nvpt2);
+		ResolutionPlan2.addNavPoint(nvpt2);
 
 		// Third waypoint directly above exit point
 		Position wp3 = goal.mkAlt(altFence+1);
 		distH = wp3.distanceH(wp2);
 		ETA = ETA + distH/rSpeed;
 		NavPoint nvpt3 = new NavPoint(wp3,ETA);
-		ResolutionPlan2.add(nvpt3);
+		ResolutionPlan2.addNavPoint(nvpt3);
 
 		// Final waypoint
 		distV = goal.distanceH(wp3);
 		ETA = ETA + distV/rSpeed;
 		NavPoint nvpt4 = new NavPoint(goal,ETA);
-		ResolutionPlan2.add(nvpt4);
+		ResolutionPlan2.addNavPoint(nvpt4);
 
 		return ResolutionPlan2;
 	}
@@ -473,10 +473,10 @@ public class Resolution {
 			//System.out.println("Closest point:"+cp.toString());
 			//System.out.println("Ref heading in standoff resolution plan:"+RefHeading2);
 			FlightData.ResolutionPlan.clear();
-			FlightData.ResolutionPlan.add(new NavPoint(CurrentPos,0));
+			FlightData.ResolutionPlan.addNavPoint(new NavPoint(CurrentPos,0));
 			double distance = CurrentPos.distanceH(cp);
 			double ETA      = distance/resolutionSpeed;
-			FlightData.ResolutionPlan.add(new NavPoint(cp,ETA));
+			FlightData.ResolutionPlan.addNavPoint(new NavPoint(cp,ETA));
 
 			FMS.GoalReached = true;
 			FMS.planType = plan_type_t.TRAJECTORY;
@@ -606,7 +606,8 @@ public class Resolution {
 			FMS.debug_in += "********************** Current Time: "+FMS.Detector.DAA.getCurrentTime()+"\n";
 			FMS.debug_in += FMS.Detector.DAA.toString()+"\n";
 			FMS.debug_out += "********************** Current Time: "+FMS.Detector.DAA.getCurrentTime()+"\n";
-			FMS.debug_out += FMS.Detector.KMB.toString()+"\n";
+			FMS.debug_out += FMS.Detector.KMB.outputStringInfo();
+			FMS.debug_out += FMS.Detector.KMB.outputStringTrackBands();
 			FMS.debug_out += "Vn = "+FlightData.maneuverVn+", Ve = "+FlightData.maneuverVe+"\n";
 			FMS.debug_out += "resolutionSpeed ="+resolutionSpeed+"\n";
 			FMS.debug_out += "Heading ="+FlightData.maneuverHeading+",prefHeading ="+Math.toDegrees(prefHeading)+"\n";
@@ -645,7 +646,7 @@ public class Resolution {
 		double dist = currentVel.gs()*computationTime;
 		boolean prefDirection = FMS.Detector.KMB.preferredTrackDirection();
 		double prefHeading = FMS.Detector.KMB.trackResolution(prefDirection);
-		Position start = currentPos.linearDist(prefHeading, dist);
+		Position start = currentPos.linearDist2D(prefHeading, dist);
 		FMS.SetGPSPos(start.latitude(), start.longitude(), start.alt());
 		double elapsedTime;
 		

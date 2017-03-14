@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -81,7 +81,7 @@ public final class CDII implements ErrorReporter, Detection3DAcceptor {
    * @param dUnits
    * @param height
    * @param hUnits
-   * @return
+   * @return CDII object
    */
   public static CDII make(double distance, String dUnits, double height, String hUnits) {
     CDCylinder cd = CDCylinder.make(distance, dUnits, height, hUnits);
@@ -90,11 +90,13 @@ public final class CDII implements ErrorReporter, Detection3DAcceptor {
 
   /**
    * Factory method for cylindrical detection
+   * 
    * @param distance
-   * @param dUnits
    * @param height
-   * @param hUnits
-   * @return
+   * @param haccuracy
+   * @param vaccuracy
+   * @param minDt
+   * @return CDII object
    */
   public static CDII mk(double distance, double height, double haccuracy, double vaccuracy, double minDt) {
     CDCylinder cd = CDCylinder.mk(distance, height);
@@ -108,7 +110,7 @@ public final class CDII implements ErrorReporter, Detection3DAcceptor {
    * @param dUnits
    * @param height
    * @param hUnits
-   * @return
+   * @return CDII object
    */
   public static CDII mk(double distance, double height) {
     CDCylinder cd = CDCylinder.mk(distance, height);

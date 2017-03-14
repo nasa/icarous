@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -215,10 +215,10 @@ public class SimpleMovingPoly {
 
 
 	  /**
-	   * This will return a moving polygon that starts at point i and ends at point i+1
-	   * @param i
-	   * @param proj
-	   * @return
+	   * This will return a moving polygon that starts at a time
+	   * @param time start time
+	   * @param proj relevant projection
+	   * @return moving polygon
 	   */
 	  public MovingPolygon3D getMovingPolygon(double time, EuclideanProjection proj) {
 		  Poly3D p3d = position(time).poly3D(proj);

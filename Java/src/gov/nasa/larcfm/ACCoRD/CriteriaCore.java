@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -543,7 +543,7 @@ public class CriteriaCore {
    * @param vi            velocity of intruder
    * @param epsh          horizontal epsilon
    * @param trackRate     trackRate of traffic
-   * @return
+   * @return horizontal epsilon
    */
   public static int dataVsRateEpsilon(Vect3 s, Velocity vo, Velocity vi, int epsv, double vsRate){
     int trafSrchDir = vsSearchDirection(epsv);
@@ -560,7 +560,7 @@ public class CriteriaCore {
    * @param vi            velocity of intruder
    * @param epsh          horizontal epsilon
    * @param trackRate     trackRate of traffic
-   * @return
+   * @return horizontal epsilon
    */
   public static int dataTurnEpsilon(Vect3 s, Velocity vo, Velocity vi, int epsh, double trackRate){
     int trafSrchDir = trkSearchDirection(s.Neg(), vi, vo, epsh);

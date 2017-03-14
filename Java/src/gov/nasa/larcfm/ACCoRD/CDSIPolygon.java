@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -191,7 +191,7 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
    * @param vo
    * @param intent
    * @param tm
-   * @return
+   * @return true if violation
    */
   public boolean violation(Position so, Velocity vo, PolyPath intent, double tm) {
     if (tm < intent.getFirstTime() || tm > intent.getLastTime()) {
@@ -439,7 +439,7 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
    * @param intent
    * @param B
    * @param T
-   * @return
+   * @return true if conflict
    */
   public boolean conflictOnlyXYZ(Vect3 so, Velocity vo, double t0, double state_horizon, PolyPath intent, double B, double T) {
 	    double t_base;
@@ -525,7 +525,7 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
  * @param intent
  * @param B
  * @param T
- * @return
+ * @return true if conflict
  */
 	  public boolean conflictOnlyLL(LatLonAlt so, Velocity vo, double t0, double state_horizon, PolyPath intent, double B, double T) {
 	    double t_base;

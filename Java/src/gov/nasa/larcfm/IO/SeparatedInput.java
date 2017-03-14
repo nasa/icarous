@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Cesar Munoz, George Hagen
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -88,19 +88,19 @@ import java.util.regex.PatternSyntaxException;
  */
 public final class SeparatedInput implements ParameterReader, ErrorReporter {
 
-    private static class SeparatedInputException extends Exception {
-      static final long serialVersionUID = 0;
-    
-      SeparatedInputException(String name) {
-        super(name);
-      }
-    };
-  
+	private static class SeparatedInputException extends Exception {
+		static final long serialVersionUID = 0;
+
+		SeparatedInputException(String name) {
+			super(name);
+		}
+	};
+
 
 	private LineNumberReader reader;
 
-    private ErrorLog error;
-	
+	private ErrorLog error;
+
 	private boolean header;         // header line read in
 	private String[] header_str;    // header line raw string
 	private boolean units;          // units line read in
@@ -111,61 +111,56 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 	private boolean fixed_width;    // Instead of using a delimiter, use fixed width columns
 	private int[] width_int;        // The width of columns
 
-    private boolean caseSensitive;
+	private boolean caseSensitive;
 
 	private String patternStr;
-	
-    //private HashMap<String, Quad<String, Double, String, Boolean>> parameters;
+
 	private ParameterData parameters;
 
-    /** Create an "empty" separated input that can only store parameters */
-    public SeparatedInput() {
+	/** Create an "empty" separated input that can only store parameters */
+	public SeparatedInput() {
 		reader = null;
 		header = false;
 		units = false;
-        error = new ErrorLog("SeparatedInput");
-        parameters = new ParameterData();
-        caseSensitive = true;
-        //parameters.setCaseSensitive(caseSensitive);
-        //parameters = new HashMap<String,Quad<String, Double, String, Boolean>>();
-        patternStr = Constants.wsPatternBase;
-        fixed_width = false;
-        header_str = new String[0];
-     }
-    
+		error = new ErrorLog("SeparatedInput");
+		parameters = new ParameterData();
+		caseSensitive = true;
+		patternStr = Constants.wsPatternBase;
+		fixed_width = false;
+		header_str = new String[0];
+	}
+
 	/** Create a new SeparatedInput from the given reader */
 	public SeparatedInput(Reader r) {
 		reader = new LineNumberReader(r);
 		header = false;
 		units = false;
-        error = new ErrorLog("SeparatedInput(Reader)");
-        parameters = new ParameterData();
-        caseSensitive = true;
-        //parameters.setCaseSensitive(caseSensitive);
-        //parameters = new HashMap<String,Quad<String, Double, String, Boolean>>();
-        patternStr = Constants.wsPatternBase;
-        fixed_width = false;
-        header_str = new String[0];
+		error = new ErrorLog("SeparatedInput(Reader)");
+		parameters = new ParameterData();
+		caseSensitive = true;
+		patternStr = Constants.wsPatternBase;
+		fixed_width = false;
+		header_str = new String[0];
 	}
-	
+
 	/** Return the heading for the given column */ 
 	public String getHeading(int i) {
-      if (i < 0 || i >= line_str.length) {
-        error.addWarning("getHeading index "+i+", line "+reader.getLineNumber()+" out of bounds");
-        return "";
-      }
+		if (i < 0 || i >= line_str.length) {
+			error.addWarning("getHeading index "+i+", line "+reader.getLineNumber()+" out of bounds");
+			return "";
+		}
 		return header_str[i];
 	}
- 
+
 	/** Return the number of columns */ 
 	public int size() {
 		return header_str.length;
 	}
- 
+
 	/** 
 	 * Find the index of the column with given heading.  If 
 	 * the heading is not found, then -1 is returned. 
-     * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
+	 * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
 	 */
 	public int findHeading(String heading) {
 		int rtn = -1;
@@ -187,10 +182,10 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 	 * the given headings is found, then -1 is returned. This tries to find the 
 	 * first heading, and if it finds it then returns that index.  If it doesn't 
 	 * find it, it moves to the next heading, etc.
-     * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
+	 * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
 	 */
 	public int findHeading(String heading1, String heading2) {
-        return findHeading(heading1, heading2, "", "");
+		return findHeading(heading1, heading2, "", "");
 	}
 
 	/** 
@@ -198,10 +193,10 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 	 * the given headings is found, then -1 is returned. This tries to find the 
 	 * first heading, and if it finds it then returns that index.  If it doesn't 
 	 * find it, it moves to the next heading, etc.
-     * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
+	 * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
 	 */
 	public int findHeading(String heading1, String heading2, String heading3) {
-        return findHeading(heading1, heading2, heading3, "");
+		return findHeading(heading1, heading2, heading3, "");
 	}
 
 	/** 
@@ -209,7 +204,7 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 	 * the given headings is found, then -1 is returned. This tries to find the 
 	 * first heading, and if it finds it then returns that index.  If it doesn't 
 	 * find it, it moves to the next heading, etc.
-     * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
+	 * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
 	 */
 	public int findHeading(String heading1, String heading2, String heading3, String heading4) {
 		int r = findHeading(heading1);
@@ -224,7 +219,7 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 		}
 		return r;
 	}
-	
+
 	public int findHeading(String[] headings) {
 		int r = -1;
 		for (int i = 0; r < 0 && i < headings.length; i++) {
@@ -232,83 +227,82 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 		}
 		return r;
 	}
-	
+
 	/** 
 	 * Returns the units string for the i-th column. If an invalid 
 	 * column is entered, then "unspecified" is returned. 
 	 */
 	public String getUnit(int i) {
-      if ( ! units || i < 0 || i >= units_str.length) {
-        return "unspecified";
-      }
-      return units_str[i];
+		if ( ! units || i < 0 || i >= units_str.length) {
+			return "unspecified";
+		}
+		return units_str[i];
 	}
 
 	private double getUnitFactor(int i) {
 		if ( ! units || i < 0 || i >= units_str.length) {
-        	return Units.unspecified;
+			return Units.unspecified;
 		}
 		return units_factor[i];
 	}
 
-    /**
-     * Returns true if a line defining column units was detected.
-     */
-    public boolean unitFieldsDefined() {
-      return units;
-    }
+	/**
+	 * Returns true if a line defining column units was detected.
+	 */
+	public boolean unitFieldsDefined() {
+		return units;
+	}
 
-    /** If set to false, all read-in headers and parameters will be converted to lower case. */
-    public void setCaseSensitive(boolean b) {
-      caseSensitive = b;
-      //parameters.setCaseSensitive(b);
-    }
+	/** If set to false, all read-in headers and parameters will be converted to lower case. */
+	public void setCaseSensitive(boolean b) {
+		caseSensitive = b;
+	}
 
-    /** If true, headers & parameters will be case sensitive.  If false, all headers & parameters will be converted to lower case. */
-    public boolean getCaseSensitive() {
-      return caseSensitive;
-    }  
-    
-    public ParameterData getParametersRef() {
+	/** If true, headers and parameters will be case sensitive.  If false, all headers and parameters will be converted to lower case. */
+	public boolean getCaseSensitive() {
+		return caseSensitive;
+	}  
+
+	public ParameterData getParametersRef() {
 		return parameters;
 	}
 
-    /**
-     * Return true if the column entry has some (nonempty) value, otherwise return false.
-     * A value of "-" is considered a lack of a value.
-     */
-    public boolean columnHasValue(int i) {
-   		return (i >= 0 && i < line_str.length && !line_str[i].equals("") && !line_str[i].equals("-"));    	
-    }
-    
-    /**
-     * Returns the raw string of the given column read.
-     */
-	public String getColumnString(int i) {
-       if (i < 0 || i >= line_str.length) {
-         error.addWarning("getColumnString index "+i+", line "+reader.getLineNumber()+" out of bounds");
-         return "";
-       }
-	   return line_str[i];
+	/**
+	 * Return true if the column entry has some (nonempty) value, otherwise return false.
+	 * A value of "-" is considered a lack of a value.
+	 */
+	public boolean columnHasValue(int i) {
+		return (i >= 0 && i < line_str.length && !line_str[i].equals("") && !line_str[i].equals("-"));    	
 	}
-	
-    /**
-     * Returns the value of the given column (as a double) in internal units.
-     */
+
+	/**
+	 * Returns the raw string of the given column read.
+	 */
+	public String getColumnString(int i) {
+		if (i < 0 || i >= line_str.length) {
+			error.addWarning("getColumnString index "+i+", line "+reader.getLineNumber()+" out of bounds");
+			return "";
+		}
+		return line_str[i];
+	}
+
+	/**
+	 * Returns the value of the given column (as a double) in internal units.
+	 */
 	public double getColumn(int i) {
-      if (i < 0 || i >= line_str.length) {
-        error.addWarning("getColumn index "+i+", line "+reader.getLineNumber()+" out of bounds");
-        return 0.0;
-      }
+		if (i < 0 || i >= line_str.length) {
+			error.addWarning("getColumn index "+i+", line "+reader.getLineNumber()+" out of bounds");
+			return 0.0;
+		}
 		double rtn = 0.0;
-    	try {
-    		rtn = Units.from(getUnitFactor(i), Double.parseDouble(line_str[i]));
-    	} catch (NumberFormatException e) {
-            error.addWarning("could not parse as a double in getColumn("+i+"), line "+reader.getLineNumber()+": "+line_str[i]);
-    		rtn = 0.0;  // arbitrary value
-    	}
-    	return rtn;
-    }
+		try {
+			rtn = Units.from(getUnitFactor(i), Double.parseDouble(line_str[i]));
+		} catch (NumberFormatException e) {
+			error.addWarning("could not parse as a double in getColumn("+i+"), line "+reader.getLineNumber()+": "+line_str[i]);
+			rtn = 0.0;  // arbitrary value
+		}
+		return rtn;
+	}
 
 	/** 
 	 * Returns the value of the given column (as a double) in internal units.  If 
@@ -322,22 +316,22 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 		return getColumn(i);
 	}
 
-   /** 
-    * Sets the regular expression used to divide each line into columns.  If the supplied parameter 
-    * is not a valid regular expression, then the current delimiter is retained.  This should be set 
-    * before the first "readLine" is called. 
-    * 
-    */
-   public void setColumnDelimiters(String delim) {
-	   try {
-		   @SuppressWarnings("unused")  // because we are just error checking the supplied parameter
-		   String[] tokens = (new String("This is a test")).split(delim);
-		   patternStr = delim;
-	   } catch (PatternSyntaxException e) {
-		   error.addWarning("invalid delimiter string: "+delim+" retained original: "+patternStr);
-		   // ignore the attempt to set an invalid delimiter string
-	   }
-   }
+	/** 
+	 * Sets the regular expression used to divide each line into columns.  If the supplied parameter 
+	 * is not a valid regular expression, then the current delimiter is retained.  This should be set 
+	 * before the first "readLine" is called. 
+	 * 
+	 */
+	public void setColumnDelimiters(String delim) {
+		try {
+			@SuppressWarnings("unused")  // because we are just error checking the supplied parameter
+			String[] tokens = (new String("This is a test")).split(delim);
+			patternStr = delim;
+		} catch (PatternSyntaxException e) {
+			error.addWarning("invalid delimiter string: "+delim+" retained original: "+patternStr);
+			// ignore the attempt to set an invalid delimiter string
+		}
+	}
 
 	public void setFixedColumn(String widths, String nameList, String unitList) {
 		try {
@@ -347,7 +341,7 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 			for (int i = 0; i < fields.length; i++) {
 				width_int[i] = Integer.parseInt(fields[i]);
 			}
-			
+
 			fields = nameList.split(",");
 			if (width_int.length != fields.length) {
 				throw new Exception("In parsing fixed width file, number of names does not match number of widths");
@@ -356,7 +350,7 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 			for (int i = 0; i < fields.length; i++) {
 				header_str[i] = fields[i];
 			}
-			
+
 			fields = unitList.split(",");
 			if (width_int.length != fields.length) {
 				throw new Exception("In parsing fixed width file, number of units does not match number of widths");
@@ -372,7 +366,7 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 					units_factor[i] = Units.unspecified;
 				}
 			}
-			
+
 			fixed_width = true;
 			header = true;
 			units = true;
@@ -391,7 +385,7 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 			}
 		} catch (IOException e) { 
 			error.addError("*** An IO error occured at line "+reader.getLineNumber()
-					+ "The error was:"+e.getMessage());
+			+ "The error was:"+e.getMessage());
 		}
 	}
 
@@ -402,39 +396,39 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 	 * @return true if end of file
 	 */
 	public boolean readLine() {
-	    String str = null;
+		String str = null;
 		try {
-		    while ((str = reader.readLine()) != null) {
-		    	// Remove comments from line
-		    	int comment_num = str.indexOf('#');
-		    	if (comment_num >= 0) {
-		    		str = str.substring(0,comment_num);
-		    	}
-		    	str = str.trim();
-		    	// Skip empty lines 
-		    	if (str.length() == 0) {
-		    		continue;
-		    	}
-                if ( ! header) {
-		    		header = process_preamble(str);
-		    	} else if ( ! units) {
-                  try {
-		    		units = process_units(str);
-                  } catch (SeparatedInputException e) {
-                    // use default units
-                    units = true;
-                    process_line(str);
-                    break;
-                  }
-		    	} else {
-		    		process_line(str);
-		    		break;
-		    	}
-		    }//while    
+			while ((str = reader.readLine()) != null) {
+				// Remove comments from line
+				int comment_num = str.indexOf('#');
+				if (comment_num >= 0) {
+					str = str.substring(0,comment_num);
+				}
+				str = str.trim();
+				// Skip empty lines 
+				if (str.length() == 0) {
+					continue;
+				}
+				if ( ! header) {
+					header = process_preamble(str);
+				} else if ( ! units) {
+					try {
+						units = process_units(str);
+					} catch (SeparatedInputException e) {
+						// use default units
+						units = true;
+						process_line(str);
+						break;
+					}
+				} else {
+					process_line(str);
+					break;
+				}
+			}//while    
 		} catch (IOException e) { 
-          error.addError("*** An IO error occured at line "+reader.getLineNumber()
-                         + "The error was:"+e.getMessage());
-          str = null;
+			error.addError("*** An IO error occured at line "+reader.getLineNumber()
+			+ "The error was:"+e.getMessage());
+			str = null;
 		}
 		if (str == null) {
 			return true; // end of file
@@ -442,71 +436,69 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 			return false;
 		}
 	}
-    
-    /** Returns the number of the most recently read in line */
-    public int lineNumber() {
-      return reader.getLineNumber();
-    }
-	
-    private boolean process_preamble(String str) {
 
-    	String[] fields = str.split("=",2);
-    	//String[] fields = str.split(patternStr);
-    	//f.pln("fields: "+Arrays.toString(fields));
-    	
-        // parameter keys are lower case only
-    	if (fields.length == 2 && fields[0].length() > 0) {
-    	    String id = fields[0].trim();
-            if ( ! caseSensitive) id = id.toLowerCase();
-            parameters.set(id,fields[1].trim());
-    	    return false;
-    	} else if (fields.length == 1 && str.contains("=")) {
-    	    String id = fields[0].trim();
-    		parameters.set(id,"");
-    		return false;
-    	} else {
-        	fields = str.split(patternStr);
-    		if ( ! caseSensitive) {
-    			for (int i = 0; i < fields.length; i++) {
-    				fields[i] = fields[i].toLowerCase().trim();
-        		} 
-      		}
-      		header_str = fields;
-    		return true;
-    	} 
-    }
+	/** Returns the number of the most recently read in line */
+	public int lineNumber() {
+		return reader.getLineNumber();
+	}
+
+	private boolean process_preamble(String str) {
+
+		String[] fields = str.split("=",2);
+
+		// parameter keys are lower case only
+		if (fields.length == 2 && fields[0].length() > 0) {
+			String id = fields[0].trim();
+			if ( ! caseSensitive) id = id.toLowerCase();
+			parameters.set(id,fields[1].trim());
+			return false;
+		} else if (fields.length == 1 && str.contains("=")) {
+			String id = fields[0].trim();
+			parameters.set(id,"");
+			return false;
+		} else {
+			fields = str.split(patternStr);
+			if ( ! caseSensitive) {
+				for (int i = 0; i < fields.length; i++) {
+					fields[i] = fields[i].toLowerCase().trim();
+				} 
+			}
+			header_str = fields;
+			return true;
+		} 
+	}
 
 	private boolean process_units(String str) throws SeparatedInputException {
-    	String[] fields = str.split(patternStr);
-    	
-        // if units are optional, we need to determine if any were read in...
-        // a unit line is considered true if AT LEASE HALF of the fields read in are interpreted as valid units
-        int notFound = 0;
-        
-    	units_str = new String[fields.length];
-    	units_factor = new double[fields.length];
-    	for (int i=0; i < fields.length; i++) {
-    		
-    		try {
-    			units_str[i] = Units.clean(fields[i]);
-    			units_factor[i] = Units.getFactor(units_str[i]);
-    			if (units_str[i].equals("unspecified")) {
-    				notFound++;
-    			}
-    		} catch (Units.UnitException e) {
-                notFound++;
-    			units_str[i] = "unspecified";
-    			units_factor[i] = Units.unspecified;
-    		}
-    	}
-        if (notFound > fields.length/2) {
-          throw new SeparatedInputException("default units");
-        }
+		String[] fields = str.split(patternStr);
+
+		// if units are optional, we need to determine if any were read in...
+		// a unit line is considered true if AT LEASE HALF of the fields read in are interpreted as valid units
+		int notFound = 0;
+
+		units_str = new String[fields.length];
+		units_factor = new double[fields.length];
+		for (int i=0; i < fields.length; i++) {
+
+			try {
+				units_str[i] = Units.clean(fields[i]);
+				units_factor[i] = Units.getFactor(units_str[i]);
+				if (units_str[i].equals("unspecified")) {
+					notFound++;
+				}
+			} catch (Units.UnitException e) {
+				notFound++;
+				units_str[i] = "unspecified";
+				units_factor[i] = Units.unspecified;
+			}
+		}
+		if (notFound > fields.length/2) {
+			throw new SeparatedInputException("default units");
+		}
 		return true;
 	}
 
 	private void process_line(String str) {
-    	String[] fields;
+		String[] fields;
 		if (fixed_width) {
 			int idx = 0;
 			fields = new String[width_int.length];
@@ -522,16 +514,16 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 				idx = idx + width_int[i];
 			}
 		} else {
-	    	fields = str.split(patternStr);
-	    	//f.pln(" $$ SeparatedInput.process_line: patternStr = "+patternStr);
-	    	for (int i = 0; i < fields.length; i++) {
-	    		fields[i] = fields[i].trim();
-	    		//f.pln(" $$ SeparatedInput.process_line: fields["+i+"] = "+fields[i]);
-	    	}
+			fields = str.split(patternStr);
+			//f.pln(" $$ SeparatedInput.process_line: patternStr = "+patternStr);
+			for (int i = 0; i < fields.length; i++) {
+				fields[i] = fields[i].trim();
+				//f.pln(" $$ SeparatedInput.process_line: fields["+i+"] = "+fields[i]);
+			}
 		}		
-    	line_str = fields;
+		line_str = fields;
 	}
-	
+
 	/** Return the last line read as a comma-delineated string */
 	public String getLine() {
 		String s = "";
@@ -543,52 +535,50 @@ public final class SeparatedInput implements ParameterReader, ErrorReporter {
 		}
 		return s;
 	}
-	
+
 	public void close() {
-    	if (reader != null) {
-    		try {
-    			reader.close();
-    		} catch (IOException e) {
-    			error.addError("IO Exception in close(): "+e.getMessage());
-    		}
-    	}
-	}
-	
-    // ErrorReporter Interface Methods
-  
-    public boolean hasError() {
-      return error.hasError();
-    }
-    public boolean hasMessage() {
-      return error.hasMessage();
-    }
-    public String getMessage() {
-      return error.getMessage();
-    }
-    public String getMessageNoClear() {
-      return error.getMessageNoClear();
-    }
-  
-  
-    public String toString() {
-        String str = "SeparateInput: \n header_str:";
-    	for (int i=0; i < header_str.length; i++) {
-	    str = str + ", " + header_str[i];  
+		if (reader != null) {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				error.addError("IO Exception in close(): "+e.getMessage());
+			}
+		}
 	}
 
-//        str = str + "\n parameters: "+parameters.toString();
+	// ErrorReporter Interface Methods
 
-        str = str + "\n units_str:";
-    	for (int i=0; i < units_str.length; i++) {
-	    str = str + ", " + units_str[i];  
+	public boolean hasError() {
+		return error.hasError();
+	}
+	public boolean hasMessage() {
+		return error.hasMessage();
+	}
+	public String getMessage() {
+		return error.getMessage();
+	}
+	public String getMessageNoClear() {
+		return error.getMessageNoClear();
 	}
 
-        str = str+ "\n line_str:";
-    	for (int i=0; i < line_str.length; i++) {
-	    str = str + ", " + line_str[i];  
-	}
 
-        return str;
-    }
+	public String toString() {
+		String str = "SeparateInput: \n header_str:";
+		for (int i=0; i < header_str.length; i++) {
+			str = str + ", " + header_str[i];  
+		}
+
+		str = str + "\n units_str:";
+		for (int i=0; i < units_str.length; i++) {
+			str = str + ", " + units_str[i];  
+		}
+
+		str = str+ "\n line_str:";
+		for (int i=0; i < line_str.length; i++) {
+			str = str + ", " + line_str[i];  
+		}
+
+		return str;
+	}
 
 }

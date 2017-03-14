@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -1032,20 +1032,21 @@ public class TimePlan {
 		int i = 0;
 		while (i < p.size()) {
 			NavPoint np = p.point(i);
-			if (np.isEndTCP()) {
+			if (p.isEndTCP(i)) {
 				double t = np.time();
 				int j = i-1;
-				if (np.isEOT()) j = Util.min(p.prevBOT(i),j);//fixed
-				if (np.isEGS()) j = Util.min(p.prevBGS(i),j);//fixed
-				if (np.isEVS()) j = Util.min(p.prevBVS(i),j);//fixed
-				double prevT = p.getTime(j);
+				if (p.isEOT(i)) j = Util.min(p.prevBOT(i),j);//fixed
+				if (p.isEGS(i)) j = Util.min(p.prevBGS(i),j);//fixed
+				if (p.isEVS(i)) j = Util.min(p.prevBVS(i),j);//fixed
+				double prevT = p.time(j);
 				double dt = t-prevT;
 				double step = dt/(1+Util.min(num, Math.floor(dt/timeBuffer)));
 				if (step > 0) {
 //					/f.pln(" $$## addMidPoints: num = "+num+" step = "+step+" t = "+t+" prevT+step = "+(prevT+step));
 					for (double ct = prevT+step; ct + step*0.1 < t; ct = ct + step) {
-						NavPoint mid = new NavPoint(p.position(ct),ct).makeLabel("AccelMidPoint");
-						if (p.add(mid) > 0) {
+						NavPoint mid = new NavPoint(p.position(ct),ct);
+						TcpData tcp = new TcpData().setInformation("AccelMidPoint");
+						if (p.add(mid,tcp) > 0) {
 							i++;
 						}
 					}
@@ -1088,31 +1089,61 @@ public class TimePlan {
 				np = new NavPoint(pt.h_srcPos,pt.h_srcTime).mkAlt(pt.v_srcPos.alt());
 			}
 			//f.pln(" $$$$$............... TimePlan.makePlan1: np = "+np.toStringFull());
+			Pair<NavPoint,TcpData> npPair = new Pair<NavPoint,TcpData>(np,new TcpData());
 			switch (pt.t_type) {
-			case BOT: np = np.makeBOT(pt.pos, time,  pt.vel, pt.signedRadius,-1); break;
-			case EOT: np = np.makeEOT(pt.pos, time, pt.vel,-1); break;
-			case EOTBOT: np = np.makeEOTBOT(pt.pos, time,  pt.vel, pt.signedRadius,-1); break;
+			case BOT: {		
+			     Position center = KinematicsPosition.centerFromRadius(pt.pos, pt.signedRadius, pt.vel.trk());  // TODO: should we get center this way?		
+				 npPair = Plan.makeBOT(np, pt.pos, time,   pt.signedRadius, center, -1); 
+				 break;
+			}
+			case EOT: {
+				npPair = Plan.makeEOT(np, pt.pos, time, -1); 
+				break;
+			}
+			case EOTBOT: {
+				Position center = KinematicsPosition.centerFromRadius(pt.pos, pt.signedRadius, pt.vel.trk());   // TODO: should we get center this way?
+				npPair = Plan.makeEOTBOT(np, pt.pos, time,   pt.signedRadius, center, -1); 
+				break;
+			}
 			default:
 			}
 			
 			switch (pt.g_type) {
-			case BGS: np = np.makeBGS(pt.pos, time, pt.g_accel, pt.vel,-1); break;
-			case EGS: np = np.makeEGS(pt.pos, time, pt.vel,-1); break;
-			case EGSBGS: np = np.makeEGSBGS(pt.pos, time, pt.g_accel, pt.vel,-1); break;
+			case BGS: {
+				npPair = Plan.makeBGS(np, pt.pos, time, pt.g_accel, -1); 
+				break;
+			}
+			case EGS: {
+				npPair = Plan.makeEGS(np, pt.pos, time, -1); 
+				break;
+			}
+			case EGSBGS: {
+				npPair = Plan.makeEGSBGS(np, pt.pos, time, pt.g_accel, -1); 
+				break;
+			}
 			default:
 			}			
 			switch (pt.v_type) {
 			case BVS: {
 				//f.pln(" $$$$$ TimePlan: case BVS: time = "+time+"   pt.vel (velocityIn) = "+pt.vel);  
-				np = np.makeBVS(pt.pos, time, pt.v_accel, pt.vel,-1); break;
+				 npPair = Plan.makeBVS(np, pt.pos, time, pt.v_accel, -1);
+				 break;
 			}
-			case EVS: np = np.makeEVS(pt.pos, time, pt.vel,-1); break;
-			case EVSBVS: np = np.makeEVSBVS(pt.pos, time, pt.v_accel, pt.vel,-1); break;
+			case EVS: {
+				//np = np.makeEVS(pt.pos, time, -1);
+				 npPair = Plan.makeEVS(np, pt.pos, time, -1);
+			     break;
+			}
+			case EVSBVS: {
+				//np = np.makeEVSBVS(pt.pos, time, pt.v_accel, -1); 
+				 npPair = Plan.makeEVSBVS(np, pt.pos, time, pt.v_accel, -1);
+				break;
+			}
 			default:
 			}
-			np = np.makeLabel(pt.label.replaceAll(Constants.wsPatternBase, "_"));
+			np = np.makeLabel(pt.label.replaceAll(Constants.wsPatternBase, "_"));  // TODO: this not being used !!!
 			//f.pln(" $$$...TimePlan.makePlan_2: np = "+np.toStringFull());
-			int index = p.add(np);
+			int index = p.add(npPair);
 			if (index < 0) {
 				f.pln("TimePlan.makePlan WARNING: Possible overlapping point at time "+time);
 			}

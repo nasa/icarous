@@ -250,10 +250,10 @@ public class AircraftData{
 						vel = 1;
 					}
 					double distance = MissionPlan.point(i - 1).position().distanceH(nextWP);
-					wptime          = MissionPlan.getTime(i-1) + distance/vel;
+					wptime          = MissionPlan.time(i-1) + distance/vel;
 					//System.out.println("Times:"+wptime);
 				}		     
-				MissionPlan.add(new NavPoint(nextWP,wptime));
+				MissionPlan.addNavPoint(new NavPoint(nextWP,wptime));
 			}
 		}
 		numMissionWP           = MissionPlan.size();
@@ -264,8 +264,8 @@ public class AircraftData{
 		Plan CurrentFlightPlan = fp;
 		System.out.println("nextWP:"+nextWP);
 		float speed = (float)(CurrentFlightPlan.pathDistance(nextWP-1,true)/
-				(CurrentFlightPlan.getTime(nextWP) -
-						CurrentFlightPlan.getTime(nextWP-1)));
+				(CurrentFlightPlan.time(nextWP) -
+						CurrentFlightPlan.time(nextWP-1)));
 
 		return speed;
 	}

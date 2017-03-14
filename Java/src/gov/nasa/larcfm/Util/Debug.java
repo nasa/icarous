@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2016 United States Government as represented by
+ * Copyright (c) 2013-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -46,10 +46,16 @@ public class Debug {
 		}
 	}
 
+	/**
+	 * Deliberately end program and print backtrace (may not work outside of gcc).
+	 *  */
 	public static void halt() {
 		halt("");	
 	}
 	
+	public static void printTrace() {
+		new Throwable().printStackTrace();
+	}
 
 }
 

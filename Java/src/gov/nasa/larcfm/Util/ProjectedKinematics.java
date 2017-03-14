@@ -1,7 +1,7 @@
 /*
  * ProjectedKinematics.java 
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,26 +19,31 @@ import java.util.ArrayList;
 public final class ProjectedKinematics {
 
 
-	  public static Pair<Position,Velocity> linear(Pair<Position,Velocity> p, double t) {
-		    return linear(p.first, p.second, t);
-	  }
-		  
-	  public static Pair<Position,Velocity> linear(Position so ,Velocity vo, double t) {
-		  Vect3 s3 = so.point();
-		  if (so.isLatLon()) {
-			  s3 = Projection.createProjection(so.lla().zeroAlt()).project(so); 
-		  }
-		  Vect3 ns = s3.linear(vo,t);
-		  if (so.isLatLon()) {
-			  return Projection.createProjection(so.lla().zeroAlt()).inverse(ns,vo,true);
-		  } else {
-			  return new Pair<Position,Velocity>(new Position(ns),vo);  
-		  }
-	  }
+	public static Pair<Position,Velocity> linear(Pair<Position,Velocity> p, double t) {
+		return linear(p.first, p.second, t);
+	}
 
-  /**
-   * Calculate the angle of a constant-radius turn from two points and the radius
-   */
+	public static Pair<Position,Velocity> linear(Position so ,Velocity vo, double t) {
+		Vect3 s3 = so.point();
+		if (so.isLatLon()) {
+			s3 = Projection.createProjection(so.lla().zeroAlt()).project(so); 
+		}
+		Vect3 ns = s3.linear(vo,t);
+		if (so.isLatLon()) {
+			return Projection.createProjection(so.lla().zeroAlt()).inverse(ns,vo,true);
+		} else {
+			return new Pair<Position,Velocity>(new Position(ns),vo);  
+		}
+	}
+
+	/**
+	 * Calculate the angle of a constant-radius turn from two points and the radius
+	 * 
+	 * @param s1
+	 * @param s2
+	 * @param R
+	 * @return the turn angle
+	 */
   public static double turnAngle(Position s1, Position s2, double R) {
     double distAB = s1.distanceH(s2);
     return 2*(Math.asin(distAB/(2*R))); 
@@ -46,6 +51,11 @@ public final class ProjectedKinematics {
 
   /**
    * Horizontal distance covered in a turn
+   * 
+   * @param s1
+   * @param s2
+   * @param R
+   * @return the turn distance
    */
   public static double turnDistance(Position s1, Position s2, double R) {
     return turnAngle(s1,s2,R)*R;
@@ -54,6 +64,11 @@ public final class ProjectedKinematics {
   /**
    * Given two points on a turn and the velocity (direction) at the first point, determine the direction for the shortest turn going through the second point,
    * returning true if that relative direction is to the right
+   * 
+   * @param s1
+   * @param v1
+   * @param s2
+   * @return true if clockwise turn
    */
   public static boolean clockwise(Position s1, Velocity v1, Position s2) {
     double trk1 = v1.trk();
@@ -69,46 +84,13 @@ public final class ProjectedKinematics {
   
   
 
-
-  //	  /**
-  //	   * Turn velocity at point s1, given addition position s2 on turn at relative time t 
-  //	   * @param s1 position to take tangent
-  //	   * @param s2 additional position on turn
-  //	   * @param C center of circle of rotation
-  //	   * @param t time to get from s1 to s2 (negative if s1 after s2)
-  //	   * @return velocity at point s1
-  //	   */
-  //	  public static Velocity turnVelocity(Position s1, Position s2, Position C, double t) {
-  //		  double R = s1.distanceH(C);
-  //		  double gs = turnDistance(s1,s2,R)/t;
-  //		  double vs = (s2.z() - s1.z())/t;
-  //		  double trk = s1.track(C); // work from this due to potential GC issues
-  //		  double trk1 = C.track(s1);
-  //		  double trk2 = C.track(s2);
-  //		  boolean clockwise = Util.clockwise(trk1, trk2);
-  //		  if (t < 0) {
-  //			  clockwise = !clockwise; 
-  //		  }
-  //		  if (clockwise) {
-  //			  trk = Util.to_2pi(trk - Math.PI/2);
-  //		  } else if (clockwise) {
-  //			  trk = Util.to_2pi(trk + Math.PI/2);
-  //		  } else if (t < 0) {
-  //			  
-  //		  }
-  //		  return Velocity.mkTrkGsVs(trk, gs, vs);
-  //	  }
-  //	
-  //	  
-
-
   /**
    *  Position and velocity after t time units turning in direction "dir" with radius R.  This is a wrapper around turnPosition and
    *  turnVelocity for Position objects,and uses the projection defined in the static Projection class.
    * @param so  starting position
    * @param vo  initial velocity
-   * @param R   turn radius
    * @param t   time of turn [secs]
+   * @param R   turn radius
    * @param turnRight true iff only turn direction is to the right
    * @return Position and Velocity after t time
    */
@@ -134,9 +116,9 @@ public final class ProjectedKinematics {
    *  turnVelocity for Position objects,and uses the projection defined in the static Projection class.
    * @param so  starting position
    * @param vo  initial velocity
-   * @param R   turn radius
    * @param t   time of turn [secs]
-   * @param turnRight true iff only turn direction is to the right
+   * @param omega turn rate
+   * @param proj the projection
    * @return Position and Velocity after t time
    */
   public static Pair<Position,Velocity> turnOmega(Position so, Velocity vo, double t, double omega, EuclideanProjection proj) {
@@ -163,9 +145,8 @@ public final class ProjectedKinematics {
    *  turnVelocity for Position objects,and uses the projection defined in the static Projection class.
    * @param so  starting position
    * @param vo  initial velocity
-   * @param R   turn radius
    * @param t   time of turn [secs]
-   * @param turnRight true iff only turn direction is to the right
+   * @param omega turn rate
    * @return Position and Velocity after t time
    */
   public static Pair<Position,Velocity> turnOmega(Position so, Velocity vo, double t, double omega) {
@@ -188,11 +169,9 @@ public final class ProjectedKinematics {
   /**
    *  Position and velocity after t time units turning in direction "dir" with radius R.  This is a wrapper around turnPosition and
    *  turnVelocity for Position objects,and uses the projection defined in the static Projection class.
-   * @param so  starting position
-   * @param vo  initial velocity
-   * @param R   turn radius
+   * @param pp  starting position and initial velocity
    * @param t   time of turn [secs]
-   * @param turnRight true iff only turn direction is to the right
+   * @param omega turn rate
    * @return Position and Velocity after t time
    */
   public static Pair<Position,Velocity> turnOmega(Pair<Position,Velocity> pp, double t, double omega) {
@@ -211,7 +190,6 @@ public final class ProjectedKinematics {
    * @param goalTrack the target track angle
    * @param bankAngle the aircraft's bank angle
    * @param t   time of turn [secs]
-   * @param turnRight true iff only turn direction is to the right
    * @return Position and Velocity after t time
    */
   public static Pair<Position,Velocity> turnUntil(Position so, Velocity vo, double t, double goalTrack, double bankAngle) {
@@ -245,7 +223,6 @@ public final class ProjectedKinematics {
    * @param goalTrack the target track angle
    * @param bankAngle the aircraft's bank angle
    * @param t   time of turn [secs]
-   * @param turnRight true iff only turn direction is to the right
    * @return Position and Velocity after t time
    */
   public static Pair<Position,Velocity> turnUntilTimeOmega(Position so, Velocity vo, double t, double goalTrack, double bankAngle) {
@@ -276,9 +253,9 @@ public final class ProjectedKinematics {
    *  and uses the projection defined in the static Projection class.
    * @param so  starting position
    * @param vo  initial velocity
-   * @param goalTrack the target track angle
-   * @param bankAngle the aircraft's bank angle
    * @param t   time of turn [secs]
+   * @param turnTime the time of the turn
+   * @param R the radius of the turn
    * @param turnRight true iff only turn direction is to the right
    * @return Position and Velocity after t time
    */
@@ -305,10 +282,10 @@ public final class ProjectedKinematics {
    *  turnVelocity for Position objects,and uses the projection defined in the static Projection class.
    * @param so  starting position
    * @param vo  initial velocity
+   * @param t turn time
    * @param goalTrack the target track angle
    * @param bankAngle the aircraft's bank angle
-   * @param t   time of turn [secs]
-   * @param turnRight true iff only turn direction is to the right
+   * @param rollTime the roll in/out time
    * @return Position and Velocity after t time
    */
   public static Pair<Position,Velocity> turnUntilWithRoll(Position so, Velocity vo, double t, double goalTrack, double bankAngle, 
@@ -332,28 +309,6 @@ public final class ProjectedKinematics {
 
 
 
-  //  public static boolean turnRightDirectTo(Position so, Velocity vo, Position goal) {
-  //	  Vect3 s3 = so.vect3();
-  //	  Vect3 g3 = goal.vect3();
-  //	  if (so.isLatLon()) {
-  //		  s3 = Projection.createProjection(so.lla()).project(so);
-  //		  g3 = Projection.createProjection(so.lla()).project(goal);
-  //	  }
-  //	  return Kinematics.turnRightDirectTo(s3,vo,g3);	  
-  //  }
-  //  
-  //  
-  //  /** Wrapper around Kinematic.turnTimeDirecTo()
-  //   */
-  //  public static double turnTimeDirectTo(Position so, Velocity vo, Position goal, double bankAngle) {
-  //	  Vect3 s3 = so.vect3();
-  //	  Vect3 g3 = goal.vect3();
-  //	  if (so.isLatLon()) {
-  //		  s3 = Projection.createProjection(so.lla().zeroAlt()).project(so);
-  //		  g3 = Projection.createProjection(so.lla().zeroAlt()).project(goal);
-  //	  }
-  //	  return Kinematics.turnTimeDirectTo(s3,vo,g3,bankAngle);
-  //  }
 
   // if this fails, it returns a NaN time
   public static Pair<Position,Double> intersection(Position so, Velocity vo, Position si, Velocity vi) {
@@ -389,8 +344,14 @@ public final class ProjectedKinematics {
 
 
   /** Wrapper around Kinematic.directToPoint()
-   * Returns a quad: end of turn point, velocity at that point, time at that point, direction of turn
-   * If no result is possible (for example the point lies within the given turn radius), this will return a negative time.
+   * 
+   *  @param so  current position
+   *  @param vo  current velocity
+   *  @param wp  the aircraft is turning to point to this point
+   *  @param R   turn radius
+   *  
+   *  returns a quad: (position of end of turn (EOT), velocity at end of turn, time to reach end of turn, direction of turn)
+   *  If no result is possible (for example the point lies within the given turn radius), this will return a negative time.*
    */
   public static Quad<Position,Velocity,Double,Integer> directToPoint(Position so, Velocity vo, Position wp, double R) {
     Vect3 s3 = so.point();
@@ -414,9 +375,9 @@ public final class ProjectedKinematics {
   /** Wrapper around Kinematic.genDirectToVertex
    *  Returns the vertex point (in a linear plan sense) between current point and directTo point.
    * 
-   * @param so     current position
+   * @param sop    current position
    * @param vo     current velocity
-   * @param wp     first point (in a flight plan) that you are trying to connect to
+   * @param wpp     first point (in a flight plan) that you are trying to connect to
    * @param bankAngle  turn bank angle
    * @param timeBeforeTurn   time to continue in current direction before beginning turn
    * @return (so,t0,t1) vertex point and delta time to reach the vertex point and delta time (from so) to reach end of turn
@@ -481,7 +442,7 @@ public final class ProjectedKinematics {
 
 
   /**
-   *  Position and velocity after t time units accelerating horizontally.  This is a wrapper around posAccelGS 
+   *  Position and velocity after t time units accelerating horizontally.  This is a wrapper around gsAccelPos 
    *  for Position objects,and uses the projection defined in the static Projection class.
    * @param so  starting position
    * @param vo  initial velocity
@@ -511,8 +472,9 @@ public final class ProjectedKinematics {
    *  for Position objects,and uses the projection defined in the static Projection class.
    * @param so  starting position
    * @param vo  initial velocity
-   * @param a   ground speed acceleration (or deceleration) (positive)
    * @param t   time of turn [secs]
+   * @param goalGs the goal ground speed
+   * @param a   ground speed acceleration (or deceleration) (positive)
    * @return Position and Velocity after t time
    */
   public static Pair<Position,Velocity> gsAccelUntil(Position so, Velocity vo, double t, double goalGs, double a) {
@@ -563,8 +525,9 @@ public final class ProjectedKinematics {
    *  for Position objects,and uses the projection defined in the static Projection class.
    * @param so  starting position
    * @param vo  initial velocity
-   * @param a   vertical speed acceleration (a positive value)
    * @param t   time of turn [secs]
+   * @param goalVs the goal vertical speed
+   * @param a   vertical speed acceleration (a positive value)
    * @return Position and Velocity after t time
    */
   public static Pair<Position,Velocity> vsAccelUntil(Position so, Velocity vo, double t, double goalVs, double a) {
@@ -586,11 +549,13 @@ public final class ProjectedKinematics {
    *  for Position objects,and uses the projection defined in the static Projection class.
    * @param so  starting position
    * @param vo  initial velocity
-   * @param a   vertical speed acceleration (a positive value)
    * @param t   time of turn [secs]
+   * @param goalVs goal vertical speed
+   * @param a   vertical speed acceleration (a positive value)
+   * @param tRamp the ramp up time
    * @return Position and Velocity after t time
    */
-  public static Pair<Position,Velocity> vsAccelUntilWithRampUp(Position so, Velocity vo, double t, double goalVs, double a,double tRamp) {
+  public static Pair<Position,Velocity> vsAccelUntilWithRampUp(Position so, Velocity vo, double t, double goalVs, double a, double tRamp) {
     Vect3 s3 = so.point();
     if (so.isLatLon()) {
       s3 = Projection.createProjection(so.lla().zeroAlt()).project(so); 
@@ -615,8 +580,11 @@ public final class ProjectedKinematics {
    *  for Position objects,and uses the projection defined in the static Projection class.
    * @param so  starting position
    * @param vo  initial velocity
-   * @param a   vertical speed acceleration (a positive value)
    * @param t   time of turn [secs]
+   * @param climbRate the climb rate
+   * @param targetAlt the target altitude
+   * @param a   vertical speed acceleration (a positive value)
+   * @param allowClimbRateReduction
    * @return Position and Velocity after t time
    */
   public static Pair<Position,Velocity> vsLevelOut(Position so, Velocity vo, double t, double climbRate, double targetAlt, double a, boolean allowClimbRateReduction) {

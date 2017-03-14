@@ -779,7 +779,7 @@ public class RRT {
 			}
 
 			NavPoint np = new NavPoint(wp,ETA);
-			newRoute.add(np);
+			newRoute.addNavPoint(np);
 			count++;
 		}
 

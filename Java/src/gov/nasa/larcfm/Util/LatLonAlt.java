@@ -3,7 +3,7 @@
  * 
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -13,8 +13,6 @@ package gov.nasa.larcfm.Util;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.ArrayList;
 
 /**
@@ -52,6 +50,7 @@ public final class LatLonAlt {
 	 * Creates a new position that is a copy of <code>v</code>.
 	 * 
 	 * @param v position object
+	 * @return new LatLonAlt object
 	 */
 	public static LatLonAlt mk(LatLonAlt v) {
 		return new LatLonAlt(v.lati, v.longi, v.alti);
@@ -63,6 +62,7 @@ public final class LatLonAlt {
 	 * @param lat latitude [deg north latitude]
 	 * @param lon longitude [deg east longitude]
 	 * @param alt altitude [ft]
+	 * @return new LatLonAlt object
 	 */
 	public static LatLonAlt make(double lat, double lon, double alt) {
 		return new LatLonAlt(Units.from("deg", lat),
@@ -79,6 +79,7 @@ public final class LatLonAlt {
 	 * @param lon_unit units of longitude
 	 * @param alt altitude [alt_unit]
 	 * @param alt_unit units of altitude
+	 * @return new LatLonAlt object
 	 */
 	public static LatLonAlt make(double lat, String lat_unit, double lon, String lon_unit, double alt, String alt_unit) {
 		return new LatLonAlt(Units.from(lat_unit, lat),
@@ -92,6 +93,7 @@ public final class LatLonAlt {
 	 * @param lat latitude [internal]
 	 * @param lon longitude [internal]
 	 * @param alt altitude [internal]
+	 * @return new LatLonAlt object
 	 */
 	public static LatLonAlt mk(double lat, double lon, double alt) {
 		return new LatLonAlt(lat, lon, alt);
@@ -101,6 +103,7 @@ public final class LatLonAlt {
 	 * Creates a new LatLonAlt with only altitude changed
 	 * 
 	 * @param alt altitude [internal]
+	 * @return new LatLonAlt object with modified altitude
 	 */
 	public LatLonAlt mkAlt(double alt) {
 		return new LatLonAlt(lati, longi, alt);
@@ -110,6 +113,7 @@ public final class LatLonAlt {
 	 * Creates a new LatLonAlt with only altitude changed
 	 * 
 	 * @param alt altitude [feet]
+	 * @return new LatLonAlt object with modified altitude
 	 */
 	public LatLonAlt makeAlt(double alt) {
 		return new LatLonAlt(lati, longi, Units.from("ft",alt));
@@ -156,56 +160,88 @@ public final class LatLonAlt {
 
 
 
-	/** Are these two LatLonAlt almost equal? */
+	/** Are these two LatLonAlt almost equal? 
+	 * 
+	 * @param a LatLonAlt object
+	 * @return true if the two are almost equals
+	 */
 	public boolean almostEquals(LatLonAlt a) {
 		return GreatCircle.almost_equals(this.lat(), this.lon(), a.lat(), a.lon())
 				&& Constants.almost_equals_alt(this.alt(), a.alt());
 	}
 
-	/** Are these two LatLonAlt almost equal, where 'almost' is defined by the given distances [m] */
-	public boolean almostEquals(LatLonAlt a, double horizdist, double vertdist) {
-		return GreatCircle.almost_equals(this.lat(), this.lon(), a.lat(), a.lon(), horizdist)
-				&& Util.within_epsilon(this.alt(), a.alt(), vertdist);
+	/** Are these two LatLonAlt almost equal, where 'almost' is defined by the given distances [m]
+	 * 
+	 * @param a LatLonAlt object
+	 * @param horizEps allowed difference in horizontal dimension
+	 * @param vertEps allowed difference in vertical dimension
+	 * @return true if the two are almost equals
+	 */
+	public boolean almostEquals(LatLonAlt a, double horizEps, double vertEps) {
+		return GreatCircle.almost_equals(this.lat(), this.lon(), a.lat(), a.lon(), horizEps)
+				&& Util.within_epsilon(this.alt(), a.alt(), vertEps);
 	}
 
-	/** Are these two LatLonAlt almost equal horizontally? */
-	public boolean almostEqualsHoriz(LatLonAlt a) {
-		return GreatCircle.almost_equals(this.lat(), this.lon(), a.lat(), a.lon());
+	/** Are these two LatLonAlt almost equal horizontally? 
+	 * 
+	 * @param a LatLonAlt object
+	 * @return true if the two are almost equals horizontally
+	 */
+	public boolean almostEquals2D(LatLonAlt a, double horizEps) {
+		return GreatCircle.almost_equals(this.lat(), this.lon(), a.lat(), a.lon(), horizEps);
 	}
 
 	/**
-	 * Return a copy of the current LatLonAlt with a zero altitude.  This is useful for creating projections that need to preserve altitude 
+	 * Return a copy of the current LatLonAlt with a zero altitude.  This is useful for 
+	 * creating projections that need to preserve altitude 
+	 * 
+	 * @return a LatLonAlt copy with a zero altitude
 	 */
 	public LatLonAlt zeroAlt() {
 		return new LatLonAlt(lati,longi,0.0);
 	}
 
-	/** Return latitude in degrees north */
+	/** Return latitude in degrees north 
+	 * @return latitude value in degrees
+	 * */
 	public double latitude() {
 		return Util.to_180(Units.to(Units.deg, lati));
 	}
 
-	/** Return latitude in the given units in a northerly direction */
+	/** Return latitude in the given units in a northerly direction 
+	 * @param units to return a value in
+	 * @return latitude altitude
+	 * */
 	public double latitude(String units) {
 		return Units.to(units, lati);
 	}
 
-	/** Return longitude in degrees east */
+	/** Return longitude in degrees east 
+	 * @return longitude in degrees
+	 * */
 	public double longitude() {
 		return Util.to_180(Units.to(Units.deg, longi));
 	}
 
-	/** Return longitude in the given units in an easterly direction */
+	/** Return longitude in the given units in an easterly direction 
+	 * @param units to return a value in
+	 * @return longitude in [units]
+	 * */
 	public double longitude(String units) {
 		return Units.to(units, longi);
 	}
 
-	/** Return altitude in [ft] */
+	/** Return altitude in [ft] 
+	 * @return altitude in feet
+	 * */
 	public double altitude() {
 		return Units.to(Units.ft, alti);
 	}	
 
-	/** Return altitude in the given units */
+	/** Return altitude in the given units 
+	 * @param units to return a value in
+	 * @return altitude
+	 * */
 	public double altitude(String units) {
 		return Units.to(units, alti);
 	}	
@@ -237,26 +273,20 @@ public final class LatLonAlt {
 	/** Compute a new lat/lon that is offset by dn meters north and de meters east.
 	 * This is a computationally fast estimate, and only should be used for relatively short distances.
 	 * 
-	 * @param so  original lat/lon position
 	 * @param dn  offset in north direction (m)
 	 * @param de  offset in east direction  (m)
-	 * @return
+	 * @return new position
 	 */
 	public LatLonAlt linearEst(double dn, double de) {
-		//f.pln(" lat = "+Units.str("deg",lati)+" lon = "+Units.str("deg",longi));
-		double R = 6378137;                   // diameter earth in meters
-		//double R = GreatCircle.spherical_earth_radius;
-		//f.pln(" $$$$ R = "+Units.str("NM",R,12)+" R2 = "+Units.str("NM",R2,12));
+		double R = GreatCircle.spherical_earth_radius; // 6378137;                   // diameter earth in meters
 		double nLat = lati + dn/R;
 		double nLon = longi + de/(R*Math.cos(lati));
-		//f.pln(" nLat = "+Units.str("deg",nLat)+" nLon = "+Units.str("deg",nLon));
 		return LatLonAlt.mk(nLat,nLon,alti);
 	}
 
 	/** Compute a new lat/lon that is obtained by moving with velocity vo for tm secs
 	 * This is a computationally fast estimate, and only should be used for relatively short distances.
 	 * 
-	 * @param so   original lat/lon position
 	 * @param vo   velocity away from original position
 	 * @param tm   time of relocation
 	 * @return new lat/lon position in direction v0
@@ -265,7 +295,6 @@ public final class LatLonAlt {
 		double dn = vo.Scal(tm).y();
 		double de = vo.Scal(tm).x();
 		double nAlt = alti + vo.z*tm;
-		//f.pln(" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% linearEst: nAlt = "+Units.str("ft",nAlt));
 		return linearEst(dn,de).mkAlt(nAlt);   
 	}
 
@@ -275,25 +304,34 @@ public final class LatLonAlt {
 
 	/**
 	 * Returns true if the current LatLonAlt has an "invalid" value
+	 * @return true if invalid
 	 */
 	public boolean isInvalid() {
 		return Double.isNaN(lati) || Double.isNaN(longi) || Double.isNaN(alti);
 	}
 
-	/** return the antipodal point corresponding to this LatLonAlt */
+	/** return the antipodal point corresponding to this LatLonAlt 
+	 * @return the antipode point to this object
+	 * */
 	public LatLonAlt antipode() {
 		return LatLonAlt.mk(-lati, Util.to_pi(longi+Math.PI), alti);
 	}
 
-	/** Return latitude in internal units */
+	/** Return latitude in internal units 
+	 * @return latitude value
+	 * */
 	public double lat() {
 		return lati;
 	}
-	/** Return longitude in internal units */
+	/** Return longitude in internal units 
+	 * @return longitude value
+	 * */
 	public double lon() {
 		return longi;
 	}
-	/** Return altitude in internal units */
+	/** Return altitude in internal units 
+	 * @return altitude value
+	 * */
 	public double alt() {
 		return alti;
 	}
@@ -303,7 +341,10 @@ public final class LatLonAlt {
 		return toString(Constants.get_output_precision());
 	}
 
-	/** String representation with units of [deg,deg,ft] */
+	/** String representation with units of [deg,deg,ft] 
+	 * @param precision digits of precision for the output values
+	 * @return string representation
+	 * */
 	public String toString(int precision) {
 		StringBuffer sb = new StringBuffer(30);
 		sb.append('(');
@@ -336,7 +377,10 @@ public final class LatLonAlt {
 		return sb.toString();
 	}
 
-	/** String representation */
+	/** String representation 
+	 * @param precision number of digits of precision for output
+	 * @return string representation
+	 * */
 	public List<String> toStringList(int precision) {
 		ArrayList<String> ret = new ArrayList<String>(3);
 		ret.add(f.FmPrecision(latitude(), precision));
@@ -345,22 +389,53 @@ public final class LatLonAlt {
 		return ret;
 	}
 
-	/** Return a string representation consistent with StateReader or PlanReader with user-specified units and precision */
+	/** Return a string representation consistent with StateReader or PlanReader 
+	 * with user-specified units and precision 
+	 * 
+	 * @param latunit units for latitude
+	 * @param lonunit units for longitude
+	 * @param zunit units for altitude
+	 * @param precision number of digits of precision for output
+	 * @return string representation
+	 */
 	public String toStringNP(String latunit, String lonunit, String zunit, int precision) {
-		return f.FmPrecision(f.fm_nz(Units.to(latunit, lati), precision+1),precision) + ", " + f.FmPrecision(f.fm_nz(Units.to(lonunit, longi),precision+1), precision) + ", " 	+ f.FmPrecision(Units.to(zunit, alti), precision);
+		return f.FmPrecision(Units.to(latunit, lati),precision) + ", " + 
+				f.FmPrecision(Units.to(lonunit, longi), precision) + ", " 	+ 
+				f.FmPrecision(Units.to(zunit, alti), precision);
 	}
 
-	/** Return a string representation consistent with StateReader or PlanReader with user-specified precision */
+	/** Return a string representation consistent with StateReader or PlanReader 
+	 * with user-specified units and precision 
+	 * 
+	 * @param zunit units for altitude
+	 * @param precision number of digits of precision for output
+	 * @return string representation
+	 */
+	public String toStringNP(String zunit, int precision) {
+		return f.FmPrecision(Units.to("deg",lati),Math.max(8,precision)) + ", " + 
+				f.FmPrecision(Units.to("deg",longi),Math.max(8,precision)) + ", " 	+ 
+				f.FmPrecision(Units.to(zunit,alti),precision);
+	}
+
+	/** Return a string representation consistent with StateReader or 
+	 * PlanReader with user-specified precision 
+	 * @param p number of digits of precision for output
+	 * @return a string representation
+	 * */
 	public String toStringNP(int p) {
-		return toStringNP("deg", "deg", "ft", p);
+		return toStringNP("deg","deg","ft",p);
 	}
 
-	/** Return a string representation consistent with StateReader or PlanReader with the global default precision */
+	/** Return a string representation consistent with StateReader or 
+	 * PlanReader with the global default precision 
+	 * 
+	 * @return string representation
+	 * */
 	public String toStringNP() {
 		return toStringNP("deg", "deg", "ft", Constants.get_output_precision());
 	}
 
-//	/** Return a string representation consistent with StateReader or PlanReader with the global default precision */
+	//	/** Return a string representation consistent with StateReader or PlanReader with the global default precision */
 
 
 	/**
@@ -413,7 +488,7 @@ public final class LatLonAlt {
 	/**
 	 * parse the lat/lon from the name assuming the degrees, decimal minutes representation
 	 * @param name
-	 * @return
+	 * @return a LatLonAlt object that corresponds to the given string
 	 */
 	public static LatLonAlt parseDecimalMinutes(String name) {
 		int indexToLon;
@@ -487,17 +562,17 @@ public final class LatLonAlt {
 		} catch (Exception e) {
 			return Double.NaN;
 		}
-		
+
 		if (minutes < 0 || seconds < 0 || minutes >= 60 || seconds >= 60) {
 			return Double.NaN;
 		}
-		
+
 		double deg = degrees+minutes/60.0+seconds/3600.0;
-		
+
 		if (name.indexOf('S') >= 0 || name.indexOf('s') >= 0 || name.indexOf('W') >= 0 || name.indexOf('w') >= 0) {
 			deg = -Math.abs(deg);
 		}
-		
+
 		return deg;
 	}
 
@@ -508,7 +583,10 @@ public final class LatLonAlt {
 	 * to the toString method).  If three bare values are present, then it is interpreted as deg/deg/ft.
 	 * If there are 3 value/unit pairs then each values is interpreted with regard 
 	 * to the appropriate unit.  If the string cannot be parsed, an INVALID value is
-	 * returned. 
+	 * returned.
+	 * 
+	 * @param str string representing a latitude and longitude
+	 *  @return a LatLonAlt that corresponds to the given string
 	 * */
 	public static LatLonAlt parse(String str) {
 		String[] fields = str.split(Constants.wsPatternParens);

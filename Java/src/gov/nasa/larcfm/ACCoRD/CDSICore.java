@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -295,7 +295,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 	 * @param vo
 	 * @param intent
 	 * @param tm
-	 * @return
+	 * @return true if violation
 	 */
 	public boolean violation(Position so, Velocity vo, Plan intent, double tm) {
 		if (tm < intent.getFirstTime() || tm > intent.getLastTime()) {
@@ -363,8 +363,8 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 		double NT = 0.0;
 		double HT = 0.0;
 
-		if (t0 < intent.getTime(0)) {
-			t_base = intent.getTime(0);
+		if (t0 < intent.time(0)) {
+			t_base = intent.time(0);
 			start_seg = 0;
 		} else {
 			t_base = t0;
@@ -394,7 +394,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue;
 			} else { // normal case
-				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.time(j+1) - t_base));
 				BT = Util.max(0.0, B + t0 - t_base);
 				NT = cont ? HT : T + t0 - t_base;
 				//NT = HT;
@@ -416,7 +416,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 					}     
 				}
 				cont = size() > 0 ? tout.get(tout.size()-1) == HT + t_base : false;     
-				t_base = intent.getTime(j+1);        
+				t_base = intent.time(j+1);        
 			}
 		}
 
@@ -466,8 +466,8 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 		double NT = 0.0;
 		double HT = 0.0;
 
-		if (t0 < intent.getTime(0)) {
-			t_base = intent.getTime(0);
+		if (t0 < intent.time(0)) {
+			t_base = intent.time(0);
 			start_seg = 0;
 		} else {
 			t_base = t0;
@@ -490,7 +490,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue; // leave loop
 			} else { // normal case
-				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.time(j+1) - t_base));
 				BT = Util.max(0.0, B + t0 - t_base);
 				NT = cont ? HT : T + t0 - t_base;      
 				//      Velocity vop = vo;
@@ -510,7 +510,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 					} 
 				}
 				cont = size() > 0 ? tout.get(tout.size()-1) == HT + t_base : false;     
-				t_base = intent.getTime(j+1);        
+				t_base = intent.time(j+1);        
 			}
 		}
 
@@ -571,7 +571,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 	 * @param intent
 	 * @param B
 	 * @param T
-	 * @return
+	 * @return true if conflict
 	 */
 	public boolean conflictXYZ(Vect3 so, Velocity vo, double t0, double state_horizon, Plan intent, double B, double T) {
 		boolean linear = true;     // was Plan.PlanType.LINEAR);
@@ -581,8 +581,8 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 		double NT = 0.0;
 		double HT = 0.0;
 
-		if (t0 < intent.getTime(0)) {
-			t_base = intent.getTime(0);
+		if (t0 < intent.time(0)) {
+			t_base = intent.time(0);
 			start_seg = 0;
 		} else {
 			t_base = t0;
@@ -597,13 +597,13 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue;
 			} else { // normal case
-				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.time(j+1) - t_base));
 				BT = Util.max(0.0, B + t0 - t_base);
 				NT = T + t0 - t_base;
 				if (NT >= 0) {
 					if (cdsscore.conflict(sop, vo, sip, intent.initialVelocity(j, linear), BT, Util.min(NT, HT)) ) return true;
 				}
-				t_base = intent.getTime(j+1);        
+				t_base = intent.time(j+1);        
 			}
 		}
 		return false;
@@ -623,8 +623,8 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 		double NT = 0.0;
 		double HT = 0.0;
 
-		if (t0 < intent.getTime(0)) {
-			t_base = intent.getTime(0);
+		if (t0 < intent.time(0)) {
+			t_base = intent.time(0);
 			start_seg = 0;
 		} else {
 			t_base = t0;
@@ -642,7 +642,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue; // leave loop
 			} else { // normal case
-				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.time(j+1) - t_base));
 				BT = Util.max(0.0, B + t0 - t_base);
 				NT = T + t0 - t_base;      
 				Velocity vop = proj.projectVelocity(so2p, vo);  //CHANGED!!!
@@ -650,7 +650,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 				if (NT >= 0) {
 					if ( cdsscore.conflict(so3, vop, si3, vip, BT, Util.min(NT, HT)) ) return true;
 				}
-				t_base = intent.getTime(j+1);        
+				t_base = intent.time(j+1);        
 			}
 		}
 		return false;
@@ -661,7 +661,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 	 * EXPERIMANTAL
 	 * Return the time of closest approach and "distance" at that time (as defined by the detection algorithm), or a negative value if they never overlap
 	 * Eventually blend this into the main detection with a flag?
-	 * @return
+	 * @return tca and distance
 	 */
 	public Pair<Double,Double>urgency(Position so, Velocity vo, double t0, double state_horizon, Plan intent, double B, double T) {
 		if (so.isLatLon()) return urgencyLL(so.lla(), vo, t0, state_horizon, intent, B, T);
@@ -680,8 +680,8 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 		double dist = Double.MAX_VALUE;
 		double tca = -1.0;
 
-		if (t0 < intent.getTime(0)) {
-			t_base = intent.getTime(0);
+		if (t0 < intent.time(0)) {
+			t_base = intent.time(0);
 			start_seg = 0;
 		} else {
 			t_base = t0;
@@ -696,7 +696,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue;
 			} else { // normal case
-				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.time(j+1) - t_base));
 				BT = Util.max(0.0, B + t0 - t_base);
 				NT = cont ? HT : T + t0 - t_base;
 				if (NT >= 0) {
@@ -710,7 +710,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 
 				}
 				cont = size() > 0 ? tout.get(tout.size()-1) == HT + t_base : false;     
-				t_base = intent.getTime(j+1);        
+				t_base = intent.time(j+1);        
 			}
 		}
 		return Pair.make(tca,dist);
@@ -729,8 +729,8 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 		double dist = Double.MAX_VALUE;
 		double tca = -1.0;
 
-		if (t0 < intent.getTime(0)) {
-			t_base = intent.getTime(0);
+		if (t0 < intent.time(0)) {
+			t_base = intent.time(0);
 			start_seg = 0;
 		} else {
 			t_base = t0;
@@ -748,7 +748,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 			if (j == intent.size() - 1) { 
 				continue; // leave loop
 			} else { // normal case
-				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.getTime(j+1) - t_base));
+				HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), intent.time(j+1) - t_base));
 				BT = Util.max(0.0, B + t0 - t_base);
 				NT = cont ? HT : T + t0 - t_base;      
 				Velocity vop = proj.projectVelocity(so2p, vo);  //CHANGED!!!
@@ -763,7 +763,7 @@ public final class CDSICore implements ErrorReporter, Detection3DAcceptor {
 					}
 				}
 				cont = size() > 0 ? tout.get(tout.size()-1) == HT + t_base : false;     
-				t_base = intent.getTime(j+1);        
+				t_base = intent.time(j+1);        
 			}
 		}
 

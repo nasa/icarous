@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -22,9 +22,11 @@ import java.util.Hashtable;
 import java.util.Iterator;
 
 /**
- * This server actively pushes data to and SocketPushReceivers that have signed up with it.
+ * This server actively pushes data to any SocketPushReceivers that have signed up with it.
  * Data is cached on the client side.
  * This is intended for applications where the client updates more frequently than the server.
+ * This works by consuming raw string representations of the data that are identical to FormalATM plan or state files.
+ * More efficient communication protocols are certainly possible.
  */
 public class SocketPushTransmitter implements Transmitter {
 	int port;
@@ -70,6 +72,11 @@ public class SocketPushTransmitter implements Transmitter {
 		}
 	}
 
+	public boolean shutdown() {
+		server.halt();
+		return true;
+	}
+	
 	private void sendPacket(String keyword, String packet, int num, int max) {
 		Iterator<Socket> i = servers.keySet().iterator();
 		while (i.hasNext()) {				
@@ -123,7 +130,7 @@ public class SocketPushTransmitter implements Transmitter {
 		Hashtable<ObjectOutputStream,String> clients; //client socket, keyword  
 
 		public ServerThread(int p) {
-			super("SocketTransmitter.ServerThread");
+			super("SocketPushTransmitter.ServerThread");
 			port = p;
 			ssocket = null;
 			running = true;
@@ -168,7 +175,7 @@ public class SocketPushTransmitter implements Transmitter {
 					}
 					out.flush();
 				} catch (IOException e1) {
-					f.pln("communicaiton error");
+					f.pln("communication error, transmitter may need to be reset");
 					e1.printStackTrace();
 				}			
 			}

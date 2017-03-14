@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -12,7 +12,10 @@ import java.io.Serializable;
 
 
 /**
- * This class represents either an aircraft Plan or a polygon Path
+ * A "general state" object that holds Euclidean or Lat/Lon information about position and velocity for an object.
+ * Currently this can either be a (point-mass) aircraft or a (possible morphing) polygon.
+ * This is intended to be traffic information that will be converted to a General3DState 
+ * object to be sent to a GeneralDetector object.  
  */
 public class GeneralPlan implements ErrorReporter {
 	private final Plan fp; // plan
@@ -20,6 +23,8 @@ public class GeneralPlan implements ErrorReporter {
 	private final boolean containment;  // path containment? (always false for plans)
 //	private final double t; // activation time
 
+	static final GeneralPlan INVALID = new GeneralPlan();
+	
 	public GeneralPlan() {
 		fp = null;
 		pp = null;
@@ -168,7 +173,7 @@ public class GeneralPlan implements ErrorReporter {
 		if (i >= 0) {
 			if (fp != null) {
 				if (i < fp.size()) {
-					double time = fp.getTime(i);
+					double time = fp.time(i);
 					return new GeneralState(fp.getName(), fp.point(i).position(), fp.initialVelocity(i), time);
 				}
 			} else if (pp != null) {
@@ -192,8 +197,7 @@ public class GeneralPlan implements ErrorReporter {
 	
 	public boolean validate() {
 		if (fp != null) {
-			boolean useProjection = true;
-			return fp.isWeakConsistent(true,useProjection);     // **RWB** use weak Consistent rather than is consistent
+			return fp.isWeakFlyable(true);     // **RWB** use weak Consistent rather than is consistent
 		} else if (pp != null) {
 			return pp.validate();
 		}

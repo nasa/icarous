@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -65,7 +65,7 @@ public class DensityGrid {
 	}
 
 
-	void init(BoundingRectangle b, NavPoint start, Position end, int buffer, double sqSz, boolean ll) {
+	private void init(BoundingRectangle b, NavPoint start, Position end, int buffer, double sqSz, boolean ll) {
 		squareDist = sqSz;
 		latLon = ll;
 		squareSize = sqSz;
@@ -496,7 +496,7 @@ public class DensityGrid {
 		if (gPath == null) f.pln("printGridPath NULL PATH");
 		for (int i = 0; i < gPath.size(); i++) {
 			Pair<Integer,Integer> ijPair = gPath.get(i);
-			f.pln("printGridPath i = "+i+" ijPair = "+ijPair);
+			f.pln("printGridPath: i = "+i+" ijPair = "+ijPair);
 		}	
 	}
 
@@ -586,7 +586,7 @@ public class DensityGrid {
 		}
 		Plan p =  new Plan();
 		NavPoint np0 = new NavPoint(startPoint,startTime);
-		p.add(np0);
+		p.addNavPoint(np0);
 		Position lastCenter = startPoint;
 		double lastTime = startTime;
 		double lastAlt = np0.alt();
@@ -598,7 +598,7 @@ public class DensityGrid {
 			double newAlt = lastAlt + vs*dt;
 			//f.pln(" $$$$ newAlt = "+Units.str("ft", newAlt)+" dt = "+dt+ " gs="+gs);
 			cntr = cntr.mkAlt(newAlt);
-			p.add(new NavPoint(cntr, time));
+			p.addNavPoint(new NavPoint(cntr, time));
 			//f.pln("plan adding "+cntr+", "+time);			
 			lastTime = time;
 			lastCenter = cntr;
@@ -614,7 +614,7 @@ public class DensityGrid {
 			NavPoint nearest = p.closestPoint(pivot); // this will be the new breakpoint, if it's not already in the plan
 			p.remove(p.size()-1);
 			if (p.point(p.size()-1).distanceH(nearest) > squareDist) {
-				p.add(nearest);
+				p.addNavPoint(nearest);
 			}
 			lastCenter = p.point(p.size()-1).position();
 		}
@@ -622,7 +622,7 @@ public class DensityGrid {
 		double dist = lastCenter.distanceH(endPoint);
 		double dt = dist/gs;
 		NavPoint last = new NavPoint(endPoint,lastTime+dt);
-		p.add(last);
+		p.addNavPoint(last);
 		return p;
 	}
 

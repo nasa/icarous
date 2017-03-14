@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -660,7 +660,7 @@ public class ParameterPanel extends JPanel {
 										if (!inUpdate) {
 											inUpdate = true;
 											log(key+" "+bcb.isSelected());
-											params.set(key, (Boolean)bcb.isSelected());
+											params.setBool(key,bcb.isSelected());
 											saveData(key);
 											updateBoolEntry(key);
 											updateDisplays(key);

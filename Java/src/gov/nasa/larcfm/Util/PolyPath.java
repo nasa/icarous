@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -277,7 +277,7 @@ public class PolyPath implements ErrorReporter {
 			}
 			double time = times.get(i);
 			NavPoint np = new NavPoint(poly.boundingCircleCenter(),time);
-			p.add(np);
+			p.addNavPoint(np);
 			if (Math.abs(poly.getTop()-poly.getBottom()) > maxH) { 
 				maxH = Math.abs(poly.getTop()-poly.getBottom());
 			}
@@ -297,7 +297,7 @@ public class PolyPath implements ErrorReporter {
 					np = new NavPoint(poly.boundingCircleCenter().linear(vlist.get(0), 36000), times.get(0)+36000);
 				}
 			}
-			p.add(np);
+			p.addNavPoint(np);
 		}
 
 		//		p.setProtectionDistance(maxD);
@@ -1203,31 +1203,26 @@ public class PolyPath implements ErrorReporter {
 	 */
 	public List<String> toStringList(int i, int j, int precision, boolean tcpColumns) {
 		SimplePoly poly = polyList.get(i);
-		ArrayList<String> ret = new ArrayList<String>(NavPoint.TCP_OUTPUT_COLUMNS+2);
+		ArrayList<String> ret = new ArrayList<String>(TcpData.TCP_OUTPUT_COLUMNS+2);
 		ret.add(name);  // name is (0)
 		ret.addAll(poly.getVertex(j).toStringList(precision)); //vertex 1-3
 		ret.add(f.FmPrecision(times.get(i),precision)); // time 4
 		if (tcpColumns) {
-			ret.add("-"); // type
-			int start = 5;
-			if (isUserVel()) {
-				ret.addAll(initialVelocity(j).toStringList()); // vel 6-8
-				start = 8;
-			}
-			for (int k = start; k < NavPoint.TCP_OUTPUT_COLUMNS; k++) {
+			int start = 4; 
+			for (int k = start; k < TcpData.TCP_OUTPUT_COLUMNS; k++) {
 				ret.add("-");
 			}
 		} else {
 			ret.add("-"); // label
-			if (isUserVel()) {
-				ret.addAll(initialVelocity(j).toStringList()); // vel 6-8
-			}
 		}
 		ret.add(f.FmPrecision(Units.to("ft", poly.getTop()),precision));
+		if (isUserVel()) {
+			ret.addAll(initialVelocity(j).toStringList()); // vel columns
+		}
 		return ret; 
 	}
 	
-	SimpleMovingPoly getSimpleMovingPoly(int i) {
+	public SimpleMovingPoly getSimpleMovingPoly(int i) {
 		SimplePoly poly = getPoly(i);
 		if (mode == PathMode.MORPHING) {
 			ArrayList<Velocity> vvlist = new ArrayList<Velocity>();
@@ -1240,7 +1235,7 @@ public class PolyPath implements ErrorReporter {
 		}
 	}
 
-	SimpleMovingPoly getSimpleMovingPoly(double t) {
+	public SimpleMovingPoly getSimpleMovingPoly(double t) {
 		SimplePoly poly = interpolate(t);
 		if (mode == PathMode.MORPHING) {
 			ArrayList<Velocity> vvlist = new ArrayList<Velocity>();

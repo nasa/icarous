@@ -72,7 +72,7 @@ public class Icarous{
 
 	public Icarous(String args[],Mission task){
 
-		version    = "1.0";
+		version    = "1.1";
 		verbose    = false;
 		debugDAA   = false;
 		sitlhost   = null;

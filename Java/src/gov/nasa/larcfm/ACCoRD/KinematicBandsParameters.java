@@ -1,13 +1,16 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
 package gov.nasa.larcfm.ACCoRD;
 
+import java.util.HashMap;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import gov.nasa.larcfm.IO.ConfigReader;
 import gov.nasa.larcfm.Util.ErrorLog;
@@ -15,6 +18,7 @@ import gov.nasa.larcfm.Util.ErrorReporter;
 import gov.nasa.larcfm.Util.ParameterAcceptor;
 import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.Util.Units;
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.f;
 
 final public class KinematicBandsParameters implements ParameterAcceptor, ErrorReporter {
@@ -22,7 +26,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	/**
 	 * DAIDALUS version
 	 */
-	public static final String VERSION = "1.0";
+	public static final String VERSION = "1.1";
 
 	/**
 	 * Alertor
@@ -77,53 +81,150 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	private double contour_thr_; // Horizontal threshold, specified as an angle to the left/right of current aircraft direction,
 	// for computing horizontal contours. A value of 0 means only conflict contours. A value of pi means all contours.
 
+	private HashMap<String,String> units_;
+	private List<String> keys_;  // List of key values 
+
 	/* NOTE: By default, no alert levels are configured */
 	public KinematicBandsParameters() {
-		// Bands
-		lookahead_time_ = 180; // [s]       
-		left_trk_ =  Math.PI; 
-		right_trk_ = Math.PI;
-		min_gs_  = Units.from("knot",10);  
-		max_gs_  = Units.from("knot",700);
-		min_vs_  = Units.from("fpm",-6000);
-		max_vs_  = Units.from("fpm",6000); 
-		min_alt_ = Units.from("ft",100);  
-		max_alt_ = Units.from("ft",50000);
 
-		// Kinematic bands
-		trk_step_         = Units.from("deg",  1.0); 
-		gs_step_          = Units.from("knot", 5.0); 
-		vs_step_          = Units.from("fpm",100.0); 
-		alt_step_         = Units.from("ft", 100.0); 
+		units_ = new HashMap<String,String>();
+		keys_ = new ArrayList<String>();
+
+		// Bands Parameters
+		lookahead_time_ = 180.0; // [s]
+		keys_.add("lookahead_time");
+		units_.put("lookahead_time","s");
+
+		left_trk_  = Units.from("deg",180.0); 
+		keys_.add("left_trk");
+		units_.put("left_trk","deg");
+
+		right_trk_ = Units.from("deg",180.0);
+		keys_.add("right_trk");
+		units_.put("right_trk","deg");
+
+		min_gs_  = Units.from("knot",10.0);  
+		keys_.add("min_gs");
+		units_.put("min_gs","knot");
+
+		max_gs_  = Units.from("knot",700.0);
+		keys_.add("max_gs");
+		units_.put("max_gs","knot");
+
+		min_vs_  = Units.from("fpm",-6000.0);
+		keys_.add("min_vs");
+		units_.put("min_vs","fpm");
+
+		max_vs_  = Units.from("fpm",6000.0); 
+		keys_.add("max_vs");
+		units_.put("max_vs","fpm");
+
+		min_alt_ = Units.from("ft",100.0);  
+		keys_.add("min_alt");
+		units_.put("min_alt","ft");
+
+		max_alt_ = Units.from("ft",50000.0);
+		keys_.add("max_alt");
+		units_.put("max_alt","ft");
+
+		// Kinematic Parameters
+		trk_step_ = Units.from("deg",1.0); 
+		keys_.add("trk_step");
+		units_.put("trk_step","deg");
+
+		gs_step_ = Units.from("knot",5.0); 
+		keys_.add("gs_step");
+		units_.put("gs_step","knot");
+
+		vs_step_ = Units.from("fpm",100.0); 
+		keys_.add("vs_step");
+		units_.put("vs_step","fpm");
+
+		alt_step_ = Units.from("ft", 100.0); 
+		keys_.add("alt_step");
+		units_.put("alt_step","ft");
+
 		horizontal_accel_ = Units.from("m/s^2",2.0); 
-		vertical_accel_   = Units.from("G",0.25);    // Section 1.2.3, DAA MOPS V3.6
-		turn_rate_        = Units.from("deg/s",3.0); // Section 1.2.3, DAA MOPS V3.6
-		bank_angle_       = 0.0;    
-		vertical_rate_    = Units.from("fpm",500);   // Section 1.2.3, DAA MOPS V3.6                     
+		keys_.add("horizontal_accel");
+		units_.put("horizontal_accel","m/s^2");
 
-		// Recovery bands
+		vertical_accel_ = Units.from("G",0.25);    // Section 1.2.3, DAA MOPS V3.6
+		keys_.add("vertical_accel");
+		units_.put("vertical_accel","G");
+
+		turn_rate_ = Units.from("deg/s",3.0); // Section 1.2.3, DAA MOPS V3.6
+		keys_.add("turn_rate");
+		units_.put("turn_rate","deg/s");
+
+		bank_angle_ = 0.0;    
+		keys_.add("bank_angle");
+		units_.put("bank_angle","deg");
+
+		vertical_rate_ = Units.from("fpm",500.0);   // Section 1.2.3, DAA MOPS V3.6                     
+		keys_.add("vertical_rate");
+		units_.put("vertical_rate","fpm");
+
+		// Recovery Bands Parameters
+		recovery_stability_time_ = 2.0; // [s] 
+		keys_.add("recovery_stability_time");
+		units_.put("recovery_stability_time","s");
+
+		min_horizontal_recovery_ = 0.0; 
+		keys_.add("min_horizontal_recovery");
+		units_.put("min_horizontal_recovery","nmi");
+
+		min_vertical_recovery_ = 0.0; 
+		keys_.add("min_vertical_recovery");
+		units_.put("min_vertical_recovery","ft");
+
+		recovery_trk_ = true; 
+		keys_.add("recovery_trk");
+
+		recovery_gs_ = true; 
+		keys_.add("recovery_gs");
+
+		recovery_vs_ = true; 
+		keys_.add("recovery_vs");
+
+		recovery_alt_ = true; 
+		keys_.add("recovery_alt");
+
+		// Collision Avoidance Bands Parameters
+		ca_bands_ = false; 
+		keys_.add("ca_bands");
+
+		ca_factor_ = 0.2;
+		keys_.add("ca_factor");
+
 		horizontal_nmac_ = ACCoRDConfig.NMAC_D;      // Defined in RTCA SC-147
+		keys_.add("horizontal_nmac");
+		units_.put("horizontal_nmac","ft");
+
 		vertical_nmac_ = ACCoRDConfig.NMAC_H;        // Defined in RTCA SC-147
-		recovery_stability_time_ = 2; // [s] 
-		min_horizontal_recovery_ = 0; 
-		min_vertical_recovery_   = 0; 
+		keys_.add("vertical_nmac");
+		units_.put("vertical_nmac","ft");
+
+		// Implicit Coordination Parameters
 		conflict_crit_ = false;
+		keys_.add("conflict_crit");
+
 		recovery_crit_ = false; 
-		recovery_trk_  = true; 
-		recovery_gs_   = true; 
-		recovery_vs_   = true; 
-		recovery_alt_  = true; 
-		ca_bands_      = false; 
-		ca_factor_     = 0.2;
+		keys_.add("recovery_crit");
 
-		// Contours
-		contour_thr_ = Math.PI;
+		// Horizontal Contour Threshold
+		contour_thr_ = Units.from("deg",180.0);
+		keys_.add("contour_thr");
+		units_.put("contour_thr","deg");
 
-		// Alert levels
+		// Alert Levels
 		alertor = new AlertLevels();
 	}
 
 	public KinematicBandsParameters(KinematicBandsParameters parameters) {
+		keys_ = new ArrayList<String>();
+		keys_.addAll(parameters.keys_);
+		units_ = new HashMap<String,String>();
+		alertor = new AlertLevels(); 
 		setKinematicBandsParameters(parameters);
 	}
 
@@ -131,6 +232,8 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set kinematic bands parameters
 	 */
 	public void setKinematicBandsParameters(KinematicBandsParameters parameters) {
+		units_.putAll(parameters.units_);
+
 		// Bands
 		lookahead_time_ = parameters.lookahead_time_;
 		left_trk_ = parameters.left_trk_;
@@ -172,7 +275,48 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 		contour_thr_ = parameters.contour_thr_;	
 
 		// Alert levels
-		alertor = new AlertLevels(parameters.alertor); 
+		// Bands
+		lookahead_time_ = parameters.lookahead_time_;
+		left_trk_ = parameters.left_trk_;
+		right_trk_ = parameters.right_trk_;
+		min_gs_ = parameters.min_gs_;   
+		max_gs_ = parameters.max_gs_;   
+		min_vs_ = parameters.min_vs_;   
+		max_vs_ = parameters.max_vs_;   
+		min_alt_ = parameters.min_alt_; 
+		max_alt_ = parameters.max_alt_; 
+
+		// Kinematic bands
+		trk_step_         = parameters.trk_step_;  
+		gs_step_          = parameters.gs_step_;
+		vs_step_          = parameters.vs_step_; 
+		alt_step_         = parameters.alt_step_; 
+		horizontal_accel_ = parameters.horizontal_accel_; 
+		vertical_accel_   = parameters.vertical_accel_; 
+		turn_rate_        = parameters.turn_rate_; 
+		bank_angle_       = parameters.bank_angle_; 
+		vertical_rate_    = parameters.vertical_rate_; 
+
+		// Recovery bands
+		horizontal_nmac_         = parameters.horizontal_nmac_;
+		vertical_nmac_           = parameters.vertical_nmac_;
+		recovery_stability_time_ = parameters.recovery_stability_time_; 
+		min_horizontal_recovery_ = parameters.min_horizontal_recovery_;
+		min_vertical_recovery_   = parameters.min_vertical_recovery_;
+		conflict_crit_           = parameters.conflict_crit_;
+		recovery_crit_           = parameters.recovery_crit_; 
+		recovery_trk_            = parameters.recovery_trk_;
+		recovery_gs_             = parameters.recovery_gs_;
+		recovery_vs_             = parameters.recovery_vs_;
+		recovery_alt_            = parameters.recovery_alt_;
+		ca_bands_                = parameters.ca_bands_;
+		ca_factor_               = parameters.ca_factor_;
+
+		// Contours
+		contour_thr_ = parameters.contour_thr_;	
+
+		// Alert levels
+		alertor.copy(parameters.alertor);
 	}
 
 	/** 
@@ -501,17 +645,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set lookahead time to value in seconds.
 	 */
 	public boolean setLookaheadTime(double val) {
-		if (error.isPositive("setLookaheadTime",val)) {
-			lookahead_time_ = val;
-			return true;
-		}
-		return false;
+		lookahead_time_ = Math.abs(val);	
+		return error.isPositive("setLookaheadTime",val);
 	}
 
 	/** 
 	 * Set lookahead time to value in specified units [u].
 	 */
 	public boolean setLookaheadTime(double val, String u) {
+		units_.put("lookahead_time",u);
 		return setLookaheadTime(Units.from(u,val));
 	}
 
@@ -519,18 +661,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set left track to value in internal units [rad]. Value is expected to be in [0 - pi]
 	 */
 	public boolean setLeftTrack(double val) {
-		val = Math.abs(val);
-		if (error.isBetween("setLeftTrack",val,0,Math.PI)) {
-			left_trk_ = val;
-			return true;
-		}
-		return false;
+		left_trk_ = Math.abs(Util.to_pi(val));
+		return error.isBetween("setLeftTrack",val,0,Math.PI);
 	}
 
 	/** 
 	 * Set left track to value in specified units [u]. Value is expected to be in [0 - pi]
 	 */
 	public boolean setLeftTrack(double val, String u) {
+		units_.put("left_trk",u);
 		return setLeftTrack(Units.from(u,val));
 	}
 
@@ -538,18 +677,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set right track to value in internal units [rad]. Value is expected to be in [0 - pi]
 	 */
 	public boolean setRightTrack(double val) {
-		val = Math.abs(val);
-		if (error.isBetween("setRightTrack",val,0,Math.PI)) {
-			right_trk_ = val;
-			return true;
-		}
-		return false;
+		right_trk_ = Math.abs(Util.to_pi(val));
+		return error.isBetween("setRightTrack",val,0,Math.PI);
 	}
 
 	/** 
 	 * Set right track to value in specified units [u]. Value is expected to be in [0 - pi]
 	 */
 	public boolean setRightTrack(double val, String u) {
+		units_.put("right_trk",u);
 		return setRightTrack(Units.from(u,val));
 	}
 
@@ -558,18 +694,16 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Minimum ground speed must be greater than ground speed step.
 	 */
 	public boolean setMinGroundSpeed(double val) {
-		if (error.isPositive("setMinGroundSpeed",val)) {
-			min_gs_ = val;
-			return true;
-		}
-		return false;
+		min_gs_ = Math.abs(val);
+		return error.isPositive("setMinGroundSpeed",val);
 	}
 
 	/** 
 	 * Set minimum ground speed to value in specified units [u].
 	 * Minimum ground speed must be greater than ground speed step.
 	 */
-	public boolean setMinGroundSpeed(double val, String u) {
+	public boolean setMinGroundSpeed(double val, String u) {		
+		units_.put("min_gs",u);
 		return setMinGroundSpeed(Units.from(u,val));
 	}
 
@@ -577,17 +711,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set maximum ground speed to value in internal units [m/s].
 	 */
 	public boolean setMaxGroundSpeed(double val) {
-		if (error.isPositive("setMaxGroundSpeed",val)) {
-			max_gs_ = val;
-			return true;
-		}
-		return false;
+		max_gs_ = Math.abs(val);
+		return error.isPositive("setMaxGroundSpeed",val);
 	}
 
 	/** 
 	 * Set maximum ground speed to value in specified units [u].
 	 */
 	public boolean setMaxGroundSpeed(double val, String u) {
+		units_.put("max_gs",u);
 		return setMaxGroundSpeed(Units.from(u,val));
 	}
 
@@ -603,6 +735,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set minimum vertical speed to value in specified units [u].
 	 */
 	public boolean setMinVerticalSpeed(double val, String u) {
+		units_.put("min_vs",u);
 		return setMinVerticalSpeed(Units.from(u,val));
 	}
 
@@ -618,6 +751,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set maximum vertical speed to value in specified units [u].
 	 */
 	public boolean setMaxVerticalSpeed(double val, String u) {
+		units_.put("max_vs",u);
 		return setMaxVerticalSpeed(Units.from(u,val));
 	}
 
@@ -625,17 +759,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set minimum altitude to value in internal units [m].
 	 */
 	public boolean setMinAltitude(double val) {
-		if (error.isNonNegative("setMinAltitude",val)) {
-			min_alt_ = val;
-			return true;
-		}
-		return false;
+		min_alt_ = Math.abs(val);
+		return error.isNonNegative("setMinAltitude",val);
 	}
 
 	/** 
 	 * Set minimum altitude to value in specified units [u].
 	 */
 	public boolean setMinAltitude(double val, String u) {
+		units_.put("min_alt",u);
 		return setMinAltitude(Units.from(u,val));
 	}
 
@@ -643,17 +775,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set maximum altitude to value in internal units [m].
 	 */
 	public boolean setMaxAltitude(double val) {
-		if (error.isPositive("setMaxAltitude",val)) {
-			max_alt_ = val;
-			return true;
-		}
-		return false;
+		max_alt_ = Math.abs(val);
+		return error.isPositive("setMaxAltitude",val);
 	}
 
 	/** 
 	 * Set maximum altitude to value in specified units [u].
 	 */
 	public boolean setMaxAltitude(double val, String u) {
+		units_.put("max_alt",u);
 		return setMaxAltitude(Units.from(u,val));
 	}
 
@@ -661,18 +791,16 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set track step to value in internal units [rad].
 	 */
 	public boolean setTrackStep(double val) {
-		if (error.isPositive("setTrackStep",val) &&
-				error.isLessThan("setTrackStep",val,Math.PI)) {
-			trk_step_ = val;
-			return true;
-		}
-		return false;
+		trk_step_ = Math.abs(Util.to_pi(val));
+		return error.isPositive("setTrackStep",val) &&
+				error.isLessThan("setTrackStep",val,Math.PI);
 	}
 
 	/** 
 	 * Set track step to value in specified units [u].
 	 */
 	public boolean setTrackStep(double val, String u) {
+		units_.put("trk_step",u);;
 		return setTrackStep(Units.from(u,val));
 	}
 
@@ -680,17 +808,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set ground speed step to value in internal units [m/s].
 	 */
 	public boolean setGroundSpeedStep(double val) {
-		if (error.isPositive("setGroundSpeedStep",val)) {
-			gs_step_ = val;
-			return true;
-		}
-		return false;
+		gs_step_ = Math.abs(val);
+		return error.isPositive("setGroundSpeedStep",val);
 	}
 
 	/** 
 	 * Set ground speed step to value in specified units [u].
 	 */
 	public boolean setGroundSpeedStep(double val, String u) {
+		units_.put("gs_step",u);
 		return setGroundSpeedStep(Units.from(u,val));
 	}
 
@@ -698,17 +824,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set vertical speed step to value in internal units [m/s].
 	 */
 	public boolean setVerticalSpeedStep(double val) {
-		if (error.isPositive("setVerticalSpeedStep",val)) {
-			vs_step_ = val;
-			return true;
-		}
-		return false;
+		vs_step_ = Math.abs(val);
+		return error.isPositive("setVerticalSpeedStep",val);
 	}
 
 	/** 
 	 * Set vertical speed step to value in specified units [u].
 	 */
 	public boolean setVerticalSpeedStep(double val, String u) {
+		units_.put("vs_step",u);
 		return setVerticalSpeedStep(Units.from(u,val));
 	}
 
@@ -716,17 +840,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set altitude step to value in internal units [m].
 	 */
 	public boolean setAltitudeStep(double val) {
-		if (error.isPositive("setAltitudeStep",val)) {
-			alt_step_ = val;
-			return true;
-		}
-		return false;
+		alt_step_ = Math.abs(val);
+		return error.isPositive("setAltitudeStep",val);
 	}
 
 	/** 
 	 * Set altitude step to value in specified units [u].
 	 */
 	public boolean setAltitudeStep(double val, String u) {
+		units_.put("alt_step",u);
 		return setAltitudeStep(Units.from(u,val));
 	}
 
@@ -734,17 +856,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set horizontal acceleration to value in internal units [m/s^2].
 	 */
 	public boolean setHorizontalAcceleration(double val) {
-		if (error.isNonNegative("setHorizontalAcceleration",val)) {
-			horizontal_accel_ = val;
-			return true;
-		}
-		return false;
+		horizontal_accel_ = Math.abs(val);
+		return error.isNonNegative("setHorizontalAcceleration",val);
 	}
 
 	/** 
 	 * Set horizontal acceleration to value in specified units [u].
 	 */
 	public boolean setHorizontalAcceleration(double val, String u) {
+		units_.put("horizontal_accel",u);
 		return setHorizontalAcceleration(Units.from(u,val));
 	}
 
@@ -752,26 +872,26 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set vertical acceleration to value in internal units [m/s^2].
 	 */
 	public boolean setVerticalAcceleration(double val) {
-		if (error.isNonNegative("setVerticalAcceleration",val)) {
-			vertical_accel_ = val;
-			return true;
-		}
-		return false;
+		vertical_accel_ = Math.abs(val);
+		return error.isNonNegative("setVerticalAcceleration",val);
 	}
 
 	/** 
 	 * Set vertical acceleration to value in specified units [u].
 	 */
 	public boolean setVerticalAcceleration(double val, String u) {
+		units_.put("vertical_accel",u);
 		return setVerticalAcceleration(Units.from(u,val));
 	}
 
 	private boolean set_turn_rate(double val) {
-		if (error.isNonNegative("setTurnRate",val)) {
-			turn_rate_ = val;
-			return true;
-		}
-		return false;
+		turn_rate_ = Math.abs(val);
+		return error.isNonNegative("setTurnRate",val);
+	}
+
+	private boolean set_bank_angle(double val) {
+		bank_angle_ = Math.abs(val);
+		return error.isNonNegative("setBankAngle",val);
 	}
 
 	/** 
@@ -779,11 +899,8 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * resets the bank angle.
 	 */
 	public boolean setTurnRate(double val) {
-		if (set_turn_rate(val)) {
-			bank_angle_ = 0.0;
-			return true;
-		}
-		return false;
+		set_bank_angle(0.0);
+		return set_turn_rate(val);
 	}
 
 	/** 
@@ -791,15 +908,8 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * resets the bank angle.
 	 */
 	public boolean setTurnRate(double val, String u) {
+		units_.put("turn_rate",u);
 		return setTurnRate(Units.from(u,val));
-	}
-
-	private boolean set_bank_angle(double val) {
-		if (error.isNonNegative("setBankAngle",val)) {
-			bank_angle_ = val;
-			return true;
-		}
-		return false;
 	}
 
 	/** 
@@ -807,11 +917,8 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * resets the turn rate.
 	 */
 	public boolean setBankAngle(double val) {
-		if (set_bank_angle(val)) {
-			turn_rate_ = 0.0;
-			return true;
-		}
-		return false;
+		set_turn_rate(0.0);
+		return set_bank_angle(val);
 	}
 
 	/** 
@@ -819,6 +926,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * resets the turn rate.
 	 */
 	public boolean setBankAngle(double val, String u) {
+		units_.put("bank_angle",u);
 		return setBankAngle(Units.from(u,val));
 	}
 
@@ -826,17 +934,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set vertical rate to value in internal units [m/s].
 	 */
 	public boolean setVerticalRate(double val) {
-		if (error.isNonNegative("setVerticalRate",val)) {
-			vertical_rate_ = val;
-			return true;
-		}
-		return false;
+		vertical_rate_ = Math.abs(val);
+		return error.isNonNegative("setVerticalRate",val);
 	}
 
 	/** 
 	 * Set vertical rate to value in specified units [u].
 	 */
 	public boolean setVerticalRate(double val, String u) {
+		units_.put("vertical_rate",u);
 		return setVerticalRate(Units.from(u,val));
 	}
 
@@ -844,17 +950,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set horizontal NMAC distance to value in internal units [m].
 	 */
 	public boolean setHorizontalNMAC(double val) {
-		if (error.isNonNegative("setHorizontalNMAC",val)) {
-			horizontal_nmac_ = val;
-			return true;
-		}
-		return false;
+		horizontal_nmac_ = Math.abs(val);
+		return error.isNonNegative("setHorizontalNMAC",val);
 	}
 
 	/** 
 	 * Set horizontal NMAC distance to value in specified units [u].
 	 */
 	public boolean setHorizontalNMAC(double val, String u) {
+		units_.put("horizontal_nmac",u);
 		return setHorizontalNMAC(Units.from(u,val));
 	}
 
@@ -862,17 +966,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set vertical NMAC distance to value in internal units [m].
 	 */
 	public boolean setVerticalNMAC(double val) {
-		if (error.isNonNegative("setVerticalNMAC",val)) {
-			vertical_nmac_ = val;
-			return true;
-		}
-		return false;
+		vertical_nmac_ = Math.abs(val);
+		return error.isNonNegative("setVerticalNMAC",val);
 	}
 
 	/** 
 	 * Set vertical NMAC distance to value in specified units [u].
 	 */
 	public boolean setVerticalNMAC(double val, String u) {
+		units_.put("vertical_nmac",u);
 		return setVerticalNMAC(Units.from(u,val));
 	}
 
@@ -880,17 +982,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set recovery stability time to value in seconds.
 	 */
 	public boolean setRecoveryStabilityTime(double val) {
-		if (error.isNonNegative("setRecoveryStabilityTime",val)) {
-			recovery_stability_time_ = val;
-			return true;
-		}
-		return false;
+		recovery_stability_time_ = Math.abs(val);
+		return error.isNonNegative("setRecoveryStabilityTime",val);
 	}
 
 	/** 
 	 * Set recovery stability time to value in specified units [u].
 	 */
 	public boolean setRecoveryStabilityTime(double val, String u) {
+		units_.put("recovery_stability_time",u);
 		return setRecoveryStabilityTime(Units.from(u,val));
 	}
 
@@ -898,17 +998,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set minimum recovery horizontal distance to value in internal units [m].
 	 */
 	public boolean setMinHorizontalRecovery(double val) {
-		if (error.isNonNegative("setMinHorizontalRecovery",val)) {
-			min_horizontal_recovery_ = val;
-			return true;
-		}
-		return false;
+		min_horizontal_recovery_ = Math.abs(val);
+		return error.isNonNegative("setMinHorizontalRecovery",val);
 	}
 
 	/** 
 	 * Set minimum recovery horizontal distance to value in specified units [u].
 	 */
 	public boolean setMinHorizontalRecovery(double val, String u) {
+		units_.put("min_horizontal_recovery",u);
 		return setMinHorizontalRecovery(Units.from(u,val));
 	}
 
@@ -916,17 +1014,15 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set minimum recovery vertical distance to value in internal units [m].
 	 */
 	public boolean setMinVerticalRecovery(double val) {
-		if (error.isNonNegative("setMinVerticalRecovery",val)){
-			min_vertical_recovery_ = val;
-			return true;
-		}
-		return false;
+		min_vertical_recovery_ = Math.abs(val);
+		return error.isNonNegative("setMinVerticalRecovery",val);
 	}
 
 	/** 
 	 * Set minimum recovery vertical distance to value in specified units [u].
 	 */
 	public boolean setMinVerticalRecovery(double val, String u) {
+		units_.put("min_vertical_recovery",u);
 		return setMinVerticalRecovery(Units.from(u,val));
 	}
 
@@ -1040,10 +1136,10 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Enable/disable recovery bands for track, ground speed, vertical speed, and altitude.
 	 */ 
 	public void setRecoveryBands(boolean flag) {
-		recovery_trk_ = flag;
-		recovery_gs_ = flag;
-		recovery_vs_ = flag;
-		recovery_alt_ = flag;
+		setRecoveryTrackBands(flag);
+		setRecoveryGroundSpeedBands(flag);
+		setRecoveryVerticalSpeedBands(flag);
+		setRecoveryAltitudeBands(flag);
 	}
 
 	/** 
@@ -1127,12 +1223,9 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * @return set factor for computing collision avoidance bands. Factor value is in (0,1]
 	 */
 	public boolean setCollisionAvoidanceBandsFactor(double val) {
-		if (error.isPositive("setCollisionAvoidanceBandsFactor",val) &&
-				error.isLessThan("setCollisionAvoidanceBandsFactor", val,1)) {
-			ca_factor_ = val;
-			return true;
-		}
-		return false;
+		ca_factor_ = Math.abs(val);
+		return error.isPositive("setCollisionAvoidanceBandsFactor",val) &&
+				error.isLessThan("setCollisionAvoidanceBandsFactor", val,1);
 	}
 
 	/** 
@@ -1159,12 +1252,8 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * A value of pi means all contours.
 	 */
 	public boolean setHorizontalContourThreshold(double val) {
-		val = Math.abs(val);
-		if (error.isBetween("setHorizontalContourThreshold",val,0,Math.PI)) { 
-			contour_thr_ = val;
-			return true;
-		}
-		return false;
+		contour_thr_ = Math.abs(Util.to_pi(val));
+		return error.isBetween("setHorizontalContourThreshold",val,0,Math.PI);
 	}
 
 	/** 
@@ -1173,6 +1262,7 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * A value of pi means all contours.
 	 */
 	public boolean setHorizontalContourThreshold(double val, String u) {
+		units_.put("contour_thr",u);
 		return setHorizontalContourThreshold(Units.from(u,val));
 	}
 
@@ -1180,12 +1270,12 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 * Set instantaneous bands.
 	 */
 	public void setInstantaneousBands() {
-		turn_rate_ = 0;
-		bank_angle_ = 0;
-		horizontal_accel_ = 0;
-		vertical_accel_ = 0;
-		vertical_rate_ = 0;
-		recovery_stability_time_ = 0;
+		set_turn_rate(0.0);
+		set_bank_angle(0.0);
+		setHorizontalAcceleration(0.0);
+		setVerticalAcceleration(0.0);
+		setVerticalRate(0.0);
+		setRecoveryStabilityTime(0.0);
 	}
 
 	/** 
@@ -1195,14 +1285,13 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 	 */
 	public void setKinematicBands(boolean type) {
 		// Section 1.2.3, DAA MOPS SC-228 V3.6
-		turn_rate_ = Units.from("deg/s",type ? 3.0 : 1.5); 
-		bank_angle_ = 0;
-		horizontal_accel_ = Units.from("m/s^2",2.0); 
-		vertical_accel_ = Units.from("G",0.25);
-		vertical_rate_ = Units.from("fpm",500);   
-		recovery_stability_time_ = 2;
+		setTurnRate(type ? 3.0 : 1.5,"deg/s");
+		setHorizontalAcceleration(2.0,"m/s^2"); 
+		setVerticalAcceleration(0.25,"G");
+		setVerticalRate(500.0,"fpm");   
+		setRecoveryStabilityTime(2.0,"s");
 	}
-	
+
 	/**
 	 *  Load parameters from file.
 	 */
@@ -1229,56 +1318,13 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 		return true;
 	}
 
-	public static String val_unit(double val, String u) {
-		return f.FmPrecision(Units.to(u,val))+" ["+u+"]";
-	}
-
 	public String toString() {
 		String s = "# V-"+VERSION+"\n";
-		s+="# Conflict Bands Parameters\n";
-		s+="lookahead_time = "+val_unit(lookahead_time_,"s")+"\n";
-		s+="left_trk = "+val_unit(left_trk_,"deg")+"\n";
-		s+="right_trk = "+val_unit(right_trk_,"deg")+"\n";
-		s+="min_gs = "+val_unit(min_gs_,"knot")+"\n";
-		s+="max_gs = "+val_unit(max_gs_,"knot")+"\n";
-		s+="min_vs = "+val_unit(min_vs_,"fpm")+"\n";
-		s+="max_vs = "+val_unit(max_vs_,"fpm")+"\n";
-		s+="min_alt = "+val_unit(min_alt_,"ft")+"\n";
-		s+="max_alt = "+val_unit(max_alt_,"ft")+"\n";
-		s+="# Kinematic Bands Parameters\n";
-		s+="trk_step = "+val_unit(trk_step_,"deg")+"\n";
-		s+="gs_step = "+val_unit(gs_step_,"knot")+"\n";
-		s+="vs_step = "+val_unit(vs_step_,"fpm")+"\n";
-		s+="alt_step = "+val_unit(alt_step_,"ft")+"\n";
-		s+="horizontal_accel = "+val_unit(horizontal_accel_,"m/s^2")+"\n";
-		s+="vertical_accel = "+val_unit(vertical_accel_,"m/s^2")+"\n";
-		s+="turn_rate = "+val_unit(turn_rate_,"deg/s")+"\n";
-		s+="bank_angle = "+val_unit(bank_angle_,"deg")+"\n";
-		s+="vertical_rate = "+val_unit(vertical_rate_,"fpm")+"\n";
-		s+="horizontal_nmac = "+val_unit(horizontal_nmac_,"ft")+"\n";
-		s+="vertical_nmac = "+val_unit(vertical_nmac_,"ft")+"\n";
-		s+="# Recovery Bands Parameters\n";
-		s+="recovery_stability_time = "+val_unit(recovery_stability_time_,"s")+"\n";
-		s+="# If min_horizontal_recovery is set to 0, TCAS RA HMD is used instead\n";
-		s+="min_horizontal_recovery = "+val_unit(min_horizontal_recovery_,"nmi")+"\n";
-		s+="# If min_vertical_recovery is set to 0, TCAS RA ZTHR is used instead\n";
-		s+="min_vertical_recovery = "+val_unit(min_vertical_recovery_,"ft")+"\n";
-		s+="conflict_crit = "+conflict_crit_+"\n";
-		s+="recovery_crit = "+recovery_crit_+"\n";
-		s+="recovery_trk = "+recovery_trk_+"\n";
-		s+="recovery_gs = "+recovery_gs_+"\n";
-		s+="recovery_vs = "+recovery_vs_+"\n";
-		s+="recovery_alt = "+recovery_alt_+"\n";
-		s+="# if ca_bands is true, keep computing recovery bands by reducing min horizontal/vertical recovery until NMAC\n";
-		s+="ca_bands = "+ca_bands_+"\n";
-		s+="# ca_factor is the reduction factor, when computing CA bands\n";
-		s+="ca_factor = "+f.Fm4(ca_factor_)+"\n";
-		s+="# Contours Parameters\n";
-		s+="# If contour_thr is set to 0, only conflict contours are computed. Max value is 180 [deg]\n";
-		s+="contour_thr = "+val_unit(contour_thr_,"deg")+"\n";
-		s+="# Alert Levels\n";
-		ParameterData p = alertor.getParameters();
-		s+=p.toString();
+	  ParameterData p = getParameters();
+	  s+=p.listToString(keys_);
+	  s+="# Alert Levels\n";
+		ParameterData q = alertor.getParameters();
+		s+=q.toString();
 		return s;
 	}
 
@@ -1324,161 +1370,206 @@ final public class KinematicBandsParameters implements ParameterAcceptor, ErrorR
 
 	public ParameterData getParameters() {
 		ParameterData p = new ParameterData();
-		updateParameterData(p);
+	  updateParameterData(p);
 		return p;
 	}
 
 	public void updateParameterData(ParameterData p) {  	
-		// Bands
-		p.setInternal("lookahead_time", lookahead_time_, "s");
-		p.setInternal("left_trk", left_trk_, "deg");
-		p.setInternal("right_trk", right_trk_, "deg");
-		p.setInternal("min_gs", min_gs_, "kts");
-		p.setInternal("max_gs", max_gs_, "kts");
-		p.setInternal("min_vs", min_vs_, "fpm");
-		p.setInternal("max_vs", max_vs_, "fpm");
-		p.setInternal("min_alt", min_alt_, "ft");
-		p.setInternal("max_alt", max_alt_, "ft");
+	  // Bands Parameters
+	  p.setInternal("lookahead_time", lookahead_time_, getUnits("lookahead_time"));
+	  p.updateComment("lookahead_time","Bands Parameters");
 
-		// Kinematic bands
-		p.setInternal("trk_step", trk_step_, "deg");
-		p.setInternal("gs_step", gs_step_, "kts");
-		p.setInternal("vs_step", vs_step_, "fpm");
-		p.setInternal("alt_step", alt_step_, "ft");
-		p.setInternal("horizontal_accel", horizontal_accel_, "m/s^2");
-		p.setInternal("vertical_accel", vertical_accel_, "m/s^2");
-		p.setInternal("turn_rate", turn_rate_, "deg/s");
-		p.setInternal("bank_angle", bank_angle_, "deg");
-		p.setInternal("vertical_rate", vertical_rate_, "fpm");
-		p.setInternal("horizontal_nmac",horizontal_nmac_,"ft");
-		p.setInternal("vertical_nmac",vertical_nmac_,"ft");
+	  p.setInternal("left_trk", left_trk_, getUnits("left_trk"));
+	  p.setInternal("right_trk", right_trk_, getUnits("right_trk"));
+	  p.setInternal("min_gs", min_gs_, getUnits("min_gs"));
+	  p.setInternal("max_gs", max_gs_, getUnits("max_gs"));
+	  p.setInternal("min_vs", min_vs_, getUnits("min_vs"));
+	  p.setInternal("max_vs", max_vs_, getUnits("max_vs"));
+	  p.setInternal("min_alt", min_alt_, getUnits("min_alt"));
+	  p.setInternal("max_alt", max_alt_, getUnits("max_alt"));
 
-		// Recovery bands
-		p.setInternal("recovery_stability_time", recovery_stability_time_, "s");
-		p.setInternal("min_horizontal_recovery", min_horizontal_recovery_, "nmi");
-		p.setInternal("min_vertical_recovery", min_vertical_recovery_, "ft");
-		p.set("conflict_crit", conflict_crit_);
-		p.set("recovery_crit", recovery_crit_);
-		p.set("recovery_trk", recovery_trk_);
-		p.set("recovery_gs", recovery_gs_);
-		p.set("recovery_vs", recovery_vs_);
-		p.set("recovery_alt", recovery_alt_);
-		p.set("ca_bands", ca_bands_);
-		p.setInternal("ca_factor", ca_factor_,"unitless");
+	  // Kinematic Parameters
+	  p.setInternal("trk_step", trk_step_, getUnits("trk_step"));
+	  p.updateComment("trk_step","Kinematic Parameters");
 
-		// Contours
-		p.setInternal("contour_thr", contour_thr_, "deg");
+	  p.setInternal("gs_step", gs_step_, getUnits("gs_step"));
+	  p.setInternal("vs_step", vs_step_, getUnits("vs_step"));
+	  p.setInternal("alt_step", alt_step_, getUnits("alt_step"));
+	  p.setInternal("horizontal_accel", horizontal_accel_, getUnits("horizontal_accel"));
+	  p.setInternal("vertical_accel", vertical_accel_, getUnits("vertical_accel"));
+	  p.setInternal("turn_rate", turn_rate_, getUnits("turn_rate"));
+	  p.setInternal("bank_angle", bank_angle_, getUnits("bank_angle"));
+	  p.setInternal("vertical_rate", vertical_rate_, getUnits("vertical_rate"));
 
-		// Alertor
-		alertor.updateParameterData(p);
+	  // Recovery Bands Parameters
+	  p.setInternal("recovery_stability_time", recovery_stability_time_, getUnits("recovery_stability_time"));
+	  p.updateComment("recovery_stability_time","Recovery Bands Parameters");
+
+	  p.setInternal("min_horizontal_recovery", min_horizontal_recovery_, getUnits("min_horizontal_recovery"));
+	  p.setInternal("min_vertical_recovery", min_vertical_recovery_, getUnits("min_vertical_recovery"));
+	  p.setBool("recovery_trk", recovery_trk_);
+	  p.setBool("recovery_gs", recovery_gs_);
+	  p.setBool("recovery_vs", recovery_vs_);
+	  p.setBool("recovery_alt", recovery_alt_);
+
+	  // Collision Avoidance Bands Parameters
+	  p.setBool("ca_bands", ca_bands_);
+	  p.updateComment("ca_bands","Collision Avoidance Bands Parameters");
+
+	  p.setInternal("ca_factor", ca_factor_, "unitless");
+	  p.setInternal("horizontal_nmac",horizontal_nmac_, getUnits("horizontal_nmac"));
+	  p.setInternal("vertical_nmac",vertical_nmac_, getUnits("vertical_nmac"));
+
+	  // Implicit Coordination Parameters
+	  p.setBool("conflict_crit", conflict_crit_);
+	  p.updateComment("conflict_crit","Implicit Coordination Parameters");
+	  p.setBool("recovery_crit", recovery_crit_);
+
+	  // Horizontal Contour Threshold
+	  p.setInternal("contour_thr", contour_thr_, getUnits("contour_thr"));
+	  p.updateComment("contour_thr","Horizontal Contour Threshold");
+
+	  // Alertor
+	  alertor.updateParameterData(p);
 	}
 
 	public void setParameters(ParameterData p) {
-		// Bands
-		if (p.contains("lookahead_time")) {
-			setLookaheadTime(p.getValue("lookahead_time"));    
-		}
-		if (p.contains("left_trk")) {
-			setLeftTrack(p.getValue("left_trk"));
-		}
-		if (p.contains("right_trk")) {
-			setRightTrack(p.getValue("right_trk"));    
-		}
-		if (p.contains("min_gs")) {
-			setMinGroundSpeed(p.getValue("min_gs"));    
-		}
-		if (p.contains("max_gs")) {
-			setMaxGroundSpeed(p.getValue("max_gs"));    
-		}
-		if (p.contains("min_vs")) {
-			setMinVerticalSpeed(p.getValue("min_vs"));    
-		}
-		if (p.contains("max_vs")) {
-			setMaxVerticalSpeed(p.getValue("max_vs"));    
-		}
-		if (p.contains("min_alt")) {
-			setMinAltitude(p.getValue("min_alt"));    
-		}
-		if (p.contains("max_alt")) {
-			setMaxAltitude(p.getValue("max_alt"));    
-		}
-		// Kinematic bands
-		if (p.contains("trk_step")) {
-			setTrackStep(p.getValue("trk_step"));    
-		}
-		if (p.contains("gs_step")) {
-			setGroundSpeedStep(p.getValue("gs_step"));    
-		}
-		if (p.contains("vs_step")) {
-			setVerticalSpeedStep(p.getValue("vs_step"));    
-		}
-		if (p.contains("alt_step")) {
-			setAltitudeStep(p.getValue("alt_step"));    
-		}
-		if (p.contains("horizontal_accel")) {
-			setHorizontalAcceleration(p.getValue("horizontal_accel"));    
-		}
-		if (p.contains("vertical_accel")) {
-			setVerticalAcceleration(p.getValue("vertical_accel"));    
-		}
-		if (p.contains("turn_rate")) {
-			set_turn_rate(p.getValue("turn_rate"));    
-		}
-		if (p.contains("bank_angle")) {
-			set_bank_angle(p.getValue("bank_angle"));    
-		}
-		if (p.contains("vertical_rate")) {
-			setVerticalRate(p.getValue("vertical_rate"));
-		}
-		if (p.contains("horizontal_nmac")) {
-			setHorizontalNMAC(p.getValue("horizontal_nmac"));
-		}
-		if (p.contains("vertical_nmac")) {
-			setVerticalNMAC(p.getValue("vertical_nmac"));
-		}
-		// Recovery bands
-		if (p.contains("recovery_stability_time")) {
-			setRecoveryStabilityTime(p.getValue("recovery_stability_time"));    
-		}
-		if (p.contains("min_horizontal_recovery")) {
-			setMinHorizontalRecovery(p.getValue("min_horizontal_recovery"));    
-		}
-		if (p.contains("min_vertical_recovery")) {
-			setMinVerticalRecovery(p.getValue("min_vertical_recovery"));  
-		}
-		// Criteria parameters
-		if (p.contains("conflict_crit")) {
-			conflict_crit_ = p.getBool("conflict_crit");
-		}
-		if (p.contains("recovery_crit")) {
-			recovery_crit_ = p.getBool("recovery_crit");
-		}
-		// Recovery parameters
-		if (p.contains("recovery_trk")) {
-			recovery_trk_ = p.getBool("recovery_trk");
-		}
-		if (p.contains("recovery_gs")) {
-			recovery_gs_ = p.getBool("recovery_gs");
-		}
-		if (p.contains("recovery_vs")) {
-			recovery_vs_ = p.getBool("recovery_vs");
-		}
-		if (p.contains("recovery_alt")) {
-			recovery_alt_ = p.getBool("recovery_alt");
-		}
-		if (p.contains("ca_bands")) {
-			ca_bands_ = p.getBool("ca_bands");
-		}
-		if (p.contains("ca_factor")) {
-			setCollisionAvoidanceBandsFactor(p.getValue("ca_factor"));
-		}
-		// Contours
-		if (p.contains("contour_thr")) {
-			setHorizontalContourThreshold(p.getValue("contour_thr"));
-		}
-		// Alertor
-		alertor.setParameters(p);
+	  if (p.contains("lookahead_time")) {
+	    setLookaheadTime(p.getValue("lookahead_time"));
+	    units_.put("lookahead_time",p.getUnit("lookahead_time"));
+	  }
+	  if (p.contains("left_trk")) {
+	    setLeftTrack(p.getValue("left_trk"));
+	    units_.put("left_trk",p.getUnit("left_trk"));
+	  }
+	  if (p.contains("right_trk")) {
+	    setRightTrack(p.getValue("right_trk"));
+	    units_.put("right_trk",p.getUnit("right_trk"));
+	  }
+	  if (p.contains("min_gs")) {
+	    setMinGroundSpeed(p.getValue("min_gs"));
+	    units_.put("min_gs",p.getUnit("min_gs"));
+	  }
+	  if (p.contains("max_gs")) {
+	    setMaxGroundSpeed(p.getValue("max_gs"));
+	    units_.put("max_gs",p.getUnit("max_gs"));
+	  }
+	  if (p.contains("min_vs")) {
+	    setMinVerticalSpeed(p.getValue("min_vs"));
+	    units_.put("min_vs",p.getUnit("min_vs"));
+	  }
+	  if (p.contains("max_vs")) {
+	    setMaxVerticalSpeed(p.getValue("max_vs"));
+	    units_.put("max_vs",p.getUnit("max_vs"));
+	  }
+	  if (p.contains("min_alt")) {
+	    setMinAltitude(p.getValue("min_alt"));
+	    units_.put("min_alt",p.getUnit("min_alt"));
+	  }
+	  if (p.contains("max_alt")) {
+	    setMaxAltitude(p.getValue("max_alt"));
+	    units_.put("max_alt",p.getUnit("max_alt"));
+	  }
+	  // Kinematic bands
+	  if (p.contains("trk_step")) {
+	    setTrackStep(p.getValue("trk_step"));
+	    units_.put("trk_step",p.getUnit("trk_step"));
+	  }
+	  if (p.contains("gs_step")) {
+	    setGroundSpeedStep(p.getValue("gs_step"));
+	    units_.put("gs_step",p.getUnit("gs_step"));
+	  }
+	  if (p.contains("vs_step")) {
+	    setVerticalSpeedStep(p.getValue("vs_step"));
+	    units_.put("vs_step",p.getUnit("vs_step"));
+	  }
+	  if (p.contains("alt_step")) {
+	    setAltitudeStep(p.getValue("alt_step"));
+	    units_.put("alt_step",p.getUnit("alt_step"));
+	  }
+	  if (p.contains("horizontal_accel")) {
+	    setHorizontalAcceleration(p.getValue("horizontal_accel"));
+	    units_.put("horizontal_accel",p.getUnit("horizontal_accel"));
+	  }
+	  if (p.contains("vertical_accel")) {
+	    setVerticalAcceleration(p.getValue("vertical_accel"));
+	    units_.put("vertical_accel",p.getUnit("vertical_accel"));
+	  }
+	  if (p.contains("turn_rate")) {
+	    set_turn_rate(p.getValue("turn_rate"));
+	    units_.put("turn_rate",p.getUnit("turn_rate"));
+	  }
+	  if (p.contains("bank_angle")) {
+	    set_bank_angle(p.getValue("bank_angle"));
+	    units_.put("bank_angle",p.getUnit("bank_angle"));
+	  }
+	  if (p.contains("vertical_rate")) {
+	    setVerticalRate(p.getValue("vertical_rate"));
+	    units_.put("vertical_rate",p.getUnit("vertical_rate"));
+	  }
+	  if (p.contains("horizontal_nmac")) {
+	    setHorizontalNMAC(p.getValue("horizontal_nmac"));
+	    units_.put("horizontal_nmac",p.getUnit("horizontal_nmac"));
+	  }
+	  if (p.contains("vertical_nmac")) {
+	    setVerticalNMAC(p.getValue("vertical_nmac"));
+	    units_.put("vertical_nmac",p.getUnit("vertical_nmac"));
+	  }
+	  // Recovery bands
+	  if (p.contains("recovery_stability_time")) {
+	    setRecoveryStabilityTime(p.getValue("recovery_stability_time"));
+	    units_.put("recovery_stability_time",p.getUnit("recovery_stability_time"));
+	  }
+	  if (p.contains("min_horizontal_recovery")) {
+	    setMinHorizontalRecovery(p.getValue("min_horizontal_recovery"));
+	    units_.put("min_horizontal_recovery",p.getUnit("min_horizontal_recovery"));
+	  }
+	  if (p.contains("min_vertical_recovery")) {
+	    setMinVerticalRecovery(p.getValue("min_vertical_recovery"));
+	    units_.put("min_vertical_recovery",p.getUnit("min_vertical_recovery"));
+	  }
+	  // Criteria parameters
+	  if (p.contains("conflict_crit")) {
+	    setConflictCriteria(p.getBool("conflict_crit"));
+	  }
+	  if (p.contains("recovery_crit")) {
+	    setRecoveryCriteria(p.getBool("recovery_crit"));
+	  }
+	  // Recovery parameters
+	  if (p.contains("recovery_trk")) {
+	    setRecoveryTrackBands(p.getBool("recovery_trk"));
+	  }
+	  if (p.contains("recovery_gs")) {
+	    setRecoveryGroundSpeedBands(p.getBool("recovery_gs"));
+	  }
+	  if (p.contains("recovery_vs")) {
+	    setRecoveryVerticalSpeedBands(p.getBool("recovery_vs"));
+	  }
+	  if (p.contains("recovery_alt")) {
+	    setRecoveryAltitudeBands(p.getBool("recovery_alt"));
+	  }
+	  if (p.contains("ca_bands")) {
+	    setCollisionAvoidanceBands(p.getBool("ca_bands"));
+	  }
+	  if (p.contains("ca_factor")) {
+	    setCollisionAvoidanceBandsFactor(p.getValue("ca_factor"));
+	  }
+	  // Contours
+	  if (p.contains("contour_thr")) {
+	    setHorizontalContourThreshold(p.getValue("contour_thr"));
+	    units_.put("contour_thr",p.getUnit("contour_thr"));
+	  }
+	  // Alertor
+	  alertor.setParameters(p);
 	} 
+
+	public String getUnits(String key) {
+		String u = units_.get(key);
+		if (u == null) {
+			return "unspecified";
+		}
+		return u;
+	}
 
 	public boolean hasError() {
 		return error.hasError();
