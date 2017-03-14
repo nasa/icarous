@@ -103,7 +103,7 @@ public class ConflictDetection{
 		if(GF.fType == FENCE_TYPE.KEEP_IN){
 			keepInConflict = true;
 			if(keepInFence == null){
-				keepInFence = GF;
+				keepInFence = GF;				
 			}
 			else if(keepInFence.ID != GF.ID){
 				keepInFence = GF;

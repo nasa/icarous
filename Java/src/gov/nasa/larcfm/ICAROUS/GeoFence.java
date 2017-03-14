@@ -76,8 +76,8 @@ public class GeoFence{
 	public CDIIPolygon cdp;
 	public PolycarpResolution pcr;
 	public PolyUtil pu;
-	public ArrayList<Vect2> fenceVertices;
-	public ArrayList<Vect2> fenceVertices2;
+        public ArrayList<Vect2> fenceVertices;      // Original vertices of the polygon in local NED frame
+        public ArrayList<Vect2> fenceVertices2;     // Vertices after expansion or contraction
 	public PolycarpDetection pcDet;
 	public PolycarpEdgeProximity pep;
 
@@ -109,7 +109,6 @@ public class GeoFence{
 		pcDet          = new PolycarpDetection();
 		pep            = new PolycarpEdgeProximity();
 		pData          = pdata;    		
-
 	}
 
 	public void AddVertex(int index,float lat,float lon){
@@ -126,7 +125,6 @@ public class GeoFence{
 			geoPoly3D  = geoPolyCarp.makeNicePolygon(geoPolyLLA.poly3D(proj));
 			Velocity v = Velocity.makeTrkGsVs(0.0,0.0,0.0);
 			
-
 			for(int i=0;i<geoPoly3D.size();++i){
 				fenceVertices.add(geoPoly3D.getVertex(i));
 			}
@@ -182,6 +180,7 @@ public class GeoFence{
 		double alt;
 
 		Position pos = acState.positionLast();
+		Velocity vel = acState.velocityLast();
 		Vect3 so = proj.project(pos);
 
 		SafetyPoint = GetSafetyPoint(acState);
@@ -200,9 +199,10 @@ public class GeoFence{
 			if(geoPolyCarp.nearEdge(so,geoPoly3D,hthreshold,vthreshold)){
 				conflict  = true;				
 			}else{
-				conflict = false;		
+		        conflict = CollisionDetection(pos,vel.vect2(),0,lookahead);				
 			}
 
+			
 			if(geoPolyCarp.definitelyInside(so,geoPoly3D)){
 				violation = false;		
 			}

@@ -47,7 +47,7 @@ class SlipEllipse(mp_slipmap.SlipObject):
         axes0 = int(self.axes[0]*pixels_per_meter)
         axes1 = int(self.axes[1]*pixels_per_meter)
         axes  = (axes0,axes1)
-        mp_slipmap.cv.Ellipse(img,center,axes,self.angle,self.startAngle,self.endAngle,self.colour,self.linewidth)
+        mp_slipmap.cv2.ellipse(img,center,axes,self.angle,self.startAngle,self.endAngle,self.colour,self.linewidth)
 
     
 class DAA:

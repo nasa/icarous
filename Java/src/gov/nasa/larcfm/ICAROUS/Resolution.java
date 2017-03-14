@@ -549,6 +549,7 @@ public class Resolution {
 			DAA.addTrafficState("Traffic"+i,trafficPos, trafficVel);
 		}
 
+		double startTime = (double)System.nanoTime()/1E9;	
 		KinematicMultiBands KMB = DAA.getKinematicMultiBands();
 		returnPathConflict  = KMB.regionOfTrack(nextHeading).isConflictBand();
 
@@ -610,8 +611,10 @@ public class Resolution {
 			FMS.debug_out += "resolutionSpeed ="+resolutionSpeed+"\n";
 			FMS.debug_out += "Heading ="+FlightData.maneuverHeading+",prefHeading ="+Math.toDegrees(prefHeading)+"\n";
 			FMS.debug_out += "Return path conflict:"+returnPathConflict+"\n";
+			double elapsedTime = (double)System.nanoTime()/1E9 - startTime;
+			FMS.debug_out += "Computation time: " + elapsedTime + "\n";
 		}
-
+		
 	}
 
 	public void ResolveTrafficConflictRRT(){
