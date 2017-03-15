@@ -33,6 +33,7 @@
  */
 
 package gov.nasa.larcfm.ICAROUS;
+import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.IO.SeparatedInput;
 import com.MAVLink.common.*;
@@ -44,7 +45,9 @@ import java.text.SimpleDateFormat;
 
 public class Icarous{
 
-	private boolean verbose;
+	public static final String VERSION = "1.1";
+
+        private boolean verbose;
 	private String sitlhost;
 	private String px4port;
 	private String bcastgroup;
@@ -67,12 +70,9 @@ public class Icarous{
 	private COM com_module;
 	//private BCAST bcast_module;
 	private Mission Task;
-	private String version;
 	private boolean debugDAA;
 
 	public Icarous(String args[],Mission task){
-
-		version    = "1.1";
 		verbose    = false;
 		debugDAA   = false;
 		sitlhost   = null;
@@ -155,7 +155,7 @@ public class Icarous{
 
 		}
 
-		System.out.println("ICAROUS version: "+version);
+		System.out.println("ICAROUS Release: "+release());
 
 		FlightData    = new AircraftData(pData);
 
@@ -185,7 +185,7 @@ public class Icarous{
 
 		}
 
-		COMInt.SendStatusText("ICAROUS version: "+String.valueOf(version));
+		COMInt.SendStatusText("ICAROUS version: "+VERSION);
 
 		fms_module  = new QuadFMS(APInt,COMInt,FlightData,Task,pData);
 		daq_module  = new DAQ("Data acquisition",FlightData,APInt,COMInt);
@@ -198,8 +198,9 @@ public class Icarous{
 		COMInt.SendStatusText("DAQ, FMS, COM Initialized");
 	}
 
-	public String GetVersion(){
-		return version;
+	public static String release() {
+		return "ICAROUSj V-"+VERSION+
+				"-FormalATM-"+Constants.version+" (March-18-2017)"; 
 	}
 
 	public void run(){

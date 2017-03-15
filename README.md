@@ -16,9 +16,9 @@ information see files in directory Licenses.
 
 The following repositories are required to run icarous. 
 
-- Ardupilot (https://github.com/ArduPilot/ardupilot.git)
-- mavlink (https://github.com/ArduPilot/mavlink.git)
-- MAVProxy (https://github.com/ArduPilot/MAVProxy.git)
+- [Ardupilot](https://github.com/ArduPilot/ardupilot.git)
+- [mavlink](https://github.com/ArduPilot/mavlink.git)
+- [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
 
 ### BEFORE LAUNCHING ICAROUS
 

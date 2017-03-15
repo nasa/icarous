@@ -1,5 +1,4 @@
 dry=--dry-run
-CC = g++
 CFLAGS = -Wall -g -Wno-write-strings -std=c++11
 INCLUDES = -I./libs/mavlink -I./include/ACCoRD -I./include/ICAROUS
 LIBS = -lpthread -lm
@@ -9,16 +8,22 @@ ASRCS = $(wildcard ./src/ACCoRD/*.cpp)
 AOBJS = $(patsubst ./src/ACCoRD/%.cpp,./obj/ACCoRD/%.o,$(ASRCS))
 MAIN = icarous
 
-all: $(MAIN)
+all: $(MAIN) DAAGeofencing
 
-$(MAIN): PRE $(AOBJS) $(OBJS) 
-	@$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(AOBJS) $(OBJS) $(LFLAGS) $(LIBS)
+$(MAIN): LIB
+	@$(CXX) $(CFLAGS) $(INCLUDES) -o $(MAIN) libs/icarous.a $(LFLAGS) $(LIBS)
+
+LIB: PRE $(AOBJS) $(OBJS)
+	ar -cr libs/icarous.a $(OBJS) $(AOBJS) && ranlib libs/icarous.a 
+
+DAAGeofencing:
+	$(CXX) -o DAAGeofencingExample $(CFLAGS) $(INCLUDES) src/DAAGeofencingExample.cpp libs/icarous.a
 
 ./obj/ICAROUS/%.o:./src/ICAROUS/%.cpp	
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CXX) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 ./obj/ACCoRD/%.o:./src/ACCoRD/%.cpp	
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(CXX) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 PRE:
 	@test -d obj/ICAROUS || (mkdir obj && mkdir obj/ICAROUS)
@@ -30,7 +35,7 @@ sync:
 	@echo "Try make sync -e dry="
 
 clean:
-	-@rm obj/ICAROUS/*
+	-@rm obj/ICAROUS/* libs/icarous.a
 
 cleanall: clean
 	-@rm obj/ACCoRD/*
