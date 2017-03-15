@@ -108,12 +108,12 @@ While running ICAROUS in the SITL framework, it is possible to communicate with 
 
 ### Detect and Avoid (DAA) and Geofencing Capabilities
 
-ICAROUS integrates [DAIDALUS](http://shemesh.larc.nasa.gov/fm/DAIDALUS)
+ICAROUS integrates NASA's open source software packages [DAIDALUS](http://shemesh.larc.nasa.gov/fm/DAIDALUS)
 (Detect and Avoid Alerting Logic for Unmanned Systems) and
 [PolyCARP](http://shemesh.larc.nasa.gov/fm/PolyCARP) (Algorithms and Software
 for Computations with Polygons). DAIDALUS provides detect and avoid
 capabilities, while PolyCARP provides geofencing capabilities.
 
 These capabilities are illustrated in the sample programs
-[`Java/DAAGeofencingExample.java`](DAAGeofencingExample.java) and
-[`C++/DAAGeofencingExample.cpp`](DAAGeofencingExample.cpp).
+[`DAAGeofencingExample.java`](Java/src/DAAGeofencingExample.java) and
+[`DAAGeofencingExample.cpp`](C++/src/DAAGeofencingExample.cpp).
