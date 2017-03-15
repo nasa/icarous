@@ -38,7 +38,7 @@
 
 Icarous_t::Icarous_t(int argc,char* argv[],Mission_t* task){
 
-	strcpy(version,"1.0");
+	strcpy(version,"1.1");
 	printf("Icarous version %s\n",version);
 	GetOptions(argc,argv);
 
@@ -151,6 +151,7 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 		  break;
 
 		case 'm':
+		  //printf("debug mode enabled\n");
 		  debug = true;
 		  break;
 

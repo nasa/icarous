@@ -521,6 +521,7 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		DAAresolution.addTrafficState(name, tPos, tVel);
 	}
 
+	time_t startTime;   time(&startTime);
 	KinematicMultiBands KMB;
 	DAAresolution.kinematicMultiBands(KMB);
 	returnPathConflict  = BandsRegion::isConflictBand(KMB.regionOfTrack(nextHeading));
@@ -576,12 +577,18 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 
 	planType = MANEUVER;
 	if(debugDAA){
-		debug_in.append("*** Current Time:"+std::to_string(FlightData->acTime)+"\n");
+		debug_in.append("**************** Current Time:"+std::to_string(FlightData->acTime)+" *******************\n");
 		debug_in.append(DAAresolution.toString()+"\n");
-		debug_out.append("*** Current Time:"+std::to_string(FlightData->acTime)+"\n");
-		debug_out.append(KMB.toString()+"\n");
-		debug_out.append("Vn,Ve"+std::to_string(FlightData->maneuverVn)+std::to_string(FlightData->maneuverVe)+"\n");
+		debug_out.append("*************** Current Time:"+std::to_string(FlightData->acTime)+" *******************\n");
+		debug_out.append(KMB.outputStringInfo());
+		debug_out.append(KMB.outputStringTrackBands());
+		debug_out.append("Vn = "+std::to_string(FlightData->maneuverVn)+", Ve = "+std::to_string(FlightData->maneuverVe)+"\n");
+		debug_out.append("resolutionSpeed = "+std::to_string(resolutionSpeed)+"\n");
+		debug_out.append("Heading ="+std::to_string(FlightData->maneuverHeading)+" ,prefHeading ="+std::to_string(prefHeading*180/M_PI)+"\n");
 		debug_out.append("Return path conflict:"+std::to_string(returnPathConflict)+"\n");
+		time_t stopTime; time(&stopTime);
+		double timeElapsed = difftime(stopTime,startTime);
+		debug_out.append("Elapsed time: "+std::to_string(timeElapsed)+"\n");
 	}
 }
 

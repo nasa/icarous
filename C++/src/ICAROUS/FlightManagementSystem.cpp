@@ -86,6 +86,8 @@ void FlightManagementSystem_t::RunFMS(){
                 LAND();
                 break;
         }
+
+	CheckReset();
      }
  }
 
@@ -214,13 +216,13 @@ void FlightManagementSystem_t::GetCurrentMode(){
 void FlightManagementSystem_t::GetLatestAircraftData(){
 
 	// Get aircraft position data
-	double lat,lon,abs_alt,rel_alt,vx,vy,vz,time;
-	RcvdMessages->GetGlobalPositionInt(time,lat,lon,abs_alt,rel_alt,vx,vy,vz);
+	double lat,lon,abs_alt,rel_alt,vx,vy,vz,time_gps;
+	RcvdMessages->GetGlobalPositionInt(time_gps,lat,lon,abs_alt,rel_alt,vx,vy,vz);
 	Position currentPos = Position::makeLatLonAlt(lat,"degree",lon,"degree",rel_alt,"m");
 	Velocity currentVel = Velocity::makeVxyz(vy,vx,"m/s",vz,"m/s");
 
-	FlightData->acState.add(currentPos,currentVel,time);
-	FlightData->acTime = time;
+	FlightData->acState.add(currentPos,currentVel,time_gps);
+	FlightData->acTime = time_gps;
 
 	// Get aircraft attitude data
 	double roll, pitch, yaw, heading;
@@ -300,7 +302,7 @@ void FlightManagementSystem_t::CheckReset(){
 
 	if(FlightData->reset){
 		FlightData->reset = false;
-		Reset();
+		Reset();	
 		if(debugDAA){
 			std::ofstream debug_inf;
 			std::ofstream debug_outf;
