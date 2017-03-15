@@ -3,14 +3,34 @@
 Integrated Configurable Algorithms for Reliable Operations of Unmanned Systems
 ========
 
+ICAROUS (Integrated Configurable Algorithms for Reliable Operations of
+Unmanned Systems) is a software architecture that enables the robust integration
+of mission specific software modules and highly assured core software
+modules for building safety-centric autonomous unmanned aircraft
+applications. The set of core software modules include formally
+verified algorithms that detect, monitor, and control conformance
+to safety criteria; avoid stationary obstacles and maintain a safe
+distance from other users of the airspace; and compute resolution
+and recovery maneuvers, autonomously executed by the autopilot, when
+safety criteria are violated or about to be violated.
+
 ### Current Release
 
-V-1.1 - March 18, 2017
+ICAROUS V-1.1 - March 18, 2017
 
 ### License
 
 This code is released under NASA's Open Source Agreement. For more
-information see files in directory Licenses.
+information see files in directory [LICENSES](LICENSES).
+
+### Contact
+
+[C&eacute;sar A. Mu&ntilde;oz](http://shemesh.larc.nasa.gov/people/cam) (cesar.a.munoz@nasa.gov), NASA Langley Research Center.
+
+## Logo
+
+The ICAROUS logo was designed by 
+[Mahyar Malekpour](http://shemesh.larc.nasa.gov/people/mrm/publications.htm#ETC), NASA Langley Research Center.
 
 ### REQUIRED PACKAGES
 
@@ -85,3 +105,15 @@ Setup and launch the ardupilot SITL as described in <http://ardupilot.org/dev/do
     $./run.sh SITL
 
 While running ICAROUS in the SITL framework, it is possible to communicate with ICAROUS via a ground station using the UDP sockets instead of using a radio link. See `GS_MASTER` variable in the run.sh script to enable the ground station over a UDP socket.
+
+### Detect and Avoid (DAA) and Geofencing Capabilities
+
+ICAROUS integrates [DAIDALUS](http://shemesh.larc.nasa.gov/fm/DAIDALUS)
+(Detect and Avoid Alerting Logic for Unmanned Systems) and
+[PolyCARP](http://shemesh.larc.nasa.gov/fm/PolyCARP) (Algorithms and Software
+for Computations with Polygons). DAIDALUS provides detect and avoid
+capabilities, while PolyCARP provides geofencing capabilities.
+
+These capabilities are illustrated in the sample programs
+[`Java/DAAGeofencingExample.java`](DAAGeofencingExample.java) and
+[`C++/DAAGeofencingExample.cpp`](DAAGeofencingExample.cpp).
