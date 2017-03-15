@@ -5,7 +5,7 @@ Integrated Configurable Algorithms for Reliable Operations of Unmanned Systems
 
 ### Current Release
 
-V-0.a (June, 2016)
+V-1.1 - March 18, 2017
 
 ### License
 
