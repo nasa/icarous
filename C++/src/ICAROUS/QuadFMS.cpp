@@ -87,7 +87,7 @@ uint8_t QuadFMS_t::TAKEOFF(){
 uint8_t QuadFMS_t::CLIMB(){
 
 	double currentAlt = FlightData->acState.positionLast().alt();
-	double alt_error  = fabs(currentAlt - targetAlt);
+	double alt_error  = std::abs(currentAlt - targetAlt);
 
 	if( alt_error < 0.5 ){
 		SetMode(AUTO);
@@ -473,12 +473,12 @@ uint8_t QuadFMS_t::TRACKING(Position target){
 }
 
 double QuadFMS_t::SaturateVelocity(double V, double Vsat){
-	if(abs(V) > Vsat){
-		return sign(V)*Vsat;
-	}
-	else{
-		return V;
-	}
+  if(std::abs(V) > Vsat){
+    return sign(V)*Vsat;
+  }
+  else{
+    return V;
+  }
 }
 
 

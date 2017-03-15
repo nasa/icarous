@@ -33,7 +33,7 @@ import java.util.List;
 
 /**
  * This object writes a set of aircraft states, possibly over time, (and parameters) from a file
- * The Aircraft states are stored in an ArrayList<AircraftState>.
+ * The Aircraft states are stored in an ArrayList&lt;AircraftState&gt;.
  *
  * State files consist of comma or space-separated values, with one point per line.
  * Required columns include aircraft name, 3 position columns (either x[nmi]/y[nmi]/z[ft] or 
@@ -47,7 +47,7 @@ import java.util.List;
  * There is also an optional header line, immediately following the column definition, that defines the unit type for each
  * column (the defaults are listed above).
  *
- * If points are consecutive for the same aircraft, subsequent name fields may be replaced with a double quotation mark (&quot).
+ * If points are consecutive for the same aircraft, subsequent name fields may be replaced with a double quotation mark (&quot;).
  * The aircraft name is case sensitive, so US54A != Us54a != us54a.
  *
  * Any empty line or any line starting with a hash sign (#) is ignored.

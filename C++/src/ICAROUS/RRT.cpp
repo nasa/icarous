@@ -106,7 +106,7 @@ RRT_t::RRT_t(std::list<Geofence_t> &fenceList,Position initialPos,Velocity initi
 	std::vector<Position>::iterator itP;
 	std::vector<Velocity>::iterator itV;
 	for(itP = trafficPos.begin(),itV = trafficVel.begin();
-		itP != trafficPos.end(), itP != trafficPos.end();
+		itP != trafficPos.end() && itP != trafficPos.end();
 		++itP, ++itV){
 		Vect3 tPos = proj.project(*itP);
 		Vect3 tVel = Vect3(itV->x,itV->y,itV->z);
@@ -244,7 +244,7 @@ node_t RRT_t::MotionModel(node_t nearest, double U[]){
 	std::vector<Vect3>::iterator vecItV;
 	int i=0;
 	for(vecItP = trafficPos.begin(),vecItV = trafficVel.begin();
-		vecItP != trafficPos.end(),vecItV != trafficVel.end();
+		vecItP != trafficPos.end() && vecItV != trafficVel.end();
 		++vecItP,++vecItV){
 		X[6+(6*i)+0] =  vecItP->x;
 		X[6+(6*i)+1] =  vecItV->x;
@@ -439,7 +439,7 @@ bool RRT_t::CheckTrafficCollision(Vect3 qPos,Vect3 qVel,std::vector<Vect3> Traff
 	double violationTime;
 	double alertTime = DAA.parameters.alertor.getLevel(1).getAlertingTime();
 	for(itP = TrafficPos.begin(),itV = TrafficVel.begin();
-			itP != TrafficPos.end(),itV != TrafficVel.end();
+			itP != TrafficPos.end() && itV != TrafficVel.end();
 			++itP,++itV){
 		Position si = Position::makeXYZ(itP->x,"m",itP->y,"m",itP->z,"m");
 		Velocity vi = Velocity::makeVxyz(itV->x,itV->y,"m/s",itV->z,"m/s");
@@ -464,7 +464,7 @@ bool RRT_t::CheckTrafficCollision(Vect3 qPos,Vect3 qVel,std::vector<Vect3> Traff
 			violationTime = NAN;
 		}
 
-		if(finite(violationTime) && violationTime <= alertTime){
+		if(ISFINITE(violationTime) && violationTime <= alertTime){
 			return true;
 		}
 	}
@@ -491,7 +491,7 @@ bool RRT_t::CheckTrafficCollisionWithBands(bool CheckTurn,Vect3 qPos,Vect3 qVel,
 	double trafficDist = MAXDOUBLE;
 
 	for(itP = TrafficPos.begin(),itV = TrafficVel.begin();
-		itP != TrafficPos.end(),itV != TrafficVel.end();
+		itP != TrafficPos.end() && itV != TrafficVel.end();
 		++itP,++itV){
 		Position si = Position::makeXYZ(itP->x,"m",itP->y,"m",itP->z,"m");
 		Velocity vi = Velocity::makeVxyz(itV->x,itV->y,"m/s",itV->z,"m/s");
@@ -559,17 +559,17 @@ bool RRT_t::CheckTurnConflict(double low,double high,double newHeading,double ol
 
 	// Get direction of turn
 	double psi   = newHeading - oldHeading;
-	double psi_c = 360 - abs(psi);
+	double psi_c = 360 - std::abs(psi);
 	bool rightTurn = false;
 	if(psi > 0){
-		if(abs(psi) > abs(psi_c)){
+		if(std::abs(psi) > std::abs(psi_c)){
 			rightTurn = false;
 		}
 		else{
 			rightTurn = true;
 		}
 	}else{
-		if(abs(psi) > abs(psi_c)){
+		if(std::abs(psi) > std::abs(psi_c)){
 			rightTurn = true;
 		}
 		else{

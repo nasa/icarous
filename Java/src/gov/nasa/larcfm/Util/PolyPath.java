@@ -715,6 +715,9 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Set the user velocity at index i to be v
 	 * This only has effect if isCalculatedVelocities() is false.
+	 * 
+	 * @param i index
+	 * @param v velocity
 	 */
 	public void setVelocity(int i, Velocity v) {
 		if (i < 0 || i >= times.size()) {
@@ -727,6 +730,8 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * Returns true if the polypath follows expected behaviors (i.e. increasing times and same size for each MORPHING poly).
 	 * Otherwise this sets error messages.
+	 * 
+	 * @return true, if polypath performs expected behaviors
 	 */
 	public boolean validate() {
 //f.pln("validate "+name);		
@@ -836,7 +841,9 @@ public class PolyPath implements ErrorReporter {
 	/**
 	 * This adds a vertex to every polygon on this path.  The vertex will be added relative to the centroid in each case, so other polygons may
 	 * need to be modified to match.
-	 * @param p
+	 * 
+	 * @param n index
+	 * @param p position
 	 */
 	public void addVertex(int n, Position p) {
 		SimplePoly poly = polyList.get(n);
@@ -854,7 +861,7 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Remove the nth vertex from all polygons on the path.
-	 * @param n index of vertex to be removed.
+	 * @param vert index of vertex to be removed.
 	 */
 	public void removeVertex(int vert) {
 		for (int i = 0; i < size(); i++) {
@@ -895,6 +902,9 @@ public class PolyPath implements ErrorReporter {
 	 * the time for point 1 is 10.0 and the time for point 2 is 20.0, then
 	 * getSegment(10.0) will produce 0, getSegment(15.0) will produce 0,
 	 * and getSegment(20.0) will produce 1.
+	 * 
+	 * @param tm time
+	 * @return segment number
 	 */
 	public int getSegment(double tm) {
 		int i = getIndex(tm);
@@ -914,7 +924,7 @@ public class PolyPath implements ErrorReporter {
 	 * Interpolate the poly at the given time
 	 * If time is outside the path's limit, return null.
 	 * @param time
-	 * @return
+	 * @return polygon
 	 */
 	public SimplePoly position(double time) {
 		if (times.size() > 1 && (time < getFirstTime() || time > getLastTime())) {
@@ -929,7 +939,7 @@ public class PolyPath implements ErrorReporter {
 	 * Interpolate the averagePoint velocity at the given time
 	 * If time is outside the path's limit, return invalid velocity.
 	 * @param time
-	 * @return
+	 * @return velocity
 	 */
 	public Velocity velocity(double time) {
 		if (isStatic()) {
@@ -1039,9 +1049,9 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * This will return a moving polygon that starts at point i and ends at point i+1
-	 * @param i
-	 * @param proj
-	 * @return
+	 * @param i    index
+	 * @param proj projection
+	 * @return polygon
 	 */
 	public MovingPolygon3D getInitialMovingPolygon(int i, EuclideanProjection proj) {
 		if (i < 0 || i >= size() || times.get(i) >= getLastTime()) {
@@ -1067,6 +1077,10 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * This will return a moving polygon that STARTS at time t (relative time 0) and ends at its segment end time.
+	 * 
+	 * @param time
+	 * @param proj
+	 * @return
 	 */
 	public MovingPolygon3D getMovingPolygon(double time, EuclideanProjection proj) {
 		//f.pln("PolyPath.getMovingPolygon "+toString());	  

@@ -514,10 +514,10 @@ public class TrajGen {
 	 * It assumes legs are long enough to support the turns.
 	 * 
 	 * @param lpc        linear plan
-	 * @param strict     if strict do not allow any interior waypoints in the turn
+	 * @param continueGen continue generation, even with problems
 	 * @return           a plan with BOTs and EOTs
 	 */
-	public static Plan generateTurnTCPsRadius(Plan lpc, boolean continueGen) { //, double default_radius) {
+	public static Plan generateTurnTCPsRadius(Plan lpc, boolean continueGen) { 
 		Plan traj = new Plan(lpc); // the current trajectory based on working
 		//f.pln(" $$>> generateTurnTCPsRadius: lpc = "+lpc.toStringFull());
 		//DebugSupport.dumpPlan(lpc,"generateTurnTCPsRadius_lpc");
@@ -554,7 +554,7 @@ public class TrajGen {
 	 * @return           a plan with BOTs and EOTs
 	 */
 	public static Plan generateTurnTCPsRadius(Plan lpc) {
-		boolean strict = false;
+		//boolean strict = false;
 		boolean continueGen = false;
 		return generateTurnTCPsRadius(lpc, continueGen);
 	}
@@ -565,15 +565,15 @@ public class TrajGen {
 	 * 
 	 * @param traj          trajectory under construction
 	 * @param lpc           original lpc
-	 * @param ixNp2             index of np2 in plan
+	 * @param ixNp2         index of np2 in plan
 	 * @param R             unsigned radius
-	 * @param strict if strict do not allow any interior waypoints in the turn
+	 * @param continueGen   continue generation, even with problems
 	 */
 	private static void insertTurnTcpsInTraj(Plan traj, Plan lpc, int ixNp2, double R, boolean continueGen) {
 		NavPoint np1 = lpc.point(ixNp2-1); // get the point in the traj that corresponds to the point BEFORE fp(i)!
 		NavPoint np2 = lpc.point(ixNp2);
 		NavPoint np3 = lpc.point(ixNp2+1);
-		if (np3.time() - np2.time() < 0.1 && ixNp2+2 < lpc.size()) {
+		if (np3.time() - np2.time() < 0.1 && ixNp2+2 < lpc.size()) { //TODO: fixed time?
 			np3 = lpc.point(ixNp2 + 2);
 		}
 		int linearIndex = lpc.getTcpData(ixNp2).getLinearIndex();
@@ -615,6 +615,7 @@ public class TrajGen {
 		}
 		double botAlt; 
 		if (BOT.time() < lpc.getFirstTime()) {  // is this right?
+			// should be an error?
 			botAlt = lpc.point(0).alt();
 		} else {
 			//f.pln(" $$$ BOT.time() = "+BOT.time());
@@ -627,6 +628,7 @@ public class TrajGen {
 		//f.pln(" $$>> generateTurnTCPs: MOT = "+MOT.toStringFull());
 		double EotAlt;
 		if (EOT.time() > lpc.getLastTime()) { // is this right?
+			// should be an error?
 			EotAlt = lpc.getLastPoint().alt();
 		} else {					
 			EotAlt = lpc.position(EOT.time()).alt();

@@ -241,14 +241,16 @@ public final class Point extends Vect3 implements OutputList {
 		return ret;
 	}
 
-	/** String representation, 4 decimal places, without parentheses */
+	/** String representation, 4 decimal places, without parentheses 
+	 * @return a string representing this point
+	 * */
 	public String toStringNP() {
 		return toStringNP(15,"NM","NM","ft");
 	}
 
 	/**
 	 * String representation, with user-specified precision
-	 * @param prec precision (0-15)
+	 * @param precision precision (0-15)
 	 * @return a string representing this point
 	 */
 	public String toStringNP(int precision) {
@@ -257,7 +259,7 @@ public final class Point extends Vect3 implements OutputList {
 
 	/**
 	 * String representation, with user-specified precision
-	 * @param prec precision (0-15)
+	 * @param precision precision (0-15)
 	 * @param xUnits units for the x value
 	 * @param yUnits units for the y value
 	 * @param zUnits units for the z value

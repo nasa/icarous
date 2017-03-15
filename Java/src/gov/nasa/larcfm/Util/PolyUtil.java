@@ -428,24 +428,25 @@ public class PolyUtil {
 
 	/**
 	 * Stretch a polygon so that it covers (at least) what the original would as it moves over a given time range.
-	 * The uses a convex hull, so will be an over-approximation.  There may be inaccuracies for very long periods of time if using geodetic coordinates.
-	 * @param sp base polygon
-	 * @param v average velocity of polygon
-	 * @param timeBefore time before stated position to cover (in sec)
-	 * @param timeAfter time after stated position to cover (in sec)
-	 * @return  enlarged polygon
-	 *
+	 * The uses a convex hull, so will be an over-approximation.  There may be inaccuracies for very long periods of time if using geodetic coordinates.<p>
+	 * 
 	 * Example: Given a polygon W and an aircraft A with a timeAfter of 100 seconds, a conflict detection for 
 	 * A against the stretched polygon W' is approximately equivalent to the disjunction of conflict detections 
 	 * (any positive is a positive) of the set A' against the original W, where A` is the set A plus all of "echos" timeshifted
 	 * up to 100 seconds into the future, modulo distortion from geodetic projections and convex hull expansions.  Effectively 
 	 * this is saying that if the conflict detection of A vs. W' is clear, then A will be clear of W and any aircraft that 
 	 * precisely follow A will also be clear of W for up to 100 seconds.  (If it were not clear for 100 seconds, then A would 
-	 * have impacted the extended W', which "arrives" 100 seconds earlier than W would.)
+	 * have impacted the extended W', which "arrives" 100 seconds earlier than W would.)<p>
 	 * 
-	 * Similarly for timeBefore.
+	 * Similarly for timeBefore.<p>
 	 * 
 	 * If A is clear of W', then it is also clear of the original W, which is a subset of W'.
+	 * 
+	 * @param sp base polygon
+	 * @param v average velocity of polygon
+	 * @param timeBefore time before stated position to cover (in sec)
+	 * @param timeAfter time after stated position to cover (in sec)
+	 * @return  enlarged polygon
 	 * 
 	 */
 	public static SimplePoly stretchOverTime(SimplePoly sp, Velocity v, double timeBefore, double timeAfter) {
@@ -457,6 +458,7 @@ public class PolyUtil {
 	}
 
 	/**
+	 * NOTE: THIS REQUIRES MORE THOUGHT
 	 * Given a polypath, expand the polygons on it so they at least cover the areas that they would when over a longer time.
 	 * Note: this does not work for MORPHING paths, and will convert them instead to USER_VEL_FINITE paths.
 	 * Polygons are expanded to a new convex hull, meaning this will be an over-approximation.
@@ -548,7 +550,7 @@ public class PolyUtil {
 	 * @param sp polygon starting position
 	 * @param vp polygon average velocity
 	 * @param T end time for test (relative)
-	 * @param increment time for search (> 0)
+	 * @param incr time increment for search (&gt; 0)
 	 * @return true if the point mass will intersect with the polygon at or before time T
 	 */
 	public static boolean intersectsPolygon2D(Position so, Velocity vo, SimplePoly sp, Velocity vp, double T, double incr) {
@@ -574,7 +576,7 @@ public class PolyUtil {
 	 * @param sp polygon starting position
 	 * @param vp polygon average velocity
 	 * @param T end time for test (relative)
-	 * @param increment time for search (> 0)
+	 * @param incr time increment for search (&gt; 0)
 	 * @return true if the point mass will intersect with the polygon at or before time T
 	 */
 	public static boolean intersectsPolygon(Position so, Velocity vo, SimplePoly sp, Velocity vp, double T, double incr) {
@@ -600,7 +602,7 @@ public class PolyUtil {
 	 * @param pp path describing polygon movement
 	 * @param B start time to check (absolute)
 	 * @param T end time to check (absolute)
-	 * @param increment time for search (> 0)
+	 * @param incr time increment for search (&gt; 0)
 	 * @return time of loss of separation if aircraft will intersect with the polygon between times B and T
 	 *         and polygon name that plan is in conflict with
 	 * 

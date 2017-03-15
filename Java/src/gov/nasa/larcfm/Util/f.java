@@ -361,10 +361,11 @@ final public class f {
 	/**
 	 * Format the double value after converting into the given units.  The returned string has
 	 * a given width and the value has the given number of digits of precision.
-	 * @param v
-	 * @param units
-	 * @param width
-	 * @param precision
+	 * 
+	 * @param v      value
+	 * @param units  units
+	 * @param width  width
+	 * @param precision digits of precision
 	 * @return a string represents the value
 	 */
 	public static String fmt(double v, String units, int width, int precision) {
@@ -375,9 +376,9 @@ final public class f {
 	 * Format the double value.  The returned string has
 	 * a given width and the value has the given number of digits of precision.
 	 * 
-	 * @param v
-	 * @param width
-	 * @param precision
+	 * @param v      value
+	 * @param width  width
+	 * @param precision digits of precision
 	 * @return a string represents the value
 	 */
 	public static String fmt(double v, int width, int precision) {
@@ -558,10 +559,10 @@ final public class f {
 	 * Return a string representation of the data in this 1-dimensional array.
 	 * A newline is NOT added to the end.
 	 * 
-	 * @param data
+	 * @param data data to make a string
 	 * @param unit the unit to convert the values to
-	 * @param width
-	 * @param precision
+	 * @param width width
+	 * @param precision number of digits of precision
 	 * @return the resulting string
 	 */
 	public static String array2str(double[] data, String unit, int width, int precision) {
@@ -581,10 +582,10 @@ final public class f {
 	 * Return a string representation of the data in this 2-dimensional table.
 	 * A newline is NOT added to the end.
 	 * 
-	 * @param data
+	 * @param data data to make a string
 	 * @param unit the unit to convert the values to
-	 * @param width
-	 * @param precision
+	 * @param width width
+	 * @param precision number of digits of precision
 	 * @return the resulting string
 	 */
 	public static String array2str(double[][] data, String unit, int width, int precision) {
@@ -609,10 +610,10 @@ final public class f {
 	 * Return a string representation of the data in this 3-dimensional table.
 	 * A newline is NOT added to the end.
 	 * 
-	 * @param data
+	 * @param data data to make a string
 	 * @param unit the unit to convert the values to
-	 * @param width
-	 * @param precision
+	 * @param width width
+	 * @param precision number of digits of precision
 	 * @return the resulting string
 	 */
 	public static String array2str(double[][][] data, String unit, int width, int precision) {

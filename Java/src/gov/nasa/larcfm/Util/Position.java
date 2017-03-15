@@ -577,7 +577,7 @@ public final class Position implements OutputList {
    * the this position along the track angle from the given velocity (v). 
    * Neither the ground speed nor the vertical speed of the returned velocity is computed.
    * 
-   * @param v        track angle at start
+   * @param track    track angle at start
    * @param d        distance
    * @param gsAt_d   ground speed at the end 
    * @return pair    representing the 2D position and 2D velocity

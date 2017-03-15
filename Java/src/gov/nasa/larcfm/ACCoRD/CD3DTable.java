@@ -18,8 +18,8 @@ public class CD3DTable implements ParameterTable {
 	private HashMap<String,String> units_;
 
 	public CD3DTable() {
-		D = Units.from("nmi",5);
-		H = Units.from("ft",1000);
+		D = Units.from("nmi",5.0);
+		H = Units.from("ft",1000.0);
 		units_ = new HashMap<String,String>();
 		units_.put("D","nmi");
 		units_.put("H","ft");

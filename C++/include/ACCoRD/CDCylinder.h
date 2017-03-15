@@ -77,7 +77,7 @@ namespace larcfm {
    * This specifies the internal table is a copy of the provided table
    * @param tab
    */
-    CDCylinder(CD3DTable& tab);
+    CDCylinder(const CD3DTable& tab);
 
     CDCylinder(double d, double h);
     CDCylinder(double d, const std::string& dunit, double h, const std::string& hunit);

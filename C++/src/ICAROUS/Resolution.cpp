@@ -61,7 +61,7 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 		xtrkDevGain = -xtrkDevGain;
 	}
 
-	if(fabs(FlightData->crossTrackDeviation) <= 2*allowedDev){
+	if(std::abs(FlightData->crossTrackDeviation) <= 2*allowedDev){
 		Vs = xtrkDevGain*FlightData->crossTrackDeviation;
 		V  = resolutionSpeed;
 
@@ -72,7 +72,7 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 			sgn = -1;
 		}
 
-		if(pow(fabs(Vs),2) >= pow(V,2)){
+		if(pow(std::abs(Vs),2) >= pow(V,2)){
 			Vs = V*sgn;
 		}
 
@@ -269,7 +269,7 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 			else{
 				Position pos2 = DG.getPosition(*gpit);--gpit;
 				nextHeading = pos1.track(pos2);
-				if(fabs(nextHeading - currHeading) > 0.01){
+				if(std::abs(nextHeading - currHeading) > 0.01){
 					PlanPosition.push_back(pos1.mkAlt(startAlt));
 					currHeading = nextHeading;
 				}
@@ -553,7 +553,7 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		}
 	}
 
-	if(!isnanf(prefHeading)){
+	if(!ISNAN(prefHeading)){
 		FlightData->maneuverVn = resolutionSpeed * cos(prefHeading);
 		FlightData->maneuverVe = resolutionSpeed * sin(prefHeading);
 	}

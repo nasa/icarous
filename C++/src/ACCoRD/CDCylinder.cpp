@@ -32,7 +32,7 @@ CDCylinder::CDCylinder() {
 }
 
 
-CDCylinder::CDCylinder(CD3DTable& tab) {
+CDCylinder::CDCylinder(const CD3DTable& tab) {
   table.copyValues(tab);
   id = "";
 }
@@ -150,8 +150,7 @@ CDCylinder* CDCylinder::make() const {
 
 CDCylinder* CDCylinder::copy() const {
   CDCylinder* cd = new CDCylinder();
-  cd->table.D = table.D;
-  cd->table.H = table.H;
+  cd->table.copyValues(table);
   cd->id = id;
   return cd;
 }

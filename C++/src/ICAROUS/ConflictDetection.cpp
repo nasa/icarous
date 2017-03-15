@@ -95,7 +95,7 @@ void QuadFMS_t::ComputeCrossTrackDev(Position pos,Plan fp,int nextWP,double stat
 		else if ( (psi1 - psi2) >= -180  ){
 			sgn = 1;              // Vehicle left of path
 		}
-		double bearing = abs(psi1 - psi2);
+		double bearing = std::abs(psi1 - psi2);
 		double dist = PrevWP.distanceH(pos);
 		double crossTrackDeviation = sgn*dist*sin(bearing * M_PI/180);
 		double crossTrackOffset    = dist*cos(bearing * M_PI/180);
@@ -119,10 +119,10 @@ void QuadFMS_t::CheckFlightPlanDeviation(){
 	FlightData->crossTrackDeviation = stats[0];
 	FlightData->crossTrackOffset    = stats[1];
 
-	if(fabs(FlightData->crossTrackDeviation) > allowedDev){
+	if(std::abs(FlightData->crossTrackDeviation) > allowedDev){
 		Conflict.flightPlanDeviation = true;
 		//printf("Standoff conflict %f,%f\n",stats[0],stats[1]);
-	}else if(fabs(FlightData->crossTrackDeviation) < (allowedDev)/3){
+	}else if(std::abs(FlightData->crossTrackDeviation) < (allowedDev)/3){
 		Conflict.flightPlanDeviation = false;
 	}
 
@@ -145,17 +145,17 @@ bool QuadFMS_t::CheckTurnConflict(double low,double high,double newHeading,doubl
 
 	// Get direction of turn
 	double psi   = newHeading - oldHeading;
-	double psi_c = 360 - abs(psi);
+	double psi_c = 360 - std::abs(psi);
 	bool rightTurn = false;
 	if(psi > 0){
-		if(abs(psi) > abs(psi_c)){
+		if(std::abs(psi) > std::abs(psi_c)){
 			rightTurn = false;
 		}
 		else{
 			rightTurn = true;
 		}
 	}else{
-		if(abs(psi) > abs(psi_c)){
+		if(std::abs(psi) > std::abs(psi_c)){
 			rightTurn = true;
 		}
 		else{
