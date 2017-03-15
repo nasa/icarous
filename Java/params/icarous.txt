@@ -17,14 +17,14 @@ MAX_CEILING = 30
 # Geofence parameters
 HTHRESHOLD = 0.2
 VTHRESHOLD = 0.2
-HSTEPBACK  = 2.0
-VSTEPBACK  = 2.0
+HSTEPBACK  = 3.0
+VSTEPBACK  = 3.0
 
 # Search parameters
 CHEAP_SEARCH = 0
 GRIDSIZE   = 0.5
 BUFFER     = 1
-LOOKAHEAD  = 3
+LOOKAHEAD  = 1
 PROXFACTOR = 3.0
 
 # Flight plan resolution parameters
