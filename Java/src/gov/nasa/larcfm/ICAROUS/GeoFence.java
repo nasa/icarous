@@ -571,7 +571,7 @@ public class GeoFence{
 			insideBad = true;
 		}
 
-		return PolycarpDetection.Static_Collision_Detector(startTime,stopTime,fenceVertices,pv,s,v,BUFF,insideBad);
+		return PolycarpDetection.Static_Collision_Detector(startTime,stopTime,fenceVertices2,pv,s,v,BUFF,insideBad);
 	}
 
 	public void print(){
