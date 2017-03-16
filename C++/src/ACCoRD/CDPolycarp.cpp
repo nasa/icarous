@@ -69,6 +69,10 @@ bool CDPolycarp::definitelyInside(const Vect3& so, const Poly3D& si) const {
   return Polycarp3D::definitely_inside(so, si, buff, checkNice);
 }
 
+bool CDPolycarp::definitelyOutside(const Vect3& so, const Poly3D& si) const {
+  return Polycarp3D::definitely_outside(so, si, buff, checkNice);
+}
+
 bool CDPolycarp::nearEdge(const Vect3& so, const Poly3D& si, double h, double v) const {
   return Polycarp3D::nearEdge(so, si, h, v, checkNice);
 }

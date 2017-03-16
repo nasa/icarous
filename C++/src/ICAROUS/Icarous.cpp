@@ -34,12 +34,20 @@
  *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT, TO THE EXTENT PERMITTED BY LAW.
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
+
 #include "Icarous.h"
+#include "Constants.h"
+
+std::string Icarous_t::VERSION = "1.1";
+
+std::string Icarous_t::release() {
+	return "ICAROUS++ V-"+VERSION+
+			"-FormalATM-"+Constants::version+" (March-18-2017)";
+}
 
 Icarous_t::Icarous_t(int argc,char* argv[],Mission_t* task){
 
-	strcpy(version,"1.1");
-	printf("Icarous version %s\n",version);
+	cout << "ICAROUS Release: " << release() << std::endl;
 	GetOptions(argc,argv);
 
 	// Read parameters from file and get the parameter data container
@@ -50,7 +58,6 @@ Icarous_t::Icarous_t(int argc,char* argv[],Mission_t* task){
 	sepInputReader.readLine();
 	paramData = sepInputReader.getParameters();
 	mission = task;
-
 
 }
 
