@@ -110,7 +110,7 @@ public class InspectObjectMission implements Mission,ErrorReporter{
 			if(Targetheading < 0)
 				Targetheading = 360 + Targetheading;
 
-			UAS.SetYaw(Targetheading);
+			UAS.SetYaw(true,Targetheading);
 			stateMission = MISSION_STATE.TURN2;
 			Event1 = CurrentTime;
 			break;
@@ -123,7 +123,7 @@ public class InspectObjectMission implements Mission,ErrorReporter{
 				error.addWarning("[" + timeLog + "] MSG: TURN FIREFLY TOWARDS OBJECT");
 				// Turn so that the go pro can get a clear shot of the balloon
 				Targetheading = FlightData.yaw + 90;
-				UAS.SetYaw(Targetheading);
+				UAS.SetYaw(true,Targetheading);
 				stateMission = MISSION_STATE.EXAMINE;
 				Event1 = CurrentTime;
 			}

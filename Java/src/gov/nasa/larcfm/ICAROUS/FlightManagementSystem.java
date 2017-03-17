@@ -232,12 +232,11 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	}
 
 	// Yaw command
-	public void SetYaw(double heading){
-
+	public void SetYaw(boolean relative, double heading){
+		int rel = relative?1:0;		
 		SendCommand(0,0,MAV_CMD.MAV_CMD_CONDITION_YAW,0,
-				(float)heading,0,1,0,
+				(float)heading,0,1,rel,
 				0,0,0);
-
 	}
 
 	// Position command
