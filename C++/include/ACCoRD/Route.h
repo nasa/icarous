@@ -77,7 +77,7 @@ public:
 	 * 
 	 * @param fp          source plan
 	 * @param bankAngle   bank angle used to calculate radii values (used in path distance calculations)
-	 * @return            Route generated from a linear plan fp,
+	 * @return            Route generated from a linear plan fp, radii added to vertexs
 	 *                    
 	 */
 	static Route mkRouteBankAngle(const Plan& fp, double bankAngle);

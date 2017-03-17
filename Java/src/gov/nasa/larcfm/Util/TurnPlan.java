@@ -25,8 +25,8 @@ public class TurnPlan { //extends Route {
 	public GsPlan gsp;
 	private ArrayList<PointType> ptTypes;
 	private ArrayList<Position> centers;
-	private ArrayList<Double> gsAccels;
-	private ArrayList<Double> vsAccels;
+//	private ArrayList<Double> gsAccels;      // save in TCPData instead
+//	private ArrayList<Double> vsAccels;
 	double gsAccelDef = 2;
 	double vsAccelDef =  1;
 
@@ -34,13 +34,14 @@ public class TurnPlan { //extends Route {
 		gsp = new GsPlan(startTime);
 		ptTypes = new ArrayList<PointType>();
 		centers = new ArrayList<Position>();
-		gsAccels = new ArrayList<Double>();
-		vsAccels = new ArrayList<Double>();
+		//gsAccels = new ArrayList<Double>();
+		//vsAccels = new ArrayList<Double>();
 	}
 
 	/** converts a kinematic plan into a TurnPlan using the points from "start" to "end"
+	 *  it reverts BGS-EGS and BVS-EVS zones
 	 * 
-	 * @param kpcOrig   kinematic plan
+	 * @param kpcOrig   kinematic plan that will be converted to a turn plan
 	 */
 	public TurnPlan(Plan kpcOrig,  int start, int end) {
 		//f.pln(" $$$$ TurnPlan Constructor: start = "+start+" end = "+end+" kpcOrig = "+kpcOrig.toStringGs());
@@ -86,8 +87,8 @@ public class TurnPlan { //extends Route {
 		//f.pln(" $$$ TurnPlan Constructor: gsp = "+gsp);
 		ptTypes = new ArrayList<PointType>();
 		centers = new ArrayList<Position>();
-		gsAccels = new ArrayList<Double>();
-		vsAccels = new ArrayList<Double>();
+		//gsAccels = new ArrayList<Double>();
+		//vsAccels = new ArrayList<Double>();
 		//f.pln(" $$$$ startIx = "+startIx+" endIx = "+endIx);
 		if (startIx >= 0 && startIx < kpc.size()) {
 			for (int i = startIx; i <= endIx; i++) {
@@ -97,17 +98,17 @@ public class TurnPlan { //extends Route {
 					ptTypes.add(PointType.BOT);
 					gsp.setRadius(i, kpc.signedRadius(i));
 					centers.add(kpc.turnCenter(i));
-					gsAccels.add(0.0);
+					//gsAccels.add(0.0);
 				} else if (kpc.isEOT(i)) {
 					ptTypes.add(PointType.EOT);
 					centers.add(Position.INVALID);
-					gsAccels.add(0.0);
+					//gsAccels.add(0.0);
 				} else {
 					ptTypes.add(PointType.LINEAR);
 					centers.add(Position.INVALID);
 					double gsAccel = kpc.getTcpData(i).getGsAccel();
-					gsAccels.add(gsAccel);
-					vsAccels.add(0.0);
+					//gsAccels.add(gsAccel);
+					//vsAccels.add(0.0);
 				}
 			}
 		}
@@ -123,8 +124,8 @@ public class TurnPlan { //extends Route {
 		gsp = new GsPlan(tp.gsp);
 		ptTypes = new ArrayList<PointType>(tp.ptTypes);
 		centers = new ArrayList<Position>(tp.centers);
-		gsAccels = new ArrayList<Double>(tp.gsAccels);
-		vsAccels = new ArrayList<Double>(tp.vsAccels);
+		//gsAccels = new ArrayList<Double>(tp.gsAccels);
+		//vsAccels = new ArrayList<Double>(tp.vsAccels);
 		gsp.id = tp.gsp.id;
 
 	}
@@ -196,8 +197,8 @@ public class TurnPlan { //extends Route {
 		//radius.add(rad);
 		ptTypes.add(ptType);
 		centers.add(center);
-		gsAccels.add(0.0);
-		vsAccels.add(0.0);
+		//gsAccels.add(0.0);
+		//vsAccels.add(0.0);
 	}
 
 
@@ -232,8 +233,8 @@ public class TurnPlan { //extends Route {
 		gsp.add(p.gsp,ix);
 		ptTypes.add(p.getPtType(ix));
 		centers.add(Position.INVALID);
-		gsAccels.add(0.0);
-		vsAccels.add(0.0);
+		//gsAccels.add(0.0);
+		//vsAccels.add(0.0);
 		//f.pln(" $$ GsPlan add "+p.names.get(ix));
 	}
 
@@ -324,8 +325,8 @@ public class TurnPlan { //extends Route {
 		//radius.remove(i);
 		ptTypes.remove(i);
 		centers.remove(i);
-		gsAccels.remove(i);
-		vsAccels.remove(i);
+		//gsAccels.remove(i);
+		//vsAccels.remove(i);
 	}
 	//
 	//
@@ -338,8 +339,8 @@ public class TurnPlan { //extends Route {
 		gsp.addAll(p.gsp);
 		ptTypes.addAll(p.ptTypes);
 		centers.addAll(p.centers);
-		gsAccels.addAll(p.gsAccels);
-		vsAccels.addAll(p.vsAccels);
+		//gsAccels.addAll(p.gsAccels);
+		//vsAccels.addAll(p.vsAccels);
 	}
 
 
@@ -507,15 +508,15 @@ public class TurnPlan { //extends Route {
 			//f.pln(" $$$ linearPlan: gs = "+Units.str("kn",gs_i)+" t = "+t);
 			NavPoint nvp = new NavPoint(np,t).makeLabel(name(i)); //TODO: NO INFO
 			TcpData  tcp = TcpData.makeSource(nvp);
-			if (ptType(i) == PointType.LINEAR) {
-				if (name(i).equals(Route.virtualName)) tcp = tcp.setVirtual();
-				kpc.add(nvp,tcp);
-			} else if (ptType(i) == PointType.BOT){
+			if (ptType(i) == PointType.BOT){
 				//f.pln(" TurnPlan.kinematicPlan: i = "+" vin = "+vin(i)+" radius = "+radius(i));
 				tcp = tcp.setBOT(radius(i),turnCenter(i),i);
 				kpc.add(nvp,tcp);
 			} else if (ptType(i) == PointType.EOT){
 				tcp = tcp.setEOT(i);
+				kpc.add(nvp,tcp);
+			} else {   // i.e. ptType(i) == PointType.LINEAR) {
+				if (name(i).equals(Route.virtualName)) tcp = tcp.setVirtual();
 				kpc.add(nvp,tcp);
 			}
 			//f.pln(" $$$$$ TurnPlan.linearPlan: ADDED i = "+i+" nvp = "+nvp.toString()+" tcp = "+tcp);
@@ -529,14 +530,30 @@ public class TurnPlan { //extends Route {
 			//f.pln(" TurnPlan.kinematicPlan AFTER markVsChanges: ----------------------------------- kpc2 =  "+kpc2);
 			double vsAccel = 1;		
 			//double bankAngle = Units.from("deg", 25);
-			boolean repairGs = false;
-			Plan kpc3 = TrajGen.generateGsTCPs(kpc2, gsAccelDef, repairGs, useOffset);
+			//boolean repairGs = false;
+			//Plan kpc3 = TrajGen.generateGsTCPs(kpc2, gsAccelDef, repairGs, useOffset);
+			f.pln("----------- START GS GENERATION: kpc2 = "+kpc2);
+			for (int i = kpc2.size() - 2; i > 0; i--) {     // TODO can we have i>= 0 ??
+				double timeOffset = 0.0;	
+				TcpData tcp1 = kpc2.getTcpData(i);
+				if (useOffset && tcp1.isEOT()) timeOffset = TrajGen.getMinTimeStep();
+				double targetGs = kpc2.gsOut(i+1);   
+                boolean allowOverlap = true;               
+                double gsAccel_i = kpc2.gsAccel(i);
+                if (gsAccel_i == 0) gsAccel_i = gsAccelDef;
+                //f.pln(" TurnPlan.kinematicPlan: for i = "+i+"  gsAccel_i = "+gsAccel_i);
+				TrajGen.generateGsTCPsAt(kpc2, i, gsAccel_i,  targetGs,   timeOffset, allowOverlap);
+			}
+
+			
+			
+			
 			//f.pln(" $$>> kinematicPlan.generateGsTCPs ----------------------------------- kpc3 "+kpc3);
 			//f.pln(" $$>> kinematicPlan: kpc3 = "+kpc3.toStringFull());	
 			//DebugSupport.dumpPlan(kpc3, "generateTCPs_gsTCPs");
-			Plan rtn = kpc3;
-			if ( ! kpc3.hasError()) {
-				Plan kpc4 = TrajGen.makeMarkedVsConstant(kpc3);
+			Plan rtn = kpc2;
+			if ( ! kpc2.hasError()) {
+				Plan kpc4 = TrajGen.makeMarkedVsConstant(kpc2);
 				//f.pln(" TurnPlan.kinematicPlan: makeMarkedVsConstant ----------------------------------- kpc4 = "+kpc4);
 				//DebugSupport.dumpPlan(kpc4, "generateTCPs_vsconstant");
 				//f.pln(" $$>> kinematicPlan: kpc4 = "+kpc4.toStringFull());	

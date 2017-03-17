@@ -163,6 +163,11 @@ public:
 	/**
 	 * Return the closest (horizontal) point along line a-b to point so
 	 * EXPERIMENTAL
+	 * 
+	 * @param a vector #1
+	 * @param b vector #2
+	 * @param so vector #3
+	 * @return closest point
 	 */
 	static Vect2 closestPoint(const Vect2& a, const Vect2& b, const Vect2& so);
 

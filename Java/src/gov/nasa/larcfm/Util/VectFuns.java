@@ -403,6 +403,11 @@ public final class VectFuns {
 	/**
 	 * Return the closest (horizontal) point along line a-b to point so
 	 * EXPERIMENTAL
+	 * 
+	 * @param a vector #1
+	 * @param b vector #2
+	 * @param so vector #3
+	 * @return closest point
 	 */
 	public static Vect2 closestPoint(Vect2 a, Vect2 b, Vect2 so) {
 		// translate a to origin, then project so onto the line defined by ab, then translate back to a
@@ -418,6 +423,11 @@ public final class VectFuns {
 	/**
 	 * Return the closest (horizontal) point on segment a-b to point so
 	 * EXPERIMENTAL
+	 * 
+	 * @param a vector #1
+	 * @param b vector #2
+	 * @param so vector #3
+	 * @return closest point
 	 */
 	public static Vect3 closestPointOnSegment(Vect3 a, Vect3 b, Vect3 so) {
 		Vect3 i = closestPoint(a,b,so);

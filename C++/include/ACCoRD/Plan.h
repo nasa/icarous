@@ -109,7 +109,7 @@ protected:
 	std::string  note;
 	static bool debug;
 	BoundingRectangle bound;
-
+    static double gsIn_0;
 
 
 public:
@@ -451,6 +451,10 @@ public:
 	 * @param radius     value to be set
 	 */
 	void setRadius(int i, double radius);
+
+	double getGsIn_0() const;
+
+	void setGsIn_0(double gsIn_0);
 
 	/**
 	 * This method returns a center of turn position with the same altitude as
@@ -1001,7 +1005,7 @@ public:
 
 	Velocity finalVelocity(int i, bool linear) const;
 
-	Velocity dtFinalVelocity(int i, bool linear) const;
+//	Velocity dtFinalVelocity(int i, bool linear) const;
 
 
 	/** Return the velocity of the point that is path distance "rdist" from the start of plan
@@ -1458,8 +1462,9 @@ public:
 
 	/**
 	 * Revert all BGS-EGS pairs in range "start" to "end"
-	 *
-	 * @param start  starting index
+	 * 
+	 * @param start        starting index
+	 * @param saveAccel   if true store acceleration in reverted point        
 	 */
 	void revertGsTCPs(int start, bool saveAccel);
 

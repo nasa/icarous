@@ -76,8 +76,8 @@ public class GeoFence{
 	public CDIIPolygon cdp;
 	public PolycarpResolution pcr;
 	public PolyUtil pu;
-        public ArrayList<Vect2> fenceVertices;      // Original vertices of the polygon in local NED frame
-        public ArrayList<Vect2> fenceVertices2;     // Vertices after expansion or contraction
+        public List<Vect2> fenceVertices;      // Original vertices of the polygon in local NED frame
+        public List<Vect2> fenceVertices2;     // Vertices after expansion or contraction
 	public PolycarpDetection pcDet;
 	public PolycarpEdgeProximity pep;
 

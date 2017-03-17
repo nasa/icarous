@@ -10,6 +10,7 @@
  */
 package gov.nasa.larcfm.ACCoRD;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import gov.nasa.larcfm.Util.Vect2;
@@ -23,8 +24,8 @@ public class PolycarpResolution {
 		return u.Sub(v).Hat().Add(w.Sub(v).Hat());
 	}
 
-	public static ArrayList<Vect2> expand_polygon_2D(double BUFF, double ResolBUFF, ArrayList<Vect2> p) {
-		ArrayList<Vect2> p2 = new ArrayList<Vect2>();
+	public static List<Vect2> expand_polygon_2D(double BUFF, double ResolBUFF, List<Vect2> p) {
+		List<Vect2> p2 = new ArrayList<Vect2>();
 		for (int i = 0; i < p.size(); i++) {
 			Vect2 prev = i > 0 ? p.get(i-1) : p.get(p.size()-1);
 			Vect2 next = i < p.size()-1 ? p.get(i+1) : p.get(0);
@@ -37,8 +38,8 @@ public class PolycarpResolution {
 		return p2;
 	}
 
-	public static ArrayList<Vect2> contract_polygon_2D(double BUFF, double ResolBUFF, ArrayList<Vect2> p) {
-		ArrayList<Vect2> p2 = new ArrayList<Vect2>();
+	public static List<Vect2> contract_polygon_2D(double BUFF, double ResolBUFF, List<Vect2> p) {
+		List<Vect2> p2 = new ArrayList<Vect2>();
 		for (int i = 0; i < p.size(); i++) {
 			Vect2 prev = i > 0 ? p.get(i-1) : p.get(p.size()-1);
 			Vect2 next = i < p.size()-1 ? p.get(i+1) : p.get(0);
@@ -51,7 +52,7 @@ public class PolycarpResolution {
 		return p2;
 	}
 	
-	public static int closest_edge(ArrayList<Vect2> p, double BUFF, Vect2 s) {
+	public static int closest_edge(List<Vect2> p, double BUFF, Vect2 s) {
 		int ce = 0;
 		for (int i = 0; i < p.size(); i++) {
 			int next = i < p.size()-1 ? i+1 : 0;
@@ -67,7 +68,7 @@ public class PolycarpResolution {
 		return ce;
 	}
 	
-	public static Vect2 recovery_test_point(double BUFF, double ResolBUFF, ArrayList<Vect2>p, Vect2 s, int eps) {
+	public static Vect2 recovery_test_point(double BUFF, double ResolBUFF, List<Vect2>p, Vect2 s, int eps) {
 		int i = closest_edge(p,BUFF,s);
 		int nexti = i < p.size()-1 ? i+1 : 0;
 		Vect2 ip = PolycarpEdgeProximity.closest_point(p.get(i), p.get(nexti), s, BUFF);
@@ -77,7 +78,7 @@ public class PolycarpResolution {
 		return testvect;
 	}
 
-	public static Vect2 recovery_point(double BUFF, double ResolBUFF, ArrayList<Vect2> p, Vect2 s, int eps) {
+	public static Vect2 recovery_point(double BUFF, double ResolBUFF, List<Vect2> p, Vect2 s, int eps) {
 		Vect2 tv = recovery_test_point(BUFF,ResolBUFF,p,s,eps);
 		if (eps == 1 && PolycarpContain.definitely_outside(p,s,BUFF) &&
 				!(PolycarpContain.near_any_edge(p,s, ResolBUFF))) {
@@ -128,11 +129,11 @@ public class PolycarpResolution {
 		return s;
 	}
 	
-	public static Vect2 outside_recovery_point(double BUFF, double ResolBUFF, ArrayList<Vect2> p, Vect2 s) {
+	public static Vect2 outside_recovery_point(double BUFF, double ResolBUFF, List<Vect2> p, Vect2 s) {
 		return recovery_point(BUFF,ResolBUFF,p,s,1);
 	}
 	
-	public static Vect2 inside_recovery_point(double BUFF, double ResolBUFF, ArrayList<Vect2> p, Vect2 s) {
+	public static Vect2 inside_recovery_point(double BUFF, double ResolBUFF, List<Vect2> p, Vect2 s) {
 		return recovery_point(BUFF,ResolBUFF,p,s,-1);
 	}
 		

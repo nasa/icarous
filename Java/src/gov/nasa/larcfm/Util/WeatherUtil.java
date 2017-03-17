@@ -14,6 +14,8 @@ public class WeatherUtil {
 
 	/**
 	 * Produce a plan that travels between two end points and is approximately conflict free of any polygons.
+	 *
+	 * (Note this code is experimental and may not always produce correct results.)
 	 * 
 	 * Note: 
 	 * - "Approximately conflict free" means that there should be no intrusions that are greater than gridSize.  This is intended to be a first step
@@ -126,6 +128,8 @@ public class WeatherUtil {
 	 * As reRouteWx(), but this will internally expand the polygons so that they cover a larger area, either representing their total coverage over 
 	 * a period of time of duration timeBefore+timeAfter, and/or over-approximating them to mitigate solutions that cut corners of polygons.  
 	 * Note that setting reduceGridPath to true may still result in a solutions that still contains conflicts. 
+	 * 
+	 * (Note this code is experimental and may not always produce correct results.)
 	 * 
 	 * @param own ownship plan
 	 * @param paths list of polygons to avoid

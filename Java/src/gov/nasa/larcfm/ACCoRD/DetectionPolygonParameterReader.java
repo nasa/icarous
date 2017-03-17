@@ -37,12 +37,12 @@ public class DetectionPolygonParameterReader {
 	 * 
 	 * If verbose is false (default true), suppress all status messages except exceptions
 	 */
-	public static Triple<ArrayList<DetectionPolygon>,DetectionPolygon,DetectionPolygon> readPolygonDetection(ParameterData params) {
+	public static Triple<List<DetectionPolygon>,DetectionPolygon,DetectionPolygon> readPolygonDetection(ParameterData params) {
 		return readPolygonDetection(params,false);
 	}
 
-	public static Triple<ArrayList<DetectionPolygon>,DetectionPolygon,DetectionPolygon> readPolygonDetection(ParameterData params, boolean verbose) {
-		ArrayList<DetectionPolygon> cdlist = new ArrayList<DetectionPolygon>();
+	public static Triple<List<DetectionPolygon>,DetectionPolygon,DetectionPolygon> readPolygonDetection(ParameterData params, boolean verbose) {
+		List<DetectionPolygon> cdlist = new ArrayList<DetectionPolygon>();
 		DetectionPolygon chosenD = null;
 		DetectionPolygon chosenR = null;
 		List<String> mlist = params.matchList("load_polygon_detection_");
@@ -89,7 +89,7 @@ public class DetectionPolygonParameterReader {
 		if (params.contains("set_res_polygon_detection")  && chosenR == null) {
 			if (verbose) System.out.println(">>>>> Polygon detection "+params.getString("set_res_polygon_detection")+" does not appear to be loaded, res cannot be set <<<<<");
 		}
-		return new Triple<ArrayList<DetectionPolygon>,DetectionPolygon,DetectionPolygon>(cdlist,chosenD,chosenR);
+		return new Triple<List<DetectionPolygon>,DetectionPolygon,DetectionPolygon>(cdlist,chosenD,chosenR);
 	} 
 
 }

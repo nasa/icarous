@@ -6,6 +6,7 @@ Contact: Cesar A. Munoz (Cesar.A.Munoz@nasa.gov)
 
 Release ICAROUS 1.1 (March 18, 2017)
 ----------------
+- Includes DAIDALUS 1.0.1.
 - ICAROUS has been extensively tested using the Ardupilot flight stack. Several minor bugs have been addressed.
 - C++ interface has been debugged and added to the code.
 - Baseline ICAROUS functionalities for simple waypoint missions:

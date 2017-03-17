@@ -387,7 +387,7 @@ public:
 	 * 
 	 * @param time
 	 * @param proj
-	 * @return
+	 * @return polygon
 	 */
   MovingPolygon3D getMovingPolygon(double time, const EuclideanProjection& proj) const;
 
@@ -403,6 +403,7 @@ public:
   // this outputs name, x y z1 z2 time fixed fields (or lat lon alt)
 	/**
 	 * Returns a string representation of this path that is compatible with the PolyReader input format.
+	 * @return string representation
 	 */
   std::string toOutput() const;
 

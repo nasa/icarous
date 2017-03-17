@@ -185,6 +185,7 @@ public final class LatLonAlt {
 	/** Are these two LatLonAlt almost equal horizontally? 
 	 * 
 	 * @param a LatLonAlt object
+	 * @param horizEps horizontal epsilon
 	 * @return true if the two are almost equals horizontally
 	 */
 	public boolean almostEquals2D(LatLonAlt a, double horizEps) {

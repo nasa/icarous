@@ -14,6 +14,7 @@ import gov.nasa.larcfm.Util.Vect2;
 //import gov.nasa.larcfm.Util.f;
 
 
+import java.util.List;
 import java.util.ArrayList;
 
 import static gov.nasa.larcfm.ACCoRD.PolycarpAcceptablePolygon.EdgeCross;
@@ -37,7 +38,7 @@ public class PolycarpContain {
 		}
 	}
 
-	public static boolean near_any_edge(ArrayList<Vect2> p,Vect2 s,double BUFF) {
+	public static boolean near_any_edge(List<Vect2> p,Vect2 s,double BUFF) {
 		for (int i = 0; i < p.size(); i++) {
 			if (near_poly_edge(p,s,BUFF,i)) {
 				return true;
@@ -47,7 +48,7 @@ public class PolycarpContain {
 	}
 
 
-	public static NumEdgesCross number_upshot_crosses(ArrayList<Vect2> p,Vect2 s) {
+	public static NumEdgesCross number_upshot_crosses(List<Vect2> p,Vect2 s) {
 		int num = 0;
 		boolean invalid = false;
 		for (int i = 0; i < p.size(); i++) {
@@ -69,7 +70,7 @@ public class PolycarpContain {
 		return 4;
 	}
 
-	public static int winding_number(ArrayList<Vect2> p,Vect2 s) {
+	public static int winding_number(List<Vect2> p,Vect2 s) {
 		int total = 0;
 		int q = quadrant(p.get(0).Sub(s));
 		for (int i = 0; i < p.size(); i++) {
@@ -92,9 +93,9 @@ public class PolycarpContain {
 		return total/4;
 	}
 
-	public static ArrayList<Vect2> fix_polygon(ArrayList<Vect2> p,Vect2 s,double BUFF) {
-		@SuppressWarnings("unchecked")
-		ArrayList<Vect2> newp = (ArrayList<Vect2>)p.clone();
+	public static List<Vect2> fix_polygon(List<Vect2> p,Vect2 s,double BUFF) {
+		List<Vect2> newp = new ArrayList<Vect2>();
+		newp.addAll(p);
 		for (int i = 0; i < p.size(); i++) {
 			if (p.get(i).y>=s.y-BUFF && Math.abs(p.get(i).x-s.x)<BUFF) {
 				newp.set(i, p.get(i).Sub(new Vect2(2*BUFF,0)));
@@ -103,7 +104,7 @@ public class PolycarpContain {
 		return newp;
 	}
 
-	public static boolean definitely_inside_prelim(ArrayList<Vect2> p,Vect2 s,double BUFF) {
+	public static boolean definitely_inside_prelim(List<Vect2> p,Vect2 s,double BUFF) {
 		CrossAns mcdi = min_cross_dist_index(p,s);
 		NumEdgesCross nuc = number_upshot_crosses(p,s);
 		if (mcdi.index<0) {
@@ -128,8 +129,8 @@ public class PolycarpContain {
 		return true;
 	}
 
-	public static boolean definitely_inside(ArrayList<Vect2> p, Vect2 s, double BUFF) {
-		ArrayList<Vect2> fixp = fix_polygon(p,s,BUFF);
+	public static boolean definitely_inside(List<Vect2> p, Vect2 s, double BUFF) {
+		List<Vect2> fixp = fix_polygon(p,s,BUFF);
 		boolean insidefixp = definitely_inside_prelim(fixp,s,BUFF);
 		if (near_any_edge(p,s,BUFF)) {
 			return false;
@@ -146,7 +147,7 @@ public class PolycarpContain {
 		return true;
 	}
 
-	public static boolean definitely_outside_prelim(ArrayList<Vect2> p, Vect2 s, double BUFF) {
+	public static boolean definitely_outside_prelim(List<Vect2> p, Vect2 s, double BUFF) {
 		CrossAns mcdi = min_cross_dist_index(p,s);
 		NumEdgesCross nuc = number_upshot_crosses(p,s);
 		if (near_any_edge(p,s,BUFF)) return false;
@@ -159,8 +160,8 @@ public class PolycarpContain {
 		return true;
 	}
 
-	public static boolean definitely_outside(ArrayList<Vect2> p, Vect2 s, double BUFF) {
-		ArrayList<Vect2> fixp = fix_polygon(p,s,BUFF);
+	public static boolean definitely_outside(List<Vect2> p, Vect2 s, double BUFF) {
+		List<Vect2> fixp = fix_polygon(p,s,BUFF);
 		boolean outsidefixp = definitely_outside_prelim(fixp,s,BUFF);		
 		if (near_any_edge(p,s,BUFF)) {
 			return false;
@@ -177,7 +178,7 @@ public class PolycarpContain {
 		return true;
 	}
 
-	public static boolean nice_polygon_2D(ArrayList<Vect2> p,double BUFF) {
+	public static boolean nice_polygon_2D(List<Vect2> p,double BUFF) {
 		return acceptable_polygon_2D(p,BUFF) 
 				&& counterclockwise_edges(p) 
 				&& definitely_outside(p,test_point_below(p,BUFF),BUFF);

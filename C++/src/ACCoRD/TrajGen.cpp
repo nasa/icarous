@@ -634,13 +634,30 @@ Triple<NavPoint,NavPoint,double> TrajGen::gsAccelGenerator(const Plan& traj, int
 	return Triple<NavPoint,NavPoint,double>(b,e,distToEGS);
 }
 
+Plan TrajGen::generateGsTCPs(const Plan& fp, double gsAccel, bool repairGs, bool useOffset) {
+	Plan traj(fp); // the current trajectory based on working
+	for (int i = traj.size() - 2; i > 0; i--) {
+		if (repairGs) {
+			bool checkTCP = true;
+			PlanUtil::fixGsAccelAt(traj, i, gsAccel, checkTCP, getMinTimeStep());
+		}
+		double timeOffset = 0.0;
+		TcpData tcp1 = traj.getTcpData(i);
+		if (useOffset && tcp1.isEOT() ) timeOffset = getMinTimeStep();
+		double targetGs = traj.gsOut(i+1);
+	    generateGsTCPsAt(traj, i, gsAccel, targetGs, timeOffset);
+	}
+	return traj;
+}
+
+
 void TrajGen::generateGsTCPsAt(Plan& traj, int i, double gsAccel, double targetGs, double timeOffset) {
 	bool allowOverlap = true;
 	generateGsTCPsAt(traj, i, gsAccel,  targetGs,   timeOffset, allowOverlap);
 }
 
 void TrajGen::generateGsTCPsAt(Plan& traj, int i, double gsAccel, double targetGs, double timeOffset, bool allowOverlap) {
-	double gsIn = traj.gsFinal(i-1);
+	double gsIn = traj.gsIn(i);
 	if (Util::almost_equals(gsIn,0.0) || Util::almost_equals(targetGs,0.0)) {
 		traj.addWarning("TrajGen.generateGsTCPs: zero ground speed at index "+Fm0(i));
 		gsIn = 1E-10;
@@ -671,6 +688,11 @@ void TrajGen::generateGsTCPsAt(Plan& traj, int i, double gsAccel, double targetG
 		if (allowOverlap) {
 	        bool isAltPreserve = tcp1.isAltPreserve();
 			ixBGS = traj.add(BGS, BGS_tcp);
+			if (ixBGS < 0) {
+				//fpln(" $$##### generateGsTCPs: ixBGS = "+ixBGS+" BGS.t = "+BGS.time());
+				traj.addError("TrajGen.generateGsTCPsAt ERROR: Overlap Problem at i = "+Fm0(i));
+				return;
+			}
 			adjustGsInsideAccel(traj, ixBGS, a, distanceToEGS, timeOffset, isAltPreserve);
 		} else {
 			ixBGS = traj.add(BGS, BGS_tcp);
@@ -741,21 +763,6 @@ TcpData TrajGen::makeEGS(const TcpData& tcp1) {
 
 
 
-Plan TrajGen::generateGsTCPs(const Plan& fp, double gsAccel, bool repairGs, bool useOffset) {
-	Plan traj(fp); // the current trajectory based on working
-	for (int i = traj.size() - 2; i > 0; i--) {
-		if (repairGs) {
-			bool checkTCP = true;
-			PlanUtil::fixGsAccelAt(traj, i, gsAccel, checkTCP, getMinTimeStep());
-		}
-		double timeOffset = 0.0;
-		TcpData tcp1 = traj.getTcpData(i);
-		if (useOffset && tcp1.isEOT() ) timeOffset = getMinTimeStep();
-		double targetGs = traj.gsOut(i+1);
-	    generateGsTCPsAt(traj, i, gsAccel, targetGs, timeOffset);
-	}
-	return traj;
-}
 
 
 

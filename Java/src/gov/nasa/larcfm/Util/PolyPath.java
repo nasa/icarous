@@ -1080,7 +1080,7 @@ public class PolyPath implements ErrorReporter {
 	 * 
 	 * @param time
 	 * @param proj
-	 * @return
+	 * @return polygon
 	 */
 	public MovingPolygon3D getMovingPolygon(double time, EuclideanProjection proj) {
 		//f.pln("PolyPath.getMovingPolygon "+toString());	  
@@ -1116,18 +1116,11 @@ public class PolyPath implements ErrorReporter {
 		return new SimpleMovingPoly(p,vvlist);
 	}
 
-	//  public boolean fix() {
-	//	  for (int i = 0; i < size(); i++) {
-	//		  polyList.get(i).fix();
-	//	  }
-	//	  return validate();
-	//  }
-
 	/**
 	 * Return s (hopefully) simpler (fewer vertices) version of the path that contains all points in the old path if the mode is AVG_VEL or USER_VEL.
 	 * If the current mode if MORPHING, it will return a copy of this path.
 	 * @param buffer
-	 * @return
+	 * @return poly path
 	 */
 	public PolyPath simplify(double buffer) {
 		if (mode != PathMode.MORPHING) {
@@ -1179,6 +1172,7 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Returns a string representation of this path that is compatible with the PolyReader input format.
+	 * @return string representation
 	 */
 	public String toOutput() {
 		return toOutput(Constants.get_output_precision(), false);
@@ -1197,12 +1191,12 @@ public class PolyPath implements ErrorReporter {
 	}
 
 	/**
-	 * 
+	 * Represent this polypath as a list of strings
 	 * @param i step number
 	 * @param j vertex number
 	 * @param precision
 	 * @param tcpColumns
-	 * @return
+	 * @return list of strings
 	 */
 	public List<String> toStringList(int i, int j, int precision, boolean tcpColumns) {
 		SimplePoly poly = polyList.get(i);
@@ -1254,8 +1248,12 @@ public class PolyPath implements ErrorReporter {
 
 	/**
 	 * Return true if position p is within the polygon at time t
+	 * 
+	 * @param p position
+	 * @param t time
+	 * @return true, if within polygon
 	 */
-	public boolean contains (Position p, double t) {
+	public boolean contains(Position p, double t) {
 		return t >= getFirstTime() && t <= getLastTime() && position(t).contains(p);
 	}
 

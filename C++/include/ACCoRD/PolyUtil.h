@@ -50,6 +50,8 @@ public:
 	/**
 	 * Returns the convex hull of a set of polygons.
 	 * This assumes that the resulting hull will not include the north or south poles.
+	 * @param p list of polygons
+	 * @return convex hull
 	 */
 	static SimplePoly convexHull(const std::vector<SimplePoly>& p);
 
@@ -57,16 +59,28 @@ public:
 	 * Returns the convex hull of a polygon that has been expanded by (approximately) the given buffer size.
 	 * This is done by adding additional points around each polygon point and taking the convex hull of them all.
 	 * This assumes that the resulting hull will not include the north or south poles.
+	 * @param p polygon
+	 * @param buffer buffer
+	 * @return polygon
 	 */
 	static SimplePoly convexHull(const SimplePoly& p, double buffer);
 
 	/**
 	 * Return a position that is buffer distance further away from the poly's centroid
+	 * @param poly polygon
+	 * @param p position
+	 * @param buffer buffer
+	 * @return position
 	 */
 	static Position pushOut(const SimplePoly& poly, const Position& p, double buffer);
 
 	/**
 	 * Return a position that is buffer distance further away from the poly's centroid at vertex i
+	 * 
+	 * @param poly polygon
+	 * @param i    index
+	 * @param buffer buffer
+	 * @return position
 	 */
 	static Position pushOut(const SimplePoly& poly, int i, double buffer);
 
@@ -110,13 +124,12 @@ public:
 	static SimplePoly stretchOverTime(const SimplePoly& sp, const Velocity& v, double timeBefore, double timeAfter);
 
 	/**
-	 * NOTE: THIS REQUIRES MORE THOUGHT
 	 * Given a polypath, expand the polygons on it so they at least cover the areas that they would when over a longer time.
 	 * Note: this does not work for MORPHING paths, and will convert them instead to USER_VEL_FINITE paths.
 	 * Polygons are expanded to a new convex hull, meaning this will be an over-approximation.
 	 * This may also not be accurate for paths with very long legs in geodetic coordinates.
 	 * This may also overestimate the polygons at the start and end of each leg in the path.
-	 * @param pp starting path
+	 * @param pbase starting path
 	 * @param timeBefore time before the base path time to cover (relative, in seconds)
 	 * @param timeAfter time after the base path time to cover (relative, in seconds)
 	 * @return new path with expanded polygons.
@@ -130,16 +143,16 @@ public:
 	 * @param p base polygon
 	 * @param hbuff size of horizontal buffer (approx)
 	 * @param vbuff size of vertical buffer
-	 * @return
+	 * @return convex hull
 	 */
 	static SimplePoly bufferedConvexHull(const SimplePoly& p, double hbuff, double vbuff);
 
 	/**
 	 * Return a path where polygons are replaced by convex hulls that have been expanded by hbuff and vbuff. 
-	 * @param p base polygon path
+	 * @param pbase base polygon path
 	 * @param hbuff size of horizontal buffer (approx)
 	 * @param vbuff size of vertical buffer
-	 * @return
+	 * @return path of convex hulls
 	 */
 	static PolyPath bufferedConvexHull(const PolyPath& pbase, double hbuff, double vbuff);
 
@@ -178,6 +191,11 @@ public:
 	 * This uses the intersectsPolygon2D() check, and so has the limitations associated with it.  Use ACCoRD 
 	 * calls instead for better performance and/or more accuracy.  Returns a new plan that is hopefully smaller than 
 	 * the original plan. 
+	 * 
+	 * @param p      plan
+	 * @param paths  paths
+	 * @param incr   increment
+	 * @return plan
 	 */
 	static Plan reducePlanAgainstPolys(const Plan& p, const std::vector<PolyPath>& paths, double incr);
 
@@ -195,7 +213,7 @@ public:
 	 * @param paths
 	 * @param incr
 	 * @param entryTime
-	 * @return
+	 * @return exit time
 	 */
 	static double calculateWxExitTime(const Plan& plan, const std::vector<PolyPath>& paths, double incr, double entryTime);
 

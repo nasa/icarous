@@ -10,6 +10,7 @@
  */
 package gov.nasa.larcfm.ACCoRD;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -27,8 +28,8 @@ import static gov.nasa.larcfm.ACCoRD.PolycarpAcceptablePolygon.test_point_below;
 
 public class PolycarpDetection {
 
-	private static ArrayList<Vect2> polygon_2D_at(ArrayList<Vect2> p, Vect2 pv, double t) {
-		ArrayList<Vect2> ans = new ArrayList<Vect2>();
+	private static List<Vect2> polygon_2D_at(List<Vect2> p, Vect2 pv, double t) {
+		List<Vect2> ans = new ArrayList<Vect2>();
 		for (int i = 0; i < p.size(); i++) {
 			ans.add(p.get(i).AddScal(t, pv));
 		}
@@ -164,7 +165,7 @@ public class PolycarpDetection {
 		return false;
 	}
 
-	public static boolean Static_Collision_Detector(double B, double T, ArrayList<Vect2> p, Vect2 pv, Vect2 s, Vect2 v, double BUFF, boolean insideBad) {
+	public static boolean Static_Collision_Detector(double B, double T, List<Vect2> p, Vect2 pv, Vect2 s, Vect2 v, double BUFF, boolean insideBad) {
 		if (insideBad) {
 			if (!PolycarpContain.definitely_outside(polygon_2D_at(p,pv,B),s.AddScal(B, v),BUFF)) {
 				return true;
@@ -216,8 +217,8 @@ public class PolycarpDetection {
 		return t;
 	}
 
-	private static ArrayList<Double> swap_times(double B, double T, Vect2 s, Vect2 v, Vect2 segstart, Vect2 segend, Vect2 startvel, Vect2 endvel) {
-		ArrayList<Double> ret = new ArrayList<Double>(6);
+	private static List<Double> swap_times(double B, double T, Vect2 s, Vect2 v, Vect2 segstart, Vect2 segend, Vect2 startvel, Vect2 endvel) {
+		List<Double> ret = new ArrayList<Double>(6);
 		double t0 = dot_zero_linear_2D_alg(B,T,s.Sub(segstart), v.Sub(startvel), segend.Sub(segstart).PerpR(), endvel.Sub(startvel).PerpR(), -1);
 		double t1 = dot_zero_linear_2D_alg(B,T,s.Sub(segstart), v.Sub(startvel), segend.Sub(segstart).PerpR(), endvel.Sub(startvel).PerpR(), +1);
 		double t2 = dot_zero_linear_2D_alg(B,T,s.Sub(segstart),v.Sub(startvel),segend.Sub(segstart),endvel.Sub(startvel),+1);
@@ -246,8 +247,8 @@ public class PolycarpDetection {
 	 * @param Fac
 	 * @return
 	 */
-	public static ArrayList<Double> collisionTimesInOut(double B, double T, MovingPolygon2D mp, Vect2 s, Vect2 v, double BUFF, double Fac) {
-		ArrayList<Double> ret = new ArrayList<Double>(6);
+	public static List<Double> collisionTimesInOut(double B, double T, MovingPolygon2D mp, Vect2 s, Vect2 v, double BUFF, double Fac) {
+		List<Double> ret = new ArrayList<Double>(6);
 		MovingPolygon2D mp2 = mp;
 		Vect2 s2 = s;
 		double T2 = T;

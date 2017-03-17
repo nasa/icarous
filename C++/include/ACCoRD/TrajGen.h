@@ -201,10 +201,10 @@ public:
 
 	/** Generates ground speed TCPs
 	 * 
-	 * @param fp
-	 * @param gsAccel
-	 * @param repairGs
-	 * @return
+	 * @param fp        plan to be processed
+	 * @param gsAccel   ground speed acceleration
+	 * @param repairGs  if true, attempt repair by delaying some of speed change to subsequent segments
+	 * @return          plan with BGS-EGS pairs added
 	 */
 	static Plan generateGsTCPs(const Plan& fp, double gsAccel, bool repairGs, bool useOffset);
 

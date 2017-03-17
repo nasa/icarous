@@ -11,12 +11,12 @@
 package gov.nasa.larcfm.ACCoRD;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 
 import gov.nasa.larcfm.Util.Interval;
 import gov.nasa.larcfm.Util.IntervalSet;
 import gov.nasa.larcfm.Util.MovingPolygon3D;
-import gov.nasa.larcfm.Util.Pair;
 import gov.nasa.larcfm.Util.Poly3D;
 import gov.nasa.larcfm.Util.Units;
 import gov.nasa.larcfm.Util.Util;
@@ -32,7 +32,7 @@ public class Polycarp3D {
 		if (so.z() < p.getBottom()-v || so.z() > p.getTop()+v) {
 			return false;
 		}
-		ArrayList<Vect2> ps = new ArrayList<Vect2>(p.size());
+		List<Vect2> ps = new ArrayList<Vect2>(p.size());
 		for (int i = 0; i < p.size(); i++) {
 			ps.add(p.poly2D().getVertex(i));
 		}
@@ -59,7 +59,7 @@ public class Polycarp3D {
 		if (so.z() < p.getBottom()+buff || so.z() > p.getTop()-buff) {
 			return false;
 		}
-		ArrayList<Vect2> ps = new ArrayList<Vect2>(p.size());
+		List<Vect2> ps = new ArrayList<Vect2>(p.size());
 		for (int i = 0; i < p.size(); i++) {
 			ps.add(p.poly2D().getVertex(i));
 		}
@@ -77,7 +77,7 @@ public class Polycarp3D {
 		if (so.z() < p.getBottom()-buff || so.z() > p.getTop()+buff) {
 			return true;
 		}
-		ArrayList<Vect2> ps = new ArrayList<Vect2>(p.size());
+		List<Vect2> ps = new ArrayList<Vect2>(p.size());
 		for (int i = 0; i < p.size(); i++) {
 			ps.add(p.poly2D().getVertex(i));
 		}
@@ -221,7 +221,7 @@ public class Polycarp3D {
 			}
 		}
 
-		ArrayList<Double> times = PolycarpDetection.collisionTimesInOut(b, t, mp2.horizpoly, so.vect2(), vo.vect2(), buff, fac);
+		List<Double> times = PolycarpDetection.collisionTimesInOut(b, t, mp2.horizpoly, so.vect2(), vo.vect2(), buff, fac);
 		for (int i = 0; i < times.size()-1; i++) {
 			double t1 = times.get(i);
 			double t2 = times.get(i+1);

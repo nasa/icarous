@@ -8,6 +8,7 @@ package gov.nasa.larcfm.Util;
 
 import java.awt.geom.GeneralPath;
 import java.io.Serializable;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  */
 public class Poly2D implements Serializable {
 	private final static long serialVersionUID = 1;
-	ArrayList<Vect2> vertices;
+	List<Vect2> vertices;
 //	boolean boundingRectangleDefined; // removed to eliminate dependence on Position and all that jazz
 //	private BoundingRectangle boundingRect;
 	private double minX;
@@ -44,7 +45,7 @@ public class Poly2D implements Serializable {
 	}
 			
 	
-	public Poly2D(ArrayList<Vect2> verts) {
+	public Poly2D(List<Vect2> verts) {
 //		boundingRectangleDefined = false;
 		minX = minY = Double.MAX_VALUE;
 		maxX = maxY = -Double.MAX_VALUE;
@@ -93,7 +94,7 @@ public class Poly2D implements Serializable {
 
 	// create a new polygon from this one and an arrayList of velocities.  It assumes that the arraylist is at least as 
 	//long as the starting polygon.
-	public Poly2D linear(ArrayList<Vect2> v, double t) {
+	public Poly2D linear(List<Vect2> v, double t) {
 		Poly2D rtn = new Poly2D();
 		for (int i = 0; i < size(); i++) {
 			Vect2 vt = vertices.get(i);
@@ -230,7 +231,7 @@ public class Poly2D implements Serializable {
 		}
 	}
 
-	public ArrayList<Vect2> getVertices() {
+	public List<Vect2> getVertices() {
 		return vertices;
 	}
 
@@ -411,7 +412,7 @@ public class Poly2D implements Serializable {
 	
 	
 	public Poly2D relative(Vect2 so, Vect2 vo) {
-		  ArrayList<Vect2> p = new ArrayList<Vect2>();
+		  List<Vect2> p = new ArrayList<Vect2>();
 		  Vect2 vx = vo.PerpR().Hat();
 		  Vect2 vy = vo.Hat();
 		  for (int i = 0; i < vertices.size(); i++) {
@@ -444,8 +445,8 @@ public class Poly2D implements Serializable {
 		}
 	}
 	
-	public ArrayList<Integer> nonConvexVertices() {
-		ArrayList<Integer> ret = new ArrayList<Integer>();
+	public List<Integer> nonConvexVertices() {
+		List<Integer> ret = new ArrayList<Integer>();
 		for (int i = 0; i < vertices.size(); i++) {
 			if (vertexConvex(i)) ret.add(i);
 		}
@@ -457,13 +458,13 @@ public class Poly2D implements Serializable {
 	}
 	
 	
-//	public ArrayList<Poly2D> convexComponents() {
+//	public List<Poly2D> convexComponents() {
 //		return convexComponents(new Poly2D(this));
 //	}
 	
-//	private ArrayList<Poly2D> convexComponents(Poly2D p2d) {
-//		ArrayList<Poly2D> ret = new ArrayList<Poly2D>();
-//		ArrayList<Integer> ncvs = p2d.nonConvexVertices();
+//	private List<Poly2D> convexComponents(Poly2D p2d) {
+//		List<Poly2D> ret = new ArrayList<Poly2D>();
+//		List<Integer> ncvs = p2d.nonConvexVertices();
 //		if (ncvs.size() == 0) {
 //			ret.add(this);
 //			return ret;

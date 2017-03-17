@@ -791,14 +791,15 @@ public class TcpData {
 
 	/**
 	 * Can this point be merged with the given point p?  
-	 * @param point the other point
+	 * @param tcp the other point
 	 * @return true, if the points can be merged.
 	 */
-	public boolean mergeable(TcpData point) {
+	public boolean mergeable(TcpData tcp) {
 		// these are bad!!!
-		boolean r1 = (this.isBOT() && point.isBOT()) || (this.isEOT() && point.isEOT());
-		boolean r2 = (this.isBGS() && point.isBGS()) || (this.isEGS() && point.isEGS());
-		boolean r3 = (this.isBVS() && point.isBVS()) || (this.isEVS() && point.isEVS());
+		//f.pln(" $$ mergeable: this =  "+this+" tcp = "+tcp);
+		boolean r1 = (this.isBOT() && tcp.isBOT()) || (this.isEOT() && tcp.isEOT());
+		boolean r2 = (this.isBGS() && tcp.isBGS()) || (this.isEGS() && tcp.isEGS());
+		boolean r3 = (this.isBVS() && tcp.isBVS()) || (this.isEVS() && tcp.isEVS());
 		return !r1 && !r2 && !r3;
 	}
 

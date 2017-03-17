@@ -38,7 +38,7 @@ class SimpleMovingPoly {
 	 * Constructor for a SimplePoly with predefined top and bottom altitudes.
 	 * 
 	 * @param b Bottom altitude
-	 * @param t Top Altitude
+	 * @param t Top altitude
 	 */
 	SimpleMovingPoly(double b, double t);
 
@@ -46,7 +46,8 @@ class SimpleMovingPoly {
 	 * Constructor for a SimplePoly with predefined top and bottom altitudes.
 	 * 
 	 * @param b Bottom altitude
-	 * @param t Top Altitude
+	 * @param t Top altitude
+	 * @param units units of altitude
 	 */
 	SimpleMovingPoly(double b, double t, const std::string& units);
 
@@ -69,11 +70,18 @@ class SimpleMovingPoly {
 
 	/**
 	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use latlon coordinates.
+	 * 
+	 * @param p3 polygon
+	 * @param proj projection
+	 * @return polygon
 	 */
 	static SimpleMovingPoly make(const MovingPolygon3D& p3, const EuclideanProjection& proj);
 
 	/**
 	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use Euclidean coordinates.
+	 * 
+	 * @param p3 polygon
+	 * @return polygon
 	 */
 	static SimpleMovingPoly make(const MovingPolygon3D& p3);
 
@@ -81,11 +89,15 @@ class SimpleMovingPoly {
 
 	/**
 	 * Return the polygon projected to be at time dt (dt = 0 returns a copy of the base polygon)
+	 * 
+	 * @param dt time increment
+	 * @return polygon
 	 */
 	SimplePoly position(double dt) const;
 
 	/**
 	 * Return the average Velocity (at time 0).
+	 * @return velocity
 	 */
 	Velocity averageVelocity() const;
 
@@ -105,6 +117,10 @@ class SimpleMovingPoly {
 
 	/**
 	 * Return true if point p is within the polygon at time dt from now.
+	 * 
+	 * @param p position
+	 * @param dt time increment
+	 * @return true, if point is in polygon
 	 */
 	bool contains(const Position& p, double dt) const;
 

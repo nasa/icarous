@@ -11,10 +11,7 @@
 package gov.nasa.larcfm.ACCoRD;
 
 import gov.nasa.larcfm.Util.Vect2;
-import gov.nasa.larcfm.Util.f;
-
-import java.util.ArrayList;
-
+import java.util.List;
 import static gov.nasa.larcfm.ACCoRD.PolycarpDoubleQuadratic.ae;
 import static gov.nasa.larcfm.ACCoRD.PolycarpDoubleQuadratic.AE;
 import static gov.nasa.larcfm.ACCoRD.PolycarpEdgeProximity.near_edge;
@@ -22,7 +19,7 @@ import static gov.nasa.larcfm.ACCoRD.PolycarpEdgeProximity.segments_2D_close;
 
 public class PolycarpAcceptablePolygon {
 
-	public static boolean near_poly_edge(ArrayList<Vect2> p,Vect2 s,double BUFF,int i) {
+	public static boolean near_poly_edge(List<Vect2> p,Vect2 s,double BUFF,int i) {
 	    int next_ind = i < p.size()-1 ? i+1 : 0;
 	    return near_edge(p.get(i),p.get(next_ind),s,BUFF);
 	}
@@ -44,7 +41,7 @@ public class PolycarpAcceptablePolygon {
 	    }
 	}
 
-	public static EdgeCross upshot_crosses_edge(ArrayList<Vect2> p,Vect2 s,int i) {
+	public static EdgeCross upshot_crosses_edge(List<Vect2> p,Vect2 s,int i) {
 	    int next_ind = i < p.size()-1 ? i+1 : 0;
 	    double tester = (p.get(next_ind).x-p.get(i).x)*(p.get(next_ind).x-p.get(i).x) * (p.get(i).y-s.y) + (s.x-p.get(i).x)*(p.get(next_ind).y-p.get(i).y)*(p.get(next_ind).x-p.get(i).x);
 	    if (p.get(i).x>s.x && p.get(next_ind).x>s.x) return new EdgeCross(false,false);
@@ -68,7 +65,7 @@ public class PolycarpAcceptablePolygon {
 	    }
 	}
 	
-	public static CrossAns compute_intercept(ArrayList<Vect2> p,Vect2 s,int i) {
+	public static CrossAns compute_intercept(List<Vect2> p,Vect2 s,int i) {
 		 int next_ind = i < p.size()-1 ? i+1 : 0;
 	    if ((p.get(i).x>s.x && p.get(next_ind).x>s.x) ||
 	       (p.get(i).x<s.x && p.get(next_ind).x<s.x) ||
@@ -87,7 +84,7 @@ public class PolycarpAcceptablePolygon {
 	}
 
 
-	public static CrossAns min_cross_dist_index(ArrayList<Vect2> p,Vect2 s) {
+	public static CrossAns min_cross_dist_index(List<Vect2> p,Vect2 s) {
 		CrossAns curr = compute_intercept(p,s,0);
 	    for (int j = 1; j < p.size(); j++) {
 	    	CrossAns cii = compute_intercept(p,s,j);
@@ -114,7 +111,7 @@ public class PolycarpAcceptablePolygon {
 
 	    
 
-	public static boolean acceptable_polygon_2D(ArrayList<Vect2> p,double BUFF) {
+	public static boolean acceptable_polygon_2D(List<Vect2> p,double BUFF) {
 	    if (p.size()<=2) return false;
 	    for (int i = 0; i < p.size(); i++) {
 	        for (int j = i; j < p.size(); j++) {
@@ -138,7 +135,7 @@ public class PolycarpAcceptablePolygon {
 	    return true;
 	}
 
-	public static int counterclockwise_corner_index(ArrayList<Vect2> p,int eps) {
+	public static int counterclockwise_corner_index(List<Vect2> p,int eps) {
 	    int windex = 0;
 	    for (int i = 1; i < p.size(); i++) { // python goes to <= p.size() ?
 	        if (ae(p.get(windex).x,p.get(i).x) && p.get(windex).y>=p.get(i).y) windex = i;
@@ -148,7 +145,7 @@ public class PolycarpAcceptablePolygon {
 	    return windex;
 	}
 
-	public static double min_y_val(ArrayList<Vect2> p) {
+	public static double min_y_val(List<Vect2> p) {
 	    double curr = p.get(0).y;
 	    for (int i = 1; i < p.size(); i++) {
 	        if (p.get(i).y<=curr) {
@@ -158,7 +155,7 @@ public class PolycarpAcceptablePolygon {
 	    return curr;
 	}
 
-	public static Vect2 test_point_below(ArrayList<Vect2> p,double BUFF) {
+	public static Vect2 test_point_below(List<Vect2> p,double BUFF) {
 	    int minxindex = counterclockwise_corner_index(p,1);
 	    int maxxindex = counterclockwise_corner_index(p,-1);
 	    double minx = p.get(minxindex).x;
@@ -166,7 +163,7 @@ public class PolycarpAcceptablePolygon {
 	    return new Vect2((minx+maxx)/2,min_y_val(p)-Math.abs(maxx-minx)-2*BUFF);
 	}
 
-	public static boolean counterclockwise_edges(ArrayList<Vect2> p) {
+	public static boolean counterclockwise_edges(List<Vect2> p) {
 	    int l = counterclockwise_corner_index(p,1);
 	    int r = counterclockwise_corner_index(p,-1);
 //f.pln("l="+l);	    
@@ -186,7 +183,7 @@ public class PolycarpAcceptablePolygon {
 	    return Lcc && Rcc;
 	}
 	
-	public static boolean segment_near_any_edge(ArrayList<Vect2> p,double BUFF,Vect2 segstart,Vect2 segend) {
+	public static boolean segment_near_any_edge(List<Vect2> p,double BUFF,Vect2 segstart,Vect2 segend) {
 	    for (int i = 0; i < p.size(); i++) {
 	    	int mi = i<p.size()-1 ? i+1 : 0;
 	    	if (PolycarpEdgeProximity.segments_2D_close(segstart, segend, p.get(i), p.get(mi), BUFF)) {

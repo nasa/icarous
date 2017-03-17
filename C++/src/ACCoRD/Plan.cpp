@@ -52,6 +52,7 @@ TcpData Plan::invalid_value = TcpData::makeInvalid();
 
 const double Plan::minDt = GreatCircle::minDt;
 const double Plan::nearlyZeroGs = 1E-10;
+      double Plan::gsIn_0 = -1;
 //const double Plan::revertGsTurnConnectionTime = 5.0;
 
 
@@ -592,6 +593,15 @@ void Plan::setRadius(int i, double radius) {
 	d.setRadiusSigned(radius);
 	data[i]=d;
 }
+
+double Plan::getGsIn_0() const {
+	return gsIn_0;
+}
+
+void Plan::setGsIn_0(double gsIn_0_d) {
+	gsIn_0 = gsIn_0_d;
+}
+
 
 //Position Plan::turnCenter(int i) const {
 //	if (i < 0 || i >= size()) {
@@ -1734,6 +1744,7 @@ double Plan::gsFinal(int i, bool linear) const {
 }
 
 double Plan::gsIn(int seg, bool linear)  const {
+	if (seg==0) return gsIn_0;
 	return gsFinal(seg-1,linear);
 }
 
@@ -2395,24 +2406,24 @@ Velocity Plan::finalVelocity(int i, bool linear) const {
 	return Velocity::mkTrkGsVs(trkFinal(i,linear), gsFinal(i,linear), vsFinal(i,linear));
 }
 
-Velocity Plan::dtFinalVelocity(int i, bool linear) const {
-	if (i >= (int) size()) {   // there is no "final" velocity after the last point (in general.  it happens to work for Euclidean, but not lla)
-		addWarning("finalVelocity(int): Attempt to get a final velocity after the end of the Plan: "+Fm0(i));
-		return Velocity::INVALIDV();
-	}
-	if (i == (int) size()-1) {// || points[i].time() > getLastTime()-minDt) {
-		addWarning("finalVelocity(int): Attempt to get a final velocity at end of the Plan: "+Fm0(i));
-		return Velocity::ZEROV();
-	}
-	if (i < 0) {
-		addWarning("finalVelocity(int): Attempt to get a final velocity before beginning of the Plan: "+Fm0(i));
-		return Velocity::ZEROV();
-	}
-	//fpln(" ########## finalVelocity0:   np1="+points[i]+" np2="+points[i+1]);
-	double t2 = points[i+1].time();
-	return positionVelocity(t2-2.0*minDt).second;
-}
-
+//Velocity Plan::dtFinalVelocity(int i, bool linear) const {
+//	if (i >= (int) size()) {   // there is no "final" velocity after the last point (in general.  it happens to work for Euclidean, but not lla)
+//		addWarning("finalVelocity(int): Attempt to get a final velocity after the end of the Plan: "+Fm0(i));
+//		return Velocity::INVALIDV();
+//	}
+//	if (i == (int) size()-1) {// || points[i].time() > getLastTime()-minDt) {
+//		addWarning("finalVelocity(int): Attempt to get a final velocity at end of the Plan: "+Fm0(i));
+//		return Velocity::ZEROV();
+//	}
+//	if (i < 0) {
+//		addWarning("finalVelocity(int): Attempt to get a final velocity before beginning of the Plan: "+Fm0(i));
+//		return Velocity::ZEROV();
+//	}
+//	//fpln(" ########## finalVelocity0:   np1="+points[i]+" np2="+points[i+1]);
+//	double t2 = points[i+1].time();
+//	return positionVelocity(t2-2.0*minDt).second;
+//}
+//
 
 
 /**

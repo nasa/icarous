@@ -7,8 +7,7 @@
 
 package gov.nasa.larcfm.Util;
 
-import java.util.ArrayList;
-
+import java.util.List;
 
 /**
  * A bounding rectangle for a 3-dimensional polygon. The bounding rectangle is the smallest rectangle that encloses a set 
@@ -45,7 +44,7 @@ public final class BoundingRectangle {
 	 * 
 	 * @param vertices list of vertices
 	 */
-	public BoundingRectangle(ArrayList<Vect2> vertices) {
+	public BoundingRectangle(List<Vect2> vertices) {
 		clear();
 		for (int i = 0; i < vertices.size(); i++) {
 			add(vertices.get(i).x,vertices.get(i).y);

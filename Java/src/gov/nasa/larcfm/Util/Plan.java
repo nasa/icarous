@@ -104,6 +104,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	// the same point for velocity calculations, mergeClosePoints merges points
 	// closer together in time than this parameter.
 	public static final String specPre = "$";             // special prefix for labels
+	double gsIn_0 = -1;
 
 	public static final int TCP_OUTPUT_COLUMNS = 20; // total number of output columns for full TCP not including aircraft name)
 	public static final int MIN_OUTPUT_COLUMNS = 5; // total number of output columns for linear (not including aircraft name)
@@ -1172,6 +1173,14 @@ public class Plan implements ErrorReporter, Cloneable {
 		data.set(i, d);
 	}
 
+	public double getGsIn_0() {
+		return gsIn_0;
+	}
+
+	public void setGsIn_0(double gsIn_0) {
+		this.gsIn_0 = gsIn_0;
+	}
+
 	//	/**
 	//	 * This method returns a center of turn position with the same altitude as
 	//	 * the current point. If the current point is not a turn point, and has a
@@ -1744,11 +1753,11 @@ public class Plan implements ErrorReporter, Cloneable {
 		return add(p.first, p.second);
 	}
 
-	/**
+	/**  add point and its TCP data to a plan
 	 * 
-	 * @param p
-	 * @param tcpdata
-	 * @return
+	 * @param p           NavPoint to be added
+	 * @param tcpdata     TCP DATA of this point
+	 * @return            index of added point, if negative there was an overlap
 	 */
 	public int add(NavPoint p, TcpData tcpdata) {
 		TcpData d;
@@ -1798,9 +1807,7 @@ public class Plan implements ErrorReporter, Cloneable {
 				} else {
 					addWarning("Attempt to merge a point at time " + f.Fm4(p.time())
 					+ " that already has an incompatible point, no point added.");
-					// f.pln(" $$$$$ plan.add Attempt to add a point at time
-					// "+f.Fm4(p.time())+" that already has an incompatible
-					// point. ");
+					// f.pln(" $$$$$ plan.add Attempt to add a point at time "+f.Fm4(p.time())+" that already has an incompatible point. ");
 					// Debug.halt();
 					return -points.size() - 1;
 				}
@@ -2507,6 +2514,7 @@ public class Plan implements ErrorReporter, Cloneable {
 	 * @return ground speed
 	 */
 	public double gsIn(int seg, boolean linear) {
+		if (seg==0) return gsIn_0;
 		return gsFinal(seg - 1, linear);
 	}
 
@@ -3059,10 +3067,10 @@ public class Plan implements ErrorReporter, Cloneable {
 	// return v;
 	// }
 
-	// This is not defined for the last point (as there is no next point)
-	public Velocity dtFinalVelocity(int i) {
-		return dtFinalVelocity(i, false);
-	}
+//	// This is not defined for the last point (as there is no next point)
+//	public Velocity dtFinalVelocity(int i) {
+//		return dtFinalVelocity(i, false);
+//	}
 
 	// This is not defined for the last point (as there is no next point)
 	public Velocity finalVelocity(int i) {
@@ -3087,28 +3095,28 @@ public class Plan implements ErrorReporter, Cloneable {
 		return rtn;
 	}
 
-	public Velocity dtFinalVelocity(int i, boolean linear) {
-		// f.pln(" $$ finalVelocity "+i+" "+getName());
-		if (i >= size()) { // there is no "final" velocity after the last point (in general. it happens to work for Euclidean, but not lla)
-			addWarning("finalVelocity(int): Attempt to get a final velocity after the end of the Plan: " + i);
-			// Debug.halt();
-			return Velocity.INVALID;
-		}
-		if (i == size() - 1) {// || points.get(i).time() > getLastTime()-minDt)
-			// {
-			addWarning("finalVelocity(int): Attempt to get a final velocity at end of the Plan: " + i);
-			// DebugSupport.halt();
-			return Velocity.ZERO;
-		}
-		if (i < 0) {
-			addWarning("finalVelocity(int): Attempt to get a final velocity before beginning of the Plan: " + i);
-			// Debug.halt();
-			return Velocity.ZERO;
-		}
-		// double t1 = points.get(i).time();
-		double t2 = points.get(i + 1).time();
-		return positionVelocity(t2 - 2.0 * minDt).second;
-	}
+//	public Velocity dtFinalVelocity(int i, boolean linear) {
+//		// f.pln(" $$ finalVelocity "+i+" "+getName());
+//		if (i >= size()) { // there is no "final" velocity after the last point (in general. it happens to work for Euclidean, but not lla)
+//			addWarning("finalVelocity(int): Attempt to get a final velocity after the end of the Plan: " + i);
+//			// Debug.halt();
+//			return Velocity.INVALID;
+//		}
+//		if (i == size() - 1) {// || points.get(i).time() > getLastTime()-minDt)
+//			// {
+//			addWarning("finalVelocity(int): Attempt to get a final velocity at end of the Plan: " + i);
+//			// DebugSupport.halt();
+//			return Velocity.ZERO;
+//		}
+//		if (i < 0) {
+//			addWarning("finalVelocity(int): Attempt to get a final velocity before beginning of the Plan: " + i);
+//			// Debug.halt();
+//			return Velocity.ZERO;
+//		}
+//		// double t1 = points.get(i).time();
+//		double t2 = points.get(i + 1).time();
+//		return positionVelocity(t2 - 2.0 * minDt).second;
+//	}
 
 	/**
 	 * Calculate vertical speed from point i to point i+1 (at point i).
@@ -4420,6 +4428,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			}
 			double gsOutEGS = gsOut(ixEGS);
 			double gsOutBGS = gsOut(ixBGS);
+			double gsInBGS = gsIn(ixBGS);
 			//f.pln(" $$$$ structRevertGsTCP: ixBGS = "+ixBGS+" gsOutBGS = "+Units.str("kn",gsOutBGS)+" gsOutEGS = "+Units.str("kn",gsOutEGS));
 			TcpData tcpEGS= getTcpDataRef(ixEGS);
 			tcpEGS.clearEGS();	
@@ -4433,6 +4442,7 @@ public class Plan implements ErrorReporter, Cloneable {
 			//f.pln(" $$$ structRevertGsTCP: add newPoint = "+newPoint+" iNew =  "+iNew);
 			//f.pln(" $$$$ structRevertGsTCP: AT ixBGS = "+ixBGS+" make gsOut = gsOutEGS = "+Units.str("kn",gsOutEGS));
 			mkGsOut(ixBGS, gsOutEGS);
+			//if (ixBGS == 0) setGsIn_0(gsInBGS);
 		}
 	}
 
@@ -4444,22 +4454,22 @@ public class Plan implements ErrorReporter, Cloneable {
 
 	public void revertGsTCPs() {
 		int start = 0;
-		boolean storeAccel = true;
-		revertGsTCPs(start,storeAccel);
+		boolean saveAccel = true;
+		revertGsTCPs(start,saveAccel);
 	}
 
 	/**
 	 * Revert all BGS-EGS pairs in range "start" to "end"
 	 * 
 	 * @param start        starting index
-	 * @param storeAccel   if true store acceleration in reverted point        
+	 * @param saveAccel   if true store acceleration in reverted point        
 	 */
-	public void revertGsTCPs(int start, boolean storeAccel) {
+	public void revertGsTCPs(int start, boolean saveAccel) {
 		//f.pln(" $$$ revertGsTCPs start = "+start+" size = "+size());
 		if (start < 0) start = 0;
 		for (int j = start; j < size(); j++) {
 			//f.pln(" $$$ REVERT GS AT j = "+j+" np_ix = "+point(j));
-			structRevertGsTCP(j, storeAccel); 
+			structRevertGsTCP(j, saveAccel); 
 		}
 	}
 

@@ -18,10 +18,10 @@ import java.util.List;
 
 public class CDPolycarp implements DetectionPolygon {
 
-	ArrayList<Double> tin = new ArrayList<Double>();
-	ArrayList<Double> tout = new ArrayList<Double>();
-	ArrayList<Double> tca = new ArrayList<Double>();
-	ArrayList<Double> tdist = new ArrayList<Double>();
+	List<Double> tin = new ArrayList<Double>();
+	List<Double> tout = new ArrayList<Double>();
+	List<Double> tca = new ArrayList<Double>();
+	List<Double> tdist = new ArrayList<Double>();
 
 	private double buff;
 	private double fac;

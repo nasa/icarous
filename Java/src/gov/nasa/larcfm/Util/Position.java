@@ -574,7 +574,7 @@ public final class Position implements OutputList {
   
   /** 
    * This computes the horizontal (2D) position that is a distance (d) away from
-   * the this position along the track angle from the given velocity (v). 
+   * this position along the track angle from the given track. 
    * Neither the ground speed nor the vertical speed of the returned velocity is computed.
    * 
    * @param track    track angle at start

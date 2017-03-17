@@ -781,6 +781,31 @@ public class TrajGen {
 		//f.pln(" $$>> generateTurnTCPs: turnDeltaBOT = "+Units.str("deg",turnDeltaBOT));
 		return (turnDelta < maxDelta);
 	}
+	
+	/** Generates ground speed TCPs
+	 * 
+	 * @param fp        plan to be processed
+	 * @param gsAccel   ground speed acceleration
+	 * @param repairGs  if true, attempt repair by delaying some of speed change to subsequent segments
+	 * @return          plan with BGS-EGS pairs added
+	 */
+	public static Plan generateGsTCPs(Plan fp, double gsAccel, boolean repairGs, boolean useOffset) {
+		Plan traj = new Plan(fp); // the current trajectory based on working
+		//f.pln(" generateGsTCPs: ENTER ------------------------ fp =  "+fp.toStringFull());
+		for (int i = traj.size() - 2; i > 0; i--) {
+			if (repairGs) {
+				boolean checkTCP = true;			
+				PlanUtil.fixGsAccelAt(traj, i, gsAccel, checkTCP, getMinTimeStep());				
+			}
+    		double timeOffset = 0.0;	
+			TcpData tcp1 = traj.getTcpData(i);
+    		if (useOffset && tcp1.isEOT()) timeOffset = getMinTimeStep();
+    		double targetGs = traj.gsOut(i+1);   
+ 		    generateGsTCPsAt(traj, i, gsAccel, targetGs, timeOffset);	
+		}
+		//f.pln(" generateGsTCPs: EXIT traj = "+traj);				
+		return traj;
+	}
 
 	/**
 	 * Generate gs acceleration zone between np1 and np2 
@@ -835,13 +860,13 @@ public class TrajGen {
 	
 	
 	public static void generateGsTCPsAt(Plan traj, int i, double gsAccel, double targetGs, double  timeOffset, boolean allowOverlap) {
-		double gsIn = traj.gsFinal(i-1);  		
+		double gsIn = traj.gsIn(i);  		
 		//f.pln(" $$$$$ generateGsTCPsAt:  gsIn = "+Units.str("kn",gsIn)+"  targetGs = "+Units.str("kn",targetGs));
 		if (Util.almost_equals(gsIn, 0.0) || Util.almost_equals(targetGs,0.0)) {
 			traj.addWarning("TrajGen.generateGsTCPsAt: zero ground speed at index "+i);
 			gsIn = 1E-10;
 		}	
-		//f.pln(" ##$$ generateGsTCPs: at i = "+i+" Accelerate FROM gsIn = "+Units.str("kn",gsIn)+" TO targetGs = "+Units.str("kn",targetGs));
+		//f.pln(" $$%% generateGsTCPs: at i = "+i+" Accelerate FROM gsIn = "+Units.str("kn",gsIn)+" TO targetGs = "+Units.str("kn",targetGs));
 		int sign = 1;
 		if (gsIn > targetGs) sign = -1;
 		double a = Math.abs(gsAccel)*sign; 
@@ -849,7 +874,8 @@ public class TrajGen {
 		double distanceToEGS = tcpTriple.third;
 		double distanceToEndOfPlan = traj.pathDistance(i,traj.size()-1);
 		if (distanceToEGS > distanceToEndOfPlan) {
-			traj.addError("TrajGen.generateGsTCPs ERROR: Cannot complete acceleration at i = "+i+" before end of Plan");
+			//f.pln(" $$##### generateGsTCPs  ERROR: Cannot complete acceleration at i = "+i+" before end of Plan");
+			traj.addError("TrajGen.generateGsTCPsAt ERROR: Cannot complete acceleration at i = "+i+" before end of Plan");
 			return;
 		}
 		//f.pln(" $$$$$ generateGsTCPsAt: distanceToEGS = "+Units.str("nm",distanceToEGS,8));
@@ -865,9 +891,15 @@ public class TrajGen {
 			int ixEGS;
 			int ixBGS;
 			TcpData BGS_tcp = makeBGS(tcp1, a, timeOffset, tcp1.isAltPreserve());
+			//f.pln(" $$%% generateGsTCPsAt: BGS_tcp = "+BGS_tcp);
 			if (allowOverlap) {	
 		        boolean isAltPreserve = tcp1.isAltPreserve();
 				ixBGS = traj.add(BGS, BGS_tcp);   
+				if (ixBGS < 0) {
+					//f.pln(" $$##### generateGsTCPs: ixBGS = "+ixBGS+" BGS.t = "+BGS.time());
+					traj.addError("TrajGen.generateGsTCPsAt ERROR: Overlap Problem at i = "+i+" ");
+					return;
+				}
 				adjustGsInsideAccel(traj, ixBGS, a, distanceToEGS, timeOffset, isAltPreserve);
 			} else {			
 				ixBGS = traj.add(BGS, BGS_tcp);	
@@ -888,7 +920,7 @@ public class TrajGen {
 	 * @param distToEGS  distance from BGS to new EGS point
 	 */
 	private static void adjustGsInsideAccel(Plan traj, int ixBGS, double aBGS, double distToEGS, double timeOffset, boolean isAltPreserve) {
-		//f.pln(" $$$$$ generateGsTCPsAt(1): aBGS = "+aBGS+" traj = "+traj.toStringGs());
+		//f.pln(" $$$$$ generateGsTCPsAt(1): ixBGS = "+ixBGS+" traj = "+traj.toStringGs());
 		//f.pln(" $$$ adjustGsInsideAccel: distToEGS = "+Units.str("nm",distToEGS,8));
 		double gsBGS = traj.gsIn(ixBGS);
 		int lastIxInGsAccel = ixBGS;
@@ -936,31 +968,8 @@ public class TrajGen {
 		return EGS_tcp;
 	}
 
-	/** Generates ground speed TCPs
-	 * 
-	 * @param fp
-	 * @param gsAccel
-	 * @param repairGs
-	 * @return
-	 */
-	public static Plan generateGsTCPs(Plan fp, double gsAccel, boolean repairGs, boolean useOffset) {
-		Plan traj = new Plan(fp); // the current trajectory based on working
-		//f.pln(" generateGsTCPs: ENTER ------------------------ fp =  "+fp.toStringFull());
-		for (int i = traj.size() - 2; i > 0; i--) {
-			if (repairGs) {
-				boolean checkTCP = true;			
-				PlanUtil.fixGsAccelAt(traj, i, gsAccel, checkTCP, getMinTimeStep());				
-			}
-    		double timeOffset = 0.0;	
-			TcpData tcp1 = traj.getTcpData(i);
-    		if (useOffset && tcp1.isEOT()) timeOffset = getMinTimeStep();
-    		double targetGs = traj.gsOut(i+1);   
- 		    generateGsTCPsAt(traj, i, gsAccel, targetGs, timeOffset);	
-		}
-		//f.pln(" generateGsTCPs: EXIT traj = "+traj);				
-		return traj;
-	}
 
+	
 
 	/**       Generate vertical speed TCPs centered around np2.  Compute the absolute times of BVS and EVS
 	 * @param t1 = previous point's time (will not place tbegin before this point)

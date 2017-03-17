@@ -1,4 +1,3 @@
-dry=--dry-run
 CFLAGS = -Wall -g -Wno-write-strings -std=c++11
 INCLUDES = -I./libs/mavlink -I./include/ACCoRD -I./include/ICAROUS
 LIBS = -lpthread -lm
@@ -29,13 +28,10 @@ PRE:
 	@test -d obj/ICAROUS || (mkdir obj && mkdir obj/ICAROUS)
 	@test -d obj/ACCoRD || (mkdir obj/ACCoRD)
 
-sync:
-	rsync -avz $(dry) --exclude '*Test*' --exclude '*Stress*' --exclude 'CDBatch*' --exclude 'bBands*' --exclude 'bCRSS*' ~/src/Util/C++/src/*.cpp ~/src/ACCoRD/C++/src/*.cpp src/ACCoRD/
-	rsync -avz $(dry) ~/src/Util/C++/src/*.h ~/src/ACCoRD/C++/src/*.h include/ACCoRD/
-	@echo "Try make sync -e dry="
-
-clean:
+cleanica:
 	-@rm obj/ICAROUS/* libs/icarous.a
 
-cleanall: clean
+cleanacc: 
 	-@rm obj/ACCoRD/*
+
+clean: cleanica cleanacc

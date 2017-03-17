@@ -1,7 +1,9 @@
 *~
 *.o
 .*
+*.dSYM
 icarous
 *.parm
 *.tlog.raw
 *.tlog
+
