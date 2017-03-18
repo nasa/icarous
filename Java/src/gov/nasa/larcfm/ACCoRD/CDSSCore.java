@@ -8,7 +8,7 @@
  * Conflict detection between an ownship and traffic aircraft
  * using state information for generic detectors.
  *  
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -180,7 +180,7 @@ public class CDSSCore implements Detection3DAcceptor {
    */
   public boolean detectionBetween(Vect3 so, Velocity vo, Vect3 si, Velocity vi, double B, double T) {
     boolean conflict = detectionEver(so,vo,si,vi);
-    tca = Math.max(B,tca);
+    tca = Util.max(B,tca);
     Vect3 v = vo.Sub(vi);
     stca = v.ScalAdd(tca,so.Sub(si));
     return conflict && t_in < T && t_out >= B;    
@@ -202,7 +202,7 @@ public class CDSSCore implements Detection3DAcceptor {
     t_in = det.getTimeIn();
     t_out = det.getTimeOut();
     boolean conflict = det.conflict(filter);
-    tca = Math.min(Math.max(B,tca),time_horizon);
+    tca = Util.min(Util.max(B,tca),time_horizon);
     Vect3 v = vo.Sub(vi);
     stca = v.ScalAdd(tca,so.Sub(si));
     dtca = det.getDistanceAtCriticalTime();

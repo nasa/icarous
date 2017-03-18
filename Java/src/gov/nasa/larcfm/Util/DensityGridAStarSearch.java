@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -116,7 +116,7 @@ public class DensityGridAStarSearch implements DensityGridSearch, DensityGridTim
 
 	// this computes a distance from the end point, in squares, multiplied by the distWeight
 	double distanceCost(Pair<Integer,Integer> cell2, int endx, int endy) {
-		//		double sqdist = Math.max(Math.abs(endx-cell2.first), Math.abs(endy-cell2.second));
+		//		double sqdist = Util.max(Math.abs(endx-cell2.first), Math.abs(endy-cell2.second));
 		double sqdist = (new Vect2(endx,endy)).Sub(new Vect2(cell2.first, cell2.second)).norm();
 		return sqdist*distWeight;
 	}
@@ -182,7 +182,7 @@ public class DensityGridAStarSearch implements DensityGridSearch, DensityGridTim
 								//							Triple<Integer,Integer,Integer> searchedcell3 = Triple.make(c.x+x, c.y+y, y*3+x);							
 								//							Triple<Integer,Integer,Integer> searchedcell3 = Triple.make(c.x+x, c.y+y, (int)t);
 								if (dg.containsCell(cell2) && !searched.contains(searchedcell3)) {
-									double cost2 = dg.getWeight(c.x+x, c.y+y, t) + distanceCost(cell2,endx,endy) + directionCost(c,cell2); 
+									double cost2 = dg.getWeightT(c.x+x, c.y+y, t) + distanceCost(cell2,endx,endy) + directionCost(c,cell2);
 									FringeEntry c2 = new FringeEntry(cell2, t, cost2, c);
 									if (!dg.searchedWeights.containsKey(cell2)) {
 										dg.setSearchedWeight(c2.x, c2.y, cost2);
@@ -238,8 +238,8 @@ public class DensityGridAStarSearch implements DensityGridSearch, DensityGridTim
 	//								double baseWgt = dg.getWeight(c.x+x, c.y+y, t);
 	//								if (interval > 0.0 && timeBefore >= 0.0 || timeAfter >= 0.0) {
 	//									// get largest weight between t-timeBefore and t+timeAfter, short cutting if we hit infinity.  do not start before time 0.
-	//									for (double tt = Math.max(0, t-timeBefore); tt <= t+timeAfter && Double.isFinite(baseWgt); tt += interval) {
-	//										baseWgt = Math.max(baseWgt, dg.getWeight(c.x+x, c.y+y, tt));
+	//									for (double tt = Util.max(0, t-timeBefore); tt <= t+timeAfter && Double.isFinite(baseWgt); tt += interval) {
+	//										baseWgt = Util.max(baseWgt, dg.getWeight(c.x+x, c.y+y, tt));
 	//									}
 	//								}
 	//								double cost2 = baseWgt + distanceCost(cell2,endx,endy) + directionCost(c,cell2); 
@@ -286,7 +286,7 @@ public class DensityGridAStarSearch implements DensityGridSearch, DensityGridTim
 	 * @param gs ground speed of aircraft
 	 * @return List of grid coordinates for a successful path, or null if no path found.
 	 */
-	public List<Pair<Integer, Integer>> search(DensityGridTimed dg, Position startPos, Position endPos, double startTime, double gs) {
+	public List<Pair<Integer, Integer>> searchT(DensityGridTimed dg, Position startPos, Position endPos, double startTime, double gs) {
 		Pair<Integer,Integer> start = dg.gridPosition(startPos);
 		Pair<Integer,Integer> end = dg.gridPosition(endPos);
 		ArrayList<FringeEntry> fringe = new ArrayList<FringeEntry>();
@@ -326,4 +326,13 @@ public class DensityGridAStarSearch implements DensityGridSearch, DensityGridTim
 	//		return astarT(dg, end.first, end.second, gs, fringe, searched, timeBefore, timeAfter, interval);
 	//	}
 
+	public List<Pair<Integer,Integer>> optimalPath(DensityGrid dg) {
+		return search(dg, dg.startPoint(), dg.endPoint());
+	}
+
+	public List<Pair<Integer,Integer>> optimalPathT(DensityGridTimed dg) {
+		return searchT(dg, dg.startPoint(), dg.endPoint(), dg.startTime(), dg.getGroundSpeed());
+	}
+
+	
 }

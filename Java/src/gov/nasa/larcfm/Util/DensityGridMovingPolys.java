@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -72,7 +72,7 @@ public class DensityGridMovingPolys extends DensityGridTimed {
 	//	}
 
 
-	public double getWeight(int x, int y, double t) {
+	public double getWeightT(int x, int y, double t) {
 //f.pln("DensityGridMovingPoly getWeight x="+x+" y="+y+" t="+t);		
 		if (lookaheadEndTime > 0 && t > lookaheadEndTime) {
 //			f.pln("--DensityGridMovingPoly getWeight out of time = 0");
@@ -108,8 +108,8 @@ public class DensityGridMovingPolys extends DensityGridTimed {
 		return w + cost;
 	}
 
-	public double getWeight(Triple<Integer,Integer,Integer> pii) {
-		return getWeight(pii.first,pii.second, pii.third);
+	public double getWeightT(Triple<Integer,Integer,Integer> pii) {
+		return getWeightT(pii.first,pii.second, pii.third);
 	}
 
 

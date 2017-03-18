@@ -1,7 +1,7 @@
 /*
  * KinematicsPosition.java 
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -9,8 +9,6 @@
 
 package gov.nasa.larcfm.Util;
 
-
-import java.util.ArrayList;
 
 /**
  * This class contains versions of the Kinematics functions that have been lifted to deal with Position objects instead of Vect3 objects.
@@ -48,6 +46,20 @@ public final class KinematicsPosition {
 		  }
 	  } 	
 	
+	    public static Position centerFromRadius(Position bot, double signedRadius, double trkIn) {
+	    	int dir = Util.sign(signedRadius);
+	    	double radius = dir*signedRadius;
+			double trkToCenter = trkIn + dir*Math.PI/2;
+			//f.pln(" $$$ centerFromRadius: trkToCenter = "+Units.str("deg",trkToCenter));
+			if (bot.isLatLon()) {
+				LatLonAlt center = GreatCircle.linear_initial(bot.lla(), trkToCenter, radius);
+				return new Position(center);
+			} else {		
+				Vect3 center = bot.point().linearByDist2D(trkToCenter, radius);		
+				return new Position(center);
+			}    	
+	    }
+
 //
 //	LatLonAlt KinematicsLatLon::center(const LatLonAlt& s0, const Velocity& v0, double omega) {
 //		  double v = v0.gs();
@@ -145,29 +157,58 @@ public final class KinematicsPosition {
 	//		}
 	//	}
 
-	/**  *** EXPERIMENTAL ***
-	 *  Position and velocity after turning a distance d (does not compute altitude)
-	 * @param so  starting position
-	 * @param vo  initial velocity
-	 * @param R   turn radius
-	 * @param t   time of turn [secs]
-	 * @param turnRight true iff only turn direction is to the right
-	 * @return Position and Velocity after t time
+	
+	/** Position and velocity after turning a distance d (does not compute altitude)
+	 *  
+	 * @param so        starting position
+	 * @param center    center of turn 
+	 * @param dir       direction of turn +/- 1
+	 * @param d         path distance from so
+	 * @param gsAt_d    ground speed at end of turn, used to update velocity vector at end (done for efficiency)
+	 * @return          Position and velocity after turning a distance d
 	 */
-	public static Pair<Position,Velocity> turnByDist(Position so, Position center, int dir, double d, double gsAt_d) {
+	public static Pair<Position,Velocity> turnByDist2D(Position so, Position center, int dir, double d, double gsAt_d) {
 		if (so.isLatLon()) {
-			Pair<LatLonAlt,Velocity> resp = KinematicsLatLon.turnByDist(so.lla(), center.lla(), dir, d, gsAt_d);
+			Pair<LatLonAlt,Velocity> resp = KinematicsLatLon.turnByDist2D(so.lla(), center.lla(), dir, d, gsAt_d);
 			return new Pair<Position,Velocity>(new Position(resp.first), resp.second);
 		} else {
-			Pair<Vect3,Velocity> resp = Kinematics.turnByDist(so.point(), center.point(), dir, d, gsAt_d);
+			Pair<Vect3,Velocity> resp = Kinematics.turnByDist2D(so.point(), center.point(), dir, d, gsAt_d);
 			return new Pair<Position,Velocity>(new Position(resp.first), resp.second);
 		}
+	}
+	
+	/** Advance in turn starting at "so" by distance "d" 
+	 * 
+	 * @param so        starting position
+	 * @param center    center of turn
+	 * @param dir       direction of turn
+	 * @param d         distance to turn
+	 * @return          position after turning distance "d"
+	 */
+	public static Position turnByDist2D(Position so, Position center, int dir, double d) {
+		if (so.isLatLon()) {
+			double R = GreatCircle.distance(so.lla(), center.lla());
+			double alpha = dir*d/R;	
+			double trkFromCenter = GreatCircle.initial_course(center.lla(),so.lla());
+			double nTrk = trkFromCenter + alpha;
+			LatLonAlt sn = GreatCircle.linear_initial(center.lla(), nTrk, R);
+			sn = sn.mkAlt(0.0);                                                 // TODO: why is this necessary?
+			return new Position(sn);
+		} else {
+			double R = so.distanceH(center);   
+			if (R==0.0) return so;
+			double alpha = dir*d/R;
+			double trkFromCenter = Velocity.mkVel(center.point(), so.point(), 100.0).trk();
+			double nTrk = trkFromCenter + alpha;
+			Vect3 sn = center.point().linearByDist2D(nTrk, R);
+			sn = sn.mkZ(0.0);                                                   // TODO: why is this necessary?
+			return new Position(sn);
+		}		
 	}
 
 	/**
 	 *  Position and velocity after turning at rate omega for t secs. 
-	 * @param so  starting position
-	 * @param vo  initial velocity
+	 * @param pp  starting position and velocity
 	 * @param t   time of turn [secs]
 	 * @param omega
 	 * @return Position and Velocity after t time
@@ -210,7 +251,9 @@ public final class KinematicsPosition {
 	 *  Position and velocity after t time units turning in direction "dir" with radius R.  
 	 * @param so  starting position
 	 * @param vo  initial velocity
-	 * @param t   time of turn [secs]
+	 * @param t   time of turn [s]
+	 * @param turnTime time of turn
+	 * @param omega turn rate
 	 * @return Position and Velocity after t time
 	 */
 	public static Pair<Position,Velocity> turnUntilTimeOmega(Position so, Velocity vo, double t, double turnTime, double omega) {
@@ -252,6 +295,14 @@ public final class KinematicsPosition {
 	/**
 	 *  Return time along turn where x is closest to.
 	 *  This returns -1 if x is at the turn's center
+	 * 
+	 * @param turnstart starting position of turn
+	 * @param v1        velocity
+	 * @param omega     turn rate
+	 * @param center    center of turn
+	 * @param x         a position
+	 * @param endTime   end time of turn
+	 * @return time along turn
 	 */
 	public static double closestTimeOnTurn(Position turnstart, Velocity v1, double omega, Position center, Position x, double endTime) {
 		Vect3 s3 = turnstart.point();
@@ -305,8 +356,9 @@ public final class KinematicsPosition {
 	 *  Position and velocity after t time units accelerating horizontally. 
 	 * @param so  starting position
 	 * @param vo  initial velocity
+	 * @param t   time of turn [s]
+	 * @param goalGs goal ground speed
 	 * @param a   ground speed acceleration (or deceleration) (positive)
-	 * @param t   time of turn [secs]
 	 * @return Position and Velocity after t time
 	 */
 	public static Pair<Position,Velocity> gsAccelUntil(Position so, Velocity vo, double t, double goalGs, double a) {    
@@ -359,8 +411,9 @@ public final class KinematicsPosition {
 	 *  Position and velocity after t time units accelerating vertically. 
 	 * @param so  starting position
 	 * @param vo  initial velocity
+	 * @param t   time of turn [s]
+	 * @param goalVs goal vertical speed
 	 * @param a   vertical speed acceleration (a positive value)
-	 * @param t   time of turn [secs]
 	 * @return Position and Velocity after t time
 	 */
 	public static Pair<Position,Velocity> vsAccelUntil(Position so, Velocity vo, double t, double goalVs, double a) {
@@ -382,7 +435,7 @@ public final class KinematicsPosition {
 	 * @param accelUp         		first acceleration 
 	 * @param accelDown    			second acceleration
 	 * @param allowClimbRateChange allows climbRate to change to initial velocity if it can help. 
-	 * @return
+	 * @return position and velocity
 	 */
 	public static Pair<Position, Velocity> vsLevelOut(Pair<Position, Velocity> sv0, double t, double climbRate, 
 			double targetAlt, double accelUp, double accelDown, boolean allowClimbRateChange) {

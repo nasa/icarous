@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -7,7 +7,6 @@
 
 package gov.nasa.larcfm.ACCoRD;
 
-import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.ParameterAcceptor;
 import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.Util.f;
@@ -24,8 +23,8 @@ import java.util.Optional;
 
 public class AlertLevels implements ParameterAcceptor {
 
-	public List<AlertThresholds> alertor_; 
-	public int conflict_level_;
+	private List<AlertThresholds> alertor_; 
+	private int conflict_level_;
 
 	public AlertLevels() {
 		alertor_ = new ArrayList<AlertThresholds>();
@@ -156,7 +155,7 @@ public class AlertLevels implements ParameterAcceptor {
 				alerting_time,lookahead_time,BandsRegion.NEAR));
 		return alertor;
 	}
-	
+
 	/** 
 	 * Clears alert levels
 	 **/
@@ -286,7 +285,7 @@ public class AlertLevels implements ParameterAcceptor {
 
 	@Override
 	public void updateParameterData(ParameterData p) {
-		p.set("conflict_level",f.Fmi(conflict_level_));
+		p.setInt("conflict_level",conflict_level_);
 		// get list of detectors that are in the alerts
 		List<Detection3D> dlist = new ArrayList<Detection3D>();
 		List<String> idlist = new ArrayList<String>(); 
@@ -303,19 +302,10 @@ public class AlertLevels implements ParameterAcceptor {
 		for (String idkey:idlist) {
 			pdmain.remove(idkey);
 		}
-		int precision = Constants.get_output_precision();
 		// add parameters for each alerter, ensuring they have an ordered set of identifiers
 		for (int i = 1; i <= mostSevereAlertLevel(); i++) {
-			ParameterData pd = new ParameterData();
-			pd.set("detector", getLevel(i).getDetector().getIdentifier());
-			pd.setInternal("alerting_time", getLevel(i).getAlertingTime(), "s", precision);
-			pd.setInternal("early_alerting_time", getLevel(i).getEarlyAlertingTime(), "s", precision);
-			pd.set("region", getLevel(i).getRegion().name());
-			pd.setInternal("spread_trk", getLevel(i).getTrackSpread(), "deg", precision);
-			pd.setInternal("spread_gs", getLevel(i).getGroundSpeedSpread(), "knot", precision);
-			pd.setInternal("spread_vs", getLevel(i).getVerticalSpeedSpread(), "fpm", precision);
-			pd.setInternal("spread_alt", getLevel(i).getAltitudeSpread(), "ft", precision);
-			//make sure each instance has a unique, ordered name
+			ParameterData pd = getLevel(i).getParameters();
+	    //make sure each instance has a unique, ordered name
 			String prefix = "alert_"+f.Fmi(i)+"_";
 			pdmain.copy(pd.copyWithPrefix(prefix), true);
 		}
@@ -324,7 +314,9 @@ public class AlertLevels implements ParameterAcceptor {
 
 	@Override
 	public void setParameters(ParameterData p) {
-		if (p.contains("conflict_level")) conflict_level_ = p.getInt("conflict_level");
+		if (p.contains("conflict_level")) {
+			setConflictAlertLevel(p.getInt("conflict_level"));
+		}
 		// read in all detector information
 		List<Detection3D> dlist = Detection3DParameterReader.readCoreDetection(p).first;
 		// put in map for easy lookup
@@ -339,15 +331,9 @@ public class AlertLevels implements ParameterAcceptor {
 		}
 		while (pdsub.size() > 0) {
 			// build the alertlevel
-			Detection3D det = dmap.get(pdsub.getString("detector"));
-			double alertingTime = pdsub.getValue("alerting_time");
-			double earlyAlertingTime = pdsub.getValue("early_alerting_time");
-			BandsRegion br = BandsRegion.valueOf(pdsub.getString("region"));
-			AlertThresholds al = new AlertThresholds(det,alertingTime,earlyAlertingTime,br);
-			al.setTrackSpread(pdsub.getValue("spread_trk"));
-			al.setGroundSpeedSpread(pdsub.getValue("spread_gs"));
-			al.setVerticalSpeedSpread(pdsub.getValue("spread_vs"));
-			al.setAltitudeSpread(pdsub.getValue("spread_alt"));
+			AlertThresholds al = new AlertThresholds();
+			al.setDetector(dmap.get(pdsub.getString("detector")));
+			al.setParameters(pdsub);
 			// modify or add the alertlevel (this cannot remove levels)
 			if (counter <= alertor_.size()) {
 				setLevel(counter,al);
@@ -360,7 +346,7 @@ public class AlertLevels implements ParameterAcceptor {
 			pdsub = p.extractPrefix(prefix);
 		}
 	}
-	
+
 	public String toString() {
 		String s = "Conflict Level: "+conflict_level_+" ("+conflictAlertLevel()+")\n";
 		for (int i=0; i < alertor_.size(); ++i) {

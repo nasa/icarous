@@ -1,1 +1,1 @@
-java -cp lib/ICAROUS.jar:. DAAGeofencingExample
+java -cp lib/icarous.jar DAAGeofencingExample

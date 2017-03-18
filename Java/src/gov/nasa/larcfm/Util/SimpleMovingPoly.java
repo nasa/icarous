@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -44,7 +44,7 @@ public class SimpleMovingPoly {
 	 * Constructor for a SimplePoly with predefined top and bottom altitudes.
 	 * 
 	 * @param b Bottom altitude
-	 * @param t Top Altitude
+	 * @param t Top altitude
 	 */
 	public SimpleMovingPoly(double b, double t) {
 		poly = new SimplePoly(b,t);
@@ -55,7 +55,8 @@ public class SimpleMovingPoly {
 	 * Constructor for a SimplePoly with predefined top and bottom altitudes.
 	 * 
 	 * @param b Bottom altitude
-	 * @param t Top Altitude
+	 * @param t Top altitude
+	 * @param units units of altitude
 	 */
 	public SimpleMovingPoly(double b, double t, String units) {
 		poly = new SimplePoly(b,t,units);
@@ -105,6 +106,10 @@ public class SimpleMovingPoly {
 
 	/**
 	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use latlon coordinates.
+	 * 
+	 * @param p3 polygon
+	 * @param proj projection
+	 * @return polygon
 	 */
 	public static SimpleMovingPoly make(MovingPolygon3D p3, EuclideanProjection proj) {
 		Poly3D base = p3.position(0);
@@ -121,6 +126,9 @@ public class SimpleMovingPoly {
 	
 	/**
 	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use Euclidean coordinates.
+	 * 
+	 * @param p3 polygon
+	 * @return polygon
 	 */
 	public static SimpleMovingPoly make(MovingPolygon3D p3) {
 		SimpleMovingPoly sp = new SimpleMovingPoly();
@@ -138,6 +146,9 @@ public class SimpleMovingPoly {
 	
 	/**
 	 * Return the polygon projected to be at time dt (dt = 0 returns a copy of the base polygon)
+	 * 
+	 * @param dt time increment
+	 * @return polygon
 	 */
 	public SimplePoly position(double dt) {
 		if (dt == 0.0) {
@@ -172,6 +183,7 @@ public class SimpleMovingPoly {
 	
 	/**
 	 * Return the average Velocity (at time 0).
+	 * @return velocity
 	 */
 	public Velocity averageVelocity() {
 		if (morphingPoly) {
@@ -215,10 +227,10 @@ public class SimpleMovingPoly {
 
 
 	  /**
-	   * This will return a moving polygon that starts at point i and ends at point i+1
-	   * @param i
-	   * @param proj
-	   * @return
+	   * This will return a moving polygon that starts at a time
+	   * @param time start time
+	   * @param proj relevant projection
+	   * @return moving polygon
 	   */
 	  public MovingPolygon3D getMovingPolygon(double time, EuclideanProjection proj) {
 		  Poly3D p3d = position(time).poly3D(proj);
@@ -252,6 +264,10 @@ public class SimpleMovingPoly {
 	
 	/**
 	 * Return true if point p is within the polygon at time dt from now.
+	 * 
+	 * @param p position
+	 * @param dt time increment
+	 * @return true, if point is in polygon
 	 */
 	public boolean contains(Position p, double dt) {
 		return dt >= 0 && position(dt).contains(p);
@@ -262,7 +278,7 @@ public class SimpleMovingPoly {
 	 * @param vertex vertex number
 	 * @param trkgsvs true use track/Gs/Vs, false use Euclidean velocity vector (sx, sy, sz)
 	 * @param precision number of fractional digits in fields
-	 * @return
+	 * @return string representation
 	 */
 	  public List<String> toStringList(int vertex, boolean trkgsvs, int precision) {
 		    ArrayList<String> ret = new ArrayList<String>(7);

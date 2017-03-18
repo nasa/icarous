@@ -6,7 +6,7 @@
  *
  * This class computes the critical vectors for computing bands with traffic fp.
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -21,6 +21,7 @@ import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.Projection;
 //import gov.nasa.larcfm.Util.SimpleProjection;
 //import gov.nasa.larcfm.Util.Units;
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect2;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
@@ -41,13 +42,13 @@ public class CriticalVectorsSI{
       ArrayList<Vect2> lst = new ArrayList<Vect2>();
       
       for(int i = 0; i < fp.size()-1; i++) {
-        double fi_st = fp.getTime(i);
-        double fi_et = fp.getTime(i+1);
+        double fi_st = fp.time(i);
+        double fi_et = fp.time(i+1);
         if(fi_et > B+to && fi_st < T+to) {
 		  boolean linear = true;     // was linear);
           Vect3 vi = fp.initialVelocity(i, linear);
-          double st = Math.max(fi_st,B+to);
-          double et = Math.min(fi_et,T+to);
+          double st = Util.max(fi_st,B+to);
+          double et = Util.min(fi_et,T+to);
           Vect3 si = fp.point(i).point();
           Vect3 si_o = si.Sub(vi.Scal(fi_st-to));
           Vect3 s = so.Sub(si_o);
@@ -66,13 +67,13 @@ public class CriticalVectorsSI{
     ArrayList<Vect2> lst = new ArrayList<Vect2>();
     
     for(int i = 0; i < fp.size()-1; i++) {
-      double fi_st = fp.getTime(i);
-      double fi_et = fp.getTime(i+1);
+      double fi_st = fp.time(i);
+      double fi_et = fp.time(i+1);
       if(fi_et > B+to && fi_st < T+to) {
 		boolean linear = true;     // was linear);
         Vect3 vi = fp.initialVelocity(i, linear);
-        double st = Math.max(fi_st,B+to);
-        double et = Math.min(fi_et,T+to);
+        double st = Util.max(fi_st,B+to);
+        double et = Util.min(fi_et,T+to);
         Vect3 si = fp.point(i).point();
         Vect3 si_o = si.Sub(vi.Scal(fi_st-to));
         Vect3 s = so.Sub(si_o);
@@ -92,13 +93,13 @@ public class CriticalVectorsSI{
     ArrayList<Double> lst = new ArrayList<Double>();
     
     for(int i = 0; i < fp.size()-1; i++) {
-      double fi_st = fp.getTime(i);
-      double fi_et = fp.getTime(i+1);
+      double fi_st = fp.time(i);
+      double fi_et = fp.time(i+1);
       if(fi_et > B+to && fi_st < T+to) {
   		boolean linear = true;     // was linear);
         Vect3 vi = fp.initialVelocity(i, linear);
-        double st = Math.max(fi_st,B+to);
-        double et = Math.min(fi_et,T+to);
+        double st = Util.max(fi_st,B+to);
+        double et = Util.min(fi_et,T+to);
         Vect3 si = fp.point(i).point();
         Vect3 si_o = si.Sub(vi.Scal(fi_st-to));
         Vect3 s = so.Sub(si_o);
@@ -121,15 +122,15 @@ public class CriticalVectorsSI{
     Velocity vop = proj.projectVelocity(so, vo);
     
     for(int i = 0; i < fp.size()-1; i++) {
-      double fi_st = fp.getTime(i);
-      double fi_et = fp.getTime(i+1);
+      double fi_st = fp.time(i);
+      double fi_et = fp.time(i+1);
       if(fi_et > B+to && fi_st < T+to) {
   		boolean linear = true;     // was linear);
         Velocity vi = fp.initialVelocity(i, linear);
         //double trk = vi.vect2().track();
         //double gs = vi.vect2().norm();
-        double st = Math.max(fi_st,B+to);
-        double et = Math.min(fi_et,T+to);
+        double st = Util.max(fi_st,B+to);
+        double et = Util.min(fi_et,T+to);
         
         LatLonAlt si = fp.point(i).lla();
         double dt = fi_st - to;
@@ -167,13 +168,13 @@ public class CriticalVectorsSI{
     Velocity vop = proj.projectVelocity(so, vo);
 
     for(int i = 0; i < fp.size()-1; i++) {
-      double fi_st = fp.getTime(i);
-      double fi_et = fp.getTime(i+1);
+      double fi_st = fp.time(i);
+      double fi_et = fp.time(i+1);
       if(fi_et > B+to && fi_st < T+to) {
   		boolean linear = true;     // was linear);
         Velocity vi = fp.initialVelocity(i, linear);
-        double st = Math.max(fi_st,B+to);
-        double et = Math.min(fi_et,T+to);
+        double st = Util.max(fi_st,B+to);
+        double et = Util.min(fi_et,T+to);
         
         LatLonAlt si = fp.point(i).lla();
         double dt = fi_st - to;
@@ -213,13 +214,13 @@ public class CriticalVectorsSI{
     Velocity vop = proj.projectVelocity(so, vo);
   
     for(int i = 0; i < fp.size()-1; i++) {
-      double fi_st = fp.getTime(i);
-      double fi_et = fp.getTime(i+1);
+      double fi_st = fp.time(i);
+      double fi_et = fp.time(i+1);
       if(fi_et > B+to && fi_st < T+to) {
   		boolean linear = true;     // was linear);
         Velocity vi = fp.initialVelocity(i, linear);
-        double st = Math.max(fi_st,B+to);
-        double et = Math.min(fi_et,T+to);
+        double st = Util.max(fi_st,B+to);
+        double et = Util.min(fi_et,T+to);
         
         LatLonAlt si = fp.point(i).lla();
         double dt = fi_st - to;

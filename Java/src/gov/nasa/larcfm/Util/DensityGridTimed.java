@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -55,7 +55,7 @@ public class DensityGridTimed extends DensityGrid {
 	}
 	
 	//TODO: this implements the lookahead time by shortcuttting weight lookup
-	public double getWeight(int x, int y, double t) {
+	public double getWeightT(int x, int y, double t) {
 		if (lookaheadEndTime > 0 && t > lookaheadEndTime) return 0.0;
 		if (!weights.containsKey(Pair.make(x,y))) return Double.POSITIVE_INFINITY;
 		return weights.get(Pair.make(x,y));
@@ -67,29 +67,25 @@ public class DensityGridTimed extends DensityGrid {
 //		
 //		double cost = -1.0;
 //		for (double tt = t; Double.isFinite(cost) && tt <= endT; tt += 1.0) {
-//			cost = Math.max(cost, getWeight(x,y,tt));
+//			cost = Util.max(cost, getWeight(x,y,tt));
 //		}
 //		return cost;
 //	}
 
 	
-	public double getWeight(Pair<Integer,Integer> xy, double t) {
-		return getWeight(xy.first,xy.second,t);
+	public double getWeightT(Pair<Integer,Integer> xy, double t) {
+		return getWeightT(xy.first,xy.second,t);
 	}
 
-	public double getWeight(Triple<Integer,Integer,Integer> pii) {
-		return getWeight(pii.first,pii.second, pii.third);
+	public double getWeightT(Triple<Integer,Integer,Integer> pii) {
+		return getWeightT(pii.first,pii.second, pii.third);
 	}
 	
 	
 	
-	public double startTime() {
-		return startTime;
-	}
-
-	public List<Pair<Integer,Integer>> optimalPath() {
-		return optimalPath(this.gs);
-	}
+//	public List<Pair<Integer,Integer>> optimalPath() {
+//		return optimalPath(this.gs);
+//	}
 
 //	// too inefficient
 //	public List<Pair<Integer,Integer>> optimalPathDuration(double endT) {
@@ -98,10 +94,14 @@ public class DensityGridTimed extends DensityGrid {
 //		return r; 
 //	}
 
-	public List<Pair<Integer,Integer>> optimalPath(double gs) {
-		DensityGridTimedSearch dgs = new DensityGridAStarSearch();
-		return dgs.search(this, this.startPoint, this.endPoint, this.startTime, gs);
-	}
+//	public List<Pair<Integer,Integer>> optimalPath(double gs) {
+//		DensityGridTimedSearch dgs = new DensityGridAStarSearch();
+//		return dgs.search(this, this.startPoint, this.endPoint, this.startTime, gs);
+//	}
 
+	
+	public double getGroundSpeed() {
+		return gs;
+	}
 
 }

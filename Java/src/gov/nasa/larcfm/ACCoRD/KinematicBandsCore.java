@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -8,10 +8,9 @@ package gov.nasa.larcfm.ACCoRD;
 
 import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.Interval;
-import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect2;
 import gov.nasa.larcfm.Util.Vect3;
-import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.f;
 
 import java.util.ArrayList;
@@ -148,7 +147,7 @@ public class KinematicBandsCore {
 		double min_horizontal_recovery = parameters.getMinHorizontalRecovery();
 		if (min_horizontal_recovery > 0) 
 			return min_horizontal_recovery;
-		int sl = !hasOwnship() ? 3 : Math.max(3,TCASTable.getSensitivityLevel(ownship.getPosition().alt()));
+		int sl = !hasOwnship() ? 3 : Util.max(3,TCASTable.getSensitivityLevel(ownship.altitude()));
 		return RA.getHMD(sl);
 	}
 
@@ -159,7 +158,7 @@ public class KinematicBandsCore {
 		double min_vertical_recovery = parameters.getMinVerticalRecovery();
 		if (min_vertical_recovery > 0) 
 			return min_vertical_recovery;
-		int sl = !hasOwnship() ? 3 : Math.max(3,TCASTable.getSensitivityLevel(ownship.getPosition().alt()));
+		int sl = !hasOwnship() ? 3 : Util.max(3,TCASTable.getSensitivityLevel(ownship.altitude()));
 		return RA.getZTHR(sl);
 	}
 
@@ -175,30 +174,6 @@ public class KinematicBandsCore {
 		return traffic.size() > 0;
 	}
 
-	public Position trafficPosition(int i) {
-		return traffic.get(i).getPosition();
-	}
-
-	public Velocity trafficVelocity(int i) {
-		return traffic.get(i).getVelocity();
-	}
-
-	public Vect3 own_s() {
-		return ownship.get_s();
-	}
-
-	public Velocity own_v() {
-		return ownship.get_v();
-	}
-
-	public Vect3 traffic_s(int i) {
-		return traffic.get(i).get_s();
-	}
-
-	public Velocity traffic_v(int i) {
-		return traffic.get(i).get_v();
-	}
-
 	/**
 	 * Put in conflict_acs_ the list of aircraft predicted to be in conflict for the given alert level.
 	 * Requires: 1 <= alert_level <= alertor.mostSevereAlertLevel()
@@ -208,16 +183,19 @@ public class KinematicBandsCore {
 		double tout = Double.NEGATIVE_INFINITY;
 		boolean conflict_band = parameters.alertor.getLevel(alert_level).getRegion().isConflictBand();
 		Detection3D detector = parameters.alertor.getLevel(alert_level).getDetector();
+		double alerting_time = Util.min(parameters.getLookaheadTime(),
+				parameters.alertor.getLevel(alert_level).getAlertingTime());
 		for (int i = 0; i < traffic.size(); ++i) {
 			TrafficState ac = traffic.get(i);
-			ConflictData det = detector.conflictDetection(own_s(),own_v(),ac.get_s(),ac.get_v(),
+			ConflictData det = detector.conflictDetection(ownship.get_s(),ownship.get_v(),ac.get_s(),ac.get_v(),
 					0,parameters.getLookaheadTime());
-			if (det.conflict() || detector.violation(own_s(),own_v(),ac.get_s(),ac.get_v())) {
-				if (conflict_band && det.getTimeIn() < parameters.alertor.getLevel(alert_level).getAlertingTime()) {
+			boolean lowc = detector.violation(ownship.get_s(),ownship.get_v(),ac.get_s(),ac.get_v());
+			if (lowc || det.conflict()) {
+				if (conflict_band && (lowc || det.getTimeIn() < alerting_time)) {
 					conflict_acs_.get(alert_level-1).add(ac);
 				} 
-				tin = Math.min(tin,det.getTimeIn());
-				tout = Math.max(tout,det.getTimeOut());
+				tin = Util.min(tin,det.getTimeIn());
+				tout = Util.max(tout,det.getTimeOut());
 			} 
 		}
 		tiov_.add(new Interval(tin,tout));
@@ -297,11 +275,14 @@ public class KinematicBandsCore {
 		s+="NAME sx sy sz vx vy vz time\n";
 		s+="[none] [m] [m] [m] [m/s] [m/s] [m/s] [s]\n";
 		s+=ownship.getId()+", "+ownship.get_s().formatXYZ(precision,"",", ","")+
-				", "+own_v().formatXYZ(precision,"",", ","")+", 0\n";
+				", "+ownship.get_v().formatXYZ(precision,"",", ","")+", "+
+				f.FmPrecision(ownship.getTime(),precision)+"\n";
 		for (int i = 0; i < traffic.size(); i++) {
-			s+=traffic.get(i).getId()+", "+traffic_s(i).formatXYZ(precision,"",", ","")+
-					", "+traffic_v(i).formatXYZ(precision,"",", ","")+", 0\n";
+			s+=traffic.get(i).getId()+", "+traffic.get(i).get_s().formatXYZ(precision,"",", ","")+
+					", "+traffic.get(i).get_v().formatXYZ(precision,"",", ","")+
+					", "+f.FmPrecision(traffic.get(i).getTime(),precision)+"\n";
 		}
+		s+="##\n";
 		return s;
 	}
 

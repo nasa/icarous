@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -83,6 +83,8 @@ public final class ErrorLog implements ErrorReporter {
   /**
    * If console output is set to true, then every error message and warning is 
    * output to the console.
+   * 
+   * @param console true, if output should go to console.
    */
   public void setConsoleOutput(boolean console) {
     console_out = console;
@@ -193,6 +195,10 @@ public final class ErrorLog implements ErrorReporter {
   /** 
    * Checks if a value is positive and, in that case, returns true. Otherwise, 
    * adds an error message and returns false.
+   * 
+   * @param method name of method
+   * @param val value
+   * @return true, if value is positive
    */
   public boolean isPositive(String method, double val) {
     if (val > 0) return true;
@@ -203,6 +209,10 @@ public final class ErrorLog implements ErrorReporter {
   /** 
    * Checks if a value is non negative and, in that case, returns true. Otherwise, 
    * adds an error message and returns false.
+   * 
+   * @param method name of method
+   * @param val value
+   * @return true, if value is non-negative
    */
   public boolean isNonNegative(String method, double val) {
     if (val >= 0) return true;
@@ -213,6 +223,10 @@ public final class ErrorLog implements ErrorReporter {
   /** 
    * Checks if a value is non positive and, in that case, returns true. Otherwise, 
    * adds an error message and returns false.
+   * 
+   * @param method name of method
+   * @param val value
+   * @return true, if value is non-positive
    */
   public boolean isNonPositive(String method, double val) {
     if (val <= 0) return true;
@@ -223,6 +237,11 @@ public final class ErrorLog implements ErrorReporter {
   /** 
    * Checks if a value is less than value in internal units. Otherwise,
    * adds an error message and returns false.
+   * 
+   * @param method name of method
+   * @param val value #1
+   * @param thr value #2
+   * @return true, if value #1 is less than value #2
    */
   public boolean isLessThan(String method, double val, double thr) {
     if (val < thr) return true;
@@ -233,6 +252,12 @@ public final class ErrorLog implements ErrorReporter {
   /** 
    * Checks if a value is between lb and ub. Otherwise, adds an error message 
    * and returns false.
+   * 
+   * @param method name of method
+   * @param val value
+   * @param lb  lower bound
+   * @param ub  upper bound
+   * @return true, if value is between upper and lower bound
    */
   public boolean isBetween(String method, double val, double lb, double ub) {
     if (lb <= val && val <= ub) return true;

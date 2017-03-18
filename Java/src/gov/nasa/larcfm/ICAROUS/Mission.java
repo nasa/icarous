@@ -37,10 +37,10 @@ import gov.nasa.larcfm.Util.ErrorReporter;
 
 public interface Mission{
 
-    public int Execute(Aircraft UAS);
+	public int Execute(FlightManagementSystem UAS);
 
-    public boolean isMissionComplete();
+	public boolean isMissionComplete();
 
-    public int GetMissionState();
+	public int GetMissionState();
 
 }

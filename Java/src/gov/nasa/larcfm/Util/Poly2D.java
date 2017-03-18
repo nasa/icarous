@@ -1,14 +1,15 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
 package gov.nasa.larcfm.Util;
+
 import java.awt.geom.GeneralPath;
 import java.io.Serializable;
+import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Encapsulates a geometric polygon. The polygon is defined in terms of its vertex coordinates. 
@@ -18,7 +19,7 @@ import java.util.Arrays;
  */
 public class Poly2D implements Serializable {
 	private final static long serialVersionUID = 1;
-	ArrayList<Vect2> vertices;
+	List<Vect2> vertices;
 //	boolean boundingRectangleDefined; // removed to eliminate dependence on Position and all that jazz
 //	private BoundingRectangle boundingRect;
 	private double minX;
@@ -44,7 +45,7 @@ public class Poly2D implements Serializable {
 	}
 			
 	
-	public Poly2D(ArrayList<Vect2> verts) {
+	public Poly2D(List<Vect2> verts) {
 //		boundingRectangleDefined = false;
 		minX = minY = Double.MAX_VALUE;
 		maxX = maxY = -Double.MAX_VALUE;
@@ -52,10 +53,10 @@ public class Poly2D implements Serializable {
 		for (int i = 0; i < verts.size(); i++) {  // copy
 			//vertices.set(i,new Vect2(verts.get(i).x,verts.get(i).y));
 			vertices.add(new Vect2(verts.get(i).x,verts.get(i).y));
-			maxX = Math.max(verts.get(i).x, maxX);
-			maxY = Math.max(verts.get(i).y, maxY);
-			minX = Math.min(verts.get(i).x, minX);
-			minY = Math.min(verts.get(i).y, minY);
+			maxX = Util.max(verts.get(i).x, maxX);
+			maxY = Util.max(verts.get(i).y, maxY);
+			minX = Util.min(verts.get(i).x, minX);
+			minY = Util.min(verts.get(i).y, minY);
 		}
 //		if (vertices.size() > 0) {
 //	    	boundingRect = new BoundingRectangle(vertices);
@@ -93,7 +94,7 @@ public class Poly2D implements Serializable {
 
 	// create a new polygon from this one and an arrayList of velocities.  It assumes that the arraylist is at least as 
 	//long as the starting polygon.
-	public Poly2D linear(ArrayList<Vect2> v, double t) {
+	public Poly2D linear(List<Vect2> v, double t) {
 		Poly2D rtn = new Poly2D();
 		for (int i = 0; i < size(); i++) {
 			Vect2 vt = vertices.get(i);
@@ -139,10 +140,10 @@ public class Poly2D implements Serializable {
 		
 		if (minX == Double.MAX_VALUE) {
 			for (int i = 0; i < vertices.size(); i++) {  // copy
-				maxX = Math.max(vertices.get(i).x, maxX);
-				maxY = Math.max(vertices.get(i).y, maxY);
-				minX = Math.min(vertices.get(i).x, minX);
-				minY = Math.min(vertices.get(i).y, minY);
+				maxX = Util.max(vertices.get(i).x, maxX);
+				maxY = Util.max(vertices.get(i).y, maxY);
+				minX = Util.min(vertices.get(i).x, minX);
+				minY = Util.min(vertices.get(i).y, minY);
 			}
 		}
 		if (a > maxX || a < minX || b > maxY || b < minY) {
@@ -218,8 +219,8 @@ public class Poly2D implements Serializable {
 
 	/**
 	 * Return vertex, or INVALID if out of bounds.
-	 * @param i
-	 * @return
+	 * @param i index
+	 * @return vertex
 	 */
 	public Vect2 getVertex(int i) {
 		if (i < 0 || i >= vertices.size()) {
@@ -230,17 +231,9 @@ public class Poly2D implements Serializable {
 		}
 	}
 
-	public ArrayList<Vect2> getVertices() {
+	public List<Vect2> getVertices() {
 		return vertices;
 	}
-
-//	public BoundingRectangle getBoundingRectangle() {
-//		return boundingRect;
-//	}
-//
-//	public void setBoundingRectangle(BoundingRectangle boundingRect) {
-//		this.boundingRect = boundingRect;
-//	}
 
 
 	/**
@@ -270,6 +263,7 @@ public class Poly2D implements Serializable {
 	// this calculation assumes that point 0 = point n (or the start point is counted twice)
 	/**
 	 * Return the horizontal area (in m^2) of this Poly3D.
+	 * @return area
 	 */
 	public double area() {
 		double dx = (minX+maxX)/2.0;
@@ -285,7 +279,7 @@ public class Poly2D implements Serializable {
 
 	/**
 	 * Distance from centroid to closest vertex
-	 * @return
+	 * @return radius
 	 */
 	public double innerRadius() {
 		Vect2 cpos = centroid();
@@ -300,7 +294,7 @@ public class Poly2D implements Serializable {
 	
 	/**
 	 * Distance from centroid to farthest vertex
-	 * @return
+	 * @return radius
 	 */
 	public double outerRadius() {
 		Vect2 cpos = centroid();
@@ -315,7 +309,7 @@ public class Poly2D implements Serializable {
 	
 	/**
 	 * Distance from averagePoint to farthest vertex
-	 * @return
+	 * @return radius
 	 */
 	public double apBoundingRadius() {
 		Vect2 cpos = averagePoint();
@@ -369,6 +363,8 @@ public class Poly2D implements Serializable {
 	 * Return the average of all vertices.  Note this is not the same as the centroid, and will be weighted 
 	 * towards concentrations of vertices instead of concentrations of area/mass.  This will, however, have the nice property of having
 	 * a constant linear velocity between two polygons, even if they morph shape. 
+	 * 
+	 * @return point
 	 */
 	public Vect2 averagePoint() {
 		double dx = (minX+maxX)/2.0;
@@ -387,8 +383,8 @@ public class Poly2D implements Serializable {
 	 * Return true if p is a subset of this polygon.
 	 * This determines if the starting point of p is within this polygon, and if any edges intersect with this polygon.
 	 * This does not explicitly use ACCoRD detection algorithms.
-	 * @param p
-	 * @return
+	 * @param p polygon
+	 * @return true, if polygon contains
 	 */
 	public boolean contains(Poly2D p) {
 		if (size() == 0 || p.size() == 0) return false;
@@ -416,7 +412,7 @@ public class Poly2D implements Serializable {
 	
 	
 	public Poly2D relative(Vect2 so, Vect2 vo) {
-		  ArrayList<Vect2> p = new ArrayList<Vect2>();
+		  List<Vect2> p = new ArrayList<Vect2>();
 		  Vect2 vx = vo.PerpR().Hat();
 		  Vect2 vy = vo.Hat();
 		  for (int i = 0; i < vertices.size(); i++) {
@@ -449,8 +445,8 @@ public class Poly2D implements Serializable {
 		}
 	}
 	
-	public ArrayList<Integer> nonConvexVertices() {
-		ArrayList<Integer> ret = new ArrayList<Integer>();
+	public List<Integer> nonConvexVertices() {
+		List<Integer> ret = new ArrayList<Integer>();
 		for (int i = 0; i < vertices.size(); i++) {
 			if (vertexConvex(i)) ret.add(i);
 		}
@@ -462,13 +458,13 @@ public class Poly2D implements Serializable {
 	}
 	
 	
-//	public ArrayList<Poly2D> convexComponents() {
+//	public List<Poly2D> convexComponents() {
 //		return convexComponents(new Poly2D(this));
 //	}
 	
-//	private ArrayList<Poly2D> convexComponents(Poly2D p2d) {
-//		ArrayList<Poly2D> ret = new ArrayList<Poly2D>();
-//		ArrayList<Integer> ncvs = p2d.nonConvexVertices();
+//	private List<Poly2D> convexComponents(Poly2D p2d) {
+//		List<Poly2D> ret = new ArrayList<Poly2D>();
+//		List<Integer> ncvs = p2d.nonConvexVertices();
 //		if (ncvs.size() == 0) {
 //			ret.add(this);
 //			return ret;
@@ -547,7 +543,7 @@ public class Poly2D implements Serializable {
 	
 	/**
 	 * Reverse order of vertices
-	 * @return
+	 * @return polygon
 	 */
 	public Poly2D reverseOrder() {
 		Poly2D np = new Poly2D();

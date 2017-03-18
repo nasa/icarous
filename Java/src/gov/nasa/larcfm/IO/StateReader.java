@@ -3,7 +3,7 @@
  *
  * Contact: George Hagen
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -51,7 +51,7 @@ import java.io.FileNotFoundException;
  * for the first aircraft must be grouped together, then all the data for the
  * second aircraft, etc. If consecutive position and velocity lines are for the
  * same aircraft, subsequent name fields may be replaced with a double quotation
- * mark (&quot). The aircraft name is case sensitive, so US54A != Us54a !=
+ * mark (&quot;). The aircraft name is case sensitive, so US54A != Us54a !=
  * us54a.
  * <p>
  *

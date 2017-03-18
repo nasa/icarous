@@ -3,7 +3,7 @@
  *
  * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)
  * 
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -11,14 +11,15 @@
 package gov.nasa.larcfm.ACCoRD;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 
 import gov.nasa.larcfm.Util.Interval;
 import gov.nasa.larcfm.Util.IntervalSet;
 import gov.nasa.larcfm.Util.MovingPolygon3D;
-import gov.nasa.larcfm.Util.Pair;
 import gov.nasa.larcfm.Util.Poly3D;
 import gov.nasa.larcfm.Util.Units;
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect2;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
@@ -31,7 +32,7 @@ public class Polycarp3D {
 		if (so.z() < p.getBottom()-v || so.z() > p.getTop()+v) {
 			return false;
 		}
-		ArrayList<Vect2> ps = new ArrayList<Vect2>(p.size());
+		List<Vect2> ps = new ArrayList<Vect2>(p.size());
 		for (int i = 0; i < p.size(); i++) {
 			ps.add(p.poly2D().getVertex(i));
 		}
@@ -58,7 +59,7 @@ public class Polycarp3D {
 		if (so.z() < p.getBottom()+buff || so.z() > p.getTop()-buff) {
 			return false;
 		}
-		ArrayList<Vect2> ps = new ArrayList<Vect2>(p.size());
+		List<Vect2> ps = new ArrayList<Vect2>(p.size());
 		for (int i = 0; i < p.size(); i++) {
 			ps.add(p.poly2D().getVertex(i));
 		}
@@ -76,7 +77,7 @@ public class Polycarp3D {
 		if (so.z() < p.getBottom()-buff || so.z() > p.getTop()+buff) {
 			return true;
 		}
-		ArrayList<Vect2> ps = new ArrayList<Vect2>(p.size());
+		List<Vect2> ps = new ArrayList<Vect2>(p.size());
 		for (int i = 0; i < p.size(); i++) {
 			ps.add(p.poly2D().getVertex(i));
 		}
@@ -96,14 +97,14 @@ public class Polycarp3D {
 		double sz = so.z() - (mp.maxalt+mp.minalt)/2.0;
 		double vz = vo.z() - mp.vspeed;
 		// times cannot be too big!  limit to 100 days for now
-		double b = Math.max(0.0, Math.min(B, Units.from("day",100.0)));
-		double t = Math.max(0.0, Math.min(T, Units.from("day",100.0)));
+		double b = Util.max(0.0, Util.min(B, Units.from("day",100.0)));
+		double t = Util.max(0.0, Util.min(T, Units.from("day",100.0)));
 		if (vz != 0) {
 			double h = (mp.maxalt-mp.minalt)/2.0;
 			double vb = Vertical.Theta_H(sz, vz, -1, h);
 			double vt = Vertical.Theta_H(sz, vz, +1, h);
-			b = Math.max(B, vb);
-			t = Math.min(T, vt);
+			b = Util.max(B, vb);
+			t = Util.min(T, vt);
 		} else if (so.z() < mp.minalt || so.z() > mp.maxalt) {
 			//f.pln("entranceDetection fail z1");
 			return false; //return false; // so never enters the polygon's vertical slice
@@ -138,14 +139,14 @@ public class Polycarp3D {
 		double sz = so.z() - (mp.maxalt+mp.minalt)/2.0;
 		double vz = vo.z() - mp.vspeed;
 		// times cannot be too big!  limit to 100 days for now
-		double b = Math.max(0.0, Math.min(B, Units.from("day",100.0)));
-		double t = Math.max(0.0, Math.min(T, Units.from("day",100.0)));
+		double b = Util.max(0.0, Util.min(B, Units.from("day",100.0)));
+		double t = Util.max(0.0, Util.min(T, Units.from("day",100.0)));
 		if (vz != 0) {
 			double h = (mp.maxalt-mp.minalt)/2.0;
 			double vb = Vertical.Theta_H(sz, vz, -1, h);
 			double vt = Vertical.Theta_H(sz, vz, +1, h);
-			b = Math.max(B, vb);
-			t = Math.min(T, vt);
+			b = Util.max(B, vb);
+			t = Util.min(T, vt);
 		} else if (so.z() < mp.minalt || so.z() > mp.maxalt) {
 			return true; //return false; // so never enters the polygon's vertical slice
 		}
@@ -192,15 +193,15 @@ public class Polycarp3D {
 		double sz = so.z() - (mp.maxalt+mp.minalt)/2.0;
 		double vz = vo.z() - mp.vspeed;
 		// times cannot be too big!  limit to 100 days for now
-		double b = Math.max(0.0, Math.min(B, Units.from("day",100.0)));
-		double t = Math.max(0.0, Math.min(T, Units.from("day",100.0)));
+		double b = Util.max(0.0, Util.min(B, Units.from("day",100.0)));
+		double t = Util.max(0.0, Util.min(T, Units.from("day",100.0)));
 		IntervalSet ret = new IntervalSet();
 		if (vz != 0) {
 			double h = (mp.maxalt-mp.minalt)/2.0;
 			double vb = Vertical.Theta_H(sz, vz, -1, h);
 			double vt = Vertical.Theta_H(sz, vz, +1, h);
-			b = Math.max(B, vb);
-			t = Math.min(T, vt);
+			b = Util.max(B, vb);
+			t = Util.min(T, vt);
 		} else if (so.z() < mp.minalt || so.z() > mp.maxalt) {
 			return ret; 
 		}
@@ -220,7 +221,7 @@ public class Polycarp3D {
 			}
 		}
 
-		ArrayList<Double> times = PolycarpDetection.collisionTimesInOut(b, t, mp2.horizpoly, so.vect2(), vo.vect2(), buff, fac);
+		List<Double> times = PolycarpDetection.collisionTimesInOut(b, t, mp2.horizpoly, so.vect2(), vo.vect2(), buff, fac);
 		for (int i = 0; i < times.size()-1; i++) {
 			double t1 = times.get(i);
 			double t2 = times.get(i+1);

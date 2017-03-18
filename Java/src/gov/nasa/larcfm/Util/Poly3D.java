@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -130,7 +130,7 @@ public class Poly3D { // extends Point {
 			double dist = v3.distanceH(cl);
 			for (int i = 0; i < size()-1; i++) {
 				cl = VectFuns.closestPointOnSegment(new Vect3(getVertex(i),bottom), new Vect3(getVertex(i+1),bottom), v3);
-				dist = Math.min(v3.distanceH(cl), dist);				
+				dist = Util.min(v3.distanceH(cl), dist);				
 			}
 			return dist;
 	}

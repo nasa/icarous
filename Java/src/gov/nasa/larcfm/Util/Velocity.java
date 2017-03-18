@@ -7,7 +7,7 @@
  * NOTES: 
  * Track is True North/clockwise
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -419,8 +419,14 @@ public final class Velocity extends Vect3 implements OutputList {
     return Units.to(uvs,z);
   }
 
-  /** compare Velocities: return true iff delta is within specified limits 
+  /** 
+   * Compare Velocities: return true iff delta is within specified limits 
    * 
+   * @param v       the other velocity
+   * @param maxTrk
+   * @param maxGs
+   * @param maxVs
+   * @return true, if the velocities compare correctly
    */
   public boolean compare(Velocity v, double maxTrk, double maxGs, double maxVs) {
     if (Util.turnDelta(v.trk(),trk()) > maxTrk) return false;
@@ -446,6 +452,10 @@ public final class Velocity extends Vect3 implements OutputList {
   /** Return the x component of velocity given the track and ground
    * speed.  The track angle is assumed to use the radians from true
    * North-clockwise convention.
+   * 
+   * @param trk
+   * @param gs
+   * @return x component of velocity
    */
   public static double trkgs2vx(double trk, double gs) {
     return gs * Math.sin(trk);
@@ -454,6 +464,10 @@ public final class Velocity extends Vect3 implements OutputList {
   /** Return the y component of velocity given the track and ground
    *	speed.  The track angle is assumed to use the radians from
    *	true North-clockwise convention. 
+   * 
+   * @param trk
+   * @param gs
+   * @return y component of velocity
    */
   public static double trkgs2vy(double trk, double gs) {
     return gs * Math.cos(trk);
@@ -462,6 +476,10 @@ public final class Velocity extends Vect3 implements OutputList {
   /** Return the 2-dimensional Euclidean vector for velocity given the track and ground
    *	speed.  The track angle is assumed to use the radians from
    *	true North-clockwise convention. 
+   * 
+   * @param trk
+   * @param gs
+   * @return 2-D velocity
    */
   public static Vect2 trkgs2v(double trk, double gs) {
     return new Vect2(trkgs2vx(trk,gs), trkgs2vy(trk,gs));
@@ -481,22 +499,39 @@ public final class Velocity extends Vect3 implements OutputList {
     return "("+Units.str("deg",compassAngle(),prec)+", "+Units.str("knot",gs(),prec)+", "+Units.str("fpm",vs(),prec)+")";
   }
 
-  /** String representation of the velocity in polar coordinates (compass angle and groundspeed) */
+  /** String representation of the velocity in polar coordinates (compass angle and groundspeed) 
+   * @return a string representation
+   * */
   public String toStringUnits() {
     return toStringUnits("deg","knot","fpm");
   }
 
-  /** String representation (trk,gs,vs) with the given units */
+  /** String representation (trk,gs,vs) with the given units 
+   * 
+   * @param trkUnits
+   * @param gsUnits
+   * @param vsUnits
+   * @return a string representation
+   */
   public String toStringUnits(String trkUnits, String gsUnits, String vsUnits) {
     return "("+Units.str(trkUnits,compassAngle())+", "+ Units.str(gsUnits,gs())+", "+ Units.str(vsUnits,vs())+")";
   }
 
-  /** String representation (trk,gs,vs) with the given units */
+  /** String representation (trk,gs,vs) with the given units 
+   * 
+   * @param trkUnits
+   * @param gsUnits
+   * @param vsUnits
+   * @param prec
+   * @return a string representation
+   */
   public String toStringUnitsNP(String trkUnits, String gsUnits, String vsUnits, int prec) {
     return Units.str(trkUnits,compassAngle(), prec)+", "+ Units.str(gsUnits,gs(), prec)+", "+ Units.str(vsUnits,vs(),prec);
   }
 
-  /** String representation, default number of decimal places, without parentheses */
+  /** String representation, default number of decimal places, without parentheses 
+   * @return a string representation
+   * */
   public String toStringNP() {
     return toStringNP(Constants.get_output_precision());
   }
@@ -504,15 +539,28 @@ public final class Velocity extends Vect3 implements OutputList {
   /**
    * String representation, with user-specified precision
    * @param precision number of decimal places (0-15)
-   * @return
+   * @return a string representation
    */
   public String toStringNP(int precision) {
     return f.FmPrecision(Units.to("deg", compassAngle()), precision)+", "+f.FmPrecision(Units.to("knot", gs()), precision)+", "+f.FmPrecision(Units.to("fpm", vs()), precision);	
+  }
+  
+  /**
+   * String representation, with user-specified precision
+   * @param precision number of decimal places (0-15)
+   * @param utrk units of track
+   * @param ugs units of ground speed
+   * @param uvs units of vertical speed
+   * @return a string representation
+   */
+  public String toStringNP(String utrk, String ugs, String uvs, int precision) {
+    return f.FmPrecision(Units.to(utrk, compassAngle()), precision)+", "+f.FmPrecision(Units.to(ugs, gs()), precision)+", "+f.FmPrecision(Units.to(uvs, vs()), precision);	
   }
 
   /**
    * Euclidean vector representation to arbitrary precision, in [knot,knot,fpm]
    * @param prec precision (0-15)
+   * @return a string representation
    */
   public String toXYZ(int prec) {
 	    return "("+f.FmPrecision(Units.to("knot", x),prec)+", "+f.FmPrecision(Units.to("knot", y),prec)+", "+f.FmPrecision(Units.to("fpm", z),prec)+")";
@@ -524,6 +572,7 @@ public final class Velocity extends Vect3 implements OutputList {
 
   /**
    * Euclidean vector representation to arbitrary precision, in [knot,knot,fpm]
+   * @return a string representation
    */
   public String toStringXYZ() {
     return toXYZ(Constants.get_output_precision());
@@ -531,6 +580,7 @@ public final class Velocity extends Vect3 implements OutputList {
 
   /**
    * Euclidean vector representation to arbitrary precision, in [knot,knot,fpm]
+   * @return a string representation
    */
   public String toStringXYZUnits() {
     return "("+Units.str("knot", x)+", "+Units.str("knot", y)+", "+Units.str("fpm", z)+")";
@@ -614,7 +664,11 @@ public final class Velocity extends Vect3 implements OutputList {
 
   /** This parses a space or comma-separated string as a XYZ Velocity (an inverse to the toStringXYZ method).  If three bare values are present, then it is interpreted as internal units.
    * If there are 3 value/unit pairs then each values is interpreted wrt the appropriate unit.  If the string cannot be parsed, an INVALID value is
-   * returned. */
+   * returned. 
+   * 
+   * @param str string to parse
+   * @return Velocity object
+   */
   public static Velocity parseXYZ(String str) {
     return Velocity.make(Vect3.parse(str));
   }

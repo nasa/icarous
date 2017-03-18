@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -17,20 +17,20 @@ import java.util.List;
  * (specified as altitude values).  Points describe the cross-section area vertices in
  * a consistently clockwise (or consistently counter-clockwise) manner.  The cross-section
  * need not be convex, but an "out of order" listing of the vertices will result in edges 
- * that cross, and will cause several calculations to fail (with no warning).
+ * that cross, and will cause several calculations to fail (with no warning).<p>
  * 
  * A SimplePoly sets the altitude for all its points to be the _bottom_ altitude,
  * while the top is stored elsewhere as a single value.  The exact position for "top"
- * vertices is computed on demand.
+ * vertices is computed on demand.<p>
  * 
  * The cross-section must be a simple polygon, that is it allows for non-convex areas, but
  * vertices and edges may not overlap or cross.  Vertices may be ordered in either a clockwise
- * or counterclockwise manner.
+ * or counterclockwise manner.<p>
  * 
  * (A vertex-complete polygon allows for vertices and edges to overlap but not cross, while
- * a general polygon allows for edges to cross.)
+ * a general polygon allows for edges to cross.)<p>
  * 
- * Point indices are based on the order they are added.
+ * Point indices are based on the order they are added.<p>
  * 
  * Note: polygon support is experimental and the interface is subject to change!
  *
@@ -62,7 +62,7 @@ public class SimplePoly {
 	 * Constructor for a SimplePoly with predefined top and bottom altitudes.
 	 * 
 	 * @param b Bottom altitude
-	 * @param t Top Altitude
+	 * @param t Top altitude
 	 */
 	public SimplePoly(double b, double t) {
 		bottomTopSet = true;
@@ -75,7 +75,8 @@ public class SimplePoly {
 	 * Constructor for a SimplePoly with predefined top and bottom altitudes.
 	 * 
 	 * @param b Bottom altitude
-	 * @param t Top Altitude
+	 * @param t Top altitude
+	 * @param units units to interpret both altitudes
 	 */
 	public SimplePoly(double b, double t, String units) {
 		bottomTopSet = true;
@@ -110,7 +111,9 @@ public class SimplePoly {
 	}
 
 	/**
-	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use Euclidean coordinates .
+	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use Euclidean coordinates.
+	 * @param p3 3D polygon
+	 * @return a new SimplePoly
 	 */
 	public static SimplePoly make(Poly3D p3) {
 		SimplePoly sp = new SimplePoly();
@@ -126,6 +129,9 @@ public class SimplePoly {
 
 	/**
 	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use latlon coordinates .
+	 * @param p3 3D polygon
+	 * @param proj projection to use to interpret the points in the 3D polygon
+	 * @return a new SimplePoly
 	 */
 	public static SimplePoly make(Poly3D p3, EuclideanProjection proj) {
 		SimplePoly sp = new SimplePoly();
@@ -140,7 +146,7 @@ public class SimplePoly {
 
 
 	/**
-	 *  
+	 * Determine if the polygon contains geodetic points. 
 	 * @return True if this SimplePoly contains any geodetic points.
 	 */
 	public boolean isLatLon() {
@@ -148,14 +154,13 @@ public class SimplePoly {
 	}
 
 	/**
-	 * 
+	 * Number of points
 	 * @return Number of points in this SimplePoly
 	 */
 	public int size() {
 		return points.size();
 	}
 
-	// standard formulas for area and centroid
 	/**
 	 * Return the area (in m^2 or rad^2) of this SimplePoly.
 	 */
@@ -353,6 +358,7 @@ public class SimplePoly {
 	/**
 	 * Return the average of all vertices.  Note this is not the same as the centroid!  This will, however, have the nice property of having
 	 * a constant velocity when dealing with a morphing polygon. 
+	 * @return average of all vertices
 	 */
 	public Position averagePoint() {
 		if (!averagePointDefined) {
@@ -367,6 +373,7 @@ public class SimplePoly {
 	// calculates it and radius, if necessary 
 	/**
 	 * Returns the center of a circle completely containing this SimplePoly.  This is not necessarily the minimal bounding circle.
+	 * @return center of polygon
 	 */
 	public Position boundingCircleCenter() {
 		return centroid();
@@ -376,7 +383,9 @@ public class SimplePoly {
 		//		return bPos;
 	}
 
-	/** Returns true if this polygon is convex */
+	/** Returns true if this polygon is convex 
+	 * @return true, if convex
+	 */
 	public boolean isConvex() {
 		boolean ret = true;
 		if (points.size() > 2) {
@@ -396,6 +405,7 @@ public class SimplePoly {
 
 	/**
 	 * Returns the radius of a circle completely containing this SimplePoly.  This is not necessarily the minimal bounding circle.
+	 * @return radius of bounding circle
 	 */
 	public double boundingCircleRadius() {
 		return maxRadius();
@@ -417,21 +427,22 @@ public class SimplePoly {
 		return p2;
 	}
 
-	private int maxDistIdx(Position p) {
-		double maxD = 0.0;
-		int idx = -1;
-		for (int i = 0; i < points.size(); i++) {
-			double d = points.get(i).distanceH(p);
-			if (d > maxD) {
-				idx = i;
-				maxD = d;
-			}
-		}
-		return idx;		
-	}
+//	private int maxDistIdx(Position p) {
+//		double maxD = 0.0;
+//		int idx = -1;
+//		for (int i = 0; i < points.size(); i++) {
+//			double d = points.get(i).distanceH(p);
+//			if (d > maxD) {
+//				idx = i;
+//				maxD = d;
+//			}
+//		}
+//		return idx;		
+//	}
 
 	/** 
 	 * Returns the max horizontal distance between any vertex and the centroid
+	 * @return radius 
 	 */
 	public double maxRadius() {
 		Position c = centroid();
@@ -453,7 +464,8 @@ public class SimplePoly {
 	/** 
 	 * Add a new point to the SimplePoly.  Points should be added in a consistently clockwise or consistently counter-clockwise manner. 
 	 * This currently does NOT set the Z component of the point (unless it is the first point)
-	 * Returns false if an error is detected (duplicate or invalid vertex), true otherwise. 
+	 * @param p position to add
+	 * @return false, if an error is detected (duplicate or invalid vertex), true otherwise. 
 	 */
 	public boolean addVertex(Position p){
 		if (p == null || p.isInvalid()){ //|| points.contains(p)) {
@@ -496,7 +508,10 @@ public class SimplePoly {
 	/**
 	 * Change the position of a point already added to the SimplePoly, indicated by its index. 
 	 * This currently does NOT set the Z component of the point.
-	 * Returns false if an invalid vertex is detected, true otherwise 
+	 * 
+	 * @param n index
+	 * @param p position
+	 * @return false, if an invalid vertex is detected, true otherwise 
 	 */
 	public boolean setVertex(int n, Position p) {
 		if (p == null || p.isInvalid() || points.contains(p.mkAlt(bottom))) {
@@ -528,6 +543,7 @@ public class SimplePoly {
 
 	/**
 	 * Return the top altitude of this SimplePoly.
+	 * @return top altitude
 	 */
 	public double getTop() {
 		return top;
@@ -550,6 +566,7 @@ public class SimplePoly {
 
 	/**
 	 * Return the bottom altitude of this SimplePoly.
+	 * @return bottom altitude
 	 */
 	public double getBottom() {
 		return bottom;
@@ -558,6 +575,9 @@ public class SimplePoly {
 	/**
 	 * Returns the position of the (bottom) point with index n.
 	 * If n is not a valid index, this returns the centroid position.
+	 * 
+	 * @param n index
+	 * @return position
 	 */
 	public Position getVertex(int n) {
 		if (n >= 0 && n < points.size()) {
@@ -566,9 +586,16 @@ public class SimplePoly {
 		return centroid();
 	}
 
+	public ArrayList<Position> getVertices() {
+		return points;
+	}
+	
 	/**
 	 * Returns the position of the top point with index n.
 	 * If n is not a valid index, this returns the centroid position.
+	 * 
+	 * @param n index
+	 * @return position
 	 */
 	public Position getTopPoint(int n) {
 		if (n >= 0 && n < points.size()) {
@@ -579,6 +606,8 @@ public class SimplePoly {
 
 	/**
 	 * Returns a deep copy of this SimplPoly.
+	 * 
+	 * @return copy
 	 */
 	public SimplePoly copy() {
 		SimplePoly r = new SimplePoly(bottom,top);
@@ -608,7 +637,7 @@ public class SimplePoly {
 	/**
 	 * closest horizontal distance from p to an edge.  
 	 * @param p
-	 * @return
+	 * @return distance from edge
 	 */
 	public double distanceFromEdge(Position p) {
 		if (p.isLatLon()) {
@@ -617,7 +646,7 @@ public class SimplePoly {
 			double dist = GreatCircle.distance(ll, cl);
 			for (int i = 0; i < size()-1; i++) {
 				cl = GreatCircle.closest_point_segment(getVertex(i).lla(), getVertex(i+1).lla(), ll);
-				dist = Math.min(GreatCircle.distance(ll, cl), dist);				
+				dist = Util.min(GreatCircle.distance(ll, cl), dist);				
 			}
 			return dist;
 		} else {
@@ -626,7 +655,7 @@ public class SimplePoly {
 			double dist = v3.distanceH(cl);
 			for (int i = 0; i < size()-1; i++) {
 				cl = VectFuns.closestPointOnSegment(getVertex(i).point(), getVertex(i+1).point(), v3);
-				dist = Math.min(v3.distanceH(cl), dist);				
+				dist = Util.min(v3.distanceH(cl), dist);				
 			}
 			return dist;
 		}
@@ -634,15 +663,17 @@ public class SimplePoly {
 
 	public double distanceV(Position p) {
 		if (p.isLatLon()) {
-			return Math.min(Math.abs(p.alt()-top), Math.abs(p.alt()-bottom));
+			return Util.min(Math.abs(p.alt()-top), Math.abs(p.alt()-bottom));
 		} else {
-			return Math.min(Math.abs(p.z()-top), Math.abs(p.z()-bottom));
+			return Util.min(Math.abs(p.z()-top), Math.abs(p.z()-bottom));
 		}
 
 	}
 
 	/**
 	 * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD detection algorithms.
+	 * @param p position
+	 * @return true, if position is in the polygon
 	 */
 	public boolean contains(Position p) {
 		EuclideanProjection proj = Projection.createProjection(p);
@@ -656,6 +687,9 @@ public class SimplePoly {
 
 	/**
 	 * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD detection algorithms.
+	 * 
+	 * @param p position
+	 * @return true, if position is in the polygon
 	 */
 	public boolean contains2D(Position p) {
 		EuclideanProjection proj = Projection.createProjection(p);
@@ -729,7 +763,10 @@ public class SimplePoly {
 
 	}
 
-	/** return a aPolygon3D version of this.  proj is ignored if this is Euclidean */
+	/** return a Poly3D version of this.  proj is ignored if this is Euclidean 
+	 * @param proj projection
+	 * @return a new 3D polygon
+	 */
 	public Poly3D poly3D(EuclideanProjection proj) {
 		Poly3D p3;
 		if (isLatLon()) {
@@ -756,7 +793,7 @@ public class SimplePoly {
 		for (int i = 0; i < size(); i = i + K) {
 			s.addVertex(getVertex(i));
 		}
-		f.pln(" $$ buildContainingPoly: s.size = "+s.size());
+		//f.pln(" $$ buildContainingPoly: s.size = "+s.size());
 		ArrayList<Integer> lv = new ArrayList<Integer>(10);
 		for (int i = 0; i < size(); i++) {
 			if (i % K != 0) { 
@@ -767,7 +804,7 @@ public class SimplePoly {
 				}
 			}
 		}	
-		f.pln(" $$ buildContainingPoly: lv.size = "+lv.size());
+		//f.pln(" $$ buildContainingPoly: lv.size = "+lv.size());
 
 		SimplePoly q = new SimplePoly();
 		for (int i = 0; i < size(); i++) {
@@ -1130,7 +1167,10 @@ public class SimplePoly {
 
 	/**
 	 * Return the angle that is perpendicular to the middle of the edge from vertex i to i+1, facing outward.
-	 * Return NaN if i is out of bounds or vertex i overlaps vertex i+1. 
+	 * Return NaN if i is out of bounds or vertex i overlaps vertex i+1.
+	 * 
+	 * @param i index
+	 * @return angle 
 	 */
 	public double perpSide(int i) {
 		if (i < 0 || i >= points.size()) return Double.NaN;
@@ -1159,7 +1199,10 @@ public class SimplePoly {
 
 	/**
 	 * Return the internal angle of vertex i.
-	 * Return NaN if i is out of bounds or vertex i overlaps with an adjacent vertex. 
+	 * Return NaN if i is out of bounds or vertex i overlaps with an adjacent vertex.
+	 * 
+	 * @param i index
+	 * @return angle
 	 */
 	public double vertexAngle(int i) {
 		if (i < 0 || i >= points.size()) return Double.NaN;
@@ -1190,21 +1233,21 @@ public class SimplePoly {
 		}
 	}
 
-	public String toOutput(String name, int precision, boolean tcpColumns) {
+	public String toOutput(String name, int precision, int numberTcpColumns) {
 		StringBuffer sb = new StringBuffer(100);
 		for (int j = 0; j < size(); j++) {
-			ArrayList<String> ret = new ArrayList<String>(NavPoint.TCP_OUTPUT_COLUMNS+2);
+			ArrayList<String> ret = new ArrayList<String>(numberTcpColumns+2);
 			ret.add(name);  // name is (0)
 			ret.addAll(getVertex(j).toStringList(precision)); //vertex 1-3
 			ret.add(f.FmPrecision(0.0)); // time 4
-			if (tcpColumns) {
+			if (numberTcpColumns > 0) {
 				ret.add("-"); // type
 				int start = 5;
 				//						if (mode == PathMode.USER_VEL) {
 				//							ret.addAll(initialVelocity(j).toStringList()); // vel 6-8
 				//							start = 8;
 				//						}
-				for (int k = start; k < NavPoint.TCP_OUTPUT_COLUMNS; k++) {
+				for (int k = start; k < numberTcpColumns; k++) {
 					ret.add("-");
 				}
 			} else {

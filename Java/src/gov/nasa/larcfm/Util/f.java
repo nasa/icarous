@@ -3,7 +3,7 @@
  *
  * Contact: Rick Butler (r.w.butler@nasa.gov)
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.text.DecimalFormat;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,7 +28,11 @@ final public class f {
 	/** Given a list of names that may include files or directories,
 	 * return a list of files that contains (1) all of the files in
 	 * the original list and (2) all files ending with ".txt" in
-	 * directories from the original list. */
+	 * directories from the original list.
+	 * 
+	 * @param names list of names (files or directories)
+	 * @return list of filenames
+	 */
 	public static List<String> getFileNames(String[] names) {
 		ArrayList<String> txtFiles = new ArrayList<String>();
 		for (int i=0; i < names.length; i++) {
@@ -65,7 +68,10 @@ final public class f {
 		sb = buffer;
 	}
 
-	/** Send string to the console with a "carriage return." Also flushes both stdout and stderr */
+	/** Send string to the console with a "carriage return." Also flushes both stdout and stderr
+	 * 
+	 * @param string string to print
+	 */
 	public static void pln(String string) {
 		if (sb == null) {
 			System.err.flush();
@@ -77,7 +83,10 @@ final public class f {
 		}
 	}
 
-	/** Send string to the error console with a "carriage return." Also flushes both stdout and stderr */
+	/** Send string to the error console with a "carriage return." Also flushes both stdout and stderr 
+	 * 
+	 * @param string string to output
+	 */
 	public static void dln(String string) {
 		System.err.println("$$ERROR$$ "+string);
 		System.out.flush();
@@ -88,7 +97,10 @@ final public class f {
 		pln("");
 	}
 
-	/** send a string to the console without a "carriage return" */
+	/** send a string to the console without a "carriage return"
+	 * 
+	 * @param string string to output
+	 */
 	public static void p(String string) {
 		if (sb == null) {
 			System.out.print(string);
@@ -97,94 +109,61 @@ final public class f {
 		}
 	}
 
-	//  /** Format a position vector */
-	//  public static String sStr(Vect2 s, boolean ll) {
-	//    if (ll)
-	//      return "("+Units.str("deg",s.x)+", "+Units.str("deg",s.y)+")";
-	//    else
-	//      return "("+Units.str("nmi",s.x)+" ,"+Units.str("nmi",s.y)+")";
-	//  }
-	//
-	//  /* Format a position vector */
-	//  public static String sStr(Vect3 s, boolean ll) {
-	//    if (ll)
-	//      return "("+Units.str("deg",s.x)+", "+Units.str("deg",s.y)+", "+Units.str("ft",s.z)+")";
-	//    else
-	//      return "("+Units.str("nmi",s.x)+" ,"+Units.str("nmi",s.y)+" ,"+Units.str("ft",s.z)+")";
-	//  }
-	//
-	/** Format a position vector as a Euclidean position */
+	/** Format a position vector as a Euclidean position 
+	 * 
+	 * @param s position vector
+	 * @return string representation
+	 */
 	public static String sStr(Vect2 s) {
 		return "(" + Units.str("nmi", s.x) + " ," + Units.str("nmi", s.y) + ")";
 	}
 
-	/** Format a position vector as a Euclidean position */
+	/** Format a position vector as a Euclidean position 
+	 * 
+	 * @param s a position vector
+	 * @return a string representation
+	 */
 	public static String sStr(Vect3 s) {
 		return "(" + Units.str("nmi", s.x) + " ," + Units.str("nmi", s.y) + " ," 	+ Units.str("ft", s.z) + ")";
 	}
 
-	//  /** Format a position vector as a Euclidean position */
-	//  public static String sStr16(Vect3 s) {
-	//    return "(" + Units.str("nmi",s.x,16) + " ," + Units.str("nmi",s.y,16) + " ," 	+ Units.str("ft",s.z,16) + ")";
-	//  }
-
-	/** Format a position vector as a Euclidean position */
+	/** Format a position vector as a Euclidean position 
+	 * 
+	 * @param s position vector
+	 * @return a string representation
+	 */
 	public static String sStr8(Vect3 s) {
 		return "(" + Units.str("nmi",s.x,8) + " ," + Units.str("nmi",s.y,8) + " ," 	+ Units.str("ft",s.z,8) + ")";
 	}
 
-	/** Format a position vector as a Euclidean position */
+	/** Format a position vector as a Euclidean position 
+	 * 
+	 * @param s a position vector
+	 * @return a string representation
+	 */
 	public static String sStrNP(Vect3 s) {
 		return Fm4(Units.to("NM", s.x)) + " " + Fm4(Units.to("NM", s.y)) + " " 	+ Fm4(Units.to("ft", s.z));
 	}
 
-	/** Format a position vector as a Euclidean position */
+	/** Format a position vector as a Euclidean position 
+	 * 
+	 * @param s a position vector
+	 * @return a string representation
+	 */
 	public static String sStr8NP(Vect3 s) {
 		return Fm8(Units.to("NM", s.x)) + " " + Fm8(Units.to("NM", s.y)) + " " 	+ Fm8(Units.to("ft", s.z));
 	}
 
-
-	//  /** Format a position vector as a Euclidean position */
-	//  public static String sStr12NP(Vect3 s) {
-	//    return Fm12(Units.to("NM", s.x)) + " " + Fm12(Units.to("NM", s.y)) + " " 	+ Fm12(Units.to("ft", s.z));
-	//  }
-
-	/** Format a position vector as a Euclidean position */
+	/** Format a position vector as a Euclidean position 
+	 * 
+	 * @param s a position vector
+	 * @return a string representation
+	 */
 	public static String sStr15NP(Vect3 s) {
 		return Fm16(Units.to("NM", s.x)) + " " + Fm16(Units.to("NM", s.y)) + " " 	+ Fm16(Units.to("ft", s.z));
 	}
 
 
-	//	/** Format a velocity vector as a Euclidean velocity */
-	//	public static String vStr(Vect2 s) {
-	//		return "(" + Units.str("knot", s.x) + " ," + Units.str("knot", s.y) + ")";
-	//	}
-	//
-	//  /** Format a velocity vector as a polar velocity */
-	//  public static String vStr2(Vect2 v) {
-	//    return "("+Units.str("deg",v.compassAngle())+", "+Units.str("knot",v.norm())+")";
-	//  }
-	//
-	//	/** Format a velocity vector as a Euclidean velocity */	
-	//	public static String vStr(Vect3 s) {
-	//		return "(" + Units.str("knot", s.x) + " ," + Units.str("knot", s.y) + " ," 	+ Units.str("fpm", s.z) + ")";
-	//	}
-	//
-	//	/** Format a velocity vector as a polar velocity */
-	//	public static String vStr2(Vect3 v) {
-	//		return "("+Units.str("deg",v.vect2().compassAngle())+", "+Units.str("knot",v.vect2().norm())+", "+Units.str("fpm",v.z())+")";
-	//	}
-	//
-	//	/** Format a velocity vector as a polar velocity */
-	//	public static String vStr8(Vect3 v) {
-	//		return "("+Units.str8("deg",v.vect2().compassAngle())+", "+Units.str8("knot",v.vect2().norm())+", "+Units.str8("fpm",v.z())+")";
-	//	}
-	//
-	//	/** Format a velocity vector as a polar velocity */
-	//	public static String vStrNP(Vect3 v) {
-	//		return Fm4(Units.to("deg",v.vect2().compassAngle()))+", "+Fm4(Units.to("knot",v.vect2().norm()))+", "+Fm4(Units.to("fpm",v.z()));
-	//	}
-	//
 	public static double fm_nz(double v, int precision) {
 		if (v < 0.0 && Math.ceil(v*Math.pow(10,precision)-0.5) == 0.0) 
 			return 0.0;
@@ -230,7 +209,7 @@ final public class f {
 	 * 
 	 * @param v the integer
 	 * @param minLength the minimum length.
-	 * @return
+	 * @return a string representation of this integer
 	 */
 	public static String FmLead(int v, int minLength) {
 		switch(minLength) {
@@ -285,52 +264,92 @@ final public class f {
 		return ""+v;
 	}
 
-	/** Format a double with 2 decimal places */
+	/** Format a double with 2 decimal places 
+	 * 
+	 * @param v a double value
+	 * @return a string representation
+	 */
 	public static String Fm(double v) {
 		return FmPrecision(v,2);
 	}
 
-	/** Format a double with 0 decimal places */
+	/** Format a double with 0 decimal places 
+	 * 
+	 * @param v a double value
+	 * @return a string representation
+	 */
 	public static String Fm0(double v) {
 		return FmPrecision(v,0);
 	}
 
-	/** Format a double with 1 decimal places */
+	/** Format a double with 1 decimal places 
+	 * 
+	 * @param v a double value
+	 * @return a string representation
+	 */
 	public static String Fm1(double v) {
 		return FmPrecision(v,1);
 	}
 
-	/** Format a double with 2 decimal places */
+	/** Format a double with 2 decimal places 
+	 * 
+	 * @param v a double value
+	 * @return a string representation
+	 */
 	public static String Fm2(double v) {
 		return FmPrecision(v,2);
 	}
 
-	/** Format a double with 3 decimal places */
+	/** Format a double with 3 decimal places 
+	 * 
+	 * @param v a double value
+	 * @return a string representation
+	 */
 	public static String Fm3(double v) {
 		return FmPrecision(v,3);
 	}
 
-	/** Format a double with 4 decimal places */
+	/** Format a double with 4 decimal places 
+	 * 
+	 * @param v a double value
+	 * @return a string representation
+	 */
 	public static String Fm4(double v) {
 		return FmPrecision(v,4);
 	}
 
-	/** Format a double with 6 decimal places */
+	/** Format a double with 6 decimal places 
+	 * 
+	 * @param v a double value
+	 * @return a string representation
+	 */
 	public static String Fm6(double v) {
 		return FmPrecision(v,6);
 	}
 
-	/** Format a double with 8 decimal places */
+	/** Format a double with 8 decimal places 
+	 * 
+	 * @param v a double value
+	 * @return a string representation
+	 */
 	public static String Fm8(double v) {
 		return FmPrecision(v,8);
 	}
 
-	/** Format a double with 12 decimal places */
+	/** Format a double with 12 decimal places 
+	 * 
+	 * @param v a double value
+	 * @return a string representation
+	 */
 	public static String Fm12(double v) {
 		return FmPrecision(v,12);
 	}
 
-	/** Format a double with 16 decimal places */
+	/** Format a double with 16 decimal places 
+	 * 
+	 * @param v a double value
+	 * @return a string representation
+	 */
 	public static String Fm16(double v) {
 		return FmPrecision(v,16);
 	}
@@ -342,10 +361,11 @@ final public class f {
 	/**
 	 * Format the double value after converting into the given units.  The returned string has
 	 * a given width and the value has the given number of digits of precision.
-	 * @param v
-	 * @param units
-	 * @param width
-	 * @param precision
+	 * 
+	 * @param v      value
+	 * @param units  units
+	 * @param width  width
+	 * @param precision digits of precision
 	 * @return a string represents the value
 	 */
 	public static String fmt(double v, String units, int width, int precision) {
@@ -356,9 +376,9 @@ final public class f {
 	 * Format the double value.  The returned string has
 	 * a given width and the value has the given number of digits of precision.
 	 * 
-	 * @param v
-	 * @param width
-	 * @param precision
+	 * @param v      value
+	 * @param width  width
+	 * @param precision digits of precision
 	 * @return a string represents the value
 	 */
 	public static String fmt(double v, int width, int precision) {
@@ -371,11 +391,15 @@ final public class f {
 
 	private static DecimalFormat Frm_e4 = new DecimalFormat("0.0000E00");// new DecimalFormat("0.0000");
 
-	/** Format a double in exponential notation with 4 decimal places */
+	/** Format a double in exponential notation with 4 decimal places 
+	 * 
+	 * @param v a double value
+	 * @return a string representation
+	 */
+
 	public static String Fme4(double v) {
 		return Frm_e4.format(v);
 	}
-
 
 	public static String padLeft(String s, int n) {
 		if (n == 0) {
@@ -407,7 +431,12 @@ final public class f {
 		else return "False";
 	}
 
-	/** Indent all lines of source string the given number of spaces */
+	/** Indent all lines of source string the given number of spaces 
+	 * 
+	 * @param s a string to format
+	 * @param i number of spaces to indent
+	 * @return a new string representation
+	 */
 	public static String indent(String s, int i) {
 		String tab = "";
 		for (int j=0; j < i; j++) tab += " ";
@@ -530,10 +559,10 @@ final public class f {
 	 * Return a string representation of the data in this 1-dimensional array.
 	 * A newline is NOT added to the end.
 	 * 
-	 * @param data
+	 * @param data data to make a string
 	 * @param unit the unit to convert the values to
-	 * @param width
-	 * @param precision
+	 * @param width width
+	 * @param precision number of digits of precision
 	 * @return the resulting string
 	 */
 	public static String array2str(double[] data, String unit, int width, int precision) {
@@ -553,10 +582,10 @@ final public class f {
 	 * Return a string representation of the data in this 2-dimensional table.
 	 * A newline is NOT added to the end.
 	 * 
-	 * @param data
+	 * @param data data to make a string
 	 * @param unit the unit to convert the values to
-	 * @param width
-	 * @param precision
+	 * @param width width
+	 * @param precision number of digits of precision
 	 * @return the resulting string
 	 */
 	public static String array2str(double[][] data, String unit, int width, int precision) {
@@ -581,10 +610,10 @@ final public class f {
 	 * Return a string representation of the data in this 3-dimensional table.
 	 * A newline is NOT added to the end.
 	 * 
-	 * @param data
+	 * @param data data to make a string
 	 * @param unit the unit to convert the values to
-	 * @param width
-	 * @param precision
+	 * @param width width
+	 * @param precision number of digits of precision
 	 * @return the resulting string
 	 */
 	public static String array2str(double[][][] data, String unit, int width, int precision) {

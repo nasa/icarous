@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
 package gov.nasa.larcfm.Util;
+
 
 /**
  *  TurnGeneration provides methods to generate the beginning, middle, and end of turn (BOTs, MOTs, and EOTs).
@@ -14,6 +15,8 @@ package gov.nasa.larcfm.Util;
  */
 public final class TurnGeneration {
 
+	//static Position centerDebug = Position.INVALID;
+	
 	/**
 	 * Find the beginning, middle, and end points of a turn using three points and the given radius.  It is assumed that the three
 	 * points are in ordered such that the second point is the vertex of the turn.  <p>
@@ -32,37 +35,38 @@ public final class TurnGeneration {
 	 * 
 	 * @param np1 point 1
 	 * @param np2 point 2 (the vertex, or turn point)
+	 * @param np2linearIndex index in the linear plan for point 2
 	 * @param np3 point 3
 	 * @param radius the turn radius (always positive)
 	 * @return The beginning, middle, and ending turn points (ie, BOT, MOT, EOT)
 	 * 
 	 * NOTE: TrajGen is currently using THIS ONE.
 	 */
-	public static Triple<NavPoint,NavPoint,NavPoint> turnGenerator(NavPoint np1, NavPoint np2, NavPoint np3, double radius) {
+	public static Tuple5<NavPoint,NavPoint,NavPoint,Integer,Position> turnGenerator(NavPoint np1, NavPoint np2, int np2linearIndex, NavPoint np3, double radius) {
 		if (np1.time() > np2.time() || np2.time() > np3.time() || radius < 0.0) {
-			return new Triple<NavPoint,NavPoint,NavPoint>(NavPoint.INVALID, NavPoint.INVALID, NavPoint.INVALID);
+			return new Tuple5<NavPoint,NavPoint,NavPoint,Integer,Position>(NavPoint.INVALID, NavPoint.INVALID, NavPoint.INVALID,0,Position.INVALID);
 		}
-		
-		Tuple5<Position,Position,Position,Integer,Double> turn = turnGenerator(np1.position(), np2.position(), np3.position(), radius);
+		Tuple6<Position,Position,Position,Integer,Double,Position> turn = turnGenerator(np1.position(), np2.position(), np3.position(), radius);
 		Position botPos = turn.first;
 		Position motPos = turn.second;	
 		Position eotPos = turn.third;	
 		int dir = turn.fourth;
 		double arcLength = turn.fifth;
+		Position center = turn.sixth;
 
-//Velocity vv = botPos.initialVelocity(np2.position(), 100); 
-//Position center = dir==1?botPos.linear(Velocity.make(vv.PerpR().Hat2D()), radius):botPos.linear(Velocity.make(vv.PerpL().Hat2D()), radius);
-//f.pln("turngeneratorLLA arclength="+arcLength+" calc="+(PositionUtil.angle_between(botPos, center, eotPos)*radius));		
-		
+		//Velocity vv = botPos.initialVelocity(np2.position(), 100); 
+		//Position center = dir==1?botPos.linear(Velocity.make(vv.PerpR().Hat2D()), radius):botPos.linear(Velocity.make(vv.PerpL().Hat2D()), radius);
+		//f.pln("turngeneratorLLA arclength="+arcLength+" calc="+(PositionUtil.angle_between(botPos, center, eotPos)*radius));		
+
 		Velocity vin = NavPoint.initialVelocity(np1,np2);  // used to set gs and vs
 		Velocity vout = NavPoint.initialVelocity(np2,np3); // used to set gs and vs
 		double gsIn = vin.gs();
-		
+
 		Velocity vin2 = botPos.initialVelocity(np2.position(),100);
 		Velocity vout2 = np2.position().finalVelocity(eotPos,100);
 		vin = vin.mkTrk(vin2.trk());
 		vout = vout.mkTrk(vout2.trk());
-		
+
 		// make the time of the mot = the time of the middle vertex
 		double tMOT = np2.time();
 
@@ -74,19 +78,24 @@ public final class TurnGeneration {
 		double altMOT = np2.alt();
 		double altBOT = altMOT - vs1*turnTime/2;
 		double altEOT = altMOT + vs2*turnTime/2;
-        botPos = botPos.mkAlt(altBOT);
-        motPos = motPos.mkAlt(altMOT);
-        eotPos = eotPos.mkAlt(altEOT);	
-        
-        int linearIndex = np2.linearIndex();
- 		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos, tBOT, vin, dir*radius,linearIndex);
-		NavPoint npEOT = np2.makeOriginal().makeLabel("").makeEOT(eotPos, tEOT, vout,linearIndex);							
-		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT,linearIndex).makeLabel(""); 
+		botPos = botPos.mkAlt(altBOT);
+		motPos = motPos.mkAlt(altMOT);
+		eotPos = eotPos.mkAlt(altEOT);	
+
+//		int linearIndex = np2.linearIndex();
+//		int linearIndex = np2linearIndex;
+//		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos, tBOT, vin, dir*radius,linearIndex);
+//		NavPoint npEOT = np2.makeOriginal().makeLabel("").makeEOT(eotPos, tEOT, vout,linearIndex);							
+//		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT,linearIndex).makeLabel(""); 
+		NavPoint npBOT = new NavPoint(botPos, tBOT);
+		NavPoint npEOT = new NavPoint(eotPos,tEOT).makeLabel("");							
+		NavPoint npMOT = new NavPoint(motPos,tMOT).makeLabel(""); 
+
 		//f.pln(" $$$$$ npBOT = "+npBOT+"  npEOT = "+npEOT+"  npEOT = "+npEOT);
-		return new Triple<NavPoint,NavPoint,NavPoint>(npBOT, npMOT, npEOT);
+		return new Tuple5<NavPoint,NavPoint,NavPoint, Integer,Position>(npBOT, npMOT, npEOT, dir, center);
 	}
-	
-	
+
+
 	/**
 	 * Find the beginning, middle, and end points of a turn using three points and the given radius.  The three
 	 * points are in ordered such that the second point is the vertex of the turn.  The BOT is along the line
@@ -98,14 +107,15 @@ public final class TurnGeneration {
 	 * @param radius the turn radius (always positive)
 	 * @return The beginning, middle, and ending turn points (ie, BOT, MOT, EOT), direction of turn (-1 for left, 1 for right), arc distance along turn from right to left. 
 	 */
-	public static Tuple5<Position,Position,Position,Integer,Double> turnGenerator(Position p1, Position p2, Position p3, double radius) {
+	public static Tuple6<Position,Position,Position,Integer,Double,Position> turnGenerator(Position p1, Position p2, Position p3, double radius) {
 		Position botPos;
 		Position motPos;	
 		Position eotPos;	
 		int dir;
 		double distance;
+		Position centerPos;
 		if (p2.isLatLon()) { 			
-			Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double> points = turnGeneratorLLA(p1.lla(),p2.lla(),p3.lla(),radius);
+			Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double,LatLonAlt> points = turnGeneratorLLA(p1.lla(),p2.lla(),p3.lla(),radius);
 			//Triple<LatLonAlt,LatLonAlt,LatLonAlt> points = turnGeneratorLLA_Alt2(p1.lla(),p2.lla(),p3.lla(),radius);
 			//Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double>  points = turnGeneratorLLA_Alt3(p1.lla(),p2.lla(),p3.lla(),radius);
 			botPos = new Position(points.first);
@@ -113,28 +123,30 @@ public final class TurnGeneration {
 			eotPos = new Position(points.third);	
 			dir = points.fourth;
 			distance = points.fifth;
+			centerPos = new Position(points.sixth);
 		} else {
-			Tuple5<Vect3,Vect3,Vect3,Integer,Double> points = turnGeneratorEucl(p1.point(),p2.point(),p3.point(),radius);
+			Tuple6<Vect3,Vect3,Vect3,Integer,Double,Vect3> points = turnGeneratorEucl(p1.point(),p2.point(),p3.point(),radius);
 			botPos = new Position(points.first);
 			motPos = new Position(points.second);	
 			eotPos = new Position(points.third);		
 			dir = points.fourth;
 			distance = points.fifth;
+			centerPos = new Position(points.sixth);
 		}
-		return new Tuple5<Position,Position,Position,Integer,Double>(botPos,motPos,eotPos,dir,distance);
+		return new Tuple6<Position,Position,Position,Integer,Double,Position>(botPos,motPos,eotPos,dir,distance,centerPos);
 	}
 
-	
-	
+
+
 	/**
 	 * Return the BOT and EOT trajectory change points for a turn (Horizontal Components Only)
-	 * @param np1 Start point of the leg before the turn
-	 * @param np2 Vertex of the turn
-	 * @param np3 End point of the leg after the turn
+	 * @param pt1 Start point of the leg before the turn
+	 * @param pt2 Vertex of the turn
+	 * @param pt3 End point of the leg after the turn
 	 * @param radius Radius of the turn (always positive)
 	 * @return BOT,MOT,EOT positions, direction, and arclength from BOT to EOT   
 	 */
-	public static Tuple5<Vect2,Vect2,Vect2,Integer,Double> turnGeneratorEucl(Vect2 pt1, Vect2 pt2, Vect2 pt3, double radius) {
+	public static Tuple6<Vect2,Vect2,Vect2,Integer,Double,Vect2> turnGeneratorEucl(Vect2 pt1, Vect2 pt2, Vect2 pt3, double radius) {
 		Vect2 ao = pt3.Sub(pt2);
 		Vect2 bo = pt1.Sub(pt2);
 		Vect2 ahat = ao.Hat();
@@ -150,15 +162,15 @@ public final class TurnGeneration {
 		double alpha = 2*(Math.asin(distAB/(2*radius))); 
 		double arcLength = alpha*radius;	
 		int dir = VectFuns.rightOfLinePoints(pt1,pt2,pt3);
-		
+
 		// calculate MOT position
-        Vect2 center = pt2.Add(w);
+		Vect2 center = pt2.Add(w);
 		Vect2 vhat = pt2.Sub(center).Hat();
 		Vect2 MOT = center.Add(vhat.Scal(radius));
-		return new Tuple5<Vect2,Vect2,Vect2,Integer,Double>(BOT,MOT,EOT,dir,arcLength);
+		return new Tuple6<Vect2,Vect2,Vect2,Integer,Double,Vect2>(BOT,MOT,EOT,dir,arcLength,center);
 	}
 
-	
+
 	/**
 	 * Return the BOT and EOT trajectory change points for a turn (Horizontal components only, altitudes
 	 * are all set to p1's altitude.
@@ -169,18 +181,19 @@ public final class TurnGeneration {
 	 * @param radius Radius of the turn (always positive)
 	 * @return BOT,EOT pair   
 	 */
-	private static Tuple5<Vect3,Vect3,Vect3,Integer,Double> turnGeneratorEucl(Vect3 p1, Vect3 p2, Vect3 p3, double radius) {
-		Tuple5<Vect2,Vect2,Vect2,Integer,Double> tge = turnGeneratorEucl(p1.vect2(), p2.vect2(), p3.vect2(), radius);
+	private static Tuple6<Vect3,Vect3,Vect3,Integer,Double,Vect3> turnGeneratorEucl(Vect3 p1, Vect3 p2, Vect3 p3, double radius) {
+		Tuple6<Vect2,Vect2,Vect2,Integer,Double,Vect2> tge = turnGeneratorEucl(p1.vect2(), p2.vect2(), p3.vect2(), radius);
 		Vect2 BOT = tge.first;
 		Vect2 MOT = tge.second;
 		Vect2 EOT = tge.third;
-        double altBOT = p1.z(); 
-        double altMOT = p1.z();
-        double altEOT = p1.z(); 
+		double altBOT = p1.z(); 
+		double altMOT = p1.z();
+		double altEOT = p1.z(); 
 		Vect3 BOTv3 = new Vect3(BOT.x, BOT.y, altBOT);	
 		Vect3 MOTv3 = new Vect3(MOT.x, MOT.y, altMOT);	
-		Vect3 EOTv3 = new Vect3(EOT.x, EOT.y, altEOT);			
-		return new Tuple5<Vect3,Vect3,Vect3,Integer,Double>(BOTv3,MOTv3,EOTv3,tge.fourth,tge.fifth);
+		Vect3 EOTv3 = new Vect3(EOT.x, EOT.y, altEOT);		
+		Vect3 center = new Vect3(tge.sixth, altMOT);
+		return new Tuple6<Vect3,Vect3,Vect3,Integer,Double,Vect3>(BOTv3,MOTv3,EOTv3,tge.fourth,tge.fifth, center);
 	}
 
 	/**
@@ -190,11 +203,12 @@ public final class TurnGeneration {
 	 * 
 	 * @param np1 Start point of the leg before the turn
 	 * @param np2 Vertex of the turn
+	 * @param np2linearIndex index in the linear plan for the vertex of the turn
 	 * @param np3 End point of the leg after the turn
 	 * @param R Radius of the turn
 	 * @return BOT,MOT,EOT triple.   
 	 */
-	public static Triple<NavPoint,NavPoint,NavPoint> turnGeneratorProjected(NavPoint np1, NavPoint np2, NavPoint np3, double R) {
+	public static Quad<NavPoint,NavPoint,NavPoint, Integer> turnGeneratorProjected(NavPoint np1, NavPoint np2, int np2linearIndex, NavPoint np3, double R) {
 		Vect2 pt1;
 		Vect2 pt2;
 		Vect2 pt3;
@@ -236,7 +250,7 @@ public final class TurnGeneration {
 		Vect2 Center = pt2.Add(w);
 		Vect2 BOT = pt2.Add(wdotb);
 		Vect2 EOT = pt2.Add(wdota);
-		double gs1 = np1.groundSpeed(np2);
+		double gs1 = np1.initialVelocity(np2).gs();
 		double distAB = BOT.Sub(EOT).norm();
 		double sinTheta = distAB/(2*R);
 		double alpha;
@@ -275,26 +289,18 @@ public final class TurnGeneration {
 			botPos = new Position(v3BOT);
 			eotPos = new Position(v3EOT);
 		}
-		//double  vinTrk2 = new NavPoint(botPos,tBOT).initialVelocity(np2).trk();
 		double vinTrk = pt2.Sub(BOT).trk();
 		//f.pln(" $$$ vinTrk = "+Units.str8("deg",vinTrk)+" vinTrk2 = "+Units.str8("deg",vinTrk2));
-		//		double  voutTrk = new NavPoint(eotPos,tEOT).initialVelocity(np3).trk();
 		Velocity vin = v1.mkTrk(vinTrk);
 		int dir = Util.turnDir(vin.trk(), v2.trk());
-		//double signedRadius = Util.turnDir(vin.trk(), v2.trk())*R;
-		double signedRadius = dir*R; // vin.gs()/omega;
-		int ix = np2.linearIndex();
-		NavPoint npBOT = np2.makeOriginal().makeBOT(botPos, tBOT, vin, signedRadius, ix).makeLabel(np2.label());   // only BOT has label from np2
-        //f.pln(" $$$ turnGenerator: npBOT = "+npBOT.toStringFull()+"  alpha = "+alpha+" turnTime = "+turnTime);
-		NavPoint npMOT = np2.makeMidpoint(motPos,tMOT,ix).makeLabel(""); // ,vin.mkTrk(trk2)).makeLabel("");   
-		//f.pln(" $$$ turnGenerator: npMOT = "+npMOT.toStringFull());
-		double omega = dir*vin.gs()/R;    // TODO:  only used for EOT,  can calculate trkOut without this 
-		double trk3 = vin.trk() + omega * (tEOT-tBOT);
-		NavPoint npEOT = np2.makeOriginal().makeEOT(eotPos,tEOT, vin.mkTrk(trk3),ix).makeLabel("");	
-        //f.pln(" $$$ turnGenerator: npEOT = "+npEOT.toStringFull()+"  alpha = "+alpha+" turnTime = "+turnTime);
-		return new Triple<NavPoint,NavPoint, NavPoint>(npBOT,npMOT,npEOT);
+		
+		NavPoint npBOT = new NavPoint(botPos, tBOT).makeLabel(np2.label());
+		NavPoint npMOT = new NavPoint(motPos, tMOT).makeLabel("");
+		NavPoint npEOT = new NavPoint(eotPos, tEOT).makeLabel("");
+		//f.pln(" $$$ turnGenerator: npEOT = "+npEOT.toStringFull()+"  alpha = "+alpha+" turnTime = "+turnTime);
+		return new Quad<NavPoint,NavPoint, NavPoint,Integer>(npBOT,npMOT,npEOT,dir);
 	}
-	
+
 	/**
 	 * Return the BOT and EOT trajectory change points for a turn (Horizontal Components Only, altitudes
 	 * are not accurately computed)
@@ -305,20 +311,25 @@ public final class TurnGeneration {
 	 * @param radius radius of the turn
 	 * @return returns BOT, MOT, EOT, direction, and arc distance from BOT to EOT along the curve
 	 */
-	public static Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double> turnGeneratorLLA(LatLonAlt p2, double trkIn, double trkOut, double radius) {
-        double deltaTrack = Util.turnDelta(trkIn,trkOut);
-        int dir = Util.turnDir(trkIn,trkOut);
-		double distance = radius*Math.tan(deltaTrack/2.0);               // TODO ************* EUCLIDEAN ****************
+	public static Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double,LatLonAlt> turnGeneratorLLA(LatLonAlt p2, double trkIn, double trkOut, double radius) {
+		double deltaTrack = Util.turnDelta(trkIn,trkOut);
+		int dir = Util.turnDir(trkIn,trkOut);
+		double theta = deltaTrack/2.0;
+		double distance = radius*Math.tan(theta);                  // TODO ************* EUCLIDEAN ****************
 		LatLonAlt botPos =  GreatCircle.linear_initial(p2, trkIn, -distance);
 		LatLonAlt eotPos =  GreatCircle.linear_initial(p2, trkOut, distance);
-		double cLineDist = radius/Math.cos(deltaTrack/2.0) - radius;
+		double cLineDist = radius/Math.cos(theta);
 		double cTrk = trkIn + dir*(deltaTrack + Math.PI)/2.0;
-		LatLonAlt motPos =  GreatCircle.linear_initial(p2, cTrk, cLineDist);  
-		double arcLength = deltaTrack*radius;                            // TODO: ****** EUCLIDEAN *********
+		LatLonAlt motPos =  GreatCircle.linear_initial(p2, cTrk, cLineDist-radius);  
+		double arcLength = deltaTrack*radius;                              
 		//double arcLength = arcLengthLLA(botPos, p2, radius);
-		return new Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double>(botPos,motPos,eotPos,dir,arcLength);		
+		// ******************* EXPERIMENTAL **************************
+		LatLonAlt center = GreatCircle.linear_initial(p2, cTrk, cLineDist);
+		//f.pln(" $$$ turnGeneratorLLA: center = "+center);
+		//centerDebug = new Position(center);
+		return new Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double,LatLonAlt>(botPos,motPos,eotPos,dir,arcLength,center);		
 	}
-	
+
 	/**
 	 * Return the BOT and EOT trajectory change points for a turn (Horizontal Components Only, altitudes
 	 * are set to p1's altitude)
@@ -328,31 +339,32 @@ public final class TurnGeneration {
 	 * @param radius radius of turn
 	 * @return returns BOT, MOT, EOT, direction, and arc distance from BOT to EOT along the curve
 	 */
-	public static Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double> turnGeneratorLLA(LatLonAlt p1, LatLonAlt p2, LatLonAlt p3, double radius) {
+	public static Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double,LatLonAlt> turnGeneratorLLA(LatLonAlt p1, LatLonAlt p2, LatLonAlt p3, double radius) {
 		double trkIn = GreatCircle.final_course(p1, p2);
 		double trkOut = GreatCircle.initial_course(p2, p3);
-		Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double> tG = turnGeneratorLLA(p2, trkIn, trkOut, radius);
+		//int dir = Util.turnDir(trkIn,trkOut);
+		Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double,LatLonAlt> tG = turnGeneratorLLA(p2, trkIn, trkOut, radius);
 		double altBOT = p1.alt();
 		double altMOT = p1.alt(); 
 		double altEOT = p1.alt(); 
 		LatLonAlt botPos = tG.first.mkAlt(altBOT);
 		LatLonAlt motPos = tG.second.mkAlt(altMOT);              
 		LatLonAlt eotPos = tG.third.mkAlt(altEOT);
-		return new Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double>(botPos,motPos,eotPos,tG.fourth,tG.fifth);
+		return new Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double,LatLonAlt>(botPos,motPos,eotPos,tG.fourth,tG.fifth,tG.sixth);
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	/**
 	 * Altitudes are not set.
 	 * 
-	 * @param p1
-	 * @param p2
-	 * @param p3
+	 * @param p1 point 1
+	 * @param p2 point 2
+	 * @param p3 point 3
 	 * @param radius as a distance, not an angle
-	 * @return
+	 * @return returns BOT, MOT, EOT, direction, and arc distance from BOT to EOT along the curve
 	 */
 	public static Triple<LatLonAlt,LatLonAlt,LatLonAlt> turnGeneratorLLA_Alt2(LatLonAlt p1, LatLonAlt p2, LatLonAlt p3, double radius) {
 		double A = GreatCircle.angle_between(p1, p2, p3)/2.0;
@@ -370,23 +382,22 @@ public final class TurnGeneration {
 		LatLonAlt motPos = GreatCircle.linear_initial(p2, track3, b-radius);
 		return new Triple<LatLonAlt,LatLonAlt,LatLonAlt>(botPos,motPos,eotPos);
 	}
-	
-	
-
-	//TODO: GEH NEW:
-	private static double arcLengthLLA(LatLonAlt bot, LatLonAlt intercept, double radius) {
-		double a = GreatCircle.angle_from_distance(radius, 0.0);
-		double b = GreatCircle.angular_distance(bot, intercept);
-		if (Util.almost_equals(b, 0.0)) return 0.0;
-		double B = GreatCircle.side_angle_side(a, Math.PI/2, b).second;
-		double angle = B*2;
-		double radius_prime = GreatCircle.chord_distance(2*radius)/2;
-		return angle * radius_prime;
-	}
-	
 
 
-	
+
+//	private static double arcLengthLLA(LatLonAlt bot, LatLonAlt intercept, double radius) {
+//		double a = GreatCircle.angle_from_distance(radius, 0.0);
+//		double b = GreatCircle.angular_distance(bot, intercept);
+//		if (Util.almost_equals(b, 0.0)) return 0.0;
+//		double B = GreatCircle.side_angle_side(a, Math.PI/2, b).second;
+//		double angle = B*2;
+//		double radius_prime = GreatCircle.chord_distance(2*radius)/2;
+//		return angle * radius_prime;
+//	}
+
+
+
+
 	/**
 	 * Rprime takes the turnRadius (great circle distance) and returns another distance.
 	 *  Given a point c on the sphere (center of turn, for instance), and given another point
@@ -437,7 +448,7 @@ public final class TurnGeneration {
 		Vect3 n2 = normalvect(r,q,p);
 		Vect3 n1xn2 = n1.cross(n2);
 		double Rp = Rprime(TurnRad);
-		if (Math.abs(n1xn2.x)>=Math.max(Math.abs(n1xn2.y),Math.abs(n1xn2.z))) {
+		if (Math.abs(n1xn2.x)>=Util.max(Math.abs(n1xn2.y),Math.abs(n1xn2.z))) {
 			double a=n1.y;
 			double b=n1.z;
 			double c=n2.y;
@@ -487,7 +498,7 @@ public final class TurnGeneration {
 		Vect3 p1e = GreatCircle.spherical2xyz(p1.lat(), p1.lon());
 		Vect3 p2e = GreatCircle.spherical2xyz(p2.lat(), p2.lon());
 		Vect3 p3e = GreatCircle.spherical2xyz(p3.lat(), p3.lon());
-		
+
 		double ERad = GreatCircle.spherical_earth_radius;
 		double turnRad = Math.abs(radius);
 		double Rp = Rprime(turnRad);
@@ -509,23 +520,57 @@ public final class TurnGeneration {
 		double turnAng = 2*Math.asin(cordLen/2);
 		double distance = Rp*turnAng;
 
-//		f.pln("p1 "+p1e);
-//		f.pln("p2 "+p2e);
-//		f.pln("p3 "+p3e);
-//		f.pln("bot "+bote);
-//		f.pln("eot "+eote);
-		
+		//		f.pln("p1 "+p1e);
+		//		f.pln("p2 "+p2e);
+		//		f.pln("p3 "+p3e);
+		//		f.pln("bot "+bote);
+		//		f.pln("eot "+eote);
+
 		LatLonAlt bot = GreatCircle.xyz2spherical(bote);
 		LatLonAlt eot = GreatCircle.xyz2spherical(eote);
 		LatLonAlt mot = GreatCircle.xyz2spherical(mote);
-		
+
 		bot = bot.mkAlt(p1.alt());
 		mot = mot.mkAlt(p1.alt());
 		eot = eot.mkAlt(p1.alt());
 
 		return new Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,Integer,Double>(bot,mot,eot,dir,distance);
 	}
-	
-	
-	
+
+
+//	/**
+//	 * experimental
+//	 * This provides a list of turn points (BOT/EOT, BOT/EOTBOT/EOT, or BOT/EOT/BOT/EOT, or none) such that the 2D path: start-{BOT-EOT}-targ starts at point p1 with direction trk1
+//	 * and ends at point p2 with direction trk2.  Turns will use radius R1 and R2, repsectively.
+//	 * Altitudes of all points are ignored.  It is possible that two or more of these points overlap.
+//	 */
+//	public ArrayList<Vect2> turnToTrackThroughPoint(Vect2 p1, double trk1, Vect2 p2, double trk2, double R1, double R2) {
+//		ArrayList<Vect2> ret = new ArrayList<Vect2>();
+//		Vect2 v1 = Vect2.mkTrkGs(trk1, 100);
+//		Vect2 v2 = Vect2.mkTrkGs(trk2, 100);
+//		Vect2 center1;
+//		Vect2 center2;
+//		Vect2 tmpbot2; // tangent from p1 to second turn circle, this estimates the second BOT 
+//		double dir1 = p2.Sub(p1).det(v1); // p2 is on this side of state1 
+//		double dir2 = p1.Sub(p2).det(v2); // p1 is on this side of state2
+//		if (Util.almost_equals(dir2, 0)) { // p1 roughly in line with p2
+//			if (Util.almost_equals(dir1, 0)) {
+//				return ret; // in a straight line, nothing to do
+//			}
+//			center2 = p2;
+//		} 
+//		
+//		if (dir2 > 0) { // p1 to right of p2
+//			center2 = p2.AddScal(R2, v2.PerpR());
+//			if (p1.distance(center2) < R2) return null; // error, can't make second turn, too close
+//		} else if (dir2 < 0) { // p1 to left of p2
+//			center2 = p2.AddScal(R2, v2.PerpL());  
+//			if (p1.distance(center2) < R2) return null; // error, can't make second turn, too close
+//		}
+//		
+//		// interior center of similitude (intersection of cross tangents between the circles), from Wolfram Mathworld:
+//		
+//		Vect2 icos = center1.Scal(R1).Add(center2.Scal(R2)).Scal(R1+R2);
+//	}
+
 }

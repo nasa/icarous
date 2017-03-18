@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -76,6 +76,8 @@ public class MovingPolygon3D {
     
 	/**
 	 * Return the average Velocity (at time 0).
+	 * 
+	 * @return velocity
 	 */
 	public Velocity averageVelocity() {
 		Vect2 v = Vect2.ZERO;
@@ -88,8 +90,8 @@ public class MovingPolygon3D {
     
     /**
      * Initial velocity for vertex i
-     * @param i
-     * @return
+     * @param i index
+     * @return velocity
      */
     public Velocity velocity(int i) {
     	return Velocity.make(horizpoly.polyvel.get(i)).mkVs(vspeed);

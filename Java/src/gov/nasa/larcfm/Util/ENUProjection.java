@@ -4,7 +4,7 @@
  * 
  * project spherical coordinates (lat/lon) into a Euclidean frame and the inverse.
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -37,14 +37,22 @@ public final class ENUProjection implements EuclideanProjection {
 
     public static final double tranLat = Units.from("deg", 85.0);   
     
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point. 
+     * 
+     * @param lla reference point
+     */
     public ENUProjection(LatLonAlt lla) {
         projAlt = lla.alt();
         ref = spherical2xyz(lla.lat(), lla.lon());
         llaRef = lla;
     }
  
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point. 
+     * 
+     * @param lat latitude of reference point
+     * @param lon longitude of reference point
+     * @param alt altitude of reference point
+     */
     public ENUProjection(double lat, double lon, double alt) {
         projAlt = alt;
         ref = spherical2xyz(lat, lon);
@@ -187,8 +195,9 @@ public final class ENUProjection implements EuclideanProjection {
     	// convert latitude to 0-PI
     	double theta = Math.PI/2 - lat;
     	double phi = Math.PI - lon;
-    	double x = r*Math.sin(theta)*Math.cos(phi);
-    	double y = r*Math.sin(theta)*Math.sin(phi);
+    	double rsintheta = r*Math.sin(theta);
+    	double x = rsintheta*Math.cos(phi);
+    	double y = rsintheta*Math.sin(phi);
     	double z = r*Math.cos(theta);
     	return new Vect3(x,y,z);
     }

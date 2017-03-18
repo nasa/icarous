@@ -4,7 +4,7 @@
  * 
  * project spherical coordinates (lat/lon) into a Euclidean frame and the inverse.
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -17,35 +17,41 @@ package gov.nasa.larcfm.Util;
  * This class creates a local Euclidean projection around a given point.  This projection may be used to
  * transform geodetic coordinates (LatLonAlt objects) into this Euclidean frame, using the project() method.  Also points
  * within this frame, may be found in geodetic coordinates with the inverse() method.   As long as the points are
- * close to the projection point, the errors will be very small.
+ * close to the projection point, the errors will be very small.<p>
  * 
  * This is a standard orthographic projection, and is functionally similar to the ENU projection (it uses different calculations).  
  * It distorts distances from  the tangent point, compressing them more as the distance increases (similar to a picture of a 
  * planet from distant space).  
  * Note that this  projection should be considered to have a hard limit of GreatCircle.spherical_earth_radius as the maximum allowed 
- * distance from the tangent reference point, and significant distortion may occur at much smaller distances.
+ * distance from the tangent reference point, and significant distortion may occur at much smaller distances.<p>
  * 
- * These formulas are taken from https://en.wikipedia.org/wiki/Orthographic_projection_in_cartography
+ * These formulas are taken from en.wikipedia.org/wiki/Orthographic_projection_in_cartography<p>
  * 
- * Note: projection objects should never be made directly, and instead should be retrieved via Projection.getProjection() 
+ * Note: projection objects should never be made directly, and instead should be retrieved via Projection.getProjection()<p> 
  * 
  */
 public final class OrthographicProjection implements EuclideanProjection {
-
 	
     private final double projAlt;
  	private final LatLonAlt llaRef;
 
-
     public static final double tranLat = Units.from("deg", 85.0);   
     
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point. 
+     * 
+     * @param lla reference point
+     */
     public OrthographicProjection(LatLonAlt lla) {
         projAlt = lla.alt();
         llaRef = lla;
     }
  
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point. 
+     * 
+     * @param lat latitude of reference point
+     * @param lon longitude of reference point
+     * @param alt altitude of reference point
+     */
     public OrthographicProjection(double lat, double lon, double alt) {
         projAlt = alt;
         llaRef = LatLonAlt.mk(lat, lon, alt);
@@ -166,7 +172,7 @@ public final class OrthographicProjection implements EuclideanProjection {
     
     /**
      * Transforms a lat/lon position to a point on in R3 (on a sphere)
-     * From Wikipedia https://en.wikipedia.org/wiki/Orthographic_projection_in_cartography
+     * From Wikipedia: en.wikipedia.org/wiki/Orthographic_projection_in_cartography
      * @param lat Latitude
      * @param lon Longitude
      * @return point in R2

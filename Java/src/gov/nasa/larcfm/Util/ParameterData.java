@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2016 United States Government as represented by
+ * Copyright (c) 2013-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -30,7 +30,7 @@ public class ParameterData {
 	public static final String defaultEntrySeparator = "?";
 	private boolean preserveUnits;
 	private boolean unitCompatibility;
-	private Map<String, Quad<String, Double, String, Boolean>> parameters; // string representation, double representation, unit, boolean representation
+	private Map<String, ParameterEntry> parameters; 
 	private String patternStr;
 
 	/** A database of parameters.  A parameter can be a string, double value, or a boolean value.
@@ -40,7 +40,7 @@ public class ParameterData {
 		preserveUnits = false;
 		unitCompatibility = true;
 		patternStr = Constants.wsPatternBase;
-		parameters = new TreeMap<String, Quad<String, Double, String, Boolean>>(String.CASE_INSENSITIVE_ORDER);
+		parameters = new TreeMap<String, ParameterEntry>(String.CASE_INSENSITIVE_ORDER);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class ParameterData {
 		preserveUnits = p.preserveUnits;
 		unitCompatibility = p.unitCompatibility;
 		patternStr = p.patternStr;
-		parameters = new TreeMap<String, Quad<String, Double, String, Boolean>>(String.CASE_INSENSITIVE_ORDER);
+		parameters = new TreeMap<String, ParameterEntry>(String.CASE_INSENSITIVE_ORDER);
 		copy(p,true);
 	}
 
@@ -60,7 +60,7 @@ public class ParameterData {
 	 * This is intended to create a unique ParameterData object representing the parameters of a particular 
 	 * instance (of many) of an object, that can then be collected along with others into a larger ParameterData object representing the containing object.
 	 * @param prefix
-	 * @return
+	 * @return copy of ParameterData with changes
 	 */
 	public ParameterData copyWithPrefix(String prefix) {
 		ParameterData p = new ParameterData();
@@ -80,7 +80,7 @@ public class ParameterData {
 	 * The resulting ParameterData object will include an empty string parameter if a key exactly matches the prefix.
 	 * 
 	 * @param prefix
-	 * @return
+	 * @return copy of ParameterData with changes
 	 */
 	public ParameterData extractPrefix(String prefix) {
 		String prefixlc = prefix.toLowerCase();
@@ -98,10 +98,11 @@ public class ParameterData {
 	}
 
 	/**
-	 * Return a new ParameterData object that is a subset of this object
-	 * @param keylist list of keys to be included
-	 * @return new ParameterData object that is a subset of this object, only containing elements of this object that match those keys in keylist.
+	 * Return a new ParameterData object that is a subset of this object, only containing elements of this object that match those keys in keylist.
 	 * If keylist contains keys not in this object, they will not be included in the returned subset.
+	 * 
+	 * @param keylist list of keys to be included
+	 * @return new ParameterData object that is a subset of this object
 	 */
 	public ParameterData subset(Collection<String> keylist) {
 		ParameterData p = new ParameterData();
@@ -116,6 +117,23 @@ public class ParameterData {
 		return p;		
 	}
 
+	/**
+	 * Return a new ParameterData object that is a subset of this object, only containing the element of this object that matches key
+	 * If key is not in this object, they will not be included in the returned subset.
+	 * @param key the key to be included
+	 * @return new ParameterData object that is a subset of this object
+	 */
+	public ParameterData subset(String key) {
+		ParameterData p = new ParameterData();
+		p.preserveUnits = preserveUnits;
+		p.unitCompatibility = unitCompatibility;
+		p.patternStr = patternStr;
+		if (contains(key)) {
+			p.parameters.put(key, parameters.get(key));
+		}
+		return p;		
+	}
+
 
 	/**
 	 * Return a list of parameters that have the same values in both this object and p
@@ -123,7 +141,7 @@ public class ParameterData {
 	 * @return list of Parameter keys that have the same values in both objects.
 	 */
 	public List<String> intersection(ParameterData p) {
-		ArrayList<String> s = new ArrayList<String>();
+		List<String> s = new ArrayList<String>();
 		List<String> l1 = getList();
 		for (String key : l1) {
 			if (p.contains(key)) {
@@ -184,6 +202,10 @@ public class ParameterData {
 		unitCompatibility = v;
 	}
 
+	/** Number of parameters in this object
+	 * 
+	 * @return number of parameters
+	 */
 	public int size() {
 		return parameters.size();
 	}
@@ -191,10 +213,11 @@ public class ParameterData {
 	/**
 	 * Returns a list of parameter key strings encountered.
 	 * Note that this will reflect the original capitalization of the keys when they were first stored.
+	 * 
+	 * @return list of parameter key names
 	 */
 	public List<String> getList() {
-		//return parameters.keySet().toArray(new String[0]);
-		ArrayList<String> l = new ArrayList<String>(size());
+		List<String> l = new ArrayList<String>(size());
 		l.addAll(parameters.keySet());
 		return l;
 	}
@@ -202,6 +225,8 @@ public class ParameterData {
 	/**
 	 * Returns a list of parameter assignment strings ("key = value") encountered.
 	 * Note that this will reflect the original capitalization of the keys when they were first stored.
+	 * 
+	 * @return list of parameter key names
 	 */
 	public List<String> getListFull() {
 		List<String> list = getList();
@@ -210,9 +235,6 @@ public class ParameterData {
 			String p = li.next();
 			li.set(p + " = " + getString(p));
 		}
-		//		for (int i = 0; i < list.length; i++) {
-		//			list[i] = list[i] + " = " + getParameterString(list[i]);
-		//		}
 		return list;
 	}
 
@@ -225,6 +247,9 @@ public class ParameterData {
 
 	/**
 	 * Returns true if the parameter key was defined.
+	 * 
+	 * @param key parameter key to check if it is in database
+	 * @return true, if parameter is in database
 	 */
 	public boolean contains(String key) {
 		return parameters.containsKey(key);
@@ -238,12 +263,7 @@ public class ParameterData {
 	 */
 	public List<String> matchList(String substr) {
 		String substrlc = substr.toLowerCase();
-		ArrayList<String> ret = new ArrayList<String>();
-		//		String[] plist = getParameterList();
-		//		for (int i = 0; i < plist.length; i++) {
-		//			if (plist[i].contains(key))
-		//				ret.add(plist[i]);
-		//		}
+		List<String> ret = new ArrayList<String>();
 		List<String> plist = getList();
 		for (String i: plist) {
 			String ilc = i.toLowerCase();
@@ -257,12 +277,15 @@ public class ParameterData {
 	 * Returns the string value of the given parameter key. This may be a
 	 * space-delimited list. If the key is not present, return the empty string.
 	 * Parameter keys may be case-sensitive.
+	 * 
+	 * @param key parameter name
+	 * @return string representation of parameter
 	 */
 	public String getString(String key) {
 		if (!parameters.containsKey(key)) {
 			return "";
 		} else {
-			return parameters.get(key).getFirst();
+			return parameters.get(key).sval;
 		}
 	}
 
@@ -270,21 +293,28 @@ public class ParameterData {
 	 * Returns the double-precision value of the given parameter key in internal
 	 * units. If the key is not present or if the value is not a numeral, then
 	 * return 0. Parameter keys may be case-sensitive.
+	 * 
+	 * @param key parameter name
+	 * @return value of parameter (internal units)
 	 */
 	public double getValue(String key) {
 		if (!parameters.containsKey(key)) {
 			return 0.0;
 		} else {
-			return parameters.get(key).getSecond();
+			return parameters.get(key).dval;
 		}
 	}
 
 	/**
 	 * Returns the double-precision value of the given parameter key in internal
-	 * units. Only in the case when units were not specified in the file, will
+	 * units. Only in the case when units were not specified in the database, will
 	 * the defaultUnit parameter be used. If the key is not present or if the
 	 * value is not a numeral, then return 0. Parameter keys may be
 	 * case-sensitive.
+	 * 
+	 * @param key name of parameter
+	 * @param defaultUnit units to use if no units are in database
+	 * @return value of parameter (internal units)
 	 */
 	public double getValue(String key, String defaultUnit) {
 		return Units.fromInternal(defaultUnit, getUnit(key), getValue(key));
@@ -294,10 +324,13 @@ public class ParameterData {
 	 * Returns the string representation of the specified unit of the given
 	 * parameter key. If the key is not present or no unit was specified, return
 	 * "unspecified". Parameter keys may be case-sensitive.
+	 * 
+	 * @param key name of parameter
+	 * @return units of parameter
 	 */
 	public String getUnit(String key) {
 		if (parameters.containsKey(key)) {
-			return parameters.get(key).getThird();
+			return parameters.get(key).units;
 		} else {
 			return "unspecified";
 		}
@@ -307,10 +340,13 @@ public class ParameterData {
 	 * Returns the Boolean value of the given parameter key. If the key is not
 	 * present, or not representation of "true", return the empty string.
 	 * Parameter keys may be case-sensitive.
+	 * 
+	 * @param key name of parameter
+	 * @return boolean representation of parameter
 	 */
 	public boolean getBool(String key) {
 		if (parameters.containsKey(key)) {
-			return parameters.get(key).getFourth();
+			return parameters.get(key).bval;
 		} else {
 			return false;
 		}
@@ -324,6 +360,9 @@ public class ParameterData {
 	 * double value (see the related getParameterValue() method).  If the double value is 
 	 * larger than an integer, behavior is undefined.
 	 * Parameter keys may be case-sensitive.
+	 * 
+	 * @param key name of parameter
+	 * @return integer representation of parameter
 	 */
 	public int getInt(String key) {
 		return (int) getValue(key);
@@ -337,6 +376,9 @@ public class ParameterData {
 	 * double value (see the related getParameterValue() method).  If the double value is 
 	 * larger than an long, behavior is undefined.  
 	 * Parameter keys may be case-sensitive.
+	 * 
+	 * @param key name of parameter
+	 * @return long representation of parameter
 	 */
 	public long getLong(String key) {
 		return (long) getValue(key);
@@ -351,50 +393,51 @@ public class ParameterData {
 	 */
 	private boolean parse_parameter_string(String str) {
 		int loc = str.indexOf('=');
-		//f.pln("PD "+str+" XX "+loc);
-
 		if (loc > 0) {
 			String id = str.substring(0,loc).trim();
 			if (id.length() == 0) {
 				return false;
 			}
 			String value = str.substring(loc+1).trim();
-			return putParam(id, parse_parameter_value(value));
+			return putParam(id,parse_parameter_value(value));
 		} else {
 			return false;
 		}
 	}
 
 	/**
-	 * Put the Quad in for the parameter
+	 * Put entry in parameter map
 	 * @param key
-	 * @param newEntry
-	 * @param preserve
+	 * @param entry
+	 * @return true, if parameter was added successfully
 	 */
-	protected boolean putParam(String key, Pair<Boolean, Quad<String, Double, String, Boolean>> entry) {
-		//f.pln("ParameterData.putParam "+key+" "+newEntry);
-		boolean preserve_string = entry.first;
-		Quad<String, Double, String, Boolean> newEntry = entry.second;
+	protected boolean putParam(String key, Pair<Boolean, ParameterEntry> entry) {
+		boolean perform_conversion = entry.first;
+		ParameterEntry newEntry = entry.second;
 
 		boolean compatible = true;
 		if (parameters.containsKey(key)) {
-			Quad<String, Double, String, Boolean> oldEntry = parameters.get(key);
-			if ( ! Units.isCompatible(newEntry.third,oldEntry.third)) {
+			ParameterEntry oldEntry = parameters.get(key);
+			if (!Units.isCompatible(newEntry.units,oldEntry.units)) {
 				compatible = false;
 			} else {
-				if (newEntry.third.equals("unspecified") && ! preserve_string) {
-					String units = oldEntry.third;
-					double convert = Units.from(units,newEntry.second);
-					newEntry = Quad.make(Units.strX(units,newEntry.second),convert,units,newEntry.fourth);
+				if (newEntry.units.equals("unspecified")) {
+					if (perform_conversion) {
+						String units = oldEntry.units;
+						double convert = Units.from(units,newEntry.dval);
+						newEntry.dval = convert;
+						newEntry.units = units;
+						newEntry.set_sval();
+					} else {
+						newEntry.units = oldEntry.units;
+					}
 				} else if (isPreserveUnits()) { // newEntry.third != "unspecified"
-					if ( ! oldEntry.third.equals("unspecified")) {
-						newEntry = Quad.make(newEntry.first,newEntry.second,oldEntry.third,newEntry.fourth);
+					if ( ! oldEntry.units.equals("unspecified")) {
+						newEntry.units = oldEntry.units;
 					} 
 				}
-				//f.pln(" $$$$$$$$$ new string value: "+newEntry.first+"  "+preserve_string);
 			}
 		}
-
 		if (compatible || ! unitCompatibility) {
 			parameters.put(key, newEntry);
 			return true;
@@ -403,22 +446,18 @@ public class ParameterData {
 		}
 	}
 
-	/** Doesn't do error checking, string should be "trimmed." this should always return a Quad */
-	private Pair<Boolean, Quad<String, Double, String, Boolean>> parse_parameter_value(String value) {
-		Boolean preserve_string = Boolean.FALSE;
+	/** Doesn't do error checking, string should be "trimmed." This should always return a PartameterEntry */
+	private Pair<Boolean, ParameterEntry> parse_parameter_value(String value) {
+		Boolean perform_conversion = Boolean.TRUE;
 		double dbl = Units.parse(value,Double.MAX_VALUE);
-		if (dbl == Double.MAX_VALUE) {
-			preserve_string = Boolean.TRUE;
+		if (dbl == Double.MAX_VALUE) { // unrecognized units, error
+			perform_conversion = Boolean.FALSE;
 			dbl = 0.0;
 		}
-		//f.pln(" $$$$$$$$ value = "+value+"  "+preserve_string);
 		String unit = Units.parseUnits(value);
-		Boolean boolx = Boolean.valueOf(Util.parse_boolean(value));
-		Quad<String, Double, String, Boolean> quad = Quad.make(
-				value,dbl,unit,boolx);
-		return Pair.make(preserve_string,quad);
+		ParameterEntry quad = new ParameterEntry(value,dbl,unit,Util.parse_boolean(value),"",-1);
+		return Pair.make(perform_conversion,quad);
 	}
-
 
 	/**
 	 * Parses the given string as a parameter assignment. If successful, returns
@@ -435,7 +474,7 @@ public class ParameterData {
 	 * </ul>
 	 * 
 	 * @param s the given string to parse
-	 * @return true if the database was updated, false otherwise.  The database may not
+	 * @return true, if the database was updated, false otherwise.  The database may not
 	 * be updated because of an invalid parameter string was given, or incompatible units, etc.
 	 */
 	public boolean set(String s) {
@@ -449,49 +488,83 @@ public class ParameterData {
 	 * miles.  If the supplied units
 	 * are unspecified, then the units in the database are used to interpret the value
 	 * given.  
-	 * @return true if the database was updated, false otherwise.  The database may not
+	 * 
+	 * @param key name of parameter
+	 * @param value string representation of parameter
+	 * @return true, if the database was updated, false otherwise.  The database may not
 	 * be updated because of an invalid parameter string was given, or incompatible units, etc.
 	 */
 	public boolean set(String key, String value) {
-		//parse_parameter_string(key + " = " + value, false);
 		return putParam(key,parse_parameter_value(value));
+	}
+
+	/**
+	 * @deprecated Replaced by {@link #setBool(String key, boolean value)}
+	 */
+	@Deprecated public boolean set(String key, boolean value) {
+		return setBool(key,value);
 	}
 
 	/** Associates a boolean value with a parameter key. 
 	 * 
-	 * @return true if the database was updated, false otherwise.  The database may not
+	 * @param key name of parameter
+	 * @param value boolean representation of parameter
+	 * @return true, if the database was updated, false otherwise.  The database may not
 	 * be updated because of incompatible units, etc.
-	 * */
-	public boolean set(String key, boolean value) {
-		//set(key, Boolean.toString(value));
-		if (value) {
-			Quad<String, Double, String, Boolean> newEntry = 
-					Quad.make("true",0.0,"unitless",Boolean.TRUE);
-			return putParam(key,Pair.make(Boolean.TRUE,newEntry));
-		} else {
-			Quad<String, Double, String, Boolean> newEntry = 
-					Quad.make("false",0.0,"unitless",Boolean.FALSE);
-			return putParam(key,Pair.make(Boolean.TRUE,newEntry));
-		}
+	 */
+	public boolean setBool(String key, boolean value) {
+		ParameterEntry newEntry = ParameterEntry.makeBoolEntry(value);
+		return putParam(key,Pair.make(Boolean.FALSE,newEntry));		
+	}
+
+	/** Associates true value with a parameter key. 
+	 * 
+	 * @param key name of parameter
+	 * @return true, if the database was updated, false otherwise.  The database may not
+	 * be updated because of incompatible units, etc.
+	 */
+	public boolean setTrue(String key) {
+		return setBool(key,true);	
+	}
+
+	/** Associates false value with a parameter key. 
+	 * 
+	 * @param key name of parameter
+	 * @return true, if the database was updated, false otherwise.  The database may not
+	 * be updated because of incompatible units, etc.
+	 */
+	public boolean setFalse(String key) {
+		return setBool(key,false);	
+	}
+
+	/** Associates an integer value with a parameter key. 
+	 * 
+	 * @param key name of parameter
+	 * @param value integer representation of parameter
+	 * @return true, if the database was updated, false otherwise.  The database may not
+	 * be updated because of incompatible units, etc.
+	 */
+	public boolean setInt(String key, int value) {
+		ParameterEntry newEntry = ParameterEntry.makeIntEntry(value);
+		return putParam(key,Pair.make(Boolean.FALSE,newEntry));		
 	}
 
 	/** Associates a value (in the given units) with a parameter key. If the supplied units
 	 * are "unspecified," then the units in the database are used to interpret the value
 	 * given.  How the units in the database
-	 * are updated, depends on the value of the setPreserveUnits() parameter. 
+	 * are updated depends on the value of the setPreserveUnits() parameter. 
 	 * 
 	 * 
 	 * @param key    the name of the parameter
 	 * @param value  the value of the parameter in EXTERNAL units
 	 * @param units  the units of the given parameter
-	 * @return true if the database was updated, false otherwise.  The database may not
+	 * @return true, if the database was updated, false otherwise.  The database may not
 	 * be updated because of incompatible units, etc.
 	 */
 	public boolean set(String key, double value, String units) {
 		units = Units.clean(units);
-		Quad<String, Double, String, Boolean> newEntry = 
-				Quad.make(f.Fm8(value) + " [" + units +"]",Units.from(units,value),units,Boolean.FALSE);
-		return putParam(key,Pair.make(Boolean.FALSE,newEntry));
+		ParameterEntry newEntry = ParameterEntry.makeDoubleEntry(Units.from(units,value),units,Constants.get_output_precision());
+		return putParam(key,Pair.make(Boolean.TRUE,newEntry));
 	}
 
 	/** Associates a value (in internal units) with a parameter key. How the units in the database
@@ -499,15 +572,12 @@ public class ParameterData {
 	 * 
 	 * @param key   the name of the parameter
 	 * @param value the value of the parameter in INTERNAL units
-	 * @param units the typical units of the value (but no conversion takes place)
-	 * @return true if the database was updated, false otherwise.  The database may not
+	 * @param units the typical units of the value (but no conversion takes place, if "unspecified" any old value is preserved)
+	 * @return true, if the database was updated, false otherwise.  The database may not
 	 * be updated because of incompatible units, etc.
 	 */
 	public boolean setInternal(String key, double value, String units) {
-		units = Units.clean(units);
-		Quad<String, Double, String, Boolean> newEntry = 
-				Quad.make(Units.str(units,value,8),value,units,Boolean.FALSE);
-		return putParam(key,Pair.make(Boolean.FALSE,newEntry));
+		return setInternal(key, value, units, Constants.get_output_precision());
 	}
 
 	/** Associates a value (in internal units) with a parameter key. How the units in the database
@@ -515,44 +585,173 @@ public class ParameterData {
 	 * 
 	 * @param key   the name of the parameter
 	 * @param value the value of the parameter in INTERNAL units
-	 * @param units the typical units of the value (but no conversion takes place)
+	 * @param units the typical units of the value (but no conversion takes place, if "unspecified" any old value is preserved)
 	 * @param prec  precision 
-	 * @return true if the database was updated, false otherwise.  The database may not
+	 * @return true, if the database was updated, false otherwise.  The database may not
 	 * be updated because of incompatible units, etc.
 	 */
 	public boolean setInternal(String key, double value, String units, int prec) {
 		units = Units.clean(units);
-		Quad<String, Double, String, Boolean> newEntry = 
-				Quad.make(Units.str(units,value,prec),value,units,Boolean.FALSE);
+		ParameterEntry newEntry = ParameterEntry.makeDoubleEntry(value,units,prec);
 		return putParam(key,Pair.make(Boolean.FALSE,newEntry));
 	}
 
 	/**
-	 * Updates the default unit for an entry.
+	 * Updates the unit for an entry. This ignores the setPreservedUnits() flag.
+	 * 
+	 * @param key name of parameter
+	 * @param unit unit for this parameter
 	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
 	 */
-	public boolean setDefaultUnit(String key, String unit) {
-		if (Units.isUnit(unit) && parameters.containsKey(key)) {
-			Quad<String, Double, String, Boolean> newEntry = 
-					Quad.make(parameters.get(key).first,parameters.get(key).second, unit,parameters.get(key).fourth);
-			parameters.put(key, newEntry);
+	public boolean updateUnit(String key, String unit) {
+		ParameterEntry entry = parameters.get(key);
+		if (Units.isUnit(unit) && entry != null && 
+				Units.isCompatible(entry.units,unit) &&
+				!unit.equals("unitless") && !unit.equals("unspecified")) {
+			entry.units = unit;
+			entry.set_sval();
 			return true;
 		} else {
 			return false;
 		}
 	}
 
+	/**
+	 * Updates entry's comment
+	 * 
+	 * @param key name of parameter
+	 * @param msg the new comment of the parameter
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	public boolean updateComment(String key, String msg) {
+		ParameterEntry entry = parameters.get(key);
+		if (entry != null) {
+			entry.comment = msg;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Updates entry's string
+	 * 
+	 * @param key name of parameter
+	 * @param str the new string of the parameter
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	public boolean updateStr(String key, String str) {
+		ParameterEntry entry = parameters.get(key);
+		if (entry != null) {
+			entry.sval = str;
+			entry.dval = 0;
+			entry.bval = false;
+			entry.units = "unitless";
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/** Updates entry's double value
+	 * 
+	 * @param key the name of the parameter
+	 * @param val the new double value of the parameter in INTERNAL units
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	public boolean updateDouble(String key, double val) {
+		ParameterEntry entry = parameters.get(key);
+		if (entry != null) {
+			entry.dval = val;
+			if (entry.precision == 0) {
+				entry.precision = -1;
+			}
+			entry.set_sval();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/** Updates entry's boolean value
+	 * 
+	 * @param key the name of the parameter
+	 * @param val the new boolean value of the parameter
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	public boolean updateBool(String key, boolean val) {
+		ParameterEntry entry = parameters.get(key);
+		if (entry != null) {
+			entry.sval = val ? "true" : "false";
+			entry.bval = val;
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/** Updates entry's integer value
+	 * 
+	 * @param key the name of the parameter
+	 * @param val the new integer value of the parameter
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	public boolean updateInt(String key, int val) {
+		ParameterEntry entry = parameters.get(key);
+		if (entry != null) {
+			entry.precision = 0;
+			entry.dval = val;
+			entry.set_sval();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Updates entry's precision
+	 * 
+	 * @param key name of parameter
+	 * @param p the new precision of the parameter
+	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 */
+	public boolean updatePrecision(String key, int p) {
+		ParameterEntry entry = parameters.get(key);
+		if (entry != null) {
+			entry.precision = p;
+			entry.set_sval();
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Checks the parameters against the supplied list, and returns a list of
 	 * unrecognized parameters from the collection, possible empty.
 	 * This operation is case insensitive.
+	 * 
+	 * @param c a collection (for instance a list) of parameter names
+	 * @return a list of parameters from the original list that are not 
 	 */
 	public List<String> unrecognizedParameters(Collection<String> c) {
-		ArrayList<String> p = new ArrayList<String>(parameters.keySet());
+		List<String> p = new ArrayList<String>(parameters.keySet());
 		p.removeAll(c);
-		//return p.toArray(new String[p.size()]);
 		return p;
+	}
+
+	/** 
+	 * Copy parameter entries from list of keys 
+	 */
+	public void listCopy(ParameterData p, List<String> plist, boolean overwrite) {
+		for (String key: plist) {
+			if (overwrite || ! contains(key)) {
+				ParameterEntry entry = p.parameters.get(key);
+				if (entry != null) {
+					parameters.put(key,new ParameterEntry(entry));
+				}
+			}
+		}
 	}
 
 	/**
@@ -561,93 +760,84 @@ public class ParameterData {
 	 * @param overwrite if a parameter key exists in both this object and p, if overwrite is true then p's value will be used, otherwise this object's value will be used
 	 */
 	public void copy(ParameterData p, boolean overwrite) {
-		if (this == p) return;
-		List<String> plist = p.getList();
-		for (String key: plist) {
-			if (overwrite || ! this.contains(key)) {
-				//f.pln("p.getString(key) : "+key+"   "+p.getString(key));
-				this.set(key, p.getString(key));
-			}
-		}
+		listCopy(p,p.getList(),overwrite);
 	}
 
 	/**
 	 * This interprets a string as a Constants.wsPatternBase-delineated list of strings.
 	 */
-	private ArrayList<String> stringList(String instring) {
+	private List<String> stringList(String instring) {
 		String[] l = instring.split(Constants.separatorPattern,Integer.MIN_VALUE);
-		ArrayList<String> a = new ArrayList<String>();
+		List<String> a = new ArrayList<String>();
 		for (String s: l) {
 			a.add(s.trim());
 		}
 		return a;
 	}
 
-
 	/**
 	 * This interprets a string as a Constants.wsPatternBase-delineated list of integer values. 
 	 */
-	private ArrayList<Integer> integerList(String instring) {
-		ArrayList<String> l = stringList(instring);
-		ArrayList<Integer> a = new ArrayList<Integer>();
+	private List<Integer> integerList(String instring) {
+		List<String> l = stringList(instring);
+		List<Integer> a = new ArrayList<Integer>();
 		for (String s:l) {
 			a.add(Util.parse_int(s.trim()));
 		}
 		return a;
 	}
 
-	private ArrayList<Double> doubleList(String instring) {
-		ArrayList<String> l = stringList(instring);
-		ArrayList<Double> a = new ArrayList<Double>();
+	private List<Double> doubleList(String instring) {
+		List<String> l = stringList(instring);
+		List<Double> a = new ArrayList<Double>();
 		for (String s:l) {
 			a.add(Units.parse(s.trim()));
 		}
 		return a;
 	}
 
-	private ArrayList<Boolean> boolList(String instring) {
-		ArrayList<String> l = stringList(instring);
-		ArrayList<Boolean> a = new ArrayList<Boolean>();
+	private List<Boolean> boolList(String instring) {
+		List<String> l = stringList(instring);
+		List<Boolean> a = new ArrayList<Boolean>();
 		for (String s: l) {
 			a.add(Boolean.valueOf(Util.parse_boolean(s.trim()))); 
 		}
 		return a;
 	}
 
-	public ArrayList<Integer> getListInteger(String key) {
+	public List<Integer> getListInteger(String key) {
 		if (parameters.containsKey(key)) {
-			return integerList(parameters.get(key).first);
+			return integerList(parameters.get(key).sval);
 		} else {
 			return new ArrayList<Integer>();
 		}
 	}
 
-	public ArrayList<Double> getListDouble(String key) {
+	public List<Double> getListDouble(String key) {
 		if (parameters.containsKey(key)) {
-			return doubleList(parameters.get(key).first);
+			return doubleList(parameters.get(key).sval);
 		} else {
 			return new ArrayList<Double>();
 		}
 	}
 
-	public ArrayList<String> getListString(String key) {
+	public List<String> getListString(String key) {
 		if (parameters.containsKey(key)) {
-			return stringList(parameters.get(key).first);
+			return stringList(parameters.get(key).sval);
 		} else {
 			return new ArrayList<String>();
 		}
 	}
 
-	public ArrayList<Boolean> getListBool(String key) {
+	public List<Boolean> getListBool(String key) {
 		if (parameters.containsKey(key)) {
-			return boolList(parameters.get(key).first);
+			return boolList(parameters.get(key).sval);
 		} else {
 			return new ArrayList<Boolean>();
 		}
 	}
 
 
-	//TODO replace implementation with Util.list2str ?
 	public <T> boolean set(String key, List<T> list) {
 		String s = "";
 		if (list.size() > 0) {
@@ -660,176 +850,6 @@ public class ParameterData {
 	}
 
 
-	//	/**
-	//	 * This interprets a string as a Constants.wsPatternBase-delineated array of strings. 
-	//	 */
-	//	private String[] stringArray(String instring) {
-	//		return instring.trim().split(Constants.wsPatternBase);
-	//	}
-
-
-	//	private static final Pattern pp1 = Pattern
-	//			.compile("\"([^\"]+)\"\\s*,\\s*\"([^\"]+)\""); // "([^"]+)\s*,
-	//	private static final Pattern pp2 = Pattern
-	//			.compile("([^,]+)\\s*,\\s*\"([^\"]+)\"");
-	//	private static final Pattern pp3 = Pattern
-	//			.compile("\"([^\"]+)\"\\s*,\\s*(\\S.*)");
-	//	private static final Pattern pp4 = Pattern
-	//			.compile("([^,]+)\\s*,\\s*(\\S.*)");
-
-
-	//	/**
-	//	 * This interprets a string as a pair of strings separated by commas.
-	//	 * The elements of the pair may themselves contain commas, but only if the element is surrounded by double quotation marks.
-	//	 * Quotation mark nesting is not allowed.
-	//	 */
-	//	public static Pair<String, String> readPair(String instring) {
-	//		Matcher m = pp1.matcher(instring);
-	//		if (m.matches()) {
-	//			return new Pair<String, String>(m.group(1).trim(), m.group(2)
-	//					.trim());
-	//		}
-	//		m = pp2.matcher(instring);
-	//		if (m.matches()) {
-	//			return new Pair<String, String>(m.group(1).trim(), m.group(2)
-	//					.trim());
-	//		}
-	//		m = pp3.matcher(instring);
-	//		if (m.matches()) {
-	//			return new Pair<String, String>(m.group(1).trim(), m.group(2)
-	//					.trim());
-	//		}
-	//		m = pp4.matcher(instring);
-	//		if (m.matches()) {
-	//			return new Pair<String, String>(m.group(1).trim(), m.group(2)
-	//					.trim());
-	//		}
-	//		return null;
-	//	}
-	//
-	//	/**
-	//	 * This interprets a string as a triple of strings.
-	//	 */
-	//	public static Triple<String, String, String> readTriple(String instring) {
-	//		String[] s = stringArray(instring);
-	//		if (s.length < 3)
-	//			return null;
-	//		return new Triple<String, String, String>(s[0], s[1], s[2]);
-	//	}
-	//
-	//	/**
-	//	 * This interprets a string as a list of pairs of strings.
-	//	 * Each pair must be parenthesis or square bracket delineated.
-	//	 */
-	//	public static ArrayList<Pair<String, String>> readPairList(String instring) {
-	//		String[] s = instring.trim().split(parenPattern);
-	//		ArrayList<Pair<String, String>> a = new ArrayList<Pair<String, String>>();
-	//		for (int j = 0; j < s.length; j++) {
-	//			Pair<String, String> p = readPair(s[j]);
-	//			if (p != null && !p.first.equals("") && !p.second.equals(""))
-	//				a.add(p);
-	//		}
-	//		return a;
-	//	}
-	//
-	//	/**
-	//	 * This interprets a string as a list of triples of strings.
-	//	 * Each triple must be parenthesis or square bracket delineated.
-	//	 */
-	//	public static ArrayList<Triple<String, String, String>> readTripleList(
-	//			String instring) {
-	//		String[] s = instring.trim().split(parenPattern);
-	//		ArrayList<Triple<String, String, String>> a = new ArrayList<Triple<String, String, String>>();
-	//		for (int j = 0; j < s.length; j++) {
-	//			Triple<String, String, String> p = readTriple(s[j]);
-	//			if (p != null && !p.first.equals("") && !p.second.equals("")
-	//					&& !p.third.equals(""))
-	//				a.add(p);
-	//		}
-	//		return a;
-	//	}
-	//
-	//	/**
-	//	 * This interprets a string as an associative list of string pairs (a Map of key:value pairs)
-	//	 * The input string should be in the form of a list of string pairs.
-	//	 * This returns a Map<String,String>
-	//	 */
-	//	public static Map<String, String> readMap11(String instring) {
-	//		ArrayList<Pair<String, String>> a = readPairList(instring);
-	//		HashMap<String, String> m = new HashMap<String, String>();
-	//		for (int i = 0; i < a.size(); i++) {
-	//			m.put(a.get(i).first, a.get(i).second);
-	//		}
-	//		return m;
-	//	}
-	//
-	////	public static String writeMap11(Map<String,String> a) {
-	////		String s = "";
-	////		boolean first = true;
-	////		for (String key : a.keySet()) {
-	////			if (!first) s+=",";
-	////			s += "("+key+","+a.get(key)+")";
-	////			first = false;
-	////		}
-	////		return s;
-	////	}
-	//	
-	//	/**
-	//	 * This interprets a string as an associative list of string pairs mapped to single strings (a Map of key:value pairs)
-	//	 * The input string should be in the form of a list of string triples.
-	//	 * This returns a Map<Pair<String,String>, String>
-	//	 */
-	//	public static Map<Pair<String, String>, String> readMap21(
-	//			String instring) {
-	//		ArrayList<Triple<String, String, String>> a = readTripleList(instring);
-	//		HashMap<Pair<String, String>, String> m = new HashMap<Pair<String, String>, String>();
-	//		for (int i = 0; i < a.size(); i++) {
-	//			m.put(new Pair<String, String>(a.get(i).first, a.get(i).second),
-	//					a.get(i).third);
-	//		}
-	//		return m;
-	//	}
-	//
-	////	public static String writeMap21(Map<Pair<String,String>,String> a) {
-	////		String s = "";
-	////		boolean first = true;
-	////		for (Pair<String,String> key : a.keySet()) {
-	////			if (!first) s+=",";
-	////			s += "("+key.first+","+key.second+","+a.get(key)+")";
-	////			first = false;
-	////		}
-	////		return s;
-	////	}
-	//	
-	//	/**
-	//	 * This interprets a string as an associative list of strings mapped to pairs of strings (a Map of key:value pairs)
-	//	 * The input string should be in the form of a list of string triples.
-	//	 * This returns a Map<String, Pair<String,String>>
-	//	 */
-	//	public static HashMap<String, Pair<String, String>> readMap12(
-	//			String instring) {
-	//		ArrayList<Triple<String, String, String>> a = readTripleList(instring);
-	//		HashMap<String, Pair<String, String>> m = new HashMap<String, Pair<String, String>>();
-	//		for (int i = 0; i < a.size(); i++) {
-	//			m.put(a.get(i).first,
-	//					new Pair<String, String>(a.get(i).second, a.get(i).third));
-	//		}
-	//		return m;
-	//	}
-	//
-	//	
-	//	
-	////	public static String writeMap12(Map<String,Pair<String,String>> a) {
-	////		String s = "";
-	////		boolean first = true;
-	////		for (String key : a.keySet()) {
-	////			if (!first) s+=",";
-	////			s += "("+key+","+a.get(key).first+","+a.get(key).second+")";
-	////			first = false;
-	////		}
-	////		return s;
-	////	}
-
 
 	/**
 	 * Returns true if the stored value for key is likely a boolean
@@ -840,7 +860,7 @@ public class ParameterData {
 		if (!parameters.containsKey(key)) {
 			return false;
 		} else {
-			return Util.is_boolean(parameters.get(key).getFirst());
+			return Util.is_boolean(parameters.get(key).sval);
 		}
 	}
 
@@ -853,10 +873,15 @@ public class ParameterData {
 		if (!parameters.containsKey(key)) {
 			return false;
 		} else {
-			String s = parameters.get(key).getFirst();
+			String s = parameters.get(key).sval;
 			String[] fields = s.split(patternStr);
-			if (fields.length > 2) return false; // probably a list
-			return Util.is_double(fields[0]);
+			if (fields.length == 1) {
+				return Util.is_double(fields[0]);
+			} else if (fields.length == 2) {
+				return Util.is_double(fields[0]) && !Util.is_double(fields[1]);
+			} else {
+				return false; // probably a list
+			}
 		}
 	}
 
@@ -878,17 +903,67 @@ public class ParameterData {
 	}
 
 	/**
-	 * Returns a string listing all parameters and their (original string) values
+	 * Returns a string listing all parameters in keys and their (original string) values
+	 * 
+	 * @param keys list of parameter entries
+	 * @return multi-line string
 	 */
-	public String toString() {
+	public String listToString(List<String> keys) {
 		String s = "";
-		List<String> keys = getList();
-		Collections.sort(keys);
 		for (String key : keys) {
-			Quad<String, Double, String, Boolean> val = parameters.get(key);
-			s = s+key+" = "+val.first+"\n";
+			ParameterEntry val = parameters.get(key);
+			if (val != null) {
+				if (!val.comment.equals("")) {
+					s += "# "+val.comment+"\n";
+				}
+				s += key+" = "+val.sval+"\n";
+			} 
 		}
 		return s;
+	}
+
+	/**
+	 * Returns a multi-line string listing all parameters and their (original string) values
+	 */
+	public String toString() {
+		List<String> keys = getList();
+		Collections.sort(keys);
+		return listToString(keys);
+	}
+
+	/**
+	 * Returns a string listing all parameters in keys 
+	 * 
+	 * @param keys list of parameter entries
+	 * @param separator the separator (e.g., a comma) to separate each key
+	 * @return string
+	 */
+	public String listToString(List<String> keys, String separator) {
+		String s = "";
+		boolean first = true;
+		for (String key : keys) {
+			ParameterEntry val = parameters.get(key);
+			if (val != null) {
+				if (first) {
+					first = false;
+				} else {
+					s += separator;
+				}
+				s += key+"="+val.sval;
+			} 
+		}
+		return s;
+	}
+
+	/**
+	 * Returns a string listing all parameters
+	 * @param separator the separator (e.g., a comma) to separate each key
+	 * @return A separated string of all parameters
+	 */
+	public String toString(String separator) {
+		List<String> keys = getList();
+		Collections.sort(keys);
+		return listToString(keys,separator);
 	}
 
 	/** 

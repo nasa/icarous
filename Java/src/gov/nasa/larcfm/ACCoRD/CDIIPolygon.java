@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -199,7 +199,7 @@ public final class CDIIPolygon implements ErrorReporter, DetectionPolygonAccepto
    * @param ownship
    * @param traffic
    * @param tm
-   * @return
+   * @return true if violation
    */
   public boolean violation(Plan ownship, PolyPath traffic, double tm) {
     if (tm < ownship.getFirstTime() || tm > ownship.getLastTime()) {
@@ -241,7 +241,7 @@ public final class CDIIPolygon implements ErrorReporter, DetectionPolygonAccepto
    * when B might be within a loss of separation region.
    */
   public boolean detectionExtended(Plan ownship, PolyPath traffic, double B, double T) {    
-    if (!detection(ownship, traffic, Math.max(ownship.getFirstTime(), traffic.getFirstTime()), Math.min(ownship.getLastTime(), traffic.getLastTime()))) {
+    if (!detection(ownship, traffic, Util.max(ownship.getFirstTime(), traffic.getFirstTime()), Util.min(ownship.getLastTime(), traffic.getLastTime()))) {
       return false;
     }
     int i = 0;
@@ -272,24 +272,24 @@ public final class CDIIPolygon implements ErrorReporter, DetectionPolygonAccepto
    */
   private boolean detectionXYZ(Plan ownship, PolyPath traffic, double B, double T) {
     boolean cont = false;                     // what is this?
-    int start = B > ownship.getLastTime() ? ownship.size()-1 : Math.max(0,ownship.getSegment(B));
+    int start = B > ownship.getLastTime() ? ownship.size()-1 : Util.max(0,ownship.getSegment(B));
     // calculated end segment.  Only continue search if we are currently in a conflict
-    int end = T > ownship.getLastTime() ? ownship.size()-1 : Math.max(0,ownship.size()-1);
+    int end = T > ownship.getLastTime() ? ownship.size()-1 : Util.max(0,ownship.size()-1);
     for (int i = start; i < ownship.size(); i++){
       // truncate the search at Tend if not in a conflict
       if (i <= end || cont) {
         Vect3 so = ownship.point(i).point();
 		boolean linear = true;     // was Plan.PlanType.LINEAR);
         Velocity vo = ownship.initialVelocity(i, linear);
-        double t_base = ownship.getTime(i);   // ownship start of leg
+        double t_base = ownship.time(i);   // ownship start of leg
         double nextTime;                      // ownship end of range
         if (i == ownship.size() - 1) {
           nextTime = 0.0;                   // set to 0
         } else {
-          nextTime = ownship.getTime(i + 1);  // if in the plan, set to the end of leg
+          nextTime = ownship.time(i + 1);  // if in the plan, set to the end of leg
         }
         double HT = nextTime - t_base;        
-        double BT = Math.max(0,B - t_base); // Math.max(0,B-(t_base - t0));
+        double BT = Util.max(0,B - t_base); // Util.max(0,B-(t_base - t0));
         double NT = cont ? HT : T - t_base; // - (t_base - t0); 
 
         if (NT < 0.0) {
@@ -321,22 +321,22 @@ public final class CDIIPolygon implements ErrorReporter, DetectionPolygonAccepto
   private boolean detectionLL(Plan ownship, PolyPath traffic, double B, double T) {
     boolean cont = false;
 //f.pln(" $$ CDIIPolygon.detectionLL ownship="+ownship.toString()+" traffic="+traffic.toString()+" B = "+B+" T= "+T);
-    int start = B > ownship.getLastTime() ? ownship.size()-1 : Math.max(0,ownship.getSegment(B));
+    int start = B > ownship.getLastTime() ? ownship.size()-1 : Util.max(0,ownship.getSegment(B));
     // calculated end segment.  Only continue search if we are currently in a conflict
-    int end = T > ownship.getLastTime() ? ownship.size()-1 : Math.max(0,ownship.size()-1);
+    int end = T > ownship.getLastTime() ? ownship.size()-1 : Util.max(0,ownship.size()-1);
     for (int i = start; i < ownship.size(); i++){ 
       // truncate the search at Tend if not in a conflict
       if (i <= end || cont) {
         LatLonAlt llo = ownship.point(i).lla();
-        double t_base = ownship.getTime(i);
+        double t_base = ownship.time(i);
         double nextTime;
         if (i == ownship.size() - 1) {
     		nextTime = 0.0;
         } else {
-          nextTime = ownship.getTime(i + 1);  
+          nextTime = ownship.time(i + 1);  
         }
         double HT = nextTime - t_base;      // state-based time horizon (relative time)
-        double BT = Math.max(0,B - t_base); // begin time to look for conflicts (relative time)
+        double BT = Util.max(0,B - t_base); // begin time to look for conflicts (relative time)
         double NT = cont ? HT : T - t_base; // end time to look for conflicts (relative time)
         if (NT < 0.0) {
           continue;
@@ -396,7 +396,7 @@ public final class CDIIPolygon implements ErrorReporter, DetectionPolygonAccepto
    * @param traffic
    * @param B
    * @param T
-   * @return
+   * @return true if conflict
    */
   public boolean conflictDetectionOnly(Plan ownship, PolyPath traffic, double B, double T) {    
 	    if (ownship.isLatLon() != traffic.isLatLon()) {
@@ -419,22 +419,22 @@ public final class CDIIPolygon implements ErrorReporter, DetectionPolygonAccepto
    * @return
    */
   private boolean conflictOnlyXYZ(Plan ownship, PolyPath traffic, double B, double T) {
-	    int start = B > ownship.getLastTime() ? ownship.size()-1 : Math.max(0,ownship.getSegment(B));
-	    int end = T > ownship.getLastTime() ? ownship.size()-1 : Math.max(0,ownship.size()-1);
+	    int start = B > ownship.getLastTime() ? ownship.size()-1 : Util.max(0,ownship.getSegment(B));
+	    int end = T > ownship.getLastTime() ? ownship.size()-1 : Util.max(0,ownship.size()-1);
 	    for (int i = start; i < ownship.size(); i++){
 	      if (i <= end) {
 	        Vect3 so = ownship.point(i).point();
 			boolean linear = true;     // was Plan.PlanType.LINEAR);
 	        Velocity vo = ownship.initialVelocity(i, linear);
-	        double t_base = ownship.getTime(i);   // ownship start of leg
+	        double t_base = ownship.time(i);   // ownship start of leg
 	        double nextTime;                      // ownship end of range
 	        if (i == ownship.size() - 1) {
 	          nextTime = 0.0;                   // set to 0
 	        } else {
-	          nextTime = ownship.getTime(i + 1);  // if in the plan, set to the end of leg
+	          nextTime = ownship.time(i + 1);  // if in the plan, set to the end of leg
 	        }
 	        double HT = nextTime - t_base;        
-	        double BT = Math.max(0,B - t_base); // Math.max(0,B-(t_base - t0));
+	        double BT = Util.max(0,B - t_base); // Util.max(0,B-(t_base - t0));
 	        double NT = T - t_base; // - (t_base - t0); 
 
 	        if (NT < 0.0) {
@@ -455,20 +455,20 @@ public final class CDIIPolygon implements ErrorReporter, DetectionPolygonAccepto
    * @return
    */
 	  private boolean conflictOnlyLL(Plan ownship, PolyPath traffic, double B, double T) {
-	    int start = B > ownship.getLastTime() ? ownship.size()-1 : Math.max(0,ownship.getSegment(B));
-	    int end = T > ownship.getLastTime() ? ownship.size()-1 : Math.max(0,ownship.size()-1);
+	    int start = B > ownship.getLastTime() ? ownship.size()-1 : Util.max(0,ownship.getSegment(B));
+	    int end = T > ownship.getLastTime() ? ownship.size()-1 : Util.max(0,ownship.size()-1);
 	    for (int i = start; i < ownship.size(); i++){ 
 	      if (i <= end) {
 	        LatLonAlt llo = ownship.point(i).lla();
-	        double t_base = ownship.getTime(i);
+	        double t_base = ownship.time(i);
 	        double nextTime;
 	        if (i == ownship.size() - 1) {
 	    		nextTime = 0.0;
 	        } else {
-	          nextTime = ownship.getTime(i + 1);  
+	          nextTime = ownship.time(i + 1);  
 	        }
 	        double HT = nextTime - t_base;      // state-based time horizon (relative time)
-	        double BT = Math.max(0,B - t_base); // begin time to look for conflicts (relative time)
+	        double BT = Util.max(0,B - t_base); // begin time to look for conflicts (relative time)
 	        double NT = T - t_base; // end time to look for conflicts (relative time)
 	        if (NT < 0.0) {
 	          continue;

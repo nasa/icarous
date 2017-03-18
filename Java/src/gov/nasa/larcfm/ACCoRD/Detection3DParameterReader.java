@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -37,12 +37,12 @@ public class Detection3DParameterReader {
 	 * 
 	 * If verbose is false (default true), suppress all status messages except exceptions
 	 */
-	public static Triple<ArrayList<Detection3D>,Detection3D,Detection3D> readCoreDetection(ParameterData params) {
+	public static Triple<List<Detection3D>,Detection3D,Detection3D> readCoreDetection(ParameterData params) {
 		return readCoreDetection(params,false);
 	}
 
-	public static Triple<ArrayList<Detection3D>,Detection3D,Detection3D> readCoreDetection(ParameterData params, boolean verbose) {
-		ArrayList<Detection3D> cdlist = new ArrayList<Detection3D>();
+	public static Triple<List<Detection3D>,Detection3D,Detection3D> readCoreDetection(ParameterData params, boolean verbose) {
+		List<Detection3D> cdlist = new ArrayList<Detection3D>();
 		Detection3D chosenD = null;
 		Detection3D chosenR = null;
 		List<String> mlist = params.matchList("load_core_detection_");
@@ -89,7 +89,7 @@ public class Detection3DParameterReader {
 		if (params.contains("set_res_core_detection")  && chosenR == null) {
 			if (verbose) System.out.println(">>>>> Core detection "+params.getString("set_res_core_detection")+" does not appear to be loaded, res cannot be set <<<<<");
 		}
-		return new Triple<ArrayList<Detection3D>,Detection3D,Detection3D>(cdlist,chosenD,chosenR);
+		return new Triple<List<Detection3D>,Detection3D,Detection3D>(cdlist,chosenD,chosenR);
 	}
 
 }

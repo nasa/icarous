@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -7,8 +7,7 @@
 
 package gov.nasa.larcfm.Util;
 
-import java.util.ArrayList;
-
+import java.util.List;
 
 /**
  * A bounding rectangle for a 3-dimensional polygon. The bounding rectangle is the smallest rectangle that encloses a set 
@@ -42,8 +41,10 @@ public final class BoundingRectangle {
 	}	
 	
 	/** Create a bounding rectangle with the list of given points.
+	 * 
+	 * @param vertices list of vertices
 	 */
-	public BoundingRectangle(ArrayList<Vect2> vertices) {
+	public BoundingRectangle(List<Vect2> vertices) {
 		clear();
 		for (int i = 0; i < vertices.size(); i++) {
 			add(vertices.get(i).x,vertices.get(i).y);
@@ -51,6 +52,8 @@ public final class BoundingRectangle {
 	}	
 
 	/** Copy a bounding rectangle from an existing bounding rectangle
+	 * 
+	 * @param br rectangle to copy
 	 */
 	public BoundingRectangle(BoundingRectangle br) {  //copy
 		if (br != null) {
@@ -82,21 +85,21 @@ public final class BoundingRectangle {
 
 	/**
 	 * Add a point to this bounding rectangle.
-	 * @param x
-	 * @param y
+	 * @param x x coordinate
+	 * @param y y coordinate
 	 */
 	public void add(double x, double y) {
 		//f.pln("min "+x+" "+xMin);
-		xMin = Math.min(x,xMin);
-		yMin = Math.min(y,yMin);
-		xMax = Math.max(x,xMax);
-		yMax = Math.max(y,yMax);
+		xMin = Util.min(x,xMin);
+		yMin = Util.min(y,yMin);
+		xMax = Util.max(x,xMax);
+		yMax = Util.max(y,yMax);
 	}
 
 	/**
 	 * Add a point to this bounding rectangle.
 	 * 
-	 * @param v
+	 * @param v vector
 	 */
 	public void add(Vect2 v) {
 		if (v == null) return;
@@ -106,20 +109,20 @@ public final class BoundingRectangle {
 	/**
 	 * Add a point to this bounding rectangle.
 	 * 
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x x coordinate
+	 * @param y y coordinate
+	 * @param z z coordinate
 	 */
 	public void add(double x, double y, double z) {
 		add(x,y);
-		zMin = Math.min(z,zMin);
-		zMax = Math.max(z,zMax);
+		zMin = Util.min(z,zMin);
+		zMax = Util.max(z,zMax);
 	}
 
 	/**
 	 * Add a point to this bounding rectangle.
 	 * 
-	 * @param v
+	 * @param v vector
 	 */
 	public void add(Vect3 v) {
 		if (v == null) return;
@@ -165,7 +168,7 @@ public final class BoundingRectangle {
 	 * Add a point to this bounding rectangle.
 	 * Note that when adding LatLonAlt points, great circle paths may fall outside the defined bounding rectangle!
 	 * 
-	 * @param lla
+	 * @param lla point
 	 */
 	public void add(LatLonAlt lla) {
 		if (lla == null) return;
@@ -183,7 +186,7 @@ public final class BoundingRectangle {
 	 * Add a point to this bounding rectangle.
 	 * Note that when adding LatLonAlt points, great circle paths may fall outside the defined bounding rectangle!
 	 * 
-	 * @param p
+	 * @param p point
 	 */
 	public void add(Position p) {
 		if (p == null) return;
@@ -286,14 +289,13 @@ public final class BoundingRectangle {
 
 	/**
 	 * Return true if any point in rect is within buffer of any point in this bounding rectangle. Only two dimensions are used
+	 * 
+	 * @param rect    another rectangle
+	 * @param buffer  maximum distance and still considered an overlap
 	 * @return true, if the supplied BoundingRectangle intersects this one
 	 */
 	public boolean intersects(BoundingRectangle rect, double buffer) {
 		return ! (xMax+buffer < rect.getMinX() || xMin-buffer > rect.getMaxX() || yMax+buffer < rect.getMinY() || yMin-buffer > rect.getMaxY());
-//		if (xMax+buffer < rect.getMinX() || xMin-buffer > rect.getMaxX() || yMax+buffer < rect.getMinY() || yMin-buffer > rect.getMaxY()) {
-//		return false;
-//	}
-//	return true;
 	}
 
 	/**
@@ -340,6 +342,7 @@ public final class BoundingRectangle {
 	
 	/**
 	 * Return center vector value for this BoundingRectangle
+	 * @return center
 	 */
 	public Vect3 centerVect() {
 		return new Vect3((xMax+xMin)/2.0,(yMax+yMin)/2.0,(zMax+zMin)/2.0);
@@ -348,6 +351,7 @@ public final class BoundingRectangle {
 	/**
 	 * Return center Position for this BoundingRectangle.
 	 * If any LatLonAlt values were input to the BoundingRectangle, this will be a normalized (within [-pi,+pi]) LatLonAlt position.
+	 * @return center
 	 */
 	public Position centerPos() {
 		Vect3 v = centerVect();

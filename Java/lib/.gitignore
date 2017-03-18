@@ -1,4 +1,1 @@
-# Ignore everything in this directory
-*
-# Except this file
-!.gitignore
+jssc-2.8.0.jar

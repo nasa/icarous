@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -17,6 +17,7 @@ import gov.nasa.larcfm.Util.Pair;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.ProjectedKinematics;
 import gov.nasa.larcfm.Util.Tuple5;
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
 
@@ -67,7 +68,7 @@ public class KinematicAltBands extends KinematicRealBands {
 	}
 
 	public double own_val(TrafficState ownship) {
-		return ownship.altitude();
+		return ownship.getPositionXYZ().alt();
 	}
 
 	public double time_step(TrafficState ownship) {
@@ -78,15 +79,15 @@ public class KinematicAltBands extends KinematicRealBands {
 		double target_alt = min_val(ownship)+j_step_*get_step();
 		Pair<Position,Velocity> posvel;
 		if (instantaneous_bands()) {
-			posvel = Pair.make(ownship.getPosition().mkZ(target_alt),ownship.getVelocity().mkVs(0));
+			posvel = Pair.make(ownship.getPositionXYZ().mkZ(target_alt),ownship.getVelocityXYZ().mkVs(0));
 		} else {
-			double tsqj = ProjectedKinematics.vsLevelOutTime(ownship.getPosition(),ownship.getVelocity(),vertical_rate_,
+			double tsqj = ProjectedKinematics.vsLevelOutTime(ownship.getPositionXYZ(),ownship.getVelocityXYZ(),vertical_rate_,
 					target_alt,vertical_accel_)+time_step(ownship);
 			if (time <= tsqj) {
-				posvel = ProjectedKinematics.vsLevelOut(ownship.getPosition(), ownship.getVelocity(), time, vertical_rate_, target_alt, vertical_accel_);
+				posvel = ProjectedKinematics.vsLevelOut(ownship.getPositionXYZ(), ownship.getVelocityXYZ(), time, vertical_rate_, target_alt, vertical_accel_);
 			} else {
-				Position npo = ownship.getPosition().linear(ownship.getVelocity(),time);
-				posvel = Pair.make(npo.mkZ(target_alt),ownship.getVelocity().mkVs(0));
+				Position npo = ownship.getPositionXYZ().linear(ownship.getVelocityXYZ(),time);
+				posvel = Pair.make(npo.mkZ(target_alt),ownship.getVelocityXYZ().mkVs(0));
 			}
 		}
 		return Pair.make(ownship.pos_to_s(posvel.first),ownship.vel_to_v(posvel.first,posvel.second));
@@ -100,7 +101,7 @@ public class KinematicAltBands extends KinematicRealBands {
 		} else {
 			double tstep = time_step(ownship);
 			double target_alt = min_val(ownship)+j_step_*get_step();
-			Tuple5<Double,Double,Double,Double,Double> tsqj = Kinematics.vsLevelOutTimes(ownship.altitude(),ownship.verticalSpeed(),
+			Tuple5<Double,Double,Double,Double,Double> tsqj = Kinematics.vsLevelOutTimes(ownship.getPositionXYZ().alt(),ownship.getVelocityXYZ().vs(),
 					vertical_rate_,target_alt,vertical_accel_,-vertical_accel_,true);
 			double tsqj1 = tsqj.first+0;
 			double tsqj2 = tsqj.second+0;
@@ -114,9 +115,9 @@ public class KinematicAltBands extends KinematicRealBands {
 				}
 			}
 			if ((tsqj2>=B && 
-					any_conflict_aircraft(conflict_det,B,Math.min(T,tsqj2),trajdir,Math.max(tsqj1,0),ownship,traffic)) || 
+					any_conflict_aircraft(conflict_det,B,Util.min(T,tsqj2),trajdir,Util.max(tsqj1,0),ownship,traffic)) || 
 					(recovery_det.isPresent() && tsqj2>=B2 && 
-					any_conflict_aircraft(recovery_det.get(),B2,Math.min(T2,tsqj2),trajdir,Math.max(tsqj1,0),ownship,traffic))) {
+					any_conflict_aircraft(recovery_det.get(),B2,Util.min(T2,tsqj2),trajdir,Util.max(tsqj1,0),ownship,traffic))) {
 				return false;
 			}
 			for (int i=(int)Math.ceil(tsqj2/tstep); i<=Math.floor(tsqj3/tstep);++i) {
@@ -127,7 +128,7 @@ public class KinematicAltBands extends KinematicRealBands {
 					return false;
 				}
 			}
-			return no_conflict(conflict_det,recovery_det,B,T,B2,T2,trajdir,Math.max(tsqj3,0),ownship,traffic);
+			return no_conflict(conflict_det,recovery_det,B,T,B2,T2,trajdir,Util.max(tsqj3,0),ownship,traffic);
 		}
 	}
 
@@ -197,9 +198,9 @@ public class KinematicAltBands extends KinematicRealBands {
 			double B, double T, double B2, double T2,
 			TrafficState ownship, List<TrafficState> traffic, boolean dir, boolean green) {
 		int upper = (int)(dir ? Math.floor((max_val(ownship)-min_val(ownship))/get_step())+1 : 
-			Math.floor((ownship.altitude()-min_val(ownship))/get_step()));
-		int lower = dir ? (int)(Math.ceil(ownship.altitude()-min_val(ownship))/get_step()) : 0;
-		if (ownship.altitude() < min_val(ownship) || ownship.altitude() > max_val(ownship)) {
+			Math.floor((ownship.getPositionXYZ().alt()-min_val(ownship))/get_step()));
+		int lower = dir ? (int)(Math.ceil(ownship.getPositionXYZ().alt()-min_val(ownship))/get_step()) : 0;
+		if (ownship.getPositionXYZ().alt() < min_val(ownship) || ownship.getPositionXYZ().alt() > max_val(ownship)) {
 			return -1;
 		} else {
 			return first_nat(lower,upper,dir,conflict_det,recovery_det,B,T,B2,T2,ownship,traffic,green);

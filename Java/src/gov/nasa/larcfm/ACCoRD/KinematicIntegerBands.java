@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -39,14 +39,14 @@ public abstract class KinematicIntegerBands {
 			double B, double T, double B2, double T2, boolean trajdir, int max,
 			TrafficState ownship, List<TrafficState> traffic) { 
 		int FirstLosK = (int)Math.ceil(B/tstep); // first k such that k*ts>=B
-		int FirstLosN = Math.min((int)Math.floor(T/tstep),max); // last k<=MaxN such that k*ts<=T
+		int FirstLosN = Util.min((int)Math.floor(T/tstep),max); // last k<=MaxN such that k*ts<=T
 		int FirstLosK2 = (int)Math.ceil(B2/tstep);
-		int FirstLosN2 = Math.min((int)Math.floor(T2/tstep),max); 
+		int FirstLosN2 = Util.min((int)Math.floor(T2/tstep),max); 
 		int FirstLosInit = recovery_det.isPresent() ? first_los_step(recovery_det.get(),tstep,trajdir,FirstLosK2,FirstLosN2,ownship,traffic) : -1;
 		int FirstLos = first_los_step(conflict_det,tstep,trajdir,FirstLosK,FirstLosN,ownship,traffic);
 		int LosInitIndex = FirstLosInit < 0 ? max+1 : FirstLosInit;
 		int LosIndex = FirstLos < 0 ? max+1 : FirstLos;
-		return Math.min(LosInitIndex,LosIndex);
+		return Util.min(LosInitIndex,LosIndex);
 	}
 
 	private int bands_search_index(Detection3D conflict_det, Optional<Detection3D> recovery_det, double tstep,
@@ -59,11 +59,11 @@ public abstract class KinematicIntegerBands {
 		int FirstNonHRep = !usehcrit || FirstLos == 0 ? FirstLos :
 			first_nonrepulsive_step(tstep,trajdir,FirstLos-1,ownship,repac,epsh);
 		int FirstProbHcrit = FirstNonHRep < 0 ? max+1 : FirstNonHRep;
-		int FirstProbHL = Math.min(FirstLos,FirstProbHcrit);
+		int FirstProbHL = Util.min(FirstLos,FirstProbHcrit);
 		int FirstNonVRep = !usevcrit || FirstProbHL == 0 ? FirstProbHL :
 			first_nonvert_repul_step(tstep,trajdir,FirstProbHL-1,ownship,repac,epsv);
 		int FirstProbVcrit = FirstNonVRep < 0 ? max+1 : FirstNonVRep;
-		return Math.min(FirstProbHL,FirstProbVcrit);  
+		return Util.min(FirstProbHL,FirstProbVcrit);  
 	}
 
 	public boolean no_conflict(Detection3D conflict_det, Optional<Detection3D> recovery_det, double B, double T, double B2, double T2,
@@ -88,7 +88,7 @@ public abstract class KinematicIntegerBands {
 				d = k;
 			}
 		}
-		if (d >= 0) {
+		if (d >= 0 && d != max) {
 			l.add(new Integerval(d,max));
 		}
 	}
@@ -438,7 +438,7 @@ public abstract class KinematicIntegerBands {
 				d = k;
 			}
 		}
-		if (d >= 0) {
+		if (d >= 0 && d != max) {
 			l.add(new Integerval(d,max));
 		}
 	}

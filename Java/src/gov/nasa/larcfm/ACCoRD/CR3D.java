@@ -6,7 +6,7 @@
  * NASA LaRC
  * http://shemesh.larc.nasa.gov/people/cam/ACCoRD
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -350,8 +350,8 @@ public class CR3D {
       double minrelgs, double min_gs, double max_gs, double step, int epsh) {
 
     final double gs_los_factor = 2.0;
-    double minGs = Math.max(vo.norm()/gs_los_factor,min_gs);
-    double maxGs = Math.min(gs_los_factor*vo.norm(),max_gs);
+    double minGs = Util.max(vo.norm()/gs_los_factor,min_gs);
+    double maxGs = Util.min(gs_los_factor*vo.norm(),max_gs);
 
     Horizontal nvo = losr_gs_iter_aux(s,vo,vi,minrelgs,minGs,maxGs,step,epsh);
     if (!nvo.undef())  {  
@@ -387,9 +387,9 @@ public class CR3D {
     if (epsv*v.z <= 0)
       nvz = epsv*minrelvs;
     else
-      nvz = epsv*Math.max(minrelvs,Math.abs(v.z));
+      nvz = epsv*Util.max(minrelvs,Math.abs(v.z));
     double voz = nvz+vi.z;
-    voz = Util.sign(voz)*Math.min(Math.abs(voz),maxvs);
+    voz = Util.sign(voz)*Util.min(Math.abs(voz),maxvs);
     double algInnerFactor = 2.0;
     //f.pln(" losr_vs_new: voz = "+Units.str("fpm",voz)+" maxvs = "+Units.str("fpm",maxvs)+" eps = "+f.Fmi(eps));
     if (CD3D.cd3d(s,vo,vi,caD,algInnerFactor*caH)) {

@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -191,7 +191,7 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
    * @param vo
    * @param intent
    * @param tm
-   * @return
+   * @return true if violation
    */
   public boolean violation(Position so, Velocity vo, PolyPath intent, double tm) {
     if (tm < intent.getFirstTime() || tm > intent.getLastTime()) {
@@ -280,13 +280,13 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
         if (j < intent.size()-1) {
           tend = intent.getTime(j+1) - t_base;
         }
-        HT = Math.max(0.0, Math.min(state_horizon - (t_base - t0), tend));
-        BT = Math.max(0.0, B + t0 - t_base);
+        HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), tend));
+        BT = Util.max(0.0, B + t0 - t_base);
         NT = cont ? HT : T + t0 - t_base;
         if (NT >= 0) {
           MovingPolygon3D mpg = intent.getMovingPolygon(t_base, null);
           //          f.pln(" $$>> CDSIPolygon.detectionXYZ: mpg = "+mpg+" BT = "+BT+" NT = "+NT+" HT = "+HT);
-          boolean cdssRtn = cdss.conflictDetection(sop, vo, mpg, BT, Math.min(NT, HT));
+          boolean cdssRtn = cdss.conflictDetection(sop, vo, mpg, BT, Util.min(NT, HT));
           //f.pln(" $$>> CDSIPolygon.detectionXYZ: j = "+j+" cdssRtn = "+cdssRtn);
           if ( cdssRtn ) {
             //for (int i = 0; i < intent.getPoly(0).size(); i++) f.pln("ui_reference_point_"+Util.nextCount()+" = "+intent.getPoly(0).getPoint(i).toString8()); 
@@ -368,8 +368,8 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
         if (j < intent.size()-1) {
           tend = intent.getTime(j+1) - t_base;
         }
-        HT = Math.max(0.0, Math.min(state_horizon - (t_base - t0), tend));
-        BT = Math.max(0.0, B + t0 - t_base);
+        HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), tend));
+        BT = Util.max(0.0, B + t0 - t_base);
         NT = cont ? HT : T + t0 - t_base;      
         Velocity vop = proj.projectVelocity(so2p, vo);  //CHANGED!!!
         //Velocity vip = proj.projectVelocity(sip.centroid(), intent.velocity(t_base));
@@ -377,14 +377,14 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
         if (NT >= 0) {          
           MovingPolygon3D mpg = intent.getMovingPolygon(t_base, proj);
           //f.pln(" $$>> CDSIPolygon.detectionLL: mpg = "+mpg+" BT = "+BT+" NT = "+NT+" HT = "+HT);
-          boolean cdssRtn = cdss.conflictDetection(so3, vop, mpg, BT, Math.min(NT, HT));          
+          boolean cdssRtn = cdss.conflictDetection(so3, vop, mpg, BT, Util.min(NT, HT));          
           //          f.pln(" $$>> CDSIPolygon.detectionLL: j = "+j+" cdssRtn = "+cdssRtn);
           if (cdssRtn ) {  // CHANGED!!!
             // filter out when the start time for searching is the the end time of the conflict
             for (int i = 0; i < cdss.getTimesIn().size(); i++) {
               if (Math.abs((t0+B) - (cdss.getTimesOut().get(i)+t_base)) > 0.0000001) { 
                 captureOutput(t_base, i, cdss);      
-                //f.pln("CDSIPoly: i="+i+" cdss so3="+so3+" vop="+vop+" mpg= ---"+" B="+BT+" T="+(Math.min(NT,HT)));
+                //f.pln("CDSIPoly: i="+i+" cdss so3="+so3+" vop="+vop+" mpg= ---"+" B="+BT+" T="+(Util.min(NT,HT)));
                 //f.pln("CDSIPoly: i="+i+" tin="+(cdss.getTimesIn().get(i))+" tout="+(cdss.getTimesOut().get(i))+" end="+(T)+" horiz="+(state_horizon));                
               }
             }
@@ -439,7 +439,7 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
    * @param intent
    * @param B
    * @param T
-   * @return
+   * @return true if conflict
    */
   public boolean conflictOnlyXYZ(Vect3 so, Velocity vo, double t0, double state_horizon, PolyPath intent, double B, double T) {
 	    double t_base;
@@ -466,15 +466,15 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
 	        if (j < intent.size()-1) {
 	          tend = intent.getTime(j+1) - t_base;
 	        }
-	        HT = Math.max(0.0, Math.min(state_horizon - (t_base - t0), tend));
-	        BT = Math.max(0.0, B + t0 - t_base);
+	        HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), tend));
+	        BT = Util.max(0.0, B + t0 - t_base);
 	        NT = T + t0 - t_base;
 	        if (NT >= 0) {
 	          MovingPolygon3D mpg = intent.getMovingPolygon(t_base, null);
 //f.pln("CDSIPolygon.conflictXYZ test");
-	          boolean ret = cdss.conflict(sop, vo, mpg, BT, Math.min(NT, HT)); 
-//      f.pln("cdsspolygon.conflict("+sop+",\n"+vo+",\n"+mpg+",\n"+BT+",\n"+Math.min(NT, HT)+") = "+ret);	          
-//boolean ret2 = CDPolyIter.conflict2(sop, vo, mpg, BT, Math.min(NT, HT));
+	          boolean ret = cdss.conflict(sop, vo, mpg, BT, Util.min(NT, HT)); 
+//      f.pln("cdsspolygon.conflict("+sop+",\n"+vo+",\n"+mpg+",\n"+BT+",\n"+Util.min(NT, HT)+") = "+ret);	          
+//boolean ret2 = CDPolyIter.conflict2(sop, vo, mpg, BT, Util.min(NT, HT));
 //if (ret != ret2) {
 //	int k = 0;
 //	MovingPolygon3D mp3 = mpg.copy();
@@ -482,20 +482,20 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
 //		MovingPolygon3D tmp = mp3.copy();
 //		tmp.horizpoly.polystart.remove(k);
 //		tmp.horizpoly.polyvel.remove(k);
-//		boolean ret3 = cdss.conflict(sop, vo, tmp, BT, Math.min(NT, HT));
-//		boolean ret4 = CDPolyIter.conflict2(sop, vo, tmp, BT, Math.min(NT, HT));
+//		boolean ret3 = cdss.conflict(sop, vo, tmp, BT, Util.min(NT, HT));
+//		boolean ret4 = CDPolyIter.conflict2(sop, vo, tmp, BT, Util.min(NT, HT));
 //		if (ret3 != ret4) {
 //			mp3 = tmp;
 //		} else {
 //			k++;
 //		}
 //	}
-////	for (double t = BT; t < Math.min(NT, HT); t++) {
+////	for (double t = BT; t < Util.min(NT, HT); t++) {
 ////        boolean ret3 = cdss.conflict(sop, vo, mpg, t, t+5.0); 
 ////        boolean ret4 = CDPolyIter.conflict2(sop, vo, mpg, t, t+5.0);
 ////		if (ret3 != ret4) f.pln("XYZ time "+(t+t0));
 ////	}
-//	double tt = Math.min(NT, HT);
+//	double tt = Util.min(NT, HT);
 //	mp3.horizpoly.tend = tt;
 //f.pln("CDSIPolygon.conflictXYZ test FAILED old "+ret+"!= new"+ret2+" t0="+t0);
 //	f.pln("so="+sop.toStringNP("m", "m", "m", 8));
@@ -525,7 +525,7 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
  * @param intent
  * @param B
  * @param T
- * @return
+ * @return true if conflict
  */
 	  public boolean conflictOnlyLL(LatLonAlt so, Velocity vo, double t0, double state_horizon, PolyPath intent, double B, double T) {
 	    double t_base;
@@ -555,16 +555,16 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
 	        if (j < intent.size()-1) {
 	          tend = intent.getTime(j+1) - t_base;
 	        } 
-	        HT = Math.max(0.0, Math.min(state_horizon - (t_base - t0), tend));
-	        BT = Math.max(0.0, B + t0 - t_base);
+	        HT = Util.max(0.0, Util.min(state_horizon - (t_base - t0), tend));
+	        BT = Util.max(0.0, B + t0 - t_base);
 	        NT = T + t0 - t_base;      
 	        Velocity vop = proj.projectVelocity(so2p, vo);  //CHANGED!!!
 	        if (NT >= 0) {          
 	          MovingPolygon3D mpg = intent.getMovingPolygon(t_base, proj);
 //f.pln("CDSIPolygon.conflictLL test");
-	          boolean ret = cdss.conflict(so3, vop, mpg, BT, Math.min(NT, HT));
-//f.pln("cdsspolygon.conflict("+so3+",\n"+vop+",\n"+mpg+",\n"+BT+",\n"+Math.min(NT, HT)+") = "+ret);	          
-//boolean ret2 = CDPolyIter.conflict2(so3, vop, mpg, BT, Math.min(NT, HT));
+	          boolean ret = cdss.conflict(so3, vop, mpg, BT, Util.min(NT, HT));
+//f.pln("cdsspolygon.conflict("+so3+",\n"+vop+",\n"+mpg+",\n"+BT+",\n"+Util.min(NT, HT)+") = "+ret);	          
+//boolean ret2 = CDPolyIter.conflict2(so3, vop, mpg, BT, Util.min(NT, HT));
 //if (ret != ret2) {
 //		int k = 0;
 //		MovingPolygon3D mp3 = mpg.copy();
@@ -572,21 +572,21 @@ public final class CDSIPolygon implements ErrorReporter, DetectionPolygonAccepto
 //			MovingPolygon3D tmp = mp3.copy();
 //			tmp.horizpoly.polystart.remove(k);
 //			tmp.horizpoly.polyvel.remove(k);
-//			boolean ret3 = cdss.conflict(so3, vop, tmp, BT, Math.min(NT, HT));
-//			boolean ret4 = CDPolyIter.conflict2(so3, vop, tmp, BT, Math.min(NT, HT));
+//			boolean ret3 = cdss.conflict(so3, vop, tmp, BT, Util.min(NT, HT));
+//			boolean ret4 = CDPolyIter.conflict2(so3, vop, tmp, BT, Util.min(NT, HT));
 //			if (ret3 != ret4) {
 //				mp3 = tmp;
 //			} else {
 //				k++;
 //			}
 //		}
-////	for (double t = BT; t < Math.min(NT, HT); t++) {
+////	for (double t = BT; t < Util.min(NT, HT); t++) {
 ////        boolean ret3 = cdss.conflict(so3, vo, mpg, t, t+5.0); 
 ////        boolean ret4 = CDPolyIter.conflict2(so3, vo, mpg, t, t+5.0);
 //////		if (ret3 != ret4) 
 ////			f.pln("LL time "+(t+t0)+" old="+ret3+" new="+ret4);
 ////	}
-//		double tt = Math.min(NT, HT);
+//		double tt = Util.min(NT, HT);
 //		mp3.horizpoly.tend = tt;
 //	f.pln("CDSIPolygon.conflictLL test FAILED old "+ret+"!= new "+ret2+" t0="+t0);
 //	f.pln("so="+so3.toStringNP("m", "m", "m", 8));

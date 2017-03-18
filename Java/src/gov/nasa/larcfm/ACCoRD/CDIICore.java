@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -283,7 +283,7 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 	 * @param ownship
 	 * @param traffic
 	 * @param tm
-	 * @return
+	 * @return true if there is a violation
 	 */
 	public boolean violation(Plan ownship, Plan traffic, double tm) {
 		if (tm < ownship.getFirstTime() || tm > ownship.getLastTime()) {
@@ -336,8 +336,8 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 	 */
 	public boolean detectionExtended(Plan ownship, Plan traffic, double B, double T) {
 		if (!detection(ownship, traffic,
-				Math.max(ownship.getFirstTime(), traffic.getFirstTime()),
-				Math.min(ownship.getLastTime(), traffic.getLastTime()))) {
+				Util.max(ownship.getFirstTime(), traffic.getFirstTime()),
+				Util.min(ownship.getLastTime(), traffic.getLastTime()))) {
 			return false;
 		}
 		int i = 0;
@@ -362,7 +362,7 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 	 * @param si traffic position
 	 * @param D  required horizontal separation
 	 * @param H  required vertical separation
-	 * @return
+	 * @return true if there is a loss of separation
 	 */
 	static public boolean LoS(Position so, Position si, double D, double H) {
 		boolean viol = false;
@@ -476,16 +476,16 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 //f.pln("cdiicore.detectionXYZ B="+B+" T="+T);		
 		boolean cont = false; // what is this?
 		boolean linear = true;     // was Plan.PlanType.LINEAR);
-		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.getSegment(B));
+		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.getSegment(B));
 		// calculated end segment. Only continue search if we are currently in a
 		// conflict
-		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.size() - 1);
+		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.size() - 1);
 		for (int i = start; i < ownship.size(); i++) {
 			// truncate the search at Tend if not in a conflict
 			if (i <= end || cont) {
 				Vect3 so = ownship.point(i).point();
 				Velocity vo = ownship.initialVelocity(i,linear); 
-				double t_base = ownship.getTime(i); // ownship start of leg
+				double t_base = ownship.time(i); // ownship start of leg
 				// GEH : special case!!!
 				if (t_base < B) {
 					so = so.AddScal(B-t_base, vo);
@@ -495,11 +495,11 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 				if (i == ownship.size() - 1) {
 					nextTime = 0.0; // set to 0
 				} else {
-					nextTime = ownship.getTime(i + 1); // if in the plan, set to
+					nextTime = ownship.time(i + 1); // if in the plan, set to
 														// the end of leg
 				}
 				double HT = nextTime - t_base;
-				double BT = Math.max(0, B - t_base); // Math.max(0,B-(t_base - t0));
+				double BT = Util.max(0, B - t_base); // Util.max(0,B-(t_base - t0));
 //f.pln("cdiicore.detectionXYZ B="+B+" t_base="+t_base+" BT="+BT);				
 				double NT = cont ? HT : T - t_base; // - (t_base - t0);
 				if (NT < 0.0) {
@@ -558,15 +558,15 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 		// double d = getDistance();
 		// double h = getHeight();
 
-		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.getSegment(B));
+		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.getSegment(B));
 		// calculated end segment. Only continue search if we are currently in a
 		// conflict
-		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.size() - 1);
+		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.size() - 1);
 		for (int i = start; i < ownship.size(); i++) {
 			// truncate the search at Tend if not in a conflict
 			if (i <= end || cont) {
 				LatLonAlt llo = ownship.point(i).lla();
-				double t_base = ownship.getTime(i);
+				double t_base = ownship.time(i);
 				// GEH : special case!!!
 				if (t_base < B) {
 					llo = ownship.position(B,linear).lla();
@@ -577,11 +577,11 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 				if (i == ownship.size() - 1) {
 					nextTime = 0.0;
 				} else {
-					nextTime = ownship.getTime(i + 1);
+					nextTime = ownship.time(i + 1);
 				}
 				double HT = nextTime - t_base; // state-based time horizon
 												// (relative time)
-				double BT = Math.max(0, B - t_base); // begin time to look for
+				double BT = Util.max(0, B - t_base); // begin time to look for
 														// conflicts (relative
 														// time)
 				double NT = cont ? HT : T - t_base; // end time to look for
@@ -657,7 +657,7 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 	 * @param traffic
 	 * @param B
 	 * @param T
-	 * @return
+	 * @return true if conflict
 	 */
 	public boolean conflictDetection(Plan ownship, Plan traffic, double B, double T) {
 		if (ownship.isLatLon() != traffic.isLatLon()) {
@@ -672,24 +672,24 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 
 	private boolean conflictXYZ(Plan ownship, Plan traffic, double B, double T) {
 		boolean linear = true;     // was Plan.PlanType.LINEAR);
-		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Math.max(
+		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util.max(
 				0, ownship.getSegment(B));
-		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0,
+		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0,
 				ownship.size() - 1);
 		for (int i = start; i < ownship.size(); i++) {
 			if (i <= end) {
 				Vect3 so = ownship.point(i).point();
 				Velocity vo = ownship.initialVelocity(i,linear); 
-				double t_base = ownship.getTime(i); // ownship start of leg
+				double t_base = ownship.time(i); // ownship start of leg
 				double nextTime; // ownship end of range
 				if (i == ownship.size() - 1) {
 					nextTime = 0.0; // set to 0
 				} else {
-					nextTime = ownship.getTime(i + 1); // if in the plan, set to
+					nextTime = ownship.time(i + 1); // if in the plan, set to
 														// the end of leg
 				}
 				double HT = nextTime - t_base;
-				double BT = Math.max(0, B - t_base); // Math.max(0,B-(t_base -
+				double BT = Util.max(0, B - t_base); // Util.max(0,B-(t_base -
 				double NT = T - t_base; // - (t_base - t0);
 				if (NT < 0.0) {
 					continue;
@@ -702,22 +702,22 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 
 	private boolean conflictLL(Plan ownship, Plan traffic, double B, double T) {
 		boolean linear = true;     // was Plan.PlanType.LINEAR);
-		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Math.max(
+		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util.max(
 				0, ownship.getSegment(B));
-		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0,
+		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0,
 				ownship.size() - 1);
 		for (int i = start; i < ownship.size(); i++) {
 			if (i <= end) {
 				LatLonAlt llo = ownship.point(i).lla();
-				double t_base = ownship.getTime(i);
+				double t_base = ownship.time(i);
 				double nextTime;
 				if (i == ownship.size() - 1) {
 					nextTime = 0.0;
 				} else {
-					nextTime = ownship.getTime(i + 1);
+					nextTime = ownship.time(i + 1);
 				}
 				double HT = nextTime - t_base; // state-based time horizon
-				double BT = Math.max(0, B - t_base); // begin time to look for
+				double BT = Util.max(0, B - t_base); // begin time to look for
 				double NT = T - t_base; // end time to look for
 				if (NT < 0.0) {
 					continue;
@@ -731,21 +731,21 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 	
 	/**
 	 * Experimental: calculate tca and dist score
-	 * @return
+	 * @return tca and distance
 	 */
 	public Pair<Double,Double> urgency(Plan ownship, Plan traffic, double B, double T) {
 		boolean cont = false;
 		boolean linear = true;     // was Plan.PlanType.LINEAR);
 
-		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.getSegment(B));
-		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Math.max(0, ownship.size() - 1);
+		int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.getSegment(B));
+		int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util.max(0, ownship.size() - 1);
 		
 		Pair<Double,Double> best = Pair.make(-1.0, Double.MAX_VALUE);
 		
 		for (int i = start; i < ownship.size(); i++) {
 			if (i <= end || cont) {
 				Position llo = ownship.point(i).position();
-				double t_base = ownship.getTime(i);
+				double t_base = ownship.time(i);
 				if (t_base < B) {
 					llo = ownship.position(B,linear);
 					t_base = B;
@@ -755,10 +755,10 @@ public final class CDIICore implements ErrorReporter, Detection3DAcceptor {
 				if (i == ownship.size() - 1) {
 					nextTime = 0.0;
 				} else {
-					nextTime = ownship.getTime(i + 1);
+					nextTime = ownship.time(i + 1);
 				}
 				double HT = nextTime - t_base;
-				double BT = Math.max(0, B - t_base);
+				double BT = Util.max(0, B - t_base);
 				double NT = cont ? HT : T - t_base;
 				if (NT < 0.0) {
 					continue;

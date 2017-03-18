@@ -3,13 +3,14 @@
  *
  * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)
  * 
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
 package gov.nasa.larcfm.ACCoRD;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -27,8 +28,8 @@ import static gov.nasa.larcfm.ACCoRD.PolycarpAcceptablePolygon.test_point_below;
 
 public class PolycarpDetection {
 
-	private static ArrayList<Vect2> polygon_2D_at(ArrayList<Vect2> p, Vect2 pv, double t) {
-		ArrayList<Vect2> ans = new ArrayList<Vect2>();
+	private static List<Vect2> polygon_2D_at(List<Vect2> p, Vect2 pv, double t) {
+		List<Vect2> ans = new ArrayList<Vect2>();
 		for (int i = 0; i < p.size(); i++) {
 			ans.add(p.get(i).AddScal(t, pv));
 		}
@@ -67,7 +68,7 @@ public class PolycarpDetection {
 		if (in.up<in.low || in.up<0 || in.low>T) {
 			return new Interval(T,0);
 		} else {
-			return new Interval(Math.max(in.low,0),Math.min(in.up,T));
+			return new Interval(Util.max(in.low,0),Util.min(in.up,T));
 		}
 	}
 
@@ -90,40 +91,40 @@ public class PolycarpDetection {
 		Interval P = dot_nneg_spec(T,w,v,a.PerpR(),b.PerpR(),-1,1,Fac); //[P.low,P.up]
 		Interval Pnx = dot_nneg_spec(T,w,v,a.PerpR(),b.PerpR(),1,-1,Fac); //[Pnx.low,Pnx.up]
 		Interval Px = dot_nneg_spec(T,w,v,a.PerpR(),b.PerpR(),1,1,Fac); //[Px.low,Px.up]
-		double Vlb1 = Math.max(V.low,Vn.low);
-		double Vub1 = Math.min(V.up,Vn.up);
-		double Vlb2 = Math.max(V.low,Vnx.low);
-		double Vub2 = Math.min(V.up,Vnx.up);
-		double Vlb3 = Math.max(Vx.low,Vn.low);
-		double Vub3 = Math.min(Vx.up,Vn.up);
-		double Vlb4 = Math.max(Vx.low,Vnx.low);
-		double Vub4 = Math.min(Vx.up,Vnx.up);
-		double Plb1 = Math.max(P.low,Pn.low);
-		double Pub1 = Math.min(P.up,Pn.up);
-		double Plb2 = Math.max(P.low,Pnx.low);
-		double Pub2 = Math.min(P.up,Pnx.up);
-		double Plb3 = Math.max(Px.low,Pn.low);
-		double Pub3 = Math.min(Px.up,Pn.up);
-		double Plb4 = Math.max(Px.low,Pnx.low);
-		double Pub4 = Math.min(Px.up,Pnx.up);
+		double Vlb1 = Util.max(V.low,Vn.low);
+		double Vub1 = Util.min(V.up,Vn.up);
+		double Vlb2 = Util.max(V.low,Vnx.low);
+		double Vub2 = Util.min(V.up,Vnx.up);
+		double Vlb3 = Util.max(Vx.low,Vn.low);
+		double Vub3 = Util.min(Vx.up,Vn.up);
+		double Vlb4 = Util.max(Vx.low,Vnx.low);
+		double Vub4 = Util.min(Vx.up,Vnx.up);
+		double Plb1 = Util.max(P.low,Pn.low);
+		double Pub1 = Util.min(P.up,Pn.up);
+		double Plb2 = Util.max(P.low,Pnx.low);
+		double Pub2 = Util.min(P.up,Pnx.up);
+		double Plb3 = Util.max(Px.low,Pn.low);
+		double Pub3 = Util.min(Px.up,Pn.up);
+		double Plb4 = Util.max(Px.low,Pnx.low);
+		double Pub4 = Util.min(Px.up,Pnx.up);
 
 		//f.pln("edge_detect_simple "+f.Fm4(V.low)+" "+f.Fm4(Vn.low)+" "+f.Fm4(P.low)+" "+f.Fm4(Pn.low)+" "+f.Fm4(V.up)+" "+f.Fm4(Vn.up)+" "+f.Fm4(P.up)+" "+f.Fm4(Pn.up));
-		if (Math.max(Vlb1,Plb1)<=Math.min(Vub1,Pub1)) return true;
-		if (Math.max(Vlb1,Plb2)<=Math.min(Vub1,Pub2)) return true;
-		if (Math.max(Vlb1,Plb3)<=Math.min(Vub1,Pub3)) return true;
-		if (Math.max(Vlb1,Plb4)<=Math.min(Vub1,Pub4)) return true;
-		if (Math.max(Vlb2,Plb1)<=Math.min(Vub2,Pub1)) return true;
-		if (Math.max(Vlb2,Plb2)<=Math.min(Vub2,Pub2)) return true;
-		if (Math.max(Vlb2,Plb3)<=Math.min(Vub2,Pub3)) return true;
-		if (Math.max(Vlb2,Plb4)<=Math.min(Vub2,Pub4)) return true;
-		if (Math.max(Vlb3,Plb1)<=Math.min(Vub3,Pub1)) return true;
-		if (Math.max(Vlb3,Plb2)<=Math.min(Vub3,Pub2)) return true;
-		if (Math.max(Vlb3,Plb3)<=Math.min(Vub3,Pub3)) return true;
-		if (Math.max(Vlb3,Plb4)<=Math.min(Vub3,Pub4)) return true;
-		if (Math.max(Vlb4,Plb1)<=Math.min(Vub4,Pub1)) return true;
-		if (Math.max(Vlb4,Plb2)<=Math.min(Vub4,Pub2)) return true;
-		if (Math.max(Vlb4,Plb3)<=Math.min(Vub4,Pub3)) return true;
-		if (Math.max(Vlb4,Plb4)<=Math.min(Vub4,Pub4)) return true;
+		if (Util.max(Vlb1,Plb1)<=Util.min(Vub1,Pub1)) return true;
+		if (Util.max(Vlb1,Plb2)<=Util.min(Vub1,Pub2)) return true;
+		if (Util.max(Vlb1,Plb3)<=Util.min(Vub1,Pub3)) return true;
+		if (Util.max(Vlb1,Plb4)<=Util.min(Vub1,Pub4)) return true;
+		if (Util.max(Vlb2,Plb1)<=Util.min(Vub2,Pub1)) return true;
+		if (Util.max(Vlb2,Plb2)<=Util.min(Vub2,Pub2)) return true;
+		if (Util.max(Vlb2,Plb3)<=Util.min(Vub2,Pub3)) return true;
+		if (Util.max(Vlb2,Plb4)<=Util.min(Vub2,Pub4)) return true;
+		if (Util.max(Vlb3,Plb1)<=Util.min(Vub3,Pub1)) return true;
+		if (Util.max(Vlb3,Plb2)<=Util.min(Vub3,Pub2)) return true;
+		if (Util.max(Vlb3,Plb3)<=Util.min(Vub3,Pub3)) return true;
+		if (Util.max(Vlb3,Plb4)<=Util.min(Vub3,Pub4)) return true;
+		if (Util.max(Vlb4,Plb1)<=Util.min(Vub4,Pub1)) return true;
+		if (Util.max(Vlb4,Plb2)<=Util.min(Vub4,Pub2)) return true;
+		if (Util.max(Vlb4,Plb3)<=Util.min(Vub4,Pub3)) return true;
+		if (Util.max(Vlb4,Plb4)<=Util.min(Vub4,Pub4)) return true;
 		return false;
 	}
 
@@ -164,7 +165,7 @@ public class PolycarpDetection {
 		return false;
 	}
 
-	public static boolean Static_Collision_Detector(double B, double T, ArrayList<Vect2> p, Vect2 pv, Vect2 s, Vect2 v, double BUFF, boolean insideBad) {
+	public static boolean Static_Collision_Detector(double B, double T, List<Vect2> p, Vect2 pv, Vect2 s, Vect2 v, double BUFF, boolean insideBad) {
 		if (insideBad) {
 			if (!PolycarpContain.definitely_outside(polygon_2D_at(p,pv,B),s.AddScal(B, v),BUFF)) {
 				return true;
@@ -216,8 +217,8 @@ public class PolycarpDetection {
 		return t;
 	}
 
-	private static ArrayList<Double> swap_times(double B, double T, Vect2 s, Vect2 v, Vect2 segstart, Vect2 segend, Vect2 startvel, Vect2 endvel) {
-		ArrayList<Double> ret = new ArrayList<Double>(6);
+	private static List<Double> swap_times(double B, double T, Vect2 s, Vect2 v, Vect2 segstart, Vect2 segend, Vect2 startvel, Vect2 endvel) {
+		List<Double> ret = new ArrayList<Double>(6);
 		double t0 = dot_zero_linear_2D_alg(B,T,s.Sub(segstart), v.Sub(startvel), segend.Sub(segstart).PerpR(), endvel.Sub(startvel).PerpR(), -1);
 		double t1 = dot_zero_linear_2D_alg(B,T,s.Sub(segstart), v.Sub(startvel), segend.Sub(segstart).PerpR(), endvel.Sub(startvel).PerpR(), +1);
 		double t2 = dot_zero_linear_2D_alg(B,T,s.Sub(segstart),v.Sub(startvel),segend.Sub(segstart),endvel.Sub(startvel),+1);
@@ -246,8 +247,8 @@ public class PolycarpDetection {
 	 * @param Fac
 	 * @return
 	 */
-	public static ArrayList<Double> collisionTimesInOut(double B, double T, MovingPolygon2D mp, Vect2 s, Vect2 v, double BUFF, double Fac) {
-		ArrayList<Double> ret = new ArrayList<Double>(6);
+	public static List<Double> collisionTimesInOut(double B, double T, MovingPolygon2D mp, Vect2 s, Vect2 v, double BUFF, double Fac) {
+		List<Double> ret = new ArrayList<Double>(6);
 		MovingPolygon2D mp2 = mp;
 		Vect2 s2 = s;
 		double T2 = T;

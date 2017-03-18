@@ -2,7 +2,7 @@
  *
  * Contact: George Hagen
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -17,6 +17,7 @@ import gov.nasa.larcfm.Util.LatLonAlt;
 import gov.nasa.larcfm.Util.Pair;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Quad;
+import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
 
@@ -281,7 +282,7 @@ public class SequenceReader extends StateReader {
 	
 	/**
 	 * Sets the window size for the active sequence set
-	 * @param s > 0
+	 * @param s new window size
 	 */
 	public void setWindowSize(int s) {
 		if (s > 0) windowSize = s;
@@ -379,7 +380,7 @@ public class SequenceReader extends StateReader {
 		return arl;
 	}
 
-	/** a list of n > 0 sequence keys, stopping at the given time (inclusive) */ 
+	/** a list of n &gt; 0 sequence keys, stopping at the given time (inclusive) */ 
 	public ArrayList<Double> sequenceKeysUpTo(int n, double tm) {
 		ArrayList<Double> arl = new ArrayList<Double>();
 		for (Iterator<Double> e = sequenceTable.keySet().iterator(); e.hasNext();) {
@@ -390,7 +391,7 @@ public class SequenceReader extends StateReader {
 		}
 		Double[] ar = arl.toArray(new Double[0]);
 		Arrays.sort(ar);
-		ar = Arrays.copyOfRange(ar, Math.max(ar.length-n,0), ar.length);
+		ar = Arrays.copyOfRange(ar, Util.max(ar.length-n,0), ar.length);
 		arl = new ArrayList<Double>(Arrays.asList(ar));
 		return arl;
 	}

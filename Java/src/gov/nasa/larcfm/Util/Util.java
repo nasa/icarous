@@ -5,7 +5,7 @@
  *
  * Utility functions.
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -13,11 +13,11 @@
 
 package gov.nasa.larcfm.Util;
 
-import java.util.List;
 import java.text.SimpleDateFormat;  // Next three for strDate
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /** A broad collection of utilities */
 public final class Util {
@@ -76,6 +76,9 @@ public final class Util {
    * Determines if a &lt; b, without being almost equal, according to the
    * definition of the almostEquals() method..
    * 
+   * @param a one number
+   * @param b another number
+   * @return true, if almost_less
    */
   public static boolean almost_less(double a, double b) {
     if (almost_equals(a, b)) {
@@ -88,6 +91,10 @@ public final class Util {
    * Determines if a &lt; b, without being almost equal, according to the
    * definition of the almostEquals() method..
    * 
+   * @param a one number
+   * @param b another number
+   * @param maxUlps maximum units of least precision
+   * @return true, if almost_less
    */
   public static boolean almost_less(double a, double b, long maxUlps) {
     if (almost_equals(a, b, maxUlps)) {
@@ -100,6 +107,9 @@ public final class Util {
    * Determines if a &gt; b, without being almost equal, according to the
    * definition of the almostEquals() method.
    * 
+   * @param a one number
+   * @param b another number
+   * @return true, if almost_greater
    */
   public static boolean almost_greater(double a, double b) {
     if (almost_equals(a,b)) {
@@ -112,6 +122,10 @@ public final class Util {
    * Determines if a &gt; b, without being almost equal, according to the
    * definition of the almostEquals() method.
    * 
+   * @param a one number
+   * @param b another number
+   * @param maxUlps maximum units of least precision
+   * @return true, if almost_greater
    */
   public static boolean almost_greater(double a, double b, long maxUlps) {
     if (almost_equals(a, b, maxUlps)) {
@@ -123,7 +137,11 @@ public final class Util {
   /**
    * Determines if a is greater than or almost equal to b, according to the
    * definition of the almostEquals() method.
-   *
+   * 
+   * @param a one number
+   * @param b another number
+   * @param maxUlps maximum units of least precision
+   * @return true, if almost greater or equal
    */
   public static boolean almost_geq(double a, double b, long maxUlps) {
     return a >= b || almost_equals(a, b, maxUlps);
@@ -132,7 +150,10 @@ public final class Util {
   /**
    * Determines if a is greater than or almost equal to b, according to the
    * definition of the almostEquals() method.
-   *
+   * 
+   * @param a one number
+   * @param b another number
+   * @return true, if almost great or equal
    */
   public static boolean almost_geq(double a, double b) {
     return almost_geq(a, b, PRECISION_DEFAULT);
@@ -141,7 +162,11 @@ public final class Util {
   /**
    * Determines if a is less than or almost equal to b, according to the
    * definition of the almostEquals() method.
-   *
+   * 
+   * @param a one number
+   * @param b another number
+   * @param maxUlps maximum units of least precision
+   * @return true, if almost less or equal
    */
   public static boolean almost_leq(double a, double b, long maxUlps) {
     return a <= b || almost_equals(a, b, maxUlps);
@@ -150,13 +175,21 @@ public final class Util {
   /**
    * Determines if a is less than or almost equal to b, according to the
    * definition of the almostEquals() method.
-   *
+   * 
+   * @param a one number
+   * @param b another number
+   * @return true, if almost less or equal
    */
   public static boolean almost_leq(double a, double b) {
     return almost_leq(a, b, PRECISION_DEFAULT);
   }
 
-  /** Are these two numbers almost equal, given the PRECISION_DEFAULT */
+  /** Are these two numbers almost equal, given the PRECISION_DEFAULT
+   * 
+   * @param a one number
+   * @param b another number 
+   * @return true, if almost equals
+   */
   public static boolean almost_equals(double a, double b) {
     return almost_equals(a, b, PRECISION_DEFAULT);
   }
@@ -187,6 +220,11 @@ public final class Util {
    * 
    * The implementation is based on the discussion (but not the code) in
    * (google: comparing floats cygnus)
+   * 
+   * @param a one number
+   * @param b another number
+   * @param maxUlps maximum units of least precision
+   * @return true, if almost equals
    */
   public static boolean almost_equals(double a, double b, long maxUlps) {
     if (a == b) { // if two numbers are equal, then the are almost_equal
@@ -243,14 +281,22 @@ public final class Util {
    * Comparison of two values to determine if their absolute difference is within a value 
    * epsilon.  If the epsilon value is too small relative to the 
    * a and b values in question, then this is essentially the same as ==.  Epsilon must be positive.
+   * 
+   * @param a one number
+   * @param b another number
+   * @param epsilon maximum difference
+   * @return true, if values are within epsilon
    */
   public static boolean within_epsilon(double a, double b, double epsilon) {
-	  //f.pln(" $$$$$$ within_epsilon: "+ Math.abs(a-b)+" < "+epsilon);
       return Math.abs(a-b) < epsilon;
   }
 
   /**
    * Returns true if the magnitude of a is less than epsilon. Epsilon must be positive.
+   * 
+   * @param a a number
+   * @param epsilon maximum value
+   * @return true, if value is within epsilon
    */
   public static boolean within_epsilon(double a, double epsilon) {
     return Math.abs(a) < epsilon;
@@ -276,28 +322,44 @@ public final class Util {
   }
 
 
-  /** Square */
+  /** Square 
+   * 
+   * @param x value
+   * @return square of value
+   */
   public static double sq(double x) {
     return x * x;
   }
 
-  /** a safe (won't return NaN or throw exceptions) version of square root */
+  /** a safe (won't return NaN or throw exceptions) version of square root 
+   * 
+   * @param x value
+   * @return square root of value
+   */
   public static double sqrt_safe(double x) {
-    return Math.sqrt(Math.max(x, 0));
+    return Math.sqrt(Util.max(x, 0));
   }
 
-  /** a safe (won't return NaN or throw exceptions) version of arc-tangent */
+  /** a safe (won't return NaN or throw exceptions) version of arc-tangent 
+   * 
+   * @param y ordinate coordinate
+   * @param x abscissa coordinate
+   * @return arc-tangent
+   */
   public static double atan2_safe(double y, double x) {
     if (y == 0 && x == 0)
       return 0;
     return Math.atan2(y, x);
   }
 
-  /** a safe (won't return NaN or throw exceptions) version of arc-sine */
+  /** a safe (won't return NaN or throw exceptions) version of arc-sine 
+   * @param x value
+   * @return arc-sine of value
+   * */
   public static double asin_safe(double x) {
-    return Math.asin(Math.max(-1.0,Math.min(x,1.0)));
+    return Math.asin(Util.max(-1.0,Util.min(x,1.0)));
 
-    //	double z = Math.max(-1.0,Math.min(x,1.0));
+    //	double z = Util.max(-1.0,Util.min(x,1.0));
     //	//return Math.atan2(z,Math.sqrt(1-z*z));
     //	  
     //	return z+(z*z*z)/6.0+(3.0*z*z*z*z*z)/40.0+(15.0*z*z*z*z*z*z*z)/336.0;
@@ -309,15 +371,28 @@ public final class Util {
    * @return the arc-cosine of x, between [0,pi)
    */
   public static double acos_safe(double x) {
-    return Math.acos(Math.max(-1.0,Math.min(x,1.0)));
+    return Math.acos(Util.max(-1.0,Util.min(x,1.0)));
   }
 
-  /** Discriminant of a quadratic */
+  /** Discriminant of a quadratic
+   * 
+   * @param a a coefficient of quadratic
+   * @param b b coefficient of quadratic
+   * @param c c coefficient of quadratic
+   * @return discriminant
+   */
   public static double discr(double a, double b, double c) {
     return sq(b) - 4 * a * c;
   }
 
-  /** Quadratic equation, eps = -1 or +1 */
+  /** Quadratic equation, eps = -1 or +1 
+   * 
+   * @param a a coefficient of quadratic
+   * @param b b coefficient of quadratic
+   * @param c c coefficient of quadratic
+   * @param eps
+   * @return root of quadratic
+   */
   public static double root(double a, double b, double c, int eps) {
     if (a == 0 && b == 0)
       return Double.NaN;
@@ -332,7 +407,14 @@ public final class Util {
     }
   }
 
-  /** root2b(a,b,c,eps) = root(a,2*b,c,eps) , eps = -1 or +1*/
+  /** root2b(a,b,c,eps) = root(a,2*b,c,eps) , eps = -1 or +1 
+   * 
+   * @param a a coefficient of quadratic
+   * @param b b coefficient of quadratic
+   * @param c c coefficient of quadratic
+   * @param eps
+   * @return root of quadratic
+   */
   public static double root2b(double a, double b, double c,int eps) {
     if (a == 0 && b == 0) 
       return Double.NaN; 
@@ -350,7 +432,11 @@ public final class Util {
   /** 
    * Returns +1 if the argument is positive or 0, -1 otherwise.  Note:
    * This is not the classic signum function from mathematics that 
-   * returns 0 when a 0 is supplied. */
+   * returns 0 when a 0 is supplied. 
+   * 
+   * @param x value
+   * @return sign of value
+   */
   public static int sign(double x) {
 	 // A true signum could be implemented in C++ as below.
 	 // template <typename T> int sgn(T val) {
@@ -361,20 +447,61 @@ public final class Util {
     return -1;
   }
 
-  /** Returns +1 if the argument is true, -1 otherwise */
+  /** Returns +1 if the argument is true, -1 otherwise
+   * 
+   * @param b boolean value
+   * @return sign as a number
+   */
   public static int sign(boolean b) {
     if (b)
       return 1;
     return -1;
   }
 
-  /** Returns +1 if the argument is positive or 0, -1 otherwise */
+  /** Returns +1 if the argument is positive or 0, -1 otherwise 
+   * 
+   * @param x value
+   * @return sign as a boolean
+   */
   public static boolean bsign(double x) {
     if (x >= 0)
       return true;
     return false;
   }
+  
+  public static double min(double x, double y) {
+	  return Math.min(x, y);
+  }
 
+  public static float min(float x, float y) {
+	  return Math.min(x, y);
+  }
+
+  public static int min(int x, int y) {
+	  return Math.min(x, y);
+  }
+
+  public static long min(long x, long y) {
+	  return Math.min(x, y);
+  }
+
+  public static double max(double x, double y) {
+	  return Math.max(x, y);
+  }
+
+  public static float max(float x, float y) {
+	  return Math.max(x, y);
+  }
+
+  public static int max(int x, int y) {
+	  return Math.max(x, y);
+  }
+
+  public static long max(long x, long y) {
+	  return Math.max(x, y);
+  }
+
+  
   private static final double twopi = 2 * Math.PI;
 
   /**
@@ -398,6 +525,10 @@ public final class Util {
 
   /**
    * Computes the modulo of val and mod. The returned value is in the range [0,mod)
+   * 
+   * @param val numerator
+   * @param mod denominator
+   * @return modulo value
    */
   public static double modulo(double val, double mod) {
       double n = Math.floor(val / mod);
@@ -474,7 +605,11 @@ public final class Util {
    * Returns true if a turn from track angle alpha to track angle beta is 
    * clockwise (by the shortest path).  If the two angles are equal, then 
    * this function returns true.
-   */ 
+   * 
+   * @param alpha one angle
+   * @param beta another angle
+   * @return true, if clockwise
+   */
   public static boolean clockwise(double alpha, double beta) {
     double a = Util.to_2pi(alpha);
     double b = Util.to_2pi(beta);
@@ -489,7 +624,8 @@ public final class Util {
    * Returns 1 if the minimal turn to goalTrack (i.e. less than pi) is to the right, else -1
    * @param initTrack   initial track [rad]
    * @param goalTrack   target track [rad]
-   **/
+   * @return direction of turn
+   */
   public static int turnDir(double initTrack, double goalTrack) {
     if (Util.clockwise(initTrack,goalTrack)) return 1;
     else return -1;
@@ -498,7 +634,11 @@ public final class Util {
 
   /**
    * Returns the smallest angle between two track angles [0,PI].
-   */ 
+   * 
+   * @param alpha one angle
+   * @param beta another angle
+   * @return difference in angle
+   */
   public static double turnDelta(double alpha, double beta) {
     double a = Util.to_2pi(alpha);
     double b = Util.to_2pi(beta);
@@ -524,7 +664,11 @@ public final class Util {
   /**
    * Returns the smallest angle between two track angles [-PI,PI]. The sign indicates the direction of 
    * the turn, positive is clockwise, negative counterclockwise.
-   */ 
+   * 
+   * @param alpha one angle
+   * @param beta another angle
+   * @return angle difference
+   */
   public static double signedTurnDelta(double alpha, double beta) {
     return turnDir(alpha,beta)*turnDelta(alpha,beta);
   }
@@ -533,7 +677,12 @@ public final class Util {
   /**
    * Returns the angle between two tracks when turning in direction indicated by turnRight flag [0,2PI]
    * Note: this function can return an angle larger than PI!
-   */ 
+   * 
+   * @param alpha one angle
+   * @param beta  another angle
+   * @param turnRight when true, measure angles from the right
+   * @return angle difference
+   */
   public static double turnDelta(double alpha, double beta, boolean turnRight) {
     if (Constants.almost_equals_radian(alpha,beta)) return 0.0;      // do not want 2 PI returned
     boolean clkWise = clockwise(alpha,beta);
@@ -548,8 +697,11 @@ public final class Util {
    * Returns the angle between two tracks when turning in direction indicated by turnRight flag [0,2PI]
    * Note: this function can return an angle larger than PI!
    * 
+   * @param alpha one angle
+   * @param beta another angle
    * @param dir = +/- 1 + right, - left
-   */ 
+   * @return angle difference
+   */
   public static double turnDelta(double alpha, double beta, int dir) {
     return turnDelta(alpha, beta, dir > 0);
   }
@@ -568,7 +720,10 @@ public final class Util {
    * Returns a double value which is a representation of the given string.  If the string does 
    * not represent a number, false is returned.  If one wants to know
    * the fact that the string is not a number, then use java.lang.Double.parseDouble method.
-   */ 
+   * 
+   * @param s string value
+   * @return true, if the string is a double
+   */
   public static boolean is_double(String s) {
     try {
       double v = Double.parseDouble(s);
@@ -583,7 +738,9 @@ public final class Util {
    * not represent a number, an arbitrary value is returned. 
    * In many cases, but not all, if the string is not a number then 0.0 is returned.  However,
    * on some platforms, "1abc" will return 1.  If one wants to know
-   * the fact that the string is not a number, then use Util.is_double() method.
+   * the fact that the string is not a number, then use {@link #is_double} method.
+   * @param s a string
+   * @return double value representing a string
    */ 
   public static double parse_double(String s) {
     try {
@@ -595,9 +752,9 @@ public final class Util {
 
 
   /**
-   * Returns a double value which is a representation of the given string.  If the string does 
-   * not represent a number, a zero is returned.  If one wants to know
-   * the fact that the string is not a number, then use java.lang.Double.parseDouble method.
+   * Checks if the string is an integer.
+   * @param s string
+   * @return true, if the string is the representation of an integer.
    */ 
   public static boolean is_int(String s) {
     try {
@@ -609,9 +766,11 @@ public final class Util {
   }
 
   /**
-   * Returns a double value which is a representation of the given string.  If the string does 
+   * Returns an integer value which is represented by the given string.  If the string does 
    * not represent a number, a zero is returned.  If one wants to know
-   * the fact that the string is not a number, then use Util.isDouble() method.
+   * the fact that the string is not a number, then use {@link #is_int} method.
+   * @param s a string
+   * @return integer value of the string
    */ 
   public static int parse_int(String s) {
     try {
@@ -632,8 +791,8 @@ public final class Util {
 
   /** Converts a string into a Boolean value.  This is more permissive than 
    * Boolean.parseBoolean, it accepts "true" and "T" (ignoring case).
-   * @param value
-   * @return
+   * @param value a string
+   * @return boolean value
    */
   public static boolean parse_boolean(String value) {
 	  return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("T");
@@ -653,6 +812,9 @@ public final class Util {
 
   /** Reads in a clock string and converts it to seconds.  
    * Accepts hh:mm:ss, mm:ss, and ss.
+   * 
+   * @param s string value
+   * @return time in [s]
    */
   public static double parse_time(String s) {
     double tm = -1;
@@ -696,7 +858,11 @@ public final class Util {
     return String.format("%d:%02d:%02d", hours, mins, secs);
   }
 
-  /** Return a string representing this list */
+  /** Return a string representing this list 
+   * 
+   * @param l list of objects
+   * @return string
+   */
   public static String list2str(List<? extends Object> l) {
     String rtn =  "{";
     for (Object o : l) {
@@ -706,7 +872,12 @@ public final class Util {
     return rtn;
   }
 
-  /** Returns true if string s1 is less than or equal to string s2. */
+  /** Returns true if string s1 is less than or equal to string s2.
+   * 
+   * @param s1 one string
+   * @param s2 another string
+   * @return true, if s1 is less or equals to s2
+   */
   public static boolean less_or_equal(String s1, String s2) {
     if (s1.compareTo(s2) >= 0) return true;
     //f.pln(" Util::lessThan: s1 = "+s1+" s2 = "+s2+" rtn = "+rtn);
@@ -720,11 +891,6 @@ public final class Util {
     return df.format(today.getTime());
 
   }
-
-//  private static int cnt = 0;
-//  public static int nextCount() { // a generic system-wide counter
-//    return cnt++;
-//  }
 
   /**
    * The behavior of the x%y operator is different between Java and C++ if either x or y is negative.  Use this to always return a value between 0 and y. 

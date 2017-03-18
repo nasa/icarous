@@ -4,7 +4,7 @@
  * 
  * manages a history of aircraft state information
  *
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -199,7 +199,7 @@ public final class AircraftState implements ErrorReporter {
      * Return the maximum number of elements that can be stored.  
      * This value is always greater or equal to size().  
      * There is deliberately no method setBufferSize() 
-     * @return
+     * @return maximum number of elements
      * */
     public int getBufferSize() {
     	return bufferSize;
@@ -217,7 +217,7 @@ public final class AircraftState implements ErrorReporter {
      * is returned if the time doesn't exist.
      * 
      * @param time
-     * @return
+     * @return an index
      */
     public int find(double time) {
     	for (int i = 0; i < size; i++) {
@@ -311,7 +311,7 @@ public final class AircraftState implements ErrorReporter {
 	 * then a zero position and velocity are returned.
 	 * 
 	 * @param i
-	 * @return
+	 * @return position and velocity at index i
 	 */
 	public StateVector get(int i) {
 		if (i >= size || i < 0) return new StateVector(Vect3.ZERO, Velocity.ZERO,0.0);//null;
@@ -323,7 +323,7 @@ public final class AircraftState implements ErrorReporter {
 	 * Return a Euclidean position and velocity for the latest time in this object.
 	 * The position and velocity are projected into a Euclidean frame by the
 	 * projection set by the setProjection() method.
-	 * @return
+	 * @return last position and velocity
 	 */
 	public StateVector getLast() {
 	    return get(size() - 1);
@@ -371,7 +371,7 @@ public final class AircraftState implements ErrorReporter {
 	 * the latest time.  This method returns a "zero" position for an out of bounds index 
 	 * 
 	 * @param i
-	 * @return
+	 * @return position
 	 */
 	public Position position(int i) {
 		if (i >= size || i < 0) return checkLatLon(true) ? Position.ZERO_LL : Position.ZERO_XYZ; //{throw new RuntimeException("why?");} //return null;
@@ -384,7 +384,7 @@ public final class AircraftState implements ErrorReporter {
 	 * the latest time.  This method returns a zero velocity for an out of bounds index 
 	 * 
 	 * @param i
-	 * @return
+	 * @return velocity
 	 */
 	public Velocity velocity(int i) {
 		if (i >= size || i < 0) return Velocity.ZERO; //null;
@@ -397,7 +397,7 @@ public final class AircraftState implements ErrorReporter {
 	 * the latest time.  This method returns a negative time for an out of bounds index 
 	 * 
 	 * @param i
-	 * @return
+	 * @return time
 	 */
 	public double time(int i) {
 		if (i >= size || i < 0) return -1.0;
@@ -409,7 +409,7 @@ public final class AircraftState implements ErrorReporter {
 	 * Note that this may not be synchronized with data from other aircraft!
 	 * It is generally better to use positionLinear(tm) for traffic aircraft. 
 	 * 
-	 * @return
+	 * @return last position
 	 */
 	public Position positionLast() {
 		return position(size-1);
@@ -420,7 +420,7 @@ public final class AircraftState implements ErrorReporter {
 	 * Note that this may not be synchronized with data from other aircraft!
 	 * It is generally better to use velocityBefore(tm) for traffic aircraft. 
 	 * 
-	 * @return
+	 * @return last velocity
 	 */
 	public Velocity velocityLast() {
 		return velocity(size-1);
@@ -428,13 +428,17 @@ public final class AircraftState implements ErrorReporter {
 
 	/** 
 	 * The latest (i.e., last) time in this object.
+	 * @return last time
+	 * 
 	 */
 	public double timeLast() {
 		return time(size-1);
 	}
 	
     
-    /** remove oldest n entries */
+    /** remove oldest n entries 
+     * @param n 
+     * */
     public void remove(int n) {
     	if (n <= 0) return;
     	if (n > size) n = size;
@@ -849,7 +853,7 @@ public final class AircraftState implements ErrorReporter {
 
 	/** Last time when track rate was near zero
 	 * 
-	 * @return 
+	 * @return time
 	 */
 	public double lastStraightTime() {
 		return ls_t;
@@ -871,7 +875,7 @@ public final class AircraftState implements ErrorReporter {
 	/** EXPERIMENTAL
 	 * returns time when track rate was near zero.  This method cannot return a value older than bufferSize. The companion
 	 * method lastStraightTime is not as limited.
-	 * @return
+	 * @return time
 	 */
 	public double timeLastZeroTrackRate() {
 		//f.pln(" $$$ timeLastZeroTrackRate: "+id+" size = "+size);
@@ -892,7 +896,7 @@ public final class AircraftState implements ErrorReporter {
 	/** EXPERIMENTAL
 	 * returns time when track rate was near zero.  This method cannot return a value older than bufferSize. The companion
 	 * method lastStraightTime is not as limited.
-	 * @return
+	 * @return time
 	 */
 	public boolean turnFinishing() {
 		//f.pln(" $$$ timeLastZeroTrackRate: "+id+" size = "+size);
@@ -904,7 +908,7 @@ public final class AircraftState implements ErrorReporter {
 		double tmLast = 0;
 		int n = size();
 		int numPts = 5;    // typical rollin time
-		int startI = Math.max(0,n - numPts);
+		int startI = Util.max(0,n - numPts);
 		for (int i = startI; i < n && i >= 0; i++){                      // i = 0 is oldest, i = size() -1 is newest
 			StateVector svt = get(i);
             //f.pln(" $$$ svt = "+svt);
@@ -937,7 +941,7 @@ public final class AircraftState implements ErrorReporter {
 	public double avgTrackRate(int numPtsTrkRateCalc) {
 		int n = size();
 		if (numPtsTrkRateCalc < 2) numPtsTrkRateCalc = 2;
-		int numPts = Math.min(numPtsTrkRateCalc,n);
+		int numPts = Util.min(numPtsTrkRateCalc,n);
 		double trkLast = 0;
 		double tmLast = 0;
 		double trackRateSum = 0.0;
@@ -971,7 +975,7 @@ public final class AircraftState implements ErrorReporter {
 	public double avgVsRate(int numPtsVsRateCalc) {
 		int n = size();
 		if (numPtsVsRateCalc < 2) numPtsVsRateCalc = 2;
-		int numPts = Math.min(numPtsVsRateCalc,n);
+		int numPts = Util.min(numPtsVsRateCalc,n);
 		double vsLast = 0;
 		double tmLast = 0;
 		double vsRateSum = 0.0;
@@ -1006,9 +1010,9 @@ public final class AircraftState implements ErrorReporter {
 		double gsLast = 0;
 		double vsLast = 0;
 		double tmLast = 0;
- 		f.pln("");
-		f.pln(" time     trkRate    BankAngle    gsAccel    vsAccel");
-		f.pln(" ----   ---------   ----------   ---------   -------");
+ 		System.out.println("");
+		System.out.println(" time     trkRate    BankAngle    gsAccel    vsAccel");
+		System.out.println(" ----   ---------   ----------   ---------   -------");
 		for (int i = 0; i < n; i++){                      // i = 0 is oldest, i = size() -1 is newest
 			Pair<Vect3,Velocity> muPair = get(i).pair();
 			Velocity v = muPair.getSecond();
@@ -1023,7 +1027,7 @@ public final class AircraftState implements ErrorReporter {
 				double vsAccel = (vs - vsLast)/(tmTr-tmLast);
 				double bank = Kinematics.bankAngle(v.gs(),trackRate);
 				if (i == n-1) f.p("T");
-				f.pln("  "+(i-n+1)+"   "+f.Fm2(Units.to("deg",trackRate))+" [deg/s]  "+Units.str("deg",bank)+"       "+f.Fm2(gsAccel)+"      "+f.Fm2(vsAccel));
+				System.out.println("  "+(i-n+1)+"   "+f.Fm2(Units.to("deg",trackRate))+" [deg/s]  "+Units.str("deg",bank)+"       "+f.Fm2(gsAccel)+"      "+f.Fm2(vsAccel));
 			}
 			trkLast = track;
 			gsLast = gs;

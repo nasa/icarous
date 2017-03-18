@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -96,7 +96,7 @@ import gov.nasa.larcfm.Util.f;
 			 if (thout < B || thin > T) {
 				 return noDetection;
 			 } else {
-				 return new Pair<Double,Double>(Math.max(B,Math.min(T,thin)), Math.max(B,Math.min(T,thout)));
+				 return new Pair<Double,Double>(Util.max(B,Util.min(T,thin)), Util.max(B,Util.min(T,thout)));
 			 }
 		 }
 	 }

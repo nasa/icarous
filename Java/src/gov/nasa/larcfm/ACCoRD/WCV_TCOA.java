@@ -1,5 +1,5 @@
 /*
-> * Copyright (c) 2012-2016 United States Government as represented by
+> * Copyright (c) 2012-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -32,7 +32,7 @@ public class WCV_TCOA implements WCV_Vertical {
       time_out = B;   
       return new Interval(time_in,time_out);
     }   
-    double act_H = Math.max(ZTHR,Math.abs(vz)*TCOA);
+    double act_H = Util.max(ZTHR,Math.abs(vz)*TCOA);
     double tentry = Vertical.Theta_H(sz,vz,-1,act_H);
     double texit = Vertical.Theta_H(sz,vz,1,ZTHR);
     if (T < tentry || texit < B) {
@@ -40,8 +40,8 @@ public class WCV_TCOA implements WCV_Vertical {
       time_out = B;
       return new Interval(time_in,time_out);
     }
-    time_in = Math.max(B,tentry);
-    time_out = Math.min(T,texit);
+    time_in = Util.max(B,tentry);
+    time_out = Util.min(T,texit);
     return new Interval(time_in,time_out);
   }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2016 United States Government as represented by
+ * Copyright (c) 2014-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -30,14 +30,22 @@ public final class FlatEarthProjection implements EuclideanProjection {
     private static final double earthRadius = 6371229.;  // canonical radius of the spherical earth
     private double radius = earthRadius; 
 	
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point. 
+     * 
+     * @param lla reference point
+     */
 	public FlatEarthProjection(LatLonAlt lla) {
 		projLat = lla.lat();
 		projLon = lla.lon();
 		projAlt = lla.alt();
 	}
 
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point.
+	 * 
+	 * @param lat latitude of reference point
+	 * @param lon longitude of reference point
+	 * @param alt altitude of reference point
+	 */
 	public FlatEarthProjection(double lat, double lon, double alt) {
 		projLat = lat;
 		projLon = lon;

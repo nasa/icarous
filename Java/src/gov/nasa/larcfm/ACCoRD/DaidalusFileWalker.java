@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -11,13 +11,13 @@ import gov.nasa.larcfm.IO.SequenceReader;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Velocity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class DaidalusFileWalker {
 
   private SequenceReader sr_;
-  private ArrayList<Double> times_;
+  private List<Double> times_;
   private int index_;
 
   public DaidalusFileWalker(String filename) {

@@ -9,9 +9,11 @@ package com.MAVLink;
 import java.io.Serializable;
 import com.MAVLink.Messages.MAVLinkPayload;
 import com.MAVLink.Messages.MAVLinkMessage;
-import com.MAVLink.ardupilotmega.CRC;
+import com.MAVLink.icarous.CRC;
 import com.MAVLink.common.*;
 import com.MAVLink.ardupilotmega.*;
+import com.MAVLink.icarous.*;
+
 
 /**
 * Common interface for all MAVLink Messages
@@ -152,6 +154,16 @@ public class MAVLinkPacket implements Serializable {
     public MAVLinkMessage unpack() {
         switch (msgid) {
                          
+            case msg_kinematic_bands.MAVLINK_MSG_ID_KINEMATIC_BANDS:
+                return  new msg_kinematic_bands(this);
+                 
+            case msg_safeguard.MAVLINK_MSG_ID_SAFEGUARD:
+                return  new msg_safeguard(this);
+                 
+            case msg_heartbeat_icarous.MAVLINK_MSG_ID_HEARTBEAT_ICAROUS:
+                return  new msg_heartbeat_icarous(this);
+            
+                             
             case msg_sensor_offsets.MAVLINK_MSG_ID_SENSOR_OFFSETS:
                 return  new msg_sensor_offsets(this);
                  

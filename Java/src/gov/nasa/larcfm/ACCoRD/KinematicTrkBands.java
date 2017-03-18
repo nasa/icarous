@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -62,11 +62,11 @@ public class KinematicTrkBands extends KinematicRealBands {
 	}
 
 	public double own_val(TrafficState ownship) {
-		return ownship.track();
+		return ownship.getVelocityXYZ().compassAngle();
 	}
 
 	public double time_step(TrafficState ownship) {
-		double gso = ownship.groundSpeed();
+		double gso = ownship.getVelocityXYZ().gs();
 		double omega = turn_rate_ == 0 ? Kinematics.turnRate(gso,bank_angle_) : turn_rate_;
 		return get_step()/omega;
 	}
@@ -74,13 +74,13 @@ public class KinematicTrkBands extends KinematicRealBands {
 	public Pair<Vect3, Velocity> trajectory(TrafficState ownship, double time, boolean dir) {  
 		Pair<Position,Velocity> posvel;
 		if (instantaneous_bands()) {
-			double trk = ownship.getVelocity().trk()+(dir?1:-1)*j_step_*get_step(); 
-			posvel = Pair.make(ownship.getPosition(),ownship.getVelocity().mkTrk(trk));
+			double trk = ownship.getVelocityXYZ().compassAngle()+(dir?1:-1)*j_step_*get_step(); 
+			posvel = Pair.make(ownship.getPositionXYZ(),ownship.getVelocityXYZ().mkTrk(trk));
 		} else {
-			double gso = ownship.groundSpeed();
+			double gso = ownship.getVelocityXYZ().gs();
 			double bank = turn_rate_ == 0 ? bank_angle_ : Math.abs(Kinematics.bankAngle(gso,turn_rate_));
 			double R = Kinematics.turnRadius(gso,bank);
-			posvel = ProjectedKinematics.turn(ownship.getPosition(),ownship.getVelocity(),time,R,dir);
+			posvel = ProjectedKinematics.turn(ownship.getPositionXYZ(),ownship.getVelocityXYZ(),time,R,dir);
 		}
 		return Pair.make(ownship.pos_to_s(posvel.first),ownship.vel_to_v(posvel.first,posvel.second));
 	}

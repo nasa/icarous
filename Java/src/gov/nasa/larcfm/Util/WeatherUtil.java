@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,6 +14,8 @@ public class WeatherUtil {
 
 	/**
 	 * Produce a plan that travels between two end points and is approximately conflict free of any polygons.
+	 *
+	 * (Note this code is experimental and may not always produce correct results.)
 	 * 
 	 * Note: 
 	 * - "Approximately conflict free" means that there should be no intrusions that are greater than gridSize.  This is intended to be a first step
@@ -77,7 +79,7 @@ public class WeatherUtil {
 		// cut down working plan to startTime
 		if (paths.size() == 0) {
 			solution = own;
-		} else if (own.timeInPlan(startTime) && own.timeInPlan(endTime)) {
+		} else if (own.isTimeInPlan(startTime) && own.isTimeInPlan(endTime)) {
 			nPlan = PlanUtil.cutDown(own, startTime, endTime);
 			double gs = nPlan.initialVelocity(0).gs();
 			if (gs <= 0) {
@@ -96,8 +98,8 @@ public class WeatherUtil {
 			if (rrPlan.size() > 0) {
 				rrPlan = setAltitudes(rrPlan,currentVel.vs());
 				if (rrPlan.size() > 0) {
-					rrPlan.add(currentPos);
-					rrPlan.add(finalPos);
+					rrPlan.addNavPoint(currentPos);
+					rrPlan.addNavPoint(finalPos);
 					rrPlan.setTimeGSin(rrPlan.size()-1, nPlan.initialVelocity(0).gs());
 					//f.pln(" $$$$ reRoute: rrPlan = "+rrPlan+" "+localParams.unZigReroute);
 					solution = rrPlan;
@@ -126,6 +128,8 @@ public class WeatherUtil {
 	 * As reRouteWx(), but this will internally expand the polygons so that they cover a larger area, either representing their total coverage over 
 	 * a period of time of duration timeBefore+timeAfter, and/or over-approximating them to mitigate solutions that cut corners of polygons.  
 	 * Note that setting reduceGridPath to true may still result in a solutions that still contains conflicts. 
+	 * 
+	 * (Note this code is experimental and may not always produce correct results.)
 	 * 
 	 * @param own ownship plan
 	 * @param paths list of polygons to avoid
@@ -163,6 +167,7 @@ public class WeatherUtil {
 		}
 		Pair<Plan,DensityGrid> pr = reRouteWx(own, npaths, gridSize, buffer, factor, T_p, containment, fastPolygonReroute, reduceGridPath, timeOfCurrentPosition, reRouteLeadIn);
 		Plan ret = pr.first;
+//f.pln("reRouteWx ret1="+ret.toString());		
 		if (reRouteReduction && ret != null) {
 			double incr = 10.0;
 			double gs = own.initialVelocity(0).gs();
@@ -172,6 +177,7 @@ public class WeatherUtil {
 			}
             //f.pln("reduced plan="+ret);		
 		}
+//f.pln("reRouteWx ret2="+ret.toString());		
 		return Pair.make(ret, pr.second);
 	}
 
@@ -210,8 +216,9 @@ public class WeatherUtil {
 			//	dg.setProximityWeights(ownship, factor, false);
 		} 
 		//dg.setProximityWeights(ownship, factor);
-		List<Pair<Integer,Integer>> gPath = dg.optimalPath();
-//dg.printSearchedWeights();		
+		DensityGridAStarSearch dgs = new DensityGridAStarSearch();
+		List<Pair<Integer,Integer>> gPath = dgs.optimalPathT(dg);
+		//dg.printSearchedWeights();		
 		if (gPath == null) {
 			//f.pln(" $$$$$ reRouteWithAstar: optimal path not found !!!");
 			return Pair.make(new Plan(),(DensityGrid)dg);
@@ -252,6 +259,9 @@ public class WeatherUtil {
     }
 
 
+//	static public List<Pair<Integer,Integer>> optimalPath(DensityGrid dg, DensityGridSearch dgs) {
+//		return dgs.search(dg, dg.startPoint, dg.endPoint);
+//	}
 
 	
 }

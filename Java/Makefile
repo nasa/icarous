@@ -15,10 +15,11 @@ JAVAC      = javac
 OBJ        = $(SRCS:.java=.class)
 
 
-ALL: MAVLINK ACCORD ICAROUS MISSION OTHERS JAR EXAMPLE
+ALL: MAVLINK ACCORD ICAROUS MISSION OTHERS JAR
 
 PRE:
 	test -d bin || mkdir bin
+
 
 ACCORD: PRE $(ACCORDSRC)
 	@echo
@@ -48,14 +49,6 @@ OTHERS: PRE $(OTHERSRC)
 JAR:
 	@cd bin && jar -cvf icarous.jar gov com *.class
 	@mv bin/icarous.jar ./lib/
-	@$(JAVAC) -cp $(CLASSPATH)$(LIB) $(OTHERSRC) -d $(CLASSPATH)
-
-EXAMPLE:
-	@echo
-	@echo "Compiling DAAGeofencingExample"
-	@$(JAVAC) -cp lib/icarous.jar DAAGeofencingExample.java
-	@echo "** To run DAAGeofencingExample type:"
-	@echo "./DAAGeofencingExample"
 
 clean:
-	rm -rf bin/* lib/icarous.jar
+	-@rm -rf bin/* lib/icarous.jar

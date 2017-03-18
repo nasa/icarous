@@ -5,7 +5,7 @@
  *           George Hagen              NASA Langley Research Center      
  *           Jeff Maddalon             NASA Langley Research Center
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -154,7 +154,7 @@ public class KinematicsLatLon {
 	 * Determine the proper omega (angular velocity) given am earth-surface speed and radius.
 	 * @param speed
 	 * @param radius
-	 * @return
+	 * @return turn rate
 	 */
 	public static double turnRateRadius(double speed, double radius) {
 		double R = GreatCircle.chord_distance(radius*2.0)/2.0;	//convert surface distance to distance in the small circle's plane
@@ -165,7 +165,7 @@ public class KinematicsLatLon {
 	 * Determine the earth-surface radius of a turn given the ground speed and omega (angular velocity).
 	 * @param speed
 	 * @param omega
-	 * @return
+	 * @return turn radius
 	 */
 	public static double turnRadiusByRate(double speed, double omega) {
 		double R = Kinematics.turnRadiusByRate(speed, omega);	// this is in the small circle's plane
@@ -174,8 +174,8 @@ public class KinematicsLatLon {
 
 	/**
 	 * Position/Velocity after turning t time units according to track rate omega
-	 * @param s0          starting position
-	 * @param v0          initial velocity
+	 * @param so          starting position
+	 * @param vo          initial velocity
 	 * @param t           time into turn 
 	 * @param omega       rate of change of turn angle, sign indicates direction
 	 * @return Position/Velocity after t time
@@ -257,8 +257,7 @@ public class KinematicsLatLon {
 
 	/**
 	 * Position/Velocity after turning t time units according to track rate omega
-	 * @param s0          starting position
-	 * @param v0          initial velocity
+	 * @param sv0         starting position and velocity
 	 * @param t           time of turn 
 	 * @param omega       rate of change of track, sign indicates direction
 	 * @return Position/Velocity after t time
@@ -308,13 +307,16 @@ public class KinematicsLatLon {
 	 * 
 	 * @param so          starting position
 	 * @param center      center of turn
-	 * @param R           radius
-	 * @param d           distance into turn (sign indicates direction)
-	 * @return Position/Velocity after turning distance d
+	 * @param dir         direction of turn
+	 * @param d           distance into turn (non-negative)
+	 * @param gsAtd       ground speed at end of turn, used to update velocity vector at end (done for efficiency)
+	 * @return            Position/Velocity after turning distance d
 	 */
-	public static Pair<LatLonAlt,Velocity> turnByDist(LatLonAlt so, LatLonAlt center, int dir, double d, double gsAtd) {
+	public static Pair<LatLonAlt,Velocity> turnByDist2D(LatLonAlt so, LatLonAlt center, int dir, double d, double gsAtd) {
+		//f.pln(" $$ turnByDist: so = "+so+" center = "+center+" dir = "+dir+" d = "+d);
         double R = GreatCircle.distance(so, center);
-		double alpha = dir*d/R;	//TODO: change to dir * GreatCircle.small_circle_arc_angle(R, d);
+        //double  R = GreatCircle.chord_distance(so, center);       
+		double alpha = dir*d/R;	
 		double trkFromCenter = GreatCircle.initial_course(center,so);
 		double nTrk = trkFromCenter + alpha;
 		LatLonAlt sn = GreatCircle.linear_initial(center, nTrk, R);
@@ -363,7 +365,7 @@ public class KinematicsLatLon {
 	/**
 	 *  Position/Velocity after t time units turning at the rate of "omega," after that 
 	 *  continue in a straight line.  This function can make a turn greater than 180 deg
-	 * @param so         initial position and velocity
+	 * @param svo        initial position and velocity
 	 * @param t          time point of interest
 	 * @param turnTime   total time of turn [secs]
 	 * @param omega 	turn rate
@@ -429,8 +431,7 @@ public class KinematicsLatLon {
 	/**
 	 *  Position/Velocity after t time units turning in direction "turnRight" for a total of turnTime, after that 
 	 *  continue in a straight line.  This function can make a turn greater than 180 deg
-	 * @param so         starting position
-	 * @param vo         initial velocity
+	 * @param svo        starting position
 	 * @param t          time point of interest
 	 * @param turnTime   total time of turn [secs]
 	 * @param R          turn radius (positive)
@@ -513,8 +514,8 @@ public class KinematicsLatLon {
 	/**
 	 * Final 3D position after a constant GS acceleration for t seconds
 	 * 
-	 * @param so3        current position
-	 * @param vo3        current velocity
+	 * @param so         current position
+	 * @param vo         current velocity
 	 * @param a          acceleration,  i.e. a positive  or negative acceleration
 	 * @param t          amount of time accelerating
 	 * @return           final position
@@ -537,7 +538,7 @@ public class KinematicsLatLon {
 	 *
 	 * @param so         current position
 	 * @param vo         current velocity
-	 * @param goalGs     the ground speed where the acceleration stops
+	 * @param goalGS     the ground speed where the acceleration stops
 	 * @param gsAccel    the ground speed acceleration (a positive value)
 	 * @param t          time point of interest
 	 * @return           Position-Velocity pair after time t
@@ -560,7 +561,7 @@ public class KinematicsLatLon {
 	 *  Position after t time units where there is first an acceleration or deceleration to the target
 	 *  ground speed goalGs and then continuing at that speed for the remainder of the time, if any.
 	 *
-	 * @param svo        initial position and velocity
+	 * @param sv0        initial position and velocity
 	 * @param goalGs     the ground speed where the acceleration stops
 	 * @param gsAccel    the ground speed acceleration (a positive value)
 	 * @param t          time point of interest
@@ -662,7 +663,7 @@ public class KinematicsLatLon {
 	 * @param accelUp         		first acceleration 
 	 * @param accelDown    			second acceleration
 	 * @param allowClimbRateChange allows climbRate to change to initial velocity if it can help. 
-	 * @return
+	 * @return position and velocity
 	 */
 	public static Pair<LatLonAlt, Velocity> vsLevelOut(Pair<LatLonAlt, Velocity> sv0, double t, double climbRate, 
 			double targetAlt, double accelUp, double accelDown, boolean allowClimbRateChange) {

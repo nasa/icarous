@@ -31,17 +31,16 @@
  *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT, TO THE EXTENT PERMITTED BY LAW.  
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
+
 import gov.nasa.larcfm.ICAROUS.*;
 import gov.nasa.larcfm.MISSION.*;
-import java.io.*;
 
 public class launch{
-    
-    public static void main(String args[]){
-		
-	Demo test = new Demo();
-	Icarous IcarousMain = new Icarous(args,test);
-	IcarousMain.run();
-	
-    }// end of main    
+
+	public static void main(String args[]){
+		InspectObjectMission test = new InspectObjectMission();
+		//TrackingMission test = new TrackingMission();
+		Icarous IcarousMain = new Icarous(args,test);
+		IcarousMain.run();
+	}// end of main    
 }// end of class

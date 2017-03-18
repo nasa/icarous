@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -11,9 +11,7 @@ import gov.nasa.larcfm.Util.PolyPath.PathMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Hashtable;
 import java.util.Random;
-import java.util.TreeSet;
 
 public class PolyUtil {
 
@@ -58,9 +56,9 @@ public class PolyUtil {
 			Position p = center.linear(v, dist);
 			double rr = 2 + Math.abs(rand.nextGaussian()*10);
 			double radius = Units.from("nmi", rr);
-			//			 radius = Math.min(radius, range/4);
+			//			 radius = Util.min(radius, range/4);
 			int sides = rand.nextInt(22)+3;
-			double tp = Units.from("ft", bottom) + Math.max(5000, 20000+rand.nextGaussian()*10000);
+			double tp = Units.from("ft", bottom) + Util.max(5000, 20000+rand.nextGaussian()*10000);
 			double top = Units.from("ft", tp);
 			PolyPath pp = randomUserPath("poly"+(basenum+i), startTime, baseV, p, radius, sides, bottom, top);
 			paths.add(pp.simplify(Units.from("nmi", 2.0)));
@@ -82,8 +80,10 @@ public class PolyUtil {
 	 * For purposes of this algorithm, we only consider x, y values of positions (since all calculations are relative and no points are moved).
 	 * This uses the NE-most point as the origin, to allow for our track computations (0 is north) and proceeds in a clockwise fashion
 	 * This assumes that the resulting hull will not include the north or south poles (for lat lon positions)
-	 * @param p
-	 * @return
+	 * @param plist list of positions
+	 * @param bottom lower altitude
+	 * @param top top altitude
+	 * @return SimplePoly
 	 */
 	public static SimplePoly convexHull(ArrayList<Position> plist, double bottom, double top) {
 		ArrayList<Triple<Position,Integer,Double>> elems = new ArrayList<Triple<Position,Integer,Double>>(); // vertex position, vertex index in original polygon, angle from origin point
@@ -134,19 +134,18 @@ public class PolyUtil {
 	/**
 	 * Returns the convex hull of a polygon.
 	 * This assumes that the resulting hull will not include the north or south poles.
+	 * @param p polygon
+	 * @return convex hull
 	 */
 	public static SimplePoly convexHull(SimplePoly p) {
-//		// fails if polygon contains either pole
-//		if (p.isLatLon() && (p.contains(new Position(LatLonAlt.NORTHPOLE)) || p.contains(new Position(LatLonAlt.SOUTHPOLE)))) {
-//			f.pln("ERROR: SimplePoly.convexHull cannot process polygons including either of the poles");
-//			return null;
-//		}
 		return convexHull(p.points, p.bottom, p.top);
 	}
 
 	/**
 	 * Returns the convex hull of a set of polygons.
 	 * This assumes that the resulting hull will not include the north or south poles.
+	 * @param p list of polygons
+	 * @return convex hull
 	 */
 	public static SimplePoly convexHull(ArrayList<SimplePoly> p) {
 		ArrayList<Position> ps = new ArrayList<Position>();
@@ -154,8 +153,8 @@ public class PolyUtil {
 		double b = Double.MAX_VALUE;
 		for (int i = 0; i < p.size(); i++) {
 			ps.addAll(p.get(i).points);
-			t = Math.max(t, p.get(i).top);
-			b = Math.min(b, p.get(i).bottom);
+			t = Util.max(t, p.get(i).top);
+			b = Util.min(b, p.get(i).bottom);
 		}
 		return convexHull(ps, b, t);
 	}
@@ -165,6 +164,9 @@ public class PolyUtil {
 	 * Returns the convex hull of a polygon that has been expanded by (approximately) the given buffer size.
 	 * This is done by adding additional points around each polygon point and taking the convex hull of them all.
 	 * This assumes that the resulting hull will not include the north or south poles.
+	 * @param p polygon
+	 * @param buffer buffer
+	 * @return polygon
 	 */
 	public static SimplePoly convexHull(SimplePoly p, double buffer) {
 		ArrayList<Position> ps = new ArrayList<Position>();
@@ -180,6 +182,10 @@ public class PolyUtil {
 	
 	/**
 	 * Return a position that is buffer distance further away from the poly's centroid
+	 * @param poly polygon
+	 * @param p position
+	 * @param buffer buffer
+	 * @return position
 	 */
 	public static Position pushOut(SimplePoly poly, Position p, double buffer) {
 		Position cent = poly.centroid();
@@ -190,6 +196,11 @@ public class PolyUtil {
 
 	/**
 	 * Return a position that is buffer distance further away from the poly's centroid at vertex i
+	 * 
+	 * @param poly polygon
+	 * @param i    index
+	 * @param buffer buffer
+	 * @return position
 	 */
 	public static Position pushOut(SimplePoly poly, int i, double buffer) {
 		Position p = poly.getVertex(i);
@@ -251,7 +262,7 @@ public class PolyUtil {
 	//			return p.copy();
 	//		}
 
-	public SimplePoly simplify2(SimplePoly p, double buffer) {
+	public static SimplePoly simplify2(SimplePoly p, double buffer) {
 		if (p.size() <= 3) {
 			f.pln("Simplify size too small"); 
 			return p.copy();
@@ -388,9 +399,9 @@ public class PolyUtil {
 	public static SimplePoly simplify(SimplePoly p) {
 		boolean done = false;
 		SimplePoly p2 = p.copy();
-		int step = 0;
+		//int step = 0;
 
-		ErrorLog error = new ErrorLog("SimplePoly");
+		//ErrorLog error = new ErrorLog("SimplePoly");
 
 		while (!done) {
 			done = true;
@@ -433,24 +444,25 @@ public class PolyUtil {
 
 	/**
 	 * Stretch a polygon so that it covers (at least) what the original would as it moves over a given time range.
-	 * The uses a convex hull, so will be an over-approximation.  There may be inaccuracies for very long periods of time if using geodetic coordinates.
-	 * @param sp base polygon
-	 * @param v average velocity of polygon
-	 * @param timeBefore time before stated position to cover (in sec)
-	 * @param timeAfter time after stated position to cover (in sec)
-	 * @return  enlarged polygon
-	 *
+	 * The uses a convex hull, so will be an over-approximation.  There may be inaccuracies for very long periods of time if using geodetic coordinates.<p>
+	 * 
 	 * Example: Given a polygon W and an aircraft A with a timeAfter of 100 seconds, a conflict detection for 
 	 * A against the stretched polygon W' is approximately equivalent to the disjunction of conflict detections 
 	 * (any positive is a positive) of the set A' against the original W, where A` is the set A plus all of "echos" timeshifted
 	 * up to 100 seconds into the future, modulo distortion from geodetic projections and convex hull expansions.  Effectively 
 	 * this is saying that if the conflict detection of A vs. W' is clear, then A will be clear of W and any aircraft that 
 	 * precisely follow A will also be clear of W for up to 100 seconds.  (If it were not clear for 100 seconds, then A would 
-	 * have impacted the extended W', which "arrives" 100 seconds earlier than W would.)
+	 * have impacted the extended W', which "arrives" 100 seconds earlier than W would.)<p>
 	 * 
-	 * Similarly for timeBefore.
+	 * Similarly for timeBefore.<p>
 	 * 
 	 * If A is clear of W', then it is also clear of the original W, which is a subset of W'.
+	 * 
+	 * @param sp base polygon
+	 * @param v average velocity of polygon
+	 * @param timeBefore time before stated position to cover (in sec)
+	 * @param timeAfter time after stated position to cover (in sec)
+	 * @return  enlarged polygon
 	 * 
 	 */
 	public static SimplePoly stretchOverTime(SimplePoly sp, Velocity v, double timeBefore, double timeAfter) {
@@ -467,7 +479,7 @@ public class PolyUtil {
 	 * Polygons are expanded to a new convex hull, meaning this will be an over-approximation.
 	 * This may also not be accurate for paths with very long legs in geodetic coordinates.
 	 * This may also overestimate the polygons at the start and end of each leg in the path.
-	 * @param pp starting path
+	 * @param pbase starting path
 	 * @param timeBefore time before the base path time to cover (relative, in seconds)
 	 * @param timeAfter time after the base path time to cover (relative, in seconds)
 	 * @return new path with expanded polygons.
@@ -492,7 +504,7 @@ public class PolyUtil {
 	 * @param p base polygon
 	 * @param hbuff size of horizontal buffer (approx)
 	 * @param vbuff size of vertical buffer
-	 * @return
+	 * @return convex hull
 	 */
 	public static SimplePoly bufferedConvexHull(SimplePoly p, double hbuff, double vbuff) {
 		ArrayList<Position> points = new ArrayList<Position>();
@@ -526,10 +538,10 @@ public class PolyUtil {
 
 	/**
 	 * Return a path where polygons are replaced by convex hulls that have been expanded by hbuff and vbuff. 
-	 * @param p base polygon path
+	 * @param pbase base polygon path
 	 * @param hbuff size of horizontal buffer (approx)
 	 * @param vbuff size of vertical buffer
-	 * @return
+	 * @return path of convex hulls
 	 */
 	public static PolyPath bufferedConvexHull(PolyPath pbase, double hbuff, double vbuff) {
 		PolyPath pp = new PolyPath(pbase);
@@ -553,7 +565,7 @@ public class PolyUtil {
 	 * @param sp polygon starting position
 	 * @param vp polygon average velocity
 	 * @param T end time for test (relative)
-	 * @param increment time for search (> 0)
+	 * @param incr time increment for search (&gt; 0)
 	 * @return true if the point mass will intersect with the polygon at or before time T
 	 */
 	public static boolean intersectsPolygon2D(Position so, Velocity vo, SimplePoly sp, Velocity vp, double T, double incr) {
@@ -579,7 +591,7 @@ public class PolyUtil {
 	 * @param sp polygon starting position
 	 * @param vp polygon average velocity
 	 * @param T end time for test (relative)
-	 * @param increment time for search (> 0)
+	 * @param incr time increment for search (&gt; 0)
 	 * @return true if the point mass will intersect with the polygon at or before time T
 	 */
 	public static boolean intersectsPolygon(Position so, Velocity vo, SimplePoly sp, Velocity vp, double T, double incr) {
@@ -605,7 +617,7 @@ public class PolyUtil {
 	 * @param pp path describing polygon movement
 	 * @param B start time to check (absolute)
 	 * @param T end time to check (absolute)
-	 * @param increment time for search (> 0)
+	 * @param incr time increment for search (&gt; 0)
 	 * @return time of loss of separation if aircraft will intersect with the polygon between times B and T
 	 *         and polygon name that plan is in conflict with
 	 * 
@@ -617,8 +629,8 @@ public class PolyUtil {
 		BoundingRectangle br1 = p.getBound();
 		BoundingRectangle br2 = pp.getBoundingRectangle();
 		if (!br1.intersects(br2)) return rtn;
-		double start = Math.max(B, Math.max(p.getFirstTime(), pp.getFirstTime()));
-		double end = Math.min(T, Math.min(p.getLastTime(), pp.getLastTime()));
+		double start = Util.max(B, Util.max(p.getFirstTime(), pp.getFirstTime()));
+		double end = Util.min(T, Util.min(p.getLastTime(), pp.getLastTime()));
 		//f.pln(" $$ PolyUtil.intersectsPolygon2D p="+p.getName()+" path="+pp.getName()+" start="+start+" end="+end+" CLEAR");
 		for (double t = start; t <= end; t += incr) {
 			SimplePoly sp = pp.position(t);
@@ -638,6 +650,11 @@ public class PolyUtil {
 	 * This uses the intersectsPolygon2D() check, and so has the limitations associated with it.  Use ACCoRD 
 	 * calls instead for better performance and/or more accuracy.  Returns a new plan that is hopefully smaller than 
 	 * the original plan. 
+	 * 
+	 * @param p      plan
+	 * @param paths  paths
+	 * @param incr   increment
+	 * @return plan
 	 */
 	public static Plan reducePlanAgainstPolys(Plan p, ArrayList<PolyPath> paths, double incr) {
 		double gs = p.initialVelocity(0).gs();
@@ -655,8 +672,8 @@ public class PolyUtil {
 			int i = 1;
 			while (i < curr.size()-1) {
 				tmp = curr.copy();
-				double start = tmp.getTime(i-1);
-				double end = tmp.getTime(i+1);
+				double start = tmp.time(i-1);
+				double end = tmp.time(i+1);
 				tmp.remove(i);
 				tmp = PlanUtil.linearMakeGSConstant(tmp,gs);
 				if (isPlanInConflictWx(tmp, paths, start, end, incr).first < 0) {
@@ -691,6 +708,13 @@ public class PolyUtil {
 		return new Pair<Double,String>(-1.0,"");
 	}
 
+	/** 
+	 * 
+	 * @param plan     Plan
+	 * @param paths    polygon paths
+	 * @param incr     the step size for the search 
+	 * @return         time of conflict with weather or -1, string containing name of polygon 
+	 */
 	public static Pair<Double,String>  isPlanInConflictWx(Plan plan, ArrayList<PolyPath> paths, double incr) {
 		 return isPlanInConflictWx(plan,paths,incr,plan.getFirstTime());
 	}
@@ -714,9 +738,8 @@ public class PolyUtil {
 	 * @param paths
 	 * @param incr
 	 * @param entryTime
-	 * @return
+	 * @return exit time
 	 */
-	
 	public static double calculateWxExitTime(Plan plan, ArrayList<PolyPath> paths, double incr, double entryTime) {
 		double lastTm = plan.getLastTime();
 		for (double exTm = entryTime; exTm <= lastTm; exTm = exTm + incr) {
@@ -725,167 +748,5 @@ public class PolyUtil {
 		}
 		return lastTm;
 	}
-
-
-//	private ArrayList<Integer> findInA(int a, ArrayList<Quad<Integer,Integer,Position,Double>> intersectionPoints) {
-//		ArrayList<Integer> ret = new ArrayList<Integer>();
-//		for (int i = 0; i < intersectionPoints.size(); i++) {
-//			if (intersectionPoints.get(i).first == a) {
-//				ret.add(i);
-//			}
-//		}
-//		return ret;
-//	}
-//
-////	private ArrayList<Integer> findInB(int b, ArrayList<Quad<Integer,Integer,Position,Double>> intersectionPoints) {
-////		ArrayList<Integer> ret = new ArrayList<Integer>();
-////		for (int i = 0; i < intersectionPoints.size(); i++) {
-////			if (intersectionPoints.get(i).second == b) {
-////				ret.add(i);
-////			}
-////		}
-////		return ret;
-////	}
-//	
-//	public static SimplePoly union(SimplePoly a, SimplePoly b) {
-//		if (a.isClockwise() == b.isClockwise()) {
-//			// non-collinear intersections: a index, b index, position, relative distance on a segment
-//			ArrayList<Quad<Integer,Integer,Position,Double>> intersectionPoints = new ArrayList<Quad<Integer,Integer,Position,Double>>();
-//			ArrayList<Integer> rma = new ArrayList<Integer>(); // points to remove from a
-//			ArrayList<Integer> rmb = new ArrayList<Integer>(); // points to remove from b
-//			for (int i = 0; i < a.size(); i++) {
-//				Position a1, a2;
-//				a1 = a.getVertex(i);
-//				if (i == a.size()-1) {
-//					a2 = a.getVertex(0);
-//				} else {
-//					a2 = a.getVertex(i+1);
-//				}
-//				if (b.contains2D(a1)) {
-//					rma.add(i);
-//				}
-//				for (int j = 0; j < b.size(); j++) {
-//					Position b1, b2;
-//					b1 = b.getVertex(i);
-//					if (j == b.size()-1) {
-//						b2 = b.getVertex(0);
-//					} else {
-//						b2 = b.getVertex(j+1);
-//					}
-//					if (a.contains2D(b1)) {
-//						rma.add(j);
-//					}
-//					Pair<Position,Double> isp = PositionUtil.intersection(a1, a2, 100, b1, b2);
-//					if (isp.second >= 0 && isp.second <= 100) {
-//						intersectionPoints.add(Quad.make(i, j, isp.first, isp.second));
-//					}
-//				}
-//			}
-//			SimplePoly res = new SimplePoly(Math.min(a.getBottom(),b.getBottom()), Math.max(a.getTop(), b.getTop()));
-//			for (int i = 0; i < a.size(); i++) {
-//				if (!rma.contains(i)) {
-//					res.addVertex(a.getVertex(i));
-//				}
-//				ArrayList<Integer> as = findInA(i, )
-//			}
-//			
-//		}
-//	}
-	
-//	private static Pair<Integer,Integer> find(Pair<Integer,Integer> key, Hashtable<Pair<Integer,Integer>,TreeSet<Pair<Integer,Integer>>> sets) {
-//		for (Pair<Integer,Integer> setrep : sets.keySet()) {
-//			TreeSet<Pair<Integer,Integer>> set = sets.get(setrep);
-//			if (set.contains(key)) {
-//				return setrep;
-//			}
-//		}
-//		return key;
-//	}
-//	
-//	// return true if table changed
-//	private static boolean union(Pair<Integer,Integer> key1, Pair<Integer,Integer> key2, Hashtable<Pair<Integer,Integer>,TreeSet<Pair<Integer,Integer>>> sets) {
-//		if (!key1.equals(key2)) {
-//			TreeSet<Pair<Integer,Integer>> set1 = sets.remove(key1);
-//			TreeSet<Pair<Integer,Integer>> set2 = sets.remove(key2);
-//			set1.addAll(set2);
-//			sets.put(set1.first(),set1);
-//			return true;
-//		}
-//		return false;
-//	}
-//	
-//	private static boolean adjacent(Pair<Integer,Integer> key1, Pair<Integer,Integer> key2, Hashtable<Pair<Integer,Integer>,TreeSet<Pair<Integer,Integer>>> sets) {
-//		TreeSet<Pair<Integer,Integer>> set1 = sets.get(key1);
-//		TreeSet<Pair<Integer,Integer>> set2 = sets.get(key2);
-//		if (set1.contains(key2) || set2.contains(key1)) return true;
-//		for (Pair<Integer,Integer> item1 : set1) {
-//			for (Pair<Integer,Integer> item2 : set2) {
-//				if (Math.abs(item1.first-item2.first) <= 1 && Math.abs(item1.second-item2.second) <= 1) {
-//					return true;
-//				}
-//			}
-//		}
-//		return false;
-//	}
-//	
-//	//abc
-//	//h d
-//	//gfe
-//	private ArrayList<Pair<Integer,Integer>> reducePoints(TreeSet<Pair<Integer,Integer>> set) {
-//		ArrayList<Pair<Integer,Integer>> ret = new ArrayList<Pair<Integer,Integer>>();
-//		
-//		Pair<Integer,Integer> pt = set.first();
-//		while (set.contains(Pair.make(pt.first, pt.first+1))) {
-//			pt = Pair.make(pt.first, pt.first+1);
-//		}
-//		
-//		for (Pair<Integer,Integer> pt : set) {
-//			boolean grid[][] = new boolean[3][3];
-//			for ()
-//		}
-//		
-//	}
-//	
-//	/**
-//	 * Reduce boolean grid point to sets of polygon vertex-equivalents
-//	 * @param grid boolean grid (e.g. a screen of pixels) where true is inside a region of interest
-//	 * @param xsz x dimension size
-//	 * @param ysz y dimension size
-//	 * @return List of lists of grid points indicating corresponding polygon vertices.
-//	 * It is assumed that there is some outside interpretation of the grid, if necessary
-//	 */
-//	public static ArrayList<ArrayList<Pair<Integer,Integer>>> reduceGridPoints (boolean[][] grid, int xsz, int ysz) {
-//		Hashtable<Pair<Integer,Integer>,TreeSet<Pair<Integer,Integer>>> sets = new Hashtable<Pair<Integer,Integer>,TreeSet<Pair<Integer,Integer>>>();
-//		ArrayList<Pair<Integer,Integer>> keys = new ArrayList<Pair<Integer,Integer>>();
-//		for (int x = 0; x < xsz; x++) {
-//			for (int y = 0; y < ysz; y++) {
-//				if (grid[x][y]) {
-//					TreeSet<Pair<Integer,Integer>> set = new TreeSet<Pair<Integer,Integer>>();
-//					sets.put(Pair.make(x, y), set);
-//					keys.add(Pair.make(x, y));
-//				}
-//			}
-//		}
-//		int i = 0;
-//		while (i < keys.size()) {
-//			int j = i+1;
-//			while (j < keys.size()) {
-//				if (!sets.containsKey(keys.get(i))) break; // next i
-//				if (!sets.containsKey(keys.get(j))) continue; // next j
-//				Pair<Integer,Integer> key1 = find(keys.get(i), sets);
-//				Pair<Integer,Integer> key2 = find(keys.get(j), sets);
-//				if (adjacent(key1,key2,sets)) {
-//					union(key1,key2,sets);
-//				}
-//				j++;
-//			}
-//			i++;
-//		}
-//		// sets unioned
-//		ArrayList<ArrayList<Pair<Integer,Integer>>> polylist = new ArrayList<ArrayList<Pair<Integer,Integer>>>();
-//		for (Pair<Integer,Integer> key : sets.keySet()) {
-//			
-//		}
-//	}
 
 }

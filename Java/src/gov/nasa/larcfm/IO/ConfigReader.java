@@ -3,7 +3,7 @@
  *
  * Contact: George Hagen
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -84,7 +84,9 @@ public final class ConfigReader implements ParameterReader, ParameterProvider, E
 
 	/** 
 	 * Read a new file into an existing ConfigReader.  
-	 * Parameters are preserved if they are not specified in the file. 
+	 * Parameters are preserved if they are not specified in the file.
+	 * 
+	 *  @param filename file name
 	 * */
 	public void open(String filename) {
 		if (filename == null || filename.equals("")) {
@@ -184,12 +186,16 @@ public final class ConfigReader implements ParameterReader, ParameterProvider, E
 		
 	}
 
-    /** Return the number of parameters configurations in the file */
+    /** Return the number of parameters configurations in the file 
+     * @return number of parameters
+     * */
 	public int size() {
 		return param_var.length;
 	}
 
-	/** Gets the next set of parameters from a line in the file.  Returns true, if the end of file has been reached. */
+	/** Gets the next set of parameters from a line in the file.  
+	 * @return Returns true, if the end of file has been reached. 
+	 * */
 	public boolean next() {
 		//f.pln("Next "+count+" "+param_val.size());
 		if (count < param_val.size()) {
@@ -205,7 +211,7 @@ public final class ConfigReader implements ParameterReader, ParameterProvider, E
 
 	/** Gets the next set of parameters.  If there is more than one column of parameters in the 
 	 * file, then each member of one column are iterated through all members of all the other columns.
-	 * Returns true, if the end of file has been reached. 
+	 * @return Returns true, if the end of file has been reached. 
 	 */
 	public boolean nextIterate() {
 		if (count_itr.length > 0 && count_itr[0] >= param_val.size()) {
@@ -250,12 +256,18 @@ public final class ConfigReader implements ParameterReader, ParameterProvider, E
 		return false;
 	}
 
-	/** Return the number of columns. Must call "open" first */ 
+	/** Return the number of columns. Must call "open" first 
+	 * @return number of columns
+	 * */ 
 	public int getNumberColumns() {
 		return param_var.length;
 	}
 
-	/** Return the heading for the given column.  Must call "open" first. */ 
+	/** Return the heading for the given column.  Must call "open" first.
+	 * 
+	 * @param i column index
+	 * @return heading for column i
+	 * */ 
 	public String getHeading(int i) {
       if (i < 0 || i >= param_var.length) {
         return "";

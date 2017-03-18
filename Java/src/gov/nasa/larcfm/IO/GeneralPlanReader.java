@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 United States Government as represented by
+ * Copyright (c) 2016-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -10,21 +10,19 @@ import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 import gov.nasa.larcfm.Util.GeneralPlan;
+import gov.nasa.larcfm.Util.KinematicsPosition;
 import gov.nasa.larcfm.Util.NavPoint;
 import gov.nasa.larcfm.Util.Pair;
 import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.Util.ParameterProvider;
 import gov.nasa.larcfm.Util.Plan;
+import gov.nasa.larcfm.Util.PlanUtil;
 import gov.nasa.larcfm.Util.PolyPath;
 import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.TcpData;
 import gov.nasa.larcfm.Util.Util;
 import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.f;
-import gov.nasa.larcfm.Util.NavPoint.Gs_TCPType;
-import gov.nasa.larcfm.Util.NavPoint.Trk_TCPType;
-import gov.nasa.larcfm.Util.NavPoint.Vs_TCPType;
-import gov.nasa.larcfm.Util.NavPoint.WayType;
-import gov.nasa.larcfm.Util.PolyPath.PathMode;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -33,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +74,7 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 	protected String defaultOwnship = null;
 	
 	protected boolean clock;
-	protected int[] head = new int[NavPoint.TCP_OUTPUT_COLUMNS+4]; // array size of number of elements (vector in C++)
+	protected int[] head = new int[TcpData.TCP_OUTPUT_COLUMNS+8]; // array size of number of elements (vector in C++)
 	// we store the heading indices in the following order:
 	protected final int NAME = 0;
 	protected final int LAT_SX = 1;
@@ -89,7 +86,7 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 	protected final int TCP_TRK = 7;
 	protected final int TCP_GS = 8;
 	protected final int TCP_VS = 9;
-	protected final int ACC_TRK = 10;
+	protected final int ACC_TRK = 10; // deprecated
 	protected final int ACC_GS = 11;
 	protected final int ACC_VS = 12;
 	protected final int TRK = 13;
@@ -100,10 +97,13 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 	protected final int SRC_ALT = 18;
 	protected final int SRC_TIME = 19;
 	protected final int RADIUS = 20;
-	protected final int SZ2 = 21;
-	protected final int TIME2 = 22; // this is an "activation time" after which the plan goes live
-
-	protected final int ENDTIME = 22; // polygon truncation time
+	protected final int CENTER_LAT_SX = 21; 
+	protected final int CENTER_LON_SY = 22; 
+	protected final int CENTER_ALT    = 23; 
+	protected final int SZ2 = 24;
+	protected final int TIME2 = 25; // this is an "activation time" after which the plan goes live
+	protected final int ENDTIME = 26; // polygon truncation time
+	protected final int INFO = 27;
 	
 	protected final int POLY = -1;
 	protected final int UNKNOWN = 0;
@@ -117,7 +117,8 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 		//fname = "";
 	}
 
-	/** Create a new GeneralPlanReader reading the specified file. */
+	/** Create a new GeneralPlanReader reading the specified file.
+	 * @param filename name of file */
 	public void open(String filename) {
 		error = new ErrorLog("GeneralPlanReader("+filename+")");
 		if (filename == null || filename.equals("")) {
@@ -152,12 +153,7 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 		boolean latlon = true;
 		boolean tcpinfo = true;
 		boolean trkgsvs = true;
-		//interpretUnits = false;
 		sequenceTable.clear();
-//		gplans = new ArrayList<GeneralPlan>(10);
-		String name = ""; // the current aircraft name
-		//		double lastTime = -1000000; // time must be increasing
-//		int planIndex = -1;
 
 		input.setCaseSensitive(false);            // headers & parameters are lower case
 
@@ -173,7 +169,7 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 		//        boolean kinematic = false;
 
 		while ( ! input.readLine()) {
-//f.pln("GeneralPlanReaer line="+input.getLine());			
+			//f.pln("GeneralPlanReaer line="+input.getLine());			
 			// look for each possible heading
 			if ( ! hasRead) {
 				// process heading
@@ -195,7 +191,8 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 				head[SZ] =      altHeadings5("sz", "alt", "altitude", "sz1", "alt1");
 				head[SZ2] =     altHeadings("sz2", "alt2", "altitude_top", "poly_top");
 				head[TIME] =    altHeadings("clock", "time", "tm", "st");
-				head[LABEL] =   input.findHeading("label");
+				head[LABEL] =   altHeadings("label","point_name", "fix");
+				head[INFO] =   altHeadings("info", "information", "tcp_info");
 
 				head[TYPE] = 	input.findHeading("type");
 				head[TCP_TRK] =	input.findHeading("tcp_trk");
@@ -212,15 +209,19 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 				head[SRC_ALT] =		altHeadings("src_z", "src_sz", "src_alt", "src_altitude");
 				head[SRC_TIME] =    altHeadings("src_time", "src_tm", "src_t");
 				head[RADIUS] = altHeadings("radius", "turn_radius", "R");
+				head[CENTER_LAT_SX] = altHeadings("center_x", "center_lat");
+				head[CENTER_LON_SY] = altHeadings("center_y", "center_lon");
+				head[CENTER_ALT] =    altHeadings("center_z", "center_alt");
 				head[TIME2] = altHeadings("start_time", "activation_time", "time2", "active_time");
 				head[ENDTIME] = altHeadings("endtime", "end_time", "poly_end");
 
 
 				// make sure all tcp columns are defined
 				if (	   head[TCP_TRK] < 0 || head[TCP_GS] < 0 || head[TCP_VS] < 0
-						|| head[ACC_TRK] < 0 || head[ACC_GS] < 0 || head[ACC_VS] < 0
-						|| head[TRK] < 0 || head[GS] < 0 || head[VS] < 0
-						|| head[SRC_LAT_SX] < 0 || head[SRC_LON_SY] < 0 || head[SRC_ALT] < 0 || head[SRC_TIME] < 0) {
+						|| (head[RADIUS] < 0 && head[ACC_TRK] < 0) || head[ACC_GS] < 0 || head[ACC_VS] < 0
+						|| head[SRC_LAT_SX] < 0 || head[SRC_LON_SY] < 0 || head[SRC_ALT] < 0 || head[SRC_TIME] < 0
+						|| (head[TRK] < 0 && head[CENTER_LAT_SX] < 0)
+					)	{
 					if (	   head[TCP_TRK] >= 0 || head[TCP_GS] >= 0 || head[TCP_VS] >= 0
 							|| head[ACC_TRK] >= 0 || head[ACC_GS] >= 0 || head[ACC_VS] >= 0
 							|| head[SRC_LAT_SX] >= 0 || head[SRC_LON_SY] >= 0 || head[SRC_ALT] >= 0 || head[SRC_TIME] >= 0)
@@ -270,7 +271,7 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 
 				hasRead = true;
 				for (int i = 0; i <= TIME; i++) {
-					if (head[i] < 0) error.addError("This appears to be an invalid plan file (missing header definitions)");
+					if (head[i] < 0) error.addError("This appears to be an invalid plan file (missing header definitions): "+i);
 				}
 			}
 
@@ -312,14 +313,11 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 				//stateIndex++;
 			}
 
-//f.pln("GeneralPlanReader entry startTime="+startTime+" "+thisName+" myTime="+myTime);			
 			Map<String, GeneralPlan > entry = sequenceTable.get(startTime);
 			if (entry == null) {
 				entry = new HashMap<String, GeneralPlan>();
 				sequenceTable.put(startTime, entry);
 			}
-//f.pln("entry="+f.Fobj(entry));
-//f.pln(input.getLine());
 
 			if (!entry.containsKey(thisName)) {
 				if (linetype == POLY) {
@@ -390,20 +388,19 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 				}
 			} else if (linetype == PLAN) {
 				String label = "";
+				String info = "";
 				if (input.columnHasValue(head[LABEL])) label = input.getColumnString(head[LABEL]);
-				NavPoint n = new NavPoint(
-						pos, 
-						myTime,
-						label
-						);
+				if (input.columnHasValue(head[INFO])) info = input.getColumnString(head[INFO]);
+				NavPoint nnp = new NavPoint(pos, myTime, label);
+				TcpData n = new TcpData().setInformation(info);
 
 				if (input.columnHasValue(head[TYPE])) {
 					try {
-						NavPoint.WayType ty = NavPoint.WayType.valueOf(input.getColumnString(head[TYPE]));
-						if (ty == NavPoint.WayType.Virtual) {
-							n = n.makeVirtual();
-						} else if (ty == NavPoint.WayType.AltPreserve) {
-							n = n.makeAltPreserve();
+						TcpData.WayType ty = TcpData.WayType.valueOf(input.getColumnString(head[TYPE]));
+						if (ty == TcpData.WayType.Virtual) {
+							n = n.setVirtual();
+						} else if (ty == TcpData.WayType.AltPreserve) {
+							n = n.setAltPreserve();
 						}
 					} catch (Exception e) {
 						error.addError("Unrecognized NavPoint WayType: "+input.getColumnString(head[TYPE]));
@@ -412,15 +409,35 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 
 				if (input.columnHasValue(head[RADIUS])) {
 					double rad = input.getColumn(head[RADIUS], "nmi"); 
-					n = n.makeRadius(rad);
+					n = n.setRadiusSigned(rad);
 				}
-
+				Position turnCenter = Position.INVALID;
+				if (input.columnHasValue(head[CENTER_LAT_SX])) {			
+					if (latlon) {
+						turnCenter = Position.makeLatLonAlt(
+								input.getColumn(head[CENTER_LAT_SX], "deg"), "unspecified", // getColumn(_deg, head[LAT_SX]),
+								input.getColumn(head[CENTER_LON_SY], "deg"), "unspecified", // getColumn(_deg, head[LON_SY]),
+								input.getColumn(head[CENTER_ALT],     "ft"), "unspecified" // getColumn(_ft, head[SZ]),
+								);
+					} else {
+						turnCenter = Position.makeXYZ(
+								input.getColumn(head[CENTER_LAT_SX], "NM"), "unspecified", // getColumn(_deg, head[LAT_SX]),
+								input.getColumn(head[CENTER_LON_SY], "NM"), "unspecified", // getColumn(_deg, head[LON_SY]),
+								input.getColumn(head[CENTER_ALT],    "ft"), "unspecified"  // getColumn(_ft, head[SZ]),
+								);
+					}
+					n = n.setTurnCenter(turnCenter);
+					//f.pln("\n $$$$ GeneralPlanReader.loadfile: SET setTurnCenter ="+turnCenter);
+				}
+				//f.pln(" $$$$ GeneralPlanReader.loadfile: turnCenter = "+turnCenter);
 				if (!tcpinfo) {
-					NavPoint n2 = n.parseMetaDataLabel(label);
+					Pair<TcpData,String> p = n.parseMetaDataLabel(nnp,label);
+					TcpData n2 = p.first;
 					if (n2.isInvalid()) {
 						error.addError("Plan file uses invalid metadata format");
 					} else {
 						n=n2;
+						nnp = nnp.makeLabel(p.second);
 					}
 				} else { // read tcp columns
 					Position srcpos = Position.INVALID;
@@ -429,22 +446,30 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 							srcpos = Position.makeLatLonAlt(
 									input.getColumn(head[SRC_LAT_SX], "deg"), "unspecified", // getColumn(_deg, head[LAT_SX]),
 									input.getColumn(head[SRC_LON_SY], "deg"), "unspecified", // getColumn(_deg, head[LON_SY]),
-									input.getColumn(head[SRC_ALT],      "ft"), "unspecified" // getColumn(_ft, head[SZ]),
+									input.getColumn(head[SRC_ALT],     "ft"), "unspecified" // getColumn(_ft, head[SZ]),
 									);
 						} else {
 							srcpos = Position.makeXYZ(
-									input.getColumn(head[SRC_LAT_SX], "nmi"), "unspecified", // getColumn(_deg, head[LAT_SX]),
-									input.getColumn(head[SRC_LON_SY], "nmi"), "unspecified", // getColumn(_deg, head[LON_SY]),
-									input.getColumn(head[SRC_ALT],      "ft"), "unspecified"  // getColumn(_ft, head[SZ]),
+									input.getColumn(head[SRC_LAT_SX], "NM"), "unspecified", // getColumn(_deg, head[LAT_SX]),
+									input.getColumn(head[SRC_LON_SY], "NM"), "unspecified", // getColumn(_deg, head[LON_SY]),
+									input.getColumn(head[SRC_ALT],    "ft"), "unspecified"  // getColumn(_ft, head[SZ]),
 									);
 						}
 						if (srcpos.isInvalid()) {
 							error.addWarning("Invalid source data for NavPoint "+thisName+" at "+myTime);
 						}
+						//f.pln(" $$$>>>>>>>> GeneralPlanReader: nnp = "+nnp+" srcpos = "+srcpos);
 					}
 					double srcTime = input.getColumn(head[SRC_TIME], "s");
-					n = n.makeSource(srcpos,  srcTime);
+					//f.pln(" $$$$$$$$ GeneralPlanReader: nnp = "+nnp+" srcTime = "+srcTime);
+					n = n.setSource(srcpos,  srcTime);
 					//					NavPoint np = n.makePosition(srcpos).makeTime(srcTime);
+					if (input.columnHasValue(head[RADIUS])) {
+						double rad = input.getColumn(head[RADIUS], "NM"); 
+						n = n.setRadiusSigned(rad);
+						//f.pln("\n $$$$ PlanReader.loadfile: SET setRadiusSigned ="+rad);
+					}
+
 					Velocity vel = Velocity.INVALID;
 					if (input.columnHasValue(head[TRK])) {
 						if (trkgsvs) {
@@ -464,54 +489,61 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 							error.addWarning("Invalid velocity data for NavPoint "+thisName+" at "+myTime);
 						}
 					}
-					n = n.makeVelocityInit(vel);
+					//n = n.setVelocityInit(vel);
 
 					try {
-						NavPoint.Trk_TCPType tcptrk = NavPoint.Trk_TCPType.valueOf(input.getColumnString(head[TCP_TRK]));
-						double acctrk = input.getColumn(head[ACC_TRK], "deg/s");
-						double radius = 0.0;
-						if (input.columnHasValue(head[RADIUS])) radius = input.getColumn(head[RADIUS], "NM");
-						if (Util.almost_equals(radius,0.0)) radius = vel.gs()/acctrk;
-						// TODO: linearIndex
+						TcpData.TrkTcpType tcptrk = TcpData.TrkTcpType.valueOf(input.getColumnString(head[TCP_TRK]));
+						double sRadius = n.getRadiusSigned();
+						//if (input.columnHasValue(head[RADIUS])) sRadius = input.getColumn(head[RADIUS], "NM");
+						if (Util.almost_equals(sRadius,0.0) && input.columnHasValue(head[ACC_TRK])) {
+							double acctrk = input.getColumn(head[ACC_TRK], "deg/s");
+							sRadius = vel.gs()/acctrk;
+						}
+						if ((tcptrk == TcpData.TrkTcpType.BOT || tcptrk == TcpData.TrkTcpType.EOTBOT) && turnCenter.isInvalid()) {					
+							   // This relies on the file having a TRK column !!
+							   //f.pln(" $$$$ GeneralPlanReader.loadfile: pos = "+pos+" sRadius = "+sRadius+" vel = "+vel);
+							   turnCenter = KinematicsPosition.centerFromRadius(pos, sRadius, vel.trk());
+							   //f.pln(" $$$$ GeneralPlanReader.loadfile: turnCenter = "+turnCenter);
+							}
 						switch (tcptrk) {
-						case BOT: n = n.makeBOT(n.position(), n.time(), vel, radius,-1); break;
-						case EOT: n = n.makeEOT(n.position(), n.time(), vel,-1); break;
-						case EOTBOT: n = n.makeEOTBOT(n.position(), n.time(), vel, radius,-1); break;
+						case BOT: n = n.setBOT( sRadius, turnCenter, -1); break;
+						case EOT: n = n.setEOT(-1); break;
+						case EOTBOT: n = n.setEOTBOT( sRadius,turnCenter, -1); break;
 						default: // no change
 						}
 					} catch (Exception e) {
 						error.addError("Unrecognized Trk_TCPType: "+input.getColumnString(head[TCP_TRK]));
 					}
 					try {
-						NavPoint.Gs_TCPType tcpgs = NavPoint.Gs_TCPType.valueOf(input.getColumnString(head[TCP_GS]));
+						TcpData.GsTcpType tcpgs = TcpData.GsTcpType.valueOf(input.getColumnString(head[TCP_GS]));
 						double accgs = input.getColumn(head[ACC_GS], "m/s^2");
 						// TODO: linearIndex
 						switch (tcpgs) {
-						case BGS: n = n.makeBGS(n.position(), n.time(), accgs, vel,-1); break;
-						case EGS: n = n.makeEGS(n.position(), n.time(), vel,-1); break;
-						case EGSBGS: n = n.makeEGSBGS(n.position(), n.time(), accgs, vel,-1); break;
+						case BGS: n = n.setBGS(accgs, -1); break;
+						case EGS: n = n.setEGS(-1); break;
+						case EGSBGS: n = n.setEGSBGS(accgs, -1); break;
 						default: // no change
 						}
 					} catch (Exception e) {
 						error.addError("Unrecognized Gs_TCPType: "+input.getColumnString(head[TCP_GS]));
 					}
 					try {
-						NavPoint.Vs_TCPType tcpvs = NavPoint.Vs_TCPType.valueOf(input.getColumnString(head[TCP_VS]));
+						TcpData.VsTcpType tcpvs = TcpData.VsTcpType.valueOf(input.getColumnString(head[TCP_VS]));
 						double accvs = input.getColumn(head[ACC_VS], "m/s^2");
 						// TODO: linearIndex
 						switch (tcpvs) {
-						case BVS: n = n.makeBVS(n.position(), n.time(), accvs, vel,-1); break;
-						case EVS: n = n.makeEVS(n.position(), n.time(), vel,-1); break;
-						case EVSBVS: n = n.makeEVSBVS(n.position(), n.time(), accvs, vel,-1); break;
+						case BVS: n = n.setBVS(accvs, -1); break;
+						case EVS: n = n.setEVS(-1); break;
+						case EVSBVS: n = n.setEVSBVS(accvs, -1); break;
 						default: // no change
 						}
 					} catch (Exception e) {
 						error.addError("Unrecognized Vs_TCPType: "+input.getColumnString(head[TCP_VS]));
 					}
-
 				}
 
-				entry.get(thisName).getPlan().add(n);
+				//f.pln(" $$$$$$$$!!!!!!!!!!!!!!!!!!!!! GeneralPlanReader: ADD n = "+n.toString());
+				entry.get(thisName).getPlan().add(nnp,n);
 
 				//if (!label.equals(PlanUtil.convertOldTCPLabel(label))) convert = true;
 				if (entry.get(thisName).hasError()) {
@@ -528,8 +560,8 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 			Map<String, GeneralPlan > entry = sequenceTable.get(key1);
 			for (String key2 : entry.keySet()) {
 				GeneralPlan p = entry.get(key2);
-				if (!p.validate()) {
-					error.addError("Plan "+key2+" "+p.getName()+" is not validating"+p.getMessage());
+				if (!p.validate()) {   // TODO:  MAKE THIS WARNING??
+					error.addWarning("Plan "+key2+" "+p.getName()+" is not validating: "+p.getMessage());
 				}				
 			}
 		}
@@ -620,19 +652,24 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 		return tm;
 	}
 
-	/** Return the number of plans in the file */
+	/** Return the number of plans in the file 
+	 * @return number of plans
+	 * */
 	public int size() {
 		return g2plans.size();
 	}
 
-	/** Returns the i-th plan in the file */
+	/** Returns the i-th plan in the file
+	 * @param i index of plan 
+	 * @return plan
+	 * */
 	public GeneralPlan getGeneralPlan(int i) {
 		return g2plans.get(i);
 	}
 
 	/**
 	 * Return a list of current active GeneralPlans
-	 * @return
+	 * @return list of plans
 	 */
 	public List<GeneralPlan> getGeneralPlanList() {
 		ArrayList<GeneralPlan> plans = new ArrayList<GeneralPlan>(g2plans);
@@ -640,12 +677,16 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 	}
 
 	/**
-	 * Return a list of all plans up to the indicated time.  If a plan has more than one activation time, only the one closest to the given time will be in the list.
-	 * @return
+	 * Return a list of all plans up to the indicated time.  
+	 * If a plan has more than one activation time, only the one closest 
+	 * to the given time will be in the list.
+	 * 
+	 * @param time time
+	 * @return list of plans
 	 */
 	public List<GeneralPlan> getGeneralPlanListUpTo(double time) {
 		ArrayList<GeneralPlan> plans = new ArrayList<GeneralPlan>();
-		
+		//TODO is this used? Is this the correct implementation?
 		return plans;
 	}
 
@@ -739,6 +780,7 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 	
 	/**
 	 *  Returns a sorted list of all sequence keys (times)
+	 *  @return list of sequence keys
 	 */
 	public ArrayList<Double> sequenceKeys() {
 		ArrayList<Double> arl = new ArrayList<Double>();
@@ -751,7 +793,10 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 		return arl;
 	}
 
-	/** a list of n > 0 sequence keys, stopping at the given time (inclusive) */ 
+	/** a list of n &gt; 0 sequence keys, stopping at the given time (inclusive) 
+	 * @param tm time to stop searching
+	 * @return list of sequence keys (times)
+	 *  */ 
 	public ArrayList<Double> sequenceKeysUpTo(double tm) {
 		ArrayList<Double> arl = new ArrayList<Double>();
 		for (Iterator<Double> e = sequenceTable.keySet().iterator(); e.hasNext();) {
@@ -767,12 +812,19 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 		return arl;
 	}
 
-	/** Return a list of aircraft names */
+	/** Return a list of aircraft names 
+	 * @return list of aircraft names
+	 * */
 	public ArrayList<String> getNameIndex() {
 		return new ArrayList<String>(nameIndex);
 	}
 	
-	/** Returns true if an entry exists for the given name and time */
+	/** Returns true if an entry exists for the given name and time 
+	 * 
+	 * @param name name of an entry (aircraft or weather)
+	 * @param time time of interest
+	 * @return true if the entity exists at the given time.
+	 */
 	public boolean hasEntry(String name, double time) {
 		return sequenceTable.containsKey(time) && sequenceTable.get(time).containsKey(name);
 	}
@@ -787,12 +839,18 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 		}
 	}
 	
-	/** Returns a list of all Aircraft ids in the sequence */
+	/** Returns a list of all Aircraft identifiers in the sequence 
+	 * @return list of plan names
+	 * */
 	public ArrayList<String> getSequencePlanNameList() {
 		return new ArrayList<String>(names);
 	}
 
-	/** sets a particular entry without reading in from a file */
+	/** sets a particular entry without reading in from a file
+	 * 
+	 * @param time time
+	 * @param p plan
+	 */
 	public void setEntry(double time, GeneralPlan p) {
 		if (!sequenceTable.containsKey(time)) {
 			sequenceTable.put(time, new HashMap<String, GeneralPlan >());
@@ -803,6 +861,7 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 	/**
 	 * This purges all references of a given set of aircraft from this reader.
 	 * This then resets the active time to the last time in the list
+	 * 
 	 * @param alist List of aircraft identifiers
 	 */
 	public void removeGeneralPlan(ArrayList<String> alist) {
@@ -834,6 +893,7 @@ public class GeneralPlanReader implements ParameterProvider, ErrorReporter {
 	
 	/**
 	 * Return the name of the first aircraft that appears in the file, or null if there are no aircraft.
+	 * @return name of default ownship
 	 */
 	public String defaultOwnship() {
 		return defaultOwnship;

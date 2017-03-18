@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -45,7 +45,7 @@ public class KinematicVsBands extends KinematicRealBands {
 	}
 
 	public double own_val(TrafficState ownship) {
-		return ownship.verticalSpeed();
+		return ownship.getVelocityXYZ().vs();
 	}
 
 	public double time_step(TrafficState ownship) {
@@ -55,11 +55,11 @@ public class KinematicVsBands extends KinematicRealBands {
 	public Pair<Vect3, Velocity> trajectory(TrafficState ownship, double time, boolean dir) {    
 		Pair<Position,Velocity> posvel;
 		if (instantaneous_bands()) {
-			double vs = ownship.getVelocity().vs()+(dir?1:-1)*j_step_*get_step(); 
-			posvel = Pair.make(ownship.getPosition(),ownship.getVelocity().mkVs(vs));
+			double vs = ownship.getVelocityXYZ().vs()+(dir?1:-1)*j_step_*get_step(); 
+			posvel = Pair.make(ownship.getPositionXYZ(),ownship.getVelocityXYZ().mkVs(vs));
 		} else {
-			posvel = ProjectedKinematics.vsAccel(ownship.getPosition(),
-					ownship.getVelocity(),time,(dir?1:-1)*vertical_accel_);
+			posvel = ProjectedKinematics.vsAccel(ownship.getPositionXYZ(),
+					ownship.getVelocityXYZ(),time,(dir?1:-1)*vertical_accel_);
 		}
 		return Pair.make(ownship.pos_to_s(posvel.first),ownship.vel_to_v(posvel.first,posvel.second));
 	}

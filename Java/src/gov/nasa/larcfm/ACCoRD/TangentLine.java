@@ -8,7 +8,7 @@
  *
  * Computes a vector that is tangent to the protected zone.
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -32,7 +32,7 @@ public class TangentLine extends Vect2 {
     eps = v.eps;
   }
   
-  /** Q function */
+  /** Q function (relative tangent line) */
   public static Vect2 Q(Vect2 s, double D, int eps) {
     double sq_s = s.sqv();
     double sq_D = Util.sq(D);

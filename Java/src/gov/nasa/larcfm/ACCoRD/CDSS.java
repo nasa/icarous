@@ -9,7 +9,7 @@
  * Conflict detection between an ownship and traffic aircraft
  * using state information (specifically for cylindrical separation volumes).
  *  
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -389,7 +389,7 @@ public class CDSS {
    * @return true, if the aircraft are in conflict in the interval [B,T].
    */
   public boolean conflictBetween(Vect3 so, Velocity vo, Vect3 si, Velocity vi, double B, double T) {
-    return cd.conflict(so,vo,si,vi,D,H,B,Math.min(T,time_horizon));
+    return cd.conflict(so,vo,si,vi,D,H,B,Util.min(T,time_horizon));
   }
 
 
@@ -487,7 +487,7 @@ public class CDSS {
    */
   public boolean detectionBetween(Vect3 so, Velocity vo, Vect3 si, Velocity vi, double B, double T) {
     boolean conflict = detectionEver(so,vo,si,vi);
-    tca =  Math.min(Math.max(B,tca),time_horizon);
+    tca =  Util.min(Util.max(B,tca),time_horizon);
     Vect3 v = vo.Sub(vi);
     stca = v.ScalAdd(tca,so.Sub(si));
     return conflict && t_in < T && t_out >= B;    
@@ -618,7 +618,7 @@ public class CDSS {
     double vz = vo.z-vi.z;
     if (vo2.almostEquals(vi2) && Horizontal.almost_horizontal_los(s2,D)) {
       if (!Util.almost_equals(vo.z,vi.z)) {
-        t_in  = Math.max(Vertical.Theta_H(s.z,vz,Entry,H),0);
+        t_in  = Util.max(Vertical.Theta_H(s.z,vz,Entry,H),0);
       } else if (Vertical.almost_vertical_los(s.z,H)) {
         t_in  = 0;
       }     
@@ -627,10 +627,10 @@ public class CDSS {
       if (Horizontal.Delta(s2,v2,D) > 0) {
         double td1 = Horizontal.Theta_D(s2,v2,Entry,D);
         if (!Util.almost_equals(vo.z,vi.z)) {
-          double tin  = Math.max(td1,Vertical.Theta_H(s.z,vz,Entry,H));
-          t_in  = Math.max(tin,0); 
+          double tin  = Util.max(td1,Vertical.Theta_H(s.z,vz,Entry,H));
+          t_in  = Util.max(tin,0); 
         } else if (Vertical.almost_vertical_los(s.z,H) ) {
-          t_in  = Math.max(td1,0);
+          t_in  = Util.max(td1,0);
         }
       } 
     }

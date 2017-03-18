@@ -5,7 +5,7 @@
  * 
  * Contact:  Cesar Munoz               NASA Langley Research Center
  *           
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -26,6 +26,7 @@ import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 import gov.nasa.larcfm.Util.LossData;
 import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.Units;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
 
@@ -43,12 +44,12 @@ public class Daidalus implements ErrorReporter {
 	 */
 	public KinematicBandsParameters parameters; // Parameters
 
-  /**
-   * Create a new Daidalus object such that
+	/**
+	 * Create a new Daidalus object such that
 	 * - Alerting thresholds are unbuffered as defined by SC-228 MOPS.
 	 * - Maneuver guidance logic assumes instantaneous maneuvers
 	 * - Bands saturate at DMOD/ZTHR
-   */
+	 */
 	public Daidalus() {
 		parameters = new KinematicBandsParameters();
 		urgency_strat_ = new NoneUrgencyStrategy(); 
@@ -72,7 +73,7 @@ public class Daidalus implements ErrorReporter {
 		traffic_ = new ArrayList<TrafficState>();
 		traffic_.addAll(daa.traffic_);
 	}
-	
+
 	/*  
 	 * Set Daidalus object such that 
 	 * - Alerting thresholds are unbuffered as defined by SC-228 MOPS.
@@ -86,7 +87,7 @@ public class Daidalus implements ErrorReporter {
 		parameters.setMinHorizontalRecovery(0.66,"nmi");
 		parameters.setMinVerticalRecovery(450,"ft");
 	}
-	
+
 	/*  
 	 * Set DAIDALUS object such that 
 	 * - Alerting thresholds are buffered 
@@ -103,7 +104,7 @@ public class Daidalus implements ErrorReporter {
 		parameters.setMinHorizontalRecovery(1.0,"nmi");
 		parameters.setMinVerticalRecovery(450,"ft");
 	}
-	
+
 	/**
 	 * Clear aircraft list, current time, and wind vector.
 	 */
@@ -152,7 +153,7 @@ public class Daidalus implements ErrorReporter {
 		if (lastTrafficIndex() >= 0) {
 			Velocity delta_wind = wind_vector_.Sub(wind);
 			ownship_ = TrafficState.makeOwnship(ownship_.getId(),ownship_.getPosition(),
-					ownship_.getVelocity().Add(delta_wind));
+					ownship_.getVelocity().Add(delta_wind),ownship_.getTime());
 			for (int i=0; i < traffic_.size(); ++i) {
 				TrafficState ac = traffic_.get(i);
 				traffic_.set(i,ownship_.makeIntruder(ac.getId(),ac.getPosition(),
@@ -168,7 +169,7 @@ public class Daidalus implements ErrorReporter {
 	 */
 	public void setOwnshipState(String id, Position pos, Velocity vel, double time) {
 		traffic_.clear();
-		ownship_ = TrafficState.makeOwnship(id,pos,vel.Sub(wind_vector_));
+		ownship_ = TrafficState.makeOwnship(id,pos,vel.Sub(wind_vector_),time);
 		current_time_ = time;
 	}
 
@@ -237,14 +238,14 @@ public class Daidalus implements ErrorReporter {
 	public void resetOwnship(int ac_idx) {
 		if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
 			int ac = ac_idx-1;
-			TrafficState new_own = TrafficState.makeOwnship(traffic_.get(ac).getId(),traffic_.get(ac).getPosition(),traffic_.get(ac).getVelocity());
-			TrafficState old_own = new_own.makeIntruder(ownship_.getId(),ownship_.getPosition(),ownship_.getVelocity());
+			TrafficState new_own = TrafficState.makeOwnship(traffic_.get(ac));
+			TrafficState old_own = new_own.makeIntruder(ownship_);
 			ownship_ = new_own;
 			for (int i = 0; i < traffic_.size(); ++i) {
 				if (i == ac) {
 					traffic_.set(i,old_own);
 				} else {
-					traffic_.set(i,ownship_.makeIntruder(traffic_.get(i).getId(),traffic_.get(i).getPosition(),traffic_.get(i).getVelocity()));
+					traffic_.set(i,ownship_.makeIntruder(traffic_.get(i)));
 				}
 			}
 		} else {
@@ -290,7 +291,7 @@ public class Daidalus implements ErrorReporter {
 			double dt = time-current_time_;
 			Velocity vo = ownship_.getVelocity().Add(wind_vector_); // Original ground velocity
 			Position po = ownship_.getPosition().linear(vo,dt);   
-			ownship_ = TrafficState.makeOwnship(ownship_.getId(),po,ownship_.getVelocity());
+			ownship_ = TrafficState.makeOwnship(ownship_.getId(),po,ownship_.getVelocity(),time);
 			for (int i=0; i < traffic_.size(); ++i) {
 				TrafficState ac = traffic_.get(i);
 				Velocity vi = ac.getVelocity().Add(wind_vector_); // Original ground velocity
@@ -337,7 +338,7 @@ public class Daidalus implements ErrorReporter {
 
 	/**
 	 * Detects conflict with aircraft at index ac_idx for given alert level. 
-	 * Conflict data provides time to first violation and time to last violation 
+	 * Conflict data provides time to violation and time to end of violation 
 	 * within lookahead time. 
 	 */
 	public ConflictData detection(int ac_idx, int alert_level) {
@@ -354,7 +355,7 @@ public class Daidalus implements ErrorReporter {
 
 	/**
 	 * Detects conflict with aircraft at index ac_idx for conflict alert level. 
-	 * Conflict data provides time to first violation and time to last violation 
+	 * Conflict data provides time to violation and time to end of violation 
 	 * within lookahead time. 
 	 */
 	public ConflictData detection(int ac_idx) {
@@ -362,9 +363,9 @@ public class Daidalus implements ErrorReporter {
 	}
 
 	/**
-	 * @return time to violation, in seconds, between ownship and aircraft at index ac_idx, for the 
-	 * lookahead time. The returned time is relative to current time. NaN means no 
-	 * conflict within lookahead time or aircraft index is out of range. 
+	 * @return time to violation, in seconds, between ownship and aircraft at index ac_idx, for the
+	 * lookahead time. The returned time is relative to current time. POSITIVE_INFINITY means no
+	 * conflict within lookahead time. NaN means aircraft index is out of range.
 	 */
 	public double timeToViolation(int ac_idx) {
 		if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
@@ -372,10 +373,11 @@ public class Daidalus implements ErrorReporter {
 			if (det.conflict()) {
 				return det.getTimeIn();
 			}
+			return Double.POSITIVE_INFINITY;
 		} else {
 			error.addError("timeToViolation: aircraft index "+ac_idx+" is out of bounds");
+			return Double.NaN;
 		}
-		return Double.NaN;
 	}
 
 	/**
@@ -558,7 +560,7 @@ public class Daidalus implements ErrorReporter {
 			error.addError("trackContour: aircraft index "+ac_idx+" is out of bounds");
 		}
 	}
-	
+
 	/**
 	 * Computes horizontal contours contributed by aircraft at index ac_idx, for 
 	 * conflict alert level. A contour is a non-empty list of points in counter-clockwise 
@@ -574,20 +576,34 @@ public class Daidalus implements ErrorReporter {
 		return ownship_.listToPVSAircraftList(traffic_,prec);
 	}
 
+	public String outputStringAircraftStates() {
+		String ualt = parameters.getUnits("alt_step");
+		String ugs = parameters.getUnits("gs_step");
+		String uvs = parameters.getUnits("vs_step");
+		String uxy = "m";
+		if (Units.isCompatible(ugs,"knot")) {
+			uxy = "nmi";
+		} else if (Units.isCompatible(ugs,"fpm")) {
+			uxy = "ft";
+		} else if (Units.isCompatible(ugs,"kph")) {
+			uxy = "km";
+		}
+		return ownship_.formattedTraffic(traffic_, uxy, ualt, ugs, uvs);
+	}
+
 	public String toString() {
 		String s;
 		s = "Daidalus Object\n";
-		s += "Alertor:\n"+parameters.alertor.toString();
-		s += "Parameters:\n"+parameters.toString();
-		if (traffic_.size() > 0) {
-			s += "###\nAircraft:\n"+ownship_.formattedTraffic(traffic_,current_time_);
+		s += parameters.toString();
+		if (ownship_.isValid()) {
+			s += "###\nAircraft States:\n"+outputStringAircraftStates();
 		}
 		return s;
 	}
 
 	public static String release() {
 		return "DAIDALUSj V-"+KinematicBandsParameters.VERSION+
-				"-FormalATM-"+Constants.version+" (Nov-18-2016)"; 
+				"-FormalATM-"+Constants.version+" (March-18-2017)"; 
 	}
 
 	public boolean hasError() {

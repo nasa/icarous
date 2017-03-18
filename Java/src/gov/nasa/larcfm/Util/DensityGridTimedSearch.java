@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -18,8 +18,10 @@ public interface DensityGridTimedSearch {
 	 * @param gs ground speed of aircraft
 	 * @return List of grid coordinates for a successful path, or null if no path found.
 	 */
-	public List<Pair<Integer,Integer>> search(DensityGridTimed dg, Position startPos, Position endPos, double startTime, double gs);
+	public List<Pair<Integer,Integer>> searchT(DensityGridTimed dg, Position startPos, Position endPos, double startTime, double gs);
 
+	public List<Pair<Integer,Integer>> optimalPathT(DensityGridTimed dg);
+	
 //	/**
 //	 * Perform a search on the given timed density grid assuming a constant groundspeed.  Polygons may be static or moving.  
 //	 * This search includes a user-specified time buffer around the given path, meaning the path will be will be clear not only 

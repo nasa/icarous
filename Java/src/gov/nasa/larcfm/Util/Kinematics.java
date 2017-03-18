@@ -8,7 +8,7 @@
  *           Anthony Narkawicz         NASA Langley Research Center
  *           Aaron Dutle               NASA Langley Research Center
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -88,12 +88,12 @@ public final class Kinematics {
   
   /**
    * Calculates track rate (angular velocity) from ground speed and radius.  
-   * Negative radius (or speed) will produce a negative result. 
+   * Negative radius (or speed) will produce a negative result. <p>
+   * WARNING:  this does not return the sign of the turn!!!!
    * @param speed  ground speed
    * @param  R     radius
    * @return turn rate (ie. omega or track rate), positive turn rate is right hand turn. 
    * 
-   * WARNING:  this does not return the sign of the turn!!!!
    */
   public static double turnRateRadius(double speed, double R) {
 	  if (Util.almost_equals(R,0.0)) return Double.MAX_VALUE;
@@ -134,7 +134,8 @@ public final class Kinematics {
    * Calculates the bank angle used for a given turn radius and ground speed.   Assumes 
    * sea-level gravity.  
    * @param speed ground speed (speed &ge; 0.0)
-   * @param  R     radius (R &gt; 0.0)
+   * @param R     radius (R &gt; 0.0)
+   * @param turnRight true, if a right turn is desired
    * @return       bank angle (positive = turn right, negative = turn left)
    */
   public static double bankAngleRadius(double speed, double R, boolean turnRight) {
@@ -246,7 +247,7 @@ public final class Kinematics {
    * 
    * @param deltaTrack         track change over turn
    * @param omega              turn rate
-   * @return
+   * @return turn time
    */
   public static double turnTime(double deltaTrack, double omega) {
 	   if (omega == 0) return Double.MAX_VALUE;
@@ -254,9 +255,10 @@ public final class Kinematics {
   }
   
   /**
-   * Returns true if the minimal (i.e. less than 180 deg) turn to goalTrack is tp the right
+   * Returns true if the minimal (i.e. less than 180 deg) turn to goalTrack is to the right
    * @param vo          initial velocity vector
    * @param goalTrack   target velocity track [rad]
+   * @return true, if a right turn 
    **/
   public static boolean turnRight(Velocity vo, double goalTrack) {
 	  return Util.clockwise(vo.trk(),goalTrack);
@@ -383,28 +385,6 @@ public final class Kinematics {
 	  return new Pair<Vect3,Velocity>(ns,nv);
   }
   
-//  /**   *** EXPERIMENTAL ***
-//   * Position/Velocity 
-//   * @param s0          starting position
-//   * @param center     
-//   * @param d           distance into turn 
-//   * @param gsAt_d     
-//   * @return Position/Velocity after t time
-//   */
-//  public static Pair<Vect3,Velocity> turnByDist_alt(Vect3 s0, Vect3 center, int dir, double d, double gsAt_d) {
-//	  double R = s0.distanceH(center);
-//	  //f.pln(" $$$$$ turnByDist: s0 = "+s0+" R = "+Units.str("nm",R,4));
-//	  //double omega = Util.sign(d)*gsAt_d/R;
-//	  double dt = Math.abs(d/gsAt_d);
-//	  Velocity vPerp = Velocity.make(s0.Sub(center));
-//	  //int dir = Util.sign(d);
-//	  double currentTrk = vPerp.trk()+dir*Math.PI/2;
-//	  Velocity vo = Velocity.mkTrkGsVs( currentTrk , gsAt_d ,0.0);
-//	  //f.pln(" $$$$$ turnByDist: vo = "+vo+" dir = "+dir+" dt = "+dt+" currentTrk = "+Units.str("deg",currentTrk));  
-//	  return turn(s0, vo, dt, R, dir > 0);
-//	  //return turnOmega(s0,vo,dt,omega);
-//  }
-  
   
 	/** 
 	 * Position/Velocity after turning (does not compute altitude!!)
@@ -413,21 +393,23 @@ public final class Kinematics {
 	 * 
 	 * @param so          starting position
 	 * @param center      center of turn
-	 * @param R           radius
+	 * @param dir         direction of turnb
 	 * @param d           distance into turn (sign indicates direction)
+	 * @param gsAtd       ground speed at position d
 	 * @return Position/Velocity after turning distance d
 	 */
-	public static Pair<Vect3,Velocity> turnByDist(Vect3 so, Vect3 center, int dir, double d, double gsAtd) {
+	public static Pair<Vect3,Velocity> turnByDist2D(Vect3 so, Vect3 center, int dir, double d, double gsAtd) {
 		//f.pln(" $$$$ turnByDist: so = "+so+" center = "+center);
         //double R = GreatCircle.distance(so, center);
-        double R = so.distanceH(center);
+        double R = so.distanceH(center);    // TODO: should we test for 0?
+        if (R==0.0) return new Pair<Vect3,Velocity>(so,Velocity.INVALID);
 		double alpha = dir*d/R;
 		//double vFinalTrk = GreatCircle.initial_course(center,so);
 		double trkFromCenter = Velocity.mkVel(center, so, 100.0).trk();
 		double nTrk = trkFromCenter + alpha;
 		//Vect3 sn = GreatCircle.linear_initial(center, nTrk, R);
-		Vect3 sn = center.linearByDist(nTrk, R);
-		//f.pln(" $$$$ turnByDist: sn = "+sn);
+		Vect3 sn = center.linearByDist2D(nTrk, R);
+		//f.pln(" $$$$ turnByDist: sn = "+sn);bb
 		sn = sn.mkZ(0.0);
 		//double final_course = GreatCircle.final_course(center,sn);
 		//f.pln(" $$ d = "+d+" final_course = "+final_course+" nTrk = "+nTrk);
@@ -449,8 +431,7 @@ public final class Kinematics {
   
   /**
    * Position/Velocity after turning t time units according to track rate omega
-   * @param s0          starting position
-   * @param v0          initial velocity
+   * @param sv0         starting position and velocity
    * @param t           time of turn 
    * @param omega       rate of change of track, sign indicates direction
    * @return Position/Velocity after t time
@@ -517,7 +498,7 @@ public final class Kinematics {
   // *** EXPERIMENTAL ***
   public static Pair<Vect3,Velocity> ApproxTurnOmegaWithRoll(Pair<Vect3,Velocity> sv0, double t, double omega, double rollTime) {
 		double delay = rollTime/2.0;
-		double t1 = Math.min(t,delay);
+		double t1 = Util.min(t,delay);
 		Pair<Vect3,Velocity> nsv = linear(sv0, t1); 
 		return turnOmega(nsv, t-t1, omega);
   }
@@ -525,8 +506,7 @@ public final class Kinematics {
   /**
    *  Position/Velocity after t time units turning in direction "turnRight" for a total of turnTime, after that 
    *  continue in a straight line.  This function can make a turn greater than 180 deg
-   * @param so         starting position
-   * @param vo         initial velocity
+   * @param svo        starting position and velocity
    * @param t          time point of interest
    * @param turnTime   total time of turn [secs]
    * @param R          turn radius (positive)
@@ -548,7 +528,7 @@ public final class Kinematics {
 	/**
 	 *  Position/Velocity after t time units turning at the rate of "omega," after that 
 	 *  continue in a straight line.  This function can make a turn greater than 180 deg
-	 * @param so         initial position and velocity
+	 * @param svo        initial position and velocity
 	 * @param t          time point of interest
 	 * @param turnTime   total time of turn [secs]
 	 * @param omega 	turn rate
@@ -712,13 +692,13 @@ public final class Kinematics {
 			rollTime = turnTm/2;
 		}
 		double turnTime = (int) turnTime(v0,goalTrack,maxBank,turnRight)-rollTime;
-		double iterT = Math.min(t,rollTime);
+		double iterT = Util.min(t,rollTime);
 		Pair<Vect3,Velocity> svEnd = RollInOut(new Pair<Vect3,Velocity>(s0,v0) ,iterT,maxBank, turnRight, rollTime,true);  // roll OUT
 		double rollInStartTm = turnTime+rollTime;
 		if (t > rollTime) {  // --------------------------------------- constant turn
 			//f.pln(" T = "+T+" turnTime = "+f.Fm1(turnTime)+" rollTime = "+rollTime);
 			double R = Kinematics.turnRadius(v0.gs(),maxBank);
-			double tmTurning = Math.min(t-rollTime,turnTime);
+			double tmTurning = Util.min(t-rollTime,turnTime);
 			svEnd = turn(svEnd, tmTurning, R , turnRight);
 		}
 		if (t > rollInStartTm) {
@@ -726,14 +706,14 @@ public final class Kinematics {
 			double delta = t-rollInStartTm;
 			//f.pln(T+" nv.track() = "+Units.str("deg",nv.track())+" goalTrack =" +Units.str("deg",goalTrack));
 			//double estRollTime = (int) turnTime(nv,goalTrack,maxBank,turnRight);
-			double iterTm = Math.min(delta,rollTime);
+			double iterTm = Util.min(delta,rollTime);
 			svEnd = RollInOut(svEnd, iterTm,maxBank, turnRight, rollTime,false);   // roll in
 			double turnRemainingTm = 0.0;
 			if (t > rollInStartTm+rollTime) {                  // ---------- we usually come up a little short
 				double lastBank = Units.from("deg",5);
 				double trnTm = turnTime(svEnd.second,goalTrack, lastBank ,turnRight);
 				if (trnTm < rollTime) {  // have not gone past goal track yet
-					turnRemainingTm = Math.min(delta-rollTime, trnTm);
+					turnRemainingTm = Util.min(delta-rollTime, trnTm);
 					double Rlast= Kinematics.turnRadius(v0.gs(), lastBank);
 					svEnd = turn(svEnd, turnRemainingTm, Rlast , turnRight);
 					//f.pln(T+" In turnRemainingTm :  nv = "+nv+" turnRemainingTm = "+turnRemainingTm+" trnTm = "+trnTm);
@@ -765,11 +745,11 @@ public final class Kinematics {
 			rollTime = turnTm/2;
 		}
 		double delay = rollTime/2.0;
-		double t1 = Math.min(t,delay);
+		double t1 = Util.min(t,delay);
 		Pair<Vect3,Velocity> nsv = linear(new Pair<Vect3,Velocity>(s0,v0), t1); 
 		double turnTime = (int) turnTime(v0,goalTrack,maxBank,turnRight);
 		if (t > delay) {
-			double t2 = Math.min(t-delay,turnTime);
+			double t2 = Util.min(t-delay,turnTime);
 			double R = Kinematics.turnRadius(v0.gs(),maxBank);
 			nsv = turn(nsv, t2, R, turnRight);
 		}
@@ -862,16 +842,16 @@ public final class Kinematics {
 	  }
 	  Velocity vo = svo.second;
 	  double R = Kinematics.turnRadius(vo.gs(),maxBank);
-	  double tOut = Math.min(t,rollTime);
+	  double tOut = Util.min(t,rollTime);
 	  double tMid = -1;
 	  double tIn = -1;
 	  Pair<Vect3,Velocity> svPair = RollInOut(svo,tOut,maxBank, turnRight, rollTime,true);   // rollOut
 	  if (t > rollTime) {
-		  tMid = Math.min(t-rollTime,turnTime - 2*rollTime);     // amount of time for middle section
+		  tMid = Util.min(t-rollTime,turnTime - 2*rollTime);     // amount of time for middle section
 		  //f.pln("turnTimeWithRoll: t = "+t+" tMid = "+tMid);
 		  svPair = turn(svPair, tMid , R , turnRight);
 		  if (t > turnTime - rollTime) {
-			  tIn = Math.min(t - (turnTime - rollTime),rollTime);
+			  tIn = Util.min(t - (turnTime - rollTime),rollTime);
 			  svPair = RollInOut(svPair,tIn,maxBank, turnRight, rollTime,false);   // rollIn
 		  }
 		  if (t > turnTime) 
@@ -890,16 +870,16 @@ public final class Kinematics {
 	 * @param turnTime    total time for this turn (sec)  (cannot exceed time to perform 360 deg turn)
 	 * @param maxBank     bank angle at the end of the roll
 	 * @param turnRight   true iff only turn direction is to the right
-	 * @param rollRate    rate of change of bank angle when rolling
+	 * @param rollTime    time to accomplish the roll
 	 * @return Position/velocity after t time
 	 */
 	public static Pair<Vect3,Velocity> approxTurnTimeWithRoll(Vect3 s0, Velocity v0, double t, double turnTime, double maxBank, boolean turnRight, double rollTime) {
        //double rollRate = maxBank/rollTime;
 		double delay = rollTime/2.0;
-		double t1 = Math.min(t,delay);
+		double t1 = Util.min(t,delay);
 		Pair<Vect3,Velocity> nsv = linear(new Pair<Vect3,Velocity>(s0,v0), t1); 
 		if (t > delay) {
-			double t2 = Math.min(t-delay,turnTime-2*delay);
+			double t2 = Util.min(t-delay,turnTime-2*delay);
 			double R = Kinematics.turnRadius(v0.gs(),maxBank);
 			nsv = turn(nsv, t2, R, turnRight);
 		}
@@ -1211,6 +1191,8 @@ public final class Kinematics {
 	 * @param bankAngleOwn       the bank angle of the ownship
 	 * @param turnRightOwn     the turn direction of ownship
 	 * @param stopTime         the duration of the turns
+	 * @param D     horizontal distance
+	 * @param H     vertical distance
 	 * @return                 minimum distance data packed in a Vect4
 	 */
 	public static boolean testLoSTrk(Vect3 so, Velocity vo, Velocity nvo, Vect3 si, Velocity vi,  
@@ -1322,9 +1304,9 @@ public final class Kinematics {
 	 *
 	 * @param so         current position
 	 * @param vo         current velocity
-	 * @param goalGs     the ground speed where the acceleration stops
-	 * @param gsAccel    the ground speed acceleration (a positive value)
 	 * @param t          time point of interest
+	 * @param goalGS     the ground speed where the acceleration stops
+	 * @param gsAccel    the ground speed acceleration (a positive value)
 	 * @return           Position-Velocity pair after time t
 	 */	
 	public static Pair<Vect3,Velocity> gsAccelUntil(Vect3 so, Velocity vo, double t, double goalGS, double gsAccel) {
@@ -1345,7 +1327,7 @@ public final class Kinematics {
 	 *  Position after t time units where there is first an acceleration or deceleration to the target
 	 *  ground speed goalGs and then continuing at that speed for the remainder of the time, if any.
 	 *
-	 * @param svo        initial position and velocity
+	 * @param sv0        initial position and velocity
 	 * @param goalGs     the ground speed where the acceleration stops
 	 * @param gsAccel    the ground speed acceleration (a positive value)
 	 * @param t          time point of interest
@@ -1357,7 +1339,7 @@ public final class Kinematics {
 
 	// ********* EXPERIMENTAL ***** USES LINEAR APPROXIMATION *****************
 	public static Pair<Vect3,Velocity> gsAccelUntilWithRamp(Pair<Vect3,Velocity> sv0, double t, double goalGs, double gsAccel, double rampTime) {
-		double rmpTm = Math.min(t, rampTime/2.0);
+		double rmpTm = Util.min(t, rampTime/2.0);
 		Pair<Vect3,Velocity> nsv = linear(sv0,rmpTm);
 		return gsAccelUntil(nsv, t-rmpTm, goalGs, gsAccel);
 	}
@@ -1438,7 +1420,7 @@ public final class Kinematics {
 	
 	private static Pair<Boolean, Double> gsAccelToRTA_possible(double gsIn, double dist, double rta, double a) {
 		if (a>0) return new Pair<Boolean, Double>(gsIn*rta + 0.5*a*rta*rta >= dist, rta);
-		 double T = Math.min(rta, -gsIn/a);
+		 double T = Util.min(rta, -gsIn/a);
 		 return new Pair<Boolean, Double>(gsIn*rta+0.5*a*rta*rta<=dist, T);
 		
 	}
@@ -1604,11 +1586,14 @@ public final class Kinematics {
 	}
 
 
-	// test fix
 	/**
 	 * Accelerate for a given distance.  Return the end gs and time.  Negative time indicates an error.
+	 * 
+	 * @param gsIn ground speed in
+	 * @param dist distance
+	 * @param gsAccel ground speed acceleration
+	 * @return end ground speed and time
 	 */
-
 	public static Pair<Double,Double> gsAccelToDist(double gsIn, double dist, double gsAccel) {
 		if (gsIn < 0 || dist < 0) {
 			return new Pair<Double,Double>(0.0,-1.0);
@@ -1640,6 +1625,8 @@ public final class Kinematics {
 	 * @param vi    initial velocity of traffic
 	 * @param gsAccelOwn    ground speed acceleration of the ownship
 	 * @param stopTime         the duration of the turns
+	 * @param D     horizontal distance
+	 * @param H     vertical distance
 	 * @return                 minimum distance data packed in a Vect4
 	 */
 	public static boolean testLoSGs(Vect3 so, Velocity vo, Velocity nvo, Vect3 si, Velocity vi,  
@@ -1662,10 +1649,10 @@ public final class Kinematics {
 
 	/**
 	 * Return the elevation angle (alternatively the negative glide-slope angle) for a climb (descent)
+	 * @param v velocity
 	 * @return elevation angle [radians]
 	 */
 	public static double elevationAngle(Velocity v) {
-//f.pln(v.verticalSpeed()+"  "+v.groundSpeed()+"  "+Util.atan2_safe(v.verticalSpeed(), v.groundSpeed()));		
 		return Util.atan2_safe(v.vs(), v.gs());
 	}
 	
@@ -1725,8 +1712,8 @@ public final class Kinematics {
 	 * @return           acceleration time
 	 */
 	public static double vsAccelTime(double vs, double goalVs, double vsAccel) {
-		double deltaVs = Math.abs(vs - goalVs);
-		double rtn = deltaVs/vsAccel;
+		double deltaVs = vs - goalVs;
+		double rtn = Math.abs(deltaVs/vsAccel);
 		//f.pln("#### vsAccelTime: vs() = "+Units.str("fpm",vs)+" deltaVs = "+Units.str("fpm",deltaVs)+" rtn = "+rtn);
 		return rtn;
 	}
@@ -1770,7 +1757,7 @@ public final class Kinematics {
 		double accelTime = vsAccelTime(vo,goalVs, vsAccel);
 		int sgn = 1;
 		if (goalVs < vo.vs()) sgn = -1;
-		Vect3 ns = Vect3.ZERO;
+		//Vect3 ns = Vect3.ZERO;
 		if (t <= accelTime)
 			return vsAccel(so,vo, t, sgn*vsAccel);
 		else {
@@ -1871,7 +1858,7 @@ public final class Kinematics {
 	// ***** EXPERIMENTAL ******
 	public static Pair<Vect3,Velocity> approxVsAccelWithRampUp(Pair<Vect3,Velocity> sv0, double t, double vsAccel, double tRamp) {
 		double delay = tRamp/2.0;
-		double t1 = Math.min(t,delay);
+		double t1 = Util.min(t,delay);
 		Pair<Vect3,Velocity> nsv = linear(sv0, t1); 
 		return vsAccel(nsv, t-t1, vsAccel);
 	}
@@ -1885,7 +1872,7 @@ public final class Kinematics {
 	 * @param targetAlt
 	 * @param a
 	 * @param allowClimbRateChange
-	 * @return
+	 * @return a StateVector
 	 */
 	public static StateVector vsLevelOutFinal(Pair<Vect3,Velocity> sv0, double climbRate, double targetAlt, double a, boolean allowClimbRateChange) {
 		Tuple5<Double, Double,Double,Double,Double> qV =  vsLevelOutTimes(sv0,climbRate,targetAlt,a, allowClimbRateChange);
@@ -1905,7 +1892,7 @@ public final class Kinematics {
 	 * @param targetAlt
 	 * @param a
 	 * @param allowClimbRateChange
-	 * @return
+	 * @return a StateVector
 	 */
 	public static StateVector vsLevelOutFinal(Pair<Vect3,Velocity> sv0, double climbRate, double targetAlt, double a) {
 		Tuple5<Double, Double,Double,Double,Double> qV =  vsLevelOutTimes(sv0,climbRate,targetAlt,a);
@@ -1985,7 +1972,7 @@ public final class Kinematics {
 		int altDir = -1;
 		if (targetAlt >= s0z) altDir = 1;
 	    climbRate = altDir*Math.abs(climbRate);
-		if (allowClimbRateChange) climbRate = altDir*(Math.max(Math.abs(climbRate), Math.abs(v0z)));
+		if (allowClimbRateChange) climbRate = altDir*(Util.max(Math.abs(climbRate), Math.abs(v0z)));
 	    double S = targetAlt-s0z;
 		double a1 = acceldown;
 		if (climbRate>=v0z) a1 = accelup;
@@ -2007,7 +1994,7 @@ public final class Kinematics {
 			if (root1<0)  T1 = root2;
 			else if (root2<0) T1 = root1;
 			else
-			T1= Math.min(root1, root2);
+			T1= Util.min(root1, root2);
 			//f.pln("times1 case2");
 			return new Tuple5<Double, Double,Double,Double,Double>(T1, T1, T1+T3(V1(v0z, a1, T1), a2),a1,a2);
 		}
@@ -2114,13 +2101,15 @@ public final class Kinematics {
 	/** returns Pair that contains position and velocity at time t due to level out maneuver based on vsLevelOutTimesAD
 	 * 
 	 * @param sv0        			current position and velocity vectors
-	 * @param t          			time point of interest
 	 * @param climbRate  			climb rate
 	 * @param targetAlt  			target altitude
 	 * @param a1         			first acceleration 
 	 * @param a2         			second acceleration
-	 * @param allowClimbRateChange allows climbRate to change to initial velocity if it can help. 
-	 * @return
+	 * @param t1                    first time
+	 * @param t2                    second time
+	 * @param t3                    third time
+	 * @param t          			time point of interest
+	 * @return position and velocity
 	 */
 	public static Pair<Vect3, Velocity> vsLevelOutCalculation(Pair<Vect3,Velocity> sv0,  
 			                              double targetAlt, double a1, double a2, double t1, double t2, double t3,  double t) {
@@ -2145,7 +2134,7 @@ public final class Kinematics {
 	 * @param accelUp         		first acceleration 
 	 * @param accelDown    			second acceleration
 	 * @param allowClimbRateChange allows climbRate to change to initial velocity if it can help. 
-	 * @return
+	 * @return position and velocity
 	 */
 	public static Pair<Vect3, Velocity> vsLevelOut(Pair<Vect3, Velocity> sv0, double t, double climbRate, 
 			                            double targetAlt, double accelUp, double accelDown, boolean allowClimbRateChange) {
@@ -2165,11 +2154,11 @@ public final class Kinematics {
 
 	 /**
 	   * EXPERIMENTAL: See vsAccelUntilWithRampUp for better version
-	   * @param svo
-	   * @param t
-	   * @param goalVs
+	   * @param svo position and velocity
+	   * @param t   time
+	   * @param goalVs goal vertical speed
 	   * @param maxAccel &ge; 0
-	   * @param accelRate &ge; 0 
+	   * @param tRamp ramp up time
 	   * @return the position and velocity pair
 	   */
 	  public static Pair<Vect3,Velocity> vsAccelUntilAccelRateIter(Pair<Vect3,Velocity> svo, double t, double goalVs, double maxAccel, double tRamp) {
@@ -2315,7 +2304,7 @@ public final class Kinematics {
 	   * @param goalAlt goal altitude
 	   * @param goalClimb desired rate of climb (sign does not matter)
 	   * @param vsAccel acceleration during climb (sign does not matter)
-	   * @return
+	   * @return position and velocity
 	   */
 	  public static Pair<Vect3,Velocity> vsAccelToFlightLevel(Vect3 s, Velocity v, double t, double goalAlt, double goalClimb, double vsAccel) {
 		  Triple<Double,Double,Double> tm = climbSegmentEnds(s,v,goalAlt,goalClimb,vsAccel);
@@ -2332,10 +2321,11 @@ public final class Kinematics {
 	   * @param s initial position
 	   * @param v initial velocity
 	   * @param t time from start of climb
-	   * @param goalAlt goal altitude
-	   * @param goalClimb desired rate of climb (sign does not matter)
+	   * @param goalTrk goal track
+	   * @param goalVs goal vertical speed
+	   * @param maxBank max bank angle
 	   * @param vsAccel acceleration during climb (sign does not matter)
-	   * @return
+	   * @return position and velocity
 	   */
 	  public static Pair<Vect3,Velocity> vsAccelandTurnUntil(Vect3 s, Velocity v, double t, double goalTrk, double goalVs, double maxBank, double vsAccel) {
 		  Pair<Vect3,Velocity> tPair = turnUntil(s,v,t,goalTrk,maxBank); 
@@ -2439,7 +2429,7 @@ public final class Kinematics {
 //
 //  boolean ret = false;
 //  double stepSize = 1.0;
-//  stepSize = Math.min(stepSize, turnTime/2.0); // need at least 2 steps
+//  stepSize = Util.min(stepSize, turnTime/2.0); // need at least 2 steps
 //  while (time < turnTime) {
 //	  ret = (time >= turnTime/2);
 //	  if (!ret && bank < maxBank) {
@@ -2479,7 +2469,7 @@ public final class Kinematics {
 //
 //	public static Pair<Vect3,Velocity> turnWithRoll(Pair<Vect3,Velocity> sv0, double T, double maxBank, boolean turnRight, double rollRate) {
 //		double rollTime = maxBank/rollRate;
-//		double iterT = Math.min(T,rollTime);
+//		double iterT = Util.min(T,rollTime);
 //		Velocity v0 = sv0.second;
 //		Pair<Vect3,Velocity> rPair = RollInOut(sv0,iterT,maxBank, turnRight, rollTime, true);
 //		if (T > rollTime) {

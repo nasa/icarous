@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2016 United States Government as represented by
+ * Copyright (c) 2012-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -145,7 +145,7 @@ public class TCAS3D implements Detection3D {
     double tentry = B;
     double texit  = T;
     if (!Util.almost_equals(vo.z, vi.z)) {
-      double act_H = Math.max(ZTHR,Math.abs(vz)*TCOA);
+      double act_H = Util.max(ZTHR,Math.abs(vz)*TCOA);
       tentry = Vertical.Theta_H(sz,vz,-1,act_H);
       texit = Vertical.Theta_H(sz,vz,1,ZTHR);
     }
@@ -157,14 +157,14 @@ public class TCAS3D implements Detection3D {
       dist_mintau = so.linear(vo, time_mintau).Sub(si.linear(vi, time_mintau)).cyl_norm(table.getDMOD(8), table.getZTHR(8));
       return new ConflictData(time_in,time_out,time_mintau,dist_mintau,s,v);
     }
-    double tin = Math.max(B,tentry);
-    double tout = Math.min(T,texit);
+    double tin = Util.max(B,tentry);
+    double tout = Util.min(T,texit);
     TCAS2D tcas2d = new TCAS2D();
     tcas2d.RA2D_interval(DMOD,TAU,tin,tout,s2,vo2,vi2);
     double RAin2D = tcas2d.time_in;
     double RAout2D = tcas2d.time_out;
-    double RAin2D_lookahead = Math.max(tin,Math.min(tout,RAin2D));
-    double RAout2D_lookahead = Math.max(tin,Math.min(tout,RAout2D));
+    double RAin2D_lookahead = Util.max(tin,Util.min(tout,RAin2D));
+    double RAout2D_lookahead = Util.max(tin,Util.min(tout,RAout2D));
     if (RAin2D > RAout2D || RAout2D<tin || RAin2D > tout ||
     (usehmdf && HMD < DMOD && exit_at_centry && !los_at_centry)) { 
       time_mintau = TCAS2D.time_of_min_tau(DMOD,B,T,s2,v2);
@@ -174,8 +174,8 @@ public class TCAS3D implements Detection3D {
     if (usehmdf && HMD < DMOD) {
       double exitTheta = T;
       if (v2.sqv() > 0) 
-        exitTheta = Math.max(B,Math.min(Horizontal.Theta_D(s2,v2,1,HMD),T));
-      double minRAoutTheta = Math.min(RAout2D_lookahead,exitTheta);
+        exitTheta = Util.max(B,Util.min(Horizontal.Theta_D(s2,v2,1,HMD),T));
+      double minRAoutTheta = Util.min(RAout2D_lookahead,exitTheta);
       time_in = RAin2D_lookahead;
       time_out = minRAoutTheta;
       if (RAin2D_lookahead <= minRAoutTheta) {

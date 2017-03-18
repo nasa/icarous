@@ -1,34 +1,27 @@
 /*
- * Copyright (c) 2015-2016 United States Government as represented by
+ * Copyright (c) 2015-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
 package gov.nasa.larcfm.ACCoRD;
 
-import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.IntervalSet;
-import gov.nasa.larcfm.Util.MovingPolygon2D;
 import gov.nasa.larcfm.Util.MovingPolygon3D;
-import gov.nasa.larcfm.Util.Pair;
 import gov.nasa.larcfm.Util.ParameterData;
-import gov.nasa.larcfm.Util.Poly2D;
 import gov.nasa.larcfm.Util.Poly3D;
-import gov.nasa.larcfm.Util.Units;
-import gov.nasa.larcfm.Util.Vect2;
 import gov.nasa.larcfm.Util.Vect3;
 import gov.nasa.larcfm.Util.Velocity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class CDPolycarp implements DetectionPolygon {
 
-	ArrayList<Double> tin = new ArrayList<Double>();
-	ArrayList<Double> tout = new ArrayList<Double>();
-	ArrayList<Double> tca = new ArrayList<Double>();
-	ArrayList<Double> tdist = new ArrayList<Double>();
+	List<Double> tin = new ArrayList<Double>();
+	List<Double> tout = new ArrayList<Double>();
+	List<Double> tca = new ArrayList<Double>();
+	List<Double> tdist = new ArrayList<Double>();
 
 	private double buff;
 	private double fac;
@@ -151,6 +144,16 @@ public class CDPolycarp implements DetectionPolygon {
 	public boolean definitelyInside(Vect3 so, Poly3D si) {
 		return Polycarp3D.definitely_inside(so, si, buff, checkNice);
 	}
+	
+	/**
+	 * Return true if ownship is definitely outside a polygon (fence)
+	 * @param so ownship position
+	 * @param si polygon
+	 * @return true if definitely outside
+	 */
+	public boolean definitelyOutside(Vect3 so, Poly3D si) {
+		return Polycarp3D.definitely_outside(so, si, buff, checkNice);
+	}
 
 	public boolean violation(Vect3 so, Velocity vo, Poly3D si) {
 		return !Polycarp3D.definitely_outside(so, si, buff, checkNice);
@@ -182,17 +185,6 @@ public class CDPolycarp implements DetectionPolygon {
 	}
 
 
-	
-//	@Override
-//	public boolean outside(Vect3 so, Velocity vo, Poly3D si) {
-//		return Polycarp3D.definitely_outside(so, si, buff);
-//	}
-//
-//	@Override
-//	public boolean inside(Vect3 so, Velocity vo, Poly3D si) {
-//		return Polycarp3D.definitely_inside(so, si, buff);
-//	}
-//
 //	@Override
 //	public boolean willEnter(Vect3 so, Velocity vo, MovingPolygon3D si, double B, double T) {
 //		return Polycarp3D.detection(so, vo, si, B, T, buff, fac, true);
@@ -267,7 +259,7 @@ public class CDPolycarp implements DetectionPolygon {
 		p.set("id", id);
 		p.setInternal("buff", buff, "m");
 		p.setInternal("fac",fac, "unitless");
-		p.set("checkNice", checkNice);
+		p.setBool("checkNice", checkNice);
 	}
 
 	public void setParameters(ParameterData p) {

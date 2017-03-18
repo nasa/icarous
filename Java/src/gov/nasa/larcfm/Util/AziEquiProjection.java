@@ -4,7 +4,7 @@
  * 
  * project spherical coordinates (lat/lon) into a Euclidean frame and the inverse.
  * 
- * Copyright (c) 2011-2016 United States Government as represented by
+ * Copyright (c) 2011-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -30,22 +30,27 @@ package gov.nasa.larcfm.Util;
  */
 public final class AziEquiProjection implements EuclideanProjection {
 
-
-//    private double projAlt;
-	
     private final double projAlt;
  	private final Vect3 ref;
  	private final LatLonAlt llaRef;
 
     
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point.
+ 	 * 
+ 	 * @param lla reference point
+ 	 */
     public AziEquiProjection(LatLonAlt lla) {
         projAlt = lla.alt();
         ref = spherical2xyz(lla.lat(), lla.lon());
         llaRef = lla;
     }
  
-    /** Create a projection around the given reference point. */
+    /** Create a projection around the given reference point.
+     * 
+     * @param lat latitude of reference point
+     * @param lon longitude of reference point
+     * @param alt altitude of reference point
+     */
     public AziEquiProjection(double lat, double lon, double alt) {
         projAlt = alt;
         ref = spherical2xyz(lat, lon);

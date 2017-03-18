@@ -1,0 +1,4 @@
+icarous
+*.dSYM
+DAAGeofencingExample
+libs/*.a

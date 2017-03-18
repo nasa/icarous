@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * Organization: NASA/Langley Research Center
  * 
- * Copyright (c) 2011-2016 United States Government as represented by 
+ * Copyright (c) 2011-2017 United States Government as represented by 
  * the National Aeronautics and Space Administration.  No copyright 
  * is claimed in the United States under Title 17, U.S.Code. All Other 
  * Rights Reserved.
@@ -22,7 +22,7 @@ package gov.nasa.larcfm.Util;
  * <ul>
  * <li>The Earth does not rotate. This may change.
  * <li>Positive latitude is north and positive longitude is east.
- * <li>All course angles (i.e., desired track angles) are in radians clockwise
+ * <li>All course angles (i.e., desired chord angles) are in radians clockwise
  * from true north.
  * <li>When the returned value is in lat/long and it is a Vect2, latitude is in
  * the "x" position and longitude is in the "y" position.
@@ -48,6 +48,12 @@ public final class GreatCircle {
 	 * 
 	 * If the degrees is negative (representing 
 	 * south or west), then the flag is ignored.
+	 * 
+	 * @param degrees value of degrees
+	 * @param minutes value of minutes
+	 * @param seconds value of seconds
+	 * @param north_east true, if north or east
+	 * @return an angle
 	 */
 	public static double decimal_angle(double degrees, double minutes,
 			double seconds, boolean north_east) {
@@ -128,7 +134,7 @@ public final class GreatCircle {
 
 
 	/**
-	 * Convert the distance (in internal length units) across the surface of the
+	 * Convert the distance (in internal length units) across the <b>surface</b> of the
 	 * (spherical) Earth into an angle.
 	 */
 	private static double angle_from_distance(double distance) {
@@ -140,7 +146,7 @@ public final class GreatCircle {
 	 * (as defined by various international committees) and that one nautical
 	 * mile is equal to one minute of arc (traditional definition of a nautical
 	 * mile) on the Earth's surface. This value lies between the major and minor 
-	 * axis as defined by the "reference ellipsoid" in WGS84.
+	 * axis as defined by the reference ellipsoid in WGS84.
 	 */
 	public static final double spherical_earth_radius = Units.from(Units.m,
 			1.0 / angle_from_distance(1.0));
@@ -150,6 +156,10 @@ public final class GreatCircle {
 	 * Convert the distance (in internal length units) across a sphere at a
 	 * height of h (in internal length units) above surface of the (spherical)
 	 * Earth into an angle.
+	 * 
+	 * @param distance distance [m]
+	 * @param h height above surface of spherical Earth
+	 * @return angular distance [radian]
 	 */
 	public static double angle_from_distance(double distance, double h) {
 		return angle_from_distance(distance * spherical_earth_radius
@@ -159,6 +169,10 @@ public final class GreatCircle {
 	/**
 	 * Convert the given angle into a distance across a (spherical) Earth at
 	 * height above the surface of h.
+	 * 
+	 * @param angle angular distance [radian]
+	 * @param h height above surface of spherical Earth
+	 * @return linear distance [m]
 	 */
 	public static double distance_from_angle(double angle, double h) {
 		return (spherical_earth_radius + h) * angle;
@@ -167,6 +181,12 @@ public final class GreatCircle {
 	/**
 	 * Determines if two points are close to each other, see
 	 * Constants.get_horizontal_accuracy().
+	 * 
+	 * @param lat1 latitude of point 1
+	 * @param lon1 longitude of point 1
+	 * @param lat2 latitude of point 2
+	 * @param lon2 longitude of point 2
+	 * @return true, if almost equals
 	 */
 	public static boolean almost_equals(double lat1, double lon1, double lat2,
 			double lon2) {
@@ -177,6 +197,13 @@ public final class GreatCircle {
 	/**
 	 * Determines if two points are close to each other, where 'close'
 	 * is defined by the distance parameter given in meters.
+	 * 
+	 * @param lat1 latitude of point 1
+	 * @param lon1 longitude of point 1
+	 * @param lat2 latitude of point 2
+	 * @param lon2 longitude of point 2
+	 * @param epsilon maximum difference
+	 * @return true, if almost equals
 	 */
 	public static boolean almost_equals(double lat1, double lon1, double lat2,
 			double lon2, double epsilon) {
@@ -187,6 +214,12 @@ public final class GreatCircle {
 	 * Compute the great circle distance in radians between the two points. The
 	 * calculation applies to any sphere, not just a spherical Earth. The
 	 * current implementation uses the haversine formula.
+	 * 
+	 * @param lat1 latitude of point 1
+	 * @param lon1 longitude of point 1
+	 * @param lat2 latitude of point 2
+	 * @param lon2 longitude of point 2
+	 * @return angular distance
 	 */
 	public static double angular_distance(double lat1, double lon1,
 			double lat2, double lon2) {
@@ -221,6 +254,12 @@ public final class GreatCircle {
 	 * accurate for small distances; however, it is not faster, in fact, 
 	 * it takes about twice the time.  It seems that sin's are 
 	 * faster than cos's?  Investigations are continuing.
+	 * 
+	 * @param lat1 latitude of point 1
+	 * @param lon1 longitude of point 1
+	 * @param lat2 latitude of point 2
+	 * @param lon2 longitude of point 2
+	 * @return angular distance
 	 */
 	public static double angular_distance_alt(double lat1, double lon1,
 			double lat2, double lon2) {
@@ -233,6 +272,10 @@ public final class GreatCircle {
 	 * Compute the great circle distance in radians between the two points. The
 	 * calculation applies to any sphere, not just a spherical Earth. The
 	 * current implementation uses the haversine formula.
+	 * 
+	 * @param p1 one point
+	 * @param p2 another point
+	 * @return angular distance
 	 */
 	public static double angular_distance(LatLonAlt p1, LatLonAlt p2) {
 		return angular_distance(p1.lat(), p1.lon(), p2.lat(), p2.lon());
@@ -241,6 +284,12 @@ public final class GreatCircle {
 	/**
 	 * Compute the great circle distance between the two given points. The
 	 * calculation assumes the Earth is a sphere
+	 * 
+	 * @param lat1 latitude of point 1
+	 * @param lon1 longitude of point 1
+	 * @param lat2 latitude of point 2
+	 * @param lon2 longitude of point 2
+	 * @return distance
 	 */
 	public static double distance(double lat1, double lon1, double lat2,
 			double lon2) {
@@ -251,6 +300,10 @@ public final class GreatCircle {
 	/**
 	 * Compute the great circle distance between the two given points. The
 	 * calculation assumes the Earth is a sphere. This ignores the altitudes.
+	 * 
+	 * @param p1 one point
+	 * @param p2 another point
+	 * @return angular distance
 	 */
 	public static double distance(LatLonAlt p1, LatLonAlt p2) {
 		// return distance_from_angle(angular_distance(p1, p2),(p1.alt() + p2.alt())/2.0);
@@ -314,6 +367,12 @@ public final class GreatCircle {
 	 * Usage Note: If lat/long #1 and #2 are close to each other, then the
 	 * initial course may become unstable. In the extreme case when lat/long #1
 	 * equals lat/long #2, then the initial course is undefined.
+	 * 
+	 * @param lat1 latitude of point 1
+	 * @param lon1 longitude of point 1
+	 * @param lat2 latitude of point 2
+	 * @param lon2 longitude of point 2
+	 * @return initial course
 	 */
 	public static double initial_course(double lat1, double lon1, double lat2, double lon2) {
 		LatLonAlt p1 = LatLonAlt.mk(lat1, lon1, 0.0);
@@ -331,6 +390,10 @@ public final class GreatCircle {
 	 * Usage Note: If point #1 and #2 are close to each other, then the initial
 	 * course may become unstable. In the extreme case when point #1 equals
 	 * point #2, then the initial course is undefined.
+	 * 
+	 * @param p1 a point
+	 * @param p2 another point
+	 * @return initial course
 	 */
 	public static double initial_course(LatLonAlt p1, LatLonAlt p2) {
 		double d = angular_distance(p1.lat(), p1.lon(), p2.lat(), p2.lon());
@@ -347,6 +410,12 @@ public final class GreatCircle {
 	 * is in internal units of angles (radians), and is a compass angle
 	 * [0..2*Pi]: clockwise from true north. This is currently calculated as the
 	 * initial course from the midpoint of the arc to its endpoint.
+	 * 
+	 * @param lat1 latitude of point 1
+	 * @param lon1 longitude of point 1
+	 * @param lat2 latitude of point 2
+	 * @param lon2 longitude of point 2
+	 * @return representative course
 	 */
 	public static double representative_course(double lat1, double lon1, double lat2, double lon2) {
 		LatLonAlt p1 = LatLonAlt.mk(lat1, lon1, 0.0);
@@ -401,6 +470,11 @@ public final class GreatCircle {
 	 * circle line is undefined (there are infinitely many of them).
 	 * <li>if lat/long #1 is almost the same as #2, then #1 is returned
 	 * </ul>
+	 * 
+	 * @param p1 point #1
+	 * @param p2 point #1
+	 * @param f decimal fraction
+	 * @return a new point between p1 and p2
 	 */
 	public static LatLonAlt interpolate(LatLonAlt p1, LatLonAlt p2, double f) {
 		double d = angular_distance(p1, p2);
@@ -410,10 +484,10 @@ public final class GreatCircle {
 	/**
 	 * This is a fast but crude way of interpolating between relatively close geodesic points
 	 * 
-	 * @param p1
-	 * @param p2
-	 * @param f
-	 * @return
+	 * @param p1 point #1
+	 * @param p2 point #1
+	 * @param f decimal fraction
+	 * @return a new point between p1 and p2
 	 */
 	public static LatLonAlt interpolateEst(LatLonAlt p1, LatLonAlt p2, double f) {
 		return LatLonAlt.mk((p2.lat() - p1.lat()) * f + p1.lat(),
@@ -577,6 +651,12 @@ public final class GreatCircle {
 	 * 
 	 * This calculation ignores altitude. Small errors (typically less than
 	 * 0.5%) will be introduced at typical aircraft altitudes.
+	 * 
+	 * @param p1 a point
+	 * @param p2 another point
+	 * @param v velocity
+	 * @param t time
+	 * @return end point of a linear extrapolation
 	 */
 	public static LatLonAlt linear_gcgs(LatLonAlt p1, LatLonAlt p2, Velocity v,
 			double t) {
@@ -634,6 +714,11 @@ public final class GreatCircle {
 	 * 
 	 * This calculation is approximate: small errors (typically less than 0.5%)
 	 * will be introduced at typical aircraft altitudes.
+	 * 
+	 * @param s position
+	 * @param v velocity
+	 * @param t time
+	 * @return linear extrapolation along a rhumb line
 	 */
 	public static LatLonAlt linear_rhumb(LatLonAlt s, Velocity v, double t) {
 		return linear_rhumb_impl(s, v.trk(), angle_from_distance(v.gs() * t),
@@ -667,6 +752,11 @@ public final class GreatCircle {
 	 * 
 	 * This calculation is approximate: small errors (typically less than 0.5%)
 	 * will be introduced at typical aircraft altitudes.
+	 * 
+	 * @param s position
+	 * @param track track angle
+	 * @param dist distance
+	 * @return linear extrapolation along a rhumb line
 	 */
 	public static LatLonAlt linear_rhumb(LatLonAlt s, double track, double dist) {
 		return linear_rhumb_impl(s, track, angle_from_distance(dist), 0.0);
@@ -679,6 +769,12 @@ public final class GreatCircle {
 	 * 
 	 * This calculation is approximate: small errors (typically less than 0.5%)
 	 * will be introduced at typical aircraft altitudes.
+	 * 
+	 * @param s position
+	 * @param v velocity
+	 * @param t time
+	 * @param firstSolution true, return first solution
+	 * @return linear extrapolation of point
 	 */
 	public static LatLonAlt linear_final(LatLonAlt s, Velocity v, double t, boolean firstSolution) {
 		double c = GreatCircle.angle_from_distance(v.gs() * t);  // angular distance between initial and final point
@@ -738,12 +834,17 @@ public final class GreatCircle {
 	}
 
 	/**
-	 * Find a point from the given lat/lon when traveling along the great circle
+	 * Find a point from the given lat/lon ('s') when traveling along the great circle
 	 * with the given initial velocity for the given amount of time.
 	 * <p>
 	 * 
 	 * This calculation is approximate: small errors (typically less than 0.5%)
 	 * will be introduced at typical aircraft altitudes.
+	 * 
+	 * @param s a position
+	 * @param v velocity
+	 * @param t time
+	 * @return position that is t seconds from s going velocity v
 	 */
 	public static LatLonAlt linear_initial(LatLonAlt s, Velocity v, double t) {
 		return linear_initial_impl(s, v.trk(), angle_from_distance(v.gs() * t),
@@ -751,24 +852,22 @@ public final class GreatCircle {
 	}
 
 	/**
-	 * Find a point from the given lat/lon with an initial angle of 'track' at a distance
+	 * Find a point from the given lat/lon ('s') with an initial 'track' angle at a distance
 	 * of 'dist'. This calculation follows the great circle.
 	 * <p>
 	 * 
-	 * This calculation is approximate: small errors (typically less than 0.5%)
-	 * will be introduced at typical aircraft altitudes.<p>
+	 * Note: this method does not compute an accurate altitude<p>
+	 * 
 	 * 
 	 * @param s     a position
 	 * @param track the second point to define the great circle
-	 * @param dist  distance from point #1 [m]
+	 * @param dist  distance from point #1 over the surface of the Earth [m]
 	 * @return a new position that is distance d from point #1
-	 * 
-	 * Note: this method does not compute an accurate altitude
-	 * 
 	 */
 	public static LatLonAlt linear_initial(LatLonAlt s, double track, double dist) {
 		return linear_initial_impl(s, track, angle_from_distance(dist), 0.0);
 	}
+
 
 	private static LatLonAlt linear_initial_impl(LatLonAlt s, double track,	double d, double vertical) {
 		double cosd = Math.cos(d);
@@ -791,9 +890,9 @@ public final class GreatCircle {
 		// force any polar latitudes to be "near" the pole
 
 		final double eps = 1e-15;
-		double s_lat = Math.max(Math.min(s.lat(), pi / 2 - eps), -pi / 2 + eps);
+		double s_lat = Util.max(Util.min(s.lat(), pi / 2 - eps), -pi / 2 + eps);
 		double lat = s_lat + d * Math.cos(track);
-		lat = Math.max(Math.min(lat, pi / 2 - eps), -pi / 2 + eps);
+		lat = Util.max(Util.min(lat, pi / 2 - eps), -pi / 2 + eps);
 
 		double q;
 		if (Constants.almost_equals_radian(lat, s_lat)) {
@@ -1213,6 +1312,12 @@ public final class GreatCircle {
 	 * intersection point.  This is the same as the dihedral angle, or angle between the two GC planes. 
 	 * Note this may not be the same angle as the one projected into the Euclidean (unless the projection point is the intersection point), 
 	 * and will generally not be the same as the (non-projected) track angle difference between them.
+	 * 
+	 * @param a1 one point on the first great circle
+	 * @param a2 second point on the first great circle
+	 * @param b1 one point on the second great circle
+	 * @param b2 second point on the second great circle
+	 * @return angle between two great circles
 	 */
 	public static double angle_between(LatLonAlt a1, LatLonAlt a2, LatLonAlt b1, LatLonAlt b2) {
 		Vect3 va = spherical2xyz(a1.lat(), a1.lon()).cross(spherical2xyz(a2.lat(), a2.lon())).Hat(); // normal 1
@@ -1250,7 +1355,7 @@ public final class GreatCircle {
 	 * @param ll aircraft position
 	 * @param v aircraft velocity
 	 * @param x intruder positino
-	 * @return
+	 * @return true, if x is behind ll
 	 */
 	public static boolean behind(LatLonAlt x, LatLonAlt ll, Velocity v) {
 		Velocity v2 = velocity_initial(ll, x, 100);
@@ -1299,14 +1404,17 @@ public final class GreatCircle {
 	 * This calculation ignores altitude when calculating great circle distance.
 	 * Small errors (typically less than 0.5%) will be introduced at typical
 	 * aircraft altitudes.
+	 * 
+	 * @param p1 point 1
+	 * @param p2 point 2
+	 * @param t time
+	 * @return velocity from point 1 to point 2, taking time t
 	 */
 	public static Velocity velocity_initial(LatLonAlt p1, LatLonAlt p2, double t) {
 		// p1 is the source position, p2 is another point to form a great circle
 		// positive time is moving from p1 toward p2
 		// negative time is moving from p1 away from p2
-		if (Math.abs(t) < minDt
-				|| Util.almost_equals(Math.abs(t) + minDt, minDt,
-						Util.PRECISION7)) {
+		if (Math.abs(t) < minDt || Util.almost_equals(Math.abs(t) + minDt, minDt, Util.PRECISION7)) {
 			// time is negative or very small (less than 1 ms)
 			//f.pln("GC case 1");
 			return Velocity.ZERO;
@@ -1314,8 +1422,7 @@ public final class GreatCircle {
 		double d = angular_distance(p1, p2);
 		if (Constants.almost_equals_radian(d)) {
 			if (Constants.almost_equals_alt(p1.alt(), p2.alt())) {
-				// If the two points are about 1 meter apart, then count them as
-				// the same.
+				// If the two points are about 1 meter apart, then count them as  the same.
 				//f.pln("GC case 2");
 				return Velocity.ZERO;
 			} else {
@@ -1345,6 +1452,11 @@ public final class GreatCircle {
 	 * This is an estimate of the velocity. This calculation ignores altitude
 	 * when calculating great circle distance. Small errors (typically less than
 	 * 0.5%) will be introduced at typical aircraft altitudes.
+	 * 
+	 * @param p1 a point
+	 * @param p2 another point
+	 * @param t time
+	 * @return average velocity
 	 */
 	public static Velocity velocity_average(LatLonAlt p1, LatLonAlt p2, double t) {
 		// p1 is the source position, p2 is another point on that circle
@@ -1366,6 +1478,11 @@ public final class GreatCircle {
 	 * This is an estimate of the velocity. This calculation ignores altitude
 	 * when calculating great circle distance. Small errors (typically less than
 	 * 0.5%) will be introduced at typical aircraft altitudes.
+	 * 
+	 * @param s1 a point
+	 * @param s2 another point
+	 * @param speed speed between point
+	 * @return average velocity
 	 */
 	public static Velocity velocity_average_speed(LatLonAlt s1, LatLonAlt s2, double speed) {
 		double dist = GreatCircle.distance(s1, s2);
@@ -1392,6 +1509,11 @@ public final class GreatCircle {
 	 * This is an estimate of the velocity. This calculation ignores altitude
 	 * when calculating great circle distance. Small errors (typically less than
 	 * 0.5%) will be introduced at typical aircraft altitudes.
+	 * 
+	 * @param p1 a point
+	 * @param p2 another point
+	 * @param t time
+	 * @return final velocity 
 	 */
 	public static Velocity velocity_final(LatLonAlt p1, LatLonAlt p2, double t) {
 		// p1 is the source position, p2 is another point on that circle
@@ -1411,7 +1533,7 @@ public final class GreatCircle {
 	/**
 	 * Transforms a lat/lon position to a point in R3 (on a sphere)
 	 * This is an Earth-Centered, Earth-Fixed translation (assuming earth-surface altitude).
-	 * From Wikipedia http://en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
+	 * From Wikipedia: en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
 	 * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0. 
 	 * 
 	 * The x-axis intersects the sphere of the earth at 0 latitude (the equator) and 0 longitude (Greenwich). 
@@ -1439,7 +1561,7 @@ public final class GreatCircle {
 	/**
 	 * Transforms a R3 position on the earth surface into lat/lon coordinates
 	 * This is an Earth-Centered, Earth-Fixed translation (assuming earth-surface altitude).
-	 * From Wikipedia http://en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
+	 * From Wikipedia: en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
 	 * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0. 
 	 * @param v position in R3, with ECEF origin
 	 * @return LatLonAlt point on surface of the earth (zero altitude)
@@ -1484,10 +1606,14 @@ public final class GreatCircle {
 		return v1.Sub(v2).norm();
 	}
 
+	public static double chord_distance(LatLonAlt lla1, LatLonAlt lla2) {
+			return chord_distance(lla1.lat(), lla1.lon(), lla2.lat(), lla2.lon());
+    }
+	
 	/**
 	 * Return the chord distance (through the earth) corresponding to a given surface distance (at the nominal earth radius)
 	 * @param surface_dist
-	 * @return
+	 * @return chord distance
 	 */
 	public static double chord_distance(double surface_dist) {
 		double theta = angle_from_distance(surface_dist,0.0);
@@ -1497,7 +1623,7 @@ public final class GreatCircle {
 	/**
 	 * Return the surface distance (at the nominal earth radius) corresponding to a given chord distance (through the earth) 
 	 * @param chord_distance
-	 * @return
+	 * @return surface distance
 	 */
 	public static double surface_distance(double chord_distance) {
 		double theta = 2.0*Util.asin_safe(chord_distance*0.5 / GreatCircle.spherical_earth_radius);
@@ -1611,6 +1737,8 @@ public final class GreatCircle {
 	
 	/**
 	 * Haversine function
+	 * @param x value
+	 * @return haversine of x
 	 */
 	public static double haversin(double x) {
 		return (1.0-Math.cos(x))/2.0;

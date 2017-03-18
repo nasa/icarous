@@ -1,5 +1,5 @@
 /*
-> * Copyright (c) 2012-2016 United States Government as represented by
+> * Copyright (c) 2012-2017 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -50,7 +50,7 @@ public class WCV_TEP extends WCV_tvar {
       return new LossData(time_in,time_out);
     if (sqs <= sqD) {
       time_in = 0;
-      time_out = Math.min(T,Horizontal.Theta_D(s,v,1,table.DTHR));
+      time_out = Util.min(T,Horizontal.Theta_D(s,v,1,table.DTHR));
       return new LossData(time_in,time_out);
     }
     if (sdotv > 0 || Horizontal.Delta(s,v,table.DTHR) < 0) 
@@ -58,8 +58,8 @@ public class WCV_TEP extends WCV_tvar {
     double tep = Horizontal.Theta_D(s,v,-1,table.DTHR);
     if (tep-table.TTHR > T) 
       return new LossData(time_in,time_out);
-    time_in = Math.max(0,tep-table.TTHR);
-    time_out = Math.min(T,Horizontal.Theta_D(s,v,1,table.DTHR));
+    time_in = Util.max(0,tep-table.TTHR);
+    time_out = Util.min(T,Horizontal.Theta_D(s,v,1,table.DTHR));
     return new LossData(time_in,time_out);
   }
 
