@@ -301,7 +301,7 @@ def GetPerformanceData(num,args):
     proxEachEdge = []
 
     if(args.virtual):
-        edgelen = _virtual_edge
+        edgelen = _virtual_edge - 1
     else:
         edgelen = len(Vertices_ned)
 
