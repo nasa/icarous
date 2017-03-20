@@ -42,7 +42,6 @@
  #include "icarous/mavlink.h"
  #include "Interface.h"
  #include "AircraftData.h"
- #include "Conflict.h"
  #include "NavPoint.h"
  #include "PlanUtil.h"
  #include "ErrorLog.h"
@@ -80,10 +79,9 @@ class FlightManagementSystem_t{
         
         Interface_t *px4Intf;
         Interface_t *gsIntf;
-        AircraftData_t* FlightData;
+
         MAVLinkMessages_t* RcvdMessages;
         fms_state_t fmsState;
-        Conflict_t Conflict;
         uint8_t conflictSize;
         Mission_t* mission;
         bool deviationApproved;
@@ -97,6 +95,7 @@ class FlightManagementSystem_t{
         std::string debug_in;
         std::string debug_out;
         control_mode_t currentMode;
+        AircraftData_t* FlightData;
 
         FlightManagementSystem_t():log("FMS"){};
         FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);

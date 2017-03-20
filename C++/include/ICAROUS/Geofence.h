@@ -65,7 +65,7 @@ class Geofence_t{
 private:
 
 	FENCE_TYPE fenceType;
-	uint16_t id;
+	int16_t id;
 	uint16_t nVertices;
 	double floor;
 	double ceiling;
@@ -97,7 +97,7 @@ public:
 	void CheckViolation(AircraftState acState,double elapsedTime,Plan fp);
 	bool CollisionDetection(Position pos, Vect2 v,double startTime, double stopTime);
 	bool CheckWPFeasibility(Position current, Position nextWP);
-	uint16_t GetID();
+	int16_t GetID();
 	uint16_t GetSize();
 	Poly3D GetPoly3D();
 	Position GetRecoveryPoint();
@@ -109,6 +109,7 @@ public:
 	SimplePoly GetPoly();
 	EuclideanProjection GetProjection();
 	double GetCeiling();
+	void clear(){id = -1;};
 };
 
 

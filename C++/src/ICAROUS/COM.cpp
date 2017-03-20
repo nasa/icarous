@@ -35,9 +35,9 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#include "Communication.h"
+#include "COM.h"
 
- Communication_t::Communication_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata):log("COM"){
+COM_t::COM_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata):log("COM"){
      px4Intf      = px4int;
      gsIntf       = gsint;
      FlightData   = fdata;
@@ -46,23 +46,8 @@
      WPloaded     = 0;                     // waypoints loaded
  }
 
-// Get data from pixhawk
- void Communication_t::GetPixhawkData(){
-     while(true){
-         // Get data from the pixhawk
-         px4Intf->GetMAVLinkMsg();
-         
-         // Send the raw data in the queue to the send interface
-         while(!px4Intf->msgQueue.empty()){
-            gsIntf->SendMAVLinkMsg(px4Intf->msgQueue.front());
-            px4Intf->msgQueue.pop();
-         }
-     }
- }
-
-
 // Get data from ground station
- void Communication_t::GetGSData(){
+ void COM_t::GetGSData(){
 
      
      while(true){
@@ -105,7 +90,7 @@
  }
 
  
- void Communication_t::MissionCountHandler(){
+ void COM_t::MissionCountHandler(){
      mavlink_mission_count_t msg;
      bool have_msg = RcvdMessages->GetMissionCount(msg);
      if(have_msg && msg.target_system == 1){
@@ -119,7 +104,7 @@
      }
  }
 
- void Communication_t::MissionItemHandler(){
+ void COM_t::MissionItemHandler(){
      mavlink_mission_item_t msg;
      bool have_msg = RcvdMessages->GetMissionItem(msg);
      if(have_msg && msg.target_system == 1){
@@ -134,7 +119,7 @@
      }
  }
 
- void Communication_t::MissionRequestHandler(){
+ void COM_t::MissionRequestHandler(){
      mavlink_mission_request_t msg;
      bool have_msg = RcvdMessages->GetMissionRequest(msg);
      if(have_msg && msg.target_system == 1){
@@ -145,7 +130,7 @@
 
  }
 
- void Communication_t::MissionRequestListHandler(){
+ void COM_t::MissionRequestListHandler(){
      mavlink_mission_request_list_t msg;
      bool have_msg = RcvdMessages->GetMissionRequestList(msg);
      if(have_msg && msg.target_system == 1){
@@ -155,7 +140,7 @@
      }
  }
 
- void Communication_t::ParamRequestListHandler(){
+ void COM_t::ParamRequestListHandler(){
      mavlink_param_request_list_t msg;
      bool have_msg = RcvdMessages->GetParamRequestList(msg);
      if(have_msg){
@@ -165,7 +150,7 @@
      }
  }
 
- void Communication_t::ParamRequestReadHandler(){
+ void COM_t::ParamRequestReadHandler(){
      mavlink_param_request_read_t msg;
      bool have_msg = RcvdMessages->GetParamRequestRead(msg);
      if(have_msg && msg.target_system == 1){
@@ -175,7 +160,7 @@
      }
  }
 
- void Communication_t::ParamSetHandler(){
+ void COM_t::ParamSetHandler(){
 	 mavlink_param_set_t msg;
 	 bool have_msg = RcvdMessages->GetParamSet(msg);
 	 if(have_msg && msg.target_system == 1){
@@ -263,7 +248,7 @@
  }
 
 
-  void Communication_t::ParamValueHandler(){
+  void COM_t::ParamValueHandler(){
      mavlink_param_value_t msg;
      bool have_msg = RcvdMessages->GetParamValue(msg);
      if(have_msg){
@@ -273,7 +258,7 @@
      }
  }
 
-  void Communication_t::SetModeHandler(){
+  void COM_t::SetModeHandler(){
      mavlink_set_mode_t msg;
      bool have_msg = RcvdMessages->GetSetMode(msg);
      if(have_msg && msg.target_system == 1){
@@ -283,7 +268,7 @@
      }
  }
 
- void Communication_t::CommandLongHandler(){
+ void COM_t::CommandLongHandler(){
      mavlink_command_long_t msg;
      bool have_msg = RcvdMessages->GetCommandLong(msg);
      if(have_msg && msg.command == MAV_CMD_MISSION_START){
@@ -311,7 +296,7 @@
      }
  }
 
- void Communication_t::CommandIntHandler(){
+ void COM_t::CommandIntHandler(){
      mavlink_command_int_t msg;
      bool have_msg = RcvdMessages->GetCommandInt(msg);
      if(have_msg && msg.command == MAV_CMD_SPATIAL_USER_2){
@@ -319,7 +304,7 @@
      }
  }
 
- void Communication_t::KinematicBandsHandler(){
+ void COM_t::KinematicBandsHandler(){
 	 mavlink_kinematic_bands_t msg;
 	 bool have_msg = RcvdMessages->GetKinematicBands(msg);
 	 if(have_msg){

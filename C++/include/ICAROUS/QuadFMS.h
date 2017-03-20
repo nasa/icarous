@@ -45,10 +45,13 @@
 #include "BoundingRectangle.h"
 #include "DensityGrid.h"
 #include "DensityGridAStarSearch.h"
+#include "ConflictDetection.h"
+#include "Resolution.h"
 #include <time.h>
 
 class QuadFMS_t:public FlightManagementSystem_t{
 
+public:
 	enum resolve_state_t {IDLE_r, COMPUTE_r, MANEUVER_r, TRAJECTORY_r, RESUME_r};
 	enum trajectory_state_t {IDLE_t, START_t, FIX_t, ENROUTE_t, STOP_t};
 	enum maneuver_state_t {START_m,GUIDE_m,IDLE_m};
@@ -60,22 +63,14 @@ class QuadFMS_t:public FlightManagementSystem_t{
         resolve_state_t resolutionState;
         trajectory_state_t trajectoryState;
         maneuver_state_t maneuverState;
-        plan_type_t planType;
-        bool resumeMission;
-        Daidalus DAA;
-        Daidalus DAAresolution;
-        KinematicMultiBands KMB;
-        double daaLookAhead;
-        time_t trafficResolutionTime;
-        Position NextGoal;
-        bool goalReached;
-        time_t timeStart;
-        bool returnPathConflict;
-        Velocity lastVelocity;
-        double alertTime0;
 
     public:
-        time_t daaTimeStart;
+        ConflictDetection_t Detector;
+        Resolution_t Resolver;
+        bool resumeMission;
+        bool goalReached;
+        Position NextGoal;
+        plan_type_t planType;
         QuadFMS_t(){};
         QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);
         ~QuadFMS_t();
@@ -91,22 +86,8 @@ class QuadFMS_t:public FlightManagementSystem_t{
         uint8_t FlyTrajectory();
         uint8_t FlyManuever();
         void ComputeInterceptCourse();
-
-        void CheckGeofence();
-        void CheckFlightPlanDeviation();
-        void ComputeCrossTrackDev(Position pos,Plan fp,int nextWP,double stats[]);
-        Position GetPointOnPlan(double offset,Plan fp,int next);
-        bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
-        void CheckTraffic();
-        void ResolveKeepInConflict();
-        void ResolveKeepOutConflict_Astar();
-        void ResolveKeepOutConflict_RRT();
-        void ResolveFlightPlanDeviation();
-        void ResolveTrafficConflictRRT();
-        void ResolveTrafficConflictDAA();
-        double SaturateVelocity(double V, double Vsat);
-        Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
         void Reset();
+        double SaturateVelocity(double V, double Vsat);
 };
 
 

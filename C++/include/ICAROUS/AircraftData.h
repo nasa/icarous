@@ -47,19 +47,9 @@
 #include "time.h"
 #include "Interface.h"
 #include "MAVLinkMessages.h"
+#include "GenericObject.h"
 
 using namespace larcfm;
-
-struct Object_t{
-	int id;
-	double x;
-	double y;
-	double z;
-	double vx;
-	double vy;
-	double vz;
-	double heading;
-};
 
 
 class AircraftData_t{
@@ -90,9 +80,9 @@ class AircraftData_t{
         Plan ResolutionPlan;
         std::list<Geofence_t> fenceList;
         std::list<Geofence_t>::iterator fenceListIt;
-        std::list<Object_t> trafficList;
-        std::list<Object_t> missionObjList;
-        Object_t TrackingObject;
+        std::list<GenericObject_t> trafficList;
+        std::list<GenericObject_t> missionObjList;
+        GenericObject_t TrackingObject;
 
         //Member functions
         AircraftData_t(){};

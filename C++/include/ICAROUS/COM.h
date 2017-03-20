@@ -1,7 +1,7 @@
 /**
- * COMMUNICATION
+ * COM
  * 
- * This class contains functions to constantly collect data from the pixhawk and ground station.
+ * This class contains functions to constantly communicate with the ground station.
  *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  * 
@@ -35,8 +35,8 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
- #ifndef COMMUNICATION_H_
- #define COMMUNICATION_H_
+ #ifndef COM_H_
+ #define COM_H_
 
  #include <string>
  #include "Interface.h"
@@ -45,7 +45,7 @@
 
  #include "icarous/mavlink.h"
 
- class Communication_t{
+ class COM_t{
 
     private:
         Interface_t* px4Intf;
@@ -57,9 +57,9 @@
     public:
 
         ErrorLog log;
-        Communication_t():log("COM"){};
-        Communication_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata);
-        void GetPixhawkData();
+        COM_t():log("COM"){};
+        COM_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata);
+
         void GetGSData();
         void MissionCountHandler();
         void MissionItemHandler();

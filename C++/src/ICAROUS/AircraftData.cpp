@@ -198,73 +198,41 @@ void AircraftData_t::GetGeofence(Interface_t *gsIntf,mavlink_command_long_t msgI
 	}
 }
 
-void AircraftData_t::AddTraffic(int id,double x,double y,double z,double vx,double vy,double vz){
+void AircraftData_t::AddTraffic(int id,double lat,double lon,double alt,double vx,double vy,double vz){
 
 	pthread_mutex_lock(&lock);
-	std::list<Object_t>::iterator it;
-	bool present = false;
-	if(!trafficList.empty()){
-		for(it = trafficList.begin(); it != trafficList.end(); ++it){
-			if(it->id == id){
-				it->x = x;
-				it->y = y;
-				it->z = z;
-				it->vx = vx;
-				it->vy = vy;
-				it->vz = vz;
-				present = true;
-				break;
-			}
-		}
-	}
-
-	if(!present){
-		Object_t newTraffic = {id,x,y,z,vx,vy,vz,0};
-		trafficList.push_back(newTraffic);
-	}
+	GenericObject_t newTraffic(1,id,lat,lon,alt,vx,vy,vz);
+	GenericObject_t::AddObject(trafficList,newTraffic);
+	Position pos;Velocity vel;
 	pthread_mutex_unlock(&lock);
 }
 
 void AircraftData_t::GetTraffic(int id,Position& pos,Velocity& vel){
 	pthread_mutex_lock(&lock);
-	std::list<Object_t>::iterator it;
+	std::list<GenericObject_t>::iterator it;
 	for(it = trafficList.begin(); it != trafficList.end(); ++it){
 		if(it->id == id){
-			pos = Position::makeLatLonAlt(it->x,"degree",it->y,"degree",it->z,"m");
-			vel = Velocity::makeVxyz(it->vy,it->vx,"m/s",it->vz,"m/s");
+			pos = it->pos;
+			vel = it->vel;
 			break;
 		}
 	}
 	pthread_mutex_unlock(&lock);
 }
 
-void AircraftData_t::AddMissionObject(int id,double x,double y,double z,double vx,double vy,double vz){
+void AircraftData_t::AddMissionObject(int id,double lat,double lon,double alt,double vx,double vy,double vz){
 	pthread_mutex_lock(&lock);
-	Object_t obj={id,x,y,z,vx,vy,vz,0};
+	GenericObject_t obj(0,id,lat,lon,alt,vx,vy,vz);
 	bool present = false;
-	std::list<Object_t>::iterator it;
-	for(it = missionObjList.begin(); it != missionObjList.end(); ++it ){
-		if(it->id == id){
-			it->x = x;
-			it->y = y;
-			it->z = z;
-			it->vx = vx;
-			it->vy = vy;
-			it->vz = vz;
-			present = true;
-		}
-
-	}
-	if(!present){
-		missionObjList.push_back(obj);
-	}
+	std::list<GenericObject_t>::iterator it;
+	GenericObject_t::AddObject(missionObjList,obj);
 	pthread_mutex_unlock(&lock);
 
 }
 
-void AircraftData_t::AddTrackingObject(int id,double x,double y,double z,double vx,double vy,double vz){
+void AircraftData_t::AddTrackingObject(int id,double lat,double lon,double alt,double vx,double vy,double vz){
 	pthread_mutex_lock(&lock);
-	Object_t obj = {id,x,y,z,vx,vy,vz,0};
+	GenericObject_t obj(2,id,lat,lon,alt,vx,vy,vz);
 	TrackingObject = obj;
 	pthread_mutex_unlock(&lock);
 }

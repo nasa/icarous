@@ -16,7 +16,7 @@ LIB: PRE $(AOBJS) $(OBJS)
 	ar -cr libs/icarous.a $(OBJS) $(AOBJS) && ranlib libs/icarous.a 
 
 DAAGeofencing:
-	$(CXX) -o DAAGeofencingExample $(CFLAGS) $(INCLUDES) src/DAAGeofencingExample.cpp libs/icarous.a
+	$(CXX) -o DAAGeofencingExample $(CFLAGS) $(INCLUDES) src/DAAGeofencingExample.cpp libs/icarous.a $(LIBS)
 
 ./obj/ICAROUS/%.o:./src/ICAROUS/%.cpp	
 	$(CXX) $(CFLAGS) $(INCLUDES) -c $< -o $@

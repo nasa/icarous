@@ -35,9 +35,21 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
+#include "Resolution.h"
+
 #include "QuadFMS.h"
 
-void QuadFMS_t::ResolveFlightPlanDeviation(){
+Resolution_t::Resolution_t(QuadFMS_t* fms){
+	FMS = fms;
+	FlightData = fms->FlightData;
+	resolutionSpeed = 1.0;
+	returnPathConflict = false;
+	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+	alertTime0 = DAA.parameters.alertor.getLevel(1).getAlertingTime();
+	diffAlertTime = DAA.parameters.alertor.getLevel(1).getEarlyAlertingTime() - alertTime0;
+}
+
+void Resolution_t::ResolveFlightPlanDeviation(){
 
 	double xtrkDevGain ;
 	double resolutionSpeed;
@@ -88,7 +100,7 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 			FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
 		}
 
-		planType = MANEUVER;
+		FMS->planType = QuadFMS_t::MANEUVER;
 
 	}
 	else{
@@ -104,16 +116,16 @@ void QuadFMS_t::ResolveFlightPlanDeviation(){
 		FlightData->ResolutionPlan.addNavPoint(wp2);
 
 		std::cout<<FlightData->ResolutionPlan.toString()<<std::endl;
-		planType      = TRAJECTORY;
-		resumeMission = false;
-		goalReached   = true;
+		FMS->planType      = QuadFMS_t::TRAJECTORY;
+		FMS->resumeMission = false;
+		FMS->goalReached   = true;
 	}
 }
 
-void QuadFMS_t::ResolveKeepInConflict(){
-	Geofence_t fence = Conflict.GetKeepInConflict();
+void Resolution_t::ResolveKeepInConflict(){
+	Geofence_t fence = FMS->Detector.KeepInFence;
 	NavPoint wp(fence.GetRecoveryPoint(),0);
-	std::cout<<wp.position().toStringUnits("degree","degree","m")<<std::endl;
+	//std::cout<<wp.position().toStringUnits("degree","degree","m")<<std::endl;
 	NavPoint next_wp = FlightData->MissionPlan.point(FlightData->nextMissionWP);
 	FlightData->ResolutionPlan.clear();
 	FlightData->ResolutionPlan.addNavPoint(wp);
@@ -123,13 +135,13 @@ void QuadFMS_t::ResolveKeepInConflict(){
 		FlightData->nextMissionWP++;
 	}
 
-	planType        = TRAJECTORY;
-	resumeMission   = false;
-	goalReached     = true;
+	FMS->planType        = QuadFMS_t::TRAJECTORY;
+	FMS->resumeMission   = false;
+	FMS->goalReached     = true;
 	return;
 }
 
-void QuadFMS_t::ResolveKeepOutConflict_Astar(){
+void Resolution_t::ResolveKeepOutConflict_Astar(){
 
 	double gridsize          = FlightData->paramData->getValue("GRIDSIZE");
 	double buffer            = FlightData->paramData->getValue("BUFFER");
@@ -138,7 +150,7 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
 
 	// Reroute flight plan
-	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	FMS->SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
 
 	Position currentPos = FlightData->acState.positionLast();
 	Velocity currentVel = FlightData->acState.velocityLast();
@@ -153,42 +165,40 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 	Position nextWP;
 	Position start = currentPos;
 
-	if(planType == MISSION){
+	if(FMS->planType == QuadFMS_t::MISSION){
 		currentFP = FlightData->MissionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(currentFP,FlightData->nextMissionWP);
+		elapsedTime = FMS->GetApproxElapsedPlanTime(currentFP,FlightData->nextMissionWP);
 		prevWP = currentFP.point(FlightData->nextMissionWP - 1).position();
 		nextWP = currentFP.point(FlightData->nextMissionWP).position();
 	}
-	else if(planType == TRAJECTORY){
+	else if(FMS->planType == QuadFMS_t::TRAJECTORY){
 		currentFP = FlightData->ResolutionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(currentFP,FlightData->nextResolutionWP);
+		elapsedTime = FMS->GetApproxElapsedPlanTime(currentFP,FlightData->nextResolutionWP);
 		prevWP = currentFP.point(FlightData->nextResolutionWP - 1).position();
 		nextWP = currentFP.point(FlightData->nextResolutionWP).position();
 	}
 
 
-	std::list<Geofence_t>::iterator it;
-	for(it=Conflict.keepOutGeofence.begin();
-			it!=Conflict.keepOutGeofence.end();++it){
-		double entrytime, exittime;
-		it->GetEntryExitTime(entrytime,exittime);
+	Geofence_t gf = FMS->Detector.KeepOutFence;
 
-		if(entrytime <= minTime){
-			minTime  = entrytime;
-			altFence = it->GetCeiling();
+	double entrytime, exittime;
+	gf.GetEntryExitTime(entrytime,exittime);
 
-			if(it->GetViolationStatus()){
-				start = it->GetRecoveryPoint();
-			}
+	if(entrytime <= minTime){
+		minTime  = entrytime;
+		altFence = gf.GetCeiling();
+
+		if(gf.GetViolationStatus()){
+			start = gf.GetRecoveryPoint();
 		}
+	}
 
-		if(exittime >= maxTime){
-			maxTime = exittime;
-		}
+	if(exittime >= maxTime){
+		maxTime = exittime;
+	}
 
-		if(it->GetViolationStatus()){
-			start = it->GetRecoveryPoint();
-		}
+	if(gf.GetViolationStatus()){
+		start = gf.GetRecoveryPoint();
 	}
 
 	minTime = minTime - lookahead;
@@ -202,7 +212,7 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 		maxTime = currentFP.getLastTime() - 0.1;
 	}
 
-	if(planType == MISSION){
+	if(FMS->planType == QuadFMS_t::MISSION){
 		FlightData->nextMissionWP = FlightData->MissionPlan.getSegment(maxTime) + 1;
 	}
 
@@ -210,6 +220,7 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 	Position goal = conflictFP.getLastPoint().position();
 
 	BoundingRectangle BR;
+	std::list<Geofence_t>::iterator it;
 	for(it=FlightData->fenceList.begin();
 			it!=FlightData->fenceList.end();++it){
 		if(it->GetType() == KEEP_IN){
@@ -317,20 +328,20 @@ void QuadFMS_t::ResolveKeepOutConflict_Astar(){
 		FlightData->ResolutionPlan = ResolutionPlan2;
 	}
 
-	planType        = TRAJECTORY;
-	resumeMission   = false;
-	goalReached     = true;
+	FMS->planType        = QuadFMS_t::TRAJECTORY;
+	FMS->resumeMission   = false;
+	FMS->goalReached     = true;
 	return;
 
 }
 
-void QuadFMS_t::ResolveKeepOutConflict_RRT(){
+void Resolution_t::ResolveKeepOutConflict_RRT(){
 
 	double resolutionSpeed   = FlightData->paramData->getValue("RES_SPEED");
 	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
 
 	// Reroute flight plan
-	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	FMS->SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
 
 	std::vector<Position> TrafficPos;
 	std::vector<Velocity> TrafficVel;
@@ -347,38 +358,41 @@ void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 	Position nextWP;
 	Position start = currentPos;
 
-	if(planType == MISSION){
+	if(FMS->planType == QuadFMS_t::MISSION){
 		currentFP = FlightData->MissionPlan;
 		prevWP = currentFP.point(FlightData->nextMissionWP - 1).position();
 		nextWP = currentFP.point(FlightData->nextMissionWP).position();
 	}
-	else if(planType == TRAJECTORY){
+	else if(FMS->planType == QuadFMS_t::TRAJECTORY){
 		currentFP = FlightData->ResolutionPlan;
 		prevWP = currentFP.point(FlightData->nextResolutionWP - 1).position();
 		nextWP = currentFP.point(FlightData->nextResolutionWP).position();
 	}
 
-	std::list<Geofence_t>::iterator it;
-	for(it=Conflict.keepOutGeofence.begin();
-		it!=Conflict.keepOutGeofence.end();++it){
-		double entrytime, exittime;
-		it->GetEntryExitTime(entrytime,exittime);
+	Geofence_t gf = FMS->Detector.KeepOutFence;
 
-		if(entrytime <= minTime){
-			minTime  = entrytime;
-			altFence = it->GetCeiling();
+	double entrytime, exittime;
+	gf.GetEntryExitTime(entrytime,exittime);
 
-			if(it->GetViolationStatus()){
-				start = it->GetRecoveryPoint();
-			}
-		}
+	if(entrytime <= minTime){
+		minTime  = entrytime;
+		altFence = gf.GetCeiling();
 
-		if(exittime >= maxTime){
-			maxTime = exittime;
+		if(gf.GetViolationStatus()){
+			start = gf.GetRecoveryPoint();
 		}
 	}
 
-	if(planType == MISSION){
+	if(exittime >= maxTime){
+		maxTime = exittime;
+	}
+
+	if(gf.GetViolationStatus()){
+		start = gf.GetRecoveryPoint();
+	}
+
+
+	if(FMS->planType == QuadFMS_t::MISSION){
 		FlightData->nextMissionWP = FlightData->MissionPlan.getSegment(maxTime) + 1;
 	}
 
@@ -402,9 +416,9 @@ void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 
 	printf("iteration count = %d\n",i);
 
-	goalReached = RRT.goalreached;
-	if(!goalReached){
-		NextGoal = goal;
+	FMS->goalReached = RRT.goalreached;
+	if(!FMS->goalReached){
+		FMS->NextGoal = goal;
 	}
 
 	Plan ResolutionPlan1 = RRT.GetPlan();
@@ -424,13 +438,13 @@ void QuadFMS_t::ResolveKeepOutConflict_RRT(){
 		FlightData->ResolutionPlan = ResolutionPlan2;
 	}
 
-	planType        = TRAJECTORY;
-	resumeMission   = false;
+	FMS->planType        = QuadFMS_t::TRAJECTORY;
+	FMS->resumeMission   = false;
 	return;
 
 }
 
-Plan QuadFMS_t::ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed){
+Plan Resolution_t::ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed){
 	// Compute go above plan
 	Plan ResolutionPlan2;
 	double ETA = 0;
@@ -462,7 +476,7 @@ Plan QuadFMS_t::ComputeGoAbovePlan(Position start,Position goal,double altFence,
 	return ResolutionPlan2;
 }
 
-Position QuadFMS_t::GetPointOnPlan(double offset,Plan fp,int next){
+Position Resolution_t::GetPointOnPlan(double offset,Plan fp,int next){
 
 	Position nextWP       = fp.point(next).position();
 	Position prevWP       = fp.point(next-1).position();
@@ -479,7 +493,7 @@ Position QuadFMS_t::GetPointOnPlan(double offset,Plan fp,int next){
 
 }
 
-void QuadFMS_t::ResolveTrafficConflictDAA(){
+void Resolution_t::ResolveTrafficConflictDAA(){
 	// Track based resolutions
 	//TODO: add eps to preferred heading
 	Position currentPos = FlightData->acState.positionLast();
@@ -489,7 +503,7 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 	int gotoNextWP = FlightData->paramData->getInt("GOTO_NEXTWP");
 
 	double crossStats[2];
-	ComputeCrossTrackDev(currentPos, FlightData->MissionPlan, FlightData->nextMissionWP,crossStats);
+	FMS->Detector.ComputeCrossTrackDev(currentPos, FlightData->MissionPlan, FlightData->nextMissionWP,crossStats);
 	Position goal;
 
 	if(gotoNextWP == 0){
@@ -510,20 +524,20 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 	//alertor.setEarlyAlertingTime(alertTime);
 	//DAAresolution.parameters.alertor.setLevel(1,alertor);
 
-	DAAresolution.setOwnshipState("Ownship", currentPos, currentVel, FlightData->acTime);
-	std::list<Object_t>::iterator it;
+	DAA.setOwnshipState("Ownship", currentPos, currentVel, FlightData->acTime);
+	std::list<GenericObject_t>::iterator it;
 	int count = 0;
 	for(it = FlightData->trafficList.begin();it != FlightData->trafficList.end();it++){
-		Position tPos = Position::makeLatLonAlt(it->x,"degree",it->y,"degree",it->z,"m");
-		Velocity tVel = Velocity::makeVxyz(it->vy,it->vx,"m/s",it->vz,"m/s");
+		Position tPos = it->pos.mkAlt(it->pos.alt());
+		Velocity tVel = it->vel.mkAddTrk(0);
 		char name[10];
 		sprintf(name,"Traffic%d",count);count++;
-		DAAresolution.addTrafficState(name, tPos, tVel);
+		DAA.addTrafficState(name, tPos, tVel);
 	}
 
 	time_t startTime;   time(&startTime);
 	KinematicMultiBands KMB;
-	DAAresolution.kinematicMultiBands(KMB);
+	DAA.kinematicMultiBands(KMB);
 	returnPathConflict  = BandsRegion::isConflictBand(KMB.regionOfTrack(nextHeading));
 	bool prefDirection = KMB.preferredTrackDirection();
 	double prefHeading    = KMB.trackResolution(prefDirection);
@@ -545,7 +559,7 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		double lower_trk = iv.low; // [deg]
 		double upper_trk = iv.up; // [deg]
 		if (KMB.trackRegion(i) == BandsRegion::NONE) {
-			bool val = CheckTurnConflict(lower_trk, upper_trk, nextHeading*180/M_PI,  currentHeading*180/M_PI);
+			bool val = FMS->Detector.CheckTurnConflict(lower_trk, upper_trk, nextHeading*180/M_PI,  currentHeading*180/M_PI);
 			if(val){
 				returnPathConflict = true;
 				break;
@@ -575,30 +589,30 @@ void QuadFMS_t::ResolveTrafficConflictDAA(){
 		FlightData->maneuverHeading = 360 + FlightData->maneuverHeading;
 	}
 
-	planType = MANEUVER;
-	if(debugDAA){
-		debug_in.append("**************** Current Time:"+std::to_string(FlightData->acTime)+" *******************\n");
-		debug_in.append(DAAresolution.toString()+"\n");
-		debug_out.append("*************** Current Time:"+std::to_string(FlightData->acTime)+" *******************\n");
-		debug_out.append(KMB.outputStringInfo());
-		debug_out.append(KMB.outputStringTrackBands());
-		debug_out.append("Vn = "+std::to_string(FlightData->maneuverVn)+", Ve = "+std::to_string(FlightData->maneuverVe)+"\n");
-		debug_out.append("resolutionSpeed = "+std::to_string(resolutionSpeed)+"\n");
-		debug_out.append("Heading ="+std::to_string(FlightData->maneuverHeading)+" ,prefHeading ="+std::to_string(prefHeading*180/M_PI)+"\n");
-		debug_out.append("Return path conflict:"+std::to_string(returnPathConflict)+"\n");
+	FMS->planType = QuadFMS_t::MANEUVER;
+	if(FMS->debugDAA){
+		FMS->debug_in.append("**************** Current Time:"+std::to_string(FlightData->acTime)+" *******************\n");
+		FMS->debug_in.append(DAA.toString()+"\n");
+		FMS->debug_out.append("*************** Current Time:"+std::to_string(FlightData->acTime)+" *******************\n");
+		FMS->debug_out.append(KMB.outputStringInfo());
+		FMS->debug_out.append(KMB.outputStringTrackBands());
+		FMS->debug_out.append("Vn = "+std::to_string(FlightData->maneuverVn)+", Ve = "+std::to_string(FlightData->maneuverVe)+"\n");
+		FMS->debug_out.append("resolutionSpeed = "+std::to_string(resolutionSpeed)+"\n");
+		FMS->debug_out.append("Heading ="+std::to_string(FlightData->maneuverHeading)+" ,prefHeading ="+std::to_string(prefHeading*180/M_PI)+"\n");
+		FMS->debug_out.append("Return path conflict:"+std::to_string(returnPathConflict)+"\n");
 		time_t stopTime; time(&stopTime);
 		double timeElapsed = difftime(stopTime,startTime);
-		debug_out.append("Elapsed time: "+std::to_string(timeElapsed)+"\n");
+		FMS->debug_out.append("Elapsed time: "+std::to_string(timeElapsed)+"\n");
 	}
 }
 
-void QuadFMS_t::ResolveTrafficConflictRRT(){
+void Resolution_t::ResolveTrafficConflictRRT(){
 
 	double maxInputNorm = FlightData->paramData->getValue("RES_SPEED");
 
 	// Reroute flight plan
 
-	SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	FMS->SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
 
 	std::vector<Position> TrafficPos;
 	std::vector<Velocity> TrafficVel;
@@ -608,11 +622,11 @@ void QuadFMS_t::ResolveTrafficConflictRRT(){
 
 	double computationTime = 1;
 
-	std::list<Object_t>::iterator it;
+	std::list<GenericObject_t>::iterator it;
 	for(it=FlightData->trafficList.begin();
 		it!=FlightData->trafficList.end();++it){
-		Velocity tVel = Velocity::makeVxyz(it->vy,it->vx,"m/s",it->vz,"m/s");
-		Position tPos = Position::makeLatLonAlt(it->x,"degree",it->y,"degree",it->z,"m");
+		Velocity tVel = it->vel.mkAddTrk(0);
+		Position tPos = it->pos.mkAlt(it->pos.alt());
 		tPos.linear(tVel,computationTime);
 		TrafficPos.push_back(tPos);
 		TrafficVel.push_back(tVel);
@@ -622,19 +636,19 @@ void QuadFMS_t::ResolveTrafficConflictRRT(){
 	Position prevWP;
 	Position nextWP;
 	double dist = currentVel.gs()*computationTime;
-	bool prefDirection = KMB.preferredTrackDirection();
+	bool prefDirection = FMS->Detector.KMB.preferredTrackDirection();
 
-	double prefHeading = KMB.trackResolution(prefDirection);
+	double prefHeading = FMS->Detector.KMB.trackResolution(prefDirection);
 
 	Position start = currentPos.linearDist2D(prefHeading, dist);
-	SetGPSPos(start.latitude(), start.longitude(), start.alt());
+	FMS->SetGPSPos(start.latitude(), start.longitude(), start.alt());
 
-	if(planType == MISSION){
+	if(FMS->planType == QuadFMS_t::MISSION){
 		currentFP = FlightData->MissionPlan;
 		prevWP = currentFP.point(FlightData->nextMissionWP - 1).position();
 		nextWP = currentFP.point(FlightData->nextMissionWP).position();
 	}
-	else if(planType == TRAJECTORY){
+	else if(FMS->planType == QuadFMS_t::TRAJECTORY){
 		currentFP = FlightData->ResolutionPlan;
 		prevWP = currentFP.point(FlightData->nextResolutionWP - 1).position();
 		nextWP = currentFP.point(FlightData->nextResolutionWP).position();
@@ -656,15 +670,15 @@ void QuadFMS_t::ResolveTrafficConflictRRT(){
 		}
 	}
 
-	goalReached = RRT.goalreached;
-	if(!goalReached){
-		NextGoal = goal;
+	FMS->goalReached = RRT.goalreached;
+	if(!FMS->goalReached){
+		FMS->NextGoal = goal;
 	}
 
 	FlightData->ResolutionPlan.clear();
 	FlightData->ResolutionPlan = RRT.GetPlan();
-	planType        = TRAJECTORY;
-	resumeMission   = false;
+	FMS->planType        = QuadFMS_t::TRAJECTORY;
+	FMS->resumeMission   = false;
 	return;
 }
 

@@ -1,8 +1,5 @@
-/**
- * Conflict
- *
- * Conflict class
- *
+/*
+ * DAQ.cpp
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  *
  *
@@ -34,81 +31,26 @@
  *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT, TO THE EXTENT PERMITTED BY LAW.
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
-#include "Geofence.h"
-#include "Conflict.h"
+#include "DAQ.h"
 
-Conflict_t::Conflict_t(){
-	keepin   = false;
-	keepout  = false;
-	flightPlanDeviation = false;
-	traffic = false;
-}
+DAQ_t::DAQ_t(Interface_t* px4int, Interface_t* gsint):log("DAQ"){
+     px4Intf      = px4int;
+     gsIntf       = gsint;
+ }
 
-bool Conflict_t::isEqual(Geofence_t gf){
+// Get data from pixhawk
+ void DAQ_t::GetPixhawkData(){
+     while(true){
+         // Get data from the pixhawk
+         px4Intf->GetMAVLinkMsg();
 
-	if(gf.GetType() == KEEP_IN){
-		for(itGeofence = keepInGeofence.begin();
-			itGeofence != keepInGeofence.end();++itGeofence){
-			if(gf.GetID() == itGeofence->GetID()){
-				return true;
-			}
-		}
-	}
-	else{
-		for(itGeofence = keepOutGeofence.begin();
-			itGeofence != keepOutGeofence.end();++itGeofence){
-			if(gf.GetID() == itGeofence->GetID()){
-				return true;
-			}
-		}
-	}
-	return false;
-}
+         // Send the raw data in the queue to the send interface
+         while(!px4Intf->msgQueue.empty()){
+            gsIntf->SendMAVLinkMsg(px4Intf->msgQueue.front());
+            px4Intf->msgQueue.pop();
+         }
+     }
+ }
 
-void Conflict_t::AddConflict(Geofence_t gf){
-	if(!isEqual(gf)){
-		if(gf.GetType() == KEEP_IN){
-			keepInGeofence.push_back(gf);
-			printf("Keep in conflict\n");
-		}
-		else{
-			keepOutGeofence.push_back(gf);
-		}
-	}
-}
 
-void Conflict_t::RemoveConflict(Geofence_t gf){
-	if(gf.GetType() == KEEP_IN){
-		for(itGeofence = keepInGeofence.begin();
-			itGeofence != keepInGeofence.end();++itGeofence){
-			if(gf.GetID() == itGeofence->GetID()){
-				itGeofence = keepInGeofence.erase(itGeofence);
-			}
-		}
-	}
-	else{
-		for(itGeofence = keepOutGeofence.begin();
-			itGeofence != keepOutGeofence.end();++itGeofence){
-			if(gf.GetID() == itGeofence->GetID()){
-				itGeofence = keepOutGeofence.erase(itGeofence);
-			}
-		}
-	}
-}
 
-uint8_t Conflict_t::size(){
-	return keepInGeofence.size()+
-			keepOutGeofence.size()+
-				(int)flightPlanDeviation+
-					(int)traffic;
-}
-
-Geofence_t Conflict_t::GetKeepInConflict(){
-	itGeofence = keepInGeofence.begin();
-	return *itGeofence;
-}
-
-void Conflict_t::clear(){
-	keepInGeofence.clear();
-	keepOutGeofence.clear();
-}

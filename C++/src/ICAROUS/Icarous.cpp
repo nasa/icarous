@@ -201,11 +201,14 @@ void Icarous_t::Run(){
 		COM     = &comSock;
 	}
 
-	Communication_t DAQ(AP,COM,&FlightData);
+	DAQ_t daq_module(AP,COM);
+	COM_t com_module(AP,COM,&FlightData);
+
 	QuadFMS_t FMS(AP,COM,&FlightData,mission);
 
 	if(verbose){
-		DAQ.log.setConsoleOutput(true);
+		daq_module.log.setConsoleOutput(true);
+		com_module.log.setConsoleOutput(true);
 		FMS.log.setConsoleOutput(true);
 	}
 
@@ -213,8 +216,8 @@ void Icarous_t::Run(){
 
 	FMS.SendStatusText("Starting ICAROUS");
 
-	std::thread thread1(&Communication_t::GetPixhawkData,&DAQ);
-	std::thread thread2(&Communication_t::GetGSData,&DAQ);
+	std::thread thread1(&DAQ_t::GetPixhawkData,&daq_module);
+	std::thread thread2(&COM_t::GetGSData,&com_module);
 	std::thread thread3(&FlightManagementSystem_t::RunFMS,&FMS);
 
 	thread1.join();

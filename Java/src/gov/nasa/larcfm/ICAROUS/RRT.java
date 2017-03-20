@@ -676,7 +676,7 @@ public class RRT {
 			closestNode = lastNode;
 			if(CheckDirectPath2Goal(closestNode)){
 				System.out.print("found direct path to goal\n");
-				//goalreached = true;
+				goalreached = true;
 				return true;
 			}
 		}
@@ -747,19 +747,13 @@ public class RRT {
 		node_t parent;
 		ArrayList<node_t> path = new ArrayList<node_t>();
 		
+		if(!goalreached){
+			node = goalNode;
+			node.parent = closestNode;
+		}
+		
 		while(node != null){
-			
-			System.out.format("x,y:%f,%f",node.pos.x,node.pos.y);
-			if(node.trafficPos.size()>0){
-				System.out.format("|%f,%f\n",node.trafficPos.get(0).x,node.trafficPos.get(0).y);
-			}
-			else{
-				System.out.format("|0,0\n");
-			}
-			System.out.println(CheckDirectPath2Goal(node));
-			if(node.parent != null && trafficSize > 0){
-				//CheckTrafficCollisionWithBands(true,node.pos,node.vel,node.trafficPos,node.trafficVel,node.parent.vel);
-			}
+			System.out.format("x,y:%f,%f\n",node.pos.x,node.pos.y);
 			path.add(node);
 			node = node.parent;
 		}

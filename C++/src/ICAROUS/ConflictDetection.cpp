@@ -37,24 +37,76 @@
 
 #include "QuadFMS.h"
 #include "Units.h"
+#include "Geofence.h"
+#include <list>
+#include <time.h>
 
-void QuadFMS_t::CheckGeofence(){
+
+ConflictDetection_t::ConflictDetection_t(QuadFMS_t* fms)
+	:KeepInFence(-1,KEEP_IN,0,0,0,NULL),KeepOutFence(-1,KEEP_OUT,0,0,0,NULL){
+	keepInConflict   = false;
+	keepOutConflict  = false;
+	flightPlanDeviationConflict = false;
+	trafficConflict = false;
+	FMS = fms;
+	FlightData = fms->FlightData;
+	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+	daaLookAhead = DAA.parameters.getLookaheadTime();
+	time(&daaTimeStart);
+	time(&timeStart);
+	numConflicts = 0;
+}
+
+void ConflictDetection_t::AddFenceConflict(Geofence_t gf){
+	if(gf.GetType() == KEEP_IN){
+		keepInConflict = true;
+		if(KeepInFence.GetID() != gf.GetID()){
+			KeepInFence = gf;
+			printf("*Keep in conflict*\n");
+		}
+	}
+	else{
+		keepOutConflict = true;
+		if(KeepOutFence.GetID() != gf.GetID()){
+			printf("*Keep out conflict*\n");
+			KeepOutFence = gf;
+		}
+	}
+}
+
+
+uint8_t ConflictDetection_t::size(){
+	int count = 0;
+	if (KeepInFence.GetID() >= 0){ count++;}
+	if (KeepOutFence.GetID() >= 0){ count++;};
+	return count+(int)flightPlanDeviationConflict+
+			(int)trafficConflict;
+}
+
+void ConflictDetection_t::clear(){
+	KeepInFence.clear();
+	KeepOutFence.clear();
+	trafficConflict = false;
+	flightPlanDeviationConflict = false;
+}
+
+void ConflictDetection_t::CheckGeofence(){
 	Position CurrentPos = FlightData->acState.positionLast();
 	Velocity CurrentVel = FlightData->acState.velocityLast();
 
-	Conflict.keepin = false;
-	Conflict.keepout = false;
+	keepInConflict = false;
+	keepOutConflict = false;
 
 	Plan CurrentFP;
 	double elapsedTime;
 
-	if(planType == MISSION){
+	if(FMS->planType == QuadFMS_t::MISSION){
 		CurrentFP = FlightData->MissionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(CurrentFP,FlightData->nextMissionWP);
+		elapsedTime = FMS->GetApproxElapsedPlanTime(CurrentFP,FlightData->nextMissionWP);
 	}
 	else{
 		CurrentFP = FlightData->ResolutionPlan;
-		elapsedTime = GetApproxElapsedPlanTime(CurrentFP,FlightData->nextResolutionWP);
+		elapsedTime = FMS->GetApproxElapsedPlanTime(CurrentFP,FlightData->nextResolutionWP);
 	}
 	// Check for geofence violation
 	for(FlightData->fenceListIt = FlightData->fenceList.begin();
@@ -62,20 +114,13 @@ void QuadFMS_t::CheckGeofence(){
 		++FlightData->fenceListIt){
 		Geofence_t fence = *FlightData->fenceListIt;
 		fence.CheckViolation(FlightData->acState,elapsedTime,CurrentFP);
-
 		if(fence.GetConflictStatus() || fence.GetViolationStatus()){
-			Conflict.AddConflict(fence);
-			if(fence.GetType() == KEEP_IN){
-				Conflict.keepin = true;
-			}
-			else{
-				Conflict.keepout = true;
-			}
+			AddFenceConflict(fence);
 		}
 	}
 }
 
-void QuadFMS_t::ComputeCrossTrackDev(Position pos,Plan fp,int nextWP,double stats[]){
+void ConflictDetection_t::ComputeCrossTrackDev(Position pos,Plan fp,int nextWP,double stats[]){
 		Plan CurrentPlan =  fp;
 
 		Position PrevWP     = CurrentPlan.point(nextWP - 1).position();
@@ -104,7 +149,13 @@ void QuadFMS_t::ComputeCrossTrackDev(Position pos,Plan fp,int nextWP,double stat
 		stats[1] = crossTrackOffset;
 	}
 
-void QuadFMS_t::CheckFlightPlanDeviation(){
+void ConflictDetection_t::CheckFlightPlanDeviation(bool devAllowed){
+
+	flightPlanDeviationConflict = false;
+	if(devAllowed){
+		return;
+	}
+
 	double allowedDev = FlightData->paramData->getValue("XTRK_DEV");
 	Plan CurrentFP;
 	Position prevWP,nextWP,currentPos;
@@ -120,20 +171,20 @@ void QuadFMS_t::CheckFlightPlanDeviation(){
 	FlightData->crossTrackOffset    = stats[1];
 
 	if(std::abs(FlightData->crossTrackDeviation) > allowedDev){
-		Conflict.flightPlanDeviation = true;
+		flightPlanDeviationConflict = true;
 		//printf("Standoff conflict %f,%f\n",stats[0],stats[1]);
 	}else if(std::abs(FlightData->crossTrackDeviation) < (allowedDev)/3){
-		Conflict.flightPlanDeviation = false;
+		flightPlanDeviationConflict = false;
 	}
 
-	if(planType == TRAJECTORY){
-		Conflict.flightPlanDeviation = false;
+	if(FMS->planType == QuadFMS_t::TRAJECTORY){
+		flightPlanDeviationConflict = false;
 
 	}
 }
 
 
-bool QuadFMS_t::CheckTurnConflict(double low,double high,double newHeading,double oldHeading){
+bool ConflictDetection_t::CheckTurnConflict(double low,double high,double newHeading,double oldHeading){
 
 	if(newHeading < 0){
 		newHeading = 360 + newHeading;
@@ -213,7 +264,12 @@ bool QuadFMS_t::CheckTurnConflict(double low,double high,double newHeading,doubl
 	return false;
 }
 
-void QuadFMS_t::CheckTraffic(){
+void ConflictDetection_t::CheckTraffic(){
+
+	if(FlightData->trafficList.size() == 0){
+		return;
+	}
+
 	double radius = FlightData->paramData->getValue("CYL_RADIUS");
 	double height = FlightData->paramData->getValue("CYL_HEIGHT");
 	double alertTime = FlightData->paramData->getValue("ALERT_TIME");
@@ -249,14 +305,14 @@ void QuadFMS_t::CheckTraffic(){
 	bool daaViolation = BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()));
 
 	if(daaViolation){
-		Conflict.traffic = true;
+		trafficConflict = true;
 		time(&daaTimeStart);
 	}
 
 
 	if(daaTimeElapsed > holdConflictTime){
 		if(!daaViolation){
-			Conflict.traffic = returnPathConflict;
+			trafficConflict = FMS->Resolver.returnPathConflict;
 		}
 	}
 

@@ -114,7 +114,8 @@ void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp
 		}
 
 		Vect2 recPointR2 = geoPolyResolution.inside_recovery_point(BUFF,hstepback,
-												fenceVertices0,currentPosR3.vect2());
+												fenceVertices1,currentPosR3.vect2());
+
 		LatLonAlt LLA = proj.inverse(recPointR2,currentPosLLA.alt());
 		recoveryPoint = Position::makeLatLonAlt(LLA.latitude(),"degree",
 										        LLA.longitude(),"degree",
@@ -170,7 +171,7 @@ bool Geofence_t::CheckWPFeasibility(Position currentPos,Position nextWP){
 	return val;
 }
 
-uint16_t Geofence_t::GetID(){
+int16_t Geofence_t::GetID(){
 	return id;
 }
 

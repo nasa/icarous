@@ -38,22 +38,13 @@
  #include "QuadFMS.h"
 
  QuadFMS_t::QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task):
- FlightManagementSystem_t(px4int,gsint,fData,task){
+ FlightManagementSystem_t(px4int,gsint,fData,task),Detector(this),Resolver(this){
      targetAlt         = 0.0f;
      resolutionState   = IDLE_r;
      maneuverState     = IDLE_m;
      trajectoryState   = IDLE_t;
      planType          = MISSION;
      resumeMission     = true;
-     DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
-     DAAresolution.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
-     alertTime0 = DAAresolution.parameters.alertor.getLevel(1).getAlertingTime();
-     time(&daaTimeStart);
-     daaLookAhead = DAA.parameters.getLookaheadTime("s");
-     trafficResolutionTime = 0;
-     time(&timeStart);
-     goalReached = true;
-     returnPathConflict = false;
  }
 
 QuadFMS_t::~QuadFMS_t(){}
@@ -108,6 +99,7 @@ uint8_t QuadFMS_t::CRUISE(){
 	confSize = Monitor();
 
 	if(confSize != conflictSize){
+		printf("Conflict size %d,%d\n",confSize,conflictSize);
 		conflictSize = confSize;
 		if(conflictSize > 0){
 			resolutionState = COMPUTE_r;
@@ -151,29 +143,15 @@ uint8_t QuadFMS_t::LAND(){
 uint8_t QuadFMS_t::Monitor(){
 
 	//Monitor geofences
-	CheckGeofence();
+	Detector.CheckGeofence();
 
 	//Check flight plan deviaiton
-	if(!deviationApproved){
-		CheckFlightPlanDeviation();
-	}
+	Detector.CheckFlightPlanDeviation(deviationApproved);
 
-	//Check traffic
-	if(FlightData->trafficList.size() > 0){
-		CheckTraffic();
+	// Check traffic conflicts
+	Detector.CheckTraffic();
 
-		time_t currentTime;
-		time(&currentTime);
-		double diff = difftime(currentTime,trafficResolutionTime);
-
-		if( (Conflict.traffic == true) && (diff > 10) ){ //TODO: remove hard coded value
-			resolutionState = COMPUTE_r;
-			printf("diff %f\n",diff);
-			printf("resetting resolution to compute\n");
-		}
-	}
-
-	return Conflict.size();
+	return Detector.size();
 }
 
 uint8_t QuadFMS_t::Resolve(){
@@ -187,42 +165,41 @@ uint8_t QuadFMS_t::Resolve(){
 
 	case COMPUTE_r:
 
-		if(Conflict.traffic){
+		if(Detector.trafficConflict){
 			printf("Computing traffic resolution\n");
 			SendStatusText("traffic conflict");
 			int search_type = FlightData->paramData->getInt("CHEAP_DAA");
 			if(search_type == 0){
-				ResolveTrafficConflictRRT();
+				Resolver.ResolveTrafficConflictRRT();
 			}
 			else{
-				ResolveTrafficConflictDAA();
+				Resolver.ResolveTrafficConflictDAA();
 			}
-			time(&trafficResolutionTime);
 		}
-		else if(Conflict.keepin){
+		else if(Detector.keepInConflict){
 			SendStatusText("keep in conflict");
 			printf("Computing keep in resolution\n");
-			ResolveKeepInConflict();
+			Resolver.ResolveKeepInConflict();
 		}
-		else if(Conflict.keepout){
+		else if(Detector.keepOutConflict){
 			SetMode(GUIDED);
 			SendStatusText("keep out conflict");
 			int search_type = FlightData->paramData->getInt("CHEAP_SEARCH");
 			printf("Computing keep out resolution\n");
 			time(&startTime);
 			if(search_type == 0){
-				ResolveKeepOutConflict_Astar();
+				Resolver.ResolveKeepOutConflict_Astar();
 			}
 			else{
-				ResolveKeepOutConflict_RRT();
+				Resolver.ResolveKeepOutConflict_RRT();
 			}
 			time(&stopTime);
 			printf("Time to compute solution %f\n",difftime(stopTime,startTime));
 		}
-		else if(Conflict.flightPlanDeviation){
+		else if(Detector.flightPlanDeviationConflict){
 			SendStatusText("flight plan deviation");
 			printf("Computing standoff deviation\n");
-			ResolveFlightPlanDeviation();
+			Resolver.ResolveFlightPlanDeviation();
 		}
 
 		if(planType == TRAJECTORY){
@@ -264,11 +241,12 @@ uint8_t QuadFMS_t::Resolve(){
 
 	case RESUME_r:
 		// Resume mission
+		printf("Resuming mission\n");
 		ComputeInterceptCourse();
 		resolutionState = TRAJECTORY_r;
 		trajectoryState = START_t;
-		Conflict.clear();
-		conflictSize = Conflict.size();
+		Detector.clear();
+		conflictSize = Detector.size();
 		goalReached = true;
 
 		break;
@@ -290,7 +268,7 @@ uint8_t QuadFMS_t::FlyTrajectory(){
 	switch(trajectoryState){
 
 	case START_t:
-		printf("executing trajectory resolution of size\n");
+		printf("executing trajectory resolution of size %d\n",FlightData->ResolutionPlan.size());
 		FlightData->nextResolutionWP = 0;
 		resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
 		SetMode(GUIDED); sleep(1);
@@ -311,7 +289,7 @@ uint8_t QuadFMS_t::FlyTrajectory(){
 		distH     = current.distanceH(next);
 		distV     = current.distanceV(next);
 		//printf("distH,V = %f,%f\n",distH,distV);
-		if(distH < 1 && distV < 0.5){
+		if(distH < 0.5 && distV < 0.5){
 
 			FlightData->nextResolutionWP++;
 			if(FlightData->nextResolutionWP >= FlightData->ResolutionPlan.size()){
@@ -355,21 +333,21 @@ uint8_t QuadFMS_t::FlyManuever(){
 		//break;
 
 	case GUIDE_m:
-		if(Conflict.traffic){
-			ResolveTrafficConflictDAA();
+		if(Detector.trafficConflict){
+			Resolver.ResolveTrafficConflictDAA();
 			SetYaw(FlightData->maneuverHeading);
 			SetVelocity(FlightData->maneuverVn,FlightData->maneuverVe,FlightData->maneuverVu);
 		}
-		else if(Conflict.flightPlanDeviation){
-			ResolveFlightPlanDeviation();
+		else if(Detector.flightPlanDeviationConflict){
+			Resolver.ResolveFlightPlanDeviation();
 			SetYaw(FlightData->maneuverHeading);
 			SetVelocity(FlightData->maneuverVn,FlightData->maneuverVe,FlightData->maneuverVu);
 		}
 		else{
 			printf("finished maneuver resolution\n");
 			maneuverState = IDLE_m;
-			Conflict.clear();
-			conflictSize = Conflict.size();
+			Detector.clear();
+			conflictSize = Detector.size();
 		}
 		break;
 
@@ -486,7 +464,7 @@ void QuadFMS_t::Reset(){
 	fmsState = _idle_;
 	planType = MISSION;
 	conflictSize = 0;
-	Conflict.clear();
+	Detector.clear();
 	landStarted = false;
 }
 

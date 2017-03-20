@@ -44,13 +44,16 @@
 #include <string.h>
 #include <getopt.h>
 
-#include "Communication.h"
 #include "Interface.h"
 #include "QuadFMS.h"
 #include "ParameterData.h"
 #include "SeparatedInput.h"
 #include "Mission.h"
 #include <string>
+
+#include "DAQ.h"
+#include "COM.h"
+
 
 using namespace std;
 using namespace larcfm;
