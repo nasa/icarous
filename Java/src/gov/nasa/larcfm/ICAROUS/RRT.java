@@ -13,7 +13,8 @@ public class RRT {
 		public Vect3 vel;
 		public ArrayList<Vect3> trafficPos;
 		public ArrayList<Vect3> trafficVel;
-
+		public double waitTime;
+		
 		boolean goal;
 		double g,h;
 		public ArrayList<node_t> children;
@@ -24,6 +25,8 @@ public class RRT {
 			trafficVel = new ArrayList<Vect3>();
 			children   = new ArrayList<node_t>();  
 			parent     = null;
+			waitTime   = 0.0;
+			goal       = false;
 		}
 	};
 	
@@ -447,25 +450,22 @@ public class RRT {
 			Position si = Position.makeXYZ(pos.x,"m",pos.y,"m",pos.z,"m");
 			Velocity vi = Velocity.makeVxyz(vel.x,vel.y,"m/s",vel.z,"m/s");
 			DAA.addTrafficState("Traffic"+i,si,vi);
-
-			KMB = DAA.getKinematicMultiBands();
-			
-			if(!KMB.timeIntervalOfViolation(1).isEmpty()){
-				violationTime = KMB.timeIntervalOfViolation(1).low;
-			}else{
-				violationTime = Double.NaN;
-			}
-			
 			double distH = so.distanceH(si);
-
 			if(distH < trafficDist){
 				trafficDist = distH;
-			}
-			
-			
-			if(Double.isFinite(violationTime) && violationTime < alertTime){
-				return true;
-			}
+			}						
+		}
+		
+		KMB = DAA.getKinematicMultiBands();
+		
+		if(!KMB.timeIntervalOfViolation(1).isEmpty()){
+			violationTime = KMB.timeIntervalOfViolation(1).low;
+		}else{
+			violationTime = Double.NaN;
+		}
+		
+		if(Double.isFinite(violationTime) && violationTime < alertTime){
+			return true;
 		}
 		
 		if(trafficDist < maxD){
@@ -655,7 +655,12 @@ public class RRT {
 				vel = parent.vel;
 			}
 			if(CheckTrafficCollisionWithBands(CheckTurn,qnode.pos,AB,qnode.trafficPos,qnode.trafficVel,vel)){
-				return false;
+				if(CheckWaitAndGo(qnode)){
+					System.out.println("Wait and go solution found\n");
+					return true;
+				}else{
+					return false;
+				}
 			}
 			else{
 				return true;
@@ -664,7 +669,84 @@ public class RRT {
 		else{
 			return true;
 		}
+	}
+	
+	public boolean CheckWaitAndGo(node_t qnode){
+		
+		Vect3 pos = qnode.pos;
+		Vect3 vel = qnode.vel;
+		double speed = maxInputNorm;
+		Vect3 A = qnode.pos;
+		Vect3 B = goalNode.pos;
+		Vect3 AB = B.Sub(A);
+		AB = AB.mkZ(0);
+		double norm = AB.norm();
+		if(norm > 0){
+			AB = AB.Scal(speed/norm);
+		}
+		
+		ArrayList<Vect3> trafficListPos = qnode.trafficPos;
+		ArrayList<Vect3> trafficListVel = qnode.trafficVel;
+		
+		// First check if hovering in place can lead to traffic violations
+		if(CheckTrafficCollision(pos, Vect3.ZERO, trafficListPos, trafficListVel)){
+			return false;
+		}
+		
+		double maxTime = 0;
+				
+		for(int i=0;i<trafficListPos.size();i++){
+			Vect3 st = trafficListPos.get(i);
+			Vect3 vt = trafficListVel.get(i);
+			Vect3 V  = vt.Sub(AB);
+			Vect3 S  = st.Sub(pos);
+			
+			// If intruder velocity is negligible, ignore wait time computation. 
+			if(vt.norm() < 0.1){
+				continue;
+			}
+							
+			// If velocities are parallel and the perp distances (perp to intruder vel) is 
+			// greater than separation threshold, ignore wait time compuation.
+			double cosangle = vt.dot(S)/(vt.norm()*S.norm());
+			double angle = Math.acos(cosangle);
+			
+			if(angle > Math.toRadians(90)){
+				angle = Math.PI - angle;
+			}
+				
+			double perpdist = S.norm()*Math.sin(angle);
+				
+			if (perpdist < 5){					
+				return false;
+			}
+			
+						
+			if (V.norm() < 1e-2){
+				return false;
+			}
+			
+			double t = 0;
 
+			// Compute time at which s.v < 0 
+			// s.v < 0 => aircraft diverge 
+			double ad = S.x * V.x + S.y*V.y + S.z*V.z;
+			double bd = V.x*vt.x + V.y*vt.y + V.z*vt.z;
+			t = -ad/bd;
+			
+			if(t > maxTime){
+				maxTime = -ad/bd;
+			}						
+		}
+		
+		if(maxTime > 0.0){
+			qnode.waitTime = maxTime;			
+			System.out.format("Wait time: %f\n",maxTime);
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 
 	public boolean CheckGoal(){
@@ -692,10 +774,12 @@ public class RRT {
 
 	public void SetGoal(Position goal){
 		goalNode.pos = proj.project(goal);
+		goalNode.goal = true;
 	}
 
 	public void SetGoal(node_t goal){
 		goalNode = goal;
+		goalNode.goal = true;
 	}
 
 
@@ -753,7 +837,22 @@ public class RRT {
 		}
 		
 		while(node != null){
+			Vect3 A = node.pos;
+			Vect3 B = goalNode.pos;
+			Vect3 AB = B.Sub(A);
+			AB = AB.mkZ(0);
+			double norm = AB.norm();
+			if(norm > 0){
+				AB = AB.Scal(speed/norm);
+			}
+			
 			System.out.format("x,y:%f,%f\n",node.pos.x,node.pos.y);
+			//System.out.println(AB.toString());			
+			if(!node.goal){				
+				//System.out.println("Hover check:" + CheckTrafficCollision(node.pos, Vect3.ZERO, node.trafficPos, node.trafficVel));
+				// System.out.println("Wait:" + CheckWaitAndGo(node));
+				//System.out.format("*%f,%f\n", node.trafficPos.get(0).x,node.trafficPos.get(0).y);
+			}
 			path.add(node);
 			node = node.parent;
 		}
@@ -775,6 +874,15 @@ public class RRT {
 			NavPoint np = new NavPoint(wp,ETA);
 			newRoute.addNavPoint(np);
 			count++;
+			
+			double waitTime = path.get(i).waitTime; 
+			if (waitTime > 0.0){
+				ETA = ETA + waitTime;
+				NavPoint npW = new NavPoint(wp,ETA);
+				newRoute.addNavPoint(npW);
+				count++;
+			}
+			
 		}
 
 		return newRoute;
