@@ -59,6 +59,7 @@ public class QuadFMS extends FlightManagementSystem{
 	Mission mission;
 	Position NextGoal;
 	boolean GoalReached;
+	private double wpDiffTime,startNextWPTime;
 
 	public QuadFMS(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc,ParameterData pdata){
 		super("QuadFMS",acData,ap_Intf,com_Intf);
@@ -71,6 +72,8 @@ public class QuadFMS extends FlightManagementSystem{
 		maneuverState = maneuver_state_t.IDLE;
 		mission = mc;
 		planType = plan_type_t.MISSION;
+		wpDiffTime = 0;
+		startNextWPTime = 0;
 	}
 
 	@Override
@@ -206,6 +209,13 @@ public class QuadFMS extends FlightManagementSystem{
 			else if(Detector.keepInConflict){
 				log.addWarning("MSG: Computing resolution for keep in conflict");
 				gsIntf.SendStatusText("Keep in conflict");
+				SetMode(ARDUPILOT_MODES.BRAKE);
+				try{
+					Thread.sleep(500);
+				}
+				catch(InterruptedException e){
+					System.out.println(e);
+				}				
 				Resolver.ResolveKeepInConflict();		
 			}
 			else if(Detector.keepOutConflict){
@@ -299,7 +309,10 @@ public class QuadFMS extends FlightManagementSystem{
 		NavPoint wp;
 		Position current, next;
 		double distH,distV;
+		double currentWPTime,nextWPTime;
 
+		double currentTime = System.nanoTime();
+		
 		switch(trajectoryState){
 
 		case START:
@@ -309,6 +322,8 @@ public class QuadFMS extends FlightManagementSystem{
 			SetMode(ARDUPILOT_MODES.GUIDED); 
 			SetSpeed(resolutionSpeed);
 			trajectoryState = trajectory_state_t.FIX;
+			startNextWPTime = System.nanoTime();
+			wpDiffTime = 0;
 			break;
 
 		case FIX:
@@ -320,13 +335,18 @@ public class QuadFMS extends FlightManagementSystem{
 
 		case ENROUTE:
 			current = FlightData.acState.positionLast();
-			next    = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).position();
+			next    = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).position();			
 			distH     = current.distanceH(next);
 			distV     = current.distanceV(next);
+			
+			double timeElapsed = (currentTime - startNextWPTime)/1E9;
 
-			if(distH < 1 && distV < 0.5){
-
+			if(distH < 1 && distV < 0.5 && timeElapsed > wpDiffTime){				
+				currentWPTime = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).time();
 				FlightData.nextResolutionWP++;
+				nextWPTime = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).time();
+				startNextWPTime = System.nanoTime();
+				wpDiffTime = nextWPTime - currentWPTime;
 				if(FlightData.nextResolutionWP >= FlightData.ResolutionPlan.size()){
 					trajectoryState = trajectory_state_t.STOP;
 					FlightData.nextResolutionWP = 0;
