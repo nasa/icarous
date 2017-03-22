@@ -155,10 +155,10 @@ void Resolution_t::ResolveKeepOutConflict_Astar(){
 	Position currentPos = FlightData->acState.positionLast();
 	Velocity currentVel = FlightData->acState.velocityLast();
 
-	double elapsedTime;
+	double elapsedTime = 0.0;
 	double altFence;
 	double minTime = MAXDOUBLE;
-	double maxTime = 0;
+	double maxTime = 0.0;
 
 	Plan currentFP;
 	Position prevWP;

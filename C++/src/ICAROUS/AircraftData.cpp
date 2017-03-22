@@ -223,7 +223,6 @@ void AircraftData_t::GetTraffic(int id,Position& pos,Velocity& vel){
 void AircraftData_t::AddMissionObject(int id,double lat,double lon,double alt,double vx,double vy,double vz){
 	pthread_mutex_lock(&lock);
 	GenericObject_t obj(0,id,lat,lon,alt,vx,vy,vz);
-	bool present = false;
 	std::list<GenericObject_t>::iterator it;
 	GenericObject_t::AddObject(missionObjList,obj);
 	pthread_mutex_unlock(&lock);
