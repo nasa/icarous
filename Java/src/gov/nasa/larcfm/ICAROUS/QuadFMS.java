@@ -376,7 +376,7 @@ public class QuadFMS extends FlightManagementSystem{
 			
 			if(Detector.trafficConflict){
 				Resolver.ResolveTrafficConflictDAA();
-				SetYaw(true,FlightData.maneuverHeading);
+				SetYaw(false,FlightData.maneuverHeading);
 				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
 			}		
 			else if(Detector.flightPlanDeviationConflict){

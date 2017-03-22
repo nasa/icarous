@@ -1,4 +1,7 @@
 *~
 *.o
 *.class
-C++/IcarousExample
+*.a
+*.dSYM
+C++/DAAGeofencingExample
+C++/icarous
