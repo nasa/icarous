@@ -11,6 +11,9 @@ ICHBEAT = 5
 # Takeoff altitude
 TAKEOFF_ALT = 5
 
+#Yaw behavior
+ALLOW_YAW = 0
+
 #Maximum ceiling
 MAX_CEILING = 30
 

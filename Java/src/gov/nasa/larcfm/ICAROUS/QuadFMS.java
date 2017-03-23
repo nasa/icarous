@@ -328,7 +328,11 @@ public class QuadFMS extends FlightManagementSystem{
 
 		case FIX:
 			wp = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP);
-			SetYaw(true,0.0);
+			if(FlightData.pData.getBool("ALLOW_YAW")){
+				SetYaw(false,FlightData.maneuverHeading);
+			}else{
+				SetYaw(true,0);
+			}			
 			SetGPSPos(wp.lla().latitude(),wp.lla().longitude(),wp.lla().alt());
 			trajectoryState = trajectory_state_t.ENROUTE;
 			break;
@@ -396,12 +400,20 @@ public class QuadFMS extends FlightManagementSystem{
 			
 			if(Detector.trafficConflict){
 				Resolver.ResolveTrafficConflictDAA();
-				SetYaw(false,FlightData.maneuverHeading);
+				if(FlightData.pData.getBool("ALLOW_YAW")){
+					SetYaw(false,FlightData.maneuverHeading);
+				}else{
+					SetYaw(true,0);
+				}
 				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
 			}		
 			else if(Detector.flightPlanDeviationConflict){
 				Resolver.ResolveFlightPlanDeviationConflict();
-				SetYaw(true,FlightData.maneuverHeading);
+				if(FlightData.pData.getBool("ALLOW_YAW")){
+					SetYaw(false,FlightData.maneuverHeading);
+				}else{
+					SetYaw(true,0);
+				}				
 				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
 			}
 			else{
