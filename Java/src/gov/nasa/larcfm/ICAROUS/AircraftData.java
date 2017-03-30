@@ -45,6 +45,7 @@ import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.AircraftState;
 import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larcfm.Util.Pair;
 
 public class AircraftData{
 
@@ -85,6 +86,8 @@ public class AircraftData{
 	//public FlightPlan NewFlightPlan;
 	//public FlightPlan CurrentFlightPlan;
 	public Plan MissionPlan;
+	public Set<Integer> WaypointIndices;
+	public List<Pair<Integer,Integer>> WPMissionItemMapping;
 	public Plan ResolutionPlan;
 
 	public List<GeoFence> fenceList; 
@@ -121,7 +124,9 @@ public class AircraftData{
 		obstacles           = new ArrayList<GenericObject>();
 		traffic             = new ArrayList<GenericObject>();
 		missionObj          = new ArrayList<GenericObject>();
-		InputFlightPlan     = new ArrayList<msg_mission_item>();
+		InputFlightPlan     = new ArrayList<msg_mission_item>();		
+		WaypointIndices     = new HashSet<Integer>();
+		WPMissionItemMapping = new ArrayList<Pair<Integer,Integer>>();
 		startMission        = -1;
 		nextMissionWP       = 0;
 		nextResolutionWP    = 0;
@@ -238,10 +243,14 @@ public class AircraftData{
 		MissionPlan = new Plan();
 
 		msg_mission_item msgMissionItem         = new msg_mission_item();
+		int count = 0;
 		for(int i=0;i<InputFlightPlan.size();i++){
 			msgMissionItem = InputFlightPlan.get(i);
 			if( (msgMissionItem.command == MAV_CMD.MAV_CMD_NAV_WAYPOINT) ||
 					(msgMissionItem.command == MAV_CMD.MAV_CMD_NAV_SPLINE_WAYPOINT) ){
+				WaypointIndices.add(msgMissionItem.seq);
+				WPMissionItemMapping.add(new Pair<Integer,Integer>(count,msgMissionItem.seq));
+				count++;
 				double wptime= 0;
 				Position nextWP = Position.makeLatLonAlt(msgMissionItem.x,"degree",msgMissionItem.y,"degree",msgMissionItem.z,"m");
 				if(i > 0 ){
@@ -257,6 +266,7 @@ public class AircraftData{
 			}
 		}
 		numMissionWP           = MissionPlan.size();
+		WaypointIndices.remove(0);
 	}
 
 	public float GetFlightPlanSpeed(Plan fp,int nextWP){
