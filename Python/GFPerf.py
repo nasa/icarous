@@ -268,7 +268,6 @@ def GetPerformanceData(num,args):
 
         VirtualEdge.append(_virtual_edge)
 
-
     # Compute speed from velocity
     speed = []
     for i in range(0,len(vx)):
@@ -313,7 +312,7 @@ def GetPerformanceData(num,args):
     pmean = np.mean(pmins)
     pstd  = np.std(pmins)
     print "Minimum proximity values and standard deviation for each edge:"
-    print pmean,pstd
+    print pmins,pmean,pstd
 
     if args.show:
         plt.show()
@@ -331,7 +330,7 @@ parser.add_argument("--reverse", action='store_true',default=False, help ="rever
 parser.add_argument("--num", type=int, default=0, help = "num datapoints on X axis - starts from 1m/s upto NUM m/s")
 parser.add_argument("--show", action="store_true", help="show plots")
 parser.add_argument("--cap", type=float, default=5,help="maximum proximity value")
-parser.add_argument("--virtual", action="store_false",help="use virtual edges for minimum proximity detection")
+parser.add_argument("--virtual", action="store_true",help="use virtual edges for minimum proximity detection")
 parser.add_argument("-o","--output", help="output file name")
 args = parser.parse_args()
 
