@@ -269,7 +269,7 @@ public class QuadFMS extends FlightManagementSystem{
 
 			if(status == 1){
 				if(resumeMission){
-					System.out.println("Resuming mission\n");
+					System.out.println("Resuming mission to:"+FlightData.nextMissionWP);
 					resolveState = resolve_state_t.IDLE;
 					planType = plan_type_t.MISSION;
 					SetMissionItem(FlightData.nextMissionWP);
@@ -442,6 +442,7 @@ public class QuadFMS extends FlightManagementSystem{
 		NavPoint wp1,wp2;
 		if(GoalReached){
 			next    = FlightData.MissionPlan.point(FlightData.nextMissionWP).position();
+			//System.out.println("Intercept to:"+next.toString(6));
 			resumeMission = true;
 		}
 		else{

@@ -331,7 +331,8 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
         		msgMission.seq = FlightData.WPMissionItemMapping.get(i).second;
         		break;
         	}
-        }                
+        }
+        //System.out.println("Setting AP mission seq:"+msgMission.seq);
         apIntf.Write(msgMission);
 	}
 
@@ -465,7 +466,8 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		        }
 		    }
 		}
-		if(reached){			
+		if(reached){
+			//System.out.println("Incrementing next WP index");
 			FlightData.nextMissionWP++;
 			if(FlightData.nextMissionWP < FlightData.numMissionWP){
 				float speed = FlightData.GetFlightPlanSpeed(FlightData.MissionPlan,FlightData.nextMissionWP);					

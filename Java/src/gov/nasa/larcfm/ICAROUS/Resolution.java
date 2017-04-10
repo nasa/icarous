@@ -55,9 +55,9 @@ public class Resolution {
 		FMS.FlightData.nextResolutionWP = 0;
 		FMS.FlightData.ResolutionPlan.addNavPoint(wp);
 
-		NavPoint nextWP = CurrentPlan.point(nextWPind);
-		if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){
-			FlightData.nextMissionWP++;
+		NavPoint nextWP = CurrentPlan.point(nextWPind);		
+		if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){			
+			FlightData.nextMissionWP++;			
 		}
 
 		FMS.GoalReached = true;
