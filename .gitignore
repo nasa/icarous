@@ -6,4 +6,8 @@ icarous
 *.parm
 *.tlog.raw
 *.tlog
-
+Python/*
+log
+Java/params/
+*.a
+C++/DAAGeofencingExample
