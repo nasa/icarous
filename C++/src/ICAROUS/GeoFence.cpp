@@ -94,6 +94,7 @@ void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp
 	double hthreshold = params->getValue("HTHRESHOLD");
 	double vthreshold = params->getValue("VTHRESHOLD");
 	double hstepback  = params->getValue("HSTEPBACK");
+	double vstepback  = params->getValue("VSTEPBACK");
 
 	if(fenceType == KEEP_IN){
 		if(geoPolyCarp.nearEdge(currentPosR3,geoPoly3D,hthreshold,vthreshold)){
@@ -116,10 +117,17 @@ void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp
 		Vect2 recPointR2 = geoPolyResolution.inside_recovery_point(BUFF,hstepback,
 												fenceVertices1,currentPosR3.vect2());
 
+		double alt;
+		if(abs(currentPosR3.z - ceiling) <= vthreshold){
+			alt = ceiling - vstepback;
+		}else{
+			alt = currentPosR3.z;
+		}
+
 		LatLonAlt LLA = proj.inverse(recPointR2,currentPosLLA.alt());
 		recoveryPoint = Position::makeLatLonAlt(LLA.latitude(),"degree",
 										        LLA.longitude(),"degree",
-												LLA.altitude(),"ft");
+												alt,"m");
 	}
 	else{
 		Vect2 recPointR2 = geoPolyResolution.outside_recovery_point(BUFF,hstepback,
