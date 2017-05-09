@@ -118,7 +118,7 @@ void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp
 												fenceVertices1,currentPosR3.vect2());
 
 		double alt;
-		if(abs(currentPosR3.z - ceiling) <= vthreshold){
+		if(std::abs(currentPosR3.z - ceiling) <= vthreshold){
 			alt = ceiling - vstepback;
 		}else{
 			alt = currentPosR3.z;
