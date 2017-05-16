@@ -11,3 +11,6 @@ log
 Java/params/
 *.a
 C++/DAAGeofencingExample
+*.bin
+*.so
+*.tbl
