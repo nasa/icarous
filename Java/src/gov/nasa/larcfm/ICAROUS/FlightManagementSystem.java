@@ -324,8 +324,15 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	public void SetMissionItem(int nextWP){
 		msg_mission_set_current msgMission = new msg_mission_set_current();
         msgMission.target_system = 1;
-        msgMission.target_component = 0;
-        msgMission.seq = nextWP;
+        msgMission.target_component = 0;        
+        msgMission.seq = nextWP;               
+        for(int i=0;i<FlightData.WPMissionItemMapping.size();++i){
+        	if (FlightData.WPMissionItemMapping.get(i).first == nextWP){
+        		msgMission.seq = FlightData.WPMissionItemMapping.get(i).second;
+        		break;
+        	}
+        }
+        //System.out.println("Setting AP mission seq:"+msgMission.seq);
         apIntf.Write(msgMission);
 	}
 
@@ -443,9 +450,24 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	public boolean CheckMissionWaypointReached(){
 
 		boolean reached = false;
-		msg_mission_item_reached msgMissionItemReached = FlightData.RcvdMessages.GetMissionItemReached();
+		msg_mission_item_reached msgMissionItemReached = FlightData.RcvdMessages.GetMissionItemReached();		
 		if(msgMissionItemReached != null){
-			reached = true;
+			//System.out.format("mission item reached:%d\n",msgMissionItemReached.seq);
+			//System.out.println(FlightData.WaypointIndices);
+			//System.out.println(FlightData.WaypointIndices.contains(msgMissionItemReached.seq));
+			Iterator<Integer> iterator = FlightData.WaypointIndices.iterator();
+		    while(iterator.hasNext()) {
+		        Integer setElement = iterator.next();
+		        if(msgMissionItemReached.seq >= setElement) {
+		            iterator.remove();
+		            reached = true;
+		        }else{		        	
+		        	break;
+		        }
+		    }
+		}
+		if(reached){
+			//System.out.println("Incrementing next WP index");
 			FlightData.nextMissionWP++;
 			if(FlightData.nextMissionWP < FlightData.numMissionWP){
 				float speed = FlightData.GetFlightPlanSpeed(FlightData.MissionPlan,FlightData.nextMissionWP);					

@@ -225,6 +225,7 @@ public class COM implements Runnable,ErrorReporter{
 			case "DAA_LOOKAHEAD":
 			case "CHEAP_DAA":
 			case "CHEAP_SEARCH":
+			case "ALLOW_YAW":
 				pData.set(ID,msgParamSet.param_value,pData.getUnit(ID));
 				//System.out.println(ID+": "+pData.getValue(ID));
 				icarous_parm  = true;
