@@ -250,6 +250,12 @@ public class AircraftData{
 						vel = 1;
 					}
 					double distance = MissionPlan.point(i - 1).position().distanceH(nextWP);
+					
+					if(distance < 0.01){
+						distance = MissionPlan.point(i - 1).position().distanceV(nextWP);
+						vel      = 1;
+					}
+					
 					wptime          = MissionPlan.time(i-1) + distance/vel;
 					//System.out.println("Times:"+wptime);
 				}		     
