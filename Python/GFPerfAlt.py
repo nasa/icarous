@@ -169,7 +169,7 @@ def GetPerformanceData(num,args):
     vz  = []
 
     logfilename = args.logfolder
-    #logfilename = args.logfolder + "/test"+str(num+1)+"/mav.tlog"
+    #logfilename = args.logfolder + "/log"+str(num+1)+"/mav.tlog"
     geofilename = args.logfolder + "/test"+str(num+1)+"/geofence.xml"
 
     print "processing test : " + str(num+1)
@@ -228,7 +228,7 @@ def GetPerformanceData(num,args):
 
     proximity = [roof - val for val in alt] # proximity
 
-    plt.plot(t,proximity)
+    plt.plot(t,proximity,'-o')
     plt.show()
 
     approach = True
@@ -237,18 +237,20 @@ def GetPerformanceData(num,args):
     minProx = []
     record = True
     for i,val in enumerate(proximity):
+        if val > args.cap:
+            continue
         if i < len(proximity) -1:
             vi = proximity[i]
             vj = proximity[i+1]
 
-            if vj > vi and record:
+            if vj > (vi) and record:
                 minProx.append(vi)
                 record = False
             elif vj < vi:
                 record = True
 
     plt.figure(2)
-    plt.plot(minProx)
+    plt.plot(minProx,'-o')
     plt.show()
 
     minProx = [val for val in minProx if val < args.cap]
@@ -256,7 +258,7 @@ def GetPerformanceData(num,args):
     pmean = np.mean(minProx)
     pstd  = np.std(minProx)
 
-    print pmean,pstd
+    print pmean,pstd,np.min(minProx),np.max(minProx)
 
     return [pmean,pstd]
 
