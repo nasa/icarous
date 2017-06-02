@@ -132,6 +132,7 @@ void Resolution_t::ResolveKeepInConflict(){
 	FlightData->nextResolutionWP = 0;
 
 	if(fence.CheckWPFeasibility(wp.position(),next_wp.position())){
+		cout<<"waypoint not feasible"<<endl;
 		FlightData->nextMissionWP++;
 	}
 

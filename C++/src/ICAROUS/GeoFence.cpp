@@ -174,7 +174,7 @@ bool Geofence_t::CheckWPFeasibility(Position currentPos,Position nextWP){
 	double vx = sin(heading2WP);
 	Vect2 vel(vx,vy);
 
-	bool val = CollisionDetection(currentPos,vel,0,5);
+	bool val = CollisionDetection(currentPos,vel,0,50);
 
 	return val;
 }
