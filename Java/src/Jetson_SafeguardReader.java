@@ -34,6 +34,7 @@ import java.net.*;
 import com.MAVLink.*;
 import com.MAVLink.common.msg_command_int;
 import com.MAVLink.common.msg_command_long;
+import com.MAVLink.enums.MAV_CMD;
 import com.MAVLink.icarous.*;
 
 public class Jetson_SafeguardReader{
@@ -100,7 +101,7 @@ public class Jetson_SafeguardReader{
 				
 		// Constuct MAVLink message
 		msg_command_long msgSafeguard = new msg_command_long();
-
+		msgSafeguard.command = MAV_CMD.MAV_CMD_USER_1;
 		msgSafeguard.param1 = 10;
 		if((int) input1[0] == 48 ){
 

@@ -35,6 +35,7 @@ import com.MAVLink.*;
 import com.MAVLink.common.msg_command_int;
 import com.MAVLink.common.msg_command_long;
 import com.MAVLink.icarous.*;
+import com.MAVLink.enums.*;
 
 public class BeagleBone_SafeguardReader{
 
@@ -100,7 +101,7 @@ public class BeagleBone_SafeguardReader{
 				
 		// Constuct MAVLink message
 		msg_command_long msgSafeguard = new msg_command_long();
-
+		msgSafeguard.command = MAV_CMD.MAV_CMD_USER_1;
 		msgSafeguard.param1 = 10;
 		if((int) input1[0] == 48 ){
 
