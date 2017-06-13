@@ -34,6 +34,7 @@ The following repositories are required to run icarous.
 - [Ardupilot](https://github.com/ArduPilot/ardupilot.git)
 - [mavlink](https://github.com/ArduPilot/mavlink.git)
 - [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
+- [Java simple serial connector (JSSC)](https://code.google.com/archive/p/java-simple-serial-connector/) All ready provided in Java/lib.
 
 ### BEFORE LAUNCHING ICAROUS
 
