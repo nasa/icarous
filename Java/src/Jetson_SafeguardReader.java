@@ -76,7 +76,7 @@ public class Jetson_SafeguardReader{
 	    Files.write(GPIO_export,port2.getBytes(),StandardOpenOption.WRITE);
 	}
 	catch(IOException e){	    
-	    
+	    System.out.println(e);
 	}
 
 	// Set port direction
@@ -85,7 +85,7 @@ public class Jetson_SafeguardReader{
 	    Files.write(GPIO_direction2,"in".getBytes(),StandardOpenOption.WRITE);
 	}
 	catch(IOException e){
-
+	    System.out.println(e);
 	}
 
 	double timeStart = (double) System.nanoTime()/1E9;
@@ -109,14 +109,14 @@ public class Jetson_SafeguardReader{
 			msgSafeguard.param2         = 0;
 		    }
 		    else{
-			msgSafeguard.param2         = 2;
+			msgSafeguard.param2         = 1;
 		    }
 		    
 		}
 		else{
 
 		    if((int) input2[0] == 48 ){
-			msgSafeguard.param2        = 1;
+			msgSafeguard.param2        = 2;
 		    }
 		    else{
 			msgSafeguard.param2        = 3;
@@ -127,7 +127,7 @@ public class Jetson_SafeguardReader{
 		buffer            = raw_packet.encodePacket();
 		
 		// Send MAVLink message via socket to ICAROUS
-		if(timeNow - timeStart > 1){
+		if(timeNow - timeStart > 0.5){
 		    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
 		    sock.send(output);
 		    timeStart = timeNow;
@@ -135,7 +135,7 @@ public class Jetson_SafeguardReader{
 		
 	    }
 	    catch(IOException e){
-	    
+		System.out.println(e);
 	    }
 	}
 	
