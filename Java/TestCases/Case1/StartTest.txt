@@ -20,9 +20,13 @@
 # load mission flight plan
 wp load TestCases/Case1/flightplan1.txt
 
+shell sleep 5
+
 # load keep in and keep out geofences
 geofence load TestCases/Case1/geofence.xml
 
+shell sleep 5
+
 # start mission from the home position
-long MISSION_START 0
+long MISSION_START
 

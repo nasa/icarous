@@ -213,7 +213,8 @@ public class Icarous{
 		else{
 
 			daq_module.start();
-
+			com_module.start();
+			
 			msg_heartbeat msgHeartbeatAP = FlightData.RcvdMessages.GetHeartbeat_AP();	
 			while(msgHeartbeatAP == null){
 				msgHeartbeatAP = FlightData.RcvdMessages.GetHeartbeat_AP();
@@ -224,7 +225,7 @@ public class Icarous{
 
 			fms_module.EnableDataStream(1);
 
-			com_module.start();
+			
 
 			if(bcastport > 0){
 				//bcast_module.start();
