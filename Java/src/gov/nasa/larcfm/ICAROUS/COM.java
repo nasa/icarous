@@ -256,7 +256,8 @@ public class COM implements Runnable,ErrorReporter{
 			}
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){		    
 				FlightData.startMission = (int) msgCommandLong.param1;
-				log.addWarning("MSG: Received Mission START");		    
+				log.addWarning("MSG: Received Mission START");
+				System.out.println("Available FP size:"+FlightData.InputFlightPlan.size());
 			}
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_1){
 				GenericObject obj = new GenericObject(0,(int)msgCommandLong.param1,
