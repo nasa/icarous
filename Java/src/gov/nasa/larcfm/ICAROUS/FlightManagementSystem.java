@@ -490,6 +490,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		}
 		else if( FlightData.startMission > 0 && FlightData.startMission < FlightData.InputFlightPlan.size()){		
 			if(FlightData.InputFlightPlan.size() > 0){
+				Preflight();
 				fmsState = FMS_STATE_t._CRUISE_;
 				FlightData.nextMissionWP = FlightData.startMission;
 				log.addWarning("MSG: Starting mission to waypoint:"+FlightData.nextMissionWP);

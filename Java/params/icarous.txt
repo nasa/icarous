@@ -33,7 +33,7 @@ PROXFACTOR = 3.0
 # Flight plan resolution parameters
 RES_SPEED = 1.0
 XTRK_GAIN = 0.6
-XTRK_DEV  = 100.0
+XTRK_DEV  = 10.0
 
 #Tracking
 TRK_HEADING = 270
@@ -49,3 +49,7 @@ CYL_HEIGHT = 10
 ALERT_TIME = 10
 EALERT_TIME = 15
 DAA_LOOKAHEAD = 20
+
+#Waypoint parameters
+CAPTURE_H = 50
+CAPTURE_V = 50

@@ -137,6 +137,7 @@ public class COM implements Runnable,ErrorReporter{
 	public void HandleMissionItem(){
 		msg_mission_item msgMissionItem = RcvdMessages.GetMissionItem();
 		if(msgMissionItem != null && msgMissionItem.target_system == 1){
+			System.out.println("received wp item:"+WPloaded);
 			apIntf.Write(msgMissionItem);
 			if(msgMissionItem.seq == WPloaded){
 				FlightData.InputFlightPlan.add(msgMissionItem);

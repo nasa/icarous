@@ -473,10 +473,10 @@ public class Resolution {
 			//System.out.println("Closest point:"+cp.toString());
 			//System.out.println("Ref heading in standoff resolution plan:"+RefHeading2);
 			FlightData.ResolutionPlan.clear();
-			FlightData.ResolutionPlan.addNavPoint(new NavPoint(CurrentPos,0));
-			double distance = CurrentPos.distanceH(cp);
-			double ETA      = distance/resolutionSpeed;
-			FlightData.ResolutionPlan.addNavPoint(new NavPoint(cp,ETA));
+			//FlightData.ResolutionPlan.addNavPoint(new NavPoint(CurrentPos,0));
+			//double distance = CurrentPos.distanceH(cp);
+			//double ETA      = distance/resolutionSpeed;
+			FlightData.ResolutionPlan.addNavPoint(new NavPoint(cp,0));
 
 			FMS.GoalReached = true;
 			FMS.planType = plan_type_t.TRAJECTORY;

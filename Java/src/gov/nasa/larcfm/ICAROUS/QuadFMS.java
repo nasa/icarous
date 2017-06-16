@@ -60,6 +60,7 @@ public class QuadFMS extends FlightManagementSystem{
 	Position NextGoal;
 	boolean GoalReached;
 	private double wpDiffTime,startNextWPTime;
+	double captureH,captureV;
 
 	public QuadFMS(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc,ParameterData pdata){
 		super("QuadFMS",acData,ap_Intf,com_Intf);
@@ -74,6 +75,8 @@ public class QuadFMS extends FlightManagementSystem{
 		planType = plan_type_t.MISSION;
 		wpDiffTime = 0;
 		startNextWPTime = 0;
+		captureH = (float)FlightData.pData.getValue("CAPTURE_H");
+		captureV = (float)FlightData.pData.getValue("CAPTURE_V");
 	}
 
 	@Override
@@ -258,6 +261,7 @@ public class QuadFMS extends FlightManagementSystem{
 			status = FlyManeuver();
 			if(status == 1){
 				resolveState = resolve_state_t.IDLE;
+				SetMissionItem(FlightData.nextMissionWP);
 				SetMode(ARDUPILOT_MODES.AUTO);
 			}
 
@@ -344,8 +348,8 @@ public class QuadFMS extends FlightManagementSystem{
 			distV     = current.distanceV(next);
 			
 			double timeElapsed = (currentTime - startNextWPTime)/1E9;
-
-			if(distH < 1 && distV < 0.5 && timeElapsed > wpDiffTime){				
+			
+			if(distH < captureH && distV < captureV && timeElapsed > wpDiffTime){				
 				currentWPTime = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).time();
 				FlightData.nextResolutionWP++;
 				nextWPTime = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).time();
