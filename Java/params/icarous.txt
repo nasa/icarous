@@ -31,7 +31,7 @@ LOOKAHEAD  = 1
 PROXFACTOR = 3.0
 
 # Flight plan resolution parameters
-RES_SPEED = 1.0
+RES_SPEED = 20.0
 XTRK_GAIN = 0.6
 XTRK_DEV  = 10.0
 
@@ -51,5 +51,5 @@ EALERT_TIME = 15
 DAA_LOOKAHEAD = 20
 
 #Waypoint parameters
-CAPTURE_H = 50
-CAPTURE_V = 50
+CAPTURE_H = 100
+CAPTURE_V = 100

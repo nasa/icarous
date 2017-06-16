@@ -348,7 +348,7 @@ public class QuadFMS extends FlightManagementSystem{
 			distV     = current.distanceV(next);
 			
 			double timeElapsed = (currentTime - startNextWPTime)/1E9;
-			
+			//System.out.format("distH=%f,distV=%f,timeElapsed=%f\n",distH,distV,timeElapsed);
 			if(distH < captureH && distV < captureV && timeElapsed > wpDiffTime){				
 				currentWPTime = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).time();
 				FlightData.nextResolutionWP++;
@@ -445,7 +445,7 @@ public class QuadFMS extends FlightManagementSystem{
 		double ETA;
 		NavPoint wp1,wp2;
 		if(GoalReached){
-			next    = FlightData.MissionPlan.point(FlightData.nextMissionWP).position();
+			next    = FlightData.MissionPlan.point(FlightData.nextMissionWP).position();FlightData.nextMissionWP++;
 			//System.out.println("Intercept to:"+next.toString(6));
 			resumeMission = true;
 		}
