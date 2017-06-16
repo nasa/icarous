@@ -260,7 +260,9 @@ public class QuadFMS extends FlightManagementSystem{
 			// Execute maneuver based resolution when appropriate
 			status = FlyManeuver();
 			if(status == 1){
+				System.out.println("Resuming mission to:"+FlightData.nextMissionWP);				
 				resolveState = resolve_state_t.IDLE;
+				planType = plan_type_t.MISSION;
 				SetMissionItem(FlightData.nextMissionWP);
 				SetMode(ARDUPILOT_MODES.AUTO);
 			}
@@ -277,7 +279,7 @@ public class QuadFMS extends FlightManagementSystem{
 					resolveState = resolve_state_t.IDLE;
 					planType = plan_type_t.MISSION;
 					SetMissionItem(FlightData.nextMissionWP);
-					SetMode(ARDUPILOT_MODES.AUTO);
+					SetMode(ARDUPILOT_MODES.AUTO);					
 				}
 				else{
 					resolveState = resolve_state_t.RESUME;
@@ -348,7 +350,7 @@ public class QuadFMS extends FlightManagementSystem{
 			distV     = current.distanceV(next);
 			
 			double timeElapsed = (currentTime - startNextWPTime)/1E9;
-			//System.out.format("distH=%f,distV=%f,timeElapsed=%f\n",distH,distV,timeElapsed);
+			//System.out.format("distH=%f,distV=%f,timeElapsed=%f,wpDiff=%f\n",distH,distV,timeElapsed,wpDiffTime);
 			if(distH < captureH && distV < captureV && timeElapsed > wpDiffTime){				
 				currentWPTime = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).time();
 				FlightData.nextResolutionWP++;
