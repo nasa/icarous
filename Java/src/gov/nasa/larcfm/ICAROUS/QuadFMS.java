@@ -350,6 +350,10 @@ public class QuadFMS extends FlightManagementSystem{
 			distV     = current.distanceV(next);
 			
 			double timeElapsed = (currentTime - startNextWPTime)/1E9;
+			if(!FlightData.pData.getBool("WAIT")){
+				wpDiffTime = 0;
+			}
+			
 			//System.out.format("distH=%f,distV=%f,timeElapsed=%f,wpDiff=%f\n",distH,distV,timeElapsed,wpDiffTime);
 			if(distH < captureH && distV < captureV && timeElapsed > wpDiffTime){				
 				currentWPTime = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).time();
