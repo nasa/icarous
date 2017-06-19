@@ -137,7 +137,7 @@ public class COM implements Runnable,ErrorReporter{
 	public void HandleMissionItem(){
 		msg_mission_item msgMissionItem = RcvdMessages.GetMissionItem();
 		if(msgMissionItem != null && msgMissionItem.target_system == 1){
-			System.out.println("received wp item:"+WPloaded);
+			//System.out.println("received wp item:"+WPloaded);
 			apIntf.Write(msgMissionItem);
 			if(msgMissionItem.seq == WPloaded){
 				FlightData.InputFlightPlan.add(msgMissionItem);
@@ -257,7 +257,7 @@ public class COM implements Runnable,ErrorReporter{
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){		    
 				FlightData.startMission = (int) msgCommandLong.param1;
 				log.addWarning("MSG: Received Mission START");
-				System.out.println("Available FP size:"+FlightData.InputFlightPlan.size());
+				//System.out.println("Available FP size:"+FlightData.InputFlightPlan.size());
 			}
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_1){
 				GenericObject obj = new GenericObject(0,(int)msgCommandLong.param1,
