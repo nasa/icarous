@@ -18,20 +18,20 @@ ALLOW_YAW = 0
 MAX_CEILING = 30
 
 # Geofence parameters
-HTHRESHOLD = 100.0
+HTHRESHOLD = 1.0
 VTHRESHOLD = 1.0
 HSTEPBACK  = 4.0
 VSTEPBACK  = 4.0
 
 # Search parameters
 CHEAP_SEARCH = 0
-GRIDSIZE   = 100
-BUFFER     = 10
-LOOKAHEAD  = 5
+GRIDSIZE   = 1
+BUFFER     = 1
+LOOKAHEAD  = 1
 PROXFACTOR = 3.0
 
 # Flight plan resolution parameters
-RES_SPEED = 30.0
+RES_SPEED = 1.0
 XTRK_GAIN = 0.6
 XTRK_DEV  = 500.0
 
@@ -51,6 +51,6 @@ EALERT_TIME = 15
 DAA_LOOKAHEAD = 20
 
 #Waypoint parameters
-CAPTURE_H = 200
-CAPTURE_V = 200
+CAPTURE_H = 1
+CAPTURE_V = 1
 WAIT      = 0
