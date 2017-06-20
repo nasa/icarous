@@ -54,6 +54,7 @@ public class Icarous{
 	private String comport;
 	private String radioport;
 	private String mode;
+	private String inputfile;
 	private int px4baud;
 	private int radiobaud;
 	private int sitlport;
@@ -93,19 +94,7 @@ public class Icarous{
 		Task       = task;
 
 		// Read in initial value for all parameters (Note this can also be set from
-		// the ground station later.
-		pData = null;
-		try{
-			FileReader in = new FileReader("params/icarous.txt");
-			SeparatedInput reader = new SeparatedInput(in);
-
-			reader.readLine();
-			pData = reader.getParametersRef();	    	    
-		}
-		catch(FileNotFoundException e){
-			System.out.println("parameter file not found");
-		}	
-
+		// the ground station later.		
 		// Process input arguments
 		for(int i=0;i<args.length && args[i].startsWith("-");++i){
 			if(args[i].startsWith("-v")){
@@ -141,6 +130,10 @@ public class Icarous{
 			else if(args[i].startsWith("--mode")){
 				mode = args[++i];
 			}
+			
+			else if(args[i].startsWith("--config")){
+				inputfile = args[++i];
+			}
 
 			else if(args[i].startsWith("--debug")){
 				debugDAA = true;
@@ -150,10 +143,22 @@ public class Icarous{
 				System.out.println("Invalid option "+args[i]);
 				System.exit(0);
 			}
-
-
+			
 
 		}
+		
+		pData = null;
+		try{
+			System.out.println("Getting data from: "+inputfile);
+			FileReader in = new FileReader(inputfile);
+			SeparatedInput reader = new SeparatedInput(in);
+
+			reader.readLine();
+			pData = reader.getParametersRef();	    	    
+		}
+		catch(FileNotFoundException e){
+			System.out.println("parameter file not found");
+		}	
 
 		System.out.println("ICAROUS Release: "+release());
 
