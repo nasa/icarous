@@ -451,8 +451,8 @@ public class QuadFMS extends FlightManagementSystem{
 		double ETA;
 		NavPoint wp1,wp2;
 		if(GoalReached){
-			next    = FlightData.MissionPlan.point(FlightData.nextMissionWP).position();FlightData.nextMissionWP++;
-			//System.out.println("Intercept to:"+next.toString(6));
+			next    = FlightData.MissionPlan.point(FlightData.nextMissionWP).position();
+			//System.out.println("Intercept to:"+FlightData.nextMissionWP+", pos:"+next.toString(6));		
 			resumeMission = true;
 		}
 		else{
