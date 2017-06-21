@@ -274,6 +274,7 @@ COM_t::COM_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata):log(
      if(have_msg && msg.command == MAV_CMD_MISSION_START){
     	 log.addWarning("Received mission start command");
          FlightData->SetStartMissionFlag((uint8_t)msg.param1);
+         cout<<"Flying to: "<<msg.param1<<endl;
      }
      else if(have_msg && msg.command == MAV_CMD_DO_FENCE_ENABLE){
     	 log.addWarning("Receiving geofence");

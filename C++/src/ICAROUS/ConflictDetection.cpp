@@ -98,13 +98,13 @@ void ConflictDetection_t::CheckGeofence(){
 	keepOutConflict = false;
 
 	Plan CurrentFP;
-	double elapsedTime;
+	double elapsedTime = 0;
 
 	if(FMS->planType == QuadFMS_t::MISSION){
 		CurrentFP = FlightData->MissionPlan;
 		elapsedTime = FMS->GetApproxElapsedPlanTime(CurrentFP,FlightData->nextMissionWP);
 	}
-	else{
+	else if(FMS->planType == QuadFMS_t::TRAJECTORY){
 		CurrentFP = FlightData->ResolutionPlan;
 		elapsedTime = FMS->GetApproxElapsedPlanTime(CurrentFP,FlightData->nextResolutionWP);
 	}

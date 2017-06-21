@@ -11,26 +11,29 @@ ICHBEAT = 5
 # Takeoff altitude
 TAKEOFF_ALT = 5
 
+#Yaw behavior
+ALLOW_YAW = 0
+
 #Maximum ceiling
 MAX_CEILING = 30
 
 # Geofence parameters
-HTHRESHOLD = 1.0
-VTHRESHOLD = 1.0
-HSTEPBACK  = 5.0
-VSTEPBACK  = 5.0
+HTHRESHOLD = 200.0
+VTHRESHOLD = 10.0
+HSTEPBACK  = 10.0
+VSTEPBACK  = 10.0
 
 # Search parameters
 CHEAP_SEARCH = 0
-GRIDSIZE   = 0.5
-BUFFER     = 1
-LOOKAHEAD  = 1
+GRIDSIZE   = 100
+BUFFER     = 10
+LOOKAHEAD  = 10
 PROXFACTOR = 3.0
 
 # Flight plan resolution parameters
-RES_SPEED = 1.0
+RES_SPEED = 20.0
 XTRK_GAIN = 0.6
-XTRK_DEV  = 100.0
+XTRK_DEV  = 500.0
 
 #Tracking
 TRK_HEADING = 270
@@ -38,7 +41,7 @@ TRK_DISTH = 3
 TRK_DISTV = 0
 
 #DAA parameters
-CHEAP_DAA = 1
+CHEAP_DAA = 0
 GOTO_NEXTWP = 1
 CONFLICT_HOLD = 3
 CYL_RADIUS = 5
@@ -46,3 +49,8 @@ CYL_HEIGHT = 10
 ALERT_TIME = 10
 EALERT_TIME = 15
 DAA_LOOKAHEAD = 20
+
+#Waypoint parameters
+CAPTURE_H = 300
+CAPTURE_V = 300
+WAIT      = 0
