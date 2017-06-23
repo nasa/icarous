@@ -55,6 +55,7 @@ public class RRT {
 	double startTime;
 	double maxD;
 	double maxInputNorm;
+	public boolean waitNGo = false;
 	
 	public RRT(){
 		nodeCount = 0;
@@ -89,7 +90,7 @@ public class RRT {
 	}
 	
 	public RRT(List<GeoFence> fences,Position initialPos,Velocity initialVel,
-			 ArrayList<Position> trafficPos,ArrayList<Velocity> trafficVel,int stepT,double dt,double inputNormMax){
+			 ArrayList<Position> trafficPos,ArrayList<Velocity> trafficVel,int stepT,double dt,double inputNormMax,boolean hoverNgo){
 
 		obstacleList = new ArrayList<Poly3D>();
 		nodeList     = new ArrayList<node_t>();
@@ -97,6 +98,7 @@ public class RRT {
 		geoPolycarp  = new CDPolycarp();
 		root         = new node_t();
 		goalNode     = new node_t();
+		waitNGo      = hoverNgo;
 		
 		RD    = new Random();
 		Tstep = stepT;
@@ -672,6 +674,10 @@ public class RRT {
 	}
 	
 	public boolean CheckWaitAndGo(node_t qnode){
+		
+		if(!waitNGo){
+			return false;
+		}
 		
 		Vect3 pos = qnode.pos;
 		Vect3 vel = qnode.vel;

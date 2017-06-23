@@ -334,7 +334,7 @@ public class Resolution {
 		int Tstep  = 5;
 		double dT  = 1;
 		double maxInputNorm = 1;
-		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,maxInputNorm);
+		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,maxInputNorm,false);
 		rrt.SetGoal(goal);
 
 		int i;
@@ -669,7 +669,8 @@ public class Resolution {
 		int Tstep  = 5;
 		double dT  = 1;
 		double maxInputNorm = 1;
-		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,maxInputNorm);
+		boolean waitNGo = FlightData.pData.getBool("WAIT");
+		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,maxInputNorm,waitNGo);
 		rrt.SetGoal(goal);
 
 		for(int i=0;i<Nsteps;i++){
