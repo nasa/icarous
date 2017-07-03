@@ -50,13 +50,7 @@ Icarous_t::Icarous_t(int argc,char* argv[],Mission_t* task){
 	cout << "ICAROUS Release: " << release() << std::endl;
 	GetOptions(argc,argv);
 
-	// Read parameters from file and get the parameter data container
-	ifstream ConfigFile;
-	SeparatedInput sepInputReader(&ConfigFile);
 
-	ConfigFile.open("params/icarous.txt");
-	sepInputReader.readLine();
-	paramData = sepInputReader.getParameters();
 	mission = task;
 
 }
@@ -83,6 +77,7 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 		  {"radiobaud",required_argument, 0, 'k'},
 		  {"mode",     required_argument, 0, 'l'},
 		  {"debug",          no_argument, 0, 'm'},
+		  {"config",   required_argument, 0, 'n'},
 		  {0,                          0, 0,   0}
 	  };
 
@@ -162,8 +157,12 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 		  debug = true;
 		  break;
 
-		case '?':
+		case 'n':
+		  strcpy(config,optarg);
+		  //printf("config file %s\n",config);
+		  break;
 
+		case '?':
 		  break;
 
 		default:
@@ -173,6 +172,14 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 }
 
 void Icarous_t::Run(){
+
+	// Read parameters from file and get the parameter data container
+	ifstream ConfigFile;
+	SeparatedInput sepInputReader(&ConfigFile);
+
+	ConfigFile.open(config);
+	sepInputReader.readLine();
+	paramData = sepInputReader.getParameters();
 
 	MAVLinkMessages_t RcvdMessages;
 	AircraftData_t FlightData(&RcvdMessages,&paramData);
