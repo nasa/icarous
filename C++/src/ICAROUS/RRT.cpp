@@ -326,6 +326,7 @@ node_t RRT_t::MotionModel(node_t nearest, double U[]){
 	newNode.vel = newVel;
 	newNode.trafficPos = newTrafficPos;
 	newNode.trafficVel = trafficVel;
+	newNode.waitTime = 0.0;
 
 	delete[] X;
 	delete[] X_p;
@@ -653,11 +654,92 @@ bool RRT_t::CheckDirectPath2Goal(node_t qnode){
 
 		bool CheckTurn = false;
 		if(CheckTrafficCollisionWithBands(CheckTurn,qnode.pos,AB,qnode.trafficPos,qnode.trafficVel,vel)){
-			return false;
+				return false;
 		}
 		else{
 			return true;
 		}
+	}
+	else{
+		return false;
+	}
+}
+
+bool RRT_t::CheckWaitAndGo(node_t qnode){
+
+	Vect3 pos = qnode.pos;
+	Vect3 vel = qnode.vel;
+	double speed = maxInputNorm;
+	Vect3 A = qnode.pos;
+	Vect3 B = goalNode.pos;
+	Vect3 AB = B.Sub(A);
+	AB = AB.mkZ(0);
+	double norm = AB.norm();
+	if(norm > 0){
+		AB = AB.Scal(speed/norm);
+	}
+
+	std::vector<Vect3> trafficListPos = qnode.trafficPos;
+	std::vector<Vect3> trafficListVel = qnode.trafficVel;
+	std::vector<Vect3>::iterator itrP,itrV;
+	double maxTime = 0;
+
+	for(itrP=trafficListPos.begin(),itrV=trafficListVel.begin(); itrP != trafficListPos.end(); itrP++, itrV++){
+		Vect3 st = *itrP;
+		Vect3 vt = *itrV;
+		Vect3 V  = vt.Sub(AB);
+		Vect3 S  = pos.Sub(st);
+
+		Vect3 xV = AB.cross(vt);
+
+		// cross product of velocities are zero if aircraft heading in parallel directions.
+		if(xV.norm() < 0.1){
+			// If velocities are parallel
+			double cosangle = AB.dot(S)/(AB.norm()*S.norm());
+			double angle = acos(cosangle);
+
+			if(angle > 90*M_PI/180){
+				angle = M_PI - angle;
+			}
+
+			double perpdist = S.norm()*sin(angle);
+
+			if (perpdist < 5){
+				return false;
+			}
+		}
+
+		if (V.norm() < 1e-2){
+			return false;
+		}
+		double C = st.x * V.y - st.y*V.x;
+		double E = vt.x*V.y - vt.y*V.x;
+
+		if(E < 0.1){
+			return false;
+		}
+
+		double D = 5; //TODO: remove this hard coded parameter
+		double t0 = (-D* sqrt(V.dot(V)) - C)/E;
+		double t1 = (D* sqrt(V.dot(V)) - C)/E;
+		double t = 0;
+
+		if (t0 > 0){
+			t = t0;
+		}
+		else if(t1 > 0){
+			t = t1;
+		}
+
+		if (t > maxTime){
+			maxTime = t;
+		}
+	}
+
+	if(maxTime > 0.0){
+		qnode.waitTime = maxTime;
+		printf("Wait time: %f\n",maxTime);
+		return true;
 	}
 	else{
 		return false;

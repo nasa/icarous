@@ -45,6 +45,7 @@ import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Velocity;
 import gov.nasa.larcfm.Util.AircraftState;
 import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larcfm.Util.Pair;
 
 public class AircraftData{
 
@@ -85,6 +86,8 @@ public class AircraftData{
 	//public FlightPlan NewFlightPlan;
 	//public FlightPlan CurrentFlightPlan;
 	public Plan MissionPlan;
+	public List<Integer> WaypointIndices;
+	public List<Pair<Integer,Integer>> WPMissionItemMapping;
 	public Plan ResolutionPlan;
 
 	public List<GeoFence> fenceList; 
@@ -121,7 +124,9 @@ public class AircraftData{
 		obstacles           = new ArrayList<GenericObject>();
 		traffic             = new ArrayList<GenericObject>();
 		missionObj          = new ArrayList<GenericObject>();
-		InputFlightPlan     = new ArrayList<msg_mission_item>();
+		InputFlightPlan     = new ArrayList<msg_mission_item>();		
+		WaypointIndices     = new ArrayList<Integer>();
+		WPMissionItemMapping = new ArrayList<Pair<Integer,Integer>>();
 		startMission        = -1;
 		nextMissionWP       = 0;
 		nextResolutionWP    = 0;
@@ -236,27 +241,39 @@ public class AircraftData{
 	public void ConstructFlightPlan(){
 		// Make a new Plan using the input mission item
 		MissionPlan = new Plan();
-
+		WaypointIndices.clear();
+		WPMissionItemMapping.clear();
 		msg_mission_item msgMissionItem         = new msg_mission_item();
+		int count = 0;
 		for(int i=0;i<InputFlightPlan.size();i++){
 			msgMissionItem = InputFlightPlan.get(i);
 			if( (msgMissionItem.command == MAV_CMD.MAV_CMD_NAV_WAYPOINT) ||
-					(msgMissionItem.command == MAV_CMD.MAV_CMD_NAV_SPLINE_WAYPOINT) ){
+					(msgMissionItem.command == MAV_CMD.MAV_CMD_NAV_SPLINE_WAYPOINT) ){				
+				WaypointIndices.add(msgMissionItem.seq);
+				WPMissionItemMapping.add(new Pair<Integer,Integer>(count,msgMissionItem.seq));				
 				double wptime= 0;
-				Position nextWP = Position.makeLatLonAlt(msgMissionItem.x,"degree",msgMissionItem.y,"degree",msgMissionItem.z,"m");
-				if(i > 0 ){
+				Position nextWP = Position.makeLatLonAlt(msgMissionItem.x,"degree",msgMissionItem.y,"degree",msgMissionItem.z,"m");				
+				if(count > 0 ){
 					double vel = msgMissionItem.param4;
 					if(vel < 0.5){
 						vel = 1;
 					}
-					double distance = MissionPlan.point(i - 1).position().distanceH(nextWP);
-					wptime          = MissionPlan.time(i-1) + distance/vel;
+
+					double distance = MissionPlan.point(count - 1).position().distanceH(nextWP);
+					if(distance < 0.01){
+						distance = MissionPlan.point(i - 1).position().distanceV(nextWP);
+						vel      = 1;
+					}
+					wptime          = MissionPlan.time(count-1) + distance/vel;
+
 					//System.out.println("Times:"+wptime);
 				}		     
 				MissionPlan.addNavPoint(new NavPoint(nextWP,wptime));
+				count++;
 			}
 		}
 		numMissionWP           = MissionPlan.size();
+		WaypointIndices.remove(0);
 	}
 
 	public float GetFlightPlanSpeed(Plan fp,int nextWP){

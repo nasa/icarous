@@ -68,6 +68,7 @@ private:
 	char gshost[100];
 	char gsradio[100];
 	char mode[100];
+	char config[100];
 	int  px4baud = 0,radiobaud = 0;
 	int sitlin =0,sitlout =0;
 	int gsin =0,gsout = 0;

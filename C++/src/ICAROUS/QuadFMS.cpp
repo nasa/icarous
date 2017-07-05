@@ -45,6 +45,8 @@
      trajectoryState   = IDLE_t;
      planType          = MISSION;
      resumeMission     = true;
+     captureH          = (float) FlightData->paramData->getValue("CAPTURE_H");
+     captureV          = (float) FlightData->paramData->getValue("CAPTURE_V");
  }
 
 QuadFMS_t::~QuadFMS_t(){}
@@ -97,9 +99,8 @@ uint8_t QuadFMS_t::CRUISE(){
 	int confSize;
 
 	confSize = Monitor();
-
 	if(confSize != conflictSize){
-		printf("Conflict size %d,%d\n",confSize,conflictSize);
+		//printf("Conflict size %d,%d\n",confSize,conflictSize);
 		conflictSize = confSize;
 		if(conflictSize > 0){
 			resolutionState = COMPUTE_r;
@@ -217,6 +218,9 @@ uint8_t QuadFMS_t::Resolve(){
 		status = FlyManuever();
 		if(status == 1){
 			resolutionState = IDLE_r;
+			SetMissionItem(FlightData->nextMissionWP);
+			planType = QuadFMS_t::MISSION;
+			cout<<"Next mission item: "<<FlightData->nextMissionWP<<endl;
 			SetMode(AUTO);
 		}
 		break;
@@ -230,6 +234,7 @@ uint8_t QuadFMS_t::Resolve(){
 			if(resumeMission){
 				resolutionState = IDLE_r;
 				SetMissionItem(FlightData->nextMissionWP);
+				planType = QuadFMS_t::MISSION;
 				SetMode(AUTO);
 			}
 			else{
@@ -288,8 +293,9 @@ uint8_t QuadFMS_t::FlyTrajectory(){
 		next    = FlightData->ResolutionPlan.point(FlightData->nextResolutionWP).position();
 		distH     = current.distanceH(next);
 		distV     = current.distanceV(next);
+
 		//printf("distH,V = %f,%f\n",distH,distV);
-		if(distH < 0.5 && distV < 0.5){
+		if(distH < captureH && distV < captureV){
 
 			FlightData->nextResolutionWP++;
 			if(FlightData->nextResolutionWP >= FlightData->ResolutionPlan.size()){
@@ -320,7 +326,9 @@ uint8_t QuadFMS_t::FlyTrajectory(){
 uint8_t QuadFMS_t::FlyManuever(){
 	uint8_t status = 0;
 	float resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
+	static int countVel = 0;
 
+	countVel++;
 	switch(maneuverState){
 
 	case START_m:
@@ -340,8 +348,10 @@ uint8_t QuadFMS_t::FlyManuever(){
 		}
 		else if(Detector.flightPlanDeviationConflict){
 			Resolver.ResolveFlightPlanDeviation();
-			SetYaw(FlightData->maneuverHeading);
-			SetVelocity(FlightData->maneuverVn,FlightData->maneuverVe,FlightData->maneuverVu);
+			if(countVel % 1000 == 0){
+				SetYaw(FlightData->maneuverHeading);
+				SetVelocity(FlightData->maneuverVn,FlightData->maneuverVe,FlightData->maneuverVu);
+			}
 		}
 		else{
 			printf("finished maneuver resolution\n");

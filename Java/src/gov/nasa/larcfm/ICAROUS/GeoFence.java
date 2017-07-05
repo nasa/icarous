@@ -173,10 +173,7 @@ public class GeoFence{
 	}
 
 	public void CheckViolation(AircraftState acState, double currentTime,Plan FP){
-
-		double hdist;
-		double vdist;
-
+		
 		double alt;
 
 		Position pos = acState.positionLast();
@@ -191,6 +188,7 @@ public class GeoFence{
 		double hthreshold   = pData.getValue("HTHRESHOLD");
 		double vthreshold   = pData.getValue("VTHRESHOLD");
 		double hstepback    = pData.getValue("HSTEPBACK");
+		double vstepback    = pData.getValue("VSTEPBACK");		
 
 		//System.out.println("Distance from edge:"+geoPoly3D.distanceFromEdge(so));
 
@@ -207,10 +205,17 @@ public class GeoFence{
 				violation = false;		
 			}
 			Vect2 so_2 = so.vect2();
-			Vect2 recpoint = pcr.inside_recovery_point(BUFF,hstepback,fenceVertices2,so_2);		
-			LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
-			RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());		
-
+			Vect2 recpoint = pcr.inside_recovery_point(BUFF,hstepback,fenceVertices2,so_2);
+			
+			if(Math.abs(so.z - ceiling) <= vthreshold){
+				alt = ceiling - vstepback;
+			}else{
+				alt = so.z;				
+			}
+			
+			LatLonAlt LLA = proj.inverse(recpoint,pos.alt());
+			RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),"degree",LLA.longitude(),"degree",alt,"m");	
+			//System.out.println(RecoveryPoint.toStringNP(6));
 		}
 		//Keep out Geofence
 		else{
@@ -406,6 +411,10 @@ public class GeoFence{
 
 		boolean InPlaneInt;
 
+		if( (NextWP.alt() > ceiling) || (NextWP.alt() < floor)){
+			return false;
+		}
+		
 		for(int i=0;i<numVertices;i++){
 			vertexi = i;
 

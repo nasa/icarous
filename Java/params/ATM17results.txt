@@ -1,0 +1,23 @@
+###################################################################
+# ATM 2017 paper case study
+# Launching ardupilot SITL 
+#        sim_vehicle.py -l lat,lon,alt,heading
+#
+# Note: lat,lon,alt for start point can be obtained using
+# firstpoint.py script location in Python/
+#        firstpoint.py ATM17fp.txt
+#
+# Load waypoints, geofences and traffic using this script in MAVProxy
+#        script ATM17results.txt
+#
+# Start mission
+#        long MISSION_START
+#####################################################################
+wp load params/ATM17fp.txt
+geofence load params/ATM17fence.xml
+traffic radius 10
+traffic load 123.3 122.1 5 1 300 0
+traffic load 215.9 66.7 5 0.7 210 0
+traffic load 286.2 139.7 5 1.0 333.0 0
+
+

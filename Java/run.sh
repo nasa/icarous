@@ -25,7 +25,7 @@ if [ "$1" == 'SITL' ];then
 	-v \
 	--sitl $SITL_HOST $SITL_INPUT_PORT \
 	--com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
-	--mode $MODE $2 ${POST}
+	--mode $MODE --config $2 $3 ${POST}
    
 elif [ "$1" == 'PX4' ];then
     echo "Launching ICAROUS with Pixhawk"
@@ -42,7 +42,7 @@ elif [ "$1" == 'PX4' ];then
 	 -v \
 	 --px4 $PX4_PORT $PX4_BAUD\
 	 --com $COM_HOST $COM_INPUT_PORT $COM_OUTPUT_PORT \
-	 --mode $MODE $2
+	 --mode $MODE --config $2 $3
     fi
 
 elif [ "$1" == 'SITLR' ];then

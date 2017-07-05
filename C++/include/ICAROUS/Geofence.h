@@ -110,6 +110,7 @@ public:
 	EuclideanProjection GetProjection();
 	double GetCeiling();
 	void clear(){id = -1;};
+	void Print();
 };
 
 

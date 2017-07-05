@@ -124,7 +124,7 @@ public class ConflictDetection{
 		keepInConflict  = false;
 		keepOutConflict = false;
 		Plan CurrentPlan;
-		double elapsedTime;
+		double elapsedTime = 0;
 
 		if(FMS.planType == QuadFMS.plan_type_t.MISSION ){
 			CurrentPlan =  FlightData.MissionPlan;	

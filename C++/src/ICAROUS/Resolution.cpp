@@ -109,11 +109,10 @@ void Resolution_t::ResolveFlightPlanDeviation(){
 		double distance = currentPos.distanceH(cp);
 		double ETA      = distance/resolutionSpeed;
 
-		NavPoint wp1(currentPos,0);
-		NavPoint wp2(cp,ETA);
+
+		NavPoint wp1(cp,0);
 		FlightData->ResolutionPlan.clear();
 		FlightData->ResolutionPlan.addNavPoint(wp1);
-		FlightData->ResolutionPlan.addNavPoint(wp2);
 
 		std::cout<<FlightData->ResolutionPlan.toString()<<std::endl;
 		FMS->planType      = QuadFMS_t::TRAJECTORY;
@@ -132,6 +131,7 @@ void Resolution_t::ResolveKeepInConflict(){
 	FlightData->nextResolutionWP = 0;
 
 	if(fence.CheckWPFeasibility(wp.position(),next_wp.position())){
+		cout<<"waypoint not feasible"<<endl;
 		FlightData->nextMissionWP++;
 	}
 
@@ -148,6 +148,7 @@ void Resolution_t::ResolveKeepOutConflict_Astar(){
 	double lookahead         = FlightData->paramData->getValue("LOOKAHEAD");
 	double resolutionSpeed   = FlightData->paramData->getValue("RES_SPEED");
 	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
+	double Hthreshold        = FlightData->paramData->getValue("HTHRESHOLD");
 
 	// Reroute flight plan
 	FMS->SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
@@ -217,7 +218,9 @@ void Resolution_t::ResolveKeepOutConflict_Astar(){
 	}
 
 	Plan conflictFP = PlanUtil::cutDown(currentFP,minTime,maxTime);
-	Position goal = conflictFP.getLastPoint().position();
+	Position temp = conflictFP.getLastPoint().position();
+	double trackTemp2NextWP = temp.track(FlightData->MissionPlan.getPos(FlightData->nextMissionWP));
+	Position goal = temp.linearDist2D(trackTemp2NextWP,Hthreshold+1);
 
 	BoundingRectangle BR;
 	std::list<Geofence_t>::iterator it;

@@ -62,6 +62,7 @@ struct node_t{
 
 	bool goal;
 	double g,h;
+	double waitTime;
 	std::list<node_t> children;
 	node_t* parent;
 };
@@ -122,6 +123,7 @@ public:
 	bool CheckDirectPath2Goal(node_t nearest);
 	bool LinePlanIntersection(Vect2 A,Vect2 B,double floor,double ceiling,Vect3 currentPos,Vect3 nextPos);
 	bool CheckProjectedFenceConflict(node_t qnode,node_t goal);
+	bool CheckWaitAndGo(node_t qnode);
 };
 
 

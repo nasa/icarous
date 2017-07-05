@@ -55,9 +55,9 @@ public class Resolution {
 		FMS.FlightData.nextResolutionWP = 0;
 		FMS.FlightData.ResolutionPlan.addNavPoint(wp);
 
-		NavPoint nextWP = CurrentPlan.point(nextWPind);
-		if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){
-			FlightData.nextMissionWP++;
+		NavPoint nextWP = CurrentPlan.point(nextWPind);		
+		if(!GF.CheckWaypointFeasibility(wp.position(),nextWP.position())){			
+			FlightData.nextMissionWP++;			
 		}
 
 		FMS.GoalReached = true;
@@ -334,7 +334,7 @@ public class Resolution {
 		int Tstep  = 5;
 		double dT  = 1;
 		double maxInputNorm = 1;
-		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,maxInputNorm);
+		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,maxInputNorm,false);
 		rrt.SetGoal(goal);
 
 		int i;
@@ -473,10 +473,10 @@ public class Resolution {
 			//System.out.println("Closest point:"+cp.toString());
 			//System.out.println("Ref heading in standoff resolution plan:"+RefHeading2);
 			FlightData.ResolutionPlan.clear();
-			FlightData.ResolutionPlan.addNavPoint(new NavPoint(CurrentPos,0));
-			double distance = CurrentPos.distanceH(cp);
-			double ETA      = distance/resolutionSpeed;
-			FlightData.ResolutionPlan.addNavPoint(new NavPoint(cp,ETA));
+			//FlightData.ResolutionPlan.addNavPoint(new NavPoint(CurrentPos,0));
+			//double distance = CurrentPos.distanceH(cp);
+			//double ETA      = distance/resolutionSpeed;
+			FlightData.ResolutionPlan.addNavPoint(new NavPoint(cp,0));
 
 			FMS.GoalReached = true;
 			FMS.planType = plan_type_t.TRAJECTORY;
@@ -669,7 +669,8 @@ public class Resolution {
 		int Tstep  = 5;
 		double dT  = 1;
 		double maxInputNorm = 1;
-		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,maxInputNorm);
+		boolean waitNGo = FlightData.pData.getBool("WAIT");
+		RRT rrt = new RRT(FlightData.fenceList,start,currentVel,TrafficPos,TrafficVel,Tstep,dT,maxInputNorm,waitNGo);
 		rrt.SetGoal(goal);
 
 		for(int i=0;i<Nsteps;i++){

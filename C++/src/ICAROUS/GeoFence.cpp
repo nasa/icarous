@@ -80,7 +80,7 @@ void Geofence_t::AddVertex(int index, double lat,double lon){
 		geoPoly1 = SimplePoly::make(p3D,proj);
 
 		Velocity vel = Velocity::makeTrkGsVs(0,0,0);
-		geoPolyPath.addPolygon(geoPoly1,vel,0);
+		geoPolyPath.addPolygon(geoPoly0,vel,0);
 	}
 }
 
@@ -139,11 +139,11 @@ void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp
 
 
 	    geoCDIIPolygon.detection(fp,geoPolyPath,0,fp.getLastTime());
-	    if(geoCDIIPolygon.conflictBetween(elapsedTime,elapsedTime + lookahead)){
+	    bool val = CollisionDetection(currentPosLLA,currentVel.vect2(),0,lookahead);
+	    if(val){
 	    	conflict = true;
 	    	entryTime = geoCDIIPolygon.getTimeIn(0);
 	    	exitTime  = geoCDIIPolygon.getTimeOut(0);
-	    	//printf("Conflict keep out fence\n");
 	    }
 	    else{
 	    	conflict = false;
@@ -155,7 +155,6 @@ bool Geofence_t::CollisionDetection(Position pos,Vect2 v,double startTime,double
 	Vect2 currentPos = proj.project(pos).vect2();
 	Vect2 polygonVel(0,0);
 	bool insideBad = false;
-
 	if(fenceType == KEEP_OUT){
 		insideBad = true;
 	}
@@ -174,7 +173,7 @@ bool Geofence_t::CheckWPFeasibility(Position currentPos,Position nextWP){
 	double vx = sin(heading2WP);
 	Vect2 vel(vx,vy);
 
-	bool val = CollisionDetection(currentPos,vel,0,5);
+	bool val = CollisionDetection(currentPos,vel,0,50);
 
 	return val;
 }
@@ -227,4 +226,14 @@ void Geofence_t::GetEntryExitTime(double& in, double &out){
 
 double Geofence_t::GetCeiling(){
 	return ceiling;
+}
+
+void Geofence_t::Print(){
+	std::cout<<"id:"<<id<<std::endl;
+	std::cout<<"type:"<<fenceType<<std::endl;
+	std::cout<<"floor:"<<floor<<std::endl;
+	std::cout<<"roof:"<<ceiling<<std::endl;
+	for(int i=0;i<nVertices;++i){
+		std::cout<<geoPoly3D.getVertex(i).toString(6)<<std::endl;
+	}
 }
