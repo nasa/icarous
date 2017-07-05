@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<mavlink>
+        <include>ardupilotmega.xml</include>
+        <include>common.xml</include>
+	<enums>
+	</enums>
+	<messages>
+	  <message id="220" name="KINEMATIC_BANDS">
+	    <description>Kinematic multi bands (track) output from Daidalus</description>
+	    <field type="int8_t" name="numBands">Number of track bands</field>
+	    <field type="int8_t" name="type1">type of band (0 - None, 1-NEAR, ...)</field>
+	    <field type="float" name="min1">min angle (degrees)</field>
+	    <field type="float" name="max1">max angle (degrees)</field> 
+	    <field type="int8_t" name="type2">type of band</field>
+	    <field type="float" name="min2">min angle (degrees)</field>
+	    <field type="float" name="max2">max angle (degrees)</field>
+	    <field type="int8_t" name="type3">type of band</field>
+	    <field type="float" name="min3">min angle (degrees)</field>
+	    <field type="float" name="max3">max angle (degrees)</field>
+	    <field type="int8_t" name="type4">type of band</field>
+	    <field type="float" name="min4">min angle (degrees)</field>
+	    <field type="float" name="max4">max angle (degrees)</field>
+	    <field type="int8_t" name="type5">type of band</field>
+	    <field type="float" name="min5">min angle (degrees)</field>
+	    <field type="float" name="max5">max angle (degrees)</field>
+	  </message>
+
+	  <message id="224" name="SAFEGUARD">
+	    <description>Safeguard input</description>
+	    <field type="int8_t" name="value">1-success,0-failure</field>
+	  </message>
+	  
+	  <message id="229" name="HEARTBEAT_ICAROUS">
+	    <description>ICAROUS heartbeat</description>
+	    <field type="int8_t" name="status">FMS state (0-idle, 1-Takeoff, 2-Climb, 3-Cruise, 4-Land)</field>
+	  </message>
+	</messages>
+</mavlink>

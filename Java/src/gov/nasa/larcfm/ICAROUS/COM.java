@@ -137,6 +137,7 @@ public class COM implements Runnable,ErrorReporter{
 	public void HandleMissionItem(){
 		msg_mission_item msgMissionItem = RcvdMessages.GetMissionItem();
 		if(msgMissionItem != null && msgMissionItem.target_system == 1){
+			//System.out.println("received wp item:"+WPloaded);
 			apIntf.Write(msgMissionItem);
 			if(msgMissionItem.seq == WPloaded){
 				FlightData.InputFlightPlan.add(msgMissionItem);
@@ -225,6 +226,7 @@ public class COM implements Runnable,ErrorReporter{
 			case "DAA_LOOKAHEAD":
 			case "CHEAP_DAA":
 			case "CHEAP_SEARCH":
+			case "ALLOW_YAW":
 				pData.set(ID,msgParamSet.param_value,pData.getUnit(ID));
 				//System.out.println(ID+": "+pData.getValue(ID));
 				icarous_parm  = true;
@@ -254,7 +256,8 @@ public class COM implements Runnable,ErrorReporter{
 			}
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){		    
 				FlightData.startMission = (int) msgCommandLong.param1;
-				log.addWarning("MSG: Received Mission START");		    
+				log.addWarning("MSG: Received Mission START");
+				//System.out.println("Available FP size:"+FlightData.InputFlightPlan.size());
 			}
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_1){
 				GenericObject obj = new GenericObject(0,(int)msgCommandLong.param1,
@@ -284,6 +287,59 @@ public class COM implements Runnable,ErrorReporter{
 				}
 				else if(msgCommandLong.param1 == 10){ // Safeguards gpio outputs
 					System.out.println(msgCommandLong.param2);
+					
+					if(msgCommandLong.param2 == 3){
+
+
+					}else if(msgCommandLong.param2 == 2){
+					    
+					
+					}else if(msgCommandLong.param2 == 1){
+					    // bounce back
+
+					    msg_set_mode Mode = new msg_set_mode();
+					    Mode.target_system = (short) 0;
+					    Mode.base_mode     = (short) 1;
+					    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.GUIDED;
+					    
+					    apIntf.Write(Mode);					    					    
+					    
+					    double lat = FlightData.acState.position(FlightData.acState.size()-1).latitude();
+					    double lon = FlightData.acState.position(FlightData.acState.size()-1).longitude();
+					    double alt = FlightData.acState.position(FlightData.acState.size()-1).alt();
+					    
+					    msg_set_position_target_global_int msg= new msg_set_position_target_global_int();
+					    msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
+					    msg.type_mask        = 0b0000111111111000;
+					    msg.lat_int          = (int) (lat*1E7);
+					    msg.lon_int          = (int) (lon*1E7);
+					    msg.alt              = (float) alt;
+					    
+					    apIntf.Write(msg);
+					    System.out.println("received warning from safeguard");
+
+					    try{
+						Thread.sleep(200);
+					    }catch(InterruptedException e){
+						System.out.println(e);
+					    }
+					    					    					    
+					}else if(msgCommandLong.param2 == 0){
+					    // terminate
+					    msg_set_mode Mode = new msg_set_mode();
+					    Mode.target_system = (short) 0;
+					    Mode.base_mode     = (short) 1;
+					    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.LAND;
+					    
+					    apIntf.Write(Mode);
+					    System.out.println("received terminate from safeguard");
+
+					    try{
+						Thread.sleep(200);
+					    }catch(InterruptedException e){
+						System.out.println(e);
+					    }
+					}
 				}
 
 			}		

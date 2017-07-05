@@ -63,6 +63,7 @@ public:
         resolve_state_t resolutionState;
         trajectory_state_t trajectoryState;
         maneuver_state_t maneuverState;
+        float captureH,captureV;
 
     public:
         ConflictDetection_t Detector;

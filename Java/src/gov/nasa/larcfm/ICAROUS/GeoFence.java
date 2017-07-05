@@ -173,10 +173,7 @@ public class GeoFence{
 	}
 
 	public void CheckViolation(AircraftState acState, double currentTime,Plan FP){
-
-		double hdist;
-		double vdist;
-
+		
 		double alt;
 
 		Position pos = acState.positionLast();
@@ -191,6 +188,7 @@ public class GeoFence{
 		double hthreshold   = pData.getValue("HTHRESHOLD");
 		double vthreshold   = pData.getValue("VTHRESHOLD");
 		double hstepback    = pData.getValue("HSTEPBACK");
+		double vstepback    = pData.getValue("VSTEPBACK");		
 
 		//System.out.println("Distance from edge:"+geoPoly3D.distanceFromEdge(so));
 
@@ -207,10 +205,17 @@ public class GeoFence{
 				violation = false;		
 			}
 			Vect2 so_2 = so.vect2();
-			Vect2 recpoint = pcr.inside_recovery_point(BUFF,hstepback,fenceVertices2,so_2);		
-			LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
-			RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());		
-
+			Vect2 recpoint = pcr.inside_recovery_point(BUFF,hstepback,fenceVertices2,so_2);
+			
+			if(Math.abs(so.z - ceiling) <= vthreshold){
+				alt = ceiling - vstepback;
+			}else{
+				alt = so.z;				
+			}
+			
+			LatLonAlt LLA = proj.inverse(recpoint,pos.alt());
+			RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),"degree",LLA.longitude(),"degree",alt,"m");	
+			//System.out.println(RecoveryPoint.toStringNP(6));
 		}
 		//Keep out Geofence
 		else{
@@ -218,14 +223,12 @@ public class GeoFence{
 			Vect2 recpoint = pcr.outside_recovery_point(BUFF,hthreshold,fenceVertices2,so_2);
 			LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
 			RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());	    
-			cdp.detection(FP,geoPolyPath,0,FP.getLastTime());	    	    	    	    
-			if(cdp.conflictBetween(currentTime,currentTime + lookahead)){				
-				//System.out.println("FP last time:"+FP.getLastTime());
+			cdp.detection(FP,geoPolyPath,0,FP.getLastTime());
+			boolean val = CollisionDetection(pos,vel.vect2(),0,lookahead);
+			if(val){							
 				conflict = true;
 				entryTime = cdp.getTimeIn(0);
 				exitTime  = cdp.getTimeOut(0);
-				//System.out.println("entry:"+entryTime);
-				//System.out.println("exit:"+exitTime);
 			}
 			else{
 				conflict = false;
@@ -406,6 +409,10 @@ public class GeoFence{
 
 		boolean InPlaneInt;
 
+		if( (NextWP.alt() > ceiling) || (NextWP.alt() < floor)){
+			return false;
+		}
+		
 		for(int i=0;i<numVertices;i++){
 			vertexi = i;
 
@@ -571,7 +578,7 @@ public class GeoFence{
 			insideBad = true;
 		}
 
-		return PolycarpDetection.Static_Collision_Detector(startTime,stopTime,fenceVertices2,pv,s,v,BUFF,insideBad);
+		return PolycarpDetection.Static_Collision_Detector(startTime,stopTime,fenceVertices,pv,s,v,BUFF,insideBad);
 	}
 
 	public void print(){

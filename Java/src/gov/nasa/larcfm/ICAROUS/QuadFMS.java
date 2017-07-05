@@ -59,6 +59,8 @@ public class QuadFMS extends FlightManagementSystem{
 	Mission mission;
 	Position NextGoal;
 	boolean GoalReached;
+	private double wpDiffTime,startNextWPTime;
+	double captureH,captureV;
 
 	public QuadFMS(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc,ParameterData pdata){
 		super("QuadFMS",acData,ap_Intf,com_Intf);
@@ -71,6 +73,10 @@ public class QuadFMS extends FlightManagementSystem{
 		maneuverState = maneuver_state_t.IDLE;
 		mission = mc;
 		planType = plan_type_t.MISSION;
+		wpDiffTime = 0;
+		startNextWPTime = 0;
+		captureH = (float)FlightData.pData.getValue("CAPTURE_H");
+		captureV = (float)FlightData.pData.getValue("CAPTURE_V");
 	}
 
 	@Override
@@ -206,6 +212,13 @@ public class QuadFMS extends FlightManagementSystem{
 			else if(Detector.keepInConflict){
 				log.addWarning("MSG: Computing resolution for keep in conflict");
 				gsIntf.SendStatusText("Keep in conflict");
+				SetMode(ARDUPILOT_MODES.BRAKE);
+				try{
+					Thread.sleep(500);
+				}
+				catch(InterruptedException e){
+					System.out.println(e);
+				}				
 				Resolver.ResolveKeepInConflict();		
 			}
 			else if(Detector.keepOutConflict){
@@ -220,7 +233,7 @@ public class QuadFMS extends FlightManagementSystem{
 					Resolver.ResolveKeepOutConflictAstar();
 				}
 				double tstart2 = (double)System.nanoTime()/1E9;
-				System.out.format("RRT time:%f\n",(tstart2 - tstart1));
+				System.out.format("Path computation time:%f\n",(tstart2 - tstart1));
 			}
 			else if(Detector.flightPlanDeviationConflict){
 				log.addWarning("MSG: Computing resolution for stand off conflict");
@@ -247,7 +260,10 @@ public class QuadFMS extends FlightManagementSystem{
 			// Execute maneuver based resolution when appropriate
 			status = FlyManeuver();
 			if(status == 1){
+				System.out.println("Resuming mission to:"+FlightData.nextMissionWP);				
 				resolveState = resolve_state_t.IDLE;
+				planType = plan_type_t.MISSION;
+				SetMissionItem(FlightData.nextMissionWP);
 				SetMode(ARDUPILOT_MODES.AUTO);
 			}
 
@@ -259,11 +275,11 @@ public class QuadFMS extends FlightManagementSystem{
 
 			if(status == 1){
 				if(resumeMission){
-					System.out.println("Resuming mission\n");
+					System.out.println("Resuming mission to:"+FlightData.nextMissionWP);
 					resolveState = resolve_state_t.IDLE;
 					planType = plan_type_t.MISSION;
 					SetMissionItem(FlightData.nextMissionWP);
-					SetMode(ARDUPILOT_MODES.AUTO);
+					SetMode(ARDUPILOT_MODES.AUTO);					
 				}
 				else{
 					resolveState = resolve_state_t.RESUME;
@@ -299,7 +315,10 @@ public class QuadFMS extends FlightManagementSystem{
 		NavPoint wp;
 		Position current, next;
 		double distH,distV;
+		double currentWPTime,nextWPTime;
 
+		double currentTime = System.nanoTime();
+		
 		switch(trajectoryState){
 
 		case START:
@@ -309,24 +328,39 @@ public class QuadFMS extends FlightManagementSystem{
 			SetMode(ARDUPILOT_MODES.GUIDED); 
 			SetSpeed(resolutionSpeed);
 			trajectoryState = trajectory_state_t.FIX;
+			startNextWPTime = System.nanoTime();
+			wpDiffTime = 0;
 			break;
 
 		case FIX:
 			wp = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP);
-			SetYaw(true,0.0);
+			if(FlightData.pData.getBool("ALLOW_YAW")){
+				SetYaw(false,FlightData.maneuverHeading);
+			}else{
+				SetYaw(true,0);
+			}			
 			SetGPSPos(wp.lla().latitude(),wp.lla().longitude(),wp.lla().alt());
 			trajectoryState = trajectory_state_t.ENROUTE;
 			break;
 
 		case ENROUTE:
 			current = FlightData.acState.positionLast();
-			next    = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).position();
+			next    = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).position();			
 			distH     = current.distanceH(next);
 			distV     = current.distanceV(next);
-
-			if(distH < 1 && distV < 0.5){
-
+			
+			double timeElapsed = (currentTime - startNextWPTime)/1E9;
+			if(!FlightData.pData.getBool("WAIT")){
+				wpDiffTime = 0;
+			}
+			
+			//System.out.format("distH=%f,distV=%f,timeElapsed=%f,wpDiff=%f\n",distH,distV,timeElapsed,wpDiffTime);
+			if(distH < captureH && distV < captureV && timeElapsed > wpDiffTime){				
+				currentWPTime = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).time();
 				FlightData.nextResolutionWP++;
+				nextWPTime = FlightData.ResolutionPlan.point(FlightData.nextResolutionWP).time();
+				startNextWPTime = System.nanoTime();
+				wpDiffTime = nextWPTime - currentWPTime;
 				if(FlightData.nextResolutionWP >= FlightData.ResolutionPlan.size()){
 					trajectoryState = trajectory_state_t.STOP;
 					FlightData.nextResolutionWP = 0;
@@ -376,12 +410,20 @@ public class QuadFMS extends FlightManagementSystem{
 			
 			if(Detector.trafficConflict){
 				Resolver.ResolveTrafficConflictDAA();
-				SetYaw(false,FlightData.maneuverHeading);
+				if(FlightData.pData.getBool("ALLOW_YAW")){
+					SetYaw(false,FlightData.maneuverHeading);
+				}else{
+					SetYaw(true,0);
+				}
 				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
 			}		
 			else if(Detector.flightPlanDeviationConflict){
 				Resolver.ResolveFlightPlanDeviationConflict();
-				SetYaw(true,FlightData.maneuverHeading);
+				if(FlightData.pData.getBool("ALLOW_YAW")){
+					SetYaw(false,FlightData.maneuverHeading);
+				}else{
+					SetYaw(true,0);
+				}				
 				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
 			}
 			else{
@@ -410,6 +452,7 @@ public class QuadFMS extends FlightManagementSystem{
 		NavPoint wp1,wp2;
 		if(GoalReached){
 			next    = FlightData.MissionPlan.point(FlightData.nextMissionWP).position();
+			//System.out.println("Intercept to:"+FlightData.nextMissionWP+", pos:"+next.toString(6));		
 			resumeMission = true;
 		}
 		else{
