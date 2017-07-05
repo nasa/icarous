@@ -223,14 +223,12 @@ public class GeoFence{
 			Vect2 recpoint = pcr.outside_recovery_point(BUFF,hthreshold,fenceVertices2,so_2);
 			LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
 			RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());	    
-			cdp.detection(FP,geoPolyPath,0,FP.getLastTime());	    	    	    	    
-			if(cdp.conflictBetween(currentTime,currentTime + lookahead)){				
-				//System.out.println("FP last time:"+FP.getLastTime());
+			cdp.detection(FP,geoPolyPath,0,FP.getLastTime());
+			boolean val = CollisionDetection(pos,vel.vect2(),0,lookahead);
+			if(val){							
 				conflict = true;
 				entryTime = cdp.getTimeIn(0);
 				exitTime  = cdp.getTimeOut(0);
-				//System.out.println("entry:"+entryTime);
-				//System.out.println("exit:"+exitTime);
 			}
 			else{
 				conflict = false;
@@ -580,7 +578,7 @@ public class GeoFence{
 			insideBad = true;
 		}
 
-		return PolycarpDetection.Static_Collision_Detector(startTime,stopTime,fenceVertices2,pv,s,v,BUFF,insideBad);
+		return PolycarpDetection.Static_Collision_Detector(startTime,stopTime,fenceVertices,pv,s,v,BUFF,insideBad);
 	}
 
 	public void print(){
