@@ -60,7 +60,7 @@ The various parameters that control the behavior of ICAROUS can be found in `par
 
 To run ICAROUS on a companion computer for Ardupilot, first make sure that the pixhawk port and baud rate settings in the run script are the same as the telemetry port settings on the pixhawk. First lauch the ICAROUS application as follows:
 
-	$nohup ./run.sh PX4 > pxout.txt &
+	$nohup ./run.sh PX4 params/icarous.txt > pxout.txt &
 
 Note that the nohup (no hang up) command enables the application to run as a background process without interruption. To enable interaction with ICAROUS and the pixhawk through a ground station uplink, launch the radio interface application:
 
@@ -98,7 +98,7 @@ Update Icarous parameters as follows:
 
 Setup and launch the ardupilot SITL as described in <http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html>. Specify the SITL host address in the run script. By default, the ardupilot SITL is configured to output packets to udp port 14551. Launch ICAROUS in the SITL mode as follows:
 
-    $./run.sh SITL
+    $./run.sh SITL params/icarous.txt
 
 While running ICAROUS in the SITL framework, it is possible to communicate with ICAROUS via a ground station using the UDP sockets instead of using a radio link. See `GS_MASTER` variable in the run.sh script to enable the ground station over a UDP socket.
 
