@@ -16,7 +16,7 @@ safety criteria are violated or about to be violated.
 
 ### Current Release
 
-ICAROUS V-1.1 - March 18, 2017
+ICAROUS V-1.2.0 - July 5, 2017
 
 ### License
 

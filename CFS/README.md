@@ -22,21 +22,21 @@ We provide several CFS apps that run on the CFS middleware that collectively pro
 - The icarous table defines the icarous configurations.
 - The table binaries will have to be regenerated. Use make as follows to build the app tables:
 ```
-$make cfs_build_app_tbls
+$ make cfs_build_app_tbls
 ```
 ### Compiling and running the ICAROUS app suite
 
 - From the CFS/ folder, setup the environment variables
 ```
- $source setvars.sh
+ $ source setvars.sh
 ```
 - Compile CFS with the relevant apps. This single command takes care of everything.
 ```
-$cd build/cpu1
-$make compile
+$ cd build/cpu1
+$ make compile
 ```
 - Start the app. You may need to use sudo.
 ```
-$cd exe
-$sudo ./core-linux.bin
+$ cd exe
+$ sudo ./core-linux.bin
 ```
