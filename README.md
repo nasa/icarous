@@ -29,12 +29,13 @@ Agreement.  See the directory [`LICENSES`](LICENSES); see also the copyright not
 
 ### REQUIRED PACKAGES
 
-The following repositories are required to run icarous. 
+The following repositories are required to run ICAROUS. 
 
 - [Ardupilot](https://github.com/ArduPilot/ardupilot.git) (Only required for software in the loop simulations)
 - [mavlink](https://github.com/ArduPilot/mavlink.git)
 - [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
-- [Java simple serial connector (JSSC)](https://code.google.com/archive/p/java-simple-serial-connector/) (Already provided in Java/lib.)
+- [Java simple serial connector (JSSC)](https://code.google.com/archive/p/java-simple-serial-connector/) (Already provided in `Java/lib`)
+- [Core Flight System](https://cfs.gsfc.nasa.gov/) (Only required for provided [CFS](CFS/) application)
 
 ### BEFORE LAUNCHING ICAROUS
 
