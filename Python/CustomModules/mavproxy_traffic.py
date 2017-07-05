@@ -94,6 +94,7 @@ class TrafficModule(mp_module.MPModule):
         self.Bands = [];
         self.kmbMsgCounter = 0;
         self.gotStart = False;
+        self.lastUpdateTime = 0
         
         
         
@@ -250,18 +251,20 @@ class TrafficModule(mp_module.MPModule):
             heading = math.degrees(math.atan2(self.traffic_list[i].vy0, self.traffic_list[i].vx0))            
             self.mpstate.map.set_position(vehicle, (lat, lon), rotation=heading)
 
-            self.master.mav.command_long_send(
-                1,  # target_system
-                0, # target_component
-                mavutil.mavlink.MAV_CMD_SPATIAL_USER_1, # command
-                0, # confirmation
-                i, # param1
-                self.traffic_list[i].vx0, # param2
-                self.traffic_list[i].vy0, # param3
-                self.traffic_list[i].vz0, # param4
-                lat, # param5
-                lon, # param6
-                self.traffic_list[i].z0) # param7
+            if(t - self.lastUpdateTime > 0.5):
+                self.lastUpdateTime = t
+                self.master.mav.command_long_send(
+                    1,  # target_system
+                    0, # target_component
+                    mavutil.mavlink.MAV_CMD_SPATIAL_USER_1, # command
+                    0, # confirmation
+                    i, # param1
+                    self.traffic_list[i].vx0, # param2
+                    self.traffic_list[i].vy0, # param3
+                    self.traffic_list[i].vz0, # param4
+                    lat, # param5
+                    lon, # param6
+                    self.traffic_list[i].z0) # param7
             
 
     def print_usage(self):
