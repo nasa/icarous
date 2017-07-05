@@ -105,7 +105,7 @@ void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp
 			conflict = false;
 		}
 
-		projectedViolation = CollisionDetection(currentPosLLA,currentVel.vect2(),0,3);
+		projectedViolation = CollisionDetection(currentPosLLA,currentVel.vect2(),0,lookahead);
 
 		if(geoPolyCarp.definitelyInside(currentPosR3,geoPoly3D)){
 			violation = false;

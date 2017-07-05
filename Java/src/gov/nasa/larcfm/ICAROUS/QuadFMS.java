@@ -233,7 +233,7 @@ public class QuadFMS extends FlightManagementSystem{
 					Resolver.ResolveKeepOutConflictAstar();
 				}
 				double tstart2 = (double)System.nanoTime()/1E9;
-				System.out.format("RRT time:%f\n",(tstart2 - tstart1));
+				System.out.format("Path computation time:%f\n",(tstart2 - tstart1));
 			}
 			else if(Detector.flightPlanDeviationConflict){
 				log.addWarning("MSG: Computing resolution for stand off conflict");
