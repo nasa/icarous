@@ -223,7 +223,7 @@ public class GeoFence{
 			Vect2 recpoint = pcr.outside_recovery_point(BUFF,hthreshold,fenceVertices2,so_2);
 			LatLonAlt LLA = proj.inverse(recpoint,pos.alt());;
 			RecoveryPoint = Position.makeLatLonAlt(LLA.latitude(),LLA.longitude(),LLA.altitude());	    
-			cdp.detection(FP,geoPolyPath,0,FP.getLastTime());
+			cdp.detection(FP,geoPolyPath,currentTime,FP.getLastTime());
 			boolean val = CollisionDetection(pos,vel.vect2(),0,lookahead);
 			if(val){							
 				conflict = true;
