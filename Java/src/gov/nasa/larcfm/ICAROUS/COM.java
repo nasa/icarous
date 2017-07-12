@@ -43,6 +43,9 @@ import com.MAVLink.*;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.Velocity;
+
 import java.io.*;
 
 public class COM implements Runnable,ErrorReporter{
@@ -290,9 +293,6 @@ public class COM implements Runnable,ErrorReporter{
 					
 					if(msgCommandLong.param2 == 3){
 
-
-					}else if(msgCommandLong.param2 == 2){
-					    
 					
 					}else if(msgCommandLong.param2 == 1){
 					    // bounce back
@@ -304,9 +304,17 @@ public class COM implements Runnable,ErrorReporter{
 					    
 					    apIntf.Write(Mode);					    					    
 					    
-					    double lat = FlightData.acState.position(FlightData.acState.size()-1).latitude();
-					    double lon = FlightData.acState.position(FlightData.acState.size()-1).longitude();
-					    double alt = FlightData.acState.position(FlightData.acState.size()-1).alt();
+					    Position acpos = FlightData.acState.positionLast();
+					    Velocity acvel = FlightData.acState.velocityLast();
+					    
+					    Velocity acvelrev = Velocity.make(acvel.Scal(-1));
+					    double trk = acvelrev.trk();
+					    Position acposrev = acpos.linearDist2D(trk,5);
+					    
+					    
+					    double lat = acposrev.latitude();
+					    double lon = acposrev.longitude();
+					    double alt = acposrev.alt();
 					    
 					    msg_set_position_target_global_int msg= new msg_set_position_target_global_int();
 					    msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
@@ -319,17 +327,24 @@ public class COM implements Runnable,ErrorReporter{
 					    System.out.println("received warning from safeguard");
 
 					    try{
-						Thread.sleep(200);
+						Thread.sleep(8000);
 					    }catch(InterruptedException e){
 						System.out.println(e);
 					    }
+					    
+					    msg_set_mode Mode2 = new msg_set_mode();
+					    Mode2.target_system = (short) 0;
+					    Mode2.base_mode     = (short) 1;
+					    Mode2.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.AUTO;
+					    
+					    apIntf.Write(Mode2);	
 					    					    					    
-					}else if(msgCommandLong.param2 == 0){
+					}else if(msgCommandLong.param2 == 0 || msgCommandLong.param2 == 2 ){
 					    // terminate
 					    msg_set_mode Mode = new msg_set_mode();
 					    Mode.target_system = (short) 0;
 					    Mode.base_mode     = (short) 1;
-					    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.LAND;
+					    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.RTL;
 					    
 					    apIntf.Write(Mode);
 					    System.out.println("received terminate from safeguard");
