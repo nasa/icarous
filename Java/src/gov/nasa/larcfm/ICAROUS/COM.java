@@ -344,7 +344,7 @@ public class COM implements Runnable,ErrorReporter{
 					    msg_set_mode Mode = new msg_set_mode();
 					    Mode.target_system = (short) 0;
 					    Mode.base_mode     = (short) 1;
-					    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.RTL;
+					    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.LAND;
 					    
 					    apIntf.Write(Mode);
 					    System.out.println("received terminate from safeguard");
