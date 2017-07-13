@@ -260,11 +260,13 @@ public class COM implements Runnable,ErrorReporter{
 				status = FlightData.GetGeoFence(gsIntf,msgCommandLong);
 				if(status == 1){
 					log.addWarning("MSG: Geo fence update, #fences:"+FlightData.fenceList.size());
+					gsIntf.SendStatusText("Received Fence");
 				}
 			}
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){		    
 				FlightData.startMission = (int) msgCommandLong.param1;
 				log.addWarning("MSG: Received Mission START");
+				gsIntf.SendStatusText("Starting mission");
 				//System.out.println("Available FP size:"+FlightData.InputFlightPlan.size());
 			}
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_1){
@@ -350,8 +352,7 @@ public class COM implements Runnable,ErrorReporter{
 		if(msgCommandLong.param2 == 3){
 			if(sgMsgRcvd){
 				Position currentPos = FlightData.acState.positionLast();
-				double dist2pos = currentPos.distanceH(acposrev);
-				System.out.println(dist2pos);
+				double dist2pos = currentPos.distanceH(acposrev);				
 				if(dist2pos < 1){
 					msg_set_mode Mode = new msg_set_mode();
 				    Mode.target_system = (short) 0;
@@ -359,6 +360,7 @@ public class COM implements Runnable,ErrorReporter{
 				    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.AUTO;
 				    apIntf.Write(Mode);
 				    sgMsgRcvd = false;
+				    gsIntf.SendStatusText("Switching to AUTO");
 				}
 			}
 		}else if(msgCommandLong.param2 == 1){
@@ -420,6 +422,7 @@ public class COM implements Runnable,ErrorReporter{
 			    
 			    apIntf.Write(msg);		    
 			    System.out.println(FlightData.acTime +": received warning from safeguard");
+			    gsIntf.SendStatusText("Safeguard warning");
 			}		 		    					    					   
 		}else if(msgCommandLong.param2 == 0 || msgCommandLong.param2 == 2 ){
 		    // terminate
@@ -430,7 +433,8 @@ public class COM implements Runnable,ErrorReporter{
 		    
 		    apIntf.Write(Mode);
 		    System.out.println(FlightData.acTime + ": received terminate from safeguard");
-
+		    gsIntf.SendStatusText("Safeguard terminate");
+		    
 		    try{
 			Thread.sleep(200);
 		    }catch(InterruptedException e){

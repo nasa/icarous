@@ -101,7 +101,7 @@ public class QuadFMS extends FlightManagementSystem{
 
 		if(ack == 1){
 			fmsState = FMS_STATE_t._CLIMB_;
-			apIntf.SendStatusText("Starting climb");
+			gsIntf.SendStatusText("Starting climb");
 		}
 		else{
 			fmsState = FMS_STATE_t._IDLE_;
