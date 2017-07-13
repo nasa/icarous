@@ -59,6 +59,9 @@ public class COM implements Runnable,ErrorReporter{
 	private Interface apIntf;
 	private Interface gsIntf;
 	private int WPloaded;
+	private boolean sgMsgRcvd;
+	Position acposrev;
+	
 
 	public COM(String name,Interface ap,Interface gs,AircraftData fData,ParameterData pdata){
 		threadName       = name;
@@ -69,6 +72,8 @@ public class COM implements Runnable,ErrorReporter{
 		RcvdMessages     = FlightData.RcvdMessages;
 		pData            = pdata;
 		WPloaded         = 0;
+		sgMsgRcvd        = false;
+		acposrev         = Position.mkLatLonAlt(0, 0, 0);
 	}
 
 	public void run(){
@@ -340,73 +345,82 @@ public class COM implements Runnable,ErrorReporter{
 	}
 	
 	public void SafeguardHandler(msg_command_long msgCommandLong){
-		System.out.println(msgCommandLong.param2);
+	       //System.out.println(msgCommandLong.param2);
 		
 		if(msgCommandLong.param2 == 3){
-
-		
+			if(sgMsgRcvd){
+				Position currentPos = FlightData.acState.positionLast();
+				double dist2pos = currentPos.distanceH(acposrev);
+				System.out.println(dist2pos);
+				if(dist2pos < 1){
+					msg_set_mode Mode = new msg_set_mode();
+				    Mode.target_system = (short) 0;
+				    Mode.base_mode     = (short) 1;
+				    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.AUTO;
+				    apIntf.Write(Mode);
+				    sgMsgRcvd = false;
+				}
+			}
 		}else if(msgCommandLong.param2 == 1){
 		    // bounce back
-			
-			// First, set mode to GUIDED
-		    msg_set_mode Mode = new msg_set_mode();
-		    Mode.target_system = (short) 0;
-		    Mode.base_mode     = (short) 1;
-		    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.GUIDED;
-		    
-		    apIntf.Write(Mode);					    					    
-		    
-		    Position acpos = FlightData.acState.positionLast();
-		    Velocity acvel = FlightData.acState.velocityLast();
-		    
-		    Velocity acvelrev = Velocity.make(acvel.Scal(-1));
-		    double trk = acvelrev.trk();
-		    Position acposrev = acpos.linearDist2D(trk,5);
-		    
-		    
-		    double lat = acposrev.latitude();
-		    double lon = acposrev.longitude();
-		    double alt = acposrev.alt();
-		    
-		    // No yawing					    
-		    msg_command_long CommandLong  = new msg_command_long();
-
-			CommandLong.target_system     = (short) 1;
-			CommandLong.target_component  = (short) 0;
-			CommandLong.command           = MAV_CMD.MAV_CMD_CONDITION_YAW;
-			CommandLong.confirmation      = (short) 0;						
-			CommandLong.param4            = 1;
-			CommandLong.param5            = 1;
-			
-
-			apIntf.Write(CommandLong);
-		    
-			
-			// Set position
-		    msg_set_position_target_global_int msg= new msg_set_position_target_global_int();
-		    msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
-		    msg.type_mask        = 0b0000111111111000;
-		    msg.lat_int          = (int) (lat*1E7);
-		    msg.lon_int          = (int) (lon*1E7);
-		    msg.alt              = (float) alt;
-		    
-		    apIntf.Write(msg);
-		    System.out.println("received warning from safeguard");
-
-		    try{
-			Thread.sleep(8000);
-		    }catch(InterruptedException e){
-			System.out.println(e);
-		    }
-		    					    
-		    //Change mode back to AUTO
-		    msg_set_mode Mode2 = new msg_set_mode();
-		    Mode2.target_system = (short) 0;
-		    Mode2.base_mode     = (short) 1;
-		    Mode2.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.AUTO;
-		    
-		    apIntf.Write(Mode2);	
-		    					    					    
+			if(!sgMsgRcvd){
+				sgMsgRcvd = true;
+				
+				Position acpos = FlightData.acState.positionLast();
+			    Velocity acvel = FlightData.acState.velocityLast();
+			    
+				// First, set mode to GUIDED
+			    msg_set_mode Mode = new msg_set_mode();
+			    Mode.target_system = (short) 0;
+			    Mode.base_mode     = (short) 1;
+			    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.BRAKE;
+			    
+			    apIntf.Write(Mode);	
+			    
+			    try{
+					Thread.sleep(500);
+			    }catch(InterruptedException e){
+					System.out.println(e);
+			    }			    
+			    
+			    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.GUIDED;
+			    
+			    apIntf.Write(Mode);					    					    
+			    			    			    
+			    Velocity acvelrev = Velocity.make(acvel.Scal(-1));
+			    double trk = acvelrev.trk();
+			    acposrev = acpos.linearDist2D(trk,15);
+			    
+			    
+			    double lat = acposrev.latitude();
+			    double lon = acposrev.longitude();
+			    double alt = acposrev.alt();
+			    
+			    // No yawing					    
+			    msg_command_long CommandLong  = new msg_command_long();
+	
+				CommandLong.target_system     = (short) 1;
+				CommandLong.target_component  = (short) 0;
+				CommandLong.command           = MAV_CMD.MAV_CMD_CONDITION_YAW;
+				CommandLong.confirmation      = (short) 0;						
+				CommandLong.param4            = 1;
+				CommandLong.param5            = 1;
+				
+	
+				apIntf.Write(CommandLong);
+			    
+				
+				// Set position
+			    msg_set_position_target_global_int msg= new msg_set_position_target_global_int();
+			    msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
+			    msg.type_mask        = 0b0000111111111000;
+			    msg.lat_int          = (int) (lat*1E7);
+			    msg.lon_int          = (int) (lon*1E7);
+			    msg.alt              = (float) alt;
+			    
+			    apIntf.Write(msg);		    
+			    System.out.println(FlightData.acTime +": received warning from safeguard");
+			}		 		    					    					   
 		}else if(msgCommandLong.param2 == 0 || msgCommandLong.param2 == 2 ){
 		    // terminate
 		    msg_set_mode Mode = new msg_set_mode();
@@ -415,7 +429,7 @@ public class COM implements Runnable,ErrorReporter{
 		    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.LAND;
 		    
 		    apIntf.Write(Mode);
-		    System.out.println("received terminate from safeguard");
+		    System.out.println(FlightData.acTime + ": received terminate from safeguard");
 
 		    try{
 			Thread.sleep(200);
