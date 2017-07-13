@@ -59,7 +59,8 @@ public class COM implements Runnable,ErrorReporter{
 	private Interface apIntf;
 	private Interface gsIntf;
 	private int WPloaded;
-	private boolean sgMsgRcvd;
+	private boolean sgMsgRcvd1;
+	private boolean sgMsgRcvd2;
 	Position acposrev;
 	
 
@@ -72,7 +73,8 @@ public class COM implements Runnable,ErrorReporter{
 		RcvdMessages     = FlightData.RcvdMessages;
 		pData            = pdata;
 		WPloaded         = 0;
-		sgMsgRcvd        = false;
+		sgMsgRcvd1       = false;
+		sgMsgRcvd2       = false;
 		acposrev         = Position.mkLatLonAlt(0, 0, 0);
 	}
 
@@ -350,7 +352,7 @@ public class COM implements Runnable,ErrorReporter{
 	       //System.out.println(msgCommandLong.param2);
 		
 		if(msgCommandLong.param2 == 3){
-			if(sgMsgRcvd){
+			if(sgMsgRcvd1){
 				Position currentPos = FlightData.acState.positionLast();
 				double dist2pos = currentPos.distanceH(acposrev);				
 				if(dist2pos < 1){
@@ -359,14 +361,18 @@ public class COM implements Runnable,ErrorReporter{
 				    Mode.base_mode     = (short) 1;
 				    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.AUTO;
 				    apIntf.Write(Mode);
-				    sgMsgRcvd = false;
+				    sgMsgRcvd1 = false;
 				    gsIntf.SendStatusText("Switching to AUTO");
 				}
 			}
+			
+			if(sgMsgRcvd2){
+				sgMsgRcvd2 = false;
+			}
 		}else if(msgCommandLong.param2 == 1){
 		    // bounce back
-			if(!sgMsgRcvd){
-				sgMsgRcvd = true;
+			if(!sgMsgRcvd1){
+				sgMsgRcvd1 = true;
 				
 				Position acpos = FlightData.acState.positionLast();
 			    Velocity acvel = FlightData.acState.velocityLast();
@@ -426,20 +432,23 @@ public class COM implements Runnable,ErrorReporter{
 			}		 		    					    					   
 		}else if(msgCommandLong.param2 == 0 || msgCommandLong.param2 == 2 ){
 		    // terminate
-		    msg_set_mode Mode = new msg_set_mode();
-		    Mode.target_system = (short) 0;
-		    Mode.base_mode     = (short) 1;
-		    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.LAND;
-		    
-		    apIntf.Write(Mode);
-		    System.out.println(FlightData.acTime + ": received terminate from safeguard");
-		    gsIntf.SendStatusText("Safeguard terminate");
-		    
-		    try{
-			Thread.sleep(200);
-		    }catch(InterruptedException e){
-			System.out.println(e);
-		    }
+			if(!sgMsgRcvd2){
+				sgMsgRcvd2 = true;
+			    msg_set_mode Mode = new msg_set_mode();
+			    Mode.target_system = (short) 0;
+			    Mode.base_mode     = (short) 1;
+			    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.LAND;
+			    
+			    apIntf.Write(Mode);
+			    System.out.println(FlightData.acTime + ": received terminate from safeguard");
+			    gsIntf.SendStatusText("Safeguard terminate");
+			    
+			    try{
+			    	Thread.sleep(200);
+			    }catch(InterruptedException e){
+			    	System.out.println(e);
+			    }
+			}
 		}
 	}
 	

@@ -98,6 +98,7 @@ class GeoFenceModule(mp_module.MPModule):
     def load_fence(self, filename):
         '''load fence points from a file'''
         try:
+            self.fenceList = []  # uncomment this line if you want to send fences from different files
             self.GetGeofence(filename)
         except Exception as msg:
             print("Unable to load %s - %s" % (filename, msg))
