@@ -8,7 +8,7 @@ SITL_INPUT_PORT=14551
 COM_HOST=localhost
 COM_INPUT_PORT=14552
 COM_OUTPUT_PORT=14553
-PX4_PORT=/dev/ttyO1
+PX4_PORT=/dev/ttyTHS1
 PX4_BAUD=57600
 #GS_MASTER=192.42.142.83:$COM_OUTPUT_PORT
 GS_MASTER=127.0.0.1:$COM_OUTPUT_PORT
@@ -63,7 +63,7 @@ elif [ "$1" == 'PX4R' ];then
     
 elif [ "$1" == 'GS' ];then
     echo "Launching Ground station test"
-    mavproxy.py --master=$GS_MASTER --map --console --load-module geofence,traffic --mav10 --dialect=icarous
+    mavproxy.py --master=$GS_MASTER --map --console  --load-module geofence --mav10 --dialect=icarous
 
 elif [ "$1" == 'RADIO' ];then
     echo "Launching radio module"
