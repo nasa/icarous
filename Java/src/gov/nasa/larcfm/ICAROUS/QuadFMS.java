@@ -114,13 +114,13 @@ public class QuadFMS extends FlightManagementSystem{
 		double currentAlt = FlightData.acState.positionLast().alt();
 		double error      = Math.abs( Math.abs(currentAlt - takeoffAlt));
 
-		if( error < 0.5 ){
+		if( error < 2.5 ){
 			fmsState = FMS_STATE_t._CRUISE_;
 			SetMode(ARDUPILOT_MODES.AUTO);
 			// Set speed
 			FlightData.nextMissionWP++;
 			float speed = FlightData.GetFlightPlanSpeed(FlightData.MissionPlan,FlightData.nextMissionWP);
-			SetSpeed(speed);
+			//SetSpeed(speed);
 		}
 	}
 

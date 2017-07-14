@@ -471,7 +471,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 			FlightData.nextMissionWP++;
 			if(FlightData.nextMissionWP < FlightData.numMissionWP){
 				float speed = FlightData.GetFlightPlanSpeed(FlightData.MissionPlan,FlightData.nextMissionWP);					
-				SetSpeed(speed);
+				//SetSpeed(speed);
 			}
 		}
 		return reached;	
