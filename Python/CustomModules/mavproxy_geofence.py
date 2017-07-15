@@ -50,8 +50,8 @@ class GeoFenceModule(mp_module.MPModule):
     def mavlink_packet(self, m):
         '''handle and incoming mavlink packet'''                        
         
-        if m.get_type() == "FENCE_STATUS":
-            print m.breach_status                    
+        #if m.get_type() == "FENCE_STATUS":
+            #print m.breach_status                    
         
                     
     def cmd_fence(self, args):
