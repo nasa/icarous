@@ -160,11 +160,6 @@ public class AircraftData{
 		msgFenceFetchPoint.target_system    = (short) msg.sysid;
 		msgFenceFetchPoint.target_component = (short) msg.compid;
 
-		msg_fence_status msgFenceStatus = new msg_fence_status();
-
-		msgFenceStatus.sysid            = 2;
-		msgFenceStatus.compid           = 0;
-
 		GF state = GF.GF_FETCH;
 
 		ArrayList<msg_fence_point> InputFence = new ArrayList<msg_fence_point>();
