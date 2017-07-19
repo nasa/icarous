@@ -61,6 +61,7 @@ public class COM implements Runnable,ErrorReporter{
 	private int WPloaded;
 	private boolean sgMsgRcvd1;
 	private boolean sgMsgRcvd2;
+	private int sfcount;
 	Position acposrev;
 	
 
@@ -76,6 +77,7 @@ public class COM implements Runnable,ErrorReporter{
 		sgMsgRcvd1       = false;
 		sgMsgRcvd2       = false;
 		acposrev         = Position.mkLatLonAlt(0, 0, 0);
+		sfcount          = 0;
 	}
 
 	public void run(){
@@ -350,7 +352,8 @@ public class COM implements Runnable,ErrorReporter{
 	
 	public void SafeguardHandler(msg_command_long msgCommandLong){
 	       //System.out.println(msgCommandLong.param2);
-		
+		sfcount++;
+		System.out.format("SG signal %d:%d",sfcount,msgCommandLong.param2);
 		if(msgCommandLong.param2 == 3){
 			if(sgMsgRcvd1){
 				Position currentPos = FlightData.acState.positionLast();
