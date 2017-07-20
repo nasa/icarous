@@ -89,7 +89,7 @@ public class Jetson_SafeguardReader{
 	}
 
 	double timeStart = (double) System.nanoTime()/1E9;
-	int sfcount = 0;
+	
 	
 	while(true){
 
@@ -132,12 +132,7 @@ public class Jetson_SafeguardReader{
 		    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
 		    sock.send(output);
 		    timeStart = timeNow;
-		    sfcount++;
 		    
-		    if(sfcount == Integer.MAX_VALUE){
-		    	sfcount = 0;
-		    }
-		    //System.out.format("SG signal %d:%d",msgSafeguard.param2);
 		}
 		
 	    }
