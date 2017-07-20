@@ -73,6 +73,7 @@
         void CommandLongHandler();
         void CommandIntHandler();
         void KinematicBandsHandler();
+	void HandleUnprocessedMsgs();
  };
 
  #endif

@@ -84,6 +84,9 @@ COM_t::COM_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata):log(
          // Handle kinematic bands
          KinematicBandsHandler();
 
+	 // Handle any unprocessed messaged
+	 //HandleUnprocessedMsgs();
+
      }
      
 
@@ -276,9 +279,9 @@ COM_t::COM_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata):log(
          FlightData->SetStartMissionFlag((uint8_t)msg.param1);
          cout<<"Flying to: "<<msg.param1<<endl;
      }
-     else if(have_msg && msg.command == MAV_CMD_DO_FENCE_ENABLE){
-    	 log.addWarning("Receiving geofence");
+     else if(have_msg && msg.command == MAV_CMD_DO_FENCE_ENABLE){   
     	 FlightData->GetGeofence(gsIntf,msg);
+	 log.addWarning("Received geofence");
      }
      else if(have_msg && msg.command == MAV_CMD_SPATIAL_USER_1){
     	 FlightData->AddTraffic((int)msg.param1,msg.param5,msg.param6,msg.param7,
@@ -314,3 +317,31 @@ COM_t::COM_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata):log(
 	     gsIntf->SendMAVLinkMsg(msg2send);
 	 }
  }
+
+void COM_t::HandleUnprocessedMsgs(){
+
+  while(!gsIntf->msgQueue.empty()){
+    mavlink_message_t msg = gsIntf->msgQueue.front();
+    gsIntf->msgQueue.pop();
+    
+    switch(msg.msgid){
+    case MAVLINK_MSG_ID_MISSION_COUNT: break;
+    case MAVLINK_MSG_ID_MISSION_ITEM: break;
+    case MAVLINK_MSG_ID_MISSION_REQUEST_LIST:break;
+    case MAVLINK_MSG_ID_MISSION_REQUEST:break;
+    case MAVLINK_MSG_ID_PARAM_REQUEST_LIST:break;
+    case MAVLINK_MSG_ID_PARAM_REQUEST_READ:break;
+    case MAVLINK_MSG_ID_PARAM_VALUE:break;
+    case MAVLINK_MSG_ID_PARAM_SET:break;
+    case MAVLINK_MSG_ID_COMMAND_LONG:break;
+    case MAVLINK_MSG_ID_COMMAND_INT:break;
+    case MAVLINK_MSG_ID_SET_MODE:break;
+    case MAVLINK_MSG_ID_FENCE_POINT:break;
+    default:
+      px4Intf->SendMAVLinkMsg(msg);
+      //printf("message id %d\n",msg.msgid);
+      break;
+
+  }
+  }
+}
