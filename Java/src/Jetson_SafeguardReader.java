@@ -137,7 +137,7 @@ public class Jetson_SafeguardReader{
 		    if(sfcount == Integer.MAX_VALUE){
 		    	sfcount = 0;
 		    }
-		    System.out.format("SG signal %d:%d",msgSafeguard.param2);
+		    //System.out.format("SG signal %d:%d",msgSafeguard.param2);
 		}
 		
 	    }
