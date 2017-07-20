@@ -371,6 +371,7 @@ public class COM implements Runnable,ErrorReporter{
 			
 			if(sgMsgRcvd2){
 				sgMsgRcvd2 = false;
+				sgMsgRcvd1 = false;
 			}
 		}else if(msgCommandLong.param2 == 1){
 		    // bounce back
