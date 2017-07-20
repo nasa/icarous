@@ -42,11 +42,13 @@ DAQ_t::DAQ_t(Interface_t* px4int, Interface_t* gsint):log("DAQ"){
  void DAQ_t::GetPixhawkData(){
      while(true){
          // Get data from the pixhawk
-         px4Intf->GetMAVLinkMsg();
+         int n = px4Intf->GetMAVLinkMsg();
 
-         // Send the raw data in the queue to the send interface
+	 //px4Intf->PipeThrough(gsIntf,n);
+	 
+         // Send the mavlink messages in the queue to the ground station interface
          while(!px4Intf->msgQueue.empty()){
-            gsIntf->SendMAVLinkMsg(px4Intf->msgQueue.front());
+	    gsIntf->SendMAVLinkMsg(px4Intf->msgQueue.front());
             px4Intf->msgQueue.pop();
          }
      }
