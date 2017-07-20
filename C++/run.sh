@@ -6,7 +6,7 @@ SITL_INPUT_PORT=14551
 COM_HOST=127.0.0.1
 COM_INPUT_PORT=14552
 COM_OUTPUT_PORT=14553
-PX4_PORT=/dev/ttyO1
+PX4_PORT=/dev/ttyACM0
 PX4_BAUD=57600
 #GS_MASTER=192.42.142.110:$COM_OUTPUT_PORT
 GS_MASTER=127.0.0.1:$COM_OUTPUT_PORT
@@ -29,7 +29,7 @@ elif [ "$1" == 'PX4' ];then
        ./icarous --verbose \
 	--px4 $PX4_PORT --px4baud $PX4_BAUD \
 	--gshost $COM_HOST --gsin $COM_INPUT_PORT --gsout $COM_OUTPUT_PORT \
-	--mode --config $2 $3 $MODE
+	--mode $MODE --config $2 $3
         
 elif [ "$1" == 'PX4R' ];then
     echo "Launching ICAROUS with Pixhawk and Radio"
