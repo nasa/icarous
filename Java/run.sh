@@ -59,7 +59,7 @@ elif [ "$1" == 'PX4R' ];then
 	 -v \
 	 --px4 $PX4_PORT $PX4_BAUD\
 	 --radio $RADIO_SERIAL_PORT $RADIO_BAUD \
-	 --mode $MODE
+	 --mode $MODE --config $2 $3
     
 elif [ "$1" == 'GS' ];then
     echo "Launching Ground station test"
