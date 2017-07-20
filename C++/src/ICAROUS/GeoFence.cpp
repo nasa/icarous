@@ -138,7 +138,7 @@ void Geofence_t::CheckViolation(AircraftState acState,double elapsedTime,Plan fp
 												LLA.altitude(),"ft");
 
 
-	    geoCDIIPolygon.detection(fp,geoPolyPath,0,fp.getLastTime());
+	    geoCDIIPolygon.detection(fp,geoPolyPath,elapsedTime,fp.getLastTime());
 	    bool val = CollisionDetection(currentPosLLA,currentVel.vect2(),0,lookahead);
 	    if(val){
 	    	conflict = true;
