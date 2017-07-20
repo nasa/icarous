@@ -417,7 +417,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		msg1.autopilot = MAV_AUTOPILOT.MAV_AUTOPILOT_GENERIC;
 		msg1.sysid     = 255;
 
-		apIntf.Write(msg1);
+		//apIntf.Write(msg1);
 
 		msg_request_data_stream req = new msg_request_data_stream();
 		req.req_message_rate = 4;
