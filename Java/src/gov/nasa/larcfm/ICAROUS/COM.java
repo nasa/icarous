@@ -353,7 +353,7 @@ public class COM implements Runnable,ErrorReporter{
 	public void SafeguardHandler(msg_command_long msgCommandLong){
 	       //System.out.println(msgCommandLong.param2);
 		sfcount++;
-		System.out.format("SG signal %d:%d",sfcount,msgCommandLong.param2);
+		//System.out.format("SG signal %d:%d",sfcount,msgCommandLong.param2);
 		if(msgCommandLong.param2 == 3){
 			if(sgMsgRcvd1){
 				Position currentPos = FlightData.acState.positionLast();
