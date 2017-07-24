@@ -71,6 +71,7 @@ int Interface_t::GetMAVLinkMsg(){
         if(msgReceived){
             msgQueue.push(message);
             RcvdMessages->DecodeMessage(message);
+	    msgReceived = false;
         }
     }
 
@@ -138,7 +139,8 @@ int SerialInterface_t::set_interface_attribs()
     tty.c_cflag |= CS8;         /* 8-bit characters */
     tty.c_cflag &= ~PARENB;     /* no parity bit */
     tty.c_cflag &= ~CSTOPB;     /* only need 1 stop bit */
-    tty.c_cflag &= ~CRTSCTS;    /* no hardware flowcontrol */
+    tty.c_cflag |= CRTSCTS;
+    //tty.c_cflag &= ~CRTSCTS;    /* no hardware flowcontrol */
 
     /* setup for non-canonical mode */
     tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
@@ -180,9 +182,9 @@ int SerialInterface_t::ReadData(){
     char buf;
     int n = 0;
     pthread_mutex_lock(&lockrx);
-    //n = read (fd, &buf, 1);
-    //recvbuffer[0] = buf;
-    n = read (fd, recvbuffer, 256);
+    n = read (fd, &buf, 1);
+    recvbuffer[0] = buf;
+    //n = read (fd, recvbuffer, 256);
     pthread_mutex_unlock(&lockrx);
 
     return n;
@@ -191,9 +193,11 @@ int SerialInterface_t::ReadData(){
 void SerialInterface_t::WriteData(uint8_t buffer[],uint16_t len){
 
   pthread_mutex_lock(&locktx);
-  write(fd,buffer,len);  
-  pthread_mutex_unlock(&locktx);
-
+  for(int i=0;i<len;i++){
+    char c = buffer[i];
+    write(fd,&c,1);
+  }
+  pthread_mutex_unlock(&locktx);  
 }
 
 

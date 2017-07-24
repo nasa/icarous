@@ -75,6 +75,9 @@ COM_t::COM_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata):log(
          // Handle parameter set
          ParamSetHandler();
 
+	 // Handle parameter values
+	 ParamValueHandler();
+	 
          // Handle set mode
          SetModeHandler();
 
@@ -145,11 +148,12 @@ COM_t::COM_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata):log(
 
  void COM_t::ParamRequestListHandler(){
      mavlink_param_request_list_t msg;
-     bool have_msg = RcvdMessages->GetParamRequestList(msg);
+     bool have_msg = RcvdMessages->GetParamRequestList(msg);     
      if(have_msg){
+         std::cout<<"received param request handler"<<std::endl;
          mavlink_message_t msg2send;
          mavlink_msg_param_request_list_encode(255,0,&msg2send,&msg);
-         px4Intf->SendMAVLinkMsg(msg2send);
+         px4Intf->SendMAVLinkMsg(msg2send);	 
      }
  }
 
@@ -256,8 +260,7 @@ COM_t::COM_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata):log(
      bool have_msg = RcvdMessages->GetParamValue(msg);
      if(have_msg){
          mavlink_message_t msg2send;
-         mavlink_msg_param_value_encode(255,0,&msg2send,&msg);
-         
+         mavlink_msg_param_value_encode(255,0,&msg2send,&msg);	
      }
  }
 

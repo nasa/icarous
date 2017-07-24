@@ -45,7 +45,7 @@ DAQ_t::DAQ_t(Interface_t* px4int, Interface_t* gsint):log("DAQ"){
          int n = px4Intf->GetMAVLinkMsg();
 
 	 //px4Intf->PipeThrough(gsIntf,n);
-	 
+
          // Send the mavlink messages in the queue to the ground station interface
          while(!px4Intf->msgQueue.empty()){
 	    gsIntf->SendMAVLinkMsg(px4Intf->msgQueue.front());
