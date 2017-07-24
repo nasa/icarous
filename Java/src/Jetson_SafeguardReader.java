@@ -90,6 +90,7 @@ public class Jetson_SafeguardReader{
 
 	double timeStart = (double) System.nanoTime()/1E9;
 	
+	
 	while(true){
 
 	    double timeNow = (double) System.nanoTime()/1E9;
@@ -125,12 +126,13 @@ public class Jetson_SafeguardReader{
 								
 		MAVLinkPacket raw_packet = msgSafeguard.pack();
 		buffer            = raw_packet.encodePacket();
-		
+				
 		// Send MAVLink message via socket to ICAROUS
-		if(timeNow - timeStart > 0.5){
+		if(timeNow - timeStart > 1){
 		    DatagramPacket  output = new DatagramPacket(buffer , buffer.length , host , udpSendPort);
 		    sock.send(output);
 		    timeStart = timeNow;
+		    
 		}
 		
 	    }

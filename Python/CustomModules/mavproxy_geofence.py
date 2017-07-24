@@ -50,8 +50,8 @@ class GeoFenceModule(mp_module.MPModule):
     def mavlink_packet(self, m):
         '''handle and incoming mavlink packet'''                        
         
-        if m.get_type() == "FENCE_STATUS":
-            print m.breach_status                    
+        #if m.get_type() == "FENCE_STATUS":
+            #print m.breach_status                    
         
                     
     def cmd_fence(self, args):
@@ -98,14 +98,16 @@ class GeoFenceModule(mp_module.MPModule):
     def load_fence(self, filename):
         '''load fence points from a file'''
         try:
+            self.fenceList = []  # uncomment this line if you want to send fences from different files
             self.GetGeofence(filename)
         except Exception as msg:
             print("Unable to load %s - %s" % (filename, msg))
             return
 
         for fence in self.fenceList:
-            if fence not in self.sentFenceList:
-                self.Send_fence(fence)
+            if fence not in self.sentFenceList:                
+                if not self.Send_fence(fence):
+                    return
             
 
     def Send_fence(self,fence):
@@ -113,53 +115,67 @@ class GeoFenceModule(mp_module.MPModule):
         target_system    = 2;
         target_component = 0;
 
+        self.console.writeln("sending fence description")
         self.master.mav.command_long_send(target_system,target_component,
                                           mavutil.mavlink.MAV_CMD_DO_FENCE_ENABLE,0,
                                           0,fence["id"],fence["type"],fence["numV"],
                                           fence["floor"],fence["roof"],0);    
 
         fence_sent = False;
-                            
+        t1= time.time()
+        count = 0
         while(not fence_sent):
 
+            t2 = time.time()
+
+            if (t2 - t1) > 10:
+                print "Sending failed"
+                return False
+            
+            
             msg = None
             while(msg == None):
                 msg = self.master.recv_msg();
-                
-                
-            if(msg.get_type() == "FENCE_FETCH_POINT"):            
-
+                                
+            if(msg.get_type() == "FENCE_FETCH_POINT"):                            
                 numV = fence["numV"]
                 lat  = fence["Vertices"][msg.idx][0]
                 lon  = fence["Vertices"][msg.idx][1]
                 
                 self.master.mav.fence_point_send(2,0,msg.idx,numV,lat,lon)            
-                    
+                self.console.writeln("sending vertex %u" % msg.idx)
+                count = count+1
                 
-            elif(msg.get_type() == "COMMAND_ACK" ):
+            elif(count == fence["numV"] and msg.get_type() == "COMMAND_ACK" ):
                 
                 if msg.result == 1:            
                     fence_sent = True;
-                    print ("Geofence sent")
+                    self.console.writeln("Geofence sent")
                 else:
                     self.Send_fence(fence);
                     fence_sent = True;
 
-        points = fence["Vertices"][:]
-        points.append(points[0])
-        
-        from MAVProxy.modules.mavproxy_map import mp_slipmap
-        name = 'Fence'+str(fence["id"])
+            elif(count == fence["numV"]):
+                fence_sent = True;
+                self.console.writeln ("Geofence sent")
 
-        if(fence["type"] == 0):
-            gcf = (0,255,0)
-        else:
-            gcf = (255,0,0)
+
+        if fence_sent:
+            points = fence["Vertices"][:]
+            points.append(points[0])
+        
+            from MAVProxy.modules.mavproxy_map import mp_slipmap
+            name = 'Fence'+str(fence["id"])
+
+            if(fence["type"] == 0):
+                gcf = (0,255,0)
+            else:
+                gcf = (255,0,0)
             
-        self.mpstate.map.add_object(mp_slipmap.SlipPolygon(name, points, layer=1,
+            self.mpstate.map.add_object(mp_slipmap.SlipPolygon(name, points, layer=1,
                                                                linewidth=2, colour=gcf))
 
-        return
+        return True
 
     def clear_fence(self,fence):
 

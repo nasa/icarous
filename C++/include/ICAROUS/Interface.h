@@ -63,7 +63,8 @@ class Interface_t{
   uint8_t recvbuffer[BUFFER_LENGTH];
   uint8_t sendbuffer[BUFFER_LENGTH];
   MAVLinkMessages_t *RcvdMessages;
-  pthread_mutex_t  lock;
+  pthread_mutex_t  lockrx;
+  pthread_mutex_t  locktx;
   mavlink_status_t lastStatus;
   
 
@@ -80,6 +81,7 @@ class Interface_t{
   uint8_t* GetRecvBuffer();
   virtual int ReadData(){return 0;};
   virtual void WriteData(uint8_t buffer[], uint16_t len){return;};
+  void PipeThrough(Interface_t *intf,int32_t len);
 };
 
 class SerialInterface_t: public Interface_t{

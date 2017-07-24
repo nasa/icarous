@@ -42,11 +42,11 @@
 #define TO_CPP(a) (reinterpret_cast<Icarous_t*>(a))
 #define TO_C(a)   (reinterpret_cast<icarous_t*>(a))
 
-std::string Icarous_t::VERSION = "1.1";
+std::string Icarous_t::VERSION = "1.2.1";
 
 std::string Icarous_t::release() {
 	return "ICAROUS++ V-"+VERSION+
-			"-FormalATM-"+Constants::version+" (March-18-2017)";
+			"-FormalATM-"+Constants::version+" (July-24-2017)";
 }
 
 Icarous_t::Icarous_t(icarous_table_t* pData):FlightData(pData),FMS(FlightData){

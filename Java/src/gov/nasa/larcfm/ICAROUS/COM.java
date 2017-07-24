@@ -43,6 +43,9 @@ import com.MAVLink.*;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.Velocity;
+
 import java.io.*;
 
 public class COM implements Runnable,ErrorReporter{
@@ -56,6 +59,11 @@ public class COM implements Runnable,ErrorReporter{
 	private Interface apIntf;
 	private Interface gsIntf;
 	private int WPloaded;
+	private boolean sgMsgRcvd1;
+	private boolean sgMsgRcvd2;
+	private int sfcount;
+	Position acposrev;
+	
 
 	public COM(String name,Interface ap,Interface gs,AircraftData fData,ParameterData pdata){
 		threadName       = name;
@@ -66,6 +74,10 @@ public class COM implements Runnable,ErrorReporter{
 		RcvdMessages     = FlightData.RcvdMessages;
 		pData            = pdata;
 		WPloaded         = 0;
+		sgMsgRcvd1       = false;
+		sgMsgRcvd2       = false;
+		acposrev         = Position.mkLatLonAlt(0, 0, 0);
+		sfcount          = 0;
 	}
 
 	public void run(){
@@ -252,11 +264,13 @@ public class COM implements Runnable,ErrorReporter{
 				status = FlightData.GetGeoFence(gsIntf,msgCommandLong);
 				if(status == 1){
 					log.addWarning("MSG: Geo fence update, #fences:"+FlightData.fenceList.size());
+					gsIntf.SendStatusText("Received Fence");
 				}
 			}
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){		    
 				FlightData.startMission = (int) msgCommandLong.param1;
 				log.addWarning("MSG: Received Mission START");
+				gsIntf.SendStatusText("Starting mission");
 				//System.out.println("Available FP size:"+FlightData.InputFlightPlan.size());
 			}
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_1){
@@ -285,63 +299,9 @@ public class COM implements Runnable,ErrorReporter{
 						FlightData.Reset();
 					}
 				}
-				else if(msgCommandLong.param1 == 10){ // Safeguards gpio outputs
-					System.out.println(msgCommandLong.param2);
-					
-					if(msgCommandLong.param2 == 3){
-
-
-					}else if(msgCommandLong.param2 == 2){
-					    
-					
-					}else if(msgCommandLong.param2 == 1){
-					    // bounce back
-
-					    msg_set_mode Mode = new msg_set_mode();
-					    Mode.target_system = (short) 0;
-					    Mode.base_mode     = (short) 1;
-					    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.GUIDED;
-					    
-					    apIntf.Write(Mode);					    					    
-					    
-					    double lat = FlightData.acState.position(FlightData.acState.size()-1).latitude();
-					    double lon = FlightData.acState.position(FlightData.acState.size()-1).longitude();
-					    double alt = FlightData.acState.position(FlightData.acState.size()-1).alt();
-					    
-					    msg_set_position_target_global_int msg= new msg_set_position_target_global_int();
-					    msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
-					    msg.type_mask        = 0b0000111111111000;
-					    msg.lat_int          = (int) (lat*1E7);
-					    msg.lon_int          = (int) (lon*1E7);
-					    msg.alt              = (float) alt;
-					    
-					    apIntf.Write(msg);
-					    System.out.println("received warning from safeguard");
-
-					    try{
-						Thread.sleep(200);
-					    }catch(InterruptedException e){
-						System.out.println(e);
-					    }
-					    					    					    
-					}else if(msgCommandLong.param2 == 0){
-					    // terminate
-					    msg_set_mode Mode = new msg_set_mode();
-					    Mode.target_system = (short) 0;
-					    Mode.base_mode     = (short) 1;
-					    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.LAND;
-					    
-					    apIntf.Write(Mode);
-					    System.out.println("received terminate from safeguard");
-
-					    try{
-						Thread.sleep(200);
-					    }catch(InterruptedException e){
-						System.out.println(e);
-					    }
-					}
+				else if(msgCommandLong.param1 == 10){ // Safeguards gpio outputs					
+					SafeguardHandler(msgCommandLong);
 				}
-
 			}		
 			else{
 				apIntf.Write(msgCommandLong); 
@@ -389,6 +349,113 @@ public class COM implements Runnable,ErrorReporter{
 			gsIntf.Write(msgKinematicBands);
 		}
 	}
+	
+	public void SafeguardHandler(msg_command_long msgCommandLong){
+	       //System.out.println(msgCommandLong.param2);
+		sfcount++;
+		//System.out.format("SG signal %d:%d",sfcount,msgCommandLong.param2);
+		if(msgCommandLong.param2 == 3){
+			if(sgMsgRcvd1){
+				Position currentPos = FlightData.acState.positionLast();
+				double dist2pos = currentPos.distanceH(acposrev);				
+				if(dist2pos < 1){
+					msg_set_mode Mode = new msg_set_mode();
+				    Mode.target_system = (short) 0;
+				    Mode.base_mode     = (short) 1;
+				    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.AUTO;
+				    apIntf.Write(Mode);
+				    sgMsgRcvd1 = false;
+				    gsIntf.SendStatusText("Switching to AUTO");
+				}
+			}
+			
+			if(sgMsgRcvd2){
+				sgMsgRcvd2 = false;
+				sgMsgRcvd1 = false;
+			}
+		}else if(msgCommandLong.param2 == 1){
+		    // bounce back
+			if(!sgMsgRcvd1){
+				sgMsgRcvd1 = true;
+				
+				Position acpos = FlightData.acState.positionLast();
+			    Velocity acvel = FlightData.acState.velocityLast();
+			    
+				// First, set mode to GUIDED
+			    msg_set_mode Mode = new msg_set_mode();
+			    Mode.target_system = (short) 0;
+			    Mode.base_mode     = (short) 1;
+			    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.BRAKE;
+			    
+			    apIntf.Write(Mode);	
+			    
+			    try{
+					Thread.sleep(500);
+			    }catch(InterruptedException e){
+					System.out.println(e);
+			    }			    
+			    
+			    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.GUIDED;
+			    
+			    apIntf.Write(Mode);					    					    
+			    			    			    
+			    Velocity acvelrev = Velocity.make(acvel.Scal(-1));
+			    double trk = acvelrev.trk();
+			    acposrev = acpos.linearDist2D(trk,15);
+			    
+			    
+			    double lat = acposrev.latitude();
+			    double lon = acposrev.longitude();
+			    double alt = acposrev.alt();
+			    
+			    // No yawing					    
+			    msg_command_long CommandLong  = new msg_command_long();
+	
+				CommandLong.target_system     = (short) 1;
+				CommandLong.target_component  = (short) 0;
+				CommandLong.command           = MAV_CMD.MAV_CMD_CONDITION_YAW;
+				CommandLong.confirmation      = (short) 0;						
+				CommandLong.param4            = 1;
+				CommandLong.param5            = 1;
+				
+	
+				apIntf.Write(CommandLong);
+			    
+				
+				// Set position
+			    msg_set_position_target_global_int msg= new msg_set_position_target_global_int();
+			    msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
+			    msg.type_mask        = 0b0000111111111000;
+			    msg.lat_int          = (int) (lat*1E7);
+			    msg.lon_int          = (int) (lon*1E7);
+			    msg.alt              = (float) alt;
+			    
+			    apIntf.Write(msg);		    
+			    System.out.println(FlightData.acTime +": received warning from safeguard");
+			    gsIntf.SendStatusText("Safeguard warning");
+			}		 		    					    					   
+		}else if(msgCommandLong.param2 == 0 || msgCommandLong.param2 == 2 ){
+		    // terminate
+			if(!sgMsgRcvd2){
+				sgMsgRcvd2 = true;
+			    msg_set_mode Mode = new msg_set_mode();
+			    Mode.target_system = (short) 0;
+			    Mode.base_mode     = (short) 1;
+			    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.LAND;
+			    
+			    apIntf.Write(Mode);
+			    System.out.println(FlightData.acTime + ": received terminate from safeguard");
+			    gsIntf.SendStatusText("Safeguard terminate");
+			    
+			    try{
+			    	Thread.sleep(200);
+			    }catch(InterruptedException e){
+			    	System.out.println(e);
+			    }
+			}
+		}
+	}
+	
 
 	public boolean hasError() {
 		return log.hasError();

@@ -38,11 +38,11 @@
 #include "Icarous.h"
 #include "Constants.h"
 
-std::string Icarous_t::VERSION = "1.1";
+std::string Icarous_t::VERSION = "1.2.1";
 
 std::string Icarous_t::release() {
 	return "ICAROUS++ V-"+VERSION+
-			"-FormalATM-"+Constants::version+" (March-18-2017)";
+			"-FormalATM-"+Constants::version+" (July-24-2017)";
 }
 
 Icarous_t::Icarous_t(int argc,char* argv[],Mission_t* task){
@@ -76,17 +76,16 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 		  {"radio",    required_argument, 0, 'j'},
 		  {"radiobaud",required_argument, 0, 'k'},
 		  {"mode",     required_argument, 0, 'l'},
-		  {"debug",          no_argument, 0, 'm'},
-		  {"config",   required_argument, 0, 'n'},
+		  {"config",   required_argument, 0, 'm'},
+		  {"debug",          no_argument, 0, 'n'},		  
 		  {0,                          0, 0,   0}
 	  };
 
 	  int option_index = 0;
 
-	  c = getopt_long (argc, argv, "ab:c:d:e:f:g:h:i:j:k:l:",
+	  c = getopt_long (argc, argv, "ab:c:d:e:f:g:h:i:j:k:l:m:n",
 					   long_options, &option_index);
-
-
+	  
 	  if (c == -1)
 		break;
 
@@ -99,67 +98,67 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 		case 'b':
 		  //printf ("option -c with value `%s'\n", optarg);
 		  strcpy(px4port,optarg);
-		  //printf("Connecting to pixhawk at %s\n",px4port);
+		  printf("Connecting to pixhawk at %s\n",px4port);
 		  break;
 
 		case 'c':
 		  px4baud = atoi(optarg);
-		  //printf("pixhawk port baud rate %d\n",px4baud);
+		  printf("pixhawk port baud rate %d\n",px4baud);
 		  break;
 
 		case 'd':
 		  strcpy(sitlhost,optarg);
-		  //printf("Connecting to SITL host: %s\n",sitlhost);
+		  printf("Connecting to SITL host: %s\n",sitlhost);
 		  break;
 
 		case 'e':
 		  sitlin = atoi(optarg);
-		  //printf("SITL host input at port: %d\n",sitlin);
+		  printf("SITL host input at port: %d\n",sitlin);
 		  break;
 
 		case 'f':
 		  sitlout = atoi(optarg);
-		  //printf("SITL host output at port: %d\n",sitlout);
+		  printf("SITL host output at port: %d\n",sitlout);
 		  break;
 
 		case 'g':
 		  strcpy(gshost,optarg);
-		  //printf("Ground station host: %s\n",gshost);
+		  printf("Ground station host: %s\n",gshost);
 		  break;
 
 		case 'h':
 		  gsin = atoi(optarg);
-		  //printf("Ground station host input at port:%d\n",gsin);
+		  printf("Ground station host input at port:%d\n",gsin);
 		  break;
 
 		case 'i':
 		  gsout = atoi(optarg);
-		  //printf("Ground station host output at port:%d\n",gsout);
+		  printf("Ground station host output at port:%d\n",gsout);
 		  break;
 
 		case 'j':
 		  strcpy(gsradio,optarg);
-		  //printf("Connecting to radio on port %s\n",gsradio);
+		  printf("Connecting to radio on port %s\n",gsradio);
 		  break;
 
 		case 'k':
 		  radiobaud = atoi(optarg);
-		  //printf("Radio baud rate %d\n",radiobaud);
+		  printf("Radio baud rate %d\n",radiobaud);
 		  break;
 
 		case 'l':
 		  strcpy(mode,optarg);
-		  //printf("Launching ICAROUS in %s mode\n",mode);
-		  break;
-
-		case 'm':
-		  //printf("debug mode enabled\n");
-		  debug = true;
+		  printf("Launching ICAROUS in %s mode\n",mode);
 		  break;
 
 		case 'n':
+		  printf("debug mode enabled\n");
+		  debug = true;
+		  break;
+
+		case 'm':
 		  strcpy(config,optarg);
-		  //printf("config file %s\n",config);
+		  printf("config file %s\n",config);
 		  break;
 
 		case '?':
@@ -172,7 +171,7 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 }
 
 void Icarous_t::Run(){
-
+  
 	// Read parameters from file and get the parameter data container
 	ifstream ConfigFile;
 	SeparatedInput sepInputReader(&ConfigFile);
@@ -189,10 +188,11 @@ void Icarous_t::Run(){
 
 	SerialInterface_t apPort,gsPort;
 	SocketInterface_t SITL,comSock;
-
+	
 	if(px4baud > 0){
 		apPort = SerialInterface_t(px4port,px4baud,0,&RcvdMessages);
 		AP     = &apPort;
+		AP->EnableDataStream(1);
 	}
 	else{
 		SITL  = SocketInterface_t(sitlhost,sitlin,sitlout,&RcvdMessages);
@@ -201,7 +201,7 @@ void Icarous_t::Run(){
 
 	if(radiobaud > 0){
 		gsPort = SerialInterface_t(gsradio,radiobaud,0,&RcvdMessages);
-		COM    = &gsPort;
+		COM    = &gsPort;		
 	}
 	else{
 		comSock = SocketInterface_t(gshost,gsin,gsout,&RcvdMessages);

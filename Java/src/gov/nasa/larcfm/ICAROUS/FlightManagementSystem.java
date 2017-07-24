@@ -415,14 +415,15 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 
 		msg1.type      = MAV_TYPE.MAV_TYPE_ONBOARD_CONTROLLER;
 		msg1.autopilot = MAV_AUTOPILOT.MAV_AUTOPILOT_GENERIC;
+		msg1.sysid     = 255;
 
-		apIntf.Write(msg1);
+		//apIntf.Write(msg1);
 
 		msg_request_data_stream req = new msg_request_data_stream();
-		req.req_message_rate = 10;
+		req.req_message_rate = 4;
 		req.req_stream_id    = MAV_DATA_STREAM.MAV_DATA_STREAM_ALL;
 		req.start_stop       = (byte) option;
-		req.target_system    = 0;
+		req.target_system    = 1;
 		req.target_component = 0;
 
 		apIntf.Write(req);
@@ -471,7 +472,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 			FlightData.nextMissionWP++;
 			if(FlightData.nextMissionWP < FlightData.numMissionWP){
 				float speed = FlightData.GetFlightPlanSpeed(FlightData.MissionPlan,FlightData.nextMissionWP);					
-				SetSpeed(speed);
+				//SetSpeed(speed);
 			}
 		}
 		return reached;	

@@ -41,7 +41,8 @@
 
 
 Interface_t::Interface_t(MAVLinkMessages_t *msgInbox){
-    pthread_mutex_init(&lock, NULL);
+    pthread_mutex_init(&locktx, NULL);
+    pthread_mutex_init(&lockrx, NULL);
     RcvdMessages = msgInbox;
 }
 
@@ -58,18 +59,19 @@ int Interface_t::GetMAVLinkMsg(){
 
         msgReceived = mavlink_parse_char(MAVLINK_COMM_0, cp, &message, &status);
         
-        /*
+        
         if ( (lastStatus.packet_rx_drop_count != status.packet_rx_drop_count) )
 		{
-			printf("ERROR: DROPPED %d PACKETS\n", status.packet_rx_drop_count);
+		  //printf("ERROR: DROPPED %d PACKETS\n", status.packet_rx_drop_count);
 
 		}
 		lastStatus = status;
-		*/
+		
 
         if(msgReceived){
             msgQueue.push(message);
             RcvdMessages->DecodeMessage(message);
+	    msgReceived = false;
         }
     }
 
@@ -81,20 +83,22 @@ void Interface_t::SendMAVLinkMsg(mavlink_message_t msg){
     WriteData(sendbuffer,len);
 }
 
+void Interface_t::PipeThrough(Interface_t* intf,int32_t len){
+  intf->WriteData(recvbuffer,len);
+}
+
 uint8_t* Interface_t::GetRecvBuffer(){
     return recvbuffer;
 }
 
 void Interface_t::EnableDataStream(int option){
 	
-	mavlink_message_t msg1,msg2;
-    mavlink_msg_heartbeat_pack(255, 0, &msg1, MAV_TYPE_ONBOARD_CONTROLLER, 
-                                MAV_AUTOPILOT_GENERIC, 0, 0, 0);
-    
-    mavlink_msg_request_data_stream_pack(255,0,&msg1,1,0,MAV_DATA_STREAM_ALL,10,option);
-    
-	SendMAVLinkMsg(msg1);
-    SendMAVLinkMsg(msg2);
+    mavlink_message_t msg1,msg2;
+    mavlink_msg_heartbeat_pack(2, 0, &msg1, MAV_TYPE_ONBOARD_CONTROLLER, 
+                                MAV_AUTOPILOT_GENERIC, 0, 0, 0);    
+    mavlink_msg_request_data_stream_pack(2,0,&msg2,1,0,MAV_DATA_STREAM_ALL,4,option);    
+    //SendMAVLinkMsg(msg1);
+    SendMAVLinkMsg(msg2);   
 }
 
 
@@ -130,24 +134,22 @@ int SerialInterface_t::set_interface_attribs()
     cfsetospeed (&tty, baudrate);
     cfsetispeed (&tty, baudrate);
 
-    tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;     // 8-bit chars
-    // disable IGNBRK for mismatched speed tests; otherwise receive break
-    // as \000 chars
-    tty.c_iflag &= ~IGNBRK;         // disable break processing
-    tty.c_lflag = 0;                // no signaling chars, no echo,
-                                    // no canonical processing
-    tty.c_oflag = 0;                // no remapping, no delays
-    tty.c_cc[VMIN]  = 0;            // read doesn't block
-    tty.c_cc[VTIME] = 5;            // 0.5 seconds read timeout
+    tty.c_cflag |= (CLOCAL | CREAD);    /* ignore modem controls */
+    tty.c_cflag &= ~CSIZE;
+    tty.c_cflag |= CS8;         /* 8-bit characters */
+    tty.c_cflag &= ~PARENB;     /* no parity bit */
+    tty.c_cflag &= ~CSTOPB;     /* only need 1 stop bit */
+    tty.c_cflag |= CRTSCTS;
+    //tty.c_cflag &= ~CRTSCTS;    /* no hardware flowcontrol */
 
-    tty.c_iflag &= ~(IXON | IXOFF | IXANY); // shut off xon/xoff ctrl
+    /* setup for non-canonical mode */
+    tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
+    tty.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+    tty.c_oflag &= ~OPOST;
 
-    tty.c_cflag |= (CLOCAL | CREAD);// ignore modem controls,
-                                    // enable reading
-    tty.c_cflag &= ~(PARENB | PARODD);  // shut off parity
-    tty.c_cflag |= parity;
-    tty.c_cflag &= ~CSTOPB;
-    tty.c_cflag &= ~CRTSCTS;
+    /* fetch bytes as they become available */
+    tty.c_cc[VMIN] = 1;
+    tty.c_cc[VTIME] = 1;
 
     if (tcsetattr (fd, TCSANOW, &tty) != 0)
     {
@@ -168,7 +170,7 @@ void SerialInterface_t::set_blocking (int should_block)
     }
 
     tty.c_cc[VMIN]  = should_block ? 1 : 0;
-    tty.c_cc[VTIME] = 5;                      // 0.5 seconds read timeout
+    tty.c_cc[VTIME] = 1;                      // 0.5 seconds read timeout
 
     if (tcsetattr (fd, TCSANOW, &tty) != 0)
         printf("error from tcsetattr 4");
@@ -179,19 +181,23 @@ int SerialInterface_t::ReadData(){
     
     char buf;
     int n = 0;
-    pthread_mutex_lock(&lock);
+    pthread_mutex_lock(&lockrx);
     n = read (fd, &buf, 1);
     recvbuffer[0] = buf;
-    pthread_mutex_unlock(&lock);
+    //n = read (fd, recvbuffer, 256);
+    pthread_mutex_unlock(&lockrx);
 
     return n;
 }
 
 void SerialInterface_t::WriteData(uint8_t buffer[],uint16_t len){
 
-    pthread_mutex_lock(&lock);
-    write(fd,buffer,len);
-    pthread_mutex_unlock(&lock);
+  pthread_mutex_lock(&locktx);
+  for(int i=0;i<len;i++){
+    char c = buffer[i];
+    write(fd,&c,1);
+  }
+  pthread_mutex_unlock(&locktx);  
 }
 
 
@@ -230,15 +236,15 @@ SocketInterface_t::SocketInterface_t(char targetip[], int inportno, int outportn
 int SocketInterface_t::ReadData(){
 
     int n = 0;
-    pthread_mutex_lock(&lock);
+    pthread_mutex_lock(&lockrx);
     memset(recvbuffer, 0, BUFFER_LENGTH);
     n = recvfrom(sock, (void *)recvbuffer, BUFFER_LENGTH, 0, (struct sockaddr *)&targetAddr, &recvlen);
-    pthread_mutex_unlock(&lock);
+    pthread_mutex_unlock(&lockrx);
     return n;
 }
 
 void SocketInterface_t::WriteData(uint8_t buffer[],uint16_t len){
-    pthread_mutex_lock(&lock);
+    pthread_mutex_lock(&locktx);
     sendto(sock, buffer, len, 0, (struct sockaddr*)&targetAddr, sizeof (struct sockaddr_in));
-    pthread_mutex_unlock(&lock);
+    pthread_mutex_unlock(&locktx);
 }

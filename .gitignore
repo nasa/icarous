@@ -2,7 +2,7 @@
 *.o
 .*
 *.dSYM
-icarous
+icarous.jar
 *.parm
 *.tlog.raw
 *.tlog
@@ -14,3 +14,9 @@ C++/DAAGeofencingExample
 *.bin
 *.so
 *.tbl
+*.bin
+elf2cfetbl
+!CFS/build/cpu1/Makefile
+!CFS/build/cpu1/exe/
+CFS/build/cpu1/*
+CFS/build/mission_inc/*
