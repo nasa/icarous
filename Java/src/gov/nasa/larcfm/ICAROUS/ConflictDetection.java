@@ -216,23 +216,9 @@ public class ConflictDetection{
 		if(FlightData.traffic.size() == 0){
 			return;
 		}
-		
-		KinematicBandsParameters kbParams = new KinematicBandsParameters();
- 		kbParams.loadFromFile("params/DaidalusQuadConfig.txt");
- 		double distance  = FlightData.pData.getValue("CYL_RADIUS");
- 		double height    = FlightData.pData.getValue("CYL_HEIGHT");
- 		double alertTime = FlightData.pData.getValue("ALERT_TIME");
- 		double earlyAlertTime = FlightData.pData.getValue("EALERT_TIME");
- 		double lookAheadTime = FlightData.pData.getValue("DAA_LOOKAHEAD");
+				
  		double daaConflictHold = FlightData.pData.getValue("CONFLICT_HOLD");
- 		
- 		kbParams.alertor.getLevel(1).setDetector(new CDCylinder(distance, "m", height, "m"));
- 		kbParams.alertor.getLevel(1).setAlertingTime(alertTime);
- 		kbParams.alertor.getLevel(1).setEarlyAlertingTime(earlyAlertTime);
- 		kbParams.setLookaheadTime(lookAheadTime);
- 		
- 		DAA.parameters = kbParams;
-		
+ 				
 		double simTime = (double)System.nanoTime()/1E9 - timeStart;
 		daaTimeElapsed = (double)System.nanoTime()/1E9 - daaTimeStart;
 
