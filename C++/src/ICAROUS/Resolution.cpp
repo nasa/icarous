@@ -535,7 +535,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 	returnPathConflict  = BandsRegion::isConflictBand(KMB.regionOfTrack(nextHeading));
 	bool prefDirection = KMB.preferredTrackDirection();
 	double prefHeading    = KMB.trackResolution(prefDirection);
-
+	
 	if(prefDirection){
 		prefHeading = prefHeading + 5*M_PI/180;
 		if(prefHeading > M_PI){
@@ -552,7 +552,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 		Interval iv = KMB.track(i, "deg"); // i-th band region
 		double lower_trk = iv.low; // [deg]
 		double upper_trk = iv.up; // [deg]
-		if (KMB.trackRegion(i) == BandsRegion::NONE) {
+		if (KMB.trackRegion(i) != BandsRegion::NONE) {
 			bool val = FMS->Detector.CheckTurnConflict(lower_trk, upper_trk, nextHeading*180/M_PI,  currentHeading*180/M_PI);
 			if(val){
 				returnPathConflict = true;
@@ -560,6 +560,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 			}
 		}
 	}
+
 
 	if(!ISNAN(prefHeading)){
 		FlightData->maneuverVn = resolutionSpeed * cos(prefHeading);

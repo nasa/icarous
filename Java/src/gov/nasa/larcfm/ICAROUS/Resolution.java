@@ -511,7 +511,7 @@ public class Resolution {
 		gotoNextWP  = FlightData.pData.getInt("GOTO_NEXTWP");
 		
 		returnPathConflict = true;
-		double resolutionSpeed = FlightData.speed;
+		double resolutionSpeed = FlightData.pData.getValue("RES_SPEED");
 
 		double crossStats[] = FMS.Detector.ComputeCrossTrackDev(currentPos, FlightData.MissionPlan, FlightData.nextMissionWP);
 		Position goal;
