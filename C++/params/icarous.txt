@@ -33,7 +33,7 @@ PROXFACTOR = 3.0
 # Flight plan resolution parameters
 RES_SPEED = 1.0
 XTRK_GAIN = 0.6
-XTRK_DEV  = 500.0
+XTRK_DEV  = 10.0
 
 #Tracking
 TRK_HEADING = 270

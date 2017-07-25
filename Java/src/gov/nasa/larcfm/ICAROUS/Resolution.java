@@ -504,25 +504,12 @@ public class Resolution {
 
 	public void ResolveTrafficConflictDAA(){
 
-		KinematicBandsParameters kbParams = new KinematicBandsParameters();
- 		kbParams.loadFromFile("params/DaidalusQuadConfig.txt");
-		
+	        
 		// Track based resolutions
 		Position currentPos = FlightData.acState.positionLast();
 		Velocity currentVel = FlightData.acState.velocityLast();
 		gotoNextWP  = FlightData.pData.getInt("GOTO_NEXTWP");
- 		double distance  = FlightData.pData.getValue("CYL_RADIUS");
- 		double height    = FlightData.pData.getValue("CYL_HEIGHT");
- 		double alertTime0 = FlightData.pData.getValue("ALERT_TIME");
- 		double earlyAlertTime = FlightData.pData.getValue("EALERT_TIME");
- 		double lookAheadTime = FlightData.pData.getValue("DAA_LOOKAHEAD");
- 		
- 		kbParams.alertor.getLevel(1).setDetector(new CDCylinder(distance, "m", height, "m"));
- 		kbParams.alertor.getLevel(1).setAlertingTime(alertTime0);
- 		kbParams.alertor.getLevel(1).setEarlyAlertingTime(earlyAlertTime);
- 		kbParams.setLookaheadTime(lookAheadTime);
- 		DAA.parameters = kbParams;
- 		
+		
 		returnPathConflict = true;
 		double resolutionSpeed = FlightData.speed;
 
@@ -538,10 +525,7 @@ public class Resolution {
 
 		double currentHeading = currentVel.trk();
 		double nextHeading = currentPos.track(goal);
-		Velocity nextVel   = Velocity.mkTrkGsVs(nextHeading, resolutionSpeed, 0);
-		//double alertTime   = currentPos.distanceH(goal)/resolutionSpeed;
-		//DAA.parameters.alertor.getLevel(1).setAlertingTime(alertTime);
-		//DAA.parameters.alertor.getLevel(1).setEarlyAlertingTime(alertTime);
+		Velocity nextVel   = Velocity.mkTrkGsVs(nextHeading, resolutionSpeed, 0);		
 		DAA.setOwnshipState("Ownship", currentPos, nextVel, FlightData.acTime);
 		for(int i=0;i<FMS.FlightData.traffic.size();++i){
 			Position trafficPos = FlightData.traffic.get(i).pos;
