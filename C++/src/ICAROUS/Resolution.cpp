@@ -502,7 +502,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 	Position currentPos = FlightData->acState.positionLast();
 	Velocity currentVel = FlightData->acState.velocityLast();
 	returnPathConflict = true;
-	double resolutionSpeed = FlightData->speed;
+	double resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
 	int gotoNextWP = FlightData->paramData->getInt("GOTO_NEXTWP");
 
 	double crossStats[2];
@@ -517,7 +517,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 
 	double currentHeading = currentVel.trk();
 	double nextHeading = currentPos.track(goal);
-	Velocity nextVel   = Velocity::makeTrkGsVs(nextHeading,"radians",resolutionSpeed,"m/s",0,"m/s");	
+	Velocity nextVel   = Velocity::makeTrkGsVs(nextHeading,"rad",resolutionSpeed,"m/s",0,"m/s");
 	DAA.setOwnshipState("Ownship", currentPos, currentVel, FlightData->acTime);
 	std::list<GenericObject_t>::iterator it;
 	int count = 0;
@@ -536,6 +536,16 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 	bool prefDirection = KMB.preferredTrackDirection();
 	double prefHeading    = KMB.trackResolution(prefDirection);
 	
+	Velocity projVel = Velocity::makeTrkGsVs(prefHeading,"rad",resolutionSpeed,"m/s",0,"m/s");
+	std::list<Geofence_t>::iterator gi;
+	for(gi = FlightData->fenceList.begin();gi != FlightData->fenceList.end();gi++){
+		bool fenceCollision = gi->CollisionDetection(currentPos,projVel.vect2(),0,30);
+		if(fenceCollision){
+			prefHeading = KMB.trackResolution(!prefDirection);
+			break;
+		}
+	}
+
 	if(prefDirection){
 		prefHeading = prefHeading + 5*M_PI/180;
 		if(prefHeading > M_PI){
