@@ -395,6 +395,7 @@ public class QuadFMS extends FlightManagementSystem{
 		case START:
 			System.out.print("executing maneuver resolution\n");
 			SetMode(ARDUPILOT_MODES.GUIDED);
+			SetSpeed(resolutionSpeed);
 			maneuverState = maneuver_state_t.GUIDE;
 			//This sleep may not be necessary - there is a 200 ms sleep within SetMode
 			try{

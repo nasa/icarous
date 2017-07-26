@@ -291,7 +291,7 @@ COM_t::COM_t(Interface_t* px4int, Interface_t* gsint,AircraftData_t *fdata):log(
     			 	 	 	 	msg.param2,msg.param3,msg.param4);
      }
      else if(have_msg && msg.command == MAV_CMD_USER_1){
-    	 if(msg.param1 == 0){
+    	 if(msg.param1 == 1){
     		 log.addWarning("Received reset command");
     		 FlightData->Reset();
     	 }

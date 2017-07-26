@@ -84,7 +84,7 @@ uint8_t QuadFMS_t::CLIMB(){
 
 	if( alt_error < 0.5 ){
 		SetMode(AUTO);
-		SetSpeed(1.0f);
+		//SetSpeed(1.0f);
 		FlightData->nextMissionWP++;
 		fmsState = _cruise_;
 		SendStatusText("Starting cruise");
