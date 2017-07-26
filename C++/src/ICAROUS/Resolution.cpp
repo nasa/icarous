@@ -595,6 +595,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 	}
 
 	FMS->planType = QuadFMS_t::MANEUVER;
+	/*
 	if(FMS->debugDAA){
 		FMS->debug_in.append("**************** Current Time:"+std::to_string(FlightData->acTime)+" *******************\n");
 		FMS->debug_in.append(DAA.toString()+"\n");
@@ -608,7 +609,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 		time_t stopTime; time(&stopTime);
 		double timeElapsed = difftime(stopTime,startTime);
 		FMS->debug_out.append("Elapsed time: "+std::to_string(timeElapsed)+"\n");
-	}
+	}*/
 }
 
 void Resolution_t::ResolveTrafficConflictRRT(){

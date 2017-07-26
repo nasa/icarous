@@ -358,4 +358,9 @@ void ConflictDetection_t::CheckTraffic(){
 			FlightData->RcvdMessages->AddKinematicBands(msg);
 		}
 	}
+
+	if(FMS->debugDAA){
+			FMS->debug_in.append("**************** Current Time:"+std::to_string(FlightData->acTime)+" *******************\n");
+			FMS->debug_in.append(DAA.toString()+"\n");
+	}
 }
