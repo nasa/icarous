@@ -50,7 +50,7 @@ ConflictDetection_t::ConflictDetection_t(QuadFMS_t* fms)
 	trafficConflict = false;
 	FMS = fms;
 	FlightData = fms->FlightData;
-	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+	DAA.parameters.loadFromFile(FlightData->paramData->getString("DAA_CONFIG"));
 	daaLookAhead = DAA.parameters.getLookaheadTime();
 	time(&daaTimeStart);
 	time(&timeStart);

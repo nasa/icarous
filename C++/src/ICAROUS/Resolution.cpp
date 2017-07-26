@@ -44,7 +44,7 @@ Resolution_t::Resolution_t(QuadFMS_t* fms){
 	FlightData = fms->FlightData;
 	resolutionSpeed = 1.0;
 	returnPathConflict = false;
-	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+	DAA.parameters.loadFromFile(FlightData->paramData->getString("DAA_CONFIG"));
 	alertTime0 = DAA.parameters.alertor.getLevel(1).getAlertingTime();
 	diffAlertTime = DAA.parameters.alertor.getLevel(1).getEarlyAlertingTime() - alertTime0;
 }
