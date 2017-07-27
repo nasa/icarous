@@ -35,7 +35,7 @@ public class Resolution {
 		resolutionSpeed = 1.0;
 		returnPathConflict = false;
 		DAA = new Daidalus();
-		DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+		DAA.parameters.loadFromFile(FlightData.pData.getString("DAA_CONFIG"));
 		alertTime0 = DAA.parameters.alertor.getLevel(1).getAlertingTime();
 		diffAlertTime = DAA.parameters.alertor.getLevel(1).getEarlyAlertingTime() - alertTime0;
 	}
@@ -539,6 +539,16 @@ public class Resolution {
 
 		boolean prefDirection = FMS.Detector.KMB.preferredTrackDirection(); 
 		double prefHeading    = FMS.Detector.KMB.trackResolution(prefDirection);
+		
+		Velocity projVel = Velocity.makeTrkGsVs(prefHeading,"rad",resolutionSpeed,"m/s",0,"m/s");		
+		for(int i=0;i<FlightData.fenceList.size();i++){
+			GeoFence gf = FlightData.fenceList.get(i);
+			boolean fenceCollision = gf.CollisionDetection(currentPos,projVel.vect2(),0,30);
+			if(fenceCollision){
+				prefHeading = KMB.trackResolution(!prefDirection);
+				break;
+			}
+		}
 
 		if(prefDirection){
 			prefHeading = prefHeading + Units.convert(Units.deg, Units.rad, 5);
@@ -585,7 +595,7 @@ public class Resolution {
 		}
 
 		FMS.planType = plan_type_t.MANEUVER;
-
+		/*
 		if(FMS.debugDAA){
 			FMS.debug_in += "********************** Current Time: "+FMS.Detector.DAA.getCurrentTime()+"\n";
 			FMS.debug_in += FMS.Detector.DAA.toString()+"\n";
@@ -598,7 +608,7 @@ public class Resolution {
 			FMS.debug_out += "Return path conflict:"+returnPathConflict+"\n";
 			double elapsedTime = (double)System.nanoTime()/1E9 - startTime;
 			FMS.debug_out += "Computation time: " + elapsedTime + "\n";
-		}
+		}*/
 		
 	}
 
