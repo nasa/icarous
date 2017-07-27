@@ -34,25 +34,25 @@
 #include "DAQ.h"
 
 DAQ_t::DAQ_t(Interface_t* px4int, Interface_t* gsint):log("DAQ"){
-     px4Intf      = px4int;
-     gsIntf       = gsint;
- }
+	px4Intf      = px4int;
+	gsIntf       = gsint;
+}
 
 // Get data from pixhawk
- void DAQ_t::GetPixhawkData(){
-     while(true){
-         // Get data from the pixhawk
-         int n = px4Intf->GetMAVLinkMsg();
+void DAQ_t::GetPixhawkData(){
+	while(true){
+		// Get data from the pixhawk
+		int n = px4Intf->GetMAVLinkMsg();
 
-	 //px4Intf->PipeThrough(gsIntf,n);
+		//px4Intf->PipeThrough(gsIntf,n);
 
-         // Send the mavlink messages in the queue to the ground station interface
-         while(!px4Intf->msgQueue.empty()){
-	    gsIntf->SendMAVLinkMsg(px4Intf->msgQueue.front());
-            px4Intf->msgQueue.pop();
-         }
-     }
- }
+		// Send the mavlink messages in the queue to the ground station interface
+		while(!px4Intf->msgQueue.empty()){
+			gsIntf->SendMAVLinkMsg(px4Intf->msgQueue.front());
+			px4Intf->msgQueue.pop();
+		}
+	}
+}
 
 
 

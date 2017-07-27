@@ -50,11 +50,12 @@ ConflictDetection_t::ConflictDetection_t(QuadFMS_t* fms)
 	trafficConflict = false;
 	FMS = fms;
 	FlightData = fms->FlightData;
-	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+	DAA.parameters.loadFromFile(FlightData->paramData->getString("DAA_CONFIG"));
 	daaLookAhead = DAA.parameters.getLookaheadTime();
 	time(&daaTimeStart);
 	time(&timeStart);
 	numConflicts = 0;
+	daalogtime = 0;
 }
 
 void ConflictDetection_t::AddFenceConflict(Geofence_t gf){
@@ -357,5 +358,11 @@ void ConflictDetection_t::CheckTraffic(){
 		}else{
 			FlightData->RcvdMessages->AddKinematicBands(msg);
 		}
+	}
+
+	if(FMS->debugDAA && FlightData->acTime > daalogtime){
+			daalogtime = FlightData->acTime;
+			FMS->debug_in.append("**************** Current Time:"+std::to_string(FlightData->acTime)+" *******************\n");
+			FMS->debug_in.append(DAA.toString()+"\n");
 	}
 }

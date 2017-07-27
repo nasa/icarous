@@ -41,7 +41,7 @@ TRK_DISTH = 3
 TRK_DISTV = 0
 
 #DAA parameters
-DAA_CONFIG = params/DaidalusQuadConfig.txt
+DAA_CONFIG = params/ISAAC/IsaacDAA_Tau.txt
 CHEAP_DAA = 1
 GOTO_NEXTWP = 1
 CONFLICT_HOLD = 3

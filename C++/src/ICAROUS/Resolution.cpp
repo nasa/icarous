@@ -44,7 +44,7 @@ Resolution_t::Resolution_t(QuadFMS_t* fms){
 	FlightData = fms->FlightData;
 	resolutionSpeed = 1.0;
 	returnPathConflict = false;
-	DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+	DAA.parameters.loadFromFile(FlightData->paramData->getString("DAA_CONFIG"));
 	alertTime0 = DAA.parameters.alertor.getLevel(1).getAlertingTime();
 	diffAlertTime = DAA.parameters.alertor.getLevel(1).getEarlyAlertingTime() - alertTime0;
 }
@@ -502,7 +502,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 	Position currentPos = FlightData->acState.positionLast();
 	Velocity currentVel = FlightData->acState.velocityLast();
 	returnPathConflict = true;
-	double resolutionSpeed = FlightData->speed;
+	double resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
 	int gotoNextWP = FlightData->paramData->getInt("GOTO_NEXTWP");
 
 	double crossStats[2];
@@ -517,7 +517,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 
 	double currentHeading = currentVel.trk();
 	double nextHeading = currentPos.track(goal);
-	Velocity nextVel   = Velocity::makeTrkGsVs(nextHeading,"radians",resolutionSpeed,"m/s",0,"m/s");	
+	Velocity nextVel   = Velocity::makeTrkGsVs(nextHeading,"rad",resolutionSpeed,"m/s",0,"m/s");
 	DAA.setOwnshipState("Ownship", currentPos, currentVel, FlightData->acTime);
 	std::list<GenericObject_t>::iterator it;
 	int count = 0;
@@ -536,6 +536,16 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 	bool prefDirection = KMB.preferredTrackDirection();
 	double prefHeading    = KMB.trackResolution(prefDirection);
 	
+	Velocity projVel = Velocity::makeTrkGsVs(prefHeading,"rad",resolutionSpeed,"m/s",0,"m/s");
+	std::list<Geofence_t>::iterator gi;
+	for(gi = FlightData->fenceList.begin();gi != FlightData->fenceList.end();gi++){
+		bool fenceCollision = gi->CollisionDetection(currentPos,projVel.vect2(),0,30);
+		if(fenceCollision){
+			prefHeading = KMB.trackResolution(!prefDirection);
+			break;
+		}
+	}
+
 	if(prefDirection){
 		prefHeading = prefHeading + 5*M_PI/180;
 		if(prefHeading > M_PI){
@@ -585,6 +595,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 	}
 
 	FMS->planType = QuadFMS_t::MANEUVER;
+	/*
 	if(FMS->debugDAA){
 		FMS->debug_in.append("**************** Current Time:"+std::to_string(FlightData->acTime)+" *******************\n");
 		FMS->debug_in.append(DAA.toString()+"\n");
@@ -598,7 +609,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 		time_t stopTime; time(&stopTime);
 		double timeElapsed = difftime(stopTime,startTime);
 		FMS->debug_out.append("Elapsed time: "+std::to_string(timeElapsed)+"\n");
-	}
+	}*/
 }
 
 void Resolution_t::ResolveTrafficConflictRRT(){

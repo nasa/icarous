@@ -62,15 +62,17 @@ public class ConflictDetection{
 	public KinematicMultiBands KMB;
 	public double daaLookAhead;
 	public double timeStart;
+	private double daalogtime;
 	
 	public ConflictDetection(QuadFMS fms){
 		FMS = fms;
 		FlightData = FMS.FlightData;	
 		numConflicts = 0;
 		DAA = new Daidalus();
-		DAA.parameters.loadFromFile("params/DaidalusQuadConfig.txt");
+		DAA.parameters.loadFromFile(FlightData.pData.getString("DAA_CONFIG"));
 		daaLookAhead = DAA.parameters.getLookaheadTime();
 		timeStart    = (double)System.nanoTime()/1E9;
+		daalogtime   = 0;
 	}
 
 	public int Size(){
@@ -303,7 +305,14 @@ public class ConflictDetection{
 		    FlightData.RcvdMessages.AddKinematicBands(msg);
 		}
 		
-		//System.out.println(KMB.outputString());
+		if(FMS.debugDAA && FlightData.acTime > daalogtime){
+			daalogtime = FlightData.acTime;
+			FMS.debug_in += "********************** Current Time: "+FMS.Detector.DAA.getCurrentTime()+"\n";
+			FMS.debug_in += FMS.Detector.DAA.toString()+"\n";
+			FMS.debug_out += "********************** Current Time: "+FMS.Detector.DAA.getCurrentTime()+"\n";
+			FMS.debug_out += FMS.Detector.KMB.outputStringInfo();
+			FMS.debug_out += FMS.Detector.KMB.outputStringTrackBands();			
+		}
 	}
 	
 	public boolean CheckTurnConflict(double low,double high,double newHeading,double oldHeading){
