@@ -55,6 +55,7 @@ ConflictDetection_t::ConflictDetection_t(QuadFMS_t* fms)
 	time(&daaTimeStart);
 	time(&timeStart);
 	numConflicts = 0;
+	daalogtime = 0;
 }
 
 void ConflictDetection_t::AddFenceConflict(Geofence_t gf){
@@ -359,7 +360,8 @@ void ConflictDetection_t::CheckTraffic(){
 		}
 	}
 
-	if(FMS->debugDAA){
+	if(FMS->debugDAA && FlightData->acTime > daalogtime){
+			daalogtime = FlightData->acTime;
 			FMS->debug_in.append("**************** Current Time:"+std::to_string(FlightData->acTime)+" *******************\n");
 			FMS->debug_in.append(DAA.toString()+"\n");
 	}

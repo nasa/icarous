@@ -24,6 +24,7 @@ class ConflictDetection_t{
 private:
 	QuadFMS_t* FMS;
 	AircraftData_t* FlightData;
+	double daalogtime;
 
 public:
 
