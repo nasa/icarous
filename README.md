@@ -29,10 +29,10 @@ Agreement.  See the directory [`LICENSES`](LICENSES); see also the copyright not
 
 ### REQUIRED PACKAGES
 
-The following repositories are required to run ICAROUS. 
+The following repositories are required to run ICAROUS (You will also have to update the submodules in these repositories if available)
 
 - [Ardupilot](https://github.com/ArduPilot/ardupilot.git) (Only required for software in the loop simulations)
-- [mavlink](https://github.com/ArduPilot/mavlink.git)
+- [mavlink](https://github.com/ArduPilot/mavlink.git) 
 - [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
 - [Java simple serial connector (JSSC)](https://code.google.com/archive/p/java-simple-serial-connector/) (Already provided in `Java/lib`)
 - [Core Flight System](https://cfs.gsfc.nasa.gov/) (Only required for provided [CFS](CFS/) application)
@@ -41,7 +41,7 @@ The following repositories are required to run ICAROUS.
 
 ICAROUS uses several messages that are not part of the common/ardupilotmega MAVlink message set. To ensure that the MAVProxy ground station can receive these custom messages, perform the following steps:
 
-- copy icarous.xml in the `msg/` folder in the icarous repository to `mavlink/message_definitions/v1.0`
+- copy icarous.xml in the `msg/` folder in the icarous repository to `mavlink/message_definitions/v1.0` in the mavlink repository.
 - (re)install pymavlink library to incorporate the new dialect (icarous.xml). To do this, goto `mavlink/pymavlink` and run:
 
 ```
