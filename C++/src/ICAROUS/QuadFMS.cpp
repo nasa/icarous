@@ -234,6 +234,7 @@ uint8_t QuadFMS_t::Resolve(){
 			if(resumeMission){
 				resolutionState = IDLE_r;
 				SetMissionItem(FlightData->nextMissionWP);
+				SetSpeed(FlightData->getFlightPlanSpeed(&FlightData->MissionPlan,FlightData->nextMissionWP));
 				planType = QuadFMS_t::MISSION;
 				SetMode(AUTO);
 			}

@@ -38,11 +38,11 @@
 #include "Icarous.h"
 #include "Constants.h"
 
-std::string Icarous_t::VERSION = "1.2.1";
+std::string Icarous_t::VERSION = "1.2.2";
 
 std::string Icarous_t::release() {
 	return "ICAROUS++ V-"+VERSION+
-			"-FormalATM-"+Constants::version+" (July-24-2017)";
+			"-FormalATM-"+Constants::version+" (July-28-2017)";
 }
 
 Icarous_t::Icarous_t(int argc,char* argv[],Mission_t* task){

@@ -112,6 +112,8 @@ public class AircraftData{
 	public double planTime;
 	public ParameterData pData;
 	public boolean reset;
+	
+	public double missionSpeed;
 
 	double crossTrackDeviation;
 	double crossTrackOffset;
@@ -136,6 +138,7 @@ public class AircraftData{
 		MissionPlan         = new Plan();
 		ResolutionPlan      = new Plan();
 		speed               = 1;
+		missionSpeed        = 1;
 	}
 
 	// Function to get flight plan
@@ -249,7 +252,8 @@ public class AircraftData{
 				double wptime= 0;
 				Position nextWP = Position.makeLatLonAlt(msgMissionItem.x,"degree",msgMissionItem.y,"degree",msgMissionItem.z,"m");				
 				if(count > 0 ){
-					double vel = msgMissionItem.param4;
+					//double vel = msgMissionItem.param4;
+					double vel = missionSpeed;
 					if(vel < 0.5){
 						vel = 1;
 					}
@@ -265,6 +269,8 @@ public class AircraftData{
 				}		     
 				MissionPlan.addNavPoint(new NavPoint(nextWP,wptime));
 				count++;
+			}else if(msgMissionItem.command == MAV_CMD.MAV_CMD_DO_CHANGE_SPEED){
+				missionSpeed = msgMissionItem.param2;					
 			}
 		}
 		numMissionWP           = MissionPlan.size();
@@ -273,8 +279,7 @@ public class AircraftData{
 
 	public float GetFlightPlanSpeed(Plan fp,int nextWP){
 
-		Plan CurrentFlightPlan = fp;
-		System.out.println("nextWP:"+nextWP);
+		Plan CurrentFlightPlan = fp;		
 		float speed = (float)(CurrentFlightPlan.pathDistance(nextWP-1,true)/
 				(CurrentFlightPlan.time(nextWP) -
 						CurrentFlightPlan.time(nextWP-1)));

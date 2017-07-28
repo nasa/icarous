@@ -279,6 +279,8 @@ public class QuadFMS extends FlightManagementSystem{
 					resolveState = resolve_state_t.IDLE;
 					planType = plan_type_t.MISSION;
 					SetMissionItem(FlightData.nextMissionWP);
+					System.out.println("Setting mission speed:"+FlightData.GetFlightPlanSpeed(FlightData.MissionPlan, FlightData.nextMissionWP));
+					SetSpeed(FlightData.GetFlightPlanSpeed(FlightData.MissionPlan, FlightData.nextMissionWP));
 					SetMode(ARDUPILOT_MODES.AUTO);					
 				}
 				else{
