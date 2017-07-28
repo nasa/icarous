@@ -45,7 +45,7 @@ import java.text.SimpleDateFormat;
 
 public class Icarous{
 
-	public static final String VERSION = "1.2.1";
+	public static final String VERSION = "1.2.2";
 
         private boolean verbose;
 	private String sitlhost;
@@ -205,7 +205,7 @@ public class Icarous{
 
 	public static String release() {
 		return "ICAROUSj V-"+VERSION+
-				"-FormalATM-"+Constants.version+" (July-24-2017)"; 
+				"-FormalATM-"+Constants.version+" (July-28-2017)"; 
 	}
 
 	public void run(){
