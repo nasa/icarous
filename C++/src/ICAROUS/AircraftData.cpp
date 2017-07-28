@@ -54,6 +54,7 @@
      maneuverVe = 0;
      maneuverVn = 0;
      maneuverVu = 0;
+     missionSpeed = 1;
      reset = false;
  }
 
@@ -104,7 +105,7 @@ void AircraftData_t::ConstructPlan(){
 			double wptime = 0;
 			if(ic > 0){
 
-				double vel = it->param4;
+				double vel = missionSpeed;
 
 				if(vel < 0.5){
 					vel = 1;
@@ -116,6 +117,8 @@ void AircraftData_t::ConstructPlan(){
 
 			NavPoint navPoint(WP,wptime);
 			MissionPlan.addNavPoint(navPoint);
+		}else if(it->command == MAV_CMD_DO_CHANGE_SPEED){
+			missionSpeed = it->param2;
 		}
 	}
 }
@@ -196,6 +199,11 @@ void AircraftData_t::GetGeofence(Interface_t *gsIntf,mavlink_command_long_t msgI
 		}
 
 	}
+}
+
+double AircraftData_t::getFlightPlanSpeed(Plan* fp,int nextWP){
+	double speed = fp->pathDistance(nextWP-1,true)/(fp->time(nextWP) - fp->time(nextWP-1));
+	return speed;
 }
 
 void AircraftData_t::AddTraffic(int id,double lat,double lon,double alt,double vx,double vy,double vz){

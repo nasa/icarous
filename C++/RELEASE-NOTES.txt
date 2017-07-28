@@ -1,8 +1,14 @@
 ICAROUS: Integrated Configurable Algorithms for Reliable Operations of Unmanned Systems
 -------------------------------------------------------------------------
-Release: 1.1, March 18, 2017
+Release: 1.2.2, July 28, 2017
 Authors: Swee Balachadran, Cesar Munoz
 Contact: Cesar A. Munoz (Cesar.A.Munoz@nasa.gov)
+
+Release ICAROUS 1.2.2 (July 28, 2017)
+-------------------------------------
+- Bug fix in DAA functionality.
+- Minor changes to logging DAA events
+- ICAROUS sets original mission speed after resolutions are completed.
 
 Release ICAROUS 1.1 (March 18, 2017)
 ----------------

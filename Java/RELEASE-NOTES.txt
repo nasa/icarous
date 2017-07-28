@@ -1,6 +1,6 @@
 ICAROUS: Integrated Configurable Algorithms for Reliable Operations of Unmanned Systems
 -------------------------------------------------------------------------
-Release: 1.2.2, March 18, 2017
+Release: 1.2.2, July 28, 2017
 Authors: Swee Balachadran, Cesar Munoz
 Contact: Cesar A. Munoz (Cesar.A.Munoz@nasa.gov)
 
@@ -13,10 +13,6 @@ Release ICAROUS 1.2.1 (July 24, 2017)
 -------------------------------------
 - Implementation of Safeguard interface for ICAROUS.
 - Setting MISSION speed is disabled within ICAROUS.
-
-Release ICAROUS 1.2.0 (July 5, 2017)
-------------------------------------
-- Includes a CFS based implementation for ICAROUS.
 
 Release ICAROUS 1.1 (March 18, 2017)
 ------------------------------------

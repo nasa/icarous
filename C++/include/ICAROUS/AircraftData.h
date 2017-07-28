@@ -70,6 +70,7 @@ class AircraftData_t{
 		bool reset;
 		double speed;
 		double acTime;
+		double missionSpeed;
 
         uint16_t nextMissionWP;
         uint16_t nextResolutionWP;
@@ -97,6 +98,7 @@ class AircraftData_t{
         void GetTraffic(int id,Position &pos,Velocity &vel);
         void ClearMissionList();
         void Reset();
+        double getFlightPlanSpeed(Plan *fp,int nextWP);
         void AddTrackingObject(int id,double x,double y,double z,double vx,double vy,double vz);
         void AddMissionObject(int id,double x,double y,double z,double vx,double vy,double vz);
 };
