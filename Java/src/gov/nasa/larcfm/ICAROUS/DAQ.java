@@ -60,13 +60,8 @@ public class DAQ implements Runnable{
 			ArrayList<MAVLinkPacket> packets;
 			packets = apIntf.Read();
 			
-			for(int i=0;i<packets.size();i++){
-				int msgid = packets.get(i).msgid;
-				if(msgid == 109 || msgid == 166 ){
-					apIntf.Write(packets.get(i));
-				}else{
-					gsIntf.Write(packets.get(i));
-				}
+			for(int i=0;i<packets.size();i++){				
+				gsIntf.Write(packets.get(i));				
 			}								
 		}
 	}

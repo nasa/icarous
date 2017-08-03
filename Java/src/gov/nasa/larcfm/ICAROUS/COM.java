@@ -47,6 +47,7 @@ import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Velocity;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class COM implements Runnable,ErrorReporter{
 
@@ -90,7 +91,17 @@ public class COM implements Runnable,ErrorReporter{
 			currentTime = (double)System.nanoTime()/1E9;
 			
 			// Read data from COM interface
-			gsIntf.Read();
+			ArrayList<MAVLinkPacket> packets;
+			packets = gsIntf.Read();
+									
+			for(int i=0;i<packets.size();++i){
+				MAVLinkPacket rcvdPacket = packets.get(i);
+				int msgid = rcvdPacket.msgid;
+				if(msgid == 109 || msgid == 166 ){
+					// Send Radio packets to pixhawk for flow control
+					apIntf.Write(rcvdPacket);					
+				}
+			}
 
 			// Handle mission waypoints points
 			HandleMissionCount();
