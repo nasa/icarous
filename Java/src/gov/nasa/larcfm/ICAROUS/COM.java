@@ -62,6 +62,7 @@ public class COM implements Runnable,ErrorReporter{
 	private boolean sgMsgRcvd1;
 	private boolean sgMsgRcvd2;
 	private int sfcount;
+	private double currentTime;
 	Position acposrev;
 	
 
@@ -83,9 +84,11 @@ public class COM implements Runnable,ErrorReporter{
 	public void run(){
 
 		gsIntf.SetTimeout(1);
-
+		
 		while(true){	        
 
+			currentTime = (double)System.nanoTime()/1E9;
+			
 			// Read data from COM interface
 			gsIntf.Read();
 
@@ -107,8 +110,8 @@ public class COM implements Runnable,ErrorReporter{
 			// Handle parameter read requests
 			HandleParamValue();
 
-			// Handle parameter value
-			HandleParamValue();
+			// Handle parameter value			
+			HandleParamRequestRead();
 
 			// Handle parameter set
 			HandleParamSet();
@@ -127,7 +130,9 @@ public class COM implements Runnable,ErrorReporter{
 			
 			//Handle kinematic bands
 			HandleKinematicBands();
-
+			
+			// Refresh data streams if necessary
+			Refresh();
 		}
 	}
 
@@ -135,7 +140,11 @@ public class COM implements Runnable,ErrorReporter{
 		System.out.println("Starting "+threadName);
 		t = new Thread(this,threadName);
 		t.start();
-	}    
+	}  
+	
+	public void Refresh(){
+		
+	}
 
 	public void HandleMissionCount(){
 		msg_mission_count msgMissionCount = RcvdMessages.GetMissionCount();	    
@@ -175,15 +184,15 @@ public class COM implements Runnable,ErrorReporter{
 	public void HandleParamRequestList(){
 		msg_param_request_list msgParamRequestList = RcvdMessages.GetParamRequestList();	    
 		if(msgParamRequestList != null){
-			log.addWarning("MSG: Handling parameter request list");
+			log.addWarning("MSG: Handling parameter request list");			
 			apIntf.Write(msgParamRequestList);		
 		}
 	}
 
-	public void HanldeParamRequestRead() {
+	public void HandleParamRequestRead() {
 		msg_param_request_read msgParamRequestRead = RcvdMessages.GetParamRequestRead();
 		if(msgParamRequestRead != null){
-			apIntf.Write(msgParamRequestRead);
+			apIntf.Write(msgParamRequestRead);			
 		}
 	}
 
@@ -191,8 +200,7 @@ public class COM implements Runnable,ErrorReporter{
 		msg_param_value msgParamValue = RcvdMessages.GetParamValue();
 		if( msgParamValue != null){
 			if(msgParamValue.sysid == 1){
-
-
+				
 			}
 			else{
 				apIntf.Write(msgParamValue);
@@ -350,6 +358,18 @@ public class COM implements Runnable,ErrorReporter{
 		}
 	}
 	
+	public void EnableDataStream(int option){
+
+		msg_request_data_stream req = new msg_request_data_stream();
+		req.req_message_rate = 4;
+		req.req_stream_id    = MAV_DATA_STREAM.MAV_DATA_STREAM_ALL;
+		req.start_stop       = (byte) option;
+		req.target_system    = 1;
+		req.target_component = 0;
+
+		apIntf.Write(req);
+	}
+	
 	public void SafeguardHandler(msg_command_long msgCommandLong){
 	       //System.out.println(msgCommandLong.param2);
 		sfcount++;
@@ -365,7 +385,7 @@ public class COM implements Runnable,ErrorReporter{
 				    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.AUTO;
 				    apIntf.Write(Mode);
 				    sgMsgRcvd1 = false;
-				    gsIntf.SendStatusText("Switching to AUTO");
+				    gsIntf.SendStatusText("IC:Switching to AUTO");
 				}
 			}
 			
@@ -432,7 +452,7 @@ public class COM implements Runnable,ErrorReporter{
 			    
 			    apIntf.Write(msg);		    
 			    System.out.println(FlightData.acTime +": received warning from safeguard");
-			    gsIntf.SendStatusText("Safeguard warning");
+			    gsIntf.SendStatusText("IC:Safeguard warning");
 			}		 		    					    					   
 		}else if(msgCommandLong.param2 == 0 || msgCommandLong.param2 == 2 ){
 		    // terminate
@@ -445,7 +465,7 @@ public class COM implements Runnable,ErrorReporter{
 			    
 			    apIntf.Write(Mode);
 			    System.out.println(FlightData.acTime + ": received terminate from safeguard");
-			    gsIntf.SendStatusText("Safeguard terminate");
+			    gsIntf.SendStatusText("IC:Safeguard terminate");
 			    
 			    try{
 			    	Thread.sleep(200);
