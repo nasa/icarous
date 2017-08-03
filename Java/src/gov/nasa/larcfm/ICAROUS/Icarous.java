@@ -200,7 +200,7 @@ public class Icarous{
 		com_module.log.setConsoleOutput(verbose);
 		fms_module.debugDAA = debugDAA;
 
-		COMInt.SendStatusText("DAQ, FMS, COM Initialized");
+		COMInt.SendStatusText("IC: DAQ, FMS, COM Initialized");
 	}
 
 	public static String release() {
@@ -226,7 +226,7 @@ public class Icarous{
 			}
 
 			System.out.println("Received heartbeat from AP");
-			COMInt.SendStatusText("Connected to Pixhawk");
+			COMInt.SendStatusText("IC:Connected to Pixhawk");
 
 			fms_module.EnableDataStream(1);
 
@@ -239,7 +239,7 @@ public class Icarous{
 			if(mode.equals("passive")){
 
 				System.out.println("ICAROUS passive mode");
-				COMInt.SendStatusText("ICAROUS is passive");
+				COMInt.SendStatusText("IC:ICAROUS is passive");
 				while(true){
 					fms_module.UpdateAircraftData();
 					fms_module.Monitor();
@@ -247,7 +247,7 @@ public class Icarous{
 			}
 			else{
 				System.out.println("ICAROUS active mode");
-				COMInt.SendStatusText("ICAROUS is active");
+				COMInt.SendStatusText("IC:ICAROUS is active");
 				fms_module.start();
 				while(fms_module.isFMSrunning()){
 					// DO nothing
