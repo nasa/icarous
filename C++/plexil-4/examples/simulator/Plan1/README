@@ -1,6 +1,0 @@
-This directory contains a trivial example.  To run it, type:
-
-  plexilsim -p Plan1.plx -s Plan1-script.txt -c Plan1-config.xml 
-
-See the simulation script (Plan1-script.txt) for important information about the
-Plexil simulator.

@@ -1,7 +1,0 @@
-<PLEXILScript>
-  <Script>
-    <CommandAck name="drillIdle" type="string">
-      <Result>COMMAND_SUCCESS</Result>
-    </CommandAck>
-  </Script>
-</PLEXILScript>

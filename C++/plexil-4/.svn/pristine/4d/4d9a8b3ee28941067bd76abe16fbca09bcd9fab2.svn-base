@@ -1,1 +1,0 @@
-<PlexilPlan LineNo="3" ColNo="4" FileName="input/concat1.ple"><Node NodeType="Empty" LineNo="3" ColNo="12"><NodeId>Root</NodeId><StartCondition LineNo="3" ColNo="12"><EQString LineNo="3" ColNo="41"><Concat LineNo="3" ColNo="33"><StringValue>foo</StringValue><StringValue>bar</StringValue></Concat><StringValue>foobar</StringValue></EQString></StartCondition></Node></PlexilPlan>

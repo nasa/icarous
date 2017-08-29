@@ -1,6 +1,0 @@
-Real[4] Lookup foo;
-
-{
-  Real temp = 0;
-  temp = Lookup(foo)[1];  
-}

@@ -1,1 +1,0 @@
-<PlexilPlan LineNo="3" ColNo="2" FileName="input/succeeded1.ple"><Sequence LineNo="3" ColNo="2"><NodeId>BLOCK__0</NodeId><PostCondition LineNo="3" ColNo="2"><Succeeded LineNo="3" ColNo="7"><NodeId>A</NodeId></Succeeded></PostCondition><Node NodeType="Empty" LineNo="1" ColNo="0"><NodeId>A</NodeId></Node></Sequence></PlexilPlan>

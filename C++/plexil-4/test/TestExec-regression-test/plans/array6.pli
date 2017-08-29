@@ -1,9 +1,0 @@
-(plexil-plan
-  (comment "Tests array initial values")
-  (empty-node "array6"
-    (variables (real-array "a4" 2 5.0 6.0))
-    (postcondition (and
-                     (= (array-element "a4" 0) 5.0)
-                     (= (array-element "a4" 1) 6.0)))))
-
-

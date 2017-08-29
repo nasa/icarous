@@ -1,6 +1,0 @@
-This directory contains slides, in both PDF and their source
-OpenOffice/NeoOffice format, for a PLEXIL workshop.  
-
-NOTE: the "interfacing" slides are out of date and need signficant revision.
-See the "Interfacing" chapter in the Plexil reference manual, and an example in
-plexil/src/apps/sample.

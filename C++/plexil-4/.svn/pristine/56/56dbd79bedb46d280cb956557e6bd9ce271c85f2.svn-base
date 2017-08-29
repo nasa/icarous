@@ -1,4 +1,0 @@
-<PLEXILScript>
-  <Script>
-  </Script>
-</PLEXILScript>

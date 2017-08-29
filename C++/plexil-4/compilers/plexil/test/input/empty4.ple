@@ -1,5 +1,0 @@
-  DoNothing1:
-  {
-    String name = "Fred";
-    Real MaxTemp = 100.0;
-  }

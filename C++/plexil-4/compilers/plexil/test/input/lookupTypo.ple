@@ -1,8 +1,0 @@
-Integer Lookup abc;
-
-Command foo();
-
-lookupTypo: {
-  StartCondition Lookup(acb) == 0;
-  foo();
-}

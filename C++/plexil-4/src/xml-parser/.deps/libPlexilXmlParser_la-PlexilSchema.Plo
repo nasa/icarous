@@ -1,4 +1,0 @@
-libPlexilXmlParser_la-PlexilSchema.lo: PlexilSchema.cc \
- /usr/include/stdc-predef.h
-
-/usr/include/stdc-predef.h:

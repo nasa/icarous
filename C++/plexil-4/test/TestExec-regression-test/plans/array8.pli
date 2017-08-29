@@ -1,7 +1,0 @@
-(plexil-plan
-  (comment "Tests arrays as update values")
-  (update-node "array8"
-    (variables (real-array "src" 2 5.0 6.0))
-    (update (pair "val" (arrayvar "src")))))
-
-

@@ -1,8 +1,0 @@
-// This example demonstrates how an arbitrary state name
-// can be used by Lookup without a declaration.
-
-LookupWithComputedStateName:
-{
-  Real r;
-  r = Lookup(("Arbitrary:State:Name"));
-}

@@ -1,8 +1,0 @@
-CopyEntry:
-{
-  Real TemperatureReadings[10];
-  Integer i = 0;
-  Real x = 2.3;
-
-  TemperatureReadings[i] = x;
-}

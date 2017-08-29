@@ -1,6 +1,0 @@
-(plexil-plan
-  (synchronous-command "Root"
-    (variables (integer "x" 2))
-    (command-with-return (intvar "x") "foo" 1)))
-
-                       

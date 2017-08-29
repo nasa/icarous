@@ -1,8 +1,0 @@
-(plexil-plan
-  (library-call-node "LibraryCall6"
-    (variables (string "name"))
-    (end-condition (is-known (stringvar "name")))
-    (post-condition (Successful "library6"))
-    (call "library6"
-      (alias "x" (stringvar "name"))
-      (alias "y" "foo"))))

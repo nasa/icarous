@@ -1,7 +1,0 @@
-Integer Lookup x;
-
-Root:
-{
-  Integer y;
-  y = Lookup (x, 1.2);
-}

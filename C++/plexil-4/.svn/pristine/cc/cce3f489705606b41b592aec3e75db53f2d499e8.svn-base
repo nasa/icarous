@@ -1,5 +1,0 @@
-{
-  Integer x;
-
-  StartCondition isKnown(x);
-}

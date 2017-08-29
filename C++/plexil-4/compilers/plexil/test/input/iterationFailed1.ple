@@ -1,5 +1,0 @@
-Concurrence
-{
-  A: { Repeat true; Post false; }
-  B: { Start NodeIterationFailed (A); }
-}

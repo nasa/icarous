@@ -1,7 +1,0 @@
-This directory implements the Core Plexil executive module tests.
-
-Type 'make' to build the tester.
-Then run the script 'run-exec-module-tests'
-
-
-

@@ -1,5 +1,0 @@
-Concurrence
-{
-  A: { Repeat true; }
-  B: { Start NodeIterationEnded (A); }
-}

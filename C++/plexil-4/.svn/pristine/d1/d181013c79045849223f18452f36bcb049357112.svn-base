@@ -1,4 +1,0 @@
-(plexil-plan
-  (on-message "Hello"
-    (command-node "handle_Hello"
-      (command "send-message" "Hi there"))))

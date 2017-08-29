@@ -1,6 +1,0 @@
-(plexil-script
- (initial-state
-  (state "time" "real" 1.0)
-  (state "foo" "bool" 1))
- (script
-  (state "time" "real" 1.0)))

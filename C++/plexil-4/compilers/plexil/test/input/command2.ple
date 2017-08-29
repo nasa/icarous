@@ -1,6 +1,0 @@
-Command set_waypoint (Real, Real, Real);
-
-SetWaypoint: {
-  Real x,y,z;
-  set_waypoint (x,y,z); 
-}

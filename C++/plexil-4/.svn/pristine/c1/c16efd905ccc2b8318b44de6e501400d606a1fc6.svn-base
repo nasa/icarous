@@ -1,8 +1,0 @@
-(plexil-plan
-  (list-node "FailureType3"
-    (list
-      (empty-node "One"
-        (precondition (= 1 0)))
-      (empty-node "Two"
-        (start-condition (precondition-failed "One"))))))
-          

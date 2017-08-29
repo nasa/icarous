@@ -1,8 +1,0 @@
-
-// Resource2EqualPriority
-
-script {
-  command-ack pickup_object (20 : int) = "COMMAND_SENT_TO_SYSTEM" : string;
-  command     pickup_object (20 : int) = 10 : int;
-}
-

@@ -1,8 +1,0 @@
-(plexil-script
-  (script
-    (command "get-a2" "string-array" ("hello" "world"))
-    (command-ack "get-a2" "string-array" ("hello" "world"))
-    (command "get-a3" "bool-array" (0 0 0 1))
-    (command-ack "get-a3" "bool-array" (0 0 0 1))))
-
-                   

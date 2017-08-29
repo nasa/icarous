@@ -1,9 +1,0 @@
-Integer Command c1;
-
-Root:
-{
-    Integer returnValue = -1;
-    EndCondition returnValue == 10;
-    PostCondition Root.command_handle == COMMAND_SUCCESS;
-    returnValue = c1();
-}

@@ -1,9 +1,0 @@
-(plexil-plan
-  (comment "Tests the interface default value")
-  (empty-node "library4"
-    (interface (in (string "x" "foo")))
-    (postcondition (= (stringvar "x") "foo"))))
-      
-      
-      
-

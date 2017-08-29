@@ -1,8 +1,0 @@
-
-// resource3
-
-script {
-  command store () = "COMMAND_SUCCESS" : string;
-  command-success store ();
-}
-

@@ -1,5 +1,0 @@
-Boolean Lookup WheelStuck;
-Command driveOneMeter();
-
-while (! Lookup (WheelStuck)) driveOneMeter();
-

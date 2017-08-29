@@ -1,4 +1,0 @@
-(plexil-plan
- (comment "A named empty try.")
- (try "Root"))
-

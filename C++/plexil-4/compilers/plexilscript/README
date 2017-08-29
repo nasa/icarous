@@ -1,5 +1,0 @@
-Building the Plexilscript parser requires Java 1.4.x or newer, and
-Apache 'ant' 1.7 or newer.
-
-To build the parser, invoke 'ant'.  NOTE: there are many warnings, due
-to circular file dependencies, but the final build should be correct.

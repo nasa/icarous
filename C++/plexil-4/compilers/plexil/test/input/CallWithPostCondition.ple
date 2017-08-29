@@ -1,7 +1,0 @@
-LibraryAction Foo;
-
-CallWithPostCondition:
-{
-  PostCondition Foo.outcome == SUCCESS;
-  LibraryCall Foo;
-}

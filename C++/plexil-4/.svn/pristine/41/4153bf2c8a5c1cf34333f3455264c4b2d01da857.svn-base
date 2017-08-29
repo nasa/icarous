@@ -1,9 +1,0 @@
-Command foo;
-Command bar;
-
-simpleIfThenElse:
-if (true)
- foo();
-else
- bar();
-endif

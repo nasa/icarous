@@ -1,6 +1,0 @@
-*DEFAULT
-  subindent 2
-
-StringValue
-  format = verbatim
-

@@ -1,5 +1,0 @@
-:IpcAdapter
-#:MessageQueueMap
-#:Node:outcome
-#:Node:transition
-:UdpAdapter

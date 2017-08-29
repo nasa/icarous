@@ -1,6 +1,0 @@
-F:
-{
- In Integer i;
- InOut Integer j;
- j = j * j + i;
-}
