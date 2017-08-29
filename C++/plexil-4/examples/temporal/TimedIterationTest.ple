@@ -1,0 +1,33 @@
+Date Lookup time;
+Command pprint(...);
+
+TimedIterationTest:
+{
+  Date startTime;
+  Duration initialWait = Duration("PT10S");
+
+  startTime = TimedIterationTest.EXECUTING.START + initialWait;
+  pprint("Run to start at", startTime);
+
+ AfterPause:
+  {
+    Integer repeatCount = 10;
+    Integer i = 0;
+
+    Start Lookup(time, initialWait) >= startTime;
+
+  Iterate:
+    {
+      Duration iterationInterval = Duration("PT1S");
+
+      RepeatCondition i < repeatCount;
+      EndCondition Lookup(time, iterationInterval) >= Iterate.EXECUTING.START + iterationInterval;
+
+      pprint("Iteration", i, "at", Iterate.EXECUTING.START);
+      i = i + 1;
+    }
+  
+    pprint("Iteration", i, "complete at", Iterate.EXECUTING.END);
+  }
+}
+

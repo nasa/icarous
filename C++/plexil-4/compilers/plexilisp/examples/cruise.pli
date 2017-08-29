@@ -1,0 +1,60 @@
+;;; This is a toy application still under development.  It's a model of
+;;; automobile cruise control, and is being developed to prototype and
+;;; study continuous control applications.
+
+(plexil-plan
+  (list-node "cruise-control"
+    (variables
+      (boolean "cruise-on" false)
+      (real "target-speed")        
+      (real "throttle-pos" 0.0))
+    (list
+      ;;
+      ;; Cruise control interface
+      ;;
+      (list-node "SET"
+        (start-condition (lookup-on-change "SetPressed"))
+        (list
+          (assignment-node "set-cruise-on"   ; idempotent
+            (assignment (boolvar "cruise-on") true))
+          (assignment-node "set-target-speed"
+            (assignment (realvar "target-speed") (lookup-now "actual-speed")))))
+      ;;
+      (assignment-node "CANCEL"
+        (start-condition (lookup-on-change "CancelPressed"))
+        (repeat-condition true)
+        (assignment (boolvar "cruise-on") false))
+      (empty-node "RESUME"
+        ;; engaged = true
+        )
+      (empty-node "ACCEL"
+        ;; target-speed = target-speed + .5
+        ;; increase throttle until target speed reached
+        )
+      (empty-node "DECEL"
+        ;; target-speed = target-speed - .5
+        ;; decrease throttle until target speed reached
+        )
+      (empty-node "RESUME2"
+        ;; engaged = true
+        )
+      ;;
+      ;; Continuous control: Cruise Control
+      ;;
+      (list-node "control-speed-automatically"
+        (start-condition (boolvar "cruise-on"))
+        (end-condition (not (boolvar "cruise-on")))
+        (repeat-condition (boolvar "cruise-on"))
+        (list
+          (assignment-node "increase-throttle"
+            (start-condition (< (lookup-on-change "actual-speed")
+                                (realvar "target-speed")))
+            (assignment (realvar "throttle-pos")
+                        (+ (realvar "throttle-pos") 0.1)))
+          (assignment-node "decrease-throttle"
+            (start-condition (> (lookup-on-change "actual-speed")
+                                (realvar "target-speed")))
+            (assignment (realvar "throttle-pos")
+                        (- (realvar "throttle-pos") 0.1)))))
+
+      )))

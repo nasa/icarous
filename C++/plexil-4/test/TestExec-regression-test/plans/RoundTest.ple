@@ -1,0 +1,15 @@
+RoundTest:
+{
+  Real foo = 3.14;
+  Integer rfoo, tfoo, cfoo, ffoo;
+
+  PostCondition isKnown(rfoo) && rfoo == 3
+    && isKnown(tfoo) && tfoo == 3
+    && isKnown(cfoo) && cfoo == 4
+    && isKnown(ffoo) && ffoo == 3;
+
+  rfoo = round(foo);
+  tfoo = trunc(foo);
+  cfoo = ceil(foo);
+  ffoo = floor(foo);
+}

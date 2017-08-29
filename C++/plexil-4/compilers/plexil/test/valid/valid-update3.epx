@@ -1,0 +1,1 @@
+<PlexilPlan LineNo="3" ColNo="2" FileName="input/update3.ple"><Node LineNo="3" ColNo="2" NodeType="Update"><NodeId>Update__1</NodeId><NodeBody><Update><Pair><Name>x</Name><IntegerValue>1</IntegerValue></Pair><Pair><Name>y</Name><RealValue>2.3</RealValue></Pair><Pair><Name>z</Name><StringValue>foo</StringValue></Pair></Update></NodeBody></Node></PlexilPlan>

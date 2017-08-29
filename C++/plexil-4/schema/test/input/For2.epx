@@ -1,0 +1,31 @@
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <For>
+    <LoopVariable>
+      <DeclareVariable>
+        <Name>count</Name>
+        <Type>Real</Type>
+        <InitialValue>
+          <RealValue>0.0</RealValue>
+        </InitialValue>
+      </DeclareVariable>
+    </LoopVariable>
+    <Condition>
+      <LT>
+        <RealVariable>count</RealVariable>
+        <RealValue>1.0</RealValue>
+      </LT>
+    </Condition>
+    <LoopVariableUpdate>
+      <ADD>
+        <RealVariable>count</RealVariable>
+        <RealValue>0.2</RealValue>
+      </ADD>
+    </LoopVariableUpdate>
+    <Action>
+      <Node NodeType="Empty">
+        <NodeId>One</NodeId>
+      </Node>
+    </Action>
+  </For>
+</PlexilPlan>
+

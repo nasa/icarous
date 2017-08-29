@@ -1,0 +1,7 @@
+(plexil-plan
+ (for (integer "i" 0)
+      (< (intvar "i") 3) 
+      (+ (intvar "i") 1)
+      (command "foo")))
+
+

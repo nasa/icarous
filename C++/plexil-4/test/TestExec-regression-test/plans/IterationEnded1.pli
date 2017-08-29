@@ -1,0 +1,14 @@
+(plexil-plan
+  (comment "Tests the checking of node iteration outcome")
+  (list-node "IterationEnded1"
+    (variables (integer "x" 0))
+    (end-condition (= (intvar "x") 4))
+    (list
+      (assignment-node "One"
+        (repeat-condition (< (intvar "x") 4))
+        (assignment (intvar "x") (+ (intvar "x") 1)))
+      (comment "Node Two executes on each successful iteration of node One")
+      (empty-node "Two"
+        (repeat-condition true)
+        (start-condition (iteration-successful "One"))))))
+

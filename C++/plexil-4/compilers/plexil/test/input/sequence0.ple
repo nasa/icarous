@@ -1,0 +1,7 @@
+// Note that it takes at least two actions to generate a Sequence.
+
+{
+  Integer x;
+  x = 0;
+  x = 1;
+}

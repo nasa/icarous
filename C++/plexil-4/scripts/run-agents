@@ -1,0 +1,335 @@
+#!/usr/bin/env bash
+# File: $SVNROOT/scripts/run-agents
+# Note: Script to run two Plexil agent systems using IPC
+
+# Copyright (c) 2006-2015, Universities Space Research Association (USRA).
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of the Universities Space Research Association nor the
+#       names of its contributors may be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY USRA ``AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL USRA BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+# TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+debug=
+
+function usage ()
+{
+cat <<EOF
+
+Usage:      `basename $0` [options] <agent1> [-c <config>] [-l <lib>] [-L <lib_dir>] <agent2> [-c <config>] [-l <lib>] [-L <lib_dir>]
+
+Options:    -v -viewer  := start the Plexil Viewer
+            -x -xterms  := run the execs in xterms (if your system has them)
+            -i -ipc     := run IPC in an xterm (rather than in the background)
+            -n -no-ipc  := do not run IPC at all
+
+Examples:   `basename $0` -x sim cmd -l get-int -l get-real
+
+Notes:      <agent1> and <agent2> are the "base names" of the plans, e.g., "cmd" for cmd.pli
+            or "t1-sim" for t1-sim.pli.
+
+            The communications configuration files will be guessed at based on the given
+            "base names", e.g., given "t1-cmd" as the base name, "t1-cmd.xml" and "cmd.xml"
+            will be tried.
+
+EOF
+exit
+}
+
+# Check for something like the right parameters and/or a "help" request
+if [ $# -lt 2 ] ; then usage ; fi
+
+# Check for PLEXIL_HOME being set (correctly, one hopes)
+if [ -z "$PLEXIL_HOME" ] ; then echo "PLEXIL_HOME is not set" ; exit ; fi
+if [ ! -e $PLEXIL_HOME/makeinclude/generic-plexil.make ] ; then
+    echo "PLEXIL_HOME is set to $PLEXIL_HOME, but I can't find some required files."
+fi
+
+# Check for xterms and IPC/central
+has_xterm=`which xterm`
+use_xterm=no
+use_viewer=no
+ipc_running=`ps aux | egrep "ipc|central" | grep -v grep`
+run_ipc_in_background=yes
+ipc_pid=
+no_ipc=
+
+# Show the usage message and/or set up the "mode" to run in
+until [ -z $1 ] ;
+do
+    if [ "$1" = "-h" ] || [ "$1" = "-help" ] ; then usage ; fi
+    if [ "$1" = "-d" ] ; then debug=true ; shift ; fi
+    if [ "$1" = "-v" ] || [ "$1" = "-viewer" ] ; then use_viewer=yes ; shift ;
+    elif [ "$1" = "-x" ] || [ "$1" = "-xterm" ] || [ "$1" = "-xterms" ] ; then use_xterm=yes ; shift ;
+    elif [ "$1" = "-vx" ] || [ "$1" = "-xv" ] ; then use_xterm=yes ; use_viewer=yes ; shift ;
+    elif [ "$1" = "-i" ] || [ "$1" = "-ipc" ] ; then run_ipc_in_background=no ; shift ;
+    elif [ "$1" = "-n" ] || [ "$1" = "-no-ipc" ] ; then no_ipc=yes ; shift ;
+    elif [ "$1" = "-c" ] ; then
+        if [ -z $com1 ] ; then shift ; com1=$1 ; shift;
+        else shift ; com2=$1 ; shift ;
+        fi
+    elif [ "$1" = "-l" ] ; then
+        if [ -z $agent2_raw ] ; then shift ; libs1+=$1 ; libs1+=" " ; shift ;
+        else shift ; libs2+=$1 ; libs2+=" " ; shift ;
+        fi
+    elif [ "$1" = "-L" ] ; then
+        if [ -z $agent2_raw ] ; then libdirs1+=$1 ; libdirs1+=" " ; shift ; libdirs1+=$1 ; libdirs1+=" " ; shift ;
+        else libdirs2+=$1 ; libdirs2+=" "; shift ; libdirs2+=$1 ; libdirs2+=" " ; shift ;
+        fi
+    else
+        if [ -z $agent1_raw ] ; then agent1_raw=$1 ; shift ;
+        elif [ -z $agent2_raw ] ; then agent2_raw=$1 ; shift ;
+        else echo "The \"$1\" parameter is ambiguous.  Maybe it is a library missing the -l flag?" ; usage ;
+        fi
+    fi
+done
+
+if [ -z $agent1_raw ] || [ -z $agent2_raw ] ; then
+  echo "Two agents required"
+  usage
+fi
+
+# Allow for either base names or names including extensions
+agent1=`echo $agent1_raw | awk '{ split($0, arr, "."); print(arr[1]) }'` ; shift
+agent2=`echo $agent2_raw | awk '{ split($0, arr, "."); print(arr[1]) }'` ; shift
+
+# Guess at what the communications configurations might be for these agents
+# t1-cmd = cmd.xml or t1-cmd.xml = cmd-t1; cmd = cmd.xml
+if [ -z $com1 ] ;
+then
+    if [ -e $agent1.xml ] ;
+    then
+        com1=$agent1.xml ;
+    elif [ -e `echo $agent1 | awk '{ split($0, arr, "-"); print(arr[1]) }'`.xml ] ;
+    then
+        com1=`echo $agent1 | awk '{ split($0, arr, "-"); print(arr[1]) }'`.xml
+    elif [ -e `echo $agent1 | awk '{ split($0, arr, "-"); print(arr[2]) }'`.xml ] ;
+    then
+        com1=`echo $agent1 | awk '{ split($0, arr, "-"); print(arr[2]) }'`.xml
+    else
+        echo "No communications configuration file found for base name $agent1"
+        exit
+    fi
+fi
+
+# And now for agent2
+if [ -z $com2 ] ;
+then
+    if [ -e $agent2.xml ] ;
+    then
+        com2=$agent2.xml ;
+    elif [ -e `echo $agent2 | awk '{ split($0, arr, "-"); print(arr[1]) }'`.xml ] ;
+    then
+        com2=`echo $agent2 | awk '{ split($0, arr, "-"); print(arr[1]) }'`.xml
+    elif [ -e `echo $agent2 | awk '{ split($0, arr, "-"); print(arr[2]) }'`.xml ] ;
+    then
+        com2=`echo $agent2 | awk '{ split($0, arr, "-"); print(arr[2]) }'`.xml
+    else
+        echo "No communications configuration file found for base name $agent2"
+        exit
+    fi
+fi
+
+# Now, double check to be sure we have comm configuration files
+if [ ! -e $com1 ] ; then
+    if [ ! -e $com1.xml ] ; then
+        echo " " ; echo "No communications configuration file found for \"-c $com1\""
+        usage
+    else
+        com1=$com1.xml
+    fi
+fi
+# Now, do it again for the second agent
+if [ ! -e $com2 ] ; then
+    if [ ! -e $com2.xml ] ; then
+        echo " " ; echo "No communications configuration file found for \"-c $com2\""
+        usage
+    else
+        com2=$com2.xml
+    fi
+fi
+
+# For readability
+echo " "
+
+# Try to figure out which make to use
+MAKE=make
+if [ `uname -s` = 'FreeBSD' ]
+then
+    if ( which gmake )
+    then
+	MAKE=gmake
+    else
+	echo 'ERROR: GNU make not found. Please install it.'
+	exit 1
+    fi
+fi
+
+# Try to figure out which makefile to use
+if [ -e "makefile" ] ; then
+    make_file=makefile
+elif [ -e "Makefile" ] ; then
+    make_file=Makefile
+else
+    make_file=$PLEXIL_HOME/makeinclude/generic-plexil.make
+fi
+
+# Keep the plans up-to-date if possible...
+${MAKE} -f $make_file $agent1.plx $agent2.plx
+make_status=$?
+# bail if things don't compile properly
+if [ $make_status != 0 ] ;
+then
+    echo "make exited with error status $make_status"
+    exit $make_status
+fi
+
+# Set up the libraries for inclusion
+for lib in $libs1 ;
+do
+    lib=`echo $lib | awk '{ split($0, arr, "."); print(arr[1]) }'`
+    # allow for both lib/name and just name
+    if [ ! -e $lib.pli ] ; then
+        if [ -e lib/$lib.pli ] ; then lib=lib/$lib ;
+        else echo "$lib.pli not found" ; exit ;
+        fi
+    fi
+    ${MAKE} $lib.plx
+    # stop of the compile fails
+    if [ $? != 0 ] ; then echo "Error: $lib.plx failed to compile" ; exit ; fi
+    libraries1+=`echo " -l " $lib.plx`
+done
+# And again for the second agent
+for lib in $libs2 ;
+do
+    lib=`echo $lib | awk '{ split($0, arr, "."); print(arr[1]) }'`
+    if [ ! -e $lib.pli ] ; then
+        if [ -e lib/$lib.pli ] ; then lib=lib/$lib ;
+        else echo "$lib.pli not found" ; exit ;
+        fi
+    fi
+    ${MAKE} $lib.plx
+    if [ $? != 0 ] ; then echo "Error: $lib.plx failed to compile" ; exit ; fi
+    libraries2+=`echo " -l " $lib.plx`
+done
+
+# Set up the command line and sleep time.  Java on Mac OS is really slow,
+# hence the long sleep time...
+if [ "$use_viewer" = "yes" ] ;
+then
+    cmd1="plexilexec -v -b -p $agent1.plx -c $com1 $libdirs1 $libraries1"
+    cmd2="plexilexec -v -b -p $agent2.plx -c $com2 $libdirs2 $libraries2"
+    if [ "`uname`" = "Darwin" ] ;
+    then
+        sleep_time=15
+    else
+        sleep_time=3
+    fi
+else
+    cmd1="plexilexec -p $agent1.plx -c $com1 $libdirs1 $libraries1"
+    cmd2="plexilexec -p $agent2.plx -c $com2 $libdirs2 $libraries2"
+    sleep_time=1
+fi
+
+if [ ! -z $debug ] ;
+then
+    echo " " ; echo "agent1_raw:  " $agent1_raw
+    echo "agent1:      " $agent1
+    echo "com1:        " $com1
+    echo "libs1:       " $libs1
+    echo "libraries1:  " $libraries1
+    echo " " ; echo "agent2_raw:  " $agent2_raw
+    echo "agent2:      " $agent2
+    echo "com2:        " $com2
+    echo "libs2:       " $libs2
+    echo "libraries2:  " $libraries2
+    echo " " ; echo "cmd1:        " $cmd1
+    echo "cmd2:        " $cmd2
+    echo " " ; echo "PLEXIL_HOME: " $PLEXIL_HOME
+    echo "make_file:   " $make_file ; echo " "
+    exit
+fi
+
+# Either start IPC/central in an xterm, or make sure it is already running
+if [ "$has_xterm" = "" ] && [ "$no_ipc" != "yes" ];
+then
+    echo " "
+    if [ "$ipc_running" = "" ] && [ "$run_ipc_in_background" = "no" ] ;
+    then
+        echo "ipc (central) must already be running for this script to work without xterm..."
+        echo " "
+        exit
+    else
+        echo "xterm not found: both agents will be run in the background..."
+        echo " "
+    fi
+fi
+
+# start IPC/central if necessary
+if [ "$no_ipc" != "yes" ] ;
+then
+    if [ "$ipc_running" = "" ] ;
+    then
+        echo ' '
+        echo "Starting IPC..."
+        if [ "$run_ipc_in_background" = "no" ] ; then
+            xterm -g 172x20 -T "IPC" ipc &
+        else
+            central -s -L -f/dev/null &
+            ipc_pid=$!
+            echo "Running IPC in the background (pid: $ipc_pid)..."
+            echo ' '
+        fi
+        sleep 3;
+    else
+        echo " " ; echo "IPC already running..."
+        run_ipc_in_background=no
+    fi
+fi
+
+# Start the agents
+echo "$cmd1"
+if [ "$use_xterm" = "no" ] ;
+then
+    $cmd1 &
+else
+    xterm -e $cmd1 &
+fi
+
+sleep $sleep_time
+
+echo "$cmd2"
+if [ "$use_xterm" = "no" ] ;
+then
+    $cmd2
+else
+    xterm -e $cmd2
+fi
+
+kill_ipc_timeout=20
+
+if [ "$run_ipc_in_background" = "yes" ] && [ "$no_ipc" != "yes" ];
+then
+    read -t $kill_ipc_timeout -p "Press [Return] to kill ipc ($kill_ipc_timeout second timeout): "
+    kill -9 "$ipc_pid"
+    echo ' '
+fi
+
+# EOF

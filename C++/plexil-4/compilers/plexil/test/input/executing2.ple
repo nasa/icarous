@@ -1,0 +1,6 @@
+executing2:
+Concurrence
+{
+  A: { End false; }
+  B: { Start NodeExecuting (A); }
+}

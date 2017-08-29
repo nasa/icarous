@@ -1,0 +1,31 @@
+subscriber.o: subscriber.cc subscriber.hh
+SampleSystem.o: SampleSystem.cc subscriber.hh SampleSystem.hh
+SampleAdapter.o: SampleAdapter.cc SampleAdapter.hh \
+ /home/research133/Software/plexil-4/include/Command.hh \
+ /home/research133/Software/plexil-4/include/CommandHandleVariable.hh \
+ /home/research133/Software/plexil-4/include/CommandHandle.hh \
+ /home/research133/Software/plexil-4/include/GetValueImpl.hh \
+ /home/research133/Software/plexil-4/include/Expression.hh \
+ /home/research133/Software/plexil-4/include/ValueType.hh \
+ /home/research133/Software/plexil-4/include/ParserException.hh \
+ /home/research133/Software/plexil-4/include/ArrayFwd.hh \
+ /home/research133/Software/plexil-4/include/plexil-config.h \
+ /home/research133/Software/plexil-4/include/ExpressionListener.hh \
+ /home/research133/Software/plexil-4/include/NotifierImpl.hh \
+ /home/research133/Software/plexil-4/include/State.hh \
+ /home/research133/Software/plexil-4/include/Value.hh \
+ /home/research133/Software/plexil-4/include/SimpleBooleanVariable.hh \
+ /home/research133/Software/plexil-4/include/InterfaceAdapter.hh \
+ /home/research133/Software/plexil-4/include/pugixml.hpp \
+ /home/research133/Software/plexil-4/include/pugiconfig.hpp \
+ /home/research133/Software/plexil-4/include/Value.hh subscriber.hh \
+ SampleSystem.hh \
+ /home/research133/Software/plexil-4/include/AdapterConfiguration.hh \
+ /home/research133/Software/plexil-4/include/InterfaceAdapter.hh \
+ /home/research133/Software/plexil-4/include/AdapterFactory.hh \
+ /home/research133/Software/plexil-4/include/AdapterExecInterface.hh \
+ /home/research133/Software/plexil-4/include/Debug.hh \
+ /home/research133/Software/plexil-4/include/plexil-config.h \
+ /home/research133/Software/plexil-4/include/DebugMessage.hh \
+ /home/research133/Software/plexil-4/include/Expression.hh \
+ /home/research133/Software/plexil-4/include/StateCacheEntry.hh

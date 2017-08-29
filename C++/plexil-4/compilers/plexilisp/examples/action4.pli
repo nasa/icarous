@@ -1,0 +1,13 @@
+(plexil-plan
+  (action "Root"
+    (start-condition (not (lookup-on-change "x")))
+    (end-condition (lookup-on-change "x"))
+    (command "foo")
+    (while (< 2 3) (action "doit" (command "now")))
+    (empty-node "bar")
+    ))
+
+      
+        
+
+      

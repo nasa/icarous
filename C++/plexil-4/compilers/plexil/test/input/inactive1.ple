@@ -1,0 +1,5 @@
+{
+  A: { Start NodeInactive (B); }
+  B: { }
+
+}

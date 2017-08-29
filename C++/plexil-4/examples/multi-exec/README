@@ -1,0 +1,19 @@
+This directory contains several examples of PLEXIL applications that involve
+multiple communicating executives.  See the README in each subdirectory
+for more details.
+
+The 'directed' example illustrates directed communication (messaging) between
+executives.
+
+The 'simulator' example illustrates an executive acting as a simulator
+(i.e. accepting commands and lookups) from another executive.
+
+The 'arrays' example is like 'simulator', but passes and returns arrays
+in the commands.
+
+The 'agents' example illustrates a more sophisticated interaction
+between two Plexil agents.
+
+See the PLEXIL user manual (plexil.sourceforge.net, or in
+plexil/docs/plexil-manual.pdf if this is a prebuilt distribution) for
+more information about multi-executive applications.

@@ -1,0 +1,10 @@
+// Trivial For loop
+
+Command pprint(...);
+
+Root: 
+{
+  for (Integer i = 0; i <= 5; i + 1) pprint ("i: ", i);
+}
+
+    

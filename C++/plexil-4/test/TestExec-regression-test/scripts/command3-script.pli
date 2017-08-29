@@ -1,0 +1,4 @@
+(plexil-script
+  (script
+    (command "get-string" "string" "fred")
+    (command-ack "get-string" "string" "COMMAND_SUCCESS")))

@@ -1,0 +1,14 @@
+
+// double-drive
+
+initial-state {
+  state At ("Rock" : string) = 0 : bool;
+}
+
+script {
+  command-ack drive (1.0 : real)   = "COMMAND_SUCCESS" : string;
+  state       At ("Rock" : string) = 1 : bool;
+  command-ack drive (1.0 : real)   = "COMMAND_SUCCESS" : string;
+  command-ack takeSample ()        = "COMMAND_SUCCESS" : string;
+}
+

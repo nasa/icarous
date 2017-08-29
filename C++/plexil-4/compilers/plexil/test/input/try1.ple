@@ -1,0 +1,8 @@
+Try
+{
+  Integer x;
+
+  A: { Pre false; }
+  B: { Post false; }
+  C: x = 1;
+}

@@ -1,0 +1,10 @@
+(plexil-plan
+ (list-node "while-test"
+  (variables (integer "count" 0))
+  (list
+   (while (< (intvar "count") 2)
+     (assignment (intvar "count") (+ (intvar "count") 1))))))
+
+
+
+ 

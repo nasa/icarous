@@ -1,0 +1,7 @@
+(plexil-plan
+ (sequence "Root"
+  (empty-node "foo"
+   (start-condition (= 2 2)))
+  (empty-node "baz"
+   (start-condition (= 3 3)))
+  (command "bar")))

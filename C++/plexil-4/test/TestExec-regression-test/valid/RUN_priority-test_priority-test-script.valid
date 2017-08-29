@@ -1,0 +1,791 @@
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:addPlan]Added plan: 
+Parent{
+ State: (id_343[a](INACTIVE): state(INACTIVE)) (inf)
+  Child1{
+   State: (id_392[a](INACTIVE): state(INACTIVE)) (inf)
+    Child1-1{
+     State: (id_437[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Child1-2{
+     State: (id_482[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Child1-3{
+     State: (id_527[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+  }
+  Child2{
+   State: (id_578[a](INACTIVE): state(INACTIVE)) (inf)
+    Child2-1{
+     State: (id_623[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Child2-2{
+     State: (id_668[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Child2-3{
+     State: (id_713[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+  }
+  Child3{
+   State: (id_764[a](INACTIVE): state(INACTIVE)) (inf)
+    Child3-1{
+     State: (id_809[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Child3-2{
+     State: (id_854[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Child3-3{
+     State: (id_899[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+  }
+  Child4{
+   State: (id_950[a](INACTIVE): state(INACTIVE)) (inf)
+    Child4-1{
+     State: (id_995[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Child4-2{
+     State: (id_1040[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Child4-3{
+     State: (id_1085[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+  }
+  Test{
+   State: (id_1136[a](INACTIVE): state(INACTIVE)) (inf)
+  }
+}
+
+[PlexilExec:handleConditionsChanged]Node Parent had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Parent' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Parent' on the state change queue in position 1
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 1
+[PlexilExec:step][1:0] State change queue: Parent 
+[PlexilExec:step][1:0:0] Transitioning node Parent
+[PlexilExec:handleConditionsChanged]Node Parent had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Parent' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Parent' on the state change queue in position 2
+[PlexilExec:step][1:1] State change queue: Parent 
+[PlexilExec:step][1:1:0] Transitioning node Parent
+[PlexilExec:handleConditionsChanged]Node Child1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1' on the state change queue in position 3
+[PlexilExec:handleConditionsChanged]Node Child2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2' on the state change queue in position 4
+[PlexilExec:handleConditionsChanged]Node Child3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3' on the state change queue in position 5
+[PlexilExec:handleConditionsChanged]Node Child4 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4' on the state change queue in position 6
+[PlexilExec:handleConditionsChanged]Node Test had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Test' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Test' on the state change queue in position 7
+[PlexilExec:handleNeedsExecution]Storing action for node 'Parent' to be executed.
+[PlexilExec:handleConditionsChanged]Node Parent had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Parent' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:2] State change queue: Child1 Child2 Child3 Child4 Test 
+[PlexilExec:step][1:2:0] Transitioning node Child1
+[PlexilExec:handleConditionsChanged]Node Child1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1' on the state change queue in position 8
+[PlexilExec:step][1:2:1] Transitioning node Child2
+[PlexilExec:handleConditionsChanged]Node Child2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2' on the state change queue in position 9
+[PlexilExec:step][1:2:2] Transitioning node Child3
+[PlexilExec:handleConditionsChanged]Node Child3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3' on the state change queue in position 10
+[PlexilExec:step][1:2:3] Transitioning node Child4
+[PlexilExec:handleConditionsChanged]Node Child4 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4' on the state change queue in position 11
+[PlexilExec:step][1:2:4] Transitioning node Test
+[PlexilExec:handleConditionsChanged]Node Test had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Test' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:3] State change queue: Child1 Child2 Child3 Child4 
+[PlexilExec:step][1:3:0] Transitioning node Child1
+[PlexilExec:handleConditionsChanged]Node Child1-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1-1' on the state change queue in position 12
+[PlexilExec:handleConditionsChanged]Node Child1-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1-2' on the state change queue in position 13
+[PlexilExec:handleConditionsChanged]Node Child1-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1-3' on the state change queue in position 14
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child1' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child1' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:3:1] Transitioning node Child2
+[PlexilExec:handleConditionsChanged]Node Child2-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2-1' on the state change queue in position 15
+[PlexilExec:handleConditionsChanged]Node Child2-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2-2' on the state change queue in position 16
+[PlexilExec:handleConditionsChanged]Node Child2-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2-3' on the state change queue in position 17
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child2' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child2' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:3:2] Transitioning node Child3
+[PlexilExec:handleConditionsChanged]Node Child3-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3-1' on the state change queue in position 18
+[PlexilExec:handleConditionsChanged]Node Child3-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3-2' on the state change queue in position 19
+[PlexilExec:handleConditionsChanged]Node Child3-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3-3' on the state change queue in position 20
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child3' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child3' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:3:3] Transitioning node Child4
+[PlexilExec:handleConditionsChanged]Node Child4-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4-1' on the state change queue in position 21
+[PlexilExec:handleConditionsChanged]Node Child4-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4-2' on the state change queue in position 22
+[PlexilExec:handleConditionsChanged]Node Child4-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4-3' on the state change queue in position 23
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child4' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child4 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child4' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:4] State change queue: Child1-1 Child1-2 Child1-3 Child2-1 Child2-2 Child2-3 Child3-1 Child3-2 Child3-3 Child4-1 Child4-2 Child4-3 
+[PlexilExec:step][1:4:0] Transitioning node Child1-1
+[PlexilExec:handleConditionsChanged]Node Child1-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-1' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child1-1' to resource contention.
+[PlexilExec:step][1:4:1] Transitioning node Child1-2
+[PlexilExec:handleConditionsChanged]Node Child1-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-2' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child1-2' to resource contention.
+[PlexilExec:step][1:4:2] Transitioning node Child1-3
+[PlexilExec:handleConditionsChanged]Node Child1-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-3' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child1-3' to resource contention.
+[PlexilExec:step][1:4:3] Transitioning node Child2-1
+[PlexilExec:handleConditionsChanged]Node Child2-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-1' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child2-1' to resource contention.
+[PlexilExec:step][1:4:4] Transitioning node Child2-2
+[PlexilExec:handleConditionsChanged]Node Child2-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-2' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child2-2' to resource contention.
+[PlexilExec:step][1:4:5] Transitioning node Child2-3
+[PlexilExec:handleConditionsChanged]Node Child2-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-3' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child2-3' to resource contention.
+[PlexilExec:step][1:4:6] Transitioning node Child3-1
+[PlexilExec:handleConditionsChanged]Node Child3-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-1' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child3-1' to resource contention.
+[PlexilExec:step][1:4:7] Transitioning node Child3-2
+[PlexilExec:handleConditionsChanged]Node Child3-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-2' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child3-2' to resource contention.
+[PlexilExec:step][1:4:8] Transitioning node Child3-3
+[PlexilExec:handleConditionsChanged]Node Child3-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-3' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child3-3' to resource contention.
+[PlexilExec:step][1:4:9] Transitioning node Child4-1
+[PlexilExec:handleConditionsChanged]Node Child4-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-1' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child4-1' to resource contention.
+[PlexilExec:step][1:4:10] Transitioning node Child4-2
+[PlexilExec:handleConditionsChanged]Node Child4-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-2' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child4-2' to resource contention.
+[PlexilExec:step][1:4:11] Transitioning node Child4-3
+[PlexilExec:handleConditionsChanged]Node Child4-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-3' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Child4-3' to resource contention.
+[PlexilExec:resolveResourceConflicts]Node 'Child1-1' has best priority.  Adding it to be executed in position 24
+[PlexilExec:resolveResourceConflicts]Node 'Child2-1' has best priority.  Adding it to be executed in position 25
+[PlexilExec:resolveResourceConflicts]Node 'Child3-2' has best priority.  Adding it to be executed in position 26
+[PlexilExec:resolveResourceConflicts]Node 'Child4-3' has best priority.  Adding it to be executed in position 27
+[PlexilExec:step][1:5] State change queue: Child1-1 Child2-1 Child3-2 Child4-3 
+[PlexilExec:step][1:5:0] Transitioning node Child1-1
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child1-1' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child1-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child1-1' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:5:1] Transitioning node Child2-1
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child2-1' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child2-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child2-1' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:5:2] Transitioning node Child3-2
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child3-2' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child3-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child3-2' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:5:3] Transitioning node Child4-3
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child4-3' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child4-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child4-3' was previously eligible to transition but isn't now.
+[Test:testOutput]Assigning 'a' ((id_386[a](0): int)) to 2
+[PlexilExec:handleConditionsChanged]Node Child1-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1-1' on the state change queue in position 28
+[Test:testOutput]Assigning 'b' ((id_387[a](0): int)) to 2
+[PlexilExec:handleConditionsChanged]Node Child2-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2-1' on the state change queue in position 29
+[Test:testOutput]Assigning 'c' ((id_388[a](0): int)) to 0
+[PlexilExec:handleConditionsChanged]Node Child3-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3-2' on the state change queue in position 30
+[Test:testOutput]Assigning 'd' ((id_389[a](0): int)) to 5
+[PlexilExec:handleConditionsChanged]Node Child4-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4-3' on the state change queue in position 31
+[PlexilExec:resolveResourceConflicts]Node 'Child1-2' has best priority.  Adding it to be executed in position 32
+[PlexilExec:resolveResourceConflicts]Node 'Child2-3' has best priority.  Adding it to be executed in position 33
+[PlexilExec:resolveResourceConflicts]Node 'Child3-1' has best priority.  Adding it to be executed in position 34
+[PlexilExec:resolveResourceConflicts]Node 'Child4-2' has best priority.  Adding it to be executed in position 35
+[PlexilExec:step][1:6] State change queue: Child1-1 Child2-1 Child3-2 Child4-3 Child1-2 Child2-3 Child3-1 Child4-2 
+[PlexilExec:step][1:6:0] Transitioning node Child1-1
+[PlexilExec:handleConditionsChanged]Node Child1-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1-1' on the state change queue in position 36
+[PlexilExec:step][1:6:1] Transitioning node Child2-1
+[PlexilExec:handleConditionsChanged]Node Child2-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2-1' on the state change queue in position 37
+[PlexilExec:step][1:6:2] Transitioning node Child3-2
+[PlexilExec:handleConditionsChanged]Node Child3-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3-2' on the state change queue in position 38
+[PlexilExec:step][1:6:3] Transitioning node Child4-3
+[PlexilExec:handleConditionsChanged]Node Child4-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4-3' on the state change queue in position 39
+[PlexilExec:step][1:6:4] Transitioning node Child1-2
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child1-2' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child1-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child1-2' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:6:5] Transitioning node Child2-3
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child2-3' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child2-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child2-3' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:6:6] Transitioning node Child3-1
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child3-1' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child3-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child3-1' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:6:7] Transitioning node Child4-2
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child4-2' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child4-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child4-2' was previously eligible to transition but isn't now.
+[Test:testOutput]Assigning 'a' ((id_386[a](2): int)) to 6
+[PlexilExec:handleConditionsChanged]Node Child1-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1-2' on the state change queue in position 40
+[Test:testOutput]Assigning 'b' ((id_387[a](2): int)) to 7
+[PlexilExec:handleConditionsChanged]Node Child2-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2-3' on the state change queue in position 41
+[Test:testOutput]Assigning 'c' ((id_388[a](0): int)) to 2
+[PlexilExec:handleConditionsChanged]Node Child3-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3-1' on the state change queue in position 42
+[Test:testOutput]Assigning 'd' ((id_389[a](5): int)) to 15
+[PlexilExec:handleConditionsChanged]Node Child4-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4-2' on the state change queue in position 43
+[PlexilExec:resolveResourceConflicts]Node 'Child1-3' has best priority.  Adding it to be executed in position 44
+[PlexilExec:resolveResourceConflicts]Node 'Child2-2' has best priority.  Adding it to be executed in position 45
+[PlexilExec:resolveResourceConflicts]Node 'Child3-3' has best priority.  Adding it to be executed in position 46
+[PlexilExec:resolveResourceConflicts]Node 'Child4-1' has best priority.  Adding it to be executed in position 47
+[PlexilExec:step][1:7] State change queue: Child1-1 Child2-1 Child3-2 Child4-3 Child1-2 Child2-3 Child3-1 Child4-2 Child1-3 Child2-2 Child3-3 Child4-1 
+[PlexilExec:step][1:7:0] Transitioning node Child1-1
+[PlexilExec:handleConditionsChanged]Node Child1-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child1-1' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:7:1] Transitioning node Child2-1
+[PlexilExec:handleConditionsChanged]Node Child2-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child2-1' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:7:2] Transitioning node Child3-2
+[PlexilExec:handleConditionsChanged]Node Child3-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child3-2' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:7:3] Transitioning node Child4-3
+[PlexilExec:handleConditionsChanged]Node Child4-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child4-3' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:7:4] Transitioning node Child1-2
+[PlexilExec:handleConditionsChanged]Node Child1-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1-2' on the state change queue in position 48
+[PlexilExec:step][1:7:5] Transitioning node Child2-3
+[PlexilExec:handleConditionsChanged]Node Child2-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2-3' on the state change queue in position 49
+[PlexilExec:step][1:7:6] Transitioning node Child3-1
+[PlexilExec:handleConditionsChanged]Node Child3-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3-1' on the state change queue in position 50
+[PlexilExec:step][1:7:7] Transitioning node Child4-2
+[PlexilExec:handleConditionsChanged]Node Child4-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4-2' on the state change queue in position 51
+[PlexilExec:step][1:7:8] Transitioning node Child1-3
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child1-3' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child1-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child1-3' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:7:9] Transitioning node Child2-2
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child2-2' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child2-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child2-2' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:7:10] Transitioning node Child3-3
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child3-3' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child3-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child3-3' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:7:11] Transitioning node Child4-1
+[PlexilExec:handleNeedsExecution]Storing action for node 'Child4-1' to be executed.
+[PlexilExec:handleConditionsChanged]Node Child4-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child4-1' was previously eligible to transition but isn't now.
+[Test:testOutput]Assigning 'a' ((id_386[a](6): int)) to 11
+[PlexilExec:handleConditionsChanged]Node Child1-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1-3' on the state change queue in position 52
+[Test:testOutput]Assigning 'b' ((id_387[a](7): int)) to 21
+[PlexilExec:handleConditionsChanged]Node Child2-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2-2' on the state change queue in position 53
+[Test:testOutput]Assigning 'c' ((id_388[a](2): int)) to 7
+[PlexilExec:handleConditionsChanged]Node Child3-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3-3' on the state change queue in position 54
+[Test:testOutput]Assigning 'd' ((id_389[a](15): int)) to 17
+[PlexilExec:handleConditionsChanged]Node Child4-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4-1' on the state change queue in position 55
+[PlexilExec:step][1:8] State change queue: Child1-2 Child2-3 Child3-1 Child4-2 Child1-3 Child2-2 Child3-3 Child4-1 
+[PlexilExec:step][1:8:0] Transitioning node Child1-2
+[PlexilExec:handleConditionsChanged]Node Child1-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child1-2' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:8:1] Transitioning node Child2-3
+[PlexilExec:handleConditionsChanged]Node Child2-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child2-3' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:8:2] Transitioning node Child3-1
+[PlexilExec:handleConditionsChanged]Node Child3-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child3-1' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:8:3] Transitioning node Child4-2
+[PlexilExec:handleConditionsChanged]Node Child4-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child4-2' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:8:4] Transitioning node Child1-3
+[PlexilExec:handleConditionsChanged]Node Child1-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child1-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1-3' on the state change queue in position 56
+[PlexilExec:step][1:8:5] Transitioning node Child2-2
+[PlexilExec:handleConditionsChanged]Node Child2-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2-2' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child2-2' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2-2' on the state change queue in position 57
+[PlexilExec:step][1:8:6] Transitioning node Child3-3
+[PlexilExec:handleConditionsChanged]Node Child3-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3-3' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child3-3' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3-3' on the state change queue in position 58
+[PlexilExec:step][1:8:7] Transitioning node Child4-1
+[PlexilExec:handleConditionsChanged]Node Child4-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4-1' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Child4-1' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4-1' on the state change queue in position 59
+[PlexilExec:step][1:9] State change queue: Child1-3 Child2-2 Child3-3 Child4-1 
+[PlexilExec:step][1:9:0] Transitioning node Child1-3
+[PlexilExec:handleConditionsChanged]Node Child1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1' on the state change queue in position 60
+[PlexilExec:handleConditionsChanged]Node Child1-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child1-3' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:9:1] Transitioning node Child2-2
+[PlexilExec:handleConditionsChanged]Node Child2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2' on the state change queue in position 61
+[PlexilExec:handleConditionsChanged]Node Child2-2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child2-2' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:9:2] Transitioning node Child3-3
+[PlexilExec:handleConditionsChanged]Node Child3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3' on the state change queue in position 62
+[PlexilExec:handleConditionsChanged]Node Child3-3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child3-3' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:9:3] Transitioning node Child4-1
+[PlexilExec:handleConditionsChanged]Node Child4 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4' on the state change queue in position 63
+[PlexilExec:handleConditionsChanged]Node Child4-1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child4-1' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][1:10] State change queue: Child1 Child2 Child3 Child4 
+[PlexilExec:step][1:10:0] Transitioning node Child1
+[PlexilExec:handleConditionsChanged]Node Child1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1' on the state change queue in position 64
+[PlexilExec:step][1:10:1] Transitioning node Child2
+[PlexilExec:handleConditionsChanged]Node Child2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2' on the state change queue in position 65
+[PlexilExec:step][1:10:2] Transitioning node Child3
+[PlexilExec:handleConditionsChanged]Node Child3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3' on the state change queue in position 66
+[PlexilExec:step][1:10:3] Transitioning node Child4
+[PlexilExec:handleConditionsChanged]Node Child4 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4' on the state change queue in position 67
+[PlexilExec:step][1:11] State change queue: Child1 Child2 Child3 Child4 
+[PlexilExec:step][1:11:0] Transitioning node Child1
+[PlexilExec:handleConditionsChanged]Node Child1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child1' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child1' on the state change queue in position 68
+[PlexilExec:step][1:11:1] Transitioning node Child2
+[PlexilExec:handleConditionsChanged]Node Child2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child2' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child2' on the state change queue in position 69
+[PlexilExec:step][1:11:2] Transitioning node Child3
+[PlexilExec:handleConditionsChanged]Node Child3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child3' on the state change queue in position 70
+[PlexilExec:step][1:11:3] Transitioning node Child4
+[PlexilExec:handleConditionsChanged]Node Child4 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Child4' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Child4' on the state change queue in position 71
+[PlexilExec:step][1:12] State change queue: Child1 Child2 Child3 Child4 
+[PlexilExec:step][1:12:0] Transitioning node Child1
+[PlexilExec:handleConditionsChanged]Node Child1 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child1' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:12:1] Transitioning node Child2
+[PlexilExec:handleConditionsChanged]Node Child2 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child2' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:12:2] Transitioning node Child3
+[PlexilExec:handleConditionsChanged]Node Child3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child3' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:12:3] Transitioning node Child4
+[PlexilExec:handleConditionsChanged]Node Test had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Test' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Test' on the state change queue in position 72
+[PlexilExec:handleConditionsChanged]Node Child4 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Child4' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:13] State change queue: Test 
+[PlexilExec:step][1:13:0] Transitioning node Test
+[PlexilExec:handleNeedsExecution]Storing action for node 'Test' to be executed.
+[PlexilExec:handleConditionsChanged]Node Test had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Test' was previously eligible to transition but isn't now.
+[Test:testOutput]Executing test(11, 21, 7, 17) into noId with ack (id_1533[a](UNKNOWN): boolean)
+[PlexilExec:cycle]==>End cycle 1
+[PlexilExec:printPlan]
+Parent{
+ State: (id_343[a](EXECUTING): state(EXECUTING)) (0)
+ StartCondition: (id_360[a](1): boolean)
+ EndCondition: (id_1182[a](0): childrenFinished(4:5))
+ InvariantCondition: (id_364[a](1): boolean)
+ PreCondition: (id_366[a](1): boolean)
+ PostCondition: (id_368[a](1): boolean)
+ RepeatCondition: (id_370[a](0): boolean)
+ AncestorInvariantCondition: (id_372[a](1): boolean)
+ AncestorEndCondition: (id_374[a](0): boolean)
+ ParentExecutingCondition: (id_376[a](1): boolean)
+ AllChildrenWaitingOrFinishedCondition: (id_1179[i](UNKNOWN): childrenWaitingOrFinished(0:5))
+ AbortCompleteCondition: (id_380[a](UNKNOWN): boolean)
+ ParentWaitingCondition: (id_382[a](0): boolean)
+ ParentFinishedCondition: (id_384[a](0): boolean)
+ a: (id_386[a](11): int)
+ b: (id_387[a](21): int)
+ c: (id_388[a](7): int)
+ d: (id_389[a](17): int)
+  Child1{
+   State: (id_392[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_393[a](SUCCESS):  outcome)
+   a: (id_386[a](11): int)
+    Child1-1{
+     State: (id_437[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_438[a](SUCCESS):  outcome)
+     a: (id_386[a](11): int)
+    }
+    Child1-2{
+     State: (id_482[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_483[a](SUCCESS):  outcome)
+     a: (id_386[a](11): int)
+    }
+    Child1-3{
+     State: (id_527[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_528[a](SUCCESS):  outcome)
+     a: (id_386[a](11): int)
+    }
+  }
+  Child2{
+   State: (id_578[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_579[a](SUCCESS):  outcome)
+   b: (id_387[a](21): int)
+    Child2-1{
+     State: (id_623[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_624[a](SUCCESS):  outcome)
+     b: (id_387[a](21): int)
+    }
+    Child2-2{
+     State: (id_668[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_669[a](SUCCESS):  outcome)
+     b: (id_387[a](21): int)
+    }
+    Child2-3{
+     State: (id_713[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_714[a](SUCCESS):  outcome)
+     b: (id_387[a](21): int)
+    }
+  }
+  Child3{
+   State: (id_764[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_765[a](SUCCESS):  outcome)
+   c: (id_388[a](7): int)
+    Child3-1{
+     State: (id_809[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_810[a](SUCCESS):  outcome)
+     c: (id_388[a](7): int)
+    }
+    Child3-2{
+     State: (id_854[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_855[a](SUCCESS):  outcome)
+     c: (id_388[a](7): int)
+    }
+    Child3-3{
+     State: (id_899[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_900[a](SUCCESS):  outcome)
+     c: (id_388[a](7): int)
+    }
+  }
+  Child4{
+   State: (id_950[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_951[a](SUCCESS):  outcome)
+   d: (id_389[a](17): int)
+    Child4-1{
+     State: (id_995[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_996[a](SUCCESS):  outcome)
+     d: (id_389[a](17): int)
+    }
+    Child4-2{
+     State: (id_1040[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_1041[a](SUCCESS):  outcome)
+     d: (id_389[a](17): int)
+    }
+    Child4-3{
+     State: (id_1085[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_1086[a](SUCCESS):  outcome)
+     d: (id_389[a](17): int)
+    }
+  }
+  Test{
+   State: (id_1136[a](EXECUTING): state(EXECUTING)) (0)
+   StartCondition: (id_1510[i](UNKNOWN): ((id_1512[i](UNKNOWN): (id_1515[i](UNKNOWN): ((id_392[a](FINISHED): state(FINISHED)) == (id_1514[i](UNKNOWN): state(FINISHED))))) && (id_1517[i](UNKNOWN): (id_1520[i](UNKNOWN): ((id_578[a](FINISHED): state(FINISHED)) == (id_1519[i](UNKNOWN): state(FINISHED))))) && (id_1522[i](UNKNOWN): (id_1525[i](UNKNOWN): ((id_764[a](FINISHED): state(FINISHED)) == (id_1524[i](UNKNOWN): state(FINISHED))))) && (id_1527[i](UNKNOWN): (id_1530[i](UNKNOWN): ((id_950[a](FINISHED): state(FINISHED)) == (id_1529[i](UNKNOWN): state(FINISHED))))))
+   EndCondition: (id_1534[a](UNKNOWN): ((id_1533[a](UNKNOWN): boolean) && (id_1155[a](1): boolean))
+   InvariantCondition: (id_1157[a](1): boolean)
+   PreCondition: (id_1159[a](1): boolean)
+   PostCondition: (id_1161[a](1): boolean)
+   RepeatCondition: (id_1163[a](0): boolean)
+   AncestorInvariantCondition: (id_1500[a](1): ((id_1496[auT]{1}((id_372[a](1): boolean)) && (id_1498[auT]{1}((id_364[a](1): boolean)))
+   AncestorEndCondition: (id_1502[iuT]{0}((id_1182[a](0): childrenFinished(4:5)))
+   ParentExecutingCondition: (id_1504[i](UNKNOWN): ((id_343[a](EXECUTING): state(EXECUTING)) == (id_1193[a](EXECUTING): state(EXECUTING))))
+   AllChildrenWaitingOrFinishedCondition: (id_1171[a](UNKNOWN): boolean)
+   AbortCompleteCondition: (id_1532[i](UNKNOWN): boolean)
+   ParentWaitingCondition: (id_1506[i](UNKNOWN): ((id_343[a](EXECUTING): state(EXECUTING)) == (id_1196[a](WAITING): state(WAITING))))
+   ParentFinishedCondition: (id_1508[i](UNKNOWN): ((id_343[a](EXECUTING): state(EXECUTING)) == (id_1199[a](FINISHED): state(FINISHED))))
+   a: (id_386[a](11): int)
+   b: (id_387[a](21): int)
+   c: (id_388[a](7): int)
+   d: (id_389[a](17): int)
+  }
+}
+
+[Test:testOutput]Sending command ACK test(11, 21, 7, 17) = 1
+[PlexilExec:handleConditionsChanged]Node Test had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Test' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Test' on the state change queue in position 73
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 2
+[PlexilExec:step][2:0] State change queue: Test 
+[PlexilExec:step][2:0:0] Transitioning node Test
+[PlexilExec:handleConditionsChanged]Node Test had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Test' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Test' on the state change queue in position 74
+[PlexilExec:step][2:1] State change queue: Test 
+[PlexilExec:step][2:1:0] Transitioning node Test
+[PlexilExec:handleConditionsChanged]Node Parent had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Parent' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Parent' on the state change queue in position 75
+[PlexilExec:handleConditionsChanged]Node Test had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Test' was previously eligible to transition but isn't now.
+[PlexilExec:step][2:2] State change queue: Parent 
+[PlexilExec:step][2:2:0] Transitioning node Parent
+[PlexilExec:handleConditionsChanged]Node Parent had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Parent' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Parent' on the state change queue in position 76
+[PlexilExec:step][2:3] State change queue: Parent 
+[PlexilExec:step][2:3:0] Transitioning node Parent
+[PlexilExec:handleConditionsChanged]Node Parent had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Parent' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Parent' on the state change queue in position 77
+[PlexilExec:step][2:4] State change queue: Parent 
+[PlexilExec:step][2:4:0] Transitioning node Parent
+[PlexilExec:handleConditionsChanged]Node Parent had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Parent' was previously eligible to transition but isn't now.
+[PlexilExec:cycle]==>End cycle 2
+[PlexilExec:printPlan]
+Parent{
+ State: (id_343[a](FINISHED): state(FINISHED)) (0)
+ Outcome: (id_344[a](SUCCESS):  outcome)
+ a: (id_386[i](11): int)
+ b: (id_387[i](21): int)
+ c: (id_388[i](7): int)
+ d: (id_389[i](17): int)
+  Child1{
+   State: (id_392[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_393[a](SUCCESS):  outcome)
+   a: (id_386[i](11): int)
+    Child1-1{
+     State: (id_437[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_438[a](SUCCESS):  outcome)
+     a: (id_386[i](11): int)
+    }
+    Child1-2{
+     State: (id_482[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_483[a](SUCCESS):  outcome)
+     a: (id_386[i](11): int)
+    }
+    Child1-3{
+     State: (id_527[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_528[a](SUCCESS):  outcome)
+     a: (id_386[i](11): int)
+    }
+  }
+  Child2{
+   State: (id_578[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_579[a](SUCCESS):  outcome)
+   b: (id_387[i](21): int)
+    Child2-1{
+     State: (id_623[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_624[a](SUCCESS):  outcome)
+     b: (id_387[i](21): int)
+    }
+    Child2-2{
+     State: (id_668[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_669[a](SUCCESS):  outcome)
+     b: (id_387[i](21): int)
+    }
+    Child2-3{
+     State: (id_713[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_714[a](SUCCESS):  outcome)
+     b: (id_387[i](21): int)
+    }
+  }
+  Child3{
+   State: (id_764[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_765[a](SUCCESS):  outcome)
+   c: (id_388[i](7): int)
+    Child3-1{
+     State: (id_809[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_810[a](SUCCESS):  outcome)
+     c: (id_388[i](7): int)
+    }
+    Child3-2{
+     State: (id_854[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_855[a](SUCCESS):  outcome)
+     c: (id_388[i](7): int)
+    }
+    Child3-3{
+     State: (id_899[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_900[a](SUCCESS):  outcome)
+     c: (id_388[i](7): int)
+    }
+  }
+  Child4{
+   State: (id_950[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_951[a](SUCCESS):  outcome)
+   d: (id_389[i](17): int)
+    Child4-1{
+     State: (id_995[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_996[a](SUCCESS):  outcome)
+     d: (id_389[i](17): int)
+    }
+    Child4-2{
+     State: (id_1040[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_1041[a](SUCCESS):  outcome)
+     d: (id_389[i](17): int)
+    }
+    Child4-3{
+     State: (id_1085[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_1086[a](SUCCESS):  outcome)
+     d: (id_389[i](17): int)
+    }
+  }
+  Test{
+   State: (id_1136[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_1137[a](SUCCESS):  outcome)
+   a: (id_386[i](11): int)
+   b: (id_387[i](21): int)
+   c: (id_388[i](7): int)
+   d: (id_389[i](17): int)
+  }
+}
+

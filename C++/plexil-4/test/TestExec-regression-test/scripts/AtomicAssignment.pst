@@ -1,0 +1,7 @@
+
+// atomic-assignment
+
+script {
+  command-ack check (1 : int, 0 : int) = "COMMAND_SUCCESS" : string;
+}
+

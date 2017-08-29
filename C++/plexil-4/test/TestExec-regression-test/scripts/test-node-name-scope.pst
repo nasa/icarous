@@ -1,0 +1,10 @@
+
+// test-node-name-scope
+
+initial-state {
+}
+
+script {
+  command-ack Y () = "COMMAND_SUCCESS" : string;
+}
+

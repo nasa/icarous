@@ -1,0 +1,10 @@
+{
+  Integer i, j;
+  Real p = 4.3;
+
+  Post p == 4.3;
+
+  i = 3 mod 2;
+  j = 4 % i;
+  p = sqrt (|p|) + i - j + 1.0 * i;
+}

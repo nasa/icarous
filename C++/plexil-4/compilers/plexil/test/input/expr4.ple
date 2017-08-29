@@ -1,0 +1,62 @@
+// Tests that focus on:
+//   - unary minus
+//   - whitespace combinations in binary operations 
+//     (i.e. that they make no difference)
+
+{
+  Integer i = 0;
+  Integer j = -0;  // note: this remains -0
+  Integer k = -1;
+  Real r = 0.0;
+  Real s = -0.0;  // note: this remains -0.0
+  Real t = -1.1; 
+
+  Post t == -1.1 && s == -0.0 && j < -0 && k == -1;
+
+  // All equivalent
+  i = 3 + 2;
+  i = 3+2;
+  i = 3+ 2;
+  i = 3 +2;
+
+  // All equivalent
+  i = 3 + i;
+  i = 3+i;
+  i = 3+ i;
+  i = 3 +i;
+
+  // All equivalent
+  i = j + 2;
+  i = j+2;
+  i = j+ 2;
+  i = j +2;
+
+  // All equivalent
+  i = j + i;
+  i = j+i;
+  i = j+ i;
+  i = j +i;
+
+  // All equivalent
+  j = i-2;
+  j = i - 2;
+  j = i -2;
+  j = i- 2;
+
+  // All equivalent
+  j = -2;
+  j = - 2;
+
+  // All equivalent
+  r = 1.0 - 0.0;
+  r = 1.0-0.0;
+  r = 1.0- 0.0;
+  r = 1.0 -0.0;
+
+  // All equivalent
+  r = 1.0 + 0.0;
+  r = 1.0+0.0;
+  r = 1.0+ 0.0;
+  r = 1.0 +0.0;
+
+}

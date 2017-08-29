@@ -1,0 +1,13 @@
+(plexil-plan
+  (list-node "interface1"
+    (variables (integer "foo")
+               (integer "bar"))
+
+    (list
+      (assignment-node "One"
+        (assignment (intvar "bar") 55))
+      (assignment-node "Two"
+        (comment "The following interface declaration, in combination with "
+          "bar's assignment above, breaks this plan.")
+        (interface (in (integer "bar")))
+        (assignment (intvar "foo") (intvar "bar"))))))))

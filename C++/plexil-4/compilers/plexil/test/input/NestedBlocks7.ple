@@ -1,0 +1,10 @@
+Command print(...);
+
+{
+NestedBlocks7:
+  UncheckedSequence
+  {
+    print("NestedBlocks7");
+    print("with some more crud");
+  }
+}

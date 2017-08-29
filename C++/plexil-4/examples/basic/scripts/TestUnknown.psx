@@ -1,0 +1,108 @@
+<PLEXILScript>
+  <InitialState>
+    <State name="time" type="int">
+      <Value>0</Value>
+    </State>
+    <State name="r1" type="real">
+      <Value>0.0</Value>
+    </State>
+    <State name="r2" type="real">
+      <Value>Plexil_Unknown</Value>
+    </State>
+    <State name="i1" type="int">
+      <Value>0</Value>
+    </State>
+    <State name="i2" type="int">
+      <Value>Plexil_Unknown</Value>
+    </State>
+    <State name="s1" type="string">
+      <Value>foo</Value>
+    </State>
+    <State name="s2" type="string">
+      <Value>Plexil_Unknown</Value>
+    </State>
+    <State name="b1" type="bool">
+      <Value>true</Value>
+    </State>
+    <State name="b2" type="bool">
+      <Value>Plexil_Unknown</Value>
+    </State>
+  </InitialState>
+  <Script>
+    <State name="time" type="int">
+      <Value>1</Value>
+    </State>
+    <Command name="get_string" type="string">
+      <Result>yes</Result>
+    </Command>
+    <CommandAck name="get_string" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="int">
+      <Value>2</Value>
+    </State>
+    <Command name="get_string" type="string">
+      <Result>Plexil_Unknown</Result>
+    </Command>
+    <CommandAck name="get_string" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="int">
+      <Value>3</Value>
+    </State>
+    <Command name="get_int" type="int">
+      <Result>1</Result>
+    </Command>
+    <CommandAck name="get_int" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="int">
+      <Value>4</Value>
+    </State>
+    <Command name="get_int" type="int">
+      <Result>Plexil_Unknown</Result>
+    </Command>
+    <CommandAck name="get_int" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="int">
+      <Value>5</Value>
+    </State>
+    <Command name="get_real" type="real">
+      <Result>1.0</Result>
+    </Command>
+    <CommandAck name="get_real" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="int">
+      <Value>6</Value>
+    </State>
+    <Command name="get_real" type="real">
+      <Result>Plexil_Unknown</Result>
+    </Command>
+    <CommandAck name="get_real" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="int">
+      <Value>7</Value>
+    </State>
+    <Command name="get_bool" type="bool">
+      <Result>false</Result>
+    </Command>
+    <CommandAck name="get_bool" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="int">
+      <Value>8</Value>
+    </State>
+    <Command name="get_bool" type="bool">
+      <Result>Plexil_Unknown</Result>
+    </Command>
+    <CommandAck name="get_bool" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="int">
+      <Value>9</Value>
+    </State>
+  </Script>
+</PLEXILScript>

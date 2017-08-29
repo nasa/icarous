@@ -1,0 +1,160 @@
+// -*- Mode: Java -*-
+// This is a Plexil plan for the RoboSim application.  It has the robot
+// find the "goal".  NOTE: For some reason, the robot circles a while
+// before landing on the goal spot.
+
+// Contributed by Sudhanshu Vias of Iowa State University.
+
+// Copyright (c) 2006-2015, Universities Space Research Association (USRA).
+//  All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the Universities Space Research Association nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY USRA ``AS IS'' AND ANY EXPRESS OR IMPLIED
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL USRA BE LIABLE FOR ANY DIRECT, INDIRECT,
+// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+// OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+// TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+// USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Real[5] Command QueryGoalSensor(String name);
+Integer[4] Command QueryVisibilitySensor(String name);
+Integer Command Move(String name, Integer direction);
+Command pprint(...);
+
+GoalSearch:
+{
+	String RobotName = "RobotYellow";
+    Boolean AtGoal = false;
+    Boolean Stuck = false;
+	while (!AtGoal && !Stuck) {
+        Real RobotGoal[5];
+
+        pprint("Read goal sensors");
+		ReadGoalSensors:
+		{
+			// Exit node only after sensor data is registered
+			EndCondition isKnown(RobotGoal[0]); 
+			RobotGoal = QueryGoalSensor(RobotName);
+		}
+
+        CheckGoal:
+        if (RobotGoal[4] == 1) {
+            pprint("Reached goal");
+            AtGoal = true;
+        }
+        endif
+
+        if (!AtGoal) {
+            Integer RobotVisibility[4];
+            // Direction defaults to an invalid value.
+            // If the value remains -1 the robot will not move.
+            Integer Direction = -1;
+
+            pprint("Read visibility sensors");
+            ReadVisibility: // Check if anything is blocking the path
+            {
+                EndCondition isKnown(RobotVisibility[0]);
+                RobotVisibility = QueryVisibilitySensor(RobotName);
+            }
+
+            CompareSensors:
+            {
+                Real HighestSensorVal;
+                HighestSensorVal = RobotGoal[4]; // value at current position
+
+                // Compare each Sensor value.
+                // If higher than previous store and change direction.
+                for (Integer i = 0; i < 4; i + 1) {
+                    if (HighestSensorVal < RobotGoal[i]) {
+                        HighestSensorVal = RobotGoal[i];
+                        Direction = i;
+                    }
+                    endif
+                } // For
+                pprint("Goal signal strongest in direction ", Direction);
+            } // CompareSensors
+
+            Move:
+            {
+                Integer Result;
+                EndCondition isKnown(Result);
+
+                if (Direction == -1) {
+                    pprint("Can't find a good direction to move");
+                    Result = 0;
+                    Stuck = true;
+                }
+                elseif (RobotVisibility[Direction] == 0) {
+                    // Obstacle handling logic
+                    pprint("Attempting to avoid obstacle by turning clockwise");
+
+                    TurnOne:
+                    // Turn 90 degrees clockwise
+                    Direction = (Direction + 1) % 4; 
+                    
+                    pprint("New direction is ", Direction);
+
+                    MakeTurnOne:
+                    for (Integer j = 0; j < 2; j + 1) {
+                        //move two paces in the new direction
+                        Integer move_turn1;
+                        EndCondition isKnown(move_turn1);
+                        move_turn1 = Move(RobotName,Direction);
+                    }
+                    DecideTurnTwo:
+                    Direction = (Direction + 1) % 4;             
+                    pprint("New direction is ", Direction);
+
+                    TaketurnTwo:
+                    {
+                        // Using Result and not local variable to 
+                        // satisfy Move Node's EndCondition.
+                        EndCondition isKnown(Result);
+                        for (Integer i = 0; i < 2; i + 1) {
+                            Integer move_turn2;
+                            {
+                                EndCondition isKnown(move_turn2);
+                                move_turn2 = Move(RobotName,Direction);
+                            }
+                            if (i == 1)
+                                Result = move_turn2;
+                            endif
+                                }
+                    }
+                } // End of obstacle handling logic
+                else {
+                    // No obstacle
+                    pprint("Moving in direction ", Direction);
+                    {
+                        EndCondition isKnown(Result);
+                        Result = Move(RobotName, Direction);
+                    }
+                }
+                endif
+                    } // End Move
+            pprint("Move complete");
+        }
+        endif // !AtGoal
+	} // End Loop
+
+    if (Stuck)
+        pprint("Unable to find path to goal");
+    else
+        pprint("Found goal!");
+    endif
+}
+

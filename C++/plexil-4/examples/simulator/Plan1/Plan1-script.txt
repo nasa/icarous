@@ -1,0 +1,43 @@
+# Simulation script for Plan1.ple/plx.  This script illustrates the essential
+# features of the Plexil simulator, but also points out some (serious)
+# shortcomings and unspecified behaviors of the simulator.  Documentation of the
+# Plexil simulator is found here on the PLEXIL Sourceforge wiki:
+# https://sourceforge.net/apps/mediawiki/plexil/index.php?title=Executing_Plans
+
+
+BEGIN_COMMANDS
+
+# Command Foo is handled the same way every time it's called (first 0).
+# It does not return a value (second 0).
+# It completes instantly (third 0)
+# SHORTCOMING: the arguments to Foo are ignored.
+
+Foo 0 0 0
+
+# Command Bar is handled differently the first and second time its called (1 and
+# 2 following command name).
+# UNSPECIFIED: how are additional calls to Bar handled?
+# It returns a value (1 as second number).  The first invocation returns 1.1,
+# the second 2.2.
+# UNSPECIFIED: how to parsed and return this value?  At present UNKNOWN is
+# returned.
+# The simulator waits one second before responding to the first Bar call, and 5
+# seconds for the second (last number following command name).
+# BUG: these delay values are ignored -- the commands return instantly.
+
+Bar 1 1 1
+1.1
+
+Bar 2 1 5
+2.2
+
+
+BEGIN_TELEMETRY
+
+# State X starts out with a value of 0, and becomes 1 after 5 seconds
+
+X 0
+0
+
+X 5
+1

@@ -1,0 +1,19 @@
+(plexil-plan
+  (declarations
+    (command-declaration "drive" (parameter "real"))
+    (command-declaration "takeSample")
+    (state-declaration "At" (return "boolean") (parameter "string")))
+ (list-node "SimpleDrive"
+   (end-condition (finished "TakeSample"))
+   (postcondition (successful "TakeSample"))
+   (list
+    (command-node "Drive"
+      (precondition (= (lookup-now "At" "Rock") false))
+      (repeat-condition (= false (lookup-on-change "At" "Rock")))
+      (end-condition (= true (lookup-on-change "At" "Rock")))
+      (command "drive" 1.0))
+    (command-node "TakeSample"
+      (start-condition (finished "Drive"))
+      (invariant-condition (= true (lookup-on-change "At" "Rock")))
+      (command "takeSample")))))
+
