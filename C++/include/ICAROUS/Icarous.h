@@ -79,6 +79,7 @@ public:
 	Icarous_t(int argc,char* argv[],Mission_t* task);
 	void GetOptions(int argc,char* argv[]);
 	void Run();
+	void RunWithPlexil();
 	static std::string release();
 	static std::string VERSION;
 };

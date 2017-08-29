@@ -42,7 +42,7 @@
 #include <time.h>
 
 
-ConflictDetection_t::ConflictDetection_t(QuadFMS_t* fms)
+ConflictDetection_t::ConflictDetection_t(FlightManagementSystem_t* fms)
 	:KeepInFence(-1,KEEP_IN,0,0,0,NULL),KeepOutFence(-1,KEEP_OUT,0,0,0,NULL){
 	keepInConflict   = false;
 	keepOutConflict  = false;

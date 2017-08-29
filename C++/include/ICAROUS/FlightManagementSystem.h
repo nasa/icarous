@@ -46,6 +46,8 @@
  #include "PlanUtil.h"
  #include "ErrorLog.h"
  #include "Mission.h"
+ #include "ConflictDetection.h"
+ #include "Resolution.h"
  #include <fstream>
  #include <iostream>
 
@@ -75,6 +77,11 @@ enum control_mode_t {
 
 class FlightManagementSystem_t{
 
+	public:
+	  enum trajectory_state_t {IDLE_t, START_t, FIX_t, ENROUTE_t, STOP_t};
+	  enum maneuver_state_t {START_m,GUIDE_m,IDLE_m};
+	  enum plan_type_t {MISSION,TRAJECTORY,MANEUVER};
+
     protected:
         
         Interface_t *px4Intf;
@@ -87,6 +94,11 @@ class FlightManagementSystem_t{
         bool deviationApproved;
         bool landStarted;
         bool icarousActive;
+        float targetAlt;
+	    trajectory_state_t trajectoryState;
+	    maneuver_state_t maneuverState;
+	    float captureH,captureV;
+
 
     public:
 
@@ -96,6 +108,13 @@ class FlightManagementSystem_t{
         std::string debug_out;
         control_mode_t currentMode;
         AircraftData_t* FlightData;
+        ConflictDetection_t Detector;
+	    Resolution_t Resolver;
+
+	    bool resumeMission;
+		bool goalReached;
+		Position NextGoal;
+		plan_type_t planType;
 
         FlightManagementSystem_t():log("FMS"){};
         FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);
@@ -126,14 +145,19 @@ class FlightManagementSystem_t{
 
         uint8_t IDLE();
         uint8_t PREFLIGHT();
-        virtual uint8_t TAKEOFF(){return 0;};
-        virtual uint8_t CLIMB(){return 0;};
-        virtual uint8_t CRUISE(){return 0;};
-        virtual uint8_t DESCEND(){return 0;};
-        virtual uint8_t APPROACH(){return 0;};
-        virtual uint8_t LAND(){return 0;};
-        virtual uint8_t TRACKING(Position target){return 0;};
-        virtual void Reset(){return;};
+        virtual uint8_t TAKEOFF(){return 0;}
+        virtual uint8_t CLIMB(){return 0;}
+        virtual uint8_t CRUISE(){return 0;}
+        virtual uint8_t DESCEND(){return 0;}
+        virtual uint8_t APPROACH(){return 0;}
+        virtual uint8_t LAND(){return 0;}
+        virtual uint8_t TRACKING(Position target){return 0;}
+
+        virtual uint8_t FlyTrajectory(){return 0;}
+        virtual uint8_t FlyManuever(){return 0;}
+        virtual void Reset(){return;}
+        virtual void ComputeInterceptCourse(){return;}
+        virtual double SaturateVelocity(double V, double Vsat){return 0.0;}
 };
 
 

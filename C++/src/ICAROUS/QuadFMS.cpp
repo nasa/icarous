@@ -38,7 +38,7 @@
  #include "QuadFMS.h"
 
  QuadFMS_t::QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task):
- FlightManagementSystem_t(px4int,gsint,fData,task),Detector(this),Resolver(this){
+ FlightManagementSystem_t(px4int,gsint,fData,task){
      targetAlt         = 0.0f;
      resolutionState   = IDLE_r;
      maneuverState     = IDLE_m;

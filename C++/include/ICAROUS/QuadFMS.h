@@ -45,33 +45,18 @@
 #include "BoundingRectangle.h"
 #include "DensityGrid.h"
 #include "DensityGridAStarSearch.h"
-#include "ConflictDetection.h"
-#include "Resolution.h"
 #include <time.h>
 
 class QuadFMS_t:public FlightManagementSystem_t{
 
-public:
-	enum resolve_state_t {IDLE_r, COMPUTE_r, MANEUVER_r, TRAJECTORY_r, RESUME_r};
-	enum trajectory_state_t {IDLE_t, START_t, FIX_t, ENROUTE_t, STOP_t};
-	enum maneuver_state_t {START_m,GUIDE_m,IDLE_m};
-	enum plan_type_t {MISSION,TRAJECTORY,MANEUVER};
-
+	public:
+		enum resolve_state_t {IDLE_r, COMPUTE_r, MANEUVER_r, TRAJECTORY_r, RESUME_r};
 
     private:
-        float targetAlt;
-        resolve_state_t resolutionState;
-        trajectory_state_t trajectoryState;
-        maneuver_state_t maneuverState;
-        float captureH,captureV;
+		resolve_state_t resolutionState;
 
     public:
-        ConflictDetection_t Detector;
-        Resolution_t Resolver;
-        bool resumeMission;
-        bool goalReached;
-        Position NextGoal;
-        plan_type_t planType;
+
         QuadFMS_t(){};
         QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);
         ~QuadFMS_t();

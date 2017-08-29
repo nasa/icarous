@@ -230,6 +230,65 @@ void Icarous_t::Run(){
 	thread1.join();
 	thread2.join();
 	thread3.join();
+}
 
+void Icarous_t::RunWithPlexil(){
+
+	// Read parameters from file and get the parameter data container
+	ifstream ConfigFile;
+	SeparatedInput sepInputReader(&ConfigFile);
+
+	ConfigFile.open(config);
+	sepInputReader.readLine();
+	paramData = sepInputReader.getParameters();
+
+	MAVLinkMessages_t RcvdMessages;
+	AircraftData_t FlightData(&RcvdMessages,&paramData);
+
+	Interface_t *AP;
+	Interface_t *COM;
+
+	SerialInterface_t apPort,gsPort;
+	SocketInterface_t SITL,comSock;
+
+	if(px4baud > 0){
+		apPort = SerialInterface_t(px4port,px4baud,0,&RcvdMessages);
+		AP     = &apPort;
+		AP->EnableDataStream(1);
+	}
+	else{
+		SITL  = SocketInterface_t(sitlhost,sitlin,sitlout,&RcvdMessages);
+		AP    = &SITL;
+	}
+
+	if(radiobaud > 0){
+		gsPort = SerialInterface_t(gsradio,radiobaud,0,&RcvdMessages);
+		COM    = &gsPort;
+	}
+	else{
+		comSock = SocketInterface_t(gshost,gsin,gsout,&RcvdMessages);
+		COM     = &comSock;
+	}
+
+	DAQ_t daq_module(AP,COM);
+	COM_t com_module(AP,COM,&FlightData);
+
+	FlightManagementSystem_t FMS(AP,COM,&FlightData,NULL);
+
+	if(verbose){
+		daq_module.log.setConsoleOutput(true);
+		com_module.log.setConsoleOutput(true);
+		FMS.log.setConsoleOutput(true);
+	}
+
+	FMS.debugDAA = debug;
+
+	FMS.SendStatusText("Starting ICAROUS");
+
+	std::thread thread1(&DAQ_t::GetPixhawkData,&daq_module);
+	std::thread thread2(&COM_t::GetGSData,&com_module);
+
+	thread1.join();
+	thread2.join();
 }
 

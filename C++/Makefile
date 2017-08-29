@@ -1,16 +1,24 @@
 CFLAGS = -Wall -g -Wno-write-strings -std=c++11
 INCLUDES = -I./libs/mavlink -I./include/ACCoRD -I./include/ICAROUS
-LIBS = -lpthread -lm
+PLEXIL_INCLUDES = -I./plexil-4/include -I./include/PLEXIL
+LIBS  = -lpthread -lm
+PLIBS = -L./plexil-4/lib -lpugixml -lIpcUtils -lipc -lPlexilExpr -lPlexilUtils -lPlexilValue -lpthread
 SRCS = $(wildcard ./src/ICAROUS/*.cpp)
 OBJS = $(patsubst ./src/ICAROUS/%.cpp,./obj/ICAROUS/%.o,$(SRCS))
 ASRCS = $(wildcard ./src/ACCoRD/*.cpp)
 AOBJS = $(patsubst ./src/ACCoRD/%.cpp,./obj/ACCoRD/%.o,$(ASRCS))
-MAIN = icarous
+PSRCS = ./src/PLEXIL/IpcIcarousAdapter.cpp
+POBJS = $(patsubst ./src/PLEXIL/%.cpp,./obj/PLEXIL/%.o,$(PSRCS))
+PLAIN = icarous
+ICPLEXIL = icarousPlexil
 
-all: $(MAIN) DAAGeofencing
+all: $(PLAIN) $(ICPLEXIL) DAAGeofencing
 
-$(MAIN): LIB
-	@$(CXX) $(CFLAGS) $(INCLUDES) -o $(MAIN) src/LaunchIcarous.cpp libs/icarous.a $(LFLAGS) $(LIBS)
+$(PLAIN): LIB
+	@$(CXX) $(CFLAGS) $(INCLUDES) -o $(PLAIN) src/LaunchIcarous.cpp libs/icarous.a $(LFLAGS) $(LIBS)
+
+$(ICPLEXIL): LIB $(POBJS)
+	@$(CXX) $(CFLAGS) $(PLEXIL_INCLUDES) $(INCLUDES) -o $(ICPLEXIL) src/LaunchIcarousPlexil.cpp libs/icarous.a $(POBJS) $(LIBS) $(PLIBS)
 
 LIB: PRE $(AOBJS) $(OBJS)
 	ar -cr libs/icarous.a $(OBJS) $(AOBJS) && ranlib libs/icarous.a 
@@ -24,9 +32,13 @@ DAAGeofencing:
 ./obj/ACCoRD/%.o:./src/ACCoRD/%.cpp	
 	$(CXX) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+./obj/PLEXIL/%.o:./src/PLEXIL/%.cpp
+	$(CXX) $(CFLAGS) $(PLEXIL_INCLUDES) $(INCLUDES) -c $< -o $@ $(PLIBS)
+
 PRE:
 	@test -d obj/ICAROUS || (mkdir obj && mkdir obj/ICAROUS)
 	@test -d obj/ACCoRD || (mkdir obj/ACCoRD)
+	@test -d obj/PLEXIL || (mkdir obj/PLEXIL)
 
 cleanica:
 	-@rm obj/ICAROUS/* libs/icarous.a

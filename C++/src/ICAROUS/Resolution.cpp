@@ -39,7 +39,7 @@
 
 #include "QuadFMS.h"
 
-Resolution_t::Resolution_t(QuadFMS_t* fms){
+Resolution_t::Resolution_t(FlightManagementSystem_t* fms){
 	FMS = fms;
 	FlightData = fms->FlightData;
 	resolutionSpeed = 1.0;
@@ -115,7 +115,7 @@ void Resolution_t::ResolveFlightPlanDeviation(){
 		FlightData->ResolutionPlan.addNavPoint(wp1);
 
 		std::cout<<FlightData->ResolutionPlan.toString()<<std::endl;
-		FMS->planType      = QuadFMS_t::TRAJECTORY;
+		FMS->planType      = FlightManagementSystem_t::TRAJECTORY;
 		FMS->resumeMission = false;
 		FMS->goalReached   = true;
 	}

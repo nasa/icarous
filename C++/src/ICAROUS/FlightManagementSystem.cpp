@@ -38,7 +38,8 @@
 #include "FlightManagementSystem.h"
 #include <sys/time.h>
 
-FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t *task):log("FMS"){
+FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t *task)
+ :log("FMS"),Detector(this),Resolver(this){
     px4Intf      = px4int;
     gsIntf       = gsint;
     FlightData   = fData;
