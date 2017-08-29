@@ -39,9 +39,9 @@
 
 #include "QuadFMS.h"
 
-Resolution_t::Resolution_t(FlightManagementSystem_t* fms){
+Resolution_t::Resolution_t(FlightManagementSystem_t* fms,AircraftData_t* fdata){
 	FMS = fms;
-	FlightData = fms->FlightData;
+	FlightData = fdata;
 	resolutionSpeed = 1.0;
 	returnPathConflict = false;
 	DAA.parameters.loadFromFile(FlightData->paramData->getString("DAA_CONFIG"));

@@ -1,0 +1,179 @@
+// -*- Mode: Java -*-
+ICAROUS:
+concurrent
+{
+    String _state = "IDLE";	    
+    Integer nextWaypoint = 1;
+    Integer totalMissionWaypoints;
+    
+    // Conflict indicators
+    boolean keepInGeofenceConflict = false;
+    boolean keepOutGeofenceConflict = false;
+    boolean trafficConflict = false;
+    boolean flightPlanConflict = false;
+    Real previousConflicts = 0;
+    
+    UPDATE_AIRCRAFT_STATES:{
+	Repeat true;
+	UpdateCurrentAircraftState();
+    }
+
+    MISSION:{
+	repeat true;
+
+	if(FMS.CRUISE.RESOLVE_CONFLICTS.resumeMision){
+	    ExecutionMission();
+	}
+    }
+
+    FMS:{
+	IDLE:{}
+    
+	TAKEOFF:{
+
+	    // Variable declaration
+	    Real altitudeAGL;
+	    boolean cmdArmedSuccess = true;
+
+	    // Execution conditions
+	    Start _state == "TAKEOFF";
+	    Invariant cmdArmedSuccess;
+
+	    // Actions
+	
+	    // Arm throttles
+	    SetMode("GUIDED");	
+	    cmdArmedSuccess  = ArmThrottles();
+
+	    // Throttle up motors
+	    ThrottleUpMotors();
+
+	    // Monitor the ascend from ground to takeoff altitude (5 m AGL)
+	    while( LookUp(altitudeAGL) < 5.0 ){       
+	    
+	    }
+
+	    // Transition to CLIMB after takeoff altitude is reached
+	    _state = "CLIMB";
+	}
+
+	CLIMB:{
+	    Start _state == "CLIMB"
+	    SetNextWaypoint(nextWaypoint);
+
+	    CHECK_ALTITUDE:{
+		boolean reachedAltitude = false;
+		Real error;
+		Repeat !reachedAltitude;
+
+		error = abs(LookUp(targetAltitude) - LookUp(altitudeAGL));
+
+		if(error < 2.5){
+		    _state = "CRUISE";
+		    SetMode("AUTO");
+		    nextWaypoint = nextWaypoint+1;
+		    reachedAltitude = true;
+		}
+	    }	    
+	}
+
+	CRUISE:
+	concurrent
+	{
+	    Start _state == "CRUISE";
+	    Repeat _state == "CRUISE";
+
+	    // A hash value to identify distinctly the types of conflicts and
+	    // distinguish the new set of conflicts from the others.
+	    Real currentConflicts; 
+
+	    currentConflicts = 0;
+	    
+	    DETECT_CONFLICTS:{
+		Repeat true;
+		keepInGeofenceConflict = CheckKeepInGeofence();
+		keepOutGeofenceConflict = CheckKeepOutGeofence();
+		trafficConflict = CheckTrafficConflict();
+
+		if(keepInGeofenceConflict)
+		    currentConflicts = currentConflicts + 0.1231;
+
+		if(keepOutGeofenceConflict)
+		    currentConflicts = currentConflicts + 1.2346;
+
+		if(trafficConflict)
+		    currentConflicts = currentConflicts + 2.1785;
+
+		if(flightPlanConflict)
+		    currentConflicts = currentConflicts + 3.1234;
+
+		if(abs(previousConflicts - currentConflicts) > 0.01){
+		    previousConflicts = currentConflicts;
+		    if(previousConflicts > 0.0){
+			computeResolution = true;
+		    }
+		}				
+	    }
+
+	    RESOLVE_CONFLICTS:
+	    concurrent
+	    {
+		boolean computeResolution = false;
+		boolean ExecutionEnabled = false;
+		boolean newTrajectory = false;
+		boolean resumeMission = false;		
+		String resolveState;
+		String trajectoryState;
+		String maneuverState;
+		String resolutionType;
+		
+		End resumeMission;		
+			       
+		COMPUTE:{
+		    Repeat true;
+		    
+		    if(computeResolution){
+			// Stop any resolution execution
+			ExecutionEnabled = false;
+
+			// Rest execution parameters
+			newTrajectory = true;
+			completed = false;
+			
+			// Enter loiter/hover
+			
+			
+			// Compute resolution
+			
+			
+			// Enable execution
+			ExecutionEnabled = true;
+						
+			computeResolution = false;
+		    }		    
+		}
+
+		EXECUTE:{
+		    Repeat true;
+		 
+		    if(ExecutionEnabled){
+			TRAJECTORY:{
+			    completed = FlyTrajectory(newTrajectory);
+			    newTrajectory = false;
+			}
+			
+			MANEUVER:{
+			    
+			}
+		    }
+
+		    if(completed){
+			ExecutionEnabled = false;
+			resumeMission = true;
+		    }
+		    
+		}
+	    }	 
+	}
+    }
+}

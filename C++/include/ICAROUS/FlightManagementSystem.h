@@ -132,6 +132,7 @@ class FlightManagementSystem_t{
         void SetSpeed(float speed);
         void SendStatusText(char buffer[]);
         void ArmThrottles(bool arm);
+        uint8_t ThrottleUp();
         void StartTakeoff(float alt);
         void StartLand();
         void GetLatestAircraftData();

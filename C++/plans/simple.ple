@@ -1,99 +1,152 @@
 // -*- Mode: Java -*-
+
+Real Lookup altitudeAGL;
+
+Boolean Command UpdateCurrentAircraftState();
+Integer Command RunIdleChecks();
+Boolean Command ThrottleUp();
+Boolean Command CheckKeepInGeofence();
+Boolean Command CheckKeepOutGeofence();
+Boolean Command CheckTraffic();
+Boolean Command CheckFlightPlan();
+Boolean Command FlyTrajectory(Boolean value);
+Boolean Command FlyManeuver();
+
+Command SetMode(String mode);
+Command ArmMotors(Boolean status);
+Command pprint(...);
+
 ICAROUS:
-concurrent
+Concurrence
 {
-    String _state = "IDLE";	    
-    Integer nextWaypoint = 1;
-    Integer totalMissionWaypoints;
-    
-    // Conflict indicators
-    boolean keepInGeofenceConflict = false;
-    boolean keepOutGeofenceConflict = false;
-    boolean trafficConflict = false;
-    boolean flightPlanConflict = false;
-    Real previousConflicts = 0;
-    
-    UPDATE_AIRCRAFT_STATES:{
+        
+    UPDATE_AIRCRAFT_STATES:
+    {
+	Boolean rVal;
+	EndCondition isKnown(rVal);	
 	Repeat true;
-	UpdateCurrentAircraftState();
+        rVal = UpdateCurrentAircraftState();
     }
 
-    MISSION:{
-	repeat true;
-
-	if(FMS.CRUISE.RESOLVE_CONFLICTS.resumeMision){
-	    ExecutionMission();
-	}
-    }
-
-    FMS:{
-	IDLE:{}
-    
-	TAKEOFF:{
-
-	    // Variable declaration
-	    Real altitudeAGL;
-	    boolean cmdArmedSuccess = true;
-
-	    // Execution conditions
-	    Start _state == "TAKEOFF";
-	    Invariant cmdArmedSuccess;
-
-	    // Actions
+    FMS:
+    {
+	String _state = "IDLE";
+	Boolean executeResolution;
+	Boolean trajectoryResolution;
+	Boolean maneuverResolution;	
+	Repeat true;
 	
-	    // Arm throttles
-	    SetMode("GUIDED");	
-	    cmdArmedSuccess  = ArmThrottles();
+	IDLE:
+	{
+	    Integer rVal;
+	    Start (_state == "IDLE");
+	    Repeat (_state == "IDLE");
 
-	    // Throttle up motors
-	    ThrottleUpMotors();
-
-	    // Monitor the ascend from ground to takeoff altitude (5 m AGL)
-	    while( LookUp(altitudeAGL) < 5.0 ){       
-	    
+	    // Run idle checks - Check for mission start command
+	    RUN:
+	    {
+		EndCondition isKnown(rVal);				
+		rVal = RunIdleChecks();
 	    }
 
-	    // Transition to CLIMB after takeoff altitude is reached
-	    _state = "CLIMB";
+	    CHECK_TRANSITION:
+	    {
+		if(rVal == 1){
+		    _state = "TAKEOFF";
+		}endif;
+	    }	    	   
+	}
+
+	TAKEOFF:{
+	    Boolean cmdTakeoffSuccess;	    
+	    Start ( _state == "TAKEOFF");	    
+	    Repeat (_state == "TAKEOFF");
+
+	    CHANGEMODE1:
+	        SetMode("GUIDED");
+
+	    ARM:
+	        ArmMotors(true);
+	    
+	    SPOOL_UP_MOTORS:
+	    {
+		EndCondition isKnown(cmdTakeoffSuccess);
+		cmdTakeoffSuccess = ThrottleUp();
+	    }
+
+	    CHECK_TRANSITION:
+	    {
+		if !cmdTakeoffSuccess
+		    _state = "IDLE";
+		else
+		    _state = "CLIMB";
+		endif
+	    }	    	    
 	}
 
 	CLIMB:{
-	    Start _state == "CLIMB"
-	    SetNextWaypoint(nextWaypoint);
+	    Start (_state == "CLIMB");
 
-	    CHECK_ALTITUDE:{
-		boolean reachedAltitude = false;
-		Real error;
-		Repeat !reachedAltitude;
+	    MONITOR_ASCENT:
+	    {
+		Real alt = 0;
+		EndCondition (abs(Lookup(altitudeAGL) - 5.0) < 2);
+		
+		// Perform any required activities during ascent - nothing for now
+		alt = Lookup(altitudeAGL);
+	    }
 
-		error = abs(LookUp(targetAltitude) - LookUp(altitudeAGL));
-
-		if(error < 2.5){
-		    _state = "CRUISE";
-		    SetMode("AUTO");
-		    nextWaypoint = nextWaypoint+1;
-		    reachedAltitude = true;
-		}
-	    }	    
+	    CHANGEMODE2:
+	        SetMode("AUTO");
+		
+	    // If all above actions were completed,
+	    // its time to transition to cruise
+	    CHECK_TRANSITION:
+		_state = "CRUISE";
 	}
-
+	
 	CRUISE:
-	concurrent
 	{
-	    Start _state == "CRUISE";
-	    Repeat _state == "CRUISE";
-
 	    // A hash value to identify distinctly the types of conflicts and
 	    // distinguish the new set of conflicts from the others.
-	    Real currentConflicts; 
+	    Real currentConflicts;
+	    Boolean keepInConflict;
+	    Boolean keepOutConflict;
+	    Boolean trafficConflict;
+	    Boolean flightPlanConflict;
+	    Boolean computeResolution;
 
+	    Start (_state == "CRUISE");
+	    Repeat _state == "CRUISE";
+	    
 	    currentConflicts = 0;
 	    
-	    DETECT_CONFLICTS:{
-		Repeat true;
-		keepInGeofenceConflict = CheckKeepInGeofence();
-		keepOutGeofenceConflict = CheckKeepOutGeofence();
-		trafficConflict = CheckTrafficConflict();
+	    DETECT_CONFLICTS:
+	    {
+
+		CHECK_KEEPIN:
+		{
+		    EndCondition isKnown(keepInConflict);
+		    keepInConflict = CheckKeepInGeofence();
+		}
+		
+		CHECK_KEEPOUT:
+		{
+		    EndCondition isKnown(keepOutConflict);
+		    keepOutConflict = CheckKeepOutGeofence();		    
+		}
+
+		CHECK_TRAFFIC:
+		{
+		    EndCondition isKnown(trafficConflict);
+		    trafficConflict = CheckTraffic();
+		}
+
+		CHECK_FLIGHTPLAN:
+		{
+		    EndCondition isKnown(flightPlanConflict);
+		    flightPlanConfict = CheckFlightPlan();
+		}
 
 		if(keepInGeofenceConflict)
 		    currentConflicts = currentConflicts + 0.1231;
@@ -116,64 +169,46 @@ concurrent
 	    }
 
 	    RESOLVE_CONFLICTS:
-	    concurrent
 	    {
-		boolean computeResolution = false;
-		boolean ExecutionEnabled = false;
-		boolean newTrajectory = false;
-		boolean resumeMission = false;		
-		String resolveState;
-		String trajectoryState;
-		String maneuverState;
-		String resolutionType;
+		Boolean newTrajectory = false;
+		Boolean completed;
 		
-		End resumeMission;		
-			       
-		COMPUTE:{
-		    Repeat true;
-		    
+		COMPUTE:
+		{
 		    if(computeResolution){
-			// Stop any resolution execution
-			ExecutionEnabled = false;
 
-			// Rest execution parameters
-			newTrajectory = true;
-			completed = false;
-			
-			// Enter loiter/hover
-			
-			
-			// Compute resolution
-			
-			
-			// Enable execution
-			ExecutionEnabled = true;
-						
-			computeResolution = false;
-		    }		    
+
+			executeResolution = true;
+		    }
 		}
 
-		EXECUTE:{
-		    Repeat true;
-		 
-		    if(ExecutionEnabled){
-			TRAJECTORY:{
+		EXECUTE:
+		{
+		    if(executeResolution){
+			TRAJECTORY:
+			{
+			    StartCondition trajectoryResolution;
+			    EndCondition isKnown(completed);
 			    completed = FlyTrajectory(newTrajectory);
-			    newTrajectory = false;
 			}
-			
-			MANEUVER:{
-			    
+			newTrajectory = false;
+		    }else if(maneuverResolution){
+			MANEUVER:
+			{
+			    StartCondition maneuverResolution;
+			    EndCondition isKnown(completed);
+			    completed = FlyManeuver();
 			}
-		    }
+		    }else{
+			completed = true;
+		    }endif
 
 		    if(completed){
-			ExecutionEnabled = false;
+			executeResolution = false;
 			resumeMission = true;
 		    }
-		    
 		}
-	    }	 
-	}
+	    }	    
+	} 
     }
 }

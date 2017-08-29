@@ -68,9 +68,35 @@ void IpcIcarousAdapter::processCommand(const std::vector<const PlexilMsgBase*>& 
 {
   PlexilStringValueMsg const *cmdMsg = (PlexilStringValueMsg const *) msgs[0];
   const std::string cmdName(cmdMsg->stringValue);
+  IpcMessageId transId = IpcMessageId(msgs[0]->senderUID, msgs[0]->serial);
 
-  
-  
+  if (cmdName == "UpdateCurrentAircraftState"){
+	  //std::cout<<"getting data"<<std::endl;
+	  icarous->fms->GetLatestAircraftData();
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,PLEXIL::Boolean(true));
+  }
+  else if (cmdName == "RunIdleChecks"){
+	  //std::cout<<"running idle checks"<<std::endl;
+	  PLEXIL::Value returnVal(PLEXIL::Integer(icarous->fms->IDLE()));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
+  else if(cmdName == "SetMode"){
+	  PlexilStringValueMsg const *nameMsg = (PlexilStringValueMsg const *) msgs[1];
+	  std::string mode(nameMsg->stringValue);
+	  if(mode == "GUIDED")
+		  icarous->fms->SetMode(GUIDED);
+	  else if(mode =="AUTO")
+		  icarous->fms->SetMode(AUTO);
+  }
+  else if(cmdName == "ArmMotors"){
+	  PlexilBooleanValueMsg const *valueMsg = (PlexilBooleanValueMsg const *) msgs[1];
+	  bool val = valueMsg->boolValue;
+	  icarous->fms->ArmThrottles(val);
+  }
+  else if(cmdName == "ThrottleUp"){
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(icarous->fms->ThrottleUp()?true:false));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
 }
 
 /**
@@ -80,7 +106,13 @@ void IpcIcarousAdapter::processCommand(const std::vector<const PlexilMsgBase*>& 
 void IpcIcarousAdapter::processLookupNow(const std::vector<const PlexilMsgBase*>& msgs)
 {
   std::string stateName(((const PlexilStringValueMsg*)msgs[0])->stringValue);
-  debugMsg("IpcIcarousAdapter:lookupNow", " ignoring lookup request for " << stateName);
+  //std::cout<<"Received lookup:"<<stateName<<std::endl;
+  IpcMessageId transId = IpcMessageId(msgs[0]->senderUID, msgs[0]->serial);
+
+  if(stateName == "altitudeAGL"){
+	  PLEXIL::Value returnVal(PLEXIL::Real(icarous->fms->FlightData->acState.positionLast().alt()));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
 }
 
 

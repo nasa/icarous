@@ -35,7 +35,7 @@ private:
 public:
 	bool returnPathConflict;
 	Resolution_t(){};
-	Resolution_t(FlightManagementSystem_t *fms);
+	Resolution_t(FlightManagementSystem_t *fms,AircraftData_t* fdata);
 	void ResolveKeepInConflict();
 	void ResolveKeepOutConflict_Astar();
 	void ResolveKeepOutConflict_RRT();

@@ -1,0 +1,16 @@
+ <Interfaces ConfigurationType="default">
+  <Adapter AdapterType="OSNativeTime" />
+  <Adapter AdapterType="Utility" />
+  <Adapter AdapterType="IpcAdapter" Server="localhost:1381">
+    <CommandNames>
+      UpdateCurrentAircraftState,
+      RunIdleChecks,
+      SetMode,
+      ArmMotors,
+      ThrottleUp      
+    </CommandNames>
+    <LookupNames>
+      altitudeAGL
+    </LookupNames> 
+  </Adapter>
+</Interfaces>

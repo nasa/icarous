@@ -82,6 +82,8 @@ public:
 	void RunWithPlexil();
 	static std::string release();
 	static std::string VERSION;
+
+	FlightManagementSystem_t *fms;
 };
 
 

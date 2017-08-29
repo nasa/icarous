@@ -39,7 +39,7 @@
 #include <sys/time.h>
 
 FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t *task)
- :log("FMS"),Detector(this),Resolver(this){
+ :log("FMS"),Detector(this,fData),Resolver(this,fData){
     px4Intf      = px4int;
     gsIntf       = gsint;
     FlightData   = fData;
@@ -340,3 +340,23 @@ void FlightManagementSystem_t::CheckReset(){
 void FlightManagementSystem_t::SetDeviationApproved(bool status){
 	deviationApproved = status;
 }
+
+uint8_t FlightManagementSystem_t::ThrottleUp(){
+
+	targetAlt = (float) FlightData->paramData->getValue("TAKEOFF_ALT");
+
+	// Send Takeoff with target altitude
+	StartTakeoff(targetAlt);
+
+	// Sleep
+	sleep(1);
+
+	if(CheckAck(MAV_CMD_NAV_TAKEOFF)){
+		SendStatusText("Starting climb");
+		return 1;
+	}
+	else{
+		return 0;
+	}
+}
+

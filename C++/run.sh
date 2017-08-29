@@ -23,6 +23,14 @@ if [ "$1" == 'SITL' ];then
 	--sitlhost $SITL_HOST --sitlin $SITL_INPUT_PORT \
 	--gshost $COM_HOST --gsin $COM_INPUT_PORT --gsout $COM_OUTPUT_PORT \
 	--mode $MODE --config $2 $3 ${POST}
+
+elif [ "$1" == 'ICPL' ];then
+    . ./plexil-4/scripts/plexil-setup.sh
+    echo "Launching ICAROUS with Pixhawk"
+       ./icarousPlexil --verbose \
+	--sitlhost $SITL_HOST --sitlin $SITL_INPUT_PORT \
+	--gshost $COM_HOST --gsin $COM_INPUT_PORT --gsout $COM_OUTPUT_PORT \
+	--mode $MODE --config $2 $3 ${POST}
    
 elif [ "$1" == 'PX4' ];then
     echo "Launching ICAROUS with Pixhawk"

@@ -42,14 +42,14 @@
 #include <time.h>
 
 
-ConflictDetection_t::ConflictDetection_t(FlightManagementSystem_t* fms)
+ConflictDetection_t::ConflictDetection_t(FlightManagementSystem_t* fms,AircraftData_t* fdata)
 	:KeepInFence(-1,KEEP_IN,0,0,0,NULL),KeepOutFence(-1,KEEP_OUT,0,0,0,NULL){
 	keepInConflict   = false;
 	keepOutConflict  = false;
 	flightPlanDeviationConflict = false;
 	trafficConflict = false;
 	FMS = fms;
-	FlightData = fms->FlightData;
+	FlightData = fdata;
 	DAA.parameters.loadFromFile(FlightData->paramData->getString("DAA_CONFIG"));
 	daaLookAhead = DAA.parameters.getLookaheadTime();
 	time(&daaTimeStart);

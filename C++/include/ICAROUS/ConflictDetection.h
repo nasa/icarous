@@ -36,7 +36,7 @@ public:
 	bool trafficConflict;
 
 	ConflictDetection_t(){};
-	ConflictDetection_t(FlightManagementSystem_t* fms);
+	ConflictDetection_t(FlightManagementSystem_t* fms,AircraftData_t* fdata);
 	void AddFenceConflict(Geofence_t gf);
 	uint8_t size();
 	void clear();

@@ -274,6 +274,7 @@ void Icarous_t::RunWithPlexil(){
 	COM_t com_module(AP,COM,&FlightData);
 
 	FlightManagementSystem_t FMS(AP,COM,&FlightData,NULL);
+	fms = &FMS;
 
 	if(verbose){
 		daq_module.log.setConsoleOutput(true);
