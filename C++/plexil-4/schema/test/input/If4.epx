@@ -1,0 +1,25 @@
+<!-- Tests Unknown result -->
+
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <If>
+    <VariableDeclarations>
+      <DeclareVariable>
+        <Name>test</Name>
+        <Type>Boolean</Type>
+      </DeclareVariable>
+    </VariableDeclarations>
+    <Condition>
+      <BooleanVariable>test</BooleanVariable>
+    </Condition>
+    <Then>
+      <Node NodeType="Empty">
+        <NodeId>One</NodeId>
+      </Node>
+    </Then>
+    <Else>
+      <Node NodeType="Empty">
+        <NodeId>Two</NodeId>
+      </Node>
+    </Else>    
+  </If>
+</PlexilPlan>

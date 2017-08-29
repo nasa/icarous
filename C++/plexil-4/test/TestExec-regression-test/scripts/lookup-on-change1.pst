@@ -1,0 +1,12 @@
+
+// lookup-on-change1
+
+initial-state {
+  state time () = 1.0 : real;
+  state foo  () = 1 : bool;
+}
+
+script {
+  state time () = 1.0 : real;
+}
+

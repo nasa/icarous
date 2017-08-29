@@ -1,0 +1,21 @@
+minTest:
+Concurrence {
+  Integer l, m, n;
+  Real x, y;
+  PostCondition !isKnown(l) && m == 1 && n == 1 && x == 2.0 && y == 7.0;
+
+unknownInts:
+  l = min(l, 0);
+
+equalInts:
+  m = min(1,1);
+
+unequalInts:
+  n = min(1, 2);
+
+equalReals:
+  x = min(2.0, 2.0);
+
+unequal:
+  y = min(7.0, 7.1);
+}

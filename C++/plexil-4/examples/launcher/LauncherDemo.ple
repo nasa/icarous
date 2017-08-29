@@ -1,0 +1,23 @@
+String Command StartPlan(...); // actually (String planName [, String paramName, Any paramValue]* )
+Command ExitPlan(String planName);
+Command pprint(...);
+
+String Lookup PlanState(String planName);
+String Lookup PlanOutcome(String planName);
+String Lookup PlanFailureType(String planName);
+
+LauncherDemo:
+{
+  String planName;
+  pprint("LauncherDemo: starting Launchee");
+  planName = StartPlan("Launchee");
+  {
+    EndCondition Lookup(PlanState(planName)) == "FINISHED";
+  LauncherWait:
+    Wait 5;
+    pprint("LauncherDemo: requesting Launchee to exit");
+  LauncherExitLaunchee:
+    ExitPlan(planName);
+  }
+  pprint("LauncherDemo: confirmed Launchee exited");
+}

@@ -1,0 +1,3 @@
+{
+    Root: { StartCondition "foo" + "bar" == "foobar"; }
+}

@@ -1,0 +1,20 @@
+Command Foo (Integer, String);
+Command pprint (...);
+Real Command Bar ();
+Real Lookup X ();
+
+Plan1:
+{
+  Real b;
+  Start Lookup(X) > 0;
+
+  Foo (1, "blue");
+
+  b = Bar ();
+  pprint (b);
+
+  b = Bar ();
+  pprint (b);
+
+}
+

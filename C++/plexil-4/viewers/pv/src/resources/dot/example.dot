@@ -1,0 +1,6 @@
+digraph simple_hierarchy 
+{
+   B [label="The boss"]      // node B
+   E [label="The employee"]  // node E
+   B->E [label="commands", fontcolor=darkgreen] // edge B->E
+}

@@ -1,0 +1,440 @@
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:addPlan]Added plan: 
+TestArrays{
+ State: (id_262[a](INACTIVE): state(INACTIVE)) (inf)
+  testIntStateVariable{
+   State: (id_317[a](INACTIVE): state(INACTIVE)) (inf)
+  }
+  callBoolArrayCommand{
+   State: (id_367[a](INACTIVE): state(INACTIVE)) (inf)
+  }
+  testCallBoolArrayCommand{
+   State: (id_417[a](INACTIVE): state(INACTIVE)) (inf)
+  }
+}
+
+[PlexilExec:handleConditionsChanged]Node TestArrays had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'TestArrays' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'TestArrays' on the state change queue in position 1
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 1
+[PlexilExec:step][1:0] State change queue: TestArrays 
+[PlexilExec:step][1:0:0] Transitioning node TestArrays
+[PlexilExec:handleConditionsChanged]Node TestArrays had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'TestArrays' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'TestArrays' on the state change queue in position 2
+[PlexilExec:step][1:1] State change queue: TestArrays 
+[PlexilExec:step][1:1:0] Transitioning node TestArrays
+[PlexilExec:handleConditionsChanged]Node testIntStateVariable had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'testIntStateVariable' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'testIntStateVariable' on the state change queue in position 3
+[PlexilExec:handleConditionsChanged]Node callBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'callBoolArrayCommand' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'callBoolArrayCommand' on the state change queue in position 4
+[PlexilExec:handleConditionsChanged]Node testCallBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'testCallBoolArrayCommand' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'testCallBoolArrayCommand' on the state change queue in position 5
+[PlexilExec:handleNeedsExecution]Storing action for node 'TestArrays' of type 'NodeList' to be executed.
+[PlexilExec:handleConditionsChanged]Node TestArrays had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'TestArrays' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:2] State change queue: testIntStateVariable callBoolArrayCommand testCallBoolArrayCommand 
+[PlexilExec:step][1:2:0] Transitioning node testIntStateVariable
+[Test:testOutput]Registering change lookup stateInteger() with tolerances 0
+[PlexilExec:handleConditionsChanged]Node testIntStateVariable had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'testIntStateVariable' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:2:1] Transitioning node callBoolArrayCommand
+[PlexilExec:handleConditionsChanged]Node callBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'callBoolArrayCommand' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'callBoolArrayCommand' on the state change queue in position 6
+[PlexilExec:step][1:2:2] Transitioning node testCallBoolArrayCommand
+[PlexilExec:handleConditionsChanged]Node testCallBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'testCallBoolArrayCommand' was previously eligible to transition but isn't now.
+[PlexilExec:step][1:3] State change queue: callBoolArrayCommand 
+[PlexilExec:step][1:3:0] Transitioning node callBoolArrayCommand
+[PlexilExec:handleNeedsExecution]Storing action for node 'callBoolArrayCommand' of type 'Command' to be executed.
+[PlexilExec:handleConditionsChanged]Node callBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'callBoolArrayCommand' was previously eligible to transition but isn't now.
+[Test:testOutput]Executing boolArrayCommand() into (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>]) with ack (id_583[a](UNKNOWN): string)
+[PlexilExec:cycle]==>End cycle 1
+[PlexilExec:printPlan]
+TestArrays{
+ State: (id_262[a](EXECUTING): state(EXECUTING)) (0)
+ SkipCondition: (id_280[a](0): boolean)
+ StartCondition: (id_471[i](UNKNOWN): ((id_473[i](UNKNOWN): ((id_475[i](UNKNOWN): ArrayElement: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])[(id_478[i](0): int)]) == (id_479[i](UNKNOWN): string))) && (id_480[i](UNKNOWN): !(id_482[i](UNKNOWN): isknown((id_484[i](UNKNOWN): ArrayElement: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])[(id_487[i](2): int)])))) && (id_488[i](UNKNOWN): ((id_490[i](UNKNOWN): ArrayElement: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])[(id_493[i](0): int)]) == (id_494[i](UNKNOWN): real))) && (id_495[i](UNKNOWN): !(id_497[i](UNKNOWN): isknown((id_499[i](UNKNOWN): ArrayElement: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])[(id_502[i](2): int)])))) && (id_503[i](UNKNOWN): ((id_505[i](UNKNOWN): ArrayElement: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])[(id_508[i](0): int)]) == (id_509[i](1): int))) && (id_510[i](UNKNOWN): !(id_512[i](UNKNOWN): isknown((id_514[i](UNKNOWN): ArrayElement: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])[(id_517[i](2): int)])))) && (id_518[i](UNKNOWN): ArrayElement: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])[(id_521[i](0): int)]) && (id_522[i](UNKNOWN): !(id_524[i](UNKNOWN): ArrayElement: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])[(id_527[i](1): int)])) && (id_528[i](UNKNOWN): !(id_530[i](UNKNOWN): isknown((id_532[i](UNKNOWN): ArrayElement: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])[(id_535[i](2): int)])))))
+ EndCondition: (id_468[a](0): childrenFinished(0:3))
+ InvariantCondition: (id_286[a](1): boolean)
+ PreCondition: (id_288[a](1): boolean)
+ PostCondition: (id_290[a](1): boolean)
+ RepeatCondition: (id_292[a](0): boolean)
+ AncestorInvariantCondition: (id_294[a](1): boolean)
+ AncestorEndCondition: (id_296[a](0): boolean)
+ ParentExecutingCondition: (id_298[a](1): boolean)
+ AllChildrenWaitingOrFinishedCondition: (id_465[i](UNKNOWN): childrenWaitingOrFinished(0:3))
+ AbortCompleteCondition: (id_302[a](UNKNOWN): boolean)
+ ParentWaitingCondition: (id_304[a](0): boolean)
+ ParentFinishedCondition: (id_306[a](0): boolean)
+ CommandHandleReceivedCondition: (id_308[a](1): boolean)
+ command_handle: (id_265[a](UNKNOWN):  command_handle)
+ x: (id_310[a](4): int)
+ myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+ myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+ myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+ myBooleanArray: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])
+  testIntStateVariable{
+   State: (id_317[a](WAITING): state(WAITING)) (0)
+   SkipCondition: (id_335[a](0): boolean)
+   StartCondition: (id_557[a](UNKNOWN): ((id_559[a](UNKNOWN): LookupOnChange(5.53354e-322(), (id_562[a](0): real))) == (id_563[a](100): int)))
+   EndCondition: (id_339[a](1): boolean)
+   InvariantCondition: (id_341[a](1): boolean)
+   PreCondition: (id_343[a](1): boolean)
+   PostCondition: (id_345[a](1): boolean)
+   RepeatCondition: (id_347[a](0): boolean)
+   AncestorInvariantCondition: (id_540[a](1): (TransparentWrapper(id_536[auT]{1}((id_294[a](1): boolean)) && TransparentWrapper(id_538[auT]{1}((id_286[a](1): boolean)))
+   AncestorEndCondition: (id_546[a](0): (TransparentWrapper(id_542[auT]{0}((id_296[a](0): boolean)) || TransparentWrapper(id_544[auT]{0}((id_468[a](0): childrenFinished(0:3))))
+   ParentExecutingCondition: (id_549[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_548[a](EXECUTING): state(EXECUTING))))
+   AllChildrenWaitingOrFinishedCondition: (id_355[a](UNKNOWN): boolean)
+   AbortCompleteCondition: (id_357[a](UNKNOWN): boolean)
+   ParentWaitingCondition: (id_552[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_551[a](WAITING): state(WAITING))))
+   ParentFinishedCondition: (id_555[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_554[a](FINISHED): state(FINISHED))))
+   CommandHandleReceivedCondition: (id_363[a](1): boolean)
+   command_handle: (id_320[a](UNKNOWN):  command_handle)
+   x: (id_310[a](4): int)
+   myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])
+  }
+  callBoolArrayCommand{
+   State: (id_367[a](EXECUTING): state(EXECUTING)) (0)
+   SkipCondition: (id_385[a](0): boolean)
+   StartCondition: (id_387[a](1): boolean)
+   EndCondition: (id_590[a](0): ((id_586[a](0): interruptibleCommandHandleValues((id_583[a](UNKNOWN): string))) || (id_588[a](0): ((id_584[a](0): isknown((id_583[a](UNKNOWN): string))) && (id_389[a](1): boolean)))
+   InvariantCondition: (id_391[a](1): boolean)
+   PreCondition: (id_393[a](1): boolean)
+   PostCondition: (id_395[a](1): boolean)
+   RepeatCondition: (id_397[a](0): boolean)
+   AncestorInvariantCondition: (id_568[a](1): (TransparentWrapper(id_564[auT]{1}((id_294[a](1): boolean)) && TransparentWrapper(id_566[auT]{1}((id_286[a](1): boolean)))
+   AncestorEndCondition: (id_574[i](UNKNOWN): (TransparentWrapper(id_570[iuT]{0}((id_296[a](0): boolean)) || TransparentWrapper(id_572[iuT]{0}((id_468[a](0): childrenFinished(0:3))))
+   ParentExecutingCondition: (id_576[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_548[a](EXECUTING): state(EXECUTING))))
+   AllChildrenWaitingOrFinishedCondition: (id_405[a](UNKNOWN): boolean)
+   AbortCompleteCondition: (id_582[i](UNKNOWN): boolean)
+   ParentWaitingCondition: (id_578[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_551[a](WAITING): state(WAITING))))
+   ParentFinishedCondition: (id_580[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_554[a](FINISHED): state(FINISHED))))
+   CommandHandleReceivedCondition: (id_594[a](0): ((id_592[a](0): allCommandHandleValues((id_583[a](UNKNOWN): string))) && (id_413[a](1): boolean))
+   command_handle: (id_370[a](UNKNOWN):  command_handle)
+   x: (id_310[a](4): int)
+   myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])
+  }
+  testCallBoolArrayCommand{
+   State: (id_417[a](WAITING): state(WAITING)) (0)
+   SkipCondition: (id_435[a](0): boolean)
+   StartCondition: (id_616[a](0): ((id_618[a](UNKNOWN): (id_621[a](UNKNOWN): ((id_368[a](UNKNOWN):  outcome) == (id_620[a](SUCCESS):  outcome)))) && (id_623[a](0): ArrayElement: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])[(id_626[a](1): int)]))
+   EndCondition: (id_439[a](1): boolean)
+   InvariantCondition: (id_441[a](1): boolean)
+   PreCondition: (id_443[a](1): boolean)
+   PostCondition: (id_445[a](1): boolean)
+   RepeatCondition: (id_447[a](0): boolean)
+   AncestorInvariantCondition: (id_602[a](1): (TransparentWrapper(id_598[auT]{1}((id_294[a](1): boolean)) && TransparentWrapper(id_600[auT]{1}((id_286[a](1): boolean)))
+   AncestorEndCondition: (id_608[a](0): (TransparentWrapper(id_604[auT]{0}((id_296[a](0): boolean)) || TransparentWrapper(id_606[auT]{0}((id_468[a](0): childrenFinished(0:3))))
+   ParentExecutingCondition: (id_610[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_548[a](EXECUTING): state(EXECUTING))))
+   AllChildrenWaitingOrFinishedCondition: (id_455[a](UNKNOWN): boolean)
+   AbortCompleteCondition: (id_457[a](UNKNOWN): boolean)
+   ParentWaitingCondition: (id_612[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_551[a](WAITING): state(WAITING))))
+   ParentFinishedCondition: (id_614[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_554[a](FINISHED): state(FINISHED))))
+   CommandHandleReceivedCondition: (id_463[a](1): boolean)
+   command_handle: (id_420[a](UNKNOWN):  command_handle)
+   x: (id_310[a](4): int)
+   myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])
+  }
+}
+
+[Test:testOutput]Processing event: stateInteger() = 100
+[PlexilExec:handleConditionsChanged]Node testIntStateVariable had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'testIntStateVariable' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'testIntStateVariable' on the state change queue in position 7
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 2
+[PlexilExec:step][2:0] State change queue: testIntStateVariable 
+[PlexilExec:step][2:0:0] Transitioning node testIntStateVariable
+[PlexilExec:handleConditionsChanged]Node testIntStateVariable had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'testIntStateVariable' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'testIntStateVariable' on the state change queue in position 8
+[PlexilExec:step][2:1] State change queue: testIntStateVariable 
+[PlexilExec:step][2:1:0] Transitioning node testIntStateVariable
+[PlexilExec:handleConditionsChanged]Node testIntStateVariable had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'testIntStateVariable' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'testIntStateVariable' on the state change queue in position 9
+[PlexilExec:step][2:2] State change queue: testIntStateVariable 
+[PlexilExec:step][2:2:0] Transitioning node testIntStateVariable
+[PlexilExec:handleConditionsChanged]Node testIntStateVariable had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'testIntStateVariable' was previously eligible to transition but isn't now.
+[PlexilExec:cycle]==>End cycle 2
+[PlexilExec:printPlan]
+TestArrays{
+ State: (id_262[a](EXECUTING): state(EXECUTING)) (0)
+ SkipCondition: (id_280[a](0): boolean)
+ StartCondition: (id_471[i](UNKNOWN): ((id_473[i](UNKNOWN): ((id_475[i](UNKNOWN): ArrayElement: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])[(id_478[i](0): int)]) == (id_479[i](UNKNOWN): string))) && (id_480[i](UNKNOWN): !(id_482[i](UNKNOWN): isknown((id_484[i](UNKNOWN): ArrayElement: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])[(id_487[i](2): int)])))) && (id_488[i](UNKNOWN): ((id_490[i](UNKNOWN): ArrayElement: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])[(id_493[i](0): int)]) == (id_494[i](UNKNOWN): real))) && (id_495[i](UNKNOWN): !(id_497[i](UNKNOWN): isknown((id_499[i](UNKNOWN): ArrayElement: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])[(id_502[i](2): int)])))) && (id_503[i](UNKNOWN): ((id_505[i](UNKNOWN): ArrayElement: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])[(id_508[i](0): int)]) == (id_509[i](1): int))) && (id_510[i](UNKNOWN): !(id_512[i](UNKNOWN): isknown((id_514[i](UNKNOWN): ArrayElement: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])[(id_517[i](2): int)])))) && (id_518[i](UNKNOWN): ArrayElement: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])[(id_521[i](0): int)]) && (id_522[i](UNKNOWN): !(id_524[i](UNKNOWN): ArrayElement: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])[(id_527[i](1): int)])) && (id_528[i](UNKNOWN): !(id_530[i](UNKNOWN): isknown((id_532[i](UNKNOWN): ArrayElement: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])[(id_535[i](2): int)])))))
+ EndCondition: (id_468[a](0): childrenFinished(1:3))
+ InvariantCondition: (id_286[a](1): boolean)
+ PreCondition: (id_288[a](1): boolean)
+ PostCondition: (id_290[a](1): boolean)
+ RepeatCondition: (id_292[a](0): boolean)
+ AncestorInvariantCondition: (id_294[a](1): boolean)
+ AncestorEndCondition: (id_296[a](0): boolean)
+ ParentExecutingCondition: (id_298[a](1): boolean)
+ AllChildrenWaitingOrFinishedCondition: (id_465[i](UNKNOWN): childrenWaitingOrFinished(0:3))
+ AbortCompleteCondition: (id_302[a](UNKNOWN): boolean)
+ ParentWaitingCondition: (id_304[a](0): boolean)
+ ParentFinishedCondition: (id_306[a](0): boolean)
+ CommandHandleReceivedCondition: (id_308[a](1): boolean)
+ command_handle: (id_265[a](UNKNOWN):  command_handle)
+ x: (id_310[a](4): int)
+ myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+ myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+ myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+ myBooleanArray: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])
+  testIntStateVariable{
+   State: (id_317[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_318[a](SUCCESS):  outcome)
+   x: (id_310[a](4): int)
+   myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])
+  }
+  callBoolArrayCommand{
+   State: (id_367[a](EXECUTING): state(EXECUTING)) (0)
+   SkipCondition: (id_385[a](0): boolean)
+   StartCondition: (id_387[a](1): boolean)
+   EndCondition: (id_590[a](0): ((id_586[a](0): interruptibleCommandHandleValues((id_583[a](UNKNOWN): string))) || (id_588[a](0): ((id_584[a](0): isknown((id_583[a](UNKNOWN): string))) && (id_389[a](1): boolean)))
+   InvariantCondition: (id_391[a](1): boolean)
+   PreCondition: (id_393[a](1): boolean)
+   PostCondition: (id_395[a](1): boolean)
+   RepeatCondition: (id_397[a](0): boolean)
+   AncestorInvariantCondition: (id_568[a](1): (TransparentWrapper(id_564[auT]{1}((id_294[a](1): boolean)) && TransparentWrapper(id_566[auT]{1}((id_286[a](1): boolean)))
+   AncestorEndCondition: (id_574[i](UNKNOWN): (TransparentWrapper(id_570[iuT]{0}((id_296[a](0): boolean)) || TransparentWrapper(id_572[iuT]{0}((id_468[a](0): childrenFinished(1:3))))
+   ParentExecutingCondition: (id_576[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_548[a](EXECUTING): state(EXECUTING))))
+   AllChildrenWaitingOrFinishedCondition: (id_405[a](UNKNOWN): boolean)
+   AbortCompleteCondition: (id_582[i](UNKNOWN): boolean)
+   ParentWaitingCondition: (id_578[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_551[a](WAITING): state(WAITING))))
+   ParentFinishedCondition: (id_580[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_554[a](FINISHED): state(FINISHED))))
+   CommandHandleReceivedCondition: (id_594[a](0): ((id_592[a](0): allCommandHandleValues((id_583[a](UNKNOWN): string))) && (id_413[a](1): boolean))
+   command_handle: (id_370[a](UNKNOWN):  command_handle)
+   x: (id_310[a](4): int)
+   myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])
+  }
+  testCallBoolArrayCommand{
+   State: (id_417[a](WAITING): state(WAITING)) (0)
+   SkipCondition: (id_435[a](0): boolean)
+   StartCondition: (id_616[a](0): ((id_618[a](UNKNOWN): (id_621[a](UNKNOWN): ((id_368[a](UNKNOWN):  outcome) == (id_620[a](SUCCESS):  outcome)))) && (id_623[a](0): ArrayElement: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])[(id_626[a](1): int)]))
+   EndCondition: (id_439[a](1): boolean)
+   InvariantCondition: (id_441[a](1): boolean)
+   PreCondition: (id_443[a](1): boolean)
+   PostCondition: (id_445[a](1): boolean)
+   RepeatCondition: (id_447[a](0): boolean)
+   AncestorInvariantCondition: (id_602[a](1): (TransparentWrapper(id_598[auT]{1}((id_294[a](1): boolean)) && TransparentWrapper(id_600[auT]{1}((id_286[a](1): boolean)))
+   AncestorEndCondition: (id_608[a](0): (TransparentWrapper(id_604[auT]{0}((id_296[a](0): boolean)) || TransparentWrapper(id_606[auT]{0}((id_468[a](0): childrenFinished(1:3))))
+   ParentExecutingCondition: (id_610[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_548[a](EXECUTING): state(EXECUTING))))
+   AllChildrenWaitingOrFinishedCondition: (id_455[a](UNKNOWN): boolean)
+   AbortCompleteCondition: (id_457[a](UNKNOWN): boolean)
+   ParentWaitingCondition: (id_612[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_551[a](WAITING): state(WAITING))))
+   ParentFinishedCondition: (id_614[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_554[a](FINISHED): state(FINISHED))))
+   CommandHandleReceivedCondition: (id_463[a](1): boolean)
+   command_handle: (id_420[a](UNKNOWN):  command_handle)
+   x: (id_310[a](4): int)
+   myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[a](Array: [1, 0, <unknown>]): Array: [true, false, <unknown>])
+  }
+}
+
+[Test:testOutput]Sending command result boolArrayCommand() = 5.73116e-322
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 3
+[PlexilExec:cycle]==>End cycle 3
+[PlexilExec:printPlan]
+TestArrays{
+ State: (id_262[a](EXECUTING): state(EXECUTING)) (0)
+ SkipCondition: (id_280[a](0): boolean)
+ StartCondition: (id_471[i](UNKNOWN): ((id_473[i](UNKNOWN): ((id_475[i](UNKNOWN): ArrayElement: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])[(id_478[i](0): int)]) == (id_479[i](UNKNOWN): string))) && (id_480[i](UNKNOWN): !(id_482[i](UNKNOWN): isknown((id_484[i](UNKNOWN): ArrayElement: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])[(id_487[i](2): int)])))) && (id_488[i](UNKNOWN): ((id_490[i](UNKNOWN): ArrayElement: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])[(id_493[i](0): int)]) == (id_494[i](UNKNOWN): real))) && (id_495[i](UNKNOWN): !(id_497[i](UNKNOWN): isknown((id_499[i](UNKNOWN): ArrayElement: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])[(id_502[i](2): int)])))) && (id_503[i](UNKNOWN): ((id_505[i](UNKNOWN): ArrayElement: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])[(id_508[i](0): int)]) == (id_509[i](1): int))) && (id_510[i](UNKNOWN): !(id_512[i](UNKNOWN): isknown((id_514[i](UNKNOWN): ArrayElement: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])[(id_517[i](2): int)])))) && (id_518[i](UNKNOWN): ArrayElement: (id_314[a](Array: [1, 1, 1]): Array: [true, true, true])[(id_521[i](0): int)]) && (id_522[i](UNKNOWN): !(id_524[i](UNKNOWN): ArrayElement: (id_314[a](Array: [1, 1, 1]): Array: [true, true, true])[(id_527[i](1): int)])) && (id_528[i](UNKNOWN): !(id_530[i](UNKNOWN): isknown((id_532[i](UNKNOWN): ArrayElement: (id_314[a](Array: [1, 1, 1]): Array: [true, true, true])[(id_535[i](2): int)])))))
+ EndCondition: (id_468[a](0): childrenFinished(1:3))
+ InvariantCondition: (id_286[a](1): boolean)
+ PreCondition: (id_288[a](1): boolean)
+ PostCondition: (id_290[a](1): boolean)
+ RepeatCondition: (id_292[a](0): boolean)
+ AncestorInvariantCondition: (id_294[a](1): boolean)
+ AncestorEndCondition: (id_296[a](0): boolean)
+ ParentExecutingCondition: (id_298[a](1): boolean)
+ AllChildrenWaitingOrFinishedCondition: (id_465[i](UNKNOWN): childrenWaitingOrFinished(0:3))
+ AbortCompleteCondition: (id_302[a](UNKNOWN): boolean)
+ ParentWaitingCondition: (id_304[a](0): boolean)
+ ParentFinishedCondition: (id_306[a](0): boolean)
+ CommandHandleReceivedCondition: (id_308[a](1): boolean)
+ command_handle: (id_265[a](UNKNOWN):  command_handle)
+ x: (id_310[a](4): int)
+ myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+ myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+ myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+ myBooleanArray: (id_314[a](Array: [1, 1, 1]): Array: [true, true, true])
+  testIntStateVariable{
+   State: (id_317[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_318[a](SUCCESS):  outcome)
+   x: (id_310[a](4): int)
+   myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[a](Array: [1, 1, 1]): Array: [true, true, true])
+  }
+  callBoolArrayCommand{
+   State: (id_367[a](EXECUTING): state(EXECUTING)) (0)
+   SkipCondition: (id_385[a](0): boolean)
+   StartCondition: (id_387[a](1): boolean)
+   EndCondition: (id_590[a](0): ((id_586[a](0): interruptibleCommandHandleValues((id_583[a](UNKNOWN): string))) || (id_588[a](0): ((id_584[a](0): isknown((id_583[a](UNKNOWN): string))) && (id_389[a](1): boolean)))
+   InvariantCondition: (id_391[a](1): boolean)
+   PreCondition: (id_393[a](1): boolean)
+   PostCondition: (id_395[a](1): boolean)
+   RepeatCondition: (id_397[a](0): boolean)
+   AncestorInvariantCondition: (id_568[a](1): (TransparentWrapper(id_564[auT]{1}((id_294[a](1): boolean)) && TransparentWrapper(id_566[auT]{1}((id_286[a](1): boolean)))
+   AncestorEndCondition: (id_574[i](UNKNOWN): (TransparentWrapper(id_570[iuT]{0}((id_296[a](0): boolean)) || TransparentWrapper(id_572[iuT]{0}((id_468[a](0): childrenFinished(1:3))))
+   ParentExecutingCondition: (id_576[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_548[a](EXECUTING): state(EXECUTING))))
+   AllChildrenWaitingOrFinishedCondition: (id_405[a](UNKNOWN): boolean)
+   AbortCompleteCondition: (id_582[i](UNKNOWN): boolean)
+   ParentWaitingCondition: (id_578[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_551[a](WAITING): state(WAITING))))
+   ParentFinishedCondition: (id_580[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_554[a](FINISHED): state(FINISHED))))
+   CommandHandleReceivedCondition: (id_594[a](0): ((id_592[a](0): allCommandHandleValues((id_583[a](UNKNOWN): string))) && (id_413[a](1): boolean))
+   command_handle: (id_370[a](UNKNOWN):  command_handle)
+   x: (id_310[a](4): int)
+   myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[a](Array: [1, 1, 1]): Array: [true, true, true])
+  }
+  testCallBoolArrayCommand{
+   State: (id_417[a](WAITING): state(WAITING)) (0)
+   SkipCondition: (id_435[a](0): boolean)
+   StartCondition: (id_616[a](UNKNOWN): ((id_618[a](UNKNOWN): (id_621[a](UNKNOWN): ((id_368[a](UNKNOWN):  outcome) == (id_620[a](SUCCESS):  outcome)))) && (id_623[a](1): ArrayElement: (id_314[a](Array: [1, 1, 1]): Array: [true, true, true])[(id_626[a](1): int)]))
+   EndCondition: (id_439[a](1): boolean)
+   InvariantCondition: (id_441[a](1): boolean)
+   PreCondition: (id_443[a](1): boolean)
+   PostCondition: (id_445[a](1): boolean)
+   RepeatCondition: (id_447[a](0): boolean)
+   AncestorInvariantCondition: (id_602[a](1): (TransparentWrapper(id_598[auT]{1}((id_294[a](1): boolean)) && TransparentWrapper(id_600[auT]{1}((id_286[a](1): boolean)))
+   AncestorEndCondition: (id_608[a](0): (TransparentWrapper(id_604[auT]{0}((id_296[a](0): boolean)) || TransparentWrapper(id_606[auT]{0}((id_468[a](0): childrenFinished(1:3))))
+   ParentExecutingCondition: (id_610[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_548[a](EXECUTING): state(EXECUTING))))
+   AllChildrenWaitingOrFinishedCondition: (id_455[a](UNKNOWN): boolean)
+   AbortCompleteCondition: (id_457[a](UNKNOWN): boolean)
+   ParentWaitingCondition: (id_612[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_551[a](WAITING): state(WAITING))))
+   ParentFinishedCondition: (id_614[i](UNKNOWN): ((id_262[a](EXECUTING): state(EXECUTING)) == (id_554[a](FINISHED): state(FINISHED))))
+   CommandHandleReceivedCondition: (id_463[a](1): boolean)
+   command_handle: (id_420[a](UNKNOWN):  command_handle)
+   x: (id_310[a](4): int)
+   myStringArray: (id_311[a](Array: ["string 1", "string 2", <unknown>]): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[a](Array: [1.1, 2.2, <unknown>]): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[a](Array: [1, 2, <unknown>]): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[a](Array: [1, 1, 1]): Array: [true, true, true])
+  }
+}
+
+[Test:testOutput]Sending command ACK boolArrayCommand() = (string)COMMAND_SUCCESS
+[PlexilExec:handleConditionsChanged]Node callBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'callBoolArrayCommand' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'callBoolArrayCommand' on the state change queue in position 10
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 4
+[PlexilExec:step][4:0] State change queue: callBoolArrayCommand 
+[PlexilExec:step][4:0:0] Transitioning node callBoolArrayCommand
+[PlexilExec:handleConditionsChanged]Node testCallBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'testCallBoolArrayCommand' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'testCallBoolArrayCommand' on the state change queue in position 11
+[PlexilExec:handleConditionsChanged]Node callBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'callBoolArrayCommand' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'callBoolArrayCommand' on the state change queue in position 12
+[PlexilExec:step][4:1] State change queue: testCallBoolArrayCommand callBoolArrayCommand 
+[PlexilExec:step][4:1:0] Transitioning node testCallBoolArrayCommand
+[PlexilExec:handleConditionsChanged]Node testCallBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'testCallBoolArrayCommand' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'testCallBoolArrayCommand' on the state change queue in position 13
+[PlexilExec:step][4:1:1] Transitioning node callBoolArrayCommand
+[PlexilExec:handleConditionsChanged]Node callBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'callBoolArrayCommand' was previously eligible to transition but isn't now.
+[PlexilExec:step][4:2] State change queue: testCallBoolArrayCommand 
+[PlexilExec:step][4:2:0] Transitioning node testCallBoolArrayCommand
+[PlexilExec:handleConditionsChanged]Node testCallBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'testCallBoolArrayCommand' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'testCallBoolArrayCommand' on the state change queue in position 14
+[PlexilExec:step][4:3] State change queue: testCallBoolArrayCommand 
+[PlexilExec:step][4:3:0] Transitioning node testCallBoolArrayCommand
+[PlexilExec:handleConditionsChanged]Node TestArrays had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'TestArrays' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'TestArrays' on the state change queue in position 15
+[PlexilExec:handleConditionsChanged]Node testCallBoolArrayCommand had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'testCallBoolArrayCommand' was previously eligible to transition but isn't now.
+[PlexilExec:step][4:4] State change queue: TestArrays 
+[PlexilExec:step][4:4:0] Transitioning node TestArrays
+[PlexilExec:handleConditionsChanged]Node TestArrays had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'TestArrays' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'TestArrays' on the state change queue in position 16
+[PlexilExec:step][4:5] State change queue: TestArrays 
+[PlexilExec:step][4:5:0] Transitioning node TestArrays
+[PlexilExec:handleConditionsChanged]Node TestArrays had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'TestArrays' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'TestArrays' on the state change queue in position 17
+[PlexilExec:step][4:6] State change queue: TestArrays 
+[PlexilExec:step][4:6:0] Transitioning node TestArrays
+[PlexilExec:handleConditionsChanged]Node TestArrays had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'TestArrays' was previously eligible to transition but isn't now.
+[PlexilExec:cycle]==>End cycle 4
+[PlexilExec:printPlan]
+TestArrays{
+ State: (id_262[a](FINISHED): state(FINISHED)) (0)
+ Outcome: (id_263[a](SUCCESS):  outcome)
+ x: (id_310[i](4): int)
+ myStringArray: (id_311[i](UNKNOWN): Array: ["string 1", "string 2", <unknown>])
+ myRealArray: (id_312[i](UNKNOWN): Array: [1.1, 2.2, <unknown>])
+ myIntegerArray: (id_313[i](UNKNOWN): Array: [1, 2, <unknown>])
+ myBooleanArray: (id_314[i](UNKNOWN): Array: [true, true, true])
+  testIntStateVariable{
+   State: (id_317[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_318[a](SUCCESS):  outcome)
+   x: (id_310[i](4): int)
+   myStringArray: (id_311[i](UNKNOWN): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[i](UNKNOWN): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[i](UNKNOWN): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[i](UNKNOWN): Array: [true, true, true])
+  }
+  callBoolArrayCommand{
+   State: (id_367[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_368[a](SUCCESS):  outcome)
+   Command handle: (id_370[a](COMMAND_SUCCESS):  command_handle)
+   x: (id_310[i](4): int)
+   myStringArray: (id_311[i](UNKNOWN): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[i](UNKNOWN): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[i](UNKNOWN): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[i](UNKNOWN): Array: [true, true, true])
+  }
+  testCallBoolArrayCommand{
+   State: (id_417[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_418[a](SUCCESS):  outcome)
+   x: (id_310[i](4): int)
+   myStringArray: (id_311[i](UNKNOWN): Array: ["string 1", "string 2", <unknown>])
+   myRealArray: (id_312[i](UNKNOWN): Array: [1.1, 2.2, <unknown>])
+   myIntegerArray: (id_313[i](UNKNOWN): Array: [1, 2, <unknown>])
+   myBooleanArray: (id_314[i](UNKNOWN): Array: [true, true, true])
+  }
+}
+

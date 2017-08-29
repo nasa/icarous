@@ -1,0 +1,8 @@
+(plexil-plan
+  (list-node "FailureType4"
+    (list
+      (empty-node "One"
+        (precondition (= 1 0)))
+      (empty-node "Two"
+        (end-condition (precondition-failed "One"))))))
+          

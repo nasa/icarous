@@ -1,0 +1,20 @@
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Sequence>
+    <VariableDeclarations>
+      <DeclareVariable>
+        <Name>x</Name>
+        <Type>Real</Type>
+        <InitialValue><RealValue>100.3</RealValue></InitialValue>
+      </DeclareVariable>
+    </VariableDeclarations>
+    <Wait FileName= "foo.ple" LineNo= "104" ColNo= "1">
+      <NodeId>Wait1</NodeId>
+      <Units><RealValue>23.9</RealValue></Units>
+      <Tolerance><RealValue>0.2</RealValue></Tolerance>
+    </Wait>
+    <Wait FileName= "foo.ple" LineNo= "108" ColNo= "1">
+      <NodeId>Wait2</NodeId>
+      <Units><RealVariable>x</RealVariable></Units>
+    </Wait>
+  </Sequence>
+</PlexilPlan>

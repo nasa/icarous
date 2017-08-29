@@ -1,0 +1,457 @@
+This file is a compendium of past release notes for PLEXIL distributions.
+
+4.5 (in progress, plexil-4 branch)
+
+ This is a major evolutionary update, featuring improvements and fixes
+ throughout.
+
+Packaging:
+
+ - Top-level Makefile's 'all' target builds most of what the default
+   target did previously. New target 'essentials' builds only
+   executables, translators, standard adapters and listeners, Plexil
+   Simulator, and Checker. New target 'tools' builds executables,
+   translators, adapters and listeners, Plexil Simulator, checker, and
+   Plexil Viewer. Default target is now 'tools'.
+
+ - Top-level Makefile no longer assumes gcc and g++ are the C and C++
+   compilers. Like most Makefile-based packages, the values of
+   environment variables CC and CXX are used. If these are not bound,
+   'cc' and 'c++' are used by default. The development team routinely
+   builds PLEXIL with a variety of gcc and clang (llvm) versions.
+
+ - Most, if not all, GNU autotools-generated files have been removed
+   from the Subversion repository. Likewise, most .plx files have been
+   deleted from the examples directories. Both are easily regenerated
+   when needed. Distribution tarballs will include the required
+   autotools files.
+
+ - This release incorporates pugixml version 1.7 and saxon9he release
+   9.7.0.8.
+
+Core PLEXIL (XML) language and schema:
+
+ - New Any type, optional AnyParameters element in command and state
+   declarations
+
+ - New command handle value COMMAND_INTERFACE_ERROR, returned when an
+   interface adapter causes an error while processing a command
+
+ - Schema files now have DTD
+
+Extended PLEXIL (XML) language and translator:
+
+ - Tolerance for the Wait operator now defaults to the requested delay
+   time (was 1 second)
+
+ - Translator now generates Core PLEXIL XML output without additional
+   formatting. This dramatically reduces the bulk of large plans. The
+   'xmllint' utility on most platforms generates formatted output
+   should it be required:
+
+    xmllint --format myPlan.plx > myPlan-formatted.plx
+
+Standard PLEXIL (C-like) language and compiler:
+
+ - The compiler itself is now compiled to Java 1.6 bytecodes, to allow
+   use on legacy platforms
+
+ - Output now incorporates the <Any> type and <AnyParameters>
+   declarations added to the schema. We recommend you recompile any
+   Standard Plexil plans.
+
+ - Node-reachable semantics made consistent with executive's
+
+ - Optimization phase performs more optimizations 
+
+Executive core and Universal Executive:
+
+ - More potential "crasher" bugs and memory leaks fixed
+
+ - Many non-fatal errors that used to halt the executive now warn
+
+ - Run-time type errors now reported with "expected type X, but got
+   type Y" messages
+
+ - More plan errors detected at plan load time, so they won't crash
+   the executive
+
+ - Executive now parses and checks against global command and state
+   declarations at plan load time
+
+ - LibraryNodeCall nodes can now reference the called node in
+   conditions
+
+ - Executive working memory and plan parser stack usage reduced
+
+Standard interfaces:
+
+ - Commanding via UdpAdapter made more robust
+
+ - Native time adapter made more robust - fixes missed-wakeup bug on
+   macOS
+
+ - New Launcher adapter allows plans to load and run other plans,
+   and query their status. See examples/launcher for a simple
+   demonstration.
+
+TestExec:
+
+ - Initial states are no longer ignored when a LookupOnChange
+   references them.
+
+Executive internals and user-defined interfaces:
+
+ - LookupNames interface configuration element adds TelemetryOnly
+   attribute; LookupNow for these names will not call the adapter's
+   lookupNow() method, but instead get values from the state cache.
+
+ - State cache now stores all values received via
+   InterfaceManager::handleValueChange(), whether or not the supplied
+   state has ever been looked up before. This helps support
+   TelemetryOnly.
+
+ - Typedefs Boolean, Integer, Real, and String have been defined in
+   the PLEXIL namespace. Interface code should use these in preference
+   to bool, int, int32_t, double, and std::string.
+
+ - Serialization and deserialization for PLEXIL data types has been
+   implemented. This will be the basis of a new inter-application
+   communication package in the next major release.
+
+Other tools:
+
+ - There is a new 'analyzePlan' command line executable. It reads in a
+   plan file (and any referenced libraries), and prints a number of
+   statistics about that plan.
+
+Plexil Viewer:
+
+ - The Viewer has been rewritten to support multiple plan windows at
+   once, consistent with the Universal Exec's ability to run multiple
+   plans simultaneously. As this is a work-in-progress, we appreciate
+   any reports of problems in the Viewer.
+
+Examples:
+
+ - New Launcher adapter example in examples/launcher
+
+ - The RoboSim GoalSearch1 plan now actually reaches its goal!
+
+4.0.1 (17 June 2015; SVN revision 4357 of the plexil-4 branch)
+
+ - The PLEXIL suite now builds "out of the box" on FreeBSD. Most tools
+   work correctly, however IPC is not yet working on FreeBSD.
+
+4.0.0 (15 June 2015; SVN revision 4336 of the plexil-4 branch)
+
+ - Please see the README file for up-to-date build instructions.
+ - Executive core has been reimplemented for speed and memory safety.
+ - Real-to-Integer conversion functions added.
+ - Interfacing API has changed.
+ - Standard PLEXIL compiler now has optimization phase, performs 'peephole'
+   optimizations where possible.
+ - Extended PLEXIL now translates to smaller Core PLEXIL plans in many instances.
+ - Shell scripts plexil, plexilexec, plexiltest, plexilsim revised, with improved
+   checking for free TCP ports for Viewer.
+ - Plexil Viewer significantly improved.
+ - Plexil Viewer requires Java 8.
+ - Plexil Checker updated and significantly improved.
+ - Tests and examples updated, cleaned up.
+
+3.0 (March 14, 2014; SVN revision 3336 of the plexil-3 branch)
+
+ - NOTE:
+     - Please see the README file for up-to-date build instructions.
+     - Please see the CAVEATS file, as this release has a bunch!
+ - Significant improvement of PLEXIL executive's performance (memory usage and speed).
+ - Revamped build system, now based GNU's autoconf/automake, to better support
+   cross-platform builds.
+ - Revamped directory structure of distribution
+ - Significant improvements to the Gantt Temporal Viewer
+ - Numerous miscellaneous bug fixes and enhancements.
+
+
+2.5 (July 16, 2012; SVN revision 2851)
+
+ - Added ExitCondition to PLEXIL nodes.  This provides a clean way to
+   deliberately terminate a plan.  New outcome and failure type
+   variables were added to support ExitCondition.  The new user syntax
+   and Plexilisp have been updated to match.
+
+ - Additional performance enhancements to the executive.
+
+ - Completely revised node state transition diagrams.  The diagrams now
+   accurately reflect the exact behavior of the executive, which is also
+   its specified semantics.
+
+ - Assignment node execution and failure are better behaved.  Failure
+   of an Assignment node causes the variable's previous value to be
+   restored (the old behavior was to assign UNKNOWN). Failing
+   Assignment nodes always take priority over any eligible Assignment
+   nodes on the same variable.
+
+ - Minor improvements to the InterfaceAdapter API.
+
+ - The PLEXIL_OPTIMIZED build flag is confirmed working.  This flag
+   can be used to improve runtime performance for time-critical
+   applications.  PLEXIL_DEBUG and PLEXIL_OPTIMIZED can be used
+   together for debugging purposes.  See:
+   makeinclude/standard-defs.make
+
+ - Cleaned up a number of compiler warnings in the C++ source code.
+
+2.0 (May 4, 2012; SVN revision 2762)
+
+IMPORTANT NOTE: This release has several features that are not
+compatible with 1.x based PLEXIL applications.  1.7.1 is the latest
+version of PLEXIL available prior to 2.0.  It reflects the state of
+PLEXIL's SVN trunk prior to February 6, 2012, and is available on this
+SVN branch:
+
+https://plexil.svn.sourceforge.net/svnroot/plexil/branches/plexil-1.7.1
+
+Please note that the Core Plexil XML representation has not changed. Old
+.plx files will continue to work unmodified in Plexil 2.0.
+
+ - Completely revised user syntax: simpler, much more compact.  The old
+   syntax is no longer supported, however, at present you can compile
+   your Plexil code using Plexil version 1.x and run the output (.plx
+   files) in 2.0.
+
+ - Significantly faster Plexil executive, with major speedups in XML
+   parsing (see below), construction of internal representations, and
+   execution proper.
+
+ - The TinyXML parser has been replaced by pugixml, which proved 20x
+   faster in our testing. This was a major contributor to the improved
+   performance of the executive.
+
+ - New, simpler interfacing APIs.
+
+ - The Plexil executive's behavior conforms more closely to its
+    formal specification.
+
+ - New arithmetic functions: MOD, MAX, MIN
+ - Numerous bug fixes and enhancements throughout system.
+
+=================================================================================
+
+1.7 (September 14, 2011; SVN revision 2471)
+ - Added support for Android operating system
+ - refactored README file, added Versions file
+ - new Gantt-style temporal viewer for executed plans
+ - new UDP-based adapter for external communication
+ - signficant code refactoring and performance enhancement
+ - numerous bug fixes, minor enhancements, and better
+   robustness throughout system
+
+1.6  (December 2010, SVN revision 1959)
+ - Plexil executive and interface
+   * New "utility" interface adapter, which introduces built-in commands to
+     PLEXIL.  The first such commands are for printing from a plan (print, pprint).
+   * Variable updates from command return values are now published (e.g. display
+     in Plexil Viewer)
+ - Plexil Viewer:
+   * fixed and enhanced the Configuration Dialog 
+   * added an interface for selecting library plans
+   * misc fixes and enhancements
+ - Plexilisp:
+   * added the SynchronousCommand (synchronous-command) form
+   * revised the Wait form, adding a tolerance parameter
+   * fixed bug in handling of newlines in strings
+ - Plexil XML schemas
+   * Added Wait and SynchronousCommand (user syntax to come in next release)
+   * fixed XSD schemas to work with xmllint
+   * added file locator attributes to aid in source debugging
+   * added Relax NG versions of some schemas
+ - Plexil syntax
+   * A major revision of Plexil's user syntax is largely implemented in this
+     release, though is still in a refinement and testing phase and not yet
+     documented or officially supported.
+
+
+1.5  (October 2010)
+ - Extensively revised user manual
+   * PLEXIL is now presented as a language of high level Actions, of which Core
+     PLEXIL (nodes) is the executable subset.  I.e. PLEXIL is now Core PLEXIL
+     plus syntactic extensions (formerly called Extended Plexil).  There are no
+     changes to Core PLEXIL, and existing Plexil plans are fully compatible.
+   * Changes to long-standing PLEXIL nomenclature:
+       "Universal Executive" is now "Plexil Executive"
+       "Extended PLEXIL" is now just "PLEXIL"
+       "LUV" is now "Plexil Viewer"
+       "Standalone Simulator" is now "Plexil Simulator"
+   * Reorganized; many chapters expanded and corrected
+ - New and refactored set of commands for Plexil related applications:
+   * plexilexec starts the Plexil Executive, replacing run-ue
+   * plexiltest starts the Test Executive, replacing run-te
+   * plexilsim runs the Plexil Simulator in one step
+   * plexil (formerly the Plexil translator) replaces luv
+   * plexilc replaces the former plexil and is an all-purpose translator:
+       - translates (standard) Plexil into XML
+       - translates Test Executive simulation scripts into XML
+       - translates Plexilisp files into XML
+ - Enhancements to the Plexil Viewer
+   * new Configuration Dialog to select Plexil application and its parameters
+   * new Plexil logo
+ - Plexil syntax improvements:
+   * all-purpose Lookup form obviates need for LookupNow, LookupOnChange
+   * OnCommand, OnMessage forms more consistent with other actions
+   * uniform usage of colons in action bodies
+ - Rewrote Plexil Simulator internals, fixing Mac OS issues
+ - Plexilisp improvements: 
+   * Sequence forms can now contain any attributes, and also structured comments.
+   * In command-with-return, reversed order of state name and return variable.
+ - Greatly revised examples
+   * New small, complete Plexil Executive application in src/apps/sample
+   * new multiple-executive plan examples in plexil/examples/multi-exec
+   * existing examples revised to use high-level actions where possible
+ - New file extension requirements for Test Executive simulation scripts
+   * Source files: .pst
+   * Translated (XML) files: .psx
+ - Numerous misc. fixes and enhancements throughout system
+
+1.2.1 (August 2010)
+ - IPC-related applications (Robosim, Standalone Simulator, and any
+   user-created applications that use IPC) now work in Mac OS
+ - Enhanced PLEXIL viewer (LUV):
+   * Array variable assignments now shown; dynamic and expandable views
+   * Current port displays in bottom right corner
+   * Misc. minor redesigns and internal refactorings
+ - Performance enhancements yielding a much faster executive
+ - Revised startup scripts (new command line options)
+ - 'Try' form will no longer hang if no child succeeds
+ - New 'summarize-plexil' utility for producing a compact
+   textual representation of a Plexil XML file
+ - Misc enhancements, fixes, and refactorings throughout system
+
+1.2  (June 2010)
+ - Support for Ubuntu Linux
+ - LUV (execution viewer) enhancements
+   - multiple instances possible, one for each executive
+   - automatically started, when requested, from run-ue and run-te scripts
+ - Extended PLEXIL: 
+   - new all-purpose "Lookup" form
+   - Skip Condition now handled correctly in sequences
+   - OnCommand, OnMessage fully integrated
+ - Allow string expressions, and arrays, as command arguments
+ - Cleanup of TestExec regression tests
+ - Cleanup of XML schemas
+ - Revision of DriveToSchool example
+ - Miscellaneous fixes throughout system
+ - Reference manual revision
+
+1.1 (April 2010)
+ - Added signficant support and language features for inter-executive
+   communication, with a new chapter on this feature.  In particular, executives
+   can send (and respond to) messages, commands, and state lookups amongst each
+   other.
+ - Greatly simplified the interfacing of the PLEXIL executive with external
+   systems, with a new chapter on this.  In particular:
+   * universalExec executable replaces most UE application executables.
+   * Interface adapters and exec listeners can be loaded dynamically from shared
+     libraries at runtime, and no longer need to be built into the executable.
+   * Interface manager now has getProperty() and setProperty() to allow
+     communication of arbitrary data between the application, adapters, and
+     listeners.
+   * Exec listeners and exec listener filters' constructors are now called with
+     a 2nd argument, a reference to the interface manager.
+ - The LCM (Lightweight Communications and Marshalling) package has been
+   completely replaced by CMU's IPC (Inter-Process Communication).  The
+   applications that used LCM (standalone simulator, Robosim) now use IPC.
+ - The 'run-ue' script now runs 'universalExec' and a new 'run-te' runs the Test
+   Executive.  Both can optionally run the PLEXIL static checker first.
+ - LUV can run either the TestExecutive (default) or UniversalExec.
+ - New Plexilisp Emacs menus (courtesy of Robert Goldman at SIFT). 
+ - Numerous miscellaneous fixes, enhancements, and code refactorings across the
+   entire system.
+ - Much revision of the reference manual.
+
+1.0
+ - Revamped source code directory structure.
+ - Replaced 'jam' with 'make' as the system's build tool.
+ - Added a new application IpcExec, allowing multiple communicating executives.
+ - Added CMU's "IPC" system to support IpcExec, and future planned applications.
+ - Numerous small fixes and enhancements throughout the system.
+ CAVEATS: 
+ - Standalone Simulator may not work in Mac OS and some
+   versions of Linux, due to errors in the LCM library.  LCM
+   is in the process of being replaced by IPC.
+ - A PDF version of the user manual, normally included in the distribution, 
+   is not available; we are seeking a means to create one from the new wiki
+   system used by Sourceforge.
+
+
+0.91
+ - Deprecated Function Call node.
+ - Added 'jam' executables in plexil/bin
+ - Added support for testing node iteration outcome.
+ - Extended Plexil: added Concurrence form; bug fixes
+ - Plexilisp: added Wait, Concurrence; action forms can now contain
+   nodes or node bodies; empty sequences are properly supported
+ - XML schema updates
+ CAVEATS: 
+ - Standalone Simulator may not work in Mac OS and some versions of
+   Linux, due to errors in the LCM library.  The problem is being worked on.
+
+
+0.90
+ - New application framework, revised external interfaces, and simple
+   test application using both.  See the app-framework directory.  The
+   existing external interfaces are unchanged from the previous release,
+   but are deprecated.
+ - Standard Plexil no longer supports hyphenated variable names. Hyphenated
+   variables may be supported in a future release.
+ - Standalone simulator now supports telemetry and has a test executive.
+ - New Extended Plexil language: schema, translator, examples.
+ - Plexilisp has several new constructs and generates Extended Plexil
+ - Refactoring of Plexil schemas.
+ - New enhancements and bug fixes to the Luv Viewer.
+ - Top level Makefile and simplified build and installation instructions.
+ - Numerous small enhancements and bug fixes throughout code base.
+
+
+0.84
+ - new component: a standalone simulator for PLEXIL.
+ - new component: static checker for PLEXIL.
+ - added global declarations (for static plan checking) to schemas and
+   Plexilisp
+ - additional workshop slides
+ - easier setup for Plexilisp
+ - misc bug fixes and enhancements
+
+
+0.83
+ - critical bug fix for event processing
+ - the Node Priority clause has been deprecated.  It had semantic
+   issues, and is not used in any known PLEXIL applications.  Multiple
+   assignments to the same variable occuring simultaneously results in a
+   runtime error.  At this stage, the Priority clause has only been
+   removed from documentation and tests.  It is still implemented, as an
+   undocumented and unsupported feature.  It may someday be removed from
+   the implementation without notice.  A better solution may be designed.
+ - more documentation regarding concurrency in list nodes
+ - added PLEXIL workshop presentations
+ - significant revision of several UE reference manual chapters
+ - PDF manuals now included in distribution
+
+
+0.82
+ - refactored universal-exec/Exec/test,
+   creating new 'bin' and 'apps' directories
+ - slightly simplified installation
+ - added RoboSim example application and plans
+ - reduced response time to external world events
+ - support for 64-bit architectures
+ - numerous minor fixes and enhancements
+
+
+0.81
+ - new syntax and translator for simulation scripts
+   (standard-plexil/plexilscript)
+ - numerous minor fixes and enhancements
+
+0.80
+ - first Sourceforge release
+

@@ -1,0 +1,10 @@
+(plexil-plan
+ (if true
+     (command "foo")
+     (command "bar")))
+
+
+
+
+
+

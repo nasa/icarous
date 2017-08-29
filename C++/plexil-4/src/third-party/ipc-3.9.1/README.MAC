@@ -1,0 +1,108 @@
+README for MacIntosh version of IPC (version 3.7.10)
+
+Updated December 30, 2005 by Reid Simmons, Carnegie Mellon University.
+
+IPC now supports OSX.  The C version has been tested, but not the Lisp version.
+The C version was compiled with gcc 4.0.0; Other versions of gcc, and other
+compilers, may work, but this has not been tested.
+
+==============================================================================
+Written January 12, 1998 by Reid Simmons, Carnegie Mellon University.
+
+IPC for the MacIntosh provides the full functionality of IPC, as documented
+in the IPC Reference Manual.  In particular, it enables the creation of
+both C and Lisp (MCL) programs that can communicate over the Internet with
+other IPC programs on other machines.  The IPC "central" program is also
+available for the MacIntosh, so that standalone networks of MacIntoshes can
+communicate.
+
+Creating IPC programs on the MacIntosh
+
+The C version of IPC for the MacIntosh has been created with CodeWarrior
+2.0.  It is advised that you also use CodeWarrior for compiling and linking
+your IPC programs.  The MacIntosh version of IPC also makes use of a
+freeware package called GUSI, developed by Mattias Neeracher
+(neeri@iis.ee.ethz.ch), which provides UNIX-like sockets and I/O.
+
+To create an IPC program, you must include "ipc.h" in your C program (found
+in IPC:src:), and link with both IPC.lib (found in IPC:) and
+MSLGUSI.Lib.PPC (found in GUSI:Lib:), in addition to the other libraries
+your program normally needs. You must link MSLGUSI.Lib.PPC before linking
+with either "MSL C.PPC.lib" (or "MSL C++.PPC.lib") or "MSL SIOUX.PPC.Lib",
+since GUSI redefines some of the functions provided in those libraries.
+For help in creating your own IPC program, look at the targets defined in
+the "IPC:tests:" directory.
+
+The Lisp version of IPC runs under Digitool's MCL (tested on version 4.0).
+The first thing you must do is to place a copy of "IPC.lisp.shlib" (found
+in IPC:) in the directory where the MCL program is located (this enables
+MCL to find the IPC functions that it needs).  To create a Lisp program
+that uses IPC, you need to load "ipc.lisp" (found in IPC:lisp:).  To
+compile a Lisp version of IPC, load "ipc-compile.lisp" (also found in
+IPC:lisp:).  All IPC functions documented in the IPC Reference Manual are
+available from within Lisp (exported from the IPC package), as are all the
+constants defined in the reference manual.  The functions and constants all
+have the exact same names as their C counterparts (sorry Ñ this sometimes
+leads to unreadable symbols, since Lisp translates things like
+"IPC_msgInstanceFormatter" into "IPC_MSGINSTANCEFORMATTER"!). For help in
+creating your own IPC program, look at the "*.lisp" files found in the
+"IPC:tests:" directory.
+
+
+Running IPC programs on the MacIntosh
+
+If you want to run with the central server on the MacIntosh, double-click
+on "central" (found in the IPC directory).  A dialog box appears that asks
+you for command-line arguments.  The available options are described in the
+reference manual, or can be displayed if you type in "-h" (without the
+quotes).  If you just press return, the standard options (display
+user-level message traffic) is invoked.  A window appears that displays the
+central I/O.  You can also type at that window, to change options or to
+inspect the current state of the central server.
+
+To start up a user program that uses IPC, you need to let it know where the
+central server is running.  On UNIX machines, this is done by setting the
+environment variable CENTRALHOST.  Since MacIntoshes do not have such a
+facility (to the best of my knowledge), you need to explicitly tell IPC the
+name of the machine on which the central server is running.  You can do
+this using the function "IPC_connectModule(<task name>, <server machine>)",
+where "<task name>" is an arbitrary string to identify the module, and
+"<server machine>" is either a domain name, an IP address, or <domain
+name>:<port> (the reference manual explains the latter).  For instance, one
+could invoke IPC_connectModule("GUI", "jubilee.learning.cs.cmu.edu") (or,
+in Lisp, (IPC:IPC_connectModule "GUI" "jubilee.learning.cs.cmu.edu")).
+This function is new to IPC 2.8.0 (actually, it was first developed by Tam
+Ngo at JSC, but version 2.8.0 is its first "official" release).  Note: If
+your user program is running on the same machine as the central server, you
+can either pass NULL/NIL or "" (the empty string) to IPC_connectModule.
+Alternately, you can just invoke IPC_connect, which defaults to using the
+local machine if the CENTRALHOST environment variable is not set.
+
+
+Known Bugs
+
+1. Every once in a while, the central server freezes, thinking that it has
+user input to handle.  I think this is because GUSI is getting confused
+which window the input actually occurs in, but I have not been able to
+track down the bug.  You can recognize this problem if the line "Handling
+Input" appears at the top of the central server window.  If this occurs,
+just select the central window and press return.  Alternately, you can
+either run central with the "-u" option (don't listen to terminal input),
+or run central on a UNIX machine.
+
+2. The timer mechanism does not seem to work quite right on MacIntoshes (it
+appears to be erratic).  I am looking into this -- how quickly depends on
+how loudly anyone screams for it!
+
+3. When IPC_dispatch is invoked from Lisp, IPC enters its own dispatch
+loop.  While in this situation most interaction with the Lisp Listener
+window is preserved (such as dragging, scrolling, selecting), some window
+manager actions are not supported.  These include growing the Lisp window,
+closing the window, and using menus.  Only the latter may be a problem, and
+if it is I will try to find a work-around for it.
+
+=============================================================
+
+Copyright (c) 2008, Carnegie Mellon University
+    This software is distributed under the terms of the 
+    Simplified BSD License (see ipc/LICENSE.TXT)

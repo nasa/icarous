@@ -1,0 +1,9 @@
+(plexil-plan
+ (list-node "repeat8"
+  (variables (integer "repeat-count" 0))
+  (list
+   (assignment-node "repeater"
+					(repeat-condition (lookup-on-change "continue"))
+					(assignment (intvar "repeat-count") (+ (intvar "repeat-count") 1))))
+  (post-condition (= 4 (intvar "repeat-count")))
+  ))

@@ -1,0 +1,14 @@
+#! /usr/bin/env bash
+
+if [ -z "$1" ]
+then
+	echo Usage: $0 '[out-dir]'
+	exit 1
+fi
+
+for f in ${1}/*.out
+do
+	out=`echo $f | sed -e 's/\.out/\.stripped/'`
+	sed -e 's/0x[0-9a-fA-F]*/0x/g' $f > $out
+	echo $out
+done

@@ -1,0 +1,21 @@
+NonLocalExit:
+Concurrence
+{
+  Boolean quitLooping = false;
+  Integer loopCount = 0;
+
+theLoop:
+  {
+    Repeat loopCount < 5;
+    Exit quitLooping;
+    loopCount = loopCount + 1;
+  }
+
+theSpoiler:
+  {
+    Start loopCount == 2;
+    quitLooping = true;
+  }
+
+}
+    

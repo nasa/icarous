@@ -1,0 +1,5 @@
+(plexil-plan
+  (assignment-node "library6"
+    (interface (inout (string "x"))
+               (in (string "y")))
+    (assignment (stringvar "x") (stringvar "y"))))

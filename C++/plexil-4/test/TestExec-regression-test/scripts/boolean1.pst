@@ -1,0 +1,10 @@
+
+// boolean1
+
+initial-state {
+  state flag ()= true : bool;
+}
+
+script {
+}
+

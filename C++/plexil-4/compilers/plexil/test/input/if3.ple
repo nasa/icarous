@@ -1,0 +1,13 @@
+Command turn_on_wipers ();
+Command turn_on_lights();
+Boolean Lookup raining;
+
+{
+  if ( Lookup(raining) )
+    Concurrence
+    {
+      Wipers: { turn_on_wipers(); }
+      Lights: { turn_on_lights(); }
+    }
+  endif
+}

@@ -1,0 +1,9 @@
+Command print(...);
+
+{
+NestedBlocks3:
+  Concurrence
+  {
+    print("NestedBlocks3");
+  }
+}

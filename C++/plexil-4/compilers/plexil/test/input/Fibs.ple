@@ -1,0 +1,20 @@
+// Compute and print Fibonacci(n) for various values.
+
+LibraryAction PrintFib(In Integer n);
+
+Fibs: {
+  Integer n = 0;
+  LibraryCall PrintFib (n = n);
+
+  n = 1;
+  LibraryCall PrintFib (n = n);
+
+  n = 2;
+  LibraryCall PrintFib (n = n);
+
+  n = 2;
+  LibraryCall PrintFib (n = n);
+
+  n = 5;
+  LibraryCall PrintFib (n = n);
+}

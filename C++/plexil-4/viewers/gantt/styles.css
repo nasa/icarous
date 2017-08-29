@@ -1,0 +1,329 @@
+/* Copyright (c) 2006-2011, Universities Space Research Association (USRA).
+*  All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*     * Redistributions of source code must retain the above copyright
+*       notice, this list of conditions and the following disclaimer.
+*     * Redistributions in binary form must reproduce the above copyright
+*       notice, this list of conditions and the following disclaimer in the
+*       documentation and/or other materials provided with the distribution.
+*     * Neither the name of the Universities Space Research Association nor the
+*       names of its contributors may be used to endorse or promote products
+*       derived from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY USRA ``AS IS'' AND ANY EXPRESS OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+* MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL USRA BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+* TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Modified by Madan, Isaac A.
+* Originally authored by Swanson, Keith J. (ARC-TI)
+*/
+
+body {
+	background-color: #DCDCDC; /* Gainsboro - a light grey */
+} 
+
+.planLine {
+	background-color: #B7B17C; /* 696 was orig green; A4C0D3 light blue */
+}
+
+.simLine {
+	background-color: #D2B48C; /* Tan */
+}
+
+.refined {
+	background-color: #3C74A6;
+}
+
+.abstracted {
+	background-color: #696;
+}
+
+.tokenLine.problem {
+/*	background-color: #852C1B;	*/
+	border: solid #852C1B 3px;
+}
+
+.stickyHiliteTokenLine.problem {
+	border: solid #000 3px;
+	z-index: 10;
+}
+
+.tokenLine {
+	position: absolute;
+	border: solid #333 1px;
+	/* interior values */	
+	font-size: x-small;
+	vertical-align: middle;
+	overflow: hidden;
+/*	padding-left: 2px; now using &nbsp in html content */
+	font-family:Helvetica, sans-serif;
+}
+
+.hoverTokenLine { /* .tokenTitle:hover works too! */
+	border: solid #444 2px;	
+	z-index: 10; /* force on top */
+}
+
+.stickyHiliteTokenLine {
+	border: solid #000 3px;
+	z-index: 10;
+}
+
+/* Start new stuff for column based layout */
+
+.ganttColumns {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+/*	border: 2px #999 dashed;	*/
+	margin-bottom:15px;
+}
+
+.objectColumn {
+	position: relative;
+	top: 15px;
+	left: 3px;
+/*	border: 2px #999 dashed;*/
+}
+
+.objectColumnRow {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 100%;	
+}
+
+.objectTitle {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 15px;
+	font-size: small;
+	font-weight: bold;
+	color: #333;
+	font-family:Helvetica, sans-serif;
+}
+
+.predicateTitle {
+/*	background-color:  #DCDCDC; /* Gainsboro - a light grey */
+	background-color: transparent;
+	position: relative;
+	text-align: right;
+	width: 100%;
+	top: 0;
+	left: 0;
+/*	border: solid #DCDCDC 1px;*/
+/*	padding-top: 3px;*/
+/*	padding-bottom: 3px;
+	padding-left: 5px;*/
+	font-size: small;
+/*	font-family: Arial, sans-serif;*/
+/*	visibility: hidden;*/
+	font-family:Helvetica, sans-serif; /* this was from old GHS Left styling... */
+	color: #333; 
+}
+
+.predicateTitleDoubleHeight {
+	/* indicates single title for plan and sim rows */
+}
+
+.tokenColumn {
+	position: absolute;
+	top: 0px;
+/*	border: 2px #999 dashed;	*/
+	overflow:auto;
+	z-index:1;
+
+}
+
+.tokenColumnRow {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+.tokenColumnRowTokens {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 100%;	
+}
+/* End new stuff for column based layout */
+
+#gantt {
+	position: relative;
+	left: 0px;
+	top:195px;
+/*	width: 100%;*/
+	height:100%;
+	border: 2px #999 solid;
+	margin-bottom:15px;
+	font:Helvetica;
+}
+
+.gridHeader { /* div that shows the grid line numbers every 10 */
+	position:relative;
+	height: 15px;
+}
+
+.gHSAlternateBG {
+	background-color: #E5E5E5;
+}
+
+/* Grid */
+.gridSection {
+	position: absolute;
+	width: 100%;
+	left: 0px;
+	overflow:inherit;
+}
+
+.gridLines {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+
+.gridLine {
+	position: absolute;
+	border-bottom-width: 0;
+	border-top-width:    0;
+	border-right-width:  0;
+	border-left-width:   1px;	
+	border-style: dotted;
+	border-color: #AAA;
+	height: 100%;
+	width: 0px; /* make larger to more easily view with Firebug */	
+}
+
+.majorGridLine {
+	border-style: solid;
+	border-color: #888;	
+}
+
+.minorGridLine {
+
+}
+
+.majorGridLabel {
+	position:absolute;
+	color: #777;
+	font-style: italic;
+	font-size: smaller;
+	padding-top: 2px;
+	padding-left: 2px;
+/*	z-index: 1; */
+	/* try to stay above when scrolling */
+}
+/* End Grid */
+
+/* Tokens Details */
+#tokenDetailsBox {
+	position: absolute;
+	top: 20px;
+	left: 400px;
+	width: 200px;
+	border-style: solid;
+	border-width: 2px;
+	background: #EAEAEA; /* also overrides background-image... */
+	z-index: 10;
+}
+
+#tokenDetailsDefault {
+	font-style: italic;
+	font-size: small;
+}
+
+#tokenDetailsDiv {
+	font-size:small;
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+.detailsLabel {
+	font-weight: bold;
+}
+
+.detailsValue {
+	
+}
+
+#footer {
+	position:fixed;
+	top:0px;
+	left:0px;
+	right:0px;
+	background-color:#666;
+	width: 100%;
+	z-index:200;
+}
+
+.topLine {
+	background-color:#09F;
+}
+
+.parentLine {
+	background-color:#0C0;
+}
+
+.objectInfo {
+	position:absolute;
+	font-family:Helvetica, sans-serif;
+	font-size:12px;
+}
+	
+#mod {
+	font-family: Helvetica, sans-serif;
+	font-size:14px;
+	padding-top:15px;
+	position:fixed;
+	top:30px;
+	z-index:300;
+	background-color:#DCDCDC;
+	left:0px;
+	padding-left:5px;
+	padding-right:5px;
+	width:99%;
+}
+
+#tokenScroller {
+	margin-left:200px;
+}
+
+#scaleradio {
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.newhidden {
+	display:none;
+}
+
+#help {
+	position:fixed;
+	left:97%;
+	font-size:12px;
+	color:white;
+	font-family:Helvetica;
+	top:7px;
+	text-decoration:none;
+}
+
+#help:hover {
+	text-decoration:underline;
+}
+
+/* End Token Details */

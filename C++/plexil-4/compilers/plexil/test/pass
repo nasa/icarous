@@ -1,0 +1,1 @@
+cp output/$1.epx valid/valid-$1.epx

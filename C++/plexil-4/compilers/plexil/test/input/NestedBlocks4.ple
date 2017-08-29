@@ -1,0 +1,9 @@
+Command print(...);
+
+{
+NestedBlocks4:
+  Sequence
+  {
+    print("NestedBlocks4");
+  }
+}

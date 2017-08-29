@@ -1,0 +1,364 @@
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:addPlan]Added plan: 
+Procedure_5_350{
+ State: (id_232[a](INACTIVE): state(INACTIVE)) (inf)
+  Step_1_2_3{
+   State: (id_277[a](INACTIVE): state(INACTIVE)) (inf)
+    Three_Min_Timer{
+     State: (id_323[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Determine_Persistence{
+     State: (id_369[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Step_1_Branch{
+     State: (id_414[a](INACTIVE): state(INACTIVE)) (inf)
+      condition_eval{
+       State: (id_460[a](INACTIVE): state(INACTIVE)) (inf)
+      }
+    }
+  }
+}
+
+[PlexilExec:handleConditionsChanged]Node Procedure_5_350 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Procedure_5_350' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Procedure_5_350' on the state change queue in position 1
+[Test:testOutput]Creating initial state Event_5520() = 0
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 1
+[PlexilExec:step][1:0] State change queue: Procedure_5_350 
+[PlexilExec:step][1:0:0] Transitioning node Procedure_5_350
+[Test:testOutput]Registering change lookup Event_5520() with tolerances 0
+[PlexilExec:handleConditionsChanged]Node Procedure_5_350 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Procedure_5_350' was previously eligible to transition but isn't now.
+[PlexilExec:cycle]==>End cycle 1
+[PlexilExec:printPlan]
+Procedure_5_350{
+ State: (id_232[a](WAITING): state(WAITING)) (0)
+ StartCondition: (id_521[a](0): ((id_523[a](0): LookupOnChange(Event_5520(), (id_524[a](0): real))) == (id_525[a](1): boolean)))
+ EndCondition: (id_518[i](UNKNOWN): childrenFinished(0:1))
+ InvariantCondition: (id_253[a](1): boolean)
+ PreCondition: (id_255[a](1): boolean)
+ PostCondition: (id_257[a](1): boolean)
+ RepeatCondition: (id_259[a](0): boolean)
+ AncestorInvariantCondition: (id_261[a](1): boolean)
+ AncestorEndCondition: (id_263[a](0): boolean)
+ ParentExecutingCondition: (id_265[a](1): boolean)
+ AllChildrenWaitingOrFinishedCondition: (id_515[i](UNKNOWN): childrenWaitingOrFinished(0:1))
+ AbortCompleteCondition: (id_269[a](UNKNOWN): boolean)
+ ParentWaitingCondition: (id_271[a](0): boolean)
+ ParentFinishedCondition: (id_273[a](0): boolean)
+  Step_1_2_3{
+   State: (id_277[a](INACTIVE): state(INACTIVE)) (inf)
+    Three_Min_Timer{
+     State: (id_323[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Determine_Persistence{
+     State: (id_369[a](INACTIVE): state(INACTIVE)) (inf)
+    }
+    Step_1_Branch{
+     State: (id_414[a](INACTIVE): state(INACTIVE)) (inf)
+      condition_eval{
+       State: (id_460[a](INACTIVE): state(INACTIVE)) (inf)
+      }
+    }
+  }
+}
+
+[Test:testOutput]Processing event: Event_5520() = 1
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:handleConditionsChanged]Node Procedure_5_350 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Procedure_5_350' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Procedure_5_350' on the state change queue in position 2
+[PlexilExec:cycle]==>Start cycle 2
+[PlexilExec:step][2:0] State change queue: Procedure_5_350 
+[PlexilExec:step][2:0:0] Transitioning node Procedure_5_350
+[PlexilExec:handleConditionsChanged]Node Step_1_2_3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Step_1_2_3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Step_1_2_3' on the state change queue in position 3
+[PlexilExec:handleNeedsExecution]Storing action for node 'Procedure_5_350' to be executed.
+[PlexilExec:handleConditionsChanged]Node Procedure_5_350 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Procedure_5_350' was previously eligible to transition but isn't now.
+[PlexilExec:step][2:1] State change queue: Step_1_2_3 
+[PlexilExec:step][2:1:0] Transitioning node Step_1_2_3
+[PlexilExec:handleConditionsChanged]Node Step_1_2_3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Step_1_2_3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Step_1_2_3' on the state change queue in position 4
+[PlexilExec:step][2:2] State change queue: Step_1_2_3 
+[PlexilExec:step][2:2:0] Transitioning node Step_1_2_3
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Three_Min_Timer' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Three_Min_Timer' on the state change queue in position 5
+[PlexilExec:handleConditionsChanged]Node Determine_Persistence had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Determine_Persistence' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Determine_Persistence' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Determine_Persistence' on the state change queue in position 6
+[PlexilExec:handleConditionsChanged]Node Step_1_Branch had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Step_1_Branch' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Step_1_Branch' on the state change queue in position 7
+[PlexilExec:handleNeedsExecution]Storing action for node 'Step_1_2_3' to be executed.
+[PlexilExec:handleConditionsChanged]Node Step_1_2_3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Step_1_2_3' was previously eligible to transition but isn't now.
+[PlexilExec:step][2:3] State change queue: Three_Min_Timer Determine_Persistence Step_1_Branch 
+[PlexilExec:step][2:3:0] Transitioning node Three_Min_Timer
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Three_Min_Timer' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Three_Min_Timer' to resource contention.
+[PlexilExec:step][2:3:1] Transitioning node Determine_Persistence
+[PlexilExec:handleConditionsChanged]Node Determine_Persistence had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Determine_Persistence' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Determine_Persistence' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Determine_Persistence' to resource contention.
+[PlexilExec:step][2:3:2] Transitioning node Step_1_Branch
+[PlexilExec:handleConditionsChanged]Node Step_1_Branch had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Step_1_Branch' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Step_1_Branch' on the state change queue in position 8
+[PlexilExec:resolveResourceConflicts]Node 'Determine_Persistence' has best priority.  Adding it to be executed in position 9
+[PlexilExec:resolveResourceConflicts]Node 'Three_Min_Timer' has best priority.  Adding it to be executed in position 10
+[PlexilExec:step][2:4] State change queue: Step_1_Branch Determine_Persistence Three_Min_Timer 
+[PlexilExec:step][2:4:0] Transitioning node Step_1_Branch
+[PlexilExec:handleConditionsChanged]Node condition_eval had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'condition_eval' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'condition_eval' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'condition_eval' on the state change queue in position 11
+[PlexilExec:handleNeedsExecution]Storing action for node 'Step_1_Branch' to be executed.
+[PlexilExec:handleConditionsChanged]Node Step_1_Branch had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Step_1_Branch' was previously eligible to transition but isn't now.
+[PlexilExec:step][2:4:1] Transitioning node Determine_Persistence
+[PlexilExec:handleNeedsExecution]Storing action for node 'Determine_Persistence' to be executed.
+[PlexilExec:handleConditionsChanged]Node Determine_Persistence had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Determine_Persistence' was previously eligible to transition but isn't now.
+[PlexilExec:step][2:4:2] Transitioning node Three_Min_Timer
+[Test:testOutput]Registering change lookup three_min_timer() with tolerances 0
+[PlexilExec:handleNeedsExecution]Storing action for node 'Three_Min_Timer' to be executed.
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' was previously eligible to transition but isn't now.
+[Test:testOutput]Assigning 'advisory_persistent' ((id_320[a](UNKNOWN): boolean)) to 1
+[PlexilExec:handleConditionsChanged]Node Determine_Persistence had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Determine_Persistence' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Determine_Persistence' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Determine_Persistence' on the state change queue in position 12
+[Test:testOutput]Assigning 'hack' ((id_366[a](UNKNOWN): boolean)) to 1
+[PlexilExec:resolveResourceConflicts]Node for id_366 already executing.  Nothing to resolve.
+[PlexilExec:step][2:5] State change queue: condition_eval Determine_Persistence 
+[PlexilExec:step][2:5:0] Transitioning node condition_eval
+[PlexilExec:handleConditionsChanged]Node condition_eval had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'condition_eval' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'condition_eval' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'condition_eval' to resource contention.
+[PlexilExec:step][2:5:1] Transitioning node Determine_Persistence
+[PlexilExec:handleConditionsChanged]Node Determine_Persistence had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Determine_Persistence' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Determine_Persistence' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Determine_Persistence' on the state change queue in position 13
+[PlexilExec:resolveResourceConflicts]Node for id_366 already executing.  Nothing to resolve.
+[PlexilExec:resolveResourceConflicts]Node 'condition_eval' has best priority.  Adding it to be executed in position 14
+[PlexilExec:step][2:6] State change queue: Determine_Persistence condition_eval 
+[PlexilExec:step][2:6:0] Transitioning node Determine_Persistence
+[PlexilExec:handleConditionsChanged]Node Determine_Persistence had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Determine_Persistence' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][2:6:1] Transitioning node condition_eval
+[PlexilExec:handleNeedsExecution]Storing action for node 'condition_eval' to be executed.
+[PlexilExec:handleConditionsChanged]Node condition_eval had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'condition_eval' was previously eligible to transition but isn't now.
+[Test:testOutput]Assigning 'which_1' ((id_457[a](UNKNOWN): boolean)) to 1
+[PlexilExec:handleConditionsChanged]Node condition_eval had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'condition_eval' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'condition_eval' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'condition_eval' on the state change queue in position 15
+[PlexilExec:resolveResourceConflicts]Node for id_366 already executing.  Nothing to resolve.
+[PlexilExec:step][2:7] State change queue: condition_eval 
+[PlexilExec:step][2:7:0] Transitioning node condition_eval
+[PlexilExec:handleConditionsChanged]Node condition_eval had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'condition_eval' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'condition_eval' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'condition_eval' on the state change queue in position 16
+[PlexilExec:resolveResourceConflicts]Node for id_366 already executing.  Nothing to resolve.
+[PlexilExec:step][2:8] State change queue: condition_eval 
+[PlexilExec:step][2:8:0] Transitioning node condition_eval
+[PlexilExec:handleConditionsChanged]Node Step_1_Branch had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Step_1_Branch' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Step_1_Branch' on the state change queue in position 17
+[PlexilExec:handleConditionsChanged]Node condition_eval had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'condition_eval' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:resolveResourceConflicts]Node for id_366 already executing.  Nothing to resolve.
+[PlexilExec:step][2:9] State change queue: Step_1_Branch 
+[PlexilExec:step][2:9:0] Transitioning node Step_1_Branch
+[PlexilExec:handleConditionsChanged]Node Step_1_Branch had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Step_1_Branch' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Step_1_Branch' on the state change queue in position 18
+[PlexilExec:resolveResourceConflicts]Node for id_366 already executing.  Nothing to resolve.
+[PlexilExec:step][2:10] State change queue: Step_1_Branch 
+[PlexilExec:step][2:10:0] Transitioning node Step_1_Branch
+[PlexilExec:handleConditionsChanged]Node Step_1_Branch had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Step_1_Branch' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Step_1_Branch' on the state change queue in position 19
+[PlexilExec:resolveResourceConflicts]Node for id_366 already executing.  Nothing to resolve.
+[PlexilExec:step][2:11] State change queue: Step_1_Branch 
+[PlexilExec:step][2:11:0] Transitioning node Step_1_Branch
+[PlexilExec:handleConditionsChanged]Node Step_1_Branch had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Step_1_Branch' was previously eligible to transition but isn't now.
+[PlexilExec:resolveResourceConflicts]Node for id_366 already executing.  Nothing to resolve.
+[PlexilExec:cycle]==>End cycle 2
+[PlexilExec:printPlan]
+Procedure_5_350{
+ State: (id_232[a](EXECUTING): state(EXECUTING)) (0)
+ StartCondition: (id_521[i](UNKNOWN): ((id_523[i](UNKNOWN): LookupOnChange(Event_5520(), (id_524[a](0): real))) == (id_525[i](1): boolean)))
+ EndCondition: (id_518[a](0): childrenFinished(0:1))
+ InvariantCondition: (id_253[a](1): boolean)
+ PreCondition: (id_255[a](1): boolean)
+ PostCondition: (id_257[a](1): boolean)
+ RepeatCondition: (id_259[a](0): boolean)
+ AncestorInvariantCondition: (id_261[a](1): boolean)
+ AncestorEndCondition: (id_263[a](0): boolean)
+ ParentExecutingCondition: (id_265[a](1): boolean)
+ AllChildrenWaitingOrFinishedCondition: (id_515[i](UNKNOWN): childrenWaitingOrFinished(0:1))
+ AbortCompleteCondition: (id_269[a](UNKNOWN): boolean)
+ ParentWaitingCondition: (id_271[a](0): boolean)
+ ParentFinishedCondition: (id_273[a](0): boolean)
+  Step_1_2_3{
+   State: (id_277[a](EXECUTING): state(EXECUTING)) (0)
+   StartCondition: (id_294[a](1): boolean)
+   EndCondition: (id_512[a](0): childrenFinished(2:3))
+   InvariantCondition: (id_298[a](1): boolean)
+   PreCondition: (id_300[a](1): boolean)
+   PostCondition: (id_302[a](1): boolean)
+   RepeatCondition: (id_304[a](0): boolean)
+   AncestorInvariantCondition: (id_530[a](1): ((id_526[auT]{1}((id_261[a](1): boolean)) && (id_528[auT]{1}((id_253[a](1): boolean)))
+   AncestorEndCondition: (id_532[iuT]{0}((id_518[a](0): childrenFinished(0:1)))
+   ParentExecutingCondition: (id_535[i](UNKNOWN): ((id_232[a](EXECUTING): state(EXECUTING)) == (id_534[a](EXECUTING): state(EXECUTING))))
+   AllChildrenWaitingOrFinishedCondition: (id_509[i](UNKNOWN): childrenWaitingOrFinished(0:3))
+   AbortCompleteCondition: (id_314[a](UNKNOWN): boolean)
+   ParentWaitingCondition: (id_538[i](UNKNOWN): ((id_232[a](EXECUTING): state(EXECUTING)) == (id_537[a](WAITING): state(WAITING))))
+   ParentFinishedCondition: (id_541[i](UNKNOWN): ((id_232[a](EXECUTING): state(EXECUTING)) == (id_540[a](FINISHED): state(FINISHED))))
+   advisory_persistent: (id_320[i](1): boolean)
+    Three_Min_Timer{
+     State: (id_323[a](EXECUTING): state(EXECUTING)) (0)
+     StartCondition: (id_340[a](1): boolean)
+     EndCondition: (id_562[a](UNKNOWN): ((id_561[a](1): boolean) && (id_557[a](UNKNOWN): ((id_559[a](UNKNOWN): LookupOnChange(three_min_timer(), (id_524[a](0): real))) == (id_560[a](1): boolean))))
+     InvariantCondition: (id_344[a](1): boolean)
+     PreCondition: (id_346[a](1): boolean)
+     PostCondition: (id_348[a](1): boolean)
+     RepeatCondition: (id_350[a](0): boolean)
+     AncestorInvariantCondition: (id_547[a](1): ((id_543[auT]{1}((id_530[a](1): ((id_526[auT]{1}((id_261[a](1): boolean)) && (id_528[auT]{1}((id_253[a](1): boolean)))) && (id_545[auT]{1}((id_298[a](1): boolean)))
+     AncestorEndCondition: (id_549[iuT]{0}((id_512[a](0): childrenFinished(2:3)))
+     ParentExecutingCondition: (id_551[i](UNKNOWN): ((id_277[a](EXECUTING): state(EXECUTING)) == (id_534[a](EXECUTING): state(EXECUTING))))
+     AllChildrenWaitingOrFinishedCondition: (id_358[a](UNKNOWN): boolean)
+     AbortCompleteCondition: (id_360[a](UNKNOWN): boolean)
+     ParentWaitingCondition: (id_553[i](UNKNOWN): ((id_277[a](EXECUTING): state(EXECUTING)) == (id_537[a](WAITING): state(WAITING))))
+     ParentFinishedCondition: (id_555[i](UNKNOWN): ((id_277[a](EXECUTING): state(EXECUTING)) == (id_540[a](FINISHED): state(FINISHED))))
+     hack: (id_366[a](1): boolean)
+    }
+    Determine_Persistence{
+     State: (id_369[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_370[a](SUCCESS):  outcome)
+     advisory_persistent: (id_320[i](1): boolean)
+    }
+    Step_1_Branch{
+     State: (id_414[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_415[a](SUCCESS):  outcome)
+     advisory_persistent: (id_320[i](1): boolean)
+     which_1: (id_457[i](1): boolean)
+      condition_eval{
+       State: (id_460[a](FINISHED): state(FINISHED)) (0)
+       Outcome: (id_461[a](SUCCESS):  outcome)
+       advisory_persistent: (id_320[i](1): boolean)
+       which_1: (id_457[i](1): boolean)
+      }
+    }
+  }
+}
+
+[Test:testOutput]Processing event: three_min_timer() = 1
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Three_Min_Timer' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Three_Min_Timer' on the state change queue in position 20
+[PlexilExec:cycle]==>Start cycle 3
+[PlexilExec:step][3:0] State change queue: Three_Min_Timer 
+[PlexilExec:step][3:0:0] Transitioning node Three_Min_Timer
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Three_Min_Timer' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Three_Min_Timer' on the state change queue in position 21
+[PlexilExec:step][3:1] State change queue: Three_Min_Timer 
+[PlexilExec:step][3:1:0] Transitioning node Three_Min_Timer
+[PlexilExec:handleConditionsChanged]Node Step_1_2_3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Step_1_2_3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Step_1_2_3' on the state change queue in position 22
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:step][3:2] State change queue: Step_1_2_3 
+[PlexilExec:step][3:2:0] Transitioning node Step_1_2_3
+[PlexilExec:handleConditionsChanged]Node Step_1_2_3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Step_1_2_3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Step_1_2_3' on the state change queue in position 23
+[PlexilExec:step][3:3] State change queue: Step_1_2_3 
+[PlexilExec:step][3:3:0] Transitioning node Step_1_2_3
+[PlexilExec:handleConditionsChanged]Node Step_1_2_3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Step_1_2_3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Step_1_2_3' on the state change queue in position 24
+[PlexilExec:step][3:4] State change queue: Step_1_2_3 
+[PlexilExec:step][3:4:0] Transitioning node Step_1_2_3
+[PlexilExec:handleConditionsChanged]Node Procedure_5_350 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Procedure_5_350' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Procedure_5_350' on the state change queue in position 25
+[PlexilExec:handleConditionsChanged]Node Step_1_2_3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Step_1_2_3' was previously eligible to transition but isn't now.
+[PlexilExec:step][3:5] State change queue: Procedure_5_350 
+[PlexilExec:step][3:5:0] Transitioning node Procedure_5_350
+[PlexilExec:handleConditionsChanged]Node Procedure_5_350 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Procedure_5_350' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Procedure_5_350' on the state change queue in position 26
+[PlexilExec:step][3:6] State change queue: Procedure_5_350 
+[PlexilExec:step][3:6:0] Transitioning node Procedure_5_350
+[PlexilExec:handleConditionsChanged]Node Procedure_5_350 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Procedure_5_350' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Procedure_5_350' on the state change queue in position 27
+[PlexilExec:step][3:7] State change queue: Procedure_5_350 
+[PlexilExec:step][3:7:0] Transitioning node Procedure_5_350
+[PlexilExec:handleConditionsChanged]Node Procedure_5_350 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Procedure_5_350' was previously eligible to transition but isn't now.
+[PlexilExec:cycle]==>End cycle 3
+[PlexilExec:printPlan]
+Procedure_5_350{
+ State: (id_232[a](FINISHED): state(FINISHED)) (0)
+ Outcome: (id_233[a](SUCCESS):  outcome)
+  Step_1_2_3{
+   State: (id_277[a](FINISHED): state(FINISHED)) (0)
+   Outcome: (id_278[a](SUCCESS):  outcome)
+   advisory_persistent: (id_320[i](1): boolean)
+    Three_Min_Timer{
+     State: (id_323[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_324[a](SUCCESS):  outcome)
+     hack: (id_366[i](1): boolean)
+    }
+    Determine_Persistence{
+     State: (id_369[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_370[a](SUCCESS):  outcome)
+     advisory_persistent: (id_320[i](1): boolean)
+    }
+    Step_1_Branch{
+     State: (id_414[a](FINISHED): state(FINISHED)) (0)
+     Outcome: (id_415[a](SUCCESS):  outcome)
+     advisory_persistent: (id_320[i](1): boolean)
+     which_1: (id_457[i](1): boolean)
+      condition_eval{
+       State: (id_460[a](FINISHED): state(FINISHED)) (0)
+       Outcome: (id_461[a](SUCCESS):  outcome)
+       advisory_persistent: (id_320[i](1): boolean)
+       which_1: (id_457[i](1): boolean)
+      }
+    }
+  }
+}
+

@@ -1,0 +1,6 @@
+{
+  Integer i;
+  Post i == 3;
+
+  i = 3.2;
+}
