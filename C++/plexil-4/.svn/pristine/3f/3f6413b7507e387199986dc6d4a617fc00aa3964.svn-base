@@ -1,0 +1,18 @@
+
+// repeat5
+
+initial-state {
+  state time () = 0.0 : real;
+  state continue ()  = 1 : bool;
+}
+
+script {
+  state time () = 1.0 : real;
+  command-ack foo () = "COMMAND_SUCCESS" : string;
+  command-ack foo () = "COMMAND_SUCCESS" : string;
+  command-ack foo () = "COMMAND_SUCCESS" : string;
+  command-ack foo () = "COMMAND_SUCCESS" : string;
+  state continue () = 0 : bool ;
+  command-ack foo () = "COMMAND_SUCCESS" : string;
+}
+

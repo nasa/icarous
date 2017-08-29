@@ -1,0 +1,38 @@
+The Java version of IPC has currently been tested only under Linux
+(specifically RedHat 6.2, RedHat 7.0 and 7.1, Mandrake 8.1) and Solaris.
+
+To make IPC for Java on your system, you may need to edit the GNUmakefile,
+changing the location of the include files to point to your Java installation.
+In particular, search for the occurrences of INC_PATH in the GNUmakefile in
+this directory, and replace the appropriate lines so that the compiler can
+find jni.h and jni_md.h
+
+After editing the GNUmakefile, just type "gmake install" and everything
+should happen automatically (actually, you need to do a "gmake install" in
+the ipc/src directory first, in order to make libipc.a).  After completing,
+you should have a number of classes in this directory, and libipcjava.so in
+the ../lib/<sys> directory (where <sys> is Linux, for instance).
+
+For some compilers, you may need to edit ipc/src/GNUmakefile to uncomment
+the USE_JAVA line.  You will know you have to do this if, when doing a
+"make" in the java directory, it complains about needing to recompile using
+-fPIC.
+
+To run the Java IPC, you need to set the LD_LIBRARY_PATH environment
+variable to include the directory where libipcjava.so is found (see above).
+You also need to set the CLASSPATH environment variable to include the
+ipc/java/build directory.  For instance:
+> setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${HOME}/code/ipc/lib/Linux-2.4"
+> setenv CLASSPATH "${CLASSPATH}:${HOME}/code/ipc/java/build"
+
+There are Java test programs in the ipc/test directory to give you some
+indication of how to use the Java version of IPC.  The manual has more
+complete instructions.
+
+Reid Simmons
+Carnegie Mellon University
+February 12, 2003
+
+Copyright (c) 2008, Carnegie Mellon University
+    This software is distributed under the terms of the 
+    Simplified BSD License (see ipc/LICENSE.TXT)

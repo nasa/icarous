@@ -1,0 +1,120 @@
+[PlexilExec:addPlan]Added plan: 
+simple-openloop-command-a3{
+ State: INACTIVE (0)
+  Drive{
+   State: INACTIVE (0)
+  }
+}
+
+[PlexilExec:notifyNodeConditionChanged] for node simple-openloop-command-a3
+[PlexilExec:cycle]==>Start cycle 1
+[PlexilExec:step][1:0] Check queue: simple-openloop-command-a3 
+[PlexilExec:handleConditionsChanged]Node simple-openloop-command-a3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'simple-openloop-command-a3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'simple-openloop-command-a3' on the state change queue in position 1
+[PlexilExec:step][1:0] State change queue: simple-openloop-command-a3 
+[PlexilExec:step][1:0:0] Transitioning node simple-openloop-command-a3 from INACTIVE to WAITING
+[PlexilExec:notifyNodeConditionChanged] for node simple-openloop-command-a3
+[PlexilExec:step][1:1] Check queue: simple-openloop-command-a3 
+[PlexilExec:handleConditionsChanged]Node simple-openloop-command-a3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'simple-openloop-command-a3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'simple-openloop-command-a3' on the state change queue in position 2
+[PlexilExec:step][1:1] State change queue: simple-openloop-command-a3 
+[PlexilExec:step][1:1:0] Transitioning node simple-openloop-command-a3 from WAITING to EXECUTING
+[PlexilExec:notifyNodeConditionChanged] for node simple-openloop-command-a3
+[PlexilExec:notifyNodeConditionChanged] for node Drive
+[PlexilExec:handleNeedsExecution]Storing action for node 'simple-openloop-command-a3' of type 'NodeList' to be executed.
+[PlexilExec:step][1:2] Check queue: simple-openloop-command-a3 Drive 
+[PlexilExec:handleConditionsChanged]Node Drive had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Drive' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Drive' on the state change queue in position 3
+[PlexilExec:step][1:2] State change queue: Drive 
+[PlexilExec:step][1:2:0] Transitioning node Drive from INACTIVE to WAITING
+[PlexilExec:notifyNodeConditionChanged] for node simple-openloop-command-a3
+[PlexilExec:notifyNodeConditionChanged] for node Drive
+[PlexilExec:step][1:3] Check queue: simple-openloop-command-a3 Drive 
+[PlexilExec:handleConditionsChanged]Node Drive had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Drive' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Drive' on the state change queue in position 4
+[PlexilExec:step][1:3] State change queue: Drive 
+[PlexilExec:step][1:3:0] Transitioning node Drive from WAITING to EXECUTING
+[PlexilExec:notifyNodeConditionChanged] for node simple-openloop-command-a3
+[PlexilExec:notifyNodeConditionChanged] for node Drive
+[PlexilExec:handleNeedsExecution]Storing action for node 'Drive' of type 'Command' to be executed.
+[PlexilExec:performAssignments] performing 0 assignments and 0 retractions
+[Test:testOutput]Executing drive() into noId with ack (CommandHandleVariable NodeCommandHandle 0x7f8399d00808 [a](UNKNOWN))
+[PlexilExec:cycle]==>End cycle 1
+[PlexilExec:printPlan]
+simple-openloop-command-a3{
+ State: EXECUTING (0)
+ EndCondition: (AllChildrenFinished Boolean 0x7f8399d009f0 [a](0))
+ ActionCompleteCondition: (AllChildrenWaitingOrFinished Boolean 0x7f8399d00960 [i](0))
+  Drive{
+   State: EXECUTING (0)
+   PostCondition: (EQ Boolean 0x7f8399d00a60 [i](UNKNOWN) (CommandHandleVariable NodeCommandHandle 0x7f8399d00808 [a](UNKNOWN)) (CommandHandleValue NodeCommandHandle 0x1090d73c8 [a](COMMAND_DENIED)))
+   ActionCompleteCondition: (CommandHandleKnown Boolean 0x7f8399d00900 [i](0))
+   AbortCompleteCondition: (InternalVariable Boolean abortComplete 0x7f8399d00848 [a](0))
+   Command handle: (CommandHandleVariable NodeCommandHandle 0x7f8399d00808 [a](UNKNOWN))
+  }
+}
+
+[Test:testOutput]Sending command ACK drive() = (string)COMMAND_SENT_TO_SYSTEM
+[PlexilExec:cycle]==>Start cycle 2
+[PlexilExec:step][2:0] Check queue: simple-openloop-command-a3 Drive 
+[PlexilExec:handleConditionsChanged]Node Drive had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Drive' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Drive' on the state change queue in position 5
+[PlexilExec:step][2:0] State change queue: Drive 
+[PlexilExec:step][2:0:0] Transitioning node Drive from EXECUTING to FINISHING
+[PlexilExec:notifyNodeConditionChanged] for node simple-openloop-command-a3
+[PlexilExec:notifyNodeConditionChanged] for node Drive
+[PlexilExec:step][2:1] Check queue: simple-openloop-command-a3 Drive 
+[PlexilExec:handleConditionsChanged]Node Drive had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Drive' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Drive' on the state change queue in position 6
+[PlexilExec:step][2:1] State change queue: Drive 
+[PlexilExec:step][2:1:0] Transitioning node Drive from FINISHING to ITERATION_ENDED
+[PlexilExec:notifyNodeConditionChanged] for node simple-openloop-command-a3
+[PlexilExec:notifyNodeConditionChanged] for node Drive
+[PlexilExec:step][2:2] Check queue: simple-openloop-command-a3 Drive 
+[PlexilExec:handleConditionsChanged]Node Drive had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Drive' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Drive' on the state change queue in position 7
+[PlexilExec:step][2:2] State change queue: Drive 
+[PlexilExec:step][2:2:0] Transitioning node Drive from ITERATION_ENDED to FINISHED
+[PlexilExec:notifyNodeConditionChanged] for node simple-openloop-command-a3
+[PlexilExec:notifyNodeConditionChanged] for node Drive
+[PlexilExec:step][2:3] Check queue: simple-openloop-command-a3 Drive 
+[PlexilExec:handleConditionsChanged]Node simple-openloop-command-a3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'simple-openloop-command-a3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'simple-openloop-command-a3' on the state change queue in position 8
+[PlexilExec:step][2:3] State change queue: simple-openloop-command-a3 
+[PlexilExec:step][2:3:0] Transitioning node simple-openloop-command-a3 from EXECUTING to FINISHING
+[PlexilExec:notifyNodeConditionChanged] for node simple-openloop-command-a3
+[PlexilExec:step][2:4] Check queue: simple-openloop-command-a3 
+[PlexilExec:handleConditionsChanged]Node simple-openloop-command-a3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'simple-openloop-command-a3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'simple-openloop-command-a3' on the state change queue in position 9
+[PlexilExec:step][2:4] State change queue: simple-openloop-command-a3 
+[PlexilExec:step][2:4:0] Transitioning node simple-openloop-command-a3 from FINISHING to ITERATION_ENDED
+[PlexilExec:notifyNodeConditionChanged] for node simple-openloop-command-a3
+[PlexilExec:step][2:5] Check queue: simple-openloop-command-a3 
+[PlexilExec:handleConditionsChanged]Node simple-openloop-command-a3 had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'simple-openloop-command-a3' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'simple-openloop-command-a3' on the state change queue in position 10
+[PlexilExec:step][2:5] State change queue: simple-openloop-command-a3 
+[PlexilExec:step][2:5:0] Transitioning node simple-openloop-command-a3 from ITERATION_ENDED to FINISHED
+[PlexilExec:performAssignments] performing 0 assignments and 0 retractions
+[PlexilExec:cycle]==>End cycle 2
+[PlexilExec:printPlan]
+simple-openloop-command-a3{
+ State: FINISHED (0)
+ Outcome: SUCCESS
+  Drive{
+   State: FINISHED (0)
+   Outcome: FAILURE
+   Failure type: POST_CONDITION_FAILED
+   Command handle: (CommandHandleVariable NodeCommandHandle 0x7f8399d00808 [i](UNKNOWN))
+  }
+}
+

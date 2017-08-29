@@ -11,6 +11,7 @@ log
 Java/params/
 *.a
 C++/DAAGeofencingExample
+C++/plexil-4
 *.bin
 *.so
 *.tbl

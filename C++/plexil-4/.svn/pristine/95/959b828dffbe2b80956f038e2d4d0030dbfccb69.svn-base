@@ -1,0 +1,53 @@
+;; File: plexil/examples/multi-exec/agents/cmd.pli
+
+(plexil-plan
+  (sequence "cmd"
+    (variables (string "name" "cmd")      ;agent name
+               (integer "period" 2)       ;polling period
+               (integer "run-length" 160) ;seconds
+               (real-array "actual" 5)    ;dist(ft) alt(ft) speed(kts) vspeed(ft/s) angle(deg)
+               (real "run-start-time"))   ;start time of the current test run
+    ;; Record the start time of the run...
+    (assignment (realvar "run-start-time") (lookup-now "time"))
+    ;; Poll for the current state every "period" seconds and react accordingly
+    (for (integer "i" 0) (>= (intvar "run-length") (intvar "i")) (+ (intvar "i") (intvar "period"))
+      (sequence "sense-and-react"
+        (variables (real "run-elapsed-time") ;elapsed time of the current test run
+                   (real "loop-start-time")) ;start time of the current loop iteration
+        ;; Start this interation after "period" second boundaries (i.e., now - run-start >= i)
+        (start-condition (>= (- (lookup-on-change-with-tolerance "time" 0.01)
+                                (realvar "run-start-time"))
+                             (intvar "i"))) ;to center on boundary, use (- (intvar "i") 0.01)
+        ;; (1) Record the start time of this loop iteration
+        (assignment (realvar "loop-start-time") (lookup-now "time"))
+        ;; (2) Get the current elapsed time and print it for debugging/continuity
+        (assignment (realvar "run-elapsed-time") (- (realvar "loop-start-time") (realvar "run-start-time")))
+        (command "print" "\n[" (stringvar "name") "] run-elapsed-time: " (intvar "i") " (" (realvar "run-elapsed-time") ")\n")
+        ;; (3) Get the current state from the simulator and print it
+        (synchronous-command "get-states"
+          (command-with-return (arrayvar "actual") "get-current-state" (intvar "period")))
+        (command "print" "[" (stringvar "name") "] recv: " (arrayvar "actual") "\n")
+        ;; (4) Command deceleration as appropriate
+        (sequence "decel-1"
+          (variables (real "kps-decel" -1.21) (real "delta"))
+          (skip-condition (or (< 70036.0 (array-element "actual" 0))
+                              (> 42796.0 (array-element "actual" 0))
+                              (> 180.0 (array-element "actual" 2)))) ;target speed
+          (assignment (realvar "delta") (* (realvar "kps-decel") (intvar "period")))
+          (command "set-speed" (realvar "delta")))
+        ;; (5) Command deceleration and rotor angle as appropriate
+        (sequence "decel-2"
+          (variables (real "kps-decel" -1.1666) (real "kps-delta") (real "dps" 1.2) (real "dps-delta"))
+          (skip-condition (or (<= 42796.0 (array-element "actual" 0))
+                              (> 110.0 (array-element "actual" 2))))
+          (assignment (realvar "kps-delta") (* (realvar "kps-decel") (intvar "period")))
+          (assignment (realvar "dps-delta") (* (realvar "dps") (intvar "period")))
+          (command "set-speed" (realvar "kps-delta"))
+          (if (> 59.8 (array-element "actual" 4))
+              (command "set-angle" (realvar "dps-delta"))))))
+    ;; Halt the system when done
+    (action "Quit"
+      (command "print" "\n[" (stringvar "name") "] sent: Quit (quitting)\n")
+      (command "SendMessage" "Quit"))))
+
+;; EOF

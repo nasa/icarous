@@ -1,0 +1,5 @@
+(plexil-plan
+  (let ((string "foo" "first"))
+    (assign (stringvar "foo") "second")
+    (let ((integer "bar" 5))
+      (assign (intvar "bar") (+ (intvar "bar") 10)))))

@@ -1,0 +1,15 @@
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <While>
+    <Condition>
+      <LT>
+        <IntegerValue>0</IntegerValue>
+        <IntegerValue>1</IntegerValue>
+      </LT>
+    </Condition>
+    <Action>
+      <Node NodeType="Empty">
+        <NodeId>One</NodeId>
+      </Node>
+    </Action>
+  </While>
+</PlexilPlan>

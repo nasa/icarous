@@ -1,0 +1,40 @@
+;; File: $SVNROOT/examples/multi-exec/agents/sim.pli
+
+(plexil-plan
+  (concurrently "sim"
+    (variables
+      (string "name" "sim")
+      (real-array "actual" 5 74000.0 2000.0 250.0 0.0 0.0) ;dist(ft) alt(ft) speed(kts) vspeed(ft/s) angle(deg)
+      (boolean "debug" true))
+    (invariant-condition (not (finished "QuitCommand")))
+    ;; Handle set-speed commands
+    (action "set-speed-handler"
+      (repeat-condition true)
+      (on-command "set-speed" ((real "knots"))
+        (sequence "set-speed"
+	  (assignment-node (priority 1)
+	     (assignment (array-element "actual" 2) (+ (array-element "actual" 2) (realvar "knots"))))
+          (if (boolvar "debug")
+              (command "print" "[" (stringvar "name") "] recv: set-speed " (realvar "knots") ", " (arrayvar "actual") "\n")))))
+    ;; Handle set-angle commands
+    (action "set-angle-handler"
+      (repeat-condition true)
+      (on-command "set-angle" ((real "degrees"))
+        (sequence "set-angle"
+	  (assignment-node 
+	   (priority 2)
+	   (assignment (array-element "actual" 4) (+ (array-element "actual" 4) (realvar "degrees"))))
+          (if (boolvar "debug")
+              (command "print" "[" (stringvar "name") "] recv: set-angle " (realvar "degrees") ", " (arrayvar "actual") "\n")))))
+    ;; Handle get-current-state commands
+    (action "state-request-handler"
+      (repeat-condition true)
+      (library-call-node (call "state-request"
+                               (alias "actual" (arrayvar "actual"))
+                               (alias "name" (stringvar "name"))
+                               (alias "debug" (boolvar "debug")))))
+    (action "QuitCommand"
+      (on-message "Quit"
+        (command "print" "[" (stringvar "name") "] recv: Quit (quitting)\n\n")))))
+
+;; EOF

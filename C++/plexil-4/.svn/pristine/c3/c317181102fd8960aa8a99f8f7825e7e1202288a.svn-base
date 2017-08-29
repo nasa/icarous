@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlexilPlan>
+  <GlobalDeclarations>
+    <StateDeclaration>
+      <Name>someValue</Name>
+      <Return>
+        <Type>Integer</Type>
+      </Return>
+    </StateDeclaration>
+  </GlobalDeclarations>
+  <Node NodeType="Update">
+    <NodeId>UpdateLookupTest</NodeId>
+    <VariableDeclarations>
+      <DeclareVariable>
+        <Name>x</Name>
+        <Type>Integer</Type>
+        <InitialValue>
+          <IntegerValue>10</IntegerValue>
+        </InitialValue>
+      </DeclareVariable>
+      <DeclareVariable>
+        <Name>y</Name>
+        <Type>Boolean</Type>
+        <InitialValue>
+          <BooleanValue>0</BooleanValue>
+        </InitialValue>
+      </DeclareVariable>
+    </VariableDeclarations>
+    <NodeBody>
+      <Update>
+	    <Pair>
+	      <Name>xValue</Name>
+	      <IntegerVariable>x</IntegerVariable>
+	    </Pair>
+	    <Pair>
+	      <Name>yValue</Name>
+	      <BooleanVariable>y</BooleanVariable>
+	    </Pair>
+	    <Pair>
+	      <Name>realconstant</Name>
+	      <RealValue>3.141</RealValue>
+	    </Pair>
+	    <Pair>
+	      <Name>lookup</Name>
+	      <LookupNow>
+	        <Name><StringValue>someValue</StringValue></Name>
+	      </LookupNow>
+	    </Pair>
+      </Update>
+    </NodeBody>
+  </Node>
+</PlexilPlan>

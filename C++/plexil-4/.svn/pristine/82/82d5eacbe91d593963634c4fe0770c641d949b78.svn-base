@@ -1,0 +1,23 @@
+This directory contains PLEXIL's temporal viewer for plans.
+
+To use the viewer:
+
+1. Add '<Listener ListenerType="GanttListener"/>' to an interface
+   configuration XML file associated with any plan(s) you wish to
+   examine with the viewer.
+
+2. Run the desired plans, using 'plexilexec' from the command line, or
+   the 'plexilexec' configuration from the Plexil Viewer.  NOTE:
+   plexiltest and plexilsim are not currently supported.
+
+3. Open the newly created HTML file(s) to view the Gantt chart.  These
+   files are found in directory from which you ran Plexil.  Each HTML
+   file corresponds to the execution of a single plan. The naming
+   convention for HTML files is 'Gantt_x_y.html' where 'x' is the system
+   time of the plan's execution and 'y' is the name of root node in the
+   executed plan. JSON files associated with each plan are stored in
+   plexil/src/viewer/json with the naming convention 'x_y.html' where
+   'x' and 'y' are as stated above.
+
+NOTE: We recommend you use Mozilla Firefox or Safari. Google Chrome is
+not supported. 

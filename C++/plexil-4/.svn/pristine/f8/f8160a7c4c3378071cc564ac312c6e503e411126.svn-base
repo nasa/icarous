@@ -1,0 +1,4 @@
+(plexil-script
+  (script
+    (command "foo" "int-array" (0 1 2 3))
+    (command-success "foo")))

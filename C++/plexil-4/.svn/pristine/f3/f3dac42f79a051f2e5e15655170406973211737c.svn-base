@@ -1,0 +1,13 @@
+Command print(...);
+
+{
+NestedBlocks5:
+  Sequence
+  {
+    print("NestedBlocks5");
+  }
+  {
+    print("Some more crud");
+    print("And even more");
+  }
+}

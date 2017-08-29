@@ -1,0 +1,6 @@
+libPlexilIntfc_la-resource-tags.lo: resource-tags.cc \
+ /usr/include/stdc-predef.h resource-tags.hh
+
+/usr/include/stdc-predef.h:
+
+resource-tags.hh:

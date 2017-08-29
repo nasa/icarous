@@ -1,0 +1,15 @@
+// Can't declare these because the colon in the state name is a syntax error
+//Command front_engine:setTorque(Real);
+//Command rear_engine:setTorque(Real);
+//Real Lookup front_engine:Torque;
+//Real Lookup rear_engine:Torque;
+
+Main:
+{
+  Real fTorque;
+  Real bTorque;
+  GetF: fTorque = Lookup(("front_engine:Torque"));
+  GetB: bTorque = Lookup(("rear_engine:Torque"));
+  SetF: ("front_engine:setTorque")(bTorque);
+  SetB: ("rear_engine:setTorque")(fTorque);
+}

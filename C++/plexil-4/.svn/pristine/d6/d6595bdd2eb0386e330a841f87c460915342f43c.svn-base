@@ -1,0 +1,15 @@
+(plexil-plan
+  (declarations
+    (state-declaration "foofoo" (return "boolean"))
+    (state-declaration "foobar" (return "boolean"))
+    (state-declaration "x" (return "integer")))
+  (assignment-node "Root"
+    (variables
+      (integer "x")
+      (string "state1" "foo")
+      (string "state2" "bar"))
+    (start-condition (lookup-on-change (concat (stringvar "state1")
+                                               (stringvar "state1"))))
+    (post-condition (lookup-now (concat (stringvar "state1")
+                                        (stringvar "state2"))))
+    (assignment (intvar "x") (lookup-now "x"))))

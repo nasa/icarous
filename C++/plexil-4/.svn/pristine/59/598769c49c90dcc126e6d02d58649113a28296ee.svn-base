@@ -1,0 +1,62 @@
+Real Lookup time;
+Command print (...);
+Command test_udp_msg (String, Boolean, Integer, Real, Integer[3], Real[3], Boolean[3], String[3]);
+Command quit_msg (String);
+
+root: UncheckedSequence
+{
+    String arg1 = "CA";                    // intentionally shorter than declared in udp.xml (for testing)
+    //Boolean arg2 = false;                // set to "true" to request an "ack" from the other agent
+    Integer arg3 = 3;                      // 23 bits: -2147483649, 2147483648; 16 bits: -32768, 32767
+    Real arg4 = 3.14159;                   // 1.17e-38, 3.5e+38
+    Integer arg5[3] = #(9 8 7);            // test arrays
+    Real arg6[3] = #(36.0 -104.7 25000.0);
+    Boolean arg7[3] = #(true true false);
+    String arg8[3] = #("foo" "baz" "bar");
+    Real run_start_time;
+    Boolean ackTimedOut = false;
+
+    RecordStartTime: run_start_time = Lookup(time);
+
+    SendUdpCommand1:
+    {
+        ReportParameters: print ("\ntest-send: sending arg1==", arg1, ", arg2==false, arg3==", arg3, ", arg4==", arg4,
+                                 ", arg5==", arg5, ", arg6==", arg6, ", arg7==", arg7, ", arg8==", arg8, "\n\n");
+        SendCommand: test_udp_msg (arg1, false, arg3, arg4, arg5, arg6, arg7, arg8); // Send the UDP message, no ack
+    }
+
+    SendUdpCommand2: Concurrence {
+        StartCondition Lookup(time, 1) > run_start_time + 2;
+        InvariantCondition ackTimedOut == false;
+
+        ReportParameters: print ("\ntest-send: sending arg1==", arg1, ", arg2==true, arg3==", arg3, ", arg4==", arg4,
+                                 ", arg5==", arg5, ", arg6==", arg6, ", arg7==", arg7, ", arg8==", arg8, "\n\n");
+
+        HandleAck:
+        {
+            StartCondition ReportParameters.state == FINISHED;
+            OnCommand "ack_msg" (String ack) print ("\ntest-send: received ack\n\n");
+        }
+
+        HandleTimeout: UncheckedSequence {
+            StartCondition Lookup(time, 1) > run_start_time + 4;
+            SkipCondition HandleAck.state == FINISHED;
+            ReportTimeout: print ("\ntest-send: ack timed out\n\n");
+            SignalTimeout: ackTimedOut = true;
+        }
+
+        SendCommand:
+        {
+            StartCondition HandleAck.state == EXECUTING;
+            test_udp_msg (arg1, true, arg3, arg4, arg5, arg6, arg7, arg8); // Send the UDP message, ack requested
+        }
+    }
+
+    SendQuitCommand:
+    {
+        StartCondition SendUdpCommand2.state == FINISHED;
+        ReportSendQuit: print ("\ntest-send: sending quit command\n\n");
+        SendQuit: quit_msg ("quit");   // Send a Quit command
+    }
+}
+

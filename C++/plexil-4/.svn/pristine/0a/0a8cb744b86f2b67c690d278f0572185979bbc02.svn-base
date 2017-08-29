@@ -1,0 +1,16 @@
+Command pprint(...);
+
+IfThenElseif: {
+    for (Integer i = 0; i < 4 ; i + 1) {
+        if (i == 0)
+            pprint("i == 0");
+        elseif (i == 1)
+            pprint("i == 1");
+        elseif (i == 2)
+            pprint("i == 2");
+        else
+            pprint("i > 2");
+        endif
+    }
+    pprint("Done.");
+}

@@ -1,0 +1,12 @@
+(plexil-plan
+  (action "Root"
+    (start-condition (not (lookup-on-change "x")))
+    (end-condition (lookup-on-change "x"))
+    (empty-node "bar")
+    (action "Sub"
+      (post-condition (lookup-on-change "x"))
+      (while (lookup-on-change "x")
+        (command-node "f" (command "start" 4))))))
+        
+
+      

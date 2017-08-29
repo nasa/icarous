@@ -1,0 +1,9 @@
+<Interfaces>
+ <Adapter AdapterType="Utility"/>
+ <Adapter AdapterType="OSNativeTime">
+  <LookupNames>time</LookupNames>
+ </Adapter>
+ <Adapter AdapterType="IpcAdapter" Server="localhost" AllowDuplicateMessages="true">
+  <DefaultAdapter/>
+ </Adapter>
+</Interfaces>

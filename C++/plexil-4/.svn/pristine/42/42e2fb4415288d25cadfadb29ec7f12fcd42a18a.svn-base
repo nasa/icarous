@@ -1,0 +1,6 @@
+Real Lookup time;
+
+VerifyTemp:
+{
+  PostCondition Lookup(time) >= Self.EXECUTING.START;
+}

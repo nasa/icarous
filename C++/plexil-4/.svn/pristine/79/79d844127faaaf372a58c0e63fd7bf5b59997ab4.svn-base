@@ -1,0 +1,6 @@
+SimpleAssignment:
+{
+  Integer foo = 0;
+  PostCondition foo == 3;
+  foo = 3;
+}

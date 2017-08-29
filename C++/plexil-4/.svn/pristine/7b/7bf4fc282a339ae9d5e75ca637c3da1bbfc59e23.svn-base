@@ -1,0 +1,71 @@
+// Simulation script for testing the newly added support for 'unknown' value
+
+initial-state {
+  state time           () = 0 : int;
+  state r1             () =   0.0 : real;
+  state r2             () =   <unknown> : real;  
+  state i1             () =   0 : int;
+  state i2             () =   <unknown> : int;  
+  state s1             () =   "foo" : string;
+  state s2             () =   <unknown> : string;  
+  state b1             () =   true : bool;
+  state b2             () =   <unknown> : bool;  
+}
+
+
+script {
+
+  state time           () = 1 : int;
+
+  command         get_string () = "yes" : string;
+  command-success get_string ();
+
+  state time           () = 2 : int;
+  
+  command         get_string () = <unknown> : string;
+  command-success get_string ();
+
+  state time           () = 3 : int;
+  
+  command         get_int () = 1 : int;
+  command-success get_int ();
+
+  state time           () = 4 : int;
+  
+  command         get_int () = <unknown> : int;
+  command-success get_int ();
+
+  state time           () = 5 : int;
+  
+  command         get_real () = 1.0 : real;
+  command-success get_real ();
+
+  state time           () = 6 : int;
+  
+  command         get_real () = <unknown> : real;
+  command-success get_real ();
+
+  state time           () = 7 : int;
+  
+  command         get_bool () = false : bool;
+  command-success get_bool ();
+
+  state time           () = 8 : int;
+  
+  command         get_bool () = <unknown> : bool;
+  command-success get_bool ();
+
+  state time           () = 9 : int;
+
+// See comments near end of ../TestUnknown.ple
+
+//  state s2             () =   "foo" : string;
+//  state s1             () =   <unknown> : string;
+//  state b2             () =   true : bool;
+//  state b1             () =   <unknown> : bool;
+//  state r2             () =   0.0 : real;
+//  state r1             () =   <unknown> : real;
+//  state i2             () =   0 : int;
+//  state i1             () =   <unknown> : int;
+  
+}

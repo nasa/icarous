@@ -1,0 +1,15 @@
+// Sum the integers up to N
+
+Command pprint (...);
+
+Sum: {
+  Integer n = 10; 
+  Integer sum = 0;
+  for (Integer i = 0; i <= n; i + 1) {
+    sum = sum + i;
+  }
+  pprint ("Sum up to ", n, " = ", sum);
+}
+
+  
+

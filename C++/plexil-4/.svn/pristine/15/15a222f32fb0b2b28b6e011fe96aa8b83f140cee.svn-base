@@ -1,0 +1,5 @@
+(plexil-plan
+ (assignment-node "SimpleAssignment"
+  (variables (integer "foo" 0))
+  (assignment (intvar "foo") 3)))
+

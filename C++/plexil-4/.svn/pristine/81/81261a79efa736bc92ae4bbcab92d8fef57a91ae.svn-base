@@ -1,0 +1,19 @@
+// This plan emulates a simulator that handles:
+//   The command 'GetName()', which returns an array of strings
+
+Command SendReturnValue (String[2]);
+Command pprint(...);
+
+Interface: Concurrence
+{
+  // The integer lookup, x
+  String a_name[2] = #("Jeff" "Gold");
+
+  // The handler for the command GetName()
+  RecGetName: OnCommand "GetName" ( ) {
+    pprint("Received GetName command");
+  RespondMoveRight: 
+    SendReturnValue(a_name);
+    pprint("Returned ", a_name);
+  }
+}

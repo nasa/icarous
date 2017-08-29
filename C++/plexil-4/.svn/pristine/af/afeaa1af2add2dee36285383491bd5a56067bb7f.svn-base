@@ -1,0 +1,6 @@
+Real Command get_speed(String, ...);
+
+GetSpeed: {
+  Real speed;
+  speed = get_speed("car1"); 
+}

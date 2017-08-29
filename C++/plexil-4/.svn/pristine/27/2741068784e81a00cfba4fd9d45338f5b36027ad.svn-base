@@ -1,0 +1,7 @@
+
+// resource2
+
+script {
+  command-ack foot-in-mount () = "COMMAND_SUCCESS" : string;
+}
+

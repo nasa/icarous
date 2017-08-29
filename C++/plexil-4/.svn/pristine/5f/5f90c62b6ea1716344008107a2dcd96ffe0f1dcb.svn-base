@@ -1,0 +1,49 @@
+ArrayAssignmentWithFailure:
+{
+  Boolean spoil = false;
+  Real ary[3] = #(1.0 2.0 3.0);
+  String sa[3] = #("eh" "bee" "see");
+
+  // The failed assignments should restore the arrays
+  // to their modified values.
+  PostCondition spoil && ary[1] == 42.0 && sa[1] == "B";
+
+  Concurrence
+  {
+    ary[1] = 42.0;
+    sa[1] = "B";
+  }
+
+  // Test retraction of array element assignments
+  Concurrence
+  {
+    SpoiledAssignment1:
+    {
+      InvariantCondition !spoil;
+      ary[1] = 69.0;
+    }
+    SpoiledAssignment2:
+    {
+      InvariantCondition !spoil;
+      sa[1] = "bea";
+    }
+    spoil = true;
+  }
+
+  spoil = false;
+
+  Concurrence
+  {
+    SpoiledAssignment3:
+    {
+      InvariantCondition !spoil;
+      ary = #(4.0 5.0 6.0);
+    }
+    SpoiledAssignment4:
+    {
+      InvariantCondition !spoil;
+      sa = #("zee" "why" "ecks");
+    }
+    spoil = true;
+  }
+}

@@ -1,0 +1,72 @@
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:addPlan]Added plan: 
+Root{
+ State: (id_231[a](INACTIVE): state(INACTIVE)) (inf)
+}
+
+[PlexilExec:handleConditionsChanged]Node Root had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Root' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Root' on the state change queue in position 1
+[Test:testOutput]Creating initial state barfoo() = (string)the-command
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 1
+[PlexilExec:step][1:0] State change queue: Root 
+[PlexilExec:step][1:0:0] Transitioning node Root
+[PlexilExec:handleConditionsChanged]Node Root had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Root' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Root' on the state change queue in position 2
+[PlexilExec:step][1:1] State change queue: Root 
+[PlexilExec:step][1:1:0] Transitioning node Root
+[PlexilExec:handleNeedsExecution]Storing action for node 'Root' of type 'Command' to be executed.
+[Test:testOutput]Looking up immediately barfoo()
+[Test:testOutput]Returning value 0.00189
+[PlexilExec:handleConditionsChanged]Node Root had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Root' was previously eligible to transition but isn't now.
+[Test:testOutput]Executing the-command() into noId with ack (id_278[a](UNKNOWN): boolean)
+[PlexilExec:cycle]==>End cycle 1
+[PlexilExec:printPlan]
+Root{
+ State: (id_231[a](EXECUTING): state(EXECUTING)) (0)
+ SkipCondition: (id_248[a](0): boolean)
+ StartCondition: (id_250[a](1): boolean)
+ EndCondition: (id_279[a](UNKNOWN): ((id_278[a](UNKNOWN): boolean) && (id_252[a](1): boolean))
+ InvariantCondition: (id_254[a](1): boolean)
+ PreCondition: (id_256[a](1): boolean)
+ PostCondition: (id_258[a](1): boolean)
+ RepeatCondition: (id_260[a](0): boolean)
+ AncestorInvariantCondition: (id_262[a](1): boolean)
+ AncestorEndCondition: (id_264[a](0): boolean)
+ ParentExecutingCondition: (id_266[a](1): boolean)
+ AllChildrenWaitingOrFinishedCondition: (id_268[a](UNKNOWN): boolean)
+ AbortCompleteCondition: (id_277[i](UNKNOWN): boolean)
+ ParentWaitingCondition: (id_272[a](0): boolean)
+ ParentFinishedCondition: (id_274[a](0): boolean)
+ CommandName: (id_276[a](foo): string)
+}
+
+[Test:testOutput]Sending command ACK the-command() = 1
+[PlexilExec:handleConditionsChanged]Node Root had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Root' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Root' on the state change queue in position 3
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 2
+[PlexilExec:step][2:0] State change queue: Root 
+[PlexilExec:step][2:0:0] Transitioning node Root
+[PlexilExec:handleConditionsChanged]Node Root had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Root' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'Root' on the state change queue in position 4
+[PlexilExec:step][2:1] State change queue: Root 
+[PlexilExec:step][2:1:0] Transitioning node Root
+[PlexilExec:handleConditionsChanged]Node Root had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Root' was previously eligible to transition but isn't now.
+[PlexilExec:cycle]==>End cycle 2
+[PlexilExec:printPlan]
+Root{
+ State: (id_231[a](FINISHED): state(FINISHED)) (0)
+ Outcome: (id_232[a](SUCCESS):  outcome)
+ CommandName: (id_276[i](UNKNOWN): string)
+}
+

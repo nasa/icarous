@@ -1,0 +1,8 @@
+Command C (String);
+
+Root: Sequence
+{
+  String s;
+  s = "foo";
+  C (s);  
+}
