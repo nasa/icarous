@@ -10,7 +10,7 @@ MAIN = icarous
 all: $(MAIN) DAAGeofencing
 
 $(MAIN): LIB
-	@$(CXX) $(CFLAGS) $(INCLUDES) -o $(MAIN) libs/icarous.a $(LFLAGS) $(LIBS)
+	@$(CXX) $(CFLAGS) $(INCLUDES) -o $(MAIN) src/LaunchIcarous.cpp libs/icarous.a $(LFLAGS) $(LIBS)
 
 LIB: PRE $(AOBJS) $(OBJS)
 	ar -cr libs/icarous.a $(OBJS) $(AOBJS) && ranlib libs/icarous.a 
