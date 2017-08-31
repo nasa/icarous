@@ -18,10 +18,13 @@
       ComputeKeepOutResolution,
       SetNextWPParameters,
       ClearConflictData,
-      ComputeInterceptCourse
+      ComputeInterceptCourse,
+      StartLandingSequence
     </CommandNames>
     <LookupNames>
-      altitudeAGL
+      altitudeAGL,
+      currentWP,
+      totalWP
     </LookupNames> 
   </Adapter>
 </Interfaces>

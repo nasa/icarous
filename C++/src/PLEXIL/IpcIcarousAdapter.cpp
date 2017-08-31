@@ -147,6 +147,9 @@ void IpcIcarousAdapter::processCommand(const std::vector<const PlexilMsgBase*>& 
 	  icarous->fms->ComputeInterceptCourse();
 	  PLEXIL::Value returnVal(PLEXIL::Boolean(true));
 	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }else if(cmdName == "StartLandingSequence"){
+	  std::cout<<"Starting landing sequence"<<endl;
+	  icarous->fms->LAND();
   }
 }
 
@@ -162,6 +165,12 @@ void IpcIcarousAdapter::processLookupNow(const std::vector<const PlexilMsgBase*>
 
   if(stateName == "altitudeAGL"){
 	  PLEXIL::Value returnVal(PLEXIL::Real(icarous->fms->FlightData->acState.positionLast().alt()));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }else if(stateName == "totalWP"){
+	  PLEXIL::Value returnVal(PLEXIL::Integer(icarous->fms->FlightData->MissionPlan.size()));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }else if(stateName == "currentWP"){
+	  PLEXIL::Value returnVal(PLEXIL::Integer(icarous->fms->FlightData->nextMissionWP));
 	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
   }
 }

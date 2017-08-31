@@ -1,7 +1,8 @@
 // -*- Mode: Java -*-
 
 Real Lookup altitudeAGL;
-
+Real Lookup totalWP;
+Real Lookup currentWP;
 Integer Command RunIdleChecks();
 Boolean Command ThrottleUp();
 Boolean Command CheckKeepInGeofence();
@@ -18,6 +19,7 @@ Boolean Command ComputeInterceptCourse();
 Command SetMode(String mode);
 Command ArmMotors(Boolean status);
 Command SetNextWPParameters();
+Command StartLandingSequence();
 Command pprint(...);
 
 ICAROUS:
@@ -31,6 +33,7 @@ ICAROUS:
 	Boolean maneuverResolution;
 	Boolean resumeMission;
 	Real previousConflicts = 0;
+	Integer totalWaypoints;
 	
 	IDLE:
 	{
@@ -47,8 +50,8 @@ ICAROUS:
 
 	    CHECK_TRANSITION:
 	    {
-		if(rVal == 1){
-		    _state = "TAKEOFF";
+		if(rVal == 1){		    
+		    _state = "TAKEOFF";		    
 		}endif;
 	    }	    	   
 	}
@@ -258,12 +261,21 @@ ICAROUS:
 		    }endif
 		
 		}
-	    } 
+	    }
+
+	    CHECK_TRANSITION:
+	    {
+		if(Lookup(currentWP) >= Lookup(totalWP))
+		    _state = "LAND";
+		endif
+	    }
 	}
 
 	LAND:{
-
-
+	    Start (_state == "LAND");
+	    Repeat true;
+	    StartLandingSequence();
+	    _state = "IDLE";
 	}
     }
 }
