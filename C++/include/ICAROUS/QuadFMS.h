@@ -69,7 +69,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
         uint8_t Resolve();
         uint8_t TRACKING(Position target);
 
-        uint8_t FlyTrajectory();
+        uint8_t FlyTrajectory(bool newPath);
         uint8_t FlyManuever();
         void ComputeInterceptCourse();
         void Reset();

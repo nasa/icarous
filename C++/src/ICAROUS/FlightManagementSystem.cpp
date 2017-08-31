@@ -353,10 +353,18 @@ uint8_t FlightManagementSystem_t::ThrottleUp(){
 
 	if(CheckAck(MAV_CMD_NAV_TAKEOFF)){
 		SendStatusText("Starting climb");
+		FlightData->nextMissionWP++;
 		return 1;
 	}
 	else{
 		return 0;
 	}
+}
+
+void FlightManagementSystem_t::SetNextWPParameters(){
+	SetMissionItem(FlightData->nextMissionWP);
+	SetSpeed(FlightData->getFlightPlanSpeed(&FlightData->MissionPlan,FlightData->nextMissionWP));
+	planType = FlightManagementSystem_t::MISSION;
+	SetMode(AUTO);
 }
 

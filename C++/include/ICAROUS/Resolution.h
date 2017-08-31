@@ -36,12 +36,12 @@ public:
 	bool returnPathConflict;
 	Resolution_t(){};
 	Resolution_t(FlightManagementSystem_t *fms,AircraftData_t* fdata);
-	void ResolveKeepInConflict();
-	void ResolveKeepOutConflict_Astar();
-	void ResolveKeepOutConflict_RRT();
-	void ResolveFlightPlanDeviation();
-	void ResolveTrafficConflictRRT();
-	void ResolveTrafficConflictDAA();
+	bool ResolveKeepInConflict();
+	bool ResolveKeepOutConflict_Astar();
+	bool ResolveKeepOutConflict_RRT();
+	bool ResolveFlightPlanDeviation();
+	bool ResolveTrafficConflictRRT();
+	bool ResolveTrafficConflictDAA();
 	double SaturateVelocity(double V, double Vsat);
 	Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
 	Position GetPointOnPlan(double offset,Plan fp,int next);

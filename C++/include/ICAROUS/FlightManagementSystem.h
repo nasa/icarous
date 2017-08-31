@@ -143,6 +143,7 @@ class FlightManagementSystem_t{
         void SetDeviationApproved(bool status);
         void SetMissionItem(uint8_t nextWP);
         void GetCurrentMode();
+        void SetNextWPParameters();
 
         uint8_t IDLE();
         uint8_t PREFLIGHT();
@@ -154,8 +155,8 @@ class FlightManagementSystem_t{
         virtual uint8_t LAND(){return 0;}
         virtual uint8_t TRACKING(Position target){return 0;}
 
-        virtual uint8_t FlyTrajectory(){return 0;}
-        virtual uint8_t FlyManuever(){return 0;}
+        virtual uint8_t FlyTrajectory(bool val)=0;
+        virtual uint8_t FlyManuever()=0;
         virtual void Reset(){return;}
         virtual void ComputeInterceptCourse(){return;}
         virtual double SaturateVelocity(double V, double Vsat){return 0.0;}

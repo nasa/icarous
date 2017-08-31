@@ -273,7 +273,7 @@ void Icarous_t::RunWithPlexil(){
 	DAQ_t daq_module(AP,COM);
 	COM_t com_module(AP,COM,&FlightData);
 
-	FlightManagementSystem_t FMS(AP,COM,&FlightData,NULL);
+	QuadFMS_t FMS(AP,COM,&FlightData,NULL);
 	fms = &FMS;
 
 	if(verbose){
@@ -288,6 +288,12 @@ void Icarous_t::RunWithPlexil(){
 
 	std::thread thread1(&DAQ_t::GetPixhawkData,&daq_module);
 	std::thread thread2(&COM_t::GetGSData,&com_module);
+
+	while(true){
+		FMS.GetLatestAircraftData();
+		FMS.CheckMissionWaypointReached();
+		FMS.CheckReset();
+	}
 
 	thread1.join();
 	thread2.join();

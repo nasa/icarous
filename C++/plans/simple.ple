@@ -2,45 +2,41 @@
 
 Real Lookup altitudeAGL;
 
-Boolean Command UpdateCurrentAircraftState();
 Integer Command RunIdleChecks();
 Boolean Command ThrottleUp();
 Boolean Command CheckKeepInGeofence();
 Boolean Command CheckKeepOutGeofence();
 Boolean Command CheckTraffic();
-Boolean Command CheckFlightPlan();
+Boolean Command CheckFlightPlan(Boolean value);
 Boolean Command FlyTrajectory(Boolean value);
 Boolean Command FlyManeuver();
+Boolean Command ComputeKeepInResolution();
+Boolean Command ComputeKeepOutResolution();
+Boolean Command ClearConflictData();
+Boolean Command ComputeInterceptCourse();
 
 Command SetMode(String mode);
 Command ArmMotors(Boolean status);
+Command SetNextWPParameters();
 Command pprint(...);
 
 ICAROUS:
-Concurrence
-{
-        
-    UPDATE_AIRCRAFT_STATES:
-    {
-	Boolean rVal;
-	EndCondition isKnown(rVal);	
-	Repeat true;
-        rVal = UpdateCurrentAircraftState();
-    }
-
+{           
     FMS:
+    Concurrence
     {
 	String _state = "IDLE";
 	Boolean executeResolution;
 	Boolean trajectoryResolution;
-	Boolean maneuverResolution;	
-	Repeat true;
+	Boolean maneuverResolution;
+	Boolean resumeMission;
+	Real previousConflicts = 0;
 	
 	IDLE:
 	{
 	    Integer rVal;
 	    Start (_state == "IDLE");
-	    Repeat (_state == "IDLE");
+	    Repeat true;
 
 	    // Run idle checks - Check for mission start command
 	    RUN:
@@ -60,7 +56,7 @@ Concurrence
 	TAKEOFF:{
 	    Boolean cmdTakeoffSuccess;	    
 	    Start ( _state == "TAKEOFF");	    
-	    Repeat (_state == "TAKEOFF");
+	    Repeat true;
 
 	    CHANGEMODE1:
 	        SetMode("GUIDED");
@@ -86,14 +82,18 @@ Concurrence
 
 	CLIMB:{
 	    Start (_state == "CLIMB");
-
+	    Repeat true;
+	    
 	    MONITOR_ASCENT:
 	    {
 		Real alt = 0;
 		EndCondition (abs(Lookup(altitudeAGL) - 5.0) < 2);
 		
 		// Perform any required activities during ascent - nothing for now
-		alt = Lookup(altitudeAGL);
+		ACTIONS:{
+		    Repeat true;
+		    alt = Lookup(altitudeAGL);		   
+		}
 	    }
 
 	    CHANGEMODE2:
@@ -114,10 +114,10 @@ Concurrence
 	    Boolean keepOutConflict;
 	    Boolean trafficConflict;
 	    Boolean flightPlanConflict;
-	    Boolean computeResolution;
+	    Boolean computeResolution = false;
 
 	    Start (_state == "CRUISE");
-	    Repeat _state == "CRUISE";
+	    Repeat true;
 	    
 	    currentConflicts = 0;
 	    
@@ -145,27 +145,31 @@ Concurrence
 		CHECK_FLIGHTPLAN:
 		{
 		    EndCondition isKnown(flightPlanConflict);
-		    flightPlanConfict = CheckFlightPlan();
+		    flightPlanConflict = CheckFlightPlan(false);
 		}
 
-		if(keepInGeofenceConflict)
-		    currentConflicts = currentConflicts + 0.1231;
+		if(keepInConflict){
+		    currentConflicts = currentConflicts + 0.1231;		 
+		}endif
 
-		if(keepOutGeofenceConflict)
+		if(keepOutConflict)
 		    currentConflicts = currentConflicts + 1.2346;
+		endif
 
 		if(trafficConflict)
 		    currentConflicts = currentConflicts + 2.1785;
+		endif
 
 		if(flightPlanConflict)
 		    currentConflicts = currentConflicts + 3.1234;
+		endif
 
 		if(abs(previousConflicts - currentConflicts) > 0.01){
 		    previousConflicts = currentConflicts;
-		    if(previousConflicts > 0.0){
+		    if(previousConflicts > 0.0)
 			computeResolution = true;
-		    }
-		}				
+		    endif
+		}endif				
 	    }
 
 	    RESOLVE_CONFLICTS:
@@ -175,16 +179,28 @@ Concurrence
 		
 		COMPUTE:
 		{
-		    if(computeResolution){
-
+		    if(computeResolution){						
+			newTrajectory = true;
+			if(keepInConflict){
+			    Boolean computedSolution;
+			    End isKnown(computedSolution);			    
+			    computedSolution = ComputeKeepInResolution();
+			}elseif(keepOutConflict){
+			    Boolean computedSolution;
+			    End isKnown(computedSolution);			    
+			    computedSolution = ComputeKeepOutResolution();
+			}endif
 
 			executeResolution = true;
-		    }
+			trajectoryResolution = true;
+			resumeMission = false;
+		    }endif
 		}
 
 		EXECUTE:
 		{
-		    if(executeResolution){
+		    if(executeResolution)
+		    {
 			TRAJECTORY:
 			{
 			    StartCondition trajectoryResolution;
@@ -192,23 +208,62 @@ Concurrence
 			    completed = FlyTrajectory(newTrajectory);
 			}
 			newTrajectory = false;
-		    }else if(maneuverResolution){
+		    }elseif(maneuverResolution)
+		    {
 			MANEUVER:
 			{
 			    StartCondition maneuverResolution;
 			    EndCondition isKnown(completed);
 			    completed = FlyManeuver();
-			}
-		    }else{
-			completed = true;
+			}		    
 		    }endif
 
-		    if(completed){
+		    if(completed)
+		    {			
 			executeResolution = false;
 			resumeMission = true;
-		    }
+			newTrajectory = true;
+			CLEAR_PREV_CONFLICTS:
+			{
+			    Boolean cleared;
+			    End isKnown(cleared);
+			    cleared = ClearConflictData();
+			}
+
+			COMPUTE_INTERCEPT_COURSE:
+			{
+			    Boolean computed;
+			    End isKnown(computed);
+			    computed = ComputeInterceptCourse();
+			}		       			
+		    }endif
+		}					    	       
+	    
+		RESUME_MISSION:
+		{
+
+		    Boolean missionIntercepted;
+		    if(resumeMission)
+		    {
+			EndCondition isKnown(missionIntercepted);
+			missionIntercepted = FlyTrajectory(newTrajectory);		    
+		    }endif
+		
+		    newTrajectory = false;
+		    
+		    if(missionIntercepted)
+		    {
+			resumeMission = false;
+			SetNextWPParameters();
+		    }endif
+		
 		}
-	    }	    
-	} 
+	    } 
+	}
+
+	LAND:{
+
+
+	}
     }
 }

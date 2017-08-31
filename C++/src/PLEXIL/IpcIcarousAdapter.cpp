@@ -97,6 +97,57 @@ void IpcIcarousAdapter::processCommand(const std::vector<const PlexilMsgBase*>& 
 	  PLEXIL::Value returnVal(PLEXIL::Boolean(icarous->fms->ThrottleUp()?true:false));
 	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
   }
+  else if(cmdName == "CheckKeepInGeofence"){
+	  icarous->fms->Detector.CheckGeofence();
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(icarous->fms->Detector.keepInConflict));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
+  else if(cmdName == "CheckKeepOutGeofence"){
+	  // Only send conflict flag - keep out geofences are checked for conflicts in previous if condition
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(icarous->fms->Detector.keepOutConflict));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
+  else if(cmdName == "CheckTraffic"){
+	  icarous->fms->Detector.CheckTraffic();
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(icarous->fms->Detector.trafficConflict));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
+  else if(cmdName == "CheckFlightPlan"){
+	  PlexilBooleanValueMsg const *valueMsg = (PlexilBooleanValueMsg const *) msgs[1];
+	  bool val = valueMsg->boolValue;
+	  icarous->fms->Detector.CheckFlightPlanDeviation(val);
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(icarous->fms->Detector.flightPlanDeviationConflict));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }else if(cmdName == "ComputeKeepInResolution"){
+	  bool val = icarous->fms->Resolver.ResolveKeepInConflict();
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(val));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }else if(cmdName == "ComputeKeepOutResolution"){
+	  bool val = icarous->fms->Resolver.ResolveKeepOutConflict_Astar();
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(val));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }else if(cmdName == "FlyTrajectory"){
+	  PlexilBooleanValueMsg const *valueMsg = (PlexilBooleanValueMsg const *) msgs[1];
+	  bool val = valueMsg->boolValue;
+	  uint8_t rval = icarous->fms->FlyTrajectory(val);
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(rval?true:false));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
+  else if(cmdName == "SetNextWPParameters"){
+	  icarous->fms->SetNextWPParameters();
+  }
+  else if(cmdName == "ClearConflictData"){
+	  std::cout<<"Clearing all conflicts"<<endl;
+	  icarous->fms->Detector.clear();
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(true));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
+  else if(cmdName == "ComputeInterceptCourse"){
+	  std::cout<<"Compute intercept course"<<endl;
+	  icarous->fms->ComputeInterceptCourse();
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(true));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
 }
 
 /**

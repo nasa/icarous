@@ -49,7 +49,7 @@ Resolution_t::Resolution_t(FlightManagementSystem_t* fms,AircraftData_t* fdata){
 	diffAlertTime = DAA.parameters.alertor.getLevel(1).getEarlyAlertingTime() - alertTime0;
 }
 
-void Resolution_t::ResolveFlightPlanDeviation(){
+bool Resolution_t::ResolveFlightPlanDeviation(){
 
 	double xtrkDevGain ;
 	double resolutionSpeed;
@@ -119,18 +119,20 @@ void Resolution_t::ResolveFlightPlanDeviation(){
 		FMS->resumeMission = false;
 		FMS->goalReached   = true;
 	}
+
+	return true;
 }
 
-void Resolution_t::ResolveKeepInConflict(){
+bool Resolution_t::ResolveKeepInConflict(){
 	Geofence_t fence = FMS->Detector.KeepInFence;
 	NavPoint wp(fence.GetRecoveryPoint(),0);
 	//std::cout<<wp.position().toStringUnits("degree","degree","m")<<std::endl;
-	NavPoint next_wp = FlightData->MissionPlan.point(FlightData->nextMissionWP);
+	Position next_wp = FlightData->MissionPlan.point(FlightData->nextMissionWP).position();
 	FlightData->ResolutionPlan.clear();
 	FlightData->ResolutionPlan.addNavPoint(wp);
 	FlightData->nextResolutionWP = 0;
 
-	if(fence.CheckWPFeasibility(wp.position(),next_wp.position())){
+	if(fence.CheckWPFeasibility(wp.position(),next_wp)){
 		cout<<"waypoint not feasible"<<endl;
 		FlightData->nextMissionWP++;
 	}
@@ -138,10 +140,10 @@ void Resolution_t::ResolveKeepInConflict(){
 	FMS->planType        = QuadFMS_t::TRAJECTORY;
 	FMS->resumeMission   = false;
 	FMS->goalReached     = true;
-	return;
+	return true;
 }
 
-void Resolution_t::ResolveKeepOutConflict_Astar(){
+bool Resolution_t::ResolveKeepOutConflict_Astar(){
 
 	double gridsize          = FlightData->paramData->getValue("GRIDSIZE");
 	double buffer            = FlightData->paramData->getValue("BUFFER");
@@ -334,11 +336,11 @@ void Resolution_t::ResolveKeepOutConflict_Astar(){
 	FMS->planType        = QuadFMS_t::TRAJECTORY;
 	FMS->resumeMission   = false;
 	FMS->goalReached     = true;
-	return;
+	return true;
 
 }
 
-void Resolution_t::ResolveKeepOutConflict_RRT(){
+bool Resolution_t::ResolveKeepOutConflict_RRT(){
 
 	double resolutionSpeed   = FlightData->paramData->getValue("RES_SPEED");
 	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
@@ -443,7 +445,7 @@ void Resolution_t::ResolveKeepOutConflict_RRT(){
 
 	FMS->planType        = QuadFMS_t::TRAJECTORY;
 	FMS->resumeMission   = false;
-	return;
+	return true;
 
 }
 
@@ -496,7 +498,7 @@ Position Resolution_t::GetPointOnPlan(double offset,Plan fp,int next){
 
 }
 
-void Resolution_t::ResolveTrafficConflictDAA(){
+bool Resolution_t::ResolveTrafficConflictDAA(){
 	// Track based resolutions
 	//TODO: add eps to preferred heading
 	Position currentPos = FlightData->acState.positionLast();
@@ -610,9 +612,11 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 		double timeElapsed = difftime(stopTime,startTime);
 		FMS->debug_out.append("Elapsed time: "+std::to_string(timeElapsed)+"\n");
 	}*/
+
+	return true;
 }
 
-void Resolution_t::ResolveTrafficConflictRRT(){
+bool Resolution_t::ResolveTrafficConflictRRT(){
 
 	double maxInputNorm = FlightData->paramData->getValue("RES_SPEED");
 
@@ -685,7 +689,7 @@ void Resolution_t::ResolveTrafficConflictRRT(){
 	FlightData->ResolutionPlan = RRT.GetPlan();
 	FMS->planType        = QuadFMS_t::TRAJECTORY;
 	FMS->resumeMission   = false;
-	return;
+	return true;
 }
 
 

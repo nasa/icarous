@@ -161,6 +161,7 @@ uint8_t QuadFMS_t::Resolve(){
 
 	time_t startTime;
 	time_t stopTime;
+	bool newSolution;
 
 	switch(resolutionState){
 
@@ -205,7 +206,7 @@ uint8_t QuadFMS_t::Resolve(){
 
 		if(planType == TRAJECTORY){
 			resolutionState = TRAJECTORY_r;
-			trajectoryState = START_t;
+			newSolution = true;
 		}
 		else if(planType == MANEUVER){
 			resolutionState = MANEUVER_r;
@@ -228,7 +229,8 @@ uint8_t QuadFMS_t::Resolve(){
 	case TRAJECTORY_r:
 		// Fly trajectory
 
-		status = FlyTrajectory();
+		status = FlyTrajectory(newSolution);
+		newSolution = false;
 
 		if(status == 1){
 			if(resumeMission){
@@ -263,13 +265,17 @@ uint8_t QuadFMS_t::Resolve(){
 	return 0;
 }
 
-uint8_t QuadFMS_t::FlyTrajectory(){
+uint8_t QuadFMS_t::FlyTrajectory(bool newPath){
 
 	uint8_t status = 0;
 	float resolutionSpeed;
 	NavPoint wp;
 	Position current, next;
 	double distH,distV;
+
+	if(newPath){
+		trajectoryState = START_t;
+	}
 
 	switch(trajectoryState){
 
