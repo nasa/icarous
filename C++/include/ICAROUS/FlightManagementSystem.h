@@ -156,7 +156,7 @@ class FlightManagementSystem_t{
         virtual uint8_t TRACKING(Position target){return 0;}
 
         virtual uint8_t FlyTrajectory(bool val)=0;
-        virtual uint8_t FlyManuever()=0;
+        virtual uint8_t FlyManeuver(bool val)=0;
         virtual void Reset(){return;}
         virtual void ComputeInterceptCourse(){return;}
         virtual double SaturateVelocity(double V, double Vsat){return 0.0;}

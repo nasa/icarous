@@ -16,10 +16,12 @@
       FlyManeuver,
       ComputeKeepInResolution,
       ComputeKeepOutResolution,
+      ComputeTrafficResolution,
+      ComputeFlightPlanResolution,
       SetNextWPParameters,
       ClearConflictData,
       ComputeInterceptCourse,
-      StartLandingSequence
+      StartLandingSequence      
     </CommandNames>
     <LookupNames>
       altitudeAGL,

@@ -47,6 +47,7 @@
      resumeMission     = true;
      captureH          = (float) FlightData->paramData->getValue("CAPTURE_H");
      captureV          = (float) FlightData->paramData->getValue("CAPTURE_V");
+     newSolution       = false;
  }
 
 QuadFMS_t::~QuadFMS_t(){}
@@ -161,7 +162,6 @@ uint8_t QuadFMS_t::Resolve(){
 
 	time_t startTime;
 	time_t stopTime;
-	bool newSolution;
 
 	switch(resolutionState){
 
@@ -210,13 +210,14 @@ uint8_t QuadFMS_t::Resolve(){
 		}
 		else if(planType == MANEUVER){
 			resolutionState = MANEUVER_r;
-			maneuverState = START_m;
+			newSolution = true;
 		}
 
 		break;
 	case MANEUVER_r:
 		// Do something
-		status = FlyManuever();
+		status = FlyManeuver(newSolution);
+		newSolution = false;
 		if(status == 1){
 			resolutionState = IDLE_r;
 			SetMissionItem(FlightData->nextMissionWP);
@@ -330,10 +331,15 @@ uint8_t QuadFMS_t::FlyTrajectory(bool newPath){
 	return status;
 }
 
-uint8_t QuadFMS_t::FlyManuever(){
+uint8_t QuadFMS_t::FlyManeuver(bool newPlan){
 	uint8_t status = 0;
 	float resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
 	static int countVel = 0;
+
+	if(newPlan){
+		maneuverState = START_m;
+		countVel = 0;
+	}
 
 	countVel++;
 	switch(maneuverState){

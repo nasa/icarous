@@ -54,6 +54,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
 
     private:
 		resolve_state_t resolutionState;
+		bool newSolution;
 
     public:
 
@@ -70,7 +71,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
         uint8_t TRACKING(Position target);
 
         uint8_t FlyTrajectory(bool newPath);
-        uint8_t FlyManuever();
+        uint8_t FlyManeuver(bool newPlan);
         void ComputeInterceptCourse();
         void Reset();
         double SaturateVelocity(double V, double Vsat);

@@ -140,10 +140,29 @@ void IpcIcarousAdapter::processCommand(const std::vector<const PlexilMsgBase*>& 
 	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
   }
 
+  else if(cmdName == "ComputeTrafficResolution"){
+	  std::cout<<"Computed traffic resolution"<<std::endl;
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(true));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
+
+  else if(cmdName == "ComputeFlightPlanResolution"){
+
+
+  }
+
   else if(cmdName == "FlyTrajectory"){
 	  PlexilBooleanValueMsg const *valueMsg = (PlexilBooleanValueMsg const *) msgs[1];
 	  bool val = valueMsg->boolValue;
 	  uint8_t rval = icarous->fms->FlyTrajectory(val);
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(rval?true:false));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
+
+  else if(cmdName == "FlyManeuver"){
+	  PlexilBooleanValueMsg const *valueMsg = (PlexilBooleanValueMsg const *) msgs[1];
+	  bool val = valueMsg->boolValue;
+	  uint8_t rval = icarous->fms->FlyManeuver(val);
 	  PLEXIL::Value returnVal(PLEXIL::Boolean(rval?true:false));
 	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
   }

@@ -10,9 +10,11 @@ Boolean Command CheckKeepOutGeofence();
 Boolean Command CheckTraffic();
 Boolean Command CheckFlightPlan(Boolean value);
 Boolean Command FlyTrajectory(Boolean value);
-Boolean Command FlyManeuver();
+Boolean Command FlyManeuver(Boolean value);
 Boolean Command ComputeKeepInResolution();
 Boolean Command ComputeKeepOutResolution();
+Boolean Command ComputeFlightPlanResolution();
+Boolean Command ComputeTrafficResolution();
 Boolean Command ClearConflictData();
 Boolean Command ComputeInterceptCourse();
 
@@ -178,51 +180,74 @@ ICAROUS:
 	    RESOLVE_CONFLICTS:
 	    {
 		Boolean newTrajectory = false;
+		Boolean newManeuver = false;
 		Boolean completed;
 		
 		COMPUTE:
 		{
 		    if(computeResolution){
 
+			executeResolution = true;			
+			resumeMission = false;
+			trajectoryResolution = false;
+			maneuverResolution = false;
+
 			CHANGEMODE:
 			    SetMode("GUIDED");
 			
 			newTrajectory = true;
+			newManeuver = true;
 			if(keepInConflict){
-			    Boolean computedSolution;
-			    End isKnown(computedSolution);			    
-			    computedSolution = ComputeKeepInResolution();
+			    {
+				Boolean computedSolution;
+				End isKnown(computedSolution);			    
+				computedSolution = ComputeKeepInResolution();
+			    }
+			    trajectoryResolution = true;
 			}elseif(keepOutConflict){
-			    Boolean computedSolution;
-			    End isKnown(computedSolution);			    
-			    computedSolution = ComputeKeepOutResolution();
-			}endif
-
-			executeResolution = true;
-			trajectoryResolution = true;
-			resumeMission = false;
+			    {
+				Boolean computedSolution;
+				End isKnown(computedSolution);			    
+				computedSolution = ComputeKeepOutResolution();
+			    }
+			    trajectoryResolution = true;
+			}elseif(trafficConflict){
+			    {
+				Boolean computedSolution;
+				End isKnown(computedSolution);			    
+				computedSolution = ComputeTrafficResolution();
+			    }
+			    maneuverResolution = true;
+			}elseif(flightPlanConflict){
+			    {
+				Boolean computedSolution;
+				End isKnown(computedSolution);			    
+				computedSolution = ComputeFlightPlanResolution();
+			    }
+			    maneuverResolution = true;
+			}endif			     
 		    }endif
 		}
 
 		EXECUTE:
-		{
+		{		   
 		    if(executeResolution)
 		    {
-			TRAJECTORY:
-			{
-			    StartCondition trajectoryResolution;
-			    EndCondition isKnown(completed);
-			    completed = FlyTrajectory(newTrajectory);
-			}
-			newTrajectory = false;
-		    }elseif(maneuverResolution)
-		    {
-			MANEUVER:
-			{
-			    StartCondition maneuverResolution;
-			    EndCondition isKnown(completed);
-			    completed = FlyManeuver();
-			}		    
+			if(trajectoryResolution){
+			    TRAJECTORY:
+			    {
+				EndCondition isKnown(completed);			    
+				completed = FlyTrajectory(newTrajectory);			    
+			    }			
+			    newTrajectory = false;
+			}else{
+			    MANEUVER:
+			    {
+				EndCondition isKnown(completed);
+				completed = FlyManeuver(newManeuver);			    
+			    }			
+			    newManeuver = false; // Test if i can put this statement in this action;
+			}endif
 		    }endif
 
 		    if(completed)

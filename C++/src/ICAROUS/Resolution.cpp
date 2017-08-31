@@ -506,7 +506,7 @@ bool Resolution_t::ResolveTrafficConflictDAA(){
 	returnPathConflict = true;
 	double resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
 	int gotoNextWP = FlightData->paramData->getInt("GOTO_NEXTWP");
-
+	FMS->planType        = QuadFMS_t::MANEUVER;
 	double crossStats[2];
 	FMS->Detector.ComputeCrossTrackDev(currentPos, FlightData->MissionPlan, FlightData->nextMissionWP,crossStats);
 	Position goal;
