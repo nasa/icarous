@@ -182,7 +182,11 @@ ICAROUS:
 		
 		COMPUTE:
 		{
-		    if(computeResolution){						
+		    if(computeResolution){
+
+			CHANGEMODE:
+			    SetMode("GUIDED");
+			
 			newTrajectory = true;
 			if(keepInConflict){
 			    Boolean computedSolution;
