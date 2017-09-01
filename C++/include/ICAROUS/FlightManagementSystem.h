@@ -125,7 +125,8 @@ class FlightManagementSystem_t{
                          float param1, float param2, float param3,float param4, 
                          float param5, float param6, float param7);
 
-        void SetYaw(double heading);
+        void SetYaw(bool relative,double heading);
+        void SetYaw(double heading){SetYaw(false,heading);};
         void SetGPSPos(double lat,double lon, double alt);
         void SetVelocity(double Vn,double Ve,double Vu);
         void SetMode(control_mode_t mode);

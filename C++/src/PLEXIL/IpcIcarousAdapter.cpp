@@ -128,6 +128,14 @@ void IpcIcarousAdapter::processCommand(const std::vector<const PlexilMsgBase*>& 
 	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
   }
 
+  else if(cmdName == "SetYaw"){
+	  PlexilRealValueMsg const *valueMsg = (PlexilRealValueMsg const *) msgs[1];
+	  double val = valueMsg->doubleValue;
+	  icarous->fms->SetYaw(val);
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(true));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
+  }
+
   else if(cmdName == "ComputeKeepInResolution"){
 	  bool val = icarous->fms->Resolver.ResolveKeepInConflict();
 	  PLEXIL::Value returnVal(PLEXIL::Boolean(val));
@@ -147,8 +155,9 @@ void IpcIcarousAdapter::processCommand(const std::vector<const PlexilMsgBase*>& 
   }
 
   else if(cmdName == "ComputeFlightPlanResolution"){
-
-
+	  std::cout<<"Computed traffic resolution"<<std::endl;
+	  PLEXIL::Value returnVal(PLEXIL::Boolean(true));
+	  m_ipcFacade.publishReturnValues(transId.second, transId.first,returnVal);
   }
 
   else if(cmdName == "FlyTrajectory"){

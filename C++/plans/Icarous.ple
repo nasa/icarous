@@ -17,6 +17,7 @@ Boolean Command ComputeFlightPlanResolution();
 Boolean Command ComputeTrafficResolution();
 Boolean Command ClearConflictData();
 Boolean Command ComputeInterceptCourse();
+Boolean Command SetYaw(Real heading);
 
 Command SetMode(String mode);
 Command ArmMotors(Boolean status);
@@ -24,13 +25,22 @@ Command SetNextWPParameters();
 Command StartLandingSequence();
 Command pprint(...);
 
+LibraryAction MISSION (In Boolean execResolution);
+
 ICAROUS:
-{           
+Concurrence
+{
+    Boolean executeResolution = false;
+
+    RUN_MISSION:{
+	LibraryCall MISSION(execResolution = executeResolution);
+    }
+    
+        
     FMS:
     Concurrence
     {
 	String _state = "IDLE";
-	Boolean executeResolution;
 	Boolean trajectoryResolution;
 	Boolean maneuverResolution;
 	Boolean resumeMission;
