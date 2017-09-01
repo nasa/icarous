@@ -31,7 +31,7 @@ LOOKAHEAD  = 1
 PROXFACTOR = 3.0
 
 # Flight plan resolution parameters
-RES_SPEED = 15.0
+RES_SPEED = 1.0
 XTRK_GAIN = 0.6
 XTRK_DEV  = 10.0
 
