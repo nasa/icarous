@@ -246,7 +246,7 @@ ICAROUS:
 				EndCondition isKnown(completed);
 				completed = FlyManeuver(newManeuver);			    
 			    }			
-			    newManeuver = false; // Test if i can put this statement in this action;
+			    newManeuver = false; 
 			}endif
 		    }endif
 
