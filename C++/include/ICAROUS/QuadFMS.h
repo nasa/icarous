@@ -58,8 +58,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
 
     public:
 
-        QuadFMS_t(){};
-        QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);
+        QuadFMS_t(AircraftData_t* fData);
         ~QuadFMS_t();
         uint8_t TAKEOFF();
         uint8_t CLIMB();

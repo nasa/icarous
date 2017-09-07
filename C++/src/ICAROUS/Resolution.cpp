@@ -44,6 +44,9 @@ Resolution_t::Resolution_t(FlightManagementSystem_t* fms,AircraftData_t* fdata){
 	FlightData = fdata;
 	resolutionSpeed = 1.0;
 	returnPathConflict = false;
+}
+
+void Resolution_t::Initialize(){
 	DAA.parameters.loadFromFile(FlightData->paramData->getString("DAA_CONFIG"));
 	alertTime0 = DAA.parameters.alertor.getLevel(1).getAlertingTime();
 	diffAlertTime = DAA.parameters.alertor.getLevel(1).getEarlyAlertingTime() - alertTime0;
@@ -153,7 +156,7 @@ bool Resolution_t::ResolveKeepOutConflict_Astar(){
 	double Hthreshold        = FlightData->paramData->getValue("HTHRESHOLD");
 
 	// Reroute flight plan
-	FMS->SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	FMS->SetMode(_ACTIVE_); // Set mode to guided for quadrotor to hover before replanning
 
 	Position currentPos = FlightData->acState.positionLast();
 	Velocity currentVel = FlightData->acState.velocityLast();
@@ -346,7 +349,7 @@ bool Resolution_t::ResolveKeepOutConflict_RRT(){
 	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
 
 	// Reroute flight plan
-	FMS->SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	FMS->SetMode(_ACTIVE_); // Set mode to guided for quadrotor to hover before replanning
 
 	std::vector<Position> TrafficPos;
 	std::vector<Velocity> TrafficVel;
@@ -622,7 +625,7 @@ bool Resolution_t::ResolveTrafficConflictRRT(){
 
 	// Reroute flight plan
 
-	FMS->SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	FMS->SetMode(_ACTIVE_); // Set mode to guided for quadrotor to hover before replanning
 
 	std::vector<Position> TrafficPos;
 	std::vector<Velocity> TrafficVel;

@@ -43,24 +43,57 @@
 #include <fstream>
 #include <string.h>
 #include <getopt.h>
-
-#include "Interface.h"
-#include "QuadFMS.h"
-#include "ParameterData.h"
-#include "SeparatedInput.h"
-#include "Mission.h"
 #include <string>
 
-#include "DAQ.h"
-#include "COM.h"
-
-
-using namespace std;
-using namespace larcfm;
+#include "Port.h"
+#include "FlightManagementSystem.h"
+#include "ParameterData.h"
+#include "SeparatedInput.h"
+#include "Icarous_msg.h"
+#include "Interface.h"
 
 class Icarous_t{
 
 private:
+	ParameterData paramData;
+	AircraftData_t FlightData;
+	std::list <geofence_t>tempVertices;
+	bool usePlexil;
+
+public:
+	Icarous_t(int argc,char* argv[]);
+	void GetOptions(int argc,char* argv[]);
+	void Initialize();
+    void Run(Interface_t* AP,Interface_t* GS);
+
+    // Input interface functions
+    void InputStartMission(int param);
+    void InputResetIcarous();
+    void InputClearFlightPlan();
+    void InputParamTable(ParameterData* pData);
+	void InputFlightPlanData(waypoint_t* wp);
+	void InputGeofenceData(geofence_t* gf);
+	void InputPosition(position_t* pos);
+	void InputAttitude(attitude_t* att);
+	void InputMissionItemReached(missionItemReached_t* msnItem);
+	void InputTraffic(object_t* obj);
+	void InputAck(CmdAck_t* ack);
+
+    // Output interface functions
+	int OutputCommand(ArgsCmd_t* cmd);
+	int OutputKinematicBands(visbands_t* bands);
+	int OutputGPSPosition(position_t* pos);
+    int OutputAttitude(attitude_t* att);
+    int OutputWaypoint(waypoint_t* wp);
+    int OutputGeofence(geofence_t* gf);
+
+    void OutputToAP(Interface_t* iface);
+    void OutputToGS(Interface_t* iface);
+
+	FlightManagementSystem_t *FMS;
+
+	static std::string release();
+	static std::string VERSION;
 	bool verbose = false;
 	bool debug = false;
 	char px4port[100];
@@ -69,21 +102,10 @@ private:
 	char gsradio[100];
 	char mode[100];
 	char config[100];
-	int  px4baud = 0,radiobaud = 0;
+	int  px4baud = 0;
+	int radiobaud = 0;
 	int sitlin =0,sitlout =0;
 	int gsin =0,gsout = 0;
-	ParameterData paramData;
-	Mission_t* mission;
-
-public:
-	Icarous_t(int argc,char* argv[],Mission_t* task);
-	void GetOptions(int argc,char* argv[]);
-	void Run();
-	void RunWithPlexil();
-	static std::string release();
-	static std::string VERSION;
-
-	FlightManagementSystem_t *fms;
 };
 
 

@@ -37,131 +37,114 @@
 
 #include "FlightManagementSystem.h"
 #include <sys/time.h>
+#include <Icarous_msg.h>
 
-FlightManagementSystem_t::FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t *task)
- :log("FMS"),Detector(this,fData),Resolver(this,fData){
-    px4Intf      = px4int;
-    gsIntf       = gsint;
+FlightManagementSystem_t::FlightManagementSystem_t(AircraftData_t* fData)
+ :Detector(this,fData),Resolver(this,fData){
     FlightData   = fData;
-    RcvdMessages = fData->RcvdMessages; 
     fmsState     = _idle_;
     conflictSize = 0;
-    mission      = task;
     deviationApproved = false;
     landStarted  = false;
     debug_in     = "";
     debug_out    = "";
     icarousActive = true;
-    currentMode   = AUTO;
     debugDAA      = false;
+    startTakeoffTime = 0.0;
+}
+
+void FlightManagementSystem_t::Initialize(){
+	Detector.Initialize();
+	Resolver.Initialize();
 }
 
 void FlightManagementSystem_t::RunFMS(){
-     while(true){
+    switch(fmsState){
+        case _idle_:
+            IDLE();
+            break;
 
-    	GetLatestAircraftData();
-    	CheckMissionWaypointReached();
+        case _takeoff_:
+            TAKEOFF();
+            break;
 
-        switch(fmsState){
-            case _idle_:
-                IDLE();
-                break;
+        case _climb_:
+            CLIMB();
+            break;
 
-            case _takeoff_:
-                TAKEOFF();
-                break;
+        case _cruise_:
+            CRUISE();
+            break;
 
-            case _climb_:
-                CLIMB();
-                break;
+        case _descend_:
+            DESCEND();
+            break;
 
-            case _cruise_:
-                CRUISE();
-                break;
-
-            case _descend_:
-                DESCEND();
-                break;
-
-            case _land_:
-                LAND();
-                break;
-        }
-
-	CheckReset();
-     }
+        case _land_:
+            LAND();
+            break;
+    }
  }
 
- void FlightManagementSystem_t::
- SendCommand(uint8_t target_system,uint8_t target_component,
-             uint16_t command,uint8_t confirmation,
-             float param1, float param2, float param3,float param4, 
-             float param5, float param6, float param7){
 
-    mavlink_message_t msg;
-    mavlink_msg_command_long_pack(255,0,&msg,target_system,target_component,
-                                  command,confirmation,param1,param2,param3,
-                                  param4,param5,param6,param7);
-
-    px4Intf->SendMAVLinkMsg(msg);
-}
 
 void FlightManagementSystem_t::SetYaw(bool relative,double heading){
 	int rel = relative?1:0;
-    SendCommand(0,0,MAV_CMD_CONDITION_YAW,0,
-		       (float)heading,0,1,rel,
-		       0,0,0);
+
+	ArgsCmd_t cmd;
+	cmd.name = _SETYAW_;
+	cmd.param1 = heading;
+	cmd.param2 = 0;
+	cmd.param3 = 1;
+	cmd.param4 = rel;
+	FlightData->outputList.push_back(cmd);
 }
 
 void FlightManagementSystem_t::SetGPSPos(double lat,double lon, double alt){
-    mavlink_message_t msg;
-    mavlink_msg_set_position_target_global_int_pack(255, 0, &msg,0,1,0, 
-                                                    MAV_FRAME_GLOBAL_RELATIVE_ALT_INT, 
-                                                    0b0000111111111000, 
-                                                    (int32_t) (lat*1E7), (int32_t) (lon*1E7), (float) alt, 
-                                                    0, 0, 0, 0, 0, 0, 0, 0);
-    px4Intf->SendMAVLinkMsg(msg);
+	ArgsCmd_t cmd;
+	cmd.name = _SETPOS_;
+	cmd.param1 = lat;
+	cmd.param2 = lon;
+	cmd.param3 = alt;
+	FlightData->outputList.push_back(cmd);
 }
 
 void FlightManagementSystem_t::SetVelocity(double Vn,double Ve,double Vu){
-    mavlink_message_t msg;
-    mavlink_msg_set_position_target_local_ned_pack(255, 0, &msg,0,1,0, 
-                                                    MAV_FRAME_LOCAL_NED, 
-                                                    0b0000111111000111, 
-                                                    0 , 0, 0, 
-                                                    (float) Vn, (float) Ve, (float) Vu, 
-                                                    0, 0, 0, 
-                                                    0, 0);
-
-    px4Intf->SendMAVLinkMsg(msg);
+	ArgsCmd_t cmd;
+	cmd.name = _SETVEL_;
+	cmd.param1 = Vn;
+	cmd.param2 = Ve;
+	cmd.param3 = Vu;
+	FlightData->outputList.push_back(cmd);
 }
 
-void FlightManagementSystem_t::SetMode(control_mode_t mode){
-    mavlink_message_t msg;
-    mavlink_msg_set_mode_pack(255,0,&msg,
-                              0,1,mode);
-	
-    px4Intf->SendMAVLinkMsg(msg);
+void FlightManagementSystem_t::SetMode(icarous_control_mode_t mode){
+	ArgsCmd_t cmd;
+	cmd.name = _SETMODE_;
+	cmd.param1 = mode;
+	FlightData->outputList.push_back(cmd);
 }
 
 void FlightManagementSystem_t::SetMissionItem(uint8_t nextWP){
-	mavlink_message_t msg;
-	mavlink_msg_mission_set_current_pack(255,0,&msg,1,0,nextWP);
-	px4Intf->SendMAVLinkMsg(msg);
+	ArgsCmd_t cmd;
+	cmd.name = _GOTOWP_;
+	cmd.param1 = nextWP;
+	FlightData->outputList.push_back(cmd);
 }
 
 void FlightManagementSystem_t::SetSpeed(float speed){
-	
-	SendCommand(0,0,MAV_CMD_DO_CHANGE_SPEED,0,
-		        1,speed,0,0,0,0,0);
-
+	ArgsCmd_t cmd;
+	cmd.name = _SETSPEED_;
+	cmd.param1 = speed;
+	FlightData->outputList.push_back(cmd);
 	FlightData->speed = speed;
 }
 
-void FlightManagementSystem_t::SendStatusText(char buffer[]){
-    mavlink_message_t msg;
-    mavlink_msg_statustext_pack(1,0,&msg,MAV_SEVERITY_INFO,buffer);
-    gsIntf->SendMAVLinkMsg(msg);
+void FlightManagementSystem_t::SendStatusText(char buffer[],int len){
+	ArgsCmd_t cmd;
+	cmd.name = _STATUS_;
+	memcpy(cmd.buffer,buffer,len);
+	FlightData->outputList.push_back(cmd);
 }
 
 void FlightManagementSystem_t::ArmThrottles(bool arm){
@@ -174,71 +157,37 @@ void FlightManagementSystem_t::ArmThrottles(bool arm){
         c = 0;
     }
 
-    SendCommand(0,0,MAV_CMD_COMPONENT_ARM_DISARM,0,
-			         (float)c,0,0,0,0,0,0);
+	ArgsCmd_t cmd;
+	cmd.name = _ARM_;
+	cmd.param1 = c;
+	FlightData->outputList.push_back(cmd);
 }
 
 void FlightManagementSystem_t::StartTakeoff(float alt){
-    SendCommand(0,0,MAV_CMD_NAV_TAKEOFF,0,
-			    1,0,0,0,0,0,alt);
+	ArgsCmd_t cmd;
+	cmd.name = _TAKEOFF_;
+	cmd.param1 = alt;
+	FlightData->outputList.push_back(cmd);
 }
 
 void FlightManagementSystem_t::StartLand(){
-    SendCommand(0,0,MAV_CMD_NAV_LAND,0,
-			    0,0,0,0,0,0,0);
+	ArgsCmd_t cmd;
+	cmd.name = _LAND_;
+	Position currPosition = FlightData->acState.positionLast();
+	cmd.param5 = (float)currPosition.latitude();
+	cmd.param6 = (float)currPosition.longitude();
+	cmd.param7 = (float)0.0;
+	FlightData->outputList.push_back(cmd);
 }
 
 
-bool FlightManagementSystem_t::CheckAck(MAV_CMD command){
-    bool have_msg = true;
-    bool status = false;
-    mavlink_command_ack_t msg;
-
-    while(have_msg){
-       have_msg = RcvdMessages->GetCommandAck(msg);
-       if(msg.command == command && msg.result == 0){
-           status = true;
-           return status;
-       }
-    }
-    return status;
+bool FlightManagementSystem_t::CheckAck(command_name_t command){
+	return FlightData->CheckAck(command);
 }
 
 void FlightManagementSystem_t::GetCurrentMode(){
-	mavlink_heartbeat_t msg;
-	RcvdMessages->GetHeartbeat(msg);
-	currentMode = (control_mode_t) msg.custom_mode;
-	if( (currentMode == ALT_HOLD) || (currentMode == POSHOLD) ){
-		icarousActive = false;
-	}else{
-		icarousActive = true;
-	}
-}
 
-void FlightManagementSystem_t::GetLatestAircraftData(){
-
-	// Get aircraft position data
-	double lat,lon,abs_alt,rel_alt,vx,vy,vz,time_gps;
-	RcvdMessages->GetGlobalPositionInt(time_gps,lat,lon,abs_alt,rel_alt,vx,vy,vz);
-	Position currentPos = Position::makeLatLonAlt(lat,"degree",lon,"degree",rel_alt,"m");
-	Velocity currentVel = Velocity::makeVxyz(vy,vx,"m/s",vz,"m/s");
-
-	FlightData->acState.add(currentPos,currentVel,time_gps);
-	FlightData->acTime = time_gps;
-
-	// Get aircraft attitude data
-	double roll, pitch, yaw, heading;
-	RcvdMessages->GetAttitude(roll,pitch,yaw);
-
-	heading = currentVel.track("degree");
-	if(heading < 0){
-		heading = 360 + heading;
-	}
-
-	FlightData->roll = roll;
-	FlightData->pitch = pitch;
-	FlightData->yaw = yaw;
-	FlightData->heading = heading;
+	// TODO: Implement current mode
 }
 
 uint8_t FlightManagementSystem_t::IDLE(){
@@ -253,7 +202,7 @@ uint8_t FlightManagementSystem_t::IDLE(){
             return 1; 
         }
         else{
-            SendStatusText("No flightplan uploaded");
+            SendStatusText("No flightplan uploaded",23);
             return 0;
         }
     }
@@ -261,27 +210,12 @@ uint8_t FlightManagementSystem_t::IDLE(){
     	PREFLIGHT();
         fmsState           = _cruise_;
         FlightData->nextMissionWP = start;
-        SendStatusText("Flying to waypoint");
+        SendStatusText("Flying to waypoint",19);
         return 1;
     }
-
     return 0;
 }
 
-
-
-bool FlightManagementSystem_t::CheckMissionWaypointReached(){
-
-	mavlink_mission_item_reached_t msg;
-	bool val;
-	val = RcvdMessages->GetMissionItemReached(msg);
-
-	if(val){
-		FlightData->nextMissionWP++;
-	}
-
-	return val;
-}
 
 uint8_t FlightManagementSystem_t::PREFLIGHT(){
 
@@ -352,8 +286,8 @@ uint8_t FlightManagementSystem_t::ThrottleUp(){
 	// Sleep
 	sleep(1);
 
-	if(CheckAck(MAV_CMD_NAV_TAKEOFF)){
-		SendStatusText("Starting climb");
+	if(CheckAck(_TAKEOFF_)){
+		SendStatusText("Starting climb",15);
 		FlightData->nextMissionWP++;
 		return 1;
 	}
@@ -366,6 +300,6 @@ void FlightManagementSystem_t::SetNextWPParameters(){
 	SetMissionItem(FlightData->nextMissionWP);
 	SetSpeed(FlightData->getFlightPlanSpeed(&FlightData->MissionPlan,FlightData->nextMissionWP));
 	planType = FlightManagementSystem_t::MISSION;
-	SetMode(AUTO);
+	SetMode(_PASSIVE_);
 }
 

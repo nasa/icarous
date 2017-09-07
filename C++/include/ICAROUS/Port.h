@@ -37,10 +37,11 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#ifndef INTERFACES_H_
-#define INTERFACES_H_
+#ifndef PORT_H_
+#define PORT_H_
 
 #include <stdio.h>   // Standard input/output definitions
+#include <string.h>
 #include <unistd.h>  // UNIX standard function definitions
 #include <fcntl.h>   // File control definitions
 #include <termios.h> // POSIX terminal control definitions
@@ -53,67 +54,52 @@
 #include <time.h>
 #include <queue>
 
-#include "MAVLinkMessages.h"
-
 #define BUFFER_LENGTH 300
 
-class Interface_t{
+class Port_t{
+protected:
+    pthread_mutex_t  lockrx;
+    pthread_mutex_t  locktx;
 
- protected:
-  uint8_t recvbuffer[BUFFER_LENGTH];
-  uint8_t sendbuffer[BUFFER_LENGTH];
-  MAVLinkMessages_t *RcvdMessages;
-  pthread_mutex_t  lockrx;
-  pthread_mutex_t  locktx;
-  mavlink_status_t lastStatus;
-  
-
- public:
-
-  
-  std::queue<mavlink_message_t> msgQueue;
-  Interface_t(){};
-  Interface_t(MAVLinkMessages_t *msgInbox);
-  virtual ~Interface_t(){};
-  int GetMAVLinkMsg();
-  void SendMAVLinkMsg(mavlink_message_t msg);
-  void EnableDataStream(int option);
-  uint8_t* GetRecvBuffer();
-  virtual int ReadData(){return 0;};
-  virtual void WriteData(uint8_t buffer[], uint16_t len){return;};
-  void PipeThrough(Interface_t *intf,int32_t len);
+public:
+    uint8_t recvbuffer[BUFFER_LENGTH];
+    uint8_t sendbuffer[BUFFER_LENGTH];
+    Port_t();
+    virtual ~Port_t(){};
+    virtual int ReadData(){return 0;}
+    virtual void WriteData(uint8_t buffer[], uint16_t len){return;}
+    void PipeThrough(Port_t *intf,int32_t len);
 };
 
-class SerialInterface_t: public Interface_t{
- private:
-  char *portname;
-  int baudrate;
-  int fd;
-  int parity;
+class SerialPort_t: public Port_t{
+private:
+    char *portname;
+    int baudrate;
+    int fd;
+    int parity;
 
- public:
-  SerialInterface_t(){};
-  SerialInterface_t(char pname[], int brate, int pbit,MAVLinkMessages_t *msgInbox);
-  int set_interface_attribs();
-  void set_blocking (int should_block);
-  int ReadData();
-  void WriteData(uint8_t buffer[], uint16_t len);
+public:
+    SerialPort_t(){};
+    SerialPort_t(char pname[], int brate, int pbit);
+    int set_interface_attribs();
+    void set_blocking (int should_block);
+    int ReadData();
+    void WriteData(uint8_t buffer[], uint16_t len);
 };
 
-class SocketInterface_t: public Interface_t{
-  private:
+class SocketPort_t: public Port_t{
+private:
     
     int sock;
     struct sockaddr_in locAddr; 
     struct sockaddr_in targetAddr; 
     socklen_t recvlen;
     
-  public:
-    SocketInterface_t(){};
-    SocketInterface_t(char targetip[], int inportno, int outportno,MAVLinkMessages_t *msgInbox);
+public:
+    SocketPort_t(){};
+    SocketPort_t(char targetip[], int inportno, int outportno);
     int ReadData();
     void WriteData(uint8_t buffer[], uint16_t len);
-
 };
 
 

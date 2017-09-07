@@ -36,6 +36,7 @@ public:
 	bool returnPathConflict;
 	Resolution_t(){};
 	Resolution_t(FlightManagementSystem_t *fms,AircraftData_t* fdata);
+	void Initialize();
 	bool ResolveKeepInConflict();
 	bool ResolveKeepOutConflict_Astar();
 	bool ResolveKeepOutConflict_RRT();

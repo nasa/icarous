@@ -1,5 +1,9 @@
-/*
- * DAQ.cpp
+/**
+ * Interface for ICAROUS
+ *
+ * This is a base class to define all interfaces for ICAROUS. Refer to the comment for function descriptions
+ * Look into the MAVLinkInterface implementation to get an idea on how to implement a specific interface.
+ *
  * Contact: Swee Balachandran (swee.balachandran@nianet.org)
  *
  *
@@ -31,28 +35,43 @@
  *   ITS CONTRACTORS AND SUBCONTRACTORS, AS WELL AS ANY PRIOR RECIPIENT, TO THE EXTENT PERMITTED BY LAW.
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
-#include "DAQ.h"
 
-DAQ_t::DAQ_t(Interface_t* px4int, Interface_t* gsint):log("DAQ"){
-	px4Intf      = px4int;
-	gsIntf       = gsint;
-}
+#ifndef C_INTERFACE_H
+#define C_INTERFACE_H
 
-// Get data from pixhawk
-void DAQ_t::GetPixhawkData(){
-	while(true){
-		// Get data from the pixhawk
-		int n = px4Intf->GetMAVLinkMsg();
+class Icarous_t;
 
-		//px4Intf->PipeThrough(gsIntf,n);
+class Interface_t{
+protected:
+    Icarous_t* icarous;
 
-		// Send the mavlink messages in the queue to the ground station interface
-		while(!px4Intf->msgQueue.empty()){
-			gsIntf->SendMAVLinkMsg(px4Intf->msgQueue.front());
-			px4Intf->msgQueue.pop();
-		}
-	}
-}
+public:
+    Interface_t(Icarous_t* ic){
+        icarous = ic;
+    }
+
+    ~Interface_t(){};
+
+    /**
+     * @brief Get data from external entity
+     *
+     * 1. Implement this function in derived classes to translate data from autopilot/ground station/
+     *    sensor into Icarous data structures.
+     * 2. This must be a function that runs continuously and hence must be implemented
+     *    using a while/for loop
+     * 3. Use the appropriate input functions in the Icarous class to send data to the ICAROUS.
+     *
+     */
+    virtual void GetData()=0;
+
+    /**
+     * @brief Send data to external entity
+     * @param _type defines the type of message/data being sent. refer to msgType enum for details of type.
+     * @param _data void pointer to data.
+     */
+    virtual void SendData(msgType _type,void* _data)=0;
 
 
+};
 
+#endif //C_INTERFACE_H

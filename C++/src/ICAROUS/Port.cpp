@@ -37,73 +37,21 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#include "Interface.h"
+#include "Port.h"
 
 
-Interface_t::Interface_t(MAVLinkMessages_t *msgInbox){
+Port_t::Port_t(){
     pthread_mutex_init(&locktx, NULL);
     pthread_mutex_init(&lockrx, NULL);
-    RcvdMessages = msgInbox;
 }
 
-int Interface_t::GetMAVLinkMsg(){
 
-    int n = ReadData();
-    mavlink_message_t message;
-    mavlink_status_t status;
- 
-    bool msgReceived = false;
-
-    for(int i=0;i<n;i++){
-        uint8_t cp = recvbuffer[i];
-
-        msgReceived = mavlink_parse_char(MAVLINK_COMM_0, cp, &message, &status);
-        
-        
-        if ( (lastStatus.packet_rx_drop_count != status.packet_rx_drop_count) )
-		{
-		  //printf("ERROR: DROPPED %d PACKETS\n", status.packet_rx_drop_count);
-
-		}
-		lastStatus = status;
-		
-
-        if(msgReceived){
-            msgQueue.push(message);
-            RcvdMessages->DecodeMessage(message);
-	    msgReceived = false;
-        }
-    }
-
-    return n;
-}
-
-void Interface_t::SendMAVLinkMsg(mavlink_message_t msg){
-    uint16_t len = mavlink_msg_to_send_buffer(sendbuffer, &msg);
-    WriteData(sendbuffer,len);
-}
-
-void Interface_t::PipeThrough(Interface_t* intf,int32_t len){
+void Port_t::PipeThrough(Port_t* intf,int32_t len){
   intf->WriteData(recvbuffer,len);
 }
 
-uint8_t* Interface_t::GetRecvBuffer(){
-    return recvbuffer;
-}
-
-void Interface_t::EnableDataStream(int option){
-	
-    mavlink_message_t msg1,msg2;
-    mavlink_msg_heartbeat_pack(2, 0, &msg1, MAV_TYPE_ONBOARD_CONTROLLER, 
-                                MAV_AUTOPILOT_GENERIC, 0, 0, 0);    
-    mavlink_msg_request_data_stream_pack(2,0,&msg2,1,0,MAV_DATA_STREAM_ALL,4,option);    
-    //SendMAVLinkMsg(msg1);
-    SendMAVLinkMsg(msg2);   
-}
-
-
-SerialInterface_t::SerialInterface_t(char name[],int brate,int pbit,MAVLinkMessages_t *msgInbox)
-:Interface_t(msgInbox){
+SerialPort_t::SerialPort_t(char name[],int brate,int pbit)
+{
 
   portname = name;
   baudrate = brate;
@@ -121,7 +69,7 @@ SerialInterface_t::SerialInterface_t(char name[],int brate,int pbit,MAVLinkMessa
 
 }
 
-int SerialInterface_t::set_interface_attribs()
+int SerialPort_t::set_interface_attribs()
 {
     struct termios tty;
     memset (&tty, 0, sizeof tty);
@@ -159,7 +107,7 @@ int SerialInterface_t::set_interface_attribs()
     return 0;
 }
 
-void SerialInterface_t::set_blocking (int should_block)
+void SerialPort_t::set_blocking (int should_block)
 {
     struct termios tty;
     memset (&tty, 0, sizeof tty);
@@ -177,7 +125,7 @@ void SerialInterface_t::set_blocking (int should_block)
 	
 }
 
-int SerialInterface_t::ReadData(){
+int SerialPort_t::ReadData(){
     
     char buf;
     int n = 0;
@@ -190,7 +138,7 @@ int SerialInterface_t::ReadData(){
     return n;
 }
 
-void SerialInterface_t::WriteData(uint8_t buffer[],uint16_t len){
+void SerialPort_t::WriteData(uint8_t buffer[],uint16_t len){
 
   pthread_mutex_lock(&locktx);
   for(int i=0;i<len;i++){
@@ -202,8 +150,8 @@ void SerialInterface_t::WriteData(uint8_t buffer[],uint16_t len){
 
 
 // Socet interface class definition
-SocketInterface_t::SocketInterface_t(char targetip[], int inportno, int outportno,MAVLinkMessages_t *msgInbox)
-:Interface_t(msgInbox){
+SocketPort_t::SocketPort_t(char targetip[], int inportno, int outportno)
+{
 
     sock = socket(AF_INET, SOCK_DGRAM, 0);
     recvlen = 0;
@@ -212,7 +160,7 @@ SocketInterface_t::SocketInterface_t(char targetip[], int inportno, int outportn
     locAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     locAddr.sin_port        = htons((unsigned short)inportno);
     
-    /* Bind the socket to port 14551 - necessary to receive packets from qgroundcontrol */ 
+    /* Bind the socket to input */
     if (bind(sock,(struct sockaddr *)&locAddr, sizeof(locAddr)) == -1){
       printf("error: bind failed");
       close(sock);
@@ -229,11 +177,11 @@ SocketInterface_t::SocketInterface_t(char targetip[], int inportno, int outportn
     bzero((char *) &targetAddr, sizeof(targetAddr));
     targetAddr.sin_family      = AF_INET;
     targetAddr.sin_addr.s_addr = inet_addr(targetip);
-    targetAddr.sin_port        = htons(outportno);
+    targetAddr.sin_port        = htons((unsigned short)outportno);
     
 }
 
-int SocketInterface_t::ReadData(){
+int SocketPort_t::ReadData(){
 
     int n = 0;
     pthread_mutex_lock(&lockrx);
@@ -243,7 +191,7 @@ int SocketInterface_t::ReadData(){
     return n;
 }
 
-void SocketInterface_t::WriteData(uint8_t buffer[],uint16_t len){
+void SocketPort_t::WriteData(uint8_t buffer[],uint16_t len){
     pthread_mutex_lock(&locktx);
     sendto(sock, buffer, len, 0, (struct sockaddr*)&targetAddr, sizeof (struct sockaddr_in));
     pthread_mutex_unlock(&locktx);

@@ -50,12 +50,15 @@ ConflictDetection_t::ConflictDetection_t(FlightManagementSystem_t* fms,AircraftD
 	trafficConflict = false;
 	FMS = fms;
 	FlightData = fdata;
-	DAA.parameters.loadFromFile(FlightData->paramData->getString("DAA_CONFIG"));
-	daaLookAhead = DAA.parameters.getLookaheadTime();
 	time(&daaTimeStart);
 	time(&timeStart);
 	numConflicts = 0;
 	daalogtime = 0;
+}
+
+void ConflictDetection_t::Initialize() {
+	DAA.parameters.loadFromFile(FlightData->paramData->getString("DAA_CONFIG"));
+	daaLookAhead = DAA.parameters.getLookaheadTime();
 }
 
 void ConflictDetection_t::AddFenceConflict(Geofence_t gf){
@@ -265,100 +268,89 @@ bool ConflictDetection_t::CheckTurnConflict(double low,double high,double newHea
 	return false;
 }
 
-void ConflictDetection_t::CheckTraffic(){
+void ConflictDetection_t::CheckTraffic() {
 
-	if(FlightData->trafficList.size() == 0){
-		return;
-	}
-	
-	double holdConflictTime = FlightData->paramData->getValue("CONFLICT_HOLD");
-		
-	time_t currentTime    = time(&currentTime);
-	double daaTimeElapsed = difftime(currentTime,daaTimeStart);
-	double elapsedTime    = difftime(currentTime,timeStart);
+    if (FlightData->trafficList.size() == 0) {
+        return;
+    }
 
-	Position so = FlightData->acState.positionLast();
-	Velocity vo = FlightData->acState.velocityLast();
+    double holdConflictTime = FlightData->paramData->getValue("CONFLICT_HOLD");
 
-	DAA.setOwnshipState("Ownship",so,vo,elapsedTime);
-	double dist2traffic = MAXDOUBLE;
-	for(unsigned int i=0;i<FlightData->trafficList.size();i++){
-		Position si;
-		Velocity vi;
-		FlightData->GetTraffic(i,si,vi);
-		char name[10];
-		sprintf(name,"Traffic%d",i);
-		DAA.addTrafficState(name,si,vi);
-		double dist = so.distanceH(si);
-		if(dist < dist2traffic){
-			dist2traffic = dist;
-		}
-	}
+    time_t currentTime = time(&currentTime);
+    double daaTimeElapsed = difftime(currentTime, daaTimeStart);
+    double elapsedTime = difftime(currentTime, timeStart);
 
-	DAA.kinematicMultiBands(KMB);
-	bool daaViolation = BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()));
+    Position so = FlightData->acState.positionLast();
+    Velocity vo = FlightData->acState.velocityLast();
 
-	if(daaViolation){
-		trafficConflict = true;
-		time(&daaTimeStart);
-	}
+    DAA.setOwnshipState("Ownship", so, vo, elapsedTime);
+    double dist2traffic = MAXDOUBLE;
+    for (unsigned int i = 0; i < FlightData->trafficList.size(); i++) {
+        Position si;
+        Velocity vi;
+        FlightData->GetTraffic(i, si, vi);
+        char name[10];
+        sprintf(name, "Traffic%d", i);
+        DAA.addTrafficState(name, si, vi);
+        double dist = so.distanceH(si);
+        if (dist < dist2traffic) {
+            dist2traffic = dist;
+        }
+    }
+
+    DAA.kinematicMultiBands(KMB);
+    bool daaViolation = BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()));
+
+    if (daaViolation) {
+        trafficConflict = true;
+        time(&daaTimeStart);
+    }
 
 
-	if(daaTimeElapsed > holdConflictTime){
-		if(!daaViolation){
-			trafficConflict = FMS->Resolver.returnPathConflict;
-		}
-	}
+    if (daaTimeElapsed > holdConflictTime) {
+        if (!daaViolation) {
+            trafficConflict = FMS->Resolver.returnPathConflict;
+        }
+    }
 
-	// Construct kinematic bands message to send to ground station
-	mavlink_kinematic_bands_t msg;
+    // Construct kinematic bands message to send to ground station
 
-	msg.numBands = KMB.trackLength();
+    if (dist2traffic < 20) {
+        FlightData->visBands.numBands = KMB.trackLength();
 
-	for(int i=0;i<msg.numBands;++i){
-		Interval iv = KMB.track(i,"deg");
-		int type = 0;
-		if( KMB.trackRegion(i) == BandsRegion::NONE){
-			type = 0;
-		}
-		else if(KMB.trackRegion(i) == BandsRegion::NEAR){
-			type = 1;
-		}
+        for (int i = 0; i < KMB.trackLength(); ++i) {
+            Interval iv = KMB.track(i, "deg");
+            int type = 0;
+            if (KMB.trackRegion(i) == BandsRegion::NONE) {
+                type = 0;
+            } else if (KMB.trackRegion(i) == BandsRegion::NEAR) {
+                type = 1;
+            }
 
-		if(i==0){
-			msg.type1 =  type;
-			msg.min1 = (float) iv.low;
-			msg.max1 = (float) iv.up;
-		}else if(i==1){
-			msg.type2 =  type;
-			msg.min2 = (float) iv.low;
-			msg.max2 = (float) iv.up;
-		}else if(i==2){
-			msg.type3 =  type;
-			msg.min3 = (float) iv.low;
-			msg.max3 = (float) iv.up;
-		}else if(i==3){
-			msg.type4 =  type;
-			msg.min4 = (float) iv.low;
-			msg.max4 = (float) iv.up;
-		}else{
-			msg.type5 =  type;
-			msg.min5 = (float) iv.low;
-			msg.max5 = (float) iv.up;
-		}
-	}
+            if (i == 0) {
+                FlightData->visBands.type1 = type;
+                FlightData->visBands.min1 = (float) iv.low;
+                FlightData->visBands.max1 = (float) iv.up;
+            } else if (i == 1) {
+                FlightData->visBands.type2 = type;
+                FlightData->visBands.min2 = (float) iv.low;
+                FlightData->visBands.max2 = (float) iv.up;
+            } else if (i == 2) {
+                FlightData->visBands.type3 = type;
+                FlightData->visBands.min3 = (float) iv.low;
+                FlightData->visBands.max3 = (float) iv.up;
+            } else if (i == 3) {
+                FlightData->visBands.type4 = type;
+                FlightData->visBands.min4 = (float) iv.low;
+                FlightData->visBands.max4 = (float) iv.up;
+            } else {
+                FlightData->visBands.type5 = type;
+                FlightData->visBands.min5 = (float) iv.low;
+                FlightData->visBands.max5 = (float) iv.up;
+            }
+        }
+    }
 
-	if(msg.numBands > 0){
-		if(dist2traffic < 20){
-			FlightData->RcvdMessages->AddKinematicBands(msg);
-		}
-		else if(msg.numBands == 1 && msg.type1 == 0){
-			// Don't send if we only have one type 0 band
-			// This is to save bandwidth
-		}else{
-			FlightData->RcvdMessages->AddKinematicBands(msg);
-		}
-	}
 
 	if(FMS->debugDAA && FlightData->acTime > daalogtime){
 			daalogtime = FlightData->acTime;

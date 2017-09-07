@@ -40,40 +40,16 @@
 
  #include "math.h"
  #include "icarous/mavlink.h"
- #include "Interface.h"
+ #include "Port.h"
  #include "AircraftData.h"
  #include "NavPoint.h"
  #include "PlanUtil.h"
- #include "ErrorLog.h"
- #include "Mission.h"
  #include "ConflictDetection.h"
  #include "Resolution.h"
  #include <fstream>
  #include <iostream>
 
 enum fms_state_t {_idle_,_takeoff_,_climb_,_cruise_,_descend_,_land_};
-
-// Auto Pilot Modes enumeration
-enum control_mode_t {
-    STABILIZE =     0,  // manual airframe angle with manual throttle
-    ACRO =          1,  // manual body-frame angular rate with manual throttle
-    ALT_HOLD =      2,  // manual airframe angle with automatic throttle
-    AUTO =          3,  // fully automatic waypoint control using mission commands
-    GUIDED =        4,  // fully automatic fly to coordinate or fly at velocity/direction using GCS immediate commands
-    LOITER =        5,  // automatic horizontal acceleration with automatic throttle
-    RTL =           6,  // automatic return to launching point
-    CIRCLE =        7,  // automatic circular flight with automatic throttle
-    LAND =          9,  // automatic landing with horizontal position control
-    DRIFT =        11,  // semi-automous position, yaw and throttle control
-    SPORT =        13,  // manual earth-frame angular rate control with manual throttle
-    FLIP =         14,  // automatically flip the vehicle on the roll axis
-    AUTOTUNE =     15,  // automatically tune the vehicle's roll and pitch gains
-    POSHOLD =      16,  // automatic position hold with manual override, with automatic throttle
-    BRAKE =        17,  // full-brake using inertial/GPS system, no pilot input
-    THROW =        18,  // throw to launch mode using inertial/GPS system, no pilot input
-    AVOID_ADSB =   19,  // automatic avoidance of obstacles in the macro scale - e.g. full-sized aircraft
-    GUIDED_NOGPS = 20,  // guided mode but only accepts attitude and altitude
-};
 
 class FlightManagementSystem_t{
 
@@ -84,13 +60,9 @@ class FlightManagementSystem_t{
 
     protected:
         
-        Interface_t *px4Intf;
-        Interface_t *gsIntf;
 
-        MAVLinkMessages_t* RcvdMessages;
         fms_state_t fmsState;
         uint8_t conflictSize;
-        Mission_t* mission;
         bool deviationApproved;
         bool landStarted;
         bool icarousActive;
@@ -98,48 +70,41 @@ class FlightManagementSystem_t{
 	    trajectory_state_t trajectoryState;
 	    maneuver_state_t maneuverState;
 	    float captureH,captureV;
-
+        double startTakeoffTime;
 
     public:
-
-        ErrorLog log;
         bool debugDAA;
         std::string debug_in;
         std::string debug_out;
-        control_mode_t currentMode;
+        icarous_control_mode_t currentMode;
         AircraftData_t* FlightData;
         ConflictDetection_t Detector;
 	    Resolution_t Resolver;
 
 	    bool resumeMission;
 		bool goalReached;
-		Position NextGoal;
+		larcfm::Position NextGoal;
 		plan_type_t planType;
 
-        FlightManagementSystem_t():log("FMS"){};
-        FlightManagementSystem_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task);
+        FlightManagementSystem_t(AircraftData_t* fData);
         virtual ~FlightManagementSystem_t(){};
+        void Initialize();
         void RunFMS();
-
-        void SendCommand(uint8_t target_system,uint8_t target_component,uint16_t command,uint8_t confirmation,
-                         float param1, float param2, float param3,float param4, 
-                         float param5, float param6, float param7);
-
         void SetYaw(bool relative,double heading);
         void SetYaw(double heading){SetYaw(false,heading);};
         void SetGPSPos(double lat,double lon, double alt);
         void SetVelocity(double Vn,double Ve,double Vu);
-        void SetMode(control_mode_t mode);
+        void SetMode(icarous_control_mode_t mode);
         void SetSpeed(float speed);
-        void SendStatusText(char buffer[]);
+        void SendStatusText(char buffer[],int len);
         void ArmThrottles(bool arm);
         uint8_t ThrottleUp();
         void StartTakeoff(float alt);
         void StartLand();
         void GetLatestAircraftData();
-        bool CheckAck(MAV_CMD command);
+        bool CheckAck(command_name_t command);
         bool CheckMissionWaypointReached();
-        double GetApproxElapsedPlanTime(Plan fp, int nextWP);
+        double GetApproxElapsedPlanTime(larcfm::Plan fp, int nextWP);
         void CheckReset();
         void SetDeviationApproved(bool status);
         void SetMissionItem(uint8_t nextWP);

@@ -37,8 +37,8 @@
 
  #include "QuadFMS.h"
 
- QuadFMS_t::QuadFMS_t(Interface_t *px4int, Interface_t *gsint,AircraftData_t* fData,Mission_t* task):
- FlightManagementSystem_t(px4int,gsint,fData,task){
+ QuadFMS_t::QuadFMS_t(AircraftData_t* fData):
+ FlightManagementSystem_t(fData){
      targetAlt         = 0.0f;
      resolutionState   = IDLE_r;
      maneuverState     = IDLE_m;
@@ -54,28 +54,31 @@ QuadFMS_t::~QuadFMS_t(){}
 
 uint8_t QuadFMS_t::TAKEOFF(){
 
-	targetAlt = (float) FlightData->paramData->getValue("TAKEOFF_ALT");
+    if(startTakeoffTime <= 0.0) {
+        targetAlt = (float) FlightData->paramData->getValue("TAKEOFF_ALT");
 
-	SetMode(GUIDED);
+        SetMode(_ACTIVE_);
 
-	// Arm throttles
-	ArmThrottles(true);
-        
-	// Send Takeoff with target altitude
-	StartTakeoff(targetAlt);
+        // Arm throttles
+        ArmThrottles(true);
 
-	// Sleep
-	sleep(1);
+        // Send Takeoff with target altitude
+        StartTakeoff(targetAlt);
 
-	if(CheckAck(MAV_CMD_NAV_TAKEOFF)){
-		fmsState = _climb_;
-		SendStatusText("Starting climb");
-		return 1;
-	}
-	else{
-		fmsState = _idle_;
-		return 0;
-	}
+        startTakeoffTime = FlightData->acTime;
+    }else {
+        if(FlightData->acTime - startTakeoffTime > 2) {
+            if (CheckAck(_TAKEOFF_)) {
+                fmsState = _climb_;
+                SendStatusText("Starting climb", 15);
+                return 1;
+            } else {
+                printf("Takeoff failed\n");
+                fmsState = _idle_;
+                return 0;
+            }
+        }
+    }
 }
 
 uint8_t QuadFMS_t::CLIMB(){
@@ -84,11 +87,11 @@ uint8_t QuadFMS_t::CLIMB(){
 	double alt_error  = std::abs(currentAlt - targetAlt);
 
 	if( alt_error < 0.5 ){
-		SetMode(AUTO);
+		SetMode(_PASSIVE_);
 		//SetSpeed(1.0f);
 		FlightData->nextMissionWP++;
 		fmsState = _cruise_;
-		SendStatusText("Starting cruise");
+		SendStatusText("Starting cruise",16);
 		return 1;
 	}
 
@@ -116,9 +119,7 @@ uint8_t QuadFMS_t::CRUISE(){
 		trajectoryState = IDLE_t;
 		maneuverState   = IDLE_m;
 	}
-	else{
-		mission->Execute(this);
-	}
+
 
 	if(FlightData->nextMissionWP >= FlightData->MissionPlan.size()){
 		fmsState = _land_;
@@ -134,8 +135,8 @@ uint8_t QuadFMS_t::DESCEND(){
 uint8_t QuadFMS_t::LAND(){
 
 	if(!landStarted){
-		log.addWarning("Landing");
-		SetMode(GUIDED);
+		SendStatusText("Landing",8);
+		SetMode(_ACTIVE_);
 		StartLand();
 		landStarted = true;
 	}
@@ -169,7 +170,7 @@ uint8_t QuadFMS_t::Resolve(){
 
 		if(Detector.trafficConflict){
 			printf("Computing traffic resolution\n");
-			SendStatusText("traffic conflict");
+			SendStatusText("traffic conflict",17);
 			int search_type = FlightData->paramData->getInt("CHEAP_DAA");
 			if(search_type == 0){
 				Resolver.ResolveTrafficConflictRRT();
@@ -179,13 +180,13 @@ uint8_t QuadFMS_t::Resolve(){
 			}
 		}
 		else if(Detector.keepInConflict){
-			SendStatusText("keep in conflict");
+			SendStatusText("keep in conflict",17);
 			printf("Computing keep in resolution\n");
 			Resolver.ResolveKeepInConflict();
 		}
 		else if(Detector.keepOutConflict){
-			SetMode(GUIDED);
-			SendStatusText("keep out conflict");
+			SetMode(_ACTIVE_);
+			SendStatusText("keep out conflict",18);
 			int search_type = FlightData->paramData->getInt("CHEAP_SEARCH");
 			printf("Computing keep out resolution\n");
 			time(&startTime);
@@ -199,7 +200,7 @@ uint8_t QuadFMS_t::Resolve(){
 			printf("Time to compute solution %f\n",difftime(stopTime,startTime));
 		}
 		else if(Detector.flightPlanDeviationConflict){
-			SendStatusText("flight plan deviation");
+			SendStatusText("flight plan deviation",22);
 			printf("Computing standoff deviation\n");
 			Resolver.ResolveFlightPlanDeviation();
 		}
@@ -223,7 +224,7 @@ uint8_t QuadFMS_t::Resolve(){
 			SetMissionItem(FlightData->nextMissionWP);
 			planType = QuadFMS_t::MISSION;
 			cout<<"Next mission item: "<<FlightData->nextMissionWP<<endl;
-			SetMode(AUTO);
+			SetMode(_PASSIVE_);
 		}
 		break;
 
@@ -239,7 +240,7 @@ uint8_t QuadFMS_t::Resolve(){
 				SetMissionItem(FlightData->nextMissionWP);
 				SetSpeed(FlightData->getFlightPlanSpeed(&FlightData->MissionPlan,FlightData->nextMissionWP));
 				planType = QuadFMS_t::MISSION;
-				SetMode(AUTO);
+				SetMode(_PASSIVE_);
 			}
 			else{
 				resolutionState = RESUME_r;
@@ -284,7 +285,7 @@ uint8_t QuadFMS_t::FlyTrajectory(bool newPath){
 		printf("executing trajectory resolution of size %d\n",FlightData->ResolutionPlan.size());
 		FlightData->nextResolutionWP = 0;
 		resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
-		SetMode(GUIDED); sleep(1);
+		SetMode(_ACTIVE_); sleep(1);
 		SetSpeed(resolutionSpeed);  usleep(5000);
 		trajectoryState = FIX_t;
 		break;
@@ -346,7 +347,7 @@ uint8_t QuadFMS_t::FlyManeuver(bool newPlan){
 
 	case START_m:
 		printf("executing maneuver resolution\n");
-		SetMode(GUIDED);
+		SetMode(_ACTIVE_);
 		SetSpeed(resolutionSpeed);
 		maneuverState = GUIDE_m;
 		usleep(100);
