@@ -42,6 +42,7 @@ typedef struct{
 	double trkDistV;
 
 	// DAA parameters
+	char daaConfig[50];
 	uint8_t cheapDAA;
 	uint8_t gotoNextWP;
 	uint8_t conflictHold;

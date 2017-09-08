@@ -19,6 +19,7 @@ APPTARGET = icarouslib
 ENTRY_PT = ICAROUS_LibInit
 
 ICAROUS_SRC = $(CFS_APP_SRC)/$(APPTARGET)/fsw/src/ICAROUS/
+ICAROUS_SRC += $(CFS_APP_SRC)/$(APPTARGET)/fsw/src/
 ACCORD_SRC = $(CFS_APP_SRC)/$(APPTARGET)/fsw/src/ACCoRD/
 
 #
@@ -100,6 +101,7 @@ INCLUDE_PATH = \
 -I$(CFS_APP_SRC)/inc \
 -I$(CFS_APP_SRC)/$(APPTARGET)/fsw/mission_inc/ICAROUS \
 -I$(CFS_APP_SRC)/$(APPTARGET)/fsw/mission_inc/ACCoRD \
+-I$(CFS_APP_SRC)/$(APPTARGET)/fsw/mission_inc/ \
 -I$(CFS_APP_SRC)/icarous/fsw/src \
 -I$(CFS_MISSION_INC) \
 -I../cfe/inc \
@@ -114,6 +116,7 @@ INCLUDE_PATH = \
 ##
 VPATH = $(CFS_APP_SRC)/$(APPTARGET)/fsw/src/ICAROUS
 VPATH += $(CFS_APP_SRC)/$(APPTARGET)/fsw/src/ACCoRD
+VPATH += $(CFS_APP_SRC)/$(APPTARGET)/fsw/src/
 
 ##
 ## Include the common make rules for building a cFE Application

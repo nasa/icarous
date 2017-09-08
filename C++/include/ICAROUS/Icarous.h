@@ -61,11 +61,12 @@ private:
 	bool usePlexil;
 
 public:
+    Icarous_t();
 	Icarous_t(int argc,char* argv[]);
 	void GetOptions(int argc,char* argv[]);
 	void Initialize();
     void Run(Interface_t* AP,Interface_t* GS);
-
+    void RunFMS(){FMS->RunFMS();};
     // Input interface functions
     void InputStartMission(int param);
     void InputResetIcarous();

@@ -47,6 +47,11 @@ std::string Icarous_t::release() {
 			"-FormalATM-"+Constants::version+" (July-28-2017)";
 }
 
+Icarous_t::Icarous_t(){
+    usePlexil = false;
+    FMS = new QuadFMS_t(&FlightData);
+}
+
 Icarous_t::Icarous_t(int argc,char* argv[]):FlightData(&paramData){
 
 	cout << "ICAROUS Release: " << release() << std::endl;

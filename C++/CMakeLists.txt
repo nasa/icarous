@@ -581,7 +581,7 @@ set(SOURCE_FILES
         src/INTERFACE/MavlinkInterface.cpp
         src/LaunchIcarous.cpp
         include/INTERFACE/MAVLinkInterface.h
-        include/INTERFACE/Interface.h)
+        include/ICAROUS/Interface.h)
 
 include_directories(include/ACCoRD include/ICAROUS include/PLEXIL libs/mavlink include/INTERFACE plexil-4/include)
 

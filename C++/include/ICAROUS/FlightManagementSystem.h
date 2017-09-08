@@ -39,7 +39,6 @@
  #define FMS_H
 
  #include "math.h"
- #include "icarous/mavlink.h"
  #include "Port.h"
  #include "AircraftData.h"
  #include "NavPoint.h"
