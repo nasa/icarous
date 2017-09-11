@@ -35,6 +35,7 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
+#include <Icarous_msg.h>
 #include "Icarous.h"
 #include "Constants.h"
 #include "QuadFMS.h"
@@ -47,7 +48,7 @@ std::string Icarous_t::release() {
 			"-FormalATM-"+Constants::version+" (July-28-2017)";
 }
 
-Icarous_t::Icarous_t(){
+Icarous_t::Icarous_t():FlightData(&paramData){
     usePlexil = false;
     FMS = new QuadFMS_t(&FlightData);
 }
@@ -244,7 +245,7 @@ void Icarous_t::InputGeofenceData(geofence_t* gf){
 		tempVertices.clear();
 	}
 	tempVertices.push_back(*gf);
-
+    std::cout<<"received fence: "<<gf->vertexIndex<<"/"<<gf->totalvertices<<std::endl;
 	if(gf->vertexIndex+1 == gf->totalvertices){
 		Geofence_t fence((int)gf->index,(FENCE_TYPE)gf->type,(int)gf->totalvertices,gf->floor,gf->ceiling,FlightData.paramData);
 		for(geofence_t sgf: tempVertices){
@@ -253,7 +254,7 @@ void Icarous_t::InputGeofenceData(geofence_t* gf){
 
 		if(FlightData.fenceList.size() <= gf->index){
 			FlightData.fenceList.push_back(fence);
-			cout << "Received fence: "<<gf->index <<endl;
+			std::cout << "Received fence: "<<gf->index <<std::endl;
 		}
 		else{
 			std::list<Geofence_t>::iterator it;

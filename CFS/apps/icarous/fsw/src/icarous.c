@@ -119,17 +119,20 @@ void ICAROUS_ProcessPacket(void)
 
         case ICAROUS_GEOFENCE_MID:
         {
+	  printf("received geofence data\n");
         	geofence_t *gf;
-        	gf = (geofence_t*)appdataIC.ICAROUSMsgPtr;
+        	gf = (geofence_t*)appdataIC.ICAROUSMsgPtr;		
         	icarous_setGeofenceData(appdataIC.ic,gf);
         	break;
         }
 
         case ICAROUS_STARTMISSION_MID:
         {
+	        printf("received mission start in icarous\n");
         	ArgsCmd_t *cmd;
         	cmd = (ArgsCmd_t*)appdataIC.ICAROUSMsgPtr;
         	icarous_StartMission(appdataIC.ic,cmd->param1);
+		printf("received mission start in icarous\n");
         	break;
         }
 

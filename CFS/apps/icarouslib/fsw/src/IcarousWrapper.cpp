@@ -34,10 +34,10 @@ struct icarous_t *icarous_create_init(icarous_table_t* pData){
 	 params.setInternal("CAPTURE_V",pData->Capture_V,"unspecified");
 	 params.setInternal("WAIT",pData->WaitAtWaypoint,"unspecified");
 
-	 
 	 Icarous_t *IC = new Icarous_t();
 	 IC->InputParamTable(&params);
 	 icarous_t *ic = TO_C(IC);
+
 	 return ic;
 }
 
@@ -50,6 +50,7 @@ void icarous_setFlightData(struct icarous_t* ic,waypoint_t *wp){
 }
 
 void icarous_setGeofenceData(struct icarous_t* ic,geofence_t *gfdata){
+        printf("%d/%d\n",gfdata->vertexIndex,gfdata->totalvertices);
 	TO_CPP(ic)->InputGeofenceData(gfdata);
 }
 

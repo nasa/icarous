@@ -191,6 +191,7 @@ void ProcessGSMessage(mavlink_message_t message){
 
 			if(msg.command == MAV_CMD_MISSION_START){
 				startMission.param1 = msg.param1;
+				printf("received misison start\n");
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &startMission);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &startMission);
 			}
