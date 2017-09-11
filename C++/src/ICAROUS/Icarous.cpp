@@ -245,7 +245,6 @@ void Icarous_t::InputGeofenceData(geofence_t* gf){
 		tempVertices.clear();
 	}
 	tempVertices.push_back(*gf);
-    std::cout<<"received fence: "<<gf->vertexIndex<<"/"<<gf->totalvertices<<std::endl;
 	if(gf->vertexIndex+1 == gf->totalvertices){
 		Geofence_t fence((int)gf->index,(FENCE_TYPE)gf->type,(int)gf->totalvertices,gf->floor,gf->ceiling,FlightData.paramData);
 		for(geofence_t sgf: tempVertices){

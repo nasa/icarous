@@ -155,6 +155,7 @@ bool Resolution_t::ResolveKeepOutConflict_Astar(){
 	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
 	double Hthreshold        = FlightData->paramData->getValue("HTHRESHOLD");
 
+
 	// Reroute flight plan
 	FMS->SetMode(_ACTIVE_); // Set mode to guided for quadrotor to hover before replanning
 
@@ -256,9 +257,6 @@ bool Resolution_t::ResolveKeepOutConflict_Astar(){
 	std::vector<std::pair<int,int>> GridPath = DGAstar.optimalPath(DG);
 	std::vector<std::pair<int,int>>::iterator gpit;
 
-	std::pair<int,int> p3(103,63);
-	Position pos2 = DG.getPosition(p3);
-
 	Plan ResolutionPlan1;
 	//Create a plan out of the grid points
 	if(!GridPath.empty()){
@@ -318,6 +316,8 @@ bool Resolution_t::ResolveKeepOutConflict_Astar(){
 			ResolutionPlan1.addNavPoint(np);
 			count++;
 		}
+	}else{
+		std::cout<<"grid path is empty"<<std::endl;
 	}
 
 	Plan ResolutionPlan2 = ComputeGoAbovePlan(start,goal,altFence,resolutionSpeed);

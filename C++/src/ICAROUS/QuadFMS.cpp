@@ -45,12 +45,17 @@
      trajectoryState   = IDLE_t;
      planType          = MISSION;
      resumeMission     = true;
-     captureH          = (float) FlightData->paramData->getValue("CAPTURE_H");
-     captureV          = (float) FlightData->paramData->getValue("CAPTURE_V");
      newSolution       = false;
  }
 
 QuadFMS_t::~QuadFMS_t(){}
+
+void QuadFMS_t::Initialize(){
+    captureH          = (float) FlightData->paramData->getValue("CAPTURE_H");
+    captureV          = (float) FlightData->paramData->getValue("CAPTURE_V");
+    Detector.Initialize();
+    Resolver.Initialize();
+}
 
 uint8_t QuadFMS_t::TAKEOFF(){
 
@@ -303,7 +308,7 @@ uint8_t QuadFMS_t::FlyTrajectory(bool newPath){
 		distH     = current.distanceH(next);
 		distV     = current.distanceV(next);
 
-		//printf("distH,V = %f,%f\n",distH,distV);
+		//printf("distH,distV = %f/%f,%f/%f\n",distH,captureH,distV,captureV);
 		if(distH < captureH && distV < captureV){
 
 			FlightData->nextResolutionWP++;

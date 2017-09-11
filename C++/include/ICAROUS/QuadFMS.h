@@ -71,6 +71,7 @@ class QuadFMS_t:public FlightManagementSystem_t{
 
         uint8_t FlyTrajectory(bool newPath);
         uint8_t FlyManeuver(bool newPlan);
+	    void Initialize();
         void ComputeInterceptCourse();
         void Reset();
         double SaturateVelocity(double V, double Vsat);

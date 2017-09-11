@@ -8,9 +8,10 @@
 
 #include <stdint.h>
 
-#ifdef CFS
-#define TLM_HDR_SIZE CFE_SB_TLM_HDR_SIZE;
-#define TLM_CMD_SIZE CFE_SB_CMD_HDR_SIZE;
+#ifdef CFS 
+#include "cfe.h"
+#define TLM_HDR_SIZE CFE_SB_TLM_HDR_SIZE
+#define CMD_HDR_SIZE CFE_SB_CMD_HDR_SIZE
 #else
 #define TLM_HDR_SIZE 1
 #define CMD_HDR_SIZE 1
@@ -51,6 +52,7 @@ typedef enum {
 
 // Icarous internal messages  
 typedef struct{
+        uint8_t TlmHeader[TLM_HDR_SIZE];
 	uint16_t totalWayPoints;
 	uint16_t wayPointIndex;
 	float latitude;
@@ -60,10 +62,12 @@ typedef struct{
 }waypoint_t;
 
 typedef struct{
+        uint8_t TlmHeader[TLM_HDR_SIZE];
 	uint8_t reachedwaypoint;
 }missionItemReached_t;
 
 typedef struct{
+        uint8_t TlmHeader[TLM_HDR_SIZE];
 	uint16_t index;
 	uint8_t type;
 	uint16_t totalvertices;
@@ -75,6 +79,7 @@ typedef struct{
 }geofence_t;
 
 typedef struct{
+        uint8_t TlmHeader[TLM_HDR_SIZE];
 	uint8_t type;
 	uint16_t index;
 	float latitude;
@@ -86,6 +91,7 @@ typedef struct{
 }object_t;
 
 typedef struct{
+        uint8_t TlmHeader[TLM_HDR_SIZE];
 	double time_gps;
 	double latitude;
 	double longitude;
@@ -100,16 +106,19 @@ typedef struct{
 }position_t;
 
 typedef struct{
+        uint8_t TlmHeader[TLM_HDR_SIZE];
 	float roll;
 	float pitch;
 	float yaw;
 }attitude_t;
 
 typedef struct{
+        uint8_t TlmHeader[CMD_HDR_SIZE];
 	command_name_t name;
 }NoArgsCmd_t;
 
 typedef struct{
+        uint8_t TlmHeader[CMD_HDR_SIZE];
 	command_name_t name;
 	float param1,param2;
 	float param3,param4;
@@ -119,12 +128,13 @@ typedef struct{
 }ArgsCmd_t;
 
 typedef struct{
-
+        uint8_t TlmHeader[CMD_HDR_SIZE];
 	command_name_t name;
 	int result;
 }CmdAck_t;
 
 typedef struct{
+        uint8_t TlmHeader[TLM_HDR_SIZE];
 	uint8_t numBands;
 	uint8_t type1,type2,type3,type4,type5;
 	float min1,min2,min3,min4,min5;
