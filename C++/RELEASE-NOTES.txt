@@ -1,8 +1,15 @@
 ICAROUS: Integrated Configurable Algorithms for Reliable Operations of Unmanned Systems
 -------------------------------------------------------------------------
-Release: 1.2.2, July 28, 2017
+Release: 1.3, September 11, 2017
 Authors: Swee Balachadran, Cesar Munoz
 Contact: Cesar A. Munoz (Cesar.A.Munoz@nasa.gov)
+
+Release ICAROUS 1.3 (September 11, 2017)
+-----------------------------------------
+- Code is refactored so that ICAROUS is a self contained class independent of communication protocols.
+- ICAROUS data structures are provided to interface with other protocols.
+- Provides an interface that can be derived and implemented for use with custom protocols.
+- Decision making and Mission plans can now be encoded and executed using the PLEXIL tool.
 
 Release ICAROUS 1.2.2 (July 28, 2017)
 -------------------------------------

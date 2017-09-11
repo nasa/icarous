@@ -14,9 +14,13 @@ distance from other users of the airspace; and compute resolution
 and recovery maneuvers, autonomously executed by the autopilot, when
 safety criteria are violated or about to be violated.
 
-### Current Release
+The ICAROUS package is currently available in C++ and Java. Both versions of ICAROUS have the same functionalities.
+The default version of ICAROUS supports the MAVLink protocol. You can define your own interfaces for other protocols (See C++/src/INTERFACE for examples)
 
-ICAROUS V-1.2.2 - July 28, 2017
+### Current Releases
+
+- ICAROUS C++: V-1.3.0 - September 11, 2017
+- ICAROUS Java: V-1.2.2 - July 28, 2017
 
 ### License
 
@@ -35,7 +39,8 @@ The following repositories are required to run ICAROUS (You will also have to up
 - [mavlink](https://github.com/ArduPilot/mavlink.git) 
 - [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
 - [Java simple serial connector (JSSC)](https://code.google.com/archive/p/java-simple-serial-connector/) (Already provided in `Java/lib`)
-- [Core Flight System](https://cfs.gsfc.nasa.gov/) (Only required for provided [CFS](CFS/) application)
+- [Core Flight System](https://cfs.gsfc.nasa.gov/) (Already provided)
+- [PLEXIL](https://sourceforge.net/projects/plexil/) (currently only C++ version of ICAROUS supports Plexil)
 
 ### BEFORE LAUNCHING ICAROUS
 
