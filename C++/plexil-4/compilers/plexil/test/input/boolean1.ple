@@ -1,0 +1,5 @@
+Root:
+{
+    Integer x;
+    StartCondition x==x;
+}

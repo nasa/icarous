@@ -1,0 +1,11 @@
+Command drillIdle;
+Command print(...);
+
+CommandCleanupTest:
+{
+  EndCondition Idle.command_handle == COMMAND_SUCCESS;
+ Idle:
+  drillIdle();
+
+  print("Idle complete");
+}

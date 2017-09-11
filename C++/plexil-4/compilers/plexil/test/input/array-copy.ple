@@ -1,0 +1,9 @@
+Command pprint (...);
+
+{
+  Real foo[4] = #(0.1 0.2 0.3 0.4);
+  Real bar[4];
+  bar = foo;
+  pprint (bar);
+}
+

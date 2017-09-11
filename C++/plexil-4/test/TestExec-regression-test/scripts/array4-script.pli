@@ -1,0 +1,7 @@
+(plexil-script
+  (initial-state
+    (state "a4" "real-array" (0.0 0.0)))
+  (script))
+
+
+                   

@@ -1,0 +1,8 @@
+Command UpdateLookup(String, Real);
+
+Receiver: {
+  RepeatCondition true;
+  OnCommand "setTorque" (Real torque) {
+    UpdateLookup("Torque", torque);
+  }
+}

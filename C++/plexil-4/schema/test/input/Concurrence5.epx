@@ -1,0 +1,5 @@
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Concurrence>
+    <NodeId>Root</NodeId>
+  </Concurrence>
+</PlexilPlan>

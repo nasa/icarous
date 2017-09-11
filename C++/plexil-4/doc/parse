@@ -1,0 +1,32 @@
+#sed -nf /root/parse intro
+
+#pull chapters
+/Chapter/{
+#remove garbage tags
+s/<ul>.*<li> //g
+s/Chapter \([0-9]*\)/\1\.1/
+#format chapters for book into sections
+#remove title garbage
+s/" title.*//gw naming.txt
+s/.*<a href="//gw plexil_links.txt
+}
+
+#pull sections
+/[0-9]\.[0-9]/{
+#remove tags
+s/<.*li>.*<li> //g
+s/<ul>.*<li> //g
+#remove garbage and prep for file naming
+s/" title.*//gw naming.txt
+#remove extras and prep file for wget
+s/.*<a href="//gw plexil_links.txt
+}
+
+/Appendix/{
+#replace garbage with x to delimit end of manual
+s/<ul>.*<li> /x/g
+#remove garbage and prep for file naming
+s/" title.*//gw naming.txt
+#remove extras and prep file for wget
+s/.*<a href="//gw plexil_links.txt
+}

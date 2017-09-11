@@ -342,7 +342,6 @@ void INTERFACE_ProcessPacket(){
 					mavlink_msg_set_position_target_global_int_pack(255,0,&msg,0,1,0,MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,
 							 0b0000111111111000,(int)(cmd->param1*1E7),(int)(cmd->param2*1E7),(cmd->param3),
 							 0,0,0,0,0,0,0,0);
-
 					break;
 				}
 

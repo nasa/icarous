@@ -35,8 +35,11 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
+#include <Icarous_msg.h>
 #include "Icarous.h"
 #include "Constants.h"
+#include "QuadFMS.h"
+#include "Interface.h"
 
 std::string Icarous_t::VERSION = "1.2.2";
 
@@ -45,22 +48,27 @@ std::string Icarous_t::release() {
 			"-FormalATM-"+Constants::version+" (July-28-2017)";
 }
 
-Icarous_t::Icarous_t(int argc,char* argv[],Mission_t* task){
-
-	cout << "ICAROUS Release: " << release() << std::endl;
-	GetOptions(argc,argv);
-
-
-	mission = task;
-
+Icarous_t::Icarous_t():FlightData(&paramData){
+    usePlexil = false;
+    FMS = new QuadFMS_t(&FlightData);
 }
 
+Icarous_t::Icarous_t(int argc,char* argv[]):FlightData(&paramData){
+
+	cout << "ICAROUS Release: " << release() << std::endl;
+    usePlexil = false;
+	GetOptions(argc, argv);
+    FMS = new QuadFMS_t(&FlightData);
+}
+
+void Icarous_t::InputParamTable(ParameterData* pData){
+	paramData = *pData;
+}
 
 void Icarous_t::GetOptions(int argc,char* argv[]){
 
 	while (1)
 	{
-
 	  int c;
 	  static struct option long_options[] =
 	  {
@@ -77,13 +85,14 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 		  {"radiobaud",required_argument, 0, 'k'},
 		  {"mode",     required_argument, 0, 'l'},
 		  {"config",   required_argument, 0, 'm'},
-		  {"debug",          no_argument, 0, 'n'},		  
+		  {"debug",          no_argument, 0, 'n'},
+          {"plexil",          no_argument, 0, 'o'},
 		  {0,                          0, 0,   0}
 	  };
 
 	  int option_index = 0;
 
-	  c = getopt_long (argc, argv, "ab:c:d:e:f:g:h:i:j:k:l:m:n",
+	  c = getopt_long (argc, argv, "ab:c:d:e:f:g:h:i:j:k:l:m:n:o",
 					   long_options, &option_index);
 	  
 	  if (c == -1)
@@ -156,10 +165,23 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 		  debug = true;
 		  break;
 
-		case 'm':
-		  strcpy(config,optarg);
-		  printf("config file %s\n",config);
-		  break;
+		case 'm': {
+			strcpy(config, optarg);
+			printf("config file %s\n", config);
+
+			ifstream ConfigFile;
+			SeparatedInput sepInputReader(&ConfigFile);
+
+			ConfigFile.open(config);
+			sepInputReader.readLine();
+			paramData = sepInputReader.getParameters();
+
+			break;
+		}
+
+        case 'o':{
+            usePlexil = true;
+        }
 
 		case '?':
 		  break;
@@ -170,66 +192,160 @@ void Icarous_t::GetOptions(int argc,char* argv[]){
 	}
 }
 
-void Icarous_t::Run(){
-  
-	// Read parameters from file and get the parameter data container
-	ifstream ConfigFile;
-	SeparatedInput sepInputReader(&ConfigFile);
-
-	ConfigFile.open(config);
-	sepInputReader.readLine();
-	paramData = sepInputReader.getParameters();
-
-	MAVLinkMessages_t RcvdMessages;
-	AircraftData_t FlightData(&RcvdMessages,&paramData);
-
-	Interface_t *AP;
-	Interface_t *COM;
-
-	SerialInterface_t apPort,gsPort;
-	SocketInterface_t SITL,comSock;
-	
-	if(px4baud > 0){
-		apPort = SerialInterface_t(px4port,px4baud,0,&RcvdMessages);
-		AP     = &apPort;
-		AP->EnableDataStream(1);
-	}
-	else{
-		SITL  = SocketInterface_t(sitlhost,sitlin,sitlout,&RcvdMessages);
-		AP    = &SITL;
-	}
-
-	if(radiobaud > 0){
-		gsPort = SerialInterface_t(gsradio,radiobaud,0,&RcvdMessages);
-		COM    = &gsPort;		
-	}
-	else{
-		comSock = SocketInterface_t(gshost,gsin,gsout,&RcvdMessages);
-		COM     = &comSock;
-	}
-
-	DAQ_t daq_module(AP,COM);
-	COM_t com_module(AP,COM,&FlightData);
-
-	QuadFMS_t FMS(AP,COM,&FlightData,mission);
-
-	if(verbose){
-		daq_module.log.setConsoleOutput(true);
-		com_module.log.setConsoleOutput(true);
-		FMS.log.setConsoleOutput(true);
-	}
-
-	FMS.debugDAA = debug;
-
-	FMS.SendStatusText("Starting ICAROUS");
-
-	std::thread thread1(&DAQ_t::GetPixhawkData,&daq_module);
-	std::thread thread2(&COM_t::GetGSData,&com_module);
-	std::thread thread3(&FlightManagementSystem_t::RunFMS,&FMS);
-
-	thread1.join();
-	thread2.join();
-	thread3.join();
-
+void Icarous_t::Run(Interface_t* AP,Interface_t* GS){
+    while(true) {
+        if (!usePlexil) {
+            FMS->RunFMS();
+        }
+        OutputToAP(AP);
+        OutputToGS(GS);
+    }
 }
 
+void Icarous_t::OutputToAP(Interface_t *iface) {
+    int n=1;
+    while(n>=0){
+        ArgsCmd_t cmd;
+        n = OutputCommand(&cmd);
+        if(n >= 0){
+            iface->SendData(MSG_ID_CMD,(void*)&cmd);
+        }
+    }
+}
+
+void Icarous_t::OutputToGS(Interface_t *iface) {
+    int n=0;
+    visbands_t visband;
+    n = OutputKinematicBands(&visband);
+    if (n>0){
+        iface->SendData(MSG_ID_BANDS,(void*)&visband);
+    }
+}
+
+
+void Icarous_t::Initialize() {
+    FMS->Initialize();
+}
+
+void Icarous_t::InputFlightPlanData(waypoint_t* wp){
+	FlightData.AddMissionItem(wp);
+}
+
+void Icarous_t::InputClearFlightPlan() {
+	FlightData.listMissionItem.clear();
+}
+
+void Icarous_t::InputResetIcarous() {
+	FlightData.Reset();
+}
+
+void Icarous_t::InputGeofenceData(geofence_t* gf){
+
+	if(gf->vertexIndex == 0){
+		tempVertices.clear();
+	}
+	tempVertices.push_back(*gf);
+	if(gf->vertexIndex+1 == gf->totalvertices){
+		Geofence_t fence((int)gf->index,(FENCE_TYPE)gf->type,(int)gf->totalvertices,gf->floor,gf->ceiling,FlightData.paramData);
+		for(geofence_t sgf: tempVertices){
+			fence.AddVertex(sgf.vertexIndex,sgf.latitude,sgf.longitude);
+		}
+
+		if(FlightData.fenceList.size() <= gf->index){
+			FlightData.fenceList.push_back(fence);
+			std::cout << "Received fence: "<<gf->index <<std::endl;
+		}
+		else{
+			std::list<Geofence_t>::iterator it;
+			for(it = FlightData.fenceList.begin(); it != FlightData.fenceList.end(); ++it){
+				if(it->GetID() == fence.GetID()){
+					it = FlightData.fenceList.erase(it);
+					FlightData.fenceList.insert(it,fence);
+					break;
+				}
+			}
+		}
+	}
+}
+
+void Icarous_t::InputStartMission(int param1){
+	FlightData.SetStartMissionFlag(param1);
+}
+
+int Icarous_t::OutputCommand(ArgsCmd_t* cmd){
+	if(FlightData.outputList.size() > 0){
+		ArgsCmd_t icCmd;
+		icCmd = (ArgsCmd_t)FlightData.outputList.front();
+		cmd->name = icCmd.name;
+		cmd->param1 = icCmd.param1;
+		cmd->param2 = icCmd.param2;
+		cmd->param3 = icCmd.param3;
+		cmd->param4 = icCmd.param4;
+		cmd->param5 = icCmd.param5;
+		cmd->param6 = icCmd.param6;
+		cmd->param7 = icCmd.param7;
+		cmd->param8 = icCmd.param8;
+		FlightData.outputList.pop_front();
+		return FlightData.outputList.size();
+	}else{
+		return -1;
+	}
+}
+
+void Icarous_t::InputAck(CmdAck_t* ack){
+    FlightData.InputAck(ack);
+}
+
+void Icarous_t::InputPosition(position_t* pos){
+	larcfm::Position currentPos = Position::makeLatLonAlt(pos->latitude,"degree",pos->longitude,"degree",pos->altitude_rel,"m");
+	larcfm::Velocity currentVel = Velocity::makeVxyz(pos->vy,pos->vx,"m/s",pos->vz,"m/s");
+
+	FlightData.acState.add(currentPos,currentVel,pos->time_gps);
+	FlightData.acTime = pos->time_gps;
+}
+
+void Icarous_t::InputAttitude(attitude_t* att){
+	double roll, pitch, yaw, heading;
+
+	heading = FlightData.acState.velocityLast().track("degree");
+	if(heading < 0){
+		heading = 360 + heading;
+	}
+
+	FlightData.roll = att->roll;
+	FlightData.pitch = att->pitch;
+	FlightData.yaw = att->yaw;
+	FlightData.heading = heading;
+}
+
+void Icarous_t::InputMissionItemReached(missionItemReached_t* msnItem){
+	FlightData.nextMissionWP++;
+}
+
+void Icarous_t::InputTraffic(object_t* traffic){
+	FlightData.AddTraffic(traffic->index,traffic->latitude,traffic->longitude,traffic->altiude,
+						  traffic->vx,traffic->vy,traffic->vz);
+}
+
+int Icarous_t::OutputKinematicBands(visbands_t *bands) {
+    if(FlightData.visBands.numBands > 0){
+        bands->numBands = FlightData.visBands.numBands;
+        bands->type1 = FlightData.visBands.type1;
+        bands->type2 = FlightData.visBands.type2;
+        bands->type3 = FlightData.visBands.type3;
+        bands->type4 = FlightData.visBands.type4;
+        bands->type5 = FlightData.visBands.type5;
+        bands->min1  = FlightData.visBands.min1;
+        bands->min2  = FlightData.visBands.min2;
+        bands->min3  = FlightData.visBands.min3;
+        bands->min4  = FlightData.visBands.min4;
+        bands->min5  = FlightData.visBands.min5;
+        bands->max1  = FlightData.visBands.max1;
+        bands->max2  = FlightData.visBands.max2;
+        bands->max3  = FlightData.visBands.max3;
+        bands->max4  = FlightData.visBands.max4;
+        bands->max5  = FlightData.visBands.max5;
+        return FlightData.visBands.numBands;
+    }
+    return 0;
+}

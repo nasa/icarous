@@ -1,0 +1,18 @@
+Boolean Lookup At (String);
+Command drive (Real);
+Command takeSample;
+
+SimpleDrive:
+{
+  PostCondition TakeSample.outcome == SUCCESS;
+  Drive: {
+    PreCondition NOT Lookup(At("Rock"));
+    RepeatCondition NOT Lookup(At("Rock"));
+    EndCondition Lookup(At("Rock"));
+    drive(1.0);
+  }
+  TakeSample: {
+    InvariantCondition Lookup(At("Rock"));
+    takeSample();
+  }
+}

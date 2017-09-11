@@ -1,0 +1,1236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE schema PUBLIC "-//W3C//DTD XMLSCHEMA 200102//EN" "http://www.w3.org/2001/XMLSchema.dtd" >
+
+<!--
+* Copyright (c) 2006-2017, Universities Space Research Association (USRA).
+*  All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*     * Redistributions of source code must retain the above copyright
+*       notice, this list of conditions and the following disclaimer.
+*     * Redistributions in binary form must reproduce the above copyright
+*       notice, this list of conditions and the following disclaimer in the
+*       documentation and/or other materials provided with the distribution.
+*     * Neither the name of the Universities Space Research Association nor the
+*       names of its contributors may be used to endorse or promote products
+*       derived from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY USRA ``AS IS'' AND ANY EXPRESS OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+* MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL USRA BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+* OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+* TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+* USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<!-- Common elements that are included in several PLEXIL schemas.
+NOTE: this is an incomplete schema, as it doesn't define the "Name"
+element.  It is used as an included schema only.
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xml:lang="en">
+  <xs:attribute name="FileName" type="xs:string"/>
+  <xs:attribute name="LineNo" type="xs:integer"/>
+  <xs:attribute name="ColNo" type="xs:integer"/>
+  <xs:attributeGroup name="SourceLocators">
+    <xs:attribute ref="FileName"/>
+    <xs:attribute ref="LineNo"/>
+    <xs:attribute ref="ColNo"/>
+  </xs:attributeGroup>
+
+  <!-- This is the sole root element allowed! -->
+  <xs:element name="PlexilPlan">
+    <xs:complexType>
+      <xs:sequence> 
+        <xs:element ref="GlobalDeclarations" minOccurs="0"/>
+        <xs:group ref="Action"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="Action">
+    <xs:choice>
+      <xs:element ref="Node"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="NodeReference">
+    <xs:choice>
+      <xs:element ref="NodeId"/>
+      <xs:element ref="NodeRef"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:complexType name="node-reference">
+    <xs:group ref= "NodeReference"/>
+	<xs:attributeGroup ref="SourceLocators"/>
+  </xs:complexType>
+
+  <xs:element name="NodeId" type="xs:NCName"/>
+
+  <xs:element name="NodeRef">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="NCNameOrEmpty">
+          <xs:attribute name="dir">
+            <xs:simpleType>
+              <xs:restriction base="xs:NMTOKEN">
+                <xs:enumeration value="parent"/>
+                <xs:enumeration value="sibling"/>
+                <xs:enumeration value="child"/>
+                <xs:enumeration value="self"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="GlobalDeclarations">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="CommandDeclaration" minOccurs="0"/>
+        <xs:element ref="StateDeclaration" minOccurs="0"/>
+        <xs:element ref="LibraryNodeDeclaration" minOccurs="0"/>
+        <xs:element name="TimeScalingUnitsSubunits" type="xs:integer" minOccurs="0"/>
+      </xs:choice>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="CommandDeclaration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:NCName"/>
+        <xs:element ref="Return" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:group ref="ParameterSpec" minOccurs="0" />
+        <xs:element ref="ResourceList" minOccurs="0" />
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="StateDeclaration">
+    <xs:complexType>
+      <xs:sequence>      
+        <xs:element name="Name" type="xs:NCName"/>
+        <xs:element ref="Return"/>
+        <xs:group ref="ParameterSpec" minOccurs="0" />
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="LibraryNodeDeclaration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:NCName"/>
+        <xs:element ref="Interface" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="ParameterSpec">
+    <xs:sequence>
+      <xs:element ref="Parameter" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="AnyParameters" minOccurs="0" />
+    </xs:sequence>
+  </xs:group>
+
+  <xs:element name="Parameter">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:NCName" minOccurs="0" />
+        <xs:element name="Type" type="ParameterTypeValues"/>
+		<!-- MaxSize indicates an array value, Type is the element type -->
+        <xs:element name="MaxSize" type="xs:nonNegativeInteger" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Return" nillable="true">
+    <!-- KMD: not sure about the motivation for 'nillable'.  Assuming it
+         is for declaring a void return explicitly. -->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:NCName" minOccurs="0" />
+        <xs:element name="Type" type="AtomicTypeValues" />
+		<!-- MaxSize indicates an array value, Type is the element type -->
+        <xs:element name="MaxSize" type="xs:nonNegativeInteger" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:simpleType name="NCNameOrEmpty">
+    <xs:union memberTypes="xs:NCName">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value=""/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+
+  <xs:element name="Node">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="Comment" type="xs:string" minOccurs="0"/>
+        <xs:element ref="NodeId"/>
+        <xs:element ref="Assume" minOccurs="0"/>
+        <xs:element ref="Desire" minOccurs="0"/>
+        <xs:element ref="Expect" minOccurs="0"/>
+        <xs:element ref="StartCondition" minOccurs="0"/>
+        <xs:element ref="RepeatCondition" minOccurs="0"/>
+        <xs:element ref="PreCondition" minOccurs="0"/>
+        <xs:element ref="PostCondition" minOccurs="0"/>
+        <xs:element ref="InvariantCondition" minOccurs="0"/>
+        <xs:element ref="EndCondition" minOccurs="0"/>
+        <xs:element ref="ExitCondition" minOccurs="0"/>
+        <xs:element ref="SkipCondition" minOccurs="0"/>
+        <xs:element name="Priority" type="xs:nonNegativeInteger" minOccurs="0"/>
+        <xs:element ref="Interface" minOccurs="0"/>
+        <xs:element ref="VariableDeclarations" minOccurs="0"/>
+        <xs:element ref="NodeBody" minOccurs="0"/>
+      </xs:all>
+      <xs:attribute name="NodeType" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:NMTOKEN">
+            <xs:enumeration value="NodeList"/>
+            <xs:enumeration value="Command"/>
+            <xs:enumeration value="Assignment"/>
+            <xs:enumeration value="Update"/>
+            <xs:enumeration value="Empty"/>
+            <xs:enumeration value="LibraryNodeCall"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <!-- The epx attribute indicates a node that is a translation of an
+           Extended Plexil construct (i.e. macro).  Its value is the type of
+           this construct, or 'aux' indicating it is an auxilliary generated
+           node. -->
+      <xs:attribute name="epx" use="optional">
+        <xs:simpleType>
+          <xs:restriction base="xs:NCName"/>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NodeBody">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="NodeList"/>
+        <xs:element ref="Command"/>
+        <xs:element ref="Assignment"/>
+        <xs:element ref="Update"/>
+        <xs:element ref="LibraryNodeCall"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NodeList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref="Action" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Assume">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Desire">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Expect">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="StartCondition">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="RepeatCondition">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PreCondition">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="PostCondition">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="InvariantCondition">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="EndCondition">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ExitCondition">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="SkipCondition">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Interface">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="In" minOccurs="0"/>
+        <xs:element ref="InOut" minOccurs="0"/>
+      </xs:all>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="In">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="DeclareVariable"/>
+        <xs:element ref="DeclareArray"/>
+      </xs:choice>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="InOut">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="DeclareVariable"/>
+        <xs:element ref="DeclareArray"/>
+      </xs:choice>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="ResourceList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Resource" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- FIXME: make these tags less verbose -->
+  <xs:element name="Resource">
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="ResourceName">
+          <xs:complexType>
+            <xs:group ref="GeneralizedStringExpression"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ResourcePriority">
+          <xs:complexType>
+            <xs:group ref="GeneralizedNumericExpression"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ResourceLowerBound" minOccurs="0">
+          <xs:complexType>
+            <xs:group ref="GeneralizedNumericExpression"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ResourceUpperBound" minOccurs="0">
+          <xs:complexType>
+            <xs:group ref="GeneralizedNumericExpression"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ResourceReleaseAtTermination" minOccurs="0">
+          <xs:complexType>
+            <xs:group ref="GeneralizedBooleanExpression"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:all>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="DeclaredVariable">
+    <xs:choice>
+      <xs:element ref="IntegerVariable"/>
+      <xs:element ref="RealVariable"/>
+      <xs:element ref="BooleanVariable"/>
+      <xs:element ref="StringVariable"/>
+      <xs:element ref="ArrayVariable"/>
+      <xs:element ref="ArrayElement"/>
+    </xs:choice>
+  </xs:group>
+
+  <!-- Note: ArrayValue is not included here because arrays
+       are handled independently (and NOT supported in places
+       were Value is) -->
+  <xs:group name="Value">
+    <xs:choice>
+      <xs:element ref="IntegerValue"/>
+      <xs:element ref="RealValue"/>
+      <xs:element ref="BooleanValue"/>
+      <xs:element ref="StringValue"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="IntegerVariable" type="xs:NCName"/>
+  <xs:element name="RealVariable" type="xs:NCName"/>
+  <xs:element name="BooleanVariable" type="xs:NCName"/>
+  <xs:element name="StringVariable" type="xs:NCName"/>
+  <xs:element name="ArrayVariable" type="xs:NCName"/>
+
+  <xs:element name="DeclareVariable">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:NCName" />
+        <xs:element name="Type" type="AtomicTypeValues"/>
+        <xs:element name="InitialValue" minOccurs="0">
+          <xs:complexType>
+            <xs:group ref="Value"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DeclareArray">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:NCName" />
+        <xs:element name="Type" type="AtomicTypeValues"/>
+        <xs:element name="MaxSize" type="xs:nonNegativeInteger" minOccurs="0"/>
+        <xs:element name="InitialValue" minOccurs="0">
+          <xs:complexType>
+            <xs:choice>
+              <!-- these for backward compatibility -->
+              <xs:group ref="Value" maxOccurs="unbounded"/>
+              <!-- preferred new style -->
+              <xs:element ref ="ArrayValue"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="VariableDeclarations">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="DeclareVariable"/>
+        <xs:element ref="DeclareArray"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Command">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ResourceList" minOccurs="0" maxOccurs="1"/>
+        <xs:group ref="DeclaredVariable" minOccurs="0"/>
+        <xs:element ref="Name"/>
+        <xs:element ref="Arguments" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Expression of any type -->
+  <xs:group name="Expression">
+    <xs:choice>
+	  <xs:group ref="BooleanExpression"/>
+	  <xs:group ref="NumericExpression"/>
+	  <xs:group ref="StringExpression"/>
+	  <xs:group ref="ArrayExpression"/>
+      <xs:group ref="LookupGroup"/>
+      <xs:element ref="ArrayElement"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="Arguments">
+    <xs:complexType>
+      <xs:group ref="Expression" maxOccurs="unbounded"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Update">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Pair" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Pair">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Name" type="xs:NCName"/>
+        <xs:group ref="Expression"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="LibraryNodeCall">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="NodeId"/>
+        <xs:element ref="Alias" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Alias">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="NodeParameter" type="xs:NCName"/>
+        <xs:group ref="Expression"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="IntegerValue">
+    <xs:simpleType>
+      <xs:restriction base="xs:integer">
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="RealValue">
+    <xs:simpleType>
+      <xs:restriction base="xs:double">
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="BooleanValue">
+    <xs:simpleType>
+      <xs:restriction base="xs:boolean">
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="StringValue">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="ArrayValue">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="IntegerValue" maxOccurs="unbounded"/>
+        <xs:element ref="RealValue" maxOccurs="unbounded"/>
+        <xs:element ref="BooleanValue" maxOccurs="unbounded"/>
+        <xs:element ref="StringValue" maxOccurs="unbounded"/>
+      </xs:choice>
+      <xs:attribute name="Type" type="AtomicTypeValues" use="required"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="GeneralizedArrayExpression">
+    <xs:choice>
+      <xs:group ref="ArrayExpression"/>
+      <xs:group ref="LookupGroup"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="ArrayExpression">
+    <xs:choice>
+      <xs:element ref="ArrayValue"/>
+      <xs:element ref="ArrayVariable"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="BooleanRHS">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NumericRHS">
+    <xs:complexType>
+      <xs:choice>
+        <xs:group ref="GeneralizedNumericExpression"/>
+      </xs:choice>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="StringRHS">
+    <xs:complexType>
+      <xs:group ref="GeneralizedStringExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ArrayRHS">
+    <xs:complexType>
+      <xs:group ref="GeneralizedArrayExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="assignment">
+    <xs:sequence>
+      <xs:group ref="DeclaredVariable"/>
+      <xs:choice>
+        <xs:element ref="BooleanRHS"/>
+        <xs:element ref="NumericRHS"/>
+        <xs:element ref="StringRHS"/>
+        <xs:element ref="ArrayRHS"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attributeGroup ref="SourceLocators"/>
+  </xs:complexType>
+
+  <xs:element name="Assignment" type="assignment"/>
+
+  <xs:group name="GeneralizedBooleanExpression">
+    <xs:choice>
+      <xs:group ref="BooleanExpression"/>
+      <xs:group ref="LookupGroup"/>
+      <xs:element ref="ArrayElement"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="BooleanExpression">
+    <xs:choice>
+	  <xs:group ref="LogicalOperator"/>
+	  <xs:group ref="Equality"/>
+	  <xs:group ref="NumericComparison"/>
+      <xs:group ref="KnownTest"/>
+      <xs:element ref="BooleanVariable"/>
+      <xs:element ref="BooleanValue"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="LogicalOperator">
+	<xs:choice>
+      <xs:element ref="OR"/>
+      <xs:element ref="XOR"/>
+      <xs:element ref="AND"/>
+      <xs:element ref="NOT"/>
+	</xs:choice>
+  </xs:group>
+
+  <xs:group name="Equality">
+	<xs:choice>
+      <xs:element ref="EQBoolean"/>
+      <xs:element ref="EQNumeric"/>
+      <xs:element ref="EQInternal"/>
+      <xs:element ref="EQString"/>
+      <xs:element ref="EQArray"/>
+      <xs:element ref="NEBoolean"/>
+      <xs:element ref="NENumeric"/>
+      <xs:element ref="NEInternal"/>
+      <xs:element ref="NEString"/>
+      <xs:element ref="NEArray"/>
+	</xs:choice>
+  </xs:group>
+
+  <xs:group name="NumericComparison">
+	<xs:choice>
+      <xs:element ref="GT"/>
+      <xs:element ref="GE"/>
+      <xs:element ref="LT"/>
+      <xs:element ref="LE"/>
+	</xs:choice>
+  </xs:group>
+
+  <xs:element name="IsKnown">
+    <xs:complexType>
+      <xs:choice>
+        <xs:group ref="Expression"/>
+        <xs:element ref="NodeStateVariable"/>
+        <xs:element ref="NodeOutcomeVariable"/>
+        <xs:element ref="NodeCommandHandleVariable"/>
+      </xs:choice>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ALL_KNOWN">
+    <xs:complexType>
+      <xs:group ref="GeneralizedArrayExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ANY_KNOWN">
+    <xs:complexType>
+      <xs:group ref="GeneralizedArrayExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="KnownTest">
+    <xs:choice>
+      <xs:element ref="IsKnown"/>
+      <xs:element ref="ALL_KNOWN"/>
+      <xs:element ref="ANY_KNOWN"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="OR">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"
+                 minOccurs="0" maxOccurs="unbounded"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="XOR">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"
+                 minOccurs="0" maxOccurs="unbounded"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AND">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"
+                 minOccurs="0" maxOccurs="unbounded"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NOT">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="GT">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="GE">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="LT">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="LE">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="EQBoolean">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="EQNumeric">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="EQInternal">
+    <xs:complexType>
+      <xs:choice>
+        <xs:group ref="NodeState" minOccurs="2" maxOccurs="2"/>
+        <xs:group ref="NodeOutcome" minOccurs="2" maxOccurs="2"/>
+        <xs:group ref="NodeFailure" minOccurs="2" maxOccurs="2"/>
+        <xs:group ref="NodeCommandHandle" minOccurs="2" maxOccurs="2"/>
+      </xs:choice>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="EQString">
+    <xs:complexType>
+      <xs:group ref="GeneralizedStringExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="EQArray">
+    <xs:complexType>
+      <xs:group ref="GeneralizedArrayExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NEBoolean">
+    <xs:complexType>
+      <xs:group ref="GeneralizedBooleanExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NENumeric">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NEInternal">
+    <xs:complexType>
+      <xs:choice>
+        <xs:group ref="NodeState" minOccurs="2" maxOccurs="2"/>
+        <xs:group ref="NodeOutcome" minOccurs="2" maxOccurs="2"/>
+        <xs:group ref="NodeFailure" minOccurs="2" maxOccurs="2"/>
+        <xs:group ref="NodeCommandHandle" minOccurs="2" maxOccurs="2"/>
+      </xs:choice>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NEString">
+    <xs:complexType>
+      <xs:group ref="GeneralizedStringExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NEArray">
+    <xs:complexType>
+      <xs:group ref="GeneralizedArrayExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="NodeCommandHandleVariable" type="node-reference"/>
+
+  <xs:element name="NodeCommandHandleValue">
+    <xs:simpleType>
+      <xs:restriction base="xs:NMTOKEN">
+        <xs:enumeration value="COMMAND_SENT_TO_SYSTEM"/>
+        <xs:enumeration value="COMMAND_ACCEPTED"/>
+        <xs:enumeration value="COMMAND_DENIED"/>
+        <xs:enumeration value="COMMAND_RCVD_BY_SYSTEM"/>
+        <xs:enumeration value="COMMAND_FAILED"/>
+        <xs:enumeration value="COMMAND_SUCCESS"/>
+        <xs:enumeration value="COMMAND_ABORTED"/>
+        <xs:enumeration value="COMMAND_ABORT_FAILED"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:group name="NodeCommandHandle">
+    <xs:choice>
+      <xs:element ref="NodeCommandHandleVariable"/>
+      <xs:element ref="NodeCommandHandleValue"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="NodeState">
+    <xs:choice>
+      <xs:element ref="NodeStateVariable"/>
+      <xs:element ref="NodeStateValue"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="NodeStateVariable" type="node-reference"/>
+
+  <xs:element name="NodeStateValue">
+    <xs:simpleType>
+      <xs:restriction base="xs:NMTOKEN">
+        <xs:enumeration value="WAITING"/>
+        <xs:enumeration value="EXECUTING"/>
+        <xs:enumeration value="FINISHING"/>
+        <xs:enumeration value="FAILING"/>
+        <xs:enumeration value="ITERATION_ENDED"/>
+        <xs:enumeration value="FINISHED"/>
+        <xs:enumeration value="INACTIVE"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:group name="NodeOutcome">
+    <xs:choice>
+      <xs:element ref="NodeOutcomeVariable"/>
+      <xs:element ref="NodeOutcomeValue"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="NodeOutcomeVariable" type="node-reference"/>
+
+  <xs:element name="NodeOutcomeValue">
+    <xs:simpleType>
+      <xs:restriction base="xs:NMTOKEN">
+        <xs:enumeration value="SUCCESS"/>
+        <xs:enumeration value="FAILURE"/>
+        <xs:enumeration value="SKIPPED"/>
+        <xs:enumeration value="INTERRUPTED"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:group name="NodeFailure">
+    <xs:choice>
+      <xs:element ref="NodeFailureVariable"/>
+      <xs:element ref="NodeFailureValue"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="NodeFailureVariable" type= "node-reference"/>
+
+  <xs:element name="NodeFailureValue">
+    <xs:simpleType>
+      <xs:restriction base="xs:NMTOKEN">
+        <xs:enumeration value="PRE_CONDITION_FAILED"/>
+        <xs:enumeration value="POST_CONDITION_FAILED"/>
+        <xs:enumeration value="INVARIANT_CONDITION_FAILED"/>
+        <xs:enumeration value="PARENT_FAILED"/>
+        <xs:enumeration value="PARENT_EXITED"/>
+        <xs:enumeration value="EXITED"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:element name="NodeTimepointValue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:group ref= "NodeReference"/>
+        <xs:element ref="NodeStateValue"/>
+        <xs:element ref="Timepoint"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Timepoint">
+    <xs:simpleType>
+      <xs:restriction base="xs:NMTOKEN">
+        <xs:enumeration value="START"/>
+        <xs:enumeration value="END"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+
+  <xs:group name="GeneralizedStringExpression">
+    <xs:choice>
+      <xs:group ref="StringExpression"/>
+      <xs:group ref="LookupGroup"/>
+      <xs:element ref="ArrayElement"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="StringExpression">
+    <xs:choice>
+      <xs:element ref="StringVariable"/>
+      <xs:element ref="StringValue"/>
+      <xs:group ref="StringOperator"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="StringOperator">
+	<xs:choice>
+      <xs:element ref="Concat"/>
+	</xs:choice>
+  </xs:group>
+
+  <xs:element name="Concat">
+    <xs:complexType>
+      <xs:group ref="GeneralizedStringExpression" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="GeneralizedNumericExpression">
+    <xs:choice>
+      <xs:group ref="NumericExpression"/>
+      <xs:group ref="LookupGroup"/>
+      <xs:element ref="ArrayElement"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="NumericExpression">
+    <xs:choice>
+	  <xs:group ref="ArithmeticOperator"/>
+      <xs:element ref="IntegerVariable"/>
+      <xs:element ref="RealVariable"/>
+      <xs:element ref="IntegerValue"/>
+      <xs:element ref="RealValue"/>
+      <xs:element ref="NodeTimepointValue"/>
+      <!-- read operations for arrays-->
+      <xs:element ref="ArraySize"/>
+      <xs:element ref="ArrayMaxSize"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:group name="ArithmeticOperator">
+    <xs:choice>
+      <xs:element ref="ADD"/>
+      <xs:element ref="SUB"/>
+      <xs:element ref="MUL"/>
+      <xs:element ref="DIV"/>
+      <xs:element ref="MOD"/>
+      <xs:element ref="MAX"/>
+      <xs:element ref="MIN"/>
+      <xs:element ref="SQRT"/>
+      <xs:element ref="ABS"/>
+      <xs:element ref="CEIL"/>
+      <xs:element ref="FLOOR"/>
+      <xs:element ref="ROUND"/>
+      <xs:element ref="TRUNC"/>
+      <xs:element ref="REAL_TO_INT"/>
+      <xs:element ref="STRLEN"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="ArrayElement">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice>
+          <xs:group ref="GeneralizedArrayExpression"/>
+          <xs:element name="Name" type="xs:NCName"/>
+        </xs:choice>
+        <xs:element name="Index">
+          <xs:complexType>
+            <xs:group ref="GeneralizedNumericExpression"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ADD">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="unbounded"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="SUB">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="unbounded"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="MUL">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="unbounded"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="DIV">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="MOD">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="MAX">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="MIN">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"
+                 minOccurs="2" maxOccurs="2"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="SQRT">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ABS">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="CEIL">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="FLOOR">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ROUND">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TRUNC">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="REAL_TO_INT">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="STRLEN">
+    <xs:complexType>
+      <xs:group ref="GeneralizedStringExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ArraySize">
+    <xs:complexType>
+      <xs:group ref="GeneralizedArrayExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="ArrayMaxSize">
+    <xs:complexType>
+      <xs:group ref="GeneralizedArrayExpression"/>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:group name="LookupGroup">
+    <xs:choice>
+      <xs:element ref="LookupOnChange"/>
+      <xs:element ref="LookupNow"/>
+    </xs:choice>
+  </xs:group>
+
+  <xs:element name="LookupOnChange">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Name"/>
+        <xs:element ref="Tolerance" minOccurs="0"/>
+        <xs:element ref="Arguments" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="LookupNow">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Name"/>
+        <xs:element ref="Arguments" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attributeGroup ref="SourceLocators"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Tolerance">
+    <xs:complexType>
+      <xs:group ref="GeneralizedNumericExpression"/>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

@@ -1,0 +1,6 @@
+(plexil-plan
+  (declarations
+    (library-node-declaration "library1" (inout (integer "arg1"))))
+  (library-call-node "root"
+    (variables (integer "x" 0))
+    (call "library1" (alias "arg1" 5))))

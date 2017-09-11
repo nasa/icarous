@@ -1,0 +1,13 @@
+{
+  Integer i = 0, j = 1;
+  Boolean b1 = false, b2 = true;
+  Real r = 3.2;
+
+  Start b1 XOR b2;
+  End   i == j || (b2 && r > i+j);
+  Invariant i + j + r > 2;
+
+  i = i + j;
+  i = abs (3);
+  i = |j|;
+}

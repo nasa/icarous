@@ -1,0 +1,17 @@
+<Interfaces>
+
+	<Adapter AdapterType="MyAdapter" LibPath="libMyAdapter.so">
+	  <!-- List names of all supported commands here -->
+		<CommandNames>
+			MoveUp,
+      MoveLeft,
+      MoveDown,
+      MoveRight,
+			QueryState,
+			QueryGoalSensor,
+			QueryEnergySensor,
+			QueryVisibilitySensor
+	  </CommandNames>
+	  <!-- Other tags you want to be passed into the adapter's init functions go here -->
+	</Adapter>
+</Interfaces>

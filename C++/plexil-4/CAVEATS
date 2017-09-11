@@ -1,0 +1,79 @@
+This file, plexil/CAVEATS, lists known bugs and issues in this version
+of PLEXIL.
+
+Build: 
+
+ * If the GNU autotools installed on your system are a different
+   version from the ones used to build this release, you may encounter
+   errors running 'make'. The following commands can replace the bad
+   files with compatible ones from your local installation:
+
+  cd $PLEXIL_HOME/src
+  aclocal --force
+  libtoolize --force --copy
+  autoreconf --force --install
+
+   You should be able to re-run 'configure' and 'make' successfully at
+   this point.
+
+ * The following subsystems in the src directory are built by default: 
+     - the Universal Executive
+     - the Test Executive
+     - IPC and IPC Adapter
+     - UDP Adapter
+     - GANTT listener
+     - Plexil Simulator
+
+   The following are not built by default:
+     - module tests
+
+   See the "Advanced builds" section in the README file for
+   instructions on how to use the 'configure' script to select the
+   particular subsystems and applications you need.
+
+ * The Plexil example plans and applications (found in
+   plexil-4/examples) are NOT compiled by default. Plans (.ple files)
+   must be compiled manually (with plexilc) to produce .plx files. The
+   application directories (examples/sample-app and examples/robosim)
+   must be built by typing 'make'.
+
+Custom builds:
+
+ * The default installation location for PLEXIL libraries and
+   executables under the GNU autotools is /usr/local. The installation
+   locations can be specified with the '--prefix=', '--bindir=',
+   '--libdir=', and '--includedir=' options to 'configure'. We
+   suggest installing these files in the PLEXIL installation
+   directory itself. E.g.:
+
+ cd $PLEXIL_HOME/src
+ ./configure --prefix=$PLEXIL_HOME [... more options ...]
+
+ * By default, the GNU autotools build both dynamic and static
+   libraries. This consumes time and disk space. Unless your
+   application specifically requires static libraries, we recommend
+   that you build only the dynamic (shared) libraries. This is done by
+   supplying the '--disable-static' option to 'configure'.
+
+PLEXIL executive and interfaces:
+
+ * The IPC subsystem is not yet working on FreeBSD (as of PLEXIL
+   4.0.1). Unfortunately, this means many of the example applications
+   cannot be used on FreeBSD.
+
+Standard Plexil language:
+
+ * Node timepoints cannot be assigned to variables.
+
+Plexil Viewer: 
+
+ * The Plexil Viewer has been completely reimplemented for release
+   4.5. Many old bugs have been squashed, but it is likely many new
+   ones have been introduced. We encourage users to report any
+   problems to plexil-support@sourceforge.net.
+
+Plexil compiler ('plexilc'): 
+
+ * File extensions included in the '-o' option are ignored:
+   Extended and Core Plexil files are always written with the
+   ".epx" and ".plx" extensions, respectively.

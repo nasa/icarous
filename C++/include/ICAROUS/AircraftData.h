@@ -45,22 +45,16 @@
 #include "Plan.h"
 #include "Geofence.h"
 #include "time.h"
-#include "Interface.h"
-#include "MAVLinkMessages.h"
+#include "Port.h"
 #include "GenericObject.h"
-
-using namespace larcfm;
-
+#include "Icarous_msg.h"
 
 class AircraftData_t{
     private:
         pthread_mutex_t lock;
-        std::list<mavlink_mission_item_t> listMissionItem;
         uint8_t startMission;
-        
 
     public:
-
         //member variables
         double roll, pitch, yaw, heading;
 		double crossTrackDeviation;
@@ -74,33 +68,33 @@ class AircraftData_t{
 
         uint16_t nextMissionWP;
         uint16_t nextResolutionWP;
-        MAVLinkMessages_t* RcvdMessages;
-        ParameterData* paramData;
-        AircraftState acState;
-        Plan MissionPlan;
-        Plan ResolutionPlan;
+        larcfm::ParameterData* paramData;
+        larcfm::AircraftState acState;
+        larcfm::Plan MissionPlan;
+        larcfm::Plan ResolutionPlan;
         std::list<Geofence_t> fenceList;
         std::list<Geofence_t>::iterator fenceListIt;
         std::list<GenericObject_t> trafficList;
-        std::list<GenericObject_t> missionObjList;
-        GenericObject_t TrackingObject;
+	    std::list<ArgsCmd_t> outputList;
+	    std::list<CmdAck_t> commandAckList;
+	    std::list<waypoint_t> listMissionItem;
+	    visbands_t visBands;
 
         //Member functions
         AircraftData_t(){};
-        AircraftData_t(MAVLinkMessages_t* Msgs,ParameterData* pData);
-        void AddMissionItem(mavlink_mission_item_t msg);
+        AircraftData_t(larcfm::ParameterData* pData);
+        void AddMissionItem(waypoint_t* msg);
         uint8_t GetStartMissionFlag();
         void SetStartMissionFlag(uint8_t flag);
         uint16_t GetFlightPlanSize();
         void ConstructPlan();
-        void GetGeofence(Interface_t *gsIntf,mavlink_command_long_t msg);
         void AddTraffic(int id,double x,double y,double z,double vx,double vy,double vz);
-        void GetTraffic(int id,Position &pos,Velocity &vel);
+        void GetTraffic(int id,larcfm::Position &pos,larcfm::Velocity &vel);
         void ClearMissionList();
         void Reset();
-        double getFlightPlanSpeed(Plan *fp,int nextWP);
-        void AddTrackingObject(int id,double x,double y,double z,double vx,double vy,double vz);
-        void AddMissionObject(int id,double x,double y,double z,double vx,double vy,double vz);
+	    bool CheckAck(command_name_t command);
+	    void InputAck(CmdAck_t* ack);
+        double getFlightPlanSpeed(larcfm::Plan *fp,int nextWP);
 };
 
 

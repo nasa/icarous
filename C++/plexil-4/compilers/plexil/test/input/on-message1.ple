@@ -1,0 +1,11 @@
+Command HaltAndCatchFire;
+Command ExecuteProgrammerImmediate (String);
+
+root:
+Concurrence
+{
+    String hcfName = "HCF";
+    
+    OnMessage hcfName HaltAndCatchFire();
+    OnMessage "EPI" ExecuteProgrammerImmediate (hcfName);
+}

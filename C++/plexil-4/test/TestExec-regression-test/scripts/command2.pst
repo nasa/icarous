@@ -1,0 +1,11 @@
+
+// command2
+
+initial-state {
+  state barfoo () = "the-command" : string;
+}
+
+script {
+  command-ack the-command () = "COMMAND_SUCCESS" : string;
+}
+

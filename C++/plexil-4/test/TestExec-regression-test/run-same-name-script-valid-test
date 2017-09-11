@@ -1,0 +1,80 @@
+#! /usr/bin/env bash
+
+# Copyright (c) 2006-2015, Universities Space Research Association (USRA).
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of the Universities Space Research Association nor the
+#       names of its contributors may be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY USRA ``AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL USRA BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+# TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+if [ -z "$1" ]
+then
+   echo "Usage: $0 <test_name>"
+   exit 1
+fi
+
+if [ -z "$PLEXIL_HOME" ]
+then
+    echo "$0: Environment variable PLEXIL_HOME not set"
+    exit 1
+fi
+
+. ${PLEXIL_HOME}/test/TestExec-regression-test/test-env.sh
+cd $TEST_DIR
+
+PLAN_FILE=plans/$1.plx
+if [ ! -r $PLAN_FILE ]
+then
+   echo "$0: Plan file $PLAN_FILE not found"
+   exit 1
+fi
+
+SCRIPT_FILE=scripts/$1.psx
+if [ ! -r $SCRIPT_FILE ]
+then
+   echo "$0: Script file $SCRIPT_FILE not found"
+   exit 1
+fi
+
+VALID_FILE=valid/RUN_$1_$1-script.valid
+if [ ! -r $VALID_FILE ]
+then
+   echo "$0: Valid file $VALID_FILE not found"
+   exit 1
+fi
+
+OUT_FILE=output/$1.out
+
+echo $1 >> tempRegressionResults
+$EXEC_PROG -d $TEST_DEBUG_CFG -p $PLAN_FILE -s $SCRIPT_FILE > $OUT_FILE 2>> tempRegressionResults
+declare -i execstatus=$?
+if [ $execstatus -gt 128 ]
+then
+    declare -i sig=$execstatus-128
+    echo '***' Test $1 exited on signal $sig >> RegressionResults
+    echo '***' Test $1 exited on signal $sig
+elif [ $execstatus -ne 0 ]
+then
+    echo '***' Test $1 exited with status $execstatus >> RegressionResults
+    echo '***' Test $1 exited with status $execstatus
+fi
+
+perl $REGRESSION_PL $OUT_FILE $VALID_FILE

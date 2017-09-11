@@ -1,0 +1,13 @@
+
+// change-lookup-test-script
+
+initial-state {
+  state some_state () = 0.0 : real;
+}
+
+script {
+  state some_state () = 1.0 : real;
+  state some_state () = 2.0 : real;
+  state some_state () = 3.0 : real;
+}
+

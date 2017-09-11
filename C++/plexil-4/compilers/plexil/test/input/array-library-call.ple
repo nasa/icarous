@@ -1,0 +1,10 @@
+LibraryAction CopyReals (In Integer size, In Real[] source, InOut Real[] dest);
+Command pprint (...);
+
+{
+  Real foo[4] = #(0.1 0.2 0.3 0.4);
+  Real bar[4];
+  LibraryCall CopyReals (size=4, source=foo, dest=bar);
+  pprint (bar);  
+}
+

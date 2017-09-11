@@ -1,0 +1,9 @@
+Date Lookup time;
+Date Lookup start;
+Duration Lookup duration;
+
+time_tolerance_test:
+{
+    Start Lookup(time, Duration("PT1S")) >= Lookup(start);
+    End   Lookup(time, Duration("PT1S")) <= Self.EXECUTING.START + Lookup(duration);
+}

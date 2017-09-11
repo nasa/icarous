@@ -1,0 +1,17 @@
+MoveUp 0 1 2.0
+1
+
+MoveRight 0 1 2.0
+1
+
+MoveDown 0 1 2.0
+1
+
+MoveLeft 0 1 2.0
+1
+
+QueryEnergySensor 0 1 2.0
+1.1 2.2 3.3 4.4 5.5
+
+MoveDown 2 1 2.0
+0

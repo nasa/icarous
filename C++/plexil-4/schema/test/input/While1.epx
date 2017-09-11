@@ -1,0 +1,22 @@
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <While>
+    <NodeId>Root</NodeId>
+    <VariableDeclarations>
+      <DeclareVariable>
+        <Name>foo</Name>
+        <Type>Boolean</Type>
+        <InitialValue>
+            <BooleanValue>true</BooleanValue>
+        </InitialValue>
+      </DeclareVariable>
+    </VariableDeclarations>
+    <Condition>
+      <BooleanVariable>foo</BooleanVariable>
+    </Condition>
+    <Action>
+      <Node NodeType="Empty">
+        <NodeId>One</NodeId>
+      </Node>
+    </Action>
+  </While>
+</PlexilPlan>

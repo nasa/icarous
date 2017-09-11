@@ -39,17 +39,20 @@
 
 #include "QuadFMS.h"
 
-Resolution_t::Resolution_t(QuadFMS_t* fms){
+Resolution_t::Resolution_t(FlightManagementSystem_t* fms,AircraftData_t* fdata){
 	FMS = fms;
-	FlightData = fms->FlightData;
+	FlightData = fdata;
 	resolutionSpeed = 1.0;
 	returnPathConflict = false;
+}
+
+void Resolution_t::Initialize(){
 	DAA.parameters.loadFromFile(FlightData->paramData->getString("DAA_CONFIG"));
 	alertTime0 = DAA.parameters.alertor.getLevel(1).getAlertingTime();
 	diffAlertTime = DAA.parameters.alertor.getLevel(1).getEarlyAlertingTime() - alertTime0;
 }
 
-void Resolution_t::ResolveFlightPlanDeviation(){
+bool Resolution_t::ResolveFlightPlanDeviation(){
 
 	double xtrkDevGain ;
 	double resolutionSpeed;
@@ -115,22 +118,24 @@ void Resolution_t::ResolveFlightPlanDeviation(){
 		FlightData->ResolutionPlan.addNavPoint(wp1);
 
 		std::cout<<FlightData->ResolutionPlan.toString()<<std::endl;
-		FMS->planType      = QuadFMS_t::TRAJECTORY;
+		FMS->planType      = FlightManagementSystem_t::TRAJECTORY;
 		FMS->resumeMission = false;
 		FMS->goalReached   = true;
 	}
+
+	return true;
 }
 
-void Resolution_t::ResolveKeepInConflict(){
+bool Resolution_t::ResolveKeepInConflict(){
 	Geofence_t fence = FMS->Detector.KeepInFence;
 	NavPoint wp(fence.GetRecoveryPoint(),0);
 	//std::cout<<wp.position().toStringUnits("degree","degree","m")<<std::endl;
-	NavPoint next_wp = FlightData->MissionPlan.point(FlightData->nextMissionWP);
+	Position next_wp = FlightData->MissionPlan.point(FlightData->nextMissionWP).position();
 	FlightData->ResolutionPlan.clear();
 	FlightData->ResolutionPlan.addNavPoint(wp);
 	FlightData->nextResolutionWP = 0;
 
-	if(fence.CheckWPFeasibility(wp.position(),next_wp.position())){
+	if(fence.CheckWPFeasibility(wp.position(),next_wp)){
 		cout<<"waypoint not feasible"<<endl;
 		FlightData->nextMissionWP++;
 	}
@@ -138,10 +143,10 @@ void Resolution_t::ResolveKeepInConflict(){
 	FMS->planType        = QuadFMS_t::TRAJECTORY;
 	FMS->resumeMission   = false;
 	FMS->goalReached     = true;
-	return;
+	return true;
 }
 
-void Resolution_t::ResolveKeepOutConflict_Astar(){
+bool Resolution_t::ResolveKeepOutConflict_Astar(){
 
 	double gridsize          = FlightData->paramData->getValue("GRIDSIZE");
 	double buffer            = FlightData->paramData->getValue("BUFFER");
@@ -150,8 +155,9 @@ void Resolution_t::ResolveKeepOutConflict_Astar(){
 	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
 	double Hthreshold        = FlightData->paramData->getValue("HTHRESHOLD");
 
+
 	// Reroute flight plan
-	FMS->SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	FMS->SetMode(_ACTIVE_); // Set mode to guided for quadrotor to hover before replanning
 
 	Position currentPos = FlightData->acState.positionLast();
 	Velocity currentVel = FlightData->acState.velocityLast();
@@ -251,9 +257,6 @@ void Resolution_t::ResolveKeepOutConflict_Astar(){
 	std::vector<std::pair<int,int>> GridPath = DGAstar.optimalPath(DG);
 	std::vector<std::pair<int,int>>::iterator gpit;
 
-	std::pair<int,int> p3(103,63);
-	Position pos2 = DG.getPosition(p3);
-
 	Plan ResolutionPlan1;
 	//Create a plan out of the grid points
 	if(!GridPath.empty()){
@@ -313,6 +316,8 @@ void Resolution_t::ResolveKeepOutConflict_Astar(){
 			ResolutionPlan1.addNavPoint(np);
 			count++;
 		}
+	}else{
+		std::cout<<"grid path is empty"<<std::endl;
 	}
 
 	Plan ResolutionPlan2 = ComputeGoAbovePlan(start,goal,altFence,resolutionSpeed);
@@ -334,17 +339,17 @@ void Resolution_t::ResolveKeepOutConflict_Astar(){
 	FMS->planType        = QuadFMS_t::TRAJECTORY;
 	FMS->resumeMission   = false;
 	FMS->goalReached     = true;
-	return;
+	return true;
 
 }
 
-void Resolution_t::ResolveKeepOutConflict_RRT(){
+bool Resolution_t::ResolveKeepOutConflict_RRT(){
 
 	double resolutionSpeed   = FlightData->paramData->getValue("RES_SPEED");
 	double maxAlt            = FlightData->paramData->getValue("MAX_CEILING");
 
 	// Reroute flight plan
-	FMS->SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	FMS->SetMode(_ACTIVE_); // Set mode to guided for quadrotor to hover before replanning
 
 	std::vector<Position> TrafficPos;
 	std::vector<Velocity> TrafficVel;
@@ -443,7 +448,7 @@ void Resolution_t::ResolveKeepOutConflict_RRT(){
 
 	FMS->planType        = QuadFMS_t::TRAJECTORY;
 	FMS->resumeMission   = false;
-	return;
+	return true;
 
 }
 
@@ -496,7 +501,7 @@ Position Resolution_t::GetPointOnPlan(double offset,Plan fp,int next){
 
 }
 
-void Resolution_t::ResolveTrafficConflictDAA(){
+bool Resolution_t::ResolveTrafficConflictDAA(){
 	// Track based resolutions
 	//TODO: add eps to preferred heading
 	Position currentPos = FlightData->acState.positionLast();
@@ -504,7 +509,7 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 	returnPathConflict = true;
 	double resolutionSpeed = FlightData->paramData->getValue("RES_SPEED");
 	int gotoNextWP = FlightData->paramData->getInt("GOTO_NEXTWP");
-
+	FMS->planType        = QuadFMS_t::MANEUVER;
 	double crossStats[2];
 	FMS->Detector.ComputeCrossTrackDev(currentPos, FlightData->MissionPlan, FlightData->nextMissionWP,crossStats);
 	Position goal;
@@ -610,15 +615,17 @@ void Resolution_t::ResolveTrafficConflictDAA(){
 		double timeElapsed = difftime(stopTime,startTime);
 		FMS->debug_out.append("Elapsed time: "+std::to_string(timeElapsed)+"\n");
 	}*/
+
+	return true;
 }
 
-void Resolution_t::ResolveTrafficConflictRRT(){
+bool Resolution_t::ResolveTrafficConflictRRT(){
 
 	double maxInputNorm = FlightData->paramData->getValue("RES_SPEED");
 
 	// Reroute flight plan
 
-	FMS->SetMode(GUIDED); // Set mode to guided for quadrotor to hover before replanning
+	FMS->SetMode(_ACTIVE_); // Set mode to guided for quadrotor to hover before replanning
 
 	std::vector<Position> TrafficPos;
 	std::vector<Velocity> TrafficVel;
@@ -685,7 +692,7 @@ void Resolution_t::ResolveTrafficConflictRRT(){
 	FlightData->ResolutionPlan = RRT.GetPlan();
 	FMS->planType        = QuadFMS_t::TRAJECTORY;
 	FMS->resumeMission   = false;
-	return;
+	return true;
 }
 
 

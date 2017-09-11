@@ -1,0 +1,4 @@
+(plexil-plan
+ (comment "An empty try.")
+ (try))
+

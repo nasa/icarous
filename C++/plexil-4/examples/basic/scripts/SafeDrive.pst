@@ -1,0 +1,32 @@
+
+//
+// SafeDrive script
+//
+
+initial-state {
+  state WheelStuck () = false : bool;
+  state time             () =   0.0 : real;
+}
+
+script {
+  state time () = 1.0 : real;
+  command-success Drive (1 : int);
+  command-success TakePicture ();
+  state time () = 2.0 : real;  
+  command-success Drive (1 : int);
+  command-success TakePicture ();
+  state time () = 3.0 : real;  
+  command-success Drive (1 : int);
+  command-success TakePicture ();
+  state time () = 4.0 : real;  
+  command-success Drive (1 : int);
+  command-success TakePicture ();
+  state time () = 5.0 : real;  
+  command-success Drive (1 : int);
+  command-success TakePicture ();
+  state time () = 6.0 : real;  
+  state WheelStuck () = true : bool;
+  command-success Drive (1 : int);
+  command-success TakePicture ();
+}
+

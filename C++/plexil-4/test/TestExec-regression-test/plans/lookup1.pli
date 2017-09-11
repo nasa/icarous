@@ -1,0 +1,5 @@
+(plexil-plan
+ (assignment-node "lookup1"
+  (variables (integer "x"))
+  (start-condition (is-known (lookup-now "foo")))
+  (assignment (intvar "x") (lookup-on-change "foo"))))

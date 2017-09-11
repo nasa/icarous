@@ -14,11 +14,11 @@
 #include "Daidalus.h"
 #include "KinematicMultiBands.h"
 
-class QuadFMS_t;
+class FlightManagementSystem_t;
 
 class Resolution_t{
 private:
-	QuadFMS_t* FMS;
+	FlightManagementSystem_t* FMS;
 	AircraftData_t* FlightData;
 	double resolutionSpeed;
 	double gridsize;
@@ -35,13 +35,14 @@ private:
 public:
 	bool returnPathConflict;
 	Resolution_t(){};
-	Resolution_t(QuadFMS_t *fms);
-	void ResolveKeepInConflict();
-	void ResolveKeepOutConflict_Astar();
-	void ResolveKeepOutConflict_RRT();
-	void ResolveFlightPlanDeviation();
-	void ResolveTrafficConflictRRT();
-	void ResolveTrafficConflictDAA();
+	Resolution_t(FlightManagementSystem_t *fms,AircraftData_t* fdata);
+	void Initialize();
+	bool ResolveKeepInConflict();
+	bool ResolveKeepOutConflict_Astar();
+	bool ResolveKeepOutConflict_RRT();
+	bool ResolveFlightPlanDeviation();
+	bool ResolveTrafficConflictRRT();
+	bool ResolveTrafficConflictDAA();
 	double SaturateVelocity(double V, double Vsat);
 	Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
 	Position GetPointOnPlan(double offset,Plan fp,int next);

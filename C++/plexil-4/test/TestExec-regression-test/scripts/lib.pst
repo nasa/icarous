@@ -1,0 +1,9 @@
+
+// lib-script
+
+script {
+  command-ack bar (3.1415 : real, 2.7 : real) = 1 : bool;
+  command-ack foo (0 : bool,  123 : int, 3.1415 : real, "what!" : string) = "COMMAND_SUCCESS" : string;
+  command-ack foo (1 : bool, 1966 : int, 3.1415 : real, "hello" : string) = "COMMAND_SUCCESS" : string;
+}
+

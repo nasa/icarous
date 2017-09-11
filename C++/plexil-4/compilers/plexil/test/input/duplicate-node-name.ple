@@ -1,0 +1,11 @@
+Root: Concurrence
+{
+  One: { }
+  Two: Concurrence
+  {
+    One: Concurrence
+    {
+      Two: { }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+LibraryAction F (In Integer i, InOut Integer j);
+
+LibraryCallTest:
+{
+ Integer k = 2;
+ LibraryCall F(i=12, j=k);
+}

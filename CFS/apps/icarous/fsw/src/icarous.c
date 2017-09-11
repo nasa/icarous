@@ -118,18 +118,18 @@ void ICAROUS_ProcessPacket(void)
         }
 
         case ICAROUS_GEOFENCE_MID:
-        {
+        {	
         	geofence_t *gf;
-        	gf = (geofence_t*)appdataIC.ICAROUSMsgPtr;
+        	gf = (geofence_t*)appdataIC.ICAROUSMsgPtr;		
         	icarous_setGeofenceData(appdataIC.ic,gf);
         	break;
         }
 
         case ICAROUS_STARTMISSION_MID:
-        {
+        {	  
         	ArgsCmd_t *cmd;
         	cmd = (ArgsCmd_t*)appdataIC.ICAROUSMsgPtr;
-        	icarous_StartMission(appdataIC.ic,cmd->param1);
+        	icarous_StartMission(appdataIC.ic,cmd->param1);	
         	break;
         }
 

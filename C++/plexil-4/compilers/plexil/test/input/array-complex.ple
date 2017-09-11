@@ -1,0 +1,16 @@
+ArrayComplex:
+{
+  Real foo[4] = #(0.0 -0.0 0.0 -0.0);
+  Real bar[30];
+
+  for (Integer i = 0; i < 30; i + 1) {
+    bar[i] = 0.0;
+  }
+
+  for (Real i = 0.0; i < 10.0; i + 1) {
+    foo[1] = foo[1] + 1.0;
+    bar[2] = bar[2] + 2.0;
+    foo[3] = foo[3] + 3.0;
+    bar[15] = bar[15] + 4.0;
+  }    
+}

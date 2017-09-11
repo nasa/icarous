@@ -1,0 +1,8 @@
+(plexil-plan
+  (comment "Illustrates the Interface declaration (success mode)")
+  (list-node "Root"
+    (variables (integer "foo" 0))
+    (list
+      (assignment-node "one"
+        (interface (inout (integer "foo")))
+        (assignment (intvar "foo") 1)))))

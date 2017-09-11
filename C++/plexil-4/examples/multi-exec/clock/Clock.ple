@@ -1,0 +1,36 @@
+// A simple clock plan.
+// Publishes 'Time', an integer starting at 0 and incrementing once per second.
+
+Command UpdateLookup (...);
+Command pprint (...);
+
+Clock:
+{
+  Integer Time = 0;
+  Boolean continue = true;
+  Boolean started = false;
+
+  Exit !continue;
+
+  Operate: Concurrence {
+    Begin: OnMessage "StartClock" { 
+      pprint ("Clock: starting...");
+      started = true;
+    }
+
+    Go: {
+      Start started;
+      Repeat true;
+
+      Wait (Duration("PT1S"));
+      Time = Time + 1;
+      UpdateLookup ("Time", Time);
+      pprint ("Clock: incremented time to ", Time);
+    }
+
+    Stop: OnMessage "StopClock" { 
+      pprint ("Clock: stopping...");
+      continue = false;
+    }
+  }
+}

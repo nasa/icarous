@@ -1,0 +1,19 @@
+This directory contains a small example using the UE with the Standalone Simulator.
+
+To run it, first compile the sample plan:
+
+  $ plexil sas-test.ple
+
+Then start the following programs, preferably in separate Unix shells.
+
+1. IPC publish/subscribe server:
+
+   $ ipc
+
+2. Standalone Simulator
+
+   $ run-sas unified-script.txt
+
+3. Universal Executive
+
+   $ run-ue -p sas-test.plx -c config.xml

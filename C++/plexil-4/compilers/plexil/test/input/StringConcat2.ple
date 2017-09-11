@@ -1,0 +1,7 @@
+Command print(...);
+String Lookup foo;
+
+StringConcat2:
+{
+  print("Foo is" + (Lookup(foo) + "No really"));
+}

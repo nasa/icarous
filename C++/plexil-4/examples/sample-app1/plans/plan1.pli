@@ -1,0 +1,37 @@
+(plexil-plan
+  ;;
+  ;; This simple plan verifies the initial values of some system states, issues
+  ;; commands that change the system state, and finally checks that the state
+  ;; has changed as expected, and that a command has returned the expected value
+  ;;
+  (sequence "Root"
+    (variables (integer "result"))
+    ;;
+    ;; The start condition verifies the assumed initial system state.
+    ;;
+    (start-condition (and (lookup "at" "Home")
+                          (lookup "at" 0 0)
+                          (= (lookup "Speed") 4)
+                          (= (lookup "at") "Home")
+                          (= (lookup "Color") "Blue")))
+    ;;
+    ;; The postcondition verifies that the state has changed as expected after
+    ;; execution.
+    ;;
+    (postcondition (and (= 16 (intvar "result"))
+                        (lookup "at" "Waypoint1")
+                        (lookup "at" 1 1)
+                        (= (lookup "Speed") 10)
+                        (= (lookup "Size") 10.0)
+                        (= (lookup "Color") "Green")))
+    (command-node "A" (command "pprint" "---- Beginning commands..."))
+    (concurrence "Commands"
+      (command-node "B" (command "Hello"))
+      (command-node "C" (command-with-return (intvar "result") "Square" 4))
+      (command-node "D" (command "SetSpeed" 10))
+      (command-node "E" (command "SetSize" 10.0))
+      (command-node "F" (command "SetColor" "Green"))
+      (command-node "G" (command "Move" "Waypoint1" 1 1)))
+    (command-node "H" (command "pprint" "Speed and size:"
+                               (lookup "Speed") (lookup "Size")))))
+

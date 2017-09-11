@@ -1,0 +1,5 @@
+Concurrence
+{
+  A: { End false; }
+  B: { Start NodeExecuting (Sibling(A)); }
+}

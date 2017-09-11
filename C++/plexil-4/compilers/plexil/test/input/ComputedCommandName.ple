@@ -1,0 +1,5 @@
+ComputedCommandName:
+{
+  EndCondition Self.command_handle == COMMAND_SUCCESS;
+  ("Arbitrary:Command:Name")();
+}
