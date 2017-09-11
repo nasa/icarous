@@ -16,7 +16,7 @@ struct icarous_t *icarous_create_init(icarous_table_t* pData){
 	 params.setInternal("HSTEPBACK",pData->hStepback,"unspecified");
 	 params.setInternal("VSTEPBACK",pData->vStepback,"unspecified");
 	 params.setInternal("CHEAP_SEARCH",pData->cheapSearch,"unspecified");
-	 params.setInternal("GRID_SIZE",pData->gridSize,"unspecified");
+	 params.setInternal("GRIDSIZE",pData->gridSize,"unspecified");
 	 params.setInternal("BUFFER",pData->buffer,"unspecified");
 	 params.setInternal("LOOKAHEAD",pData->lookahead,"unspecified");
 	 params.setInternal("PROXFACTOR",pData->proxFactor,"unspecified");
@@ -36,6 +36,7 @@ struct icarous_t *icarous_create_init(icarous_table_t* pData){
 
 	 Icarous_t *IC = new Icarous_t();
 	 IC->InputParamTable(&params);
+	 IC->Initialize();
 	 icarous_t *ic = TO_C(IC);
 
 	 return ic;
@@ -50,7 +51,6 @@ void icarous_setFlightData(struct icarous_t* ic,waypoint_t *wp){
 }
 
 void icarous_setGeofenceData(struct icarous_t* ic,geofence_t *gfdata){
-        printf("%d/%d\n",gfdata->vertexIndex,gfdata->totalvertices);
 	TO_CPP(ic)->InputGeofenceData(gfdata);
 }
 

@@ -253,7 +253,7 @@ cfs_copy_installs::
 	@- $(CP_ALWAYS) $(CFS_EXE)/run $(CFS_PROM_APPS)
 	@- $(CP_ALWAYS) $(CFS_EXE)/cfe_es_startup.scr $(CFS_PROM_APPS)
 	@echo " >> Copy Daidalus configuration text file "
-	@- $(CP_ALWAYS) $(CFS_APP_SRC)/icarouslib/fsw/src/ICAROUS/*.txt $(CFS_RAM)/
+	@- $(CP_ALWAYS) $(CFS_APP_SRC)/icarouslib/fsw/src/*.txt $(CFS_RAM)/
 
 #-------------------------------------------------------------------------------
 

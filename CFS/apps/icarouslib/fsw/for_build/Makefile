@@ -121,6 +121,6 @@ VPATH += $(CFS_APP_SRC)/$(APPTARGET)/fsw/src/
 ##
 ## Include the common make rules for building a cFE Application
 ##
-COMPILER=g++ -std=c++11 -fPIC
+COMPILER=g++ -std=c++11 -fPIC -DCFS
 include $(CFE_CORE_SRC)/make/app-rules.mak
 COMPILER=gcc
