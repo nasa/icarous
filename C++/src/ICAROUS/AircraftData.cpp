@@ -35,11 +35,11 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
- #include "AircraftData.h"
+#include <Icarous_msg.h>
+#include "AircraftData.h"
 
- AircraftData_t::AircraftData_t(MAVLinkMessages_t* Msgs,ParameterData* pData){
+ AircraftData_t::AircraftData_t(ParameterData* pData){
      pthread_mutex_init(&lock, NULL);
-     RcvdMessages = Msgs;
      startMission = -1;
      nextMissionWP = 0;
      nextResolutionWP = 0;
@@ -56,12 +56,13 @@
      maneuverVu = 0;
      missionSpeed = 1;
      reset = false;
+     visBands.numBands = 0;
  }
 
- void AircraftData_t::AddMissionItem(mavlink_mission_item_t msg){
+ void AircraftData_t::AddMissionItem(waypoint_t* msg){
 
      pthread_mutex_lock(&lock);
-     listMissionItem.push_back(msg);
+     listMissionItem.push_back(*msg);
      pthread_mutex_unlock(&lock);
  }
 
@@ -95,110 +96,27 @@ void AircraftData_t::ClearMissionList(){
 void AircraftData_t::ConstructPlan(){
 	// Create a Plan object with the available mission items
 	MissionPlan.clear();
-	std::list<mavlink_mission_item_t>::iterator it;
+	std::list<waypoint_t>::iterator it;
 	int ic;
 	for(it = listMissionItem.begin(),ic = 0;
 		it != listMissionItem.end(); ++it,++ic){
-		if(it->command == MAV_CMD_NAV_WAYPOINT ||
-		   it->command == MAV_CMD_NAV_SPLINE_WAYPOINT ){
-			Position WP = Position::makeLatLonAlt(it->x,"degree",it->y,"degree",it->z,"m");
-			double wptime = 0;
-			if(ic > 0){
+		larcfm::Position WP = Position::makeLatLonAlt(it->latitude,"degree",it->longitude,"degree",it->altitude,"m");
+		double wptime = 0;
+		if(ic > 0){
 
-				double vel = missionSpeed;
+				double vel = it->speed;
 
 				if(vel < 0.5){
-					vel = 1;
+					vel = 2;
 				}
 
 				double distance = MissionPlan.point(ic - 1).position().distanceH(WP);
 				wptime   = MissionPlan.time(ic-1) + distance/vel;
 			}
-
 			NavPoint navPoint(WP,wptime);
 			MissionPlan.addNavPoint(navPoint);
-		}else if(it->command == MAV_CMD_DO_CHANGE_SPEED){
-			missionSpeed = it->param2;
-		}
 	}
-}
-
-void AircraftData_t::GetGeofence(Interface_t *gsIntf,mavlink_command_long_t msgIn){
-	bool readComplete = false;
-	uint16_t nVertices     = (int) msgIn.param4;
-
-	Geofence_t fence((int)msgIn.param2,(FENCE_TYPE)msgIn.param3,(int)msgIn.param4,
-					msgIn.param5,msgIn.param6,paramData);
-
-	time_t starttime;
-	time_t polltime;
-	double seconds;
-	uint8_t state = 0;
-	uint16_t count = 0;
-	mavlink_message_t msg;
-
-	time(&starttime);
-
-	while(!readComplete){
-
-
-		time(&polltime);
-		seconds   = difftime(starttime,polltime);
-
-		if(seconds > 10){
-			break;
-		}
-
-		switch(state){
-
-		case 0:
-
-			mavlink_msg_fence_fetch_point_pack(1,1,&msg,255,0,count);
-			gsIntf->SendMAVLinkMsg(msg);
-			state = 1;
-			break;
-
-		case 1:
-			gsIntf->GetMAVLinkMsg();
-			mavlink_fence_point_t msgFencePoint;
-			bool have_msg;
-			have_msg = RcvdMessages->GetFencePoint(msgFencePoint);
-			if(have_msg){
-				if(msgFencePoint.idx == count){
-					fence.AddVertex(msgFencePoint.idx,msgFencePoint.lat,msgFencePoint.lng);
-					count++;
-					time(&starttime);
-					state = 0;
-				}
-			}
-
-			if(count == nVertices){
-				state = 2;
-			}
-			break;
-
-		case 2:
-			readComplete = true;
-
-			if(fenceList.size() >= fence.GetID()){
-				fenceList.push_back(fence);
-			}
-			else{
-				std::list<Geofence_t>::iterator it;
-				for(it = fenceList.begin(); it != fenceList.end(); ++it){
-					if(it->GetID() == fence.GetID()){
-						it = fenceList.erase(it);
-						fenceList.insert(it,fence);
-						break;
-					}
-				}
-			}
-			mavlink_msg_command_ack_pack(1,0,&msg,MAV_CMD_DO_FENCE_ENABLE,1);
-			gsIntf->SendMAVLinkMsg(msg);
-			break;
-		}
-
-	}
+    printf("Constructed Flight plan with %d waypoints\n",MissionPlan.size());
 }
 
 double AircraftData_t::getFlightPlanSpeed(Plan* fp,int nextWP){
@@ -207,15 +125,14 @@ double AircraftData_t::getFlightPlanSpeed(Plan* fp,int nextWP){
 }
 
 void AircraftData_t::AddTraffic(int id,double lat,double lon,double alt,double vx,double vy,double vz){
-
 	pthread_mutex_lock(&lock);
 	GenericObject_t newTraffic(1,id,lat,lon,alt,vx,vy,vz);
 	GenericObject_t::AddObject(trafficList,newTraffic);
-	Position pos;Velocity vel;
+	larcfm::Position pos;larcfm::Velocity vel;
 	pthread_mutex_unlock(&lock);
 }
 
-void AircraftData_t::GetTraffic(int id,Position& pos,Velocity& vel){
+void AircraftData_t::GetTraffic(int id,larcfm::Position& pos,larcfm::Velocity& vel){
 	pthread_mutex_lock(&lock);
 	std::list<GenericObject_t>::iterator it;
 	for(it = trafficList.begin(); it != trafficList.end(); ++it){
@@ -227,23 +144,6 @@ void AircraftData_t::GetTraffic(int id,Position& pos,Velocity& vel){
 	}
 	pthread_mutex_unlock(&lock);
 }
-
-void AircraftData_t::AddMissionObject(int id,double lat,double lon,double alt,double vx,double vy,double vz){
-	pthread_mutex_lock(&lock);
-	GenericObject_t obj(0,id,lat,lon,alt,vx,vy,vz);
-	std::list<GenericObject_t>::iterator it;
-	GenericObject_t::AddObject(missionObjList,obj);
-	pthread_mutex_unlock(&lock);
-
-}
-
-void AircraftData_t::AddTrackingObject(int id,double lat,double lon,double alt,double vx,double vy,double vz){
-	pthread_mutex_lock(&lock);
-	GenericObject_t obj(2,id,lat,lon,alt,vx,vy,vz);
-	TrackingObject = obj;
-	pthread_mutex_unlock(&lock);
-}
-
 void AircraftData_t::Reset(){
 	 pthread_mutex_lock(&lock);
 	 startMission = -1;
@@ -261,4 +161,26 @@ void AircraftData_t::Reset(){
 	 maneuverVu = 0;
 	 reset = true;
 	 pthread_mutex_unlock(&lock);
+}
+
+bool AircraftData_t::CheckAck(command_name_t command){
+	bool status = false;
+	pthread_mutex_lock(&lock);
+	while(commandAckList.size() > 0){
+		CmdAck_t ack = commandAckList.front();
+		commandAckList.pop_front();
+		if(ack.name == command && ack.result == 0){
+			status = true;
+			pthread_mutex_unlock(&lock);
+			return status;
+		}
+	}
+	pthread_mutex_unlock(&lock);
+	return status;
+}
+
+void AircraftData_t::InputAck(CmdAck_t *ack) {
+	pthread_mutex_lock(&lock);
+	commandAckList.push_back(*ack);
+	pthread_mutex_unlock(&lock);
 }

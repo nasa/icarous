@@ -1,0 +1,13 @@
+Command foo;
+Command bar;
+Command baz;
+
+root:
+  if true
+    TrueCase: {
+      foo();
+      bar();
+    }
+  elseif 2 == 2 bar();
+  elseif 3 == 3 baz();
+  endif

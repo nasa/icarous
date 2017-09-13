@@ -63,6 +63,7 @@ public class ConflictDetection{
 	public double daaLookAhead;
 	public double timeStart;
 	private double daalogtime;
+	private double daaBandTime;
 	
 	public ConflictDetection(QuadFMS fms){
 		FMS = fms;
@@ -73,6 +74,7 @@ public class ConflictDetection{
 		daaLookAhead = DAA.parameters.getLookaheadTime();
 		timeStart    = (double)System.nanoTime()/1E9;
 		daalogtime   = 0;
+		daaBandTime  = 0;
 	}
 
 	public int Size(){
@@ -301,7 +303,8 @@ public class ConflictDetection{
 		
 		
 		if(KMB.trackLength() > 1 || (KMB.trackLength() == 1 && KMB.trackRegion(0).isValidBand() &&
-					     KMB.trackRegion(0) != BandsRegion.NONE)) { 
+					     KMB.trackRegion(0) != BandsRegion.NONE) && FlightData.acTime > daaBandTime) {
+			daaBandTime = FlightData.acTime;
 		    FlightData.RcvdMessages.AddKinematicBands(msg);
 		}
 		

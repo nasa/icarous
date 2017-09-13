@@ -1,0 +1,57 @@
+// A Plexil plan illustrating a simple rover driving task.
+
+Command rover_drive (Integer);
+Command rover_stop;
+Command take_navcam; 
+Command take_pancam;
+Command turn_on_heater;
+
+Real Lookup time;
+Real Lookup temperature;
+Boolean Lookup target_in_view;
+
+
+DriveToTarget:
+Concurrence {
+  Boolean drive_done = false, timeout = false;
+  Drive:  rover_drive(10);
+  StopForTimeout:
+  {
+    StartCondition Lookup(time) >= 10;
+    Concurrence {
+      Stop: rover_stop();
+      SetTimeoutFlag: timeout = true;
+    }
+  }
+
+  StopForTarget:
+  Concurrence {
+    StartCondition Lookup(target_in_view);
+    SkipCondition timeout;
+    Stop: rover_stop();
+    SetDriveFlag: drive_done = true;
+  }
+
+  TakeNavcam:
+  {
+    StartCondition timeout;
+    SkipCondition drive_done;
+    take_navcam();
+  }
+
+  TakePancam:
+  {
+    StartCondition drive_done;
+    SkipCondition timeout;
+    take_pancam();
+  }
+
+  Heater:
+  {
+    SkipCondition timeout;
+    StartCondition Lookup(temperature) < 0;
+    EndCondition Lookup(temperature) >= 10;
+    turn_on_heater();
+  }
+} 
+

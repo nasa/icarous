@@ -1,0 +1,14 @@
+script {
+  command QueryRobotState () = (10.0, 10.0, 10.0) : real-array;
+  command-success QueryRobotState ();
+  command Move (3 : int) = 1 : int;
+  command-success Move (3 : int);
+  command Move (0 : int) = 1 : int;
+  command-success Move (0 : int);
+  command Move (1 : int) = 1 : int;
+  command-success Move (1 : int);
+  command Move (2 : int) = 1 : int;
+  command-success Move (2 : int);
+  command QueryRobotState () = (10.0, 10.0, 10.0) : real-array;
+  command-success QueryRobotState ();
+}

@@ -1,0 +1,10 @@
+<Interfaces>
+  <Adapter AdapterType="OSNativeTime" />
+  <Adapter AdapterType="Utility"/>
+  <Adapter AdapterType="IpcAdapter" Server="localhost" AllowDuplicateMessages="true">
+    <ExternalLookups>
+      <Lookup name="x" type="Integer" value="1"/>
+    </ExternalLookups>
+  </Adapter>
+  <Listener ListenerType="PlanDebugListener"/>
+</Interfaces>

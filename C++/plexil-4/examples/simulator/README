@@ -1,0 +1,14 @@
+Example plans and scripts for the PLEXIL simulator.  See
+
+https://sourceforge.net/apps/mediawiki/plexil/index.php?title=Executing_Plans
+
+for documentation of this simulator.
+
+Each directory contains a plan with a complementary simulation script and
+interface configuration file.  See the README files in each directory for more
+information.
+
+
+
+
+

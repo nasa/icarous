@@ -1,0 +1,10 @@
+
+// test-end-condition
+
+initial-state {
+  state Event_5520 () = true : bool;
+}
+
+script {
+}
+

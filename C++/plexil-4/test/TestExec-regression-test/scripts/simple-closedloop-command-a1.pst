@@ -1,0 +1,8 @@
+
+// simple-closedloop-command-a1
+
+script {
+  command-ack drive () = "COMMAND_SENT_TO_SYSTEM" : string;
+  command     drive () = 10 : int;
+}
+

@@ -1,0 +1,3 @@
+(plexil-plan
+  (empty-node "boolean1"
+    (precondition (lookup-now "flag"))))

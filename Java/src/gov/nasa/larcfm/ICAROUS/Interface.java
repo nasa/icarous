@@ -93,7 +93,7 @@ public class Interface{
 		}
 
 		InitSocketInterface();
-		SetTimeout(100);
+		SetTimeout(1);
 	}
 
 	public Interface(int intType,String portName,int BAUDRATE,AircraftData acData){
@@ -107,7 +107,7 @@ public class Interface{
 		}
 
 		InitSerialInterface(BAUDRATE);
-		SetTimeout(500);
+		SetTimeout(1);
 	}
 
 	public void InitSocketInterface(){
@@ -150,7 +150,8 @@ public class Interface{
 			serialPort.setParams(BAUDRATE, 
 					SerialPort.DATABITS_8,
 					SerialPort.STOPBITS_1,
-					SerialPort.PARITY_NONE);
+					SerialPort.PARITY_NONE);			
+			//serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT);			
 
 		}
 		catch(SerialPortException ex){
@@ -159,6 +160,19 @@ public class Interface{
 
 		System.out.println("Connected to serial port:"+serialPortName);
 
+	}
+	
+	public void EnableFlowControl(){
+		if(interfaceType == SOCKET){
+			return;
+		}else{
+			try{
+				serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_RTSCTS_IN | SerialPort.FLOWCONTROL_RTSCTS_OUT);
+			}catch(SerialPortException ex){
+				System.out.println(ex);
+			}
+		}
+		
 	}
 
 	public byte[] UDPRead(){
@@ -244,7 +258,7 @@ public class Interface{
 					Inbox.decode_message(RcvdPacket);
 				}
 
-				if(RcvdPacket != null){
+				if(RcvdPacket != null){						
 					packets.add(RcvdPacket);
 				}
 			}

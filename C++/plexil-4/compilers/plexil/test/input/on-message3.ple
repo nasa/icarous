@@ -1,0 +1,8 @@
+Command HaltAndCatchFire;
+Command ExecuteProgrammerImmediate (String);
+
+root:
+{
+    Integer x = 0;
+    OnMessage x HaltAndCatchFire ();
+}

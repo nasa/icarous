@@ -1,0 +1,5 @@
+(plexil-plan
+  (action "Root"
+    (action "A")
+    (action "B"
+      (start-condition (starts-after-start 1.0 2.0 "A")))))

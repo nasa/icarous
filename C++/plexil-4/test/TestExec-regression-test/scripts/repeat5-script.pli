@@ -1,0 +1,13 @@
+(plexil-script
+  (initial-state
+    (state "time" "real" 0.0)
+    (state "continue" "bool" 1))
+  (script
+    (state "time" "real" 1.0)
+    (command-ack "foo" "string" "COMMAND_SUCCESS")
+    (command-ack "foo" "string" "COMMAND_SUCCESS")
+    (command-ack "foo" "string" "COMMAND_SUCCESS")
+    (command-ack "foo" "string" "COMMAND_SUCCESS")
+    (state "continue" "string" 0)
+    (command-ack "foo" "string" "COMMAND_SUCCESS")
+    ))

@@ -1,0 +1,36 @@
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <While>
+    <NodeId>Root</NodeId>
+    <VariableDeclarations>
+      <DeclareVariable>
+        <Name>i</Name>
+        <Type>Integer</Type>
+        <InitialValue>
+          <IntegerValue>0</IntegerValue>
+        </InitialValue>
+      </DeclareVariable>
+    </VariableDeclarations>
+    <Condition>
+      <LT>
+        <IntegerVariable>i</IntegerVariable>
+        <IntegerValue>5</IntegerValue>
+      </LT>
+    </Condition>
+    <Action>
+      <Node NodeType="Assignment">
+        <NodeId>increment</NodeId>
+        <NodeBody>
+          <Assignment>
+            <IntegerVariable>i</IntegerVariable>
+            <NumericRHS>
+              <ADD>
+                <IntegerVariable>i</IntegerVariable>
+                <IntegerValue>1</IntegerValue>
+              </ADD>
+            </NumericRHS>
+          </Assignment>
+        </NodeBody>
+      </Node>
+    </Action>
+  </While>
+</PlexilPlan>

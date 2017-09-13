@@ -1,0 +1,9 @@
+Command pprint(...);
+
+Launchee:
+{
+  pprint("Launchee: start");
+ LauncheeWait:
+  Wait 10;
+  pprint("Launchee: finished");
+}

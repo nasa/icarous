@@ -1,0 +1,5 @@
+Sequence {
+  String s;
+  s = "foo";
+  s = "bar";
+}

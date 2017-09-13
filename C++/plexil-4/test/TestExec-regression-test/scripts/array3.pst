@@ -1,0 +1,10 @@
+
+// Array3
+
+script {
+  command       get-a2 () = ("hello", "world") : string-array;
+  command-ack   get-a2 () = "COMMAND_SUCCESS" : string;
+  command       get-a3 () = (0, 0, 0, 1) : bool-array;
+  command-ack   get-a3 () = "COMMAND_SUCCESS" : string;
+}
+

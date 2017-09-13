@@ -1,0 +1,18 @@
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OnCommand>
+    <VariableDeclarations>
+      <DeclareVariable>
+        <Name>distance</Name>
+        <Type>Integer</Type>
+      </DeclareVariable>
+      <DeclareVariable>
+        <Name>direction</Name>
+        <Type>Real</Type>
+      </DeclareVariable>
+    </VariableDeclarations>
+    <Name><StringValue>moveRover</StringValue></Name>
+    <Node NodeType= "Empty">
+      <NodeId>foo</NodeId>
+    </Node>
+  </OnCommand>
+</PlexilPlan>

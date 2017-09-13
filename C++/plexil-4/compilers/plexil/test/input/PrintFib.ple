@@ -1,0 +1,13 @@
+// Compute and print Fibonacci(n)
+//  - Library node called by Fibs.ple
+
+Command pprint (...);
+LibraryAction Fib (In Integer n, InOut Integer result);
+
+PrintFib: {
+  In Integer n;
+  Integer result;
+
+  LibraryCall Fib (n = n, result = result);
+  pprint ("Fib(", n, ") = ", result);
+}

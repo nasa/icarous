@@ -1,0 +1,4 @@
+(plexil-script
+  (initial-state
+    (state "foo" "int" 5))
+  (script))

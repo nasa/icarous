@@ -1,0 +1,2 @@
+This directory contains "valid" transcripts of runs of the test plans,
+which are compared to actual runs to satisfy regression testing.

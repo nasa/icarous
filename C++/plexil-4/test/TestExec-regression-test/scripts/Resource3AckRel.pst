@@ -1,0 +1,10 @@
+
+// resource3-ackRel
+
+script {
+  command-ack c1 (20 : int) = "COMMAND_SENT_TO_SYSTEM" : string;
+  command-ack c3 ()         = "COMMAND_SENT_TO_SYSTEM" : string;
+  command     c1 (20 : int) = 10 : int;
+  command-ack c2 ()         = "COMMAND_SENT_TO_SYSTEM" : string;
+}
+

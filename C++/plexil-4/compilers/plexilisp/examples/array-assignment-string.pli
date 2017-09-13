@@ -1,0 +1,11 @@
+(plexil-plan
+  (sequence "root"
+    (variables (string-array "xs" 4 "one" "two" "three" "four")
+               (string-array "ys" 4))
+    (assignment (arrayvar "ys") (arrayvar "xs"))
+    (command "pprint" 
+        (array-element "ys" 0)
+        (array-element "ys" 1)
+        (array-element "ys" 2)
+        (array-element "ys" 3))))
+    

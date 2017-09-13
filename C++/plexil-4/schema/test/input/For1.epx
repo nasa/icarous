@@ -1,0 +1,41 @@
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <For>
+    <NodeId>Root</NodeId>
+    <VariableDeclarations>
+      <DeclareVariable>
+        <Name>foo</Name>
+        <Type>Boolean</Type>
+        <InitialValue>
+            <BooleanValue>true</BooleanValue>
+        </InitialValue>
+      </DeclareVariable>
+    </VariableDeclarations>
+    <LoopVariable>
+      <DeclareVariable>
+        <Name>count</Name>
+        <Type>Integer</Type>
+        <InitialValue>
+          <IntegerValue>0</IntegerValue>
+        </InitialValue>
+      </DeclareVariable>
+    </LoopVariable>
+    <Condition>
+      <LT>
+        <IntegerVariable>count</IntegerVariable>
+        <IntegerValue>3</IntegerValue>
+      </LT>
+    </Condition>
+    <LoopVariableUpdate>
+      <ADD>
+        <IntegerVariable>count</IntegerVariable>
+        <IntegerValue>1</IntegerValue>
+      </ADD>
+    </LoopVariableUpdate>
+    <Action>
+      <Node NodeType="Empty">
+        <NodeId>Two</NodeId>
+      </Node>
+    </Action>
+  </For>
+</PlexilPlan>
+

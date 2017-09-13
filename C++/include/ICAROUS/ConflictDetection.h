@@ -17,12 +17,12 @@
 using namespace std;
 using namespace larcfm;
 
-class QuadFMS_t;
+class FlightManagementSystem_t;
 
 class ConflictDetection_t{
 
 private:
-	QuadFMS_t* FMS;
+	FlightManagementSystem_t* FMS;
 	AircraftData_t* FlightData;
 	double daalogtime;
 
@@ -36,7 +36,8 @@ public:
 	bool trafficConflict;
 
 	ConflictDetection_t(){};
-	ConflictDetection_t(QuadFMS_t* fms);
+	ConflictDetection_t(FlightManagementSystem_t* fms,AircraftData_t* fdata);
+	void Initialize();
 	void AddFenceConflict(Geofence_t gf);
 	uint8_t size();
 	void clear();

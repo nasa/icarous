@@ -1,0 +1,33 @@
+;; File: $SVNROOT/examples/multi-exec/agents/test/t4-sim.pli
+
+(plexil-plan
+  (concurrently "Interface"
+    (variables (integer "x" 1)
+               (boolean "continue" true))
+    (invariant-condition (boolvar "continue"))
+    (action "MoveRightCommand"
+      (repeat-condition (boolvar "continue"))
+      (on-command "MoveRight" ((integer "moveState"))
+        (sequence "RecMoveRight"
+          (action "Increment"
+            (assignment (intvar "x") (+ (intvar "x") (intvar "moveState"))))
+          (action "SetExt"
+            (command "UpdateLookup" "x" (intvar "x")))
+          (action "RespondMoveRight"
+            (command "SendReturnValue" (intvar "x"))))))
+    (action "TestCommand"
+      (repeat-condition (boolvar "continue"))
+      (on-command "TestCommand" ((integer "int"))
+        (concurrently "Dispatch"
+          (action "One"
+            (skip-condition (!= (intvar "int") 1))
+            (command "SendReturnValue" "one"))
+          (action "Two"
+            (skip-condition (!= (intvar "int") 2))
+            (command "SendReturnValue" "two")))))
+    (action "QuitCommand"
+      (repeat-condition (boolvar "continue"))
+      (on-message "Quit"
+        (assignment (boolvar "continue") (boolval false))))))
+
+;; EOF

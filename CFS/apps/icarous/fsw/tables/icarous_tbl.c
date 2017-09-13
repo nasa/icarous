@@ -35,6 +35,7 @@ icarous_table_t icarousTblStruct = {
 		3,     // track distance H
 		0,     // track distance V
 
+		"ram/DaidalusQuadConfig.txt", // Daa config file
 		1,  //Cheap DAA
 		1,  // goto next WP
 		3,  // conflict hold in seconds

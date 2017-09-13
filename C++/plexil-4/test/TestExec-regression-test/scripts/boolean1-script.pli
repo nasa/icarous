@@ -1,0 +1,4 @@
+(plexil-script
+  (initial-state
+    (state "flag" "bool" true))
+  (script))

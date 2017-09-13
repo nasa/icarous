@@ -1,0 +1,11 @@
+(plexil-plan
+ (list-node "isKnown1"
+  (variables (boolean "test"))
+  (postcondition (is-known (node-state "two")))
+  (list
+   (empty-node "two"
+    (start-condition (is-known (boolvar "test"))))
+   (assignment-node "one"
+    (assignment (boolvar "test") true))
+   (empty-node "three"
+    (start-condition (is-known (node-outcome "two")))))))

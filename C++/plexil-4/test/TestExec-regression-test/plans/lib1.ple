@@ -1,0 +1,15 @@
+LibraryAction LibTest1 (In Boolean lb,
+                        In Integer li,
+                        In Real lr,
+                        In String ls); 
+LibraryAction LibTest2 (In Real y, In Real z);
+Command foo (Boolean, Integer, Real, String);
+
+LibTest1:
+{
+   In Boolean lb;
+   In Integer li;
+   In Real    lr;
+   In String  ls;
+   foo (lb, li, lr, ls);
+}

@@ -1,0 +1,10 @@
+
+// library-call6
+
+initial-state {
+  state foo ("p1" : string) = "mary" : string;
+}
+
+script {
+}
+

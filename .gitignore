@@ -20,3 +20,5 @@ elf2cfetbl
 !CFS/build/cpu1/exe/
 CFS/build/cpu1/*
 CFS/build/mission_inc/*
+#Ignore plexil files
+C++/plexil-4/*

@@ -28,7 +28,7 @@
 #include "icarous_version.h"
 #include "icarous_events.h"
 #include "icarous_table.h"
-#include "Icarous.h"
+#include "IcarousWrapper.h"
 
 #define ICAROUS_PIPE_DEPTH    250
 

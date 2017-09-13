@@ -1,0 +1,7 @@
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Wait FileName= "foo.ple" LineNo= "104" ColNo= "1">
+    <NodeId>Wait1</NodeId>
+    <Units><RealValue>23.9</RealValue></Units>
+    <Tolerance><RealValue>0.2</RealValue></Tolerance>
+  </Wait>
+</PlexilPlan>

@@ -1,0 +1,32 @@
+
+//
+// DriveToTarget script
+//
+
+initial-state {
+  state time           () =   0.0 : real;
+  state target_in_view () = false : bool;
+  state temperature    () =   0.0 : real;
+}
+
+script {
+  state time () =  1.0 : real;
+  state time () =  2.0 : real;
+  command-success rover_drive (10.0 : real);
+  state time () =  3.0 : real;
+  state time () =  4.0 : real;
+  state time () =  5.0 : real;
+  state temperature () = -1.0 : real;
+  command-success turn_on_heater ();
+  state time () =  6.0 : real;
+  state temperature () = 4.5 : real;
+  state time () =  7.0 : real;
+  state time () =  8.0 : real;
+  state temperature () = 11.0 : real;
+  state time () =  9.0 : real;
+  state time () = 10.0 : real;
+  command-success rover_stop ();
+  command-success take_navcam ();
+  state time () = 11.0 : real;
+}
+

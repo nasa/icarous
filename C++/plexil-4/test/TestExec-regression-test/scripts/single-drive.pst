@@ -1,0 +1,13 @@
+
+// single-drive
+
+initial-state {
+  state at ("Rock" : string) = false : bool;
+}
+
+script {
+  state at ("Rock" : string)     = true : bool;
+  command-ack drive (1.0 : real) = "COMMAND_SUCCESS" : string;
+  command-ack takeSample ()      = "COMMAND_SUCCESS" : string;
+}
+

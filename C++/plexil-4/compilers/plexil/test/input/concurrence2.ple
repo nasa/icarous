@@ -1,0 +1,12 @@
+// This plan is valid syntactically, but confusing.  C will get called with
+// "bar" and not "foo" because of the synchonous execution of the command and
+// assignment.
+
+Command C (String);
+
+Root: Concurrence
+{
+  String s = "bar";
+  s = "foo";
+  C (s);  
+}

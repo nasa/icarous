@@ -1,0 +1,86 @@
+#! /usr/bin/env bash
+
+# Copyright (c) 2006-2015, Universities Space Research Association (USRA).
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of the Universities Space Research Association nor the
+#       names of its contributors may be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY USRA ``AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL USRA BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+# TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+usage()
+{
+    echo 'Usage: port_in_use [-q] <port_number>'
+    echo 'Options:'
+    echo " -q    Do not generate any output, only set return code (0 = in use)"
+}
+
+if [ -z "$PLEXIL_HOME" ]
+then
+    echo Error: Please set environment variable PLEXIL_HOME
+    echo to the full pathname of your root 'plexil' directory.
+    exit 2
+fi
+
+if ( echo $PATH | grep -q -v "\<$PLEXIL_HOME/scripts\>" )
+then
+    PATH=$PATH:$PLEXIL_HOME/scripts
+fi
+
+quiet=
+
+if [ "$1" = '-q' ]
+then
+    quiet=$1
+    shift
+fi
+
+if [ -z "$1" ]
+then
+    usage
+    exit 2
+fi
+
+# Validity/range check of argument
+if ( echo "$1" | grep -q -v "\<[0-9]\+\>" )
+then
+    echo "Error: $1 is not a port number"
+    usage
+    exit 2
+elif [ "$1" -lt 1 ] || [ "$1" -gt 65535 ]  
+then
+    echo "Error: $1 is not a port number between 1 and 65535"
+    usage
+    exit 2
+fi
+
+if ( list_ports_in_use | grep -q "\<$1\>" )
+then
+    if [ -z "$quiet" ]
+    then
+        echo "Port $1 is in use"
+    fi
+    exit 0
+elif [ -z "$quiet" ]
+then
+    echo "Port $1 is free"
+fi
+
+exit 1
