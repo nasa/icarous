@@ -43,26 +43,18 @@ import gov.nasa.larcfm.Util.NavPoint;
 import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Velocity;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_Geofence;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_Object;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_Waypoint;
 import gov.nasa.larcfm.Util.AircraftState;
 import gov.nasa.larcfm.Util.ParameterData;
 import gov.nasa.larcfm.Util.Pair;
 
 public class AircraftData{
 
-	public enum FP_WRITE_AP{
-		FP_CLR, FP_CLR_ACK, FP_SEND_COUNT, FP_SEND_WP
-	}
-
-	public enum FP_READ{
-		FP_ITEM_REQUEST, FP_WP_READ, FP_READ_COMPLETE
-	}
-
+	
 	public enum GF{
 		GF_READ, GF_FETCH, GF_READ_COMPLETE
-	}
-
-	public enum FP_READ_COM{
-		FP_INFO, FP_WAYPT_INFO, FP_ACK_FAIL,FP_ACK_SUCCESS
 	}
 
 	public MAVLinkMessages RcvdMessages;
@@ -90,8 +82,9 @@ public class AircraftData{
 	public List<Pair<Integer,Integer>> WPMissionItemMapping;
 	public Plan ResolutionPlan;
 
-	public List<GeoFence> fenceList; 
-	public List<msg_mission_item>InputFlightPlan;
+	public List<msg_Geofence> tempFenceList;
+	public List<GeoFence> fenceList;
+	public List<msg_Waypoint>InputFlightPlan;
 
 	// List for various objects
 	public List<GenericObject> obstacles;
@@ -123,10 +116,11 @@ public class AircraftData{
 		RcvdMessages        = new MAVLinkMessages();
 		acState             = new AircraftState();
 		fenceList           = new ArrayList<GeoFence>();
+		tempFenceList       = new ArrayList<msg_Geofence>();
 		obstacles           = new ArrayList<GenericObject>();
 		traffic             = new ArrayList<GenericObject>();
 		missionObj          = new ArrayList<GenericObject>();
-		InputFlightPlan     = new ArrayList<msg_mission_item>();		
+		InputFlightPlan     = new ArrayList<msg_Waypoint>();		
 		WaypointIndices     = new ArrayList<Integer>();
 		WPMissionItemMapping = new ArrayList<Pair<Integer,Integer>>();
 		startMission        = -1;
@@ -139,6 +133,59 @@ public class AircraftData{
 		ResolutionPlan      = new Plan();
 		speed               = 1;
 		missionSpeed        = 1;
+	}
+	
+	public synchronized void AddMissionItem(msg_Waypoint waypoint){
+		InputFlightPlan.add(waypoint);
+	}
+	
+	public synchronized int GetStartMissionFlag(){
+		int var = startMission;
+		startMission = -1;
+		return var;
+	}
+	
+	public synchronized void SetStartMissionFlag(int param){
+		startMission = param;
+	}
+	
+	public synchronized int GetFlightPlanSize(){
+		return InputFlightPlan.size();
+	}
+	
+	public synchronized void ClearMissionList(){
+		InputFlightPlan.clear();
+	}
+	
+	public synchronized void AddTraffic(int id,float lat,float lon,float alt,float vx,float vy,float vz){
+		GenericObject obj = new GenericObject(1,id,lat,lon,alt,vx,vy,vz);		
+		GenericObject.AddObject(traffic,obj);
+		
+	}
+	
+	public synchronized void AddGeofence(msg_Geofence gf){
+		if(gf.vertexIndex == 0){
+			tempFenceList.clear();
+		}
+		
+		tempFenceList.add(gf);
+		
+		if(gf.vertexIndex+1 == gf.totalVertices){
+			
+			GeoFence GF = new GeoFence(gf.index,gf.type,gf.totalVertices,gf.floor,gf.ceiling,pData);
+			for(int i=0;i<tempFenceList.size();i++){
+				msg_Geofence fence = tempFenceList.get(i);
+				GF.AddVertex(i, fence.latitude, fence.longitude);
+			}
+			
+			if(fenceList.size() <= gf.index){
+				fenceList.add(GF);
+				System.out.println("Received fence:"+gf.index);
+			}else{
+				fenceList.remove(gf.index);
+				fenceList.add(gf.index, GF);
+			}
+		}
 	}
 
 	// Function to get flight plan
@@ -241,19 +288,18 @@ public class AircraftData{
 		MissionPlan = new Plan();
 		WaypointIndices.clear();
 		WPMissionItemMapping.clear();
-		msg_mission_item msgMissionItem         = new msg_mission_item();
+		msg_Waypoint msgMissionItem;
 		int count = 0;
 		for(int i=0;i<InputFlightPlan.size();i++){
 			msgMissionItem = InputFlightPlan.get(i);
-			if( (msgMissionItem.command == MAV_CMD.MAV_CMD_NAV_WAYPOINT) ||
-					(msgMissionItem.command == MAV_CMD.MAV_CMD_NAV_SPLINE_WAYPOINT) ){				
-				WaypointIndices.add(msgMissionItem.seq);
-				WPMissionItemMapping.add(new Pair<Integer,Integer>(count,msgMissionItem.seq));				
+														
 				double wptime= 0;
-				Position nextWP = Position.makeLatLonAlt(msgMissionItem.x,"degree",msgMissionItem.y,"degree",msgMissionItem.z,"m");				
+				Position nextWP = Position.makeLatLonAlt(msgMissionItem.latitude,"degree",
+														 msgMissionItem.longitude,"degree",
+														 msgMissionItem.altitude,"m");				
 				if(count > 0 ){
 					//double vel = msgMissionItem.param4;
-					double vel = missionSpeed;
+					double vel = msgMissionItem.speed;
 					if(vel < 0.5){
 						vel = 1;
 					}
@@ -268,13 +314,9 @@ public class AircraftData{
 					//System.out.println("Times:"+wptime);
 				}		     
 				MissionPlan.addNavPoint(new NavPoint(nextWP,wptime));
-				count++;
-			}else if(msgMissionItem.command == MAV_CMD.MAV_CMD_DO_CHANGE_SPEED){
-				missionSpeed = msgMissionItem.param2;					
-			}
+				count++;			
 		}
-		numMissionWP           = MissionPlan.size();
-		WaypointIndices.remove(0);
+		numMissionWP           = MissionPlan.size();		
 	}
 
 	public float GetFlightPlanSpeed(Plan fp,int nextWP){
