@@ -57,8 +57,8 @@ public class COM implements Runnable,ErrorReporter{
 	public ErrorLog log;
 	public MAVLinkMessages RcvdMessages;
 	private ParameterData pData;    
-	private Interface apIntf;
-	private Interface gsIntf;
+	private Interface1 apIntf;
+	private Interface1 gsIntf;
 	private int WPloaded;
 	private boolean sgMsgRcvd1;
 	private boolean sgMsgRcvd2;
@@ -67,7 +67,7 @@ public class COM implements Runnable,ErrorReporter{
 	Position acposrev;
 	
 
-	public COM(String name,Interface ap,Interface gs,AircraftData fData,ParameterData pdata){
+	public COM(String name,Interface1 ap,Interface1 gs,AircraftData fData,ParameterData pdata){
 		threadName       = name;
 		apIntf           = ap;
 		gsIntf           = gs;
@@ -172,7 +172,7 @@ public class COM implements Runnable,ErrorReporter{
 			//System.out.println("received wp item:"+WPloaded);
 			apIntf.Write(msgMissionItem);
 			if(msgMissionItem.seq == WPloaded){
-				FlightData.InputFlightPlan.add(msgMissionItem);
+				//FlightData.InputFlightPlan.add(msgMissionItem);
 				WPloaded++;
 			}
 		}

@@ -45,10 +45,10 @@ public class DAQ implements Runnable{
 	public Thread t;
 	public String threadName;
 	public AircraftData FlightData;
-	public Interface apIntf;
-	public Interface gsIntf;
+	public Interface1 apIntf;
+	public Interface1 gsIntf;
 
-	public DAQ(String name,AircraftData fData,Interface ap,Interface gs){
+	public DAQ(String name,AircraftData fData,Interface1 ap,Interface1 gs){
 		threadName   = name;
 		FlightData   = fData;
 		apIntf       = ap;

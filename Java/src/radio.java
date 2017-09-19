@@ -36,14 +36,14 @@ import gov.nasa.larcfm.ICAROUS.*;
 public class radio{
     public static void main(String args[]){
 
-	Interface SOCKET  = new Interface(Interface.SOCKET,"localhost",
+	Interface1 SOCKET  = new Interface1(Interface1.SOCKET,"localhost",
 				      Integer.parseInt(args[0]),
 				      Integer.parseInt(args[1]),null);
 
-	Interface SERIAL  = new Interface(Interface.SERIAL,args[2],Integer.parseInt(args[3]),null);
+	Interface1 SERIAL  = new Interface1(Interface1.SERIAL,args[2],Integer.parseInt(args[3]),null);
 
 	while(true){
-	    Interface.PassThroughMAVPackets(SOCKET,SERIAL);
+	    Interface1.PassThroughMAVPackets(SOCKET,SERIAL);
 	}
     }    
 }

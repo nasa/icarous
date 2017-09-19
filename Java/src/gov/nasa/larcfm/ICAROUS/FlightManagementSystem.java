@@ -80,8 +80,8 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	protected MAVLinkMessages RcvdMessages;
 	protected FMS_STATE_t fmsState;
 	protected boolean FMSrunning;
-	protected Interface apIntf;
-	protected Interface gsIntf;
+	protected Interface1 apIntf;
+	protected Interface1 gsIntf;
 	public ErrorLog log;
 	public AircraftData FlightData;
 	public boolean devAllowed;
@@ -91,7 +91,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	public int currentMode;
 	public boolean icarousActive;
    
-	public FlightManagementSystem(String name,AircraftData fData,Interface ap, Interface gs){
+	public FlightManagementSystem(String name,AircraftData fData,Interface1 ap, Interface1 gs){
 		threadName       = name;
 		FMSrunning       = true;
 		fmsState         = FMS_STATE_t._IDLE_;

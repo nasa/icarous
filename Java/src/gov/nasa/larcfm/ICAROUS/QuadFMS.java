@@ -62,7 +62,7 @@ public class QuadFMS extends FlightManagementSystem{
 	private double wpDiffTime,startNextWPTime;
 	double captureH,captureV;
 
-	public QuadFMS(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc,ParameterData pdata){
+	public QuadFMS(Interface1 ap_Intf,Interface1 com_Intf,AircraftData acData,Mission mc,ParameterData pdata){
 		super("QuadFMS",acData,ap_Intf,com_Intf);
 		takeoffAlt = 0.0f;
 		landStarted = false;

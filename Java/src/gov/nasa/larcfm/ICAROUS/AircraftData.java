@@ -189,7 +189,7 @@ public class AircraftData{
 	}
 
 	// Function to get flight plan
-	public int GetGeoFence(Interface Intf,msg_command_long msg){
+	public int GetGeoFence(Interface1 Intf,msg_command_long msg){
 
 		boolean readComplete = false;
 		int count = 0;

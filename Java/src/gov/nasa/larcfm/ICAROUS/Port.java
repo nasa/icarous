@@ -40,49 +40,30 @@ package gov.nasa.larcfm.ICAROUS;
 
 import java.io.*;
 import java.net.*;
-import java.util.*;
-import com.MAVLink.Parser;
-import com.MAVLink.Messages.*;
-import com.MAVLink.common.*;
-import com.MAVLink.enums.*;
-import com.MAVLink.MAVLinkPacket;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 import jssc.SerialPortTimeoutException;
 
-public class Interface{
-
-	public static short PX4       = 1;
-	public static short COM       = 2;
-	public static short SAFEGUARD = 3;
-	public static short BROADCAST = 4;
-
-	public static short SOCKET    = 0;
-	public static short SERIAL    = 1;
-
-	public short interfaceType    = 0;
+public class Port{
+	
+	public class PortType{
+		public static final short SOCKET = 0;
+		public static final short SERIAL = 1;
+	}
+	
+	private short pType;
 	private int udpReceivePort    = 0;
 	private int udpSendPort       = 0;
-	private String udpHost        = null;
 	private String serialPortName = null;
 	private InetAddress host      = null;
 	private DatagramSocket sock   = null;
 	private SerialPort serialPort = null;
-	private Parser MsgParser      = new Parser();
-	private MAVLinkMessages Inbox;
-	private int Timeout;
 	public byte[] buffer_data     = null;
 
-	public Interface(int intType,String hostname,int recvPort,int sendPort,AircraftData acData){
-
-		interfaceType   = (short) intType;
+	public Port(short pt,String hostname,int recvPort,int sendPort,AircraftData acData){
+		pType           = pt;
 		udpReceivePort  = recvPort;
 		udpSendPort     = sendPort;
-
-		Inbox = null;
-		if(acData != null){
-			Inbox           = acData.RcvdMessages;
-		}
 
 		if(hostname != null){
 			try{
@@ -96,22 +77,15 @@ public class Interface{
 		SetTimeout(1);
 	}
 
-	public Interface(int intType,String portName,int BAUDRATE,AircraftData acData){
-
-		interfaceType  = (short) intType;
+	public Port(short pt,String portName,int BAUDRATE,AircraftData acData){
+		pType          = pt;
 		serialPortName = portName;
-
-		Inbox = null;
-		if(acData != null){
-			Inbox           = acData.RcvdMessages;
-		}
 
 		InitSerialInterface(BAUDRATE);
 		SetTimeout(1);
 	}
 
 	public void InitSocketInterface(){
-
 		try{
 			if(udpReceivePort != 0){
 				sock  = new DatagramSocket(udpReceivePort);
@@ -123,12 +97,10 @@ public class Interface{
 		catch(IOException e){
 			System.err.println(e);
 		}
-
 	}
 
 	public void SetTimeout(int timeout){
-
-		if(interfaceType == SOCKET){
+		if(pType == PortType.SOCKET){
 			try{
 				sock.setSoTimeout(timeout);
 			}
@@ -136,15 +108,10 @@ public class Interface{
 				System.out.println(e);
 			}
 		}
-		else{
-			Timeout = timeout;
-		}
 	}
 
 	public void InitSerialInterface(int BAUDRATE){
-
 		serialPort = new SerialPort(serialPortName);
-
 		try {
 			serialPort.openPort();
 			serialPort.setParams(BAUDRATE, 
@@ -159,11 +126,10 @@ public class Interface{
 		}
 
 		System.out.println("Connected to serial port:"+serialPortName);
-
 	}
 	
 	public void EnableFlowControl(){
-		if(interfaceType == SOCKET){
+		if(pType == PortType.SOCKET){
 			return;
 		}else{
 			try{
@@ -207,7 +173,6 @@ public class Interface{
 		catch(IOException e){
 			System.err.println(e);
 		}
-
 	}   
 
 	public byte[] SerialRead(){
@@ -218,9 +183,7 @@ public class Interface{
 		catch(SerialPortException e){
 			System.out.println(e);
 		}
-		//catch(SerialPortTimeoutException e){
-		//  System.out.println(e);
-		//}
+		
 		return buffer_data;
 	}
 
@@ -233,80 +196,13 @@ public class Interface{
 		}	
 	}
 
-	public ArrayList<MAVLinkPacket> Read(){
-
-
-		ArrayList<MAVLinkPacket> packets = new ArrayList<MAVLinkPacket>();
+	public synchronized byte[] Read(){
+	
 		byte[] buffer = null;
-		if(interfaceType == SOCKET){
+		if(pType == PortType.SOCKET){
 			buffer = UDPRead();
 		}
-		else if(interfaceType == SERIAL){
-			buffer = SerialRead();
-		}
-		else{
-			System.out.println("Unknown interface");	    
-		}
-
-
-		MAVLinkPacket RcvdPacket = null;
-		if(buffer != null){
-			for(int i=0;i<buffer.length;++i){
-				RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer[i]);
-
-				if(Inbox != null){
-					Inbox.decode_message(RcvdPacket);
-				}
-
-				if(RcvdPacket != null){						
-					packets.add(RcvdPacket);
-				}
-			}
-		}
-
-		return packets;
-	}
-
-	public synchronized void Write(MAVLinkMessage msg2send){
-
-		if(msg2send != null){
-			MAVLinkPacket raw_packet = msg2send.pack();
-			raw_packet.sysid  = msg2send.sysid;
-			raw_packet.compid = msg2send.compid;	    
-			byte[] buffer            = raw_packet.encodePacket();	    	    
-			if(interfaceType == SOCKET){
-				this.UDPWrite(buffer);
-			}
-			else if (interfaceType == SERIAL){
-				this.SerialWrite(buffer);
-			}
-		}
-
-	}
-
-	public synchronized void Write(MAVLinkPacket msg2send){
-
-		if(msg2send != null){
-			MAVLinkPacket raw_packet = msg2send;
-			raw_packet.sysid  = msg2send.sysid;
-			raw_packet.compid = msg2send.compid;	    
-			byte[] buffer            = raw_packet.encodePacket();	    	    
-			if(interfaceType == SOCKET){
-				this.UDPWrite(buffer);
-			}
-			else if (interfaceType == SERIAL){
-				this.SerialWrite(buffer);
-			}
-		}
-
-	}
-
-	public byte[] ReadBytes(){
-		byte[] buffer = null;
-		if(interfaceType == SOCKET){
-			buffer = UDPRead();
-		}
-		else if(interfaceType == SERIAL){
+		else if(pType == PortType.SERIAL){
 			buffer = SerialRead();
 		}
 		else{
@@ -316,70 +212,12 @@ public class Interface{
 		return buffer;
 	}
 
-	public void WriteBytes(byte[] buffer){
-
-		if(buffer != null){
-			if(interfaceType == SOCKET){
+	public synchronized void Write(byte[] buffer){			    	   
+			if(pType == PortType.SOCKET){
 				this.UDPWrite(buffer);
 			}
-			else if (interfaceType == SERIAL){
+			else if (pType == PortType.SERIAL){
 				this.SerialWrite(buffer);
-			}
-		}
-
+			}	
 	}
-
-	public static void PassThroughMAVPackets(Interface AP, Interface GS){
-
-		ArrayList<MAVLinkPacket> AP_buffer;
-		ArrayList<MAVLinkPacket> GS_buffer;
-
-		AP_buffer =AP.Read();
-
-		if(AP_buffer != null){
-			for(int i=0;i<AP_buffer.size();i++){
-				GS.Write(AP_buffer.get(i));
-			}
-		}
-
-		GS_buffer = GS.Read();
-
-		if(GS_buffer != null){
-			for(int i=0;i<GS_buffer.size();i++){
-				AP.Write(GS_buffer.get(i));
-			}
-		}
-
-	}
-
-	public static void PassThrough(Interface AP, Interface GS){
-		byte[] AP_buffer = null;
-		byte[] GS_buffer = null;
-
-		//AP.SetTimeout(1);
-		//GS.SetTimeout(1);
-
-
-		// Read from AP
-		AP_buffer = AP.ReadBytes();
-
-		// Write to GS
-		GS.WriteBytes(AP_buffer);
-
-		// Read from GS	
-		GS_buffer = GS.ReadBytes();
-
-		// Write to AP
-		AP.WriteBytes(GS_buffer);
-
-	}
-
-	public void SendStatusText(String Text){
-
-		msg_statustext status = new msg_statustext();
-		status.severity = MAV_SEVERITY.MAV_SEVERITY_INFO;
-		status.text     = Arrays.copyOf(Text.getBytes(),50);
-		Write(status);
-	}
-
 }

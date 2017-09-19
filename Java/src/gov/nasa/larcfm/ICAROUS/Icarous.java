@@ -35,6 +35,13 @@
 package gov.nasa.larcfm.ICAROUS;
 import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_Attitude;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_CmdAck;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_Geofence;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_MissionItemReached;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_Object;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_Position;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_Waypoint;
 import gov.nasa.larcfm.IO.SeparatedInput;
 import com.MAVLink.common.*;
 import java.io.*;
@@ -63,9 +70,9 @@ public class Icarous{
 	private int comportout;
 	private ParameterData pData;
 	private AircraftData FlightData;
-	private Interface APInt;
-	private Interface COMInt;
-	private Interface BCASTInt;
+	private Interface1 APInt;
+	private Interface1 COMInt;
+	private Interface1 BCASTInt;
 	private QuadFMS fms_module;
 	private DAQ daq_module;
 	private COM com_module;
@@ -166,7 +173,7 @@ public class Icarous{
 
 
 		if(sitlport > 0){
-			APInt        = new Interface(Interface.SOCKET,
+			APInt        = new Interface1(Interface1.SOCKET,
 					sitlhost,
 					sitlport,
 					0,
@@ -174,19 +181,19 @@ public class Icarous{
 
 
 		}else{	    
-			APInt         =  new Interface(Interface.SERIAL,px4port,px4baud,FlightData);
+			APInt         =  new Interface1(Interface1.SERIAL,px4port,px4baud,FlightData);
 		}
 
 
 		if(radioport == null){
-			COMInt   = new Interface(Interface.SOCKET,
+			COMInt   = new Interface1(Interface1.SOCKET,
 					comport,
 					comportin,
 					comportout,
 					FlightData);
 		}
 		else{
-			COMInt   = new Interface(Interface.SERIAL,radioport,radiobaud,FlightData);
+			COMInt   = new Interface1(Interface1.SERIAL,radioport,radiobaud,FlightData);
 
 		}
 
@@ -212,7 +219,7 @@ public class Icarous{
 		if(mode.equals("passthrough")){
 			System.out.println("ICAROUS pass through mode");
 			while(true){
-				Interface.PassThrough(APInt,COMInt);
+				Interface1.PassThrough(APInt,COMInt);
 			}
 		}	
 		else{
@@ -256,4 +263,50 @@ public class Icarous{
 		} // end of mode else (passthrough)
 		// [CAM] Printing debug information
 	}// end of run
+	
+	public void InputStartMission(int param){
+		
+	}
+	
+	public void InputResetIcarous(){
+		
+	}
+	
+	public void InputClearFlightPlan(){
+		
+	}
+	
+	public void InputParamTable(ParameterData pData){
+		
+	}
+	
+	public void InputFlightPlanData(msg_Waypoint waypoint){
+		
+	}
+	
+	public void InputGeofenceData(msg_Geofence geofence){
+		
+	}
+	
+	public void InputPosition(msg_Position position){
+		
+	}
+	
+	public void InputAttitude(msg_Attitude attitude){
+		
+	}
+	
+	public void InputMissionItemReached(msg_MissionItemReached misssionItemReached){
+		
+	}
+	
+	public void InputTraffic(msg_Object traffic){
+		
+		
+	}
+	
+	public void InputAck(msg_CmdAck ack){
+		
+	}
+	
 }// end of class
