@@ -1,7 +1,15 @@
 package gov.nasa.larcfm.ICAROUS.Messages;
 
 public class msg_Attitude extends IcarousMessages {
-	float roll;
-	float pitch;
-	float yaw;
+	
+	public static final int ICAROUS_MSG_ID_ATTITUDE = 2;
+		
+	public float roll;
+	public float pitch;
+	public float yaw;
+	
+	public msg_Attitude(){
+		msgid = ICAROUS_MSG_ID_ATTITUDE;
+	}
+	
 }
