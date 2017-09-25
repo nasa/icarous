@@ -51,8 +51,8 @@ public class ArduPilot extends MAVLinkInterface {
 	}
 	
 	@Override
-	public void HandleHeartbeat(MAVLinkMessage msg){
-		msg_heartbeat hbeat = (msg_heartbeat) msg;
+	public void HandleHeartbeat(MAVLinkPacket msg){
+		msg_heartbeat hbeat = (msg_heartbeat) msg.unpack();
 		lastPing = newPing;
 		newPing  = (double)System.nanoTime()/1E9;
 		elapsedTime = newPing - lastPing;
@@ -69,8 +69,8 @@ public class ArduPilot extends MAVLinkInterface {
 	}
 		
 	@Override
-	public void HandleMissionItemReached(MAVLinkMessage msg){
-		msg_mission_item_reached msgMissionItemReached = (msg_mission_item_reached) msg;		
+	public void HandleMissionItemReached(MAVLinkPacket msg){
+		msg_mission_item_reached msgMissionItemReached = (msg_mission_item_reached) msg.unpack();		
 		if(pipe.waypointType.get(msgMissionItemReached.seq) == MAV_CMD.MAV_CMD_NAV_WAYPOINT ||
 				pipe.waypointType.get(msgMissionItemReached.seq) == MAV_CMD.MAV_CMD_NAV_SPLINE_WAYPOINT){
 			msg_MissionItemReached wpreached = new msg_MissionItemReached(msgMissionItemReached.seq);
@@ -79,8 +79,8 @@ public class ArduPilot extends MAVLinkInterface {
 	}
 	
 	@Override
-	public void HandleCommandAck(MAVLinkMessage msg){
-		msg_command_ack ack = (msg_command_ack) msg;
+	public void HandleCommandAck(MAVLinkPacket msg){
+		msg_command_ack ack = (msg_command_ack) msg.unpack();
 		msg_CmdAck icAck = new msg_CmdAck();		
 		switch(ack.command){
 		case MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM:
@@ -98,8 +98,8 @@ public class ArduPilot extends MAVLinkInterface {
 	}
 
 	@Override
-	public void HandlePosition(MAVLinkMessage msg){
-		msg_global_position_int globalPositionInt = (msg_global_position_int) msg;
+	public void HandlePosition(MAVLinkPacket msg){
+		msg_global_position_int globalPositionInt = (msg_global_position_int) msg.unpack();
 		
 		msg_Position position = new msg_Position();
 		position.time_gps  = (double)globalPositionInt.time_boot_ms/1E3;

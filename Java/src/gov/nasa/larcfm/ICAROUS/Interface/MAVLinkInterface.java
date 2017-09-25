@@ -215,6 +215,8 @@ public class MAVLinkInterface implements Interface {
             break;	
 		}
 	}
+	
+	
 		
 	protected void HandleRadioStatus(MAVLinkPacket rcvdPacket) {
 		// TODO Auto-generated method stub
@@ -305,6 +307,7 @@ public class MAVLinkInterface implements Interface {
 		// TODO Auto-generated method stub
 		
 	}
+	
 
 	public void SendCommand(msg_ArgCmds msg){
 		switch(msg.name){
@@ -527,5 +530,8 @@ public class MAVLinkInterface implements Interface {
 		SendMavlinkData(req);
 	}
 
+	
+
+	
 
 }
