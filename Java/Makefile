@@ -7,6 +7,8 @@ MAVLinkSRC = $(wildcard src/com/MAVLink/*.java src/com/MAVLink/common/*.java \
 			src/com/MAVLink/enums/*.java \
 			src/com/MAVLink/Messages/*.java)
 ICAROUSSRC = $(wildcard src/gov/nasa/larcfm/ICAROUS/*.java)
+ICAROUSSRC += $(wildcard src/gov/nasa/larcfm/ICAROUS/Interface/*.java)
+ICAROUSSRC += $(wildcard src/gov/nasa/larcfm/ICAROUS/Messages/*.java)
 MISSIONSRC = $(wildcard src/gov/nasa/larcfm/MISSION/*.java)
 OTHERSRC   = $(wildcard src/*.java)
 LIB        = :lib/jssc-2.8.0.jar

@@ -35,7 +35,7 @@ import gov.nasa.larcfm.ICAROUS.*;
 
 public class radio{
     public static void main(String args[]){
-
+    	/*
 	Interface1 SOCKET  = new Interface1(Interface1.SOCKET,"localhost",
 				      Integer.parseInt(args[0]),
 				      Integer.parseInt(args[1]),null);
@@ -44,6 +44,6 @@ public class radio{
 
 	while(true){
 	    Interface1.PassThroughMAVPackets(SOCKET,SERIAL);
-	}
+	}*/
     }    
 }
