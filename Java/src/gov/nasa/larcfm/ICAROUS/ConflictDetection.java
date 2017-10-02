@@ -41,6 +41,7 @@ import java.lang.*;
 
 import gov.nasa.larcfm.ACCoRD.*;
 import gov.nasa.larcfm.ICAROUS.GeoFence.FENCE_TYPE;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_Visbands;
 import gov.nasa.larcfm.Util.*;
 
 public class ConflictDetection{   
@@ -259,12 +260,12 @@ public class ConflictDetection{
 			}
 		}
 		
-		// Construct kinematic bands message to send to ground station
-		msg_kinematic_bands msg = new msg_kinematic_bands();
-		msg.sysid = 1;
-		msg.numBands = (byte)KMB.trackLength();
+		// Construct kinematic bands message to send to ground station		
+		msg_Visbands msg = new msg_Visbands();
+		msg.numBands = (byte)KMB.trackLength(); 
 		
-		for(int i=0;i<msg.numBands;++i){
+		
+		for(int i=0;i<FlightData.visBands.numBands;++i){
 			Interval iv = KMB.track(i,"deg");
 			BandsRegion br = KMB.trackRegion(i);
 			int type = 0;
@@ -305,7 +306,7 @@ public class ConflictDetection{
 		if(KMB.trackLength() > 1 || (KMB.trackLength() == 1 && KMB.trackRegion(0).isValidBand() &&
 					     KMB.trackRegion(0) != BandsRegion.NONE) && FlightData.acTime > daaBandTime) {
 			daaBandTime = FlightData.acTime;
-		    FlightData.RcvdMessages.AddKinematicBands(msg);
+		    FlightData.visBands = msg;
 		}
 		
 		if(FMS.debugDAA && FlightData.acTime > daalogtime){

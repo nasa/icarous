@@ -60,7 +60,7 @@ public class Port{
 	private SerialPort serialPort = null;
 	public byte[] buffer_data     = null;
 
-	public Port(short pt,String hostname,int recvPort,int sendPort,AircraftData acData){
+	public Port(short pt,String hostname,int recvPort,int sendPort){
 		pType           = pt;
 		udpReceivePort  = recvPort;
 		udpSendPort     = sendPort;
@@ -77,7 +77,7 @@ public class Port{
 		SetTimeout(1);
 	}
 
-	public Port(short pt,String portName,int BAUDRATE,AircraftData acData){
+	public Port(short pt,String portName,int BAUDRATE){
 		pType          = pt;
 		serialPortName = portName;
 

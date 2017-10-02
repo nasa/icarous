@@ -43,8 +43,12 @@ import gov.nasa.larcfm.Util.NavPoint;
 import gov.nasa.larcfm.Util.Plan;
 import gov.nasa.larcfm.Util.Position;
 import gov.nasa.larcfm.Util.Velocity;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_ArgCmds;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_ArgCmds.command_name;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_CmdAck;
 import gov.nasa.larcfm.ICAROUS.Messages.msg_Geofence;
 import gov.nasa.larcfm.ICAROUS.Messages.msg_Object;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_Visbands;
 import gov.nasa.larcfm.ICAROUS.Messages.msg_Waypoint;
 import gov.nasa.larcfm.Util.AircraftState;
 import gov.nasa.larcfm.Util.ParameterData;
@@ -110,6 +114,10 @@ public class AircraftData{
 
 	double crossTrackDeviation;
 	double crossTrackOffset;
+	
+	public Queue<msg_ArgCmds> outputList;
+	public Queue<msg_CmdAck> commandAckList;
+	msg_Visbands visBands;
 
 	public AircraftData(ParameterData pdata){
 
@@ -123,6 +131,8 @@ public class AircraftData{
 		InputFlightPlan     = new ArrayList<msg_Waypoint>();		
 		WaypointIndices     = new ArrayList<Integer>();
 		WPMissionItemMapping = new ArrayList<Pair<Integer,Integer>>();
+		outputList          = new LinkedList<msg_ArgCmds>();
+		commandAckList      = new LinkedList<msg_CmdAck>(); 
 		startMission        = -1;
 		nextMissionWP       = 0;
 		nextResolutionWP    = 0;
@@ -188,101 +198,6 @@ public class AircraftData{
 		}
 	}
 
-	// Function to get flight plan
-	public int GetGeoFence(Interface1 Intf,msg_command_long msg){
-
-		boolean readComplete = false;
-		int count = 0;
-		int COUNT = (int) msg.param4;
-		GeoFence fence1 = new GeoFence((int)msg.param2,(int)msg.param3,(int)msg.param4,msg.param5,msg.param6,pData);
-
-		if(COUNT < 1){
-			if( (fence1.ID + 1) <= fenceList.size() ){
-				fenceList.remove(fence1.ID);	
-			}
-			return 1;
-		}
-
-		msg_fence_fetch_point msgFenceFetchPoint = new msg_fence_fetch_point();
-
-		msgFenceFetchPoint.sysid            = 1;
-		msgFenceFetchPoint.compid           = 1;
-		msgFenceFetchPoint.target_system    = (short) msg.sysid;
-		msgFenceFetchPoint.target_component = (short) msg.compid;
-
-		GF state = GF.GF_FETCH;
-
-		ArrayList<msg_fence_point> InputFence = new ArrayList<msg_fence_point>();
-
-		long time1 = System.nanoTime();
-
-		while(!readComplete){
-
-			long time2 = System.nanoTime();
-			if(time2 - time1 > 3E9){
-				break;
-			}
-
-			switch(state){
-
-			case GF_FETCH:
-
-				msgFenceFetchPoint.idx = (byte)count;		    		    
-				Intf.Write(msgFenceFetchPoint);					    		
-				//System.out.println("Wrote count:"+count);
-				state = GF.GF_READ;	       
-
-				break;
-
-			case GF_READ:
-
-				Intf.Read();								
-				msg_fence_point msgFencePoint = RcvdMessages.GetFencePoint();
-				if(msgFencePoint != null){
-
-					//System.out.println("geofence point received:"+msgFencePoint.idx);
-					if(msgFencePoint.idx == count){
-						InputFence.add(msgFencePoint);
-						fence1.AddVertex(msgFencePoint.idx,msgFencePoint.lat,msgFencePoint.lng);			    
-						count++;
-						time1 = time2;
-						state = GF.GF_FETCH;    	       
-					}
-					else{
-						// Send failure acknowledgement
-						//msg_command_ack msgCommandAck = new msg_command_ack();
-						//msgCommandAck.result = 0;
-						//Intf.Write(msgCommandAck);
-					}
-				}
-
-				if(count >= COUNT){
-					state = GF.GF_READ_COMPLETE;
-				}
-
-				break;
-
-			case GF_READ_COMPLETE:
-
-				readComplete = true;
-				//System.out.println("Received fence");
-				if( fence1.ID >= fenceList.size() ){
-					fenceList.add(fence1);
-				}
-				else{
-					fenceList.set(fence1.ID,fence1);
-				}
-				msg_command_ack msgCommandAck = new msg_command_ack();
-				msgCommandAck.command = MAV_CMD.MAV_CMD_DO_FENCE_ENABLE;
-				msgCommandAck.result = 1;
-				Intf.Write(msgCommandAck);		
-				//fence1.print();
-				return 1;
-			} // end of switch case
-		}//end of while
-		return 0;
-	}//end of function
-
 	public void ConstructFlightPlan(){
 		// Make a new Plan using the input mission item
 		MissionPlan = new Plan();
@@ -327,6 +242,23 @@ public class AircraftData{
 						CurrentFlightPlan.time(nextWP-1)));
 
 		return speed;
+	}
+	
+	public synchronized void InputAck(msg_CmdAck ack){
+		commandAckList.add(ack);
+	}
+	
+	public synchronized boolean CheckAck(int command){
+		boolean status = false;
+		while(commandAckList.size()>0){
+			msg_CmdAck ack = commandAckList.remove();
+			if(ack.name == command && ack.result == 0){
+				status = true;
+				return status;
+			}
+		}
+		
+		return status;
 	}
 
 	public synchronized void Reset(){

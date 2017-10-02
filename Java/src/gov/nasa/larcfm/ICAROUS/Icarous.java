@@ -35,12 +35,17 @@
 package gov.nasa.larcfm.ICAROUS;
 import gov.nasa.larcfm.Util.Constants;
 import gov.nasa.larcfm.Util.ParameterData;
+import gov.nasa.larcfm.Util.Position;
+import gov.nasa.larcfm.Util.Velocity;
+import gov.nasa.larcfm.ICAROUS.Interface.Interface;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_ArgCmds;
 import gov.nasa.larcfm.ICAROUS.Messages.msg_Attitude;
 import gov.nasa.larcfm.ICAROUS.Messages.msg_CmdAck;
 import gov.nasa.larcfm.ICAROUS.Messages.msg_Geofence;
 import gov.nasa.larcfm.ICAROUS.Messages.msg_MissionItemReached;
 import gov.nasa.larcfm.ICAROUS.Messages.msg_Object;
 import gov.nasa.larcfm.ICAROUS.Messages.msg_Position;
+import gov.nasa.larcfm.ICAROUS.Messages.msg_Visbands;
 import gov.nasa.larcfm.ICAROUS.Messages.msg_Waypoint;
 import gov.nasa.larcfm.IO.SeparatedInput;
 import com.MAVLink.common.*;
@@ -55,30 +60,23 @@ public class Icarous{
 	public static final String VERSION = "1.2.2";
 
     private boolean verbose;
-	private String sitlhost;
-	private String px4port;
-	private String bcastgroup;
-	private String comport;
-	private String radioport;
-	private String mode;
-	private String inputfile;
-	private int px4baud;
-	private int radiobaud;
-	private int sitlport;
-	private int bcastport;
-	private int comportin;
-	private int comportout;
+    private String mode;
+	private String inputfile;	
 	private ParameterData pData;
-	private AircraftData FlightData;
-	private Interface1 APInt;
-	private Interface1 COMInt;
-	private Interface1 BCASTInt;
-	private QuadFMS fms_module;
-	private DAQ daq_module;
-	private COM com_module;
+	private AircraftData FlightData;	
+	private QuadFMS fms_module;	
 	//private BCAST bcast_module;
 	private Mission Task;
 	private boolean debugDAA;
+	public String sitlhost;
+	public String px4port;	
+	public String comport;
+	public String radioport;	
+	public int px4baud;
+	public int radiobaud;
+	public int sitlport;	
+	public int comportin;
+	public int comportout;
 	
 	public class IcarousMode{
 		public static final int _ACTIVE_ = 0;
@@ -89,20 +87,15 @@ public class Icarous{
 		verbose    = false;
 		debugDAA   = false;
 		sitlhost   = null;
-		px4port    = null;
-		bcastgroup = null;
+		px4port    = null;		
 		comport    = null;
 		radioport  = null;
 		mode       = null;
 		px4baud   = 0;
 		radiobaud = 0;
-		sitlport   = 0;
-		bcastport  = 0;
+		sitlport   = 0;		
 		comportin  = 0;
-		comportout = 0;
-		APInt      = null;
-		COMInt     = null;
-		BCASTInt   = null;
+		comportout = 0;		
 		Task       = task;
 
 		// Read in initial value for all parameters (Note this can also be set from
@@ -133,12 +126,7 @@ public class Icarous{
 				radioport = args[++i];
 				radiobaud = Integer.parseInt(args[++i]);
 			}
-
-			else if(args[i].startsWith("--bc")){
-				bcastgroup = args[++i];
-				bcastport  = Integer.parseInt(args[++i]);
-			}	    
-
+				    
 			else if(args[i].startsWith("--mode")){
 				mode = args[++i];
 			}
@@ -155,8 +143,6 @@ public class Icarous{
 				System.out.println("Invalid option "+args[i]);
 				System.exit(0);
 			}
-			
-
 		}
 		
 		pData = null;
@@ -174,45 +160,7 @@ public class Icarous{
 
 		System.out.println("ICAROUS Release: "+release());
 
-		FlightData    = new AircraftData(pData);
-
-
-		if(sitlport > 0){
-			APInt        = new Interface1(Interface1.SOCKET,
-					sitlhost,
-					sitlport,
-					0,
-					FlightData);
-
-
-		}else{	    
-			APInt         =  new Interface1(Interface1.SERIAL,px4port,px4baud,FlightData);
-		}
-
-
-		if(radioport == null){
-			COMInt   = new Interface1(Interface1.SOCKET,
-					comport,
-					comportin,
-					comportout,
-					FlightData);
-		}
-		else{
-			COMInt   = new Interface1(Interface1.SERIAL,radioport,radiobaud,FlightData);
-
-		}
-
-		COMInt.SendStatusText("ICAROUS version: "+VERSION);
-
-		fms_module  = new QuadFMS(APInt,COMInt,FlightData,Task,pData);
-		daq_module  = new DAQ("Data acquisition",FlightData,APInt,COMInt);
-		com_module  = new COM("Communications",APInt,COMInt,FlightData,pData);
-
-		fms_module.log.setConsoleOutput(verbose);
-		com_module.log.setConsoleOutput(verbose);
-		fms_module.debugDAA = debugDAA;
-
-		COMInt.SendStatusText("IC: DAQ, FMS, COM Initialized");
+		FlightData    = new AircraftData(pData);	
 	}
 
 	public static String release() {
@@ -220,98 +168,111 @@ public class Icarous{
 				"-FormalATM-"+Constants.version+" (July-28-2017)"; 
 	}
 
-	public void run(){
-		if(mode.equals("passthrough")){
-			System.out.println("ICAROUS pass through mode");
-			while(true){
-				Interface1.PassThrough(APInt,COMInt);
-			}
-		}	
-		else{
-
-			daq_module.start();
-			com_module.start();
-			
-			msg_heartbeat msgHeartbeatAP = FlightData.RcvdMessages.GetHeartbeat_AP();	
-			while(msgHeartbeatAP == null){
-				msgHeartbeatAP = FlightData.RcvdMessages.GetHeartbeat_AP();
-			}
-
-			System.out.println("Received heartbeat from AP");
-			COMInt.SendStatusText("IC:Connected to Pixhawk");
-
-			fms_module.EnableDataStream(1);
-
-			
-
-			if(bcastport > 0){
-				//bcast_module.start();
-			}
-
-			if(mode.equals("passive")){
-
-				System.out.println("ICAROUS passive mode");
-				COMInt.SendStatusText("IC:ICAROUS is passive");
-				while(true){
-					fms_module.UpdateAircraftData();
-					fms_module.Monitor();
-				}
-			}
-			else{
-				System.out.println("ICAROUS active mode");
-				COMInt.SendStatusText("IC:ICAROUS is active");
-				fms_module.start();
-				while(fms_module.isFMSrunning()){
-					// DO nothing
-				}					
-			} // end of mode else (passive)
-		} // end of mode else (passthrough)
-		// [CAM] Printing debug information
-	}// end of run
+	public void Run(Interface AP,Interface GS){
+		while(true){
+			fms_module.run();			
+			OutputToAP(AP);
+			OutputToGS(GS);
+		}
+	}
+	
 	
 	public void InputStartMission(int param){
-		
+		FlightData.SetStartMissionFlag(param);
 	}
 	
 	public void InputResetIcarous(){
-		
+		FlightData.Reset();
 	}
 	
 	public void InputClearFlightPlan(){
-		
+		FlightData.InputFlightPlan.clear();
 	}
-	
-	public void InputParamTable(ParameterData pData){
 		
-	}
-	
 	public void InputFlightPlanData(msg_Waypoint waypoint){
-		
+		FlightData.AddMissionItem(waypoint);
 	}
 	
 	public void InputGeofenceData(msg_Geofence geofence){
-		
+		FlightData.AddGeofence(geofence);
 	}
 	
 	public void InputPosition(msg_Position position){
+		double lat,lon,alt;
+		double vx,vy,vz;
+		double bootTime;
+		
+		bootTime = (double) position.time_gps;
+		lat      = (double) position.latitude;
+		lon      = (double) position.longitude;
+		alt      = (double) position.altitude_rel;
+		vx       = (double) position.vx;
+		vy       = (double) position.vy;
+		vz       = (double) position.vz;
+		
+		Velocity V = Velocity.makeVxyz(vy,vx,"m/s",vz,"m/s");
+		Position P = Position.makeLatLonAlt(lat,"degree",lon,"degree",alt,"m");	
+		FlightData.acState.add(P,V,bootTime);
+		FlightData.acTime = bootTime;
 		
 	}
 	
 	public void InputAttitude(msg_Attitude attitude){
+		// Get aircraft attitude information
 		
-	}
+		FlightData.roll  = attitude.roll;
+		FlightData.pitch = attitude.pitch;
+		FlightData.yaw   = attitude.yaw;
+		
+		
+		FlightData.heading = FlightData.acState.velocityLast().track("degree");
+		
+		if(FlightData.heading < 0){
+			FlightData.heading = 360 + FlightData.heading;
+		}
+	}	
 	
 	public void InputMissionItemReached(msg_MissionItemReached misssionItemReached){
-		
+		FlightData.nextMissionWP++;
 	}
 	
 	public void InputTraffic(msg_Object traffic){
-		
-		
+		FlightData.AddTraffic(traffic.index, traffic.latitude, traffic.longitude, traffic.altiude,
+				traffic.vx, traffic.vy, traffic.vz);
 	}
 	
 	public void InputAck(msg_CmdAck ack){
-		
+		FlightData.InputAck(ack);
+	}
+	
+	public msg_ArgCmds OutputCommand(){
+		if(FlightData.outputList.size() > 0){
+			return FlightData.outputList.remove();
+		}else{
+			return null;
+		}
+	}
+	
+	public msg_Visbands OutputKinematicBands(){
+		return FlightData.visBands;
+	}
+	
+	public void OutputToAP(Interface iface){
+		msg_ArgCmds cmd = null;
+		do{
+			cmd = OutputCommand();
+			if (cmd != null){
+				iface.SendData(cmd);
+			}
+		}while(cmd != null);
+	}
+	
+	public void OutputToGS(Interface iface){
+		msg_Visbands msg = FlightData.visBands;
+		FlightData.visBands = null;		
+		if(msg!= null){
+			iface.SendData(msg);
+		}		
 	}
 	
 }// end of class

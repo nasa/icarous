@@ -36,6 +36,7 @@ import com.MAVLink.enums.*;
 import com.MAVLink.icarous.msg_kinematic_bands;
 import com.MAVLink.common.*;
 
+import gov.nasa.larcfm.ICAROUS.Messages.msg_ArgCmds;
 import gov.nasa.larcfm.Util.ErrorLog;
 import gov.nasa.larcfm.Util.ErrorReporter;
 import gov.nasa.larcfm.Util.ParameterData;
@@ -80,8 +81,6 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	protected MAVLinkMessages RcvdMessages;
 	protected FMS_STATE_t fmsState;
 	protected boolean FMSrunning;
-	protected Interface1 apIntf;
-	protected Interface1 gsIntf;
 	public ErrorLog log;
 	public AircraftData FlightData;
 	public boolean devAllowed;
@@ -91,15 +90,13 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	public int currentMode;
 	public boolean icarousActive;
    
-	public FlightManagementSystem(String name,AircraftData fData,Interface1 ap, Interface1 gs){
+	public FlightManagementSystem(String name,AircraftData fData){
 		threadName       = name;
 		FMSrunning       = true;
 		fmsState         = FMS_STATE_t._IDLE_;
 		FlightData       = fData;
 		RcvdMessages     = FlightData.RcvdMessages;
 		log              = new ErrorLog("FMS");
-		apIntf           = ap;
-		gsIntf           = gs;
 		devAllowed       = false;
 		debugDAA         = false;
 		debug_in         = "";
@@ -129,12 +126,6 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	}
 
 	public void FlightManagement(){
-
-		UpdateAircraftData();
-		CheckMissionWaypointReached();
-		CheckResetFlag();
-		GetCurrentMode();
-
 		switch(fmsState){
 
 		case _IDLE_:
@@ -165,318 +156,99 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 			break;
 		}
 	}
-
-	public void UpdateAircraftData(){
-
-		// Get GPS data from mavlink messages
-		double lat,lon,alt;
-		double vx,vy,vz;
-		double bootTime;
-
-		msg_global_position_int GPS = RcvdMessages.GetGlobalPositionInt();
-		bootTime = (double) (GPS.time_boot_ms)/1E3;
-		lat      = (double) (GPS.lat)/1.0E7;
-		lon      = (double) (GPS.lon)/1.0E7;
-		alt      = (double) (GPS.relative_alt)/1.0E3;
-		vx       = (double) (GPS.vx)/1E2;
-		vy       = (double) (GPS.vy)/1E2;
-		vz       = (double) (GPS.vz)/1E2;
-		
-		Velocity V = Velocity.makeVxyz(vy,vx,"m/s",vz,"m/s");
-		Position P = Position.makeLatLonAlt(lat,"degree",lon,"degree",alt,"m");	
-		FlightData.acState.add(P,V,bootTime);
-
-		// Get aircraft attitude information
-		msg_attitude msg = RcvdMessages.GetAttitude();
-
-		FlightData.roll  = msg.roll*180/Math.PI;
-		FlightData.pitch = msg.pitch*180/Math.PI;
-		FlightData.yaw   = msg.yaw*180/Math.PI;
-
-
-		FlightData.heading = FlightData.acState.velocityLast().track("degree");
-
-		if(FlightData.heading < 0){
-			FlightData.heading = 360 + FlightData.heading;
-		}
-
-		FlightData.acTime = bootTime;
+	
+	public void StartTakeoff(float alt){
+		msg_ArgCmds cmd = new msg_ArgCmds();
+		cmd.name = msg_ArgCmds.command_name._TAKEOFF_;
+		cmd.param1 = alt;
+		FlightData.outputList.add(cmd);
 	}
-
-	// Function to send commands to pixhawk
-	public void SendCommand( int target_system,int target_component,int command,int confirmation,
-			float param1,float param2,float param3,float param4,float param5,
-			float param6,float param7){
-
-		msg_command_long CommandLong  = new msg_command_long();
-
-		CommandLong.target_system     = (short) target_system;
-		CommandLong.target_component  = (short) target_component;
-		CommandLong.command           = command;
-		CommandLong.confirmation      = (short) confirmation;
-		CommandLong.param1            = param1;
-		CommandLong.param2            = param2;
-		CommandLong.param3            = param3;
-		CommandLong.param4            = param4;
-		CommandLong.param5            = param5;
-		CommandLong.param6            = param6;
-		CommandLong.param7            = param7;
-
-		apIntf.Write(CommandLong);
-
-		try{
-			Thread.sleep(100);
-		}catch(InterruptedException e){
-			System.out.println(e);
-		}
+	
+	public void StartLand(){
+		msg_ArgCmds cmd = new msg_ArgCmds();
+		cmd.name = msg_ArgCmds.command_name._LAND_;
+		Position currPosition = FlightData.acState.positionLast();
+		cmd.param5 = (float)currPosition.latitude();
+		cmd.param6 = (float)currPosition.longitude();
+		cmd.param7 = (float)0.0;
+		FlightData.outputList.add(cmd);
 	}
-
+	
+	public void ArmThrottles(boolean arm){
+				
+		int c=arm?1:0;
+		msg_ArgCmds cmd = new msg_ArgCmds(); 
+		cmd.name = msg_ArgCmds.command_name._ARM_;
+		cmd.param1 = c;
+		FlightData.outputList.add(cmd);		
+	}
+	
 	// Yaw command
 	public void SetYaw(boolean relative, double heading){
-		int rel = relative?1:0;		
-		SendCommand(0,0,MAV_CMD.MAV_CMD_CONDITION_YAW,0,
-				(float)heading,0,1,rel,
-				0,0,0);
+		int rel = relative?1:0;
+		msg_ArgCmds cmd = new msg_ArgCmds();
+		cmd.name = msg_ArgCmds.command_name._SETYAW_;
+		cmd.param1 = (float)heading;
+		cmd.param2 = 0;
+		cmd.param3 = 1;
+		cmd.param4 = rel;
+		FlightData.outputList.add(cmd);		
 	}
 
 	// Position command
 	public void SetGPSPos(double lat,double lon, double alt){
 
-		msg_set_position_target_global_int msg= new msg_set_position_target_global_int();
-
-		msg.time_boot_ms     = 0;
-		msg.target_system    = 0;
-		msg.target_component = 0;
-		msg.coordinate_frame = MAV_FRAME.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT;
-		msg.type_mask        = 0b0000111111111000;
-		msg.lat_int          = (int) (lat*1E7);
-		msg.lon_int          = (int) (lon*1E7);
-		msg.alt              = (float) alt;
-		msg.vx               = 0;
-		msg.vy               = 0;
-		msg.vz               = 0;
-		msg.afx              = 0;
-		msg.afy              = 0;
-		msg.afz              = 0;
-		msg.yaw              = 0;
-		msg.yaw_rate         = 0;
-
-		apIntf.Write(msg);
-
-		try{
-			Thread.sleep(100);
-		}catch(InterruptedException e){
-			System.out.println(e);
-		}
+		msg_ArgCmds cmd = new msg_ArgCmds();
+		cmd.name = msg_ArgCmds.command_name._SETPOS_;
+		cmd.param1 = (float)lat;
+		cmd.param2 = (float)lon;
+		cmd.param3 = (float)alt;
+		FlightData.outputList.add(cmd);
 	}
 
 	// Velocity command
 	public void SetVelocity(double Vn,double Ve, double Vu){
 
-		msg_set_position_target_local_ned msg= new msg_set_position_target_local_ned();
-
-		msg.time_boot_ms     = 0;
-		msg.target_system    = 0;
-		msg.target_component = 0;
-		msg.coordinate_frame = MAV_FRAME.MAV_FRAME_LOCAL_NED;	
-		msg.type_mask        = 0b0000111111000111;
-		msg.x                = 0;
-		msg.y                = 0;
-		msg.z                = 0;
-		msg.vx               = (float)Vn;
-		msg.vy               = (float)Ve;
-		msg.vz               = (float)Vu;
-		msg.afx              = 0;
-		msg.afy              = 0;
-		msg.afz              = 0;
-		msg.yaw              = 0;
-		msg.yaw_rate         = 0;
-
-		apIntf.Write(msg);
-
-		try{
-			Thread.sleep(100);
-		}
-		catch(InterruptedException e){
-			System.out.println(e);
-		}
+		msg_ArgCmds cmd = new msg_ArgCmds();
+		cmd.name = msg_ArgCmds.command_name._SETVEL_;
+		cmd.param1 = (float)Vn;
+		cmd.param2 = (float)Ve;
+		cmd.param3 = (float)Vu;
+		FlightData.outputList.add(cmd);
 	}
 
 	// Function to set mode
-	public int SetMode(int modeid){
+	public void SetMode(int modeid){
 
-		msg_set_mode Mode = new msg_set_mode();
-		Mode.target_system = (short) 0;
-		Mode.base_mode     = (short) 1;
-		Mode.custom_mode   = (long) modeid;
-
-		apIntf.Write(Mode);
-
-		try{
-			Thread.sleep(200);
-		}catch(InterruptedException e){
-			System.out.println(e);
-		}
-
-		return 1;
+		msg_ArgCmds cmd = new msg_ArgCmds();
+		cmd.name = msg_ArgCmds.command_name._SETMODE_;
+		cmd.param1 = modeid;
+		FlightData.outputList.add(cmd);
 	}
 	
 	public void SetMissionItem(int nextWP){
-		msg_mission_set_current msgMission = new msg_mission_set_current();
-        msgMission.target_system = 1;
-        msgMission.target_component = 0;        
-        msgMission.seq = nextWP;               
-        for(int i=0;i<FlightData.WPMissionItemMapping.size();++i){
-        	if (FlightData.WPMissionItemMapping.get(i).first == nextWP){
-        		msgMission.seq = FlightData.WPMissionItemMapping.get(i).second;
-        		break;
-        	}
-        }
-        //System.out.println("Setting AP mission seq:"+msgMission.seq);
-        apIntf.Write(msgMission);
-	}
-
-	// Check acknowledgement
-	public int CheckAcknowledgement(int command){
-
-		short status;
-
-		msg_command_ack msgCommandAck = null;
-
-		//System.out.println("Checking for ack for:"+command);
-		while(msgCommandAck == null){	    
-			msgCommandAck = RcvdMessages.GetCommandAck();
-			if(msgCommandAck != null){
-				//System.out.format("Got ack for %d = %d\n",msgCommandAck.command,msgCommandAck.result);
-			}
-			if( (msgCommandAck != null) && (msgCommandAck.command != command)){
-				msgCommandAck = null;
-			}
-		}
-
-		status = msgCommandAck.result;
-
-		switch(status){
-
-		case 0:
-			//error.addWarning("Command Accepted");
-			return 1;
-
-		case MAV_CMD_ACK.MAV_CMD_ACK_OK:
-			//error.addError("Command Accepted");	    
-			return 1;
-
-		case MAV_CMD_ACK.MAV_CMD_ACK_ERR_FAIL:
-			log.addError("Command error: fail");	    
-			return 0;
-
-		case MAV_CMD_ACK.MAV_CMD_ACK_ERR_ACCESS_DENIED:
-			log.addError("Command error: access denied");
-			return 0;
-
-		case MAV_CMD_ACK.MAV_CMD_ACK_ERR_NOT_SUPPORTED:
-			log.addError("Command error: not supported");
-			return 0;
-
-		case MAV_CMD_ACK.MAV_CMD_ACK_ERR_COORDINATE_FRAME_NOT_SUPPORTED:
-			log.addError("Command error: frame not supported");
-			return 0;
-
-		case MAV_CMD_ACK.MAV_CMD_ACK_ERR_COORDINATES_OUT_OF_RANGE:
-			log.addError("Command error: coordinates out of range");
-			return 0;
-
-		case MAV_CMD_ACK.MAV_CMD_ACK_ERR_X_LAT_OUT_OF_RANGE:
-			log.addError("Command error: x lat out of range");
-			return 0;
-
-		case MAV_CMD_ACK.MAV_CMD_ACK_ERR_Y_LON_OUT_OF_RANGE:
-			log.addError("Command error: y lat out of range");
-			return 0;
-
-		case MAV_CMD_ACK.MAV_CMD_ACK_ERR_Z_ALT_OUT_OF_RANGE:
-			log.addError("Command error: z alt out of range");
-			return 0;
-
-		case MAV_CMD_ACK.MAV_CMD_ACK_ENUM_END:
-			log.addError("Command error: enum end");
-			return 0;
-
-		default:
-			log.addError("Unrecognized result");
-			return -1;
-
-		}	   	    		
-	}
-
-	public void EnableDataStream(int option){
-
-		msg_heartbeat msg1 = new msg_heartbeat();
-
-		msg1.type      = MAV_TYPE.MAV_TYPE_ONBOARD_CONTROLLER;
-		msg1.autopilot = MAV_AUTOPILOT.MAV_AUTOPILOT_GENERIC;
-		msg1.sysid     = 255;
-
-		//apIntf.Write(msg1);
-
-		msg_request_data_stream req = new msg_request_data_stream();
-		req.req_message_rate = 4;
-		req.req_stream_id    = MAV_DATA_STREAM.MAV_DATA_STREAM_ALL;
-		req.start_stop       = (byte) option;
-		req.target_system    = 1;
-		req.target_component = 0;
-
-		apIntf.Write(req);
+		msg_ArgCmds cmd = new msg_ArgCmds();
+		cmd.name = msg_ArgCmds.command_name._GOTOWP_;
+		cmd.param1 = nextWP;
+		FlightData.outputList.add(cmd);
 	}
 	
+	// Check acknowledgement
+	public boolean CheckAcknowledgement(int command){
+		return FlightData.CheckAck(command);
+	}
+
 	public void GetCurrentMode(){
-		msg_heartbeat msg = FlightData.RcvdMessages.GetHeartbeat_AP();
-		currentMode =  (int)msg.custom_mode;
-		
-		if( (currentMode == ARDUPILOT_MODES.ALT_HOLD) || 
-			(currentMode == ARDUPILOT_MODES.POSHOLD)){
-			icarousActive = false;
-		}else{
-			icarousActive = true;
-		}
+		//TODO: implement this
 	}
 
 	public void SetSpeed(float speed){
-		SendCommand(0,0,MAV_CMD.MAV_CMD_DO_CHANGE_SPEED,0,
-				1,speed,0,0,0,0,0);
-		
+		msg_ArgCmds cmd = new msg_ArgCmds();
+		cmd.name = msg_ArgCmds.command_name._SETSPEED_;
+		cmd.param1 = speed;
+		FlightData.outputList.add(cmd);		
 		FlightData.speed = speed;
 	}
-
-	public boolean CheckMissionWaypointReached(){
-
-		boolean reached = false;
-		msg_mission_item_reached msgMissionItemReached = FlightData.RcvdMessages.GetMissionItemReached();		
-		if(msgMissionItemReached != null){
-			//System.out.format("mission item reached:%d\n",msgMissionItemReached.seq);
-			//System.out.println(FlightData.WaypointIndices);
-			//System.out.println(FlightData.WaypointIndices.contains(msgMissionItemReached.seq));
-			Iterator<Integer> iterator = FlightData.WaypointIndices.iterator();
-		    while(iterator.hasNext()) {
-		        Integer setElement = iterator.next();
-		        if(msgMissionItemReached.seq >= setElement) {
-		            iterator.remove();
-		            reached = true;
-		        }else{		        	
-		        	break;
-		        }
-		    }
-		}
-		if(reached){
-			//System.out.println("Incrementing next WP index");
-			FlightData.nextMissionWP++;
-			if(FlightData.nextMissionWP < FlightData.numMissionWP){
-				float speed = FlightData.GetFlightPlanSpeed(FlightData.MissionPlan,FlightData.nextMissionWP);					
-				//SetSpeed(speed);
-			}
-		}
-		return reached;	
-	} 
 
 	public void IDLE(){
 		if(FlightData.startMission == 0){		

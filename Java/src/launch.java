@@ -33,6 +33,8 @@
  */
 
 import gov.nasa.larcfm.ICAROUS.*;
+import gov.nasa.larcfm.ICAROUS.Interface.ArduPilot;
+import gov.nasa.larcfm.ICAROUS.Interface.MAVProxy;
 import gov.nasa.larcfm.MISSION.*;
 
 public class launch{
@@ -41,6 +43,26 @@ public class launch{
 		InspectObjectMission test = new InspectObjectMission();
 		//TrackingMission test = new TrackingMission();
 		Icarous IcarousMain = new Icarous(args,test);
-		IcarousMain.run();
+		ArduPilot AP = new ArduPilot(IcarousMain);
+		if(IcarousMain.px4baud > 0){
+			AP.ConfigurePorts(IcarousMain.px4port, IcarousMain.px4baud);
+		}else{
+			AP.ConfigurePorts(IcarousMain.sitlhost,IcarousMain.sitlport,0);
+		}
+		
+		MAVProxy GS = new MAVProxy(IcarousMain);
+		if(IcarousMain.radiobaud > 0){
+			GS.ConfigurePorts(IcarousMain.radioport, IcarousMain.radiobaud);
+		}else{
+			GS.ConfigurePorts(IcarousMain.comport, IcarousMain.comportin, IcarousMain.comportout);
+		}
+		
+		AP.SetPipe(GS);
+		GS.SetPipe(AP);
+		
+		AP.Start("AP_READ");
+		GS.Start("GS_READ");
+				
+		IcarousMain.Run(AP,GS);
 	}// end of main    
 }// end of class

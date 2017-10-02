@@ -39,7 +39,7 @@ import gov.nasa.larcfm.ICAROUS.Icarous.IcarousMode;
 import gov.nasa.larcfm.ICAROUS.Port;
 import gov.nasa.larcfm.ICAROUS.Messages.*;
 
-public class MAVLinkInterface implements Interface {
+public class MAVLinkInterface implements Interface,Runnable {
 
 	public class ARDUPILOT_MODES{
 		public static final int STABILIZE =     0;  // manual airframe angle with manual throttle
@@ -75,6 +75,14 @@ public class MAVLinkInterface implements Interface {
 
 	public void SetPipe(MAVLinkInterface intf){
 		pipe = intf;
+	}
+	
+	public void ConfigurePorts(String portname,int baudrate){
+		PT = new Port(Port.PortType.SERIAL, portname, baudrate);
+	}
+	
+	public void ConfigurePorts(String hostname,int input,int output){
+		PT = new Port(Port.PortType.SOCKET,hostname,input,output);
 	}
 
 	@Override
@@ -530,8 +538,16 @@ public class MAVLinkInterface implements Interface {
 		SendMavlinkData(req);
 	}
 
+	@Override
+	public void run() {		
+		while(true){
+			GetData();
+		}
+	}
 	
-
-	
+	public void Start(String threadName){
+		Thread t = new Thread(this,threadName);
+		t.start();
+	}
 
 }

@@ -35,6 +35,8 @@ package gov.nasa.larcfm.ICAROUS;
 import com.MAVLink.enums.*;
 import com.MAVLink.common.*;
 import com.MAVLink.icarous.*;
+
+import gov.nasa.larcfm.ICAROUS.Messages.msg_ArgCmds;
 import gov.nasa.larcfm.Util.*;
 import java.util.*;
 
@@ -62,8 +64,8 @@ public class QuadFMS extends FlightManagementSystem{
 	private double wpDiffTime,startNextWPTime;
 	double captureH,captureV;
 
-	public QuadFMS(Interface1 ap_Intf,Interface1 com_Intf,AircraftData acData,Mission mc,ParameterData pdata){
-		super("QuadFMS",acData,ap_Intf,com_Intf);
+	public QuadFMS(AircraftData acData,Mission mc,ParameterData pdata){
+		super("QuadFMS",acData);
 		takeoffAlt = 0.0f;
 		landStarted = false;
 		Detector = new ConflictDetection(this);
@@ -85,23 +87,20 @@ public class QuadFMS extends FlightManagementSystem{
 		Position currPosition  = FlightData.acState.positionLast();
 
 		// set mode to guided
-		SetMode(ARDUPILOT_MODES.GUIDED);
+		SetMode(Icarous.IcarousMode._ACTIVE_);
 
 		// arm the copter
-		SendCommand(0,0,MAV_CMD.MAV_CMD_COMPONENT_ARM_DISARM,0,
-				1,0,0,0,0,0,0);
+		ArmThrottles(true);
 
 		// send takeoff command
-		SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_TAKEOFF,0,
-				1,0,0,0, (float) currPosition.latitude(),
-				(float) currPosition.longitude(),
-				takeoffAlt);
+		StartTakeoff(takeoffAlt);
+		
 
-		int ack = CheckAcknowledgement(MAV_CMD.MAV_CMD_NAV_TAKEOFF);
+		boolean ack = CheckAcknowledgement(msg_ArgCmds.command_name._TAKEOFF_);
 
-		if(ack == 1){
+		if(ack){
 			fmsState = FMS_STATE_t._CLIMB_;
-			gsIntf.SendStatusText("Starting climb");
+			// Send status text
 		}
 		else{
 			fmsState = FMS_STATE_t._IDLE_;
@@ -116,7 +115,7 @@ public class QuadFMS extends FlightManagementSystem{
 
 		if( error < 2.5 ){
 			fmsState = FMS_STATE_t._CRUISE_;
-			SetMode(ARDUPILOT_MODES.AUTO);
+			SetMode(Icarous.IcarousMode._PASSIVE_);
 			// Set speed
 			FlightData.nextMissionWP++;
 			float speed = FlightData.GetFlightPlanSpeed(FlightData.MissionPlan,FlightData.nextMissionWP);
@@ -160,15 +159,7 @@ public class QuadFMS extends FlightManagementSystem{
 	public void LAND(){	
 		Position currPosition = FlightData.acState.positionLast();
 		if(!landStarted){
-			// Set mode to guided
-			log.addWarning("MSG: Landing started");
-			gsIntf.SendStatusText("Landing");
-			SetMode(ARDUPILOT_MODES.GUIDED);
-			SendCommand(0,0,MAV_CMD.MAV_CMD_NAV_LAND,0,
-					0,0,0,0,
-					(float) currPosition.latitude(),
-					(float) currPosition.longitude(),
-					(float) currPosition.alt());
+			StartLand();
 			landStarted = true;
 		}
 	}
@@ -198,7 +189,7 @@ public class QuadFMS extends FlightManagementSystem{
 			// Call the relevant resolution functions to resolve conflicts
 			if(Detector.trafficConflict){
 				log.addWarning("MSG: Computing resolution for traffic conflict");
-				gsIntf.SendStatusText("Traffic conflict");
+				//SendStatusText("Traffic conflict");
 				int cheapDAA = FlightData.pData.getInt("CHEAP_DAA");
 				if(cheapDAA == 1){
 					Resolver.ResolveTrafficConflictDAA();
@@ -211,8 +202,8 @@ public class QuadFMS extends FlightManagementSystem{
 			}
 			else if(Detector.keepInConflict){
 				log.addWarning("MSG: Computing resolution for keep in conflict");
-				gsIntf.SendStatusText("Keep in conflict");
-				SetMode(ARDUPILOT_MODES.BRAKE);
+				//SendStatusText("Keep in conflict");
+				//SetMode(ARDUPILOT_MODES.BRAKE);
 				try{
 					Thread.sleep(500);
 				}
@@ -222,9 +213,9 @@ public class QuadFMS extends FlightManagementSystem{
 				Resolver.ResolveKeepInConflict();		
 			}
 			else if(Detector.keepOutConflict){
-				SetMode(ARDUPILOT_MODES.GUIDED);
+				SetMode(Icarous.IcarousMode._ACTIVE_);
 				log.addWarning("MSG: Computing resolution for keep out conflict");
-				gsIntf.SendStatusText("Keep out conflict");
+				//SendStatusText("Keep out conflict");
 				int cheapSearch = FlightData.pData.getInt("CHEAP_SEARCH");
 				double tstart1 = (double)System.nanoTime()/1E9;
 				if(cheapSearch == 1){					
@@ -237,7 +228,7 @@ public class QuadFMS extends FlightManagementSystem{
 			}
 			else if(Detector.flightPlanDeviationConflict){
 				log.addWarning("MSG: Computing resolution for stand off conflict");
-				gsIntf.SendStatusText("Flight plan deviation conflict");
+				//SendStatusText("Flight plan deviation conflict");
 				Resolver.ResolveFlightPlanDeviationConflict();
 			}
 			else{
@@ -264,7 +255,7 @@ public class QuadFMS extends FlightManagementSystem{
 				resolveState = resolve_state_t.IDLE;
 				planType = plan_type_t.MISSION;
 				SetMissionItem(FlightData.nextMissionWP);
-				SetMode(ARDUPILOT_MODES.AUTO);
+				SetMode(Icarous.IcarousMode._PASSIVE_);
 			}
 
 			break;
@@ -281,7 +272,7 @@ public class QuadFMS extends FlightManagementSystem{
 					SetMissionItem(FlightData.nextMissionWP);
 					System.out.println("Setting mission speed:"+FlightData.GetFlightPlanSpeed(FlightData.MissionPlan, FlightData.nextMissionWP));
 					SetSpeed(FlightData.GetFlightPlanSpeed(FlightData.MissionPlan, FlightData.nextMissionWP));
-					SetMode(ARDUPILOT_MODES.AUTO);					
+					SetMode(Icarous.IcarousMode._PASSIVE_);					
 				}
 				else{
 					resolveState = resolve_state_t.RESUME;
@@ -327,7 +318,7 @@ public class QuadFMS extends FlightManagementSystem{
 			System.out.print("executing trajectory resolution\n");
 			FlightData.nextResolutionWP = 0;
 			resolutionSpeed = (float)FlightData.pData.getValue("RES_SPEED");
-			SetMode(ARDUPILOT_MODES.GUIDED); 
+			SetMode(Icarous.IcarousMode._ACTIVE_); 
 			SetSpeed(resolutionSpeed);
 			trajectoryState = trajectory_state_t.FIX;
 			startNextWPTime = System.nanoTime();
@@ -396,7 +387,7 @@ public class QuadFMS extends FlightManagementSystem{
 
 		case START:
 			System.out.print("executing maneuver resolution\n");
-			SetMode(ARDUPILOT_MODES.GUIDED);
+			SetMode(Icarous.IcarousMode._ACTIVE_);
 			SetSpeed(resolutionSpeed);
 			maneuverState = maneuver_state_t.GUIDE;
 			//This sleep may not be necessary - there is a 200 ms sleep within SetMode
