@@ -178,13 +178,13 @@ public class AircraftData{
 			tempFenceList.clear();
 		}
 		
-		tempFenceList.add(gf);
-		
+		tempFenceList.add(gf);		
+				
 		if(gf.vertexIndex+1 == gf.totalVertices){
 			
 			GeoFence GF = new GeoFence(gf.index,gf.type,gf.totalVertices,gf.floor,gf.ceiling,pData);
-			for(int i=0;i<tempFenceList.size();i++){
-				msg_Geofence fence = tempFenceList.get(i);
+			for(int i=0;i<tempFenceList.size();i++){				
+				msg_Geofence fence = tempFenceList.get(i);				
 				GF.AddVertex(i, fence.latitude, fence.longitude);
 			}
 			

@@ -160,7 +160,8 @@ public class Icarous{
 
 		System.out.println("ICAROUS Release: "+release());
 
-		FlightData    = new AircraftData(pData);	
+		FlightData    = new AircraftData(pData);
+		fms_module    = new QuadFMS(FlightData, task, pData);
 	}
 
 	public static String release() {

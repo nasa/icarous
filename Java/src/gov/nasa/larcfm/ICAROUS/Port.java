@@ -196,7 +196,7 @@ public class Port{
 		}	
 	}
 
-	public synchronized byte[] Read(){
+	public byte[] Read(){
 	
 		byte[] buffer = null;
 		if(pType == PortType.SOCKET){

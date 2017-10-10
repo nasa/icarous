@@ -43,7 +43,7 @@ public class ArduPilot extends MAVLinkInterface {
 			for(int i=0;i<buffer.length;++i){
 				RcvdPacket = MsgParser.mavlink_parse_char((int)0xFF & buffer[i]);
 				if(RcvdPacket != null){
-					ProcessMessage(RcvdPacket);					
+					ProcessMessage(RcvdPacket);
 					pipe.SendMavlinkData(RcvdPacket);
 				}			
 			}
@@ -57,7 +57,7 @@ public class ArduPilot extends MAVLinkInterface {
 		newPing  = (double)System.nanoTime()/1E9;
 		elapsedTime = newPing - lastPing;
 		
-		if(elapsedTime > 7){
+		if(elapsedTime > 15){
 			foundVehicle = false;
 			System.out.println("Reconnecting with vehicle");
 		}

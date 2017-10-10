@@ -22,11 +22,13 @@ public class MAVProxy extends MAVLinkInterface {
 	msg_Geofence gfdata;
 	
 	public MAVProxy(Icarous IC){
-		super(IC);		
+		super(IC);	
+		gfdata = new msg_Geofence();
 	}
 	
 	@Override
 	public void HandleMissionCount(MAVLinkPacket msg){
+		System.out.println("Received mission count");
 		msg_mission_count msgMissionCount = (msg_mission_count) msg.unpack();	    
 		pipe.SendMavlinkData(msg);		
 		int numWaypoints = msgMissionCount.count;
@@ -76,13 +78,22 @@ public class MAVProxy extends MAVLinkInterface {
 	public void HandleFencePoint(MAVLinkPacket msg){
 		msg_fence_point msgFencePoint = (msg_fence_point) msg.unpack();
 		int id = msgFencePoint.idx;
-		int total = msgFencePoint.count;
-		
+		int total = msgFencePoint.count;		
 		gfdata.vertexIndex = id;
 		gfdata.latitude = msgFencePoint.lat;
 		gfdata.longitude = msgFencePoint.lng;
 		
-		IC.InputGeofenceData(gfdata);
+		msg_Geofence gfdata_cpy = new msg_Geofence();
+		gfdata_cpy.ceiling = gfdata.ceiling;
+		gfdata_cpy.floor   = gfdata.floor;
+		gfdata_cpy.index   = gfdata.index;
+		gfdata_cpy.latitude = gfdata.latitude;
+		gfdata_cpy.longitude = gfdata.longitude;
+		gfdata_cpy.totalVertices = gfdata.totalVertices;
+		gfdata_cpy.type = gfdata.type;
+		gfdata_cpy.vertexIndex = gfdata.vertexIndex;
+		
+		IC.InputGeofenceData(gfdata_cpy);
 		
 		if(id < total - 1){
 			msg_fence_fetch_point fenceFetchPoint = new msg_fence_fetch_point();

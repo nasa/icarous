@@ -150,7 +150,7 @@ public class MAVLinkInterface implements Interface,Runnable {
 			break;
 			
 		case msg_heartbeat.MAVLINK_MSG_ID_HEARTBEAT:        
-            HandleHeartbeat(RcvdPacket);
+            //HandleHeartbeat(RcvdPacket);
             break;        
 
         case msg_mission_count.MAVLINK_MSG_ID_MISSION_COUNT:
@@ -158,39 +158,32 @@ public class MAVLinkInterface implements Interface,Runnable {
             break;
 
         case msg_mission_item.MAVLINK_MSG_ID_MISSION_ITEM:
-            //printf("MAVLINK_MSG_ID_MISSION_ITEM\n");
             HandleMissionItem(RcvdPacket);
             break;
 
 
         case msg_mission_request_list.MAVLINK_MSG_ID_MISSION_REQUEST_LIST:
-            //printf("MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
             HandleMissionRequestList(RcvdPacket);
             break;
 
         case msg_mission_request.MAVLINK_MSG_ID_MISSION_REQUEST:
-            //printf("MAVLINK_MSG_ID_MISSION_REQUEST\n");
             HandleMissionRequest(RcvdPacket);
             break;
 
 
         case msg_param_request_list.MAVLINK_MSG_ID_PARAM_REQUEST_LIST:
-            //printf("MAVLINK_MSG_ID_PARAM_REQUEST_LIST\n");
             HandleParamRequestList(RcvdPacket);
             break;
 
         case msg_param_request_read.MAVLINK_MSG_ID_PARAM_REQUEST_READ:
-            //printf("MAVLINK_MSG_ID_PARAM_REQUEST_READ\n");
             HandleParamRequestRead(RcvdPacket);
             break;
 
         case msg_param_value.MAVLINK_MSG_ID_PARAM_VALUE:
-            //printf("MAVLINK_MSG_ID_PARAM_SET\n");
             HandleParamValue(RcvdPacket);
             break;
 
         case msg_param_set.MAVLINK_MSG_ID_PARAM_SET:
-            //printf("MAVLINK_MSG_ID_PARAM_SET\n");
             HandleParamSet(RcvdPacket);
             break;
 
@@ -199,18 +192,15 @@ public class MAVLinkInterface implements Interface,Runnable {
             break;
 
         case msg_command_int.MAVLINK_MSG_ID_COMMAND_INT:
-            //printf("MAVLINK_MSG_ID_COMMAND_INT\n");
             HandleCommandInt(RcvdPacket);
             break;
 
         case msg_set_mode.MAVLINK_MSG_ID_SET_MODE:
-            //printf("MAVLINK_MSG_ID_SET_MODE\n");
             HandleSetMode(RcvdPacket);
             break;
 
 
         case msg_fence_point.MAVLINK_MSG_ID_FENCE_POINT:
-            //printf("MAVLINK_MSG_ID_FENCE_POINT\n");
             HandleFencePoint(RcvdPacket);
             break;
 
