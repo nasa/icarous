@@ -106,9 +106,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	}
 
 	public void run(){	
-		while(FMSrunning){
-			FlightManagement();
-		}
+		FlightManagement();
 	}
 
 	public void start(){
@@ -251,17 +249,17 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	}
 
 	public void IDLE(){
-		if(FlightData.startMission == 0){		
+		int startFlag = FlightData.GetStartMissionFlag();
+		if(startFlag == 0){		
 			if(FlightData.InputFlightPlan.size() > 0){
 				Preflight();
 				fmsState = FMS_STATE_t._TAKEOFF_;
 			}
 			else{
 				log.addError("MSG: No flight plan loaded");
-			}
-			FlightData.startMission = -1;
+			}			
 		}
-		else if( FlightData.startMission > 0 && FlightData.startMission < FlightData.InputFlightPlan.size()){		
+		else if( startFlag > 0 && startFlag < FlightData.InputFlightPlan.size()){		
 			if(FlightData.InputFlightPlan.size() > 0){
 				Preflight();
 				fmsState = FMS_STATE_t._CRUISE_;
@@ -270,8 +268,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 			}
 			else{
 				log.addError("MSG: No flight plan loaded");
-			}
-			FlightData.startMission = -1;
+			}			
 		}
 	}
 

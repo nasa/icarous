@@ -63,11 +63,13 @@ public class QuadFMS extends FlightManagementSystem{
 	boolean GoalReached;
 	private double wpDiffTime,startNextWPTime;
 	double captureH,captureV;
+	boolean takeoffStarted;
 
 	public QuadFMS(AircraftData acData,Mission mc,ParameterData pdata){
 		super("QuadFMS",acData);
 		takeoffAlt = 0.0f;
 		landStarted = false;
+		takeoffStarted = false;
 		Detector = new ConflictDetection(this);
 		Resolver = new Resolution(this);
 		resolveState = resolve_state_t.IDLE;
@@ -83,27 +85,41 @@ public class QuadFMS extends FlightManagementSystem{
 
 	@Override
 	public void TAKEOFF(){
-		takeoffAlt             = (float)FlightData.pData.getValue("TAKEOFF_ALT");
-		Position currPosition  = FlightData.acState.positionLast();
-
-		// set mode to guided
-		SetMode(Icarous.IcarousMode._ACTIVE_);
-
-		// arm the copter
-		ArmThrottles(true);
-
-		// send takeoff command
-		StartTakeoff(takeoffAlt);
 		
+		if(!takeoffStarted){
+			takeoffAlt             = (float)FlightData.pData.getValue("TAKEOFF_ALT");
+			Position currPosition  = FlightData.acState.positionLast();
+	
+			// set mode to guided
+			SetMode(Icarous.IcarousMode._ACTIVE_);
 
-		boolean ack = CheckAcknowledgement(msg_ArgCmds.command_name._TAKEOFF_);
-
-		if(ack){
-			fmsState = FMS_STATE_t._CLIMB_;
-			// Send status text
-		}
-		else{
-			fmsState = FMS_STATE_t._IDLE_;
+			// arm the copter
+			ArmThrottles(true);
+			
+			// send takeoff command
+			StartTakeoff(takeoffAlt);
+		
+			takeoffStarted = true;
+			
+			try{
+				Thread.sleep(500);
+			}
+			catch(InterruptedException e){
+				System.out.println(e);
+			}
+			
+		}else{
+								
+			boolean ack = CheckAcknowledgement(msg_ArgCmds.command_name._TAKEOFF_);
+	
+			if(ack){
+				fmsState = FMS_STATE_t._CLIMB_;
+				// Send status text
+			}
+			else{
+				fmsState = FMS_STATE_t._IDLE_;
+				takeoffStarted = false;
+			}
 		}
 	}
 

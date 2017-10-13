@@ -248,16 +248,24 @@ public class AircraftData{
 		commandAckList.add(ack);
 	}
 	
-	public synchronized boolean CheckAck(int command){
-		boolean status = false;
-		while(commandAckList.size()>0){
-			msg_CmdAck ack = commandAckList.remove();
-			if(ack.name == command && ack.result == 0){
-				status = true;
-				return status;
+	public boolean CheckAck(int command){
+		boolean status = false;		
+		msg_CmdAck ack = null;
+		int size = 1;		
+		while(ack == null){			
+			synchronized(this){
+				size = commandAckList.size(); 
+				if ( size > 0){
+					ack = commandAckList.remove();				
+					if(ack.name == command && ack.result == 0){
+						status = true;					
+						return status;
+					}else{
+						ack = null;
+					}
+				}
 			}
-		}
-		
+		}	
 		return status;
 	}
 
