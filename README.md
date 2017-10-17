@@ -7,7 +7,7 @@ ICAROUS (Integrated Configurable Algorithms for Reliable Operations of
 Unmanned Systems) is a software architecture that enables the robust integration
 of mission specific software modules and highly assured core software
 modules for building safety-centric autonomous unmanned aircraft
-applications. The set of core software modules include formally
+applications. The set of core software modules includes formally
 verified algorithms that detect, monitor, and control conformance
 to safety criteria; avoid stationary obstacles and maintain a safe
 distance from other users of the airspace; and compute resolution
