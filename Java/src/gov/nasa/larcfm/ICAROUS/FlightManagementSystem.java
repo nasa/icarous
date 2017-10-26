@@ -150,7 +150,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 			LAND();
 			break;
 		
-		case _TERMINATE_: // [CAM] Added this case since it was missing
+		case _TERMINATE_:
 			break;
 		}
 	}

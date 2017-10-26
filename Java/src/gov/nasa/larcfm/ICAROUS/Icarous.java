@@ -184,6 +184,7 @@ public class Icarous{
 	
 	public void InputResetIcarous(){
 		FlightData.Reset();
+		fms_module.Reset();
 	}
 	
 	public void InputClearFlightPlan(){

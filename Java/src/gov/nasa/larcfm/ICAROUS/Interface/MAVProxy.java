@@ -125,6 +125,8 @@ public class MAVProxy extends MAVLinkInterface {
 		traffic.vx = msg.param2;
 		traffic.vy = msg.param3;
 		traffic.vz = msg.param4;
+
+		IC.InputTraffic(traffic);
 	}
 	
 	
