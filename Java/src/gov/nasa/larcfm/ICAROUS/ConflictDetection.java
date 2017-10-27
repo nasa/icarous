@@ -265,7 +265,7 @@ public class ConflictDetection{
 		msg.numBands = (byte)KMB.trackLength(); 
 		
 		
-		for(int i=0;i<FlightData.visBands.numBands;++i){
+		for(int i=0;i<KMB.trackLength();++i){
 			Interval iv = KMB.track(i,"deg");
 			BandsRegion br = KMB.trackRegion(i);
 			int type = 0;

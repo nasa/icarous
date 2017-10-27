@@ -102,6 +102,10 @@ public class MAVLinkInterface implements Interface,Runnable {
 		switch(msg.msgid){
 		case msg_ArgCmds.ICAROUS_MSG_ID_ARG_CMDS:
 			SendCommand((msg_ArgCmds) msg);
+			break;
+		case msg_Visbands.ICAROUS_MSG_ID_VISBANDS:
+			SendBand((msg_Visbands) msg);
+			break;
 		}
 	}
 

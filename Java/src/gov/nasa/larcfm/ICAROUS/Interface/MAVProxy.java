@@ -121,7 +121,7 @@ public class MAVProxy extends MAVLinkInterface {
 		traffic.index = (int) msg.param1;
 		traffic.latitude = msg.param5;
 		traffic.longitude = msg.param6;
-		traffic.altiude = msg.param6;
+		traffic.altiude = msg.param7;
 		traffic.vx = msg.param2;
 		traffic.vy = msg.param3;
 		traffic.vz = msg.param4;
