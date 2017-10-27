@@ -61,9 +61,7 @@ public class AircraftData{
 		GF_READ, GF_FETCH, GF_READ_COMPLETE
 	}
 
-	public MAVLinkMessages RcvdMessages;
-
-        public double acTime;
+    public double acTime;
     
 	// Aircraft attitude
 	public double roll;
@@ -121,7 +119,6 @@ public class AircraftData{
 
 	public AircraftData(ParameterData pdata){
 
-		RcvdMessages        = new MAVLinkMessages();
 		acState             = new AircraftState();
 		fenceList           = new ArrayList<GeoFence>();
 		tempFenceList       = new ArrayList<msg_Geofence>();

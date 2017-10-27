@@ -77,8 +77,7 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 	}
 
 	protected Thread t;
-	protected String threadName;    
-	protected MAVLinkMessages RcvdMessages;
+	protected String threadName;
 	protected FMS_STATE_t fmsState;
 	protected boolean FMSrunning;
 	public ErrorLog log;
@@ -95,7 +94,6 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		FMSrunning       = true;
 		fmsState         = FMS_STATE_t._IDLE_;
 		FlightData       = fData;
-		RcvdMessages     = FlightData.RcvdMessages;
 		log              = new ErrorLog("FMS");
 		devAllowed       = false;
 		debugDAA         = false;
