@@ -3,7 +3,7 @@ project(universalExec)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(PLEXIL_ROOT ${CMAKE_SOURCE_DIR}/../../)
+set(PLEXIL_ROOT ${CMAKE_SOURCE_DIR}/../)
 
 set(PLEXIL_SOURCE ${PLEXIL_ROOT}/src)
 

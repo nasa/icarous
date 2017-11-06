@@ -8,7 +8,7 @@ option(BUILD_PKGCONFIG "Build in PKGCONFIG mode" OFF)
 
 set(BUILD_DEFINES "" CACHE STRING "Build defines")
 
-set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}../../../../lib)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/../lib)
 
 if(MSVC)
 	option(STATIC_CRT "Use static CRT libraries" OFF)

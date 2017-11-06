@@ -7,7 +7,7 @@ set(CMAKE_CXX_FLAGS "-O2 -fPIC")
 
 add_definitions(-DHAVE_CONFIG_H -DPIC)
 
-set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}../../../lib)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/../lib)
 
 
 set(SOURCE_FILES

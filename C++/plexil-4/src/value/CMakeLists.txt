@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(PlexilValue)
 
-set(PLEXIL_ROOT ${CMAKE_SOURCE_DIR}/../../)
+set(PLEXIL_ROOT ${CMAKE_SOURCE_DIR}/../)
 
 set(PLEXIL_SOURCE ${PLEXIL_ROOT}/src)
 
