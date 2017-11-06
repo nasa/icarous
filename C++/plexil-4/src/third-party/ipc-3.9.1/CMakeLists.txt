@@ -3,6 +3,8 @@ project(ipc)
 
 set(CMAKE_CXX_STANDARD 11)
 
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}../../../../lib)
+
 set(SOURCE_FILES
         include/ipc.h
         src/basics.h
@@ -93,4 +95,4 @@ set(CMAKE_CXX_FLAGS "-O2")
 
 add_definitions(-DREDHAT_52 -DREDHAT_6 -DREDHAT_71)
 
-add_library(ipc STATIC ${SOURCE_FILES})
+add_library(ipc SHARED ${SOURCE_FILES})

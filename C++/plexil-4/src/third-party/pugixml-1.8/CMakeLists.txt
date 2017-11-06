@@ -2,11 +2,13 @@ project(pugixml)
 
 cmake_minimum_required(VERSION 2.6)
 
-option(BUILD_SHARED_LIBS "Build shared instead of static library" OFF)
+option(BUILD_SHARED_LIBS "Build shared instead of static library" ON)
 option(BUILD_TESTS "Build tests" OFF)
 option(BUILD_PKGCONFIG "Build in PKGCONFIG mode" OFF)
 
 set(BUILD_DEFINES "" CACHE STRING "Build defines")
+
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}../../../../lib)
 
 if(MSVC)
 	option(STATIC_CRT "Use static CRT libraries" OFF)

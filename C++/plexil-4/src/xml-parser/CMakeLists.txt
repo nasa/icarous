@@ -1,23 +1,11 @@
 cmake_minimum_required(VERSION 3.7)
-project(xml_parser)
+project(PlexilXmlParser)
 
 set(CMAKE_CXX_STANDARD 11)
 
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/../../lib)
+
 set(SOURCE_FILES
-        test/arrayReferenceXmlParserTest.cc
-        test/benchmark.cc
-        test/commandXmlParserTest.cc
-        test/constantXmlParserTest.cc
-        test/FactoryTestNodeConnector.cc
-        test/FactoryTestNodeConnector.hh
-        test/functionXmlParserTest.cc
-        test/lookupXmlParserTest.cc
-        test/nodeXmlParserTest.cc
-        test/parser-test-module.cc
-        test/TrivialNodeConnector.cc
-        test/TrivialNodeConnector.hh
-        test/updateXmlParserTest.cc
-        test/variableXmlParserTest.cc
         analyzePlan.cc
         ArithmeticFunctionFactory.cc
         ArithmeticFunctionFactory.hh
@@ -64,4 +52,26 @@ set(SOURCE_FILES
         UserVariableFactory.cc
         UserVariableFactory.hh)
 
-add_executable(xml_parser ${SOURCE_FILES})
+include_directories(
+        ./
+        ../
+        ../utils
+        ../value
+        ../third-party/pugixml/src
+        ../exec
+        ../expr
+        ../intfc
+)
+
+link_directories(${CMAKE_SOURCE_DIR}/../../lib)
+
+add_library(PlexilXmlParser SHARED ${SOURCE_FILES})
+
+target_link_libraries(PlexilXmlParser
+        pugixml
+        PlexilExec
+        PlexilIntfc
+        PlexilExpr
+        PlexilValue
+        PlexilUtils
+        wrap nsl m rt pthread dl)
