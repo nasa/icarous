@@ -10,6 +10,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifdef CFS
 #include "cfe.h"
@@ -38,8 +39,9 @@ typedef struct{
     bool argsB[4];
 }PlexilCommandMsg;
 
-
+#ifdef __cplusplus
 }
+#endif
 
 
 #endif //CFS_DATA_FORMAT_H

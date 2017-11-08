@@ -365,7 +365,7 @@ function(process_arch SYSVAR)
     endforeach(APP ${TGT${TGTID}_APPLIST})
   
     # Target to generate the actual executable file
-    add_subdirectory(cmake/target ${TGTNAME})
+    add_subdirectory(cfe/cmake/target ${TGTNAME})
     
     foreach(INSTFILE ${TGT${TGTID}_FILELIST})
       if(EXISTS ${MISSION_DEFS}/${TGTNAME}_${INSTFILE})

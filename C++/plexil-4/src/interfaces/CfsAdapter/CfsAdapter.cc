@@ -104,7 +104,7 @@ namespace PLEXIL {
                                            false,false,false,false};
             memcpy(lookupMsg.name,stateName.c_str(),stateName.size()+1);
 
-            lookupQueue.push(&lookupMsg);
+            lookupQueue.push(lookupMsg);
         }
 
         // Wait for results
@@ -177,7 +177,7 @@ namespace PLEXIL {
             }
         }
 
-        cmdQueue.push(&commandMsg);
+        cmdQueue.push(commandMsg);
 
         m_pendingCommands[m_pendingCommandSerial] = cmd;
         // store ack
@@ -228,24 +228,34 @@ namespace PLEXIL {
 
     }
 
-    void CfsAdapter::GetCmdQueueMsg(PlexilCommandMsg &msg) {
+    int CfsAdapter::GetCmdQueueMsg(PlexilCommandMsg &msg) {
         //lock mutex to ensure all writing procedures are complete.
         ThreadMutexGuard guard(m_cmdMutex);
-        PlexilCommandMsg* queueMsg = cmdQueue.front();
+        if (cmdQueue.size() == 0){
+            return -1;
+        }
+
+        PlexilCommandMsg queueMsg = cmdQueue.front();
         cmdQueue.pop();
 
-        memcpy(&msg,queueMsg,sizeof(msg));
-        delete queueMsg;
+        memcpy(&msg,&queueMsg,sizeof(msg));
+
+        return cmdQueue.size();
     }
 
-    void CfsAdapter::GetLookUpQueueMsg(PlexilCommandMsg &msg) {
+    int CfsAdapter::GetLookUpQueueMsg(PlexilCommandMsg &msg) {
         //lock mutex to ensure all writing procedures are complete.
         ThreadMutexGuard guard(m_cmdMutex);
-        PlexilCommandMsg* queueMsg = lookupQueue.front();
+        if (cmdQueue.size() == 0){
+            return -1;
+        }
+
+        PlexilCommandMsg queueMsg = lookupQueue.front();
         cmdQueue.pop();
 
-        memcpy(&msg,queueMsg,sizeof(msg));
-        delete queueMsg;
+        memcpy(&msg,&queueMsg,sizeof(msg));
+
+        return lookupQueue.size();
     }
 
     extern "C" {

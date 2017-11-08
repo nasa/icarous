@@ -37,12 +37,12 @@ namespace PLEXIL {
 
         void HandleReturnValue(PlexilCommandMsg msg);
 
-        void GetCmdQueueMsg(PlexilCommandMsg& msg);
-        void GetLookUpQueueMsg(PlexilCommandMsg& msg);
+        int GetCmdQueueMsg(PlexilCommandMsg& msg);
+        int GetLookUpQueueMsg(PlexilCommandMsg& msg);
 
     private:
-        std::queue<PlexilCommandMsg*> cmdQueue;
-        std::queue<PlexilCommandMsg*> lookupQueue;
+        std::queue<PlexilCommandMsg> cmdQueue;
+        std::queue<PlexilCommandMsg> lookupQueue;
 
         //* @brief Semaphore for return values from LookupNow
         ThreadSemaphore m_lookupSem;

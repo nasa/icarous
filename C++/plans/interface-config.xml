@@ -1,7 +1,10 @@
  <Interfaces ConfigurationType="default">
   <Adapter AdapterType="OSNativeTime" />
   <Adapter AdapterType="Utility" />
-  <Adapter AdapterType="IpcAdapter" Server="localhost:1381">
+  <Adapter AdapterType="CfsAdapter" Server="localhost:1381">
+    <DefaultAdapter/>
+    <DefaultCommandAdapter/>
+    <DefaultLookupAdapter/>
     <CommandNames>
       UpdateCurrentAircraftState,
       RunIdleChecks,
