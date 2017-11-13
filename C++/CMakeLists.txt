@@ -1,11 +1,85 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.5)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 project(ICAROUS)
 
+################################################################################
+#
+# OpenSplice package
+#
+# * Requires OSPL_HOME environment variable to be pointing at the OpenSplice
+#   installation directory
+#   - In CLion: Settings > Build, Execution, Deployment > CMake > Environment
+#   - In sh shell: export OSPL_HOME="<directory"
+#
+################################################################################
+
+find_package(OpenSplice REQUIRED)
+
+
+################################################################################
+#
+# Compilation options
+#
+################################################################################
+
 set(CMAKE_CXX_STANDARD 11)
+add_definitions(-Wall -g -Wno-write-strings -Wno-comment -fPIC)
+set(CMAKE_CXX_FLAGS_DEBUG -DDEBUGGING)
 
-set(ICAROUS_ROOT ${CMAKE_SOURCE_DIR})
 
-set(LIBRARY_OUTPUT_PATH ${ICAROUS_ROOT}/lib)
+################################################################################
+#
+# Include directories
+#
+################################################################################
+
+include_directories(
+        include/ACCoRD
+        include/ICAROUS
+        include/INTERFACE
+        include/PLEXIL
+        include
+        libs/mavlink
+        ${OpenSplice_INCLUDE_DIRS}
+        plexil-4/include
+)
+
+
+################################################################################
+#
+# Interface Data Model Generation
+#
+################################################################################
+
+file(GLOB IDLs include/DDS/topics/*.idl)
+if ("${IDLs}" STREQUAL "")
+    MESSAGE(FATAL_ERROR "There are no IDL files. Check the CMake configuration to specify their location.")
+endif ()
+
+OpenSpliceCompileIdl(IDLs IDL_generated_files)
+
+add_library(DDSlib
+        SHARED
+        ${IDL_generated_files}
+        include/DDS/Common.hpp
+        include/DDS/TopicNameTraits.hpp
+        include/Utils/Types.hpp
+        src/DDS/TopicNameTraits.cpp
+        src/DDS/Common.cpp
+        include/DDS/ArduPilotInterfaceWithDDSForwarding.hpp
+        src/DDS/ArduPilotInterfaceWithDDSForwarding.cpp
+        )
+
+target_link_libraries(
+        DDSlib
+        ${OpenSplice_LIBRARIES}
+)
+
+################################################################################
+#
+# ACCORD library
+#
+################################################################################
 
 set(ACCORD_LIB_SOURCE_FILES
         src/ACCoRD/ACCoRDConfig.cpp
@@ -169,9 +243,52 @@ set(ACCORD_LIB_SOURCE_FILES
         src/ACCoRD/WCV_tvar.cpp
         src/ACCoRD/WCV_VMOD.cpp
         src/ACCoRD/WCVTable.cpp
-        src/ACCoRD/WeatherUtil.cpp)
+        src/ACCoRD/WeatherUtil.cpp
+        )
+
+add_library(ACCoRD SHARED ${ACCORD_LIB_SOURCE_FILES})
+
+
+################################################################################
+#
+# MAVLink
+#
+################################################################################
+
+set(MAVLINK_INTERFACE_SOURCE
+        include/INTERFACE/MAVLinkInterface.h
+        src/INTERFACE/MavlinkInterface.cpp
+        )
+
+add_library(MavlinkInterface SHARED ${MAVLINK_INTERFACE_SOURCE})
+target_link_libraries(MavlinkInterface DDSlib)
+
+
+################################################################################
+#
+# ICAROUS
+#
+################################################################################
+
+set(ICAROUS_ROOT ${CMAKE_SOURCE_DIR})
+
+set(LIBRARY_OUTPUT_PATH ${ICAROUS_ROOT}/lib)
 
 set(ICAROUS_LIB_SOURCE_FILES
+        include/ICAROUS/AircraftData.h
+        include/ICAROUS/ConflictDetection.h
+        include/ICAROUS/FlightManagementSystem.h
+        include/ICAROUS/GenericObject.h
+        include/ICAROUS/Geofence.h
+        include/ICAROUS/Icarous.h
+        include/ICAROUS/Icarous_msg.h
+        include/ICAROUS/Port.h
+        include/ICAROUS/QuadFMS.h
+        include/ICAROUS/Resolution.h
+        include/ICAROUS/RRT.h
+        include/ICAROUS/Interface.h
+        include/PLEXIL/IpcIcarousAdapter.h
+        include/Utils/Types.hpp
         src/ICAROUS/AircraftData.cpp
         src/ICAROUS/ConflictDetection.cpp
         src/ICAROUS/FlightManagementSystem.cpp
@@ -181,20 +298,18 @@ set(ICAROUS_LIB_SOURCE_FILES
         src/ICAROUS/Port.cpp
         src/ICAROUS/QuadFMS.cpp
         src/ICAROUS/Resolution.cpp
-        src/ICAROUS/RRT.cpp)
-
-set(MAVLINK_INTERFACE_SOURCE
-        src/INTERFACE/MavlinkInterface.cpp)
-
-include_directories(include/ACCoRD include/ICAROUS include/PLEXIL libs/mavlink include/INTERFACE plexil-4/include)
-
-add_library(ACCoRD SHARED ${ACCORD_LIB_SOURCE_FILES})
+        src/ICAROUS/RRT.cpp
+        )
 
 add_library(ICAROUS SHARED ${ICAROUS_LIB_SOURCE_FILES})
 
-add_library(MavlinkInterface SHARED ${MAVLINK_INTERFACE_SOURCE})
-
-target_link_libraries(ICAROUS ACCoRD)
+target_link_libraries(ICAROUS
+        ACCoRD
+        pthread
+        MavlinkInterface
+        )
 
 add_executable(icarous src/LaunchIcarous.cpp)
-target_link_libraries(icarous ICAROUS ACCoRD MavlinkInterface pthread)
+target_link_libraries(icarous
+        ICAROUS
+        )

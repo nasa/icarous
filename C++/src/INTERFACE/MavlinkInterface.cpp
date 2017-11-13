@@ -8,11 +8,12 @@ MAVLinkInterface_t::MAVLinkInterface_t(Icarous_t* ic):Interface_t(ic){
     numWaypoints = 0;
 }
 
-ArduPilotInterface_t::ArduPilotInterface_t(Icarous_t *ic):MAVLinkInterface_t(ic) {
+ArduPilotInterface_t::ArduPilotInterface_t(Icarous_t *ic) : MAVLinkInterface_t(ic), gpsInfoWriter(dds::core::null) {
     foundVehicle = false;
     time(&lastPing);
     time(&newPing);
     elapsedTime = 0;
+    gpsInfoWriter = DataWriterFactory<MAVLink::GPSInfo>();
 }
 
 MAVProxyInterface_t::MAVProxyInterface_t(Icarous_t *ic):MAVLinkInterface_t(ic) {
@@ -293,6 +294,17 @@ void ArduPilotInterface_t::HandlePosition(const mavlink_message_t *message){
     position.vx = (double)globalPositionInt.vx/100;
     position.vy = (double)globalPositionInt.vy/100;
     position.vz = (double)globalPositionInt.vz/100;
+
+    MAVLink::GPSInfo gpsMsg(
+            position.time_gps,
+            position.latitude,
+            position.longitude,
+            position.altitude_abs,
+            position.altitude_rel,
+            position.vx,
+            position.vy,
+            position.vz);
+    this->gpsInfoWriter << gpsMsg;
 
     icarous->InputPosition(&position);
 }
