@@ -3,9 +3,10 @@ project(PlanDebugListener)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(PLEXIL_ROOT ${CMAKE_SOURCE_DIR}/../)
-
 set(PLEXIL_SOURCE ${PLEXIL_ROOT}/src)
+
+message("This is message LEXIL_SOURCE.")
+
 
 set(CMAKE_CXX_FLAGS "-O2 -fPIC")
 

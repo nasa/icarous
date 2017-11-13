@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
-project(universalExec)
+project(Wrapper)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -12,7 +12,9 @@ add_definitions(-DHAVE_CONFIG_H -DPIC)
 set(LIBRARY_OUTPUT_PATH ${PLEXIL_ROOT}/lib)
 
 set(SOURCE_FILES
-        UniversalExec.cc)
+        PlexilWrapper.h
+        PlexilWrapper.cpp
+        test.c)
 
 include_directories(
         ./
@@ -21,6 +23,7 @@ include_directories(
         ${PLEXIL_SOURCE}/value
         ${PLEXIL_SOURCE}/interfaces/Sockets
         ${PLEXIL_SOURCE}/interfaces/LuvListener
+        ${PLEXIL_SOURCE}/interfaces/CfsAdapter
         ${PLEXIL_SOURCE}/third-party/pugixml/src
         ${PLEXIL_SOURCE}/app-framework
         ${PLEXIL_SOURCE}/expr
@@ -30,9 +33,9 @@ include_directories(
 
 link_directories(${LIBRARY_OUTPUT_PATH})
 
-add_executable(universalExec ${SOURCE_FILES})
+add_library(PlexilWrapper PlexilWrapper.cpp)
 
-target_link_libraries(universalExec
+target_link_libraries(PlexilWrapper
         pugixml
         PlexilAppFramework
         PlexilExec
@@ -45,3 +48,7 @@ target_link_libraries(universalExec
         PlexilSockets
         CfsAdapter
         wrap nsl m rt pthread dl)
+
+add_executable(wrapperTest test.c)
+
+target_link_libraries(wrapperTest PlexilWrapper)
