@@ -373,3 +373,13 @@ int plexil_getCommand(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
 
     return cfsAdap->GetCmdQueueMsg(*msg);
 }
+
+void plexil_return(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
+    InterfaceAdapter* adapter = ToCPP_Adp(adp);
+
+    CfsAdapter *cfsAdap = (CfsAdapter*) adapter;
+
+    cfsAdap->HandleReturnValue(*msg);
+
+    return;
+}

@@ -35,7 +35,7 @@ namespace PLEXIL {
 
         void invokeAbort(Command *cmd);
 
-        void HandleReturnValue(PlexilCommandMsg msg);
+        void HandleReturnValue(PlexilCommandMsg& msg);
 
         int GetCmdQueueMsg(PlexilCommandMsg& msg);
         int GetLookUpQueueMsg(PlexilCommandMsg& msg);

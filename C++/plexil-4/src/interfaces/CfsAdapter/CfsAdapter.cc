@@ -186,7 +186,7 @@ namespace PLEXIL {
         debugMsg("CfsAdapter:executeCommand", " command \"" << name << "\" sent.");
     }
 
-    void CfsAdapter::HandleReturnValue(PlexilCommandMsg msg) {
+    void CfsAdapter::HandleReturnValue(PlexilCommandMsg &msg) {
 
         //lock mutex to ensure all sending procedures are complete.
         ThreadMutexGuard guard(m_cmdMutex);
