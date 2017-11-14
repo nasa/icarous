@@ -40,6 +40,7 @@
 
 #include "icarous/mavlink.h"
 #include "Interface.h"
+#include "Port.h"
 #include <ctime>
 
 // Auto Pilot Modes enumeration

@@ -39,6 +39,8 @@
 #ifndef C_INTERFACE_H
 #define C_INTERFACE_H
 
+#include "Icarous_msg.h"
+
 class Icarous_t;
 
 class Interface_t{
