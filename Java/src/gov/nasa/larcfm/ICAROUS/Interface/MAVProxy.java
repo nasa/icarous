@@ -158,6 +158,9 @@ public class MAVProxy extends MAVLinkInterface {
 	public void HandleParamSet(MAVLinkPacket msg){
 		pipe.SendMavlinkData(msg);
 	}
+
+	@Override
+	public void HandleSetMode(MAVLinkPacket msg){pipe.SendMavlinkData(msg);}
 	
 	@Override
 	public void HandleCommandLong(MAVLinkPacket msg){
@@ -172,7 +175,7 @@ public class MAVProxy extends MAVLinkInterface {
 		}else if(msgCommandLong.command == MAV_CMD.MAV_CMD_USER_1){
 			HandleReset(msgCommandLong);
 		}else{
-			
+			pipe.SendMavlinkData(msg);
 		}
 	}
 }
