@@ -41,8 +41,6 @@
 #include "icarous/mavlink.h"
 #include "Interface.h"
 #include "Port.h"
-#include "DDS/Common.hpp"
-#include "DDS/topics/gen/GPSInfo_DCPS.hpp"
 #include <ctime>
 
 // Auto Pilot Modes enumeration
@@ -126,7 +124,6 @@ private:
     time_t newPing;
     double elapsedTime;
     bool foundVehicle;
-    dds::pub::DataWriter<MAVLink::GPSInfo> gpsInfoWriter;
 public:
     ArduPilotInterface_t(Icarous_t* ic);
     void GetData();

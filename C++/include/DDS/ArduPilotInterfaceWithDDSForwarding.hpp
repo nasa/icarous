@@ -2,6 +2,7 @@
 #define ICAROUS_ARDUPILOTINTERFACEWITHDDSFORWARDING_HPP
 
 #include "INTERFACE/MAVLinkInterface.h"
+#include "DDS/topics/gen/GPSInfo_DCPS.hpp"
 #include "DDS/Common.hpp"
 
 class ArduPilotInterfaceWithDDSForwarding : public ArduPilotInterface_t {

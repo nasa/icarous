@@ -13,7 +13,7 @@ project(ICAROUS)
 #
 ################################################################################
 
-find_package(OpenSplice REQUIRED)
+find_package(OpenSplice)
 
 
 ################################################################################
@@ -51,33 +51,38 @@ include_directories(
 #
 ################################################################################
 
-file(GLOB IDLs include/DDS/topics/*.idl)
-if ("${IDLs}" STREQUAL "")
-    MESSAGE(FATAL_ERROR "There are no IDL files. Check the CMake configuration to specify their location.")
+if (OpenSplice_FOUND)
+
+    file(GLOB IDLs include/DDS/topics/*.idl)
+    if ("${IDLs}" STREQUAL "")
+        MESSAGE(FATAL_ERROR "There are no IDL files. Check the CMake configuration to specify their location.")
+    endif ()
+
+    OpenSpliceCompileIdl(IDLs IDL_generated_files)
+
+    set(DDS_LIB_SOURCE_FILES
+            include/DDS/Common.hpp
+            include/DDS/TopicNameTraits.hpp
+            include/Utils/Types.hpp
+            src/DDS/TopicNameTraits.cpp
+            src/DDS/Common.cpp
+            include/DDS/ArduPilotInterfaceWithDDSForwarding.hpp
+            src/DDS/ArduPilotInterfaceWithDDSForwarding.cpp
+            )
+
+    add_library(DDSlib
+            SHARED
+            ${IDL_generated_files}
+            ${DDS_LIB_SOURCE_FILES}
+            )
+
+    target_link_libraries(
+            DDSlib
+            ${OpenSplice_LIBRARIES}
+    )
+
+    add_definitions(-DOSPL_DDS)
 endif ()
-
-OpenSpliceCompileIdl(IDLs IDL_generated_files)
-
-set(DDS_LIB_SOURCE_FILES
-        include/DDS/Common.hpp
-        include/DDS/TopicNameTraits.hpp
-        include/Utils/Types.hpp
-        src/DDS/TopicNameTraits.cpp
-        src/DDS/Common.cpp
-        include/DDS/ArduPilotInterfaceWithDDSForwarding.hpp
-        src/DDS/ArduPilotInterfaceWithDDSForwarding.cpp
-        )
-
-add_library(DDSlib
-        SHARED
-        ${IDL_generated_files}
-        ${DDS_LIB_SOURCE_FILES}
-        )
-
-target_link_libraries(
-        DDSlib
-        ${OpenSplice_LIBRARIES}
-)
 
 ################################################################################
 #
@@ -265,7 +270,6 @@ set(MAVLINK_INTERFACE_SOURCE
         )
 
 add_library(MAVLinklib SHARED ${MAVLINK_INTERFACE_SOURCE})
-target_link_libraries(MAVLinklib DDSlib)
 
 
 ################################################################################
@@ -312,6 +316,10 @@ target_link_libraries(ICAROUSlib
         MAVLinklib
         pthread
         )
+
+IF (OpenSplice_FOUND)
+   target_link_libraries(ICAROUSlib DDSlib)
+ENDIF ()
 
 add_executable(icarous src/LaunchIcarous.cpp)
 target_link_libraries(icarous ICAROUSlib)

@@ -19,10 +19,13 @@
 #
 ################################################################################
 
-IF (DEFINED ENV{OSPL_HOME})
-    MESSAGE(STATUS "$OSPL_HOME environment variable defined: " $ENV{OSPL_HOME})
-ELSE ()
-    MESSAGE(FATAL_ERROR "$OSPL_HOME not defined")
+IF (NOT DEFINED ENV{OSPL_HOME})
+    IF (OpenSplice_FIND_REQUIRED)
+        message(FATAL_ERROR "$OSPL_HOME not defined but needed for DDS support")
+    ELSE ()
+        message(WARNING "Building without DDS support since $OSPL_HOME environment variable is not defined")
+        return()
+    ENDIF ()
 ENDIF ()
 
 IF (EXISTS $ENV{OSPL_HOME}
@@ -91,7 +94,7 @@ IF (OpenSplice_INCLUDE_DIRS
 ENDIF ()
 
 IF (OpenSplice_FOUND)
-    MESSAGE(STATUS "Found correct OpenSplice installation: $ENV{OSPL_HOME}")
+    MESSAGE(STATUS "OpenSplice installation found: $ENV{OSPL_HOME}")
 ELSE ()
     IF (OpenSplice_FIND_REQUIRED)
         MESSAGE(FATAL_ERROR "Could not find a correct OpenSplice installation")
