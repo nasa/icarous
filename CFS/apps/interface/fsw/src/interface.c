@@ -11,7 +11,7 @@
 #include "interface_table.h"
 #include "interface_version.h"
 #include "interface_perfids.h"
-#include "icarous_msg.h"
+#include "Icarous_msg.h"
 #include "icarous_msgids.h"
 
 CFE_EVS_BinFilter_t  INTERFACE_EventFilters[] =
@@ -105,7 +105,7 @@ void INTERFACE_AppInit(void){
 				  &InterfaceTableValidationFunc);
 
 	// Load app table data
-	status = CFE_TBL_Load(appdataInt.INTERFACE_tblHandle,CFE_TBL_SRC_FILE,"/cf/apps/intf_tbl.tbl");
+	status = CFE_TBL_Load(appdataInt.INTERFACE_tblHandle,CFE_TBL_SRC_FILE,"/cf/intf_tbl.tbl");
 
 	// Check which port to open from user defined parameters
 	InterfaceTable_t *TblPtr;

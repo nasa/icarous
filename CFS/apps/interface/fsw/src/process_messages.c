@@ -7,7 +7,7 @@
 #include "interface_table.h"
 #include "interface_version.h"
 #include "interface_perfids.h"
-#include "icarous_msg.h"
+#include "Icarous_msg.h"
 #include "icarous_msgids.h"
 
 #define EXTERN extern

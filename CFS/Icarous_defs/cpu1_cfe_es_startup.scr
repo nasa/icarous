@@ -1,6 +1,5 @@
-CFE_LIB, /cf/apps/icarouslib.so, ICAROUS_LibInit, ICAROUSLIB, 0, 0, 0x0, 0;
-CFE_APP, /cf/apps/interface.so,  INTERFACE_AppMain,  INTERFACE,   240,   8192, 0x0, 0;
-CFE_APP, /cf/apps/icarous.so,    ICAROUS_AppMain,  ICAROUS,   250,   111920, 0x0, 0;
+CFE_APP, /cf/interface.so,  INTERFACE_AppMain,  INTERFACE,   50,   8192, 0x0, 0;
+
 !
 ! Startup script fields:
 ! 1. Object Type      -- CFE_APP for an Application, or CFE_LIB for a library.
@@ -25,3 +24,4 @@ CFE_APP, /cf/apps/icarous.so,    ICAROUS_AppMain,  ICAROUS,   250,   111920, 0x0
 !    vxWorks = .o ( ci.o )
 !    RTEMS with S-record Loader = .s3r ( ci.s3r )
 !    RTEMS with CEXP Loader = .o ( ci.o )
+ 

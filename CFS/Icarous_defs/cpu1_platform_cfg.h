@@ -868,7 +868,7 @@
 **       The length of each string, including the NULL terminator cannot exceed the
 **       #OS_MAX_PATH_LEN value.
 */
-#define CFE_ES_NONVOL_STARTUP_FILE    "/cf/apps/cfe_es_startup.scr"
+#define CFE_ES_NONVOL_STARTUP_FILE    "/cf/cfe_es_startup.scr"
 
 
 /**

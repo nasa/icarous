@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include "network_includes.h"
 #include "interface_events.h"
-#include "icarous_msg.h"
+#include "Icarous_msg.h"
 #include "icarous_msgids.h"
 
 /// Mavlink includes

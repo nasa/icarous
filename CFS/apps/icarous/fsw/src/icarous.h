@@ -24,7 +24,7 @@
 
 #include "icarous_perfids.h"
 #include "icarous_msgids.h"
-#include "icarous_msg.h"
+#include "Icarous_msg.h"
 #include "icarous_version.h"
 #include "icarous_events.h"
 #include "icarous_table.h"
