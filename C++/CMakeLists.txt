@@ -58,9 +58,7 @@ endif ()
 
 OpenSpliceCompileIdl(IDLs IDL_generated_files)
 
-add_library(DDSlib
-        SHARED
-        ${IDL_generated_files}
+set(DDS_LIB_SOURCE_FILES
         include/DDS/Common.hpp
         include/DDS/TopicNameTraits.hpp
         include/Utils/Types.hpp
@@ -68,6 +66,12 @@ add_library(DDSlib
         src/DDS/Common.cpp
         include/DDS/ArduPilotInterfaceWithDDSForwarding.hpp
         src/DDS/ArduPilotInterfaceWithDDSForwarding.cpp
+        )
+
+add_library(DDSlib
+        SHARED
+        ${IDL_generated_files}
+        ${DDS_LIB_SOURCE_FILES}
         )
 
 target_link_libraries(
@@ -246,7 +250,7 @@ set(ACCORD_LIB_SOURCE_FILES
         src/ACCoRD/WeatherUtil.cpp
         )
 
-add_library(ACCoRD SHARED ${ACCORD_LIB_SOURCE_FILES})
+add_library(ACCoRDlib SHARED ${ACCORD_LIB_SOURCE_FILES})
 
 
 ################################################################################
@@ -260,8 +264,8 @@ set(MAVLINK_INTERFACE_SOURCE
         src/INTERFACE/MavlinkInterface.cpp
         )
 
-add_library(MavlinkInterface SHARED ${MAVLINK_INTERFACE_SOURCE})
-target_link_libraries(MavlinkInterface DDSlib)
+add_library(MAVLinklib SHARED ${MAVLINK_INTERFACE_SOURCE})
+target_link_libraries(MAVLinklib DDSlib)
 
 
 ################################################################################
@@ -301,15 +305,13 @@ set(ICAROUS_LIB_SOURCE_FILES
         src/ICAROUS/RRT.cpp
         )
 
-add_library(ICAROUS SHARED ${ICAROUS_LIB_SOURCE_FILES})
+add_library(ICAROUSlib SHARED ${ICAROUS_LIB_SOURCE_FILES})
 
-target_link_libraries(ICAROUS
-        ACCoRD
+target_link_libraries(ICAROUSlib
+        ACCoRDlib
+        MAVLinklib
         pthread
-        MavlinkInterface
         )
 
 add_executable(icarous src/LaunchIcarous.cpp)
-target_link_libraries(icarous
-        ICAROUS
-        )
+target_link_libraries(icarous ICAROUSlib)
