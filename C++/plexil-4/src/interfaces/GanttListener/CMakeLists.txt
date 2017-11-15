@@ -3,12 +3,6 @@ project(GanttListener)
 
 set(PLEXIL_SOURCE ${PLEXIL_ROOT}/src)
 
-set(CMAKE_CXX_STANDARD 11)
-
-set(CMAKE_CXX_FLAGS "-O2 -fPIC")
-
-add_definitions(-DHAVE_CONFIG_H -DPIC)
-
 set(LIBRARY_OUTPUT_PATH ${PLEXIL_ROOT}/../lib)
 
 

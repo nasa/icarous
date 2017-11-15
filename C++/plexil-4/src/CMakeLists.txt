@@ -3,6 +3,13 @@ project(PlexilSrc)
 
 set(CMAKE_CXX_STANDARD 11)
 
+# Note: remove -m32 flag to generate binaries for 64 bit architecture.
+# Add -m32 flag for generating 32 bit binaries.
+set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
+set(CMAKE_C_FLAGS "-g -fPIC -m32")
+
+add_definitions(-DHAVE_CONFIG_H -DPIC)
+
 set(PLEXIL_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../)
 
 add_subdirectory(third-party/ipc-3.9.1)

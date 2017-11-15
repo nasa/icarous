@@ -1,16 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 project(PlanDebugListener)
 
-set(CMAKE_CXX_STANDARD 11)
-
 set(PLEXIL_SOURCE ${PLEXIL_ROOT}/src)
-
-message("This is message LEXIL_SOURCE.")
-
-
-set(CMAKE_CXX_FLAGS "-O2 -fPIC")
-
-add_definitions(-DHAVE_CONFIG_H -DPIC)
 
 set(LIBRARY_OUTPUT_PATH ${PLEXIL_ROOT}/lib)
 

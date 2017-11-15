@@ -1,12 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 project(PlexilExec)
 
-set(CMAKE_CXX_STANDARD 11)
-
-set(CMAKE_CXX_FLAGS "-O2 -fPIC")
-
-add_definitions(-DHAVE_CONFIG_H -DPIC)
-
 set(LIBRARY_OUTPUT_PATH ${PLEXIL_ROOT}/lib)
 
 set(SOURCE_FILES
