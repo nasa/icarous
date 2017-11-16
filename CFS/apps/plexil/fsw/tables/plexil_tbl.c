@@ -9,9 +9,14 @@
 #include "plexil.h"
 
 
-PlexilTable_t TblStruct = {
+PLEXILTable_t TblStruct = {
         7,           // argc
-        {"-p", "../plans/Icarous.plx", "-c", "../plans/interface-config.xml", "-l", "../plans/MISSION.plx"}  //argv
+        "-p",
+        "plans/Icarous.plx",
+        "-c",
+        "plans/interface-config.xml",
+        "-l",
+        "plans/MISSION.plx"  //argv
 };
 
 

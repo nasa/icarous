@@ -23,7 +23,7 @@
 #define PLEXIL_PIPE_NAME "PLEXILPIPE"
 #define PLEXIL_PIPE_DEPTH 32
 
-// Plexil App event defines
+// plexil App event defines
 
 #define PLEXIL_RESERVED_EID              0
 #define PLEXIL_STARTUP_INF_EID           1
@@ -31,13 +31,10 @@
 #define PLEXIL_INVALID_MSGID_ERR_EID     3
 
 
-// Plexil Message types
+// plexil Message types
 
 #define PLEXIL_RETURN_MID 1
 #define PLEXIL_COMMAND_MID 2
-
-EXTERN plexilAppData_t plexilAppdata;                ///< global variable containing app state
-EXTERN PlexilCommandMsg plexilMsg;
 
 /**
  * \struct plexilAppData
@@ -54,9 +51,53 @@ typedef struct{
 typedef struct
 {
     int argc;
-    char argv[250];
+    char argv1[50];
+    char argv2[50];
+    char argv3[50];
+    char argv4[50];
+    char argv5[50];
+    char argv6[50];
+    char argv7[50];
 
-}PlexilTable_t;
+}PLEXILTable_t;
 
+
+EXTERN plexilAppData_t plexilAppdata;                ///< global variable containing app state
+EXTERN PlexilCommandMsg plexilMsg;
+
+
+/**
+ * Entry point for app
+ */
+void PLEXIL_AppMain(void);
+
+/**
+ * Function to initialize app properties
+ */
+void PLEXIL_AppInit(void);
+
+/**
+ * Function to clean up variables
+ */
+void PLEXIL_AppCleanUp(void);
+
+/**
+ * Function to process SB messages
+ */
+void PLEXIL_ProcessPacket();
+
+/**
+ * Function to run one interation of the PLEXIL executive loop
+ */
+
+void PLEXIL_Run();
+
+/**
+ * Function to validate plexil table parameters
+ * @param TblPtr pointer to table
+ * @return 0 for success.
+ */
+
+int32_t PlexilTableValidationFunc(void *TblPtr);
 
 #endif //CFETOP_PLEXIL_H

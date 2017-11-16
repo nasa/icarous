@@ -20,7 +20,7 @@ void PLEXIL_AppMain(void){
     PLEXIL_AppInit();
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
-        status = CFE_SB_RcvMsg(&appdataInt.PLEXIL_MsgPtr, appdataInt.PLEXIL_Pipe, 1);
+        status = CFE_SB_RcvMsg(&plexilAppdata.PLEXIL_MsgPtr, plexilAppdata.PLEXIL_Pipe, 1);
 
         if (status == CFE_SUCCESS)
         {
@@ -49,13 +49,13 @@ void PLEXIL_AppInit(void){
                      CFE_EVS_BINARY_FILTER);
 
     // Create pipe to receive SB messages
-    status = CFE_SB_CreatePipe( &appdataInt.PLEXIL_Pipe, /* Variable to hold Pipe ID */
+    status = CFE_SB_CreatePipe( &plexilAppdata.PLEXIL_Pipe, /* Variable to hold Pipe ID */
                                 PLEXIL_PIPE_DEPTH,       /* Depth of Pipe */
                                 PLEXIL_PIPE_NAME);       /* Name of pipe */
 
 
     //Subscribe to command messages and kinematic band messages from the SB
-    CFE_SB_Subscribe(PLEXIL_RETURN_MID, appdataInt.PLEXIL_Pipe);
+    CFE_SB_Subscribe(PLEXIL_RETURN_MID, plexilAppdata.PLEXIL_Pipe);
 
 
     // Initialize all messages that this App generates
@@ -70,30 +70,51 @@ void PLEXIL_AppInit(void){
 
 
     // Register table with table services
-    status = CFE_TBL_Register(&appdataInt.PLEXIL_tblHandle,
-                              "InterfaceTable",
-                              sizeof(PlexilTable_t),
+    status = CFE_TBL_Register(&plexilAppdata.PLEXIL_tblHandle,
+                              "PlexilTable",
+                              sizeof(PLEXILTable_t),
                               CFE_TBL_OPT_DEFAULT,
                               &PlexilTableValidationFunc);
 
     // Load app table data
-    status = CFE_TBL_Load(appdataInt.PLEXIL_tblHandle,CFE_TBL_SRC_FILE,"/cf/apps/plexil_tbl.tbl");
+    status = CFE_TBL_Load(plexilAppdata.PLEXIL_tblHandle,CFE_TBL_SRC_FILE,"/cf/plexil_tbl.tbl");
 
 
     PLEXILTable_t *TblPtr;
-    status = CFE_TBL_GetAddress(&TblPtr,appdataInt.PLEXIL_tblHandle);
+    status = CFE_TBL_GetAddress(&TblPtr,plexilAppdata.PLEXIL_tblHandle);
 
     // copy data from table here
     int argc;
-    char** argv;
+    char **inputParams;//[7][20];
+
+    inputParams = (char**)malloc(7* sizeof(char*));
+    for(int i=0;i<7;i++){
+        inputParams[i] = (char*)malloc(50* sizeof(char));
+    }
 
     argc = TblPtr->argc;
-    argv = TblPtr->argv;
+    memset(inputParams[0],0x0,sizeof(char)*50);
+    memcpy(inputParams[1],TblPtr->argv1,sizeof(TblPtr->argv1));
+    memcpy(inputParams[2],TblPtr->argv2,sizeof(TblPtr->argv2));
+    memcpy(inputParams[3],TblPtr->argv3,sizeof(TblPtr->argv3));
+    memcpy(inputParams[4],TblPtr->argv4,sizeof(TblPtr->argv4));
+    memcpy(inputParams[5],TblPtr->argv5,sizeof(TblPtr->argv5));
+    memcpy(inputParams[6],TblPtr->argv6,sizeof(TblPtr->argv6));
 
-    plexil_init(argc,argv,&plexilAppdata.exec,&plexilAppdata.adap);
+    //argv = TblPtr->argv;
+
+    //printf("argv %s\n",argv[1]);
+
+    plexil_init(argc,inputParams,&plexilAppdata.exec,&plexilAppdata.adap);
 
     // Free table pointer
-    status = CFE_TBL_ReleaseAddress(appdataInt.PLEXIL_tblHandle);
+    status = CFE_TBL_ReleaseAddress(plexilAppdata.PLEXIL_tblHandle);
+
+    for(int i=0;i<7;i++){
+        free(inputParams[i]);
+    }
+
+    free(inputParams);
 
 }
 
@@ -104,21 +125,21 @@ void PLEXIL_AppCleanUp(){
 
 void PLEXIL_ProcessPacket(){
     CFE_SB_MsgId_t  MsgId;
-    MsgId = CFE_SB_GetMsgId(appdataInt.PLEXIL_MsgPtr);
+    MsgId = CFE_SB_GetMsgId(plexilAppdata.PLEXIL_MsgPtr);
 
     PlexilCommandMsg *msg;
 
     msg = (PlexilCommandMsg*) plexilAppdata.PLEXIL_MsgPtr;
 
     switch(msg->mType){
-        case _LOOKUP_RETURN:
-        case _COMMAND_RETURN:
+        case _LOOKUP_RETURN_:
+        case _COMMAND_RETURN_:
             plexil_return(plexilAppdata.adap,msg);
             break;
 
-        case PLEXIL_RUN:
-            PLEXIL_Run();
-            break;
+//        case PLEXIL_RUN:
+//            PLEXIL_Run();
+//            break;
     }
 
     return;
@@ -152,4 +173,11 @@ void PLEXIL_Run(){
             CFE_SB_SendMsg((CFE_SB_Msg_t * ) & plexilMsg);
         }
     }
+}
+
+int32_t PlexilTableValidationFunc(void *TblPtr){
+
+    int32_t status = 0;
+
+    return status;
 }
