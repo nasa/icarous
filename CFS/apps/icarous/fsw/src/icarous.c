@@ -85,7 +85,7 @@ void ICAROUS_AppInit(void)
 			CFE_TBL_OPT_DEFAULT,
 			&IcarousTableValidationFunc);
 
-    status = CFE_TBL_Load(appdataIC.ICAROUS_tblHandle,CFE_TBL_SRC_FILE,"/cf/apps/icarous_tbl.tbl");
+    status = CFE_TBL_Load(appdataIC.ICAROUS_tblHandle,CFE_TBL_SRC_FILE,"/cf/icarous_tbl.tbl");
 
     // Check which port to open from user defined parameters
     icarous_table_t *TblPtr;
@@ -100,6 +100,7 @@ void ICAROUS_AppInit(void)
 					  ICAROUS_MAJOR_VERSION,
 					  ICAROUS_MINOR_VERSION);
 }
+
 
 void ICAROUS_ProcessPacket(void)
 {
@@ -129,7 +130,7 @@ void ICAROUS_ProcessPacket(void)
         {	  
         	ArgsCmd_t *cmd;
         	cmd = (ArgsCmd_t*)appdataIC.ICAROUSMsgPtr;
-        	icarous_StartMission(appdataIC.ic,cmd->param1);	
+        	icarous_StartMission(appdataIC.ic,cmd->param1);
         	break;
         }
 

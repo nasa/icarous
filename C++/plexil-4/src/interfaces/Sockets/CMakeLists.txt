@@ -3,7 +3,7 @@ project(Sockets)
 
 set(PLEXIL_SOURCE ${PLEXIL_ROOT}/src)
 
-set(LIBRARY_OUTPUT_PATH ${PLEXIL_ROOT}/../lib)
+set(LIBRARY_OUTPUT_PATH ${PLEXIL_ROOT}/lib)
 
 set(SOURCE_FILES
         ClientSocket.cpp

@@ -158,7 +158,7 @@ void INTERFACE_AppInit(void){
 	     //OS_printf("MutexSem ID = %d\n", (int)gs.mutex_id);
 	  }
 
-	appdataInt.waypoint_type = (int*)malloc(sizeof(int)*2);
+	appdataInt.waypoint_type = (int*)malloc(sizeof(int)*2);//
 }
 
 void INTERFACE_AppCleanUp(){

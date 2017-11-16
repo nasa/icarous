@@ -59,12 +59,8 @@ int plexil_init(int argc, char** argv,struct plexilExec** exec,struct plexilInte
   bool resourceFileSupplied = false;
   bool useResourceFile = true;
 
-    PLEXIL::setDebugOutputStream(std::cout);
-    PLEXIL::enableMatchingDebugMessages("CfsAdapter");
-    PLEXIL::enableMatchingDebugMessages("CfsAdapter:lookupNow");
-    PLEXIL::enableMatchingDebugMessages("CfsAdapter:handleLookupNow");
-    PLEXIL::enableMatchingDebugMessages("CfsAdapter:executeCommand");
-    PLEXIL::enableMatchingDebugMessages("CfsAdapter:handleReturnValuesSequence");
+    //PLEXIL::setDebugOutputStream(std::cout);
+    //PLEXIL::enableMatchingDebugMessages("CfsAdapter");
 
   // if not enough parameters, print usage
   if (argc < 2) {
