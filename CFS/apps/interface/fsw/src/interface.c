@@ -28,6 +28,7 @@ void INTERFACE_AppMain(void){
 
 	INTERFACE_AppInit();
 
+
 	status = OS_TaskCreate( &task_1_id, "Task 1", Task1, task_1_stack, TASK_1_STACK_SIZE, TASK_1_PRIORITY, 0);
 	if ( status != OS_SUCCESS ){
 		OS_printf("Error creating Task 1\n");
@@ -39,7 +40,7 @@ void INTERFACE_AppMain(void){
 	}
 
 	while(CFE_ES_RunLoop(&RunStatus) == TRUE){
-		status = CFE_SB_RcvMsg(&appdataInt.INTERFACEMsgPtr, appdataInt.INTERFACE_Pipe, 1);
+		status = CFE_SB_RcvMsg(&appdataInt.INTERFACEMsgPtr, appdataInt.INTERFACE_Pipe, CFE_SB_PEND_FOREVER);
 
 		if (status == CFE_SUCCESS)
 		{
@@ -73,7 +74,19 @@ void INTERFACE_AppInit(void){
 				    INTERFACE_PIPE_DEPTH,    /* Depth of Pipe */
 				    INTERFACE_PIPE_NAME);    /* Name of pipe */
 
-	
+	status = CFE_SB_CreatePipe( &appdataInt.SchInterface_Pipe1, /* Variable to hold Pipe ID */
+								INTERFACE_PIPE_DEPTH,    /* Depth of Pipe */
+								SCH_INTERFACE_PIPE1_NAME);    /* Name of pipe */
+
+    status = CFE_SB_CreatePipe( &appdataInt.SchInterface_Pipe2, /* Variable to hold Pipe ID */
+                                INTERFACE_PIPE_DEPTH,    /* Depth of Pipe */
+                                SCH_INTERFACE_PIPE2_NAME);    /* Name of pipe */
+
+	// Subscribe to wakeup messages from scheduler
+	CFE_SB_Subscribe(INTERFACE_AP_WAKEUP_MID,appdataInt.SchInterface_Pipe1);
+	CFE_SB_Subscribe(INTERFACE_GS_WAKEUP_MID,appdataInt.SchInterface_Pipe2);
+
+
 	//Subscribe to command messages and kinematic band messages from the SB	 
 	CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataInt.INTERFACE_Pipe);
 	CFE_SB_Subscribe(ICAROUS_VISBAND_MID, appdataInt.INTERFACE_Pipe);
@@ -105,7 +118,7 @@ void INTERFACE_AppInit(void){
 				  &InterfaceTableValidationFunc);
 
 	// Load app table data
-	status = CFE_TBL_Load(appdataInt.INTERFACE_tblHandle,CFE_TBL_SRC_FILE,"/cf/intf_tbl.tbl");
+	status = CFE_TBL_Load(appdataInt.INTERFACE_tblHandle,CFE_TBL_SRC_FILE,"/cf/apps/intf_tbl.tbl");
 
 	// Check which port to open from user defined parameters
 	InterfaceTable_t *TblPtr;
@@ -140,7 +153,9 @@ void INTERFACE_AppInit(void){
 		//InitializeSocketPort();
 	}
 
-	status = OS_MutSemCreate( &appdataInt.ap.mutex_id, "Mutex1", 0);
+
+
+	status = OS_MutSemCreate( &appdataInt.mutex_read, "InterfaceMRead", 0);
 	if ( status != OS_SUCCESS )
 	{
 		OS_printf("Error creating mutex1\n");
@@ -149,7 +164,7 @@ void INTERFACE_AppInit(void){
 	     //OS_printf("MutexSem ID = %d\n", (int)ap.mutex_id);
 	  }
 
-	status = OS_MutSemCreate( &appdataInt.gs.mutex_id, "Mutex2", 0);
+	status = OS_MutSemCreate( &appdataInt.mutex_read, "InterfaceMWrite", 0);
 	if ( status != OS_SUCCESS )
 	{
 		OS_printf("Error creating mutex2\n");
@@ -157,6 +172,7 @@ void INTERFACE_AppInit(void){
 	  {
 	     //OS_printf("MutexSem ID = %d\n", (int)gs.mutex_id);
 	  }
+
 
 	appdataInt.waypoint_type = (int*)malloc(sizeof(int)*2);//
 }
@@ -169,7 +185,20 @@ void Task1(void){
 	//OS_printf("Starting read task\n");
 	OS_TaskRegister();
 	while(appdataInt.runThreads){
-		GetMAVLinkMsgFromAP();
+        int32 status = CFE_SB_RcvMsg(&appdataInt.Sch_MsgPtr1, appdataInt.SchInterface_Pipe1, CFE_SB_PEND_FOREVER);
+        if (status == CFE_SUCCESS)
+        {
+            CFE_SB_MsgId_t  MsgId;
+            MsgId = CFE_SB_GetMsgId(appdataInt.Sch_MsgPtr1);
+            switch (MsgId){
+                case INTERFACE_AP_WAKEUP_MID:
+                    //OS_printf("received ap wakeup msg\n");
+                    for(int i=0;i<10;i++)
+                        GetMAVLinkMsgFromAP();
+                    break;
+
+            }
+        }
 	}
 }
 
@@ -177,8 +206,19 @@ void Task2(void){
 	//OS_printf("Starting write task\n");
 	OS_TaskRegister();
 	while(appdataInt.runThreads){
-		GetMAVLinkMsgFromGS();
-	}
+        int32 status = CFE_SB_RcvMsg(&appdataInt.Sch_MsgPtr2, appdataInt.SchInterface_Pipe2, CFE_SB_PEND_FOREVER);
+        if (status == CFE_SUCCESS)
+        {
+            CFE_SB_MsgId_t  MsgId;
+            MsgId = CFE_SB_GetMsgId(appdataInt.Sch_MsgPtr2);
+            switch (MsgId){
+                case INTERFACE_GS_WAKEUP_MID:
+                    GetMAVLinkMsgFromGS();
+                    break;
+            }
+        }
+
+    }
 }
 
 
@@ -216,7 +256,7 @@ void InitializeSocketPort(port_t* prt){
 
 int readPort(port_t* prt){
 
-	OS_MutSemTake(prt->mutex_id);
+	OS_MutSemTake(appdataInt.mutex_read);
 	int n = 0;
 	if (prt->portType == SOCKET){
 		memset(prt->recvbuffer, 0, BUFFER_LENGTH);
@@ -226,7 +266,7 @@ int readPort(port_t* prt){
 	}else{
 
 	}
-	OS_MutSemGive(prt->mutex_id);
+	OS_MutSemGive(appdataInt.mutex_read);
 
 	return n;
 }
@@ -236,7 +276,7 @@ void writePort(port_t* prt,mavlink_message_t* message){
 
 	char sendbuffer[300];
 	uint16_t len = mavlink_msg_to_send_buffer(sendbuffer, message);
-	OS_MutSemTake(prt->mutex_id);
+	OS_MutSemTake(appdataInt.mutex_write);
 	if(prt->portType == SOCKET){
 		int n = sendto(prt->sockId, sendbuffer, len, 0, (struct sockaddr*)&prt->target_addr, sizeof (struct sockaddr_in));
 	}else if(prt->portType == SERIAL){
@@ -244,7 +284,7 @@ void writePort(port_t* prt,mavlink_message_t* message){
 	}else{
 		// unimplemented port type
 	}
-	OS_MutSemGive(prt->mutex_id);
+	OS_MutSemGive(appdataInt.mutex_write);
 
 }
 
@@ -259,7 +299,6 @@ int GetMAVLinkMsgFromAP(){
 		if(msgReceived){
 			// Send message to ground station
 			writePort(&appdataInt.gs,&message);
-
 			// Send SB message if necessary
 			ProcessAPMessage(message);
 		}

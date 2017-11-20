@@ -1,0 +1,5 @@
+SCH_MAX_MINOR_FRAMES 100
+MSGS_PER_MINOR_FRAMES  5
+APP_ID        PRIO   RATE_Hz    INITIAL_MF MSG_TYPE(WU_HK)
+INTERFACE_GS   61        50        0           WU
+INTERFACE_AP   60        50        0           WU

@@ -88,6 +88,24 @@ void ProcessAPMessage(mavlink_message_t message){
 			 }
 			 break;
 		 }
+
+		case MAVLINK_MSG_ID_MISSION_ITEM:
+		{
+			//printf("AP: MAVLINK_MSG_ID_MISSION_ITEM\n");
+			break;
+		}
+
+		case MAVLINK_MSG_ID_MISSION_REQUEST_LIST:
+		{
+			//printf("AP: MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
+			break;
+		}
+
+		case MAVLINK_MSG_ID_MISSION_REQUEST:
+		{
+			//printf("AP: MAVLINK_MSG_ID_MISSION_REQUEST\n");
+			break;
+		}
 	}
 }
 

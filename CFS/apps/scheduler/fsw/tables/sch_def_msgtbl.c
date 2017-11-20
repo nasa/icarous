@@ -30,19 +30,8 @@
 #include "sch_tbldefs.h"
 
 #include "cfe_msgids.h"
-/* #include "ci_lab_msgids.h" */
-/* #include "to_lab_msgids.h" */
-/* #include "cs_msgids.h"  */
-/* #include "ds_msgids.h"  */
-/* #include "fm_msgids.h"  */
-/* #include "hk_msgids.h"  */
-/* #include "hs_msgids.h"  */
-/* #include "lc_msgids.h"  */
-/* #include "md_msgids.h"  */
-/* #include "mm_msgids.h"  */
-/* #include "sc_msgids.h"  */
 #include "sch_msgids.h"
-
+#include "msgids.h"
 
 /*************************************************************************
 **
@@ -50,9 +39,6 @@
 **
 **************************************************************************/
 
-/*
-** (none)
-*/
 
 /*************************************************************************
 **
@@ -184,11 +170,9 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
   **  Mission Defined Messages
   */
     /* command ID #30 - Command Ingest HK Request Example */
-/*{ { CFE_MAKE_BIG16(CI_SEND_HK_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } }, */
-  { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
+  { { CFE_MAKE_BIG16(INTERFACE_GS_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
     /* command ID #31 - Telemetry Output HK Request Example */
-/*{ { CFE_MAKE_BIG16(TO_SEND_HK_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } }, */
-  { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
+  { { CFE_MAKE_BIG16(INTERFACE_AP_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
     /* command ID #32 */
   { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
     /* command ID #33 */

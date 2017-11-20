@@ -85,7 +85,7 @@ void ICAROUS_AppInit(void)
 			CFE_TBL_OPT_DEFAULT,
 			&IcarousTableValidationFunc);
 
-    status = CFE_TBL_Load(appdataIC.ICAROUS_tblHandle,CFE_TBL_SRC_FILE,"/cf/icarous_tbl.tbl");
+    status = CFE_TBL_Load(appdataIC.ICAROUS_tblHandle,CFE_TBL_SRC_FILE,"/cf/apps/icarous_tbl.tbl");
 
     // Check which port to open from user defined parameters
     icarous_table_t *TblPtr;

@@ -21,6 +21,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include "network_includes.h"
+#include "msgids.h"
 #include "interface_events.h"
 #include "Icarous_msg.h"
 #include "icarous_msgids.h"
@@ -32,18 +33,21 @@
 /// Defines required to specify stack properties
 #define TASK_1_ID         1
 #define TASK_1_STACK_SIZE 1024
-#define TASK_1_PRIORITY   101
+#define TASK_1_PRIORITY   63
 
 #define TASK_2_ID         2
 #define TASK_2_STACK_SIZE 1024
-#define TASK_2_PRIORITY   102
+#define TASK_2_PRIORITY   63
 
 /// Mavlink message receive buffer
-#define BUFFER_LENGTH 300
+#define BUFFER_LENGTH 1000
 
 /// Software bus properties
 #define INTERFACE_PIPE_NAME "FLIGHTPLAN"
 #define INTERFACE_PIPE_DEPTH 32
+
+#define SCH_INTERFACE_PIPE1_NAME "SCH_INTERFACE1"
+#define SCH_INTERFACE_PIPE2_NAME "SCH_INTERFACE2"
 
 /// Task related variables
 uint32 task_1_stack[TASK_1_STACK_SIZE];
@@ -55,8 +59,8 @@ uint32 task_1_id, task_2_id;
  * Port type
  */
 typedef enum {
-  SOCKET,  ///< enum value SOCKET 
-  SERIAL   ///< enum value SERIAL 
+    SOCKET,  ///< enum value SOCKET
+    SERIAL   ///< enum value SERIAL
 } PortType_t;
 
 /**
@@ -87,17 +91,17 @@ typedef enum{
  * Structure to hold port attributes
  */
 typedef struct{
-        int id;                          ///< id
-	PortType_t portType;             ///< port type 
-	struct sockaddr_in target_addr;  ///< target address 
-	struct sockaddr_in self_addr;    ///< self address
- 	socklen_t recvlen;               ///< length of received host properties
-	int sockId;                      ///< socket id
-	int portin;                      ///< input socket
-	int portout;                     ///< output socket
-	char target[50];                 ///< target ip address
-	char recvbuffer[BUFFER_LENGTH];  ///< buffer for incoming data
-	uint32_t mutex_id;               ///< mutex id
+    int id;                          ///< id
+    PortType_t portType;             ///< port type
+    struct sockaddr_in target_addr;  ///< target address
+    struct sockaddr_in self_addr;    ///< self address
+    socklen_t recvlen;               ///< length of received host properties
+    int sockId;                      ///< socket id
+    int portin;                      ///< input socket
+    int portout;                     ///< output socket
+    char target[50];                 ///< target ip address
+    char recvbuffer[BUFFER_LENGTH];  ///< buffer for incoming data
+
 }port_t;
 
 /**
@@ -105,15 +109,21 @@ typedef struct{
  * Structure to hold app data
  */
 typedef struct{
-  CFE_SB_PipeId_t    INTERFACE_Pipe;      ///< pipe variable
-  CFE_SB_MsgPtr_t    INTERFACEMsgPtr;     ///< msg pointer to SB message
-  CFE_TBL_Handle_t   INTERFACE_tblHandle; ///< table handle
-  port_t ap;                              ///< autopilot port
-  port_t gs;                              ///< groundstation port
-  uint8_t runThreads;                     ///< thread active status
-  int numWaypoints;                       ///< num total waypoints
-  int* waypoint_type;                     ///< waypoint type description
-  int foundUAV;                           ///< UAV communication alive
+    CFE_SB_PipeId_t    INTERFACE_Pipe;      ///< pipe variable
+    CFE_SB_PipeId_t    SchInterface_Pipe1;      ///< pipe variable
+    CFE_SB_PipeId_t    SchInterface_Pipe2;      ///< pipe variable
+    CFE_SB_MsgPtr_t    INTERFACEMsgPtr;     ///< msg pointer to SB message
+    CFE_SB_MsgPtr_t    Sch_MsgPtr1;     ///< msg pointer to SB message
+    CFE_SB_MsgPtr_t    Sch_MsgPtr2;     ///< msg pointer to SB message
+    CFE_TBL_Handle_t   INTERFACE_tblHandle; ///< table handle
+    port_t ap;                              ///< autopilot port
+    port_t gs;                              ///< groundstation port
+    uint8_t runThreads;                     ///< thread active status
+    int numWaypoints;                       ///< num total waypoints
+    int* waypoint_type;                     ///< waypoint type description
+    int foundUAV;                           ///< UAV communication alive
+    uint32_t mutex_read;               ///< mutex id
+    uint32_t mutex_write;               ///< mutex id
 }appdataInt_t;
 
 

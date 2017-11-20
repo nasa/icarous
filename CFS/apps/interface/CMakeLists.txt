@@ -5,6 +5,7 @@ include_directories(fsw/mission_inc)
 include_directories(fsw/platform_inc)
 include_directories(../icarous/fsw/platform_inc/)
 include_directories(../inc)
+include_directories(../inc/msgids)
 include_directories(fsw/src)
 
 set(ICAROUS_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++")

@@ -64,7 +64,7 @@ void PLEXIL_AppInit(void){
 
     // Send event indicating app initialization
     CFE_EVS_SendEvent (PLEXIL_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                       "Interface Initialized. Version %d.%d",
+                       "Plexil Initialized. Version %d.%d",
                        PLEXIL_MAJOR_VERSION,
                        PLEXIL_MINOR_VERSION);
 
@@ -77,7 +77,7 @@ void PLEXIL_AppInit(void){
                               &PlexilTableValidationFunc);
 
     // Load app table data
-    status = CFE_TBL_Load(plexilAppdata.PLEXIL_tblHandle,CFE_TBL_SRC_FILE,"/cf/plexil_tbl.tbl");
+    status = CFE_TBL_Load(plexilAppdata.PLEXIL_tblHandle,CFE_TBL_SRC_FILE,"/cf/apps/plexil_tbl.tbl");
 
 
     PLEXILTable_t *TblPtr;
