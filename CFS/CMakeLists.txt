@@ -28,6 +28,8 @@ set(OSAL_USER_C_FLAGS "-g")
 
 set(CMAKE_CXX_FLAGS "-g -Wall -fPIC -m32 -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE=600")
 
+add_definitions(-DCFS)
+
 # The minimum CMake version is chosen because 2.6.4 is what is
 # included by default with RHEL/Centos 5.x
 cmake_minimum_required(VERSION 2.6.4)
