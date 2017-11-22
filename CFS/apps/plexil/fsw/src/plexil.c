@@ -4,6 +4,7 @@
 
 #define EXTERN
 #include "plexil.h"
+#include "msgids/msgids.h"
 
 CFE_EVS_BinFilter_t  PLEXIL_EventFilters[] =
         {  /* Event ID    mask */
@@ -19,13 +20,13 @@ void PLEXIL_AppMain(void){
 
     PLEXIL_AppInit();
 
-    status = OS_TaskCreate( &task_pldaq_id, "Plexil_DataAcq", PLEXIL_DAQ, task_pldaq_stack, TASK_PLDAQ_STACK_SIZE, TASK_PLDAQ_PRIORITY, 0);
+    status = OS_TaskCreate( &task_pldaq_id, "PLDAQ", PLEXIL_DAQ, task_pldaq_stack, TASK_PLDAQ_STACK_SIZE, TASK_PLDAQ_PRIORITY, 0);
     if ( status != OS_SUCCESS ){
         OS_printf("Error creating Task 1\n");
     }
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
-        status = CFE_SB_RcvMsg(&plexilAppdata.PLEXIL_MsgPtr, plexilAppdata.PLEXIL_Pipe, 1);
+        status = CFE_SB_RcvMsg(&plexilAppData.PLEXIL_MsgPtr, plexilAppData.PLEXIL_Pipe, 1);
 
         if (status == CFE_SUCCESS)
         {
@@ -41,7 +42,7 @@ void PLEXIL_AppMain(void){
 
 void PLEXIL_AppInit(void) {
 
-    memset(&plexilAppdata, 0, sizeof(plexilAppData_t));
+    memset(&plexilAppData, 0, sizeof(plexilAppData_t));
 
     int32 status;
 
@@ -54,24 +55,24 @@ void PLEXIL_AppInit(void) {
                      CFE_EVS_BINARY_FILTER);
 
     // Create pipe to receive SB messages
-    status = CFE_SB_CreatePipe(&plexilAppdata.PLEXIL_Pipe, /* Variable to hold Pipe ID */
+    status = CFE_SB_CreatePipe(&plexilAppData.PLEXIL_Pipe, /* Variable to hold Pipe ID */
                                PLEXIL_PIPE_DEPTH,       /* Depth of Pipe */
                                PLEXIL_PIPE_NAME);       /* Name of pipe */
 
     // Create pipe to receive SB messages
-    status = CFE_SB_CreatePipe(&plexilAppdata.FlightData_Pipe, /* Variable to hold Pipe ID */
+    status = CFE_SB_CreatePipe(&plexilAppData.FlightData_Pipe, /* Variable to hold Pipe ID */
                                FLIGHTDATA_PIPE_DEPTH,       /* Depth of Pipe */
                                FLIGHTDATA_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to command messages and kinematic band messages from the SB
-    CFE_SB_Subscribe(PLEXIL_RETURN_MID, plexilAppdata.PLEXIL_Pipe);
-    CFE_SB_Subscribe(PLEXIL_WAKEUP_MID, plexilAppdata.PLEXIL_Pipe);
+    CFE_SB_Subscribe(PLEXIL_RETURN_MID, plexilAppData.PLEXIL_Pipe);
+    CFE_SB_Subscribe(PLEXIL_WAKEUP_MID, plexilAppData.PLEXIL_Pipe);
 
-    CFE_SB_Subscribe(ICAROUS_WP_MID, plexilAppdata.FlightData_Pipe);
-    CFE_SB_Subscribe(ICAROUS_WPREACHED_MID, plexilAppdata.FlightData_Pipe);
-    CFE_SB_Subscribe(ICAROUS_STARTMISSION_MID, plexilAppdata.FlightData_Pipe);
-    CFE_SB_Subscribe(ICAROUS_RESET_MID, plexilAppdata.FlightData_Pipe);
-    CFE_SB_Subscribe(ICAROUS_POSITION_MID, plexilAppdata.FlightData_Pipe);
+    CFE_SB_Subscribe(ICAROUS_WP_MID, plexilAppData.FlightData_Pipe);
+    CFE_SB_Subscribe(ICAROUS_WPREACHED_MID, plexilAppData.FlightData_Pipe);
+    CFE_SB_Subscribe(ICAROUS_STARTMISSION_MID, plexilAppData.FlightData_Pipe);
+    CFE_SB_Subscribe(ICAROUS_RESET_MID, plexilAppData.FlightData_Pipe);
+    CFE_SB_Subscribe(ICAROUS_POSITION_MID, plexilAppData.FlightData_Pipe);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&plexilMsg, PLEXIL_COMMAND_MID, sizeof(PlexilCommandMsg), TRUE);
@@ -84,18 +85,18 @@ void PLEXIL_AppInit(void) {
 
 
     // Register table with table services
-    status = CFE_TBL_Register(&plexilAppdata.PLEXIL_tblHandle,
+    status = CFE_TBL_Register(&plexilAppData.PLEXIL_tblHandle,
                               "PlexilTable",
                               sizeof(PLEXILTable_t),
                               CFE_TBL_OPT_DEFAULT,
                               &PlexilTableValidationFunc);
 
     // Load app table data
-    status = CFE_TBL_Load(plexilAppdata.PLEXIL_tblHandle, CFE_TBL_SRC_FILE, "/cf/apps/plexil_tbl.tbl");
+    status = CFE_TBL_Load(plexilAppData.PLEXIL_tblHandle, CFE_TBL_SRC_FILE, "/cf/apps/plexil_tbl.tbl");
 
 
     PLEXILTable_t *TblPtr;
-    status = CFE_TBL_GetAddress(&TblPtr, plexilAppdata.PLEXIL_tblHandle);
+    status = CFE_TBL_GetAddress(&TblPtr, plexilAppData.PLEXIL_tblHandle);
 
     // copy data from table here
     int argc;
@@ -119,10 +120,10 @@ void PLEXIL_AppInit(void) {
 
     //printf("argv %s\n",argv[1]);
 
-    plexil_init(argc, inputParams, &plexilAppdata.exec, &plexilAppdata.adap);
+    plexil_init(argc, inputParams, &plexilAppData.exec, &plexilAppData.adap);
 
     // Free table pointer
-    status = CFE_TBL_ReleaseAddress(plexilAppdata.PLEXIL_tblHandle);
+    status = CFE_TBL_ReleaseAddress(plexilAppData.PLEXIL_tblHandle);
 
     for (int i = 0; i < 7; i++) {
         free(inputParams[i]);
@@ -130,27 +131,27 @@ void PLEXIL_AppInit(void) {
 
     free(inputParams);
 
-    plexilAppdata.fData = initilizeFlightData();
+    plexilAppData.fData = initilizeFlightData();
 
 }
 
 void PLEXIL_AppCleanUp(){
     // Do clean up here
-    plexil_destroy(plexilAppdata.exec);
+    plexil_destroy(plexilAppData.exec);
 }
 
 void PLEXIL_ProcessPacket(){
     CFE_SB_MsgId_t  MsgId;
-    MsgId = CFE_SB_GetMsgId(plexilAppdata.PLEXIL_MsgPtr);
+    MsgId = CFE_SB_GetMsgId(plexilAppData.PLEXIL_MsgPtr);
 
     PlexilCommandMsg *msg;
 
-    msg = (PlexilCommandMsg*) plexilAppdata.PLEXIL_MsgPtr;
+    msg = (PlexilCommandMsg*) plexilAppData.PLEXIL_MsgPtr;
 
     switch(msg->mType){
         case _LOOKUP_RETURN_:
         case _COMMAND_RETURN_:
-            plexil_return(plexilAppdata.adap,msg);
+            plexil_return(plexilAppData.adap,msg);
             break;
 
         case PLEXIL_WAKEUP_MID:
@@ -164,12 +165,12 @@ void PLEXIL_ProcessPacket(){
 
 void PLEXIL_Run(){
     int n;
-    plexil_run(plexilAppdata.exec);
+    plexil_run(plexilAppData.exec);
 
     n = 1;
     while(n>0){
         PlexilCommandMsg msg;
-        n = plexil_getCommand(plexilAppdata.adap,&msg);
+        n = plexil_getCommand(plexilAppData.adap,&msg);
 
         if(n>0) {
             memcpy(&plexilMsg, &msg, sizeof(plexilMsg));
@@ -184,7 +185,7 @@ void PLEXIL_Run(){
     n = 1;
     while(n>0){
         PlexilCommandMsg msg;
-        n = plexil_getLookup(plexilAppdata.adap,&msg);
+        n = plexil_getLookup(plexilAppData.adap,&msg);
 
         if(n>0) {
             memcpy(&plexilMsg, &msg, sizeof(plexilMsg));

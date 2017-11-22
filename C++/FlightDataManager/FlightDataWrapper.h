@@ -5,6 +5,7 @@
 #ifndef FLIGHTDATAWRAPPER_H
 #define FLIGHTDATAWRAPPER_H
 
+#include "Icarous_msg.h"
 
 #ifdef __cplusplus
 extern "C"{
@@ -13,7 +14,7 @@ extern "C"{
 struct flightData;
 
 struct flightData* initilizeFlightData();
-void c_InputState(double time,double lat,double lon,double alt,double vx,double vy,double vz);
+void c_InputState(struct flightData* fd,double time,double lat,double lon,double alt,double vx,double vy,double vz);
 void c_addMissionItem(struct flightData* fd,waypoint_t *msg);
 void c_addResolutionItem(struct flightData* fd,waypoint_t *msg);
 void c_SetStartMissionFlag(struct flightData* fd,uint8_t flag);

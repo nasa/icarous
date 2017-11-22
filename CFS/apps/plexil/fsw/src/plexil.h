@@ -35,17 +35,10 @@
 #define PLEXIL_COMMAND_ERR_EID           2
 #define PLEXIL_INVALID_MSGID_ERR_EID     3
 
-
-// plexil Message types
-
-#define PLEXIL_RETURN_MID 1
-#define PLEXIL_COMMAND_MID 2
-
-
 /// Defines required to specify stack properties
-#define TASK_PLDAQ_ID         1
+#define TASK_PLDAQ_ID         31
 #define TASK_PLDAQ_STACK_SIZE 1024
-#define TASK_PLDAQ_PRIORITY   65
+#define TASK_PLDAQ_PRIORITY   68
 
 uint32 task_pldaq_stack[TASK_PLDAQ_STACK_SIZE];
 uint32 task_pldaq_id;
@@ -81,7 +74,7 @@ typedef struct
 }PLEXILTable_t;
 
 
-EXTERN plexilAppData_t plexilAppdata;                ///< global variable containing app state
+EXTERN plexilAppData_t plexilAppData;                ///< global variable containing app state
 EXTERN PlexilCommandMsg plexilMsg;
 
 
@@ -124,26 +117,19 @@ int32_t PlexilTableValidationFunc(void *TblPtr);
  * @param Msg PlexilCommandMsg
  * @return 1 if command is handled by default adapter,0 otherwise.
  */
-uint8_t ProcessPlexilCommand(PlexilCommandMsg* Msg){
-
-}
+uint8_t ProcessPlexilCommand(PlexilCommandMsg* Msg);
 
 /**
  * Function to process lookups from plexil
  * @param Msg Plexil Command Msg
  * @return 1 if command is handled by default adapter,0 otherwise.
  */
-uint8_t ProcessPlexilLookup(PlexilCommandMsg* Msg){
-
-}
-
+uint8_t ProcessPlexilLookup(PlexilCommandMsg* Msg);
 
 /**
  * Function to acquire flight data for plexil
  */
-void PLEXIL_DAQ(){
-
-}
+void PLEXIL_DAQ(void);
 
 
 #endif //CFETOP_PLEXIL_H

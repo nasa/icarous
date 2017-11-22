@@ -10,10 +10,10 @@
 
 struct flightData* initilizeFlightData(){
     FlightData* fdata = new FlightData();
-    return ToC(fd);
+    return ToC(fdata);
 }
 
-void c_InputState(double time,double lat,double lon,double alt,double vx,double vy,double vz){
+void c_InputState(struct flightData* fd,double time,double lat,double lon,double alt,double vx,double vy,double vz){
     FlightData* fdata = ToCPP(fd);
     fdata->InputState(time,lat,lon,alt,vx,vy,vz);
 }
@@ -59,17 +59,17 @@ void c_ClearResolutionList(struct flightData* fd){
     fdata->ClearResolutionList();
 }
 
-void c_Reset(){
+void c_Reset(struct flightData* fd){
     FlightData* fdata = ToCPP(fd);
     fdata->Reset();
 }
 
-void c_InputAck(CmdAck_t* ack){
+void c_InputAck(struct flightData* fd,CmdAck_t* ack){
     FlightData* fdata = ToCPP(fd);
     fdata->InputAck(ack);
 }
 
-bool c_CheckAck(command_name_t command){
+bool c_CheckAck(struct flightData* fd,command_name_t command){
     FlightData* fdata = ToCPP(fd);
     return fdata->CheckAck(command);
 }

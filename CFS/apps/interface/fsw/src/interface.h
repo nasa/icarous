@@ -31,11 +31,11 @@
 
 
 /// Defines required to specify stack properties
-#define TASK_1_ID         1
+#define TASK_1_ID         21
 #define TASK_1_STACK_SIZE 1024
 #define TASK_1_PRIORITY   63
 
-#define TASK_2_ID         2
+#define TASK_2_ID         22
 #define TASK_2_STACK_SIZE 1024
 #define TASK_2_PRIORITY   63
 
