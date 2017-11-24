@@ -1,41 +1,56 @@
-//
-// Created by research133 on 11/21/17.
-//
-
-#ifndef FLIGHTDATAWRAPPER_H
-#define FLIGHTDATAWRAPPER_H
-
-#include "Icarous_msg.h"
+#ifndef FLIGHTDATAWRAPPER_H 
+#define FLIGHTDATAWRAPPER_H 
 
 #ifdef __cplusplus
 extern "C"{
 #endif
 
-struct flightData;
+struct c_FlightData;
 
-struct flightData* initilizeFlightData();
-void c_InputState(struct flightData* fd,double time,double lat,double lon,double alt,double vx,double vy,double vz);
-void c_addMissionItem(struct flightData* fd,waypoint_t *msg);
-void c_addResolutionItem(struct flightData* fd,waypoint_t *msg);
-void c_SetStartMissionFlag(struct flightData* fd,uint8_t flag);
-void c_ConstructMissionPlan(struct flightData* fd);
-void c_ConstructResolutionPlan(struct flightData* fd);
-void c_AddTraffic(struct flightData* fd,int id, double x,double y, double z, double vx,double vy,double vz);
-void c_ClearMissionList(struct flightData* fd);
-void c_ClearResolutionList(struct flightData* fd);
-void c_Reset();
-void c_InputAck(CmdAck_t* ack);
-bool c_CheckAck(command_name_t command);
+struct c_FlightData* c_initFlightData();
 
+void c_AddMissionItem(struct c_FlightData* cptr,waypoint_t* msg);
 
-int8_t GetStartMissionFlag(struct flightData* fd);
-uint16_t GetMissionPlanSize(struct flightData* fd);
-uint16_t GetResolutionPlanSize(struct flightData* fd);
+void c_AddResolutionItem(struct c_FlightData* cptr,waypoint_t* msg);
 
+void c_SetStartMissionFlag(struct c_FlightData* cptr,uint8_t flag);
 
+void c_ConstructMissionPlan(struct c_FlightData* cptr);
 
-#ifdef __cplusplus
+void c_ConstructResolutionPlan(struct c_FlightData* cptr);
+
+void c_InputState(struct c_FlightData* cptr,double time,double lat,double lon,double alt,double vx,double vy,double vz);
+
+void c_AddTraffic(struct c_FlightData* cptr,int id,double x,double y,double z,double vx,double vy,double vz);
+
+void c_GetTraffic(struct c_FlightData* cptr,int id,double* x,double* y,double* z,double* vx,double* vy,double* vz);
+
+void c_ClearMissionList(struct c_FlightData* cptr);
+
+void c_ClearResolutionList(struct c_FlightData* cptr);
+
+void c_InputNextMissionWP(struct c_FlightData* cptr,int index);
+
+void c_InputNextResolutionWP(struct c_FlightData* cptr,int index);
+
+void c_Reset(struct c_FlightData* cptr);
+
+void c_InputAck(struct c_FlightData* cptr,CmdAck_t* ack);
+
+bool c_CheckAck(struct c_FlightData* cptr,command_name_t command);
+
+int8_t c_GetStartMissionFlag(struct c_FlightData* cptr);
+
+uint16_t c_GetMissionPlanSize(struct c_FlightData* cptr);
+
+uint16_t c_GetResolutionPlanSize(struct c_FlightData* cptr);
+
+uint16_t c_GetNextMissionWP(struct c_FlightData* cptr);
+
+uint16_t c_GetNextResolutionWP(struct c_FlightData* cptr);
+
+#ifdef __cplusplus 
 };
 #endif
 
-#endif //FLIGHTDATAWRAPPER_H
+#endif

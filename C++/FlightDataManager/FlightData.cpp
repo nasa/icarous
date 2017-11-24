@@ -58,8 +58,35 @@ void FlightData::InputState(double time,double lat, double lon, double alt, doub
     acTime = time;
 }
 
-void FlightData::AddMissionItem(waypoint_t* msg){
+void FlightData::InputNextMissionWP(int index){
+  pthread_mutex_lock(&lock);
+  nextMissionWP = index;
+  pthread_mutex_unlock(&lock);
+}
 
+uint16_t FlightData::GetNextMissionWP(){
+  int nextWP;
+  pthread_mutex_lock(&lock);
+  nextWP = nextMissionWP;
+  pthread_mutex_unlock(&lock);
+  return nextWP;
+}
+
+void FlightData::InputNextResolutionWP(int index){
+  pthread_mutex_lock(&lock);
+  nextResolutionWP = index;
+  pthread_mutex_unlock(&lock);
+}
+
+uint16_t FlightData::GetNextResolutionWP(){
+  int nextWP;
+  pthread_mutex_lock(&lock);
+  nextWP = nextResolutionWP;
+  pthread_mutex_unlock(&lock);
+  return nextWP;
+}
+
+void FlightData::AddMissionItem(waypoint_t* msg){
     pthread_mutex_lock(&lock);
     listMissionItem.push_back(*msg);
     pthread_mutex_unlock(&lock);
@@ -170,6 +197,19 @@ void FlightData::GetTraffic(int id,larcfm::Position& pos,larcfm::Velocity& vel){
     }
     pthread_mutex_unlock(&lock);
 }
+
+void FlightData::GetTraffic(int id,double* x,double*y,double *z,double* vx,double *vy,double *vz){
+    larcfm::Position pos;
+    larcfm::Velocity vel;
+    GetTraffic(id,pos,vel);
+    *x = pos.latitude();
+    *y = pos.longitude();
+    *z = pos.alt();
+    *vx = vel.x;
+    *vy = vel.y;
+    *vz = vel.z;
+}
+
 void FlightData::Reset(){
     pthread_mutex_lock(&lock);
     startMission = -1;

@@ -1,90 +1,112 @@
-//
-// Created by Swee Balachandran on 11/21/17.
-//
-
 #include "FlightData.h"
 #include "FlightDataWrapper.h"
 
 #define ToCPP(a) (reinterpret_cast<FlightData*>(a))
-#define ToC(a)   (reinterpret_cast<flightData*>(a))
+#define ToC(a) (reinterpret_cast<c_FlightData*>(a))
 
-struct flightData* initilizeFlightData(){
-    FlightData* fdata = new FlightData();
-    return ToC(fdata);
+
+struct c_FlightData* c_initFlightData(){
+    FlightData* ccptr = new FlightData();
+    return ToC(ccptr);
 }
 
-void c_InputState(struct flightData* fd,double time,double lat,double lon,double alt,double vx,double vy,double vz){
-    FlightData* fdata = ToCPP(fd);
-    fdata->InputState(time,lat,lon,alt,vx,vy,vz);
+void c_AddMissionItem(struct c_FlightData* cptr,waypoint_t* msg){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->AddMissionItem(msg);
 }
 
-void c_addMissionItem(struct flightData* fd,waypoint_t *msg){
-    FlightData* fdata = ToCPP(fd);
-    fdata->AddMissionItem(msg);
+void c_AddResolutionItem(struct c_FlightData* cptr,waypoint_t* msg){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->AddResolutionItem(msg);
 }
 
-void c_addResolutionItem(struct flightData* fd,waypoint_t *msg){
-    FlightData* fdata = ToCPP(fd);
-    fdata->AddResolutionItem(msg);
+void c_SetStartMissionFlag(struct c_FlightData* cptr,uint8_t flag){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->SetStartMissionFlag(flag);
 }
 
-
-void c_SetStartMissionFlag(struct flightData* fd,uint8_t flag){
-    FlightData* fdata = ToCPP(fd);
-    fdata->SetStartMissionFlag(flag);
+void c_ConstructMissionPlan(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->ConstructMissionPlan();
 }
 
-void c_ConstructMissionPlan(struct flightData* fd){
-    FlightData* fdata = ToCPP(fd);
-    fdata->ConstructMissionPlan();
+void c_ConstructResolutionPlan(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->ConstructResolutionPlan();
 }
 
-void c_ConstructResolutionPlan(struct flightData* fd){
-    FlightData* fdata = ToCPP(fd);
-    fdata->ConstructResolutionPlan();
+void c_InputState(struct c_FlightData* cptr,double time,double lat,double lon,double alt,double vx,double vy,double vz){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->InputState(time,lat,lon,alt,vx,vy,vz);
 }
 
-void c_AddTraffic(struct flightData* fd,int id, double x,double y, double z, double vx,double vy,double vz){
-    FlightData* fdata = ToCPP(fd);
-    fdata->AddTraffic(id,x,y,z,vx,vy,vz);
+void c_AddTraffic(struct c_FlightData* cptr,int id,double x,double y,double z,double vx,double vy,double vz){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->AddTraffic(id,x,y,z,vx,vy,vz);
 }
 
-void c_ClearMissionList(struct flightData* fd){
-    FlightData* fdata = ToCPP(fd);
-    fdata->ClearMissionList();
+void c_GetTraffic(struct c_FlightData* cptr,int id,double* x,double* y,double* z,double* vx,double* vy,double* vz){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetTraffic(id,x,y,z,vx,vy,vz);
 }
 
-void c_ClearResolutionList(struct flightData* fd){
-    FlightData* fdata = ToCPP(fd);
-    fdata->ClearResolutionList();
+void c_ClearMissionList(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->ClearMissionList();
 }
 
-void c_Reset(struct flightData* fd){
-    FlightData* fdata = ToCPP(fd);
-    fdata->Reset();
+void c_ClearResolutionList(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->ClearResolutionList();
 }
 
-void c_InputAck(struct flightData* fd,CmdAck_t* ack){
-    FlightData* fdata = ToCPP(fd);
-    fdata->InputAck(ack);
+void c_InputNextMissionWP(struct c_FlightData* cptr,int index){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->InputNextMissionWP(index);
 }
 
-bool c_CheckAck(struct flightData* fd,command_name_t command){
-    FlightData* fdata = ToCPP(fd);
-    return fdata->CheckAck(command);
+void c_InputNextResolutionWP(struct c_FlightData* cptr,int index){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->InputNextResolutionWP(index);
 }
 
-int8_t c_GetStartMissionFlag(struct flightData* fd){
-    FlightData* fdata = ToCPP(fd);
-    return fdata->GetStartMissionFlag();
+void c_Reset(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->Reset();
 }
 
-uint16_t c_GetMissionPlanSize(struct flightData* fd){
-    FlightData* fdata = ToCPP(fd);
-    return fdata->GetMissionPlanSize();
+void c_InputAck(struct c_FlightData* cptr,CmdAck_t* ack){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->InputAck(ack);
 }
 
-uint16_t c_GetResolutionPlanSize(struct flightData* fd){
-    FlightData* fdata = ToCPP(fd);
-    return fdata->GetResolutionPlanSize();
+bool c_CheckAck(struct c_FlightData* cptr,command_name_t command){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->CheckAck(command);
 }
+
+int8_t c_GetStartMissionFlag(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetStartMissionFlag();
+}
+
+uint16_t c_GetMissionPlanSize(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetMissionPlanSize();
+}
+
+uint16_t c_GetResolutionPlanSize(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetResolutionPlanSize();
+}
+
+uint16_t c_GetNextMissionWP(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetNextMissionWP();
+}
+
+uint16_t c_GetNextResolutionWP(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetNextResolutionWP();
+}
+

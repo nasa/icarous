@@ -12,6 +12,8 @@
 #include "Icarous_msg.h"
 #include "Plan.h"
 
+#define __CWRAP__
+
 class FlightData{
 
 private:
@@ -41,21 +43,38 @@ private:
     std::list<waypoint_t> listResolutionItem;
     visbands_t visBands;
 
+    void ConstructPlan(Plan* pl, std::list<waypoint_t> *listWaypoints);
+
 public:
+
+    // Wrap all functions with the __CWRAP__ defines for calls from C code
+    __CWRAP__
+
+    // Constructor
     FlightData();
     void AddMissionItem(waypoint_t* msg);
     void AddResolutionItem(waypoint_t* msg);
     void SetStartMissionFlag(uint8_t flag);
     void ConstructMissionPlan();
     void ConstructResolutionPlan();
-    void ConstructPlan(Plan* pl, std::list<waypoint_t> *listWaypoints);
 
+    /**
+     *
+     * @param time
+     * @param lat
+     * @param lon
+     * @param alt
+     * @param vx
+     * @param vy
+     * @param vz
+     */
     void InputState(double time,double lat,double lon,double alt,double vx,double vy,double vz);
     void AddTraffic(int id, double x,double y, double z, double vx,double vy,double vz);
-    void GetTraffic(int id,larcfm::Position& pos,larcfm::Velocity& vel);
+    void GetTraffic(int id,double* x,double* y,double* z,double* vx,double* vy, double* vz);
     void ClearMissionList();
     void ClearResolutionList();
-    double getFlightPlanSpeed(Plan* fp,int nextWP);
+    void InputNextMissionWP(int index);
+    void InputNextResolutionWP(int index);
 
     void Reset();
     void InputAck(CmdAck_t* ack);
@@ -65,6 +84,12 @@ public:
     int8_t GetStartMissionFlag();
     uint16_t GetMissionPlanSize();
     uint16_t GetResolutionPlanSize();
+    uint16_t GetNextMissionWP();
+    uint16_t GetNextResolutionWP();
+    __CWRAP__
+
+    double getFlightPlanSpeed(Plan* fp,int nextWP);
+    void GetTraffic(int id,larcfm::Position& pos,larcfm::Velocity& vel);
 };
 
 
