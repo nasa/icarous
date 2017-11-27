@@ -97,11 +97,12 @@ namespace PLEXIL {
             m_pendingLookupSerial++;
 
 
-            PlexilCommandMsg lookupMsg = { 1,
-                                           _LOOKUP_,1,
+            PlexilCommandMsg lookupMsg = {
+                                           _LOOKUP_,_REAL_,1,
                                            " ",
                                            0,0,0,0,
-                                           false,false,false,false};
+                                           false,false,false,false,
+                                           0,0,0,0};
             memcpy(lookupMsg.name,stateName.c_str(),stateName.size()+1);
 
             lookupQueue.push(lookupMsg);
@@ -149,13 +150,15 @@ namespace PLEXIL {
         //decide to direct or publish command
 
         m_pendingCommandSerial++;
-        PlexilCommandMsg commandMsg = {1,
-                                       _COMMAND_,(int)m_pendingCommandSerial,
+        PlexilCommandMsg commandMsg = {
+                                       _COMMAND_,_REAL_,(int)m_pendingCommandSerial,
                                        " ",
                                        0,0,0,0,
-                                       false,false,false,false};
+                                       false,false,false,false,
+                                       0,0,0,0};
 
         memcpy(commandMsg.name,name.c_str(),name.size()+1);
+        printf("command name after copy %s,%s\n",commandMsg.name,name.c_str());
         size_t nParams = args.size();
         assertTrueMsg(nParams < 5,
                       "CfsAdapter::lookupNow: max command arguments is 4");
@@ -186,21 +189,21 @@ namespace PLEXIL {
         debugMsg("CfsAdapter:executeCommand", " command \"" << name << "\" sent.");
     }
 
-    void CfsAdapter::HandleReturnValue(PlexilCommandMsg &msg) {
+    void CfsAdapter::HandleReturnValue(PlexilCommandMsg *msg) {
 
         //lock mutex to ensure all sending procedures are complete.
         ThreadMutexGuard guard(m_cmdMutex);
-        if (msg.mType == _LOOKUP_RETURN_) {
+        if (msg->mType == _LOOKUP_RETURN_) {
             // LookupNow for which we are awaiting data
             debugMsg("CfsAdapter:handleReturnValuesSequence",
                      " processing value(s) for a pending LookupNow");
-            m_pendingLookupResult = Value(msg.argsD[0]);
+            m_pendingLookupResult = ParseReturnValue(msg);
             // *** TODO: check for error
             m_lookupSem.post();
             return;
         }
 
-        PendingCommandsMap::iterator cit = m_pendingCommands.find(msg.id);
+        PendingCommandsMap::iterator cit = m_pendingCommands.find(msg->id);
         if (cit != m_pendingCommands.end()) {
             Command *cmd = cit->second;
             assertTrue_1(cmd);
@@ -208,12 +211,12 @@ namespace PLEXIL {
             if (!cmd->isActive()) {
                 debugMsg("CfsAdapter:handleReturnValuesSequence",
                          " ignoring return value for inactive command");
-                m_pendingCommands.erase(msg.id);
+                m_pendingCommands.erase(msg->id);
                 return;
             }
             debugMsg("CfsAdapter:handleReturnValuesSequence",
                      " processing command return value for command " << cmd->getName());
-            m_execInterface.handleCommandReturn(cmd, Value(msg.argsD[0]));
+            m_execInterface.handleCommandReturn(cmd, ParseReturnValue(msg));
             m_execInterface.notifyOfExternalEvent();
         }
         else {
@@ -228,7 +231,7 @@ namespace PLEXIL {
 
     }
 
-    int CfsAdapter::GetCmdQueueMsg(PlexilCommandMsg &msg) {
+    int CfsAdapter::GetCmdQueueMsg(PlexilCommandMsg *msg) {
         //lock mutex to ensure all writing procedures are complete.
         ThreadMutexGuard guard(m_cmdMutex);
         if (cmdQueue.size() == 0){
@@ -238,12 +241,11 @@ namespace PLEXIL {
         PlexilCommandMsg queueMsg = cmdQueue.front();
         cmdQueue.pop();
 
-        memcpy(&msg,&queueMsg,sizeof(msg));
-
+        memcpy(msg,&queueMsg,sizeof(queueMsg));
         return cmdQueue.size();
     }
 
-    int CfsAdapter::GetLookUpQueueMsg(PlexilCommandMsg &msg) {
+    int CfsAdapter::GetLookUpQueueMsg(PlexilCommandMsg *msg) {
         //lock mutex to ensure all writing procedures are complete.
         ThreadMutexGuard guard(m_cmdMutex);
         if (cmdQueue.size() == 0){
@@ -253,9 +255,55 @@ namespace PLEXIL {
         PlexilCommandMsg queueMsg = lookupQueue.front();
         cmdQueue.pop();
 
-        memcpy(&msg,&queueMsg,sizeof(msg));
+        memcpy(msg,&queueMsg,sizeof(msg));
 
         return lookupQueue.size();
+    }
+
+    Value CfsAdapter::ParseReturnValue(PlexilCommandMsg *msg){
+
+        switch(msg->rType){
+
+            case _INTEGER_:
+                return Value(msg->argsI[0]);
+                break;
+
+            case _REAL_:
+                return Value(msg->argsD[0]);
+                break;
+
+            case _BOOLEAN_:
+                return Value(msg->argsB[0]);
+                break;
+
+            case _INTEGER_ARRAY_: {
+                IntegerArray array(4);
+                for (int i = 0; i < 4; i++)
+                    array.setElement(i, (int) msg->argsI[i]);
+                return Value(array);
+                break;
+            }
+
+            case _BOOLEAN_ARRAY_: {
+                BooleanArray array(4);
+                for (int i = 0; i < 4; i++)
+                    array.setElement(i, (int) msg->argsB[i]);
+                return Value(array);
+                break;
+            }
+            case _REAL_ARRAY_:{
+                RealArray array(4);
+                for (int i = 0; i < 4; i++)
+                    array.setElement(i, (int) msg->argsD[i]);
+                return Value(array);
+                break;
+            }
+
+            default:
+                Value(0);
+                break;
+        }
+
     }
 
     extern "C" {

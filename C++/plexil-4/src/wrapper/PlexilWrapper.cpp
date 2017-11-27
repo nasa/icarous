@@ -60,7 +60,7 @@ int plexil_init(int argc, char** argv,struct plexilExec** exec,struct plexilInte
   bool useResourceFile = true;
 
     //PLEXIL::setDebugOutputStream(std::cout);
-    //PLEXIL::enableMatchingDebugMessages("CfsAdapter");
+    //PLEXIL::enableMatchingDebugMessages("CfsAdapter:executeCommand");
 
   // if not enough parameters, print usage
   if (argc < 2) {
@@ -358,7 +358,7 @@ int plexil_getLookup(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
 
     CfsAdapter *cfsAdap = (CfsAdapter*) adapter;
 
-    return cfsAdap->GetLookUpQueueMsg(*msg);
+    return cfsAdap->GetLookUpQueueMsg(msg);
 }
 
 int plexil_getCommand(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
@@ -367,7 +367,9 @@ int plexil_getCommand(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
 
     CfsAdapter *cfsAdap = (CfsAdapter*) adapter;
 
-    return cfsAdap->GetCmdQueueMsg(*msg);
+    int n = cfsAdap->GetCmdQueueMsg(msg);
+
+    return n;
 }
 
 void plexil_return(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
@@ -375,7 +377,7 @@ void plexil_return(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
 
     CfsAdapter *cfsAdap = (CfsAdapter*) adapter;
 
-    cfsAdap->HandleReturnValue(*msg);
+    cfsAdap->HandleReturnValue(msg);
 
     return;
 }

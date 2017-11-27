@@ -1,6 +1,8 @@
 #ifndef FLIGHTDATAWRAPPER_H 
 #define FLIGHTDATAWRAPPER_H 
 
+#include "Icarous_msg.h"
+
 #ifdef __cplusplus
 extern "C"{
 #endif

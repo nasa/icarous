@@ -12,16 +12,6 @@ extern "C" {
 #include <stdint.h>
 #include <stdbool.h>
 
-#ifdef CFS
-#include "cfe.h"
-#define TLM_HDR_SIZE CFE_SB_TLM_HDR_SIZE
-#define CMD_HDR_SIZE CFE_SB_CMD_HDR_SIZE
-#else
-#define TLM_HDR_SIZE 1
-#define CMD_HDR_SIZE 1
-#endif
-
-
 // Icarous Command types
 typedef enum {
     _LOOKUP_,
@@ -30,13 +20,24 @@ typedef enum {
     _COMMAND_RETURN_,
 } messageType_t;
 
+// Icarous return types
+typedef enum{
+    _REAL_,
+    _INTEGER_,
+    _BOOLEAN_,
+    _REAL_ARRAY_,
+    _INTEGER_ARRAY_,
+    _BOOLEAN_ARRAY_
+}returnType_t;
+
 typedef struct{
-    uint8_t TlmHeader[TLM_HDR_SIZE];
     messageType_t mType;
+    returnType_t rType;
     int id;
     char name[50];
     double argsD[4];
     bool argsB[4];
+    int argsI[4];
 }PlexilCommandMsg;
 
 #ifdef __cplusplus

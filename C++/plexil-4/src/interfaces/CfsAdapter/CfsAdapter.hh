@@ -35,10 +35,10 @@ namespace PLEXIL {
 
         void invokeAbort(Command *cmd);
 
-        void HandleReturnValue(PlexilCommandMsg& msg);
+        void HandleReturnValue(PlexilCommandMsg* msg);
 
-        int GetCmdQueueMsg(PlexilCommandMsg& msg);
-        int GetLookUpQueueMsg(PlexilCommandMsg& msg);
+        int GetCmdQueueMsg(PlexilCommandMsg* msg);
+        int GetLookUpQueueMsg(PlexilCommandMsg* msg);
 
     private:
         std::queue<PlexilCommandMsg> cmdQueue;
@@ -72,6 +72,7 @@ namespace PLEXIL {
         //* @brief Serial # of current pending command
         uint32_t m_pendingCommandSerial;
 
+        Value ParseReturnValue(PlexilCommandMsg* Msg);
 
     };
 
