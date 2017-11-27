@@ -26,11 +26,13 @@ void PLEXIL_AppMain(void){
     }
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
-        status = CFE_SB_RcvMsg(&plexilAppData.PLEXIL_MsgPtr, plexilAppData.PLEXIL_Pipe, 1);
+        status = CFE_SB_RcvMsg(&plexilAppData.PLEXIL_MsgPtr, plexilAppData.PLEXIL_Pipe, 10);
 
         if (status == CFE_SUCCESS)
         {
+
             PLEXIL_ProcessPacket();
+
         }
     }
 
@@ -131,7 +133,7 @@ void PLEXIL_AppInit(void) {
 
     free(inputParams);
 
-    plexilAppData.fData = initilizeFlightData();
+    plexilAppData.fData = c_initFlightData();
 
 }
 
@@ -141,24 +143,31 @@ void PLEXIL_AppCleanUp(){
 }
 
 void PLEXIL_ProcessPacket(){
+
+
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(plexilAppData.PLEXIL_MsgPtr);
 
     PlexilCommandMsg *msg;
-
-    msg = (PlexilCommandMsg*) plexilAppData.PLEXIL_MsgPtr;
-
-    switch(msg->mType){
-        case _LOOKUP_RETURN_:
-        case _COMMAND_RETURN_:
-            plexil_return(plexilAppData.adap,msg);
-            break;
+    switch(MsgId){
 
         case PLEXIL_WAKEUP_MID:
             PLEXIL_Run();
             break;
-    }
 
+        case PLEXIL_RETURN_MID:{
+            /*
+            msg = (PlexilCommandMsg*) plexilAppData.PLEXIL_MsgPtr;
+
+            switch(msg->mType) {
+                case _LOOKUP_RETURN_:
+                case _COMMAND_RETURN_:
+                    plexil_return(plexilAppData.adap, msg);
+                    break;
+            }*/
+            break;
+        }
+    }
     return;
 }
 
@@ -169,15 +178,18 @@ void PLEXIL_Run(){
 
     n = 1;
     while(n>0){
-        PlexilCommandMsg msg;
-        n = plexil_getCommand(plexilAppData.adap,&msg);
+        PlexilCommandMsg msg1;
+        memset(&msg1,0,sizeof(msg1));
+        n = plexil_getCommand(plexilAppData.adap,&msg1);
 
-        if(n>0) {
-            memcpy(&plexilMsg, &msg, sizeof(plexilMsg));
-            uint8_t status = ProcessPlexilCommand(&msg);
+        if(n>=0) {
+            OS_printf("%d, received command from plexil\n",n);
+            printf("command name in cfs %s\n",msg1.name);
+            uint8_t status = ProcessPlexilCommand(&msg1);
             if (n == 0) {
-                CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);
-                CFE_SB_SendMsg((CFE_SB_Msg_t * ) & plexilMsg);
+                //memcpy(&plexilMsg, &msg1, sizeof(plexilMsg));
+                //CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);
+                //CFE_SB_SendMsg((CFE_SB_Msg_t*) & plexilMsg);
             }
         }
     }
@@ -188,11 +200,11 @@ void PLEXIL_Run(){
         n = plexil_getLookup(plexilAppData.adap,&msg);
 
         if(n>0) {
-            memcpy(&plexilMsg, &msg, sizeof(plexilMsg));
             uint8_t status = ProcessPlexilLookup(&msg);
             if (n == 0) {
-                CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);
-                CFE_SB_SendMsg((CFE_SB_Msg_t * ) & plexilMsg);
+                //memcpy(&plexilMsg, &msg, sizeof(plexilMsg));
+                //CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);
+                //CFE_SB_SendMsg((CFE_SB_Msg_t * ) & plexilMsg);
             }
         }
     }

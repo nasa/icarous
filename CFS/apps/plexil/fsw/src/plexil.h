@@ -16,6 +16,7 @@
 #include <errno.h>
 #include "PlexilWrapper.h"
 #include "FlightDataWrapper.h"
+#include "Plexil_msg.h"
 
 #define PLEXIL_MAJOR_VERSION 4
 #define PLEXIL_MINOR_VERSION 0
@@ -75,7 +76,7 @@ typedef struct
 
 
 EXTERN plexilAppData_t plexilAppData;                ///< global variable containing app state
-EXTERN PlexilCommandMsg plexilMsg;
+EXTERN plexil_msg_t plexilMsg;
 
 
 /**
@@ -131,5 +132,10 @@ uint8_t ProcessPlexilLookup(PlexilCommandMsg* Msg);
  */
 void PLEXIL_DAQ(void);
 
+
+/**
+ * Functions specific to default adapter implementing commands and lookups
+ */
+uint8_t runIdleChecks();
 
 #endif //CFETOP_PLEXIL_H
