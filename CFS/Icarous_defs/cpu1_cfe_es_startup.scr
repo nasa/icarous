@@ -1,3 +1,4 @@
+CFE_LIB, /cf/apps/APFunctions.so,  APFunctionsLibInit,  APFUNCIONS_LIB,    0,   0,    0x0, 0;
 CFE_APP, /cf/apps/sch.so,   SCH_AppMain,  SCH,   10,   8192, 0x0, 0;
 CFE_APP, /cf/apps/interface.so,    INTERFACE_AppMain,  INTERFACE,   100,   8192, 0x0, 0;
 CFE_APP, /cf/apps/plexil.so,  PLEXIL_AppMain,  PLEXIL,   61,   1119200, 0x0, 0;

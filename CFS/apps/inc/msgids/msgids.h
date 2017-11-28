@@ -18,10 +18,18 @@
 #define ICAROUS_COMACK_MID 0x001B
 #define ICAROUS_VISBAND_MID 0x001C
 
+#define AP_COMMANDS_MID 0X001A
+
 #define INTERFACE_GS_WAKEUP_MID 0x0020
 #define INTERFACE_AP_WAKEUP_MID 0x0021
+
 #define PLEXIL_RETURN_MID 0x0030
 #define PLEXIL_COMMAND_MID 0x0031
-#define PLEXIL_WAKEUP_MID 0x0031
+#define PLEXIL_WAKEUP_MID 0x0032
+
+#define SendSBMsg(msg)\
+CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) &msg); \
+CFE_SB_SendMsg((CFE_SB_Msg_t * ) &msg);
+
 
 #endif //CFETOP_MSGIDS_H

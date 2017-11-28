@@ -16,7 +16,7 @@ include_directories(fsw/platform_inc)
 include_directories(fsw/src)
 include_directories(../inc)
 include_directories(${MODULES_SOURCE})
-
+include_directories(../APFunctionsLib/fsw/platform_inc)
 include_directories(
         ${PLEXIL_SOURCE}/interfaces/CfsAdapter
         ${PLEXIL_SOURCE}/wrapper

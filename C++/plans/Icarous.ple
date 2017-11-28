@@ -32,9 +32,9 @@ Concurrence
 {
     Boolean executeResolution = false;
 
-    RUN_MISSION:{
-	LibraryCall MISSION(execResolution = executeResolution);
-    }
+    //RUN_MISSION:{
+    //LibraryCall MISSION(execResolution = executeResolution);
+    //}
     
         
     FMS:

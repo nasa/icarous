@@ -35,6 +35,20 @@ void c_InputNextMissionWP(struct c_FlightData* cptr,int index);
 
 void c_InputNextResolutionWP(struct c_FlightData* cptr,int index);
 
+void c_InputTakeoffAlt(struct c_FlightData* cptr,double alt);
+
+void c_InputCruisingAlt(struct c_FlightData* cptr,double alt);
+
+double c_GetTakeoffAlt(struct c_FlightData* cptr);
+
+double c_GetCruisingAlt(struct c_FlightData* cptr);
+
+double c_GetAltitude(struct c_FlightData* cptr);
+
+int c_GetTotalMissionWP(struct c_FlightData* cptr);
+
+int c_GetTotalResolutionWP(struct c_FlightData* cptr);
+
 void c_Reset(struct c_FlightData* cptr);
 
 void c_InputAck(struct c_FlightData* cptr,CmdAck_t* ack);

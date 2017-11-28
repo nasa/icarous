@@ -37,7 +37,7 @@
 #define PLEXIL_INVALID_MSGID_ERR_EID     3
 
 /// Defines required to specify stack properties
-#define TASK_PLDAQ_ID         31
+#define TASK_PLDAQ_ID         38
 #define TASK_PLDAQ_STACK_SIZE 1024
 #define TASK_PLDAQ_PRIORITY   68
 
@@ -59,6 +59,7 @@ typedef struct{
     struct plexilInterfaceAdapter* adap;
     struct flightData* fData;
     uint32_t mutex;
+    uint32_t threadState;
 }plexilAppData_t;
 
 typedef struct
@@ -77,7 +78,6 @@ typedef struct
 
 EXTERN plexilAppData_t plexilAppData;                ///< global variable containing app state
 EXTERN plexil_msg_t plexilMsg;
-
 
 /**
  * Entry point for app
@@ -137,5 +137,6 @@ void PLEXIL_DAQ(void);
  * Functions specific to default adapter implementing commands and lookups
  */
 uint8_t runIdleChecks();
+uint8_t ThrottleUp();
 
 #endif //CFETOP_PLEXIL_H

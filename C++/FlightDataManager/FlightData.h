@@ -26,6 +26,8 @@ private:
     double heading;
     double currentSpeed;
     double referenceSpeed;
+    double takeoffAlt;
+    double cruisingAlt;
 
     uint16_t nextMissionWP;
     uint16_t nextResolutionWP;
@@ -75,7 +77,13 @@ public:
     void ClearResolutionList();
     void InputNextMissionWP(int index);
     void InputNextResolutionWP(int index);
-
+    void InputTakeoffAlt(double alt);
+    void InputCruisingAlt(double alt);
+    double GetTakeoffAlt();
+    double GetCruisingAlt();
+    double GetAltitude();
+    int GetTotalMissionWP();
+    int GetTotalResolutionWP();
     void Reset();
     void InputAck(CmdAck_t* ack);
 

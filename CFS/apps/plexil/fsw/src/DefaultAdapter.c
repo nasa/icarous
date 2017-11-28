@@ -4,14 +4,16 @@
 #define EXTERN extern
 #include "plexil.h"
 #include "msgids/msgids.h"
+#include "APFunctions.h"
+#include "stdbool.h"
 
 void PLEXIL_DAQ(void){
-
+    OS_TaskRegister();
     uint32 RunStatus = CFE_ES_APP_RUN;
     int32 status;
-    while(CFE_ES_RunLoop(&RunStatus) == TRUE) {
-        status = CFE_SB_RcvMsg(&plexilAppData.FlightData_MsgPtr, plexilAppData.FlightData_Pipe, CFE_SB_PEND_FOREVER);
 
+    while(plexilAppData.threadState == 1) {
+        status = CFE_SB_RcvMsg(&plexilAppData.FlightData_MsgPtr, plexilAppData.FlightData_Pipe, CFE_SB_PEND_FOREVER);
         if (status == CFE_SUCCESS) {
 
             CFE_SB_MsgId_t MsgId;
@@ -20,7 +22,8 @@ void PLEXIL_DAQ(void){
             switch (MsgId) {
                 case ICAROUS_WP_MID: {
                     waypoint_t *msg = (waypoint_t *) plexilAppData.FlightData_MsgPtr;
-                    c_addMissionItem(plexilAppData.fData, msg);
+                    c_AddMissionItem(plexilAppData.fData, msg);
+                    //OS_printf("Added mission item\n");
                     break;
                 }
 
@@ -59,7 +62,6 @@ void PLEXIL_DAQ(void){
 
 uint8_t ProcessPlexilCommand(PlexilCommandMsg* Msg){
 
-    OS_printf("command name %s\n",Msg->name);
     if(strcmp(Msg->name,"RunIdleChecks") == 0){
         uint8_t rval = runIdleChecks();
         PlexilCommandMsg returnMsg;
@@ -68,20 +70,44 @@ uint8_t ProcessPlexilCommand(PlexilCommandMsg* Msg){
         returnMsg.rType = _INTEGER_;
         returnMsg.argsI[0] = rval;
         plexil_return(plexilAppData.adap,&returnMsg);
-        OS_printf("returning rval of %d to plexil \n",rval);
         return 1;
     }else if(strcmp(Msg->name,"ThrottleUp") == 0){
-
+        OS_printf("Throttle Up\n");
+        uint8_t rval = ThrottleUp();
+        PlexilCommandMsg returnMsg;
+        returnMsg.id    = Msg->id;
+        returnMsg.mType = _COMMAND_RETURN_;
+        returnMsg.rType = _BOOLEAN_;
+        returnMsg.argsB[0] = (bool)rval;
+        plexil_return(plexilAppData.adap,&returnMsg);
+        return 1;
     }else if(strcmp(Msg->name,"SetMode") == 0){
-
+        OS_printf("Set Mode\n");
+        char modeName[50];
+        memcpy(modeName,Msg->string,sizeof(Msg->string));
+        if (strcmp(modeName,"ACTIVE") == 0){
+            SetMode(_ACTIVE_);
+        }else{
+            SetMode(_PASSIVE_);
+        }
+        return 1;
     }else if(strcmp(Msg->name,"ArmMotors") == 0){
-
+        OS_printf("Arming motors\n");
+        ArmThrottles(1);
+        return 1;
     }else if(strcmp(Msg->name,"SetNextWPParameters") == 0){
-
+        OS_printf("Setting Next WP\n");
+        c_InputNextMissionWP(plexilAppData.fData,Msg->argsI[0]);
+        SetNextMissionItem(Msg->argsI[0]);
+        return 1;
     }else if(strcmp(Msg->name,"StartLandingSequence") == 0){
-
+        OS_printf("Landing\n");
+        Land();
+        return 1;
     }else if(strcmp(Msg->name,"SetYaw") == 0){
-
+        OS_printf("Yawing\n");
+        SetYaw(0,Msg->argsD[0]);
+        return 1;
     }
 
     return 0;
@@ -89,6 +115,24 @@ uint8_t ProcessPlexilCommand(PlexilCommandMsg* Msg){
 
 
 uint8_t ProcessPlexilLookup(PlexilCommandMsg* Msg){
+
+    if(strcmp(Msg->name,"altitudeAGL") == 0){
+        PlexilCommandMsg returnMsg;
+        returnMsg.id = Msg->id;
+        returnMsg.mType = _LOOKUP_RETURN_;
+        returnMsg.rType = _REAL_;
+        returnMsg.argsD[0] = c_GetAltitude(plexilAppData.fData);
+        plexil_return(plexilAppData.adap,&returnMsg);
+    }else if(strcmp(Msg->name,"totalWP") == 0){
+        PlexilCommandMsg returnMsg;
+        returnMsg.id = Msg->id;
+        returnMsg.mType = _LOOKUP_RETURN_;
+        returnMsg.rType = _INTEGER_;
+        returnMsg.argsI[0] = c_GetTotalMissionWP(plexilAppData.fData);
+        plexil_return(plexilAppData.adap,&returnMsg);
+    }
+
+
     return 0;
 }
 
@@ -101,6 +145,7 @@ uint8_t runIdleChecks(){
             c_ConstructMissionPlan(plexilAppData.fData);
             c_InputNextMissionWP(plexilAppData.fData,0);
             //SendStatusText("Starting mission",19);
+            OS_printf("starting mission\n");
             return 1;
     }
     else if(start > 0 && start < fpsize ){
@@ -115,21 +160,14 @@ uint8_t runIdleChecks(){
     }
 }
 
-
-// Throttle up
-
-
-// Set Mode
-
-
-// Arm Motors
-
-
-// Set Next WP
-
-
-// Land
-
-
-// Set Yaw
-
+uint8_t ThrottleUp(){
+    double targetAlt = c_GetTakeoffAlt(plexilAppData.fData);
+    Takeoff(targetAlt);
+    uint8_t rval;
+    if(c_CheckAck(plexilAppData.fData,_TAKEOFF_)){
+        c_InputNextMissionWP(plexilAppData.fData,1);
+        return 1;
+    }else{
+        return 0;
+    }
+}

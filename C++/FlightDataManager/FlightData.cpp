@@ -245,3 +245,55 @@ void FlightData::InputAck(CmdAck_t *ack) {
     commandAckList.push_back(*ack);
     pthread_mutex_unlock(&lock);
 }
+
+void FlightData::InputTakeoffAlt(double alt) {
+    pthread_mutex_lock(&lock);
+    takeoffAlt = alt;
+    pthread_mutex_unlock(&lock);
+}
+
+void FlightData::InputCruisingAlt(double alt) {
+    pthread_mutex_lock(&lock);
+    cruisingAlt = alt;
+    pthread_mutex_unlock(&lock);
+}
+
+double FlightData::GetTakeoffAlt(){
+    double alt;
+    pthread_mutex_lock(&lock);
+    alt = takeoffAlt;
+    pthread_mutex_unlock(&lock);
+    return alt;
+}
+
+double FlightData::GetCruisingAlt(){
+    double alt;
+    pthread_mutex_lock(&lock);
+    alt = cruisingAlt;
+    pthread_mutex_unlock(&lock);
+    return alt;
+}
+
+int FlightData::GetTotalMissionWP() {
+    int n;
+    pthread_mutex_lock(&lock);
+    n = missionPlan.size();
+    pthread_mutex_unlock(&lock);
+    return n;
+}
+
+int FlightData::GetTotalResolutionWP() {
+    int n;
+    pthread_mutex_lock(&lock);
+    n = resolutionPlan.size();
+    pthread_mutex_unlock(&lock);
+    return n;
+}
+
+double FlightData::GetAltitude(){
+    double val;
+    pthread_mutex_lock(&lock);
+    val = acState.positionLast().alt();
+    pthread_mutex_unlock(&lock);
+    return val;
+}

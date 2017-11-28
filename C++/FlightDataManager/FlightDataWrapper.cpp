@@ -70,6 +70,41 @@ void c_InputNextResolutionWP(struct c_FlightData* cptr,int index){
     return ccptr->InputNextResolutionWP(index);
 }
 
+void c_InputTakeoffAlt(struct c_FlightData* cptr,double alt){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->InputTakeoffAlt(alt);
+}
+
+void c_InputCruisingAlt(struct c_FlightData* cptr,double alt){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->InputCruisingAlt(alt);
+}
+
+double c_GetTakeoffAlt(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetTakeoffAlt();
+}
+
+double c_GetCruisingAlt(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetCruisingAlt();
+}
+
+double c_GetAltitude(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetAltitude();
+}
+
+int c_GetTotalMissionWP(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetTotalMissionWP();
+}
+
+int c_GetTotalResolutionWP(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetTotalResolutionWP();
+}
+
 void c_Reset(struct c_FlightData* cptr){
     FlightData* ccptr = ToCPP(cptr);
     return ccptr->Reset();

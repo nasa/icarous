@@ -102,7 +102,7 @@ namespace PLEXIL {
                                            " ",
                                            0,0,0,0,
                                            false,false,false,false,
-                                           0,0,0,0};
+                                           0,0,0,0, " "};
             memcpy(lookupMsg.name,stateName.c_str(),stateName.size()+1);
 
             lookupQueue.push(lookupMsg);
@@ -155,10 +155,9 @@ namespace PLEXIL {
                                        " ",
                                        0,0,0,0,
                                        false,false,false,false,
-                                       0,0,0,0};
+                                       0,0,0,0," "};
 
         memcpy(commandMsg.name,name.c_str(),name.size()+1);
-        printf("command name after copy %s,%s\n",commandMsg.name,name.c_str());
         size_t nParams = args.size();
         assertTrueMsg(nParams < 5,
                       "CfsAdapter::lookupNow: max command arguments is 4");
@@ -175,6 +174,11 @@ namespace PLEXIL {
                     case REAL_TYPE:{
                         double real = val.getValue(real);
                         commandMsg.argsD[i] = real;
+                    }
+                    case STRING_TYPE:{
+                        String stringVal;
+                        val.getValue(stringVal);
+                        memcpy(commandMsg.string,stringVal.c_str(),name.size()+1);
                     }
                 }
             }

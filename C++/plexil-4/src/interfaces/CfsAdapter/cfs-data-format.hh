@@ -38,6 +38,7 @@ typedef struct{
     double argsD[4];
     bool argsB[4];
     int argsI[4];
+    char string[50];
 }PlexilCommandMsg;
 
 #ifdef __cplusplus

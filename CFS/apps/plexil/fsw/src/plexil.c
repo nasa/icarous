@@ -26,6 +26,7 @@ void PLEXIL_AppMain(void){
     }
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
+        plexilAppData.threadState = 1;
         status = CFE_SB_RcvMsg(&plexilAppData.PLEXIL_MsgPtr, plexilAppData.PLEXIL_Pipe, 10);
 
         if (status == CFE_SUCCESS)
@@ -35,7 +36,7 @@ void PLEXIL_AppMain(void){
 
         }
     }
-
+    plexilAppData.threadState = 0;
 
     PLEXIL_AppCleanUp();
 
@@ -183,8 +184,6 @@ void PLEXIL_Run(){
         n = plexil_getCommand(plexilAppData.adap,&msg1);
 
         if(n>=0) {
-            OS_printf("%d, received command from plexil\n",n);
-            printf("command name in cfs %s\n",msg1.name);
             uint8_t status = ProcessPlexilCommand(&msg1);
             if (n == 0) {
                 //memcpy(&plexilMsg, &msg1, sizeof(plexilMsg));

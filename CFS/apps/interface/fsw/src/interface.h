@@ -21,10 +21,9 @@
 #include <errno.h>
 #include <unistd.h>
 #include "network_includes.h"
-#include "msgids.h"
 #include "interface_events.h"
 #include "Icarous_msg.h"
-#include "icarous_msgids.h"
+#include "msgids/msgids.h"
 
 /// Mavlink includes
 #include "mavlink/ardupilotmega/mavlink.h"

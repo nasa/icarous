@@ -12,12 +12,9 @@ MISSION:
 	    
 	    Heading = Heading + 10;
 	    
-	    POINT_COMMAND:
-	    {
-		Boolean status;
-		End isKnown(status);
-		status = SetYaw(Heading);
-	    }
+	    
+	    SetYaw(Heading);
+	    
 	    
 	    Wait 2.0;
 	}
