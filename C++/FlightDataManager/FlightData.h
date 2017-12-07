@@ -35,19 +35,22 @@ private:
     larcfm::AircraftState acState;
     larcfm::Plan missionPlan;
     larcfm::Plan resolutionPlan;
-    std::list<Geofence_t> fenceList;
-    std::list<Geofence_t>::iterator fenceListIt;
-    std::list<GenericObject_t> trafficList;
+    std::list<Geofence> fenceList;
+    std::list<Geofence>::iterator fenceListIt;
+    std::list<GenericObject> trafficList;
 
     std::list<ArgsCmd_t> outputList;
     std::list<CmdAck_t> commandAckList;
     std::list<waypoint_t> listMissionItem;
     std::list<waypoint_t> listResolutionItem;
+    std::list <geofence_t>tempVertices;
     visbands_t visBands;
 
     void ConstructPlan(Plan* pl, std::list<waypoint_t> *listWaypoints);
 
 public:
+
+    ParameterData paramData;
 
     // Wrap all functions with the __CWRAP__ defines for calls from C code
     __CWRAP__
@@ -79,6 +82,7 @@ public:
     void InputNextResolutionWP(int index);
     void InputTakeoffAlt(double alt);
     void InputCruisingAlt(double alt);
+    void InputGeofenceData(geofence_t* gf);
     double GetTakeoffAlt();
     double GetCruisingAlt();
     double GetAltitude();
@@ -94,6 +98,11 @@ public:
     uint16_t GetResolutionPlanSize();
     uint16_t GetNextMissionWP();
     uint16_t GetNextResolutionWP();
+
+    Geofence* GetGeofence(int id);
+    int GetTotalFences();
+
+    AircraftState* GetAircraftState();
     __CWRAP__
 
     double getFlightPlanSpeed(Plan* fp,int nextWP);

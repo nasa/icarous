@@ -5,13 +5,12 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
 
-set(SOURCE_FILES FlightData.cpp FlightDataWrapper.cpp)
+set(SOURCE_FILES FlightData.cpp FlightDataWrapper.cpp GenericObject.cpp Geofence.cpp)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
 
-include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../include/ICAROUS
-        ${CMAKE_CURRENT_SOURCE_DIR}/../include/ACCoRD)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include/ACCoRD
+        ${CMAKE_CURRENT_SOURCE_DIR}/../include/ICAROUS)
 
 link_directories(${LIBRARY_OUTPUT_PATH})
 

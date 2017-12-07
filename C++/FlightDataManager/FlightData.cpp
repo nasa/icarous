@@ -37,6 +37,7 @@
 
 #include <Icarous_msg.h>
 #include "FlightData.h"
+#include "SeparatedInput.h"
 
 FlightData::FlightData(){
     pthread_mutex_init(&lock, NULL);
@@ -48,6 +49,21 @@ FlightData::FlightData(){
     pitch = 0;
     yaw = 0;
     visBands.numBands = 0;
+
+    string filename;
+    ifstream paramSource ("ram/param_source.txt");
+    if (paramSource.is_open())
+    {
+        getline (paramSource,filename);
+        paramSource.close();
+    }
+
+    ifstream ConfigFile;
+    SeparatedInput sepInputReader(&ConfigFile);
+
+    ConfigFile.open(filename.c_str());
+    sepInputReader.readLine();
+    paramData = sepInputReader.getParameters();
 }
 
 void FlightData::InputState(double time,double lat, double lon, double alt, double vx, double vy, double vz) {
@@ -179,15 +195,15 @@ double FlightData::getFlightPlanSpeed(Plan* fp,int nextWP){
 
 void FlightData::AddTraffic(int id,double lat,double lon,double alt,double vx,double vy,double vz){
     pthread_mutex_lock(&lock);
-    GenericObject_t newTraffic(1,id,(float)lat,(float)lon,(float)alt,(float)vx,(float)vy,(float)vz);
-    GenericObject_t::AddObject(trafficList,newTraffic);
+    GenericObject newTraffic(1,id,(float)lat,(float)lon,(float)alt,(float)vx,(float)vy,(float)vz);
+    GenericObject::AddObject(trafficList,newTraffic);
     larcfm::Position pos;larcfm::Velocity vel;
     pthread_mutex_unlock(&lock);
 }
 
 void FlightData::GetTraffic(int id,larcfm::Position& pos,larcfm::Velocity& vel){
     pthread_mutex_lock(&lock);
-    std::list<GenericObject_t>::iterator it;
+    std::list<GenericObject>::iterator it;
     for(it = trafficList.begin(); it != trafficList.end(); ++it){
         if(it->id == id){
             pos = it->pos;
@@ -296,4 +312,46 @@ double FlightData::GetAltitude(){
     val = acState.positionLast().alt();
     pthread_mutex_unlock(&lock);
     return val;
+}
+
+void FlightData::InputGeofenceData(geofence_t* gf){
+
+    if(gf->vertexIndex == 0){
+        tempVertices.clear();
+    }
+    tempVertices.push_back(*gf);
+    if(gf->vertexIndex+1 == gf->totalvertices){
+        Geofence fence((int)gf->index,(FENCE_TYPE)gf->type,(int)gf->totalvertices,gf->floor,gf->ceiling);
+        for(geofence_t sgf: tempVertices){
+            fence.AddVertex(sgf.vertexIndex,sgf.latitude,sgf.longitude);
+        }
+
+        if(fenceList.size() <= gf->index){
+            fenceList.push_back(fence);
+            std::cout << "Received fence: "<<gf->index <<std::endl;
+        }
+        else{
+            std::list<Geofence>::iterator it;
+            for(it = fenceList.begin(); it != fenceList.end(); ++it){
+                if(it->GetID() == fence.GetID()){
+                    it = fenceList.erase(it);
+                    fenceList.insert(it,fence);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+Geofence* FlightData::GetGeofence(int id) {
+    for(Geofence gf:fenceList){
+        if (id == gf.GetID()){
+            return &gf;
+        }
+    }
+
+}
+
+int FlightData::GetTotalFences(){
+    return fenceList.size();
 }
