@@ -23,10 +23,3 @@ CFS/build/mission_inc/*
 #Ignore plexil files
 C++/plexil-4/*
 cmake-build-debug
-*.pyc
-logs
-terrain
-*.log
-*.plx
-icarous
-icarousPlexil
