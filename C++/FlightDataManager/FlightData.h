@@ -88,6 +88,7 @@ public:
     double GetAltitude();
     int GetTotalMissionWP();
     int GetTotalResolutionWP();
+    int GetTotalTraffic();
     void Reset();
     void InputAck(CmdAck_t* ack);
 

@@ -30,9 +30,12 @@ private:
     
 public:
     GeofenceMonitor(FlightData* fd);
-    void CheckViolation();
+    void CheckViolation(double latitude,double longitude,double altitude,double groundSpeed,double track,double verticalSpeed);
+    bool CheckWPFeasibility(double flatitude,double flongitude,double faltitude,
+                            double tlatitude,double tlongitude,double taltitude);
     int GetNumConflicts();
     void GetConflict(int id,int& fenceId,bool& conflict,bool& violation,double& recoveryPoint[]);
+
 };
 
 

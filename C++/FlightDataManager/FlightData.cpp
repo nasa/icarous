@@ -306,6 +306,14 @@ int FlightData::GetTotalResolutionWP() {
     return n;
 }
 
+int FlightData::GetTotalTraffic(){
+    int n;
+    pthread_mutex_lock(&lock);
+    n = trafficList.size();
+    pthread_mutex_unlock(&lock);
+    return n;
+}
+
 double FlightData::GetAltitude(){
     double val;
     pthread_mutex_lock(&lock);
@@ -320,10 +328,11 @@ void FlightData::InputGeofenceData(geofence_t* gf){
         tempVertices.clear();
     }
     tempVertices.push_back(*gf);
+    double ResolBUFF = paramData.getValue("HTHRESHOLD");
     if(gf->vertexIndex+1 == gf->totalvertices){
         Geofence fence((int)gf->index,(FENCE_TYPE)gf->type,(int)gf->totalvertices,gf->floor,gf->ceiling);
         for(geofence_t sgf: tempVertices){
-            fence.AddVertex(sgf.vertexIndex,sgf.latitude,sgf.longitude);
+            fence.AddVertex(sgf.vertexIndex,sgf.latitude,sgf.longitude,ResolBUFF);
         }
 
         if(fenceList.size() <= gf->index){

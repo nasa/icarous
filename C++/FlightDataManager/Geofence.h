@@ -92,7 +92,7 @@ private:
 public:
 	Geofence(){};
 	Geofence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling);
-	void AddVertex(int index, double lat, double lon);
+	void AddVertex(int index, double lat, double lon,double ResolBUFF);
 	void CheckViolation(AircraftState acState,double elapsedTime,Plan fp);
 	bool CollisionDetection(Position pos, Vect2 v,double startTime, double stopTime);
 	bool CheckWPFeasibility(Position current, Position nextWP);

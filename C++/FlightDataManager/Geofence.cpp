@@ -51,11 +51,9 @@ Geofence::Geofence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, dou
     exitTime = 0;
 }
 
-void Geofence::AddVertex(int index, double lat,double lon){
+void Geofence::AddVertex(int index, double lat,double lon,double ResolBUFF){
 	Position pos = Position::makeLatLonAlt(lat,"degree",lon,"degree",0,"m");
 	geoPoly0.addVertex(pos);
-
-	double ResolBUFF = params->getValue("HTHRESHOLD"); // expansion/contraction amount
 
 	if(geoPoly0.size() == nVertices){
 		geoPoly0.setBottom(floor);
@@ -81,100 +79,6 @@ void Geofence::AddVertex(int index, double lat,double lon){
 		Velocity vel = Velocity::makeTrkGsVs(0,0,0);
 		geoPolyPath.addPolygon(geoPoly0,vel,0);
 	}
-}
-
-void Geofence::CheckViolation(AircraftState acState,double elapsedTime,Plan fp){
-
-	Position currentPosLLA = acState.positionLast();
-	Velocity currentVel    = acState.velocityLast();
-	Vect3 currentPosR3     = proj.project(currentPosLLA);
-
-	double lookahead  = params->getValue("LOOKAHEAD");
-	double hthreshold = params->getValue("HTHRESHOLD");
-	double vthreshold = params->getValue("VTHRESHOLD");
-	double hstepback  = params->getValue("HSTEPBACK");
-	double vstepback  = params->getValue("VSTEPBACK");
-
-	if(fenceType == KEEP_IN){
-		if(geoPolyCarp.nearEdge(currentPosR3,geoPoly3D,hthreshold,vthreshold)){
-			conflict = true;
-			//printf("Conflict keep in fence\n");
-		}
-		else{
-			conflict = false;
-		}
-
-		projectedViolation = CollisionDetection(currentPosLLA,currentVel.vect2(),0,lookahead);
-
-		if(geoPolyCarp.definitelyInside(currentPosR3,geoPoly3D)){
-			violation = false;
-		}else{
-			violation = true;
-			//printf("violation keep in fence\n");
-		}
-
-		Vect2 recPointR2 = geoPolyResolution.inside_recovery_point(BUFF,hstepback,
-												fenceVertices1,currentPosR3.vect2());
-
-		double alt;
-		if(std::abs(currentPosR3.z - ceiling) <= vthreshold){
-			alt = ceiling - vstepback;
-		}else{
-			alt = currentPosR3.z;
-		}
-
-		LatLonAlt LLA = proj.inverse(recPointR2,currentPosLLA.alt());
-		recoveryPoint = Position::makeLatLonAlt(LLA.latitude(),"degree",
-										        LLA.longitude(),"degree",
-												alt,"m");
-	}
-	else{
-		Vect2 recPointR2 = geoPolyResolution.outside_recovery_point(BUFF,hstepback,
-														fenceVertices0,currentPosR3.vect2());
-		LatLonAlt LLA = proj.inverse(recPointR2,currentPosLLA.alt());
-		recoveryPoint = Position::makeLatLonAlt(LLA.latitude(),"degree",
-												LLA.longitude(),"degree",
-												LLA.altitude(),"ft");
-
-
-	    geoCDIIPolygon.detection(fp,geoPolyPath,elapsedTime,fp.getLastTime());
-	    bool val = CollisionDetection(currentPosLLA,currentVel.vect2(),0,lookahead);
-	    if(val){
-	    	conflict = true;
-	    	entryTime = geoCDIIPolygon.getTimeIn(0);
-	    	exitTime  = geoCDIIPolygon.getTimeOut(0);
-	    }
-	    else{
-	    	conflict = false;
-	    }
-	}
-}
-
-bool Geofence::CollisionDetection(Position pos,Vect2 v,double startTime,double stopTime){
-	Vect2 currentPos = proj.project(pos).vect2();
-	Vect2 polygonVel(0,0);
-	bool insideBad = false;
-	if(fenceType == KEEP_OUT){
-		insideBad = true;
-	}
-
-	bool val = geoPolyDetect.Static_Collision_Detector(startTime,stopTime,fenceVertices0,
-														polygonVel,currentPos,v,BUFF,insideBad);
-
-	return val;
-}
-
-bool Geofence::CheckWPFeasibility(Position currentPos,Position nextWP){
-	double heading2WP = currentPos.track(nextWP);
-
-	// Velocity components assuming speed is 1 m/s
-	double vy = cos(heading2WP);
-	double vx = sin(heading2WP);
-	Vect2 vel(vx,vy);
-
-	bool val = CollisionDetection(currentPos,vel,0,50);
-
-	return val;
 }
 
 int16_t Geofence::GetID(){

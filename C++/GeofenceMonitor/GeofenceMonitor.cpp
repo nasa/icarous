@@ -29,11 +29,10 @@ bool GeofenceMonitor::CollisionDetection(Geofence* gf,Position* pos,Vect2* v,dou
     return true;
 }
 
-void GeofenceMonitor::CheckViolation(){
+void GeofenceMonitor::CheckViolation(double latitude,double longitude,double altitude,double gs,double trk,double vs){
 
-    AircraftState* acState = fdata->GetAircraftState();
-    Position currentPosLLA = acState->positionLast();
-    Velocity currentVel    = acState->velocityLast();
+    Position currentPosLLA = Position::makeLatLonAlt(latitude,"degree",longitude,"degree",altitude,"m");
+    Velocity currentVel    = Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
     int n = fdata->GetTotalFences();
     double entryTime =-1.0, exitTime =-1.0;
     bool conflict = false;
@@ -64,7 +63,8 @@ void GeofenceMonitor::CheckViolation(){
                 conflict = false;
             }
 
-            conflict = CollisionDetection(gf, &currentPosLLA, &currentVel.vect2(), 0, lookahead);
+            Vect2 vel = currentVel.vect2();
+            conflict = CollisionDetection(gf, &currentPosLLA, &vel, 0, lookahead);
 
             if (geoPolyCarp.definitelyInside(currentPosR3, *(gf->GetPoly3D()))) {
                 violation = false;
@@ -97,7 +97,8 @@ void GeofenceMonitor::CheckViolation(){
                                                     LLA.longitude(), "degree",
                                                     LLA.altitude(), "ft");
 
-            if (CollisionDetection(gf, &currentPosLLA, &currentVel.vect2(), 0, lookahead)) {
+            Vect2 vel = currentVel.vect2();
+            if (CollisionDetection(gf, &currentPosLLA, &vel, 0, lookahead)) {
                 conflict = true;
             } else {
                 conflict = false;
@@ -121,6 +122,26 @@ void GeofenceMonitor::CheckViolation(){
             conflictList.push_back(gcf);
         }
     }
+}
+
+
+bool GeofenceMonitor::CheckWPFeasibility(double flatitude,double flongitude,double faltitude,
+                                         double tlatitude,double tlongitude,double taltitude) {
+    Position currentPos = Position::makeLatLonAlt(flatitude, "degree", flongitude, "degree", faltitude, "m");
+    Position nextPos = Position::makeLatLonAlt(tlatitude, "degree", tlongitude, "degree", taltitude, "m");
+    double heading2WP = currentPos.track(nextPos);
+
+    // Velocity components assuming speed is 1 m/s
+    double vy = cos(heading2WP);
+    double vx = sin(heading2WP);
+    Vect2 vel(vx, vy);
+
+    bool val = false;
+    for (int i = 0; i < fdata->GetTotalFences(); ++i) {
+        val = val || CollisionDetection(fdata->GetGeofence(i),&currentPos, &vel, 0, 10000);
+    }
+
+    return !val;
 }
 
 int GeofenceMonitor::GetNumConflicts() {
