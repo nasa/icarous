@@ -27,10 +27,10 @@ private:
     ofstream logfileOut;
 
 public:
-    TrafficMonitor(FlightData* fdata);
     Daidalus DAA;
     KinematicMultiBands KMB;
 
+    TrafficMonitor(FlightData* fdata);
     bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
     bool MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[]);
     void GetVisualizationBands(visbands_t& bands);
