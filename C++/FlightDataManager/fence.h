@@ -35,8 +35,8 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#ifndef _GEOFENCE_H_
-#define _GEOFENCE_H_
+#ifndef _FENCE_H_
+#define _FENCE_H_
 
 #include <vector>
 #include "Position.h"
@@ -60,7 +60,7 @@ using namespace larcfm;
 
 enum FENCE_TYPE {KEEP_IN = 0,KEEP_OUT = 1};
 
-class Geofence{
+class fence{
 
 private:
 
@@ -90,8 +90,8 @@ private:
 
 
 public:
-	Geofence(){};
-	Geofence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling);
+	fence(){};
+	fence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling);
 	void AddVertex(int index, double lat, double lon,double ResolBUFF);
 	void CheckViolation(AircraftState acState,double elapsedTime,Plan fp);
 	bool CollisionDetection(Position pos, Vect2 v,double startTime, double stopTime);
@@ -117,4 +117,4 @@ public:
 
 
 
-#endif /* _GEOFENCE_H_ */
+#endif /* _FENCE_H_ */

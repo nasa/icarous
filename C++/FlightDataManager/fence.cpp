@@ -35,9 +35,9 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#include "Geofence.h"
+#include "fence.h"
 
-Geofence::Geofence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling){
+fence::fence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double inCeiling){
 	fenceType = ftype;
 	id        = ID;
 	nVertices = nVert;
@@ -51,7 +51,7 @@ Geofence::Geofence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, dou
     exitTime = 0;
 }
 
-void Geofence::AddVertex(int index, double lat,double lon,double ResolBUFF){
+void fence::AddVertex(int index, double lat,double lon,double ResolBUFF){
 	Position pos = Position::makeLatLonAlt(lat,"degree",lon,"degree",0,"m");
 	geoPoly0.addVertex(pos);
 
@@ -81,61 +81,61 @@ void Geofence::AddVertex(int index, double lat,double lon,double ResolBUFF){
 	}
 }
 
-int16_t Geofence::GetID(){
+int16_t fence::GetID(){
 	return id;
 }
 
-uint16_t Geofence::GetSize(){
+uint16_t fence::GetSize(){
 	return nVertices;
 }
 
 
-Position Geofence::GetRecoveryPoint(){
+Position fence::GetRecoveryPoint(){
 	return recoveryPoint;
 }
 
-bool Geofence::GetConflictStatus(){
+bool fence::GetConflictStatus(){
 	return conflict;
 }
 
-bool Geofence::GetProjectedStatus(){
+bool fence::GetProjectedStatus(){
 	return projectedViolation;
 }
 
-bool Geofence::GetViolationStatus(){
+bool fence::GetViolationStatus(){
 	return violation;
 }
 
-FENCE_TYPE Geofence::GetType(){
+FENCE_TYPE fence::GetType(){
 	return fenceType;
 }
 
-SimplePoly* Geofence::GetPoly(){
+SimplePoly* fence::GetPoly(){
 	return &geoPoly1;
 }
 
-Poly3D* Geofence::GetPoly3D(){
+Poly3D* fence::GetPoly3D(){
 	return &geoPoly3D;
 }
 
-PolyPath* Geofence::GetPolyPath() {
+PolyPath* fence::GetPolyPath() {
     return &geoPolyPath;
 }
 
-EuclideanProjection* Geofence::GetProjection(){
+EuclideanProjection* fence::GetProjection(){
 	return &proj;
 }
 
-void Geofence::GetEntryExitTime(double& in, double &out){
+void fence::GetEntryExitTime(double& in, double &out){
 	in = entryTime;
 	out = exitTime;
 }
 
-double Geofence::GetCeiling(){
+double fence::GetCeiling(){
 	return ceiling;
 }
 
-void Geofence::Print(){
+void fence::Print(){
 	std::cout<<"id:"<<id<<std::endl;
 	std::cout<<"type:"<<fenceType<<std::endl;
 	std::cout<<"floor:"<<floor<<std::endl;
@@ -145,10 +145,10 @@ void Geofence::Print(){
 	}
 }
 
-std::vector<Vect2>* Geofence::getCartesianVertices(){
+std::vector<Vect2>* fence::getCartesianVertices(){
     return &fenceVertices0;
 }
 
-std::vector<Vect2>* Geofence::getModCartesianVertices(){
+std::vector<Vect2>* fence::getModCartesianVertices(){
     return &fenceVertices1;
 }

@@ -12,6 +12,8 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../include/ACCoRD)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../FlightDataManager)
 
+link_directories(${LIBRARY_OUTPUT_PATH})
+
 add_library(GeofenceMonitor SHARED ${SOURCE_FILES})
 
 target_link_libraries(GeofenceMonitor FlightDataManager ACCoRD)

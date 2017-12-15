@@ -80,6 +80,11 @@ void c_InputCruisingAlt(struct c_FlightData* cptr,double alt){
     return ccptr->InputCruisingAlt(alt);
 }
 
+void c_InputGeofenceData(struct c_FlightData* cptr,geofence_t* gf){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->InputGeofenceData(gf);
+}
+
 double c_GetTakeoffAlt(struct c_FlightData* cptr){
     FlightData* ccptr = ToCPP(cptr);
     return ccptr->GetTakeoffAlt();
@@ -103,6 +108,11 @@ int c_GetTotalMissionWP(struct c_FlightData* cptr){
 int c_GetTotalResolutionWP(struct c_FlightData* cptr){
     FlightData* ccptr = ToCPP(cptr);
     return ccptr->GetTotalResolutionWP();
+}
+
+int c_GetTotalTraffic(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetTotalTraffic();
 }
 
 void c_Reset(struct c_FlightData* cptr){
@@ -143,5 +153,10 @@ uint16_t c_GetNextMissionWP(struct c_FlightData* cptr){
 uint16_t c_GetNextResolutionWP(struct c_FlightData* cptr){
     FlightData* ccptr = ToCPP(cptr);
     return ccptr->GetNextResolutionWP();
+}
+
+int c_GetTotalFences(struct c_FlightData* cptr){
+    FlightData* ccptr = ToCPP(cptr);
+    return ccptr->GetTotalFences();
 }
 

@@ -4,11 +4,11 @@
 
 #include "GeofenceMonitor.h"
 
-bool GeofenceMonitor::GeofenceMonitor(FlightData *fd) {
+GeofenceMonitor::GeofenceMonitor(FlightData *fd) {
     fdata = fd;
 }
 
-bool GeofenceMonitor::CollisionDetection(Geofence* gf,Position* pos,Vect2* v,double startTime,double stopTime){
+bool GeofenceMonitor::CollisionDetection(fence* gf,Position* pos,Vect2* v,double startTime,double stopTime){
     int n = fdata->GetTotalFences();
     for(int i=0;i<n;i++){
 
@@ -29,9 +29,9 @@ bool GeofenceMonitor::CollisionDetection(Geofence* gf,Position* pos,Vect2* v,dou
     return true;
 }
 
-void GeofenceMonitor::CheckViolation(double latitude,double longitude,double altitude,double gs,double trk,double vs){
+void GeofenceMonitor::CheckViolation(double position[],double gs,double trk,double vs){
 
-    Position currentPosLLA = Position::makeLatLonAlt(latitude,"degree",longitude,"degree",altitude,"m");
+    Position currentPosLLA = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
     Velocity currentVel    = Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
     int n = fdata->GetTotalFences();
     double entryTime =-1.0, exitTime =-1.0;
@@ -49,7 +49,7 @@ void GeofenceMonitor::CheckViolation(double latitude,double longitude,double alt
 
 
     for(int i = 0;i<n;i++) {
-        Geofence *gf = fdata->GetGeofence(i);
+        fence *gf = fdata->GetGeofence(i);
 
         EuclideanProjection *proj = gf->GetProjection();
         Vect3 currentPosR3 = proj->project(currentPosLLA);
@@ -125,10 +125,9 @@ void GeofenceMonitor::CheckViolation(double latitude,double longitude,double alt
 }
 
 
-bool GeofenceMonitor::CheckWPFeasibility(double flatitude,double flongitude,double faltitude,
-                                         double tlatitude,double tlongitude,double taltitude) {
-    Position currentPos = Position::makeLatLonAlt(flatitude, "degree", flongitude, "degree", faltitude, "m");
-    Position nextPos = Position::makeLatLonAlt(tlatitude, "degree", tlongitude, "degree", taltitude, "m");
+bool GeofenceMonitor::CheckWPFeasibility(double fromPosition[],double toPosition[]) {
+    Position currentPos = Position::makeLatLonAlt(fromPosition[0], "degree", fromPosition[1], "degree", fromPosition[2],"m");
+    Position nextPos = Position::makeLatLonAlt(toPosition[0], "degree", toPosition[1], "degree", toPosition[2], "m");
     double heading2WP = currentPos.track(nextPos);
 
     // Velocity components assuming speed is 1 m/s
@@ -148,7 +147,7 @@ int GeofenceMonitor::GetNumConflicts() {
     return conflictList.size();
 }
 
-void GeofenceMonitor::GetConflict(int id, int& fenceId, bool& conflict, bool& violation, double& recoveryPoint[]) {
+void GeofenceMonitor::GetConflict(int id, int& fenceId, bool& conflict, bool& violation, double recoveryPoint[]) {
     int count = -1;
     for(GeofenceConflict it:conflictList){
         count++;

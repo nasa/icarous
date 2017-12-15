@@ -39,6 +39,8 @@ void c_InputTakeoffAlt(struct c_FlightData* cptr,double alt);
 
 void c_InputCruisingAlt(struct c_FlightData* cptr,double alt);
 
+void c_InputGeofenceData(struct c_FlightData* cptr,geofence_t* gf);
+
 double c_GetTakeoffAlt(struct c_FlightData* cptr);
 
 double c_GetCruisingAlt(struct c_FlightData* cptr);
@@ -48,6 +50,8 @@ double c_GetAltitude(struct c_FlightData* cptr);
 int c_GetTotalMissionWP(struct c_FlightData* cptr);
 
 int c_GetTotalResolutionWP(struct c_FlightData* cptr);
+
+int c_GetTotalTraffic(struct c_FlightData* cptr);
 
 void c_Reset(struct c_FlightData* cptr);
 
@@ -64,6 +68,8 @@ uint16_t c_GetResolutionPlanSize(struct c_FlightData* cptr);
 uint16_t c_GetNextMissionWP(struct c_FlightData* cptr);
 
 uint16_t c_GetNextResolutionWP(struct c_FlightData* cptr);
+
+int c_GetTotalFences(struct c_FlightData* cptr);
 
 #ifdef __cplusplus 
 };

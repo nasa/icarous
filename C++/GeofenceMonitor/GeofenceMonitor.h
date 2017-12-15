@@ -26,17 +26,16 @@ private:
     PolycarpDetection geoPolyDetect;
     CDIIPolygon geoCDIIPolygon;
     std::list<GeofenceConflict> conflictList;
-    bool CollisionDetection(Geofence* gf,Position* pos, Vect2* v,double startTime, double stopTime);
+    bool CollisionDetection(fence* gf,Position* pos, Vect2* v,double startTime, double stopTime);
     
 public:
     GeofenceMonitor(FlightData* fd);
-    void CheckViolation(double latitude,double longitude,double altitude,double groundSpeed,double track,double verticalSpeed);
-    bool CheckWPFeasibility(double flatitude,double flongitude,double faltitude,
-                            double tlatitude,double tlongitude,double taltitude);
+    void CheckViolation(double position[],double groundSpeed,double track,double verticalSpeed);
+    bool CheckWPFeasibility(double fromPosition[],double toPosition[]);
     int GetNumConflicts();
-    void GetConflict(int id,int& fenceId,bool& conflict,bool& violation,double& recoveryPoint[]);
+    void GetConflict(int id,int& fenceId,bool& conflict,bool& violation,double recoveryPoint[]);
 
 };
 
 
-#endif GEOFENCEMONITOR_H
+#endif //GEOFENCEMONITOR_H

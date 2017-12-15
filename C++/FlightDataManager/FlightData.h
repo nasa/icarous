@@ -7,7 +7,7 @@
 #include "AircraftState.h"
 #include "Position.h"
 #include "Velocity.h"
-#include "Geofence.h"
+#include "fence.h"
 #include "GenericObject.h"
 #include "Icarous_msg.h"
 #include "Plan.h"
@@ -35,8 +35,8 @@ private:
     larcfm::AircraftState acState;
     larcfm::Plan missionPlan;
     larcfm::Plan resolutionPlan;
-    std::list<Geofence> fenceList;
-    std::list<Geofence>::iterator fenceListIt;
+    std::list<fence> fenceList;
+    std::list<fence>::iterator fenceListIt;
     std::list<GenericObject> trafficList;
 
     std::list<ArgsCmd_t> outputList;
@@ -91,23 +91,20 @@ public:
     int GetTotalTraffic();
     void Reset();
     void InputAck(CmdAck_t* ack);
-
     bool CheckAck(command_name_t command);
-
     int8_t GetStartMissionFlag();
     uint16_t GetMissionPlanSize();
     uint16_t GetResolutionPlanSize();
     uint16_t GetNextMissionWP();
     uint16_t GetNextResolutionWP();
-
-    Geofence* GetGeofence(int id);
     int GetTotalFences();
 
-    AircraftState* GetAircraftState();
     __CWRAP__
 
     double getFlightPlanSpeed(Plan* fp,int nextWP);
     void GetTraffic(int id,larcfm::Position& pos,larcfm::Velocity& vel);
+    fence* GetGeofence(int id);
+    AircraftState* GetAircraftState();
 };
 
 

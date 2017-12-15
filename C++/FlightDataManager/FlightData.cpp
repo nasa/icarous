@@ -35,7 +35,7 @@
  *   RECIPIENT'S SOLE REMEDY FOR ANY SUCH MATTER SHALL BE THE IMMEDIATE, UNILATERAL TERMINATION OF THIS AGREEMENT.
  */
 
-#include <Icarous_msg.h>
+#include "Icarous_msg.h"
 #include "FlightData.h"
 #include "SeparatedInput.h"
 
@@ -330,21 +330,21 @@ void FlightData::InputGeofenceData(geofence_t* gf){
     tempVertices.push_back(*gf);
     double ResolBUFF = paramData.getValue("HTHRESHOLD");
     if(gf->vertexIndex+1 == gf->totalvertices){
-        Geofence fence((int)gf->index,(FENCE_TYPE)gf->type,(int)gf->totalvertices,gf->floor,gf->ceiling);
+        fence newfence((int)gf->index,(FENCE_TYPE)gf->type,(int)gf->totalvertices,gf->floor,gf->ceiling);
         for(geofence_t sgf: tempVertices){
-            fence.AddVertex(sgf.vertexIndex,sgf.latitude,sgf.longitude,ResolBUFF);
+            newfence.AddVertex(sgf.vertexIndex,sgf.latitude,sgf.longitude,ResolBUFF);
         }
 
         if(fenceList.size() <= gf->index){
-            fenceList.push_back(fence);
+            fenceList.push_back(newfence);
             std::cout << "Received fence: "<<gf->index <<std::endl;
         }
         else{
-            std::list<Geofence>::iterator it;
+            std::list<fence>::iterator it;
             for(it = fenceList.begin(); it != fenceList.end(); ++it){
-                if(it->GetID() == fence.GetID()){
+                if(it->GetID() == newfence.GetID()){
                     it = fenceList.erase(it);
-                    fenceList.insert(it,fence);
+                    fenceList.insert(it,newfence);
                     break;
                 }
             }
@@ -352,13 +352,12 @@ void FlightData::InputGeofenceData(geofence_t* gf){
     }
 }
 
-Geofence* FlightData::GetGeofence(int id) {
-    for(Geofence gf:fenceList){
-        if (id == gf.GetID()){
-            return &gf;
+fence* FlightData::GetGeofence(int id) {
+    for(fenceListIt = fenceList.begin();fenceListIt != fenceList.end();++fenceListIt){
+        if (id == fenceListIt->GetID()){
+            return &(*(fenceListIt));
         }
     }
-
 }
 
 int FlightData::GetTotalFences(){
