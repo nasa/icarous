@@ -23,14 +23,15 @@ TrafficMonitor::TrafficMonitor(FlightData *fd) {
     strcat(fmt2,".logout");
     logfileIn.open(fmt1);
     logfileIn.open(fmt2);
+    DAA.parameters.loadFromFile(fdata->paramData.getString("DAA_CONFIG"));
 }
 
-void TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[]) {
+bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[]) {
 
     int numTraffic = fdata->GetTotalTraffic();
     if(numTraffic == 0){
         conflict = false;
-        return;
+        return conflict;
     }
 
     double holdConflictTime = fdata->paramData.getValue("CONFLICT_HOLD");
@@ -112,6 +113,8 @@ void TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double positio
         logfileIn << "**************** Current Time:"+std::to_string(gpsTime)+" *******************\n";
         logfileIn << DAA.toString()+"\n";
     }
+
+    return conflict;
 }
 
 bool TrafficMonitor::CheckTurnConflict(double low, double high, double newHeading, double oldHeading) {

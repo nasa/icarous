@@ -11,9 +11,13 @@ set(SOURCE_FILES TrafficMonitor.cpp)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../ACCoRD/inc)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../FlightDataManager)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 link_directories(${LIBRARY_OUTPUT_PATH})
 
 add_library(TrafficMonitor SHARED ${SOURCE_FILES})
 
 target_link_libraries(TrafficMonitor ACCoRD FlightDataManager)
+
+add_executable(trafficTest Test/main.cpp)
+target_link_libraries(trafficTest TrafficMonitor)

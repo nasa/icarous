@@ -5,8 +5,8 @@
 #define ToC(a) (reinterpret_cast<c_FlightData*>(a))
 
 
-struct c_FlightData* c_initFlightData(){
-    FlightData* ccptr = new FlightData();
+struct c_FlightData* c_initFlightData(char configfile[]){
+    FlightData* ccptr = new FlightData(configfile);
     return ToC(ccptr);
 }
 

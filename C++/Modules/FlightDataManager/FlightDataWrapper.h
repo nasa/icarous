@@ -1,15 +1,13 @@
 #ifndef FLIGHTDATAWRAPPER_H 
 #define FLIGHTDATAWRAPPER_H 
 
-#include "Icarous_msg.h"
-
 #ifdef __cplusplus
 extern "C"{
 #endif
 
 struct c_FlightData;
 
-struct c_FlightData* c_initFlightData();
+struct c_FlightData* c_initFlightData(char configfile[]);
 
 void c_AddMissionItem(struct c_FlightData* cptr,waypoint_t* msg);
 

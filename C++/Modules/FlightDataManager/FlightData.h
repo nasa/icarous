@@ -56,7 +56,7 @@ public:
     __CWRAP__
 
     // Constructor
-    FlightData();
+    FlightData(char configfile[]);
     void AddMissionItem(waypoint_t* msg);
     void AddResolutionItem(waypoint_t* msg);
     void SetStartMissionFlag(uint8_t flag);

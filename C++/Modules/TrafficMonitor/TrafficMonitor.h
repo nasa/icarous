@@ -32,7 +32,7 @@ public:
     KinematicMultiBands KMB;
 
     bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
-    void MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[]);
+    bool MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[]);
     void GetVisualizationBands(visbands_t& bands);
 };
 

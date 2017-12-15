@@ -39,7 +39,7 @@
 #include "FlightData.h"
 #include "SeparatedInput.h"
 
-FlightData::FlightData(){
+FlightData::FlightData(char configfile[]){
     pthread_mutex_init(&lock, NULL);
     startMission = -1;
     nextMissionWP = 0;
@@ -50,18 +50,10 @@ FlightData::FlightData(){
     yaw = 0;
     visBands.numBands = 0;
 
-    string filename;
-    ifstream paramSource ("ram/param_source.txt");
-    if (paramSource.is_open())
-    {
-        getline (paramSource,filename);
-        paramSource.close();
-    }
-
     ifstream ConfigFile;
     SeparatedInput sepInputReader(&ConfigFile);
 
-    ConfigFile.open(filename.c_str());
+    ConfigFile.open(configfile);
     sepInputReader.readLine();
     paramData = sepInputReader.getParameters();
 }

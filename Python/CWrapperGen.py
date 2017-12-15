@@ -67,12 +67,21 @@ while not completed:
                 arg = arg.lstrip(" ")
                 arg = arg.rstrip(" ")
                 outArgs1 = outArgs1 + arg.lstrip()
+                outArglist = outArgs1.split(",")
+                inArgslist = []
+                for argname in outArglist:
+                    argname = outArgs1.split(" ")[1]
+                    argname = argname.rstrip("]")
+                    argname = argname.rstrip("[")
+                    argname = argname.strip("*")
+                    inArgslist = argname + ","
+                inArgslist = inArgslist.rstrip(",")
             maintext1 = maintext1 + "struct " + cClassName + "* c_init" + className + "("+outArgs1 +");\n\n"
             temp  =  "struct " + cClassName + "* c_init" + className + "("+outArgs1 +");\n\n"
             maintext2 = maintext2 + temp.rstrip("\n")
             maintext2 = maintext2.rstrip(";")
             maintext2 = maintext2 + "{\n    " \
-            + className + "* ccptr = new "+className+"();\n" \
+            + className + "* ccptr = new "+className+"("+inArgslist+");\n" \
             + "    return ToC(ccptr);\n}\n\n"
 
 
