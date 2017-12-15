@@ -17,25 +17,17 @@ using namespace larcfm;
 class PathPlanner{
 
 private:
-
     FlightData* fdata;
-
-public:
-    PathPlanner(std::string filename);
-    void FindPath(algorithm, double flatitude,double flongitude,double faltitude,
-                  double tlatitude, double tlongitude,double taltitude,
-                  double trk,double gs,double vs);
-
-    void FindPathAstar(double flatitude,double flongitude,double faltitude,
-                        double tlatitude, double tlongitude,double taltitude);
-    void FindPathRRT(double flatitude,double flongitude,double faltitude,
-                         double tlatitude, double tlongitude,double taltitude,
-                     double trk,double gs,double vs);
-
+    std::list<Plan> outputPlans;
     Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
 
+public:
+    PathPlanner(FlightData* fdata);
+    int64_t FindPath(algorithm,char planID[], double fromPosition[],double toPosition[],double trk,double gs,double vs);
+    void GetWaypoint(char planID[],int wpID,double waypoint[]);
 
-
+    int64_t FindPathAstar(char planID[],double fromPosition[],double toPosition[]);
+    int64_t FindPathRRT(char planID[],double fromPosition[],double toPosition[],double trk,double gs,double vs);
 };
 
 

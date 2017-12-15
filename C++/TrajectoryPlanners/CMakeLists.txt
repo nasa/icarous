@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
 
-set(SOURCE_FILES PathPlanner.cpp)
+set(SOURCE_FILES PathPlanner.cpp AstarPlan.cpp RRTPlan.cpp Dynamics.cpp)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
 
