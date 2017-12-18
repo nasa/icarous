@@ -29,7 +29,7 @@ bool GeofenceMonitor::CollisionDetection(fence* gf,Position* pos,Vect2* v,double
     return true;
 }
 
-void GeofenceMonitor::CheckViolation(double position[],double gs,double trk,double vs){
+void GeofenceMonitor::CheckViolation(double position[],double trk,double gs,double vs){
 
     Position currentPosLLA = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
     Velocity currentVel    = Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
