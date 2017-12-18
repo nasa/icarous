@@ -8,7 +8,7 @@
 #include "ParameterData.h"
 #include "FlightData.h"
 
-typedef enum algType{
+typedef enum algorithm{
     _ASTAR_,_RRT_
 }algorithm;
 
@@ -27,7 +27,7 @@ public:
     PathPlanner(FlightData* fdata);
     int64_t FindPath(algorithm,char planID[], double fromPosition[],double toPosition[],double trk,double gs,double vs);
     void GetWaypoint(char planID[],int wpID,double waypoint[]);
-
+    void OutputFlightPlan(ENUProjection* proj,char* fenceFile,char* waypointFile);
 
 };
 

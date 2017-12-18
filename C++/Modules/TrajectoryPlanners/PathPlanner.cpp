@@ -75,3 +75,8 @@ void PathPlanner::GetWaypoint(char *planID, int wpID, double *waypoint) {
         }
     }
 }
+
+void PathPlanner::OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceFile,char* waypointFile){
+
+
+}
