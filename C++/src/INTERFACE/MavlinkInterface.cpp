@@ -1,3 +1,4 @@
+#include <Port.h>
 #include <Icarous_msg.h>
 #include <iostream>
 #include "MAVLinkInterface.h"
@@ -8,7 +9,7 @@ MAVLinkInterface_t::MAVLinkInterface_t(Icarous_t* ic):Interface_t(ic){
     numWaypoints = 0;
 }
 
-ArduPilotInterface_t::ArduPilotInterface_t(Icarous_t *ic) : MAVLinkInterface_t(ic) {
+ArduPilotInterface_t::ArduPilotInterface_t(Icarous_t *ic):MAVLinkInterface_t(ic) {
     foundVehicle = false;
     time(&lastPing);
     time(&newPing);
@@ -416,7 +417,7 @@ void MAVProxyInterface_t::HandleFencePoint(const mavlink_message_t *message) {
         SendMessage(&fetchfence);
     }else{
         mavlink_message_t ack;
-        mavlink_msg_command_ack_pack(1,0,&ack,MAV_CMD_DO_FENCE_ENABLE,1);
+        mavlink_msg_command_ack_pack(1,0,&ack,MAV_CMD_DO_FENCE_ENABLE,1,0,0,255,0);
         SendMessage(&ack);
     }
 }

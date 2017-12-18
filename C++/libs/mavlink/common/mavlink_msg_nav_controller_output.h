@@ -11,8 +11,8 @@ typedef struct __mavlink_nav_controller_output_t {
  float aspd_error; /*< Current airspeed error in meters/second*/
  float xtrack_error; /*< Current crosstrack error on x-y plane in meters*/
  int16_t nav_bearing; /*< Current desired heading in degrees*/
- int16_t target_bearing; /*< Bearing to current MISSION/target in degrees*/
- uint16_t wp_dist; /*< Distance to active MISSION in meters*/
+ int16_t target_bearing; /*< Bearing to current waypoint/target in degrees*/
+ uint16_t wp_dist; /*< Distance to active waypoint in meters*/
 }) mavlink_nav_controller_output_t;
 
 #define MAVLINK_MSG_ID_NAV_CONTROLLER_OUTPUT_LEN 26
@@ -32,12 +32,12 @@ typedef struct __mavlink_nav_controller_output_t {
     8, \
     {  { "nav_roll", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_nav_controller_output_t, nav_roll) }, \
          { "nav_pitch", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_nav_controller_output_t, nav_pitch) }, \
-         { "alt_error", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_nav_controller_output_t, alt_error) }, \
-         { "aspd_error", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_nav_controller_output_t, aspd_error) }, \
-         { "xtrack_error", NULL, MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_nav_controller_output_t, xtrack_error) }, \
          { "nav_bearing", NULL, MAVLINK_TYPE_INT16_T, 0, 20, offsetof(mavlink_nav_controller_output_t, nav_bearing) }, \
          { "target_bearing", NULL, MAVLINK_TYPE_INT16_T, 0, 22, offsetof(mavlink_nav_controller_output_t, target_bearing) }, \
          { "wp_dist", NULL, MAVLINK_TYPE_UINT16_T, 0, 24, offsetof(mavlink_nav_controller_output_t, wp_dist) }, \
+         { "alt_error", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_nav_controller_output_t, alt_error) }, \
+         { "aspd_error", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_nav_controller_output_t, aspd_error) }, \
+         { "xtrack_error", NULL, MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_nav_controller_output_t, xtrack_error) }, \
          } \
 }
 #else
@@ -46,12 +46,12 @@ typedef struct __mavlink_nav_controller_output_t {
     8, \
     {  { "nav_roll", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_nav_controller_output_t, nav_roll) }, \
          { "nav_pitch", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_nav_controller_output_t, nav_pitch) }, \
-         { "alt_error", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_nav_controller_output_t, alt_error) }, \
-         { "aspd_error", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_nav_controller_output_t, aspd_error) }, \
-         { "xtrack_error", NULL, MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_nav_controller_output_t, xtrack_error) }, \
          { "nav_bearing", NULL, MAVLINK_TYPE_INT16_T, 0, 20, offsetof(mavlink_nav_controller_output_t, nav_bearing) }, \
          { "target_bearing", NULL, MAVLINK_TYPE_INT16_T, 0, 22, offsetof(mavlink_nav_controller_output_t, target_bearing) }, \
          { "wp_dist", NULL, MAVLINK_TYPE_UINT16_T, 0, 24, offsetof(mavlink_nav_controller_output_t, wp_dist) }, \
+         { "alt_error", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_nav_controller_output_t, alt_error) }, \
+         { "aspd_error", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_nav_controller_output_t, aspd_error) }, \
+         { "xtrack_error", NULL, MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_nav_controller_output_t, xtrack_error) }, \
          } \
 }
 #endif
@@ -65,8 +65,8 @@ typedef struct __mavlink_nav_controller_output_t {
  * @param nav_roll Current desired roll in degrees
  * @param nav_pitch Current desired pitch in degrees
  * @param nav_bearing Current desired heading in degrees
- * @param target_bearing Bearing to current MISSION/target in degrees
- * @param wp_dist Distance to active MISSION in meters
+ * @param target_bearing Bearing to current waypoint/target in degrees
+ * @param wp_dist Distance to active waypoint in meters
  * @param alt_error Current altitude error in meters
  * @param aspd_error Current airspeed error in meters/second
  * @param xtrack_error Current crosstrack error on x-y plane in meters
@@ -114,8 +114,8 @@ static inline uint16_t mavlink_msg_nav_controller_output_pack(uint8_t system_id,
  * @param nav_roll Current desired roll in degrees
  * @param nav_pitch Current desired pitch in degrees
  * @param nav_bearing Current desired heading in degrees
- * @param target_bearing Bearing to current MISSION/target in degrees
- * @param wp_dist Distance to active MISSION in meters
+ * @param target_bearing Bearing to current waypoint/target in degrees
+ * @param wp_dist Distance to active waypoint in meters
  * @param alt_error Current altitude error in meters
  * @param aspd_error Current airspeed error in meters/second
  * @param xtrack_error Current crosstrack error on x-y plane in meters
@@ -189,8 +189,8 @@ static inline uint16_t mavlink_msg_nav_controller_output_encode_chan(uint8_t sys
  * @param nav_roll Current desired roll in degrees
  * @param nav_pitch Current desired pitch in degrees
  * @param nav_bearing Current desired heading in degrees
- * @param target_bearing Bearing to current MISSION/target in degrees
- * @param wp_dist Distance to active MISSION in meters
+ * @param target_bearing Bearing to current waypoint/target in degrees
+ * @param wp_dist Distance to active waypoint in meters
  * @param alt_error Current altitude error in meters
  * @param aspd_error Current airspeed error in meters/second
  * @param xtrack_error Current crosstrack error on x-y plane in meters
@@ -316,7 +316,7 @@ static inline int16_t mavlink_msg_nav_controller_output_get_nav_bearing(const ma
 /**
  * @brief Get field target_bearing from nav_controller_output message
  *
- * @return Bearing to current MISSION/target in degrees
+ * @return Bearing to current waypoint/target in degrees
  */
 static inline int16_t mavlink_msg_nav_controller_output_get_target_bearing(const mavlink_message_t* msg)
 {
@@ -326,7 +326,7 @@ static inline int16_t mavlink_msg_nav_controller_output_get_target_bearing(const
 /**
  * @brief Get field wp_dist from nav_controller_output message
  *
- * @return Distance to active MISSION in meters
+ * @return Distance to active waypoint in meters
  */
 static inline uint16_t mavlink_msg_nav_controller_output_get_wp_dist(const mavlink_message_t* msg)
 {

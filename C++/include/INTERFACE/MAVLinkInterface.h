@@ -38,9 +38,8 @@
 #ifndef C_MAVLINKINTERFACE_H
 #define C_MAVLINKINTERFACE_H
 
-#include "icarous/mavlink.h"
+#include "ardupilotmega/mavlink.h"
 #include "Interface.h"
-#include "Port.h"
 #include <ctime>
 
 // Auto Pilot Modes enumeration
@@ -53,7 +52,6 @@ enum control_mode_t {
     LOITER =        5,  // automatic horizontal acceleration with automatic throttle
     RTL =           6,  // automatic return to launching point
     CIRCLE =        7,  // automatic circular flight with automatic throttle
-    LAND =          9,  // automatic landing with horizontal position control
     DRIFT =        11,  // semi-automous position, yaw and throttle control
     SPORT =        13,  // manual earth-frame angular rate control with manual throttle
     FLIP =         14,  // automatically flip the vehicle on the roll axis

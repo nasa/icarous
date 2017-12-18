@@ -40,6 +40,7 @@
 #define C_INTERFACE_H
 
 #include "Icarous_msg.h"
+#include "Port.h"
 
 class Icarous_t;
 
