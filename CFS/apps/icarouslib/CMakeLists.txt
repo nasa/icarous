@@ -8,6 +8,8 @@ include_directories(fsw/platform_inc)
 include_directories(../icarous/fsw/src)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
+aux_source_directory(fsw/src/ACCoRD APP_SRC_FILES)
+aux_source_directory(fsw/src/ICAROUS APP_SRC_FILES)
 
 # Create the app module
 add_cfe_app(icarouslib ${APP_SRC_FILES})

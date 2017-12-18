@@ -11,3 +11,5 @@ aux_source_directory(fsw/src APP_SRC_FILES)
 
 # Create the app module
 add_cfe_app(icarous ${APP_SRC_FILES})
+
+add_cfe_tables(icarous "fsw/tables/icarous_tbl.c")

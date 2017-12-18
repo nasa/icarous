@@ -11,8 +11,23 @@
 #       (This is run when TARGETSYSTEM is unset)
 #   - An architecture-specific build that generates the binaries 
 #       (This is run when TARGETSYSTEM is set)
-# 
+#
 
+
+# The minimum CMake version is chosen because 2.6.4 is what is
+# included by default with RHEL/Centos 5.x
+cmake_minimum_required(VERSION 2.6.4)
+
+# This top-level tier does not define ANY targets but we know
+# that the subprojects will at least use the "C" language, so
+# indicate that now.  Doing this early initializes the CFLAGS
+# so they won't change later.
+project(CFETOP C CXX)
+
+
+IF (NOT DEFINED ENV{OSAL_HOME})
+    message(FATAL_ERROR "$OSAL_HOME not defined but needed for compilation")
+ENDIF ()
 
 # Squelch a warning when building on Win32/Cygwin
 set(CMAKE_LEGACY_CYGWIN_WIN32 0)
@@ -26,20 +41,11 @@ set(OSAL_USER_C_FLAGS "-g")
 
 #set(INSTALL_RPATH_USE_LINK_PATH true)
 
-set(CMAKE_CXX_FLAGS "-g -Wall -fPIC -m32 -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE=600 -std=c++0x")
+set(CMAKE_CXX_FLAGS "-g -Wall -fPIC -m32 -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE=600 -std=c++11")
 
 
 add_definitions(-DCFS)
 
-# The minimum CMake version is chosen because 2.6.4 is what is
-# included by default with RHEL/Centos 5.x
-cmake_minimum_required(VERSION 2.6.4)
-
-# This top-level tier does not define ANY targets but we know
-# that the subprojects will at least use the "C" language, so
-# indicate that now.  Doing this early initializes the CFLAGS
-# so they won't change later.
-project(CFETOP C)
 
 set(MISSIONCONFIG "Icarous")
 
