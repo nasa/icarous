@@ -1,5 +1,6 @@
-#ifndef  _MAVLINK_CONVERSIONS_H_
-#define  _MAVLINK_CONVERSIONS_H_
+#pragma once
+
+#ifndef MAVLINK_NO_CONVERSION_HELPERS
 
 /* enable math defines on Windows */
 #ifdef _MSC_VER
@@ -208,4 +209,4 @@ MAVLINK_HELPER void mavlink_euler_to_dcm(float roll, float pitch, float yaw, flo
     dcm[2][2] = cosPhi * cosThe;
 }
 
-#endif
+#endif // MAVLINK_NO_CONVERSION_HELPERS

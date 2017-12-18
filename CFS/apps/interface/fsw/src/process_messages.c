@@ -268,7 +268,7 @@ void ProcessGSMessage(mavlink_message_t message){
 				writePort(&appdataInt.gs,&fetchfence);
 			}else{
 				mavlink_message_t ack;
-				mavlink_msg_command_ack_pack(1,0,&ack,MAV_CMD_DO_FENCE_ENABLE,1);
+				mavlink_msg_command_ack_pack(1,0,&ack,MAV_CMD_DO_FENCE_ENABLE,1,0,0,255,0);
 				writePort(&appdataInt.gs,&ack);
 			}
 
