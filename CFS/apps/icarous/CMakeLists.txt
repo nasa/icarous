@@ -3,6 +3,9 @@ project(CFE_Icarous_APP C)
 
 include_directories(fsw/mission_inc)
 include_directories(fsw/platform_inc)
+include_directories(fsw/src)
+include_directories(../icarouslib/fsw/mission_inc)
+include_directories(../icarouslib/fsw/mission_inc/ICAROUS)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 

@@ -247,7 +247,7 @@ function(prepare)
     version
     COMMAND 
         ${CMAKE_COMMAND} -D BIN=${CMAKE_BINARY_DIR}
-                         -P ${CMAKE_SOURCE_DIR}/cmake/version.cmake
+                         -P ${CMAKE_SOURCE_DIR}/cfe/cmake/version.cmake
     WORKING_DIRECTORY 
       ${CMAKE_SOURCE_DIR}                             
   )

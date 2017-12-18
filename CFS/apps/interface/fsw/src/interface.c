@@ -208,7 +208,7 @@ void InitializeSocketPort(port_t* prt){
 	prt->target_addr.sin_addr.s_addr = inet_addr(prt->target);
 	prt->target_addr.sin_port        = htons(prt->portout);
 
-	fcntl(prt->sockId, F_SETFL, O_NONBLOCK | FASYNC);
+	fcntl(prt->sockId, F_SETFL, O_NONBLOCK);
 
 	//OS_printf("%d,Address: %s,Port in:%d,out: %d\n",prt->sockId,prt->target,prt->portin,prt->portout);
 }
