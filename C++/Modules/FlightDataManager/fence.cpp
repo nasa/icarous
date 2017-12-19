@@ -111,7 +111,11 @@ FENCE_TYPE fence::GetType(){
 }
 
 SimplePoly* fence::GetPoly(){
-	return &geoPoly1;
+	return &geoPoly0;
+}
+
+SimplePoly* fence::GetPolyMod(){
+    return &geoPoly1;
 }
 
 Poly3D* fence::GetPoly3D(){

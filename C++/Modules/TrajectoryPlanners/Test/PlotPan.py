@@ -21,7 +21,7 @@ for i in range(numFences):
     Fences.append(np.array(vertices))
     plt.plot(Fences[i][:,0],Fences[i][:,1])
 
-plt.plot(waypoints[:,0],waypoints[:,1])
+plt.plot(waypoints[:,0],waypoints[:,1],'o-')
 plt.xlabel("x (m)")
 plt.ylabel("y (m)")
 plt.show()

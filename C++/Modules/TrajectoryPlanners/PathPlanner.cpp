@@ -95,7 +95,7 @@ void PathPlanner::OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceF
                 for(int i=0;i<fenceSize;i++){
                     fence *gf = fdata->GetGeofence(i);
                     for(int j=0;j<gf->GetSize();j++){
-                        Vect3 loc = proj->project(gf->GetPoly()->getVertex(j));
+                        Vect3 loc = proj->project(gf->GetPolyMod()->getVertex(j));
                         fp2 << gf->GetID() <<" "<<loc.x<<" "<<
                                                   loc.y<<std::endl;
                     }

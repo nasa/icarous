@@ -53,7 +53,7 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
         if (fdata->GetGeofence(i)->GetType() == KEEP_IN){
             bbox = fdata->GetGeofence(i)->GetPoly()->poly3D(proj);
         }else{
-            obstacleList.push_back(fdata->GetGeofence(i)->GetPoly()->poly3D(proj));
+            obstacleList.push_back(fdata->GetGeofence(i)->GetPolyMod()->poly3D(proj));
         }
     }
 

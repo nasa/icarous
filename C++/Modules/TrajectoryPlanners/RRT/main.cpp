@@ -126,4 +126,5 @@ int main(int argc,char* argv[]){
         parent = node->parent;
         node = parent;
     }
+
 }

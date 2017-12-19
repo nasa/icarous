@@ -19,7 +19,7 @@ int main(int argc,char** argv){
         vertex_gf1[i].type = KEEP_IN;
         vertex_gf1[i].totalvertices = 4;
         vertex_gf1[i].vertexIndex = i;
-        vertex_gf1[i].floor = 0;
+        vertex_gf1[i].floor = -100;
         vertex_gf1[i].ceiling = 100;
     }
 
@@ -28,7 +28,7 @@ int main(int argc,char** argv){
         vertex_gf2[i].type = KEEP_OUT;
         vertex_gf2[i].totalvertices = 3;
         vertex_gf2[i].vertexIndex = i;
-        vertex_gf2[i].floor = 0;
+        vertex_gf2[i].floor = -100;
         vertex_gf2[i].ceiling = 100;
     }
 

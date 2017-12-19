@@ -168,6 +168,7 @@ void RRTplanner::MotionModel(node_t& nearest,node_t& outputNode, double U[]){
 
         if(fenceConflict || trafficConflict){
             outputNode.id = -1;
+            return;
         }
     }
 
@@ -530,7 +531,7 @@ bool RRTplanner::CheckDirectPath2Goal(node_t* qnode){
         }
     }
     else{
-        return false;
+        return true;
     }
 }
 
@@ -629,7 +630,6 @@ bool RRTplanner::CheckGoal(){
 
         if(CheckDirectPath2Goal(closestNode)){
             printf("found direct path to goal\n");
-            goalreached = true;
             return true;
         }
     }

@@ -39,7 +39,7 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
     for(int i=0;i<totalfences;++i){
         fence *gf = fdata->GetGeofence(i);
         if (gf->GetType() == KEEP_OUT){
-            DG.setWeightsInside(*gf->GetPoly(),100.0);
+            DG.setWeightsInside(*gf->GetPolyMod(),100.0);
         }
     }
 

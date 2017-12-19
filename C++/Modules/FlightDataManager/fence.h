@@ -106,6 +106,7 @@ public:
 	FENCE_TYPE GetType();
 	void GetEntryExitTime(double& in, double& out);
 	SimplePoly* GetPoly();
+    SimplePoly* GetPolyMod();
 	PolyPath* GetPolyPath();
 	EuclideanProjection* GetProjection();
 	double GetCeiling();
