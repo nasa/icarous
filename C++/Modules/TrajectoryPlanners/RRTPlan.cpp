@@ -42,7 +42,7 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
 
     Position goalPos = endPos;
 
-    int Nsteps = 500;
+    int Nsteps = 2000;
     int dTsteps  = 5;
     double dT  = 1;
     double maxD = 5.0;
@@ -63,10 +63,11 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
     node_t goal;
     goal.pos = gpos;
 
+    string daaConfig = fdata->paramData.getString("DAA_CONFIG");
 
-    RRTplanner RRT(bbox,dTsteps,dT,maxD,maxInputNorm,RRT_F,RRT_U,"../DaidalusQuadConfig.txt");
+    RRTplanner RRT(bbox,dTsteps,dT,maxD,maxInputNorm,RRT_F,RRT_U,daaConfig.c_str());
     RRT.Initialize(initPosR3,currentVel,obstacleList,TrafficPos,TrafficVel,goal);
-    RRT.SetGoal(goal);
+
 
     bool goalFound = false;
     for(int i=0;i<Nsteps;i++){

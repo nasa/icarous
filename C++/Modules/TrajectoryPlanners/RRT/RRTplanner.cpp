@@ -32,6 +32,7 @@ RRTplanner::RRTplanner(Poly3D &boundary,
 
     F = PlantDynamics;
     InputFunction = ControlInput;
+    nodeCount = 0;
 }
 
 
@@ -55,7 +56,9 @@ void RRTplanner::Initialize(Vect3& Pos, Vect3& Vel,std::list<Poly3D> &obstacles,
 
     obstacleList = obstacles;
 
-    memcpy(&goalNode,&goal,sizeof(goal));
+    goalNode.goal = true;
+    goalNode.pos = goal.pos;
+    goalNode.vel = goal.vel;
 
 }
 
@@ -227,9 +230,9 @@ void RRTplanner::RRTStep(){
 
 
     if(CheckDirectPath2Goal(nearest)){
-        memcpy(&newNode,&goalNode,sizeof(newNode));
         nodeCount++;
         newNode.id = nodeCount;
+        newNode.pos = goalNode.pos;
     }else{
         MotionModel(*nearest,newNode,U);
 

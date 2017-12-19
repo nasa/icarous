@@ -113,7 +113,7 @@ int main(int argc,char* argv[]){
         RRT.RRTStep();
 
         if(RRT.CheckGoal()){
-            printf("%f,%f\n",0.0,0.0);
+            //printf("%f,%f\n",0.0,0.0);
             break;
         }
     }

@@ -15,7 +15,7 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
     double resolutionSpeed   = fdata->paramData.getValue("RES_SPEED");
     double maxAlt            = fdata->paramData.getValue("MAX_CEILING");
     double Hthreshold        = fdata->paramData.getValue("HTHRESHOLD");
-    double altFence          = maxAlt - 1;
+    double altFence;
 
     Position startPos = Position::makeLatLonAlt(fromPosition[0],"degree",fromPosition[1],"degree",fromPosition[2],"m");
     Position endPos   = Position::makeLatLonAlt(toPosition[0],"degree",toPosition[1],"degree",toPosition[2],"m");
@@ -25,6 +25,7 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
     for(int i=0;i<totalfences;++i){
         fence *gf = fdata->GetGeofence(i);
         if (gf->GetType() == KEEP_IN){
+            altFence = gf->GetCeiling();
             for(int j=0;j<gf->GetSize();++j)
                 BR.add(gf->GetPoly()->getVertex(j));
         }
