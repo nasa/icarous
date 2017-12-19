@@ -27,7 +27,7 @@ public:
     PathPlanner(FlightData* fdata);
     int64_t FindPath(algorithm,char planID[], double fromPosition[],double toPosition[],double trk,double gs,double vs);
     void GetWaypoint(char planID[],int wpID,double waypoint[]);
-    void OutputFlightPlan(ENUProjection* proj,char* fenceFile,char* waypointFile);
+    void OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceFile,char* waypointFile);
 
 };
 

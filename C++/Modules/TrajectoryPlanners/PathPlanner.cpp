@@ -77,6 +77,41 @@ void PathPlanner::GetWaypoint(char *planID, int wpID, double *waypoint) {
 }
 
 void PathPlanner::OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceFile,char* waypointFile){
+    for(Plan pl: outputPlans){
+        if(strcmp(pl.getName().c_str(),planID)){
+            continue;
+        }else {
+            std::ofstream fp1;
+            std::ofstream fp2;
 
+            if (pl.size() > 0)
+                fp1.open(waypointFile);
+            else
+                break;
 
+            int fenceSize = fdata->GetTotalFences();
+            if ( fenceSize > 0) {
+                fp2.open(fenceFile);
+                for(int i=0;i<fenceSize;i++){
+                    fence *gf = fdata->GetGeofence(i);
+                    for(int j=0;j<gf->GetSize();j++){
+                        fp2 << gf->GetID() <<" "<<gf->GetPoly3D()->getVertex(j).x<<" "<<
+                                                  gf->GetPoly3D()->getVertex(j).y<<std::endl;
+                    }
+
+                }
+                fp2.close();
+            }
+
+            for(int i=0;i<pl.size();i++){
+                Position pos = pl.getPos(i);
+                Vect3 X = proj->project(pos);
+                fp1 << X.x <<" "<<X.y<<" "<<X.z<<std::endl;
+            }
+
+            fp1.close();
+
+            break;
+        }
+    }
 }
