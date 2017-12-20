@@ -34,7 +34,6 @@ public:
     bool CheckWPFeasibility(double fromPosition[],double toPosition[]);
     int GetNumConflicts();
     void GetConflict(int id,int& fenceId,bool& conflict,bool& violation,double recoveryPoint[]);
-
 };
 
 

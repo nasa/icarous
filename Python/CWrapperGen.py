@@ -98,6 +98,8 @@ while not completed:
                         continue
                     arg = arg.lstrip(" ")
                     arg = arg.rstrip(" ")
+                    arg = arg.rstrip("]")
+                    arg = arg.rstrip("[")
                     outArgs1  = outArgs1 + ","+arg
                     outArgs2  = outArgs2 + arg.split(" ")[1] + ","
 

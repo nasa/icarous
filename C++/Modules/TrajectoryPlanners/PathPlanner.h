@@ -12,8 +12,6 @@ typedef enum algorithm{
     _ASTAR_,_RRT_
 }algorithm;
 
-using namespace larcfm;
-
 class PathPlanner{
 
 private:

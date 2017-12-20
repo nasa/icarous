@@ -8,7 +8,6 @@
 #include "KinematicMultiBands.h"
 #include "FlightData.h"
 
-using namespace larcfm;
 
 class TrafficMonitor {
 private:
@@ -27,8 +26,8 @@ private:
     ofstream logfileOut;
 
 public:
-    Daidalus DAA;
-    KinematicMultiBands KMB;
+    larcfm::Daidalus DAA;
+    larcfm::KinematicMultiBands KMB;
 
     TrafficMonitor(FlightData* fdata);
     bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
