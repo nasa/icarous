@@ -90,6 +90,7 @@ void INTERFACE_AppInit(void){
 	//Subscribe to command messages and kinematic band messages from the SB	 
 	CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataInt.INTERFACE_Pipe);
 	CFE_SB_Subscribe(ICAROUS_VISBAND_MID, appdataInt.INTERFACE_Pipe);
+    CFE_SB_Subscribe(PLEXIL_OUTPUT_MID, appdataInt.INTERFACE_Pipe);
 
 
 	// Initialize all messages that this App generates

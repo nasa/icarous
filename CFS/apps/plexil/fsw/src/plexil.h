@@ -77,7 +77,7 @@ typedef struct
 
 
 EXTERN plexilAppData_t plexilAppData;                ///< global variable containing app state
-EXTERN plexil_msg_t plexilMsg;
+EXTERN plexil_interface_t plexilMsg;
 
 /**
  * Entry point for app

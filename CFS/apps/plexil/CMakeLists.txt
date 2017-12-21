@@ -7,7 +7,7 @@ set(PLEXIL_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++/plexil-4/src")
 
 set(PLEXIL_LIB "${PLEXIL_SOURCE}/../lib")
 
-set(MODULES_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++/FlightDataManager")
+set(MODULES_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++/Modules/FlightDataManager")
 
 set(MODULES_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++/lib")
 

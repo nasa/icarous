@@ -29,7 +29,6 @@ int64_t PathPlanner::FindPath(algorithm search, char *planID, double *fromPositi
     return retval;
 }
 
-
 Plan PathPlanner::ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed){
     // Compute go above plan
     Plan ResolutionPlan2;
@@ -63,7 +62,7 @@ Plan PathPlanner::ComputeGoAbovePlan(Position start,Position goal,double altFenc
 }
 
 void PathPlanner::GetWaypoint(char *planID, int wpID, double *waypoint) {
-    for(Plan pl: outputPlans){
+    for(Plan pl: flightPlans){
         if(strcmp(pl.getName().c_str(),planID)){
             continue;
         }else{
@@ -77,7 +76,7 @@ void PathPlanner::GetWaypoint(char *planID, int wpID, double *waypoint) {
 }
 
 void PathPlanner::OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceFile,char* waypointFile){
-    for(Plan pl: outputPlans){
+    for(Plan pl: flightPlans){
         if(strcmp(pl.getName().c_str(),planID)){
             continue;
         }else {
@@ -115,4 +114,34 @@ void PathPlanner::OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceF
             break;
         }
     }
+}
+
+int PathPlanner::GetTotalWaypoints(char planID[]){
+    std::list<Plan>::iterator it;
+    for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
+        if (strcmp(it->getName().c_str(),planID)){
+            continue;
+        }
+        return it->size();
+    }
+}
+
+void PathPlanner::InputFlightPlan(char planID[],int wpID,double waypoint[],double speed){
+    Position pos = Position::makeLatLonAlt(waypoint[0],"degree",waypoint[1],"degree",waypoint[2],"m");
+    std::list<Plan>::iterator it;
+    for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
+        if (strcmp(it->getName().c_str(),planID)){
+            continue;
+        }
+        it->add(pos,(double)wpID);
+    }
+
+    Plan newPlan(string(planID));
+    newPlan.add(pos,(double)wpID);
+}
+
+double PathPlanner::Dist2Waypoint(double currPosition[],double nextPosition[]){
+    Position A = Position::makeLatLonAlt(currPosition[0],"degree",currPosition[1],"degree",currPosition[2],"m");
+    Position B = Position::makeLatLonAlt(nextPosition[0],"degree",nextPosition[1],"degree",nextPosition[2],"m");
+    return A.distanceH(B);
 }

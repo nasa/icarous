@@ -7,6 +7,7 @@
 #include "APFunctions.h"
 #include "stdbool.h"
 
+/*
 void PLEXIL_DAQ(void){
     OS_TaskRegister();
     uint32 RunStatus = CFE_ES_APP_RUN;
@@ -171,3 +172,4 @@ uint8_t ThrottleUp(){
         return 0;
     }
 }
+*/

@@ -285,6 +285,7 @@ void ProcessGSMessage(mavlink_message_t message){
 				mavlink_msg_fence_fetch_point_pack(1,1,&fetchfence,255,0,count+1);
 				writePort(&appdataInt.gs,&fetchfence);
 			}else{
+				//TODO: change ack to match new dialect
 				mavlink_message_t ack;
 				mavlink_msg_command_ack_pack(1,0,&ack,MAV_CMD_DO_FENCE_ENABLE,1,0,0,255,0);
 				writePort(&appdataInt.gs,&ack);
@@ -407,6 +408,18 @@ void INTERFACE_ProcessPacket(){
 			writePort(&appdataInt.gs,&msg);
 			break;
 		}
+		/*
+		case PLEXIL_OUTPUT_MID:
+			plexil_interface_t* msg;
+			msg = (plexil_interface_t*) appdataInt.INTERFACEMsgPtr;
+
+			switch(msg->type){
+				case
+
+
+			}
+		 */
+
 	}
 
 	return;

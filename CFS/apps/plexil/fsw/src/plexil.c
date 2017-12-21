@@ -20,10 +20,10 @@ void PLEXIL_AppMain(void){
 
     PLEXIL_AppInit();
 
-    status = OS_TaskCreate( &task_pldaq_id, "PLDAQ", PLEXIL_DAQ, task_pldaq_stack, TASK_PLDAQ_STACK_SIZE, TASK_PLDAQ_PRIORITY, 0);
-    if ( status != OS_SUCCESS ){
-        OS_printf("Error creating Task 1\n");
-    }
+    //status = OS_TaskCreate( &task_pldaq_id, "PLDAQ", PLEXIL_DAQ, task_pldaq_stack, TASK_PLDAQ_STACK_SIZE, TASK_PLDAQ_PRIORITY, 0);
+    //if ( status != OS_SUCCESS ){
+      //  OS_printf("Error creating Task 1\n");
+    //}
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
         plexilAppData.threadState = 1;
@@ -71,11 +71,11 @@ void PLEXIL_AppInit(void) {
     CFE_SB_Subscribe(PLEXIL_RETURN_MID, plexilAppData.PLEXIL_Pipe);
     CFE_SB_Subscribe(PLEXIL_WAKEUP_MID, plexilAppData.PLEXIL_Pipe);
 
-    CFE_SB_Subscribe(ICAROUS_WP_MID, plexilAppData.FlightData_Pipe);
-    CFE_SB_Subscribe(ICAROUS_WPREACHED_MID, plexilAppData.FlightData_Pipe);
-    CFE_SB_Subscribe(ICAROUS_STARTMISSION_MID, plexilAppData.FlightData_Pipe);
-    CFE_SB_Subscribe(ICAROUS_RESET_MID, plexilAppData.FlightData_Pipe);
-    CFE_SB_Subscribe(ICAROUS_POSITION_MID, plexilAppData.FlightData_Pipe);
+    //CFE_SB_Subscribe(ICAROUS_WP_MID, plexilAppData.FlightData_Pipe);
+    //CFE_SB_Subscribe(ICAROUS_WPREACHED_MID, plexilAppData.FlightData_Pipe);
+    //CFE_SB_Subscribe(ICAROUS_STARTMISSION_MID, plexilAppData.FlightData_Pipe);
+    //CFE_SB_Subscribe(ICAROUS_RESET_MID, plexilAppData.FlightData_Pipe);
+    //CFE_SB_Subscribe(ICAROUS_POSITION_MID, plexilAppData.FlightData_Pipe);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&plexilMsg, PLEXIL_COMMAND_MID, sizeof(PlexilCommandMsg), TRUE);
@@ -149,14 +149,13 @@ void PLEXIL_ProcessPacket(){
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(plexilAppData.PLEXIL_MsgPtr);
 
-    PlexilCommandMsg *msg;
     switch(MsgId){
 
         case PLEXIL_WAKEUP_MID:
             PLEXIL_Run();
             break;
 
-        case PLEXIL_RETURN_MID:{
+        case PLEXIL_INPUT_MID:{
             /*
             msg = (PlexilCommandMsg*) plexilAppData.PLEXIL_MsgPtr;
 
@@ -184,7 +183,7 @@ void PLEXIL_Run(){
         n = plexil_getCommand(plexilAppData.adap,&msg1);
 
         if(n>=0) {
-            uint8_t status = ProcessPlexilCommand(&msg1);
+            //uint8_t status = ProcessPlexilCommand(&msg1);
             if (n == 0) {
                 //memcpy(&plexilMsg, &msg1, sizeof(plexilMsg));
                 //CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);
@@ -199,7 +198,7 @@ void PLEXIL_Run(){
         n = plexil_getLookup(plexilAppData.adap,&msg);
 
         if(n>0) {
-            uint8_t status = ProcessPlexilLookup(&msg);
+            //uint8_t status = ProcessPlexilLookup(&msg);
             if (n == 0) {
                 //memcpy(&plexilMsg, &msg, sizeof(plexilMsg));
                 //CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);

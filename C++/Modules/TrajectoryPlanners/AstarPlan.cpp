@@ -127,6 +127,6 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
     }
 
     output->setName(string(planID));
-    outputPlans.push_back(*output);
+    flightPlans.push_back(*output);
     return output->size();
 }

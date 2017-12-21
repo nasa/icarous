@@ -12,6 +12,6 @@
 typedef struct{
     uint8_t TlmHeader[CMD_HDR_SIZE];
     PlexilCommandMsg plxMsg;
-}plexil_msg_t;
+}plexil_interface_t;
 
 #endif //CFETOP_PLEXIL_MSG_H_H

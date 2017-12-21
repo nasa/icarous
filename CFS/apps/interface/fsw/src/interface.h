@@ -228,5 +228,6 @@ EXTERN NoArgsCmd_t resetIcarous;               ///< reset icarous command
 EXTERN object_t traffic;                       ///< traffic message
 EXTERN position_t position;                    ///< position message
 EXTERN CmdAck_t ack;                           ///< command acknowledge message
+//EXTERN plexil_interface_t pxlInt;
 
 #endif /* _interface_app_h_ */
