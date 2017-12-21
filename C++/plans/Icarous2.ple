@@ -1,0 +1,23 @@
+// -*- Mode: Java -*-
+
+Boolean Lookup missionStart;
+
+ICAROUS:
+Concurrence
+{
+    FMS:
+    Concurrence
+    {
+	IDLE:
+	{
+	    Repeat true;
+	    EndCondition Lookup(missionStart)
+	}
+
+	TAKEOFF:{
+	    Repeat true;
+	    pprint("Takeoff");
+	   
+	}
+    }
+}
