@@ -38,6 +38,10 @@
 #ifndef _FENCE_H_
 #define _FENCE_H_
 
+enum FENCE_TYPE {KEEP_IN = 0,KEEP_OUT = 1};
+
+#ifdef __cplusplus
+
 #include <vector>
 #include "Position.h"
 #include "Velocity.h"
@@ -57,8 +61,6 @@
 #include "math.h"
 
 using namespace larcfm;
-
-enum FENCE_TYPE {KEEP_IN = 0,KEEP_OUT = 1};
 
 class fence{
 
@@ -116,6 +118,6 @@ public:
 	std::vector<Vect2>* getModCartesianVertices();
 };
 
-
+#endif
 
 #endif /* _FENCE_H_ */

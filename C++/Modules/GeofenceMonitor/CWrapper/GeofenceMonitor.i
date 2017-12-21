@@ -5,4 +5,5 @@
 %}
 
 /* Parse the header file to generate wrappers */
-%include "GeofenceMonitor.h"
+%include "../../FlightDataManager/FlightData.h"
+%include "../GeofenceMonitor.h"

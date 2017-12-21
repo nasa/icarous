@@ -12,7 +12,6 @@
 #include "Icarous_msg.h"
 #include "Plan.h"
 
-#define __CWRAP__
 
 class FlightData{
 
@@ -52,10 +51,6 @@ public:
 
     ParameterData paramData;
 
-    // Wrap all functions with the __CWRAP__ defines for calls from C code
-    __CWRAP__
-
-    // Constructor
     FlightData(char configfile[]);
     void AddMissionItem(waypoint_t* msg);
     void AddResolutionItem(waypoint_t* msg);
@@ -99,12 +94,9 @@ public:
     uint16_t GetNextResolutionWP();
     int GetTotalFences();
 
-    __CWRAP__
-
     double getFlightPlanSpeed(Plan* fp,int nextWP);
     void GetTraffic(int id,larcfm::Position& pos,larcfm::Velocity& vel);
     fence* GetGeofence(int id);
-    AircraftState* GetAircraftState();
 };
 
 
