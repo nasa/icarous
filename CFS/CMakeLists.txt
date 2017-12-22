@@ -22,8 +22,32 @@ cmake_minimum_required(VERSION 2.6.4)
 # that the subprojects will at least use the "C" language, so
 # indicate that now.  Doing this early initializes the CFLAGS
 # so they won't change later.
-project(CFETOP C CXX)
+project(ICAROUS_CFS C CXX)
 
+
+set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
+set(MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../C++/Modules")
+set(MODULES_NAMES ACCoRD FlightDataManager GeofenceMonitor TrafficMonitor TrajectoryPlanners)
+
+foreach(ARG ${MODULES_NAMES})
+    message(STATUS "Building module:${ARG}")
+    set(MODULE_SOURCE ${MODULES_DIR}/${ARG})
+    set(MODULE_CMAKEDIR ${MODULE_SOURCE}/cmake-build-debug)
+    execute_process(COMMAND ${CMAKE_COMMAND} ${MODULE_SOURCE} ${CMAKE_OPTS}
+                    WORKING_DIRECTORY "${MODULE_CMAKEDIR}"
+                    RESULT_VARIABLE RESULT)
+    if (NOT RESULT EQUAL 0)
+              message(FATAL_ERROR "Failed to configure ${CURRSYS}")
+    endif (NOT RESULT EQUAL 0)
+
+    add_custom_target(${ARG}-all COMMAND $(MAKE) all WORKING_DIRECTORY "${MODULE_CMAKEDIR}")
+    add_custom_target(${ARG}-clean COMMAND $(MAKE) clean WORKING_DIRECTORY "${MODULE_CMAKEDIR}")
+endforeach(ARG IN LISTS MODULES_NAMES)
+
+add_dependencies(FlightDataManager-all ACCoRD-all)
+add_dependencies(GeofenceMonitor-all FlightDataManager-all)
+add_dependencies(TrafficMonitor-all FlightDataManager-all)
+add_dependencies(TrajectoryPlanners-all FlightDataManager-all)
 
 IF (NOT DEFINED ENV{OSAL_HOME})
     message(FATAL_ERROR "$OSAL_HOME not defined but needed for compilation")
@@ -32,21 +56,15 @@ ENDIF ()
 # Squelch a warning when building on Win32/Cygwin
 set(CMAKE_LEGACY_CYGWIN_WIN32 0)
 
-
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_INSTALL_PREFIX "../bin")
 
 set(OSAL_USER_C_FLAGS "-g")
 
-#set(INSTALL_RPATH_USE_LINK_PATH true)
-
 set(CMAKE_CXX_FLAGS "-g -Wall -fPIC -m32 -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE=600 -std=c++11")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
-
-add_definitions(-DCFS)
-
 
 set(MISSIONCONFIG "Icarous")
 
