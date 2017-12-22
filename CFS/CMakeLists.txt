@@ -28,7 +28,7 @@ project(ICAROUS_CFS C CXX)
 set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
 set(MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../C++/Modules")
 set(MODULES_NAMES ACCoRD FlightDataManager GeofenceMonitor TrafficMonitor TrajectoryPlanners)
-
+set(CMAKE_OPTS "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}")
 foreach(ARG ${MODULES_NAMES})
     message(STATUS "Building module:${ARG}")
     set(MODULE_SOURCE ${MODULES_DIR}/${ARG})
