@@ -10,7 +10,7 @@
 #include "cfs-data-format.hh"
 
 typedef struct{
-    uint8_t TlmHeader[CMD_HDR_SIZE];
+    uint8_t TlmHeader[CFE_SB_CMD_HDR_SIZE];
     PlexilCommandMsg plxMsg;
 }plexil_interface_t;
 
