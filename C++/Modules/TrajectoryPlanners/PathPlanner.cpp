@@ -136,7 +136,8 @@ void PathPlanner::InputFlightPlan(char planID[],int wpID,double waypoint[],doubl
         it->add(pos,(double)wpID);
     }
 
-    Plan newPlan(string(planID));
+    string planName = planID;
+    Plan newPlan(planName);
     newPlan.add(pos,(double)wpID);
 }
 

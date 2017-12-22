@@ -5,10 +5,7 @@ project(GeofenceMonitor)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -m32")
-
-set(SOURCE_FILES GeofenceMonitor.cpp CWrapper/GeofenceMonitor_wrap.cpp)
+set(SOURCE_FILES GeofenceMonitor.cpp CWrapper/GeofenceMonitor_wrap.cxx)
 
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
 
