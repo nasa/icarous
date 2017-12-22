@@ -15,8 +15,8 @@
 #include <string.h>
 #include <errno.h>
 #include "PlexilWrapper.h"
-#include "FlightDataWrapper.h"
 #include "Plexil_msg.h"
+#include "plexil_table.h"
 
 #define PLEXIL_MAJOR_VERSION 4
 #define PLEXIL_MINOR_VERSION 0
@@ -25,24 +25,13 @@
 #define PLEXIL_PIPE_NAME "PLEXILPIPE"
 #define PLEXIL_PIPE_DEPTH 32
 
-/// Software bus properties
-#define FLIGHTDATA_PIPE_NAME "FLIGHTDATAPIPE"
-#define FLIGHTDATA_PIPE_DEPTH 32
+
 
 // plexil App event defines
-
 #define PLEXIL_RESERVED_EID              0
 #define PLEXIL_STARTUP_INF_EID           1
 #define PLEXIL_COMMAND_ERR_EID           2
 #define PLEXIL_INVALID_MSGID_ERR_EID     3
-
-/// Defines required to specify stack properties
-#define TASK_PLDAQ_ID         38
-#define TASK_PLDAQ_STACK_SIZE 1024
-#define TASK_PLDAQ_PRIORITY   68
-
-uint32 task_pldaq_stack[TASK_PLDAQ_STACK_SIZE];
-uint32 task_pldaq_id;
 
 
 /**
@@ -51,29 +40,11 @@ uint32 task_pldaq_id;
  */
 typedef struct{
     CFE_SB_PipeId_t    PLEXIL_Pipe;       ///< pipe variable
-    CFE_SB_PipeId_t    FlightData_Pipe;       ///< pipe variable
     CFE_SB_MsgPtr_t    PLEXIL_MsgPtr;     ///< msg pointer to SB message
-    CFE_SB_MsgPtr_t    FlightData_MsgPtr;     ///< msg pointer to SB message
     CFE_TBL_Handle_t   PLEXIL_tblHandle;  ///< table handle
     struct plexilExec* exec;
     struct plexilInterfaceAdapter* adap;
-    struct flightData* fData;
-    uint32_t mutex;
-    uint32_t threadState;
 }plexilAppData_t;
-
-typedef struct
-{
-    int argc;
-    char argv1[50];
-    char argv2[50];
-    char argv3[50];
-    char argv4[50];
-    char argv5[50];
-    char argv6[50];
-    char argv7[50];
-
-}PLEXILTable_t;
 
 
 EXTERN plexilAppData_t plexilAppData;                ///< global variable containing app state

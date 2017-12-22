@@ -3,6 +3,8 @@
 //
 
 #define EXTERN
+
+#include <Plexil_msg.h>
 #include "plexil.h"
 #include "msgids/msgids.h"
 
@@ -20,13 +22,7 @@ void PLEXIL_AppMain(void){
 
     PLEXIL_AppInit();
 
-    //status = OS_TaskCreate( &task_pldaq_id, "PLDAQ", PLEXIL_DAQ, task_pldaq_stack, TASK_PLDAQ_STACK_SIZE, TASK_PLDAQ_PRIORITY, 0);
-    //if ( status != OS_SUCCESS ){
-      //  OS_printf("Error creating Task 1\n");
-    //}
-
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
-        plexilAppData.threadState = 1;
         status = CFE_SB_RcvMsg(&plexilAppData.PLEXIL_MsgPtr, plexilAppData.PLEXIL_Pipe, 10);
 
         if (status == CFE_SUCCESS)
@@ -36,7 +32,6 @@ void PLEXIL_AppMain(void){
 
         }
     }
-    plexilAppData.threadState = 0;
 
     PLEXIL_AppCleanUp();
 
@@ -62,13 +57,8 @@ void PLEXIL_AppInit(void) {
                                PLEXIL_PIPE_DEPTH,       /* Depth of Pipe */
                                PLEXIL_PIPE_NAME);       /* Name of pipe */
 
-    // Create pipe to receive SB messages
-    status = CFE_SB_CreatePipe(&plexilAppData.FlightData_Pipe, /* Variable to hold Pipe ID */
-                               FLIGHTDATA_PIPE_DEPTH,       /* Depth of Pipe */
-                               FLIGHTDATA_PIPE_NAME);       /* Name of pipe */
-
     //Subscribe to command messages and kinematic band messages from the SB
-    CFE_SB_Subscribe(PLEXIL_RETURN_MID, plexilAppData.PLEXIL_Pipe);
+    CFE_SB_Subscribe(PLEXIL_INPUT_MID, plexilAppData.PLEXIL_Pipe);
     CFE_SB_Subscribe(PLEXIL_WAKEUP_MID, plexilAppData.PLEXIL_Pipe);
 
     //CFE_SB_Subscribe(ICAROUS_WP_MID, plexilAppData.FlightData_Pipe);
@@ -78,7 +68,7 @@ void PLEXIL_AppInit(void) {
     //CFE_SB_Subscribe(ICAROUS_POSITION_MID, plexilAppData.FlightData_Pipe);
 
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&plexilMsg, PLEXIL_COMMAND_MID, sizeof(PlexilCommandMsg), TRUE);
+    CFE_SB_InitMsg(&plexilMsg, PLEXIL_OUTPUT_MID, sizeof(PlexilCommandMsg), TRUE);
 
     // Send event indicating app initialization
     CFE_EVS_SendEvent(PLEXIL_STARTUP_INF_EID, CFE_EVS_INFORMATION,
@@ -133,9 +123,6 @@ void PLEXIL_AppInit(void) {
     }
 
     free(inputParams);
-
-    plexilAppData.fData = c_initFlightData();
-
 }
 
 void PLEXIL_AppCleanUp(){
@@ -144,7 +131,6 @@ void PLEXIL_AppCleanUp(){
 }
 
 void PLEXIL_ProcessPacket(){
-
 
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(plexilAppData.PLEXIL_MsgPtr);
@@ -156,15 +142,15 @@ void PLEXIL_ProcessPacket(){
             break;
 
         case PLEXIL_INPUT_MID:{
-            /*
-            msg = (PlexilCommandMsg*) plexilAppData.PLEXIL_MsgPtr;
+            plexil_interface_t* msg;
+            msg = (plexil_interface_t*) plexilAppData.PLEXIL_MsgPtr;
 
-            switch(msg->mType) {
+            switch(msg->plxMsg.mType) {
                 case _LOOKUP_RETURN_:
                 case _COMMAND_RETURN_:
-                    plexil_return(plexilAppData.adap, msg);
+                    plexil_return(plexilAppData.adap, &msg->plxMsg);
                     break;
-            }*/
+            }
             break;
         }
     }
@@ -183,26 +169,24 @@ void PLEXIL_Run(){
         n = plexil_getCommand(plexilAppData.adap,&msg1);
 
         if(n>=0) {
-            //uint8_t status = ProcessPlexilCommand(&msg1);
             if (n == 0) {
-                //memcpy(&plexilMsg, &msg1, sizeof(plexilMsg));
-                //CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);
-                //CFE_SB_SendMsg((CFE_SB_Msg_t*) & plexilMsg);
+                memcpy(&plexilMsg.plxMsg, &msg1, sizeof(PlexilCommandMsg));
+                CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) &plexilMsg);
+                CFE_SB_SendMsg((CFE_SB_Msg_t*) &plexilMsg);
             }
         }
     }
 
     n = 1;
     while(n>0){
-        PlexilCommandMsg msg;
-        n = plexil_getLookup(plexilAppData.adap,&msg);
+        PlexilCommandMsg msg2;
+        n = plexil_getLookup(plexilAppData.adap,&msg2);
 
         if(n>0) {
-            //uint8_t status = ProcessPlexilLookup(&msg);
             if (n == 0) {
-                //memcpy(&plexilMsg, &msg, sizeof(plexilMsg));
-                //CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);
-                //CFE_SB_SendMsg((CFE_SB_Msg_t * ) & plexilMsg);
+                memcpy(&plexilMsg.plxMsg, &msg2, sizeof(PlexilCommandMsg));
+                CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);
+                CFE_SB_SendMsg((CFE_SB_Msg_t * ) & plexilMsg);
             }
         }
     }

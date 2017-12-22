@@ -5,8 +5,7 @@
 #include "cfe.h"
 #include "cfe_tbl_filedef.h"  /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 
-#define EXTERN extern
-#include "plexil.h"
+#include "plexil_table.h"
 
 
 PLEXILTable_t TblStruct = {
