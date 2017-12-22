@@ -61,14 +61,8 @@ void PLEXIL_AppInit(void) {
     CFE_SB_Subscribe(PLEXIL_INPUT_MID, plexilAppData.PLEXIL_Pipe);
     CFE_SB_Subscribe(PLEXIL_WAKEUP_MID, plexilAppData.PLEXIL_Pipe);
 
-    //CFE_SB_Subscribe(ICAROUS_WP_MID, plexilAppData.FlightData_Pipe);
-    //CFE_SB_Subscribe(ICAROUS_WPREACHED_MID, plexilAppData.FlightData_Pipe);
-    //CFE_SB_Subscribe(ICAROUS_STARTMISSION_MID, plexilAppData.FlightData_Pipe);
-    //CFE_SB_Subscribe(ICAROUS_RESET_MID, plexilAppData.FlightData_Pipe);
-    //CFE_SB_Subscribe(ICAROUS_POSITION_MID, plexilAppData.FlightData_Pipe);
-
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&plexilMsg, PLEXIL_OUTPUT_MID, sizeof(PlexilCommandMsg), TRUE);
+    CFE_SB_InitMsg(&plexilMsg, PLEXIL_OUTPUT_MID, sizeof(plexil_interface_t), TRUE);
 
     // Send event indicating app initialization
     CFE_EVS_SendEvent(PLEXIL_STARTUP_INF_EID, CFE_EVS_INFORMATION,

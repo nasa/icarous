@@ -12,7 +12,7 @@
 #include "interface_version.h"
 #include "interface_perfids.h"
 #include "Icarous_msg.h"
-#include "icarous_msgids.h"
+#include "msgids/msgids.h"
 
 CFE_EVS_BinFilter_t  INTERFACE_EventFilters[] =
 {  /* Event ID    mask */
