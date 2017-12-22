@@ -270,10 +270,13 @@ endfunction(prepare)
 #
 function(process_arch TARGETSYSTEM)
   set(CURRSYS "${SYSID_${TARGETSYSTEM}}")
-  set(ARCH_BINARY_DIR "${CMAKE_BINARY_DIR}/${CURRSYS}")
+  #>>>>>>>>> single build <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  set(ARCH_BINARY_DIR "${CMAKE_BINARY_DIR}")
+  #<<<<<<<<<<< multiple build <<<<<<<<<<<<<<<<<<<<<<<<<<
+  #set(ARCH_BINARY_DIR "${CMAKE_BINARY_DIR}/${CURRSYS}")
   file(MAKE_DIRECTORY "${ARCH_BINARY_DIR}")
 
-  message(STATUS "Configuring for system arch: ${CURRSYS}")
+  message(STATUS "Configuring for system arch: ${ARCH_BINARY_DIR}")
   
   # Note for parsing purposes it is easier to store each as a pair of lines; i.e. var name
   # on first line and value on second line.  This makes the recovery step easier.
@@ -308,15 +311,17 @@ function(process_arch TARGETSYSTEM)
     endif()
     list(APPEND CURRSYS_CMAKE_OPTS "-DCMAKE_TOOLCHAIN_FILE=${TOOLCHAIN_FILE}")
   endif ()
-  
+
   # Execute CMake subprocess to create a binary build tree for the specific CPU architecture
-  execute_process(COMMAND ${CMAKE_COMMAND} ${CMAKE_SOURCE_DIR} ${CURRSYS_CMAKE_OPTS} 
-    WORKING_DIRECTORY "${ARCH_BINARY_DIR}" 
-    RESULT_VARIABLE RESULT)
-  if (NOT RESULT EQUAL 0)
-    message(FATAL_ERROR "Failed to configure ${CURRSYS}")
-  endif (NOT RESULT EQUAL 0)  
-  
+  #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  #execute_process(COMMAND ${CMAKE_COMMAND} ${CMAKE_SOURCE_DIR} ${CURRSYS_CMAKE_OPTS}
+  #  WORKING_DIRECTORY "${ARCH_BINARY_DIR}"
+  #  RESULT_VARIABLE RESULT)
+  #if (NOT RESULT EQUAL 0)
+  #  message(FATAL_ERROR "Failed to configure ${CURRSYS}")
+  #endif (NOT RESULT EQUAL 0)
+  #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
   # Hook the "make all", "make clean", and "make install" targets for the subordinate build
   # to top-level build targets prefixed by the CPU architecture.
   add_custom_target(${CURRSYS}-all 

@@ -43,6 +43,7 @@ set(OSAL_USER_C_FLAGS "-g")
 
 set(CMAKE_CXX_FLAGS "-g -Wall -fPIC -m32 -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE=600 -std=c++11")
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
 
 add_definitions(-DCFS)
 
@@ -65,11 +66,28 @@ read_targetconfig()
 
 # load a sub-script that defines the other functions, depending on whether
 # the TARGETSYSTEM is defined or not
-if(TARGETSYSTEM)
-  include("cfe/cmake/arch_build.cmake")
-else(TARGETSYSTEM)
-  include("cfe/cmake/mission_build.cmake")
-endif(TARGETSYSTEM)
+
+# To use the double build system when building for multiple targets (e.g cpu1 & cpu2):
+# 1. Uncomment this block
+# 2. Comment out the next block
+# 3. See mission_build.cmake and comment/uncomment the appropriate lines.
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+#if(TARGETSYSTEM)
+  #generate_config_includefile("inc/cfe_mission_cfg.h" mission_cfg.h ${MISSIONCONFIG} )
+  #set(ARCH_BINARY_DIR "${CMAKE_BINARY_DIR}")
+  #include("cfe/cmake/arch_build.cmake")
+#else(TARGETSYSTEM)
+  #include("cfe/cmake/mission_build.cmake")
+#endif(TARGETSYSTEM)
+
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+# Comment this block for multiple targets
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+include("cfe/cmake/mission_build.cmake")
 
 # The prepare function should set up any necessary prerequisites for the build
 if (COMMAND prepare)
@@ -79,6 +97,20 @@ endif (COMMAND prepare)
 # Call the process_arch macro for each architecture
 foreach(SYSVAR ${TGTSYS_LIST})
   process_arch(${SYSVAR})
+endforeach(SYSVAR IN LISTS TGTSYS_LIST)
+
+set(TARGETSYSTEM "cpu1")
+set(ARCH_BINARY_DIR "${CMAKE_BINARY_DIR}")
+include("cfe/cmake/arch_build.cmake")
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+if (COMMAND prepare)
+    prepare()
+endif (COMMAND prepare)
+
+# Call the process_arch macro for each architecture
+foreach(SYSVAR ${TGTSYS_LIST})
+    process_arch(${SYSVAR})
 endforeach(SYSVAR IN LISTS TGTSYS_LIST)
 
 # The complete macro will do whatever is needed to finalize the build targets
