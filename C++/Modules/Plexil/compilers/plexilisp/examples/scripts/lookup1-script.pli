@@ -1,0 +1,6 @@
+(plexil-script
+  (initial-state
+   (state "x" "int" 5)
+   (state "foofoo" "bool" 1)
+   (state "foobar" "bool" 1))
+  (script))

@@ -1,0 +1,5 @@
+(plexil-plan
+  (on-command "drive"
+    ((integer "distance"))
+    (command-node "handle_drive"
+      (command "drive_rover" (intvar "distance")))))

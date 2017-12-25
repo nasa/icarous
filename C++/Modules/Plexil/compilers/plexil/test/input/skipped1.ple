@@ -1,0 +1,5 @@
+Concurrence
+{
+  A: { Skip true; }
+  B: { Start NodeSkipped (A); }
+}

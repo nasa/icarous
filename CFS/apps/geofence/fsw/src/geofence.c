@@ -52,6 +52,7 @@ void Geofence_AppInit(void) {
 
     //Subscribe to plexil output messages from the SB
     CFE_SB_Subscribe(PLEXIL_OUTPUT_MID, geofenceAppData.Geofence_Pipe);
+    CFE_SB_Subscribe(ICAROUS_GEOFENCE_MID,geofenceAppData.Geofence_Pipe);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&gfPlexilMsg, PLEXIL_INPUT_MID, sizeof(plexil_interface_t), TRUE);
@@ -79,7 +80,13 @@ void Geofence_ProcessPacket(){
     MsgId = CFE_SB_GetMsgId(geofenceAppData.Geofence_MsgPtr);
 
     switch(MsgId){
+        case ICAROUS_GEOFENCE_MID:
 
+            break;
+
+        case PLEXIL_OUTPUT_MID:
+
+            break;
     }
     return;
 }

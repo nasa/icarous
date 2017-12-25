@@ -1,0 +1,18 @@
+// This plan emulates a simulator that handles:
+//   The command 'GetName()', which returns an array of integers
+
+Command SendReturnValue (Integer[2]);
+Command pprint(...);
+
+Interface: Concurrence
+{
+  // The integer array
+  Integer a_nums[2] = #(5 10);
+
+  // The handler for the command GetNums()
+  RecGetName: OnCommand "GetNums" ( ) {
+    pprint("Received command getNums()");
+    SendReturnValue(a_nums);
+    pprint("Returned " , a_nums);
+  }
+}

@@ -1,0 +1,7 @@
+Real Lookup time;
+
+time_lookup_test:
+{
+  EndCondition Lookup (time, 1) >= (time_lookup_test.EXECUTING.START + 5);
+  PostCondition isKnown(Self.EXECUTING.END);
+}

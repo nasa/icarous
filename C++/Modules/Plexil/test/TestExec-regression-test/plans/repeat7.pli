@@ -1,0 +1,4 @@
+(plexil-plan
+  (command-node "repeat7"
+    (repeat-condition (lookup-on-change "continue"))
+    (command "foo")))

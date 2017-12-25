@@ -1,0 +1,4 @@
+{
+    A: { }
+    B: { StartCondition isKnown (A.outcome); }
+}

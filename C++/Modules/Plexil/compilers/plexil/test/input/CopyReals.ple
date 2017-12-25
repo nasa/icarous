@@ -1,0 +1,8 @@
+CopyReals:
+{
+  In Integer size;
+  In Real source[5];
+  InOut Real dest[5];
+
+  dest = source;
+}

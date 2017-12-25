@@ -1,0 +1,7 @@
+(plexil-plan
+  (comment "Tests assignment to an array element")
+  (assignment-node "array5"
+    (variables (real-array "a4" 10))
+    (postcondition (= (array-element "a4" 0) 5.0))
+    (assignment (array-element "a4" 0) 5.0)))
+

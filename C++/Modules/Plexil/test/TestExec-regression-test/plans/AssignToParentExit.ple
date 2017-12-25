@@ -1,0 +1,10 @@
+AssignToParentExit:
+Concurrence
+{
+  Boolean step_failed = false;
+  Exit step_failed;
+  End Kid.state == FINISHED;
+
+Kid:
+  step_failed = true;
+}

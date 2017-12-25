@@ -1,0 +1,32 @@
+// This plan emulates a simulator that handles:
+//	- one integer lookup, X
+//	- the command 'MoveRight(Integer dX)', which increases X by dX
+//	- the message 'Quit', which closes the simulator (CAVEAT: not always cleanly)
+
+Command UpdateLookup (...);
+Command SendReturnValue (...);
+
+Simulator: Concurrence
+{
+  Integer x = 1;
+  Boolean continue = true;
+  ExitCondition !continue;
+
+  HandleMoveRight:
+  {
+    RepeatCondition continue;
+    ReceiveMoveRight: OnCommand "MoveRight" (Integer modX)
+    {
+      Increment: x = x + modX;
+      SetExt: UpdateLookup("x", x);
+      RespondMoveRight: SendReturnValue(x);
+    }
+  }
+
+  HandleQuit:
+  {
+    RepeatCondition continue;
+    ReceiveQuit: OnMessage "Quit" Set: continue = false;
+  }
+}
+

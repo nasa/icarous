@@ -1,0 +1,75 @@
+<PLEXILScript>
+  <InitialState>
+    <State name="WheelStuck" type="bool">
+      <Value>false</Value>
+    </State>
+    <State name="time" type="real">
+      <Value>0.0</Value>
+    </State>
+  </InitialState>
+  <Script>
+    <State name="time" type="real">
+      <Value>1.0</Value>
+    </State>
+    <CommandAck name="Drive" type="string">
+      <Param type="int">1</Param>
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <CommandAck name="TakePicture" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="real">
+      <Value>2.0</Value>
+    </State>
+    <CommandAck name="Drive" type="string">
+      <Param type="int">1</Param>
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <CommandAck name="TakePicture" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="real">
+      <Value>3.0</Value>
+    </State>
+    <CommandAck name="Drive" type="string">
+      <Param type="int">1</Param>
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <CommandAck name="TakePicture" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="real">
+      <Value>4.0</Value>
+    </State>
+    <CommandAck name="Drive" type="string">
+      <Param type="int">1</Param>
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <CommandAck name="TakePicture" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="real">
+      <Value>5.0</Value>
+    </State>
+    <CommandAck name="Drive" type="string">
+      <Param type="int">1</Param>
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <CommandAck name="TakePicture" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <State name="time" type="real">
+      <Value>6.0</Value>
+    </State>
+    <State name="WheelStuck" type="bool">
+      <Value>true</Value>
+    </State>
+    <CommandAck name="Drive" type="string">
+      <Param type="int">1</Param>
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+    <CommandAck name="TakePicture" type="string">
+      <Result>COMMAND_SUCCESS</Result>
+    </CommandAck>
+  </Script>
+</PLEXILScript>

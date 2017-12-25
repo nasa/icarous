@@ -1,0 +1,7 @@
+
+// update-test
+
+script {
+  update-ack UpdateTest;
+}
+

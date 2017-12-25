@@ -1,0 +1,5 @@
+(plexil-plan
+  (sequence "timer_list"
+      (empty-node "A"
+        (end-condition (>= (current-time) (+ (durval "PT2.0S") (start-time "A")))))
+      (command "pprint" "A duration: " (- (end-time "A") (start-time "A")))))

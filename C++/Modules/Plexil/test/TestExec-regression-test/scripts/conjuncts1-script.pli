@@ -1,0 +1,10 @@
+(plexil-script
+ (initial-state
+  (state "A" "int" 1)
+  (state "B" "int" 2)
+  (state "C" "int" 3))
+ (script
+  (command-ack "Execute1" "string" "COMMAND_SUCCESS")))
+
+
+

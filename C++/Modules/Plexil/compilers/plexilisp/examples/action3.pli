@@ -1,0 +1,11 @@
+(plexil-plan
+  (action "Root"
+    (start-condition (not (lookup-on-change "x")))
+    (end-condition (lookup-on-change "x"))
+    (sequence
+      (nothing)
+      (nothing))))
+      
+        
+
+      

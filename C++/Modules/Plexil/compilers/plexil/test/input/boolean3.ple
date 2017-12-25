@@ -1,0 +1,6 @@
+Boolean Lookup foo;
+
+boolean3:
+{
+    StartCondition Lookup(foo) && true;
+}

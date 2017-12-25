@@ -1,0 +1,11 @@
+
+// update-lookup-test
+
+initial-state {
+  state someValue () = 42 : real;
+}
+
+script {
+  update-ack UpdateLookupTest;
+}
+

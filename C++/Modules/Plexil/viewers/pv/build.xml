@@ -1,0 +1,453 @@
+<?xml version = "1.0"?>
+
+<project name = "Luv"
+         default = "jar"
+         basedir = ".">
+
+  <!-- application specific build variables (change these) -->
+
+  <property name = "app-name"           value = "luv"/>
+  <property name = "app-title"          value = "Luv"/>
+  <property name = "domain"             value = "nasa.gov"/>
+  <property name = "domain-scope"       value = "gov.nasa"/>
+  <property name = "domain-scope-dir"   value = "gov/nasa"/>
+  <property name = "main-class"         value = "Luv"/>
+  <property name = "lib-dir"            value = "lib"/>
+  <property name = "resources"          value = "resources"/>
+  <property name = "compile-includes"   value = ""/>
+  <property name = "compile-excludes"   value = ""/>
+  
+  <!-- java library files that belong in the class path and the jar -->
+  
+  <fileset dir = "${lib-dir}" id = "libraries">
+    <include name = "org-netbeans-swing-outline.jar"/>
+  </fileset>
+  
+  <!-- any extra resources which may be neaded by the application -->
+
+  <fileset dir = "." id = "resources">
+    <include name = "${resources}/icons/*.gif"/>
+    <include name = "${resources}/icons/*.jpg"/>
+  </fileset>
+
+  <!-- derived build variables -->
+
+  <property name = "source-dir"         value = "src"/>
+  <property name = "doc-dir"            value = "doc"/>
+  <property name = "build-dir"          value = "build"/>
+  <property name = "icons"              value = "${resources}/icons"/>
+  <property name = "samples"            value = "${resources}/samples"/>
+  <property name = "jar-name"           value = "${app-name}.jar"/>
+  <property name = "debug-cfg-name"     value = "Debug.cfg"/>
+  <property name = "app-dir"            value = "${app-title}.app"/>
+  <property name = "dmg-dir"            value = "disk-image"/>
+  <property name = "dmg-name"           value = "${app-name}.dmg"/>
+  <property name = "dmg-vol-name"       value = "${app-title}"/>
+  <property name = "zip-dir"            value = "zip-image"/>
+  <property name = "zip-name"           value = "${app-name}.zip"/>
+  <property name = "build-env-dmg"      value = "${app-name}-build.dmg"/>
+  <property name = "build-env-zip"      value = "${app-name}-build.zip"/>
+  <property name = "build-env-dir"      value = "build-env-image"/>
+  <property name = "build-env-vol-name" value = "${app-title}Environment"/>
+  <property name = "java-framework-mac" value = "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Resources/MacOS"/>
+
+<!-- CLEAN remove all built files -->
+     
+<target name = "clean" 
+          description = "remove all generated files">
+    <delete dir = "${build-dir}"/>
+    <delete dir = "${doc-dir}"/>
+    <delete dir = "${app-dir}"/>
+    <delete dir = "${dmg-dir}"/>
+    <delete dir = "${zip-dir}"/>
+    <delete dir = "${build-env-dir}"/>
+    <delete file = "${jar-name}"/>
+    <delete file = "${dmg-name}"/>
+    <delete file = "${zip-name}"/>
+    <delete file = "${build-env-dmg}"/>
+    <delete file = "${build-env-zip}"/>
+</target>
+  
+<!-- ALL create all built files -->
+  
+<target name="all" depends="init, compile, mac_app"></target>
+      
+<!-- RUN run project -->
+
+  <target name = "run" 
+          depends = "compile" 
+          description = "execute project code">
+    <java classname = "${domain-scope}.${app-name}.${main-class}"
+          fork = "true">
+      <arg value = "-Xdoc:name=${app-title}"/>
+      <arg value = "-ae"/>
+      <classpath>
+          <fileset refid = "libraries"/>
+          <pathelement location = "${build-dir}"/>
+          <pathelement location = "."/>
+      </classpath>
+    </java>
+  </target>
+
+  <!-- initialize the build -->
+
+  <target name = "init" 
+          description = "initialize the build enviroment">
+    <mkdir dir = "${build-dir}"/>
+  </target>
+
+  <!-- compile project -->
+  
+  <target name = "compile" depends = "init" description = "compile java files">
+    <javac debug="on"
+	   includeJavaRuntime="false"
+	   includeAntRuntime="false"
+           srcdir = "${source-dir}"
+           destdir = "${build-dir}"
+           includes = "${compile-includes}"
+           excludes = "${compile-excludes}">
+      <compilerarg value = "-Xlint:deprecation"/>
+      <compilerarg value = "-Xlint:unchecked"/>
+      <compilerarg value = "-Xdiags:verbose"/>
+      <classpath>
+          <fileset refid = "libraries"/>
+          <pathelement location = "${build-dir}"/>
+          <pathelement location = "."/>
+      </classpath>
+    </javac>
+  </target>
+  
+  <!-- construct jar -->
+
+  <target name = "jar" depends = "compile" description = "construct jar package">
+    <jar destfile = "${jar-name}"
+         update   = "false"
+         basedir  = "${build-dir}"
+         includes = "**"
+         manifest = "${resources}/MANIFEST.MF">
+      <zipgroupfileset refid = "libraries"/>
+      <fileset refid = "resources"/>
+    </jar>
+</target>
+
+<!-- construct mac app -->
+
+ <target name = "mac_app" depends = "isMacOSX, jar" if="isMacOSX" description = "construct os x application (mac only)">
+
+    <!-- build directory structure -->
+
+    <mkdir dir = "${app-dir}"/>
+    <mkdir dir = "${app-dir}/Contents"/>
+    <mkdir dir = "${app-dir}/Contents/MacOS"/>
+    <mkdir dir = "${app-dir}/Contents/Resources"/>
+    <mkdir dir = "${app-dir}/Contents/Resources/Java"/>
+
+    <!-- assemble files -->
+
+    <copy file = "${java-framework-mac}/JavaApplicationStub"
+          todir = "${app-dir}/Contents/MacOS"/>
+    <exec executable = "chmod">
+      <arg value = "755"/>
+      <arg value = "${app-dir}/Contents/MacOS/JavaApplicationStub"/>
+    </exec>
+    <copy file = "${resources}/Info.plist"
+          todir = "${app-dir}/Contents"/>
+    <copy file = "${jar-name}"
+          todir = "${app-dir}/Contents/Resources/Java"/>
+    <copy file = "${icons}/${app-title}Icon.icns" 
+          tofile = "${app-dir}/Icon&#13;"/>
+    <copy file = "${icons}/${app-title}Icon.icns"
+          todir = "${app-dir}/Contents/Resources"/>
+
+    <!-- identify this as an application bundle (B) with an icon (C) -->
+
+    <exec executable = "/Developer/Tools/SetFile">
+      <arg value = "-a"/>
+      <arg value = "BC"/>
+      <arg value = "${app-dir}"/>
+    </exec>
+
+</target>
+  
+<target name="isMacOSX" depends="isMacOSX.check" if="isMacOSX">
+<echo>IS MAC OS X</echo>
+</target>
+
+<target name="isMacOSX.check">
+    <condition property="isMacOSX" value="true" >
+            <equals arg1="${os.name}" arg2="Mac OS X"/>
+    </condition>
+</target>
+
+  <!-- construct distribution disk image -->
+
+  <target name = "mac_dmg" 
+          depends = "isMacOSX, mac_app" 
+          if="isMacOSX"
+          description = "construct os x distribution disk image (mac only)">
+
+    <!-- assemble disk image contents -->
+
+    <mkdir dir = "${dmg-dir}"/>
+    <exec executable = "rsync">
+      <arg value = "-aE"/>
+      <arg value = "${app-dir}"/>
+      <arg value = "${dmg-dir}"/>
+    </exec>
+    <copy file = "${icons}/${app-title}DiskIcon.icns"
+          tofile = "${dmg-dir}/.VolumeIcon.icns"/>
+
+    <!-- build and attach temporary disk image -->
+
+    <exec executable = "hdiutil">
+      <arg value = "create"/>
+      <arg value = "-srcdir"/>
+      <arg value = "${dmg-dir}"/>
+      <arg value = "-ov"/>
+      <arg value = "-volname"/>
+      <arg value = "${dmg-vol-name}"/>
+      <arg value = "-format"/>
+      <arg value = "UDRW"/>
+      <arg value = "-attach"/>
+      <arg value = "tmp-${dmg-name}"/>
+    </exec>
+
+    <!-- activate custom volume icon -->
+
+    <exec executable = "/Developer/Tools/SetFile">
+      <arg value = "-a"/>
+      <arg value = "C"/>
+      <arg value = "/Volumes/${dmg-vol-name}"/>
+    </exec>
+
+    <!-- detach temporary disk image -->
+
+    <exec executable = "hdiutil">
+      <arg value = "detach"/>
+      <arg value = "/Volumes/${dmg-vol-name}"/>
+    </exec>
+
+    <!-- convert temporary disk image to compressed final disk image -->
+
+    <exec executable = "hdiutil">
+      <arg value = "convert"/>
+      <arg value = "tmp-${dmg-name}"/>
+      <arg value = "-format"/>
+      <arg value = "UDZO"/>
+      <arg value = "-o"/>
+      <arg value = "${dmg-name}"/>
+      <arg value = "-ov"/>
+    </exec>
+
+    <!-- delete temporary disk image -->
+
+    <delete file = "tmp-${dmg-name}"/>
+  </target>
+
+<!-- set icon for this directory -->
+
+<target name = "mac_icon" depends = "isMacOSX" if="isMacOSX" description = "attach application icon to this folder [workng?] (mac only)">
+
+    <copy file = "${icons}/${app-title}Icon.icns" 
+          tofile = "Icon&#13;"/>
+    <exec executable = "/Developer/Tools/SetFile">
+      <arg value = "-t"/>
+      <arg value = "icon"/>
+      <arg value = "-c"/>
+      <arg value = "MACS"/>
+      <arg value = "-a"/>
+      <arg value = "V"/>
+      <arg value = "Icon&#13;"/>
+    </exec>
+
+    <!-- identify this having a custom icon (C) -->
+
+    <exec executable = "/Developer/Tools/SetFile">
+      <arg value = "-a"/>
+      <arg value = "C"/>
+      <arg value = "."/>
+    </exec>
+  </target>
+
+  <!-- construct distribution zip file -->
+
+  <target name = "zip" 
+          depends = "jar"
+          description = "construct distribution zip file&#10;">
+
+    <!-- collect zip image contents -->
+
+    <mkdir dir = "${zip-dir}"/>
+    <copy file = "${jar-name}" 
+          todir = "${zip-dir}"/>
+
+    <!-- remove old zip file to be sure no old cruft is laying about -->
+
+    <delete file = "${zip-name}"/>
+
+    <!-- rename zip directory so it produces a nice zip file -->
+
+    <move file="${zip-dir}" tofile="${app-name}"/>
+
+    <!-- build zip -->
+
+    <exec executable = "zip">
+      <arg value = "-r"/>
+      <arg value = "${zip-name}"/>
+      <arg value = "${app-name}"/>
+    </exec>
+
+    <!-- restore directory name -->
+
+    <move file = "${app-name}"
+          tofile = "${zip-dir}"/>
+
+  </target>
+
+  <!-- construct a build environment directory -->
+
+  <target name = "build-env-dir"
+          depends = "clean"
+          description = "construct CLEANed build environment directory">
+
+    <!-- assemble build environment contents -->
+
+    <mkdir dir = "${build-env-dir}/${app-name}"/>
+    <exec executable = "rsync">
+      <arg value = "-aE"/>
+      <arg value = "--exclude"/>
+      <arg value = "${build-env-dir}"/>
+      <arg value = "."/>
+      <arg value = "${build-env-dir}/${app-name}"/>
+    </exec>
+
+  </target>
+
+  <!-- construct a build environment zip file -->
+
+  <target name = "build-env-zip"
+          depends = "build-env-dir"
+          description = "make a build environment zip file">
+
+    <!-- build zip build environment -->
+
+    <exec executable = "zip" dir = "${build-env-dir}">
+      <arg value = "-r"/>
+      <arg value = "../${build-env-zip}"/>
+      <arg value = "${app-name}"/>
+    </exec>
+
+  </target>
+
+  <!-- construct a build environment disk image -->
+
+  <target name = "build-env-dmg"
+          depends = "build-env-dir"
+          description = "make a build environment disk image">
+
+    <!-- set te volume icon for the build enviroment disk image -->
+
+    <copy file = "${icons}/${app-title}EnvironmentDiskIcon.icns"
+          tofile = "${build-env-dir}/.VolumeIcon.icns"/>
+
+    <!-- build temporary disk image -->
+
+    <exec executable = "hdiutil">
+      <arg value = "create"/>
+      <arg value = "-srcdir"/>
+      <arg value = "${build-env-dir}"/>
+      <arg value = "-ov"/>
+      <arg value = "-volname"/>
+      <arg value = "${build-env-vol-name}"/>
+      <arg value = "-format"/>
+      <arg value = "UDRW"/>
+      <arg value = "tmp-${build-env-dmg}"/>
+      <arg value = "-attach"/>
+    </exec>
+
+    <!-- activate custom volume icon -->
+
+    <exec executable = "/Developer/Tools/SetFile">
+      <arg value = "-a"/>
+      <arg value = "C"/>
+      <arg value = "/Volumes/${build-env-vol-name}"/>
+    </exec>
+
+    <!-- detach temporary disk image -->
+
+    <exec executable = "hdiutil">
+      <arg value = "detach"/>
+      <arg value = "/Volumes/${build-env-vol-name}"/>
+    </exec>
+
+    <!-- convert temporary disk image to compressed final disk image -->
+
+    <exec executable = "hdiutil">
+      <arg value = "convert"/>
+      <arg value = "tmp-${build-env-dmg}"/>
+      <arg value = "-format"/>
+      <arg value = "UDZO"/>
+      <arg value = "-o"/>
+      <arg value = "${build-env-dmg}"/>
+      <arg value = "-ov"/>
+    </exec>
+
+    <!-- delete temporary disk image -->
+
+    <delete file = "tmp-${build-env-dmg}"/>
+  </target>
+
+
+  <!-- construct all build environments packages -->
+
+  <target name = "build-env"
+          depends = "build-env-zip, build-env-dmg"
+          description = "make all build environment packages"/>
+
+  <!-- build all distribtions -->
+
+  <target name = "distro" depends = "build-env, zip, mac_dmg"
+          description = "build all distributions">
+  </target>
+
+  <!-- push distributions to domain staging area -->
+
+  <target name = "push" depends = "distro, doc"
+          description = "push distributions to domain staging area">
+    <copy file = "${dmg-name}"
+          todir = "../${domain}/${app-name}/"/>
+    <copy file = "${zip-name}"
+          todir = "../${domain}/${app-name}/"/>
+    <copy file = "${build-env-dmg}"
+          todir = "../${domain}/${app-name}/"/>
+    <copy file = "${build-env-zip}"
+          todir = "../${domain}/${app-name}/"/>
+    <copy todir = "../${domain}/${app-name}/${doc-dir}">
+      <fileset dir = "${doc-dir}"/>
+    </copy>
+
+  </target>
+  
+   <!-- compile java doc -->
+
+  <target name = "doc" 
+          description = "compile java documentation">
+    <javadoc
+        packagenames = "${domain-scope}.${app-name}.*"
+        sourcepath   = "${source-dir}"
+        destdir      = "${doc-dir}">
+      <classpath>
+        <fileset refid = "libraries"/>
+        <pathelement location = "${build-dir}"/>
+        <pathelement location = "."/>
+      </classpath>
+    </javadoc>
+  </target>
+
+
+  <!-- build everything -->
+
+  <target name = "everything" depends = "distro, doc"
+          description = "build everything"/>
+
+</project>

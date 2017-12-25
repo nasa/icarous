@@ -1,0 +1,75 @@
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:addPlan]Added plan: 
+Three_Min_Timer{
+ State: (id_206[a](INACTIVE): state(INACTIVE)) (inf)
+}
+
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Three_Min_Timer' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Three_Min_Timer' on the state change queue in position 1
+[Test:testOutput]Creating initial state time() = 0
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 1
+[PlexilExec:step][1:0] State change queue: Three_Min_Timer 
+[PlexilExec:step][1:0:0] Transitioning node Three_Min_Timer
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Three_Min_Timer' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' is an assignment node that could be executing.  Adding it to the resource contention list 
+[PlexilExec:addToResourceContention]Adding node 'Three_Min_Timer' to resource contention.
+[PlexilExec:resolveResourceConflicts]Node 'Three_Min_Timer' has best priority.  Adding it to be executed in position 2
+[PlexilExec:step][1:1] State change queue: Three_Min_Timer 
+[PlexilExec:step][1:1:0] Transitioning node Three_Min_Timer
+[Test:testOutput]Registering change lookup time() with tolerances 180
+[PlexilExec:handleNeedsExecution]Storing action for node 'Three_Min_Timer' to be executed.
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' was previously eligible to transition but isn't now.
+[Test:testOutput]Assigning 'hack' ((id_249[a](UNKNOWN): boolean)) to 1
+[PlexilExec:resolveResourceConflicts]Node for id_249 already executing.  Nothing to resolve.
+[PlexilExec:cycle]==>End cycle 1
+[PlexilExec:printPlan]
+Three_Min_Timer{
+ State: (id_206[a](EXECUTING): state(EXECUTING)) (0)
+ StartCondition: (id_223[a](1): boolean)
+ EndCondition: (id_258[a](0): ((id_257[a](1): boolean) && (id_250[a](0): ((id_252[a](0): LookupOnChange(time(), (id_253[a](180): real))) > (id_254[a](180): ((id_213[a](0): real) + (id_256[a](180): int))))))
+ InvariantCondition: (id_227[a](1): boolean)
+ PreCondition: (id_229[a](1): boolean)
+ PostCondition: (id_231[a](1): boolean)
+ RepeatCondition: (id_233[a](0): boolean)
+ AncestorInvariantCondition: (id_235[a](1): boolean)
+ AncestorEndCondition: (id_237[a](0): boolean)
+ ParentExecutingCondition: (id_239[a](1): boolean)
+ AllChildrenWaitingOrFinishedCondition: (id_241[a](UNKNOWN): boolean)
+ AbortCompleteCondition: (id_243[a](UNKNOWN): boolean)
+ ParentWaitingCondition: (id_245[a](0): boolean)
+ ParentFinishedCondition: (id_247[a](0): boolean)
+ hack: (id_249[a](1): boolean)
+}
+
+[Test:testOutput]Processing event: time() = 181
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Three_Min_Timer' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Three_Min_Timer' on the state change queue in position 3
+[PlexilExec:cycle]==>Start cycle 2
+[PlexilExec:step][2:0] State change queue: Three_Min_Timer 
+[PlexilExec:step][2:0:0] Transitioning node Three_Min_Timer
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'Three_Min_Timer' for state transition.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' is an assignment node that is no longer possibly executing.  Removing it from resource contention.
+[PlexilExec:handleConditionsChanged]Placing node 'Three_Min_Timer' on the state change queue in position 4
+[PlexilExec:step][2:1] State change queue: Three_Min_Timer 
+[PlexilExec:step][2:1:0] Transitioning node Three_Min_Timer
+[PlexilExec:handleConditionsChanged]Node Three_Min_Timer had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'Three_Min_Timer' was previously eligible to transition but isn't now.
+[PlexilExec:handleConditionsChanged]Removing node from resource contention.
+[PlexilExec:cycle]==>End cycle 2
+[PlexilExec:printPlan]
+Three_Min_Timer{
+ State: (id_206[a](FINISHED): state(FINISHED)) (181)
+ Outcome: (id_207[a](SUCCESS):  outcome)
+ hack: (id_249[i](1): boolean)
+}
+

@@ -1,0 +1,14 @@
+//
+// resource1 script
+//
+
+initial-state {
+}
+
+script {
+  command c1 () = 10 : int;
+  command-success c1 ();
+  command c2 () = 10 : int;
+  command-success c2 ();
+}
+

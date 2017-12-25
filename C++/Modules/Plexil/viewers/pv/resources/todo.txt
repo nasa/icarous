@@ -1,0 +1,54 @@
+todo:
+- support attach to running UE
+- show condition states
+- show command state
+- improve pause semantics
+
+also:
+- capture space key event properly
+- break in non-blocking mode
+- ttv: more efficent cell updates
+
+done:
+- simplify tree
+- fix broken plans (5420, 3209, etc.)
+- add status bar
+- record window size/position
+- add view actions
+- add reload option
+- clean up view location
+- add background color
+- plan changed to name of file
+- initial code checkin
+- add test facility
+- fix 3209 bug
+- add error message
+- add output capture window
+- establish network connection
+- fix sim links
+- triangle at rood node
+- ttv: add tree/table view
+- ttv: add colors
+- ttv: add column stability
+- add meta messaging between ue and luv
+- ttv: identify open/close list nodes
+- ttv: hide show node type
+- tv/v: handle long names in tree node
+- check for node outcome reason
+- ttv: select better colors
+- add default to UE_HOME if exists
+- handle libraries
+- add model filters
+- show/hide plexilisp_ node filter
+- pause/unpause running plan
+- step running plan
+- add rollever detail to node
+- fix tootlip exception
+- debug window persistant size/position/visible
+- debug window get's menu bar
+- add breakpoints
+- fix non-removeal of breakpoints
+- fix no keyboard events to the ui (when debug window hidden at start?)
+- fix model breakpoint deep copy bug (getStepLoa in PRL 3209)
+- add row colors
+- grey out unfound breakpoints 

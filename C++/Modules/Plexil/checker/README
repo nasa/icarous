@@ -1,0 +1,42 @@
+This directory contains a program for checking global declarations
+against their usage within a PLEXIL plan.
+
+The current system allows users to include global declarations within a
+PLEXIL program, but it does not verify that the nodes' implementation
+follows the declarations. This program is designed to be an addon that
+checks for proper implementation.
+
+Global declarations include the following:
+  - Commands
+  - Functions
+  - Lookups
+  - Library Nodes (implemented in the schema?)
+
+The file plans/test.plx shows some examples of global declaration
+syntax, though the program itself is not designed to be executed.
+
+More information can be found on the NASA's PLEXIL wiki page:
+http://sourceforge.net/apps/mediawiki/plexil/index.php?title=Plexil_Checker
+
+---------------
+Setup
+---------------
+
+This program uses ant to compile the source code. For ease of use,
+please make sure your PATH environment variable includes the directory
+with the ant binary file.
+
+It also uses Java generic lists, introduced in JDK 1.5. So, make sure
+your latest Java version is 1.5 or newer.
+
+---------------
+Running the program
+---------------
+
+To compile the source code, use:
+
+  ant jar
+
+Usage:
+
+  java -jar global-decl-checker.jar input-file.plx

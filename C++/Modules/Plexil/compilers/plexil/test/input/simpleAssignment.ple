@@ -1,0 +1,5 @@
+simpleAssignment:
+{
+  Integer i;
+  i = 2;
+}

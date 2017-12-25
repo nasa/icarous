@@ -1,0 +1,7 @@
+LibraryAction F (In Integer i, InOut Integer j);
+
+LibraryCall5:
+{
+ Integer k = 2;
+ LibraryCall F(i = k, j = 6 * k);
+}

@@ -1,0 +1,17 @@
+(plexil-script
+  (initial-state
+    (state "Goal" "bool" false)
+    )
+  (script
+    (command-success "getGoal")
+    (state "Goal" "bool" false)
+    (command-success "getGoal")
+    (state "Goal" "bool" false)
+    (state "Goal" "bool" true)
+
+    (command-success "getGoal")
+    (state "Goal" "bool" true)
+
+
+    )
+  )

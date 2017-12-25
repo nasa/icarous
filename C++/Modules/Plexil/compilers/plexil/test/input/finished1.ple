@@ -1,0 +1,5 @@
+Concurrence
+{
+  A: { Repeat true; }
+  B: { Start NodeFinished (A); }
+}

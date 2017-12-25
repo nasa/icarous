@@ -1,0 +1,73 @@
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:addPlan]Added plan: 
+UpdateNode{
+ State: (id_202[a](INACTIVE): state(INACTIVE)) (inf)
+}
+
+[PlexilExec:handleConditionsChanged]Node UpdateNode had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'UpdateNode' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'UpdateNode' on the state change queue in position 1
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 1
+[PlexilExec:step][1:0] State change queue: UpdateNode 
+[PlexilExec:step][1:0:0] Transitioning node UpdateNode
+[PlexilExec:handleConditionsChanged]Node UpdateNode had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'UpdateNode' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'UpdateNode' on the state change queue in position 2
+[PlexilExec:step][1:1] State change queue: UpdateNode 
+[PlexilExec:step][1:1:0] Transitioning node UpdateNode
+[PlexilExec:handleNeedsExecution]Storing action for node 'UpdateNode' to be executed.
+[PlexilExec:handleConditionsChanged]Node UpdateNode had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'UpdateNode' was previously eligible to transition but isn't now.
+[Test:testOutput]Received update: 
+[Test:testOutput] xValue => 10
+[Test:testOutput] yValue => 0
+[Test:testOutput] realconstant => 3.141
+[PlexilExec:cycle]==>End cycle 1
+[PlexilExec:printPlan]
+UpdateNode{
+ State: (id_202[a](EXECUTING): state(EXECUTING)) (0)
+ StartCondition: (id_219[a](1): boolean)
+ EndCondition: (id_248[a](UNKNOWN): ((id_247[a](UNKNOWN): boolean) && (id_221[a](1): boolean))
+ InvariantCondition: (id_223[a](1): boolean)
+ PreCondition: (id_225[a](1): boolean)
+ PostCondition: (id_227[a](1): boolean)
+ RepeatCondition: (id_229[a](0): boolean)
+ AncestorInvariantCondition: (id_231[a](1): boolean)
+ AncestorEndCondition: (id_233[a](0): boolean)
+ ParentExecutingCondition: (id_235[a](1): boolean)
+ AllChildrenWaitingOrFinishedCondition: (id_237[a](UNKNOWN): boolean)
+ AbortCompleteCondition: (id_239[a](UNKNOWN): boolean)
+ ParentWaitingCondition: (id_241[a](0): boolean)
+ ParentFinishedCondition: (id_243[a](0): boolean)
+ x: (id_245[a](10): int)
+ y: (id_246[a](0): boolean)
+}
+
+[Test:testOutput]Sending update ACK UpdateNode
+[PlexilExec:handleConditionsChanged]Node UpdateNode had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'UpdateNode' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'UpdateNode' on the state change queue in position 3
+[Test:testOutput]Looking up immediately time()
+[Test:testOutput]Returning value 0
+[PlexilExec:cycle]==>Start cycle 2
+[PlexilExec:step][2:0] State change queue: UpdateNode 
+[PlexilExec:step][2:0:0] Transitioning node UpdateNode
+[PlexilExec:handleConditionsChanged]Node UpdateNode had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'UpdateNode' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'UpdateNode' on the state change queue in position 4
+[PlexilExec:step][2:1] State change queue: UpdateNode 
+[PlexilExec:step][2:1:0] Transitioning node UpdateNode
+[PlexilExec:handleConditionsChanged]Node UpdateNode had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Node 'UpdateNode' was previously eligible to transition but isn't now.
+[PlexilExec:cycle]==>End cycle 2
+[PlexilExec:printPlan]
+UpdateNode{
+ State: (id_202[a](FINISHED): state(FINISHED)) (0)
+ Outcome: (id_203[a](SUCCESS):  outcome)
+ x: (id_245[i](10): int)
+ y: (id_246[i](0): boolean)
+}
+

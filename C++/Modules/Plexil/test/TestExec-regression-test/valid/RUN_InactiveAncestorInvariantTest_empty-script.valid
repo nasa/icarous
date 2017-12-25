@@ -1,0 +1,103 @@
+[PlexilExec:addPlan]Added plan: 
+InactiveAncestorInvariantTest{
+ State: INACTIVE (0)
+  TheParent{
+   State: INACTIVE (0)
+    TheChild{
+     State: INACTIVE (0)
+    }
+  }
+}
+
+[PlexilExec:notifyNodeConditionChanged] for node InactiveAncestorInvariantTest
+[PlexilExec:cycle]==>Start cycle 1
+[PlexilExec:step][1:0] Check queue: InactiveAncestorInvariantTest 
+[PlexilExec:handleConditionsChanged]Node InactiveAncestorInvariantTest had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'InactiveAncestorInvariantTest' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'InactiveAncestorInvariantTest' on the state change queue in position 1
+[PlexilExec:step][1:0] State change queue: InactiveAncestorInvariantTest 
+[PlexilExec:step][1:0:0] Transitioning node InactiveAncestorInvariantTest from INACTIVE to WAITING
+[PlexilExec:notifyNodeConditionChanged] for node InactiveAncestorInvariantTest
+[PlexilExec:step][1:1] Check queue: InactiveAncestorInvariantTest 
+[PlexilExec:handleConditionsChanged]Node InactiveAncestorInvariantTest had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'InactiveAncestorInvariantTest' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'InactiveAncestorInvariantTest' on the state change queue in position 2
+[PlexilExec:step][1:1] State change queue: InactiveAncestorInvariantTest 
+[PlexilExec:step][1:1:0] Transitioning node InactiveAncestorInvariantTest from WAITING to EXECUTING
+[PlexilExec:notifyNodeConditionChanged] for node InactiveAncestorInvariantTest
+[PlexilExec:notifyNodeConditionChanged] for node TheParent
+[PlexilExec:handleNeedsExecution]Storing action for node 'InactiveAncestorInvariantTest' of type 'NodeList' to be executed.
+[PlexilExec:step][1:2] Check queue: InactiveAncestorInvariantTest TheParent 
+[PlexilExec:handleConditionsChanged]Node TheParent had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'TheParent' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'TheParent' on the state change queue in position 3
+[PlexilExec:step][1:2] State change queue: TheParent 
+[PlexilExec:step][1:2:0] Transitioning node TheParent from INACTIVE to WAITING
+[PlexilExec:notifyNodeConditionChanged] for node InactiveAncestorInvariantTest
+[PlexilExec:notifyNodeConditionChanged] for node TheParent
+[PlexilExec:step][1:3] Check queue: InactiveAncestorInvariantTest TheParent 
+[PlexilExec:handleConditionsChanged]Node TheParent had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'TheParent' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'TheParent' on the state change queue in position 4
+[PlexilExec:step][1:3] State change queue: TheParent 
+[PlexilExec:step][1:3:0] Transitioning node TheParent from WAITING to EXECUTING
+[PlexilExec:notifyNodeConditionChanged] for node InactiveAncestorInvariantTest
+[PlexilExec:notifyNodeConditionChanged] for node TheParent
+[PlexilExec:notifyNodeConditionChanged] for node TheChild
+[PlexilExec:handleNeedsExecution]Storing action for node 'TheParent' of type 'NodeList' to be executed.
+[PlexilExec:step][1:4] Check queue: InactiveAncestorInvariantTest TheParent TheChild 
+[PlexilExec:handleConditionsChanged]Node InactiveAncestorInvariantTest had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'InactiveAncestorInvariantTest' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'InactiveAncestorInvariantTest' on the state change queue in position 5
+[PlexilExec:handleConditionsChanged]Node TheParent had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'TheParent' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'TheParent' on the state change queue in position 6
+[PlexilExec:handleConditionsChanged]Node TheChild had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'TheChild' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'TheChild' on the state change queue in position 7
+[PlexilExec:step][1:4] State change queue: InactiveAncestorInvariantTest TheParent TheChild 
+[PlexilExec:step][1:4:0] Transitioning node InactiveAncestorInvariantTest from EXECUTING to FAILING
+[PlexilExec:notifyNodeConditionChanged] for node InactiveAncestorInvariantTest
+[PlexilExec:step][1:4:1] Transitioning node TheParent from EXECUTING to FAILING
+[PlexilExec:notifyNodeConditionChanged] for node TheParent
+[PlexilExec:notifyNodeConditionChanged] for node TheChild
+[PlexilExec:step][1:4:2] Transitioning node TheChild from INACTIVE to FINISHED
+[PlexilExec:step][1:5] Check queue: InactiveAncestorInvariantTest TheParent TheChild 
+[PlexilExec:handleConditionsChanged]Node TheParent had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'TheParent' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'TheParent' on the state change queue in position 8
+[PlexilExec:step][1:5] State change queue: TheParent 
+[PlexilExec:step][1:5:0] Transitioning node TheParent from FAILING to FINISHED
+[PlexilExec:notifyNodeConditionChanged] for node InactiveAncestorInvariantTest
+[PlexilExec:notifyNodeConditionChanged] for node TheParent
+[PlexilExec:step][1:6] Check queue: InactiveAncestorInvariantTest TheParent 
+[PlexilExec:handleConditionsChanged]Node InactiveAncestorInvariantTest had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'InactiveAncestorInvariantTest' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'InactiveAncestorInvariantTest' on the state change queue in position 9
+[PlexilExec:step][1:6] State change queue: InactiveAncestorInvariantTest 
+[PlexilExec:step][1:6:0] Transitioning node InactiveAncestorInvariantTest from FAILING to ITERATION_ENDED
+[PlexilExec:notifyNodeConditionChanged] for node InactiveAncestorInvariantTest
+[PlexilExec:step][1:7] Check queue: InactiveAncestorInvariantTest 
+[PlexilExec:handleConditionsChanged]Node InactiveAncestorInvariantTest had a relevant condition change.
+[PlexilExec:handleConditionsChanged]Considering node 'InactiveAncestorInvariantTest' for state transition.
+[PlexilExec:handleConditionsChanged]Placing node 'InactiveAncestorInvariantTest' on the state change queue in position 10
+[PlexilExec:step][1:7] State change queue: InactiveAncestorInvariantTest 
+[PlexilExec:step][1:7:0] Transitioning node InactiveAncestorInvariantTest from ITERATION_ENDED to FINISHED
+[PlexilExec:performAssignments] performing 0 assignments and 0 retractions
+[PlexilExec:cycle]==>End cycle 1
+[PlexilExec:printPlan]
+InactiveAncestorInvariantTest{
+ State: FINISHED (0)
+ Outcome: FAILURE
+ Failure type: INVARIANT_CONDITION_FAILED
+  TheParent{
+   State: FINISHED (0)
+   Outcome: FAILURE
+   Failure type: PARENT_FAILED
+    TheChild{
+     State: FINISHED (0)
+     Outcome: SKIPPED
+    }
+  }
+}
+

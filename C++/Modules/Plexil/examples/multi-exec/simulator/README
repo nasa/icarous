@@ -1,0 +1,28 @@
+This directory contains an example PLEXIL application consisting of two
+communicating executives.  One executive (whose plan is Simulator.ple) acts as a
+simulator.  Another executive (specified by Robot.ple) sends commands and
+lookups to the simulator executive.
+
+Specifically, the Simulator.ple plan simulates an external system that can
+process one integer lookup (X), one command (MoveRight(Integer dx)), and one
+message (Quit).
+
+To run this example, first compile the plans:
+
+  plexilc Simulator.ple
+  plexilc Robot.ple
+
+Then start the IPC publish/subscribe server used for inter-executive
+communication:
+
+  ipc
+
+Next, start the simulator executive:
+
+  plexilexec -p Simulator.plx -c simulator-config.xml 
+
+Finally, start the "robot" executive:
+
+  plexilexec -p Robot.plx -c command-config.xml 
+
+Note that the plans use different interface configuration files.

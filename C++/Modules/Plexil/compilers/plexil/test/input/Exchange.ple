@@ -1,0 +1,9 @@
+// Example that illustrates synchronous execution of NodeList chidren.
+
+Exchange: Concurrence {
+  Integer x = 1, y = 2;
+  Invariant x + y == 3;
+  Post !(x == y);
+  X: x = y;
+  Y: y = x;
+}

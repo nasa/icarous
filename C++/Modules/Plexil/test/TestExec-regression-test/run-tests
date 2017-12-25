@@ -1,0 +1,138 @@
+#! /usr/bin/env bash
+# Run all TestExec regression tests
+
+# Copyright (c) 2006-2017, Universities Space Research Association (USRA).
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of the Universities Space Research Association nor the
+#       names of its contributors may be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY USRA ``AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL USRA BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+# TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+if [ -z "$PLEXIL_HOME" ]
+then
+    echo "$0: Environment variable PLEXIL_HOME not set"
+    exit 1
+fi
+
+. ${PLEXIL_HOME}/test/TestExec-regression-test/test-env.sh
+
+# Parser error detection tests
+PARSER_ERROR_TESTS=`(cd ${TEST_DIR}/plans/parser-tests; ls *.plx | sed -e 's/.plx//g')`
+
+# Tests requiring no external interaction, for which root node success is sufficient
+EMPTY_SCRIPT_TESTS='AncestorReferenceTest array2 array5 array6 array9
+ ArrayEquality ArrayInLoop ArrayAssignmentWithFailure AssignmentFailureTest
+ AssignFailureWithConflict
+ concat1 contention1 contention3
+ DoubleInvariantAssignment
+ empty1 empty2 empty3 empty4 EmptyString1
+ FailureType1 FailureType2 FailureType3 FailureType4
+ GrandparentAccess
+ interface1 IterationEnded1 invariant1 isKnown1
+ maxTest minTest modulo1
+ repeat1 repeat3 repeat4 RoundTest
+ SimpleAssignment skip1 skip2
+ TestAbsSqrt TestNodeNameScope TestNodeNameScopeHack
+ TestRepeatCondition TimepointVariableConstructionOrder
+ UninitializedAssignment
+ var-priority-with-exit var-priority-with-skip variables1
+ whitespace1'
+
+# Tests requiring no external interaction, 
+# whose execution traces are compared against a "gold standard"
+EMPTY_SCRIPT_VALID_TESTS='AssignToParentInvariant AssignToParentExit
+ InactiveAncestorInvariantTest NonLocalExit'
+
+# Tests of library calls
+LIBRARY_TESTS='LibraryCall6 LibraryCallWithArray'
+
+# Tests which run to success and require a script of the same name
+SAME_NAME_SCRIPT_TESTS='array1 array3 array4 array8 AtomicAssignment
+ boolean1
+ ChangeLookupTest command1 command2 command3 command4 command5 CommandCleanupTest
+ concat2 conjuncts conjuncts1
+ lookup1 lookup2 lookup3
+ repeat2 repeat5 repeat7 repeat8
+ SiteSurveyWithEOF
+ TestEndCondition TestTimepoint
+ unknown_lookup UpdateLookupTest UpdateTest
+ AssignmentMain'
+
+# Resource arbitration tests, which require comparing the output with a known standard
+RESOURCE_ARBITRATION_TESTS='resource1 Resource1RepeatCond
+ Resource2EqualPriority
+ Resource3AckRel Resource3DenyHP Resource3Deny2HP
+ Resource4Hvm Resource4HvmRepeatCond
+ ResourceRenewable1
+ NonUnaryResources'
+
+# Simple-drive tests
+SIMPLE_DRIVE_SCRIPTS='single-drive double-drive'
+
+export PATH=${TEST_DIR}:${PATH}
+
+cd ${TEST_DIR}
+
+# Make temp output directory if needed
+mkdir -p output
+
+# Cleanup results of previous runs
+cleanup-test-files
+
+# Output date to log file
+date > RegressionResults
+
+# Output header to console
+echo
+echo --------------------- SUMMARY OF FAILED TESTS ---------------------
+echo
+
+for test in $PARSER_ERROR_TESTS ; do run-xml-parser-test $test ; done
+for test in $EMPTY_SCRIPT_TESTS ; do run-empty-script-test $test ; done
+for test in $EMPTY_SCRIPT_VALID_TESTS ; do run-empty-script-valid-test $test ; done
+for test in $SAME_NAME_SCRIPT_TESTS ; do run-same-name-script-test $test ; done
+for script in $SIMPLE_DRIVE_SCRIPTS ; do run-simple-drive-test $script ; done
+
+# Command handles tests
+for openclosed in open closed
+do
+    for plan_scenario in a1 a3
+    do
+        for script_scenario in a1 a3
+        do
+            plan=simple-${openclosed}loop-command-${plan_scenario}
+            script=simple-${openclosed}loop-command-${script_scenario}
+            run-scripted-valid-test $plan $script
+        done
+    done
+done
+run-scripted-valid-test simple-openloop-command-nopost simple-openloop-command-a3
+run-same-name-script-valid-test simple-closedloop-command-multipleAck
+
+for test in $RESOURCE_ARBITRATION_TESTS ; do run-same-name-script-valid-test $test ; done
+for test in $LIBRARY_TESTS ; do run-empty-script-test $test ; done
+
+# Output footer to console
+echo
+echo ------------------- END SUMMARY OF FAILED TESTS ------------------- 
+echo -- for complete test results see file: RegressionResults 
+echo
+

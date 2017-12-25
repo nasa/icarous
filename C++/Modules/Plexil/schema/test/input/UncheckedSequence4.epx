@@ -1,0 +1,34 @@
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <UncheckedSequence>
+    <VariableDeclarations>
+      <DeclareVariable>
+        <Name>foo</Name>
+        <Type>Integer</Type>
+        <InitialValue>
+          <IntegerValue>0</IntegerValue>
+        </InitialValue>
+      </DeclareVariable>
+    </VariableDeclarations>
+    
+    <Node NodeType="Empty">
+      <NodeId>One</NodeId>
+    </Node>
+
+    <UncheckedSequence>
+      <StartCondition>
+        <EQNumeric>
+          <IntegerVariable>foo</IntegerVariable>
+          <IntegerValue>0</IntegerValue>
+        </EQNumeric>
+      </StartCondition>
+      <Node NodeType="Empty">
+        <NodeId>Two</NodeId>
+      </Node>
+    </UncheckedSequence>
+
+    <Node NodeType="Empty">
+      <NodeId>Three</NodeId>
+    </Node>
+
+  </UncheckedSequence>
+</PlexilPlan>

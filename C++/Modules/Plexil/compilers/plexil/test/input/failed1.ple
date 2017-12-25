@@ -1,0 +1,5 @@
+Concurrence
+{
+  A: { Pre false; }
+  B: { Start NodeFailed (A); }
+}

@@ -1,0 +1,6 @@
+(plexil-script
+  (initial-state
+    (state "CommandName" "string" "get-string"))
+  (script
+    (command "get-string" "string" "fred")
+    (command-ack "get-string" "string" "COMMAND_SUCCESS")))

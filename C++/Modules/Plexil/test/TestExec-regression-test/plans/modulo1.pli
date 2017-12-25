@@ -1,0 +1,12 @@
+(plexil-plan 
+  (list-node "modulo1"
+    (variables (integer "x" 0)
+                (real "y" 0.0))
+    (postcondition (and (= (intvar "x") 1)
+                        (= (realvar "y") 2.0)))
+    (list
+      (assignment-node "One"
+        (assignment (intvar "x") (mod 7 3)))
+      (assignment-node "Two"
+        (assignment (realvar "y") (mod 7.0 2.5)))
+      )))

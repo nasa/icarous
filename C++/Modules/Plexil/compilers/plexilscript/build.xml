@@ -1,0 +1,78 @@
+<project name="Plexilscript" default="install" basedir=".">
+
+  <description>
+    Build instructions for the Plexilscript language translator.
+  </description>
+
+  <property environment="env"/>
+  <property name="dir.antlr" location="${env.PLEXIL_HOME}/jars"/>
+  <property name="dir.grammars" location="antlr"/>
+  <property name="dir.java" location="java"/>
+  <property name="dir.generated" location="generated"/>
+  <property name="dir.classes" location="classes"/>
+  <property name="dir.jars" location="jars"/>
+  <property name="dir.install" location="${env.PLEXIL_HOME}"/>
+
+  <path id="antlr.classpath">
+      <pathelement path="${classpath}"/>
+      <fileset dir="${dir.antlr}">
+	<include name="*.jar"/>
+      </fileset>
+  </path>
+
+  <path id="plexilscript.sourcepath">
+    <pathelement location="${dir.java}"/>
+  </path>
+
+  <path id="plexilscript.classpath">
+      <path refid="antlr.classpath"/>
+      <pathelement location="${dir.classes}/plexilscript"/>
+  </path>
+
+
+  <target name="install" depends="plexilscript-jar">
+    <copy file="${dir.jars}/plexilscript.jar"
+	  todir="${env.PLEXIL_HOME}/jars"
+	  preservelastmodified="true"/>
+  </target>
+
+  <target name="init"
+	  description="Create directories">
+    <mkdir dir="${dir.generated}"/>
+    <mkdir dir="${dir.classes}"/>
+    <mkdir dir="${dir.jars}"/>
+  </target>
+
+  <target name="plexilscript-antlr"
+	  depends="init"
+	  description="Generate Plexilscript translator code from .g files">
+    <mkdir dir="${dir.generated}/plexilscript"/>
+    <antlr target="${dir.grammars}/plexilscript.g"
+	   outputdirectory="${dir.generated}/plexilscript">
+      <classpath refid="antlr.classpath"/>
+    </antlr>
+  </target>
+
+  <target name="plexilscript-compile" depends="plexilscript-antlr">
+    <mkdir dir="${dir.classes}/plexilscript"/>
+    <!-- N.B. there are cross dependencies between these!! -->
+    <javac srcdir="${dir.generated}/plexilscript"
+	   destdir="${dir.classes}/plexilscript"
+	   classpathref="plexilscript.classpath"
+	   sourcepathref="plexilscript.sourcepath"/>
+    <javac srcdir="${dir.java}/plexilscript"
+	   destdir="${dir.classes}/plexilscript"
+	   classpathref="plexilscript.classpath"/>
+  </target>
+
+  <target name="plexilscript-jar" depends="plexilscript-compile">
+    <jar destfile="${dir.jars}/plexilscript.jar" basedir="${dir.classes}/plexilscript"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${dir.classes}" failonerror="false"/>
+    <delete dir="${dir.jars}" failonerror="false"/>
+    <delete dir="${dir.generated}" failonerror="false"/>
+  </target>
+
+</project>

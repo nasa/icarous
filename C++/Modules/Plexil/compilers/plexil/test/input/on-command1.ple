@@ -1,0 +1,17 @@
+Command HaltAndCatchFire;
+Command ExecuteProgrammerImmediate;
+Command SendReturnValues (Any);
+
+root:
+Concurrence
+{
+
+  String hcfName = "HCF";
+  OnCommand hcfName HaltAndCatchFire();
+
+  OnCommand "EPI" ExecuteProgrammerImmediate();
+  OnCommand "Three" Increment: { SendReturnValues(3); }
+  OnCommand "Sum" (Integer number1, Integer number2)
+    Sum: { SendReturnValues(number1 + number2); }
+
+}

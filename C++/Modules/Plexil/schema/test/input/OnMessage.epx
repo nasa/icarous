@@ -1,0 +1,8 @@
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OnMessage>
+    <Message><StringValue>moveRover</StringValue></Message>
+    <Node NodeType= "Empty">
+      <NodeId>foo</NodeId>
+    </Node>
+  </OnMessage>
+</PlexilPlan>

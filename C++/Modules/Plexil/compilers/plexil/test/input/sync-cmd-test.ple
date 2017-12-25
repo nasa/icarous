@@ -1,0 +1,13 @@
+Command A;
+Command B(Integer);
+Integer Command C;
+
+root:
+{
+  Integer i;
+
+  SynchronousCommand A();
+  SynchronousCommand B(1) Timeout 2;
+  SynchronousCommand i = C();
+  SynchronousCommand i = C() Timeout 2, .1;
+}

@@ -1,0 +1,89 @@
+// Test plan for dates and durations.
+
+// NOTE: Dates and durations are represented as strings, and are assumed
+// to be in ISO-8061 format.  At present, the compiler does not check
+// the strings.
+
+Date Command getDate (Date d);
+Duration Command getDuration (Duration d);
+
+Date Lookup TheDate (Date d);
+Duration Lookup TheDuration (Duration d);
+
+LibraryAction f (In Date indat, In Duration indur,
+                 InOut Date outdat, InOut Date outdur);
+
+
+DateTest:
+{
+  // Interface
+
+  In Date dat0;
+  In Duration dur0;
+
+  // Scalar variables
+  Date dat1;
+  Date dat2 = Date ("2012-02-23T22:21:00.000");
+  Duration dur1;
+  Duration dur2 = Duration ("PT0.5S");
+
+  // Array variables
+  Date dats1[3] = #(Date("2012-02-23T22:21:00.000")
+                    Date("2012-02-23T22:21:00.000") 
+                    Date("2012-02-23T22:21:00.000"));
+  // BUG: the following parse; not sure why
+  // Date dats1[3] = #("2012-02-23T22:21:00.000" 
+  //                   "2012-02-23T22:21:00.000" 
+  //                   "2012-02-23T22:21:00.000");
+  // Duration durs1[3] = #("PT0.5S" "PT0.5S" "PT0.5S");
+  Date dats2[1];
+  Duration durs1[3] = #(Duration("PT0.5S") Duration("PT0.5S") Duration("PT0.5S"));
+  Duration durs2[1];
+
+  // Temp, for regression testing
+  Integer x = 1, y = 2;
+  String s = "foo", t = "";
+
+  // Commands
+  dat1 = getDate(dat2);
+  dur1 = getDuration(dur2);
+
+  // Lookups
+  dat1 = Lookup (TheDate (dat2));
+  dur1 = Lookup (TheDuration (dur2));
+
+  // Assignment
+  dat1 = dat2;
+  dat1 = Date ("2012-02-23T22:21:00.000");
+  dur1 = dur2;
+  dur1 = Duration ("PT0.5S");
+  dats1[0] = dat1;
+  dats1[1] = Date ("2012-02-23T22:21:00.000");
+  durs1[1] = dur1;
+  durs1[2] = Duration ("PT0.5S");
+      
+  // Arithmetic
+  dur1 = dur1 + dur2 + Duration("PT0.5S") + dur2;
+  dat1 = dat1 + dur1 + Duration("PT0.5S");
+  // Error.  When adding durations to a date, the date must occur first.
+  // Is the operation commutative in XML?  If so, let's fix this.
+  //  dat1 = dur1 + dat1;
+  dur1 = dur1 - dur2;
+  dur2 = dat1 - dat2;
+  dur2 = dat1 - dat2 - dur1;
+  dur1 = dur1 - dur2 - dur1;
+  dat1 = dat1 - dur1 - dur2;
+
+  // Boolean expressions
+  Sub1:
+  {
+    Start dat1 < dat2;
+    End dur1 > dur2;
+    Post dur1 == Duration ("PT0.5S");
+    Skip dat1 != Date ("2012-02-23T22:21:00.000");
+  }
+
+  // Libary Call
+  LibraryCall f (indat = dat1, indur = dur1, outdat = dat2, outdur = dur2);
+
+}

@@ -30,3 +30,5 @@ terrain
 *.plx
 icarous
 icarousPlexil
+C++/Modules/Plexil/lib
+C++/Modules/Plexil/workshop

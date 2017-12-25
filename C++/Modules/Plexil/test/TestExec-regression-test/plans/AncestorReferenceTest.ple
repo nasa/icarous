@@ -1,0 +1,9 @@
+AncestorReferenceTest:
+{
+   Real run_start_time, r;
+   Sub:
+   {
+       run_start_time = AncestorReferenceTest.EXECUTING.START;
+       r = run_start_time;
+   }
+}

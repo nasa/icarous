@@ -1,0 +1,3 @@
+script {
+  command-success drillIdle ();
+}

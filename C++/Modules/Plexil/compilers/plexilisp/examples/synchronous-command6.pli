@@ -1,0 +1,13 @@
+(plexil-plan
+  (action "Root"
+    (variables (integer "x"))
+    (start-condition (lookup "go"))
+    (synchronous-command "get-x"
+      (variables (integer "y"))
+      (start-condition (lookup "really-go"))
+      (timeout 4.5)
+      (tolerance 0.5)
+      (command "get-x" (intvar "x")))))
+
+
+                       
