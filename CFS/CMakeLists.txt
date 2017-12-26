@@ -26,14 +26,18 @@ project(ICAROUS_CFS C CXX)
 
 
 set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
+set(CMAKE_C_FLAGS "-g -fPIC -m32")
 set(MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../C++/Modules")
 set(MODULES_NAMES ACCoRD FlightDataManager GeofenceMonitor TrafficMonitor TrajectoryPlanners Plexil)
-set(CMAKE_OPTS "-DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}")
+add_custom_target(clear-all)
 foreach(ARG ${MODULES_NAMES})
     message(STATUS "Building module:${ARG}")
     set(MODULE_SOURCE ${MODULES_DIR}/${ARG})
     set(MODULE_CMAKEDIR ${MODULE_SOURCE}/cmake-build-debug)
-    execute_process(COMMAND ${CMAKE_COMMAND} ${MODULE_SOURCE} ${CMAKE_OPTS}
+    execute_process(COMMAND mkdir -p ${MODULE_SOURCE}/cmake-build-debug)
+    execute_process(COMMAND ${CMAKE_COMMAND} ${MODULE_SOURCE} -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+                    -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
+                    -DJAVA_PATH=${JAVA_PATH}
                     WORKING_DIRECTORY "${MODULE_CMAKEDIR}"
                     RESULT_VARIABLE RESULT)
     if (NOT RESULT EQUAL 0)
@@ -42,6 +46,8 @@ foreach(ARG ${MODULES_NAMES})
 
     add_custom_target(${ARG}-all COMMAND $(MAKE) all WORKING_DIRECTORY "${MODULE_CMAKEDIR}")
     add_custom_target(${ARG}-clean COMMAND $(MAKE) clean WORKING_DIRECTORY "${MODULE_CMAKEDIR}")
+    add_custom_target(${ARG}-clear COMMAND rm -rf ${MODULE_CMAKEDIR})
+    add_dependencies(clear-all ${ARG}-clear)
 endforeach(ARG IN LISTS MODULES_NAMES)
 
 add_dependencies(FlightDataManager-all ACCoRD-all)
@@ -62,8 +68,9 @@ set(CMAKE_INSTALL_PREFIX "../bin")
 
 set(OSAL_USER_C_FLAGS "-g")
 
-set(CMAKE_CXX_FLAGS "-g -Wall -fPIC -m32 -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE=600 -std=c++11")
+set(CMAKE_CXX_FLAGS "-g -Wall -fPIC -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE=600 -std=c++11")
 
+# Force all builds to be 32 bit
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
 
 set(MISSIONCONFIG "Icarous")

@@ -3,7 +3,7 @@ project(CFE_PLEXIL)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(PLEXIL_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++/plexil-4/src")
+set(PLEXIL_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++/Modules/Plexil/src")
 set(PLEXIL_LIB "${PLEXIL_SOURCE}/../lib")
 
 include_directories(fsw/mission_inc)
@@ -31,6 +31,7 @@ set_target_properties(plexil PROPERTIES PREFIX "")
 
 set_target_properties(plexil PROPERTIES INSTALL_RPATH "${PLEXIL_LIB}:${MODULES_LIB}")
 
+add_dependencies(plexil Plexil-all)
 
 foreach(TGT ${APP_INSTALL_LIST})
     install(TARGETS plexil DESTINATION ${TGT}/${INSTALL_SUBDIR})
