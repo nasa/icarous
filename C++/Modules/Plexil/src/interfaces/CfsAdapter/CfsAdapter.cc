@@ -258,7 +258,7 @@ namespace PLEXIL {
         PlexilCommandMsg queueMsg = lookupQueue.front();
         lookupQueue.pop();
 
-        memcpy(msg,&queueMsg,sizeof(msg));
+        memcpy(msg,&queueMsg,sizeof(queueMsg));
 
         return lookupQueue.size();
     }
