@@ -95,8 +95,7 @@ namespace PLEXIL {
             m_pendingLookupState = state;
             m_pendingLookupState.setName(stateName);
             m_pendingLookupSerial++;
-
-
+            
             PlexilCommandMsg lookupMsg = {
                                            _LOOKUP_,_REAL_,1,
                                            " ",
@@ -252,7 +251,7 @@ namespace PLEXIL {
     int CfsAdapter::GetLookUpQueueMsg(PlexilCommandMsg *msg) {
         //lock mutex to ensure all writing procedures are complete.
         ThreadMutexGuard guard(m_cmdMutex);
-        if (cmdQueue.size() == 0){
+        if (lookupQueue.size() == 0){
             return -1;
         }
 
