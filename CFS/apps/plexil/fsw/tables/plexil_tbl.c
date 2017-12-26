@@ -11,7 +11,7 @@
 PLEXILTable_t TblStruct = {
         7,           // argc
         "-p",
-        "plans/Icarous.plx",
+        "plans/Icarous2.plx",
         "-c",
         "plans/interface-config.xml",
         "-l",

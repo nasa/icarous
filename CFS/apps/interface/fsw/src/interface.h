@@ -23,7 +23,9 @@
 #include "network_includes.h"
 #include "interface_events.h"
 #include "Icarous_msg.h"
+#include "Plexil_msg.h"
 #include "msgids/msgids.h"
+
 
 /// Mavlink includes
 #include "mavlink/ardupilotmega/mavlink.h"
@@ -228,6 +230,7 @@ EXTERN NoArgsCmd_t resetIcarous;               ///< reset icarous command
 EXTERN object_t traffic;                       ///< traffic message
 EXTERN position_t position;                    ///< position message
 EXTERN CmdAck_t ack;                           ///< command acknowledge message
+EXTERN plexil_interface_t plexilInput;         ///< Input for plexil
 //EXTERN plexil_interface_t pxlInt;
 
 #endif /* _interface_app_h_ */

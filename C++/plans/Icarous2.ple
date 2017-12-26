@@ -1,6 +1,7 @@
 // -*- Mode: Java -*-
 
 Boolean Lookup missionStart;
+Command pprint(...);
 
 ICAROUS:
 Concurrence
@@ -8,15 +9,18 @@ Concurrence
     FMS:
     Concurrence
     {
+
+	pprint("Starting FMS\n");
+	
 	IDLE:
 	{
 	    Repeat true;
-	    EndCondition Lookup(missionStart)
+	    EndCondition Lookup(missionStart);
 	}
 
 	TAKEOFF:{
 	    Repeat true;
-	    pprint("Takeoff");
+	    pprint("Takeoff\n");
 	   
 	}
     }

@@ -1,17 +1,16 @@
 cmake_minimum_required(VERSION 2.6.4)
 project(CFE_INTERFACE C)
 
+set(PLEXIL_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++/Modules/Plexil/src")
+
+
 include_directories(fsw/mission_inc)
 include_directories(fsw/platform_inc)
 include_directories(../icarous/fsw/platform_inc/)
 include_directories(../inc)
 include_directories(fsw/src)
+include_directories(${PLEXIL_SOURCE}/interfaces/CfsAdapter)
 
-set(ICAROUS_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++")
-
-
-include_directories(${ICAROUS_SOURCE}/include/ACCoRD
-        ${ICAROUS_SOURCE}/include/ICAROUS)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 

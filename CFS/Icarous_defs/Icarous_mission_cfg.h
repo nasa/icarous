@@ -25,7 +25,7 @@
 **  \par Limits
 **      All versions of the cFE currently support only CCSDS as the message format
 */
-#define MESSAGE_FORMAT_IS_CCSDS
+#define MESSAGE_FORMAT_IS_CCSDS 1
 
 
 /** \name Packet timestamp format identifiers */

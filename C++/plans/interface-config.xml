@@ -30,7 +30,8 @@
     <LookupNames>
       altitudeAGL,
       currentWP,
-      totalWP
+      totalWP,
+      missionStart
     </LookupNames> 
   </Adapter>
 </Interfaces>
