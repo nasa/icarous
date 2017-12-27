@@ -27,7 +27,8 @@ typedef enum{
     _BOOLEAN_,
     _REAL_ARRAY_,
     _INTEGER_ARRAY_,
-    _BOOLEAN_ARRAY_
+    _BOOLEAN_ARRAY_,
+    _STRING_
 }returnType_t;
 
 typedef struct{

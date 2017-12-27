@@ -1,27 +1,103 @@
 // -*- Mode: Java -*-
 
 Boolean Lookup missionStart;
+Integer Lookup armStatus;
+Integer Lookup takeoffStatus;
+
+// Low level Autopilot commands
+Command SetMode(String mode);
+Command SetYaw(Real heading);
+Command Takeoff(Real altitude);
+Command ArmMotors();
+    
+
 Command pprint(...);
 
 ICAROUS:
-Concurrence
 {
     FMS:
-    Concurrence
     {
-
-	pprint("Starting FMS\n");
+	Boolean _idleStatus    = true;
+	Boolean _takeoffStatus = false;
+       	Boolean _climbStatus   = false;
+	
+	Repeat true;
 	
 	IDLE:
 	{
-	    Repeat true;
-	    EndCondition Lookup(missionStart);
-	}
+	    Boolean start = false;
+	    StartCondition _idleStatus;
+	    EndCondition !_idleStatus;       	    
 
-	TAKEOFF:{
-	    Repeat true;
-	    pprint("Takeoff\n");
-	   
-	}
-    }
-}
+	    Takeoff(10.0);
+	    
+	    {
+		Repeat true;		
+		start = Lookup(missionStart);
+		
+		if (start){
+		    _takeoffStatus = true;
+		    _idleStatus = false;
+		}endif
+	    }
+		
+	}// End of IDLE
+	
+	TAKEOFF:{	   
+	    Integer _armStatus;
+	    StartCondition _takeoffStatus;
+	    SkipCondition !_takeoffStatus;
+	    EndCondition !_takeoffStatus;
+
+	    pprint("Takeoff");
+	    
+	    CHANGE_MODE:SetMode("ACTIVE");
+
+	    ARM:{
+		EndCondition isKnown(_armStatus) && (_armStatus >= 0);
+		
+		ArmMotors();		
+	 	
+		CHECK_STATUS: {
+		    Repeat true;
+		    _armStatus = Lookup(armStatus);		    
+		}
+	    }// End of ARM
+
+	    pprint("Armed motors",_armStatus);
+
+	    THROTTLE_UP:{
+		Integer status;
+		StartCondition (_armStatus==1);
+		SkipCondition  (_armStatus!=1);
+
+
+		TAKEOFF:{
+
+		    EndCondition isKnown(status) && (status>=0);
+		    
+		    Takeoff(5.0);
+
+		    pprint("Taking off");
+
+		    CHECK_STATUS: {
+			Repeat true;
+			status = Lookup(takeoffStatus);
+		    }
+
+		}
+
+		if(status == 1){
+		    _climbStatus = true;
+		    _takeoffStatus = false;
+		}else{
+		    pprint("Takeoff failed\n");
+		    _idleStatus = true;
+		    _takeoffStatus = false;		       		    
+		}endif
+
+	    }// End of THROTTLE	    
+	}// End of TAKEOFF
+    }// End of FMS
+}// End of ICAROUS
+

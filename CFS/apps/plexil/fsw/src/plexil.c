@@ -142,7 +142,6 @@ void PLEXIL_ProcessPacket(){
             switch(msg->plxMsg.mType) {
                 case _LOOKUP_RETURN_:
                 case _COMMAND_RETURN_:
-                    OS_printf("Received lookup\n");
                     plexil_return(plexilAppData.adap, &msg->plxMsg);
                     break;
             }
@@ -164,9 +163,9 @@ void PLEXIL_Run(){
         n = plexil_getCommand(plexilAppData.adap,&msg1);
 
         if(n>=0) {
+            OS_printf("CfsAdapter: obtained command %s,%f\n",msg1.name,msg1.argsD[0]);
             memcpy(&plexilMsg.plxMsg, &msg1, sizeof(PlexilCommandMsg));
-            CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) &plexilMsg);
-            CFE_SB_SendMsg((CFE_SB_Msg_t*) &plexilMsg);
+            SendSBMsg(plexilMsg);
         }
     }
 
@@ -175,10 +174,9 @@ void PLEXIL_Run(){
         PlexilCommandMsg msg2;
         n = plexil_getLookup(plexilAppData.adap,&msg2);
         if(n>=0) {
-            OS_printf("CfsAdapter: obtained lookup %s\n",msg2.name);
+            //OS_printf("CfsAdapter: obtained lookup %s\n",msg2.name);
             memcpy(&plexilMsg.plxMsg, &msg2, sizeof(PlexilCommandMsg));
-            CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);
-            CFE_SB_SendMsg((CFE_SB_Msg_t * ) & plexilMsg);
+            SendSBMsg(plexilMsg);
         }
     }
 }

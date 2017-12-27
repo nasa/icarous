@@ -168,16 +168,22 @@ namespace PLEXIL {
                         bool boolval;
                         val.getValue(boolval);
                         commandMsg.argsB[i] = boolval;
+                        commandMsg.rType = _BOOLEAN_;
                         break;
                     }
                     case REAL_TYPE:{
-                        double real = val.getValue(real);
+                        double real;
+                        val.getValue(real);
                         commandMsg.argsD[i] = real;
+                        commandMsg.rType = _REAL_;
+                        break;
                     }
                     case STRING_TYPE:{
                         String stringVal;
                         val.getValue(stringVal);
                         memcpy(commandMsg.string,stringVal.c_str(),name.size()+1);
+                        commandMsg.rType = _STRING_;
+                        break;
                     }
                 }
             }
