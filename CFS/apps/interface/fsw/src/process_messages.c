@@ -410,7 +410,7 @@ void INTERFACE_ProcessPacket(){
 		case PLEXIL_OUTPUT_MID: {
 			plexil_interface_t *msg;
 			msg = (plexil_interface_t *) appdataInt.INTERFACEMsgPtr;
-
+            OS_printf("received plexil output\n");
 			switch (msg->plxMsg.mType) {
                 case _LOOKUP_:
                     if(strcmp(msg->plxMsg.name,"missionStart") == 0){
@@ -418,7 +418,7 @@ void INTERFACE_ProcessPacket(){
                         strcpy(plexilInput.plxMsg.name,msg->plxMsg.name);
                         plexilInput.plxMsg.mType = _LOOKUP_RETURN_;
                         plexilInput.plxMsg.rType = _BOOLEAN_;
-                        plexilInput.plxMsg.argsB[0] = false;
+                        plexilInput.plxMsg.argsB[0] = true;
                         SendSBMsg(plexilInput);
                     }
                     break;

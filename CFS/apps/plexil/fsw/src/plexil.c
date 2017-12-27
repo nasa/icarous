@@ -156,7 +156,7 @@ void PLEXIL_ProcessPacket(){
 void PLEXIL_Run(){
     int n;
     plexil_run(plexilAppData.exec);
-    OS_printf("CfsAdapter:running plexil\n");
+
     n = 1;
     while(n>0){
         PlexilCommandMsg msg1;
@@ -164,11 +164,9 @@ void PLEXIL_Run(){
         n = plexil_getCommand(plexilAppData.adap,&msg1);
 
         if(n>=0) {
-            if (n == 0) {
-                memcpy(&plexilMsg.plxMsg, &msg1, sizeof(PlexilCommandMsg));
-                CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) &plexilMsg);
-                CFE_SB_SendMsg((CFE_SB_Msg_t*) &plexilMsg);
-            }
+            memcpy(&plexilMsg.plxMsg, &msg1, sizeof(PlexilCommandMsg));
+            CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) &plexilMsg);
+            CFE_SB_SendMsg((CFE_SB_Msg_t*) &plexilMsg);
         }
     }
 
@@ -176,14 +174,11 @@ void PLEXIL_Run(){
     while(n>0){
         PlexilCommandMsg msg2;
         n = plexil_getLookup(plexilAppData.adap,&msg2);
-
-        if(n>0) {
-            OS_printf("CfsAdapter: obtained lookup\n");
-            if (n == 0) {
-                memcpy(&plexilMsg.plxMsg, &msg2, sizeof(PlexilCommandMsg));
-                CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);
-                CFE_SB_SendMsg((CFE_SB_Msg_t * ) & plexilMsg);
-            }
+        if(n>=0) {
+            OS_printf("CfsAdapter: obtained lookup %s\n",msg2.name);
+            memcpy(&plexilMsg.plxMsg, &msg2, sizeof(PlexilCommandMsg));
+            CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) & plexilMsg);
+            CFE_SB_SendMsg((CFE_SB_Msg_t * ) & plexilMsg);
         }
     }
 }

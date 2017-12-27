@@ -55,6 +55,8 @@ add_dependencies(GeofenceMonitor-all FlightDataManager-all)
 add_dependencies(TrafficMonitor-all FlightDataManager-all)
 add_dependencies(TrajectoryPlanners-all FlightDataManager-all)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DMESSAGE_FORMAT_IS_CCSDS")
+
 IF (NOT DEFINED ENV{OSAL_HOME})
     message(FATAL_ERROR "$OSAL_HOME not defined but needed for compilation")
 ENDIF ()
