@@ -6,6 +6,7 @@
 
 
 #include <Plexil_msg.h>
+#include <Icarous_msg.h>
 #include "interface_table.h"
 
 #define EXTERN extern
@@ -408,52 +409,8 @@ void INTERFACE_ProcessPacket(){
 		}
 
 		case PLEXIL_OUTPUT_MID: {
-			plexil_interface_t *msg;
-			msg = (plexil_interface_t *) appdataInt.INTERFACEMsgPtr;
-            OS_printf("received plexil output\n");
-			switch (msg->plxMsg.mType) {
-                case _LOOKUP_:
-                    if(strcmp(msg->plxMsg.name,"missionStart") == 0){
-                        OS_printf("received missionStart lookup from plexil. Sending True\n");
-                        strcpy(plexilInput.plxMsg.name,msg->plxMsg.name);
-                        plexilInput.plxMsg.mType = _LOOKUP_RETURN_;
-                        plexilInput.plxMsg.rType = _BOOLEAN_;
-                        plexilInput.plxMsg.argsB[0] = true;
-                        SendSBMsg(plexilInput);
-                    }
-                    break;
-
-                case _COMMAND_:
-					if(strcmp(msg->plxMsg.name,"ARM") == 0){
-
-					}
-					else if(strcmp(msg->plxMsg.name,"TAKEOFF") == 0){
-
-					}
-					else if(strcmp(msg->plxMsg.name,"SETMODE")){
-
-					}
-					else if(strcmp(msg->plxMsg.name,"LAND")){
-
-					}
-					else if(strcmp(msg->plxMsg.name,"GOTOWP")){
-
-					}
-					else if(strcmp(msg->plxMsg.name,"SETPOS")){
-
-					}
-					else if(strcmp(msg->plxMsg.name,"SETVEL")){
-
-					}
-					else if(strcmp(msg->plxMsg.name,"SETYAW")){
-
-					}
-					else if(strcmp(msg->plxMsg.name,"SETSPEED")){
-
-					}
-                    break;
-			}
-
+			HandlePlexilMessages();
+            break;
 		}
 	}
 
