@@ -1,0 +1,21 @@
+ <Interfaces ConfigurationType="default">
+  <Adapter AdapterType="OSNativeTime" />
+  <Adapter AdapterType="Utility" />
+  <Adapter AdapterType="CfsAdapter">
+    <DefaultAdapter/>
+    <DefaultCommandAdapter/>
+    <DefaultLookupAdapter/>
+    <CommandNames>
+      SetMode,
+      SetYaw,
+      Takeoff,
+      ArmMotors,
+      Takeoff
+    </CommandNames>
+    <LookupNames>
+      missionStart,
+      armStatus,
+      takeoffStatus
+    </LookupNames> 
+  </Adapter>
+</Interfaces>
