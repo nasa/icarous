@@ -26,27 +26,51 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
                 startMission.param1 = 0;
             }
             else if(!strcmp(msg->plxMsg.name,"armStatus")){
-                int8_t result = 0;
+                int8_t result = -1;
                 OS_printf("arming status check\n");
                 if (ack.name == _ARM_) {
                     result = (int) ack.result == 0 ? 1 : 0;
-                    plexilInput.plxMsg.rType = _INTEGER_;
-                    plexilInput.plxMsg.argsI[0] = result;
-                    SendSBMsg(plexilInput);
                 }
+                plexilInput.plxMsg.rType = _INTEGER_;
+                plexilInput.plxMsg.argsI[0] = result;
+                SendSBMsg(plexilInput);
+
             }
             else if(!strcmp(msg->plxMsg.name,"takeoffStatus")){
-                int8_t result = 0;
+                int8_t result = -1;
                 if (ack.name == _TAKEOFF_) {
                     OS_printf("takeoff status check %d\n", ack.result);
                     result = (int) ack.result == 0 ? 1 : 0;
-                    plexilInput.plxMsg.rType = _INTEGER_;
-                    plexilInput.plxMsg.argsI[0] = result;
-                    SendSBMsg(plexilInput);
                 }
-            }else if(1){
-
+                plexilInput.plxMsg.rType = _INTEGER_;
+                plexilInput.plxMsg.argsI[0] = result;
+                SendSBMsg(plexilInput);
+            }else if(!strcmp(msg->plxMsg.name,"position")){
+                plexilInput.plxMsg.rType = _REAL_ARRAY_;
+                plexilInput.plxMsg.Dlen = 3;
+                plexilInput.plxMsg.argsD[0] = position.latitude;
+                plexilInput.plxMsg.argsD[1] = position.longitude;
+                plexilInput.plxMsg.argsD[2] = position.altitude_rel;
+                SendSBMsg(plexilInput);
+            }else if(!strcmp(msg->plxMsg.name,"velocity")){
+                double angle = 360 + atan2(position.vy,position.vx)*180/M_PI;
+                double track = fmod(angle,360);
+                double groundSpeed = sqrt(pow(position.vx,2)+pow(position.vy,2));
+                double verticalSpeed = position.vz;
+                plexilInput.plxMsg.rType = _REAL_ARRAY_;
+                plexilInput.plxMsg.Dlen = 3;
+                plexilInput.plxMsg.argsD[0] = track;
+                plexilInput.plxMsg.argsD[1] = groundSpeed;
+                plexilInput.plxMsg.argsD[2] = verticalSpeed;
+                SendSBMsg(plexilInput);
+            }else if(!strcmp(msg->plxMsg.name,"numMissionWP")){
+                //TODO: move this into the trajectory app?
+                //OS_printf("received lookup numMissionWP\n");
+                plexilInput.plxMsg.rType = _INTEGER_;
+                plexilInput.plxMsg.argsI[0] = wpdata.totalWayPoints;
+                SendSBMsg(plexilInput);
             }else{
+                OS_printf("******* unhandled lookup ************\n");
                 plexilInput.plxMsg.rType = _INTEGER_;
                 plexilInput.plxMsg.argsI[0] = -1;
                 SendSBMsg(plexilInput);
@@ -54,7 +78,6 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
             break;
 
         case _COMMAND_: {
-            OS_printf("command\n");
             send = true;
             if (strcmp(msg->plxMsg.name, "ArmMotors") == 0) {
                 OS_printf("Arming\n");
@@ -120,6 +143,8 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
                 mavlink_msg_command_long_pack(255, 0, msg, 1, 0, MAV_CMD_DO_CHANGE_SPEED, 0,
                                               1, (float) speed, 0, 0, 0, 0, 0);
                 break;
+            }else if(strcmp(msg->plxMsg.name, "Breathe") == 0){
+                send = false;
             }
             break;
         }

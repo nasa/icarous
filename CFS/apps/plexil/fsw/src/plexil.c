@@ -157,13 +157,14 @@ void PLEXIL_Run(){
     plexil_run(plexilAppData.exec);
 
     n = 1;
+
     while(n>0){
         PlexilCommandMsg msg1;
         memset(&msg1,0,sizeof(msg1));
         n = plexil_getCommand(plexilAppData.adap,&msg1);
 
         if(n>=0) {
-            OS_printf("CfsAdapter: obtained command %s,%f\n",msg1.name,msg1.argsD[0]);
+            //OS_printf("CfsAdapter: obtained command %s,%f\n",msg1.name,msg1.argsD[0]);
             memcpy(&plexilMsg.plxMsg, &msg1, sizeof(PlexilCommandMsg));
             SendSBMsg(plexilMsg);
         }
