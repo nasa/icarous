@@ -21,8 +21,8 @@
 #define GEOFENCE_COMMAND_ERR_EID 1
 #define GEOFENCE_PIPE_DEPTH 25
 #define GEOFENCE_PIPE_NAME "GEOFENCE_PIPE"
-#define GEOFENCE_MAJOR_VERSION 1.0
-#define GEOFENCE_MINOR_VERSION 0.0
+#define GEOFENCE_MAJOR_VERSION 1
+#define GEOFENCE_MINOR_VERSION 0
 
 /**
  * \struct geofenceAppData
@@ -36,15 +36,15 @@ typedef struct{
 }geofenceAppData_t;
 
 
-void Geofence_AppMain(void);
+void GEOFENCE_AppMain(void);
 
-void Geofence_AppInit(void);
+void GEOFENCE_AppInit(void);
 
-void Geofence_AppCleanUp();
+void GEOFENCE_AppCleanUp();
 
-void Geofence_ProcessPacket();
+void GEOFENCE_ProcessPacket();
 
-void Geofence_Run();
+void GEOFENCE_Run();
 
 geofenceAppData_t geofenceAppData;
 plexil_interface_t gfPlexilMsg;

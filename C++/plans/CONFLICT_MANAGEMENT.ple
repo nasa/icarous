@@ -1,0 +1,90 @@
+// -*- Mode: Java -*-
+// Simple conflict detection strategy
+
+Real[3] Lookup position;
+Real[3] Lookup velocity;
+
+Boolean Command CheckFenceViolation(Real Position[3],Real Velocity[3]);
+Command pprint(...);
+
+CONFLICT_MANAGEMENT:
+Concurrence
+{
+    In Integer nM_WP;
+    Real acPosition[3];
+    Real acVelocity[3];
+    Boolean fenceConflict = false;
+    Boolean trafficConflict = false;
+    Boolean flightPlanConflict = false;
+    Boolean resolutionActive = false;
+    Real newConflictHash = 0;
+    Real oldConflictHash = 0;
+    Integer _currentM_WP = 0;
+    Integer _currentR_WP = 0;
+    
+    EndCondition (_currentM_WP >= nM_WP);
+    
+    DETECTION:
+    {
+	Integer numFenceConflicts;
+	Boolean statusGF;
+	Boolean statusTF;
+	Boolean statusFP;
+	
+	Repeat true;
+
+	acPosition = Lookup(position);
+	acVelocity = Lookup(velocity);
+	
+	FENCE: {
+	    EndCondition isKnown(statusGF);		
+	    statusGF = CheckFenceViolation(acPosition,acVelocity);
+	}
+
+	/*
+	TRAFFIC:{
+	    EndCondition isKnown(statusTF);
+	    statusTF = CheckTrafficViolation(acPosition);
+	}
+	
+	FLIGHTPLAN: {
+	    EndCondition isKnown(statusFP);
+	    if(resolutionActive){
+		_currentR_WP = Lookup(currentResolutionWP);
+		statusFP = CheckFlightPlanConflict(acPosition,_currentR_WP);
+	    }
+	    else{
+		_currentM_WP = Lookup(currentMissionWP)
+		statusFP = CheckFlightPlanConflict(acPosition,_currentM_WP);    
+	    }
+	    endif	    
+	    }*/
+
+	fenceConflict = statusGF;
+	//trafficConflict = statusTF;
+	//flightPlanConflict = statusFP;
+
+	if(fenceConflict){
+	    pprint("Detected geofence conflict\n");
+	}endif
+    }
+
+    RESOLUTION:{
+
+	COMPUTE_SOLUTION:{
+
+
+	}
+
+	EXECUTE_RESOLUTION:{
+
+
+	}
+
+	RESUME_MISSION:{
+
+
+	}
+
+    }
+}

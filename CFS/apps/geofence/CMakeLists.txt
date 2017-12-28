@@ -16,7 +16,7 @@ aux_source_directory(fsw/src APP_SRC_FILES)
 
 link_directories(${MODULES_LIB})
 
-add_library(geofence MODULE ${APP_SRC_FILES})
+add_library(geofence MODULE ${APP_SRC_FILES} ${MODULES_ROOT}/GeofenceMonitor/CWrapper/GeofenceMonitor_proxy.c)
 
 target_link_libraries(geofence FlightDataManager GeofenceMonitor)
 

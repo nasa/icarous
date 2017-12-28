@@ -1,7 +1,7 @@
  <Interfaces ConfigurationType="default">
   <Adapter AdapterType="OSNativeTime" />
   <Adapter AdapterType="Utility" />
-  <Adapter AdapterType="CfsAdapter">
+  <Adapter AdapterType="CfsAdapter" Server="localhost:1381">
     <DefaultAdapter/>
     <DefaultCommandAdapter/>
     <DefaultLookupAdapter/>
@@ -15,7 +15,9 @@
     <LookupNames>
       missionStart,
       armStatus,
-      takeoffStatus
+      takeoffStatus,
+      position,
+      velocity
     </LookupNames> 
   </Adapter>
 </Interfaces>

@@ -5,17 +5,26 @@ Integer Lookup armStatus;
 Integer Lookup takeoffStatus;
 Integer Lookup numMissionWP;
 
+Real[3] Lookup position;
+Real[3] Lookup velocity;
+
 // Low level Autopilot commands
 Command SetMode(String mode);
 Command SetYaw(Real heading);
 Command Takeoff(Real altitude);
 Command ArmMotors();
     
-
 Command pprint(...);
+
+// Library plans
+LibraryAction CONFLICT_MANAGEMENT (In Integer numMissionWP);
 
 ICAROUS:
 {
+
+    Real _Position[3];
+    Real _Velocity[3];
+        	        
     FMS:
     {
 	Boolean _idleStatus    = true;
@@ -62,7 +71,8 @@ ICAROUS:
 	 	
 		CHECK_STATUS: {
 		    Repeat true;
-		    _armStatus = Lookup(armStatus);		    
+		    _armStatus = Lookup(armStatus);
+		    pprint("In arm status");
 		}
 	    }// End of ARM
 
@@ -90,6 +100,7 @@ ICAROUS:
 		}
 
 		if(status == 1){
+		    pprint("Takeoff successful");
 		    _climbStatus = true;
 		    _takeoffStatus = false;
 		}else{
@@ -103,15 +114,29 @@ ICAROUS:
 
 
 	CLIMB:{
-	    _climbStatus = false;
-	    _cruiseStatus = true;
+	    StartCondition _climbStatus;
+	    EndCondition !_climbStatus;
+	    {
+		Boolean val;
+		Repeat true;
+		
+		_Position = Lookup(position);
+		
+		if(_Position[2] >= 3.0){
+		    pprint("Finished climbing");
+		    SetMode("PASSIVE");
+		    _cruiseStatus = true;
+		    _climbStatus = false;
+		}endif
+	    }
+	    
 	}// End of CLIMB
 
 	CRUISE:{
 	    StartCondition _cruiseStatus;
 
 	    // Check for conflicts;
-	    MonitorGeofence
+
 	    
 	}// End of CRUISE
 

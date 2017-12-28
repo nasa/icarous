@@ -15,7 +15,7 @@ PLEXILTable_t TblStruct = {
         "-c",
         "plans/interface-config2.xml",
         "-l",
-        "plans/MISSION.plx"  //argv
+        "plans/CONFLICT_MANAGEMENT.plx"  //argv
 };
 
 
