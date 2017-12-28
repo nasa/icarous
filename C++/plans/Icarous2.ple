@@ -3,6 +3,7 @@
 Boolean Lookup missionStart;
 Integer Lookup armStatus;
 Integer Lookup takeoffStatus;
+Integer Lookup numMissionWP;
 
 // Low level Autopilot commands
 Command SetMode(String mode);
@@ -21,6 +22,7 @@ ICAROUS:
 	Boolean _takeoffStatus = false;
        	Boolean _climbStatus   = false;
 	Boolean _cruiseStatus  = false;
+	Integer _numMissionWP;
 	
 	Repeat true;
 	
@@ -35,6 +37,7 @@ ICAROUS:
 		start = Lookup(missionStart);
 		
 		if (start){
+		    _numMissionWP = Lookup(numMissionWP);
 		    _takeoffStatus = true;
 		    _idleStatus = false;
 		}endif

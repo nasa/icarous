@@ -2,19 +2,62 @@
 // Simple conflict detection strategy
 
 Integer Command CheckFenceViolation(Real[3] Position,Real[3] Velocity);
-DETECTION:
+
+CONFLICT_MANAGEMENT:
+concurrence
 {
+    In Integer nM_WP;
     In Real[3] acPosition;
     In Real[3] acVelocity;
-    Out Boolean fenceConflict = false;
-    Integer numFenceConflicts;
+    Boolean fenceConflict = false;
+    Boolean trafficConflict = false;
+    Boolean flightPlanConflict = false;
+    Boolean resolutionActive = false;
+    Real newConflictHash = 0;
+    Real oldConflictHash = 0;
+    Integer _currentM_WP;
+    Integer _currentR_WP;
     
-    FENCE:
+    EndCondition (currentWP >= nM_WP);
+    
+    DETECTION:
     {
-	numFenceConflicts = CheckFenceViolation(acPosition,acVelocity);
+	Integer numFenceConflicts;
+	Repeat true;
 	
-	if(numFenceConflicts > 0){
-	    fenceConflict = true; 				     
-	}endif		     
+	FENCE: fenceConflicts = CheckFenceViolation(acPosition,acVelocity);
+	    		     
+	TRAFFIC: trafficConflict = CheckTrafficViolation(acPosition);
+	
+	FLIGHTPLAN: {
+	    if(resolutionActive){
+		_currentR_WP = Lookup(currentResolutionWP);
+		flightPlanConflict = CheckFlightPlanConflict(acPosition,_currentR_WP);
+	    }
+	    else{
+		_currentM_WP = Lookup(currentMissionWP)
+		flightPlanConflict = CheckFlightPlanConflict(acPosition,_currentM_WP);    
+	    }
+	    endif	    
+	}
+    }
+
+    RESOLUTION:{
+
+	COMPUTE_SOLUTION:{
+
+
+	}
+
+	EXECUTE_RESOLUTION:{
+
+
+	}
+
+	RESUME_MISSION:{
+
+
+	}
+
     }
 }
