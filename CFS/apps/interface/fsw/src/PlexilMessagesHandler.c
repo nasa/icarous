@@ -18,31 +18,34 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
     strcpy(plexilInput.plxMsg.name,msg->plxMsg.name);
     switch (msg->plxMsg.mType) {
         case _LOOKUP_:
-            if(strcmp(msg->plxMsg.name,"missionStart") == 0){
+            if(!strcmp(msg->plxMsg.name,"missionStart")){
                 bool start = (int)startMission.param1?true:false;
                 plexilInput.plxMsg.rType = _BOOLEAN_;
                 plexilInput.plxMsg.argsB[0] = start;
                 SendSBMsg(plexilInput);
                 startMission.param1 = 0;
             }
-            else if(strcmp(msg->plxMsg.name,"armStatus") == 0){
-                int8_t result = false;
+            else if(!strcmp(msg->plxMsg.name,"armStatus")){
+                int8_t result = 0;
                 OS_printf("arming status check\n");
                 if (ack.name == _ARM_) {
                     result = (int) ack.result == 0 ? 1 : 0;
+                    plexilInput.plxMsg.rType = _INTEGER_;
+                    plexilInput.plxMsg.argsI[0] = result;
+                    SendSBMsg(plexilInput);
                 }
-                plexilInput.plxMsg.rType = _INTEGER_;
-                plexilInput.plxMsg.argsI[0] = result;
-                SendSBMsg(plexilInput);
             }
-            else if(strcmp(msg->plxMsg.name,"takeoffStatus") == 0){
-                int8_t result = false;
+            else if(!strcmp(msg->plxMsg.name,"takeoffStatus")){
+                int8_t result = 0;
                 if (ack.name == _TAKEOFF_) {
+                    OS_printf("takeoff status check %d\n", ack.result);
                     result = (int) ack.result == 0 ? 1 : 0;
+                    plexilInput.plxMsg.rType = _INTEGER_;
+                    plexilInput.plxMsg.argsI[0] = result;
+                    SendSBMsg(plexilInput);
                 }
-                plexilInput.plxMsg.rType = _INTEGER_;
-                plexilInput.plxMsg.argsI[0] = result;
-                SendSBMsg(plexilInput);
+            }else if(1){
+
             }else{
                 plexilInput.plxMsg.rType = _INTEGER_;
                 plexilInput.plxMsg.argsI[0] = -1;
@@ -60,7 +63,7 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
                 break;
             } else if (strcmp(msg->plxMsg.name, "Takeoff") == 0) {
                 OS_printf("Takeoff off to:%f\n",msg->plxMsg.argsD[0]);
-                mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_NAV_TAKEOFF, 0, (float)msg->plxMsg.argsD[0], 0, 0, 0, 0, 0, 0);
+                mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 0, (float)msg->plxMsg.argsD[0]);
                 break;
             } else if (strcmp(msg->plxMsg.name, "SetMode") == 0) {
                 OS_printf("Setting mode\n");
