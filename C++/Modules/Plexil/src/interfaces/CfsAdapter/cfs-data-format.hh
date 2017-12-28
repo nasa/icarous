@@ -39,9 +39,9 @@ typedef struct{
     int Blen;
     int Ilen;
     char name[50];
-    double argsD[4];
-    bool argsB[4];
-    int argsI[4];
+    double argsD[10];
+    bool argsB[10];
+    int argsI[10];
     char string[50];
 }PlexilCommandMsg;
 

@@ -95,9 +95,16 @@ void GEOFENCE_ProcessPacket(){
             msg = (plexil_interface_t*)geofenceAppData.Geofence_MsgPtr;
 
             if(!strcmp(msg->plxMsg.name,"CheckFenceViolation")){
-                
 
+                double position[3] = {msg->plxMsg.argsD[0],
+                                      msg->plxMsg.argsD[1],
+                                      msg->plxMsg.argsD[2]};
+                double velocity[3] = {msg->plxMsg.argsD[3],
+                                      msg->plxMsg.argsD[4],
+                                      msg->plxMsg.argsD[5]};
+                GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,position,velocity[0],velocity[1],velocity[2]);
 
+                plexil_interface_t returnMsg;
             }
             break;
         }
