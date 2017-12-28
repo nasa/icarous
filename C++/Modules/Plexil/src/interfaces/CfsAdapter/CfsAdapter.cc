@@ -97,7 +97,7 @@ namespace PLEXIL {
             m_pendingLookupSerial++;
             
             PlexilCommandMsg lookupMsg = {
-                                           _LOOKUP_,_REAL_,1,
+                                           _LOOKUP_,_REAL_,1,0,0,0,
                                            " ",
                                            0,0,0,0,
                                            false,false,false,false,
@@ -150,7 +150,7 @@ namespace PLEXIL {
 
         m_pendingCommandSerial++;
         PlexilCommandMsg commandMsg = {
-                                       _COMMAND_,_REAL_,(int)m_pendingCommandSerial,
+                                       _COMMAND_,_REAL_,(int)m_pendingCommandSerial,0,0,0,
                                        " ",
                                        0,0,0,0,
                                        false,false,false,false,
@@ -286,23 +286,23 @@ namespace PLEXIL {
                 break;
 
             case _INTEGER_ARRAY_: {
-                IntegerArray array(4);
-                for (int i = 0; i < 4; i++)
+                IntegerArray array(msg->Dlen);
+                for (int i = 0; i < msg->Dlen; i++)
                     array.setElement(i, (int) msg->argsI[i]);
                 return Value(array);
                 break;
             }
 
             case _BOOLEAN_ARRAY_: {
-                BooleanArray array(4);
-                for (int i = 0; i < 4; i++)
+                BooleanArray array(msg->Blen);
+                for (int i = 0; i < msg->Blen; i++)
                     array.setElement(i, (int) msg->argsB[i]);
                 return Value(array);
                 break;
             }
             case _REAL_ARRAY_:{
-                RealArray array(4);
-                for (int i = 0; i < 4; i++)
+                RealArray array(msg->Dlen);
+                for (int i = 0; i < msg->Dlen; i++)
                     array.setElement(i, (int) msg->argsD[i]);
                 return Value(array);
                 break;

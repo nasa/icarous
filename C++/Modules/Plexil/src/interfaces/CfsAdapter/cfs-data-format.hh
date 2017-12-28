@@ -35,6 +35,9 @@ typedef struct{
     messageType_t mType;
     returnType_t rType;
     int id;
+    int Dlen;
+    int Blen;
+    int Ilen;
     char name[50];
     double argsD[4];
     bool argsB[4];
