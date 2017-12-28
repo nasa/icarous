@@ -104,7 +104,14 @@ void GEOFENCE_ProcessPacket(){
                                       msg->plxMsg.argsD[5]};
                 GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,position,velocity[0],velocity[1],velocity[2]);
 
+                int n = GeofenceMonitor_GetNumConflicts(geofenceAppData.gfMonitor);
+
                 plexil_interface_t returnMsg;
+                returnMsg.plxMsg.mType = _COMMAND_RETURN_;
+                returnMsg.plxMsg.rType = _INTEGER_;
+                returnMsg.plxMsg.id = msg->plxMsg.id;
+                returnMsg.plxMsg.argsI[0] = n;
+                SendSBMsg(returnMsg);
             }
             break;
         }
