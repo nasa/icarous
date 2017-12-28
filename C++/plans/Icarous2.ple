@@ -20,6 +20,7 @@ ICAROUS:
 	Boolean _idleStatus    = true;
 	Boolean _takeoffStatus = false;
        	Boolean _climbStatus   = false;
+	Boolean _cruiseStatus  = false;
 	
 	Repeat true;
 	
@@ -28,8 +29,6 @@ ICAROUS:
 	    Boolean start = false;
 	    StartCondition _idleStatus;
 	    EndCondition !_idleStatus;       	    
-
-	    Takeoff(10.0);
 	    
 	    {
 		Repeat true;		
@@ -98,6 +97,26 @@ ICAROUS:
 
 	    }// End of THROTTLE	    
 	}// End of TAKEOFF
+
+
+	CLIMB:{
+	    _climbStatus = false;
+	    _cruiseStatus = true;
+	}// End of CLIMB
+
+	CRUISE:{
+	    StartCondition _cruiseStatus;
+
+	    // Check for conflicts;
+	    MonitorGeofence
+	    
+	}// End of CRUISE
+
+	LAND:{
+	    
+
+	}// End of LAND
+	
     }// End of FMS
 }// End of ICAROUS
 
