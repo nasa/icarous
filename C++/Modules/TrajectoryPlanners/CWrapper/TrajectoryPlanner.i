@@ -5,4 +5,5 @@
 %}
 
 /* Parse the header file to generate wrappers */
+%include "../../FlightDataManager/FlightData.h"
 %include "../PathPlanner.h"
