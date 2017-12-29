@@ -112,6 +112,22 @@ void GEOFENCE_ProcessPacket(){
                 returnMsg.plxMsg.id = msg->plxMsg.id;
                 returnMsg.plxMsg.argsI[0] = n;
                 SendSBMsg(returnMsg);
+            }else if(!strcmp(msg->plxMsg.name,"CheckWPFeasbility")){
+                double fromPosition[3] = {msg->plxMsg.argsD[0],
+                                          msg->plxMsg.argsD[1],
+                                          msg->plxMsg.argsD[2]};
+                double toPosition[3] = {msg->plxMsg.argsD[3],
+                                        msg->plxMsg.argsD[4],
+                                        msg->plxMsg.argsD[5]};
+                bool status = GeofenceMonitor_CheckWPFeasibility(geofenceAppData.gfMonitor,fromPosition,toPosition);
+
+                plexil_interface_t returnMsg;
+                returnMsg.plxMsg.mType = _COMMAND_RETURN_;
+                returnMsg.plxMsg.rType = _BOOLEAN_;
+                returnMsg.plxMsg.id = msg->plxMsg.id;
+                returnMsg.plxMsg.argsB[0] = status;
+                SendSBMsg(returnMsg);
+
             }
             break;
         }
