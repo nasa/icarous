@@ -134,11 +134,14 @@ void PathPlanner::InputFlightPlan(char planID[],int wpID,double waypoint[],doubl
             continue;
         }
         it->add(pos,(double)wpID);
+        return;
     }
 
     string planName = planID;
     Plan newPlan(planName);
     newPlan.add(pos,(double)wpID);
+    flightPlans.push_back(newPlan);
+    return;
 }
 
 double PathPlanner::Dist2Waypoint(double currPosition[],double nextPosition[]){
