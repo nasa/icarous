@@ -21,12 +21,12 @@ int main(int argc, char** argv){
 
         sleep(1);
 
-        PlexilCommandMsg msg1;
+        PlexilMsg msg1;
         int n1 = plexil_getCommand(adap,&msg1);
 
         printf("Remaining commands %d\n",n1);
 
-        PlexilCommandMsg msg2;
+        PlexilMsg msg2;
         int n2 = plexil_getLookup(adap,&msg2);
 
         printf("Remaining Looups %d\n",n1);

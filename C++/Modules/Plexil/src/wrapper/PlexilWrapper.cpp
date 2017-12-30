@@ -352,7 +352,7 @@ int plexil_destroy(struct plexilExec* exec){
 
 }
 
-int plexil_getLookup(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
+int plexil_getLookup(struct plexilInterfaceAdapter* adp,PlexilMsg* msg){
 
     InterfaceAdapter* adapter = ToCPP_Adp(adp);
 
@@ -361,7 +361,7 @@ int plexil_getLookup(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
     return cfsAdap->GetLookUpQueueMsg(msg);
 }
 
-int plexil_getCommand(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
+int plexil_getCommand(struct plexilInterfaceAdapter* adp,PlexilMsg* msg){
 
     InterfaceAdapter* adapter = ToCPP_Adp(adp);
 
@@ -372,7 +372,7 @@ int plexil_getCommand(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
     return n;
 }
 
-void plexil_return(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
+void plexil_return(struct plexilInterfaceAdapter* adp,PlexilMsg* msg){
     InterfaceAdapter* adapter = ToCPP_Adp(adp);
 
     CfsAdapter *cfsAdap = (CfsAdapter*) adapter;
@@ -380,4 +380,369 @@ void plexil_return(struct plexilInterfaceAdapter* adp,PlexilCommandMsg* msg){
     cfsAdap->HandleReturnValue(msg);
 
     return;
+}
+
+char* serializeBool(const bool o,char* b){
+    *b++ = BOOLEAN_TYPE;
+    *b++ = (char) o;
+    return b;
+}
+
+char* serializeInt(const int32_t val,char* b){
+
+    int32_t o = val;
+    *b++ = INTEGER_TYPE;
+    // Store in big-endian format
+    *b++ = (char) (0xFF & (o >> 24));
+    *b++ = (char) (0xFF & (o >> 16));
+    *b++ = (char) (0xFF & (o >> 8));
+    *b++ = (char) (0xFF & o);
+    return b;
+}
+
+char* serializeReal(const double val,char* b){
+    union realInt{
+        double r;
+        uint64_t l;
+    };
+    union realInt data;
+    data.r = val;
+    data.l = data.l;
+    *b++ = REAL_TYPE;
+    // Store in big-endian format
+    *b++ = (char) (0xFF & (data.l >> 56));
+    *b++ = (char) (0xFF & (data.l >> 48));
+    *b++ = (char) (0xFF & (data.l >> 40));
+    *b++ = (char) (0xFF & (data.l >> 32));
+    *b++ = (char) (0xFF & (data.l >> 24));
+    *b++ = (char) (0xFF & (data.l >> 16));
+    *b++ = (char) (0xFF & (data.l >> 8));
+    *b++ = (char) (0xFF & data.l);
+    return b;
+}
+
+char* serailizeString(int size,const char val[],char* b){
+
+    unsigned long s = size;
+    if (s > 0xFFFFFF)
+        return NULL; // too big
+
+    *b++ = STRING_TYPE;
+    // Put 3 bytes of size first - std::string may contain embedded NUL
+    *b++ = (char) (0xFF & (s >> 16));
+    *b++ = (char) (0xFF & (s >> 8));
+    *b++ = (char) (0xFF & s);
+    memcpy(b, val, s);
+    return b + s;
+}
+
+char* serializeBoolArray(int size,const bool val[],char* b){
+    unsigned long s = size;
+    if (s > 0xFFFFFF)
+        return NULL; // too big to serialize
+
+    // Write type code
+    *b++ = (char) BOOLEAN_ARRAY_TYPE;
+
+    // Write 3 bytes of size
+    *b++ = (char) (0xFF & (s >> 16));
+    *b++ = (char) (0xFF & (s >> 8));
+    *b++ = (char) (0xFF & s);
+
+    //TODO: This should be a malloc;
+    bool known[20];
+    memset(known,1,20);
+
+    // Write known vector
+    b = serializeBoolVector(s,known, b);
+
+    // Write array contents
+    for (size_t i = 0; i < s; ++i) {
+        b = serializeBool(val[i], b);
+        if (!b)
+            return NULL; // serializeElement failed
+    }
+    return b;
+}
+
+const char* deSerializeBool(bool* o,const char* b){
+    if (BOOLEAN_TYPE != (ValueType) *b++)
+        return NULL;
+    *o = (Boolean) *b++;
+    return b;
+}
+
+const char* deSerializeInt(int32_t* val,const char* b){
+    if (INTEGER_TYPE != (ValueType) *b++)
+        return NULL;
+    uint32_t n = ((uint32_t) (unsigned char) *b++) << 8;
+    n = (n + (uint32_t) (unsigned char) *b++) << 8;
+    n = (n + (uint32_t) (unsigned char) *b++) << 8;
+    n = (n + (uint32_t) (unsigned char) *b++);
+
+    *val = (int32_t) n;
+    return b;
+}
+
+const char* deSerializeReal(double* val,const char* b){
+    if (REAL_TYPE != (ValueType) *b++)
+        return NULL;
+    union realInt{
+        double r;
+        uint64_t l;
+    };
+    union realInt data;
+    data.l = (uint64_t) (unsigned char) *b++;  data.l = data.l << 8;
+    data.l += (uint64_t) (unsigned char) *b++; data.l = data.l << 8;
+    data.l += (uint64_t) (unsigned char) *b++; data.l = data.l << 8;
+    data.l += (uint64_t) (unsigned char) *b++; data.l = data.l << 8;
+    data.l += (uint64_t) (unsigned char) *b++; data.l = data.l << 8;
+    data.l += (uint64_t) (unsigned char) *b++; data.l = data.l << 8;
+    data.l += (uint64_t) (unsigned char) *b++; data.l = data.l << 8;
+    data.l += (uint64_t) (unsigned char) *b++;
+    *val = data.r;
+    return b;
+
+}
+
+const char* deSerializeString(char val[],const char* b){
+    if (STRING_TYPE != (ValueType) *b++)
+        return NULL;
+
+    // Get 3 bytes of size
+    size_t s = ((size_t) (unsigned char) *b++) << 8;
+    s = (s + (size_t) (unsigned char) *b++) << 8;
+    s = s + (size_t) (unsigned char) *b++;
+
+    memcpy(val,b,s);
+    return b + s;
+}
+
+char* serializeIntegerArray(int size,const int32_t val[],char* b){
+    unsigned long s = size;
+    if (s > 0xFFFFFF)
+        return NULL; // too big to serialize
+
+    // Write type code
+    *b++ = (char) INTEGER_ARRAY_TYPE;
+
+    // Write 3 bytes of size
+    *b++ = (char) (0xFF & (s >> 16));
+    *b++ = (char) (0xFF & (s >> 8));
+    *b++ = (char) (0xFF & s);
+
+    //TODO: This should be a malloc;
+    bool known[20];
+    memset(known,1,20);
+
+    // Write known vector
+    b = serializeBoolVector(s,known, b);
+
+    // Write array contents
+    for (size_t i = 0; i < s; ++i) {
+        b = serializeInt(val[i], b);
+        if (!b)
+            return NULL; // serializeElement failed
+    }
+    return b;
+}
+
+char* serializeRealArray(int size,const double val[],char* b){
+    unsigned long s = size;
+    if (s > 0xFFFFFF)
+        return NULL; // too big to serialize
+
+    // Write type code
+    *b++ = (char) REAL_ARRAY_TYPE;
+
+    // Write 3 bytes of size
+    *b++ = (char) (0xFF & (s >> 16));
+    *b++ = (char) (0xFF & (s >> 8));
+    *b++ = (char) (0xFF & s);
+
+    //TODO: This should be a malloc;
+    bool known[20];
+    memset(known,1,20);
+
+    // Write known vector
+    b = serializeBoolVector(s,known, b);
+
+    // Write array contents
+    for (size_t i = 0; i < s; ++i) {
+        b = serializeReal(val[i], b);
+        if (!b)
+            return NULL; // serializeElement failed
+    }
+    return b;
+}
+
+char const *deSerializeBoolArray(bool val[],const char* b)
+{
+    // Check type code
+    if (BOOLEAN_ARRAY_TYPE !=  *b++)
+        return NULL; // not an appropriate array
+
+    // Get 3 bytes of size
+    size_t s = (size_t) *b++; s = s << 8;
+    s += (size_t) *b++; s = s << 8;
+    s += (size_t) *b++;
+
+    //TODO: This should be a malloc;
+    bool known[20];
+    memset(known,1,20);
+
+    b = deserializeBoolVector(s,known, b);
+    for (size_t i = 0; i < s; ++i)
+        b = deSerializeBool(val+i, b);
+
+    return b;
+}
+
+char const *deSerializeIntArray(int32_t val[],const char* b)
+{
+    // Check type code
+    if (INTEGER_ARRAY_TYPE !=  *b++)
+        return NULL; // not an appropriate array
+
+    // Get 3 bytes of size
+    size_t s = (size_t) *b++; s = s << 8;
+    s += (size_t) *b++; s = s << 8;
+    s += (size_t) *b++;
+
+    //TODO: This should be a malloc;
+    bool known[20];
+    memset(known,1,20);
+
+    b = deserializeBoolVector(s,known, b);
+    for (size_t i = 0; i < s; ++i)
+        b = deSerializeInt(val+i, b);
+
+    return b;
+}
+
+char const *deSerializeRealArray(double val[],const char* b)
+{
+    // Check type code
+    if (REAL_ARRAY_TYPE !=  *b++)
+        return NULL; // not an appropriate array
+
+    // Get 3 bytes of size
+    size_t s = (size_t) *b++; s = s << 8;
+    s += (size_t) *b++; s = s << 8;
+    s += (size_t) *b++;
+
+    //TODO: This should be a malloc;
+    bool known[20];
+    memset(known,1,20);
+
+    b = deserializeBoolVector(s,known, b);
+    for (size_t i = 0; i < s; ++i)
+        b = deSerializeReal(val+i, b);
+
+    return b;
+}
+
+
+char *serializeBoolVector(int size,const bool o[], char *b)
+{
+    int s = size;
+    size_t i = 0;
+    while (s > 0) {
+        uint8_t tmp = 0;
+        uint8_t mask = 0x80;
+        switch (s) {
+            default: // s >= 8
+                if (o[i++])
+                    tmp |= mask;
+                mask = mask >> 1;
+
+            case 7:
+                if (o[i++])
+                    tmp |= mask;
+                mask = mask >> 1;
+
+            case 6:
+                if (o[i++])
+                    tmp |= mask;
+                mask = mask >> 1;
+
+            case 5:
+                if (o[i++])
+                    tmp |= mask;
+                mask = mask >> 1;
+
+            case 4:
+                if (o[i++])
+                    tmp |= mask;
+                mask = mask >> 1;
+
+            case 3:
+                if (o[i++])
+                    tmp |= mask;
+                mask = mask >> 1;
+
+            case 2:
+                if (o[i++])
+                    tmp |= mask;
+                mask = mask >> 1;
+
+            case 1:
+                if (o[i++])
+                    tmp |= mask;
+                break;
+        }
+
+        *b++ = tmp;
+        s -= 8;
+    }
+
+    return b;
+}
+
+// Internal function
+// Read from buffer in big-endian form
+// Presumes vector size has already been set.
+char const *deserializeBoolVector(int size,bool o[], const char *b)
+{
+    unsigned long s = size;
+    size_t i = 0;
+    while (s > 0) {
+        uint8_t tmp = *b++;
+        uint8_t mask = 0x80;
+        switch (s) {
+            default: // s >= 8
+                o[i++] = (tmp & mask) ? true : false;
+                mask = mask >> 1;
+
+            case 7:
+                o[i++] = (tmp & mask) ? true : false;
+                mask = mask >> 1;
+
+            case 6:
+                o[i++] = (tmp & mask) ? true : false;
+                mask = mask >> 1;
+
+            case 5:
+                o[i++] = (tmp & mask) ? true : false;
+                mask = mask >> 1;
+
+            case 4:
+                o[i++] = (tmp & mask) ? true : false;
+                mask = mask >> 1;
+
+            case 3:
+                o[i++] = (tmp & mask) ? true : false;
+                mask = mask >> 1;
+
+            case 2:
+                o[i++] = (tmp & mask) ? true : false;
+                mask = mask >> 1;
+
+            case 1:
+                o[i++] = (tmp & mask) ? true : false;
+                break;
+        }
+        s -= 8;
+    }
+    return b;
 }
