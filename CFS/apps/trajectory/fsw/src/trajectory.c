@@ -1,37 +1,40 @@
 //
 // Created by Swee Balachandran on 12/22/17.
 //
+#include <Icarous_msg.h>
+#include <CWrapper/TrajectoryPlanner_proxy.h>
+#include <Plexil_msg.h>
 #include "trajectory.h"
 
-CFE_EVS_BinFilter_t  Trajectory_EventFilters[] =
+CFE_EVS_BinFilter_t  TRAJECTORY_EventFilters[] =
         {  /* Event ID    mask */
-                {Trajectory_STARTUP_INF_EID,       0x0000},
-                {Trajectory_COMMAND_ERR_EID,       0x0000},
+                {TRAJECTORY_STARTUP_INF_EID,       0x0000},
+                {TRAJECTORY_COMMAND_ERR_EID,       0x0000},
         }; /// Event ID definitions
 
 /* Application entry points */
-void Trajectory_AppMain(void){
+void TRAJECTORY_AppMain(void){
 
     int32 status;
     uint32 RunStatus = CFE_ES_APP_RUN;
 
-    Trajectory_AppInit();
+    TRAJECTORY_AppInit();
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
         status = CFE_SB_RcvMsg(&TrajectoryAppData.Trajectory_MsgPtr, TrajectoryAppData.Trajectory_Pipe, 10);
 
         if (status == CFE_SUCCESS)
         {
-            Trajectory_ProcessPacket();
+            TRAJECTORY_ProcessPacket();
         }
     }
 
-    Trajectory_AppCleanUp();
+    TRAJECTORY_AppCleanUp();
 
     CFE_ES_ExitApp(RunStatus);
 }
 
-void Trajectory_AppInit(void) {
+void TRAJECTORY_AppInit(void) {
 
     memset(&TrajectoryAppData, 0, sizeof(TrajectoryAppData_t));
 
@@ -41,52 +44,70 @@ void Trajectory_AppInit(void) {
     CFE_ES_RegisterApp();
 
     // Register the events
-    CFE_EVS_Register(Trajectory_EventFilters,
-                     sizeof(Trajectory_EventFilters) / sizeof(CFE_EVS_BinFilter_t),
+    CFE_EVS_Register(TRAJECTORY_EventFilters,
+                     sizeof(TRAJECTORY_EventFilters) / sizeof(CFE_EVS_BinFilter_t),
                      CFE_EVS_BINARY_FILTER);
 
     // Create pipe to receive SB messages
     status = CFE_SB_CreatePipe(&TrajectoryAppData.Trajectory_Pipe, /* Variable to hold Pipe ID */
-                               Trajectory_PIPE_DEPTH,       /* Depth of Pipe */
-                               Trajectory_PIPE_NAME);       /* Name of pipe */
+                               TRAJECTORY_PIPE_DEPTH,       /* Depth of Pipe */
+                               TRAJECTORY_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to plexil output messages from the SB
     CFE_SB_Subscribe(PLEXIL_OUTPUT_MID, TrajectoryAppData.Trajectory_Pipe);
-    //CFE_SB_Subscribe(ICAROUS_GEOFENCE_MID,geofenceAppData.Geofence_Pipe);
+    CFE_SB_Subscribe(ICAROUS_WP_MID,TrajectoryAppData.Trajectory_Pipe);
 
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&gfPlexilMsg, PLEXIL_INPUT_MID, sizeof(plexil_interface_t), TRUE);
+    CFE_SB_InitMsg(&trajPlexilMsg, PLEXIL_INPUT_MID, sizeof(plexil_interface_t), TRUE);
 
     // Send event indicating app initialization
-    CFE_EVS_SendEvent(Trajectory_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                      "Trajectory App Initialized. Version %d.%d",
-                      Trajectory_MAJOR_VERSION,
-                      Trajectory_MINOR_VERSION);
+    CFE_EVS_SendEvent(TRAJECTORY_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+                      "TRAJECTORY App Initialized. Version %d.%d",
+                      TRAJECTORY_MAJOR_VERSION,
+                      TRAJECTORY_MINOR_VERSION);
 
-    TrajectoryAppData.fdata = new_FlightData("/ram/icarous.txt");
-    //TrajectoryAppData.gfMonitor = new_TrajectoryMonitor(TrajectoryAppData.fdata);
+    TrajectoryAppData.fdata = new_FlightData("../ram/icarous.txt");
+    TrajectoryAppData.pplanner = new_PathPlanner(TrajectoryAppData.fdata);
 
 }
 
-void Trajectory_AppCleanUp(){
+void TRAJECTORY_AppCleanUp(){
     // Do clean up here
-    delete_TrajectoryMonitor(TrajectoryAppData.gfMonitor);
+    delete_PathPlanner(TrajectoryAppData.pplanner);
     delete_FlightData(TrajectoryAppData.fdata);
 }
 
-void Trajectory_ProcessPacket(){
+void TRAJECTORY_ProcessPacket(){
 
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(TrajectoryAppData.Trajectory_MsgPtr);
 
     switch(MsgId){
-        case ICAROUS_Trajectory_MID:
+        case ICAROUS_WP_MID: {
+            waypoint_t* wp;
+            wp = (waypoint_t*) TrajectoryAppData.Trajectory_MsgPtr;
 
+            double position[3] = {wp->latitude,wp->longitude,wp->altitude};
+            double speed = wp->speed;
+            double id = wp->wayPointIndex;
+            char name[] = "Plan0";
+            PathPlanner_InputFlightPlan(TrajectoryAppData.pplanner,name,id,position,speed);
             break;
+        }
 
-        case PLEXIL_OUTPUT_MID:
+        case PLEXIL_OUTPUT_MID: {
+            plexil_interface_t* msg;
+            msg = (plexil_interface_t*) TrajectoryAppData.Trajectory_MsgPtr;
+            if(CHECK_MSG(msg,"totalMissionWP")){
 
+            }else if(CHECK_MSG(msg,"GetWaypoint")){
+
+
+            }else if(CHECK_MSG(msg,"totalMissionWP"){
+
+            }
             break;
+        }
     }
     return;
 }

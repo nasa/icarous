@@ -14,4 +14,6 @@ typedef struct{
     PlexilCommandMsg plxMsg;
 }plexil_interface_t;
 
+#define CHECK_MSG(msg,string) !strcmp(msg->plxMsg.name,string)
+
 #endif //CFETOP_PLEXIL_MSG_H_H
