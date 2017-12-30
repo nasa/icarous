@@ -1,0 +1,72 @@
+Boolean Command ReceiveTrue();
+Boolean Command ReceiveFalse();
+Integer Command SendBool(bool arg1,bool arg2[3]);
+Integer Command SendInt(int arg1,int arg2[2]);
+Real Command SendReal(real arg1,real arg2[3]);
+
+Real[3] Lookup position
+
+TEST:{
+
+	Boolean val1,val2,bArray;
+	Integer iArray;
+	Real dArray;
+	Real _position[3];
+
+	{
+	  EndCondition isKnown(val1);
+          val1 = ReceiveTrue();	  
+	}
+
+	pprint("val1: ",val1); 
+
+	{
+	  EndCondition isKnown(val2);
+          val2 = ReceiveFalse();	  
+	}
+
+	pprint("val2: ",val2); 
+
+        {
+	  Boolean arg2[3];
+	  EndCondition isKnown(bArray);
+
+          arg1    = true;
+          arg2[0] = true;
+	  arg2[1] = false;
+	  arg2[2] = true;
+	  bArray = SendBool(arg1,arg2);
+	}
+
+	pprint("bArray",bArray); 
+
+	{
+	  Integer arg2[2];
+	  Integer arg1;
+	  EndCondition isKnown(iArray);
+
+          arg1    = 3;
+          arg2[0] = 5;
+	  arg2[1] = 15;
+	  iArray = SendInt(arg1,arg2);
+	}
+
+	pprint("iArray: ",iArray); 
+
+        {
+	  Real arg1;
+          Real arg2[3];
+    
+          arg1 = 3.142;
+	  arg2[0] = 4.0;
+	  arg2[1] = 6.0;
+	  arg2[2] = 8.76;
+	  dArray = SendReal(arg1,arg2);
+        }
+
+        pprint("dArray: ",dArray); 
+
+	_position = Lookup(position);
+
+        pprint("position: ",_position[0],_position[1],_position[2]);
+}
