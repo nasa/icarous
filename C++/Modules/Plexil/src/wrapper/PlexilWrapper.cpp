@@ -421,7 +421,7 @@ char* serializeReal(const double val,char* b){
     return b;
 }
 
-char* serailizeString(int size,const char val[],char* b){
+char* serializeString(int size,const char val[],char* b){
 
     unsigned long s = size;
     if (s > 0xFFFFFF)
@@ -518,7 +518,7 @@ const char* deSerializeString(char val[],const char* b){
     return b + s;
 }
 
-char* serializeIntegerArray(int size,const int32_t val[],char* b){
+char* serializeIntArray(int size,const int32_t val[],char* b){
     unsigned long s = size;
     if (s > 0xFFFFFF)
         return NULL; // too big to serialize
@@ -646,7 +646,7 @@ char const *deSerializeRealArray(double val[],const char* b)
 char *serializeBoolVector(int size,const bool o[], char *b)
 {
     int s = size;
-    size_t i = 0;
+    int i = 0;
     while (s > 0) {
         uint8_t tmp = 0;
         uint8_t mask = 0x80;
@@ -704,8 +704,8 @@ char *serializeBoolVector(int size,const bool o[], char *b)
 // Presumes vector size has already been set.
 char const *deserializeBoolVector(int size,bool o[], const char *b)
 {
-    unsigned long s = size;
-    size_t i = 0;
+    int s = size;
+    int i = 0;
     while (s > 0) {
         uint8_t tmp = *b++;
         uint8_t mask = 0x80;

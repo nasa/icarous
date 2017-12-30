@@ -97,7 +97,7 @@ namespace PLEXIL {
             m_pendingLookupSerial++;
             
             PlexilMsg lookupMsg;
-            
+
             lookupMsg.mType =_LOOKUP_;
 
             memcpy(lookupMsg.name,stateName.c_str(),stateName.size()+1);
