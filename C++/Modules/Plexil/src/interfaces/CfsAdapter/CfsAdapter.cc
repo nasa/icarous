@@ -96,12 +96,10 @@ namespace PLEXIL {
             m_pendingLookupState.setName(stateName);
             m_pendingLookupSerial++;
             
-            PlexilCommandMsg lookupMsg = {
-                                           _LOOKUP_,_REAL_,1,0,0,0,
-                                           " ",
-                                           0,0,0,0,
-                                           false,false,false,false,
-                                           0,0,0,0, " "};
+            PlexilMsg lookupMsg;
+            
+            lookupMsg.mType =_LOOKUP_;
+
             memcpy(lookupMsg.name,stateName.c_str(),stateName.size()+1);
 
             lookupQueue.push(lookupMsg);
@@ -149,43 +147,21 @@ namespace PLEXIL {
         //decide to direct or publish command
 
         m_pendingCommandSerial++;
-        PlexilCommandMsg commandMsg = {
-                                       _COMMAND_,_REAL_,(int)m_pendingCommandSerial,0,0,0,
-                                       " ",
-                                       0,0,0,0,
-                                       false,false,false,false,
-                                       0,0,0,0," "};
-
+        PlexilMsg commandMsg;
+        commandMsg.mType = _COMMAND_;
+        commandMsg.id = (int)m_pendingCommandSerial;
         memcpy(commandMsg.name,name.c_str(),name.size()+1);
+        int count = 0;
+        char* b = commandMsg.buffer;
+
         size_t nParams = args.size();
-        assertTrueMsg(nParams < 5,
-                      "CfsAdapter::lookupNow: max command arguments is 4");
+
         for (size_t i = 0; i < nParams; ++i) {
             Value val = args[i];
             if(val.isKnown()){
-                switch (val.valueType()){
-                    case BOOLEAN_TYPE: {
-                        bool boolval;
-                        val.getValue(boolval);
-                        commandMsg.argsB[i] = boolval;
-                        commandMsg.rType = _BOOLEAN_;
-                        break;
-                    }
-                    case REAL_TYPE:{
-                        double real;
-                        val.getValue(real);
-                        commandMsg.argsD[i] = real;
-                        commandMsg.rType = _REAL_;
-                        break;
-                    }
-                    case STRING_TYPE:{
-                        String stringVal;
-                        val.getValue(stringVal);
-                        memcpy(commandMsg.string,stringVal.c_str(),name.size()+1);
-                        commandMsg.rType = _STRING_;
-                        break;
-                    }
-                }
+                val.serialize(b);
+                count += val.serialSize();
+                assertTrueMsg(count > PLEXIL_MSG_BUFFER,"Too many function arguments, increase PLEXIL_MSG_BUFFER");
             }
         }
 
@@ -198,7 +174,7 @@ namespace PLEXIL {
         debugMsg("CfsAdapter:executeCommand", " command \"" << name << "\" sent.");
     }
 
-    void CfsAdapter::HandleReturnValue(PlexilCommandMsg *msg) {
+    void CfsAdapter::HandleReturnValue(PlexilMsg *msg) {
 
         //lock mutex to ensure all sending procedures are complete.
         ThreadMutexGuard guard(m_cmdMutex);
@@ -240,28 +216,28 @@ namespace PLEXIL {
 
     }
 
-    int CfsAdapter::GetCmdQueueMsg(PlexilCommandMsg *msg) {
+    int CfsAdapter::GetCmdQueueMsg(PlexilMsg *msg) {
         //lock mutex to ensure all writing procedures are complete.
         ThreadMutexGuard guard(m_cmdMutex);
         if (cmdQueue.size() == 0){
             return -1;
         }
 
-        PlexilCommandMsg queueMsg = cmdQueue.front();
+        PlexilMsg queueMsg = cmdQueue.front();
         cmdQueue.pop();
 
         memcpy(msg,&queueMsg,sizeof(queueMsg));
         return cmdQueue.size();
     }
 
-    int CfsAdapter::GetLookUpQueueMsg(PlexilCommandMsg *msg) {
+    int CfsAdapter::GetLookUpQueueMsg(PlexilMsg *msg) {
         //lock mutex to ensure all writing procedures are complete.
         ThreadMutexGuard guard(m_cmdMutex);
         if (lookupQueue.size() == 0){
             return -1;
         }
 
-        PlexilCommandMsg queueMsg = lookupQueue.front();
+        PlexilMsg queueMsg = lookupQueue.front();
         lookupQueue.pop();
 
         memcpy(msg,&queueMsg,sizeof(queueMsg));
@@ -269,50 +245,9 @@ namespace PLEXIL {
         return lookupQueue.size();
     }
 
-    Value CfsAdapter::ParseReturnValue(PlexilCommandMsg *msg){
-
-        switch(msg->rType){
-
-            case _INTEGER_:
-                return Value(msg->argsI[0]);
-                break;
-
-            case _REAL_:
-                return Value(msg->argsD[0]);
-                break;
-
-            case _BOOLEAN_:
-                return Value(msg->argsB[0]);
-                break;
-
-            case _INTEGER_ARRAY_: {
-                IntegerArray array(msg->Dlen);
-                for (int i = 0; i < msg->Dlen; i++)
-                    array.setElement(i, (int) msg->argsI[i]);
-                return Value(array);
-                break;
-            }
-
-            case _BOOLEAN_ARRAY_: {
-                BooleanArray array(msg->Blen);
-                for (int i = 0; i < msg->Blen; i++)
-                    array.setElement(i, (int) msg->argsB[i]);
-                return Value(array);
-                break;
-            }
-            case _REAL_ARRAY_:{
-                RealArray array(msg->Dlen);
-                for (int i = 0; i < msg->Dlen; i++)
-                    array.setElement(i, (int) msg->argsD[i]);
-                return Value(array);
-                break;
-            }
-
-            default:
-                Value(0);
-                break;
-        }
-
+    Value CfsAdapter::ParseReturnValue(PlexilMsg *msg){
+        Value val;
+        val.deserialize(msg->buffer);
     }
 
     extern "C" {

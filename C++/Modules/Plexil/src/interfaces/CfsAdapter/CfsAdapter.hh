@@ -35,14 +35,14 @@ namespace PLEXIL {
 
         void invokeAbort(Command *cmd);
 
-        void HandleReturnValue(PlexilCommandMsg* msg);
+        void HandleReturnValue(PlexilMsg* msg);
 
-        int GetCmdQueueMsg(PlexilCommandMsg* msg);
-        int GetLookUpQueueMsg(PlexilCommandMsg* msg);
+        int GetCmdQueueMsg(PlexilMsg* msg);
+        int GetLookUpQueueMsg(PlexilMsg* msg);
 
     private:
-        std::queue<PlexilCommandMsg> cmdQueue;
-        std::queue<PlexilCommandMsg> lookupQueue;
+        std::queue<PlexilMsg> cmdQueue;
+        std::queue<PlexilMsg> lookupQueue;
 
         //* @brief Semaphore for return values from LookupNow
         ThreadSemaphore m_lookupSem;
@@ -72,7 +72,7 @@ namespace PLEXIL {
         //* @brief Serial # of current pending command
         uint32_t m_pendingCommandSerial;
 
-        Value ParseReturnValue(PlexilCommandMsg* Msg);
+        Value ParseReturnValue(PlexilMsg* Msg);
 
     };
 
