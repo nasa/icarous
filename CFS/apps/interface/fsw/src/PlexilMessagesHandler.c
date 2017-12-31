@@ -66,6 +66,7 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
 
         case _COMMAND_: {
             send = true;
+            b = msg->plxData.buffer;
             if (strcmp(msg->plxData.name, "ArmMotors") == 0) {
                 OS_printf("Arming\n");
                 mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_COMPONENT_ARM_DISARM, 0,
