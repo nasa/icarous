@@ -382,16 +382,16 @@ void plexil_return(struct plexilInterfaceAdapter* adp,PlexilMsg* msg){
     return;
 }
 
-char* serializeBool(const bool o,char* b){
-    *b++ = BOOLEAN_TYPE;
+char* serializeBool(bool arrayelement,const bool o,char* b){
+    arrayelement?0:*b++ = BOOLEAN_TYPE;
     *b++ = (char) o;
     return b;
 }
 
-char* serializeInt(const int32_t val,char* b){
+char* serializeInt(bool arrayelement,const int32_t val,char* b){
 
     int32_t o = val;
-    *b++ = INTEGER_TYPE;
+    arrayelement?0:*b++ = INTEGER_TYPE;
     // Store in big-endian format
     *b++ = (char) (0xFF & (o >> 24));
     *b++ = (char) (0xFF & (o >> 16));
@@ -400,7 +400,7 @@ char* serializeInt(const int32_t val,char* b){
     return b;
 }
 
-char* serializeReal(const double val,char* b){
+char* serializeReal(bool arrayelement,const double val,char* b){
     union realInt{
         double r;
         uint64_t l;
@@ -408,7 +408,7 @@ char* serializeReal(const double val,char* b){
     union realInt data;
     data.r = val;
     data.l = data.l;
-    *b++ = REAL_TYPE;
+    arrayelement?0:*b++ = REAL_TYPE;
     // Store in big-endian format
     *b++ = (char) (0xFF & (data.l >> 56));
     *b++ = (char) (0xFF & (data.l >> 48));
@@ -456,24 +456,20 @@ char* serializeBoolArray(int size,const bool val[],char* b){
     // Write known vector
     b = serializeBoolVector(s,known, b);
 
-    // Write array contents
-    for (size_t i = 0; i < s; ++i) {
-        b = serializeBool(val[i], b);
-        if (!b)
-            return NULL; // serializeElement failed
-    }
+    b = serializeBoolVector(s,val,b);
+
     return b;
 }
 
-const char* deSerializeBool(bool* o,const char* b){
-    if (BOOLEAN_TYPE != (ValueType) *b++)
+const char* deSerializeBool(bool arrayelement,bool* o,const char* b){
+    if (!arrayelement && BOOLEAN_TYPE != (ValueType) *b++)
         return NULL;
     *o = (Boolean) *b++;
     return b;
 }
 
-const char* deSerializeInt(int32_t* val,const char* b){
-    if (INTEGER_TYPE != (ValueType) *b++)
+const char* deSerializeInt(bool arrayelement,int32_t* val,const char* b){
+    if (!arrayelement && INTEGER_TYPE != (ValueType) *b++)
         return NULL;
     uint32_t n = ((uint32_t) (unsigned char) *b++) << 8;
     n = (n + (uint32_t) (unsigned char) *b++) << 8;
@@ -484,8 +480,8 @@ const char* deSerializeInt(int32_t* val,const char* b){
     return b;
 }
 
-const char* deSerializeReal(double* val,const char* b){
-    if (REAL_TYPE != (ValueType) *b++)
+const char* deSerializeReal(bool arrayelement,double* val,const char* b){
+    if (!arrayelement && REAL_TYPE != (ValueType) *b++)
         return NULL;
     union realInt{
         double r;
@@ -540,7 +536,7 @@ char* serializeIntArray(int size,const int32_t val[],char* b){
 
     // Write array contents
     for (size_t i = 0; i < s; ++i) {
-        b = serializeInt(val[i], b);
+        b = serializeInt(true,val[i], b);
         if (!b)
             return NULL; // serializeElement failed
     }
@@ -569,7 +565,7 @@ char* serializeRealArray(int size,const double val[],char* b){
 
     // Write array contents
     for (size_t i = 0; i < s; ++i) {
-        b = serializeReal(val[i], b);
+        b = serializeReal(true,val[i], b);
         if (!b)
             return NULL; // serializeElement failed
     }
@@ -592,8 +588,7 @@ char const *deSerializeBoolArray(bool val[],const char* b)
     memset(known,1,20);
 
     b = deserializeBoolVector(s,known, b);
-    for (size_t i = 0; i < s; ++i)
-        b = deSerializeBool(val+i, b);
+    b = deserializeBoolVector(s,val,b);
 
     return b;
 }
@@ -615,7 +610,7 @@ char const *deSerializeIntArray(int32_t val[],const char* b)
 
     b = deserializeBoolVector(s,known, b);
     for (size_t i = 0; i < s; ++i)
-        b = deSerializeInt(val+i, b);
+        b = deSerializeInt(true,val+i, b);
 
     return b;
 }
@@ -637,7 +632,7 @@ char const *deSerializeRealArray(double val[],const char* b)
 
     b = deserializeBoolVector(s,known, b);
     for (size_t i = 0; i < s; ++i)
-        b = deSerializeReal(val+i, b);
+        b = deSerializeReal(true,val+i, b);
 
     return b;
 }

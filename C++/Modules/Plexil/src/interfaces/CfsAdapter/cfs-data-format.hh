@@ -62,11 +62,12 @@ typedef enum{
 
 typedef struct{
     messageType_t mType;
-    dataType_t rType;
     int id;
     char name[50];
     char buffer[PLEXIL_MSG_BUFFER];
 }PlexilMsg;
+
+#define CHECK_NAME(MSG,STRING) !strcmp(MSG.name,STRING)
 
 #ifdef __cplusplus
 }

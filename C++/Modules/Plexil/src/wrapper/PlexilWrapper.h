@@ -17,19 +17,19 @@ extern "C" {
   void plexil_return(struct plexilInterfaceAdapter* adp, PlexilMsg* msg);
 
   void serialize(char* buffer);
-  char* serializeBool(const bool o,char* b);
+  char* serializeBool(bool arrayelement,const bool o,char* b);
   char* serializeBoolArray(int size,const bool val[],char* buffer);
-  char* serializeInt(const int32_t val,char* buffer);
+  char* serializeInt(bool arrayelement,const int32_t val,char* buffer);
   char* serializeIntArray(int size,const int32_t val[],char* buffer);
-  char* serializeReal(const double val,char* buffer);
+  char* serializeReal(bool arrayelement,const double val,char* buffer);
   char* serializeRealArray(int size,const double val[],char* buffer);
   char* serializeString(int size,const char val[],char* buffer);
 
-  const char* deSerializeBool(bool* val,const char* buffer);
+  const char* deSerializeBool(bool arrayelement,bool* val,const char* buffer);
   const char* deSerializeBoolArray(bool val[],const char* buffer);
-  const char* deSerializeInt(int32_t* val,const char* buffer);
+  const char* deSerializeInt(bool arrayelement,int32_t* val,const char* buffer);
   const char* deSerializeIntArray(int32_t val[],const char* buffer);
-  const char* deSerializeReal(double* val,const char* buffer);
+  const char* deSerializeReal(bool arrayelement,double* val,const char* buffer);
   const char* deSerializeRealArray(double val[],const char* buffer);
   const char* deSerializeString(char val[],const char* buffer);
 

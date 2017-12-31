@@ -151,6 +151,7 @@ namespace PLEXIL {
         commandMsg.mType = _COMMAND_;
         commandMsg.id = (int)m_pendingCommandSerial;
         memcpy(commandMsg.name,name.c_str(),name.size()+1);
+        memset(commandMsg.buffer,0,PLEXIL_MSG_BUFFER);
         int count = 0;
         char* b = commandMsg.buffer;
 
@@ -159,9 +160,9 @@ namespace PLEXIL {
         for (size_t i = 0; i < nParams; ++i) {
             Value val = args[i];
             if(val.isKnown()){
-                val.serialize(b);
+                b = val.serialize(b);
                 count += val.serialSize();
-                assertTrueMsg(count > PLEXIL_MSG_BUFFER,"Too many function arguments, increase PLEXIL_MSG_BUFFER");
+                assertTrueMsg(count < PLEXIL_MSG_BUFFER,"Too many function arguments, increase PLEXIL_MSG_BUFFER");
             }
         }
 
@@ -248,6 +249,7 @@ namespace PLEXIL {
     Value CfsAdapter::ParseReturnValue(PlexilMsg *msg){
         Value val;
         val.deserialize(msg->buffer);
+        return val;
     }
 
     extern "C" {
