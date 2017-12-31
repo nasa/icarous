@@ -3,10 +3,12 @@ Boolean Command ReceiveFalse();
 Boolean Command SendBool(Boolean arg1,Boolean arg2[3]);
 Integer Command SendInt(Integer arg1,Integer arg2[2]);
 Real Command SendReal(Real arg1,Real arg2[3]);
+Command SendString(String name);
 
 Real[3] Lookup position;
 
 Command pprint(...);
+
 
 TEST:{
 
@@ -77,7 +79,9 @@ TEST:{
 	  }
         }
 
-        pprint("dArray: ",dArray); 
+        pprint("dArray: ",dArray);
+
+        SendString("PASSIVE");
 
 	_position = Lookup(position);
 

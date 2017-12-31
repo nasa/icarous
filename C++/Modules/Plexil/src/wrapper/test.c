@@ -81,6 +81,12 @@ int main(int argc, char** argv){
                 double val = arg1 + 1;
                 serializeReal(false, val, reply.buffer);
                 plexil_return(adap, &reply);
+            } else if (CHECK_NAME(msg1,"SendString")){
+                char string[25];
+                memset(string,0,25);
+                char* b = msg1.buffer;
+                b = deSerializeString(string,b);
+                printf("Received string: %s\n",string);
             }
         }
 
