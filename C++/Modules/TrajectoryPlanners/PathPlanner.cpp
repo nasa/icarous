@@ -149,3 +149,45 @@ double PathPlanner::Dist2Waypoint(double currPosition[],double nextPosition[]){
     Position B = Position::makeLatLonAlt(nextPosition[0],"degree",nextPosition[1],"degree",nextPosition[2],"m");
     return A.distanceH(B);
 }
+
+double PathPlanner::ComputeXtrackDistance(char planID[],int leg,double position[],double offset[]){
+    Position pos = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
+    std::list<Plan>::iterator it;
+    Plan *fp;
+    for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
+        if (strcmp(it->getName().c_str(),planID)){
+            continue;
+        }
+        fp = &(*it);
+        break;
+    };
+
+    Position PrevWP     = fp->point(leg - 1).position();
+    Position NextWP     = fp->point(leg).position();
+    double psi1         = PrevWP.track(NextWP) * 180/M_PI;
+    double psi2         = PrevWP.track(pos) * 180/M_PI;
+    double sgn          = 0;
+    if( (psi1 - psi2) >= 0){
+        sgn = 1;              // Vehicle left of the path
+    }
+    else if( (psi1 - psi2) <= 180){
+        sgn = -1;             // Vehicle right of the path
+    }
+    else if( (psi1 - psi2) < 0 ){
+        sgn = -1;             // Vehicle right of path
+    }
+    else if ( (psi1 - psi2) >= -180  ){
+        sgn = 1;              // Vehicle left of path
+    }
+    double bearing = std::abs(psi1 - psi2);
+    double dist = PrevWP.distanceH(pos);
+    double crossTrackDeviation = sgn*dist*sin(bearing * M_PI/180);
+    double crossTrackOffset    = dist*cos(bearing * M_PI/180);
+
+    if(offset != NULL){
+        offset[0] = crossTrackDeviation;
+        offset[1] = crossTrackOffset;
+    }
+
+    return crossTrackDeviation;
+}

@@ -31,6 +31,7 @@ public:
     void InputFlightPlan(char planID[],int wpID,double waypoint[],double speed);
     double Dist2Waypoint(double currPosition[],double nextWaypoint[]);
     void OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceFile,char* waypointFile);
+    double ComputeXtrackDistance(char planID[],int leg,double position[],double offset[]);
 };
 
 #endif
