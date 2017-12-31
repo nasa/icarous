@@ -98,12 +98,12 @@ void TRAJECTORY_ProcessPacket(){
         case PLEXIL_OUTPUT_MID: {
             plexil_interface_t* msg;
             msg = (plexil_interface_t*) TrajectoryAppData.Trajectory_MsgPtr;
-            if(CHECK_MSG(msg,"totalMissionWP")){
+            if(CHECK_NAME(msg->plxData,"totalMissionWP")){
 
-            }else if(CHECK_MSG(msg,"GetWaypoint")){
+            }else if(CHECK_NAME(msg->plxData,"GetWaypoint")){
 
 
-            }else if(CHECK_MSG(msg,"totalMissionWP"){
+            }else if(CHECK_NAME(msg->plxData,"totalMissionWP")){
 
             }
             break;

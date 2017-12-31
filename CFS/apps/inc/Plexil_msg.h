@@ -8,12 +8,12 @@
 #include <stdint.h>
 #include "cfe.h"
 #include "cfs-data-format.hh"
+#include "PlexilWrapper.h"
 
 typedef struct{
     uint8_t TlmHeader[CFE_SB_CMD_HDR_SIZE];
-    PlexilCommandMsg plxMsg;
+    PlexilMsg plxData;
 }plexil_interface_t;
 
-#define CHECK_MSG(msg,string) !strcmp(msg->plxMsg.name,string)
 
 #endif //CFETOP_PLEXIL_MSG_H_H

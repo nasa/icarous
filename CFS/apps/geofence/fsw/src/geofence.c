@@ -93,39 +93,34 @@ void GEOFENCE_ProcessPacket(){
         case PLEXIL_OUTPUT_MID: {
             plexil_interface_t* msg;
             msg = (plexil_interface_t*)geofenceAppData.Geofence_MsgPtr;
+            char* b = msg->plxData.buffer;
+            if(!strcmp(msg->plxData.name,"CheckFenceViolation")){
 
-            if(!strcmp(msg->plxMsg.name,"CheckFenceViolation")){
-
-                double position[3] = {msg->plxMsg.argsD[0],
-                                      msg->plxMsg.argsD[1],
-                                      msg->plxMsg.argsD[2]};
-                double velocity[3] = {msg->plxMsg.argsD[3],
-                                      msg->plxMsg.argsD[4],
-                                      msg->plxMsg.argsD[5]};
+                double position[3];
+                double velocity[3];
+                b = deSerializeRealArray(position,b);
+                b = deSerializeRealArray(velocity,b);
                 GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,position,velocity[0],velocity[1],velocity[2]);
 
-                int n = GeofenceMonitor_GetNumConflicts(geofenceAppData.gfMonitor);
+                int32_t n = GeofenceMonitor_GetNumConflicts(geofenceAppData.gfMonitor);
 
                 plexil_interface_t returnMsg;
-                returnMsg.plxMsg.mType = _COMMAND_RETURN_;
-                returnMsg.plxMsg.rType = _INTEGER_;
-                returnMsg.plxMsg.id = msg->plxMsg.id;
-                returnMsg.plxMsg.argsI[0] = n;
+                returnMsg.plxData.mType = _COMMAND_RETURN_;
+                returnMsg.plxData.id = msg->plxData.id;
+                serializeInt(false,n,returnMsg.plxData.buffer);
+
                 SendSBMsg(returnMsg);
-            }else if(!strcmp(msg->plxMsg.name,"CheckWPFeasbility")){
-                double fromPosition[3] = {msg->plxMsg.argsD[0],
-                                          msg->plxMsg.argsD[1],
-                                          msg->plxMsg.argsD[2]};
-                double toPosition[3] = {msg->plxMsg.argsD[3],
-                                        msg->plxMsg.argsD[4],
-                                        msg->plxMsg.argsD[5]};
+            }else if(!strcmp(msg->plxData.name,"CheckWPFeasbility")){
+                double fromPosition[3];
+                double toPosition[3];
+                b = deSerializeRealArray(fromPosition,b);
+                b = deSerializeRealArray(toPosition,b);
                 bool status = GeofenceMonitor_CheckWPFeasibility(geofenceAppData.gfMonitor,fromPosition,toPosition);
 
                 plexil_interface_t returnMsg;
-                returnMsg.plxMsg.mType = _COMMAND_RETURN_;
-                returnMsg.plxMsg.rType = _BOOLEAN_;
-                returnMsg.plxMsg.id = msg->plxMsg.id;
-                returnMsg.plxMsg.argsB[0] = status;
+                returnMsg.plxData.mType = _COMMAND_RETURN_;
+                returnMsg.plxData.id = msg->plxData.id;
+                serializeBool(false,status,returnMsg.plxData.buffer);
                 SendSBMsg(returnMsg);
 
             }

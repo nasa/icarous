@@ -13,96 +13,89 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
     msg = (plexil_interface_t *) appdataInt.INTERFACEMsgPtr;
     control_mode_t mode;
     bool send = false;
-    memset(&plexilInput.plxMsg, 0, sizeof(plexilInput.plxMsg));
-    plexilInput.plxMsg.mType = _LOOKUP_RETURN_;
-    strcpy(plexilInput.plxMsg.name,msg->plxMsg.name);
-    switch (msg->plxMsg.mType) {
-        case _LOOKUP_:
-            if(!strcmp(msg->plxMsg.name,"missionStart")){
-                bool start = (int)startMission.param1?true:false;
-                plexilInput.plxMsg.rType = _BOOLEAN_;
-                plexilInput.plxMsg.argsB[0] = start;
-                SendSBMsg(plexilInput);
+
+    // Initialize plexilInput message
+    memset(&plexilInput.plxData, 0, sizeof(plexilInput.plxData));
+    plexilInput.plxData.mType = _LOOKUP_RETURN_;
+    strcpy(plexilInput.plxData.name,msg->plxData.name);
+    char* b= plexilInput.plxData.buffer;
+
+    switch (msg->plxData.mType) {
+        case _LOOKUP_: {
+
+            if (CHECK_NAME(msg->plxData, "missionStart")) {
+                bool start = (int) startMission.param1 ? true : false;
                 startMission.param1 = 0;
-            }
-            else if(!strcmp(msg->plxMsg.name,"armStatus")){
-                int8_t result = -1;
+                b = serializeBool(false, start, b);
+            } else if (CHECK_NAME(msg->plxData, "armStatus")) {
+                int32_t result = -1;
                 OS_printf("arming status check\n");
                 if (ack.name == _ARM_) {
                     result = (int) ack.result == 0 ? 1 : 0;
                 }
-                plexilInput.plxMsg.rType = _INTEGER_;
-                plexilInput.plxMsg.argsI[0] = result;
-                SendSBMsg(plexilInput);
-
-            }
-            else if(!strcmp(msg->plxMsg.name,"takeoffStatus")){
-                int8_t result = -1;
+                b = serializeInt(false, result, b);
+            } else if (CHECK_NAME(msg->plxData, "takeoffStatus")) {
+                int32_t result = -1;
                 if (ack.name == _TAKEOFF_) {
                     OS_printf("takeoff status check %d\n", ack.result);
                     result = (int) ack.result == 0 ? 1 : 0;
                 }
-                plexilInput.plxMsg.rType = _INTEGER_;
-                plexilInput.plxMsg.argsI[0] = result;
-                SendSBMsg(plexilInput);
-            }else if(!strcmp(msg->plxMsg.name,"position")){
-                plexilInput.plxMsg.rType = _REAL_ARRAY_;
-                plexilInput.plxMsg.Dlen = 3;
-                plexilInput.plxMsg.argsD[0] = position.latitude;
-                plexilInput.plxMsg.argsD[1] = position.longitude;
-                plexilInput.plxMsg.argsD[2] = position.altitude_rel;
-                SendSBMsg(plexilInput);
-            }else if(!strcmp(msg->plxMsg.name,"velocity")){
-                double angle = 360 + atan2(position.vy,position.vx)*180/M_PI;
-                double track = fmod(angle,360);
-                double groundSpeed = sqrt(pow(position.vx,2)+pow(position.vy,2));
+                b = serializeInt(false, result, b);
+            } else if (CHECK_NAME(msg->plxData, "position")) {
+                double _position[3] = {position.latitude, position.longitude, position.altitude_rel};
+                b = serializeRealArray(3, _position, b);
+            } else if (CHECK_NAME(msg->plxData, "velocity")) {
+                double angle = 360 + atan2(position.vy, position.vx) * 180 / M_PI;
+                double track = fmod(angle, 360);
+                double groundSpeed = sqrt(pow(position.vx, 2) + pow(position.vy, 2));
                 double verticalSpeed = position.vz;
-                plexilInput.plxMsg.rType = _REAL_ARRAY_;
-                plexilInput.plxMsg.Dlen = 3;
-                plexilInput.plxMsg.argsD[0] = track;
-                plexilInput.plxMsg.argsD[1] = groundSpeed;
-                plexilInput.plxMsg.argsD[2] = verticalSpeed;
-                SendSBMsg(plexilInput);
-            }else if(!strcmp(msg->plxMsg.name,"numMissionWP")){
+                double _velocity[3] = {track, groundSpeed, verticalSpeed};
+                b = serializeRealArray(3, _velocity, b);
+            } else if (CHECK_NAME(msg->plxData, "numMissionWP")) {
                 //TODO: move this into the trajectory app?
                 //OS_printf("received lookup numMissionWP\n");
-                plexilInput.plxMsg.rType = _INTEGER_;
-                plexilInput.plxMsg.argsI[0] = wpdata.totalWayPoints;
-                SendSBMsg(plexilInput);
-            }else{
+                b = serializeInt(false, wpdata.totalWayPoints, b);
+            } else {
                 OS_printf("******* unhandled lookup ************\n");
-                plexilInput.plxMsg.rType = _INTEGER_;
-                plexilInput.plxMsg.argsI[0] = -1;
-                SendSBMsg(plexilInput);
+                int32_t result = -1;
+                b = serializeInt(false,result,b);
             }
+            SendSBMsg(plexilInput);
             break;
+        }
 
         case _COMMAND_: {
             send = true;
-            if (strcmp(msg->plxMsg.name, "ArmMotors") == 0) {
+            if (strcmp(msg->plxData.name, "ArmMotors") == 0) {
                 OS_printf("Arming\n");
                 mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_COMPONENT_ARM_DISARM, 0,
                                               1, 0, 0, 0, 0, 0, 0);
                 break;
-            } else if (strcmp(msg->plxMsg.name, "Takeoff") == 0) {
-                OS_printf("Takeoff off to:%f\n",msg->plxMsg.argsD[0]);
-                mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 0, (float)msg->plxMsg.argsD[0]);
+            } else if (strcmp(msg->plxData.name, "Takeoff") == 0) {
+                double takeoffAlt;
+                b = deSerializeReal(false,&takeoffAlt,b);
+                OS_printf("Takeoff off to:%f\n",takeoffAlt);
+                mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 0, (float)takeoffAlt);
                 break;
-            } else if (strcmp(msg->plxMsg.name, "SetMode") == 0) {
+            } else if (strcmp(msg->plxData.name, "SetMode") == 0) {
                 OS_printf("Setting mode\n");
-                if (!strcmp(msg->plxMsg.string, "PASSIVE")) {
+                char modeName[15];
+                memset(modeName,0,15);
+                b = deSerializeString(modeName,b);
+                if (!strcmp(modeName, "PASSIVE")) {
                     mode = AUTO;
-                } else if (!strcmp(msg->plxMsg.string, "ACTIVE")) {
+                } else if (!strcmp(modeName, "ACTIVE")) {
                     mode = GUIDED;
                 }
                 mavlink_msg_set_mode_pack(255, 0, msgMavlink, 0, 1, mode);
                 break;
-            } else if (strcmp(msg->plxMsg.name, "Land") == 0) {
+            } else if (strcmp(msg->plxData.name, "Land") == 0) {
                 mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_NAV_LAND, 0, 0, 0, 0, 0, 0, 0, 0);
                 break;
-            } else if (strcmp(msg->plxMsg.name, "GOTOWP") == 0) {
-                uint16_t tempSeq = (int) msg->plxMsg.argsI[0];
-                uint16_t seq = -1;
+            } else if (strcmp(msg->plxData.name, "GOTOWP") == 0) {
+                uint32_t tempSeq;
+                b = deSerializeInt(false,&tempSeq,b);
+                uint32_t seq = -1;
                 for (int i = 0; i <= tempSeq; i++) {
                     seq++;
                     int val = (appdataInt.waypoint_type[seq] == MAV_CMD_NAV_WAYPOINT) ||
@@ -113,38 +106,45 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
                 }
                 mavlink_msg_mission_set_current_pack(255, 0, msgMavlink, 1, 0, seq);
                 break;
-            } else if (strcmp(msg->plxMsg.name, "SETPOS") == 0) {
-                int64 latitude = msg->plxMsg.argsD[0];
-                int64 longitude = msg->plxMsg.argsD[1];
-                int64 altitude = msg->plxMsg.argsD[2];
+            } else if (strcmp(msg->plxData.name, "SETPOS") == 0) {
+                double _position[3];
+                b = deSerializeRealArray(_position,b);
+                double latitude = _position[0];
+                double longitude =_position[1];
+                double altitude = _position[2];
                 mavlink_msg_set_position_target_global_int_pack(255, 0, msgMavlink, 0, 1, 0,
                                                                 MAV_FRAME_GLOBAL_RELATIVE_ALT_INT,
                                                                 0b0000111111111000, (int) (latitude * 1E7),
-                                                                (int) (longitude * 1E7), (altitude),
+                                                                (int) (longitude * 1E7), (int) (altitude),
                                                                 0, 0, 0, 0, 0, 0, 0, 0);
                 break;
-            } else if (strcmp(msg->plxMsg.name, "SETVEL") == 0) {
-                double vx = msg->plxMsg.argsD[0];
-                double vy = msg->plxMsg.argsD[1];
-                double vz = msg->plxMsg.argsD[2];
+            } else if (strcmp(msg->plxData.name, "SETVEL") == 0) {
+
+                double _velocity[3];
+                b = deSerializeRealArray(_velocity,b);
+                double vx = _velocity[0];
+                double vy =_velocity[1];
+                double vz = _velocity[2];
+
                 mavlink_msg_set_position_target_local_ned_pack(255, 0, msgMavlink, 0, 1, 0, MAV_FRAME_LOCAL_NED,
                                                                0b0000111111000111, 0, 0, 0,
                                                                (float) vx, (float) vy, (float) vz,
                                                                0, 0, 0, 0, 0);
                 break;
-            } else if (strcmp(msg->plxMsg.name, "SETYAW") == 0) {
-                double heading = msg->plxMsg.argsD[0];
-                int relative = msg->plxMsg.argsI[0];
+            } else if (strcmp(msg->plxData.name, "SETYAW") == 0) {
+                double heading;
+                uint32_t relative;
+                b = deSerializeReal(false,&heading,b);
+                b = deSerializeInt(false,&relative,b);
                 mavlink_msg_command_long_pack(255, 0, msg, 1, 0, MAV_CMD_CONDITION_YAW, 0,
                                               (float) heading, 0, 1, (float) relative, 0, 0, 0);
                 break;
-            } else if (strcmp(msg->plxMsg.name, "SETSPEED") == 0) {
-                double speed = msg->plxMsg.argsD[0];
+            } else if (strcmp(msg->plxData.name, "SETSPEED") == 0) {
+                double speed;
+                deSerializeReal(false,&speed,b);
                 mavlink_msg_command_long_pack(255, 0, msg, 1, 0, MAV_CMD_DO_CHANGE_SPEED, 0,
                                               1, (float) speed, 0, 0, 0, 0, 0);
                 break;
-            }else if(strcmp(msg->plxMsg.name, "Breathe") == 0){
-                send = false;
             }
             break;
         }

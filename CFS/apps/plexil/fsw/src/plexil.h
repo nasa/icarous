@@ -89,14 +89,14 @@ int32_t PlexilTableValidationFunc(void *TblPtr);
  * @param Msg PlexilCommandMsg
  * @return 1 if command is handled by default adapter,0 otherwise.
  */
-uint8_t ProcessPlexilCommand(PlexilCommandMsg* Msg);
+uint8_t ProcessPlexilCommand(PlexilMsg* Msg);
 
 /**
  * Function to process lookups from plexil
  * @param Msg Plexil Command Msg
  * @return 1 if command is handled by default adapter,0 otherwise.
  */
-uint8_t ProcessPlexilLookup(PlexilCommandMsg* Msg);
+uint8_t ProcessPlexilLookup(PlexilMsg* Msg);
 
 /**
  * Function to acquire flight data for plexil

@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(PLEXIL_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++/Modules/Plexil/src")
 set(PLEXIL_LIB "${PLEXIL_SOURCE}/../lib")
+set(MODULES_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++/lib")
 
 include_directories(fsw/mission_inc)
 include_directories(fsw/platform_inc)
