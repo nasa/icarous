@@ -32,7 +32,7 @@ typedef struct{
     CFE_SB_PipeId_t    Traffic_Pipe;       ///< pipe variable
     CFE_SB_MsgPtr_t    Traffic_MsgPtr;     ///< msg pointer to SB message
     FlightData* fdata;                      ///< opaque pointer to store FlightDataManager
-    TrafficMonitor* pplanner;             ///< opaque pointer to TrafficMonitor
+    TrafficMonitor* tfMonitor;             ///< opaque pointer to TrafficMonitor
 }TrafficAppData_t;
 
 

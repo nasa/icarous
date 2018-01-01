@@ -67,13 +67,13 @@ void TRAFFIC_AppInit(void) {
                       TRAFFIC_MINOR_VERSION);
 
     TrafficAppData.fdata = new_FlightData("../ram/icarous.txt");
-    TrafficAppData.pplanner = new_TrafficMonitor(TrafficAppData.fdata);
+    TrafficAppData.tfMonitor = new_TrafficMonitor(TrafficAppData.fdata);
 
 }
 
 void TRAFFIC_AppCleanUp(){
     // Do clean up here
-    delete_TrafficMonitor(TrafficAppData.pplanner);
+    delete_TrafficMonitor(TrafficAppData.tfMonitor);
     delete_FlightData(TrafficAppData.fdata);
 }
 
