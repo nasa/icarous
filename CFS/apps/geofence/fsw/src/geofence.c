@@ -94,21 +94,18 @@ void GEOFENCE_ProcessPacket(){
             plexil_interface_t* msg;
             msg = (plexil_interface_t*)geofenceAppData.Geofence_MsgPtr;
             char* b = msg->plxData.buffer;
-            if(!strcmp(msg->plxData.name,"CheckFenceViolation")){
 
+            plexil_interface_t returnMsg;
+            returnMsg.plxData.mType = _COMMAND_RETURN_;
+            returnMsg.plxData.id = msg->plxData.id;
+            if(!strcmp(msg->plxData.name,"CheckFenceViolation")){
                 double position[3];
                 double velocity[3];
                 b = deSerializeRealArray(position,b);
                 b = deSerializeRealArray(velocity,b);
                 GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,position,velocity[0],velocity[1],velocity[2]);
-
                 int32_t n = GeofenceMonitor_GetNumConflicts(geofenceAppData.gfMonitor);
-
-                plexil_interface_t returnMsg;
-                returnMsg.plxData.mType = _COMMAND_RETURN_;
-                returnMsg.plxData.id = msg->plxData.id;
                 serializeInt(false,n,returnMsg.plxData.buffer);
-
                 SendSBMsg(returnMsg);
             }else if(!strcmp(msg->plxData.name,"CheckWPFeasbility")){
                 double fromPosition[3];
@@ -116,13 +113,8 @@ void GEOFENCE_ProcessPacket(){
                 b = deSerializeRealArray(fromPosition,b);
                 b = deSerializeRealArray(toPosition,b);
                 bool status = GeofenceMonitor_CheckWPFeasibility(geofenceAppData.gfMonitor,fromPosition,toPosition);
-
-                plexil_interface_t returnMsg;
-                returnMsg.plxData.mType = _COMMAND_RETURN_;
-                returnMsg.plxData.id = msg->plxData.id;
                 serializeBool(false,status,returnMsg.plxData.buffer);
                 SendSBMsg(returnMsg);
-
             }
             break;
         }

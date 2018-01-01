@@ -25,7 +25,7 @@ private:
     int64_t FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]);
 public:
     PathPlanner(FlightData* fdata);
-    int64_t FindPath(algorithm,char planID[], double fromPosition[],double toPosition[],double velocity[]);
+    int FindPath(algorithm,char planID[], double fromPosition[],double toPosition[],double velocity[]);
     int GetTotalWaypoints(char planID[]);
     void GetWaypoint(char planID[],int wpID,double waypoint[]);
     void InputFlightPlan(char planID[],int wpID,double waypoint[],double speed);

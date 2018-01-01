@@ -1061,15 +1061,15 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC SwigObj * _wrap_PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6) {
-    int64_t * cppresult;
+  SWIGEXPORTC int _wrap_PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6) {
+    int cppresult;
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     algorithm arg2 ;
     char *arg3 ;
     double *arg4 ;
     double *arg5 ;
     double *arg6 ;
-    SwigObj * result;
+    int result;
     
     {
       if (carg1)
@@ -1080,13 +1080,8 @@ extern "C" {
     arg4 = (double *) carg4;
     arg5 = (double *) carg5;
     arg6 = (double *) carg6;
-    {
-      const int64_t &_result_ref =  (arg1)->FindPath(arg2,arg3,arg4,arg5,arg6);cppresult = (int64_t*) &_result_ref;
-    }
-    {
-      result = (SwigObj*) SWIG_create_object(SWIG_STR(int64_t));
-      result->obj = (void*) &cppresult;
-    }
+    cppresult =  (int)(arg1)->FindPath(arg2,arg3,arg4,arg5,arg6);
+    result = cppresult;
     return result;
   }
   

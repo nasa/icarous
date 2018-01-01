@@ -47,7 +47,7 @@ void _wrap_FlightData_GetTraffic_pFlightData_i_rlarcfm_Position_rlarcfm_Velocity
 /*aaaaaa*/SwigObj * _wrap_FlightData_GetGeofence(SwigObj * carg1, int carg2);
 void _wrap_delete_FlightData(FlightData * carg1);
 PathPlanner * _wrap_new_PathPlanner(SwigObj * carg1);
-SwigObj * _wrap_PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6);
+int _wrap_PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6);
 int _wrap_PathPlanner_GetTotalWaypoints(SwigObj * carg1, /*aaa*/ char * carg2);
 void _wrap_PathPlanner_GetWaypoint(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4);
 void _wrap_PathPlanner_InputFlightPlan(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, double carg5);
@@ -177,7 +177,7 @@ void delete_FlightData(FlightData * carg1) {
 PathPlanner * new_PathPlanner(SwigObj * carg1) {
   return _wrap_new_PathPlanner(carg1);
 }
-SwigObj * PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6) {
+int PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6) {
   return _wrap_PathPlanner_FindPath(carg1, carg2, carg3, carg4, carg5, carg6);
 }
 int PathPlanner_GetTotalWaypoints(SwigObj * carg1, /*aaa*/ char * carg2) {

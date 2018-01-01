@@ -44,6 +44,7 @@ void TRAJECTORY_AppCleanUp();
 
 void TRAJECTORY_ProcessPacket();
 
+void TrajPlxMsgHandler(plexil_interface_t* msg);
 
 TrajectoryAppData_t TrajectoryAppData;
 plexil_interface_t trajPlexilMsg;

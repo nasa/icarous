@@ -10,7 +10,7 @@ PathPlanner::PathPlanner(FlightData* fd) {
     fdata = fd;
 }
 
-int64_t PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, double *toPosition,
+int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, double *toPosition,
                               double velocity[]) {
 
     int64_t retval = -1;

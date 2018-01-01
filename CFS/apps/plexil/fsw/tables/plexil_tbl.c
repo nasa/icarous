@@ -11,11 +11,11 @@
 PLEXILTable_t TblStruct = {
         7,           // argc
         "-p",
-        "plans/Icarous2.plx",
+        "../plans/Icarous2.plx",
         "-c",
-        "plans/interface-config2.xml",
+        "../plans/interface-config2.xml",
         "-l",
-        "plans/CONFLICT_MANAGEMENT.plx"  //argv
+        "../plans/CONFLICT_MANAGEMENT.plx"  //argv
 };
 
 

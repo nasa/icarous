@@ -127,7 +127,7 @@ void delete_FlightData(FlightData * carg1);
 typedef SwigObj PathPlanner;
 
 PathPlanner * new_PathPlanner(SwigObj * carg1);
-SwigObj * PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6);
+int PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6);
 int PathPlanner_GetTotalWaypoints(SwigObj * carg1, /*aaa*/ char * carg2);
 void PathPlanner_GetWaypoint(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4);
 void PathPlanner_InputFlightPlan(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, double carg5);
