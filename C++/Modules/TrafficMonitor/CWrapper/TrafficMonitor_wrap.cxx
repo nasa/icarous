@@ -536,13 +536,14 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC bool _wrap_TrafficMonitor_MonitorTraffic(SwigObj * carg1, bool carg2, double carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  SWIGEXPORTC bool _wrap_TrafficMonitor_MonitorTraffic(SwigObj * carg1, bool carg2, double carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6) {
     bool cppresult;
     TrafficMonitor *arg1 = (TrafficMonitor *) 0 ;
     bool arg2 ;
     double arg3 ;
     double *arg4 ;
     double *arg5 ;
+    double *arg6 ;
     bool result;
     
     {
@@ -553,7 +554,8 @@ extern "C" {
     arg3 = (double) carg3;
     arg4 = (double *) carg4;
     arg5 = (double *) carg5;
-    cppresult =  (bool)(arg1)->MonitorTraffic(arg2,arg3,arg4,arg5);
+    arg6 = (double *) carg6;
+    cppresult =  (bool)(arg1)->MonitorTraffic(arg2,arg3,arg4,arg5,arg6);
     result = (bool) cppresult;
     return result;
   }

@@ -47,12 +47,20 @@ void _wrap_FlightData_GetTraffic_pFlightData_i_rlarcfm_Position_rlarcfm_Velocity
 /*aaaaaa*/SwigObj * _wrap_FlightData_GetGeofence(SwigObj * carg1, int carg2);
 void _wrap_delete_FlightData(FlightData * carg1);
 PathPlanner * _wrap_new_PathPlanner(SwigObj * carg1);
-SwigObj * _wrap_PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, double carg6, double carg7, double carg8);
+SwigObj * _wrap_PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6);
 int _wrap_PathPlanner_GetTotalWaypoints(SwigObj * carg1, /*aaa*/ char * carg2);
 void _wrap_PathPlanner_GetWaypoint(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4);
 void _wrap_PathPlanner_InputFlightPlan(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, double carg5);
 double _wrap_PathPlanner_Dist2Waypoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3);
 void _wrap_PathPlanner_OutputFlightPlan(SwigObj * carg1, SwigObj * carg2, char * carg3, char * carg4, char * carg5);
+double _wrap_PathPlanner_ComputeXtrackDistance_pPathPlanner_pPlan_i_ad_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
+double _wrap_PathPlanner_ComputeXtrackDistance_pPathPlanner_ac_i_ad_ad(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
+void _wrap_PathPlanner_GetPositionOnPlan_pPathPlanner_pPlan_i_ad_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
+void _wrap_PathPlanner_GetPositionOnPlan_pPathPlanner_ac_i_ad_ad(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
+double _wrap_PathPlanner_GetInterceptHeadingToPlan_pPathPlanner_pPlan_i_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4);
+double _wrap_PathPlanner_GetInterceptHeadingToPlan_pPathPlanner_ac_i_ad(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4);
+void _wrap_PathPlanner_ManueverToIntercept_pPathPlanner_pPlan_i_ad_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
+void _wrap_PathPlanner_ManueverToIntercept_pPathPlanner_pc_i_ad_ad(SwigObj * carg1, char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
 void _wrap_delete_PathPlanner(PathPlanner * carg1);
 
 void FlightData_paramData_set(SwigObj * carg1, SwigObj * carg2) {
@@ -169,8 +177,8 @@ void delete_FlightData(FlightData * carg1) {
 PathPlanner * new_PathPlanner(SwigObj * carg1) {
   return _wrap_new_PathPlanner(carg1);
 }
-SwigObj * PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, double carg6, double carg7, double carg8) {
-  return _wrap_PathPlanner_FindPath(carg1, carg2, carg3, carg4, carg5, carg6, carg7, carg8);
+SwigObj * PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6) {
+  return _wrap_PathPlanner_FindPath(carg1, carg2, carg3, carg4, carg5, carg6);
 }
 int PathPlanner_GetTotalWaypoints(SwigObj * carg1, /*aaa*/ char * carg2) {
   return _wrap_PathPlanner_GetTotalWaypoints(carg1, carg2);
@@ -186,6 +194,30 @@ double PathPlanner_Dist2Waypoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*
 }
 void PathPlanner_OutputFlightPlan(SwigObj * carg1, SwigObj * carg2, char * carg3, char * carg4, char * carg5) {
   return _wrap_PathPlanner_OutputFlightPlan(carg1, carg2, carg3, carg4, carg5);
+}
+double PathPlanner_ComputeXtrackDistance_pPathPlanner_pPlan_i_ad_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  return _wrap_PathPlanner_ComputeXtrackDistance_pPathPlanner_pPlan_i_ad_ad(carg1, carg2, carg3, carg4, carg5);
+}
+double PathPlanner_ComputeXtrackDistance_pPathPlanner_ac_i_ad_ad(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  return _wrap_PathPlanner_ComputeXtrackDistance_pPathPlanner_ac_i_ad_ad(carg1, carg2, carg3, carg4, carg5);
+}
+void PathPlanner_GetPositionOnPlan_pPathPlanner_pPlan_i_ad_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  return _wrap_PathPlanner_GetPositionOnPlan_pPathPlanner_pPlan_i_ad_ad(carg1, carg2, carg3, carg4, carg5);
+}
+void PathPlanner_GetPositionOnPlan_pPathPlanner_ac_i_ad_ad(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  return _wrap_PathPlanner_GetPositionOnPlan_pPathPlanner_ac_i_ad_ad(carg1, carg2, carg3, carg4, carg5);
+}
+double PathPlanner_GetInterceptHeadingToPlan_pPathPlanner_pPlan_i_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4) {
+  return _wrap_PathPlanner_GetInterceptHeadingToPlan_pPathPlanner_pPlan_i_ad(carg1, carg2, carg3, carg4);
+}
+double PathPlanner_GetInterceptHeadingToPlan_pPathPlanner_ac_i_ad(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4) {
+  return _wrap_PathPlanner_GetInterceptHeadingToPlan_pPathPlanner_ac_i_ad(carg1, carg2, carg3, carg4);
+}
+void PathPlanner_ManueverToIntercept_pPathPlanner_pPlan_i_ad_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  return _wrap_PathPlanner_ManueverToIntercept_pPathPlanner_pPlan_i_ad_ad(carg1, carg2, carg3, carg4, carg5);
+}
+void PathPlanner_ManueverToIntercept_pPathPlanner_pc_i_ad_ad(SwigObj * carg1, char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  return _wrap_PathPlanner_ManueverToIntercept_pPathPlanner_pc_i_ad_ad(carg1, carg2, carg3, carg4, carg5);
 }
 void delete_PathPlanner(PathPlanner * carg1) {
   return _wrap_delete_PathPlanner(carg1);
