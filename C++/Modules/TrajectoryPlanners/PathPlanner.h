@@ -33,13 +33,13 @@ public:
     void OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceFile,char* waypointFile);
 
     double ComputeXtrackDistance(Plan* fp,int leg,double position[],double offset[]);
-    double ComputeXtrackDistance(char planID[],int leg,double position[],double offset[]);
+    double ComputeXtrackDistance_c(char planID[],int leg,double position[],double offset[]);
     void GetPositionOnPlan(Plan* fp,int leg,double currentPos[],double position[]);
-    void GetPositionOnPlan(char planID[],int leg,double currentPos[],double position[]);
+    void GetPositionOnPlan_c(char planID[],int leg,double currentPos[],double position[]);
     double GetInterceptHeadingToPlan(Plan* fp,int leg,double currentPos[]);
-    double GetInterceptHeadingToPlan(char planID[],int leg,double currentPos[]);
+    double GetInterceptHeadingToPlan_c(char planID[],int leg,double currentPos[]);
     void ManueverToIntercept(Plan* fp,int leg,double currPosition[],double velocity[]);
-    void ManueverToIntercept(char* planID,int leg,double currPosition[],double velocity[]);
+    void ManueverToIntercept_c(char* planID,int leg,double currPosition[],double velocity[]);
 };
 
 #endif

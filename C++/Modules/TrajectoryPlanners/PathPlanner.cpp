@@ -229,31 +229,6 @@ void PathPlanner::GetPositionOnPlan(Plan* fp,int leg,double currentPos[],double 
     position[2] = cp.altitude();
 }
 
-
-double PathPlanner::GetInterceptHeadingToPlan(Plan* fp,int leg,double currentPos[]){
-    Position pos = Position::makeLatLonAlt(currentPos[0],"degree",currentPos[1],"degree",currentPos[2],"m");
-
-    double _positiontOnPlan[3];
-    GetPositionOnPlan(fp,leg,currentPos,_positiontOnPlan);
-    Position goal = Position::makeLatLonAlt(_positiontOnPlan[0],"degree",_positiontOnPlan[1],"degree",_positiontOnPlan[2],"m");
-    return pos.track(goal)*180/M_PI;
-}
-
-double PathPlanner::ComputeXtrackDistance(char *planID, int leg, double *position, double *offset) {
-    Plan* fp = GetPlan(planID);
-    return ComputeXtrackDistance(fp,leg,position,offset);
-}
-
-void PathPlanner::GetPositionOnPlan(char *planID, int leg, double *currentPos, double *position) {
-    Plan* fp = GetPlan(planID);
-    GetPositionOnPlan(fp,leg,currentPos,position);
-}
-
-double PathPlanner::GetInterceptHeadingToPlan(char *planID, int leg, double *currentPos) {
-    Plan* fp = GetPlan(planID);
-    GetInterceptHeadingToPlan(fp,leg,currentPos);
-}
-
 void PathPlanner::ManueverToIntercept(Plan* fp,int leg,double currPosition[],double velocity[]){
     double xtrkDevGain ;
     double resolutionSpeed;
@@ -310,7 +285,31 @@ void PathPlanner::ManueverToIntercept(Plan* fp,int leg,double currPosition[],dou
     velocity[2] = 0;
 }
 
-void PathPlanner::ManueverToIntercept(char* planID,int leg,double currPosition[],double velocity[]){
+double PathPlanner::GetInterceptHeadingToPlan(Plan* fp,int leg,double currentPos[]){
+    Position pos = Position::makeLatLonAlt(currentPos[0],"degree",currentPos[1],"degree",currentPos[2],"m");
+
+    double _positiontOnPlan[3];
+    GetPositionOnPlan(fp,leg,currentPos,_positiontOnPlan);
+    Position goal = Position::makeLatLonAlt(_positiontOnPlan[0],"degree",_positiontOnPlan[1],"degree",_positiontOnPlan[2],"m");
+    return pos.track(goal)*180/M_PI;
+}
+
+double PathPlanner::ComputeXtrackDistance_c(char *planID, int leg, double *position, double *offset) {
+    Plan* fp = GetPlan(planID);
+    return ComputeXtrackDistance(fp,leg,position,offset);
+}
+
+void PathPlanner::GetPositionOnPlan_c(char *planID, int leg, double *currentPos, double *position) {
+    Plan* fp = GetPlan(planID);
+    GetPositionOnPlan(fp,leg,currentPos,position);
+}
+
+double PathPlanner::GetInterceptHeadingToPlan_c(char *planID, int leg, double *currentPos) {
+    Plan* fp = GetPlan(planID);
+    GetInterceptHeadingToPlan(fp,leg,currentPos);
+}
+
+void PathPlanner::ManueverToIntercept_c(char* planID,int leg,double currPosition[],double velocity[]){
     Plan* fp = GetPlan(planID);
     ManueverToIntercept(fp,leg,currPosition,velocity);
 }

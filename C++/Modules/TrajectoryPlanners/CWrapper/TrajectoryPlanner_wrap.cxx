@@ -1185,7 +1185,7 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC double _wrap_PathPlanner_ComputeXtrackDistance_pPathPlanner_pPlan_i_ad_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  SWIGEXPORTC double _wrap_PathPlanner_ComputeXtrackDistance(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
     double cppresult;
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     Plan *arg2 = (Plan *) 0 ;
@@ -1211,7 +1211,7 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC double _wrap_PathPlanner_ComputeXtrackDistance_pPathPlanner_ac_i_ad_ad(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  SWIGEXPORTC double _wrap_PathPlanner_ComputeXtrackDistance_c(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
     double cppresult;
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     char *arg2 ;
@@ -1228,13 +1228,13 @@ extern "C" {
     arg3 = (int) carg3;
     arg4 = (double *) carg4;
     arg5 = (double *) carg5;
-    cppresult =  (double)(arg1)->ComputeXtrackDistance(arg2,arg3,arg4,arg5);
+    cppresult =  (double)(arg1)->ComputeXtrackDistance_c(arg2,arg3,arg4,arg5);
     result = cppresult;
     return result;
   }
   
   
-  SWIGEXPORTC void _wrap_PathPlanner_GetPositionOnPlan_pPathPlanner_pPlan_i_ad_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  SWIGEXPORTC void _wrap_PathPlanner_GetPositionOnPlan(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     Plan *arg2 = (Plan *) 0 ;
     int arg3 ;
@@ -1256,7 +1256,7 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC void _wrap_PathPlanner_GetPositionOnPlan_pPathPlanner_ac_i_ad_ad(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  SWIGEXPORTC void _wrap_PathPlanner_GetPositionOnPlan_c(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     char *arg2 ;
     int arg3 ;
@@ -1271,11 +1271,11 @@ extern "C" {
     arg3 = (int) carg3;
     arg4 = (double *) carg4;
     arg5 = (double *) carg5;
-    (arg1)->GetPositionOnPlan(arg2,arg3,arg4,arg5);
+    (arg1)->GetPositionOnPlan_c(arg2,arg3,arg4,arg5);
   }
   
   
-  SWIGEXPORTC double _wrap_PathPlanner_GetInterceptHeadingToPlan_pPathPlanner_pPlan_i_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4) {
+  SWIGEXPORTC double _wrap_PathPlanner_GetInterceptHeadingToPlan(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4) {
     double cppresult;
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     Plan *arg2 = (Plan *) 0 ;
@@ -1299,7 +1299,7 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC double _wrap_PathPlanner_GetInterceptHeadingToPlan_pPathPlanner_ac_i_ad(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4) {
+  SWIGEXPORTC double _wrap_PathPlanner_GetInterceptHeadingToPlan_c(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4) {
     double cppresult;
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     char *arg2 ;
@@ -1314,13 +1314,13 @@ extern "C" {
     arg2 = (char *) carg2;
     arg3 = (int) carg3;
     arg4 = (double *) carg4;
-    cppresult =  (double)(arg1)->GetInterceptHeadingToPlan(arg2,arg3,arg4);
+    cppresult =  (double)(arg1)->GetInterceptHeadingToPlan_c(arg2,arg3,arg4);
     result = cppresult;
     return result;
   }
   
   
-  SWIGEXPORTC void _wrap_PathPlanner_ManueverToIntercept_pPathPlanner_pPlan_i_ad_ad(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  SWIGEXPORTC void _wrap_PathPlanner_ManueverToIntercept(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     Plan *arg2 = (Plan *) 0 ;
     int arg3 ;
@@ -1342,7 +1342,7 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC void _wrap_PathPlanner_ManueverToIntercept_pPathPlanner_pc_i_ad_ad(SwigObj * carg1, char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  SWIGEXPORTC void _wrap_PathPlanner_ManueverToIntercept_c(SwigObj * carg1, char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     char *arg2 = (char *) 0 ;
     int arg3 ;
@@ -1357,7 +1357,7 @@ extern "C" {
     arg3 = (int) carg3;
     arg4 = (double *) carg4;
     arg5 = (double *) carg5;
-    (arg1)->ManueverToIntercept(arg2,arg3,arg4,arg5);
+    (arg1)->ManueverToIntercept_c(arg2,arg3,arg4,arg5);
   }
   
   
