@@ -26,7 +26,7 @@ TrafficMonitor::TrafficMonitor(FlightData *fd) {
     DAA.parameters.loadFromFile(fdata->paramData.getString("DAA_CONFIG"));
 }
 
-bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[]) {
+bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[],double resolution[]) {
 
     int numTraffic = fdata->GetTotalTraffic();
     if(numTraffic == 0){
@@ -60,6 +60,10 @@ bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double positio
     DAA.kinematicMultiBands(KMB);
     bool daaViolation = BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()));
 
+    bool prefDirection = KMB.preferredTrackDirection();
+    double prefHeading = KMB.trackResolution(prefDirection);
+    resolution[0] = prefHeading;
+    
     if (daaViolation) {
         conflict = true;
         time(&conflictStartTime);

@@ -11,16 +11,26 @@ PathPlanner::PathPlanner(FlightData* fd) {
 }
 
 int64_t PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, double *toPosition,
-                              double trk, double gs,double vs) {
+                              double velocity[]) {
 
     int64_t retval = -1;
+
+    std::list<Plan>::iterator it;
+    for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
+        if (strcmp(it->getName().c_str(),planID)){
+            continue;
+        }
+        flightPlans.erase(it);
+        break;
+    }
+
     switch(search){
 
         case _ASTAR_:
             retval = FindPathAstar(planID,fromPosition,toPosition);
             break;
         case _RRT_:
-            retval = FindPathRRT(planID,fromPosition,toPosition,trk,gs,vs);
+            retval = FindPathRRT(planID,fromPosition,toPosition,velocity);
             break;
         default:
             break;
@@ -75,6 +85,20 @@ void PathPlanner::GetWaypoint(char *planID, int wpID, double *waypoint) {
     }
 }
 
+Plan* PathPlanner::GetPlan(char planID[]){
+    std::list<Plan>::iterator it;
+    Plan *fp;
+    for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
+        if (strcmp(it->getName().c_str(),planID)){
+            continue;
+        }
+        fp = &(*it);
+        return fp;
+    };
+
+    return NULL;
+}
+
 void PathPlanner::OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceFile,char* waypointFile){
     for(Plan pl: flightPlans){
         if(strcmp(pl.getName().c_str(),planID)){
@@ -117,31 +141,29 @@ void PathPlanner::OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceF
 }
 
 int PathPlanner::GetTotalWaypoints(char planID[]){
-    std::list<Plan>::iterator it;
-    for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
-        if (strcmp(it->getName().c_str(),planID)){
-            continue;
-        }
-        return it->size();
-    }
+    Plan* fp = GetPlan(planID);
+    if (fp != NULL)
+        return fp->size();
+    else
+        return 0;
 }
 
 void PathPlanner::InputFlightPlan(char planID[],int wpID,double waypoint[],double speed){
     Position pos = Position::makeLatLonAlt(waypoint[0],"degree",waypoint[1],"degree",waypoint[2],"m");
     std::list<Plan>::iterator it;
-    for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
-        if (strcmp(it->getName().c_str(),planID)){
-            continue;
-        }
-        it->add(pos,(double)wpID);
+    Plan* fp = GetPlan(planID);
+
+    if(fp != NULL) {
+        fp->add(pos, (double) wpID);
         return;
     }
-
-    string planName = planID;
-    Plan newPlan(planName);
-    newPlan.add(pos,(double)wpID);
-    flightPlans.push_back(newPlan);
-    return;
+    else{
+        string planName = planID;
+        Plan newPlan(planName);
+        newPlan.add(pos,(double)wpID);
+        flightPlans.push_back(newPlan);
+        return;
+    }
 }
 
 double PathPlanner::Dist2Waypoint(double currPosition[],double nextPosition[]){
@@ -150,18 +172,10 @@ double PathPlanner::Dist2Waypoint(double currPosition[],double nextPosition[]){
     return A.distanceH(B);
 }
 
-double PathPlanner::ComputeXtrackDistance(char planID[],int leg,double position[],double offset[]){
-    Position pos = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
-    std::list<Plan>::iterator it;
-    Plan *fp;
-    for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
-        if (strcmp(it->getName().c_str(),planID)){
-            continue;
-        }
-        fp = &(*it);
-        break;
-    };
 
+double PathPlanner::ComputeXtrackDistance(Plan* fp,int leg,double position[],double offset[]){
+    std::list<Plan>::iterator it;
+    Position pos = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
     Position PrevWP     = fp->point(leg - 1).position();
     Position NextWP     = fp->point(leg).position();
     double psi1         = PrevWP.track(NextWP) * 180/M_PI;
@@ -190,4 +204,113 @@ double PathPlanner::ComputeXtrackDistance(char planID[],int leg,double position[
     }
 
     return crossTrackDeviation;
+}
+
+
+void PathPlanner::GetPositionOnPlan(Plan* fp,int leg,double currentPos[],double position[]){
+
+    double offsets[2];
+    ComputeXtrackDistance(fp,leg,currentPos,offsets);
+
+    Position nextWP       = fp->point(leg).position();
+    Position prevWP       = fp->point(leg-1).position();
+
+    double headingNextWP  = prevWP.track(nextWP);;
+    double dn             = offsets[1]*cos(headingNextWP);
+    double de             = offsets[1]*sin(headingNextWP);
+    Position cp           = prevWP.linearEst(dn, de);
+
+    if(cp.alt() <= 0){
+        cp = cp.mkAlt(nextWP.alt());
+    }
+
+    position[0] = cp.latitude();
+    position[1] = cp.longitude();
+    position[2] = cp.altitude();
+}
+
+
+double PathPlanner::GetInterceptHeadingToPlan(Plan* fp,int leg,double currentPos[]){
+    Position pos = Position::makeLatLonAlt(currentPos[0],"degree",currentPos[1],"degree",currentPos[2],"m");
+
+    double _positiontOnPlan[3];
+    GetPositionOnPlan(fp,leg,currentPos,_positiontOnPlan);
+    Position goal = Position::makeLatLonAlt(_positiontOnPlan[0],"degree",_positiontOnPlan[1],"degree",_positiontOnPlan[2],"m");
+    return pos.track(goal)*180/M_PI;
+}
+
+double PathPlanner::ComputeXtrackDistance(char *planID, int leg, double *position, double *offset) {
+    Plan* fp = GetPlan(planID);
+    return ComputeXtrackDistance(fp,leg,position,offset);
+}
+
+void PathPlanner::GetPositionOnPlan(char *planID, int leg, double *currentPos, double *position) {
+    Plan* fp = GetPlan(planID);
+    GetPositionOnPlan(fp,leg,currentPos,position);
+}
+
+double PathPlanner::GetInterceptHeadingToPlan(char *planID, int leg, double *currentPos) {
+    Plan* fp = GetPlan(planID);
+    GetInterceptHeadingToPlan(fp,leg,currentPos);
+}
+
+void PathPlanner::ManueverToIntercept(Plan* fp,int leg,double currPosition[],double velocity[]){
+    double xtrkDevGain ;
+    double resolutionSpeed;
+    double allowedDev;
+    double Vs,Vf,V,sgn;
+    double Trk;
+    Position prevWP,nextWP,currentPos,cp;
+    Plan currentFP;
+
+    xtrkDevGain     = fdata->paramData.getValue("XTRK_GAIN");
+    resolutionSpeed = fdata->paramData.getValue("RES_SPEED");
+    allowedDev      = fdata->paramData.getValue("XTRK_DEV");
+
+    double offsets[2];
+    ComputeXtrackDistance(fp,leg,currPosition,offsets);
+    double crossTrackDeviation = offsets[0];
+
+    prevWP = fp->point(leg - 1).position();
+    nextWP = fp->point(leg).position();
+
+    if(xtrkDevGain < 0){
+        xtrkDevGain = -xtrkDevGain;
+    }
+
+
+    Vs = xtrkDevGain*crossTrackDeviation;
+    V  = resolutionSpeed;
+
+    if(Vs >= 0){
+        sgn = 1;
+    }
+    else{
+        sgn = -1;
+    }
+
+    if(pow(std::abs(Vs),2) >= pow(V,2)){
+        Vs = V*sgn;
+    }
+
+    Vf = sqrt(pow(V,2) - pow(Vs,2));
+
+    Trk = prevWP.track(nextWP);
+    double Vn = Vf*cos(Trk) - Vs*sin(Trk);
+    double Ve = Vf*sin(Trk) + Vs*cos(Trk);
+    double Vu = 0;
+
+    double track = atan2(Ve,Vn)*180/M_PI;
+    if(track < 0){
+        track = 360 + track;
+    }
+
+    velocity[0] = track;
+    velocity[1] = resolutionSpeed;
+    velocity[2] = 0;
+}
+
+void PathPlanner::ManueverToIntercept(char* planID,int leg,double currPosition[],double velocity[]){
+    Plan* fp = GetPlan(planID);
+    ManueverToIntercept(fp,leg,currPosition,velocity);
 }

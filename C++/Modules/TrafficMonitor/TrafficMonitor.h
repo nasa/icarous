@@ -19,7 +19,7 @@ private:
 
     time_t conflictStartTime;
     time_t startTime;
-
+    
     FlightData* fdata;
     visbands_t visBands;
     ofstream logfileIn;
@@ -31,8 +31,9 @@ public:
 
     TrafficMonitor(FlightData* fdata);
     bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
-    bool MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[]);
+    bool MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[],double resolution[]);
     void GetVisualizationBands(visbands_t& bands);
+
 };
 
 

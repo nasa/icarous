@@ -71,8 +71,8 @@ int main(int argc,char** argv){
     Position pos = Position::makeLatLonAlt(positionA[0],"degree",positionA[1],"degree",positionA[2],"m");
     EuclideanProjection projection =  Projection::createProjection(pos);
 
-    int status1 = planner.FindPath(_ASTAR_,"PlanA",positionA,positionB,velocityA[0],velocityA[1],velocityA[2]);
-    int status2 = planner.FindPath(_RRT_,"PlanB",positionA,positionB,velocityA[0],velocityA[1],velocityA[2]);
+    int status1 = planner.FindPath(_ASTAR_,"PlanA",positionA,positionB,velocityA);
+    int status2 = planner.FindPath(_RRT_,"PlanB",positionA,positionB,velocityA);
 
     if (status1 > 0)
         planner.OutputFlightPlan(&projection,"PlanA","fence1.txt","waypoints1.txt");

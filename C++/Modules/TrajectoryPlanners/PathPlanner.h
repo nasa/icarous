@@ -20,18 +20,26 @@ private:
     FlightData* fdata;
     std::list<Plan> flightPlans;
     Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
+    Plan* GetPlan(char planID[]);
     int64_t FindPathAstar(char planID[],double fromPosition[],double toPosition[]);
-    int64_t FindPathRRT(char planID[],double fromPosition[],double toPosition[],double trk,double gs,double vs);
-
+    int64_t FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]);
 public:
     PathPlanner(FlightData* fdata);
-    int64_t FindPath(algorithm,char planID[], double fromPosition[],double toPosition[],double trk,double gs,double vs);
+    int64_t FindPath(algorithm,char planID[], double fromPosition[],double toPosition[],double velocity[]);
     int GetTotalWaypoints(char planID[]);
     void GetWaypoint(char planID[],int wpID,double waypoint[]);
     void InputFlightPlan(char planID[],int wpID,double waypoint[],double speed);
     double Dist2Waypoint(double currPosition[],double nextWaypoint[]);
     void OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceFile,char* waypointFile);
+
+    double ComputeXtrackDistance(Plan* fp,int leg,double position[],double offset[]);
     double ComputeXtrackDistance(char planID[],int leg,double position[],double offset[]);
+    void GetPositionOnPlan(Plan* fp,int leg,double currentPos[],double position[]);
+    void GetPositionOnPlan(char planID[],int leg,double currentPos[],double position[]);
+    double GetInterceptHeadingToPlan(Plan* fp,int leg,double currentPos[]);
+    double GetInterceptHeadingToPlan(char planID[],int leg,double currentPos[]);
+    void ManueverToIntercept(Plan* fp,int leg,double currPosition[],double velocity[]);
+    void ManueverToIntercept(char* planID,int leg,double currPosition[],double velocity[]);
 };
 
 #endif

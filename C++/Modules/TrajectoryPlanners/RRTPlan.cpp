@@ -5,9 +5,12 @@
 #include "RRTplanner.h"
 #include "Dynamics.h"
 
-int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPosition[],double trk,double gs,double vs){
+int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]){
 
     double maxInputNorm = fdata->paramData.getValue("RES_SPEED");
+    double trk = velocity[0];
+    double gs = velocity[1];
+    double vs = velocity[2];
 
     // Reroute flight plan
     std::vector<Vect3> TrafficPos;
