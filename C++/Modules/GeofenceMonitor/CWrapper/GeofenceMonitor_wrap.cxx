@@ -1051,6 +1051,24 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC /*aaaaaa*/SwigObj * _wrap_FlightData_GetPolyPath(SwigObj * carg1) {
+    PolyPath * cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    /*aaaaaa*/SwigObj * result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    cppresult =  (PolyPath *)(arg1)->GetPolyPath();
+    {
+      result = (SwigObj*) SWIG_create_object(SWIG_STR(PolyPath));
+      result->obj = (void*) cppresult;
+    }
+    return result;
+  }
+  
+  
   SWIGEXPORTC void _wrap_delete_FlightData(SwigObj * carg1) {
     SWIG_remove_registry_entry(carg1);
     SWIG_destroy_object(carg1);
@@ -1254,6 +1272,19 @@ extern "C" {
     cppresult =  (int)(arg1)->GetNumConflicts();
     result = cppresult;
     return result;
+  }
+  
+  
+  SWIGEXPORTC void _wrap_GeofenceMonitor_GetConflictStatus(SwigObj * carg1, bool * carg2) {
+    GeofenceMonitor *arg1 = (GeofenceMonitor *) 0 ;
+    bool *arg2 ;
+    
+    {
+      if (carg1)
+      arg1 = (GeofenceMonitor *) carg1->obj;
+    }
+    arg2 = (bool *) carg2;
+    (arg1)->GetConflictStatus(arg2);
   }
   
   

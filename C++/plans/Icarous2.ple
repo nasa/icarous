@@ -17,7 +17,7 @@ Command ArmMotors();
 Command pprint(...);
 
 // Library plans
-LibraryAction CONFLICT_MANAGEMENT (In Integer numMissionWP);
+LibraryAction CONFLICT_MANAGEMENT();
 
 ICAROUS:
 {
@@ -136,7 +136,7 @@ ICAROUS:
 	    StartCondition _cruiseStatus;
 
 	    // Check for conflicts;
-
+	    LibraryCall CONFLICT_MANAGEMENT();
 	    
 	}// End of CRUISE
 

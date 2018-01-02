@@ -10,14 +10,16 @@
       SetYaw,
       Takeoff,
       ArmMotors,
-      Takeoff
+      Takeoff,
+      CheckFenceViolation
     </CommandNames>
     <LookupNames>
       missionStart,
       armStatus,
       takeoffStatus,
       position,
-      velocity
+      velocity,
+      totalMissionWP
     </LookupNames> 
   </Adapter>
 </Interfaces>

@@ -7,7 +7,7 @@
 #include <Icarous_msg.h>
 #include "interface.h"
 
-bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
+bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
 
     plexil_interface_t *msg;
     msg = (plexil_interface_t *) appdataInt.INTERFACEMsgPtr;
@@ -16,6 +16,7 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
 
     // Initialize plexilInput message
     memset(&plexilInput.plxData, 0, sizeof(plexilInput.plxData));
+    CFE_SB_InitMsg(&plexilInput,PLEXIL_INPUT_MID,sizeof(plexil_interface_t),TRUE);
     plexilInput.plxData.mType = _LOOKUP_RETURN_;
     strcpy(plexilInput.plxData.name,msg->plxData.name);
     char* b= plexilInput.plxData.buffer;
@@ -27,6 +28,7 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
                 bool start = (int) startMission.param1 ? true : false;
                 startMission.param1 = 0;
                 b = serializeBool(false, start, b);
+                SendSBMsg(plexilInput);
             } else if (CHECK_NAME(msg->plxData, "armStatus")) {
                 int32_t result = -1;
                 OS_printf("arming status check\n");
@@ -34,6 +36,7 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
                     result = (int) ack.result == 0 ? 1 : 0;
                 }
                 b = serializeInt(false, result, b);
+                SendSBMsg(plexilInput);
             } else if (CHECK_NAME(msg->plxData, "takeoffStatus")) {
                 int32_t result = -1;
                 if (ack.name == _TAKEOFF_) {
@@ -41,9 +44,11 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
                     result = (int) ack.result == 0 ? 1 : 0;
                 }
                 b = serializeInt(false, result, b);
+                SendSBMsg(plexilInput);
             } else if (CHECK_NAME(msg->plxData, "position")) {
                 double _position[3] = {position.latitude, position.longitude, position.altitude_rel};
                 b = serializeRealArray(3, _position, b);
+                SendSBMsg(plexilInput);
             } else if (CHECK_NAME(msg->plxData, "velocity")) {
                 double angle = 360 + atan2(position.vy, position.vx) * 180 / M_PI;
                 double track = fmod(angle, 360);
@@ -51,16 +56,17 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
                 double verticalSpeed = position.vz;
                 double _velocity[3] = {track, groundSpeed, verticalSpeed};
                 b = serializeRealArray(3, _velocity, b);
+                SendSBMsg(plexilInput);
             } else if (CHECK_NAME(msg->plxData, "numMissionWP")) {
                 //TODO: move this into the trajectory app?
-                //OS_printf("received lookup numMissionWP\n");
-                b = serializeInt(false, wpdata.totalWayPoints, b);
+                int32_t result = wpdata.totalWayPoints;
+                b = serializeInt(false, result, b);
+                SendSBMsg(plexilInput);
             } else {
-                OS_printf("******* unhandled lookup ************\n");
-                int32_t result = -1;
-                b = serializeInt(false,result,b);
+                //OS_printf("******* unhandled lookup ************\n");
+                //int32_t result = -1;
+                //b = serializeInt(false,result,b);
             }
-            SendSBMsg(plexilInput);
             break;
         }
 
@@ -146,6 +152,8 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
                 mavlink_msg_command_long_pack(255, 0, msg, 1, 0, MAV_CMD_DO_CHANGE_SPEED, 0,
                                               1, (float) speed, 0, 0, 0, 0, 0);
                 break;
+            } else{
+                send =false;
             }
             break;
         }

@@ -33,6 +33,7 @@ public:
     void CheckViolation(double position[],double track,double groundSpeed,double verticalSpeed);
     bool CheckWPFeasibility(double fromPosition[],double toPosition[]);
     int GetNumConflicts();
+    void GetConflictStatus(bool conflicts[]);
     void GetConflict(int id,int& fenceId,bool& conflict,bool& violation,double recoveryPoint[]);
     void GetClosestRecoveryPoint(double currentPosition[],double recoveryPosition[]);
 };

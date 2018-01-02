@@ -20,10 +20,12 @@ void GeoPlxMsgHandler(plexil_interface_t* msg){
         b = deSerializeRealArray(position,b);
         b = deSerializeRealArray(velocity,b);
         GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,position,velocity[0],velocity[1],velocity[2]);
-        int32_t n = GeofenceMonitor_GetNumConflicts(geofenceAppData.gfMonitor);
-        serializeInt(false,n,gfPlexilMsg.plxData.buffer);
+        bool conflicts[2];
+        GeofenceMonitor_GetConflictStatus(geofenceAppData.gfMonitor,conflicts);
+        serializeBoolArray(2,conflicts,gfPlexilMsg.plxData.buffer);
         SendSBMsg(gfPlexilMsg);
     }else if(CHECK_NAME(msg->plxData,"CheckWPFeasbility")){
+        OS_printf("Received WP feasbilility check command from plexil\n");
         double fromPosition[3];
         double toPosition[3];
         b = deSerializeRealArray(fromPosition,b);
@@ -32,6 +34,7 @@ void GeoPlxMsgHandler(plexil_interface_t* msg){
         serializeBool(false,status,gfPlexilMsg.plxData.buffer);
         SendSBMsg(gfPlexilMsg);
     }else if(CHECK_NAME(msg->plxData,"GetRecoveryPosition")){
+        OS_printf("Received recovery position command from plexil\n");
         double currentPos[3];
         b = deSerializeRealArray(currentPos,b);
         double recoveryPoisiton[3];

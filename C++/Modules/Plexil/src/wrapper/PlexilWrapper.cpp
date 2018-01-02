@@ -60,7 +60,8 @@ int plexil_init(int argc, char** argv,struct plexilExec** exec,struct plexilInte
   bool useResourceFile = true;
 
     //PLEXIL::setDebugOutputStream(std::cout);
-    //PLEXIL::enableMatchingDebugMessages("CfsAdapter:executeCommand");
+    //PLEXIL::enableMatchingDebugMessages("CfsAdapter:");
+
 
   // if not enough parameters, print usage
   if (argc < 2) {
@@ -383,7 +384,7 @@ void plexil_return(struct plexilInterfaceAdapter* adp,PlexilMsg* msg){
 }
 
 char* serializeBool(bool arrayelement,const bool o,char* b){
-    arrayelement?0:*b++ = BOOLEAN_TYPE;
+    arrayelement?0:*b++ = _BOOLEAN_TYPE_;
     *b++ = (char) o;
     return b;
 }
@@ -391,7 +392,7 @@ char* serializeBool(bool arrayelement,const bool o,char* b){
 char* serializeInt(bool arrayelement,const int32_t val,char* b){
 
     int32_t o = val;
-    arrayelement?0:*b++ = INTEGER_TYPE;
+    arrayelement?0:*b++ = _INTEGER_TYPE_;
     // Store in big-endian format
     *b++ = (char) (0xFF & (o >> 24));
     *b++ = (char) (0xFF & (o >> 16));
@@ -408,7 +409,7 @@ char* serializeReal(bool arrayelement,const double val,char* b){
     union realInt data;
     data.r = val;
     data.l = data.l;
-    arrayelement?0:*b++ = REAL_TYPE;
+    arrayelement?0:*b++ = _REAL_TYPE_;
     // Store in big-endian format
     *b++ = (char) (0xFF & (data.l >> 56));
     *b++ = (char) (0xFF & (data.l >> 48));
@@ -427,7 +428,7 @@ char* serializeString(int size,const char val[],char* b){
     if (s > 0xFFFFFF)
         return NULL; // too big
 
-    *b++ = STRING_TYPE;
+    *b++ = _STRING_TYPE_;
     // Put 3 bytes of size first - std::string may contain embedded NUL
     *b++ = (char) (0xFF & (s >> 16));
     *b++ = (char) (0xFF & (s >> 8));
@@ -442,7 +443,7 @@ char* serializeBoolArray(int size,const bool val[],char* b){
         return NULL; // too big to serialize
 
     // Write type code
-    *b++ = (char) BOOLEAN_ARRAY_TYPE;
+    *b++ = (char) _BOOLEAN_ARRAY_TYPE_;
 
     // Write 3 bytes of size
     *b++ = (char) (0xFF & (s >> 16));
@@ -462,14 +463,14 @@ char* serializeBoolArray(int size,const bool val[],char* b){
 }
 
 const char* deSerializeBool(bool arrayelement,bool* o,const char* b){
-    if (!arrayelement && BOOLEAN_TYPE != (ValueType) *b++)
+    if (!arrayelement && _BOOLEAN_TYPE_ != (ValueType) *b++)
         return NULL;
     *o = (Boolean) *b++;
     return b;
 }
 
 const char* deSerializeInt(bool arrayelement,int32_t* val,const char* b){
-    if (!arrayelement && INTEGER_TYPE != (ValueType) *b++)
+    if (!arrayelement && _INTEGER_TYPE_ != (ValueType) *b++)
         return NULL;
     uint32_t n = ((uint32_t) (unsigned char) *b++) << 8;
     n = (n + (uint32_t) (unsigned char) *b++) << 8;
@@ -481,7 +482,7 @@ const char* deSerializeInt(bool arrayelement,int32_t* val,const char* b){
 }
 
 const char* deSerializeReal(bool arrayelement,double* val,const char* b){
-    if (!arrayelement && REAL_TYPE != (ValueType) *b++)
+    if (!arrayelement && _REAL_TYPE_ != (ValueType) *b++)
         return NULL;
     union realInt{
         double r;
@@ -502,7 +503,7 @@ const char* deSerializeReal(bool arrayelement,double* val,const char* b){
 }
 
 const char* deSerializeString(char val[],const char* b){
-    if (STRING_TYPE != (ValueType) *b++)
+    if (_STRING_TYPE_ != (ValueType) *b++)
         return NULL;
 
     // Get 3 bytes of size
@@ -520,7 +521,7 @@ char* serializeIntArray(int size,const int32_t val[],char* b){
         return NULL; // too big to serialize
 
     // Write type code
-    *b++ = (char) INTEGER_ARRAY_TYPE;
+    *b++ = (char) _INTEGER_ARRAY_TYPE_;
 
     // Write 3 bytes of size
     *b++ = (char) (0xFF & (s >> 16));
@@ -549,7 +550,7 @@ char* serializeRealArray(int size,const double val[],char* b){
         return NULL; // too big to serialize
 
     // Write type code
-    *b++ = (char) REAL_ARRAY_TYPE;
+    *b++ = (char) _REAL_ARRAY_TYPE_;
 
     // Write 3 bytes of size
     *b++ = (char) (0xFF & (s >> 16));
@@ -575,7 +576,7 @@ char* serializeRealArray(int size,const double val[],char* b){
 char const *deSerializeBoolArray(bool val[],const char* b)
 {
     // Check type code
-    if (BOOLEAN_ARRAY_TYPE !=  *b++)
+    if (_BOOLEAN_ARRAY_TYPE_ !=  *b++)
         return NULL; // not an appropriate array
 
     // Get 3 bytes of size
@@ -596,7 +597,7 @@ char const *deSerializeBoolArray(bool val[],const char* b)
 char const *deSerializeIntArray(int32_t val[],const char* b)
 {
     // Check type code
-    if (INTEGER_ARRAY_TYPE !=  *b++)
+    if (_INTEGER_ARRAY_TYPE_ !=  *b++)
         return NULL; // not an appropriate array
 
     // Get 3 bytes of size
@@ -618,7 +619,7 @@ char const *deSerializeIntArray(int32_t val[],const char* b)
 char const *deSerializeRealArray(double val[],const char* b)
 {
     // Check type code
-    if (REAL_ARRAY_TYPE !=  *b++)
+    if (_REAL_ARRAY_TYPE_ !=  *b++)
         return NULL; // not an appropriate array
 
     // Get 3 bytes of size

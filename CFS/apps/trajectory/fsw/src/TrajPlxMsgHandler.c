@@ -69,18 +69,7 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
         }
     }else{
 
-        trajPlexilMsg.plxData.id = msg->plxData.id;
-        trajPlexilMsg.plxData.mType = _LOOKUP_RETURN_;
 
-        if (CHECK_NAME(msg->plxData, "totalMissionWP")) {
-            char planID[10];
-            memset(planID, 0, 10);
-            deSerializeString(planID, b);
-            int n = PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner, planID);
-            serializeInt(false, n, trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
-
-        }
 
 
     }

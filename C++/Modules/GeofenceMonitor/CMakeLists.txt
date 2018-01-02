@@ -24,5 +24,5 @@ add_executable(GeofenceTest Test/main.cpp)
 
 target_link_libraries(GeofenceTest FlightDataManager ACCoRD GeofenceMonitor)
 
-#add_executable(GeofenceTestC Test/main.c CWrapper/GeofenceMonitor_proxy.c)
-#target_link_libraries(GeofenceTestC GeofenceMonitor)
+add_executable(GeofenceTestC Test/main.c CWrapper/GeofenceMonitor_proxy.c)
+target_link_libraries(GeofenceTestC GeofenceMonitor)

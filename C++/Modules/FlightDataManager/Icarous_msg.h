@@ -8,14 +8,9 @@
 
 #include <stdint.h>
 
-#ifdef CFS 
-#include "cfe.h"
-#define TLM_HDR_SIZE CFE_SB_TLM_HDR_SIZE
-#define CMD_HDR_SIZE CFE_SB_CMD_HDR_SIZE
-#else
-#define TLM_HDR_SIZE 1
-#define CMD_HDR_SIZE 1
-#endif
+#define TLM_HDR_SIZE 12
+#define CMD_HDR_SIZE 8
+
 
 // Icarous Modes enumeration
 typedef enum {

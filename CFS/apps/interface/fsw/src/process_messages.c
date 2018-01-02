@@ -409,7 +409,7 @@ void INTERFACE_ProcessPacket(){
 
 		case PLEXIL_OUTPUT_MID: {
             mavlink_message_t msg;
-			bool send = HandlePlexilMessages(&msg);
+			bool send = IntfPlxMsgHandler(&msg);
             if(send) {
                 //OS_printf("sending to ap\n");
                 writePort(&appdataInt.ap, &msg);

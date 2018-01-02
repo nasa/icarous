@@ -45,6 +45,7 @@ int _wrap_FlightData_GetTotalFences(SwigObj * carg1);
 double _wrap_FlightData_getFlightPlanSpeed(SwigObj * carg1, SwigObj * carg2, int carg3);
 void _wrap_FlightData_GetTraffic_pFlightData_i_rlarcfm_Position_rlarcfm_Velocity(SwigObj * carg1, int carg2, SwigObj * carg3, SwigObj * carg4);
 /*aaaaaa*/SwigObj * _wrap_FlightData_GetGeofence(SwigObj * carg1, int carg2);
+/*aaaaaa*/SwigObj * _wrap_FlightData_GetPolyPath(SwigObj * carg1);
 void _wrap_delete_FlightData(FlightData * carg1);
 void _wrap_GeofenceConflict_fenceId_set(SwigObj * carg1, int carg2);
 int _wrap_GeofenceConflict_fenceId_get(SwigObj * carg1);
@@ -60,6 +61,7 @@ GeofenceMonitor * _wrap_new_GeofenceMonitor(SwigObj * carg1);
 void _wrap_GeofenceMonitor_CheckViolation(SwigObj * carg1, /*aaa*/ double * carg2, double carg3, double carg4, double carg5);
 bool _wrap_GeofenceMonitor_CheckWPFeasibility(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3);
 int _wrap_GeofenceMonitor_GetNumConflicts(SwigObj * carg1);
+void _wrap_GeofenceMonitor_GetConflictStatus(SwigObj * carg1, bool * carg2);
 void _wrap_GeofenceMonitor_GetConflict(SwigObj * carg1, int carg2, int * carg3, bool * carg4, bool * carg5, /*aaa*/ double * carg6);
 void _wrap_GeofenceMonitor_GetClosestRecoveryPoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3);
 void _wrap_delete_GeofenceMonitor(GeofenceMonitor * carg1);
@@ -172,6 +174,9 @@ void FlightData_GetTraffic_pFlightData_i_rlarcfm_Position_rlarcfm_Velocity(SwigO
 /*aaaaaa*/SwigObj * FlightData_GetGeofence(SwigObj * carg1, int carg2) {
   return _wrap_FlightData_GetGeofence(carg1, carg2);
 }
+/*aaaaaa*/SwigObj * FlightData_GetPolyPath(SwigObj * carg1) {
+  return _wrap_FlightData_GetPolyPath(carg1);
+}
 void delete_FlightData(FlightData * carg1) {
   return _wrap_delete_FlightData(carg1);
 }
@@ -216,6 +221,9 @@ bool GeofenceMonitor_CheckWPFeasibility(SwigObj * carg1, /*aaa*/ double * carg2,
 }
 int GeofenceMonitor_GetNumConflicts(SwigObj * carg1) {
   return _wrap_GeofenceMonitor_GetNumConflicts(carg1);
+}
+void GeofenceMonitor_GetConflictStatus(SwigObj * carg1, bool * carg2) {
+  return _wrap_GeofenceMonitor_GetConflictStatus(carg1, carg2);
 }
 void GeofenceMonitor_GetConflict(SwigObj * carg1, int carg2, int * carg3, bool * carg4, bool * carg5, /*aaa*/ double * carg6) {
   return _wrap_GeofenceMonitor_GetConflict(carg1, carg2, carg3, carg4, carg5, carg6);

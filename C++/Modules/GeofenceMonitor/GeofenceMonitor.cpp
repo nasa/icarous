@@ -47,7 +47,6 @@ void GeofenceMonitor::CheckViolation(double position[],double trk,double gs,doub
     double hstepback = fdata->paramData.getValue("HSTEPBACK");
     double vstepback = fdata->paramData.getValue("VSTEPBACK");
 
-
     for(int i = 0;i<n;i++) {
         fence *gf = fdata->GetGeofence(i);
 
@@ -182,5 +181,21 @@ void  GeofenceMonitor::GetClosestRecoveryPoint(double currPos[],double recoveryP
               recoveryPos[2] = _recPos[2];
 
           }
+    }
+}
+
+void GeofenceMonitor::GetConflictStatus(bool conflicts[]) {
+
+    conflicts[0] = false; //Keep in conflict
+    conflicts[1] = false; // Keep out conflict
+    for(GeofenceConflict it:conflictList){
+
+        int id = it.fenceId;
+        fence *gf = fdata->GetGeofence(id);
+        if(gf->GetType() == KEEP_IN){
+            conflicts[0] |= it.conflictstatus;
+        }else{
+            conflicts[1] |= it.conflictstatus;
+        }
     }
 }

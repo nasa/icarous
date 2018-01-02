@@ -217,7 +217,7 @@ void INTERFACE_ProcessPacket(void);
 int32_t InterfaceTableValidationFunc(void *TblPtr);
 
 
-bool HandlePlexilMessages(mavlink_message_t *message);
+bool IntfPlxMsgHandler(mavlink_message_t *message);
 
 /**
  * Global variable declaration

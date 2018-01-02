@@ -2,12 +2,12 @@
 // Plan to fly to a specific waypoint
 
 Boolean Command CheckDirectPathFeasibility(Real fromPosition[3],Real toPosition[3]);
-Boolean Command ComputePath(String planID,Real fromPosition[3],Real fromVelocity[3],Real toPosition[3]);
+Boolean Command FindNewPath(String planID,String algorithm,Real fromPosition[3],Real fromVelocity[3],Real toPosition[3]);
 Integer Command GetTotalWaypoints(String planID);
 Real[3] Command GetWaypoint(String planID,Integer index);
 Real Command ComputeDistance(Real fromPosition[3],Real toPosition[3]);
 Command Goto(Real position[3]);
-
+Command pprint(...);
 Real[3] Lookup position;
 Real[3] Lookup velocity;
 
@@ -24,6 +24,8 @@ GOTO_POSITION:{
     
     CurrentPosition = Lookup(position);
     CurrentVelocity = Lookup(velocity);
+
+    pprint("In Library call GOTO_POSITION");
     
     CHECK_FEASIBILITY:{
 	EndCondition isKnown(targetFeasibility);
@@ -55,7 +57,7 @@ GOTO_POSITION:{
 		
 	{	    
 	    EndCondition isKnown(status);
-	    status = ComputePath("Plan1",CurrentPosition,CurrentVelocity,TargetPosition);
+	    status = FindNewPath("Plan1","ASTAR",CurrentPosition,CurrentVelocity,TargetPosition);
 	}
 
 	if(!status){

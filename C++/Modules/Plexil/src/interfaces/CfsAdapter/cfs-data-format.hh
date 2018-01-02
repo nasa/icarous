@@ -51,13 +51,21 @@ typedef enum {
 
 // Icarous return types
 typedef enum{
-    _REAL_,
-    _INTEGER_,
-    _BOOLEAN_,
-    _REAL_ARRAY_,
-    _INTEGER_ARRAY_,
-    _BOOLEAN_ARRAY_,
-    _STRING_
+    _UNKNOWN_TYPE_ = 0,
+    // User scalar types
+    _BOOLEAN_TYPE_,
+    _INTEGER_TYPE_,
+    _REAL_TYPE_,
+    _STRING_TYPE_,
+
+    // User array types
+    _ARRAY_TYPE_ = 16, // Not a valid type, but an offset from scalar types
+    _BOOLEAN_ARRAY_TYPE_,
+    _INTEGER_ARRAY_TYPE_,
+    _REAL_ARRAY_TYPE_,
+    _STRING_ARRAY_TYPE_,
+    // more to come?
+
 }dataType_t;
 
 typedef struct{
