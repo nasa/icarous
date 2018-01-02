@@ -46,6 +46,8 @@ void GEOFENCE_ProcessPacket();
 
 void GEOFENCE_Run();
 
+void GeoPlxMsgHandler(plexil_interface_t* msg);
+
 geofenceAppData_t geofenceAppData;
 plexil_interface_t gfPlexilMsg;
 

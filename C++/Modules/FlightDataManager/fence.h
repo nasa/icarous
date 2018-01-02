@@ -82,14 +82,13 @@ private:
 	SimplePoly geoPoly1;          // Expanded/Contracted polygon in lat,lon
 	Poly3D geoPoly3D;             // 3D polygon in cartesian coordinates
 	CDPolycarp geoPolyCarp;
-	PolyPath geoPolyPath;
 	PolycarpResolution geoPolyResolution;
 	PolycarpDetection geoPolyDetect;
 	CDIIPolygon geoCDIIPolygon;
 	std::vector<Vect2> fenceVertices0; // Cartesian coordinates of vertices of geoPoly0
 	std::vector<Vect2> fenceVertices1; //Cartesian coordinates of vertices of geoPoly1
 	Position recoveryPoint;
-
+	PolyPath geoPolyPath;
 
 public:
 	fence(){};

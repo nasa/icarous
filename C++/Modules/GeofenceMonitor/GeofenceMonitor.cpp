@@ -161,3 +161,26 @@ void GeofenceMonitor::GetConflict(int id, int& fenceId, bool& conflict, bool& vi
         }
     }
 }
+
+void  GeofenceMonitor::GetClosestRecoveryPoint(double currPos[],double recoveryPos[]) {
+    double dist;
+    double mindist = MAXDOUBLE;
+    double _recPos[3];
+    for(GeofenceConflict it:conflictList){
+            int fenceId = it.fenceId;
+            bool conflict = it.conflictstatus;
+            bool violation = it.violationStatus;
+            _recPos[0] = it.recoveryPoint[0];
+            _recPos[1] = it.recoveryPoint[1];
+            _recPos[2] = it.recoveryPoint[2];
+
+           dist = sqrt(pow(_recPos[0] - currPos[0],2) + pow(_recPos[1] - currPos[1],2));
+          if(dist < mindist){
+              mindist = dist;
+              recoveryPos[0] = _recPos[0];
+              recoveryPos[1] = _recPos[1];
+              recoveryPos[2] = _recPos[2];
+
+          }
+    }
+}

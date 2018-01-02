@@ -3,6 +3,7 @@
 //
 #include <Icarous_msg.h>
 #include <Plexil_msg.h>
+#include <cfs-data-format.hh>
 #include "geofence.h"
 
 CFE_EVS_BinFilter_t  GEOFENCE_EventFilters[] =
@@ -65,7 +66,7 @@ void GEOFENCE_AppInit(void) {
                       GEOFENCE_MAJOR_VERSION,
                       GEOFENCE_MINOR_VERSION);
 
-    geofenceAppData.fdata = new_FlightData("ram/icarous.txt");
+    geofenceAppData.fdata = new_FlightData("../ram/icarous.txt");
     geofenceAppData.gfMonitor = new_GeofenceMonitor(geofenceAppData.fdata);
 
 }
@@ -81,6 +82,7 @@ void GEOFENCE_ProcessPacket(){
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(geofenceAppData.Geofence_MsgPtr);
 
+
     switch(MsgId){
         case ICAROUS_GEOFENCE_MID: {
             geofence_t *gf;
@@ -91,31 +93,8 @@ void GEOFENCE_ProcessPacket(){
             break;
         }
         case PLEXIL_OUTPUT_MID: {
-            plexil_interface_t* msg;
-            msg = (plexil_interface_t*)geofenceAppData.Geofence_MsgPtr;
-            char* b = msg->plxData.buffer;
-
-            plexil_interface_t returnMsg;
-            returnMsg.plxData.mType = _COMMAND_RETURN_;
-            returnMsg.plxData.id = msg->plxData.id;
-            if(!strcmp(msg->plxData.name,"CheckFenceViolation")){
-                double position[3];
-                double velocity[3];
-                b = deSerializeRealArray(position,b);
-                b = deSerializeRealArray(velocity,b);
-                GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,position,velocity[0],velocity[1],velocity[2]);
-                int32_t n = GeofenceMonitor_GetNumConflicts(geofenceAppData.gfMonitor);
-                serializeInt(false,n,returnMsg.plxData.buffer);
-                SendSBMsg(returnMsg);
-            }else if(!strcmp(msg->plxData.name,"CheckWPFeasbility")){
-                double fromPosition[3];
-                double toPosition[3];
-                b = deSerializeRealArray(fromPosition,b);
-                b = deSerializeRealArray(toPosition,b);
-                bool status = GeofenceMonitor_CheckWPFeasibility(geofenceAppData.gfMonitor,fromPosition,toPosition);
-                serializeBool(false,status,returnMsg.plxData.buffer);
-                SendSBMsg(returnMsg);
-            }
+            plexil_interface_t* msg = (plexil_interface_t*)geofenceAppData.Geofence_MsgPtr;
+            GeoPlxMsgHandler(msg);
             break;
         }
     }

@@ -1278,6 +1278,21 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC void _wrap_GeofenceMonitor_GetClosestRecoveryPoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3) {
+    GeofenceMonitor *arg1 = (GeofenceMonitor *) 0 ;
+    double *arg2 ;
+    double *arg3 ;
+    
+    {
+      if (carg1)
+      arg1 = (GeofenceMonitor *) carg1->obj;
+    }
+    arg2 = (double *) carg2;
+    arg3 = (double *) carg3;
+    (arg1)->GetClosestRecoveryPoint(arg2,arg3);
+  }
+  
+  
   SWIGEXPORTC void _wrap_delete_GeofenceMonitor(SwigObj * carg1) {
     SWIG_remove_registry_entry(carg1);
     SWIG_destroy_object(carg1);

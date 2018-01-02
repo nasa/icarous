@@ -61,6 +61,7 @@ void _wrap_GeofenceMonitor_CheckViolation(SwigObj * carg1, /*aaa*/ double * carg
 bool _wrap_GeofenceMonitor_CheckWPFeasibility(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3);
 int _wrap_GeofenceMonitor_GetNumConflicts(SwigObj * carg1);
 void _wrap_GeofenceMonitor_GetConflict(SwigObj * carg1, int carg2, int * carg3, bool * carg4, bool * carg5, /*aaa*/ double * carg6);
+void _wrap_GeofenceMonitor_GetClosestRecoveryPoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3);
 void _wrap_delete_GeofenceMonitor(GeofenceMonitor * carg1);
 
 void FlightData_paramData_set(SwigObj * carg1, SwigObj * carg2) {
@@ -218,6 +219,9 @@ int GeofenceMonitor_GetNumConflicts(SwigObj * carg1) {
 }
 void GeofenceMonitor_GetConflict(SwigObj * carg1, int carg2, int * carg3, bool * carg4, bool * carg5, /*aaa*/ double * carg6) {
   return _wrap_GeofenceMonitor_GetConflict(carg1, carg2, carg3, carg4, carg5, carg6);
+}
+void GeofenceMonitor_GetClosestRecoveryPoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3) {
+  return _wrap_GeofenceMonitor_GetClosestRecoveryPoint(carg1, carg2, carg3);
 }
 void delete_GeofenceMonitor(GeofenceMonitor * carg1) {
   return _wrap_delete_GeofenceMonitor(carg1);

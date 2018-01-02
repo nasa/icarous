@@ -329,6 +329,7 @@ void FlightData::InputGeofenceData(geofence_t* gf){
 
         if(fenceList.size() <= gf->index){
             fenceList.push_back(newfence);
+            geoPolyPath.addPolygon(*newfence.GetPoly(),Velocity::makeVxyz(0,0,0),0);
             std::cout << "Received fence: "<<gf->index <<std::endl;
         }
         else{
@@ -336,7 +337,9 @@ void FlightData::InputGeofenceData(geofence_t* gf){
             for(it = fenceList.begin(); it != fenceList.end(); ++it){
                 if(it->GetID() == newfence.GetID()){
                     it = fenceList.erase(it);
+                    geoPolyPath.remove(it->GetID());
                     fenceList.insert(it,newfence);
+                    geoPolyPath.addPolygon(*newfence.GetPoly(),Velocity::makeVxyz(0,0,0),0);
                     break;
                 }
             }
@@ -354,4 +357,8 @@ fence* FlightData::GetGeofence(int id) {
 
 int FlightData::GetTotalFences(){
     return fenceList.size();
+}
+
+PolyPath* FlightData::GetPolyPath(){
+    return &geoPolyPath;
 }

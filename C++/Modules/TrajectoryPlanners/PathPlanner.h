@@ -19,6 +19,8 @@ class PathPlanner{
 private:
     FlightData* fdata;
     std::list<Plan> flightPlans;
+    CDPolycarp geoPolyCarp;
+    CDIIPolygon geoCDIIPolygon;
     Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
     Plan* GetPlan(char planID[]);
     int64_t FindPathAstar(char planID[],double fromPosition[],double toPosition[]);
@@ -40,6 +42,8 @@ public:
     double GetInterceptHeadingToPlan_c(char planID[],int leg,double currentPos[]);
     void ManueverToIntercept(Plan* fp,int leg,double currPosition[],double velocity[]);
     void ManueverToIntercept_c(char* planID,int leg,double currPosition[],double velocity[]);
+    void GetExitPoint(char* planID,double currentPoisition[],int nextWP,double exitPosition[]);
+    double GetApproxElapsedPlanTime(Plan* fp,double currentPos[],int nextWP);
 };
 
 #endif

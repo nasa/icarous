@@ -34,6 +34,7 @@ private:
     larcfm::AircraftState acState;
     larcfm::Plan missionPlan;
     larcfm::Plan resolutionPlan;
+    larcfm::PolyPath geoPolyPath;
     std::list<fence> fenceList;
     std::list<fence>::iterator fenceListIt;
     std::list<GenericObject> trafficList;
@@ -97,6 +98,7 @@ public:
     double getFlightPlanSpeed(Plan* fp,int nextWP);
     void GetTraffic(int id,larcfm::Position& pos,larcfm::Velocity& vel);
     fence* GetGeofence(int id);
+    PolyPath* GetPolyPath();
 };
 
 

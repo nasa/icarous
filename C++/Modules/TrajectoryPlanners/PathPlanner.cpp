@@ -2,12 +2,14 @@
 // Created by Swee Balachandran on 12/14/17.
 //
 #include <cstring>
+#include <PlanUtil.h>
 #include "PathPlanner.h"
 
 using namespace std;
 
 PathPlanner::PathPlanner(FlightData* fd) {
     fdata = fd;
+    geoCDIIPolygon = CDIIPolygon(&geoPolyCarp);
 }
 
 int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, double *toPosition,
@@ -294,17 +296,17 @@ double PathPlanner::GetInterceptHeadingToPlan(Plan* fp,int leg,double currentPos
     return pos.track(goal)*180/M_PI;
 }
 
-double PathPlanner::ComputeXtrackDistance_c(char *planID, int leg, double *position, double *offset) {
+double PathPlanner::ComputeXtrackDistance_c(char *planID, int leg, double position[], double offset[]) {
     Plan* fp = GetPlan(planID);
     return ComputeXtrackDistance(fp,leg,position,offset);
 }
 
-void PathPlanner::GetPositionOnPlan_c(char *planID, int leg, double *currentPos, double *position) {
+void PathPlanner::GetPositionOnPlan_c(char *planID, int leg, double currentPos[], double position[]) {
     Plan* fp = GetPlan(planID);
     GetPositionOnPlan(fp,leg,currentPos,position);
 }
 
-double PathPlanner::GetInterceptHeadingToPlan_c(char *planID, int leg, double *currentPos) {
+double PathPlanner::GetInterceptHeadingToPlan_c(char *planID, int leg, double currentPos[]) {
     Plan* fp = GetPlan(planID);
     GetInterceptHeadingToPlan(fp,leg,currentPos);
 }
@@ -312,4 +314,33 @@ double PathPlanner::GetInterceptHeadingToPlan_c(char *planID, int leg, double *c
 void PathPlanner::ManueverToIntercept_c(char* planID,int leg,double currPosition[],double velocity[]){
     Plan* fp = GetPlan(planID);
     ManueverToIntercept(fp,leg,currPosition,velocity);
+}
+
+double PathPlanner::GetApproxElapsedPlanTime(Plan* fp,double currentPos[],int nextWP){
+    Position pos = Position::makeLatLonAlt(currentPos[0],"degree",currentPos[1],"degree",currentPos[2],"m");
+    double legDistance    = fp->pathDistance(nextWP - 1);
+    double legTime        = fp->time(nextWP) - fp->time(nextWP-1);
+    double lastWPDistance = fp->point(nextWP-1).position().distanceH(pos);
+    double currentTime    = fp->time(nextWP-1) + legTime/legDistance * lastWPDistance;
+
+    return currentTime;
+}
+
+void PathPlanner::GetExitPoint(char *planID,double currentPoisition[],int nextWP,double exitPosition[]) {
+    Plan* fp;
+    fp = GetPlan(planID);
+
+    double elapsedTime = GetApproxElapsedPlanTime(fp,currentPoisition,nextWP);
+
+    geoCDIIPolygon.detection(*fp,*fdata->GetPolyPath(),elapsedTime,fp->getLastTime());
+
+    double entryTime = geoCDIIPolygon.getTimeIn(0);
+    double exitTime = geoCDIIPolygon.getTimeOut(0);
+
+    Plan cutPlan = PlanUtil::cutDown(*fp,entryTime,exitTime);
+    Position lastPos = cutPlan.getLastPoint().position();
+
+    exitPosition[0] = lastPos.latitude();
+    exitPosition[1] = lastPos.longitude();
+    exitPosition[1] = lastPos.alt();
 }

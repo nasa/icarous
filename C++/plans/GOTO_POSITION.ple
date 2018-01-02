@@ -1,0 +1,118 @@
+// -*- Mode: Java -*-
+// Plan to fly to a specific waypoint
+
+Boolean Command CheckDirectPathFeasibility(Real fromPosition[3],Real toPosition[3]);
+Boolean Command ComputePath(String planID,Real fromPosition[3],Real fromVelocity[3],Real toPosition[3]);
+Integer Command GetTotalWaypoints(String planID);
+Real[3] Command GetWaypoint(String planID,Integer index);
+Real Command ComputeDistance(Real fromPosition[3],Real toPosition[3]);
+Command Goto(Real position[3]);
+
+Real[3] Lookup position;
+Real[3] Lookup velocity;
+
+GOTO_POSITION:{
+
+    In Real TargetPosition[3];
+    Real CurrentPosition[3];
+    Real CurrentVelocity[3];    
+    Boolean targetReached;
+    Boolean targetFeasibility;    
+    Integer nextWPIndex = 1;
+    Integer totalWPIndex;
+    EndCondition isKnown(targetReached);
+    
+    CurrentPosition = Lookup(position);
+    CurrentVelocity = Lookup(velocity);
+    
+    CHECK_FEASIBILITY:{
+	EndCondition isKnown(targetFeasibility);
+	targetFeasibility = CheckDirectPathFeasibility(CurrentPosition,TargetPosition);
+    }
+
+    BEE_LINE:{
+	SkipCondition !targetFeasibility;
+	Goto(TargetPosition);
+
+	{
+	    Real dist2nextWP;
+	    Repeat true;
+	    {
+		EndCondition isKnown(dist2nextWP);
+		dist2nextWP = ComputeDistance(CurrentPosition,TargetPosition);
+	    }
+
+	    if(dist2nextWP < 2.0){
+		targetReached = true;
+	    }endif
+		
+	}
+    }
+
+    PLAN_PATH:{
+	Boolean status;
+	SkipCondition targetFeasibility;
+		
+	{	    
+	    EndCondition isKnown(status);
+	    status = ComputePath("Plan1",CurrentPosition,CurrentVelocity,TargetPosition);
+	}
+
+	if(!status){
+	    targetReached = false;
+	}endif
+	
+	{
+	    EndCondition isKnown(totalWPIndex);
+	    totalWPIndex = GetTotalWaypoints("Plan1");
+	}
+    }
+
+    CHECK_WP_TRANSITION:{
+	Real NextWP[3];	
+	CurrentPosition = Lookup(position);
+	
+	{	    
+	    EndCondition isKnown(NextWP[0]);
+	    NextWP = GetWaypoint("Plan1",nextWPIndex);
+	}
+
+	Goto(NextWP);
+	
+	{
+	    Real dist2nextWP;
+	    Repeat true;
+	    
+	    {
+		EndCondition isKnown(dist2nextWP);
+		dist2nextWP = ComputeDistance(CurrentPosition,NextWP);
+	    }
+	    
+	    {
+		StartCondition dist2nextWP < 2.0;
+		nextWPIndex = nextWPIndex + 1;
+
+		{
+		    SkipCondition nextWPIndex <= totalWPIndex -1;
+		    targetReached = true;			
+		}
+
+		{
+		    Real _nextWP[3];
+		    StartCondition (nextWPIndex <= totalWPIndex - 1);
+		    
+		    {			
+			EndCondition isKnown(_nextWP[0]);
+			_nextWP = GetWaypoint("Plan1",nextWPIndex);
+		    }
+
+		    Goto(_nextWP);
+		    NextWP = _nextWP;
+		    
+		}
+
+	    }
+	    
+	}             
+    }
+}

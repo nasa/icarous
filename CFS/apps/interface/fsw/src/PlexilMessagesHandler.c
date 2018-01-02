@@ -93,7 +93,7 @@ bool HandlePlexilMessages(mavlink_message_t *msgMavlink){
             } else if (strcmp(msg->plxData.name, "Land") == 0) {
                 mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_NAV_LAND, 0, 0, 0, 0, 0, 0, 0, 0);
                 break;
-            } else if (strcmp(msg->plxData.name, "GOTOWP") == 0) {
+            } else if (strcmp(msg->plxData.name, "Goto") == 0) {
                 uint32_t tempSeq;
                 b = deSerializeInt(false,&tempSeq,b);
                 uint32_t seq = -1;
