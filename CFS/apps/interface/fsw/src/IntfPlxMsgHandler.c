@@ -99,7 +99,7 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
             } else if (strcmp(msg->plxData.name, "Land") == 0) {
                 mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_NAV_LAND, 0, 0, 0, 0, 0, 0, 0, 0);
                 break;
-            } else if (strcmp(msg->plxData.name, "Goto") == 0) {
+            } else if (strcmp(msg->plxData.name, "SetNextMissionWP") == 0) {
                 uint32_t tempSeq;
                 b = deSerializeInt(false,&tempSeq,b);
                 uint32_t seq = -1;
@@ -112,8 +112,9 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
                     }
                 }
                 mavlink_msg_mission_set_current_pack(255, 0, msgMavlink, 1, 0, seq);
+                OS_printf("Setting next mission WP %d\n",seq);
                 break;
-            } else if (strcmp(msg->plxData.name, "SETPOS") == 0) {
+            } else if (strcmp(msg->plxData.name, "SetPos") == 0) {
                 double _position[3];
                 b = deSerializeRealArray(_position,b);
                 double latitude = _position[0];
@@ -124,6 +125,7 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
                                                                 0b0000111111111000, (int) (latitude * 1E7),
                                                                 (int) (longitude * 1E7), (int) (altitude),
                                                                 0, 0, 0, 0, 0, 0, 0, 0);
+                OS_printf("Setting position\n");
                 break;
             } else if (strcmp(msg->plxData.name, "SETVEL") == 0) {
 

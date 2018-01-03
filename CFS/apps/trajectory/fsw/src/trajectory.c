@@ -91,7 +91,7 @@ void TRAJECTORY_ProcessPacket(){
             double speed = wp->speed;
             double id = wp->wayPointIndex;
             char name[] = "Plan0";
-            PathPlanner_InputFlightPlan(TrajectoryAppData.pplanner,name,id,position,speed);
+            PathPlanner_InputFlightPlan(TrajectoryAppData.pplanner,name,(int)id,position,speed);
             break;
         }
 

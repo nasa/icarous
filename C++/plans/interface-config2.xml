@@ -12,7 +12,9 @@
       ArmMotors,
       Takeoff,
       CheckFenceViolation,
-      GetRecoveryPosition
+      GetRecoveryPosition,
+      GetWaypoint,
+      SetNextMissionWP
     </CommandNames>
     <LookupNames>
       missionStart,

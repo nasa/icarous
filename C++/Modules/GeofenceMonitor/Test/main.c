@@ -64,7 +64,7 @@ int main(int argc,char** argv){
 
     bool val = GeofenceMonitor_CheckWPFeasibility(gfMonitor,fromPosition,toPosition);
 
-    printf("wp feasbility: %d\n",bool);
+    printf("wp feasbility: %d\n",val);
 
     return 0;
 

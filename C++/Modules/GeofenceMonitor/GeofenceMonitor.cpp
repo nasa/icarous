@@ -136,7 +136,7 @@ bool GeofenceMonitor::CheckWPFeasibility(double fromPosition[],double toPosition
 
     bool val = false;
     for (int i = 0; i < fdata->GetTotalFences(); ++i) {
-        val = val || CollisionDetection(fdata->GetGeofence(i),&currentPos, &vel, 0, 10000);
+        val = val || CollisionDetection(fdata->GetGeofence(i),&currentPos, &vel, 0, 10);
     }
 
     return !val;

@@ -74,17 +74,20 @@ Plan PathPlanner::ComputeGoAbovePlan(Position start,Position goal,double altFenc
 }
 
 void PathPlanner::GetWaypoint(char *planID, int wpID, double *waypoint) {
-    for(Plan pl: flightPlans){
-        if(strcmp(pl.getName().c_str(),planID)){
-            continue;
-        }else{
-            Position pos = pl.getPos(wpID);
-            waypoint[0] = pos.latitude();
-            waypoint[1] = pos.longitude();
-            waypoint[2] = pos.alt();
-            break;
-        }
+    Plan* fp = GetPlan(planID);
+    std::cout<<"Getting waypoing in:"<<planID<<std::endl;
+    if(fp != NULL){
+        Position pos = fp->getPos(wpID);
+        waypoint[0] = pos.latitude();
+        waypoint[1] = pos.longitude();
+        waypoint[2] = pos.alt();
+        printf("waypoint: %f,%f",waypoint[0],waypoint[1]);
+    }else{
+        waypoint[0] = 0;
+        waypoint[1] = 0;
+        waypoint[2] = 0;
     }
+
 }
 
 Plan* PathPlanner::GetPlan(char planID[]){
@@ -157,6 +160,7 @@ void PathPlanner::InputFlightPlan(char planID[],int wpID,double waypoint[],doubl
 
     if(fp != NULL) {
         fp->add(pos, (double) wpID);
+        std::cout<<"Total waypoints in "<<planID<<": "<<fp->size()<<std::endl;
         return;
     }
     else{

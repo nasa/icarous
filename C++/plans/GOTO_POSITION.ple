@@ -6,7 +6,7 @@ Boolean Command FindNewPath(String planID,String algorithm,Real fromPosition[3],
 Integer Command GetTotalWaypoints(String planID);
 Real[3] Command GetWaypoint(String planID,Integer index);
 Real Command ComputeDistance(Real fromPosition[3],Real toPosition[3]);
-Command Goto(Real position[3]);
+Command SetPos(Real position[3]);
 Command SetMode(String mode);
 Command pprint(...);
 Real[3] Lookup position;
@@ -15,13 +15,13 @@ Real[3] Lookup velocity;
 GOTO_POSITION:{
 
     In Real TargetPosition[3];
+    InOut Boolean resolutionCompleted;
     Real CurrentPosition[3];
-    Real CurrentVelocity[3];    
-    Boolean targetReached;
+    Real CurrentVelocity[3];
     Boolean targetFeasibility;    
     Integer nextWPIndex = 1;
     Integer totalWPIndex;
-    EndCondition isKnown(targetReached);
+    EndCondition isKnown(resolutionCompleted);
     
     CurrentPosition = Lookup(position);
     CurrentVelocity = Lookup(velocity);
@@ -37,18 +37,24 @@ GOTO_POSITION:{
 
     BEE_LINE:{
         SkipCondition !targetFeasibility;
-        Goto(TargetPosition);
+
+        pprint("Going to target:",TargetPosition);
+
+        SetPos(TargetPosition);
 
         {
             Real dist2nextWP;
             Repeat true;
+
+            CurrentPosition = Lookup(position);
+
             {
                 EndCondition isKnown(dist2nextWP);
                 dist2nextWP = ComputeDistance(CurrentPosition,TargetPosition);
             }
 
             if(dist2nextWP < 2.0){
-                targetReached = true;
+                resolutionCompleted = true;
             }endif
 
         }
@@ -64,7 +70,7 @@ GOTO_POSITION:{
         }
 
         if(!status){
-            targetReached = false;
+            resolutionCompleted = false;
         }endif
 
         {
@@ -82,7 +88,7 @@ GOTO_POSITION:{
             NextWP = GetWaypoint("Plan1",nextWPIndex);
         }
 
-        Goto(NextWP);
+        SetPos(NextWP);
 
         {
             Real dist2nextWP;
@@ -99,7 +105,7 @@ GOTO_POSITION:{
 
             {
                 SkipCondition nextWPIndex <= totalWPIndex -1;
-                targetReached = true;
+                resolutionCompleted = true;
             }
 
             {
@@ -111,7 +117,7 @@ GOTO_POSITION:{
                 _nextWP = GetWaypoint("Plan1",nextWPIndex);
                 }
 
-                Goto(_nextWP);
+                SetPos(_nextWP);
                 NextWP = _nextWP;
 
             }

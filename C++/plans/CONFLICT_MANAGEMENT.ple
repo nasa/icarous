@@ -8,10 +8,12 @@ Real[3] Lookup velocity;
 Real[3] Command GetWaypoint(String planID,Integer index);
 Boolean[2] Command CheckFenceViolation(Real Position[3],Real Velocity[3]);
 Real[3] Command GetRecoveryPosition(Real Position[3]);
+Command SetMode(String mode);
+Command SetNextMissionWP(Integer index);
 Command pprint(...);
 
 // Library plans
-LibraryAction GOTO_POSITION (In Real CurrentPos[3],In Real CurrentVel[3],In Real TargetPosition[3]);
+LibraryAction GOTO_POSITION (In Real TargetPosition[3],InOut Boolean resolutionCompleted);
 
 CONFLICT_MANAGEMENT:
 {
@@ -24,7 +26,7 @@ CONFLICT_MANAGEMENT:
     Boolean resolutionActive = false;
     Real newConflictHash = 0;
     Real oldConflictHash = 0;
-    Integer _currentM_WP = 0;
+    Integer _currentM_WP = 1;
     Integer _currentR_WP = 0;
     
     EndCondition (_currentM_WP >= Lookup(numMissionWP));
@@ -92,7 +94,7 @@ CONFLICT_MANAGEMENT:
         RESOLUTION:{
             InOut Boolean fenceConflict[2];
             Real RecoveryPosition[3];
-            Boolean resolutionCompleted = false;
+            Boolean resolutionStatus = false;
             Repeat true;
 
             COMPUTE_SOLUTION:{
@@ -131,14 +133,21 @@ CONFLICT_MANAGEMENT:
 
             EXECUTE_RESOLUTION:{
                 FENCE_RESOLUTION:{
+                    Boolean _resolutionCompleted;
                     SkipCondition !fenceConflict[0];
-                    LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition);
+                    LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition,
+                                              resolutionCompleted = _resolutionCompleted);
+                    resolutionStatus = _resolutionCompleted;
                 }
+
+                pprint("Resolution status:",resolutionStatus);
             }
 
             RESUME_MISSION:{
                 Boolean validPoint = false;
-                SkipCondition !resolutionCompleted;
+                SkipCondition !resolutionStatus;
+
+                pprint("Resuming mission");
 
                 while(!validPoint && _currentM_WP < _numMissionWP){
                     Real _position[3];
@@ -150,20 +159,33 @@ CONFLICT_MANAGEMENT:
                     _velocity[2] = 0.0;
 
                     {
-                        EndCondition isKnown(_position);
-                        _position = GetWaypoint("Plan1",_currentM_WP);
+                        EndCondition isKnown(_position[0]);
+                        _position = GetWaypoint("Plan0",_currentM_WP);
                     }
+
+                    pprint("Obtained waypoint with index:",_currentM_WP);
+                    pprint("Checking fence violation of WP:",_position[0],_position[1]);
 
                     {
                         EndCondition isKnown(status[0]);
                         status = CheckFenceViolation(_position,_velocity);
                     }
 
+                    pprint("status:",status[0],status[1]);
+
                     if(status[0] || status[1]){
                         _currentM_WP = _currentM_WP + 1;
+                        pprint("incrementing index:");
                     }else{
+                        Boolean _resolutionCompleted;
                         validPoint = true;
-                        LibraryCall GOTO_POSITION(TargetPosition = _position);
+                        pprint("Going to next waypoint");
+                        LibraryCall GOTO_POSITION(TargetPosition = _position,
+                                                  resolutionCompleted = _resolutionCompleted);
+
+                        _currentM_WP = _currentM_WP + 1;
+                        SetNextMissionWP(_currentM_WP);
+                        SetMode("PASSIVE");
                     }endif
 
                 }
