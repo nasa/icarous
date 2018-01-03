@@ -56,6 +56,7 @@ void TRAJECTORY_AppInit(void) {
     //Subscribe to plexil output messages from the SB
     CFE_SB_Subscribe(PLEXIL_OUTPUT_MID, TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_WP_MID,TrajectoryAppData.Trajectory_Pipe);
+    CFE_SB_Subscribe(ICAROUS_GEOFENCE_MID, TrajectoryAppData.Trajectory_Pipe);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&trajPlexilMsg, PLEXIL_INPUT_MID, sizeof(plexil_interface_t), TRUE);
@@ -92,6 +93,15 @@ void TRAJECTORY_ProcessPacket(){
             double id = wp->wayPointIndex;
             char name[] = "Plan0";
             PathPlanner_InputFlightPlan(TrajectoryAppData.pplanner,name,(int)id,position,speed);
+            break;
+        }
+
+        case ICAROUS_GEOFENCE_MID: {
+            geofence_t *gf;
+            gf = (geofence_t *) TrajectoryAppData.Trajectory_MsgPtr;
+            SwigObj vertexWrapper;
+            vertexWrapper.obj = (void*)gf;
+            FlightData_InputGeofenceData(TrajectoryAppData.fdata,&vertexWrapper);
             break;
         }
 

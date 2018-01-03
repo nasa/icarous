@@ -14,7 +14,8 @@
       CheckFenceViolation,
       GetRecoveryPosition,
       GetWaypoint,
-      SetNextMissionWP
+      SetNextMissionWP,
+      Land
     </CommandNames>
     <LookupNames>
       missionStart,

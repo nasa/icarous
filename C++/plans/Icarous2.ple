@@ -1,5 +1,4 @@
 // -*- Mode: Java -*-
-
 Boolean Lookup missionStart;
 Integer Lookup armStatus;
 Integer Lookup takeoffStatus;
@@ -13,6 +12,7 @@ Command SetMode(String mode);
 Command SetYaw(Real heading);
 Command Takeoff(Real altitude);
 Command ArmMotors();
+Command Land();
 Command SetNextMissionWP(Integer index);
 Command pprint(...);
 
@@ -66,15 +66,15 @@ ICAROUS:
 	    CHANGE_MODE:SetMode("ACTIVE");
 
 	    ARM:{
-		EndCondition isKnown(_armStatus) && (_armStatus >= 0);
-		
-		ArmMotors();		
-	 	
-		CHECK_STATUS: {
-		    Repeat true;
-		    _armStatus = Lookup(armStatus);
-		    pprint("In arm status");
-		}
+            EndCondition isKnown(_armStatus) && (_armStatus >= 0);
+
+            ArmMotors();
+
+            CHECK_STATUS: {
+                Repeat true;
+                _armStatus = Lookup(armStatus);
+                pprint("In arm status");
+            }
 	    }// End of ARM
 
 	    pprint("Armed motors",_armStatus);
@@ -94,8 +94,8 @@ ICAROUS:
 		    pprint("Taking off");
 
 		    CHECK_STATUS: {
-			Repeat true;
-			status = Lookup(takeoffStatus);
+                Repeat true;
+                status = Lookup(takeoffStatus);
 		    }
 
 		}
@@ -118,33 +118,31 @@ ICAROUS:
 	    StartCondition _climbStatus;
 	    EndCondition !_climbStatus;
 	    {
-		Boolean val;
-		Repeat true;
-		
-		_Position = Lookup(position);
-		
-		if(_Position[2] >= 3.0){
-		    pprint("Finished climbing");
-		    SetNextMissionWP(_nextMissionWP);
-		    SetMode("PASSIVE");
-		    _cruiseStatus = true;
-		    _climbStatus = false;
-		}endif
+            Boolean val;
+            Repeat true;
+
+            _Position = Lookup(position);
+
+            if(_Position[2] >= 3.0){
+                pprint("Finished climbing");
+                SetNextMissionWP(_nextMissionWP);
+                SetMode("PASSIVE");
+                _cruiseStatus = true;
+                _climbStatus = false;
+            }endif
 	    }
 	    
 	}// End of CLIMB
 
 	CRUISE:{
 	    StartCondition _cruiseStatus;
-
-	    // Check for conflicts;
+	    // Perform Conflict Management (Detection and Resolution)
 	    LibraryCall CONFLICT_MANAGEMENT();
-	    
+
 	}// End of CRUISE
 
 	LAND:{
-	    
-
+	    Land();
 	}// End of LAND
 	
     }// End of FMS
