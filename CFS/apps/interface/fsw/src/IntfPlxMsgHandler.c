@@ -66,7 +66,7 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
                 int32_t result = appdataInt.nextWaypointIndex;
                 b = serializeInt(false,result,b);
                 SendSBMsg(plexilInput);
-                OS_printf("Next mission wp index:%d\n",result);
+                //OS_printf("Next mission wp index:%d\n",result);
             } else {
                 //OS_printf("******* unhandled lookup ************\n");
                 //int32_t result = -1;

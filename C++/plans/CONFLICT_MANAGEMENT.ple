@@ -12,6 +12,7 @@ Real[3] Command GetRecoveryPosition(Real Position[3]);
 Command SetMode(String mode);
 Command SetNextMissionWP(Integer index);
 Command pprint(...);
+Real[3] Command GetExitPoint(String planID,Real Position[3],Integer nextWP);
 
 // Library plans
 LibraryAction GOTO_POSITION (In Real TargetPosition[3],InOut Boolean resolutionCompleted);
@@ -29,6 +30,7 @@ CONFLICT_MANAGEMENT:
     Real oldConflictHash = 0;
     Integer _currentM_WP = 1;
     Integer _currentR_WP = 0;
+    String currentPlanID = "Plan0"
     
     EndCondition (_currentM_WP >= Lookup(numMissionWP));
 
@@ -103,7 +105,7 @@ CONFLICT_MANAGEMENT:
                 _currentM_WP = Lookup(nextMissionWPIndex);
 
                 KEEP_IN:{
-                    StartCondition fenceConflict[0];
+                    SkipCondition !fenceConflict[0];
 
                     pprint("Obtaining recovery point");
 
@@ -116,12 +118,22 @@ CONFLICT_MANAGEMENT:
 
                 }
 
-                /*
-                  KEEP_OUT:{
-                  SkipCondition !fenceConflict[1];
 
-                  }
+                KEEP_OUT:{
+                    Real exitPosition[3]
+                    SkipCondition !fenceConflict[1];
 
+                    {
+                        EndCondition isKnown(exitPosition[0]);
+                        exitPosition = GetExitPoint(currentPlanID,acPosition,_currentM_WP);
+
+                    }
+
+
+
+                }
+
+                  /*
                   TRAFFIC:{
 
 
@@ -143,7 +155,7 @@ CONFLICT_MANAGEMENT:
                     resolutionStatus = _resolutionCompleted;
                 }
 
-                pprint("Resolution status:",resolutionStatus);
+                //pprint("Resolution status:",resolutionStatus);
             }
 
             RESUME_MISSION:{
@@ -189,6 +201,7 @@ CONFLICT_MANAGEMENT:
                         _currentM_WP = _currentM_WP + 1;
                         SetNextMissionWP(_currentM_WP);
                         SetMode("PASSIVE");
+                        currentPlanID = "Plan0"
                     }endif
 
                 }

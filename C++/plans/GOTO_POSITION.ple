@@ -11,6 +11,7 @@ Command SetMode(String mode);
 Command pprint(...);
 Real[3] Lookup position;
 Real[3] Lookup velocity;
+Real Lookup speed;
 
 GOTO_POSITION:{
 
@@ -18,6 +19,7 @@ GOTO_POSITION:{
     InOut Boolean resolutionCompleted;
     Real CurrentPosition[3];
     Real CurrentVelocity[3];
+    Real Speed;
     Boolean targetFeasibility;    
     Integer nextWPIndex = 1;
     Integer totalWPIndex;

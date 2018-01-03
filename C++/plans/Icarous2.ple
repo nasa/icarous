@@ -27,91 +27,90 @@ ICAROUS:
         	        
     FMS:
     {
-	Boolean _idleStatus    = true;
-	Boolean _takeoffStatus = false;
-       	Boolean _climbStatus   = false;
-	Boolean _cruiseStatus  = false;
-	Integer _numMissionWP;
-	Integer _nextMissionWP = 1;
+        Boolean _idleStatus    = true;
+        Boolean _takeoffStatus = false;
+        Boolean _climbStatus   = false;
+        Boolean _cruiseStatus  = false;
+        Integer _numMissionWP;
+        Integer _nextMissionWP = 1;
 	
-	Repeat true;
+	    Repeat true;
 	
-	IDLE:
-	{
-	    Boolean start = false;
-	    StartCondition _idleStatus;
-	    EndCondition !_idleStatus;       	    
-	    
-	    {
-		Repeat true;		
-		start = Lookup(missionStart);
-		
-		if (start){
-		    _numMissionWP = Lookup(numMissionWP);
-		    _takeoffStatus = true;
-		    _idleStatus = false;
-		}endif
-	    }
-		
-	}// End of IDLE
-	
-	TAKEOFF:{	   
-	    Integer _armStatus;
-	    StartCondition _takeoffStatus;
-	    SkipCondition !_takeoffStatus;
-	    EndCondition !_takeoffStatus;
+        IDLE:
+        {
+            Boolean start = false;
+            StartCondition _idleStatus;
+            EndCondition !_idleStatus;
 
-	    pprint("Takeoff");
-	    
-	    CHANGE_MODE:SetMode("ACTIVE");
+            {
+            Repeat true;
+            start = Lookup(missionStart);
 
-	    ARM:{
-            EndCondition isKnown(_armStatus) && (_armStatus >= 0);
-
-            ArmMotors();
-
-            CHECK_STATUS: {
-                Repeat true;
-                _armStatus = Lookup(armStatus);
-                pprint("In arm status");
+            if (start){
+                _numMissionWP = Lookup(numMissionWP);
+                _takeoffStatus = true;
+                _idleStatus = false;
+            }endif
             }
-	    }// End of ARM
 
-	    pprint("Armed motors",_armStatus);
+        }// End of IDLE
+	
+        TAKEOFF:{
+            Integer _armStatus;
+            StartCondition _takeoffStatus;
+            SkipCondition !_takeoffStatus;
+            EndCondition !_takeoffStatus;
 
-	    THROTTLE_UP:{
-		Integer status;
-		StartCondition (_armStatus==1);
-		SkipCondition  (_armStatus!=1);
+            pprint("Takeoff");
 
+            CHANGE_MODE:SetMode("ACTIVE");
 
-		TAKEOFF:{
+            ARM:{
+                EndCondition isKnown(_armStatus) && (_armStatus >= 0);
 
-		    EndCondition isKnown(status) && (status>=0);
-		    
-		    Takeoff(5.0);
+                ArmMotors();
 
-		    pprint("Taking off");
+                CHECK_STATUS: {
+                    Repeat true;
+                    _armStatus = Lookup(armStatus);
+                    pprint("In arm status");
+                }
+            }// End of ARM
 
-		    CHECK_STATUS: {
-                Repeat true;
-                status = Lookup(takeoffStatus);
-		    }
+            pprint("Armed motors",_armStatus);
 
-		}
+            THROTTLE_UP:{
+                Integer status;
+                StartCondition (_armStatus==1);
+                SkipCondition  (_armStatus!=1);
 
-		if(status == 1){
-		    pprint("Takeoff successful");
-		    _climbStatus = true;
-		    _takeoffStatus = false;
-		}else{
-		    pprint("Takeoff failed\n");
-		    _idleStatus = true;
-		    _takeoffStatus = false;		       		    
-		}endif
+                SEND_COMMAND:{
 
-	    }// End of THROTTLE	    
-	}// End of TAKEOFF
+                    EndCondition isKnown(status) && (status>=0);
+
+                    Takeoff(5.0);
+
+                    pprint("Taking off");
+
+                    CHECK_STATUS: {
+                        Repeat true;
+                        status = Lookup(takeoffStatus);
+                    }
+
+                }
+
+                if(status == 1){
+                    pprint("Takeoff successful");
+                    _climbStatus = true;
+                    _takeoffStatus = false;
+                }else{
+                    pprint("Takeoff failed\n");
+                    _idleStatus = true;
+                    _takeoffStatus = false;
+                }endif
+
+            }// End of THROTTLE
+        }// End of TAKEOFF
 
 
 	CLIMB:{

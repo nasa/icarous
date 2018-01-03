@@ -52,7 +52,7 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
 
         } else if (CHECK_NAME(msg->plxData, "ComputeCrossTrackDeviation")) {
 
-            char planID[10];
+            char planID[10]={0};
             int leg;
             double position[3];
             double offsets[2];
@@ -77,9 +77,22 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
 
             serializeReal(false,distance,trajPlexilMsg.plxData.buffer);
             SendSBMsg(trajPlexilMsg);
+        } else if(CHECK_NAME(msg->plxData, "GetExitPoint")){
+
+            double exitPosition[3];
+            double currPosition[3];
+            char planID[10] = {0};
+            int32_t nextWP;
+
+            b = deSerializeString(planID,b);
+            b = deSerializeRealArray(currPosition,b);
+            b = deSerializeInt(false,&nextWP,b);
+            PathPlanner_GetExitPoint(TrajectoryAppData.pplanner,planID,currPosition,nextWP,exitPosition);
+
+            serializeRealArray(3,exitPosition,trajPlexilMsg.plxData.buffer);
+            SendSBMsg(trajPlexilMsg);
         }
     }else{
-
 
 
 

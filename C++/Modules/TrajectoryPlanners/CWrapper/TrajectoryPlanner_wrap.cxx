@@ -1040,6 +1040,24 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC /*aaaaaa*/SwigObj * _wrap_FlightData_GetPolyPath(SwigObj * carg1) {
+    PolyPath * cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    /*aaaaaa*/SwigObj * result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    cppresult =  (PolyPath *)(arg1)->GetPolyPath();
+    {
+      result = (SwigObj*) SWIG_create_object(SWIG_STR(PolyPath));
+      result->obj = (void*) cppresult;
+    }
+    return result;
+  }
+  
+  
   SWIGEXPORTC void _wrap_delete_FlightData(SwigObj * carg1) {
     SWIG_remove_registry_entry(carg1);
     SWIG_destroy_object(carg1);
@@ -1353,6 +1371,49 @@ extern "C" {
     arg4 = (double *) carg4;
     arg5 = (double *) carg5;
     (arg1)->ManueverToIntercept_c(arg2,arg3,arg4,arg5);
+  }
+  
+  
+  SWIGEXPORTC void _wrap_PathPlanner_GetExitPoint(SwigObj * carg1, char * carg2, /*aaa*/ double * carg3, int carg4, /*aaa*/ double * carg5) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    char *arg2 = (char *) 0 ;
+    double *arg3 ;
+    int arg4 ;
+    double *arg5 ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (char *) carg2;
+    arg3 = (double *) carg3;
+    arg4 = (int) carg4;
+    arg5 = (double *) carg5;
+    (arg1)->GetExitPoint(arg2,arg3,arg4,arg5);
+  }
+  
+  
+  SWIGEXPORTC double _wrap_PathPlanner_GetApproxElapsedPlanTime(SwigObj * carg1, SwigObj * carg2, /*aaa*/ double * carg3, int carg4) {
+    double cppresult;
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    Plan *arg2 = (Plan *) 0 ;
+    double *arg3 ;
+    int arg4 ;
+    double result;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    {
+      if (carg2)
+      arg2 = (Plan *) carg2->obj;
+    }
+    arg3 = (double *) carg3;
+    arg4 = (int) carg4;
+    cppresult =  (double)(arg1)->GetApproxElapsedPlanTime(arg2,arg3,arg4);
+    result = cppresult;
+    return result;
   }
   
   

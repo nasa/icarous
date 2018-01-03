@@ -120,6 +120,7 @@ int FlightData_GetTotalFences(SwigObj * carg1);
 double FlightData_getFlightPlanSpeed(SwigObj * carg1, SwigObj * carg2, int carg3);
 void FlightData_GetTraffic_pFlightData_i_rlarcfm_Position_rlarcfm_Velocity(SwigObj * carg1, int carg2, SwigObj * carg3, SwigObj * carg4);
 /*aaaaaa*/SwigObj * FlightData_GetGeofence(SwigObj * carg1, int carg2);
+/*aaaaaa*/SwigObj * FlightData_GetPolyPath(SwigObj * carg1);
 void delete_FlightData(FlightData * carg1);
 #define _ASTAR_ 0
 #define _RRT_ _ASTAR_ + 1
@@ -141,6 +142,8 @@ double PathPlanner_GetInterceptHeadingToPlan(SwigObj * carg1, SwigObj * carg2, i
 double PathPlanner_GetInterceptHeadingToPlan_c(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4);
 void PathPlanner_ManueverToIntercept(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
 void PathPlanner_ManueverToIntercept_c(SwigObj * carg1, char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
+void PathPlanner_GetExitPoint(SwigObj * carg1, char * carg2, /*aaa*/ double * carg3, int carg4, /*aaa*/ double * carg5);
+double PathPlanner_GetApproxElapsedPlanTime(SwigObj * carg1, SwigObj * carg2, /*aaa*/ double * carg3, int carg4);
 void delete_PathPlanner(PathPlanner * carg1);
 
 #endif /* _TrajectoryPlanner_proxy_H_ */

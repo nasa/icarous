@@ -128,15 +128,16 @@ bool GeofenceMonitor::CheckWPFeasibility(double fromPosition[],double toPosition
     Position currentPos = Position::makeLatLonAlt(fromPosition[0], "degree", fromPosition[1], "degree", fromPosition[2],"m");
     Position nextPos = Position::makeLatLonAlt(toPosition[0], "degree", toPosition[1], "degree", toPosition[2], "m");
     double heading2WP = currentPos.track(nextPos);
-
+    double dist = currentPos.distanceH(nextPos);
     // Velocity components assuming speed is 1 m/s
     double vy = cos(heading2WP);
     double vx = sin(heading2WP);
     Vect2 vel(vx, vy);
 
+    double time = dist;
     bool val = false;
     for (int i = 0; i < fdata->GetTotalFences(); ++i) {
-        val = val || CollisionDetection(fdata->GetGeofence(i),&currentPos, &vel, 0, 10);
+        val = val || CollisionDetection(fdata->GetGeofence(i),&currentPos, &vel, 0, time);
     }
 
     return !val;
