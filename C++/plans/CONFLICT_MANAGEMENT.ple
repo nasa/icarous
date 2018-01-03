@@ -1,4 +1,4 @@
-// -*- Mode: Java -*-
+// -*- Mode: C++ -*-
 // Simple conflict detection strategy
 
 Integer Lookup numMissionWP;
@@ -18,7 +18,7 @@ CONFLICT_MANAGEMENT:
     Integer _numMissionWP;
     Real acPosition[3];
     Real acVelocity[3];
-    Boolean fenceConflict[2];
+    Boolean fenceConflict[2] = #(false false);
     Boolean trafficConflict = false;
     Boolean flightPlanConflict = false;
     Boolean resolutionActive = false;
@@ -38,137 +38,137 @@ CONFLICT_MANAGEMENT:
     CORE:Concurrence
     {
 	
-	DETECTION:
-	{
-	    Integer numFenceConflicts;
-	    Boolean statusGF[2];
-	    Boolean statusTF;
-	    Boolean statusFP;
-	
-	    Repeat true;
-	    
-	    acPosition = Lookup(position);	    
-	    acVelocity = Lookup(velocity);
+        DETECTION:
+        {
+            InOut Boolean fenceConflict[2];
+            Integer numFenceConflicts;
+            Boolean statusGF[2];
+            Boolean statusTF;
+            Boolean statusFP;
 
-	    pprint("position:",acPosition[0],acPosition[1],acPosition[2]);
-	    pprint("velocity:",acVelocity[0],acVelocity[1],acVelocity[2]);
+            Repeat true;
 
-	    
-	    FENCE: {
-		EndCondition isKnown(statusGF[0]);
-		statusGF = CheckFenceViolation(acPosition,acVelocity);
-	    }
-	
-	    pprint("conflict:",statusGF[0],statusGF[1]);
-	
-	    /*
-	      TRAFFIC:{
-	      EndCondition isKnown(statusTF);
-	      statusTF = CheckTrafficViolation(acPosition);
-	      }
-	
-	      FLIGHTPLAN: {
-	      EndCondition isKnown(statusFP);
-	      if(resolutionActive){
-	      _currentR_WP = Lookup(currentResolutionWP);
-	      statusFP = CheckFlightPlanConflict(acPosition,_currentR_WP);
-	      }
-	      else{
-	      _currentM_WP = Lookup(currentMissionWP)
-	      statusFP = CheckFlightPlanConflict(acPosition,_currentM_WP);    
-	      }
-	      endif	    
-	      }*/
+            acPosition = Lookup(position);
+            acVelocity = Lookup(velocity);
 
-	    fenceConflict = statusGF;
-	    //trafficConflict = statusTF;
-	    //flightPlanConflict = statusFP;
+            FENCE:
+            {
+                EndCondition isKnown(statusGF[0]);
+                statusGF = CheckFenceViolation(acPosition,acVelocity);
+            }
 
-	    if(fenceConflict[0] || fenceConflict[1]){
-		pprint("Detected geofence conflict\n");
-	    }endif
+            //pprint("conflict:",statusGF[0],statusGF[1]);
+
+            /*
+              TRAFFIC:{
+              EndCondition isKnown(statusTF);
+              statusTF = CheckTrafficViolation(acPosition);
+              }
+
+              FLIGHTPLAN: {
+              EndCondition isKnown(statusFP);
+              if(resolutionActive){
+              _currentR_WP = Lookup(currentResolutionWP);
+              statusFP = CheckFlightPlanConflict(acPosition,_currentR_WP);
+              }
+              else{
+              _currentM_WP = Lookup(currentMissionWP)
+              statusFP = CheckFlightPlanConflict(acPosition,_currentM_WP);
+              }
+              endif
+              }*/
+
+            fenceConflict[0] = statusGF[0];
+            fenceConflict[1] = statusGF[1];
+            //trafficConflict = statusTF;
+            //flightPlanConflict = statusFP;
+
+            if(fenceConflict[0] || fenceConflict[1]){
+            //pprint("Detected geofence conflict\n");
+            }endif
+        }
+
+
+        RESOLUTION:{
+            InOut Boolean fenceConflict[2];
+            Real RecoveryPosition[3];
+            Boolean resolutionCompleted = false;
+            Repeat true;
+
+            COMPUTE_SOLUTION:{
+
+                KEEP_IN:{
+                    StartCondition fenceConflict[0];
+
+                    pprint("Obtaining recovery point");
+
+                    {
+                        EndCondition isKnown(RecoveryPosition[0]);
+                        RecoveryPosition = GetRecoveryPosition(acPosition);
+                    }
+
+                    pprint("RecoveryPosition:",RecoveryPosition[0],RecoveryPosition[1],RecoveryPosition[2]);
+
+                }
+
+                /*
+                  KEEP_OUT:{
+                  SkipCondition !fenceConflict[1];
+
+                  }
+
+                  TRAFFIC:{
+
+
+                  }
+
+                  FLIGHTPLAN_DEV:{
+
+
+                  }
+                     */
+            }
+
+            EXECUTE_RESOLUTION:{
+                FENCE_RESOLUTION:{
+                    SkipCondition !fenceConflict[0];
+                    LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition);
+                }
+            }
+
+            RESUME_MISSION:{
+                Boolean validPoint = false;
+                SkipCondition !resolutionCompleted;
+
+                while(!validPoint && _currentM_WP < _numMissionWP){
+                    Real _position[3];
+                    Real _velocity[3];
+                    Boolean status[2];
+
+                    _velocity[0] = 0.0;
+                    _velocity[1] = 0.0;
+                    _velocity[2] = 0.0;
+
+                    {
+                        EndCondition isKnown(_position);
+                        _position = GetWaypoint("Plan1",_currentM_WP);
+                    }
+
+                    {
+                        EndCondition isKnown(status[0]);
+                        status = CheckFenceViolation(_position,_velocity);
+                    }
+
+                    if(status[0] || status[1]){
+                        _currentM_WP = _currentM_WP + 1;
+                    }else{
+                        validPoint = true;
+                        LibraryCall GOTO_POSITION(TargetPosition = _position);
+                    }endif
+
+                }
+            }
+
+        }
 	}
-
-	
-	RESOLUTION:{
-
-	    Real RecoveryPosition[3];
-	    Boolean resolutionCompleted;
-	    Repeat true;
-	
-	    COMPUTE_SOLUTION:{
-	    
-		KEEP_IN:{
-		    StartCondition fenceConflict[0];
-		    SkipCondition !fenceConflict[0];
-
-		    pprint("Obtaining recovery point");
-		
-		    {	    
-			EndCondition isKnown(RecoveryPosition[0]);
-			RecoveryPosition = GetRecoveryPosition(acPosition);
-		    }
-
-		}
-
-		/*
-		  KEEP_OUT:{
-		  SkipCondition !fenceConflict[1];
-
-		  }
-
-		  TRAFFIC:{
-
-
-		  }
-
-		  FLIGHTPLAN_DEV:{
-
-
-		  }
-	         */
-	    }
-
-	    EXECUTE_RESOLUTION:{
-		FENCE_RESOLUTION:{
-		    SkipCondition !fenceConflict[0];
-		    LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition);
-		}
-	    }
-
-	    RESUME_MISSION:{
-		Boolean validPoint = false;
-		StartCondition resolutionCompleted;
-	    
-		while(!validPoint && _currentM_WP < _numMissionWP){
-		    Real _position[3];
-		    Real _velocity[3];
-		    Boolean status[2];
-
-		    _velocity[0] = 0.0;
-		    _velocity[1] = 0.0;
-		    _velocity[2] = 0.0;
-		
-		    {		    
-			EndCondition isKnown(_position);
-			_position = GetWaypoint("Plan1",_currentM_WP);		
-		    }
-
-		    {
-			EndCondition isKnown(status[0]);
-			status = CheckFenceViolation(_position,_velocity);
-		    }
-		    
-		    if(status[0] || status[1]){
-			_currentM_WP = _currentM_WP + 1;
-		    }else{
-			validPoint = true;
-			LibraryCall GOTO_POSITION(TargetPosition = _position);
-		    }endif
-			 
-		}	    
-	    }
-	    
-	}
-    }
 }

@@ -11,7 +11,8 @@
       Takeoff,
       ArmMotors,
       Takeoff,
-      CheckFenceViolation
+      CheckFenceViolation,
+      GetRecoveryPosition
     </CommandNames>
     <LookupNames>
       missionStart,

@@ -59,6 +59,13 @@ int main(int argc,char** argv){
     printf("CONFLICT: %d, VIOLATION: %d, numConflict:%d\n",conflict,violation,n);
     printf("Recovery Position: %f,%f,%f\n",recPosition[0],recPosition[1],recPosition[2]);
 
+    double fromPosition[3] = {37.102188,-76.387013,5.000000};
+    double toPosition[3] = {37.102186,-76.387060,5.000000};
+
+    bool val = GeofenceMonitor_CheckWPFeasibility(gfMonitor,fromPosition,toPosition);
+
+    printf("wp feasbility: %d\n",bool);
+
     return 0;
 
 }

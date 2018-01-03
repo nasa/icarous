@@ -24,23 +24,27 @@ void GeoPlxMsgHandler(plexil_interface_t* msg){
         GeofenceMonitor_GetConflictStatus(geofenceAppData.gfMonitor,conflicts);
         serializeBoolArray(2,conflicts,gfPlexilMsg.plxData.buffer);
         SendSBMsg(gfPlexilMsg);
-    }else if(CHECK_NAME(msg->plxData,"CheckWPFeasbility")){
+    }else if(CHECK_NAME(msg->plxData,"CheckDirectPathFeasibility")){
         OS_printf("Received WP feasbilility check command from plexil\n");
         double fromPosition[3];
         double toPosition[3];
         b = deSerializeRealArray(fromPosition,b);
         b = deSerializeRealArray(toPosition,b);
+        OS_printf("From position: %f,%f,%f\n",fromPosition[0],fromPosition[1],fromPosition[2]);
+        OS_printf("To position: %f,%f,%f\n",toPosition[0],toPosition[1],toPosition[2]);
         bool status = GeofenceMonitor_CheckWPFeasibility(geofenceAppData.gfMonitor,fromPosition,toPosition);
         serializeBool(false,status,gfPlexilMsg.plxData.buffer);
         SendSBMsg(gfPlexilMsg);
+        OS_printf("Path feasibility:%d\n",status);
     }else if(CHECK_NAME(msg->plxData,"GetRecoveryPosition")){
         OS_printf("Received recovery position command from plexil\n");
         double currentPos[3];
         b = deSerializeRealArray(currentPos,b);
-        double recoveryPoisiton[3];
-        GeofenceMonitor_GetClosestRecoveryPoint(geofenceAppData.gfMonitor,currentPos,recoveryPoisiton);
-        serializeRealArray(3,recoveryPoisiton,gfPlexilMsg.plxData.buffer);
-        SendSBMsg(msg);
+        double recoveryPosition[3];
+        GeofenceMonitor_GetClosestRecoveryPoint(geofenceAppData.gfMonitor,currentPos,recoveryPosition);
+        serializeRealArray(3,recoveryPosition,gfPlexilMsg.plxData.buffer);
+        OS_printf("Recovery position: %f,%f,%f\n",recoveryPosition[0],recoveryPosition[1],recoveryPosition[2]);
+        SendSBMsg(gfPlexilMsg);
     }
 
 }
