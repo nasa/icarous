@@ -129,6 +129,8 @@ void INTERFACE_AppInit(void){
 	char apName[50],gsName[50];
 
 	appdataInt.ap.id = 0;
+	appdataInt.waypointSeq = 0;
+	appdataInt.nextWaypointIndex = 0;
 	appdataInt.ap.portType = TblPtr->apPortType;
 	appdataInt.ap.portin   = TblPtr->apPortin;
 	appdataInt.ap.portout  = TblPtr->apPortout;

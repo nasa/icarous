@@ -59,9 +59,14 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
                 SendSBMsg(plexilInput);
             } else if (CHECK_NAME(msg->plxData, "numMissionWP")) {
                 //TODO: move this into the trajectory app?
-                int32_t result = wpdata.totalWayPoints;
+                int32_t result = appdataInt.numWaypoints;
                 b = serializeInt(false, result, b);
                 SendSBMsg(plexilInput);
+            } else if(CHECK_NAME(msg->plxData, "nextMissionWPIndex")){
+                int32_t result = appdataInt.nextWaypointIndex;
+                b = serializeInt(false,result,b);
+                SendSBMsg(plexilInput);
+                OS_printf("Next mission wp index:%d\n",result);
             } else {
                 //OS_printf("******* unhandled lookup ************\n");
                 //int32_t result = -1;
@@ -103,6 +108,7 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
                 uint32_t tempSeq;
                 b = deSerializeInt(false,&tempSeq,b);
                 uint32_t seq = -1;
+                appdataInt.nextWaypointIndex = tempSeq;
                 for (int i = 0; i <= tempSeq; i++) {
                     seq++;
                     int val = (appdataInt.waypoint_type[seq] == MAV_CMD_NAV_WAYPOINT) ||

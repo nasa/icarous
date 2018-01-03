@@ -22,7 +22,8 @@
       takeoffStatus,
       position,
       velocity,
-      totalMissionWP
+      totalMissionWP,
+      nextMissionWPIndex
     </LookupNames> 
   </Adapter>
 </Interfaces>

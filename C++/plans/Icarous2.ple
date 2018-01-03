@@ -13,7 +13,7 @@ Command SetMode(String mode);
 Command SetYaw(Real heading);
 Command Takeoff(Real altitude);
 Command ArmMotors();
-    
+Command SetNextMissionWP(Integer index);
 Command pprint(...);
 
 // Library plans
@@ -32,6 +32,7 @@ ICAROUS:
        	Boolean _climbStatus   = false;
 	Boolean _cruiseStatus  = false;
 	Integer _numMissionWP;
+	Integer _nextMissionWP = 1;
 	
 	Repeat true;
 	
@@ -124,6 +125,7 @@ ICAROUS:
 		
 		if(_Position[2] >= 3.0){
 		    pprint("Finished climbing");
+		    SetNextMissionWP(_nextMissionWP);
 		    SetMode("PASSIVE");
 		    _cruiseStatus = true;
 		    _climbStatus = false;

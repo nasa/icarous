@@ -121,7 +121,10 @@ typedef struct{
     port_t gs;                              ///< groundstation port
     uint8_t runThreads;                     ///< thread active status
     int numWaypoints;                       ///< num total waypoints
+    int waypointSeq;                        ///< received position waypoint
+    int nextWaypointIndex;                  ///< Next waypoint index to goto.
     int* waypoint_type;                     ///< waypoint type description
+    int* waypoint_index;                    ///< waypoint index (only positional waypoints)
     int foundUAV;                           ///< UAV communication alive
     uint32_t mutex_read;               ///< mutex id
     uint32_t mutex_write;               ///< mutex id

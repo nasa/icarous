@@ -2,6 +2,7 @@
 // Simple conflict detection strategy
 
 Integer Lookup numMissionWP;
+Integer Lookup nextMissionWPIndex;
 Real[3] Lookup position;
 Real[3] Lookup velocity;
 
@@ -98,6 +99,8 @@ CONFLICT_MANAGEMENT:
             Repeat true;
 
             COMPUTE_SOLUTION:{
+
+                _currentM_WP = Lookup(nextMissionWPIndex);
 
                 KEEP_IN:{
                     StartCondition fenceConflict[0];
