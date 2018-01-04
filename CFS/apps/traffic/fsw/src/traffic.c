@@ -87,7 +87,8 @@ void TRAFFIC_ProcessPacket(){
         case ICAROUS_TRAFFIC_MID:{
             object_t* msg;
             msg = (object_t*) TrafficAppData.Traffic_MsgPtr;
-            FlightData_AddTraffic(TrafficAppData.Traffic_Pipe,msg->index,msg->latitude,msg->longitude,msg->altiude,msg->vx,msg->vy,msg->vz);
+
+            FlightData_AddTraffic(TrafficAppData.fdata,msg->index,msg->latitude,msg->longitude,msg->altiude,msg->vx,msg->vy,msg->vz);
             break;
         }
 

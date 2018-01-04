@@ -15,7 +15,9 @@
       GetRecoveryPosition,
       GetWaypoint,
       SetNextMissionWP,
-      Land
+      Land,
+      SetVel,
+      CheckSafeToTurn
     </CommandNames>
     <LookupNames>
       missionStart,

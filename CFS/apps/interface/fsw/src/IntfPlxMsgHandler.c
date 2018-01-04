@@ -133,17 +133,22 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
                                                                 0, 0, 0, 0, 0, 0, 0, 0);
                 //OS_printf("Setting position\n");
                 break;
-            } else if (strcmp(msg->plxData.name, "SETVEL") == 0) {
+            } else if (strcmp(msg->plxData.name, "SetVel") == 0) {
 
                 double _velocity[3];
                 b = deSerializeRealArray(_velocity,b);
-                double vx = _velocity[0];
-                double vy =_velocity[1];
-                double vz = _velocity[2];
+                double track = _velocity[0];
+                double groundspeed =_velocity[1];
+                double verticalspeed = _velocity[2];
 
+
+                double vn = groundspeed*cos(track*M_PI/180);
+                double ve = groundspeed*sin(track*M_PI/180);
+                double vu = verticalspeed;
+                //OS_printf("Setting velocities: %f,%f,%f\n",vn,ve,vu);
                 mavlink_msg_set_position_target_local_ned_pack(255, 0, msgMavlink, 0, 1, 0, MAV_FRAME_LOCAL_NED,
                                                                0b0000111111000111, 0, 0, 0,
-                                                               (float) vx, (float) vy, (float) vz,
+                                                               (float) vn, (float) ve, (float) vu,
                                                                0, 0, 0, 0, 0);
                 break;
             } else if (strcmp(msg->plxData.name, "SETYAW") == 0) {

@@ -4,6 +4,7 @@ CFE_APP, /cf/apps/interface.so,    INTERFACE_AppMain,  INTERFACE,   100,   8192,
 CFE_APP, /cf/apps/plexil.so,  PLEXIL_AppMain,  PLEXIL,   61,   1119200, 0x0, 0;
 CFE_APP, /cf/apps/geofence.so,  GEOFENCE_AppMain,  GEOFENCE,   80,   8192, 0x0, 0;
 CFE_APP, /cf/apps/trajectory.so,  TRAJECTORY_AppMain,  TRAJECTORY,   81,   81920, 0x0, 0;
+CFE_APP, /cf/apps/traffic.so,  TRAFFIC_AppMain,  TRAFFIC,   82,   81920, 0x0, 0;
 ! Startup script fields:
 ! 1. Object Type      -- CFE_APP for an Application, or CFE_LIB for a library.
 ! 2. Path/Filename    -- This is a cFE Virtual filename, not a vxWorks device/pathname

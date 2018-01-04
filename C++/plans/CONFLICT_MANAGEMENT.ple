@@ -10,8 +10,12 @@ Real[3] Command GetWaypoint(String planID,Integer index);
 Boolean[2] Command CheckFenceViolation(Real Position[3],Real Velocity[3]);
 Real[3] Command GetRecoveryPosition(Real Position[3]);
 Real[3] Command GetExitPoint(String planID,Real Position[3],Integer nextWP);
+Real[4] Command MonitorTraffic(Real position[3],Real velocity[3]);
 Command SetMode(String mode);
 Command SetNextMissionWP(Integer index);
+Command SetVel(Real velocity[3]);
+Real Command GetInterceptHeadingToPlan(String planID,Integer leg,Real position[3]);
+Boolean Command CheckSafeToTurn(Real position[3],Real velocity[3],Real fromHeading,Real toHeading);
 Command pprint(...);
 
 // Library plans
@@ -63,12 +67,23 @@ CONFLICT_MANAGEMENT:
 
             //pprint("conflict:",statusGF[0],statusGF[1]);
 
-            /*
-              TRAFFIC:{
-              EndCondition isKnown(statusTF);
-              statusTF = CheckTrafficViolation(acPosition);
-              }
+            TRAFFIC:{
 
+                Real tfOutput[4];
+                {
+                    EndCondition isKnown(tfOutput[0]);
+                    tfOutput = MonitorTraffic(acPosition,acVelocity);
+                }
+
+                if(tfOutput[0] > 0){
+                    statusTF = true;
+                    //pprint("traffic conflict");
+                }else{
+                    statusTF = false;
+                }endif
+            }
+
+              /*
               FLIGHTPLAN: {
               EndCondition isKnown(statusFP);
               if(resolutionActive){
@@ -84,7 +99,7 @@ CONFLICT_MANAGEMENT:
 
             fenceConflict[0] = statusGF[0];
             fenceConflict[1] = statusGF[1];
-            //trafficConflict = statusTF;
+            trafficConflict = statusTF;
             //flightPlanConflict = statusFP;
 
             if(fenceConflict[0] || fenceConflict[1]){
@@ -95,12 +110,13 @@ CONFLICT_MANAGEMENT:
 
         RESOLUTION:{
             InOut Boolean fenceConflict[2];
+            InOut Boolean trafficConflict;
             Real RecoveryPosition[3];
             Boolean resolutionStatus = false;
             Repeat true;
 
             COMPUTE_SOLUTION:{
-                StartCondition (fenceConflict[0] || fenceConflict[1]);
+                StartCondition (fenceConflict[0] || fenceConflict[1] || trafficConflict);
                 _currentM_WP = Lookup(nextMissionWPIndex);
 
                 KEEP_IN:{
@@ -129,11 +145,7 @@ CONFLICT_MANAGEMENT:
                     }
 
                     pprint("RecoveryPosition:",RecoveryPosition[0],RecoveryPosition[1],RecoveryPosition[2]);
-
-
-
                 }
-
 
             }
 
@@ -144,6 +156,71 @@ CONFLICT_MANAGEMENT:
                     LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition,
                                               resolutionCompleted = _resolutionCompleted);
                     resolutionStatus = _resolutionCompleted;
+                }
+
+                TRAFFIC_RESOLUTION:{
+                   Real prevVelCmd[3];
+                   SkipCondition !trafficConflict;
+                   EndCondition resolutionStatus;
+
+                   //acPosition = Lookup(position);
+                   //acVelocity = Lookup(velocity);
+
+                   SetMode("ACTIVE");
+
+                   {
+                     Real output[4];
+                     Real velCmd[3];
+                     Real returnVel[3];
+                     Boolean returnSafe;
+                     Real track;
+                     Real speed;
+                     Repeat true;
+
+                     {
+                         EndCondition isKnown(output[0]);
+                         output = MonitorTraffic(acPosition,acVelocity);
+                     }
+
+                     pprint("output traffic resolution:",output);
+
+                     if(output[1] < 100)
+                        velCmd[0] = output[1];
+                     else
+                        velCmd[0] = prevVelCmd[0];
+                     endif
+                     velCmd[1] = 1;
+                     velCmd[2] = 0;
+
+                     SetVel(velCmd);
+
+                     prevVelCmd[0] = velCmd[0];
+                     prevVelCmd[1] = velCmd[1];
+                     prevVelCmd[2] = velCmd[2];
+
+                     {
+                         EndCondition isKnown(track);
+                         track = GetInterceptHeadingToPlan("Plan0",_currentM_WP,acPosition);
+                     }
+
+                     pprint("Intercept heading:",track);
+
+                     returnVel[0] = track;
+                     returnVel[1] = 1;
+                     returnVel[2] = 0;
+
+                     {
+                          EndCondition isKnown(returnSafe);
+                          returnSafe = CheckSafeToTurn(acPosition,acVelocity,velCmd[0],returnVel[0]);
+                     }
+
+                     pprint("return safe:",returnSafe);
+
+                     if(returnSafe && output[0] < 0){
+                           resolutionStatus = true;
+                     }endif
+
+                   }
                 }
 
                 pprint("Resolution status:",resolutionStatus);
