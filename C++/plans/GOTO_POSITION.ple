@@ -16,6 +16,7 @@ Real Lookup speed;
 GOTO_POSITION:{
 
     In Real TargetPosition[3];
+    InOut String planID;
     InOut Boolean resolutionCompleted;
     Real CurrentPosition[3];
     Real CurrentVelocity[3];
@@ -66,9 +67,11 @@ GOTO_POSITION:{
         Boolean status;
         SkipCondition targetFeasibility;
 
+        planID = "Plan1";
+
         {
             EndCondition isKnown(status);
-            status = FindNewPath("Plan1","ASTAR",CurrentPosition,CurrentVelocity,TargetPosition);
+            status = FindNewPath(planID,"ASTAR",CurrentPosition,CurrentVelocity,TargetPosition);
         }
 
         if(!status){
@@ -87,7 +90,7 @@ GOTO_POSITION:{
 
         {
             EndCondition isKnown(NextWP[0]);
-            NextWP = GetWaypoint("Plan1",nextWPIndex);
+            NextWP = GetWaypoint(planID,nextWPIndex);
         }
 
         SetPos(NextWP);

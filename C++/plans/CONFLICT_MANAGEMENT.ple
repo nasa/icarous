@@ -15,7 +15,7 @@ Command pprint(...);
 Real[3] Command GetExitPoint(String planID,Real Position[3],Integer nextWP);
 
 // Library plans
-LibraryAction GOTO_POSITION (In Real TargetPosition[3],InOut Boolean resolutionCompleted);
+LibraryAction GOTO_POSITION (In Real TargetPosition[3],InOut String planID,InOut Boolean resolutionCompleted);
 
 CONFLICT_MANAGEMENT:
 {
@@ -30,7 +30,7 @@ CONFLICT_MANAGEMENT:
     Real oldConflictHash = 0;
     Integer _currentM_WP = 1;
     Integer _currentR_WP = 0;
-    String currentPlanID = "Plan0"
+    String currentPlanID = "Plan0";
     
     EndCondition (_currentM_WP >= Lookup(numMissionWP));
 
@@ -98,9 +98,10 @@ CONFLICT_MANAGEMENT:
             InOut Boolean fenceConflict[2];
             Real RecoveryPosition[3];
             Boolean resolutionStatus = false;
+            Boolean trajectoryResolution = false;
             Repeat true;
 
-            COMPUTE_SOLUTION:{
+            COMPUTE_RECOVERY_POSITION:{
 
                 _currentM_WP = Lookup(nextMissionWPIndex);
 
@@ -115,22 +116,20 @@ CONFLICT_MANAGEMENT:
                     }
 
                     pprint("RecoveryPosition:",RecoveryPosition[0],RecoveryPosition[1],RecoveryPosition[2]);
-
+                    trajectoryResolution = true;
                 }
 
 
                 KEEP_OUT:{
-                    Real exitPosition[3]
                     SkipCondition !fenceConflict[1];
 
                     {
-                        EndCondition isKnown(exitPosition[0]);
-                        exitPosition = GetExitPoint(currentPlanID,acPosition,_currentM_WP);
-
+                        EndCondition isKnown(RecoveryPosition[0]);
+                        RecoveryPosition = GetExitPoint(currentPlanID,acPosition,_currentM_WP);
                     }
+                    trajectoryResolution = true;
 
-
-
+                    pprint("receive exit point:",RecoveryPosition[0],RecoveryPosition[1],RecoveryPosition[2]);
                 }
 
                   /*
@@ -143,17 +142,17 @@ CONFLICT_MANAGEMENT:
 
 
                   }
-                     */
+                  */
             }
 
-            EXECUTE_RESOLUTION:{
-                FENCE_RESOLUTION:{
-                    Boolean _resolutionCompleted;
-                    SkipCondition !fenceConflict[0];
-                    LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition,
-                                              resolutionCompleted = _resolutionCompleted);
-                    resolutionStatus = _resolutionCompleted;
-                }
+            EXECUTE_TRAJECTORY_RESOLUTION:{
+
+                Boolean _resolutionCompleted;
+                SkipCondition !trajectoryResolution;
+                LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition,
+                                          planID = currentPlanID,
+                                          resolutionCompleted = _resolutionCompleted);
+                resolutionStatus = _resolutionCompleted;
 
                 //pprint("Resolution status:",resolutionStatus);
             }
@@ -196,12 +195,13 @@ CONFLICT_MANAGEMENT:
                         validPoint = true;
                         pprint("Going to next waypoint");
                         LibraryCall GOTO_POSITION(TargetPosition = _position,
+                                                  planID = currentPlanID,
                                                   resolutionCompleted = _resolutionCompleted);
 
                         _currentM_WP = _currentM_WP + 1;
                         SetNextMissionWP(_currentM_WP);
                         SetMode("PASSIVE");
-                        currentPlanID = "Plan0"
+                        currentPlanID = "Plan0";
                     }endif
 
                 }
