@@ -9,13 +9,13 @@ Real[3] Lookup velocity;
 Real[3] Command GetWaypoint(String planID,Integer index);
 Boolean[2] Command CheckFenceViolation(Real Position[3],Real Velocity[3]);
 Real[3] Command GetRecoveryPosition(Real Position[3]);
+Real[3] Command GetExitPoint(String planID,Real Position[3],Integer nextWP);
 Command SetMode(String mode);
 Command SetNextMissionWP(Integer index);
 Command pprint(...);
-Real[3] Command GetExitPoint(String planID,Real Position[3],Integer nextWP);
 
 // Library plans
-LibraryAction GOTO_POSITION (In Real TargetPosition[3],InOut String planID,InOut Boolean resolutionCompleted);
+LibraryAction GOTO_POSITION (In Real TargetPosition[3],InOut Boolean resolutionCompleted);
 
 CONFLICT_MANAGEMENT:
 {
@@ -30,7 +30,6 @@ CONFLICT_MANAGEMENT:
     Real oldConflictHash = 0;
     Integer _currentM_WP = 1;
     Integer _currentR_WP = 0;
-    String currentPlanID = "Plan0";
     
     EndCondition (_currentM_WP >= Lookup(numMissionWP));
 
@@ -89,7 +88,7 @@ CONFLICT_MANAGEMENT:
             //flightPlanConflict = statusFP;
 
             if(fenceConflict[0] || fenceConflict[1]){
-            //pprint("Detected geofence conflict\n");
+               //pprint("Detected geofence conflict\n");
             }endif
         }
 
@@ -98,11 +97,10 @@ CONFLICT_MANAGEMENT:
             InOut Boolean fenceConflict[2];
             Real RecoveryPosition[3];
             Boolean resolutionStatus = false;
-            Boolean trajectoryResolution = false;
             Repeat true;
 
-            COMPUTE_RECOVERY_POSITION:{
-
+            COMPUTE_SOLUTION:{
+                StartCondition (fenceConflict[0] || fenceConflict[1]);
                 _currentM_WP = Lookup(nextMissionWPIndex);
 
                 KEEP_IN:{
@@ -116,45 +114,39 @@ CONFLICT_MANAGEMENT:
                     }
 
                     pprint("RecoveryPosition:",RecoveryPosition[0],RecoveryPosition[1],RecoveryPosition[2]);
-                    trajectoryResolution = true;
+
                 }
 
 
                 KEEP_OUT:{
                     SkipCondition !fenceConflict[1];
 
-                    {
-                        EndCondition isKnown(RecoveryPosition[0]);
-                        RecoveryPosition = GetExitPoint(currentPlanID,acPosition,_currentM_WP);
-                    }
-                    trajectoryResolution = true;
+                    pprint("Obtaining exit point");
 
-                    pprint("receive exit point:",RecoveryPosition[0],RecoveryPosition[1],RecoveryPosition[2]);
+                    {
+                       EndCondition isKnown(RecoveryPosition[0]);
+                       RecoveryPosition = GetExitPoint("Plan0",acPosition,_currentM_WP);
+                    }
+
+                    pprint("RecoveryPosition:",RecoveryPosition[0],RecoveryPosition[1],RecoveryPosition[2]);
+
+
+
                 }
 
-                  /*
-                  TRAFFIC:{
 
-
-                  }
-
-                  FLIGHTPLAN_DEV:{
-
-
-                  }
-                  */
             }
 
-            EXECUTE_TRAJECTORY_RESOLUTION:{
+            EXECUTE_RESOLUTION:{
+                FENCE_RESOLUTION:{
+                    Boolean _resolutionCompleted;
+                    SkipCondition (!fenceConflict[0] && !fenceConflict[1]);
+                    LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition,
+                                              resolutionCompleted = _resolutionCompleted);
+                    resolutionStatus = _resolutionCompleted;
+                }
 
-                Boolean _resolutionCompleted;
-                SkipCondition !trajectoryResolution;
-                LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition,
-                                          planID = currentPlanID,
-                                          resolutionCompleted = _resolutionCompleted);
-                resolutionStatus = _resolutionCompleted;
-
-                //pprint("Resolution status:",resolutionStatus);
+                pprint("Resolution status:",resolutionStatus);
             }
 
             RESUME_MISSION:{
@@ -195,13 +187,11 @@ CONFLICT_MANAGEMENT:
                         validPoint = true;
                         pprint("Going to next waypoint");
                         LibraryCall GOTO_POSITION(TargetPosition = _position,
-                                                  planID = currentPlanID,
                                                   resolutionCompleted = _resolutionCompleted);
 
                         _currentM_WP = _currentM_WP + 1;
                         SetNextMissionWP(_currentM_WP);
                         SetMode("PASSIVE");
-                        currentPlanID = "Plan0";
                     }endif
 
                 }

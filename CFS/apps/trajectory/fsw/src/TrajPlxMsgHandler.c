@@ -18,17 +18,20 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             b = deSerializeString(planID, b);
             b = deSerializeInt(false, &index, b);
             PathPlanner_GetWaypoint(TrajectoryAppData.pplanner, planID, index, waypoint);
-            OS_printf("wp %d:%f,%f\n",index,waypoint[0],waypoint[1]);
+            //OS_printf("wp %d:%f,%f\n",index,waypoint[0],waypoint[1]);
             serializeRealArray(3, waypoint, trajPlexilMsg.plxData.buffer);
             SendSBMsg(trajPlexilMsg);
-        } else if (CHECK_NAME(msg->plxData, "totalWP")) {
-
-
+        } else if (CHECK_NAME(msg->plxData, "GetTotalWaypoints")) {
+            char planID[10]={0};
+            int nWP;
+            b = deSerializeString(planID,b);
+            nWP = PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner,planID);
+            OS_printf("Total waypoints %d\n",nWP);
+            serializeInt(false,nWP,trajPlexilMsg.plxData.buffer);
+            SendSBMsg(trajPlexilMsg);
         } else if (CHECK_NAME(msg->plxData, "FindNewPath")) {
             char planID[10]={0};
-            char algorithmID[10];
-            memset(planID, 0, 10);
-            memset(algorithmID, 0, 10);
+            char algorithmID[10] = {0};
             double fromPosition[3];
             double fromVelocity[3];
             double toPosition[3];
@@ -44,9 +47,12 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             } else if (!strcmp(algorithmID, "RRT")) {
                 algType = 1;
             }
+            OS_printf("computing path %s using alg: %s\n",planID,algorithmID);
 
-            int n;
+            int32_t n;
             n = PathPlanner_FindPath(TrajectoryAppData.pplanner, algType, planID, fromPosition, toPosition, fromVelocity);
+
+            //OS_printf("solution status %d\n",n);
             serializeInt(false,n,trajPlexilMsg.plxData.buffer);
             SendSBMsg(trajPlexilMsg);
 

@@ -10,6 +10,19 @@ int main(int argc,char** argv){
     FlightData fdata(filename);
     PathPlanner planner(&fdata);
 
+
+    double pos1[3] = {37.1021769,-76.3872069,5};
+    double pos2[3] = {37.102192,-76.386940,5};
+    double pos3[3] = {37.102066,-76.387047,5.000000};
+    double pos4[3] = {37.101978,-76.387115,5.000000};
+
+
+    planner.InputFlightPlan("Plan0",0,pos1,1);
+    planner.InputFlightPlan("Plan0",1,pos2,1);
+    planner.InputFlightPlan("Plan0",2,pos3,1);
+    planner.InputFlightPlan("Plan0",3,pos4,1);
+    planner.InputFlightPlan("Plan0",4,pos1,1);
+
     // Create a keep in geofence with 4 vertices
     geofence_t vertex_gf1[4];
     geofence_t vertex_gf2[3];
@@ -62,10 +75,21 @@ int main(int argc,char** argv){
     for(int i=0;i<3;i++)
         fdata.InputGeofenceData(&vertex_gf2[i]);
 
-    double positionA[3] = {37.102177,-76.387206,0};
+    //double positionA[3] = {37.102177,-76.387206,0};
+    double positionA[3] = {37.102179,-76.387175,4.990000};
     double velocityA[3] = {90,1,0};
 
-    double positionB[3] = {37.102185,-76.387065,0};
+    //double positionB[3] = {37.102185,-76.387065,0};
+    double positionB[3] = {37.102180,-76.387140,5.075000};
+
+    double currPos[3] = {37.102178,-76.387177,4.990000};
+    double exitPosition[3];
+
+
+
+    planner.GetExitPoint("Plan0",currPos,1,exitPosition);
+
+    std::cout<<"exit position: "<<exitPosition[0]<<","<<exitPosition[1]<<","<<exitPosition[2]<<std::endl;
 
 
     Position pos = Position::makeLatLonAlt(positionA[0],"degree",positionA[1],"degree",positionA[2],"m");
@@ -83,6 +107,7 @@ int main(int argc,char** argv){
         planner.OutputFlightPlan(&projection,"PlanB","fence2.txt","waypoints2.txt");
     else
         std::cout<<"RRT algorithm couldn't find solution"<<std::endl;
+
 
 }
 

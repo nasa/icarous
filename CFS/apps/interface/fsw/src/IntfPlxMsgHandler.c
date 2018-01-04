@@ -131,7 +131,7 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
                                                                 0b0000111111111000, (int) (latitude * 1E7),
                                                                 (int) (longitude * 1E7), (int) (altitude),
                                                                 0, 0, 0, 0, 0, 0, 0, 0);
-                OS_printf("Setting position\n");
+                //OS_printf("Setting position\n");
                 break;
             } else if (strcmp(msg->plxData.name, "SETVEL") == 0) {
 

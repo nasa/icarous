@@ -75,13 +75,11 @@ Plan PathPlanner::ComputeGoAbovePlan(Position start,Position goal,double altFenc
 
 void PathPlanner::GetWaypoint(char *planID, int wpID, double *waypoint) {
     Plan* fp = GetPlan(planID);
-    std::cout<<"Getting waypoing in:"<<planID<<std::endl;
     if(fp != NULL){
         Position pos = fp->getPos(wpID);
         waypoint[0] = pos.latitude();
         waypoint[1] = pos.longitude();
         waypoint[2] = pos.alt();
-        printf("waypoint: %f,%f",waypoint[0],waypoint[1]);
     }else{
         waypoint[0] = 0;
         waypoint[1] = 0;
@@ -334,17 +332,25 @@ void PathPlanner::GetExitPoint(char *planID,double currentPoisition[],int nextWP
     Plan* fp;
     fp = GetPlan(planID);
 
+    if (fp == NULL){
+        std::cout<<"Couldn't find plan ID:"<<planID<<std::endl;
+        return;
+    }
+
     double elapsedTime = GetApproxElapsedPlanTime(fp,currentPoisition,nextWP);
 
-    geoCDIIPolygon.detection(*fp,*fdata->GetPolyPath(),elapsedTime,fp->getLastTime());
+    PolyPath gfPolyPath = *fdata->GetPolyPath();
+
+    bool val = geoCDIIPolygon.detection(*fp,gfPolyPath,elapsedTime,fp->getLastTime());
 
     double entryTime = geoCDIIPolygon.getTimeIn(0);
     double exitTime = geoCDIIPolygon.getTimeOut(0);
 
     Plan cutPlan = PlanUtil::cutDown(*fp,entryTime,exitTime);
+
     Position lastPos = cutPlan.getLastPoint().position();
 
     exitPosition[0] = lastPos.latitude();
     exitPosition[1] = lastPos.longitude();
-    exitPosition[1] = lastPos.alt();
+    exitPosition[2] = lastPos.alt();
 }
