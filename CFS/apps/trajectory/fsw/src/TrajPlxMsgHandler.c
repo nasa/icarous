@@ -97,6 +97,21 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
 
             serializeRealArray(3,exitPosition,trajPlexilMsg.plxData.buffer);
             SendSBMsg(trajPlexilMsg);
+        } else if(CHECK_NAME(msg->plxData,"GetInterceptHeadingToPlan")){
+
+            char planID[10] = {0};
+            int nextWP;
+            double position[3];
+
+            b = deSerializeString(planID,b);
+            b = deSerializeInt(false,&nextWP,b);
+            b = deSerializeRealArray(position,b);
+
+            //OS_printf("Get intercept to plan %s,at %f,%f,%f, to %d\n",planID,position[0],position[1],position[2],nextWP);
+
+            double track = PathPlanner_GetInterceptHeadingToPlan_c(TrajectoryAppData.pplanner,planID,nextWP,position);
+            serializeReal(false,track,trajPlexilMsg.plxData.buffer);
+            SendSBMsg(trajPlexilMsg);
         }
     }else{
 
