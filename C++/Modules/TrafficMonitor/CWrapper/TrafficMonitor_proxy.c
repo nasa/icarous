@@ -45,6 +45,7 @@ int _wrap_FlightData_GetTotalFences(SwigObj * carg1);
 double _wrap_FlightData_getFlightPlanSpeed(SwigObj * carg1, SwigObj * carg2, int carg3);
 void _wrap_FlightData_GetTraffic_pFlightData_i_rlarcfm_Position_rlarcfm_Velocity(SwigObj * carg1, int carg2, SwigObj * carg3, SwigObj * carg4);
 /*aaaaaa*/SwigObj * _wrap_FlightData_GetGeofence(SwigObj * carg1, int carg2);
+/*aaaaaa*/SwigObj * _wrap_FlightData_GetPolyPath(SwigObj * carg1);
 void _wrap_delete_FlightData(FlightData * carg1);
 void _wrap_TrafficMonitor_DAA_set(SwigObj * carg1, SwigObj * carg2);
 SwigObj * _wrap_TrafficMonitor_DAA_get(SwigObj * carg1);
@@ -54,6 +55,7 @@ TrafficMonitor * _wrap_new_TrafficMonitor(SwigObj * carg1);
 bool _wrap_TrafficMonitor_CheckTurnConflict(SwigObj * carg1, double carg2, double carg3, double carg4, double carg5);
 bool _wrap_TrafficMonitor_MonitorTraffic(SwigObj * carg1, bool carg2, double carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6);
 void _wrap_TrafficMonitor_GetVisualizationBands(SwigObj * carg1, SwigObj * carg2);
+bool _wrap_TrafficMonitor_CheckSafeToTurn(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, double carg4, double carg5);
 void _wrap_delete_TrafficMonitor(TrafficMonitor * carg1);
 
 void FlightData_paramData_set(SwigObj * carg1, SwigObj * carg2) {
@@ -164,6 +166,9 @@ void FlightData_GetTraffic_pFlightData_i_rlarcfm_Position_rlarcfm_Velocity(SwigO
 /*aaaaaa*/SwigObj * FlightData_GetGeofence(SwigObj * carg1, int carg2) {
   return _wrap_FlightData_GetGeofence(carg1, carg2);
 }
+/*aaaaaa*/SwigObj * FlightData_GetPolyPath(SwigObj * carg1) {
+  return _wrap_FlightData_GetPolyPath(carg1);
+}
 void delete_FlightData(FlightData * carg1) {
   return _wrap_delete_FlightData(carg1);
 }
@@ -190,6 +195,9 @@ bool TrafficMonitor_MonitorTraffic(SwigObj * carg1, bool carg2, double carg3, /*
 }
 void TrafficMonitor_GetVisualizationBands(SwigObj * carg1, SwigObj * carg2) {
   return _wrap_TrafficMonitor_GetVisualizationBands(carg1, carg2);
+}
+bool TrafficMonitor_CheckSafeToTurn(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, double carg4, double carg5) {
+  return _wrap_TrafficMonitor_CheckSafeToTurn(carg1, carg2, carg3, carg4, carg5);
 }
 void delete_TrafficMonitor(TrafficMonitor * carg1) {
   return _wrap_delete_TrafficMonitor(carg1);

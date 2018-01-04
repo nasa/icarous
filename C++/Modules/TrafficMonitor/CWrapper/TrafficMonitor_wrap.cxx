@@ -1040,6 +1040,24 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC /*aaaaaa*/SwigObj * _wrap_FlightData_GetPolyPath(SwigObj * carg1) {
+    PolyPath * cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    /*aaaaaa*/SwigObj * result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    cppresult =  (PolyPath *)(arg1)->GetPolyPath();
+    {
+      result = (SwigObj*) SWIG_create_object(SWIG_STR(PolyPath));
+      result->obj = (void*) cppresult;
+    }
+    return result;
+  }
+  
+  
   SWIGEXPORTC void _wrap_delete_FlightData(SwigObj * carg1) {
     SWIG_remove_registry_entry(carg1);
     SWIG_destroy_object(carg1);
@@ -1194,6 +1212,29 @@ extern "C" {
       arg2 = (visbands_t *) 0;
     }
     (arg1)->GetVisualizationBands(*arg2);
+  }
+  
+  
+  SWIGEXPORTC bool _wrap_TrafficMonitor_CheckSafeToTurn(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, double carg4, double carg5) {
+    bool cppresult;
+    TrafficMonitor *arg1 = (TrafficMonitor *) 0 ;
+    double *arg2 ;
+    double *arg3 ;
+    double arg4 ;
+    double arg5 ;
+    bool result;
+    
+    {
+      if (carg1)
+      arg1 = (TrafficMonitor *) carg1->obj;
+    }
+    arg2 = (double *) carg2;
+    arg3 = (double *) carg3;
+    arg4 = (double) carg4;
+    arg5 = (double) carg5;
+    cppresult =  (bool)(arg1)->CheckSafeToTurn(arg2,arg3,arg4,arg5);
+    result = (bool) cppresult;
+    return result;
   }
   
   

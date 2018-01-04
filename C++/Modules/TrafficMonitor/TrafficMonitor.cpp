@@ -62,7 +62,23 @@ bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double positio
 
     bool prefDirection = KMB.preferredTrackDirection();
     double prefHeading = KMB.trackResolution(prefDirection);
-    resolution[0] = prefHeading;
+
+    if(!ISNAN(prefHeading)) {
+        if (prefDirection) {
+            prefHeading = prefHeading + 5 * M_PI / 180;
+            if (prefHeading > M_PI) {
+                prefHeading = prefHeading - 2 * M_PI;
+            }
+        } else {
+            prefHeading = prefHeading - 5 * M_PI / 180;
+            if (prefHeading < -M_PI) {
+                prefHeading = 2 * M_PI + prefHeading;
+            }
+        }
+        resolution[0] = prefHeading * 180 / M_PI;
+    }else{
+        resolution[0] = 1e5;
+    }
     
     if (daaViolation) {
         conflict = true;
@@ -75,6 +91,7 @@ bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double positio
             conflict = false;
         }
     }
+
 
     // Construct kinematic bands message to send to ground station
     if (dist2traffic < 20 && visualize) {
@@ -119,6 +136,43 @@ bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double positio
     }
 
     return conflict;
+}
+
+bool TrafficMonitor::CheckSafeToTurn(double position[],double velocity[],double fromHeading,double toHeading){
+    Position so = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
+    Velocity vo = Velocity::makeTrkGsVs(velocity[0],"degree",velocity[1],"m/s",velocity[2],"m/s");
+
+    bool conflict = false;
+
+    int numTraffic = fdata->GetTotalTraffic();
+
+    if (numTraffic == 0)
+        return true;
+
+    DAA.setOwnshipState("Ownship", so, vo, 0);
+    double dist2traffic = MAXDOUBLE;
+    for (unsigned int i = 0; i < numTraffic; i++) {
+        Position si;
+        Velocity vi;
+        fdata->GetTraffic(i, si, vi);
+        char name[10];
+        sprintf(name, "Traffic%d", i);
+        DAA.addTrafficState(name, si, vi);
+    }
+
+    DAA.kinematicMultiBands(KMB);
+
+    for (int i = 0; i < KMB.trackLength(); ++i){
+
+        Interval iv = KMB.track(i, "deg");
+        double low = iv.low;
+        double high = iv.up;
+
+        conflict |= CheckTurnConflict(low,high,toHeading,fromHeading);
+    }
+
+    return !conflict;
+
 }
 
 bool TrafficMonitor::CheckTurnConflict(double low, double high, double newHeading, double oldHeading) {

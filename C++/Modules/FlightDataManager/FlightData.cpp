@@ -189,7 +189,6 @@ void FlightData::AddTraffic(int id,double lat,double lon,double alt,double vx,do
     pthread_mutex_lock(&lock);
     GenericObject newTraffic(1,id,(float)lat,(float)lon,(float)alt,(float)vx,(float)vy,(float)vz);
     GenericObject::AddObject(trafficList,newTraffic);
-    larcfm::Position pos;larcfm::Velocity vel;
     pthread_mutex_unlock(&lock);
 }
 
