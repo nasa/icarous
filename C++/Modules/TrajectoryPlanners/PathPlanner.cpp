@@ -310,7 +310,12 @@ void PathPlanner::GetPositionOnPlan_c(char *planID, int leg, double currentPos[]
 
 double PathPlanner::GetInterceptHeadingToPlan_c(char *planID, int leg, double currentPos[]) {
     Plan* fp = GetPlan(planID);
-    GetInterceptHeadingToPlan(fp,leg,currentPos);
+    if(fp!=NULL) {
+        return GetInterceptHeadingToPlan(fp, leg, currentPos);
+    }else{
+        std::cout<<"Couldn't find plan:"<<planID<<std::endl;
+    }
+
 }
 
 void PathPlanner::ManueverToIntercept_c(char* planID,int leg,double currPosition[],double velocity[]){

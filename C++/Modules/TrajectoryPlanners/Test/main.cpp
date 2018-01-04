@@ -85,7 +85,14 @@ int main(int argc,char** argv){
     double currPos[3] = {37.102178,-76.387177,4.990000};
     double exitPosition[3];
 
+    double offsetPos[3] = {37.102197,-76.387045,4.990000};
 
+    double offsets[2];
+    planner.ComputeXtrackDistance_c("Plan0",1,offsetPos,offsets);
+
+    printf("offsets: %f,%f\n",offsets[0],offsets[1]);
+
+    planner.GetInterceptHeadingToPlan_c("Plan0",1,offsetPos);
 
     planner.GetExitPoint("Plan0",currPos,1,exitPosition);
 
