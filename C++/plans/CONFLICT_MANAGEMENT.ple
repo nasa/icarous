@@ -36,6 +36,7 @@ CONFLICT_MANAGEMENT:
     Real newConflictHash = 0;
     Real oldConflictHash = 0;
     Real allowedDeviation;
+    Real deviation;
     Integer _currentM_WP = 1;
     Integer _currentR_WP = 0;
     
@@ -90,7 +91,6 @@ CONFLICT_MANAGEMENT:
 
 
             FLIGHTPLAN: {
-                  Real deviation;
                   Integer nextWP;
                   EndCondition isKnown(statusFP);
 
@@ -122,11 +122,14 @@ CONFLICT_MANAGEMENT:
             InOut Boolean fenceConflict[2];
             InOut Boolean trafficConflict;
             Real RecoveryPosition[3];
-            Boolean resolutionStatus = false;
+            Boolean completionStatus = false;
             Repeat true;
+
+            resolutionActive = true;
 
             GET_RECOVERY_POSITION:{
                 StartCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict );
+
                 _currentM_WP = Lookup(nextMissionWPIndex);
 
                 KEEP_IN:{
@@ -165,13 +168,13 @@ CONFLICT_MANAGEMENT:
                     SkipCondition (!keepInConflict && !keepOutConflict);
                     LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition,
                                               resolutionCompleted = _resolutionCompleted);
-                    resolutionStatus = _resolutionCompleted;
+                    completionStatus = _resolutionCompleted;
                 }
 
                 TRAFFIC_RESOLUTION:{
                    Real prevVelCmd[3];
                    SkipCondition !trafficConflict;
-                   EndCondition resolutionStatus;
+                   EndCondition completionStatus;
 
                    //acPosition = Lookup(position);
                    //acVelocity = Lookup(velocity);
@@ -227,18 +230,41 @@ CONFLICT_MANAGEMENT:
                      pprint("return safe:",returnSafe);
 
                      if(returnSafe && output[0] < 0){
-                           resolutionStatus = true;
+                           completionStatus = true;
                      }endif
 
                    }
                 }
 
-                pprint("Resolution status:",resolutionStatus);
+                FLIGHTPLAN:{
+
+                    SkipCondition !flightPlanConflict;
+                    EndCondition (deviation < allowedDeviation/2);
+
+                    completionStatus = true;
+
+                    MANEUVER:
+                    {
+                        Real velCmd[3];
+                        Repeat true;
+
+                        COMPUTE_VELOCITY:
+                        {
+                           EndCondition isKnown(velCmd[0]);
+                           velCmd = ManeuverToIntercept("PlanID",_currentM_WP,acPosition);
+                        }
+
+                        SetVel(velCmd);
+                    }
+
+                }
+
+                pprint("Resolution status:",completionStatus);
             }
 
             RESUME_MISSION:{
                 Boolean validPoint = false;
-                SkipCondition !resolutionStatus;
+                SkipCondition !completionStatus;
 
                 pprint("Resuming mission");
 
@@ -279,6 +305,7 @@ CONFLICT_MANAGEMENT:
                         _currentM_WP = _currentM_WP + 1;
                         SetNextMissionWP(_currentM_WP);
                         SetMode("PASSIVE");
+                        resolutionActive = false;
                     }endif
 
                 }
