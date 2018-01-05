@@ -1,23 +1,27 @@
 // -*- Mode: C++ -*-
 // Simple conflict detection strategy
 
+// Lookup definitions
 Integer Lookup numMissionWP;
 Integer Lookup nextMissionWPIndex;
 Real[3] Lookup position;
 Real[3] Lookup velocity;
-Real Lookup allowedXtrackDev;
+Real    Lookup allowedXtrackDev;
 
-Real[3] Command GetWaypoint(String planID,Integer index);
+// Command definitions
+Real[3]    Command GetWaypoint(String planID,Integer index);
 Boolean[2] Command CheckFenceViolation(Real Position[3],Real Velocity[3]);
-Real ComputeCrossTrackDeviation(String planID,Integer leg,Real position[3]);
-Real[3] Command GetRecoveryPosition(Real Position[3]);
-Real[3] Command GetExitPoint(String planID,Real Position[3],Integer nextWP);
-Real[4] Command MonitorTraffic(Real position[3],Real velocity[3]);
+Real       Command ComputeCrossTrackDeviation(String planID,Integer leg,Real position[3]);
+Real[3]    Command GetRecoveryPosition(Real Position[3]);
+Real[3]    Command GetExitPoint(String planID,Real Position[3],Integer nextWP);
+Real[4]    Command MonitorTraffic(Real position[3],Real velocity[3]);
+Real       Command GetInterceptHeadingToPlan(String planID,Integer leg,Real position[3]);
+Real[3]    Command ManeuverToIntercept(String planID,Integer leg,Real position[3]);
+Boolean    Command CheckSafeToTurn(Real position[3],Real velocity[3],Real fromHeading,Real toHeading);
+
 Command SetMode(String mode);
 Command SetNextMissionWP(Integer index);
 Command SetVel(Real velocity[3]);
-Real Command GetInterceptHeadingToPlan(String planID,Integer leg,Real position[3]);
-Boolean Command CheckSafeToTurn(Real position[3],Real velocity[3],Real fromHeading,Real toHeading);
 Command pprint(...);
 
 // Library plans
@@ -54,7 +58,8 @@ CONFLICT_MANAGEMENT:
 	
         DETECTION:
         {
-            InOut Boolean fenceConflict[2];
+            InOut Boolean keepInConflict;
+            InOut Boolean keepOutConflict;
             Integer numFenceConflicts;
             Boolean statusGF[2];
             Boolean statusTF;
@@ -92,15 +97,18 @@ CONFLICT_MANAGEMENT:
 
             FLIGHTPLAN: {
                   Integer nextWP;
+                  Real _deviation;
                   EndCondition isKnown(statusFP);
 
-                  if(!resolutionActive){
-                      nextWP = Lookup(currentMissionWP);
-                      {
-                        EndCondition isKnown(deviation);
-                        deviation = ComputeCrossTrackDeviation("Plan0",nextWP,acPosition);
-                      }
+                  nextWP = Lookup(nextMissionWPIndex);
+                  {
+                    EndCondition isKnown(_deviation);
+                    _deviation = ComputeCrossTrackDeviation("Plan0",nextWP,acPosition);
+                  }
 
+                  deviation = _deviation;
+
+                  if(!resolutionActive){
                       if (deviation > allowedDeviation){
                           statusFP = true;
                       }else{
@@ -119,16 +127,20 @@ CONFLICT_MANAGEMENT:
 
 
         RESOLUTION:{
-            InOut Boolean fenceConflict[2];
-            InOut Boolean trafficConflict;
+            In Boolean keepInConflict;
+            In Boolean keepOutConflict;
+            In Boolean trafficConflict;
+            In Boolean flightPlanConflict;
             Real RecoveryPosition[3];
             Boolean completionStatus = false;
+            StartCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict );
             Repeat true;
 
             resolutionActive = true;
 
+            pprint("Starting resolution");
+
             GET_RECOVERY_POSITION:{
-                StartCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict );
 
                 _currentM_WP = Lookup(nextMissionWPIndex);
 
@@ -166,6 +178,7 @@ CONFLICT_MANAGEMENT:
                 FENCE_RESOLUTION:{
                     Boolean _resolutionCompleted;
                     SkipCondition (!keepInConflict && !keepOutConflict);
+
                     LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition,
                                               resolutionCompleted = _resolutionCompleted);
                     completionStatus = _resolutionCompleted;
@@ -175,9 +188,6 @@ CONFLICT_MANAGEMENT:
                    Real prevVelCmd[3];
                    SkipCondition !trafficConflict;
                    EndCondition completionStatus;
-
-                   //acPosition = Lookup(position);
-                   //acVelocity = Lookup(velocity);
 
                    SetMode("ACTIVE");
 
@@ -243,6 +253,10 @@ CONFLICT_MANAGEMENT:
 
                     completionStatus = true;
 
+                    pprint("Executing flight plan resolution");
+
+                    SetMode("ACTIVE");
+
                     MANEUVER:
                     {
                         Real velCmd[3];
@@ -251,7 +265,7 @@ CONFLICT_MANAGEMENT:
                         COMPUTE_VELOCITY:
                         {
                            EndCondition isKnown(velCmd[0]);
-                           velCmd = ManeuverToIntercept("PlanID",_currentM_WP,acPosition);
+                           velCmd = ManeuverToIntercept("Plan0",_currentM_WP,acPosition);
                         }
 
                         SetVel(velCmd);

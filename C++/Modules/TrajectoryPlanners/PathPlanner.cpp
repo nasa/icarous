@@ -320,7 +320,10 @@ double PathPlanner::GetInterceptHeadingToPlan_c(char *planID, int leg, double cu
 
 void PathPlanner::ManueverToIntercept_c(char* planID,int leg,double currPosition[],double velocity[]){
     Plan* fp = GetPlan(planID);
-    ManueverToIntercept(fp,leg,currPosition,velocity);
+    if(fp != NULL)
+        ManueverToIntercept(fp,leg,currPosition,velocity);
+    else
+        std::cout<<"Couldn't find plan:"<<planID<<std::endl;
 }
 
 double PathPlanner::GetApproxElapsedPlanTime(Plan* fp,double currentPos[],int nextWP){

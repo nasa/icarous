@@ -57,7 +57,6 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             SendSBMsg(trajPlexilMsg);
 
         } else if (CHECK_NAME(msg->plxData, "ComputeCrossTrackDeviation")) {
-
             char planID[10]={0};
             int leg;
             double position[3];
@@ -126,7 +125,8 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             SendSBMsg(trajPlexilMsg);
         }
     }else{
-
+        trajPlexilMsg.plxData.id = msg->plxData.id;
+        trajPlexilMsg.plxData.mType = _LOOKUP_RETURN_;
         if(CHECK_NAME(msg->plxData,"allowedXtrackDev")){
             double val;
             val = FlightData_GetAllowedXtracDeviation(TrajectoryAppData.fdata);
