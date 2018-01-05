@@ -41,10 +41,10 @@ CONFLICT_MANAGEMENT:
     Real oldConflictHash = 0;
     Real allowedDeviation;
     Real deviation;
-    Integer _currentM_WP = 1;
-    Integer _currentR_WP = 0;
+    Integer currentM_WP = 1;
+
     
-    EndCondition (_currentM_WP >= Lookup(numMissionWP));
+    EndCondition (currentM_WP+1 >= Lookup(numMissionWP));
 
     _numMissionWP = Lookup(numMissionWP);
     allowedDeviation = Lookup(allowedXtrackDev);
@@ -69,6 +69,7 @@ CONFLICT_MANAGEMENT:
 
             acPosition = Lookup(position);
             acVelocity = Lookup(velocity);
+            currentM_WP = Lookup(nextMissionWPIndex);
 
             FENCE:
             {
@@ -100,7 +101,7 @@ CONFLICT_MANAGEMENT:
                   Real _deviation;
                   EndCondition isKnown(statusFP);
 
-                  nextWP = Lookup(nextMissionWPIndex);
+                  nextWP = currentM_WP;
                   {
                     EndCondition isKnown(_deviation);
                     _deviation = ComputeCrossTrackDeviation("Plan0",nextWP,acPosition);
@@ -131,18 +132,19 @@ CONFLICT_MANAGEMENT:
             In Boolean keepOutConflict;
             In Boolean trafficConflict;
             In Boolean flightPlanConflict;
+            Integer nextWP;
             Real RecoveryPosition[3];
             Boolean completionStatus = false;
             StartCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict );
             Repeat true;
 
             resolutionActive = true;
+            nextWP = currentM_WP;
 
             pprint("Starting resolution");
 
             GET_RECOVERY_POSITION:{
 
-                _currentM_WP = Lookup(nextMissionWPIndex);
 
                 KEEP_IN:{
                     SkipCondition !keepInConflict;
@@ -166,7 +168,7 @@ CONFLICT_MANAGEMENT:
 
                     {
                        EndCondition isKnown(RecoveryPosition[0]);
-                       RecoveryPosition = GetExitPoint("Plan0",acPosition,_currentM_WP);
+                       RecoveryPosition = GetExitPoint("Plan0",acPosition,nextWP);
                     }
 
                     pprint("RecoveryPosition:",RecoveryPosition[0],RecoveryPosition[1],RecoveryPosition[2]);
@@ -223,7 +225,7 @@ CONFLICT_MANAGEMENT:
 
                      {
                          EndCondition isKnown(track);
-                         track = GetInterceptHeadingToPlan("Plan0",_currentM_WP,acPosition);
+                         track = GetInterceptHeadingToPlan("Plan0",nextWP,acPosition);
                      }
 
                      pprint("Intercept heading:",track);
@@ -265,7 +267,7 @@ CONFLICT_MANAGEMENT:
                         COMPUTE_VELOCITY:
                         {
                            EndCondition isKnown(velCmd[0]);
-                           velCmd = ManeuverToIntercept("Plan0",_currentM_WP,acPosition);
+                           velCmd = ManeuverToIntercept("Plan0",nextWP,acPosition);
                         }
 
                         SetVel(velCmd);
@@ -282,7 +284,7 @@ CONFLICT_MANAGEMENT:
 
                 pprint("Resuming mission");
 
-                while(!validPoint && _currentM_WP < _numMissionWP){
+                while(!validPoint && nextWP < _numMissionWP){
                     Real _position[3];
                     Real _velocity[3];
                     Boolean status[2];
@@ -293,10 +295,10 @@ CONFLICT_MANAGEMENT:
 
                     {
                         EndCondition isKnown(_position[0]);
-                        _position = GetWaypoint("Plan0",_currentM_WP);
+                        _position = GetWaypoint("Plan0",nextWP);
                     }
 
-                    pprint("Obtained waypoint with index:",_currentM_WP);
+                    pprint("Obtained waypoint with index:",nextWP);
                     pprint("Checking fence violation of WP:",_position[0],_position[1]);
 
                     {
@@ -307,17 +309,19 @@ CONFLICT_MANAGEMENT:
                     pprint("status:",status[0],status[1]);
 
                     if(status[0] || status[1]){
-                        _currentM_WP = _currentM_WP + 1;
+                        nextWP = nextWP + 1;
                         pprint("incrementing index:");
                     }else{
                         Boolean _resolutionCompleted;
                         validPoint = true;
-                        pprint("Going to next waypoint");
+                        pprint("Going to next waypoint:",nextWP);
                         LibraryCall GOTO_POSITION(TargetPosition = _position,
                                                   resolutionCompleted = _resolutionCompleted);
-
-                        _currentM_WP = _currentM_WP + 1;
-                        SetNextMissionWP(_currentM_WP);
+                        if(nextWP+1 <= _numMissionWP-1){
+                           nextWP = nextWP + 1;
+                        }endif
+                        pprint("Finished resolution. Resuming to:",nextWP);
+                        SetNextMissionWP(nextWP);
                         SetMode("PASSIVE");
                         resolutionActive = false;
                     }endif

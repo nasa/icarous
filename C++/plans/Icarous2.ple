@@ -142,6 +142,7 @@ ICAROUS:
 	}// End of CRUISE
 
 	LAND:{
+	    SetMode("ACTIVE");
 	    Land();
 	}// End of LAND
 	
