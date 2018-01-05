@@ -54,7 +54,7 @@ void TRAJECTORY_AppInit(void) {
                                TRAJECTORY_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to plexil output messages from the SB
-    CFE_SB_Subscribe(PLEXIL_OUTPUT_MID, TrajectoryAppData.Trajectory_Pipe);
+    CFE_SB_Subscribe(PLEXIL_OUTPUT_TRAJECTORY_MID, TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_WP_MID,TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_GEOFENCE_MID, TrajectoryAppData.Trajectory_Pipe);
 
@@ -105,7 +105,7 @@ void TRAJECTORY_ProcessPacket(){
             break;
         }
 
-        case PLEXIL_OUTPUT_MID: {
+        case PLEXIL_OUTPUT_TRAJECTORY_MID: {
             plexil_interface_t* msg;
             msg = (plexil_interface_t*) TrajectoryAppData.Trajectory_MsgPtr;
             TrajPlxMsgHandler(msg);

@@ -112,10 +112,7 @@ CONFLICT_MANAGEMENT:
                   }
 
                   deviation = _deviation;
-
-                  pprint("deviation:",deviation);
-
-
+                  
                   if (deviation > allowedDeviation){
                       statusFP = true;
                   }else{
@@ -212,7 +209,6 @@ CONFLICT_MANAGEMENT:
                          output = MonitorTraffic(acPosition,acVelocity);
                      }
 
-                     pprint("output traffic resolution:",output);
 
                      if(output[1] < 100)
                         velCmd[0] = output[1];

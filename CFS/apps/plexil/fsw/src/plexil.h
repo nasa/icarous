@@ -101,7 +101,7 @@ uint8_t ProcessPlexilLookup(PlexilMsg* Msg);
 /**
  * Function to acquire flight data for plexil
  */
-void PLEXIL_DAQ(void);
+void PLEXIL_DistributeMessage(PlexilMsg msg);
 
 
 /**

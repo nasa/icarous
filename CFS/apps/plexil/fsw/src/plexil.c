@@ -165,8 +165,10 @@ void PLEXIL_Run(){
 
         if(n>=0) {
             //OS_printf("CfsAdapter: obtained command %s,%f\n",msg1.name,msg1.argsD[0]);
-            memcpy(&plexilMsg.plxData, &msg1, sizeof(PlexilMsg));
-            SendSBMsg(plexilMsg);
+            //memcpy(&plexilMsg.plxData, &msg1, sizeof(PlexilMsg));
+            //SendSBMsg(plexilMsg);
+
+            PLEXIL_DistributeMessage(msg1);
         }
     }
 
@@ -176,8 +178,10 @@ void PLEXIL_Run(){
         n = plexil_getLookup(plexilAppData.adap,&msg2);
         if(n>=0) {
             //OS_printf("CfsAdapter: obtained lookup %s\n",msg2.name);
-            memcpy(&plexilMsg.plxData, &msg2, sizeof(PlexilMsg));
-            SendSBMsg(plexilMsg);
+            //memcpy(&plexilMsg.plxData, &msg2, sizeof(PlexilMsg));
+            //SendSBMsg(plexilMsg);
+
+            PLEXIL_DistributeMessage(msg2);
         }
     }
 }

@@ -20,7 +20,7 @@ include_directories(
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
-set(SOURCE_FILES fsw/src/plexil.c fsw/src/DefaultAdapter.c fsw/src/plexil_table.h)
+set(SOURCE_FILES fsw/src/plexil.c fsw/src/DistributeMessage.c fsw/src/plexil_table.h)
 
 link_directories(${PLEXIL_LIB})
 

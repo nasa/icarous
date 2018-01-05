@@ -54,7 +54,7 @@ void GEOFENCE_AppInit(void) {
                                GEOFENCE_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to plexil output messages from the SB
-    CFE_SB_Subscribe(PLEXIL_OUTPUT_MID, geofenceAppData.Geofence_Pipe);
+    CFE_SB_Subscribe(PLEXIL_OUTPUT_GEOFENCE_MID, geofenceAppData.Geofence_Pipe);
     CFE_SB_Subscribe(ICAROUS_GEOFENCE_MID,geofenceAppData.Geofence_Pipe);
 
     // Initialize all messages that this App generates
@@ -92,7 +92,7 @@ void GEOFENCE_ProcessPacket(){
             FlightData_InputGeofenceData(geofenceAppData.fdata,&vertexWrapper);
             break;
         }
-        case PLEXIL_OUTPUT_MID: {
+        case PLEXIL_OUTPUT_GEOFENCE_MID: {
             plexil_interface_t* msg = (plexil_interface_t*)geofenceAppData.Geofence_MsgPtr;
             GeoPlxMsgHandler(msg);
             break;

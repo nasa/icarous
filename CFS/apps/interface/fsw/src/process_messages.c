@@ -415,7 +415,7 @@ void INTERFACE_ProcessPacket(){
 			break;
 		}
 
-		case PLEXIL_OUTPUT_MID: {
+		case PLEXIL_OUTPUT_INTERFACE_MID: {
             mavlink_message_t msg;
 			bool send = IntfPlxMsgHandler(&msg);
             if(send) {

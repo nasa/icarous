@@ -54,7 +54,7 @@ void TRAFFIC_AppInit(void) {
                                TRAFFIC_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to plexil output messages from the SB
-    CFE_SB_Subscribe(PLEXIL_OUTPUT_MID, TrafficAppData.Traffic_Pipe);
+    CFE_SB_Subscribe(PLEXIL_OUTPUT_TRAFFIC_MID, TrafficAppData.Traffic_Pipe);
     CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,TrafficAppData.Traffic_Pipe);
 
     // Initialize all messages that this App generates
@@ -92,7 +92,7 @@ void TRAFFIC_ProcessPacket(){
             break;
         }
 
-        case PLEXIL_OUTPUT_MID: {
+        case PLEXIL_OUTPUT_TRAFFIC_MID: {
             plexil_interface_t* msg;
             msg = (plexil_interface_t*) TrafficAppData.Traffic_MsgPtr;
             TrafficPlxMsgHandler(msg);
