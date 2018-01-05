@@ -5,9 +5,11 @@ Integer Lookup numMissionWP;
 Integer Lookup nextMissionWPIndex;
 Real[3] Lookup position;
 Real[3] Lookup velocity;
+Real Lookup allowedXtrackDev;
 
 Real[3] Command GetWaypoint(String planID,Integer index);
 Boolean[2] Command CheckFenceViolation(Real Position[3],Real Velocity[3]);
+Real ComputeCrossTrackDeviation(String planID,Integer leg,Real position[3]);
 Real[3] Command GetRecoveryPosition(Real Position[3]);
 Real[3] Command GetExitPoint(String planID,Real Position[3],Integer nextWP);
 Real[4] Command MonitorTraffic(Real position[3],Real velocity[3]);
@@ -26,18 +28,21 @@ CONFLICT_MANAGEMENT:
     Integer _numMissionWP;
     Real acPosition[3];
     Real acVelocity[3];
-    Boolean fenceConflict[2] = #(false false);
+    Boolean keepInConflict = false;
+    Boolean keepOutConflict = false;
     Boolean trafficConflict = false;
     Boolean flightPlanConflict = false;
     Boolean resolutionActive = false;
     Real newConflictHash = 0;
     Real oldConflictHash = 0;
+    Real allowedDeviation;
     Integer _currentM_WP = 1;
     Integer _currentR_WP = 0;
     
     EndCondition (_currentM_WP >= Lookup(numMissionWP));
 
     _numMissionWP = Lookup(numMissionWP);
+    allowedDeviation = Lookup(allowedXtrackDev);
 
     pprint("starting CONFLICT_MANAGEMENT");
 
@@ -83,28 +88,33 @@ CONFLICT_MANAGEMENT:
                 }endif
             }
 
-              /*
-              FLIGHTPLAN: {
-              EndCondition isKnown(statusFP);
-              if(resolutionActive){
-              _currentR_WP = Lookup(currentResolutionWP);
-              statusFP = CheckFlightPlanConflict(acPosition,_currentR_WP);
-              }
-              else{
-              _currentM_WP = Lookup(currentMissionWP)
-              statusFP = CheckFlightPlanConflict(acPosition,_currentM_WP);
-              }
-              endif
-              }*/
 
-            fenceConflict[0] = statusGF[0];
-            fenceConflict[1] = statusGF[1];
+            FLIGHTPLAN: {
+                  Real deviation;
+                  Integer nextWP;
+                  EndCondition isKnown(statusFP);
+
+                  if(!resolutionActive){
+                      nextWP = Lookup(currentMissionWP);
+                      {
+                        EndCondition isKnown(deviation);
+                        deviation = ComputeCrossTrackDeviation("Plan0",nextWP,acPosition);
+                      }
+
+                      if (deviation > allowedDeviation){
+                          statusFP = true;
+                      }else{
+                          statusFP = false;
+                      }endif
+                  }else{
+                      statusFP = false;
+                  }endif
+            }
+
+            keepInConflict = statusGF[0];
+            keepOutConflict = statusGF[1];
             trafficConflict = statusTF;
-            //flightPlanConflict = statusFP;
-
-            if(fenceConflict[0] || fenceConflict[1]){
-               //pprint("Detected geofence conflict\n");
-            }endif
+            flightPlanConflict = statusFP;
         }
 
 
@@ -115,12 +125,12 @@ CONFLICT_MANAGEMENT:
             Boolean resolutionStatus = false;
             Repeat true;
 
-            COMPUTE_SOLUTION:{
-                StartCondition (fenceConflict[0] || fenceConflict[1] || trafficConflict);
+            GET_RECOVERY_POSITION:{
+                StartCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict );
                 _currentM_WP = Lookup(nextMissionWPIndex);
 
                 KEEP_IN:{
-                    SkipCondition !fenceConflict[0];
+                    SkipCondition !keepInConflict;
 
                     pprint("Obtaining recovery point");
 
@@ -135,7 +145,7 @@ CONFLICT_MANAGEMENT:
 
 
                 KEEP_OUT:{
-                    SkipCondition !fenceConflict[1];
+                    SkipCondition !keepOutConflict;
 
                     pprint("Obtaining exit point");
 
@@ -152,7 +162,7 @@ CONFLICT_MANAGEMENT:
             EXECUTE_RESOLUTION:{
                 FENCE_RESOLUTION:{
                     Boolean _resolutionCompleted;
-                    SkipCondition (!fenceConflict[0] && !fenceConflict[1]);
+                    SkipCondition (!keepInConflict && !keepOutConflict);
                     LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition,
                                               resolutionCompleted = _resolutionCompleted);
                     resolutionStatus = _resolutionCompleted;

@@ -313,6 +313,12 @@ double FlightData::GetAltitude(){
     return val;
 }
 
+double FlightData::GetAllowedXtracDeviation() {
+    double val;
+    val = paramData.getValue("XTRK_DEV");
+    return val;
+}
+
 void FlightData::InputGeofenceData(geofence_t* gf){
 
     if(gf->vertexIndex == 0){

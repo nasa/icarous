@@ -64,11 +64,9 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             double offsets[2];
             double xtrackdist;
 
-            memset(planID, 0, 10);
             b = deSerializeString(planID, b);
             b = deSerializeInt(false, &leg, b);
             b = deSerializeRealArray(position, b);
-            b = deSerializeRealArray(offsets, b);
 
             xtrackdist = PathPlanner_ComputeXtrackDistance_c(TrajectoryAppData.pplanner, planID, leg, position,
                                                              offsets);
@@ -115,7 +113,12 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
         }
     }else{
 
-
+        if(CHECK_NAME(msg->plxData,"allowedXtrackDev")){
+            double val;
+            val = FlightData_GetAllowedXtracDeviation(TrajectoryAppData.fdata);
+            serializeReal(false,val,trajPlexilMsg.plxData.buffer);
+            SendSBMsg(trajPlexilMsg);
+        }
 
     }
 
