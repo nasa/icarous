@@ -18,8 +18,8 @@ Real[4]    Command MonitorTraffic(Real position[3],Real velocity[3]);
 Real       Command GetInterceptHeadingToPlan(String planID,Integer leg,Real position[3]);
 Real[3]    Command ManeuverToIntercept(String planID,Integer leg,Real position[3]);
 Boolean    Command CheckSafeToTurn(Real position[3],Real velocity[3],Real fromHeading,Real toHeading);
+Boolean    Command SetMode(String mode);
 
-Command SetMode(String mode);
 Command SetNextMissionWP(Integer index);
 Command SetVel(Real velocity[3]);
 Command pprint(...);
@@ -92,16 +92,20 @@ CONFLICT_MANAGEMENT:
                     //pprint("traffic conflict");
                 }else{
                     statusTF = false;
+                    //pprint("no traffic conflict");
                 }endif
             }
 
+            //pprint("conflict traffic:",statusTF);
+
+            statusFP = false;
 
             FLIGHTPLAN: {
                   Integer nextWP;
                   Real _deviation;
-                  EndCondition isKnown(statusFP);
 
                   nextWP = currentM_WP;
+
                   {
                     EndCondition isKnown(_deviation);
                     _deviation = ComputeCrossTrackDeviation("Plan0",nextWP,acPosition);
@@ -109,16 +113,17 @@ CONFLICT_MANAGEMENT:
 
                   deviation = _deviation;
 
-                  if(!resolutionActive){
-                      if (deviation > allowedDeviation){
-                          statusFP = true;
-                      }else{
-                          statusFP = false;
-                      }endif
+                  pprint("deviation:",deviation);
+
+
+                  if (deviation > allowedDeviation){
+                      statusFP = true;
                   }else{
                       statusFP = false;
                   }endif
             }
+
+            //pprint("conflict flight plan:",statusFP);
 
             keepInConflict = statusGF[0];
             keepOutConflict = statusGF[1];
@@ -141,7 +146,7 @@ CONFLICT_MANAGEMENT:
             resolutionActive = true;
             nextWP = currentM_WP;
 
-            pprint("Starting resolution");
+            pprint("Starting resolution:",keepInConflict,keepOutConflict,trafficConflict,flightPlanConflict);
 
             GET_RECOVERY_POSITION:{
 
@@ -322,7 +327,13 @@ CONFLICT_MANAGEMENT:
                         }endif
                         pprint("Finished resolution. Resuming to:",nextWP);
                         SetNextMissionWP(nextWP);
-                        SetMode("PASSIVE");
+
+                        {
+                           Boolean status;
+                           EndCondition isKnown(status);
+                           status = SetMode("PASSIVE");
+                        }
+
                         resolutionActive = false;
                     }endif
 

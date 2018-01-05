@@ -17,6 +17,7 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
     // Initialize plexilInput message
     memset(&plexilInput.plxData, 0, sizeof(plexilInput.plxData));
     CFE_SB_InitMsg(&plexilInput,PLEXIL_INPUT_MID,sizeof(plexil_interface_t),TRUE);
+    plexilInput.plxData.id = msg->plxData.id;
     plexilInput.plxData.mType = _LOOKUP_RETURN_;
     strcpy(plexilInput.plxData.name,msg->plxData.name);
     char* b= plexilInput.plxData.buffer;
@@ -91,15 +92,23 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
                 break;
             } else if (strcmp(msg->plxData.name, "SetMode") == 0) {
                 OS_printf("Setting mode\n");
+
                 char modeName[15];
                 memset(modeName,0,15);
                 b = deSerializeString(modeName,b);
+
                 if (!strcmp(modeName, "PASSIVE")) {
                     mode = AUTO;
                 } else if (!strcmp(modeName, "ACTIVE")) {
                     mode = GUIDED;
                 }
                 mavlink_msg_set_mode_pack(255, 0, msgMavlink, 0, 1, mode);
+
+                plexilInput.plxData.mType = _COMMAND_RETURN_;
+                bool val = true;
+                serializeBool(false,val,plexilInput.plxData.buffer);
+                SendSBMsg(plexilInput);
+
                 break;
             } else if (strcmp(msg->plxData.name, "Land") == 0) {
                 mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_NAV_LAND, 0, 0, 0, 0, 0, 0, 0, 0);

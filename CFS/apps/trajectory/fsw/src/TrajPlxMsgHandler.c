@@ -67,10 +67,14 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             b = deSerializeInt(false, &leg, b);
             b = deSerializeRealArray(position, b);
 
+            //OS_printf("checking xtrack deviation from %s to leg %d at %f,%f,%f\n",planID,leg,position[0],position[1],position[2]);
+
             xtrackdist = PathPlanner_ComputeXtrackDistance_c(TrajectoryAppData.pplanner, planID, leg, position,
                                                              offsets);
             serializeReal(false,xtrackdist,trajPlexilMsg.plxData.buffer);
             SendSBMsg(trajPlexilMsg);
+            //OS_printf("xtrack %f\n",xtrackdist);
+
         } else if(CHECK_NAME(msg->plxData, "ComputeDistance")){
             double positionA[3];
             double positionB[3];
