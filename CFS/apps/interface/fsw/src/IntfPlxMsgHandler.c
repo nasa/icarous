@@ -26,9 +26,9 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
         case _LOOKUP_: {
 
             if (CHECK_NAME(msg->plxData, "missionStart")) {
-                bool start = (int) startMission.param1 ? true : false;
-                startMission.param1 = 0;
-                b = serializeBool(false, start, b);
+                int32_t  start = (int) startMission.param1;
+                startMission.param1 = -1;
+                b = serializeInt(false, start, b);
                 SendSBMsg(plexilInput);
             } else if (CHECK_NAME(msg->plxData, "armStatus")) {
                 int32_t result = -1;

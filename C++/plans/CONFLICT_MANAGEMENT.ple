@@ -44,7 +44,7 @@ CONFLICT_MANAGEMENT:
     Integer currentM_WP = 1;
 
     
-    EndCondition (currentM_WP+1 >= Lookup(numMissionWP));
+    EndCondition (currentM_WP+1 > Lookup(numMissionWP));
 
     _numMissionWP = Lookup(numMissionWP);
     allowedDeviation = Lookup(allowedXtrackDev);
@@ -112,7 +112,7 @@ CONFLICT_MANAGEMENT:
                   }
 
                   deviation = _deviation;
-                  
+
                   if (deviation > allowedDeviation){
                       statusFP = true;
                   }else{

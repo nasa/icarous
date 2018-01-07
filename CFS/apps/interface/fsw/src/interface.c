@@ -7,6 +7,8 @@
  **
  *******************************************************************************/
 #define EXTERN
+
+#include <Icarous_msg.h>
 #include "interface.h"
 #include "interface_table.h"
 #include "interface_version.h"
@@ -141,6 +143,9 @@ void INTERFACE_AppInit(void){
 	appdataInt.gs.portin   = TblPtr->gsPortin;
 	appdataInt.gs.portout  = TblPtr->gsPortout;
 	memcpy(appdataInt.gs.target,TblPtr->gsAddress,50);
+
+    //Set mission start flag to -1
+    startMission.param1 = -1;
 
 	// Free table pointer
 	status = CFE_TBL_ReleaseAddress(appdataInt.INTERFACE_tblHandle);

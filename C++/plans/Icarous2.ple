@@ -1,5 +1,5 @@
 // -*- Mode: Java -*-
-Boolean Lookup missionStart;
+Integer Lookup missionStart;
 Integer Lookup armStatus;
 Integer Lookup takeoffStatus;
 Integer Lookup numMissionWP;
@@ -27,124 +27,138 @@ ICAROUS:
         	        
     FMS:
     {
-	Boolean _idleStatus    = true;
-	Boolean _takeoffStatus = false;
-       	Boolean _climbStatus   = false;
-	Boolean _cruiseStatus  = false;
-	Integer _numMissionWP;
-	Integer _nextMissionWP = 1;
-	
-	Repeat true;
-	
-	IDLE:
-	{
-	    Boolean start = false;
-	    StartCondition _idleStatus;
-	    EndCondition !_idleStatus;       	    
-	    
-	    {
-		Repeat true;		
-		start = Lookup(missionStart);
-		
-		if (start){
-		    _numMissionWP = Lookup(numMissionWP);
-		    _takeoffStatus = true;
-		    _idleStatus = false;
-		}endif
-	    }
-		
-	}// End of IDLE
-	
-	TAKEOFF:{	   
-	    Integer _armStatus;
-	    StartCondition _takeoffStatus;
-	    SkipCondition !_takeoffStatus;
-	    EndCondition !_takeoffStatus;
+        Boolean _idleStatus    = true;
+        Boolean _takeoffStatus = false;
+        Boolean _climbStatus   = false;
+        Boolean _cruiseStatus  = false;
+        Boolean _landStatus    = false;
+        Integer _numMissionWP;
+        Integer _nextMissionWP = 1;
 
-	    pprint("Takeoff");
-	    
-	    CHANGE_MODE:SetMode("ACTIVE");
+        Repeat true;
 
-	    ARM:{
-            EndCondition isKnown(_armStatus) && (_armStatus >= 0);
+        IDLE:
+        {
+            Integer start;
+            StartCondition _idleStatus;
+            EndCondition !_idleStatus;
 
-            ArmMotors();
-
-            CHECK_STATUS: {
+            {
                 Repeat true;
-                _armStatus = Lookup(armStatus);
-                pprint("In arm status");
+                start = Lookup(missionStart);
+
+                if (start == 0){
+                    _numMissionWP = Lookup(numMissionWP);
+                    _takeoffStatus = true;
+                    _idleStatus = false;
+                }elseif(start > 0){
+                    _numMissionWP = Lookup(numMissionWP);
+                    _climbStatus = true;
+                    _idleStatus = false;
+                }endif
             }
-	    }// End of ARM
 
-	    pprint("Armed motors",_armStatus);
+        }// End of IDLE
 
-	    THROTTLE_UP:{
-		Integer status;
-		StartCondition (_armStatus==1);
-		SkipCondition  (_armStatus!=1);
+        TAKEOFF:{
+            Integer _armStatus;
+            StartCondition _takeoffStatus;
+            SkipCondition !_takeoffStatus;
+            EndCondition !_takeoffStatus;
 
+            pprint("Takeoff");
 
-		TAKEOFF:{
+            CHANGE_MODE:SetMode("ACTIVE");
 
-		    EndCondition isKnown(status) && (status>=0);
-		    
-		    Takeoff(5.0);
+            ARM:{
+                EndCondition isKnown(_armStatus) && (_armStatus >= 0);
 
-		    pprint("Taking off");
+                ArmMotors();
 
-		    CHECK_STATUS: {
-                Repeat true;
-                status = Lookup(takeoffStatus);
-		    }
+                CHECK_STATUS: {
+                    Repeat true;
+                    _armStatus = Lookup(armStatus);
+                    pprint("In arm status");
+                }
+            }// End of ARM
 
-		}
+            pprint("Armed motors",_armStatus);
 
-		if(status == 1){
-		    pprint("Takeoff successful");
-		    _climbStatus = true;
-		    _takeoffStatus = false;
-		}else{
-		    pprint("Takeoff failed\n");
-		    _idleStatus = true;
-		    _takeoffStatus = false;		       		    
-		}endif
-
-	    }// End of THROTTLE	    
-	}// End of TAKEOFF
+            THROTTLE_UP:{
+            Integer status;
+            StartCondition (_armStatus==1);
+            SkipCondition  (_armStatus!=1);
 
 
-	CLIMB:{
-	    StartCondition _climbStatus;
-	    EndCondition !_climbStatus;
-	    {
-            Boolean val;
-            Repeat true;
+            TAKEOFF:{
 
-            _Position = Lookup(position);
+                EndCondition isKnown(status) && (status>=0);
 
-            if(_Position[2] >= 3.0){
-                pprint("Finished climbing");
-                SetNextMissionWP(_nextMissionWP);
-                SetMode("PASSIVE");
-                _cruiseStatus = true;
-                _climbStatus = false;
+                Takeoff(5.0);
+
+                pprint("Taking off");
+
+                CHECK_STATUS: {
+                    Repeat true;
+                    status = Lookup(takeoffStatus);
+                }
+
+            }
+
+            if(status == 1){
+                pprint("Takeoff successful");
+                _climbStatus = true;
+                _takeoffStatus = false;
+            }else{
+                pprint("Takeoff failed\n");
+                _takeoffStatus = false;
             }endif
-	    }
-	    
-	}// End of CLIMB
 
-	CRUISE:{
-	    StartCondition _cruiseStatus;
-	    // Perform Conflict Management (Detection and Resolution)
-	    LibraryCall CONFLICT_MANAGEMENT();
+            }// End of THROTTLE
+        }// End of TAKEOFF
 
-	}// End of CRUISE
 
-	LAND:{
-	    SetMode("ACTIVE");
-	    Land();
-	}// End of LAND
+        CLIMB:{
+            StartCondition _climbStatus;
+            SkipCondition !_climbStatus;
+            EndCondition !_climbStatus;
+            {
+                Boolean val;
+                Repeat true;
+
+                _Position = Lookup(position);
+
+                if(_Position[2] >= 3.0){
+                    pprint("Finished climbing");
+                    SetNextMissionWP(_nextMissionWP);
+                    SetMode("PASSIVE");
+                    _cruiseStatus = true;
+                    _climbStatus = false;
+                }endif
+            }
+
+        }// End of CLIMB
+
+        CRUISE:{
+            StartCondition _cruiseStatus;
+            SkipCondition !_cruiseStatus;
+            // Perform Conflict Management (Detection and Resolution)
+            LibraryCall CONFLICT_MANAGEMENT();
+
+            _cruiseStatus = false;
+            _landStatus = true;
+
+        }// End of CRUISE
+
+        LAND:{
+            StartCondition _landStatus;
+            SkipCondition !_landStatus;
+
+            SetMode("ACTIVE");
+            Land();
+
+            _landStatus = false;
+        }// End of LAND
 	
     }// End of FMS
 }// End of ICAROUS
