@@ -1447,6 +1447,17 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC void _wrap_PathPlanner_ClearAllPlans(SwigObj * carg1) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    (arg1)->ClearAllPlans();
+  }
+  
+  
   SWIGEXPORTC void _wrap_delete_PathPlanner(SwigObj * carg1) {
     SWIG_remove_registry_entry(carg1);
     SWIG_destroy_object(carg1);

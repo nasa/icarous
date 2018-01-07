@@ -146,6 +146,7 @@ void PathPlanner_ManueverToIntercept(SwigObj * carg1, SwigObj * carg2, int carg3
 void PathPlanner_ManueverToIntercept_c(SwigObj * carg1, char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
 void PathPlanner_GetExitPoint(SwigObj * carg1, char * carg2, /*aaa*/ double * carg3, int carg4, /*aaa*/ double * carg5);
 double PathPlanner_GetApproxElapsedPlanTime(SwigObj * carg1, SwigObj * carg2, /*aaa*/ double * carg3, int carg4);
+void PathPlanner_ClearAllPlans(SwigObj * carg1);
 void delete_PathPlanner(PathPlanner * carg1);
 
 #endif /* _TrajectoryPlanner_proxy_H_ */

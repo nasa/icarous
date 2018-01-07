@@ -66,6 +66,7 @@ void _wrap_PathPlanner_ManueverToIntercept(SwigObj * carg1, SwigObj * carg2, int
 void _wrap_PathPlanner_ManueverToIntercept_c(SwigObj * carg1, char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
 void _wrap_PathPlanner_GetExitPoint(SwigObj * carg1, char * carg2, /*aaa*/ double * carg3, int carg4, /*aaa*/ double * carg5);
 double _wrap_PathPlanner_GetApproxElapsedPlanTime(SwigObj * carg1, SwigObj * carg2, /*aaa*/ double * carg3, int carg4);
+void _wrap_PathPlanner_ClearAllPlans(SwigObj * carg1);
 void _wrap_delete_PathPlanner(PathPlanner * carg1);
 
 void FlightData_paramData_set(SwigObj * carg1, SwigObj * carg2) {
@@ -238,6 +239,9 @@ void PathPlanner_GetExitPoint(SwigObj * carg1, char * carg2, /*aaa*/ double * ca
 }
 double PathPlanner_GetApproxElapsedPlanTime(SwigObj * carg1, SwigObj * carg2, /*aaa*/ double * carg3, int carg4) {
   return _wrap_PathPlanner_GetApproxElapsedPlanTime(carg1, carg2, carg3, carg4);
+}
+void PathPlanner_ClearAllPlans(SwigObj * carg1) {
+  return _wrap_PathPlanner_ClearAllPlans(carg1);
 }
 void delete_PathPlanner(PathPlanner * carg1) {
   return _wrap_delete_PathPlanner(carg1);

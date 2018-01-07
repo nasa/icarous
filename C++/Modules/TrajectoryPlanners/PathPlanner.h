@@ -44,6 +44,7 @@ public:
     void ManueverToIntercept_c(char* planID,int leg,double currPosition[],double velocity[]);
     void GetExitPoint(char* planID,double currentPoisition[],int nextWP,double exitPosition[]);
     double GetApproxElapsedPlanTime(Plan* fp,double currentPos[],int nextWP);
+    void ClearAllPlans();
 };
 
 #endif

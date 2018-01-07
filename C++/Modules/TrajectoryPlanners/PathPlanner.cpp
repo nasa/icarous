@@ -362,3 +362,7 @@ void PathPlanner::GetExitPoint(char *planID,double currentPoisition[],int nextWP
     exitPosition[1] = lastPos.longitude();
     exitPosition[2] = lastPos.alt();
 }
+
+void PathPlanner::ClearAllPlans() {
+    flightPlans.clear();
+}
