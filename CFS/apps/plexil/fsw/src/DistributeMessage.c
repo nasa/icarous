@@ -25,7 +25,8 @@ void PLEXIL_DistributeMessage(PlexilMsg msg){
              CHECK_NAME(msg , "GetExitPoint") ||
              CHECK_NAME(msg ,"GetInterceptHeadingToPlan") ||
              CHECK_NAME(msg ,"ManeuverToIntercept") ||
-             CHECK_NAME(msg ,"allowedXtrackDev")){
+             CHECK_NAME(msg ,"allowedXtrackDev") ||
+             CHECK_NAME(msg,"resolutionSpeed")){
         MsgId = PLEXIL_OUTPUT_TRAJECTORY_MID;
     }
 

@@ -136,6 +136,11 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             val = FlightData_GetAllowedXtracDeviation(TrajectoryAppData.fdata);
             serializeReal(false,val,trajPlexilMsg.plxData.buffer);
             SendSBMsg(trajPlexilMsg);
+        }else if(CHECK_NAME(msg->plxData,"resolutionSpeed")){
+            double val;
+            val = FlightData_GetResolutionSpeed(TrajectoryAppData.fdata);
+            serializeReal(false,val,trajPlexilMsg.plxData.buffer);
+            SendSBMsg(trajPlexilMsg);
         }
 
     }

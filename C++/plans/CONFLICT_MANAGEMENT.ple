@@ -7,6 +7,7 @@ Integer Lookup nextMissionWPIndex;
 Real[3] Lookup position;
 Real[3] Lookup velocity;
 Real    Lookup allowedXtrackDev;
+Real    Lookup resolutionSpeed;
 
 // Command definitions
 Real[3]    Command GetWaypoint(String planID,Integer index);
@@ -41,6 +42,7 @@ CONFLICT_MANAGEMENT:
     Real oldConflictHash = 0;
     Real allowedDeviation;
     Real deviation;
+    Real resSpeed;
     Integer currentM_WP = 1;
 
     
@@ -48,10 +50,9 @@ CONFLICT_MANAGEMENT:
 
     _numMissionWP = Lookup(numMissionWP);
     allowedDeviation = Lookup(allowedXtrackDev);
+    resSpeed  = Lookup(resolutionSpeed);
 
-    pprint("starting CONFLICT_MANAGEMENT");
-
-    pprint(_numMissionWP);
+    pprint("Starting CONFLICT_MANAGEMENT");
 
     CORE:Concurrence
     {
@@ -215,7 +216,7 @@ CONFLICT_MANAGEMENT:
                      else
                         velCmd[0] = prevVelCmd[0];
                      endif
-                     velCmd[1] = 1;
+                     velCmd[1] = resSpeed;
                      velCmd[2] = 0;
 
                      SetVel(velCmd);
@@ -232,7 +233,7 @@ CONFLICT_MANAGEMENT:
                      pprint("Intercept heading:",track);
 
                      returnVel[0] = track;
-                     returnVel[1] = 1;
+                     returnVel[1] = resSpeed;
                      returnVel[2] = 0;
 
                      {

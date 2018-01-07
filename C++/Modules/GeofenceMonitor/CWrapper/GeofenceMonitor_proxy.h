@@ -105,6 +105,7 @@ double FlightData_GetTakeoffAlt(SwigObj * carg1);
 double FlightData_GetCruisingAlt(SwigObj * carg1);
 double FlightData_GetAltitude(SwigObj * carg1);
 double FlightData_GetAllowedXtracDeviation(SwigObj * carg1);
+double FlightData_GetResolutionSpeed(SwigObj * carg1);
 int FlightData_GetTotalMissionWP(SwigObj * carg1);
 int FlightData_GetTotalResolutionWP(SwigObj * carg1);
 int FlightData_GetTotalTraffic(SwigObj * carg1);

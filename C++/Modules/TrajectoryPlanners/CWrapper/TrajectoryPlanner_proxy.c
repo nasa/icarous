@@ -31,6 +31,7 @@ double _wrap_FlightData_GetTakeoffAlt(SwigObj * carg1);
 double _wrap_FlightData_GetCruisingAlt(SwigObj * carg1);
 double _wrap_FlightData_GetAltitude(SwigObj * carg1);
 double _wrap_FlightData_GetAllowedXtracDeviation(SwigObj * carg1);
+double _wrap_FlightData_GetResolutionSpeed(SwigObj * carg1);
 int _wrap_FlightData_GetTotalMissionWP(SwigObj * carg1);
 int _wrap_FlightData_GetTotalResolutionWP(SwigObj * carg1);
 int _wrap_FlightData_GetTotalTraffic(SwigObj * carg1);
@@ -132,6 +133,9 @@ double FlightData_GetAltitude(SwigObj * carg1) {
 }
 double FlightData_GetAllowedXtracDeviation(SwigObj * carg1) {
   return _wrap_FlightData_GetAllowedXtracDeviation(carg1);
+}
+double FlightData_GetResolutionSpeed(SwigObj * carg1) {
+  return _wrap_FlightData_GetResolutionSpeed(carg1);
 }
 int FlightData_GetTotalMissionWP(SwigObj * carg1) {
   return _wrap_FlightData_GetTotalMissionWP(carg1);

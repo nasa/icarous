@@ -780,6 +780,21 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC double _wrap_FlightData_GetResolutionSpeed(SwigObj * carg1) {
+    double cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    double result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    cppresult =  (double)(arg1)->GetResolutionSpeed();
+    result = cppresult;
+    return result;
+  }
+  
+  
   SWIGEXPORTC int _wrap_FlightData_GetTotalMissionWP(SwigObj * carg1) {
     int cppresult;
     FlightData *arg1 = (FlightData *) 0 ;

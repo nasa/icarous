@@ -369,3 +369,7 @@ int FlightData::GetTotalFences(){
 PolyPath* FlightData::GetPolyPath(){
     return &geoPolyPath;
 }
+
+double FlightData::GetResolutionSpeed() {
+    return paramData.getValue("RES_SPEED");
+}

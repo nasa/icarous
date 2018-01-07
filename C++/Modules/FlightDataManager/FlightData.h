@@ -83,6 +83,7 @@ public:
     double GetCruisingAlt();
     double GetAltitude();
     double GetAllowedXtracDeviation();
+    double GetResolutionSpeed();
     int GetTotalMissionWP();
     int GetTotalResolutionWP();
     int GetTotalTraffic();
