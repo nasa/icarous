@@ -53,7 +53,7 @@ ICAROUS:
                     _idleStatus = false;
                 }elseif(start > 0){
                     _numMissionWP = Lookup(numMissionWP);
-                    _climbStatus = true;
+                    _cruiseStatus = true;
                     _idleStatus = false;
                 }endif
             }
