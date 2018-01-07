@@ -57,6 +57,7 @@ void TRAJECTORY_AppInit(void) {
     CFE_SB_Subscribe(PLEXIL_OUTPUT_TRAJECTORY_MID, TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_WP_MID,TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_GEOFENCE_MID, TrajectoryAppData.Trajectory_Pipe);
+    CFE_SB_Subscribe(ICAROUS_RESET_MID, TrajectoryAppData.Trajectory_Pipe);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&trajPlexilMsg, PLEXIL_INPUT_MID, sizeof(plexil_interface_t), TRUE);
@@ -103,6 +104,12 @@ void TRAJECTORY_ProcessPacket(){
             vertexWrapper.obj = (void*)gf;
             FlightData_InputGeofenceData(TrajectoryAppData.fdata,&vertexWrapper);
             break;
+        }
+
+        case ICAROUS_RESET_MID:{
+            NoArgsCmd_t *resetIcarous;
+            resetIcarous = (NoArgsCmd_t*) TrajectoryAppData.Trajectory_MsgPtr;
+            PathPlanner_ClearAllPlans(TrajectoryAppData.pplanner);
         }
 
         case PLEXIL_OUTPUT_TRAJECTORY_MID: {
