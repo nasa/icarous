@@ -298,6 +298,18 @@ void ProcessGSMessage(mavlink_message_t message){
 
 			break;
 		}
+
+        case MAVLINK_MSG_ID_RADIO:
+        {
+            writePort(&appdataInt.ap,&message);
+            break;
+        }
+
+        case MAVLINK_MSG_ID_RADIO_STATUS:
+        {
+            writePort(&appdataInt.ap,&message);
+            break;
+        }
 	}
 }
 
