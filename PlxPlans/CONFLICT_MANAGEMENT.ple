@@ -27,7 +27,7 @@ Command pprint(...);
 
 // Library plans
 LibraryAction GOTO_POSITION (In Real TargetPosition[3],InOut Boolean resolutionCompleted);
-LibraryAction TRAFFIC_RESOLUTION(InOut completionStatus,In Integer nextWP,
+LibraryAction TRAFFIC_RESOLUTION(InOut Boolean completionStatus,In Integer nextWP,
                                  In Real acPosition[3],In Real acVelocity[3],In Real resSpeed);
 
 CONFLICT_MANAGEMENT:

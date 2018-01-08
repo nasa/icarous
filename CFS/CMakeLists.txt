@@ -30,6 +30,11 @@ set(CMAKE_C_FLAGS "-g -fPIC -m32")
 set(MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../C++/Modules")
 set(MODULES_NAMES ACCoRD FlightDataManager GeofenceMonitor TrafficMonitor TrajectoryPlanners Plexil)
 add_custom_target(clear-all)
+
+IF (NOT DEFINED ENV{PLEXIL_HOME})
+    message(FATAL_ERROR "$PLEXIL_HOME not defined but needed for generating plexil plans")
+ENDIF ()
+
 foreach(ARG ${MODULES_NAMES})
     message(STATUS "Building module:${ARG}")
     set(MODULE_SOURCE ${MODULES_DIR}/${ARG})

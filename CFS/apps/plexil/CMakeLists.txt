@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(PLEXIL_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++/Modules/Plexil/src")
 set(PLEXIL_LIB "${PLEXIL_SOURCE}/../lib")
 set(MODULES_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../../../C++/lib")
+set(PLAN_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/../../../PlxPlans")
 
 include_directories(fsw/mission_inc)
 include_directories(fsw/platform_inc)
@@ -39,3 +40,13 @@ foreach(TGT ${APP_INSTALL_LIST})
 endforeach()
 
 add_cfe_tables(plexil "fsw/tables/plexil_tbl.c")
+
+set(PLEXIL_PLANS Icarous2.ple CONFLICT_MANAGEMENT.ple GOTO_POSITION.ple TRAFFIC_RESOLUTION.ple)
+
+foreach(ARG ${PLEXIL_PLANS})
+    message(STATUS "Build plexil plan: ${ARG}" )
+    execute_process(COMMAND bash ${PLEXIL_SOURCE}/../scripts/plexilc ${ARG} WORKING_DIRECTORY ${PLAN_LOCATION} RESULT_VARIABLE RESULT)
+    if (NOT RESULT EQUAL 0)
+        message(STATUS "Failed to compile plexil plan ${ARG}")
+    endif (NOT RESULT EQUAL 0)
+endforeach(ARG IN LISTS PLEXIL_PLANS)

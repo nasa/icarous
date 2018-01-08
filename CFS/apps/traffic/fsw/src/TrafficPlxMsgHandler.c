@@ -41,7 +41,7 @@ void TrafficPlxMsgHandler(plexil_interface_t* msg){
 
             bool val = TrafficMonitor_CheckSafeToTurn(TrafficAppData.tfMonitor,position,velocity,fromHeading,toHeading);
             serializeBool(false,val,trafficPlexilMsg.plxData.buffer);
-            OS_printf("turn safety from %f to %f: %d\n",fromHeading,toHeading,val);
+            //OS_printf("turn safety from %f to %f: %d\n",fromHeading,toHeading,val);
             SendSBMsg(trafficPlexilMsg);
         }
     }

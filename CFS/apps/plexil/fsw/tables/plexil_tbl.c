@@ -15,7 +15,7 @@ PLEXILTable_t TblStruct = {
         "-c",
         "../../../PlxPlans/interface-config.xml",
         "-L",
-        "../plans"  //argv
+        "../../../PlxPlans"  //argv
 };
 
 
