@@ -17,7 +17,7 @@ int main() {
     double position[3] = {so.latitude(),so.longitude(),so.alt()};
     double velocity[3] = {vo.track("degree"),vo.gs(),vo.vs()};
     double resolution[3];
-    bool conflict = tfMonitor.MonitorTraffic(false,0,position,velocity,resolution);
+    bool conflict = tfMonitor.MonitorTraffic(false,0,position,velocity,resolution,NULL);
 
 
     std::cout<<"CONFLICT STATUS:"<<conflict<<std::endl;

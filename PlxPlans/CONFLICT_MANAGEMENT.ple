@@ -15,7 +15,7 @@ Boolean[2] Command CheckFenceViolation(Real Position[3],Real Velocity[3]);
 Real       Command ComputeCrossTrackDeviation(String planID,Integer leg,Real position[3]);
 Real[3]    Command GetRecoveryPosition(Real Position[3]);
 Real[3]    Command GetExitPoint(String planID,Real Position[3],Integer nextWP);
-Real[4]    Command MonitorTraffic(Real position[3],Real velocity[3]);
+Real[4]    Command MonitorTraffic(Boolean bands,Real position[3],Real velocity[3]);
 Real       Command GetInterceptHeadingToPlan(String planID,Integer leg,Real position[3]);
 Real[3]    Command ManeuverToIntercept(String planID,Integer leg,Real position[3]);
 Boolean    Command CheckSafeToTurn(Real position[3],Real velocity[3],Real fromHeading,Real toHeading);
@@ -87,7 +87,7 @@ CONFLICT_MANAGEMENT:
                 Real tfOutput[4];
                 {
                     EndCondition isKnown(tfOutput[0]);
-                    tfOutput = MonitorTraffic(acPosition,acVelocity);
+                    tfOutput = MonitorTraffic(true,acPosition,acVelocity);
                 }
 
                 if(tfOutput[0] > 0){

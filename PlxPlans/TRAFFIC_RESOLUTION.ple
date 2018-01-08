@@ -1,4 +1,4 @@
-Real[4]    Command MonitorTraffic(Real position[3],Real velocity[3]);
+Real[4]    Command MonitorTraffic(Boolean bands,Real position[3],Real velocity[3]);
 Real       Command GetInterceptHeadingToPlan(String planID,Integer leg,Real position[3]);
 Boolean    Command CheckSafeToTurn(Real position[3],Real velocity[3],Real fromHeading,Real toHeading);
 
@@ -22,7 +22,7 @@ TRAFFIC_RESOLUTION:{
 
     {
        EndCondition isKnown(output[0]);
-       output = MonitorTraffic(acPosition,acVelocity);
+       output = MonitorTraffic(false,acPosition,acVelocity);
     }
 
 

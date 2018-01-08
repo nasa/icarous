@@ -45,8 +45,9 @@ set(PLEXIL_PLANS Icarous2.ple CONFLICT_MANAGEMENT.ple GOTO_POSITION.ple TRAFFIC_
 
 foreach(ARG ${PLEXIL_PLANS})
     message(STATUS "Build plexil plan: ${ARG}" )
-    execute_process(COMMAND bash ${PLEXIL_SOURCE}/../scripts/plexilc ${ARG} WORKING_DIRECTORY ${PLAN_LOCATION} RESULT_VARIABLE RESULT)
+    add_custom_target(${ARG} COMMAND env PLEXIL_HOME=$ENV{PLEXIL_HOME} bash ${PLEXIL_SOURCE}/../scripts/plexilc ${ARG} WORKING_DIRECTORY ${PLAN_LOCATION})
     if (NOT RESULT EQUAL 0)
         message(STATUS "Failed to compile plexil plan ${ARG}")
     endif (NOT RESULT EQUAL 0)
+    add_dependencies(plexil ${ARG})
 endforeach(ARG IN LISTS PLEXIL_PLANS)

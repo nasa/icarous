@@ -133,7 +133,7 @@ void TrafficMonitor_KMB_set(SwigObj * carg1, SwigObj * carg2);
 SwigObj * TrafficMonitor_KMB_get(SwigObj * carg1);
 TrafficMonitor * new_TrafficMonitor(SwigObj * carg1);
 bool TrafficMonitor_CheckTurnConflict(SwigObj * carg1, double carg2, double carg3, double carg4, double carg5);
-bool TrafficMonitor_MonitorTraffic(SwigObj * carg1, bool carg2, double carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6);
+bool TrafficMonitor_MonitorTraffic(SwigObj * carg1, bool carg2, double carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6, SwigObj * carg7);
 void TrafficMonitor_GetVisualizationBands(SwigObj * carg1, SwigObj * carg2);
 bool TrafficMonitor_CheckSafeToTurn(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, double carg4, double carg5);
 void delete_TrafficMonitor(TrafficMonitor * carg1);

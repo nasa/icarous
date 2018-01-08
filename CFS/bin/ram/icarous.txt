@@ -50,6 +50,7 @@ CYL_HEIGHT = 10
 ALERT_TIME = 10
 EALERT_TIME = 15
 DAA_LOOKAHEAD = 20
+LOG_DAA = false;
 
 #Waypoint parameters
 CAPTURE_H = 1

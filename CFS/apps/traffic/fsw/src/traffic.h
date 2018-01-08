@@ -16,6 +16,7 @@
 #include "TrafficMonitor_proxy.h"
 #include "msgids/msgids.h"
 #include "Plexil_msg.h"
+#include "Icarous_msg.h"
 
 #define TRAFFIC_STARTUP_INF_EID 0
 #define TRAFFIC_COMMAND_ERR_EID 1
@@ -48,6 +49,7 @@ void TrafficPlxMsgHandler(plexil_interface_t* msg);
 
 TrafficAppData_t TrafficAppData;
 plexil_interface_t trafficPlexilMsg;
+visbands_t trackBands;
 
 
 #endif //ICAROUS_CFS_TRAFFIC_H

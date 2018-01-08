@@ -59,6 +59,7 @@ void TRAFFIC_AppInit(void) {
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&trafficPlexilMsg, PLEXIL_INPUT_MID, sizeof(plexil_interface_t), TRUE);
+    CFE_SB_InitMsg(&trackBands, ICAROUS_VISBAND_MID, sizeof(visbands_t), TRUE);
 
     // Send event indicating app initialization
     CFE_EVS_SendEvent(TRAFFIC_STARTUP_INF_EID, CFE_EVS_INFORMATION,

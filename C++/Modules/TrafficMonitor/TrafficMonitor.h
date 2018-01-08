@@ -31,7 +31,7 @@ public:
 
     TrafficMonitor(FlightData* fdata);
     bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
-    bool MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[],double resolution[]);
+    bool MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[],double resolution[],visbands_t* trkbands);
     void GetVisualizationBands(visbands_t& bands);
     bool CheckSafeToTurn(double position[],double velocity[],double fromHeading,double toHeading);
 

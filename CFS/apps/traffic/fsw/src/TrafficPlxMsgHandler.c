@@ -2,6 +2,8 @@
 // Created by swee on 1/1/18.
 //
 #include <Plexil_msg.h>
+#include <CWrapper/TrafficMonitor_proxy.h>
+#include <Icarous_msg.h>
 #include "traffic.h"
 
 void TrafficPlxMsgHandler(plexil_interface_t* msg){
@@ -15,11 +17,16 @@ void TrafficPlxMsgHandler(plexil_interface_t* msg){
             //OS_printf("received traffic monitor");
             double position[3];
             double velocity[3];
+            bool bands;
+            b = deSerializeBool(false,&bands,b);
             b = deSerializeRealArray(position,b);
             b = deSerializeRealArray(velocity,b);
             double resolution[3] = {0.0,0.0,0.0};
             double output[4];
-            bool val = TrafficMonitor_MonitorTraffic(TrafficAppData.tfMonitor,false,0.0,position,velocity,resolution);
+            SwigObj bandwrapper;
+            bandwrapper.obj = &trackBands;
+            bool val = TrafficMonitor_MonitorTraffic(TrafficAppData.tfMonitor,bands,0.0,position,velocity,resolution,&bandwrapper);
+
 
             output[0] = val?1.0:-1.0;
             output[1] = resolution[0];
@@ -27,6 +34,12 @@ void TrafficPlxMsgHandler(plexil_interface_t* msg){
             output[3] = resolution[2];
             serializeRealArray(4,output,trafficPlexilMsg.plxData.buffer);
             SendSBMsg(trafficPlexilMsg);
+
+            //OS_printf("num bands: %d\n",trackBands.numBands);
+            if(trackBands.numBands > 0) {
+                SendSBMsg(trackBands);
+            }
+
             //OS_printf("Traffic output:%d\n",output[0]);
         }else if(CHECK_NAME(msg->plxData,"CheckSafeToTurn")){
             double position[3];

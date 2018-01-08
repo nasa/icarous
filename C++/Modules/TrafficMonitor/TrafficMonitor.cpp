@@ -5,6 +5,7 @@
 #include "TrafficMonitor.h"
 #include <sys/time.h>
 #include <cstring>
+#include <Icarous_msg.h>
 
 TrafficMonitor::TrafficMonitor(FlightData *fd) {
     fdata = fd;
@@ -21,12 +22,19 @@ TrafficMonitor::TrafficMonitor(FlightData *fd) {
     strftime(fmt2, sizeof fmt2, "Icarous-%Y-%m-%d-%H:%M:%S", tm);
     strcat(fmt1,".login");
     strcat(fmt2,".logout");
-    logfileIn.open(fmt1);
-    logfileIn.open(fmt2);
+
+    log = fdata->paramData.getBool("LOG_DAA");
+
+    if(log) {
+        logfileIn.open(fmt1);
+        logfileOut.open(fmt2);
+    }
     DAA.parameters.loadFromFile(fdata->paramData.getString("DAA_CONFIG"));
+
+    visBands.numBands = 0;
 }
 
-bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[],double resolution[]) {
+bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[],double resolution[],visbands_t* trkbands) {
 
     int numTraffic = fdata->GetTotalTraffic();
     if(numTraffic == 0){
@@ -95,8 +103,7 @@ bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double positio
 
     // Construct kinematic bands message to send to ground station
     if (dist2traffic < 20 && visualize) {
-        visBands.numBands = KMB.trackLength();
-
+        trkbands->numBands = KMB.trackLength();
         for (int i = 0; i < KMB.trackLength(); ++i) {
             Interval iv = KMB.track(i, "deg");
             int type = 0;
@@ -107,27 +114,30 @@ bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double positio
             }
 
             if (i == 0) {
-                visBands.type1 = type;
-                visBands.min1 = (float) iv.low;
-                visBands.max1 = (float) iv.up;
+                trkbands->type1 = type;
+                trkbands->min1 = (float) iv.low;
+                trkbands->max1 = (float) iv.up;
             } else if (i == 1) {
-                visBands.type2 = type;
-                visBands.min2 = (float) iv.low;
-                visBands.max2 = (float) iv.up;
+                trkbands->type2 = type;
+                trkbands->min2 = (float) iv.low;
+                trkbands->max2 = (float) iv.up;
             } else if (i == 2) {
-                visBands.type3 = type;
-                visBands.min3 = (float) iv.low;
-                visBands.max3 = (float) iv.up;
+                trkbands->type3 = type;
+                trkbands->min3 = (float) iv.low;
+                trkbands->max3 = (float) iv.up;
             } else if (i == 3) {
-                visBands.type4 = type;
-                visBands.min4 = (float) iv.low;
-                visBands.max4 = (float) iv.up;
+                trkbands->type4 = type;
+                trkbands->min4 = (float) iv.low;
+                trkbands->max4 = (float) iv.up;
             } else {
-                visBands.type5 = type;
-                visBands.min5 = (float) iv.low;
-                visBands.max5 = (float) iv.up;
+                trkbands->type5 = type;
+                trkbands->min5 = (float) iv.low;
+                trkbands->max5 = (float) iv.up;
             }
         }
+    }else{
+        if(trkbands != NULL)
+            trkbands->numBands = 0;
     }
 
     if(log && visualize){
@@ -256,6 +266,8 @@ bool TrafficMonitor::CheckTurnConflict(double low, double high, double newHeadin
 
 void TrafficMonitor::GetVisualizationBands(visbands_t &bands) {
 
+    if(visBands.numBands > 0)
+        std::cout<<"Num bands:"<<visBands.numBands<<std::endl;
     // NOTE: Must not use a memcpy here.
     bands.numBands = visBands.numBands;
     bands.max1 = visBands.max1;
