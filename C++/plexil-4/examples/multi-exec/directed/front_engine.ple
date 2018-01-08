@@ -1,7 +1,0 @@
-Command UpdateLookup (String, Real);
-
-Receiver: Concurrence
-{
-  RepeatCondition true;
-  OnCommand "setTorque" (Real torque) UpdateLookup("Torque", torque);
-}

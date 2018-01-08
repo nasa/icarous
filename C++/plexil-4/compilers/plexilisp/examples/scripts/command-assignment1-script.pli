@@ -1,4 +1,0 @@
-(plexil-script
-  (script
-    (command "foo" "int" 2)
-    (command-success "foo")))

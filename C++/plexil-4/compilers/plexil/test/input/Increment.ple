@@ -1,6 +1,0 @@
-Increment:
-{
-  In Integer x;
-  InOut Integer result;
-  result = x + 1;
-}

@@ -1,8 +1,0 @@
-Boolean Lookup foo;
-Boolean Lookup bar;
-Boolean Lookup baz;
-
-boolean5:
-{
-    StartCondition Lookup(foo) && (Lookup(bar) && Lookup(baz));
-}

@@ -1,3 +1,0 @@
-(plexil-script
- (script
-  (update-ack "update1")))

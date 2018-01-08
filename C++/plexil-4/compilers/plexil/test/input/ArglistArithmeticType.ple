@@ -1,8 +1,0 @@
-Command foo(Integer i);
-
-ArglistArithmeticType:
-{
-  Integer a = 1;
-  Integer b = 2;
-  foo(a + b);
-}

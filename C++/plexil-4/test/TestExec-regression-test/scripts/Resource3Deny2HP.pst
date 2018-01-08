@@ -1,7 +1,0 @@
-
-// resource3-deny2HP
-
-script {
-  command-ack c3 () = "COMMAND_SENT_TO_SYSTEM" : string;
-}
-

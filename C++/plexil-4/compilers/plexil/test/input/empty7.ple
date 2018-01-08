@@ -1,7 +1,0 @@
-// Same as empty6, but testing defaulting of time type
-//Real Lookup time;
-
-VerifyTemp:
-{
-  PostCondition Lookup(time) >= Self.EXECUTING.START;
-}

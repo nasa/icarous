@@ -1,9 +1,0 @@
-(plexil-plan
- (list-node "Root"
-   (list
-	(empty-node "SkipMe"
-      (skip-condition true)))
-   (post-condition
-     (skipped "SkipMe"))
- )
-)

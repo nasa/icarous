@@ -1,3 +1,0 @@
-(plexil-script
-  (script
-    (command-success "foobar")))

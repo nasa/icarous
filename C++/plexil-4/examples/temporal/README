@@ -1,6 +1,0 @@
-This directory contains example PLEXIL plans and simulation scripts that
-illustrate time-related features such as Date and Duration operations. 
-
-NOTE: Though reasonably tested, these features are not yet officially
-supported, which is also why they are not yet documented.  We expect
-to complete this release soon.

@@ -1,7 +1,0 @@
-// Same as empty6, but testing duration as tolerance in time lookup
-Date Lookup time;
-
-VerifyTemp:
-{
-  EndCondition Lookup(time, Duration("PT1S")) >= Self.EXECUTING.START;
-}

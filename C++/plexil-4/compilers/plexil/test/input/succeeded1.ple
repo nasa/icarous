@@ -1,4 +1,0 @@
-{
-  Post NodeSucceeded (A);
-  A: { }
-}

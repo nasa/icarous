@@ -1,8 +1,0 @@
-array_size_test:
-{
-  Integer a[8] = #(0 1 2 3);
-  Integer m, s;
-
-  m = arrayMaxSize(a);
-  s = arraySize(a);
-}

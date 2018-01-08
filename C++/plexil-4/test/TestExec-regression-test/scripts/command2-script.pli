@@ -1,5 +1,0 @@
-(plexil-script
-  (initial-state
-    (state "barfoo" "string" "the-command"))
-  (script
-    (command-ack "the-command" "string" "COMMAND_SUCCESS")))

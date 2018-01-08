@@ -1,7 +1,0 @@
-(plexil-plan
-  (comment "Tests command with return value")
-  (list-node "command3"
-    (variables (string "result-string"))
-    (list
-      (command-node "StringCommand"
-        (command-with-return (stringvar "result-string") "get-string")))))
