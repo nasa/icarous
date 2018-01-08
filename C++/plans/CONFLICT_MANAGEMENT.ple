@@ -27,6 +27,8 @@ Command pprint(...);
 
 // Library plans
 LibraryAction GOTO_POSITION (In Real TargetPosition[3],InOut Boolean resolutionCompleted);
+LibraryAction TRAFFIC_RESOLUTION(InOut completionStatus,In Integer nextWP,
+                                 In Real acPosition[3],In Real acVelocity[3],In Real resSpeed);
 
 CONFLICT_MANAGEMENT:
 {
@@ -197,56 +199,12 @@ CONFLICT_MANAGEMENT:
                    SetMode("ACTIVE");
 
                    {
-                     Real output[4];
-                     Real velCmd[3];
-                     Real returnVel[3];
-                     Boolean returnSafe;
-                     Real track;
-                     Real speed;
-                     Repeat true;
-
-                     {
-                         EndCondition isKnown(output[0]);
-                         output = MonitorTraffic(acPosition,acVelocity);
-                     }
-
-
-                     if(output[1] < 100)
-                        velCmd[0] = output[1];
-                     else
-                        velCmd[0] = prevVelCmd[0];
-                     endif
-                     velCmd[1] = resSpeed;
-                     velCmd[2] = 0;
-
-                     SetVel(velCmd);
-
-                     prevVelCmd[0] = velCmd[0];
-                     prevVelCmd[1] = velCmd[1];
-                     prevVelCmd[2] = velCmd[2];
-
-                     {
-                         EndCondition isKnown(track);
-                         track = GetInterceptHeadingToPlan("Plan0",nextWP,acPosition);
-                     }
-
-                     pprint("Intercept heading:",track);
-
-                     returnVel[0] = track;
-                     returnVel[1] = resSpeed;
-                     returnVel[2] = 0;
-
-                     {
-                          EndCondition isKnown(returnSafe);
-                          returnSafe = CheckSafeToTurn(acPosition,acVelocity,velCmd[0],returnVel[0]);
-                     }
-
-                     pprint("return safe:",returnSafe);
-
-                     if(returnSafe && output[0] < 0){
-                           completionStatus = true;
-                     }endif
-
+                      Repeat true;
+                      LibraryCall TRAFFIC_RESOLUTION(completionStatus=completionStatus,
+                                                     nextWP = nextWP,
+                                                     acPosition = acPosition,
+                                                     acVelocity = acVelocity,
+                                                     resSpeed = resSpeed);
                    }
                 }
 
