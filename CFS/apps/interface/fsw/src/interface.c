@@ -15,6 +15,8 @@
 #include "interface_perfids.h"
 #include "Icarous_msg.h"
 #include "msgids/msgids.h"
+#include <fcntl.h>   // File control definitions
+#include <termios.h> // POSIX terminal control definitions
 
 CFE_EVS_BinFilter_t  INTERFACE_EventFilters[] =
 {  /* Event ID    mask */
@@ -153,13 +155,14 @@ void INTERFACE_AppInit(void){
 	if (appdataInt.ap.portType == SOCKET){
 		InitializeSocketPort(&appdataInt.ap);
 	}else if(appdataInt.ap.portType == SERIAL){
-		//InitializeSerialPort();
+        OS_printf("Initializing serial port\n");
+		InitializeSerialPort(&appdataInt.ap,false);
 	}
 
 	if (appdataInt.gs.portType == SOCKET){
 		InitializeSocketPort(&appdataInt.gs);
 	}else if(appdataInt.gs.portType == SERIAL){
-		//InitializeSocketPort();
+		InitializeSerialPort(&appdataInt.gs,false);
 	}
 
 
@@ -262,6 +265,53 @@ void InitializeSocketPort(port_t* prt){
 	//OS_printf("%d,Address: %s,Port in:%d,out: %d\n",prt->sockId,prt->target,prt->portin,prt->portout);
 }
 
+int InitializeSerialPort(port_t* prt,bool should_block){
+
+	prt->id = open (prt->target, O_RDWR | O_NOCTTY | O_SYNC);
+	if (prt->id < 0)
+	{
+		printf("Error operning port");
+		return -1;
+	}
+
+	struct termios tty;
+	memset (&tty, 0, sizeof tty);
+	if (tcgetattr (prt->id, &tty) != 0)
+	{
+		printf("error in tcgetattr 1");
+		return -1;
+	}
+
+	cfsetospeed (&tty, prt->baudrate);
+	cfsetispeed (&tty, prt->baudrate);
+
+	tty.c_cflag |= (CLOCAL | CREAD);    /* ignore modem controls */
+	tty.c_cflag &= ~CSIZE;
+	tty.c_cflag |= CS8;         /* 8-bit characters */
+	tty.c_cflag &= ~PARENB;     /* no parity bit */
+	tty.c_cflag &= ~CSTOPB;     /* only need 1 stop bit */
+	//tty.c_cflag |= CRTSCTS;
+	//tty.c_cflag &= ~CRTSCTS;    /* no hardware flowcontrol */
+
+	/* setup for non-canonical mode */
+	tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
+	tty.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+	tty.c_oflag &= ~OPOST;
+
+	/* fetch bytes as they become available */
+	tty.c_cc[VMIN]  = should_block ? 1 : 0;
+	tty.c_cc[VTIME] = 1;                      // 0.5 seconds read timeout
+
+
+	if (tcsetattr (prt->id, TCSANOW, &tty) != 0)
+	{
+		printf("error from tcsetattr 2");
+		return -1;
+	}
+
+    OS_printf("Opened serial port\n");
+
+}
 
 int readPort(port_t* prt){
 
@@ -271,7 +321,7 @@ int readPort(port_t* prt){
 		memset(prt->recvbuffer, 0, BUFFER_LENGTH);
 		n = recvfrom(prt->sockId, (void *)prt->recvbuffer, BUFFER_LENGTH, 0, (struct sockaddr *)&prt->target_addr, &prt->recvlen);
 	}else if(prt->portType == SERIAL){
-
+		n = read (prt->id, prt->recvbuffer, BUFFER_LENGTH);
 	}else{
 
 	}
@@ -289,7 +339,10 @@ void writePort(port_t* prt,mavlink_message_t* message){
 	if(prt->portType == SOCKET){
 		int n = sendto(prt->sockId, sendbuffer, len, 0, (struct sockaddr*)&prt->target_addr, sizeof (struct sockaddr_in));
 	}else if(prt->portType == SERIAL){
-
+		for(int i=0;i<len;i++){
+			char c = sendbuffer[i];
+			write(prt->id,&c,1);
+		}
 	}else{
 		// unimplemented port type
 	}

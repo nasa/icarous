@@ -45,7 +45,7 @@
 
 /// Software bus properties
 #define INTERFACE_PIPE_NAME "FLIGHTPLAN"
-#define INTERFACE_PIPE_DEPTH 32
+#define INTERFACE_PIPE_DEPTH 100
 
 #define SCH_INTERFACE_PIPE1_NAME "SCH_INTERFACE1"
 #define SCH_INTERFACE_PIPE2_NAME "SCH_INTERFACE2"
@@ -100,9 +100,9 @@ typedef struct{
     int sockId;                      ///< socket id
     int portin;                      ///< input socket
     int portout;                     ///< output socket
-    char target[50];                 ///< target ip address
+    char target[50];                 ///< target ip address/or name of serial port
     char recvbuffer[BUFFER_LENGTH];  ///< buffer for incoming data
-
+    int baudrate;                    ///< baud rate only if a serial port
 }port_t;
 
 /**
@@ -156,7 +156,7 @@ void InitializeSocketPort(port_t *prt);
  * Initialize a serial port
  * @param *prt pointer to port
  */
-//void InitializeSerialPort(port_t* prt);
+int InitializeSerialPort(port_t* prt,bool should_block);
 
 
 /**
