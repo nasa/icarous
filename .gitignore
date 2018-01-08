@@ -33,3 +33,5 @@ icarousPlexil
 C++/Modules/Plexil/lib
 C++/Modules/Plexil/workshop
 C++/Modules/*/build
+CFS/bin/cpu1
+CFS/bin/host
