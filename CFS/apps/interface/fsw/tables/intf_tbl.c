@@ -3,10 +3,11 @@
 #include "cfe_tbl_filedef.h"  /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "interface_table.h"
 
-/*
+#ifdef SITL
+
 InterfaceTable_t TblStruct = {
-	_SOCKET_,           // apPortType
-	0,
+	_SOCKET_,    // apPortType
+	0,           // baudrate
 	14551,       // apPortin
 	0,           // apPortout
 	"127.0.0.1", // ap address
@@ -15,11 +16,11 @@ InterfaceTable_t TblStruct = {
 	14553,       // gsPortout
 	"127.0.0.1"  // gs address
 };
-*/
 
+#else
 InterfaceTable_t TblStruct = {
-        _SERIAL_,           // apPortType
-        57600,
+        _SERIAL_,    // apPortType
+        57600,       // baudrate
         14551,       // apPortin
         0,           // apPortout
         "/dev/ttyACM0", // ap address
@@ -28,7 +29,7 @@ InterfaceTable_t TblStruct = {
         14553,       // gsPortout
         "127.0.0.1"  // gs address
 };
-
+#endif
 
 
 /*

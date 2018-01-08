@@ -25,6 +25,11 @@ cmake_minimum_required(VERSION 2.6.4)
 project(ICAROUS_CFS C CXX)
 
 
+OPTION(SITL "Build the project for SITL" OFF)
+IF(SITL)
+    add_definitions(-DSITL)
+ENDIF(SITL)
+
 set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
 set(CMAKE_C_FLAGS "-g -fPIC -m32")
 set(MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../C++/Modules")

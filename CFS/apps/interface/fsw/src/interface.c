@@ -152,10 +152,11 @@ void INTERFACE_AppInit(void){
 	// Free table pointer
 	status = CFE_TBL_ReleaseAddress(appdataInt.INTERFACE_tblHandle);
 
+    OS_printf("Port types: %d, %d\n",appdataInt.ap.portType,appdataInt.gs.portType);
+
 	if (appdataInt.ap.portType == SOCKET){
 		InitializeSocketPort(&appdataInt.ap);
 	}else if(appdataInt.ap.portType == SERIAL){
-        OS_printf("Initializing serial port\n");
 		InitializeSerialPort(&appdataInt.ap,false);
 	}
 
@@ -262,7 +263,7 @@ void InitializeSocketPort(port_t* prt){
 
 	fcntl(prt->sockId, F_SETFL, O_NONBLOCK);
 
-	//OS_printf("%d,Address: %s,Port in:%d,out: %d\n",prt->sockId,prt->target,prt->portin,prt->portout);
+	OS_printf("Sock id: %d,Address: %s,Port in:%d,out: %d\n",prt->sockId,prt->target,prt->portin,prt->portout);
 }
 
 int InitializeSerialPort(port_t* prt,bool should_block){
@@ -270,7 +271,7 @@ int InitializeSerialPort(port_t* prt,bool should_block){
 	prt->id = open (prt->target, O_RDWR | O_NOCTTY | O_SYNC);
 	if (prt->id < 0)
 	{
-		printf("Error operning port");
+		printf("Error operning port\n");
 		return -1;
 	}
 
@@ -278,7 +279,7 @@ int InitializeSerialPort(port_t* prt,bool should_block){
 	memset (&tty, 0, sizeof tty);
 	if (tcgetattr (prt->id, &tty) != 0)
 	{
-		printf("error in tcgetattr 1");
+		printf("error in tcgetattr 1\n");
 		return -1;
 	}
 
@@ -305,11 +306,11 @@ int InitializeSerialPort(port_t* prt,bool should_block){
 
 	if (tcsetattr (prt->id, TCSANOW, &tty) != 0)
 	{
-		printf("error from tcsetattr 2");
+		printf("error from tcsetattr 2\n");
 		return -1;
 	}
 
-    OS_printf("Opened serial port\n");
+    OS_printf("Opened serial port %s\n",prt->target);
 
 }
 
