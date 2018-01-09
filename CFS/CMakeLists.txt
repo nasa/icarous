@@ -45,9 +45,8 @@ foreach(ARG ${MODULES_NAMES})
     set(MODULE_SOURCE ${MODULES_DIR}/${ARG})
     set(MODULE_CMAKEDIR ${MODULE_SOURCE}/cmake-build-debug)
     execute_process(COMMAND mkdir -p ${MODULE_SOURCE}/cmake-build-debug)
-    execute_process(COMMAND ${CMAKE_COMMAND} ${MODULE_SOURCE} -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+    execute_process(COMMAND env JAVA_HOME=$ENV{JAVA_HOME} ${CMAKE_COMMAND} ${MODULE_SOURCE} -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
                     -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
-                    -DJAVA_PATH=${JAVA_PATH}
                     WORKING_DIRECTORY "${MODULE_CMAKEDIR}"
                     RESULT_VARIABLE RESULT)
     if (NOT RESULT EQUAL 0)

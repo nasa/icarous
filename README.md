@@ -12,15 +12,14 @@ verified algorithms that detect, monitor, and control conformance
 to safety criteria; avoid stationary obstacles and maintain a safe
 distance from other users of the airspace; and compute resolution
 and recovery maneuvers, autonomously executed by the autopilot, when
-safety criteria are violated or about to be violated.
-
-The ICAROUS package is currently available in C++ and Java. Both versions of ICAROUS have the same functionalities.
-The default version of ICAROUS supports the MAVLink protocol. You can define your own interfaces for other protocols (See C++/src/INTERFACE for examples)
+safety criteria are violated or about to be violated. ICAROUS is implemented using the
+NASA's core Flight Systems (cFS) middleware. The aforementioned functionalities are implemented as
+cFS applications which interact via a publish/subscribe messaging
+service provided by the cFS Software Bus.
 
 ### Current Releases
 
-- ICAROUS C++: V-1.3.0 - September 11, 2017
-- ICAROUS Java: V-1.2.3 - July 28, 2017
+- ICAROUS  V-2.0 - January 31, 2018
 
 ### License
 
@@ -33,25 +32,44 @@ Agreement.  See the directory [`LICENSES`](LICENSES); see also the copyright not
 
 ### REQUIRED PACKAGES
 
-The following repositories are required to run ICAROUS (You will also have to update the submodules in these repositories if available)
+The following repositories are required to run (or support software-in-the-loop tests for) ICAROUS (You will also have to update the submodules in these repositories if available)
 
 - [Ardupilot](https://github.com/ArduPilot/ardupilot.git) (Only required for software in the loop simulations)
 - [mavlink](https://github.com/ArduPilot/mavlink.git) 
 - [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
-- [Java simple serial connector (JSSC)](https://code.google.com/archive/p/java-simple-serial-connector/) (Already provided in `Java/lib`)
-- [Core Flight System](https://cfs.gsfc.nasa.gov/) (Already provided)
-- [PLEXIL](https://sourceforge.net/projects/plexil/) (currently only C++ version of ICAROUS supports Plexil)
 
-### BEFORE LAUNCHING ICAROUS
+### COMPILING ICAROUS
 
-ICAROUS uses several messages that are not part of the common/ardupilotmega MAVlink message set. To ensure that the MAVProxy ground station can receive these custom messages, perform the following steps:
+ICAROUS makes use of the cmake build system. In order to setup a build, the following environment variables must be defined. These can be added to you ~/.bashrc script.
 
-- copy icarous.xml in the `msg/` folder in the icarous repository to `mavlink/message_definitions/v1.0` in the mavlink repository.
-- (re)install pymavlink library to incorporate the new dialect (icarous.xml). To do this, goto `mavlink/pymavlink` and run:
+- PLEXIL_HOME= absolute path to the C++/Modules/Plexil folder found in the Icarous repository.
+- OSAL_HOME= absolute path to the CFS/osal folder found in the Icarous repository.
+- JAVA_HOME= absolute path to the java installation
 
 ```
-    $python setup.py install
+    $cd CFS
+    $mkdir build
+    $cd build && cmake ..
+    $make cpu-install
 ```
+
+### LAUNCHING ICAROUS
+
+The generated executable file is installed under `CFS/bin/cpu1`. Launch Icarous using the following command:
+
+```
+    $sudo ./core-cpu1
+```
+
+Note that you need root previleges. When running ICAROUS on an embedded platform, one can make use of the `nohup` or `screen` command to avoid termination when a terminal is closed.
+
+The intf_tbl.c located under `CFS/apps/interface/fsw/tables` defines parameters required to configure the serial port settings to connect to an autopilot. 
+
+The various parameters that control the behavior of ICAROUS can be found in `CFS/bin/ram/icarous.txt`. The default parameters found in icarous.txt were selected after several flight tests to yield acceptable performances.
+
+### INTERACTING WITH ICAROUS
+
+We strongly recommend using MAVProxy as a ground station to communicate with ICAROUS. The custom MAVProxy modules provided in `Python/CustomModules` help upload geofence and visualize track bands.
 
 - Install the custom modules provided as part of the ICAROUS repository:
 
@@ -60,53 +78,32 @@ ICAROUS uses several messages that are not part of the common/ardupilotmega MAVl
     $bash SetuMavProxy.sh <Location of MAVProxy/>
 ```
 
-### LAUNCHING ICAROUS
-
-The various parameters that control the behavior of ICAROUS can be found in `params/icarous.txt` under Java or C++. The default parameters found in icarous.txt were selected after several flight tests to yield acceptable performances. For convenience, a script (run.sh) is provided to launch ICAROUS and other supporting applications. The run script also helps configure several port options.
-
-To run ICAROUS on a companion computer for Ardupilot, first make sure that the pixhawk port and baud rate settings in the run script are the same as the telemetry port settings on the pixhawk. First lauch the ICAROUS application as follows:
-
-	$nohup ./run.sh PX4 params/icarous.txt > pxout.txt &
-
-Note that the nohup (no hang up) command enables the application to run as a background process without interruption. To enable interaction with ICAROUS and the pixhawk through a ground station uplink, launch the radio interface application:
-
-    $nohup ./run.sh RADIO > radioout.txt &
-
-Once the above two applications are launched, you should be able to receive data via the telemetry link connected to the ground station (e.g. mission planner/mavproxy). When using radios with the SiK firmware, it is recommended that the firmware is configured with the following settings:
-
-* MAVLink - None (Raw data mode).
-* Op Resend - disabled.
-* ECC - disabled.
-The Sik radio firmware can be configured using Mission planner or APM Planner.
-
-We strongly recommend using MAVProxy as a ground station to communicate with ICAROUS. To simplify uploading geofence data to ICAROUS, additional modules are provided in `Python/CustomModules`. The MAVProxy ground station can be lauched using the run script:
+The MAVProxy ground station can be lauched using the run script located under the C++ folder:
 
     $./run.sh GS
 
 Waypoints can be uploaded from MAVProxy using the `wp` command. An example waypoint is provided in `Java/params`
 
-	wp load params/flightplan.txt
+	wp load InputData/flightplan.txt
 
 Geofence can be uploaded from MAVProxy using the `geofence` command. An example geofence file is provided in `Java/params`
 
-	geofence load params/geofence.xml
+	geofence load InputData/geofence.xml
 
 Once waypoints and geofence are uploaded, the mission can be started from MAVProxy as follows:
 
     long MISSION_START
 
-Update Icarous parameters as follows:
+### RUNNING ICAROUS WITH THE ARDUPILOT SITL
 
-    icparams load params/icarous.txt
+Setup and launch the ardupilot SITL as described in <http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html>. By default, the ardupilot SITL is configured to output packets to udp port 14551. To interface Icarous with the ardupilot SITL, generate the SITL build and compile as follows:
 
-### Running ICAROUS with the ardupilot SITL
-
-
-Setup and launch the ardupilot SITL as described in <http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html>. Specify the SITL host address in the run script. By default, the ardupilot SITL is configured to output packets to udp port 14551. Launch ICAROUS in the SITL mode as follows:
-
-    $./run.sh SITL params/icarous.txt
-
-While running ICAROUS in the SITL framework, it is possible to communicate with ICAROUS via a ground station using the UDP sockets instead of using a radio link. See `GS_MASTER` variable in the run.sh script to enable the ground station over a UDP socket.
+```
+    $cd CFS
+    $mkdir build-stil
+    $cd build-sitl && cmake .. -DSITL=ON
+    $make cpu-install
+```
 
 ### Detect and Avoid (DAA) and Geofencing Capabilities
 
@@ -115,10 +112,6 @@ ICAROUS integrates NASA's open source software packages [DAIDALUS](http://shemes
 [PolyCARP](http://shemesh.larc.nasa.gov/fm/PolyCARP) (Algorithms and Software
 for Computations with Polygons). DAIDALUS provides detect and avoid
 capabilities, while PolyCARP provides geofencing capabilities.
-
-These capabilities are illustrated in the sample programs
-[`DAAGeofencingExample.java`](Java/src/DAAGeofencingExample.java) and
-[`DAAGeofencingExample.cpp`](C++/src/DAAGeofencingExample.cpp).
 
 ## Logo
 

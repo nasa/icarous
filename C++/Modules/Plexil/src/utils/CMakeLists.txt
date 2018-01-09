@@ -47,16 +47,16 @@ set(SOURCE_FILES
         timeval-utils.hh
         utils_main_page.hh)
 
-if(JAVA_PATH)
+if(DEFINED ENV{JAVA_HOME})
     add_library(PlexilUtils SHARED ${SOURCE_FILES})
 
     include_directories(
-            ${JAVA_PATH}/include/
-            ${JAVA_PATH}/include/linux/
+            $ENV{JAVA_HOME}/include/
+            $ENV{JAVA_HOME}/include/linux/
             ${PLEXIL_ROOT}/include)
 
 else()
-    message(FATAL_ERROR "JAVA_PATH needed.")
+    message(FATAL_ERROR "JAVA_HOME not defined.")
 endif()
 
 
