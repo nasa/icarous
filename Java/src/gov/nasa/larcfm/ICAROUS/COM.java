@@ -300,6 +300,18 @@ public class COM implements Runnable,ErrorReporter{
 					GenericObject.AddObject(FlightData.traffic,obj);
 				}
 
+				msg_command_long gsTraffic = new msg_command_long();
+				gsTraffic.sysid = 2;
+				gsTraffic.command = MAV_CMD.MAV_CMD_SPATIAL_USER_3;
+				gsTraffic.param1 = msgCommandLong.param1;
+				gsTraffic.param2 = msgCommandLong.param2;
+				gsTraffic.param3 = msgCommandLong.param3;
+				gsTraffic.param4 = msgCommandLong.param4;
+				gsTraffic.param5 = msgCommandLong.param5;
+				gsTraffic.param6 = msgCommandLong.param6;
+				gsTraffic.param7 = msgCommandLong.param7;
+				gsIntf.Write(gsTraffic);
+				//System.out.println("sending traffic to ground station");
 			}
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_2){
 				GenericObject obj = new GenericObject(1,(int)msgCommandLong.param1,
