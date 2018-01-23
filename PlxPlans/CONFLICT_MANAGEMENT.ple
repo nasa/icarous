@@ -26,20 +26,21 @@ Command SetVel(Real velocity[3]);
 Command pprint(...);
 
 // Library plans
+LibraryAction MISSION(In Boolean execResolution);
 LibraryAction GOTO_POSITION (In Real TargetPosition[3],InOut Boolean resolutionCompleted);
 LibraryAction TRAFFIC_RESOLUTION(InOut Boolean completionStatus,In Integer nextWP,
                                  In Real acPosition[3],In Real acVelocity[3],In Real resSpeed);
 
 CONFLICT_MANAGEMENT:
 {
+    Boolean resolutionActive = false;
     Integer _numMissionWP;
     Real acPosition[3];
     Real acVelocity[3];
     Boolean keepInConflict = false;
     Boolean keepOutConflict = false;
     Boolean trafficConflict = false;
-    Boolean flightPlanConflict = false;
-    Boolean resolutionActive = false;
+    Boolean flightPlanConflict = false;    
     Real newConflictHash = 0;
     Real oldConflictHash = 0;
     Real allowedDeviation;
@@ -58,7 +59,13 @@ CONFLICT_MANAGEMENT:
 
     CORE:Concurrence
     {
-	
+
+        MISSION:{
+	   // Perform user defined mission
+	   LibraryCall MISSION(execResolution = resolutionActive);
+        }
+
+      
         DETECTION:
         {
             InOut Boolean keepInConflict;

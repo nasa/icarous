@@ -41,7 +41,7 @@ endforeach()
 
 add_cfe_tables(plexil "fsw/tables/plexil_tbl.c")
 
-set(PLEXIL_PLANS Icarous2.ple CONFLICT_MANAGEMENT.ple GOTO_POSITION.ple TRAFFIC_RESOLUTION.ple)
+set(PLEXIL_PLANS Icarous2.ple CONFLICT_MANAGEMENT.ple GOTO_POSITION.ple TRAFFIC_RESOLUTION.ple MISSION.ple)
 
 foreach(ARG ${PLEXIL_PLANS})
     message(STATUS "Build plexil plan: ${ARG}" )
