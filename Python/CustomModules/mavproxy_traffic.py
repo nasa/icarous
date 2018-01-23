@@ -86,7 +86,7 @@ class TrafficModule(mp_module.MPModule):
         self.traffic_list = [];
         self.traffic_on_map = [];
         self.WCV = False;
-        self.radius = 10.0;
+        self.radius = 5.0;
 
 
         self.numBands = 0;
@@ -144,7 +144,7 @@ class TrafficModule(mp_module.MPModule):
             if(self.kmbMsgCounter == 95):
                 self.Bands = []
 
-            if m.get_type() == "KINEMATIC_BANDS":
+            if m.get_type() == "ICAROUS_KINEMATIC_BANDS":
                 self.kmbMsgCounter = 0;
                 self.oldNumBands = self.numBands;
                 self.numBands = m.numBands;
