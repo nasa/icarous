@@ -148,7 +148,7 @@ class GeoFenceModule(mp_module.MPModule):
                 
             elif(count == fence["numV"] and msg.get_type() == "COMMAND_ACK" ):
                 
-                if msg.result == 1:            
+                if msg.result == 0:            
                     fence_sent = True;
                     self.console.writeln("Geofence sent")
                 else:

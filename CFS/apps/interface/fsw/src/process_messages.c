@@ -416,7 +416,7 @@ void INTERFACE_ProcessPacket(){
 		{
 			mavlink_message_t msg;
 			visbands_t* bands = (visbands_t*) appdataInt.INTERFACEMsgPtr;
-			mavlink_msg_kinematic_bands_pack(1,0,&msg,bands->numBands,
+			mavlink_msg_icarous_kinematic_bands_pack(1,0,&msg,bands->numBands,
 					bands->type1,bands->min1,bands->max1,
 					bands->type2,bands->min2,bands->max2,
 					bands->type3,bands->min3,bands->max3,
