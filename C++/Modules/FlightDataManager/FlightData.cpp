@@ -332,25 +332,15 @@ void FlightData::InputGeofenceData(geofence_t* gf){
             newfence.AddVertex(sgf.vertexIndex,sgf.latitude,sgf.longitude,ResolBUFF);
         }
 
-        if(fenceList.size() <= gf->index){
-            fenceList.push_back(newfence);
-            if(newfence.GetType() == KEEP_OUT)
-                geoPolyPath.addPolygon(*newfence.GetPoly(),Velocity::makeVxyz(0,0,0),0);
-            std::cout << "Received fence: "<<gf->index <<std::endl;
+        if(fenceList.size() > gf->index){
+            fenceList.clear();
         }
-        else{
-            std::list<fence>::iterator it;
-            for(it = fenceList.begin(); it != fenceList.end(); ++it){
-                if(it->GetID() == newfence.GetID()){
-                    it = fenceList.erase(it);
-                    geoPolyPath.remove(it->GetID());
-                    fenceList.insert(it,newfence);
-                    if(newfence.GetType() == KEEP_OUT)
-                        geoPolyPath.addPolygon(*newfence.GetPoly(),Velocity::makeVxyz(0,0,0),0);
-                    break;
-                }
-            }
-        }
+
+        fenceList.push_back(newfence);
+        if(newfence.GetType() == KEEP_OUT)
+            geoPolyPath.addPolygon(*newfence.GetPoly(),Velocity::makeVxyz(0,0,0),0);
+        std::cout << "Received fence: "<<gf->index <<std::endl;
+
     }
 }
 
