@@ -1,9 +1,10 @@
 ![](logo/ICAROUS.jpeg "")
 
-Integrated Configurable Algorithms for Reliable Operations of Unmanned Systems
+Independent Configurable Architecture for Reliable Operations of
+Unmanned Systems (ICAROUS)
 ========
 
-ICAROUS (Integrated Configurable Algorithms for Reliable Operations of
+ICAROUS (Independent Configurable Architecture for Reliable Operations of
 Unmanned Systems) is a software architecture that enables the robust integration
 of mission specific software modules and highly assured core software
 modules for building safety-centric autonomous unmanned aircraft
@@ -19,7 +20,7 @@ service provided by the cFS Software Bus.
 
 ### Current Releases
 
-- ICAROUS  V-2.0 - January 31, 2018
+- ICAROUS  V-pre2.0 - January 25, 2018
 
 ### License
 
