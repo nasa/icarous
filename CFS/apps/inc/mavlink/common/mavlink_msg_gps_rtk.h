@@ -17,7 +17,7 @@ typedef struct __mavlink_gps_rtk_t {
  uint8_t rtk_health; /*< GPS-specific health report for RTK data.*/
  uint8_t rtk_rate; /*< Rate of baseline messages being received by GPS, in HZ*/
  uint8_t nsats; /*< Current number of sats used for RTK calculation.*/
- uint8_t baseline_coords_type; /*< Coordinate system of baseline. 0 == ECEF, 1 == NED*/
+ uint8_t baseline_coords_type; /*< Coordinate system of baseline*/
 }) mavlink_gps_rtk_t;
 
 #define MAVLINK_MSG_ID_GPS_RTK_LEN 35
@@ -36,18 +36,18 @@ typedef struct __mavlink_gps_rtk_t {
     "GPS_RTK", \
     13, \
     {  { "time_last_baseline_ms", NULL, MAVLINK_TYPE_UINT32_T, 0, 0, offsetof(mavlink_gps_rtk_t, time_last_baseline_ms) }, \
+         { "rtk_receiver_id", NULL, MAVLINK_TYPE_UINT8_T, 0, 30, offsetof(mavlink_gps_rtk_t, rtk_receiver_id) }, \
+         { "wn", NULL, MAVLINK_TYPE_UINT16_T, 0, 28, offsetof(mavlink_gps_rtk_t, wn) }, \
          { "tow", NULL, MAVLINK_TYPE_UINT32_T, 0, 4, offsetof(mavlink_gps_rtk_t, tow) }, \
+         { "rtk_health", NULL, MAVLINK_TYPE_UINT8_T, 0, 31, offsetof(mavlink_gps_rtk_t, rtk_health) }, \
+         { "rtk_rate", NULL, MAVLINK_TYPE_UINT8_T, 0, 32, offsetof(mavlink_gps_rtk_t, rtk_rate) }, \
+         { "nsats", NULL, MAVLINK_TYPE_UINT8_T, 0, 33, offsetof(mavlink_gps_rtk_t, nsats) }, \
+         { "baseline_coords_type", NULL, MAVLINK_TYPE_UINT8_T, 0, 34, offsetof(mavlink_gps_rtk_t, baseline_coords_type) }, \
          { "baseline_a_mm", NULL, MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_gps_rtk_t, baseline_a_mm) }, \
          { "baseline_b_mm", NULL, MAVLINK_TYPE_INT32_T, 0, 12, offsetof(mavlink_gps_rtk_t, baseline_b_mm) }, \
          { "baseline_c_mm", NULL, MAVLINK_TYPE_INT32_T, 0, 16, offsetof(mavlink_gps_rtk_t, baseline_c_mm) }, \
          { "accuracy", NULL, MAVLINK_TYPE_UINT32_T, 0, 20, offsetof(mavlink_gps_rtk_t, accuracy) }, \
          { "iar_num_hypotheses", NULL, MAVLINK_TYPE_INT32_T, 0, 24, offsetof(mavlink_gps_rtk_t, iar_num_hypotheses) }, \
-         { "wn", NULL, MAVLINK_TYPE_UINT16_T, 0, 28, offsetof(mavlink_gps_rtk_t, wn) }, \
-         { "rtk_receiver_id", NULL, MAVLINK_TYPE_UINT8_T, 0, 30, offsetof(mavlink_gps_rtk_t, rtk_receiver_id) }, \
-         { "rtk_health", NULL, MAVLINK_TYPE_UINT8_T, 0, 31, offsetof(mavlink_gps_rtk_t, rtk_health) }, \
-         { "rtk_rate", NULL, MAVLINK_TYPE_UINT8_T, 0, 32, offsetof(mavlink_gps_rtk_t, rtk_rate) }, \
-         { "nsats", NULL, MAVLINK_TYPE_UINT8_T, 0, 33, offsetof(mavlink_gps_rtk_t, nsats) }, \
-         { "baseline_coords_type", NULL, MAVLINK_TYPE_UINT8_T, 0, 34, offsetof(mavlink_gps_rtk_t, baseline_coords_type) }, \
          } \
 }
 #else
@@ -55,18 +55,18 @@ typedef struct __mavlink_gps_rtk_t {
     "GPS_RTK", \
     13, \
     {  { "time_last_baseline_ms", NULL, MAVLINK_TYPE_UINT32_T, 0, 0, offsetof(mavlink_gps_rtk_t, time_last_baseline_ms) }, \
+         { "rtk_receiver_id", NULL, MAVLINK_TYPE_UINT8_T, 0, 30, offsetof(mavlink_gps_rtk_t, rtk_receiver_id) }, \
+         { "wn", NULL, MAVLINK_TYPE_UINT16_T, 0, 28, offsetof(mavlink_gps_rtk_t, wn) }, \
          { "tow", NULL, MAVLINK_TYPE_UINT32_T, 0, 4, offsetof(mavlink_gps_rtk_t, tow) }, \
+         { "rtk_health", NULL, MAVLINK_TYPE_UINT8_T, 0, 31, offsetof(mavlink_gps_rtk_t, rtk_health) }, \
+         { "rtk_rate", NULL, MAVLINK_TYPE_UINT8_T, 0, 32, offsetof(mavlink_gps_rtk_t, rtk_rate) }, \
+         { "nsats", NULL, MAVLINK_TYPE_UINT8_T, 0, 33, offsetof(mavlink_gps_rtk_t, nsats) }, \
+         { "baseline_coords_type", NULL, MAVLINK_TYPE_UINT8_T, 0, 34, offsetof(mavlink_gps_rtk_t, baseline_coords_type) }, \
          { "baseline_a_mm", NULL, MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_gps_rtk_t, baseline_a_mm) }, \
          { "baseline_b_mm", NULL, MAVLINK_TYPE_INT32_T, 0, 12, offsetof(mavlink_gps_rtk_t, baseline_b_mm) }, \
          { "baseline_c_mm", NULL, MAVLINK_TYPE_INT32_T, 0, 16, offsetof(mavlink_gps_rtk_t, baseline_c_mm) }, \
          { "accuracy", NULL, MAVLINK_TYPE_UINT32_T, 0, 20, offsetof(mavlink_gps_rtk_t, accuracy) }, \
          { "iar_num_hypotheses", NULL, MAVLINK_TYPE_INT32_T, 0, 24, offsetof(mavlink_gps_rtk_t, iar_num_hypotheses) }, \
-         { "wn", NULL, MAVLINK_TYPE_UINT16_T, 0, 28, offsetof(mavlink_gps_rtk_t, wn) }, \
-         { "rtk_receiver_id", NULL, MAVLINK_TYPE_UINT8_T, 0, 30, offsetof(mavlink_gps_rtk_t, rtk_receiver_id) }, \
-         { "rtk_health", NULL, MAVLINK_TYPE_UINT8_T, 0, 31, offsetof(mavlink_gps_rtk_t, rtk_health) }, \
-         { "rtk_rate", NULL, MAVLINK_TYPE_UINT8_T, 0, 32, offsetof(mavlink_gps_rtk_t, rtk_rate) }, \
-         { "nsats", NULL, MAVLINK_TYPE_UINT8_T, 0, 33, offsetof(mavlink_gps_rtk_t, nsats) }, \
-         { "baseline_coords_type", NULL, MAVLINK_TYPE_UINT8_T, 0, 34, offsetof(mavlink_gps_rtk_t, baseline_coords_type) }, \
          } \
 }
 #endif
@@ -84,7 +84,7 @@ typedef struct __mavlink_gps_rtk_t {
  * @param rtk_health GPS-specific health report for RTK data.
  * @param rtk_rate Rate of baseline messages being received by GPS, in HZ
  * @param nsats Current number of sats used for RTK calculation.
- * @param baseline_coords_type Coordinate system of baseline. 0 == ECEF, 1 == NED
+ * @param baseline_coords_type Coordinate system of baseline
  * @param baseline_a_mm Current baseline in ECEF x or NED north component in mm.
  * @param baseline_b_mm Current baseline in ECEF y or NED east component in mm.
  * @param baseline_c_mm Current baseline in ECEF z or NED down component in mm.
@@ -148,7 +148,7 @@ static inline uint16_t mavlink_msg_gps_rtk_pack(uint8_t system_id, uint8_t compo
  * @param rtk_health GPS-specific health report for RTK data.
  * @param rtk_rate Rate of baseline messages being received by GPS, in HZ
  * @param nsats Current number of sats used for RTK calculation.
- * @param baseline_coords_type Coordinate system of baseline. 0 == ECEF, 1 == NED
+ * @param baseline_coords_type Coordinate system of baseline
  * @param baseline_a_mm Current baseline in ECEF x or NED north component in mm.
  * @param baseline_b_mm Current baseline in ECEF y or NED east component in mm.
  * @param baseline_c_mm Current baseline in ECEF z or NED down component in mm.
@@ -238,7 +238,7 @@ static inline uint16_t mavlink_msg_gps_rtk_encode_chan(uint8_t system_id, uint8_
  * @param rtk_health GPS-specific health report for RTK data.
  * @param rtk_rate Rate of baseline messages being received by GPS, in HZ
  * @param nsats Current number of sats used for RTK calculation.
- * @param baseline_coords_type Coordinate system of baseline. 0 == ECEF, 1 == NED
+ * @param baseline_coords_type Coordinate system of baseline
  * @param baseline_a_mm Current baseline in ECEF x or NED north component in mm.
  * @param baseline_b_mm Current baseline in ECEF y or NED east component in mm.
  * @param baseline_c_mm Current baseline in ECEF z or NED down component in mm.
@@ -426,7 +426,7 @@ static inline uint8_t mavlink_msg_gps_rtk_get_nsats(const mavlink_message_t* msg
 /**
  * @brief Get field baseline_coords_type from gps_rtk message
  *
- * @return Coordinate system of baseline. 0 == ECEF, 1 == NED
+ * @return Coordinate system of baseline
  */
 static inline uint8_t mavlink_msg_gps_rtk_get_baseline_coords_type(const mavlink_message_t* msg)
 {

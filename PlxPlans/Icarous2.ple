@@ -1,0 +1,165 @@
+// -*- Mode: Java -*-
+Integer Lookup missionStart;
+Integer Lookup armStatus;
+Integer Lookup takeoffStatus;
+Integer Lookup numMissionWP;
+
+Real[3] Lookup position;
+Real[3] Lookup velocity;
+
+// Low level Autopilot commands
+Command SetMode(String mode);
+Command SetYaw(Real heading);
+Command Takeoff(Real altitude);
+Command ArmMotors();
+Command Land();
+Command SetNextMissionWP(Integer index);
+Command pprint(...);
+
+// Library plans
+LibraryAction CONFLICT_MANAGEMENT();
+
+ICAROUS:
+{
+
+    Real _Position[3];
+    Real _Velocity[3];
+        	        
+    FMS:
+    {
+        Boolean _idleStatus    = true;
+        Boolean _takeoffStatus = false;
+        Boolean _climbStatus   = false;
+        Boolean _cruiseStatus  = false;
+        Boolean _landStatus    = false;
+        Integer _numMissionWP;
+        Integer _nextMissionWP = 1;
+
+        Repeat true;
+
+        IDLE:
+        {
+            Integer start;
+            StartCondition _idleStatus;
+            EndCondition !_idleStatus;
+
+            {
+                Repeat true;
+                start = Lookup(missionStart);
+
+                if (start == 0){
+                    _numMissionWP = Lookup(numMissionWP);
+                    _takeoffStatus = true;
+                    _idleStatus = false;
+                }elseif(start > 0){
+                    _numMissionWP = Lookup(numMissionWP);
+                    _cruiseStatus = true;
+                    _idleStatus = false;
+                }endif
+            }
+
+        }// End of IDLE
+
+        TAKEOFF:{
+            Integer _armStatus;
+            StartCondition _takeoffStatus;
+            SkipCondition !_takeoffStatus;
+            EndCondition !_takeoffStatus;
+
+            pprint("Takeoff");
+
+            CHANGE_MODE:SetMode("ACTIVE");
+
+            ARM:{
+                EndCondition isKnown(_armStatus) && (_armStatus >= 0);
+
+                ArmMotors();
+
+                CHECK_STATUS: {
+                    Repeat true;
+                    _armStatus = Lookup(armStatus);
+                    pprint("In arm status");
+                }
+            }// End of ARM
+
+            pprint("Armed motors",_armStatus);
+
+            THROTTLE_UP:{
+            Integer status;
+            StartCondition (_armStatus==1);
+            SkipCondition  (_armStatus!=1);
+
+
+            TAKEOFF:{
+
+                EndCondition isKnown(status) && (status>=0);
+
+                Takeoff(5.0);
+
+                pprint("Taking off");
+
+                CHECK_STATUS: {
+                    Repeat true;
+                    status = Lookup(takeoffStatus);
+                }
+
+            }
+
+            if(status == 1){
+                pprint("Takeoff successful");
+                _climbStatus = true;
+                _takeoffStatus = false;
+            }else{
+                pprint("Takeoff failed\n");
+                _takeoffStatus = false;
+            }endif
+
+            }// End of THROTTLE
+        }// End of TAKEOFF
+
+
+        CLIMB:{
+            StartCondition _climbStatus;
+            SkipCondition !_climbStatus;
+            EndCondition !_climbStatus;
+            {
+                Boolean val;
+                Repeat true;
+
+                _Position = Lookup(position);
+
+                if(_Position[2] >= 3.0){
+                    pprint("Finished climbing");
+                    SetNextMissionWP(_nextMissionWP);
+                    SetMode("PASSIVE");
+                    _cruiseStatus = true;
+                    _climbStatus = false;
+                }endif
+            }
+
+        }// End of CLIMB
+
+        CRUISE:{
+            StartCondition _cruiseStatus;
+            SkipCondition !_cruiseStatus;
+            // Perform Conflict Management (Detection and Resolution)
+            LibraryCall CONFLICT_MANAGEMENT();
+	    	   
+            _cruiseStatus = false;
+            _landStatus = true;
+
+        }// End of CRUISE
+
+        LAND:{
+            StartCondition _landStatus;
+            SkipCondition !_landStatus;
+
+            SetMode("ACTIVE");
+            Land();
+
+            _landStatus = false;
+        }// End of LAND
+	
+    }// End of FMS
+}// End of ICAROUS
+

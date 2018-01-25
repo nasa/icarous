@@ -86,7 +86,7 @@ class TrafficModule(mp_module.MPModule):
         self.traffic_list = [];
         self.traffic_on_map = [];
         self.WCV = False;
-        self.radius = 10.0;
+        self.radius = 5.0;
 
 
         self.numBands = 0;
@@ -144,7 +144,7 @@ class TrafficModule(mp_module.MPModule):
             if(self.kmbMsgCounter == 95):
                 self.Bands = []
 
-            if m.get_type() == "KINEMATIC_BANDS":
+            if m.get_type() == "ICAROUS_KINEMATIC_BANDS":
                 self.kmbMsgCounter = 0;
                 self.oldNumBands = self.numBands;
                 self.numBands = m.numBands;
@@ -232,6 +232,8 @@ class TrafficModule(mp_module.MPModule):
         
         #from MAVProxy.modules.mavproxy_map import mp_slipmap
         t = time.time()
+        if(t - self.lastUpdateTime < 0.5):
+            return
         
         for i,tffc in enumerate(self.traffic_list):
             vehicle = 'Traffic%d' % i
@@ -251,9 +253,7 @@ class TrafficModule(mp_module.MPModule):
             heading = math.degrees(math.atan2(self.traffic_list[i].vy0, self.traffic_list[i].vx0))            
             self.mpstate.map.set_position(vehicle, (lat, lon), rotation=heading)
 
-            if(t - self.lastUpdateTime > 0.5):
-                self.lastUpdateTime = t
-                self.master.mav.command_long_send(
+            self.master.mav.command_long_send(
                     1,  # target_system
                     0, # target_component
                     mavutil.mavlink.MAV_CMD_SPATIAL_USER_1, # command
@@ -265,6 +265,7 @@ class TrafficModule(mp_module.MPModule):
                     lat, # param5
                     lon, # param6
                     self.traffic_list[i].z0) # param7
+        self.lastUpdateTime = t
             
 
     def print_usage(self):

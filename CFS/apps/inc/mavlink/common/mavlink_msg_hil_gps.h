@@ -11,7 +11,7 @@ typedef struct __mavlink_hil_gps_t {
  int32_t alt; /*< Altitude (AMSL, not WGS84), in meters * 1000 (positive for up)*/
  uint16_t eph; /*< GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535*/
  uint16_t epv; /*< GPS VDOP vertical dilution of position in cm (m*100). If unknown, set to: 65535*/
- uint16_t vel; /*< GPS ground speed (m/s * 100). If unknown, set to: 65535*/
+ uint16_t vel; /*< GPS ground speed in cm/s. If unknown, set to: 65535*/
  int16_t vn; /*< GPS velocity in cm/s in NORTH direction in earth-fixed NED frame*/
  int16_t ve; /*< GPS velocity in cm/s in EAST direction in earth-fixed NED frame*/
  int16_t vd; /*< GPS velocity in cm/s in DOWN direction in earth-fixed NED frame*/
@@ -36,6 +36,7 @@ typedef struct __mavlink_hil_gps_t {
     "HIL_GPS", \
     13, \
     {  { "time_usec", NULL, MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_hil_gps_t, time_usec) }, \
+         { "fix_type", NULL, MAVLINK_TYPE_UINT8_T, 0, 34, offsetof(mavlink_hil_gps_t, fix_type) }, \
          { "lat", NULL, MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_hil_gps_t, lat) }, \
          { "lon", NULL, MAVLINK_TYPE_INT32_T, 0, 12, offsetof(mavlink_hil_gps_t, lon) }, \
          { "alt", NULL, MAVLINK_TYPE_INT32_T, 0, 16, offsetof(mavlink_hil_gps_t, alt) }, \
@@ -46,7 +47,6 @@ typedef struct __mavlink_hil_gps_t {
          { "ve", NULL, MAVLINK_TYPE_INT16_T, 0, 28, offsetof(mavlink_hil_gps_t, ve) }, \
          { "vd", NULL, MAVLINK_TYPE_INT16_T, 0, 30, offsetof(mavlink_hil_gps_t, vd) }, \
          { "cog", NULL, MAVLINK_TYPE_UINT16_T, 0, 32, offsetof(mavlink_hil_gps_t, cog) }, \
-         { "fix_type", NULL, MAVLINK_TYPE_UINT8_T, 0, 34, offsetof(mavlink_hil_gps_t, fix_type) }, \
          { "satellites_visible", NULL, MAVLINK_TYPE_UINT8_T, 0, 35, offsetof(mavlink_hil_gps_t, satellites_visible) }, \
          } \
 }
@@ -55,6 +55,7 @@ typedef struct __mavlink_hil_gps_t {
     "HIL_GPS", \
     13, \
     {  { "time_usec", NULL, MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_hil_gps_t, time_usec) }, \
+         { "fix_type", NULL, MAVLINK_TYPE_UINT8_T, 0, 34, offsetof(mavlink_hil_gps_t, fix_type) }, \
          { "lat", NULL, MAVLINK_TYPE_INT32_T, 0, 8, offsetof(mavlink_hil_gps_t, lat) }, \
          { "lon", NULL, MAVLINK_TYPE_INT32_T, 0, 12, offsetof(mavlink_hil_gps_t, lon) }, \
          { "alt", NULL, MAVLINK_TYPE_INT32_T, 0, 16, offsetof(mavlink_hil_gps_t, alt) }, \
@@ -65,7 +66,6 @@ typedef struct __mavlink_hil_gps_t {
          { "ve", NULL, MAVLINK_TYPE_INT16_T, 0, 28, offsetof(mavlink_hil_gps_t, ve) }, \
          { "vd", NULL, MAVLINK_TYPE_INT16_T, 0, 30, offsetof(mavlink_hil_gps_t, vd) }, \
          { "cog", NULL, MAVLINK_TYPE_UINT16_T, 0, 32, offsetof(mavlink_hil_gps_t, cog) }, \
-         { "fix_type", NULL, MAVLINK_TYPE_UINT8_T, 0, 34, offsetof(mavlink_hil_gps_t, fix_type) }, \
          { "satellites_visible", NULL, MAVLINK_TYPE_UINT8_T, 0, 35, offsetof(mavlink_hil_gps_t, satellites_visible) }, \
          } \
 }
@@ -84,7 +84,7 @@ typedef struct __mavlink_hil_gps_t {
  * @param alt Altitude (AMSL, not WGS84), in meters * 1000 (positive for up)
  * @param eph GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
  * @param epv GPS VDOP vertical dilution of position in cm (m*100). If unknown, set to: 65535
- * @param vel GPS ground speed (m/s * 100). If unknown, set to: 65535
+ * @param vel GPS ground speed in cm/s. If unknown, set to: 65535
  * @param vn GPS velocity in cm/s in NORTH direction in earth-fixed NED frame
  * @param ve GPS velocity in cm/s in EAST direction in earth-fixed NED frame
  * @param vd GPS velocity in cm/s in DOWN direction in earth-fixed NED frame
@@ -148,7 +148,7 @@ static inline uint16_t mavlink_msg_hil_gps_pack(uint8_t system_id, uint8_t compo
  * @param alt Altitude (AMSL, not WGS84), in meters * 1000 (positive for up)
  * @param eph GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
  * @param epv GPS VDOP vertical dilution of position in cm (m*100). If unknown, set to: 65535
- * @param vel GPS ground speed (m/s * 100). If unknown, set to: 65535
+ * @param vel GPS ground speed in cm/s. If unknown, set to: 65535
  * @param vn GPS velocity in cm/s in NORTH direction in earth-fixed NED frame
  * @param ve GPS velocity in cm/s in EAST direction in earth-fixed NED frame
  * @param vd GPS velocity in cm/s in DOWN direction in earth-fixed NED frame
@@ -238,7 +238,7 @@ static inline uint16_t mavlink_msg_hil_gps_encode_chan(uint8_t system_id, uint8_
  * @param alt Altitude (AMSL, not WGS84), in meters * 1000 (positive for up)
  * @param eph GPS HDOP horizontal dilution of position in cm (m*100). If unknown, set to: 65535
  * @param epv GPS VDOP vertical dilution of position in cm (m*100). If unknown, set to: 65535
- * @param vel GPS ground speed (m/s * 100). If unknown, set to: 65535
+ * @param vel GPS ground speed in cm/s. If unknown, set to: 65535
  * @param vn GPS velocity in cm/s in NORTH direction in earth-fixed NED frame
  * @param ve GPS velocity in cm/s in EAST direction in earth-fixed NED frame
  * @param vd GPS velocity in cm/s in DOWN direction in earth-fixed NED frame
@@ -426,7 +426,7 @@ static inline uint16_t mavlink_msg_hil_gps_get_epv(const mavlink_message_t* msg)
 /**
  * @brief Get field vel from hil_gps message
  *
- * @return GPS ground speed (m/s * 100). If unknown, set to: 65535
+ * @return GPS ground speed in cm/s. If unknown, set to: 65535
  */
 static inline uint16_t mavlink_msg_hil_gps_get_vel(const mavlink_message_t* msg)
 {

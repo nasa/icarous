@@ -35,7 +35,7 @@ endif (STDINT_H_FILE)
 # This is required and must be defined
 set(OSAL_SYSTEM_OSTYPE "posix")
 set(OSAL_SYSTEM_BSPTYPE "pc-linux")
-set(OSAL_INCLUDEDIR "/home/research133/Software/osal-4.2.1a-release/src/bsp/pc-linux/config")
+set(OSAL_INCLUDEDIR "$ENV{OSAL_HOME}/src/bsp/pc-linux/config")
 if (NOT OSAL_SYSTEM_OSTYPE)
   message(FATAL_ERROR "OSAL_SYSTEM_OSTYPE must be set to the appropriate OS")
 endif (NOT OSAL_SYSTEM_OSTYPE)

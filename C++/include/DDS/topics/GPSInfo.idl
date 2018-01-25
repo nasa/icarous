@@ -1,0 +1,16 @@
+module MAVLink
+{
+    struct GPSInfo
+    {
+        double time;
+        double latitude;
+        double longitude;
+        double absoluteAltitude;
+        double relativeAltitude;
+        double xVelocity;
+        double yVelocity;
+        double zVelocity;
+    };
+    #pragma keylist GPSInfo
+};
+

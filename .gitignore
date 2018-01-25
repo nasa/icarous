@@ -22,3 +22,19 @@ CFS/build/cpu1/*
 CFS/build/mission_inc/*
 #Ignore plexil files
 C++/plexil-4/*
+cmake-build-debug
+*.pyc
+logs
+terrain
+*.log
+*.plx
+icarous
+icarousPlexil
+C++/Modules/Plexil/lib
+C++/Modules/Plexil/workshop
+C++/Modules/*/build
+C++/Modules/Plexil/compilers/plexil/classes
+C++/Modules/Plexil/compilers/plexil/generated
+C++/Modules/Plexil/jars/PlexilCompiler.jar
+CFS/bin/cpu1
+CFS/bin/host

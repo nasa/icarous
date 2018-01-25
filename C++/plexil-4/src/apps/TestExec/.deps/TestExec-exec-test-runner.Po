@@ -1,9 +1,0 @@
-TestExec-exec-test-runner.o: exec-test-runner.cc \
- /usr/include/stdc-predef.h ExecTestRunner.hh \
- ../../utils/lifecycle-utils.h
-
-/usr/include/stdc-predef.h:
-
-ExecTestRunner.hh:
-
-../../utils/lifecycle-utils.h:
