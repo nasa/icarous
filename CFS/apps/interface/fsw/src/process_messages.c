@@ -9,6 +9,7 @@
 #include <Icarous_msg.h>
 #include "interface_table.h"
 
+
 #define EXTERN extern
 #include "interface.h"
 
@@ -241,6 +242,8 @@ void ProcessGSMessage(mavlink_message_t message){
 
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &traffic);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &traffic);
+
+
 			}
 			else if(msg.command == MAV_CMD_USER_1){
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &resetIcarous);
