@@ -18,6 +18,8 @@
 #include <fcntl.h>   // File control definitions
 #include <termios.h> // POSIX terminal control definitions
 
+
+
 CFE_EVS_BinFilter_t  INTERFACE_EventFilters[] =
 {  /* Event ID    mask */
 		{INTERFACE_STARTUP_INF_EID,       0x0000},
@@ -107,7 +109,7 @@ void INTERFACE_AppInit(void){
 	CFE_SB_InitMsg(&position,ICAROUS_POSITION_MID,sizeof(position_t),TRUE);	
 	CFE_SB_InitMsg(&ack,ICAROUS_COMACK_MID,sizeof(CmdAck_t),TRUE);
 	CFE_SB_InitMsg(&plexilInput,PLEXIL_INPUT_MID,sizeof(plexil_interface_t),TRUE);
-	
+
 
 	// Send event indicating app initialization
 	CFE_EVS_SendEvent (INTERFACE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
