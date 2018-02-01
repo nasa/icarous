@@ -61,6 +61,8 @@ Before building ICAROUS, generate the plexil plan compiler
     $make cpu1-install
 ```
 
+For compilation and linking errors related to missing libraries, check [C++/Modules/README.md](C++/Modules/README.md).
+
 ### LAUNCHING ICAROUS
 
 The generated executable file is installed under `CFS/bin/cpu1`. Launch Icarous using the following command:
