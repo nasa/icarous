@@ -107,13 +107,13 @@ Setup and launch the ardupilot SITL as described in <http://ardupilot.org/dev/do
 
 ### DDS APP FOR ICAROUS
 
-ICAROUS provides an application that communicates through OpenSplice DDS. In order to enable this application, do the following:
+ICAROUS provides an application to communicate using OpenSplice DDS. Enable this application as follows:
 
 1. Download and install an OpenSplice DDS 32bit version
 
-2. Create an OpenSplice `*.xml` configuration file with **domain id** 100. There are examples in the directory `etc/conf` of an OpenSplice DDS distribution.
+2. Create an OpenSplice configuration file (.xml) with **domain id** 100.  Follow the examples provided in the OpenSplice DDS distribution directory within `etc/conf`.
 
-3. Add `dds_interface` to the `TGT1_APPLIST` in the file `CFS/Icarous_defs/targets.cmake` before building:
+3. Add `dds_interface` to the `TGT1_APPLIST` in the file `CFS/Icarous_defs/targets.cmake` to compile the dds application:
 
 4. Define the following environment variable for building:
 
