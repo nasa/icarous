@@ -5,7 +5,6 @@ to enable multi-arch support. CFS builds 32 bit binaries and hence you will have
 multi-arch support. 
 
 ## `-lwrap` library not found
-------------------------
 
 - Use
 ```
@@ -16,7 +15,7 @@ located under `/lib/x86_64-linux-gnu` or
 `i386-linux-gnu`.
 - If `libwrap` is not available, install it:
 ```
-sudo apt-get install tcpd  tcpd:i386
+sudo apt-get install tcpd tcpd:i386
 ```
 
 - Make sure `libwrap.so` is symbolically linked to `libwrap.so.x`,

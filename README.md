@@ -41,11 +41,11 @@ The following repositories are required to run (or support software-in-the-loop 
 
 ### COMPILING ICAROUS
 
-ICAROUS makes use of the cmake build system. In order to setup a build, the following environment variables must be defined. These can be added to you ~/.bashrc script.
+ICAROUS makes use of the cmake build system. In order to setup a build, the following environment variables must be defined. These can be added to you `~/.bashrc` script.
 
 - PLEXIL_HOME= absolute path to the C++/Modules/Plexil folder found in the Icarous repository.
 - OSAL_HOME= absolute path to the CFS/osal folder found in the Icarous repository.
-- JAVA_HOME= absolute path to the Java installation directory. Typically located under /usr/lib/jvm/<java-*> 
+- JAVA_HOME= absolute path to the Java installation directory. Typically located under `/usr/lib/jvm/java-*` 
 
 Before building ICAROUS, generate the plexil plan compiler
 
