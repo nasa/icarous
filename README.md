@@ -112,7 +112,7 @@ Setup and launch the ardupilot SITL as described in <http://ardupilot.org/dev/do
     $cd CFS
     $mkdir build-stil
     $cd build-sitl && cmake .. -DSITL=ON
-    $make cpu-install
+    $make cpu1-install
 ```
 
 ### DDS APP FOR ICAROUS
