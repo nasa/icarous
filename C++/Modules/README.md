@@ -19,8 +19,8 @@ sudo apt-get install tcpd tcpd:i386
 ```
 
 - Make sure `libwrap.so` is symbolically linked to `libwrap.so.x`,
-  which in turn is a symbolic link to the actual library `libwrap.so.x.x.x`
+  which in turn is a symbolic link to the actual library `libwrap.so.x.x.x`.
 
-### Multiib
+### Multilib
 - Make sure g++multlib, gcc-multilib are installed/updated.
   
