@@ -24,14 +24,16 @@ cmake_minimum_required(VERSION 2.6.4)
 # so they won't change later.
 project(ICAROUS_CFS C CXX)
 
-
 OPTION(SITL "Build the project for SITL" OFF)
 IF(SITL)
     add_definitions(-DSITL)
 ENDIF(SITL)
 
+OPTION(DDS "Build the project with OpenSplice DDS support" OFF)
+
 set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
 set(CMAKE_C_FLAGS "-g -fPIC -m32")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/../cmake")
 set(MODULES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../C++/Modules")
 set(MODULES_NAMES ACCoRD FlightDataManager GeofenceMonitor TrafficMonitor TrajectoryPlanners Plexil)
 add_custom_target(clear-all)

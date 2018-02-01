@@ -14,7 +14,7 @@ MISSION:
 	    
 	    Heading = Heading + 10;
 	    
-	    //pprint("New heading:",Heading);
+	    pprint("New heading:",Heading);
 	    
 	}
 }

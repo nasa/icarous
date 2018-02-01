@@ -334,6 +334,9 @@ void FlightData::InputGeofenceData(geofence_t* gf){
 
         if(fenceList.size() > gf->index){
             fenceList.clear();
+            for(int i=geoPolyPath.size()-1;i>=0;i--){
+                geoPolyPath.remove(i);
+            }
         }
 
         fenceList.push_back(newfence);

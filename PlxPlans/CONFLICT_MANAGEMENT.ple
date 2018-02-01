@@ -60,10 +60,10 @@ CONFLICT_MANAGEMENT:
     CORE:Concurrence
     {
 
-        MISSION:{
+      //MISSION:{
 	   // Perform user defined mission
-	   LibraryCall MISSION(execResolution = resolutionActive);
-        }
+	   //LibraryCall MISSION(execResolution = resolutionActive);
+      //}
 
       
         DETECTION:
