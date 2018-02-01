@@ -82,14 +82,14 @@ The MAVProxy ground station can be lauched using the run script located under th
 
     $./run.sh GS
 
-Waypoints can be uploaded from MAVProxy using the `wp` command. An example waypoint is provided in `Java/params`
+Waypoints can be uploaded from MAVProxy using the `wp` command, e.g.,
 
 	wp load InputData/flightplan.txt
 
-Geofence can be uploaded from MAVProxy using the `geofence` command. An example geofence file is provided in `Java/params`
+Geofence can be uploaded from MAVProxy using the `geofence` command, e.g.,
 
 	geofence load InputData/geofence.xml
-
+	
 Once waypoints and geofence are uploaded, the mission can be started from MAVProxy as follows:
 
     long MISSION_START
