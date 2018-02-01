@@ -58,7 +58,7 @@ Before building ICAROUS, generate the plexil plan compiler
     $cd CFS
     $mkdir build
     $cd build && cmake ..
-    $make cpu-install
+    $make cpu1-install
 ```
 
 ### LAUNCHING ICAROUS
