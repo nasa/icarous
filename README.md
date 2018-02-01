@@ -20,7 +20,7 @@ service provided by the cFS Software Bus.
 
 ### Current Releases
 
-- ICAROUS  V-pre2.0 - January 25, 2018
+- ICAROUS  V-2.0 - January 31, 2018
 
 ### License
 
@@ -45,7 +45,6 @@ ICAROUS makes use of the cmake build system. In order to setup a build, the foll
 
 - PLEXIL_HOME= absolute path to the C++/Modules/Plexil folder found in the Icarous repository.
 - OSAL_HOME= absolute path to the CFS/osal folder found in the Icarous repository.
-- JAVA_HOME= absolute path to the java installation
 
 ```
     $cd CFS

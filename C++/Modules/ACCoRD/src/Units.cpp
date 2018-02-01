@@ -630,11 +630,11 @@ double Units::parse(const string& defaultUnitsFrom, const std::string& s, double
 		//   illformed               defvalue       defunit
 
 		if (Util::is_double(m1)) {
-			ret = Util::parse_double(m1));
+			ret = Util::parse_double(m1);
 			if (Units::isUnit(unit)) {
-				ret = Units::from(unit, dbl);
+				ret = Units::from(unit, ret);
 			} else {
-				ret = Units::from(defaultUnitsFrom, dbl);
+				ret = Units::from(defaultUnitsFrom, ret);
 			}
 		} else {  // no value
 			ret = Units::from(defaultUnitsFrom, default_value);
