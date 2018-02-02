@@ -79,7 +79,7 @@ void PLEXIL_AppInit(void) {
                               &PlexilTableValidationFunc);
 
     // Load app table data
-    status = CFE_TBL_Load(plexilAppData.PLEXIL_tblHandle, CFE_TBL_SRC_FILE, "/cf/apps/plexil_tbl.tbl");
+    status = CFE_TBL_Load(plexilAppData.PLEXIL_tblHandle, CFE_TBL_SRC_FILE, "/cf/plexil_tbl.tbl");
 
 
     PLEXILTable_t *TblPtr;

@@ -260,7 +260,7 @@
 **       the #OS_MAX_PATH_LEN value.
 */
 
-#define SCH_SCHEDULE_FILENAME  "/cf/apps/sch_def_schtbl.tbl"
+#define SCH_SCHEDULE_FILENAME  "/cf/sch_def_schtbl.tbl"
 
 
 /**
@@ -275,7 +275,7 @@
 **       the #OS_MAX_PATH_LEN value.
 */
 
-#define SCH_MESSAGE_FILENAME   "/cf/apps/sch_def_msgtbl.tbl"
+#define SCH_MESSAGE_FILENAME   "/cf/sch_def_msgtbl.tbl"
 
 
 /** \schcfg Mission specific version number for SCH application
