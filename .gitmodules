@@ -1,0 +1,3 @@
+[submodule "cFE"]
+	path = cFE
+	url = https://github.com/nasa/cFE.git
