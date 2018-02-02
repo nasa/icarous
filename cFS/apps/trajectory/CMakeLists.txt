@@ -4,8 +4,8 @@ project(TRAJECTORY_APP C)
 set(CMAKE_CXX_STANDARD 11)
 
 
-set(MODULES_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../C++/Modules")
-set(MODULES_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../../C++/lib")
+set(MODULES_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../../Modules")
+set(MODULES_LIB "${MODULES_ROOT}/lib")
 set(PLEXIL_SOURCE "${MODULES_ROOT}/Plexil/src")
 set(PLEXIL_LIB "${PLEXIL_SOURCE}/../lib")
 

@@ -38,7 +38,7 @@ function(setup_globals)
     # this is the parent (mission) build and variable values must be determined
     # Obtain the "real" top-level source directory and set it in parent scope
     if (NOT DEFINED MISSION_SOURCE_DIR)
-      get_filename_component(MISSION_SOURCE_DIR "${CMAKE_SOURCE_DIR}/cFE" ABSOLUTE)
+      get_filename_component(MISSION_SOURCE_DIR "${CMAKE_SOURCE_DIR}/cFS/cFE" ABSOLUTE)
       set(MISSION_SOURCE_DIR "${MISSION_SOURCE_DIR}" CACHE PATH "Top level mission source directory")
     endif(NOT DEFINED MISSION_SOURCE_DIR)
 
@@ -65,7 +65,7 @@ function(setup_globals)
     endif(NOT MISSIONCONFIG)
     
     # Export values to parent level 
-    set(MISSION_DEFS "${MISSION_SOURCE_DIR}/../cFSapps/${MISSIONCONFIG}_defs" PARENT_SCOPE)
+    set(MISSION_DEFS "${MISSION_SOURCE_DIR}/../apps/${MISSIONCONFIG}_defs" PARENT_SCOPE)
     set(MISSION_BINARY_DIR ${CMAKE_BINARY_DIR} PARENT_SCOPE)
          
   endif()

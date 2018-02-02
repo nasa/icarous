@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 2.6.4)
 project(CFE_INTERFACE C)
 
 
-set(PLEXIL_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../C++/Modules/Plexil/src")
+set(PLEXIL_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../Modules/Plexil/src")
 set(PLEXIL_LIB "${PLEXIL_SOURCE}/../lib")
-set(MODULES_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../../C++/lib")
+set(MODULES_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../../../Modules/lib")
 
 include_directories(fsw/mission_inc)
 include_directories(fsw/platform_inc)

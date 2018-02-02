@@ -56,7 +56,7 @@ function(prepare)
   # Each of those may in turn have a "mission_build" file that calls out additional dependencies for that app,
   # so this is run in a loop until the list of unfound apps is empty
   string(REPLACE ":" ";" CFS_APP_PATH "$ENV{CFS_APP_PATH}")
-  list(APPEND CFS_APP_PATH "apps" "apps/CFS" "cfe/fsw" "libs" "../cFSapps")
+  list(APPEND CFS_APP_PATH "apps" "apps/CFS" "cfe/fsw" "libs" "../apps")
   set(MISSION_DEPS "cfe-core")
   if (ENABLE_FUNCTIONAL_TESTS)
     list(APPEND MISSION_DEPS "utexec" "ftctrl")
@@ -247,7 +247,7 @@ function(prepare)
     version
     COMMAND 
         ${CMAKE_COMMAND} -D BIN=${CMAKE_BINARY_DIR}
-                         -P ${CMAKE_SOURCE_DIR}/cFE/cfe/cmake/version.cmake
+                         -P ${CMAKE_SOURCE_DIR}/cFS/cFE/cfe/cmake/version.cmake
     WORKING_DIRECTORY 
       ${CMAKE_SOURCE_DIR}                             
   )
@@ -304,8 +304,8 @@ function(process_arch TARGETSYSTEM)
     # Find the toolchain file - allow a file in the mission defs dir to supercede one in the compile dir
     if (EXISTS ${MISSION_DEFS}/toolchain-${CURRSYS}.cmake)
       set(TOOLCHAIN_FILE ${MISSION_DEFS}/toolchain-${CURRSYS}.cmake)
-    elseif(EXISTS ${CMAKE_SOURCE_DIR}/cmake/toolchain-${CURRSYS}.cmake)
-      set(TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/toolchain-${CURRSYS}.cmake)
+    elseif(EXISTS ${CMAKE_SOURCE_DIR}/CMake/toolchain-${CURRSYS}.cmake)
+      set(TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/CMake/toolchain-${CURRSYS}.cmake)
     else()
       message(FATAL_ERROR "Unable to find toolchain file for ${CURRSYS}")
     endif()

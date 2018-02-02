@@ -33,12 +33,12 @@ set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
 set(CMAKE_C_FLAGS "-g -fPIC -m32")
 
 # Add modules
-add_subdirectory(C++/Modules/ACCoRD)
-add_subdirectory(C++/Modules/FlightDataManager)
-add_subdirectory(C++/Modules/Plexil)
-add_subdirectory(C++/Modules/TrafficMonitor)
-add_subdirectory(C++/Modules/TrajectoryPlanners)
-add_subdirectory(C++/Modules/GeofenceMonitor)
+add_subdirectory(Modules/ACCoRD)
+add_subdirectory(Modules/FlightDataManager)
+add_subdirectory(Modules/Plexil)
+add_subdirectory(Modules/TrafficMonitor)
+add_subdirectory(Modules/TrajectoryPlanners)
+add_subdirectory(Modules/GeofenceMonitor)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DMESSAGE_FORMAT_IS_CCSDS")
 
@@ -51,11 +51,12 @@ set(CMAKE_LEGACY_CYGWIN_WIN32 0)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(CMAKE_INSTALL_PREFIX "../bin")
+set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/cFS/bin")
 
 set(OSAL_USER_C_FLAGS "-g")
 
 set(CMAKE_CXX_FLAGS "-g -Wall -fPIC -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE=600 -std=c++11")
+
 
 # Force all builds to be 32 bit
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
@@ -63,7 +64,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
 set(MISSIONCONFIG "Icarous")
 
 # Include the global routines
-include("cmake/global_functions.cmake")
+include("CMake/global_functions.cmake")
 
 # call the setup_globals() function which determines
 # the correct mission definitions path (among other things)
@@ -71,7 +72,7 @@ setup_globals()
 
 # Load the target configuration information (used by all builds)
 # This is at the top level so all vars set in here will become globals.
-include(cmake/targets.cmake)
+include(CMake/targets.cmake)
     
 # Scan the list of targets and organize by target system type.
 read_targetconfig()
@@ -99,7 +100,7 @@ read_targetconfig()
 # Comment this block for multiple targets
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-include("cmake/mission_build.cmake")
+include("CMake/mission_build.cmake")
 
 # The prepare function should set up any necessary prerequisites for the build
 if (COMMAND prepare)
@@ -113,7 +114,7 @@ endforeach(SYSVAR IN LISTS TGTSYS_LIST)
 
 set(TARGETSYSTEM "cpu1")
 set(ARCH_BINARY_DIR "${CMAKE_BINARY_DIR}")
-include("cmake/arch_build.cmake")
+include("CMake/arch_build.cmake")
 #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 if (COMMAND prepare)
