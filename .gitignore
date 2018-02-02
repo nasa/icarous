@@ -38,4 +38,8 @@ C++/Modules/Plexil/compilers/plexil/generated
 C++/Modules/Plexil/jars/PlexilCompiler.jar
 CFS/bin/cpu1
 CFS/bin/host
+bin/cpu1
+bin/host
+bin/include
+bin/lib
 **/gen
