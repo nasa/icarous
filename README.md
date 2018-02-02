@@ -1,4 +1,4 @@
-![](logo/ICAROUS.jpeg "")
+![](ICAROUS-logo.jpeg "")
 
 Independent Configurable Architecture for Reliable Operations of
 Unmanned Systems (ICAROUS)
