@@ -7,7 +7,7 @@ add_subdirectory(RRT)
 
 set(SOURCE_FILES PathPlanner.cpp AstarPlan.cpp RRTPlan.cpp Dynamics.cpp CWrapper/TrajectoryPlanner_wrap.cxx)
 
-set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_SOURCE_DIR}/../ACCoRD/inc
