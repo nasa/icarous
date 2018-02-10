@@ -59,7 +59,7 @@ set(CMAKE_CXX_FLAGS "-g -Wall -fPIC -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE
 
 
 # Force all builds to be 32 bit
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -std=c99")
 
 set(MISSIONCONFIG "Icarous")
 
