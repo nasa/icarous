@@ -1,6 +1,6 @@
 /************************************************************************
 ** File:
-**   $Id: interface_version.h  $
+**   $Id: ardupilot_version.h  $
 **
 ** Purpose: 
 **  The Interface Application header file containing version number
@@ -9,11 +9,11 @@
 **
 **
 *************************************************************************/
-#ifndef _interface_version_h_
-#define _interface_version_h_
+#ifndef _ardupilot_interface_version_h_
+#define _ardupilot_interface_version_h_
 
-#define INTERFACE_MAJOR_VERSION    1
-#define INTERFACE_MINOR_VERSION    0
+#define ARDUPILOT_INTERFACE_MAJOR_VERSION    1
+#define ARDUPILOT_INTERFACE_MINOR_VERSION    0
 
       
 #endif /* _interface_version_h_ */

@@ -7,11 +7,11 @@
 
 #include <Plexil_msg.h>
 #include <Icarous_msg.h>
-#include "interface_table.h"
+#include "ardupilot_table.h"
 
 
 #define EXTERN extern
-#include "interface.h"
+#include "ardupilot.h"
 
 void ProcessAPMessage(mavlink_message_t message){
 	switch(message.msgid){
@@ -316,7 +316,7 @@ void ProcessGSMessage(mavlink_message_t message){
 	}
 }
 
-void INTERFACE_ProcessPacket(){
+void ARDUPILOT_ProcessPacket(){
 	CFE_SB_MsgId_t  MsgId;
 
 	ArgsCmd_t* cmd;
@@ -407,6 +407,10 @@ void INTERFACE_ProcessPacket(){
 										1,(float)cmd->param1,0,0,0,0,0);
 					break;
 				}
+
+                default:{
+
+                }
 
 			}
 

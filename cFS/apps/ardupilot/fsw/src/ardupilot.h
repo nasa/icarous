@@ -7,8 +7,8 @@
 **
 *******************************************************************************/
 
-#ifndef _interface_h_
-#define _interface_h_
+#ifndef _ardupilot_h_
+#define _ardupilot_h_
 
 /// Required header files.
 #include "cfe.h"
@@ -21,7 +21,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include "network_includes.h"
-#include "interface_events.h"
+#include "ardupilot_events.h"
 #include "Icarous_msg.h"
 #include "Plexil_msg.h"
 #include "msgids/msgids.h"
@@ -44,11 +44,11 @@
 #define BUFFER_LENGTH 1000
 
 /// Software bus properties
-#define INTERFACE_PIPE_NAME "FLIGHTPLAN"
-#define INTERFACE_PIPE_DEPTH 100
+#define ARDUPILOT_PIPE_NAME "FLIGHTPLAN"
+#define ARDUPILOT_PIPE_DEPTH 100
 
-#define SCH_INTERFACE_PIPE1_NAME "SCH_INTERFACE1"
-#define SCH_INTERFACE_PIPE2_NAME "SCH_INTERFACE2"
+#define SCH_ARDUPILOT_PIPE1_NAME "SCH_ARDUPILOT1"
+#define SCH_ARDUPILOT_PIPE2_NAME "SCH_ARDUPILOT2"
 
 /// Task related variables
 uint32 task_1_stack[TASK_1_STACK_SIZE];
@@ -134,17 +134,17 @@ typedef struct{
 /**
  * Entry point for app
  */
-void INTERFACE_AppMain(void);
+void ARDUPILOT_AppMain(void);
 
 /**
  * Function to initialize app properties
  */
-void INTERFACE_AppInit(void);
+void ARDUPILOT_AppInit(void);
 
 /**
  * Function to clean up variables
  */
-void INTERFACE_AppCleanUp(void);
+void ARDUPILOT_AppCleanUp(void);
 
 /**
  * Initialize a socket port
@@ -211,13 +211,13 @@ void ProcessAPMessage(mavlink_message_t message);
 /**
  * Process SB messages from pipes and take action
  */
-void INTERFACE_ProcessPacket(void);
+void ARDUPILOT_ProcessPacket(void);
 
 /**
  * Function to validate table data
  * @param *TblPtr pointer to table
  */
-int32_t InterfaceTableValidationFunc(void *TblPtr);
+int32_t ArdupilotTableValidationFunc(void *TblPtr);
 
 
 bool IntfPlxMsgHandler(mavlink_message_t *message);

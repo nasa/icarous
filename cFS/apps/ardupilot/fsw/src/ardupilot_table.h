@@ -19,7 +19,7 @@ typedef struct
   uint16_t gsPortout;
   char gsAddress[50];
 
-}InterfaceTable_t;
+}ArdupilotTable_t;
 
 
 #endif

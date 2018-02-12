@@ -1,11 +1,11 @@
 
 #include "cfe.h"
 #include "cfe_tbl_filedef.h"  /* Required to obtain the CFE_TBL_FILEDEF macro definition */
-#include "interface_table.h"
+#include "ardupilot_table.h"
 
 #ifdef SITL
 
-InterfaceTable_t TblStruct = {
+ArdupilotTable_t TblStruct = {
 	_SOCKET_,    // apPortType
 	0,           // baudrate
 	14551,       // apPortin
@@ -18,7 +18,7 @@ InterfaceTable_t TblStruct = {
 };
 
 #else
-InterfaceTable_t TblStruct = {
+ArdupilotTable_t TblStruct = {
         _SERIAL_,    // apPortType
         57600,       // baudrate
         14551,       // apPortin
@@ -39,4 +39,4 @@ InterfaceTable_t TblStruct = {
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(TblStruct, INTERFACE.InterfaceTable, Interface parameters, intf_tbl.tbl )
+CFE_TBL_FILEDEF(TblStruct, ARDUPILOT.InterfaceTable, Interface parameters, intf_tbl.tbl )

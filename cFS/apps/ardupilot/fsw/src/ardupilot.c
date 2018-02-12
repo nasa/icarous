@@ -9,10 +9,10 @@
 #define EXTERN
 
 #include <Icarous_msg.h>
-#include "interface.h"
-#include "interface_table.h"
-#include "interface_version.h"
-#include "interface_perfids.h"
+#include "ardupilot.h"
+#include "ardupilot_table.h"
+#include "ardupilot_version.h"
+#include "ardupilot_perfids.h"
 #include "Icarous_msg.h"
 #include "msgids/msgids.h"
 #include <fcntl.h>   // File control definitions
@@ -22,17 +22,17 @@
 
 CFE_EVS_BinFilter_t  INTERFACE_EventFilters[] =
 {  /* Event ID    mask */
-		{INTERFACE_STARTUP_INF_EID,       0x0000},
-		{INTERFACE_COMMAND_ERR_EID,       0x0000},
+		{ARDUPILOT_STARTUP_INF_EID,       0x0000},
+		{ARDUPILOT_COMMAND_ERR_EID,       0x0000},
 }; /// Event ID definitions
 
-/* Interface_AppMain() -- Application entry points */
-void INTERFACE_AppMain(void){
+/* ARDUPILOT_AppMain() -- Application entry points */
+void ARDUPILOT_AppMain(void){
 
 	int32 status;
 	uint32 RunStatus = CFE_ES_APP_RUN;
 
-	INTERFACE_AppInit();
+    ARDUPILOT_AppInit();
 
 
 	status = OS_TaskCreate( &task_1_id, "Task 1", Task1, task_1_stack, TASK_1_STACK_SIZE, TASK_1_PRIORITY, 0);
@@ -50,17 +50,17 @@ void INTERFACE_AppMain(void){
 
 		if (status == CFE_SUCCESS)
 		{
-			INTERFACE_ProcessPacket();
+			ARDUPILOT_ProcessPacket();
 		}
 	}
 
 	appdataInt.runThreads = CFE_ES_RunLoop(&RunStatus);
-	INTERFACE_AppCleanUp();
+    ARDUPILOT_AppCleanUp();
 
 	CFE_ES_ExitApp(RunStatus);
 }
 
-void INTERFACE_AppInit(void){
+void ARDUPILOT_AppInit(void){
 
 	memset(&appdataInt,0,sizeof(appdataInt_t));
 	appdataInt.runThreads = 1;
@@ -77,16 +77,16 @@ void INTERFACE_AppInit(void){
 
 	// Create pipe to receive SB messages
 	status = CFE_SB_CreatePipe( &appdataInt.INTERFACE_Pipe, /* Variable to hold Pipe ID */
-				    INTERFACE_PIPE_DEPTH,    /* Depth of Pipe */
-				    INTERFACE_PIPE_NAME);    /* Name of pipe */
+								ARDUPILOT_PIPE_DEPTH,    /* Depth of Pipe */
+								ARDUPILOT_PIPE_NAME);    /* Name of pipe */
 
 	status = CFE_SB_CreatePipe( &appdataInt.SchInterface_Pipe1, /* Variable to hold Pipe ID */
-								INTERFACE_PIPE_DEPTH,    /* Depth of Pipe */
-								SCH_INTERFACE_PIPE1_NAME);    /* Name of pipe */
+								ARDUPILOT_PIPE_DEPTH,    /* Depth of Pipe */
+								SCH_ARDUPILOT_PIPE1_NAME);    /* Name of pipe */
 
     status = CFE_SB_CreatePipe( &appdataInt.SchInterface_Pipe2, /* Variable to hold Pipe ID */
-                                INTERFACE_PIPE_DEPTH,    /* Depth of Pipe */
-                                SCH_INTERFACE_PIPE2_NAME);    /* Name of pipe */
+								ARDUPILOT_PIPE_DEPTH,    /* Depth of Pipe */
+                                SCH_ARDUPILOT_PIPE2_NAME);    /* Name of pipe */
 
 	// Subscribe to wakeup messages from scheduler
 	CFE_SB_Subscribe(INTERFACE_AP_WAKEUP_MID,appdataInt.SchInterface_Pipe1);
@@ -112,25 +112,25 @@ void INTERFACE_AppInit(void){
 
 
 	// Send event indicating app initialization
-	CFE_EVS_SendEvent (INTERFACE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+	CFE_EVS_SendEvent (ARDUPILOT_STARTUP_INF_EID, CFE_EVS_INFORMATION,
 						"Interface Initialized. Version %d.%d",
-						INTERFACE_MAJOR_VERSION,
-						INTERFACE_MINOR_VERSION);
+					   ARDUPILOT_INTERFACE_MAJOR_VERSION,
+					   ARDUPILOT_INTERFACE_MINOR_VERSION);
 
 
 	// Register table with table services
 	status = CFE_TBL_Register(&appdataInt.INTERFACE_tblHandle,
 				  "InterfaceTable",
-				  sizeof(InterfaceTable_t),
+				  sizeof(ArdupilotTable_t),
 				  CFE_TBL_OPT_DEFAULT,
-				  &InterfaceTableValidationFunc);
+				  &ArdupilotTableValidationFunc);
 
 	// Load app table data
 	status = CFE_TBL_Load(appdataInt.INTERFACE_tblHandle,CFE_TBL_SRC_FILE,"/cf/intf_tbl.tbl");
 
 	// Check which port to open from user defined parameters
-	InterfaceTable_t *TblPtr;
-	status = CFE_TBL_GetAddress(&TblPtr,appdataInt.INTERFACE_tblHandle);
+	ArdupilotTable_t *TblPtr;
+	status = CFE_TBL_GetAddress((void**)&TblPtr,appdataInt.INTERFACE_tblHandle);
 
 	char apName[50],gsName[50];
 
@@ -192,7 +192,7 @@ void INTERFACE_AppInit(void){
 	appdataInt.waypoint_type = (int*)malloc(sizeof(int)*2);//
 }
 
-void INTERFACE_AppCleanUp(){
+void ARDUPILOT_AppCleanUp(){
 	free((void*)appdataInt.waypoint_type);
 }
 
@@ -337,7 +337,7 @@ int readPort(port_t* prt){
 void writePort(port_t* prt,mavlink_message_t* message){
 
 	char sendbuffer[300];
-	uint16_t len = mavlink_msg_to_send_buffer(sendbuffer, message);
+	uint16_t len = mavlink_msg_to_send_buffer((uint8_t*)sendbuffer, message);
 	OS_MutSemTake(appdataInt.mutex_write);
 	if(prt->portType == SOCKET){
 		int n = sendto(prt->sockId, sendbuffer, len, 0, (struct sockaddr*)&prt->target_addr, sizeof (struct sockaddr_in));
@@ -387,7 +387,7 @@ int GetMAVLinkMsgFromGS(){
 	return n;
 }
 
-int32_t InterfaceTableValidationFunc(void *TblPtr){
+int32_t ArdupilotTableValidationFunc(void *TblPtr){
 
   int32_t status = 0;
 

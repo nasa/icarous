@@ -5,7 +5,7 @@
 
 #include <Plexil_msg.h>
 #include <Icarous_msg.h>
-#include "interface.h"
+#include "ardupilot.h"
 
 bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
 
@@ -20,11 +20,11 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
     plexilInput.plxData.id = msg->plxData.id;
     plexilInput.plxData.mType = _LOOKUP_RETURN_;
     strcpy(plexilInput.plxData.name,msg->plxData.name);
-    char* b= plexilInput.plxData.buffer;
+
 
     switch (msg->plxData.mType) {
         case _LOOKUP_: {
-
+            char* b= plexilInput.plxData.buffer;
             if (CHECK_NAME(msg->plxData, "missionStart")) {
                 int32_t  start = (int) startMission.param1;
                 startMission.param1 = -1;
@@ -78,7 +78,7 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
 
         case _COMMAND_: {
             send = true;
-            b = msg->plxData.buffer;
+            const char* b = msg->plxData.buffer;
             if (strcmp(msg->plxData.name, "ArmMotors") == 0) {
                 OS_printf("Arming\n");
                 mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_COMPONENT_ARM_DISARM, 0,
@@ -114,9 +114,9 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
                 mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_NAV_LAND, 0, 0, 0, 0, 0, 0, 0, 0);
                 break;
             } else if (strcmp(msg->plxData.name, "SetNextMissionWP") == 0) {
-                uint32_t tempSeq;
+                int32_t tempSeq;
                 b = deSerializeInt(false,&tempSeq,b);
-                uint32_t seq = -1;
+                int32_t seq = -1;
                 appdataInt.nextWaypointIndex = tempSeq;
                 for (int i = 0; i <= tempSeq; i++) {
                     seq++;
@@ -162,16 +162,16 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
                 break;
             } else if (strcmp(msg->plxData.name, "SETYAW") == 0) {
                 double heading;
-                uint32_t relative;
+                int32_t relative;
                 b = deSerializeReal(false,&heading,b);
                 b = deSerializeInt(false,&relative,b);
-                mavlink_msg_command_long_pack(255, 0, msg, 1, 0, MAV_CMD_CONDITION_YAW, 0,
+                mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_CONDITION_YAW, 0,
                                               (float) heading, 0, 1, (float) relative, 0, 0, 0);
                 break;
             } else if (strcmp(msg->plxData.name, "SETSPEED") == 0) {
                 double speed;
                 deSerializeReal(false,&speed,b);
-                mavlink_msg_command_long_pack(255, 0, msg, 1, 0, MAV_CMD_DO_CHANGE_SPEED, 0,
+                mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_DO_CHANGE_SPEED, 0,
                                               1, (float) speed, 0, 0, 0, 0, 0);
                 break;
             } else{
@@ -179,6 +179,10 @@ bool IntfPlxMsgHandler(mavlink_message_t *msgMavlink){
             }
             break;
         }
+
+        default:{
+
+        };
     }
 
     return send;
