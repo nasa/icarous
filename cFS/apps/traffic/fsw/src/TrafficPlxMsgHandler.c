@@ -7,7 +7,7 @@
 #include "traffic.h"
 
 void TrafficPlxMsgHandler(plexil_interface_t* msg){
-    char* b = msg->plxData.buffer;
+    const char* b = msg->plxData.buffer;
 
     if(msg->plxData.mType == _COMMAND_) {
         trafficPlexilMsg.plxData.id = msg->plxData.id;

@@ -83,7 +83,7 @@ void PLEXIL_AppInit(void) {
 
 
     PLEXILTable_t *TblPtr;
-    status = CFE_TBL_GetAddress(&TblPtr, plexilAppData.PLEXIL_tblHandle);
+    status = CFE_TBL_GetAddress((void**)&TblPtr, plexilAppData.PLEXIL_tblHandle);
 
     // copy data from table here
     int argc;
@@ -144,6 +144,9 @@ void PLEXIL_ProcessPacket(){
                 case _COMMAND_RETURN_:
                     plexil_return(plexilAppData.adap, &msg->plxData);
                     break;
+                default:{
+
+                }
             }
             break;
         }

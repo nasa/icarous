@@ -6,7 +6,7 @@
 #include "trajectory.h"
 
 void TrajPlxMsgHandler(plexil_interface_t* msg){
-    char* b = msg->plxData.buffer;
+    const char* b = msg->plxData.buffer;
 
     if(msg->plxData.mType == _COMMAND_) {
         trajPlexilMsg.plxData.id = msg->plxData.id;
