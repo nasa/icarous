@@ -52,3 +52,10 @@ ul.posts {
 ul.posts li {
     list-style: none;
 }
+
+.videofeat {
+    margin: 0 auto;
+    width: 80%;
+}
+
+

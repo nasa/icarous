@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ICAROUS 2, USER GUIDE</title>
+		<!-- link to main stylesheet -->
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+	</head>
+	<body>
+		<nav>
+    		<ul>
+        		<li><a href="index.html">Home</a></li>
+	        	<li><a href="interfaces.html">Interfaces</a></li>
+			<li><a href="/">Contact Us</a></li>
+    		</ul>
+		</nav>
+		<div class="container">
+    		<div class="MainTitle">
+    			<img id="logo" src="../ICAROUS-logo.jpeg" alt="Icarous logo" align="right">
+        		<h1>ICAROUS</h1>
+        	</div><!-- /.MainTitle -->
+        	<div class="main_matter">
+			<h3>Interfaces</h3>
+            <p>The default implementation of Icarous uses the cFS middleware. The various cFS applications provided in the default distribution each expect specific messages to perform their functions. This requires the use of an interface application that
+                translates telemetry data received from an autopilot into appropriate messages and published them on the cFS software bus. Applications subscribe to relevant messages to perform their respective functions. The messages used by Icarous and their defintions can be found under "cFS/apps/inc/Icarous_msg.h". A few notes on implementing an interface application:</p>
+                <ul>
+                    <li> Aircraft position/velocity must be encoded into the position_t message.</li>
+                    <li> Aircraft attitude information must be encoded in the attitude_t message.</li>
+                    <li> Intruder traffic information must be endcode in an object_t message</li>
+                    <li> Waypoints in a mission flight plan are each encoded in a waypoint_t message. </li>
+                    <li> Vertices in a geofence are each encoded in a geofence_t message.</li>
+					<li> Refer to cFS/apps/interface/fsw/src/interface.c for an example interface. </li> 
+                </ul>
+
+        	</div>
+		</div><!-- /.container -->
+		<footer>
+    		<ul>        		
+        		<li><a href="https://github.com/nasa/icarous">github.com/nasa/icarous</a></li>
+			</ul>
+		</footer>
+	</body>
+</html>
