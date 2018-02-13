@@ -43,6 +43,12 @@ The following repositories are required to run (or support software-in-the-loop 
 - [mavlink](https://github.com/ArduPilot/mavlink.git) 
 - [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
 
+### Initialize and Update submodules
+
+```
+    $git submodule update --init --recursive
+```
+
 ### COMPILING ICAROUS
 
 ICAROUS makes use of the cmake build system. In order to setup a build, the following environment variables must be defined. These can be added to you `~/.bashrc` script.
