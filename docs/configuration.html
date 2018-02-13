@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ICAROUS 2, USER GUIDE</title>
+		<!-- link to main stylesheet -->
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+	</head>
+	<body>
+		<nav>
+    		<ul>
+        		<li><a href="index.html">Home</a></li>
+	        	<li><a href="interfaces.html">Interfaces</a></li>
+                <li><a href="configuration.html">Configuration</a></li>
+			<li><a href="/">Contact Us</a></li>
+    		</ul>
+		</nav>
+		<div class="container">
+    		<div class="MainTitle">
+    			<img id="logo" src="../ICAROUS-logo.jpeg" alt="Icarous logo" align="right">
+        		<h1>ICAROUS</h1>
+        	</div><!-- /.MainTitle -->
+        	<div class="main_matter">
+			<h3>ICAROUS Configuration</h3>
+            <p>There are several paramters that can be chosen by a user to fine-tune Icarous behaviors to a specific mission. These parameters are located in <code><a href="https://github.com/nasa/icarous/blob/master/cFS/bin/ram/icarous.txt">cFS/bin/ram/icarous.txt</a></code>. All applications access this file to extract relevant parameters. A brief explanation of a few relevant parameter is provided below:</p>
+            <table class="parameters">
+                <tr>
+                    <td>HTRESHOLD</td>
+                    <td>Horizontal buffer (m) added to geofence polygons. The polgons are expanded horizontally by this amount</td>
+                </tr>
+                <tr>
+                    <td>VTHRESHOLD </td>
+                    <td>Vertical buffer (m) added to geofence polygons. The polygons are expanded vertically by this amount </td>
+                </tr>
+            </table>
+        	</div>
+		</div><!-- /.container -->
+		<footer>
+    		<ul>        		
+        		<li><a href="https://github.com/nasa/icarous">github.com/nasa/icarous</a></li>
+			</ul>
+		</footer>
+	</body>
+</html>

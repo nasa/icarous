@@ -38,6 +38,7 @@ p {
     font-size: 1.0em;
     line-height: 1.4em;
     color: #333;
+    text-align: justify;
 }
 footer {
     border-top: 1px solid #d5d5d5;
@@ -58,4 +59,18 @@ ul.posts li {
     width: 80%;
 }
 
+.code-snippet {
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    border-radius: 5px;
+    background-color: lightgrey;
+    height: 30px;
+}
+
+.code-snippet .code {
+    position: relative;
+    left: 10px;
+    top: 4px;
+}
 
