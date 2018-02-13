@@ -1,7 +1,8 @@
-body {
+.container {
     margin: 60px auto;
     width: 60%;
 }
+
 nav ul, footer ul {
     font-family:'Helvetica', 'Arial', 'Sans-Serif';
     padding: 0px;
@@ -41,6 +42,8 @@ p {
     text-align: justify;
 }
 footer {
+    margin: 0px auto;
+    width: 60%;
     border-top: 1px solid #d5d5d5;
     font-size: .8em;
 }
@@ -52,6 +55,24 @@ ul.posts {
 
 ul.posts li {
     list-style: none;
+}
+
+.Header {
+    height: 200px;
+    width: 100%;
+    border-bottom: 1px solid lightgrey;
+}
+
+.Header .topPanel {
+    margin: 0px auto;
+    width: 65%;
+    position: relative;
+    top: 50px;
+}
+
+.Header .topPanel .text .SubTitle {
+    position: relative;
+    top: -30px;
 }
 
 .videofeat {

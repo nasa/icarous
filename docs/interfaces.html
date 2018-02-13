@@ -6,19 +6,30 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 	</head>
 	<body>
-		<nav>
-    		<ul>
-        		<li><a href="index.html">Home</a></li>
-	        	<li><a href="interfaces.html">Interfaces</a></li>
-                <li><a href="configuration.html">Configuration</a></li>
-			<li><a href="/">Contact Us</a></li>
-    		</ul>
-		</nav>
+		<div class="Header">
+			<div class ="topPanel">
+				<div class="Logo">
+					<img id="logo" src="media/ICAROUS-logo.jpeg" alt="Icarous logo" align="right">
+				</div>
+				<div class ="text">
+					<div class="MainTitle">
+						<h1>ICAROUS</h1>
+					</div>
+					<div class="SubTitle">
+						<h4>Independent Configurable Algorithms for Reliable Operations of Unmanned Systems</h4>
+					</div>
+				</div>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="interfaces.html">Interfaces</a></li>
+						<li><a href="configuration.html">Configuration</a></li>
+						<li><a href="/">Contact Us</a></li>
+					</ul>
+				</nav>
+			</div>
+        </div><!-- /.MainTitle -->
 		<div class="container">
-    		<div class="MainTitle">
-    			<img id="logo" src="media/ICAROUS-logo.jpeg" alt="Icarous logo" align="right">
-        		<h1>ICAROUS</h1>
-        	</div><!-- /.MainTitle -->
         	<div class="main_matter">
                 <h3>Interfacing Icarous with an autopilot</h3>
                 <p>The default implementation of Icarous uses the cFS middleware. The various cFS applications provided in the default distribution each expect specific messages to perform their functions. This requires the use of an interface application that

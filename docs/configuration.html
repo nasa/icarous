@@ -6,19 +6,30 @@
 		<link rel="stylesheet" type="text/css" href="css/main.css">
 	</head>
 	<body>
-		<nav>
-    		<ul>
-        		<li><a href="index.html">Home</a></li>
-	        	<li><a href="interfaces.html">Interfaces</a></li>
-                <li><a href="configuration.html">Configuration</a></li>
-			<li><a href="/">Contact Us</a></li>
-    		</ul>
-		</nav>
+		<div class="Header">
+			<div class ="topPanel">
+				<div class="Logo">
+					<img id="logo" src="media/ICAROUS-logo.jpeg" alt="Icarous logo" align="right">
+				</div>
+				<div class ="text">
+					<div class="MainTitle">
+						<h1>ICAROUS</h1>
+					</div>
+					<div class="SubTitle">
+						<h4>Independent Configurable Algorithms for Reliable Operations of Unmanned Systems</h4>
+					</div>
+				</div>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="interfaces.html">Interfaces</a></li>
+						<li><a href="configuration.html">Configuration</a></li>
+						<li><a href="/">Contact Us</a></li>
+					</ul>
+				</nav>
+			</div>
+        </div><!-- /.MainTitle -->
 		<div class="container">
-    		<div class="MainTitle">
-    			<img id="logo" src="media/ICAROUS-logo.jpeg" alt="Icarous logo" align="right">
-        		<h1>ICAROUS</h1>
-        	</div><!-- /.MainTitle -->
         	<div class="main_matter">
                 <h3>ICAROUS Configuration</h3>
                 <p>There are several paramters that can be chosen by a user to fine-tune Icarous behaviors to a specific mission. These parameters are located in <code><a href="https://github.com/nasa/icarous/blob/master/cFS/bin/ram/icarous.txt">cFS/bin/ram/icarous.txt</a></code>. All applications access this file to extract relevant parameters. A brief explanation of a few relevant parameter is provided below:</p>
