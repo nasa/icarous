@@ -74,3 +74,12 @@ ul.posts li {
     top: 4px;
 }
 
+.paramtable {
+    margin: 0 auto;
+    width: 80%;
+}
+
+.paramtable .parameters {
+    line-height: 20px;
+}
+
