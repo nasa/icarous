@@ -2,26 +2,18 @@
 *.o
 .*
 *.dSYM
-icarous.jar
 *.parm
 *.tlog.raw
 *.tlog
 Python/*
 log
-Java/params/
 *.a
-C++/DAAGeofencingExample
 *.bin
 *.so
 *.tbl
 *.bin
 elf2cfetbl
-!CFS/build/cpu1/Makefile
-!CFS/build/cpu1/exe/
-CFS/build/cpu1/*
-CFS/build/mission_inc/*
 #Ignore plexil files
-C++/plexil-4/*
 cmake-build-debug
 *.pyc
 logs
@@ -38,4 +30,5 @@ cFS/bin/cpu1
 cFS/bin/host
 cFS/bin/include
 cFS/bin/lib
+cFS/cFE
 **/gen
