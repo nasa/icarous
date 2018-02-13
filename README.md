@@ -18,6 +18,10 @@ NASA's core Flight Systems (cFS) middleware. The aforementioned functionalities 
 cFS applications which interact via a publish/subscribe messaging
 service provided by the cFS Software Bus.
 
+### User Guide
+
+https://nasa.github.io/icarous/
+
 ### Current Releases
 
 - ICAROUS  V-2.0 - January 31, 2018
