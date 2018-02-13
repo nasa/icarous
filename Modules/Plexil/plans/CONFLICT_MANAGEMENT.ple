@@ -1,0 +1,307 @@
+// -*- Mode: C++ -*-
+// Simple conflict detection strategy
+
+// Lookup definitions
+Integer Lookup numMissionWP;
+Integer Lookup nextMissionWPIndex;
+Real[3] Lookup position;
+Real[3] Lookup velocity;
+Real    Lookup allowedXtrackDev;
+Real    Lookup resolutionSpeed;
+
+// Command definitions
+Real[3]    Command GetWaypoint(String planID,Integer index);
+Boolean[2] Command CheckFenceViolation(Real Position[3],Real Velocity[3]);
+Real       Command ComputeCrossTrackDeviation(String planID,Integer leg,Real position[3]);
+Real[3]    Command GetRecoveryPosition(Real Position[3]);
+Real[3]    Command GetExitPoint(String planID,Real Position[3],Integer nextWP);
+Real[4]    Command MonitorTraffic(Boolean bands,Real position[3],Real velocity[3]);
+Real       Command GetInterceptHeadingToPlan(String planID,Integer leg,Real position[3]);
+Real[3]    Command ManeuverToIntercept(String planID,Integer leg,Real position[3]);
+Boolean    Command CheckSafeToTurn(Real position[3],Real velocity[3],Real fromHeading,Real toHeading);
+Boolean    Command SetMode(String mode);
+
+Command SetNextMissionWP(Integer index);
+Command SetVel(Real velocity[3]);
+Command pprint(...);
+
+// Library plans
+LibraryAction MISSION(In Boolean execResolution);
+LibraryAction GOTO_POSITION (In Real TargetPosition[3],InOut Boolean resolutionCompleted);
+LibraryAction TRAFFIC_RESOLUTION(InOut Boolean completionStatus,In Integer nextWP,
+                                 In Real acPosition[3],In Real acVelocity[3],In Real resSpeed);
+
+CONFLICT_MANAGEMENT:
+{
+    Boolean resolutionActive = false;
+    Integer _numMissionWP;
+    Real acPosition[3];
+    Real acVelocity[3];
+    Boolean keepInConflict = false;
+    Boolean keepOutConflict = false;
+    Boolean trafficConflict = false;
+    Boolean flightPlanConflict = false;    
+    Real newConflictHash = 0;
+    Real oldConflictHash = 0;
+    Real allowedDeviation;
+    Real deviation;
+    Real resSpeed;
+    Integer currentM_WP = 1;
+
+    
+    EndCondition (currentM_WP+1 > Lookup(numMissionWP));
+
+    _numMissionWP = Lookup(numMissionWP);
+    allowedDeviation = Lookup(allowedXtrackDev);
+    resSpeed  = Lookup(resolutionSpeed);
+
+    pprint("Starting CONFLICT_MANAGEMENT");
+
+    CORE:Concurrence
+    {
+
+      //MISSION:{
+	   // Perform user defined mission
+	   //LibraryCall MISSION(execResolution = resolutionActive);
+      //}
+
+      
+        DETECTION:
+        {
+            InOut Boolean keepInConflict;
+            InOut Boolean keepOutConflict;
+            Integer numFenceConflicts;
+            Boolean statusGF[2];
+            Boolean statusTF;
+            Boolean statusFP;
+
+            Repeat true;
+
+            acPosition = Lookup(position);
+            acVelocity = Lookup(velocity);
+            currentM_WP = Lookup(nextMissionWPIndex);
+
+            FENCE:
+            {
+                EndCondition isKnown(statusGF[0]);
+                statusGF = CheckFenceViolation(acPosition,acVelocity);
+            }
+
+            //pprint("conflict:",statusGF[0],statusGF[1]);
+
+            TRAFFIC:{
+
+                Real tfOutput[4];
+                {
+                    EndCondition isKnown(tfOutput[0]);
+                    tfOutput = MonitorTraffic(true,acPosition,acVelocity);
+                }
+
+                if(tfOutput[0] > 0){
+                    statusTF = true;
+                    //pprint("traffic conflict");
+                }else{
+                    statusTF = false;
+                    //pprint("no traffic conflict");
+                }endif
+            }
+
+            //pprint("conflict traffic:",statusTF);
+
+            statusFP = false;
+
+            FLIGHTPLAN: {
+                  Integer nextWP;
+                  Real _deviation;
+
+                  nextWP = currentM_WP;
+
+                  {
+                    EndCondition isKnown(_deviation);
+                    _deviation = ComputeCrossTrackDeviation("Plan0",nextWP,acPosition);
+                  }
+
+                  deviation = _deviation;
+
+                  if (deviation > allowedDeviation){
+                      statusFP = true;
+                  }else{
+                      statusFP = false;
+                  }endif
+            }
+
+            //pprint("conflict flight plan:",statusFP);
+
+            keepInConflict = statusGF[0];
+            keepOutConflict = statusGF[1];
+            trafficConflict = statusTF;
+            flightPlanConflict = statusFP;
+        }
+
+
+        RESOLUTION:{
+            In Boolean keepInConflict;
+            In Boolean keepOutConflict;
+            In Boolean trafficConflict;
+            In Boolean flightPlanConflict;
+            Integer nextWP;
+            Real RecoveryPosition[3];
+            Boolean completionStatus = false;
+            StartCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict );
+            Repeat true;
+
+            resolutionActive = true;
+            nextWP = currentM_WP;
+
+            pprint("Starting resolution:",keepInConflict,keepOutConflict,trafficConflict,flightPlanConflict);
+
+            GET_RECOVERY_POSITION:{
+
+
+                KEEP_IN:{
+                    SkipCondition !keepInConflict;
+
+                    pprint("Obtaining recovery point");
+
+                    {
+                        EndCondition isKnown(RecoveryPosition[0]);
+                        RecoveryPosition = GetRecoveryPosition(acPosition);
+                    }
+
+                    pprint("RecoveryPosition:",RecoveryPosition[0],RecoveryPosition[1],RecoveryPosition[2]);
+
+                }
+
+
+                KEEP_OUT:{
+                    SkipCondition !keepOutConflict;
+
+                    pprint("Obtaining exit point");
+
+                    {
+                       EndCondition isKnown(RecoveryPosition[0]);
+                       RecoveryPosition = GetExitPoint("Plan0",acPosition,nextWP);
+                    }
+
+                    pprint("RecoveryPosition:",RecoveryPosition[0],RecoveryPosition[1],RecoveryPosition[2]);
+                }
+
+            }
+
+            EXECUTE_RESOLUTION:{
+                FENCE_RESOLUTION:{
+                    Boolean _resolutionCompleted;
+                    SkipCondition (!keepInConflict && !keepOutConflict);
+
+                    LibraryCall GOTO_POSITION(TargetPosition = RecoveryPosition,
+                                              resolutionCompleted = _resolutionCompleted);
+                    completionStatus = _resolutionCompleted;
+                }
+
+                TRAFFIC_RESOLUTION:{
+                   Real prevVelCmd[3];
+                   SkipCondition !trafficConflict;
+                   EndCondition completionStatus;
+
+                   SetMode("ACTIVE");
+
+                   {
+                      Repeat true;
+                      LibraryCall TRAFFIC_RESOLUTION(completionStatus=completionStatus,
+                                                     nextWP = nextWP,
+                                                     acPosition = acPosition,
+                                                     acVelocity = acVelocity,
+                                                     resSpeed = resSpeed);
+                   }
+                }
+
+                FLIGHTPLAN:{
+
+                    SkipCondition !flightPlanConflict;
+                    EndCondition (deviation < allowedDeviation/2);
+
+                    completionStatus = true;
+
+                    pprint("Executing flight plan resolution");
+
+                    SetMode("ACTIVE");
+
+                    MANEUVER:
+                    {
+                        Real velCmd[3];
+                        Repeat true;
+
+                        COMPUTE_VELOCITY:
+                        {
+                           EndCondition isKnown(velCmd[0]);
+                           velCmd = ManeuverToIntercept("Plan0",nextWP,acPosition);
+                        }
+
+                        SetVel(velCmd);
+                    }
+
+                }
+
+                pprint("Resolution status:",completionStatus);
+            }
+
+            RESUME_MISSION:{
+                Boolean validPoint = false;
+                SkipCondition !completionStatus;
+
+                pprint("Resuming mission");
+
+                while(!validPoint && nextWP < _numMissionWP){
+                    Real _position[3];
+                    Real _velocity[3];
+                    Boolean status[2];
+
+                    _velocity[0] = 0.0;
+                    _velocity[1] = 0.0;
+                    _velocity[2] = 0.0;
+
+                    {
+                        EndCondition isKnown(_position[0]);
+                        _position = GetWaypoint("Plan0",nextWP);
+                    }
+
+                    pprint("Obtained waypoint with index:",nextWP);
+                    pprint("Checking fence violation of WP:",_position[0],_position[1]);
+
+                    {
+                        EndCondition isKnown(status[0]);
+                        status = CheckFenceViolation(_position,_velocity);
+                    }
+
+                    pprint("status:",status[0],status[1]);
+
+                    if(status[0] || status[1]){
+                        nextWP = nextWP + 1;
+                        pprint("incrementing index:");
+                    }else{
+                        Boolean _resolutionCompleted;
+                        validPoint = true;
+                        pprint("Going to next waypoint:",nextWP);
+                        LibraryCall GOTO_POSITION(TargetPosition = _position,
+                                                  resolutionCompleted = _resolutionCompleted);
+                        if(nextWP+1 <= _numMissionWP-1){
+                           nextWP = nextWP + 1;
+                        }endif
+                        pprint("Finished resolution. Resuming to:",nextWP);
+                        SetNextMissionWP(nextWP);
+
+                        {
+                           Boolean status;
+                           EndCondition isKnown(status);
+                           status = SetMode("PASSIVE");
+                        }
+
+                        resolutionActive = false;
+                    }endif
+
+                }
+            }
+
+        }
+	}
+}

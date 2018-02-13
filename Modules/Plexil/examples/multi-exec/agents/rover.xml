@@ -1,0 +1,8 @@
+<Interfaces>
+  <Adapter AdapterType="OSNativeTime" />
+  <Adapter AdapterType="Utility"/>
+  <Adapter AdapterType="IpcAdapter" Server="localhost" AllowDuplicateMessages="true">
+    <DefaultCommandAdapter/>
+  </Adapter>
+  <Listener ListenerType="PlanDebugListener"/>
+</Interfaces>

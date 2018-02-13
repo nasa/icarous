@@ -1,0 +1,100 @@
+namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
+default namespace = ""
+
+start =
+  CommandAck
+  | Script
+  | SendPlan
+  | UpdateAck
+  | CommandAbort
+  | InitialState
+  | Command
+  | State
+  | Param
+  | (notAllowed
+     | element PLEXILScript { InitialState?, Script })
+  | Simultaneous
+Param =
+  notAllowed
+  | element Param { type?, xsd:string }
+Script =
+  notAllowed
+  | element Script {
+      (State
+       | UpdateAck
+       | Command
+       | CommandAck
+       | CommandAbort
+       | Simultaneous
+       | SendPlan
+       | element Delay {
+           mixed {
+             (attribute * { text }
+              | element0)*
+           }
+         })*
+    }
+State =
+  notAllowed
+  | element State {
+      type?,
+      attribute name { xsd:string }?,
+      Param*,
+      element Value { \string }+
+    }
+command-type =
+  (type?,
+   attribute name { xsd:string }?,
+   Param*,
+   (notAllowed
+    | element Result { \string })+),
+  empty
+Command =
+  notAllowed
+  | element Command { command-type }
+\string = xsd:string
+CommandAck =
+  notAllowed
+  | element CommandAck { command-type }
+InitialState =
+  notAllowed
+  | element InitialState { State* }
+element0 =
+  element * {
+    mixed {
+      (attribute * { text }
+       | element0)*
+    }
+  }
+Simultaneous =
+  notAllowed
+  | element Simultaneous {
+      (State | UpdateAck | Command | CommandAck | CommandAbort)*
+    }
+type =
+  attribute type {
+    xsd:NMTOKEN "string-array"
+    | xsd:NMTOKEN "bool"
+    | xsd:NMTOKEN "string"
+    | xsd:NMTOKEN "bool-array"
+    | xsd:NMTOKEN "real-array"
+    | xsd:NMTOKEN "int-array"
+    | xsd:NMTOKEN "real"
+    | xsd:NMTOKEN "int"
+  }
+UpdateAck =
+  notAllowed
+  | element UpdateAck {
+      attribute name { xsd:string }?
+    }
+CommandAbort =
+  notAllowed
+  | element CommandAbort { command-type }
+SendPlan =
+  notAllowed
+  | element SendPlan {
+      attribute file { xsd:string }?
+    }
+PlexilPlanAttributes = 
+  notAllowed
+  | attribute xsi:* { xsd:anyURI }*

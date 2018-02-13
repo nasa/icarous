@@ -1,0 +1,134 @@
+;; File: $SVNROOT/examples/multi-exec/agents/dock.pli
+
+(plexil-plan
+  ;; The "dock" sits and waits for requests to dock from particular rovers,
+  ;; and can handle multiple rovers (4 bays?, more?)
+  ;;    request := rover-id[0] action(1=doc, ?=un-dock)[2] urgency(not used)[3]
+  ;;   response := bay[0] rover[1] dist(ft][2] speed(ft/sec)[3] angle(deg)[4] time(sec)[5]
+  ;; A "rover" requests docking information periodically until the dock responds,
+  ;; after which the dock periodically broadcasts the telemetry (response) to the
+  ;; rover (which it is expected follow as closely as it can).
+  ;; After the rover has docked, both the rover and dock execute their own post
+  ;; docking procedures, exchanging docking done message, and opening their inner
+  ;; hatches.  Eventually, the rover un-docks and departs, freeing up the bay.
+  ;;
+  ;; The dock has N bays.  If one or more have been requested, then we loop through
+  ;; the bays sending "sensed" telemetry related to the rover assigned to the bay
+  ;; in question (i.e., dist, angle, speed).  Telemetry is pushed until docking is
+  ;; achieved, then post-docking procedures/checks are run, finally the dock hatch
+  ;; is opened.  After some time, everything is reverse, and eventually, the bay
+  ;; is once again free.
+  (concurrently "wait-for-docking-request"
+    (variables
+      (string "name" "dock")             ;agent name
+      (real-array "times" 3)             ;start-time(sec)[0] now(sec)[1] then(sec)[2]
+      (real "period" 2.0)                ;periodicity of update cycles
+      (integer "boundary" 0)
+      (real "initial-distance" 30)       ;initial distance from dock to rover
+      (real-array "speeds" 3 2 1 .2)     ;initial(ft/sec)[0] intermediate(ft/sec)[1] final(ft-sec)[2]
+      (real-array "bay1" 6 1 0 0 0 0 0)  ;bay-id[0], rover-id[1], dist(ft)[2], speed(ft/sec)[3], action[4], time(sec)[5]
+      (real-array "bay2" 6 2 0 0 0 0 0)
+      (real-array "bay3" 6 3 0 0 0 0 0)
+      (real-array "bay4" 6 4 0 0 0 0 0))
+    (end-condition (finished "QuitCommand"))
+    ;; Record the start time of this run
+    (assignment (array-element "times" 0) (lookup-now "time"))
+    ;; Announce that we are up and running
+    (command "print" "\n\n[" (stringvar "name") "] is up and running...\n\n")
+    ;; (1) wait for a docking request, and when one is received, register it with
+    ;;     the telemetry loop (so that it will be appropriately serviced)
+    (sequence "docking-request"
+      (variables (real "rover-id"))
+      (repeat-condition true)           ;always open for business
+      (end-condition (finished "QuitCommand"))
+      (on-command "docking-request" ((real-array "request" 3)) ;rover-id[0] action(1=dock,0=un-dock)[1] urgency(unused)[2]
+        (sequence "handle-request"
+          (assignment (array-element "times" 1) (- (lookup-now "time") (array-element "times" 0)))
+          (command "print" "\n[" (stringvar "name") " (" (array-element "times" 1) ")] recv: " (arrayvar "request"))
+          (assignment (realvar "rover-id") (array-element "request" 0)) ;grab the rover-id
+          ;; Handle both docking and un-docking requests
+          (try "request-type"
+            (action "handle-un-docking-request"
+              ;; This is an un-docking request, so now find which bay it applies to and update the record
+              (skip-condition (= 1 (array-element "request" 1))) ;action(1=dock,0=un-dock)
+              (try "update-bay-record"
+                (action "un-dock-from-bay1"
+                  (skip-condition (not (= 1 (array-element "bay1" 0))))
+                  (assignment (array-element "bay1" 4) (array-element "request" 1)))
+                (action "un-dock-from-bay2"
+                  (skip-condition (not (= 1 (array-element "bay2" 0))))
+                  (assignment (array-element "bay2" 4) (array-element "request" 1)))
+                (action "un-dock-from-bay3"
+                  (skip-condition (not (= 1 (array-element "bay3" 0))))
+                  (assignment (array-element "bay3" 4) (array-element "request" 1)))
+                (action "un-dock-from-bay4"
+                  (skip-condition (not (= 1 (array-element "bay4" 0))))
+                  (assignment (array-element "bay4" 4) (array-element "request" 1)))))
+            (action "handle-docking-request"
+              ;; If this is a docking request, assign it to the first open bay (what about no bays open?)
+              (skip-condition (= 0 (array-element "request" 1))) ;action(1=dock,0=un-dock)
+              (try "assign-rover-to-bay"
+                (action "use-bay1"
+                  (skip-condition (not (= 0 (array-element "bay1" 1))))
+                  (library-call-node (call "setup-bay"
+										   (alias "initial-distance" (realvar "initial-distance"))
+										   (alias "request" (arrayvar "request"))
+										   (alias "bay" (arrayvar "bay1")))))
+                (action "use-bay2"
+                  (skip-condition (not (= 0 (array-element "bay2" 1))))
+                  (library-call-node (call "setup-bay"
+										   (alias "initial-distance" (realvar "initial-distance"))
+										   (alias "request" (arrayvar "request"))
+										   (alias "bay" (arrayvar "bay2")))))
+                (action "use-bay3"
+                  (skip-condition (not (= 0 (array-element "bay3" 1))))
+                  (library-call-node (call "setup-bay"
+										   (alias "initial-distance" (realvar "initial-distance"))
+										   (alias "request" (arrayvar "request"))
+										   (alias "bay" (arrayvar "bay3")))))
+                (action "use-bay4"
+                  (skip-condition (not (= 0 (array-element "bay4" 1))))
+                  (library-call-node (call "setup-bay"
+										   (alias "initial-distance" (realvar "initial-distance"))
+										   (alias "request" (arrayvar "request"))
+										   (alias "bay" (arrayvar "bay4")))))))))))
+    ;; (2) the telemetry/status loop spins and services any/all registered docking
+    ;; requests every "period" seconds
+    (sequence "update-bays"
+      (repeat-condition true)
+      ;; mod (now - start-time) period < 2 * tolerance
+      (start-condition (< (mod (- (lookup-on-change-with-tolerance "time" 0.01) (array-element "times" 0))
+                               (realvar "period"))
+                          0.02)) ;twice the tolerance (i.e., 2 * latency), or wakeups will be skipped
+      (assignment (array-element "times" 1) (- (lookup-now "time") (array-element "times" 0)))
+      (command "print" "\n\n[" (stringvar "name") " (" (array-element "times" 1) ")]")
+      (library-call-node (call "update-bay"
+							   (alias "name" (stringvar "name"))
+							   (alias "speeds" (arrayvar "speeds"))
+							   (alias "times" (arrayvar "times"))
+							   (alias "bay" (arrayvar "bay1"))))
+      (library-call-node (call "update-bay"
+							   (alias "name" (stringvar "name"))
+							   (alias "speeds" (arrayvar "speeds"))
+							   (alias "times" (arrayvar "times"))
+							   (alias "bay" (arrayvar "bay2"))))
+      (library-call-node (call "update-bay"
+							   (alias "name" (stringvar "name"))
+							   (alias "speeds" (arrayvar "speeds"))
+							   (alias "times" (arrayvar "times"))
+							   (alias "bay" (arrayvar "bay3"))))
+      (library-call-node (call "update-bay"
+							   (alias "name" (stringvar "name"))
+							   (alias "speeds" (arrayvar "speeds"))
+							   (alias "times" (arrayvar "times"))
+							   (alias "bay" (arrayvar "bay4"))))
+      ;;remember when the last cycle finished -- used in update-bay.pli
+      (assignment (array-element "times" 2) (array-element "times" 1))
+      ;; Without this (2 * tolerance) wait, this sequence will run more than one iteration per "period"
+      (wait-with-tolerance 0.02 0.01))
+    ;; Quit when asked to
+    (action "QuitCommand"
+      (on-message "Quit"
+        (command "print" "[" (stringvar "name") "] recv: Quit (quitting)\n\n")))))
+
+;; EOF

@@ -1,0 +1,25 @@
+(plexil-plan 
+  (list-node "minTest"
+    (variables (integer "l")
+			   (integer "m")
+			   (integer "n")
+               (real "x")
+               (real "y"))
+    (postcondition (and (not (is-known (intvar "l")))
+						(= (intvar "m") 1)
+						(= (intvar "n") 1)
+                        (= (realvar "x") 2.0)
+                        (= (realvar "y") 7.0)
+						))
+    (list
+	 (assignment-node "unknownInts"
+	   (assignment (intvar "l") (min (intvar "l") 0)))
+	 (assignment-node "equalInts"
+	   (assignment (intvar "m") (min 1 1)))
+	 (assignment-node "unequalInts"
+	   (assignment (intvar "n") (min 1 2)))
+	 (assignment-node "equalReals"
+       (assignment (realvar "x") (min 2.0 2.0)))
+	 (assignment-node "unequal"
+       (assignment (realvar "y") (min 7.0 7.1)))
+	 )))

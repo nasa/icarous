@@ -1,7 +1,0 @@
-(plexil-plan
-  (action "foo"
-    (start-condition (lookup-on-change "x"))
-    (end-condition (lookup-on-change "x"))
-    (concurrently
-      (command-node "bar" (command "bar"))
-      (empty-node "boo"))))

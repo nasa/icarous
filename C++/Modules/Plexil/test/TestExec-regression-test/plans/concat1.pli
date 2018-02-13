@@ -1,6 +1,0 @@
-(plexil-plan
-  (assignment-node "concat1"
-    (variables (string "foo") (string "bar" "world"))
-    (postcondition (= "helloworld" (stringvar "foo")))
-    (assignment (stringvar "foo") (concat "hello" (stringvar "bar")))))
-      

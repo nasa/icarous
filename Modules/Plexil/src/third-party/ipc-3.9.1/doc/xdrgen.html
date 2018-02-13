@@ -1,0 +1,520 @@
+<html><head>
+<title>xdrgen Documentation</title>
+</head><body bgcolor="#ffffff">
+
+<h1><code>xdrgen</code> Documentation</h1>
+
+<h2>Purpose of <code>xdrgen</code></h2>
+
+Defining an IPC message requires a format string which corresponds to
+the data structure of the message.  Typically, the designer of the
+message has defined this format string by hand, as a macro in the same
+header file which defines the data structure.  The <code>xdrgen</code>
+parser automates this process.  It parses an XDR data structure
+specification (similar to a list of C type definitions), and generates a
+C header which includes both type definitions and macros defining
+the IPC format strings.<p>
+
+Automating this process helps to avoid inconsistencies between the C
+data structure and the IPC format string.  In our experience,
+inconsistencies are often introduced when the data structure is changed,
+but the person modifying the code is not aware that the format string
+must also be changed.  These inconsistencies can lead to garbled binary
+messages, which are sometimes very difficult to track down.<p>
+
+<h2>Running <code>xdrgen</code> for the first time</h2>
+
+Installing IPC will place an <code>xdrgen</code> binary in the same
+location as the central server.  To see an example run of
+<code>xdrgen</code>, run the following command in the <code>src/XDRGen</code>
+directory of the IPC distribution:<p>
+
+<code>xdrgen example.xdr example.xdr.h</code><p>
+
+This will output the C header file <code>example.xdr.h</code>, based on
+the XDR specification in <code>example.xdr</code>.  You can compare the
+two to get a quick idea of the relationship between XDR and C.<p>
+
+<h2><code>xdrgen</code> command-line options</h2>
+
+<pre>
+usage: xdrgen <var>OPTIONS</var> &lt;<var>xdrFile</var>&gt; [<var>outputHeaderFile</var>]
+ -h or --help        Print this help
+ --lang=[c,c++]      Change language for header output
+                     (default: c++)
+</pre>
+
+When <code>xdrgen</code> is run, it will parse <var>xdrFile</var> and
+output the resulting C header to <var>outputHeaderFile</var> (or to
+<code>stdout</code> if <var>outputHeaderFile</var> isn't specified).
+Specifying C++ for the header output language (the default) will cause
+the header to use some C++ language features which are not supported by
+C.  The differences will be discussed more later.<p>
+
+<h2>Basic <code>xdrgen</code> type declarations</h2>
+
+We now move onto the kinds of declarations which <code>xdrgen</code> can
+parse.  There are two basic kinds of declarations.  The first is a
+<code>typedef</code>.  The declaration<p>
+
+<pre>
+typedef int foo;
+</pre><p>
+
+generates a <code>typedef</code> and a macro in the output header file:<p>
+
+<pre>
+typedef int foo;
+#define foo_IPC_FORMAT "int"
+</pre><p>
+
+The second kind of declaration is a <code>struct</code>.  The
+declaration<p>
+
+<pre>
+struct Zoo {
+  int foo;
+  int goo;
+};
+</pre>
+
+generates a <code>struct</code> and a macro in the output header file:<p>
+
+<pre>
+typedef struct _Zoo {
+  int foo;
+  int goo;
+} Zoo;
+#define Zoo_IPC_FORMAT "{int,int}"
+</pre>
+
+If the header language is C++, the generated code is slightly different:<p>
+
+<pre>
+struct Zoo {
+  int foo;
+  int goo;
+#define Zoo_IPC_FORMAT "{int,int}"
+  static const char *getIPCFormat(void) {
+    return Zoo_IPC_FORMAT;
+  }
+};
+</pre><p>
+
+If you are using a C++ compiler, the C++ output has the following
+advantages:
+<ul>
+  <li> As we will see later, <code>xdrgen</code> allows arbitrary code
+       to be inserted at the end of a struct definition.  In C++, this
+       can be used to define member functions.  Defining the
+       <code>struct</code> starting with <code>struct Zoo</code> instead
+       of <code>typedef struct _Zoo</code> allows us to define
+       constructors for <code>Zoo</code> in the arbitrary
+       code section.
+  <li> Code which requires the IPC format can access either the
+       macro <code>Zoo_IPC_FORMAT</code> or the member function
+       <code>Zoo::getIPCFormat()</code>, which may enable you to write
+       cleaner code.
+</ul><p>
+
+You may nest <code>struct</code> declarations to arbitrary depths, and
+use previously defined types in declarations of new types, as in the
+following:<p>
+
+<pre>
+struct MyIncludableStruct {
+  int foo;
+  struct { int a; } goo;
+};
+
+struct MyNestedStruct {
+  MyIncludableStruct b;
+  struct {
+    char a;
+    MyIncludableStruct b2;
+  } roo;
+};
+</pre><p>
+
+You may not declare multiple fields of the same type in one line, so
+the C construction <code>int a, b;</code> must be replaced with
+<code>int a; int b;</code>.
+
+<h2>Primitive types</h2>
+
+The following struct definition has fields with all of the supported
+primitive types:<p>
+
+<pre>
+struct PrimitiveTypes {
+  string a&lt;&gt;;
+  unsigned char b;
+  char c;
+  unsigned int d;
+  int e;
+  bool f;
+  float g;
+  double h;
+};
+</pre>
+
+Some notes about how these types are used:
+<ul>
+  <li> The <code>string</code> field is followed by &lt;&gt; because
+       strings are always variable-length arrays in XDR.  This will be
+       discussed more later.
+  <li> The <code>bool</code> type isn't defined by default in C.
+       Therefore, whenever <code>xdrgen</code> creates C-language
+       output, it includes a definition for <code>bool</code>
+       as an enumerated type compatible with the built-in C++ definition.
+       In C++, a <code>bool</code> is a 4-byte data structure which
+       takes on the values <code>false</code>=0 or <code>true</code>=1.
+       In the IPC format string, the <code>bool</code> field is
+       represented as <code>"int"</code>
+  <li> For the other types, there is a straightforward mapping both to C
+       datatypes and to IPC format strings (see the <em>Defining Message
+       Data Formats</em> section).
+</ul>
+
+<h2>Fixed-length arrays</h2>
+
+Fixed length arrays in the XDR file are mapped directly to fixed-length
+arrays in C.  For the XDR declarations<p>
+
+<pre>
+typedef unsigned char ImagePixel[3];
+
+struct Transform {
+  double mat[4][4];
+};
+</pre><p>
+
+we get the following header output (abbreviated for clarity):<p>
+
+<pre>
+typedef unsigned char ImagePixel[3];
+#define ImagePixel_IPC_FORMAT "[uchar:3]"
+
+struct Transform {
+  double mat[4][4];
+};
+#define Transform_IPC_FORMAT "{[double:4,4]}"
+</pre><p>
+
+<h2>Variable-length arrays</h2>
+
+Variable-length arrays are specified in XDR using angle brackets
+&lt;&gt;.  For the XDR declaration<p>
+
+<pre>
+struct Image {
+  int rows;
+  int cols;
+  unsigned char data&lt;&gt;&lt;&gt;;
+};
+</pre><p>
+
+we get the following header output (abbreviated for clarity):<p>
+
+<pre>
+struct Image {
+  int rows;
+  int cols;
+  unsigned char *data;
+};
+#define Image_IPC_FORMAT "{int,int,&lt;uchar:1,2&gt;}"
+</pre><p>
+
+Variable-length array fields in IPC must be inside a
+<code>struct</code>, and the length in each dimension of the array must
+correspond to an <code>int</code> or <code>unsigned int</code> field of
+the <code>struct</code>.  Which fields of the
+<code>struct</code> are used for each dimension is controlled by the
+format string.  <code>xdrgen</code> has the following stricter
+requirements:
+<ul>
+  <li> If the variable-length array has <var>n</var> dimensions, the
+       struct must have exactly <var>n</var>+1 fields.
+  <li> The first <var>n</var> fields of the struct must have type
+       <code>int</code> or <code>unsigned int</code>
+  <li> The <code>int</code> fields of the struct correspond to
+       dimensions of the array in order from left to right (most
+       significant dimension to least significant).
+</ul>
+
+<code>xdrgen</code> is designed this way to make it clear where the size
+of each dimension of the array is coming from, and remove the need for
+extra language features to specify how <code>int</code> fields
+correspond to array dimensions.  This simplicity comes at the cost of
+discarding some of IPC's flexibility.<p>
+
+Fixed and variable-length array dimensions cannot be mixed, so the
+following declaration is illegal:<p>
+
+<pre>
+struct Alpha {
+  int size;
+  char beta[5]&lt;&gt;;
+}
+</pre><p>
+
+However, a similar effect could be achieved with the following
+declaration:<p>
+
+<pre>
+struct Alpha {
+  int size;
+  struct { char data[5]; } beta&lt;&gt;;
+};
+</pre><p>
+
+<code>xdrgen</code> allows a maximum possible length to be declared for
+a variable-length array, as in the following definition:<p>
+
+<pre>
+struct Gamma {
+  int delta;
+  float epsilon&lt;20&gt;;
+};
+</pre><p>
+
+However, there is no notion of a maximum length for a variable-length
+array in IPC, so the length doesn't currently appear in the header
+output.
+
+<h2>Enumerated types</h2>
+
+Enumerated types in XDR are mapped directly to enumerated types in C.
+From the declaration<p>
+
+<pre>
+enum Color {
+  RED, ORANGE, YELLOW
+};
+</pre><p>
+
+we get the following header output:
+
+<pre>
+enum Color {
+  RED,
+  ORANGE,
+  YELLOW
+};
+#define Color_IPC_FORMAT "{enum RED,ORANGE,YELLOW}"
+</pre><p>
+
+Values for the named options of an enumerated type can also be
+specified, but IPC is only flexible enough to handle a consecutive set
+of options, so if any values are specified, <code>xdrgen</code>
+represents the field as <code>"int"</code> to IPC (with the disadvantage
+that IPC can't expand values to option names during data logging).  For
+the declaration<p>
+
+<pre>
+enum Mixed {
+  TWO = 2, FOUR, SIX = 6
+};
+</pre><p>
+
+we get the following header output:
+
+<pre>
+enum Mixed {
+  TWO = 2,
+  FOUR,
+  SIX = 6
+};
+#define Mixed_IPC_FORMAT "int"
+</pre><p>
+
+<h2>More about the <code>string</code> type</h2>
+
+Strings are a special case.  A string is a null-terminated array of
+<code>char</code>.  IPC doesn't need to have an integer dimension for
+the size of the array because it can detect the size from the null
+termination.  Therefore the last variable-length dimension of a string.
+<ul>
+  <li> is required to be present (as specified in RFC 1014)
+  <li> is ignored in the IPC format generated by xdrgen
+  <li> does not need to appear in a struct with a corresponding
+       <code>int</code> field
+</ul>
+Also, fixed- and variable-length arrays of strings are allowed, as in
+the following definition:<p>
+
+<pre>
+struct ExecCall {
+  struct {
+    int argc;
+    string argv&lt;&gt;;
+  } args;
+  string envVars[20]&lt;&gt;;
+};
+</pre><p>
+
+which produces the header output (abbreviated for clarity):<p>
+
+<pre>
+struct ExecCall {
+  struct {
+    int argc;
+    char **argv;
+  } args;
+  char *envVars[20];
+};
+#define ExecCall_IPC_FORMAT "{{int,<string:1>},[string:20]}"
+</pre><p>
+
+<h2>Arbitrary code sections</h2>
+
+Your XDR file can include arbitrary code sections wrapped in the
+delimiters <code>%{</code> and <code>%}</code>.  Arbitrary code can be
+placed at the beginning or end of the file, between declarations, or at
+the end of a <code>struct</code> declaration, just before the closing
+<code>}</code> character.  The arbitrary code will be copied into the
+generated header at the corresponding point in the C code.<p>
+
+The XDR file text<p>
+
+<pre>
+%{
+#include "my_arbitrary_code.h"
+#define N 3
+extern int foo;
+%}
+
+typedef double Meters;
+
+%{
+extern Meters length;
+%}
+
+struct Roo {
+  int a;
+  char b;
+%{
+  Roo(int _a, char _b) { a = _a; b = _b; }
+%}
+};
+</pre><p>
+
+generates the header output (abbreviated for clarity):<p>
+
+<pre>
+#include "my_arbitrary_code.h"
+#define N 3
+extern int foo;
+
+typedef double Meters;
+#define Meters_IPC_FORMAT "double"
+
+extern Meters length;
+
+struct Roo {
+  int a;
+  char b;
+  Roo(int _a, char _b) { a = _a; b = _b; }
+};
+#define Roo_IPC_FORMAT "{int,char}"
+</pre><p>
+
+<h2>External format definitions</h2>
+
+You can use external format definitions if the structs you define
+using XDR contain other datatypes which are not defined using XDR.
+This could happen if you want to manually define the IPC format for a
+datatype using an IPC feature not supported by <code>xdrgen</code>.
+
+The declaration<p>
+
+<pre>
+ipc_type ExternalStruct1;
+</pre><p>
+
+tells <code>xdrgen</code> to expect that the type
+<code>ExternalStruct1</code> has an IPC format defined in the macro
+<code>ExternalStruct1_IPC_FORMAT</code>.  The macro definition must
+appear before the generated code for any <code>struct</code> which
+includes <code>ExternalStruct1</code>, which means that it should either
+appear in an arbitrary code section of the XDR file, or it should be
+included via a <code>#include</code> directive in an arbitrary code
+section.<p>
+
+Once <code>ExternalStruct1</code> is declared using
+<code>ipc_type</code>, it can be included in subsequent
+<code>struct</code> declarations without causing a warning.
+The declaration<p>
+
+<pre>
+struct IncExternalStruct {
+  int a;
+  ExternalStruct1 s1;
+}
+</pre><p>
+
+generates the header output (abbreviated for clarity):<p>
+
+<pre>
+struct IncExternalStruct {
+  int a;
+  ExternalStruct1 s1;
+}
+#define IncExternalStruct_IPC_FORMAT "{int," ExternalStruct1_IPC_FORMAT "}"
+</pre><p>
+
+You can also manually define the IPC format for a type using
+<code>ipc_type</code>.  The declaration<p>
+
+<pre>
+ipc_type ExternalStruct2 = "{char,double}";
+</pre><p>
+
+tells <code>xdrgen</code> to use the given format string instead of
+trying to refer to the macro <code>ExternalStruct2_IPC_FORMAT</code>.<p>
+
+<h2>Formal XDR language definition</h2>
+
+The <code>xdrgen</code> parser aims to parse the XDR language (as
+specified by Sun Microsystems in <a
+href="http://www.landfield.com/rfcs/rfc1014.html">RFC 1014</a> )
+wherever this makes sense.  However, there are both unsupported features
+and extensions in the <code>xdrgen</code> input language:
+<ul>
+  <li> RFC 1014 specifies a mapping between an XDR datatype
+       specification and
+       the binary format of the corresponding network message.  Because
+       XDR syntax is so similar to C syntax, there is also an implicit
+       mapping between the XDR datatype and the corresponding C
+       datatype.  It is this second mapping that <code>xdrgen</code>
+       tries to capture.  The IPC format string for a datatype is
+       generated from the C datatype according to the rules in the
+       <em>Defining Message Data Formats</em> section.
+       There is no reason to expect that IPC network
+       messages will follow the XDR binary packing rules.
+  <li> Unsupported feature: <code>union</code> types.  There are no
+       corresponding types in IPC.
+  <li> Unsupported feature: <code>hyper</code> (8-byte integer) types.
+       There are no corresponding types in IPC.
+  <li> Unsupported feature: optional data (the XDR <code>*</code>
+       syntax).  Supported in IPC, but not implemented by <code>xdrgen</code>.
+  <li> Extension: <code>opaque</code> replaced with <code>char</code>
+       and <code>unsigned char</code>.  A <code>char</code> type need
+       not be in an array.
+  <li> Extension: arbitrary code sections.
+  <li> Extension: multi-dimensional arrays.
+</ul><p>
+
+Those interested in a full grammar for the <code>xdrgen</code> input
+language can look at <code>bison</code> input file
+<code>src/XDRGen/XDR.y</code> in the IPC distribution.<p>
+
+<hr>
+<address>
+Trey Smith,
+&lt;<a href="mailto:trey@ri.cmu.edu">trey@ri.cmu.edu</a>&gt;
+[<!-- hhmts start -->
+Last modified: Tue Feb 13 18:37:24 2001
+<!-- hhmts end -->]
+</address>
+</body></html>

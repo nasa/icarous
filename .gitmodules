@@ -1,0 +1,5 @@
+[submodule "cFS/cFE"]
+	path = cFS/cFE
+	url = https://github.com/nasa/cFE.git
+	branch = cFE_OSAL_only
+	ignore = dirty

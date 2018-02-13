@@ -1,8 +1,0 @@
-
-// simple-closedloop-command-a3
-
-script {
-  command-ack drive () = "COMMAND_DENIED" : string;
-  command     drive () = 10 : int;
-}
-

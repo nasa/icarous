@@ -1,0 +1,10 @@
+Date Lookup time;
+Date Lookup start;
+Duration Lookup duration;
+
+Test:
+{
+    Start Lookup(time) >= Lookup(start);
+    End   Lookup(time) <= Self.EXECUTING.START + Lookup(duration);
+}
+

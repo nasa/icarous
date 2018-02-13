@@ -1,0 +1,64 @@
+Date Lookup time;
+Command pprint (...);
+
+TimedIteration:
+{
+    Date run_start_time;
+    Date earliest_start = Date ("2012-08-20T11:55:00.000");
+    Date latest_start;
+    Duration period = Duration ("PT0.5S");
+    Duration elapsed_time = Duration ("PT0.0S");
+    Duration start_delta;
+    Duration run_length = Duration ("PT10.0S");
+    Duration tolerance = Duration ("PT0.01S");
+    Boolean continue = true;
+
+    CheckStartTime:
+    {
+        PostCondition continue;
+        if (earliest_start < LookupNow(time)) {
+            pprint ("The earliest start time is already passed!");
+            pprint ("Terminating plan.");
+            continue = false;
+        }
+        endif;
+
+    }
+
+    SetupTimes:
+    {
+        run_start_time = TimedIteration.EXECUTING.START;
+        start_delta = earliest_start - run_start_time;
+        latest_start = earliest_start + Duration("PT4.0S");
+        run_length = run_length + start_delta;
+    }
+
+    pprint ("Earliest start time is in", start_delta, "seconds...");
+
+    waitForStartTime:
+    {
+        Start earliest_start < Lookup(time, tolerance);
+        Invariant Lookup(time) < latest_start;
+
+        pprint ("Plan starting...");
+    }
+
+    periodicIteration:
+    {
+        Date iteration_start_time;
+        Repeat continue;
+        Start ((Lookup(time, tolerance) - run_start_time) mod period) < tolerance*2;
+
+        iteration_start_time = Lookup(time);
+        elapsed_time = iteration_start_time - run_start_time;
+        pprint ("elapsed_time: ", elapsed_time);
+        WaitABit: Wait (2*tolerance);
+        ConditionallyEndIteration:
+        {
+            Skip elapsed_time <= run_length;
+
+            continue = false;
+            pprint ("Ending periodic iteration");
+        }
+    }
+}

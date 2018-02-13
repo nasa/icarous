@@ -1,0 +1,13 @@
+Command A;
+Command B(Integer);
+Integer Command C;
+
+root:
+{
+  Integer i;
+
+  SynchronousCommand A();
+  SynchronousCommand B(1) Timeout Duration ("PT0.5S");
+  SynchronousCommand i = C();
+  SynchronousCommand i = C() Timeout Duration ("PT0.5S"), Duration ("PT0.5S");
+}

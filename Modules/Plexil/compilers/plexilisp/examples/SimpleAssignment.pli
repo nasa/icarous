@@ -1,0 +1,4 @@
+(PlexilPlan
+ (AssignmentNode "SimpleAssignment"
+  (Variables (Integer "foo" 0))
+  (Assignment (IntegerVariable "foo") 3)))

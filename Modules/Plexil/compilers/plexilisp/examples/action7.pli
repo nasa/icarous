@@ -1,0 +1,7 @@
+(plexil-plan
+  (comment "An singleton action containing an IF")
+  (action "Root"
+    (if true
+      (command "foo")
+      (command "bar"))))
+

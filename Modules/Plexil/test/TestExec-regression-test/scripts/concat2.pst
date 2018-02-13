@@ -1,0 +1,11 @@
+
+// concat2
+
+initial-state {
+  state name  () = "Three" : string;
+  state name2 () = "Five" : string;
+}
+
+script {
+}
+

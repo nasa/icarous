@@ -1,9 +1,0 @@
-(plexil-plan
- (if true
-     (command "foo")))
-
-
-
-
-
-

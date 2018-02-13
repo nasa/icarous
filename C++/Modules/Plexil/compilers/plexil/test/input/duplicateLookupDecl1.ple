@@ -1,9 +1,0 @@
-String Lookup abc;
-Boolean Lookup abc;
-     
-Command foo();
-
-lookupTypo: {
-  StartCondition Lookup(abc);
-  foo();
-}

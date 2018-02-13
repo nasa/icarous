@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ICAROUS 2, USER GUIDE</title>
+		<!-- link to main stylesheet -->
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+	</head>
+	<body>
+		<div class="Header">
+			<div class ="topPanel">
+				<div class="Logo">
+					<img id="logo" src="media/ICAROUS-logo.jpeg" alt="Icarous logo" align="right">
+				</div>
+				<div class ="text">
+					<div class="MainTitle">
+						<h1>ICAROUS</h1>
+					</div>
+					<div class="SubTitle">
+						<h4>Independent Configurable Algorithms for Reliable Operations of Unmanned Systems</h4>
+					</div>
+				</div>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="interfaces.html">Interfaces</a></li>
+						<li><a href="configuration.html">Configuration</a></li>
+						<li><a href="/">Contact Us</a></li>
+					</ul>
+				</nav>
+			</div>
+        </div><!-- /.MainTitle -->
+		<div class="container">
+        	<div class="main_matter">
+                <h3>ICAROUS Configuration</h3>
+                <p>There are several paramters that can be chosen by a user to fine-tune Icarous behaviors to a specific mission. These parameters are located in <code><a href="https://github.com/nasa/icarous/blob/master/cFS/bin/ram/icarous.txt">cFS/bin/ram/icarous.txt</a></code>. All applications access this file to extract relevant parameters. A brief explanation of a few relevant parameter is provided below:</p>
+                <div class="paramtable">
+                    <table class="parameters">
+                        <tr>
+                            <td>HTRESHOLD</td>
+                            <td>Horizontal buffer (m) added to geofence polygons. The polgons are expanded horizontally by this amount</td>
+                        </tr>
+                        <tr>
+                            <td>VTHRESHOLD </td>
+                            <td>Vertical buffer (m) added to geofence polygons. The polygons are expanded vertically by this amount </td>
+                        </tr>
+                        <tr>
+                            <td>HSTEPBACK</td>
+                            <td>(m) Horizontal bounce back distance on encountering a keep-in fence conflict. </td>   
+                        </tr>
+                        <tr>
+                            <td>HSTEPBACK</td>
+                            <td>(m) Vertical bounce back distance on encountering a keep-in fence conflict (only used in vertical violations). </td>   
+                        </tr>
+                        <tr>
+                            <td>CHEAP_SEARCH</td>
+                            <td> 0 (Use RRT algorithm), 1 (Use A* algorithm) </td>
+                        </tr>
+                        <tr>
+                            <td>GRIDSIZE</td>
+                            <td>(m) Grid size used for discretization of x-y space in A* search </td>
+                        </tr>
+                        <tr>
+                            <td>LOOKAHEAD</td>
+                            <td>(s) Look ahead horizon to check for geofence violations</td>
+                        </tr>
+                        <tr>
+                            <td>RES_SPEED</td>
+                            <td>(m/s) Ground speed used for when executing conflict resolution maneuvers</td>
+                        </tr>
+                        <tr>
+                            <td>XTRK_GAIN</td>
+                            <td>Proportional gain used by the path conformance controller</td>
+                        </tr>
+                        <tr>
+                            <td>XTRK_DEV</td>
+                            <td>(m) Allowed cross track deviation</td>
+                        </tr>
+                        <tr>
+                            <td>TRK_HEADING</td>
+                            <td>(degrees) Bearing with respect to leader</td>
+                        </tr>
+                        <tr>
+                            <td>TRK_DISTH</td>
+                            <td>(m) Horizontal distance to leader</td>
+                        </tr>
+                        <tr>
+                            <td>TRK_DISTV</td>
+                            <td>(m) Vertical distance to leader</td>
+                        </tr>
+                        <tr>
+                            <td>DAA_CONFIG</td>
+                            <td>location of DAA configuration</td>
+                        </tr>
+                        <tr>
+                            <td>CAPTURE_H</td>
+                            <td>(m) horizontal distance within which a waypoint is considered reached </td>
+                        </tr>
+                        <tr>
+                            <td>CAPTURE_V</td>
+                            <td>(m) vertical distance within which a waypoint is considered reached </td>
+                        </tr>
+                    </table>
+                </div>
+                <h3>DAA configurations</h3>
+                <p>A more detailed descriptions of the various parameters used for the detect and avoid functions can be found in the <a href="https://github.com/nasa/WellClear/tree/master/DAIDALUS">DAIDALUS</a> repository.</p>
+        	</div>
+		</div><!-- /.container -->
+		<footer>
+    		<ul>        		
+        		<li><a href="https://github.com/nasa/icarous">github.com/nasa/icarous</a></li>
+			</ul>
+		</footer>
+	</body>
+</html>

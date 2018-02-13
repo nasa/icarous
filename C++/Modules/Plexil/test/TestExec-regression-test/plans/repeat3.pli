@@ -1,8 +1,0 @@
-(plexil-plan
-  (list-node "repeat3"
-    (variables (boolean "done" false))
-    (end-condition (boolvar "done"))
-    (list
-      (assignment-node "set"
-        (repeat-condition true)
-        (assignment (boolvar "done") true)))))

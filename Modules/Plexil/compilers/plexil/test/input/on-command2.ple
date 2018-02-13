@@ -1,0 +1,6 @@
+Command Foo (Integer x);
+
+Root: {
+  OnCommand "Bar" (Integer y)
+    Foo (y);
+}

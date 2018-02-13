@@ -1,0 +1,7 @@
+
+// simple-openloop-command-a1
+
+script {
+  command-ack drive () = "COMMAND_SENT_TO_SYSTEM" : string;
+}
+

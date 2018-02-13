@@ -1,0 +1,11 @@
+--- cFE/cfe/fsw/cfe-core/src/es/cfe_es_api.c	2018-02-02 17:23:56.124248499 -0500
++++ ../../Icarous/CFS/cfe/fsw/cfe-core/src/es/cfe_es_api.c	2018-02-13 15:41:05.458130355 -0500
+@@ -949,7 +949,7 @@
+    }
+    else
+    {
+-      CFE_ES_WriteToSysLog("CFE_ES_GetTaskInfo: Task ID Not Active: %u\n",(unsigned int)OSTaskId);
++     //CFE_ES_WriteToSysLog("CFE_ES_GetTaskInfo: Task ID Not Active: %u\n",(unsigned int)OSTaskId);
+       ReturnCode = CFE_ES_ERR_TASKID;
+    }
+    

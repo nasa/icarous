@@ -1,0 +1,6 @@
+(plexil-plan
+  (sequence "root"
+    (variables (integer "x" 1))
+    (start-condition (= (intvar "x") 1))
+    (comment "This is a trivial example")
+    (empty-node)))

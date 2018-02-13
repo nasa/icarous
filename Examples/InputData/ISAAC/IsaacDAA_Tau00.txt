@@ -1,0 +1,57 @@
+# V-1.0.1
+# Bands Parameters
+lookahead_time = 60.000000 [s]
+left_trk = 180.000000 [deg]
+right_trk = 180.000000 [deg]
+min_gs = 0.100000 [m/s]
+max_gs = 25.000000 [m/s]
+min_vs = -400.000000 [fpm]
+max_vs = 400.000000 [fpm]
+min_alt = 0.000000 [ft]
+max_alt = 500.000000 [ft]
+# Kinematic Parameters
+trk_step = 1.000000 [deg]
+gs_step = 0.050000 [m/s]
+vs_step = 1.000000 [fpm]
+alt_step = 1.000000 [m]
+horizontal_accel = 4.000000 [m/s^2]
+vertical_accel = 0.000000 [m/s^2]
+turn_rate = 5.000000 [deg/s]
+bank_angle = 0.000000 [deg]
+vertical_rate = 0.000000 [m/s]
+# Recovery Bands Parameters
+recovery_stability_time = 1.000000 [s]
+min_horizontal_recovery = 3000.000000 [ft]
+min_vertical_recovery = 1000.000000 [ft]
+recovery_trk = true
+recovery_gs = false
+recovery_vs = false
+recovery_alt = false
+# Collision Avoidance Bands Parameters
+ca_bands = true
+ca_factor = 0.100000
+horizontal_nmac = 500.000000 [ft]
+vertical_nmac = 100.000000 [ft]
+# Implicit Coordination Parameters
+conflict_crit = false
+recovery_crit = false
+# Horizontal Contour Threshold
+contour_thr = 180.000000 [deg]
+# Alert Levels
+alert_1_alerting_time = 30.000000 [s]
+alert_1_detector = det_1
+alert_1_early_alerting_time = 45.000000 [s]
+alert_1_region = NEAR
+alert_1_spread_alt = 0.000000 [m]
+alert_1_spread_gs = 0.000000 [m/s]
+alert_1_spread_trk = 0.000000 [deg]
+alert_1_spread_vs = 0.000000 [fpm]
+conflict_level = 1
+det_1_WCV_DTHR = 1000.000000 [ft]
+det_1_WCV_TCOA = 0.000000 [s]
+det_1_WCV_TTHR = 0.000000 [s]
+det_1_WCV_ZTHR = 1000.000000 [ft]
+load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.WCV_TAUMOD
+#det_1_D = 1000.000000 [ft]
+#det_1_H = 1000.000000 [ft]
+#load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.CDCylinder

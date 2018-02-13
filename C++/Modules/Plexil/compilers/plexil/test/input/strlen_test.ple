@@ -1,7 +1,0 @@
-strlen_test:
-{
-  String s = "ess";
-  Integer l;
-
-  l = strlen(s);
-}

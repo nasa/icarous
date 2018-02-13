@@ -1,9 +1,0 @@
-(plexil-plan
-  (assignment-node "library2"
-    (interface
-      (inout (string "x")))
-    (assignment (stringvar "x") "hello")))
-      
-      
-      
-

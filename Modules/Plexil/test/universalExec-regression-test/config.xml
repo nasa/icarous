@@ -1,0 +1,7 @@
+<Interfaces>
+ <Adapter AdapterType="Dummy">
+  <DefaultAdapter/>
+ </Adapter>
+ <Adapter AdapterType="OSNativeTime"/>
+ <!-- Listener ListenerType="LuvListener"/ -->
+</Interfaces>

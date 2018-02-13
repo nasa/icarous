@@ -1,0 +1,8 @@
+(plexil-plan
+  (sequence "root"
+    (variables (integer "x" 0))
+    (command-node "A" (command "pprint" "x =" (intvar "x")))
+    (assignment-node "B" (assignment (intvar "x") 1))
+    (command-node "C" (command "pprint" "x =" (intvar "x")))
+    (command-node "D" (command-with-return (intvar "x") "foo"))
+    (command-node "E" (command "pprint" "x =" (intvar "x")))))

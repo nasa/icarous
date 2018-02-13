@@ -1,0 +1,14 @@
+(plexil-plan
+  (list-node "repeat4"
+    (variables (boolean "done" false)
+               (boolean "doset" true))
+    (end-condition (boolvar "done"))
+    (list
+      (assignment-node "A"
+        (start-condition (boolvar "doset"))
+        (repeat-condition true)
+        (assignment (boolvar "doset") false))
+      (assignment-node "B"
+        (start-condition (iteration-ended "A"))
+        (repeat-condition true)
+        (assignment (boolvar "done") true)))))

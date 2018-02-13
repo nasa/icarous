@@ -1,0 +1,9 @@
+<Interfaces>
+  <!-- This configuration specifies that all commands and lookups are handled by SampleAdapter -->
+  <Adapter AdapterType="SampleAdapter">
+    <DefaultCommandAdapter/>
+    <DefaultLookupAdapter/>
+  </Adapter>
+  <Adapter AdapterType="OSNativeTime"/>
+  <Adapter AdapterType="Utility"/>
+</Interfaces>

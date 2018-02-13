@@ -1,0 +1,7 @@
+(plexil-plan
+  (comment "An singleton action containing a node body")
+  (action "Root"
+    (start-condition false)
+    (invariant-condition false)
+    (command "foo")))
+

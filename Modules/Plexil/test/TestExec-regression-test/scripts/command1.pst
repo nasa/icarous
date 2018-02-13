@@ -1,0 +1,7 @@
+
+// command1
+
+script {
+  command-ack foo ("" : string) = "COMMAND_SUCCESS" : string;
+}
+

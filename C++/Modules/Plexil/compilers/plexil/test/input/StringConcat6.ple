@@ -1,7 +1,0 @@
-Command print(...);
-String Lookup foo;
-
-StringConcat6:
-{
-  print(("Foo is" + Lookup(foo) + "No really") + ("I mean it" + "buddy"));
-}

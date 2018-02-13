@@ -1,0 +1,19 @@
+ <Interfaces ConfigurationType="default">
+  <Adapter AdapterType="OSNativeTime" />
+  <Adapter AdapterType="Utility" />
+  <Adapter AdapterType="CfsAdapter">
+    <DefaultAdapter/>
+    <DefaultCommandAdapter/>
+    <DefaultLookupAdapter/>
+    <CommandNames>
+      ReceiveTrue,
+      ReceiveFalse,
+      SendBool,
+      SendInt,
+      SendReal
+    </CommandNames>
+    <LookupNames>
+      position
+    </LookupNames> 
+  </Adapter>
+</Interfaces>

@@ -1,4 +1,4 @@
-![](logo/ICAROUS.jpeg "")
+![](ICAROUS-logo.jpeg "")
 
 Independent Configurable Architecture for Reliable Operations of
 Unmanned Systems (ICAROUS)
@@ -47,13 +47,6 @@ ICAROUS makes use of the cmake build system. In order to setup a build, the foll
 - OSAL_HOME= absolute path to the CFS/osal folder found in the Icarous repository.
 - JAVA_HOME= absolute path to the Java installation directory. Typically located under `/usr/lib/jvm/java-*` 
 
-Before building ICAROUS, generate the plexil plan compiler
-
-```
-    $cd C++/Modules/Plexil
-    $make plexil-compiler
-```
-
 ```
     $cd CFS
     $mkdir build
@@ -61,11 +54,11 @@ Before building ICAROUS, generate the plexil plan compiler
     $make cpu1-install
 ```
 
-For compilation and linking errors related to missing libraries, check [C++/Modules/README.md](C++/Modules/README.md).
+For compilation and linking errors related to missing libraries, check [Modules/README.md](Modules/README.md).
 
 ### LAUNCHING ICAROUS
 
-The generated executable file is installed under `CFS/bin/cpu1`. Launch Icarous using the following command:
+The generated executable file is installed under `cFS/bin/cpu1`. Launch Icarous using the following command:
 
 ```
     $sudo ./core-cpu1
@@ -73,9 +66,9 @@ The generated executable file is installed under `CFS/bin/cpu1`. Launch Icarous 
 
 Note that you need root previleges. When running ICAROUS on an embedded platform, one can make use of the `nohup` or `screen` command to avoid termination when a terminal is closed.
 
-The intf_tbl.c located under `CFS/apps/interface/fsw/tables` defines parameters required to configure the serial port settings to connect to an autopilot. 
+The intf_tbl.c located under `cFS/apps/interface/fsw/tables` defines parameters required to configure the serial port settings to connect to an autopilot. 
 
-The various parameters that control the behavior of ICAROUS can be found in `CFS/bin/ram/icarous.txt`. The default parameters found in icarous.txt were selected after several flight tests to yield acceptable performances.
+The various parameters that control the behavior of ICAROUS can be found in `cFS/bin/ram/icarous.txt`. The default parameters found in icarous.txt were selected after several flight tests to yield acceptable performances.
 
 ### INTERACTING WITH ICAROUS
 
@@ -88,17 +81,17 @@ We strongly recommend using MAVProxy as a ground station to communicate with ICA
     $bash SetuMavProxy.sh <Location of MAVProxy/>
 ```
 
-The MAVProxy ground station can be lauched using the run script located under the C++ folder:
+The MAVProxy ground station can be lauched using the run script located under the Scripts folder:
 
-    $./run.sh GS
+    $./runGS.sh
 
 Waypoints can be uploaded from MAVProxy using the `wp` command, e.g.,
 
-	wp load InputData/flightplan.txt
+	wp load Examples/InputData/flightplan.txt
 
 Geofence can be uploaded from MAVProxy using the `geofence` command, e.g.,
 
-	geofence load InputData/geofence.xml
+	geofence load Examples/InputData/geofence.xml
 	
 Once waypoints and geofence are uploaded, the mission can be started from MAVProxy as follows:
 
@@ -123,7 +116,7 @@ ICAROUS provides an application to communicate using OpenSplice DDS. Enable this
 
 2. Create an OpenSplice configuration file (.xml) with **domain id** 100.  Follow the examples provided in the OpenSplice DDS distribution directory within `etc/conf`.
 
-3. Add `dds_interface` to the `TGT1_APPLIST` in the file `CFS/Icarous_defs/targets.cmake` to compile the dds application:
+3. Add `dds_interface` to the `TGT1_APPLIST` in the file `cFS/apps/Icarous_defs/targets.cmake` to compile the dds application:
 
 4. Define the following environment variable for building:
 

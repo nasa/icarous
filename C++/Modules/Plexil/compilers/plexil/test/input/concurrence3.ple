@@ -1,8 +1,0 @@
-Command C (String);
-Command D (Real);
-
-Concurrence
-{
-  C ("foo");  
-  D (3.3);  
-}

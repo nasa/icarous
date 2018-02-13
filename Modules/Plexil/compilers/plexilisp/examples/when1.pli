@@ -1,0 +1,4 @@
+(plexil-plan
+ (when (= 1 1)
+  (nothing)
+  (nothing)))

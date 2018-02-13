@@ -1,0 +1,5 @@
+Real Lookup temp;
+
+{
+  Start (Lookup (temp, 2.5) > 100.0);
+}

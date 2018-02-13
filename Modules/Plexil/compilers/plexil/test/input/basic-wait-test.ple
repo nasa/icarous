@@ -1,0 +1,10 @@
+root:
+{
+  Real rtol = 0.5;
+  Real rdelay = 1.414;
+
+  Wait 2;
+  Wait 5, 1;
+  Wait rdelay, rtol;
+  Wait 3.14, .1;
+}

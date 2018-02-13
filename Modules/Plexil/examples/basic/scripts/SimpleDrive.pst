@@ -1,0 +1,14 @@
+//
+// SimpleDrive
+//
+
+initial-state {
+  state At ("Rock" : string) = false : bool;
+}
+
+script {
+  command-success drive (1.0 : real);
+  state At ("Rock" : string) = true : bool;
+  command-success takeSample ();
+}
+

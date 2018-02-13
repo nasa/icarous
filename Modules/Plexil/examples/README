@@ -1,0 +1,25 @@
+This directory contains example PLEXIL plans, simulation scripts, and
+multi-executive applications.
+
+The 'basic' directory is a good place to start.  See the README there
+for details.
+
+The 'resource' directory contains plans that illustrate the use of
+command resources. 
+
+Multiple-executive examples are found in the 'multi-exec' subdirectory.
+See the README there for details.
+
+The "empty.pst" and "empty.plx" files are empty simulation scripts, used
+as a default by the Test Executive.
+
+An example "PLEXIL applications" (executive interfaced to an external
+system, with plans) is found in examples/sample-app.
+
+A more sophisticated example of a PLEXIL application, one that uses
+PLEXIL to control robots in a graphical simulator, is found in
+examples/robosim.
+
+See the PLEXIL user manual (plexil.sourceforge.net, or in
+plexil/docs/plexil-manual.pdf if this is a prebuilt distribution) for
+more information.

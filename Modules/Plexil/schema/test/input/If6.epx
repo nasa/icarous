@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlexilPlan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <If>
+    <NodeId>Root</NodeId>
+    <VariableDeclarations>
+      <DeclareVariable>
+        <Name>foo</Name>
+        <Type>Integer</Type>
+        <InitialValue>
+          <IntegerValue>0</IntegerValue>
+        </InitialValue>
+      </DeclareVariable>
+    </VariableDeclarations>
+    <Condition>
+      <EQNumeric>
+        <IntegerVariable>foo</IntegerVariable>
+        <IntegerValue>1</IntegerValue>
+      </EQNumeric>
+    </Condition>
+    <Then>
+      <Node NodeType="Empty">
+        <NodeId>One</NodeId>
+      </Node>
+    </Then>
+    <ElseIf>
+      <Condition>
+        <EQNumeric>
+          <IntegerVariable>foo</IntegerVariable>
+          <IntegerValue>2</IntegerValue>
+        </EQNumeric>
+      </Condition>
+      <Then>
+        <Node NodeType="Empty">
+          <NodeId>Two</NodeId>
+        </Node>
+      </Then>
+    </ElseIf>
+    <ElseIf>
+      <Condition>
+        <EQNumeric>
+          <IntegerVariable>foo</IntegerVariable>
+          <IntegerValue>3</IntegerValue>
+        </EQNumeric>
+      </Condition>
+      <Then>
+        <Node NodeType="Empty">
+          <NodeId>Three</NodeId>
+        </Node>
+      </Then>
+    </ElseIf>
+    <Else>
+      <Node NodeType="Empty">
+        <NodeId>Four</NodeId>
+      </Node>
+    </Else>
+  </If>
+</PlexilPlan>

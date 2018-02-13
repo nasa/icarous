@@ -1,0 +1,4 @@
+(plexil-plan
+  (library-call-node "library2"
+    (call "library2")))
+

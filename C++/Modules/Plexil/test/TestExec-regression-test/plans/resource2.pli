@@ -1,7 +1,0 @@
-(plexil-plan
-  (command-node "resource2"
-    (command "foot-in-mouth"
-        (resources
-          (resource "Foot" 1)
-          (resource "Mouth" 1))
-        )))

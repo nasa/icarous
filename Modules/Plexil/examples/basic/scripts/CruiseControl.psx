@@ -1,0 +1,57 @@
+<PLEXILScript>
+  <InitialState>
+    <State name="time" type="real">
+      <Value>0.0</Value>
+    </State>
+    <State name="SetPressed" type="bool">
+      <Value>false</Value>
+    </State>
+    <State name="CancelPressed" type="bool">
+      <Value>false</Value>
+    </State>
+    <State name="ActualSpeed" type="real">
+      <Value>0.0</Value>
+    </State>
+  </InitialState>
+  <Script>
+    <State name="time" type="real">
+      <Value>1.0</Value>
+    </State>
+    <State name="ActualSpeed" type="real">
+      <Value>50.0</Value>
+    </State>
+    <State name="time" type="real">
+      <Value>2.0</Value>
+    </State>
+    <State name="ActualSpeed" type="real">
+      <Value>51.0</Value>
+    </State>
+    <State name="time" type="real">
+      <Value>3.0</Value>
+    </State>
+    <State name="ActualSpeed" type="real">
+      <Value>52.0</Value>
+    </State>
+    <State name="time" type="real">
+      <Value>4.0</Value>
+    </State>
+    <State name="SetPressed" type="bool">
+      <Value>true</Value>
+    </State>
+    <State name="time" type="real">
+      <Value>5.0</Value>
+    </State>
+    <State name="ActualSpeed" type="real">
+      <Value>50.0</Value>
+    </State>
+    <State name="ActualSpeed" type="real">
+      <Value>50.0</Value>
+    </State>
+    <State name="ActualSpeed" type="real">
+      <Value>51.0</Value>
+    </State>
+    <State name="ActualSpeed" type="real">
+      <Value>53.0</Value>
+    </State>
+  </Script>
+</PLEXILScript>

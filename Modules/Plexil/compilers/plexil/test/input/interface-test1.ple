@@ -1,0 +1,10 @@
+Test:
+{
+  In Integer x, y;
+  InOut String s;
+
+  Integer z;
+
+  z = x + y;
+  s = "foo";
+}

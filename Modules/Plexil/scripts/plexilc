@@ -1,0 +1,223 @@
+#!/usr/bin/env bash
+
+# Copyright (c) 2006-2016, Universities Space Research Association (USRA).
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of the Universities Space Research Association nor the
+#       names of its contributors may be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY USRA ``AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL USRA BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+# TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+#
+# Usage:
+#    plexilc [options] <source-file>
+#
+#  The type of source file given is partly identified by its extension:
+#
+#    Plexil plans                 : .ple, .epx
+#    Plexilisp plans and scripts  : .pli
+#    Plexil simulator scripts     : .pst
+#
+#  The default (and required) output file extensions are:
+#
+#    Plexil plans (XML)           : .plx
+#    Plexil scripts (XML)         : .psx
+#
+
+function usage ()
+{
+    echo "Usage: $0 [options] <source-file>"
+    echo "Options are"
+    echo "  -c, -check              Run static checker on output (only valid for plan files)"
+    echo "  -d, -debug <logfile>    Print debug information to <logfile>"
+    echo "  -h, -help               Print this help and exit"
+    echo "  -o, -output <outfile>   Write translator output to <outfile>"
+    echo "  -q, -quiet              Parse files quietly"
+    echo "  -v, -version            Print translator version and exit"
+    echo "Some options are not supported for all file formats."
+}
+
+# Check environment variables
+if [ -z "$PLEXIL_HOME" ]
+then
+    echo Error: Please set environment variable PLEXIL_HOME
+    echo to the full pathname of your 'plexil' or 'trunk' directory.
+    exit 1
+fi
+
+. ${PLEXIL_HOME}/scripts/plexil-setup.sh
+
+JARS_DIR=${PLEXIL_HOME}/jars
+ANTLR_RUNTIME_JAR=antlr-3.5.2-complete-no-st3.jar
+JAVA=java
+if [ -n "$JAVA_HOME" ]
+then
+    JAVA=$JAVA_HOME/bin/java
+fi
+
+# Commands to execute
+plexil_compiler="$JAVA -classpath $JARS_DIR/PlexilCompiler.jar:$JARS_DIR/$ANTLR_RUNTIME_JAR:$JARS_DIR/nanoxml.jar:$JARS_DIR/saxon.jar plexil.Compiler"
+plexilscript_compiler="$JAVA -cp ${JARS_DIR}/plexilscript.jar:${JARS_DIR}/antlr.jar plexilscript.PlexilScriptParse"
+plexil_checker="$PLEXIL_HOME/scripts/checkDecls"
+
+# Parse options
+while [ "${1:0:1}" = '-' ]
+do
+    if [ "$1" = '-c' -o "$1" = '-check' ]
+    then
+	check=$1
+	shift
+    elif [ "$1" = '-d' -o "$1" = '-debug' ]
+    then
+	if [ -z "$2" -o "${2:0:1}" = '-' ]
+	then
+	    echo "Error: debug filename missing for $1 option"
+	    usage
+	    exit 1
+	fi
+	debug=$2
+	shift 2
+    elif [ "$1" = '-h' -o "$1" = '-help' ]
+    then
+	usage
+	exit 0
+    elif [ "$1" = '-o' -o "$1" = '-output' ]
+    then
+	if [ -z "$2" -o "${2:0:1}" = '-' ]
+	then
+	    echo "Error: output filename missing for $1 option"
+	    usage
+	    exit 1
+	fi
+	output=$2
+	shift 2
+    elif [ "$1" = '-q' -o "$1" = '-quiet' ]
+    then
+	quiet=$1
+	shift
+    elif [ "$1" = '-v' -o "$1" = '-version' ]
+    then
+	echo 'plexilc script version 1.0'
+	$plexil_compiler --version
+	exit 0
+    fi
+done
+
+# If we got this far, we are expecting a filename to translate
+if [ $# -lt 1 ]
+then
+    echo "Error: no filename supplied."
+    usage
+    exit 1
+fi
+
+if [ ! -r $1 ]
+then
+    echo "Error: file $1 does not exist or is not readable"
+    exit 1
+fi
+
+# Select translator for this file
+if [ `expr $1 : '.*\.ple\$'` -ne 0 ]
+then
+	# Plexil plan
+    options=""
+    if [ -n "$debug" ]
+    then
+	options="$options -d $debug" 
+    fi
+    if [ -n "$quiet" ]
+    then
+	options="$options -q"
+    fi
+
+    if [ -z "$output" ]
+    then
+	output=${1//\.ple/.plx}
+    fi
+
+    $plexil_compiler $options -o $output $1
+    status=$?
+    if [ $status -ne 0 ]
+    then
+	echo Error: compilation of $1 failed.
+	exit $status
+    fi
+
+    if [ -n "$check" ]
+    then
+	$plexil_checker $output
+    fi
+
+elif [ `expr $1 : '.*\.pli\$'` -ne 0 ]
+then
+	# Plexilisp plan/script
+
+    if [ -n "$quiet" ]
+    then
+	emacs --batch --no-site-file --load $PLEXIL_HOME/compilers/plexilisp/plexil.el $1 --eval '(plexil)' > /dev/null 2>&1
+    else
+	emacs --batch --no-site-file --load $PLEXIL_HOME/compilers/plexilisp/plexil.el $1 --eval '(plexil)'
+    fi
+
+	# If plexilisp generates a plan, we can check it.
+    output=${1//\.pli/.plx}
+    if [ -r $output -a -n "$check" ]
+    then
+	$plexil_checker $output
+    fi
+
+elif [ `expr $1 : '.*\.epx\$'` -ne 0 ]
+then
+	# Extended Plexil XML plan
+
+    output=${1//\.epx/.plx}
+    $PLEXIL_HOME/scripts/eplexil $1 $output
+
+    if [ -n "$check" ]
+    then
+	$plexil_checker $output
+    fi
+
+elif [ `expr $1 : '.*\.pst\$'` -ne 0 ]
+then
+	# Plexilscript
+    if [ -z "$output" ]
+    then
+	output=${1//\.pst/.psx}
+    fi
+    $plexilscript_compiler < $1 > $output
+    status=$?
+    if [ $status -ne 0 ]
+    then
+	echo Error: compilation of $1 failed.
+	exit $status
+    fi
+else
+    echo "Error: file $1 not recognized."
+    echo "Recognized extensions are:"
+    echo "  .epx - Extended Plexil XML plan"
+    echo "  .ple - Plexil plan"
+    echo "  .pli - Plexilisp plan or simulation script"
+    echo "  .pst - Plexilscript simulation script"
+    exit 1
+fi
+
+exit 0

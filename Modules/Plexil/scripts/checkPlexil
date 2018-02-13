@@ -1,0 +1,106 @@
+#!/bin/sh
+
+# Copyright (c) 2006-2015, Universities Space Research Association (USRA).
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of the Universities Space Research Association nor the
+#       names of its contributors may be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY USRA ``AS IS'' AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL USRA BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+# TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# -d enable debug mode
+
+# Runs global-decl-checker.jar on a given input .plx file.
+
+# If the input is appropriate, it will return a following value.
+#   0 Passed (Warnings Only)
+#   1 Checking Error(s) Found
+#   2 Unhandled Exception
+
+if [ -z "$PLEXIL_HOME" ]
+then
+    echo Error: Please set environment variable PLEXIL_HOME
+    echo to the full pathname of your 'plexil' or 'trunk' directory.
+    echo Exiting.
+    exit 2
+fi
+
+prog=${PLEXIL_HOME}/checker/global-decl-checker.jar
+args=$*
+JAVA=java
+if [ -n "$JAVA_HOME" ]
+then
+    JAVA=$JAVA_HOME/bin/java
+fi
+
+# Make sure jar file exists
+if [ ! -f "${prog}" ]
+then
+  echo "Cannot find file ${prog}. To build it:"
+  echo "  cd ${PLEXIL_HOME}/checker"
+  echo "  ant jar"
+  echo "If JAR is located elsewhere, please update the location in the script."
+  exit 2
+fi
+
+if [ '-d' = "$1" ]
+  then
+    shift
+fi
+
+ #Make sure a true input file is added as argument
+if [ ! -f $1 ]
+then
+  echo "Cannot find file" $1
+  exit 2
+fi
+
+# No input file selected, exit
+if [ ! $1 ]
+then
+  echo "Usage: checkDecls [-d] file.plx"
+  exit 2
+fi
+
+# First validate against Core Plexil schema
+xmllint --noout --schema $PLEXIL_HOME/schema/core-plexil.xsd $1
+result=$?
+if [ $result -ne 0 ]
+then
+    echo Validation of $1 against PLEXIL schema failed.
+    exit 1
+fi
+
+# Run the program
+$JAVA -jar ${prog} $args
+
+# Check result of the program
+result=$?
+if [ $result -eq 0 ]
+then
+  echo Passed
+elif [ $result -eq 1 ]
+then
+  echo Failed: Result = $result
+else
+  echo Error: Result = $result
+fi
+
+exit $result

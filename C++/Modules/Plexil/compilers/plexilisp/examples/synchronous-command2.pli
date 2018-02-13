@@ -1,5 +1,0 @@
-(plexil-plan
-  (synchronous-command "Root"
-    (command "foo" 1)))
-
-                       

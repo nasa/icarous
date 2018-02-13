@@ -1,1 +1,93 @@
-
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ICAROUS 2, USER GUIDE</title>
+		<!-- link to main stylesheet -->
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+	</head>
+	<body>
+		
+		<div class="Header">
+			<div class ="topPanel">
+				<div class="Logo">
+					<img id="logo" src="media/ICAROUS-logo.jpeg" alt="Icarous logo" align="right">
+				</div>
+				<div class ="text">
+					<div class="MainTitle">
+						<h1>ICAROUS</h1>
+					</div>
+					<div class="SubTitle">
+						<h4>Independent Configurable Algorithms for Reliable Operations of Unmanned Systems</h4>
+					</div>
+				</div>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="interfaces.html">Interfaces</a></li>
+						<li><a href="configuration.html">Configuration</a></li>
+						<li><a href="/">Contact Us</a></li>
+					</ul>
+				</nav>
+			</div>
+        </div><!-- /.MainTitle -->
+		<div class="container">
+        	<div class="main_matter">
+				<h3>What is ICAROUS?</h3>
+				<p>ICAROUS stands for Independent Configurable Architecture for Reliable Operations of Unmanned Systems. It is a software architecture that enables the robust integration of mission specific software modules and highly assured core algorithms for building safety-centric autonomous unmanned aircraft applications. ICAROUS is a research effort under the auspices of the Unmanned Air Traffic Management (UTM) project. ICAROUS is a research in progress and is constantly evolving with the addition of new functionalities for single and multiple UAS. The primary goal of ICAROUS is to enable beyond visual line of sight (BVLOS) missions for UAS without the need for constant human supervision/intervention. To this end, ICAROUS uses various tools and algorithms to provide an integrated reasoning, decision making and planning framework to enable numerous UAS applications while ensuring that relevant safety properties are never violated.</p>
+				<h3>What is it not?</h3>
+				ICAROUS currently depends on an external autopilot that can provide basic control and navigation functionalities (e.g. ArduPilot, PX4, Piccolo etc...). ICAROUS runs on a companion computer and communicates with the autopilot to orchestrate resolution maneuves to avoid imminent conflicts.
+				<h3>Why ICAROUS?</h3>
+				<p>Most off the shelf autopilot systems for small UAS come with limited computing capabilities that are suffcient to perform control and navigation functions. However, as UAS applications are rapidly evovling there is a high demand to perform sophisticated decision making such as avoiding other UAS in the airspace, respecting airspace constraints such as geofences and other mission specific tasks. ICAROUS provides an onboard decision making capability to address such complex situations. 
+				</p>
+				<h3>ICAROUS Architecture</h3>
+				<img id="architecture" src="media/Architecture.png" alt="Icarous arch" align="middle">
+				<p>Icarous is implemented in a distributed fashion enabling modularity and facilitating rapid incorporation of new features. The various core functionalities are each distributed across one or more applications. ICAROUS depends on an interprocess communication framework that provides publish/subscribe capabilities to exchange data between applications. The default implementation provided in the repository uses NASA's <a href="https://cfs.gsfc.nasa.gov/">core Flight Systems (cFS)</a> middleware to achieve this distributed architecture. Such a distributed architecture enables ICAROUS to be easily integrated with any autopilot system by developing a suitable interface application. The default distribution of ICAROUS provides a MAVLink interface application for ArduPilot autopilots.</p>
+				<h3>Libraries used</h3>
+				The current version of Icarous provides several core features. Each feature is supported by libraries:
+				<ul>
+				  <li><a href="https://github.com/nasa/WellClear">DAIDALUS</a>: A detect and avoid library that provivdes functions to monitor well clear violations against intruder vehicles. DAIDALUS also provides resolution bands in track, ground speed, vertical speed and altitude resolutions to avoid loss of separation. Located in Modules/ACCoRD</li>
+				  <li><a href="https://github.com/nasa/PolyCARP">PolyCARP</a>: A library to determine if a given point lies inside/outside a given polygon. Located in Modules/ACCoRD</li>
+				  <li><a href="http://plexil.sourceforge.net/wiki/index.php/Main_Page">PLEXIL</a>: Provides a language to represent tasks/plans and an executive to execute these plans.</li>
+				</ul>
+				<h3>Feature highlights</h3>
+				<ul>
+					<li>Geofence containment: ICAROUS uses PolyCARP to constantly monitor for imminent keep-in and keep-out geofence violations based on the current position and velocity of the UAS.  In each case, ICAROUS prevents the violation by flying to the next feasible waypoint. </li>
+					<li>Traffic avoidance: Given information about intruder vehicles, ICAROUS detects imminent loss of separation and performs track angle based maneuvers to avoid a well clear violation.</li> 
+					<li>Replanning flightplans: ICAROUS currently uses search algorithms to reroute the current flight plan to avoid static (keep-out geofences)/dynamic (intruder traffic) obstacles. ICAROUS currently assumes that intruders move with a constant velocity.
+					<li>Flight plan conformance: ICAROUS monitors cross track deviation from a given flight plan and maneuvers to maintain deviations within a user defined threshold.
+				</ul>
+				<table class="videofeat">
+					<tr>
+						<td align="center"><video height="300" controls>
+							<source src="media/dryden.mp4" type="video/mp4">  				
+							Your browser does not support the video tag.
+							</video>
+						</td>
+						<td align="center"><video height="300" controls>
+							<source src="media/ATMresult.mp4" type="video/mp4">  				
+							Your browser does not support the video tag.
+							</video>
+						</td>
+					</tr>
+					<tr>
+						<td align="center">Rerouting around keep-out fence</td>
+						<td align="center">Avoiding traffic and geofence constraints</td>
+					</tr>
+				</table>
+				<h3>Features to expect</h3>
+				Currently, we are working on adding a host of new features to ICAROUS.
+				<ul>
+					<li> Integration with Safe2Ditch: Safe2Ditch is a computer vision based landing site selection system being developed at NASA Langley </li>
+					<li> Integration with URAF: URAF is a risk assessment tool that evalutes the risk associated with current flight condition based on metrics relevant to battery health, elapsed time of flight etc..</li>
+					<li> Improved path planning capability: Current planners in ICAROUS search for feasible trajectories only in 2D space (x-y). Updates to perform a search in 3D space. Incorporation of optimal control based planners.</li>
+					<li> Multiagent coordination framework to support collaboration among multiple UAS performing missions such as surveillance, merging and spacing etc. </li>					
+				</ul>
+    		</div>
+		</div><!-- /.container -->
+		<footer>
+    		<ul>        		
+        		<li><a href="https://github.com/nasa/icarous">github.com/nasa/icarous</a></li>
+			</ul>
+		</footer>
+	</body>
+</html>

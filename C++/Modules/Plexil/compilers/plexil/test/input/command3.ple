@@ -1,6 +1,0 @@
-Integer Command get_speed();
-
-GetSpeed: {
-  Integer speed;
-  speed = get_speed(); 
-}

@@ -1,0 +1,9 @@
+Command print(...);
+
+{
+NestedBlocks6:
+  UncheckedSequence
+  {
+    print("NestedBlocks6");
+  }
+}

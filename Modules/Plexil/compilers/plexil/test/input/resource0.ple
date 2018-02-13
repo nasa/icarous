@@ -1,0 +1,8 @@
+Integer Command c1;
+
+Root: {
+  Integer returnValue = -1;
+  EndCondition returnValue == 10;
+  Resource Name = "arm", Priority = 20;
+  returnValue = c1();
+}

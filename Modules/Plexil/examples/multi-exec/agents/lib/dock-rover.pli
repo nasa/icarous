@@ -1,0 +1,46 @@
+;; File: plexil/examples/multi-exec/agents/lib/dock-rover.pli
+
+(plexil-plan
+  ;; (1) send a docking request
+  ;; (2) use the bay-status messages to dock
+  (sequence "dock-rover"
+			(interface
+			 (in (boolean "send-quit" false)) ;default is not to send quit message
+			 (inout (string "name")
+					(real "rover-id")
+					(boolean "docked" false) ;default is that we are not docked
+					(real-array "request" 3))) ;rover-id[0] action(1=dock,0=Mn-dock)[1] urgency(unused)[2]
+			(variables (real "bay"))
+			(assignment (array-element "request" 0) (realvar "rover-id")) ;set the request to this rover
+			(command "print" "\n\n[" (stringvar "name") "] is up and running...\n\n")
+			(wait 5 "wait-to-start")
+			;; (1) send the docking request
+			(command "docking-request" (arrayvar "request"))
+			(command "print" "\n[" (stringvar "name") "] sent: " (arrayvar "request"))
+			;; (2) respond to the bay-status messages
+			(action "dock"
+					(repeat-condition (not (boolvar "docked")))
+					(on-command "bay-status" ((real-array "bay-status" 6))
+								(sequence "handle-bay-status"
+										  ;;(start-condition (= (array-element "request" 0) (array-element "bay-status" 1)))
+										  (skip-condition (not (= (array-element "request" 0) (array-element "bay-status" 1))))
+										  (action "docked"
+												  ;; We are docked when we are 0 feet from the dock...
+												  (skip-condition (not (= 0 (array-element "bay-status" 2))))
+												  (assignment (realvar "bay") (array-element "bay-status" 0))
+												  (assignment (boolvar "docked") true))
+										  (command "print" "\n[" (stringvar "name") "] recv: " (arrayvar "bay-status")))))
+			(command "print" "\n\n[" (stringvar "name") "] docked in bay " (realvar "bay") "\n")
+			;; ( ) Stay awhile, then un-dock and leave
+			(wait 10 "wait-before-un-docking")
+			(assignment (array-element "request" 1) 0) ;un-dock request
+			(command "docking-request" (arrayvar "request"))
+			(wait 5 "wait-after-un-docking")
+			;; (3) Stop the run
+			(sequence "Quit"
+					  (skip-condition (not (boolvar "send-quit")))
+					  (wait 5 "wait-to-quit")
+					  (command "print" "\n[" (stringvar "name") "] sent: Quit (quitting)\n")
+					  (command "SendMessage" "Quit"))))
+
+;; EOF

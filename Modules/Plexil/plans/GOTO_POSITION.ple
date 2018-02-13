@@ -1,0 +1,135 @@
+// -*- Mode: Java -*-
+// Plan to fly to a specific waypoint
+
+Boolean Command CheckDirectPathFeasibility(Real fromPosition[3],Real toPosition[3]);
+Integer Command FindNewPath(String planID,String algorithm,Real fromPosition[3],Real fromVelocity[3],Real toPosition[3]);
+Integer Command GetTotalWaypoints(String planID);
+Real[3] Command GetWaypoint(String planID,Integer index);
+Real Command ComputeDistance(Real fromPosition[3],Real toPosition[3]);
+Command SetPos(Real position[3]);
+Command SetMode(String mode);
+Command pprint(...);
+Real[3] Lookup position;
+Real[3] Lookup velocity;
+
+GOTO_POSITION:{
+
+    In Real TargetPosition[3];
+    InOut Boolean resolutionCompleted;
+    Real CurrentPosition[3];
+    Real CurrentVelocity[3];
+    Boolean targetFeasibility;    
+    Integer nextWPIndex = 1;
+    Integer totalWPIndex;
+    EndCondition isKnown(resolutionCompleted);
+    
+    CurrentPosition = Lookup(position);
+    CurrentVelocity = Lookup(velocity);
+
+    pprint("In Library call GOTO_POSITION");
+
+    SetMode("ACTIVE");
+    
+    CHECK_FEASIBILITY:{
+	    EndCondition isKnown(targetFeasibility);
+	    targetFeasibility = CheckDirectPathFeasibility(CurrentPosition,TargetPosition);
+    }
+
+    BEE_LINE:{
+        SkipCondition !targetFeasibility;
+
+        pprint("Going to target:",TargetPosition);
+
+        SetPos(TargetPosition);
+
+        {
+            Real dist2nextWP;
+            Repeat true;
+
+            CurrentPosition = Lookup(position);
+
+            {
+                EndCondition isKnown(dist2nextWP);
+                dist2nextWP = ComputeDistance(CurrentPosition,TargetPosition);
+            }
+
+            if(dist2nextWP < 2.0){
+                resolutionCompleted = true;
+            }endif
+
+        }
+    }
+
+    PLAN_PATH:{
+        Integer status;
+        SkipCondition targetFeasibility;
+
+        {
+            EndCondition isKnown(status);
+            status = FindNewPath("Plan1","ASTAR",CurrentPosition,CurrentVelocity,TargetPosition);
+        }
+
+        if(status < 0){
+            resolutionCompleted = false;
+            pprint("Failed to Compute resolution");
+        }endif
+
+        {
+            EndCondition isKnown(totalWPIndex);
+            totalWPIndex = GetTotalWaypoints("Plan1");
+        }
+
+    }
+
+    CHECK_WP_TRANSITION:{
+        Real NextWP[3];
+
+        {
+            EndCondition isKnown(NextWP[0]);
+            NextWP = GetWaypoint("Plan1",nextWPIndex);
+        }
+
+        SetPos(NextWP);
+
+        {
+            Real dist2nextWP;
+            Repeat true;
+
+            CurrentPosition = Lookup(position);
+
+            {
+                EndCondition isKnown(dist2nextWP);
+                dist2nextWP = ComputeDistance(CurrentPosition,NextWP);
+            }
+
+            //pprint("dist2nextWP:",dist2nextWP);
+
+            {
+                SkipCondition dist2nextWP > 1.0;
+                nextWPIndex = nextWPIndex + 1;
+
+                {
+                    SkipCondition nextWPIndex <= totalWPIndex -1;
+                    resolutionCompleted = true;
+                }
+
+                {
+                    Real _nextWP[3];
+                    StartCondition (nextWPIndex <= totalWPIndex - 1);
+
+                    {
+                        EndCondition isKnown(_nextWP[0]);
+                        _nextWP = GetWaypoint("Plan1",nextWPIndex);
+                    }
+
+                    SetPos(_nextWP);
+                    NextWP[0] = _nextWP[0];
+                    NextWP[1] = _nextWP[1];
+                    NextWP[2] = _nextWP[2];
+                }
+
+            }
+
+        }
+    }
+}

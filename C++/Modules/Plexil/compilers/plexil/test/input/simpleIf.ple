@@ -1,4 +1,0 @@
-Command foo;
-
-simpleIf:
-if true foo(); endif
