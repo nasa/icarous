@@ -18,6 +18,10 @@ NASA's core Flight Systems (cFS) middleware. The aforementioned functionalities 
 cFS applications which interact via a publish/subscribe messaging
 service provided by the cFS Software Bus.
 
+### User Guide
+
+https://nasa.github.io/icarous/
+
 ### Current Releases
 
 - ICAROUS  V-2.0 - January 31, 2018
@@ -38,6 +42,12 @@ The following repositories are required to run (or support software-in-the-loop 
 - [Ardupilot](https://github.com/ArduPilot/ardupilot.git) (Only required for software in the loop simulations)
 - [mavlink](https://github.com/ArduPilot/mavlink.git) 
 - [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
+
+### Initialize and Update submodules
+
+```
+    $git submodule update --init --recursive
+```
 
 ### COMPILING ICAROUS
 
