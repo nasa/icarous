@@ -96,11 +96,12 @@ public class COM implements Runnable,ErrorReporter{
 									
 			for(int i=0;i<packets.size();++i){
 				MAVLinkPacket rcvdPacket = packets.get(i);
+
 				int msgid = rcvdPacket.msgid;
-				if(msgid == 109 || msgid == 166 ){
+				//if(msgid == 109 || msgid == 166 ){
 					// Send Radio packets to pixhawk for flow control
 					apIntf.Write(rcvdPacket);					
-				}
+				//}
 			}
 
 			// Handle mission waypoints points
@@ -161,7 +162,7 @@ public class COM implements Runnable,ErrorReporter{
 		boolean status = false;
 		msg_mission_count msgMissionCount = RcvdMessages.GetMissionCount();	    
 		if(msgMissionCount != null && msgMissionCount.target_system == 1){
-			apIntf.Write(msgMissionCount);
+			//apIntf.Write(msgMissionCount);
 			WPloaded = 0;
 			FlightData.InputFlightPlan.clear();
 			status = true;
@@ -175,7 +176,7 @@ public class COM implements Runnable,ErrorReporter{
 		msg_mission_item msgMissionItem = RcvdMessages.GetMissionItem();
 		if(msgMissionItem != null && msgMissionItem.target_system == 1){
 			//System.out.println("received wp item:"+WPloaded);
-			apIntf.Write(msgMissionItem);
+			//apIntf.Write(msgMissionItem);
 			if(msgMissionItem.seq == WPloaded){
 				FlightData.InputFlightPlan.add(msgMissionItem);
 				WPloaded++;
@@ -190,7 +191,7 @@ public class COM implements Runnable,ErrorReporter{
 		boolean status= false;
 		msg_mission_request msgMissionRequest = RcvdMessages.GetMissionRequest();
 		if(msgMissionRequest != null && msgMissionRequest.target_system == 1){
-			apIntf.Write(msgMissionRequest);
+			//apIntf.Write(msgMissionRequest);
 			status = true;
 		}
 		return status;
@@ -200,7 +201,7 @@ public class COM implements Runnable,ErrorReporter{
 		boolean status = false;
 		msg_mission_request_list msgMissionRequestList = RcvdMessages.GetMissionRequestList();
 		if(msgMissionRequestList != null && msgMissionRequestList.target_system == 1){
-			apIntf.Write(msgMissionRequestList);
+			//apIntf.Write(msgMissionRequestList);
 			status = true;
 		}
 		return status;
@@ -211,7 +212,7 @@ public class COM implements Runnable,ErrorReporter{
 		msg_param_request_list msgParamRequestList = RcvdMessages.GetParamRequestList();	    
 		if(msgParamRequestList != null){
 			log.addWarning("MSG: Handling parameter request list");			
-			apIntf.Write(msgParamRequestList);
+			//apIntf.Write(msgParamRequestList);
 			status = true;
 		}
 		return status;
@@ -221,7 +222,7 @@ public class COM implements Runnable,ErrorReporter{
 		boolean status = false;
 		msg_param_request_read msgParamRequestRead = RcvdMessages.GetParamRequestRead();
 		if(msgParamRequestRead != null){
-			apIntf.Write(msgParamRequestRead);
+			//apIntf.Write(msgParamRequestRead);
 			status = true;
 		}
 		return status;
@@ -235,7 +236,7 @@ public class COM implements Runnable,ErrorReporter{
 				
 			}
 			else{
-				apIntf.Write(msgParamValue);
+				//apIntf.Write(msgParamValue);
 				status = true;
 			}				
 		}
@@ -287,7 +288,7 @@ public class COM implements Runnable,ErrorReporter{
 				icarous_parm  = true;
 				break;
 			default:
-				apIntf.Write(msgParamSet);
+				//apIntf.Write(msgParamSet);
 				status = true;
 				break;
 			}
@@ -363,7 +364,7 @@ public class COM implements Runnable,ErrorReporter{
 				}
 			}		
 			else{
-				apIntf.Write(msgCommandLong);
+				//apIntf.Write(msgCommandLong);
 				return true;
 			}
 
@@ -397,7 +398,7 @@ public class COM implements Runnable,ErrorReporter{
 		boolean status= false;
 		msg_set_mode msgSetMode = RcvdMessages.GetSetMode();
 		if(msgSetMode != null){
-			apIntf.Write(msgSetMode);
+			//apIntf.Write(msgSetMode);
 			status = true;
 		}
 		return status;
@@ -408,7 +409,7 @@ public class COM implements Runnable,ErrorReporter{
 		// Handle GPS Inject RTCM messages
 		msg_gps_inject_data msgGPSInjectData = RcvdMessages.GetGPSInjectData();
 		if(msgGPSInjectData != null){
-			apIntf.Write(msgGPSInjectData);
+			//apIntf.Write(msgGPSInjectData);
 			status  = true;
 		}
 		return status;
