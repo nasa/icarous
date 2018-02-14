@@ -61,6 +61,7 @@ public class QuadFMS extends FlightManagementSystem{
 	boolean GoalReached;
 	private double wpDiffTime,startNextWPTime;
 	double captureH,captureV;
+	boolean performKeepOutResolution = false;
 
 	public QuadFMS(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc,ParameterData pdata){
 		super("QuadFMS",acData,ap_Intf,com_Intf);
@@ -235,6 +236,8 @@ public class QuadFMS extends FlightManagementSystem{
 				}
 				double tstart2 = (double)System.nanoTime()/1E9;
 				System.out.format("Path computation time:%f\n",(tstart2 - tstart1));
+
+				performKeepOutResolution = true;
 			}
 			else if(Detector.flightPlanDeviationConflict){
 				log.addWarning("MSG: Computing resolution for stand off conflict");
@@ -430,7 +433,7 @@ public class QuadFMS extends FlightManagementSystem{
 				}				
 				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
 			}
-			else if(Detector.keepOutConflict){
+			else if(performKeepOutResolution){
 				if (FlightData.nextResolutionWP < FlightData.ResolutionPlan.size()-1){
 					Position current = FlightData.acState.positionLast();
 					Position next0 = FlightData.ResolutionPlan.getPos(FlightData.nextResolutionWP);
@@ -460,6 +463,8 @@ public class QuadFMS extends FlightManagementSystem{
 					}else{
 						SetYaw(true,0);
 					}
+				}else{
+					performKeepOutResolution = false;
 				}
 			}
 			else{

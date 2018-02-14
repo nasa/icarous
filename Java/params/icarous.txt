@@ -12,7 +12,7 @@ ICHBEAT = 5
 TAKEOFF_ALT = 5
 
 #Yaw behavior
-ALLOW_YAW = 0
+ALLOW_YAW = true
 
 #Maximum ceiling
 MAX_CEILING = 30
@@ -52,6 +52,6 @@ EALERT_TIME = 15
 DAA_LOOKAHEAD = 20
 
 #Waypoint parameters
-CAPTURE_H = 0.5
-CAPTURE_V = 0.5
+CAPTURE_H = 2
+CAPTURE_V = 2
 WAIT      = 0

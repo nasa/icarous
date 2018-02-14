@@ -227,7 +227,7 @@ public class AircraftData{
 				}
 				msg_command_ack msgCommandAck = new msg_command_ack();
 				msgCommandAck.command = MAV_CMD.MAV_CMD_DO_FENCE_ENABLE;
-				msgCommandAck.result = 1;
+				msgCommandAck.result = 0;
 				Intf.Write(msgCommandAck);		
 				//fence1.print();
 				return 1;
