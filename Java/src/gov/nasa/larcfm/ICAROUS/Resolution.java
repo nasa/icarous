@@ -261,7 +261,7 @@ public class Resolution {
 
 
 		FMS.GoalReached = true;
-		FMS.planType = plan_type_t.TRAJECTORY;
+		FMS.planType = plan_type_t.MANEUVER;
 		FMS.resumeMission = false;
 	}
 

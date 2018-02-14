@@ -430,6 +430,38 @@ public class QuadFMS extends FlightManagementSystem{
 				}				
 				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
 			}
+			else if(Detector.keepOutConflict){
+				if (FlightData.nextResolutionWP < FlightData.ResolutionPlan.size()-1){
+					Position current = FlightData.acState.positionLast();
+					Position next0 = FlightData.ResolutionPlan.getPos(FlightData.nextResolutionWP);
+					Position next1 = FlightData.ResolutionPlan.getPos(FlightData.nextResolutionWP+1);
+					double heading0 = Math.toDegrees(current.track(next0));
+					double heading1 = Math.toDegrees(current.track(next1));
+					double speed = resolutionSpeed;
+
+					double dist2next0 = current.distanceH(next0);
+					double heading;
+					if(dist2next0<10){
+						double fac = dist2next0/10;
+						heading = fac*heading0 + (1-fac)*heading1;
+					}else{
+						heading = heading0;
+					}
+
+					if(dist2next0 < FlightData.pData.getValue("CAPTURE_H")){
+						FlightData.nextResolutionWP++;
+					}
+
+					Velocity velCmd = Velocity.makeTrkGsVs(heading,"degree",resolutionSpeed,"m/s",0,"m/s");
+					SetVelocity(velCmd.y,velCmd.x,velCmd.z);
+
+					if(FlightData.pData.getBool("ALLOW_YAW")){
+						SetYaw(false,heading);
+					}else{
+						SetYaw(true,0);
+					}
+				}
+			}
 			else{
 				System.out.print("finished maneuver resolution\n");
 				maneuverState = maneuver_state_t.IDLE;
