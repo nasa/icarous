@@ -157,16 +157,21 @@ public class COM implements Runnable,ErrorReporter{
 		
 	}
 
-	public void HandleMissionCount(){
+	public boolean HandleMissionCount(){
+		boolean status = false;
 		msg_mission_count msgMissionCount = RcvdMessages.GetMissionCount();	    
 		if(msgMissionCount != null && msgMissionCount.target_system == 1){
 			apIntf.Write(msgMissionCount);
 			WPloaded = 0;
 			FlightData.InputFlightPlan.clear();
+			status = true;
 		}
+
+		return status;
 	}
 	
-	public void HandleMissionItem(){
+	public boolean HandleMissionItem(){
+		boolean status= false;
 		msg_mission_item msgMissionItem = RcvdMessages.GetMissionItem();
 		if(msgMissionItem != null && msgMissionItem.target_system == 1){
 			//System.out.println("received wp item:"+WPloaded);
@@ -175,39 +180,55 @@ public class COM implements Runnable,ErrorReporter{
 				FlightData.InputFlightPlan.add(msgMissionItem);
 				WPloaded++;
 			}
+
+			status = true;
 		}
+		return status;
 	}
 	
-	public void HandleMissionRequest(){
+	public boolean HandleMissionRequest(){
+		boolean status= false;
 		msg_mission_request msgMissionRequest = RcvdMessages.GetMissionRequest();
 		if(msgMissionRequest != null && msgMissionRequest.target_system == 1){
 			apIntf.Write(msgMissionRequest);
+			status = true;
 		}
+		return status;
 	}
 
-	public void HandeMissionRequestList(){
+	public boolean HandeMissionRequestList(){
+		boolean status = false;
 		msg_mission_request_list msgMissionRequestList = RcvdMessages.GetMissionRequestList();
 		if(msgMissionRequestList != null && msgMissionRequestList.target_system == 1){
 			apIntf.Write(msgMissionRequestList);
+			status = true;
 		}
+		return status;
 	}
 
-	public void HandleParamRequestList(){
+	public boolean HandleParamRequestList(){
+		boolean status= false;
 		msg_param_request_list msgParamRequestList = RcvdMessages.GetParamRequestList();	    
 		if(msgParamRequestList != null){
 			log.addWarning("MSG: Handling parameter request list");			
-			apIntf.Write(msgParamRequestList);		
+			apIntf.Write(msgParamRequestList);
+			status = true;
 		}
+		return status;
 	}
 
-	public void HandleParamRequestRead() {
+	public boolean HandleParamRequestRead() {
+		boolean status = false;
 		msg_param_request_read msgParamRequestRead = RcvdMessages.GetParamRequestRead();
 		if(msgParamRequestRead != null){
-			apIntf.Write(msgParamRequestRead);			
+			apIntf.Write(msgParamRequestRead);
+			status = true;
 		}
+		return status;
 	}
 
-	public void HandleParamValue(){
+	public boolean HandleParamValue(){
+		boolean status= false;
 		msg_param_value msgParamValue = RcvdMessages.GetParamValue();
 		if( msgParamValue != null){
 			if(msgParamValue.sysid == 1){
@@ -215,11 +236,14 @@ public class COM implements Runnable,ErrorReporter{
 			}
 			else{
 				apIntf.Write(msgParamValue);
+				status = true;
 			}				
 		}
+		return status;
 	}
 
-	public void HandleParamSet(){
+	public boolean HandleParamSet(){
+		boolean status= false;
 		msg_param_set msgParamSet = RcvdMessages.GetParamSet();
 		if( msgParamSet != null ){
 			String ID = new String(msgParamSet.param_id);		
@@ -264,6 +288,7 @@ public class COM implements Runnable,ErrorReporter{
 				break;
 			default:
 				apIntf.Write(msgParamSet);
+				status = true;
 				break;
 			}
 
@@ -271,11 +296,14 @@ public class COM implements Runnable,ErrorReporter{
 				msgParamValueIC.param_id    =  msgParamSet.param_id;
 				msgParamValueIC.param_value =  msgParamSet.param_value;
 				gsIntf.Write(msgParamValueIC);
+				status = true;
 			}
 		}
+		return status;
 	}
 
-	public void HandleCommandLong(){
+	public boolean HandleCommandLong(){
+
 		msg_command_long msgCommandLong = RcvdMessages.GetCommandLong();
 		if( msgCommandLong != null ){		
 			if(msgCommandLong.command == MAV_CMD.MAV_CMD_DO_FENCE_ENABLE){
@@ -335,13 +363,17 @@ public class COM implements Runnable,ErrorReporter{
 				}
 			}		
 			else{
-				apIntf.Write(msgCommandLong); 
+				apIntf.Write(msgCommandLong);
+				return true;
 			}
 
 		}
+
+		return false;
 	}
 
-	public void HandleCommandInt(){
+	public boolean HandleCommandInt(){
+		boolean status= false;
 		msg_command_int msgCommandInt = RcvdMessages.GetCommandInt();
 		if(msgCommandInt != null){
 			if(msgCommandInt.command == MAV_CMD.MAV_CMD_SPATIAL_USER_2){
@@ -353,32 +385,44 @@ public class COM implements Runnable,ErrorReporter{
 				synchronized(FlightData.missionObj){
 					GenericObject.AddObject(FlightData.missionObj,obj);
 				}
+
+				status = true;
 			}
 
 		}
+		return status;
 	}
 
-	public void HandleSetMode(){
+	public boolean HandleSetMode(){
+		boolean status= false;
 		msg_set_mode msgSetMode = RcvdMessages.GetSetMode();
 		if(msgSetMode != null){
 			apIntf.Write(msgSetMode);
+			status = true;
 		}
+		return status;
 	}
 
-	public void HandleGPSInjectData(){
+	public boolean HandleGPSInjectData(){
+		boolean status= false;
 		// Handle GPS Inject RTCM messages
 		msg_gps_inject_data msgGPSInjectData = RcvdMessages.GetGPSInjectData();
 		if(msgGPSInjectData != null){
 			apIntf.Write(msgGPSInjectData);
+			status  = true;
 		}
+		return status;
 	}
 	
-	public void HandleKinematicBands(){
+	public boolean HandleKinematicBands(){
+		boolean status= false;
 		// Handle kinematic band messages
 		msg_kinematic_bands msgKinematicBands = RcvdMessages.GetKinematicBands();
 		if(msgKinematicBands != null){
 			gsIntf.Write(msgKinematicBands);
+			status = true;
 		}
+		return status;
 	}
 	
 	public void EnableDataStream(int option){
