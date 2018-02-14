@@ -222,6 +222,7 @@ public class QuadFMS extends FlightManagementSystem{
 				Resolver.ResolveKeepInConflict();		
 			}
 			else if(Detector.keepOutConflict){
+				SetMode(ARDUPILOT_MODES.BRAKE);
 				SetMode(ARDUPILOT_MODES.GUIDED);
 				log.addWarning("MSG: Computing resolution for keep out conflict");
 				gsIntf.SendStatusText("Keep out conflict");
