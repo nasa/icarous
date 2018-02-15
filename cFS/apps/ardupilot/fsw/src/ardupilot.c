@@ -35,12 +35,12 @@ void ARDUPILOT_AppMain(void){
     ARDUPILOT_AppInit();
 
 
-	status = OS_TaskCreate( &task_1_id, "Task 1", Task1, task_1_stack, TASK_1_STACK_SIZE, TASK_1_PRIORITY, 0);
+	status = CFE_ES_CreateChildTask( &task_1_id, "Task 1", Task1, task_1_stack, TASK_1_STACK_SIZE, TASK_1_PRIORITY, 0);
 	if ( status != OS_SUCCESS ){
 		OS_printf("Error creating Task 1\n");
 	}
 
-	status = OS_TaskCreate( &task_2_id, "Task 2", Task2, task_2_stack, TASK_2_STACK_SIZE, TASK_2_PRIORITY, 0);
+	status = CFE_ES_CreateChildTask( &task_2_id, "Task 2", Task2, task_2_stack, TASK_2_STACK_SIZE, TASK_2_PRIORITY, 0);
 	if ( status != OS_SUCCESS ){
 		OS_printf("Error creating Task 2\n");
 	}
