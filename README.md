@@ -43,7 +43,7 @@ The following repositories are required to run (or support software-in-the-loop 
 - [mavlink](https://github.com/ArduPilot/mavlink.git) 
 - [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
 
-### Initialize and Update submodules
+### Initialize and update submodules
 
 ```
     $git submodule update --init --recursive
