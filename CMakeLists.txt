@@ -40,11 +40,6 @@ add_subdirectory(Modules/TrafficMonitor)
 add_subdirectory(Modules/TrajectoryPlanners)
 add_subdirectory(Modules/GeofenceMonitor)
 
-#Path cFE to avoid the Idle Task Warning
-execute_process(COMMAND patch -N -r - ${CMAKE_CURRENT_SOURCE_DIR}/cFS/cFE/cfe/fsw/cfe-core/src/es/cfe_es_api.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/Scripts/IdleTaskWarningFix.patch)
-
-
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DMESSAGE_FORMAT_IS_CCSDS")
 
 IF (NOT DEFINED ENV{OSAL_HOME})
