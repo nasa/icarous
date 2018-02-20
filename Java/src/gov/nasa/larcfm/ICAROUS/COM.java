@@ -100,10 +100,27 @@ public class COM implements Runnable,ErrorReporter{
 				MAVLinkPacket rcvdPacket = packets.get(i);
 
 				int msgid = rcvdPacket.msgid;
+				boolean send = true;
+
 				//if(msgid == 109 || msgid == 166 ){
-					// Send Radio packets to pixhawk for flow control
-					apIntf.Write(rcvdPacket);					
+				// Send Radio packets to pixhawk for flow control
+				// send = true
 				//}
+
+				if(msgid == msg_command_long.MAVLINK_MSG_ID_COMMAND_LONG){
+					msg_command_long cmdLong = (msg_command_long)rcvdPacket.unpack();
+					if(cmdLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_1 ||
+					   cmdLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_2 ||
+					   cmdLong.command == MAV_CMD.MAV_CMD_USER_2) {
+						send = false;
+					}
+				}
+
+
+				if(send) {
+					apIntf.Write(rcvdPacket);
+				}
+
 			}
 
 			// Handle mission waypoints points
@@ -158,7 +175,7 @@ public class COM implements Runnable,ErrorReporter{
 	
 	public void Refresh(){
 
-		
+
 	}
 
 	public boolean HandleMissionCount(){
