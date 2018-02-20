@@ -502,7 +502,7 @@ public class Resolution {
 
 	}
 
-	public void ResolveTrafficConflictDAA(){
+	public void ResolveTrafficConflictWithTrack(){
 
 	        
 		// Track based resolutions
@@ -610,6 +610,42 @@ public class Resolution {
 			FMS.debug_out += "Computation time: " + elapsedTime + "\n";
 		}*/
 		
+	}
+
+	public void ResolveTrafficConflictWithSpeed(){
+		// Track based resolutions
+		double startTime = (double)System.nanoTime()/1E9;
+		boolean prefDirection = FMS.Detector.KMB.preferredGroundSpeedDirection();
+		double prefSpeed      = FMS.Detector.KMB.groundSpeedResolution(prefDirection);
+
+		double heading = FMS.Detector.lastTrafficConflictVel.track("degree");
+		double vs = 0;
+		double gs = prefSpeed;
+
+		Velocity velCmd = Velocity.makeTrkGsVs(heading,"degree",prefSpeed,"m/s",vs,"m/s");
+
+		if(Double.isFinite(prefSpeed)) {
+			FlightData.maneuverVn = velCmd.y;
+			FlightData.maneuverVe = velCmd.x;
+			FlightData.maneuverVu = velCmd.z;
+		}
+		//System.out.println("Preferred ground speed: "+gs);
+
+		FlightData.maneuverHeading = Math.toDegrees(Math.atan2(FlightData.maneuverVe,FlightData.maneuverVn));
+
+		if(FlightData.maneuverHeading < 0){
+			FlightData.maneuverHeading = 360 + FlightData.maneuverHeading;
+		}
+
+	}
+
+	public void ResolveTrafficConflictDAA(){
+		boolean speedResolution = FlightData.pData.getBool("SPEED_RESOLUTION");
+
+		if(speedResolution)
+			ResolveTrafficConflictWithSpeed();
+		else
+			ResolveTrafficConflictWithTrack();
 	}
 
 	public void ResolveTrafficConflictRRT(){

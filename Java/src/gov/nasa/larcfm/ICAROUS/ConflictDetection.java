@@ -64,6 +64,7 @@ public class ConflictDetection{
 	public double timeStart;
 	private double daalogtime;
 	private double daaBandTime;
+	public Velocity lastTrafficConflictVel;
 	
 	public ConflictDetection(QuadFMS fms){
 		FMS = fms;
@@ -214,7 +215,7 @@ public class ConflictDetection{
 		return stats;
 	}
 
-	public void CheckTraffic(){
+	public void CheckTrafficWithTrack(){
 		
 		
 		if(FlightData.traffic.size() == 0){
@@ -316,6 +317,65 @@ public class ConflictDetection{
 			FMS.debug_out += FMS.Detector.KMB.outputStringInfo();
 			FMS.debug_out += FMS.Detector.KMB.outputStringTrackBands();			
 		}
+	}
+
+	public void CheckTrafficWithSpeed(){
+		if(FlightData.traffic.size() == 0){
+			return;
+		}
+
+		double daaConflictHold = FlightData.pData.getValue("CONFLICT_HOLD");
+
+		double simTime = (double)System.nanoTime()/1E9 - timeStart;
+		daaTimeElapsed = (double)System.nanoTime()/1E9 - daaTimeStart;
+
+
+		Position so = FlightData.acState.positionLast();
+		Velocity vo;
+
+		if(trafficConflict)
+			vo = lastTrafficConflictVel;
+		else
+			vo = FlightData.acState.velocityLast();
+
+		DAA.setOwnshipState("Ownship",so,vo,simTime);
+
+		double dist2traffic = Double.MAX_VALUE;
+		for(int i=0;i<FlightData.traffic.size();i++){
+			Position si = FlightData.traffic.get(i).pos;
+			Velocity vi = FlightData.traffic.get(i).vel;
+			DAA.addTrafficState("Traffic"+i,si,vi);
+			double dist = so.distanceH(si);
+			if(dist < dist2traffic){
+				dist2traffic = dist;
+			}
+		}
+
+		boolean daaViolation = false;
+		KMB = DAA.getKinematicMultiBands();
+		if(KMB.regionOfGroundSpeed(vo.gs()).isConflictBand()){
+			trafficConflict = true;
+			daaTimeStart = (double)System.nanoTime()/1E9;
+			daaViolation = true;
+			lastTrafficConflictVel = vo.mkAddTrk(0);
+		}
+
+		if(daaTimeElapsed > daaConflictHold){
+			if(!daaViolation){
+				trafficConflict = false;
+			}
+		}
+
+	}
+
+	public void CheckTraffic(){
+
+		boolean speedResolution = FlightData.pData.getBool("SPEED_RESOLUTION");
+
+		if(speedResolution)
+			CheckTrafficWithSpeed();
+		else
+			CheckTrafficWithTrack();
 	}
 	
 	public boolean CheckTurnConflict(double low,double high,double newHeading,double oldHeading){
