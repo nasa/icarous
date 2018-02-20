@@ -244,12 +244,12 @@ class TrafficModule(mp_module.MPModule):
         vd = msg.param4
         lat = msg.param5
         lon = msg.param6
-        alt = msg.param7
+        alt = msg.param7        
 
         vehicle = 'Traffic%d' % id
 
         if (vehicle not in self.traffic_on_map):
-            colour = "blue"
+            colour = "green"
             vehicle_type = "copter"
             icon = self.mpstate.map.icon(colour + vehicle_type + '.png')
 
