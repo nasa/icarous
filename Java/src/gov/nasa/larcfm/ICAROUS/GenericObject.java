@@ -36,8 +36,7 @@ package gov.nasa.larcfm.ICAROUS;
 import java.util.*;
 import java.lang.*;
 import com.MAVLink.icarous.*;
-import gov.nasa.larcfm.Util.Position;
-import gov.nasa.larcfm.Util.Velocity;
+import gov.nasa.larcfm.Util.*;
 
 public class GenericObject{
 
@@ -46,6 +45,9 @@ public class GenericObject{
 	public Position pos;
 	public Velocity vel;
 	public double orientation;
+	public double lastUpdated;
+	public EuclideanProjection proj;
+	public boolean prediction = false;
 
 	public GenericObject(int type_in,int id_in,
 			float lat_in, float lon_in, float altmsl_in,			 
@@ -55,16 +57,29 @@ public class GenericObject{
 		pos  = Position.makeLatLonAlt(lat_in,"degree",lon_in,"degree",altmsl_in,"m");
 		vel  = Velocity.makeVxyz(vy_in,vx_in,"m/s",vz_in,"m/s");		
 		orientation = vel.trk();
-
+		lastUpdated = (double)System.nanoTime()/1E9;
+		proj = Projection.createProjection(pos);
 	}
 
-	public boolean isEqual(GenericObject obj,boolean update){
+	public synchronized boolean isEqual(GenericObject obj,boolean update){
 
 		if(id == obj.id){
 			if(update){
-				pos = obj.pos.copy();
+				Position newPos = obj.pos.copy();
+				double latitude,longitude;
+				if(prediction) {
+					latitude = 0.6 * pos.latitude() + 0.4 * newPos.latitude();
+					longitude = 0.6 * pos.longitude() + 0.4 * newPos.longitude();
+					prediction = false;
+				}else{
+					latitude = 1.0 * pos.latitude() + 0.0 * newPos.latitude();
+					longitude = 1.0 * pos.longitude() + 0.0 * newPos.longitude();
+				}
+				double altitude = pos.alt();
+				pos = Position.makeLatLonAlt(latitude,"degree",longitude,"degree",altitude,"m");
 				vel = obj.vel.mkAddTrk(0);
 				orientation = obj.orientation;
+				lastUpdated = (double)System.nanoTime()/1E9;
 			}
 			return true;
 		}else{
@@ -72,7 +87,6 @@ public class GenericObject{
 		}
 
 	}
-
 
 
 	public static void AddObject(List<GenericObject> objectList,GenericObject obj){
@@ -105,6 +119,17 @@ public class GenericObject{
 				break;   
 			}
 		}
+	}
+
+	public synchronized void UpdateState(){
+		double currentTime = (double)System.nanoTime()/1E9;
+		double dt = currentTime - lastUpdated;
+		Vect3 localPos = proj.project(pos);
+		Vect3 NewPos = localPos.AddScal(dt,vel);
+		LatLonAlt poslla = proj.inverse(NewPos);
+		pos = Position.makeLatLonAlt(poslla.latitude(),"degree",poslla.longitude(),"degree",poslla.alt(),"m");
+		lastUpdated = currentTime;
+		prediction = true;
 	}
 
 }
