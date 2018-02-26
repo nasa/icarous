@@ -31,9 +31,9 @@ LOOKAHEAD  = 1
 PROXFACTOR = 3.0
 
 # Flight plan resolution parameters
-RES_SPEED = 10.0
+RES_SPEED = 15.0
 XTRK_GAIN = 0.6
-XTRK_DEV  = 200.0
+XTRK_DEV  = 10.0
 
 #Tracking
 TRK_HEADING = 270
@@ -42,7 +42,7 @@ TRK_DISTV = 0
 
 #DAA parameters
 DAA_CONFIG = params/ISAAC/IsaacDAA_Tau00.txt
-SPEED_RESOLUTION = false
+SPEED_RESOLUTION = true
 CHEAP_DAA = 1
 GOTO_NEXTWP = 1
 CONFLICT_HOLD = 3
