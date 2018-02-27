@@ -12,7 +12,7 @@ ICHBEAT = 5
 TAKEOFF_ALT = 5
 
 #Yaw behavior
-ALLOW_YAW = 0
+ALLOW_YAW = true
 
 #Maximum ceiling
 MAX_CEILING = 30
@@ -42,6 +42,7 @@ TRK_DISTV = 0
 
 #DAA parameters
 DAA_CONFIG = params/ISAAC/IsaacDAA_Tau15.txt
+SPEED_RESOLUTION = false
 CHEAP_DAA = 1
 GOTO_NEXTWP = 1
 CONFLICT_HOLD = 3
@@ -52,6 +53,6 @@ EALERT_TIME = 15
 DAA_LOOKAHEAD = 20
 
 #Waypoint parameters
-CAPTURE_H = 1
-CAPTURE_V = 1
+CAPTURE_H = 3
+CAPTURE_V = 3
 WAIT      = 0

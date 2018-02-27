@@ -19,7 +19,8 @@
 wp load TestCases/Case2/flightplan1.txt
 
 # load traffic
-traffic load 0 80 5 0 -0.5 0
+# traffic load range bearing altitude speed heading climbrate
+traffic load 80 90 5 1 270 0
 
 # start mission from the home position
 long MISSION_START 0

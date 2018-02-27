@@ -61,6 +61,7 @@ public class QuadFMS extends FlightManagementSystem{
 	boolean GoalReached;
 	private double wpDiffTime,startNextWPTime;
 	double captureH,captureV;
+	boolean performKeepOutResolution = false;
 
 	public QuadFMS(Interface ap_Intf,Interface com_Intf,AircraftData acData,Mission mc,ParameterData pdata){
 		super("QuadFMS",acData,ap_Intf,com_Intf);
@@ -222,6 +223,7 @@ public class QuadFMS extends FlightManagementSystem{
 				Resolver.ResolveKeepInConflict();		
 			}
 			else if(Detector.keepOutConflict){
+				SetMode(ARDUPILOT_MODES.BRAKE);
 				SetMode(ARDUPILOT_MODES.GUIDED);
 				log.addWarning("MSG: Computing resolution for keep out conflict");
 				gsIntf.SendStatusText("Keep out conflict");
@@ -234,6 +236,8 @@ public class QuadFMS extends FlightManagementSystem{
 				}
 				double tstart2 = (double)System.nanoTime()/1E9;
 				System.out.format("Path computation time:%f\n",(tstart2 - tstart1));
+
+				performKeepOutResolution = true;
 			}
 			else if(Detector.flightPlanDeviationConflict){
 				log.addWarning("MSG: Computing resolution for stand off conflict");
@@ -428,6 +432,40 @@ public class QuadFMS extends FlightManagementSystem{
 					SetYaw(true,0);
 				}				
 				SetVelocity(FlightData.maneuverVn,FlightData.maneuverVe,FlightData.maneuverVu);
+			}
+			else if(performKeepOutResolution){
+				if (FlightData.nextResolutionWP < FlightData.ResolutionPlan.size()-1){
+					Position current = FlightData.acState.positionLast();
+					Position next0 = FlightData.ResolutionPlan.getPos(FlightData.nextResolutionWP);
+					Position next1 = FlightData.ResolutionPlan.getPos(FlightData.nextResolutionWP+1);
+					double heading0 = Math.toDegrees(current.track(next0));
+					double heading1 = Math.toDegrees(current.track(next1));
+					double speed = resolutionSpeed;
+
+					double dist2next0 = current.distanceH(next0);
+					double heading;
+					if(dist2next0<10){
+						double fac = dist2next0/10;
+						heading = fac*heading0 + (1-fac)*heading1;
+					}else{
+						heading = heading0;
+					}
+
+					if(dist2next0 < FlightData.pData.getValue("CAPTURE_H")){
+						FlightData.nextResolutionWP++;
+					}
+
+					Velocity velCmd = Velocity.makeTrkGsVs(heading,"degree",resolutionSpeed,"m/s",0,"m/s");
+					SetVelocity(velCmd.y,velCmd.x,velCmd.z);
+
+					if(FlightData.pData.getBool("ALLOW_YAW")){
+						SetYaw(false,heading);
+					}else{
+						SetYaw(true,0);
+					}
+				}else{
+					performKeepOutResolution = false;
+				}
 			}
 			else{
 				System.out.print("finished maneuver resolution\n");

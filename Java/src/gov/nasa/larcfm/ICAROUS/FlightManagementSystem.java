@@ -201,6 +201,10 @@ public class FlightManagementSystem implements Runnable,ErrorReporter{
 		}
 
 		FlightData.acTime = bootTime;
+
+		for(int i=0;i < FlightData.traffic.size();i++){
+			FlightData.traffic.get(i).UpdateState();
+		}
 	}
 
 	// Function to send commands to pixhawk

@@ -15,12 +15,12 @@ and recovery maneuvers, autonomously executed by the autopilot, when
 safety criteria are violated or about to be violated.
 
 The ICAROUS package is currently available in C++ and Java. Both versions of ICAROUS have the same functionalities.
-The default version of ICAROUS supports the MAVLink protocol. You can define your own interfaces for other protocols (See C++/src/INTERFACE for examples)
+The default version of ICAROUS supports the MAVLink protocol (v1.0). You can define your own interfaces for other protocols (See C++/src/INTERFACE for examples)
 
 ### Current Releases
 
 - ICAROUS C++: V-1.3.0 - September 11, 2017
-- ICAROUS Java: V-1.2.2 - July 28, 2017
+- ICAROUS Java: V-1.2.3 - January 19, 2018
 
 ### License
 
@@ -36,11 +36,10 @@ Agreement.  See the directory [`LICENSES`](LICENSES); see also the copyright not
 The following repositories are required to run ICAROUS (You will also have to update the submodules in these repositories if available)
 
 - [Ardupilot](https://github.com/ArduPilot/ardupilot.git) (Only required for software in the loop simulations)
-- [mavlink](https://github.com/ArduPilot/mavlink.git) 
+- [mavlink](https://github.com/ArduPilot/mavlink.git) (commit 5de84bb1c)
 - [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
 - [Java simple serial connector (JSSC)](https://code.google.com/archive/p/java-simple-serial-connector/) (Already provided in `Java/lib`)
 - [Core Flight System](https://cfs.gsfc.nasa.gov/) (Already provided)
-- [PLEXIL](https://sourceforge.net/projects/plexil/) (currently only C++ version of ICAROUS supports Plexil)
 
 ### BEFORE LAUNCHING ICAROUS
 
@@ -66,18 +65,11 @@ The various parameters that control the behavior of ICAROUS can be found in `par
 
 To run ICAROUS on a companion computer for Ardupilot, first make sure that the pixhawk port and baud rate settings in the run script are the same as the telemetry port settings on the pixhawk. First lauch the ICAROUS application as follows:
 
-	$nohup ./run.sh PX4 params/icarous.txt > pxout.txt &
+	$nohup ./run.sh PX4R params/icarous.txt > pxout.txt &
 
-Note that the nohup (no hang up) command enables the application to run as a background process without interruption. To enable interaction with ICAROUS and the pixhawk through a ground station uplink, launch the radio interface application:
+Note that the nohup (no hang up) command enables the application to run as a background process without interruption. 
 
-    $nohup ./run.sh RADIO > radioout.txt &
-
-Once the above two applications are launched, you should be able to receive data via the telemetry link connected to the ground station (e.g. mission planner/mavproxy). When using radios with the SiK firmware, it is recommended that the firmware is configured with the following settings:
-
-* MAVLink - None (Raw data mode).
-* Op Resend - disabled.
-* ECC - disabled.
-The Sik radio firmware can be configured using Mission planner or APM Planner.
+Once the above two application is launched, you should be able to receive data via the telemetry link connected to the ground station (e.g. mission planner/mavproxy).
 
 We strongly recommend using MAVProxy as a ground station to communicate with ICAROUS. To simplify uploading geofence data to ICAROUS, additional modules are provided in `Python/CustomModules`. The MAVProxy ground station can be lauched using the run script:
 
@@ -94,10 +86,6 @@ Geofence can be uploaded from MAVProxy using the `geofence` command. An example 
 Once waypoints and geofence are uploaded, the mission can be started from MAVProxy as follows:
 
     long MISSION_START
-
-Update Icarous parameters as follows:
-
-    icparams load params/icarous.txt
 
 ### Running ICAROUS with the ardupilot SITL
 
