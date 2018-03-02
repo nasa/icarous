@@ -43,6 +43,8 @@ TRK_DISTV = 0
 #DAA parameters
 DAA_CONFIG = params/DaidalusQuadConfig.txt
 SPEED_RESOLUTION = false
+WIND_SPEED = 0
+WIND_DIRECTION = 0
 CHEAP_DAA = 1
 GOTO_NEXTWP = 1
 CONFLICT_HOLD = 3

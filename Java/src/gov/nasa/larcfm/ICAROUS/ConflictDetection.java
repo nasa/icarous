@@ -72,6 +72,11 @@ public class ConflictDetection{
 		numConflicts = 0;
 		DAA = new Daidalus();
 		DAA.parameters.loadFromFile(FlightData.pData.getString("DAA_CONFIG"));
+		// Set wind information (TO direction)
+		double windSpeed = FlightData.pData.getValue("WIND_SPEED");
+		double windDirection = FlightData.pData.getValue("WIND_DIRECTION");
+		Velocity wind = Velocity.makeTrkGsVs(windDirection,"deg", windSpeed,"knot", 0,"fpm");
+		DAA.setWindField(wind);
 		daaLookAhead = DAA.parameters.getLookaheadTime();
 		timeStart    = (double)System.nanoTime()/1E9;
 		daalogtime   = 0;
