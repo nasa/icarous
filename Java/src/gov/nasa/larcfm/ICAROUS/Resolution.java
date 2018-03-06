@@ -38,6 +38,10 @@ public class Resolution {
 		DAA.parameters.loadFromFile(FlightData.pData.getString("DAA_CONFIG"));
 		alertTime0 = DAA.parameters.alertor.getLevel(1).getAlertingTime();
 		diffAlertTime = DAA.parameters.alertor.getLevel(1).getEarlyAlertingTime() - alertTime0;
+		double windSpeed = FlightData.pData.getValue("WIND_SPEED");
+		int windDirection = (FlightData.pData.getInt("WIND_DIRECTION") + 180)%360;
+		Velocity wind = Velocity.makeTrkGsVs(windDirection,"deg", (double)windSpeed,"knot", 0,"fpm");
+		DAA.setWindField(wind);
 	}
 
 	public void ResolveKeepInConflict(){

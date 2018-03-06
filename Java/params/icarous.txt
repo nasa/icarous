@@ -51,6 +51,9 @@ CYL_HEIGHT = 10
 ALERT_TIME = 10
 EALERT_TIME = 15
 DAA_LOOKAHEAD = 20
+# Wind speed in knots, from wind direction respective to North.
+WIND_SPEED = 0
+WIND_DIRECTION = 0
 
 #Waypoint parameters
 CAPTURE_H = 2
