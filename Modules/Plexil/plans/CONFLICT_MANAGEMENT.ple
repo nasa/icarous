@@ -86,8 +86,6 @@ CONFLICT_MANAGEMENT:
             acVelocity = Lookup(velocity);
             currentM_WP = Lookup(nextMissionWPIndex);
 
-            pprint("next mission wp:",currentM_WP,_numMissionWP,keepInConflict,keepOutConflict,trafficConflict,flightPlanConflict,_conflictId);
-
             _nextM_WP = currentM_WP + 1;
 
             FENCE:
@@ -303,7 +301,7 @@ CONFLICT_MANAGEMENT:
                 RESUME_MISSION:{
                     Boolean validPoint = false;
                     SkipCondition !completionStatus;
-                    EndCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict );
+                    EndCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict || !resolutionActive);
 
                     pprint("Resuming mission");
 
