@@ -59,7 +59,7 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
             obstacleList.push_back(fdata->GetGeofence(i)->GetPolyMod()->poly3D(proj));
         }
     }
-    
+
     Vect3 initPosR3 = proj.project(currentPos);
 
     Vect3 gpos = proj.project(goalPos);
