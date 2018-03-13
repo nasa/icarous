@@ -26,7 +26,10 @@
       position,
       velocity,
       totalMissionWP,
-      nextMissionWPIndex
+      nextMissionWPIndex,
+      totalFences,
+      totalTraffic,
+      trafficResType
     </LookupNames> 
   </Adapter>
 </Interfaces>

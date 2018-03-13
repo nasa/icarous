@@ -144,6 +144,8 @@ ICAROUS:
             SkipCondition !_cruiseStatus;
             // Perform Conflict Management (Detection and Resolution)
             LibraryCall CONFLICT_MANAGEMENT();
+
+            pprint("Finished cruise");
 	    	   
             _cruiseStatus = false;
             _landStatus = true;

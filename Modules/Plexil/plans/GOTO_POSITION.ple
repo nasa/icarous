@@ -14,6 +14,8 @@ Real[3] Lookup velocity;
 
 GOTO_POSITION:{
 
+    In String SearchType;
+    In Boolean TrafficConflict;
     In Real TargetPosition[3];
     InOut Boolean resolutionCompleted;
     Real CurrentPosition[3];
@@ -31,9 +33,19 @@ GOTO_POSITION:{
     SetMode("ACTIVE");
     
     CHECK_FEASIBILITY:{
-	    EndCondition isKnown(targetFeasibility);
-	    targetFeasibility = CheckDirectPathFeasibility(CurrentPosition,TargetPosition);
+
+        {
+	        EndCondition isKnown(targetFeasibility);
+	        targetFeasibility = CheckDirectPathFeasibility(CurrentPosition,TargetPosition);
+	    }
+
+	    {
+          	SkipCondition !TrafficConflict;
+           	targetFeasibility = false;
+        }
+
     }
+
 
     BEE_LINE:{
         SkipCondition !targetFeasibility;
@@ -66,7 +78,7 @@ GOTO_POSITION:{
 
         {
             EndCondition isKnown(status);
-            status = FindNewPath("Plan1","ASTAR",CurrentPosition,CurrentVelocity,TargetPosition);
+            status = FindNewPath("Plan1",SearchType,CurrentPosition,CurrentVelocity,TargetPosition);
         }
 
         if(status < 0){
@@ -79,6 +91,8 @@ GOTO_POSITION:{
             totalWPIndex = GetTotalWaypoints("Plan1");
         }
 
+        //pprint("Computed waypoint with:",SearchType);
+
     }
 
     CHECK_WP_TRANSITION:{
@@ -90,6 +104,8 @@ GOTO_POSITION:{
         }
 
         SetPos(NextWP);
+
+        //pprint("Setting position");
 
         {
             Real dist2nextWP;
