@@ -986,6 +986,21 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC int _wrap_FlightData_GetTrafficResolutionType(SwigObj * carg1) {
+    int cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    int result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    cppresult =  (int)(arg1)->GetTrafficResolutionType();
+    result = cppresult;
+    return result;
+  }
+  
+  
   SWIGEXPORTC int _wrap_FlightData_GetTotalFences(SwigObj * carg1) {
     int cppresult;
     FlightData *arg1 = (FlightData *) 0 ;

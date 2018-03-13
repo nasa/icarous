@@ -43,6 +43,7 @@ SwigObj * _wrap_FlightData_GetMissionPlanSize(SwigObj * carg1);
 SwigObj * _wrap_FlightData_GetResolutionPlanSize(SwigObj * carg1);
 SwigObj * _wrap_FlightData_GetNextMissionWP(SwigObj * carg1);
 SwigObj * _wrap_FlightData_GetNextResolutionWP(SwigObj * carg1);
+int _wrap_FlightData_GetTrafficResolutionType(SwigObj * carg1);
 int _wrap_FlightData_GetTotalFences(SwigObj * carg1);
 double _wrap_FlightData_getFlightPlanSpeed(SwigObj * carg1, SwigObj * carg2, int carg3);
 void _wrap_FlightData_GetTraffic_pFlightData_i_rlarcfm_Position_rlarcfm_Velocity(SwigObj * carg1, int carg2, SwigObj * carg3, SwigObj * carg4);
@@ -161,6 +162,9 @@ SwigObj * FlightData_GetNextMissionWP(SwigObj * carg1) {
 }
 SwigObj * FlightData_GetNextResolutionWP(SwigObj * carg1) {
   return _wrap_FlightData_GetNextResolutionWP(carg1);
+}
+int FlightData_GetTrafficResolutionType(SwigObj * carg1) {
+  return _wrap_FlightData_GetTrafficResolutionType(carg1);
 }
 int FlightData_GetTotalFences(SwigObj * carg1) {
   return _wrap_FlightData_GetTotalFences(carg1);
