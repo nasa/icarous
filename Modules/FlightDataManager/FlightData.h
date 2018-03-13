@@ -95,6 +95,7 @@ public:
     uint16_t GetResolutionPlanSize();
     uint16_t GetNextMissionWP();
     uint16_t GetNextResolutionWP();
+    int GetTrafficResolutionType();
     int GetTotalFences();
 
     double getFlightPlanSpeed(Plan* fp,int nextWP);

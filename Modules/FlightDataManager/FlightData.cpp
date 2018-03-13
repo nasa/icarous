@@ -319,6 +319,12 @@ double FlightData::GetAllowedXtracDeviation() {
     return val;
 }
 
+int FlightData::GetTrafficResolutionType(){
+    int val;
+    val = paramData.getInt("CHEAP_DAA");
+    return val;
+}
+
 void FlightData::InputGeofenceData(geofence_t* gf){
 
     if(gf->vertexIndex == 0){
