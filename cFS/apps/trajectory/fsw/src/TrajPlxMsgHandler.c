@@ -141,6 +141,21 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             val = FlightData_GetResolutionSpeed(TrajectoryAppData.fdata);
             serializeReal(false,val,trajPlexilMsg.plxData.buffer);
             SendSBMsg(trajPlexilMsg);
+        }else if(CHECK_NAME(msg->plxData,"totalFences")){
+            int val;
+            val = FlightData_GetTotalFences(TrajectoryAppData.fdata);
+            serializeInt(false,val,trajPlexilMsg.plxData.buffer);
+            SendSBMsg(trajPlexilMsg);
+        }else if(CHECK_NAME(msg->plxData,"totalTraffic")){
+            int val;
+            val = FlightData_GetTotalTraffic(TrajectoryAppData.fdata);
+            serializeInt(false,val,trajPlexilMsg.plxData.buffer);
+            SendSBMsg(trajPlexilMsg);
+        }else if(CHECK_NAME(msg->plxData,"trafficResType")){
+            int val;
+            val = FlightData_GetTrafficResolutionType(TrajectoryAppData.fdata);
+            serializeInt(false,val,trajPlexilMsg.plxData.buffer);
+            SendSBMsg(trajPlexilMsg);
         }
 
     }
