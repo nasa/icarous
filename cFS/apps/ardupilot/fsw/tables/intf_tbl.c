@@ -11,7 +11,8 @@ ArdupilotTable_t TblStruct = {
 	14551,       // apPortin
 	0,           // apPortout
 	"127.0.0.1", // ap address
-	0,	         // gsPortType
+	_SOCKET_,    // gsPortType
+	0,           // baudrate
 	14552,       // gsPortin
 	14553,       // gsPortout
 	"127.0.0.1"  // gs address
@@ -19,15 +20,16 @@ ArdupilotTable_t TblStruct = {
 
 #else
 ArdupilotTable_t TblStruct = {
-        _SERIAL_,    // apPortType
-        57600,       // baudrate
-        14551,       // apPortin
-        0,           // apPortout
+        _SERIAL_,       // apPortType
+        57600,          // baudrate
+        0,              // apPortin
+        0,              // apPortout
         "/dev/ttyACM0", // ap address
-        0,	         // gsPortType
-        14552,       // gsPortin
-        14553,       // gsPortout
-        "127.0.0.1"  // gs address
+        _SERIAL_,       // gsPortType
+        57600,          // baudrate
+        0,              // gsPortin
+        0,              // gsPortout
+        "/dev/ttyUSB0"  // gs address
 };
 #endif
 

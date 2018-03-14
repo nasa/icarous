@@ -138,12 +138,14 @@ void ARDUPILOT_AppInit(void){
 	appdataInt.waypointSeq = 0;
 	appdataInt.nextWaypointIndex = 0;
 	appdataInt.ap.portType = TblPtr->apPortType;
+    appdataInt.ap.baudrate = TblPtr->apBaudRate;
 	appdataInt.ap.portin   = TblPtr->apPortin;
 	appdataInt.ap.portout  = TblPtr->apPortout;
 	memcpy(appdataInt.ap.target,TblPtr->apAddress,50);
 
 	appdataInt.gs.id = 1;
 	appdataInt.gs.portType = TblPtr->gsPortType;
+    appdataInt.gs.baudrate = TblPtr->gsBaudRate;
 	appdataInt.gs.portin   = TblPtr->gsPortin;
 	appdataInt.gs.portout  = TblPtr->gsPortout;
 	memcpy(appdataInt.gs.target,TblPtr->gsAddress,50);
@@ -154,7 +156,7 @@ void ARDUPILOT_AppInit(void){
 	// Free table pointer
 	status = CFE_TBL_ReleaseAddress(appdataInt.INTERFACE_tblHandle);
 
-    OS_printf("Port types: %d, %d\n",appdataInt.ap.portType,appdataInt.gs.portType);
+    //OS_printf("Port types: %d, %d\n",appdataInt.ap.portType,appdataInt.gs.portType);
 
 	if (appdataInt.ap.portType == SOCKET){
 		InitializeSocketPort(&appdataInt.ap);
