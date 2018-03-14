@@ -54,6 +54,7 @@ void GEOFENCE_AppInit(void) {
     //Subscribe to plexil output messages from the SB
     CFE_SB_Subscribe(SERVICE_GEOFENCE_MID, geofenceAppData.Geofence_Pipe);
     CFE_SB_Subscribe(ICAROUS_GEOFENCE_MID,geofenceAppData.Geofence_Pipe);
+    CFE_SB_Subscribe(ICAROUS_RESET_MID,geofenceAppData.Geofence_Pipe);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&gfServiceResponse, PLEXIL_INPUT_MID, sizeof(service_t), TRUE);
@@ -80,7 +81,6 @@ void GEOFENCE_ProcessPacket(){
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(geofenceAppData.Geofence_MsgPtr);
 
-
     switch(MsgId){
         case ICAROUS_GEOFENCE_MID: {
             geofence_t *gf;
@@ -94,6 +94,12 @@ void GEOFENCE_ProcessPacket(){
             service_t* msg = (service_t*)geofenceAppData.Geofence_MsgPtr;
             GeoPlxMsgHandler(msg);
             break;
+        }
+
+        case ICAROUS_RESET_MID:{
+            NoArgsCmd_t *resetIcarous;
+            resetIcarous = (NoArgsCmd_t*) geofenceAppData.Geofence_MsgPtr;
+            FlightData_ClearFenceList(geofenceAppData.fdata);
         }
     }
     return;

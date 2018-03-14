@@ -160,6 +160,7 @@ ICAROUS:
             Land();
 
             _landStatus = false;
+            _idleStatus = true;
         }// End of LAND
 	
     }// End of FMS

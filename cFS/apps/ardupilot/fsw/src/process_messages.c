@@ -121,12 +121,16 @@ void ProcessGSMessage(mavlink_message_t message){
 			//writePort(&appdataInt.ap,&message);
 			appdataInt.numWaypoints = msg.count;
 			appdataInt.waypointSeq = 0;
+            appdataInt.nextWaypointIndex = 0;
 			free((void*)appdataInt.waypoint_type);
 			free((void*)appdataInt.waypoint_index);
 			appdataInt.waypoint_type = (int*)malloc(sizeof(int)*appdataInt.numWaypoints);
 			appdataInt.waypoint_index = (int*)malloc(sizeof(int)*appdataInt.numWaypoints);
 
-
+            NoArgsCmd_t resetFpIcarous;
+            CFE_SB_InitMsg(&resetFpIcarous,ICAROUS_RESETFP_MID,sizeof(NoArgsCmd_t),TRUE);
+            CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &resetFpIcarous);
+            CFE_SB_SendMsg((CFE_SB_Msg_t *) &resetFpIcarous);
 			break;
 		}
 
@@ -248,6 +252,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			else if(msg.command == MAV_CMD_USER_1){
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &resetIcarous);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &resetIcarous);
+                appdataInt.nextWaypointIndex = 1000;
 			}
 			else {
 				//writePort(&appdataInt.ap,&message);

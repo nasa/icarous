@@ -57,6 +57,7 @@ void TRAJECTORY_AppInit(void) {
     CFE_SB_Subscribe(ICAROUS_WP_MID,TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_GEOFENCE_MID, TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_RESET_MID, TrajectoryAppData.Trajectory_Pipe);
+    CFE_SB_Subscribe(ICAROUS_RESETFP_MID, TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,TrajectoryAppData.Trajectory_Pipe);
 
     // Initialize all messages that this App generates
@@ -115,8 +116,11 @@ void TRAJECTORY_ProcessPacket(){
         }
 
         case ICAROUS_RESET_MID:{
-            NoArgsCmd_t *resetIcarous;
-            resetIcarous = (NoArgsCmd_t*) TrajectoryAppData.Trajectory_MsgPtr;
+            PathPlanner_ClearAllPlans(TrajectoryAppData.pplanner);
+            FlightData_ClearFenceList(TrajectoryAppData.fdata);
+        }
+
+        case ICAROUS_RESETFP_MID:{
             PathPlanner_ClearAllPlans(TrajectoryAppData.pplanner);
         }
 
