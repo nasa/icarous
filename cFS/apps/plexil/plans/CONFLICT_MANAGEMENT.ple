@@ -220,7 +220,7 @@ CONFLICT_MANAGEMENT:
                 EXECUTE_RESOLUTION:{
                     FENCE_RESOLUTION:{
                         Boolean _resolutionCompleted;
-                        SkipCondition (!keepInConflict && !keepOutConflict);
+                        SkipCondition (!keepInConflict && !keepOutConflict) || trafficConflict;
 
                         LibraryCall GOTO_POSITION(SearchType ="ASTAR",TrafficConflict = false,TargetPosition = RecoveryPosition,
                                                   resolutionCompleted = _resolutionCompleted);
@@ -234,6 +234,10 @@ CONFLICT_MANAGEMENT:
                        EndCondition completionStatus;
 
                        resType = Lookup(trafficResType);
+
+                       if(_prevConflictId == 3){
+                            resType = 0;
+                       }endif
 
                        SetMode("ACTIVE");
 
