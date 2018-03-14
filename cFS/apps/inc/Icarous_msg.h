@@ -32,7 +32,8 @@ typedef enum {
 	_SETVEL_,
 	_SETYAW_,
 	_SETSPEED_,
-	_STATUS_
+	_STATUS_,
+	_DITCH_,
 } command_name_t;
 
 typedef enum{
@@ -151,6 +152,7 @@ typedef struct{
 	double vx;                                /**< velocity North component (m/s)*/
 	double vy;                                /**< velocity East component (m/s)*/
 	double vz;                                /**< velocity Down component (m/s)*/
+    double hdg;                               /**< heading in degrees */
 	double hdop;                              /**< GPS Horizontal Dilution of Precision */
 	double vdop;                              /**< GPS Vertical Dilution of Precision */
 	int numSats;                              /**< Total number of satellites being used for localization */

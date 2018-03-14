@@ -31,6 +31,7 @@
 #define SERVICE_GEOFENCE_MID 0x0035
 #define SERVICE_TRAFFIC_MID 0x0036
 #define SERVICE_RESPONSE_MID 0x0031
+#define SERVICE_DITCH_MID 0x0037
 
 #define SendSBMsg(msg)\
 CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) &msg); \

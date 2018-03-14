@@ -25,6 +25,7 @@ void ProcessAPMessage(mavlink_message_t message){
 			position.vx = (double)globalPositionInt.vx/100;
 			position.vy = (double)globalPositionInt.vy/100;
 			position.vz = (double)globalPositionInt.vz/100;
+			position.hdg = (double)globalPositionInt.hdg/100;
 
 			CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &position);
 			CFE_SB_SendMsg((CFE_SB_Msg_t *) &position);
