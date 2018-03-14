@@ -74,6 +74,7 @@ public:
     void GetTraffic(int id,double* x,double* y,double* z,double* vx,double* vy, double* vz);
     void ClearMissionList();
     void ClearResolutionList();
+    void ClearFenceList();
     void InputNextMissionWP(int index);
     void InputNextResolutionWP(int index);
     void InputTakeoffAlt(double alt);

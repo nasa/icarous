@@ -372,3 +372,7 @@ PolyPath* FlightData::GetPolyPath(){
 double FlightData::GetResolutionSpeed() {
     return paramData.getValue("RES_SPEED");
 }
+
+void FlightData::ClearFenceList() {
+    fenceList.clear();
+}

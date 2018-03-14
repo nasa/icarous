@@ -22,6 +22,7 @@ void _wrap_FlightData_AddTraffic(SwigObj * carg1, int carg2, double carg3, doubl
 void _wrap_FlightData_GetTraffic_pFlightData_i_pd_pd_pd_pd_pd_pd(SwigObj * carg1, int carg2, double * carg3, double * carg4, double * carg5, double * carg6, double * carg7, double * carg8);
 void _wrap_FlightData_ClearMissionList(SwigObj * carg1);
 void _wrap_FlightData_ClearResolutionList(SwigObj * carg1);
+void _wrap_FlightData_ClearFenceList(SwigObj * carg1);
 void _wrap_FlightData_InputNextMissionWP(SwigObj * carg1, int carg2);
 void _wrap_FlightData_InputNextResolutionWP(SwigObj * carg1, int carg2);
 void _wrap_FlightData_InputTakeoffAlt(SwigObj * carg1, double carg2);
@@ -99,6 +100,9 @@ void FlightData_ClearMissionList(SwigObj * carg1) {
 }
 void FlightData_ClearResolutionList(SwigObj * carg1) {
   return _wrap_FlightData_ClearResolutionList(carg1);
+}
+void FlightData_ClearFenceList(SwigObj * carg1) {
+  return _wrap_FlightData_ClearFenceList(carg1);
 }
 void FlightData_InputNextMissionWP(SwigObj * carg1, int carg2) {
   return _wrap_FlightData_InputNextMissionWP(carg1, carg2);
