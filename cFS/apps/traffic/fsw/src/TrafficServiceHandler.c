@@ -1,19 +1,19 @@
 //
 // Created by swee on 1/1/18.
 //
-#include <Plexil_msg.h>
+
 #include <CWrapper/TrafficMonitor_proxy.h>
 #include <Icarous_msg.h>
 #include "traffic.h"
 
-void TrafficPlxMsgHandler(plexil_interface_t* msg){
-    const char* b = msg->plxData.buffer;
+void TrafficServiceHandler(service_t* msg){
+    const char* b = msg->buffer;
 
-    if(msg->plxData.mType == _COMMAND_) {
-        trafficPlexilMsg.plxData.id = msg->plxData.id;
-        trafficPlexilMsg.plxData.mType = _COMMAND_RETURN_;
+    if(msg->sType == _command_) {
+        trafficServiceResponse.id = msg->id;
+        trafficServiceResponse.sType = _command_return_;
 
-        if(CHECK_NAME(msg->plxData,"MonitorTraffic")){
+        if(CHECKNAME((*msg),"MonitorTraffic")){
             //OS_printf("received traffic monitor");
             double position[3];
             double velocity[3];
@@ -32,8 +32,8 @@ void TrafficPlxMsgHandler(plexil_interface_t* msg){
             output[1] = resolution[0];
             output[2] = resolution[1];
             output[3] = resolution[2];
-            serializeRealArray(4,output,trafficPlexilMsg.plxData.buffer);
-            SendSBMsg(trafficPlexilMsg);
+            serializeRealArray(4,output,trafficServiceResponse.buffer);
+            SendSBMsg(trafficServiceResponse);
 
             //OS_printf("num bands: %d\n",trackBands.numBands);
             if(trackBands.numBands > 0) {
@@ -41,7 +41,7 @@ void TrafficPlxMsgHandler(plexil_interface_t* msg){
             }
 
             //OS_printf("Traffic output:%d\n",output[0]);
-        }else if(CHECK_NAME(msg->plxData,"CheckSafeToTurn")){
+        }else if(CHECKNAME((*msg),"CheckSafeToTurn")){
             double position[3];
             double velocity[3];
             double fromHeading;
@@ -53,9 +53,9 @@ void TrafficPlxMsgHandler(plexil_interface_t* msg){
             b = deSerializeReal(false,&toHeading,b);
 
             bool val = TrafficMonitor_CheckSafeToTurn(TrafficAppData.tfMonitor,position,velocity,fromHeading,toHeading);
-            serializeBool(false,val,trafficPlexilMsg.plxData.buffer);
+            serializeBool(false,val,trafficServiceResponse.buffer);
             //OS_printf("turn safety from %f to %f: %d\n",fromHeading,toHeading,val);
-            SendSBMsg(trafficPlexilMsg);
+            SendSBMsg(trafficServiceResponse);
         }
     }
 

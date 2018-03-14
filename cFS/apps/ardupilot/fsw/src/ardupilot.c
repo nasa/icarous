@@ -96,7 +96,7 @@ void ARDUPILOT_AppInit(void){
 	//Subscribe to command messages and kinematic band messages from the SB	 
 	CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataInt.INTERFACE_Pipe);
 	CFE_SB_Subscribe(ICAROUS_VISBAND_MID, appdataInt.INTERFACE_Pipe);
-    CFE_SB_Subscribe(PLEXIL_OUTPUT_INTERFACE_MID, appdataInt.INTERFACE_Pipe);
+    CFE_SB_Subscribe(SERVICE_INTERFACE_MID, appdataInt.INTERFACE_Pipe);
 
 
 	// Initialize all messages that this App generates
@@ -108,7 +108,7 @@ void ARDUPILOT_AppInit(void){
 	CFE_SB_InitMsg(&traffic,ICAROUS_TRAFFIC_MID,sizeof(object_t),TRUE);	
 	CFE_SB_InitMsg(&position,ICAROUS_POSITION_MID,sizeof(position_t),TRUE);	
 	CFE_SB_InitMsg(&ack,ICAROUS_COMACK_MID,sizeof(CmdAck_t),TRUE);
-	CFE_SB_InitMsg(&plexilInput,PLEXIL_INPUT_MID,sizeof(plexil_interface_t),TRUE);
+	CFE_SB_InitMsg(&intfServiceResponse,PLEXIL_INPUT_MID,sizeof(service_t),TRUE);
 
 
 	// Send event indicating app initialization

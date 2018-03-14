@@ -6,15 +6,10 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(MODULES_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../../Modules")
 set(MODULES_LIB "${MODULES_ROOT}/lib")
-set(PLEXIL_SOURCE "${MODULES_ROOT}/Plexil/src")
-set(PLEXIL_LIB "${PLEXIL_SOURCE}/../lib")
-
 
 include_directories(../inc)
 include_directories(${MODULES_ROOT}/GeofenceMonitor)
 include_directories(${MODULES_ROOT}/GeofenceMonitor/CWrapper)
-include_directories(${PLEXIL_SOURCE}/interfaces/CfsAdapter)
-include_directories(${PLEXIL_SOURCE}/wrapper/)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 

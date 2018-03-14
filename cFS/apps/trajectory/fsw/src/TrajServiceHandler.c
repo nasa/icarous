@@ -1,17 +1,15 @@
 //
 // Created by swee on 1/1/18.
 //
-#include <Plexil_msg.h>
-#include <cfs-data-format.hh>
 #include "trajectory.h"
 
-void TrajPlxMsgHandler(plexil_interface_t* msg){
-    const char* b = msg->plxData.buffer;
+void TrajServiceHandler(service_t* msg){
+    const char* b = msg->buffer;
 
-    if(msg->plxData.mType == _COMMAND_) {
-        trajPlexilMsg.plxData.id = msg->plxData.id;
-        trajPlexilMsg.plxData.mType = _COMMAND_RETURN_;
-        if (CHECK_NAME(msg->plxData, "GetWaypoint")) {
+    if(msg->sType == _command_) {
+        trajServiceResponse.id = msg->id;
+        trajServiceResponse.sType = _command_return_;
+        if (CHECKNAME((*msg), "GetWaypoint")) {
             char planID[10]={0};
             int index;
             double waypoint[3];
@@ -19,17 +17,17 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             b = deSerializeInt(false, &index, b);
             PathPlanner_GetWaypoint(TrajectoryAppData.pplanner, planID, index, waypoint);
             //OS_printf("wp %d:%f,%f\n",index,waypoint[0],waypoint[1]);
-            serializeRealArray(3, waypoint, trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
-        } else if (CHECK_NAME(msg->plxData, "GetTotalWaypoints")) {
+            serializeRealArray(3, waypoint, trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
+        } else if (CHECKNAME((*msg), "GetTotalWaypoints")) {
             char planID[10]={0};
             int nWP;
             b = deSerializeString(planID,b);
             nWP = PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner,planID);
             OS_printf("Total waypoints %d\n",nWP);
-            serializeInt(false,nWP,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
-        } else if (CHECK_NAME(msg->plxData, "FindNewPath")) {
+            serializeInt(false,nWP,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
+        } else if (CHECKNAME((*msg), "FindNewPath")) {
             char planID[10]={0};
             char algorithmID[10] = {0};
             double fromPosition[3];
@@ -53,10 +51,10 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             n = PathPlanner_FindPath(TrajectoryAppData.pplanner, algType, planID, fromPosition, toPosition, fromVelocity);
 
             //OS_printf("solution status %d\n",n);
-            serializeInt(false,n,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
+            serializeInt(false,n,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
 
-        } else if (CHECK_NAME(msg->plxData, "ComputeCrossTrackDeviation")) {
+        } else if (CHECKNAME((*msg), "ComputeCrossTrackDeviation")) {
             char planID[10]={0};
             int leg;
             double position[3];
@@ -71,20 +69,20 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
 
             xtrackdist = PathPlanner_ComputeXtrackDistance_c(TrajectoryAppData.pplanner, planID, leg, position,
                                                              offsets);
-            serializeReal(false,xtrackdist,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
+            serializeReal(false,xtrackdist,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
             //OS_printf("xtrack %f\n",xtrackdist);
 
-        } else if(CHECK_NAME(msg->plxData, "ComputeDistance")){
+        } else if(CHECKNAME((*msg), "ComputeDistance")){
             double positionA[3];
             double positionB[3];
             b = deSerializeRealArray(positionA,b);
             b = deSerializeRealArray(positionB,b);
             double distance = PathPlanner_Dist2Waypoint(TrajectoryAppData.pplanner,positionA,positionB);
 
-            serializeReal(false,distance,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
-        } else if(CHECK_NAME(msg->plxData, "GetExitPoint")){
+            serializeReal(false,distance,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
+        } else if(CHECKNAME((*msg), "GetExitPoint")){
 
             double exitPosition[3];
             double currPosition[3];
@@ -96,9 +94,9 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             b = deSerializeInt(false,&nextWP,b);
             PathPlanner_GetExitPoint(TrajectoryAppData.pplanner,planID,currPosition,nextWP,exitPosition);
 
-            serializeRealArray(3,exitPosition,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
-        } else if(CHECK_NAME(msg->plxData,"GetInterceptHeadingToPlan")){
+            serializeRealArray(3,exitPosition,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
+        } else if(CHECKNAME((*msg),"GetInterceptHeadingToPlan")){
 
             char planID[10] = {0};
             int nextWP;
@@ -111,9 +109,9 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             //OS_printf("Get intercept to plan %s,at %f,%f,%f, to %d\n",planID,position[0],position[1],position[2],nextWP);
 
             double track = PathPlanner_GetInterceptHeadingToPlan_c(TrajectoryAppData.pplanner,planID,nextWP,position);
-            serializeReal(false,track,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
-        } else if(CHECK_NAME(msg->plxData,"ManeuverToIntercept")){
+            serializeReal(false,track,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
+        } else if(CHECKNAME((*msg),"ManeuverToIntercept")){
 
             char planID[10] = {0};
             int nextWP;
@@ -125,37 +123,37 @@ void TrajPlxMsgHandler(plexil_interface_t* msg){
             b = deSerializeRealArray(position,b);
 
             PathPlanner_ManueverToIntercept_c(TrajectoryAppData.pplanner,planID,nextWP,position,cmdVelocity);
-            serializeRealArray(3,cmdVelocity,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
+            serializeRealArray(3,cmdVelocity,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
         }
     }else{
-        trajPlexilMsg.plxData.id = msg->plxData.id;
-        trajPlexilMsg.plxData.mType = _LOOKUP_RETURN_;
-        if(CHECK_NAME(msg->plxData,"allowedXtrackDev")){
+        trajServiceResponse.id = msg->id;
+        trajServiceResponse.sType = _lookup_return_;
+        if(CHECKNAME((*msg),"allowedXtrackDev")){
             double val;
             val = FlightData_GetAllowedXtracDeviation(TrajectoryAppData.fdata);
-            serializeReal(false,val,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
-        }else if(CHECK_NAME(msg->plxData,"resolutionSpeed")){
+            serializeReal(false,val,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
+        }else if(CHECKNAME((*msg),"resolutionSpeed")){
             double val;
             val = FlightData_GetResolutionSpeed(TrajectoryAppData.fdata);
-            serializeReal(false,val,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
-        }else if(CHECK_NAME(msg->plxData,"totalFences")){
+            serializeReal(false,val,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
+        }else if(CHECKNAME((*msg),"totalFences")){
             int val;
             val = FlightData_GetTotalFences(TrajectoryAppData.fdata);
-            serializeInt(false,val,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
-        }else if(CHECK_NAME(msg->plxData,"totalTraffic")){
+            serializeInt(false,val,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
+        }else if(CHECKNAME((*msg),"totalTraffic")){
             int val;
             val = FlightData_GetTotalTraffic(TrajectoryAppData.fdata);
-            serializeInt(false,val,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
-        }else if(CHECK_NAME(msg->plxData,"trafficResType")){
+            serializeInt(false,val,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
+        }else if(CHECKNAME((*msg),"trafficResType")){
             int val;
             val = FlightData_GetTrafficResolutionType(TrajectoryAppData.fdata);
-            serializeInt(false,val,trajPlexilMsg.plxData.buffer);
-            SendSBMsg(trajPlexilMsg);
+            serializeInt(false,val,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
         }
 
     }

@@ -4,8 +4,6 @@
  *
  */
 
-
-#include <Plexil_msg.h>
 #include <Icarous_msg.h>
 #include "ardupilot_table.h"
 
@@ -434,11 +432,10 @@ void ARDUPILOT_ProcessPacket(){
 			break;
 		}
 
-		case PLEXIL_OUTPUT_INTERFACE_MID: {
+		case SERVICE_INTERFACE_MID: {
             mavlink_message_t msg;
-			bool send = IntfPlxMsgHandler(&msg);
+			bool send = IntfServiceHandler(&msg);
             if(send) {
-                //OS_printf("sending to ap\n");
                 writePort(&appdataInt.ap, &msg);
             }
             break;

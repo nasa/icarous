@@ -15,7 +15,6 @@
 
 #include "TrafficMonitor_proxy.h"
 #include "msgids/msgids.h"
-#include "Plexil_msg.h"
 #include "Icarous_msg.h"
 
 #define TRAFFIC_STARTUP_INF_EID 0
@@ -45,10 +44,10 @@ void TRAFFIC_AppCleanUp();
 
 void TRAFFIC_ProcessPacket();
 
-void TrafficPlxMsgHandler(plexil_interface_t* msg);
+void TrafficServiceHandler(service_t* msg);
 
 TrafficAppData_t TrafficAppData;
-plexil_interface_t trafficPlexilMsg;
+service_t trafficServiceResponse;
 visbands_t trackBands;
 
 

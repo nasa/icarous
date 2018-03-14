@@ -15,7 +15,7 @@
 
 #include "TrajectoryPlanner_proxy.h"
 #include "msgids/msgids.h"
-#include "Plexil_msg.h"
+#include "Icarous_msg.h"
 
 #define TRAJECTORY_STARTUP_INF_EID 0
 #define TRAJECTORY_COMMAND_ERR_EID 1
@@ -44,10 +44,10 @@ void TRAJECTORY_AppCleanUp();
 
 void TRAJECTORY_ProcessPacket();
 
-void TrajPlxMsgHandler(plexil_interface_t* msg);
+void TrajServiceHandler(service_t* msg);
 
 TrajectoryAppData_t TrajectoryAppData;
-plexil_interface_t trajPlexilMsg;
+service_t trajServiceResponse;
 
 
 #endif //ICAROUS_CFS_TRAJECTORY_H

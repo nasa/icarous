@@ -3,7 +3,6 @@
 //
 #include <Icarous_msg.h>
 #include <CWrapper/TrajectoryPlanner_proxy.h>
-#include <Plexil_msg.h>
 #include "trajectory.h"
 
 CFE_EVS_BinFilter_t  TRAJECTORY_EventFilters[] =
@@ -54,14 +53,14 @@ void TRAJECTORY_AppInit(void) {
                                TRAJECTORY_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to plexil output messages from the SB
-    CFE_SB_Subscribe(PLEXIL_OUTPUT_TRAJECTORY_MID, TrajectoryAppData.Trajectory_Pipe);
+    CFE_SB_Subscribe(SERVICE_TRAJECTORY_MID, TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_WP_MID,TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_GEOFENCE_MID, TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_RESET_MID, TrajectoryAppData.Trajectory_Pipe);
     CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,TrajectoryAppData.Trajectory_Pipe);
 
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&trajPlexilMsg, PLEXIL_INPUT_MID, sizeof(plexil_interface_t), TRUE);
+    CFE_SB_InitMsg(&trajServiceResponse, PLEXIL_INPUT_MID, sizeof(service_t), TRUE);
 
     // Send event indicating app initialization
     CFE_EVS_SendEvent(TRAJECTORY_STARTUP_INF_EID, CFE_EVS_INFORMATION,
@@ -121,10 +120,10 @@ void TRAJECTORY_ProcessPacket(){
             PathPlanner_ClearAllPlans(TrajectoryAppData.pplanner);
         }
 
-        case PLEXIL_OUTPUT_TRAJECTORY_MID: {
-            plexil_interface_t* msg;
-            msg = (plexil_interface_t*) TrajectoryAppData.Trajectory_MsgPtr;
-            TrajPlxMsgHandler(msg);
+        case SERVICE_TRAJECTORY_MID: {
+            service_t* msg;
+            msg = (service_t*) TrajectoryAppData.Trajectory_MsgPtr;
+            TrajServiceHandler(msg);
             break;
         }
     }
