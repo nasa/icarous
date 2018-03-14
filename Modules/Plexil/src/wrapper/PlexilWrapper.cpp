@@ -1,4 +1,5 @@
 #include "PlexilWrapper.h"
+#include "Serialize.h"
 
 #include "ExecApplication.hh"
 #include "AdapterConfiguration.hh"
