@@ -29,7 +29,6 @@ bool IntfServiceHandler(mavlink_message_t *msgMavlink){
                 SendSBMsg(intfServiceResponse);
             } else if (CHECKNAME((*msg), "armStatus")) {
                 int32_t result = -1;
-                OS_printf("arming status check\n");
                 if (ack.name == _ARM_) {
                     result = (int) ack.result == 0 ? 1 : 0;
                 }
@@ -38,7 +37,6 @@ bool IntfServiceHandler(mavlink_message_t *msgMavlink){
             } else if (CHECKNAME((*msg), "takeoffStatus")) {
                 int32_t result = -1;
                 if (ack.name == _TAKEOFF_) {
-                    OS_printf("takeoff status check %d\n", ack.result);
                     result = (int) ack.result == 0 ? 1 : 0;
                 }
                 b = serializeInt(false, result, b);
@@ -77,18 +75,18 @@ bool IntfServiceHandler(mavlink_message_t *msgMavlink){
             send = true;
             const char* b = msg->buffer;
             if (CHECKNAME((*msg), "ArmMotors")) {
-                OS_printf("Arming\n");
+                //OS_printf("Arming\n");
                 mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_COMPONENT_ARM_DISARM, 0,
                                               1, 0, 0, 0, 0, 0, 0);
                 break;
             } else if (CHECKNAME((*msg), "Takeoff")) {
                 double takeoffAlt;
                 b = deSerializeReal(false,&takeoffAlt,b);
-                OS_printf("Takeoff off to:%f\n",takeoffAlt);
+                //OS_printf("Takeoff off to:%f\n",takeoffAlt);
                 mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_NAV_TAKEOFF, 0, 0, 0, 0, 0, 0, 0, (float)takeoffAlt);
                 break;
             } else if (CHECKNAME((*msg), "SetMode")) {
-                OS_printf("Setting mode\n");
+                //OS_printf("Setting mode\n");
 
                 char modeName[15];
                 memset(modeName,0,15);
@@ -124,7 +122,7 @@ bool IntfServiceHandler(mavlink_message_t *msgMavlink){
                     }
                 }
                 mavlink_msg_mission_set_current_pack(255, 0, msgMavlink, 1, 0, seq);
-                OS_printf("Setting next mission WP %d\n",seq);
+                //OS_printf("Setting next mission WP %d\n",seq);
                 break;
             } else if (CHECKNAME((*msg), "SetPos")) {
                 double _position[3];

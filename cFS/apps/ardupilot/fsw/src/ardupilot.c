@@ -267,7 +267,7 @@ void InitializeSocketPort(port_t* prt){
 
 	fcntl(prt->sockId, F_SETFL, O_NONBLOCK);
 
-	OS_printf("Sock id: %d,Address: %s,Port in:%d,out: %d\n",prt->sockId,prt->target,prt->portin,prt->portout);
+	//OS_printf("Sock id: %d,Address: %s,Port in:%d,out: %d\n",prt->sockId,prt->target,prt->portin,prt->portout);
 }
 
 int InitializeSerialPort(port_t* prt,bool should_block){

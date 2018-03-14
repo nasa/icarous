@@ -208,7 +208,7 @@ int plexil_init(int argc, char** argv,struct plexilExec** exec,struct plexilInte
   // get interface configuration file, if provided
   pugi::xml_document configDoc;
   if (!interfaceConfig.empty()) {
-    std::cout << "Reading interface configuration from " << interfaceConfig << std::endl;
+    //std::cout << "Reading interface configuration from " << interfaceConfig << std::endl;
     pugi::xml_parse_result parseResult = configDoc.load_file(interfaceConfig.c_str());
     if (parseResult.status != pugi::status_ok) {
       std::cout << "WARNING: unable to load interface configuration file "
@@ -263,7 +263,7 @@ int plexil_init(int argc, char** argv,struct plexilExec** exec,struct plexilInte
   PLEXIL::ExecApplication* _app = new PLEXIL::ExecApplication();
 
   // initialize it
-  std::cout << "Initializing application" << std::endl;
+  //std::cout << "Initializing application" << std::endl;
   if (useResourceFile) {
     g_interface->readResourceFile(resourceFile);
   }
@@ -279,7 +279,7 @@ int plexil_init(int argc, char** argv,struct plexilExec** exec,struct plexilInte
     _app->addLibraryPath(libraryPath);
 
   // start interfaces
-  std::cout << "Starting interfaces" << std::endl;
+  //std::cout << "Starting interfaces" << std::endl;
   if (!_app->startInterfaces()) {
     std::cout << "ERROR: unable to start interfaces"
 	      << std::endl;
@@ -287,7 +287,7 @@ int plexil_init(int argc, char** argv,struct plexilExec** exec,struct plexilInte
   }
 
   // start the application
-  std::cout << "Starting the exec" << std::endl;
+  //std::cout << "Starting the exec" << std::endl;
   if (!_app->run()) {
     std::cout << "ERROR: Failed to start Exec" << std::endl;
     return 1;

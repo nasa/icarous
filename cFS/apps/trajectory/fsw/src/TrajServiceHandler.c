@@ -24,7 +24,7 @@ void TrajServiceHandler(service_t* msg){
             int nWP;
             b = deSerializeString(planID,b);
             nWP = PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner,planID);
-            OS_printf("Total waypoints %d\n",nWP);
+            //OS_printf("Total waypoints %d\n",nWP);
             serializeInt(false,nWP,trajServiceResponse.buffer);
             SendSBMsg(trajServiceResponse);
         } else if (CHECKNAME((*msg), "FindNewPath")) {
@@ -45,7 +45,7 @@ void TrajServiceHandler(service_t* msg){
             } else if (!strcmp(algorithmID, "RRT")) {
                 algType = 1;
             }
-            OS_printf("computing path %s using alg: %s\n",planID,algorithmID);
+            OS_printf("Trajectory: Computing path %s using alg: %s\n",planID,algorithmID);
 
             int32_t n;
             n = PathPlanner_FindPath(TrajectoryAppData.pplanner, algType, planID, fromPosition, toPosition, fromVelocity);

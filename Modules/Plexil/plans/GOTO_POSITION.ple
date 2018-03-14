@@ -28,7 +28,7 @@ GOTO_POSITION:{
     CurrentPosition = Lookup(position);
     CurrentVelocity = Lookup(velocity);
 
-    pprint("In Library call GOTO_POSITION");
+    //pprint("In Library call GOTO_POSITION");
 
     SetMode("ACTIVE");
     
@@ -50,7 +50,7 @@ GOTO_POSITION:{
     BEE_LINE:{
         SkipCondition !targetFeasibility;
 
-        pprint("Going to target:",TargetPosition);
+        //pprint("Going to target:",TargetPosition);
 
         SetPos(TargetPosition);
 
@@ -83,7 +83,7 @@ GOTO_POSITION:{
 
         if(status < 0){
             resolutionCompleted = false;
-            pprint("Failed to Compute resolution");
+            pprint("Plexil status: Failed to Compute resolution");
         }endif
 
         {
