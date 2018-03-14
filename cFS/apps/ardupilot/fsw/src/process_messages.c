@@ -118,13 +118,15 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_MISSION_COUNT\n");
 			mavlink_mission_count_t msg;
 			mavlink_msg_mission_count_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			appdataInt.numWaypoints = msg.count;
 			appdataInt.waypointSeq = 0;
 			free((void*)appdataInt.waypoint_type);
 			free((void*)appdataInt.waypoint_index);
 			appdataInt.waypoint_type = (int*)malloc(sizeof(int)*appdataInt.numWaypoints);
 			appdataInt.waypoint_index = (int*)malloc(sizeof(int)*appdataInt.numWaypoints);
+
+
 			break;
 		}
 
@@ -133,7 +135,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_MISSION_ITEM\n");
 			mavlink_mission_item_t msg;
 			mavlink_msg_mission_item_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			appdataInt.waypoint_type[(int)msg.seq] = msg.command;
 			appdataInt.waypoint_index[(int)msg.seq] = appdataInt.waypointSeq;
 			if(msg.command == MAV_CMD_NAV_WAYPOINT || msg.command == MAV_CMD_NAV_SPLINE_WAYPOINT){
@@ -156,7 +158,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
 			mavlink_mission_request_list_t msg;
 			mavlink_msg_mission_request_list_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -165,7 +167,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_MISSION_REQUEST\n");
 			mavlink_mission_request_t msg;
 			mavlink_msg_mission_request_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -175,7 +177,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_PARAM_REQUEST_LIST\n");
 			mavlink_param_request_list_t msg;
 			mavlink_msg_param_request_list_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -184,7 +186,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_PARAM_REQUEST_READ\n");
 			mavlink_param_request_read_t msg;
 			mavlink_msg_param_request_read_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -193,7 +195,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_PARAM_SET\n");
 			mavlink_param_value_t msg;
 			mavlink_msg_param_value_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -202,7 +204,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_PARAM_SET\n");
 			mavlink_param_set_t msg;
 			mavlink_msg_param_set_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -248,7 +250,7 @@ void ProcessGSMessage(mavlink_message_t message){
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &resetIcarous);
 			}
 			else {
-				writePort(&appdataInt.ap,&message);
+				//writePort(&appdataInt.ap,&message);
 			}
 
 			break;
@@ -259,7 +261,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_COMMAND_INT\n");
 			mavlink_command_int_t msg;
 			mavlink_msg_command_int_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -268,7 +270,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_SET_MODE\n");
 			mavlink_set_mode_t msg;
 			mavlink_msg_set_mode_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -302,13 +304,13 @@ void ProcessGSMessage(mavlink_message_t message){
 
         case MAVLINK_MSG_ID_RADIO:
         {
-            writePort(&appdataInt.ap,&message);
+            //writePort(&appdataInt.ap,&message);
             break;
         }
 
         case MAVLINK_MSG_ID_RADIO_STATUS:
         {
-            writePort(&appdataInt.ap,&message);
+            //writePort(&appdataInt.ap,&message);
             break;
         }
 	}

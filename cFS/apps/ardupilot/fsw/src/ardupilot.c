@@ -381,6 +381,9 @@ int GetMAVLinkMsgFromGS(){
 		uint8_t cp = appdataInt.gs.recvbuffer[i];
 		msgReceived = mavlink_parse_char(MAVLINK_COMM_1, cp, &message, &status);
 		if(msgReceived){
+			// Send message to autopilot
+			writePort(&appdataInt.ap,&message);
+
 			ProcessGSMessage(message);
 		}
 	}
