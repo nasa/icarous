@@ -57,7 +57,11 @@ void PLEXIL_DistributeMessage(PlexilMsg msg){
             CHECKNAME(msg ,"SetSpeed")){
         MsgId = SERVICE_INTERFACE_MID;
         //OS_printf("interface service request\n");
-    } else{
+    } else if(CHECKNAME(msg,"InitializeDitching") ||
+              CHECKNAME(msg,"GetDitchSite") ||
+              CHECKNAME(msg,"DitchStatus")) {
+
+    }else{
         OS_printf(" '%s' message not distributed:",msg.name);
     }
 
