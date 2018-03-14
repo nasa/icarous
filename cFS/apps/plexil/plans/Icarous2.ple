@@ -104,7 +104,7 @@ ICAROUS:
                 _climbStatus = true;
                 _takeoffStatus = false;
             }else{
-                pprint("Takeoff failed\n");
+                pprint("Plexil status: Takeoff failed\n");
                 _idleStatus = true;
                 _takeoffStatus = false;
             }endif
@@ -149,6 +149,7 @@ ICAROUS:
             StartCondition _landStatus;
             SkipCondition !_landStatus;
 
+            pprint("Plexil status: Landing");
             SetMode("ACTIVE");
             Land();
 
