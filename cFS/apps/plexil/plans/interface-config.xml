@@ -18,7 +18,6 @@
       Land,
       SetVel,
       CheckSafeToTurn,
-      GetDitchSite
     </CommandNames>
     <LookupNames>
       missionStart,
@@ -31,10 +30,11 @@
       totalFences,
       totalTraffic,
       trafficResType,
-      RequireDitchGuidance,
+      requireDitchGuidance,
       ditchingStatus,
       ditchingComplete,
-      resetDitching
+      resetDitching,
+      ditchSite
     </LookupNames> 
   </Adapter>
 </Interfaces>

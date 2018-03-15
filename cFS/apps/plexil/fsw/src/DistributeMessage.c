@@ -57,8 +57,8 @@ void PLEXIL_DistributeMessage(PlexilMsg msg){
             CHECKNAME(msg ,"SetSpeed")){
         MsgId = SERVICE_INTERFACE_MID;
         //OS_printf("interface service request\n");
-    } else if(CHECKNAME(msg,"RequireDitchGuidance") ||
-              CHECKNAME(msg,"GetDitchSite") ||
+    } else if(CHECKNAME(msg,"requireDitchGuidance") ||
+              CHECKNAME(msg,"ditchSite") ||
               CHECKNAME(msg,"ditchingStatus") ||
               CHECKNAME(msg,"ditchingComplete") ||
               CHECKNAME(msg,"resetDitching")) {

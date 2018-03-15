@@ -144,6 +144,8 @@ ICAROUS:
 
             _cruiseStatus = false;
 
+            pprint("Plexil status: finished cruise:",_ditchStatus);
+
             if(!_ditchStatus){
                _landStatus = true;
             }endif
@@ -152,7 +154,7 @@ ICAROUS:
 
         TERMINATE:{
            StartCondition _ditchStatus;
-           SkipCondition _ditchStatus;
+           SkipCondition !_ditchStatus;
 
            pprint("Plexil status: Ditching");
 

@@ -169,6 +169,7 @@ void ProcessMavlinkMessage(mavlink_message_t message){
                     appdataS2D.ditchLocation[0] = intcmd.x/1E7;
                     appdataS2D.ditchLocation[1] = intcmd.y/1E7;
                     appdataS2D.ditchLocation[2] = intcmd.z/1E3;
+                    OS_printf("Received ditch site %f,%f,%f\n",appdataS2D.ditchLocation[0],appdataS2D.ditchLocation[1],appdataS2D.ditchLocation[2]);
 
 				}else if(intcmd.param1 == _RESETDITCH_){
                     appdataS2D.resetDitch = true;
@@ -207,41 +208,40 @@ void ProcessSBMessage(void){
 
         case SERVICE_DITCH_MID: {
             service_t *msgSrv = (service_t *) appdataS2D.SAFE2DITCHMsgPtr;
-            if(CHECKNAME((*msgSrv), "GetDitchSite")){
-                service_t returnMsg;
-                CFE_SB_InitMsg(&returnMsg,P)
-                returnMsg.sType = _command_return_;
+            service_t returnMsg;
+            CFE_SB_InitMsg(&returnMsg,SERVICE_RESPONSE_MID, sizeof(service_t),TRUE);
+            strcpy(returnMsg.name,msgSrv->name);
+            if(CHECKNAME((*msgSrv), "ditchSite")){
+                returnMsg.sType = _lookup_return_;
                 returnMsg.id = msgSrv->id;
                 serializeRealArray(3,appdataS2D.ditchLocation,returnMsg.buffer);
                 SendSBMsg(returnMsg);
-                appdataS2D.ditchLocation[2] = -100000;
+                appdataS2D.ditchLocation[2] = -1000;
+                //OS_printf("Getting ditch site\n");
             }else if(CHECKNAME((*msgSrv), "ditchingStatus")){
-                service_t returnMsg;
                 returnMsg.sType = _lookup_return_;
                 returnMsg.id = msgSrv->id;
                 serializeBool(false, appdataS2D.ditchRequested, returnMsg.buffer);
                 SendSBMsg(returnMsg);
-                OS_printf("Getting ditching status\n");
+                //OS_printf("Getting ditching status\n");
             }else if(CHECKNAME((*msgSrv), "requireDitchGuidance")){
-                service_t returnMsg;
                 returnMsg.sType = _lookup_return_;
                 returnMsg.id = msgSrv->id;
                 serializeBool(false, appdataS2D.ditchGuidanceRequired, returnMsg.buffer);
                 SendSBMsg(returnMsg);
                 OS_printf("require ditch guidance\n");
             }else if(CHECKNAME((*msgSrv), "resetDitching")){
-                service_t returnMsg;
                 returnMsg.sType = _lookup_return_;
                 returnMsg.id = msgSrv->id;
                 serializeBool(false, appdataS2D.resetDitch, returnMsg.buffer);
                 SendSBMsg(returnMsg);
-                OS_printf("reseting ditch");
+                //OS_printf("resetting ditch\n");
             }else if(CHECKNAME((*msgSrv), "ditchingComplete")){
-                service_t returnMsg;
                 returnMsg.sType = _lookup_return_;
                 returnMsg.id = msgSrv->id;
                 serializeBool(false, appdataS2D.endDitch, returnMsg.buffer);
                 SendSBMsg(returnMsg);
+                //OS_printf("ditching complete\n");
             }
 
             break;
@@ -259,7 +259,6 @@ void ProcessSBMessage(void){
             NoArgsCmd_t* cmd = (NoArgsCmd_t*) appdataS2D.SAFE2DITCHMsgPtr;
             switch(cmd->name){
                 case _DITCH_:
-                    OS_printf("Received ditch command from ground station\n");
                     mavlink_msg_command_int_pack(255, 0, &msg, 1, 0, 0, MAV_CMD_USER_1,
                                                  0, 0, _INITIALIZE_, 0, 0, 0, 0, 0, 0);
 

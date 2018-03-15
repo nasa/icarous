@@ -142,7 +142,10 @@ CONFLICT_MANAGEMENT:
 
             DITCH:{
                 statusDH = Lookup(ditchingStatus);
-                pprint("Plexil status: Preparing to ditch");
+
+                if(statusDH){
+                   pprint("Plexil status: Preparing to ditch");
+                }endif
             }
 
             //pprint("conflict flight plan:",statusFP);
