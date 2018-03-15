@@ -109,27 +109,14 @@ void ProcessSBMessage(void){
 
 		case SERVICE_DITCH_MID: {
             service_t *msgSrv = (service_t *) appdataS2D.SAFE2DITCHMsgPtr;
-            if (CHECKNAME((*msgSrv), "InitializeDitching")) {
+           if(CHECKNAME((*msgSrv), "GetDitchSite")){
                 mavlink_msg_command_int_pack(255, 0, &msg, 1, 0, 0, MAV_CMD_SPATIAL_USER_1,
-                                             0, 0, 0, 0, 0, 0, 0, 0, 0);
-                if (!appdataS2D.s2dInitialized) {
-                    s2d_writePort(&appdataS2D.s2dport, &msg);
-                    appdataS2D.s2dInitialized = true;
-                }
-
-                service_t returnMsg;
-                returnMsg.sType = _command_return_;
-                returnMsg.id = msgSrv->id;
-                serializeBool(false, true, returnMsg.buffer);
-                SendSBMsg(returnMsg);
-            }else if(CHECKNAME((*msgSrv), "GetDitchSite")){
-                mavlink_msg_command_int_pack(255, 0, &msg, 1, 0, 0, MAV_CMD_SPATIAL_USER_2,
                                              0, 0, 0, 0, 0, 0, 0, 0, 0);
 
                 s2d_writePort(&appdataS2D.s2dport, &msg);
                 appdataS2D.ditchSite.sType = _command_return_;
                 appdataS2D.ditchSite.id = msgSrv->id;
-            }else if(CHECKNAME((*msgSrv), "DitchStatus")){
+            }else if(CHECKNAME((*msgSrv), "GetDitchingStatus")){
                 service_t returnMsg;
                 returnMsg.sType = _lookup_return_;
                 returnMsg.id = msgSrv->id;

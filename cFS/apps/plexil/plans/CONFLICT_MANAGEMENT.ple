@@ -23,6 +23,8 @@ Real       Command GetInterceptHeadingToPlan(String planID,Integer leg,Real posi
 Real[3]    Command ManeuverToIntercept(String planID,Integer leg,Real position[3]);
 Boolean    Command CheckSafeToTurn(Real position[3],Real velocity[3],Real fromHeading,Real toHeading);
 Boolean    Command SetMode(String mode);
+Boolean    Command GetDitchingStatus();
+Real[3]    Command GetDitchSite();
 
 Command SetNextMissionWP(Integer index);
 Command SetVel(Real velocity[3]);
@@ -43,7 +45,8 @@ CONFLICT_MANAGEMENT:
     Boolean keepInConflict = false;
     Boolean keepOutConflict = false;
     Boolean trafficConflict = false;
-    Boolean flightPlanConflict = false;    
+    Boolean flightPlanConflict = false;
+    Boolean ditchStatus = false;
     Real newConflictHash = 0;
     Real oldConflictHash = 0;
     Real allowedDeviation;
@@ -54,6 +57,7 @@ CONFLICT_MANAGEMENT:
     Integer _numFences = 0;
     Integer _numTraffic = 0;
     Integer _numObjects = 0;
+    Integer _numDitchAttempts = 0;
     Integer _conflictId = 0;
 
     _numMissionWP = Lookup(numMissionWP);
@@ -75,6 +79,7 @@ CONFLICT_MANAGEMENT:
             Boolean statusGF[2];
             Boolean statusTF;
             Boolean statusFP;
+            Boolean statusDH;
 
             Repeat true;
 
@@ -137,6 +142,15 @@ CONFLICT_MANAGEMENT:
                   }endif
             }
 
+            DITCH:{
+                EndCondition isKnown(statusDH);
+                statusDH = GetDitchingStatus();
+            }
+
+	    if(statusDH){
+	        _numDitchAttempts = _numDitchAttempts + 1;
+	    }endif
+
             //pprint("conflict flight plan:",statusFP);
 
             _conflictId = 0;
@@ -157,8 +171,8 @@ CONFLICT_MANAGEMENT:
             keepOutConflict = statusGF[1];
             trafficConflict = statusTF;
             flightPlanConflict = statusFP;
+            ditchStatus = statusDH;
         }
-
 
         RESOLUTION:{
             In Boolean keepInConflict;
@@ -170,13 +184,15 @@ CONFLICT_MANAGEMENT:
             Integer _prevConflictId;
             Integer _prevObjects;
             Real RecoveryPosition[3];
+            Real DitchPosition[3];
             Boolean completionStatus = false;
-            StartCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict );
+            StartCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict || ditchStatus);
             Repeat true;
 
             resolutionActive = true;
-            nextWP = currentM_WP;
+            nextWP = currentM_WP;	    
             _prevObjects = _numObjects;
+	    _prevDitchAttempts = _numDitchAttempts;
             _prevConflictId = _conflictId;
 
             //pprint("Starting resolution:",keepInConflict,keepOutConflict,trafficConflict,flightPlanConflict);
@@ -185,7 +201,7 @@ CONFLICT_MANAGEMENT:
             {
 
                 EndCondition (((_conflictId > 0)&&(_prevConflictId != _conflictId))||
-                              (_prevObjects != _numObjects)||
+                              (_prevObjects != _numObjects)||(_prevDitchAttempts != _numDitchAttempts)||
                               (!resolutionActive));
 
                 GET_RECOVERY_POSITION:{
@@ -213,6 +229,17 @@ CONFLICT_MANAGEMENT:
                         }
 
                         //pprint("Plexil status: recovery position:",RecoveryPosition[0],RecoveryPosition[1],RecoveryPosition[2]);
+                    }
+
+                    DITCH_POINT:{
+                        SkipCondition !ditchStatus;
+
+                        {
+			   EndCondition isKnown(DitchPosition[0]);
+			   DitchPosition = GetDitchSite();
+
+                        }
+
                     }
 
                 }
@@ -261,7 +288,7 @@ CONFLICT_MANAGEMENT:
                           }
 
                           LibraryCall GOTO_POSITION(SearchType = "RRT",TrafficConflict = true,TargetPosition = RecoveryPosition,
-                                                    resolutionCompleted = _resolutionCompleted);
+                                                    resolutionCompleted = _resolutionCompleted); 
                           completionStatus = _resolutionCompleted;
 
                        }
@@ -293,6 +320,16 @@ CONFLICT_MANAGEMENT:
                         }
 
                     }
+
+	            DITCH:{
+		        Boolean _resolutionCompleted;
+			SkipCondition !ditchStatus;
+
+			LibraryCall GOTO_POSITION(SearchType = "ASTAR",TrafficConflict = true,TargetPosition = DitchPosition,
+                                                  resolutionCompleted = _resolutionCompleted);
+			completionStatus = false;
+                         
+		    }
 
                     //pprint("Resolution status:",completionStatus);
                 }
