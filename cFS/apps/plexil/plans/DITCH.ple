@@ -33,8 +33,19 @@ DITCH:
            Repeat true;
 
            {
-               EndCondition isKnown(ditchsite[0]);
-               ditchsite = GetDitchSite();
+               Boolean validSite = false;
+
+               Repeat !validSite;
+               {
+                   EndCondition isKnown(ditchsite[0]);
+                   ditchsite = GetDitchSite();
+               }
+
+               if(ditchsite[2] > -1000){
+                   validSite = true;
+                   pprint("Plexil status: received valid ditch site\n");
+               }endif
+
            }
 
            reqGuidance = Lookup(RequireDitchGuidance);
@@ -52,7 +63,7 @@ DITCH:
            }
 
            DIRECT:{
-
+              Boolean complete = false;
               StartCondition !reqGuidance && !success;
               SkipCondition reqGuidance;
 

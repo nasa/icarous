@@ -248,13 +248,17 @@ void ProcessGSMessage(mavlink_message_t message){
 
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &traffic);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &traffic);
-
-
 			}
 			else if(msg.command == MAV_CMD_USER_1){
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &resetIcarous);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &resetIcarous);
                 appdataInt.nextWaypointIndex = 1000;
+			}else if(msg.command == MAV_CMD_USER_5){
+				NoArgsCmd_t ditchCmd;
+				CFE_SB_InitMsg(&ditchCmd,ICAROUS_COMMANDS_MID, sizeof(NoArgsCmd_t),TRUE);
+				ditchCmd.name = _DITCH_;
+				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &ditchCmd);
+				CFE_SB_SendMsg((CFE_SB_Msg_t *) &ditchCmd);
 			}
 			else {
 				//writePort(&appdataInt.ap,&message);
