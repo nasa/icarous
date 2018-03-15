@@ -59,12 +59,9 @@ void PLEXIL_AppInit(void) {
                                PLEXIL_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to command messages and kinematic band messages from the SB
-    CFE_SB_Subscribe(PLEXIL_INPUT_MID, plexilAppData.PLEXIL_Pipe);
+    CFE_SB_Subscribe(SERVICE_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
     CFE_SB_Subscribe(PLEXIL_WAKEUP_MID, plexilAppData.PLEXIL_Pipe);
-
-    // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&plexilRequests, PLEXIL_OUTPUT_MID, sizeof(service_t), TRUE);
-
+    
     // Send event indicating app initialization
     CFE_EVS_SendEvent(PLEXIL_STARTUP_INF_EID, CFE_EVS_INFORMATION,
                       "Plexil Initialized. Version %d.%d",
@@ -136,7 +133,7 @@ void PLEXIL_ProcessPacket(){
             PLEXIL_Run();
             break;
 
-        case PLEXIL_INPUT_MID:{
+        case SERVICE_RESPONSE_MID:{
             service_t* msg;
             msg = (service_t*) plexilAppData.PLEXIL_MsgPtr;
 

@@ -14,7 +14,7 @@ bool IntfServiceHandler(mavlink_message_t *msgMavlink){
     bool send = false;
 
     // Initialize plexilInput message
-    CFE_SB_InitMsg(&intfServiceResponse,PLEXIL_INPUT_MID,sizeof(service_t),TRUE);
+    CFE_SB_InitMsg(&intfServiceResponse,SERVICE_RESPONSE_MID,sizeof(service_t),TRUE);
     intfServiceResponse.id = msg->id;
     intfServiceResponse.sType = _lookup_return_;
     strcpy(intfServiceResponse.name,msg->name);
