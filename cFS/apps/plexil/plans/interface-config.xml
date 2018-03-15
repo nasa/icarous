@@ -18,7 +18,6 @@
       Land,
       SetVel,
       CheckSafeToTurn,
-      GetDitchingStatus,
       GetDitchSite
     </CommandNames>
     <LookupNames>
@@ -31,7 +30,11 @@
       nextMissionWPIndex,
       totalFences,
       totalTraffic,
-      trafficResType
+      trafficResType,
+      RequireDitchGuidance,
+      ditchingStatus,
+      ditchingComplete,
+      resetDitching
     </LookupNames> 
   </Adapter>
 </Interfaces>

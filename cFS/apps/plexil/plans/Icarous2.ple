@@ -17,7 +17,8 @@ Command SetNextMissionWP(Integer index);
 Command pprint(...);
 
 // Library plans
-LibraryAction CONFLICT_MANAGEMENT();
+LibraryAction CONFLICT_MANAGEMENT(InOut Boolean ditchStatus);
+LibraryAction DITCH();
 
 ICAROUS:
 {
@@ -32,6 +33,7 @@ ICAROUS:
         Boolean _climbStatus   = false;
         Boolean _cruiseStatus  = false;
         Boolean _landStatus    = false;
+        Boolean _ditchStatus   = false;
         Integer _numMissionWP;
         Integer _nextMissionWP = 1;
 
@@ -138,12 +140,27 @@ ICAROUS:
             StartCondition _cruiseStatus;
             SkipCondition !_cruiseStatus;
             // Perform Conflict Management (Detection and Resolution)
-            LibraryCall CONFLICT_MANAGEMENT();
+            LibraryCall CONFLICT_MANAGEMENT(ditchStatus=_ditchStatus);
 
             _cruiseStatus = false;
-            _landStatus = true;
+
+            if(!_ditchStatus){
+               _landStatus = true;
+            }endif
 
         }// End of CRUISE
+
+        TERMINATE:{
+           StartCondition _ditchStatus;
+           SkipCondition _ditchStatus;
+
+           pprint("Plexil status: Ditching");
+
+           LibraryCall DITCH();
+
+           _ditchStatus = false;
+           _landStatus = true;
+        }
 
         LAND:{
             StartCondition _landStatus;
@@ -156,6 +173,7 @@ ICAROUS:
             _landStatus = false;
             _idleStatus = true;
         }// End of LAND
+
 	
     }// End of FMS
 }// End of ICAROUS

@@ -82,69 +82,11 @@ void SAFE2DITCH_AppInit(void){
 	memcpy(appdataS2D.s2dport.target,"127.0.0.1",9);
 
 	s2d_InitializeSocketPort(&appdataS2D.s2dport);
-}
 
-void ProcessSBMessage(void){
-	CFE_SB_MsgId_t  MsgId;
-	MsgId = CFE_SB_GetMsgId(appdataS2D.SAFE2DITCHMsgPtr);
-	mavlink_message_t msg;
-
-	switch (MsgId){
-		case ICAROUS_POSITION_MID: {
-            position_t *msgPos = (position_t *) appdataS2D.SAFE2DITCHMsgPtr;
-
-            mavlink_msg_global_position_int_pack(1, 0, &msg, (int32_t) msgPos->time_gps * 1E3,
-                                                 (int32_t) msgPos->latitude * 1E7,
-                                                 (int32_t) msgPos->longitude * 1E7,
-                                                 (int32_t) msgPos->altitude_abs * 1E3,
-                                                 (int32_t) msgPos->altitude_rel * 1E3,
-                                                 (int32_t) msgPos->vx * 1E2,
-                                                 (int32_t) msgPos->vy * 1E2,
-                                                 (int32_t) msgPos->vz * 1E2,
-                                                 (int32_t) msgPos->hdg * 1E3);
-
-            s2d_writePort(&appdataS2D.s2dport,&msg);
-            break;
-        }
-
-		case SERVICE_DITCH_MID: {
-            service_t *msgSrv = (service_t *) appdataS2D.SAFE2DITCHMsgPtr;
-           if(CHECKNAME((*msgSrv), "GetDitchSite")){
-                mavlink_msg_command_int_pack(255, 0, &msg, 1, 0, 0, MAV_CMD_SPATIAL_USER_1,
-                                             0, 0, 0, 0, 0, 0, 0, 0, 0);
-
-                s2d_writePort(&appdataS2D.s2dport, &msg);
-                appdataS2D.ditchSite.sType = _command_return_;
-                appdataS2D.ditchSite.id = msgSrv->id;
-            }else if(CHECKNAME((*msgSrv), "GetDitchingStatus")){
-                service_t returnMsg;
-                returnMsg.sType = _lookup_return_;
-                returnMsg.id = msgSrv->id;
-                serializeBool(false, appdataS2D.ditchRequested, returnMsg.buffer);
-                SendSBMsg(returnMsg);
-            }
-
-            break;
-        }
-
-        case ICAROUS_RESET_MID:{
-            appdataS2D.s2dInitialized = false;
-            appdataS2D.ditchRequested = false;
-            break;
-        }
-
-        case ICAROUS_COMMANDS_MID:{
-            NoArgsCmd_t* cmd = (NoArgsCmd_t*) appdataS2D.SAFE2DITCHMsgPtr;
-            switch(cmd->name){
-                case _DITCH_:
-                    appdataS2D.ditchRequested = true;
-                    break;
-            }
-        }
-
-
-
-	}
+    appdataS2D.resetDitch = false;
+    appdataS2D.endDitch = false;
+    appdataS2D.ditchGuidanceRequired = false;
+    appdataS2D.ditchRequested = false;
 }
 
 void SAFE2DITCH_AppCleanUp(){
@@ -213,27 +155,111 @@ int GetMAVLinkMsg(){
 void ProcessMavlinkMessage(mavlink_message_t message){
 	switch(message.msgid) {
 
-        case MAVLINK_MSG_ID_SET_MODE:{
+        case MAVLINK_MSG_ID_COMMAND_INT: {
 
-            if(!appdataS2D.s2dInitialized){
-                appdataS2D.ditchRequested = true;
-            }
-            break;
+			mavlink_command_int_t intcmd;
+			mavlink_msg_command_int_decode(&message,&intcmd);
+			if (intcmd.command == MAV_CMD_USER_1) {
+                if(intcmd.param1 == _STARTDITCH_){
+                    appdataS2D.ditchRequested   = (bool) intcmd.param2;
+                    appdataS2D.ditchGuidanceRequired = (bool) intcmd.param3;
+                    appdataS2D.ditchLocation[0] = intcmd.x/1E7;
+                    appdataS2D.ditchLocation[1] = intcmd.y/1E7;
+                    appdataS2D.ditchLocation[2] = intcmd.z/1E3;
+
+				}else if(intcmd.param1 == _RESETDITCH_){
+                    appdataS2D.resetDitch = true;
+                }
+                else if(intcmd.param1 == _ENDDITCH_){
+                    appdataS2D.endDitch = true;
+                }
+				break;
+		    }
         }
-
-        case MAVLINK_MSG_ID_POSITION_TARGET_GLOBAL_INT:{
-            mavlink_position_target_global_int_t targetSite;
-            mavlink_msg_position_target_global_int_decode(&message,&targetSite);
-            double position[3];
-            position[0] = targetSite.lat_int/1E7;
-            position[1] = targetSite.lon_int/1E7;
-            position[2] = targetSite.alt;
-            serializeRealArray(3,position,appdataS2D.ditchSite.buffer);
-            SendSBMsg(appdataS2D.ditchSite);
-
-            break;
-        }
-
 	}
 }
 
+void ProcessSBMessage(void){
+    CFE_SB_MsgId_t  MsgId;
+    MsgId = CFE_SB_GetMsgId(appdataS2D.SAFE2DITCHMsgPtr);
+    mavlink_message_t msg;
+
+    switch (MsgId){
+        case ICAROUS_POSITION_MID: {
+            position_t *msgPos = (position_t *) appdataS2D.SAFE2DITCHMsgPtr;
+
+            mavlink_msg_global_position_int_pack(1, 0, &msg, (int32_t) msgPos->time_gps * 1E3,
+                                                 (int32_t) msgPos->latitude * 1E7,
+                                                 (int32_t) msgPos->longitude * 1E7,
+                                                 (int32_t) msgPos->altitude_abs * 1E3,
+                                                 (int32_t) msgPos->altitude_rel * 1E3,
+                                                 (int32_t) msgPos->vx * 1E2,
+                                                 (int32_t) msgPos->vy * 1E2,
+                                                 (int32_t) msgPos->vz * 1E2,
+                                                 (int32_t) msgPos->hdg * 1E3);
+
+            s2d_writePort(&appdataS2D.s2dport,&msg);
+            break;
+        }
+
+        case SERVICE_DITCH_MID: {
+            service_t *msgSrv = (service_t *) appdataS2D.SAFE2DITCHMsgPtr;
+            if(CHECKNAME((*msgSrv), "GetDitchSite")){
+                service_t returnMsg;
+                returnMsg.sType = _command_return_;
+                returnMsg.id = msgSrv->id;
+                serializeRealArray(3,appdataS2D.ditchLocation,returnMsg.buffer);
+                SendSBMsg(returnMsg);
+            }else if(CHECKNAME((*msgSrv), "ditchingStatus")){
+                service_t returnMsg;
+                returnMsg.sType = _lookup_return_;
+                returnMsg.id = msgSrv->id;
+                serializeBool(false, appdataS2D.ditchRequested, returnMsg.buffer);
+                SendSBMsg(returnMsg);
+            }else if(CHECKNAME((*msgSrv), "requireDitchGuidance")){
+                service_t returnMsg;
+                returnMsg.sType = _lookup_return_;
+                returnMsg.id = msgSrv->id;
+                serializeBool(false, appdataS2D.ditchGuidanceRequired, returnMsg.buffer);
+                SendSBMsg(returnMsg);
+            }else if(CHECKNAME((*msgSrv), "resetDitching")){
+                service_t returnMsg;
+                returnMsg.sType = _lookup_return_;
+                returnMsg.id = msgSrv->id;
+                serializeBool(false, appdataS2D.resetDitch, returnMsg.buffer);
+                SendSBMsg(returnMsg);
+            }else if(CHECKNAME((*msgSrv), "ditchingComplete")){
+                service_t returnMsg;
+                returnMsg.sType = _lookup_return_;
+                returnMsg.id = msgSrv->id;
+                serializeBool(false, appdataS2D.endDitch, returnMsg.buffer);
+                SendSBMsg(returnMsg);
+            }
+
+            break;
+        }
+
+        case ICAROUS_RESET_MID:{
+            appdataS2D.resetDitch = false;
+            appdataS2D.endDitch = false;
+            appdataS2D.ditchGuidanceRequired = false;
+            appdataS2D.ditchRequested = false;
+            break;
+        }
+
+        case ICAROUS_COMMANDS_MID:{
+            NoArgsCmd_t* cmd = (NoArgsCmd_t*) appdataS2D.SAFE2DITCHMsgPtr;
+            switch(cmd->name){
+                case _DITCH_:
+                    mavlink_msg_command_int_pack(255, 0, &msg, 1, 0, 0, MAV_CMD_USER_1,
+                                                 0, 0, _INITIALIZE_, 0, 0, 0, 0, 0, 0);
+
+                    s2d_writePort(&appdataS2D.s2dport, &msg);
+                    break;
+            }
+        }
+
+
+
+    }
+}

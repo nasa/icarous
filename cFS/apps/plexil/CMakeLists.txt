@@ -40,7 +40,7 @@ endforeach()
 
 add_cfe_tables(plexil "fsw/tables/plexil_tbl.c")
 
-set(PLEXIL_PLANS Icarous2.ple CONFLICT_MANAGEMENT.ple GOTO_POSITION.ple TRAFFIC_RESOLUTION.ple MISSION.ple)
+set(PLEXIL_PLANS Icarous2.ple CONFLICT_MANAGEMENT.ple GOTO_POSITION.ple TRAFFIC_RESOLUTION.ple MISSION.ple DITCH.ple)
 
 add_custom_target(PLEXIL_COMPILER COMMAND env PLEXIL_HOME=$ENV{PLEXIL_HOME} make plexil-compiler WORKING_DIRECTORY ${PLEXIL_SOURCE}/../ )
 add_dependencies(plexil PLEXIL_COMPILER)

@@ -23,7 +23,6 @@
 #include "network_includes.h"
 #include "safe2ditch_events.h"
 #include "Icarous_msg.h"
-#include "Plexil_msg.h"
 #include "msgids/msgids.h"
 
 
@@ -73,11 +72,20 @@ typedef struct{
     CFE_SB_PipeId_t    SAFE2DITCH_Pipe;     ///< pipe variable
     CFE_SB_MsgPtr_t    SAFE2DITCHMsgPtr;    ///< msg pointer to SB message
     s2d_port_t s2dport;
-    boolean s2dInitialized;
     boolean ditchRequested;
+    boolean ditchGuidanceRequired;
+    boolean resetDitch;
+    boolean endDitch;
     service_t ditchSite;
+    double ditchLocation[3];
 }appdataS2D_t;
 
+typedef enum{
+    _INITIALIZE_=0,
+    _STARTDITCH_,
+    _RESETDITCH_,
+    _ENDDITCH_
+}DitchStatus_t;
 
 /**
  * Entry point for app

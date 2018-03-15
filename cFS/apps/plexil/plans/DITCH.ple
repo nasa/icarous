@@ -1,0 +1,69 @@
+// -*- Mode: C++ -*-
+// Ditching
+Real[3] Command GetDitchSite();
+Command SetPos(Real position[3]);
+Command SetMode(String mode);
+Command pprint(...);
+
+Boolean Lookup RequireDitchGuidance;
+Boolean Lookup ditchingComplete;
+Boolean Lookup resetDitching;
+
+LibraryAction GOTO_POSITION (In String SearchType,In Boolean TrafficConflict,In Real TargetPosition[3],InOut Boolean resolutionCompleted);
+DITCH:
+{
+
+   Boolean reqGuidance;
+   Boolean success = false;
+   Boolean restartDitching = false;
+   EndCondition success;
+
+   SetMode("ACTIVE");
+
+   CORE:Concurrence{
+
+       {
+           Repeat true;
+           success = Lookup(ditchingComplete);
+           restartDitching = Lookup(resetDitching);
+       }
+
+       {
+           Real ditchsite[3];
+           Repeat true;
+
+           {
+               EndCondition isKnown(ditchsite[0]);
+               ditchsite = GetDitchSite();
+           }
+
+           reqGuidance = Lookup(RequireDitchGuidance);
+
+           ICAROUS_GUIDED:{
+              Boolean complete = false;
+              StartCondition reqGuidance && !success;
+              SkipCondition !reqGuidance;
+
+              EndCondition (restartDitching || complete);
+
+              LibraryCall GOTO_POSITION(SearchType = "ASTAR",TrafficConflict = false,TargetPosition = ditchsite,
+                                                                  resolutionCompleted = complete);
+              complete = true;
+           }
+
+           DIRECT:{
+
+              StartCondition !reqGuidance && !success;
+              SkipCondition reqGuidance;
+
+              EndCondition (restartDitching || complete);
+
+              SetPos(ditchsite);
+
+              complete = true;
+           }
+
+       }
+   }
+
+}
