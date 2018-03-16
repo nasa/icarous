@@ -45,7 +45,7 @@ void TrajServiceHandler(service_t* msg){
             } else if (!strcmp(algorithmID, "RRT")) {
                 algType = 1;
             }
-            OS_printf("Trajectory: Computing path %s using alg: %s\n",planID,algorithmID);
+            //OS_printf("Trajectory: Computing path %s using alg: %s\n",planID,algorithmID);
 
             int32_t n;
             n = PathPlanner_FindPath(TrajectoryAppData.pplanner, algType, planID, fromPosition, toPosition, fromVelocity);
