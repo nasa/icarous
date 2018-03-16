@@ -24,20 +24,24 @@ GOTO_POSITION:{
     Integer nextWPIndex = 1;
     Integer totalWPIndex;
     EndCondition isKnown(resolutionCompleted);
-    
+
+    pprint("Plexil status: In Library call GOTO_POSITION");
+
     CurrentPosition = Lookup(position);
     CurrentVelocity = Lookup(velocity);
-
-    //pprint("In Library call GOTO_POSITION");
 
     SetMode("ACTIVE");
     
     CHECK_FEASIBILITY:{
 
+        pprint("Plexil status: checking target feasibility");
+
         {
 	        EndCondition isKnown(targetFeasibility);
 	        targetFeasibility = CheckDirectPathFeasibility(CurrentPosition,TargetPosition);
 	    }
+
+        pprint("Plexil status: Target feasibility ",targetFeasibility);
 
 	    {
           	SkipCondition !TrafficConflict;
@@ -50,7 +54,7 @@ GOTO_POSITION:{
     BEE_LINE:{
         SkipCondition !targetFeasibility;
 
-        //pprint("Going to target:",TargetPosition);
+        pprint("Plexil status: Going to target:",TargetPosition);
 
         SetPos(TargetPosition);
 
@@ -76,6 +80,8 @@ GOTO_POSITION:{
         Integer status;
         SkipCondition targetFeasibility;
 
+        //pprint("Plexil status: Planning a path to target location");
+
         {
             EndCondition isKnown(status);
             status = FindNewPath("Plan1",SearchType,CurrentPosition,CurrentVelocity,TargetPosition);
@@ -91,7 +97,7 @@ GOTO_POSITION:{
             totalWPIndex = GetTotalWaypoints("Plan1");
         }
 
-        //pprint("Computed waypoint with:",SearchType);
+        pprint("Plexil status: Computed waypoint with:",SearchType);
 
     }
 
