@@ -55,9 +55,9 @@ DITCH:
                Repeat !validSite;
 
                ditchsite = Lookup(ditchSite);
-
+               
                if(ditchsite[2] > -100.0){
-                   pprint("Plexil status: received valid ditch site");
+                   pprint("Plexil status: received valid ditch site ",ditchsite[0],ditchsite[1],ditchsite[2]);
                    validSite = true;
                }endif
 
@@ -78,15 +78,16 @@ DITCH:
 
            ICAROUS_GUIDED:{
               Boolean complete = false;
+              Boolean rescomplete;
               StartCondition reqGuidance && !success;
               SkipCondition !reqGuidance;
 
-              EndCondition (restartDitching || complete);
+              InvariantCondition (!restartDitching || !complete);
 
               pprint("Plexil status: Ditching with Icarous guidance");
 
               LibraryCall GOTO_POSITION(SearchType = "ASTAR",TrafficConflict = false,TargetPosition = ditchsite,
-                                                                  resolutionCompleted = complete);
+                                                                  resolutionCompleted = rescomplete);
               complete = true;
            }
 
