@@ -31,7 +31,7 @@ DITCH:
 
        {
            Real waypoint[3];
-           Repeat true;
+           Repeat !success;
            success = Lookup(ditchingComplete);
            restartDitching = Lookup(resetDitching);
 
@@ -42,24 +42,31 @@ DITCH:
               EndCondition isKnown(waypoint[0]);
               waypoint = GetWaypoint("Plan0",0);
            }
+
        }
 
        {
            Real ditchsite[3];
            Boolean validSite = false;
-           Repeat true;
+           Repeat !success;
 
            {
+               Real waypoint[3];
                Repeat !validSite;
 
                ditchsite = Lookup(ditchSite);
 
-               //pprint("Plexil status: received a ditch site:",ditchsite[0],ditchsite[1],ditchsite[2]);
-
                if(ditchsite[2] > -100.0){
-                   pprint("Plexil status: received valid ditch site\n");
+                   pprint("Plexil status: received valid ditch site");
                    validSite = true;
                }endif
+
+               // This has no reason to be here, but plexil will not let
+               // the other actions under CORE run if only have two repeating lookups
+               {
+                    EndCondition isKnown(waypoint[0]);
+                    waypoint = GetWaypoint("Plan0",0);
+               }
 
            }
 
@@ -88,7 +95,7 @@ DITCH:
               StartCondition !reqGuidance && !success;
               SkipCondition reqGuidance;
 
-              EndCondition (restartDitching || complete);
+              EndCondition (complete);
 
               pprint("Plexil status: Proceeding direct to ditch site");
 

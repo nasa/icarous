@@ -169,12 +169,13 @@ void ProcessMavlinkMessage(mavlink_message_t message){
                     appdataS2D.ditchLocation[0] = intcmd.x/1E7;
                     appdataS2D.ditchLocation[1] = intcmd.y/1E7;
                     appdataS2D.ditchLocation[2] = intcmd.z/1E3;
-                    OS_printf("Received ditch site %f,%f,%f\n",appdataS2D.ditchLocation[0],appdataS2D.ditchLocation[1],appdataS2D.ditchLocation[2]);
+                    //OS_printf("Received ditch site %f,%f,%f\n",appdataS2D.ditchLocation[0],appdataS2D.ditchLocation[1],appdataS2D.ditchLocation[2]);
 
 				}else if(intcmd.param1 == _RESETDITCH_){
                     appdataS2D.resetDitch = true;
                 }
                 else if(intcmd.param1 == _ENDDITCH_){
+                    //OS_printf("End ditching from s2d\n");
                     appdataS2D.endDitch = true;
                 }
 				break;
@@ -193,14 +194,14 @@ void ProcessSBMessage(void){
             position_t *msgPos = (position_t *) appdataS2D.SAFE2DITCHMsgPtr;
 
             mavlink_msg_global_position_int_pack(1, 0, &msg, (int32_t) msgPos->time_gps * 1E3,
-                                                 (int32_t) msgPos->latitude * 1E7,
-                                                 (int32_t) msgPos->longitude * 1E7,
-                                                 (int32_t) msgPos->altitude_abs * 1E3,
-                                                 (int32_t) msgPos->altitude_rel * 1E3,
-                                                 (int32_t) msgPos->vx * 1E2,
-                                                 (int32_t) msgPos->vy * 1E2,
-                                                 (int32_t) msgPos->vz * 1E2,
-                                                 (int32_t) msgPos->hdg * 1E3);
+                                                 (int32_t) (msgPos->latitude * 1E7),
+                                                 (int32_t) (msgPos->longitude * 1E7),
+                                                 (int32_t) (msgPos->altitude_abs * 1E3),
+                                                 (int32_t) (msgPos->altitude_rel * 1E3),
+                                                 (int32_t) (msgPos->vx * 1E2),
+                                                 (int32_t) (msgPos->vy * 1E2),
+                                                 (int32_t) (msgPos->vz * 1E2),
+                                                 (int32_t) (msgPos->hdg * 1E3));
 
             s2d_writePort(&appdataS2D.s2dport,&msg);
             break;
@@ -229,12 +230,13 @@ void ProcessSBMessage(void){
                 returnMsg.id = msgSrv->id;
                 serializeBool(false, appdataS2D.ditchGuidanceRequired, returnMsg.buffer);
                 SendSBMsg(returnMsg);
-                OS_printf("require ditch guidance\n");
+                //OS_printf("require ditch guidance\n");
             }else if(CHECKNAME((*msgSrv), "resetDitching")){
                 returnMsg.sType = _lookup_return_;
                 returnMsg.id = msgSrv->id;
                 serializeBool(false, appdataS2D.resetDitch, returnMsg.buffer);
                 SendSBMsg(returnMsg);
+                appdataS2D.resetDitch = false;
                 //OS_printf("resetting ditch\n");
             }else if(CHECKNAME((*msgSrv), "ditchingComplete")){
                 returnMsg.sType = _lookup_return_;
