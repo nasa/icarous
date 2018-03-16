@@ -134,25 +134,26 @@ void ProcessGSMessage(mavlink_message_t message){
 			break;
 		}
 
-		case MAVLINK_MSG_ID_MISSION_ITEM:
-		{
-			//printf("MAVLINK_MSG_ID_MISSION_ITEM\n");
-			mavlink_mission_item_t msg;
-			mavlink_msg_mission_item_decode(&message, &msg);
-			//writePort(&appdataInt.ap,&message);
-			appdataInt.waypoint_type[(int)msg.seq] = msg.command;
-			appdataInt.waypoint_index[(int)msg.seq] = appdataInt.waypointSeq;
-			if(msg.command == MAV_CMD_NAV_WAYPOINT || msg.command == MAV_CMD_NAV_SPLINE_WAYPOINT){
-				// Send message to SB
-				wpdata.totalWayPoints = appdataInt.numWaypoints;
-				wpdata.wayPointIndex = appdataInt.waypointSeq;
-				wpdata.latitude  = msg.x;
-				wpdata.longitude = msg.y;
-				wpdata.altitude  = msg.z;
-				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &wpdata);
-				CFE_SB_SendMsg((CFE_SB_Msg_t *) &wpdata);
-				appdataInt.waypointSeq++;
-			}
+		case MAVLINK_MSG_ID_MISSION_ITEM: {
+            //printf("MAVLINK_MSG_ID_MISSION_ITEM\n");
+            mavlink_mission_item_t msg;
+            mavlink_msg_mission_item_decode(&message, &msg);
+            //writePort(&appdataInt.ap,&message);
+            if (appdataInt.numWaypoints > 0) {
+                appdataInt.waypoint_type[(int) msg.seq] = msg.command;
+                appdataInt.waypoint_index[(int) msg.seq] = appdataInt.waypointSeq;
+                if (msg.command == MAV_CMD_NAV_WAYPOINT || msg.command == MAV_CMD_NAV_SPLINE_WAYPOINT) {
+                    // Send message to SB
+                    wpdata.totalWayPoints = appdataInt.numWaypoints;
+                    wpdata.wayPointIndex = appdataInt.waypointSeq;
+                    wpdata.latitude = msg.x;
+                    wpdata.longitude = msg.y;
+                    wpdata.altitude = msg.z;
+                    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &wpdata);
+                    CFE_SB_SendMsg((CFE_SB_Msg_t *) &wpdata);
+                    appdataInt.waypointSeq++;
+                }
+            }
 			break;
 		}
 
