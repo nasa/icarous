@@ -5,7 +5,11 @@
 #include "Node.h"
 #include <cmath>
 
-void Node::Node(Node* _parent,int index,double xl,double yl,double zl,double psil,double vsl,double speedl){
+Node::Node() {
+
+}
+
+Node::Node(Node* _parent,int index,double xl,double yl,double zl,double psil,double vsl,double speedl){
     parent = _parent;
     x = xl;
     y = yl;
@@ -33,7 +37,7 @@ bool Node::GoalCheck(Node goal) {
 }
 
 bool Node::AddChild(Node child) {
-    std::list::iterator it;
+    std::list<Node>::iterator it;
     for(it=children.begin();it!=children.end();++it){
         if(it->index == child.index)
             return false;
@@ -61,3 +65,23 @@ void Node::GenerateChildren(int lenH,int lenV,double* heading, double* vspeed, d
     }
 
 }
+
+bool Node::operator<(Node &B) {
+    double val1 = g + h;
+    double val2 = B.g + B.h;
+
+    if (val1 < val2){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+bool Node::operator!=(Node &B) {
+    if (index != B.index){
+        return true;
+    }else{
+        return false;
+    }
+}
+

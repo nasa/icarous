@@ -25,12 +25,15 @@ public:
     std::list<Node> children;
     double neighborhood;
     Node* parent;
-
+    Node();
     Node(Node* parent,int index,double x,double y,double z,double psi,double vs,double speed);
     bool GoalCheck(Node goal);
     bool AddChild(Node child);
     void GenerateChildren(int lenH,int lenV,double* heading, double* vspeed, double dt, std::list<Node> *nodeList);
     double NodeDist(Node B);
+
+    bool operator<(Node& B);
+    bool operator!=(Node& B);
 
 };
 

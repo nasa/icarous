@@ -3,17 +3,16 @@
 //
 
 #include "Astar.h"
+#include <algorithm>
 
-Astar::Astar(Node root, Node goal,int lenh,double* heading,int lenv,double *vs,double deltaT):
-        Root(NULL,root.index,root.x,root.y,root.z,root.psi,root.vs,root.speed),
-        Goal(NULL,goal.index,goal.x,goal.y,goal.z,goal.psi,goal.vs,goal.speed){
-    currentNode = &root;
+Astar::Astar(int lenh,double* heading,int lenv,double *vs,double deltaT,double eps){
     closestDist = MAXDOUBLE;
     HEADING = heading;
     VS = vs;
     dt = deltaT;
     lenH = lenh;
     lenV = lenv;
+    nhood = eps;
 }
 
 void Astar::SetBoundary(Poly3D *boundary) {
@@ -24,8 +23,30 @@ void Astar::InputObstacle(Poly3D *obs) {
     keepOutFence.push_back(*obs);
 }
 
+void Astar::SetRoot(double x, double y, double z, double psi) {
+    Root.index = 0;
+    Root.x = x;
+    Root.y = y;
+    Root.z = z;
+    Root.psi = psi;
+    Root.vs = 0;
+    Root.vx = 0;
+    Root.vy = 0;
+    Root.vz = 0;
+    Root.g = 0;
+    Root.h = 0;
+    Root.neighborhood = nhood;
+    Root.parent = NULL;
+}
+
+void Astar::SetGoal(double x, double y, double z) {
+    Goal.x = x;
+    Goal.y = y;
+    Goal.z = z;
+}
+
 bool Astar::Visited(Node *qnode) {
-    std::list::iterator it;
+    std::list<Node>::iterator it;
     for(it = VisitedList.begin(); it != VisitedList.end(); ++it){
         double dist = qnode->NodeDist(*it);
         if (dist < qnode->neighborhood){
@@ -47,7 +68,7 @@ bool Astar::CheckConstraints(Node qnode) {
     }
 
     if (keepOutFence.size() > 0){
-        std::list::iterator it;
+        std::list<Poly3D>::iterator it;
         for(it = keepOutFence.begin();it != keepOutFence.end();++it){
             val = geoPolyCarp.definitelyOutside(A,*it);
 
@@ -72,7 +93,7 @@ void Astar::GetPath() {
         if(Visited(currentNode)){
             if(Frontier.size() > 0){
                 currentNode = &Frontier.front();
-                Frontier.pop();
+                Frontier.pop_front();
                 continue;
             }
             else{
@@ -85,20 +106,34 @@ void Astar::GetPath() {
 
         currentNode->GenerateChildren(lenH,lenV,HEADING,VS,dt,&nodeList);
 
-        std::list::iterator it;
+        std::list<Node>::iterator it;
         for(it = currentNode->children.begin(); it != currentNode->children.end();++it){
-            if(!CheckConstraints(*it)){
+            Node *_node = (Node*)&(*it);
+            if(!CheckConstraints(*_node)){
                 continue;
             }
 
 
-            it->g = currentNode->g + currentNode->NodeDist(*it) + 0.1*fabs(currentNode->psi - it->psi)
-                                                                + 0.1*fabs(currentNode->vs - it->vs);
+            _node->g = currentNode->g + currentNode->NodeDist(*_node) + 0.1*fabs(currentNode->psi - _node->psi)
+                                                                + 0.1*fabs(currentNode->vs - _node->vs);
 
-            it->h = it->NodeDist(Goal);
-            Frontier.push(*it);
+            _node->h = _node->NodeDist(Goal);
+            Frontier.push_back(*_node);
         }
 
+        Frontier.sort();
 
+        if (Frontier.size() > 0){
+            currentNode = &Frontier.front();
+            Frontier.pop_front();
+        }else{
+            printf("End of frontier\n");
+        }
+    }
+
+    Path.push_back(*currentNode);
+    while(currentNode->parent){
+        Path.push_back(*(currentNode->parent));
+        currentNode = currentNode->parent;
     }
 }
