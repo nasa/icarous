@@ -14,9 +14,15 @@ using namespace larcfm;
 
 class Astar {
 private:
+    double *HEADING;
+    double *VS;
+    double dt;
+    int lenH;
+    int lenV;
     std::list<Node> VisitedList;
     std::queue<Node> Frontier;
     std::list<Node> Path;
+    std::list<Node> nodeList;
     Node Root;
     Node Goal;
     Node* currentNode;
@@ -26,11 +32,12 @@ private:
     std::list<Poly3D> keepOutFence;
 
 public:
-    Astar(Node root,Node goal);
+    Astar(Node root,Node goal,int lenh,double* heading,int lenv,double *vs,double dt);
     void SetBoundary(Poly3D* boundary);
     void InputObstacle(Poly3D* obs);
     void GetPath();
     bool Visited(Node *qnode);
+    bool CheckConstraints(Node qnode);
 
 };
 

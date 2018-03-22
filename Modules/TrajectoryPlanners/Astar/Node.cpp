@@ -5,7 +5,8 @@
 #include "Node.h"
 #include <cmath>
 
-void Node::Node(int index,double xl,double yl,double zl,double psil,double vsl,double speedl){
+void Node::Node(Node* _parent,int index,double xl,double yl,double zl,double psil,double vsl,double speedl){
+    parent = _parent;
     x = xl;
     y = yl;
     z = zl;
@@ -52,7 +53,8 @@ void Node::GenerateChildren(int lenH,int lenV,double* heading, double* vspeed, d
             znew = z + vs*dt;
 
             int totalNodes = nodeList->size();
-            Node _child(totalNodes,xnew,ynew,znew,psi+dpsi,vs,2);
+            Node _child(this,totalNodes,xnew,ynew,znew,psi+dpsi,vs,2);
+            _child.
             AddChild(_child);
             nodeList->push_back(_child);
         }
