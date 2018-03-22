@@ -9,10 +9,10 @@ AUTOPILOT_ID = 1
 ICHBEAT = 5
 
 # Takeoff altitude
-TAKEOFF_ALT = 5
+TAKEOFF_ALT = 4
 
 #Yaw behavior
-ALLOW_YAW = true
+ALLOW_YAW = false
 
 #Maximum ceiling
 MAX_CEILING = 30

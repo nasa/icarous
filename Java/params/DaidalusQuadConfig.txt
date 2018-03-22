@@ -48,5 +48,5 @@ alert_1_spread_trk = 0.000000 [deg]
 alert_1_spread_vs = 0.000000 [fpm]
 conflict_level = 1
 det_1_D = 5.000000 [m]
-det_1_H = 10.000000 [m]
+det_1_H = 1000.000000 [m]
 load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.CDCylinder

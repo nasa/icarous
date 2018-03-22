@@ -68,7 +68,11 @@ elif [ "$1" == 'GS' ];then
 elif [ "$1" == 'RADIO' ];then
     echo "Launching radio module"
     java -cp $EXEC:$JSSCLIB radio $RADIO_SOCKET_IN $RADIO_SOCKET_OUT $RADIO_SERIAL_PORT $RADIO_BAUD 
-    
+
+elif [ "$1" == 'SAFE' ];then
+    echo "Launching Safeguard reader"
+    java -cp $EXEC Jetson_SafeguardReader 165 166 14552
+
 else
     echo "run.sh [ SITL | PX4 | GS | RADIO | SAFE ]"    
 fi
