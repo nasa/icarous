@@ -26,7 +26,7 @@ public:
     double neighborhood;
     Node* parent;
     Node();
-    Node(Node* parent,int index,double x,double y,double z,double psi,double vs,double speed);
+    Node(Node* parent,int index,double x,double y,double z,double psi,double vs,double speed,double eps);
     Node(const Node& _copy);
     bool GoalCheck(Node goal);
     bool AddChild(Node child);

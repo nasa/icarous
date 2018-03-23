@@ -6,7 +6,7 @@
 #define PATHPLANNER_H
 
 typedef enum algorithm{
-    _ASTAR_,_RRT_
+    _GRID_,_ASTAR_,_RRT_
 }algorithm;
 
 #ifdef __cplusplus
@@ -23,7 +23,8 @@ private:
     CDIIPolygon geoCDIIPolygon;
     Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
     Plan* GetPlan(char planID[]);
-    int64_t FindPathAstar(char planID[],double fromPosition[],double toPosition[]);
+    int64_t FindPathGridAstar(char planID[],double fromPosition[],double toPosition[]);
+    int64_t FindPathAstar(char planID[],double fromPosition[],double toPosition[],double velocity[]);
     int64_t FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]);
 public:
     PathPlanner(FlightData* fdata);

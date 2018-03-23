@@ -1,132 +1,104 @@
 //
-// Created by Swee Balachandran on 12/14/17.
+// Created by Swee Balachandran on 3/23/18.
 //
-
 #include "PathPlanner.h"
-#include "DensityGrid.h"
-#include "DensityGridAStarSearch.h"
+#include "Astar.h"
+
+int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double toPosition[],double velocity[]) {
+
+    double trk = velocity[0];
+    double gs = velocity[1];
+    double vs = velocity[2];
+
+    // Reroute flight plan
+    std::vector<Vect3> TrafficPos;
+    std::vector<Vect3> TrafficVel;
+
+    Position currentPos = Position::makeLatLonAlt(fromPosition[0], "degree",fromPosition[1], "degree", fromPosition[2], "m");
+    Position endPos     = Position::makeLatLonAlt(toPosition[0], "degree", toPosition[1], "degree", toPosition[2], "m");
+    Velocity currentVel = Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
 
 
-int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double toPosition[]) {
+    EuclideanProjection proj = Projection::createProjection(currentPos.mkAlt(0));
 
-    double gridsize          = fdata->paramData.getValue("GRIDSIZE");
-    double buffer            = fdata->paramData.getValue("BUFFER");
-    double lookahead         = fdata->paramData.getValue("LOOKAHEAD");
-    double resolutionSpeed   = fdata->paramData.getValue("RES_SPEED");
-    double maxAlt            = fdata->paramData.getValue("MAX_CEILING");
-    double Hthreshold        = fdata->paramData.getValue("HTHRESHOLD");
-    double altFence;
+    double computationTime = 1.0;
 
-    Position startPos = Position::makeLatLonAlt(fromPosition[0],"degree",fromPosition[1],"degree",fromPosition[2],"m");
-    Position endPos   = Position::makeLatLonAlt(toPosition[0],"degree",toPosition[1],"degree",toPosition[2],"m");
+    for(int i=0;i<fdata->GetTotalTraffic();++i){
+        double x,y,z,vx,vy,vz;
+        fdata->GetTraffic(i,&x,&y,&z,&vx,&vy,&vz);
+        Velocity Vel = Velocity::makeVxyz(vx,vy,vz);
+        Position Pos = Position::makeLatLonAlt(x,"degree",y,"degree",z,"m");
+        Vect3 tPos = proj.project(Pos);
+        Vect3 tVel = Vect3(vx,vy,vz);
+        tPos.linear(tVel,computationTime);
+        TrafficPos.push_back(tPos);
+        TrafficVel.push_back(tVel);
+    }
 
-    BoundingRectangle BR;
-    int totalfences = fdata->GetTotalFences();
-    for(int i=0;i<totalfences;++i){
-        fence *gf = fdata->GetGeofence(i);
-        if (gf->GetType() == KEEP_IN){
-            altFence = gf->GetCeiling();
-            for(int j=0;j<gf->GetSize();++j)
-                BR.add(gf->GetPoly()->getVertex(j));
+    Plan currentFP;
+    Position prevWP;
+    Position nextWP;
+    double dist = currentVel.gs()*computationTime;
+
+    Position start = currentPos.linearDist2D(currentVel.trk(), dist);
+    Position goalPos = endPos;
+
+    Vect3 initPosR3 = proj.project(currentPos);
+    Vect3 gpos = proj.project(goalPos);
+
+
+    //TODO: Make these user defined parameters?
+    double HEADING[5] = {-90.0, -45.0, 0.0, 45.0, 90.0};
+    double VS[1] = {0.0};
+    int lenH = 5;
+    int lenV = 1;
+
+    Astar pathfinder(lenH,HEADING,lenV,VS,0.5,1.0);
+
+    pathfinder.SetRoot(initPosR3.x,initPosR3.y,initPosR3.z,trk,2.0);
+    pathfinder.SetGoal(gpos.x,gpos.y,gpos.z);
+
+    for(int i=0;i<fdata->GetTotalFences();++i){
+        if (fdata->GetGeofence(i)->GetType() == KEEP_IN){
+            Poly3D bbox = fdata->GetGeofence(i)->GetPoly()->poly3D(proj);
+            pathfinder.SetBoundary(&bbox);
+        }else{
+            Poly3D obs = fdata->GetGeofence(i)->GetPolyMod()->poly3D(proj);
+            pathfinder.InputObstacle(&obs);
         }
     }
 
-    NavPoint initpos(startPos,0);
-    DensityGrid DG(BR,initpos,endPos,(int)buffer,gridsize,true);
-    DG.snapToStart();
-    DG.setWeights(5.0);
+    string daaConfig = fdata->paramData.getString("DAA_CONFIG");
 
-    for(int i=0;i<totalfences;++i){
-        fence *gf = fdata->GetGeofence(i);
-        if (gf->GetType() == KEEP_OUT){
-            DG.setWeightsInside(*gf->GetPolyMod(),100.0);
-        }
-    }
+    bool goalFound = pathfinder.ComputePath();
 
-    DensityGridAStarSearch DGAstar;
-    std::vector<std::pair<int,int>> GridPath = DGAstar.optimalPath(DG);
-    std::vector<std::pair<int,int>>::iterator gpit;
 
-    Plan ResolutionPlan1;
-    //Create a plan out of the grid points
-    if(!GridPath.empty()) {
-        std::list<Position> PlanPosition;
-        double currHeading = 0.0;
-        double nextHeading = 0.0;
-
-        // Reduce the waypoints based on heading
-        PlanPosition.push_back(startPos);
-        double startAlt = startPos.alt();
-
-        for (gpit = GridPath.begin(); gpit != GridPath.end(); ++gpit) {
-            Position pos1 = DG.getPosition(*gpit);
-
-            if (gpit == GridPath.begin()) {
-                ++gpit;
-                Position pos2 = DG.getPosition(*gpit);
-                --gpit;
-                currHeading = pos1.track(pos2);
-                continue;
-            }
-
-            if (++gpit == GridPath.end()) {
-                --gpit;
-                PlanPosition.push_back(pos1.mkAlt(startAlt));
-                break;
-            } else {
-                Position pos2 = DG.getPosition(*gpit);
-                --gpit;
-                nextHeading = pos1.track(pos2);
-                if (std::abs(nextHeading - currHeading) > 0.01) {
-                    PlanPosition.push_back(pos1.mkAlt(startAlt));
-                    currHeading = nextHeading;
-                }
-            }
-
-        }
-        PlanPosition.push_back(endPos);
-
-        double ETA = 0.0;
-        NavPoint wp0(PlanPosition.front(), 0);
-        ResolutionPlan1.addNavPoint(wp0);
-
+    if(goalFound){
+        std::list<Node> _planOutput = pathfinder.GetPath();
+        std::list<Node>::iterator it;
+        Plan output;
         int count = 0;
-        std::list<Position>::iterator it;
-        for (it = PlanPosition.begin(); it != PlanPosition.end(); ++it) {
-            Position pos = *it;
-            if (count == 0) {
+        double ETA = 0.0;
+        double speed = 1.0; //TODO: maybe change this speed to something based on mission?
+        for(it = _planOutput.begin(); it != _planOutput.end(); ++it){
+            Vect3 _locxyz(it->x,it->y,it->z);
+            Position wp(proj.inverse(_locxyz));
+            if(count == 0){
                 ETA = 0;
-            } else {
-                Position prevWP = ResolutionPlan1.point(count - 1).position();
-                double distH = pos.distanceH(prevWP);
-                ETA = ETA + distH / resolutionSpeed;
             }
-            NavPoint np(pos, ETA);
-            ResolutionPlan1.addNavPoint(np);
+            else{
+                Position prevWP = output.point(count-1).position();
+                double distH    = wp.distanceH(prevWP);
+                ETA             = ETA + distH/speed;
+            }
+            NavPoint np(wp,ETA);
+            output.addNavPoint(np);
             count++;
         }
+        output.setName(string(planID));
+        flightPlans.push_back(output);
+        return output.size();
     }else{
-        std::cout<<"grid path is empty"<<std::endl;
         return -1;
     }
-
-    Plan ResolutionPlan2 = ComputeGoAbovePlan(startPos,endPos,altFence,resolutionSpeed);
-
-    double length1 = ResolutionPlan1.pathDistance();
-    double length2 = ResolutionPlan2.pathDistance();
-
-    if( (altFence >= maxAlt) ){
-        length2 = MAXDOUBLE;
-    }
-
-    Plan* output;
-    if(length1 < length2){
-        output = &ResolutionPlan1;
-    }else{
-        output = &ResolutionPlan2;
-    }
-
-    output->setName(string(planID));
-    flightPlans.push_back(*output);
-    return output->size();
 }

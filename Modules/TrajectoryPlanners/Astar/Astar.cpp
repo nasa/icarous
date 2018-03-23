@@ -85,7 +85,7 @@ bool Astar::CheckConstraints(Node& qnode) {
 
 }
 
-void Astar::ComputePath() {
+bool Astar::ComputePath() {
     while (!currentNode->GoalCheck(Goal)){
 
         if (currentNode->h < closestDist){
@@ -139,6 +139,12 @@ void Astar::ComputePath() {
     while(_cn){
         Path.push_back(*_cn);
         _cn = _cn->parent;
+    }
+
+    if (Path.size()>1){
+        return true;
+    }else{
+        return false;
     }
 }
 

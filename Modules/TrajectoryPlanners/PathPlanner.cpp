@@ -28,8 +28,11 @@ int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, 
 
     switch(search){
 
+        case _GRID_:
+            retval = FindPathGridAstar(planID,fromPosition,toPosition);
+            break;
         case _ASTAR_:
-            retval = FindPathAstar(planID,fromPosition,toPosition);
+            retval = FindPathAstar(planID,fromPosition,toPosition,velocity);
             break;
         case _RRT_:
             retval = FindPathRRT(planID,fromPosition,toPosition,velocity);

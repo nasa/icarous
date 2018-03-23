@@ -9,7 +9,7 @@ Node::Node() {
 
 }
 
-Node::Node(Node* _parent,int _index,double xl,double yl,double zl,double psil,double vsl,double speedl){
+Node::Node(Node* _parent,int _index,double xl,double yl,double zl,double psil,double vsl,double speedl,double eps){
     parent = _parent;
     index = _index;
     x = xl;
@@ -23,7 +23,7 @@ Node::Node(Node* _parent,int _index,double xl,double yl,double zl,double psil,do
     speed = speedl;
     g = 0;
     h = 0;
-    neighborhood = 5;
+    neighborhood = eps;
 }
 
 Node::Node(const Node& _copy){
@@ -76,7 +76,7 @@ void Node::GenerateChildren(int lenH,int lenV,double* heading, double* vspeed, d
             znew = z + vs*dt;
 
             int totalNodes = nodeList->size() + 1;
-            Node _child(this,totalNodes,xnew,ynew,znew,psi+dpsi,vs,speed);
+            Node _child(this,totalNodes,xnew,ynew,znew,psi+dpsi,vs,speed,neighborhood);
             AddChild(_child);
             nodeList->push_back(_child);
         }

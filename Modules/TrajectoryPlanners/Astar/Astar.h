@@ -40,7 +40,7 @@ public:
     void SetGoal(double x,double y,double z);
     void SetBoundary(Poly3D* boundary);
     void InputObstacle(Poly3D* obs);
-    void ComputePath();
+    bool ComputePath();
     std::list<Node> GetPath();
     bool Visited(const Node qnode);
     bool CheckConstraints(Node& qnode);
