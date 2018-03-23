@@ -43,9 +43,9 @@ void TrajServiceHandler(service_t* msg){
             if (!strcmp(algorithmID, "GRID")) {
                 algType = 0;
             }else if (!strcmp(algorithmID, "ASTAR")) {
-                algType = 2;
+                algType = 1;
             }else if (!strcmp(algorithmID, "RRT")) {
-                algType = 3;
+                algType = 2;
             }
             //OS_printf("Trajectory: Computing path %s using alg: %s\n",planID,algorithmID);
 

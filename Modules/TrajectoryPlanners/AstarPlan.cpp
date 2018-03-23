@@ -77,6 +77,7 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
 
     if(goalFound){
         std::list<Node> _planOutput = pathfinder.GetPath();
+        _planOutput.reverse();
         std::list<Node>::iterator it;
         Plan output;
         int count = 0;

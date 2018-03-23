@@ -75,11 +75,13 @@ int main(int argc,char** argv){
     for(int i=0;i<3;i++)
         fdata.InputGeofenceData(&vertex_gf2[i]);
 
-    double positionA[3] = {37.102177,-76.387206,0};
+    //double positionA[3] = {37.102177,-76.387206,0};
     //double positionA[3] = {37.102179,-76.387175,4.990000};
+    double positionA[3] = {37.10218,-76.38718,0};
     double velocityA[3] = {90,1,0};
 
-    double positionB[3] = {37.102185,-76.387065,0};
+    //double positionB[3] = {37.102185,-76.387065,0};
+    double positionB[3] = {37.10218,-76.38712,0};
     //double positionB[3] = {37.102180,-76.387140,5.075000};
 
     double currPos[3] = {37.102178,-76.387177,4.990000};

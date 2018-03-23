@@ -129,7 +129,7 @@ bool Astar::ComputePath() {
             }
 
 
-            _node.g = currentNode->g + currentNode->NodeDist(_node) + 0.1*fabs(currentNode->psi - _node.psi)
+            _node.g = currentNode->g + currentNode->NodeDist(_node) + 1.5*fabs(currentNode->psi - _node.psi)
                                                                 + 0.1*fabs(currentNode->vs - _node.vs);
 
             _node.h = _node.NodeDist(Goal);
