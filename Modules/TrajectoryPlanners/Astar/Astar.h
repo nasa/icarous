@@ -7,6 +7,7 @@
 
 #include <list>
 #include <queue>
+#include <PolycarpDetection.h>
 #include "Node.h"
 #include "CDPolycarp.h"
 
@@ -30,6 +31,7 @@ private:
     Node *currentNode;
     double closestDist;
     CDPolycarp geoPolyCarp;
+    PolycarpDetection geoPolyDetect;
     Poly3D keepInFence;
     std::list<Poly3D> keepOutFence;
 

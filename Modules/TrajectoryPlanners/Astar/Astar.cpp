@@ -60,6 +60,13 @@ bool Astar::CheckConstraints(Node& qnode) {
 
     Vect3 A(qnode.x,qnode.y,qnode.z);
     bool val;
+
+    Vect3 O(qnode.parent->x,qnode.parent->y,qnode.parent->z);
+    Vect3 OA = A.Sub(O);
+    double dist = OA.norm();
+
+    Vect2 vel = OA.vect2();
+
     if (keepInFence.size() > 0){
         val = geoPolyCarp.definitelyInside(A,keepInFence);
 
@@ -76,10 +83,16 @@ bool Astar::CheckConstraints(Node& qnode) {
             if (!val){
                 return false;
             }
+
+            std::vector<Vect2> fenceVertices = it->poly2D().getVertices();
+            Vect2 polyVel(0,0);
+            val = geoPolyDetect.Static_Collision_Detector(0,1,fenceVertices,polyVel,A.vect2(),vel,0.1,true);
+
+            if(val){
+                return false;
+            }
         }
     }
-
-    // Check collision on points in between parent and child.
 
     return true;
 
