@@ -9,8 +9,9 @@ Node::Node() {
 
 }
 
-Node::Node(Node* _parent,int index,double xl,double yl,double zl,double psil,double vsl,double speedl){
+Node::Node(Node* _parent,int _index,double xl,double yl,double zl,double psil,double vsl,double speedl){
     parent = _parent;
+    index = _index;
     x = xl;
     y = yl;
     z = zl;
@@ -25,7 +26,25 @@ Node::Node(Node* _parent,int index,double xl,double yl,double zl,double psil,dou
     neighborhood = 5;
 }
 
-double Node::NodeDist(Node B) {
+Node::Node(const Node& _copy){
+    index = _copy.index;
+    x = _copy.x;
+    y = _copy.y;
+    z = _copy.z;
+    vx = _copy.vx;
+    vy = _copy.vy;
+    vz = _copy.vz;
+    psi = _copy.psi;
+    vs = _copy.vs;
+    speed = _copy.speed;
+    g = _copy.g;
+    h = _copy.h;
+    neighborhood = _copy.neighborhood;
+    parent = _copy.parent;
+    children = _copy.children;
+}
+
+double Node::NodeDist(Node& B) const {
     return sqrt(pow((x - B.x),2) + pow((y - B.y),2) );
 }
 
@@ -56,9 +75,8 @@ void Node::GenerateChildren(int lenH,int lenV,double* heading, double* vspeed, d
             ynew = y + speed*cos(dpsi * M_PI/180 + psi*M_PI/180)*dt;
             znew = z + vs*dt;
 
-            int totalNodes = nodeList->size();
-            Node _child(this,totalNodes,xnew,ynew,znew,psi+dpsi,vs,2);
-            _child.
+            int totalNodes = nodeList->size() + 1;
+            Node _child(this,totalNodes,xnew,ynew,znew,psi+dpsi,vs,speed);
             AddChild(_child);
             nodeList->push_back(_child);
         }
@@ -83,5 +101,23 @@ bool Node::operator!=(Node &B) {
     }else{
         return false;
     }
+}
+
+void Node::operator=(const Node &_copy) {
+    index = _copy.index;
+    x = _copy.x;
+    y = _copy.y;
+    z = _copy.z;
+    vx = _copy.vx;
+    vy = _copy.vy;
+    vz = _copy.vz;
+    psi = _copy.psi;
+    vs = _copy.vs;
+    speed = _copy.speed;
+    g = _copy.g;
+    h = _copy.h;
+    neighborhood = _copy.neighborhood;
+    parent = _copy.parent;
+    children = _copy.children;
 }
 

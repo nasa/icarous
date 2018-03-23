@@ -23,39 +23,40 @@ void Astar::InputObstacle(Poly3D *obs) {
     keepOutFence.push_back(*obs);
 }
 
-void Astar::SetRoot(double x, double y, double z, double psi) {
+void Astar::SetRoot(double x, double y, double z, double psi,double speed) {
     Root.index = 0;
     Root.x = x;
     Root.y = y;
     Root.z = z;
     Root.psi = psi;
     Root.vs = 0;
-    Root.vx = 0;
-    Root.vy = 0;
-    Root.vz = 0;
     Root.g = 0;
-    Root.h = 0;
     Root.neighborhood = nhood;
     Root.parent = NULL;
+    Root.speed = speed;
+    currentNode = new Node(Root);
+
 }
 
 void Astar::SetGoal(double x, double y, double z) {
     Goal.x = x;
     Goal.y = y;
     Goal.z = z;
+    Root.h = sqrt(pow((x - Root.x),2) + pow((y - Root.y),2) + pow((x - Root.x),2));
 }
 
-bool Astar::Visited(Node *qnode) {
+bool Astar::Visited(const Node qnode) {
     std::list<Node>::iterator it;
     for(it = VisitedList.begin(); it != VisitedList.end(); ++it){
-        double dist = qnode->NodeDist(*it);
-        if (dist < qnode->neighborhood){
+        Node _node = *it;
+        double dist = qnode.NodeDist(_node);
+        if (dist < qnode.neighborhood){
             return true;
         }
     }
 }
 
-bool Astar::CheckConstraints(Node qnode) {
+bool Astar::CheckConstraints(Node& qnode) {
 
     Vect3 A(qnode.x,qnode.y,qnode.z);
     bool val;
@@ -80,19 +81,20 @@ bool Astar::CheckConstraints(Node qnode) {
 
     // Check collision on points in between parent and child.
 
+    return true;
 
 }
 
-void Astar::GetPath() {
-    while (currentNode->GoalCheck(Goal)){
+void Astar::ComputePath() {
+    while (!currentNode->GoalCheck(Goal)){
 
         if (currentNode->h < closestDist){
             closestDist = currentNode->h;
         }
 
-        if(Visited(currentNode)){
+        if(Visited(*currentNode)){
             if(Frontier.size() > 0){
-                currentNode = &Frontier.front();
+                currentNode = new Node(Frontier.front());
                 Frontier.pop_front();
                 continue;
             }
@@ -108,32 +110,49 @@ void Astar::GetPath() {
 
         std::list<Node>::iterator it;
         for(it = currentNode->children.begin(); it != currentNode->children.end();++it){
-            Node *_node = (Node*)&(*it);
-            if(!CheckConstraints(*_node)){
+            Node _node = (*it);
+            if(!CheckConstraints(_node)){
                 continue;
             }
 
 
-            _node->g = currentNode->g + currentNode->NodeDist(*_node) + 0.1*fabs(currentNode->psi - _node->psi)
-                                                                + 0.1*fabs(currentNode->vs - _node->vs);
+            _node.g = currentNode->g + currentNode->NodeDist(_node) + 0.1*fabs(currentNode->psi - _node.psi)
+                                                                + 0.1*fabs(currentNode->vs - _node.vs);
 
-            _node->h = _node->NodeDist(Goal);
-            Frontier.push_back(*_node);
+            _node.h = _node.NodeDist(Goal);
+            Frontier.push_back(_node);
         }
 
         Frontier.sort();
 
+
         if (Frontier.size() > 0){
-            currentNode = &Frontier.front();
+            currentNode = new Node(Frontier.front());
             Frontier.pop_front();
         }else{
             printf("End of frontier\n");
         }
     }
 
-    Path.push_back(*currentNode);
-    while(currentNode->parent){
-        Path.push_back(*(currentNode->parent));
+    //printf("Found path\n");
+    Node *_cn = currentNode;
+    while(_cn){
+        Path.push_back(*_cn);
+        _cn = _cn->parent;
+    }
+}
+
+std::list<Node> Astar::GetPath() {
+    return Path;
+}
+
+Astar::~Astar() {
+    Node *_cn = currentNode;
+    currentNode = currentNode->parent;
+    delete(_cn);
+    while(currentNode){
+        _cn = currentNode;
         currentNode = currentNode->parent;
+        delete(_cn);
     }
 }

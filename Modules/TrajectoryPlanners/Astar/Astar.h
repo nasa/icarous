@@ -27,7 +27,7 @@ private:
     std::list<Node> nodeList;
     Node Root;
     Node Goal;
-    Node* currentNode;
+    Node *currentNode;
     double closestDist;
     CDPolycarp geoPolyCarp;
     Poly3D keepInFence;
@@ -35,13 +35,15 @@ private:
 
 public:
     Astar(int lenh,double* heading,int lenv,double *vs,double dt,double eps);
-    void SetRoot(double x,double y,double z,double psi);
+    ~Astar();
+    void SetRoot(double x,double y,double z,double psi,double speed);
     void SetGoal(double x,double y,double z);
     void SetBoundary(Poly3D* boundary);
     void InputObstacle(Poly3D* obs);
-    void GetPath();
-    bool Visited(Node *qnode);
-    bool CheckConstraints(Node qnode);
+    void ComputePath();
+    std::list<Node> GetPath();
+    bool Visited(const Node qnode);
+    bool CheckConstraints(Node& qnode);
 
 };
 

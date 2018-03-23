@@ -3,6 +3,8 @@ project(Astar)
 
 set(CMAKE_CXX_STANDARD 11)
 
+set(CMAKE_CXX_FLAGS -m32)
+
 set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../ACCoRD/inc)
