@@ -86,7 +86,7 @@ DITCH:
 
               pprint("Plexil status: Ditching with Icarous guidance");
 
-              LibraryCall GOTO_POSITION(SearchType = "ASTAR",TrafficConflict = false,TargetPosition = ditchsite,
+              LibraryCall GOTO_POSITION(SearchType = "GRID",TrafficConflict = false,TargetPosition = ditchsite,
                                                                   resolutionCompleted = rescomplete);
               complete = true;
            }

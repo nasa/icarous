@@ -40,10 +40,12 @@ void TrajServiceHandler(service_t* msg){
             b = deSerializeRealArray(toPosition, b);
 
             int algType;
-            if (!strcmp(algorithmID, "ASTAR")) {
+            if (!strcmp(algorithmID, "GRID")) {
                 algType = 0;
-            } else if (!strcmp(algorithmID, "RRT")) {
-                algType = 1;
+            }else if (!strcmp(algorithmID, "ASTAR")) {
+                algType = 2;
+            }else if (!strcmp(algorithmID, "RRT")) {
+                algType = 3;
             }
             //OS_printf("Trajectory: Computing path %s using alg: %s\n",planID,algorithmID);
 

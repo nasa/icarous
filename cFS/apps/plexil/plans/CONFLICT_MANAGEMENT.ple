@@ -233,7 +233,7 @@ CONFLICT_MANAGEMENT:
                         Boolean _resolutionCompleted;
                         SkipCondition (!keepInConflict && !keepOutConflict) || trafficConflict;
 
-                        LibraryCall GOTO_POSITION(SearchType ="ASTAR",TrafficConflict = false,TargetPosition = RecoveryPosition,
+                        LibraryCall GOTO_POSITION(SearchType ="GRID",TrafficConflict = false,TargetPosition = RecoveryPosition,
                                                   resolutionCompleted = _resolutionCompleted);
                         completionStatus = _resolutionCompleted;
                     }
@@ -345,7 +345,7 @@ CONFLICT_MANAGEMENT:
                         }else{
                             Boolean _resolutionCompleted;
                             validPoint = true;
-                            LibraryCall GOTO_POSITION(SearchType = "ASTAR",TrafficConflict = false, TargetPosition = _position,
+                            LibraryCall GOTO_POSITION(SearchType = "GRID",TrafficConflict = false, TargetPosition = _position,
                                                       resolutionCompleted = _resolutionCompleted);
                             if(nextWP+1 <= _numMissionWP-1){
                                nextWP = nextWP + 1;
