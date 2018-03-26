@@ -48,11 +48,20 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
 
 
     //TODO: Make these user defined parameters?
+    bool search3d = false;
+    search3d = fdata->paramData.getBool("SEARCH_3D");
+
     double HEADING[5] = {-90.0, -45.0, 0.0, 45.0, 90.0};
-    double VS[1] = {0.0};
+    double VS[3] = {0.0,0.0,0.0};
     int lenH = 5;
     int lenV = 1;
 
+    if(search3d){
+        VS[0] = -1.0;
+        VS[2] = 1.0;
+        lenV  = 3;
+    }
+    
     double res_speed = fdata->paramData.getValue("RES_SPEED");
     double eps = res_speed*1.0; //(speed*horizon)
     Astar pathfinder(lenH,HEADING,lenV,VS,res_speed,eps);

@@ -25,6 +25,7 @@ VSTEPBACK  = 3.0
 
 # Search parameters
 CHEAP_SEARCH = 0
+SEARCH_3D  = false
 GRIDSIZE   = 0.5
 BUFFER     = 1
 LOOKAHEAD  = 2
@@ -50,7 +51,7 @@ CYL_HEIGHT = 10
 ALERT_TIME = 10
 EALERT_TIME = 15
 DAA_LOOKAHEAD = 20
-LOG_DAA = false;
+LOG_DAA = false
 
 #Waypoint parameters
 CAPTURE_H = 1
