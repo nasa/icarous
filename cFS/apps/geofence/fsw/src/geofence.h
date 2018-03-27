@@ -15,7 +15,7 @@
 
 #include "GeofenceMonitor_proxy.h"
 #include "msgids/msgids.h"
-#include "Plexil_msg.h"
+#include "Icarous_msg.h"
 
 #define GEOFENCE_STARTUP_INF_EID 0
 #define GEOFENCE_COMMAND_ERR_EID 1
@@ -46,10 +46,10 @@ void GEOFENCE_ProcessPacket();
 
 void GEOFENCE_Run();
 
-void GeoPlxMsgHandler(plexil_interface_t* msg);
+void GeoPlxMsgHandler(service_t* msg);
 
 geofenceAppData_t geofenceAppData;
-plexil_interface_t gfPlexilMsg;
+service_t gfServiceResponse;
 
 
 #endif //ICAROUS_CFS_GEOFENCE_H

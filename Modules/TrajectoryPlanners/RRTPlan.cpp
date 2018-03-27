@@ -30,7 +30,7 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
         Velocity Vel = Velocity::makeVxyz(vx,vy,vz);
         Position Pos = Position::makeLatLonAlt(x,"degree",y,"degree",z,"m");
         Vect3 tPos = proj.project(Pos);
-        Vect3 tVel = Vect3(Vel.x,Vel.y,Vel.z);
+        Vect3 tVel = Vect3(vx,vy,vz);
         tPos.linear(tVel,computationTime);
         TrafficPos.push_back(tPos);
         TrafficVel.push_back(tVel);

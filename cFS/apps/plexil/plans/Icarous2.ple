@@ -17,7 +17,8 @@ Command SetNextMissionWP(Integer index);
 Command pprint(...);
 
 // Library plans
-LibraryAction CONFLICT_MANAGEMENT();
+LibraryAction CONFLICT_MANAGEMENT(InOut Boolean ditchStatus);
+LibraryAction DITCH();
 
 ICAROUS:
 {
@@ -32,6 +33,7 @@ ICAROUS:
         Boolean _climbStatus   = false;
         Boolean _cruiseStatus  = false;
         Boolean _landStatus    = false;
+        Boolean _ditchStatus   = false;
         Integer _numMissionWP;
         Integer _nextMissionWP = 1;
 
@@ -66,7 +68,7 @@ ICAROUS:
             SkipCondition !_takeoffStatus;
             EndCondition !_takeoffStatus;
 
-            pprint("Takeoff");
+            pprint("Plexil status: Starting takeoff");
 
             CHANGE_MODE:SetMode("ACTIVE");
 
@@ -78,11 +80,8 @@ ICAROUS:
                 CHECK_STATUS: {
                     Repeat true;
                     _armStatus = Lookup(armStatus);
-                    pprint("In arm status");
                 }
             }// End of ARM
-
-            pprint("Armed motors",_armStatus);
 
             THROTTLE_UP:{
             Integer status;
@@ -96,8 +95,6 @@ ICAROUS:
 
                 Takeoff(5.0);
 
-                pprint("Taking off");
-
                 CHECK_STATUS: {
                     Repeat true;
                     status = Lookup(takeoffStatus);
@@ -106,11 +103,11 @@ ICAROUS:
             }
 
             if(status == 1){
-                pprint("Takeoff successful");
                 _climbStatus = true;
                 _takeoffStatus = false;
             }else{
-                pprint("Takeoff failed\n");
+                pprint("Plexil status: Takeoff failed\n");
+                _idleStatus = true;
                 _takeoffStatus = false;
             }endif
 
@@ -129,7 +126,7 @@ ICAROUS:
                 _Position = Lookup(position);
 
                 if(_Position[2] >= 3.0){
-                    pprint("Finished climbing");
+                    pprint("Plexil status: Starting Cruise");
                     SetNextMissionWP(_nextMissionWP);
                     SetMode("PASSIVE");
                     _cruiseStatus = true;
@@ -143,22 +140,42 @@ ICAROUS:
             StartCondition _cruiseStatus;
             SkipCondition !_cruiseStatus;
             // Perform Conflict Management (Detection and Resolution)
-            LibraryCall CONFLICT_MANAGEMENT();
-	    	   
+            LibraryCall CONFLICT_MANAGEMENT(ditchStatus=_ditchStatus);
+
             _cruiseStatus = false;
-            _landStatus = true;
+
+            pprint("Plexil status: finished cruise:",_ditchStatus);
+
+            if(!_ditchStatus){
+               _landStatus = true;
+            }endif
 
         }// End of CRUISE
+
+        TERMINATE:{
+           StartCondition _ditchStatus;
+           SkipCondition !_ditchStatus;
+
+           pprint("Plexil status: Ditching");
+
+           LibraryCall DITCH();
+
+           _ditchStatus = false;
+           _landStatus = true;
+        }
 
         LAND:{
             StartCondition _landStatus;
             SkipCondition !_landStatus;
 
+            pprint("Plexil status: Landing");
             SetMode("ACTIVE");
             Land();
 
             _landStatus = false;
+            _idleStatus = true;
         }// End of LAND
+
 	
     }// End of FMS
 }// End of ICAROUS

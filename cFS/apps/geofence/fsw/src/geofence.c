@@ -2,8 +2,6 @@
 // Created by Swee Balachandran on 12/22/17.
 //
 #include <Icarous_msg.h>
-#include <Plexil_msg.h>
-#include <cfs-data-format.hh>
 #include "geofence.h"
 
 CFE_EVS_BinFilter_t  GEOFENCE_EventFilters[] =
@@ -54,11 +52,12 @@ void GEOFENCE_AppInit(void) {
                                GEOFENCE_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to plexil output messages from the SB
-    CFE_SB_Subscribe(PLEXIL_OUTPUT_GEOFENCE_MID, geofenceAppData.Geofence_Pipe);
+    CFE_SB_Subscribe(SERVICE_GEOFENCE_MID, geofenceAppData.Geofence_Pipe);
     CFE_SB_Subscribe(ICAROUS_GEOFENCE_MID,geofenceAppData.Geofence_Pipe);
+    CFE_SB_Subscribe(ICAROUS_RESET_MID,geofenceAppData.Geofence_Pipe);
 
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&gfPlexilMsg, PLEXIL_INPUT_MID, sizeof(plexil_interface_t), TRUE);
+    CFE_SB_InitMsg(&gfServiceResponse, SERVICE_RESPONSE_MID, sizeof(service_t), TRUE);
 
     // Send event indicating app initialization
     CFE_EVS_SendEvent(GEOFENCE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
@@ -82,7 +81,6 @@ void GEOFENCE_ProcessPacket(){
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(geofenceAppData.Geofence_MsgPtr);
 
-
     switch(MsgId){
         case ICAROUS_GEOFENCE_MID: {
             geofence_t *gf;
@@ -92,10 +90,16 @@ void GEOFENCE_ProcessPacket(){
             FlightData_InputGeofenceData(geofenceAppData.fdata,&vertexWrapper);
             break;
         }
-        case PLEXIL_OUTPUT_GEOFENCE_MID: {
-            plexil_interface_t* msg = (plexil_interface_t*)geofenceAppData.Geofence_MsgPtr;
+        case SERVICE_GEOFENCE_MID: {
+            service_t* msg = (service_t*)geofenceAppData.Geofence_MsgPtr;
             GeoPlxMsgHandler(msg);
             break;
+        }
+
+        case ICAROUS_RESET_MID:{
+            NoArgsCmd_t *resetIcarous;
+            resetIcarous = (NoArgsCmd_t*) geofenceAppData.Geofence_MsgPtr;
+            FlightData_ClearFenceList(geofenceAppData.fdata);
         }
     }
     return;

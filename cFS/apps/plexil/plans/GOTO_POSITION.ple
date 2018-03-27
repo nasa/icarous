@@ -14,6 +14,8 @@ Real[3] Lookup velocity;
 
 GOTO_POSITION:{
 
+    In String SearchType;
+    In Boolean TrafficConflict;
     In Real TargetPosition[3];
     InOut Boolean resolutionCompleted;
     Real CurrentPosition[3];
@@ -22,23 +24,37 @@ GOTO_POSITION:{
     Integer nextWPIndex = 1;
     Integer totalWPIndex;
     EndCondition isKnown(resolutionCompleted);
-    
+
+    pprint("Plexil status: In Library call GOTO_POSITION");
+
     CurrentPosition = Lookup(position);
     CurrentVelocity = Lookup(velocity);
-
-    pprint("In Library call GOTO_POSITION");
 
     SetMode("ACTIVE");
     
     CHECK_FEASIBILITY:{
-	    EndCondition isKnown(targetFeasibility);
-	    targetFeasibility = CheckDirectPathFeasibility(CurrentPosition,TargetPosition);
+
+        pprint("Plexil status: checking target feasibility");
+
+        {
+	        EndCondition isKnown(targetFeasibility);
+	        targetFeasibility = CheckDirectPathFeasibility(CurrentPosition,TargetPosition);
+	    }
+
+        pprint("Plexil status: Target feasibility ",targetFeasibility);
+
+	    {
+          	SkipCondition !TrafficConflict;
+           	targetFeasibility = false;
+        }
+
     }
+
 
     BEE_LINE:{
         SkipCondition !targetFeasibility;
 
-        pprint("Going to target:",TargetPosition);
+        pprint("Plexil status: Going to target:",TargetPosition);
 
         SetPos(TargetPosition);
 
@@ -64,20 +80,24 @@ GOTO_POSITION:{
         Integer status;
         SkipCondition targetFeasibility;
 
+        //pprint("Plexil status: Planning a path to target location");
+
         {
             EndCondition isKnown(status);
-            status = FindNewPath("Plan1","ASTAR",CurrentPosition,CurrentVelocity,TargetPosition);
+            status = FindNewPath("Plan1",SearchType,CurrentPosition,CurrentVelocity,TargetPosition);
         }
 
         if(status < 0){
             resolutionCompleted = false;
-            pprint("Failed to Compute resolution");
+            pprint("Plexil status: Failed to Compute resolution");
         }endif
 
         {
             EndCondition isKnown(totalWPIndex);
             totalWPIndex = GetTotalWaypoints("Plan1");
         }
+
+        pprint("Plexil status: Computed waypoint with:",SearchType);
 
     }
 
@@ -90,6 +110,8 @@ GOTO_POSITION:{
         }
 
         SetPos(NextWP);
+
+        //pprint("Setting position");
 
         {
             Real dist2nextWP;

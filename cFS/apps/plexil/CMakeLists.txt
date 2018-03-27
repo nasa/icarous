@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(PLEXIL_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../../Modules/Plexil/src")
 set(PLEXIL_LIB "${PLEXIL_SOURCE}/../lib")
 set(MODULES_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../../../Modules/lib")
-set(PLAN_LOCATION "${PLEXIL_SOURCE}/../plans")
+set(PLAN_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/plans")
 
 include_directories(fsw/mission_inc)
 include_directories(fsw/platform_inc)
@@ -40,7 +40,7 @@ endforeach()
 
 add_cfe_tables(plexil "fsw/tables/plexil_tbl.c")
 
-set(PLEXIL_PLANS Icarous2.ple CONFLICT_MANAGEMENT.ple GOTO_POSITION.ple TRAFFIC_RESOLUTION.ple MISSION.ple)
+set(PLEXIL_PLANS Icarous2.ple CONFLICT_MANAGEMENT.ple GOTO_POSITION.ple TRAFFIC_RESOLUTION.ple MISSION.ple DITCH.ple)
 
 add_custom_target(PLEXIL_COMPILER COMMAND env PLEXIL_HOME=$ENV{PLEXIL_HOME} make plexil-compiler WORKING_DIRECTORY ${PLEXIL_SOURCE}/../ )
 add_dependencies(plexil PLEXIL_COMPILER)

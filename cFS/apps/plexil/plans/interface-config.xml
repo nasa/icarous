@@ -17,7 +17,7 @@
       SetNextMissionWP,
       Land,
       SetVel,
-      CheckSafeToTurn
+      CheckSafeToTurn,
     </CommandNames>
     <LookupNames>
       missionStart,
@@ -26,7 +26,15 @@
       position,
       velocity,
       totalMissionWP,
-      nextMissionWPIndex
+      nextMissionWPIndex,
+      totalFences,
+      totalTraffic,
+      trafficResType,
+      requireDitchGuidance,
+      ditchingStatus,
+      ditchingComplete,
+      resetDitching,
+      ditchSite
     </LookupNames> 
   </Adapter>
 </Interfaces>

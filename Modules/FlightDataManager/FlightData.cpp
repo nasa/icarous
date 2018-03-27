@@ -319,6 +319,12 @@ double FlightData::GetAllowedXtracDeviation() {
     return val;
 }
 
+int FlightData::GetTrafficResolutionType(){
+    int val;
+    val = paramData.getInt("CHEAP_DAA");
+    return val;
+}
+
 void FlightData::InputGeofenceData(geofence_t* gf){
 
     if(gf->vertexIndex == 0){
@@ -341,7 +347,7 @@ void FlightData::InputGeofenceData(geofence_t* gf){
 
         fenceList.push_back(newfence);
         if(newfence.GetType() == KEEP_OUT)
-            geoPolyPath.addPolygon(*newfence.GetPoly(),Velocity::makeVxyz(0,0,0),0);
+            geoPolyPath.addPolygon(*newfence.GetPolyMod(),Velocity::makeVxyz(0,0,0),0);
         std::cout << "Received fence: "<<gf->index <<std::endl;
 
     }
@@ -365,4 +371,8 @@ PolyPath* FlightData::GetPolyPath(){
 
 double FlightData::GetResolutionSpeed() {
     return paramData.getValue("RES_SPEED");
+}
+
+void FlightData::ClearFenceList() {
+    fenceList.clear();
 }

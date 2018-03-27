@@ -15,7 +15,7 @@
 #include <string.h>
 #include <errno.h>
 #include "PlexilWrapper.h"
-#include "Plexil_msg.h"
+#include "Icarous_msg.h"
 #include "plexil_table.h"
 
 #define PLEXIL_MAJOR_VERSION 4
@@ -48,7 +48,7 @@ typedef struct{
 
 
 EXTERN plexilAppData_t plexilAppData;                ///< global variable containing app state
-EXTERN plexil_interface_t plexilMsg;
+EXTERN service_t plexilRequests;
 
 /**
  * Entry point for app

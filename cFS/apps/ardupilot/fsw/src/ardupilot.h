@@ -23,7 +23,6 @@
 #include "network_includes.h"
 #include "ardupilot_events.h"
 #include "Icarous_msg.h"
-#include "Plexil_msg.h"
 #include "msgids/msgids.h"
 
 
@@ -220,7 +219,7 @@ void ARDUPILOT_ProcessPacket(void);
 int32_t ArdupilotTableValidationFunc(void *TblPtr);
 
 
-bool IntfPlxMsgHandler(mavlink_message_t *message);
+bool IntfServiceHandler(mavlink_message_t *message);
 
 /**
  * Global variable declaration
@@ -235,6 +234,6 @@ EXTERN NoArgsCmd_t resetIcarous;               ///< reset icarous command
 EXTERN object_t traffic;                       ///< traffic message
 EXTERN position_t position;                    ///< position message
 EXTERN CmdAck_t ack;                           ///< command acknowledge message
-EXTERN plexil_interface_t plexilInput;         ///< Input for plexil
+EXTERN service_t intfServiceResponse;          ///< Input for plexil
 
 #endif /* _interface_app_h_ */

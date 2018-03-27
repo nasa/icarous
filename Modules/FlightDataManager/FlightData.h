@@ -74,6 +74,7 @@ public:
     void GetTraffic(int id,double* x,double* y,double* z,double* vx,double* vy, double* vz);
     void ClearMissionList();
     void ClearResolutionList();
+    void ClearFenceList();
     void InputNextMissionWP(int index);
     void InputNextResolutionWP(int index);
     void InputTakeoffAlt(double alt);
@@ -95,6 +96,7 @@ public:
     uint16_t GetResolutionPlanSize();
     uint16_t GetNextMissionWP();
     uint16_t GetNextResolutionWP();
+    int GetTrafficResolutionType();
     int GetTotalFences();
 
     double getFlightPlanSpeed(Plan* fp,int nextWP);

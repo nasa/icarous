@@ -3,7 +3,6 @@
 //
 #include <Icarous_msg.h>
 #include <CWrapper/TrafficMonitor_proxy.h>
-#include <Plexil_msg.h>
 #include "traffic.h"
 
 CFE_EVS_BinFilter_t  TRAFFIC_EventFilters[] =
@@ -54,11 +53,11 @@ void TRAFFIC_AppInit(void) {
                                TRAFFIC_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to plexil output messages from the SB
-    CFE_SB_Subscribe(PLEXIL_OUTPUT_TRAFFIC_MID, TrafficAppData.Traffic_Pipe);
+    CFE_SB_Subscribe(SERVICE_TRAFFIC_MID, TrafficAppData.Traffic_Pipe);
     CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,TrafficAppData.Traffic_Pipe);
 
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&trafficPlexilMsg, PLEXIL_INPUT_MID, sizeof(plexil_interface_t), TRUE);
+    CFE_SB_InitMsg(&trafficServiceResponse, SERVICE_RESPONSE_MID, sizeof(service_t), TRUE);
     CFE_SB_InitMsg(&trackBands, ICAROUS_VISBAND_MID, sizeof(visbands_t), TRUE);
 
     // Send event indicating app initialization
@@ -93,10 +92,10 @@ void TRAFFIC_ProcessPacket(){
             break;
         }
 
-        case PLEXIL_OUTPUT_TRAFFIC_MID: {
-            plexil_interface_t* msg;
-            msg = (plexil_interface_t*) TrafficAppData.Traffic_MsgPtr;
-            TrafficPlxMsgHandler(msg);
+        case SERVICE_TRAFFIC_MID: {
+            service_t* msg;
+            msg = (service_t*) TrafficAppData.Traffic_MsgPtr;
+            TrafficServiceHandler(msg);
             break;
         }
     }

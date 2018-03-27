@@ -4,8 +4,6 @@
  *
  */
 
-
-#include <Plexil_msg.h>
 #include <Icarous_msg.h>
 #include "ardupilot_table.h"
 
@@ -27,6 +25,7 @@ void ProcessAPMessage(mavlink_message_t message){
 			position.vx = (double)globalPositionInt.vx/100;
 			position.vy = (double)globalPositionInt.vy/100;
 			position.vz = (double)globalPositionInt.vz/100;
+			position.hdg = (double)globalPositionInt.hdg/100;
 
 			CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &position);
 			CFE_SB_SendMsg((CFE_SB_Msg_t *) &position);
@@ -120,35 +119,42 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_MISSION_COUNT\n");
 			mavlink_mission_count_t msg;
 			mavlink_msg_mission_count_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			appdataInt.numWaypoints = msg.count;
 			appdataInt.waypointSeq = 0;
+            appdataInt.nextWaypointIndex = 0;
 			free((void*)appdataInt.waypoint_type);
 			free((void*)appdataInt.waypoint_index);
 			appdataInt.waypoint_type = (int*)malloc(sizeof(int)*appdataInt.numWaypoints);
 			appdataInt.waypoint_index = (int*)malloc(sizeof(int)*appdataInt.numWaypoints);
+
+            NoArgsCmd_t resetFpIcarous;
+            CFE_SB_InitMsg(&resetFpIcarous,ICAROUS_RESETFP_MID,sizeof(NoArgsCmd_t),TRUE);
+            CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &resetFpIcarous);
+            CFE_SB_SendMsg((CFE_SB_Msg_t *) &resetFpIcarous);
 			break;
 		}
 
-		case MAVLINK_MSG_ID_MISSION_ITEM:
-		{
-			//printf("MAVLINK_MSG_ID_MISSION_ITEM\n");
-			mavlink_mission_item_t msg;
-			mavlink_msg_mission_item_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
-			appdataInt.waypoint_type[(int)msg.seq] = msg.command;
-			appdataInt.waypoint_index[(int)msg.seq] = appdataInt.waypointSeq;
-			if(msg.command == MAV_CMD_NAV_WAYPOINT || msg.command == MAV_CMD_NAV_SPLINE_WAYPOINT){
-				// Send message to SB
-				wpdata.totalWayPoints = appdataInt.numWaypoints;
-				wpdata.wayPointIndex = appdataInt.waypointSeq;
-				wpdata.latitude  = msg.x;
-				wpdata.longitude = msg.y;
-				wpdata.altitude  = msg.z;
-				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &wpdata);
-				CFE_SB_SendMsg((CFE_SB_Msg_t *) &wpdata);
-				appdataInt.waypointSeq++;
-			}
+		case MAVLINK_MSG_ID_MISSION_ITEM: {
+            //printf("MAVLINK_MSG_ID_MISSION_ITEM\n");
+            mavlink_mission_item_t msg;
+            mavlink_msg_mission_item_decode(&message, &msg);
+            //writePort(&appdataInt.ap,&message);
+            if (appdataInt.numWaypoints > 0) {
+                appdataInt.waypoint_type[(int) msg.seq] = msg.command;
+                appdataInt.waypoint_index[(int) msg.seq] = appdataInt.waypointSeq;
+                if (msg.command == MAV_CMD_NAV_WAYPOINT || msg.command == MAV_CMD_NAV_SPLINE_WAYPOINT) {
+                    // Send message to SB
+                    wpdata.totalWayPoints = appdataInt.numWaypoints;
+                    wpdata.wayPointIndex = appdataInt.waypointSeq;
+                    wpdata.latitude = msg.x;
+                    wpdata.longitude = msg.y;
+                    wpdata.altitude = msg.z;
+                    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &wpdata);
+                    CFE_SB_SendMsg((CFE_SB_Msg_t *) &wpdata);
+                    appdataInt.waypointSeq++;
+                }
+            }
 			break;
 		}
 
@@ -158,7 +164,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
 			mavlink_mission_request_list_t msg;
 			mavlink_msg_mission_request_list_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -167,7 +173,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_MISSION_REQUEST\n");
 			mavlink_mission_request_t msg;
 			mavlink_msg_mission_request_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -177,7 +183,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_PARAM_REQUEST_LIST\n");
 			mavlink_param_request_list_t msg;
 			mavlink_msg_param_request_list_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -186,7 +192,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_PARAM_REQUEST_READ\n");
 			mavlink_param_request_read_t msg;
 			mavlink_msg_param_request_read_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -195,7 +201,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_PARAM_SET\n");
 			mavlink_param_value_t msg;
 			mavlink_msg_param_value_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -204,7 +210,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_PARAM_SET\n");
 			mavlink_param_set_t msg;
 			mavlink_msg_param_set_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -242,15 +248,20 @@ void ProcessGSMessage(mavlink_message_t message){
 
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &traffic);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &traffic);
-
-
 			}
 			else if(msg.command == MAV_CMD_USER_1){
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &resetIcarous);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &resetIcarous);
+                appdataInt.nextWaypointIndex = 1000;
+			}else if(msg.command == MAV_CMD_USER_5){
+				NoArgsCmd_t ditchCmd;
+				CFE_SB_InitMsg(&ditchCmd,ICAROUS_COMMANDS_MID, sizeof(NoArgsCmd_t),TRUE);
+				ditchCmd.name = _DITCH_;
+				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &ditchCmd);
+				CFE_SB_SendMsg((CFE_SB_Msg_t *) &ditchCmd);
 			}
 			else {
-				writePort(&appdataInt.ap,&message);
+				//writePort(&appdataInt.ap,&message);
 			}
 
 			break;
@@ -261,7 +272,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_COMMAND_INT\n");
 			mavlink_command_int_t msg;
 			mavlink_msg_command_int_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -270,7 +281,7 @@ void ProcessGSMessage(mavlink_message_t message){
 			//printf("MAVLINK_MSG_ID_SET_MODE\n");
 			mavlink_set_mode_t msg;
 			mavlink_msg_set_mode_decode(&message, &msg);
-			writePort(&appdataInt.ap,&message);
+			//writePort(&appdataInt.ap,&message);
 			break;
 		}
 
@@ -304,13 +315,13 @@ void ProcessGSMessage(mavlink_message_t message){
 
         case MAVLINK_MSG_ID_RADIO:
         {
-            writePort(&appdataInt.ap,&message);
+            //writePort(&appdataInt.ap,&message);
             break;
         }
 
         case MAVLINK_MSG_ID_RADIO_STATUS:
         {
-            writePort(&appdataInt.ap,&message);
+            //writePort(&appdataInt.ap,&message);
             break;
         }
 	}
@@ -434,11 +445,10 @@ void ARDUPILOT_ProcessPacket(){
 			break;
 		}
 
-		case PLEXIL_OUTPUT_INTERFACE_MID: {
+		case SERVICE_INTERFACE_MID: {
             mavlink_message_t msg;
-			bool send = IntfPlxMsgHandler(&msg);
+			bool send = IntfServiceHandler(&msg);
             if(send) {
-                //OS_printf("sending to ap\n");
                 writePort(&appdataInt.ap, &msg);
             }
             break;

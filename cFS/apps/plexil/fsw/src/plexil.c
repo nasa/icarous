@@ -4,7 +4,8 @@
 
 #define EXTERN
 
-#include <Plexil_msg.h>
+#include <cfs-data-format.hh>
+#include <Icarous_msg.h>
 #include "plexil.h"
 #include "msgids/msgids.h"
 
@@ -58,12 +59,9 @@ void PLEXIL_AppInit(void) {
                                PLEXIL_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to command messages and kinematic band messages from the SB
-    CFE_SB_Subscribe(PLEXIL_INPUT_MID, plexilAppData.PLEXIL_Pipe);
+    CFE_SB_Subscribe(SERVICE_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
     CFE_SB_Subscribe(PLEXIL_WAKEUP_MID, plexilAppData.PLEXIL_Pipe);
-
-    // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&plexilMsg, PLEXIL_OUTPUT_MID, sizeof(plexil_interface_t), TRUE);
-
+    
     // Send event indicating app initialization
     CFE_EVS_SendEvent(PLEXIL_STARTUP_INF_EID, CFE_EVS_INFORMATION,
                       "Plexil Initialized. Version %d.%d",
@@ -135,14 +133,19 @@ void PLEXIL_ProcessPacket(){
             PLEXIL_Run();
             break;
 
-        case PLEXIL_INPUT_MID:{
-            plexil_interface_t* msg;
-            msg = (plexil_interface_t*) plexilAppData.PLEXIL_MsgPtr;
+        case SERVICE_RESPONSE_MID:{
+            service_t* msg;
+            msg = (service_t*) plexilAppData.PLEXIL_MsgPtr;
 
-            switch(msg->plxData.mType) {
+            PlexilMsg plxInput;
+            switch(msg->sType) {
                 case _LOOKUP_RETURN_:
                 case _COMMAND_RETURN_:
-                    plexil_return(plexilAppData.adap, &msg->plxData);
+                    plxInput.mType = (dataType_t)msg->sType;
+                    plxInput.id = msg->id;
+                    memcpy(plxInput.name,msg->name,50);
+                    memcpy(plxInput.buffer,msg->buffer,250);
+                    plexil_return(plexilAppData.adap, &plxInput);
                     break;
                 default:{
 
@@ -167,10 +170,6 @@ void PLEXIL_Run(){
         n = plexil_getCommand(plexilAppData.adap,&msg1);
 
         if(n>=0) {
-            //OS_printf("CfsAdapter: obtained command %s,%f\n",msg1.name,msg1.argsD[0]);
-            //memcpy(&plexilMsg.plxData, &msg1, sizeof(PlexilMsg));
-            //SendSBMsg(plexilMsg);
-
             PLEXIL_DistributeMessage(msg1);
         }
     }
@@ -180,10 +179,6 @@ void PLEXIL_Run(){
         PlexilMsg msg2;
         n = plexil_getLookup(plexilAppData.adap,&msg2);
         if(n>=0) {
-            //OS_printf("CfsAdapter: obtained lookup %s\n",msg2.name);
-            //memcpy(&plexilMsg.plxData, &msg2, sizeof(PlexilMsg));
-            //SendSBMsg(plexilMsg);
-
             PLEXIL_DistributeMessage(msg2);
         }
     }

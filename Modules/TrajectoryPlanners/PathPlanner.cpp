@@ -28,8 +28,11 @@ int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, 
 
     switch(search){
 
+        case _GRID_:
+            retval = FindPathGridAstar(planID,fromPosition,toPosition);
+            break;
         case _ASTAR_:
-            retval = FindPathAstar(planID,fromPosition,toPosition);
+            retval = FindPathAstar(planID,fromPosition,toPosition,velocity);
             break;
         case _RRT_:
             retval = FindPathRRT(planID,fromPosition,toPosition,velocity);
@@ -351,12 +354,17 @@ void PathPlanner::GetExitPoint(char *planID,double currentPoisition[],int nextWP
 
     bool val = geoCDIIPolygon.detection(*fp,gfPolyPath,elapsedTime,fp->getLastTime());
 
-    double entryTime = geoCDIIPolygon.getTimeIn(0);
-    double exitTime = geoCDIIPolygon.getTimeOut(0);
+    Position lastPos;
+    if(val) {
+        double entryTime = geoCDIIPolygon.getTimeIn(0);
+        double exitTime = geoCDIIPolygon.getTimeOut(0);
 
-    Plan cutPlan = PlanUtil::cutDown(*fp,entryTime,exitTime);
+        Plan cutPlan = PlanUtil::cutDown(*fp, entryTime, exitTime);
 
-    Position lastPos = cutPlan.getLastPoint().position();
+        lastPos = cutPlan.getLastPoint().position();
+    }else{
+        lastPos = fp->point(nextWP).position();
+    }
 
     exitPosition[0] = lastPos.latitude();
     exitPosition[1] = lastPos.longitude();

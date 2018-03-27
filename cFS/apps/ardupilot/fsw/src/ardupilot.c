@@ -96,7 +96,7 @@ void ARDUPILOT_AppInit(void){
 	//Subscribe to command messages and kinematic band messages from the SB	 
 	CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataInt.INTERFACE_Pipe);
 	CFE_SB_Subscribe(ICAROUS_VISBAND_MID, appdataInt.INTERFACE_Pipe);
-    CFE_SB_Subscribe(PLEXIL_OUTPUT_INTERFACE_MID, appdataInt.INTERFACE_Pipe);
+    CFE_SB_Subscribe(SERVICE_INTERFACE_MID, appdataInt.INTERFACE_Pipe);
 
 
 	// Initialize all messages that this App generates
@@ -108,7 +108,7 @@ void ARDUPILOT_AppInit(void){
 	CFE_SB_InitMsg(&traffic,ICAROUS_TRAFFIC_MID,sizeof(object_t),TRUE);	
 	CFE_SB_InitMsg(&position,ICAROUS_POSITION_MID,sizeof(position_t),TRUE);	
 	CFE_SB_InitMsg(&ack,ICAROUS_COMACK_MID,sizeof(CmdAck_t),TRUE);
-	CFE_SB_InitMsg(&plexilInput,PLEXIL_INPUT_MID,sizeof(plexil_interface_t),TRUE);
+	CFE_SB_InitMsg(&intfServiceResponse,SERVICE_RESPONSE_MID,sizeof(service_t),TRUE);
 
 
 	// Send event indicating app initialization
@@ -138,12 +138,14 @@ void ARDUPILOT_AppInit(void){
 	appdataInt.waypointSeq = 0;
 	appdataInt.nextWaypointIndex = 0;
 	appdataInt.ap.portType = TblPtr->apPortType;
+    appdataInt.ap.baudrate = TblPtr->apBaudRate;
 	appdataInt.ap.portin   = TblPtr->apPortin;
 	appdataInt.ap.portout  = TblPtr->apPortout;
 	memcpy(appdataInt.ap.target,TblPtr->apAddress,50);
 
 	appdataInt.gs.id = 1;
 	appdataInt.gs.portType = TblPtr->gsPortType;
+    appdataInt.gs.baudrate = TblPtr->gsBaudRate;
 	appdataInt.gs.portin   = TblPtr->gsPortin;
 	appdataInt.gs.portout  = TblPtr->gsPortout;
 	memcpy(appdataInt.gs.target,TblPtr->gsAddress,50);
@@ -154,7 +156,7 @@ void ARDUPILOT_AppInit(void){
 	// Free table pointer
 	status = CFE_TBL_ReleaseAddress(appdataInt.INTERFACE_tblHandle);
 
-    OS_printf("Port types: %d, %d\n",appdataInt.ap.portType,appdataInt.gs.portType);
+    //OS_printf("Port types: %d, %d\n",appdataInt.ap.portType,appdataInt.gs.portType);
 
 	if (appdataInt.ap.portType == SOCKET){
 		InitializeSocketPort(&appdataInt.ap);
@@ -265,7 +267,7 @@ void InitializeSocketPort(port_t* prt){
 
 	fcntl(prt->sockId, F_SETFL, O_NONBLOCK);
 
-	OS_printf("Sock id: %d,Address: %s,Port in:%d,out: %d\n",prt->sockId,prt->target,prt->portin,prt->portout);
+	//OS_printf("Sock id: %d,Address: %s,Port in:%d,out: %d\n",prt->sockId,prt->target,prt->portin,prt->portout);
 }
 
 int InitializeSerialPort(port_t* prt,bool should_block){
@@ -381,6 +383,9 @@ int GetMAVLinkMsgFromGS(){
 		uint8_t cp = appdataInt.gs.recvbuffer[i];
 		msgReceived = mavlink_parse_char(MAVLINK_COMM_1, cp, &message, &status);
 		if(msgReceived){
+			// Send message to autopilot
+			writePort(&appdataInt.ap,&message);
+
 			ProcessGSMessage(message);
 		}
 	}

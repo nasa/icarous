@@ -7,6 +7,7 @@
 #include <memory.h>
 #include <interfaces/CfsAdapter/cfs-data-format.hh>
 #include "PlexilWrapper.h"
+#include "Serialize.h"
 
 int main(int argc, char** argv){
 

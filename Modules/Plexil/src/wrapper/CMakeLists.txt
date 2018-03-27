@@ -8,6 +8,7 @@ set(LIBRARY_OUTPUT_PATH ${PLEXIL_ROOT}/lib)
 
 set(SOURCE_FILES
         PlexilWrapper.h
+        Serialize.h
         PlexilWrapper.cpp
         test.c)
 
