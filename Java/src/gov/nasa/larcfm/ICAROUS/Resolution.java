@@ -516,6 +516,7 @@ public class Resolution {
 		
 		returnPathConflict = true;
 		double resolutionSpeed = FlightData.pData.getValue("RES_SPEED");
+		double captureH = (float)FlightData.pData.getValue("CAPTURE_H");
 
 		double crossStats[] = FMS.Detector.ComputeCrossTrackDev(currentPos, FlightData.MissionPlan, FlightData.nextMissionWP);
 		Position goal;
@@ -586,7 +587,7 @@ public class Resolution {
 			
 			returnPathConflict = true;
 			double distH = currentPos.distanceH(goal);
-			if(distH < 1){
+			if(distH < captureH){
 				returnPathConflict = false;
 			}
 		}

@@ -332,13 +332,17 @@ public class COM implements Runnable,ErrorReporter{
 				status = FlightData.GetGeoFence(gsIntf,msgCommandLong);
 				if(status == 1){
 					log.addWarning("MSG: Geo fence update, #fences:"+FlightData.fenceList.size());
-					gsIntf.SendStatusText("Received Fence");
+					gsIntf.SendStatusText("IC: Received Fence");
 				}
 			}
-			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){		    
-				FlightData.startMission = (int) msgCommandLong.param1;
-				log.addWarning("MSG: Received Mission START");
-				gsIntf.SendStatusText("Starting mission");
+			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_MISSION_START){
+				if(FlightData.InputFlightPlan.size() < 2){
+					gsIntf.SendStatusText("IC: No flightplan loaded");
+				}else {
+					FlightData.startMission = (int) msgCommandLong.param1;
+					log.addWarning("MSG: Received Mission START");
+					gsIntf.SendStatusText("IC:Starting mission");
+				}
 				//System.out.println("Available FP size:"+FlightData.InputFlightPlan.size());
 			}
 			else if(msgCommandLong.command == MAV_CMD.MAV_CMD_SPATIAL_USER_1){
@@ -381,7 +385,7 @@ public class COM implements Runnable,ErrorReporter{
 				if(msgCommandLong.param1 == 1){
 					synchronized(FlightData){
 						log.addWarning("MSG: Resetting ICAROUS");
-						gsIntf.SendStatusText("Resetting ICAROUS");
+						gsIntf.SendStatusText("IC: Resetting ICAROUS");
 						FlightData.Reset();
 					}
 				}
@@ -473,8 +477,9 @@ public class COM implements Runnable,ErrorReporter{
 				Position currentPos = FlightData.acState.positionLast();
 				double dist2pos = currentPos.distanceH(acposrev);				
 				if(dist2pos < 1){
-					SetMissionItem(FlightData.nextMissionWP + 1);
-					msg_set_mode Mode = new msg_set_mode();
+				    FlightData.nextMissionWP += 1; 
+				    SetMissionItem(FlightData.nextMissionWP);
+				    msg_set_mode Mode = new msg_set_mode();				    
 				    Mode.target_system = (short) 0;
 				    Mode.base_mode     = (short) 1;
 				    Mode.custom_mode   = (long) FlightManagementSystem.ARDUPILOT_MODES.AUTO;

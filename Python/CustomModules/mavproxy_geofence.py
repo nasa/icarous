@@ -168,7 +168,7 @@ class GeoFenceModule(mp_module.MPModule):
             name = 'Fence'+str(fence["id"])
 
             if(fence["type"] == 0):
-                gcf = (0,255,0)
+                gcf = (255,190,0)
             else:
                 gcf = (255,0,0)
             

@@ -443,13 +443,14 @@ public class QuadFMS extends FlightManagementSystem{
 					double speed = resolutionSpeed;
 
 					double dist2next0 = current.distanceH(next0);
-					double heading;
-					if(dist2next0<10){
-						double fac = dist2next0/10;
-						heading = fac*heading0 + (1-fac)*heading1;
-					}else{
-						heading = heading0;
-					}
+					double heading = heading0;
+					
+					//if(dist2next0<10){
+					//	double fac = dist2next0/10;
+					//	heading = fac*heading0 + (1-fac)*heading1;
+					//}else{
+					//	heading = heading0;
+					//}
 
 					if(dist2next0 < FlightData.pData.getValue("CAPTURE_H")){
 						FlightData.nextResolutionWP++;
