@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_executable(BSplines Bsplines.cpp main.cpp)
 
-target_link_libraries(BSplines m)
+target_link_libraries(BSplines m nlopt)

@@ -83,7 +83,7 @@ double Bsplines::Objective2D(double *x){
         double pathlen;
         i>0?pathlen=dist(oldVal[0],oldVal[1],sumX,sumY):pathlen = 0;
 
-        cost += pathlen*pathlen ;//+ obsCost;
+        cost += pathlen*pathlen + obsCost;
         oldVal[0] = sumX;
         oldVal[1] = sumY;
     }
@@ -134,12 +134,24 @@ void Bsplines::ObsDerivative(double* x0,double *grad){
                 Pty1 += nfac1*P1[1];
             }
 
-            sumOPx += 2*(Ptx1 - obsloc[0]) *Nfac(tVec[i],k,order);
-            sumOPy += 2*(Pty1 - obsloc[1]) *Nfac(tVec[i],k,order);
+            double dist2obs = dist(obsloc[0],obsloc[1],Ptx1,Pty1);
+            double nfac  = Nfac(tVec[i],k,order);
+            double dbeta = (1.0/OBS_THRESH - OBS_THRESH/(dist2obs*dist2obs));
+            double dist2obsgradX = dbeta*(1/dist2obs)*(Ptx1-obsloc[0])*nfac;
+            double dist2obsgradY = dbeta*(1/dist2obs)*(Pty1-obsloc[1])*nfac;
+
+            if (dist2obs >= OBS_THRESH){
+                dist2obsgradX = 0;
+                dist2obsgradY = 0;
+            }
+
+            sumOPx += dist2obsgradX;
+            sumOPy += dist2obsgradY;
+
         }
 
-        grad[2*k] = sumLPx;// + sumOPx;
-        grad[2*k+1] = sumLPy;// + sumOPy;
+        grad[2*k] = sumLPx + sumOPx;
+        grad[2*k+1] = sumLPy + sumOPy;
     }
 }
 
