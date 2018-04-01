@@ -5,7 +5,7 @@
 #ifndef BSPLINES_H
 #define BSPLINES_H
 
-#define OBS_THRESH 5.0
+#define OBS_THRESH 3.0
 
 class Bsplines {
 private:
@@ -25,11 +25,11 @@ public:
     void SetInitControlPts(double* ctrlPt);
     void SetObstacles(double x,double y,double z);
     double Beta(double x);
-    double Nfac(double t,double* knotVec,int i,int k);
+    double Nfac(double t,int i,int k);
     double dist(double x1,double y1,double x2,double y2);
     double Objective2D(double *x);
     double HdgConstraint(double *x);
-    void ObsDerivative(double *x);
+    void ObsDerivative(double* x0,double *grad);
 };
 
 

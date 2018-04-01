@@ -33,23 +33,23 @@ void Bsplines::SetObstacles(double x, double y, double z) {
     obsloc[1] = y;
 }
 
-double Bsplines::Nfac(double t,double* knotVec,int i,int k){
+double Bsplines::Nfac(double t,int i,int k){
     if (k==0){
-        if ((t >= knotVec[i]) && (t < knotVec[i+1])){
+        if ((t >= KntVec[i]) && (t < KntVec[i+1])){
             return 1;
         }else{
             return 0;
         }
     }else{
         double facA,facB;
-        double facAN = t - knotVec[i];
-        double facAD = knotVec[i+k] - knotVec[i];
-        double facBN = knotVec[i+k+1] - t;
-        double facBD = knotVec[i+1];
+        double facAN = t - KntVec[i];
+        double facAD = KntVec[i+k] - KntVec[i];
+        double facBN = KntVec[i+k+1] - t;
+        double facBD = KntVec[i+k+1] - KntVec[i+1];
         fabs(facAD)<1e-5?facA=0:facA=facAN/facAD;
         fabs(facBD)<1e-5?facB=0:facB=facBN/facBD;
-        double Nikm1   = Nfac(t,knotVec,i,k-1);
-        double Nip1km1 = Nfac(t,knotVec,i+1,k-1);
+        double Nikm1   = Nfac(t,i,k-1);
+        double Nip1km1 = Nfac(t,i+1,k-1);
         return facA*Nikm1 + facB*Nip1km1;
     };
 }
@@ -73,7 +73,7 @@ double Bsplines::Objective2D(double *x){
         double sumY = 0;
         for(int j=0;j<numPts;j++){
             double pt[2] = {x[2*j],x[2*j+1]};
-            double nfac = Nfac(tVec[i],KntVec,j,order);
+            double nfac = Nfac(tVec[i],j,order);
             sumX += pt[0]*nfac;
             sumY += pt[1]*nfac;
         }
@@ -83,18 +83,64 @@ double Bsplines::Objective2D(double *x){
         double pathlen;
         i>0?pathlen=dist(oldVal[0],oldVal[1],sumX,sumY):pathlen = 0;
 
-        cost += pathlen + dist2obs;
+        cost += pathlen*pathlen ;//+ obsCost;
         oldVal[0] = sumX;
         oldVal[1] = sumY;
     }
 
-
-
     return cost;
 }
 
-void Bsplines::ObsDerivative(double *x){
-    
+void Bsplines::ObsDerivative(double* x0,double *grad){
+
+    int numPts = ndim/2;
+
+    for(int k=0;k<numPts;++k){
+
+        double sumLPx = 0;
+        double sumLPy = 0;
+        double sumOPx = 0;
+        double sumOPy = 0;
+
+        for(int i=0;i<lenT-1;++i){
+            double Ptx1 = 0;
+            double Ptx2 = 0;
+            double Pty1 = 0;
+            double Pty2 = 0;
+            for(int j=0;j<numPts;++j){
+                double P1[2] = {x0[2*j],x0[2*j+1]};
+                double nfac1 = Nfac(tVec[i],j,order);
+                double nfac2 = Nfac(tVec[i+1],j,order);
+
+                Ptx1 += nfac1*P1[0];
+                Pty1 += nfac1*P1[1];
+
+                Ptx2 += nfac2*P1[0];
+                Pty2 += nfac2*P1[1];
+            }
+            sumLPx += 2*(Ptx2 - Ptx1)*(Nfac(tVec[i+1],k,order) - Nfac(tVec[i],k,order));
+            sumLPy += 2*(Pty2 - Pty1)*(Nfac(tVec[i+1],k,order) - Nfac(tVec[i],k,order));
+        }
+
+
+        for(int i=0;i<lenT;++i){
+            double Ptx1 = 0;
+            double Pty1 = 0;
+
+            for(int j=0;j<numPts;++j){
+                double P1[2] = {x0[2*j],x0[2*j+1]};
+                double nfac1 = Nfac(tVec[i],j,order);
+                Ptx1 += nfac1*P1[0];
+                Pty1 += nfac1*P1[1];
+            }
+
+            sumOPx += 2*(Ptx1 - obsloc[0]) *Nfac(tVec[i],k,order);
+            sumOPy += 2*(Pty1 - obsloc[1]) *Nfac(tVec[i],k,order);
+        }
+
+        grad[2*k] = sumLPx;// + sumOPx;
+        grad[2*k+1] = sumLPy;// + sumOPy;
+    }
 }
 
 double Bsplines::HdgConstraint(double *x) {
