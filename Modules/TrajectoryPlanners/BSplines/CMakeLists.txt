@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_executable(BSplines Bsplines.cpp main.cpp)
 
+add_executable(KD kdtree.cpp)
+
 target_link_libraries(BSplines m nlopt)
