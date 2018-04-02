@@ -27,9 +27,9 @@ public:
     double Beta(double x);
     double Nfac(double t,int i,int k);
     double dist(double x1,double y1,double x2,double y2);
-    double Objective2D(double *x);
+    double Objective2D(const double *x);
     double HdgConstraint(double *x);
-    void ObsDerivative(double* x0,double *grad);
+    void ObsDerivative(const double* x0,double *grad);
 };
 
 

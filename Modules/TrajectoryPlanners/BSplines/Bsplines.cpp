@@ -64,7 +64,7 @@ double Bsplines::dist(double x1,double y1,double x2,double y2){
     return sqrt( pow((x1 - x2),2) + pow((y1 - y2),2));
 }
 
-double Bsplines::Objective2D(double *x){
+double Bsplines::Objective2D(const double *x){
     double cost = 0;
     double oldVal[2] = {0.0,0.0};
     int numPts = ndim/2;
@@ -91,7 +91,7 @@ double Bsplines::Objective2D(double *x){
     return cost;
 }
 
-void Bsplines::ObsDerivative(double* x0,double *grad){
+void Bsplines::ObsDerivative(const double* x0,double *grad){
 
     int numPts = ndim/2;
 
