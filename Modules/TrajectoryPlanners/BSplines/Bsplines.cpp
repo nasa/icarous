@@ -152,6 +152,13 @@ void Bsplines::ObsDerivative(const double* x0,double *grad){
 
         grad[2*k] = sumLPx + sumOPx;
         grad[2*k+1] = sumLPy + sumOPy;
+
+        if( (k==0) || (k==numPts-1)){
+            grad[2*k] = 0;
+            grad[2*k+1] = 0;
+        }
+
+
     }
 }
 

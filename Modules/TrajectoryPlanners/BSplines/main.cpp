@@ -50,10 +50,7 @@ int main() {
     nlopt_set_upper_bounds(opt,ub);
     nlopt_set_min_objective(opt,objfunc,&splinePath);
 
-    int val = nlopt_add_equality_constraint(opt,x0eqcon,NULL,1e-8);
-    nlopt_add_equality_constraint(opt,y0eqcon,NULL,1e-8);
-    nlopt_add_equality_constraint(opt,xfeqcon,NULL,1e-8);
-    nlopt_add_equality_constraint(opt,yfeqcon,NULL,1e-8);
+
     nlopt_set_xtol_rel(opt, 1e-4);
 
 
