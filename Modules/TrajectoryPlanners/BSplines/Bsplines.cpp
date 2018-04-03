@@ -28,9 +28,30 @@ void Bsplines::SetInitControlPts(double *ctrlPt) {
     ctrlPt0 = ctrlPt;
 }
 
-void Bsplines::SetObstacles(double x, double y, double z) {
-    obsloc[0] = x;
-    obsloc[1] = y;
+void Bsplines::SetObstacles(larcfm::Poly3D& obs) {
+
+    KDTREE kdtree(5);
+    int numVertices = obs.size();
+    for(int i=0;i<numVertices;++i){
+        int j = (i+1)%numVertices;
+        larcfm::Vect2 vertex1 = obs.poly2D().getVertex(i);
+        larcfm::Vect2 vertex2 = obs.poly2D().getVertex(j);
+        double distH = (vertex2 - vertex1).norm();
+        double distV = obs.getTop() - obs.getBottom();
+        int numNodesH = (int) distH/OBS_THRESH*2.0;
+        int numNodesV = (int) distV/OBS_THRESH*2.0;
+        double nH = 1/numNodesH;
+        double nV = 1/numNodesV;
+
+        for(int q=0;q<numNodesV;++q) {
+            for (int k = 0; k < numNodesH; ++k) {
+                larcfm::Vect2 vertex = vertex1.Scal(1 - nH*k) + vertex2.Scal(nH*k);
+                double h = obs.getBottom() + nV*q;
+                std::vector<double> val({vertex.x, vertex.y,h});
+                kdtree.points.push_back(val);
+            }
+        }
+    }
 }
 
 double Bsplines::Nfac(double t,int i,int k){
@@ -60,7 +81,7 @@ double Bsplines::Beta(double x){
     return val;
 }
 
-double Bsplines::dist(double x1,double y1,double x2,double y2){
+double Bsplines::dist2D(double x1,double y1,double x2,double y2){
     return sqrt( pow((x1 - x2),2) + pow((y1 - y2),2));
 }
 
@@ -85,17 +106,15 @@ double Bsplines::Objective2D(const double *x){
             std::vector<double> qval({sumX,sumY});
             qnode.val = qval;
             double _distval = MAXDOUBLE;
-            kdtree->KNN(kdtree->root,&qnode,_distval);
-            for (int k = 0; k < kdtree->kneighbors.size(); ++k) {
-                obsloc[0] = kdtree->kneighbors[k][0];
-                obsloc[1] = kdtree->kneighbors[k][1];
-                double dist2obs = dist(obsloc[0], obsloc[1], sumX, sumY);
-                obsCost += Beta(dist2obs);
-            }
+            node_t *nn = kdtree->KNN(kdtree->root,&qnode,_distval);
+            obsloc[0] = nn->val[0];
+            obsloc[1] = nn->val[1];
+            double dist2obs = dist2D(obsloc[0], obsloc[1], sumX, sumY);
+            obsCost += Beta(dist2obs);
         }
 
         double pathlen;
-        i>0?pathlen=dist(oldVal[0],oldVal[1],sumX,sumY):pathlen = 0;
+        i>0?pathlen=dist2D(oldVal[0],oldVal[1],sumX,sumY):pathlen = 0;
 
         cost += pathlen*pathlen + obsCost;
         oldVal[0] = sumX;
@@ -105,7 +124,7 @@ double Bsplines::Objective2D(const double *x){
     return cost;
 }
 
-void Bsplines::ObsDerivative(const double* x0,double *grad){
+void Bsplines::Gradient2D(const double* x0,double *grad){
 
     int numPts = ndim/2;
 
@@ -158,21 +177,21 @@ void Bsplines::ObsDerivative(const double* x0,double *grad){
                 std::vector<double> qval({Ptx1,Pty1});
                 qnode.val = qval;
                 double _distval = MAXDOUBLE;
-                kdtree->KNN(kdtree->root,&qnode,_distval);
-                for (int j = 0; j < kdtree->kneighbors.size(); ++j) {
-                    obsloc[0] = kdtree->kneighbors[j][0];
-                    obsloc[1] = kdtree->kneighbors[j][1];
-                    double dist2obs = dist(obsloc[0], obsloc[1], Ptx1, Pty1);
+                node_t *nn = kdtree->KNN(kdtree->root,&qnode,_distval);
 
-                    if (dist2obs >= OBS_THRESH){
-                        dist2obsgradX += 0;
-                        dist2obsgradY += 0;
-                    }else {
-                        double dbeta = (1.0 / OBS_THRESH - OBS_THRESH / (dist2obs * dist2obs));
-                        dist2obsgradX += dbeta * (1 / dist2obs) * (Ptx1 - obsloc[0]) * nfac;
-                        dist2obsgradY += dbeta * (1 / dist2obs) * (Pty1 - obsloc[1]) * nfac;
-                    }
+                obsloc[0] = nn->val[0];
+                obsloc[1] = nn->val[1];
+                double dist2obs = dist2D(obsloc[0], obsloc[1], Ptx1, Pty1);
+
+                if (dist2obs >= OBS_THRESH){
+                    dist2obsgradX += 0;
+                    dist2obsgradY += 0;
+                }else {
+                    double dbeta = (1.0 / OBS_THRESH - OBS_THRESH / (dist2obs * dist2obs));
+                    dist2obsgradX += dbeta * (1 / dist2obs) * (Ptx1 - obsloc[0]) * nfac;
+                    dist2obsgradY += dbeta * (1 / dist2obs) * (Pty1 - obsloc[1]) * nfac;
                 }
+
             }
 
             sumOPx += dist2obsgradX;

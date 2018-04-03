@@ -110,6 +110,7 @@ node_t* KDTREE::unwind(node_t* nodeA,node_t* qnode,double& bestdist,node_t* root
     if (val < prevbestdist){
         bestnode = nodeA;
         prevbestdist = val;
+        bestdist = prevbestdist;
     }
 
     int split = nodeA->depth%2;
@@ -155,6 +156,11 @@ node_t* KDTREE::unwind(node_t* nodeA,node_t* qnode,double& bestdist,node_t* root
 }
 
 node_t* KDTREE::KNN(node_t* root,node_t* qnode,double& distance) {
+
+    if(root == NULL){
+        return NULL;
+    }
+
     double bestdist = distance;
     node_t *bestNode = NULL;
     node_t* leaf = traverse(root,qnode);
@@ -186,6 +192,7 @@ node_t* KDTREE::KNN(node_t* root,node_t* qnode,double& distance) {
     return bestNode;
 }
 
+/*
 int main(){
 
     std::vector<double> val1({1.0,2.0});
@@ -220,4 +227,4 @@ int main(){
 
     printf("nearest node distance %f\n",distance);
 
-}
+}*/

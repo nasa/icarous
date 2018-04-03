@@ -3,8 +3,14 @@ project(BSplines)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(BSplines Bsplines.cpp main.cpp kdtree.h)
+set(CMAKE_CXX_FLAGS -m32)
 
-add_executable(KD kdtree.cpp)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
 
-target_link_libraries(BSplines m nlopt)
+link_directories(${LIBRARY_OUTPUT_PATH})
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../ACCoRD/inc)
+
+add_executable(BSplines main.cpp Bsplines.cpp kdtree.cpp)
+
+target_link_libraries(BSplines m nlopt ACCoRD)

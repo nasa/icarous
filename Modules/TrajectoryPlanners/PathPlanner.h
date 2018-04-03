@@ -26,6 +26,7 @@ private:
     int64_t FindPathGridAstar(char planID[],double fromPosition[],double toPosition[]);
     int64_t FindPathAstar(char planID[],double fromPosition[],double toPosition[],double velocity[]);
     int64_t FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]);
+    int64_t FindPathSplines(char planID[],double fromPosition[],double toPosition[],double velocity[]);
 public:
     PathPlanner(FlightData* fdata);
     int FindPath(algorithm,char planID[], double fromPosition[],double toPosition[],double velocity[]);

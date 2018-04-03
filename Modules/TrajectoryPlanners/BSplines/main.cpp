@@ -1,18 +1,13 @@
 #include <iostream>
 #include <fstream>
 
-#include "Bsplines.h"
+
 #include <math.h>
 #include <nlopt.h>
-
+#include "Bsplines.h"
 
 
 double objfunc(unsigned n,const double *x,double * grad,void* data);
-double x0eqcon(unsigned n,const double *x,double* grad,void* data);
-double y0eqcon(unsigned n,const double *x,double* grad,void* data);
-double xfeqcon(unsigned n,const double *x,double* grad,void* data);
-double yfeqcon(unsigned n,const double *x,double* grad,void* data);
-
 
 int main() {
 
@@ -32,9 +27,26 @@ int main() {
                           7.0,3.0};
 
 
+
+    larcfm::Poly2D _obs1;
+    _obs1.addVertex(20,20);
+    _obs1.addVertex(60,20);
+    _obs1.addVertex(60,60);
+    _obs1.addVertex(20,60);
+    larcfm::Poly3D obs1(_obs1,0,30);
+
+
     splinePath.SetSplineProperties(8,40,tVec,8,KnotVec,3);
     splinePath.SetInitControlPts(CtrlPt0);
-    splinePath.SetObstacles(5.0,3.0,0.0);
+    //splinePath.SetObstacles(5.0,3.0,0.0);
+
+    KDTREE kdtree(5);
+    //std::vector<double> obs1({5.0,3.0,0.0});
+    //std::vector<double> obs2({4.0,3.0,0.0});
+    //kdtree.points.push_back(obs1);
+
+    kdtree.ConstructTree(kdtree.points,NULL,0);
+    splinePath.kdtreeList.push_back(&kdtree);
 
     double gradient[8] = {0,0,0,0,0,0,0,0};
 
@@ -50,10 +62,7 @@ int main() {
     nlopt_set_upper_bounds(opt,ub);
     nlopt_set_min_objective(opt,objfunc,&splinePath);
 
-
     nlopt_set_xtol_rel(opt, 1e-4);
-
-
 
     double minf;
     if (nlopt_optimize(opt, CtrlPt0, &minf) < 0) {
@@ -73,55 +82,7 @@ double objfunc(unsigned n,const double *x,double *grad,void* data) {
     double fval = _bsplines->Objective2D(x);
 
     if (grad) {
-        _bsplines->ObsDerivative(x, grad);
+        _bsplines->Gradient2D(x, grad);
     }
     return fval;
-}
-
-double x0eqcon(unsigned n,const double *x,double* grad,void *data){
-
-    if(grad) {
-        for (int i = 0; i < n; ++i) {
-            grad[i] = 0;
-        }
-
-        grad[0] = 1;
-    }
-    return x[0] - 0.0;
-}
-
-double y0eqcon(unsigned n,const double *x,double* grad,void *data){
-
-    if(grad) {
-        for (int i = 0; i < n; ++i) {
-            grad[i] = 0;
-        }
-
-        grad[1] = 1;
-    }
-    return x[1] - 1.0;
-}
-
-double xfeqcon(unsigned n,const double *x,double* grad,void *data){
-
-    if(grad) {
-        for (int i = 0; i < n; ++i) {
-            grad[i] = 0;
-        }
-
-        grad[6] = 1;
-    }
-    return x[6] - 7.0;
-}
-
-double yfeqcon(unsigned n,const double *x,double* grad,void *data){
-
-    if(grad) {
-        for (int i = 0; i < n; ++i) {
-            grad[i] = 0;
-        }
-
-        grad[7] = 1;
-    }
-    return x[7] - 3.0;
 }

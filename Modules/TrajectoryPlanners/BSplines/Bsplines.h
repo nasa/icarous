@@ -6,6 +6,7 @@
 #define BSPLINES_H
 
 #include "kdtree.h"
+#include "Poly3D.h"
 #include <list>
 
 #define OBS_THRESH 3.0
@@ -28,13 +29,14 @@ public:
     Bsplines(int ndim,int lent,double* tVec,int lenk,double* KntVec,int order);
     void SetSplineProperties(int ndim,int lent,double* tVec,int lenk,double* KntVec,int order);
     void SetInitControlPts(double* ctrlPt);
-    void SetObstacles(double x,double y,double z);
+    void SetObstacles(larcfm::Poly3D& obs);
     double Beta(double x);
     double Nfac(double t,int i,int k);
-    double dist(double x1,double y1,double x2,double y2);
+    double dist2D(double x1,double y1,double x2,double y2);
     double Objective2D(const double *x);
+    void Gradient2D(const double* x0,double *grad);
     double HdgConstraint(double *x);
-    void ObsDerivative(const double* x0,double *grad);
+
 };
 
 
