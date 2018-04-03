@@ -6,7 +6,7 @@
 #include "math.h"
 
 
-Bsplines::Bsplines(int _ndim,int lent, double *_tVec, int lenk, double *_KntVec, int _order) {
+Bsplines::Bsplines(int _ndim,int lent, double *_tVec, int lenk, double *_KntVec, int _order){
     lenT = lent;
     lenK = lenk;
     tVec = _tVec;
@@ -78,8 +78,22 @@ double Bsplines::Objective2D(const double *x){
             sumY += pt[1]*nfac;
         }
 
-        double dist2obs = dist(obsloc[0],obsloc[1],sumX,sumY);
-        double obsCost  = Beta(dist2obs);
+        double obsCost = 0;
+        for(it = kdtreeList.begin();it != kdtreeList.end(); ++it) {
+            KDTREE *kdtree = *it;
+            node_t qnode;
+            std::vector<double> qval({sumX,sumY});
+            qnode.val = qval;
+            double _distval = MAXDOUBLE;
+            kdtree->KNN(kdtree->root,&qnode,_distval);
+            for (int k = 0; k < kdtree->kneighbors.size(); ++k) {
+                obsloc[0] = kdtree->kneighbors[k][0];
+                obsloc[1] = kdtree->kneighbors[k][1];
+                double dist2obs = dist(obsloc[0], obsloc[1], sumX, sumY);
+                obsCost += Beta(dist2obs);
+            }
+        }
+
         double pathlen;
         i>0?pathlen=dist(oldVal[0],oldVal[1],sumX,sumY):pathlen = 0;
 
@@ -134,20 +148,35 @@ void Bsplines::ObsDerivative(const double* x0,double *grad){
                 Pty1 += nfac1*P1[1];
             }
 
-            double dist2obs = dist(obsloc[0],obsloc[1],Ptx1,Pty1);
             double nfac  = Nfac(tVec[i],k,order);
-            double dbeta = (1.0/OBS_THRESH - OBS_THRESH/(dist2obs*dist2obs));
-            double dist2obsgradX = dbeta*(1/dist2obs)*(Ptx1-obsloc[0])*nfac;
-            double dist2obsgradY = dbeta*(1/dist2obs)*(Pty1-obsloc[1])*nfac;
+            double dist2obsgradX = 0;
+            double dist2obsgradY = 0;
 
-            if (dist2obs >= OBS_THRESH){
-                dist2obsgradX = 0;
-                dist2obsgradY = 0;
+            for(it = kdtreeList.begin();it != kdtreeList.end(); ++it) {
+                KDTREE *kdtree = *it;
+                node_t qnode;
+                std::vector<double> qval({Ptx1,Pty1});
+                qnode.val = qval;
+                double _distval = MAXDOUBLE;
+                kdtree->KNN(kdtree->root,&qnode,_distval);
+                for (int j = 0; j < kdtree->kneighbors.size(); ++j) {
+                    obsloc[0] = kdtree->kneighbors[j][0];
+                    obsloc[1] = kdtree->kneighbors[j][1];
+                    double dist2obs = dist(obsloc[0], obsloc[1], Ptx1, Pty1);
+
+                    if (dist2obs >= OBS_THRESH){
+                        dist2obsgradX += 0;
+                        dist2obsgradY += 0;
+                    }else {
+                        double dbeta = (1.0 / OBS_THRESH - OBS_THRESH / (dist2obs * dist2obs));
+                        dist2obsgradX += dbeta * (1 / dist2obs) * (Ptx1 - obsloc[0]) * nfac;
+                        dist2obsgradY += dbeta * (1 / dist2obs) * (Pty1 - obsloc[1]) * nfac;
+                    }
+                }
             }
 
             sumOPx += dist2obsgradX;
             sumOPy += dist2obsgradY;
-
         }
 
         grad[2*k] = sumLPx + sumOPx;
@@ -157,8 +186,7 @@ void Bsplines::ObsDerivative(const double* x0,double *grad){
             grad[2*k] = 0;
             grad[2*k+1] = 0;
         }
-
-
+        
     }
 }
 

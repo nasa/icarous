@@ -5,6 +5,9 @@
 #ifndef BSPLINES_H
 #define BSPLINES_H
 
+#include "kdtree.h"
+#include <list>
+
 #define OBS_THRESH 3.0
 
 class Bsplines {
@@ -19,7 +22,9 @@ private:
 
 public:
     double *ctrlPt0;
-    Bsplines(){}
+    std::list<KDTREE*> kdtreeList;
+    std::list<KDTREE*>::iterator it;
+    Bsplines(){};
     Bsplines(int ndim,int lent,double* tVec,int lenk,double* KntVec,int order);
     void SetSplineProperties(int ndim,int lent,double* tVec,int lenk,double* KntVec,int order);
     void SetInitControlPts(double* ctrlPt);

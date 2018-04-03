@@ -48,7 +48,7 @@ node_t* KDTREE::ConstructTree(std::vector<std::vector<double>> list, node_t *par
             nd->rightChild = NULL;
         }
     }
-
+    root = nd;
     return nd;
 }
 
