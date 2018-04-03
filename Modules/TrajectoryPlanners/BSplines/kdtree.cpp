@@ -2,31 +2,22 @@
 // Created by research133 on 4/2/18.
 //
 
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <values.h>
+#include "kdtree.h"
 
 
-typedef struct node{
-    int depth;
-    std::vector<double> val;
-    node* parent;
-    node* rightChild;
-    node* leftChild;
-}node_t;
+KDTREE::KDTREE(double eps) {
+    neighborhood = eps;
+}
 
-node_t* KNN(node_t* root,node_t* qnode,double& distance);
-
-bool dimX(std::vector<double> val1, std::vector<double> val2){
+bool KDTREE::dimX(std::vector<double> val1, std::vector<double> val2){
     return val1[0] < val2[0];
 }
 
-bool dimY(std::vector<double> val1, std::vector<double> val2){
+bool KDTREE::dimY(std::vector<double> val1, std::vector<double> val2){
     return val1[1] < val2[1];
 }
 
-node_t* kdtree(std::vector<std::vector<double>> list,node_t* parent,int depth){
+node_t* KDTREE::ConstructTree(std::vector<std::vector<double>> list, node_t *parent, int depth){
     int axis = depth%2;
 
     if (axis == 0){
@@ -50,8 +41,8 @@ node_t* kdtree(std::vector<std::vector<double>> list,node_t* parent,int depth){
             std::vector<std::vector<double>> left(list.begin(), list.begin() + (median));
             std::vector<std::vector<double>> right(list.begin() + median + 1, list.end());
 
-            nd->leftChild = kdtree(left,nd, depth + 1);
-            nd->rightChild = kdtree(right,nd, depth + 1);
+            nd->leftChild = ConstructTree(left,nd, depth + 1);
+            nd->rightChild = ConstructTree(right,nd, depth + 1);
         }else{
             nd->leftChild = NULL;
             nd->rightChild = NULL;
@@ -61,11 +52,11 @@ node_t* kdtree(std::vector<std::vector<double>> list,node_t* parent,int depth){
     return nd;
 }
 
-double dist(node_t* A,node_t* B){
+double KDTREE::dist(node_t* A,node_t* B){
     return sqrt(pow(A->val[0]-B->val[0],2) + pow(A->val[1]-B->val[1],2));
 }
 
-node_t* traverse(node_t* root,node_t* qnode){
+node_t* KDTREE::traverse(node_t* root,node_t* qnode){
     if(root->val.size() > 0) {
         int splitType = root->depth % 2;
         if (splitType == 0) {
@@ -100,7 +91,7 @@ node_t* traverse(node_t* root,node_t* qnode){
     }
 }
 
-node_t* unwind(node_t* nodeA,node_t* qnode,double& bestdist,node_t* root){
+node_t* KDTREE::unwind(node_t* nodeA,node_t* qnode,double& bestdist,node_t* root){
 
     if(!nodeA){
         return NULL;
@@ -111,6 +102,10 @@ node_t* unwind(node_t* nodeA,node_t* qnode,double& bestdist,node_t* root){
     double val = dist(nodeA,qnode);
     node_t* bestnode = NULL;
     node_t* currentNode = nodeA;
+
+    if(val < neighborhood){
+        kneighbors.push_back(nodeA->val);
+    }
 
     if (val < prevbestdist){
         bestnode = nodeA;
@@ -149,7 +144,6 @@ node_t* unwind(node_t* nodeA,node_t* qnode,double& bestdist,node_t* root){
         }
     }
 
-
     node_t* upbranch = unwind(currentNode->parent,qnode,prevbestdist,root);
 
     if(prevbestdist < bestdist){
@@ -160,11 +154,18 @@ node_t* unwind(node_t* nodeA,node_t* qnode,double& bestdist,node_t* root){
     return bestnode;
 }
 
-node_t* KNN(node_t* root,node_t* qnode,double& distance) {
+node_t* KDTREE::KNN(node_t* root,node_t* qnode,double& distance) {
     double bestdist = distance;
     node_t *bestNode = NULL;
     node_t* leaf = traverse(root,qnode);
     double val = dist(leaf, qnode);
+
+    if(val < neighborhood){
+        if (root->parent==NULL){
+            kneighbors.clear();
+        }
+        kneighbors.push_back(leaf->val);
+    }
 
     if (val < bestdist){
         bestNode = leaf;
@@ -194,16 +195,18 @@ int main(){
     std::vector<double> val5({5.0,1.0});
     std::vector<double> val6({4.0,4.0});
 
-    std::vector<std::vector<double>> values;
-    values.push_back(val1);
-    values.push_back(val2);
-    values.push_back(val3);
-    values.push_back(val4);
-    values.push_back(val5);
-    values.push_back(val6);
+    KDTREE kdtree(3);
 
 
-    node_t *nd = kdtree(values,NULL,0);
+    kdtree.points.push_back(val1);
+    kdtree.points.push_back(val2);
+    kdtree.points.push_back(val3);
+    kdtree.points.push_back(val4);
+    kdtree.points.push_back(val5);
+    kdtree.points.push_back(val6);
+
+
+    node_t* root = kdtree.ConstructTree(kdtree.points,NULL,0);
 
     node_t qnode;
 
@@ -211,6 +214,10 @@ int main(){
     qnode.val = val;
     double distance = MAXDOUBLE;
 
-    node_t *nearest = KNN(nd,&qnode,distance);
+    std::vector<std::vector<double>> nearestNodes;
+
+    node_t *nearest = kdtree.KNN(root,&qnode,distance);
+
+    printf("nearest node distance %f\n",distance);
 
 }

@@ -3,7 +3,7 @@ project(BSplines)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(BSplines Bsplines.cpp main.cpp)
+add_executable(BSplines Bsplines.cpp main.cpp kdtree.h)
 
 add_executable(KD kdtree.cpp)
 
