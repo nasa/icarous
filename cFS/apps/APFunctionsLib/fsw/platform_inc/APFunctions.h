@@ -63,7 +63,7 @@ void ServiceFence_DecodeFenceViolation(service_t* msg,bool* output);
 void ServiceFence_DecodeWPFeasibility(service_t* msg,bool* output);
 void ServiceFence_DecodeRecoveryPosition(service_t* msg,double* output);
 
-void ServiceTraffic_DecodeTrafficConflict(service_t* msg,double* output);
+void ServiceTraffic_DecodeTrafficConflict(service_t* msg,bool* conflict,double* output);
 void ServiceTraffic_DecodeSafe2Turn(service_t* msg,bool* output);
 
 void ServiceTrajectory_DecodeWaypoint(service_t* msg,double* output);
@@ -73,5 +73,6 @@ void ServiceTrajectory_DecodeXTrackDeviation(service_t* msg,double* output);
 void ServiceTrajectory_DecodeDistance(service_t* msg,double* output);
 void ServiceTrajectory_DecodeExitPoint(service_t* msg,double* output);
 void ServiceTrajectory_DecodeInterceptHeading(service_t* msg,double* output);
+void ServiceTrajectory_DecodeInterceptManeuver(service_t* msg,double* output);
 
 #endif //APFUNCTIONS_H

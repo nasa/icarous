@@ -99,6 +99,7 @@ void SetSpeed(float speed){
 
 int ServiceFence_GetFenceViolation(double* position,double* velocity){
     InitGeofenceServiceMsg(msg);
+    msg.sType = _command_;
     memcpy(msg.name,"CheckFenceViolation",19);
     char* b  = msg.buffer;
     b = serializeRealArray(3,position,b);
@@ -109,6 +110,7 @@ int ServiceFence_GetFenceViolation(double* position,double* velocity){
 
 int ServiceFence_GetWPFeasibility(double* positionA,double* positionB){
     InitGeofenceServiceMsg(msg);
+    msg.sType = _command_;
     memcpy(msg.name,"CheckDirectPathFeasibility",26);
     char* b  = msg.buffer;
     b = serializeRealArray(3,positionA,b);
@@ -119,7 +121,8 @@ int ServiceFence_GetWPFeasibility(double* positionA,double* positionB){
 
 int ServiceFence_GetRecoveryPosition(double* position){
     InitGeofenceServiceMsg(msg);
-    memcpy(msg.name,"CheckDirectPathFeasibility",26);
+    msg.sType = _command_;
+    memcpy(msg.name,"GetRecoveryPosition",19);
     serializeRealArray(3,position,msg.buffer);
     SendSBMsg(msg);
     return msg.id;
@@ -127,6 +130,7 @@ int ServiceFence_GetRecoveryPosition(double* position){
 
 int ServiceTraffic_GetTrafficConflict(bool bands,double* position,double* velocity){
     InitTrafficServiceMsg(msg);
+    msg.sType = _command_;
     memcpy(msg.name,"MonitorTraffic",14);
     char* b  = msg.buffer;
     b = serializeBool(false,bands,b);
@@ -138,6 +142,7 @@ int ServiceTraffic_GetTrafficConflict(bool bands,double* position,double* veloci
 
 int ServiceTraffic_GetSafe2Turn(double* position,double* velocity,double headingA,double headingB){
     InitTrafficServiceMsg(msg);
+    msg.sType = _command_;
     memcpy(msg.name,"CheckSafeToTurn",15);
     char* b  = msg.buffer;
     b = serializeRealArray(3,position,b);
@@ -150,6 +155,7 @@ int ServiceTraffic_GetSafe2Turn(double* position,double* velocity,double heading
 
 int ServiceTrajectory_GetWaypoint(char* planID,int index){
     InitTrajectoryServiceMsg(msg);
+    msg.sType = _command_;
     memcpy(msg.name,"GetWaypoint",11);
     char* b  = msg.buffer;
     b = serializeString(5,planID,b);
@@ -158,8 +164,19 @@ int ServiceTrajectory_GetWaypoint(char* planID,int index){
     return msg.id;
 }
 
+int ServiceTrajectory_GetTotalWaypoints(char* planID){
+    InitTrajectoryServiceMsg(msg);
+    msg.sType = _command_;
+    memcpy(msg.name,"GetTotalWaypoints",17);
+    char* b  = msg.buffer;
+    b = serializeString(5,planID,b);
+    SendSBMsg(msg);
+    return msg.id;
+}
+
 int ServiceTrajectory_GetNewPath(char* planID,char* algorithm,double* positionA,double* velocity,double* positionB){
     InitTrajectoryServiceMsg(msg);
+    msg.sType = _command_;
     memcpy(msg.name,"FindNewPath",11);
     char* b  = msg.buffer;
     b = serializeString(5,planID,b);
@@ -169,6 +186,8 @@ int ServiceTrajectory_GetNewPath(char* planID,char* algorithm,double* positionA,
         b = serializeString(5,"ASTAR",b);
     }else if (!strcmp(algorithm, "RRT")) {
         b = serializeString(3,"RRT",b);
+    }else{
+        OS_printf("unknown algorithm\n");
     }
     b = serializeRealArray(3,positionA,b);
     b = serializeRealArray(3,velocity,b);
@@ -179,6 +198,7 @@ int ServiceTrajectory_GetNewPath(char* planID,char* algorithm,double* positionA,
 
 int ServiceTrajectory_GetXTrackDeviation(char* planID,int leg,double* position){
     InitTrajectoryServiceMsg(msg);
+    msg.sType = _command_;
     memcpy(msg.name,"ComputeCrossTrackDeviation",26);
     char* b  = msg.buffer;
     b = serializeString(5,planID,b);
@@ -190,6 +210,7 @@ int ServiceTrajectory_GetXTrackDeviation(char* planID,int leg,double* position){
 
 int ServiceTrajectory_GetDistance(double* positionA,double* positionB){
     InitTrajectoryServiceMsg(msg);
+    msg.sType = _command_;
     memcpy(msg.name,"ComputeDistance",15);
     char* b  = msg.buffer;
     b = serializeRealArray(3,positionA,b);
@@ -200,6 +221,7 @@ int ServiceTrajectory_GetDistance(double* positionA,double* positionB){
 
 int ServiceTrajectory_GetExitPoint(char* planID,double* position,int nextWP){
     InitTrajectoryServiceMsg(msg);
+    msg.sType = _command_;
     memcpy(msg.name,"GetExitPoint",12);
     char* b  = msg.buffer;
     b = serializeString(5,planID,b);
@@ -211,6 +233,7 @@ int ServiceTrajectory_GetExitPoint(char* planID,double* position,int nextWP){
 
 int ServiceTrajectory_GetInterceptHeading(char* planID,int nextWP,double* position){
     InitTrajectoryServiceMsg(msg);
+    msg.sType = _command_;
     memcpy(msg.name,"GetInterceptHeadingToPlan",25);
     char* b  = msg.buffer;
     b = serializeString(5,planID,b);
@@ -222,6 +245,7 @@ int ServiceTrajectory_GetInterceptHeading(char* planID,int nextWP,double* positi
 
 int ServiceTrajectory_GetInterceptManeuver(char* planID,int nextWP,double* position){
     InitTrajectoryServiceMsg(msg);
+    msg.sType = _command_;
     memcpy(msg.name,"ManeuverToIntercept",19);
     char* b  = msg.buffer;
     b = serializeString(5,planID,b);
@@ -246,11 +270,14 @@ void ServiceFence_DecodeRecoveryPosition(service_t* msg,double* output){
     b = deSerializeRealArray(output,b);
 }
 
-void ServiceTraffic_DecodeTrafficConflict(service_t* msg,double* output){
+void ServiceTraffic_DecodeTrafficConflict(service_t* msg,bool* conflict,double* output){
     const char* b = msg->buffer;
     double resolution[4];
     b = deSerializeRealArray(resolution,b);
-    *output = resolution[0];
+    *conflict = resolution[0];
+    output[0] = resolution[1];
+    output[1] = resolution[2];
+    output[2] = resolution[3];
 }
 
 void ServiceTraffic_DecodeSafe2Turn(service_t* msg,bool* output){
@@ -287,7 +314,13 @@ void ServiceTrajectory_DecodeExitPoint(service_t* msg,double* output){
     const char* b = msg->buffer;
     b = deSerializeRealArray(output,b);
 }
+
 void ServiceTrajectory_DecodeInterceptHeading(service_t* msg,double* output){
     const char* b = msg->buffer;
     b = deSerializeReal(false,output,b);
+}
+
+void ServiceTrajectory_DecodeInterceptManeuver(service_t* msg,double* output){
+    const char* b = msg->buffer;
+    b = deSerializeRealArray(output,b);
 }
