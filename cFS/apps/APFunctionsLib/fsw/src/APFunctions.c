@@ -100,7 +100,9 @@ void SetSpeed(float speed){
 int ServiceFence_GetFenceViolation(double* position,double* velocity){
     InitGeofenceServiceMsg(msg);
     memcpy(msg.name,"CheckFenceViolation",19);
-    serializeRealArray(3,position,msg.buffer);
+    char* b  = msg.buffer;
+    b = serializeRealArray(3,position,b);
+    b = serializeRealArray(3,velocity,b);
     SendSBMsg(msg);
     return msg.id;
 }
@@ -108,8 +110,9 @@ int ServiceFence_GetFenceViolation(double* position,double* velocity){
 int ServiceFence_GetWPFeasibility(double* positionA,double* positionB){
     InitGeofenceServiceMsg(msg);
     memcpy(msg.name,"CheckDirectPathFeasibility",26);
-    serializeRealArray(3,positionA,msg.buffer);
-    serializeRealArray(3,positionB,msg.buffer);
+    char* b  = msg.buffer;
+    b = serializeRealArray(3,positionA,b);
+    b = serializeRealArray(3,positionB,b);
     SendSBMsg(msg);
     return msg.id;
 }
@@ -125,9 +128,10 @@ int ServiceFence_GetRecoveryPosition(double* position){
 int ServiceTraffic_GetTrafficConflict(bool bands,double* position,double* velocity){
     InitTrafficServiceMsg(msg);
     memcpy(msg.name,"MonitorTraffic",14);
-    serializeBool(false,bands,msg.buffer);
-    serializeRealArray(3,position,msg.buffer);
-    serializeRealArray(3,velocity,msg.buffer);
+    char* b  = msg.buffer;
+    b = serializeBool(false,bands,b);
+    b = serializeRealArray(3,position,b);
+    b = serializeRealArray(3,velocity,b);
     SendSBMsg(msg);
     return msg.id;
 }
@@ -135,10 +139,11 @@ int ServiceTraffic_GetTrafficConflict(bool bands,double* position,double* veloci
 int ServiceTraffic_GetSafe2Turn(double* position,double* velocity,double headingA,double headingB){
     InitTrafficServiceMsg(msg);
     memcpy(msg.name,"CheckSafeToTurn",15);
-    serializeRealArray(3,position,msg.buffer);
-    serializeRealArray(3,velocity,msg.buffer);
-    serializeReal(false,headingA,msg.buffer);
-    serializeReal(false,headingB,msg.buffer);
+    char* b  = msg.buffer;
+    b = serializeRealArray(3,position,b);
+    b = serializeRealArray(3,velocity,b);
+    b = serializeReal(false,headingA,b);
+    b = serializeReal(false,headingB,b);
     SendSBMsg(msg);
     return msg.id;
 }
@@ -146,8 +151,9 @@ int ServiceTraffic_GetSafe2Turn(double* position,double* velocity,double heading
 int ServiceTrajectory_GetWaypoint(char* planID,int index){
     InitTrajectoryServiceMsg(msg);
     memcpy(msg.name,"GetWaypoint",11);
-    serializeString(5,planID,msg.buffer);
-    serializeInt(false,index,msg.buffer);
+    char* b  = msg.buffer;
+    b = serializeString(5,planID,b);
+    b = serializeInt(false,index,b);
     SendSBMsg(msg);
     return msg.id;
 }
@@ -155,17 +161,18 @@ int ServiceTrajectory_GetWaypoint(char* planID,int index){
 int ServiceTrajectory_GetNewPath(char* planID,char* algorithm,double* positionA,double* velocity,double* positionB){
     InitTrajectoryServiceMsg(msg);
     memcpy(msg.name,"FindNewPath",11);
-    serializeString(5,planID,msg.buffer);
+    char* b  = msg.buffer;
+    b = serializeString(5,planID,b);
     if (!strcmp(algorithm, "GRID")) {
-        serializeString(4,"GRID",msg.buffer);
+        b = serializeString(4,"GRID",b);
     }else if (!strcmp(algorithm, "ASTAR")) {
-        serializeString(5,"ASTAR",msg.buffer);
+        b = serializeString(5,"ASTAR",b);
     }else if (!strcmp(algorithm, "RRT")) {
-        serializeString(3,"RRT",msg.buffer);
+        b = serializeString(3,"RRT",b);
     }
-    serializeRealArray(3,positionA,msg.buffer);
-    serializeRealArray(3,velocity,msg.buffer);
-    serializeRealArray(3,positionB,msg.buffer);
+    b = serializeRealArray(3,positionA,b);
+    b = serializeRealArray(3,velocity,b);
+    b = serializeRealArray(3,positionB,b);
     SendSBMsg(msg);
     return msg.id;
 }
@@ -173,9 +180,10 @@ int ServiceTrajectory_GetNewPath(char* planID,char* algorithm,double* positionA,
 int ServiceTrajectory_GetXTrackDeviation(char* planID,int leg,double* position){
     InitTrajectoryServiceMsg(msg);
     memcpy(msg.name,"ComputeCrossTrackDeviation",26);
-    serializeString(5,planID,msg.buffer);
-    serializeInt(false,leg,msg.buffer);
-    serializeRealArray(3,position,msg.buffer);
+    char* b  = msg.buffer;
+    b = serializeString(5,planID,b);
+    b = serializeInt(false,leg,b);
+    b = serializeRealArray(3,position,b);
     SendSBMsg(msg);
     return msg.id;
 }
@@ -183,8 +191,9 @@ int ServiceTrajectory_GetXTrackDeviation(char* planID,int leg,double* position){
 int ServiceTrajectory_GetDistance(double* positionA,double* positionB){
     InitTrajectoryServiceMsg(msg);
     memcpy(msg.name,"ComputeDistance",15);
-    serializeRealArray(3,positionA,msg.buffer);
-    serializeRealArray(3,positionB,msg.buffer);
+    char* b  = msg.buffer;
+    b = serializeRealArray(3,positionA,b);
+    b = serializeRealArray(3,positionB,b);
     SendSBMsg(msg);
     return msg.id;
 }
@@ -192,9 +201,10 @@ int ServiceTrajectory_GetDistance(double* positionA,double* positionB){
 int ServiceTrajectory_GetExitPoint(char* planID,double* position,int nextWP){
     InitTrajectoryServiceMsg(msg);
     memcpy(msg.name,"GetExitPoint",12);
-    serializeString(5,planID,msg.buffer);
-    serializeRealArray(3,position,msg.buffer);
-    serializeInt(false,nextWP,msg.buffer);
+    char* b  = msg.buffer;
+    b = serializeString(5,planID,b);
+    b = serializeRealArray(3,position,b);
+    b = serializeInt(false,nextWP,b);
     SendSBMsg(msg);
     return msg.id;
 }
@@ -202,9 +212,10 @@ int ServiceTrajectory_GetExitPoint(char* planID,double* position,int nextWP){
 int ServiceTrajectory_GetInterceptHeading(char* planID,int nextWP,double* position){
     InitTrajectoryServiceMsg(msg);
     memcpy(msg.name,"GetInterceptHeadingToPlan",25);
-    serializeString(5,planID,msg.buffer);
-    serializeInt(false,nextWP,msg.buffer);
-    serializeRealArray(3,position,msg.buffer);
+    char* b  = msg.buffer;
+    b = serializeString(5,planID,b);
+    b = serializeInt(false,nextWP,b);
+    b = serializeRealArray(3,position,b);
     SendSBMsg(msg);
     return msg.id;
 }
@@ -212,9 +223,10 @@ int ServiceTrajectory_GetInterceptHeading(char* planID,int nextWP,double* positi
 int ServiceTrajectory_GetInterceptManeuver(char* planID,int nextWP,double* position){
     InitTrajectoryServiceMsg(msg);
     memcpy(msg.name,"ManeuverToIntercept",19);
-    serializeString(5,planID,msg.buffer);
-    serializeInt(false,nextWP,msg.buffer);
-    serializeRealArray(3,position,msg.buffer);
+    char* b  = msg.buffer;
+    b = serializeString(5,planID,b);
+    b = serializeInt(false,nextWP,b);
+    b = serializeRealArray(3,position,b);
     SendSBMsg(msg);
     return msg.id;
 }

@@ -57,7 +57,7 @@ void TRAFFIC_AppInit(void) {
     CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,TrafficAppData.Traffic_Pipe);
 
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&trafficServiceResponse, SERVICE_RESPONSE_MID, sizeof(service_t), TRUE);
+    CFE_SB_InitMsg(&trafficServiceResponse, SERVICE_TRAFFIC_RESPONSE_MID, sizeof(service_t), TRUE);
     CFE_SB_InitMsg(&trackBands, ICAROUS_VISBAND_MID, sizeof(visbands_t), TRUE);
 
     // Send event indicating app initialization

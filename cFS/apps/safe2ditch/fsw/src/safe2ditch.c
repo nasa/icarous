@@ -210,7 +210,7 @@ void ProcessSBMessage(void){
         case SERVICE_DITCH_MID: {
             service_t *msgSrv = (service_t *) appdataS2D.SAFE2DITCHMsgPtr;
             service_t returnMsg;
-            CFE_SB_InitMsg(&returnMsg,SERVICE_RESPONSE_MID, sizeof(service_t),TRUE);
+            CFE_SB_InitMsg(&returnMsg,SERVICE_DITCH_RESPONSE_MID, sizeof(service_t),TRUE);
             strcpy(returnMsg.name,msgSrv->name);
             if(CHECKNAME((*msgSrv), "ditchSite")){
                 returnMsg.sType = _lookup_return_;

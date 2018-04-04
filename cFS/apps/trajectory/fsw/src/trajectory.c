@@ -61,7 +61,7 @@ void TRAJECTORY_AppInit(void) {
     CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,TrajectoryAppData.Trajectory_Pipe);
 
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&trajServiceResponse, SERVICE_RESPONSE_MID, sizeof(service_t), TRUE);
+    CFE_SB_InitMsg(&trajServiceResponse, SERVICE_TRAJECTORY_RESPONSE_MID, sizeof(service_t), TRUE);
 
     // Send event indicating app initialization
     CFE_EVS_SendEvent(TRAJECTORY_STARTUP_INF_EID, CFE_EVS_INFORMATION,

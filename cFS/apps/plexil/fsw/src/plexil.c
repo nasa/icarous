@@ -59,7 +59,10 @@ void PLEXIL_AppInit(void) {
                                PLEXIL_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to command messages and kinematic band messages from the SB
-    CFE_SB_Subscribe(SERVICE_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
+    CFE_SB_Subscribe(SERVICE_INTERFACE_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
+    CFE_SB_Subscribe(SERVICE_GEOFENCE_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
+    CFE_SB_Subscribe(SERVICE_TRAFFIC_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
+    CFE_SB_Subscribe(SERVICE_TRAJECTORY_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
     CFE_SB_Subscribe(PLEXIL_WAKEUP_MID, plexilAppData.PLEXIL_Pipe);
     
     // Send event indicating app initialization
