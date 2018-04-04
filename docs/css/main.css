@@ -95,6 +95,21 @@ ul.posts li {
     top: 4px;
 }
 
+.code-snippet-big {
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    border-radius: 5px;
+    background-color: lightgrey;
+    height: 100%;
+}
+
+.code-snippet-big .code {
+    position: relative;
+    left: 10px;
+    top: 4px;
+}
+
 .paramtable {
     margin: 0 auto;
     width: 80%;

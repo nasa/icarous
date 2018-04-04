@@ -211,7 +211,7 @@ void ServiceTrajectory_DecodeTotalWaypoints(service_t* msg,int* output);
 /**
  * Decode a NewPath service response message
  * @param msg service_t message received from SERVICE_TRAJECTORY_RESPONSE_MID subscription.
- * @param output pointer to int.
+ * @param output pointer to int. (number of waypoints in computed path)
  */
 void ServiceTrajectory_DecodeNewPath(service_t* msg,int* output);
 
