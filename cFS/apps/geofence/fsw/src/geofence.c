@@ -57,7 +57,7 @@ void GEOFENCE_AppInit(void) {
     CFE_SB_Subscribe(ICAROUS_RESET_MID,geofenceAppData.Geofence_Pipe);
 
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&gfServiceResponse, SERVICE_RESPONSE_MID, sizeof(service_t), TRUE);
+    CFE_SB_InitMsg(&gfServiceResponse, SERVICE_GEOFENCE_RESPONSE_MID, sizeof(service_t), TRUE);
 
     // Send event indicating app initialization
     CFE_EVS_SendEvent(GEOFENCE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
