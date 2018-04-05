@@ -122,7 +122,7 @@
                         if(status == CFE_SUCCESS){<br/>
                             &emsp;&emsp;&emsp;service_t *msg1 = (service_t*) SAMPLEMsgPtr1;<br/>
                             &emsp;&emsp;&emsp;bool output[2];<br/>    
-                            &emsp;&emsp;&emsp;if (msg1->id == _getdistance){<br/>
+                            &emsp;&emsp;&emsp;if (msg1->id == _fenceViolationResponseId){<br/>
                                 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;ServiceFence_DecodeFenceViolation(msg1,output);<br/>                            
                             &emsp;&emsp;&emsp;}<br/>
                         }<br/>
