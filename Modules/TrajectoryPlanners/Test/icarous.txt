@@ -26,7 +26,7 @@ VSTEPBACK  = 0.5
 # Search parameters
 CHEAP_SEARCH = 0
 SEARCH_3D  = false
-GRIDSIZE   = 0.5
+GRIDSIZE   = 2
 BUFFER     = 1
 LOOKAHEAD  = 1
 PROXFACTOR = 3.0

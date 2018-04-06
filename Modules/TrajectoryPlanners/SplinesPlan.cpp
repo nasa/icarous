@@ -72,14 +72,14 @@ int64_t PathPlanner::FindPathBSplines(char planID[],double fromPosition[],double
         tVec[i] = i*0.1;
     }
 
-    double CtrlPt0[8] = {0.0,1.0,
-                         72.0,72.0,
-                         27.0,27.0,
-                         90.0,90.0};
-
     Vect3 heading2goal = (gpos - initPosR3);
     double dist2goal = heading2goal.norm();
     heading2goal = heading2goal*(1/dist2goal);
+
+    double CtrlPt0[8] = {initPosR3.x,initPosR3.y,
+                         0.7*initPosR3.x + 0.3*gpos.x,0.7*initPosR3.y + 0.3*gpos.y,
+                         0.3*initPosR3.x + 0.7*gpos.x,0.3*initPosR3.y + 0.7*gpos.y,
+                         gpos.x,gpos.y};
 
     int n = 0;
     for(int i=0;i<ndim/2;++i){
@@ -88,7 +88,7 @@ int64_t PathPlanner::FindPathBSplines(char planID[],double fromPosition[],double
     }
 
     splinePath.SetSplineProperties(8,40,tVec,8,KnotVec,3);
-    splinePath.SetObstacleProperties(3,100,1,2);
+    splinePath.SetObstacleProperties(3,50,5,30);
     splinePath.SetInitControlPts(CtrlPt0);
 
     for(int i=0;i<fdata->GetTotalFences();++i){

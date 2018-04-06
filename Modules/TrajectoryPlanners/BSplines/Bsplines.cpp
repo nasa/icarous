@@ -89,7 +89,7 @@ void Bsplines::GetPoint(double t,double *x,double *output) {
     }
 
     output[0] = sumX;
-    output[0] = sumY;
+    output[1] = sumY;
 }
 
 double Bsplines::Beta(double x){
