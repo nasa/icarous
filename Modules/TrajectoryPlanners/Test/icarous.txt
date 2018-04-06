@@ -27,8 +27,8 @@ VSTEPBACK  = 0.5
 CHEAP_SEARCH = 0
 SEARCH_3D  = false
 GRIDSIZE   = 2
-BUFFER     = 1
-LOOKAHEAD  = 1
+BUFFER     = 5
+LOOKAHEAD  = 3
 PROXFACTOR = 3.0
 
 # Flight plan resolution parameters
