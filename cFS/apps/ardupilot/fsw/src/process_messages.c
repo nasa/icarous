@@ -330,6 +330,8 @@ bool ProcessGSMessage(mavlink_message_t message){
             break;
         }
 	}
+
+	return send2ap;
 }
 
 void ARDUPILOT_ProcessPacket(){
