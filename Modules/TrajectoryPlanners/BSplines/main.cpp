@@ -22,44 +22,34 @@ int main() {
     }
 
     double CtrlPt0[8] = {0.0,1.0,
-                          3.0,4.0,
-                          4.0,2.0,
-                          7.0,3.0};
-
-
+                          72.0,72.0,
+                          27.0,27.0,
+                          90.0,90.0};
 
     larcfm::Poly2D _obs1;
-    _obs1.addVertex(20,20);
-    _obs1.addVertex(60,20);
+    _obs1.addVertex(40,40);
+    _obs1.addVertex(60,40);
     _obs1.addVertex(60,60);
-    _obs1.addVertex(20,60);
-    larcfm::Poly3D obs1(_obs1,0,30);
-
+    _obs1.addVertex(40,60);
+    larcfm::Poly3D obs1(_obs1,-10,10);
 
     splinePath.SetSplineProperties(8,40,tVec,8,KnotVec,3);
+    splinePath.SetObstacleProperties(4,4,20,100);
     splinePath.SetInitControlPts(CtrlPt0);
-    //splinePath.SetObstacles(5.0,3.0,0.0);
-
-    KDTREE kdtree(5);
-    //std::vector<double> obs1({5.0,3.0,0.0});
-    //std::vector<double> obs2({4.0,3.0,0.0});
-    //kdtree.points.push_back(obs1);
-
-    kdtree.ConstructTree(kdtree.points,NULL,0);
-    splinePath.kdtreeList.push_back(&kdtree);
+    splinePath.SetObstacles(obs1);
 
     double gradient[8] = {0,0,0,0,0,0,0,0};
 
     double lb[8] = {0.0,0.0,0.0,0.0,
                     0.0,0.0,0.0,0.0};
 
-    double ub[8] = {10.0,10.0,10.0,10.0,
-                    10.0,10.0,10.0,10.0};
+    double ub[8] = {100.0,100.0,100.0,100.0,
+                    100.0,100.0,100.0,100.0};
 
     nlopt_opt opt;
     opt = nlopt_create(NLOPT_LD_SLSQP,8);
-    nlopt_set_lower_bounds(opt,lb);
-    nlopt_set_upper_bounds(opt,ub);
+    //nlopt_set_lower_bounds(opt,lb);
+    //nlopt_set_upper_bounds(opt,ub);
     nlopt_set_min_objective(opt,objfunc,&splinePath);
 
     nlopt_set_xtol_rel(opt, 1e-4);

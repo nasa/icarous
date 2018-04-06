@@ -6,15 +6,6 @@
 #include "math.h"
 
 
-Bsplines::Bsplines(int _ndim,int lent, double *_tVec, int lenk, double *_KntVec, int _order){
-    lenT = lent;
-    lenK = lenk;
-    tVec = _tVec;
-    KntVec = _KntVec;
-    order = _order;
-    ndim = _ndim;
-}
-
 void Bsplines::SetSplineProperties(int _ndim, int _lenT, double *_tVec, int _lenK, double *_KntVec, int _order) {
     lenT = _lenT;
     lenK = _lenK;
@@ -24,13 +15,20 @@ void Bsplines::SetSplineProperties(int _ndim, int _lenT, double *_tVec, int _len
     ndim = _ndim;
 }
 
+void Bsplines::SetObstacleProperties(double _dx, double _dy, double _threshold, double _obsWeight) {
+    dx = _dx;
+    dy = _dy;
+    OBS_THRESH = _threshold;
+    obsWeight = _obsWeight;
+}
+
 void Bsplines::SetInitControlPts(double *ctrlPt) {
     ctrlPt0 = ctrlPt;
 }
 
 void Bsplines::SetObstacles(larcfm::Poly3D& obs) {
 
-    KDTREE kdtree(5);
+    KDTREE *kdtree = new KDTREE(5);
     int numVertices = obs.size();
     for(int i=0;i<numVertices;++i){
         int j = (i+1)%numVertices;
@@ -38,20 +36,24 @@ void Bsplines::SetObstacles(larcfm::Poly3D& obs) {
         larcfm::Vect2 vertex2 = obs.poly2D().getVertex(j);
         double distH = (vertex2 - vertex1).norm();
         double distV = obs.getTop() - obs.getBottom();
-        int numNodesH = (int) distH/OBS_THRESH*2.0;
-        int numNodesV = (int) distV/OBS_THRESH*2.0;
-        double nH = 1/numNodesH;
-        double nV = 1/numNodesV;
+        int numNodesH = (int) distH/dx;
+        int numNodesV = (int) distV/dy;
+        double nH = 1.0/(double)numNodesH;
+        double nV = distV/(double)numNodesV;
 
-        for(int q=0;q<numNodesV;++q) {
-            for (int k = 0; k < numNodesH; ++k) {
+        for(int q=0;q<=numNodesV;++q) {
+            for (int k = 0; k <= numNodesH; ++k) {
                 larcfm::Vect2 vertex = vertex1.Scal(1 - nH*k) + vertex2.Scal(nH*k);
                 double h = obs.getBottom() + nV*q;
                 std::vector<double> val({vertex.x, vertex.y,h});
-                kdtree.points.push_back(val);
+                kdtree->points.push_back(val);
             }
         }
     }
+
+    kdtree->ConstructTree(kdtree->points,NULL,0);
+    kdtreeList.push_back(kdtree);
+    obslist.push_back(obs);
 }
 
 double Bsplines::Nfac(double t,int i,int k){
@@ -81,6 +83,26 @@ double Bsplines::Beta(double x){
     return val;
 }
 
+double Bsplines::HingeLoss(double x){
+    if (x > OBS_THRESH){
+        return 0;
+    }else if( x > 0 && x < OBS_THRESH){
+        return 0.5*(1-x)*(1-x);
+    }else{
+        return 0.5 - x;
+    }
+}
+
+double Bsplines::HingeLossGrad(double x) {
+    if(x > OBS_THRESH){
+        return 0;
+    }else if(x > 0 && x < OBS_THRESH){
+        return x-1;
+    }else{
+        return -1;
+    }
+}
+
 double Bsplines::dist2D(double x1,double y1,double x2,double y2){
     return sqrt( pow((x1 - x2),2) + pow((y1 - y2),2));
 }
@@ -99,6 +121,11 @@ double Bsplines::Objective2D(const double *x){
             sumY += pt[1]*nfac;
         }
 
+        double sign;
+        larcfm::Vect3 point(sumX,sumY,0);
+        bool val = polycarp.definitelyInside(point,obslist.front());
+        (val)?sign=-1:sign=1;
+
         double obsCost = 0;
         for(it = kdtreeList.begin();it != kdtreeList.end(); ++it) {
             KDTREE *kdtree = *it;
@@ -109,8 +136,8 @@ double Bsplines::Objective2D(const double *x){
             node_t *nn = kdtree->KNN(kdtree->root,&qnode,_distval);
             obsloc[0] = nn->val[0];
             obsloc[1] = nn->val[1];
-            double dist2obs = dist2D(obsloc[0], obsloc[1], sumX, sumY);
-            obsCost += Beta(dist2obs);
+            double dist2obs = dist2D(obsloc[0], obsloc[1], sumX, sumY)*sign;
+            obsCost += HingeLoss(dist2obs)*obsWeight;
         }
 
         double pathlen;
@@ -183,14 +210,22 @@ void Bsplines::Gradient2D(const double* x0,double *grad){
                 obsloc[1] = nn->val[1];
                 double dist2obs = dist2D(obsloc[0], obsloc[1], Ptx1, Pty1);
 
-                if (dist2obs >= OBS_THRESH){
-                    dist2obsgradX += 0;
-                    dist2obsgradY += 0;
-                }else {
-                    double dbeta = (1.0 / OBS_THRESH - OBS_THRESH / (dist2obs * dist2obs));
-                    dist2obsgradX += dbeta * (1 / dist2obs) * (Ptx1 - obsloc[0]) * nfac;
-                    dist2obsgradY += dbeta * (1 / dist2obs) * (Pty1 - obsloc[1]) * nfac;
+                double sign;
+                larcfm::Vect3 point(obsloc[0],obsloc[1],0);
+                bool val = polycarp.definitelyInside(point,obslist.front());
+                val?sign=-1:sign=1;
+
+                dist2obs = dist2obs*sign;
+
+                if (fabs(dist2obs) < 0.0001){
+                    dist2obs = 0.0001*sign;
                 }
+
+
+                //double dbeta = (1.0 / OBS_THRESH - OBS_THRESH / (dist2obs * dist2obs));
+                double hlossgrad = HingeLossGrad(dist2obs);
+                dist2obsgradX += (hlossgrad * (1 / dist2obs) * (Ptx1 - obsloc[0]) * nfac)*obsWeight;
+                dist2obsgradY += (hlossgrad * (1 / dist2obs) * (Pty1 - obsloc[1]) * nfac)*obsWeight;
 
             }
 
@@ -207,23 +242,4 @@ void Bsplines::Gradient2D(const double* x0,double *grad){
         }
         
     }
-}
-
-double Bsplines::HdgConstraint(double *x) {
-    double hdgChange = 0;
-    int numPts = ndim/2;
-    for(int j=0;j<numPts-2;j++){
-        double A[2] = {x[2*j],x[2*j+1]};
-        double B[2] = {x[2*j+2],x[2*j+3]};
-        double C[2] = {x[2*j+4],x[2*j+5]};
-
-        double val1 = 360 + atan2(B[1] - A[1],B[0]-A[0])*180/M_PI;
-        double val2 = 360 + atan2(C[1] - B[1],C[0]-B[0])*180/M_PI;
-        double hdg1 = fmod(val1,360);
-        double hdg2 = fmod(val2,360);
-
-        hdgChange += fabs(hdg2 - hdg1);
-    }
-
-    return hdgChange;
 }

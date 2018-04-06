@@ -23,4 +23,9 @@ sudo apt-get install tcpd tcpd:i386
 
 ### Multilib
 - Make sure g++multlib, gcc-multilib are installed/updated.
+
+### Compiling 32-bit version of nlopt
+- create a new build directory within the nlopt directory (nlopt root folder)
+- ../configure CC="gcc -m32" CXX="g++ -m32" --prefix=</usr/lib/i386-linux-gnu/nlopt>
+- Note: the --prefix determines the installation folder. Select a suitable location.
   

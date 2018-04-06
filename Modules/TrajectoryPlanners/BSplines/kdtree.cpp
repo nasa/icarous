@@ -145,11 +145,12 @@ node_t* KDTREE::unwind(node_t* nodeA,node_t* qnode,double& bestdist,node_t* root
         }
     }
 
-    node_t* upbranch = unwind(currentNode->parent,qnode,prevbestdist,root);
-
-    if(prevbestdist < bestdist){
-        bestnode = upbranch;
-        bestdist = prevbestdist;
+    if(currentNode != root) {
+        node_t *upbranch = unwind(currentNode->parent, qnode, prevbestdist, root);
+        if (prevbestdist < bestdist) {
+            bestnode = upbranch;
+            bestdist = prevbestdist;
+        }
     }
 
     return bestnode;
@@ -179,14 +180,17 @@ node_t* KDTREE::KNN(node_t* root,node_t* qnode,double& distance) {
         distance = val;
     }
 
-    node_t* upbranch = NULL;
-    if(leaf != root)
-        upbranch = unwind(leaf->parent,qnode,bestdist,root);
+    val = bestdist;
 
-    if(bestdist < val){
-        bestNode = upbranch;
-        val = bestdist;
-        distance = val;
+    node_t* upbranch = NULL;
+    if(leaf != root) {
+        upbranch = unwind(leaf->parent, qnode, bestdist, root);
+
+        if (bestdist < val) {
+            bestNode = upbranch;
+            val = bestdist;
+            distance = val;
+        }
     }
 
     return bestNode;
