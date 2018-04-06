@@ -13,6 +13,10 @@ find_library(NLOPTLIB nlopt HINTS $ENV{NLOPT_PATH})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../ACCoRD/inc)
 
-add_executable(BSplines main.cpp Bsplines.cpp kdtree.cpp)
+add_library(BSPLINES SHARED Bsplines.cpp kdtree.cpp)
 
-target_link_libraries(BSplines m ${NLOPTLIB} ACCoRD)
+target_link_libraries(BSPLINES m ${NLOPTLIB} ACCoRD)
+
+add_executable(BSplines main.cpp)
+
+target_link_libraries(BSplines BSPLINES)

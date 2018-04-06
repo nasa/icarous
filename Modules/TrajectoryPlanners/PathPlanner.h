@@ -6,7 +6,7 @@
 #define PATHPLANNER_H
 
 typedef enum algorithm{
-    _GRID_,_ASTAR_,_RRT_
+    _GRID_,_ASTAR_,_RRT_,_SPLINES_
 }algorithm;
 
 #ifdef __cplusplus

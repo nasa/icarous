@@ -77,11 +77,11 @@ int main(int argc,char** argv){
 
     //double positionA[3] = {37.102177,-76.387206,0};
     //double positionA[3] = {37.102179,-76.387175,4.990000};
-    double positionA[3] = {37.10218,-76.38718,0};
+    double positionA[3] = {37.10218,-76.38708,0};
     double velocityA[3] = {90,1,0};
 
     //double positionB[3] = {37.102185,-76.387065,0};
-    double positionB[3] = {37.10218,-76.38712,0};
+    double positionB[3] = {37.10218,-76.3872,0};
     //double positionB[3] = {37.102180,-76.387140,5.075000};
 
     double currPos[3] = {37.102178,-76.387177,4.990000};
@@ -107,6 +107,7 @@ int main(int argc,char** argv){
     int status1 = planner.FindPath(_GRID_,"PlanA",positionA,positionB,velocityA);
     int status2 = planner.FindPath(_ASTAR_,"PlanB",positionA,positionB,velocityA);
     int status3 = planner.FindPath(_RRT_,"PlanC",positionA,positionB,velocityA);
+    int status4 = planner.FindPath(_SPLINES_,"PlanD",positionA,positionB,velocityA);
 
     if (status1 > 0)
         planner.OutputFlightPlan(&projection,"PlanA","fence1.txt","waypoints1.txt");
@@ -122,6 +123,11 @@ int main(int argc,char** argv){
         planner.OutputFlightPlan(&projection,"PlanC","fence3.txt","waypoints3.txt");
     else
         std::cout<<"RRT algorithm couldn't find solution"<<std::endl;
+
+    if (status4 > 0)
+        planner.OutputFlightPlan(&projection,"PlanD","fence4.txt","waypoints4.txt");
+    else
+        std::cout<<"SPLINES algorithm couldn't find solution"<<std::endl;
 
 
 }

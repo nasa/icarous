@@ -38,6 +38,7 @@ public:
     void SetObstacleProperties(double dx,double dy,double threshold,double obsWeight);
     void SetInitControlPts(double* ctrlPt);
     void SetObstacles(larcfm::Poly3D& obs);
+    void GetPoint(double t,double *x,double *output);
     double Beta(double x);
     double HingeLoss(double x);
     double HingeLossGrad(double x);

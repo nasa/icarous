@@ -40,7 +40,7 @@ void Bsplines::SetObstacles(larcfm::Poly3D& obs) {
         int numNodesV = (int) distV/dy;
         double nH = 1.0/(double)numNodesH;
         double nV = distV/(double)numNodesV;
-
+        numNodesV = 0;
         for(int q=0;q<=numNodesV;++q) {
             for (int k = 0; k <= numNodesH; ++k) {
                 larcfm::Vect2 vertex = vertex1.Scal(1 - nH*k) + vertex2.Scal(nH*k);
@@ -51,6 +51,7 @@ void Bsplines::SetObstacles(larcfm::Poly3D& obs) {
         }
     }
 
+    std::vector<double> val = kdtree->points[10];
     kdtree->ConstructTree(kdtree->points,NULL,0);
     kdtreeList.push_back(kdtree);
     obslist.push_back(obs);
@@ -75,6 +76,20 @@ double Bsplines::Nfac(double t,int i,int k){
         double Nip1km1 = Nfac(t,i+1,k-1);
         return facA*Nikm1 + facB*Nip1km1;
     };
+}
+
+void Bsplines::GetPoint(double t,double *x,double *output) {
+    double sumX=0,sumY=0;
+    int numPts = ndim/2;
+    for(int j=0;j<numPts;j++){
+        double pt[2] = {x[2*j],x[2*j+1]};
+        double nfac = Nfac(t,j,order);
+        sumX += pt[0]*nfac;
+        sumY += pt[1]*nfac;
+    }
+
+    output[0] = sumX;
+    output[0] = sumY;
 }
 
 double Bsplines::Beta(double x){
@@ -129,11 +144,10 @@ double Bsplines::Objective2D(const double *x){
         double obsCost = 0;
         for(it = kdtreeList.begin();it != kdtreeList.end(); ++it) {
             KDTREE *kdtree = *it;
-            node_t qnode;
-            std::vector<double> qval({sumX,sumY});
-            qnode.val = qval;
+            std::vector<double> qval({sumX,sumY,0});
+            spline_node_t qnode{0,qval,NULL,NULL,NULL};
             double _distval = MAXDOUBLE;
-            node_t *nn = kdtree->KNN(kdtree->root,&qnode,_distval);
+            spline_node_t *nn = kdtree->KNN(kdtree->root,&qnode,_distval);
             obsloc[0] = nn->val[0];
             obsloc[1] = nn->val[1];
             double dist2obs = dist2D(obsloc[0], obsloc[1], sumX, sumY)*sign;
@@ -200,11 +214,10 @@ void Bsplines::Gradient2D(const double* x0,double *grad){
 
             for(it = kdtreeList.begin();it != kdtreeList.end(); ++it) {
                 KDTREE *kdtree = *it;
-                node_t qnode;
-                std::vector<double> qval({Ptx1,Pty1});
-                qnode.val = qval;
+                std::vector<double> qval({Ptx1,Pty1,0});
+                spline_node_t qnode{0,qval,NULL,NULL,NULL};
                 double _distval = MAXDOUBLE;
-                node_t *nn = kdtree->KNN(kdtree->root,&qnode,_distval);
+                spline_node_t *nn = kdtree->KNN(kdtree->root,&qnode,_distval);
 
                 obsloc[0] = nn->val[0];
                 obsloc[1] = nn->val[1];
