@@ -383,10 +383,12 @@ int GetMAVLinkMsgFromGS(){
 		uint8_t cp = appdataInt.gs.recvbuffer[i];
 		msgReceived = mavlink_parse_char(MAVLINK_COMM_1, cp, &message, &status);
 		if(msgReceived){
-			// Send message to autopilot
-			writePort(&appdataInt.ap,&message);
+			bool val = ProcessGSMessage(message);
 
-			ProcessGSMessage(message);
+            // Send message to autopilot
+            if(val) {
+                writePort(&appdataInt.ap, &message);
+            }
 		}
 	}
 	return n;
