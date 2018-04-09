@@ -313,7 +313,7 @@ CONFLICT_MANAGEMENT:
                 RESUME_MISSION:{
                     Boolean validPoint = false;
                     SkipCondition !completionStatus;
-                    EndCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict || !resolutionActive);
+                    EndCondition (!resolutionActive);
 
                     pprint("Plexil status: Intercepting mission");
 

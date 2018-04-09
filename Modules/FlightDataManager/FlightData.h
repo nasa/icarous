@@ -80,6 +80,7 @@ public:
     void InputTakeoffAlt(double alt);
     void InputCruisingAlt(double alt);
     void InputGeofenceData(geofence_t* gf);
+    double GetValue(char name[]);
     double GetTakeoffAlt();
     double GetCruisingAlt();
     double GetAltitude();

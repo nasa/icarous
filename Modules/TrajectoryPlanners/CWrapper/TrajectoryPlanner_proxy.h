@@ -102,6 +102,7 @@ void FlightData_InputNextResolutionWP(SwigObj * carg1, int carg2);
 void FlightData_InputTakeoffAlt(SwigObj * carg1, double carg2);
 void FlightData_InputCruisingAlt(SwigObj * carg1, double carg2);
 void FlightData_InputGeofenceData(SwigObj * carg1, SwigObj * carg2);
+double FlightData_GetValue(SwigObj * carg1, /*aaa*/ char * carg2);
 double FlightData_GetTakeoffAlt(SwigObj * carg1);
 double FlightData_GetCruisingAlt(SwigObj * carg1);
 double FlightData_GetAltitude(SwigObj * carg1);
