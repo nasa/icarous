@@ -25,10 +25,12 @@ void PLEXIL_DistributeMessage(PlexilMsg msg){
              CHECKNAME(msg,"GetExitPoint") ||
              CHECKNAME(msg,"GetInterceptHeadingToPlan") ||
              CHECKNAME(msg,"ManeuverToIntercept") ||
+             CHECKNAME(msg,"Heading2Maneuver") ||
              CHECKNAME(msg,"allowedXtrackDev") ||
              CHECKNAME(msg,"resolutionSpeed") ||
              CHECKNAME(msg,"totalFences") ||
              CHECKNAME(msg,"totalTraffic") ||
+             CHECKNAME(msg,"captureH") ||
              CHECKNAME(msg,"trafficResType")){
         MsgId = SERVICE_TRAJECTORY_MID;
     }

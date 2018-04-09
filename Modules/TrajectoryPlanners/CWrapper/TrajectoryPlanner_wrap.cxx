@@ -731,6 +731,23 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC double _wrap_FlightData_GetValue(SwigObj * carg1, /*aaa*/ char * carg2) {
+    double cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    char *arg2 ;
+    double result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    arg2 = (char *) carg2;
+    cppresult =  (double)(arg1)->GetValue(arg2);
+    result = cppresult;
+    return result;
+  }
+  
+  
   SWIGEXPORTC double _wrap_FlightData_GetTakeoffAlt(SwigObj * carg1) {
     double cppresult;
     FlightData *arg1 = (FlightData *) 0 ;

@@ -35,7 +35,8 @@
       ditchingStatus,
       ditchingComplete,
       resetDitching,
-      ditchSite
+      ditchSite,
+      captureH
     </LookupNames> 
   </Adapter>
 </Interfaces>

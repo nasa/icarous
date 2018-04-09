@@ -13,6 +13,7 @@ Command SetVel(Real velocity[3]);
 Command pprint(...);
 Real[3] Lookup position;
 Real[3] Lookup velocity;
+Real Lookup captureH;
 
 GOTO_POSITION:{
 
@@ -23,7 +24,8 @@ GOTO_POSITION:{
     InOut Boolean resolutionCompleted;
     Real CurrentPosition[3];
     Real CurrentVelocity[3];
-    Boolean targetFeasibility;    
+    Boolean targetFeasibility;
+    Real capH;
     Integer nextWPIndex = 1;
     Integer totalWPIndex;
     EndCondition isKnown(resolutionCompleted);
@@ -32,6 +34,7 @@ GOTO_POSITION:{
 
     CurrentPosition = Lookup(position);
     CurrentVelocity = Lookup(velocity);
+    capH = Lookup(captureH);
 
     SetMode("ACTIVE");
     
@@ -128,7 +131,7 @@ GOTO_POSITION:{
 
             {
                EndCondition isKnown(heading2nextWP);
-               heading2nextWP = ComputeDistance(CurrentPosition,NextWP);
+               heading2nextWP = Heading2Maneuver(CurrentPosition,NextWP);
             }
 
 
@@ -142,10 +145,15 @@ GOTO_POSITION:{
 
             SetVel(velocityCmd);
 
+
             //pprint("dist2nextWP:",dist2nextWP);
 
+            //pprint("resSpeed:",resSpeed);
+
+            //pprint("capH:",capH);
+
             {
-                SkipCondition dist2nextWP > 1.0;
+                SkipCondition dist2nextWP > capH;
                 nextWPIndex = nextWPIndex + 1;
 
                 {
@@ -162,7 +170,7 @@ GOTO_POSITION:{
                         _nextWP = GetWaypoint("Plan1",nextWPIndex);
                     }
 
-                    SetPos(_nextWP);
+                    //SetPos(_nextWP);
                     NextWP[0] = _nextWP[0];
                     NextWP[1] = _nextWP[1];
                     NextWP[2] = _nextWP[2];

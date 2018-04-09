@@ -1,6 +1,7 @@
 //
 // Created by swee on 1/1/18.
 //
+#include <Icarous_msg.h>
 #include "trajectory.h"
 
 void TrajServiceHandler(service_t* msg){
@@ -137,7 +138,7 @@ void TrajServiceHandler(service_t* msg){
             b = deSerializeRealArray(positionB,b);
             output = PathPlanner_GetInterceptHeadingToPoint(TrajectoryAppData.pplanner,positionA,positionB);
             serializeReal(false,output,trajServiceResponse.buffer);
-            SendSBMsg(msg);
+            SendSBMsg(trajServiceResponse);
         }
     }else{
         trajServiceResponse.id = msg->id;
@@ -166,6 +167,11 @@ void TrajServiceHandler(service_t* msg){
             int val;
             val = FlightData_GetTrafficResolutionType(TrajectoryAppData.fdata);
             serializeInt(false,val,trajServiceResponse.buffer);
+            SendSBMsg(trajServiceResponse);
+        }else if(CHECKNAME((*msg),"captureH")){
+            double val;
+            val = FlightData_GetValue(TrajectoryAppData.fdata,"CAPTURE_H");
+            serializeReal(false,val,trajServiceResponse.buffer);
             SendSBMsg(trajServiceResponse);
         }
 
