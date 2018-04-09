@@ -5,9 +5,11 @@ Boolean Command CheckDirectPathFeasibility(Real fromPosition[3],Real toPosition[
 Integer Command FindNewPath(String planID,String algorithm,Real fromPosition[3],Real fromVelocity[3],Real toPosition[3]);
 Integer Command GetTotalWaypoints(String planID);
 Real[3] Command GetWaypoint(String planID,Integer index);
+Real Command Heading2Maneuver(Real fromPosition[3],Real toPosition[3]);
 Real Command ComputeDistance(Real fromPosition[3],Real toPosition[3]);
 Command SetPos(Real position[3]);
 Command SetMode(String mode);
+Command SetVel(Real velocity[3]);
 Command pprint(...);
 Real[3] Lookup position;
 Real[3] Lookup velocity;
@@ -17,6 +19,7 @@ GOTO_POSITION:{
     In String SearchType;
     In Boolean TrafficConflict;
     In Real TargetPosition[3];
+    In Real resSpeed;
     InOut Boolean resolutionCompleted;
     Real CurrentPosition[3];
     Real CurrentVelocity[3];
@@ -109,20 +112,35 @@ GOTO_POSITION:{
             NextWP = GetWaypoint("Plan1",nextWPIndex);
         }
 
-        SetPos(NextWP);
+        // Use set pos to go to spot directly
+        //SetPos(NextWP);
+
 
         //pprint("Setting position");
 
         {
             Real dist2nextWP;
+            Real heading2nextWP;
+            Real velocityCmd[3];
             Repeat true;
 
             CurrentPosition = Lookup(position);
 
             {
+               EndCondition isKnown(heading2nextWP);
+               heading2nextWP = ComputeDistance(CurrentPosition,NextWP);
+            }
+
+
+            {
                 EndCondition isKnown(dist2nextWP);
                 dist2nextWP = ComputeDistance(CurrentPosition,NextWP);
             }
+
+            velocityCmd[0] = heading2nextWP;
+            velocityCmd[1] = resSpeed;
+
+            SetVel(velocityCmd);
 
             //pprint("dist2nextWP:",dist2nextWP);
 

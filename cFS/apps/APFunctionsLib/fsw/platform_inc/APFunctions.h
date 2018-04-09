@@ -157,6 +157,16 @@ int ServiceTrajectory_GetInterceptHeading(char* planID,int nextWP,double* positi
  */
 int ServiceTrajectory_GetInterceptManeuver(char* planID,int nextWP,double* position);
 
+/**
+ * Get heading to follow to get from positionA to position B
+ * @param positionA current position,double[3] containing lat (deg),lon (deg), alt (m)
+ * @param velocity current velocity, double[3] containing track (deg),ground speed (m/s),vertical speed (m/s)
+ * @param positionB target position, double[3] containing lat (deg),lon (deg), alt (m)
+ * @return
+ */
+int ServiceTrajectory_GetManeuverHeading(double* positionA,double* positionB);
+
+
 // helper functions to decode service response
 /**
  * Decode a GetFenceViolation service response message
@@ -249,5 +259,12 @@ void ServiceTrajectory_DecodeInterceptHeading(service_t* msg,double* output);
  * @param output pointer to double[3], containing track (deg),ground speed (m/s) and vertical speed (m/s)
  */
 void ServiceTrajectory_DecodeInterceptManeuver(service_t* msg,double* output);
+
+/**
+ * Decode heading for maneuver
+ * @param msg service_t message received from SERVICE_TRAJECTORY_RESPONSE_MID subscription.
+ * @param output pointer to double[3], containing track (deg),ground speed (m/s) and vertical speed (m/s)
+ */
+void ServiceTrajectory_DecodeManeuverHeading(service_t* msg,double* output);
 
 #endif //APFUNCTIONS_H

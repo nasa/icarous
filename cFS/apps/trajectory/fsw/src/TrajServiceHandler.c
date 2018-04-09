@@ -127,6 +127,17 @@ void TrajServiceHandler(service_t* msg){
             PathPlanner_ManueverToIntercept_c(TrajectoryAppData.pplanner,planID,nextWP,position,cmdVelocity);
             serializeRealArray(3,cmdVelocity,trajServiceResponse.buffer);
             SendSBMsg(trajServiceResponse);
+        } else if(CHECKNAME((*msg),"Heading2Maneuver")){
+
+            double positionA[3];
+            double positionB[3];
+            double output;
+
+            b = deSerializeRealArray(positionA,b);
+            b = deSerializeRealArray(positionB,b);
+            output = PathPlanner_GetInterceptHeadingToPoint(TrajectoryAppData.pplanner,positionA,positionB);
+            serializeReal(false,output,trajServiceResponse.buffer);
+            SendSBMsg(msg);
         }
     }else{
         trajServiceResponse.id = msg->id;
