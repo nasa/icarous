@@ -1389,6 +1389,25 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC double _wrap_PathPlanner_GetInterceptHeadingToPoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3) {
+    double cppresult;
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    double *arg2 ;
+    double *arg3 ;
+    double result;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (double *) carg2;
+    arg3 = (double *) carg3;
+    cppresult =  (double)(arg1)->GetInterceptHeadingToPoint(arg2,arg3);
+    result = cppresult;
+    return result;
+  }
+  
+  
   SWIGEXPORTC void _wrap_PathPlanner_ManueverToIntercept(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     Plan *arg2 = (Plan *) 0 ;

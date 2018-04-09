@@ -126,8 +126,10 @@ void FlightData_GetTraffic_pFlightData_i_rlarcfm_Position_rlarcfm_Velocity(SwigO
 /*aaaaaa*/SwigObj * FlightData_GetGeofence(SwigObj * carg1, int carg2);
 /*aaaaaa*/SwigObj * FlightData_GetPolyPath(SwigObj * carg1);
 void delete_FlightData(FlightData * carg1);
-#define _ASTAR_ 0
+#define _GRID_ 0
+#define _ASTAR_ _GRID_ + 1
 #define _RRT_ _ASTAR_ + 1
+#define _SPLINES_ _RRT_ + 1
 
 typedef SwigObj PathPlanner;
 
@@ -144,6 +146,7 @@ void PathPlanner_GetPositionOnPlan(SwigObj * carg1, SwigObj * carg2, int carg3, 
 void PathPlanner_GetPositionOnPlan_c(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
 double PathPlanner_GetInterceptHeadingToPlan(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4);
 double PathPlanner_GetInterceptHeadingToPlan_c(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4);
+double PathPlanner_GetInterceptHeadingToPoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3);
 void PathPlanner_ManueverToIntercept(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
 void PathPlanner_ManueverToIntercept_c(SwigObj * carg1, char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
 void PathPlanner_GetExitPoint(SwigObj * carg1, char * carg2, /*aaa*/ double * carg3, int carg4, /*aaa*/ double * carg5);
