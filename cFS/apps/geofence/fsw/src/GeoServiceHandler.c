@@ -23,17 +23,7 @@ void GeoPlxMsgHandler(service_t* msg){
         GeofenceMonitor_GetConflictStatus(geofenceAppData.gfMonitor,conflicts);
         serializeBoolArray(2,conflicts,gfServiceResponse.buffer);
         SendSBMsg(gfServiceResponse);
-
-        status_t statusMsg;
-        CFE_SB_InitMsg(&statusMsg,ICAROUS_STATUS_MID,sizeof(statusMsg),TRUE);
-        if(conflicts[0])
-            memcpy(statusMsg.buffer,"IC:Keep out conflict",20);
-
-        if(conflicts[1])
-            memcpy(statusMsg.buffer,"IC:Keep in conflict",19);
-
-        SendSBMsg(statusMsg);
-
+        
     }else if(CHECKNAME((*msg),"CheckDirectPathFeasibility")){
         double fromPosition[3];
         double toPosition[3];
