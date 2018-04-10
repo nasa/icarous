@@ -232,7 +232,7 @@ bool ProcessGSMessage(mavlink_message_t message){
                     mavlink_msg_statustext_pack(2,0,&statusMsg,MAV_SEVERITY_WARNING,"IC:Starting Mission");
                     writePort(&appdataInt.gs,&statusMsg);
 				}else{
-					mavlink_statustext_t statusMsg;
+                    mavlink_message_t statusMsg;
                     mavlink_msg_statustext_pack(2,0,&statusMsg,MAV_SEVERITY_WARNING,"IC:No Flight Plan loaded");
 					writePort(&appdataInt.gs,&statusMsg);
 
@@ -269,7 +269,7 @@ bool ProcessGSMessage(mavlink_message_t message){
                 appdataInt.nextWaypointIndex = 1000;
 				send2ap = false;
 
-				mavlink_statustext_t statusMsg;
+                mavlink_message_t statusMsg;;
 				mavlink_msg_statustext_pack(2,0,&statusMsg,MAV_SEVERITY_WARNING,"IC:Resetting Icarous");
 				writePort(&appdataInt.gs,&statusMsg);
 			}else if(msg.command == MAV_CMD_USER_5){
@@ -475,6 +475,14 @@ void ARDUPILOT_ProcessPacket(){
             }
             break;
 		}
+
+        case ICAROUS_STATUS_MID:{
+            status_t* statusMsg = (status_t*) appdataInt.INTERFACEMsgPtr;
+            mavlink_message_t msg;
+            mavlink_msg_statustext_pack(2,0,&msg,MAV_SEVERITY_WARNING,statusMsg->buffer);
+            writePort(&appdataInt.gs,&msg);
+            break;
+        }
 	}
 
 	return;
