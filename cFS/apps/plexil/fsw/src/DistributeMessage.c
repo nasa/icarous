@@ -49,6 +49,7 @@ void PLEXIL_DistributeMessage(PlexilMsg msg){
             CHECKNAME(msg ,"numMissionWP") ||
             CHECKNAME(msg ,"nextMissionWPIndex") ||
             CHECKNAME(msg ,"ArmMotors") ||
+            CHECKNAME(msg ,"Status") ||
             CHECKNAME(msg ,"Takeoff") ||
             CHECKNAME(msg ,"SetMode") ||
             CHECKNAME(msg ,"Land") ||

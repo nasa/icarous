@@ -14,6 +14,7 @@ Command Takeoff(Real altitude);
 Command ArmMotors();
 Command Land();
 Command SetNextMissionWP(Integer index);
+Command Status(String text);
 Command pprint(...);
 
 // Library plans
@@ -51,10 +52,12 @@ ICAROUS:
 
                 if (start == 0){
                     _numMissionWP = Lookup(numMissionWP);
+                    Status("IC:Starting takeoff");
                     _takeoffStatus = true;
                     _idleStatus = false;
                 }elseif(start > 0){
                     _numMissionWP = Lookup(numMissionWP);
+                    Status("IC:Starting cruise");
                     _cruiseStatus = true;
                     _idleStatus = false;
                 }endif
@@ -103,6 +106,7 @@ ICAROUS:
             }
 
             if(status == 1){
+                Status("IC:Starting climb");
                 _climbStatus = true;
                 _takeoffStatus = false;
             }else{
@@ -129,6 +133,7 @@ ICAROUS:
                     pprint("Plexil status: Starting Cruise");
                     SetNextMissionWP(_nextMissionWP);
                     SetMode("PASSIVE");
+                    Status("IC:Starting cruise");
                     _cruiseStatus = true;
                     _climbStatus = false;
                 }endif

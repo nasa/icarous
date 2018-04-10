@@ -170,7 +170,15 @@ bool IntfServiceHandler(mavlink_message_t *msgMavlink){
                 mavlink_msg_command_long_pack(255, 0, msgMavlink, 1, 0, MAV_CMD_DO_CHANGE_SPEED, 0,
                                               1, (float) speed, 0, 0, 0, 0, 0);
                 break;
-            } else{
+            } else if(CHECKNAME((*msg), "Status")){
+                char buffer[50];
+                memset(buffer,0,50);
+                b = deSerializeString(buffer,b);
+                mavlink_message_t statusMsg;
+                mavlink_msg_statustext_pack(2,0,&statusMsg,MAV_SEVERITY_WARNING,buffer);
+                writePort(&appdataInt.gs,&statusMsg);
+            }
+            else{
                 send =false;
             }
             break;
