@@ -18,7 +18,8 @@
       Land,
       SetVel,
       CheckSafeToTurn,
-      Heading2Maneuver
+      Heading2Maneuver,
+      Status
     </CommandNames>
     <LookupNames>
       missionStart,
