@@ -63,8 +63,9 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
     }
     
     double res_speed = fdata->paramData.getValue("RES_SPEED");
-    double eps = res_speed*1.0; //(speed*horizon)
-    Astar pathfinder(lenH,HEADING,lenV,VS,res_speed,eps);
+    double horizon = fdata->paramData.getValue("LOOKAHEAD");
+    double eps = res_speed*horizon;
+    Astar pathfinder(lenH,HEADING,lenV,VS,horizon,eps);
 
     pathfinder.SetRoot(initPosR3.x,initPosR3.y,initPosR3.z,trk,2.0);
     pathfinder.SetGoal(gpos.x,gpos.y,gpos.z);

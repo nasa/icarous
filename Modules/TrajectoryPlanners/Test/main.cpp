@@ -25,7 +25,7 @@ int main(int argc,char** argv){
 
     // Create a keep in geofence with 4 vertices
     geofence_t vertex_gf1[4];
-    geofence_t vertex_gf2[3];
+    geofence_t vertex_gf2[4];
 
     for(int i=0;i<4;i++){
         vertex_gf1[i].index = 0;
@@ -36,70 +36,52 @@ int main(int argc,char** argv){
         vertex_gf1[i].ceiling = 100;
     }
 
-    for(int i=0;i<3;i++){
+    for(int i=0;i<4;i++){
         vertex_gf2[i].index = 1;
         vertex_gf2[i].type = KEEP_OUT;
-        vertex_gf2[i].totalvertices = 3;
+        vertex_gf2[i].totalvertices = 4;
         vertex_gf2[i].vertexIndex = i;
         vertex_gf2[i].floor = -100;
         vertex_gf2[i].ceiling = 100;
     }
 
 
-    vertex_gf1[0].latitude  = 37.1020599;
-    vertex_gf1[0].longitude = -76.3869966;
+    vertex_gf1[0].latitude  = 37.102739;
+    vertex_gf1[0].longitude = -76.387493;
 
-    vertex_gf1[1].latitude = 37.1022559;
-    vertex_gf1[1].longitude = -76.3870096;
+    vertex_gf1[1].latitude = 37.102611;
+    vertex_gf1[1].longitude = -76.386055;
 
-    vertex_gf1[2].latitude  = 37.1022474;
-    vertex_gf1[2].longitude = -76.3872689;
+    vertex_gf1[2].latitude  = 37.103578;
+    vertex_gf1[2].longitude = -76.386039;
 
-    vertex_gf1[3].latitude = 37.1020174;
-    vertex_gf1[3].longitude = -76.3872664;
+    vertex_gf1[3].latitude = 37.103631;
+    vertex_gf1[3].longitude = -76.387589;
 
 
-    vertex_gf2[0].latitude  = 37.1021970;
-    vertex_gf2[0].longitude = -76.3871620;
+    vertex_gf2[0].latitude  = 37.103040;
+    vertex_gf2[0].longitude = -76.386965;
 
-    vertex_gf2[1].latitude = 37.1021160;
-    vertex_gf2[1].longitude = -76.3871900;
+    vertex_gf2[1].latitude = 37.102992;
+    vertex_gf2[1].longitude = -76.386503;
 
-    vertex_gf2[2].latitude  = 37.1021340;
-    vertex_gf2[2].longitude = -76.3870780;
+    vertex_gf2[2].latitude  = 37.103222;
+    vertex_gf2[2].longitude = -76.386475;
+
+    vertex_gf2[3].latitude  = 37.103293;
+    vertex_gf2[3].longitude = -76.386946;
 
     // Input the geofence data
     for(int i=0;i<4;i++)
         fdata.InputGeofenceData(&vertex_gf1[i]);
 
-    for(int i=0;i<3;i++)
+    for(int i=0;i<4;i++)
         fdata.InputGeofenceData(&vertex_gf2[i]);
 
-    //double positionA[3] = {37.102177,-76.387206,0};
-    //double positionA[3] = {37.102179,-76.387175,4.990000};
-    double positionA[3] = {37.10218,-76.38718,0};
+    double positionA[3] = {37.102865,-76.387257,0};
     double velocityA[3] = {90,1,0};
 
-    //double positionB[3] = {37.102185,-76.387065,0};
-    double positionB[3] = {37.10218,-76.38712,0};
-    //double positionB[3] = {37.102180,-76.387140,5.075000};
-
-    double currPos[3] = {37.102178,-76.387177,4.990000};
-    double exitPosition[3];
-
-    double offsetPos[3] = {37.102197,-76.387045,4.990000};
-
-    double offsets[2];
-    planner.ComputeXtrackDistance_c("Plan0",1,offsetPos,offsets);
-
-    printf("offsets: %f,%f\n",offsets[0],offsets[1]);
-
-    planner.GetInterceptHeadingToPlan_c("Plan0",1,offsetPos);
-
-    planner.GetExitPoint("Plan0",currPos,1,exitPosition);
-
-    std::cout<<"exit position: "<<exitPosition[0]<<","<<exitPosition[1]<<","<<exitPosition[2]<<std::endl;
-
+    double positionB[3] = {37.103522,-76.386211,0};
 
     Position pos = Position::makeLatLonAlt(positionA[0],"degree",positionA[1],"degree",positionA[2],"m");
     EuclideanProjection projection =  Projection::createProjection(pos);
@@ -107,6 +89,7 @@ int main(int argc,char** argv){
     int status1 = planner.FindPath(_GRID_,"PlanA",positionA,positionB,velocityA);
     int status2 = planner.FindPath(_ASTAR_,"PlanB",positionA,positionB,velocityA);
     int status3 = planner.FindPath(_RRT_,"PlanC",positionA,positionB,velocityA);
+    int status4 = planner.FindPath(_SPLINES_,"PlanD",positionA,positionB,velocityA);
 
     if (status1 > 0)
         planner.OutputFlightPlan(&projection,"PlanA","fence1.txt","waypoints1.txt");
@@ -122,6 +105,11 @@ int main(int argc,char** argv){
         planner.OutputFlightPlan(&projection,"PlanC","fence3.txt","waypoints3.txt");
     else
         std::cout<<"RRT algorithm couldn't find solution"<<std::endl;
+
+    if (status4 > 0)
+        planner.OutputFlightPlan(&projection,"PlanD","fence4.txt","waypoints4.txt");
+    else
+        std::cout<<"SPLINES algorithm couldn't find solution"<<std::endl;
 
 
 }

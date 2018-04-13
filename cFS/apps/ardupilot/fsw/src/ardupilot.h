@@ -199,7 +199,7 @@ int GetMAVLinkMsgFromGS(void);
  * Process mavlink message from groundstation and take action
  * @param message mavlink message
  */
-void ProcessGSMessage(mavlink_message_t message);
+bool ProcessGSMessage(mavlink_message_t message);
 
 /**
  * Process mavlink message from ardupilot and take action

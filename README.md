@@ -42,6 +42,7 @@ The following repositories are required to run (or support software-in-the-loop 
 - [Ardupilot](https://github.com/ArduPilot/ardupilot.git) (Only required for software in the loop simulations)
 - [mavlink](https://github.com/ArduPilot/mavlink.git) 
 - [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
+- [NLOPT](https://nlopt.readthedocs.io/en/latest/) (required only if using splines based path planner)
 
 ### Initialize and update submodules
 
@@ -55,7 +56,8 @@ ICAROUS makes use of the cmake build system. In order to setup a build, the foll
 
 - PLEXIL_HOME= absolute path to the C++/Modules/Plexil folder found in the Icarous repository.
 - OSAL_HOME= absolute path to the CFS/osal folder found in the Icarous repository.
-- JAVA_HOME= absolute path to the Java installation directory. Typically located under `/usr/lib/jvm/java-*` 
+- JAVA_HOME= absolute path to the Java installation directory. Typically located under `/usr/lib/jvm/java-*`
+- NLOPT_PATH = absolute path to the nlopt library location (libnlopt.a) [Optional-only required if splines based planner is being used].
 
 ```
     $cd CFS
@@ -64,7 +66,10 @@ ICAROUS makes use of the cmake build system. In order to setup a build, the foll
     $make cpu1-install
 ```
 
+Run cmake with `-DSITL=ON` option to compile for software-in-the-loop simulations. Use `-DSPLINES=ON` to compile splines planner (This requires the nlopt library).
+
 For compilation and linking errors related to missing libraries, check [Modules/README.md](Modules/README.md).
+
 
 ### LAUNCHING ICAROUS
 
@@ -118,7 +123,7 @@ Setup and launch the ardupilot SITL as described in <http://ardupilot.org/dev/do
     $make cpu1-install
 ```
 
-### DDS APP FOR ICAROUS
+### DDS APP FOR ICAROUS (Optional)
 
 ICAROUS provides an application to communicate using OpenSplice DDS. Enable this application as follows:
 
@@ -144,7 +149,7 @@ ICAROUS provides an application to communicate using OpenSplice DDS. Enable this
 OSPL_URI="file:///opt/OpenSplice/HDE/x86.linux/etc/icarous-ospl.xml" \
 OSPL_HOME="/opt/OpenSplice/HDE/x86.linux" \
 LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/opt/OpenSplice/HDE/x86.linux/lib" \
-./core-cpu1
+sudo ./core-cpu1
 ```
 
 

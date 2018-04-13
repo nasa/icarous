@@ -37,6 +37,11 @@ int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, 
         case _RRT_:
             retval = FindPathRRT(planID,fromPosition,toPosition,velocity);
             break;
+#ifdef SPLINES
+        case _SPLINES_:
+            retval = FindPathBSplines(planID,fromPosition,toPosition,velocity);
+            break;
+#endif
         default:
             break;
     }

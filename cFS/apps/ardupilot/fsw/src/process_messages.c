@@ -111,7 +111,8 @@ void ProcessAPMessage(mavlink_message_t message){
 }
 
 
-void ProcessGSMessage(mavlink_message_t message){
+bool ProcessGSMessage(mavlink_message_t message){
+	bool send2ap = true;
 	switch(message.msgid){
 
 		case MAVLINK_MSG_ID_MISSION_COUNT:
@@ -224,6 +225,7 @@ void ProcessGSMessage(mavlink_message_t message){
 				startMission.param1 = msg.param1;
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &startMission);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &startMission);
+				send2ap = false;
 			}
 			else if(msg.command == MAV_CMD_DO_FENCE_ENABLE){
 
@@ -248,17 +250,20 @@ void ProcessGSMessage(mavlink_message_t message){
 
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &traffic);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &traffic);
+				send2ap = false;
 			}
 			else if(msg.command == MAV_CMD_USER_1){
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &resetIcarous);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &resetIcarous);
                 appdataInt.nextWaypointIndex = 1000;
+				send2ap = false;
 			}else if(msg.command == MAV_CMD_USER_5){
 				NoArgsCmd_t ditchCmd;
 				CFE_SB_InitMsg(&ditchCmd,ICAROUS_COMMANDS_MID, sizeof(NoArgsCmd_t),TRUE);
 				ditchCmd.name = _DITCH_;
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &ditchCmd);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &ditchCmd);
+				send2ap = false;
 			}
 			else {
 				//writePort(&appdataInt.ap,&message);
@@ -325,6 +330,8 @@ void ProcessGSMessage(mavlink_message_t message){
             break;
         }
 	}
+
+	return send2ap;
 }
 
 void ARDUPILOT_ProcessPacket(){

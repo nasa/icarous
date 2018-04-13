@@ -6,7 +6,7 @@
 #define PATHPLANNER_H
 
 typedef enum algorithm{
-    _GRID_,_ASTAR_,_RRT_
+    _GRID_,_ASTAR_,_RRT_,_SPLINES_
 }algorithm;
 
 #ifdef __cplusplus
@@ -26,6 +26,9 @@ private:
     int64_t FindPathGridAstar(char planID[],double fromPosition[],double toPosition[]);
     int64_t FindPathAstar(char planID[],double fromPosition[],double toPosition[],double velocity[]);
     int64_t FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]);
+#ifdef SPLINES
+    int64_t FindPathBSplines(char planID[],double fromPosition[],double toPosition[],double velocity[]);
+#endif
 public:
     PathPlanner(FlightData* fdata);
     int FindPath(algorithm,char planID[], double fromPosition[],double toPosition[],double velocity[]);
