@@ -29,6 +29,14 @@ IF(SITL)
     add_definitions(-DSITL)
 ENDIF(SITL)
 
+OPTION(SBD "Build the project with SBD" OFF)
+IF(SBD)
+    get_filename_component(CMAKE_AUX_MODULES_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake" REALPATH)
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_AUX_MODULES_PATH})
+    add_definitions(-DSBD)
+    get_filename_component(MISSION_SOURCE_DIR "cFS/SBD" REALPATH)
+ENDIF(SBD)
+
 set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
 set(CMAKE_C_FLAGS "-g -fPIC -m32")
 
