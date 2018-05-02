@@ -34,7 +34,21 @@ IF(SBD)
     get_filename_component(CMAKE_AUX_MODULES_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake" REALPATH)
     set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_AUX_MODULES_PATH})
     add_definitions(-DSBD)
-    get_filename_component(MISSION_SOURCE_DIR "cFS/SBD" REALPATH)
+    get_filename_component(MISSION_SOURCE_DIR "cFS/SBD-snapshot" REALPATH)
+    include(cFS/SBD/CMakeLists.txt)
+    execute_process(
+            COMMAND rm "-R" "${CMAKE_SOURCE_DIR}/cFS/SBD-snapshot"
+            ERROR_VARIABLE ERROR
+            OUTPUT_QUIET
+    )
+    execute_process(
+            COMMAND cp "-R" "${CMAKE_SOURCE_DIR}/cFS/SBD/cFS" "${CMAKE_SOURCE_DIR}/cFS/SBD-snapshot"
+            ERROR_VARIABLE ERROR
+            OUTPUT_QUIET
+    )
+    if (ERROR)
+       message(ERROR "There was a problem doing the SBD snapshot: ${ERROR}")
+    endif ()
 ENDIF(SBD)
 
 set(CMAKE_CXX_FLAGS "-g -fPIC -m32")

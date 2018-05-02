@@ -32,3 +32,4 @@ cFS/bin/include
 cFS/bin/lib
 cFS/cFE
 **/gen
+cFS/SBD-snapshot

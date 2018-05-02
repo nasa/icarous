@@ -3,3 +3,8 @@
 	url = https://github.com/nasa/cFE.git
 	branch = cFE_OSAL_only
 	ignore = dirty
+[submodule "SBD"]
+	path = cFS/SBD
+	url = https://github.com/CHREC/SBD_OSPL.git
+	branch = cmake
+	ignore = dirty
