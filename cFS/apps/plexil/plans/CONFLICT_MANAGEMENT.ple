@@ -27,11 +27,12 @@ Boolean    Command SetMode(String mode);
 
 Command SetNextMissionWP(Integer index);
 Command SetVel(Real velocity[3]);
+Command Status(String text);
 Command pprint(...);
 
 // Library plans
 LibraryAction MISSION(In Boolean execResolution);
-LibraryAction GOTO_POSITION (In String SearchType,In Boolean TrafficConflict,In Real TargetPosition[3],InOut Boolean resolutionCompleted);
+LibraryAction GOTO_POSITION (In String SearchType,In Boolean TrafficConflict,In Real TargetPosition[3],In Real resSpeed,InOut Boolean resolutionCompleted);
 LibraryAction TRAFFIC_RESOLUTION(InOut Boolean completionStatus,In Integer nextWP,
                                  In Real acPosition[3],In Real acVelocity[3],In Real resSpeed);
 
@@ -192,6 +193,7 @@ CONFLICT_MANAGEMENT:
 
             //pprint("Starting resolution:",keepInConflict,keepOutConflict,trafficConflict,flightPlanConflict);
             //pprint("Plexil status: Starting resolution");
+            Status("IC:Starting conflict resolution");
 
             {
 
@@ -233,7 +235,9 @@ CONFLICT_MANAGEMENT:
                         Boolean _resolutionCompleted;
                         SkipCondition (!keepInConflict && !keepOutConflict) || trafficConflict;
 
+                        Status("IC:Executing fence resolution");
                         LibraryCall GOTO_POSITION(SearchType ="GRID",TrafficConflict = false,TargetPosition = RecoveryPosition,
+                                                  resSpeed = resSpeed,
                                                   resolutionCompleted = _resolutionCompleted);
                         completionStatus = _resolutionCompleted;
                     }
@@ -244,6 +248,7 @@ CONFLICT_MANAGEMENT:
                        SkipCondition !trafficConflict;
                        EndCondition completionStatus;
 
+                       Status("IC:Executing traffic resolution");
                        resType = Lookup(trafficResType);
 
                        if(_prevConflictId == 3){
@@ -272,6 +277,7 @@ CONFLICT_MANAGEMENT:
                           }
 
                           LibraryCall GOTO_POSITION(SearchType = "RRT",TrafficConflict = true,TargetPosition = RecoveryPosition,
+                                                    resSpeed = resSpeed,
                                                     resolutionCompleted = _resolutionCompleted); 
                           completionStatus = _resolutionCompleted;
 
@@ -285,6 +291,7 @@ CONFLICT_MANAGEMENT:
 
                         completionStatus = true;
 
+                        Status("IC:Resolving flight plan deviation");
                         //pprint("Executing flight plan resolution");
 
                         SetMode("ACTIVE");
@@ -311,9 +318,11 @@ CONFLICT_MANAGEMENT:
                 RESUME_MISSION:{
                     Boolean validPoint = false;
                     SkipCondition !completionStatus;
-                    EndCondition (keepInConflict || keepOutConflict || trafficConflict || flightPlanConflict || !resolutionActive);
+                    EndCondition (!resolutionActive);
 
                     pprint("Plexil status: Intercepting mission");
+
+                    Status("IC:Resuming mission");
 
                     while(!validPoint && nextWP < _numMissionWP){
                         Real _position[3];
@@ -346,6 +355,7 @@ CONFLICT_MANAGEMENT:
                             Boolean _resolutionCompleted;
                             validPoint = true;
                             LibraryCall GOTO_POSITION(SearchType = "GRID",TrafficConflict = false, TargetPosition = _position,
+                                                      resSpeed = resSpeed,
                                                       resolutionCompleted = _resolutionCompleted);
                             if(nextWP+1 <= _numMissionWP-1){
                                nextWP = nextWP + 1;

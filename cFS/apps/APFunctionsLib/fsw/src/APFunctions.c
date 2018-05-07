@@ -255,6 +255,17 @@ int ServiceTrajectory_GetInterceptManeuver(char* planID,int nextWP,double* posit
     return msg.id;
 }
 
+int ServiceTrajectory_GetManeuverHeading(double* positionA,double* positionB){
+    InitTrajectoryServiceMsg(msg);
+    msg.sType = _command_;
+    memcpy(msg.name,"Heading2Maneuver",16);
+    char* b  = msg.buffer;
+    b = serializeRealArray(3,positionA,b);
+    b = serializeRealArray(3,positionB,b);
+    SendSBMsg(msg);
+    return msg.id;
+}
+
 void ServiceFence_DecodeFenceViolation(service_t* msg,bool* output){
     const char* b  = msg->buffer;
     b = deSerializeBoolArray(output,b);
@@ -323,4 +334,9 @@ void ServiceTrajectory_DecodeInterceptHeading(service_t* msg,double* output){
 void ServiceTrajectory_DecodeInterceptManeuver(service_t* msg,double* output){
     const char* b = msg->buffer;
     b = deSerializeRealArray(output,b);
+}
+
+void ServiceTrajectory_DecodeManeuverHeading(service_t* msg,double* output){
+    const char* b = msg->buffer;
+    b = deSerializeReal(false,output,b);
 }

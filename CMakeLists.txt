@@ -24,21 +24,24 @@ cmake_minimum_required(VERSION 2.6.4)
 # so they won't change later.
 project(ICAROUS_CFS C CXX)
 
+include("CMake/utils.cmake")
+
 OPTION(SITL "Build the project for SITL" OFF)
 IF(SITL)
     add_definitions(-DSITL)
 ENDIF(SITL)
 
+
 set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
 set(CMAKE_C_FLAGS "-g -fPIC -m32")
 
 # Add modules
-add_subdirectory(Modules/ACCoRD)
-add_subdirectory(Modules/FlightDataManager)
-add_subdirectory(Modules/Plexil)
-add_subdirectory(Modules/TrafficMonitor)
-add_subdirectory(Modules/TrajectoryPlanners)
-add_subdirectory(Modules/GeofenceMonitor)
+get_subdirs(SUBDIRS ${CMAKE_SOURCE_DIR}/Modules)
+foreach(subdir ${SUBDIRS})
+    if (NOT (${subdir} STREQUAL "${CMAKE_SOURCE_DIR}/Modules/lib"))
+        add_subdirectory(${subdir})
+    endif ()
+endforeach()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DMESSAGE_FORMAT_IS_CCSDS")
 

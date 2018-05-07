@@ -54,6 +54,6 @@ DAA_LOOKAHEAD = 20
 LOG_DAA = false
 
 #Waypoint parameters
-CAPTURE_H = 1
-CAPTURE_V = 1
+CAPTURE_H = 2
+CAPTURE_V = 2
 WAIT      = 0

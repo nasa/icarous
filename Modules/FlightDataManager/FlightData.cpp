@@ -325,6 +325,13 @@ int FlightData::GetTrafficResolutionType(){
     return val;
 }
 
+double FlightData::GetValue(char *name) {
+    double val;
+    std::string _name(name);
+    val = paramData.getValue(_name);
+    return val;
+}
+
 void FlightData::InputGeofenceData(geofence_t* gf){
 
     if(gf->vertexIndex == 0){

@@ -376,6 +376,13 @@ void PathPlanner::GetExitPoint(char *planID,double currentPoisition[],int nextWP
     exitPosition[2] = lastPos.alt();
 }
 
+double PathPlanner:: GetInterceptHeadingToPoint(double positionA[],double positionB[]){
+    Position posA = Position::makeLatLonAlt(positionA[0],"degree",positionA[1],"degree",positionA[2],"m");
+    Position posB = Position::makeLatLonAlt(positionB[0],"degree",positionB[1],"degree",positionB[2],"m");
+
+    return posA.track(posB)*180/M_PI;
+}
+
 void PathPlanner::ClearAllPlans() {
     flightPlans.clear();
 }

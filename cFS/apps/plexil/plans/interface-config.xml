@@ -18,6 +18,8 @@
       Land,
       SetVel,
       CheckSafeToTurn,
+      Heading2Maneuver,
+      Status
     </CommandNames>
     <LookupNames>
       missionStart,
@@ -34,7 +36,8 @@
       ditchingStatus,
       ditchingComplete,
       resetDitching,
-      ditchSite
+      ditchSite,
+      captureH
     </LookupNames> 
   </Adapter>
 </Interfaces>

@@ -44,6 +44,7 @@ public:
     void GetPositionOnPlan_c(char planID[],int leg,double currentPos[],double position[]);
     double GetInterceptHeadingToPlan(Plan* fp,int leg,double currentPos[]);
     double GetInterceptHeadingToPlan_c(char planID[],int leg,double currentPos[]);
+    double GetInterceptHeadingToPoint(double positionA[],double positionB[]);
     void ManueverToIntercept(Plan* fp,int leg,double currPosition[],double velocity[]);
     void ManueverToIntercept_c(char* planID,int leg,double currPosition[],double velocity[]);
     void GetExitPoint(char* planID,double currentPoisition[],int nextWP,double exitPosition[]);

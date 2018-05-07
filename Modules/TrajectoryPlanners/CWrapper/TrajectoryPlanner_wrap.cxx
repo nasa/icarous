@@ -731,6 +731,23 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC double _wrap_FlightData_GetValue(SwigObj * carg1, /*aaa*/ char * carg2) {
+    double cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    char *arg2 ;
+    double result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    arg2 = (char *) carg2;
+    cppresult =  (double)(arg1)->GetValue(arg2);
+    result = cppresult;
+    return result;
+  }
+  
+  
   SWIGEXPORTC double _wrap_FlightData_GetTakeoffAlt(SwigObj * carg1) {
     double cppresult;
     FlightData *arg1 = (FlightData *) 0 ;
@@ -1384,6 +1401,25 @@ extern "C" {
     arg3 = (int) carg3;
     arg4 = (double *) carg4;
     cppresult =  (double)(arg1)->GetInterceptHeadingToPlan_c(arg2,arg3,arg4);
+    result = cppresult;
+    return result;
+  }
+  
+  
+  SWIGEXPORTC double _wrap_PathPlanner_GetInterceptHeadingToPoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3) {
+    double cppresult;
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    double *arg2 ;
+    double *arg3 ;
+    double result;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (double *) carg2;
+    arg3 = (double *) carg3;
+    cppresult =  (double)(arg1)->GetInterceptHeadingToPoint(arg2,arg3);
     result = cppresult;
     return result;
   }
