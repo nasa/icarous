@@ -24,43 +24,24 @@ cmake_minimum_required(VERSION 2.6.4)
 # so they won't change later.
 project(ICAROUS_CFS C CXX)
 
+include("CMake/utils.cmake")
+
 OPTION(SITL "Build the project for SITL" OFF)
 IF(SITL)
     add_definitions(-DSITL)
 ENDIF(SITL)
 
-OPTION(SBD "Build the project with SBD" OFF)
-IF(SBD)
-    get_filename_component(CMAKE_AUX_MODULES_PATH "${CMAKE_CURRENT_LIST_DIR}/CMake" REALPATH)
-    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_AUX_MODULES_PATH})
-    add_definitions(-DSBD)
-    get_filename_component(MISSION_SOURCE_DIR "cFS/SBD-snapshot" REALPATH)
-    include(cFS/SBD/CMakeLists.txt)
-    execute_process(
-            COMMAND rm "-R" "${CMAKE_SOURCE_DIR}/cFS/SBD-snapshot"
-            ERROR_VARIABLE ERROR
-            OUTPUT_QUIET
-    )
-    execute_process(
-            COMMAND cp "-R" "${CMAKE_SOURCE_DIR}/cFS/SBD/cFS" "${CMAKE_SOURCE_DIR}/cFS/SBD-snapshot"
-            ERROR_VARIABLE ERROR
-            OUTPUT_QUIET
-    )
-    if (ERROR)
-       message(ERROR "There was a problem doing the SBD snapshot: ${ERROR}")
-    endif ()
-ENDIF(SBD)
 
 set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
 set(CMAKE_C_FLAGS "-g -fPIC -m32")
 
 # Add modules
-add_subdirectory(Modules/ACCoRD)
-add_subdirectory(Modules/FlightDataManager)
-add_subdirectory(Modules/Plexil)
-add_subdirectory(Modules/TrafficMonitor)
-add_subdirectory(Modules/TrajectoryPlanners)
-add_subdirectory(Modules/GeofenceMonitor)
+get_subdirs(SUBDIRS ${CMAKE_SOURCE_DIR}/Modules)
+foreach(subdir ${SUBDIRS})
+    if (NOT (${subdir} STREQUAL "${CMAKE_SOURCE_DIR}/Modules/lib"))
+        add_subdirectory(${subdir})
+    endif ()
+endforeach()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DMESSAGE_FORMAT_IS_CCSDS")
 
