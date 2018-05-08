@@ -641,6 +641,17 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC void _wrap_FlightData_ClearFenceList(SwigObj * carg1) {
+    FlightData *arg1 = (FlightData *) 0 ;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    (arg1)->ClearFenceList();
+  }
+  
+  
   SWIGEXPORTC void _wrap_FlightData_InputNextMissionWP(SwigObj * carg1, int carg2) {
     FlightData *arg1 = (FlightData *) 0 ;
     int arg2 ;
@@ -709,6 +720,23 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC double _wrap_FlightData_GetValue(SwigObj * carg1, /*aaa*/ char * carg2) {
+    double cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    char *arg2 ;
+    double result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    arg2 = (char *) carg2;
+    cppresult =  (double)(arg1)->GetValue(arg2);
+    result = cppresult;
+    return result;
+  }
+  
+  
   SWIGEXPORTC double _wrap_FlightData_GetTakeoffAlt(SwigObj * carg1) {
     double cppresult;
     FlightData *arg1 = (FlightData *) 0 ;
@@ -749,6 +777,36 @@ extern "C" {
       arg1 = (FlightData *) carg1->obj;
     }
     cppresult =  (double)(arg1)->GetAltitude();
+    result = cppresult;
+    return result;
+  }
+  
+  
+  SWIGEXPORTC double _wrap_FlightData_GetAllowedXtracDeviation(SwigObj * carg1) {
+    double cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    double result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    cppresult =  (double)(arg1)->GetAllowedXtracDeviation();
+    result = cppresult;
+    return result;
+  }
+  
+  
+  SWIGEXPORTC double _wrap_FlightData_GetResolutionSpeed(SwigObj * carg1) {
+    double cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    double result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    cppresult =  (double)(arg1)->GetResolutionSpeed();
     result = cppresult;
     return result;
   }
@@ -945,6 +1003,21 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC int _wrap_FlightData_GetTrafficResolutionType(SwigObj * carg1) {
+    int cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    int result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    cppresult =  (int)(arg1)->GetTrafficResolutionType();
+    result = cppresult;
+    return result;
+  }
+  
+  
   SWIGEXPORTC int _wrap_FlightData_GetTotalFences(SwigObj * carg1) {
     int cppresult;
     FlightData *arg1 = (FlightData *) 0 ;
@@ -1023,6 +1096,24 @@ extern "C" {
     cppresult =  (fence *)(arg1)->GetGeofence(arg2);
     {
       result = (SwigObj*) SWIG_create_object(SWIG_STR(fence));
+      result->obj = (void*) cppresult;
+    }
+    return result;
+  }
+  
+  
+  SWIGEXPORTC /*aaaaaa*/SwigObj * _wrap_FlightData_GetPolyPath(SwigObj * carg1) {
+    PolyPath * cppresult;
+    FlightData *arg1 = (FlightData *) 0 ;
+    /*aaaaaa*/SwigObj * result;
+    
+    {
+      if (carg1)
+      arg1 = (FlightData *) carg1->obj;
+    }
+    cppresult =  (PolyPath *)(arg1)->GetPolyPath();
+    {
+      result = (SwigObj*) SWIG_create_object(SWIG_STR(PolyPath));
       result->obj = (void*) cppresult;
     }
     return result;

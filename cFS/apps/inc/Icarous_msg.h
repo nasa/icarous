@@ -222,6 +222,15 @@ typedef struct{
 	char buffer[250];                        /**< arguments */
 }service_t;
 
+/**
+ * status_t: Message to provide status information
+ */
+typedef struct{
+	uint8_t TlmHeader[CFE_SB_CMD_HDR_SIZE];
+	char buffer[250];
+}status_t;
+
+
 static char* serializeBool(bool arrayelement,const bool o,char* b){
     arrayelement?0:(*b++ = _boolean_type_);
     *b++ = (char) o;

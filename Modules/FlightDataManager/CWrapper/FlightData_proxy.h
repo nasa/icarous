@@ -96,14 +96,18 @@ void FlightData_AddTraffic(SwigObj * carg1, int carg2, double carg3, double carg
 void FlightData_GetTraffic_pFlightData_i_pd_pd_pd_pd_pd_pd(SwigObj * carg1, int carg2, double * carg3, double * carg4, double * carg5, double * carg6, double * carg7, double * carg8);
 void FlightData_ClearMissionList(SwigObj * carg1);
 void FlightData_ClearResolutionList(SwigObj * carg1);
+void FlightData_ClearFenceList(SwigObj * carg1);
 void FlightData_InputNextMissionWP(SwigObj * carg1, int carg2);
 void FlightData_InputNextResolutionWP(SwigObj * carg1, int carg2);
 void FlightData_InputTakeoffAlt(SwigObj * carg1, double carg2);
 void FlightData_InputCruisingAlt(SwigObj * carg1, double carg2);
 void FlightData_InputGeofenceData(SwigObj * carg1, SwigObj * carg2);
+double FlightData_GetValue(SwigObj * carg1, /*aaa*/ char * carg2);
 double FlightData_GetTakeoffAlt(SwigObj * carg1);
 double FlightData_GetCruisingAlt(SwigObj * carg1);
 double FlightData_GetAltitude(SwigObj * carg1);
+double FlightData_GetAllowedXtracDeviation(SwigObj * carg1);
+double FlightData_GetResolutionSpeed(SwigObj * carg1);
 int FlightData_GetTotalMissionWP(SwigObj * carg1);
 int FlightData_GetTotalResolutionWP(SwigObj * carg1);
 int FlightData_GetTotalTraffic(SwigObj * carg1);
@@ -116,10 +120,12 @@ SwigObj * FlightData_GetMissionPlanSize(SwigObj * carg1);
 SwigObj * FlightData_GetResolutionPlanSize(SwigObj * carg1);
 SwigObj * FlightData_GetNextMissionWP(SwigObj * carg1);
 SwigObj * FlightData_GetNextResolutionWP(SwigObj * carg1);
+int FlightData_GetTrafficResolutionType(SwigObj * carg1);
 int FlightData_GetTotalFences(SwigObj * carg1);
 double FlightData_getFlightPlanSpeed(SwigObj * carg1, SwigObj * carg2, int carg3);
 void FlightData_GetTraffic_pFlightData_i_rlarcfm_Position_rlarcfm_Velocity(SwigObj * carg1, int carg2, SwigObj * carg3, SwigObj * carg4);
 /*aaaaaa*/SwigObj * FlightData_GetGeofence(SwigObj * carg1, int carg2);
+/*aaaaaa*/SwigObj * FlightData_GetPolyPath(SwigObj * carg1);
 void delete_FlightData(FlightData * carg1);
 
 #endif /* _FlightData_proxy_H_ */

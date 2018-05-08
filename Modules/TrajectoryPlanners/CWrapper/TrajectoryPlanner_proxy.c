@@ -28,6 +28,7 @@ void _wrap_FlightData_InputNextResolutionWP(SwigObj * carg1, int carg2);
 void _wrap_FlightData_InputTakeoffAlt(SwigObj * carg1, double carg2);
 void _wrap_FlightData_InputCruisingAlt(SwigObj * carg1, double carg2);
 void _wrap_FlightData_InputGeofenceData(SwigObj * carg1, SwigObj * carg2);
+double _wrap_FlightData_GetValue(SwigObj * carg1, /*aaa*/ char * carg2);
 double _wrap_FlightData_GetTakeoffAlt(SwigObj * carg1);
 double _wrap_FlightData_GetCruisingAlt(SwigObj * carg1);
 double _wrap_FlightData_GetAltitude(SwigObj * carg1);
@@ -64,6 +65,7 @@ void _wrap_PathPlanner_GetPositionOnPlan(SwigObj * carg1, SwigObj * carg2, int c
 void _wrap_PathPlanner_GetPositionOnPlan_c(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
 double _wrap_PathPlanner_GetInterceptHeadingToPlan(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4);
 double _wrap_PathPlanner_GetInterceptHeadingToPlan_c(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4);
+double _wrap_PathPlanner_GetInterceptHeadingToPoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3);
 void _wrap_PathPlanner_ManueverToIntercept(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
 void _wrap_PathPlanner_ManueverToIntercept_c(SwigObj * carg1, char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5);
 void _wrap_PathPlanner_GetExitPoint(SwigObj * carg1, char * carg2, /*aaa*/ double * carg3, int carg4, /*aaa*/ double * carg5);
@@ -127,6 +129,9 @@ void FlightData_InputCruisingAlt(SwigObj * carg1, double carg2) {
 }
 void FlightData_InputGeofenceData(SwigObj * carg1, SwigObj * carg2) {
   return _wrap_FlightData_InputGeofenceData(carg1, carg2);
+}
+double FlightData_GetValue(SwigObj * carg1, /*aaa*/ char * carg2) {
+  return _wrap_FlightData_GetValue(carg1, carg2);
 }
 double FlightData_GetTakeoffAlt(SwigObj * carg1) {
   return _wrap_FlightData_GetTakeoffAlt(carg1);
@@ -235,6 +240,9 @@ double PathPlanner_GetInterceptHeadingToPlan(SwigObj * carg1, SwigObj * carg2, i
 }
 double PathPlanner_GetInterceptHeadingToPlan_c(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4) {
   return _wrap_PathPlanner_GetInterceptHeadingToPlan_c(carg1, carg2, carg3, carg4);
+}
+double PathPlanner_GetInterceptHeadingToPoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3) {
+  return _wrap_PathPlanner_GetInterceptHeadingToPoint(carg1, carg2, carg3);
 }
 void PathPlanner_ManueverToIntercept(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
   return _wrap_PathPlanner_ManueverToIntercept(carg1, carg2, carg3, carg4, carg5);
