@@ -37,7 +37,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
 ############################################################
 # Download ICAROUS
 
-RUN git clone https://github.com/nasa/icarous.git
+RUN git clone https://github.com/nasa/icarous.git /icarous
+RUN cd /icarous && git submodule update --init --recursive
 
 ############################################################
 # Install wrap library
@@ -48,17 +49,17 @@ RUN cd /lib/i386-linux-gnu && ln -s libwrap.so.0  libwrap.so
 ############################################################
 # Build Plexil compiler
 
-RUN cd /icarous/C++/Modules/Plexil && \
-    PLEXIL_HOME="/icarous/C++/Modules/Plexil" \
+RUN cd /icarous/Modules/Plexil && \
+    PLEXIL_HOME="/icarous/Modules/Plexil" \
     make plexil-compiler
 
 
 ############################################################
 # Build ICAROUS
 
-RUN cd /icarous/CFS && mkdir cmake-build && cd cmake-build && \
+RUN cd /icarous/cFS && mkdir build && cd build && \
     JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64" \
-    PLEXIL_HOME="/icarous/C++/Modules/Plexil" \
-    OSAL_HOME="/icarous/CFS/osal" \
-    cmake .. -DSITL=on
-RUN cd /icarous/CFS/cmake-build && cmake --build . --target cpu1-install
+    PLEXIL_HOME="/icarous/Modules/Plexil" \
+    OSAL_HOME="/icarous/cFS/cFE/osal" \
+    cmake ../.. -DSITL=on
+RUN cd /icarous/cFS/build && cmake --build . --target cpu1-install
