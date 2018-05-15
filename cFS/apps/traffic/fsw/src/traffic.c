@@ -55,6 +55,7 @@ void TRAFFIC_AppInit(void) {
     //Subscribe to plexil output messages from the SB
     CFE_SB_Subscribe(SERVICE_TRAFFIC_MID, TrafficAppData.Traffic_Pipe);
     CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,TrafficAppData.Traffic_Pipe);
+    CFE_SB_Subscribe(ICAROUS_POSITION_MID,TrafficAppData.Traffic_Pipe);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&trafficServiceResponse, SERVICE_TRAFFIC_RESPONSE_MID, sizeof(service_t), TRUE);
@@ -89,6 +90,19 @@ void TRAFFIC_ProcessPacket(){
             msg = (object_t*) TrafficAppData.Traffic_MsgPtr;
 
             FlightData_AddTraffic(TrafficAppData.fdata,msg->index,msg->latitude,msg->longitude,msg->altiude,msg->vx,msg->vy,msg->vz);
+            break;
+        }
+
+        case ICAROUS_POSITION_MID:{
+            position_t* msg;
+            msg = (position_t*) TrafficAppData.Traffic_MsgPtr;
+
+            if (msg->aircraft_id != CFE_PSP_GetSpacecraftId()) {
+                FlightData_AddTraffic(TrafficAppData.fdata, msg->aircraft_id, msg->latitude, msg->longitude,
+                                      msg->altitude_rel, msg->vx, msg->vy, msg->vz);
+                OS_printf("received traffic from aircraft_id %s", msg->aircraft_id);
+            }
+
             break;
         }
 
