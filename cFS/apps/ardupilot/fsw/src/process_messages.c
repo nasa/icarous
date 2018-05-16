@@ -484,6 +484,20 @@ void ARDUPILOT_ProcessPacket(){
             writePort(&appdataInt.gs,&msg);
             break;
         }
+
+        case ICAROUS_POSITION_MID:{
+            position_t* position = (position_t*) appdataInt.INTERFACEMsgPtr;
+
+
+            if (position->aircraft_id != CFE_PSP_GetSpacecraftId()){
+
+                mavlink_message_t msg;
+                mavlink_msg_command_long_pack(1,0,&msg,255,0,MAV_CMD_SPATIAL_USER_3,0,position->aircraft_id,
+                position->vy,position->vx,position->vz,position->latitude,position->longitude,position->altitude_rel);
+                writePort(&appdataInt.gs,&msg);
+
+            }
+        }
 	}
 
 	return;

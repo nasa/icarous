@@ -98,6 +98,7 @@ void ARDUPILOT_AppInit(void){
 	CFE_SB_Subscribe(ICAROUS_VISBAND_MID, appdataInt.INTERFACE_Pipe);
     CFE_SB_Subscribe(SERVICE_INTERFACE_MID, appdataInt.INTERFACE_Pipe);
     CFE_SB_Subscribe(ICAROUS_STATUS_MID, appdataInt.INTERFACE_Pipe);
+    CFE_SB_Subscribe(ICAROUS_POSITION_MID,appdataInt.INTERFACEMsgPtr);
 
 
 	// Initialize all messages that this App generates
