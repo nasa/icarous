@@ -100,7 +100,7 @@ void TRAFFIC_ProcessPacket(){
             if (msg->aircraft_id != CFE_PSP_GetSpacecraftId()) {
                 FlightData_AddTraffic(TrafficAppData.fdata, msg->aircraft_id, msg->latitude, msg->longitude,
                                       msg->altitude_rel, msg->vx, msg->vy, msg->vz);
-                OS_printf("received traffic from aircraft_id %s", msg->aircraft_id);
+                OS_printf("received traffic from aircraft_id %d", msg->aircraft_id);
             }
 
             break;
