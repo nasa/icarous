@@ -195,12 +195,14 @@ void FlightData::AddTraffic(int id,double lat,double lon,double alt,double vx,do
 void FlightData::GetTraffic(int id,larcfm::Position& pos,larcfm::Velocity& vel){
     pthread_mutex_lock(&lock);
     std::list<GenericObject>::iterator it;
+    int count = 0;
     for(it = trafficList.begin(); it != trafficList.end(); ++it){
-        if(it->id == id){
+        if(count == id){
             pos = it->pos;
             vel = it->vel;
             break;
         }
+        count++;
     }
     pthread_mutex_unlock(&lock);
 }
