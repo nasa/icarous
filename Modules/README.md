@@ -22,7 +22,7 @@ sudo apt-get install tcpd tcpd:i386
   which in turn is a symbolic link to the actual library `libwrap.so.x.x.x`.
 
 ### Multilib
-- Make sure g++multlib, gcc-multilib are installed/updated.
+- Make sure g++-multilib, gcc-multilib are installed/updated.
 
 ### Compiling 32-bit version of nlopt
 Since cFS works with 32-bit binaries, nlopt should be compiled for use on a 32 bit architecture.
