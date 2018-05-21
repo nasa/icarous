@@ -74,4 +74,4 @@ RUN cd /icarous/Python/CustomModules && bash SetupMavProxy.sh /
 
 ##############################
 # Precompile Arducopter SITL
-RUN cd /ardupilot/ArduCopter && echo | /ardupilot/Tools/autotest/sim_vehicle.py -b bin/arducopter
+RUN cd /ardupilot/ArduCopter && echo | /ardupilot/Tools/autotest/sim_vehicle.py -b bin/arducopter -l 37.101783,-76.382997,0,270
