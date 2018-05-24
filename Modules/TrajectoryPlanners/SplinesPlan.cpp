@@ -82,7 +82,7 @@ int64_t PathPlanner::FindPathBSplines(char planID[],double fromPosition[],double
                          gpos.x,gpos.y};
 
     int n = 0;
-    for(int i=0;i<ndim/2;++i){
+    for(int i=1;i<(ndim/2)-1;++i){
         CtrlPt0[2*i]   = initPosR3.x + i*dist2goal/(ndim/2) * heading2goal.x;
         CtrlPt0[2*i+1] = initPosR3.x + i*dist2goal/(ndim/2) * heading2goal.y;
     }
@@ -124,19 +124,19 @@ int64_t PathPlanner::FindPathBSplines(char planID[],double fromPosition[],double
         for(int i=0;i<lenT;++i){
             double point[2];
             splinePath.GetPoint(tVec[i],CtrlPt0,point);
-                Vect3 _locxyz(point[0],point[1],initPosR3.z);
-                Position wp(proj.inverse(_locxyz));
-                if(count == 0){
-                    ETA = 0;
-                }
-                else{
-                    Position prevWP = output.point(count-1).position();
-                    double distH    = wp.distanceH(prevWP);
-                    ETA             = ETA + distH/speed;
-                }
-                NavPoint np(wp,ETA);
-                output.addNavPoint(np);
-                count++;
+            Vect3 _locxyz(point[0],point[1],initPosR3.z);
+            Position wp(proj.inverse(_locxyz));
+            if(count == 0){
+                ETA = 0;
+            }
+            else{
+                Position prevWP = output.point(count-1).position();
+                double distH    = wp.distanceH(prevWP);
+                ETA             = ETA + distH/speed;
+            }
+            NavPoint np(wp,ETA);
+            output.addNavPoint(np);
+            count++;
         }
         output.setName(string(planID));
         flightPlans.push_back(output);

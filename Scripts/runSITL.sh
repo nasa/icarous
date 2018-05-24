@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd /ardupilot/ArduCopter/
-/ardupilot/Tools/autotest/sim_vehicle.py -l 37.1021769,-76.3872069,5,0
+./Tools/autotest/sim_vehicle.py -b bin/arducopter -l 37.101783,-76.382997,0,270

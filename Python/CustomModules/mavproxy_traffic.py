@@ -87,6 +87,7 @@ class TrafficModule(mp_module.MPModule):
         self.traffic_on_map = [];
         self.WCV = False;
         self.radius = 5.0;
+        self.V2V = False;
 
 
         self.numBands = 0;
@@ -199,6 +200,10 @@ class TrafficModule(mp_module.MPModule):
         if m.get_type() == "TRAFFIC_INFO":
             print m.breach_status
 
+        if m.get_type() == "COMMAND_LONG":
+            if self.V2V:
+                self.show_received_traffic(m)
+
     def load_traffic(self, args):
         '''fence commands'''
         if len(args) < 1:
@@ -222,10 +227,39 @@ class TrafficModule(mp_module.MPModule):
         elif args[0] == "radius":
             if len(args) == 2:
                 self.radius = float(args[1]);
+
+        elif args[0] == "V2V":
+            self.V2V = True
             
         
         else:
             self.print_usage()
+
+    def show_received_traffic(self, msg):
+        """ Dislay received traffic """
+
+        id = int(msg.param1)
+        vn = msg.param2
+        ve = msg.param3
+        vd = msg.param4
+        lat = msg.param5
+        lon = msg.param6
+        alt = msg.param7        
+
+        vehicle = 'Traffic%d' % id
+
+        if (vehicle not in self.traffic_on_map):
+            colour = "green"
+            vehicle_type = "copter"
+            icon = self.mpstate.map.icon(colour + vehicle_type + '.png')
+
+            self.mpstate.map.add_object(mp_slipmap.SlipIcon(vehicle, (0, 0), icon, layer=3, rotation=0, follow=False, \
+                                                            trail=mp_slipmap.SlipTrail(colour=(0, 255, 0))))
+            self.traffic_on_map.append(vehicle)
+
+        heading = math.degrees(math.atan2(ve, vn))
+        self.mpstate.map.set_position(vehicle, (lat, lon), rotation=heading)
+
 
     def Update_traffic(self):
         '''Update traffic icon on map'''

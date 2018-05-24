@@ -17,6 +17,7 @@ void ProcessAPMessage(mavlink_message_t message){
 		{
 			mavlink_global_position_int_t globalPositionInt;
 			mavlink_msg_global_position_int_decode(&message,&globalPositionInt);
+			position.aircraft_id = CFE_PSP_GetSpacecraftId();
 			position.time_gps  = (double)globalPositionInt.time_boot_ms/1E3;
 			position.latitude  = (double)globalPositionInt.lat/1E7;
 			position.longitude = (double)globalPositionInt.lon/1E7;
@@ -482,6 +483,20 @@ void ARDUPILOT_ProcessPacket(){
             mavlink_msg_statustext_pack(2,0,&msg,MAV_SEVERITY_WARNING,statusMsg->buffer);
             writePort(&appdataInt.gs,&msg);
             break;
+        }
+
+        case ICAROUS_POSITION_MID:{
+            position_t* position = (position_t*) appdataInt.INTERFACEMsgPtr;
+
+
+            if (position->aircraft_id != CFE_PSP_GetSpacecraftId()){
+
+                mavlink_message_t msg;
+                mavlink_msg_command_long_pack(1,0,&msg,255,0,MAV_CMD_SPATIAL_USER_3,0,position->aircraft_id,
+                position->vy,position->vx,position->vz,position->latitude,position->longitude,position->altitude_rel);
+                writePort(&appdataInt.gs,&msg);
+
+            }
         }
 	}
 

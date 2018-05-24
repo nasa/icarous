@@ -144,6 +144,7 @@ typedef struct{
  */
 typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
+    uint32_t aircraft_id;                     /**< aircraft id */
 	double time_gps;                          /**< gps time */
 	double latitude;                          /**< latitude (degrees) */
 	double longitude;                         /**< longitude (degrees) */
