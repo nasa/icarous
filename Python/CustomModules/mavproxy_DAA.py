@@ -76,6 +76,8 @@ class DAAModule(mp_module.MPModule):
         self.oldNumBands = 0;
         self.Bands = [];
         self.kmbMsgCounter = 0;
+        self.lastUpdateTime = 0;
+        
         
     def idle_task(self):
         '''called on idle'''
@@ -222,6 +224,12 @@ class DAAModule(mp_module.MPModule):
     def Update_traffic(self):
         '''Update traffic icon on map'''
 
+        t = time.time()
+        if(t - self.lastUpdateTime < 1.0):
+            return
+
+        self.lastUpdateTime = t;
+        
         #place info in local variable becuase map.set_position will not accept it otherwise
         i_lat = self.intr_lat;
         i_lon = self.intr_lon;
