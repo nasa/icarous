@@ -204,6 +204,7 @@ public class MAVLinkMessages{
 	public Queue<msg_safeguard> listSafeguard;
 	public Queue<msg_gps_inject_data> listGPSInjectData;
 	public Queue<msg_kinematic_bands> listKinematicBands;
+	public Queue<msg_adsb_vehicle> listAdsbData;
 
 	public MAVLinkMessages(){
 
@@ -232,6 +233,7 @@ public class MAVLinkMessages{
 		listSafeguard          = new LinkedList<msg_safeguard>();
 		listGPSInjectData      = new LinkedList<msg_gps_inject_data>();
 		listKinematicBands     = new LinkedList<msg_kinematic_bands>();
+		listAdsbData           = new LinkedList<msg_adsb_vehicle>();
 	}
 
 
@@ -761,7 +763,7 @@ public class MAVLinkMessages{
 			break;
 
 		case msg_adsb_vehicle.MAVLINK_MSG_ID_ADSB_VEHICLE:
-			msgAdsbVehicle = (msg_adsb_vehicle) message.unpack();
+			listAdsbData.add((msg_adsb_vehicle) message.unpack());
 			break;
 
 		case msg_v2_extension.MAVLINK_MSG_ID_V2_EXTENSION:
@@ -1108,6 +1110,15 @@ public class MAVLinkMessages{
 	public synchronized msg_safeguard GetSafeguard(){
 		if(listSafeguard.size() > 0){
 			return listSafeguard.remove();
+		}
+		else{
+			return null;
+		}
+	}
+
+	public synchronized msg_adsb_vehicle GetADSB(){
+		if(listAdsbData.size()>0){
+			return listAdsbData.remove();
 		}
 		else{
 			return null;
