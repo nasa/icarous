@@ -464,9 +464,9 @@ public class COM implements Runnable, ErrorReporter {
 						(float) (msgAdsb.lat / 1.0E7), (float) (msgAdsb.lon / 1.0E7), (float) (msgAdsb.altitude / 1.0E3),
 						(float) vel.y, (float) vel.x, (float) vel.z);
 
-				System.out.format("Raw ADSB: %f,%f,%f,%f,%f,%f\n", (msgAdsb.lat / 1.0E7), (msgAdsb.lon / 1.0E7), (msgAdsb.altitude / 1.0E3), msgAdsb.heading / 1.0E2, msgAdsb.hor_velocity / 1.0E2, msgAdsb.ver_velocity / 1.0E2);
-				System.out.println(obj.pos.toString(6));
-				System.out.println(obj.vel.toString());
+				//System.out.format("Raw ADSB: %f,%f,%f,%f,%f,%f\n", (msgAdsb.lat / 1.0E7), (msgAdsb.lon / 1.0E7), (msgAdsb.altitude / 1.0E3), msgAdsb.heading / 1.0E2, msgAdsb.hor_velocity / 1.0E2, msgAdsb.ver_velocity / 1.0E2);
+				//System.out.println(obj.pos.toString(6));
+				//System.out.println(obj.vel.toString());
 				synchronized (FlightData.traffic) {
 					GenericObject.AddObject(FlightData.traffic, obj);
 				}
