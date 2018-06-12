@@ -60,7 +60,6 @@ ICAROUS makes use of the cmake build system. In order to setup a build, the foll
 - NLOPT_PATH = absolute path to the nlopt library location (libnlopt.a) [Optional-only required if splines based planner is being used].
 
 ```
-    $cd CFS
     $mkdir build
     $cd build && cmake ..
     $make cpu1-install
@@ -117,7 +116,6 @@ Once waypoints and geofence are uploaded, the mission can be started from MAVPro
 Setup and launch the ardupilot SITL as described in <http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html>. By default, the ardupilot SITL is configured to output packets to udp port 14551. To interface Icarous with the ardupilot SITL, generate the SITL build and compile as follows:
 
 ```
-    $cd CFS
     $mkdir build-stil
     $cd build-sitl && cmake .. -DSITL=ON
     $make cpu1-install
