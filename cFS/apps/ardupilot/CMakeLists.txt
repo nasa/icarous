@@ -11,13 +11,7 @@ include_directories(fsw/src)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
-link_directories(${PLEXIL_LIB})
-
 # Create the app module
 add_cfe_app(ardupilot ${APP_SRC_FILES})
-
-target_link_libraries(ardupilot PlexilWrapper)
-
-set_target_properties(ardupilot PROPERTIES INSTALL_RPATH "${PLEXIL_LIB}:${MODULES_LIB}")
 
 add_cfe_tables(ardupilot "fsw/tables/intf_tbl.c")
