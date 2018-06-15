@@ -56,7 +56,7 @@ bool IntfServiceHandler(mavlink_message_t *msgMavlink){
                 SendSBMsg(intfServiceResponse);
             } else if (CHECKNAME((*msg), "numMissionWP")) {
                 //TODO: move this into the trajectory app?
-                int32_t result = appdataInt.numWaypoints;
+                int32_t result = appdataInt.waypointSeq;
                 b = serializeInt(false, result, b);
                 SendSBMsg(intfServiceResponse);
             } else if(CHECKNAME((*msg), "nextMissionWPIndex")){
