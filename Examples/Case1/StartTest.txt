@@ -3,13 +3,6 @@
 # This case demonstrates the geofence keep in and keep out resolution
 # capabilities of ICAROUS
 #
-# Instructions:
-# - run SITL application (use sim_vehicle.py -l 37.1021769,-76.3872069,5,0
-# - use ./run.sh SITL to start ICAROUS
-# - use ./run.sh GS to start ground station
-# - run script after obtaining GPS locks on SITL framework
-# - script StartTest.txt
-#
 #
 # Expected results:
 # Quadrotor should avoid keep out fence by rerouting itself around
@@ -18,11 +11,11 @@
 #********************************************************************
 
 # load mission flight plan
-wp load TestCases/Case1/flightplan1.txt
+wp load flightplan1.txt
 
 # load keep in and keep out geofences
-geofence load TestCases/Case1/geofence.xml
+geofence load geofence.xml
 
 # start mission from the home position
-long MISSION_START 0
+long MISSION_START 
 
