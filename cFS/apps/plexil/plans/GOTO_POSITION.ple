@@ -116,7 +116,7 @@ GOTO_POSITION:{
         }
 
         // Use set pos to go to spot directly
-        //SetPos(NextWP);
+        SetPos(NextWP);
 
 
         //pprint("Setting position");
@@ -143,7 +143,7 @@ GOTO_POSITION:{
             velocityCmd[0] = heading2nextWP;
             velocityCmd[1] = resSpeed;
 
-            SetVel(velocityCmd);
+            //SetVel(velocityCmd);
 
 
             //pprint("dist2nextWP:",dist2nextWP);
@@ -170,7 +170,7 @@ GOTO_POSITION:{
                         _nextWP = GetWaypoint("Plan1",nextWPIndex);
                     }
 
-                    //SetPos(_nextWP);
+                    SetPos(_nextWP);
                     NextWP[0] = _nextWP[0];
                     NextWP[1] = _nextWP[1];
                     NextWP[2] = _nextWP[2];
