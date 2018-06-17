@@ -36,7 +36,7 @@ ICAROUS:
         Boolean _landStatus    = false;
         Boolean _ditchStatus   = false;
         Integer _numMissionWP;
-        Integer _nextMissionWP = 1;
+        Integer _nextMissionWP = 0;
 
         Repeat true;
 
