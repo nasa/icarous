@@ -17,7 +17,7 @@
 						<h1>ICAROUS</h1>
 					</div>
 					<div class="SubTitle">
-						<h4>Independent Configurable Algorithms for Reliable Operations of Unmanned Systems</h4>
+						<h4>Independent Configurable Architecture for Reliable Operations of Unmanned Systems</h4>
 					</div>
 				</div>
 				<nav>
@@ -42,9 +42,9 @@
 				</p>
 				<h3>ICAROUS Architecture</h3>
 				<img id="architecture" src="media/Architecture.png" alt="Icarous arch" align="middle">
-				<p>Icarous is implemented in a distributed fashion enabling modularity and facilitating rapid incorporation of new features. The various core functionalities are each distributed across one or more applications. ICAROUS depends on an interprocess communication framework that provides publish/subscribe capabilities to exchange data between applications. The default implementation provided in the repository uses NASA's <a href="https://cfs.gsfc.nasa.gov/">core Flight Systems (cFS)</a> middleware to achieve this distributed architecture. Such a distributed architecture enables ICAROUS to be easily integrated with any autopilot system by developing a suitable interface application. The default distribution of ICAROUS provides a MAVLink interface application for ArduPilot autopilots.</p>
+				<p>ICAROUS is implemented in a distributed fashion enabling modularity and facilitating rapid incorporation of new features. The various core functionalities are each distributed across one or more applications. ICAROUS depends on an interprocess communication framework that provides publish/subscribe capabilities to exchange data between applications. The default implementation provided in the repository uses NASA's <a href="https://cfs.gsfc.nasa.gov/">core Flight Systems (cFS)</a> middleware to achieve this distributed architecture. Such a distributed architecture enables ICAROUS to be easily integrated with any autopilot system by developing a suitable interface application. The default distribution of ICAROUS provides a MAVLink interface application for ArduPilot autopilots.</p>
 				<h3>Libraries used</h3>
-				The current version of Icarous provides several core features. Each feature is supported by libraries:
+				The current version of ICAROUS provides several core features. Each feature is supported by libraries:
 				<ul>
 				  <li><a href="https://github.com/nasa/WellClear">DAIDALUS</a>: A detect and avoid library that provivdes functions to monitor well clear violations against intruder vehicles. DAIDALUS also provides resolution bands in track, ground speed, vertical speed and altitude resolutions to avoid loss of separation. Located in Modules/ACCoRD</li>
 				  <li><a href="https://github.com/nasa/PolyCARP">PolyCARP</a>: A library to determine if a given point lies inside/outside a given polygon. Located in Modules/ACCoRD</li>
