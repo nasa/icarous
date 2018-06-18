@@ -97,7 +97,7 @@ def LLA2NED(origin,position):
 
 def GetProximity(position,fence):
     """
-    Function to calucate proximity to a geofence (returns proximity to closest edge)
+    Function to calculate proximity to a geofence (returns proximity to closest edge)
     :param position: position in NED frame
     :param fence: list containing fence vertices in NED
     :return: proximity (scalar value), closest edge
