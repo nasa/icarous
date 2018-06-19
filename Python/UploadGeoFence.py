@@ -102,7 +102,7 @@ def uploadGeofence(master, point_list, ceiling, floor, fence_idx=0, fence_type=F
         inMsg = master.recv_match(blocking=True, type=["FENCE_FETCH_POINT", "COMMAND_ACK"], timeout=50)
         #inMsg = master.recv_msg();
         if inMsg is None:
-            print("Did not recieve a response, resending message")
+            print("Did not receive a response, resending message")
             attempts += 1
             continue
 
