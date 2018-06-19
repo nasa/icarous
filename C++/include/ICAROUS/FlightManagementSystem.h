@@ -87,7 +87,7 @@ class FlightManagementSystem_t{
 
         FlightManagementSystem_t(AircraftData_t* fData);
         virtual ~FlightManagementSystem_t(){};
-        virtual void Initialize();
+        virtual void Initialize(bool);
         void RunFMS();
         void SetYaw(bool relative,double heading);
         void SetYaw(double heading){SetYaw(false,heading);};

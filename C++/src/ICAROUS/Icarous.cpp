@@ -224,7 +224,7 @@ void Icarous_t::OutputToGS(Interface_t *iface) {
 
 
 void Icarous_t::Initialize() {
-    FMS->Initialize();
+    FMS->Initialize(debug);
 }
 
 void Icarous_t::InputFlightPlanData(waypoint_t* wp){

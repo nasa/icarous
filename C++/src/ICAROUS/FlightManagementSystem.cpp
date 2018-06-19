@@ -53,9 +53,10 @@ FlightManagementSystem_t::FlightManagementSystem_t(AircraftData_t* fData)
     startTakeoffTime = 0.0;
 }
 
-void FlightManagementSystem_t::Initialize(){
+void FlightManagementSystem_t::Initialize(bool debug){
 	Detector.Initialize();
 	Resolver.Initialize();
+	debugDAA = debug;
 }
 
 void FlightManagementSystem_t::RunFMS(){
@@ -84,6 +85,7 @@ void FlightManagementSystem_t::RunFMS(){
             LAND();
             break;
     }
+    CheckReset();
  }
 
 
@@ -235,10 +237,9 @@ double FlightManagementSystem_t::GetApproxElapsedPlanTime(Plan fp,int nextWP){
 }
 
 void FlightManagementSystem_t::CheckReset(){
-
 	if(FlightData->reset){
 		FlightData->reset = false;
-		Reset();	
+		Reset();
 		if(debugDAA){
 			std::ofstream debug_inf;
 			std::ofstream debug_outf;

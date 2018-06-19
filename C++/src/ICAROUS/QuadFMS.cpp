@@ -50,11 +50,12 @@
 
 QuadFMS_t::~QuadFMS_t(){}
 
-void QuadFMS_t::Initialize(){
+void QuadFMS_t::Initialize(bool debug){
     captureH          = (float) FlightData->paramData->getValue("CAPTURE_H");
     captureV          = (float) FlightData->paramData->getValue("CAPTURE_V");
     Detector.Initialize();
     Resolver.Initialize();
+    debugDAA = debug;
 }
 
 uint8_t QuadFMS_t::TAKEOFF(){
