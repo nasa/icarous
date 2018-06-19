@@ -19,7 +19,7 @@ The default version of ICAROUS supports the MAVLink protocol (v1.0). You can def
 
 ### Current Releases
 
-- ICAROUS C++: V-1.3.0 - September 11, 2017
+- ICAROUS C++: V-1.3.1 - June 19, 2018
 - ICAROUS Java: V-1.2.3 - January 19, 2018
 
 ### License
