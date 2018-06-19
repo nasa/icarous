@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include "network_includes.h"
 #include "safe2ditch_events.h"
-#include "Icarous_msg.h"
+#include "common_defs.h"
 #include "msgids/msgids.h"
 
 

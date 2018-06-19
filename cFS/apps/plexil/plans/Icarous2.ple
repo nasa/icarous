@@ -3,6 +3,7 @@ Integer Lookup missionStart;
 Integer Lookup armStatus;
 Integer Lookup takeoffStatus;
 Integer Lookup numMissionWP;
+Integer Lookup nextMissionWPIndex;
 
 Real[3] Lookup position;
 Real[3] Lookup velocity;
@@ -18,7 +19,7 @@ Command Status(String text);
 Command pprint(...);
 
 // Library plans
-LibraryAction CONFLICT_MANAGEMENT(InOut Boolean ditchStatus);
+LibraryAction CONFLICT_MANAGEMENT(InOut Boolean DitchStatus);
 LibraryAction DITCH();
 
 ICAROUS:
@@ -61,6 +62,7 @@ ICAROUS:
                     _cruiseStatus = true;
                     _idleStatus = false;
                 }endif
+
             }
 
         }// End of IDLE
@@ -86,35 +88,38 @@ ICAROUS:
                 }
             }// End of ARM
 
-            THROTTLE_UP:{
-            Integer status;
-            StartCondition (_armStatus==1);
-            SkipCondition  (_armStatus!=1);
-
-
-            TAKEOFF:{
-
-                EndCondition isKnown(status) && (status>=0);
-
-                Takeoff(5.0);
-
-                CHECK_STATUS: {
-                    Repeat true;
-                    status = Lookup(takeoffStatus);
-                }
-
-            }
-
-            if(status == 1){
-                Status("IC:Starting climb");
-                _climbStatus = true;
-                _takeoffStatus = false;
-            }else{
-                pprint("Plexil status: Takeoff failed\n");
-                _idleStatus = true;
+            if(_armStatus != 1){
                 _takeoffStatus = false;
             }endif
 
+            THROTTLE_UP:{
+                Integer status;
+                StartCondition (_armStatus==1);
+                SkipCondition  (_armStatus!=1);
+
+
+                TAKEOFF:{
+
+                    EndCondition isKnown(status) && (status>=0);
+
+                    Takeoff(5.0);
+
+                    CHECK_STATUS: {
+                        Repeat true;
+                        status = Lookup(takeoffStatus);
+                    }
+
+                }
+
+                if(status == 1){
+                    Status("IC:Starting climb");
+                    _climbStatus = true;
+                    _takeoffStatus = false;
+                }else{
+                    pprint("Plexil status: Takeoff failed\n");
+                    _idleStatus = true;
+                    _takeoffStatus = false;
+                }endif
             }// End of THROTTLE
         }// End of TAKEOFF
 
@@ -130,7 +135,7 @@ ICAROUS:
                 _Position = Lookup(position);
 
                 if(_Position[2] >= 3.0){
-                    pprint("Plexil status: Starting Cruise");
+                    pprint("Plexil status: Starting cruise");
                     SetNextMissionWP(_nextMissionWP);
                     SetMode("PASSIVE");
                     Status("IC:Starting cruise");
@@ -145,7 +150,7 @@ ICAROUS:
             StartCondition _cruiseStatus;
             SkipCondition !_cruiseStatus;
             // Perform Conflict Management (Detection and Resolution)
-            LibraryCall CONFLICT_MANAGEMENT(ditchStatus=_ditchStatus);
+            LibraryCall CONFLICT_MANAGEMENT(DitchStatus=_ditchStatus);
 
             _cruiseStatus = false;
 

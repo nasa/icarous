@@ -10,19 +10,21 @@ set(MODULES_LIB "${MODULES_ROOT}/lib")
 include_directories(../inc)
 include_directories(${MODULES_ROOT}/GeofenceMonitor)
 include_directories(${MODULES_ROOT}/GeofenceMonitor/CWrapper)
+include_directories(fsw/src)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
 link_directories(${MODULES_LIB})
-link_directories(${PLEXIL_LIB})
 
-add_library(geofence MODULE ${APP_SRC_FILES} ${MODULES_ROOT}/GeofenceMonitor/CWrapper/GeofenceMonitor_proxy.c)
+add_library(geofence MODULE ${APP_SRC_FILES} ${MODULES_ROOT}/GeofenceMonitor/CWrapper/GeofenceMonitor_proxy.c ../inc/msgdef/geofence_msg.h ../inc/msgids/geofence_msgids.h)
 
-target_link_libraries(geofence GeofenceMonitor PlexilWrapper)
+target_link_libraries(geofence GeofenceMonitor)
 
 set_target_properties(geofence PROPERTIES PREFIX "")
 
-set_target_properties(geofence PROPERTIES INSTALL_RPATH "${MODULES_LIB}:${PLEXIL_LIB}")
+set_target_properties(geofence PROPERTIES INSTALL_RPATH "${MODULES_LIB}")
+
+add_cfe_tables(geofence "fsw/tables/geofence_tbl.c")
 
 foreach(TGT ${APP_INSTALL_LIST})
     install(TARGETS geofence DESTINATION ${TGT}/${INSTALL_SUBDIR})

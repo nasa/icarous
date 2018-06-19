@@ -31,7 +31,7 @@
 
 #include "cfe_msgids.h"
 #include "sch_msgids.h"
-#include "msgids.h"
+#include "scheduler_msgids.h"
 
 /*************************************************************************
 **
@@ -176,11 +176,11 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
     /* command ID #32 */
   { { CFE_MAKE_BIG16(PLEXIL_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
     /* command ID #33 */
-  { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
+  { { CFE_MAKE_BIG16(GEOFENCE_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
     /* command ID #34 */
-  { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },  
+  { { CFE_MAKE_BIG16(TRAFFIC_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
     /* command ID #35 */
-  { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
+  { { CFE_MAKE_BIG16(TRAJECTORY_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
     /* command ID #36 */
   { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
     /* command ID #37 */

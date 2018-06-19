@@ -395,8 +395,6 @@ SWIGINTERN void SWIG_runtime_init() {
 /* Includes the header in the wrapper code */
 #include "PathPlanner.h"
 
-const char* Swig_typename_FlightData = "FlightData";
-
 const char* Swig_typename_PathPlanner = "PathPlanner";
 
 
@@ -405,11 +403,6 @@ SWIG_runtime_init();
 SwigObj *result;
 result = (SwigObj *) malloc(sizeof(SwigObj));
 result->obj = 0;
-if (strcmp(classname, "FlightData") == 0) {
-result->typenames = (const char **) malloc(2*sizeof(const char*));
-result->typenames[0] = Swig_typename_FlightData;
-result->typenames[1] = 0;
-}
 if (strcmp(classname, "PathPlanner") == 0) {
 result->typenames = (const char **) malloc(2*sizeof(const char*));
 result->typenames[0] = Swig_typename_PathPlanner;
@@ -423,10 +416,6 @@ return result;
 SWIGINTERN void SWIG_destroy_object(SwigObj *object) {
 if (object) {
 if (object->typenames) {
-if (strcmp(object->typenames[0], "FlightData") == 0) {
-if (object->obj)
-delete (FlightData *) (object->obj);
-}
 if (strcmp(object->typenames[0], "PathPlanner") == 0) {
 if (object->obj)
 delete (PathPlanner *) (object->obj);
@@ -439,716 +428,80 @@ SWIG_free_SwigObj(object);
 extern "C" {
 #endif
   
-  SWIGEXPORTC void _wrap_FlightData_paramData_set(SwigObj * carg1, SwigObj * carg2) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    ParameterData arg2 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      arg2 = *(ParameterData *) (carg2->obj);
-    }
-    if (arg1) (arg1)->paramData = arg2;
-  }
-  
-  
-  SWIGEXPORTC SwigObj * _wrap_FlightData_paramData_get(SwigObj * carg1) {
-    ParameterData * cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    SwigObj * result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      const ParameterData &_result_ref =  ((arg1)->paramData);cppresult = (ParameterData*) &_result_ref;
-    }
-    {
-      result = (SwigObj*) SWIG_create_object(SWIG_STR(ParameterData));
-      result->obj = (void*) &cppresult;
-    }
-    return result;
-  }
-  
-  
-  SWIGEXPORTC SwigObj * _wrap_new_FlightData(/*aaa*/ char * carg1) {
-    char *arg1 ;
-    SwigObj * result;
-    
-    arg1 = (char *) carg1;
-    result = SWIG_create_object("FlightData");
-    result->obj = (void*) new FlightData(arg1);
-    
-    return result;
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_AddMissionItem(SwigObj * carg1, SwigObj * carg2) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    waypoint_t *arg2 = (waypoint_t *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      if (carg2)
-      arg2 = (waypoint_t *) carg2->obj;
-    }
-    (arg1)->AddMissionItem(arg2);
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_AddResolutionItem(SwigObj * carg1, SwigObj * carg2) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    waypoint_t *arg2 = (waypoint_t *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      if (carg2)
-      arg2 = (waypoint_t *) carg2->obj;
-    }
-    (arg1)->AddResolutionItem(arg2);
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_SetStartMissionFlag(SwigObj * carg1, SwigObj * carg2) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    uint8_t arg2 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      arg2 = *(uint8_t *) (carg2->obj);
-    }
-    (arg1)->SetStartMissionFlag(arg2);
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_ConstructMissionPlan(SwigObj * carg1) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    (arg1)->ConstructMissionPlan();
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_ConstructResolutionPlan(SwigObj * carg1) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    (arg1)->ConstructResolutionPlan();
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_InputState(SwigObj * carg1, double carg2, double carg3, double carg4, double carg5, double carg6, double carg7, double carg8) {
-    FlightData *arg1 = (FlightData *) 0 ;
+  SWIGEXPORTC SwigObj * _wrap_new_PathPlanner(double carg1, double carg2) {
+    double arg1 ;
     double arg2 ;
-    double arg3 ;
-    double arg4 ;
-    double arg5 ;
-    double arg6 ;
-    double arg7 ;
-    double arg8 ;
+    SwigObj * result;
     
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
+    arg1 = (double) carg1;
     arg2 = (double) carg2;
-    arg3 = (double) carg3;
-    arg4 = (double) carg4;
-    arg5 = (double) carg5;
-    arg6 = (double) carg6;
-    arg7 = (double) carg7;
-    arg8 = (double) carg8;
-    (arg1)->InputState(arg2,arg3,arg4,arg5,arg6,arg7,arg8);
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_AddTraffic(SwigObj * carg1, int carg2, double carg3, double carg4, double carg5, double carg6, double carg7, double carg8) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    int arg2 ;
-    double arg3 ;
-    double arg4 ;
-    double arg5 ;
-    double arg6 ;
-    double arg7 ;
-    double arg8 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    arg2 = (int) carg2;
-    arg3 = (double) carg3;
-    arg4 = (double) carg4;
-    arg5 = (double) carg5;
-    arg6 = (double) carg6;
-    arg7 = (double) carg7;
-    arg8 = (double) carg8;
-    (arg1)->AddTraffic(arg2,arg3,arg4,arg5,arg6,arg7,arg8);
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_GetTraffic_pFlightData_i_pd_pd_pd_pd_pd_pd(SwigObj * carg1, int carg2, double * carg3, double * carg4, double * carg5, double * carg6, double * carg7, double * carg8) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    int arg2 ;
-    double *arg3 = (double *) 0 ;
-    double *arg4 = (double *) 0 ;
-    double *arg5 = (double *) 0 ;
-    double *arg6 = (double *) 0 ;
-    double *arg7 = (double *) 0 ;
-    double *arg8 = (double *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    arg2 = (int) carg2;
-    arg3 = (double *) carg3;
-    arg4 = (double *) carg4;
-    arg5 = (double *) carg5;
-    arg6 = (double *) carg6;
-    arg7 = (double *) carg7;
-    arg8 = (double *) carg8;
-    (arg1)->GetTraffic(arg2,arg3,arg4,arg5,arg6,arg7,arg8);
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_ClearMissionList(SwigObj * carg1) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    (arg1)->ClearMissionList();
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_ClearResolutionList(SwigObj * carg1) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    (arg1)->ClearResolutionList();
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_ClearFenceList(SwigObj * carg1) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    (arg1)->ClearFenceList();
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_InputNextMissionWP(SwigObj * carg1, int carg2) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    int arg2 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    arg2 = (int) carg2;
-    (arg1)->InputNextMissionWP(arg2);
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_InputNextResolutionWP(SwigObj * carg1, int carg2) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    int arg2 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    arg2 = (int) carg2;
-    (arg1)->InputNextResolutionWP(arg2);
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_InputTakeoffAlt(SwigObj * carg1, double carg2) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    double arg2 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    arg2 = (double) carg2;
-    (arg1)->InputTakeoffAlt(arg2);
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_InputCruisingAlt(SwigObj * carg1, double carg2) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    double arg2 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    arg2 = (double) carg2;
-    (arg1)->InputCruisingAlt(arg2);
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_InputGeofenceData(SwigObj * carg1, SwigObj * carg2) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    geofence_t *arg2 = (geofence_t *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      if (carg2)
-      arg2 = (geofence_t *) carg2->obj;
-    }
-    (arg1)->InputGeofenceData(arg2);
-  }
-  
-  
-  SWIGEXPORTC double _wrap_FlightData_GetValue(SwigObj * carg1, /*aaa*/ char * carg2) {
-    double cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    char *arg2 ;
-    double result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    arg2 = (char *) carg2;
-    cppresult =  (double)(arg1)->GetValue(arg2);
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC double _wrap_FlightData_GetTakeoffAlt(SwigObj * carg1) {
-    double cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    double result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    cppresult =  (double)(arg1)->GetTakeoffAlt();
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC double _wrap_FlightData_GetCruisingAlt(SwigObj * carg1) {
-    double cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    double result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    cppresult =  (double)(arg1)->GetCruisingAlt();
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC double _wrap_FlightData_GetAltitude(SwigObj * carg1) {
-    double cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    double result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    cppresult =  (double)(arg1)->GetAltitude();
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC double _wrap_FlightData_GetAllowedXtracDeviation(SwigObj * carg1) {
-    double cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    double result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    cppresult =  (double)(arg1)->GetAllowedXtracDeviation();
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC double _wrap_FlightData_GetResolutionSpeed(SwigObj * carg1) {
-    double cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    double result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    cppresult =  (double)(arg1)->GetResolutionSpeed();
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC int _wrap_FlightData_GetTotalMissionWP(SwigObj * carg1) {
-    int cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    int result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    cppresult =  (int)(arg1)->GetTotalMissionWP();
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC int _wrap_FlightData_GetTotalResolutionWP(SwigObj * carg1) {
-    int cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    int result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    cppresult =  (int)(arg1)->GetTotalResolutionWP();
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC int _wrap_FlightData_GetTotalTraffic(SwigObj * carg1) {
-    int cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    int result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    cppresult =  (int)(arg1)->GetTotalTraffic();
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_Reset(SwigObj * carg1) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    (arg1)->Reset();
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_InputAck(SwigObj * carg1, SwigObj * carg2) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    CmdAck_t *arg2 = (CmdAck_t *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      if (carg2)
-      arg2 = (CmdAck_t *) carg2->obj;
-    }
-    (arg1)->InputAck(arg2);
-  }
-  
-  
-  SWIGEXPORTC bool _wrap_FlightData_CheckAck(SwigObj * carg1, SwigObj * carg2) {
-    bool cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    command_name_t arg2 ;
-    bool result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      arg2 = *(command_name_t *) (carg2->obj);
-    }
-    cppresult =  (bool)(arg1)->CheckAck(arg2);
-    result = (bool) cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC SwigObj * _wrap_FlightData_GetStartMissionFlag(SwigObj * carg1) {
-    int8_t * cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    SwigObj * result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      const int8_t &_result_ref =  (arg1)->GetStartMissionFlag();cppresult = (int8_t*) &_result_ref;
-    }
-    {
-      result = (SwigObj*) SWIG_create_object(SWIG_STR(int8_t));
-      result->obj = (void*) &cppresult;
-    }
-    return result;
-  }
-  
-  
-  SWIGEXPORTC SwigObj * _wrap_FlightData_GetMissionPlanSize(SwigObj * carg1) {
-    uint16_t * cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    SwigObj * result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      const uint16_t &_result_ref =  (arg1)->GetMissionPlanSize();cppresult = (uint16_t*) &_result_ref;
-    }
-    {
-      result = (SwigObj*) SWIG_create_object(SWIG_STR(uint16_t));
-      result->obj = (void*) &cppresult;
-    }
-    return result;
-  }
-  
-  
-  SWIGEXPORTC SwigObj * _wrap_FlightData_GetResolutionPlanSize(SwigObj * carg1) {
-    uint16_t * cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    SwigObj * result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      const uint16_t &_result_ref =  (arg1)->GetResolutionPlanSize();cppresult = (uint16_t*) &_result_ref;
-    }
-    {
-      result = (SwigObj*) SWIG_create_object(SWIG_STR(uint16_t));
-      result->obj = (void*) &cppresult;
-    }
-    return result;
-  }
-  
-  
-  SWIGEXPORTC SwigObj * _wrap_FlightData_GetNextMissionWP(SwigObj * carg1) {
-    uint16_t * cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    SwigObj * result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      const uint16_t &_result_ref =  (arg1)->GetNextMissionWP();cppresult = (uint16_t*) &_result_ref;
-    }
-    {
-      result = (SwigObj*) SWIG_create_object(SWIG_STR(uint16_t));
-      result->obj = (void*) &cppresult;
-    }
-    return result;
-  }
-  
-  
-  SWIGEXPORTC SwigObj * _wrap_FlightData_GetNextResolutionWP(SwigObj * carg1) {
-    uint16_t * cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    SwigObj * result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      const uint16_t &_result_ref =  (arg1)->GetNextResolutionWP();cppresult = (uint16_t*) &_result_ref;
-    }
-    {
-      result = (SwigObj*) SWIG_create_object(SWIG_STR(uint16_t));
-      result->obj = (void*) &cppresult;
-    }
-    return result;
-  }
-  
-  
-  SWIGEXPORTC int _wrap_FlightData_GetTrafficResolutionType(SwigObj * carg1) {
-    int cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    int result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    cppresult =  (int)(arg1)->GetTrafficResolutionType();
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC int _wrap_FlightData_GetTotalFences(SwigObj * carg1) {
-    int cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    int result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    cppresult =  (int)(arg1)->GetTotalFences();
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC double _wrap_FlightData_getFlightPlanSpeed(SwigObj * carg1, SwigObj * carg2, int carg3) {
-    double cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    Plan *arg2 = (Plan *) 0 ;
-    int arg3 ;
-    double result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    {
-      if (carg2)
-      arg2 = (Plan *) carg2->obj;
-    }
-    arg3 = (int) carg3;
-    cppresult =  (double)(arg1)->getFlightPlanSpeed(arg2,arg3);
-    result = cppresult;
-    return result;
-  }
-  
-  
-  SWIGEXPORTC void _wrap_FlightData_GetTraffic_pFlightData_i_rlarcfm_Position_rlarcfm_Velocity(SwigObj * carg1, int carg2, SwigObj * carg3, SwigObj * carg4) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    int arg2 ;
-    larcfm::Position *arg3 = 0 ;
-    larcfm::Velocity *arg4 = 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    arg2 = (int) carg2;
-    {
-      if (carg3)
-      arg3 = (larcfm::Position *) carg3->obj;
-      else
-      arg3 = (larcfm::Position *) 0;
-    }
-    {
-      if (carg4)
-      arg4 = (larcfm::Velocity *) carg4->obj;
-      else
-      arg4 = (larcfm::Velocity *) 0;
-    }
-    (arg1)->GetTraffic(arg2,*arg3,*arg4);
-  }
-  
-  
-  SWIGEXPORTC /*aaaaaa*/SwigObj * _wrap_FlightData_GetGeofence(SwigObj * carg1, int carg2) {
-    fence * cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    int arg2 ;
-    /*aaaaaa*/SwigObj * result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    arg2 = (int) carg2;
-    cppresult =  (fence *)(arg1)->GetGeofence(arg2);
-    {
-      result = (SwigObj*) SWIG_create_object(SWIG_STR(fence));
-      result->obj = (void*) cppresult;
-    }
-    return result;
-  }
-  
-  
-  SWIGEXPORTC /*aaaaaa*/SwigObj * _wrap_FlightData_GetPolyPath(SwigObj * carg1) {
-    PolyPath * cppresult;
-    FlightData *arg1 = (FlightData *) 0 ;
-    /*aaaaaa*/SwigObj * result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
-    cppresult =  (PolyPath *)(arg1)->GetPolyPath();
-    {
-      result = (SwigObj*) SWIG_create_object(SWIG_STR(PolyPath));
-      result->obj = (void*) cppresult;
-    }
-    return result;
-  }
-  
-  
-  SWIGEXPORTC void _wrap_delete_FlightData(SwigObj * carg1) {
-    SWIG_remove_registry_entry(carg1);
-    SWIG_destroy_object(carg1);
-  }
-  
-  
-  SWIGEXPORTC SwigObj * _wrap_new_PathPlanner(SwigObj * carg1) {
-    FlightData *arg1 = (FlightData *) 0 ;
-    SwigObj * result;
-    
-    {
-      if (carg1)
-      arg1 = (FlightData *) carg1->obj;
-    }
     result = SWIG_create_object("PathPlanner");
-    result->obj = (void*) new PathPlanner(arg1);
+    result->obj = (void*) new PathPlanner(arg1,arg2);
     
     return result;
+  }
+  
+  
+  SWIGEXPORTC void _wrap_PathPlanner_InitializeAstarParameters(SwigObj * carg1, bool carg2, double carg3, double carg4, double carg5, /*aaa*/ char * carg6) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    bool arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    char *arg6 ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (bool) carg2;
+    arg3 = (double) carg3;
+    arg4 = (double) carg4;
+    arg5 = (double) carg5;
+    arg6 = (char *) carg6;
+    (arg1)->InitializeAstarParameters(arg2,arg3,arg4,arg5,arg6);
+  }
+  
+  
+  SWIGEXPORTC void _wrap_PathPlanner_InitializeRRTParameters(SwigObj * carg1, double carg2, int carg3, double carg4, int carg5, double carg6, /*aaa*/ char * carg7) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    double arg2 ;
+    int arg3 ;
+    double arg4 ;
+    int arg5 ;
+    double arg6 ;
+    char *arg7 ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (double) carg2;
+    arg3 = (int) carg3;
+    arg4 = (double) carg4;
+    arg5 = (int) carg5;
+    arg6 = (double) carg6;
+    arg7 = (char *) carg7;
+    (arg1)->InitializeRRTParameters(arg2,arg3,arg4,arg5,arg6,arg7);
+  }
+  
+  
+  SWIGEXPORTC void _wrap_PathPlanner_InitializeBSplinesParameters(SwigObj * carg1, bool carg2, double carg3, int carg4, int carg5) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    bool arg2 ;
+    double arg3 ;
+    int arg4 ;
+    int arg5 ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (bool) carg2;
+    arg3 = (double) carg3;
+    arg4 = (int) carg4;
+    arg5 = (int) carg5;
+    (arg1)->InitializeBSplinesParameters(arg2,arg3,arg4,arg5);
   }
   
   
@@ -1211,6 +564,114 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC void _wrap_PathPlanner_OutputFlightPlan(SwigObj * carg1, SwigObj * carg2, char * carg3, char * carg4, char * carg5) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    ENUProjection *arg2 = (ENUProjection *) 0 ;
+    char *arg3 = (char *) 0 ;
+    char *arg4 = (char *) 0 ;
+    char *arg5 = (char *) 0 ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    {
+      if (carg2)
+      arg2 = (ENUProjection *) carg2->obj;
+    }
+    arg3 = (char *) carg3;
+    arg4 = (char *) carg4;
+    arg5 = (char *) carg5;
+    (arg1)->OutputFlightPlan(arg2,arg3,arg4,arg5);
+  }
+  
+  
+  SWIGEXPORTC void _wrap_PathPlanner_ClearAllPlans(SwigObj * carg1) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    (arg1)->ClearAllPlans();
+  }
+  
+  
+  SWIGEXPORTC void _wrap_PathPlanner_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double (*carg7)[2] ) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    int arg2 ;
+    int arg3 ;
+    int arg4 ;
+    double arg5 ;
+    double arg6 ;
+    double (*arg7)[2] ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (int) carg2;
+    arg3 = (int) carg3;
+    arg4 = (int) carg4;
+    arg5 = (double) carg5;
+    arg6 = (double) carg6;
+    arg7 = (double (*)[2]) carg7;
+    (arg1)->InputGeofenceData(arg2,arg3,arg4,arg5,arg6,(double (*)[2])arg7);
+  }
+  
+  
+  SWIGEXPORTC /*aaaaaa*/SwigObj * _wrap_PathPlanner_GetGeofence(SwigObj * carg1, int carg2) {
+    fence * cppresult;
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    int arg2 ;
+    /*aaaaaa*/SwigObj * result;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (int) carg2;
+    cppresult =  (fence *)(arg1)->GetGeofence(arg2);
+    {
+      result = (SwigObj*) SWIG_create_object(SWIG_STR(fence));
+      result->obj = (void*) cppresult;
+    }
+    return result;
+  }
+  
+  
+  SWIGEXPORTC void _wrap_PathPlanner_ClearFences(SwigObj * carg1) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    (arg1)->ClearFences();
+  }
+  
+  
+  SWIGEXPORTC int _wrap_PathPlanner_InputTraffic(SwigObj * carg1, int carg2, double * carg3, double * carg4) {
+    int cppresult;
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    int arg2 ;
+    double *arg3 = (double *) 0 ;
+    double *arg4 = (double *) 0 ;
+    int result;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (int) carg2;
+    arg3 = (double *) carg3;
+    arg4 = (double *) carg4;
+    cppresult =  (int)(arg1)->InputTraffic(arg2,arg3,arg4);
+    result = cppresult;
+    return result;
+  }
+  
+  
   SWIGEXPORTC void _wrap_PathPlanner_InputFlightPlan(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4, double carg5) {
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     char *arg2 ;
@@ -1246,28 +707,6 @@ extern "C" {
     cppresult =  (double)(arg1)->Dist2Waypoint(arg2,arg3);
     result = cppresult;
     return result;
-  }
-  
-  
-  SWIGEXPORTC void _wrap_PathPlanner_OutputFlightPlan(SwigObj * carg1, SwigObj * carg2, char * carg3, char * carg4, char * carg5) {
-    PathPlanner *arg1 = (PathPlanner *) 0 ;
-    ENUProjection *arg2 = (ENUProjection *) 0 ;
-    char *arg3 = (char *) 0 ;
-    char *arg4 = (char *) 0 ;
-    char *arg5 = (char *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (PathPlanner *) carg1->obj;
-    }
-    {
-      if (carg2)
-      arg2 = (ENUProjection *) carg2->obj;
-    }
-    arg3 = (char *) carg3;
-    arg4 = (char *) carg4;
-    arg5 = (char *) carg5;
-    (arg1)->OutputFlightPlan(arg2,arg3,arg4,arg5);
   }
   
   
@@ -1425,12 +864,15 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC void _wrap_PathPlanner_ManueverToIntercept(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  SWIGEXPORTC void _wrap_PathPlanner_ManueverToIntercept(SwigObj * carg1, SwigObj * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, double carg6, double carg7, double carg8) {
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     Plan *arg2 = (Plan *) 0 ;
     int arg3 ;
     double *arg4 ;
     double *arg5 ;
+    double arg6 ;
+    double arg7 ;
+    double arg8 ;
     
     {
       if (carg1)
@@ -1443,16 +885,22 @@ extern "C" {
     arg3 = (int) carg3;
     arg4 = (double *) carg4;
     arg5 = (double *) carg5;
-    (arg1)->ManueverToIntercept(arg2,arg3,arg4,arg5);
+    arg6 = (double) carg6;
+    arg7 = (double) carg7;
+    arg8 = (double) carg8;
+    (arg1)->ManueverToIntercept(arg2,arg3,arg4,arg5,arg6,arg7,arg8);
   }
   
   
-  SWIGEXPORTC void _wrap_PathPlanner_ManueverToIntercept_c(SwigObj * carg1, char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5) {
+  SWIGEXPORTC void _wrap_PathPlanner_ManueverToIntercept_c(SwigObj * carg1, char * carg2, int carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, double carg6, double carg7, double carg8) {
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     char *arg2 = (char *) 0 ;
     int arg3 ;
     double *arg4 ;
     double *arg5 ;
+    double arg6 ;
+    double arg7 ;
+    double arg8 ;
     
     {
       if (carg1)
@@ -1462,7 +910,10 @@ extern "C" {
     arg3 = (int) carg3;
     arg4 = (double *) carg4;
     arg5 = (double *) carg5;
-    (arg1)->ManueverToIntercept_c(arg2,arg3,arg4,arg5);
+    arg6 = (double) carg6;
+    arg7 = (double) carg7;
+    arg8 = (double) carg8;
+    (arg1)->ManueverToIntercept_c(arg2,arg3,arg4,arg5,arg6,arg7,arg8);
   }
   
   
@@ -1506,17 +957,6 @@ extern "C" {
     cppresult =  (double)(arg1)->GetApproxElapsedPlanTime(arg2,arg3,arg4);
     result = cppresult;
     return result;
-  }
-  
-  
-  SWIGEXPORTC void _wrap_PathPlanner_ClearAllPlans(SwigObj * carg1) {
-    PathPlanner *arg1 = (PathPlanner *) 0 ;
-    
-    {
-      if (carg1)
-      arg1 = (PathPlanner *) carg1->obj;
-    }
-    (arg1)->ClearAllPlans();
   }
   
   

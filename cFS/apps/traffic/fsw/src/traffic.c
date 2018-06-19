@@ -1,15 +1,19 @@
 //
 // Created by Swee Balachandran on 12/22/17.
 //
-#include <Icarous_msg.h>
+#include <msgdef/ardupilot_msg.h>
 #include <CWrapper/TrafficMonitor_proxy.h>
+#include <msgdef/traffic_msg.h>
 #include "traffic.h"
+#include <math.h>
+#include "UtilFunctions.h"
 
 CFE_EVS_BinFilter_t  TRAFFIC_EventFilters[] =
-        {  /* Event ID    mask */
-                {TRAFFIC_STARTUP_INF_EID,       0x0000},
-                {TRAFFIC_COMMAND_ERR_EID,       0x0000},
-        }; /// Event ID definitions
+{  /* Event ID    mask */
+        {TRAFFIC_STARTUP_INF_EID,       0x0000},
+        {TRAFFIC_COMMAND_ERR_EID,       0x0000},
+        {TRAFFIC_RECEIVED_INTRUDER_EID, 0x0000}
+}; /// Event ID definitions
 
 /* Application entry points */
 void TRAFFIC_AppMain(void){
@@ -20,7 +24,7 @@ void TRAFFIC_AppMain(void){
     TRAFFIC_AppInit();
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
-        status = CFE_SB_RcvMsg(&TrafficAppData.Traffic_MsgPtr, TrafficAppData.Traffic_Pipe, 10);
+        status = CFE_SB_RcvMsg(&trafficAppData.Traffic_MsgPtr, trafficAppData.Traffic_Pipe, 10);
 
         if (status == CFE_SUCCESS)
         {
@@ -35,7 +39,7 @@ void TRAFFIC_AppMain(void){
 
 void TRAFFIC_AppInit(void) {
 
-    memset(&TrafficAppData, 0, sizeof(TrafficAppData_t));
+    memset(&trafficAppData, 0, sizeof(TrafficAppData_t));
 
     int32 status;
 
@@ -48,18 +52,36 @@ void TRAFFIC_AppInit(void) {
                      CFE_EVS_BINARY_FILTER);
 
     // Create pipe to receive SB messages
-    status = CFE_SB_CreatePipe(&TrafficAppData.Traffic_Pipe, /* Variable to hold Pipe ID */
+    status = CFE_SB_CreatePipe(&trafficAppData.Traffic_Pipe, /* Variable to hold Pipe ID */
                                TRAFFIC_PIPE_DEPTH,       /* Depth of Pipe */
                                TRAFFIC_PIPE_NAME);       /* Name of pipe */
 
     //Subscribe to plexil output messages from the SB
-    CFE_SB_Subscribe(SERVICE_TRAFFIC_MID, TrafficAppData.Traffic_Pipe);
-    CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,TrafficAppData.Traffic_Pipe);
-    CFE_SB_Subscribe(ICAROUS_POSITION_MID,TrafficAppData.Traffic_Pipe);
+    CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,trafficAppData.Traffic_Pipe);
+    CFE_SB_Subscribe(ICAROUS_POSITION_MID,trafficAppData.Traffic_Pipe);
+    CFE_SB_Subscribe(TRAFFIC_WAKEUP_MID,trafficAppData.Traffic_Pipe);
+    CFE_SB_Subscribe(ICAROUS_FLIGHTPLAN_MID,trafficAppData.Traffic_Pipe);
 
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&trafficServiceResponse, SERVICE_TRAFFIC_RESPONSE_MID, sizeof(service_t), TRUE);
-    CFE_SB_InitMsg(&trackBands, ICAROUS_VISBAND_MID, sizeof(visbands_t), TRUE);
+    CFE_SB_InitMsg(&trafficAppData.trackBands, ICAROUS_BANDS_TRACK_MID, sizeof(bands_t), TRUE);
+    CFE_SB_InitMsg(&trafficAppData.speedBands, ICAROUS_BANDS_SPEED_MID, sizeof(bands_t), TRUE);
+    CFE_SB_InitMsg(&trafficAppData.vsBands, ICAROUS_BANDS_VS_MID, sizeof(bands_t), TRUE);
+    CFE_SB_InitMsg(&trafficAppData.altBands,ICAROUS_BANDS_ALT_MID,sizeof(bands_t),TRUE);
+
+    // Register table with table services
+    status = CFE_TBL_Register(&trafficAppData.Traffic_tblHandle,
+                              "TrafficTable",
+                              sizeof(TrafficTable_t),
+                              CFE_TBL_OPT_DEFAULT,
+                              &TrafficTableValidationFunc);
+
+    // Load app table data
+    status = CFE_TBL_Load(trafficAppData.Traffic_tblHandle, CFE_TBL_SRC_FILE, "/cf/traffic_tbl.tbl");
+
+
+    TrafficTable_t *TblPtr;
+    status = CFE_TBL_GetAddress((void**)&TblPtr, trafficAppData.Traffic_tblHandle);
+
 
     // Send event indicating app initialization
     CFE_EVS_SendEvent(TRAFFIC_STARTUP_INF_EID, CFE_EVS_INFORMATION,
@@ -67,51 +89,163 @@ void TRAFFIC_AppInit(void) {
                       TRAFFIC_MAJOR_VERSION,
                       TRAFFIC_MINOR_VERSION);
 
-    TrafficAppData.fdata = new_FlightData("../ram/icarous.txt");
-    TrafficAppData.tfMonitor = new_TrafficMonitor(TrafficAppData.fdata);
+
+    trafficAppData.tfMonitor = new_TrafficMonitor(true,TblPtr->configFile);
 
 }
 
 void TRAFFIC_AppCleanUp(){
     // Do clean up here
-    delete_TrafficMonitor(TrafficAppData.tfMonitor);
-    delete_FlightData(TrafficAppData.fdata);
+    delete_TrafficMonitor(trafficAppData.tfMonitor);
 }
 
 void TRAFFIC_ProcessPacket(){
 
     CFE_SB_MsgId_t  MsgId;
-    MsgId = CFE_SB_GetMsgId(TrafficAppData.Traffic_MsgPtr);
+    MsgId = CFE_SB_GetMsgId(trafficAppData.Traffic_MsgPtr);
 
     switch(MsgId){
 
+        case ICAROUS_FLIGHTPLAN_MID:{
+            flightplan_t* msg = (flightplan_t*) trafficAppData.Traffic_MsgPtr;
+            memcpy(&trafficAppData.flightplan,msg, sizeof(flightplan_t));
+            break;
+        }
+
         case ICAROUS_TRAFFIC_MID:{
             object_t* msg;
-            msg = (object_t*) TrafficAppData.Traffic_MsgPtr;
-
-            FlightData_AddTraffic(TrafficAppData.fdata,msg->index,msg->latitude,msg->longitude,msg->altiude,msg->vx,msg->vy,msg->vz);
+            msg = (object_t*) trafficAppData.Traffic_MsgPtr;
+            double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
+            double vel[3] = {msg->vx,msg->vy,msg->vz};
+            int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->index,pos,vel);
+            if(val)
+                CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder:%d",msg->index);
             break;
         }
 
         case ICAROUS_POSITION_MID:{
             position_t* msg;
-            msg = (position_t*) TrafficAppData.Traffic_MsgPtr;
+            msg = (position_t*) trafficAppData.Traffic_MsgPtr;
 
             if (msg->aircraft_id != CFE_PSP_GetSpacecraftId()) {
-                FlightData_AddTraffic(TrafficAppData.fdata, msg->aircraft_id, msg->latitude, msg->longitude,
-                                      msg->altitude_rel, msg->vx, msg->vy, msg->vz);
-                OS_printf("received traffic from aircraft_id %d\n", msg->aircraft_id);
+
+                double pos[3] = {msg->latitude,msg->longitude,msg->altitude_rel};
+                double vel[3] = {msg->vx,msg->vy,msg->vz};
+                int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->aircraft_id,pos,vel);
+                if(val)
+                    CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder:%d",msg->aircraft_id);
+            }else{
+
+                trafficAppData.position[0] = msg->latitude;
+                trafficAppData.position[1] = msg->longitude;
+                trafficAppData.position[2] = msg->altitude_rel;
+
+                double track,groundSpeed,verticalSpeed;
+                ConvertVnedToTrkGsVs(msg->vx,msg->vy,msg->vz,&track,&groundSpeed,&verticalSpeed);
+
+                trafficAppData.velocity[0] = track;
+                trafficAppData.velocity[1] = groundSpeed;
+                trafficAppData.velocity[2] = verticalSpeed;
+
+
             }
 
             break;
         }
 
-        case SERVICE_TRAFFIC_MID: {
-            service_t* msg;
-            msg = (service_t*) TrafficAppData.Traffic_MsgPtr;
-            TrafficServiceHandler(msg);
+        case TRAFFIC_WAKEUP_MID:{
+
+            TrafficMonitor_MonitorTraffic(trafficAppData.tfMonitor,trafficAppData.position,trafficAppData.velocity);
+
+            TrafficMonitor_GetTrackBands(trafficAppData.tfMonitor,
+                                         &trafficAppData.trackBands.numBands,
+                                         trafficAppData.trackBands.type,
+                                         (double*)trafficAppData.trackBands.min,
+                                         (double*)trafficAppData.trackBands.max,
+                                          &trafficAppData.trackBands.recovery,
+                                          &trafficAppData.trackBands.currentConflictBand,
+                                          &trafficAppData.trackBands.timeToViolation,
+                                          &trafficAppData.trackBands.timeToRecovery,
+                                          &trafficAppData.trackBands.minHDist,
+                                          &trafficAppData.trackBands.minVDist,
+                                          &trafficAppData.trackBands.resUp,
+                                          &trafficAppData.trackBands.resDown,
+                                          &trafficAppData.trackBands.resPreferred);
+
+
+            TrafficMonitor_GetGSBands(trafficAppData.tfMonitor,
+                                      &trafficAppData.speedBands.numBands,
+                                      trafficAppData.speedBands.type,
+                                      (double*)trafficAppData.speedBands.min,
+                                      (double*)trafficAppData.speedBands.max,
+                                      &trafficAppData.speedBands.recovery,
+                                      &trafficAppData.speedBands.currentConflictBand,
+                                        &trafficAppData.speedBands.timeToViolation,
+                                          &trafficAppData.speedBands.timeToRecovery,
+                                          &trafficAppData.speedBands.minHDist,
+                                          &trafficAppData.speedBands.minVDist,
+                                          &trafficAppData.speedBands.resUp,
+                                          &trafficAppData.speedBands.resDown,
+                                          &trafficAppData.speedBands.resPreferred);
+
+            TrafficMonitor_GetVSBands(trafficAppData.tfMonitor,
+                                      &trafficAppData.vsBands.numBands,
+                                      trafficAppData.vsBands.type,
+                                      (double*)trafficAppData.vsBands.min,
+                                      (double*)trafficAppData.vsBands.max,
+                                      &trafficAppData.vsBands.recovery,
+                                      &trafficAppData.vsBands.currentConflictBand,
+                                      &trafficAppData.vsBands.timeToViolation,
+                                          &trafficAppData.vsBands.timeToRecovery,
+                                          &trafficAppData.vsBands.minHDist,
+                                          &trafficAppData.vsBands.minVDist,
+                                          &trafficAppData.vsBands.resUp,
+                                          &trafficAppData.vsBands.resDown,
+                                          &trafficAppData.vsBands.resPreferred);
+
+
+            TrafficMonitor_GetAltBands(trafficAppData.tfMonitor,
+                                      &trafficAppData.altBands.numBands,
+                                      trafficAppData.altBands.type,
+                                      (double*)trafficAppData.altBands.min,
+                                      (double*)trafficAppData.altBands.max,
+                                      &trafficAppData.altBands.recovery,
+                                      &trafficAppData.altBands.currentConflictBand,
+                                      &trafficAppData.altBands.timeToViolation,
+                                      &trafficAppData.altBands.timeToRecovery,
+                                      &trafficAppData.altBands.minHDist,
+                                      &trafficAppData.altBands.minVDist,
+                                      &trafficAppData.altBands.resUp,
+                                      &trafficAppData.altBands.resDown,
+                                      &trafficAppData.altBands.resPreferred);
+
+
+            for(int i=0;i<trafficAppData.flightplan.totalWayPoints;++i){
+                double wp[3] = {trafficAppData.flightplan.position[i][0],
+                                trafficAppData.flightplan.position[i][1],
+                                trafficAppData.flightplan.position[i][2]};
+
+                bool feasibility = TrafficMonitor_MonitorWPFeasibility(trafficAppData.tfMonitor,
+                                              trafficAppData.position,trafficAppData.velocity,wp);
+                trafficAppData.trackBands.wpFeasibility[i] = feasibility;
+                trafficAppData.speedBands.wpFeasibility[i] = feasibility;
+                trafficAppData.vsBands.wpFeasibility[i] = feasibility;
+                trafficAppData.altBands.wpFeasibility[i] = feasibility;
+            }
+
+            SendSBMsg(trafficAppData.trackBands);
+
+            SendSBMsg(trafficAppData.speedBands);
+
+            SendSBMsg(trafficAppData.vsBands);
+
+            SendSBMsg(trafficAppData.altBands);
+
             break;
         }
     }
-    return;
+}
+
+int32_t TrafficTableValidationFunc(void *TblPtr){
+    return 0;
 }

@@ -113,6 +113,7 @@ bool Astar::ComputePath() {
             }
             else{
                 printf("No more nodes on the frontier\n");
+                printf("Total nodes expanded: %d\n",VisitedList.size());
                 break;
             }
         }

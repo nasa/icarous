@@ -16,8 +16,11 @@ double objfunc(unsigned n,const double *x,double *grad,void* data) {
     return fval;
 }
 
+
+
 int64_t PathPlanner::FindPathBSplines(char planID[],double fromPosition[],double toPosition[],double velocity[]){
 
+    //TODO: make hardcoded parameters as parameters and make relevant changes
     double trk = velocity[0];
     double gs = velocity[1];
     double vs = velocity[2];
@@ -33,23 +36,10 @@ int64_t PathPlanner::FindPathBSplines(char planID[],double fromPosition[],double
 
     EuclideanProjection proj = Projection::createProjection(currentPos.mkAlt(0));
 
-    double computationTime = 1.0;
-
-    for(int i=0;i<fdata->GetTotalTraffic();++i){
-        double x,y,z,vx,vy,vz;
-        fdata->GetTraffic(i,&x,&y,&z,&vx,&vy,&vz);
-        Velocity Vel = Velocity::makeVxyz(vx,vy,vz);
-        Position Pos = Position::makeLatLonAlt(x,"degree",y,"degree",z,"m");
-        Vect3 tPos = proj.project(Pos);
-        Vect3 tVel = Vect3(vx,vy,vz);
-        tPos.linear(tVel,computationTime);
-        TrafficPos.push_back(tPos);
-        TrafficVel.push_back(tVel);
-    }
-
     Plan currentFP;
     Position prevWP;
     Position nextWP;
+    double computationTime = 1;
     double dist = currentVel.gs()*computationTime;
 
     Position start = currentPos.linearDist2D(currentVel.trk(), dist);
@@ -57,9 +47,6 @@ int64_t PathPlanner::FindPathBSplines(char planID[],double fromPosition[],double
 
     Vect3 initPosR3 = proj.project(currentPos);
     Vect3 gpos = proj.project(goalPos);
-
-    bool search3d = false;
-    search3d = fdata->paramData.getBool("SEARCH_3D");
 
     Bsplines splinePath;
     int ndim = 8;
@@ -91,12 +78,9 @@ int64_t PathPlanner::FindPathBSplines(char planID[],double fromPosition[],double
     splinePath.SetObstacleProperties(3,50,5,30);
     splinePath.SetInitControlPts(CtrlPt0);
 
-    for(int i=0;i<fdata->GetTotalFences();++i){
-        if (fdata->GetGeofence(i)->GetType() == KEEP_IN){
-
-
-        }else{
-            Poly3D obs = fdata->GetGeofence(i)->GetPolyMod()->poly3D(proj);
+    for(fence gf: fenceList){
+        if (gf.GetType() == KEEP_OUT){
+            Poly3D obs = gf.GetPolyMod()->poly3D(proj);
             splinePath.SetObstacles(obs);
         }
     }
@@ -116,7 +100,7 @@ int64_t PathPlanner::FindPathBSplines(char planID[],double fromPosition[],double
         return -1;
     }
     else {
-        printf("found minimum\n");
+        //printf("found minimum\n");
         Plan output;
         int count = 0;
         double ETA = 0.0;

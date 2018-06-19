@@ -3,12 +3,15 @@
 //
 #include <cstring>
 #include <PlanUtil.h>
+#include <list>
 #include "PathPlanner.h"
 
 using namespace std;
+using namespace larcfm;
 
-PathPlanner::PathPlanner(FlightData* fd) {
-    fdata = fd;
+PathPlanner::PathPlanner(double _obsBuffer,double _maxCeiling) {
+    obsbuffer = _obsBuffer;
+    maxCeiling = _maxCeiling;
     geoCDIIPolygon = CDIIPolygon(&geoPolyCarp);
 }
 
@@ -45,6 +48,15 @@ int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, 
         default:
             break;
     }
+
+    // Writing to file for debugging
+    Position pos = Position::makeLatLonAlt(fromPosition[0],"degree",fromPosition[1],"degree",fromPosition[2],"m");
+    EuclideanProjection projection =  Projection::createProjection(pos);
+    char fenceFile[20];
+    char wpFile[20];
+    sprintf(fenceFile,"gf_%s.log",planID);
+    sprintf(wpFile,"wp_%s.log",planID);
+    OutputFlightPlan(&projection,planID,fenceFile,wpFile);
 
     return retval;
 }
@@ -123,11 +135,11 @@ void PathPlanner::OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceF
             else
                 break;
 
-            int fenceSize = fdata->GetTotalFences();
+            int fenceSize = fenceList.size();
             if ( fenceSize > 0) {
                 fp2.open(fenceFile);
                 for(int i=0;i<fenceSize;i++){
-                    fence *gf = fdata->GetGeofence(i);
+                    fence *gf = GetGeofence(i);
                     for(int j=0;j<gf->GetSize();j++){
                         Vect3 loc = proj->project(gf->GetPolyMod()->getVertex(j));
                         fp2 << gf->GetID() <<" "<<loc.x<<" "<<
@@ -166,7 +178,6 @@ void PathPlanner::InputFlightPlan(char planID[],int wpID,double waypoint[],doubl
 
     if(fp != NULL) {
         fp->add(pos, (double) wpID);
-        std::cout<<"Total waypoints in "<<planID<<": "<<fp->size()<<std::endl;
         return;
     }
     else{
@@ -186,6 +197,11 @@ double PathPlanner::Dist2Waypoint(double currPosition[],double nextPosition[]){
 
 
 double PathPlanner::ComputeXtrackDistance(Plan* fp,int leg,double position[],double offset[]){
+
+    if(fp == NULL){
+        return 0;
+    }
+
     std::list<Plan>::iterator it;
     Position pos = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
     Position PrevWP     = fp->point(leg - 1).position();
@@ -221,6 +237,13 @@ double PathPlanner::ComputeXtrackDistance(Plan* fp,int leg,double position[],dou
 
 void PathPlanner::GetPositionOnPlan(Plan* fp,int leg,double currentPos[],double position[]){
 
+    if(fp == NULL){
+        position[0] = 0;
+        position[1] = 0;
+        position[2] = 0;
+        return;
+    }
+
     double offsets[2];
     ComputeXtrackDistance(fp,leg,currentPos,offsets);
 
@@ -241,18 +264,19 @@ void PathPlanner::GetPositionOnPlan(Plan* fp,int leg,double currentPos[],double 
     position[2] = cp.altitude();
 }
 
-void PathPlanner::ManueverToIntercept(Plan* fp,int leg,double currPosition[],double velocity[]){
-    double xtrkDevGain ;
-    double resolutionSpeed;
-    double allowedDev;
+void PathPlanner::ManueverToIntercept(Plan* fp,int leg,double currPosition[],double velocity[],
+                                     double xtrkDevGain,double resolutionSpeed,double allowedDev){
+
+    if(fp == NULL){
+        velocity[0] = 0;
+        velocity[1] = 0;
+        velocity[2] = 0;
+    }
+
     double Vs,Vf,V,sgn;
     double Trk;
     Position prevWP,nextWP,currentPos,cp;
     Plan currentFP;
-
-    xtrkDevGain     = fdata->paramData.getValue("XTRK_GAIN");
-    resolutionSpeed = fdata->paramData.getValue("RES_SPEED");
-    allowedDev      = fdata->paramData.getValue("XTRK_DEV");
 
     double offsets[2];
     ComputeXtrackDistance(fp,leg,currPosition,offsets);
@@ -298,6 +322,11 @@ void PathPlanner::ManueverToIntercept(Plan* fp,int leg,double currPosition[],dou
 }
 
 double PathPlanner::GetInterceptHeadingToPlan(Plan* fp,int leg,double currentPos[]){
+
+    if(fp == NULL){
+        return 0;
+    }
+
     Position pos = Position::makeLatLonAlt(currentPos[0],"degree",currentPos[1],"degree",currentPos[2],"m");
 
     double _positiontOnPlan[3];
@@ -321,17 +350,20 @@ double PathPlanner::GetInterceptHeadingToPlan_c(char *planID, int leg, double cu
     if(fp!=NULL) {
         return GetInterceptHeadingToPlan(fp, leg, currentPos);
     }else{
-        std::cout<<"Couldn't find plan:"<<planID<<std::endl;
+        //std::cout<<"Couldn't find plan:"<<planID<<std::endl;
+        return -1;
     }
 
 }
 
-void PathPlanner::ManueverToIntercept_c(char* planID,int leg,double currPosition[],double velocity[]){
+void PathPlanner::ManueverToIntercept_c(char* planID,int leg,double currPosition[],double velocity[],
+                                         double xtrkDevGain,double resolutionSpeed,double allowedDev){
     Plan* fp = GetPlan(planID);
     if(fp != NULL)
-        ManueverToIntercept(fp,leg,currPosition,velocity);
-    else
-        std::cout<<"Couldn't find plan:"<<planID<<std::endl;
+        ManueverToIntercept(fp,leg,currPosition,velocity,xtrkDevGain,resolutionSpeed,allowedDev);
+    else {
+        //std::cout << "Couldn't find plan:" << planID << std::endl;
+    }
 }
 
 double PathPlanner::GetApproxElapsedPlanTime(Plan* fp,double currentPos[],int nextWP){
@@ -349,15 +381,13 @@ void PathPlanner::GetExitPoint(char *planID,double currentPoisition[],int nextWP
     fp = GetPlan(planID);
 
     if (fp == NULL){
-        std::cout<<"Couldn't find plan ID:"<<planID<<std::endl;
+        //std::cout<<"Couldn't find plan ID:"<<planID<<std::endl;
         return;
     }
 
     double elapsedTime = GetApproxElapsedPlanTime(fp,currentPoisition,nextWP);
 
-    PolyPath gfPolyPath = *fdata->GetPolyPath();
-
-    bool val = geoCDIIPolygon.detection(*fp,gfPolyPath,elapsedTime,fp->getLastTime());
+    bool val = geoCDIIPolygon.detection(*fp,geoPolyPath,elapsedTime,fp->getLastTime());
 
     Position lastPos;
     if(val) {
@@ -386,3 +416,54 @@ double PathPlanner:: GetInterceptHeadingToPoint(double positionA[],double positi
 void PathPlanner::ClearAllPlans() {
     flightPlans.clear();
 }
+void PathPlanner::InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, double pos[][2]){
+
+
+    double ResolBUFF = obsbuffer;
+    fence newfence(index,(FENCE_TYPE)type,totalVertices,floor,ceiling);
+
+    for(int i=0;i<totalVertices;++i) {
+        newfence.AddVertex(i, pos[i][0], pos[i][1], ResolBUFF);
+    }
+    if(fenceList.size() > index){
+        fenceList.clear();
+        for(int i=geoPolyPath.size()-1;i>=0;i--){
+            geoPolyPath.remove(i);
+        }
+    }
+
+    fenceList.push_back(newfence);
+    if(newfence.GetType() == KEEP_OUT)
+        geoPolyPath.addPolygon(*newfence.GetPolyMod(),Velocity::makeVxyz(0,0,0),0);
+
+    //std::cout <<"Trajectory module: Received fence: "<<index<<std::endl;
+
+}
+
+fence* PathPlanner::GetGeofence(int id) {
+    std::list<fence>::iterator fenceListIt;
+    for(fenceListIt = fenceList.begin();fenceListIt != fenceList.end();++fenceListIt){
+        if (id == fenceListIt->GetID()){
+            return &(*(fenceListIt));
+        }
+    }
+}
+
+void PathPlanner::ClearFences() {
+    fenceList.clear();
+}
+
+int PathPlanner::InputTraffic(int id, double *position, double *velocity) {
+
+    GenericObject _traffic(0,_TRAFFIC_,id,(float)position[0],(float)position[1],(float)position[2],
+                                        (float)velocity[0],(float)velocity[1],(float)velocity[2]);
+    return GenericObject::AddObject(trafficList,_traffic);
+}
+
+void PathPlanner::InitializeBSplinesParameters(bool enable3D,double computationT,int numControlPts,int lenTVec) {
+    _bsplines_enable3D = enable3D;
+    _bsplines_compTime = computationT;
+    _bsplines_numControlPts = numControlPts;
+    _bsplines_lenTVec = lenTVec;
+}
+

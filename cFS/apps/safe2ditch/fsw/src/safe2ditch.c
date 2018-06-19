@@ -7,7 +7,7 @@
  *******************************************************************************/
 #define EXTERN
 
-#include <Icarous_msg.h>
+#include <common_defs.h>
 #include "safe2ditch.h"
 #include "safe2ditch_version.h"
 

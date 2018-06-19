@@ -26,7 +26,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_SOURCE_DIR}/../ACCoRD/inc
-                    ${CMAKE_CURRENT_SOURCE_DIR}/../FlightDataManager
+                    ${CMAKE_CURRENT_SOURCE_DIR}/../Utils
                     ${CMAKE_CURRENT_SOURCE_DIR}/RRT
                     ${CMAKE_CURRENT_SOURCE_DIR}/Astar)
 
@@ -34,7 +34,7 @@ link_directories(${LIBRARY_OUTPUT_PATH})
 
 add_library(PathPlanner SHARED ${SOURCE_FILES})
 
-target_link_libraries(PathPlanner RRT ASTAR ACCoRD FlightDataManager)
+target_link_libraries(PathPlanner RRT ASTAR ACCoRD Utils)
 
 IF(SPLINES)
     target_link_libraries(PathPlanner BSPLINES)

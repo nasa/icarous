@@ -1,37 +1,37 @@
-Real[4]    Command MonitorTraffic(Boolean bands,Real position[3],Real velocity[3]);
-Real       Command GetInterceptHeadingToPlan(String planID,Integer leg,Real position[3]);
-Boolean    Command CheckSafeToTurn(Real position[3],Real velocity[3],Real fromHeading,Real toHeading);
+Boolean Lookup trafficConflict;
+Real Lookup preferredTrack;
+Real Lookup interceptHeading;
+
+Boolean    Command CheckSafeToTurn(Real fromHeading,Real toHeading);
 
 Command SetVel(Real velocity[3]);
 Command pprint(...);
 
 
 TRAFFIC_RESOLUTION:{
-	Real prevVelCmd[3];
-  	InOut Boolean completionStatus;
-  	In Integer nextWP;
-  	In Real acPosition[3];
-  	In Real acVelocity[3];
-  	In Real resSpeed;
-    Real output[4];
+    Real prevVelCmd[3];
+    InOut Boolean completionStatus;
+    In Integer nextWP;
+    In Real acPosition[3];
+    In Real acVelocity[3];
+    In Real resSpeed;
+
     Real velCmd[3];
-    Real returnVel[3];
-    Boolean returnSafe;
-    Real track;
+    Real returnVel;
+    Real trackPref;
     Real speed;
+    Boolean returnSafe;
+    Boolean statusTF;
 
-    {
-       EndCondition isKnown(output[0]);
-       output = MonitorTraffic(false,acPosition,acVelocity);
-    }
+    // Get traffic conflict status
+    statusTF = Lookup(trafficConflict);
 
+    // Preferred track angle
+    trackPref = Lookup(preferredTrack);
 
-    if(output[1] < 100)
-        velCmd[0] = output[1];
-    else
-        velCmd[0] = prevVelCmd[0];
-    endif
+    //pprint("preferred track:",trackPref);
 
+    velCmd[0] = trackPref;
     velCmd[1] = resSpeed;
     velCmd[2] = 0;
 
@@ -41,24 +41,18 @@ TRAFFIC_RESOLUTION:{
     prevVelCmd[1] = velCmd[1];
     prevVelCmd[2] = velCmd[2];
 
-    {
-        EndCondition isKnown(track);
-        track = GetInterceptHeadingToPlan("Plan0",nextWP,acPosition);
-    }
 
+    returnVel = Lookup(interceptHeading);
 
-
-    returnVel[0] = track;
-    returnVel[1] = resSpeed;
-    returnVel[2] = 0;
+    //pprint("Return heading to plan:",returnVel);
 
     {
         EndCondition isKnown(returnSafe);
-        returnSafe = CheckSafeToTurn(acPosition,acVelocity,velCmd[0],returnVel[0]);
+        returnSafe = CheckSafeToTurn(velCmd[0],returnVel);
     }
 
-
-    if(returnSafe && output[0] < 0){
+    //pprint("return, tfconflict:",returnSafe,statusTF);
+    if(returnSafe && !statusTF){
        completionStatus = true;
     }endif
 

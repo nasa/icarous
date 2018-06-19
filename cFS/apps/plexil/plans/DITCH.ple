@@ -14,7 +14,15 @@ Real[3] Lookup ditchSite;
 Real Lookup time;
 
 
-LibraryAction GOTO_POSITION (In String SearchType,In Boolean TrafficConflict,In Real TargetPosition[3],In Real resSpeed,InOut Boolean resolutionCompleted);
+LibraryAction GOTO_POSITION (In String SearchType,
+                             In Boolean TrafficConflict,
+                             In Real TargetPosition[3],
+                             In Real resSpeed,
+                             In Integer PrevConflictId,
+                             InOut Boolean resolutionCompleted);
+
+
+
 DITCH:
 {
 
@@ -92,8 +100,10 @@ DITCH:
 
               pprint("Plexil status: Ditching with Icarous guidance");
 
-              LibraryCall GOTO_POSITION(SearchType = "GRID",TrafficConflict = false,TargetPosition = ditchsite,
+              LibraryCall GOTO_POSITION(SearchType = "GRID",
+                                        TrafficConflict = false,TargetPosition = ditchsite,
                                         resSpeed = resSpeed,
+                                        PrevConflictId = 0,
                                         resolutionCompleted = rescomplete);
               complete = true;
            }

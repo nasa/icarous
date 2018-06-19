@@ -49,7 +49,7 @@ double Node::NodeDist(Node& B) const {
 }
 
 bool Node::GoalCheck(Node goal) {
-    if (NodeDist(goal) < neighborhood)
+    if (NodeDist(goal) < 2.0*neighborhood)
         return true;
     else
         return false;

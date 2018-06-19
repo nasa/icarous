@@ -4,6 +4,14 @@
 #include "PathPlanner.h"
 #include "Astar.h"
 
+void PathPlanner::InitializeAstarParameters(bool enable3D,double gridSize,double resSpeed,double lookahead,char daaConfig[]){
+    _astar_daaConfig = string(daaConfig);
+    _astar_enable3D = enable3D;
+    _astar_gridSize = gridSize;
+    _astar_lookahead = lookahead;
+    _astar_resSpeed = resSpeed;
+}
+
 int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double toPosition[],double velocity[]) {
 
     double trk = velocity[0];
@@ -23,13 +31,12 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
 
     double computationTime = 1.0;
 
-    for(int i=0;i<fdata->GetTotalTraffic();++i){
+    for(GenericObject tf: trafficList){
         double x,y,z,vx,vy,vz;
-        fdata->GetTraffic(i,&x,&y,&z,&vx,&vy,&vz);
-        Velocity Vel = Velocity::makeVxyz(vx,vy,vz);
-        Position Pos = Position::makeLatLonAlt(x,"degree",y,"degree",z,"m");
+        Velocity Vel = tf.vel;
+        Position Pos = tf.pos;
         Vect3 tPos = proj.project(Pos);
-        Vect3 tVel = Vect3(vx,vy,vz);
+        Vect3 tVel = Vect3(Vel.x,Vel.y,Vel.z);
         tPos.linear(tVel,computationTime);
         TrafficPos.push_back(tPos);
         TrafficVel.push_back(tVel);
@@ -49,11 +56,11 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
 
     //TODO: Make these user defined parameters?
     bool search3d = false;
-    search3d = fdata->paramData.getBool("SEARCH_3D");
+    search3d = _astar_enable3D;
 
-    double HEADING[5] = {-90.0, -45.0, 0.0, 45.0, 90.0};
+    double HEADING[9] = {-90.0, -60.0, -45.0, -30.0, 0.0, 30.0, 45.0, 60.0, 90.0};
     double VS[3] = {0.0,0.0,0.0};
-    int lenH = 5;
+    int lenH = 9;
     int lenV = 1;
 
     if(search3d){
@@ -62,28 +69,25 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
         lenV  = 3;
     }
     
-    double res_speed = fdata->paramData.getValue("RES_SPEED");
-    double horizon = fdata->paramData.getValue("LOOKAHEAD");
-    double eps = res_speed*horizon;
+    double res_speed = _astar_resSpeed;
+    double horizon = _astar_lookahead;
+    double eps = res_speed*horizon*0.5;
     Astar pathfinder(lenH,HEADING,lenV,VS,horizon,eps);
 
-    pathfinder.SetRoot(initPosR3.x,initPosR3.y,initPosR3.z,trk,2.0);
+    pathfinder.SetRoot(initPosR3.x,initPosR3.y,initPosR3.z,trk,res_speed);
     pathfinder.SetGoal(gpos.x,gpos.y,gpos.z);
 
-    for(int i=0;i<fdata->GetTotalFences();++i){
-        if (fdata->GetGeofence(i)->GetType() == KEEP_IN){
-            Poly3D bbox = fdata->GetGeofence(i)->GetPoly()->poly3D(proj);
+    for(fence gf: fenceList){
+        if (gf.GetType() == KEEP_IN){
+            Poly3D bbox = gf.GetPoly()->poly3D(proj);
             pathfinder.SetBoundary(&bbox);
         }else{
-            Poly3D obs = fdata->GetGeofence(i)->GetPolyMod()->poly3D(proj);
+            Poly3D obs = gf.GetPolyMod()->poly3D(proj);
             pathfinder.InputObstacle(&obs);
         }
     }
 
-    string daaConfig = fdata->paramData.getString("DAA_CONFIG");
-
     bool goalFound = pathfinder.ComputePath();
-
 
     if(goalFound){
         std::list<Node> _planOutput = pathfinder.GetPath();

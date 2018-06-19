@@ -4,12 +4,16 @@
 
 #include "GeofenceMonitor.h"
 
-GeofenceMonitor::GeofenceMonitor(FlightData *fd) {
-    fdata = fd;
+GeofenceMonitor::GeofenceMonitor(double *params) {
+    lookahead  = params[0];
+    hthreshold = params[1];
+    vthreshold = params[2];
+    hstepback  = params[3];
+    vstepback  = params[4];
 }
 
 bool GeofenceMonitor::CollisionDetection(fence* gf,Position* pos,Vect2* v,double startTime,double stopTime){
-    int n = fdata->GetTotalFences();
+    int n = fenceList.size();
     for(int i=0;i<n;i++){
 
         Vect2 currentPos = gf->GetProjection()->project(*pos).vect2();
@@ -29,11 +33,11 @@ bool GeofenceMonitor::CollisionDetection(fence* gf,Position* pos,Vect2* v,double
     return true;
 }
 
-void GeofenceMonitor::CheckViolation(double position[],double trk,double gs,double vs){
+bool GeofenceMonitor::CheckViolation(double position[],double trk,double gs,double vs){
 
     Position currentPosLLA = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
     Velocity currentVel    = Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
-    int n = fdata->GetTotalFences();
+    int n = fenceList.size();
     double entryTime =-1.0, exitTime =-1.0;
     bool conflict = false;
     bool violation = false;
@@ -41,14 +45,9 @@ void GeofenceMonitor::CheckViolation(double position[],double trk,double gs,doub
     conflictList.clear();
     GeofenceConflict gcf;
 
-    double lookahead = fdata->paramData.getValue("LOOKAHEAD");
-    double hthreshold = fdata->paramData.getValue("HTHRESHOLD");
-    double vthreshold = fdata->paramData.getValue("VTHRESHOLD");
-    double hstepback = fdata->paramData.getValue("HSTEPBACK");
-    double vstepback = fdata->paramData.getValue("VSTEPBACK");
 
     for(int i = 0;i<n;i++) {
-        fence *gf = fdata->GetGeofence(i);
+        fence *gf = GetGeofence(i);
 
         EuclideanProjection *proj = gf->GetProjection();
         Vect3 currentPosR3 = proj->project(currentPosLLA);
@@ -99,6 +98,7 @@ void GeofenceMonitor::CheckViolation(double position[],double trk,double gs,doub
             Vect2 vel = currentVel.vect2();
             if (CollisionDetection(gf, &currentPosLLA, &vel, 0, lookahead)) {
                 conflict = true;
+                //printf("keep out conflict\n");
             } else {
                 conflict = false;
             }
@@ -118,8 +118,16 @@ void GeofenceMonitor::CheckViolation(double position[],double trk,double gs,doub
             gcf.recoveryPoint[0] = recoveryPoint.latitude();
             gcf.recoveryPoint[1] = recoveryPoint.longitude();
             gcf.recoveryPoint[2] = recoveryPoint.alt();
+            gcf._gf = gf;
             conflictList.push_back(gcf);
         }
+    }
+
+
+    if(conflictList.size() > 0){
+        return true;
+    }else{
+        return false;
     }
 }
 
@@ -136,8 +144,8 @@ bool GeofenceMonitor::CheckWPFeasibility(double fromPosition[],double toPosition
 
     double time = dist;
     bool val = false;
-    for (int i = 0; i < fdata->GetTotalFences(); ++i) {
-        val = val || CollisionDetection(fdata->GetGeofence(i),&currentPos, &vel, 0, time);
+    for (int i = 0; i < fenceList.size(); ++i) {
+        val = val || CollisionDetection(GetGeofence(i),&currentPos, &vel, 0, time);
     }
 
     return !val;
@@ -147,11 +155,12 @@ int GeofenceMonitor::GetNumConflicts() {
     return conflictList.size();
 }
 
-void GeofenceMonitor::GetConflict(int id, int& fenceId, bool& conflict, bool& violation, double recoveryPoint[]) {
+void GeofenceMonitor::GetConflict(int id, int& fenceId, bool& conflict, bool& violation, double recoveryPoint[],int& type) {
     int count = -1;
     for(GeofenceConflict it:conflictList){
         count++;
         if (count == id){
+            type = (it._gf->GetType()==KEEP_IN)?0:1;
             fenceId = it.fenceId;
             conflict = it.conflictstatus;
             violation = it.violationStatus;
@@ -192,11 +201,44 @@ void GeofenceMonitor::GetConflictStatus(bool conflicts[]) {
     for(GeofenceConflict it:conflictList){
 
         int id = it.fenceId;
-        fence *gf = fdata->GetGeofence(id);
+        fence *gf = GetGeofence(id);
         if(gf->GetType() == KEEP_IN){
             conflicts[0] |= it.conflictstatus;
         }else{
             conflicts[1] |= it.conflictstatus;
         }
     }
+}
+
+void GeofenceMonitor::InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, double pos[][2]){
+
+
+    double ResolBUFF = hthreshold;
+    fence newfence(index,(FENCE_TYPE)type,totalVertices,floor,ceiling);
+
+    for(int i=0;i<totalVertices;++i) {
+        newfence.AddVertex(i, pos[i][0], pos[i][1], ResolBUFF);
+    }
+    if(fenceList.size() > index){
+        fenceList.clear();
+        for(int i=geoPolyPath.size()-1;i>=0;i--){
+            geoPolyPath.remove(i);
+        }
+    }
+
+    fenceList.push_back(newfence);
+    if(newfence.GetType() == KEEP_OUT)
+        geoPolyPath.addPolygon(*newfence.GetPolyMod(),Velocity::makeVxyz(0,0,0),0);
+}
+
+fence* GeofenceMonitor::GetGeofence(int id) {
+    for(fenceListIt = fenceList.begin();fenceListIt != fenceList.end();++fenceListIt){
+        if (id == fenceListIt->GetID()){
+            return &(*(fenceListIt));
+        }
+    }
+}
+
+void GeofenceMonitor::ClearFences() {
+    fenceList.clear();
 }
