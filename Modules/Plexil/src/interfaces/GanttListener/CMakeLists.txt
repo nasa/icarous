@@ -23,7 +23,7 @@ include_directories(
         ${PLEXIL_SOURCE}/exec
 )
 
-link_directories(LIBRARY_OUTPUT_PATH)
+link_directories(${LIBRARY_OUTPUT_PATH})
 
 add_library(GanttListener SHARED ${SOURCE_FILES})
 

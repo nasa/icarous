@@ -91,7 +91,7 @@ set(SOURCE_FILES
         src/timer.c
         src/wsocksrt.c)
 
-set(CMAKE_CXX_FLAGS "-O2")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
 add_definitions(-DREDHAT_52 -DREDHAT_6 -DREDHAT_71)
 
