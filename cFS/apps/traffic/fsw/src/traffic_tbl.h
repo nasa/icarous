@@ -6,6 +6,7 @@
 #ifndef ICAROUS_CFS_TRAFFIC_TBL_H
 #define ICAROUS_CFS_TRAFFIC_TBL_H
 
+#include <stdbool.h>
 
 /**
  * @defgroup TRAFFIC_TABLES
@@ -21,6 +22,7 @@
 typedef struct
 {
     char configFile[50];   ///< Daidalus configuration file
+    bool log;              ///< Enable Daidalus log output
 
 }TrafficTable_t;
 

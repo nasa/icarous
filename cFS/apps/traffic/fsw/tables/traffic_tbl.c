@@ -8,7 +8,8 @@
 #include "traffic_tbl.h"
 
 TrafficTable_t TblStruct = {
-  "../ram/DaidalusQuadConfig.txt"
+  "../ram/DaidalusQuadConfig.txt",  // configuration file
+  false                             // log daa output
 };
 
 

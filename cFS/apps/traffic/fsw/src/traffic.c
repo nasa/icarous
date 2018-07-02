@@ -90,8 +90,8 @@ void TRAFFIC_AppInit(void) {
                       TRAFFIC_MINOR_VERSION);
 
 
-    trafficAppData.tfMonitor = new_TrafficMonitor(true,TblPtr->configFile);
-
+    trafficAppData.log = TblPtr->log;
+    trafficAppData.tfMonitor = new_TrafficMonitor(trafficAppData.log,TblPtr->configFile);
 }
 
 void TRAFFIC_AppCleanUp(){
