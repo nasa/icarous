@@ -20,12 +20,13 @@
  */
 
 
-#define INTERFACE_GS_WAKEUP_MID 0x001F    ///< wake up autopilot communication thread.
-#define INTERFACE_AP_WAKEUP_MID 0x0020    ///< wake up ground staion communication thread.
-#define GEOFENCE_WAKEUP_MID 0x021E        ///< wake up geofence monitor.
-#define TRAFFIC_WAKEUP_MID 0x0335         ///< wake up traffic monitoring functionality
-#define TRAJECTORY_WAKEUP_MID 0x0464      ///< wake up trajectory monitoring funcitonalities
-#define PLEXIL_WAKEUP_MID 0x0100          ///< wake up plexil
+#define INTERFACE_GS_WAKEUP_MID 0x0F01    ///< wake up autopilot communication thread.
+#define INTERFACE_AP_WAKEUP_MID 0x0F02    ///< wake up ground staion communication thread.
+#define GEOFENCE_WAKEUP_MID 0x0F03        ///< wake up geofence monitor.
+#define TRAFFIC_WAKEUP_MID 0x0F04         ///< wake up traffic monitoring functionality
+#define TRAJECTORY_WAKEUP_MID 0x0F05      ///< wake up trajectory monitoring funcitonalities
+#define PLEXIL_WAKEUP_MID 0x0F06          ///< wake up plexil
+#define TRACKING_WAKEUP_MID 0x0F07        ///< wake up tracking
 
 /**@}*/
 #endif //ICAROUS_CFS_SCHEDULER_MSGIDS_H

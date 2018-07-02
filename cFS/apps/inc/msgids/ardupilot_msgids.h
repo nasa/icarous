@@ -27,7 +27,8 @@
 #define ICAROUS_COMACK_MID 0x001B         ///< Command acknowledgement. message type: cmdAck_t
 #define ICAROUS_RESETFP_MID 0x001D        ///< Clear flight plan
 #define ICAROUS_STATUS_MID 0x001E         ///< Icarous status message. message type:status_t
-
+#define ICAROUS_DITCH_MID 0x001F          ///< Ditching signal: noArgsCmd_t
+#define ICAROUS_TRACK_STATUS_MID 0x0020   ///< Command to start/stop tracking. message type: argsCmd_t
 
 
 /**@}*/

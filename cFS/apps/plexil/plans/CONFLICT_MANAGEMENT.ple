@@ -207,7 +207,6 @@ CONFLICT_MANAGEMENT:
                 EndCondition TrafficResolutionCompleted;
 
                 Status("IC:Executing traffic resolution");
-                pprint("Starting traffic resolution");
 
                 // If geofence are present, always use the RRT algorithm
                 if(gNumFences == 0){
@@ -218,7 +217,7 @@ CONFLICT_MANAGEMENT:
 
                 SetMode("ACTIVE");
 
-                pprint("res type:",resType);
+                pprint("Plexil status: Traffic resolution type:",resType);
 
                 PURE_DAIDALUS:{
                     SkipCondition !(resType == "PURE_DAIDALUS");

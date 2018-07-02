@@ -182,7 +182,7 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
     /* command ID #35 */
   { { CFE_MAKE_BIG16(TRAJECTORY_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
     /* command ID #36 */
-  { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
+  { { CFE_MAKE_BIG16(TRACKING_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
     /* command ID #37 */
   { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
     /* command ID #38 */

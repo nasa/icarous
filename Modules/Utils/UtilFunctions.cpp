@@ -6,6 +6,8 @@
 #include <Position.h>
 #include <Velocity.h>
 #include <math.h>
+#include <EuclideanProjection.h>
+#include <Projection.h>
 
 using namespace larcfm;
 
@@ -109,3 +111,69 @@ bool CheckTurnConflict(double low, double high, double newHeading, double oldHea
 
     return false;
 }
+
+
+void ComputeTrackingResolution(double targetPos[],double currentPos[],double currentVel[],double heading,double distH,double distV,
+                                      double PropGains[],double outputVel[],double* outputHeading){
+
+    // Get coordinates of object to track
+    Position CurrentPos = Position::makeLatLonAlt(currentPos[0],"degree",currentPos[1],"degree",currentPos[2],"m");
+    Position Target     = Position::makeLatLonAlt(targetPos[0],"degree",targetPos[1],"degree",targetPos[2],"m");
+    double distHx  = distH*sin(heading *M_PI/180); // Heading is measured from North
+    double distHy  = distH*cos(heading *M_PI/180);
+
+    double Kx_trk = PropGains[0];
+    double Ky_trk = PropGains[1];
+    double Kz_trk = PropGains[2];
+
+    Vect3 delPos(distHx,distHy,distV);
+
+    // Project from LatLonAlt to cartesian coordinates
+
+    EuclideanProjection proj = Projection::createProjection(CurrentPos.mkAlt(0));
+    Vect3 vecCP  =  proj.project(CurrentPos);
+    Vect3 vecTP  =  proj.project(Target);
+
+    Vect3 vecTPf =  vecTP.Add(delPos);
+
+    // Relative vector to object
+    Vect3 Rel    = vecTPf.Sub(vecCP);
+
+    // Compute velocity commands that will enure smooth tracking of object
+    double dx = Rel.x;
+    double dy = Rel.y;
+    double dz = Rel.z;
+
+    // Velocity is proportional to distance from object.
+    double Vx = SaturateVelocity(Kx_trk * dx,2.0);
+    double Vy = SaturateVelocity(Ky_trk * dy,2.0);
+    double Vz = SaturateVelocity(Kz_trk * dz,2.0);
+
+    //printf("vecCP:%f,%f,%f\n",vecCP.x,vecCP.y,vecCP.z);
+    //printf("vecTPf:%f,%f,%f\n",vecTPf.x,vecTPf.y,vecTPf.z);
+    //printf("dx,dy,dz = %f,%f,%f\n",dx,dy,dz);
+
+    double RefHeading = atan2(Vx,Vy) * 180/M_PI;
+
+    if(RefHeading < 0){
+        RefHeading = 360 + RefHeading;
+    }
+
+    outputVel[0] = Vy;
+    outputVel[1] = Vx;
+    outputVel[2] = -Vz;
+
+    *outputHeading = RefHeading;
+
+    //printf("Heading = %f, Velocities %1.3f, %1.3f, %1.3f\n",heading,Vx,Vy,Vz);
+}
+
+double SaturateVelocity(double V, double Vsat){
+    if(abs(V) > Vsat){
+        return sign(V)*Vsat;
+    }
+    else{
+        return V;
+    }
+}
+

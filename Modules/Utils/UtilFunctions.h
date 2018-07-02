@@ -13,6 +13,12 @@ double ComputeDistance(double positionA[],double positionB[]);
 bool CheckTurnConflict(double low,double high,double fromHeading,double toHeading);
 void ConvertVnedToTrkGsVs(double vn,double ve,double vz,double *Trk,double *Gs,double *Vs);
 void ConvertTrkGsVsToVned(double Trk,double Gs,double Vs,double *vn,double *ve,double *vd);
+void ComputeTrackingResolution(double targetPos[],double currentPos[],double currentVel[],double heading,double distH,double distV,
+                                      double PropGains[],double outputVel[],double *outputHeading);
+double SaturateVelocity(double V, double Vsat);
+
+
+
 #ifdef __cplusplus
 };
 #endif

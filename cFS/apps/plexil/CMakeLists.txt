@@ -22,7 +22,7 @@ include_directories(${MODULES_ROOT}/Utils)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
-set(SOURCE_FILES fsw/src/plexil.c fsw/src/custom_functions.c fsw/src/plexil_table.h ../inc/msgdef/traffic_msg.h)
+set(SOURCE_FILES fsw/src/plexil.c fsw/src/custom_functions.c)
 
 link_directories(${PLEXIL_LIB})
 link_directories(${MODULES_LIB})

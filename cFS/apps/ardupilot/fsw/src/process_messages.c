@@ -312,9 +312,15 @@ bool ProcessGSMessage(mavlink_message_t message) {
 				mavlink_message_t statusMsg;;
 				mavlink_msg_statustext_pack(2,0,&statusMsg,MAV_SEVERITY_WARNING,"IC:Resetting Icarous");
 				writePort(&appdataInt.gs,&statusMsg);
-			}else if (msg.command == MAV_CMD_USER_5) {
+			}else if(msg.command == MAV_CMD_USER_2){
+				argsCmd_t trackCmd;
+				CFE_SB_InitMsg(&trackCmd,ICAROUS_TRACK_STATUS_MID, sizeof(argsCmd_t),TRUE);
+				trackCmd.param1 = (float) msg.param1;
+				SendSBMsg(trackCmd);
+				send2ap = false;
+			} if (msg.command == MAV_CMD_USER_5) {
 				noArgsCmd_t ditchCmd;
-				CFE_SB_InitMsg(&ditchCmd,ICAROUS_COMMANDS_MID, sizeof(noArgsCmd_t),TRUE);
+				CFE_SB_InitMsg(&ditchCmd,ICAROUS_DITCH_MID, sizeof(noArgsCmd_t),TRUE);
 				ditchCmd.name = _DITCH_;
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &ditchCmd);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &ditchCmd);
