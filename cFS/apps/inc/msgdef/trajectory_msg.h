@@ -19,11 +19,11 @@
  * @enum algorithm_e
  * @brief search algorithm type
  */
-typedef enum algorithm{
-    _GRID,              ///< A simple grid based Astar algorithm
+typedef enum {
+    _GRID,              ///< A simple grid based Astar algorithm (Requires a keep in geofence to bound the search space)
     _ASTAR,             ///< A pseudo-motion primitive type Astar algorithm
-    _RRT,               ///< Rapidly exploring random tree based algorithm
-    _SPLINES            ///< Bsplines based planner
+    _RRT,               ///< Rapidly exploring random tree based algorithm (Requires a keep in geofence to bound the search space)
+    _SPLINES            ///< Bsplines based planner (experimental planner)
 }algorithm_e;
 
 /**

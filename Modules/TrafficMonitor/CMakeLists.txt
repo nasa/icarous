@@ -17,7 +17,7 @@ link_directories(${LIBRARY_OUTPUT_PATH})
 
 add_library(TrafficMonitor SHARED ${SOURCE_FILES})
 
-target_link_libraries(TrafficMonitor Utils ACCoRD FlightDataManager)
+target_link_libraries(TrafficMonitor Utils ACCoRD)
 
 add_executable(trafficTest Test/main.cpp)
 target_link_libraries(trafficTest TrafficMonitor)
