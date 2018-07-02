@@ -4,7 +4,9 @@
 <area shape="rect" id="node5" href="$geofence_8h.html" title="Definition of defines, structs and functions for geofence monitoring app. " alt="" coords="301,109,494,165"/>
 <area shape="rect" id="node6" href="$custom__datastructure_8h_source.html" title="/home/swee/Software\l/Icarous2/cFS/apps/plexil\l/fsw/src/custom_datastructure.h" alt="" coords="519,109,729,165"/>
 <area shape="rect" id="node7" href="$plexil_8h.html" title="Function declaration and defintions of defines and data structures used in plexl app. " alt="" coords="753,109,924,165"/>
-<area shape="rect" id="node8" href="$traffic_8h.html" title="Function declaration, MACRO and data structure definitions for the traffic application. " alt="" coords="948,109,1121,165"/>
-<area shape="rect" id="node9" href="$trajectory_8h.html" title="Function declarations, data structure and macro declarations for the trajectory management applicatio..." alt="" coords="1145,109,1340,165"/>
+<area shape="rect" id="node8" href="$tracking_8c.html" title="application to track an object. " alt="" coords="933,213,1120,269"/>
+<area shape="rect" id="node9" href="$tracking_8h.html" title="Function declaration, MACRO and data structure definitions for the tracking application. " alt="" coords="999,109,1185,165"/>
+<area shape="rect" id="node10" href="$traffic_8h.html" title="Function declaration, MACRO and data structure definitions for the traffic application. " alt="" coords="1209,109,1383,165"/>
+<area shape="rect" id="node11" href="$trajectory_8h.html" title="Function declarations, data structure and macro declarations for the trajectory management applicatio..." alt="" coords="1407,109,1601,165"/>
 <area shape="rect" id="node4" href="$ardupilot__table_8h.html" title="Ardupilot app table definition. " alt="" coords="137,213,327,269"/>
 </map>

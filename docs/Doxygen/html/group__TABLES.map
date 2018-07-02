@@ -1,7 +1,8 @@
 <map id="TABLES" name="TABLES">
 <area shape="rect" id="node1" href="$group__PLEXIL__TABLES.html" title="plexil input tables " alt="" coords="145,5,270,32"/>
-<area shape="rect" id="node2" href="$group__TRAFFIC__TABLES.html" title="traffic tables " alt="" coords="139,56,276,83"/>
-<area shape="rect" id="node3" href="$group__ARDUPILOT__TABLES.html" title="ARDUPILOT_TABLES" alt="" coords="129,107,286,133"/>
-<area shape="rect" id="node4" href="$group__TRAJECTORY__TABLE.html" title="Trajectory table. " alt="" coords="127,157,288,184"/>
-<area shape="rect" id="node6" href="$group__GEOFENCE__TABLES.html" title="input tables used by the geofence monitoring application " alt="" coords="130,208,285,235"/>
+<area shape="rect" id="node2" href="$group__TRACKING__TABLES.html" title="tracking tables " alt="" coords="132,56,283,83"/>
+<area shape="rect" id="node3" href="$group__TRAFFIC__TABLES.html" title="traffic tables " alt="" coords="139,107,276,133"/>
+<area shape="rect" id="node4" href="$group__ARDUPILOT__TABLES.html" title="ARDUPILOT_TABLES" alt="" coords="129,157,286,184"/>
+<area shape="rect" id="node5" href="$group__TRAJECTORY__TABLE.html" title="Trajectory table. " alt="" coords="127,208,288,235"/>
+<area shape="rect" id="node7" href="$group__GEOFENCE__TABLES.html" title="input tables used by the geofence monitoring application " alt="" coords="130,259,285,285"/>
 </map>

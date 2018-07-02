@@ -5,6 +5,9 @@ var searchData=
   ['param6',['param6',['../structargsCmd__t.html#a75dfca98f37492027b0aa10825523477',1,'argsCmd_t']]],
   ['param8',['param8',['../structargsCmd__t.html#a5f4a3f52ef27d673f73a0fc6a07e9a89',1,'argsCmd_t']]],
   ['pathfeasibilitycheck_5ft',['pathFeasibilityCheck_t',['../structpathFeasibilityCheck__t.html',1,'']]],
+  ['pgainx',['pGainX',['../structTrackingTable__t.html#a1b4616977f2fe1aa3e64d9c25607e831',1,'TrackingTable_t']]],
+  ['pgainy',['pGainY',['../structTrackingTable__t.html#a50249346067c85c74a94e69c1372a723',1,'TrackingTable_t']]],
+  ['pgainz',['pGainZ',['../structTrackingTable__t.html#aa780692b4587776e1913a70ff31361c7',1,'TrackingTable_t']]],
   ['pitch',['pitch',['../structattitude__t.html#a5ebde1bfe2f839c12fe302ea19384fb2',1,'attitude_t']]],
   ['planid',['planID',['../structflightplan__t.html#ab3bb1e56160b14ec49d4c14704100268',1,'flightplan_t']]],
   ['plexil',['PLEXIL',['../group__PLEXIL.html',1,'']]],
@@ -38,10 +41,11 @@ var searchData=
   ['porttype',['portType',['../structport__t.html#a57b5a10f6599778d29b2d18c02823ea5',1,'port_t::portType()'],['../structs2d__port__t.html#a427121f3875cd942c1081d3410bf5230',1,'s2d_port_t::portType()']]],
   ['porttype_5fe',['portType_e',['../ardupilot_8h.html#a66e863beb9373e5375cccc1270fcdb5b',1,'ardupilot.h']]],
   ['poshold',['POSHOLD',['../ardupilot_8h.html#a7e009e7dbc0dd7be939d03455c972549a811e9291d1a8da7dc288f079f836eda9',1,'ardupilot.h']]],
-  ['position',['position',['../structgeofenceAppData__t.html#a937ebee8b16adaf0ae3e24fd5edf88c7',1,'geofenceAppData_t::position()'],['../structflightplan__t.html#acfe64745b8b589e3530e3b0584033aea',1,'flightplan_t::position()'],['../structTrafficAppData__t.html#af169ae13c081ae97186fcfd52066b854',1,'TrafficAppData_t::position()'],['../structTrajectoryAppData__t.html#a4e2aa6007d309e38dfef17e2f167e283',1,'TrajectoryAppData_t::position()'],['../ardupilot_8h.html#a97f6f07d9b99c3e3d789183a9064a7da',1,'position():&#160;ardupilot.h']]],
+  ['position',['position',['../structgeofenceAppData__t.html#a937ebee8b16adaf0ae3e24fd5edf88c7',1,'geofenceAppData_t::position()'],['../structflightplan__t.html#acfe64745b8b589e3530e3b0584033aea',1,'flightplan_t::position()'],['../structTrackingAppData__t.html#a06f2385be8d6e0534ffce1e81c127182',1,'TrackingAppData_t::position()'],['../structTrafficAppData__t.html#af169ae13c081ae97186fcfd52066b854',1,'TrafficAppData_t::position()'],['../structTrajectoryAppData__t.html#a4e2aa6007d309e38dfef17e2f167e283',1,'TrajectoryAppData_t::position()'],['../ardupilot_8h.html#a97f6f07d9b99c3e3d789183a9064a7da',1,'position():&#160;ardupilot.h']]],
   ['position_5ft',['position_t',['../structposition__t.html',1,'']]],
   ['pplanner',['pplanner',['../structTrajectoryAppData__t.html#a0d9817e92488896a04006ce38cc3e24b',1,'TrajectoryAppData_t']]],
   ['processapmessage',['ProcessAPMessage',['../ardupilot_8h.html#a8b56d89d18a7b18c8cbeaf32feea0f18',1,'process_messages.c']]],
   ['processgsmessage',['ProcessGSMessage',['../ardupilot_8h.html#aa66411a7b203f08f8eda844035d314d2',1,'process_messages.c']]],
-  ['processingdisabledctr',['ProcessingDisabledCtr',['../structSCH__LibData__t.html#a9e28083f6ea6cf200bca794638426e39',1,'SCH_LibData_t']]]
+  ['processingdisabledctr',['ProcessingDisabledCtr',['../structSCH__LibData__t.html#a9e28083f6ea6cf200bca794638426e39',1,'SCH_LibData_t']]],
+  ['propgain',['propGain',['../structTrackingAppData__t.html#a4737a4f3fcd7111f07d06172fbe04535',1,'TrackingAppData_t']]]
 ];

@@ -101,8 +101,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <map name="_2home_2swee_2Software_2Icarous2_2cFS_2apps_2inc_2msgids_2ardupilot__msgids_8hdep" id="_2home_2swee_2Software_2Icarous2_2cFS_2apps_2inc_2msgids_2ardupilot__msgids_8hdep">
 <area shape="rect" id="node2" href="ardupilot_8h.html" title="function declarations, definitions of macros, datastructures and global variables for the arudpilot a..." alt="" coords="5,109,195,165"/>
 <area shape="rect" id="node5" href="geofence_8h.html" title="Definition of defines, structs and functions for geofence monitoring app. " alt="" coords="219,109,413,165"/>
-<area shape="rect" id="node6" href="traffic_8h.html" title="Function declaration, MACRO and data structure definitions for the traffic application. " alt="" coords="437,109,611,165"/>
-<area shape="rect" id="node7" href="trajectory_8h.html" title="Function declarations, data structure and macro declarations for the trajectory management applicatio..." alt="" coords="635,109,829,165"/>
+<area shape="rect" id="node6" href="tracking_8c.html" title="application to track an object. " alt="" coords="423,213,609,269"/>
+<area shape="rect" id="node7" href="tracking_8h.html" title="Function declaration, MACRO and data structure definitions for the tracking application. " alt="" coords="488,109,675,165"/>
+<area shape="rect" id="node8" href="traffic_8h.html" title="Function declaration, MACRO and data structure definitions for the traffic application. " alt="" coords="699,109,872,165"/>
+<area shape="rect" id="node9" href="trajectory_8h.html" title="Function declarations, data structure and macro declarations for the trajectory management applicatio..." alt="" coords="896,109,1091,165"/>
 <area shape="rect" id="node3" href="ardupilot_8c.html" title="function definitions for ardupilot app " alt="" coords="5,317,195,373"/>
 <area shape="rect" id="node4" href="ardupilot__table_8h.html" title="Ardupilot app table definition. " alt="" coords="72,213,261,269"/>
 </map>
@@ -164,6 +166,14 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ARDUPILOT__MESSAGE__TOPICS.html#ga192d4a5ecffcd7e241fc11b33cf67b10">ICAROUS_STATUS_MID</a>&#160;&#160;&#160;0x001E</td></tr>
 <tr class="memdesc:ga192d4a5ecffcd7e241fc11b33cf67b10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Icarous status message. message type:<a class="el" href="structstatus__t.html" title="Message to provide status information. ">status_t</a>. <br /></td></tr>
 <tr class="separator:ga192d4a5ecffcd7e241fc11b33cf67b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac3eb8d8d7743ecefcae6def08129426d"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ARDUPILOT__MESSAGE__TOPICS.html#gac3eb8d8d7743ecefcae6def08129426d">ICAROUS_DITCH_MID</a>&#160;&#160;&#160;0x001F</td></tr>
+<tr class="memdesc:gac3eb8d8d7743ecefcae6def08129426d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ditching signal: <a class="el" href="structnoArgsCmd__t.html" title="Command without arguments. ">noArgsCmd_t</a>. <br /></td></tr>
+<tr class="separator:gac3eb8d8d7743ecefcae6def08129426d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga987bf9a22e5b69737a20175f9406e70a"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ARDUPILOT__MESSAGE__TOPICS.html#ga987bf9a22e5b69737a20175f9406e70a">ICAROUS_TRACK_STATUS_MID</a>&#160;&#160;&#160;0x0020</td></tr>
+<tr class="memdesc:ga987bf9a22e5b69737a20175f9406e70a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command to start/stop tracking. message type: <a class="el" href="structargsCmd__t.html" title="Command with arguments. ">argsCmd_t</a>. <br /></td></tr>
+<tr class="separator:ga987bf9a22e5b69737a20175f9406e70a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32da34c7ccc9c236d5bdabd58847fc16"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>SendSBMsg</b>(msg)</td></tr>
 <tr class="separator:a32da34c7ccc9c236d5bdabd58847fc16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>

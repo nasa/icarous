@@ -10,6 +10,7 @@ var searchData=
   ['remainder',['Remainder',['../structSCH__ScheduleEntry__t.html#afed927177469e682cd7ac1f0fb18c4d9',1,'SCH_ScheduleEntry_t']]],
   ['resdown',['resDown',['../structbands__t.html#acb27f9f0c4da6256d73515594d52076f',1,'bands_t']]],
   ['reseticarous',['resetIcarous',['../ardupilot_8h.html#af7be49f01a35ee0616919e72e71942cb',1,'ardupilot.h']]],
+  ['resolution',['resolution',['../structTrackingAppData__t.html#a4aee2ec37308683ce9bd460bcfc4a92c',1,'TrackingAppData_t']]],
   ['resolutionspeed',['resolutionSpeed',['../structflightplan__monitor__t.html#a0d79041a4297593a71a550b785f103b4',1,'flightplan_monitor_t']]],
   ['respreferred',['resPreferred',['../structbands__t.html#aa7424a707ad5d613123424ce5560dbb8',1,'bands_t']]],
   ['resspeed',['resSpeed',['../structTrajectoryAppData__t.html#a6045bfea101fc8cd567bbdd58bf497d0',1,'TrajectoryAppData_t::resSpeed()'],['../structTrajectoryTable__t.html#a8ce200031d8975c9ec98152b5afe3bb8',1,'TrajectoryTable_t::resSpeed()']]],

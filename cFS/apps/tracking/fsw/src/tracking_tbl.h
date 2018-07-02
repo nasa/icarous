@@ -26,9 +26,9 @@ typedef struct
     double pGainX;       ///< proportional gain x;
     double pGainY;       ///< proportional gain y;
     double pGainZ;       ///< proportional gain z;
-    double heading;      ///< heading behind the target from which to track.
-    double distH;        ///< horizontal distance to maintain from the target.
-    double distV;        ///< vertical distance to maintain from the target.
+    double heading;      ///< heading behind the target from which to track (degree).
+    double distH;        ///< horizontal distance to maintain from the target (m).
+    double distV;        ///< vertical distance to maintain from the target (m).
 }TrackingTable_t;
 
 

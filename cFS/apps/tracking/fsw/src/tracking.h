@@ -28,7 +28,7 @@
 #define TRACKING_MINOR_VERSION 0
 
 /**
- * @defgroup TRAFFIC
+ * @defgroup TRACKING
  * @brief Application to track object
  * @ingroup APPLICATIONS
  *

@@ -7,5 +7,7 @@ var searchData=
   ['diagpacket',['DiagPacket',['../structSCH__AppData__t.html#ac0054573e464c334a5cde1188c1205b6',1,'SCH_AppData_t']]],
   ['directpathtowaypoint',['directPathToWaypoint',['../structgeofenceConflict__t.html#a5d9d58f76382889712f7ffbfeb80276f',1,'geofenceConflict_t']]],
   ['directpathtowp',['directPathToWP',['../structgeofenceAppData__t.html#af4d752ba4772c4b327a5707dc7615d2e',1,'geofenceAppData_t']]],
-  ['dist2nextwp',['dist2NextWP',['../structflightplan__monitor__t.html#aad327b88bd7fd511b1938daa17f108a3',1,'flightplan_monitor_t']]]
+  ['dist2nextwp',['dist2NextWP',['../structflightplan__monitor__t.html#aad327b88bd7fd511b1938daa17f108a3',1,'flightplan_monitor_t']]],
+  ['disth',['distH',['../structTrackingAppData__t.html#a23109e79e08ff1b6e4e9ff59a1a2bde8',1,'TrackingAppData_t::distH()'],['../structTrackingTable__t.html#ae4c746cbfabef5c2296eb64722e9f3d5',1,'TrackingTable_t::distH()']]],
+  ['distv',['distV',['../structTrackingAppData__t.html#ab86ee211b76b5a2e4a40a1490403a0c9',1,'TrackingAppData_t::distV()'],['../structTrackingTable__t.html#ae8b8e37b5177d5fd9850a597d68896a1',1,'TrackingTable_t::distV()']]]
 ];

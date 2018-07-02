@@ -9,6 +9,7 @@ var searchData=
   ['numconflicts',['numConflicts',['../structgeofenceConflict__t.html#ac984c44bf6161fc6979d21908dcace0c',1,'geofenceConflict_t']]],
   ['numconflicttraffic',['numConflictTraffic',['../structbands__t.html#a3d1b5e100442339e341cc1edbfb56c07',1,'bands_t']]],
   ['numfences',['numFences',['../structgeofenceAppData__t.html#a1c3be2a94524af2b5e5802ad06141313',1,'geofenceAppData_t::numFences()'],['../structgeofenceConflict__t.html#a8a48d35ce1137645151e0d0ff631ea88',1,'geofenceConflict_t::numFences()']]],
+  ['numobjects',['numObjects',['../structTrackingAppData__t.html#a421dd2db7f0219ca84efcbdfbb4730d0',1,'TrackingAppData_t']]],
   ['numplanscomputed',['numPlansComputed',['../structTrajectoryAppData__t.html#a1cf679c4db5cb55324c01d9b015fbd88',1,'TrajectoryAppData_t']]],
   ['numsats',['numSats',['../structposition__t.html#a35ef98927f8fa5786364fa64db39d459',1,'position_t']]],
   ['numwaypoints',['numWaypoints',['../structappdataInt__t.html#a83f3cd45e1aaebbb24b4c4849d13352c',1,'appdataInt_t']]]
