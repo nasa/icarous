@@ -181,31 +181,31 @@ Enumerations</h2></td></tr>
 </div><div class="memdoc">
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="gga3c2f9082ecaa451d1cd2ffc30fb01e8da42c4a5e03dc541106fe858b777c43988"></a>_ARM_&#160;</td><td class="fielddoc">
-<p>Arm the motors. </p>
+<p>Arm the motors. 1 parameter (arm_status:0/1 [disarm/arm]) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga3c2f9082ecaa451d1cd2ffc30fb01e8daa17a028662feb96d5232aabd6c8547bb"></a>_TAKEOFF_&#160;</td><td class="fielddoc">
-<p>Start the takeoff sequence (used in quadcopters) </p>
+<p>Start the takeoff sequence (used in quadcopters). 1 parameter (takeoff altitude [m]) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga3c2f9082ecaa451d1cd2ffc30fb01e8daab1774358a927cf641cc0c5b86fc056c"></a>_SETMODE_&#160;</td><td class="fielddoc">
-<p>Set autopilot modes. </p>
+<p>Set autopilot modes. 1 parameter (see icarousControlMode_e) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga3c2f9082ecaa451d1cd2ffc30fb01e8da8a1eb22ca26d3f2ccb0dd346642a8b35"></a>_LAND_&#160;</td><td class="fielddoc">
 <p>Start the landing sequence. </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga3c2f9082ecaa451d1cd2ffc30fb01e8da22118e5f5189b4115cc3d3e47399c2ba"></a>_GOTOWP_&#160;</td><td class="fielddoc">
-<p>Goto waypoint. </p>
+<p>Goto waypoint. 1 parameter (waypoint index) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga3c2f9082ecaa451d1cd2ffc30fb01e8da7d57e6522c20d91ef6ba2a73dc4b9672"></a>_SETPOS_&#160;</td><td class="fielddoc">
-<p>Set position. </p>
+<p>Set position. 3 parameters (lat [deg], lon [deg], alt [m]) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga3c2f9082ecaa451d1cd2ffc30fb01e8da04bc8530f5467061e805f52edf066e8d"></a>_SETVEL_&#160;</td><td class="fielddoc">
-<p>Set velocity. </p>
+<p>Set velocity. 3 parameters (Vn [m/s], Ve [m/s], Vu [m/s]) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga3c2f9082ecaa451d1cd2ffc30fb01e8dae5d39b8f6ab73bfde64adab5f48a40e7"></a>_SETYAW_&#160;</td><td class="fielddoc">
-<p>Set yaw. </p>
+<p>Set yaw. 4 parameters (target angle [deg], angular rate [deg/s], direction (clk,anit-clk) [1,-1], type (1/0) [relative/absolute] ) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga3c2f9082ecaa451d1cd2ffc30fb01e8da44620aa63f908fbbefd7f0f1c7f92e4c"></a>_SETSPEED_&#160;</td><td class="fielddoc">
-<p>Set speed. </p>
+<p>Set speed. 1 parameter (speed [m/s]) </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga3c2f9082ecaa451d1cd2ffc30fb01e8da43483117ae10cc7335265f693e326e48"></a>_STATUS_&#160;</td><td class="fielddoc">
 <p>Status command. </p>

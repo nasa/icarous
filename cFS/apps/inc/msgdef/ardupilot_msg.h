@@ -37,15 +37,15 @@ typedef enum {
  * @brief Commands that are set to the autopilot app from other applications
  */
 typedef enum {
-	_ARM_,           ///< Arm the motors
-	_TAKEOFF_,       ///< Start the takeoff sequence (used in quadcopters)
-	_SETMODE_,       ///< Set autopilot modes
+	_ARM_,           ///< Arm the motors. 1 parameter (arm_status:0/1 [disarm/arm])
+	_TAKEOFF_,       ///< Start the takeoff sequence (used in quadcopters). 1 parameter (takeoff altitude [m])
+	_SETMODE_,       ///< Set autopilot modes. 1 parameter (see icarousControlMode_e)
 	_LAND_,          ///< Start the landing sequence
-	_GOTOWP_,        ///< Goto waypoint
-	_SETPOS_,        ///< Set position
-	_SETVEL_,        ///< Set velocity
-	_SETYAW_,        ///< Set yaw
-	_SETSPEED_,      ///< Set speed
+	_GOTOWP_,        ///< Goto waypoint. 1 parameter (waypoint index)
+	_SETPOS_,        ///< Set position. 3 parameters (lat [deg], lon [deg], alt [m])
+	_SETVEL_,        ///< Set velocity. 3 parameters (Vn [m/s], Ve [m/s], Vu [m/s])
+	_SETYAW_,        ///< Set yaw. 4 parameters (target angle [deg], angular rate [deg/s], direction (clk,anit-clk) [1,-1], type (1/0) [relative/absolute] )
+	_SETSPEED_,      ///< Set speed. 1 parameter (speed [m/s])
 	_STATUS_,        ///< Status command
 	_DITCH_,         ///< Start ditching status
 } commandName_e;
@@ -177,10 +177,10 @@ typedef struct{
 typedef struct{
     uint8_t TlmHeader[CFE_SB_CMD_HDR_SIZE];  /**< cFS header information */
 	commandName_e name;                      /**< command name: see command_name_t */
-	double param1,param2;                     /**< command arguments */
-	double param3,param4;                     /**< command arguments */
-	double param5,param6;                     /**< command arguments */
-	double param7,param8;                     /**< command arguments */
+	double param1,param2;                    /**< command arguments */
+	double param3,param4;                    /**< command arguments */
+	double param5,param6;                    /**< command arguments */
+	double param7,param8;                    /**< command arguments */
 	char buffer[50];                         /**< command arguments */
 }argsCmd_t;
 
@@ -205,4 +205,5 @@ typedef struct{
 }status_t;
 
 /**@}*/
-#endif /* COMMON_DEFS_H_ */
+
+#endif /* ARDUPILOT_DEFS_H_ */
