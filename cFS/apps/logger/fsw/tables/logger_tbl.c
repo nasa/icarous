@@ -4,7 +4,8 @@
 #include "logger.h"
 
 LoggerTable_t TblStruct={
-    true // log data
+    true,                // log data
+    "1980-012-14:02:48"  //time stamp for playback.
 };
 
 /*

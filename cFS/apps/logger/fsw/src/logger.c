@@ -6,6 +6,7 @@
 #include <msgdef/ardupilot_msg.h>
 #include <cfe_time.h>
 #include "logger.h"
+#include "logger_table.h"
 
 /// Event filter definition for logger
 CFE_EVS_BinFilter_t  LOGGER_EventFilters[] =
@@ -80,6 +81,7 @@ void LOGGER_AppInit(void){
 	status = CFE_TBL_GetAddress((void**)&TblPtr,appdataLog.LOGGER_tblHandle);
 
 	appdataLog.record = TblPtr->logRecord;
+    memcpy(appdataLog.playbackTS,TblPtr->timeStamp,20);
 
 	// Free table pointer
 	status = CFE_TBL_ReleaseAddress(appdataLog.LOGGER_tblHandle);
@@ -108,17 +110,41 @@ void LOGGER_AppInit(void){
 }
 
 void PrepareLogFiles(){
+	char timeBuffer1[100], timeBuffer2[18];
+    char fnamePosition[50];
+	char fnameCommands[50];
+	char fnameMP[50];
+    char fnameGF[50];
+	char fnameAck[50];
+	char fnameTraffic[50];
+	char fnameStart[50];
+	char fnameWPReached[50];
 
-	appdataLog.fpPos = fopen("../ram/IClog/Position.log","w");
-	appdataLog.fpCommands = fopen("../ram/IClog/Commands.log","w");
-	appdataLog.fpFlightPlan = fopen("../ram/IClog/MissionPlan.log","w");
-	appdataLog.fpGeofence =  fopen("../ram/IClog/Geofence.log","w");
-	appdataLog.fpCmdAck = fopen("../ram/IClog/CommandAck.log","w");
-	appdataLog.fpTraffic = fopen("../ram/IClog/Traffic.log","w");
-	appdataLog.fpStartMission = fopen("../ram/IClog/StartMission.log","w");
-	appdataLog.fpWpReached = fopen("../ram/IClog/WPReached.log","w");
+    // Get current time to create log file names
+	CFE_TIME_SysTime_t currentTime = CFE_TIME_GetUTC();
+	CFE_TIME_Print(timeBuffer1,currentTime);
 
-    CFE_TIME_SysTime_t currentTime = CFE_TIME_GetUTC();
+	memcpy(timeBuffer2,timeBuffer1,17);
+    timeBuffer2[17] = '\0';
+
+	sprintf(fnamePosition,"../ram/IClog/Position_%s.log",timeBuffer2);
+ 	sprintf(fnameCommands,"../ram/IClog/Commands_%s.log",timeBuffer2);
+    sprintf(fnameMP,"../ram/IClog/MissionPlan_%s.log",timeBuffer2);
+    sprintf(fnameGF,"../ram/IClog/Geofence_%s.log",timeBuffer2);
+    sprintf(fnameAck,"../ram/IClog/CommandAck_%s.log",timeBuffer2);
+    sprintf(fnameTraffic,"../ram/IClog/Traffic_%s.log",timeBuffer2);
+    sprintf(fnameStart,"../ram/IClog/StartMission_%s.log",timeBuffer2);
+   	sprintf(fnameWPReached,"../ram/IClog/WPReached_%s.log",timeBuffer2);
+
+	appdataLog.fpPos = fopen(fnamePosition,"w");
+	appdataLog.fpCommands = fopen(fnameCommands,"w");
+	appdataLog.fpFlightPlan = fopen(fnameMP,"w");
+	appdataLog.fpGeofence =  fopen(fnameGF,"w");
+	appdataLog.fpCmdAck = fopen(fnameAck,"w");
+	appdataLog.fpTraffic = fopen(fnameTraffic,"w");
+	appdataLog.fpStartMission = fopen(fnameStart,"w");
+	appdataLog.fpWpReached = fopen(fnameWPReached,"w");
+
 	fwrite(&currentTime, sizeof(CFE_TIME_SysTime_t),1,appdataLog.fpPos);
 	fwrite(&currentTime, sizeof(CFE_TIME_SysTime_t),1,appdataLog.fpCommands);
     fwrite(&currentTime, sizeof(CFE_TIME_SysTime_t),1,appdataLog.fpFlightPlan);
@@ -131,14 +157,37 @@ void PrepareLogFiles(){
 
 
 void OpenLogFiles(){
-    appdataLog.fpPos = fopen("../ram/IClog/Position.log","r");
-	appdataLog.fpCommands = fopen("../ram/IClog/Commands.log","r");
-	appdataLog.fpFlightPlan = fopen("../ram/IClog/MissionPlan.log","r");
-	appdataLog.fpGeofence =  fopen("../ram/IClog/Geofence.log","r");
-	appdataLog.fpCmdAck = fopen("../ram/IClog/CommandAck.log","r");
-	appdataLog.fpTraffic = fopen("../ram/IClog/Traffic.log","r");
-	appdataLog.fpStartMission = fopen("../ram/IClog/StartMission.log","r");
-    appdataLog.fpWpReached = fopen("../ram/IClog/WPReached.log","r");
+
+    char fnamePosition[50];
+	char fnameCommands[50];
+	char fnameMP[50];
+    char fnameGF[50];
+	char fnameAck[50];
+	char fnameTraffic[50];
+	char fnameStart[50];
+	char fnameWPReached[50];
+
+	sprintf(fnamePosition,"../ram/IClog/Position_%s.log",appdataLog.playbackTS);
+ 	sprintf(fnameCommands,"../ram/IClog/Commands_%s.log",appdataLog.playbackTS);
+    sprintf(fnameMP,"../ram/IClog/MissionPlan_%s.log",appdataLog.playbackTS);
+    sprintf(fnameGF,"../ram/IClog/Geofence_%s.log",appdataLog.playbackTS);
+    sprintf(fnameAck,"../ram/IClog/CommandAck_%s.log",appdataLog.playbackTS);
+    sprintf(fnameTraffic,"../ram/IClog/Traffic_%s.log",appdataLog.playbackTS);
+    sprintf(fnameStart,"../ram/IClog/StartMission_%s.log",appdataLog.playbackTS);
+   	sprintf(fnameWPReached,"../ram/IClog/WPReached_%s.log",appdataLog.playbackTS);
+
+	appdataLog.fpPos = fopen(fnamePosition,"r");
+	appdataLog.fpCommands = fopen(fnameCommands,"r");
+	appdataLog.fpFlightPlan = fopen(fnameMP,"r");
+	appdataLog.fpGeofence =  fopen(fnameGF,"r");
+	appdataLog.fpCmdAck = fopen(fnameAck,"r");
+	appdataLog.fpTraffic = fopen(fnameTraffic,"r");
+	appdataLog.fpStartMission = fopen(fnameStart,"r");
+	appdataLog.fpWpReached = fopen(fnameWPReached,"r");
+
+    if(appdataLog.fpPos == NULL){
+        OS_printf("Log file not found\n");
+    }
 
 	fread(&appdataLog.logRecStartTime, sizeof(CFE_TIME_SysTime_t),1,appdataLog.fpPos);
 	fread(&appdataLog.logRecStartTime, sizeof(CFE_TIME_SysTime_t),1,appdataLog.fpCommands);

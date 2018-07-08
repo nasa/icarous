@@ -65,8 +65,8 @@ typedef struct{
     FILE * fpWpReached;                         ///< waypoint reached
     CFE_TIME_SysTime_t logRecStartTime;         ///< Start time recorded in log
     CFE_TIME_SysTime_t appStartTime;            ///< App start time
-    bool record;
-
+    bool record;                                ///< record log file
+    char playbackTS[20];                        ///< play back time stamp
 }appdataLog_t;
 
 
