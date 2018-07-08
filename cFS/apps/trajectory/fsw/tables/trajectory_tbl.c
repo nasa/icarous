@@ -24,7 +24,7 @@ TrajectoryTable_t TblStruct = {
   5.0,                              // final goal capture radius
   "../ram/DaidalusQuadConfig.txt",  // daa configuration file for RRT
 
-  2.0,                              // Xtrack deviation allowed
+  6.0,                              // Xtrack deviation allowed
   0.6,                              // Xtrack error gain.
   1.0,                              // Resolution speed for maneuvers
   _ASTAR                            // Search algorithm for planning
