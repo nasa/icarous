@@ -467,6 +467,11 @@ void ARDUPILOT_ProcessPacket() {
 
                 case _GOTOWP_:
                 {
+
+					if(appdataInt.numWaypoints == 0){
+						break;
+					}
+
                     int tempSeq = (int)cmd->param1;
                     int seq = -1;
                     appdataInt.nextWaypointIndex = tempSeq;

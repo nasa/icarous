@@ -1,10 +1,12 @@
-<map id="/home/research133/Software/Icarous2/cFS/apps/inc/msgids/ardupilot_msgids.h" name="/home/research133/Software/Icarous2/cFS/apps/inc/msgids/ardupilot_msgids.h">
+<map id="/home/swee/Software/Icarous2/cFS/apps/inc/msgids/ardupilot_msgids.h" name="/home/swee/Software/Icarous2/cFS/apps/inc/msgids/ardupilot_msgids.h">
 <area shape="rect" id="node2" href="$ardupilot_8h.html" title="function declarations, definitions of macros, datastructures and global variables for the arudpilot a..." alt="" coords="5,109,195,165"/>
 <area shape="rect" id="node5" href="$geofence_8h.html" title="Definition of defines, structs and functions for geofence monitoring app. " alt="" coords="219,109,413,165"/>
-<area shape="rect" id="node6" href="$tracking_8c.html" title="application to track an object. " alt="" coords="421,213,611,269"/>
-<area shape="rect" id="node7" href="$tracking_8h.html" title="Function declaration, MACRO and data structure definitions for the tracking application. " alt="" coords="488,109,677,165"/>
-<area shape="rect" id="node8" href="$traffic_8h.html" title="Function declaration, MACRO and data structure definitions for the traffic application. " alt="" coords="701,109,891,165"/>
-<area shape="rect" id="node9" href="$trajectory_8h.html" title="Function declarations, data structure and macro declarations for the trajectory management applicatio..." alt="" coords="915,109,1109,165"/>
+<area shape="rect" id="node6" href="$logger_8h.html" title="function declarations, definitions of macros, datastructures and global variables for the logging app..." alt="" coords="437,109,611,165"/>
+<area shape="rect" id="node8" href="$tracking_8c.html" title="application to track an object. " alt="" coords="661,213,848,269"/>
+<area shape="rect" id="node9" href="$tracking_8h.html" title="Function declaration, MACRO and data structure definitions for the tracking application. " alt="" coords="687,109,873,165"/>
+<area shape="rect" id="node10" href="$traffic_8h.html" title="Function declaration, MACRO and data structure definitions for the traffic application. " alt="" coords="897,109,1071,165"/>
+<area shape="rect" id="node11" href="$trajectory_8h.html" title="Function declarations, data structure and macro declarations for the trajectory management applicatio..." alt="" coords="1095,109,1289,165"/>
 <area shape="rect" id="node3" href="$ardupilot_8c.html" title="function definitions for ardupilot app " alt="" coords="5,317,195,373"/>
 <area shape="rect" id="node4" href="$ardupilot__table_8h.html" title="Ardupilot app table definition. " alt="" coords="72,213,261,269"/>
+<area shape="rect" id="node7" href="$logger_8c.html" title="function definitions for logger app " alt="" coords="437,213,611,269"/>
 </map>

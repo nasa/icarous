@@ -4,6 +4,7 @@ var searchData=
   ['readport',['readPort',['../ardupilot_8c.html#a03f2dc5b2f5b2d574266abb4d5bc0f00',1,'readPort(port_t *prt):&#160;ardupilot.c'],['../ardupilot_8h.html#a03f2dc5b2f5b2d574266abb4d5bc0f00',1,'readPort(port_t *prt):&#160;ardupilot.c']]],
   ['receivedfence',['receivedFence',['../structgeofenceAppData__t.html#a3a8bfe9115b4b1936416f36269cd20ca',1,'geofenceAppData_t']]],
   ['receivedfp',['receivedFP',['../structgeofenceAppData__t.html#a90cc5f8c9577467c23718724fca635ca',1,'geofenceAppData_t']]],
+  ['recordpackets',['RecordPackets',['../logger_8c.html#a9dcceceb516449ebc91388cf68ed802b',1,'RecordPackets():&#160;logger.c'],['../logger_8h.html#a9dcceceb516449ebc91388cf68ed802b',1,'RecordPackets():&#160;logger.c']]],
   ['recovery',['recovery',['../structbands__t.html#a9328f5622b0d72d1d28c211e963739f9',1,'bands_t']]],
   ['recoveryposition',['recoveryPosition',['../structgeofenceConflict__t.html#a793d0502a8caa3c31de26171a48b6403',1,'geofenceConflict_t']]],
   ['recvbuffer',['recvbuffer',['../structport__t.html#aae1a7c5a40dd235876567fad3e5d1b71',1,'port_t::recvbuffer()'],['../structs2d__port__t.html#aee491c7d169ca187c51d9cce32493a96',1,'s2d_port_t::recvbuffer()']]],

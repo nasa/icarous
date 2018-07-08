@@ -29,6 +29,7 @@ var searchData=
   ['searchalgorithm',['searchAlgorithm',['../structTrajectoryTable__t.html#ad554662142dec6b997a3952a7329e77d',1,'TrajectoryTable_t']]],
   ['searchtype',['searchType',['../structflightplan__monitor__t.html#a7355f01012aad718da22da605f02a1d5',1,'flightplan_monitor_t::searchType()'],['../structTrajectoryAppData__t.html#a0deede4e96cc16c1aff60256dc4dd7c9',1,'TrajectoryAppData_t::searchType()']]],
   ['self_5faddr',['self_addr',['../structport__t.html#a064da1e23f778d24e376a0634b016fce',1,'port_t::self_addr()'],['../structs2d__port__t.html#afb2d3cb6158baf90e74030f9fcd163ea',1,'s2d_port_t::self_addr()']]],
+  ['sentpos',['sentPos',['../logger_8h.html#a30b7fc2f9ddd505adece0109d02b5d25',1,'logger.h']]],
   ['serial',['SERIAL',['../ardupilot_8h.html#a66e863beb9373e5375cccc1270fcdb5bab110642f01505447ed49cf2d49fbf0a2',1,'ardupilot.h']]],
   ['skippedslotscount',['SkippedSlotsCount',['../structSCH__AppData__t.html#ab3096988488fc9154cfb6571bf9742b1',1,'SCH_AppData_t::SkippedSlotsCount()'],['../structSCH__HkPacket__t.html#a459d3cd3c53c6a67acdcbf0ba0f1a012',1,'SCH_HkPacket_t::SkippedSlotsCount()']]],
   ['slotnumber',['SlotNumber',['../structSCH__EntryCmd__t.html#ab2c4beb6673659795bb1afa5681699e0',1,'SCH_EntryCmd_t']]],
@@ -41,6 +42,7 @@ var searchData=
   ['stabilize',['STABILIZE',['../ardupilot_8h.html#a7e009e7dbc0dd7be939d03455c972549a1aa061c741237642fc9720e78bcc0ce9',1,'ardupilot.h']]],
   ['startmission',['startMission',['../ardupilot_8h.html#a3fff3567b90515dc216dd41ee385266d',1,'ardupilot.h']]],
   ['status_5ft',['status_t',['../structstatus__t.html',1,'']]],
+  ['subscribeinputs',['SubscribeInputs',['../logger_8c.html#adc7885d70472b4741c13b8eb5ac17270',1,'SubscribeInputs():&#160;logger.c'],['../logger_8h.html#adc7885d70472b4741c13b8eb5ac17270',1,'SubscribeInputs():&#160;logger.c']]],
   ['syncattemptsleft',['SyncAttemptsLeft',['../structSCH__AppData__t.html#a18b11d9ee4ba1441b4043c85ffa792ac',1,'SCH_AppData_t']]],
   ['synctomet',['SyncToMET',['../structSCH__AppData__t.html#a7566da82417dde9200295fdeb8394a3b',1,'SCH_AppData_t::SyncToMET()'],['../structSCH__HkPacket__t.html#ac8936e4ac0482d7f26806bb4cf40b178',1,'SCH_HkPacket_t::SyncToMET()']]]
 ];

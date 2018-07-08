@@ -166,7 +166,7 @@ typedef struct{
  *
  */
 typedef struct{
-    uint8_t TlmHeader[CFE_SB_CMD_HDR_SIZE];  /**< cFS header information */
+    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];  /**< cFS header information */
 	commandName_e name;                      /**< command name */
 }noArgsCmd_t;
 
@@ -175,7 +175,7 @@ typedef struct{
  * @brief Command with arguments
  */
 typedef struct{
-    uint8_t TlmHeader[CFE_SB_CMD_HDR_SIZE];  /**< cFS header information */
+    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];  /**< cFS header information */
 	commandName_e name;                      /**< command name: see command_name_t */
 	double param1,param2;                    /**< command arguments */
 	double param3,param4;                    /**< command arguments */
@@ -189,7 +189,7 @@ typedef struct{
  * @brief Command acknowledgement
  */
 typedef struct{
-    uint8_t TlmHeader[CFE_SB_CMD_HDR_SIZE];  /**< cFS header information */
+    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];  /**< cFS header information */
 	commandName_e name;                      /**< command name: see command_name_t */
 	int result;                              /**< result */
 }cmdAck_t;
@@ -200,7 +200,7 @@ typedef struct{
  * @brief Message to provide status information
  */
 typedef struct{
-    uint8_t TlmHeader[CFE_SB_CMD_HDR_SIZE];   /**< cFS header information */
+    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
     char buffer[250];                         /**< status message */
 }status_t;
 

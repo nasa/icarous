@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['missionitemreached_5ft',['missionItemReached_t',['../structmissionItemReached__t.html',1,'']]]
+  ['loggertable_5ft',['LoggerTable_t',['../structLoggerTable__t.html',1,'']]]
 ];

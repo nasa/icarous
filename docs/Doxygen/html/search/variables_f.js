@@ -15,6 +15,7 @@ var searchData=
   ['searchalgorithm',['searchAlgorithm',['../structTrajectoryTable__t.html#ad554662142dec6b997a3952a7329e77d',1,'TrajectoryTable_t']]],
   ['searchtype',['searchType',['../structflightplan__monitor__t.html#a7355f01012aad718da22da605f02a1d5',1,'flightplan_monitor_t::searchType()'],['../structTrajectoryAppData__t.html#a0deede4e96cc16c1aff60256dc4dd7c9',1,'TrajectoryAppData_t::searchType()']]],
   ['self_5faddr',['self_addr',['../structport__t.html#a064da1e23f778d24e376a0634b016fce',1,'port_t::self_addr()'],['../structs2d__port__t.html#afb2d3cb6158baf90e74030f9fcd163ea',1,'s2d_port_t::self_addr()']]],
+  ['sentpos',['sentPos',['../logger_8h.html#a30b7fc2f9ddd505adece0109d02b5d25',1,'logger.h']]],
   ['skippedslotscount',['SkippedSlotsCount',['../structSCH__AppData__t.html#ab3096988488fc9154cfb6571bf9742b1',1,'SCH_AppData_t::SkippedSlotsCount()'],['../structSCH__HkPacket__t.html#a459d3cd3c53c6a67acdcbf0ba0f1a012',1,'SCH_HkPacket_t::SkippedSlotsCount()']]],
   ['slotnumber',['SlotNumber',['../structSCH__EntryCmd__t.html#ab2c4beb6673659795bb1afa5681699e0',1,'SCH_EntryCmd_t']]],
   ['slotsprocessedcount',['SlotsProcessedCount',['../structSCH__AppData__t.html#ab8b8c2cb0da3cc35316490f73e8a1ef6',1,'SCH_AppData_t::SlotsProcessedCount()'],['../structSCH__HkPacket__t.html#a44390eb7a92bbd1a9250db505ee55ee1',1,'SCH_HkPacket_t::SlotsProcessedCount()']]],
