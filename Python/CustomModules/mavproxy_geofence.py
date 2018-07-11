@@ -66,6 +66,8 @@ class GeoFenceModule(mp_module.MPModule):
                 self.communicating = False
                 self.fence2send = None
                 self.console.writeln("Sending failed")
+                self.numSentFence = 0
+                return 
             if self.numSentFence == len(self.fenceList):
                 self.startSendingFence = False
                 self.communicating = False
