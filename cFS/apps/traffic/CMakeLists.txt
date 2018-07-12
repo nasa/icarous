@@ -7,21 +7,24 @@ set(MODULES_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../../Modules")
 set(MODULES_LIB "${MODULES_ROOT}/lib")
 
 include_directories(../inc)
+include_directories(${MODULES_ROOT}/Utils)
 include_directories(${MODULES_ROOT}/TrafficMonitor)
 include_directories(${MODULES_ROOT}/TrafficMonitor/CWrapper)
+include_directories(fsw/src)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
 link_directories(${MODULES_LIB})
-link_directories(${PLEXIL_LIB})
 
-add_library(traffic MODULE ${APP_SRC_FILES} ${MODULES_ROOT}/TrafficMonitor/CWrapper/TrafficMonitor_proxy.c fsw/src/TrafficServiceHandler.c)
+add_library(traffic MODULE ${APP_SRC_FILES} ${MODULES_ROOT}/TrafficMonitor/CWrapper/TrafficMonitor_proxy.c)
 
-target_link_libraries(traffic TrafficMonitor PlexilWrapper)
+target_link_libraries(traffic TrafficMonitor)
 
 set_target_properties(traffic PROPERTIES PREFIX "")
 
-set_target_properties(traffic PROPERTIES INSTALL_RPATH "${MODULES_LIB}:${PLEXIL_LIB}")
+set_target_properties(traffic PROPERTIES INSTALL_RPATH "${MODULES_LIB}")
+
+add_cfe_tables(traffic "fsw/tables/traffic_tbl.c")
 
 foreach(TGT ${APP_INSTALL_LIST})
     install(TARGETS traffic DESTINATION ${TGT}/${INSTALL_SUBDIR})

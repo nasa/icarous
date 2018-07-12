@@ -1,19 +1,24 @@
 // -*- Mode: Java -*-
 // Plan to fly to a specific waypoint
 
+//Commands
 Boolean Command CheckDirectPathFeasibility(Real fromPosition[3],Real toPosition[3]);
-Integer Command FindNewPath(String planID,String algorithm,Real fromPosition[3],Real fromVelocity[3],Real toPosition[3]);
-Integer Command GetTotalWaypoints(String planID);
-Real[3] Command GetWaypoint(String planID,Integer index);
-Real Command Heading2Maneuver(Real fromPosition[3],Real toPosition[3]);
+Integer Command FindNewPath(String algorithm,Real fromPosition[3],Real fromVelocity[3],Real toPosition[3]);
+Real[3] Command GetResolutionWP(Integer index);
 Real Command ComputeDistance(Real fromPosition[3],Real toPosition[3]);
 Command SetPos(Real position[3]);
 Command SetMode(String mode);
 Command SetVel(Real velocity[3]);
 Command pprint(...);
+
+// Lookups
 Real[3] Lookup position;
 Real[3] Lookup velocity;
-Real Lookup captureH;
+Real[3] Lookup nextFeasibleWP;
+Boolean Lookup directPathToNextFeasibleWP;
+Integer Lookup totalResolutionWP;
+
+LibraryAction MONITOR(InOut Integer ConflictId);
 
 GOTO_POSITION:{
 
@@ -21,31 +26,33 @@ GOTO_POSITION:{
     In Boolean TrafficConflict;
     In Real TargetPosition[3];
     In Real resSpeed;
+    In Integer PrevConflictId;
     InOut Boolean resolutionCompleted;
     Real CurrentPosition[3];
     Real CurrentVelocity[3];
-    Boolean targetFeasibility;
     Real capH;
     Integer nextWPIndex = 1;
     Integer totalWPIndex;
+    Boolean targetFeasibility;
+
     EndCondition isKnown(resolutionCompleted);
 
     pprint("Plexil status: In Library call GOTO_POSITION");
 
     CurrentPosition = Lookup(position);
     CurrentVelocity = Lookup(velocity);
-    capH = Lookup(captureH);
+    capH = resSpeed*1.5;
 
     SetMode("ACTIVE");
     
-    CHECK_FEASIBILITY:{
+    GET_FEASIBLE_WP:{
 
         pprint("Plexil status: checking target feasibility");
 
         {
-	        EndCondition isKnown(targetFeasibility);
-	        targetFeasibility = CheckDirectPathFeasibility(CurrentPosition,TargetPosition);
-	    }
+            EndCondition isKnown(targetFeasibility);
+            targetFeasibility = CheckDirectPathFeasibility(CurrentPosition,TargetPosition);
+        }
 
         pprint("Plexil status: Target feasibility ",targetFeasibility);
 
@@ -58,39 +65,41 @@ GOTO_POSITION:{
 
 
     BEE_LINE:{
+        Integer vConflictId;
+        Real dist2nextWP = 10000;
         SkipCondition !targetFeasibility;
 
         pprint("Plexil status: Going to target:",TargetPosition);
+        vConflictId = PrevConflictId;
 
         SetPos(TargetPosition);
 
         {
-            Real dist2nextWP;
-            Repeat true;
-
+            Real val;
+            Repeat (dist2nextWP > capH) && (vConflictId == PrevConflictId);
             CurrentPosition = Lookup(position);
 
             {
-                EndCondition isKnown(dist2nextWP);
-                dist2nextWP = ComputeDistance(CurrentPosition,TargetPosition);
+                EndCondition isKnown(val);
+                val = ComputeDistance(CurrentPosition,TargetPosition);
             }
+            dist2nextWP = val;
 
-            if(dist2nextWP < 2.0){
-                resolutionCompleted = true;
-            }endif
-
+            LibraryCall MONITOR(ConflictId = vConflictId);
         }
+
+        resolutionCompleted = true;
     }
 
     PLAN_PATH:{
         Integer status;
         SkipCondition targetFeasibility;
 
-        //pprint("Plexil status: Planning a path to target location");
+        pprint("Plexil status: Planning a path to target location");
 
         {
             EndCondition isKnown(status);
-            status = FindNewPath("Plan1",SearchType,CurrentPosition,CurrentVelocity,TargetPosition);
+            status = FindNewPath(SearchType,CurrentPosition,CurrentVelocity,TargetPosition);
         }
 
         if(status < 0){
@@ -98,26 +107,26 @@ GOTO_POSITION:{
             pprint("Plexil status: Failed to Compute resolution");
         }endif
 
-        {
-            EndCondition isKnown(totalWPIndex);
-            totalWPIndex = GetTotalWaypoints("Plan1");
-        }
+        totalWPIndex = Lookup(totalResolutionWP);
 
-        pprint("Plexil status: Computed waypoint with:",SearchType);
+        pprint("Plexil status: Computed waypoint with:",SearchType,status);
 
     }
 
+
     CHECK_WP_TRANSITION:{
         Real NextWP[3];
+        Integer vConflictId;
+
+        vConflictId = PrevConflictId;
 
         {
             EndCondition isKnown(NextWP[0]);
-            NextWP = GetWaypoint("Plan1",nextWPIndex);
+            NextWP = GetResolutionWP(nextWPIndex);
         }
 
         // Use set pos to go to spot directly
         SetPos(NextWP);
-
 
         //pprint("Setting position");
 
@@ -125,49 +134,28 @@ GOTO_POSITION:{
             Real dist2nextWP;
             Real heading2nextWP;
             Real velocityCmd[3];
-            Repeat true;
+            Repeat (nextWPIndex < totalWPIndex) && (vConflictId == PrevConflictId);
 
             CurrentPosition = Lookup(position);
 
-            {
-               EndCondition isKnown(heading2nextWP);
-               heading2nextWP = Heading2Maneuver(CurrentPosition,NextWP);
-            }
-
+            LibraryCall MONITOR(ConflictId = vConflictId);
 
             {
                 EndCondition isKnown(dist2nextWP);
                 dist2nextWP = ComputeDistance(CurrentPosition,NextWP);
             }
 
-            velocityCmd[0] = heading2nextWP;
-            velocityCmd[1] = resSpeed;
-
-            //SetVel(velocityCmd);
-
-
-            //pprint("dist2nextWP:",dist2nextWP);
-
-            //pprint("resSpeed:",resSpeed);
-
-            //pprint("capH:",capH);
-
             {
                 SkipCondition dist2nextWP > capH;
                 nextWPIndex = nextWPIndex + 1;
 
                 {
-                    SkipCondition nextWPIndex <= totalWPIndex -1;
-                    resolutionCompleted = true;
-                }
-
-                {
                     Real _nextWP[3];
-                    StartCondition (nextWPIndex <= totalWPIndex - 1);
+                    SkipCondition (nextWPIndex >= totalWPIndex);
 
                     {
                         EndCondition isKnown(_nextWP[0]);
-                        _nextWP = GetWaypoint("Plan1",nextWPIndex);
+                        _nextWP = GetResolutionWP(nextWPIndex);
                     }
 
                     SetPos(_nextWP);
@@ -179,5 +167,7 @@ GOTO_POSITION:{
             }
 
         }
+
+        resolutionCompleted = true;
     }
 }

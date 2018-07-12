@@ -5,9 +5,9 @@
 #define EXTERN
 
 #include <cfs-data-format.hh>
-#include <Icarous_msg.h>
+#include <msgdef/ardupilot_msg.h>
 #include "plexil.h"
-#include "msgids/msgids.h"
+#include "msgids/ardupilot_msgids.h"
 
 CFE_EVS_BinFilter_t  PLEXIL_EventFilters[] =
         {  /* Event ID    mask */
@@ -24,13 +24,24 @@ void PLEXIL_AppMain(void){
     PLEXIL_AppInit();
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
-        status = CFE_SB_RcvMsg(&plexilAppData.PLEXIL_MsgPtr, plexilAppData.PLEXIL_Pipe, 10);
 
+        // Receive plexil scheduler message and command/lookup returns
+        status = CFE_SB_RcvMsg(&plexilAppData.PLEXIL_MsgPtr, plexilAppData.PLEXIL_Pipe,10);
+
+        // run actions on wakeup
         if (status == CFE_SUCCESS)
         {
+            PLEXIL_ProcessPacket(false);
+        }
 
-            PLEXIL_ProcessPacket();
+        // Lets process several messages in the other pipe
+        for(int i=0;i<20;i++){
+            status = CFE_SB_RcvMsg(&plexilAppData.DATA_MsgPtr, plexilAppData.DATA_Pipe,1);
 
+            if (status == CFE_SUCCESS)
+            {
+                PLEXIL_ProcessPacket(true);
+            }
         }
     }
 
@@ -54,18 +65,26 @@ void PLEXIL_AppInit(void) {
                      CFE_EVS_BINARY_FILTER);
 
     // Create pipe to receive SB messages
+
+
     status = CFE_SB_CreatePipe(&plexilAppData.PLEXIL_Pipe, /* Variable to hold Pipe ID */
-                               PLEXIL_PIPE_DEPTH,       /* Depth of Pipe */
-                               PLEXIL_PIPE_NAME);       /* Name of pipe */
+                               PLEXIL_PIPE_DEPTH,              /* Depth of Pipe */
+                               PLEXIL_PIPE_NAME);          /* Name of pipe */
+
+
+    status = CFE_SB_CreatePipe(&plexilAppData.DATA_Pipe, /* Variable to hold Pipe ID */
+                               PLEXIL_PIPE_DEPTH,          /* Depth of Pipe */
+                               PLEXIL_DATA_PIPE_NAME);          /* Name of pipe */
 
     //Subscribe to command messages and kinematic band messages from the SB
-    CFE_SB_Subscribe(SERVICE_INTERFACE_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
-    CFE_SB_Subscribe(SERVICE_GEOFENCE_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
-    CFE_SB_Subscribe(SERVICE_TRAFFIC_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
-    CFE_SB_Subscribe(SERVICE_TRAJECTORY_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
-    CFE_SB_Subscribe(SERVICE_DITCH_RESPONSE_MID, plexilAppData.PLEXIL_Pipe);
+    //Subscribe to scheduler messages
     CFE_SB_Subscribe(PLEXIL_WAKEUP_MID, plexilAppData.PLEXIL_Pipe);
-    
+
+    //Subscribe to command/lookup return messages other data messages
+    //command/lookup return messages should be subscribed in the PLEXIL_Pipe and
+    //the reset in data pipes.
+    PLEXIL_CustomSubscription();
+
     // Send event indicating app initialization
     CFE_EVS_SendEvent(PLEXIL_STARTUP_INF_EID, CFE_EVS_INFORMATION,
                       "Plexil Initialized. Version %d.%d",
@@ -119,53 +138,38 @@ void PLEXIL_AppInit(void) {
     }
 
     free(inputParams);
+
+    PLEXIL_InitializeCustomData();
 }
+
+
 
 void PLEXIL_AppCleanUp(){
     // Do clean up here
     plexil_destroy(plexilAppData.exec);
 }
 
-void PLEXIL_ProcessPacket(){
+void PLEXIL_ProcessPacket(bool data){
 
     CFE_SB_MsgId_t  MsgId;
-    MsgId = CFE_SB_GetMsgId(plexilAppData.PLEXIL_MsgPtr);
+    if(data) {
+        MsgId = CFE_SB_GetMsgId(plexilAppData.DATA_MsgPtr);
+    }else{
+        MsgId = CFE_SB_GetMsgId(plexilAppData.PLEXIL_MsgPtr);
+    }
 
     switch(MsgId){
 
+        // Process the default packet
         case PLEXIL_WAKEUP_MID:
             PLEXIL_Run();
             break;
-
-        case SERVICE_INTERFACE_RESPONSE_MID:
-        case SERVICE_GEOFENCE_RESPONSE_MID:
-        case SERVICE_TRAFFIC_RESPONSE_MID:
-        case SERVICE_TRAJECTORY_RESPONSE_MID:
-        case SERVICE_DITCH_RESPONSE_MID:
-        {
-            service_t* msg;
-            msg = (service_t*) plexilAppData.PLEXIL_MsgPtr;
-
-            PlexilMsg plxInput;
-            switch(msg->sType) {
-                case _LOOKUP_RETURN_:
-                case _COMMAND_RETURN_:
-                    plxInput.mType = (dataType_t)msg->sType;
-                    plxInput.id = msg->id;
-                    memcpy(plxInput.name,msg->name,50);
-                    memcpy(plxInput.buffer,msg->buffer,250);
-                    plexil_return(plexilAppData.adap, &plxInput);
-                    break;
-                default:{
-
-                }
-            }
+        // Pass everything else to the user defined function
+        default:
+            PLEXIL_ProcessCustomPackets(data);
             break;
-        }
     }
-    return;
 }
-
 
 void PLEXIL_Run(){
     int n;
@@ -179,7 +183,7 @@ void PLEXIL_Run(){
         n = plexil_getCommand(plexilAppData.adap,&msg1);
 
         if(n>=0) {
-            PLEXIL_DistributeMessage(msg1);
+            PLEXIL_HandleCustomCommands(&msg1);
         }
     }
 
@@ -188,7 +192,7 @@ void PLEXIL_Run(){
         PlexilMsg msg2;
         n = plexil_getLookup(plexilAppData.adap,&msg2);
         if(n>=0) {
-            PLEXIL_DistributeMessage(msg2);
+            PLEXIL_HandleCustomLookups(&msg2);
         }
     }
 }

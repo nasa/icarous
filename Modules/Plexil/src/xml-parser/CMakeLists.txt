@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 2.6)
 project(PlexilXmlParser)
 
 set(LIBRARY_OUTPUT_PATH ${PLEXIL_ROOT}/lib)

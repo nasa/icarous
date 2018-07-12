@@ -1,17 +1,17 @@
 //
-// Created by research133 on 12/15/17.
+// Created by Swee on 12/15/17.
 //
 
 #include "TrafficMonitor.h"
 #include <sys/time.h>
 #include <cstring>
-#include <Icarous_msg.h>
 
-TrafficMonitor::TrafficMonitor(FlightData *fd) {
-    fdata = fd;
+TrafficMonitor::TrafficMonitor(bool reclog,char daaConfig[]) {
     time(&conflictStartTime);
     time(&startTime);
-    conflict = false;
+    conflictTrack = false;
+    conflictSpeed = false;
+    conflictVerticalSpeed = false;
 
     char            fmt1[64],fmt2[64];
     struct timeval  tv;
@@ -19,32 +19,49 @@ TrafficMonitor::TrafficMonitor(FlightData *fd) {
     gettimeofday(&tv, NULL);
     tm = localtime(&tv.tv_sec);
     strftime(fmt1, sizeof fmt1, "Icarous-%Y-%m-%d-%H:%M:%S", tm);
-    strftime(fmt2, sizeof fmt2, "Icarous-%Y-%m-%d-%H:%M:%S", tm);
     strcat(fmt1,".login");
-    strcat(fmt2,".logout");
 
-    log = fdata->paramData.getBool("LOG_DAA");
+    log = reclog;
 
     if(log) {
         logfileIn.open(fmt1);
-        logfileOut.open(fmt2);
     }
-    DAA.parameters.loadFromFile(fdata->paramData.getString("DAA_CONFIG"));
 
-    visBands.numBands = 0;
+    std::string filename(daaConfig);
+    DAA.parameters.loadFromFile(filename);
+
+    numTrackBands = 0;
+    numSpeedBands = 0;
+    numVerticalSpeedBands = 0;
+
+    trackIntTypes[0] = BandsRegion::NONE;
+    speedIntTypes[0] = BandsRegion::NONE;
+    vsIntTypes[0] = BandsRegion::NONE;
+
 }
 
-bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double position[],double velocity[],double resolution[],visbands_t* trkbands) {
+int TrafficMonitor::InputTraffic(int id, double *position, double *velocity) {
 
-    int numTraffic = fdata->GetTotalTraffic();
+    time_t currentTime = time(&currentTime);
+    double elapsedTime = difftime(currentTime, startTime);
+
+    TrafficObject _traffic(elapsedTime,_TRAFFIC_,id,(float)position[0],(float)position[1],(float)position[2],
+                                        (float)velocity[0],(float)velocity[1],(float)velocity[2]);
+    return TrafficObject::AddObject(trafficList,_traffic);
+}
+
+void TrafficMonitor::MonitorTraffic(double position[],double velocity[]) {
+
+    int numTraffic = trafficList.size();
     if(numTraffic == 0){
-        conflict = false;
-        return conflict;
+        conflictTrack = false;
+        conflictSpeed = false;
+        conflictVerticalSpeed = false;
+        return;
     }
 
-    double holdConflictTime = fdata->paramData.getValue("CONFLICT_HOLD");
+    double holdConflictTime = 3;
     time_t currentTime = time(&currentTime);
-    double daaTimeElapsed = difftime(currentTime,conflictStartTime);
     double elapsedTime = difftime(currentTime, startTime);
 
     Position so = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
@@ -52,100 +69,129 @@ bool TrafficMonitor::MonitorTraffic(bool visualize,double gpsTime,double positio
 
     DAA.setOwnshipState("Ownship", so, vo, elapsedTime);
     double dist2traffic = MAXDOUBLE;
-    for (unsigned int i = 0; i < numTraffic; i++) {
-        Position si;
-        Velocity vi;
-        fdata->GetTraffic(i, si, vi);
+    int count = 0;
+    bool conflict = false;
+    for (TrafficObject _traffic:trafficList){
+        count++;
+        Position si = _traffic.pos;
+        Velocity vi = _traffic.vel;
+
         char name[10];
-        sprintf(name, "Traffic%d", i);
-        DAA.addTrafficState(name, si, vi);
+        sprintf(name, "Traffic%d", count);
+        DAA.addTrafficState(name, si, vi, _traffic.time);
         double dist = so.distanceH(si);
         if (dist < dist2traffic) {
             dist2traffic = dist;
         }
-    }
 
-    DAA.kinematicMultiBands(KMB);
-    bool daaViolation = BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()));
-
-    bool prefDirection = KMB.preferredTrackDirection();
-    double prefHeading = KMB.trackResolution(prefDirection);
-
-    if(!ISNAN(prefHeading)) {
-        if (prefDirection) {
-            prefHeading = prefHeading + 5 * M_PI / 180;
-            if (prefHeading > M_PI) {
-                prefHeading = prefHeading - 2 * M_PI;
-            }
-        } else {
-            prefHeading = prefHeading - 5 * M_PI / 180;
-            if (prefHeading < -M_PI) {
-                prefHeading = 2 * M_PI + prefHeading;
-            }
-        }
-        resolution[0] = prefHeading * 180 / M_PI;
-    }else{
-        resolution[0] = 1e5;
-    }
-    
-    if (daaViolation) {
-        conflict = true;
-        time(&conflictStartTime);
-    }
-
-
-    if (daaTimeElapsed > holdConflictTime) {
-        if (!daaViolation) {
-            conflict = false;
+        if(DAA.alerting(count)) {
+            conflict = true;
+            conflictStartTime = time(&currentTime);
         }
     }
 
 
-    // Construct kinematic bands message to send to ground station
-    if (dist2traffic < 20 && visualize) {
-        trkbands->numBands = KMB.trackLength();
-        for (int i = 0; i < KMB.trackLength(); ++i) {
+    double daaTimeElapsed = difftime(currentTime,conflictStartTime);
+
+    if(daaTimeElapsed > holdConflictTime && conflict != true){
+       numTrackBands = 0;
+       numSpeedBands = 0;
+       numVerticalSpeedBands = 0;
+       numAltitudeBands = 0;
+    }
+
+
+
+    if(conflict) {
+        DAA.kinematicMultiBands(KMB);
+        daaViolationTrack = BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()));
+        daaViolationSpeed = BandsRegion::isConflictBand(KMB.regionOfGroundSpeed(DAA.getOwnshipState().groundSpeed()));
+        daaViolationVS = BandsRegion::isConflictBand(KMB.regionOfVerticalSpeed(DAA.getOwnshipState().verticalSpeed()));
+        daaViolationAlt = BandsRegion::isConflictBand(KMB.regionOfAltitude(DAA.getOwnshipState().altitude()));
+
+        numTrackBands = KMB.trackLength();
+        for (int i = 0; i < numTrackBands; ++i) {
+            if (i > 19)
+                break; // Currently hardcoded to handle only 20 tracks
             Interval iv = KMB.track(i, "deg");
-            int type = 0;
-            if (KMB.trackRegion(i) == BandsRegion::NONE) {
-                type = 0;
-            } else if (KMB.trackRegion(i) == BandsRegion::NEAR) {
-                type = 1;
-            }
-
-            if (i == 0) {
-                trkbands->type1 = type;
-                trkbands->min1 = (float) iv.low;
-                trkbands->max1 = (float) iv.up;
-            } else if (i == 1) {
-                trkbands->type2 = type;
-                trkbands->min2 = (float) iv.low;
-                trkbands->max2 = (float) iv.up;
-            } else if (i == 2) {
-                trkbands->type3 = type;
-                trkbands->min3 = (float) iv.low;
-                trkbands->max3 = (float) iv.up;
-            } else if (i == 3) {
-                trkbands->type4 = type;
-                trkbands->min4 = (float) iv.low;
-                trkbands->max4 = (float) iv.up;
-            } else {
-                trkbands->type5 = type;
-                trkbands->min5 = (float) iv.low;
-                trkbands->max5 = (float) iv.up;
-            }
+            trackIntTypes[i] = (int) KMB.trackRegion(i);
+            trackIntervals[i][0] = iv.low;
+            trackIntervals[i][1] = iv.up;
         }
-    }else{
-        if(trkbands != NULL)
-            trkbands->numBands = 0;
+
+        numSpeedBands = KMB.groundSpeedLength();
+        for (int i = 0; i < numSpeedBands; ++i) {
+            if (i > 19)
+                break; // Currently hardcoded to handle only 20 tracks
+            Interval iv = KMB.groundSpeed(i, "m/s");
+            speedIntTypes[i] = (int) KMB.groundSpeedRegion(i);
+            speedIntervals[i][0] = iv.low;
+            speedIntervals[i][1] = iv.up;
+        }
+
+        numVerticalSpeedBands = KMB.verticalSpeedLength();
+        for (int i = 0; i < numVerticalSpeedBands; ++i) {
+            if (i > 19)
+                break; // Currently hardcoded to handle only 20 tracks
+            Interval iv = KMB.verticalSpeed(i, "m/s");
+            vsIntTypes[i] = (int) KMB.verticalSpeedRegion(i);
+            vsIntervals[i][0] = iv.low;
+            vsIntervals[i][1] = iv.up;
+        }
+
+        numAltitudeBands = KMB.altitudeLength();
+        for(int i =0;i< numAltitudeBands; ++i){
+            if(i> 19)
+                break; // Current hardcoded to handle only 20 tracks
+            Interval iv = KMB.altitude(i,"m");
+            altIntTypes[i] = (int) KMB.altitudeRegion(i);
+            altIntervals[i][0] = iv.low;
+            altIntervals[i][1] = iv.up;
+        }
     }
 
-    if(log && visualize){
-        logfileIn << "**************** Current Time:"+std::to_string(gpsTime)+" *******************\n";
+
+    if(log){
+        logfileIn << "**************** Current Time:"+std::to_string(elapsedTime)+" *******************\n";
         logfileIn << DAA.toString()+"\n";
     }
+}
 
-    return conflict;
+bool TrafficMonitor::MonitorWPFeasibility(double *position, double *velocity, double *wp) {
+
+    int numTraffic = trafficList.size();
+    if(numTraffic == 0){
+        conflictTrack = false;
+        conflictSpeed = false;
+        conflictVerticalSpeed = false;
+        return true;
+    }
+
+    Position so = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
+    Position WP = Position::makeLatLonAlt(wp[0],"degree",wp[1],"degree",wp[2],"m");
+
+    double track = so.track(WP) * 180/M_PI;
+    Velocity vo = Velocity::makeTrkGsVs(track,"degree",velocity[1],"m/s",0,"m/s");
+
+    DAA.setOwnshipState("Ownship", so, vo, 0);
+    double dist2traffic = MAXDOUBLE;
+    int count = 0;
+    bool conflict = false;
+    for (TrafficObject _traffic:trafficList){
+        count++;
+        Position si = _traffic.pos;
+        Velocity vi = _traffic.vel;
+
+        char name[10];
+        sprintf(name, "Traffic%d", count);
+        DAA.addTrafficState(name, si, vi);
+
+        if(DAA.alerting(count)) {
+            conflict = true;
+        }
+    }
+
+    return !conflict;
 }
 
 bool TrafficMonitor::CheckSafeToTurn(double position[],double velocity[],double fromHeading,double toHeading){
@@ -154,19 +200,20 @@ bool TrafficMonitor::CheckSafeToTurn(double position[],double velocity[],double 
 
     bool conflict = false;
 
-    int numTraffic = fdata->GetTotalTraffic();
+    int numTraffic = trafficList.size();
 
     if (numTraffic == 0)
         return true;
 
+    int count = 0;
     DAA.setOwnshipState("Ownship", so, vo, 0);
-    double dist2traffic = MAXDOUBLE;
-    for (unsigned int i = 0; i < numTraffic; i++) {
-        Position si;
-        Velocity vi;
-        fdata->GetTraffic(i, si, vi);
+    for (TrafficObject _traffic:trafficList){
+        count++;
+        Position si = _traffic.pos;
+        Velocity vi = _traffic.vel;
+
         char name[10];
-        sprintf(name, "Traffic%d", i);
+        sprintf(name, "Traffic%d", count);
         DAA.addTrafficState(name, si, vi);
     }
 
@@ -182,7 +229,6 @@ bool TrafficMonitor::CheckSafeToTurn(double position[],double velocity[],double 
     }
 
     return !conflict;
-
 }
 
 bool TrafficMonitor::CheckTurnConflict(double low, double high, double newHeading, double oldHeading) {
@@ -264,22 +310,166 @@ bool TrafficMonitor::CheckTurnConflict(double low, double high, double newHeadin
     return false;
 }
 
-void TrafficMonitor::GetVisualizationBands(visbands_t &bands) {
+void TrafficMonitor::GetTrackBands(int& numBands,int* bandTypes,double* low,double *high,
+                                   int& recovery,
+                                   int& currentConflict,
+                                   double& tviolation,
+                                   double& trecovery,
+                                   double& minhdist,
+                                   double& minvdist,
+                                   double& resup,
+                                   double& resdown,
+                                   double& respref) {
 
-    if(visBands.numBands > 0)
-        std::cout<<"Num bands:"<<visBands.numBands<<std::endl;
-    // NOTE: Must not use a memcpy here.
-    bands.numBands = visBands.numBands;
-    bands.max1 = visBands.max1;
-    bands.max2 = visBands.max2;
-    bands.max3 = visBands.max3;
-    bands.max4 = visBands.max4;
-    bands.max5 = visBands.max5;
+    recovery = 0;
+    numBands = numTrackBands;
+    currentConflict = 0;
+    if(numBands > 0)
+        currentConflict = (int)daaViolationTrack;
+    for(int i=0;i<numBands;++i){
+       bandTypes[i] = trackIntTypes[i];
+       low[i] = trackIntervals[i][0];
+       high[i] = trackIntervals[i][1];
+       if(bandTypes[i] == BandsRegion::RECOVERY) {
+           recovery = 1;
+           trecovery = KMB.timeToTrackRecovery();
+           minhdist = KMB.getMinHorizontalRecovery("m");
+           minvdist = KMB.getMinVerticalRecovery("m");
+       }
+    }
 
-    bands.min1 = visBands.min1;
-    bands.min2 = visBands.min2;
-    bands.min3 = visBands.min3;
-    bands.min4 = visBands.min4;
-    bands.min5 = visBands.min5;
+    if(numBands > 0) {
+        resup = KMB.trackResolution(true) * 180/M_PI;
+        resdown = KMB.trackResolution(false) * 180/M_PI;
+        bool prefDirection = KMB.preferredTrackDirection();
+        double prefHeading = KMB.trackResolution(prefDirection);
+        if(!ISNAN(prefHeading)) {
+            if (prefDirection) {
+                prefHeading = prefHeading + 5 * M_PI / 180;
+                if (prefHeading > M_PI) {
+                    prefHeading = prefHeading - 2 * M_PI;
+                }
+            } else {
+                prefHeading = prefHeading - 5 * M_PI / 180;
+                if (prefHeading < -M_PI) {
+                    prefHeading = 2 * M_PI + prefHeading;
+                }
+            }
+            respref = prefHeading * 180 / M_PI;
+        }else{
+            respref = -1;
+        }
+    }else{
+        respref = -1;
+        resup = -1;
+        resdown = -1;
+    }
 
+}
+
+void TrafficMonitor::GetGSBands(int& numBands,int* bandTypes,double* low,double *high,
+                                   int& recovery,
+                                   int& currentConflict,
+                                   double& tviolation,
+                                   double& trecovery,
+                                   double& minhdist,
+                                   double& minvdist,
+                                   double& resup,
+                                   double& resdown,
+                                   double& respref) {
+
+    recovery = 0;
+    numBands = numSpeedBands;
+    currentConflict = 0;
+    if(numBands > 0)
+        currentConflict = (int)daaViolationSpeed;
+    for(int i=0;i<numBands;++i){
+       bandTypes[i] = speedIntTypes[i];
+       low[i] = speedIntervals[i][0];
+       high[i] = speedIntervals[i][1];
+       if(bandTypes[i] == BandsRegion::RECOVERY) {
+           recovery = 1;
+           trecovery = KMB.timeToGroundSpeedRecovery();
+           minhdist = KMB.getMinHorizontalRecovery("m");
+           minvdist = KMB.getMinVerticalRecovery("m");
+       }
+
+    }
+
+    if(numBands > 1) {
+        resup = KMB.groundSpeedResolution(true);
+        resdown = KMB.groundSpeedResolution(false);
+        respref = KMB.groundSpeedResolution(KMB.preferredGroundSpeedDirection());
+    }
+}
+
+void TrafficMonitor::GetVSBands(int& numBands,int* bandTypes,double* low,double *high,
+                                   int& recovery,
+                                   int& currentConflict,
+                                   double& tviolation,
+                                   double& trecovery,
+                                   double& minhdist,
+                                   double& minvdist,
+                                   double& resup,
+                                   double& resdown,
+                                   double& respref){
+    recovery = 0;
+    numBands = numVerticalSpeedBands;
+    currentConflict = 0;
+    if(numBands > 0)
+        currentConflict = (int)daaViolationVS;
+    for(int i=0;i<numBands;++i){
+       bandTypes[i] = vsIntTypes[i];
+       low[i] = vsIntervals[i][0];
+       high[i] = vsIntervals[i][1];
+       if(bandTypes[i] == BandsRegion::RECOVERY) {
+           recovery = 1;
+           trecovery = KMB.timeToVerticalSpeedRecovery();
+           minhdist = KMB.getMinHorizontalRecovery("m");
+           minvdist = KMB.getMinVerticalRecovery("m");
+       }
+
+    }
+
+    if(numBands > 1) {
+        resup = KMB.verticalSpeedResolution(true);
+        resdown = KMB.verticalSpeedResolution(false);
+        respref = KMB.verticalSpeedResolution(KMB.preferredVerticalSpeedDirection());
+    }
+}
+
+
+void TrafficMonitor::GetAltBands(int& numBands,int* bandTypes,double* low,double *high,
+                                int& recovery,
+                                int& currentConflict,
+                                double& tviolation,
+                                double& trecovery,
+                                double& minhdist,
+                                double& minvdist,
+                                double& resup,
+                                double& resdown,
+                                double& respref){
+    recovery = 0;
+    numBands = numAltitudeBands;
+    currentConflict = 0;
+    if(numBands > 0)
+        currentConflict = (int)daaViolationAlt;
+    for(int i=0;i<numBands;++i){
+        bandTypes[i] = altIntTypes[i];
+        low[i] = altIntervals[i][0];
+        high[i] = altIntervals[i][1];
+        if(bandTypes[i] == BandsRegion::RECOVERY) {
+            recovery = 1;
+            trecovery = KMB.timeToAltitudeRecovery();
+            minhdist = KMB.getMinHorizontalRecovery("m");
+            minvdist = KMB.getMinVerticalRecovery("m");
+        }
+
+    }
+
+    if(numBands > 1) {
+        resup = KMB.altitudeResolution(true);
+        resdown = KMB.altitudeResolution(false);
+        respref = KMB.altitudeResolution(KMB.preferredAltitudeDirection());
+    }
 }

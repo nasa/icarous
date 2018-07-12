@@ -2,16 +2,17 @@
 #include "cfe.h"
 #include "cfe_tbl_filedef.h"  /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "ardupilot_table.h"
+#include "ardupilot.h"
 
 #ifdef SITL
 
 ArdupilotTable_t TblStruct = {
-	_SOCKET_,    // apPortType
+	SOCKET,    // apPortType
 	0,           // baudrate
 	14551,       // apPortin
 	0,           // apPortout
 	"127.0.0.1", // ap address
-	_SOCKET_,    // gsPortType
+	SOCKET,    // gsPortType
 	0,           // baudrate
 	14552,       // gsPortin
 	14553,       // gsPortout
@@ -20,12 +21,12 @@ ArdupilotTable_t TblStruct = {
 
 #else
 ArdupilotTable_t TblStruct = {
-        _SERIAL_,       // apPortType
+        SERIAL,       // apPortType
         57600,          // baudrate
         0,              // apPortin
         0,              // apPortout
         "/dev/ttyACM0", // ap address
-        _SERIAL_,       // gsPortType
+        SERIAL,       // gsPortType
         57600,          // baudrate
         0,              // gsPortin
         0,              // gsPortout

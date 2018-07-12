@@ -111,9 +111,9 @@ class TrafficModule(mp_module.MPModule):
         
     def AddBand(self,i,bands):
 
-        if bands[2] == 0:
+        if bands[2] == 1:
             colour = (0,255,0,100)
-        elif bands[2] == 1:
+        elif bands[2] == 3:
             colour = (255,0,0,100)
         elif bands[2] == 2:
             colour = (255,255,0,100)

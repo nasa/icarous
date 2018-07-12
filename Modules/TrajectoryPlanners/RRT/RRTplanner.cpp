@@ -382,7 +382,7 @@ bool RRTplanner::CheckTrafficCollisionWithBands(bool CheckTurn,Vect3& qPos,Vect3
 
     //TODO: change this number to a parameter
     if(trafficDist < maxD){
-        printf("In cylinder\n");
+        //printf("In cylinder\n");
         return true;
     }
 
@@ -608,7 +608,7 @@ bool RRTplanner::CheckWaitAndGo(node_t& qnode){
 
     if(maxTime > 0.0){
         qnode.waitTime = maxTime;
-        printf("Wait time: %f\n",maxTime);
+        //printf("Wait time: %f\n",maxTime);
         return true;
     }
     else{
@@ -629,13 +629,14 @@ bool RRTplanner::CheckGoal(){
         closestNode = lastNode;
 
         if(CheckDirectPath2Goal(closestNode)){
-            printf("found direct path to goal\n");
+            //printf("found direct path to goal\n");
             return true;
         }
     }
 
+    //TODO: make this value a parameter
     if( mag < 3 ){
-        printf("found goal\n");
+        //printf("found goal\n");
         goalreached = true;
         return true;
     }else{
@@ -696,9 +697,9 @@ Plan RRTplanner::GetPlan(EuclideanProjection& proj){
     node_t *node = closestNode;
     node_t parent;
     std::list<node_t> path;
-    printf("Node count:%d\n",nodeCount);
-    printf("Closest dist: %f\n",closestDist);
-    printf("goal: x,y:%f,%f\n",goalNode.pos.x,goalNode.pos.y);
+    //printf("Node count:%d\n",nodeCount);
+    //printf("Closest dist: %f\n",closestDist);
+    //printf("goal: x,y:%f,%f\n",goalNode.pos.x,goalNode.pos.y);
 
     if(!goalreached){
         node = &goalNode;
@@ -706,7 +707,7 @@ Plan RRTplanner::GetPlan(EuclideanProjection& proj){
     }
 
     while(node != NULL){
-        printf("x,y:%f,%f\n",node->pos.x,node->pos.y);
+        //printf("x,y:%f,%f\n",node->pos.x,node->pos.y);
         path.push_front(*node);
         node = node->parent;
     }
@@ -731,7 +732,7 @@ Plan RRTplanner::GetPlan(EuclideanProjection& proj){
         count++;
     }
 
-    std::cout<<newRoute.toString()<<std::endl;
+    //std::cout<<newRoute.toString()<<std::endl;
 
     return newRoute;
 }

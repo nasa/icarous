@@ -23,7 +23,7 @@ include_directories(
 )
 
 add_definitions(-DWITH_DDS)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -m32 -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++11")
 
 set(IDL_FILES ./fsw/src/extra/GPSInfo.idl)
 OpenSpliceCompileIdl(IDL_FILES SB_DDS_FILES)

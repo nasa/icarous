@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 2.6)
 project(GanttListener)
 
 set(PLEXIL_SOURCE ${PLEXIL_ROOT}/src)
@@ -23,7 +23,7 @@ include_directories(
         ${PLEXIL_SOURCE}/exec
 )
 
-link_directories(LIBRARY_OUTPUT_PATH)
+link_directories(${LIBRARY_OUTPUT_PATH})
 
 add_library(GanttListener SHARED ${SOURCE_FILES})
 

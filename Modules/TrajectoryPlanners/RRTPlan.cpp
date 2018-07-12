@@ -5,9 +5,19 @@
 #include "RRTplanner.h"
 #include "Dynamics.h"
 
+
+void PathPlanner::InitializeRRTParameters(double resSpeed,int Nsteps,double dt,int Dt,double capR,char daaConfig[]){
+   _rrt_resSpeed = resSpeed;
+   _rrt_daaConfig = string(daaConfig);
+   _rrt_maxIterations = Nsteps;
+   _rrt_dt = dt;
+   _rrt_macroSteps = Dt;
+   _rrt_goalCaptureRadius = capR;
+}
+
 int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]){
 
-    double maxInputNorm = fdata->paramData.getValue("RES_SPEED");
+    double maxInputNorm = _rrt_resSpeed;
     double trk = velocity[0];
     double gs = velocity[1];
     double vs = velocity[2];
@@ -24,13 +34,11 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
 
     EuclideanProjection proj = Projection::createProjection(currentPos.mkAlt(0));
 
-    for(int i=0;i<fdata->GetTotalTraffic();++i){
-        double x,y,z,vx,vy,vz;
-        fdata->GetTraffic(i,&x,&y,&z,&vx,&vy,&vz);
-        Velocity Vel = Velocity::makeVxyz(vx,vy,vz);
-        Position Pos = Position::makeLatLonAlt(x,"degree",y,"degree",z,"m");
+    for(GenericObject traffic: trafficList){
+        Velocity Vel = traffic.vel;
+        Position Pos = traffic.pos;
         Vect3 tPos = proj.project(Pos);
-        Vect3 tVel = Vect3(vx,vy,vz);
+        Vect3 tVel = Vect3(Vel.x,Vel.y,Vel.z);
         tPos.linear(tVel,computationTime);
         TrafficPos.push_back(tPos);
         TrafficVel.push_back(tVel);
@@ -45,18 +53,18 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
 
     Position goalPos = endPos;
 
-    int Nsteps = 2000;
-    int dTsteps  = 5;
-    double dT  = 1;
-    double maxD = 5.0;
+    int Nsteps = _rrt_maxIterations;
+    int dTsteps  = _rrt_macroSteps;
+    double dT  = _rrt_dt;
+    double maxD = _rrt_goalCaptureRadius;
 
     Poly3D bbox;
     std::list<Poly3D> obstacleList;
-    for(int i=0;i<fdata->GetTotalFences();++i){
-        if (fdata->GetGeofence(i)->GetType() == KEEP_IN){
-            bbox = fdata->GetGeofence(i)->GetPoly()->poly3D(proj);
+    for(fence gf: fenceList){
+        if (gf.GetType() == KEEP_IN){
+            bbox = gf.GetPoly()->poly3D(proj);
         }else{
-            obstacleList.push_back(fdata->GetGeofence(i)->GetPolyMod()->poly3D(proj));
+            obstacleList.push_back(gf.GetPolyMod()->poly3D(proj));
         }
     }
 
@@ -66,9 +74,8 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
     node_t goal;
     goal.pos = gpos;
 
-    string daaConfig = fdata->paramData.getString("DAA_CONFIG");
 
-    RRTplanner RRT(bbox,dTsteps,dT,maxD,maxInputNorm,RRT_F,RRT_U,daaConfig.c_str());
+    RRTplanner RRT(bbox,dTsteps,dT,maxD,maxInputNorm,RRT_F,RRT_U,_rrt_daaConfig.c_str());
     RRT.Initialize(initPosR3,currentVel,obstacleList,TrafficPos,TrafficVel,goal);
 
 

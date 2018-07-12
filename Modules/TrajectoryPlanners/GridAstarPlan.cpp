@@ -9,21 +9,20 @@
 
 int64_t PathPlanner::FindPathGridAstar(char planID[],double fromPosition[],double toPosition[]) {
 
-    double gridsize          = fdata->paramData.getValue("GRIDSIZE");
-    double buffer            = fdata->paramData.getValue("BUFFER");
-    double lookahead         = fdata->paramData.getValue("LOOKAHEAD");
-    double resolutionSpeed   = fdata->paramData.getValue("RES_SPEED");
-    double maxAlt            = fdata->paramData.getValue("MAX_CEILING");
-    double Hthreshold        = fdata->paramData.getValue("HTHRESHOLD");
+    double gridsize          = _astar_gridSize;
+    double buffer            = gridsize * 2;
+    double resolutionSpeed   = 1;
+    double maxAlt            = maxCeiling;
+    double Hthreshold        = obsbuffer;
     double altFence;
 
     Position startPos = Position::makeLatLonAlt(fromPosition[0],"degree",fromPosition[1],"degree",fromPosition[2],"m");
     Position endPos   = Position::makeLatLonAlt(toPosition[0],"degree",toPosition[1],"degree",toPosition[2],"m");
 
     BoundingRectangle BR;
-    int totalfences = fdata->GetTotalFences();
+    int totalfences = fenceList.size();
     for(int i=0;i<totalfences;++i){
-        fence *gf = fdata->GetGeofence(i);
+        fence *gf = GetGeofence(i);
         if (gf->GetType() == KEEP_IN){
             altFence = gf->GetCeiling();
             for(int j=0;j<gf->GetSize();++j)
@@ -37,7 +36,7 @@ int64_t PathPlanner::FindPathGridAstar(char planID[],double fromPosition[],doubl
     DG.setWeights(5.0);
 
     for(int i=0;i<totalfences;++i){
-        fence *gf = fdata->GetGeofence(i);
+        fence *gf = GetGeofence(i);
         if (gf->GetType() == KEEP_OUT){
             DG.setWeightsInside(*gf->GetPolyMod(),100.0);
         }
@@ -126,7 +125,7 @@ int64_t PathPlanner::FindPathGridAstar(char planID[],double fromPosition[],doubl
         output = &ResolutionPlan2;
     }
 
-    output->setName(string(planID));
+    output->setName(std::string(planID));
     flightPlans.push_back(*output);
     return output->size();
 }

@@ -1,41 +1,37 @@
 #include <iostream>
-#include <Icarous_msg.h>
 #include "GeofenceMonitor.h"
 
 
 int main() {
 
-    char filename[]="../Test/icarous.txt";
-    FlightData fdata(filename);
-    GeofenceMonitor fenceMonitor(&fdata);
 
-    // Create a keep in geofence with 4 vertices
-    geofence_t vertex[4];
+    // input parameters for geofence monitor
+    double lookahead = 5;
+    double hthreshold = 2;
+    double vthreshold = 1;
+    double hstepback  = 1;
+    double vstepback  = 1;
 
-    for(int i=0;i<4;i++){
-        vertex[i].index = 0;
-        vertex[i].type = KEEP_IN;
-        vertex[i].totalvertices = 4;
-        vertex[i].vertexIndex = i;
-        vertex[i].floor = 0;
-        vertex[i].ceiling = 100;
-    }
+    double params[5] = {lookahead,hstepback,vthreshold,hstepback,vstepback};
 
-    vertex[0].latitude  = 37.102545;
-    vertex[0].longitude = -76.387163;
+    GeofenceMonitor fenceMonitor(params);
 
-    vertex[1].latitude = 37.102344;
-    vertex[1].longitude = -76.387163;
+    double vertex[4][2];
 
-    vertex[2].latitude  = 37.102351;
-    vertex[2].longitude = -76.386844;
+    vertex[0][0]= 37.102545;
+    vertex[0][1]= -76.387163;
 
-    vertex[3].latitude = 37.102575;
-    vertex[3].longitude = -76.386962;
+    vertex[1][0]= 37.102344;
+    vertex[1][1]= -76.387163;
+
+    vertex[2][0]= 37.102351;
+    vertex[2][1]= -76.386844;
+
+    vertex[3][0]= 37.102575;
+    vertex[3][1]= -76.386962;
 
     // Input the geofence data
-    for(int i=0;i<4;i++)
-        fdata.InputGeofenceData(&vertex[i]);
+    fenceMonitor.InputGeofenceData(KEEP_IN,0,4,0,100,vertex);
 
     Position so = Position::makeLatLonAlt(37.1021913,"deg", -76.3869528,"deg", 5.0,"m");
     Velocity vo = Velocity::makeTrkGsVs(90.0,"deg",  0.94,"m/s", 0.0,"fpm");
@@ -49,8 +45,9 @@ int main() {
     bool conflict;
     int fenceid;
     double recPosition[3] = {0,0,0};
+    int test;
 
-    fenceMonitor.GetConflict(0,fenceid,conflict,violation,recPosition);
+    fenceMonitor.GetConflict(0,fenceid,conflict,violation,recPosition,test);
 
     std::cout<<"CONFLICT: "<<conflict<<std::endl;
     std::cout<<"VIOLATION: "<<violation<<std::endl;

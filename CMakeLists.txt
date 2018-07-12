@@ -26,14 +26,18 @@ project(ICAROUS_CFS C CXX)
 
 include("CMake/utils.cmake")
 
+OPTION(ARM "Build binaries for ARM" OFF)
 OPTION(SITL "Build the project for SITL" OFF)
+
 IF(SITL)
     add_definitions(-DSITL)
 ENDIF(SITL)
 
 
-set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
-set(CMAKE_C_FLAGS "-g -fPIC -m32")
+IF(NOT ARM)
+    set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
+    set(CMAKE_C_FLAGS "-g -fPIC -m32 ")
+ENDIF()
 
 # Add modules
 get_subdirs(SUBDIRS ${CMAKE_SOURCE_DIR}/Modules)
@@ -58,11 +62,11 @@ set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/cFS/bin")
 
 set(OSAL_USER_C_FLAGS "-g")
 
-set(CMAKE_CXX_FLAGS "-g -Wall -fPIC -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE=600 -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fPIC -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE=600 -std=c++11")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fPIC -std=c99")
 
 
 # Force all builds to be 32 bit
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32 -std=c99")
 
 set(MISSIONCONFIG "Icarous")
 

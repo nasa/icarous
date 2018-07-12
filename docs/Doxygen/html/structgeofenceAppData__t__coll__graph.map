@@ -1,0 +1,4 @@
+<map id="geofenceAppData_t" name="geofenceAppData_t">
+<area shape="rect" id="node2" href="$structflightplan__t.html" title="flightplan_t" alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node3" href="$structgeofenceConflict__t.html" title="message contaning information about goefence conflicts " alt="" coords="115,5,245,32"/>
+</map>

@@ -3,6 +3,7 @@
 """
 import os, time, platform
 import xml.etree.ElementTree as ET
+import numpy as np
 from pymavlink import mavwp, mavutil
 from MAVProxy.modules.lib import mp_util
 from MAVProxy.modules.lib import mp_module
@@ -22,6 +23,14 @@ class GeoFenceModule(mp_module.MPModule):
         self.have_list = False        
         self.menu_added_console = False
         self.menu_added_map = False
+        self.fetchPointMessage = None
+        self.sentVertexCount = 0
+        self.fence2send = None
+        self.sentFence = False
+        self.t1 = 0
+        self.t2 = 0
+        self.numSentFence = 0
+        self.communicating = False
 
         if mp_util.has_wxpython:
             self.menu = MPMenuSubMenu('Geofence',
@@ -49,11 +58,66 @@ class GeoFenceModule(mp_module.MPModule):
 
     def mavlink_packet(self, m):
         '''handle and incoming mavlink packet'''                        
+
+        if self.startSendingFence:
+            self.t2 = time.time()
+            if self.t2 - self.t1 > 10:
+                self.startSendingFence = False
+                self.communicating = False
+                self.fence2send = None
+                self.console.writeln("Sending failed")
+                self.numSentFence = 0
+                return 
+            if self.numSentFence == len(self.fenceList):
+                self.startSendingFence = False
+                self.communicating = False
+                self.fence2send = None
+            elif self.fence2send is None:
+                self.commmunicating = True
+                self.fence2send = self.fenceList[self.numSentFence]
+                target_system    = 2;
+                target_component = 0;
+                fence = self.fence2send
+                self.console.writeln("sending fence description")
+                self.master.mav.command_long_send(target_system,target_component,
+                                          mavutil.mavlink.MAV_CMD_DO_FENCE_ENABLE,0,
+                                          0,fence["id"],fence["type"],fence["numV"],
+                                          fence["floor"],fence["roof"],0);    
+
+        if m.get_type() == "FENCE_FETCH_POINT":
+            self.t1 = time.time()
+            fence = self.fence2send
+            numV = fence["numV"]
+            lat  = fence["Vertices"][m.idx][0]
+            lon  = fence["Vertices"][m.idx][1]
+            
+            self.master.mav.fence_point_send(2,0,m.idx,numV,lat,lon)            
+            self.console.writeln("sending vertex %u" % m.idx)
+            self.sentVertexCount = m.idx+1
+     
+
+        if m.get_type() == "COMMAND_ACK":
+            self.t1 = time.time()
+            if self.sentVertexCount == self.fence2send["numV"] and m.result == 0:
+                self.numSentFence = self.numSentFence + 1
+                self.console.writeln("Geofence sent")
+
+                points = self.fence2send["Vertices"][:]
+                points.append(points[0])
         
-        #if m.get_type() == "FENCE_STATUS":
-            #print m.breach_status                    
-        
-                    
+                from MAVProxy.modules.mavproxy_map import mp_slipmap
+                name = 'Fence'+str(self.fence2send["id"])
+
+                if(self.fence2send["type"] == 0):
+                    gcf = (255,190,0)
+                else:
+                    gcf = (255,0,0)
+            
+                self.mpstate.map.add_object(mp_slipmap.SlipPolygon(name, points, layer=1,
+                                                               linewidth=2, colour=gcf))
+                self.fence2send = None
+
+                
     def cmd_fence(self, args):
         '''fence commands'''
         if len(args) < 1:
@@ -104,78 +168,12 @@ class GeoFenceModule(mp_module.MPModule):
             print("Unable to load %s - %s" % (filename, msg))
             return
 
-        for fence in self.fenceList:
-            if fence not in self.sentFenceList:                
-                if not self.Send_fence(fence):
-                    return
-            
+        if len(self.fenceList) > 0:
+            self.t1 = time.time()
+            self.t2 = time.time()
+            self.numSentFence = 0
+            self.startSendingFence = True
 
-    def Send_fence(self,fence):
-        '''send fence points from fenceloader'''
-        target_system    = 2;
-        target_component = 0;
-
-        self.console.writeln("sending fence description")
-        self.master.mav.command_long_send(target_system,target_component,
-                                          mavutil.mavlink.MAV_CMD_DO_FENCE_ENABLE,0,
-                                          0,fence["id"],fence["type"],fence["numV"],
-                                          fence["floor"],fence["roof"],0);    
-
-        fence_sent = False;
-        t1= time.time()
-        count = 0
-        while(not fence_sent):
-
-            t2 = time.time()
-
-            if (t2 - t1) > 10:
-                print "Sending failed"
-                return False
-            
-            
-            msg = None
-            while(msg == None):
-                msg = self.master.recv_msg();
-                                
-            if(msg.get_type() == "FENCE_FETCH_POINT"):                            
-                numV = fence["numV"]
-                lat  = fence["Vertices"][msg.idx][0]
-                lon  = fence["Vertices"][msg.idx][1]
-                
-                self.master.mav.fence_point_send(2,0,msg.idx,numV,lat,lon)            
-                self.console.writeln("sending vertex %u" % msg.idx)
-                count = count+1
-                
-            elif(count == fence["numV"] and msg.get_type() == "COMMAND_ACK" ):
-                
-                if msg.result == 0:            
-                    fence_sent = True;
-                    self.console.writeln("Geofence sent")
-                else:
-                    self.Send_fence(fence);
-                    fence_sent = True;
-
-            elif(count == fence["numV"]):
-                fence_sent = True;
-                self.console.writeln ("Geofence sent")
-
-
-        if fence_sent:
-            points = fence["Vertices"][:]
-            points.append(points[0])
-        
-            from MAVProxy.modules.mavproxy_map import mp_slipmap
-            name = 'Fence'+str(fence["id"])
-
-            if(fence["type"] == 0):
-                gcf = (0,255,0)
-            else:
-                gcf = (255,0,0)
-            
-            self.mpstate.map.add_object(mp_slipmap.SlipPolygon(name, points, layer=1,
-                                                               linewidth=2, colour=gcf))
-
-        return True
 
     def clear_fence(self,fence):
 

@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 2.6)
 project(Wrapper)
 
-
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 set(PLEXIL_SOURCE ${PLEXIL_ROOT}/src)
 
 set(LIBRARY_OUTPUT_PATH ${PLEXIL_ROOT}/lib)

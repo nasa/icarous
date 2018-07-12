@@ -1,30 +1,23 @@
-/*******************************************************************************
- ** File: Interface.c
- **
- ** Purpose:
- **   App to interface mavlink compatible autpilot (ardupilot), ground station
- **   and Icarous.
- **
- *******************************************************************************/
+/**
+ * @file ardupilot.c
+ * @brief function definitions for ardupilot app
+ */
+
 #define EXTERN
 
-#include <Icarous_msg.h>
+#include <msgdef/ardupilot_msg.h>
 #include "ardupilot.h"
 #include "ardupilot_table.h"
 #include "ardupilot_version.h"
-#include "ardupilot_perfids.h"
-#include "Icarous_msg.h"
-#include "msgids/msgids.h"
 #include <fcntl.h>   // File control definitions
 #include <termios.h> // POSIX terminal control definitions
 
-
-
-CFE_EVS_BinFilter_t  INTERFACE_EventFilters[] =
+/// Event filter definition for ardupilot
+CFE_EVS_BinFilter_t  ARDUPILOT_EventFilters[] =
 {  /* Event ID    mask */
 		{ARDUPILOT_STARTUP_INF_EID,       0x0000},
 		{ARDUPILOT_COMMAND_ERR_EID,       0x0000},
-}; /// Event ID definitions
+};
 
 /* ARDUPILOT_AppMain() -- Application entry points */
 void ARDUPILOT_AppMain(void){
@@ -71,8 +64,8 @@ void ARDUPILOT_AppInit(void){
 	CFE_ES_RegisterApp();
 
 	// Register the events
-	CFE_EVS_Register(INTERFACE_EventFilters,
-			sizeof(INTERFACE_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
+	CFE_EVS_Register(ARDUPILOT_EventFilters,
+			sizeof(ARDUPILOT_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
 			CFE_EVS_BINARY_FILTER);
 
 	// Create pipe to receive SB messages
@@ -95,27 +88,23 @@ void ARDUPILOT_AppInit(void){
 
 	//Subscribe to command messages and kinematic band messages from the SB	 
 	CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataInt.INTERFACE_Pipe);
-	CFE_SB_Subscribe(ICAROUS_VISBAND_MID, appdataInt.INTERFACE_Pipe);
-    CFE_SB_Subscribe(SERVICE_INTERFACE_MID, appdataInt.INTERFACE_Pipe);
+	CFE_SB_Subscribe(ICAROUS_BANDS_TRACK_MID, appdataInt.INTERFACE_Pipe);
     CFE_SB_Subscribe(ICAROUS_STATUS_MID, appdataInt.INTERFACE_Pipe);
-    //CFE_SB_Subscribe(ICAROUS_POSITION_MID,appdataInt.INTERFACEMsgPtr);
 
 
 	// Initialize all messages that this App generates
-	CFE_SB_InitMsg(&wpdata,ICAROUS_WP_MID,sizeof(waypoint_t),TRUE);              
+	CFE_SB_InitMsg(&wpdata,ICAROUS_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
 	CFE_SB_InitMsg(&wpreached,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);
 	CFE_SB_InitMsg(&gfdata,ICAROUS_GEOFENCE_MID,sizeof(geofence_t),TRUE);
-	CFE_SB_InitMsg(&startMission,ICAROUS_STARTMISSION_MID,sizeof(ArgsCmd_t),TRUE);
-	CFE_SB_InitMsg(&resetIcarous,ICAROUS_RESET_MID,sizeof(NoArgsCmd_t),TRUE);
+	CFE_SB_InitMsg(&startMission,ICAROUS_STARTMISSION_MID,sizeof(argsCmd_t),TRUE);
+	CFE_SB_InitMsg(&resetIcarous,ICAROUS_RESET_MID,sizeof(noArgsCmd_t),TRUE);
 	CFE_SB_InitMsg(&traffic,ICAROUS_TRAFFIC_MID,sizeof(object_t),TRUE);	
 	CFE_SB_InitMsg(&position,ICAROUS_POSITION_MID,sizeof(position_t),TRUE);	
-	CFE_SB_InitMsg(&ack,ICAROUS_COMACK_MID,sizeof(CmdAck_t),TRUE);
-	CFE_SB_InitMsg(&intfServiceResponse,SERVICE_INTERFACE_RESPONSE_MID,sizeof(service_t),TRUE);
-
+	CFE_SB_InitMsg(&ack,ICAROUS_COMACK_MID,sizeof(cmdAck_t),TRUE);
 
 	// Send event indicating app initialization
 	CFE_EVS_SendEvent (ARDUPILOT_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-						"Interface Initialized. Version %d.%d",
+                       "Ardupilot Interface initialized. Version %d.%d",
 					   ARDUPILOT_INTERFACE_MAJOR_VERSION,
 					   ARDUPILOT_INTERFACE_MINOR_VERSION);
 
@@ -176,24 +165,13 @@ void ARDUPILOT_AppInit(void){
 
 	status = OS_MutSemCreate( &appdataInt.mutex_read, "InterfaceMRead", 0);
 	if ( status != OS_SUCCESS )
-	{
 		OS_printf("Error creating mutex1\n");
-	}else
-	  {
-	     //OS_printf("MutexSem ID = %d\n", (int)ap.mutex_id);
-	  }
 
 	status = OS_MutSemCreate( &appdataInt.mutex_read, "InterfaceMWrite", 0);
 	if ( status != OS_SUCCESS )
-	{
 		OS_printf("Error creating mutex2\n");
-	}else
-	  {
-	     //OS_printf("MutexSem ID = %d\n", (int)gs.mutex_id);
-	  }
 
-
-	appdataInt.waypoint_type = (int*)malloc(sizeof(int)*2);//
+	appdataInt.waypoint_type = (int*)malloc(sizeof(int)*2);
 }
 
 void ARDUPILOT_AppCleanUp(){
@@ -236,7 +214,6 @@ void Task2(void){
                     break;
             }
         }
-
     }
 }
 
@@ -277,7 +254,7 @@ int InitializeSerialPort(port_t* prt,bool should_block){
 	prt->id = open (prt->target, O_RDWR | O_NOCTTY | O_SYNC);
 	if (prt->id < 0)
 	{
-		printf("Error operning port\n");
+		OS_printf("Error operning port\n");
 		return -1;
 	}
 
@@ -285,7 +262,7 @@ int InitializeSerialPort(port_t* prt,bool should_block){
 	memset (&tty, 0, sizeof tty);
 	if (tcgetattr (prt->id, &tty) != 0)
 	{
-		printf("error in tcgetattr 1\n");
+		OS_printf("error in tcgetattr 1\n");
 		return -1;
 	}
 
@@ -297,8 +274,7 @@ int InitializeSerialPort(port_t* prt,bool should_block){
 	tty.c_cflag |= CS8;         /* 8-bit characters */
 	tty.c_cflag &= ~PARENB;     /* no parity bit */
 	tty.c_cflag &= ~CSTOPB;     /* only need 1 stop bit */
-	//tty.c_cflag |= CRTSCTS;
-	//tty.c_cflag &= ~CRTSCTS;    /* no hardware flowcontrol */
+
 
 	/* setup for non-canonical mode */
 	tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
@@ -312,7 +288,7 @@ int InitializeSerialPort(port_t* prt,bool should_block){
 
 	if (tcsetattr (prt->id, TCSANOW, &tty) != 0)
 	{
-		printf("error from tcsetattr 2\n");
+		OS_printf("error from tcsetattr 2\n");
 		return -1;
 	}
 
