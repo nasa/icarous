@@ -136,7 +136,6 @@ ICAROUS:
 
                 if(_Position[2] >= 3.0){
                     pprint("Plexil status: Starting cruise");
-                    SetNextMissionWP(_nextMissionWP);
                     SetMode("PASSIVE");
                     Status("IC:Starting cruise");
                     _cruiseStatus = true;
