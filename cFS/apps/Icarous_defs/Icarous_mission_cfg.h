@@ -200,7 +200,7 @@
 **      Minute - 0 to 59
 **      Second - 0 to 59
 */
-#define CFE_TIME_EPOCH_YEAR        1980
+#define CFE_TIME_EPOCH_YEAR        1970
 #define CFE_TIME_EPOCH_DAY            1
 #define CFE_TIME_EPOCH_HOUR           0
 #define CFE_TIME_EPOCH_MINUTE         0

@@ -120,8 +120,16 @@ void PrepareLogFiles(){
 	char fnameStart[50];
 	char fnameWPReached[50];
 
+	CFE_TIME_SysTime_t LatchTime;
+    OS_time_t LocalTime;
+
+    CFE_PSP_GetTime(&LocalTime);
+
+    LatchTime.Seconds = LocalTime.seconds;
+    LatchTime.Subseconds = CFE_TIME_Micro2SubSecs(LocalTime.microsecs);
+
     // Get current time to create log file names
-	CFE_TIME_SysTime_t currentTime = CFE_TIME_GetUTC();
+	CFE_TIME_SysTime_t currentTime =   LatchTime;
 	CFE_TIME_Print(timeBuffer1,currentTime);
 
 	memcpy(timeBuffer2,timeBuffer1,17);
@@ -145,6 +153,7 @@ void PrepareLogFiles(){
 	appdataLog.fpStartMission = fopen(fnameStart,"w");
 	appdataLog.fpWpReached = fopen(fnameWPReached,"w");
 
+	currentTime = CFE_TIME_GetUTC();
 	fwrite(&currentTime, sizeof(CFE_TIME_SysTime_t),1,appdataLog.fpPos);
 	fwrite(&currentTime, sizeof(CFE_TIME_SysTime_t),1,appdataLog.fpCommands);
     fwrite(&currentTime, sizeof(CFE_TIME_SysTime_t),1,appdataLog.fpFlightPlan);
