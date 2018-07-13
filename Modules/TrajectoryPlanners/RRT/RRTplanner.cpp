@@ -69,7 +69,7 @@ double RRTplanner::NodeDistance(node_t& A, node_t& B){
 
 
 node_t* RRTplanner::FindNearest(node_t& query){
-    double minDist = 10000;
+    double minDist = MAXDOUBLE;
     double dist;
     node_t* nearest;
 
