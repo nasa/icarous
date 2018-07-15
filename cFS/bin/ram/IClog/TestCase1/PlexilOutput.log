@@ -1,0 +1,33 @@
+Plexil status: Starting takeoff 
+Plexil status: Starting cruise 
+Plexil status: Starting conflict management 
+Plexil status: Total mission waypoints: 6 
+Plexil status: Preferred planning strategy: ASTAR 
+Plexil status: Starting resolution enroute to WP: 2 
+Plexil status: Starting fence resolution 
+Plexil status: In Library call GOTO_POSITION 
+Plexil status: Checking target feasibility 
+Plexil status: Target feasibility  1 
+Plexil status: Going to target: #(37.1021762 -76.3871961999999 4.86) 
+Plexil status: Intercepting mission to next feasible waypoint: 3 
+Plexil status: In Library call GOTO_POSITION 
+Plexil status: Checking target feasibility 
+Plexil status: Target feasibility  0 
+Plexil status: Planning a path to target location 
+Plexil status: Computed waypoint with: ASTAR 14 
+Plexil status: Finished intercepting. Resuming to: 4 
+Plexil status: Starting resolution enroute to WP: 4 
+Plexil status: Starting fence resolution 
+Plexil status: In Library call GOTO_POSITION 
+Plexil status: Checking target feasibility 
+Plexil status: Target feasibility  1 
+Plexil status: Going to target: #(37.1020681 -76.3870502 4.92) 
+Plexil status: Intercepting mission to next feasible waypoint: 5 
+Plexil status: In Library call GOTO_POSITION 
+Plexil status: Checking target feasibility 
+Plexil status: Target feasibility  0 
+Plexil status: Planning a path to target location 
+Plexil status: Computed waypoint with: ASTAR 12 
+Plexil status: Finished intercepting. Resuming to: 5 
+Plexil status: Finished cruise: 0 
+Plexil status: Landing 
