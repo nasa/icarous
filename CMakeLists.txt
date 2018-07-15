@@ -33,6 +33,11 @@ IF(SITL)
     add_definitions(-DSITL)
 ENDIF(SITL)
 
+IF(TEST1)
+    add_definitions(-DTESTCASE1)
+ELSEIF(TEST2)
+    add_definitions(-DTESTCASE2)
+ENDIF()
 
 IF(NOT ARM)
     set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
