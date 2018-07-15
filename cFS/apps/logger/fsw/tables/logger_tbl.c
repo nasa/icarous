@@ -3,10 +3,28 @@
 #include "logger_table.h"
 #include "logger.h"
 
+#ifdef TESTCASE1
 LoggerTable_t TblStruct={
-    true,                // log data
-    "1980-012-14:02:48"  //time stamp for playback.
+    false,                         // log data
+    "../ram/IClog/TestCase1",      // Source directory of log files
+    "2018-196-00:28:07"            // time stamp for playback.
 };
+#elif TESTCASE2
+LoggerTable_t TblStruct={
+    false,                          // log data
+    "../ram/IClog/TestCase2",      // Source directory of log files
+    "2018-196-00:37:57"            // time stamp for playback.
+};
+#else
+LoggerTable_t TblStruct={
+     true,                         // log data
+     "../ram/IClog/",               // Source directory of log files
+     "1980-015-14:02:48"            // time stamp for playback.
+};
+#endif
+
+
+
 
 /*
 ** The macro below identifies:

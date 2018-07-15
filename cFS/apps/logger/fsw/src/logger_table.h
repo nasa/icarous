@@ -20,6 +20,7 @@
 typedef struct
 {
     bool logRecord;       ///< record log if true, playback log if false
+    char location[100];   ///< source directory of playback logfiles
     char timeStamp[20];   ///< time stamp of log files used for playback.
 
 }LoggerTable_t;
