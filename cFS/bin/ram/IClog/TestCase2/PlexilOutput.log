@@ -9,7 +9,7 @@ Plexil status: Intercepting mission to next feasible waypoint: 2
 Plexil status: In Library call GOTO_POSITION 
 Plexil status: Checking target feasibility 
 Plexil status: Target feasibility  1 
-Plexil status: Going to target: #(37.1022033691406 -76.3869476318359 5) 
+Plexil status: Direct to target position
 Plexil status: Finished intercepting. Resuming to: 3 
 Plexil status: Finished cruise: 0 
 Plexil status: Landing
