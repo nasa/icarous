@@ -60,11 +60,6 @@ void LOGGER_AppInit(void){
                                 LOG_PIPE_DEPTH,                         /* Depth of Pipe */
 								LOG_PIPE_COMMANDS_NAME);                /* Name of pipe */
 
-	// Send event indicating app initialization
-	CFE_EVS_SendEvent (LOGGER_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                       "Logging application initialized. Version %d.%d",
-					   1,
-					   0);
 
 	// Register table with table services
 	status = CFE_TBL_Register(&appdataLog.LOGGER_tblHandle,
@@ -82,9 +77,24 @@ void LOGGER_AppInit(void){
 
 	appdataLog.record = TblPtr->logRecord;
     memcpy(appdataLog.playbackTS,TblPtr->timeStamp,20);
+    memcpy(appdataLog.playbackLocation,TblPtr->location,100);
 
 	// Free table pointer
 	status = CFE_TBL_ReleaseAddress(appdataLog.LOGGER_tblHandle);
+
+	// Send event indicating app initialization
+	if(appdataLog.record) {
+		CFE_EVS_SendEvent(LOGGER_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+						  "Logging application initialized in logging mode. Version %d.%d",
+						  1,
+						  0);
+	}else{
+			CFE_EVS_SendEvent(LOGGER_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+						  "Logging application initialized in playback mode. Version %d.%d",
+						  1,0);
+
+	}
+
 
 	sentCmdAck = true;
 	sentCommand = true;
@@ -167,23 +177,23 @@ void PrepareLogFiles(){
 
 void OpenLogFiles(){
 
-    char fnamePosition[50];
-	char fnameCommands[50];
-	char fnameMP[50];
-    char fnameGF[50];
-	char fnameAck[50];
-	char fnameTraffic[50];
-	char fnameStart[50];
-	char fnameWPReached[50];
+    char fnamePosition[250];
+	char fnameCommands[250];
+	char fnameMP[250];
+    char fnameGF[250];
+	char fnameAck[250];
+	char fnameTraffic[250];
+	char fnameStart[250];
+	char fnameWPReached[250];
 
-	sprintf(fnamePosition,"../ram/IClog/Position_%s.log",appdataLog.playbackTS);
- 	sprintf(fnameCommands,"../ram/IClog/Commands_%s.log",appdataLog.playbackTS);
-    sprintf(fnameMP,"../ram/IClog/MissionPlan_%s.log",appdataLog.playbackTS);
-    sprintf(fnameGF,"../ram/IClog/Geofence_%s.log",appdataLog.playbackTS);
-    sprintf(fnameAck,"../ram/IClog/CommandAck_%s.log",appdataLog.playbackTS);
-    sprintf(fnameTraffic,"../ram/IClog/Traffic_%s.log",appdataLog.playbackTS);
-    sprintf(fnameStart,"../ram/IClog/StartMission_%s.log",appdataLog.playbackTS);
-   	sprintf(fnameWPReached,"../ram/IClog/WPReached_%s.log",appdataLog.playbackTS);
+	sprintf(fnamePosition,"%s/Position_%s.log",appdataLog.playbackLocation,appdataLog.playbackTS);
+ 	sprintf(fnameCommands,"%s/Commands_%s.log",appdataLog.playbackLocation,appdataLog.playbackTS);
+    sprintf(fnameMP,"%s/MissionPlan_%s.log",appdataLog.playbackLocation,appdataLog.playbackTS);
+    sprintf(fnameGF,"%s/Geofence_%s.log",appdataLog.playbackLocation,appdataLog.playbackTS);
+    sprintf(fnameAck,"%s/CommandAck_%s.log",appdataLog.playbackLocation,appdataLog.playbackTS);
+    sprintf(fnameTraffic,"%s/Traffic_%s.log",appdataLog.playbackLocation,appdataLog.playbackTS);
+    sprintf(fnameStart,"%s/StartMission_%s.log",appdataLog.playbackLocation,appdataLog.playbackTS);
+   	sprintf(fnameWPReached,"%s/WPReached_%s.log",appdataLog.playbackLocation,appdataLog.playbackTS);
 
 	appdataLog.fpPos = fopen(fnamePosition,"r");
 	appdataLog.fpCommands = fopen(fnameCommands,"r");

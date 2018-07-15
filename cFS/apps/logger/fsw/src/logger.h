@@ -67,6 +67,7 @@ typedef struct{
     CFE_TIME_SysTime_t appStartTime;            ///< App start time
     bool record;                                ///< record log file
     char playbackTS[20];                        ///< play back time stamp
+    char playbackLocation[100];                 ///< play back location
 }appdataLog_t;
 
 
