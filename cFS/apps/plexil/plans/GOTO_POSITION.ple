@@ -47,7 +47,7 @@ GOTO_POSITION:{
     
     GET_FEASIBLE_WP:{
 
-        pprint("Plexil status: checking target feasibility");
+        pprint("Plexil status: Checking target feasibility");
 
         {
             EndCondition isKnown(targetFeasibility);
