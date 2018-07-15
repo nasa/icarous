@@ -69,7 +69,7 @@ GOTO_POSITION:{
         Real dist2nextWP = 10000;
         SkipCondition !targetFeasibility;
 
-        pprint("Plexil status: Going to target:",TargetPosition);
+        pprint("Plexil status: Direct to target position");
         vConflictId = PrevConflictId;
 
         SetPos(TargetPosition);
@@ -109,7 +109,7 @@ GOTO_POSITION:{
 
         totalWPIndex = Lookup(totalResolutionWP);
 
-        pprint("Plexil status: Computed waypoint with:",SearchType,status);
+        pprint("Plexil status: Computed waypoint with:",SearchType);
 
     }
 
