@@ -39,7 +39,7 @@ void PLEXIL_InitializeCustomData(void){
     plexilCustomData.totalFences = 0;
     plexilCustomData.totalTraffic = 0;
     plexilCustomData.searchType = _ASTAR;
-    plexilCustomData.resolutionTraj.totalWayPoints = 0;
+    plexilCustomData.resolutionTraj.num_waypoints = 0;
     plexilCustomData.nextMissionWP = 1;
     plexilCustomData.trafficResType = 1;
     plexilCustomData.preferredTrack = -1e5;
@@ -98,7 +98,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
 
         case ICAROUS_FLIGHTPLAN_MID:{
             flightplan_t* msg = (flightplan_t*) plexilAppData.DATA_MsgPtr;
-            plexilCustomData.totalMissionWP = msg->totalWayPoints;
+            plexilCustomData.totalMissionWP = msg->num_waypoints;
             memcpy(&plexilCustomData.missionFP,msg,sizeof(flightplan_t));
             break;
         }
@@ -115,7 +115,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
                 OS_printf("plexil: No matching requests found: %s\n",msg->name);
             }
 
-            serializeInt(false,traj->totalWayPoints,plxInput.buffer);
+            serializeInt(false,traj->num_waypoints,plxInput.buffer);
             plexil_return(plexilAppData.adap,&plxInput);
             break;
         }
@@ -364,7 +364,7 @@ void PLEXIL_HandleCustomLookups(PlexilMsg *msg){
     }else if(CHECKNAME(msg ,"directPathToNextFeasibleWP")){
         b = serializeBool(false,plexilCustomData.directPathToFeasibleWP,b);
     }else if(CHECKNAME(msg ,"totalResolutionWP")){
-        b = serializeInt(false,plexilCustomData.resolutionTraj.totalWayPoints,b);
+        b = serializeInt(false,plexilCustomData.resolutionTraj.num_waypoints,b);
     }else if(CHECKNAME(msg ,"interceptManeuver")){
         b = serializeRealArray(3,plexilCustomData.interceptManeuver,b);
     }else if(CHECKNAME(msg ,"interceptHeading")){
@@ -512,9 +512,9 @@ void PLEXIL_HandleCustomCommands(PlexilMsg* msg){
 
         deSerializeInt(false,&nrWP,b);
 
-        double waypoint[3] = {plexilCustomData.resolutionTraj.position[nrWP][0],
-                              plexilCustomData.resolutionTraj.position[nrWP][1],
-                              plexilCustomData.resolutionTraj.position[nrWP][2]};
+        double waypoint[3] = {plexilCustomData.resolutionTraj.waypoints[nrWP].latitude,
+                              plexilCustomData.resolutionTraj.waypoints[nrWP].longitude,
+                              plexilCustomData.resolutionTraj.waypoints[nrWP].altitude};
 
         serializeRealArray(3,waypoint,plxInput.buffer);
         plexil_return(plexilAppData.adap,&plxInput);
@@ -524,9 +524,9 @@ void PLEXIL_HandleCustomCommands(PlexilMsg* msg){
 
         deSerializeInt(false,&nmWP,b);
 
-        double waypoint[3] = {plexilCustomData.missionFP.position[nmWP][0],
-                              plexilCustomData.missionFP.position[nmWP][1],
-                              plexilCustomData.missionFP.position[nmWP][2]};
+        double waypoint[3] = {plexilCustomData.missionFP.waypoints[nmWP].latitude,
+                              plexilCustomData.missionFP.waypoints[nmWP].longitude,
+                              plexilCustomData.missionFP.waypoints[nmWP].altitude};
 
         serializeRealArray(3,waypoint,plxInput.buffer);
         plexil_return(plexilAppData.adap,&plxInput);

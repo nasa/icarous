@@ -154,18 +154,18 @@ void TRAJECTORY_ProcessPacket(){
 
                     flightplan_t result;
                     CFE_SB_InitMsg(&result,ICAROUS_TRAJECTORY_MID,sizeof(flightplan_t),TRUE);
-                    memcpy(result.planID,planID,10);
-                    result.totalWayPoints = (uint16_t) PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner,planID);
-                    for(int i=0;i<result.totalWayPoints;++i){
+                    memcpy(result.id,planID,10);
+                    result.num_waypoints = (uint16_t) PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner,planID);
+                    for(int i=0;i<result.num_waypoints;++i){
                         double wp[3];
                         PathPlanner_GetWaypoint(TrajectoryAppData.pplanner,planID,i,wp);
                         if(i > 49){
                             OS_printf("Trajectory: more than 50 waypoints");
                             break;
                         }
-                        result.position[i][0] = (float)wp[0];
-                        result.position[i][1] = (float)wp[1];
-                        result.position[i][2] = (float)wp[2];
+                        result.waypoints[i].latitude = (float)wp[0];
+                        result.waypoints[i].longitude = (float)wp[1];
+                        result.waypoints[i].altitude = (float)wp[2];
 
                         //OS_printf("%f, %f , %f\n",wp[0],wp[1],wp[2]);
                     }
@@ -187,13 +187,13 @@ void TRAJECTORY_Monitor(void){
             switch (MsgId){
 
                 case ICAROUS_FLIGHTPLAN_MID: {
-                    flightplan_t* wp;
-                    wp = (flightplan_t*) TrajectoryAppData.Traj_MsgPtr;
+                    flightplan_t* fp;
+                    fp = (flightplan_t*) TrajectoryAppData.Traj_MsgPtr;
                     PathPlanner_ClearAllPlans(TrajectoryAppData.pplanner);
-                    memcpy(&TrajectoryAppData.mission, wp, sizeof(flightplan_t));
-                    for(int i=0;i<wp->totalWayPoints;++i) {
-                        double position[3] = {wp->position[i][0], wp->position[i][1], wp->position[i][2]};
-                        double speed = wp->speed[i];
+                    memcpy(&TrajectoryAppData.mission, fp, sizeof(flightplan_t));
+                    for(int i=0;i<fp->num_waypoints;++i) {
+                        double position[3] = {fp->waypoints[i].latitude, fp->waypoints[i].longitude, fp->waypoints[i].altitude};
+                        double speed = 0;
                         int id = i;
                         char name[] = "Plan0";
                         PathPlanner_InputFlightPlan(TrajectoryAppData.pplanner, name, (int) id, position, speed);
@@ -202,7 +202,7 @@ void TRAJECTORY_Monitor(void){
                         OS_MutSemGive(TrajectoryAppData.mutexAcState);
                     }
 
-                    CFE_EVS_SendEvent(TRAJECTORY_RECEIVED_FLIGHTPLAN_EID,CFE_EVS_INFORMATION,"Received flight plan with %d waypoints",wp->totalWayPoints);
+                    CFE_EVS_SendEvent(TRAJECTORY_RECEIVED_FLIGHTPLAN_EID,CFE_EVS_INFORMATION,"Received flight plan with %d waypoints",fp->num_waypoints);
                     break;
                 }
 
@@ -303,9 +303,9 @@ void TRAJECTORY_Monitor(void){
                         break;
 
                     // Compute distance to next waypoint.
-                    double nextWPPosition[3] = {TrajectoryAppData.mission.position[nextWP][0],
-                                                TrajectoryAppData.mission.position[nextWP][1],
-                                                TrajectoryAppData.mission.position[nextWP][2]};
+                    double nextWPPosition[3] = {TrajectoryAppData.mission.waypoints[nextWP].latitude,
+                                                TrajectoryAppData.mission.waypoints[nextWP].longitude,
+                                                TrajectoryAppData.mission.waypoints[nextWP].altitude};
 
                     double dist2NextWP = PathPlanner_Dist2Waypoint(TrajectoryAppData.pplanner,position,nextWPPosition);
 

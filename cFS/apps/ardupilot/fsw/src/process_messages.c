@@ -160,24 +160,32 @@ bool ProcessGSMessage(mavlink_message_t message) {
 				appdataInt.waypoint_index[(int) msg.seq] = appdataInt.waypointSeq;
 				if (msg.command == MAV_CMD_NAV_WAYPOINT || msg.command == MAV_CMD_NAV_SPLINE_WAYPOINT) {
 					// Send message to SB
-					wpdata.position[appdataInt.waypointSeq][0] = msg.x;
-					wpdata.position[appdataInt.waypointSeq][1] = msg.y;
-					wpdata.position[appdataInt.waypointSeq][2] = msg.z;
 
-					if(appdataInt.waypointSeq > 0)
-                        wpdata.speed[appdataInt.waypointSeq] = wpdata.speed[appdataInt.waypointSeq-1];
-					else
-						wpdata.speed[0] = 1;
+					fpdata.waypoints[appdataInt.waypointSeq].index = appdataInt.waypointSeq;
+					fpdata.waypoints[appdataInt.waypointSeq].latitude = msg.x;
+					fpdata.waypoints[appdataInt.waypointSeq].longitude = msg.y;
+					fpdata.waypoints[appdataInt.waypointSeq].altitude = msg.z;
+
+                    if(appdataInt.waypointSeq > 0) {
+                    	fpdata.waypoints[appdataInt.waypointSeq].wp_metric = WP_METRIC_SPEED;
+						fpdata.waypoints[appdataInt.waypointSeq].value_to_next_wp = fpdata.waypoints[
+								appdataInt.waypointSeq - 1].value_to_next_wp;
+					}
+					else {
+                        fpdata.waypoints[appdataInt.waypointSeq].wp_metric = WP_METRIC_SPEED;
+						fpdata.waypoints[appdataInt.waypointSeq].value_to_next_wp = 1;
+					}
 
 					appdataInt.waypointSeq++;
 				}else if(msg.command == MAV_CMD_DO_CHANGE_SPEED){
-				    wpdata.speed[appdataInt.waypointSeq-1] = msg.param2;
+					fpdata.waypoints[appdataInt.waypointSeq-1].wp_metric = WP_METRIC_SPEED;
+				    fpdata.waypoints[appdataInt.waypointSeq-1].value_to_next_wp = msg.param2;
                 }
 			}
 
 			if (msg.seq == appdataInt.numWaypoints - 1) {
-				wpdata.totalWayPoints = appdataInt.waypointSeq;
-                SendSBMsg(wpdata);
+				fpdata.num_waypoints = appdataInt.waypointSeq;
+                SendSBMsg(fpdata);
 		    }
 
 			break;
@@ -193,24 +201,19 @@ bool ProcessGSMessage(mavlink_message_t message) {
 				if (msg.command == MAV_CMD_NAV_WAYPOINT || msg.command == MAV_CMD_NAV_SPLINE_WAYPOINT) {
 					// Send message to SB
 
-                    wpdata.position[appdataInt.waypointSeq][0] = (double)msg.x/1E7;
-					wpdata.position[appdataInt.waypointSeq][1] = msg.y/1E7;
-					wpdata.position[appdataInt.waypointSeq][2] = msg.z/1E7;
 
-					if(appdataInt.waypointSeq > 0)
-                        wpdata.speed[appdataInt.waypointSeq] = wpdata.speed[appdataInt.waypointSeq-1];
-					else
-						wpdata.speed[0] = 1;
-
+					fpdata.waypoints[appdataInt.waypointSeq].latitude = msg.x/1.0E7;
+					fpdata.waypoints[appdataInt.waypointSeq].longitude = msg.y/1.0E7;
+					fpdata.waypoints[appdataInt.waypointSeq].altitude = msg.z/1.0E7;
 					appdataInt.waypointSeq++;
 				}else if(msg.command == MAV_CMD_DO_CHANGE_SPEED){
-				    wpdata.speed[appdataInt.waypointSeq-1] = msg.param2;
+				    fpdata.waypoints[appdataInt.waypointSeq-1].value_to_next_wp= msg.param2;
 				}
 			}
 
             if (msg.seq == appdataInt.numWaypoints - 1) {
-				wpdata.totalWayPoints = appdataInt.waypointSeq;
-                SendSBMsg(wpdata);
+				fpdata.num_waypoints = appdataInt.waypointSeq;
+                SendSBMsg(fpdata);
 		    }
 
 			break;
