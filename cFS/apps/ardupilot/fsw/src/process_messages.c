@@ -23,9 +23,9 @@ void ProcessAPMessage(mavlink_message_t message) {
 			position.longitude = (double)globalPositionInt.lon/1E7;
 			position.altitude_abs  = (double)globalPositionInt.alt/1E3;
 			position.altitude_rel  = (double)globalPositionInt.relative_alt/1E3;
-			position.vx = (double)globalPositionInt.vx/100;
-			position.vy = (double)globalPositionInt.vy/100;
-			position.vz = (double)globalPositionInt.vz/100;
+			position.vn = (double)globalPositionInt.vx/100;
+			position.ve = (double)globalPositionInt.vy/100;
+			position.vd = (double)globalPositionInt.vz/100;
 			position.hdg = (double)globalPositionInt.hdg/100;
 
 			CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &position);
@@ -112,9 +112,9 @@ void ProcessAPMessage(mavlink_message_t message) {
 			double vn = groundspeed*cos(track*M_PI/180);
 			double ve = groundspeed*sin(track*M_PI/180);
 			double vu = verticalspeed;
-            traffic.vx = vn;
-            traffic.vy = ve;
-            traffic.vz = vu;
+            traffic.vn = vn;
+            traffic.ve = ve;
+            traffic.vd = vu;
 
             CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &traffic);
             CFE_SB_SendMsg((CFE_SB_Msg_t *) &traffic);
@@ -295,9 +295,9 @@ bool ProcessGSMessage(mavlink_message_t message) {
 				traffic.latitude = msg.param5;
 				traffic.longitude = msg.param6;
 				traffic.altitude = msg.param7;
-				traffic.vx = msg.param2;
-				traffic.vy = msg.param3;
-				traffic.vz = msg.param4;
+				traffic.ve = msg.param2;
+				traffic.vn = msg.param3;
+				traffic.vd = msg.param4;
 
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &traffic);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &traffic);

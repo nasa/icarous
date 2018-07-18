@@ -120,9 +120,9 @@ typedef struct{
 	double latitude;                          /**< latitude (degrees) */
 	double longitude;                         /**< longitude (degrees) */
 	double altitude;                          /**< altitude (degrees) */
-	double vx;                                /**< velocity East component */
-	double vy;                                /**< velocity North component */
-	double vz;                                /**< velocity Up component */
+	double ve;                                /**< velocity East component */
+	double vn;                                /**< velocity North component */
+	double vd;                                /**< velocity Up component */
 }object_t;
 
 /**
@@ -138,9 +138,9 @@ typedef struct{
 	double longitude;                         /**< longitude (degrees) */
 	double altitude_abs;                      /**< absolution altitude, ASL (m)  */
 	double altitude_rel;                      /**< relative altitude, AGL (m) */
-	double vx;                                /**< velocity North component (m/s)*/
-	double vy;                                /**< velocity East component (m/s)*/
-	double vz;                                /**< velocity Down component (m/s)*/
+	double vn;                                /**< velocity North component (m/s)*/
+	double ve;                                /**< velocity East component (m/s)*/
+	double vd;                                /**< velocity Down component (m/s)*/
     double hdg;                               /**< heading in degrees */
 	double hdop;                              /**< GPS Horizontal Dilution of Precision */
 	double vdop;                              /**< GPS Vertical Dilution of Precision */

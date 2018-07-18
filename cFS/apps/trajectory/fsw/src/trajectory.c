@@ -229,7 +229,7 @@ void TRAJECTORY_Monitor(void){
 
                     if(pos->aircraft_id != CFE_PSP_GetSpacecraftId()) {
                         double _pos[3] = {pos->latitude,pos->longitude,pos->altitude_rel};
-                        double _vel[3] = {pos->vx,pos->vy,pos->vz};
+                        double _vel[3] = {pos->ve,pos->vn,pos->vd};
                         int val = PathPlanner_InputTraffic(TrajectoryAppData.pplanner,pos->aircraft_id,_pos,_vel);
                         if(val)
                             CFE_EVS_SendEvent(TRAJECTORY_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder:%d",pos->aircraft_id);
@@ -241,7 +241,7 @@ void TRAJECTORY_Monitor(void){
                         TrajectoryAppData.position[2] = pos->altitude_rel;
 
                         double trk,gs,vs;
-                        ConvertVnedToTrkGsVs(pos->vx,pos->vy,pos->vz,&trk,&gs,&vs);
+                        ConvertVnedToTrkGsVs(pos->vn,pos->ve,pos->vd,&trk,&gs,&vs);
 
                         TrajectoryAppData.velocity[0] = trk;
                         TrajectoryAppData.velocity[1] = gs;
@@ -257,7 +257,7 @@ void TRAJECTORY_Monitor(void){
                     msg = (object_t*) TrajectoryAppData.Traj_MsgPtr;
 
                     double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
-                    double vel[3] = {msg->vx,msg->vy,msg->vz};
+                    double vel[3] = {msg->ve,msg->vn,msg->vd};
                     int val = PathPlanner_InputTraffic(TrajectoryAppData.pplanner,msg->index,pos,vel);
                     if(val)
                         CFE_EVS_SendEvent(TRAJECTORY_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder: %d",msg->index);
