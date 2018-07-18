@@ -93,7 +93,7 @@ void ARDUPILOT_AppInit(void){
 
 
 	// Initialize all messages that this App generates
-	CFE_SB_InitMsg(&wpdata,ICAROUS_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
+	CFE_SB_InitMsg(&fpdata,ICAROUS_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
 	CFE_SB_InitMsg(&wpreached,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);
 	CFE_SB_InitMsg(&gfdata,ICAROUS_GEOFENCE_MID,sizeof(geofence_t),TRUE);
 	CFE_SB_InitMsg(&startMission,ICAROUS_STARTMISSION_MID,sizeof(argsCmd_t),TRUE);

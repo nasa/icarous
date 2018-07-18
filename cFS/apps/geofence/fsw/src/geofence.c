@@ -97,7 +97,7 @@ void GEOFENCE_AppInit(void) {
 
     memset(geofenceAppData.waypointConflict,false,50);
     memset(geofenceAppData.directPathToWP,true,50);
-    geofenceAppData.flightplan.totalWayPoints = 0;
+    geofenceAppData.flightplan.num_waypoints = 0;
     geofenceAppData.numFences = 0;
 }
 
@@ -127,10 +127,10 @@ void GEOFENCE_ProcessPacket(){
             geofenceAppData.receivedFence = true;
 
             if(geofenceAppData.receivedFP){
-                for(int i=0;i<geofenceAppData.flightplan.totalWayPoints; ++i) {
-                    double wpPos[3] = {geofenceAppData.flightplan.position[i][0],
-                                       geofenceAppData.flightplan.position[i][1],
-                                       geofenceAppData.flightplan.position[i][2]};
+                for(int i=0;i<geofenceAppData.flightplan.num_waypoints; ++i) {
+                    double wpPos[3] = {geofenceAppData.flightplan.waypoints[i].latitude,
+                                       geofenceAppData.flightplan.waypoints[i].longitude,
+                                       geofenceAppData.flightplan.waypoints[i].altitude};
                     geofenceAppData.waypointConflict[i] = GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor, wpPos , 0, 0, 0);
 
                     double position[3] = {geofenceAppData.position[0],geofenceAppData.position[1],geofenceAppData.position[2]};
@@ -165,10 +165,10 @@ void GEOFENCE_ProcessPacket(){
             memcpy(&geofenceAppData.flightplan,fp,sizeof(flightplan_t));
             geofenceAppData.receivedFP = true;
 
-           for(int i=0;i<geofenceAppData.flightplan.totalWayPoints; ++i) {
-                    double wpPos[3] = {geofenceAppData.flightplan.position[i][0],
-                                       geofenceAppData.flightplan.position[i][1],
-                                       geofenceAppData.flightplan.position[i][2]};
+           for(int i=0;i<geofenceAppData.flightplan.num_waypoints; ++i) {
+                    double wpPos[3] = {geofenceAppData.flightplan.waypoints[i].latitude,
+                                       geofenceAppData.flightplan.waypoints[i].longitude,
+                                       geofenceAppData.flightplan.waypoints[i].altitude};
                     geofenceAppData.waypointConflict[i] = GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor, wpPos , 0, 0, 0);
 
                     double position[3] = {geofenceAppData.position[0],geofenceAppData.position[1],geofenceAppData.position[2]};

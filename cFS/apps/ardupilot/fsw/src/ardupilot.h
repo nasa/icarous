@@ -233,7 +233,7 @@ int32_t ArdupilotTableValidationFunc(void *TblPtr);
 bool IntfServiceHandler(mavlink_message_t *message);
 
 EXTERN appdataInt_t appdataInt;                ///< global variable containing app state
-EXTERN flightplan_t wpdata;                    ///< waypoint message
+EXTERN flightplan_t fpdata;                    ///< waypoint message
 EXTERN missionItemReached_t wpreached;         ///< mission item reached
 EXTERN geofence_t gfdata;                      ///< geofence data
 EXTERN argsCmd_t startMission;                 ///< start mission command
