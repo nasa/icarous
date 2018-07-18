@@ -116,7 +116,7 @@ void TRAFFIC_ProcessPacket(){
             object_t* msg;
             msg = (object_t*) trafficAppData.Traffic_MsgPtr;
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
-            double vel[3] = {msg->vx,msg->vy,msg->vz};
+            double vel[3] = {msg->ve,msg->vn,msg->vd};
             int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->index,pos,vel);
             if(val)
                 CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder:%d",msg->index);
@@ -130,7 +130,7 @@ void TRAFFIC_ProcessPacket(){
             if (msg->aircraft_id != CFE_PSP_GetSpacecraftId()) {
 
                 double pos[3] = {msg->latitude,msg->longitude,msg->altitude_rel};
-                double vel[3] = {msg->vx,msg->vy,msg->vz};
+                double vel[3] = {msg->ve,msg->vn,msg->vd};
                 int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->aircraft_id,pos,vel);
                 if(val)
                     CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder:%d",msg->aircraft_id);
@@ -141,7 +141,7 @@ void TRAFFIC_ProcessPacket(){
                 trafficAppData.position[2] = msg->altitude_rel;
 
                 double track,groundSpeed,verticalSpeed;
-                ConvertVnedToTrkGsVs(msg->vx,msg->vy,msg->vz,&track,&groundSpeed,&verticalSpeed);
+                ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,&track,&groundSpeed,&verticalSpeed);
 
                 trafficAppData.velocity[0] = track;
                 trafficAppData.velocity[1] = groundSpeed;

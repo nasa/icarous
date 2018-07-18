@@ -151,9 +151,9 @@ void GEOFENCE_ProcessPacket(){
                 geofenceAppData.position[1] = pos->longitude;
                 geofenceAppData.position[2] = pos->altitude_rel;
 
-                geofenceAppData.velocity[0] = pos->vx;
-                geofenceAppData.velocity[1] = pos->vy;
-                geofenceAppData.velocity[2] = pos->vz;
+                geofenceAppData.velocity[0] = pos->vn;
+                geofenceAppData.velocity[1] = pos->ve;
+                geofenceAppData.velocity[2] = pos->vd;
             }
 
             break;

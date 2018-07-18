@@ -82,7 +82,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
             if(msg->aircraft_id == CFE_PSP_GetSpacecraftId()) {
 
                 double trk,gs,vs;
-                ConvertVnedToTrkGsVs(msg->vx,msg->vy,msg->vz,&trk,&gs,&vs);
+                ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,&trk,&gs,&vs);
                 plexilCustomData.position[0] = msg->latitude;
                 plexilCustomData.position[1] = msg->longitude;
                 plexilCustomData.position[2] = msg->altitude_rel;

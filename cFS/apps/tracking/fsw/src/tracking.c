@@ -123,7 +123,7 @@ void TRACKING_ProcessPacket(){
             object_t* msg;
             msg = (object_t*) trackingAppData.Tracking_MsgPtr;
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
-            double vel[3] = {msg->vx,msg->vy,msg->vz};
+            double vel[3] = {msg->vn,msg->ve,msg->vd};
 
             int val = -1;
             for(int i=0;i<trackingAppData.numObjects;++i){
@@ -165,7 +165,7 @@ void TRACKING_ProcessPacket(){
             if (msg->aircraft_id != CFE_PSP_GetSpacecraftId()) {
 
                 double pos[3] = {msg->latitude,msg->longitude,msg->altitude_rel};
-                double vel[3] = {msg->vx,msg->vy,msg->vz};
+                double vel[3] = {msg->vn,msg->ve,msg->vd};
 
                 int val = -1;
                 for(int i=0;i<trackingAppData.numObjects;++i){
@@ -205,7 +205,7 @@ void TRACKING_ProcessPacket(){
                 trackingAppData.position[2] = msg->altitude_rel;
 
                 double track,groundSpeed,verticalSpeed;
-                ConvertVnedToTrkGsVs(msg->vx,msg->vy,msg->vz,&track,&groundSpeed,&verticalSpeed);
+                ConvertVnedToTrkGsVs(msg->vn,msg->ve,msg->vd,&track,&groundSpeed,&verticalSpeed);
 
                 trackingAppData.velocity[0] = track;
                 trackingAppData.velocity[1] = groundSpeed;
