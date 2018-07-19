@@ -9,6 +9,7 @@ Real Command ComputeDistance(Real fromPosition[3],Real toPosition[3]);
 Command SetPos(Real position[3]);
 Command SetMode(String mode);
 Command SetVel(Real velocity[3]);
+Command SetSpeed(Real speed);
 Command pprint(...);
 
 // Lookups
@@ -73,6 +74,7 @@ GOTO_POSITION:{
         vConflictId = PrevConflictId;
 
         SetPos(TargetPosition);
+        SetSpeed(resSpeed);
 
         {
             Real val;
@@ -127,8 +129,6 @@ GOTO_POSITION:{
 
         // Use set pos to go to spot directly
         SetPos(NextWP);
-
-        //pprint("Setting position");
 
         {
             Real dist2nextWP;

@@ -22,7 +22,7 @@ MONITOR:{
     conflictId = 0;
 
     if(statusGF[0] || statusGF[1]){
-         conflictId = 1;
+         //conflictId = 1;
     }endif
 
     if(statusTF){
@@ -33,9 +33,7 @@ MONITOR:{
          conflictId = 4;
     }endif
 
-    if(conflictId != 0){
-        ConflictId = conflictId;
-    }endif
+    ConflictId = conflictId;
 
     {
         EndCondition isKnown(position[0]);

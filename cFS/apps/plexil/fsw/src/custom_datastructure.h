@@ -18,6 +18,9 @@ typedef struct{
     bool keepOutConflict;
     double recoveryPosition[3];
     bool trafficConflict;
+    bool trafficTrackConflict;
+    bool trafficSpeedConflict;
+    bool trafficAltConflict;
     bool flightPlanConflict;
     bool ditch;
     double allowedXtrackError;
@@ -35,7 +38,11 @@ typedef struct{
     double interceptHeadingToPlan;
     int trafficResType;
     double preferredTrack;
+    double preferredSpeed;
+    double preferredAlt;
     bands_t trkBands;
+    bands_t gsBands;
+    bands_t altBands;
 }plexilCustomData_t;
 
 plexilCustomData_t plexilCustomData;

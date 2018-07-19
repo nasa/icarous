@@ -219,14 +219,17 @@ void TRAFFIC_ProcessPacket(){
                                       &trafficAppData.altBands.resDown,
                                       &trafficAppData.altBands.resPreferred);
 
-
             for(int i=0;i<trafficAppData.flightplan.totalWayPoints;++i){
                 double wp[3] = {trafficAppData.flightplan.position[i][0],
                                 trafficAppData.flightplan.position[i][1],
                                 trafficAppData.flightplan.position[i][2]};
 
+                double originalVelocity[3] = {trafficAppData.velocity[0],
+                                              trafficAppData.flightplan.speed[i],
+                                              trafficAppData.velocity[2]};
+
                 bool feasibility = TrafficMonitor_MonitorWPFeasibility(trafficAppData.tfMonitor,
-                                              trafficAppData.position,trafficAppData.velocity,wp);
+                                              trafficAppData.position,originalVelocity,wp);
                 trafficAppData.trackBands.wpFeasibility[i] = feasibility;
                 trafficAppData.speedBands.wpFeasibility[i] = feasibility;
                 trafficAppData.vsBands.wpFeasibility[i] = feasibility;

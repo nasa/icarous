@@ -42,7 +42,9 @@ void PLEXIL_InitializeCustomData(void){
     plexilCustomData.resolutionTraj.totalWayPoints = 0;
     plexilCustomData.nextMissionWP = 1;
     plexilCustomData.trafficResType = 1;
-    plexilCustomData.preferredTrack = 0;
+    plexilCustomData.preferredTrack = -1e5;
+    plexilCustomData.preferredSpeed = -1e5;
+    plexilCustomData.preferredAlt = -1e5;
     plexilCustomData.interceptHeadingToPlan = 0;
     memset(&plexilCustomData.pendingRequest,0,sizeof(PlexilMsg));
 }
@@ -62,6 +64,7 @@ void PLEXIL_CustomSubscription(void){
     CFE_SB_Subscribe(ICAROUS_TRAJECTORY_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(ICAROUS_BANDS_TRACK_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(ICAROUS_BANDS_SPEED_MID,plexilAppData.DATA_Pipe);
+    CFE_SB_Subscribe(ICAROUS_BANDS_ALT_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(FLIGHTPLAN_MONITOR_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(GEOFENCE_PATH_CHECK_RESULT_MID,plexilAppData.DATA_Pipe);
 }
@@ -182,16 +185,64 @@ void PLEXIL_ProcessCustomPackets(bool data){
             memcpy(&plexilCustomData.trkBands,trk,sizeof(bands_t));
 
             if(trk->currentConflictBand == 1){
-               plexilCustomData.trafficConflict = true;
+               plexilCustomData.trafficTrackConflict = true;
+               if(!isinf(trk->resPreferred))
+                   plexilCustomData.preferredTrack = trk->resPreferred;
+               else
+                   plexilCustomData.preferredTrack = -10000;
             }else{
-               plexilCustomData.trafficConflict = false;
-            }
-
-            if(trk->numBands > 1){
-                plexilCustomData.preferredTrack = trk->resPreferred;
+               plexilCustomData.trafficTrackConflict = false;
+               plexilCustomData.preferredTrack = -1000;
             }
 
             break;
+        }
+
+        case ICAROUS_BANDS_SPEED_MID:{
+            bands_t* gs = (bands_t*) plexilAppData.DATA_MsgPtr;
+
+            memcpy(&plexilCustomData.gsBands,gs,sizeof(bands_t));
+
+            if(gs->currentConflictBand == 1){
+               plexilCustomData.trafficSpeedConflict = true;
+               if(!isinf(gs->resPreferred))
+                   plexilCustomData.preferredSpeed = gs->resPreferred;
+               else
+                   plexilCustomData.preferredSpeed = -10000;
+            }else{
+               int id = plexilCustomData.nextMissionWP;
+               if (id >= plexilCustomData.totalMissionWP)
+                   id = plexilCustomData.totalMissionWP-1;
+
+               if(gs->wpFeasibility[id]) {
+                   plexilCustomData.trafficSpeedConflict = false;
+               }
+               else {
+                   plexilCustomData.trafficSpeedConflict = true;
+               }
+               plexilCustomData.preferredSpeed = -1000;
+            }
+
+            break;
+        }
+
+        case ICAROUS_BANDS_ALT_MID:{
+            bands_t* alt = (bands_t*) plexilAppData.DATA_MsgPtr;
+
+            memcpy(&plexilCustomData.gsBands,alt,sizeof(bands_t));
+            if(alt->currentConflictBand == 1){
+               plexilCustomData.trafficAltConflict = true;
+               if(!isinf(alt->resPreferred))
+                   plexilCustomData.preferredAlt = alt->resPreferred;
+               else
+                   plexilCustomData.preferredAlt = -10000;
+            }else{
+               plexilCustomData.trafficAltConflict = false;
+               plexilCustomData.preferredAlt = -1000;
+            }
+
+            break;
+
         }
 
         case FLIGHTPLAN_MONITOR_MID:{
@@ -266,7 +317,18 @@ void PLEXIL_HandleCustomLookups(PlexilMsg *msg){
         conflict[1] = plexilCustomData.keepOutConflict;
         b = serializeBoolArray(2,conflict,b);
     }else if(CHECKNAME(msg ,"trafficConflict")){
+        if((plexilCustomData.trafficTrackConflict || plexilCustomData.trafficSpeedConflict) || plexilCustomData.trafficAltConflict){
+            plexilCustomData.trafficConflict = true;
+        }else{
+            plexilCustomData.trafficConflict = false;
+        }
         b = serializeBool(false,plexilCustomData.trafficConflict,b);
+    }else if(CHECKNAME(msg ,"trafficSpeedConflict")){
+        b = serializeBool(false,plexilCustomData.trafficSpeedConflict,b);
+    }else if(CHECKNAME(msg ,"trafficAltConflict")){
+        b = serializeBool(false,plexilCustomData.trafficAltConflict,b);
+    }else if(CHECKNAME(msg ,"trafficTrackConflict")){
+        b = serializeBool(false,plexilCustomData.trafficTrackConflict,b);
     }else if(CHECKNAME(msg ,"flightPlanConflict")){
         b = serializeBool(false,plexilCustomData.flightPlanConflict,b);
     }else if(CHECKNAME(msg ,"totalFences")){
@@ -311,6 +373,10 @@ void PLEXIL_HandleCustomLookups(PlexilMsg *msg){
         b = serializeInt(false,plexilCustomData.trafficResType,b);
     }else if(CHECKNAME(msg ,"preferredTrack")){
         b = serializeReal(false,plexilCustomData.preferredTrack,b);
+    }else if(CHECKNAME(msg ,"preferredSpeed")){
+        b = serializeReal(false,plexilCustomData.preferredSpeed,b);
+    }else if(CHECKNAME(msg ,"preferredAltitude")){
+        b = serializeReal(false,plexilCustomData.preferredAlt,b);
     }else{
        //TODO: add event saying lookup not handled
         OS_printf("lookup not handled: %s\n",msg->name);

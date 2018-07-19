@@ -49,9 +49,7 @@ LibraryAction GOTO_POSITION(In String SearchType,
 
 LibraryAction TRAFFIC_RESOLUTION(InOut Boolean completionStatus,
                                  In Integer nextWP,
-                                 In Real acPosition[3],
-                                 In Real acVelocity[3],
-                                 In Real resSpeed);
+                                 InOut Real resSpeed);
 
 LibraryAction MONITOR(InOut Integer ConflictId);
 
@@ -115,6 +113,7 @@ CONFLICT_MANAGEMENT:
             statusTF = Lookup(trafficConflict);
             statusFP = Lookup(flightPlanConflict);
             statusDH = Lookup(ditchingStatus);
+            gResSpeed  = Lookup(resolutionSpeed);
 
             gConflictId = 0;
 
@@ -172,6 +171,7 @@ CONFLICT_MANAGEMENT:
             Boolean TrafficResolutionCompleted;
             Boolean GeofenceResolutionCompleted;
             Boolean FlightplanResolutionCompleted;
+            Boolean skipResumeMission = false;
 
             SkipCondition (gConflictId == 0);
 
@@ -197,6 +197,7 @@ CONFLICT_MANAGEMENT:
                                               PrevConflictId = gOldConflictId,
                                               resolutionCompleted = GeofenceResolutionCompleted);
                 }
+                skipResumeMission = false;
             }
 
 
@@ -208,12 +209,7 @@ CONFLICT_MANAGEMENT:
 
                 Status("IC:Executing traffic resolution");
 
-                // If geofence are present, always use the RRT algorithm
-                if(gNumFences == 0){
-                     resType = "PURE_DAIDALUS";
-                }else{
-                     resType = "RRT_DAIDALUS";
-                }endif
+                resType = "PURE_DAIDALUS";
 
                 SetMode("ACTIVE");
 
@@ -222,11 +218,8 @@ CONFLICT_MANAGEMENT:
                 PURE_DAIDALUS:{
                     SkipCondition !(resType == "PURE_DAIDALUS");
 
-                    Repeat true;
                     LibraryCall TRAFFIC_RESOLUTION(completionStatus= TrafficResolutionCompleted,
                                                  nextWP = gCurrentMissionWp,
-                                                 acPosition = gPosition,
-                                                 acVelocity = gVelocity,
                                                  resSpeed = gResSpeed);
                 }
 
@@ -269,11 +262,11 @@ CONFLICT_MANAGEMENT:
                 }
             }
 
-
             RESUME_MISSION:{
                 Integer vNextFeasibleWp;
                 Real vNextPosition[3];
                 Boolean vResolutionCompleted;
+                SkipCondition skipResumeMission;
 
                 Status("IC:Resuming mission");
 
@@ -288,8 +281,12 @@ CONFLICT_MANAGEMENT:
 
                 SetNextMissionWP(vNextFeasibleWp);
 
+                LibraryCall MONITOR(ConflictId = gConflictId);
+                gOldConflictId = gConflictId;
+
                 INTERCEPT_MISSION:{
 
+                        SkipCondition ((gConflictId == 2) || (gConflictId == 4));
                         LibraryCall GOTO_POSITION(SearchType = gSearchType,
                                                   TrafficConflict = false,
                                                   TargetPosition = vNextPosition,
@@ -303,7 +300,7 @@ CONFLICT_MANAGEMENT:
 
                 CONTINUE_MISSION:{
 
-                    SkipCondition (gOldConflictId != gConflictId);
+                    SkipCondition ((gConflictId == 2) || (gConflictId == 4));
                     gCurrentMissionWp = vNextFeasibleWp;
                     if( vNextFeasibleWp + 1 <= gNumMissionWp-1){
                           gCurrentMissionWp = vNextFeasibleWp + 1;
@@ -317,8 +314,10 @@ CONFLICT_MANAGEMENT:
                         status = SetNextMissionWP(gCurrentMissionWp);
                     }
 
-                    SetMode("PASSIVE");
                 }
+
+
+                SetMode("PASSIVE");
             }
         }
     }
