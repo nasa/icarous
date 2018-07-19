@@ -1,6 +1,14 @@
 Boolean Lookup trafficConflict;
+Boolean Lookup trafficSpeedConflict;
+Boolean Lookup trafficAltConflict;
+Boolean Lookup trafficTrackConflict;
+Boolean Lookup nextWPFeasibility;
 Real Lookup preferredTrack;
+Real Lookup preferredSpeed;
+Real Lookup preferredAltitude;
 Real Lookup interceptHeading;
+Real[3] Lookup velocity;
+Real[3] Lookup position;
 
 Boolean    Command CheckSafeToTurn(Real fromHeading,Real toHeading);
 
@@ -9,51 +17,173 @@ Command pprint(...);
 
 
 TRAFFIC_RESOLUTION:{
-    Real prevVelCmd[3];
     InOut Boolean completionStatus;
     In Integer nextWP;
-    In Real acPosition[3];
-    In Real acVelocity[3];
-    In Real resSpeed;
+    InOut Real resSpeed;
+    Real acPosition[3];
+    Real acVelocity[3];
 
     Real velCmd[3];
+    Real prevSpeedResCmd[3];
+    Real prevTrackResCmd[3];
+    Real prevAltResCmd[3];
     Real returnVel;
     Real trackPref;
-    Real speed;
-    Boolean returnSafe;
+    Real speedPref;
+    Real altPref;
+    Boolean returnSafe = false;
     Boolean statusTF;
+    Boolean statusTF_Speed;
+    Boolean statusTF_Altitude;
+    Boolean statusTF_Track;
+    Boolean SpeedResolution = false;
+    Boolean AltResolution = false;
+    Boolean TrackResolution = false;
 
-    // Get traffic conflict status
-    statusTF = Lookup(trafficConflict);
+    acVelocity = Lookup(velocity);
 
-    // Preferred track angle
-    trackPref = Lookup(preferredTrack);
+    prevSpeedResCmd[0] = -100000;
+    prevSpeedResCmd[1] = -100000;
+    prevSpeedResCmd[2] = -100000;
 
-    //pprint("preferred track:",trackPref);
+    prevTrackResCmd[0] = -100000;
+    prevTrackResCmd[1] = -100000;
+    prevTrackResCmd[2] = -100000;
 
-    velCmd[0] = trackPref;
-    velCmd[1] = resSpeed;
-    velCmd[2] = 0;
+    prevAltResCmd[0] = -100000;
+    prevAltResCmd[1] = -100000;
+    prevAltResCmd[2] = -100000;
 
-    SetVel(velCmd);
-
-    prevVelCmd[0] = velCmd[0];
-    prevVelCmd[1] = velCmd[1];
-    prevVelCmd[2] = velCmd[2];
-
-
-    returnVel = Lookup(interceptHeading);
-
-    //pprint("Return heading to plan:",returnVel);
 
     {
-        EndCondition isKnown(returnSafe);
-        returnSafe = CheckSafeToTurn(velCmd[0],returnVel);
+        // Get traffic conflict status
+        Boolean executed = false;
+        Repeat (!returnSafe || statusTF);
+
+        statusTF = Lookup(trafficConflict) ;
+        statusTF_Speed = Lookup(trafficSpeedConflict);
+        statusTF_Altitude = Lookup(trafficAltConflict);
+        statusTF_Track = Lookup(trafficTrackConflict);
+
+        acPosition = Lookup(position);
+
+        //pprint("position:",acPosition[0],acPosition[1],acPosition[2]);
+        //pprint("speed conflict:",statusTF_Speed);
+        //pprint("altitude conflict:",statusTF_Altitude);
+        //pprint("track conflict:",statusTF_Track);
+
+        SPEED:{
+           SkipCondition !statusTF_Speed || TrackResolution || AltResolution;
+
+           speedPref = Lookup(preferredSpeed);
+
+           //pprint("preferred speed:",speedPref);
+
+           if(speedPref >= 0){
+               velCmd[0] = acVelocity[0];
+               velCmd[1] = speedPref;
+               velCmd[2] = 0;
+               //pprint("velocity command :",velCmd[0],velCmd[1],velCmd[2]);
+               SetVel(velCmd);
+               prevSpeedResCmd[0] = velCmd[0];
+               prevSpeedResCmd[1] = velCmd[1];
+               prevSpeedResCmd[2] = velCmd[2];
+               SpeedResolution = true;
+           }elseif(speedPref > -10000){
+               SetVel(prevSpeedResCmd);
+               SpeedResolution = true;
+           }else{
+               SpeedResolution = false;
+               //pprint("no speed resolution");
+           }endif
+
+           returnSafe = true;
+        }
+
+        ALT:{
+           Real climbRate = 0;
+           Real diff;
+           SkipCondition !statusTF_Altitude || TrackResolution || SpeedResolution;
+
+           altPref = Lookup(preferredAltitude);
+
+           //pprint("preferred altitude:",altPref);
+
+           if(altPref > -1e2 && altPref < 1e2 ){
+              diff = altPref - acPosition[2];
+
+              if(diff > 50){
+                   diff = 50;
+              }elseif(diff < -50){
+                   diff = -50;
+              }endif
+
+              //pprint("altitude diff:",diff);
+
+              climbRate = -0.5* diff;
+
+              //pprint("climb rate:",climbRate);
+
+              velCmd[0] = acVelocity[0];
+              velCmd[1] = acVelocity[1];
+              velCmd[2] = climbRate;
+              SetVel(velCmd);
+              prevAltResCmd[0] = velCmd[0];
+              prevAltResCmd[1] = velCmd[1];
+              prevAltResCmd[2] = velCmd[2];
+              //pprint("velocity command :",velCmd[0],velCmd[1],velCmd[2]);
+              AltResolution = true;
+           }elseif(altPref > -10000 && altPref < 100){
+              SetVel(prevAltResCmd);
+              AltResolution = true;
+           }else{
+              AltResolution = false;
+           }endif
+        }
+
+        TRACK:{
+
+            SkipCondition !statusTF_Track || SpeedResolution || AltResolution;
+
+            // Preferred track angle
+            trackPref = Lookup(preferredTrack);
+
+            //pprint("preferred track:",trackPref);
+
+            if(trackPref > -1e3){
+                velCmd[0] = trackPref;
+                velCmd[1] = resSpeed;
+                velCmd[2] = 0;
+                SetVel(velCmd);
+                prevTrackResCmd[0] = velCmd[0];
+                prevTrackResCmd[1] = velCmd[1];
+                prevTrackResCmd[2] = velCmd[2];
+                TrackResolution = true;
+                //pprint("Setting velocity:",velCmd);
+            }elseif(trackPref > -1000){
+                SetVel(prevTrackResCmd);
+                TrackResolution = true;
+            }else{
+                TrackResolution = false;
+            }endif
+        }
+
+        if(TrackResolution){
+            Boolean _returnsafe;
+            returnVel = Lookup(interceptHeading);
+            //pprint("Return heading to plan:",returnVel);
+            {
+                EndCondition isKnown(_returnsafe);
+                _returnsafe = CheckSafeToTurn(velCmd[0],returnVel);
+            }
+            returnSafe = _returnsafe;
+
+            if(!returnSafe){
+                SetVel(prevTrackResCmd);
+            }endif
+        }endif
+
     }
 
-    //pprint("return, tfconflict:",returnSafe,statusTF);
-    if(returnSafe && !statusTF){
-       completionStatus = true;
-    }endif
-
+    completionStatus = true;
 }

@@ -163,8 +163,16 @@ bool ProcessGSMessage(mavlink_message_t message) {
 					wpdata.position[appdataInt.waypointSeq][0] = msg.x;
 					wpdata.position[appdataInt.waypointSeq][1] = msg.y;
 					wpdata.position[appdataInt.waypointSeq][2] = msg.z;
+
+					if(appdataInt.waypointSeq > 0)
+                        wpdata.speed[appdataInt.waypointSeq] = wpdata.speed[appdataInt.waypointSeq-1];
+					else
+						wpdata.speed[0] = 1;
+
 					appdataInt.waypointSeq++;
-				}
+				}else if(msg.command == MAV_CMD_DO_CHANGE_SPEED){
+				    wpdata.speed[appdataInt.waypointSeq-1] = msg.param2;
+                }
 			}
 
 			if (msg.seq == appdataInt.numWaypoints - 1) {
@@ -188,7 +196,15 @@ bool ProcessGSMessage(mavlink_message_t message) {
                     wpdata.position[appdataInt.waypointSeq][0] = (double)msg.x/1E7;
 					wpdata.position[appdataInt.waypointSeq][1] = msg.y/1E7;
 					wpdata.position[appdataInt.waypointSeq][2] = msg.z/1E7;
+
+					if(appdataInt.waypointSeq > 0)
+                        wpdata.speed[appdataInt.waypointSeq] = wpdata.speed[appdataInt.waypointSeq-1];
+					else
+						wpdata.speed[0] = 1;
+
 					appdataInt.waypointSeq++;
+				}else if(msg.command == MAV_CMD_DO_CHANGE_SPEED){
+				    wpdata.speed[appdataInt.waypointSeq-1] = msg.param2;
 				}
 			}
 

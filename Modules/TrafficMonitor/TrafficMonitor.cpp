@@ -396,11 +396,24 @@ void TrafficMonitor::GetGSBands(int& numBands,int* bandTypes,double* low,double 
 
     }
 
-    if(numBands > 1) {
-        resup = KMB.groundSpeedResolution(true);
+    double speedMax = DAA.parameters.getMaxGroundSpeed("m/s");
+    double speedMin = DAA.parameters.getMinGroundSpeed("m/s");
+    double diff = speedMax - speedMin;
+    double percentChange = 0.05 * diff;
+
+    resup = KMB.groundSpeedResolution(true) + percentChange;
+    resdown = KMB.groundSpeedResolution(false) - percentChange;
+
+    if(resup > speedMax)
+        resup =  KMB.groundSpeedResolution(true);
+
+    if(resdown < speedMin)
         resdown = KMB.groundSpeedResolution(false);
-        respref = KMB.groundSpeedResolution(KMB.preferredGroundSpeedDirection());
-    }
+
+    if(KMB.preferredGroundSpeedDirection())
+        respref = resup;
+    else
+        respref = resdown;
 }
 
 void TrafficMonitor::GetVSBands(int& numBands,int* bandTypes,double* low,double *high,
@@ -431,11 +444,11 @@ void TrafficMonitor::GetVSBands(int& numBands,int* bandTypes,double* low,double 
 
     }
 
-    if(numBands > 1) {
+    //if(numBands > 1) {
         resup = KMB.verticalSpeedResolution(true);
         resdown = KMB.verticalSpeedResolution(false);
         respref = KMB.verticalSpeedResolution(KMB.preferredVerticalSpeedDirection());
-    }
+    //}
 }
 
 
@@ -467,9 +480,27 @@ void TrafficMonitor::GetAltBands(int& numBands,int* bandTypes,double* low,double
 
     }
 
-    if(numBands > 1) {
-        resup = KMB.altitudeResolution(true);
+    double altMax = DAA.parameters.getMaxAltitude("m/s");
+    double altMin = DAA.parameters.getMinAltitude("m/s");
+    double diff = altMax - altMin;
+    double percentChange = 0.05 * diff;
+
+    resup = KMB.altitudeResolution(true) + percentChange;
+    resdown = KMB.altitudeResolution(false) - percentChange;
+
+    if(resup > altMax)
+        resup =  KMB.altitudeResolution(true);
+
+    if(resdown < altMin)
         resdown = KMB.altitudeResolution(false);
-        respref = KMB.altitudeResolution(KMB.preferredAltitudeDirection());
-    }
+
+    if(KMB.preferredAltitudeDirection())
+        respref = resup;
+    else
+        respref = resdown;
+
+    //}
+    //printf("num bands :%d\n",numBands);
+    //printf("current conflict: %d\n",currentConflict);
+    //printf("pref resolution:%f\n",respref);
 }
