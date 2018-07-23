@@ -140,6 +140,14 @@ typedef struct{
     int foundUAV;                           ///< UAV communication alive
     uint32_t mutex_read;                    ///< mutex id
     uint32_t mutex_write;                   ///< mutex id
+    bool startWPUplink;
+    bool startWPDownlink;
+    uint16_t  numUplinkWaypoints;
+    uint16_t  numDownlinkWaypoints;
+    uint16_t  downlinkRequestIndex;
+
+    mavlink_mission_item_t UplinkMissionItems[50];
+    mavlink_mission_item_t DownlinkMissionItems[50];
 }appdataInt_t;
 
 
@@ -229,6 +237,9 @@ void ARDUPILOT_ProcessPacket(void);
  */
 int32_t ArdupilotTableValidationFunc(void *TblPtr);
 
+void ConvertPlanToMissionItems(flightplan_t* fp);
+
+void ConvertMissionItemsToPlan(mavlink_mission_item_t items[]);
 
 bool IntfServiceHandler(mavlink_message_t *message);
 

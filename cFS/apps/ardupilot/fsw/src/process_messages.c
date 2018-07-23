@@ -77,8 +77,72 @@ void ProcessAPMessage(mavlink_message_t message) {
 				appdataInt.nextWaypointIndex = appdataInt.waypoint_index[msg.seq]+1;
 
 			}
-
 			break;
+		}
+
+		case MAVLINK_MSG_ID_MISSION_ACK:{
+			if(appdataInt.startWPUplink){
+				appdataInt.startWPUplink = false;
+				appdataInt.startWPDownlink = true;
+
+
+				mavlink_message_t msg;
+				mavlink_msg_mission_request_list_pack(255,0,&msg,1,0,MAV_MISSION_TYPE_MISSION);
+			}
+			break;
+		}
+
+		case MAVLINK_MSG_ID_MISSION_REQUEST:{
+
+			if(appdataInt.startWPUplink) {
+				mavlink_mission_request_t msg;
+				mavlink_msg_mission_request_decode(&message,&msg);
+
+				mavlink_message_t missionItem;
+				mavlink_msg_mission_item_pack(255,0,&missionItem,1,0,appdataInt.UplinkMissionItems[msg.seq].seq,
+												appdataInt.UplinkMissionItems[msg.seq].frame,
+												appdataInt.UplinkMissionItems[msg.seq].command,
+											    appdataInt.UplinkMissionItems[msg.seq].current,
+											    appdataInt.UplinkMissionItems[msg.seq].autocontinue,
+                                                appdataInt.UplinkMissionItems[msg.seq].param1,
+                                                appdataInt.UplinkMissionItems[msg.seq].param2,
+                                                appdataInt.UplinkMissionItems[msg.seq].param3,
+                                                appdataInt.UplinkMissionItems[msg.seq].param4,
+                                                appdataInt.UplinkMissionItems[msg.seq].x,
+											    appdataInt.UplinkMissionItems[msg.seq].y,
+                                                appdataInt.UplinkMissionItems[msg.seq].z,
+                                                appdataInt.UplinkMissionItems[msg.seq].mission_type);
+				writePort(&(appdataInt.ap),&missionItem);
+			}
+			break;
+		}
+
+		case MAVLINK_MSG_ID_MISSION_COUNT:{
+			if(appdataInt.startWPDownlink){
+				mavlink_mission_count_t missionCount;
+				mavlink_msg_mission_count_decode(&message,&missionCount);
+
+				mavlink_message_t msg;
+				mavlink_msg_mission_request_pack(255,0,&msg,1,0,appdataInt.downlinkRequestIndex,MAV_MISSION_TYPE_MISSION);
+				writePort(&(appdataInt.ap),&msg);
+			}
+			break;
+		}
+
+		case MAVLINK_MSG_ID_MISSION_ITEM:{
+			if(appdataInt.startWPDownlink){
+				mavlink_mission_item_t missionItem;
+				mavlink_msg_mission_item_decode(&message,&missionItem);
+
+				memcpy(appdataInt.DownlinkMissionItems + missionItem.seq,&missionItem,sizeof(mavlink_mission_item_t));
+
+				if(missionItem.seq == appdataInt.numDownlinkWaypoints - 1){
+
+					mavlink_message_t ack;
+					mavlink_msg_mission_ack_pack(255,0,&ack,1,0,MAV_RESULT_ACCEPTED,MAV_MISSION_TYPE_MISSION);
+					appdataInt.startWPDownlink = false;
+				}
+			}
 		}
 
 		case MAVLINK_MSG_ID_HEARTBEAT:
@@ -440,6 +504,15 @@ void ARDUPILOT_ProcessPacket() {
 			break;
 		}
 
+		case UPLINK_FLIGHTPLAN_MID:{
+			mavlink_message_t msg;
+			flightplan_t* fp = (flightplan_t*)appdataInt.INTERFACEMsgPtr;
+
+			ConvertPlanToMissionItems(fp);
+			mavlink_msg_mission_count_pack(255,0,&msg,1,0,(uint16_t)fp->num_waypoints,MAV_MISSION_TYPE_MISSION);
+			writePort(&appdataInt.ap,&msg);
+		}
+
 		case ICAROUS_STATUS_MID:{
 			status_t* statusMsg = (status_t*) appdataInt.INTERFACEMsgPtr;
 			mavlink_message_t msg;
@@ -560,3 +633,11 @@ void ARDUPILOT_ProcessPacket() {
 	return;
 }
 
+void ConvertPlanToMissionItems(flightplan_t* fp){
+
+}
+
+
+void ConvertMissionItemsToPlan(mavlink_mission_item_t items[]){
+
+}
