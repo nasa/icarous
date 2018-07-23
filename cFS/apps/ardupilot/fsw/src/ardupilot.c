@@ -172,6 +172,9 @@ void ARDUPILOT_AppInit(void){
 		OS_printf("Error creating mutex2\n");
 
 	appdataInt.waypoint_type = (int*)malloc(sizeof(int)*2);
+	appdataInt.startWPUplink = false;
+	appdataInt.startWPDownlink = false;
+	appdataInt.downlinkRequestIndex = 0;
 }
 
 void ARDUPILOT_AppCleanUp(){

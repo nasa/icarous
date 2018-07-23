@@ -29,7 +29,8 @@
 #define ICAROUS_STATUS_MID 0x081E         ///< Icarous status message. message type:status_t
 #define ICAROUS_DITCH_MID 0x081F          ///< Ditching signal: noArgsCmd_t
 #define ICAROUS_TRACK_STATUS_MID 0x0820   ///< Command to start/stop tracking. message type: argsCmd_t
-
+#define UPLINK_FLIGHTPLAN_MID 0x0821      ///< Uplink flight plan
+#define DOWNLINK_FLIGHTPLAN_MID 0x0822    ///< Downlink flight plan
 
 /**@}*/
 #define SendSBMsg(msg)\
