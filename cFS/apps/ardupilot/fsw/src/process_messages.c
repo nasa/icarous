@@ -81,6 +81,7 @@ void ProcessAPMessage(mavlink_message_t message) {
 		}
 
 		case MAVLINK_MSG_ID_MISSION_ACK:{
+			OS_printf("Received mission ack\n");
 			if(appdataInt.startWPUplink){
 				appdataInt.startWPUplink = false;
 				appdataInt.startWPDownlink = true;
@@ -88,16 +89,18 @@ void ProcessAPMessage(mavlink_message_t message) {
 
 				mavlink_message_t msg;
 				mavlink_msg_mission_request_list_pack(255,0,&msg,1,0,MAV_MISSION_TYPE_MISSION);
+				writePort(&appdataInt.ap,&msg);
 			}
 			break;
 		}
 
 		case MAVLINK_MSG_ID_MISSION_REQUEST:{
-
 			if(appdataInt.startWPUplink) {
 				mavlink_mission_request_t msg;
 				mavlink_msg_mission_request_decode(&message,&msg);
 
+
+				OS_printf("recieved mission request %d\n",msg.seq);
 				mavlink_message_t missionItem;
 				mavlink_msg_mission_item_pack(255,0,&missionItem,1,0,appdataInt.UplinkMissionItems[msg.seq].seq,
 												appdataInt.UplinkMissionItems[msg.seq].frame,
@@ -112,16 +115,18 @@ void ProcessAPMessage(mavlink_message_t message) {
 											    appdataInt.UplinkMissionItems[msg.seq].y,
                                                 appdataInt.UplinkMissionItems[msg.seq].z,
                                                 appdataInt.UplinkMissionItems[msg.seq].mission_type);
+				OS_printf("sending mission type:%d\n",appdataInt.UplinkMissionItems[msg.seq].mission_type);
 				writePort(&(appdataInt.ap),&missionItem);
 			}
 			break;
 		}
 
 		case MAVLINK_MSG_ID_MISSION_COUNT:{
+			OS_printf("Received mission count\n");
 			if(appdataInt.startWPDownlink){
 				mavlink_mission_count_t missionCount;
 				mavlink_msg_mission_count_decode(&message,&missionCount);
-
+				appdataInt.numDownlinkWaypoints = missionCount.count;
 				mavlink_message_t msg;
 				mavlink_msg_mission_request_pack(255,0,&msg,1,0,appdataInt.downlinkRequestIndex,MAV_MISSION_TYPE_MISSION);
 				writePort(&(appdataInt.ap),&msg);
@@ -130,6 +135,7 @@ void ProcessAPMessage(mavlink_message_t message) {
 		}
 
 		case MAVLINK_MSG_ID_MISSION_ITEM:{
+			OS_printf("Received mission item\n");
 			if(appdataInt.startWPDownlink){
 				mavlink_mission_item_t missionItem;
 				mavlink_msg_mission_item_decode(&message,&missionItem);
@@ -139,8 +145,14 @@ void ProcessAPMessage(mavlink_message_t message) {
 				if(missionItem.seq == appdataInt.numDownlinkWaypoints - 1){
 
 					mavlink_message_t ack;
-					mavlink_msg_mission_ack_pack(255,0,&ack,1,0,MAV_RESULT_ACCEPTED,MAV_MISSION_TYPE_MISSION);
+					mavlink_msg_mission_ack_pack(255,0,&ack,1,0,MAV_MISSION_ACCEPTED,MAV_MISSION_TYPE_MISSION);
 					appdataInt.startWPDownlink = false;
+					OS_printf("Received downlink flightplan from pixhawk\n");
+				}else{
+				    mavlink_message_t request;
+				    mavlink_msg_mission_request_pack(255,0,&request,1,0,(uint16_t )(missionItem.seq + 1),MAV_MISSION_TYPE_MISSION);
+				    writePort(&appdataInt.ap,&request);
+				    OS_printf("Requesting %d waypoint \n",missionItem.seq + 1);
 				}
 			}
 		}
@@ -505,10 +517,12 @@ void ARDUPILOT_ProcessPacket() {
 		}
 
 		case UPLINK_FLIGHTPLAN_MID:{
+			OS_printf("received flight plan\n");
 			mavlink_message_t msg;
 			flightplan_t* fp = (flightplan_t*)appdataInt.INTERFACEMsgPtr;
 
 			ConvertPlanToMissionItems(fp);
+			appdataInt.startWPUplink = true;
 			mavlink_msg_mission_count_pack(255,0,&msg,1,0,(uint16_t)fp->num_waypoints,MAV_MISSION_TYPE_MISSION);
 			writePort(&appdataInt.ap,&msg);
 		}
@@ -639,6 +653,7 @@ void ConvertPlanToMissionItems(flightplan_t* fp){
 		appdataInt.UplinkMissionItems[i].target_component = 0;
 		appdataInt.UplinkMissionItems[i].seq = (uint16_t )i;
 		appdataInt.UplinkMissionItems[i].mission_type = MAV_MISSION_TYPE_MISSION;
+		appdataInt.UplinkMissionItems[i].command = MAV_CMD_NAV_WAYPOINT;
 		appdataInt.UplinkMissionItems[i].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
 		appdataInt.UplinkMissionItems[i].autocontinue = 1;
 		appdataInt.UplinkMissionItems[i].current = 0;
