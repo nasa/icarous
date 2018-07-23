@@ -634,10 +634,32 @@ void ARDUPILOT_ProcessPacket() {
 }
 
 void ConvertPlanToMissionItems(flightplan_t* fp){
-
+	for(int i=0;i<fp->num_waypoints;++i){
+		appdataInt.UplinkMissionItems[i].target_system = 1;
+		appdataInt.UplinkMissionItems[i].target_component = 0;
+		appdataInt.UplinkMissionItems[i].seq = (uint16_t )i;
+		appdataInt.UplinkMissionItems[i].mission_type = MAV_MISSION_TYPE_MISSION;
+		appdataInt.UplinkMissionItems[i].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+		appdataInt.UplinkMissionItems[i].autocontinue = 1;
+		appdataInt.UplinkMissionItems[i].current = 0;
+		appdataInt.UplinkMissionItems[i].x = (float)fp->waypoints[i].latitude;
+		appdataInt.UplinkMissionItems[i].y = (float)fp->waypoints[i].longitude;
+		appdataInt.UplinkMissionItems[i].z = (float)fp->waypoints[i].altitude;
+	}
 }
 
 
-void ConvertMissionItemsToPlan(mavlink_mission_item_t items[]){
+flightplan_t ConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[]){
 
+	flightplan_t fp;
+	int count = 0;
+	for(int i=0;i<size;++i){
+		fp.waypoints[count].latitude = items[i].x;
+		fp.waypoints[count].longitude = items[i].y;
+		fp.waypoints[count].altitude = items[i].z;
+		count++;
+	}
+
+	fp.num_waypoints = count;
+	return fp;
 }
