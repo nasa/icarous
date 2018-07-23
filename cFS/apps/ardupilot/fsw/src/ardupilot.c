@@ -90,6 +90,7 @@ void ARDUPILOT_AppInit(void){
 	CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataInt.INTERFACE_Pipe);
 	CFE_SB_Subscribe(ICAROUS_BANDS_TRACK_MID, appdataInt.INTERFACE_Pipe);
     CFE_SB_Subscribe(ICAROUS_STATUS_MID, appdataInt.INTERFACE_Pipe);
+    CFE_SB_Subscribe(UPLINK_FLIGHTPLAN_MID,appdataInt.INTERFACE_Pipe);
 
 
 	// Initialize all messages that this App generates
