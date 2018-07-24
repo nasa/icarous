@@ -160,7 +160,7 @@ TRAFFIC_RESOLUTION:{
                 prevTrackResCmd[2] = velCmd[2];
                 TrackResolution = true;
                 //pprint("Setting velocity:",velCmd);
-            }elseif(trackPref > -1000){
+            }elseif(trackPref > -10000){
                 SetVel(prevTrackResCmd);
                 TrackResolution = true;
             }else{
