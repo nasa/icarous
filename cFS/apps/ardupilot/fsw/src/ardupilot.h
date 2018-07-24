@@ -237,9 +237,9 @@ void ARDUPILOT_ProcessPacket(void);
  */
 int32_t ArdupilotTableValidationFunc(void *TblPtr);
 
-void ConvertPlanToMissionItems(flightplan_t* fp);
+uint16_t ConvertPlanToMissionItems(flightplan_t* fp);
 
-flightplan_t ConvertMissionItemsToPlan(uint16_t size,mavlink_mission_item_t items[]);
+void ConvertMissionItemsToPlan(uint16_t size,mavlink_mission_item_t items[],flightplan_t *fp);
 
 bool IntfServiceHandler(mavlink_message_t *message);
 

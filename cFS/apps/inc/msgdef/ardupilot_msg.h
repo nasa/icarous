@@ -71,6 +71,15 @@ typedef enum{
 }objectType_e;
 
 
+/**
+ * @enum wp_metric_e
+ * @brief waypoint metrix
+ */
+typedef enum {
+	WP_METRIC_ETA       = 0,//(s)
+	WP_METRIC_SPEED     = 1,//(m/s)
+	WP_METRIC_ALTITUDE  = 2 //(m)
+}wp_metric_e;
 
 //typedef struct{
 //    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< cFS header information */
