@@ -47,6 +47,11 @@ alert_1_spread_gs = 0.000000 [m/s]
 alert_1_spread_trk = 0.000000 [deg]
 alert_1_spread_vs = 0.000000 [fpm]
 conflict_level = 1
+<<<<<<< 7bdb18ef7658ca8c764773c83561627e786bbc01
 det_1_D = 5.000000 [m]
 det_1_H = 200.000000 [m]
+=======
+det_1_D = 500.000000 [m]
+det_1_H = 10000.000000 [m]
+>>>>>>> Table parameter changes for cratos
 load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.CDCylinder

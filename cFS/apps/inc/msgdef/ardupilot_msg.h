@@ -75,6 +75,7 @@ typedef enum{
  * @enum wp_metric_e
  * @brief waypoint metrix
  */
+
 typedef enum {
 	WP_METRIC_ETA       = 0,///< Estimated time of arrival (s) at the next waypoint
 	WP_METRIC_SPEED     = 1,///< Speed(m/s) en route to next waypoint
@@ -132,7 +133,7 @@ typedef struct{
 	uint8_t type;                           /**< geofence type: see geofence_type_t */
     uint16_t index;                         /**< geofence index */
 	uint16_t totalvertices;                 /**< total vertices in this geofence */
-    double vertices[50][2];                  /**< lat,lon (deg,deg) */
+    double vertices[64][2];                  /**< lat,lon (deg,deg) */
 	double floor;                            /**< floor of geofence (m) */
 	double ceiling;                          /**< roof of geofence (m) */
 }geofence_t;

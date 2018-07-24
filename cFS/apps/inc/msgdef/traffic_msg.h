@@ -41,7 +41,7 @@ typedef struct{
 	double resUp;                            /**< resolution up */
 	double resDown;                          /**< resolution down */
 	double resPreferred;                     /**< preferred resolution */
-    bool wpFeasibility[50];                  /**< feasiblity to waypoints */
+    bool wpFeasibility[1023];                  /**< feasiblity to waypoints */
 }bands_t;
 
 /**
