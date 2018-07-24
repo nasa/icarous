@@ -10,6 +10,7 @@
 #include <msgdef/traffic_msg.h>
 #include <msgdef/ardupilot_msg.h>
 #include "ardupilot.h"
+#include "UtilFunctions.h"
 
 void ProcessAPMessage(mavlink_message_t message) {
 	switch (message.msgid) {
@@ -147,12 +148,17 @@ void ProcessAPMessage(mavlink_message_t message) {
 					mavlink_message_t ack;
 					mavlink_msg_mission_ack_pack(255,0,&ack,1,0,MAV_MISSION_ACCEPTED,MAV_MISSION_TYPE_MISSION);
 					appdataInt.startWPDownlink = false;
-					OS_printf("Received downlink flightplan from pixhawk\n");
+					//OS_printf("Received downlink flightplan from pixhawk\n");
+
+					flightplan_t fp;
+					CFE_SB_InitMsg(&fp,DOWNLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
+					ConvertMissionItemsToPlan(appdataInt.numDownlinkWaypoints,appdataInt.DownlinkMissionItems,&fp);
+					SendSBMsg(fp);
 				}else{
 				    mavlink_message_t request;
 				    mavlink_msg_mission_request_pack(255,0,&request,1,0,(uint16_t )(missionItem.seq + 1),MAV_MISSION_TYPE_MISSION);
 				    writePort(&appdataInt.ap,&request);
-				    OS_printf("Requesting %d waypoint \n",missionItem.seq + 1);
+				    //OS_printf("Requesting %d waypoint \n",missionItem.seq + 1);
 				}
 			}
 		}
@@ -517,13 +523,14 @@ void ARDUPILOT_ProcessPacket() {
 		}
 
 		case UPLINK_FLIGHTPLAN_MID:{
-			OS_printf("received flight plan\n");
+			//OS_printf("received flight plan\n");
 			mavlink_message_t msg;
 			flightplan_t* fp = (flightplan_t*)appdataInt.INTERFACEMsgPtr;
 
-			ConvertPlanToMissionItems(fp);
+			uint16_t  numMissionItems = ConvertPlanToMissionItems(fp);
 			appdataInt.startWPUplink = true;
-			mavlink_msg_mission_count_pack(255,0,&msg,1,0,(uint16_t)fp->num_waypoints,MAV_MISSION_TYPE_MISSION);
+			appdataInt.numUplinkWaypoints = numMissionItems;
+			mavlink_msg_mission_count_pack(255,0,&msg,1,0,numMissionItems,MAV_MISSION_TYPE_MISSION);
 			writePort(&appdataInt.ap,&msg);
 		}
 
@@ -647,34 +654,121 @@ void ARDUPILOT_ProcessPacket() {
 	return;
 }
 
-void ConvertPlanToMissionItems(flightplan_t* fp){
+uint16_t ConvertPlanToMissionItems(flightplan_t* fp){
+    int count = 0;
 	for(int i=0;i<fp->num_waypoints;++i){
-		appdataInt.UplinkMissionItems[i].target_system = 1;
-		appdataInt.UplinkMissionItems[i].target_component = 0;
-		appdataInt.UplinkMissionItems[i].seq = (uint16_t )i;
-		appdataInt.UplinkMissionItems[i].mission_type = MAV_MISSION_TYPE_MISSION;
-		appdataInt.UplinkMissionItems[i].command = MAV_CMD_NAV_WAYPOINT;
-		appdataInt.UplinkMissionItems[i].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
-		appdataInt.UplinkMissionItems[i].autocontinue = 1;
-		appdataInt.UplinkMissionItems[i].current = 0;
-		appdataInt.UplinkMissionItems[i].x = (float)fp->waypoints[i].latitude;
-		appdataInt.UplinkMissionItems[i].y = (float)fp->waypoints[i].longitude;
-		appdataInt.UplinkMissionItems[i].z = (float)fp->waypoints[i].altitude;
+		appdataInt.UplinkMissionItems[count].target_system = 1;
+		appdataInt.UplinkMissionItems[count].target_component = 0;
+		appdataInt.UplinkMissionItems[count].seq = (uint16_t )count;
+		appdataInt.UplinkMissionItems[count].mission_type = MAV_MISSION_TYPE_MISSION;
+		appdataInt.UplinkMissionItems[count].command = MAV_CMD_NAV_WAYPOINT;
+		appdataInt.UplinkMissionItems[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+		appdataInt.UplinkMissionItems[count].autocontinue = 1;
+		appdataInt.UplinkMissionItems[count].current = 0;
+		appdataInt.UplinkMissionItems[count].x = (float)fp->waypoints[i].latitude;
+		appdataInt.UplinkMissionItems[count].y = (float)fp->waypoints[i].longitude;
+		appdataInt.UplinkMissionItems[count].z = (float)fp->waypoints[i].altitude;
+
+
+		count++;
+		if(i < fp->num_waypoints-1){
+			if(fp->waypoints[i].wp_metric == WP_METRIC_ETA) {
+				double currentWP[3] = {fp->waypoints[i].latitude, fp->waypoints[i].longitude,
+									   fp->waypoints[i].altitude};
+				double nextWP[3] = {fp->waypoints[i + 1].latitude, fp->waypoints[i + 1].longitude,
+									fp->waypoints[i + 1].altitude};
+				double dist2NextWP = ComputeDistance(currentWP, nextWP);
+				double time2NextWP = fp->waypoints[i].value_to_next_wp;
+				double speed2NextWP = dist2NextWP/time2NextWP;
+
+				if (dist2NextWP > 1E-3) {
+					appdataInt.UplinkMissionItems[count].target_system = 1;
+					appdataInt.UplinkMissionItems[count].target_component = 0;
+					appdataInt.UplinkMissionItems[count].seq = (uint16_t) count;
+					appdataInt.UplinkMissionItems[count].mission_type = MAV_MISSION_TYPE_MISSION;
+					appdataInt.UplinkMissionItems[count].command = MAV_CMD_DO_CHANGE_SPEED;
+					appdataInt.UplinkMissionItems[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+					appdataInt.UplinkMissionItems[count].autocontinue = 1;
+					appdataInt.UplinkMissionItems[count].current = 0;
+					appdataInt.UplinkMissionItems[count].param1 = 1;
+					appdataInt.UplinkMissionItems[count].param2 = speed2NextWP;
+					appdataInt.UplinkMissionItems[count].param3 = 0;
+					appdataInt.UplinkMissionItems[count].param4 = 0;
+					appdataInt.UplinkMissionItems[count].x = 0;
+					appdataInt.UplinkMissionItems[count].y = 0;
+					appdataInt.UplinkMissionItems[count].z = 0;
+					count++;
+					//OS_printf("Constructed speed waypoint:%f\n",speed2NextWP);
+				}else if(time2NextWP > 0){
+                    appdataInt.UplinkMissionItems[count].target_system = 1;
+					appdataInt.UplinkMissionItems[count].target_component = 0;
+					appdataInt.UplinkMissionItems[count].seq = (uint16_t) count;
+					appdataInt.UplinkMissionItems[count].mission_type = MAV_MISSION_TYPE_MISSION;
+					appdataInt.UplinkMissionItems[count].command = MAV_CMD_NAV_LOITER_TIME;
+					appdataInt.UplinkMissionItems[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+					appdataInt.UplinkMissionItems[count].autocontinue = 1;
+					appdataInt.UplinkMissionItems[count].current = 0;
+					appdataInt.UplinkMissionItems[count].param1 = time2NextWP;
+					appdataInt.UplinkMissionItems[count].param2 = 0;
+					appdataInt.UplinkMissionItems[count].param3 = 15;
+					appdataInt.UplinkMissionItems[count].param4 = 0;
+					appdataInt.UplinkMissionItems[count].x = nextWP[0];
+					appdataInt.UplinkMissionItems[count].y = nextWP[1];
+					appdataInt.UplinkMissionItems[count].z = nextWP[2];
+					++i;
+					count++;
+                    //OS_printf("Constructed loiter waypoint\n");
+				}
+			}
+		}
 	}
+
+	return count;
 }
 
+void ConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp){
 
-flightplan_t ConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[]){
-
-	flightplan_t fp;
 	int count = 0;
 	for(int i=0;i<size;++i){
-		fp.waypoints[count].latitude = items[i].x;
-		fp.waypoints[count].longitude = items[i].y;
-		fp.waypoints[count].altitude = items[i].z;
-		count++;
+		switch(items[i].command){
+
+			case MAV_CMD_NAV_WAYPOINT:{
+				fp->waypoints[count].latitude = items[i].x;
+				fp->waypoints[count].longitude = items[i].y;
+				fp->waypoints[count].altitude = items[i].z;
+				count++;
+				//OS_printf("constructed waypoint\n");
+				break;
+			}
+
+			case MAV_CMD_NAV_LOITER_TIME:{
+				fp->waypoints[count].latitude = items[i].x;
+				fp->waypoints[count].longitude = items[i].y;
+				fp->waypoints[count].altitude = items[i].z;
+				if(items[i].command == MAV_CMD_NAV_LOITER_TIME){
+					fp->waypoints[count-1].value_to_next_wp = items[i].param1;
+
+				}
+				count++;
+				//OS_printf("Setting loiter point %f\n",items[i].param1);
+
+				break;
+			}
+
+			case MAV_CMD_DO_CHANGE_SPEED:{
+				if(i>0 && i < size-1) {
+					double wpA[3] = {items[i - 1].x, items[i - 1].y, items[i - 1].z};
+					double wpB[3] = {items[i + 1].x,items[i + 1].y,items[i + 1].z};
+					double dist = ComputeDistance(wpA,wpB);
+					double eta = dist/items[i].param2;
+
+					fp->waypoints[count-1].value_to_next_wp = eta;
+					//OS_printf("Setting ETA to %f\n",eta);
+				}
+				break;
+			}
+		}
 	}
 
-	fp.num_waypoints = count;
-	return fp;
+	fp->num_waypoints = count;
 }
