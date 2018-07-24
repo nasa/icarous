@@ -317,8 +317,9 @@ CONFLICT_MANAGEMENT:
                 }
 
 
-                SetMode("PASSIVE");
             }
+
+            SetMode("PASSIVE");
         }
     }
 }
