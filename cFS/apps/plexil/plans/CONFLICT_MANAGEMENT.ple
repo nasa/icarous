@@ -171,7 +171,7 @@ CONFLICT_MANAGEMENT:
             Boolean TrafficResolutionCompleted;
             Boolean GeofenceResolutionCompleted;
             Boolean FlightplanResolutionCompleted;
-            Boolean skipResumeMission = false;
+            Boolean skipResumeMission = true;
 
             SkipCondition (gConflictId == 0);
 
@@ -248,6 +248,7 @@ CONFLICT_MANAGEMENT:
                 {
                     EndCondition (deviation < gAllowedDeviation/2);
                     Status("IC:Resolving flight plan deviation");
+                    pprint("Plexil status: resolving flight plan deviation");
                     SetMode("ACTIVE");
                     MANEUVER:
                     {
