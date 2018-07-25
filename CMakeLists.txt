@@ -42,6 +42,8 @@ ENDIF()
 IF(NOT ARM)
     set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
     set(CMAKE_C_FLAGS "-g -fPIC -m32 ")
+ELSE()
+    execute_process(COMMAND bash -c "sed -i 's/-m32//g' ${CMAKE_SOURCE_DIR}/cFS/cFE/tools/elf2cfetbl/CMakeLists.txt")
 ENDIF()
 
 # Add modules
