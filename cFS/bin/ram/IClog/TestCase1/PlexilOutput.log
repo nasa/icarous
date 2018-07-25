@@ -8,26 +8,26 @@ Plexil status: Starting fence resolution
 Plexil status: In Library call GOTO_POSITION 
 Plexil status: Checking target feasibility 
 Plexil status: Target feasibility  1 
-Plexil status: Direct to target position
+Plexil status: Direct to target position 
 Plexil status: Intercepting mission to next feasible waypoint: 3 
 Plexil status: In Library call GOTO_POSITION 
 Plexil status: Checking target feasibility 
 Plexil status: Target feasibility  0 
 Plexil status: Planning a path to target location 
-Plexil status: Computed waypoint with: ASTAR
+Plexil status: Computed waypoint with: ASTAR 
 Plexil status: Finished intercepting. Resuming to: 4 
 Plexil status: Starting resolution enroute to WP: 4 
 Plexil status: Starting fence resolution 
 Plexil status: In Library call GOTO_POSITION 
 Plexil status: Checking target feasibility 
 Plexil status: Target feasibility  1 
-Plexil status: Direct to target position
+Plexil status: Direct to target position 
 Plexil status: Intercepting mission to next feasible waypoint: 5 
 Plexil status: In Library call GOTO_POSITION 
 Plexil status: Checking target feasibility 
 Plexil status: Target feasibility  0 
 Plexil status: Planning a path to target location 
-Plexil status: Computed waypoint with: ASTAR
+Plexil status: Computed waypoint with: ASTAR 
 Plexil status: Finished intercepting. Resuming to: 5 
 Plexil status: Finished cruise: 0 
-Plexil status: Landing 
+Plexil status: Landing
