@@ -98,22 +98,22 @@ Public Attributes</h2></td></tr>
 uint8&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSCH__DiagPacket__t.html#a3a2bacfee662c8d52108e0c77f20bb12">TlmHeader</a> [CFE_SB_TLM_HDR_SIZE]</td></tr>
 <tr class="memdesc:a3a2bacfee662c8d52108e0c77f20bb12"><td class="mdescLeft">&#160;</td><td class="mdescRight">cFE Software Bus Telemetry Message Header <br /></td></tr>
 <tr class="separator:a3a2bacfee662c8d52108e0c77f20bb12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6df456ff6d74eb60796f022e14a8272"><td class="memItemLeft" align="right" valign="top">uint16&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSCH__DiagPacket__t.html#ae6df456ff6d74eb60796f022e14a8272">EntryStates</a> [SCH_NUM_STATUS_BYTES_REQD/2]</td></tr>
-<tr class="memdesc:ae6df456ff6d74eb60796f022e14a8272"><td class="mdescLeft">&#160;</td><td class="mdescRight">States of each Schedule Entry.  <a href="#ae6df456ff6d74eb60796f022e14a8272">More...</a><br /></td></tr>
-<tr class="separator:ae6df456ff6d74eb60796f022e14a8272"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93cb215dbeda7d00db3cc4871dd28621"><td class="memItemLeft" align="right" valign="top">CFE_SB_MsgId_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSCH__DiagPacket__t.html#a93cb215dbeda7d00db3cc4871dd28621">MsgIDs</a> [SCH_TABLE_ENTRIES]</td></tr>
-<tr class="memdesc:a93cb215dbeda7d00db3cc4871dd28621"><td class="mdescLeft">&#160;</td><td class="mdescRight">Message ID of msg associated with each entry.  <a href="#a93cb215dbeda7d00db3cc4871dd28621">More...</a><br /></td></tr>
-<tr class="separator:a93cb215dbeda7d00db3cc4871dd28621"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ec0b2b14970d62108f5fbe12a14ad5d"><td class="memItemLeft" align="right" valign="top">uint16&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSCH__DiagPacket__t.html#a8ec0b2b14970d62108f5fbe12a14ad5d">EntryStates</a> [((((SCH_TOTAL_SLOTS *SCH_ENTRIES_PER_SLOT)+7)/8)*2)/2]</td></tr>
+<tr class="memdesc:a8ec0b2b14970d62108f5fbe12a14ad5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">States of each Schedule Entry.  <a href="#a8ec0b2b14970d62108f5fbe12a14ad5d">More...</a><br /></td></tr>
+<tr class="separator:a8ec0b2b14970d62108f5fbe12a14ad5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a133064b1b5b02d33c2c2852f30d7d9fb"><td class="memItemLeft" align="right" valign="top">CFE_SB_MsgId_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSCH__DiagPacket__t.html#a133064b1b5b02d33c2c2852f30d7d9fb">MsgIDs</a> [(SCH_TOTAL_SLOTS *SCH_ENTRIES_PER_SLOT)]</td></tr>
+<tr class="memdesc:a133064b1b5b02d33c2c2852f30d7d9fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Message ID of msg associated with each entry.  <a href="#a133064b1b5b02d33c2c2852f30d7d9fb">More...</a><br /></td></tr>
+<tr class="separator:a133064b1b5b02d33c2c2852f30d7d9fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Scheduler Diagnostic Telemetry format </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="ae6df456ff6d74eb60796f022e14a8272"></a>
+<a class="anchor" id="a8ec0b2b14970d62108f5fbe12a14ad5d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint16 SCH_DiagPacket_t::EntryStates[SCH_NUM_STATUS_BYTES_REQD/2]</td>
+          <td class="memname">uint16 SCH_DiagPacket_t::EntryStates[((((SCH_TOTAL_SLOTS *SCH_ENTRIES_PER_SLOT)+7)/8)*2)/2]</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -123,12 +123,12 @@ uint8&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str
 
 </div>
 </div>
-<a class="anchor" id="a93cb215dbeda7d00db3cc4871dd28621"></a>
+<a class="anchor" id="a133064b1b5b02d33c2c2852f30d7d9fb"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">CFE_SB_MsgId_t SCH_DiagPacket_t::MsgIDs[SCH_TABLE_ENTRIES]</td>
+          <td class="memname">CFE_SB_MsgId_t SCH_DiagPacket_t::MsgIDs[(SCH_TOTAL_SLOTS *SCH_ENTRIES_PER_SLOT)]</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -138,7 +138,7 @@ uint8&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/swee/Software/Icarous2/cFS/apps/scheduler/fsw/src/<a class="el" href="sch__msg_8h_source.html">sch_msg.h</a></li>
+<li>/home/research133/Software/Icarous2/cFS/apps/scheduler/fsw/src/<a class="el" href="sch__msg_8h_source.html">sch_msg.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

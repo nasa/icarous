@@ -9,7 +9,7 @@ var searchData=
   ['allowedxtrackerror',['allowedXtrackError',['../structflightplan__monitor__t.html#a9bc9fa55c9fa43982ae9b8a8d8b1cf84',1,'flightplan_monitor_t']]],
   ['alt_5fhold',['ALT_HOLD',['../ardupilot_8h.html#a7e009e7dbc0dd7be939d03455c972549a3f19d04c83af54e96713b4ab14c7a7ef',1,'ardupilot.h']]],
   ['altbands',['altBands',['../structTrafficAppData__t.html#a20eda20a466c7f181a40a9080f4530c1',1,'TrafficAppData_t']]],
-  ['altitude',['altitude',['../structobject__t.html#ad9f19a72a39eb794b776691341a14ccd',1,'object_t']]],
+  ['altitude',['altitude',['../structwaypoint__t.html#a7f188d29f3206a13fe6a117be1e8ab19',1,'waypoint_t::altitude()'],['../structobject__t.html#ad9f19a72a39eb794b776691341a14ccd',1,'object_t::altitude()']]],
   ['altitude_5fabs',['altitude_abs',['../structposition__t.html#abdd763dee8e303432e3cc2d7227b7499',1,'position_t']]],
   ['altitude_5frel',['altitude_rel',['../structposition__t.html#afa614e7d8149f9e2af09b7cc3eed0125',1,'position_t']]],
   ['ap',['ap',['../structappdataInt__t.html#a970f9d9643fe9bd7bacc627f64cec922',1,'appdataInt_t']]],

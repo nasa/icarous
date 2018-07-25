@@ -94,8 +94,9 @@ Collaboration diagram for plexilCustomData_t:</div>
 <div class="dyncontent">
 <div class="center"><img src="structplexilCustomData__t__coll__graph.png" border="0" usemap="#plexilCustomData__t_coll__map" alt="Collaboration graph"/></div>
 <map name="plexilCustomData__t_coll__map" id="plexilCustomData__t_coll__map">
-<area shape="rect" id="node2" href="structflightplan__t.html" title="flightplan_t" alt="" coords="5,5,91,32"/>
-<area shape="rect" id="node3" href="structbands__t.html" title="kinematics bands " alt="" coords="123,5,191,32"/>
+<area shape="rect" id="node2" href="structflightplan__t.html" title="message encoding flight plan information " alt="" coords="5,95,91,121"/>
+<area shape="rect" id="node3" href="structwaypoint__t.html" title="waypoint data. " alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node4" href="structbands__t.html" title="kinematics bands " alt="" coords="123,95,191,121"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -134,6 +135,15 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>recoveryPosition</b
 <tr class="memitem:ac7df7b370f4216b530cee73f5c48077c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac7df7b370f4216b530cee73f5c48077c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>trafficConflict</b></td></tr>
 <tr class="separator:ac7df7b370f4216b530cee73f5c48077c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12f22cddbda432d1ad93670db13e4176"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a12f22cddbda432d1ad93670db13e4176"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>trafficTrackConflict</b></td></tr>
+<tr class="separator:a12f22cddbda432d1ad93670db13e4176"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a724c6b8a1e5cd57deab63e0938b42b19"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a724c6b8a1e5cd57deab63e0938b42b19"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>trafficSpeedConflict</b></td></tr>
+<tr class="separator:a724c6b8a1e5cd57deab63e0938b42b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98cbfcb7ed0a71b546534c6b4f238c84"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a98cbfcb7ed0a71b546534c6b4f238c84"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>trafficAltConflict</b></td></tr>
+<tr class="separator:a98cbfcb7ed0a71b546534c6b4f238c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33f53183ac88c82b7385b68ff4ae862d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a33f53183ac88c82b7385b68ff4ae862d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>flightPlanConflict</b></td></tr>
 <tr class="separator:a33f53183ac88c82b7385b68ff4ae862d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,12 +195,24 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>trafficResType</b></td
 <tr class="memitem:a80936a2f7f2eeed00df170bac6869720"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80936a2f7f2eeed00df170bac6869720"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>preferredTrack</b></td></tr>
 <tr class="separator:a80936a2f7f2eeed00df170bac6869720"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87ac3e0b9505c3c8e7d73f91fde2086b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87ac3e0b9505c3c8e7d73f91fde2086b"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>preferredSpeed</b></td></tr>
+<tr class="separator:a87ac3e0b9505c3c8e7d73f91fde2086b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0a8f9954cf964dd40cb99ce63e9a108"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab0a8f9954cf964dd40cb99ce63e9a108"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>preferredAlt</b></td></tr>
+<tr class="separator:ab0a8f9954cf964dd40cb99ce63e9a108"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcf58d122cc101c0fa0ff36ef97aaacb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afcf58d122cc101c0fa0ff36ef97aaacb"></a>
 <a class="el" href="structbands__t.html">bands_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>trkBands</b></td></tr>
 <tr class="separator:afcf58d122cc101c0fa0ff36ef97aaacb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae15aab0b89906ae425fff44a84afa1a8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae15aab0b89906ae425fff44a84afa1a8"></a>
+<a class="el" href="structbands__t.html">bands_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>gsBands</b></td></tr>
+<tr class="separator:ae15aab0b89906ae425fff44a84afa1a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa087dc17108d808b6b75771e3bef80ad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa087dc17108d808b6b75771e3bef80ad"></a>
+<a class="el" href="structbands__t.html">bands_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>altBands</b></td></tr>
+<tr class="separator:aa087dc17108d808b6b75771e3bef80ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>/home/swee/Software/Icarous2/cFS/apps/plexil/fsw/src/<a class="el" href="custom__datastructure_8h_source.html">custom_datastructure.h</a></li>
+<li>/home/research133/Software/Icarous2/cFS/apps/plexil/fsw/src/<a class="el" href="custom__datastructure_8h_source.html">custom_datastructure.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

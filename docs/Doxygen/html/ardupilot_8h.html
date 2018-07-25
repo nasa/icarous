@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Icarous: /home/swee/Software/Icarous2/cFS/apps/ardupilot/fsw/src/ardupilot.h File Reference</title>
+<title>Icarous: /home/research133/Software/Icarous2/cFS/apps/ardupilot/fsw/src/ardupilot.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -117,8 +117,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ardupilot.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="ardupilot_8h__incl.png" border="0" usemap="#_2home_2swee_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8h" alt=""/></div>
-<map name="_2home_2swee_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8h" id="_2home_2swee_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8h">
+<div class="center"><img src="ardupilot_8h__incl.png" border="0" usemap="#_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8h" alt=""/></div>
+<map name="_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8h" id="_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8h">
 <area shape="rect" id="node11" href="ardupilot__events_8h.html" title="Event definitions for ardupilot app. " alt="" coords="1181,117,1309,143"/>
 <area shape="rect" id="node12" href="ardupilot__msg_8h.html" title="Ardupilot message definitions. " alt="" coords="84,117,245,143"/>
 <area shape="rect" id="node15" href="traffic__msg_8h.html" title="Traffic message definition. " alt="" coords="269,117,415,143"/>
@@ -130,8 +130,8 @@ Include dependency graph for ardupilot.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img src="ardupilot_8h__dep__incl.png" border="0" usemap="#_2home_2swee_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8hdep" alt=""/></div>
-<map name="_2home_2swee_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8hdep" id="_2home_2swee_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8hdep">
+<div class="center"><img src="ardupilot_8h__dep__incl.png" border="0" usemap="#_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8hdep" alt=""/></div>
+<map name="_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8hdep" id="_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot_8hdep">
 <area shape="rect" id="node2" href="ardupilot_8c.html" title="function definitions for ardupilot app " alt="" coords="5,213,195,269"/>
 <area shape="rect" id="node3" href="ardupilot__table_8h.html" title="Ardupilot app table definition. " alt="" coords="72,109,261,165"/>
 </map>
@@ -252,19 +252,25 @@ Functions</h2></td></tr>
 <tr class="separator:a40230a0a2ea73d576449377519dba3b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e826754dbfe681f155b4ace271c33a1"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ardupilot_8h.html#a6e826754dbfe681f155b4ace271c33a1">ArdupilotTableValidationFunc</a> (void *TblPtr)</td></tr>
 <tr class="separator:a6e826754dbfe681f155b4ace271c33a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe191ba551056629817421f19927e08e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe191ba551056629817421f19927e08e"></a>
+uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertPlanToMissionItems</b> (<a class="el" href="structflightplan__t.html">flightplan_t</a> *fp)</td></tr>
+<tr class="separator:abe191ba551056629817421f19927e08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c4ec36e8acadeb7424765429df807c3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c4ec36e8acadeb7424765429df807c3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ConvertMissionItemsToPlan</b> (uint16_t size, mavlink_mission_item_t items[], <a class="el" href="structflightplan__t.html">flightplan_t</a> *fp)</td></tr>
+<tr class="separator:a7c4ec36e8acadeb7424765429df807c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a180f4e45c08aa72b4f4aadbad2d0a3e2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a180f4e45c08aa72b4f4aadbad2d0a3e2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IntfServiceHandler</b> (mavlink_message_t *message)</td></tr>
 <tr class="separator:a180f4e45c08aa72b4f4aadbad2d0a3e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ac1b1cff182e50eef38759f4b02efa0ad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac1b1cff182e50eef38759f4b02efa0ad"></a>
-uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ardupilot_8h.html#ac1b1cff182e50eef38759f4b02efa0ad">task_1_stack</a> [<a class="el" href="ardupilot_8h.html#adeb7339d53a2d746d383f8253750e10a">TASK_1_STACK_SIZE</a>]</td></tr>
-<tr class="memdesc:ac1b1cff182e50eef38759f4b02efa0ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte array that will serve as stacks for for the child tasks. <br /></td></tr>
-<tr class="separator:ac1b1cff182e50eef38759f4b02efa0ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9da953b095823b47be4680b834b4820"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad9da953b095823b47be4680b834b4820"></a>
-uint32&#160;</td><td class="memItemRight" valign="bottom"><b>task_2_stack</b> [TASK_2_STACK_SIZE]</td></tr>
-<tr class="separator:ad9da953b095823b47be4680b834b4820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a945bdf7e9570f8fdd07014ae088d8b71"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a945bdf7e9570f8fdd07014ae088d8b71"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ardupilot_8h.html#a945bdf7e9570f8fdd07014ae088d8b71">task_1_stack</a> [1024]</td></tr>
+<tr class="memdesc:a945bdf7e9570f8fdd07014ae088d8b71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Byte array that will serve as stacks for for the child tasks. <br /></td></tr>
+<tr class="separator:a945bdf7e9570f8fdd07014ae088d8b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c956e3d002791ca20f7f4b0e6ba7691"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c956e3d002791ca20f7f4b0e6ba7691"></a>
+uint32&#160;</td><td class="memItemRight" valign="bottom"><b>task_2_stack</b> [1024]</td></tr>
+<tr class="separator:a7c956e3d002791ca20f7f4b0e6ba7691"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2dba5cfe1e288c1456f714f1e6de459"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2dba5cfe1e288c1456f714f1e6de459"></a>
 uint32&#160;</td><td class="memItemRight" valign="bottom"><b>task_1_id</b></td></tr>
 <tr class="separator:ab2dba5cfe1e288c1456f714f1e6de459"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -275,10 +281,10 @@ uint32&#160;</td><td class="memItemRight" valign="bottom"><b>task_2_id</b></td><
 EXTERN <a class="el" href="structappdataInt__t.html">appdataInt_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ardupilot_8h.html#a9a518bea551679e20e268267d1576422">appdataInt</a></td></tr>
 <tr class="memdesc:a9a518bea551679e20e268267d1576422"><td class="mdescLeft">&#160;</td><td class="mdescRight">global variable containing app state <br /></td></tr>
 <tr class="separator:a9a518bea551679e20e268267d1576422"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b61a7056a3850531883358551c27ac9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2b61a7056a3850531883358551c27ac9"></a>
-EXTERN <a class="el" href="structflightplan__t.html">flightplan_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ardupilot_8h.html#a2b61a7056a3850531883358551c27ac9">wpdata</a></td></tr>
-<tr class="memdesc:a2b61a7056a3850531883358551c27ac9"><td class="mdescLeft">&#160;</td><td class="mdescRight">waypoint message <br /></td></tr>
-<tr class="separator:a2b61a7056a3850531883358551c27ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21f737488b4924a267edc0a2fa97fff6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a21f737488b4924a267edc0a2fa97fff6"></a>
+EXTERN <a class="el" href="structflightplan__t.html">flightplan_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ardupilot_8h.html#a21f737488b4924a267edc0a2fa97fff6">fpdata</a></td></tr>
+<tr class="memdesc:a21f737488b4924a267edc0a2fa97fff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">waypoint message <br /></td></tr>
+<tr class="separator:a21f737488b4924a267edc0a2fa97fff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbfc4fce6a74a1110667bee17869ec31"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acbfc4fce6a74a1110667bee17869ec31"></a>
 EXTERN <a class="el" href="structmissionItemReached__t.html">missionItemReached_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ardupilot_8h.html#acbfc4fce6a74a1110667bee17869ec31">wpreached</a></td></tr>
 <tr class="memdesc:acbfc4fce6a74a1110667bee17869ec31"><td class="mdescLeft">&#160;</td><td class="mdescRight">mission item reached <br /></td></tr>
