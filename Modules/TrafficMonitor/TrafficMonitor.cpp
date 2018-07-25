@@ -12,7 +12,7 @@ TrafficMonitor::TrafficMonitor(bool reclog,char daaConfig[]) {
     conflictTrack = false;
     conflictSpeed = false;
     conflictVerticalSpeed = false;
-
+    prevLogTime = 0;
     char            fmt1[64],fmt2[64];
     struct timeval  tv;
     struct tm       *tm;
@@ -151,9 +151,10 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[]) {
     }
 
 
-    if(log){
+    if(log && elapsedTime > prevLogTime){
         logfileIn << "**************** Current Time:"+std::to_string(elapsedTime)+" *******************\n";
         logfileIn << DAA.toString()+"\n";
+        prevLogTime = elapsedTime;
     }
 }
 

@@ -49,6 +49,7 @@ private:
     int altIntTypes[20];
 
     std::list<TrafficObject> trafficList;
+    double prevLogTime;
 
 public:
     larcfm::Daidalus DAA;
