@@ -159,8 +159,8 @@ void TRAJECTORY_ProcessPacket(){
                     for(int i=0;i<result.num_waypoints;++i){
                         double wp[3];
                         PathPlanner_GetWaypoint(TrajectoryAppData.pplanner,planID,i,wp);
-                        if(i > 49){
-                            OS_printf("Trajectory: more than 50 waypoints");
+                        if(i >= MAX_WAYPOINTS){
+                            OS_printf("Trajectory: more than MAX_WAYPOINTS");
                             break;
                         }
                         result.waypoints[i].latitude = (float)wp[0];
