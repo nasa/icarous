@@ -13,7 +13,7 @@ LoggerTable_t TblStruct={
 LoggerTable_t TblStruct={
     false,                         // log data
     "../ram/IClog/TestCase2",      // Source directory of log files
-    "2018-206-13:39:21"            // time stamp for playback.
+    "2018-206-23:40:30"            // time stamp for playback.
 };
 #else
 LoggerTable_t TblStruct={
