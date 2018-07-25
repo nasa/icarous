@@ -1,4 +1,5 @@
 <map id="plexilCustomData_t" name="plexilCustomData_t">
-<area shape="rect" id="node2" href="$structflightplan__t.html" title="flightplan_t" alt="" coords="5,5,91,32"/>
-<area shape="rect" id="node3" href="$structbands__t.html" title="kinematics bands " alt="" coords="123,5,191,32"/>
+<area shape="rect" id="node2" href="$structflightplan__t.html" title="message encoding flight plan information " alt="" coords="5,95,91,121"/>
+<area shape="rect" id="node3" href="$structwaypoint__t.html" title="waypoint data. " alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node4" href="$structbands__t.html" title="kinematics bands " alt="" coords="123,95,191,121"/>
 </map>

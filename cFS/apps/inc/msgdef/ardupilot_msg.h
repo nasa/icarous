@@ -76,9 +76,9 @@ typedef enum{
  * @brief waypoint metrix
  */
 typedef enum {
-	WP_METRIC_ETA       = 0,//(s)
-	WP_METRIC_SPEED     = 1,//(m/s)
-	WP_METRIC_ALTITUDE  = 2 //(m)
+	WP_METRIC_ETA       = 0,///< Estimated time of arrival (s) at the next waypoint
+	WP_METRIC_SPEED     = 1,///< Speed(m/s) en route to next waypoint
+	WP_METRIC_ALTITUDE  = 2 ///< Altitude
 }wp_metric_e;
 
 

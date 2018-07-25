@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Icarous: /home/swee/Software/Icarous2/cFS/apps/logger/fsw/src/logger.c File Reference</title>
+<title>Icarous: /home/research133/Software/Icarous2/cFS/apps/logger/fsw/src/logger.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -98,15 +98,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &lt;<a class="el" href="ardupilot__msg_8h_source.html">msgdef/ardupilot_msg.h</a>&gt;</code><br />
 <code>#include &lt;cfe_time.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="logger_8h_source.html">logger.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="logger__table_8h_source.html">logger_table.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for logger.c:</div>
 <div class="dyncontent">
-<div class="center"><img src="logger_8c__incl.png" border="0" usemap="#_2home_2swee_2Software_2Icarous2_2cFS_2apps_2logger_2fsw_2src_2logger_8c" alt=""/></div>
-<map name="_2home_2swee_2Software_2Icarous2_2cFS_2apps_2logger_2fsw_2src_2logger_8c" id="_2home_2swee_2Software_2Icarous2_2cFS_2apps_2logger_2fsw_2src_2logger_8c">
+<div class="center"><img src="logger_8c__incl.png" border="0" usemap="#_2home_2research133_2Software_2Icarous2_2cFS_2apps_2logger_2fsw_2src_2logger_8c" alt=""/></div>
+<map name="_2home_2research133_2Software_2Icarous2_2cFS_2apps_2logger_2fsw_2src_2logger_8c" id="_2home_2research133_2Software_2Icarous2_2cFS_2apps_2logger_2fsw_2src_2logger_8c">
 <area shape="rect" id="node2" href="ardupilot__msg_8h.html" title="Ardupilot message definitions. " alt="" coords="132,184,293,211"/>
-<area shape="rect" id="node8" href="logger_8h.html" title="function declarations, definitions of macros, datastructures and global variables for the logging app..." alt="" coords="533,109,601,136"/>
-<area shape="rect" id="node15" href="ardupilot__msgids_8h.html" title="Message ID definition of ardupilot app messages. " alt="" coords="1003,184,1180,211"/>
+<area shape="rect" id="node8" href="logger_8h.html" title="function declarations, definitions of macros, datastructures and global variables for the logging app..." alt="" coords="623,109,691,136"/>
 <area shape="rect" id="node16" href="logger__table_8h.html" title="Logger app table definition. " alt="" coords="5,184,108,211"/>
+<area shape="rect" id="node15" href="ardupilot__msgids_8h.html" title="Message ID definition of ardupilot app messages. " alt="" coords="496,184,673,211"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -353,7 +354,7 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{  </div><div class="line">        {LOGGER_STARTUP_INF_EID,       0x0000},</div><div class="line">        {LOGGER_COMMAND_ERR_EID,       0x0000},</div><div class="line">}</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">{  </div><div class="line">        { 0 ,       0x0000},</div><div class="line">        { 1 ,       0x0000},</div><div class="line">}</div></div><!-- fragment -->
 <p>Event filter definition for logger. </p>
 
 </div>
