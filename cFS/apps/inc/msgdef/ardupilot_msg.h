@@ -81,42 +81,34 @@ typedef enum {
 	WP_METRIC_ALTITUDE  = 2 //(m)
 }wp_metric_e;
 
-//typedef struct{
-//    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< cFS header information */
-//    char planID[10];                        /**< string to identify the plan */
-//	int32_t totalWayPoints;                 /**< total number of waypoints in flight plan*/
-//	double position[50][3];                 /**< lat,lon,alt (deg,deg,m) */
-//	double speed[50];                       /**< speed between current and next wp  (m/s)*/
-//}flightplan_t;
 
 /**
  * @struct waypoint_t
  * @brief waypoint data.
- *
  */
-typedef struct
+typedef struct __attribute__((__packed__))
 {
 	uint16  index;                          /**< waypoint index */
 	char    name[MAX_FIX_NAME_SIZE];        /**< waypoint name */
 	double  latitude; 					    /**< latitude in degrees */
 	double  longitude; 					    /**< longitude in degrees */
 	double  altitude;                       /**< altitude Meters */
-	int     wp_metric;
+	int     wp_metric;                      /**< see @see wp_metric_e */
 	double  value_to_next_wp;               /**< wp_metric value to next waypoint. */
-} OS_PACK waypoint_t;
+}waypoint_t;
 
 /**
  * @struct flightplan_t
  * @brief message encoding flight plan information
  */
-typedef struct
+typedef struct __attribute__((__packed__))
 {
 	uint8    TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< cFS header information */
 	char     id[ACID_SIZE];                  /**< identifier */
 	int      num_waypoints;                  /**< total waypoints. Cannot be greater than max. */
 	double   scenario_time;                  /**< flight plan time */
 	waypoint_t waypoints[MAX_WAYPOINTS];     /**< waypoint data */
-} OS_PACK flightplan_t;
+}flightplan_t;
 
 
 /**
