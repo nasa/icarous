@@ -13,7 +13,7 @@ GenericObject::GenericObject(double _time,genericObjectType_e type_in,int id_in,
 	id = id_in;
 	type = type_in;
 	pos = Position::makeLatLonAlt(lat_in,"degree",lon_in,"degree",altmsl_in,"m");
-	vel = Velocity::makeVxyz(vy_in,vx_in,"m/s",vz_in,"m/s");
+	vel = Velocity::makeVxyz(vx_in,vy_in,"m/s",vz_in,"m/s");
 	orientation = vel.trk();
 
 }

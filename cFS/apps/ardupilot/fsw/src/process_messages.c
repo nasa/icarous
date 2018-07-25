@@ -390,8 +390,8 @@ bool ProcessGSMessage(mavlink_message_t message) {
 				traffic.latitude = msg.param5;
 				traffic.longitude = msg.param6;
 				traffic.altitude = msg.param7;
-				traffic.ve = msg.param2;
-				traffic.vn = msg.param3;
+				traffic.vn = msg.param2;
+				traffic.ve = msg.param3;
 				traffic.vd = msg.param4;
 
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &traffic);
