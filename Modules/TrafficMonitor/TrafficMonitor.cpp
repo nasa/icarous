@@ -481,8 +481,8 @@ void TrafficMonitor::GetAltBands(int& numBands,int* bandTypes,double* low,double
 
     }
 
-    double altMax = DAA.parameters.getMaxAltitude("m/s");
-    double altMin = DAA.parameters.getMinAltitude("m/s");
+    double altMax = DAA.parameters.getMaxAltitude("m");
+    double altMin = DAA.parameters.getMinAltitude("m");
     double diff = altMax - altMin;
     double percentChange = 0.05 * diff;
 
@@ -500,7 +500,6 @@ void TrafficMonitor::GetAltBands(int& numBands,int* bandTypes,double* low,double
     else
         respref = resdown;
 
-    //}
     //printf("num bands :%d\n",numBands);
     //printf("current conflict: %d\n",currentConflict);
     //printf("pref resolution:%f\n",respref);
