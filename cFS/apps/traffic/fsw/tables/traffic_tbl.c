@@ -9,7 +9,7 @@
 
 TrafficTable_t TblStruct = {
   "../ram/DaidalusQuadConfig.txt",  // configuration file
-  false                             // log daa output
+  true                             // log daa output
 };
 
 

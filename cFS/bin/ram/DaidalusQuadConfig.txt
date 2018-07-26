@@ -1,14 +1,14 @@
 # V-1.0.1
 # Bands Parameters
-lookahead_time = 20.000000 [s]
+lookahead_time = 300.000000 [s]
 left_trk = 180.000000 [deg]
 right_trk = 180.000000 [deg]
-min_gs = 20.000000 [m/s]
+min_gs = 10.000000 [m/s]
 max_gs = 35.000000 [m/s]
 min_vs = -400.000000 [fpm]
 max_vs = 400.000000 [fpm]
 min_alt = 0.000000 [ft]
-max_alt = 500.000000 [ft]
+max_alt = 50000.000000 [ft]
 # Kinematic Parameters
 trk_step = 3.000000 [deg]
 gs_step = 2.000 [m/s]
@@ -34,13 +34,13 @@ horizontal_nmac = 1.000000 [m]
 vertical_nmac = 0.500000 [m]
 # Implicit Coordination Parameters
 conflict_crit = true
-recovery_crit = false
+recovery_crit = true
 # Horizontal Contour Threshold
 contour_thr = 180.000000 [deg]
 # Alert Levels
-alert_1_alerting_time = 10.000000 [s]
+alert_1_alerting_time = 100.000000 [s]
 alert_1_detector = det_1
-alert_1_early_alerting_time = 15.000000 [s]
+alert_1_early_alerting_time = 150.000000 [s]
 alert_1_region = NEAR
 alert_1_spread_alt = 0.000000 [m]
 alert_1_spread_gs = 0.000000 [m/s]
