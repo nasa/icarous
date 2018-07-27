@@ -12,7 +12,7 @@
 
 #include "cfe.h"
 
-#define MAX_WAYPOINTS 50
+#define MAX_WAYPOINTS 545
 #define ACID_SIZE 20
 #define MAX_FIX_NAME_SIZE 20
 
