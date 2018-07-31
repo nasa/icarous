@@ -53,12 +53,6 @@ TRAFFIC_RESOLUTION:{
     prevAltResCmd[0] = -100000;
     prevAltResCmd[1] = -100000;
     prevAltResCmd[2] = -100000;
-    
-    SpeedResolution = false;
-    TrackResolution = true;
-    AltResolution = false;
-
-
     {
         // Get traffic conflict status
         Boolean executed = false;
