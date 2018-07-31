@@ -168,7 +168,7 @@ void ARDUPILOT_AppInit(void){
 	if ( status != OS_SUCCESS )
 		OS_printf("Error creating mutex1\n");
 
-	status = OS_MutSemCreate( &appdataInt.mutex_read, "InterfaceMWrite", 0);
+	status = OS_MutSemCreate( &appdataInt.mutex_write, "InterfaceMWrite", 0);
 	if ( status != OS_SUCCESS )
 		OS_printf("Error creating mutex2\n");
 
