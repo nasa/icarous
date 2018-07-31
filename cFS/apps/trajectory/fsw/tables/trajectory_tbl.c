@@ -13,8 +13,8 @@ TrajectoryTable_t TblStruct = {
 
   false,                            // enable 3D
   1.0,                              // astar grid size (only for grid search)
-  2.0,                              // speed used in astar search
-  1.0,                              // astar look ahead time for next node
+  22.0,                              // speed used in astar search
+  5.0,                              // astar look ahead time for next node
   "../ram/DaidalusQuadConfig.txt",  // daa configuration file for Astar
 
   1.0,                              // rrt resolution speed

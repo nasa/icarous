@@ -121,15 +121,7 @@ void GEOFENCE_ProcessPacket(){
             for(int i=0;i<gf->totalvertices;++i) {
                 vertices[i][0] = gf->vertices[i][0];
                 vertices[i][1] = gf->vertices[i][1];
-            fprintf(stdout, "gf|latitude|%f\n", gf->vertices[i][0]);
-            fprintf(stdout, "gf|longitude|%f\n", gf->vertices[i][1]);
             }
-            
-            fprintf(stdout, "gf|type|%i\n", gf->type);
-            fprintf(stdout, "gf|totalvertices|%i\n", gf->totalvertices);
-            fprintf(stdout, "gf|floor|%f\n", gf->floor);
-            fprintf(stdout, "gf|ceiling|%f\n", gf->ceiling);
-            fprintf(stdout, "gf|index|%i\n", gf->index);
             
             geofenceAppData.numFences++;
             GeofenceMonitor_InputGeofenceData(geofenceAppData.gfMonitor,gf->type,gf->index,gf->totalvertices,gf->floor,gf->ceiling,vertices);

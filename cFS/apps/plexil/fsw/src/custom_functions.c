@@ -271,7 +271,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
             if(CHECKNAME(msg,"CheckDirectPathFeasibility")){
                     memcpy(&plxInput,msg,sizeof(PlexilMsg));
             }else{
-                OS_printf("plexil: No matching requests found:%s\n",msg->name);
+                //OS_printf("plexil: No matching requests found:%s\n",msg->name);
             }
 
             serializeBool(false,result,plxInput.buffer);
