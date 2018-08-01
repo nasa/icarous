@@ -146,12 +146,11 @@ void TRAJECTORY_ProcessPacket(){
                     trajectory_request_t* msg;
                     msg = (trajectory_request_t*) TrajectoryAppData.TrajRequest_MsgPtr;
                     TrajectoryAppData.numPlansComputed++;
-
+                    
                     // Plan
                     char planID[10];
                     sprintf(planID,"plan%d",TrajectoryAppData.numPlansComputed);
                     int val = PathPlanner_FindPath(TrajectoryAppData.pplanner,msg->algorithm,planID,msg->initialPosition,msg->finalPosition,msg->initialVelocity);
-
                     flightplan_t result;
                     CFE_SB_InitMsg(&result,ICAROUS_TRAJECTORY_MID,sizeof(flightplan_t),TRUE);
                     memcpy(result.id,planID,10);
@@ -167,7 +166,7 @@ void TRAJECTORY_ProcessPacket(){
                         result.waypoints[i].longitude = (float)wp[1];
                         result.waypoints[i].altitude = (float)wp[2];
 
-                        //OS_printf("%f, %f , %f\n",wp[0],wp[1],wp[2]);
+                        //OS_printf("Result: %f, %f , %f\n",wp[0],wp[1],wp[2]);
                     }
                     SendSBMsg(result);
                     break;
