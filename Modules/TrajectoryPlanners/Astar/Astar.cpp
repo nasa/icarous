@@ -4,9 +4,10 @@
 
 #include "Astar.h"
 #include <algorithm>
+#include <cfloat>
 
 Astar::Astar(int lenh,double* heading,int lenv,double *vs,double deltaT,double eps){
-    closestDist = MAXDOUBLE;
+    closestDist = DBL_MAX;
     HEADING = heading;
     VS = vs;
     dt = deltaT;
@@ -34,7 +35,6 @@ void Astar::SetRoot(double x, double y, double z, double psi,double speed) {
     Root.neighborhood = nhood;
     Root.parent = NULL;
     Root.speed = speed;
-    currentNode = new Node(Root);
 
 }
 
@@ -43,6 +43,8 @@ void Astar::SetGoal(double x, double y, double z) {
     Goal.y = y;
     Goal.z = z;
     Root.h = sqrt(pow((x - Root.x),2) + pow((y - Root.y),2) + pow((x - Root.x),2));
+
+    currentNode = new Node(Root);
 }
 
 bool Astar::Visited(const Node qnode) {
@@ -143,6 +145,7 @@ bool Astar::ComputePath() {
         if (Frontier.size() > 0){
             currentNode = new Node(Frontier.front());
             Frontier.pop_front();
+            //printf("frontier size: %d\n",Frontier.size());
         }else{
             printf("End of frontier\n");
         }
