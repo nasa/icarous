@@ -13,8 +13,8 @@ TrajectoryTable_t TblStruct = {
 
   false,                            // enable 3D
   1.0,                              // astar grid size (only for grid search)
-  22.0,                              // speed used in astar search
-  5.0,                              // astar look ahead time for next node
+  22.0,                             // speed used in astar search
+  10.0,                             // astar look ahead time for next node
   "../ram/DaidalusQuadConfig.txt",  // daa configuration file for Astar
 
   1.0,                              // rrt resolution speed
@@ -24,9 +24,9 @@ TrajectoryTable_t TblStruct = {
   5.0,                              // final goal capture radius
   "../ram/DaidalusQuadConfig.txt",  // daa configuration file for RRT
 
-  10000000.0,                              // Xtrack deviation allowed
+  10000000.0,                       // Xtrack deviation allowed
   0.6,                              // Xtrack error gain.
-  22.0,                              // Resolution speed for maneuvers
+  22.0,                             // Resolution speed for maneuvers
   _ASTAR                            // Search algorithm for planning
 };
 
