@@ -46,6 +46,7 @@ int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, 
             break;
 #endif
         default:
+            retval = 1;
             break;
     }
 
