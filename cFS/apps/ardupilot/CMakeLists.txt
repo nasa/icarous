@@ -18,4 +18,6 @@ aux_source_directory(fsw/src APP_SRC_FILES)
 # Create the app module
 add_cfe_app(ardupilot ${APP_SRC_FILES})
 
+target_link_libraries(ardupilot Utils)
+
 add_cfe_tables(ardupilot "fsw/tables/intf_tbl.c")
