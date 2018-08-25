@@ -22,7 +22,6 @@ typedef struct{
     bool trafficSpeedConflict;
     bool trafficAltConflict;
     bool flightPlanConflict;
-    bool ditch;
     double allowedXtrackError;
     double xtrackError;
     double resolutionSpeed;
@@ -43,6 +42,13 @@ typedef struct{
     bands_t trkBands;
     bands_t gsBands;
     bands_t altBands;
+
+    double ditchsite[3];
+    bool ditch;
+    bool resetDitch;
+    bool endDitch;
+    bool ditchGuidanceRequired;
+    bool ditchRequested;
 }plexilCustomData_t;
 
 plexilCustomData_t plexilCustomData;

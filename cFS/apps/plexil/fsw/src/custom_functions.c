@@ -13,6 +13,7 @@
 #include "msgids/geofence_msgids.h"
 #include "msgids/traffic_msgids.h"
 #include "msgids/trajectory_msgids.h"
+#include "msgids/safe2ditch_msgids.h"
 #include "../../../../../Modules/Utils/fence.h"
 
 
@@ -20,6 +21,7 @@
 #include <msgdef/geofence_msg.h>
 #include <msgdef/traffic_msg.h>
 #include <msgdef/trajectory_msg.h>
+#include <msgdef/safe2ditch_msg.h>
 #include <float.h>
 #include <UtilFunctions.h>
 
@@ -67,6 +69,7 @@ void PLEXIL_CustomSubscription(void){
     CFE_SB_Subscribe(ICAROUS_BANDS_ALT_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(FLIGHTPLAN_MONITOR_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(GEOFENCE_PATH_CHECK_RESULT_MID,plexilAppData.DATA_Pipe);
+    CFE_SB_Subscribe(SAFE2DITCH_STATUS_MID,plexilAppData.DATA_Pipe);
 }
 
 
@@ -280,6 +283,18 @@ void PLEXIL_ProcessCustomPackets(bool data){
 
         }
 
+        case SAFE2DITCH_STATUS_MID:{
+            safe2ditchStatus_t *s2dstatus = (safe2ditchStatus_t*) plexilAppData.DATA_MsgPtr;
+            plexilCustomData.ditchsite[0] = s2dstatus->ditchsite[0];
+            plexilCustomData.ditchsite[1] = s2dstatus->ditchsite[1];
+            plexilCustomData.ditchsite[2] = s2dstatus->ditchsite[2];
+            plexilCustomData.ditchGuidanceRequired = s2dstatus->ditchGuidanceRequired;
+            plexilCustomData.ditchRequested = s2dstatus->ditchRequested;
+            plexilCustomData.resetDitch = s2dstatus->resetDitch;
+            plexilCustomData.endDitch = s2dstatus->endDitch;
+            break;
+        }
+
         default:
             break;
     }
@@ -377,6 +392,14 @@ void PLEXIL_HandleCustomLookups(PlexilMsg *msg){
         b = serializeReal(false,plexilCustomData.preferredSpeed,b);
     }else if(CHECKNAME(msg ,"preferredAltitude")){
         b = serializeReal(false,plexilCustomData.preferredAlt,b);
+    }else if(CHECKNAME(msg ,"requireDitchGuidance")){
+        b = serializeBool(false,plexilCustomData.ditchGuidanceRequired,b);
+    }else if(CHECKNAME(msg ,"ditchingComplete")){
+        b = serializeBool(false,plexilCustomData.endDitch,b);
+    }else if(CHECKNAME(msg ,"resetDitching")){
+        b = serializeBool(false,plexilCustomData.resetDitch,b);
+    }else if(CHECKNAME(msg ,"ditchSite")){
+        b = serializeRealArray(3,plexilCustomData.ditchsite,b);
     }else{
        //TODO: add event saying lookup not handled
         OS_printf("lookup not handled: %s\n",msg->name);
