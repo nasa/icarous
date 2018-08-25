@@ -7,7 +7,7 @@
  *******************************************************************************/
 #define EXTERN
 
-#include <common_defs.h>
+#include <safe2ditch_msg.h>
 #include "safe2ditch.h"
 #include "safe2ditch_version.h"
 
@@ -64,9 +64,6 @@ void SAFE2DITCH_AppInit(void){
 
 	//Subscribe to command messages and kinematic band messages from the SB
 	CFE_SB_Subscribe(ICAROUS_POSITION_MID, appdataS2D.SAFE2DITCH_Pipe);
-	CFE_SB_Subscribe(ICAROUS_VELOCITY_MID, appdataS2D.SAFE2DITCH_Pipe);
-	CFE_SB_Subscribe(ICAROUS_ATTITUDE_MID, appdataS2D.SAFE2DITCH_Pipe);
-    CFE_SB_Subscribe(SERVICE_DITCH_MID, appdataS2D.SAFE2DITCH_Pipe);
 	CFE_SB_Subscribe(ICAROUS_RESET_MID, appdataS2D.SAFE2DITCH_Pipe);
     CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataS2D.SAFE2DITCH_Pipe);
 
@@ -83,13 +80,15 @@ void SAFE2DITCH_AppInit(void){
 
 	s2d_InitializeSocketPort(&appdataS2D.s2dport);
 
-    appdataS2D.resetDitch = false;
-    appdataS2D.endDitch = false;
-    appdataS2D.ditchGuidanceRequired = false;
-    appdataS2D.ditchRequested = false;
-    appdataS2D.ditchLocation[0] = 0.0;
-    appdataS2D.ditchLocation[1] = 0.0;
-    appdataS2D.ditchLocation[2] = -10000.0;
+    CFE_SB_InitMsg(&appdataS2D.s2dStatus,SAFE2DITCH_STATUS_MID,sizeof(safe2ditchStatus_t),TRUE);
+    appdataS2D.s2dStatus.resetDitch = false;
+    appdataS2D.s2dStatus.endDitch = false;
+    appdataS2D.s2dStatus.ditchGuidanceRequired = false;
+    appdataS2D.s2dStatus.ditchRequested = false;
+    appdataS2D.s2dStatus.ditchsite[0] = 0.0;
+    appdataS2D.s2dStatus.ditchsite[1] = 0.0;
+    appdataS2D.s2dStatus.ditchsite[2] = -10000.0;
+
 }
 
 void SAFE2DITCH_AppCleanUp(){
@@ -164,19 +163,19 @@ void ProcessMavlinkMessage(mavlink_message_t message){
 			mavlink_msg_command_int_decode(&message,&intcmd);
 			if (intcmd.command == MAV_CMD_USER_1) {
                 if(intcmd.param1 == _STARTDITCH_){
-                    appdataS2D.ditchRequested   = (bool) intcmd.param2;
-                    appdataS2D.ditchGuidanceRequired = (bool) intcmd.param3;
-                    appdataS2D.ditchLocation[0] = intcmd.x/1E7;
-                    appdataS2D.ditchLocation[1] = intcmd.y/1E7;
-                    appdataS2D.ditchLocation[2] = intcmd.z/1E3;
+                    appdataS2D.s2dStatus.ditchRequested   = (bool) intcmd.param2;
+                    appdataS2D.s2dStatus.ditchGuidanceRequired = (bool) intcmd.param3;
+                    appdataS2D.s2dStatus.ditchsite[0] = intcmd.x/1E7;
+                    appdataS2D.s2dStatus.ditchsite[1] = intcmd.y/1E7;
+                    appdataS2D.s2dStatus.ditchsite[2] = intcmd.z/1E3;
                     //OS_printf("Received ditch site %f,%f,%f\n",appdataS2D.ditchLocation[0],appdataS2D.ditchLocation[1],appdataS2D.ditchLocation[2]);
 
 				}else if(intcmd.param1 == _RESETDITCH_){
-                    appdataS2D.resetDitch = true;
+                    appdataS2D.s2dStatus.resetDitch = true;
                 }
                 else if(intcmd.param1 == _ENDDITCH_){
                     //OS_printf("End ditching from s2d\n");
-                    appdataS2D.endDitch = true;
+                    appdataS2D.s2dStatus.endDitch = true;
                 }
 				break;
 		    }
@@ -198,54 +197,13 @@ void ProcessSBMessage(void){
                                                  (int32_t) (msgPos->longitude * 1E7),
                                                  (int32_t) (msgPos->altitude_abs * 1E3),
                                                  (int32_t) (msgPos->altitude_rel * 1E3),
-                                                 (int32_t) (msgPos->vx * 1E2),
-                                                 (int32_t) (msgPos->vy * 1E2),
-                                                 (int32_t) (msgPos->vz * 1E2),
+                                                 (int32_t) (msgPos->vn * 1E2),
+                                                 (int32_t) (msgPos->ve * 1E2),
+                                                 (int32_t) (msgPos->vd * 1E2),
                                                  (int32_t) (msgPos->hdg * 1E3));
 
             s2d_writePort(&appdataS2D.s2dport,&msg);
-            break;
-        }
-
-        case SERVICE_DITCH_MID: {
-            service_t *msgSrv = (service_t *) appdataS2D.SAFE2DITCHMsgPtr;
-            service_t returnMsg;
-            CFE_SB_InitMsg(&returnMsg,SERVICE_DITCH_RESPONSE_MID, sizeof(service_t),TRUE);
-            strcpy(returnMsg.name,msgSrv->name);
-            if(CHECKNAME((*msgSrv), "ditchSite")){
-                returnMsg.sType = _lookup_return_;
-                returnMsg.id = msgSrv->id;
-                serializeRealArray(3,appdataS2D.ditchLocation,returnMsg.buffer);
-                SendSBMsg(returnMsg);
-                appdataS2D.ditchLocation[2] = -1000;
-                //OS_printf("Getting ditch site\n");
-            }else if(CHECKNAME((*msgSrv), "ditchingStatus")){
-                returnMsg.sType = _lookup_return_;
-                returnMsg.id = msgSrv->id;
-                serializeBool(false, appdataS2D.ditchRequested, returnMsg.buffer);
-                SendSBMsg(returnMsg);
-                //OS_printf("Getting ditching status\n");
-            }else if(CHECKNAME((*msgSrv), "requireDitchGuidance")){
-                returnMsg.sType = _lookup_return_;
-                returnMsg.id = msgSrv->id;
-                serializeBool(false, appdataS2D.ditchGuidanceRequired, returnMsg.buffer);
-                SendSBMsg(returnMsg);
-                //OS_printf("require ditch guidance\n");
-            }else if(CHECKNAME((*msgSrv), "resetDitching")){
-                returnMsg.sType = _lookup_return_;
-                returnMsg.id = msgSrv->id;
-                serializeBool(false, appdataS2D.resetDitch, returnMsg.buffer);
-                SendSBMsg(returnMsg);
-                appdataS2D.resetDitch = false;
-                //OS_printf("resetting ditch\n");
-            }else if(CHECKNAME((*msgSrv), "ditchingComplete")){
-                returnMsg.sType = _lookup_return_;
-                returnMsg.id = msgSrv->id;
-                serializeBool(false, appdataS2D.endDitch, returnMsg.buffer);
-                SendSBMsg(returnMsg);
-                //OS_printf("ditching complete\n");
-            }
-
+            SendSBMsg(appdataS2D.s2dStatus);
             break;
         }
 
@@ -258,7 +216,7 @@ void ProcessSBMessage(void){
         }
 
         case ICAROUS_COMMANDS_MID:{
-            NoArgsCmd_t* cmd = (NoArgsCmd_t*) appdataS2D.SAFE2DITCHMsgPtr;
+            noArgsCmd_t* cmd = (noArgsCmd_t*) appdataS2D.SAFE2DITCHMsgPtr;
             switch(cmd->name){
                 case _DITCH_:
                     mavlink_msg_command_int_pack(255, 0, &msg, 1, 0, 0, MAV_CMD_USER_1,

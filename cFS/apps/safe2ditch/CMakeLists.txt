@@ -6,8 +6,10 @@ set(MODULES_LIB "${CMAKE_CURRENT_SOURCE_DIR}/../../../Modules/lib")
 include_directories(fsw/mission_inc)
 include_directories(fsw/platform_inc)
 include_directories(../icarous/fsw/platform_inc/)
-include_directories(../inc)
+include_directories(../inc/msgdef)
+include_directories(../inc/msgids)
 include_directories(fsw/src)
+include_directories(../ardupilot/fsw/mission_inc/)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 

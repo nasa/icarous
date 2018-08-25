@@ -22,8 +22,10 @@
 #include <unistd.h>
 #include "network_includes.h"
 #include "safe2ditch_events.h"
-#include "common_defs.h"
-#include "msgids/msgids.h"
+#include "safe2ditch_msgids.h"
+#include "safe2ditch_msg.h"
+#include "ardupilot_msg.h"
+#include "ardupilot_msgids.h"
 
 
 /// Mavlink includes
@@ -76,8 +78,8 @@ typedef struct{
     boolean ditchGuidanceRequired;
     boolean resetDitch;
     boolean endDitch;
-    service_t ditchSite;
     double ditchLocation[3];
+    safe2ditchStatus_t s2dStatus;
 }appdataS2D_t;
 
 typedef enum{
