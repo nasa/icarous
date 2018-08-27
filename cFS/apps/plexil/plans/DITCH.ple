@@ -3,7 +3,7 @@
 Command SetPos(Real position[3]);
 Command SetMode(String mode);
 Command pprint(...);
-Real[3]    Command GetWaypoint(String planID,Integer index);
+Real[3]    Command GetMissionWP(Integer index);
 
 Boolean Lookup requireDitchGuidance;
 Boolean Lookup ditchingComplete;
@@ -54,7 +54,7 @@ DITCH:
            // the other actions under CORE run if only have two repeating lookups
            {
               EndCondition isKnown(waypoint[0]);
-              waypoint = GetWaypoint("Plan0",0);
+              waypoint = GetMissionWP(0);
            }
 
        }
@@ -79,7 +79,7 @@ DITCH:
                // the other actions under CORE run if only have two repeating lookups
                {
                     EndCondition isKnown(waypoint[0]);
-                    waypoint = GetWaypoint("Plan0",0);
+                    waypoint = GetMissionWP(0);
                }
 
            }

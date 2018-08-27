@@ -413,13 +413,14 @@ bool ProcessGSMessage(mavlink_message_t message) {
 				trackCmd.param1 = (float) msg.param1;
 				SendSBMsg(trackCmd);
 				send2ap = false;
-			} if (msg.command == MAV_CMD_USER_5) {
+			}else if (msg.command == MAV_CMD_USER_5) {
 				noArgsCmd_t ditchCmd;
 				CFE_SB_InitMsg(&ditchCmd,ICAROUS_DITCH_MID, sizeof(noArgsCmd_t),TRUE);
 				ditchCmd.name = _DITCH_;
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &ditchCmd);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &ditchCmd);
 				send2ap = false;
+				OS_printf("Received ditching command \n");
 			}
 			else {
 				//writePort(&appdataInt.ap,&message);
