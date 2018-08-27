@@ -38,7 +38,7 @@ DITCH:
    SetMode("ACTIVE");
 
    resSpeed  = Lookup(resolutionSpeed);
-   captureH = Lookup(captureH);
+   captureH = resSpeed * 1.5;
 
    CORE:Concurrence{
 
