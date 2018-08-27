@@ -26,7 +26,7 @@ https://nasa.github.io/icarous/
 
 ### Current Releases
 
-- ICAROUS  V-2.0.6 - August 2, 2018
+- ICAROUS  V-2.0.7 - August 2, 2018
 
 ### License
 

@@ -65,7 +65,7 @@ void SAFE2DITCH_AppInit(void){
 	//Subscribe to command messages and kinematic band messages from the SB
 	CFE_SB_Subscribe(ICAROUS_POSITION_MID, appdataS2D.SAFE2DITCH_Pipe);
 	CFE_SB_Subscribe(ICAROUS_RESET_MID, appdataS2D.SAFE2DITCH_Pipe);
-    CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataS2D.SAFE2DITCH_Pipe);
+    CFE_SB_Subscribe(ICAROUS_DITCH_MID, appdataS2D.SAFE2DITCH_Pipe);
 
 	// Send event indicating app initialization
 	CFE_EVS_SendEvent (SAFE2DITCH_STARTUP_INF_EID, CFE_EVS_INFORMATION,
@@ -215,7 +215,7 @@ void ProcessSBMessage(void){
             break;
         }
 
-        case ICAROUS_COMMANDS_MID:{
+        case ICAROUS_DITCH_MID:{
             noArgsCmd_t* cmd = (noArgsCmd_t*) appdataS2D.SAFE2DITCHMsgPtr;
             switch(cmd->name){
                 case _DITCH_:
