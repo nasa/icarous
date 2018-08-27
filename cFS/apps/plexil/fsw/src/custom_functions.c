@@ -289,7 +289,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
             plexilCustomData.ditchsite[1] = s2dstatus->ditchsite[1];
             plexilCustomData.ditchsite[2] = s2dstatus->ditchsite[2];
             plexilCustomData.ditchGuidanceRequired = s2dstatus->ditchGuidanceRequired;
-            plexilCustomData.ditchRequested = s2dstatus->ditchRequested;
+            plexilCustomData.ditch = s2dstatus->ditchRequested;
             plexilCustomData.resetDitch = s2dstatus->resetDitch;
             plexilCustomData.endDitch = s2dstatus->endDitch;
             break;
