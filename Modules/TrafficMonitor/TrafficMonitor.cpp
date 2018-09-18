@@ -50,7 +50,7 @@ int TrafficMonitor::InputTraffic(int id, double *position, double *velocity) {
     return TrafficObject::AddObject(trafficList,_traffic);
 }
 
-void TrafficMonitor::MonitorTraffic(double position[],double velocity[]) {
+void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double elapsedTime) {
 
     int numTraffic = trafficList.size();
     if(numTraffic == 0){
@@ -62,7 +62,7 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[]) {
 
     double holdConflictTime = 3;
     time_t currentTime = time(&currentTime);
-    double elapsedTime = difftime(currentTime, startTime);
+    //double elapsedTime = difftime(currentTime, startTime);
 
     Position so = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
     Velocity vo = Velocity::makeTrkGsVs(velocity[0],"degree",velocity[1],"m/s",velocity[2],"m/s");

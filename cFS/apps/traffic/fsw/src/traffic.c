@@ -146,7 +146,7 @@ void TRAFFIC_ProcessPacket(){
                 trafficAppData.velocity[0] = track;
                 trafficAppData.velocity[1] = groundSpeed;
                 trafficAppData.velocity[2] = verticalSpeed;
-
+                trafficAppData.time = msg->time_gps;
 
             }
 
@@ -155,7 +155,7 @@ void TRAFFIC_ProcessPacket(){
 
         case TRAFFIC_WAKEUP_MID:{
 
-            TrafficMonitor_MonitorTraffic(trafficAppData.tfMonitor,trafficAppData.position,trafficAppData.velocity);
+            TrafficMonitor_MonitorTraffic(trafficAppData.tfMonitor,trafficAppData.position,trafficAppData.velocity,trafficAppData.time);
 
             TrafficMonitor_GetTrackBands(trafficAppData.tfMonitor,
                                          &trafficAppData.trackBands.numBands,

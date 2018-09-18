@@ -533,10 +533,11 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC void _wrap_TrafficMonitor_MonitorTraffic(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3) {
+  SWIGEXPORTC void _wrap_TrafficMonitor_MonitorTraffic(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, double carg4) {
     TrafficMonitor *arg1 = (TrafficMonitor *) 0 ;
     double *arg2 ;
     double *arg3 ;
+    double arg4 ;
     
     {
       if (carg1)
@@ -544,7 +545,8 @@ extern "C" {
     }
     arg2 = (double *) carg2;
     arg3 = (double *) carg3;
-    (arg1)->MonitorTraffic(arg2,arg3);
+    arg4 = (double) carg4;
+    (arg1)->MonitorTraffic(arg2,arg3,arg4);
   }
   
   

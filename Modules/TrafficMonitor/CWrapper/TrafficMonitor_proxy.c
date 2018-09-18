@@ -15,7 +15,7 @@ void _wrap_TrafficMonitor_KMB_set(SwigObj * carg1, SwigObj * carg2);
 SwigObj * _wrap_TrafficMonitor_KMB_get(SwigObj * carg1);
 TrafficMonitor * _wrap_new_TrafficMonitor(bool carg1, /*aaa*/ char * carg2);
 int _wrap_TrafficMonitor_InputTraffic(SwigObj * carg1, int carg2, /*aaa*/ double * carg3, /*aaa*/ double * carg4);
-void _wrap_TrafficMonitor_MonitorTraffic(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3);
+void _wrap_TrafficMonitor_MonitorTraffic(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, double carg4);
 bool _wrap_TrafficMonitor_MonitorWPFeasibility(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, /*aaa*/ double * carg4);
 bool _wrap_TrafficMonitor_CheckSafeToTurn(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, double carg4, double carg5);
 bool _wrap_TrafficMonitor_CheckTurnConflict(SwigObj * carg1, double carg2, double carg3, double carg4, double carg5);
@@ -43,8 +43,8 @@ TrafficMonitor * new_TrafficMonitor(bool carg1, /*aaa*/ char * carg2) {
 int TrafficMonitor_InputTraffic(SwigObj * carg1, int carg2, /*aaa*/ double * carg3, /*aaa*/ double * carg4) {
   return _wrap_TrafficMonitor_InputTraffic(carg1, carg2, carg3, carg4);
 }
-void TrafficMonitor_MonitorTraffic(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3) {
-  return _wrap_TrafficMonitor_MonitorTraffic(carg1, carg2, carg3);
+void TrafficMonitor_MonitorTraffic(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, double carg4) {
+  return _wrap_TrafficMonitor_MonitorTraffic(carg1, carg2, carg3, carg4);
 }
 bool TrafficMonitor_MonitorWPFeasibility(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, /*aaa*/ double * carg4) {
   return _wrap_TrafficMonitor_MonitorWPFeasibility(carg1, carg2, carg3, carg4);

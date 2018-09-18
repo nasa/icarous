@@ -57,7 +57,7 @@ public:
 
     TrafficMonitor(bool reclog,char daaConfig[]);
     int InputTraffic(int id,double position[],double velocity[]);
-    void MonitorTraffic(double position[],double velocity[]);
+    void MonitorTraffic(double position[],double velocity[],double elapsedTime);
     bool MonitorWPFeasibility(double position[],double velocity[],double wp[]);
     bool CheckSafeToTurn(double position[],double velocity[],double fromHeading,double toHeading);
     bool CheckTurnConflict(double low, double high, double newHeading, double oldHeading);
