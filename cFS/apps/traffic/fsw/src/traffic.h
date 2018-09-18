@@ -64,6 +64,7 @@ typedef struct{
     flightplan_t flightplan;               ///< Mission flight plan information
     double position[3];                    ///< Current position as lat (deg), lon (deg) and alt (m)
     double velocity[3];                    ///< Current velocity as track (deg), ground speed (m/s) and vertical speed (m/s)
+    double time;                           ///< Time from autopilot
     bool log;                              ///< log DAA output
 }TrafficAppData_t;
 

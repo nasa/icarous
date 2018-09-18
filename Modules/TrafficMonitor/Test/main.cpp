@@ -18,7 +18,7 @@ int main() {
 
     double position[3] = {so.latitude(),so.longitude(),so.alt()};
     double velocity[3] = {vo.track("degree"),vo.gs(),vo.vs()};
-    tfMonitor.MonitorTraffic(position,velocity);
+    tfMonitor.MonitorTraffic(position,velocity,0);
 
     std::cout<<" **** DAA **** "<<std::endl;
     std::cout<<tfMonitor.DAA.toString()<<std::endl;
