@@ -145,7 +145,7 @@ typedef struct{
     uint16_t  numUplinkWaypoints;
     uint16_t  numDownlinkWaypoints;
     uint16_t  downlinkRequestIndex;
-
+    controlMode_e currentMode;
     mavlink_mission_item_t UplinkMissionItems[MAX_WAYPOINTS];
     mavlink_mission_item_t DownlinkMissionItems[MAX_WAYPOINTS];
 }appdataInt_t;
