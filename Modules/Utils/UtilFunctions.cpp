@@ -112,6 +112,16 @@ bool CheckTurnConflict(double low, double high, double newHeading, double oldHea
     return false;
 }
 
+void ComputeLatLngAlt(double origin[],double xyz[],double output[]){
+    Position CurrentPos = Position::makeLatLonAlt(origin[0],"degree",origin[1],"degree",origin[2],"m");
+    EuclideanProjection proj = Projection::createProjection(CurrentPos);
+    const Vect3 cartPos(xyz[0],xyz[1],xyz[2]);
+    LatLonAlt transformedPos = proj.inverse(cartPos);
+    output[0] = transformedPos.latitude();
+    output[1] = transformedPos.longitude();
+    output[2] = transformedPos.alt();
+}
+
 
 void ComputeTrackingResolution(double targetPos[],double currentPos[],double currentVel[],double heading,double distH,double distV,
                                       double PropGains[],double outputVel[],double* outputHeading){
