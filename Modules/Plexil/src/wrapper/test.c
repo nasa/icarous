@@ -3,7 +3,7 @@
 //
 
 #include <stdio.h>
-#include <zconf.h>
+//#include <zconf.h>
 #include <memory.h>
 #include <interfaces/CfsAdapter/cfs-data-format.hh>
 #include "PlexilWrapper.h"
