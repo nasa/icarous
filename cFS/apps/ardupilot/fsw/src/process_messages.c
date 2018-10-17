@@ -167,6 +167,7 @@ void ProcessAPMessage(mavlink_message_t message) {
 				appdataInt.foundUAV = 1;
 				CFE_EVS_SendEvent(ARDUPILOT_CONNECTED_TO_AP_EID,CFE_EVS_INFORMATION,"Connection to autopilot established");
 			}
+			appdataInt.currentMode = msg.custom_mode;
 			break;
 		}
 
@@ -175,25 +176,31 @@ void ProcessAPMessage(mavlink_message_t message) {
 
 			mavlink_adsb_vehicle_t msg;
 			mavlink_msg_adsb_vehicle_decode(&message,&msg);
+
             traffic.index = msg.ICAO_address;
             traffic.latitude = msg.lat/1.0E7;
             traffic.longitude = msg.lon/1.0E7;
             traffic.altitude = msg.altitude/1.0E3;
 
+            double positionA[3] = {position.latitude,position.longitude,position.altitude_rel};
+            double positionB[3] = {traffic.latitude,traffic.longitude,traffic.altitude};
+            double dist = ComputeDistance(positionA,positionB);
 
-			double track = msg.heading/1.0E2;
-			double groundspeed = msg.hor_velocity/1.0E2;
-			double verticalspeed = msg.ver_velocity/1.0E2;
+            if(dist <= 2000 && (appdataInt.currentMode == GUIDED || appdataInt.currentMode == AUTO) ) {
+				double track = msg.heading / 1.0E2;
+				double groundspeed = msg.hor_velocity / 1.0E2;
+				double verticalspeed = msg.ver_velocity / 1.0E2;
 
-			double vn = groundspeed*cos(track*M_PI/180);
-			double ve = groundspeed*sin(track*M_PI/180);
-			double vu = verticalspeed;
-            traffic.vn = vn;
-            traffic.ve = ve;
-            traffic.vd = vu;
+				double vn = groundspeed * cos(track * M_PI / 180);
+				double ve = groundspeed * sin(track * M_PI / 180);
+				double vu = verticalspeed;
+				traffic.vn = vn;
+				traffic.ve = ve;
+				traffic.vd = vu;
 
-            CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &traffic);
-            CFE_SB_SendMsg((CFE_SB_Msg_t *) &traffic);
+				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &traffic);
+				CFE_SB_SendMsg((CFE_SB_Msg_t *) &traffic);
+			}
 			break;
 
 		}
