@@ -16,6 +16,7 @@ void ConvertTrkGsVsToVned(double Trk,double Gs,double Vs,double *vn,double *ve,d
 void ComputeTrackingResolution(double targetPos[],double currentPos[],double currentVel[],double heading,double distH,double distV,
                                       double PropGains[],double outputVel[],double *outputHeading);
 double SaturateVelocity(double V, double Vsat);
+void ComputeLatLngAlt(double origin[],double xyz[],double output[]);
 
 
 
