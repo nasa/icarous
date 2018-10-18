@@ -306,7 +306,13 @@ int readPort(port_t* prt){
 	int n = 0;
 	if (prt->portType == SOCKET){
 		memset(prt->recvbuffer, 0, BUFFER_LENGTH);
-		n = recvfrom(prt->sockId, (void *)prt->recvbuffer, BUFFER_LENGTH, 0, (struct sockaddr *)&prt->target_addr, &prt->recvlen);
+		if(prt->portout == 0) {
+			n = recvfrom(prt->sockId, (void *) prt->recvbuffer, BUFFER_LENGTH, 0, (struct sockaddr *) &prt->target_addr,
+						 &prt->recvlen);
+			prt->portout = ntohs(prt->target_addr.sin_port);
+		}else{
+			n = recvfrom(prt->sockId, (void *) prt->recvbuffer, BUFFER_LENGTH, 0, NULL, NULL);
+		}
 	}else if(prt->portType == SERIAL){
 		n = read (prt->id, prt->recvbuffer, BUFFER_LENGTH);
 	}else{
