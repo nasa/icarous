@@ -38,7 +38,7 @@ TRAFFIC_RESOLUTION:{
     Boolean statusTF_Track;
     Boolean SpeedResolution = false;
     Boolean AltResolution = false;
-    Boolean TrackResolution = false;
+    Boolean TrackResolution = true;
 
     acVelocity = Lookup(velocity);
 
