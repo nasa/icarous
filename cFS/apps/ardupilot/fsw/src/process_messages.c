@@ -34,6 +34,21 @@ void ProcessAPMessage(mavlink_message_t message) {
 			break;
 		}
 
+		case MAVLINK_MSG_ID_ATTITUDE:{
+			mavlink_attitude_t apAttitude;
+			mavlink_msg_attitude_decode(&message,&apAttitude);
+			attitude.pitch = apAttitude.pitch*180/M_PI;
+			attitude.roll  = apAttitude.roll*180/M_PI;
+			attitude.yaw = apAttitude.yaw*180/M_PI;
+
+			if(attitude.yaw < 0){
+				attitude.yaw = 360 + attitude.yaw;
+			}
+
+			SendSBMsg(attitude);
+			break;
+		}
+
 		case MAVLINK_MSG_ID_COMMAND_ACK:
 		{
 			mavlink_command_ack_t msg;
