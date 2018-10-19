@@ -40,10 +40,10 @@ TrafficMonitor::TrafficMonitor(bool reclog,char daaConfig[]) {
 
 }
 
-int TrafficMonitor::InputTraffic(int id, double *position, double *velocity) {
+int TrafficMonitor::InputTraffic(int id, double *position, double *velocity,double elapsedTime) {
 
     time_t currentTime = time(&currentTime);
-    double elapsedTime = difftime(currentTime, startTime);
+    //double elapsedTime = difftime(currentTime, startTime);
 
     TrafficObject _traffic(elapsedTime,_TRAFFIC_,id,(float)position[0],(float)position[1],(float)position[2],
                                         (float)velocity[0],(float)velocity[1],(float)velocity[2]);

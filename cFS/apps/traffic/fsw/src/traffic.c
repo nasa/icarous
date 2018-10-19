@@ -117,7 +117,7 @@ void TRAFFIC_ProcessPacket(){
             msg = (object_t*) trafficAppData.Traffic_MsgPtr;
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
             double vel[3] = {msg->ve,msg->vn,msg->vd};
-            int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->index,pos,vel);
+            int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->index,pos,vel,trafficAppData.time);
             if(val)
                 CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder:%d",msg->index);
             break;
@@ -131,7 +131,7 @@ void TRAFFIC_ProcessPacket(){
 
                 double pos[3] = {msg->latitude,msg->longitude,msg->altitude_rel};
                 double vel[3] = {msg->ve,msg->vn,msg->vd};
-                int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->aircraft_id,pos,vel);
+                int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->aircraft_id,pos,vel,trafficAppData.time);
                 if(val)
                     CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder:%d",msg->aircraft_id);
             }else{
