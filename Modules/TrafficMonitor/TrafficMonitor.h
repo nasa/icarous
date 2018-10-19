@@ -56,7 +56,7 @@ public:
     larcfm::KinematicMultiBands KMB;
 
     TrafficMonitor(bool reclog,char daaConfig[]);
-    int InputTraffic(int id,double position[],double velocity[]);
+    int InputTraffic(int id,double position[],double velocity[],double elapsedTime);
     void MonitorTraffic(double position[],double velocity[],double elapsedTime);
     bool MonitorWPFeasibility(double position[],double velocity[],double wp[]);
     bool CheckSafeToTurn(double position[],double velocity[],double fromHeading,double toHeading);

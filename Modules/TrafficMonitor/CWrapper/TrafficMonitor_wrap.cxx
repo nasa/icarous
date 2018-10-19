@@ -512,12 +512,13 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC int _wrap_TrafficMonitor_InputTraffic(SwigObj * carg1, int carg2, /*aaa*/ double * carg3, /*aaa*/ double * carg4) {
+  SWIGEXPORTC int _wrap_TrafficMonitor_InputTraffic(SwigObj * carg1, int carg2, /*aaa*/ double * carg3, /*aaa*/ double * carg4, double carg5) {
     int cppresult;
     TrafficMonitor *arg1 = (TrafficMonitor *) 0 ;
     int arg2 ;
     double *arg3 ;
     double *arg4 ;
+    double arg5 ;
     int result;
     
     {
@@ -527,7 +528,8 @@ extern "C" {
     arg2 = (int) carg2;
     arg3 = (double *) carg3;
     arg4 = (double *) carg4;
-    cppresult =  (int)(arg1)->InputTraffic(arg2,arg3,arg4);
+    arg5 = (double) carg5;
+    cppresult =  (int)(arg1)->InputTraffic(arg2,arg3,arg4,arg5);
     result = cppresult;
     return result;
   }
