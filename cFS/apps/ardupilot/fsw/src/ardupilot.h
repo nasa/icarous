@@ -251,6 +251,7 @@ EXTERN argsCmd_t startMission;                 ///< start mission command
 EXTERN noArgsCmd_t resetIcarous;               ///< reset icarous command
 EXTERN object_t traffic;                       ///< traffic message
 EXTERN position_t position;                    ///< position message
+EXTERN attitude_t attitude;                    ///< attitude message
 EXTERN cmdAck_t ack;                           ///< command acknowledge message
 
 #endif /* _ardupilot_h_ */
