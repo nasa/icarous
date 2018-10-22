@@ -123,7 +123,7 @@ void s2d_InitializeSocketPort(s2d_port_t* prt){
 
 	fcntl(prt->sockId, F_SETFL, O_NONBLOCK);
 
-	OS_printf("Sock id: %d,Address: %s,Port in:%d,out: %d\n",prt->sockId,prt->target,prt->portin,prt->portout);
+	//OS_printf("Sock id: %d,Address: %s,Port in:%d,out: %d\n",prt->sockId,prt->target,prt->portin,prt->portout);
 }
 
 int s2d_readPort(s2d_port_t* prt){
