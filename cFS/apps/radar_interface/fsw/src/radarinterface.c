@@ -153,31 +153,54 @@ void RADARINTERFACE_ProcessMavlinkMessage(mavlink_message_t message){
 
         case MAVLINK_MSG_ID_ADSB_VEHICLE: {
 
+            // radar coordinate frame (frame 1)
+		    // x axis - side to side (positive left) from behind radar
+		    // y axis - up and down (positive up)
+		    // z axis - in and out of radar antenna plane (positive out)
+
+	        // radar frame rotated to align with conventional euclidean frame (frame 2)
+		    // x axis - side to side (positive right)
+			// y axis - in and out of radar plane (positive out)
+			// z axis - up and down (positive up)
+
+			// NEU xyz frame (frame 3)
+			// x axis - + east
+			// y axis - + north
+			// z axis - + up
+
 			mavlink_adsb_vehicle_t target;
 			mavlink_msg_follow_target_decode(&message,&target);
-			double pos_xyz_radarframe[3];
-		    pos_xyz_radarframe[0] = target.lat/1E7;
-		    pos_xyz_radarframe[1] = target.lon/1E7;
-		    pos_xyz_radarframe[2] = target.altitude/1E3;
 
-
-
-
-		    // Convert position from radar xyz to vehicle xyz frame
-		    double pos_xyz_vehicle[3];
-
-
-		    // Convert velocity from radar xyz to vehicle xyz frame
-
-
+			// This assumes heading is computed as atan2(-Vx_est,Vz_est) in frame 1
+			// This way, this heading is bearing relative to Vz (frame 1) or Vy (frame 2)
+            // heading should be between (-180,180) or (0,360)
 			double track = target.heading / 1.0E2;
+
+			// If heading is negative because of (-180,180) range, convert to (0,360) range.
+			if(track < 0)
+				track = 360 + track;
+
+		    // These are scalar values and don't change with frames
 			double groundspeed = target.hor_velocity / 1.0E2;
 			double verticalspeed = target.ver_velocity / 1.0E2;
 
-			double vn = groundspeed * cos(track * M_PI / 180);
-			double ve = groundspeed * sin(track * M_PI / 180);
-			double vu = verticalspeed;
+			// Flip coordinates so that position is converted from frame1 to frame2
+			double pos_xyz_radarframe[3];
+		    pos_xyz_radarframe[0] = -target.lat/1E7;         // Vx_est
+		    pos_xyz_radarframe[1] = target.altitude/1E7;     // Vz_est
+		    pos_xyz_radarframe[2] = target.lon/1E7;          // Vy_est
 
+		    // Convert position from frame 2 to frame 3
+		    double pos_xyz_vehicle[3];
+		    double heading_rad = appdataRadar.yaw * M_PI/180;
+			pos_xyz_vehicle[0] = pos_xyz_radarframe[1]*sin(heading_rad) + pos_xyz_radarframe[0]*cos(heading_rad);
+            pos_xyz_vehicle[1] = pos_xyz_radarframe[1]*cos(heading_rad) - pos_xyz_radarframe[0]*sin(heading_rad);
+            pos_xyz_vehicle[2] = pos_xyz_radarframe[2];
+
+		    // Convert velocity from radar xyz to vehicle xyz frame
+			double vn = groundspeed * cos(track * M_PI / 180 + heading_rad);
+			double ve = groundspeed * sin(track * M_PI / 180 + heading_rad);
+			double vu = verticalspeed;
 
             double pos_gps[3];
             ComputeLatLngAlt(appdataRadar.acPosition,pos_xyz_vehicle,pos_gps);
@@ -191,6 +214,7 @@ void RADARINTERFACE_ProcessMavlinkMessage(mavlink_message_t message){
 			appdataRadar.traffic.vd = vu;
 
             SendSBMsg(appdataRadar.traffic);
+            break;
         }
 	}
 }
