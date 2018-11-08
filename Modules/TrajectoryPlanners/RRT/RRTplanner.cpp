@@ -35,6 +35,18 @@ RRTplanner::RRTplanner(Poly3D &boundary,
     nodeCount = 0;
 }
 
+void RRTplanner::SetParameters(int stepT, double dt, double maxD, double maxInputNorm) {
+    dTsteps = stepT;
+    dT    = dt;
+    maxInputNorm = maxInputNorm;
+}
+
+void RRTplanner::SetDAAParameters(std::string parameterList) {
+    larcfm::ParameterData newParams;
+    newParams.parseParameterList(";",parameterList);
+    DAA.parameters.updateParameterData(newParams);
+}
+
 
 void RRTplanner::Initialize(Vect3& Pos, Vect3& Vel,std::list<Poly3D> &obstacles, std::vector<Vect3>& TrafficPos, std::vector<Vect3>& TrafficVel,node_t& goal) {
 

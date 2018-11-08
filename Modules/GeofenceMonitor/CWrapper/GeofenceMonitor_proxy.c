@@ -22,7 +22,8 @@ void _wrap_GeofenceConflict__gf_set(SwigObj * carg1, SwigObj * carg2);
 GeofenceConflict * _wrap_new_GeofenceConflict();
 void _wrap_delete_GeofenceConflict(GeofenceConflict * carg1);
 GeofenceMonitor * _wrap_new_GeofenceMonitor(/*aaa*/ double * carg1);
-void _wrap_GeofenceMonitor_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double *carg7[2] );
+void _wrap_GeofenceMonitor_SetGeofenceParameters(SwigObj * carg1, /*aaa*/ double * carg2);
+void _wrap_GeofenceMonitor_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double *carg7[2]);
 bool _wrap_GeofenceMonitor_CheckViolation(SwigObj * carg1, /*aaa*/ double * carg2, double carg3, double carg4, double carg5);
 bool _wrap_GeofenceMonitor_CheckWPFeasibility(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3);
 int _wrap_GeofenceMonitor_GetNumConflicts(SwigObj * carg1);
@@ -71,7 +72,10 @@ void delete_GeofenceConflict(GeofenceConflict * carg1) {
 GeofenceMonitor * new_GeofenceMonitor(/*aaa*/ double * carg1) {
   return _wrap_new_GeofenceMonitor(carg1);
 }
-void GeofenceMonitor_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double *carg7[2] ) {
+void GeofenceMonitor_SetGeofenceParameters(SwigObj * carg1, /*aaa*/ double * carg2) {
+  return _wrap_GeofenceMonitor_SetGeofenceParameters(carg1, carg2);
+}
+void GeofenceMonitor_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double *carg7[2]) {
   return _wrap_GeofenceMonitor_InputGeofenceData(carg1, carg2, carg3, carg4, carg5, carg6, carg7);
 }
 bool GeofenceMonitor_CheckViolation(SwigObj * carg1, /*aaa*/ double * carg2, double carg3, double carg4, double carg5) {

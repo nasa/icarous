@@ -505,6 +505,63 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC void _wrap_PathPlanner_UpdateAstarParameters(SwigObj * carg1, bool carg2, double carg3, double carg4, double carg5, /*aaa*/ char * carg6) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    bool arg2 ;
+    double arg3 ;
+    double arg4 ;
+    double arg5 ;
+    char *arg6 ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (bool) carg2;
+    arg3 = (double) carg3;
+    arg4 = (double) carg4;
+    arg5 = (double) carg5;
+    arg6 = (char *) carg6;
+    (arg1)->UpdateAstarParameters(arg2,arg3,arg4,arg5,arg6);
+  }
+  
+  
+  SWIGEXPORTC void _wrap_PathPlanner_UpdateRRTParameters(SwigObj * carg1, double carg2, int carg3, double carg4, int carg5, double carg6, /*aaa*/ char * carg7) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    double arg2 ;
+    int arg3 ;
+    double arg4 ;
+    int arg5 ;
+    double arg6 ;
+    char *arg7 ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (double) carg2;
+    arg3 = (int) carg3;
+    arg4 = (double) carg4;
+    arg5 = (int) carg5;
+    arg6 = (double) carg6;
+    arg7 = (char *) carg7;
+    (arg1)->UpdateRRTParameters(arg2,arg3,arg4,arg5,arg6,arg7);
+  }
+  
+  
+  SWIGEXPORTC void _wrap_PathPlanner_UpdateDAAParameters(SwigObj * carg1, /*aaa*/ char * carg2) {
+    PathPlanner *arg1 = (PathPlanner *) 0 ;
+    char *arg2 ;
+    
+    {
+      if (carg1)
+      arg1 = (PathPlanner *) carg1->obj;
+    }
+    arg2 = (char *) carg2;
+    (arg1)->UpdateDAAParameters(arg2);
+  }
+  
+  
   SWIGEXPORTC int _wrap_PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6) {
     int cppresult;
     PathPlanner *arg1 = (PathPlanner *) 0 ;
@@ -597,7 +654,7 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC void _wrap_PathPlanner_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double (*carg7)[2] ) {
+  SWIGEXPORTC void _wrap_PathPlanner_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double *carg7[2]) {
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     int arg2 ;
     int arg3 ;

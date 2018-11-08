@@ -59,6 +59,62 @@ typedef struct{
 }checkTurnSafety_t;
 
 /**
+ * @struct traffic_parameters_t
+ * @brief parameters used by the traffic application
+ */
+
+typedef struct{
+  uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];
+  bool logDAAdata;
+  float lookahead_time;
+  float left_trk;
+  float right_trk;
+  float min_gs;
+  float max_gs;
+  float min_vs;
+  float max_vs;
+  float min_alt;
+  float max_alt;
+  float trk_step;
+  float	gs_step;
+  float	vs_step;
+  float	alt_step;
+  float	horizontal_accel;
+  float	vertical_accel;
+  float	turn_rate;
+  float	bank_angle;
+  float	vertical_rate;
+  float	recovery_stability_time;
+  float	min_horizontal_recovery;
+  float	min_vertical_recovery;
+  bool recovery_trk;
+  bool recovery_gs;
+  bool recovery_vs;
+  bool recovery_alt;
+  bool ca_bands;
+  float	ca_factor;
+  float	horizontal_nmac;
+  float	vertical_nmac;
+  bool conflict_crit;
+  bool recovery_crit;
+  float	contour_thr;
+  float	alert_1_alerting_time;
+  char	alert_1_detector[10];
+  float	alert_1_early_alerting_time;
+  char	alert_1_region[10];
+  float	alert_1_spread_alt;
+  float	alert_1_spread_gs;
+  float	alert_1_spread_trk;
+  float	alert_1_spread_vs;
+  uint8_t conflict_level;
+  char load_core_detection_det_1[50];
+  float det_1_WCV_DTHR;
+  float det_1_WCV_TCOA;
+  float det_1_WCV_TTHR;
+  float det_1_WCV_ZTHR;
+}traffic_parameters_t;
+
+/**
  * @enum Region
  * Defines the band types
  */

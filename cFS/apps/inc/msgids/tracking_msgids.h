@@ -14,7 +14,8 @@
  * @{
  */
 
-#define TRACKING_RESPONSE_MID 0x0501  ///< Tracking response. message type: trackingResolution_t
+#define TRACKING_RESPONSE_MID   0x0501 ///< Tracking response. message type: trackingResolution_t
+#define TRACKING_PARAMETERS_MID 0x0902 ///< Tracking parameter message
 
 
 /**@}*/

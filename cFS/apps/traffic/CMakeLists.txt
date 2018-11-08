@@ -11,6 +11,7 @@ include_directories(${MODULES_ROOT}/Utils)
 include_directories(${MODULES_ROOT}/TrafficMonitor)
 include_directories(${MODULES_ROOT}/TrafficMonitor/CWrapper)
 include_directories(fsw/src)
+include_directories(fsw/tables)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
@@ -24,7 +25,7 @@ set_target_properties(traffic PROPERTIES PREFIX "")
 
 set_target_properties(traffic PROPERTIES INSTALL_RPATH "${MODULES_LIB}")
 
-add_cfe_tables(traffic "fsw/tables/traffic_tbl.c")
+#add_cfe_tables(traffic "fsw/tables/traffic_tbl.c")
 
 foreach(TGT ${APP_INSTALL_LIST})
     install(TARGETS traffic DESTINATION ${TGT}/${INSTALL_SUBDIR})

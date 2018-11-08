@@ -31,6 +31,8 @@
 #define ICAROUS_TRACK_STATUS_MID 0x0820   ///< Command to start/stop tracking. message type: argsCmd_t
 #define UPLINK_FLIGHTPLAN_MID 0x0821      ///< Uplink flight plan
 #define DOWNLINK_FLIGHTPLAN_MID 0x0822    ///< Downlink flight plan
+#define ICAROUS_VFRHUD_MID 0x0823         ///< VFR hud data
+#define ICAROUS_BATTERY_STATUS_MID 0x0824 ///< Battery status
 
 /**@}*/
 #define SendSBMsg(msg)\

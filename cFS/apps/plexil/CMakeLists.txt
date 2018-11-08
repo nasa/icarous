@@ -12,6 +12,7 @@ set(PLAN_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/plans")
 include_directories(fsw/mission_inc)
 include_directories(fsw/platform_inc)
 include_directories(fsw/src)
+include_directories(fsw/tables)
 include_directories(../inc)
 include_directories(
         ${PLEXIL_SOURCE}/interfaces/CfsAdapter
@@ -40,7 +41,7 @@ foreach(TGT ${APP_INSTALL_LIST})
     install(TARGETS plexil DESTINATION ${TGT}/${INSTALL_SUBDIR})
 endforeach()
 
-add_cfe_tables(plexil "fsw/tables/plexil_tbl.c")
+#add_cfe_tables(plexil "fsw/tables/plexil_tbl.c")
 
 set(PLEXIL_PLANS Icarous2.ple CONFLICT_MANAGEMENT.ple GOTO_POSITION.ple
            TRAFFIC_RESOLUTION.ple MONITOR.ple DITCH.ple)

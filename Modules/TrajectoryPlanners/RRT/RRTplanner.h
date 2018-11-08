@@ -138,6 +138,10 @@ public:
                void (*ControlInput)(node_t&, node_t&,double[]),
                const char daaConfig[]);
 
+
+    void SetParameters(int stepT,double dt,double maxD,double maxInputNorm);
+    void SetDAAParameters(std::string parameterList);
+
     /**
      * Initialize the problem
      * @param Pos initial position of ownship

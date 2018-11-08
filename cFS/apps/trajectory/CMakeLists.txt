@@ -9,6 +9,7 @@ set(MODULES_LIB "${MODULES_ROOT}/lib")
 include_directories(../inc/msgdef)
 include_directories(../inc/msgids)
 include_directories(fsw/src)
+include_directories(fsw/tables)
 include_directories(${MODULES_ROOT}/Utils)
 include_directories(${MODULES_ROOT}/TrajectoryPlanners)
 include_directories(${MODULES_ROOT}/TrajectoryPlanners/CWrapper)
@@ -27,7 +28,7 @@ set_target_properties(trajectory PROPERTIES PREFIX "")
 
 set_target_properties(trajectory PROPERTIES INSTALL_RPATH "${MODULES_LIB}")
 
-add_cfe_tables(trajectory "fsw/tables/trajectory_tbl.c")
+#add_cfe_tables(trajectory "fsw/tables/trajectory_tbl.c")
 
 foreach(TGT ${APP_INSTALL_LIST})
     install(TARGETS trajectory DESTINATION ${TGT}/${INSTALL_SUBDIR})

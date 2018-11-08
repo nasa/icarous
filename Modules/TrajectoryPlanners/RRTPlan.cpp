@@ -15,6 +15,15 @@ void PathPlanner::InitializeRRTParameters(double resSpeed,int Nsteps,double dt,i
    _rrt_goalCaptureRadius = capR;
 }
 
+void PathPlanner::UpdateRRTParameters(double resSpeed, int Nsteps, double dt, int Dt, double capR, char *daaConfig) {
+    _rrt_resSpeed = resSpeed;
+   _rrt_daaConfig = string(daaConfig);
+   _rrt_maxIterations = Nsteps;
+   _rrt_dt = dt;
+   _rrt_macroSteps = Dt;
+   _rrt_goalCaptureRadius = capR;
+}
+
 int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]){
 
     double maxInputNorm = _rrt_resSpeed;
@@ -77,7 +86,7 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
 
     RRTplanner RRT(bbox,dTsteps,dT,maxD,maxInputNorm,RRT_F,RRT_U,_rrt_daaConfig.c_str());
     RRT.Initialize(initPosR3,currentVel,obstacleList,TrafficPos,TrafficVel,goal);
-
+    RRT.SetDAAParameters(daaParameters);
 
     bool goalFound = false;
     for(int i=0;i<Nsteps;i++){

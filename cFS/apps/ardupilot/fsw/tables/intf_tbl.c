@@ -2,35 +2,24 @@
 #include "cfe.h"
 #include "cfe_tbl_filedef.h"  /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "ardupilot_table.h"
-#include "ardupilot.h"
 
 #ifdef SITL
 
-ArdupilotTable_t TblStruct = {
-	SOCKET,    // apPortType
-	0,           // baudrate
-	14551,       // apPortin
-	0,           // apPortout
-	"127.0.0.1", // ap address
-	SOCKET,    // gsPortType
-	0,           // baudrate
-	14552,       // gsPortin
-	14553,       // gsPortout
-	"127.0.0.1"  // gs address
+ArdupilotTable_t Ardupilot_TblStruct = {
+	.PortType = SOCKET,
+	.BaudRate = 0,
+	.Portin = 14551,
+	.Portout = 0,
+	.Address = "127.0.0.1",
 };
 
 #else
-ArdupilotTable_t TblStruct = {
-        SERIAL,       // apPortType
-        57600,          // baudrate
-        0,              // apPortin
-        0,              // apPortout
-        "/dev/ttyACM0", // ap address
-        SERIAL,       // gsPortType
-        57600,          // baudrate
-        0,              // gsPortin
-        0,              // gsPortout
-        "/dev/ttyUSB0"  // gs address
+ArdupilotTable_t Ardupilot_TblStruct = {
+    .PortType = SERIAL,       // apPortType
+    .BaudRate = 57600,          // baudrate
+    .Portin = 0,              // apPortin
+    .Portout = 0,              // apPortout
+    .Address = "/dev/ttyACM0", // ap address
 };
 #endif
 
@@ -42,4 +31,4 @@ ArdupilotTable_t TblStruct = {
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(TblStruct, ARDUPILOT.InterfaceTable, Interface parameters, intf_tbl.tbl )
+CFE_TBL_FILEDEF(Ardupilot_TblStruct, ARDUPILOT.InterfaceTable, Interface parameters, intf_tbl.tbl )

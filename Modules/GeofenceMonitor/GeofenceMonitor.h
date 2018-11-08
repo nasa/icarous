@@ -42,6 +42,7 @@ private:
     fence* GetGeofence(int id);
 public:
     GeofenceMonitor(double[]);
+    void SetGeofenceParameters(double []);
     void InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, double pos[][2]);
     bool CheckViolation(double position[],double track,double groundSpeed,double verticalSpeed);
     bool CheckWPFeasibility(double fromPosition[],double toPosition[]);

@@ -38,6 +38,7 @@ private:
 public:
     Astar(int lenh,double* heading,int lenv,double *vs,double dt,double eps);
     ~Astar();
+    void SetParameters(int lenh,double* heading,int lenv,double *vs,double dt,double eps);
     void SetRoot(double x,double y,double z,double psi,double speed);
     void SetGoal(double x,double y,double z);
     void SetBoundary(Poly3D* boundary);

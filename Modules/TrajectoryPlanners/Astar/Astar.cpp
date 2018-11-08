@@ -16,6 +16,15 @@ Astar::Astar(int lenh,double* heading,int lenv,double *vs,double deltaT,double e
     nhood = eps;
 }
 
+void Astar::SetParameters(int lenh,double* heading,int lenv,double *vs,double deltaT,double eps) {
+    HEADING = heading;
+    VS = vs;
+    dt = deltaT;
+    lenH = lenh;
+    lenV = lenv;
+    nhood = eps;
+}
+
 void Astar::SetBoundary(Poly3D *boundary) {
     keepInFence = *boundary;
 }

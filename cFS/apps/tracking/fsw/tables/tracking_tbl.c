@@ -7,7 +7,7 @@
 
 #include "tracking_tbl.h"
 
-TrackingTable_t TblStruct = {
+TrackingTable_t Tracking_TblStruct = {
     true,         // command mode.
     0,            // object id to track
     0.5,          // proportional gain x
@@ -26,4 +26,4 @@ TrackingTable_t TblStruct = {
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(TblStruct, TRACKING.TrackingTable, Tracking parameters, tracking_tbl.tbl )
+CFE_TBL_FILEDEF(Tracking_TblStruct, TRACKING.TrackingTable, Tracking parameters, tracking_tbl.tbl )

@@ -512,6 +512,19 @@ extern "C" {
   }
   
   
+  SWIGEXPORTC void _wrap_TrafficMonitor_UpdateDAAParameters(SwigObj * carg1, /*aaa*/ char * carg2) {
+    TrafficMonitor *arg1 = (TrafficMonitor *) 0 ;
+    char *arg2 ;
+    
+    {
+      if (carg1)
+      arg1 = (TrafficMonitor *) carg1->obj;
+    }
+    arg2 = (char *) carg2;
+    (arg1)->UpdateDAAParameters(arg2);
+  }
+  
+  
   SWIGEXPORTC int _wrap_TrafficMonitor_InputTraffic(SwigObj * carg1, int carg2, /*aaa*/ double * carg3, /*aaa*/ double * carg4, double carg5) {
     int cppresult;
     TrafficMonitor *arg1 = (TrafficMonitor *) 0 ;

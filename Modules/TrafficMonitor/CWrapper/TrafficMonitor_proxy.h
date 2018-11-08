@@ -89,6 +89,7 @@ void TrafficMonitor_KMB_set(SwigObj * carg1, SwigObj * carg2);
 SwigObj * TrafficMonitor_KMB_get(SwigObj * carg1);
 #include <stdbool.h>
 TrafficMonitor * new_TrafficMonitor(bool carg1, /*aaa*/ char * carg2);
+void TrafficMonitor_UpdateDAAParameters(SwigObj * carg1, /*aaa*/ char * carg2);
 int TrafficMonitor_InputTraffic(SwigObj * carg1, int carg2, /*aaa*/ double * carg3, /*aaa*/ double * carg4, double carg5);
 void TrafficMonitor_MonitorTraffic(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, double carg4);
 bool TrafficMonitor_MonitorWPFeasibility(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, /*aaa*/ double * carg4);

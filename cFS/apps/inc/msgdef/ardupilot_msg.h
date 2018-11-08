@@ -76,9 +76,10 @@ typedef enum{
  * @brief waypoint metrix
  */
 typedef enum {
-	WP_METRIC_ETA       = 0,///< Estimated time of arrival (s) at the next waypoint
-	WP_METRIC_SPEED     = 1,///< Speed(m/s) en route to next waypoint
-	WP_METRIC_ALTITUDE  = 2 ///< Altitude
+	WP_METRIC_NONE      = 0,///< None
+	WP_METRIC_ETA       = 1,///< Estimated time of arrival (s) at the next waypoint
+	WP_METRIC_SPEED     = 2,///< Speed(m/s) en route to next waypoint
+	WP_METRIC_ALTITUDE  = 3 ///< Altitude
 }wp_metric_e;
 
 
@@ -132,9 +133,9 @@ typedef struct{
 	uint8_t type;                           /**< geofence type: see geofence_type_t */
     uint16_t index;                         /**< geofence index */
 	uint16_t totalvertices;                 /**< total vertices in this geofence */
-    double vertices[50][2];                  /**< lat,lon (deg,deg) */
-	double floor;                            /**< floor of geofence (m) */
-	double ceiling;                          /**< roof of geofence (m) */
+    double vertices[50][2];                 /**< lat,lon (deg,deg) */
+	double floor;                           /**< floor of geofence (m) */
+	double ceiling;                         /**< roof of geofence (m) */
 }geofence_t;
 
 /**
@@ -163,6 +164,7 @@ typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
     uint32_t aircraft_id;                     /**< aircraft id */
 	double time_gps;                          /**< gps time */
+    double time_boot;                         /**< boot time of onboard autopilot */
 	double latitude;                          /**< latitude (degrees) */
 	double longitude;                         /**< longitude (degrees) */
 	double altitude_abs;                      /**< absolution altitude, ASL (m)  */
@@ -171,8 +173,8 @@ typedef struct{
 	double ve;                                /**< velocity East component (m/s)*/
 	double vd;                                /**< velocity Down component (m/s)*/
     double hdg;                               /**< heading in degrees */
-	double hdop;                              /**< GPS Horizontal Dilution of Precision */
-	double vdop;                              /**< GPS Vertical Dilution of Precision */
+	uint16_t hdop;                            /**< GPS Horizontal Dilution of Precision */
+	uint16_t vdop;                            /**< GPS Vertical Dilution of Precision */
 	int numSats;                              /**< Total number of satellites being used for localization */
 }position_t;
 
@@ -184,9 +186,13 @@ typedef struct{
  */
 typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
+    double time_boot;							/**< boot time of onboard autopilot (ms) */
 	double roll;                               /**< roll angle (degree) */
 	double pitch;                              /**< pitch angle (degree) */
 	double yaw;                                /**< yaw angle (degree) */
+	double rollspeed;							/**< roll speed (degree/second) */
+	double pitchspeed;							/**< pitch speed (degree/second) */
+	double yawspeed;							/**< yaw speed (degree/second) */
 }attitude_t;
 
 /**
@@ -232,6 +238,42 @@ typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
     char buffer[250];                         /**< status message */
 }status_t;
+
+/**
+ * @struct vfrHud_t
+ * @brief Message containing information to be displayed on a hud
+ */
+typedef struct{
+	uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
+    double airspeed;                          /**< airspeed in m/s */
+	double groundspeed;                       /**< groundspeed in m/s */
+	int16_t heading;                          /**< heading [0,360] 0 = north */
+	uint16_t throttle;                        /**< throttle % */
+	double alt;                               /**< altitude in m */
+	double climb;                             /**< climb rate in m/s */
+	uint8_t modeAP;                           /**< pixhawk mode */
+	uint8_t modeIcarous;                      /**< icarous mode */
+	uint16_t waypointCurrent;                 /**< current waypoint */
+}vfrhud_t;
+
+/**
+ * @struct battery_status_t
+ * @brief Message containing battery status
+ */
+typedef struct{
+	uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
+	uint8_t id;		                          /**< battery id*/
+	uint8_t battery_function;                 /**< function of the battery */
+	uint8_t type;                          	  /**< type (chemistry) of battery */
+	int16_t temperature;                      /**< Temperature of the battery in deg C, INT16_MAX for unknown */
+	uint16_t voltages[10];                    /**< voltage of battery cells in mV, cells above cell count = UINT16_MAX*/
+	int16_t current_battery;                  /**< battery current in cA, -1 means autopilot does not measure current */
+	int32_t current_consumed;                 /**< consumed charge in mAh, -1 means autopilot does not provide */
+	int32_t energy_consumed;                  /**< consumed energy in hJ, -1 means autopilot does not provide */
+	int8_t battery_remaining;                 /**< remaining energy, [0-100]%, -1 means autopilot does not provide */
+}battery_status_t;
+
+
 
 /**@}*/
 

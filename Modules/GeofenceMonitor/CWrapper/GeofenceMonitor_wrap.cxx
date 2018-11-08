@@ -617,7 +617,20 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC void _wrap_GeofenceMonitor_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double *carg7[2] ) {
+  SWIGEXPORTC void _wrap_GeofenceMonitor_SetGeofenceParameters(SwigObj * carg1, /*aaa*/ double * carg2) {
+    GeofenceMonitor *arg1 = (GeofenceMonitor *) 0 ;
+    double *arg2 ;
+    
+    {
+      if (carg1)
+      arg1 = (GeofenceMonitor *) carg1->obj;
+    }
+    arg2 = (double *) carg2;
+    (arg1)->SetGeofenceParameters(arg2);
+  }
+  
+  
+  SWIGEXPORTC void _wrap_GeofenceMonitor_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double *carg7[2]) {
     GeofenceMonitor *arg1 = (GeofenceMonitor *) 0 ;
     int arg2 ;
     int arg3 ;

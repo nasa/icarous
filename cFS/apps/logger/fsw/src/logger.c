@@ -7,6 +7,7 @@
 #include <cfe_time.h>
 #include "logger.h"
 #include "logger_table.h"
+#include "logger_tbl.c"
 
 /// Event filter definition for logger
 CFE_EVS_BinFilter_t  LOGGER_EventFilters[] =
@@ -69,7 +70,7 @@ void LOGGER_AppInit(void){
 				  &LoggerTableValidationFunc);
 
 	// Load app table data
-	status = CFE_TBL_Load(appdataLog.LOGGER_tblHandle,CFE_TBL_SRC_FILE,"/cf/logger_tbl.tbl");
+	status = CFE_TBL_Load(appdataLog.LOGGER_tblHandle,CFE_TBL_SRC_ADDRESS,&Logger_TblStruct);
 
 	// Check which port to open from user defined parameters
 	LoggerTable_t *TblPtr;

@@ -12,6 +12,14 @@ void PathPlanner::InitializeAstarParameters(bool enable3D,double gridSize,double
     _astar_resSpeed = resSpeed;
 }
 
+void PathPlanner::UpdateAstarParameters(bool enable3D, double gridSize, double resSpeed, double lookahead,char daaConfig[]) {
+    _astar_daaConfig = string(daaConfig);
+    _astar_enable3D = enable3D;
+    _astar_gridSize = gridSize;
+    _astar_lookahead = lookahead;
+    _astar_resSpeed = resSpeed;
+}
+
 int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double toPosition[],double velocity[]) {
 
     double trk = velocity[0];

@@ -9,7 +9,7 @@
 #include <msgids/tracking_msgids.h>
 #include "tracking.h"
 #include "UtilFunctions.h"
-
+#include "tracking_tbl.c"
 CFE_EVS_BinFilter_t  TRACKING_EventFilters[] =
 {  /* Event ID    mask */
         {TRACKING_STARTUP_INF_EID,       0x0000},
@@ -62,7 +62,9 @@ void TRACKING_AppInit(void) {
     CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,trackingAppData.Tracking_Pipe);
     CFE_SB_Subscribe(ICAROUS_POSITION_MID,trackingAppData.Tracking_Pipe);
     CFE_SB_Subscribe(ICAROUS_TRACK_STATUS_MID,trackingAppData.Tracking_Pipe);
-    CFE_SB_Subscribe(TRACKING_WAKEUP_MID,trackingAppData.Tracking_Pipe);
+    CFE_SB_Subscribe(FREQ_10_WAKEUP_MID,trackingAppData.Tracking_Pipe);
+
+    CFE_SB_Subscribe(TRACKING_PARAMETERS_MID,trackingAppData.Tracking_Pipe);
 
     // Initialize messages
     CFE_SB_InitMsg(&trackingAppData.resolution,TRACKING_RESPONSE_MID,sizeof(trackingResolution_t),TRUE);
@@ -75,8 +77,7 @@ void TRACKING_AppInit(void) {
                               &TrackingTableValidationFunc);
 
     // Load app table data
-    status = CFE_TBL_Load(trackingAppData.Tracking_tblHandle, CFE_TBL_SRC_FILE, "/cf/tracking_tbl.tbl");
-
+    status = CFE_TBL_Load(trackingAppData.Tracking_tblHandle, CFE_TBL_SRC_ADDRESS, &Tracking_TblStruct);
 
     TrackingTable_t *TblPtr;
     status = CFE_TBL_GetAddress((void**)&TblPtr, trackingAppData.Tracking_tblHandle);
@@ -111,6 +112,19 @@ void TRACKING_ProcessPacket(){
     MsgId = CFE_SB_GetMsgId(trackingAppData.Tracking_MsgPtr);
 
     switch(MsgId){
+
+        case TRACKING_PARAMETERS_MID:{
+           tracking_parameters_t *trkParams = (tracking_parameters_t*) trackingAppData.Tracking_MsgPtr;
+           trackingAppData.trackingID = trkParams->trackingObjId;
+           trackingAppData.propGain[0] = trkParams->pGainX;
+           trackingAppData.propGain[1] = trkParams->pGainY;
+           trackingAppData.propGain[2] = trkParams->pGainZ;
+           trackingAppData.heading     = trkParams->heading;
+           trackingAppData.distH       = trkParams->distH;
+           trackingAppData.distV       = trkParams->distV;
+           trackingAppData.command     = trkParams->command;
+           break;
+        }
 
         case ICAROUS_TRACK_STATUS_MID:{
             argsCmd_t *trkCmd = (argsCmd_t*) trackingAppData.Tracking_MsgPtr;
@@ -217,7 +231,7 @@ void TRACKING_ProcessPacket(){
             break;
         }
 
-        case TRACKING_WAKEUP_MID:{
+        case FREQ_10_WAKEUP_MID:{
 
             double vn,ve,vd;
             for(int i=0;i<trackingAppData.numObjects;++i){

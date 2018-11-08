@@ -66,6 +66,7 @@ typedef struct{
     double velocity[3];                    ///< Current velocity as track (deg), ground speed (m/s) and vertical speed (m/s)
     double time;                           ///< Time from autopilot
     bool log;                              ///< log DAA output
+    int numTraffic;                        ///< Number of traffic vehicles added
 }TrafficAppData_t;
 
 /**

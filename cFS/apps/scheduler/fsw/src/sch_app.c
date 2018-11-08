@@ -44,6 +44,9 @@
 #include "cfe_time_msg.h"
 #include "sch_verify.h"
 
+#include "sch_def_msgtbl.c"
+#include "sch_def_schtbl.c"
+
 /*************************************************************************
 **
 ** Macro definitions
@@ -526,8 +529,8 @@ int32 SCH_TblInit(void)
     ** Load default schedule definition table data
     */
     Status = CFE_TBL_Load(SCH_AppData.ScheduleTableHandle,
-                          CFE_TBL_SRC_FILE,
-                          (const void *) SCH_SCHEDULE_FILENAME);
+                          CFE_TBL_SRC_ADDRESS,
+                          SCH_DefaultScheduleTable);
 
     if (Status != CFE_SUCCESS)
     {
@@ -541,8 +544,8 @@ int32 SCH_TblInit(void)
     ** Load default message definition table data
     */
     Status = CFE_TBL_Load(SCH_AppData.MessageTableHandle,
-                          CFE_TBL_SRC_FILE,
-                          (const void *) SCH_MESSAGE_FILENAME);
+                          CFE_TBL_SRC_ADDRESS,
+                          SCH_DefaultMessageTable);
 
     if (Status != CFE_SUCCESS)
     {

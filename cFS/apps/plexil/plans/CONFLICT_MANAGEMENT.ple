@@ -245,6 +245,8 @@ CONFLICT_MANAGEMENT:
                 Real deviation = 1000000;
                 SkipCondition !gFlightPlanConflict || TrafficResolutionCompleted;
 
+                pprint("Plexil status: Resolving flight plan deviations");
+
                 {
                     EndCondition (deviation < gAllowedDeviation/2);
                     Status("IC:Resolving flight plan deviation");

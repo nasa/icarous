@@ -7,7 +7,7 @@
 
 #include "trajectory_tbl.h"
 
-TrajectoryTable_t TblStruct = {
+TrajectoryTable_t Trajectory_TblStruct = {
   1,                                // obstacle buffer
   50,                               // max ceiling
 
@@ -38,4 +38,4 @@ TrajectoryTable_t TblStruct = {
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(TblStruct, TRAJECTORY.TrajectoryTable, Trajectory parameters, trajectory_tbl.tbl )
+CFE_TBL_FILEDEF(Trajectory_TblStruct, TRAJECTORY.TrajectoryTable, Trajectory parameters, trajectory_tbl.tbl )

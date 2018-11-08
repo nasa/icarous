@@ -8,12 +8,12 @@
 #include "geofence_table.h"
 
 
-GeofenceTable_t TblStruct = {
-   3,   // lookahead time in seconds
-   1,   // hbuffer
-   1,   // vbuffer
-   1,   // hstepback
-   1    // vstepback
+GeofenceTable_t Geofence_TblStruct = {
+   .lookahead = 3,   // lookahead time in seconds
+   .hbuffer = 1,   // hbuffer
+   .vbuffer = 1,   // vbuffer
+   .hstepback = 1,   // hstepback
+   .vstepback = 1    // vstepback
 };
 
 
@@ -24,4 +24,4 @@ GeofenceTable_t TblStruct = {
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(TblStruct, GEOFENCE.GeofenceTable, Geofence parameters, geofence_tbl.tbl )
+CFE_TBL_FILEDEF(Geofence_TblStruct, GEOFENCE.GeofenceTable, Geofence parameters, geofence_tbl.tbl )

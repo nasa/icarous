@@ -13,12 +13,15 @@ PathPlanner * _wrap_new_PathPlanner(double carg1, double carg2);
 void _wrap_PathPlanner_InitializeAstarParameters(SwigObj * carg1, bool carg2, double carg3, double carg4, double carg5, /*aaa*/ char * carg6);
 void _wrap_PathPlanner_InitializeRRTParameters(SwigObj * carg1, double carg2, int carg3, double carg4, int carg5, double carg6, /*aaa*/ char * carg7);
 void _wrap_PathPlanner_InitializeBSplinesParameters(SwigObj * carg1, bool carg2, double carg3, int carg4, int carg5);
+void _wrap_PathPlanner_UpdateAstarParameters(SwigObj * carg1, bool carg2, double carg3, double carg4, double carg5, /*aaa*/ char * carg6);
+void _wrap_PathPlanner_UpdateRRTParameters(SwigObj * carg1, double carg2, int carg3, double carg4, int carg5, double carg6, /*aaa*/ char * carg7);
+void _wrap_PathPlanner_UpdateDAAParameters(SwigObj * carg1, /*aaa*/ char * carg2);
 int _wrap_PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6);
 int _wrap_PathPlanner_GetTotalWaypoints(SwigObj * carg1, /*aaa*/ char * carg2);
 void _wrap_PathPlanner_GetWaypoint(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4);
 void _wrap_PathPlanner_OutputFlightPlan(SwigObj * carg1, SwigObj * carg2, char * carg3, char * carg4, char * carg5);
 void _wrap_PathPlanner_ClearAllPlans(SwigObj * carg1);
-void _wrap_PathPlanner_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double (*carg7)[2]);
+void _wrap_PathPlanner_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double * carg7[2]);
 /*aaaaaa*/SwigObj * _wrap_PathPlanner_GetGeofence(SwigObj * carg1, int carg2);
 void _wrap_PathPlanner_ClearFences(SwigObj * carg1);
 int _wrap_PathPlanner_InputTraffic(SwigObj * carg1, int carg2, double * carg3, double * carg4);
@@ -49,6 +52,15 @@ void PathPlanner_InitializeRRTParameters(SwigObj * carg1, double carg2, int carg
 void PathPlanner_InitializeBSplinesParameters(SwigObj * carg1, bool carg2, double carg3, int carg4, int carg5) {
   return _wrap_PathPlanner_InitializeBSplinesParameters(carg1, carg2, carg3, carg4, carg5);
 }
+void PathPlanner_UpdateAstarParameters(SwigObj * carg1, bool carg2, double carg3, double carg4, double carg5, /*aaa*/ char * carg6) {
+  return _wrap_PathPlanner_UpdateAstarParameters(carg1, carg2, carg3, carg4, carg5, carg6);
+}
+void PathPlanner_UpdateRRTParameters(SwigObj * carg1, double carg2, int carg3, double carg4, int carg5, double carg6, /*aaa*/ char * carg7) {
+  return _wrap_PathPlanner_UpdateRRTParameters(carg1, carg2, carg3, carg4, carg5, carg6, carg7);
+}
+void PathPlanner_UpdateDAAParameters(SwigObj * carg1, /*aaa*/ char * carg2) {
+  return _wrap_PathPlanner_UpdateDAAParameters(carg1, carg2);
+}
 int PathPlanner_FindPath(SwigObj * carg1, int carg2, /*aaa*/ char * carg3, /*aaa*/ double * carg4, /*aaa*/ double * carg5, /*aaa*/ double * carg6) {
   return _wrap_PathPlanner_FindPath(carg1, carg2, carg3, carg4, carg5, carg6);
 }
@@ -64,7 +76,7 @@ void PathPlanner_OutputFlightPlan(SwigObj * carg1, SwigObj * carg2, char * carg3
 void PathPlanner_ClearAllPlans(SwigObj * carg1) {
   return _wrap_PathPlanner_ClearAllPlans(carg1);
 }
-void PathPlanner_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double (*carg7)[2] ) {
+void PathPlanner_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double * carg7[2]) {
   return _wrap_PathPlanner_InputGeofenceData(carg1, carg2, carg3, carg4, carg5, carg6, carg7);
 }
 /*aaaaaa*/SwigObj * PathPlanner_GetGeofence(SwigObj * carg1, int carg2) {

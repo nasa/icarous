@@ -12,6 +12,14 @@ GeofenceMonitor::GeofenceMonitor(double *params) {
     vstepback  = params[4];
 }
 
+void GeofenceMonitor::SetGeofenceParameters(double *params) {
+    lookahead  = params[0];
+    hthreshold = params[1];
+    vthreshold = params[2];
+    hstepback  = params[3];
+    vstepback  = params[4];
+}
+
 bool GeofenceMonitor::CollisionDetection(fence* gf,Position* pos,Vect2* v,double startTime,double stopTime){
     int n = fenceList.size();
     for(int i=0;i<n;i++){

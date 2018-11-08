@@ -467,3 +467,7 @@ void PathPlanner::InitializeBSplinesParameters(bool enable3D,double computationT
     _bsplines_lenTVec = lenTVec;
 }
 
+void PathPlanner::UpdateDAAParameters(char *parameterString) {
+    daaParameters = to_string(parameterString);
+}
+

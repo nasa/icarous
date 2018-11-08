@@ -8,7 +8,7 @@
 #include "plexil_table.h"
 
 
-PLEXILTable_t TblStruct = {
+PLEXILTable_t Plexil_TblStruct = {
         7,           // argc
         "-p",
         "../../apps/plexil/plans/Icarous2.plx",
@@ -26,4 +26,4 @@ PLEXILTable_t TblStruct = {
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(TblStruct, PLEXIL.PlexilTable, Plexil parameters, plexil_tbl.tbl )
+CFE_TBL_FILEDEF(Plexil_TblStruct, PLEXIL.PlexilTable, Plexil parameters, plexil_tbl.tbl )

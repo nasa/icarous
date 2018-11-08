@@ -21,7 +21,7 @@
 #include "GeofenceMonitor_proxy.h"
 #include "msgids/ardupilot_msgids.h"
 #include "msgdef/ardupilot_msg.h"
-#include "geofence_table.h"
+#include "geofence_tbl.c"
 #include "msgdef/geofence_msg.h"
 #include "msgids/geofence_msgids.h"
 #include "msgids/scheduler_msgids.h"

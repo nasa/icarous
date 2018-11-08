@@ -4,22 +4,22 @@
 #include "logger.h"
 
 #ifdef TESTCASE1
-LoggerTable_t TblStruct={
-    false,                         // log data
-    "../ram/IClog/TestCase1",      // Source directory of log files
-    "2018-206-13:34:43"            // time stamp for playback.
+LoggerTable_t Logger_TblStruct={
+    .logRecord = false,                         // log data
+    .location = "../ram/IClog/TestCase1",      // Source directory of log files
+    .timeStamp = "2018-206-13:34:43"            // time stamp for playback.
 };
 #elif TESTCASE2
-LoggerTable_t TblStruct={
-    false,                         // log data
-    "../ram/IClog/TestCase2",      // Source directory of log files
-    "2018-206-23:40:30"            // time stamp for playback.
+LoggerTable_t Logger_TblStruct={
+    .logRecord = false,                         // log data
+    .location = "../ram/IClog/TestCase2",      // Source directory of log files
+    .timeStamp = "2018-206-23:40:30"            // time stamp for playback.
 };
 #else
-LoggerTable_t TblStruct={
-     true,                         // log data
-     "../ram/IClog/",               // Source directory of log files
-     "1980-015-14:02:48"            // time stamp for playback.
+LoggerTable_t Logger_TblStruct={
+     .logRecord = true,                         // log data
+     .location = "../ram/IClog/",               // Source directory of log files
+     .timeStamp = "1980-015-14:02:48"            // time stamp for playback.
 };
 #endif
 
@@ -33,4 +33,4 @@ LoggerTable_t TblStruct={
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(TblStruct, LOG.LoggerTable, Logger parameters, logger_tbl.tbl )
+CFE_TBL_FILEDEF(Logger_TblStruct, LOG.LoggerTable, Logger parameters, logger_tbl.tbl )

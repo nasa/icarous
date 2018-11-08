@@ -58,9 +58,10 @@ void GEOFENCE_AppInit(void) {
     CFE_SB_Subscribe(ICAROUS_GEOFENCE_MID,geofenceAppData.Geofence_Pipe);
     CFE_SB_Subscribe(ICAROUS_RESET_MID,geofenceAppData.Geofence_Pipe);
     CFE_SB_Subscribe(ICAROUS_POSITION_MID,geofenceAppData.Geofence_Pipe);
-    CFE_SB_Subscribe(GEOFENCE_WAKEUP_MID,geofenceAppData.Geofence_Pipe);
+    CFE_SB_Subscribe(FREQ_30_WAKEUP_MID,geofenceAppData.Geofence_Pipe);
     CFE_SB_Subscribe(ICAROUS_FLIGHTPLAN_MID,geofenceAppData.Geofence_Pipe);
     CFE_SB_Subscribe(GEOFENCE_PATH_CHECK_MID,geofenceAppData.Geofence_Pipe);
+    CFE_SB_Subscribe(GEOFENCE_PARAMETERS_MID,geofenceAppData.Geofence_Pipe);
 
     // Register table with table services
     status = CFE_TBL_Register(&geofenceAppData.Geofence_tblHandle,
@@ -70,7 +71,7 @@ void GEOFENCE_AppInit(void) {
                               &GeofenceTableValidationFunc);
 
     // Load app table data
-    status = CFE_TBL_Load(geofenceAppData.Geofence_tblHandle, CFE_TBL_SRC_FILE, "/cf/geofence_tbl.tbl");
+    status = CFE_TBL_Load(geofenceAppData.Geofence_tblHandle, CFE_TBL_SRC_ADDRESS, &Geofence_TblStruct);
 
 
     GeofenceTable_t *TblPtr;
@@ -196,7 +197,7 @@ void GEOFENCE_ProcessPacket(){
             break;
         }
 
-        case GEOFENCE_WAKEUP_MID:{
+        case FREQ_30_WAKEUP_MID:{
             CFE_SB_InitMsg(&geofenceAppData.gfConflictData,ICAROUS_GEOFENCE_MONITOR_MID,sizeof(geofenceConflict_t),TRUE);
 
             double angle = 360 + atan2(geofenceAppData.velocity[1], geofenceAppData.velocity[0]) * 180 / M_PI;
@@ -232,6 +233,17 @@ void GEOFENCE_ProcessPacket(){
             memcpy(geofenceAppData.gfConflictData.directPathToWaypoint,geofenceAppData.directPathToWP,sizeof(bool)*50);
             SendSBMsg(geofenceAppData.gfConflictData);
 
+            break;
+        }
+
+        case GEOFENCE_PARAMETERS_MID:{
+            geofence_parameters_t* params = (geofence_parameters_t*)geofenceAppData.Geofence_MsgPtr;
+            double geoParams[5] = {params->lookahead,
+                                   params->hthreshold,
+                                   params->vthreshold,
+                                   params->hstepback,
+                                   params->vstepback};
+            GeofenceMonitor_SetGeofenceParameters(geofenceAppData.gfMonitor,geoParams);
             break;
         }
     }

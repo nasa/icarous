@@ -7,7 +7,7 @@
 
 #include "traffic_tbl.h"
 
-TrafficTable_t TblStruct = {
+TrafficTable_t Traffic_TblStruct = {
   "../ram/DaidalusQuadConfig.txt",  // configuration file
   false                             // log daa output
 };
@@ -20,4 +20,4 @@ TrafficTable_t TblStruct = {
 **    3) a brief description of the contents of the file image
 **    4) the desired name of the table image binary file that is cFE compatible
 */
-CFE_TBL_FILEDEF(TblStruct, TRAFFIC.TrafficTable, Traffic parameters, traffic_tbl.tbl )
+CFE_TBL_FILEDEF(Traffic_TblStruct, TRAFFIC.TrafficTable, Traffic parameters, traffic_tbl.tbl )

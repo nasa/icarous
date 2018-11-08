@@ -169,20 +169,20 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
   /*
   **  Mission Defined Messages
   */
-    /* command ID #30 - Command Ingest HK Request Example */
-  { { CFE_MAKE_BIG16(INTERFACE_GS_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
-    /* command ID #31 - Telemetry Output HK Request Example */
-  { { CFE_MAKE_BIG16(INTERFACE_AP_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
+    /* command ID #30 */
+  { { CFE_MAKE_BIG16(FREQ_50_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
+    /* command ID #31 */
+  { { CFE_MAKE_BIG16(FREQ_30_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
     /* command ID #32 */
-  { { CFE_MAKE_BIG16(PLEXIL_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
+  { { CFE_MAKE_BIG16(FREQ_10_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
     /* command ID #33 */
-  { { CFE_MAKE_BIG16(GEOFENCE_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
+  { { CFE_MAKE_BIG16(FREQ_01_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
     /* command ID #34 */
-  { { CFE_MAKE_BIG16(TRAFFIC_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
+  { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
     /* command ID #35 */
-  { { CFE_MAKE_BIG16(TRAJECTORY_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
+  { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
     /* command ID #36 */
-  { { CFE_MAKE_BIG16(TRACKING_WAKEUP_MID),  CFE_MAKE_BIG16(0xC000), CFE_MAKE_BIG16(0x0001), 0x0000 } },
+  { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
     /* command ID #37 */
   { { CFE_MAKE_BIG16(SCH_UNUSED_MID) } },
     /* command ID #38 */
@@ -380,7 +380,7 @@ SCH_MessageEntry_t SCH_DefaultMessageTable[SCH_MAX_MESSAGES] =
 /*
 ** Table file header
 */
-CFE_TBL_FILEDEF(SCH_DefaultMessageTable, SCH.MSG_DEFS, SCH message definitions table, sch_def_msgtbl.tbl)
+//CFE_TBL_FILEDEF(SCH_DefaultMessageTable, SCH.MSG_DEFS, SCH message definitions table, sch_def_msgtbl.tbl)
 
 /*************************************************************************
 **

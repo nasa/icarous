@@ -39,6 +39,7 @@ ELSEIF(TEST2)
     add_definitions(-DTESTCASE2)
 ENDIF()
 
+
 IF(NOT ARM)
     set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
     set(CMAKE_C_FLAGS "-g -fPIC -m32 ")

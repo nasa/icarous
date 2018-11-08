@@ -3,10 +3,13 @@
 //
 #include <CWrapper/TrajectoryPlanner_proxy.h>
 #include <trajectory_msg.h>
+#include <traffic_msg.h>
 #include <ardupilot_msg.h>
+#include <traffic_msgids.h>
 #include "trajectory.h"
 #include "UtilFunctions.h"
 #include "trajectory_tbl.h"
+#include "trajectory_tbl.c"
 
 CFE_EVS_BinFilter_t  TRAJECTORY_EventFilters[] =
         {  /* Event ID    mask */
@@ -80,7 +83,10 @@ void TRAJECTORY_AppInit(void) {
     CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,TrajectoryAppData.TrajData_Pipe);
     CFE_SB_Subscribe(ICAROUS_TRAJECTORY_MID, TrajectoryAppData.TrajData_Pipe);
     CFE_SB_Subscribe(ICAROUS_WPREACHED_MID,TrajectoryAppData.TrajData_Pipe);
-    CFE_SB_Subscribe(TRAJECTORY_WAKEUP_MID, TrajectoryAppData.TrajData_Pipe);
+    CFE_SB_Subscribe(FREQ_30_WAKEUP_MID, TrajectoryAppData.TrajData_Pipe);
+
+    CFE_SB_Subscribe(TRAFFIC_PARAMETERS_MID,TrajectoryAppData.TrajData_Pipe);
+    CFE_SB_Subscribe(TRAJECTORY_PARAMETERS_MID,TrajectoryAppData.TrajData_Pipe);
 
     CFE_SB_Subscribe(ICAROUS_TRAJECTORY_REQUEST_MID, TrajectoryAppData.TrajRequest_Pipe);
     // Register table with table services
@@ -91,7 +97,7 @@ void TRAJECTORY_AppInit(void) {
                               &TrajectoryTableValidationFunc);
 
     // Load app table data
-    status = CFE_TBL_Load(TrajectoryAppData.Trajectory_TblHandle, CFE_TBL_SRC_FILE, "/cf/trajectory_tbl.tbl");
+    status = CFE_TBL_Load(TrajectoryAppData.Trajectory_TblHandle, CFE_TBL_SRC_ADDRESS, &Trajectory_TblStruct);
 
     TrajectoryTable_t *TblPtr;
     status = CFE_TBL_GetAddress((void**)&TblPtr, TrajectoryAppData.Trajectory_TblHandle);
@@ -285,7 +291,7 @@ void TRAJECTORY_Monitor(void){
 
 
 
-                case TRAJECTORY_WAKEUP_MID: {
+                case FREQ_30_WAKEUP_MID: {
 
                     double position[3];
                     double velocity[3];
@@ -333,6 +339,93 @@ void TRAJECTORY_Monitor(void){
                     SendSBMsg(TrajectoryAppData.fpMonitor);
                     break;
                 }
+
+
+                case TRAFFIC_PARAMETERS_MID:{
+                    int n = 0;
+                    char params[2000];
+
+                    traffic_parameters_t* msg;
+                    msg = (traffic_parameters_t*) TrajectoryAppData.Traj_MsgPtr;
+
+                    n += sprintf(params,"lookahead_time=%f [s];",msg->lookahead_time);
+                    n += sprintf(params + n,"left_trk=%f [deg];",msg->left_trk);
+                    n += sprintf(params + n,"right_trk=%f [deg];",msg->right_trk);
+                    n += sprintf(params + n,"min_gs=%f [m/s];",msg->min_gs);
+                    n += sprintf(params + n,"max_gs=%f [m/s];",msg->max_gs);
+                    n += sprintf(params + n,"min_vs=%f [fpm];",msg->min_vs);
+                    n += sprintf(params + n,"max_vs=%f [fpm];",msg->max_vs);
+                    n += sprintf(params + n,"min_alt=%f [ft];",msg->min_alt);
+                    n += sprintf(params + n,"max_alt=%f [ft];",msg->max_alt);
+                    n += sprintf(params + n,"trk_step=%f [deg];",msg->trk_step);
+                    n += sprintf(params + n,"gs_step=%f [m/s];",msg->gs_step);
+                    n += sprintf(params + n,"vs_step=%f [fpm];",msg->vs_step);
+                    n += sprintf(params + n,"alt_step=%f [ft];",msg->alt_step);
+                    n += sprintf(params + n,"horizontal_accel=%f [m/s^2];",msg->horizontal_accel);
+                    n += sprintf(params + n,"vertical_accel=%f [m/s^2];",msg->vertical_accel);
+                    n += sprintf(params + n,"turn_rate=%f [deg/s];",msg->turn_rate);
+                    n += sprintf(params + n,"bank_angle=%f [deg];",msg->bank_angle);
+                    n += sprintf(params + n,"vertical_rate=%f [m/s];",msg->vertical_rate);
+                    n += sprintf(params + n,"recover_stability_time=%f [s];",msg->recovery_stability_time);
+                    n += sprintf(params + n,"min_horizontal_recovery=%f [ft];",msg->min_horizontal_recovery);
+                    n += sprintf(params + n,"min_vertical_recovery=%f [ft];",msg->min_vertical_recovery);
+                    n += msg->recovery_trk? sprintf(params + n,"recovery_trk=true;"):sprintf(params + n,"recovery_trk=false;");
+                    n += msg->recovery_gs? sprintf(params + n,"recovery_gs=true;"):sprintf(params + n,"recovery_gs=false;");
+                    n += msg->recovery_vs? sprintf(params + n,"recovery_vs=true;"):sprintf(params + n,"recovery_vs=false;");
+                    n += msg->recovery_alt? sprintf(params + n,"recovery_alt=true;"):sprintf(params + n,"recovery_alt=false;");
+                    n += msg->conflict_crit? sprintf(params + n,"conflict_crit=true;"):sprintf(params + n,"conflict_crit=false;");
+                    n += msg->recovery_crit? sprintf(params + n,"recovery_crit=true;"):sprintf(params + n,"recovery_crit=false;");
+                    n += msg->ca_bands? sprintf(params + n,"ca_bands=true;"):sprintf(params + n,"ca_bands=false;");
+                    n += sprintf(params + n,"ca_factor=%f;",msg->ca_factor);
+                    n += sprintf(params + n,"horizontal_nmac=%f [ft];",msg->horizontal_nmac);
+                    n += sprintf(params + n,"vertical_nmac=%f [ft];",msg->vertical_nmac);
+                    n += sprintf(params + n,"contour_thr=%f [deg];",msg->contour_thr);
+                    n += sprintf(params + n,"alert_1_alerting_time=%f [s];",msg->alert_1_alerting_time);
+                    n += sprintf(params + n,"alert_1_detector=%s;",msg->alert_1_detector);
+                    n += sprintf(params + n,"alert_1_early_alerting_time=%f [s];",msg->alert_1_alerting_time);
+                    n += sprintf(params + n,"alert_1_region=%s ;",msg->alert_1_region);
+                    n += sprintf(params + n,"alert_1_spread_alt=%f [m];",msg->alert_1_spread_alt);
+                    n += sprintf(params + n,"alert_1_spread_gs=%f [m/s];",msg->alert_1_spread_gs);
+                    n += sprintf(params + n,"alert_1_spread_trk=%f [deg];",msg->alert_1_spread_trk);
+                    n += sprintf(params + n,"alert_1_spread_vs=%f [fpm];",msg->alert_1_spread_vs);
+                    n += sprintf(params + n,"conflict_level = %d;",msg->conflict_level);
+                    n += sprintf(params + n,"det_1_WCV_DTHR = %f [ft];",msg->det_1_WCV_DTHR);
+                    n += sprintf(params + n,"det_1_WCV_TCOA = %f [s];",msg->det_1_WCV_TCOA);
+                    n += sprintf(params + n,"det_1_WCV_TTHR = %f [s];",msg->det_1_WCV_TTHR);
+                    n += sprintf(params + n,"det_1_WCV_ZTHR = %f [ft];",msg->det_1_WCV_ZTHR);
+                    n += sprintf(params + n,"load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.%s;",msg->load_core_detection_det_1);
+
+                    PathPlanner_UpdateDAAParameters(TrajectoryAppData.pplanner,params);
+                    break;
+                }
+
+                case TRAJECTORY_PARAMETERS_MID:{
+
+                    trajectory_parameters_t* msg;
+                    msg = (trajectory_parameters_t*) TrajectoryAppData.Traj_MsgPtr;
+
+                    PathPlanner_UpdateAstarParameters(TrajectoryAppData.pplanner,
+                            msg->astar_enable3D,
+                            msg->astar_gridSize,
+                            msg->astar_resSpeed,
+                            msg->astar_lookahead,
+                            msg->astar_daaConfigFile);
+
+                    PathPlanner_UpdateRRTParameters(TrajectoryAppData.pplanner,
+                            msg->rrt_resSpeed,
+                            msg->rrt_numIterations,
+                            msg->rrt_dt,
+                            msg->rrt_macroSteps,
+                            msg->rrt_capR,
+                            msg->rrt_daaConfigFile);
+
+                    TrajectoryAppData.xtrkDev = msg->xtrkDev;
+                    TrajectoryAppData.xtrkGain = msg->xtrkGain;
+                    TrajectoryAppData.resSpeed = msg->resSpeed;
+                    
+                    break;
+                }
+
                 default:
                     break;
             }

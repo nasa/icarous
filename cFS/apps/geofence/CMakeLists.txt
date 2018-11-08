@@ -11,6 +11,7 @@ include_directories(../inc)
 include_directories(${MODULES_ROOT}/GeofenceMonitor)
 include_directories(${MODULES_ROOT}/GeofenceMonitor/CWrapper)
 include_directories(fsw/src)
+include_directories(fsw/tables)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
@@ -24,7 +25,7 @@ set_target_properties(geofence PROPERTIES PREFIX "")
 
 set_target_properties(geofence PROPERTIES INSTALL_RPATH "${MODULES_LIB}")
 
-add_cfe_tables(geofence "fsw/tables/geofence_tbl.c")
+#add_cfe_tables(geofence "fsw/tables/geofence_tbl.c")
 
 foreach(TGT ${APP_INSTALL_LIST})
     install(TARGETS geofence DESTINATION ${TGT}/${INSTALL_SUBDIR})

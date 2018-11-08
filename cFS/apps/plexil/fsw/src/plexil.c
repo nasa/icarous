@@ -8,6 +8,7 @@
 #include <msgdef/ardupilot_msg.h>
 #include "plexil.h"
 #include "msgids/ardupilot_msgids.h"
+#include "plexil_tbl.c"
 
 CFE_EVS_BinFilter_t  PLEXIL_EventFilters[] =
         {  /* Event ID    mask */
@@ -78,7 +79,7 @@ void PLEXIL_AppInit(void) {
 
     //Subscribe to command messages and kinematic band messages from the SB
     //Subscribe to scheduler messages
-    CFE_SB_Subscribe(PLEXIL_WAKEUP_MID, plexilAppData.PLEXIL_Pipe);
+    CFE_SB_Subscribe(FREQ_10_WAKEUP_MID, plexilAppData.PLEXIL_Pipe);
 
     //Subscribe to command/lookup return messages other data messages
     //command/lookup return messages should be subscribed in the PLEXIL_Pipe and
@@ -100,7 +101,7 @@ void PLEXIL_AppInit(void) {
                               &PlexilTableValidationFunc);
 
     // Load app table data
-    status = CFE_TBL_Load(plexilAppData.PLEXIL_tblHandle, CFE_TBL_SRC_FILE, "/cf/plexil_tbl.tbl");
+    status = CFE_TBL_Load(plexilAppData.PLEXIL_tblHandle, CFE_TBL_SRC_ADDRESS,&Plexil_TblStruct);
 
 
     PLEXILTable_t *TblPtr;
@@ -161,7 +162,7 @@ void PLEXIL_ProcessPacket(bool data){
     switch(MsgId){
 
         // Process the default packet
-        case PLEXIL_WAKEUP_MID:
+        case FREQ_10_WAKEUP_MID:
             PLEXIL_Run();
             break;
         // Pass everything else to the user defined function

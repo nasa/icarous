@@ -2,8 +2,6 @@
  * @file ardupilot.h
  * @brief function declarations, definitions of macros, datastructures and global variables for the arudpilot application
  */
-
-
 #ifndef _ardupilot_h_
 #define _ardupilot_h_
 
@@ -24,28 +22,12 @@
 #include "msgids/traffic_msgids.h"
 #include "msgids/scheduler_msgids.h"
 #include "mavlink/ardupilotmega/mavlink.h"
-
-
-#define TASK_1_ID         21    /// Task id for child task
-#define TASK_2_ID         22    /// Task id for child task
-
-#define TASK_1_STACK_SIZE 1024  ///< Stack size for task
-#define TASK_2_STACK_SIZE 1024
-
-#define TASK_1_PRIORITY   63    ///< Task priority
-#define TASK_2_PRIORITY   63
-
-#define BUFFER_LENGTH 1000  ///< Mavlink message receive buffer size
+#include "port_lib.h"
 
 #define ARDUPILOT_PIPE_NAME "FLIGHTPLAN"
 #define ARDUPILOT_PIPE_DEPTH 100
 
-#define SCH_ARDUPILOT_PIPE1_NAME "SCH_ARDUPILOT1"
-#define SCH_ARDUPILOT_PIPE2_NAME "SCH_ARDUPILOT2"
-
-uint32 task_1_stack[TASK_1_STACK_SIZE]; ///< Byte array that will serve as stacks for for the child tasks
-uint32 task_2_stack[TASK_2_STACK_SIZE];
-uint32 task_1_id, task_2_id;
+#define SCH_ARDUPILOT_PIPE1_NAME "SCH_ARDUPILOT"
 
 /**
  * @defgroup ARDUPILOT
@@ -64,16 +46,6 @@ uint32 task_1_id, task_2_id;
  *
  * @see ARDUPILOT_MESSAGES, ARDUPILOT_MESSAGE_TOPICS, ARDUPILOT_TABLES
  */
-
-
-/**
- * @enum PortType_t
- * @brief Port type
- */
-typedef enum {
-    SOCKET,  ///< enum value SOCKET
-    SERIAL   ///< enum value SERIAL
-} portType_e;
 
 /**
  * @enum controlMode_e
@@ -100,43 +72,22 @@ typedef enum{
 }controlMode_e;
 
 /**
- *\struct port_t
- * @brief Structure to hold port attributes
- */
-typedef struct{
-    int id;                          ///< id
-    portType_e portType;             ///< port type
-    struct sockaddr_in target_addr;  ///< target address
-    struct sockaddr_in self_addr;    ///< self address
-    socklen_t recvlen;               ///< length of received host properties
-    int sockId;                      ///< socket id
-    int portin;                      ///< input socket
-    int portout;                     ///< output socket
-    char target[50];                 ///< target ip address/or name of serial port
-    char recvbuffer[BUFFER_LENGTH];  ///< buffer for incoming data
-    int baudrate;                    ///< baud rate only if a serial port
-}port_t;
-
-/**
  * @struct appdataInt_t
  * @brief Structure to hold app data
  */
 typedef struct{
     CFE_SB_PipeId_t    INTERFACE_Pipe;      ///< pipe variable
-    CFE_SB_PipeId_t    SchInterface_Pipe1;  ///< pipe variable
-    CFE_SB_PipeId_t    SchInterface_Pipe2;  ///< pipe variable
+    CFE_SB_PipeId_t    SchInterface_Pipe;   ///< pipe variable
     CFE_SB_MsgPtr_t    INTERFACEMsgPtr;     ///< msg pointer to SB message
-    CFE_SB_MsgPtr_t    Sch_MsgPtr1;         ///< msg pointer to SB message
-    CFE_SB_MsgPtr_t    Sch_MsgPtr2;         ///< msg pointer to SB message
+    CFE_SB_MsgPtr_t    Sch_MsgPtr;          ///< msg pointer to SB message
     CFE_TBL_Handle_t   INTERFACE_tblHandle; ///< table handle
     port_t ap;                              ///< autopilot port
-    port_t gs;                              ///< groundstation port
     uint8_t runThreads;                     ///< thread active status
     int numWaypoints;                       ///< num total waypoints
     int waypointSeq;                        ///< received position waypoint
     int nextWaypointIndex;                  ///< Next waypoint index to goto.
     int* waypoint_type;                     ///< waypoint type description
-    int* waypoint_index;                    ///< waypoint index (only positional waypoints)
+    int waypoint_index[MAX_WAYPOINTS];      ///< waypoint index (only positional waypoints)
     int foundUAV;                           ///< UAV communication alive
     uint32_t mutex_read;                    ///< mutex id
     uint32_t mutex_write;                   ///< mutex id
@@ -145,7 +96,8 @@ typedef struct{
     uint16_t  numUplinkWaypoints;
     uint16_t  numDownlinkWaypoints;
     uint16_t  downlinkRequestIndex;
-    controlMode_e currentMode;
+    controlMode_e currentAPMode;
+    uint8_t icarousMode;
     mavlink_mission_item_t UplinkMissionItems[MAX_WAYPOINTS];
     mavlink_mission_item_t DownlinkMissionItems[MAX_WAYPOINTS];
 }appdataInt_t;
@@ -167,58 +119,15 @@ void ARDUPILOT_AppInit(void);
 void ARDUPILOT_AppCleanUp(void);
 
 /**
- * Initialize a socket port
- * @param *prt pointer to port
- */
-void InitializeSocketPort(port_t *prt);
-
-/**
- * Initialize a serial port
- * @param *prt pointer to port
- */
-int InitializeSerialPort(port_t* prt,bool should_block);
-
-
-/**
  * Read from Ardupilot data stream and pass data to
  * groundstation and ICAROUS app
  */
 void Task1(void);
 
 /**
- * Read from groundstation data stream and pass to Ardupilot
- * and ICAROUS app
- */
-void Task2(void);
-
-/**
- * Read raw data from port
- * @param *prt pointer to port to read from
- */
-int readPort(port_t *prt);
-
-/**
- * Write mavlink message to a given port
- * @param *prt pointer to output port
- * @param *message pointer to mavlink message
- */
-void writePort(port_t* prt,mavlink_message_t *message);
-
-/**
  * Get mavlink message from Ardupilot
  */
 int GetMAVLinkMsgFromAP(void);
-
-/**
- * Get mavlink message from ground station
- */
-int GetMAVLinkMsgFromGS(void);
-
-/**
- * Process mavlink message from groundstation and take action
- * @param message mavlink message
- */
-bool ProcessGSMessage(mavlink_message_t message);
 
 /**
  * Process mavlink message from ardupilot and take action
@@ -230,6 +139,9 @@ void ProcessAPMessage(mavlink_message_t message);
  * Process SB messages from pipes and take action
  */
 void ARDUPILOT_ProcessPacket(void);
+
+
+void apSendHeartbeat();
 
 /**
  * Validate table data
@@ -252,6 +164,8 @@ EXTERN noArgsCmd_t resetIcarous;               ///< reset icarous command
 EXTERN object_t traffic;                       ///< traffic message
 EXTERN position_t position;                    ///< position message
 EXTERN attitude_t attitude;                    ///< attitude message
+EXTERN battery_status_t battery_status;        ///< battery status message
 EXTERN cmdAck_t ack;                           ///< command acknowledge message
+EXTERN vfrhud_t vfrhud;                        ///< vfr hud data
 
 #endif /* _ardupilot_h_ */

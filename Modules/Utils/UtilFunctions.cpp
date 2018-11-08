@@ -13,10 +13,51 @@ using namespace larcfm;
 
 double ComputeDistance(double positionA[],double positionB[]){
 
+    Position A = Position::makeLatLonAlt(positionA[0],"degree",positionA[1],"degree",positionA[2],"m");
+    Position B = Position::makeLatLonAlt(positionB[0],"degree",positionB[1],"degree",positionB[2],"m");
+
+    return A.distanceH(B);
+}
+
+double ComputeHeading(double positionA[],double positionB[]){
+
     Position A = Position::makeLatLonAlt(positionA[0],"degree",positionA[1],"degree",positionA[2],"m/s");
     Position B = Position::makeLatLonAlt(positionB[0],"degree",positionB[1],"degree",positionB[2],"m/s");
 
-    return A.distanceH(B);
+    return Units::to(Units::deg,A.track(B));
+}
+
+void ComputeOffsetPosition(double position[],double track,double dist,double output[]){
+    Position A = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m/s");
+
+    track = Units::from(Units::deg,track);
+    dist = Units::from(Units::m,dist);
+
+    Position B = A.linearDist2D(track,dist);
+
+    output[0] = B.latitude();
+    output[1] = B.longitude();
+    output[2] = B.alt();
+}
+
+void ConvertLLA2NED(double gpsOrigin[],double LLA[],double outputNED[]){
+   Position origin = Position::makeLatLonAlt(gpsOrigin[0],"degree",gpsOrigin[1],"degree",gpsOrigin[1],"m");
+   Position query = Position::makeLatLonAlt(LLA[0],"degree",LLA[1],"degree",LLA[2],"m");
+   EuclideanProjection proj = Projection::createProjection(origin);
+   Vect3 output = proj.project(query);
+   outputNED[0] = output.x;
+   outputNED[1] = output.y;
+   outputNED[2] = output.z;
+}
+
+void ConvertNED2LLA(double gpsOrigin[],double NED[],double outputLLA[]){
+    Position origin = Position::makeLatLonAlt(gpsOrigin[0],"degree",gpsOrigin[1],"degree",gpsOrigin[1],"m");
+    EuclideanProjection proj = Projection::createProjection(origin);
+    Vect3 query = Vect3::makeXYZ(NED[0],"m",NED[1],"m",NED[2],"m");
+    LatLonAlt output = proj.inverse(query);
+    outputLLA[0] = output.latitude();
+    outputLLA[1] = output.longitude();
+    outputLLA[2] = output.alt();
 }
 
 void ConvertVnedToTrkGsVs(double vn,double ve,double vz,double *Trk,double *Gs,double *Vs){

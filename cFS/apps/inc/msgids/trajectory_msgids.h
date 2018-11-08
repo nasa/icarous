@@ -12,9 +12,10 @@
  * @ingroup TOPICS
  * @{
  */
-#define ICAROUS_TRAJECTORY_MID 0x0462           ///< Encodes the result of trajectory computation. message type: flightplan_t
+#define ICAROUS_TRAJECTORY_MID         0x0462   ///< Encodes the result of trajectory computation. message type: flightplan_t
 #define ICAROUS_TRAJECTORY_REQUEST_MID 0x0463   ///< Request to compute a new trajectory: message type: trajectory_request_t
-#define FLIGHTPLAN_MONITOR_MID 0x0465           ///< Flight plan monitoring information. message type: flightplan_monitor_t
+#define FLIGHTPLAN_MONITOR_MID         0x0465   ///< Flight plan monitoring information. message type: flightplan_monitor_t
+#define TRAJECTORY_PARAMETERS_MID      0x0904   ///< Trajectory parameters
 
 /**@}*/
 #endif //ICAROUS_CFS_TRAJECTORY_MSGIDS_H
