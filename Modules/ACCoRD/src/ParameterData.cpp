@@ -469,7 +469,7 @@ std::string ParameterData::toParameterList(const std::string& separator) const {
 	std::vector<std::string> list = getListFull();
 	for (int i = 0; i < (int) list.size(); i++) {
 		std::string def = list[i];
-		if (def.find(sep) == std::string::npos) {
+		if (def.find(sep) != std::string::npos) {
 			return "";
 		}
 		ret += def+sep;
