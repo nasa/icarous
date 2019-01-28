@@ -28,6 +28,7 @@ include("CMake/utils.cmake")
 
 OPTION(ARM "Build binaries for ARM" OFF)
 OPTION(SITL "Build the project for SITL" OFF)
+OPTION(CRATOUS "Build the project with CRATOUS support" OFF)
 
 IF(SITL)
     add_definitions(-DSITL)
