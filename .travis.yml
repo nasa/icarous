@@ -36,4 +36,13 @@ before_script:
     - cd ../
 
 script:
-    - echo "OK!"
+    - cd cFS/bin
+    - cp -r Test1/cpu1 .
+    - cd cpu1 
+    - python ../../../Python/TestRunner/Launch.py 1
+    - cat output.txt
+    - cd ../
+    - cp -r Test2/cpu1 .
+    - cd cpu1
+    - python ../../../Python/TestRunner/Launch.py 2
+    - cat output.txt
