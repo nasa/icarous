@@ -24,6 +24,8 @@ before_install:
 
 before_script:
     - source SetEnv.sh
+    - cp cFS/apps/trajectory/fsw/tables/trajectory_tbl2.c cFS/apps/trajectory/fsw/tables/trajectory_tbl.c 
+    - cp cFS/bin/ram/DaidalusQuadConfig2.txt cFS/bin/ram/DaidalusQuadConfig.txt
     - mkdir build
     - cd build
     - cmake .. -DBUILDNAME=Test1 -DSITL=ON -DTEST1=ON
