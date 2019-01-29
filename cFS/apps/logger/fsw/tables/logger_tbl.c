@@ -7,13 +7,13 @@
 LoggerTable_t TblStruct={
     false,                         // log data
     "../ram/IClog/TestCase1",      // Source directory of log files
-    "2018-206-13:34:43"            // time stamp for playback.
+    "2019-029-16:42:16"            // time stamp for playback.
 };
 #elif TESTCASE2
 LoggerTable_t TblStruct={
     false,                         // log data
     "../ram/IClog/TestCase2",      // Source directory of log files
-    "2018-206-23:40:30"            // time stamp for playback.
+    "2019-029-18:01:20"            // time stamp for playback.
 };
 #else
 LoggerTable_t TblStruct={
