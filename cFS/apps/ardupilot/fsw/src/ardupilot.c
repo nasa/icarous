@@ -124,7 +124,7 @@ void ARDUPILOT_AppInit(void){
 	appdataInt.nextWaypointIndex = 0;
 	appdataInt.ap.portType = TblPtr->PortType;
     appdataInt.ap.baudrate = TblPtr->BaudRate;
-	appdataInt.ap.portin   = TblPtr->Portin;
+	appdataInt.ap.portin   = TblPtr->Portin + 10 * CFE_PSP_GetSpacecraftId();
 	appdataInt.ap.portout  = TblPtr->Portout;
 	memcpy(appdataInt.ap.target,TblPtr->Address,50);
 
