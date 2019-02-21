@@ -26,7 +26,7 @@ https://nasa.github.io/icarous/
 
 ### Current Releases
 
-- ICAROUS  V-2.0.9 - October 19, 2018
+- ICAROUS  V-2.1.0 - February 21, 2019
 
 ### License
 
@@ -77,7 +77,7 @@ For compilation and linking errors related to missing libraries, check [Modules/
 The generated executable file is installed under `cFS/bin/cpu1`. Launch Icarous using the following command:
 
 ```
-    $sudo ./core-cpu1
+    $sudo ./core-cpu1 -I 0 -C 1
 ```
 
 Note that you need root previleges. When running ICAROUS on an embedded platform, one can make use of the `nohup` or `screen` command to avoid termination when a terminal is closed.
