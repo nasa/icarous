@@ -40,24 +40,41 @@ void ComputeOffsetPosition(double position[],double track,double dist,double out
     output[2] = B.alt();
 }
 
-void ConvertLLA2NED(double gpsOrigin[],double LLA[],double outputNED[]){
-   Position origin = Position::makeLatLonAlt(gpsOrigin[0],"degree",gpsOrigin[1],"degree",gpsOrigin[1],"m");
+void ConvertLLA2END(double gpsOrigin[],double LLA[],double outputEND[]){
+   Position origin = Position::makeLatLonAlt(gpsOrigin[0],"degree",gpsOrigin[1],"degree",gpsOrigin[2],"m");
    Position query = Position::makeLatLonAlt(LLA[0],"degree",LLA[1],"degree",LLA[2],"m");
    EuclideanProjection proj = Projection::createProjection(origin);
    Vect3 output = proj.project(query);
-   outputNED[0] = output.x;
-   outputNED[1] = output.y;
-   outputNED[2] = output.z;
+   outputEND[0] = output.x;
+   outputEND[1] = output.y;
+   outputEND[2] = output.z;
 }
 
-void ConvertNED2LLA(double gpsOrigin[],double NED[],double outputLLA[]){
-    Position origin = Position::makeLatLonAlt(gpsOrigin[0],"degree",gpsOrigin[1],"degree",gpsOrigin[1],"m");
+void ConvertEND2LLA(double gpsOrigin[],double END[],double outputLLA[]){
+    Position origin = Position::makeLatLonAlt(gpsOrigin[0],"degree",gpsOrigin[1],"degree",gpsOrigin[2],"m");
     EuclideanProjection proj = Projection::createProjection(origin);
-    Vect3 query = Vect3::makeXYZ(NED[0],"m",NED[1],"m",NED[2],"m");
+    Vect3 query = Vect3::makeXYZ(END[0],"m",END[1],"m",END[2],"m");
     LatLonAlt output = proj.inverse(query);
     outputLLA[0] = output.latitude();
     outputLLA[1] = output.longitude();
     outputLLA[2] = output.alt();
+}
+
+
+void ConvertRAE2LLA(double lat,double lon,double heading,double range,double azimuth,double elevation,double outputLL[]){
+    double az_rad   = azimuth * M_PI/180;
+    double elev_rad = elevation * M_PI/180;
+    double heading_rad = heading * M_PI/180;
+
+    double N,E,U;
+
+    N = range * cos(elev_rad) * cos(heading_rad + az_rad);
+    E = range * cos(elev_rad) * sin(heading_rad + az_rad);
+    U = range * sin(elev_rad);
+
+    double origin[3] = {lat,lon,0};
+    double END[3]    = {E,N,U};
+    ConvertEND2LLA(origin,END,outputLL);
 }
 
 void ConvertVnedToTrkGsVs(double vn,double ve,double vz,double *Trk,double *Gs,double *Vs){

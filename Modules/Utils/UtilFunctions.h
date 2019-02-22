@@ -14,8 +14,9 @@ extern "C" {
 double ComputeDistance(double positionA[],double positionB[]);
 double ComputeHeading(double positionA[],double positionB[]);
 void ComputeOffsetPosition(double position[],double track,double dist,double output[]);
-void ConvertNED2LLA(double gpsOrigin[],double NED[],double outputLLA[]);
-void ConvertLLA2NED(double gpsOrigin[],double LLA[],double outputNED[]);
+void ConvertEND2LLA(double gpsOrigin[],double NED[],double outputLLA[]);
+void ConvertRAE2LLA(double range,double azimuth,double elevation);
+void ConvertLLA2END(double gpsOrigin[],double LLA[],double outputNED[]);
 bool CheckTurnConflict(double low,double high,double fromHeading,double toHeading);
 void ConvertVnedToTrkGsVs(double vn,double ve,double vz,double *Trk,double *Gs,double *Vs);
 void ConvertTrkGsVsToVned(double Trk,double Gs,double Vs,double *vn,double *ve,double *vd);
