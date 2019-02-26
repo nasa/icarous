@@ -28,7 +28,7 @@ void gsSendHeartbeat(){
 
     mavlink_message_t hbeat;
 	mavlink_msg_heartbeat_pack(1,0,&hbeat,MAV_TYPE_ONBOARD_CONTROLLER,MAV_AUTOPILOT_INVALID,appdataIntGS.currentIcarousMode,appdataIntGS.currentApMode,0);
-	writePort(&appdataIntGS.gs,&hbeat);
+	writeMavlinkData(&appdataIntGS.gs,&hbeat);
 }
 
 void ProcessGSMessage(mavlink_message_t message) {
@@ -52,12 +52,12 @@ void ProcessGSMessage(mavlink_message_t message) {
 
 			//mavlink_message_t msgRequestInt;
 			//mavlink_msg_mission_request_int_pack(1,0,&msgRequestInt,255,0,appdataIntGS.waypointSeq,MAV_MISSION_TYPE_MISSION);
-			//writePort(&appdataIntGS.gs,&msgRequestInt);
+			//writeMavlinkData(&appdataIntGS.gs,&msgRequestInt);
             //OS_printf("Sending mission request : %d\n",appdataIntGS.waypointSeq);
 
 			mavlink_message_t msgRequest;
 			mavlink_msg_mission_request_pack(1,0,&msgRequest,255,0,appdataIntGS.waypointSeq,MAV_MISSION_TYPE_MISSION);
-			writePort(&appdataIntGS.gs,&msgRequest);
+			writeMavlinkData(&appdataIntGS.gs,&msgRequest);
 			break;
 		}
 
@@ -83,14 +83,14 @@ void ProcessGSMessage(mavlink_message_t message) {
                 mavlink_message_t msgAck;
                 mavlink_msg_mission_ack_pack(1, 0, &msgAck, 255, 0, MAV_MISSION_ACCEPTED, msg.mission_type);
                 //printf("mission accepted\n");
-				writePort(&appdataIntGS.gs, &msgAck);
+				writeMavlinkData(&appdataIntGS.gs, &msgAck);
 		    }
 
 		    if(appdataIntGS.receivingWP < appdataIntGS.numWaypoints) {
 				mavlink_message_t msgRequest;
 				mavlink_msg_mission_request_pack(1, 0, &msgRequest, 255, 0, appdataIntGS.receivingWP,
 													 MAV_MISSION_TYPE_MISSION);
-				writePort(&appdataIntGS.gs, &msgRequest);
+				writeMavlinkData(&appdataIntGS.gs, &msgRequest);
 			}
 
 			break;
@@ -122,7 +122,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 				mavlink_message_t msgRequestInt;
 				mavlink_msg_mission_request_int_pack(1, 0, &msgRequestInt, 255, 0, appdataIntGS.receivingWP,
 													 MAV_MISSION_TYPE_MISSION);
-				writePort(&appdataIntGS.gs, &msgRequestInt);
+				writeMavlinkData(&appdataIntGS.gs, &msgRequestInt);
 			}
 
 			break;
@@ -136,7 +136,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 
 		    mavlink_message_t msgCount;
 		    mavlink_msg_mission_count_pack(1,0,&msgCount,255,0,appdataIntGS.numWaypoints,MAV_MISSION_TYPE_MISSION);
-		    writePort(&appdataIntGS.gs,&msgCount);
+		    writeMavlinkData(&appdataIntGS.gs,&msgCount);
 
 			break;
 		}
@@ -162,7 +162,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 			                                                                   appdataIntGS.ReceivedMissionItems[msg.seq].z,
 			                                                                   appdataIntGS.ReceivedMissionItems[msg.seq].mission_type);
 
-			writePort(&appdataIntGS.gs,&msgMissionItem);
+			writeMavlinkData(&appdataIntGS.gs,&msgMissionItem);
 			break;
 		}
 
@@ -186,7 +186,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 			                                                                   appdataIntGS.ReceivedMissionItems[msg.seq].z,
 			                                                                   appdataIntGS.ReceivedMissionItems[msg.seq].mission_type);
 
-			writePort(&appdataIntGS.gs,&msgMissionItem);
+			writeMavlinkData(&appdataIntGS.gs,&msgMissionItem);
 			break;
 
 		}
@@ -205,7 +205,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 				//Send confirmation message to GS
 				mavlink_message_t paramStatusMsg;
 				mavlink_msg_statustext_pack(2,0,&paramStatusMsg,MAV_SEVERITY_WARNING,"Parameters Sent to Apps");
-				writePort(&appdataIntGS.gs,&paramStatusMsg);
+				writeMavlinkData(&appdataIntGS.gs,&paramStatusMsg);
 
 				send2ap = false;
 				if (appdataIntGS.numWaypoints > 1) {
@@ -215,11 +215,11 @@ void ProcessGSMessage(mavlink_message_t message) {
 
 					mavlink_message_t statusMsg;
 					mavlink_msg_statustext_pack(2,0,&statusMsg,MAV_SEVERITY_WARNING,"IC:Starting Mission");
-					writePort(&appdataIntGS.gs,&statusMsg);
+					writeMavlinkData(&appdataIntGS.gs,&statusMsg);
 				}else{
 					mavlink_message_t statusMsg;
 					mavlink_msg_statustext_pack(2,0,&statusMsg,MAV_SEVERITY_WARNING,"IC:No Flight Plan loaded");
-					writePort(&appdataIntGS.gs,&statusMsg);
+					writeMavlinkData(&appdataIntGS.gs,&statusMsg);
 
 				}
 			}
@@ -233,7 +233,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 
 				mavlink_message_t fetchfence;
 				mavlink_msg_fence_fetch_point_pack(1,1,&fetchfence,255,0,0);
-				writePort(&appdataIntGS.gs,&fetchfence);
+				writeMavlinkData(&appdataIntGS.gs,&fetchfence);
 			}
 			else if (msg.command == MAV_CMD_SPATIAL_USER_1) {
 				appdataIntGS.traffic.index = (uint32_t)msg.param1;
@@ -256,7 +256,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 
 				mavlink_message_t statusMsg;;
 				mavlink_msg_statustext_pack(2,0,&statusMsg,MAV_SEVERITY_WARNING,"IC:Resetting Icarous");
-				writePort(&appdataIntGS.gs,&statusMsg);
+				writeMavlinkData(&appdataIntGS.gs,&statusMsg);
 			}else if(msg.command == MAV_CMD_USER_2){
 				argsCmd_t trackCmd;
 				CFE_SB_InitMsg(&trackCmd,ICAROUS_TRACK_STATUS_MID, sizeof(argsCmd_t),TRUE);
@@ -283,7 +283,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 				OS_printf("Received ditching command \n");
 			}
 			else {
-				//writePort(&appdataInt.ap,&message);
+				//writeMavlinkData(&appdataInt.ap,&message);
 			}
 
 			break;
@@ -304,11 +304,11 @@ void ProcessGSMessage(mavlink_message_t message) {
 			if (count < total-1) {
 				mavlink_message_t fetchfence;
 				mavlink_msg_fence_fetch_point_pack(1,1,&fetchfence,255,0,count+1);
-				writePort(&appdataIntGS.gs,&fetchfence);
+				writeMavlinkData(&appdataIntGS.gs,&fetchfence);
 			}else{
 				mavlink_message_t ack;
 				mavlink_msg_command_ack_pack(1,0,&ack,MAV_CMD_DO_FENCE_ENABLE,MAV_RESULT_ACCEPTED);
-				writePort(&appdataIntGS.gs,&ack);
+				writeMavlinkData(&appdataIntGS.gs,&ack);
 			}
 
 		    if(count == total - 1) {
@@ -372,7 +372,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 												 appdataIntGS.params[i].param_type,
 												 PARAM_COUNT, i);
 
-				writePort(&appdataIntGS.gs,&param_value_msg);
+				writeMavlinkData(&appdataIntGS.gs,&param_value_msg);
 				//printf("Sending parameter : %s: %f\n",appdataIntGS.param_ids[i],appdataIntGS.params[i].param_value);
 			}
 
@@ -425,7 +425,7 @@ void gsInterface_ProcessPacket() {
 
 
 			if(bands->numBands > 0) {
-				writePort(&appdataIntGS.gs, &msg);
+				writeMavlinkData(&appdataIntGS.gs, &msg);
 			}
 			break;
 		}
@@ -434,7 +434,7 @@ void gsInterface_ProcessPacket() {
 			status_t* statusMsg = (status_t*) appdataIntGS.INTERFACEMsgPtr;
 			mavlink_message_t msg;
 			mavlink_msg_statustext_pack(2,0,&msg,MAV_SEVERITY_WARNING,statusMsg->buffer);
-			writePort(&appdataIntGS.gs,&msg);
+			writeMavlinkData(&appdataIntGS.gs,&msg);
 			break;
 		}
 
@@ -445,7 +445,7 @@ void gsInterface_ProcessPacket() {
             switch (cmd->name) {
             	case _STATUS_: {
 					mavlink_msg_statustext_pack(255, 0, &msg, MAV_SEVERITY_WARNING, cmd->buffer);
-					writePort(&appdataIntGS.gs,&msg);
+					writeMavlinkData(&appdataIntGS.gs,&msg);
 					break;
 				}
                 default:{
@@ -470,7 +470,7 @@ void gsInterface_ProcessPacket() {
 													 (uint16_t) (pos->vd * 1E2),
 													 (uint16_t) (pos->hdg * 1E2));
 
-				writePort(&appdataIntGS.gs, &msg);
+				writeMavlinkData(&appdataIntGS.gs, &msg);
 			}else{
 				mavlink_message_t msg;
 
@@ -486,7 +486,7 @@ void gsInterface_ProcessPacket() {
 										  (uint16_t) (pos->vd*1E2),
 										  "NONE",0,0,0,0);
 
-			    writePort(&appdataIntGS.gs,&msg);
+			    writeMavlinkData(&appdataIntGS.gs,&msg);
 
 			}
 			break;
@@ -505,11 +505,11 @@ void gsInterface_ProcessPacket() {
 									 vfrhud->throttle,
 									 (float)vfrhud->alt,
 									 (float)vfrhud->climb);
-			writePort(&appdataIntGS.gs,&msg1);
+			writeMavlinkData(&appdataIntGS.gs,&msg1);
 
 		    mavlink_message_t msg2;
 		    mavlink_msg_mission_current_pack(1,0,&msg2,vfrhud->waypointCurrent);
-		    writePort(&appdataIntGS.gs,&msg2);
+		    writeMavlinkData(&appdataIntGS.gs,&msg2);
 
 			break;
 		}
@@ -531,7 +531,7 @@ void gsInterface_ProcessPacket() {
 										  (uint16_t) (traffic->vd*1E2),
 										  "NONE",0,0,0,0);
 
-			writePort(&appdataIntGS.gs,&msg);
+			writeMavlinkData(&appdataIntGS.gs,&msg);
             break;
 		}
 
@@ -558,7 +558,7 @@ void gsInterface_ProcessPacket() {
 									  (float) yawspeed*M_PI/180);
 
 			//printf("IC sending attitude info to GCS\n");
-			writePort(&appdataIntGS.gs,&msg);
+			writeMavlinkData(&appdataIntGS.gs,&msg);
 			break;
 		}
 
@@ -579,7 +579,7 @@ void gsInterface_ProcessPacket() {
 											battery_status->battery_remaining);
 
 			//printf("IC sending battery info to GCS\n");
-			writePort(&appdataIntGS.gs,&msg);
+			writeMavlinkData(&appdataIntGS.gs,&msg);
 			break;
 		}
 	}

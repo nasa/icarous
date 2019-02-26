@@ -144,7 +144,7 @@ void gsInterface_InitializeParamIds();
  */
 void gsInterface_PublishParams();
 
-#define SendGSMsg(arg) writePort(&appdataIntGS.gs,&arg)
+#define SendGSMsg(arg) writeMavlinkData(&appdataIntGS.gs,&arg)
 
 #define NextParam appdataIntGS.params[i].param_value;\
 i++

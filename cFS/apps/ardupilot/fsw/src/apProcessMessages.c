@@ -30,7 +30,7 @@ int GetMAVLinkMsgFromAP(){
 void apSendHeartbeat(){
     mavlink_message_t hbeat;
     mavlink_msg_heartbeat_pack(1,0,&hbeat,MAV_TYPE_ONBOARD_CONTROLLER,MAV_AUTOPILOT_INVALID,0,0,0);
-    writePort(&appdataInt.ap,&hbeat);
+    writeMavlinkData(&appdataInt.ap,&hbeat);
 }
 
 void ProcessAPMessage(mavlink_message_t message) {
@@ -58,7 +58,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                                               appdataInt.UplinkMissionItems[msg.seq].z,
                                               appdataInt.UplinkMissionItems[msg.seq].mission_type);
 
-            writePort(&appdataInt.ap,&msgMissionItemInt);
+            writeMavlinkData(&appdataInt.ap,&msgMissionItemInt);
             break;
         }
 
@@ -82,7 +82,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                                               appdataInt.UplinkMissionItems[msg.seq].y,
                                               appdataInt.UplinkMissionItems[msg.seq].z,
                                               appdataInt.UplinkMissionItems[msg.seq].mission_type);
-                writePort(&(appdataInt.ap),&missionItem);
+                writeMavlinkData(&(appdataInt.ap),&missionItem);
             }
             break;
         }
@@ -218,7 +218,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                 appdataInt.numDownlinkWaypoints = missionCount.count;
                 mavlink_message_t msg;
                 mavlink_msg_mission_request_pack(255,0,&msg,1,0,appdataInt.downlinkRequestIndex,MAV_MISSION_TYPE_MISSION);
-                //writePort(&(appdataInt.ap),&msg);
+                //writeMavlinkData(&(appdataInt.ap),&msg);
             }
             break;
         }
@@ -244,7 +244,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                 }else{
                     mavlink_message_t request;
                     mavlink_msg_mission_request_pack(255,0,&request,1,0,(uint16_t )(missionItem.seq + 1),MAV_MISSION_TYPE_MISSION);
-                    //writePort(&appdataInt.ap,&request);
+                    //writeMavlinkData(&appdataInt.ap,&request);
                     //OS_printf("Requesting %d waypoint \n",missionItem.seq + 1);
                 }
             }
@@ -361,7 +361,7 @@ void ARDUPILOT_ProcessPacket() {
 #ifdef SITL
             mavlink_message_t missionCount;
             mavlink_msg_mission_count_pack(200,1,&missionCount,1,0,count,MAV_MISSION_TYPE_MISSION);
-            writePort(&appdataInt.ap,&missionCount);
+            writeMavlinkData(&appdataInt.ap,&missionCount);
             appdataInt.startWPUplink = true;
 #endif
             break;
@@ -465,7 +465,7 @@ void ARDUPILOT_ProcessPacket() {
 
             }
 
-            writePort(&appdataInt.ap,&msg);
+            writeMavlinkData(&appdataInt.ap,&msg);
 
             break;
         }

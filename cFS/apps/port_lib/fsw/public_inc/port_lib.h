@@ -67,17 +67,25 @@ void InitializeSocketPort(port_t *prt);
 int InitializeSerialPort(port_t* prt,bool should_block);
 
 /**
- * Read raw data from port
- * @param *prt pointer to port to read from
- */
-int readPort(port_t *prt);
-
-/**
  * Write mavlink message to a given port
  * @param *prt pointer to output port
  * @param *message pointer to mavlink message
  */
-void writePort(port_t* prt,mavlink_message_t *message);
+void writeMavlinkData(port_t* prt,mavlink_message_t *message);
+
+/**
+ * Read raw data from port
+ * @param prt pointer to port to read from
+ */
+int readPort(port_t *prt);
+
+/**
+ * Write raw data to port
+ * @param prt  pointer to port to read data from
+ * @param sendbuffer pointer to char array contiaining data
+ * @param datalength length of data to be used
+ */
+void writeData(port_t* prt,char* sendbuffer,int datalength);
 
 #endif _port_lib_h_
 

@@ -120,19 +120,23 @@ int readPort(port_t* prt){
 	return n;
 }
 
-void writePort(port_t* prt,mavlink_message_t* message){
-	char sendbuffer[300];
-	uint16_t len = mavlink_msg_to_send_buffer((uint8_t*)sendbuffer, message);
+void writeData(port_t* prt,char* sendbuffer,int datalength){
 	if(prt->portType == SOCKET){
-		int n = sendto(prt->sockId, sendbuffer, len, 0, (struct sockaddr*)&prt->target_addr, sizeof (struct sockaddr_in));
+		int n = sendto(prt->sockId, sendbuffer, datalength, 0, (struct sockaddr*)&prt->target_addr, sizeof (struct sockaddr_in));
 	}else if(prt->portType == SERIAL){
-		for(int i=0;i<len;i++){
+		for(int i=0;i<datalength;i++){
 			char c = sendbuffer[i];
 			write(prt->id,&c,1);
 		}
 	}else{
 		// unimplemented port type
 	}
+}
+
+void writeMavlinkData(port_t *prt,mavlink_message_t* message){
+	char sendbuffer[300];
+	uint16_t datalen = mavlink_msg_to_send_buffer((uint8_t*)sendbuffer, message);
+    writeData(prt,sendbuffer,datalen);
 }
 
 /************************/
