@@ -15,6 +15,7 @@ var searchData=
   ['wp_5fmetric_5fnone',['WP_METRIC_NONE',['../group__ARDUPILOT__MESSAGES.html#ggae04d967ed80badd3f6175e2e526d6b24ad4906e066f0a85f85923a2e3ecd2d701',1,'ardupilot_msg.h']]],
   ['wp_5fmetric_5fspeed',['WP_METRIC_SPEED',['../group__ARDUPILOT__MESSAGES.html#ggae04d967ed80badd3f6175e2e526d6b24ac985af41707ba9b4d6d3efd4e10df07c',1,'ardupilot_msg.h']]],
   ['wpfeasibility',['wpFeasibility',['../structbands__t.html#a320c10963306c415bada33496075b982',1,'bands_t']]],
-  ['wpreached',['wpreached',['../ardupilot_8h.html#acbfc4fce6a74a1110667bee17869ec31',1,'ardupilot.h']]],
-  ['writeport',['writePort',['../port__lib_8h.html#a2fdecae771bdeddc538a3000cf50e736',1,'port_lib.c']]]
+  ['wpreached',['wpReached',['../structappdataInt__t.html#ae3693b8fb67eea585c8b96e93f169fe1',1,'appdataInt_t::wpReached()'],['../ardupilot_8h.html#acbfc4fce6a74a1110667bee17869ec31',1,'wpreached():&#160;ardupilot.h']]],
+  ['writedata',['writeData',['../port__lib_8h.html#a5422fa17fc6bf125dc315c24ee0fbaab',1,'port_lib.c']]],
+  ['writemavlinkdata',['writeMavlinkData',['../port__lib_8h.html#afb6fc10453a780fd7a17b91468316ddc',1,'port_lib.c']]]
 ];

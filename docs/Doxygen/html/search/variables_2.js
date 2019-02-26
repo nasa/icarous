@@ -18,5 +18,6 @@ var searchData=
   ['current_5fconsumed',['current_consumed',['../structbattery__status__t.html#a22b9ff97460844b94104a47b925ca933',1,'battery_status_t']]],
   ['current_5frx_5fseq',['current_rx_seq',['../struct____mavlink__status.html#affbdd32b3dff8ae35327a79ed6b17646',1,'__mavlink_status']]],
   ['current_5ftx_5fseq',['current_tx_seq',['../struct____mavlink__status.html#a06482d6c3fbfa829526c9b2e2e895f32',1,'__mavlink_status']]],
-  ['currentconflictband',['currentConflictBand',['../structbands__t.html#a17bfc486ee2334c1c78e378d4fdb048d',1,'bands_t']]]
+  ['currentconflictband',['currentConflictBand',['../structbands__t.html#a17bfc486ee2334c1c78e378d4fdb048d',1,'bands_t']]],
+  ['currentwp',['currentWP',['../structappdataInt__t.html#a8dfca40223c4c88ced005b012e88fab9',1,'appdataInt_t']]]
 ];

@@ -100,10 +100,13 @@ Collaboration diagram for appdataInt_t:</div>
 <div class="dyncontent">
 <div class="center"><img src="structappdataInt__t__coll__graph.png" border="0" usemap="#appdataInt__t_coll__map" alt="Collaboration graph"/></div>
 <map name="appdataInt__t_coll__map" id="appdataInt__t_coll__map">
-<area shape="rect" id="node2" href="structport__t.html" title="Structure to hold port attributes. " alt="" coords="5,5,60,32"/>
-<area shape="rect" id="node3" href="structattitude__t.html" title="aircraft attitude information. " alt="" coords="84,5,160,32"/>
-<area shape="rect" id="node4" href="structposition__t.html" title="position information of aircraft. " alt="" coords="184,5,263,32"/>
-<area shape="rect" id="node5" href="structmissionItemReached__t.html" title="message indicating a specific waypoint has been reached. " alt="" coords="287,5,443,32"/>
+<area shape="rect" id="node2" href="structflightplan__t.html" title="message encoding flight plan information " alt="" coords="5,95,91,121"/>
+<area shape="rect" id="node3" href="structwaypoint__t.html" title="waypoint data. " alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node4" href="structport__t.html" title="Structure to hold port attributes. " alt="" coords="115,95,170,121"/>
+<area shape="rect" id="node5" href="structobject__t.html" title="message to represent information about an static/dynamic object " alt="" coords="194,95,262,121"/>
+<area shape="rect" id="node6" href="structattitude__t.html" title="aircraft attitude information. " alt="" coords="286,95,362,121"/>
+<area shape="rect" id="node7" href="structposition__t.html" title="position information of aircraft. " alt="" coords="386,95,465,121"/>
+<area shape="rect" id="node8" href="structmissionItemReached__t.html" title="message indicating a specific waypoint has been reached. " alt="" coords="489,95,645,121"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -134,14 +137,28 @@ CFE_TBL_Handle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <tr class="memdesc:a970f9d9643fe9bd7bacc627f64cec922"><td class="mdescLeft">&#160;</td><td class="mdescRight">autopilot port <br /></td></tr>
 <tr class="separator:a970f9d9643fe9bd7bacc627f64cec922"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2384248e01f070b0d790a54ca51b74a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2384248e01f070b0d790a54ca51b74a"></a>
-<a class="el" href="structposition__t.html">position_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
+<a class="el" href="structposition__t.html">position_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#ab2384248e01f070b0d790a54ca51b74a">position</a></td></tr>
+<tr class="memdesc:ab2384248e01f070b0d790a54ca51b74a"><td class="mdescLeft">&#160;</td><td class="mdescRight">position message <br /></td></tr>
 <tr class="separator:ab2384248e01f070b0d790a54ca51b74a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfd9ddcbefa16a3c3005427885e2aeb2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abfd9ddcbefa16a3c3005427885e2aeb2"></a>
-<a class="el" href="structattitude__t.html">attitude_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>attitude</b></td></tr>
+<a class="el" href="structattitude__t.html">attitude_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#abfd9ddcbefa16a3c3005427885e2aeb2">attitude</a></td></tr>
+<tr class="memdesc:abfd9ddcbefa16a3c3005427885e2aeb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">attitude message <br /></td></tr>
 <tr class="separator:abfd9ddcbefa16a3c3005427885e2aeb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4ddb988b857e79903692d82316a08e3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa4ddb988b857e79903692d82316a08e3"></a>
+<a class="el" href="structobject__t.html">object_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#aa4ddb988b857e79903692d82316a08e3">traffic</a></td></tr>
+<tr class="memdesc:aa4ddb988b857e79903692d82316a08e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">traffic message <br /></td></tr>
+<tr class="separator:aa4ddb988b857e79903692d82316a08e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3693b8fb67eea585c8b96e93f169fe1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3693b8fb67eea585c8b96e93f169fe1"></a>
-<a class="el" href="structmissionItemReached__t.html">missionItemReached_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>wpReached</b></td></tr>
+<a class="el" href="structmissionItemReached__t.html">missionItemReached_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#ae3693b8fb67eea585c8b96e93f169fe1">wpReached</a></td></tr>
+<tr class="memdesc:ae3693b8fb67eea585c8b96e93f169fe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">waypoint reached feedback message <br /></td></tr>
 <tr class="separator:ae3693b8fb67eea585c8b96e93f169fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dfca40223c4c88ced005b012e88fab9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8dfca40223c4c88ced005b012e88fab9"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#a8dfca40223c4c88ced005b012e88fab9">currentWP</a></td></tr>
+<tr class="memdesc:a8dfca40223c4c88ced005b012e88fab9"><td class="mdescLeft">&#160;</td><td class="mdescRight">autopilot's current waypoint <br /></td></tr>
+<tr class="separator:a8dfca40223c4c88ced005b012e88fab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65764b68311d447aeba8fea46c45b088"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65764b68311d447aeba8fea46c45b088"></a>
+<a class="el" href="structflightplan__t.html">flightplan_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>flightplan</b></td></tr>
+<tr class="separator:a65764b68311d447aeba8fea46c45b088"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b757d3da00367d902821059021fcab0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1b757d3da00367d902821059021fcab0"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#a1b757d3da00367d902821059021fcab0">runThreads</a></td></tr>
 <tr class="memdesc:a1b757d3da00367d902821059021fcab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">thread active status <br /></td></tr>
@@ -209,7 +226,7 @@ mavlink_mission_item_t&#160;</td><td class="memItemRight" valign="bottom"><b>Dow
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure to hold app data. </p>
 </div><hr/>The documentation for this struct was generated from the following files:<ul>
-<li>/home/research133/Software/Icarous2/cFS/apps/ap_interface/fsw/src/<a class="el" href="apInterface_8h_source.html">apInterface.h</a></li>
+<li>/home/research133/Software/Icarous2/cFS/apps/apInterface/fsw/src/<a class="el" href="apInterface_8h_source.html">apInterface.h</a></li>
 <li>/home/research133/Software/Icarous2/cFS/apps/ardupilot/fsw/src/<a class="el" href="ardupilot_8h_source.html">ardupilot.h</a></li>
 </ul>
 </div><!-- contents -->

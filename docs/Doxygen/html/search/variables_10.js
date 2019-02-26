@@ -11,7 +11,7 @@ var searchData=
   ['time',['time',['../structrotorsimAppData__t.html#a812ed14ad73f5aa66ff9adc7ca8cd4c1',1,'rotorsimAppData_t::time()'],['../structTrafficAppData__t.html#a867c381b45910858bf9a95803d7a2fcb',1,'TrafficAppData_t::time()']]],
   ['time_5fboot',['time_boot',['../structposition__t.html#add59791ab895e05e0a4716423f8f992d',1,'position_t::time_boot()'],['../structattitude__t.html#aed1e9c1280d62c25b809e97a57c302e6',1,'attitude_t::time_boot()']]],
   ['time_5fgps',['time_gps',['../structposition__t.html#a6950593b7eaba1e10f16f645ca7fad81',1,'position_t']]],
-  ['timerid',['timerId',['../structrotorsimAppData__t.html#a9bdee298d5e1f1107c0314c56b12658d',1,'rotorsimAppData_t::timerId()'],['../structSCH__AppData__t.html#af9e4f199c0f88b9720bdbcbf75aca608',1,'SCH_AppData_t::TimerId()']]],
+  ['timerid',['TimerId',['../structSCH__AppData__t.html#af9e4f199c0f88b9720bdbcbf75aca608',1,'SCH_AppData_t::TimerId()'],['../structrotorsimAppData__t.html#a9bdee298d5e1f1107c0314c56b12658d',1,'rotorsimAppData_t::timerId()']]],
   ['timesemaphore',['TimeSemaphore',['../structSCH__AppData__t.html#aa8196db568ed1fdf30d3a23fdd7b7648',1,'SCH_AppData_t']]],
   ['timestamp',['timeStamp',['../structLoggerTable__t.html#a220d4a432a8651520ddbb3fed9c2fc88',1,'LoggerTable_t']]],
   ['timetorecovery',['timeToRecovery',['../structbands__t.html#abd634cf5dc07427f52831d1eea06ead4',1,'bands_t']]],
@@ -32,7 +32,7 @@ var searchData=
   ['trackingobjid',['trackingObjId',['../group__TRACKING__MESSAGES.html#ga2abb173198d7e198fceffd1fcd469182',1,'tracking_parameters_t::trackingObjId()'],['../structTrackingTable__t.html#ace99f824df3d4a33e74e42fed4835152',1,'TrackingTable_t::trackingObjId()']]],
   ['trackingvel',['trackingVel',['../structTrackingAppData__t.html#afa16636a06293c5ae92fed188a3211cf',1,'TrackingAppData_t']]],
   ['trackingvelocity',['trackingVelocity',['../group__TRACKING__MESSAGES.html#gab7fe4b357df270c60654657abaf399d4',1,'trackingResolution_t']]],
-  ['traffic',['traffic',['../ardupilot_8h.html#af658750d9926b54e48a492c3cf3f446b',1,'ardupilot.h']]],
+  ['traffic',['traffic',['../structappdataInt__t.html#aa4ddb988b857e79903692d82316a08e3',1,'appdataInt_t::traffic()'],['../ardupilot_8h.html#af658750d9926b54e48a492c3cf3f446b',1,'traffic():&#160;ardupilot.h']]],
   ['traffic_5fmsgptr',['Traffic_MsgPtr',['../structTrafficAppData__t.html#a0ebdf3a4641184e19242c603859230c3',1,'TrafficAppData_t']]],
   ['traffic_5fpipe',['Traffic_Pipe',['../structTrafficAppData__t.html#a4a78de3e51ee0b3d8bb36374e453424e',1,'TrafficAppData_t']]],
   ['traffic_5ftblhandle',['Traffic_tblHandle',['../structTrafficAppData__t.html#ab9d07337512a5bfd295605f92391e4ec',1,'TrafficAppData_t']]],
@@ -41,5 +41,5 @@ var searchData=
   ['trajectory_5ftblhandle',['Trajectory_TblHandle',['../structTrajectoryAppData__t.html#adbbdc4ae934db9539e29e6dca6965056',1,'TrajectoryAppData_t']]],
   ['trajrequest_5fmsgptr',['TrajRequest_MsgPtr',['../structTrajectoryAppData__t.html#af26b16f48d663ad3b948208b350623f6',1,'TrajectoryAppData_t']]],
   ['trajrequest_5fpipe',['TrajRequest_Pipe',['../structTrajectoryAppData__t.html#a0668df8e9f97b1b0eb3b1afa601c21c0',1,'TrajectoryAppData_t']]],
-  ['type',['Type',['../structSCH__ScheduleEntry__t.html#a0d8fe221038749a9195738d49ff6316b',1,'SCH_ScheduleEntry_t::Type()'],['../structgeofence__t.html#a499a3a4f301c982733bc8b259f02bb4c',1,'geofence_t::type()'],['../structobject__t.html#ae18be856532d750511e82b8c387fac94',1,'object_t::type()'],['../structbattery__status__t.html#a44120f3b658f74c2b74d7b12f36715b1',1,'battery_status_t::type()'],['../structbands__t.html#a942b93350a4a0fce9d497ef7284902d4',1,'bands_t::type()']]]
+  ['type',['type',['../structgeofence__t.html#a499a3a4f301c982733bc8b259f02bb4c',1,'geofence_t::type()'],['../structobject__t.html#ae18be856532d750511e82b8c387fac94',1,'object_t::type()'],['../structbattery__status__t.html#a44120f3b658f74c2b74d7b12f36715b1',1,'battery_status_t::type()'],['../structbands__t.html#a942b93350a4a0fce9d497ef7284902d4',1,'bands_t::type()'],['../structSCH__ScheduleEntry__t.html#a0d8fe221038749a9195738d49ff6316b',1,'SCH_ScheduleEntry_t::Type()']]]
 ];
