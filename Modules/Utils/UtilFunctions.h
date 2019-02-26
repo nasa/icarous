@@ -15,7 +15,7 @@ double ComputeDistance(double positionA[],double positionB[]);
 double ComputeHeading(double positionA[],double positionB[]);
 void ComputeOffsetPosition(double position[],double track,double dist,double output[]);
 void ConvertEND2LLA(double gpsOrigin[],double NED[],double outputLLA[]);
-void ConvertRAE2LLA(double range,double azimuth,double elevation);
+void ConvertRAE2LLA(double lat,double lon,double heading,double range,double azimuth,double elevation,double output[]);
 void ConvertLLA2END(double gpsOrigin[],double LLA[],double outputNED[]);
 bool CheckTurnConflict(double low,double high,double fromHeading,double toHeading);
 void ConvertVnedToTrkGsVs(double vn,double ve,double vz,double *Trk,double *Gs,double *Vs);

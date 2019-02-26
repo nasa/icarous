@@ -406,7 +406,7 @@ void Rotorsim_GetOutputs(){
     //                    rotorsimAppData.Rotorsim_Tbl.originLL[1],0};
     double origin[3] = {rotorsimAppData.flightPlan.waypoints[0].latitude,
                         rotorsimAppData.flightPlan.waypoints[0].longitude,0};
-    ConvertNED2LLA(origin,currentPosition,rotorsimAppData.position);
+    ConvertEND2LLA(origin,currentPosition,rotorsimAppData.position);
 
     // Publish position messages
     position_t positionGPS;
