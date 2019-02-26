@@ -26,7 +26,7 @@ https://nasa.github.io/icarous/
 
 ### Current Releases
 
-- ICAROUS  V-2.1.0 - February 21, 2019
+- ICAROUS  V-2.1.1 - February 26, 2019
 
 ### License
 
@@ -54,12 +54,12 @@ The following repositories are required to run (or support software-in-the-loop 
 
 ### COMPILING ICAROUS
 
-ICAROUS makes use of the cmake build system. In order to setup a build, the following environment variables must be defined. These can be added to you `~/.bashrc` script.
+ICAROUS makes use of the cmake build system. In order to setup a build, the following environment variables must be defined. These can be added to you `~/.bashrc` script. Conveniently, you can also source the SetEnv.sh script in the repository.
 
-- PLEXIL_HOME= absolute path to the C++/Modules/Plexil folder found in the Icarous repository.
+- PLEXIL_HOME= absolute path to the Modules/Plexil folder found in the Icarous repository.
 - OSAL_HOME= absolute path to the CFS/osal folder found in the Icarous repository.
 - JAVA_HOME= absolute path to the Java installation directory. Typically located under `/usr/lib/jvm/java-*`
-- NLOPT_PATH = absolute path to the nlopt library location (libnlopt.a) [Optional-only required if splines based planner is being used].
+- Optional NLOPT_PATH = absolute path to the nlopt library location (libnlopt.a) [Optional-only required if splines based planner is being used].
 
 ```
     $mkdir build
@@ -82,7 +82,7 @@ The generated executable file is installed under `cFS/bin/cpu1`. Launch Icarous 
 
 Note that you need root previleges. When running ICAROUS on an embedded platform, one can make use of the `nohup` or `screen` command to avoid termination when a terminal is closed.
 
-The intf_tbl.c located under `cFS/apps/interface/fsw/tables` defines parameters required to configure the serial port settings to connect to an autopilot. 
+The intf_tbl.c located under `cFS/apps/ardupilot/fsw/tables` defines parameters required to configure the serial port settings to connect to an autopilot. Similarly gsIntf_tbl.c contains parameters that configure the connection to a ground station (radio link or a socket connection).
 
 The various parameters that control the behavior of ICAROUS can be found in `cFS/bin/ram/icarous.txt`. The default parameters found in icarous.txt were selected after several flight tests to yield acceptable performances.
 
