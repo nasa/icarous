@@ -263,6 +263,16 @@ void ProcessGSMessage(mavlink_message_t message) {
 				trackCmd.param1 = (float) msg.param1;
 				SendSBMsg(trackCmd);
 				send2ap = false;
+			}else if (msg.command == MAV_CMD_USER_3) {
+				argsCmd_t radarCmd;
+				CFE_SB_InitMsg(&radarCmd,RADAR_TRIGGER_MID, sizeof(argsCmd_t),TRUE);
+				radarCmd.name = _RADAR_;
+				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &radarCmd);
+				CFE_SB_SendMsg((CFE_SB_Msg_t *) &radarCmd);
+				send2ap = false;
+				radarCmd.param1 =  msg.param1;
+				OS_printf("Received radar command %f\n",msg.param1);
+				SendSBMsg(radarCmd);
 			}else if (msg.command == MAV_CMD_USER_5) {
 				noArgsCmd_t ditchCmd;
 				CFE_SB_InitMsg(&ditchCmd,ICAROUS_DITCH_MID, sizeof(noArgsCmd_t),TRUE);
