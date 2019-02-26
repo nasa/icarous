@@ -1,3 +1,4 @@
 <map id="appdataS2D_t" name="appdataS2D_t">
-<area shape="rect" id="node2" href="$structs2d__port__t.html" title="s2d_port_t" alt="" coords="17,5,99,32"/>
+<area shape="rect" id="node2" href="$structs2d__port__t.html" title="s2d_port_t" alt="" coords="5,5,88,32"/>
+<area shape="rect" id="node3" href="$structsafe2ditchStatus__t.html" title="message contaning status information about safe2ditch " alt="" coords="112,5,243,32"/>
 </map>

@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -90,8 +91,9 @@ Collaboration diagram for ARDUPILOT_MESSAGES:</div>
 <div class="dyncontent">
 <center><table><tr><td><img src="group__ARDUPILOT__MESSAGES.png" border="0" alt="" usemap="#group____ARDUPILOT____MESSAGES"/>
 <map name="group____ARDUPILOT____MESSAGES" id="group____ARDUPILOT____MESSAGES">
-<area shape="rect" id="node1" href="group__MESSAGES.html" title="MESSAGES" alt="" coords="6,5,103,32"/>
-<area shape="rect" id="node2" href="group__ARDUPILOT.html" title="An application to interface cFS with an ardupilot autopilot system. " alt="" coords="5,56,104,83"/>
+<area shape="rect" id="node1" href="group__PARAMETER__MESSAGES.html" title="parameter message description " alt="" coords="447,31,635,57"/>
+<area shape="rect" id="node2" href="group__MESSAGES.html" title="MESSAGES" alt="" coords="6,5,103,32"/>
+<area shape="rect" id="node3" href="group__ARDUPILOT.html" title="An application to interface cFS with an ardupilot autopilot system. " alt="" coords="5,56,104,83"/>
 </map>
 </td></tr></table></center>
 </div>
@@ -131,6 +133,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structstatus__t.html">status_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Message to provide status information.  <a href="structstatus__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvfrhud__t.html">vfrhud_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbattery__status__t.html">battery_status_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Message containing battery status.  <a href="structbattery__status__t.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structvfrHud__t.html">vfrHud_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Message containing information to be displayed on a hud.  <a href="structvfrHud__t.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -167,9 +177,10 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:ga8b6a37c9579d94b329f39b4b343ab0a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">object type  <a href="group__ARDUPILOT__MESSAGES.html#ga8b6a37c9579d94b329f39b4b343ab0a5">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:ga8b6a37c9579d94b329f39b4b343ab0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae04d967ed80badd3f6175e2e526d6b24"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ARDUPILOT__MESSAGES.html#gae04d967ed80badd3f6175e2e526d6b24">wp_metric_e</a> { <a class="el" href="group__ARDUPILOT__MESSAGES.html#ggae04d967ed80badd3f6175e2e526d6b24aa3cef6d8ef9754d19fbee83e16adf4b7">WP_METRIC_ETA</a> = 0, 
-<a class="el" href="group__ARDUPILOT__MESSAGES.html#ggae04d967ed80badd3f6175e2e526d6b24ac985af41707ba9b4d6d3efd4e10df07c">WP_METRIC_SPEED</a> = 1, 
-<a class="el" href="group__ARDUPILOT__MESSAGES.html#ggae04d967ed80badd3f6175e2e526d6b24ae2371b8e39eaf41599812f6cc3da31d3">WP_METRIC_ALTITUDE</a> = 2
+<tr class="memitem:gae04d967ed80badd3f6175e2e526d6b24"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ARDUPILOT__MESSAGES.html#gae04d967ed80badd3f6175e2e526d6b24">wp_metric_e</a> { <a class="el" href="group__ARDUPILOT__MESSAGES.html#ggae04d967ed80badd3f6175e2e526d6b24ad4906e066f0a85f85923a2e3ecd2d701">WP_METRIC_NONE</a> = 0, 
+<a class="el" href="group__ARDUPILOT__MESSAGES.html#ggae04d967ed80badd3f6175e2e526d6b24aa3cef6d8ef9754d19fbee83e16adf4b7">WP_METRIC_ETA</a> = 1, 
+<a class="el" href="group__ARDUPILOT__MESSAGES.html#ggae04d967ed80badd3f6175e2e526d6b24ac985af41707ba9b4d6d3efd4e10df07c">WP_METRIC_SPEED</a> = 2, 
+<a class="el" href="group__ARDUPILOT__MESSAGES.html#ggae04d967ed80badd3f6175e2e526d6b24ae2371b8e39eaf41599812f6cc3da31d3">WP_METRIC_ALTITUDE</a> = 3
  }<tr class="memdesc:gae04d967ed80badd3f6175e2e526d6b24"><td class="mdescLeft">&#160;</td><td class="mdescRight">waypoint metrix  <a href="group__ARDUPILOT__MESSAGES.html#gae04d967ed80badd3f6175e2e526d6b24">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:gae04d967ed80badd3f6175e2e526d6b24"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -305,7 +316,10 @@ Enumerations</h2></td></tr>
 
 <p>waypoint metrix </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="ggae04d967ed80badd3f6175e2e526d6b24aa3cef6d8ef9754d19fbee83e16adf4b7"></a>WP_METRIC_ETA&#160;</td><td class="fielddoc">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="ggae04d967ed80badd3f6175e2e526d6b24ad4906e066f0a85f85923a2e3ecd2d701"></a>WP_METRIC_NONE&#160;</td><td class="fielddoc">
+<p>None. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="ggae04d967ed80badd3f6175e2e526d6b24aa3cef6d8ef9754d19fbee83e16adf4b7"></a>WP_METRIC_ETA&#160;</td><td class="fielddoc">
 <p>Estimated time of arrival (s) at the next waypoint. </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="ggae04d967ed80badd3f6175e2e526d6b24ac985af41707ba9b4d6d3efd4e10df07c"></a>WP_METRIC_SPEED&#160;</td><td class="fielddoc">

@@ -7,11 +7,7 @@ var searchData=
   ['gfconflictdata',['gfConflictData',['../structgeofenceAppData__t.html#aeac0b3c2abc888f7b8e7c4a58caece3c',1,'geofenceAppData_t']]],
   ['gfdata',['gfdata',['../ardupilot_8h.html#aaccd061993dfdeef88a2dbce71c6f68e',1,'ardupilot.h']]],
   ['gfmonitor',['gfMonitor',['../structgeofenceAppData__t.html#a91103c449a1a892bcb6b5e89d73157bf',1,'geofenceAppData_t']]],
+  ['groundspeed',['groundspeed',['../structvfrhud__t.html#af2c62050e399121cd4907bd9adfb9750',1,'vfrhud_t']]],
   ['groupdata',['GroupData',['../structSCH__GroupCmd__t.html#a7b3bc39e9f4e01e8dad54dea3e7da611',1,'SCH_GroupCmd_t::GroupData()'],['../structSCH__ScheduleEntry__t.html#aad89647f606b4a34a3a91e233c1e4dcf',1,'SCH_ScheduleEntry_t::GroupData()']]],
-  ['gs',['gs',['../structappdataInt__t.html#ac8e47386669d5ec5b66abaebed4ffe3c',1,'appdataInt_t']]],
-  ['gsaddress',['gsAddress',['../structArdupilotTable__t.html#ad9ed4ccf5f2a85710fe4bc75a5f431b6',1,'ArdupilotTable_t']]],
-  ['gsbaudrate',['gsBaudRate',['../structArdupilotTable__t.html#aa6c7bc4b77d2f912622b9c83efe854d9',1,'ArdupilotTable_t']]],
-  ['gsportin',['gsPortin',['../structArdupilotTable__t.html#aded1169e501202ca7aaa3e33cf9bcc60',1,'ArdupilotTable_t']]],
-  ['gsportout',['gsPortout',['../structArdupilotTable__t.html#a4907dda45c4bebecd5246b8697dc54f2',1,'ArdupilotTable_t']]],
-  ['gsporttype',['gsPortType',['../structArdupilotTable__t.html#a0e145d1ffa3d8945abdac42a8d4c54d2',1,'ArdupilotTable_t']]]
+  ['gs',['gs',['../structappdataIntGS__t.html#aaa2629484d4f5b013079353e77a2bf58',1,'appdataIntGS_t']]]
 ];

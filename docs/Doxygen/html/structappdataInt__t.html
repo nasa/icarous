@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -93,13 +94,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Structure to hold app data.  
  <a href="structappdataInt__t.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="ardupilot_8h_source.html">ardupilot.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="apInterface_8h_source.html">apInterface.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for appdataInt_t:</div>
 <div class="dyncontent">
 <div class="center"><img src="structappdataInt__t__coll__graph.png" border="0" usemap="#appdataInt__t_coll__map" alt="Collaboration graph"/></div>
 <map name="appdataInt__t_coll__map" id="appdataInt__t_coll__map">
-<area shape="rect" id="node2" href="structport__t.html" title="Structure to hold port attributes. " alt="" coords="25,5,80,32"/>
+<area shape="rect" id="node2" href="structport__t.html" title="Structure to hold port attributes. " alt="" coords="5,5,60,32"/>
+<area shape="rect" id="node3" href="structattitude__t.html" title="aircraft attitude information. " alt="" coords="84,5,160,32"/>
+<area shape="rect" id="node4" href="structposition__t.html" title="position information of aircraft. " alt="" coords="184,5,263,32"/>
+<area shape="rect" id="node5" href="structmissionItemReached__t.html" title="message indicating a specific waypoint has been reached. " alt="" coords="287,5,443,32"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -109,26 +113,18 @@ Public Attributes</h2></td></tr>
 CFE_SB_PipeId_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#a568edfe99f8424996d461208bf0e5b8c">INTERFACE_Pipe</a></td></tr>
 <tr class="memdesc:a568edfe99f8424996d461208bf0e5b8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">pipe variable <br /></td></tr>
 <tr class="separator:a568edfe99f8424996d461208bf0e5b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab292be247a008b64f2a8218df5dd64b1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab292be247a008b64f2a8218df5dd64b1"></a>
-CFE_SB_PipeId_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#ab292be247a008b64f2a8218df5dd64b1">SchInterface_Pipe1</a></td></tr>
-<tr class="memdesc:ab292be247a008b64f2a8218df5dd64b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">pipe variable <br /></td></tr>
-<tr class="separator:ab292be247a008b64f2a8218df5dd64b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6792ae1417ae72b7ff43cc1b825edf92"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6792ae1417ae72b7ff43cc1b825edf92"></a>
-CFE_SB_PipeId_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#a6792ae1417ae72b7ff43cc1b825edf92">SchInterface_Pipe2</a></td></tr>
-<tr class="memdesc:a6792ae1417ae72b7ff43cc1b825edf92"><td class="mdescLeft">&#160;</td><td class="mdescRight">pipe variable <br /></td></tr>
-<tr class="separator:a6792ae1417ae72b7ff43cc1b825edf92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a268efe00b5492f9b701a1866af61e57c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a268efe00b5492f9b701a1866af61e57c"></a>
+CFE_SB_PipeId_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#a268efe00b5492f9b701a1866af61e57c">SchInterface_Pipe</a></td></tr>
+<tr class="memdesc:a268efe00b5492f9b701a1866af61e57c"><td class="mdescLeft">&#160;</td><td class="mdescRight">pipe variable <br /></td></tr>
+<tr class="separator:a268efe00b5492f9b701a1866af61e57c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbe995097a32897e2106b6baeb342504"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abbe995097a32897e2106b6baeb342504"></a>
 CFE_SB_MsgPtr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#abbe995097a32897e2106b6baeb342504">INTERFACEMsgPtr</a></td></tr>
 <tr class="memdesc:abbe995097a32897e2106b6baeb342504"><td class="mdescLeft">&#160;</td><td class="mdescRight">msg pointer to SB message <br /></td></tr>
 <tr class="separator:abbe995097a32897e2106b6baeb342504"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca1763f2c1c3c249bb192b12c83ab480"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aca1763f2c1c3c249bb192b12c83ab480"></a>
-CFE_SB_MsgPtr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#aca1763f2c1c3c249bb192b12c83ab480">Sch_MsgPtr1</a></td></tr>
-<tr class="memdesc:aca1763f2c1c3c249bb192b12c83ab480"><td class="mdescLeft">&#160;</td><td class="mdescRight">msg pointer to SB message <br /></td></tr>
-<tr class="separator:aca1763f2c1c3c249bb192b12c83ab480"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfd33ba5f08699474d4a5b77bbd0f974"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adfd33ba5f08699474d4a5b77bbd0f974"></a>
-CFE_SB_MsgPtr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#adfd33ba5f08699474d4a5b77bbd0f974">Sch_MsgPtr2</a></td></tr>
-<tr class="memdesc:adfd33ba5f08699474d4a5b77bbd0f974"><td class="mdescLeft">&#160;</td><td class="mdescRight">msg pointer to SB message <br /></td></tr>
-<tr class="separator:adfd33ba5f08699474d4a5b77bbd0f974"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fe2e973a885666348f1289d07964af9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3fe2e973a885666348f1289d07964af9"></a>
+CFE_SB_MsgPtr_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#a3fe2e973a885666348f1289d07964af9">Sch_MsgPtr</a></td></tr>
+<tr class="memdesc:a3fe2e973a885666348f1289d07964af9"><td class="mdescLeft">&#160;</td><td class="mdescRight">msg pointer to SB message <br /></td></tr>
+<tr class="separator:a3fe2e973a885666348f1289d07964af9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7021f5e874a93674b1ab92b5644369d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7021f5e874a93674b1ab92b5644369d"></a>
 CFE_TBL_Handle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#ae7021f5e874a93674b1ab92b5644369d">INTERFACE_tblHandle</a></td></tr>
 <tr class="memdesc:ae7021f5e874a93674b1ab92b5644369d"><td class="mdescLeft">&#160;</td><td class="mdescRight">table handle <br /></td></tr>
@@ -137,10 +133,15 @@ CFE_TBL_Handle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el
 <a class="el" href="structport__t.html">port_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#a970f9d9643fe9bd7bacc627f64cec922">ap</a></td></tr>
 <tr class="memdesc:a970f9d9643fe9bd7bacc627f64cec922"><td class="mdescLeft">&#160;</td><td class="mdescRight">autopilot port <br /></td></tr>
 <tr class="separator:a970f9d9643fe9bd7bacc627f64cec922"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8e47386669d5ec5b66abaebed4ffe3c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac8e47386669d5ec5b66abaebed4ffe3c"></a>
-<a class="el" href="structport__t.html">port_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#ac8e47386669d5ec5b66abaebed4ffe3c">gs</a></td></tr>
-<tr class="memdesc:ac8e47386669d5ec5b66abaebed4ffe3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">groundstation port <br /></td></tr>
-<tr class="separator:ac8e47386669d5ec5b66abaebed4ffe3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2384248e01f070b0d790a54ca51b74a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab2384248e01f070b0d790a54ca51b74a"></a>
+<a class="el" href="structposition__t.html">position_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>position</b></td></tr>
+<tr class="separator:ab2384248e01f070b0d790a54ca51b74a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfd9ddcbefa16a3c3005427885e2aeb2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abfd9ddcbefa16a3c3005427885e2aeb2"></a>
+<a class="el" href="structattitude__t.html">attitude_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>attitude</b></td></tr>
+<tr class="separator:abfd9ddcbefa16a3c3005427885e2aeb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3693b8fb67eea585c8b96e93f169fe1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3693b8fb67eea585c8b96e93f169fe1"></a>
+<a class="el" href="structmissionItemReached__t.html">missionItemReached_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>wpReached</b></td></tr>
+<tr class="separator:ae3693b8fb67eea585c8b96e93f169fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b757d3da00367d902821059021fcab0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a1b757d3da00367d902821059021fcab0"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#a1b757d3da00367d902821059021fcab0">runThreads</a></td></tr>
 <tr class="memdesc:a1b757d3da00367d902821059021fcab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">thread active status <br /></td></tr>
@@ -161,10 +162,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struc
 int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#aa724d7c4977a4a654bbb62f96dac73f8">waypoint_type</a></td></tr>
 <tr class="memdesc:aa724d7c4977a4a654bbb62f96dac73f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">waypoint type description <br /></td></tr>
 <tr class="separator:aa724d7c4977a4a654bbb62f96dac73f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ee51ff8bba1541df43ece2304da052f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ee51ff8bba1541df43ece2304da052f"></a>
-int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#a9ee51ff8bba1541df43ece2304da052f">waypoint_index</a></td></tr>
-<tr class="memdesc:a9ee51ff8bba1541df43ece2304da052f"><td class="mdescLeft">&#160;</td><td class="mdescRight">waypoint index (only positional waypoints) <br /></td></tr>
-<tr class="separator:a9ee51ff8bba1541df43ece2304da052f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3d9b2aa725063e79d6ec505ccfec197"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af3d9b2aa725063e79d6ec505ccfec197"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#af3d9b2aa725063e79d6ec505ccfec197">waypoint_index</a> [MAX_WAYPOINTS]</td></tr>
+<tr class="memdesc:af3d9b2aa725063e79d6ec505ccfec197"><td class="mdescLeft">&#160;</td><td class="mdescRight">waypoint index (only positional waypoints) <br /></td></tr>
+<tr class="separator:af3d9b2aa725063e79d6ec505ccfec197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe368432095b2da0e7e290e846c73ef2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abe368432095b2da0e7e290e846c73ef2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structappdataInt__t.html#abe368432095b2da0e7e290e846c73ef2">foundUAV</a></td></tr>
 <tr class="memdesc:abe368432095b2da0e7e290e846c73ef2"><td class="mdescLeft">&#160;</td><td class="mdescRight">UAV communication alive. <br /></td></tr>
@@ -192,6 +193,12 @@ uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>numDownlinkWaypoi
 <tr class="memitem:ad091f91ec9f7a8c5319b5c37b9f9eead"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad091f91ec9f7a8c5319b5c37b9f9eead"></a>
 uint16_t&#160;</td><td class="memItemRight" valign="bottom"><b>downlinkRequestIndex</b></td></tr>
 <tr class="separator:ad091f91ec9f7a8c5319b5c37b9f9eead"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51fe9a7d0465fa673016232ed24067a2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a51fe9a7d0465fa673016232ed24067a2"></a>
+<a class="el" href="ardupilot_8h.html#a7e009e7dbc0dd7be939d03455c972549">controlMode_e</a>&#160;</td><td class="memItemRight" valign="bottom"><b>currentAPMode</b></td></tr>
+<tr class="separator:a51fe9a7d0465fa673016232ed24067a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea6f98801a01e7fe8d0cfa9c0bf8b2e7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aea6f98801a01e7fe8d0cfa9c0bf8b2e7"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>icarousMode</b></td></tr>
+<tr class="separator:aea6f98801a01e7fe8d0cfa9c0bf8b2e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a862319dcd34920a125496408ad6022cb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a862319dcd34920a125496408ad6022cb"></a>
 mavlink_mission_item_t&#160;</td><td class="memItemRight" valign="bottom"><b>UplinkMissionItems</b> [MAX_WAYPOINTS]</td></tr>
 <tr class="separator:a862319dcd34920a125496408ad6022cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -201,7 +208,8 @@ mavlink_mission_item_t&#160;</td><td class="memItemRight" valign="bottom"><b>Dow
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure to hold app data. </p>
-</div><hr/>The documentation for this struct was generated from the following file:<ul>
+</div><hr/>The documentation for this struct was generated from the following files:<ul>
+<li>/home/research133/Software/Icarous2/cFS/apps/ap_interface/fsw/src/<a class="el" href="apInterface_8h_source.html">apInterface.h</a></li>
 <li>/home/research133/Software/Icarous2/cFS/apps/ardupilot/fsw/src/<a class="el" href="ardupilot_8h_source.html">ardupilot.h</a></li>
 </ul>
 </div><!-- contents -->

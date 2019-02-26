@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -99,12 +100,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Public Attributes</h2></td></tr>
 <tr class="memitem:ad74cc12da6fa7e248743d0a47db35309"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structattitude__t.html#ad74cc12da6fa7e248743d0a47db35309">TlmHeader</a> [CFE_SB_TLM_HDR_SIZE]</td></tr>
 <tr class="separator:ad74cc12da6fa7e248743d0a47db35309"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed1e9c1280d62c25b809e97a57c302e6"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structattitude__t.html#aed1e9c1280d62c25b809e97a57c302e6">time_boot</a></td></tr>
+<tr class="separator:aed1e9c1280d62c25b809e97a57c302e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37f03eb650cb75e2de293e47641806bb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structattitude__t.html#a37f03eb650cb75e2de293e47641806bb">roll</a></td></tr>
 <tr class="separator:a37f03eb650cb75e2de293e47641806bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ebde1bfe2f839c12fe302ea19384fb2"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structattitude__t.html#a5ebde1bfe2f839c12fe302ea19384fb2">pitch</a></td></tr>
 <tr class="separator:a5ebde1bfe2f839c12fe302ea19384fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5d4958450c7f0e52264ee88534984fd"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structattitude__t.html#ad5d4958450c7f0e52264ee88534984fd">yaw</a></td></tr>
 <tr class="separator:ad5d4958450c7f0e52264ee88534984fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7aba6d6b238c4a1fc4abbc69dcd740a9"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structattitude__t.html#a7aba6d6b238c4a1fc4abbc69dcd740a9">rollspeed</a></td></tr>
+<tr class="separator:a7aba6d6b238c4a1fc4abbc69dcd740a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cc478402b60359a7870bddeae41ebdd"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structattitude__t.html#a6cc478402b60359a7870bddeae41ebdd">pitchspeed</a></td></tr>
+<tr class="separator:a6cc478402b60359a7870bddeae41ebdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af38197dadee630c0d5123b5b113d9d12"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structattitude__t.html#af38197dadee630c0d5123b5b113d9d12">yawspeed</a></td></tr>
+<tr class="separator:af38197dadee630c0d5123b5b113d9d12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>aircraft attitude information. </p>
@@ -122,6 +131,19 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a6cc478402b60359a7870bddeae41ebdd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double attitude_t::pitchspeed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>pitch speed (degree/second) </p>
+
+</div>
+</div>
 <a class="anchor" id="a37f03eb650cb75e2de293e47641806bb"></a>
 <div class="memitem">
 <div class="memproto">
@@ -132,6 +154,32 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>roll angle (degree) </p>
+
+</div>
+</div>
+<a class="anchor" id="a7aba6d6b238c4a1fc4abbc69dcd740a9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double attitude_t::rollspeed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>roll speed (degree/second) </p>
+
+</div>
+</div>
+<a class="anchor" id="aed1e9c1280d62c25b809e97a57c302e6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double attitude_t::time_boot</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>boot time of onboard autopilot (ms) </p>
 
 </div>
 </div>
@@ -158,6 +206,19 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>yaw angle (degree) </p>
+
+</div>
+</div>
+<a class="anchor" id="af38197dadee630c0d5123b5b113d9d12"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double attitude_t::yawspeed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>yaw speed (degree/second) </p>
 
 </div>
 </div>

@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
@@ -86,8 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
 <div class="title">ardupilot_table.h File Reference</div>  </div>
 </div><!--header-->
@@ -96,19 +96,53 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Ardupilot app table definition.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="ardupilot_8h_source.html">ardupilot.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ardupilot__table_8h_source.html">ardupilot_table.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="port__lib_8h_source.html">port_lib.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ardupilot_table.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="ardupilot__table_8h__incl.png" border="0" usemap="#_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot__table_8h" alt=""/></div>
 <map name="_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot__table_8h" id="_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot__table_8h">
-<area shape="rect" id="node3" href="ardupilot_8h.html" title="function declarations, definitions of macros, datastructures and global variables for the arudpilot a..." alt="" coords="928,109,1011,136"/>
-<area shape="rect" id="node13" href="ardupilot__events_8h.html" title="Event definitions for ardupilot app. " alt="" coords="728,191,856,218"/>
-<area shape="rect" id="node14" href="ardupilot__msg_8h.html" title="Ardupilot message definitions. " alt="" coords="1653,191,1814,218"/>
-<area shape="rect" id="node16" href="traffic__msg_8h.html" title="Traffic message definition. " alt="" coords="221,191,366,218"/>
-<area shape="rect" id="node17" href="ardupilot__msgids_8h.html" title="Message ID definition of ardupilot app messages. " alt="" coords="881,191,1058,218"/>
-<area shape="rect" id="node18" href="traffic__msgids_8h.html" title="Traffic message id definitions. " alt="" coords="1082,191,1244,218"/>
-<area shape="rect" id="node19" href="scheduler__msgids_8h.html" title="message topics published by the scheduler " alt="" coords="1268,191,1452,218"/>
+<area shape="rect" id="node3" href="port__lib_8h.html" title="serial/socket port library " alt="" coords="311,109,385,136"/>
+<area shape="rect" id="node12" href="ardupilotmega_2mavlink_8h.html" title="MAVLink comm protocol built from ardupilotmega.xml. " alt="" coords="1893,184,2045,225"/>
+<area shape="rect" id="node13" href="ardupilotmega_2version_8h.html" title="MAVLink comm protocol built from ardupilotmega.xml. " alt="" coords="1932,273,2007,300"/>
+<area shape="rect" id="node14" href="ardupilotmega_8h.html" title="MAVLink comm protocol generated from ardupilotmega.xml. " alt="" coords="3173,273,3288,300"/>
+<area shape="rect" id="node15" href="protocol_8h_source.html" title="../protocol.h" alt="" coords="131,355,221,382"/>
+<area shape="rect" id="node16" href="mavlink__msg__sensor__offsets_8h_source.html" title="./mavlink_msg_sensor\l_offsets.h" alt="" coords="246,348,399,389"/>
+<area shape="rect" id="node17" href="mavlink__msg__set__mag__offsets_8h_source.html" title="./mavlink_msg_set_mag\l_offsets.h" alt="" coords="423,348,587,389"/>
+<area shape="rect" id="node18" href="mavlink__msg__meminfo_8h_source.html" title="./mavlink_msg_meminfo.h" alt="" coords="611,355,786,382"/>
+<area shape="rect" id="node19" href="mavlink__msg__ap__adc_8h_source.html" title="./mavlink_msg_ap_adc.h" alt="" coords="810,355,977,382"/>
+<area shape="rect" id="node20" href="mavlink__msg__digicam__configure_8h_source.html" title="./mavlink_msg_digicam\l_configure.h" alt="" coords="1001,348,1159,389"/>
+<area shape="rect" id="node21" href="mavlink__msg__digicam__control_8h_source.html" title="./mavlink_msg_digicam\l_control.h" alt="" coords="1183,348,1342,389"/>
+<area shape="rect" id="node22" href="mavlink__msg__mount__configure_8h_source.html" title="./mavlink_msg_mount\l_configure.h" alt="" coords="1366,348,1517,389"/>
+<area shape="rect" id="node23" href="mavlink__msg__mount__control_8h_source.html" title="./mavlink_msg_mount\l_control.h" alt="" coords="1541,348,1691,389"/>
+<area shape="rect" id="node24" href="mavlink__msg__mount__status_8h_source.html" title="./mavlink_msg_mount\l_status.h" alt="" coords="1715,348,1866,389"/>
+<area shape="rect" id="node25" href="mavlink__msg__fence__point_8h_source.html" title="./mavlink_msg_fence\l_point.h" alt="" coords="1891,348,2037,389"/>
+<area shape="rect" id="node26" href="mavlink__msg__fence__fetch__point_8h_source.html" title="./mavlink_msg_fence\l_fetch_point.h" alt="" coords="2061,348,2208,389"/>
+<area shape="rect" id="node27" href="mavlink__msg__fence__status_8h_source.html" title="./mavlink_msg_fence\l_status.h" alt="" coords="2232,348,2379,389"/>
+<area shape="rect" id="node28" href="mavlink__msg__ahrs_8h_source.html" title="./mavlink_msg_ahrs.h" alt="" coords="2403,355,2554,382"/>
+<area shape="rect" id="node29" href="mavlink__msg__simstate_8h_source.html" title="./mavlink_msg_simstate.h" alt="" coords="2578,355,2753,382"/>
+<area shape="rect" id="node30" href="mavlink__msg__hwstatus_8h_source.html" title="./mavlink_msg_hwstatus.h" alt="" coords="2777,355,2956,382"/>
+<area shape="rect" id="node31" href="mavlink__msg__radio_8h_source.html" title="./mavlink_msg_radio.h" alt="" coords="2981,355,3134,382"/>
+<area shape="rect" id="node32" href="mavlink__msg__limits__status_8h_source.html" title="./mavlink_msg_limits\l_status.h" alt="" coords="3158,348,3303,389"/>
+<area shape="rect" id="node33" href="mavlink__msg__wind_8h_source.html" title="./mavlink_msg_wind.h" alt="" coords="3328,355,3480,382"/>
+<area shape="rect" id="node34" href="mavlink__msg__data16_8h_source.html" title="./mavlink_msg_data16.h" alt="" coords="3505,355,3669,382"/>
+<area shape="rect" id="node35" href="mavlink__msg__data32_8h_source.html" title="./mavlink_msg_data32.h" alt="" coords="3693,355,3857,382"/>
+<area shape="rect" id="node36" href="mavlink__msg__data64_8h_source.html" title="./mavlink_msg_data64.h" alt="" coords="3881,355,4045,382"/>
+<area shape="rect" id="node37" href="mavlink__msg__data96_8h_source.html" title="./mavlink_msg_data96.h" alt="" coords="4069,355,4233,382"/>
+<area shape="rect" id="node38" href="mavlink__msg__rangefinder_8h_source.html" title="./mavlink_msg_rangefinder.h" alt="" coords="4257,355,4447,382"/>
+<area shape="rect" id="node39" href="mavlink__msg__airspeed__autocal_8h_source.html" title="./mavlink_msg_airspeed\l_autocal.h" alt="" coords="4471,348,4633,389"/>
+<area shape="rect" id="node40" href="mavlink__msg__rally__point_8h_source.html" title="./mavlink_msg_rally\l_point.h" alt="" coords="4657,348,4796,389"/>
+<area shape="rect" id="node41" href="mavlink__msg__rally__fetch__point_8h_source.html" title="./mavlink_msg_rally\l_fetch_point.h" alt="" coords="4820,348,4959,389"/>
+<area shape="rect" id="node42" href="mavlink__msg__compassmot__status_8h_source.html" title="./mavlink_msg_compassmot\l_status.h" alt="" coords="4983,348,5172,389"/>
+<area shape="rect" id="node43" href="mavlink__msg__ahrs2_8h_source.html" title="./mavlink_msg_ahrs2.h" alt="" coords="5196,355,5353,382"/>
+<area shape="rect" id="node44" href="mavlink__msg__camera__status_8h_source.html" title="./mavlink_msg_camera\l_status.h" alt="" coords="5377,348,5535,389"/>
+<area shape="rect" id="node45" href="mavlink__msg__camera__feedback_8h_source.html" title="./mavlink_msg_camera\l_feedback.h" alt="" coords="5559,348,5716,389"/>
+<area shape="rect" id="node46" href="mavlink__msg__battery2_8h_source.html" title="./mavlink_msg_battery2.h" alt="" coords="5741,355,5913,382"/>
+<area shape="rect" id="node47" href="mavlink__msg__ahrs3_8h_source.html" title="./mavlink_msg_ahrs3.h" alt="" coords="5937,355,6095,382"/>
+<area shape="rect" id="node48" href="mavlink__msg__autopilot__version__request_8h_source.html" title="./mavlink_msg_autopilot\l_version_request.h" alt="" coords="6119,348,6281,389"/>
+<area shape="rect" id="node49" href="mavlink__msg__remote__log__data__block_8h_source.html" title="./mavlink_msg_remote\l_log_data_block.h" alt="" coords="6305,348,6460,389"/>
+<area shape="rect" id="node50" href="mavlink__msg__remote__log__block__status_8h_source.html" title="./mavlink_msg_remote\l_log_block_status.h" alt="" coords="6484,348,6639,389"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -116,7 +150,6 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="ardupilot__table_8h__dep__incl.png" border="0" usemap="#_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot__table_8hdep" alt=""/></div>
 <map name="_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot__table_8hdep" id="_2home_2research133_2Software_2Icarous2_2cFS_2apps_2ardupilot_2fsw_2src_2ardupilot__table_8hdep">
-<area shape="rect" id="node2" href="ardupilot_8c.html" title="function definitions for ardupilot app " alt="" coords="5,109,195,165"/>
 </map>
 </div>
 </div>
@@ -127,15 +160,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structArdupilotTable__t.html">ArdupilotTable_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input parameters for ardupilot application.  <a href="structArdupilotTable__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a77366c1bd428629dc898e188bfd182a3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a77366c1bd428629dc898e188bfd182a3"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>EXTERN</b>&#160;&#160;&#160;extern</td></tr>
-<tr class="separator:a77366c1bd428629dc898e188bfd182a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Ardupilot app table definition. </p>
+<dl class="section author"><dt>Author</dt><dd>Swee Balachandran</dd></dl>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

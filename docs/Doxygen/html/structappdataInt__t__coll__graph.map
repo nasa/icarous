@@ -1,3 +1,6 @@
 <map id="appdataInt_t" name="appdataInt_t">
-<area shape="rect" id="node2" href="$structport__t.html" title="Structure to hold port attributes. " alt="" coords="25,5,80,32"/>
+<area shape="rect" id="node2" href="$structport__t.html" title="Structure to hold port attributes. " alt="" coords="5,5,60,32"/>
+<area shape="rect" id="node3" href="$structattitude__t.html" title="aircraft attitude information. " alt="" coords="84,5,160,32"/>
+<area shape="rect" id="node4" href="$structposition__t.html" title="position information of aircraft. " alt="" coords="184,5,263,32"/>
+<area shape="rect" id="node5" href="$structmissionItemReached__t.html" title="message indicating a specific waypoint has been reached. " alt="" coords="287,5,443,32"/>
 </map>

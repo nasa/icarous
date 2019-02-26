@@ -120,7 +120,7 @@ typedef struct __attribute__((__packed__))
 typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< cFS header information */
 	uint8_t reachedwaypoint;                /**< waypoint index that was reached */
-    bool feedback;                          /**< true if from autopilot */
+    bool feedback;                          /**< this should be set to true if this is data from the autopilot */
 }missionItemReached_t;
 
 /**

@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -86,7 +87,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structflightplan__t-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">flightplan_t Struct Reference<div class="ingroups"><a class="el" href="group__APPLICATIONS.html">APPLICATIONS</a> &raquo; <a class="el" href="group__ARDUPILOT.html">ARDUPILOT</a> &#124; <a class="el" href="group__MESSAGES.html">MESSAGES</a> &raquo; <a class="el" href="group__ARDUPILOT__MESSAGES.html">ARDUPILOT_MESSAGES</a></div></div>  </div>
+<div class="title">flightplan_t Struct Reference<div class="ingroups"><a class="el" href="group__APPLICATIONS.html">APPLICATIONS</a> &raquo; <a class="el" href="group__ARDUPILOT.html">ARDUPILOT</a> &#124; <a class="el" href="group__MESSAGES.html">MESSAGES</a> &raquo; <a class="el" href="group__ARDUPILOT__MESSAGES.html">ARDUPILOT_MESSAGES</a><a class="el" href="group__MESSAGES.html">MESSAGES</a> &raquo;  &#124; <a class="el" href="group__PARAMETER__MESSAGES.html">PARAMETER_MESSAGES</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -105,8 +106,8 @@ Collaboration diagram for flightplan_t:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a3e85b65db55d33857f997c023fdd408d"><td class="memItemLeft" align="right" valign="top">uint8&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflightplan__t.html#a3e85b65db55d33857f997c023fdd408d">TlmHeader</a> [CFE_SB_TLM_HDR_SIZE]</td></tr>
-<tr class="separator:a3e85b65db55d33857f997c023fdd408d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b3c18d4a62c6c316346ca24af5c7dac"><td class="memItemLeft" align="right" valign="top">uint8&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflightplan__t.html#a6b3c18d4a62c6c316346ca24af5c7dac">TlmHeader</a> [CFE_SB_TLM_HDR_SIZE]</td></tr>
+<tr class="separator:a6b3c18d4a62c6c316346ca24af5c7dac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71cfa9cfadb96a3e42120229357f2b07"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflightplan__t.html#a71cfa9cfadb96a3e42120229357f2b07">id</a> [20]</td></tr>
 <tr class="separator:a71cfa9cfadb96a3e42120229357f2b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79daba3d5887e19987dcd8b51006d9cf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflightplan__t.html#a79daba3d5887e19987dcd8b51006d9cf">num_waypoints</a></td></tr>
@@ -115,10 +116,40 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a4a06dd627ed1274595020305a9fd193f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d21539f6279e1a681ef4a6d12cc4cfe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwaypoint__t.html">waypoint_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflightplan__t.html#a5d21539f6279e1a681ef4a6d12cc4cfe">waypoints</a> [50]</td></tr>
 <tr class="separator:a5d21539f6279e1a681ef4a6d12cc4cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1986f88c503d7885f8389afad772025"><td class="memItemLeft" align="right" valign="top">uint8&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflightplan__t.html#aa1986f88c503d7885f8389afad772025">acid</a></td></tr>
+<tr class="separator:aa1986f88c503d7885f8389afad772025"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b3c5ecb2f195a9f48b6b827a3ebeb71"><td class="memItemLeft" align="right" valign="top">uint8&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structflightplan__t.html#a4b3c5ecb2f195a9f48b6b827a3ebeb71">parameter_name</a></td></tr>
+<tr class="separator:a4b3c5ecb2f195a9f48b6b827a3ebeb71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a242425c29c51e3b9afbe5cb33c158c67"><td class="memItemLeft" ><a class="anchor" id="a242425c29c51e3b9afbe5cb33c158c67"></a>
+union {</td></tr>
+<tr class="memitem:a0b0e05e9c99b893fec0cfbb87037639a"><td class="memItemLeft" >
+&#160;&#160;&#160;double&#160;&#160;&#160;<b>parameter_valueF</b></td></tr>
+<tr class="separator:a0b0e05e9c99b893fec0cfbb87037639a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e1b2ab863f55b10ac18ffd8a0abec6c"><td class="memItemLeft" >
+&#160;&#160;&#160;int32_t&#160;&#160;&#160;<b>parameter_valueI</b></td></tr>
+<tr class="separator:a5e1b2ab863f55b10ac18ffd8a0abec6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3b62a6971e00a804918e63d91f23afc"><td class="memItemLeft" >
+&#160;&#160;&#160;char&#160;&#160;&#160;<b>parameter_valueS</b> [50]</td></tr>
+<tr class="separator:af3b62a6971e00a804918e63d91f23afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a242425c29c51e3b9afbe5cb33c158c67"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><b>parameter_value</b></td></tr>
+<tr class="separator:a242425c29c51e3b9afbe5cb33c158c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>message encoding flight plan information </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="aa1986f88c503d7885f8389afad772025"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8 flightplan_t::acid</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>identifier </p>
+
+</div>
+</div>
 <a class="anchor" id="a71cfa9cfadb96a3e42120229357f2b07"></a>
 <div class="memitem">
 <div class="memproto">
@@ -145,6 +176,19 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a4b3c5ecb2f195a9f48b6b827a3ebeb71"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8 flightplan_t::parameter_name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>total waypoints. Cannot be greater than max. </p>
+
+</div>
+</div>
 <a class="anchor" id="a4a06dd627ed1274595020305a9fd193f"></a>
 <div class="memitem">
 <div class="memproto">
@@ -158,12 +202,12 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a3e85b65db55d33857f997c023fdd408d"></a>
+<a class="anchor" id="a6b3c18d4a62c6c316346ca24af5c7dac"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8 flightplan_t::TlmHeader[CFE_SB_TLM_HDR_SIZE]</td>
+          <td class="memname">uint8 flightplan_t::TlmHeader</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -184,8 +228,9 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<hr/>The documentation for this struct was generated from the following files:<ul>
 <li>/home/research133/Software/Icarous2/cFS/apps/inc/msgdef/<a class="el" href="ardupilot__msg_8h_source.html">ardupilot_msg.h</a></li>
+<li>/home/research133/Software/Icarous2/cFS/apps/inc/msgdef/<a class="el" href="parameters__msg_8h_source.html">parameters_msg.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li class="current"><a href="modules.html"><span>Modules</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -99,6 +100,10 @@ Collaboration diagram for TRACKING_MESSAGES:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtrackingResolution__t.html">trackingResolution_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">tracking commands  <a href="structtrackingResolution__t.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structtracking__parameters__t.html">tracking_parameters_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">tracking parameter definition  <a href="structtracking__parameters__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
@@ -111,6 +116,41 @@ Variables</h2></td></tr>
 <tr class="separator:gab7fe4b357df270c60654657abaf399d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2d58a87e2fa508f7a8aa8edc9662f408"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__TRACKING__MESSAGES.html#ga2d58a87e2fa508f7a8aa8edc9662f408">trackingResolution_t::trackingHeading</a> [10]</td></tr>
 <tr class="separator:ga2d58a87e2fa508f7a8aa8edc9662f408"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafc0038236f3a744344bba75cc536938e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gafc0038236f3a744344bba75cc536938e"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>tracking_parameters_t::TlmHeader</b> [CFE_SB_TLM_HDR_SIZE]</td></tr>
+<tr class="separator:gafc0038236f3a744344bba75cc536938e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6066b8d6ba5fbf678a5d035ed19c1431"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga6066b8d6ba5fbf678a5d035ed19c1431"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__TRACKING__MESSAGES.html#ga6066b8d6ba5fbf678a5d035ed19c1431">tracking_parameters_t::command</a></td></tr>
+<tr class="memdesc:ga6066b8d6ba5fbf678a5d035ed19c1431"><td class="mdescLeft">&#160;</td><td class="mdescRight">command mode (true/false). Send commands to ardupilot directly. <br /></td></tr>
+<tr class="separator:ga6066b8d6ba5fbf678a5d035ed19c1431"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2abb173198d7e198fceffd1fcd469182"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2abb173198d7e198fceffd1fcd469182"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__TRACKING__MESSAGES.html#ga2abb173198d7e198fceffd1fcd469182">tracking_parameters_t::trackingObjId</a></td></tr>
+<tr class="memdesc:ga2abb173198d7e198fceffd1fcd469182"><td class="mdescLeft">&#160;</td><td class="mdescRight">Id of object to track;. <br /></td></tr>
+<tr class="separator:ga2abb173198d7e198fceffd1fcd469182"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2e6b7bdb5cda491af76509d238246526"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2e6b7bdb5cda491af76509d238246526"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__TRACKING__MESSAGES.html#ga2e6b7bdb5cda491af76509d238246526">tracking_parameters_t::pGainX</a></td></tr>
+<tr class="memdesc:ga2e6b7bdb5cda491af76509d238246526"><td class="mdescLeft">&#160;</td><td class="mdescRight">proportional gain x; <br /></td></tr>
+<tr class="separator:ga2e6b7bdb5cda491af76509d238246526"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3eaf73e8e540382d0c6d7194ff36f614"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga3eaf73e8e540382d0c6d7194ff36f614"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__TRACKING__MESSAGES.html#ga3eaf73e8e540382d0c6d7194ff36f614">tracking_parameters_t::pGainY</a></td></tr>
+<tr class="memdesc:ga3eaf73e8e540382d0c6d7194ff36f614"><td class="mdescLeft">&#160;</td><td class="mdescRight">proportional gain y; <br /></td></tr>
+<tr class="separator:ga3eaf73e8e540382d0c6d7194ff36f614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2588bb408bc305a42c98a7cac9daef70"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga2588bb408bc305a42c98a7cac9daef70"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__TRACKING__MESSAGES.html#ga2588bb408bc305a42c98a7cac9daef70">tracking_parameters_t::pGainZ</a></td></tr>
+<tr class="memdesc:ga2588bb408bc305a42c98a7cac9daef70"><td class="mdescLeft">&#160;</td><td class="mdescRight">proportional gain z; <br /></td></tr>
+<tr class="separator:ga2588bb408bc305a42c98a7cac9daef70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5c3fefde3efa47dbec353f2fbb075feb"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5c3fefde3efa47dbec353f2fbb075feb"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__TRACKING__MESSAGES.html#ga5c3fefde3efa47dbec353f2fbb075feb">tracking_parameters_t::heading</a></td></tr>
+<tr class="memdesc:ga5c3fefde3efa47dbec353f2fbb075feb"><td class="mdescLeft">&#160;</td><td class="mdescRight">heading behind the target from which to track (degree). <br /></td></tr>
+<tr class="separator:ga5c3fefde3efa47dbec353f2fbb075feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0a51042d17cb3097bcd87b0279696fa2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga0a51042d17cb3097bcd87b0279696fa2"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__TRACKING__MESSAGES.html#ga0a51042d17cb3097bcd87b0279696fa2">tracking_parameters_t::distH</a></td></tr>
+<tr class="memdesc:ga0a51042d17cb3097bcd87b0279696fa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">horizontal distance to maintain from the target (m). <br /></td></tr>
+<tr class="separator:ga0a51042d17cb3097bcd87b0279696fa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf6baae0a5a7dda5bef24e97dc93735d7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="gaf6baae0a5a7dda5bef24e97dc93735d7"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__TRACKING__MESSAGES.html#gaf6baae0a5a7dda5bef24e97dc93735d7">tracking_parameters_t::distV</a></td></tr>
+<tr class="memdesc:gaf6baae0a5a7dda5bef24e97dc93735d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">vertical distance to maintain from the target (m). <br /></td></tr>
+<tr class="separator:gaf6baae0a5a7dda5bef24e97dc93735d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Tracking message definitions. </p>

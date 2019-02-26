@@ -8,8 +8,12 @@ var searchData=
   ['directpathtowaypoint',['directPathToWaypoint',['../structgeofenceConflict__t.html#a5d9d58f76382889712f7ffbfeb80276f',1,'geofenceConflict_t']]],
   ['directpathtowp',['directPathToWP',['../structgeofenceAppData__t.html#af4d752ba4772c4b327a5707dc7615d2e',1,'geofenceAppData_t']]],
   ['dist2nextwp',['dist2NextWP',['../structflightplan__monitor__t.html#aad327b88bd7fd511b1938daa17f108a3',1,'flightplan_monitor_t']]],
-  ['disth',['distH',['../structTrackingAppData__t.html#a23109e79e08ff1b6e4e9ff59a1a2bde8',1,'TrackingAppData_t::distH()'],['../structTrackingTable__t.html#ae4c746cbfabef5c2296eb64722e9f3d5',1,'TrackingTable_t::distH()']]],
-  ['distv',['distV',['../structTrackingAppData__t.html#ab86ee211b76b5a2e4a40a1490403a0c9',1,'TrackingAppData_t::distV()'],['../structTrackingTable__t.html#ae8b8e37b5177d5fd9850a597d68896a1',1,'TrackingTable_t::distV()']]],
+  ['disth',['distH',['../group__TRACKING__MESSAGES.html#ga0a51042d17cb3097bcd87b0279696fa2',1,'tracking_parameters_t::distH()'],['../structTrackingAppData__t.html#a23109e79e08ff1b6e4e9ff59a1a2bde8',1,'TrackingAppData_t::distH()'],['../structTrackingTable__t.html#ae4c746cbfabef5c2296eb64722e9f3d5',1,'TrackingTable_t::distH()']]],
+  ['distv',['distV',['../group__TRACKING__MESSAGES.html#gaf6baae0a5a7dda5bef24e97dc93735d7',1,'tracking_parameters_t::distV()'],['../structTrackingAppData__t.html#ab86ee211b76b5a2e4a40a1490403a0c9',1,'TrackingAppData_t::distV()'],['../structTrackingTable__t.html#ae8b8e37b5177d5fd9850a597d68896a1',1,'TrackingTable_t::distV()']]],
+  ['ditchguidancerequired',['ditchGuidanceRequired',['../group__SAFE2DITCH__MESSAGES.html#ga90385cba520828b86844521a9119fd96',1,'safe2ditchStatus_t']]],
+  ['ditchrequested',['ditchRequested',['../group__SAFE2DITCH__MESSAGES.html#gaecb89739afb0394f5aa90c3dc080096b',1,'safe2ditchStatus_t']]],
+  ['ditchsite',['ditchsite',['../group__SAFE2DITCH__MESSAGES.html#ga99b9642711be9a1a2763a2f4338ac3e5',1,'safe2ditchStatus_t']]],
   ['downlink_5fflightplan_5fmid',['DOWNLINK_FLIGHTPLAN_MID',['../group__ARDUPILOT__MESSAGE__TOPICS.html#ga131fda02c7faf7052e89657b6dd03da0',1,'ardupilot_msgids.h']]],
-  ['drift',['DRIFT',['../ardupilot_8h.html#a7e009e7dbc0dd7be939d03455c972549a946256f1d654ac45417961704ea2323d',1,'ardupilot.h']]]
+  ['drift',['DRIFT',['../ardupilot_8h.html#a7e009e7dbc0dd7be939d03455c972549a946256f1d654ac45417961704ea2323d',1,'ardupilot.h']]],
+  ['dw_5fpc_5fquadcopter_5fsimulation_5ft',['DW_PC_Quadcopter_Simulation_T',['../structDW__PC__Quadcopter__Simulation__T.html',1,'']]]
 ];

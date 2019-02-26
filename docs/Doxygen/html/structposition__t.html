@@ -38,6 +38,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="pages.html"><span>Related&#160;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
@@ -103,6 +104,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a67ee1985e1b7f991b27a3d282215e370"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6950593b7eaba1e10f16f645ca7fad81"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structposition__t.html#a6950593b7eaba1e10f16f645ca7fad81">time_gps</a></td></tr>
 <tr class="separator:a6950593b7eaba1e10f16f645ca7fad81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add59791ab895e05e0a4716423f8f992d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structposition__t.html#add59791ab895e05e0a4716423f8f992d">time_boot</a></td></tr>
+<tr class="separator:add59791ab895e05e0a4716423f8f992d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b4c8a3559bd68b435b8b0a4fad32301"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structposition__t.html#a0b4c8a3559bd68b435b8b0a4fad32301">latitude</a></td></tr>
 <tr class="separator:a0b4c8a3559bd68b435b8b0a4fad32301"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaaca1450b1335112bb591de7fe0c4b8c"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structposition__t.html#aaaca1450b1335112bb591de7fe0c4b8c">longitude</a></td></tr>
@@ -119,10 +122,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ad0c56b07b0f104cd9a8d6b2badea4780"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44e54a05b52afda34b175576e26c1485"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structposition__t.html#a44e54a05b52afda34b175576e26c1485">hdg</a></td></tr>
 <tr class="separator:a44e54a05b52afda34b175576e26c1485"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1399785dd17960c54fa7ba1f573ff61e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structposition__t.html#a1399785dd17960c54fa7ba1f573ff61e">hdop</a></td></tr>
-<tr class="separator:a1399785dd17960c54fa7ba1f573ff61e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af140261953e5042d0c2f263c8f729935"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structposition__t.html#af140261953e5042d0c2f263c8f729935">vdop</a></td></tr>
-<tr class="separator:af140261953e5042d0c2f263c8f729935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a697054865b77c23f3cb908b81a2005ed"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structposition__t.html#a697054865b77c23f3cb908b81a2005ed">hdop</a></td></tr>
+<tr class="separator:a697054865b77c23f3cb908b81a2005ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a61debd99c57e57fe14894b190dd83a"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structposition__t.html#a8a61debd99c57e57fe14894b190dd83a">vdop</a></td></tr>
+<tr class="separator:a8a61debd99c57e57fe14894b190dd83a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35ef98927f8fa5786364fa64db39d459"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structposition__t.html#a35ef98927f8fa5786364fa64db39d459">numSats</a></td></tr>
 <tr class="separator:a35ef98927f8fa5786364fa64db39d459"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -181,12 +184,12 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1399785dd17960c54fa7ba1f573ff61e"></a>
+<a class="anchor" id="a697054865b77c23f3cb908b81a2005ed"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double position_t::hdop</td>
+          <td class="memname">uint16_t position_t::hdop</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -233,6 +236,19 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="add59791ab895e05e0a4716423f8f992d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double position_t::time_boot</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>boot time of onboard autopilot </p>
+
+</div>
+</div>
 <a class="anchor" id="a6950593b7eaba1e10f16f645ca7fad81"></a>
 <div class="memitem">
 <div class="memproto">
@@ -272,12 +288,12 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="af140261953e5042d0c2f263c8f729935"></a>
+<a class="anchor" id="a8a61debd99c57e57fe14894b190dd83a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double position_t::vdop</td>
+          <td class="memname">uint16_t position_t::vdop</td>
         </tr>
       </table>
 </div><div class="memdoc">
