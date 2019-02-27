@@ -17,8 +17,10 @@
 #include "network_includes.h"
 #include "apInterface_events.h"
 #include "msgdef/ardupilot_msg.h"
+#include "msgdef/traffic_msg.h"
 #include "msgids/ardupilot_msgids.h"
 #include "msgids/scheduler_msgids.h"
+#include "msgids/traffic_msgids.h"
 #include "port_lib.h"
 
 #define APINTERFACE_PIPE_NAME "APFLTPLAN"

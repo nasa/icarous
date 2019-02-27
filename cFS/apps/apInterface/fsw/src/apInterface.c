@@ -99,6 +99,10 @@ void APINTERFACE_AppInit(void){
 	//Subscribe to command messages from the SB to command the autopilot
 	CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataApIntf.INTERFACE_Pipe);
     CFE_SB_Subscribe(ICAROUS_FLIGHTPLAN_MID,appdataApIntf.INTERFACE_Pipe);
+    CFE_SB_Subscribe(ICAROUS_BANDS_TRACK_MID,appdataApIntf.INTERFACE_Pipe);
+    //CFE_SB_Subscribe(ICAROUS_BANDS_SPEED_MID,appdataApIntf.INTERFACE_Pipe);
+    //CFE_SB_Subscribe(ICAROUS_BANDS_ALT_MID,appdataApIntf.INTERFACE_Pipe);
+    //CFE_SB_Subscribe(ICAROUS_BANDS_VS_MID,appdataApIntf.INTERFACE_Pipe);
 
 	// Initialize all messages that this App generates.
 	// To perfrom sense and avoid, as a minimum, the following messages must be generated
@@ -218,6 +222,34 @@ void APINTERFACE_ProcessSBData() {
             break;
         }
 
+        case ICAROUS_BANDS_TRACK_MID:{
+            bands_t* bands = (bands_t*) appdataApIntf.INTERFACEMsgPtr;
+
+            //TODO: Track bands can be displayed to the piot if there is an interface
+            break;
+        }
+
+        case ICAROUS_BANDS_SPEED_MID:{
+            bands_t* bands = (bands_t*) appdataApIntf.INTERFACEMsgPtr;
+
+            //TODO: speed bands can be displayed to the piot if there is an interface
+            break;
+        }
+
+        case ICAROUS_BANDS_ALT_MID:{
+            bands_t* bands = (bands_t*) appdataApIntf.INTERFACEMsgPtr;
+
+            //TODO: alt bands
+            break;
+        }
+
+        case ICAROUS_BANDS_VS_MID:{
+            bands_t* bands = (bands_t*) appdataApIntf.INTERFACEMsgPtr;
+
+            //TODO: vertical speed bands
+            break;
+        }
+
         case ICAROUS_COMMANDS_MID:
         {
             argsCmd_t *cmd = (argsCmd_t*) appdataApIntf.INTERFACEMsgPtr;
@@ -268,8 +300,11 @@ void APINTERFACE_ProcessSBData() {
                     double commandVn = cmd->param1; // commanded Velocity north component (m/s)
                     double commandVe = cmd->param2; // commanded Velocity east component (m/s)
                     double commandVd = cmd->param3; // commanded Velocity down component (m/s)
+                    double heading = fmod(2*M_PI + atan2(commandVe,commandVn),2*M_PI)*180/M_PI;
+                    double speed = sqrt( commandVn*commandVn + commandVe*commandVe + commandVd*commandVd );
 
-                    //TODO: send set velocity command to autopilot
+                    //TODO: send set Vn,Ve,Vd velocity components command to autopilot or
+                    // send heading and speed to autopilot
                     break;
                 }
 
