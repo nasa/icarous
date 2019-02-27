@@ -237,6 +237,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 			}
 			else if (msg.command == MAV_CMD_SPATIAL_USER_1) {
 				appdataIntGS.traffic.index = (uint32_t)msg.param1;
+				appdataIntGS.traffic.type = _TRAFFIC_SIM_;
 				appdataIntGS.traffic.latitude = msg.param5;
 				appdataIntGS.traffic.longitude = msg.param6;
 				appdataIntGS.traffic.altitude = msg.param7;
@@ -516,22 +517,28 @@ void gsInterface_ProcessPacket() {
 
 		case ICAROUS_TRAFFIC_MID:{
 			object_t* traffic = (object_t*)	appdataIntGS.INTERFACEMsgPtr;
+			if(traffic->type != _TRAFFIC_SIM_) {
+				mavlink_message_t msg;
 
-			mavlink_message_t msg;
+			    uint8_t emitterType = 0;
+			    if(traffic->type != _TRAFFIC_ADSB_){
+			       emitterType =	100;
+			    }
 
-			double heading = fmod(2*M_PI + atan2(traffic->ve,traffic->vn),2*M_PI)*180/M_PI;
-			double speed = sqrt(traffic->vn*traffic->vn + traffic->ve*traffic->ve);
-			mavlink_msg_adsb_vehicle_pack((uint8_t)traffic->index,0,&msg,(uint8_t)traffic->index,
-										  (int32_t)(traffic->latitude*1E7),
-										  (int32_t)(traffic->longitude*1E7),
-			                              ADSB_ALTITUDE_TYPE_GEOMETRIC,
-										  (int32_t)(traffic->altitude*1E3),
-										  (uint16_t) (heading*1E2),
-										  (uint16_t) (speed*1E2),
-										  (uint16_t) (traffic->vd*1E2),
-										  "NONE",0,0,0,0);
+				double heading = fmod(2 * M_PI + atan2(traffic->ve, traffic->vn), 2 * M_PI) * 180 / M_PI;
+				double speed = sqrt(traffic->vn * traffic->vn + traffic->ve * traffic->ve);
+				mavlink_msg_adsb_vehicle_pack((uint8_t) traffic->index, 0, &msg, (uint8_t) traffic->index,
+											  (int32_t) (traffic->latitude * 1E7),
+											  (int32_t) (traffic->longitude * 1E7),
+											  ADSB_ALTITUDE_TYPE_GEOMETRIC,
+											  (int32_t) (traffic->altitude * 1E3),
+											  (uint16_t) (heading * 1E2),
+											  (uint16_t) (speed * 1E2),
+											  (uint16_t) (traffic->vd * 1E2),
+											  "NONE", emitterType, 0, 0, 0);
 
-			writeMavlinkData(&appdataIntGS.gs,&msg);
+				writeMavlinkData(&appdataIntGS.gs, &msg);
+			}
             break;
 		}
 

@@ -66,8 +66,10 @@ typedef enum{
  * @brief object type
  */
 typedef enum{
-    _TRAFFIC_,  ///< traffic
-    _OBSTACLE_  ///< obstacle
+    _TRAFFIC_SIM_,   ///< traffic data from simulation
+    _TRAFFIC_ADSB_,  ///< traffic data from ADSB
+    _TRAFFIC_RADAR_, ///< traffic data from radar
+    _OBSTACLE_       ///< obstacle
 }objectType_e;
 
 
