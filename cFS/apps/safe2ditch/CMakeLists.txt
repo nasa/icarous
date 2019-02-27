@@ -10,6 +10,7 @@ include_directories(../inc/msgdef)
 include_directories(../inc/msgids)
 include_directories(fsw/src)
 include_directories(../ardupilot/fsw/mission_inc/)
+include_directories(../port_lib/fsw/public_inc)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
