@@ -60,7 +60,7 @@ void TRAFFIC_AppInit(void) {
     //Subscribe to plexil output messages from the SB
     CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,trafficAppData.Traffic_Pipe);
     CFE_SB_Subscribe(ICAROUS_POSITION_MID,trafficAppData.Traffic_Pipe);
-    CFE_SB_Subscribe(FREQ_30_WAKEUP_MID,trafficAppData.Traffic_Pipe);
+    CFE_SB_Subscribe(FREQ_10_WAKEUP_MID,trafficAppData.Traffic_Pipe);
     CFE_SB_Subscribe(ICAROUS_FLIGHTPLAN_MID,trafficAppData.Traffic_Pipe);
     CFE_SB_Subscribe(TRAFFIC_PARAMETERS_MID,trafficAppData.Traffic_Pipe);
 
