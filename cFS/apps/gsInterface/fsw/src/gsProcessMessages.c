@@ -462,13 +462,13 @@ void gsInterface_ProcessPacket() {
 			if(pos->aircraft_id == CFE_PSP_GetSpacecraftId()) {
 				mavlink_message_t msg;
 				mavlink_msg_global_position_int_pack(1, 0, &msg, (uint32_t) pos->time_gps,
-													 (uint32_t) (pos->latitude * 1E7),
-													 (uint32_t) (pos->longitude * 1E7),
-													 (uint32_t) (pos->altitude_abs * 1E3),
-													 (uint32_t) (pos->altitude_rel * 1E3),
-													 (uint16_t) (pos->vn * 1E2),
-													 (uint16_t) (pos->ve * 1E2),
-													 (uint16_t) (pos->vd * 1E2),
+													 (int32_t) (pos->latitude * 1E7),
+													 (int32_t) (pos->longitude * 1E7),
+													 (int32_t) (pos->altitude_abs * 1E3),
+													 (int32_t) (pos->altitude_rel * 1E3),
+													 (int16_t) (pos->vn * 1E2),
+													 (int16_t) (pos->ve * 1E2),
+													 (int16_t) (pos->vd * 1E2),
 													 (uint16_t) (pos->hdg * 1E2));
 
 				writeMavlinkData(&appdataIntGS.gs, &msg);
