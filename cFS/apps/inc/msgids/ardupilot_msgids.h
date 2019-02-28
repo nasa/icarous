@@ -33,7 +33,7 @@
 #define DOWNLINK_FLIGHTPLAN_MID 0x0822    ///< Downlink flight plan
 #define ICAROUS_VFRHUD_MID 0x0823         ///< VFR hud data
 #define ICAROUS_BATTERY_STATUS_MID 0x0824 ///< Battery status
-
+#define RADAR_TRIGGER_MID 0x0825          ///< Radar trigger
 /**@}*/
 #define SendSBMsg(msg)\
 CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) &msg); \
