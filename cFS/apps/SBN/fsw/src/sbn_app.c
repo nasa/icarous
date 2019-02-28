@@ -39,6 +39,8 @@ SBN_App_t SBN;
 
 #include <string.h>
 #include "sbn_app.h"
+#include "sbn_conf_tbl.c"
+#include "sbn_remap_tbl.c"
 
 static uint32 UnloadModules(void)
 {
@@ -1026,8 +1028,8 @@ static uint32 LoadRemapTbl(void)
         return Status;
     }/* end if */
 
-    if((Status = CFE_TBL_Load(SBN.RemapTblHandle, CFE_TBL_SRC_FILE,
-            SBN_REMAP_TBL_FILENAME))
+    if((Status = CFE_TBL_Load(SBN.RemapTblHandle, CFE_TBL_SRC_ADDRESS,
+            &SBN_RemapTbl))
         != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(SBN_TBL_EID, CFE_EVS_ERROR,
@@ -1219,8 +1221,8 @@ static uint32 LoadConfTbl(void)
         return Status;
     }/* end if */
 
-    if((Status = CFE_TBL_Load(SBN.ConfTblHandle, CFE_TBL_SRC_FILE,
-            SBN_CONF_TBL_FILENAME))
+    if((Status = CFE_TBL_Load(SBN.ConfTblHandle, CFE_TBL_SRC_ADDRESS,
+            &SBN_ConfTbl))
         != CFE_SUCCESS)
     {
         CFE_EVS_SendEvent(SBN_TBL_EID, CFE_EVS_ERROR,

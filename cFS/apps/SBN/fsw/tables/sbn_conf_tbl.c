@@ -42,4 +42,4 @@ SBN_ConfTbl_t SBN_ConfTbl =
 		2 /* PeerCnt */
 };
 
-CFE_TBL_FILEDEF(SBN_ConfTbl, SBN.SBN_ConfTbl, SBN Configuration Table, sbn_conf_tbl.tbl)
+//CFE_TBL_FILEDEF(SBN_ConfTbl, SBN.SBN_ConfTbl, SBN Configuration Table, sbn_conf_tbl.tbl)

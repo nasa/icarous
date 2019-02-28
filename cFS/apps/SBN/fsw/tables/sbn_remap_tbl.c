@@ -1,5 +1,5 @@
 #include "sbn_tbl.h"
-#include "cfe_tbl_filedef.h"
+//#include "cfe_tbl_filedef.h"
 
 SBN_RemapTbl_t SBN_RemapTbl =
 { 
@@ -18,4 +18,4 @@ SBN_RemapTbl_t SBN_RemapTbl =
     }
 };/* end SBN_RemapTbl */
 
-CFE_TBL_FILEDEF(SBN_RemapTbl, SBN.SBN_RemapTbl, SBN Remap Table, sbn_remap_tbl.tbl)
+//CFE_TBL_FILEDEF(SBN_RemapTbl, SBN.SBN_RemapTbl, SBN Remap Table, sbn_remap_tbl.tbl)
