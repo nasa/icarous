@@ -50,6 +50,7 @@ typedef enum {
 	_SETSPEED_,      ///< Set speed. 1 parameter (speed [m/s])
 	_STATUS_,        ///< Status command
 	_DITCH_,         ///< Start ditching status
+	_RADAR_          ///< Start radar
 } commandName_e;
 
 /**
