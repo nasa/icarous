@@ -125,7 +125,7 @@ function(prepare)
 
   # Add a dependency on "elf2cfetbl" as this is required for table builds
   # The "elf2cfetbl" target should have been added by the "tools" above
-  add_dependencies(mission-genfiles elf2cfetbl) 
+  #add_dependencies(mission-genfiles elf2cfetbl) 
   
   if (ENABLE_DATA_DICTIONARY)
     add_subdirectory(cmake/tools buildtools)  

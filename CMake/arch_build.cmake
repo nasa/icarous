@@ -116,12 +116,12 @@ function(add_cfe_tables APP_NAME TBL_SRC_FILES)
     # this must match and if it does not the build will break.  That's just the
     # way it is, because NO make system supports changing rules based on the
     # current content of a dependency (rightfully so).
-    add_custom_command(
-      OUTPUT ${TBLWE}.tbl
-      COMMAND ${CMAKE_C_COMPILER} ${TBL_CFLAGS} -c -o ${TBLWE}.o ${TBL_SRC}
-      COMMAND ${MISSION_BINARY_DIR}/tools/elf2cfetbl/elf2cfetbl ${TBLWE}.o
-      DEPENDS ${MISSION_BINARY_DIR}/tools/elf2cfetbl/elf2cfetbl ${TBL_SRC}
-    )
+    # add_custom_command(
+    #  OUTPUT ${TBLWE}.tbl
+    #  COMMAND ${CMAKE_C_COMPILER} ${TBL_CFLAGS} -c -o ${TBLWE}.o ${TBL_SRC}
+    #  COMMAND ${MISSION_BINARY_DIR}/tools/elf2cfetbl/elf2cfetbl ${TBLWE}.o
+    #  DEPENDS ${MISSION_BINARY_DIR}/tools/elf2cfetbl/elf2cfetbl ${TBL_SRC}
+    #)
     
   endforeach(TBL ${TBL_SRC_FILES} ${ARGN})
 
