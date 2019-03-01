@@ -1,0 +1,15 @@
+--- CMakeLists.txt	2019-02-28 18:46:40.179602346 -0500
++++ CMakeLists2.txt	2019-02-28 18:47:09.387615105 -0500
+@@ -30,9 +30,9 @@
+ include_directories(${CMAKE_CURRENT_BINARY_DIR}/inc_stubs)
+ 
+ # force build as 32-bit
+-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+-add_executable(elf2cfetbl elf2cfetbl.c)
++#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
++#add_executable(elf2cfetbl elf2cfetbl.c)
+ 
+-install(TARGETS elf2cfetbl DESTINATION host)
++#install(TARGETS elf2cfetbl DESTINATION host)
+ 
+ 

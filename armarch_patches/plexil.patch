@@ -1,0 +1,29 @@
+--- CMakeLists.txt	2019-02-21 11:01:18.594461611 -0500
++++ CMakeLists2.txt	2019-02-28 18:34:48.907329610 -0500
+@@ -49,15 +49,15 @@
+ #set(PLEXIL_PLANS ArdupilotTest.ple)
+ 
+ 
+-add_custom_target(PLEXIL_COMPILER COMMAND env PLEXIL_HOME=$ENV{PLEXIL_HOME} make plexil-compiler WORKING_DIRECTORY ${PLEXIL_SOURCE}/../ )
+-add_dependencies(plexil PLEXIL_COMPILER)
++#add_custom_target(PLEXIL_COMPILER COMMAND env PLEXIL_HOME=$ENV{PLEXIL_HOME} make plexil-compiler WORKING_DIRECTORY ${PLEXIL_SOURCE}/../ )
++#add_dependencies(plexil PLEXIL_COMPILER)
+ 
+-foreach(ARG ${PLEXIL_PLANS})
+-    #message(STATUS "Build plexil plan: ${ARG}" )
+-    add_custom_target(${ARG} COMMAND env PLEXIL_HOME=$ENV{PLEXIL_HOME} bash ${PLEXIL_SOURCE}/../scripts/plexilc ${ARG} WORKING_DIRECTORY ${PLAN_LOCATION})
+-    #if (NOT RESULT EQUAL 0)
+-    #    message(STATUS "Failed to compile plexil plan ${ARG}")
+-    #endif (NOT RESULT EQUAL 0)
+-    add_dependencies(${ARG} PLEXIL_COMPILER)
+-    add_dependencies(plexil ${ARG})
+-endforeach(ARG IN LISTS PLEXIL_PLANS)
++#foreach(ARG ${PLEXIL_PLANS})
++#    #message(STATUS "Build plexil plan: ${ARG}" )
++#    add_custom_target(${ARG} COMMAND env PLEXIL_HOME=$ENV{PLEXIL_HOME} bash ${PLEXIL_SOURCE}/../scripts/plexilc ${ARG} WORKING_DIRECTORY ${PLAN_LOCATION})
++#    #if (NOT RESULT EQUAL 0)
++#    #    message(STATUS "Failed to compile plexil plan ${ARG}")
++#    #endif (NOT RESULT EQUAL 0)
++#    add_dependencies(${ARG} PLEXIL_COMPILER)
++#    add_dependencies(plexil ${ARG})
++#endforeach(ARG IN LISTS PLEXIL_PLANS)
