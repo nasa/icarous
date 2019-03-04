@@ -10,6 +10,17 @@ from MAVProxy.modules.lib import mp_module
 if mp_util.has_wxpython:
     from MAVProxy.modules.lib.mp_menu import *
 
+try:
+    from polygon_contain import nice_polygon_2D
+    from vectors import Vector
+    geofence_check_niceness = True
+except:
+    print "*******************************"
+    print "PolyCARP not found.\n Download PolyCARP from https://github.com/nasa/PolyCARP.git and add the Python folder in this repository to the PYTHONPATH environment variable."
+    print "Geofences will not be checked for niceness before upload."
+    print "*****************************"
+    geofence_check_niceness = False
+
 class GeoFenceModule(mp_module.MPModule):
     def __init__(self, mpstate):
         super(GeoFenceModule, self).__init__(mpstate, "geofence", "geo-fence management", public = True)
@@ -18,8 +29,11 @@ class GeoFenceModule(mp_module.MPModule):
                          "geo-fence management",
                          ["load (FILENAME)"])
         self.fenceList = []
+        self.drawnFenceList = []
+        self.drawnFenceIds = []
         self.sentFenceList = []
-        self.fenceToSend= 0;
+        self.fenceToSend= 0
+        self.startSendingFence = False
         self.have_list = False        
         self.menu_added_console = False
         self.menu_added_map = False
@@ -45,7 +59,8 @@ class GeoFenceModule(mp_module.MPModule):
                                                                                  wildcard='*.txt')),                                       
                                          MPMenuItem('Draw', 'Draw', '# geofence draw ',
                                                     handler=MPMenuCallTextDialog(title='Fence info:id,type [0 in/1 out],#vertices,floor [m],ceiling [m]',
-                                                                                 default='0,0,0,0,0'))])
+                                                                                 default='0,0,0,0,0')),
+                                         MPMenuItem('Upload', 'Upload', '# geofence upload')])
         
     def idle_task(self):
         '''called on idle'''
@@ -125,7 +140,7 @@ class GeoFenceModule(mp_module.MPModule):
             return        
         elif args[0] == "load":
             if len(args) != 2:
-                print("usage: fence load <filename>")
+                print("usage: geofence load <filename>")
                 return
             self.load_fence(args[1])
 
@@ -151,11 +166,30 @@ class GeoFenceModule(mp_module.MPModule):
                               'floor':float(params[3]),
                               'roof':float(params[4]),
                               'Vertices':[]}
-
             
             self.mpstate.map_functions['draw_lines'](self.geofence_draw_callback)
             print "Drawing geofence on map with %d vertices" % int(params[2])
-        
+
+        elif args[0] == "upload":
+            if len(self.drawnFenceList) == 0:
+                print("No drawn geofences to upload")
+
+            for gf in self.drawnFenceList:
+                # Add the drawn "draft" geofences to fenceList
+                if gf['id'] > len(self.fenceList) - 1:
+                    self.fenceList.append(gf)
+                else:
+                    self.fenceList[gf['id']] = gf
+                # Remove the draft fence from the map
+                self.mpstate.map.remove_object("DraftFence"+str(gf['id']))
+            self.drawnFenceIds = []
+            self.drawnFenceList = []
+
+            # Send all fences
+            self.t1 = time.time()
+            self.numSentFence = 0
+            self.startSendingFence = True
+
         else:
             self.print_usage()
 
@@ -235,25 +269,120 @@ class GeoFenceModule(mp_module.MPModule):
                 Geofence = {'id':id,'type': type,'numV':numV,'floor':floor,
                             'roof':roof,'Vertices':Vertices}
 
-                self.fenceList.append(Geofence)
+                if self.nice_geofence(Geofence):
+                    self.fenceList.append(Geofence)
+                else:
+                    print("Geofence %d not added - Polygon does not meet niceness criteria." % id)
+
+    def nice_geofence(self,geofence):
+        if not geofence_check_niceness:
+            return True
+
+        # Represent geofence as a polygon in x,y coordinates
+        vertices = geofence["Vertices"]
+        points = []
+        origin = vertices[0]
+        for vertex in vertices:
+            # Convert from geodetic coordinates to NED coordinates
+            pt = self.LLA2NED(origin, vertex)
+            # Reverse North,East coords to match x,y coords used by nice_polygon_2D
+            pt = (pt[1], pt[0])
+            points.append(Vector(*pt))
+
+        # Use PolyCARP function to check that polygon is nice
+        return nice_polygon_2D(points, 0.01)
+
+    def LLA2NED(self,origin,position):
+        """
+        Convert from geodetic coordinates to NED coordinates
+        :param origin:  origin of NED frame in geodetic coordinates
+        :param position: position to be converted to NED
+        :return: returns position in NED
+        """
+        R    = 6371000  # radius of earth
+        oLat = origin[0]*np.pi/180
+        oLon = origin[1]*np.pi/180
+
+        if(len(origin) > 2):
+            oAlt = origin[2]
+        else:
+            oAlt = 0
+
+        pLat = position[0]*np.pi/180
+        pLon = position[1]*np.pi/180
+
+        if(len (origin) > 2):
+            pAlt = position[2]
+        else:
+            pAlt = 0
+
+        # convert given positions from geodetic coordinate frame to ECEF
+        oX   = (R+oAlt)*np.cos(oLat)*np.cos(oLon)
+        oY   = (R+oAlt)*np.cos(oLat)*np.sin(oLon)
+        oZ   = (R+oAlt)*np.sin(oLat)
+
+        Pref = np.array([[oX],[oY],[oZ]])
+
+        pX   = (R+pAlt)*np.cos(pLat)*np.cos(pLon)
+        pY   = (R+pAlt)*np.cos(pLat)*np.sin(pLon)
+        pZ   = (R+pAlt)*np.sin(pLat)
+
+        P    = np.array([[pX],[pY],[pZ]])
+
+        # Convert from ECEF to NED
+        Rne  = np.array([[-np.sin(oLat)*np.cos(oLon), -np.sin(oLat)*np.sin(oLon), np.cos(oLat)],
+                        [-np.sin(oLon),                np.cos(oLon),          0     ],
+                        [-np.cos(oLat)*np.cos(oLon), -np.cos(oLat)*np.sin(oLon),-np.sin(oLat)]])
+        
+        Pn   = np.dot(Rne,(P - Pref))
+
+        if(len (origin) > 2):
+            return [Pn[0,0], Pn[1,0], Pn[2,0]]
+        else:
+            return [Pn[0,0], Pn[1,0]]
+
 
     def geofence_draw_callback(self, points):
         '''callback from drawing waypoints'''
+        
         if len(points) != self.Geofence0["numV"]:            
             print "Insufficient points in polygon, try drawing polygon again"
+            print("(Expected %d points, Received %d points)" % (self.Geofence0["numV"], len(points)))
             return
+            
         from MAVProxy.modules.lib import mp_util
+        from MAVProxy.modules.mavproxy_map import mp_slipmap 
 
         for pts in points:
-            self.Geofence0["Vertices"].append(pts);
-        
+            self.Geofence0['Vertices'].append(pts)
 
-        if(self.Geofence0["id"] > len(self.fenceList)-1):        
-            self.Send_fence(self.Geofence0);
-            self.fenceList.append(self.Geofence0)
+        # Adjust fence id to not leave empty spaces
+        if self.Geofence0['id'] > len(self.fenceList) - 1:
+            self.Geofence0['id'] = len(self.fenceList)
+        name = "DraftFence"+str(self.Geofence0['id'])
+
+        # Check that the geofence polygon is nice
+        if self.nice_geofence(self.Geofence0):
+            if self.Geofence0['id'] not in self.drawnFenceIds:        
+                self.drawnFenceList.append(self.Geofence0)
+            else:
+                self.drawnFenceList[self.drawnFenceIds.index(self.Geofence0['id'])] = self.Geofence0
+                self.mpstate.map.remove_object(name)
+            print("Geofence %d added (draft)" % (self.Geofence0['id']))
         else:
-            self.fenceList[self.Geofence0["id"]] = self.Geofence0;
-            self.Send_fence(self.Geofence0);
+            print("Geofence not added - Polygon does not meet niceness criteria (must be counterclockwise)")
+            return
+
+        # Draw the draft geofence (but do not upload it yet)
+        points = self.Geofence0['Vertices'][:]
+        points.append(points[0])
+        if self.Geofence0['type'] == 0:
+            gcf = (255, 255, 150)
+        else:
+            gcf = (255, 200, 200)
+        self.mpstate.map.add_object(mp_slipmap.SlipPolygon(name, points, layer=2,
+                                                               linewidth=2, colour=gcf)) 
+
 
     def save_geofence(self,filename):
 

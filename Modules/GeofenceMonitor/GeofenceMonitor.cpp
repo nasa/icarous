@@ -56,6 +56,9 @@ bool GeofenceMonitor::CheckViolation(double position[],double trk,double gs,doub
 
     for(int i = 0;i<n;i++) {
         fence *gf = GetGeofence(i);
+        if(gf == NULL){
+            continue;
+        }
 
         EuclideanProjection *proj = gf->GetProjection();
         Vect3 currentPosR3 = proj->project(currentPosLLA);
@@ -245,6 +248,7 @@ fence* GeofenceMonitor::GetGeofence(int id) {
             return &(*(fenceListIt));
         }
     }
+    return NULL;
 }
 
 void GeofenceMonitor::ClearFences() {

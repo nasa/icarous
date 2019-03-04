@@ -108,6 +108,8 @@ Waypoints can be uploaded from MAVProxy using the `wp` command, e.g.,
 Geofence can be uploaded from MAVProxy using the `geofence` command, e.g.,
 
 	geofence load Examples/InputData/geofence.xml
+
+(Optional: To automatically check that geofences are composed of "nice" polygons before uploading, download PolyCARP from https://github.com/nasa/PolyCARP.git and add the Python folder in this repository to the PYTHONPATH environment variable.)
 	
 Once waypoints and geofence are uploaded, the mission can be started from MAVProxy as follows:
 
