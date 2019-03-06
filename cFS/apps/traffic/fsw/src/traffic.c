@@ -156,7 +156,7 @@ void TRAFFIC_ProcessPacket(){
             break;
         }
 
-        case FREQ_30_WAKEUP_MID:{
+        case FREQ_10_WAKEUP_MID:{
 
             if(trafficAppData.numTraffic == 0)
                 break;
