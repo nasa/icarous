@@ -69,8 +69,9 @@ ICAROUS makes use of the cmake build system. In order to setup a build, the foll
 
 Run cmake with `-DSITL=ON` option to compile for software-in-the-loop simulations. Use `-DSPLINES=ON` to compile splines planner (This requires the nlopt library).
 
-For compilation and linking errors related to missing libraries, check [Modules/README.md](Modules/README.md).
+For compilation on an ARM processor, follow the instructions in patches/arm before running cmake.
 
+ICAROUS and cFS can be compiled and run on OSX as well. Follow instructions in patches/osx. NOTE: Due to the lack of extended posix functionality on OSX, the patches provide implementations of osal's timer api. However, the scheduler application doesn't work well with this patch. We recommend using the macScheduler app instead.
 
 ### LAUNCHING ICAROUS
 

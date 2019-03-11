@@ -15,6 +15,6 @@ add_library(ASTAR SHARED ${SOURCE_FILES})
 
 target_link_libraries(ASTAR ACCoRD)
 
-add_executable(Astar main.cpp)
+add_executable(AstarTest main.cpp)
 
-target_link_libraries(Astar ASTAR)
+target_link_libraries(AstarTest ASTAR)

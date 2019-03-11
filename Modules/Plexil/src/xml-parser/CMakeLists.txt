@@ -71,5 +71,4 @@ target_link_libraries(PlexilXmlParser
         PlexilIntfc
         PlexilExpr
         PlexilValue
-        PlexilUtils
-        wrap nsl m rt pthread dl)
+        PlexilUtils)

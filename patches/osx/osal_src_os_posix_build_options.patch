@@ -1,0 +1,14 @@
+--- build_options.cmake	2019-03-11 13:57:14.000000000 -0400
++++ build_options2.cmake	2019-03-11 16:57:11.000000000 -0400
+@@ -25,4 +25,10 @@
+ # link command in order to produce the final binary.  These libs will be used for
+ # ALL targets that utilize the POSIX OS layer.  Additional target-specific libraries 
+ # may also be specified in the BSP or the cross-compile toolchain. 
+-set (OSAL_LINK_LIBS ${OSAL_LINK_LIBS} pthread dl rt)
++
++if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
++ # Removing dependency on librt. 
++ set (OSAL_LINK_LIBS ${OSAL_LINK_LIBS} pthread dl)
++else()
++ set (OSAL_LINK_LIBS ${OSAL_LINK_LIBS} pthread dl rt)
++endif()

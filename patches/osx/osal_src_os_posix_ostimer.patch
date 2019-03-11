@@ -1,0 +1,233 @@
+--- ../cFE/osal/src/os/posix/ostimer.c	2019-03-11 13:57:14.000000000 -0400
++++ /Users/sbalach2/Downloads/cFE/osal/src/os/posix/ostimer.c	2019-03-12 10:46:08.000000000 -0400
+@@ -35,6 +35,15 @@
+ #include <sys/errno.h>
+ #include <pthread.h>
+ 
++/*
++ * Using Grand Central Dispatch since osx doesn't support timer functionality available 
++ * in linux
++ */
++#ifdef __APPLE__
++#include <dispatch/dispatch.h>
++#endif
++
++
+ /****************************************************************************************
+                                 EXTERNAL FUNCTION PROTOTYPES
+ ****************************************************************************************/
+@@ -54,6 +63,14 @@
+                                      DEFINES
+ ****************************************************************************************/
+ 
++/**
++ * Lets define a value for SIGRTMAX becuase osx doesn't support the extended posix
++ * functionality
++ */
++#ifdef __APPLE__
++#define SIGRTMAX 10
++#endif
++
+ /*
+ ** The timers use the RT Signals. The system that this code was developed
+ ** and tested on has 32 available RT signals ( SIGRTMIN -> SIGRTMAX ).
+@@ -73,6 +90,26 @@
+                                     LOCAL TYPEDEFS 
+ ****************************************************************************************/
+ 
++#ifdef __APPLE__
++typedef struct 
++{
++  uint32_t              free;
++  char                  name[OS_MAX_API_NAME];
++  uint32_t              creator;
++  uint32_t              start_time;
++  uint32_t              interval_time;
++  uint32_t              accuracy;
++  OS_TimerCallback_t    callback_ptr;
++  dispatch_source_t     host_timerid;
++  uint8_t               resumed;
++} OS_timer_internal_record_t;
++
++struct itimerspec {
++  struct timespec it_interval;
++  struct timespec it_value;
++};
++
++#else
+ typedef struct 
+ {
+    uint32_t              free;
+@@ -85,6 +122,7 @@
+    timer_t              host_timerid;
+ 
+ } OS_timer_internal_record_t;
++#endif
+ 
+ /****************************************************************************************
+                                    GLOBAL DATA
+@@ -98,6 +136,12 @@
+ */
+ pthread_mutex_t    OS_timer_table_mut;
+ 
++
++#ifdef __APPLE__
++dispatch_queue_t queue;
++#endif
++
++
+ /****************************************************************************************
+                                 INITIALIZATION FUNCTION
+ ****************************************************************************************/
+@@ -116,13 +160,18 @@
+       OS_timer_table[i].free      = TRUE;
+       OS_timer_table[i].creator   = UNINITIALIZED;
+       strcpy(OS_timer_table[i].name,"");
+-
+    }
+ 
+    /*
+    ** get the resolution of the realtime clock
+    */
++   #ifdef __APPLE__
++   // Note: this is an arbitrary assignment for now.
++   clock_resolution.tv_sec = 0;
++   clock_resolution.tv_nsec = 100;
++   #else
+    status = clock_getres(CLOCK_REALTIME, &clock_resolution);
++   #endif
+    if ( status < 0 )
+    {
+       return_code = OS_ERROR;
+@@ -142,9 +191,14 @@
+       {
+          return_code = OS_ERROR;
+       }
++
++      #ifdef __APPLE__
++      queue = dispatch_queue_create("timerQueue", 0);
++      #endif
+    }
+    return(return_code);
+ 
++
+ }
+ 
+ /****************************************************************************************
+@@ -271,6 +325,8 @@
+         return OS_ERR_NO_FREE_IDS;
+    }
+ 
++
++
+    /* 
+    ** Check to see if the name is already taken 
+    */
+@@ -304,9 +360,10 @@
+    strncpy(OS_timer_table[possible_tid].name, timer_name, OS_MAX_API_NAME);
+    OS_timer_table[possible_tid].start_time = 0;
+    OS_timer_table[possible_tid].interval_time = 0;
+-    
+    OS_timer_table[possible_tid].callback_ptr = callback_ptr;
++   OS_timer_table[possible_tid].resumed = 0;
+ 
++   #ifndef __APPLE__
+    /*
+    **  Initialize the sigaction and sigevent structures for the handler.
+    */
+@@ -318,21 +375,49 @@
+    memset((void *)&evp, 0, sizeof(evp));
+    evp.sigev_notify = SIGEV_SIGNAL; 
+    evp.sigev_signo = OS_STARTING_SIGNAL - possible_tid;
++   #endif
+ 
+    /*
+    ** Create the timer
+    */
++   #ifdef __APPLE__
++
++   // Create the timer on the dispatch queue
++   dispatch_source_t timerId = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
++
++   //Associate the call back function with the timer
++   dispatch_source_set_event_handler(timerId, ^{callback_ptr(possible_tid);});
++
++   //Set the cancel handler
++   dispatch_source_set_cancel_handler(timerId, ^{
++       dispatch_release(timerId);
++       dispatch_release(queue);
++   });
++
++   //Store the timer data in the timer table
++   OS_timer_table[possible_tid].host_timerid = timerId;
++
++   // Lets assume this is successful for now.
++   status = 1;
++
++   #else
++
+    status = timer_create(CLOCK_REALTIME, &evp, (timer_t *)&(OS_timer_table[possible_tid].host_timerid));
++
++   #endif
+    if (status < 0) 
+    {
+       OS_timer_table[possible_tid].free = TRUE;
+       return ( OS_TIMER_ERR_UNAVAILABLE);
+    }
+    
++
++   #ifndef __APPLE__
+    /*
+    ** Set the signal action for the timer
+    */
+    sigaction(OS_STARTING_SIGNAL - possible_tid, &(sig_act), 0); 
++   #endif
+ 
+    /*
+    ** Return the clock accuracy to the user
+@@ -399,10 +484,23 @@
+    /*
+    ** Program the real timer
+    */
++   #ifdef __APPLE__
++   // Start the timer
++   dispatch_time_t start = dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC); 
++
++   dispatch_source_set_timer(OS_timer_table[timer_id].host_timerid, start, interval_time*1000, 0);
++
++   if(OS_timer_table[timer_id].resumed == 0){
++      dispatch_resume(OS_timer_table[timer_id].host_timerid);
++      OS_timer_table[timer_id].resumed = 1;
++   }
++
++   #else
+    status = timer_settime((timer_t)(OS_timer_table[timer_id].host_timerid), 
+                              0,              /* Flags field can be zero */
+                              &timeout,       /* struct itimerspec */
+-		             NULL);         /* Oldvalue */
++                            NULL);         /* Oldvalue */
++   #endif
+    if (status < 0) 
+    {
+       return ( OS_TIMER_ERR_INTERNAL);
+@@ -438,7 +536,12 @@
+    /*
+    ** Delete the timer 
+    */
++   #ifdef __APPLE__
++   dispatch_source_cancel(OS_timer_table[timer_id].host_timerid);
++   #else
+    status = timer_delete((timer_t)(OS_timer_table[timer_id].host_timerid));
++   #endif
++
+    OS_timer_table[timer_id].free = TRUE;
+    if (status < 0)
+    {
+@@ -543,6 +646,7 @@
+ } /* end OS_TimerGetInfo */
+ 
+ /****************************************************************
++
+  * TIME BASE API
+  *
+  * This is not implemented by this OSAL, so return "OS_ERR_NOT_IMPLEMENTED"

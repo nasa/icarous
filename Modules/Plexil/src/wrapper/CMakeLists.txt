@@ -43,8 +43,14 @@ target_link_libraries(PlexilWrapper
         PlanDebugListener
         LuvListener
         PlexilSockets
-        CfsAdapter
-        wrap nsl m rt pthread dl)
+        CfsAdapter)
+
+target_link_libraries(PlexilWrapper m dl pthread)
+
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+  target_link_libraries(PlexilWrapper nsl rt)
+else()
+endif()
 
 add_executable(wrapperTest test.c)
 

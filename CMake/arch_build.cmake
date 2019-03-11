@@ -215,7 +215,8 @@ function(prepare)
     if (CMAKE_CROSSCOMPILING)
       message(FATAL_ERROR "Cross-compile toolchain ${CMAKE_TOOLCHAIN_FILE} must define CFE_SYSTEM_PSPNAME and OSAL_SYSTEM_OSTYPE")
     elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux" OR 
-            "${CMAKE_SYSTEM_NAME}" STREQUAL "CYGWIN")
+            "${CMAKE_SYSTEM_NAME}" STREQUAL "CYGWIN" OR
+            "${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
       # Export the variables determined here up to the parent scope
       SET(CFE_SYSTEM_PSPNAME      "pc-linux" PARENT_SCOPE)
       SET(OSAL_SYSTEM_OSTYPE      "posix"    PARENT_SCOPE)

@@ -11,7 +11,6 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
-#include <endian.h>
 
 #if __BYTE_ORDER == __BIG_ENDIAN
 

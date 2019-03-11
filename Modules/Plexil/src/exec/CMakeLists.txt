@@ -58,6 +58,6 @@ include_directories(
 
 add_library(PlexilExec SHARED ${SOURCE_FILES})
 
-target_link_libraries(PlexilExec wrap nsl m rt pthread dl)
+target_link_libraries(PlexilExec)
 
 

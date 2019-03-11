@@ -1,0 +1,20 @@
+--- cfe_es_apps.c	2019-03-11 13:57:16.000000000 -0400
++++ /Users/sbalach2/Downloads/cFE/cfe/fsw/cfe-core/src/es/cfe_es_apps.c	2019-03-09 19:13:13.000000000 -0500
+@@ -591,7 +591,7 @@
+           */
+           if ( ReturnCode == OS_SUCCESS )
+           {
+-             ReturnCode = OS_SymbolLookup( &StartAddr, (const char*)EntryPointData );
++            ReturnCode = OS_SymbolLookupWithHandle(ModuleId, &StartAddr, (const char*)EntryPointData );
+              if ( ReturnCode != OS_SUCCESS )
+              {
+                  CFE_ES_WriteToSysLog("ES Startup: Could not find symbol:%s. EC = 0x%08X\n",
+@@ -902,7 +902,7 @@
+           if ( ReturnCode == OS_SUCCESS )
+           {
+ 
+-             ReturnCode = OS_SymbolLookup( &StartAddr, (const char *)EntryPointData );
++            ReturnCode = OS_SymbolLookupWithHandle(ModuleId, &StartAddr, (const char *)EntryPointData );
+              if (ReturnCode != OS_SUCCESS) /* could not find symbol */
+              {
+                  CFE_ES_WriteToSysLog("ES Startup: Could not find Library Init symbol:%s. EC = 0x%08X\n",

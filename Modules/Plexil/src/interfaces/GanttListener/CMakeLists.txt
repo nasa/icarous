@@ -26,5 +26,3 @@ include_directories(
 link_directories(${LIBRARY_OUTPUT_PATH})
 
 add_library(GanttListener SHARED ${SOURCE_FILES})
-
-target_link_libraries(GanttListener wrap nsl m rt pthread dl)

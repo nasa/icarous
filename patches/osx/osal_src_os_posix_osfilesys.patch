@@ -1,0 +1,14 @@
+--- ../cFE/osal/src/os/posix/osfilesys.c	2019-03-11 13:57:14.000000000 -0400
++++ /Users/sbalach2/Downloads/cFE/osal/src/os/posix/osfilesys.c	2019-03-12 10:37:34.000000000 -0400
+@@ -99,7 +99,11 @@
+ #include "common_types.h"
+ #include "osapi.h"
+ 
++#ifdef __APPLE__
++#include <sys/mount.h>
++#else
+ #include <sys/vfs.h>
++#endif
+ /****************************************************************************************
+                                      DEFINES
+ ****************************************************************************************/

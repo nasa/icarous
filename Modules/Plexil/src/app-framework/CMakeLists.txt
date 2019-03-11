@@ -73,5 +73,4 @@ target_link_libraries(PlexilAppFramework
         PlexilExpr
         PlexilValue
         PlexilUtils
-        pugixml
-        wrap nsl m rt pthread dl)
+        pugixml)

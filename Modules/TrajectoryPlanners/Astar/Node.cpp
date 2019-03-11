@@ -84,7 +84,7 @@ void Node::GenerateChildren(int lenH,int lenV,double* heading, double* vspeed, d
 
 }
 
-bool Node::operator<(Node &B) {
+bool Node::operator<(const Node &B) const {
     double val1 = g + h;
     double val2 = B.g + B.h;
 
@@ -95,7 +95,7 @@ bool Node::operator<(Node &B) {
     }
 }
 
-bool Node::operator!=(Node &B) {
+bool Node::operator!=(const Node &B) const {
     if (index != B.index){
         return true;
     }else{

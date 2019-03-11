@@ -28,6 +28,3 @@ include_directories(
 link_directories(${LIBRARY_OUTPUT_PATH})
 
 add_library(LuvListener SHARED ${SOURCE_FILES})
-
-target_link_libraries(LuvListener
-        wrap nsl m rt pthread dl)

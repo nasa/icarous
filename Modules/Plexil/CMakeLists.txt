@@ -3,6 +3,12 @@ project(PlexilSrc)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,-undefined,dynamic_lookup")
+else()
+endif()
+
 add_definitions(-DHAVE_CONFIG_H -DPIC)
 
 set(PLEXIL_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/)
@@ -25,5 +31,5 @@ add_subdirectory(src/interfaces/GanttListener)
 add_subdirectory(src/interfaces/CfsAdapter)
 add_subdirectory(src/interfaces/PlanDebugListener)
 add_subdirectory(src/interfaces/LuvListener)
-add_subdirectory(src/universal-exec)
 add_subdirectory(src/wrapper)
+add_subdirectory(src/universal-exec)

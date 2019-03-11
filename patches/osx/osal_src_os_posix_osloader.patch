@@ -1,0 +1,48 @@
+--- ../cFE/osal/src/os/posix/osloader.c	2019-03-11 13:57:14.000000000 -0400
++++ /Users/sbalach2/Downloads/cFE/osal/src/os/posix/osloader.c	2019-03-09 19:11:44.000000000 -0500
+@@ -163,6 +163,45 @@
+     
+ }/* end OS_SymbolLookup */
+ 
++int32 OS_SymbolLookupWithHandle(uint32 moduleId, cpuaddr *SymbolAddress, const char *SymbolName )
++{
++  const char   *dlError;           /*  Pointer to error string   */
++  void         *Function;
++
++  /*
++   * call dlerror() to clear any prior error that might have occured.
++   */
++  dlerror();
++
++  /*
++  ** Check parameters
++  */
++  if (( SymbolAddress == NULL ) || ( SymbolName == NULL ))
++    {
++      return(OS_INVALID_POINTER);
++    }
++
++  /*
++  ** Lookup the entry point
++  */
++
++  void* hdl = OS_module_table[moduleId].host_module_id;
++  Function = dlsym(hdl, SymbolName);
++  dlError = dlerror();
++  if( dlError )
++    {
++      return(OS_ERROR);
++    }
++
++  *SymbolAddress = (cpuaddr)Function;
++   
++  return(OS_SUCCESS);
++    
++}/* end OS_SymbolLookup */
++
++
++
++
+ /*--------------------------------------------------------------------------------------
+     Name: OS_SymbolTableDump
+     

@@ -63,7 +63,7 @@
 
 
 /**
- * @struct appdataInt_t
+ * @struct appdataIntGS_t
  * @brief Structure to hold app data
  */
 typedef struct{
@@ -143,6 +143,8 @@ void gsInterface_InitializeParamIds();
  *  Send all locally stored params over the SB
  */
 void gsInterface_PublishParams();
+
+void ConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp);
 
 #define SendGSMsg(arg) writeMavlinkData(&appdataIntGS.gs,&arg)
 

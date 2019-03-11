@@ -1,0 +1,34 @@
+--- ../cFS/cFE/psp/fsw/pc-linux/src/cfe_psp_memory.c	2019-03-12 11:53:36.000000000 -0400
++++ /Users/sbalach2/Downloads/cFE/psp/fsw/pc-linux/src/cfe_psp_memory.c	2019-03-12 11:55:11.000000000 -0400
+@@ -90,8 +90,10 @@
+ /*
+ **  External Declarations
+ */
++#ifndef __APPLE__
+ extern unsigned int _init;
+ extern unsigned int _fini;
++#endif
+ 
+ /*
+ ** Global variables
+@@ -765,7 +767,12 @@
+ int32 CFE_PSP_GetCFETextSegmentInfo(cpuaddr *PtrToCFESegment, uint32 *SizeOfCFESegment)
+ {
+    int32 return_code;
+-   
++  
++   #ifdef __APPLE__
++   return_code = CFE_PSP_ERROR;
++   return(return_code);
++   #else
++ 
+    if ( SizeOfCFESegment == NULL )
+    {
+       return_code = CFE_PSP_ERROR;
+@@ -779,5 +786,6 @@
+    }
+    
+    return(return_code);
++   #endif
+ }
+ 

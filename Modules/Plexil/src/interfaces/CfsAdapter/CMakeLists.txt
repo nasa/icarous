@@ -31,5 +31,4 @@ add_library(CfsAdapter SHARED ${SOURCE_FILES})
 
 target_link_libraries(CfsAdapter
         PlexilValue
-        PlexilUtils
-        wrap nsl m rt pthread dl)
+        PlexilUtils)

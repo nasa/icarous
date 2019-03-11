@@ -237,10 +237,10 @@ void ProcessAPMessage(mavlink_message_t message) {
                     appdataInt.startWPDownlink = false;
                     //OS_printf("Received downlink flightplan from pixhawk\n");
 
-                    flightplan_t fp;
-                    CFE_SB_InitMsg(&fp,DOWNLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
-                    ConvertMissionItemsToPlan(appdataInt.numDownlinkWaypoints,appdataInt.DownlinkMissionItems,&fp);
-                    SendSBMsg(fp);
+                    //flightplan_t fp;
+                    //CFE_SB_InitMsg(&fp,DOWNLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
+                    //ConvertMissionItemsToPlan(appdataInt.numDownlinkWaypoints,appdataInt.DownlinkMissionItems,&fp);
+                    //SendSBMsg(fp);
                 }else{
                     mavlink_message_t request;
                     mavlink_msg_mission_request_pack(255,0,&request,1,0,(uint16_t )(missionItem.seq + 1),MAV_MISSION_TYPE_MISSION);
@@ -356,7 +356,7 @@ void ARDUPILOT_ProcessPacket() {
         case ICAROUS_FLIGHTPLAN_MID:{
             flightplan_t* msg = (flightplan_t*)appdataInt.INTERFACEMsgPtr;
             memcpy(&fpdata,msg,sizeof(flightplan_t));
-            int count = ConvertPlanToMissionItems(&fpdata);
+            int count = apConvertPlanToMissionItems(&fpdata);
             appdataInt.numWaypoints = count;
 #ifdef SITL
             mavlink_message_t missionCount;
@@ -475,7 +475,7 @@ void ARDUPILOT_ProcessPacket() {
     return;
 }
 
-uint16_t ConvertPlanToMissionItems(flightplan_t* fp){
+uint16_t apConvertPlanToMissionItems(flightplan_t* fp){
     int count = 0;
     for(int i=0;i<fp->num_waypoints;++i){
         appdataInt.UplinkMissionItems[count].target_system = 1;

@@ -1,0 +1,12 @@
+--- CMakeLists.txt	2019-03-11 16:33:46.000000000 -0400
++++ CMakeLists2.txt	2019-03-11 16:33:10.000000000 -0400
+@@ -80,6 +80,9 @@
+     set(STOP_WHOLE_ARCHIVE  "-Wl,--no-whole-archive")
+   else()
+     # Other toolchain options may be added here
++    # This is specific to mac os x
++    set(START_WHOLE_ARCHIVE "-Wl,-all_load")
++    set(STOP_WHOLE_ARCHIVE "")
+   endif()
+   
+ endif (NOT TGT${TGTID}_STATIC_LINK)

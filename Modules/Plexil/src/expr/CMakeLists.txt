@@ -58,4 +58,4 @@ include_directories(
 
 add_library(PlexilExpr SHARED ${SOURCE_FILES})
 
-target_link_libraries(PlexilExpr wrap nsl m rt pthread dl)
+target_link_libraries(PlexilExpr)

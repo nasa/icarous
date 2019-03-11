@@ -1,0 +1,14 @@
+--- ../cFE/osal/src/os/posix/osapi.c	2019-03-11 13:57:14.000000000 -0400
++++ /Users/sbalach2/Downloads/cFE/osal/src/os/posix/osapi.c	2019-03-12 10:33:04.000000000 -0400
+@@ -1063,7 +1063,11 @@
+        /* 
+        ** Set priority
+        */
++       #ifndef __APPLE__
+        ret = pthread_setschedprio(OS_task_table[task_id].id, os_priority);
++       #else
++       ret = 0;
++       #endif
+        if( ret != 0 )
+        {
+           #ifdef OS_DEBUG_PRINTF

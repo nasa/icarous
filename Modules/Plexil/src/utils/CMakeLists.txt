@@ -50,16 +50,22 @@ set(SOURCE_FILES
 if(DEFINED ENV{JAVA_HOME})
     add_library(PlexilUtils SHARED ${SOURCE_FILES})
 
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+    include_directories(
+            $ENV{JAVA_HOME}/include/
+            $ENV{JAVA_HOME}/include/darwin/
+            ${PLEXIL_ROOT}/include)
+
+else()
     include_directories(
             $ENV{JAVA_HOME}/include/
             $ENV{JAVA_HOME}/include/linux/
             ${PLEXIL_ROOT}/include)
+endif()
 
 else()
     message(FATAL_ERROR "JAVA_HOME not defined.")
 endif()
 
+target_link_libraries(PlexilUtils dl)
 
-
-
-target_link_libraries(PlexilUtils wrap nsl m rt pthread dl)

@@ -33,8 +33,8 @@ public:
     void GenerateChildren(int lenH,int lenV,double* heading, double* vspeed, double dt, std::list<Node> *nodeList);
     double NodeDist(Node& B) const;
 
-    bool operator<(Node& B);
-    bool operator!=(Node& B);
+    bool operator<(const Node& B) const;
+    bool operator!=(const Node& B) const;
     void operator=(const Node& B);
 
 };

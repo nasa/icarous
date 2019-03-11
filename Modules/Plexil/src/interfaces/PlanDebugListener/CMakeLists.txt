@@ -25,6 +25,3 @@ include_directories(
 link_directories(${LIBRARY_OUTPUT_PATH})
 
 add_library(PlanDebugListener SHARED ${SOURCE_FILES})
-
-target_link_libraries(PlanDebugListener
-        wrap nsl m rt pthread dl)

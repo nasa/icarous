@@ -30,4 +30,5 @@ include_directories(
 
 add_library(PlexilValue SHARED ${SOURCE_FILES})
 
-target_link_libraries(PlexilValue wrap nsl rt pthread dl)
+target_link_libraries(PlexilValue PlexilUtils)
+

@@ -28,5 +28,4 @@ add_library(IpcUtils SHARED ${SOURCE_FILES})
 target_link_libraries(IpcUtils
         PlexilValue
         PlexilUtils
-        ipc
-        wrap nsl m rt pthread dl)
+        ipc)

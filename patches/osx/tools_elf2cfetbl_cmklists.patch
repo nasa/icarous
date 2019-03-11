@@ -1,0 +1,15 @@
+--- ../cFE/tools/elf2cfetbl/CMakeLists.txt	2019-03-11 13:57:15.000000000 -0400
++++ /Users/sbalach2/Downloads/cFE/tools/elf2cfetbl/CMakeLists.txt	2019-03-04 20:19:17.000000000 -0500
+@@ -30,9 +30,9 @@
+ include_directories(${CMAKE_CURRENT_BINARY_DIR}/inc_stubs)
+ 
+ # force build as 32-bit
+-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+-add_executable(elf2cfetbl elf2cfetbl.c)
++#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
++#add_executable(elf2cfetbl elf2cfetbl.c)
+ 
+-install(TARGETS elf2cfetbl DESTINATION host)
++#install(TARGETS elf2cfetbl DESTINATION host)
+ 
+ 

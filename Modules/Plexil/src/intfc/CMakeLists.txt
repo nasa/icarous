@@ -45,5 +45,3 @@ include_directories(
 )
 
 add_library(PlexilIntfc SHARED ${SOURCE_FILES})
-
-target_link_libraries(PlexilIntfc wrap nsl m rt pthread dl)

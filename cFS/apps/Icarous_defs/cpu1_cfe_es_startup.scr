@@ -7,6 +7,7 @@ CFE_APP, /cf/geofence.so      , GEOFENCE_AppMain     , GEOFENCE     ,  61,    81
 CFE_APP, /cf/traffic.so       , TRAFFIC_AppMain      , TRAFFIC      ,  61,   81920, 0x0, 0;
 CFE_APP, /cf/trajectory.so    , TRAJECTORY_AppMain   , TRAJECTORY   ,  61,   81920, 0x0, 0;
 CFE_APP, /cf/logger.so        , LOGGER_AppMain       , LOG          ,  66,    8192, 0x0, 0;
+!CFE_APP, /cf/macsch.so       , MACSCH_AppMain       , MACSCH       ,  10,    8192, 0x0, 0;
 !CFE_APP, /cf/apInterface.so , APINTERFACE_AppMain  , APINTERFACE  , 100,    8192, 0x0, 0;
 !CFE_APP, /cf/merger.so     , MERGER_AppMain     , MERGER     ,  82,    8192, 0x0, 0;
 !CFE_APP, /cf/sbn.so        , SBN_AppMain        , SBN        ,  70,    4096, 0x0, 0;

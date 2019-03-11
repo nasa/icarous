@@ -24,8 +24,6 @@ cmake_minimum_required(VERSION 2.6.4)
 # so they won't change later.
 project(ICAROUS_CFS C CXX)
 
-include("CMake/utils.cmake")
-
 OPTION(ARM "Build binaries for ARM" OFF)
 OPTION(SITL "Build the project for SITL" OFF)
 
@@ -41,19 +39,19 @@ ENDIF()
 
 
 IF(NOT ARM)
-    set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
-    set(CMAKE_C_FLAGS "-g -fPIC -m32 ")
+    #set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
+    #set(CMAKE_C_FLAGS "-g -fPIC -m32 ")
 ELSE()
     execute_process(COMMAND bash -c "sed -i 's/-m32//g' ${CMAKE_SOURCE_DIR}/cFS/cFE/tools/elf2cfetbl/CMakeLists.txt")
 ENDIF()
 
 # Add modules
-get_subdirs(SUBDIRS ${CMAKE_SOURCE_DIR}/Modules)
-foreach(subdir ${SUBDIRS})
-    if (NOT (${subdir} STREQUAL "${CMAKE_SOURCE_DIR}/Modules/lib"))
-        add_subdirectory(${subdir})
-    endif ()
-endforeach()
+add_subdirectory(${CMAKE_SOURCE_DIR}/Modules/Utils)
+add_subdirectory(${CMAKE_SOURCE_DIR}/Modules/ACCoRD)
+add_subdirectory(${CMAKE_SOURCE_DIR}/Modules/Plexil)
+add_subdirectory(${CMAKE_SOURCE_DIR}/Modules/GeofenceMonitor)
+add_subdirectory(${CMAKE_SOURCE_DIR}/Modules/TrafficMonitor)
+add_subdirectory(${CMAKE_SOURCE_DIR}/Modules/TrajectoryPlanners)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DMESSAGE_FORMAT_IS_CCSDS")
 
@@ -64,7 +62,7 @@ ENDIF ()
 # Squelch a warning when building on Win32/Cygwin
 set(CMAKE_LEGACY_CYGWIN_WIN32 0)
 
-#set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 IF(NOT BUILDNAME)
     set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}/cFS/bin")
@@ -79,6 +77,15 @@ set(OSAL_USER_C_FLAGS "-g")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -fPIC -D_LINUX_OS_ -D_HAVE_STDINT_ -D_XOPEN_SOURCE=600 -std=c++11")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -fPIC -std=c99")
+
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_DARWIN_C_SOURCE")
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wl,-undefined,dynamic_lookup")
+ add_definitions("-DOSAL_SOCKET_QUEUE")
+ message(STATUS "OS X found")
+else()
+
+endif()
 
 
 # Force all builds to be 32 bit

@@ -38,5 +38,11 @@ target_link_libraries(universalExec
         PlanDebugListener
         LuvListener
         PlexilSockets
-        CfsAdapter
-        wrap nsl m rt pthread dl)
+        CfsAdapter)
+
+target_link_libraries(universalExec m dl pthread)
+
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+  target_link_libraries(universalExec nsl rt)
+else()
+endif()

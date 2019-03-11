@@ -33,5 +33,4 @@ link_directories(${LIBRARY_OUTPUT_PATH})
 add_library(IpcAdapter SHARED ${SOURCE_FILES})
 
 target_link_libraries(IpcAdapter
-        IpcUtils
-        wrap nsl m rt pthread dl)
+        IpcUtils)

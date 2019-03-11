@@ -34,9 +34,5 @@ add_library(UdpUtils SHARED udp-utils.cc)
 
 add_library(UdpAdapter SHARED MessageQueueMap.cc UdpAdapter.cc)
 
-target_link_libraries(UdpUtils
-        wrap nsl m rt pthread dl)
-
 target_link_libraries(UdpAdapter
-        UdpUtils
-        wrap nsl m rt pthread dl)
+        UdpUtils)
