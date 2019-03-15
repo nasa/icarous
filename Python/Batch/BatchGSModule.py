@@ -5,6 +5,56 @@ import pymavlink
 
 from pymavlink.dialects.v10 import icarous
 
+def LLA2NED(origin,position):
+        """
+        Convert from geodetic coordinates to NED coordinates
+        :param origin:  origin of NED frame in geodetic coordinates
+        :param position: position to be converted to NED
+        :return: returns position in NED
+        """
+        R    = 6371000  # radius of earth
+        oLat = origin[0]*np.pi/180
+        oLon = origin[1]*np.pi/180
+
+        if(len(origin) > 2):
+            oAlt = origin[2]
+        else:
+            oAlt = 0
+
+        pLat = position[0]*np.pi/180
+        pLon = position[1]*np.pi/180
+
+        if(len (origin) > 2):
+            pAlt = position[2]
+        else:
+            pAlt = 0
+
+        # convert given positions from geodetic coordinate frame to ECEF
+        oX   = (R+oAlt)*cos(oLat)*cos(oLon)
+        oY   = (R+oAlt)*cos(oLat)*sin(oLon)
+        oZ   = (R+oAlt)*sin(oLat)
+
+        Pref = np.array([[oX],[oY],[oZ]])
+
+        pX   = (R+pAlt)*cos(pLat)*cos(pLon)
+        pY   = (R+pAlt)*cos(pLat)*sin(pLon)
+        pZ   = (R+pAlt)*sin(pLat)
+
+        P    = np.array([[pX],[pY],[pZ]])
+
+        # Convert from ECEF to NED
+        Rne  = np.array([[-sin(oLat)*cos(oLon), -sin(oLat)*sin(oLon), cos(oLat)],
+                         [-sin(oLon),                cos(oLon),          0     ],
+                         [-cos(oLat)*cos(oLon), -cos(oLat)*sin(oLon),-sin(oLat)]])
+
+        Pn   = np.dot(Rne,(P - Pref))
+
+        if(len (origin) > 2):
+            return [Pn[0,0], Pn[1,0], Pn[2,0]]
+        else:
+            return [Pn[0,0], Pn[1,0]]
+
+
 class Traffic:
     def __init__(self,distH,bearing,z,S,H,V,tstart):
         self.x0 = distH*math.sin((90 - bearing)*3.142/180);
@@ -19,11 +69,15 @@ class Traffic:
         self.y = self.y0;
         self.z = self.z0;
 
+        self.lat = 0
+        self.lon = 0
+        self.alt = 0
+
         self.tstart = tstart
 
     def get_pos(self,t):
         dt = t-self.tstart
-        
+
         self.x = self.x0 + self.vx0*(dt)
         self.y = self.y0 + self.vy0*(dt)
         self.z = self.z0 + self.vz0*(dt)
@@ -50,7 +104,7 @@ class BatchGSModule():
         self.traffic_list = []
         self.start_lat = 0
         self.start_lon = 0
-        
+
         def loadGeofence(self, filename):
         '''load fence points from a file'''
         try:
@@ -252,57 +306,8 @@ class BatchGSModule():
             if m.seq != self.last_waypoint:
                 self.last_waypoint = m.seq
 
-    
-    def LLA2NED(self,origin,position):
-        """
-        Convert from geodetic coordinates to NED coordinates
-        :param origin:  origin of NED frame in geodetic coordinates
-        :param position: position to be converted to NED
-        :return: returns position in NED
-        """
-        R    = 6371000  # radius of earth
-        oLat = origin[0]*np.pi/180
-        oLon = origin[1]*np.pi/180
-        
-        if(len(origin) > 2):
-            oAlt = origin[2]
-        else:
-            oAlt = 0
-            
-        pLat = position[0]*np.pi/180
-        pLon = position[1]*np.pi/180
-            
-        if(len (origin) > 2):
-            pAlt = position[2]
-        else:
-            pAlt = 0
 
-        # convert given positions from geodetic coordinate frame to ECEF
-        oX   = (R+oAlt)*cos(oLat)*cos(oLon)
-        oY   = (R+oAlt)*cos(oLat)*sin(oLon)
-        oZ   = (R+oAlt)*sin(oLat)
-
-        Pref = np.array([[oX],[oY],[oZ]])
-        
-        pX   = (R+pAlt)*cos(pLat)*cos(pLon)
-        pY   = (R+pAlt)*cos(pLat)*sin(pLon)
-        pZ   = (R+pAlt)*sin(pLat)
-        
-        P    = np.array([[pX],[pY],[pZ]])
-        
-        # Convert from ECEF to NED
-        Rne  = np.array([[-sin(oLat)*cos(oLon), -sin(oLat)*sin(oLon), cos(oLat)],
-                         [-sin(oLon),                cos(oLon),          0     ],
-                         [-cos(oLat)*cos(oLon), -cos(oLat)*sin(oLon),-sin(oLat)]])
-    
-        Pn   = np.dot(Rne,(P - Pref))
-
-        if(len (origin) > 2):
-            return [Pn[0,0], Pn[1,0], Pn[2,0]]
-        else:
-            return [Pn[0,0], Pn[1,0]]
-                
-    def load_traffic(self,args):
+        def load_traffic(self,args):
         start_time = time.time();
         tffc = Traffic(float(args[1]),float(args[2]),float(args[3]), \
                        float(args[4]),float(args[5]),float(args[6]),start_time)
@@ -310,15 +315,19 @@ class BatchGSModule():
 
     def Update_traffic(self):
         '''Update traffic icon on map'''
-        
+
         #from MAVProxy.modules.mavproxy_map import mp_slipmap
         t = time.time()
-        
+
         for i,tffc in enumerate(self.traffic_list):
-                                                                                
+
             self.traffic_list[i].get_pos(t)
-            (lat, lon) = self.LLA2NED(self.start_lat,self.start_lon, self.traffic_list[i].y, self.traffic_list[i].x)
-            heading = math.degrees(math.atan2(self.traffic_list[i].vy0, self.traffic_list[i].vx0))            
+            (lat, lon) = LLA2NED(self.start_lat,self.start_lon, self.traffic_list[i].y, self.traffic_list[i].x)
+            self.traffic_list[i].lat = lat;
+            self.traffic_list[i].lon = lon;
+            self.traffic_list[i].alt = self.z
+
+            heading = math.degrees(math.atan2(self.traffic_list[i].vy0, self.traffic_list[i].vx0))
             self.master.mav.command_long_send(
                 1,  # target_system
                 0, # target_component
@@ -331,5 +340,3 @@ class BatchGSModule():
                 lat, # param5
                 lon, # param6
                 self.traffic_list[i].z0) # param7
-        
-                
