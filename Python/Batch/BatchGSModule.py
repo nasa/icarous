@@ -105,7 +105,7 @@ class BatchGSModule():
         self.start_lat = 0
         self.start_lon = 0
 
-        def loadGeofence(self, filename):
+    def loadGeofence(self, filename):
         '''load fence points from a file'''
         try:
             self.GetGeofence(filename)
@@ -149,7 +149,7 @@ class BatchGSModule():
 
 
             elif (msg.get_type() == "COMMAND_ACK"):
-                if msg.result == 1:
+                if msg.result == 0:
                     fence_sent = True
                     print ("Geofence sent")
                 else:
@@ -307,7 +307,7 @@ class BatchGSModule():
                 self.last_waypoint = m.seq
 
 
-        def load_traffic(self,args):
+    def load_traffic(self,args):
         start_time = time.time();
         tffc = Traffic(float(args[1]),float(args[2]),float(args[3]), \
                        float(args[4]),float(args[5]),float(args[6]),start_time)
