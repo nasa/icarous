@@ -13,86 +13,86 @@
 void gsInterface_InitializeParamIds(){
     int i = 0;
     //Traffic Parameters
-    AddParamId("LOGDAADATA");
-    AddParamId("LOOKAHEAD_TIME");
-    AddParamId("LEFT_TRK");
-    AddParamId("RIGHT_TRK");
-    AddParamId("MIN_GS");
-    AddParamId("MAX_GS");
-    AddParamId("MIN_VS");
-    AddParamId("MAX_VS");
-    AddParamId("MIN_ALT");
-    AddParamId("MAX_ALT");
-    AddParamId("TRK_STEP");
-    AddParamId("GS_STEP");
-    AddParamId("VS_STEP");
-    AddParamId("ALT_STEP");
-    AddParamId("HORIZONTAL_ACCL");
-    AddParamId("VERTICAL_ACCL");
-    AddParamId("TURN_RATE");
-    AddParamId("BANK_ANGLE");
-    AddParamId("VERTICAL_RATE");
-    AddParamId("RECOV_STAB_TIME");
-    AddParamId("MIN_HORIZ_RECOV");
-    AddParamId("MIN_VERT_RECOV");
-    AddParamId("RECOVERY_TRK");
-    AddParamId("RECOVERY_GS");
-    AddParamId("RECOVERY_VS");
-    AddParamId("RECOVERY_ALT");
-    AddParamId("CA_BANDS");
-    AddParamId("CA_FACTOR");
-    AddParamId("HORIZONTAL_NMAC");
-    AddParamId("VERTICAL_NMAC");
-    AddParamId("CONFLICT_CRIT");
-    AddParamId("RECOVERY_CRIT");
-    AddParamId("CONTOUR_THR");
-    AddParamId("AL_1_ALERT_T");
-    AddParamId("AL_1_DETECTOR");  //Hard coded for now, not a parameter
-    AddParamId("AL_1_E_ALERT_T");
-    AddParamId("AL_1_REGION");    //Hard coded for now, not a parameter
-    AddParamId("AL_1_SPREAD_ALT");
-    AddParamId("AL_1_SPREAD_GS");
-    AddParamId("AL_1_SPREAD_TRK");
-    AddParamId("AL_1_SPREAD_VS");
-    AddParamId("CONFLICT_LEVEL");
-    AddParamId("LD_CR_DTCN_DET_1"); //Hard coded for now, not a parameter
-    AddParamId("DET_1_WCV_DTHR");
-    AddParamId("DET_1_WCV_TCOA");
-    AddParamId("DET_1_WCV_TTHR");
-    AddParamId("DET_1_WCV_ZTHR");
+    AddParamId("LOGDAADATA",1);
+    AddParamId("LOOKAHEAD_TIME",20.0);
+    AddParamId("LEFT_TRK",180.0);
+    AddParamId("RIGHT_TRK",-180.0);
+    AddParamId("MIN_GS",0.2);
+    AddParamId("MAX_GS",5.0);
+    AddParamId("MIN_VS",-400);
+    AddParamId("MAX_VS",400);
+    AddParamId("MIN_ALT",0);
+    AddParamId("MAX_ALT",500);
+    AddParamId("TRK_STEP",1);
+    AddParamId("GS_STEP",0.1);
+    AddParamId("VS_STEP",5);
+    AddParamId("ALT_STEP",1);
+    AddParamId("HORIZONTAL_ACCL",1.0);
+    AddParamId("VERTICAL_ACCL",1.0);
+    AddParamId("TURN_RATE",0.0);
+    AddParamId("BANK_ANGLE",0.0);
+    AddParamId("VERTICAL_RATE",0.0);
+    AddParamId("RECOV_STAB_TIME",0.0);
+    AddParamId("MIN_HORIZ_RECOV",2.0);
+    AddParamId("MIN_VERT_RECOV",1.0);
+    AddParamId("RECOVERY_TRK",1);
+    AddParamId("RECOVERY_GS",0);
+    AddParamId("RECOVERY_VS",0);
+    AddParamId("RECOVERY_ALT",0);
+    AddParamId("CA_BANDS",1);
+    AddParamId("CA_FACTOR",0.2);
+    AddParamId("HORIZONTAL_NMAC",1.0);
+    AddParamId("VERTICAL_NMAC",0.5);
+    AddParamId("CONFLICT_CRIT",0);
+    AddParamId("RECOVERY_CRIT",0);
+    AddParamId("CONTOUR_THR",180.0);
+    AddParamId("AL_1_ALERT_T",10.0);
+    AddParamId("AL_1_DETECTOR",0);  //Hard coded for now, not a parameter
+    AddParamId("AL_1_E_ALERT_T",15.0);
+    AddParamId("AL_1_REGION",0);    //Hard coded for now, not a parameter
+    AddParamId("AL_1_SPREAD_ALT",0);
+    AddParamId("AL_1_SPREAD_GS",0);
+    AddParamId("AL_1_SPREAD_TRK",0);
+    AddParamId("AL_1_SPREAD_VS",0);
+    AddParamId("CONFLICT_LEVEL",1);
+    AddParamId("LD_CR_DTCN_DET_1",0); //Hard coded for now, not a parameter
+    AddParamId("DET_1_WCV_DTHR",5.0);
+    AddParamId("DET_1_WCV_TCOA",0.0);
+    AddParamId("DET_1_WCV_TTHR",0.0);
+    AddParamId("DET_1_WCV_ZTHR",200.0);
     // Tracking parameters
-    AddParamId("COMMAND");
-    AddParamId("TRACKINGOBJID");
-    AddParamId("PGAINX");
-    AddParamId("PGAINY");
-    AddParamId("PGAINZ");
-    AddParamId("HEADING");
-    AddParamId("DISTH");
-    AddParamId("DISTV");
+    AddParamId("COMMAND",1);
+    AddParamId("TRACKINGOBJID",0);
+    AddParamId("PGAINX",0.5);
+    AddParamId("PGAINY",0.5);
+    AddParamId("PGAINZ",0.5);
+    AddParamId("HEADING",270);
+    AddParamId("DISTH",2);
+    AddParamId("DISTV",2);
     // Trajectory parameters
-    AddParamId("OBSBUFFER");
-    AddParamId("MAXCEILING");
-    AddParamId("ASTAR_ENABLE3D");
-    AddParamId("ASTAR_GRIDSIZE");
-    AddParamId("ASTAR_RESSPEED");
-    AddParamId("ASTAR_LOOKAHEAD");
-    AddParamId("ASTAR_DAACONFILE");   //Hard coded for now, not a parameter
-    AddParamId("RRT_RESSPEED");
-    AddParamId("RRT_NITERATIONS");
-    AddParamId("RRT_DT");
-    AddParamId("RRT_MACROSTEPS");
-    AddParamId("RRT_CAPR");
-    AddParamId("RRT_DAACONFILE");     //Hard coded for now, not a parameter
-    AddParamId("XTRKDEV");
-    AddParamId("XTRKGAIN");
-    AddParamId("RESSPEED");
-    AddParamId("SEARCHALGORITHM");
+    AddParamId("OBSBUFFER",1);
+    AddParamId("MAXCEILING",50);
+    AddParamId("ASTAR_ENABLE3D",0);
+    AddParamId("ASTAR_GRIDSIZE",1.0);
+    AddParamId("ASTAR_RESSPEED",1.0);
+    AddParamId("ASTAR_LOOKAHEAD",1.0);
+    AddParamId("ASTAR_DAACONFILE",0);   //Hard coded for now, not a parameter
+    AddParamId("RRT_RESSPEED",1.0);
+    AddParamId("RRT_NITERATIONS",2000);
+    AddParamId("RRT_DT",1.0);
+    AddParamId("RRT_MACROSTEPS",5);
+    AddParamId("RRT_CAPR",5.0);
+    AddParamId("RRT_DAACONFILE",0);     //Hard coded for now, not a parameter
+    AddParamId("XTRKDEV",1000.0);
+    AddParamId("XTRKGAIN",0.6);
+    AddParamId("RESSPEED",1.0);
+    AddParamId("SEARCHALGORITHM",1);
     // Geofence parameters
-    AddParamId("LOOKAHEAD");
-    AddParamId("HTHRESHOLD");
-    AddParamId("VTHRESHOLD");
-    AddParamId("HSTEPBACK");
-    AddParamId("VSTEPBACK");
+    AddParamId("LOOKAHEAD",2.0);
+    AddParamId("HTHRESHOLD",2.0);
+    AddParamId("VTHRESHOLD",2.0);
+    AddParamId("HSTEPBACK",2.0);
+    AddParamId("VSTEPBACK",2.0);
 }
 
 void gsInterface_PublishParams() {

@@ -151,7 +151,8 @@ void ConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],fl
 #define NextParam appdataIntGS.params[i].param_value;\
 i++
 
-#define AddParamId(arg) strcpy(appdataIntGS.param_ids[i],arg);\
+#define AddParamId(arg,val) strcpy(appdataIntGS.param_ids[i],arg);\
+appdataIntGS.params[i].param_value = val; \
 i++
 
 #endif /* _ardupilot_h_ */
