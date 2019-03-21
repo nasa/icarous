@@ -300,10 +300,10 @@ void TRAFFIC_ProcessPacket(){
             n += sprintf(params + n,"alert_1_spread_trk=%f [deg];",msg->alert_1_spread_trk);
             n += sprintf(params + n,"alert_1_spread_vs=%f [fpm];",msg->alert_1_spread_vs);
             n += sprintf(params + n,"conflict_level = %d;",msg->conflict_level);
-            n += sprintf(params + n,"det_1_WCV_DTHR = %f [ft];",msg->det_1_WCV_DTHR);
+            n += sprintf(params + n,"det_1_WCV_DTHR = %f [m];",msg->det_1_WCV_DTHR);
             n += sprintf(params + n,"det_1_WCV_TCOA = %f [s];",msg->det_1_WCV_TCOA);
             n += sprintf(params + n,"det_1_WCV_TTHR = %f [s];",msg->det_1_WCV_TTHR);
-            n += sprintf(params + n,"det_1_WCV_ZTHR = %f [ft];",msg->det_1_WCV_ZTHR);
+            n += sprintf(params + n,"det_1_WCV_ZTHR = %f [m];",msg->det_1_WCV_ZTHR);
             n += sprintf(params + n,"load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.%s;",msg->load_core_detection_det_1);
 
             TrafficMonitor_UpdateDAAParameters(trafficAppData.tfMonitor,params);
