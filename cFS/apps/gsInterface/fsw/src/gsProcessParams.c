@@ -73,9 +73,9 @@ void gsInterface_InitializeParamIds(){
     AddParamId("OBSBUFFER",1);
     AddParamId("MAXCEILING",50);
     AddParamId("ASTAR_ENABLE3D",0);
-    AddParamId("ASTAR_GRIDSIZE",1.0);
+    AddParamId("ASTAR_GRIDSIZE",10.0);
     AddParamId("ASTAR_RESSPEED",1.0);
-    AddParamId("ASTAR_LOOKAHEAD",1.0);
+    AddParamId("ASTAR_LOOKAHEAD",5.0);
     AddParamId("ASTAR_DAACONFILE",0);   //Hard coded for now, not a parameter
     AddParamId("RRT_RESSPEED",1.0);
     AddParamId("RRT_NITERATIONS",2000);
