@@ -5,6 +5,39 @@ import pymavlink
 
 from pymavlink.dialects.v10 import icarous
 
+import numpy as np
+import math
+from numpy import sin,cos
+
+def wrap_valid_longitude(lon):
+    ''' wrap a longitude value around to always have a value in the range
+        [-180, +180) i.e 0 => 0, 1 => 1, -1 => -1, 181 => -179, -181 => 179
+    '''
+    return (((lon + 180.0) % 360.0) - 180.0)
+
+def gps_newpos(lat, lon, bearing, distance):
+    '''extrapolate latitude/longitude given a heading and distance
+    thanks to http://www.movable-type.co.uk/scripts/latlong.html
+    '''
+    radius_of_earth = 6378100.0
+    lat1 = math.radians(lat)
+    lon1 = math.radians(lon)
+    brng = math.radians(bearing)
+    dr = distance/radius_of_earth
+
+    lat2 = math.asin(math.sin(lat1)*math.cos(dr) +
+                     math.cos(lat1)*math.sin(dr)*math.cos(brng))
+    lon2 = lon1 + math.atan2(math.sin(brng)*math.sin(dr)*math.cos(lat1),
+                             math.cos(dr)-math.sin(lat1)*math.sin(lat2))
+    return (math.degrees(lat2), wrap_valid_longitude(math.degrees(lon2)))
+
+def gps_offset(lat, lon, east, north):
+    '''return new lat/lon after moving east/north
+    by the given number of meters'''
+    bearing = math.degrees(math.atan2(east, north))
+    distance = math.sqrt(east**2 + north**2)
+    return gps_newpos(lat, lon, bearing, distance)
+
 def LLA2NED(origin,position):
         """
         Convert from geodetic coordinates to NED coordinates
@@ -312,6 +345,8 @@ class BatchGSModule():
         tffc = Traffic(float(args[1]),float(args[2]),float(args[3]), \
                        float(args[4]),float(args[5]),float(args[6]),start_time)
         self.traffic_list.append(tffc)
+        self.start_lat = self.wploader.wp(0).x
+        self.start_lon = self.wploader.wp(0).y
 
     def Update_traffic(self):
         '''Update traffic icon on map'''
@@ -322,11 +357,10 @@ class BatchGSModule():
         for i,tffc in enumerate(self.traffic_list):
 
             self.traffic_list[i].get_pos(t)
-            (lat, lon) = LLA2NED(self.start_lat,self.start_lon, self.traffic_list[i].y, self.traffic_list[i].x)
+            (lat, lon) = gps_offset(self.start_lat,self.start_lon, self.traffic_list[i].y, self.traffic_list[i].x)
             self.traffic_list[i].lat = lat;
             self.traffic_list[i].lon = lon;
-            self.traffic_list[i].alt = self.z
-
+            self.traffic_list[i].alt = self.traffic_list[i].z
             heading = math.degrees(math.atan2(self.traffic_list[i].vy0, self.traffic_list[i].vx0))
             self.master.mav.command_long_send(
                 1,  # target_system
