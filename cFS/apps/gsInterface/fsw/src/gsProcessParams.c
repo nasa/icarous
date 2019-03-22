@@ -88,7 +88,7 @@ void gsInterface_InitializeParamIds(){
     AddParamId("RESSPEED",1.0);
     AddParamId("SEARCHALGORITHM",1);
     // Geofence parameters
-    AddParamId("LOOKAHEAD",2.0);
+    AddParamId("LOOKAHEAD",4.0);
     AddParamId("HTHRESHOLD",2.0);
     AddParamId("VTHRESHOLD",2.0);
     AddParamId("HSTEPBACK",2.0);
