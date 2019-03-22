@@ -4,7 +4,7 @@
 
 #include "GeofenceMonitor.h"
 
-GeofenceMonitor::GeofenceMonitor(double *params) {
+GeofenceMonitor::GeofenceMonitor(double *params):geoPolyCarp(0.01,0.001,false) {
     lookahead  = params[0];
     hthreshold = params[1];
     vthreshold = params[2];
