@@ -82,7 +82,7 @@ def VerifySimOutput(data):
 
     return (progress,keepInViolation,keepOutViolation,trafficViolation)
 
-if(sys.argv[1] == 0):
+if(sys.argv[1] == str(0)):
     trafficAvailable = False
 else:
     trafficAvailable = True
