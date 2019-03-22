@@ -220,8 +220,9 @@ class TrafficModule(mp_module.MPModule):
                                float(args[4]),float(args[5]),float(args[6]),start_time)
                 self.traffic_list.append(tffc)
                 if not self.gotStart:
-                    self.start_lat = self.module('map').lat
-                    self.start_lon = self.module('map').lon
+                    print(self.module('map').lat_lon)
+                    self.start_lat = self.module('map').lat_lon[1][0]
+                    self.start_lon = self.module('map').lat_lon[1][1]
                     self.gotStart = True
                 print(len(self.traffic_list))
         elif args[0] == "radius":
