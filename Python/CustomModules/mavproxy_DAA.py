@@ -93,7 +93,6 @@ class DAAModule(mp_module.MPModule):
         
         #if data contains data
         if data is not None:
-            #print data
 
             #format data as expected by ICAROUS
             self.intr_lat = float(data.lat)/10000000
@@ -198,7 +197,7 @@ class DAAModule(mp_module.MPModule):
 
         
         if m.get_type() == "TRAFFIC_INFO":
-            print m.breach_status                    
+            print(m.breach_status)
 
             
 
@@ -215,7 +214,7 @@ class DAAModule(mp_module.MPModule):
             if len(args) == 2:
                 self.radius = float(args[1]);
         else:
-            print 'usage: traffic dev "address of mav"'
+            print('usage: traffic dev "address of mav"')
 
 
 

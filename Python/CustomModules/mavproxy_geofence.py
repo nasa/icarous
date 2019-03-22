@@ -12,13 +12,14 @@ if mp_util.has_wxpython:
 
 try:
     from polygon_contain import nice_polygon_2D
+    from acceptable_polygon import counterclockwise_edges
     from vectors import Vector
     geofence_check_niceness = True
 except:
-    print "*******************************"
-    print "PolyCARP not found.\n Download PolyCARP from https://github.com/nasa/PolyCARP.git and add the Python folder in this repository to the PYTHONPATH environment variable."
-    print "Geofences will not be checked for niceness before upload."
-    print "*****************************"
+    print("*******************************")
+    print("PolyCARP not found.\n Download PolyCARP from https://github.com/nasa/PolyCARP.git and add the Python folder in this repository to the PYTHONPATH environment variable.")
+    print("Geofences will not be checked for niceness before upload.")
+    print("*****************************")
     geofence_check_niceness = False
 
 class GeoFenceModule(mp_module.MPModule):
@@ -148,7 +149,7 @@ class GeoFenceModule(mp_module.MPModule):
             if(len(args) != 2):
                return
             else:
-               print "saving"
+               print("saving")
                self.save_geofence(args[1])
             
         elif args[0] == "clear":
@@ -168,7 +169,7 @@ class GeoFenceModule(mp_module.MPModule):
                               'Vertices':[]}
             
             self.mpstate.map_functions['draw_lines'](self.geofence_draw_callback)
-            print "Drawing geofence on map with %d vertices" % int(params[2])
+            print("Drawing geofence on map with %d vertices" % int(params[2]))
 
         elif args[0] == "upload":
             if len(self.drawnFenceList) == 0:
@@ -259,35 +260,38 @@ class GeoFenceModule(mp_module.MPModule):
             roof  = float(child.find('roof').text);
             Vertices = [];
         
-            if(len(child.findall('vertex')) == numV):        
+            if(len(child.findall('vertex')) >= numV):        
                 for vertex in child.findall('vertex'):
                     coord = (float(vertex.find('lat').text),
                              float(vertex.find('lon').text))
                 
                     Vertices.append(coord)
 
-                Geofence = {'id':id,'type': type,'numV':numV,'floor':floor,
-                            'roof':roof,'Vertices':Vertices}
+                points = []
+                origin = Vertices[0]
+                for vertex in Vertices[0:numV]:
+                    # Convert from geodetic coordinates to NED coordinates
+                    pt = self.LLA2NED(origin, vertex)
+                    # Reverse North,East coords to match x,y coords used by nice_polygon_2D
+                    pt = (pt[1], pt[0])
+                    points.append(Vector(*pt))
 
-                if self.nice_geofence(Geofence):
+                if not counterclockwise_edges(points):
+                    points.reverse()
+                    Vertices.reverse()
+
+                if self.nice_geofence(points):
+                    Geofence = {'id':id,'type': type,'numV':numV,'floor':floor,
+                                'roof':roof,'Vertices':Vertices[:numV]}
+
+
                     self.fenceList.append(Geofence)
                 else:
                     print("Geofence %d not added - Polygon does not meet niceness criteria." % id)
 
-    def nice_geofence(self,geofence):
+    def nice_geofence(self,points):
         if not geofence_check_niceness:
             return True
-
-        # Represent geofence as a polygon in x,y coordinates
-        vertices = geofence["Vertices"]
-        points = []
-        origin = vertices[0]
-        for vertex in vertices:
-            # Convert from geodetic coordinates to NED coordinates
-            pt = self.LLA2NED(origin, vertex)
-            # Reverse North,East coords to match x,y coords used by nice_polygon_2D
-            pt = (pt[1], pt[0])
-            points.append(Vector(*pt))
 
         # Use PolyCARP function to check that polygon is nice
         return nice_polygon_2D(points, 0.01)
@@ -346,7 +350,7 @@ class GeoFenceModule(mp_module.MPModule):
         '''callback from drawing waypoints'''
         
         if len(points) != self.Geofence0["numV"]:            
-            print "Insufficient points in polygon, try drawing polygon again"
+            print("Insufficient points in polygon, try drawing polygon again")
             print("(Expected %d points, Received %d points)" % (self.Geofence0["numV"], len(points)))
             return
             
@@ -389,7 +393,7 @@ class GeoFenceModule(mp_module.MPModule):
         top = ET.Element('Geofence')
 
         for fence in self.fenceList:
-            print "constructing"
+            print("constructing")
             child1   = ET.SubElement(top,'fence',id=str(fence['id']))
             child1_1 = ET.SubElement(child1,'type')
             child1_1.text = str(fence['type'])
@@ -407,7 +411,7 @@ class GeoFenceModule(mp_module.MPModule):
                 child1_5_2.text = str(fence['Vertices'][vertex][1])
 
 
-        print "writing" 
+        print("writing")
         ET.ElementTree(top).write(filename)
                
 

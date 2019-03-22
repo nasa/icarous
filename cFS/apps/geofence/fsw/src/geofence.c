@@ -117,7 +117,7 @@ void GEOFENCE_ProcessPacket(){
             geofence_t *gf;
             gf = (geofence_t *) geofenceAppData.Geofence_MsgPtr;
 
-            double vertices[50][2];
+            double vertices[MAX_VERTICES][2];
 
             for(int i=0;i<gf->totalvertices;++i) {
                 vertices[i][0] = gf->vertices[i][0];

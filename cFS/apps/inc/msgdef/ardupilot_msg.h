@@ -13,6 +13,7 @@
 #include "cfe.h"
 
 #define MAX_WAYPOINTS 50
+#define MAX_VERTICES 100
 #define ACID_SIZE 20
 #define MAX_FIX_NAME_SIZE 20
 
@@ -136,7 +137,7 @@ typedef struct{
 	uint8_t type;                           /**< geofence type: see geofence_type_t */
     uint16_t index;                         /**< geofence index */
 	uint16_t totalvertices;                 /**< total vertices in this geofence */
-    double vertices[50][2];                 /**< lat,lon (deg,deg) */
+    double vertices[MAX_VERTICES][2];       /**< lat,lon (deg,deg) */
 	double floor;                           /**< floor of geofence (m) */
 	double ceiling;                         /**< roof of geofence (m) */
 }geofence_t;

@@ -198,7 +198,7 @@ class TrafficModule(mp_module.MPModule):
                 self.AddBand(i,kmb)
 
         if m.get_type() == "TRAFFIC_INFO":
-            print m.breach_status
+            print(m.breach_status)
 
         if m.get_type() == "COMMAND_LONG":
             if self.V2V:
@@ -211,7 +211,7 @@ class TrafficModule(mp_module.MPModule):
             return        
         elif args[0] == "load":
             if len(args) != 7:
-                print len(args)
+                print(len(args))
                 self.print_usage();                
                 return
             else:
@@ -223,7 +223,7 @@ class TrafficModule(mp_module.MPModule):
                     self.start_lat = self.module('map').lat
                     self.start_lon = self.module('map').lon
                     self.gotStart = True
-                print len(self.traffic_list)
+                print(len(self.traffic_list))
         elif args[0] == "radius":
             if len(args) == 2:
                 self.radius = float(args[1]);

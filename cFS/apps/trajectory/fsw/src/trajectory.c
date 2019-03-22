@@ -216,7 +216,7 @@ void TRAJECTORY_Monitor(void){
                     geofence_t *gf;
                     gf = (geofence_t *) TrajectoryAppData.Traj_MsgPtr;
 
-                    double vertices[50][2];
+                    double vertices[MAX_VERTICES][2];
 
                     for(int i=0;i<gf->totalvertices;++i) {
                         vertices[i][0] = gf->vertices[i][0];
