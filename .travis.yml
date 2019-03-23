@@ -9,37 +9,32 @@ compiler:
     - gcc
 
 before_install:
-    - sudo dpkg --add-architecture i386 
-      #- sudo add-apt-repository -y ppa:openjdk-r/ppa
     - sudo apt-get update 
     - sudo apt-get install build-essential
     - sudo apt-get install libc6-dev-i386
     - sudo apt-get install g++-multilib
     - sudo apt-get install zlib1g-dev
     - sudo apt-get install tcpd:i386
-    - sudo ln -s /lib/i386-linux-gnu/libwrap.so.0 /lib/i386-linux-gnu/libwrap.so 
-      #- sudo apt-get install openjdk-8-jdk 
-    - sudo ln -s /usr/include/x86_64-linux-gnu/zconf.h /usr/include/zconf.h 
     - sudo sysctl /fs/mqueue/msg_max=10000
+    - sudo pip install pymavlink
+    - sudo pip install numpy
+    - sudo pip install matplotlib
+    - git clone https://github.com/nasa/PolyCARP.git
+    - export PYTHONPATH=$PYTHONPATH:$PWD/PolyCARP/Python
 
 before_script:  
     - source SetEnv.sh
     - mkdir build
     - cd build
-    - cmake .. -DBUILDNAME=Test1 -DSITL=ON -DTEST1=ON
+    - cmake .. -DSITL=ON
     - cmake --build . --target cpu1-install -- -j8
-    - rm -rf ./*
-    - cmake .. -DBUILDNAME=Test2 -DSITL=ON -DTEST2=ON
-    - cmake --build . --target cpu1-install -- -j8
-    - cd ../
+    - cd ..
+    - export PYTHONPATH=$PYTHONPATH:$PWD/Python/TestRunner
+    - export PYTHONPATH=$PYTHONPATH:$PWD/Python/Batch
+
 script: 
     - cd cFS/bin
-    - cp -r Test1/cpu1 .
     - cd cpu1 
-    - python ../../../Python/TestRunner/Launch.py 1
-    - cat output.txt
-    - cd ../
-    - cp -r Test2/cpu1 .
-    - cd cpu1
-    - python ../../../Python/TestRunner/Launch.py 2
-    - cat output.txt
+    - export PATH=$PATH:$PWD
+    - python ../../../Python/TestRunner/RunTests.py 0
+    - python ../../../Python/TestRunner/RunTests.py 1

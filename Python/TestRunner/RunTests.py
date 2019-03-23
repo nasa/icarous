@@ -87,7 +87,7 @@ if(sys.argv[1] == str(0)):
 else:
     trafficAvailable = True
 
-simTimeLimit     = 200
+simTimeLimit     = 250
 
 ownship = vehicle()
 traffic = vehicle()
@@ -100,12 +100,14 @@ except Exception as msg:
 # Start the ICAROUS process
 ic = subprocess.Popen(["core-cpu1","-I 0","-C 1"])
 
+time.sleep(20)
+
 # Pause for a couple of seconds here so that ICAROUS can boot up
 master.wait_heartbeat();
 gs = GS.BatchGSModule(master,1,0)
 
 # Upload the test flight plan
-gs.loadWaypoint("../../../Examples/InputData/FlightPlan.txt")
+gs.loadWaypoint("../../../Examples/InputData/flightplan.txt")
 
 if not trafficAvailable:
     # Upload the test geofence
@@ -172,7 +174,7 @@ if not trafficAvailable:
 else:
     wpSeqResult = {'wp0':True, 'wp1':False, 'wp2':True, \
                          'wp3':True, 'wp4':True, 'wp5':True, \
-                         'wp6':False, 'wp7':True}
+                         'wp6':True, 'wp7':True}
 
 
 assert (val[0]==wpSeqResult), "waypoint test failed"
