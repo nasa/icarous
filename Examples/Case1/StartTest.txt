@@ -11,7 +11,7 @@
 #********************************************************************
 
 # load mission flight plan
-wp load flightplan1.txt
+wp load flightplan.txt
 
 # load keep in and keep out geofences
 geofence load geofence.xml
