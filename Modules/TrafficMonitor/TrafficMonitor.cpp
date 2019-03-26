@@ -204,7 +204,7 @@ bool TrafficMonitor::MonitorWPFeasibility(double *position, double *velocity, do
 
 bool TrafficMonitor::CheckSafeToTurn(double position[],double velocity[],double fromHeading,double toHeading){
     Position so = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
-    Velocity vo = Velocity::makeTrkGsVs(velocity[0],"degree",velocity[1],"m/s",velocity[2],"m/s");
+    Velocity vo = Velocity::makeTrkGsVs(toHeading,"degree",velocity[1],"m/s",velocity[2],"m/s");
 
     bool conflict = false;
 
