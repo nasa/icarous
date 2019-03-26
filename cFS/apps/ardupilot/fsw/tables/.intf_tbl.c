@@ -3,6 +3,17 @@
 #include "cfe_tbl_filedef.h"  /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "ardupilot_table.h"
 
+#ifdef SITL
+
+ArdupilotTable_t Ardupilot_TblStruct = {
+	.PortType = SOCKET,
+	.BaudRate = 0,
+	.Portin = 14551,
+	.Portout = 0,
+	.Address = "127.0.0.1",
+};
+
+#else
 ArdupilotTable_t Ardupilot_TblStruct = {
     .PortType = SERIAL,       // apPortType
     .BaudRate = 57600,          // baudrate
@@ -10,6 +21,8 @@ ArdupilotTable_t Ardupilot_TblStruct = {
     .Portout = 0,              // apPortout
     .Address = "/dev/ttyACM0", // ap address
 };
+#endif
+
 
 /*
 ** The macro below identifies:
