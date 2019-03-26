@@ -1,7 +1,7 @@
 CFE_LIB, /cf/port_lib.so      , Port_LibInit         , PORTLIB      ,   0,      0,  0x0, 0;
 CFE_APP, /cf/sch.so           , SCH_AppMain          , SCH          ,  10,    8192, 0x0, 0;
 CFE_APP, /cf/gsInterface.so   , gsInterface_AppMain  , GSINTERFACE  , 100,    8192, 0x0, 0;
-CFE_APP, /cf/rotorsim.so      , RotorSim_AppMain     , ROTORSIM     ,  10,    8192, 0x0, 0;
+CFE_APP, /cf/ardupilot.so     , ARDUPILOT_AppMain    , ARDUPILOT    , 100,    8192, 0x0, 0;
 CFE_APP, /cf/plexil.so        , PLEXIL_AppMain       , PLEXIL       ,  61, 1119200, 0x0, 0;
 CFE_APP, /cf/geofence.so      , GEOFENCE_AppMain     , GEOFENCE     ,  61,    8192, 0x0, 0;
 CFE_APP, /cf/traffic.so       , TRAFFIC_AppMain      , TRAFFIC      ,  61,   81920, 0x0, 0;
