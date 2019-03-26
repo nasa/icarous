@@ -29,6 +29,8 @@ OPTION(SITL "Build the project for SITL" OFF)
 
 IF(SITL)
     add_definitions(-DSITL)
+    execute_process(COMMAND cp "${CMAKE_SOURCE_DIR}/cFS/apps/ardupilot/fsw/tables/.intf_tbl.c" "${CMAKE_SOURCE_DIR}/cFS/apps/ardupilot/fsw/tables/intf_tbl.c")
+    execute_process(COMMAND cp "${CMAKE_SOURCE_DIR}/cFS/apps/gsInterface/fsw/tables/.gsIntf_tbl.c" "${CMAKE_SOURCE_DIR}/cFS/apps/gsInterface/fsw/tables/gsIntf_tbl.c")
 ENDIF(SITL)
 
 IF(TEST1)
