@@ -233,7 +233,7 @@ void TRAFFIC_ProcessPacket(){
                                 trafficAppData.flightplan.waypoints[i].altitude};
 
                 double originalVelocity[3] = {trafficAppData.velocity[0],
-                                              trafficAppData.flightplan.waypoints[i].value_to_next_wp,
+					      trafficAppData.velocity[1],	
                                               trafficAppData.velocity[2]};
 
                 bool feasibility = TrafficMonitor_MonitorWPFeasibility(trafficAppData.tfMonitor,
