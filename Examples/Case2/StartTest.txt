@@ -13,7 +13,7 @@
 wp load flightplan1.txt
 
 # load traffic
-traffic load 50 90 5 1 270 0
+traffic load 116 81 5 1 270 0
 
 # start mission from the home position
 long MISSION_START 
