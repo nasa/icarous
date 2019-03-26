@@ -71,7 +71,7 @@ Run cmake with `-DSITL=ON` option to compile for software-in-the-loop simulation
 
 For compilation on an ARM processor, follow the instructions in patches/arm before running cmake.
 
-ICAROUS and cFS can be compiled and run on OSX as well. Follow instructions in patches/osx. NOTE: Due to the lack of extended posix functionality on OSX, the patches provide implementations of osal's timer api. However, the scheduler application doesn't work well with this patch. We recommend using the macScheduler app instead.
+ICAROUS and cFS can be compiled and run on OSX as well. Follow instructions in patches/osx. NOTE: Due to the lack of extended posix functionality on OSX, the patches provide implementations of osal's timer api. However, the scheduler application doesn't work well with this patch. We recommend using the macScheduler app instead. 
 
 ### LAUNCHING ICAROUS
 
@@ -83,9 +83,9 @@ The generated executable file is installed under `cFS/bin/cpu1`. Launch Icarous 
 
 Note that you need root previleges. When running ICAROUS on an embedded platform, one can make use of the `nohup` or `screen` command to avoid termination when a terminal is closed.
 
-The intf_tbl.c located under `cFS/apps/ardupilot/fsw/tables` defines parameters required to configure the serial port settings to connect to an autopilot. Similarly gsIntf_tbl.c contains parameters that configure the connection to a ground station (radio link or a socket connection).
+The intf_tbl.c located under `cFS/apps/ardupilot/fsw/tables` defines parameters required to configure the serial port settings to connect to an autopilot. Similarly gsIntf_tbl.c contains parameters that configure the connection to a ground station (radio link [SERIAL] or a socket connection [SOCKET]).
 
-The various parameters that control the behavior of ICAROUS can be found in `cFS/bin/ram/icarous.txt`. The default parameters found in icarous.txt were selected after several flight tests to yield acceptable performances.
+For list of parameters that Icarous uses, please refer to Examples/InputData/icarous_default.parm
 
 ### INTERACTING WITH ICAROUS
 

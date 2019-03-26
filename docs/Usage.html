@@ -32,9 +32,16 @@
         	<div class="main_matter">
                 <h3>Interfacing Icarous with an autopilot</h3>
                 <p>The default implementation of Icarous uses the cFS middleware. A cFS application to interface Icarous with the ArduPilot autopilot is provided in the repository. Similar interface applications can be developed for other auotpilot systems.  Refer to the <a href="Doxygen/html/index.html">documentation</a> for more information on configuration port settings to connect to an autopilot.   
-                <p>The ardupilot cFS app located under <code><a href="https://github.com/nasa/icarous/tree/master/cFS/apps/ardupilot">cFS/apps/ardupilot</a></code> receives MAVLink telemetry messages from the ArduPilot autpilot, extracts relevant data and published cFS messages on the software bus. In addition to extracting required data, this app also serves as an interface to a ground station and enables data exchange between the autopilot and a ground station. The ardupilot app's interface to the autopilot/ground station can be configured to be a serial or udp port. The parameters for the port configurations are available under <code><a href="https://github.com/nasa/icarous/blob/master/cFS/apps/ardupilot/fsw/tables/intf_tbl.c">cFS/apps/ardupilot/fsw/tables/intf_tbl.c</a></code> </p>
+                <p>The ardupilot cFS app located under <code><a href="https://github.com/nasa/icarous/tree/master/cFS/apps/ardupilot">cFS/apps/ardupilot</a></code> receives MAVLink telemetry messages from the ArduPilot autpilot, extracts relevant data and published cFS messages on the software bus. The gsInterface app serves as an interface to a ground station and enables data exchange between Icarous and a ground station. The ardupilot/gsInterface apps' interfaces to the autopilot/ground station can be configured to be a serial (SERIAL) or udp port (SOCKET). The parameters for the port configurations are available under <code><a href="https://github.com/nasa/icarous/blob/master/cFS/apps/ardupilot/fsw/tables/intf_tbl.c">cFS/apps/ardupilot/fsw/tables/intf_tbl.c</a></code>,<code><a href="https://github.com/nasa/icarous/blob/master/cFS/apps/gsInterface/fsw/tables/gsIntf_tbl.c">cFS/apps/gsInterface/fsw/tables/gsIntf_tbl.c</a></code> </p>
                 <h3>Interacting with Icarous from a ground station</h3>
                 <p>The customizable nature of MAVProxy makes it a suitable ground station to interact with Icarous. We provide custom modules to upload geofences, parameters, start/reset Icarous states and simulate phantom intruder aircraft.</p>
+		<h4> Uploading Icarous parameters</h4>
+		<p>Icarous parameters can be uploaded from the MAVProxy ground station. A sample parameter file is located in Examples/InputData/icarous_default.parm</p>
+                <div class="code-snippet">  
+                    <div class="code">              
+                        <code>param forceload path/to/file.txt</code>
+                    </div>
+                </div>
                 <h4> Uploading a flight plan </h4>
                 <p>The ardupilot app piggy-backs on the MAVLink waypoint protocol to extract relevant waypoint information for Icarous when a flight plan is uploaded from the geofence. Flight plans can be uploaded by drawing them directly on the map or from a file: </p>
                 <div class="code-snippet">  
@@ -58,7 +65,7 @@
                     <li>param5: floor of geofence (m) </li>
                     <li>param6: roof of geofence (m) </li>
                 </ul>
-                On receiving this command, the ardupilot app requests each vertex using the <code>fence_fetch_point</code> message. The ground station encodes each vertex in the <code>fence_point</code> message and sends it to ardupilot app. 
+                On receiving this command, the gsInterface app requests each vertex using the <code>fence_fetch_point</code> message. The ground station encodes each vertex in the <code>fence_point</code> message and sends it to ardupilot app. 
                 <h4> Simulating intruder vehicles </h4>
                 <p>The traffic module provided in the repository enables the simulation of intruder vehicles moving with a constant velocity. To create a phantom intruder vehicle:</p>
                 <div class="code-snippet">  
@@ -67,7 +74,7 @@
                     </div>
                 </div>
                 <p>The above command initiates an intruder vehicle at the given <code>range</code> (in meters), <code>bearing</code> (degrees from true North) and <code>altitude</code> (meters AGL) flying the given <code>heading</code> (degrees), with the provided <code>groundspeed</code> (m/s) and <code>verticalspeed</code> (m/s).  Each use of this command spawns an intruder vehicle at the provided initial conditions.</p>
-                <p>Traffic information sent to the ardupilot app is encoded into a <code>COMMAND_LONG</code> message as follows:</p>
+                <p>Traffic information sent to the gsInterface app is encoded into a <code>COMMAND_LONG</code> message as follows:</p>
                 <ul>
                     <li>command: <code>MAV_CMD_SPATIAL_USER_1</code></li>
                     <li>param1: traffic index </li>
