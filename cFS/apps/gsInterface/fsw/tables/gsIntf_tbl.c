@@ -3,17 +3,6 @@
 #include "cfe_tbl_filedef.h"  /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "gsInterface_table.h"
 
-#ifdef SITL
-
-gsInterfaceTable_t gsIntf_TblStruct = {
-	.PortType = SOCKET,    // gsPortType
-	.BaudRate = 0,           // baudrate
-	.Portin = 14552,       // gsPortin
-	.Portout = 14553,       // gsPortout
-	.Address = "127.0.0.1"  // gs address
-};
-
-#else
 gsInterfaceTable_t gsIntf_TblStruct = {
         .PortType = SERIAL,       // gsPortType
         .BaudRate = 57600,          // baudrate
@@ -21,7 +10,6 @@ gsInterfaceTable_t gsIntf_TblStruct = {
         .Portout = 0,              // gsPortout
         .Address = "/dev/ttyUSB0"  // gs address
 };
-#endif
 
 
 /*
