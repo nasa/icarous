@@ -31,4 +31,7 @@ cFS/bin/host
 cFS/bin/include
 cFS/bin/lib
 cFS/cFE
+cFS/apps/ardupilot/fsw/src/tables/intf_tbl.c
+cFS/apps/gsInterface/fsw/src/tables/gsIntf_tbl.c
+cFS/apps/Icarous_defs/cpu1_cfe_es_startup.scr
 **/gen
