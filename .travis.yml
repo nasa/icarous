@@ -26,7 +26,7 @@ before_script:
     - source SetEnv.sh
     - mkdir build
     - cd build
-    - cmake .. -DSITL=ON
+    - cmake .. -DSITL=ON -DROTORSIM=ON
     - cmake --build . --target cpu1-install -- -j8
     - cd ..
     - export PYTHONPATH=$PYTHONPATH:$PWD/Python/TestRunner
