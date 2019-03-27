@@ -143,7 +143,7 @@ void gsInterface_PublishParams() {
     localTrafficParams.recovery_crit = (bool) NextParam;
     localTrafficParams.contour_thr = NextParam;
     localTrafficParams.alert_1_alerting_time = NextParam;
-    strcpy(localTrafficParams.alert_1_detector, "det 1");   //Hard coded, not parameter
+    strcpy(localTrafficParams.alert_1_detector, "det_1");   //Hard coded, not parameter
     NextParam;
     localTrafficParams.alert_1_early_alerting_time = NextParam;
     strcpy(localTrafficParams.alert_1_region, "NEAR");      //Hard coded, not parameter
