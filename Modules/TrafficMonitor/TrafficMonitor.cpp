@@ -44,7 +44,7 @@ void TrafficMonitor::UpdateDAAParameters(char daaParameters[]) {
 
     larcfm::ParameterData params;
     params.parseParameterList(";",to_string(daaParameters));
-    DAA.parameters.updateParameterData(params);
+    DAA.parameters.setParameters(params);
 }
 
 int TrafficMonitor::InputTraffic(int id, double *position, double *velocity,double elapsedTime) {
