@@ -271,6 +271,7 @@ void ProcessAPMessage(mavlink_message_t message) {
             mavlink_msg_adsb_vehicle_decode(&message,&msg);
 
             traffic.index = msg.ICAO_address;
+            traffic.type = _TRAFFIC_ADSB_;
             traffic.latitude = msg.lat/1.0E7;
             traffic.longitude = msg.lon/1.0E7;
             traffic.altitude = msg.altitude/1.0E3;
