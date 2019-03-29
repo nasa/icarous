@@ -52,7 +52,13 @@ SET(FT_INSTALL_SUBDIR "host/functional-test")
 # Each target board can have its own HW arch selection and set of included apps
 SET(TGT1_NAME cpu1)
 SET(TGT1_APPLIST scheduler ardupilot gsInterface port_lib safe2ditch rotorsim traffic trajectory plexil logger geofence macScheduler)
-SET(TGT1_FILELIST cfe_es_startup.scr)
+IF(SCR)
+    SET(TGT1_FILELIST cfe_es_startup_${SCR}.scr)
+    message(STATUS "tgt1 file list: ${TGT1_FILELIST}")
+ELSE()
+    SET(TGT1_FILELIST cfe_es_startup.scr)
+ENDIF(SCR)
+
 
 # CPU2/3 are duplicates of CPU1.  These are not built by default anymore but are
 # commented out to serve as an example of how one would configure multiple cpus.

@@ -33,17 +33,6 @@ IF(SITL)
     execute_process(COMMAND cp "${CMAKE_SOURCE_DIR}/cFS/apps/gsInterface/fsw/tables/.gsIntf_tbl.c" "${CMAKE_SOURCE_DIR}/cFS/apps/gsInterface/fsw/tables/gsIntf_tbl.c")
 ENDIF(SITL)
 
-IF(ARDUPILOT)
-    execute_process(COMMAND cp "${CMAKE_SOURCE_DIR}/cFS/apps/Icarous_defs/ardupilot.scr" "${CMAKE_SOURCE_DIR}/cFS/apps/Icarous_defs/cpu1_cfe_es_startup.scr")
-ELSEIF(ROTORSIM)
-    execute_process(COMMAND cp "${CMAKE_SOURCE_DIR}/cFS/apps/Icarous_defs/devtest.scr" "${CMAKE_SOURCE_DIR}/cFS/apps/Icarous_defs/cpu1_cfe_es_startup.scr")
-ELSEIF(MAC)
-    execute_process(COMMAND cp "${CMAKE_SOURCE_DIR}/cFS/apps/Icarous_defs/mac.scr" "${CMAKE_SOURCE_DIR}/cFS/apps/Icarous_defs/cpu1_cfe_es_startup.scr")
-ELSE()
-
-ENDIF()
-
-
 IF(NOT ARM)
     #set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
     #set(CMAKE_C_FLAGS "-g -fPIC -m32 ")
