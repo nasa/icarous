@@ -52,10 +52,13 @@ SET(FT_INSTALL_SUBDIR "host/functional-test")
 # Each target board can have its own HW arch selection and set of included apps
 SET(TGT1_NAME cpu1)
 SET(TGT1_APPLIST scheduler ardupilot gsInterface port_lib safe2ditch rotorsim traffic trajectory plexil logger geofence macScheduler)
+
+execute_process(COMMAND rm "${CMAKE_SOURCE_DIR}/cFS/apps/Icarous_defs/cpu1_cfe_es_startup.scr")
 IF(SCR)
-    SET(TGT1_FILELIST cfe_es_startup_${SCR}.scr)
-    message(STATUS "tgt1 file list: ${TGT1_FILELIST}")
-ELSE()
+    execute_process(COMMAND ln -s "${CMAKE_SOURCE_DIR}/cFS/apps/Icarous_defs/cpu1_cfe_es_startup_${SCR}.scr" "${CMAKE_SOURCE_DIR}/cFS/apps/Icarous_defs/cpu1_cfe_es_startup.scr")
+    SET(TGT1_FILELIST cfe_es_startup.scr)
+ELSE(SCR)
+    execute_process(COMMAND ln -s "${CMAKE_SOURCE_DIR}/cFS/apps/Icarous_defs/cpu1_cfe_es_startup_ardupilot.scr" "${CMAKE_SOURCE_DIR}/cFS/apps/Icarous_defs/cpu1_cfe_es_startup.scr")
     SET(TGT1_FILELIST cfe_es_startup.scr)
 ENDIF(SCR)
 
