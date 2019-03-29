@@ -3,12 +3,19 @@
 #include "cfe_tbl_filedef.h"  /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "ardupilot_table.h"
 
+/*
+ * Use this table to specify port settings.
+ * Use either a SERIAL port or a SOCKET.
+ * BaudRate is only used for SERIAL.
+ * Portin and Poutout are only used for SOCKET 
+ * Address is IP address if SOCKET or serial port if SERIAL
+ */
 ArdupilotTable_t Ardupilot_TblStruct = {
-    .PortType = SERIAL,       // apPortType
-    .BaudRate = 57600,          // baudrate
-    .Portin = 0,              // apPortin
-    .Portout = 0,              // apPortout
-    .Address = "/dev/ttyACM0", // ap address
+	.PortType = SOCKET,
+	.BaudRate = 0,
+	.Portin = 14551,
+	.Portout = 0,
+	.Address = "127.0.0.1",
 };
 
 /*
