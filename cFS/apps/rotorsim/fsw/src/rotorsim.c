@@ -85,6 +85,7 @@ void Rotorsim_AppInit(void) {
                       ROTORSIM_MAJOR_VERSION,
                       ROTORSIM_MINOR_VERSION);
 
+    rotorsimAppData.offsetdist = 3;
     rotorsimAppData.passive = true;
     rotorsimAppData.startMission = false;
     rotorsimAppData.nextWP = 0;
@@ -212,6 +213,7 @@ void Rotorsim_ProcessPacket(){
             flightplan_t* fp;
             fp = (flightplan_t*) rotorsimAppData.Rotorsim_MsgPtr;
             memcpy(&rotorsimAppData.flightPlan,fp,sizeof(flightplan_t));
+            rotorsimAppData.nextWP=1;
             break;
         }
     }
@@ -304,9 +306,11 @@ void Rotorsim_GetInputs(){
                        //OS_printf("Speed = %f\n", setSpeed);
                    }
                }
-
+               double newPositionToTrack[3];
+               double heading = rotorsimAppData.heading;
+               ComputeOffSetPositionOnPlan(rotorsimAppData.position,nextWP-1,newPositionToTrack);
                // If distance to next waypoint is < captureRadius, switch to next waypoint
-               if (dist <= speed * 0.5) {
+               if (dist <= rotorsimAppData.Rotorsim_Tbl.missionSpeed*2) {
 
                    missionItemReached_t wpReached;
                    CFE_SB_InitMsg(&wpReached,ICAROUS_WPREACHED_MID, sizeof(wpReached),TRUE);
@@ -317,7 +321,7 @@ void Rotorsim_GetInputs(){
 
                } else {
                    // Compute velocity command to next waypoint
-                   double heading = ComputeHeading(rotorsimAppData.position, nextWaypoint);
+                   double heading = ComputeHeading(rotorsimAppData.position, newPositionToTrack);
                    double speed = rotorsimAppData.Rotorsim_Tbl.missionSpeed;
                    double climbrate = (rotorsimAppData.position[2] - nextWaypoint[2]) * -0.5;
 
@@ -401,6 +405,8 @@ void Rotorsim_GetOutputs(){
     rotorsimAppData.velocity[1] = currentVelocity[1];
     rotorsimAppData.velocity[2] = currentVelocity[2];
 
+
+    rotorsimAppData.heading = fmod(2*M_PI + atan2(rotorsimAppData.velocity[1],rotorsimAppData.velocity[0]),2*M_PI)*180/M_PI;
     // Do coordinate transformation from NED to LLA
     //double origin[3] = {rotorsimAppData.Rotorsim_Tbl.originLL[0],
     //                    rotorsimAppData.Rotorsim_Tbl.originLL[1],0};
@@ -420,7 +426,7 @@ void Rotorsim_GetOutputs(){
     positionGPS.vn = rotorsimAppData.velocity[0];
     positionGPS.ve = rotorsimAppData.velocity[1];
     positionGPS.vd = rotorsimAppData.velocity[2];
-    positionGPS.hdg = fmod(2*M_PI + atan2(positionGPS.ve,positionGPS.vn),2*M_PI)*180/M_PI;
+    positionGPS.hdg = rotorsimAppData.heading; 
     positionGPS.time_gps = rotorsimAppData.time;
 
     double heading = fmod(2*M_PI + atan2(positionGPS.ve,positionGPS.vn),2*M_PI)*180/M_PI;
@@ -438,4 +444,107 @@ void Rotorsim_GetOutputs(){
     attitude.pitch = pitch;
     attitude.yaw = heading;
 
+}
+
+bool ComputeOffSetPositionOnPlan(double position[],int currentLeg,double outputLLA[]){
+    //Starting waypoint
+    double wpA[3] = {rotorsimAppData.flightPlan.waypoints[currentLeg].latitude,
+                     rotorsimAppData.flightPlan.waypoints[currentLeg].longitude,
+                     rotorsimAppData.flightPlan.waypoints[currentLeg].altitude};
+
+    //Ending waypoint
+    double wpB[3] = {rotorsimAppData.flightPlan.waypoints[currentLeg+1].latitude,
+                     rotorsimAppData.flightPlan.waypoints[currentLeg+1].longitude,
+                     rotorsimAppData.flightPlan.waypoints[currentLeg+1].altitude};
+
+    double wpC[3];
+    bool finalleg = false;
+    if(currentLeg+2 < rotorsimAppData.flightPlan.num_waypoints){
+        wpC[0] = rotorsimAppData.flightPlan.waypoints[currentLeg+2].latitude;
+        wpC[1] = rotorsimAppData.flightPlan.waypoints[currentLeg+2].longitude;
+        wpC[2] = rotorsimAppData.flightPlan.waypoints[currentLeg+2].altitude;
+    }else{
+        finalleg = true;
+    }
+
+    double distAB = ComputeDistance(wpA,wpB);
+    double heading = ComputeHeading(wpA,wpB);
+    double distAP = ComputeDistance(wpA,position);
+
+    //Convert to local frame
+    double _wpA[3],_wpB[3],_wpC[3];
+    ConvertLLA2END(position,wpA,_wpA);
+    ConvertLLA2END(position,wpB,_wpB);
+    ConvertLLA2END(position,wpC,_wpC);
+    
+    double r = rotorsimAppData.Rotorsim_Tbl.missionSpeed*2;
+    double outputEND[3] = {0.0,0.0,0.0};
+    // If there is enough room on the current leg, get the point to track on this leg
+    // else, use the other leg.
+    if(distAB - distAP > r){
+       GetCorrectIntersectionPoint(_wpA,_wpB,heading,r,outputEND); 
+    }else{
+       if(finalleg){
+           memcpy(outputLLA,wpB,sizeof(double)*3);
+           return false;
+       } 
+       GetCorrectIntersectionPoint(_wpB,_wpC,heading,r,outputEND); 
+    }
+    ConvertEND2LLA(position,outputEND,outputLLA);
+    return true;
+}
+
+
+void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double heading,double r,double output[]){
+    double x1,x2,y1,y2;    
+    if( fabs(_wpB[0] - _wpA[0]) > 1e-2 ){
+        double m = (_wpB[1] - _wpA[1])/(_wpB[0] - _wpA[0]);
+        double c = _wpA[1] - _wpA[0]*m;
+        double aq = 1 + pow(m,2);
+        double bq = 2*m*c;
+        double cq = pow(c,2) - pow(r,2);
+        double discr = sqrt(pow(bq,2) - 4*aq*cq);
+        x1 = (-bq - discr)/(2*aq);
+        x2 = (-bq + discr)/(2*aq);
+        y1 = m*x1 + c; 
+        y2 = m*x2 + c;
+    }else{
+        x1 = _wpA[0];
+        x2 = x1;
+        y1 = sqrt(pow(r,2) - pow(x1,2)); 
+        y2 = -sqrt(pow(r,2) - pow(x1,2));  
+    }
+
+    // Check which point has the smallest bearing
+
+    double heading1 = fmod(2*M_PI + atan2(y1,x1) ,2*M_PI) *180/M_PI;
+    double heading2 = fmod(2*M_PI + atan2(y2,x2) ,2*M_PI) *180/M_PI;
+
+    heading1 = fmod(360 + 90 - heading1,360);
+    heading2 = fmod(360 + 90 - heading2,360);
+
+    double bearing1 = fabs(heading - heading1);
+    double bearing2 = fabs(heading - heading2);
+
+    if(bearing1 > 180){
+        bearing1 = 180 - fabs(180 - bearing1);
+    }
+
+    if(bearing2 > 180){
+        bearing2 = 180 - fabs(180 - bearing2);
+    }
+
+    if(bearing1 < bearing2){
+        // Use (x1,y1)
+        output[0] = x1;
+        output[1] = y1;
+    }else{
+        // Use (x2,y2)
+        output[0] = x2;
+        output[1] = y2;
+    }
+}
+
+double distance(double x1,double y1,double x2,double y2){
+    return sqrt(pow(x2-x1,2) +pow(y2-y1,2));
 }

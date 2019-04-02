@@ -9,7 +9,7 @@
 
 
 RotorsimTable_t RotorsimTblStruct = {
-   1,                            // speed
+   10,                            // speed
    {37.906021,-77.046822},       // origin
    10,                           // Initial altitude
    2,                            // Total number of waypoints

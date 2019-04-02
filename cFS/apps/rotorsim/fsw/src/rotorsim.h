@@ -54,6 +54,7 @@ typedef struct{
     double position[3];                     ///< Current lat[deg], lon[deg], alt[m] position
     double velocity[3];                     ///< Current velocity: N, E ,D
     double attitude[3];                     ///< Current attitude
+    double heading;
     bool passive;                           ///< Passive mode
     bool startMission;                      ///< Start mission
     bool positionControl;                   ///< position control mode
@@ -63,6 +64,7 @@ typedef struct{
     flightplan_t flightPlan;                ///< Input flight plan
     uint32_t timerId;                       ///< Timer id
     double time;                            ///< time
+    double offsetdist;                      ///< Moving reference point on controller
 }rotorsimAppData_t;
 
 /**
@@ -105,5 +107,11 @@ void Rotorsim_GetInputs();
 void Rotorsim_GetOutputs();
 
 void timer_callback(uint32_t timerId);
+
+bool ComputeOffSetPositionOnPlan(double position[],int currentLeg,double output[]);
+
+void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double heading,double r,double output[]);
+
+double distance(double x1,double y1,double x2,double y2);
 
 #endif //ICAROUS_CFS_ROTORSIM_H
