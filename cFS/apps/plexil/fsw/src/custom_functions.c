@@ -189,13 +189,15 @@ void PLEXIL_ProcessCustomPackets(bool data){
 
             if(trk->currentConflictBand == 1){
                plexilCustomData.trafficTrackConflict = true;
-               if(!isinf(trk->resPreferred))
+               if(trk->resPreferred >= 0){
                    plexilCustomData.preferredTrack = trk->resPreferred;
-               else
-                   plexilCustomData.preferredTrack = -10000;
+               }
+               else{
+                   plexilCustomData.preferredTrack = -1000;
+               }
             }else{
                plexilCustomData.trafficTrackConflict = false;
-               plexilCustomData.preferredTrack = -1000;
+               plexilCustomData.preferredTrack = -10000;
             }
 
             break;

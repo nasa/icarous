@@ -150,7 +150,7 @@ TRAFFIC_RESOLUTION:{
 
             //pprint("preferred track:",trackPref);
 
-            if(trackPref > -1e3){
+            if(trackPref >= 0){
                 velCmd[0] = trackPref;
                 velCmd[1] = resSpeed;
                 velCmd[2] = 0;
@@ -163,6 +163,7 @@ TRAFFIC_RESOLUTION:{
             }elseif(trackPref > -10000){
                 SetVel(prevTrackResCmd);
                 TrackResolution = true;
+                //pprint("Setting prev velocity:",velCmd);
             }else{
                 TrackResolution = false;
             }endif
@@ -180,6 +181,7 @@ TRAFFIC_RESOLUTION:{
 
             if(!returnSafe){
                 SetVel(prevTrackResCmd);
+                //pprint("Setting prev velocity in returnSafe:",velCmd);
             }endif
         }endif
 
