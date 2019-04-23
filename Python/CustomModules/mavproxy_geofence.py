@@ -248,7 +248,7 @@ class GeoFenceModule(mp_module.MPModule):
         print("usage: geofence load <filename>")
            
     def GetGeofence(self,filename):
-
+        '''add geofences from a file'''
         tree = ET.parse(filename)
         root = tree.getroot()        
         
@@ -267,34 +267,36 @@ class GeoFenceModule(mp_module.MPModule):
                 
                     Vertices.append(coord)
 
-                points = []
-                origin = Vertices[0]
-                for vertex in Vertices[0:numV]:
-                    # Convert from geodetic coordinates to NED coordinates
-                    pt = self.LLA2NED(origin, vertex)
-                    # Reverse North,East coords to match x,y coords used by nice_polygon_2D
-                    pt = (pt[1], pt[0])
-                    points.append(Vector(*pt))
+            # Check geofence niceness
+            add_geofence = True
+            if geofence_check_niceness:
+                points = self.fence_to_polygon(Vertices[0:numV])
 
                 if not counterclockwise_edges(points):
                     points.reverse()
                     Vertices.reverse()
 
-                if self.nice_geofence(points):
-                    Geofence = {'id':id,'type': type,'numV':numV,'floor':floor,
-                                'roof':roof,'Vertices':Vertices[:numV]}
+                # Add geofence if polygon is nice
+                add_geofence = nice_polygon_2D(points, 0.01)
 
+            if add_geofence:
+                Geofence = {'id':id,'type': type,'numV':numV,'floor':floor,
+                            'roof':roof,'Vertices':Vertices[:numV]}
+                self.fenceList.append(Geofence)
+            else:
+                print("Geofence %d not added - Polygon does not meet niceness criteria." % id)
 
-                    self.fenceList.append(Geofence)
-                else:
-                    print("Geofence %d not added - Polygon does not meet niceness criteria." % id)
-
-    def nice_geofence(self,points):
-        if not geofence_check_niceness:
-            return True
-
-        # Use PolyCARP function to check that polygon is nice
-        return nice_polygon_2D(points, 0.01)
+    def fence_to_polygon(self, vertices):
+        '''convert lat/lon fence vertices to x/y polygon points'''
+        points = []
+        origin = vertices[0]
+        for vertex in vertices:
+            # Convert from geodetic coordinates to NED coordinates
+            pt = self.LLA2NED(origin, vertex)
+            # Reverse North,East coords to match x,y coords used by nice_polygon_2D
+            pt = (pt[1], pt[0])
+            points.append(Vector(*pt))
+        return points
 
     def LLA2NED(self,origin,position):
         """
@@ -348,7 +350,7 @@ class GeoFenceModule(mp_module.MPModule):
 
     def geofence_draw_callback(self, points):
         '''callback from drawing waypoints'''
-        
+
         if len(points) != self.Geofence0["numV"]:            
             print("Insufficient points in polygon, try drawing polygon again")
             print("(Expected %d points, Received %d points)" % (self.Geofence0["numV"], len(points)))
@@ -361,18 +363,30 @@ class GeoFenceModule(mp_module.MPModule):
             self.Geofence0['Vertices'].append(pts)
 
         # Adjust fence id to not leave empty spaces
-        if self.Geofence0['id'] > len(self.fenceList) - 1:
-            self.Geofence0['id'] = len(self.fenceList)
+        if self.Geofence0['id'] > len(self.fenceList) + len(self.drawnFenceList):
+            self.Geofence0['id'] = len(self.fenceList) + len(self.drawnFenceList)
         name = "DraftFence"+str(self.Geofence0['id'])
 
         # Check that the geofence polygon is nice
-        if self.nice_geofence(self.Geofence0):
+        add_geofence = True
+        if geofence_check_niceness:
+            points = self.fence_to_polygon(self.Geofence0["Vertices"])
+
+            # Reverse points if not counterclockwise
+            if not counterclockwise_edges(points):
+                points.reverse()
+                self.Geofence0["Vertices"].reverse()
+
+            add_geofence = nice_polygon_2D(points, 0.01)
+
+        # Add the geofence to the draft list if it is a nice polygon
+        if add_geofence:
             if self.Geofence0['id'] not in self.drawnFenceIds:        
                 self.drawnFenceList.append(self.Geofence0)
             else:
                 self.drawnFenceList[self.drawnFenceIds.index(self.Geofence0['id'])] = self.Geofence0
                 self.mpstate.map.remove_object(name)
-            print("Geofence %d added (draft)" % (self.Geofence0['id']))
+            print("Geofence %d added (draft, confirm with 'geofence upload')" % (self.Geofence0['id']))
         else:
             print("Geofence not added - Polygon does not meet niceness criteria (must be counterclockwise)")
             return

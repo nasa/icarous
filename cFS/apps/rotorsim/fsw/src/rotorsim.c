@@ -503,9 +503,20 @@ void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double heading,doub
         double aq = 1 + pow(m,2);
         double bq = 2*m*c;
         double cq = pow(c,2) - pow(r,2);
-        double discr = sqrt(pow(bq,2) - 4*aq*cq);
-        x1 = (-bq - discr)/(2*aq);
-        x2 = (-bq + discr)/(2*aq);
+
+        double discr = pow(bq,2) - 4*aq*cq;
+        double discr_sqrt = sqrt(discr);
+
+
+        if(discr < 0){
+           //OS_printf("complex roots\n"); 
+           output[0] = _wpB[0]; 
+           output[1] = _wpB[1];
+           return;
+        }
+
+        x1 = (-bq - discr_sqrt)/(2*aq);
+        x2 = (-bq + discr_sqrt)/(2*aq);
         y1 = m*x1 + c; 
         y2 = m*x2 + c;
     }else{
