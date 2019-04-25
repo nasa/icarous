@@ -16,7 +16,7 @@ void gsInterface_InitializeParamIds(){
     AddParamId("LOGDAADATA",1);
     AddParamId("LOOKAHEAD_TIME",20.0);
     AddParamId("LEFT_TRK",180.0);
-    AddParamId("RIGHT_TRK",-180.0);
+    AddParamId("RIGHT_TRK",180.0);
     AddParamId("MIN_GS",0.2);
     AddParamId("MAX_GS",5.0);
     AddParamId("MIN_VS",-400);
@@ -33,16 +33,16 @@ void gsInterface_InitializeParamIds(){
     AddParamId("BANK_ANGLE",0.0);
     AddParamId("VERTICAL_RATE",0.0);
     AddParamId("RECOV_STAB_TIME",0.0);
-    AddParamId("MIN_HORIZ_RECOV",2.0);
-    AddParamId("MIN_VERT_RECOV",1.0);
+    AddParamId("MIN_HORIZ_RECOV",30.0);
+    AddParamId("MIN_VERT_RECOV",10.0);
     AddParamId("RECOVERY_TRK",1);
     AddParamId("RECOVERY_GS",0);
     AddParamId("RECOVERY_VS",0);
     AddParamId("RECOVERY_ALT",0);
     AddParamId("CA_BANDS",1);
     AddParamId("CA_FACTOR",0.2);
-    AddParamId("HORIZONTAL_NMAC",1.0);
-    AddParamId("VERTICAL_NMAC",0.5);
+    AddParamId("HORIZONTAL_NMAC",5.0);
+    AddParamId("VERTICAL_NMAC",5.5);
     AddParamId("CONFLICT_CRIT",0);
     AddParamId("RECOVERY_CRIT",0);
     AddParamId("CONTOUR_THR",180.0);
@@ -56,7 +56,7 @@ void gsInterface_InitializeParamIds(){
     AddParamId("AL_1_SPREAD_VS",0);
     AddParamId("CONFLICT_LEVEL",1);
     AddParamId("LD_CR_DTCN_DET_1",0); //Hard coded for now, not a parameter
-    AddParamId("DET_1_WCV_DTHR",5.0);
+    AddParamId("DET_1_WCV_DTHR",30.0);
     AddParamId("DET_1_WCV_TCOA",0.0);
     AddParamId("DET_1_WCV_TTHR",0.0);
     AddParamId("DET_1_WCV_ZTHR",200.0);
