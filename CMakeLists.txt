@@ -25,13 +25,6 @@ cmake_minimum_required(VERSION 2.6.4)
 project(ICAROUS_CFS C CXX)
 
 OPTION(ARM "Build binaries for ARM" OFF)
-OPTION(SITL "Build the project for SITL" OFF)
-
-IF(SITL)
-    add_definitions(-DSITL)
-    execute_process(COMMAND cp "${CMAKE_SOURCE_DIR}/cFS/apps/ardupilot/fsw/tables/.intf_tbl.c" "${CMAKE_SOURCE_DIR}/cFS/apps/ardupilot/fsw/tables/intf_tbl.c")
-    execute_process(COMMAND cp "${CMAKE_SOURCE_DIR}/cFS/apps/gsInterface/fsw/tables/.gsIntf_tbl.c" "${CMAKE_SOURCE_DIR}/cFS/apps/gsInterface/fsw/tables/gsIntf_tbl.c")
-ENDIF(SITL)
 
 IF(NOT ARM)
     #set(CMAKE_CXX_FLAGS "-g -fPIC -m32")
