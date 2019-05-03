@@ -366,7 +366,7 @@ void TRAJECTORY_Monitor(void){
                     n += sprintf(params + n,"turn_rate=%f [deg/s];",msg->turn_rate);
                     n += sprintf(params + n,"bank_angle=%f [deg];",msg->bank_angle);
                     n += sprintf(params + n,"vertical_rate=%f [fpm];",msg->vertical_rate);
-                    n += sprintf(params + n,"recover_stability_time=%f [s];",msg->recovery_stability_time);
+                    n += sprintf(params + n,"recovery_stability_time=%f [s];",msg->recovery_stability_time);
                     n += sprintf(params + n,"min_horizontal_recovery=%f [ft];",msg->min_horizontal_recovery);
                     n += sprintf(params + n,"min_vertical_recovery=%f [ft];",msg->min_vertical_recovery);
                     n += msg->recovery_trk? sprintf(params + n,"recovery_trk=true;"):sprintf(params + n,"recovery_trk=false;");
@@ -382,7 +382,7 @@ void TRAJECTORY_Monitor(void){
                     n += sprintf(params + n,"contour_thr=%f [deg];",msg->contour_thr);
                     n += sprintf(params + n,"alert_1_alerting_time=%f [s];",msg->alert_1_alerting_time);
                     n += sprintf(params + n,"alert_1_detector=%s;",msg->alert_1_detector);
-                    n += sprintf(params + n,"alert_1_early_alerting_time=%f [s];",msg->alert_1_alerting_time);
+                    n += sprintf(params + n,"alert_1_early_alerting_time=%f [s];",msg->alert_1_early_alerting_time);
                     n += sprintf(params + n,"alert_1_region=%s ;",msg->alert_1_region);
                     n += sprintf(params + n,"alert_1_spread_alt=%f [ft];",msg->alert_1_spread_alt);
                     n += sprintf(params + n,"alert_1_spread_gs=%f [knot];",msg->alert_1_spread_gs);

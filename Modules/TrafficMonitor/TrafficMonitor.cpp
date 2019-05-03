@@ -354,12 +354,12 @@ void TrafficMonitor::GetTrackBands(int& numBands,int* bandTypes,double* low,doub
         if(!ISNAN(prefHeading)) {
             if (prefDirection) {
                 prefHeading = prefHeading + 5 * M_PI / 180;
-                if (prefHeading > M_PI) {
-                    prefHeading = prefHeading - 2 * M_PI;
+                if (prefHeading > 2*M_PI) {
+                    prefHeading = (prefHeading - 2 * M_PI);
                 }
             } else {
                 prefHeading = prefHeading - 5 * M_PI / 180;
-                if (prefHeading < -M_PI) {
+                if (prefHeading < 0) {
                     prefHeading = 2 * M_PI + prefHeading;
                 }
             }
