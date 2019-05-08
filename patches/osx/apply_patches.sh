@@ -8,7 +8,7 @@ patch -d ../../cFS/cFE/osal/src/os/posix < osal_src_os_posix_osloader.patch
 patch -d ../../cFS/cFE/osal/src/os/posix < osal_src_os_posix_ostimer.patch
 
 # Apply patch to osal inc files
-patch -d .././cFS/cFE/osal/src/os/inc < osal_src_os_inc_osapi-os-loader.patch
+patch -d ../../cFS/cFE/osal/src/os/inc < osal_src_os_inc_osapi-os-loader.patch
 
 # Apply patch to build options cmake
 patch -d ../../cFS/cFE/osal/src/os/posix < osal_src_os_posix_build_options.patch
