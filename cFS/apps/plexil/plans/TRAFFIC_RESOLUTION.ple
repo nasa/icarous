@@ -169,7 +169,7 @@ TRAFFIC_RESOLUTION:{
             }endif
         }
 
-        if(TrackResolution){
+        if(TrackResolution && !statusTF_Track && !statusTF_Altitude && !statusTF_Speed){
             Boolean _returnsafe;
             returnVel = Lookup(interceptHeading);
             //pprint("Return heading to plan:",returnVel);
