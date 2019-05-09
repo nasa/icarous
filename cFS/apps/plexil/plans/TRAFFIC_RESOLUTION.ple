@@ -169,7 +169,7 @@ TRAFFIC_RESOLUTION:{
             }endif
         }
 
-        if(TrackResolution && !statusTF_Track && !statusTF_Altitude && !statusTF_Speed){
+        if(TrackResolution){
             Boolean _returnsafe;
             returnVel = Lookup(interceptHeading);
             //pprint("Return heading to plan:",returnVel);
@@ -180,8 +180,10 @@ TRAFFIC_RESOLUTION:{
             returnSafe = _returnsafe;
 
             if(!returnSafe){
-                SetVel(prevTrackResCmd);
-                //pprint("Setting prev velocity in returnSafe:",velCmd);
+                if(prevTrackResCmd[0] >= 0){
+                    SetVel(prevTrackResCmd);
+                    //pprint("Setting prev velocity in returnSafe:",velCmd);
+                }endif
             }endif
         }endif
 
