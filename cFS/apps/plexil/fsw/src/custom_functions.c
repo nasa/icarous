@@ -70,6 +70,7 @@ void PLEXIL_CustomSubscription(void){
     CFE_SB_Subscribe(FLIGHTPLAN_MONITOR_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(GEOFENCE_PATH_CHECK_RESULT_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(SAFE2DITCH_STATUS_MID,plexilAppData.DATA_Pipe);
+    CFE_SB_Subscribe(TRAFFIC_PARAMETERS_MID,plexilAppData.DATA_Pipe);
 }
 
 
@@ -297,6 +298,12 @@ void PLEXIL_ProcessCustomPackets(bool data){
             break;
         }
 
+        case TRAFFIC_PARAMETERS_MID:{
+            traffic_parameters_t* msg = (traffic_parameters_t*) plexilAppData.DATA_MsgPtr;
+            memcpy(&plexilCustomData.trafficparameters,msg,sizeof(traffic_parameters_t));
+            break;
+        }
+
         default:
             break;
     }
@@ -482,11 +489,24 @@ void PLEXIL_HandleCustomCommands(PlexilMsg* msg){
         double vn = groundspeed*cos(track*M_PI/180);
         double ve = groundspeed*sin(track*M_PI/180);
         double vu = verticalspeed;
+
+        bool valid = true;
+        if(groundspeed > plexilCustomData.trafficparameters.max_gs ||
+           groundspeed < plexilCustomData.trafficparameters.min_gs){
+            valid = false;
+        }
+
+        if(verticalspeed > plexilCustomData.trafficparameters.max_vs*0.3/60 ||
+           verticalspeed < plexilCustomData.trafficparameters.min_vs*0.3/60){
+            valid = false;
+        }
+
         cmd.name = _SETVEL_;
         cmd.param1 = (float)vn;
         cmd.param2 = (float)ve;
         cmd.param3 = (float)vu;
-        SendSBMsg(cmd);
+        if(valid)
+            SendSBMsg(cmd);
     }else if(CHECKNAME(msg ,"SetYaw")){
         double heading;
         int32_t relative;

@@ -49,6 +49,7 @@ typedef struct{
     bool endDitch;
     bool ditchGuidanceRequired;
     bool ditchRequested;
+    traffic_parameters_t trafficparameters;
 }plexilCustomData_t;
 
 plexilCustomData_t plexilCustomData;
