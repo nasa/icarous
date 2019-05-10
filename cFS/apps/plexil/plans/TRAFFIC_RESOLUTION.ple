@@ -165,7 +165,7 @@ TRAFFIC_RESOLUTION:{
                 TrackResolution = true;
                 //pprint("Setting prev velocity:",velCmd);
             }else{
-                TrackResolution = false;
+                
             }endif
         }
 
