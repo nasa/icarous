@@ -219,14 +219,14 @@ void ProcessGSMessage(mavlink_message_t message) {
 
 						mavlink_msg_mission_item_pack(1,0,&msgMissionItem,255,0,i,
 						                                  _type,
-														  index,
-														  _floor,
-														  _ceiling,
-															_numVertices,
-															0,0,0,
-															appdataIntGS.gfData[i].vertices[index][0],
-															appdataIntGS.gfData[i].vertices[index][1],
-															0,MAV_MISSION_TYPE_FENCE);
+														  0,
+														  0,
+														  0,
+														_numVertices,
+														index,_floor,_ceiling,
+														appdataIntGS.gfData[i].vertices[index][0],
+														appdataIntGS.gfData[i].vertices[index][1],
+														0,MAV_MISSION_TYPE_FENCE);
 
 						break;
 					}

@@ -126,10 +126,10 @@ class GeoFenceModule(mp_module.MPModule):
                 self.recvVertices += 1
                 _id = m.seq  # index of fence
                 _type = m.frame  # type of fence
-                _ci = m.command  # current vertex of index
-                _floor = m.current  # floor
-                _roof = m.autocontinue  # ceiling
                 _numV = m.param1  # _numVertices
+                _ci = m.param2
+                _floor = m.param3
+                _roof = m.param4
                 _lat = m.x  # latitude
                 _lon = m.y  # longitude
                 if m.seq >= len(self.fenceList):
