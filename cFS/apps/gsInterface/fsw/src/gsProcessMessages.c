@@ -6,6 +6,7 @@
 
 
 #include <msgdef/ardupilot_msg.h>
+#include <msgids/ardupilot_msgids.h>
 #include "gsInterface.h"
 #include "UtilFunctions.h"
 
@@ -133,14 +134,25 @@ void ProcessGSMessage(mavlink_message_t message) {
 			//printf("MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
 			mavlink_mission_request_list_t msg;
 			mavlink_msg_mission_request_list_decode(&message, &msg);
+			int count = 0;
 
-		    mavlink_message_t msgCount;
-		    mavlink_msg_mission_count_pack(1,0,&msgCount,255,0,appdataIntGS.numWaypoints,MAV_MISSION_TYPE_MISSION);
-		    writeMavlinkData(&appdataIntGS.gs,&msgCount);
+			if (msg.mission_type == MAV_MISSION_TYPE_MISSION)
+			{
+				count = appdataIntGS.numWaypoints;
+			}else if(msg.mission_type == MAV_MISSION_TYPE_FENCE){
+				for(int i=0;i<appdataIntGS.numGeofences;++i){
+					count += appdataIntGS.fenceVertices[i];
+				}
+			}
+
+			mavlink_message_t msgCount;
+			mavlink_msg_mission_count_pack(1, 0, &msgCount, 255, 0, count, msg.mission_type);
+			writeMavlinkData(&appdataIntGS.gs, &msgCount);
 
 			break;
 		}
 
+        /*
 		case MAVLINK_MSG_ID_MISSION_REQUEST_INT:
 		{
 			//printf("MAVLINK_MSG_ID_MISSION_REQUEST\n");
@@ -164,7 +176,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 
 			writeMavlinkData(&appdataIntGS.gs,&msgMissionItem);
 			break;
-		}
+		}*/
 
 		case MAVLINK_MSG_ID_MISSION_REQUEST:{
 		    //printf("MAVLINK_MSG_ID_MISSION_REQUEST\n");
@@ -173,7 +185,8 @@ void ProcessGSMessage(mavlink_message_t message) {
 
 
 			mavlink_message_t msgMissionItem;
-			mavlink_msg_mission_item_pack(1,0,&msgMissionItem,255,0,msg.seq,appdataIntGS.ReceivedMissionItems[msg.seq].frame,
+			if(msg.mission_type == MAV_MISSION_TYPE_MISSION){
+				mavlink_msg_mission_item_pack(1,0,&msgMissionItem,255,0,msg.seq,appdataIntGS.ReceivedMissionItems[msg.seq].frame,
 			                                                                   appdataIntGS.ReceivedMissionItems[msg.seq].command,
 			                                                                   appdataIntGS.ReceivedMissionItems[msg.seq].current,
 			                                                                   appdataIntGS.ReceivedMissionItems[msg.seq].autocontinue,
@@ -185,6 +198,40 @@ void ProcessGSMessage(mavlink_message_t message) {
 			                                                                   appdataIntGS.ReceivedMissionItems[msg.seq].y,
 			                                                                   appdataIntGS.ReceivedMissionItems[msg.seq].z,
 			                                                                   appdataIntGS.ReceivedMissionItems[msg.seq].mission_type);
+			}else if(msg.mission_type == MAV_MISSION_TYPE_FENCE){
+				int reqItem = msg.seq;
+				int index = 0;
+				int vertexTotal = 0;
+				for(int i=0;i<appdataIntGS.numGeofences;++i){
+					vertexTotal += appdataIntGS.fenceVertices[i];
+					if (msg.seq < vertexTotal){
+						if(i > 0){
+							index  = appdataIntGS.fenceVertices[i] - (vertexTotal - reqItem);
+						}
+						else{
+							index  = reqItem;
+						}
+                       
+					    int _type = appdataIntGS.gfData[i].type;
+						double _ceiling = appdataIntGS.gfData[i].ceiling;
+						double _floor = appdataIntGS.gfData[i].floor;
+						double _numVertices = appdataIntGS.fenceVertices[i];
+
+						mavlink_msg_mission_item_pack(1,0,&msgMissionItem,255,0,i,
+						                                  _type,
+														  index,
+														  _floor,
+														  _ceiling,
+															_numVertices,
+															0,0,0,
+															appdataIntGS.gfData[i].vertices[index][0],
+															appdataIntGS.gfData[i].vertices[index][1],
+															0,MAV_MISSION_TYPE_FENCE);
+
+						break;
+					}
+				}
+			}
 
 			writeMavlinkData(&appdataIntGS.gs,&msgMissionItem);
 			break;
@@ -224,12 +271,17 @@ void ProcessGSMessage(mavlink_message_t message) {
 				}
 			}
 			else if (msg.command == MAV_CMD_DO_FENCE_ENABLE) {
+                uint16_t index = msg.param2; 
+				appdataIntGS.recvGeofIndex = index;
+				if(index >= appdataIntGS.numGeofences){
+					appdataIntGS.numGeofences++;
+				}
 
-				appdataIntGS.gfData.index = (uint16_t)msg.param2;
-				appdataIntGS.gfData.type = (uint8_t)msg.param3;
-				appdataIntGS.gfData.totalvertices = (uint16_t)msg.param4;
-				appdataIntGS.gfData.floor = msg.param5;
-				appdataIntGS.gfData.ceiling = msg.param6;
+				appdataIntGS.gfData[index].index = (uint16_t)msg.param2;
+				appdataIntGS.gfData[index].type = (uint8_t)msg.param3;
+				appdataIntGS.gfData[index].totalvertices = (uint16_t)msg.param4;
+				appdataIntGS.gfData[index].floor = msg.param5;
+				appdataIntGS.gfData[index].ceiling = msg.param6;
 
 				mavlink_message_t fetchfence;
 				mavlink_msg_fence_fetch_point_pack(1,1,&fetchfence,255,0,0);
@@ -248,8 +300,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &appdataIntGS.traffic);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &appdataIntGS.traffic);
 				send2ap = false;
-			}
-			else if (msg.command == MAV_CMD_USER_1) {
+			}else if (msg.command == MAV_CMD_USER_1) {
 				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &appdataIntGS.resetIcarous);
 				CFE_SB_SendMsg((CFE_SB_Msg_t *) &appdataIntGS.resetIcarous);
 				appdataIntGS.nextWaypointIndex = 1000;
@@ -293,14 +344,17 @@ void ProcessGSMessage(mavlink_message_t message) {
 		case MAVLINK_MSG_ID_FENCE_POINT:
 		{
 			//printf("MAVLINK_MSG_ID_FENCE_POINT\n");
+			uint16_t index = appdataIntGS.recvGeofIndex;
+
 			mavlink_fence_point_t msg;
 			mavlink_msg_fence_point_decode(&message,&msg);
 			int count = msg.idx;
 			int total = msg.count;
 
-			appdataIntGS.gfData.vertices[msg.idx][0] = msg.lat;
-            appdataIntGS.gfData.vertices[msg.idx][1] = msg.lng;
+			appdataIntGS.fenceVertices[index] = total;
 
+			appdataIntGS.gfData[index].vertices[msg.idx][0] = msg.lat;
+            appdataIntGS.gfData[index].vertices[msg.idx][1] = msg.lng;
 
 			if (count < total-1) {
 				mavlink_message_t fetchfence;
@@ -313,8 +367,12 @@ void ProcessGSMessage(mavlink_message_t message) {
 			}
 
 		    if(count == total - 1) {
-				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &appdataIntGS.gfData);
-				CFE_SB_SendMsg((CFE_SB_Msg_t *) &appdataIntGS.gfData);
+				geofence_t data2send;
+
+				memcpy(&data2send,appdataIntGS.gfData + index,sizeof(geofence_t));
+
+				CFE_SB_InitMsg(&data2send,ICAROUS_GEOFENCE_MID,sizeof(geofence_t),FALSE);
+				SendSBMsg(data2send);	
 			}
 
 			break;

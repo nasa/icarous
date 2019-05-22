@@ -43,6 +43,8 @@
 
 #define PARAM_COUNT 77      ///< Total number of ICAROUS parameters
 
+#define MAX_GEOFENCES 30
+
 /**
  * @defgroup GSINTERFACE
  * @brief An application to interface cFS with an ground station system
@@ -75,13 +77,16 @@ typedef struct{
     port_t gs;                              ///< groundstation port
     int receivingWP;                        ///< waypoint current being received
     int numWaypoints;                       ///< num total waypoints
+    int numGeofences;                       ///< Number of geofences
+    int recvGeofIndex;                      ///< Index of geofence being received
     int waypointSeq;                        ///< received position waypoint
     int nextWaypointIndex;                  ///< Next waypoint index to goto.
     int hbeatFreqCount;                     ///< Counter for sending hbeat message
     mavlink_mission_item_t ReceivedMissionItems[MAX_WAYPOINTS];
     flightplan_t fpData;
     argsCmd_t startMission;
-    geofence_t gfData;
+    geofence_t gfData[MAX_GEOFENCES];
+    uint16_t fenceVertices[MAX_GEOFENCES];
     object_t traffic;
     noArgsCmd_t resetIcarous;
     uint8_t currentApMode;
