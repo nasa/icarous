@@ -231,6 +231,11 @@ void ProcessGSMessage(mavlink_message_t message) {
 						break;
 					}
 				}
+			}else if(msg.mission_type == MAV_MISSION_TYPE_RALLY){
+				mavlink_msg_mission_item_pack(1,0,&msgMissionItem,1,0,msg.seq,MAV_FRAME_GLOBAL,0,0,0,0,0,0,0,
+				                              appdataIntGS.trajectory.waypoints[msg.seq].latitude,
+											  appdataIntGS.trajectory.waypoints[msg.seq].longitude,
+											  appdataIntGS.trajectory.waypoints[msg.seq].altitude,MAV_MISSION_TYPE_RALLY);
 			}
 
 			writeMavlinkData(&appdataIntGS.gs,&msgMissionItem);
@@ -494,6 +499,16 @@ void gsInterface_ProcessPacket() {
 			mavlink_message_t msg;
 			mavlink_msg_statustext_pack(2,0,&msg,MAV_SEVERITY_WARNING,statusMsg->buffer);
 			writeMavlinkData(&appdataIntGS.gs,&msg);
+			break;
+		}
+
+		case ICAROUS_TRAJECTORY_MID:{
+			flightplan_t* fp = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
+			memcpy(&appdataIntGS.trajectory, fp, sizeof(flightplan_t));
+
+			mavlink_message_t msg;
+			mavlink_msg_mission_count_pack(1,0,&msg,255,0,fp->num_waypoints,MAV_MISSION_TYPE_RALLY);
+            writeMavlinkData(&appdataIntGS.gs,&msg);
 			break;
 		}
 

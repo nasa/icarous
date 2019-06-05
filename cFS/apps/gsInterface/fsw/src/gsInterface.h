@@ -84,6 +84,7 @@ typedef struct{
     int hbeatFreqCount;                     ///< Counter for sending hbeat message
     mavlink_mission_item_t ReceivedMissionItems[MAX_WAYPOINTS];
     flightplan_t fpData;
+    flightplan_t trajectory;
     argsCmd_t startMission;
     geofence_t gfData[MAX_GEOFENCES];
     uint16_t fenceVertices[MAX_GEOFENCES];
