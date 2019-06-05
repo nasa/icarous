@@ -97,7 +97,7 @@ bool Astar::CheckConstraints(Node& qnode) {
 
             std::vector<Vect2> fenceVertices = it->poly2D().getVertices();
             Vect2 polyVel(0,0);
-            val = geoPolyDetect.Static_Collision_Detector(0,1,fenceVertices,polyVel,A.vect2(),vel,0.1,true);
+            val = geoPolyDetect.Static_Collision_Detector(0,1,fenceVertices,polyVel,O.vect2(),vel,0.1,true);
 
             if(val){
                 return false;
