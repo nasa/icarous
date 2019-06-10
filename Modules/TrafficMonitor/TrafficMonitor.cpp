@@ -57,7 +57,7 @@ int TrafficMonitor::InputTraffic(int id, double *position, double *velocity,doub
     return TrafficObject::AddObject(trafficList,_traffic);
 }
 
-void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double elapsedTime) {
+void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _elapsedTime) {
 
     int numTraffic = trafficList.size();
     if(numTraffic == 0){
@@ -70,6 +70,7 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double e
     double holdConflictTime = 3;
     time_t currentTime = time(&currentTime);
     //double elapsedTime = difftime(currentTime, startTime);
+    elapsedTime = _elapsedTime;
 
     Position so = Position::makeLatLonAlt(position[0],"degree",position[1],"degree",position[2],"m");
     Velocity vo = Velocity::makeTrkGsVs(velocity[0],"degree",velocity[1],"m/s",velocity[2],"m/s");
@@ -179,9 +180,10 @@ bool TrafficMonitor::MonitorWPFeasibility(double *position, double *velocity, do
     Position WP = Position::makeLatLonAlt(wp[0],"degree",wp[1],"degree",wp[2],"m");
 
     double track = so.track(WP) * 180/M_PI;
-    Velocity vo = Velocity::makeTrkGsVs(track,"degree",velocity[1],"m/s",0,"m/s");
+    double cmd = -(position[2] - wp[2])/5;
+    Velocity vo = Velocity::makeTrkGsVs(track,"degree",velocity[1],"m/s",cmd,"m/s");
 
-    DAA.setOwnshipState("Ownship", so, vo, 0);
+    DAA.setOwnshipState("Ownship", so, vo, elapsedTime);
     double dist2traffic = MAXDOUBLE;
     int count = 0;
     bool conflict = false;
@@ -192,7 +194,7 @@ bool TrafficMonitor::MonitorWPFeasibility(double *position, double *velocity, do
 
         char name[10];
         sprintf(name, "Traffic%d", count);
-        DAA.addTrafficState(name, si, vi);
+        DAA.addTrafficState(name, si, vi, _traffic.time);
 
         if(DAA.alerting(count)) {
             conflict = true;

@@ -50,6 +50,7 @@ private:
 
     std::list<TrafficObject> trafficList;
     double prevLogTime;
+    double elapsedTime;
 
 public:
     larcfm::Daidalus DAA;
