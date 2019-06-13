@@ -256,7 +256,7 @@ void ProcessAPMessage(mavlink_message_t message) {
             mavlink_msg_heartbeat_decode(&message,&msg);
             if (!appdataInt.foundUAV) {
                 mavlink_message_t msg;
-                mavlink_msg_request_data_stream_pack(255,0,&msg,1,0,MAV_DATA_STREAM_ALL,0,1);
+                mavlink_msg_request_data_stream_pack(255,0,&msg,1,0,MAV_DATA_STREAM_ALL,4,1);
                 appdataInt.foundUAV = 1;
                 writeMavlinkData(&appdataInt.ap,&msg);
                 CFE_EVS_SendEvent(ARDUPILOT_CONNECTED_TO_AP_EID,CFE_EVS_INFORMATION,"Connection to autopilot established");
