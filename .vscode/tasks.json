@@ -1,0 +1,32 @@
+{
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "build",
+      "command": "cmake",
+      "args": [
+        "..",
+        "-DSCR=mac",
+      ],
+      "options": {
+        "cwd": "${workspaceRoot}/build",
+        "env": {"JAVA_HOME":"/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home",
+                "OSAL_HOME":"${workspaceRoot}/cFS/cFE/osal",
+                "PLEXIL_HOME":"${workspaceRoot}/Modules/Plexil"}
+
+      }
+    },
+    {
+      "type": "shell",
+      "label": "install",
+      "command": "make",
+      "args": [
+        "cpu1-install",
+        "-j8"
+      ],
+      "options": { "cwd": "${workspaceRoot}/build"},
+      "dependsOn": ["build"]
+    }
+  ],
+  "version": "2.0.0"
+}
