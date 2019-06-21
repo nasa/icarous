@@ -190,8 +190,8 @@ void GEOFENCE_ProcessPacket(){
             CFE_SB_InitMsg(&pfresult,GEOFENCE_PATH_CHECK_RESULT_MID,sizeof(pathFeasibilityCheck_t),TRUE);
             memcpy(pfresult.fromPosition,pfcheck->fromPosition,sizeof(double)*3);
             memcpy(pfresult.toPosition,pfcheck->toPosition,sizeof(double)*3);
-            pfresult.feasibleA = GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,pfresult.fromPosition,0,0,0);
-            pfresult.feasibleB = GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,pfresult.toPosition,0,0,0);
+            pfresult.feasibleA = !GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,pfresult.fromPosition,0,0,0);
+            pfresult.feasibleB = !GeofenceMonitor_CheckViolation(geofenceAppData.gfMonitor,pfresult.toPosition,0,0,0);
             pfresult.feasibleAB = GeofenceMonitor_CheckWPFeasibility(geofenceAppData.gfMonitor,pfresult.fromPosition,pfresult.toPosition);
             SendSBMsg(pfresult);
             break;
