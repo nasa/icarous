@@ -39,7 +39,8 @@ void gsInterface_AppMain(void){
 
 				case FREQ_01_WAKEUP_MID:
 				    appdataIntGS.hbeatFreqCount++;
-					if(appdataIntGS.hbeatFreqCount%5 == 0){
+					int interval = 1;
+					if(appdataIntGS.hbeatFreqCount%interval == 0){
 						appdataIntGS.hbeatFreqCount = 0;
 						gsSendHeartbeat();
 					}
