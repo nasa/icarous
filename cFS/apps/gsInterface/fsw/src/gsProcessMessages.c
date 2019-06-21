@@ -600,12 +600,10 @@ void gsInterface_ProcessPacket() {
 			mavlink_message_t msg;
 
 			uint8_t emitterType = 0;
-			if (traffic->type != _TRAFFIC_ADSB_)
+			if (traffic->type == _TRAFFIC_RADAR_)
 			{
-				emitterType = 254;
-			}
-
-			if(traffic->type == _TRAFFIC_SIM_){
+				emitterType = 100;
+			}else if(traffic->type == _TRAFFIC_SIM_){
 				emitterType = 255;
 			}
 
