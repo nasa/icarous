@@ -271,6 +271,11 @@ void PLEXIL_ProcessCustomPackets(bool data){
             pathFeasibilityCheck_t *fpresult = (pathFeasibilityCheck_t*) plexilAppData.DATA_MsgPtr;
 
             bool result  = fpresult->feasibleAB;
+            // If starting location is not feasible but ending location is feasible,
+            // lets try to get out of the infeasible starting location
+            if(!fpresult-> feasibleA && fpresult->feasibleB){
+                result = true;
+            }
 
             PlexilMsg plxInput;
             PlexilMsg* msg = &plexilCustomData.pendingRequest;
