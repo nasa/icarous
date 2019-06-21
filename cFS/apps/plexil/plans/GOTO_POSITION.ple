@@ -42,7 +42,7 @@ GOTO_POSITION:{
 
     CurrentPosition = Lookup(position);
     CurrentVelocity = Lookup(velocity);
-    capH = resSpeed*1.5;
+    capH = resSpeed;
 
     SetMode("ACTIVE");
     
