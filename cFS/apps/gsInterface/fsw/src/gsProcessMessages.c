@@ -413,6 +413,13 @@ void ProcessGSMessage(mavlink_message_t message) {
                                                  PARAM_COUNT, i);
 					SendGSMsg(param_value_msg);
 
+
+					if(paramValue.param_index == PARAM_COUNT-1){
+						mavlink_message_t status;
+						mavlink_msg_statustext_pack(1,0,&status,MAV_SEVERITY_ALERT,"Received all parameters");
+						SendGSMsg(status);
+					}
+
 					break;
 				}
 			}
