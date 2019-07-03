@@ -197,6 +197,9 @@ class GeoFenceModule(mp_module.MPModule):
             self.mpstate.map_functions['draw_lines'](self.geofence_draw_callback)
             print("Drawing geofence on map with %d vertices" % int(params[2]))
 
+        elif args[0] == "gettraj":
+            self.master.mav.mission_request_list_send(2,0,2);
+
         elif args[0] == "upload":
             if len(self.drawnFenceList) == 0:
                 print("No drawn geofences to upload")
