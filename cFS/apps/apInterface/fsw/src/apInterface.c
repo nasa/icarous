@@ -11,137 +11,137 @@
 /// Event filter definition for ardupilot
 CFE_EVS_BinFilter_t  APInterface_EventFilters[] =
 {  /* Event ID    mask */
-		{APINTERFACE_STARTUP_INF_EID,       0x0000},
-		{APINTERFACE_COMMAND_ERR_EID,       0x0000},
+        {APINTERFACE_STARTUP_INF_EID,       0x0000},
+        {APINTERFACE_COMMAND_ERR_EID,       0x0000},
 };
 
 /* APINTERFACE_AppMain() -- Application entry points */
 void APINTERFACE_AppMain(void){
 
-	int32 status;
-	uint32 RunStatus = CFE_ES_APP_RUN;
+    int32 status;
+    uint32 RunStatus = CFE_ES_APP_RUN;
 
     // All functions to initialize app and open  connection to autopilot goes in here
     APINTERFACE_AppInit();
 
-	while(CFE_ES_RunLoop(&RunStatus) == TRUE) {
-		status = CFE_SB_RcvMsg(&appdataApIntf.Sch_MsgPtr, appdataApIntf.SchInterface_Pipe, CFE_SB_PEND_FOREVER);
-		if (status == CFE_SUCCESS) {
-			CFE_SB_MsgId_t MsgId;
-			MsgId = CFE_SB_GetMsgId(appdataApIntf.Sch_MsgPtr);
-			switch (MsgId) {
+    while(CFE_ES_RunLoop(&RunStatus) == TRUE) {
+        status = CFE_SB_RcvMsg(&appdataApIntf.Sch_MsgPtr, appdataApIntf.SchInterface_Pipe, CFE_SB_PEND_FOREVER);
+        if (status == CFE_SUCCESS) {
+            CFE_SB_MsgId_t MsgId;
+            MsgId = CFE_SB_GetMsgId(appdataApIntf.Sch_MsgPtr);
+            switch (MsgId) {
 
-				case FREQ_50_WAKEUP_MID:
-					break;
+                case FREQ_50_WAKEUP_MID:
+                    break;
 
 
-				case FREQ_30_WAKEUP_MID:
-					break;
+                case FREQ_30_WAKEUP_MID:
+                    break;
 
-				case FREQ_10_WAKEUP_MID:
+                case FREQ_10_WAKEUP_MID:
                     APINTERFACE_ProcessAPData();
-					break;
+                    break;
 
-				case FREQ_01_WAKEUP_MID:
-				    //TODO: If the autopilot doesn't provide ADSB data and you
+                case FREQ_01_WAKEUP_MID:
+                    //TODO: If the autopilot doesn't provide ADSB data and you
                     // have to rely on other sources, you may have to read
                     // that data separately. Those functions can go in here.
-				    //APINTERFACE_GetADSBData();
-					break;
-			}
-		}
+                    //APINTERFACE_GetADSBData();
+                    break;
+            }
+        }
 
         // Get data from Software bus and send necessary commands to autopilot
-		status = CFE_SB_RcvMsg(&appdataApIntf.INTERFACEMsgPtr, appdataApIntf.INTERFACE_Pipe, 10);
+        status = CFE_SB_RcvMsg(&appdataApIntf.INTERFACEMsgPtr, appdataApIntf.INTERFACE_Pipe, 10);
 
-		if (status == CFE_SUCCESS)
-		{
-			APINTERFACE_ProcessSBData();
-		}
-	}
+        if (status == CFE_SUCCESS)
+        {
+            APINTERFACE_ProcessSBData();
+        }
+    }
 
     APINTERFACE_AppCleanUp();
 
-	CFE_ES_ExitApp(RunStatus);
+    CFE_ES_ExitApp(RunStatus);
 }
 
 void APINTERFACE_AppInit(void){
 
-	memset(&appdataApIntf,0,sizeof(appdataInt_t));
+    memset(&appdataApIntf,0,sizeof(appdataInt_t));
 
-	int32 status;
+    int32 status;
 
-	// Register the app with executive services
-	CFE_ES_RegisterApp();
+    // Register the app with executive services
+    CFE_ES_RegisterApp();
 
-	// Register the events
-	CFE_EVS_Register(APInterface_EventFilters,
-			sizeof(APInterface_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
-			CFE_EVS_BINARY_FILTER);
+    // Register the events
+    CFE_EVS_Register(APInterface_EventFilters,
+            sizeof(APInterface_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
+            CFE_EVS_BINARY_FILTER);
 
-	// Create pipe to receive SB messages
-	status = CFE_SB_CreatePipe( &appdataApIntf.INTERFACE_Pipe, /* Variable to hold Pipe ID */
-								APINTERFACE_PIPE_DEPTH,        /* Depth of Pipe */
-								APINTERFACE_PIPE_NAME);        /* Name of pipe */
+    // Create pipe to receive SB messages
+    status = CFE_SB_CreatePipe( &appdataApIntf.INTERFACE_Pipe, /* Variable to hold Pipe ID */
+                                APINTERFACE_PIPE_DEPTH,        /* Depth of Pipe */
+                                APINTERFACE_PIPE_NAME);        /* Name of pipe */
 
-	// Create pipe to receive scheduler messages
-	status = CFE_SB_CreatePipe( &appdataApIntf.SchInterface_Pipe, /* Variable to hold Pipe ID */
-								APINTERFACE_PIPE_DEPTH,           /* Depth of Pipe */
-								SCH_APINTERFACE_PIPE1_NAME);      /* Name of pipe */
+    // Create pipe to receive scheduler messages
+    status = CFE_SB_CreatePipe( &appdataApIntf.SchInterface_Pipe, /* Variable to hold Pipe ID */
+                                APINTERFACE_PIPE_DEPTH,           /* Depth of Pipe */
+                                SCH_APINTERFACE_PIPE1_NAME);      /* Name of pipe */
 
-	// Subscribe to wakeup messages from scheduler
-	CFE_SB_Subscribe(FREQ_50_WAKEUP_MID,appdataApIntf.SchInterface_Pipe);
-	CFE_SB_Subscribe(FREQ_30_WAKEUP_MID,appdataApIntf.SchInterface_Pipe);
-	CFE_SB_Subscribe(FREQ_10_WAKEUP_MID,appdataApIntf.SchInterface_Pipe);
-	CFE_SB_Subscribe(FREQ_01_WAKEUP_MID,appdataApIntf.SchInterface_Pipe);
+    // Subscribe to wakeup messages from scheduler
+    CFE_SB_Subscribe(FREQ_50_WAKEUP_MID,appdataApIntf.SchInterface_Pipe);
+    CFE_SB_Subscribe(FREQ_30_WAKEUP_MID,appdataApIntf.SchInterface_Pipe);
+    CFE_SB_Subscribe(FREQ_10_WAKEUP_MID,appdataApIntf.SchInterface_Pipe);
+    CFE_SB_Subscribe(FREQ_01_WAKEUP_MID,appdataApIntf.SchInterface_Pipe);
 
-	// Subscribe to messages from the software bus
-	//Subscribe to command messages from the SB to command the autopilot
-	CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataApIntf.INTERFACE_Pipe);
+    // Subscribe to messages from the software bus
+    //Subscribe to command messages from the SB to command the autopilot
+    CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataApIntf.INTERFACE_Pipe);
     CFE_SB_Subscribe(ICAROUS_FLIGHTPLAN_MID,appdataApIntf.INTERFACE_Pipe);
     CFE_SB_Subscribe(ICAROUS_BANDS_TRACK_MID,appdataApIntf.INTERFACE_Pipe);
     //CFE_SB_Subscribe(ICAROUS_BANDS_SPEED_MID,appdataApIntf.INTERFACE_Pipe);
     //CFE_SB_Subscribe(ICAROUS_BANDS_ALT_MID,appdataApIntf.INTERFACE_Pipe);
     //CFE_SB_Subscribe(ICAROUS_BANDS_VS_MID,appdataApIntf.INTERFACE_Pipe);
 
-	// Initialize all messages that this App generates.
-	// To perfrom sense and avoid, as a minimum, the following messages must be generated
-	CFE_SB_InitMsg(&appdataApIntf.wpReached,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);
-	CFE_SB_InitMsg(&appdataApIntf.position,ICAROUS_POSITION_MID,sizeof(position_t),TRUE);
-	CFE_SB_InitMsg(&appdataApIntf.attitude,ICAROUS_ATTITUDE_MID,sizeof(attitude_t),TRUE);
-	CFE_SB_InitMsg(&appdataApIntf.traffic,ICAROUS_TRAFFIC_MID,sizeof(object_t),TRUE);
+    // Initialize all messages that this App generates.
+    // To perfrom sense and avoid, as a minimum, the following messages must be generated
+    CFE_SB_InitMsg(&appdataApIntf.wpReached,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);
+    CFE_SB_InitMsg(&appdataApIntf.position,ICAROUS_POSITION_MID,sizeof(position_t),TRUE);
+    CFE_SB_InitMsg(&appdataApIntf.attitude,ICAROUS_ATTITUDE_MID,sizeof(attitude_t),TRUE);
+    CFE_SB_InitMsg(&appdataApIntf.traffic,ICAROUS_TRAFFIC_MID,sizeof(object_t),TRUE);
 
-	// Send event indicating app initialization
-	CFE_EVS_SendEvent (APINTERFACE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+    // Send event indicating app initialization
+    CFE_EVS_SendEvent (APINTERFACE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
                        "Autopilot Interface initialized. Version %d.%d",
-					   APINTERFACE_MAJOR_VERSION,
-					   APINTERFACE_MINOR_VERSION);
+                       APINTERFACE_MAJOR_VERSION,
+                       APINTERFACE_MINOR_VERSION);
 
-	// Register table with table services
-	status = CFE_TBL_Register(&appdataApIntf.INTERFACE_tblHandle,
-				  "APInterfaceTable",
-				  sizeof(ApInterfaceTable_t),
-				  CFE_TBL_OPT_DEFAULT,
-				  &ApInterfaceTableValidationFunc);
+    // Register table with table services
+    status = CFE_TBL_Register(&appdataApIntf.INTERFACE_tblHandle,
+                  "APInterfaceTable",
+                  sizeof(ApInterfaceTable_t),
+                  CFE_TBL_OPT_DEFAULT,
+                  &ApInterfaceTableValidationFunc);
 
-	// Load app table data for ports
-	status = CFE_TBL_Load(appdataApIntf.INTERFACE_tblHandle,CFE_TBL_SRC_ADDRESS,&ApInterface_TblStruct);
+    // Load app table data for ports
+    status = CFE_TBL_Load(appdataApIntf.INTERFACE_tblHandle,CFE_TBL_SRC_ADDRESS,&ApInterface_TblStruct);
 
-	ApInterfaceTable_t *TblPtr;
-	status = CFE_TBL_GetAddress((void**)&TblPtr,appdataApIntf.INTERFACE_tblHandle);
+    ApInterfaceTable_t *TblPtr;
+    status = CFE_TBL_GetAddress((void**)&TblPtr,appdataApIntf.INTERFACE_tblHandle);
 
-	// Get data from tables
-	appdataApIntf.ap.id = 0;
-	appdataApIntf.ap.portType = TblPtr->PortType;
+    // Get data from tables
+    appdataApIntf.ap.id = 0;
+    appdataApIntf.ap.portType = TblPtr->PortType;
     appdataApIntf.ap.baudrate = TblPtr->BaudRate;
-	appdataApIntf.ap.portin   = TblPtr->Portin;
-	appdataApIntf.ap.portout  = TblPtr->Portout;
-	memcpy(appdataApIntf.ap.target,TblPtr->Address,50);
+    appdataApIntf.ap.portin   = TblPtr->Portin;
+    appdataApIntf.ap.portout  = TblPtr->Portout;
+    memcpy(appdataApIntf.ap.target,TblPtr->Address,50);
 
-	// Free table pointer
-	status = CFE_TBL_ReleaseAddress(appdataApIntf.INTERFACE_tblHandle);
+    // Free table pointer
+    status = CFE_TBL_ReleaseAddress(appdataApIntf.INTERFACE_tblHandle);
 
-	// Use parameters obtained from the tables to open ports here
+    // Use parameters obtained from the tables to open ports here
     APINTERFACE_InitializeAPPorts();
 
 
@@ -153,9 +153,9 @@ void APINTERFACE_InitializeAPPorts(){
 
    // Check which port to open from user defined parameters
    if (appdataApIntf.ap.portType == SOCKET){
-		InitializeSocketPort(&appdataApIntf.ap);
+        InitializeSocketPort(&appdataApIntf.ap);
    }else if(appdataApIntf.ap.portType == SERIAL){
-		InitializeSerialPort(&appdataApIntf.ap,false);
+        InitializeSerialPort(&appdataApIntf.ap,false);
    }
 }
 

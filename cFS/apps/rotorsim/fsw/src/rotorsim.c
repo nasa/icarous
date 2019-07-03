@@ -293,14 +293,14 @@ void Rotorsim_GetInputs(){
                                 rotorsimAppData.flightPlan.waypoints[nextWP - 1].longitude,
                                 rotorsimAppData.flightPlan.waypoints[nextWP - 1].altitude};
 
-			   double wpB[3] = {rotorsimAppData.flightPlan.waypoints[nextWP].latitude,
+               double wpB[3] = {rotorsimAppData.flightPlan.waypoints[nextWP].latitude,
                                 rotorsimAppData.flightPlan.waypoints[nextWP].longitude,
                                 rotorsimAppData.flightPlan.waypoints[nextWP].altitude};
 
-			   double distbtWP   = ComputeDistance(wpA,wpB);
+               double distbtWP   = ComputeDistance(wpA,wpB);
 
-			   if(rotorsimAppData.flightPlan.waypoints[nextWP-1].wp_metric == WP_METRIC_ETA) {
-			       if(rotorsimAppData.flightPlan.waypoints[nextWP-1].value_to_next_wp > 0) {
+               if(rotorsimAppData.flightPlan.waypoints[nextWP-1].wp_metric == WP_METRIC_ETA) {
+                   if(rotorsimAppData.flightPlan.waypoints[nextWP-1].value_to_next_wp > 0) {
                        double setSpeed = distbtWP / rotorsimAppData.flightPlan.waypoints[nextWP - 1].value_to_next_wp;
                        rotorsimAppData.Rotorsim_Tbl.missionSpeed = setSpeed;
                        //OS_printf("Speed = %f\n", setSpeed);

@@ -4,11 +4,11 @@
 #include "apInterface_table.h"
 
 ApInterfaceTable_t ApInterface_TblStruct = {
-	.PortType = SOCKET,
-	.BaudRate = 0,
-	.Portin = 14551,
-	.Portout = 0,
-	.Address = "127.0.0.1",
+    .PortType = SOCKET,
+    .BaudRate = 0,
+    .Portin = 14551,
+    .Portout = 0,
+    .Address = "127.0.0.1",
 };
 
 

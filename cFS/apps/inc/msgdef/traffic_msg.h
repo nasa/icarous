@@ -28,19 +28,19 @@
 typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];  /**< cFS header information */
     int numConflictTraffic;                  /**< total number of conflict traffic */
-	int numBands;                            /**< total number of bands (max:5)*/
-	int type[20];                            /**< type of each band @see Region */
-	double min[20];                          /**< min values of each band */
-	double max[20];                          /**< max values of each band */
+    int numBands;                            /**< total number of bands (max:5)*/
+    int type[20];                            /**< type of each band @see Region */
+    double min[20];                          /**< min values of each band */
+    double max[20];                          /**< max values of each band */
     int recovery;                            /**< 1 if recovery band is available */
-	int currentConflictBand;                 /**< current ownship conflict band */
-	double timeToViolation;                  /**< time to violation */
-	double timeToRecovery;                   /**< time to recovery */
-	double minHDist;                         /**< min horizontal distance */
-	double minVDist;                         /**< min vertical distance */
-	double resUp;                            /**< resolution up */
-	double resDown;                          /**< resolution down */
-	double resPreferred;                     /**< preferred resolution */
+    int currentConflictBand;                 /**< current ownship conflict band */
+    double timeToViolation;                  /**< time to violation */
+    double timeToRecovery;                   /**< time to recovery */
+    double minHDist;                         /**< min horizontal distance */
+    double minVDist;                         /**< min vertical distance */
+    double resUp;                            /**< resolution up */
+    double resDown;                          /**< resolution down */
+    double resPreferred;                     /**< preferred resolution */
     bool wpFeasibility[50];                  /**< feasiblity to waypoints */
 }bands_t;
 

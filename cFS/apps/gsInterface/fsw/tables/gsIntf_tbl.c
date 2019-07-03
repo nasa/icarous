@@ -11,11 +11,11 @@
 ** Address is IP address if SOCKET or serial port if SERIAL
 **/
 gsInterfaceTable_t gsIntf_TblStruct = {
-	.PortType = SOCKET,    // gsPortType
-	.BaudRate = 0,           // baudrate
-	.Portin = 14552,       // gsPortin
-	.Portout = 14553,       // gsPortout
-	.Address = "127.0.0.1"  // gs address
+    .PortType = SOCKET,    // gsPortType
+    .BaudRate = 0,           // baudrate
+    .Portin = 14552,       // gsPortin
+    .Portout = 14553,       // gsPortout
+    .Address = "127.0.0.1"  // gs address
 };
 
 /*

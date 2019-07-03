@@ -33,14 +33,14 @@ typedef enum {
  */
 typedef struct __attribute__((__packed__))
 {
-	uint8    TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< cFS header information */
-	uint8    acid;                           /**< identifier */
-	uint8    parameter_name;                 /**< total waypoints. Cannot be greater than max. */
-	union{
-		double parameter_valueF;
-		int32_t parameter_valueI;
-		char parameter_valueS[50];
-	}parameter_value;
+    uint8    TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< cFS header information */
+    uint8    acid;                           /**< identifier */
+    uint8    parameter_name;                 /**< total waypoints. Cannot be greater than max. */
+    union{
+        double parameter_valueF;
+        int32_t parameter_valueI;
+        char parameter_valueS[50];
+    }parameter_value;
 }flightplan_t;
 
 

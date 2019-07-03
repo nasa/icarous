@@ -9,52 +9,52 @@
 /// Event filter definition for ardupilot
 CFE_EVS_BinFilter_t  MacSch_EventFilters[] =
 {  /* Event ID    mask */
-	{MACSCH_STARTUP_INF_EID,       0x0000},
-	{MACSCH_COMMAND_ERR_EID,       0x0000},
+  {MACSCH_STARTUP_INF_EID,       0x0000},
+  {MACSCH_COMMAND_ERR_EID,       0x0000},
 };
 
 /* MACSCH_AppMain() -- Application entry points */
 void MACSCH_AppMain(void){
 
-	int32 status;
-	uint32 RunStatus = CFE_ES_APP_RUN;
+  int32 status;
+  uint32 RunStatus = CFE_ES_APP_RUN;
 
         MACSCH_AppInit();
 
-	while(CFE_ES_RunLoop(&RunStatus) == TRUE) {
-	
-	}
+  while(CFE_ES_RunLoop(&RunStatus) == TRUE) {
+  
+  }
 
         MACSCH_AppCleanUp();
 
-	CFE_ES_ExitApp(RunStatus);
+  CFE_ES_ExitApp(RunStatus);
 }
 
 void MACSCH_AppInit(void){
 
-	int32 status;
+  int32 status;
 
-	// Register the app with executive services
-	CFE_ES_RegisterApp();
+  // Register the app with executive services
+  CFE_ES_RegisterApp();
 
-	// Register the events
-	CFE_EVS_Register(MacSch_EventFilters,
-			sizeof(MacSch_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
-			CFE_EVS_BINARY_FILTER);
+  // Register the events
+  CFE_EVS_Register(MacSch_EventFilters,
+      sizeof(MacSch_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
+      CFE_EVS_BINARY_FILTER);
 
-	// Initialize all messages that this App generates.
-	// To perfrom sense and avoid, as a minimum, the following messages must be generated
-	CFE_SB_InitMsg(&FREQ_50,FREQ_50_WAKEUP_MID,sizeof(macScheduler_t),TRUE);
-	CFE_SB_InitMsg(&FREQ_30,FREQ_30_WAKEUP_MID,sizeof(macScheduler_t),TRUE);
-	CFE_SB_InitMsg(&FREQ_10,FREQ_10_WAKEUP_MID,sizeof(macScheduler_t),TRUE);
+  // Initialize all messages that this App generates.
+  // To perfrom sense and avoid, as a minimum, the following messages must be generated
+  CFE_SB_InitMsg(&FREQ_50,FREQ_50_WAKEUP_MID,sizeof(macScheduler_t),TRUE);
+  CFE_SB_InitMsg(&FREQ_30,FREQ_30_WAKEUP_MID,sizeof(macScheduler_t),TRUE);
+  CFE_SB_InitMsg(&FREQ_10,FREQ_10_WAKEUP_MID,sizeof(macScheduler_t),TRUE);
         CFE_SB_InitMsg(&FREQ_01,FREQ_01_WAKEUP_MID,sizeof(macScheduler_t),TRUE);
 
 
-	// Send event indicating app initialization
-	CFE_EVS_SendEvent (MACSCH_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+  // Send event indicating app initialization
+  CFE_EVS_SendEvent (MACSCH_STARTUP_INF_EID, CFE_EVS_INFORMATION,
                        "Mac Scheduler Interface initialized. Version %d.%d",
-					   MACSCH_MAJOR_VERSION,
-					   MACSCH_MINOR_VERSION);
+             MACSCH_MAJOR_VERSION,
+             MACSCH_MINOR_VERSION);
         
         uint32_t clockAccuracy;
         status = OS_TimerCreate(&timerId_50,"FREQ_50",&clockAccuracy,timer50_callback);

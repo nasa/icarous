@@ -175,31 +175,31 @@ void ProcessAPMessage(mavlink_message_t message) {
         }
 
 
-		case MAVLINK_MSG_ID_MISSION_ITEM_REACHED:
-		{
-		    //printf("AP: MAVLINK_MSG_ID_MISSION_ITEM_REACHED\n");
-			mavlink_mission_item_reached_t msg;
-			mavlink_msg_mission_item_reached_decode(&message, &msg);
+        case MAVLINK_MSG_ID_MISSION_ITEM_REACHED:
+        {
+            //printf("AP: MAVLINK_MSG_ID_MISSION_ITEM_REACHED\n");
+            mavlink_mission_item_reached_t msg;
+            mavlink_msg_mission_item_reached_decode(&message, &msg);
 
-			// Find the corresponding index of the flightplan_t data
-		    int i;
-		    bool avail = false;
-		    for(i=0;i<fpdata.num_waypoints;++i)	{
-		    	if (appdataInt.waypoint_index[i] == msg.seq) {
-		    		avail = true;
-		    		break;
-		    	}
-		    }
+            // Find the corresponding index of the flightplan_t data
+            int i;
+            bool avail = false;
+            for(i=0;i<fpdata.num_waypoints;++i)	{
+                if (appdataInt.waypoint_index[i] == msg.seq) {
+                    avail = true;
+                    break;
+                }
+            }
 
-			wpreached.reachedwaypoint = (uint8_t)(i);
+            wpreached.reachedwaypoint = (uint8_t)(i);
             wpreached.feedback = true;
             if(avail) {
-				CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &wpreached);
-				CFE_SB_SendMsg((CFE_SB_Msg_t *) &wpreached);
-				//OS_printf("waypoint reached = %d / %d\n", i, msg.seq);
-			}
-			break;
-		}
+                CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &wpreached);
+                CFE_SB_SendMsg((CFE_SB_Msg_t *) &wpreached);
+                //OS_printf("waypoint reached = %d / %d\n", i, msg.seq);
+            }
+            break;
+        }
 
         case MAVLINK_MSG_ID_MISSION_ACK:{
             if(appdataInt.startWPUplink){

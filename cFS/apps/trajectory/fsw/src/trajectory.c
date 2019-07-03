@@ -132,8 +132,8 @@ void TRAJECTORY_AppInit(void) {
     TrajectoryAppData.searchType = TblPtr->searchAlgorithm;
 
     status = OS_MutSemCreate( &TrajectoryAppData.mutexAcState, "ACstate", 0);
-	if ( status != OS_SUCCESS )
-		OS_printf("Error creating ACState mutex\n");
+    if ( status != OS_SUCCESS )
+        OS_printf("Error creating ACState mutex\n");
 
 }
 
@@ -184,7 +184,7 @@ void TRAJECTORY_ProcessPacket(){
 
 void TRAJECTORY_Monitor(void){
     OS_TaskRegister();
-	while(TrajectoryAppData.runThreads){
+    while(TrajectoryAppData.runThreads){
         int32 status = CFE_SB_RcvMsg(&TrajectoryAppData.Traj_MsgPtr, TrajectoryAppData.TrajData_Pipe,CFE_SB_PEND_FOREVER);
         if (status == CFE_SUCCESS)
         {
