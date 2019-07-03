@@ -79,7 +79,7 @@ int InitializeSerialPort(port_t* prt,bool should_block){
 	tty.c_cflag |= CS8;                 /* 8-bit characters */
 	tty.c_cflag &= ~PARENB;             /* no parity bit */
 	tty.c_cflag &= ~CSTOPB;             /* only need 1 stop bit */
-    tty.c_cflag |= CNEW_RTSCTS;         /* Enable hardware flow control */
+    tty.c_cflag |= CRTSCTS;         /* Enable hardware flow control */
 
 	/* setup for non-canonical mode */
 	tty.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | INLCR | IGNCR | ICRNL | IXON);
