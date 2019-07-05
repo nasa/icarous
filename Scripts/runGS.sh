@@ -18,4 +18,4 @@ RADIO_SOCKET_OUT=$COM_INPUT_PORT
 RADIO_BAUD=57600
 
 echo "Launching Ground station test"
-mavproxy.py --master=$GS_MASTER --map --console --load-module geofence,traffic
+mavproxy.py --master=$GS_MASTER --map --console --load-module geofence,traffic --target-system=1 --target-component=1
