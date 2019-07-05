@@ -449,10 +449,13 @@ void PLEXIL_HandleCustomCommands(PlexilMsg* msg){
         cmd.param1 = 1;
         SendSBMsg(cmd);
     }else if(CHECKNAME(msg ,"Status")){
-        cmd.name = _STATUS_;
-        memset(cmd.buffer,0,50);
-        b = deSerializeString(cmd.buffer,b);
-        SendSBMsg(cmd);
+        status_t plxstatus;
+        CFE_SB_InitMsg(&plxstatus,ICAROUS_STATUS_MID,sizeof(status_t),TRUE);
+        int severity;
+        memset(plxstatus.buffer,0,50);
+        b = deSerializeString(plxstatus.buffer,b);
+        b = deSerializeInt(false,&plxstatus.severity,b);
+        SendSBMsg(plxstatus);
     }else if(CHECKNAME(msg ,"Takeoff")){
         cmd.name = _TAKEOFF_;
         double takeoffAlt;

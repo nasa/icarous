@@ -37,7 +37,7 @@ Real       Command ComputeDistance(Real positionA[3],Real positionB[3]);
 Boolean Command SetNextMissionWP(Integer index);
 Command SetPos(Real position[3]);
 Command SetVel(Real velocity[3]);
-Command Status(String text);
+Command Status(String text,Integer);
 Command pprint(...);
 
 // Library plan definitions
@@ -183,14 +183,14 @@ CONFLICT_MANAGEMENT:
             gOldConflictId = gConflictId;
 
             pprint("Plexil status: Starting resolution enroute to WP:",gCurrentMissionWp);
-            Status("IC:Starting conflict resolution");
+            Status("PLX:Starting conflict resolution",5);
 
             gPosition = Lookup(position);
             gVelocity = Lookup(velocity);
 
             GEOFENCE_RESOLUTION:{
                 SkipCondition (!gKeepInConflict && !gKeepOutConflict) || gTrafficConflict;
-                Status("IC:Executing fence resolution");
+                Status("PLX:Executing fence resolution",5);
                 pprint("Plexil status: Starting fence resolution");
 
                 EXECUTE_RESOLUTION:{
@@ -212,7 +212,7 @@ CONFLICT_MANAGEMENT:
                 SkipCondition !gTrafficConflict;
                 EndCondition TrafficResolutionCompleted;
 
-                Status("IC:Executing traffic resolution");
+                Status("PLX:Executing traffic resolution",5);
 
                 resType = "PURE_DAIDALUS";
 
@@ -254,7 +254,7 @@ CONFLICT_MANAGEMENT:
 
                 {
                     EndCondition (deviation < gAllowedDeviation/2);
-                    Status("IC:Resolving flight plan deviation");
+                    Status("PLX:Resolving flight plan deviation",5);
                     SetMode("ACTIVE");
                     MANEUVER:
                     {
@@ -275,7 +275,7 @@ CONFLICT_MANAGEMENT:
                 Boolean vResolutionCompleted;
                 SkipCondition skipResumeMission;
 
-                Status("IC:Resuming mission");
+                Status("PLX:Resuming mission",5);
 
                 vNextFeasibleWp = Lookup(nextFeasibleWP);
 
