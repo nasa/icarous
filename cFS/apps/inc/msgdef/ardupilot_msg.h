@@ -35,6 +35,17 @@ typedef enum {
     _INACTIVE_     ///< Inactive mode.
 } icarousControlMode_e;
 
+typedef enum {
+   SEVERITY_EMERGENCY=0, /* System is unusable. This is a "panic" condition. | */
+   SEVERITY_ALERT=1, /* Action should be taken immediately. Indicates error in non-critical systems. | */
+   SEVERITY_CRITICAL=2, /* Action must be taken immediately. Indicates failure in a primary system. | */
+   SEVERITY_ERROR=3, /* Indicates an error in secondary/redundant systems. | */
+   SEVERITY_WARNING=4, /* Indicates about a possible future error if this is not resolved within a given timeframe. Example would be a low battery warning. | */
+   SEVERITY_NOTICE=5, /* An unusual event has occured, though not an error condition. This should be investigated for the root cause. | */
+   SEVERITY_INFO=6, /* Normal operational messages. Useful for logging. No action is required for these messages. | */
+   SEVERITY_DEBUG=7, /* Useful non-operational messages that can assist in debugging. These should not occur during normal operation. | */
+}severity_e;
+
 /**
  * @enum Icarous commands
  * @brief Commands that are set to the autopilot app from other applications
@@ -241,6 +252,7 @@ typedef struct{
 typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
     char buffer[250];                         /**< status message */
+    int8_t severity;                          /**< severity - see severity_t */
 }status_t;
 
 /**
