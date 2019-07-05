@@ -48,6 +48,7 @@ void PLEXIL_InitializeCustomData(void){
     plexilCustomData.preferredSpeed = -1e5;
     plexilCustomData.preferredAlt = -1e5;
     plexilCustomData.interceptHeadingToPlan = 0;
+    plexilCustomData.restartMission = false; 
     memset(&plexilCustomData.pendingRequest,0,sizeof(PlexilMsg));
 }
 
@@ -59,6 +60,7 @@ void PLEXIL_CustomSubscription(void){
     // Data messages
     CFE_SB_Subscribe(ICAROUS_POSITION_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(ICAROUS_STARTMISSION_MID,plexilAppData.DATA_Pipe);
+    CFE_SB_Subscribe(ICAROUS_RESET_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(ICAROUS_COMACK_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(ICAROUS_WPREACHED_MID,plexilAppData.DATA_Pipe);
     CFE_SB_Subscribe(ICAROUS_FLIGHTPLAN_MID,plexilAppData.DATA_Pipe);
@@ -125,6 +127,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
         }
 
         case ICAROUS_STARTMISSION_MID:{
+            plexilCustomData.restartMission = false;
             argsCmd_t* msg = (argsCmd_t*) plexilAppData.DATA_MsgPtr;
             plexilCustomData.missionStart = (int)msg->param1;
             break;
@@ -309,6 +312,11 @@ void PLEXIL_ProcessCustomPackets(bool data){
             break;
         }
 
+        case ICAROUS_RESET_MID:{
+            plexilCustomData.restartMission = true;
+            break;
+        }
+
         default:
             break;
     }
@@ -414,6 +422,8 @@ void PLEXIL_HandleCustomLookups(PlexilMsg *msg){
         b = serializeBool(false,plexilCustomData.resetDitch,b);
     }else if(CHECKNAME(msg ,"ditchSite")){
         b = serializeRealArray(3,plexilCustomData.ditchsite,b);
+    }else if(CHECKNAME(msg ,"restartMission")){
+        b = serializeBool(false,plexilCustomData.restartMission,b);
     }else{
        //TODO: add event saying lookup not handled
         OS_printf("lookup not handled: %s\n",msg->name);

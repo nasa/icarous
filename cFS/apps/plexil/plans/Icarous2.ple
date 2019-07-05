@@ -4,6 +4,7 @@ Integer Lookup armStatus;
 Integer Lookup takeoffStatus;
 Integer Lookup numMissionWP;
 Integer Lookup nextMissionWPIndex;
+Boolean Lookup restartMission;
 
 Real[3] Lookup position;
 Real[3] Lookup velocity;
@@ -69,22 +70,24 @@ ICAROUS:
 
         TAKEOFF:{
             Integer _armStatus;
+            Boolean _reset = false;
             StartCondition _takeoffStatus;
             SkipCondition !_takeoffStatus;
-            EndCondition !_takeoffStatus;
+            EndCondition !_takeoffStatus || _reset;
 
             pprint("Plexil status: Starting takeoff");
 
             CHANGE_MODE:SetMode("ACTIVE");
 
             ARM:{
-                EndCondition isKnown(_armStatus) && (_armStatus >= 0);
+                EndCondition (isKnown(_armStatus) && (_armStatus >= 0)) || (_reset);
 
                 ArmMotors();
 
                 CHECK_STATUS: {
                     Repeat true;
                     _armStatus = Lookup(armStatus);
+                    _reset     = Lookup(restartMission);
                 }
             }// End of ARM
 
@@ -97,16 +100,16 @@ ICAROUS:
                 StartCondition (_armStatus==1);
                 SkipCondition  (_armStatus!=1);
 
-
                 TAKEOFF:{
 
-                    EndCondition isKnown(status) && (status>=0);
+                    EndCondition isKnown(status) && (status>=0) || (_reset);
 
                     Takeoff(5.0);
 
                     CHECK_STATUS: {
                         Repeat true;
                         status = Lookup(takeoffStatus);
+                        _reset = Lookup(restartMission);
                     }
 
                 }
@@ -125,14 +128,16 @@ ICAROUS:
 
 
         CLIMB:{
+            Boolean _reset = false;
             StartCondition _climbStatus;
             SkipCondition !_climbStatus;
-            EndCondition !_climbStatus;
+            EndCondition !_climbStatus || (_reset);
             {
                 Boolean val;
                 Repeat true;
 
                 _Position = Lookup(position);
+                _reset = Lookup(restartMission);
 
                 if(_Position[2] >= 3.0){
                     pprint("Plexil status: Starting cruise");
@@ -154,7 +159,6 @@ ICAROUS:
             _cruiseStatus = false;
 
             pprint("Plexil status: Finished cruise:",_ditchStatus);
-
             if(!_ditchStatus){
                _landStatus = true;
             }endif
@@ -174,9 +178,12 @@ ICAROUS:
         }
 
         LAND:{
+            Boolean _reset = false;
             StartCondition _landStatus;
             SkipCondition !_landStatus;
-
+            EndCondition _reset;
+            
+            _reset = Lookup(restartMission);
             pprint("Plexil status: Landing");
             SetMode("ACTIVE");
             Land();

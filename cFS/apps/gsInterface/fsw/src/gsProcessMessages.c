@@ -308,8 +308,9 @@ void ProcessGSMessage(mavlink_message_t message) {
                 CFE_SB_SendMsg((CFE_SB_Msg_t *) &appdataIntGS.traffic);
                 send2ap = false;
             }else if (msg.command == MAV_CMD_USER_1) {
-                CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &appdataIntGS.resetIcarous);
-                CFE_SB_SendMsg((CFE_SB_Msg_t *) &appdataIntGS.resetIcarous);
+                noArgsCmd_t resetIcarous;
+                CFE_SB_InitMsg(&resetIcarous,ICAROUS_RESET_MID,sizeof(noArgsCmd_t),TRUE);
+                SendSBMsg(resetIcarous);
                 appdataIntGS.nextWaypointIndex = 1000;
                 send2ap = false;
 
