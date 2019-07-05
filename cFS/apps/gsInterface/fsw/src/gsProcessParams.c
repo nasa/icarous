@@ -47,15 +47,15 @@ void gsInterface_InitializeParamIds(){
     AddParamId("RECOVERY_CRIT",0);
     AddParamId("CONTOUR_THR",180.0);
     AddParamId("AL_1_ALERT_T",10.0);
-    AddParamId("AL_1_DETECTOR",0);  //Hard coded for now, not a parameter
+    //AddParamId("AL_1_DETECTOR",0);  //Hard coded for now, not a parameter
     AddParamId("AL_1_E_ALERT_T",15.0);
-    AddParamId("AL_1_REGION",0);    //Hard coded for now, not a parameter
+    //AddParamId("AL_1_REGION",0);    //Hard coded for now, not a parameter
     AddParamId("AL_1_SPREAD_ALT",0);
     AddParamId("AL_1_SPREAD_GS",0);
     AddParamId("AL_1_SPREAD_TRK",0);
     AddParamId("AL_1_SPREAD_VS",0);
     AddParamId("CONFLICT_LEVEL",1);
-    AddParamId("LD_CR_DTCN_DET_1",0); //Hard coded for now, not a parameter
+    //AddParamId("LD_CR_DTCN_DET_1",0); //Hard coded for now, not a parameter
     AddParamId("DET_1_WCV_DTHR",30.0);
     AddParamId("DET_1_WCV_TCOA",0.0);
     AddParamId("DET_1_WCV_TTHR",0.0);
@@ -76,13 +76,13 @@ void gsInterface_InitializeParamIds(){
     AddParamId("ASTAR_GRIDSIZE",10.0);
     AddParamId("ASTAR_RESSPEED",1.0);
     AddParamId("ASTAR_LOOKAHEAD",5.0);
-    AddParamId("ASTAR_DAACONFILE",0);   //Hard coded for now, not a parameter
+    //AddParamId("ASTAR_DAACONFILE",0);   //Hard coded for now, not a parameter
     AddParamId("RRT_RESSPEED",1.0);
     AddParamId("RRT_NITERATIONS",2000);
     AddParamId("RRT_DT",1.0);
     AddParamId("RRT_MACROSTEPS",5);
     AddParamId("RRT_CAPR",5.0);
-    AddParamId("RRT_DAACONFILE",0);     //Hard coded for now, not a parameter
+    //AddParamId("RRT_DAACONFILE",0);     //Hard coded for now, not a parameter
     AddParamId("XTRKDEV",1000.0);
     AddParamId("XTRKGAIN",0.6);
     AddParamId("RESSPEED",1.0);
@@ -144,17 +144,17 @@ void gsInterface_PublishParams() {
     localTrafficParams.contour_thr = NextParam;
     localTrafficParams.alert_1_alerting_time = NextParam;
     strcpy(localTrafficParams.alert_1_detector, "det_1");   //Hard coded, not parameter
-    NextParam;
+    //NextParam;
     localTrafficParams.alert_1_early_alerting_time = NextParam;
     strcpy(localTrafficParams.alert_1_region, "NEAR");      //Hard coded, not parameter
-    NextParam;
+    //NextParam;
     localTrafficParams.alert_1_spread_alt = NextParam;
     localTrafficParams.alert_1_spread_gs = NextParam;
     localTrafficParams.alert_1_spread_trk = NextParam;
     localTrafficParams.alert_1_spread_vs = NextParam;
     localTrafficParams.conflict_level = (uint8_t) NextParam;
     strcpy(localTrafficParams.load_core_detection_det_1, "WCV_TAUMOD"); //Hard coded, not parameter
-    NextParam;
+    //NextParam;
     localTrafficParams.det_1_WCV_DTHR = NextParam;
     localTrafficParams.det_1_WCV_TCOA = NextParam;
     localTrafficParams.det_1_WCV_TTHR = NextParam;
@@ -176,14 +176,14 @@ void gsInterface_PublishParams() {
     localTrajectoryParams.astar_resSpeed = (double) NextParam;
     localTrajectoryParams.astar_lookahead = (double) NextParam;
     strcpy(localTrajectoryParams.astar_daaConfigFile, "../ram/DaidalusQuadConfig.txt");   //Hard coded, not parameter
-    NextParam;
+    //NextParam;
     localTrajectoryParams.rrt_resSpeed = (double) NextParam;
     localTrajectoryParams.rrt_numIterations = (int) NextParam;
     localTrajectoryParams.rrt_dt = (double) NextParam;
     localTrajectoryParams.rrt_macroSteps = (int) NextParam;
     localTrajectoryParams.rrt_capR = (double) NextParam;
     strcpy(localTrajectoryParams.rrt_daaConfigFile, "../ram/DaidalusQuadConfig.txt");     //Hard coded, not parameter
-    NextParam;
+    //NextParam;
     localTrajectoryParams.xtrkDev = (double) NextParam;
     localTrajectoryParams.xtrkGain = (double) NextParam;
     localTrajectoryParams.resSpeed = (double) NextParam;
