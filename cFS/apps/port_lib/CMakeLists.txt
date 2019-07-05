@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 2.6.4)
 project(CFE_PORT_LIB C)
 
 set(CMAKE_C_FLAGS "-g -fPIC -std=gnu99 -D_LINUX_OS_ -D_HAVE_STDINT_")
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_DARWIN_C_SOURCE")
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wl,-undefined,dynamic_lookup")
+endif()
+
 
 include_directories(fsw/public_inc)
 
