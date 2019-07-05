@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6.4)
 project(CFE_PORT_LIB C)
 
+set(CMAKE_C_FLAGS "-g -fPIC -std=gnu99 -D_LINUX_OS_ -D_HAVE_STDINT_")
+
 include_directories(fsw/public_inc)
 
 # The shared OSAL and cFE include directories should always be used
@@ -13,4 +15,3 @@ aux_source_directory(fsw/src LIB_SRC_FILES)
 
 # Create the app module
 add_cfe_app(port_lib ${LIB_SRC_FILES})
-
