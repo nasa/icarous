@@ -71,8 +71,28 @@ int InitializeSerialPort(port_t* prt,bool should_block){
         return -1;
     }
 
-    cfsetospeed (&tty, prt->baudrate);
-    cfsetispeed (&tty, prt->baudrate);
+    /* Select baud rate */
+    uint64_t brate = B57600;
+    switch(prt->baudrate){
+        case 9600 : {
+             brate = B9600;
+             break;
+        }
+        case 19200 : {
+             brate = B19200;
+             break;
+        }
+        case 57600 : {
+             brate = B57600;
+             break;
+        }
+        case 115200 : {
+             brate = B115200;
+             break;
+        }
+    }
+    cfsetospeed (&tty, brate);
+    cfsetispeed (&tty, brate);
 
     tty.c_cflag |= (CLOCAL | CREAD);    /* ignore modem controls */
     tty.c_cflag &= ~CSIZE;
