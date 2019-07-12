@@ -21,7 +21,7 @@
 typedef struct
 {
   portType_e PortType; ///< connection type to autopilot
-  uint16_t BaudRate;   ///< baudrate (only for serial)
+  uint64_t BaudRate;   ///< baudrate (only for serial)
   uint16_t Portin;     ///< input port number (only used for socket)
   uint16_t Portout;    ///< output port number (only used for socket)
   char Address[50];    ///< port address (ip address or serial port name)
