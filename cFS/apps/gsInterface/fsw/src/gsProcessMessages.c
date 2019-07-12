@@ -13,6 +13,9 @@
 uint8_t sysid = 1;
 uint8_t compid = 1;
 
+uint8_t target_sys = 255;
+uint8_t target_comp = 1;
+
 int GetMAVLinkMsgFromGS(){
     int n = readPort(&appdataIntGS.gs);
     mavlink_message_t message;
@@ -55,7 +58,7 @@ void ProcessGSMessage(mavlink_message_t message) {
             CFE_SB_SendMsg((CFE_SB_Msg_t *) &resetFpIcarous);
 
             mavlink_message_t msgRequest;
-            mavlink_msg_mission_request_pack(1,1,&msgRequest,255,0,appdataIntGS.waypointSeq,MAV_MISSION_TYPE_MISSION);
+            mavlink_msg_mission_request_pack(sysid,compid,&msgRequest,target_sys,target_comp,appdataIntGS.waypointSeq,MAV_MISSION_TYPE_MISSION);
             writeMavlinkData(&appdataIntGS.gs,&msgRequest);
             break;
         }
@@ -80,14 +83,14 @@ void ProcessGSMessage(mavlink_message_t message) {
                 SendSBMsg(appdataIntGS.fpData);
 
                 mavlink_message_t msgAck;
-                mavlink_msg_mission_ack_pack(sysid, compid, &msgAck, 255, 0, MAV_MISSION_ACCEPTED, msg.mission_type);
+                mavlink_msg_mission_ack_pack(sysid, compid, &msgAck, target_sys, target_comp, MAV_MISSION_ACCEPTED, msg.mission_type);
                 //printf("mission accepted\n");
                 writeMavlinkData(&appdataIntGS.gs, &msgAck);
             }
 
             if(appdataIntGS.receivingWP < appdataIntGS.numWaypoints) {
                 mavlink_message_t msgRequest;
-                mavlink_msg_mission_request_pack(sysid, compid, &msgRequest, 255, 0, appdataIntGS.receivingWP,
+                mavlink_msg_mission_request_pack(sysid, compid, &msgRequest, target_sys, target_comp, appdataIntGS.receivingWP,
                                                      MAV_MISSION_TYPE_MISSION);
                 writeMavlinkData(&appdataIntGS.gs, &msgRequest);
             }
@@ -114,7 +117,7 @@ void ProcessGSMessage(mavlink_message_t message) {
             }
 
             mavlink_message_t msgCount;
-            mavlink_msg_mission_count_pack(sysid, compid, &msgCount, 255, 0, count, msg.mission_type);
+            mavlink_msg_mission_count_pack(sysid, compid, &msgCount, target_sys, target_comp, count, msg.mission_type);
             writeMavlinkData(&appdataIntGS.gs, &msgCount);
 
             break;
@@ -128,7 +131,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 
             mavlink_message_t msgMissionItem;
             if(msg.mission_type == MAV_MISSION_TYPE_MISSION){
-                mavlink_msg_mission_item_pack(sysid,compid,&msgMissionItem,255,0,msg.seq,appdataIntGS.ReceivedMissionItems[msg.seq].frame,
+                mavlink_msg_mission_item_pack(sysid,compid,&msgMissionItem,target_sys,target_comp,msg.seq,appdataIntGS.ReceivedMissionItems[msg.seq].frame,
                                                                                appdataIntGS.ReceivedMissionItems[msg.seq].command,
                                                                                appdataIntGS.ReceivedMissionItems[msg.seq].current,
                                                                                appdataIntGS.ReceivedMissionItems[msg.seq].autocontinue,
@@ -159,7 +162,7 @@ void ProcessGSMessage(mavlink_message_t message) {
                         double _floor = appdataIntGS.gfData[i].floor;
                         double _numVertices = appdataIntGS.fenceVertices[i];
 
-                        mavlink_msg_mission_item_pack(sysid,compid,&msgMissionItem,255,0,i,
+                        mavlink_msg_mission_item_pack(sysid,compid,&msgMissionItem,target_sys,target_comp,i,
                                                           _type,
                                                           0,
                                                           0,
@@ -174,7 +177,7 @@ void ProcessGSMessage(mavlink_message_t message) {
                     }
                 }
             }else if(msg.mission_type == MAV_MISSION_TYPE_RALLY){
-                mavlink_msg_mission_item_pack(sysid,compid,&msgMissionItem,1,0,msg.seq,MAV_FRAME_GLOBAL,0,0,0,0,0,0,0,
+                mavlink_msg_mission_item_pack(sysid,compid,&msgMissionItem,target_sys,target_comp,msg.seq,MAV_FRAME_GLOBAL,0,0,0,0,0,0,0,
                                               appdataIntGS.trajectory.waypoints[msg.seq].latitude,
                                               appdataIntGS.trajectory.waypoints[msg.seq].longitude,
                                               appdataIntGS.trajectory.waypoints[msg.seq].altitude,MAV_MISSION_TYPE_RALLY);
@@ -231,7 +234,7 @@ void ProcessGSMessage(mavlink_message_t message) {
                 appdataIntGS.gfData[index].ceiling = msg.param6;
 
                 mavlink_message_t fetchfence;
-                mavlink_msg_fence_fetch_point_pack(sysid,compid,&fetchfence,255,0,0);
+                mavlink_msg_fence_fetch_point_pack(sysid,compid,&fetchfence,target_sys,target_comp,0);
                 writeMavlinkData(&appdataIntGS.gs,&fetchfence);
             }
             else if (msg.command == MAV_CMD_SPATIAL_USER_1) {
@@ -314,7 +317,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 
             if (count < total-1) {
                 mavlink_message_t fetchfence;
-                mavlink_msg_fence_fetch_point_pack(sysid,compid,&fetchfence,255,0,count+1);
+                mavlink_msg_fence_fetch_point_pack(sysid,compid,&fetchfence,target_sys,target_comp,count+1);
                 writeMavlinkData(&appdataIntGS.gs,&fetchfence);
             }else{
                 mavlink_message_t ack;
@@ -465,7 +468,7 @@ void gsInterface_ProcessPacket() {
             memcpy(&appdataIntGS.trajectory, fp, sizeof(flightplan_t));
 
             mavlink_message_t msg;
-            mavlink_msg_mission_count_pack(sysid,compid,&msg,255,0,fp->num_waypoints,MAV_MISSION_TYPE_RALLY);
+            mavlink_msg_mission_count_pack(sysid,compid,&msg,target_sys,target_comp,fp->num_waypoints,MAV_MISSION_TYPE_RALLY);
             writeMavlinkData(&appdataIntGS.gs,&msg);
             break;
         }
