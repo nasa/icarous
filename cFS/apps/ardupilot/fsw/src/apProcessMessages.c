@@ -254,7 +254,7 @@ void ProcessAPMessage(mavlink_message_t message) {
         {
             mavlink_heartbeat_t msg;
             mavlink_msg_heartbeat_decode(&message,&msg);
-            if (!appdataInt.foundUAV) {
+            if (appdataInt.foundUAV == 0) {
                 mavlink_message_t msg;
                 mavlink_msg_request_data_stream_pack(255,0,&msg,1,0,MAV_DATA_STREAM_ALL,4,1);
                 appdataInt.foundUAV = 1;

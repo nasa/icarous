@@ -37,7 +37,7 @@ void ARDUPILOT_AppMain(void){
                     break;
 
                 case FREQ_01_WAKEUP_MID:
-                    apSendHeartbeat();
+                    //apSendHeartbeat();
                     break;
             }
         }
@@ -145,6 +145,7 @@ void ARDUPILOT_AppInit(void){
     appdataInt.startWPUplink = false;
     appdataInt.startWPDownlink = false;
     appdataInt.downlinkRequestIndex = 0;
+    appdataInt.foundUAV = 0;
 }
 
 void ARDUPILOT_AppCleanUp(){
