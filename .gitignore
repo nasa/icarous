@@ -19,7 +19,6 @@ cmake-build-debug
 logs
 terrain
 *.log
-*.plx
 Modules/Plexil/lib
 Modules/Plexil/workshop
 Modules/*/build
