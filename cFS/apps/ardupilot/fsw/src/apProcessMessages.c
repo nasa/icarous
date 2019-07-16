@@ -205,7 +205,7 @@ void ProcessAPMessage(mavlink_message_t message) {
             if(appdataInt.startWPUplink){
                 mavlink_mission_ack_t msg;
                 mavlink_msg_mission_ack_decode(&message,&msg);
-                if (msg.type == 0)
+                if (msg.type == MAV_RESULT_ACCEPTED)
                     appdataInt.startWPUplink = false;
             }
             break;
@@ -218,7 +218,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                 appdataInt.numDownlinkWaypoints = missionCount.count;
                 mavlink_message_t msg;
                 mavlink_msg_mission_request_pack(255,0,&msg,1,0,appdataInt.downlinkRequestIndex,MAV_MISSION_TYPE_MISSION);
-                //writeMavlinkData(&(appdataInt.ap),&msg);
+                writeMavlinkData(&(appdataInt.ap),&msg);
             }
             break;
         }
@@ -235,17 +235,22 @@ void ProcessAPMessage(mavlink_message_t message) {
                     mavlink_message_t ack;
                     mavlink_msg_mission_ack_pack(255,0,&ack,1,0,MAV_MISSION_ACCEPTED,MAV_MISSION_TYPE_MISSION);
                     appdataInt.startWPDownlink = false;
-                    //OS_printf("Received downlink flightplan from pixhawk\n");
+                    OS_printf("Received downlink flightplan from pixhawk\n");
 
-                    //flightplan_t fp;
-                    //CFE_SB_InitMsg(&fp,DOWNLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
-                    //ConvertMissionItemsToPlan(appdataInt.numDownlinkWaypoints,appdataInt.DownlinkMissionItems,&fp);
-                    //SendSBMsg(fp);
+                    flightplan_t fp;
+                    CFE_SB_InitMsg(&fp,DOWNLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
+                    ConvertMissionItemsToPlan(appdataInt.numDownlinkWaypoints,appdataInt.DownlinkMissionItems,&fp);
+                    SendSBMsg(fp);
+                    
+                    // Send the downlinked flightplan to other apps
+                    CFE_SB_InitMsg(&fp,ICAROUS_FLIGHTPLAN_MID,sizeof(flightplan_t),FALSE);
+                    SendSBMsg(fp);
+
                 }else{
                     mavlink_message_t request;
                     mavlink_msg_mission_request_pack(255,0,&request,1,0,(uint16_t )(missionItem.seq + 1),MAV_MISSION_TYPE_MISSION);
-                    //writeMavlinkData(&appdataInt.ap,&request);
-                    //OS_printf("Requesting %d waypoint \n",missionItem.seq + 1);
+                    writeMavlinkData(&appdataInt.ap,&request);
+                    OS_printf("Requesting %d waypoint \n",missionItem.seq + 1);
                 }
             }
         }
@@ -360,13 +365,18 @@ void ARDUPILOT_ProcessPacket() {
             memcpy(&fpdata,msg,sizeof(flightplan_t));
             int count = apConvertPlanToMissionItems(&fpdata);
             appdataInt.numWaypoints = count;
-#ifdef SITL
+            break;
+        }
+
+        case UPLINK_FLIGHTPLAN_MID:{
+            flightplan_t* msg = (flightplan_t*)appdataInt.INTERFACEMsgPtr;
+            memcpy(&fpdata,msg,sizeof(flightplan_t));
+            int count = apConvertPlanToMissionItems(&fpdata);
+            appdataInt.numWaypoints = count;
             mavlink_message_t missionCount;
-            mavlink_msg_mission_count_pack(200,1,&missionCount,1,0,count,MAV_MISSION_TYPE_MISSION);
+            mavlink_msg_mission_count_pack(255,1,&missionCount,1,0,count,MAV_MISSION_TYPE_MISSION);
             writeMavlinkData(&appdataInt.ap,&missionCount);
             appdataInt.startWPUplink = true;
-#endif
-            break;
         }
 
         case ICAROUS_COMMANDS_MID:
@@ -461,6 +471,14 @@ void ARDUPILOT_ProcessPacket() {
                     mavlink_msg_statustext_pack(255, 0, &msg, MAV_SEVERITY_WARNING, cmd->buffer);
                     break;
                 }
+
+                case _GETFP_:{
+                    appdataInt.startWPDownlink = true;
+				    mavlink_message_t msg;
+				    mavlink_msg_mission_request_list_pack(255,0,&msg,1,0,MAV_MISSION_TYPE_MISSION);
+                    break;
+                }
+
                 default:{
 
                 }
@@ -468,7 +486,6 @@ void ARDUPILOT_ProcessPacket() {
             }
 
             writeMavlinkData(&appdataInt.ap,&msg);
-
             break;
         }
 

@@ -108,7 +108,14 @@ void ProcessGSMessage(mavlink_message_t message) {
 
             if (msg.mission_type == MAV_MISSION_TYPE_MISSION)
             {
-                count = appdataIntGS.numWaypoints;
+                if(appdataIntGS.numWaypoints > 0){
+                     count = appdataIntGS.numWaypoints;
+                }else{
+                    argsCmd_t cmd;
+                    CFE_SB_InitMsg(&cmd,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
+                    cmd.name = _GETFP_;
+                    SendSBMsg(cmd);
+                }
             }else if(msg.mission_type == MAV_MISSION_TYPE_FENCE){
                 for(int i=0;i<appdataIntGS.numGeofences;++i){
                     count += appdataIntGS.fenceVertices[i];
@@ -117,9 +124,11 @@ void ProcessGSMessage(mavlink_message_t message) {
                 count = appdataIntGS.trajectory.num_waypoints;
             }
 
-            mavlink_message_t msgCount;
-            mavlink_msg_mission_count_pack(sysid, compid, &msgCount, target_sys, target_comp, count, msg.mission_type);
-            writeMavlinkData(&appdataIntGS.gs, &msgCount);
+            if(count > 0){
+                mavlink_message_t msgCount;
+                mavlink_msg_mission_count_pack(sysid, compid, &msgCount, target_sys, target_comp, count, msg.mission_type);
+                writeMavlinkData(&appdataIntGS.gs, &msgCount);
+            }
 
             break;
         }
@@ -453,6 +462,12 @@ void gsInterface_ProcessPacket() {
             if(bands->numBands > 0) {
                 writeMavlinkData(&appdataIntGS.gs, &msg);
             }
+            break;
+        }
+
+        case DOWNLINK_FLIGHTPLAN_MID:{
+            flightplan_t *msg = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
+            memcpy(&appdataIntGS.fpData, msg,sizeof(flightplan_t));
             break;
         }
 

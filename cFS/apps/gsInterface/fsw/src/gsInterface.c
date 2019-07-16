@@ -154,6 +154,7 @@ void gsInterface_AppInit(void){
 
     appdataIntGS.currentIcarousMode = 0;
     appdataIntGS.numGeofences = 0;
+    appdataIntGS.numWaypoints = 0;
 }
 
 void gsInterface_AppCleanUp(){
