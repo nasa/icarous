@@ -110,7 +110,11 @@ bool Astar::CheckConstraints(Node& qnode) {
 }
 
 bool Astar::ComputePath() {
-    while (!currentNode->GoalCheck(Goal)){
+    while (!currentNode->GoalCheck(Goal) ){
+
+        if(!CheckProjectedFenceConflict(currentNode,&Goal)){
+            break;
+        }
 
         if (currentNode->h < closestDist){
             closestDist = currentNode->h;
@@ -162,12 +166,13 @@ bool Astar::ComputePath() {
 
     //printf("Found path\n");
     Node *_cn = currentNode;
+    Path.push_back(this->Goal);
     while(_cn){
         Path.push_back(*_cn);
         _cn = _cn->parent;
     }
 
-    if (Path.size()>1){
+    if (Path.size()>2){
         return true;
     }else{
         return false;
@@ -176,6 +181,70 @@ bool Astar::ComputePath() {
 
 std::list<Node> Astar::GetPath() {
     return Path;
+}
+
+bool Astar::CheckProjectedFenceConflict(Node* qnode,Node* goal){
+    std::list<Poly3D>::iterator it;
+    for(it = keepOutFence.begin(); it != keepOutFence.end(); ++ it){
+        int sizePoly = it->size();
+        for(int i=0;i<sizePoly;i++){
+            int j = (i + 1) % sizePoly;
+            Vect2 A = it->getVertex(i);
+            Vect2 B = it->getVertex(j);
+            Vect3 CurrPos(qnode->x,qnode->y,qnode->z);
+            Vect3 NextWP(goal->x,goal->y,goal->z);
+            bool intCheck = LinePlanIntersection(A,B,
+                                                 it->getBottom(),it->getTop(),
+                                                 CurrPos,NextWP);
+
+            if(intCheck){
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool Astar::LinePlanIntersection(Vect2& A,Vect2& B,double floor,double ceiling,Vect3& CurrPos,Vect3& NextWP){
+
+    double x1 = A.x;
+    double y1 = A.y;
+    double z1 = floor;
+
+    double x2 = B.x;
+    double y2 = B.y;
+    double z2 = ceiling;
+
+    Vect3 l0 = Vect3(CurrPos.x, CurrPos.y, CurrPos.z);
+    Vect3 p0 = Vect3(x1, y1, z1);
+
+    Vect3 n = Vect3(-(z2 - z1) * (y2 - y1), (z2 - z1) * (x2 - x1), 0);
+    Vect3 l = Vect3(NextWP.x - CurrPos.x, NextWP.y - CurrPos.y, NextWP.z - CurrPos.z);
+
+    double d = (p0.Sub(l0).dot(n)) / (l.dot(n));
+
+    Vect3 PntI = l0.Add(l.Scal(d));
+
+
+    Vect3 OA = Vect3(x2 - x1, y2 - y1, 0);
+    Vect3 OB = Vect3(0, 0, z2 - z1);
+    Vect3 OP = PntI.Sub(p0);
+    Vect3 CN = NextWP.Sub(CurrPos);
+    Vect3 CP = PntI.Sub(CurrPos);
+
+    double proj1 = OP.dot(OA) / pow(OA.norm(), 2);
+    double proj2 = OP.dot(OB) / pow(OB.norm(), 2);
+    double proj3 = CP.dot(CN) / pow(CN.norm(), 2);
+
+    if (proj1 >= 0 && proj1 <= 1) {
+        if (proj2 >= 0 && proj2 <= 1) {
+            if (proj3 >= 0 && proj3 <= 1)
+                return true;
+        }
+    }
+
+    return false;
 }
 
 Astar::~Astar() {

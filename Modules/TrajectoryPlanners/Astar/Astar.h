@@ -47,6 +47,8 @@ public:
     std::list<Node> GetPath();
     bool Visited(const Node qnode);
     bool CheckConstraints(Node& qnode);
+    bool CheckProjectedFenceConflict(Node* qnode,Node* goal);
+    bool LinePlanIntersection(Vect2& A,Vect2& B,double floor,double ceiling,Vect3& CurrPos,Vect3& NextWP);
 
 };
 
