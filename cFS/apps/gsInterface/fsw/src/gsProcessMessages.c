@@ -14,7 +14,7 @@ uint8_t sysid = 1;
 uint8_t compid = 1;
 
 uint8_t target_sys = 255;
-uint8_t target_comp = 1;
+uint8_t target_comp = 0;
 
 int GetMAVLinkMsgFromGS(){
     int n = readPort(&appdataIntGS.gs);
@@ -65,6 +65,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 
         case MAVLINK_MSG_ID_MISSION_ITEM:
         {
+            //printf("MAVLINK_MSG_ID_MISSION_ITEM\n");
             mavlink_mission_item_t msg;
             mavlink_msg_mission_item_decode(&message, &msg);
 
