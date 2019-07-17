@@ -87,6 +87,7 @@ void ARDUPILOT_AppInit(void){
     //Subscribe to command messages and kinematic band messages from the SB
     CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataInt.INTERFACE_Pipe);
     CFE_SB_Subscribe(ICAROUS_FLIGHTPLAN_MID,appdataInt.INTERFACE_Pipe);
+    CFE_SB_Subscribe(UPLINK_FLIGHTPLAN_MID,appdataInt.INTERFACE_Pipe);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&wpreached,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);

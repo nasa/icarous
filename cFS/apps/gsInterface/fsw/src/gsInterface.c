@@ -100,6 +100,7 @@ void gsInterface_AppInit(void){
     CFE_SB_Subscribe(ICAROUS_ATTITUDE_MID, appdataIntGS.INTERFACE_Pipe);
     CFE_SB_Subscribe(ICAROUS_BATTERY_STATUS_MID, appdataIntGS.INTERFACE_Pipe);
     CFE_SB_Subscribe(ICAROUS_TRAJECTORY_MID, appdataIntGS.INTERFACE_Pipe);
+    CFE_SB_Subscribe(DOWNLINK_FLIGHTPLAN_MID, appdataIntGS.INTERFACE_Pipe);
 
     CFE_SB_InitMsg(&appdataIntGS.startMission,ICAROUS_STARTMISSION_MID,sizeof(argsCmd_t),TRUE);
     CFE_SB_InitMsg(&appdataIntGS.gfData,ICAROUS_GEOFENCE_MID,sizeof(geofence_t),TRUE);

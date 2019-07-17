@@ -80,6 +80,8 @@ void ProcessGSMessage(mavlink_message_t message) {
             }
 
             if (msg.seq == appdataIntGS.numWaypoints - 1) {
+
+                CFE_SB_InitMsg(&appdataIntGS.fpData,ICAROUS_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
                 ConvertMissionItemsToPlan(appdataIntGS.numWaypoints,appdataIntGS.ReceivedMissionItems,&appdataIntGS.fpData);
                 SendSBMsg(appdataIntGS.fpData);
 
@@ -109,7 +111,7 @@ void ProcessGSMessage(mavlink_message_t message) {
             if (msg.mission_type == MAV_MISSION_TYPE_MISSION)
             {
                 if(appdataIntGS.numWaypoints > 0){
-                     count = appdataIntGS.numWaypoints;
+                    count = appdataIntGS.numWaypoints;
                 }else{
                     argsCmd_t cmd;
                     CFE_SB_InitMsg(&cmd,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
@@ -270,6 +272,7 @@ void ProcessGSMessage(mavlink_message_t message) {
                 mavlink_message_t statusMsg;;
                 mavlink_msg_statustext_pack(sysid,compid,&statusMsg,MAV_SEVERITY_WARNING,"IC:Resetting Icarous");
                 writeMavlinkData(&appdataIntGS.gs,&statusMsg);
+                appdataIntGS.numWaypoints = 0;
             }else if(msg.command == MAV_CMD_USER_2){
                 argsCmd_t trackCmd;
                 CFE_SB_InitMsg(&trackCmd,ICAROUS_TRACK_STATUS_MID, sizeof(argsCmd_t),TRUE);
@@ -468,6 +471,8 @@ void gsInterface_ProcessPacket() {
         case DOWNLINK_FLIGHTPLAN_MID:{
             flightplan_t *msg = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
             memcpy(&appdataIntGS.fpData, msg,sizeof(flightplan_t));
+            appdataIntGS.numWaypoints = appdataIntGS.fpData.num_waypoints;
+            //OS_printf("received downlink flight plan\n");
             break;
         }
 
@@ -627,7 +632,6 @@ void gsInterface_ProcessPacket() {
 }
 
 void ConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp){
-
     int count = 0;
     for(int i=0;i<size;++i){
         switch(items[i].command){

@@ -235,13 +235,14 @@ void ProcessAPMessage(mavlink_message_t message) {
                     mavlink_message_t ack;
                     mavlink_msg_mission_ack_pack(255,0,&ack,1,0,MAV_MISSION_ACCEPTED,MAV_MISSION_TYPE_MISSION);
                     appdataInt.startWPDownlink = false;
-                    OS_printf("Received downlink flightplan from pixhawk\n");
 
                     flightplan_t fp;
-                    CFE_SB_InitMsg(&fp,DOWNLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
-                    ConvertMissionItemsToPlan(appdataInt.numDownlinkWaypoints,appdataInt.DownlinkMissionItems,&fp);
+
+                    CFE_SB_InitMsg(&fp,DOWNLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),FALSE);
+                    apConvertMissionItemsToPlan(appdataInt.numDownlinkWaypoints,appdataInt.DownlinkMissionItems,&fp);
                     SendSBMsg(fp);
-                    
+
+                    //OS_printf("Received downlink flightplan from pixhawk\n");
                     // Send the downlinked flightplan to other apps
                     CFE_SB_InitMsg(&fp,ICAROUS_FLIGHTPLAN_MID,sizeof(flightplan_t),FALSE);
                     SendSBMsg(fp);
@@ -250,7 +251,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                     mavlink_message_t request;
                     mavlink_msg_mission_request_pack(255,0,&request,1,0,(uint16_t )(missionItem.seq + 1),MAV_MISSION_TYPE_MISSION);
                     writeMavlinkData(&appdataInt.ap,&request);
-                    OS_printf("Requesting %d waypoint \n",missionItem.seq + 1);
+                    //OS_printf("Requesting %d waypoint \n",missionItem.seq + 1);
                 }
             }
         }
@@ -566,5 +567,61 @@ uint16_t apConvertPlanToMissionItems(flightplan_t* fp){
 
     appdataInt.numUplinkWaypoints = count;
     return count;
+}
+
+void apConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp){
+    int count = 0;
+    for(int i=0;i<size;++i){
+        switch(items[i].command){
+
+            case MAV_CMD_NAV_WAYPOINT: {
+                fp->waypoints[count].latitude = items[i].x;
+                fp->waypoints[count].longitude = items[i].y;
+                fp->waypoints[count].altitude = items[i].z;
+                fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                count++;
+                //OS_printf("constructed waypoint\n");
+                break;
+            }
+
+            case MAV_CMD_NAV_SPLINE_WAYPOINT:{
+                fp->waypoints[count].latitude = items[i].x;
+                fp->waypoints[count].longitude = items[i].y;
+                fp->waypoints[count].altitude = items[i].z;
+                fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                count++;
+                break;
+            }
+
+            case MAV_CMD_NAV_LOITER_TIME:{
+                fp->waypoints[count].latitude = items[i].x;
+                fp->waypoints[count].longitude = items[i].y;
+                fp->waypoints[count].altitude = items[i].z;
+                if(items[i].command == MAV_CMD_NAV_LOITER_TIME){
+                    fp->waypoints[count].wp_metric = WP_METRIC_ETA;
+                    fp->waypoints[count-1].value_to_next_wp = items[i].param1;
+
+                }
+                count++;
+                //OS_printf("Setting loiter point %f\n",items[i].param1);
+                break;
+            }
+
+            case MAV_CMD_DO_CHANGE_SPEED:{
+                if(i>0 && i < size-1) {
+                    double wpA[3] = {items[i - 1].x, items[i - 1].y, items[i - 1].z};
+                    double wpB[3] = {items[i + 1].x,items[i + 1].y,items[i + 1].z};
+                    double dist = ComputeDistance(wpA,wpB);
+                    double eta = dist/items[i].param2;
+                    fp->waypoints[count-1].value_to_next_wp = eta;
+                    fp->waypoints[count-1].wp_metric = WP_METRIC_ETA;
+                    //OS_printf("Setting ETA to %f\n",eta);
+                }
+                break;
+            }
+        }
+    }
+
+    fp->num_waypoints = count;
 }
 
