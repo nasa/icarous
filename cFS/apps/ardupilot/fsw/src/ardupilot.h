@@ -149,9 +149,10 @@ void apSendHeartbeat();
  */
 int32_t ArdupilotTableValidationFunc(void *TblPtr);
 
+
 uint16_t apConvertPlanToMissionItems(flightplan_t* fp);
 
-//void ConvertMissionItemsToPlan(uint16_t size,mavlink_mission_item_t items[],flightplan_t *fp);
+void apConvertMissionItemsToPlan(uint16_t size,mavlink_mission_item_t items[],flightplan_t *fp);
 
 bool IntfServiceHandler(mavlink_message_t *message);
 
