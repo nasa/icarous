@@ -95,7 +95,9 @@ typedef struct{
     mavlink_param_value_t params[PARAM_COUNT];      ///< array of locally stored parameters
     char param_ids[PARAM_COUNT][16];                ///< array of param_ids for all icarous parameters
     uint32_t wptimer;
+    uint32_t gftimer;
     uint32_t rcv_wp_seq;
+    uint32_t rcv_gf_seq;
 }appdataIntGS_t;
 
 
@@ -157,6 +159,8 @@ void ConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],fl
 
 
 void wpCallback(uint32_t timer);
+
+void gfCallback(uint32_t timer);
 
 #define SendGSMsg(arg) writeMavlinkData(&appdataIntGS.gs,&arg)
 

@@ -266,10 +266,21 @@ void ProcessGSMessage(mavlink_message_t message) {
                 appdataIntGS.gfData[index].totalvertices = (uint16_t)msg.param4;
                 appdataIntGS.gfData[index].floor = msg.param5;
                 appdataIntGS.gfData[index].ceiling = msg.param6;
+                appdataIntGS.rcv_gf_seq = 0;
 
-                mavlink_message_t fetchfence;
-                mavlink_msg_fence_fetch_point_pack(sysid,compid,&fetchfence,target_sys,target_comp,0);
-                writeMavlinkData(&appdataIntGS.gs,&fetchfence);
+                uint32_t clockacc = 1000;
+
+                int32 status = OS_TimerCreate(&appdataIntGS.gftimer, "GFTIME", &clockacc, gfCallback);
+                if (status != CFE_SUCCESS)
+                {
+                    OS_printf("Could not create GFTIME timer\n");
+                }
+                status = OS_TimerSet(appdataIntGS.gftimer, 1000, 1000000);
+
+                if (status != CFE_SUCCESS)
+                {
+                    OS_printf("Could not set GFTIME timer: %d\n", status);
+                }
             }
             else if (msg.command == MAV_CMD_SPATIAL_USER_1) {
                 appdataIntGS.traffic.index = (uint32_t)msg.param1;
@@ -337,7 +348,6 @@ void ProcessGSMessage(mavlink_message_t message) {
 
         case MAVLINK_MSG_ID_FENCE_POINT:
         {
-            //printf("MAVLINK_MSG_ID_FENCE_POINT\n");
             uint16_t index = appdataIntGS.recvGeofIndex;
 
             mavlink_fence_point_t msg;
@@ -351,12 +361,31 @@ void ProcessGSMessage(mavlink_message_t message) {
             appdataIntGS.gfData[index].vertices[msg.idx][1] = msg.lng;
 
             if (count < total-1) {
-                mavlink_message_t fetchfence;
-                mavlink_msg_fence_fetch_point_pack(sysid,compid,&fetchfence,target_sys,target_comp,count+1);
-                writeMavlinkData(&appdataIntGS.gs,&fetchfence);
+                appdataIntGS.rcv_gf_seq = count + 1;
+                //mavlink_message_t fetchfence;
+                //mavlink_msg_fence_fetch_point_pack(sysid,compid,&fetchfence,target_sys,target_comp,count+1);
+                //writeMavlinkData(&appdataIntGS.gs,&fetchfence);
+
+                OS_TimerDelete(appdataIntGS.gftimer);
+                uint32_t clockacc = 1000;
+
+                int32 status = OS_TimerCreate(&appdataIntGS.gftimer, "GFTIME", &clockacc, gfCallback);
+                if (status != CFE_SUCCESS)
+                {
+                    OS_printf("Could not create GFTIME timer\n");
+                }
+                status = OS_TimerSet(appdataIntGS.gftimer, 1000, 1000000);
+
+                if (status != CFE_SUCCESS)
+                {
+                    OS_printf("Could not set GFTIME timer: %d\n", status);
+                }
+
             }else{
+                OS_TimerDelete(appdataIntGS.gftimer);
                 mavlink_message_t ack;
                 mavlink_msg_command_ack_pack(sysid,compid,&ack,MAV_CMD_DO_FENCE_ENABLE,MAV_RESULT_ACCEPTED);
+
                 writeMavlinkData(&appdataIntGS.gs,&ack);
             }
 
@@ -716,4 +745,11 @@ void wpCallback(uint32_t timerId)
     mavlink_msg_mission_request_pack(sysid, compid, &msgRequest, target_sys, target_comp, appdataIntGS.receivingWP,
                                      MAV_MISSION_TYPE_MISSION);
     writeMavlinkData(&appdataIntGS.gs, &msgRequest);
+}
+
+void gfCallback(uint32_t timerId)
+{
+    mavlink_message_t fetchfence;
+    mavlink_msg_fence_fetch_point_pack(sysid, compid, &fetchfence, target_sys, target_comp, appdataIntGS.rcv_gf_seq);
+    writeMavlinkData(&appdataIntGS.gs, &fetchfence);
 }
