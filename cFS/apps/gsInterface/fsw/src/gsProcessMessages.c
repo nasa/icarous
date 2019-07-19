@@ -57,9 +57,16 @@ void ProcessGSMessage(mavlink_message_t message) {
             CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &resetFpIcarous);
             CFE_SB_SendMsg((CFE_SB_Msg_t *) &resetFpIcarous);
 
-            mavlink_message_t msgRequest;
-            mavlink_msg_mission_request_pack(sysid,compid,&msgRequest,target_sys,target_comp,appdataIntGS.waypointSeq,MAV_MISSION_TYPE_MISSION);
-            writeMavlinkData(&appdataIntGS.gs,&msgRequest);
+            //mavlink_message_t msgRequest;
+            //mavlink_msg_mission_request_pack(sysid,compid,&msgRequest,target_sys,target_comp,appdataIntGS.waypointSeq,MAV_MISSION_TYPE_MISSION);
+            //writeMavlinkData(&appdataIntGS.gs,&msgRequest);
+            int32 clockacc;
+            int32 status = OS_TimerCreate(&appdataIntGS.wptimer,"SIMSTEP",&clockacc,wpCallback);
+            if(status != CFE_SUCCESS){
+                  OS_printf("Could not create WPTimer timer\n");
+            }
+            status = OS_TimerSet(appdataIntGS.wptimer,1000,1000000);
+
             break;
         }
 
@@ -89,13 +96,28 @@ void ProcessGSMessage(mavlink_message_t message) {
                 mavlink_msg_mission_ack_pack(sysid, compid, &msgAck, target_sys, target_comp, MAV_MISSION_ACCEPTED, msg.mission_type);
                 //printf("mission accepted\n");
                 writeMavlinkData(&appdataIntGS.gs, &msgAck);
+                OS_TimerDelete(appdataIntGS.wptimer);
             }
 
             if(appdataIntGS.receivingWP < appdataIntGS.numWaypoints) {
-                mavlink_message_t msgRequest;
-                mavlink_msg_mission_request_pack(sysid, compid, &msgRequest, target_sys, target_comp, appdataIntGS.receivingWP,
-                                                     MAV_MISSION_TYPE_MISSION);
-                writeMavlinkData(&appdataIntGS.gs, &msgRequest);
+                //mavlink_message_t msgRequest;
+                //mavlink_msg_mission_request_pack(sysid, compid, &msgRequest, target_sys, target_comp, appdataIntGS.receivingWP,
+                 //                                    MAV_MISSION_TYPE_MISSION);
+                //writeMavlinkData(&appdataIntGS.gs, &msgRequest);
+                //OS_printf("Starting timer\n");
+
+                OS_TimerDelete(appdataIntGS.wptimer);
+                uint32_t clockacc = 1000;
+
+                int32 status = OS_TimerCreate(&appdataIntGS.wptimer,"SIMSTEP",&clockacc,wpCallback);
+                if(status != CFE_SUCCESS){
+                    OS_printf("Could not create WPTimer timer\n");
+                }
+                status = OS_TimerSet(appdataIntGS.wptimer,1000,1000000);
+
+                if(status != CFE_SUCCESS){
+                    OS_printf("Could not set SIMSTEP timer: %d\n",status);
+                }
             }
 
             break;
@@ -687,3 +709,11 @@ void ConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],fl
     fp->num_waypoints = count;
 }
 
+void wpCallback(uint32_t timerId)
+{
+    //OS_printf("timer callback : %d\n",appdataIntGS.receivingWP);
+    mavlink_message_t msgRequest;
+    mavlink_msg_mission_request_pack(sysid, compid, &msgRequest, target_sys, target_comp, appdataIntGS.receivingWP,
+                                     MAV_MISSION_TYPE_MISSION);
+    writeMavlinkData(&appdataIntGS.gs, &msgRequest);
+}

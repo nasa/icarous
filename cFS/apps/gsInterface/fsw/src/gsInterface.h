@@ -94,7 +94,10 @@ typedef struct{
     uint8_t currentIcarousMode;
     mavlink_param_value_t params[PARAM_COUNT];      ///< array of locally stored parameters
     char param_ids[PARAM_COUNT][16];                ///< array of param_ids for all icarous parameters
+    uint32_t wptimer;
+    uint32_t rcv_wp_seq;
 }appdataIntGS_t;
+
 
 /**
  * Entry point for app
@@ -151,6 +154,9 @@ void gsInterface_InitializeParamIds();
 void gsInterface_PublishParams();
 
 void ConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp);
+
+
+void wpCallback(uint32_t timer);
 
 #define SendGSMsg(arg) writeMavlinkData(&appdataIntGS.gs,&arg)
 
