@@ -30,7 +30,17 @@ int GetMAVLinkMsgFromAP(){
 void apSendHeartbeat(){
     mavlink_message_t hbeat;
     mavlink_msg_heartbeat_pack(1,0,&hbeat,MAV_TYPE_ONBOARD_CONTROLLER,MAV_AUTOPILOT_INVALID,0,0,0);
-    writeMavlinkData(&appdataInt.ap,&hbeat);
+    if(appdataInt.foundUAV == 0){
+        //writeMavlinkData(&appdataInt.ap,&hbeat);
+        mavlink_message_t msg;
+        mavlink_msg_request_data_stream_pack(255,0,&msg,1,0,MAV_DATA_STREAM_ALL,4,1);
+        writeMavlinkData(&appdataInt.ap,&msg);
+    }else{
+        //mavlink_message_t msg;
+        //mavlink_msg_request_data_stream_pack(255,0,&msg,1,0,MAV_DATA_STREAM_ALL,4,1);
+        //writeMavlinkData(&appdataInt.ap,&msg);
+    }
+    
 }
 
 void ProcessAPMessage(mavlink_message_t message) {
@@ -261,9 +271,9 @@ void ProcessAPMessage(mavlink_message_t message) {
             mavlink_heartbeat_t msg;
             mavlink_msg_heartbeat_decode(&message,&msg);
             if (appdataInt.foundUAV == 0) {
+                appdataInt.foundUAV = 1;
                 mavlink_message_t msg;
                 mavlink_msg_request_data_stream_pack(255,0,&msg,1,0,MAV_DATA_STREAM_ALL,4,1);
-                appdataInt.foundUAV = 1;
                 writeMavlinkData(&appdataInt.ap,&msg);
                 CFE_EVS_SendEvent(ARDUPILOT_CONNECTED_TO_AP_EID,CFE_EVS_INFORMATION,"Connection to autopilot established");
             }
