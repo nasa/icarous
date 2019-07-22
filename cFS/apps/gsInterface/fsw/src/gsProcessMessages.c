@@ -60,13 +60,8 @@ void ProcessGSMessage(mavlink_message_t message) {
             //mavlink_message_t msgRequest;
             //mavlink_msg_mission_request_pack(sysid,compid,&msgRequest,target_sys,target_comp,appdataIntGS.waypointSeq,MAV_MISSION_TYPE_MISSION);
             //writeMavlinkData(&appdataIntGS.gs,&msgRequest);
-            int32 clockacc;
-            int32 status = OS_TimerCreate(&appdataIntGS.wptimer,"SIMSTEP",&clockacc,wpCallback);
-            if(status != CFE_SUCCESS){
-                  OS_printf("Could not create WPTimer timer\n");
-            }
-            status = OS_TimerSet(appdataIntGS.wptimer,1000,1000000);
 
+            startTimer(&appdataIntGS.wptimer,wpCallback,"WPTIMER",1000000);
             break;
         }
 
@@ -96,28 +91,16 @@ void ProcessGSMessage(mavlink_message_t message) {
                 mavlink_msg_mission_ack_pack(sysid, compid, &msgAck, target_sys, target_comp, MAV_MISSION_ACCEPTED, msg.mission_type);
                 //printf("mission accepted\n");
                 writeMavlinkData(&appdataIntGS.gs, &msgAck);
-                OS_TimerDelete(appdataIntGS.wptimer);
+                stopTimer(&appdataIntGS.wptimer);
             }
 
             if(appdataIntGS.receivingWP < appdataIntGS.numWaypoints) {
                 //mavlink_message_t msgRequest;
                 //mavlink_msg_mission_request_pack(sysid, compid, &msgRequest, target_sys, target_comp, appdataIntGS.receivingWP,
-                 //                                    MAV_MISSION_TYPE_MISSION);
+                //                                    MAV_MISSION_TYPE_MISSION);
                 //writeMavlinkData(&appdataIntGS.gs, &msgRequest);
-                //OS_printf("Starting timer\n");
 
-                OS_TimerDelete(appdataIntGS.wptimer);
-                uint32_t clockacc = 1000;
-
-                int32 status = OS_TimerCreate(&appdataIntGS.wptimer,"SIMSTEP",&clockacc,wpCallback);
-                if(status != CFE_SUCCESS){
-                    OS_printf("Could not create WPTimer timer\n");
-                }
-                status = OS_TimerSet(appdataIntGS.wptimer,1000,1000000);
-
-                if(status != CFE_SUCCESS){
-                    OS_printf("Could not set SIMSTEP timer: %d\n",status);
-                }
+                startTimer(&appdataIntGS.wptimer,wpCallback,"WPTIMER",1000000);   
             }
 
             break;
@@ -268,6 +251,7 @@ void ProcessGSMessage(mavlink_message_t message) {
                 appdataIntGS.gfData[index].ceiling = msg.param6;
                 appdataIntGS.rcv_gf_seq = 0;
 
+                /*
                 uint32_t clockacc = 1000;
 
                 int32 status = OS_TimerCreate(&appdataIntGS.gftimer, "GFTIME", &clockacc, gfCallback);
@@ -281,6 +265,8 @@ void ProcessGSMessage(mavlink_message_t message) {
                 {
                     OS_printf("Could not set GFTIME timer: %d\n", status);
                 }
+                */
+               startTimer(&appdataIntGS.gftimer,gfCallback,"GFTIMER",1000000);
             }
             else if (msg.command == MAV_CMD_SPATIAL_USER_1) {
                 appdataIntGS.traffic.index = (uint32_t)msg.param1;
@@ -366,23 +352,10 @@ void ProcessGSMessage(mavlink_message_t message) {
                 //mavlink_msg_fence_fetch_point_pack(sysid,compid,&fetchfence,target_sys,target_comp,count+1);
                 //writeMavlinkData(&appdataIntGS.gs,&fetchfence);
 
-                OS_TimerDelete(appdataIntGS.gftimer);
-                uint32_t clockacc = 1000;
-
-                int32 status = OS_TimerCreate(&appdataIntGS.gftimer, "GFTIME", &clockacc, gfCallback);
-                if (status != CFE_SUCCESS)
-                {
-                    OS_printf("Could not create GFTIME timer\n");
-                }
-                status = OS_TimerSet(appdataIntGS.gftimer, 1000, 1000000);
-
-                if (status != CFE_SUCCESS)
-                {
-                    OS_printf("Could not set GFTIME timer: %d\n", status);
-                }
+                startTimer(&appdataIntGS.gftimer,gfCallback,"GFTIMER",1000000);
 
             }else{
-                OS_TimerDelete(appdataIntGS.gftimer);
+                stopTimer(&appdataIntGS.gftimer);
                 mavlink_message_t ack;
                 mavlink_msg_command_ack_pack(sysid,compid,&ack,MAV_CMD_DO_FENCE_ENABLE,MAV_RESULT_ACCEPTED);
 
@@ -752,4 +725,27 @@ void gfCallback(uint32_t timerId)
     mavlink_message_t fetchfence;
     mavlink_msg_fence_fetch_point_pack(sysid, compid, &fetchfence, target_sys, target_comp, appdataIntGS.rcv_gf_seq);
     writeMavlinkData(&appdataIntGS.gs, &fetchfence);
+}
+
+void startTimer(uint32_t *timerID,void (*f)(uint32_t),char name[],uint32_t intvl){
+
+    stopTimer(timerID);
+
+    int32 clockacc;
+    int32 status = OS_TimerCreate(timerID,name,&clockacc,f);
+    if(status != CFE_SUCCESS){
+            OS_printf("Could not create timer: %s, %d\n",name,status);
+    }
+    status = OS_TimerSet(*timerID,1000,intvl);
+    if(status != CFE_SUCCESS){
+            OS_printf("Could not set timer: %s\n",name);
+    }
+
+}
+
+void stopTimer(uint32_t *timerID){
+    if(*timerID != 0xffff){
+        OS_TimerDelete(*timerID);
+        *timerID = 0xffff;
+    }
 }

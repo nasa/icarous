@@ -162,6 +162,10 @@ void wpCallback(uint32_t timer);
 
 void gfCallback(uint32_t timer);
 
+void startTimer(uint32_t *timerID,void (*f)(uint32_t),char* name,uint32_t intvl);
+
+void stopTimer(uint32_t *timerID);
+
 #define SendGSMsg(arg) writeMavlinkData(&appdataIntGS.gs,&arg)
 
 #define NextParam appdataIntGS.params[i].param_value;\
