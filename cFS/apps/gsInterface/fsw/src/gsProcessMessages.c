@@ -84,7 +84,7 @@ void ProcessGSMessage(mavlink_message_t message) {
             if (msg.seq == appdataIntGS.numWaypoints - 1) {
 
                 CFE_SB_InitMsg(&appdataIntGS.fpData,ICAROUS_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
-                ConvertMissionItemsToPlan(appdataIntGS.numWaypoints,appdataIntGS.ReceivedMissionItems,&appdataIntGS.fpData);
+                gsConvertMissionItemsToPlan(appdataIntGS.numWaypoints,appdataIntGS.ReceivedMissionItems,&appdataIntGS.fpData);
                 SendSBMsg(appdataIntGS.fpData);
 
                 mavlink_message_t msgAck;
@@ -108,7 +108,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 
         case MAVLINK_MSG_ID_MISSION_REQUEST_LIST:
         {
-            printf("MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
+            //printf("MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
             mavlink_mission_request_list_t msg;
             mavlink_msg_mission_request_list_decode(&message, &msg);
             int count = 0;
@@ -141,7 +141,7 @@ void ProcessGSMessage(mavlink_message_t message) {
         }
 
         case MAVLINK_MSG_ID_MISSION_REQUEST:{
-            printf("MAVLINK_MSG_ID_MISSION_REQUEST\n");
+            //printf("MAVLINK_MSG_ID_MISSION_REQUEST\n");
             mavlink_mission_request_t msg;
             mavlink_msg_mission_request_decode(&message, &msg);
 
@@ -251,22 +251,7 @@ void ProcessGSMessage(mavlink_message_t message) {
                 appdataIntGS.gfData[index].ceiling = msg.param6;
                 appdataIntGS.rcv_gf_seq = 0;
 
-                /*
-                uint32_t clockacc = 1000;
-
-                int32 status = OS_TimerCreate(&appdataIntGS.gftimer, "GFTIME", &clockacc, gfCallback);
-                if (status != CFE_SUCCESS)
-                {
-                    OS_printf("Could not create GFTIME timer\n");
-                }
-                status = OS_TimerSet(appdataIntGS.gftimer, 1000, 1000000);
-
-                if (status != CFE_SUCCESS)
-                {
-                    OS_printf("Could not set GFTIME timer: %d\n", status);
-                }
-                */
-               startTimer(&appdataIntGS.gftimer,gfCallback,"GFTIMER",1000000);
+                startTimer(&appdataIntGS.gftimer,gfCallback,"GFTIMER",1000000);
             }
             else if (msg.command == MAV_CMD_SPATIAL_USER_1) {
                 appdataIntGS.traffic.index = (uint32_t)msg.param1;
@@ -496,10 +481,12 @@ void gsInterface_ProcessPacket() {
             flightplan_t *msg = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
             memcpy(&appdataIntGS.fpData, msg,sizeof(flightplan_t));
             appdataIntGS.numWaypoints = appdataIntGS.fpData.num_waypoints;
+            gsConvertPlanToMissionItems(msg);
             //OS_printf("received downlink flight plan\n");
             break;
         }
-        
+
+        /* 
         case ICAROUS_FLIGHTPLAN_MID:{
             flightplan_t *msg = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
             memcpy(&appdataIntGS.fpData, msg,sizeof(flightplan_t));
@@ -511,7 +498,7 @@ void gsInterface_ProcessPacket() {
             }
             gsInterface_PublishParams();
             break;
-        }
+        }*/
 
         case ICAROUS_STATUS_MID:{
             status_t* statusMsg = (status_t*) appdataIntGS.INTERFACEMsgPtr;
