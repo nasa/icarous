@@ -108,7 +108,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 
         case MAVLINK_MSG_ID_MISSION_REQUEST_LIST:
         {
-            //printf("MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
+            printf("MAVLINK_MSG_ID_MISSION_REQUEST_LIST\n");
             mavlink_mission_request_list_t msg;
             mavlink_msg_mission_request_list_decode(&message, &msg);
             int count = 0;
@@ -141,7 +141,7 @@ void ProcessGSMessage(mavlink_message_t message) {
         }
 
         case MAVLINK_MSG_ID_MISSION_REQUEST:{
-            //printf("MAVLINK_MSG_ID_MISSION_REQUEST\n");
+            printf("MAVLINK_MSG_ID_MISSION_REQUEST\n");
             mavlink_mission_request_t msg;
             mavlink_msg_mission_request_decode(&message, &msg);
 
@@ -499,6 +499,19 @@ void gsInterface_ProcessPacket() {
             //OS_printf("received downlink flight plan\n");
             break;
         }
+        
+        case ICAROUS_FLIGHTPLAN_MID:{
+            flightplan_t *msg = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
+            memcpy(&appdataIntGS.fpData, msg,sizeof(flightplan_t));
+            appdataIntGS.numWaypoints = appdataIntGS.fpData.num_waypoints;
+            gsConvertPlanToMissionItems(msg);
+            for(int i=0;i<appdataIntGS.numWaypoints;++i){
+                OS_printf("%d lat: %f, lon: %f\n",i,msg->waypoints[i].latitude,msg->waypoints[i].longitude);
+
+            }
+            gsInterface_PublishParams();
+            break;
+        }
 
         case ICAROUS_STATUS_MID:{
             status_t* statusMsg = (status_t*) appdataIntGS.INTERFACEMsgPtr;
@@ -655,7 +668,81 @@ void gsInterface_ProcessPacket() {
     }
 }
 
-void ConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp){
+uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
+    int count = 0;
+    for(int i=0;i<fp->num_waypoints;++i){
+        appdataIntGS.ReceivedMissionItems[count].target_system = 1;
+        appdataIntGS.ReceivedMissionItems[count].target_component = 0;
+        appdataIntGS.ReceivedMissionItems[count].seq = (uint16_t )count;
+        appdataIntGS.ReceivedMissionItems[count].mission_type = MAV_MISSION_TYPE_MISSION;
+        appdataIntGS.ReceivedMissionItems[count].command = MAV_CMD_NAV_WAYPOINT;
+        appdataIntGS.ReceivedMissionItems[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+        appdataIntGS.ReceivedMissionItems[count].autocontinue = 1;
+        appdataIntGS.ReceivedMissionItems[count].current = 0;
+        appdataIntGS.ReceivedMissionItems[count].x = (float)fp->waypoints[i].latitude;
+        appdataIntGS.ReceivedMissionItems[count].y = (float)fp->waypoints[i].longitude;
+        appdataIntGS.ReceivedMissionItems[count].z = (float)fp->waypoints[i].altitude;
+        //appdataIntGS.waypoint_index[i] = count;
+
+        count++;
+        if(i < fp->num_waypoints-1){
+            if(fp->waypoints[i].wp_metric == WP_METRIC_ETA) {
+                double currentWP[3] = {fp->waypoints[i].latitude, fp->waypoints[i].longitude,
+                                       fp->waypoints[i].altitude};
+                double nextWP[3] = {fp->waypoints[i + 1].latitude, fp->waypoints[i + 1].longitude,
+                                    fp->waypoints[i + 1].altitude};
+                double dist2NextWP = ComputeDistance(currentWP, nextWP);
+                double time2NextWP = fp->waypoints[i].value_to_next_wp;
+                double speed2NextWP = dist2NextWP/time2NextWP;
+
+                if (dist2NextWP > 1E-3) {
+                    appdataIntGS.ReceivedMissionItems[count].target_system = 1;
+                    appdataIntGS.ReceivedMissionItems[count].target_component = 0;
+                    appdataIntGS.ReceivedMissionItems[count].seq = (uint16_t) count;
+                    appdataIntGS.ReceivedMissionItems[count].mission_type = MAV_MISSION_TYPE_MISSION;
+                    appdataIntGS.ReceivedMissionItems[count].command = MAV_CMD_DO_CHANGE_SPEED;
+                    appdataIntGS.ReceivedMissionItems[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+                    appdataIntGS.ReceivedMissionItems[count].autocontinue = 1;
+                    appdataIntGS.ReceivedMissionItems[count].current = 0;
+                    appdataIntGS.ReceivedMissionItems[count].param1 = 1;
+                    appdataIntGS.ReceivedMissionItems[count].param2 = speed2NextWP;
+                    appdataIntGS.ReceivedMissionItems[count].param3 = 0;
+                    appdataIntGS.ReceivedMissionItems[count].param4 = 0;
+                    appdataIntGS.ReceivedMissionItems[count].x = 0;
+                    appdataIntGS.ReceivedMissionItems[count].y = 0;
+                    appdataIntGS.ReceivedMissionItems[count].z = 0;
+                    count++;
+                    //OS_printf("Constructed speed waypoint:%f\n",speed2NextWP);
+                }else if(time2NextWP > 0){
+                    appdataIntGS.ReceivedMissionItems[count].target_system = 1;
+                    appdataIntGS.ReceivedMissionItems[count].target_component = 0;
+                    appdataIntGS.ReceivedMissionItems[count].seq = (uint16_t) count;
+                    appdataIntGS.ReceivedMissionItems[count].mission_type = MAV_MISSION_TYPE_MISSION;
+                    appdataIntGS.ReceivedMissionItems[count].command = MAV_CMD_NAV_LOITER_TIME;
+                    appdataIntGS.ReceivedMissionItems[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+                    appdataIntGS.ReceivedMissionItems[count].autocontinue = 1;
+                    appdataIntGS.ReceivedMissionItems[count].current = 0;
+                    appdataIntGS.ReceivedMissionItems[count].param1 = time2NextWP;
+                    appdataIntGS.ReceivedMissionItems[count].param2 = 0;
+                    appdataIntGS.ReceivedMissionItems[count].param3 = 15;
+                    appdataIntGS.ReceivedMissionItems[count].param4 = 0;
+                    appdataIntGS.ReceivedMissionItems[count].x = nextWP[0];
+                    appdataIntGS.ReceivedMissionItems[count].y = nextWP[1];
+                    appdataIntGS.ReceivedMissionItems[count].z = nextWP[2];
+                    ++i;
+                    count++;
+                    //OS_printf("Constructed loiter waypoint\n");
+                }
+            }
+        }
+
+    }
+
+    appdataIntGS.numWaypoints = count;
+    return count;
+}
+
+void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp){
     int count = 0;
     for(int i=0;i<size;++i){
         switch(items[i].command){

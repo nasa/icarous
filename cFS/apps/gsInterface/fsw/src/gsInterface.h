@@ -155,7 +155,9 @@ void gsInterface_InitializeParamIds();
  */
 void gsInterface_PublishParams();
 
-void ConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp);
+void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp);
+
+uint16_t gsConvertPlanToMissionItems(flightplan_t* fp);
 
 
 void wpCallback(uint32_t timer);
