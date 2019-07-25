@@ -29,7 +29,7 @@ int GetMAVLinkMsgFromAP(){
 
 void apSendHeartbeat(){
     mavlink_message_t hbeat;
-    mavlink_msg_heartbeat_pack(1,0,&hbeat,MAV_TYPE_ONBOARD_CONTROLLER,MAV_AUTOPILOT_INVALID,0,0,0);
+    mavlink_msg_heartbeat_pack(1,1,&hbeat,MAV_TYPE_ONBOARD_CONTROLLER,MAV_AUTOPILOT_INVALID,0,0,0);
     if(appdataInt.foundUAV == 0){
         //writeMavlinkData(&appdataInt.ap,&hbeat);
         mavlink_message_t msg;
