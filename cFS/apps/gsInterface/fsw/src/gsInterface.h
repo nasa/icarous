@@ -41,7 +41,7 @@
 
 #define SCH_GSINTERFACE_PIPE1_NAME "SCH_GSINTERFACE"
 
-#define PARAM_COUNT 72      ///< Total number of ICAROUS parameters
+#define PARAM_COUNT 73      ///< Total number of ICAROUS parameters
 
 #define MAX_GEOFENCES 30
 

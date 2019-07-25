@@ -21,8 +21,9 @@
  */
 typedef struct
 {
-    char configFile[50];   ///< Daidalus configuration file
-    bool log;              ///< Enable Daidalus log output
+    char configFile[50];    ///< Daidalus configuration file
+    bool log;               ///< Enable Daidalus log output
+    uint32_t trafficSource; ///< Traffic source (ADSB, SIM, RADAR)
 
 }TrafficTable_t;
 

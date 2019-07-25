@@ -112,6 +112,7 @@ typedef struct{
   float det_1_WCV_TCOA;
   float det_1_WCV_TTHR;
   float det_1_WCV_ZTHR;
+  uint32_t trafficSource;
 }traffic_parameters_t;
 
 /**

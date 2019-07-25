@@ -115,6 +115,15 @@ void TRAFFIC_ProcessPacket(){
         case ICAROUS_TRAFFIC_MID:{
             object_t* msg;
             msg = (object_t*) trafficAppData.Traffic_MsgPtr;
+
+            // If traffic source is set to 0 (ALL), this app can ingest the traffic data
+            if(trafficAppData.trafficSrc != 0){
+                // If traffic source is non zero, only let the selected source
+                if(msg->type != trafficAppData.trafficSrc){
+                    break;
+                }
+            }
+
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
             double vel[3] = {msg->ve,msg->vn,msg->vd};
             int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->index,pos,vel,trafficAppData.time);
@@ -307,6 +316,7 @@ void TRAFFIC_ProcessPacket(){
             n += sprintf(params + n,"load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.%s;",msg->load_core_detection_det_1);
 
             TrafficMonitor_UpdateDAAParameters(trafficAppData.tfMonitor,params);
+            trafficAppData.trafficSrc = msg->trafficSource; 
             break;
         }
     }

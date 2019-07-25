@@ -67,6 +67,7 @@ typedef struct{
     double time;                           ///< Time from autopilot
     bool log;                              ///< log DAA output
     int numTraffic;                        ///< Number of traffic vehicles added
+    uint32_t trafficSrc;                   ///< Traffic source (see object_type_e)
 }TrafficAppData_t;
 
 /**

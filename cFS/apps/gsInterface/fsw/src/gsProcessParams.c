@@ -13,6 +13,7 @@
 void gsInterface_InitializeParamIds(){
     int i = 0;
     //Traffic Parameters
+    AddParamId("TRAFFIC_SRC",0);
     AddParamId("LOGDAADATA",1);
     AddParamId("LOOKAHEAD_TIME",20.0);
     AddParamId("LEFT_TRK",180.0);
@@ -109,6 +110,7 @@ void gsInterface_PublishParams() {
     //Store the locally saved parameters to the messages
     int i = 0;
     //Traffic Parameters
+    localTrafficParams.trafficSource = (uint32_t) NextParam;
     localTrafficParams.logDAAdata = (bool) NextParam;
     localTrafficParams.lookahead_time = NextParam;
     localTrafficParams.left_trk = NextParam;

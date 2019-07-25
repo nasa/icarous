@@ -1,5 +1,8 @@
 # ICAROUS PARAMETERS
 
+# TRAFFIC SOURCE (ALL:0, SIM: 1, ADSB: 2, RADAR: 3)
+TRAFFIC_SRC      0.0000000
+
 # DAA Parameters
 # Length (ft), Speed (knots), time (s), climb rate (fpm)
 # Look ahead time
