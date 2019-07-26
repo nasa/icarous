@@ -123,8 +123,8 @@ int InitializeSerialPort(port_t* prt,bool should_block){
 
 int readPort(port_t* prt){
     int n = 0;
+    memset(prt->recvbuffer, 0, BUFFER_LENGTH);
     if (prt->portType == SOCKET){
-        memset(prt->recvbuffer, 0, BUFFER_LENGTH);
         if(prt->portout == 0) {
             n = recvfrom(prt->sockId, (void *) prt->recvbuffer, BUFFER_LENGTH, 0, (struct sockaddr *) &prt->target_addr,
                          &prt->recvlen);
