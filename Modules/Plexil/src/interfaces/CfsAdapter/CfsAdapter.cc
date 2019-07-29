@@ -113,7 +113,9 @@ namespace PLEXIL {
                       "CfsAdapter::lookupNow: semaphore wait failed, result = " << errnum);
 
         entry.update(m_pendingLookupResult);
-
+        m_execInterface.handleValueChange(state, m_pendingLookupResult);
+        m_execInterface.notifyOfExternalEvent();
+        
         // Clean up
         {
             ThreadMutexGuard g(m_cmdMutex);
@@ -250,6 +252,12 @@ namespace PLEXIL {
         Value val;
         val.deserialize(msg->buffer);
         return val;
+    }
+
+    void CfsAdapter::HandleValueChange(State state, Value val){
+        m_execInterface.handleValueChange(state, val);
+        m_execInterface.notifyOfExternalEvent();
+        return; 
     }
 
     extern "C" {

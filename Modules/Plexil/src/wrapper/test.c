@@ -16,10 +16,12 @@ int main(int argc, char** argv){
 
     plexil_init(argc,argv,&exec,&adap);
 
+    int count = 0;
     while(1){
-
+        count++;
         plexil_run(exec);
 
+        sleep(2);
         PlexilMsg msg1,msg2;
         int n1 = plexil_getCommand(adap,&msg1);
         int n2 = plexil_getLookup(adap,&msg2);
@@ -99,9 +101,21 @@ int main(int argc, char** argv){
                 reply.id = msg1.id;
                 serializeRealArray(3, position, reply.buffer);
                 plexil_return(adap, &reply);
+            }else if(CHECK_NAME(msg2, "testBool")){
+                PlexilMsg reply;
+                bool val = false;
+                reply.mType = _LOOKUP_RETURN_;
+                reply.id = msg1.id;
+                serializeBool(false,val,reply.buffer);
+                plexil_return(adap,&reply);
             }
         }
 
+        if(count > 11){
+            bool val = true;
+            plexil_BoolValueChange(adap,"testBool",&val);
+        }
+        printf("%d\n",count);
     }
 
     return 0;

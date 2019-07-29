@@ -15,6 +15,7 @@ extern "C" {
   int plexil_destroy(struct plexilExec *exec);
   int plexil_getLookup(struct plexilInterfaceAdapter* adp,PlexilMsg* msg);
   int plexil_getCommand(struct plexilInterfaceAdapter* adp,PlexilMsg* msg);
+  void plexil_BoolValueChange(struct plexilInterfaceAdapter* adp,char* name,bool* val);
   void plexil_return(struct plexilInterfaceAdapter* adp, PlexilMsg* msg);
 
 #ifdef __cplusplus

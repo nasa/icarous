@@ -39,6 +39,7 @@ namespace PLEXIL {
 
         int GetCmdQueueMsg(PlexilMsg* msg);
         int GetLookUpQueueMsg(PlexilMsg* msg);
+        void HandleValueChange(State state, Value val);
 
     private:
         std::queue<PlexilMsg> cmdQueue;

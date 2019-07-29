@@ -384,4 +384,15 @@ void plexil_return(struct plexilInterfaceAdapter* adp,PlexilMsg* msg){
     return;
 }
 
+void plexil_BoolValueChange(struct plexilInterfaceAdapter* adp,char* name,bool* val){
+    InterfaceAdapter* adapter = ToCPP_Adp(adp);
+
+    CfsAdapter *cfsAdap = (CfsAdapter*) adapter;
+
+    cfsAdap->HandleValueChange(State(name),Value(*val));
+
+    return;
+
+}
+
 
