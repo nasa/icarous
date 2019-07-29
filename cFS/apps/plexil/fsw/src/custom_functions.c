@@ -314,6 +314,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
 
         case ICAROUS_RESET_MID:{
             plexilCustomData.restartMission = true;
+            plexil_BoolValueChange(plexilAppData.adap,"restartMission",&plexilCustomData.restartMission);
             break;
         }
 

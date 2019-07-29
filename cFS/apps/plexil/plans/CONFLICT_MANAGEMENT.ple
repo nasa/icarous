@@ -179,6 +179,7 @@ CONFLICT_MANAGEMENT:
             Boolean skipResumeMission = false;
 
             SkipCondition (gConflictId == 0);
+            EndCondition Lookup(restartMission);
 
             gOldConflictId = gConflictId;
 
