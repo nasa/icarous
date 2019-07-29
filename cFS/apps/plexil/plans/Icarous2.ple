@@ -42,6 +42,8 @@ ICAROUS:
 
         Repeat true;
 
+        Status("PLX:IDLE",6);
+
         IDLE:
         {
             Integer start;
@@ -184,6 +186,7 @@ ICAROUS:
             EndCondition _reset;
             
             _reset = Lookup(restartMission);
+            Status("PLX:LAND",6);
             pprint("Plexil status: Landing");
             SetMode("ACTIVE");
             Land();
