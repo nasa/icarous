@@ -180,7 +180,7 @@ void GEOFENCE_ProcessPacket(){
         }
 
         case ICAROUS_RESET_MID:{
-            GeofenceMonitor_ClearFences(geofenceAppData.gfMonitor);
+            //GeofenceMonitor_ClearFences(geofenceAppData.gfMonitor);
             break;
         }
 

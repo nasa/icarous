@@ -280,7 +280,6 @@ void TRAJECTORY_Monitor(void){
                 }
 
                 case ICAROUS_RESET_MID:{
-                    PathPlanner_ClearAllPlans(TrajectoryAppData.pplanner);
                     break;
                 }
 
