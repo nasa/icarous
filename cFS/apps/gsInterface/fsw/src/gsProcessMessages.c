@@ -276,7 +276,9 @@ void ProcessGSMessage(mavlink_message_t message) {
                 mavlink_message_t statusMsg;;
                 mavlink_msg_statustext_pack(sysid,compid,&statusMsg,MAV_SEVERITY_WARNING,"IC:Resetting Icarous");
                 writeMavlinkData(&appdataIntGS.gs,&statusMsg);
-                appdataIntGS.numWaypoints = 0;
+                if(msg.param1 == 1){
+                    appdataIntGS.numWaypoints = 0;
+                }
             }else if(msg.command == MAV_CMD_USER_2){
                 argsCmd_t trackCmd;
                 CFE_SB_InitMsg(&trackCmd,ICAROUS_TRACK_STATUS_MID, sizeof(argsCmd_t),TRUE);
