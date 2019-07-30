@@ -253,7 +253,6 @@ CONFLICT_MANAGEMENT:
                         
             FLIGHTPLAN:{
                 Real deviation = 1000000;
-                Boolean reset = false;
                 SkipCondition !gFlightPlanConflict || TrafficResolutionCompleted;
 
                 pprint("Plexil status: Resolving flight plan deviations");
@@ -276,16 +275,19 @@ CONFLICT_MANAGEMENT:
                 }
             }
 
+            reset = Lookup(restartMission);
+
             RESUME_MISSION:{
                 Integer vNextFeasibleWp;
                 Real vNextPosition[3];
                 Boolean vResolutionCompleted;
                 SkipCondition skipResumeMission;
-                EndCondition Lookup(restartMission);
+                EndCondition reset;
 
                 Status("PLX:Resuming mission",5);
 
                 vNextFeasibleWp = Lookup(nextFeasibleWP);
+                reset = Lookup(restartMission);
 
                 pprint("Plexil status: Intercepting mission to next feasible waypoint:",vNextFeasibleWp);
 
