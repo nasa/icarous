@@ -314,7 +314,6 @@ void PLEXIL_ProcessCustomPackets(bool data){
 
         case ICAROUS_RESET_MID:{
             plexilCustomData.restartMission = true;
-            plexil_BoolValueChange(plexilAppData.adap,"restartMission",&plexilCustomData.restartMission);
             break;
         }
 
@@ -431,6 +430,8 @@ void PLEXIL_HandleCustomLookups(PlexilMsg *msg){
     }
 
     plexil_return(plexilAppData.adap, &plxInput);
+
+    //plexil_BoolValueChange(plexilAppData.adap,"restartMission",&plexilCustomData.restartMission);
 }
 
 

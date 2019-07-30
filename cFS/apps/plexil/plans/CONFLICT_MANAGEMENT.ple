@@ -85,6 +85,9 @@ CONFLICT_MANAGEMENT:
 
     String gSearchType;
 
+
+    ExitCondition reset;
+
     // Perform one time lookup
     gNumMissionWp = Lookup(numMissionWP);
     gCurrentMissionWp = Lookup(nextMissionWPIndex);
@@ -95,6 +98,8 @@ CONFLICT_MANAGEMENT:
     pprint("Plexil status: Starting conflict management");
     pprint("Plexil status: Total mission waypoints:", gNumMissionWp);
     pprint("Plexil status: Preferred planning strategy:",gSearchType);
+
+
 
     {
         Repeat (( gCurrentMissionWp <  gNumMissionWp) && (!DitchStatus) && (!reset));
@@ -179,7 +184,6 @@ CONFLICT_MANAGEMENT:
             Boolean skipResumeMission = false;
 
             SkipCondition (gConflictId == 0);
-            EndCondition Lookup(restartMission);
 
             gOldConflictId = gConflictId;
 
@@ -246,21 +250,23 @@ CONFLICT_MANAGEMENT:
                                                 resolutionCompleted = TrafficResolutionCompleted);
                 }
             }
-
+                        
             FLIGHTPLAN:{
                 Real deviation = 1000000;
+                Boolean reset = false;
                 SkipCondition !gFlightPlanConflict || TrafficResolutionCompleted;
 
                 pprint("Plexil status: Resolving flight plan deviations");
 
                 {
-                    EndCondition (deviation < gAllowedDeviation/2);
+                    EndCondition (deviation < gAllowedDeviation/2) || (reset);
                     Status("PLX:Resolving flight plan deviation",5);
                     SetMode("ACTIVE");
                     MANEUVER:
                     {
                         Real velCmd[3];
                         Repeat true;
+                        reset = Lookup(restartMission);
                         deviation = Lookup(xtrackDev);
                         velCmd = Lookup(interceptManeuver);
                         SetVel(velCmd);
@@ -275,6 +281,7 @@ CONFLICT_MANAGEMENT:
                 Real vNextPosition[3];
                 Boolean vResolutionCompleted;
                 SkipCondition skipResumeMission;
+                EndCondition Lookup(restartMission);
 
                 Status("PLX:Resuming mission",5);
 

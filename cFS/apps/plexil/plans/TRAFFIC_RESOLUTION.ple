@@ -3,6 +3,8 @@ Boolean Lookup trafficSpeedConflict;
 Boolean Lookup trafficAltConflict;
 Boolean Lookup trafficTrackConflict;
 Boolean Lookup nextWPFeasibility;
+Boolean Lookup restartMission;
+
 Real Lookup preferredTrack;
 Real Lookup preferredSpeed;
 Real Lookup preferredAltitude;
@@ -39,6 +41,7 @@ TRAFFIC_RESOLUTION:{
     Boolean SpeedResolution = false;
     Boolean AltResolution = false;
     Boolean TrackResolution = true;
+    Boolean reset = false;
 
     acVelocity = Lookup(velocity);
 
@@ -58,12 +61,13 @@ TRAFFIC_RESOLUTION:{
     {
         // Get traffic conflict status
         Boolean executed = false;
-        Repeat (!returnSafe || statusTF);
+        Repeat (!returnSafe || statusTF) && (!reset);
 
         statusTF = Lookup(trafficConflict) ;
         statusTF_Speed = Lookup(trafficSpeedConflict);
         statusTF_Altitude = Lookup(trafficAltConflict);
         statusTF_Track = Lookup(trafficTrackConflict);
+        reset = Lookup(restartMission);
 
         acPosition = Lookup(position);
 
@@ -71,6 +75,7 @@ TRAFFIC_RESOLUTION:{
         //pprint("speed conflict:",statusTF_Speed);
         //pprint("altitude conflict:",statusTF_Altitude);
         //pprint("track conflict:",statusTF_Track);
+        //pprint(reset);
 
         SPEED:{
            SkipCondition !statusTF_Speed || TrackResolution || AltResolution;

@@ -17,6 +17,7 @@ Real[3] Lookup position;
 Real[3] Lookup velocity;
 Real[3] Lookup nextFeasibleWP;
 Boolean Lookup directPathToNextFeasibleWP;
+Boolean Lookup restartMission;
 Integer Lookup totalResolutionWP;
 
 LibraryAction MONITOR(InOut Integer ConflictId);
@@ -68,6 +69,7 @@ GOTO_POSITION:{
     BEE_LINE:{
         Integer vConflictId;
         Real dist2nextWP = 10000;
+        Boolean reset = false;
         SkipCondition !targetFeasibility;
 
         pprint("Plexil status: Direct to target position");
@@ -78,8 +80,10 @@ GOTO_POSITION:{
 
         {
             Real val;
-            Repeat (dist2nextWP > capH) && (vConflictId == PrevConflictId);
+            Boolean reset = false;
+            Repeat (dist2nextWP > capH) && (vConflictId == PrevConflictId) && (!reset);
             CurrentPosition = Lookup(position);
+            reset = Lookup(restartMission);
 
             {
                 EndCondition isKnown(val);
@@ -119,6 +123,7 @@ GOTO_POSITION:{
     CHECK_WP_TRANSITION:{
         Real NextWP[3];
         Integer vConflictId;
+        Boolean reset = false;
 
         vConflictId = PrevConflictId;
 
@@ -129,14 +134,16 @@ GOTO_POSITION:{
 
         // Use set pos to go to spot directly
         SetPos(NextWP);
+        reset = Lookup(restartMission);
 
         {
             Real dist2nextWP;
             Real heading2nextWP;
             Real velocityCmd[3];
-            Repeat (nextWPIndex < totalWPIndex) && (vConflictId == PrevConflictId);
+            Repeat (nextWPIndex < totalWPIndex) && (vConflictId == PrevConflictId) && (!reset);
 
             CurrentPosition = Lookup(position);
+            reset = Lookup(restartMission);
 
             LibraryCall MONITOR(ConflictId = vConflictId);
 
