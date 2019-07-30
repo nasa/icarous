@@ -68,6 +68,7 @@ typedef struct{
     bool log;                              ///< log DAA output
     int numTraffic;                        ///< Number of traffic vehicles added
     uint32_t trafficSrc;                   ///< Traffic source (see object_type_e)
+    bool startMission;
 }TrafficAppData_t;
 
 /**

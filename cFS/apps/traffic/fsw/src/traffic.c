@@ -63,6 +63,8 @@ void TRAFFIC_AppInit(void) {
     CFE_SB_Subscribe(FREQ_10_WAKEUP_MID,trafficAppData.Traffic_Pipe);
     CFE_SB_Subscribe(ICAROUS_FLIGHTPLAN_MID,trafficAppData.Traffic_Pipe);
     CFE_SB_Subscribe(TRAFFIC_PARAMETERS_MID,trafficAppData.Traffic_Pipe);
+    CFE_SB_Subscribe(ICAROUS_STARTMISSION_MID,trafficAppData.Traffic_Pipe);
+    CFE_SB_Subscribe(ICAROUS_RESET_MID,trafficAppData.Traffic_Pipe);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&trafficAppData.trackBands, ICAROUS_BANDS_TRACK_MID, sizeof(bands_t), TRUE);
@@ -92,6 +94,7 @@ void TRAFFIC_AppInit(void) {
     trafficAppData.log = TblPtr->log;
     trafficAppData.tfMonitor = new_TrafficMonitor(trafficAppData.log,TblPtr->configFile);
     trafficAppData.numTraffic = 0;
+    trafficAppData.startMission = false;
 }
 
 void TRAFFIC_AppCleanUp(){
@@ -112,25 +115,41 @@ void TRAFFIC_ProcessPacket(){
             break;
         }
 
+        case ICAROUS_STARTMISSION_MID:{
+            trafficAppData.startMission = true;
+            break;
+        }
+
+        case ICAROUS_RESET_MID:{
+            trafficAppData.startMission = false;
+            break;
+        }
+
         case ICAROUS_TRAFFIC_MID:{
-            object_t* msg;
-            msg = (object_t*) trafficAppData.Traffic_MsgPtr;
+            if (trafficAppData.startMission)
+            {
+                object_t *msg;
+                msg = (object_t *)trafficAppData.Traffic_MsgPtr;
 
-            // If traffic source is set to 0 (ALL), this app can ingest the traffic data
-            if(trafficAppData.trafficSrc != 0){
-                // If traffic source is non zero, only let the selected source
-                if(msg->type != trafficAppData.trafficSrc){
-                    break;
+                // If traffic source is set to 0 (ALL), this app can ingest the traffic data
+                if (trafficAppData.trafficSrc != 0)
+                {
+                    // If traffic source is non zero, only let the selected source
+                    if (msg->type != trafficAppData.trafficSrc)
+                    {
+                        break;
+                    }
                 }
-            }
 
-            double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
-            double vel[3] = {msg->ve,msg->vn,msg->vd};
-            int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->index,pos,vel,trafficAppData.time);
-            if(val) {
-                trafficAppData.numTraffic++;
-                CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION, "Received intruder:%d",
-                                  msg->index);
+                double pos[3] = {msg->latitude, msg->longitude, msg->altitude};
+                double vel[3] = {msg->ve, msg->vn, msg->vd};
+                int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor, msg->index, pos, vel, trafficAppData.time);
+                if (val)
+                {
+                    trafficAppData.numTraffic++;
+                    CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION, "Received intruder:%d",
+                                      msg->index);
+                }
             }
             break;
         }
@@ -144,8 +163,11 @@ void TRAFFIC_ProcessPacket(){
                 double pos[3] = {msg->latitude,msg->longitude,msg->altitude_rel};
                 double vel[3] = {msg->ve,msg->vn,msg->vd};
                 int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->aircraft_id,pos,vel,trafficAppData.time);
-                if(val)
+                if(val){
+                    trafficAppData.numTraffic++;
                     CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder:%d",msg->aircraft_id);
+                }
+
             }else{
 
                 trafficAppData.position[0] = msg->latitude;
