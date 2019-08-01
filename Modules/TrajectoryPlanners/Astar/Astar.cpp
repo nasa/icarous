@@ -112,12 +112,11 @@ bool Astar::CheckConstraints(Node& qnode) {
 bool Astar::ComputePath() {
     while (!currentNode->GoalCheck(Goal) ){
 
-        if(!CheckProjectedFenceConflict(currentNode,&Goal)){
-            break;
-        }
-
         if (currentNode->h < closestDist){
             closestDist = currentNode->h;
+            if(!CheckProjectedFenceConflict(currentNode,&Goal)){
+                break;
+            }
         }
 
         if(Visited(*currentNode)){
