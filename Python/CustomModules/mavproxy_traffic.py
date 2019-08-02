@@ -110,7 +110,7 @@ class TrafficModule(mp_module.MPModule):
             self.module('map').add_menu(self.menu)
 
         
-    def AddBand(self,i,bands):
+    def AddBand(self,i,center,bands):
 
         if bands[2] == 1:
             colour = (0,255,0,100)
@@ -119,7 +119,6 @@ class TrafficModule(mp_module.MPModule):
         elif bands[2] == 2:
             colour = (255,255,0,100)
             
-        center = (self.module('map').lat,self.module('map').lon)
         axes = (self.radius,self.radius)
         angle = -90
         startAngle = bands[0]
@@ -131,7 +130,6 @@ class TrafficModule(mp_module.MPModule):
     def mavlink_packet(self, m):
         '''handle and incoming mavlink packet'''                        
 
-        
         self.Update_traffic()
 
         if(len(self.traffic_list) > 0 or self.received_ADSB):
@@ -139,7 +137,7 @@ class TrafficModule(mp_module.MPModule):
 
             self.kmbMsgCounter = self.kmbMsgCounter+1;
             wcv_volume = mp_slipmap.SlipCircle("well_clear_volume", 3,\
-                                               (self.module('map').lat,self.module('map').lon),\
+                                               center,\
                                                self.radius,\
                                                (0, 0, 255), linewidth=2)
         
@@ -198,7 +196,7 @@ class TrafficModule(mp_module.MPModule):
                     self.mpstate.map.remove_object("band" + str(i))
 
             for i,kmb in enumerate(self.Bands):
-                self.AddBand(i,kmb)
+                self.AddBand(i,center,kmb)
 
         if m.get_type() == "TRAFFIC_INFO":
             print(m.breach_status)
