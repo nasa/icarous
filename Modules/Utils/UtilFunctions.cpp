@@ -57,7 +57,7 @@ void ConvertEND2LLA(double gpsOrigin[],double END[],double outputLLA[]){
     LatLonAlt output = proj.inverse(query);
     outputLLA[0] = output.latitude();
     outputLLA[1] = output.longitude();
-    outputLLA[2] = output.alt();
+    outputLLA[2] = gpsOrigin[2] - END[2];
 }
 
 
