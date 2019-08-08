@@ -5,7 +5,9 @@
 
 #define EXTERN
 
-#include <msgdef/ardupilot_msg.h>
+#define INIT_PARAM
+
+#include <paramdef.h>
 #include "ardupilot.h"
 #include "ardupilot_version.h"
 #include "intf_tbl.c"
@@ -37,7 +39,7 @@ void ARDUPILOT_AppMain(void){
                     break;
 
                 case FREQ_01_WAKEUP_MID:
-                    //apSendHeartbeat();
+                    apSendHeartbeat();
                     break;
             }
         }
@@ -87,7 +89,12 @@ void ARDUPILOT_AppInit(void){
     //Subscribe to command messages and kinematic band messages from the SB
     CFE_SB_Subscribe(ICAROUS_COMMANDS_MID, appdataInt.INTERFACE_Pipe);
     CFE_SB_Subscribe(ICAROUS_FLIGHTPLAN_MID,appdataInt.INTERFACE_Pipe);
-    CFE_SB_Subscribe(UPLINK_FLIGHTPLAN_MID,appdataInt.INTERFACE_Pipe);
+    //CFE_SB_Subscribe(UPLINK_FLIGHTPLAN_MID,appdataInt.INTERFACE_Pipe);
+    CFE_SB_Subscribe(ICAROUS_STATUS_MID,appdataInt.INTERFACE_Pipe);
+    CFE_SB_Subscribe(ICAROUS_TRAFFIC_MID,appdataInt.INTERFACE_Pipe);
+    CFE_SB_Subscribe(ICAROUS_BANDS_TRACK_MID, appdataInt.INTERFACE_Pipe);
+    CFE_SB_Subscribe(ICAROUS_TRAJECTORY_MID, appdataInt.INTERFACE_Pipe);
+    CFE_SB_Subscribe(SAFE2DITCH_STATUS_MID, appdataInt.INTERFACE_Pipe);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&wpreached,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);
@@ -97,6 +104,9 @@ void ARDUPILOT_AppInit(void){
     CFE_SB_InitMsg(&ack,ICAROUS_COMACK_MID,sizeof(cmdAck_t),TRUE);
     CFE_SB_InitMsg(&vfrhud,ICAROUS_VFRHUD_MID,sizeof(vfrhud_t),TRUE);
     CFE_SB_InitMsg(&battery_status,ICAROUS_BATTERY_STATUS_MID,sizeof(battery_status_t),TRUE);
+    CFE_SB_InitMsg(&rc_channels,ICAROUS_RC_CHANNELS_MID,sizeof(rc_channels_t),TRUE);
+    CFE_SB_InitMsg(&local_position,ICAROUS_LOCAL_POSITION_MID,sizeof(local_position_t),TRUE);
+    CFE_SB_InitMsg(&startMission,ICAROUS_STARTMISSION_MID,sizeof(argsCmd_t),TRUE);
 
     // Send event indicating app initialization
     CFE_EVS_SendEvent (ARDUPILOT_STARTUP_INF_EID, CFE_EVS_INFORMATION,
@@ -111,11 +121,13 @@ void ARDUPILOT_AppInit(void){
                   CFE_TBL_OPT_DEFAULT,
                   &ArdupilotTableValidationFunc);
 
-    // Load app table data
+    // Load app table data 
+    
     status = CFE_TBL_Load(appdataInt.INTERFACE_tblHandle,CFE_TBL_SRC_ADDRESS,&Ardupilot_TblStruct);
 
-    // Check which port to open from user defined parameters
     ArdupilotTable_t *TblPtr;
+
+    // Check which port to open from user defined parameters ArdupilotTable_t *TblPtr;
     status = CFE_TBL_GetAddress((void**)&TblPtr,appdataInt.INTERFACE_tblHandle);
 
     char apName[50],gsName[50];
@@ -147,8 +159,19 @@ void ARDUPILOT_AppInit(void){
     appdataInt.startWPDownlink = false;
     appdataInt.downlinkRequestIndex = 0;
     appdataInt.foundUAV = 0;
-}
+    appdataInt.startMission = false;
+    appdataInt.restartMission = true;
+    appdataInt.fpread = false;
 
+    appdataInt.wptimer = 0xffff;
+    appdataInt.gftimer = 0xffff;
+    appdataInt.pmtimer = 0xffff;
+    appdataInt.tjtimer = 0xffff;
+
+    memcpy(appdataInt.storedparams,initialValues,sizeof(param_t)*PARAM_COUNT);
+
+}
+    
 void ARDUPILOT_AppCleanUp(){
     free((void*)appdataInt.waypoint_type);
 }

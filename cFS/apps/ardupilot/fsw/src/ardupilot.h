@@ -14,13 +14,25 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include <paramdef.h>
 #include "network_includes.h"
 #include "ardupilot_events.h"
-#include "msgdef/ardupilot_msg.h"
-#include "msgdef/traffic_msg.h"
-#include "msgids/ardupilot_msgids.h"
-#include "msgids/traffic_msgids.h"
-#include "msgids/scheduler_msgids.h"
+
+#include <msgdef/ardupilot_msg.h>
+#include <msgdef/traffic_msg.h>
+#include <msgdef/trajectory_msg.h>
+#include <msgdef/tracking_msg.h>
+#include <msgdef/geofence_msg.h>
+#include <msgids/ardupilot_msgids.h>
+#include <msgids/trajectory_msgids.h>
+#include <msgids/traffic_msgids.h>
+#include <msgids/tracking_msgids.h>
+#include <msgids/geofence_msgids.h>
+#include <msgids/scheduler_msgids.h>
+#include <msgdef/safe2ditch_msg.h>
+#include <msgids/safe2ditch_msgids.h>
+
+
 #include "mavlink/ardupilotmega/mavlink.h"
 #include "port_lib.h"
 
@@ -86,6 +98,7 @@ typedef struct{
     int numWaypoints;                       ///< num total waypoints
     int waypointSeq;                        ///< received position waypoint
     int nextWaypointIndex;                  ///< Next waypoint index to goto.
+    int numGeofences;                       ///< Number of geofences
     int* waypoint_type;                     ///< waypoint type description
     int waypoint_index[MAX_WAYPOINTS];      ///< waypoint index (only positional waypoints)
     int foundUAV;                           ///< UAV communication alive
@@ -93,6 +106,9 @@ typedef struct{
     uint32_t mutex_write;                   ///< mutex id
     bool startWPUplink;
     bool startWPDownlink;
+    int recvGeofIndex;                      ///< Index of geofence being received
+    geofence_t gfData[MAX_GEOFENCES];
+    uint16_t fenceVertices[MAX_GEOFENCES];
     uint16_t  numUplinkWaypoints;
     uint16_t  numDownlinkWaypoints;
     uint16_t  downlinkRequestIndex;
@@ -100,6 +116,21 @@ typedef struct{
     uint8_t icarousMode;
     mavlink_mission_item_t UplinkMissionItems[MAX_WAYPOINTS];
     mavlink_mission_item_t DownlinkMissionItems[MAX_WAYPOINTS];
+    bool startMission;
+    bool restartMission;
+    bool fpread;
+    mavlink_mission_item_t ReceivedMissionItems[MAX_WAYPOINTS];
+
+    int receivingWP;                        ///< waypoint current being received
+    param_t storedparams[PARAM_COUNT];
+    uint32_t wptimer;
+    uint32_t gftimer;
+    uint32_t pmtimer;
+    uint32_t tjtimer;
+    uint32_t rcv_wp_seq;
+    uint32_t rcv_gf_seq;
+    flightplan_t trajectory;
+
 }appdataInt_t;
 
 
@@ -143,6 +174,19 @@ void ARDUPILOT_ProcessPacket(void);
 
 void apSendHeartbeat();
 
+void ap_gfCallback(uint32_t timer);
+
+void ap_pmCallback(uint32_t timerId);
+
+void ap_tjCallback(uint32_t timerId);
+
+
+void ap_startTimer(uint32_t *timerID,void (*f)(uint32_t),char* name,uint32_t startTime,uint32_t intvl);
+
+void ap_stopTimer(uint32_t *timerID);
+
+void apInterface_PublishParams();
+
 /**
  * Validate table data
  * @param *TblPtr pointer to table
@@ -168,5 +212,7 @@ EXTERN attitude_t attitude;                    ///< attitude message
 EXTERN battery_status_t battery_status;        ///< battery status message
 EXTERN cmdAck_t ack;                           ///< command acknowledge message
 EXTERN vfrhud_t vfrhud;                        ///< vfr hud data
+
+#define apNextParam appdataInt.storedparams[i].value;i++; 
 
 #endif /* _ardupilot_h_ */

@@ -97,11 +97,9 @@ class GeoFenceModule(mp_module.MPModule):
             elif self.fence2send is None:
                 self.commmunicating = True
                 self.fence2send = self.fenceList[self.numSentFence]
-                target_system    = 2;
-                target_component = 0;
                 fence = self.fence2send
                 self.console.writeln("sending fence description")
-                self.master.mav.command_long_send(target_system,target_component,
+                self.master.mav.command_long_send(self.target_system,self.target_component,
                                           mavutil.mavlink.MAV_CMD_DO_FENCE_ENABLE,0,
                                           0,fence["id"],fence["type"],fence["numV"],
                                           fence["floor"],fence["roof"],0);    
@@ -113,7 +111,7 @@ class GeoFenceModule(mp_module.MPModule):
             lat  = fence["Vertices"][m.idx][0]
             lon  = fence["Vertices"][m.idx][1]
             
-            self.master.mav.fence_point_send(2,0,m.idx,numV,lat,lon)            
+            self.master.mav.fence_point_send(self.target_system,self.target_component,m.idx,numV,lat,lon)            
             self.console.writeln("sending vertex %u" % m.idx)
             self.sentVertexCount = m.idx+1
      
@@ -123,7 +121,7 @@ class GeoFenceModule(mp_module.MPModule):
                 self.numwp = m.count
                 self.wpreceived = 0
                 self.wp = []
-                self.master.mav.mission_request_send(1,0,self.wpreceived,m.mission_type)
+                self.master.mav.mission_request_send(self.target_system,self.target_component,self.wpreceived,m.mission_type)
 
 
         if m.get_type() == "MISSION_ITEM":
@@ -132,7 +130,7 @@ class GeoFenceModule(mp_module.MPModule):
                     self.wpreceived += 1
                     self.wp.append((m.x,m.y))
                     if self.wpreceived < self.numwp:
-                        self.master.mav.mission_request_send(1,0,self.wpreceived,m.mission_type)
+                        self.master.mav.mission_request_send(self.target_system,self.target_component,self.wpreceived,m.mission_type)
                     else:
                         from MAVProxy.modules.mavproxy_map import mp_slipmap
                         self.mpstate.map.add_object(mp_slipmap.SlipPolygon("trajectory", self.wp, layer=2,
@@ -242,10 +240,8 @@ class GeoFenceModule(mp_module.MPModule):
     def clear_fence(self,fence):
 
         '''send fence points from fenceloader'''
-        target_system    = 2;
-        target_component = 0;
 
-        self.master.mav.command_long_send(target_system,target_component,
+        self.master.mav.command_long_send(self.target_system,self.target_component,
                                           mavutil.mavlink.MAV_CMD_DO_FENCE_ENABLE,0,
                                           0,fence["id"],fence["type"],0,
                                           fence["floor"],fence["roof"],0);
@@ -256,8 +252,6 @@ class GeoFenceModule(mp_module.MPModule):
 
     def fetch_fence_point(self):
         '''fetch one fence point'''
-        target_system = 2;
-        target_component = 0;
       
         tstart = time.time()
         p = None

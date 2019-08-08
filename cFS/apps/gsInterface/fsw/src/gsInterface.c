@@ -3,9 +3,8 @@
  * @brief function definitions for ardupilot app
  */
 
-#define EXTERN
+#define INIT_PARAM
 
-#include <msgdef/ardupilot_msg.h>
 #include "gsInterface.h"
 #include "gsInterface_version.h"
 #include "gsInterface_events.h"
@@ -124,9 +123,6 @@ void gsInterface_AppInit(void){
     // Load app table data
     status = CFE_TBL_Load(appdataIntGS.INTERFACE_tblHandle,CFE_TBL_SRC_ADDRESS,&gsIntf_TblStruct);
 
-    // Initialize array of parameter ids
-    gsInterface_InitializeParamIds();
-
     // Check which port to open from user defined parameters
     gsInterfaceTable_t *TblPtr;
     status = CFE_TBL_GetAddress((void**)&TblPtr,appdataIntGS.INTERFACE_tblHandle);
@@ -143,6 +139,7 @@ void gsInterface_AppInit(void){
     //Set mission start flag to -1
     appdataIntGS.startMission.param1 = -1;
     appdataIntGS.hbeatFreqCount = 0;
+    memcpy(appdataIntGS.storedparams,initialValues,sizeof(param_t)*PARAM_COUNT);
 
     // Free table pointer
     status = CFE_TBL_ReleaseAddress(appdataIntGS.INTERFACE_tblHandle);
@@ -159,7 +156,8 @@ void gsInterface_AppInit(void){
     appdataIntGS.numWaypoints = 0;
     appdataIntGS.wptimer = 0xffff;
     appdataIntGS.gftimer = 0xffff;
-
+    appdataIntGS.pmtimer = 0xffff;
+    appdataIntGS.tjtimer = 0xffff;
 }
 
 void gsInterface_AppCleanUp(){

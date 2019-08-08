@@ -17,6 +17,8 @@
 #include <errno.h>
 #include <unistd.h>
 #include <network_includes.h>
+
+#include <paramdef.h>
 #include <msgdef/ardupilot_msg.h>
 #include <msgids/ardupilot_msgids.h>
 #include <msgids/scheduler_msgids.h>
@@ -40,8 +42,6 @@
 #define GSINTERFACE_PIPE_DEPTH 100
 
 #define SCH_GSINTERFACE_PIPE1_NAME "SCH_GSINTERFACE"
-
-#define PARAM_COUNT 73      ///< Total number of ICAROUS parameters
 
 #define MAX_GEOFENCES 30
 
@@ -92,10 +92,11 @@ typedef struct{
     noArgsCmd_t resetIcarous;
     uint8_t currentApMode;
     uint8_t currentIcarousMode;
-    mavlink_param_value_t params[PARAM_COUNT];      ///< array of locally stored parameters
-    char param_ids[PARAM_COUNT][16];                ///< array of param_ids for all icarous parameters
+    param_t storedparams[PARAM_COUNT];
     uint32_t wptimer;
     uint32_t gftimer;
+    uint32_t pmtimer;
+    uint32_t tjtimer;
     uint32_t rcv_wp_seq;
     uint32_t rcv_gf_seq;
 }appdataIntGS_t;
@@ -146,11 +147,6 @@ int32_t gsInterfaceTableValidationFunc(void *TblPtr);
 appdataIntGS_t appdataIntGS;
 
 /**
- *  Initialize the array of parameter ids
- */
-void gsInterface_InitializeParamIds();
-
-/**
  *  Send all locally stored params over the SB
  */
 void gsInterface_PublishParams();
@@ -160,21 +156,21 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
 uint16_t gsConvertPlanToMissionItems(flightplan_t* fp);
 
 
-void wpCallback(uint32_t timer);
+void gs_wpCallback(uint32_t timer);
 
-void gfCallback(uint32_t timer);
+void gs_gfCallback(uint32_t timer);
 
-void startTimer(uint32_t *timerID,void (*f)(uint32_t),char* name,uint32_t intvl);
+void gs_pmCallback(uint32_t timerId);
 
-void stopTimer(uint32_t *timerID);
+void gs_tjCallback(uint32_t timerId);
+
+void gs_startTimer(uint32_t *timerID,void (*f)(uint32_t),char* name,uint32_t startTime,uint32_t intvl);
+
+void gs_stopTimer(uint32_t *timerID);
 
 #define SendGSMsg(arg) writeMavlinkData(&appdataIntGS.gs,&arg)
 
-#define NextParam appdataIntGS.params[i].param_value;\
-i++
 
-#define AddParamId(arg,val) strcpy(appdataIntGS.param_ids[i],arg);\
-appdataIntGS.params[i].param_value = val; \
-i++
+#define gsNextParam appdataIntGS.storedparams[i].value;i++
 
 #endif /* _ardupilot_h_ */
