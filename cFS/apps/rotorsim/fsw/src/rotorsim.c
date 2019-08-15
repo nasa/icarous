@@ -392,7 +392,7 @@ void Rotorsim_GetOutputs(){
     // Current position in local frame
     double currentPosition[3] = {PC_Quadcopter_Simulation_Y.yout[9],
                                  PC_Quadcopter_Simulation_Y.yout[10],
-                                 PC_Quadcopter_Simulation_Y.yout[11]};
+                                 -PC_Quadcopter_Simulation_Y.yout[11]};
 
     // Current velocity
     double currentVelocity[3] = {PC_Quadcopter_Simulation_Y.yout[13],
