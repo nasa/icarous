@@ -521,12 +521,14 @@ void PLEXIL_HandleCustomCommands(PlexilMsg* msg){
             valid = false;
         }
 
-        cmd.name = _SETVEL_;
-        cmd.param1 = (float)vn;
-        cmd.param2 = (float)ve;
-        cmd.param3 = (float)vu;
         if(valid)
+        {
+            cmd.name = _SETVEL_;
+            cmd.param1 = (float)vn;
+            cmd.param2 = (float)ve;
+            cmd.param3 = (float)vu;
             SendSBMsg(cmd);
+        }
     }else if(CHECKNAME(msg ,"SetYaw")){
         double heading;
         int32_t relative;
