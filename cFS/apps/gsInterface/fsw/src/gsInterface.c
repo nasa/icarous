@@ -158,6 +158,7 @@ void gsInterface_AppInit(void){
     appdataIntGS.gftimer = 0xffff;
     appdataIntGS.pmtimer = 0xffff;
     appdataIntGS.tjtimer = 0xffff;
+    appdataIntGS.fenceSent = false;
 }
 
 void gsInterface_AppCleanUp(){

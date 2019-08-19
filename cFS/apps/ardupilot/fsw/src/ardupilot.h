@@ -133,6 +133,7 @@ typedef struct{
     uint32_t rcv_wp_seq;
     uint32_t rcv_gf_seq;
     flightplan_t trajectory;
+    bool fenceSent;
 
 
     uint8_t icRcChannel;

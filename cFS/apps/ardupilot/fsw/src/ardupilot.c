@@ -170,6 +170,7 @@ void ARDUPILOT_AppInit(void){
     appdataInt.gftimer = 0xffff;
     appdataInt.pmtimer = 0xffff;
     appdataInt.tjtimer = 0xffff;
+    appdataInt.fenceSent = false;
 
     memcpy(appdataInt.storedparams,initialValues,sizeof(param_t)*PARAM_COUNT);
 

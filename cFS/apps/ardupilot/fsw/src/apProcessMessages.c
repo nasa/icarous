@@ -655,13 +655,14 @@ void ProcessAPMessage(mavlink_message_t message) {
                 writeMavlinkData(&appdataInt.ap,&ack);
             }
 
-            if(count == total - 1) {
+            if(count == total - 1 && !appdataInt.fenceSent) {
                 geofence_t data2send;
 
                 memcpy(&data2send,appdataInt.gfData + index,sizeof(geofence_t));
 
                 CFE_SB_InitMsg(&data2send,ICAROUS_GEOFENCE_MID,sizeof(geofence_t),FALSE);
                 SendSBMsg(data2send);	
+                appdataInt.fenceSent = true;
             }
 
             break;
@@ -714,6 +715,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                 appdataInt.gfData[index].floor = msg.param5;
                 appdataInt.gfData[index].ceiling = msg.param6;
                 appdataInt.rcv_gf_seq = 0;
+                appdataInt.fenceSent = false;
 
                 ap_startTimer(&appdataInt.gftimer,ap_gfCallback,"GFTIMER",1000,1000000);
             }

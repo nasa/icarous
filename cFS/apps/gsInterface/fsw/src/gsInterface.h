@@ -99,6 +99,7 @@ typedef struct{
     uint32_t tjtimer;
     uint32_t rcv_wp_seq;
     uint32_t rcv_gf_seq;
+    bool fenceSent;
 }appdataIntGS_t;
 
 
