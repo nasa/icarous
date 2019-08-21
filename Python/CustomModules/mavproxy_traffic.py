@@ -88,6 +88,7 @@ class TrafficModule(mp_module.MPModule):
         self.WCV = False;
         self.radius = 5.0;
         self.V2V = False;
+        self.received_ADSB = False;
 
 
         self.numBands = 0;
@@ -133,7 +134,9 @@ class TrafficModule(mp_module.MPModule):
         
         self.Update_traffic()
 
-        if(len(self.traffic_list) > 0):
+        if(len(self.traffic_list) > 0 or self.received_ADSB):
+            center = self.module('map').lat_lon[m.get_srcSystem()]
+
             self.kmbMsgCounter = self.kmbMsgCounter+1;
             wcv_volume = mp_slipmap.SlipCircle("well_clear_volume", 3,\
                                                (self.module('map').lat,self.module('map').lon),\
@@ -203,6 +206,9 @@ class TrafficModule(mp_module.MPModule):
         if m.get_type() == "COMMAND_LONG":
             if self.V2V:
                 self.show_received_traffic(m)
+
+        if m.get_type() == "ADSB_VEHICLE":
+            self.received_ADSB = True
 
     def load_traffic(self, args):
         '''fence commands'''
