@@ -27,12 +27,8 @@ int GetMAVLinkMsgFromAP(){
 
 void apSendHeartbeat(){
     mavlink_message_t hbeat;
-<<<<<<< HEAD
-    mavlink_msg_heartbeat_pack(1,1,&hbeat,MAV_TYPE_ONBOARD_CONTROLLER,MAV_AUTOPILOT_INVALID,0,0,0);
-=======
     mavlink_msg_heartbeat_pack(sysid_ic,compid_ic,&hbeat,MAV_TYPE_ONBOARD_CONTROLLER,MAV_AUTOPILOT_INVALID,0,0,0);
     writeMavlinkData(&appdataInt.ap,&hbeat);
->>>>>>> 0f5c40d6... - Send parameter with a timer
     if(appdataInt.foundUAV == 0){
         //writeMavlinkData(&appdataInt.ap,&hbeat);
         mavlink_message_t msg;

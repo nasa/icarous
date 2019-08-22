@@ -120,6 +120,9 @@ typedef struct{
     bool restartMission;
     bool fpread;
     mavlink_mission_item_t ReceivedMissionItems[MAX_WAYPOINTS];
+    uint32_t home_latitude;                 ///< vehicle home position latitude in degE7
+    uint32_t home_longitude;                ///< vehicle home position longitude in degE7
+    uint32_t home_altitude;                 ///< vehicle home position altitude in mm
 
     int receivingWP;                        ///< waypoint current being received
     param_t storedparams[PARAM_COUNT];
@@ -208,10 +211,12 @@ EXTERN argsCmd_t startMission;                 ///< start mission command
 EXTERN noArgsCmd_t resetIcarous;               ///< reset icarous command
 EXTERN object_t traffic;                       ///< traffic message
 EXTERN position_t position;                    ///< position message
+EXTERN local_position_t local_position;        ///< local position message
 EXTERN attitude_t attitude;                    ///< attitude message
 EXTERN battery_status_t battery_status;        ///< battery status message
 EXTERN cmdAck_t ack;                           ///< command acknowledge message
 EXTERN vfrhud_t vfrhud;                        ///< vfr hud data
+EXTERN rc_channels_t rc_channels;              ///< rc channels
 
 #define apNextParam appdataInt.storedparams[i].value;i++; 
 

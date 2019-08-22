@@ -197,6 +197,22 @@ typedef struct{
 
 
 /**
+ * @struct local_position_t
+ * @brief aircraft local position information.
+ *
+ */
+typedef struct{
+    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
+    double time_boot_ms;                      /**< boot time of onboard autopilot (ms) */
+    double x;                                 /**< x position (m) */
+    double y;                                 /**< y position (m) */
+    double z;                                 /**< z position (m) */
+    double vx;                                /**< x speed (m/s) */
+    double vy;                                /**< y speed (m/s) */
+    double vz;                                /**< z speed (m/s) */
+}local_position_t;
+
+/**
  * @struct attitude_t
  * @brief aircraft attitude information.
  *
@@ -290,6 +306,36 @@ typedef struct{
     int32_t energy_consumed;                  /**< consumed energy in hJ, -1 means autopilot does not provide */
     int8_t battery_remaining;                 /**< remaining energy, [0-100]%, -1 means autopilot does not provide */
 }battery_status_t;
+
+
+/**
+ * @struct rc_channels_t
+ * @brief Message containing rc channel information
+ */
+typedef struct{
+    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
+    uint32_t time_boot_ms;                                        /**< timestamp */
+    uint8_t chancount;                                            /**< number of rc channels being received */
+    uint16_t chan1_raw;                                           /**< RC channel 1 value */
+    uint16_t chan2_raw;                                           /**< RC channel 2 value */
+    uint16_t chan3_raw;                                           /**< RC channel 3 value */
+    uint16_t chan4_raw;                                           /**< RC channel 4 value */
+    uint16_t chan5_raw;                                           /**< RC channel 5 value */
+    uint16_t chan6_raw;                                           /**< RC channel 6 value */
+    uint16_t chan7_raw;                                           /**< RC channel 7 value */
+    uint16_t chan8_raw;                                           /**< RC channel 8 value */
+    uint16_t chan9_raw;                                           /**< RC channel 8 value */
+    uint16_t chan10_raw;                                          /**< RC channel 10 value */
+    uint16_t chan11_raw;                                          /**< RC channel 11 value */
+    uint16_t chan12_raw;                                          /**< RC channel 12 value */
+    uint16_t chan13_raw;                                          /**< RC channel 13 value */
+    uint16_t chan14_raw;                                          /**< RC channel 14 value */
+    uint16_t chan15_raw;                                          /**< RC channel 15 value */
+    uint16_t chan16_raw;                                          /**< RC channel 16 value */
+    uint16_t chan17_raw;                                          /**< RC channel 17 value */
+    uint16_t chan18_raw;                                          /**< RC channel 18 value */
+    uint8_t rssi;                                                 /**< receive signal strength */
+}rc_channels_t;
 
 
 

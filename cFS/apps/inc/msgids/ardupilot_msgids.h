@@ -34,6 +34,9 @@
 #define ICAROUS_VFRHUD_MID 0x0823         ///< VFR hud data
 #define ICAROUS_BATTERY_STATUS_MID 0x0824 ///< Battery status
 #define RADAR_TRIGGER_MID 0x0825          ///< Radar trigger
+#define ICAROUS_RC_CHANNELS_MID 0x0826    ///< RC channels
+#define ICAROUS_LOCAL_POSITION_MID 0x0827 ///< Local position information. message type: local_position_t
+
 /**@}*/
 #define SendSBMsg(msg)\
 CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) &msg); \
