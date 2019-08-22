@@ -30,16 +30,10 @@ void apSendHeartbeat(){
     mavlink_msg_heartbeat_pack(sysid_ic,compid_ic,&hbeat,MAV_TYPE_ONBOARD_CONTROLLER,MAV_AUTOPILOT_INVALID,0,0,0);
     writeMavlinkData(&appdataInt.ap,&hbeat);
     if(appdataInt.foundUAV == 0){
-        //writeMavlinkData(&appdataInt.ap,&hbeat);
         mavlink_message_t msg;
         mavlink_msg_request_data_stream_pack(sysid_ic,compid_ic,&msg,1,0,MAV_DATA_STREAM_ALL,4,1);
         writeMavlinkData(&appdataInt.ap,&msg);
-    }else{
-        //mavlink_message_t msg;
-        //mavlink_msg_request_data_stream_pack(255,0,&msg,1,0,MAV_DATA_STREAM_ALL,4,1);
-        //writeMavlinkData(&appdataInt.ap,&msg);
-    }
-    
+    }    
 }
 
 void ProcessAPMessage(mavlink_message_t message) {
@@ -484,29 +478,35 @@ void ProcessAPMessage(mavlink_message_t message) {
 
             rc_channels.time_boot_ms = msg.time_boot_ms;
             rc_channels.chancount = msg.chancount;
-            rc_channels.chan1_raw = msg.chan1_raw;
-            rc_channels.chan2_raw = msg.chan2_raw;
-            rc_channels.chan3_raw = msg.chan3_raw;
-            rc_channels.chan4_raw = msg.chan4_raw;
-            rc_channels.chan5_raw = msg.chan5_raw;
-            rc_channels.chan6_raw = msg.chan6_raw;
-            rc_channels.chan7_raw = msg.chan7_raw;
-            rc_channels.chan8_raw = msg.chan8_raw;
-            rc_channels.chan9_raw = msg.chan9_raw;
-            rc_channels.chan10_raw = msg.chan10_raw;
-            rc_channels.chan11_raw = msg.chan11_raw;
-            rc_channels.chan12_raw = msg.chan12_raw;
-            rc_channels.chan13_raw = msg.chan13_raw;
-            rc_channels.chan14_raw = msg.chan14_raw;
-            rc_channels.chan15_raw = msg.chan15_raw;
-            rc_channels.chan16_raw = msg.chan16_raw;
-            rc_channels.chan17_raw = msg.chan17_raw;
-            rc_channels.chan18_raw = msg.chan18_raw;
+            rc_channels.chan[1] = msg.chan1_raw;
+            rc_channels.chan[2] = msg.chan2_raw;
+            rc_channels.chan[3] = msg.chan3_raw;
+            rc_channels.chan[4] = msg.chan4_raw;
+            rc_channels.chan[5] = msg.chan5_raw;
+            rc_channels.chan[6] = msg.chan6_raw;
+            rc_channels.chan[7] = msg.chan7_raw;
+            rc_channels.chan[8] = msg.chan8_raw;
+            rc_channels.chan[9] = msg.chan9_raw;
+            rc_channels.chan[10] = msg.chan10_raw;
+            rc_channels.chan[11] = msg.chan11_raw;
+            rc_channels.chan[12] = msg.chan12_raw;
+            rc_channels.chan[13]= msg.chan13_raw;
+            rc_channels.chan[14]= msg.chan14_raw;
+            rc_channels.chan[15]= msg.chan15_raw;
+            rc_channels.chan[16]= msg.chan16_raw;
+            rc_channels.chan[17]= msg.chan17_raw;
+            rc_channels.chan[18]= msg.chan18_raw;
 
             SendSBMsg(rc_channels);
 
-            if(rc_channels.chan7_raw >= 500 && rc_channels.chan7_raw <= 1100 && appdataInt.startMission == false){
-                // Low position (start ICAROUS)
+            uint8_t ichan = appdataInt.icRcChannel;
+            if (ichan > 0){
+            uint8_t startlow  = appdataInt.pwmStart - 300;
+            uint8_t starthigh = appdataInt.pwmStart + 300;
+            uint8_t resetlow = appdataInt.pwmReset - 300;
+            uint8_t resethigh = appdataInt.pwmReset + 300;
+            if(rc_channels.chan[ichan] >= startlow && rc_channels.chan[ichan] <= starthigh && appdataInt.startMission == false){
+                // (start ICAROUS)
                 appdataInt.startMission = true;
                 appdataInt.restartMission = false;
                 if (appdataInt.numWaypoints > 1) {
@@ -530,26 +530,19 @@ void ProcessAPMessage(mavlink_message_t message) {
                     memcpy(statusMsg.buffer,"IC: No flight plan loaded",25);
                     SendSBMsg(statusMsg);
                 }
-            }else if(rc_channels.chan7_raw > 1100 && rc_channels.chan7_raw <= 1600){
-                // Medium position (do nothing)
-                appdataInt.startMission = false;
-                appdataInt.restartMission = false;
-                if(!appdataInt.fpread){
-                    appdataInt.startWPDownlink = true;
-				    mavlink_message_t msg;
-				    mavlink_msg_mission_request_list_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_MISSION_TYPE_MISSION);
-                    writeMavlinkData(&appdataInt.ap,&msg);
-                    appdataInt.fpread = true;
-                    apInterface_PublishParams();
-                }
-            }else if(rc_channels.chan7_raw > 1700 && appdataInt.restartMission == false){
-                // High position (reset ICAROUS)
+            }else if(rc_channels.chan[ichan] > resetlow && rc_channels.chan[ichan] <= resethigh && appdataInt.restartMission == false){
+                //RESET
                 noArgsCmd_t resetIcarous;
                 CFE_SB_InitMsg(&resetIcarous,ICAROUS_RESET_MID,sizeof(noArgsCmd_t),TRUE);
                 SendSBMsg(resetIcarous);
                 appdataInt.startMission = false;
                 appdataInt.restartMission = true;
-                appdataInt.fpread = false;
+                apInterface_PublishParams();
+                appdataInt.startWPDownlink = true;
+				mavlink_message_t msg;
+				mavlink_msg_mission_request_list_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_MISSION_TYPE_MISSION);
+                writeMavlinkData(&appdataInt.ap,&msg);
+            }
             }
 
             break;

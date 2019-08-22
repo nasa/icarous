@@ -139,6 +139,9 @@ void ARDUPILOT_AppInit(void){
     appdataInt.ap.baudrate = TblPtr->BaudRate;
     appdataInt.ap.portin   = TblPtr->Portin + 10 * CFE_PSP_GetSpacecraftId();
     appdataInt.ap.portout  = TblPtr->Portout;
+    appdataInt.icRcChannel = TblPtr->icRcChannel;
+    appdataInt.pwmStart = TblPtr->pwmStart;
+    appdataInt.pwmReset = TblPtr->pwmReset; 
     memcpy(appdataInt.ap.target,TblPtr->Address,50);
 
 

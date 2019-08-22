@@ -16,6 +16,9 @@ ArdupilotTable_t Ardupilot_TblStruct = {
 	.Portin = 14551,
 	.Portout = 0,
 	.Address = "127.0.0.1",
+	.icRcChannel = 7,
+	.pwmStart = 1100,
+	.pwmReset = 2000
 };
 
 /*
