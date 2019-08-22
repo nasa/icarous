@@ -193,7 +193,7 @@ bool TrafficMonitor::MonitorWPFeasibility(double *position, double *velocity, do
         Velocity vi = _traffic.vel;
 
         char name[10];
-        sprintf(name, "Traffic%d", count);
+        sprintf(name, "Traffic%d", _traffic.id);
         DAA.addTrafficState(name, si, vi, _traffic.time);
 
         if(DAA.alerting(count)) {
