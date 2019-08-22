@@ -532,8 +532,8 @@ void ProcessAPMessage(mavlink_message_t message) {
                 }
             }else if(rc_channels.chan[ichan] > resetlow && rc_channels.chan[ichan] <= resethigh && appdataInt.restartMission == false){
                 //RESET
-                noArgsCmd_t resetIcarous;
-                CFE_SB_InitMsg(&resetIcarous,ICAROUS_RESET_MID,sizeof(noArgsCmd_t),TRUE);
+                argsCmd_t resetIcarous;
+                CFE_SB_InitMsg(&resetIcarous,ICAROUS_RESET_MID,sizeof(argsCmd_t),TRUE);
                 SendSBMsg(resetIcarous);
                 appdataInt.startMission = false;
                 appdataInt.restartMission = true;
@@ -693,12 +693,13 @@ void ProcessAPMessage(mavlink_message_t message) {
 
                 }
             }else if(msg.command == MAV_CMD_USER_1){
-                mavlink_message_t msg;
-				mavlink_msg_mission_request_list_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_MISSION_TYPE_MISSION);
+                mavlink_message_t reqlist;
+				mavlink_msg_mission_request_list_pack(sysid_ic,compid_ic,&reqlist,sysid_ap,compid_ap,MAV_MISSION_TYPE_MISSION);
                 writeMavlinkData(&appdataInt.ap,&msg);
 
-                noArgsCmd_t resetIcarous;
-                CFE_SB_InitMsg(&resetIcarous,ICAROUS_RESET_MID,sizeof(noArgsCmd_t),TRUE);
+                argsCmd_t resetIcarous;
+                CFE_SB_InitMsg(&resetIcarous,ICAROUS_RESET_MID,sizeof(argsCmd_t),TRUE);
+                resetIcarous.param1 = msg.param1;
                 SendSBMsg(resetIcarous);
             }else if (msg.command == MAV_CMD_DO_FENCE_ENABLE) {
                 uint16_t index = msg.param2; 
