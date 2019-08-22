@@ -464,7 +464,7 @@ void gsInterface_ProcessPacket() {
             flightplan_t *msg = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
             memcpy(&appdataIntGS.fpData, msg,sizeof(flightplan_t));
             appdataIntGS.numWaypoints = appdataIntGS.fpData.num_waypoints;
-            gsConvertPlanToMissionItems(msg);
+            //gsConvertPlanToMissionItems(msg);
             //OS_printf("received downlink flight plan\n");
             break;
         }
