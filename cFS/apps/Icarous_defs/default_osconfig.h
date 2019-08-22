@@ -180,7 +180,7 @@
 **
 ** Keeping this at "5" in case this config file is used with an older OSAL
 */
-#define OS_MAX_TIMERS         5
+#define OS_MAX_TIMERS      25   
 
 /*
 ** This define sets the maximum number of open directories
