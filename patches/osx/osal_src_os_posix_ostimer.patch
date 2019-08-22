@@ -155,7 +155,7 @@
 +   //Set the cancel handler
 +   dispatch_source_set_cancel_handler(timerId, ^{
 +       dispatch_release(timerId);
-+       dispatch_release(queue);
++       //dispatch_release(queue);
 +   });
 +
 +   //Store the timer data in the timer table
