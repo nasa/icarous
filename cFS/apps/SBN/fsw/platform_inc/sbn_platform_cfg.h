@@ -104,14 +104,14 @@
  * @brief Define this to use one task per peer pipe to send messages (each
  * task blocks on read). Otherwise, pipes will be polled periodically.
  */
-#define SBN_SEND_TASK
+//#define SBN_SEND_TASK
 
 /**
  * @brief Define this to use one task per peer to receive messages (each
  * task blocks on read). Otherwise, another method (e.g. select) must be used
  * to prevent blocking.
  */
-#define SBN_RECV_TASK
+//#define SBN_RECV_TASK
 
 /**
  * @brief If defined, remapping is enabled at boot time.

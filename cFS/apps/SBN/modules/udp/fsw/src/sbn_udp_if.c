@@ -209,8 +209,9 @@ int SBN_UDP_Recv(SBN_NetInterface_t *Net, SBN_MsgType_t *MsgTypePtr,
         SBN_MsgSz_t *MsgSzPtr, SBN_CpuID_t *CpuIDPtr,
         void *Payload)
 {
+    
     uint8 RecvBuf[SBN_MAX_PACKED_MSG_SZ];
-
+    
     SBN_UDP_Net_t *NetData = (SBN_UDP_Net_t *)Net->ModulePvt;
 
 #ifndef SBN_RECV_TASK

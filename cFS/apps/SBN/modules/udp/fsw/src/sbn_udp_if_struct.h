@@ -16,13 +16,13 @@
  * \brief Number of seconds since I've last heard from the peer when I consider
  * the peer connection to be dropped.
  */
-#define SBN_UDP_PEER_TIMEOUT 10
+#define SBN_UDP_PEER_TIMEOUT 6
 
 /**
  * \brief If we're not connected, send peer occasional messages to wake
  * them up and tell them "I'm here".
  */
-#define SBN_UDP_ANNOUNCE_TIMEOUT 10
+#define SBN_UDP_ANNOUNCE_TIMEOUT 6
 
 typedef struct
 {

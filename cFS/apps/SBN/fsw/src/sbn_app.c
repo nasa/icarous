@@ -355,7 +355,7 @@ void SBN_RecvNetMsgs(void)
         SBN_MsgType_t MsgType;
         SBN_MsgSz_t MsgSz;
         SBN_CpuID_t CpuID;
-
+        
         if(Net->IfOps->RecvFromNet)
         {
             int MsgCnt = 0;
@@ -366,7 +366,6 @@ void SBN_RecvNetMsgs(void)
 
                 Status = Net->IfOps->RecvFromNet(
                     Net, &MsgType, &MsgSz, &CpuID, Msg);
-
                 if(Status == SBN_IF_EMPTY)
                 {
                     break; /* no (more) messages */
@@ -408,7 +407,6 @@ void SBN_RecvNetMsgs(void)
                     SBN_MsgSz_t MsgSz = 0;
 
                     memset(Msg, 0, sizeof(Msg));
-
                     Status = Net->IfOps->RecvFromPeer(Net, Peer,
                         &MsgType, &MsgSz, &CpuID, Msg);
 
@@ -544,16 +542,17 @@ static void SendTask(void)
 
     while(1)
     {
+        
         if(!D.Peer->Connected)
         {
             OS_TaskDelay(SBN_MAIN_LOOP_DELAY);
             continue;
         }/* end if */
 
-        if(CFE_SB_RcvMsg(&D.SBMsgPtr, D.Peer->Pipe, CFE_SB_PEND_FOREVER)
+        if(CFE_SB_RcvMsg(&D.SBMsgPtr, D.Peer->Pipe, CFE_SB_POLL)
             != CFE_SUCCESS)
         {
-            break;
+            continue;
         }/* end if */
 
         /* don't re-send what SBN sent */
@@ -614,7 +613,7 @@ static void CheckPeerPipes(void)
                 SBN_PeerInterface_t *Peer = &Net->Peers[PeerIdx];
                 /* if peer data is not in use, go to next peer */
 
-                RcvMsg(Peer, &SBMsgPtr);
+                //SBN_RcvMsg(Peer, &SBMsgPtr);
 
                 if(Peer->Connected == 0 ||
                     CFE_SB_RcvMsg(&SBMsgPtr, Peer->Pipe, CFE_SB_POLL)
@@ -622,6 +621,7 @@ static void CheckPeerPipes(void)
                 {
                     continue;
                 }/* end if */
+
 
                 ReceivedFlag = 1;
 
@@ -1565,6 +1565,8 @@ uint32 SBN_Disconnected(SBN_PeerInterface_t *Peer)
 
     Peer->Connected = 0; /**< mark as disconnected before deleting pipe */
 
+    memset(Peer->Subs,0,sizeof(SBN_Subs_t)*(SBN_MAX_SUBS_PER_PEER+1));
+    Peer->SubCnt = 0;
     CFE_SB_DeletePipe(Peer->Pipe);
     Peer->Pipe = 0;
 
