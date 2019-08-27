@@ -695,7 +695,7 @@ void ProcessAPMessage(mavlink_message_t message) {
             }else if(msg.command == MAV_CMD_USER_1){
                 mavlink_message_t reqlist;
 				mavlink_msg_mission_request_list_pack(sysid_ic,compid_ic,&reqlist,sysid_ap,compid_ap,MAV_MISSION_TYPE_MISSION);
-                writeMavlinkData(&appdataInt.ap,&msg);
+                writeMavlinkData(&appdataInt.ap,&reqlist);
 
                 argsCmd_t resetIcarous;
                 CFE_SB_InitMsg(&resetIcarous,ICAROUS_RESET_MID,sizeof(argsCmd_t),TRUE);
