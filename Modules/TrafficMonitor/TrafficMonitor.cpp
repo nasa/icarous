@@ -79,6 +79,7 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
     double dist2traffic = MAXDOUBLE;
     int count = 0;
     bool conflict = false;
+    list<TrafficObject> staleData;
     for (TrafficObject _traffic:trafficList){
         count++;
         Position si = _traffic.pos;
@@ -86,7 +87,14 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
 
         char name[10];
         sprintf(name, "Traffic%d", count);
-        DAA.addTrafficState(name, si, vi, _traffic.time);
+
+        // Use traffic only if its data has been updated within the last 10s.
+        if(elapsedTime - _traffic.time < 10){
+            DAA.addTrafficState(name, si, vi, _traffic.time);
+        }else{
+            staleData.push_back(_traffic);
+        }
+
         double dist = so.distanceH(si);
         if (dist < dist2traffic) {
             dist2traffic = dist;
@@ -96,6 +104,11 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
             conflict = true;
             conflictStartTime = time(&currentTime);
         }
+    }
+
+    // Remove all the stale data
+    for(TrafficObject _traffic:staleData){
+        trafficList.remove(_traffic);
     }
 
 
