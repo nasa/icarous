@@ -386,6 +386,12 @@ void ProcessAPMessage(mavlink_message_t message) {
             mavlink_adsb_vehicle_t msg;
             mavlink_msg_adsb_vehicle_decode(&message,&msg);
 
+            // Ignore vehicles with "NONE" callsign. These are echoes of 
+            // ADSB messages sent to the pixhawk from this app.
+            if(strcmp(msg.callsign,"NONE") == 0 ){
+                break;
+            }
+
             traffic.index = msg.ICAO_address;
             traffic.type = _TRAFFIC_ADSB_;
             traffic.latitude = msg.lat/1.0E7;
