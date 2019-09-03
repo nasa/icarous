@@ -325,10 +325,10 @@ void Rotorsim_GetInputs(){
                    double speed = rotorsimAppData.Rotorsim_Tbl.missionSpeed;
                    double climbrate = (rotorsimAppData.position[2] - nextWaypoint[2]) * -0.5;
 
-                   if (climbrate > 10) {
-                       climbrate = 10;
-                   } else if (climbrate < -10) {
-                       climbrate = -10;
+                   if (climbrate > 5) {
+                       climbrate = 5;
+                   } else if (climbrate < -5) {
+                       climbrate = -5;
                    }
                    double vn, ve, vd;
                    ConvertTrkGsVsToVned(heading, speed, climbrate, &vn, &ve, &vd);
@@ -361,10 +361,10 @@ void Rotorsim_GetInputs(){
                }
 
 
-               if(climbrate > 10){
-                  climbrate = 10;
-               }else if(climbrate < -10){
-                  climbrate = -10;
+               if(climbrate > 5){
+                  climbrate = 5;
+               }else if(climbrate < -5){
+                  climbrate = -5;
                }
                double vn,ve,vd;
                ConvertTrkGsVsToVned(heading,speed,climbrate,&vn,&ve,&vd);
