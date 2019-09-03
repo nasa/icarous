@@ -85,8 +85,8 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
         Position si = _traffic.pos;
         Velocity vi = _traffic.vel;
 
-        char name[10];
-        sprintf(name, "Traffic%d", count);
+        char name[50];
+        sprintf(name, "Traffic%d", _traffic.id);
 
         // Use traffic only if its data has been updated within the last 10s.
         if(elapsedTime - _traffic.time < 10){
