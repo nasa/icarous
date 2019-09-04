@@ -51,7 +51,9 @@ class GeoFenceModule(mp_module.MPModule):
         self.communicating = False
         self.wp = []
         self.numwp = 0
+        self.startreqeset = False
         self.wpreceived = 0
+      
 
         if mp_util.has_wxpython:
             self.menu = MPMenuSubMenu('Geofence',
@@ -104,6 +106,12 @@ class GeoFenceModule(mp_module.MPModule):
                                           0,fence["id"],fence["type"],fence["numV"],
                                           fence["floor"],fence["roof"],0);    
 
+        if self.startrequest:
+               self.t2 = time.time()
+               if self.t2 - self.t1 > 1:
+                   self.master.mav.mission_request_send(self.target_system,self.target_component,self.wpreceived,2)
+
+
         if m.get_type() == "FENCE_FETCH_POINT":
             self.t1 = time.time()
             fence = self.fence2send
@@ -127,9 +135,12 @@ class GeoFenceModule(mp_module.MPModule):
         if m.get_type() == "MISSION_ITEM":
             if m.mission_type == 2:
                 if m.seq == self.wpreceived:
+		    self.start_request = False
                     self.wpreceived += 1
                     self.wp.append((m.x,m.y))
                     if self.wpreceived < self.numwp:
+                        self.start_request = True
+                        self.t1 = time.time()
                         self.master.mav.mission_request_send(self.target_system,self.target_component,self.wpreceived,m.mission_type)
                     else:
                         from MAVProxy.modules.mavproxy_map import mp_slipmap
@@ -196,7 +207,7 @@ class GeoFenceModule(mp_module.MPModule):
             print("Drawing geofence on map with %d vertices" % int(params[2]))
 
         elif args[0] == "gettraj":
-            self.master.mav.mission_request_list_send(2,0,2);
+            self.master.mav.mission_request_list_send(self.target_system,self.target_component,2);
 
         elif args[0] == "upload":
             if len(self.drawnFenceList) == 0:
