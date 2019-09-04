@@ -51,7 +51,7 @@ class GeoFenceModule(mp_module.MPModule):
         self.communicating = False
         self.wp = []
         self.numwp = 0
-        self.startreqeset = False
+        self.startrequest = False
         self.wpreceived = 0
       
 
@@ -135,11 +135,11 @@ class GeoFenceModule(mp_module.MPModule):
         if m.get_type() == "MISSION_ITEM":
             if m.mission_type == 2:
                 if m.seq == self.wpreceived:
-		    self.start_request = False
+		    self.startrequest = False
                     self.wpreceived += 1
                     self.wp.append((m.x,m.y))
                     if self.wpreceived < self.numwp:
-                        self.start_request = True
+                        self.startrequest = True
                         self.t1 = time.time()
                         self.master.mav.mission_request_send(self.target_system,self.target_component,self.wpreceived,m.mission_type)
                     else:
