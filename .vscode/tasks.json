@@ -2,7 +2,7 @@
   "tasks": [
     {
       "type": "shell",
-      "label": "build",
+      "label": "build_mac",
       "command": "cmake",
       "args": [
         "..",
@@ -10,15 +10,42 @@
       ],
       "options": {
         "cwd": "${workspaceRoot}/build",
-        "env": {"JAVA_HOME":"/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home",
-                "OSAL_HOME":"${workspaceRoot}/cFS/cFE/osal",
+        "env": { "OSAL_HOME":"${workspaceRoot}/cFS/cFE/osal",
                 "PLEXIL_HOME":"${workspaceRoot}/Modules/Plexil"}
 
       }
     },
+
     {
       "type": "shell",
-      "label": "install",
+      "label": "build_linux",
+      "command": "cmake",
+      "args": [
+        "..",
+      ],
+      "options": {
+        "cwd": "${workspaceRoot}/build",
+        "env": { "OSAL_HOME":"${workspaceRoot}/cFS/cFE/osal",
+                "PLEXIL_HOME":"${workspaceRoot}/Modules/Plexil"}
+
+      }
+    },
+
+    {
+      "type": "shell",
+      "label": "install_mac",
+      "command": "make",
+      "args": [
+        "cpu1-install",
+        "-j8"
+      ],
+      "options": { "cwd": "${workspaceRoot}/build"},
+      "dependsOn": ["build"]
+    },
+
+    {
+      "type": "shell",
+      "label": "install_linux",
       "command": "make",
       "args": [
         "cpu1-install",

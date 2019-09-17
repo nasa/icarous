@@ -21,7 +21,26 @@
             ],
             "externalConsole": false,
             "MIMode": "lldb",
-            "preLaunchTask": "install"
+            "preLaunchTask": "install_mac"
+        },
+
+        {
+            "name": "(gdb) launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/cFS/bin/cpu1/core-cpu1",
+            "args": ["-C 1","-I 0"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/cFS/bin/cpu1",
+            "environment": [ 
+                {
+                    "name": "DYLD_LIBRARY_PATH",
+                    "value": "$DYLD_LIBRARY_PATH:${workspaceFolder}/Modules/lib:${workspaceFolder}/Modules/Plexil/lib"
+                }
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+             "preLaunchTask": "install_linux"
         }
     ]
 }
