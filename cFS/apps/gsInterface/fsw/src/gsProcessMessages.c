@@ -657,14 +657,14 @@ uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
 
         count++;
         if(i < fp->num_waypoints-1){
-            if(fp->waypoints[i].wp_metric == WP_METRIC_ETA) {
+            if(fp->waypoints[i].wp_metric == WP_METRIC_SPEED) {
                 double currentWP[3] = {fp->waypoints[i].latitude, fp->waypoints[i].longitude,
                                        fp->waypoints[i].altitude};
                 double nextWP[3] = {fp->waypoints[i + 1].latitude, fp->waypoints[i + 1].longitude,
                                     fp->waypoints[i + 1].altitude};
                 double dist2NextWP = ComputeDistance(currentWP, nextWP);
-                double time2NextWP = fp->waypoints[i].value_to_next_wp;
-                double speed2NextWP = dist2NextWP/time2NextWP;
+                double speed2NextWP = fp->waypoints[i].value_to_next_wp;
+                double time2NextWP = dist2NextWP/speed2NextWP;
 
                 if (dist2NextWP > 1E-3) {
                     appdataIntGS.ReceivedMissionItems[count].target_system = 1;
@@ -757,9 +757,8 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
                     double wpB[3] = {items[i + 1].x,items[i + 1].y,items[i + 1].z};
                     double dist = ComputeDistance(wpA,wpB);
                     double eta = dist/items[i].param2;
-                    fp->waypoints[count-1].value_to_next_wp = eta;
-                    fp->waypoints[count-1].wp_metric = WP_METRIC_ETA;
-                    //OS_printf("Setting ETA to %f\n",eta);
+                    fp->waypoints[count-1].value_to_next_wp = items[i].param2;
+                    fp->waypoints[count-1].wp_metric = WP_METRIC_SPEED;
                 }
                 break;
             }
