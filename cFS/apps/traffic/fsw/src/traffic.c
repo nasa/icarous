@@ -257,22 +257,36 @@ void TRAFFIC_ProcessPacket(){
                                       &trafficAppData.altBands.resPreferred);
 
 
-
+            double speed = 0.0;
             for(int i=0;i<trafficAppData.flightplan.num_waypoints;++i){
                 double wp[3] = {trafficAppData.flightplan.waypoints[i].latitude,
                                 trafficAppData.flightplan.waypoints[i].longitude,
                                 trafficAppData.flightplan.waypoints[i].altitude};
 
-                double originalVelocity[3] = {trafficAppData.velocity[0],
-                          trafficAppData.velocity[1],	
-                                              trafficAppData.velocity[2]};
+                double currentVelocity[3] = {trafficAppData.velocity[0],
+                                             trafficAppData.velocity[1],	
+                                             trafficAppData.velocity[2]};
 
                 bool feasibility = TrafficMonitor_MonitorWPFeasibility(trafficAppData.tfMonitor,
-                                              trafficAppData.position,originalVelocity,wp);
+                                              trafficAppData.position,currentVelocity,wp);
                 trafficAppData.trackBands.wpFeasibility[i] = feasibility;
                 trafficAppData.speedBands.wpFeasibility[i] = feasibility;
                 trafficAppData.vsBands.wpFeasibility[i] = feasibility;
                 trafficAppData.altBands.wpFeasibility[i] = feasibility;
+
+                if(i > 0){
+                    if(trafficAppData.flightplan.waypoints[i-1].value_to_next_wp > 0){
+                        speed = trafficAppData.flightplan.waypoints[i-1].value_to_next_wp;
+                    }
+
+                    double originalVelocity[3] = {trafficAppData.velocity[0],
+                                                  speed,
+                                                  trafficAppData.velocity[2]};
+                    feasibility = TrafficMonitor_MonitorWPFeasibility(trafficAppData.tfMonitor,
+                                                trafficAppData.position,originalVelocity,wp);
+                    trafficAppData.speedBands.wpFeasibility[i] &= feasibility;
+                }
+
             }
 
             SendSBMsg(trafficAppData.trackBands);
