@@ -25,7 +25,7 @@ int GetMAVLinkMsgFromGS(){
 void gsSendHeartbeat(){
 
     mavlink_message_t hbeat;
-    mavlink_msg_heartbeat_pack(sysid_ic,compid_ic,&hbeat,MAV_TYPE_ONBOARD_CONTROLLER,MAV_AUTOPILOT_INVALID,appdataIntGS.currentIcarousMode,appdataIntGS.currentApMode,0);
+    mavlink_msg_heartbeat_pack(sysid_ic,compid_ic,&hbeat,MAV_TYPE_GENERIC,MAV_AUTOPILOT_INVALID,appdataIntGS.currentIcarousMode,appdataIntGS.currentApMode,0);
     writeMavlinkData(&appdataIntGS.gs,&hbeat);
 }
 
