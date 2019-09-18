@@ -29,7 +29,7 @@ param_t initialValues[PARAM_COUNT] =
     {"LEFT_TRK",180.0,10},
     {"RIGHT_TRK",180.0,10},
     {"MIN_GS",0.2,10},
-    {"MAX_GS",5.0,10},
+    {"MAX_GS",30.0,10},
     {"MIN_VS",-400,10},
     {"MAX_VS",400,10},
     {"MIN_ALT",0,10},
