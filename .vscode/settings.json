@@ -1,5 +1,6 @@
 {
-    "cmake.environment": {"JAVA_HOME":"/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home",
+    "cmake.environment": {//"JAVA_HOME":"/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home",
+                          "JAVA_HOME":"/usr/lib/jvm/java-11-openjdk-amd64",
                           "OSAL_HOME":"${workspaceFolder}/cFS/cFE/osal",
                           "PLEXIL_HOME":"${workspaceFolder}/Modules/Plexil"},
     "cmake.generator": "Unix Makefiles",

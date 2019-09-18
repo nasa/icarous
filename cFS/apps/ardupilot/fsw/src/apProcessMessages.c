@@ -1169,6 +1169,7 @@ void apInterface_PublishParams() {
     int i = 0;
     //Traffic Parameters
     localTrafficParams.trafficSource = (uint32_t) apNextParam;
+    localTrafficParams.resType = (uint8_t)apNextParam;
     localTrafficParams.logDAAdata = (bool) apNextParam;
     localTrafficParams.lookahead_time = apNextParam;
     localTrafficParams.left_trk = apNextParam;

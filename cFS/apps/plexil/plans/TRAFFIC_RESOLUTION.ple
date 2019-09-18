@@ -11,6 +11,7 @@ Real Lookup preferredAltitude;
 Real Lookup interceptHeading;
 Real[3] Lookup velocity;
 Real[3] Lookup position;
+Integer Lookup resolutionType;
 
 Boolean    Command CheckSafeToTurn(Real fromHeading,Real toHeading);
 
@@ -43,8 +44,10 @@ TRAFFIC_RESOLUTION:{
     Boolean TrackResolution = false;
     Boolean dpNextWp = false;
     Boolean reset = false;
+    Integer resType;
 
     acVelocity = Lookup(velocity);
+    resType    = Lookup(resolutionType);
 
     prevSpeedResCmd[0] = -100000;
     prevSpeedResCmd[1] = -100000;
@@ -57,6 +60,21 @@ TRAFFIC_RESOLUTION:{
     prevAltResCmd[0] = -100000;
     prevAltResCmd[1] = -100000;
     prevAltResCmd[2] = -100000;
+
+    if(resType == 0){
+        SpeedResolution = true;
+        AltResolution = false;
+        TrackResolution = false;
+    }elseif(resType == 1){
+        SpeedResolution = false;
+        AltResolution = true;
+        TrackResolution = false;
+    }elseif(resType == 2){
+        SpeedResolution = false;
+        AltResolution = false;
+        TrackResolution = true;
+    }endif
+
 
 
     {

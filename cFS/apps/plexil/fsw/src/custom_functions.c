@@ -424,6 +424,8 @@ void PLEXIL_HandleCustomLookups(PlexilMsg *msg){
         b = serializeRealArray(3,plexilCustomData.ditchsite,b);
     }else if(CHECKNAME(msg ,"restartMission")){
         b = serializeBool(false,plexilCustomData.restartMission,b);
+    }else if(CHECKNAME(msg ,"resolutionType")){
+        b = serializeInt(false,plexilCustomData.trafficparameters.resType,b);
     }else{
        //TODO: add event saying lookup not handled
         OS_printf("lookup not handled: %s\n",msg->name);

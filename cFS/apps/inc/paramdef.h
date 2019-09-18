@@ -1,7 +1,7 @@
 #ifndef PARAMDEF
 #define PARAMDEF
 #include <stdint.h>
-#define PARAM_COUNT 73      ///< Total number of ICAROUS parameters
+#define PARAM_COUNT 74      ///< Total number of ICAROUS parameters
 
 typedef struct{
     char param_id[16];
@@ -23,6 +23,7 @@ uint8_t compid_gs = 0;
 param_t initialValues[PARAM_COUNT] = 
 {
     {"TRAFFIC_SRC",0,10},
+    {"RES_TYPE",2.0,10},
     {"LOGDAADATA",1,10},
     {"LOOKAHEAD_TIME",20.0,10},
     {"LEFT_TRK",180.0,10},

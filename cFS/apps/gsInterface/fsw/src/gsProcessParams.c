@@ -25,6 +25,7 @@ void gsInterface_PublishParams() {
     int i = 0;
     //Traffic Parameters
     localTrafficParams.trafficSource = (uint32_t) gsNextParam;
+    localTrafficParams.resType = (uint8_t)gsNextParam;
     localTrafficParams.logDAAdata = (bool) gsNextParam;
     localTrafficParams.lookahead_time = gsNextParam;
     localTrafficParams.left_trk = gsNextParam;
