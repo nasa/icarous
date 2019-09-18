@@ -100,11 +100,12 @@ TRAFFIC_RESOLUTION:{
                SetVel(prevSpeedResCmd);
                SpeedResolution = true;
            }else{
-               SpeedResolution = false;
+               //SpeedResolution = false;
+               //SetVel(prevSpeedResCmd);
                //pprint("no speed resolution");
            }endif
 
-           returnSafe = true;
+           returnSafe = dpNextWp;
         }
 
         ALT:{
@@ -148,8 +149,7 @@ TRAFFIC_RESOLUTION:{
               SetVel(prevAltResCmd);
               AltResolution = true;
            }else{
-              //pprint("finished first part");
-              AltResolution = false;
+              //AltResolution = false;
            }endif
 
         }
@@ -202,6 +202,9 @@ TRAFFIC_RESOLUTION:{
 
         if(AltResolution){
            returnSafe = dpNextWp;
+           if(!returnSafe){
+               SetVel(prevAltResCmd);
+           }endif
         }endif
 
     }
