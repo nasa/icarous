@@ -422,6 +422,7 @@ void Rotorsim_GetOutputs(){
     positionGPS.aircraft_id = CFE_PSP_GetSpacecraftId();
     positionGPS.latitude = rotorsimAppData.position[0];
     positionGPS.longitude = rotorsimAppData.position[1];
+    positionGPS.altitude_abs = rotorsimAppData.position[2];
     positionGPS.altitude_rel = rotorsimAppData.position[2];
     positionGPS.vn = rotorsimAppData.velocity[0];
     positionGPS.ve = rotorsimAppData.velocity[1];
