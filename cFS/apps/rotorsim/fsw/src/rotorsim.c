@@ -161,7 +161,7 @@ void Rotorsim_ProcessPacket(){
                    // store commanded velocity
                    rotorsimAppData.externalCmdV[0] = msg->param1;
                    rotorsimAppData.externalCmdV[1] = msg->param2;
-                   rotorsimAppData.externalCmdV[2] = msg->param3;
+                   rotorsimAppData.externalCmdV[2] = -msg->param3;
                    break;
                }
 
