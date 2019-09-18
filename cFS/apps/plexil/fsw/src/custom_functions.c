@@ -182,7 +182,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
 
             bool *fp = gfConflct->waypointConflict;
             plexilCustomData.directPathToFeasibleWP = gfConflct->directPathToWaypoint[plexilCustomData.nextFeasibleWP];
-
+            plexilCustomData.directPathToFeasibleWP &= plexilCustomData.trkBands.wpFeasibility[plexilCustomData.nextFeasibleWP];
             break;
         }
 
@@ -506,29 +506,31 @@ void PLEXIL_HandleCustomCommands(PlexilMsg* msg){
         double groundspeed =_velocity[1];
         double verticalspeed = _velocity[2];
 
+        if(groundspeed > plexilCustomData.trafficparameters.max_gs){
+            groundspeed = plexilCustomData.trafficparameters.max_gs;
+        }
+
+        if(groundspeed < plexilCustomData.trafficparameters.min_gs){
+            groundspeed = plexilCustomData.trafficparameters.min_gs;
+        }
+
+        if(verticalspeed > plexilCustomData.trafficparameters.max_vs*0.3/60){
+            verticalspeed = plexilCustomData.trafficparameters.max_vs*0.3/60;
+        }
+
+        if(verticalspeed < plexilCustomData.trafficparameters.min_vs*0.3/60){
+            verticalspeed = plexilCustomData.trafficparameters.min_vs*0.3/60;
+        }
+
         double vn = groundspeed*cos(track*M_PI/180);
         double ve = groundspeed*sin(track*M_PI/180);
         double vu = verticalspeed;
 
-        bool valid = true;
-        if(groundspeed > plexilCustomData.trafficparameters.max_gs ||
-           groundspeed < plexilCustomData.trafficparameters.min_gs){
-            valid = false;
-        }
-
-        if(verticalspeed > plexilCustomData.trafficparameters.max_vs*0.3/60 ||
-           verticalspeed < plexilCustomData.trafficparameters.min_vs*0.3/60){
-            valid = false;
-        }
-
-        if(valid)
-        {
-            cmd.name = _SETVEL_;
-            cmd.param1 = (float)vn;
-            cmd.param2 = (float)ve;
-            cmd.param3 = (float)vu;
-            SendSBMsg(cmd);
-        }
+        cmd.name = _SETVEL_;
+        cmd.param1 = (float)vn;
+        cmd.param2 = (float)ve;
+        cmd.param3 = (float)vu;
+        SendSBMsg(cmd);
     }else if(CHECKNAME(msg ,"SetYaw")){
         double heading;
         int32_t relative;

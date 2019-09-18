@@ -4,7 +4,7 @@ Boolean Lookup trafficAltConflict;
 Boolean Lookup trafficTrackConflict;
 Boolean Lookup nextWPFeasibility;
 Boolean Lookup restartMission;
-
+Boolean Lookup directPathToNextFeasibleWP;
 Real Lookup preferredTrack;
 Real Lookup preferredSpeed;
 Real Lookup preferredAltitude;
@@ -39,8 +39,9 @@ TRAFFIC_RESOLUTION:{
     Boolean statusTF_Altitude;
     Boolean statusTF_Track;
     Boolean SpeedResolution = false;
-    Boolean AltResolution = false;
-    Boolean TrackResolution = true;
+    Boolean AltResolution = true;
+    Boolean TrackResolution = false;
+    Boolean dpNextWp = false;
     Boolean reset = false;
 
     acVelocity = Lookup(velocity);
@@ -67,6 +68,7 @@ TRAFFIC_RESOLUTION:{
         statusTF_Speed = Lookup(trafficSpeedConflict);
         statusTF_Altitude = Lookup(trafficAltConflict);
         statusTF_Track = Lookup(trafficTrackConflict);
+        dpNextWp = Lookup(directPathToNextFeasibleWP);
         reset = Lookup(restartMission);
 
         acPosition = Lookup(position);
@@ -114,17 +116,19 @@ TRAFFIC_RESOLUTION:{
 
            //pprint("preferred altitude:",altPref);
 
-           if(altPref > -1e2 && altPref < 1e2 ){
-              diff = altPref - acPosition[2];
+           diff = altPref - acPosition[2];
 
-              if(diff > 50){
-                   diff = 50;
-              }elseif(diff < -50){
-                   diff = -50;
+           //pprint("altitude diff:",diff);
+           if(altPref > 0 && altPref < 10000){
+
+              if(diff > 25){
+                   diff = 25;
+              }elseif(diff < -25){
+                   diff = -25;
               }endif
 
-              //pprint("altitude diff:",diff);
 
+              // The negative sign is require to convert the climb rate to a Vd value
               climbRate = -0.5* diff;
 
               //pprint("climb rate:",climbRate);
@@ -138,12 +142,16 @@ TRAFFIC_RESOLUTION:{
               prevAltResCmd[2] = velCmd[2];
               //pprint("velocity command :",velCmd[0],velCmd[1],velCmd[2]);
               AltResolution = true;
-           }elseif(altPref > -10000 && altPref < 100){
+           }elseif(altPref > -10000 && altPref < 0){
+              //pprint("Maintaining prev cmd");
+              prevAltResCmd[2] = 0;
               SetVel(prevAltResCmd);
               AltResolution = true;
            }else{
+              //pprint("finished first part");
               AltResolution = false;
            }endif
+
         }
 
         TRACK:{
@@ -190,6 +198,10 @@ TRAFFIC_RESOLUTION:{
                     //pprint("Setting prev velocity in returnSafe:",velCmd);
                 }endif
             }endif
+        }endif
+
+        if(AltResolution){
+           returnSafe = dpNextWp;
         }endif
 
     }
