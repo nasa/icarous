@@ -179,10 +179,11 @@ void PLEXIL_ProcessCustomPackets(bool data){
                     break;
                 }
             }
-
+            
             bool *fp = gfConflct->waypointConflict;
             plexilCustomData.directPathToFeasibleWP = gfConflct->directPathToWaypoint[plexilCustomData.nextFeasibleWP];
             plexilCustomData.directPathToFeasibleWP &= plexilCustomData.trkBands.wpFeasibility[plexilCustomData.nextFeasibleWP];
+            plexilCustomData.directPathToFeasibleWP &= plexilCustomData.gsBands.wpFeasibility[plexilCustomData.nextFeasibleWP];
             break;
         }
 
@@ -231,14 +232,13 @@ void PLEXIL_ProcessCustomPackets(bool data){
                }
                plexilCustomData.preferredSpeed = -1000;
             }
-
             break;
         }
 
         case ICAROUS_BANDS_ALT_MID:{
             bands_t* alt = (bands_t*) plexilAppData.DATA_MsgPtr;
 
-            memcpy(&plexilCustomData.gsBands,alt,sizeof(bands_t));
+            memcpy(&plexilCustomData.altBands,alt,sizeof(bands_t));
             if(alt->currentConflictBand == 1){
                plexilCustomData.trafficAltConflict = true;
                if(!isinf(alt->resPreferred))
