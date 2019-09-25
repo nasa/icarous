@@ -129,6 +129,9 @@ class GeoFenceModule(mp_module.MPModule):
                 self.numwp = m.count
                 self.wpreceived = 0
                 self.wp = []
+                self.startrequest = True
+                self.t1 = time.time()
+
                 self.master.mav.mission_request_send(self.target_system,self.target_component,self.wpreceived,m.mission_type)
 
 
