@@ -480,19 +480,17 @@ bool ComputeOffSetPositionOnPlan(double position[],int currentLeg,double outputL
     
     double r = rotorsimAppData.Rotorsim_Tbl.missionSpeed*2;
     double outputEND[3] = {0.0,0.0,0.0};
+
     // If there is enough room on the current leg, get the point to track on this leg
     // else, use the other leg.
     if(distAB - distAP > r){
-       GetCorrectIntersectionPoint(_wpA,_wpB,heading,r,outputEND); 
+        GetCorrectIntersectionPoint(_wpA,_wpB,heading,r,outputEND); 
+        ConvertEND2LLA(position,outputEND,outputLLA);
+        return true;
     }else{
-       if(finalleg){
-           memcpy(outputLLA,wpB,sizeof(double)*3);
-           return false;
-       } 
-       GetCorrectIntersectionPoint(_wpB,_wpC,heading,r,outputEND); 
+        memcpy(outputLLA,wpB,sizeof(double)*3);
+        return false;
     }
-    ConvertEND2LLA(position,outputEND,outputLLA);
-    return true;
 }
 
 
@@ -523,8 +521,13 @@ void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double heading,doub
     }else{
         x1 = _wpA[0];
         x2 = x1;
-        y1 = sqrt(pow(r,2) - pow(x1,2)); 
-        y2 = -sqrt(pow(r,2) - pow(x1,2));  
+        if(r > fabs(x1)){
+            y1 = sqrt(pow(r,2) - pow(x1,2)); 
+            y2 = -sqrt(pow(r,2) - pow(x1,2));  
+        }else{
+            y1 = _wpB[1];
+            y2 = _wpB[1];
+        }
     }
 
     // Check which point has the smallest bearing
