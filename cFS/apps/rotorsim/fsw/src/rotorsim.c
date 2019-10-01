@@ -299,9 +299,9 @@ void Rotorsim_GetInputs(){
 
                double distbtWP   = ComputeDistance(wpA,wpB);
 
-               if(rotorsimAppData.flightPlan.waypoints[nextWP-1].wp_metric == WP_METRIC_ETA) {
+               if(rotorsimAppData.flightPlan.waypoints[nextWP-1].wp_metric == WP_METRIC_SPEED) {
                    if(rotorsimAppData.flightPlan.waypoints[nextWP-1].value_to_next_wp > 0) {
-                       double setSpeed = distbtWP / rotorsimAppData.flightPlan.waypoints[nextWP - 1].value_to_next_wp;
+                       double setSpeed = rotorsimAppData.flightPlan.waypoints[nextWP - 1].value_to_next_wp;
                        rotorsimAppData.Rotorsim_Tbl.missionSpeed = setSpeed;
                        //OS_printf("Speed = %f\n", setSpeed);
                    }
