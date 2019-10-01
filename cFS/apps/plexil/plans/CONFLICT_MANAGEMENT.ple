@@ -66,6 +66,7 @@ CONFLICT_MANAGEMENT:
     Boolean gTrafficConflict = false;
     Boolean gFlightPlanConflict = false;
     Boolean reset = false;
+    Boolean endFP = false;
 
     // Real variables
     Real gAllowedDeviation;
@@ -102,7 +103,14 @@ CONFLICT_MANAGEMENT:
 
 
     {
-        Repeat (( gCurrentMissionWp <  gNumMissionWp) && (!DitchStatus) && (!reset));
+        Repeat ((!endFP) && (!DitchStatus) && (!reset));
+
+        if( gCurrentMissionWp <  gNumMissionWp ){
+           endFP = false;
+        }else{
+           Status("PLX: End of flight plan",6);
+           endFP = true; 
+        }endif
 
         DETECTION:
         {
