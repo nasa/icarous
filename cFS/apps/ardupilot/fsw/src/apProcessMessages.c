@@ -507,10 +507,10 @@ void ProcessAPMessage(mavlink_message_t message) {
 
             uint8_t ichan = appdataInt.icRcChannel;
             if (ichan > 0){
-            uint8_t startlow  = appdataInt.pwmStart - 300;
-            uint8_t starthigh = appdataInt.pwmStart + 300;
-            uint8_t resetlow = appdataInt.pwmReset - 300;
-            uint8_t resethigh = appdataInt.pwmReset + 300;
+            int16_t startlow  = appdataInt.pwmStart - 300;
+            int16_t starthigh = appdataInt.pwmStart + 300;
+            int16_t resetlow = appdataInt.pwmReset - 300;
+            int16_t resethigh = appdataInt.pwmReset + 300;
             if(rc_channels.chan[ichan] >= startlow && rc_channels.chan[ichan] <= starthigh && appdataInt.startMission == false){
                 // (start ICAROUS)
                 appdataInt.startMission = true;
