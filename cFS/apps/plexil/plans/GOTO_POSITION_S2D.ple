@@ -1,0 +1,259 @@
+// -*- Mode: Java -*-
+// Plan to fly to a specific waypoint
+
+//Commands
+Boolean Command CheckDirectPathFeasibility(Real fromPosition[3],Real toPosition[3]);
+Integer Command FindNewPath(String algorithm,Real fromPosition[3],Real fromVelocity[3],Real toPosition[3]);
+Real[3] Command GetResolutionWP(Integer index);
+Real Command ComputeDistance(Real fromPosition[3],Real toPosition[3]);
+Command SetPos(Real position[3]);
+Command SetMode(String mode);
+Command SetVel(Real velocity[3]);
+Command SetSpeed(Real speed);
+Command Status(String text,Integer);
+Command pprint(...);
+
+// Lookups
+Real[3] Lookup position;
+Real[3] Lookup velocity;
+Real[3] Lookup nextFeasibleWP;
+Boolean Lookup directPathToNextFeasibleWP;
+Integer Lookup totalResolutionWP;
+Boolean Lookup restartMission;
+Boolean Lookup ditchingStatus;
+Boolean Lookup ditchingComplete;
+
+
+LibraryAction MONITOR(InOut Integer ConflictId);
+
+GOTO_POSITION_S2D:{
+
+    In String SearchType;
+    In Boolean TrafficConflict;
+    In Real TargetPosition[3];
+    In Real resSpeed;
+    In Integer PrevConflictId;
+    InOut Boolean resolutionCompleted;
+    Real CurrentPosition[3];
+    Real CurrentVelocity[3];
+    Real capH;
+    Integer nextWPIndex = 1;
+    Integer totalWPIndex;
+    Boolean targetFeasibility;
+    Boolean restartStatus = false;
+    Boolean resetDitch = false;
+    Boolean endDitch = false;
+
+    EndCondition isKnown(resolutionCompleted) || restartStatus || resetDitch || endDitch;
+
+    pprint("Plexil status: In Library call GOTO_POSITION");
+
+    CurrentPosition = Lookup(position);
+    CurrentVelocity = Lookup(velocity);
+    capH = 1.5*resSpeed;
+
+    SetMode("ACTIVE");
+    
+    GET_FEASIBLE_WP:{
+
+        pprint("Plexil status: Checking target feasibility");
+
+        {
+            EndCondition isKnown(targetFeasibility);
+            targetFeasibility = CheckDirectPathFeasibility(CurrentPosition,TargetPosition);
+        }
+
+        pprint("Plexil status: Target feasibility ",targetFeasibility);
+
+        {
+          	SkipCondition !TrafficConflict;
+           	targetFeasibility = false;
+        }
+
+    }
+
+
+    BEE_LINE:{
+        Integer vConflictId;
+        Real dist2nextWP = 10000;
+        Real startAlt;
+        Real TargetTOD[3];
+        Real threshold;
+
+        SkipCondition !targetFeasibility;
+        EndCondition endDitch || resetDitch || restartStatus || isKnown(resolutionCompleted);
+
+        pprint("Plexil status: Direct to target position");
+        vConflictId = PrevConflictId;
+
+        CurrentPosition = Lookup(position);
+        startAlt = CurrentPosition[2];
+
+        TargetTOD[0] = TargetPosition[0]; 
+	    TargetTOD[1] = TargetPosition[1]; 
+        TargetTOD[2] = startAlt;
+
+        SetPos(TargetTOD);
+        SetSpeed(resSpeed);
+
+        threshold = (startAlt - TargetPosition[2]);
+
+        {
+            Real val;
+            Repeat (dist2nextWP > threshold);
+            CurrentPosition = Lookup(position);
+            restartStatus = Lookup(restartMission);
+            resetDitch = Lookup(ditchingStatus);
+            endDitch = Lookup(ditchingComplete);
+
+            {
+                EndCondition isKnown(val);
+                val = ComputeDistance(CurrentPosition,TargetPosition);
+            }
+            dist2nextWP = val;
+        }
+
+        {
+                SetSpeed(1.5);
+                capH = 5.0;
+                SetPos(TargetPosition);
+                Status("PLX: Reached TOD",6);
+        }
+
+        {
+            Real val;
+            Repeat (dist2nextWP > capH);
+            CurrentPosition = Lookup(position);
+            restartStatus = Lookup(restartMission);
+            resetDitch = Lookup(ditchingStatus);
+            endDitch = Lookup(ditchingComplete);
+
+            {
+                EndCondition isKnown(val);
+                val = ComputeDistance(CurrentPosition,TargetPosition);
+            }
+            dist2nextWP = val;
+        }
+        resolutionCompleted = true;
+    }
+
+    PLAN_PATH:{
+        Integer status;
+        SkipCondition targetFeasibility;
+
+        pprint("Plexil status: Planning a path to target location");
+        SetSpeed(0);
+        {
+            EndCondition isKnown(status);
+            status = FindNewPath(SearchType,CurrentPosition,CurrentVelocity,TargetPosition);
+        }
+
+        if(status <= 0){
+            pprint("Plexil status: Failed to Compute resolution");
+            resolutionCompleted = false;
+        }endif
+
+        SetMode("ACTIVE");
+
+        totalWPIndex = Lookup(totalResolutionWP);
+
+        pprint("Plexil status: Computed waypoint with:",SearchType);
+
+    }
+
+
+    CHECK_WP_TRANSITION:{
+        Real NextWP[3];
+        Integer vConflictId;
+        Boolean triggerDescent = false;
+        Boolean todreached = false;
+        Real startAlt;
+        Real threshold;
+
+        SkipCondition targetFeasibility;
+
+        vConflictId = PrevConflictId;
+
+        {
+            EndCondition isKnown(NextWP[0]);
+            NextWP = GetResolutionWP(nextWPIndex);
+        }
+
+	    CurrentPosition = Lookup(position);
+        startAlt = CurrentPosition[2];
+
+        // Use set pos to go to spot directly
+        SetPos(NextWP);
+
+        threshold = (startAlt - TargetPosition[2]);
+
+        {
+            Real dist2nextWP;
+            Real heading2nextWP;
+            Real dist2Final;
+            Real velocityCmd[3];
+            Repeat (nextWPIndex < totalWPIndex) && (vConflictId == PrevConflictId) && (!restartStatus) && (!resetDitch) && (!endDitch);
+
+            CurrentPosition = Lookup(position);
+            restartStatus = Lookup(restartMission);
+            resetDitch = Lookup(ditchingStatus);
+            endDitch = Lookup(ditchingComplete);
+
+
+            LibraryCall MONITOR(ConflictId = vConflictId);
+
+            {
+                EndCondition isKnown(dist2nextWP);
+                dist2nextWP = ComputeDistance(CurrentPosition,NextWP);
+            }
+
+            {
+                EndCondition isKnown(dist2Final);
+                dist2Final = ComputeDistance(CurrentPosition,TargetPosition);
+            }
+ 
+            {
+               SkipCondition todreached;
+               if (dist2Final < threshold){
+                    triggerDescent = true;
+                    todreached = true;
+                    Status("PLX: Reached TOD",6);
+               }endif
+            }
+
+            {
+                SkipCondition dist2nextWP > capH;
+                nextWPIndex = nextWPIndex + 1;
+
+                {
+                    Real _nextWP[3];
+                    SkipCondition (nextWPIndex >= totalWPIndex);
+
+                    {
+                        EndCondition isKnown(_nextWP[0]);
+                        _nextWP = GetResolutionWP(nextWPIndex);
+
+                    }
+
+                    NextWP[0] = _nextWP[0];
+                    NextWP[1] = _nextWP[1];
+                    NextWP[2] = startAlt;
+                    SetPos(NextWP);
+                }
+
+            }
+
+            {
+		        SkipCondition !triggerDescent;
+                SetSpeed(1.5);
+                SetPos(TargetPosition);
+                triggerDescent = false;
+                capH = 5;
+            }
+
+            
+        }
+
+        resolutionCompleted = true;
+    }
+}

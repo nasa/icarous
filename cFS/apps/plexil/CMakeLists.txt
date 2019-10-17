@@ -43,7 +43,7 @@ endforeach()
 
 #add_cfe_tables(plexil "fsw/tables/plexil_tbl.c")
 
-set(PLEXIL_PLANS Icarous2.ple CONFLICT_MANAGEMENT.ple GOTO_POSITION.ple
+set(PLEXIL_PLANS Icarous2.ple CONFLICT_MANAGEMENT.ple GOTO_POSITION.ple GOTO_POSITION_S2D.ple
            TRAFFIC_RESOLUTION.ple MONITOR.ple DITCH.ple)
 
 #set(PLEXIL_PLANS ArdupilotTest.ple)
