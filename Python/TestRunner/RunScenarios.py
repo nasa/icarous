@@ -47,7 +47,7 @@ def GetWaypoints(wploader):
     return WP
 
 
-def RunScenario(scenario, watch=False, save=False, verbose=True, output_dir=""):
+def RunScenario(scenario, watch=False, save=False, verbose=True, out="14557", output_dir=""):
     '''run an icarous simulation of the given scenario'''
     ownship = vehicle()
     traffic = {}
@@ -58,21 +58,31 @@ def RunScenario(scenario, watch=False, save=False, verbose=True, output_dir=""):
     for m in messages:
         os.remove(os.path.join("/dev/mqueue", m))
 
-    # Set up mavproxy connections
-    sim_port = "14553"
+    # Set up mavlink connections
+    gs_port = "14553"
+    # Use mavproxy to forward mavlink stream (for visualization)
+    if watch and not out:
+        out = "14557"
+    if out:
+        gs_port = "14554"
+        icarous_port = "14553"
+        mav_forwarding = subprocess.Popen(["mavproxy.py",
+                                           "--master=127.0.0.1:"+icarous_port,
+                                           "--out=127.0.0.1:"+gs_port,
+                                           "--out=127.0.0.1:"+out],
+                                          stdout=subprocess.DEVNULL)
+    # Optionally open up mavproxy with a map window to watch simulation
     if watch:
-        map_port = "14553"
-        sim_port = "14554"
         logfile = os.path.join(output_dir, name+".tlog")
         mapwindow = subprocess.Popen(["mavproxy.py",
-                                      "--master=127.0.0.1:"+map_port,
-                                      "--out=127.0.0.1:"+sim_port,
+                                      "--master=127.0.0.1:"+out,
                                       "--target-component=5",
                                       "--load-module", "map,console",
                                       "--load-module", "traffic,geofence",
                                       "--logfile", logfile])
+    # Open connection for virtual ground station
     try:
-        master = mavutil.mavlink_connection("127.0.0.1:"+sim_port)
+        master = mavutil.mavlink_connection("127.0.0.1:"+gs_port)
     except Exception as msg:
         print("Error opening mavlink connection")
 
@@ -166,6 +176,8 @@ def RunScenario(scenario, watch=False, save=False, verbose=True, output_dir=""):
 
     # Once simulation is finished, kill the icarous process
     ic.kill()
+    if out:
+        subprocess.call(["kill", "-9", str(mav_forwarding.pid)])
     if watch:
         mapwindow.send_signal(signal.SIGINT)
         subprocess.call(["pkill", "-9", "mavproxy"])
@@ -210,6 +222,8 @@ if __name__ == "__main__":
                         help="watch the simulation as it runs")
     parser.add_argument("--verbose",action="store_true",
                          help="print sim information")
+    parser.add_argument("--out", nargs='?', default="",
+                        help="localhost port to forward mavlink stream to (for visualization)")
     parser.add_argument("--validate", action="store_true",
                         help="check simulation results for test conditions")
     args = parser.parse_args()
@@ -240,7 +254,7 @@ if __name__ == "__main__":
 
         # Run the simulation
         print("\nRunning scenario: \"%s\"\t(%d/%d)\n" % (scenario["name"], i+1, len(scenario_list)))
-        simdata = RunScenario(scenario, watch=args.watch, save=args.save, verbose=args.verbose, output_dir=output_dir)
+        simdata = RunScenario(scenario, watch=args.watch, save=args.save, verbose=args.verbose, output_dir=output_dir,out=args.out)
 
         # Verify the sim output
         if args.validate:
