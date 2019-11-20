@@ -12,7 +12,6 @@ from pymavlink import mavutil
 
 sys.path.append("../Batch")
 import BatchGSModule as GS
-import ValidateSim as VS
 
 sim_home = os.getcwd()
 icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
@@ -50,6 +49,7 @@ def GetWaypoints(wploader):
 
 
 def RunScenario(scenario, watch=False, save=False, verbose=True, output_dir=""):
+    '''run an icarous simulation of the given scenario'''
     ownship = vehicle()
     traffic = {}
     name = scenario["name"].replace(' ', '-')
@@ -195,7 +195,7 @@ def RunScenario(scenario, watch=False, save=False, verbose=True, output_dir=""):
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Run Icarous test scenarios")
-    parser.add_argument("scenario_file",
+    parser.add_argument("scenario",
                         help="yaml file containing scenario(s) to run ")
     parser.add_argument("--test", action="store_true",
                         help="assert test conditions")
@@ -211,6 +211,8 @@ if __name__ == "__main__":
                         help="watch the simulation as it runs")
     parser.add_argument("--verbose",action="store_true",
                          help="print sim information")
+    parser.add_argument("--validate", action="store_true",
+                        help="check simulation results for test conditions")
     args = parser.parse_args()
 
 
@@ -218,11 +220,17 @@ if __name__ == "__main__":
         from matplotlib import pyplot as plt
 
     # Load scenarios
-    f = open(args.scenario_file, 'r')
-    scenario_list = yaml.load(f, Loader=yaml.FullLoader)
-    f.close()
+    if os.path.isfile(args.scenario):
+        f = open(args.scenario, 'r')
+        scenario_list = yaml.load(f, Loader=yaml.FullLoader)
+        f.close()
+    else:
+        scenario_list = [json.loads(args.scenario)]
+
     if args.num:
         scenario_list = [scenario_list[int(args.num)]]
+    if args.validate:
+        import ValidateSim as VS
 
     results = []
     for i, scenario in enumerate(scenario_list):
@@ -236,11 +244,13 @@ if __name__ == "__main__":
         simdata = RunScenario(scenario, watch=args.watch, save=args.save, verbose=args.verbose, output_dir=output_dir)
 
         # Verify the sim output
-        result = VS.validate_sim_data(simdata, plot=args.plot, save=args.save, test=args.test, output_dir=output_dir)
-        results.append(result)
+        if args.validate:
+            result = VS.validate_sim_data(simdata, plot=args.plot, save=args.save, test=args.test, output_dir=output_dir)
+            results.append(result)
 
     # Print summary of results
-    print("\nTest Scenario Results Summary:")
-    print("------------------------------")
-    for i in range(len(scenario_list)):
-        VS.print_results(scenario_list[i], results[i])
+    if args.validate:
+        print("\nTest Scenario Results Summary:")
+        print("------------------------------")
+        for i in range(len(scenario_list)):
+            VS.print_results(scenario_list[i], results[i])
