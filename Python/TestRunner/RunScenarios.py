@@ -7,7 +7,6 @@ import datetime
 import json
 import yaml
 import numpy as np
-from polygon_contain import *
 from pymavlink import mavutil
 
 sys.path.append("../Batch")

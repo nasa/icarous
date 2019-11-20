@@ -193,17 +193,27 @@ def validate_sim_data(simdata, plot=False, save=False, test=False, output_dir=""
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Validate Icarous simulation data")
-    parser.add_argument("data_file", help="json file of simulation output")
+    parser.add_argument("sim_output", help="sim data (.json, or directory containing .json)")
     parser.add_argument("--plot", action="store_true", help="plot the scenario")
     parser.add_argument("--save", action="store_true", help="save the results")
     parser.add_argument("--test", action="store_true", help="assert test conditions")
     args = parser.parse_args()
 
-    # Read in the simulation data
-    fp = open(args.data_file, 'r')
-    simdata = json.load(fp)
-    fp.close()
+    # Gather all simulation data files
+    if os.path.isfile(args.sim_output) and args.sim_output.endswith(".json"):
+        data_files = [sim_output]
+    elif os.path.isdir(args.sim_output):
+        data_files = []
+        for root, dirs, files in os.walk(args.sim_output):
+            data_files += [os.path.join(root, f) for f in files if f.endswith(".json")]
+        print("Found %d simulation data files in %s" % (len(data_files), args.sim_output))
 
-    # Validate the data
-    output_dir = os.path.split(args.data_file)[0]
-    validate_sim_data(simdata, plot=args.plot, save=args.save, test=args.test, output_dir=output_dir)
+    for data_file in data_files:
+        # Read in the simulation data
+        fp = open(data_file, 'r')
+        simdata = json.load(fp)
+        fp.close()
+
+        # Validate the data
+        output_dir = os.path.split(data_file)[0]
+        validate_sim_data(simdata, plot=args.plot, save=args.save, test=args.test, output_dir=output_dir)
