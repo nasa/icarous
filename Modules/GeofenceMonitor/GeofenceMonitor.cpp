@@ -73,7 +73,9 @@ bool GeofenceMonitor::CheckViolation(double position[],double trk,double gs,doub
             }
 
             Vect2 vel = currentVel.vect2();
-            conflict = CollisionDetection(gf, &currentPosLLA, &vel, 0, lookahead);
+            if(vel.norm() >= 0.1){
+                conflict = conflict | CollisionDetection(gf, &currentPosLLA, &vel, 0, lookahead);
+            }
 
             if (geoPolyCarp.definitelyInside(currentPosR3, *(gf->GetPoly3D()))) {
                 violation = false;
@@ -107,7 +109,7 @@ bool GeofenceMonitor::CheckViolation(double position[],double trk,double gs,doub
                                                     LLA.altitude(), "ft");
 
             Vect2 vel = currentVel.vect2();
-            if (CollisionDetection(gf, &currentPosLLA, &vel, 0, lookahead)) {
+            if (CollisionDetection(gf, &currentPosLLA, &vel, 0, lookahead) && vel.norm() >= 0.1) {
                 conflict = true;
                 //printf("keep out conflict\n");
             } else {

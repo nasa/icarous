@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -129,8 +129,9 @@ class AircraftState : public ErrorReporter {
     /** Construct a new object with the default buffer size */
     AircraftState();
     
-    /** Construct a new object with the default buffer size */
-    AircraftState(const std::string& id);
+    /** Construct a new object with the default buffer size 
+     * @param id Aircraft identifier*/
+    explicit AircraftState(const std::string& id);
     
     // copy constructor, needed because of explicit destructor
     AircraftState(const AircraftState &orig);
@@ -183,7 +184,7 @@ class AircraftState : public ErrorReporter {
      * Return the index of the given time.  A negative index
      * is returned if the time doesn't exist.
      * 
-     * @param time
+     * @param time time
      * @return an index
      */
     int find(double time) const;
@@ -216,7 +217,7 @@ class AircraftState : public ErrorReporter {
 	 * If the index is out of range (less than zero or greater than size()),
 	 * then a zero position and velocity are returned.
 	 * 
-	 * @param i
+	 * @param i index
 	 * @return position and velocity at index i
 	 */
 	StateVector get(int i);
@@ -250,7 +251,7 @@ class AircraftState : public ErrorReporter {
 	 * earliest time in this object; and index of size()-1 corresponds to 
 	 * the latest time.  This method returns a negative time for an out of bounds index 
 	 * 
-	 * @param i
+	 * @param i index
 	 * @return time
 	 */
 	double time(int i) const;
@@ -283,11 +284,12 @@ class AircraftState : public ErrorReporter {
 
 
     /** remove oldest n entries 
-     * @param n 
+     * @param n number of entries
      * */
     void remove(int n);
 
-    /** remove any data older than the given time */
+    /** remove any data older than the given time 
+     * @param time value of time */
     void removeUpToTime(double time);
 
     /** remove the latest (i.e. newest) data point */
@@ -329,20 +331,24 @@ class AircraftState : public ErrorReporter {
 	 * (accessed through the method timeLast()).
 	 * The positions and velocities used are projected into a Euclidean frame by the 
 	 * projection set by the setProjection() method.
+	 * @param t time
+	 * @return position and velocity vector
 	 */
 	StateVector pred(double t);
 
 
-  /**
-   * Return a predicted Euclidean position and velocity for the given time, based on 
-   * a linear extrapolation from the most recent (relative to t) data point.
-   * For accuracy, the time, t, should be close the latest time added to this class 
-   * (accessed through the method timeLast()).
-   * The positions and velocities used are projected into a Euclidean frame by the 
-   * projection set by the setProjection() method.
-   * 
-   * A warning is generated if all data points are at times greater than t.
-   */
+	/**
+	 * Return a predicted Euclidean position and velocity for the given time, based on 
+	 * a linear extrapolation from the most recent (relative to t) data point.
+	 * For accuracy, the time, t, should be close the latest time added to this class 
+	 * (accessed through the method timeLast()).
+	 * The positions and velocities used are projected into a Euclidean frame by the 
+	 * projection set by the setProjection() method.
+	 * 
+	 * A warning is generated if all data points are at times greater than t.
+	 * @param t time
+	 * @return position and velocity vector
+	 */
    StateVector predLinear(double t);
 
 	/*
@@ -357,6 +363,8 @@ class AircraftState : public ErrorReporter {
 	 * Returns the velocity data from the most recent entry at or before time t.
 	 *
 	 * Generates a warning and returns INVALID if there is no data.
+	 * @param t time
+	 * @return velocity
 	 */
 	Velocity velocityAt(double t) const;
 
@@ -366,11 +374,15 @@ class AircraftState : public ErrorReporter {
 
 	/**
 	 * Determines if the aircraft is almost in level flight
+	 * @return true, if in level flight
 	 */
 	bool inLevelFlight();
 	
 	/**
 	 * Determines if these two velocities are "close" to each other
+	 * @param v1 velocity of one aircraft
+	 * @param v2 velocity of another aircraft
+	 * @return true, if close
 	 */
 	static bool closeEnough(Velocity v1, Velocity v2);
 
@@ -420,15 +432,19 @@ class AircraftState : public ErrorReporter {
 	// Utility methods
 	//
 	
-	/** Return a debug string */
+	/** Return a debug string 
+	 * @return string */
 	std::string dump() const;
 
-	/** Return a string representaiton of this object */
+	/** Return a string representation of this object 
+	 * @return string
+	 */
 	std::string toString() const;
    
-  /**
-   *  Returns a string representation of this object compatible with StateReader
-   */
+	/**
+	 *  Returns a string representation of this object compatible with StateReader
+	 * @return string
+	 */
     std::string toOutput() const;
     
   // ErrorReporter Interface Methods

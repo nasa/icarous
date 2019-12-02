@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -9,6 +9,8 @@
 #define FORMAT_H_
 
 #include <string>
+#include <vector>
+#include <map>
 #include "Vect2.h"
 #include "Vect3.h"
 #include "Triple.h"
@@ -43,8 +45,8 @@ namespace larcfm {
   /** Format a double with 16 decimal place */
   std::string Fm16(double v);
 
-  /** Format an integer to have at least precision digits */
-  std::string FmLead(int i, int precision);
+  /** Format an integer to have at least minLength digits, prepending zeros as necessary */
+  std::string FmLead(int i, int minLength);
 
   std::string FmPrecision(double v);
   std::string FmPrecision(double v, int precision);
@@ -81,8 +83,6 @@ namespace larcfm {
   /** Format a position vector as a Euclidean position */
   std::string fvStrE(const Vect2& v);
 
-
-
   /** Format a position vector */
   std::string fsStr(const Vect2& s);
 
@@ -94,19 +94,18 @@ namespace larcfm {
 
   std::string fsStr15NP(const Vect3& s);
 
-
-	/** Format a velocity vector as a Euclidean velocity */
+  /** Format a velocity vector as a Euclidean velocity */
   std::string fvStr(const Vect2& s);
-
-	/** Format a velocity vector as a Euclidean velocity */
+  
+  /** Format a velocity vector as a Euclidean velocity */
   std::string fvStr(const Vect3& s);
 
-	/** Format a velocity vector as a polar velocity */
+  /** Format a velocity vector as a polar velocity */
   std::string fvStr2(const Vect2& v);
-    
-	/** Format a velocity vector as a polar velocity */
+  
+  /** Format a velocity vector as a polar velocity */
   std::string fvStr2(const Vect3& v);
-
+  
   std::string FmPair(const std::pair<int,int>& p);
   std::string FmPair(const std::pair<double,double>& p);
   std::string FmTriple(const Triple<int,int,int>& p);
@@ -120,13 +119,22 @@ namespace larcfm {
   std::string Fobj(const std::vector<Triple<int,int,int> >& v);
   std::string Fobj(const std::vector<Triple<double, double, double> >& v);
 
+  std::string Fobj(const std::map<std::string,std::string>& v);
+  std::string Fobj(const std::map<int,int>& v);
+  std::string Fobj(const std::map<int,std::string>& v);
+  std::string Fobj(const std::map<std::string,int>& v);
+  std::string Fobj(const std::map<double,double>& v);
+  std::string Fobj(const std::map<double,std::string>& v);
+  std::string Fobj(const std::map<std::string,double>& v);
+
   std::string list2str(const std::vector<std::string>& l, const std::string& delimiter);
 
   std::string Farray(int const v[], int sz);
   std::string Farray(double const v[], int sz);
   std::string Farray(std::string const v[], int sz);
 
-  std::string double2PVS(double val, int prec);
+  std::string double2PVS(double val);
+  std::string double2PVS(double val, int precision);
 
 }
 #endif /* FORMAT_H_ */

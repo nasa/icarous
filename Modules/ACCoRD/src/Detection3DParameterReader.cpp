@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -13,6 +13,7 @@
 #include "CDCylinder.h"
 #include "TCAS3D.h"
 #include "WCV_TAUMOD.h"
+#include "WCV_TAUMOD_SUM.h"
 #include "WCV_TCPA.h"
 #include "WCV_TEP.h"
 #include "WCV_HZ.h"
@@ -42,6 +43,10 @@ void Detection3DParameterReader::registerDefaults() {
     registerDetection3D(&wcv_taumod);
     registerDetection3D(&wcv_taumod, "gov.nasa.larcfm.ACCoRD.WCV_TAUMOD"); // java name
 
+    WCV_TAUMOD_SUM wcv_taumod_sum;
+    registerDetection3D(&wcv_taumod_sum);
+    registerDetection3D(&wcv_taumod_sum, "gov.nasa.larcfm.ACCoRD.WCV_TAUMOD_SUM"); // java name
+
     WCV_TEP wcv_tep;
     registerDetection3D(&wcv_tep);
     registerDetection3D(&wcv_tep, "gov.nasa.larcfm.ACCoRD.WCV_TEP"); // java name
@@ -67,7 +72,6 @@ void Detection3DParameterReader::registerDetection3D(Detection3D* cd, const stri
     registeredDetection3DClasses[name] = cd->make();
   }
 }
-
 
 Triple<vector<Detection3D*>,Detection3D*,Detection3D*> Detection3DParameterReader::readCoreDetection(const ParameterData& params){
   return readCoreDetection(params,false);

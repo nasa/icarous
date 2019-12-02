@@ -6,7 +6,7 @@
  *
  * Conversion to internal units: meters, seconds, radians.
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -31,7 +31,7 @@ double _FormalATM_P0();
 
 
 /**
- * This class defines the conversion factors for various units. Base units are
+ * <p>This class defines the conversion factors for various units. Base units are
  * defined for the seven base dimensions: length, mass, time, electric current,
  * thermodynamic temperature, amount of substance, and luminous intensity.
  * Together these seven units form a coherent set of units. If all quantities in
@@ -39,10 +39,11 @@ double _FormalATM_P0();
  * conversions are required within the program. Unit conversions are only needed
  * when specifying and outputting quantities. This class is designed to
  * facilitate that type of use.
- * <p>
+ * </p>
  * 
- * For example, note there are no unit conversions in the equations:
  * <p>
+ * For example, note there are no unit conversions in the equations:
+ * </p>
  * 
  * <pre>
  * double one_mile = Units.from(&quot;mi&quot;, 1.0);
@@ -52,35 +53,37 @@ double _FormalATM_P0();
  * double distance = one_mile + one_km;
  * double speed = distance / time;
  * 
- * System.out.println(&quot;The distance should be 2.6 and in kilometers is &quot; + Units.to(&quot;km&quot;, distance)); 
- * System.out.println(&quot;The distance should be 1.6 and in miles is &quot; + Units.to(&quot;mi&quot;, distance)); 
- * System.out.println(&quot;The distance should be 8560 in feet is &quot; + Units.to(&quot;ft&quot;, distance)); 
- * System.out.println(&quot;The speed should be 1.6 and in miles/hour is &quot; + Units.to(&quot;mph&quot;, speed)); 
- * System.out.println(&quot;The speed should be 0.72 and in m/s is &quot; + Units.to(&quot;m/s&quot;, speed)); 
+ * System.out.println(&quot;The distance should be 2.6 in kilometers and is &quot; + Units.to(&quot;km&quot;, distance)); 
+ * System.out.println(&quot;The distance should be 1.6 in miles and is &quot; + Units.to(&quot;mi&quot;, distance)); 
+ * System.out.println(&quot;The distance should be 8560 in feet and is &quot; + Units.to(&quot;ft&quot;, distance)); 
+ * System.out.println(&quot;The speed should be 1.6 in miles/hour and is &quot; + Units.to(&quot;mph&quot;, speed)); 
+ * System.out.println(&quot;The speed should be 0.72 in m/s and is &quot; + Units.to(&quot;m/s&quot;, speed)); 
  * </pre>
- * <p>
  * 
- * One important consideration when using the Units class is that the Units
+ * <p>
+ *  * One important consideration when using the Units class is that the Units
  * class performs <b>NO</b> consistency checks. The Units class trusts that the
  * user will use units with a consistent dimension. This was a deliberate design
  * decision because of the performance penalty associated with checking
  * consistency. An example of this inconsistency is:
- * <p>
+ * </p>
  * 
  * <pre>
  * double one_mile = Units.from(&quot;mile&quot;, 1.0);
  * System.out.println(&quot;One mile in liters is &quot; + Units.to(&quot;liter&quot;, one_mile));
  * </pre>
  * 
+ * <p>
  * Obviously this makes no sense, but the Units class will not flag this as an
  * error; be careful.
- * <p>
+ * </p>
  * 
+ * <p>
  * One can determine if two units are compatible by using the
  * {@link #isCompatible} method. Units are considered compatible if they have
  * the same dimensionality. For instance, the unit "meter" is compatible with
  * the unit "foot" since they are both units of distance.
- * <p>
+ * </p>
  * 
  * <pre>
  * if (!isCompatible(&quot;m&quot;, &quot;L&quot;)) {
@@ -90,38 +93,53 @@ double _FormalATM_P0();
  * 	System.out.println(&quot;'ft' and 'm' are compatible units!&quot;);
  * }
  * </pre>
- * <p>
  * 
- * One can always correctly convert between compatible units. The unit
- * "unspecified" is a special unit that is compatible with all units. To get the
+ * <p>
+ *  * One can always correctly convert between compatible units. To get the
  * list of units compatible with a given unit use the
  * {@link #getCompatibleUnits} method.
- * <p>
+ * </p>
  * 
+ * <p>
  * The user can also create their own composite units with the
  * {@link #addUnit(String, double, String)} method. For example a <i>fathom</i>
  * unit could be defined as:
- * <p>
- * <tt>Units.addUnit("fathom", 6.0, "foot"); </tt>
+ * </p>
+ * <code>Units.addUnit("fathom", 6.0, "foot"); </code>
+ * 
  * <p>
  * This method means, define the unit called "fathom", where one fathom is equal
  * to 6.0 feet. This method also states that the new "fathom" unit is compatible
  * with the unit of "foot."
+ * </p>
  * 
+ * <p>
  * To create a new composite unit that has no compatible units, use the
  * {@link #addUnit(String, double)} method. For example a <i>linear density</i>
  * unit could be defined as:
- * <p>
- * <tt>Units.addUnit("kg/m", Units.kg / Units.meter);</tt>
- * <p>
+ * </p>
+ * <code>Units.addUnit("kg/m", Units.kg / Units.meter);</code>
  * 
- * Usage Notes:
- * <p>
+ * 
+ * <h2>Special Units:</h2>
  * 
  * <ul>
- * <li>An alternate way to use the units class is to use constant factors
+ * <li> unitless - a name to represent that the quantity has no units.  Ratios and 
+ * percentages are typical examples of unitless quantities.</li>
+ * 
+ * <li> unspecified - a name to represent that the units of the quantity that are unknown.
+ * The real distinction between a <i>unitless</i> quantity and an <i>unspecified</i> quantity is the 
+ * notion of units compatibility.  Unitless is not compatible with any other unit, and
+ * unspecified is is compatible with all units. </li>
+ * </ul>
+ * 
+ * 
+ * <h2>Usage Notes:</h2>
+ * 
+ * <ul>
+ * <li><p>An alternate way to use the units class is to use constant factors
  * instead of string representations. For example:
- * <p>
+ * </p>
  * 
  * <pre>
  * double one_mile = Units.from(Units.mile, 1.0);
@@ -129,17 +147,17 @@ double _FormalATM_P0();
  * double time = Units.from(Units.hour, 1.0);
  * </pre>
  * 
- * The advantage of this approach is that it is slightly more efficient since a
+ * <p>The advantage of this approach is that it is slightly more efficient since a
  * lookup of the string value does not need to be performed. Since this
  * operation only occurs when values are input, it is questionable how much time
- * is really saved.
+ * is really saved.</p></li>
  * 
- * <li>The above examples (using either strings or factors) are the preferred
+ * <li><p>The above examples (using either strings or factors) are the preferred
  * use of the Units class; however, this notation can become
  * cumbersome--especially when specifying values inside code. An alternate use of
  * the Units class is to multiply by the conversion factor when specifying
  * constants. For example:
- * <p>
+ * </p>
  * 
  * <pre>
  * double one_mile = 1.0 * Units.mile;
@@ -147,45 +165,45 @@ double _FormalATM_P0();
  * </pre>
  * 
  * <p>
- * 
- * The "to" and "from" methods are preferred, because some conversions are not
+ * The &quot;to&quot; and &quot;from&quot; methods are preferred, because some conversions are not
  * simply multiplying a factor, but involve an offset also. Those that involve an
  * offset (currently only degreeC and degreeF), must use the "to" and "from"
- * methods. Forms such as <tt>double temp = 32.0 * degreeF;</tt> are
- * <i>always</i> wrong.
+ * methods. Forms such as <code>double temp = 32.0 * degreeF;</code> are
+ * <i>always</i> wrong.</p></li>
  * 
  * <li>The Units class does not define a "pound". The problem is that in most
  * official standards documents, a pound is a unit of mass; however, in most
  * science and engineering texts, a pound is a unit of force. We avoid the
  * problem by not defining a pound at all, and instead defining a pound_mass
  * (lbm) and a pound_force (lbf).
- * <p>
+ * </li>
  * 
  * <li>There are many more units defined as strings in the Units class than the
  * number defined as class fields in the Units class. To get a complete list of
  * all units defined as a strings call the {@link #getAllUnits()} method.
- * <p>
+ * </li>
  * 
- * <li>The internal unit for angles is always radians. The SI convention is
+ * <li><p>The internal unit for angles is always radians. The SI convention is
  * followed by calling this a dimensionless derived unit, defined as m / m.
- * <p>
+ * </p>
  * 
+ * <p>
  * Since angles are always represented in radians, a user of the Units class
  * does not need to perform unit conversions to get radians for trigonometric
  * functions. Expressions like
- * <p>
- * <tt>a = Math.cos(Units.from("radian", pi_over_2));</tt>
+ * </p>
+ * <code>a = Math.cos(Units.from("radian", pi_over_2));</code>
  * <p>
  * are not necessary, but are still valid. Expressions that use degrees still
  * need units specified, for example:
- * <p>
- * <tt>double right_angle = Units.from("degree", 90.0);</tt><br>
- * <tt>a = Math.cos(right_angle);</tt>
- * <p>
+ * </p>
+ * <code>double right_angle = Units.from("degree", 90.0);</code><br>
+ * <code>a = Math.cos(right_angle);</code>
+ * </li>
  * 
  * <li>The units for thermodynamic temperature are degreeC, degreeF, K,
  * and degreeR, representing Celsius, Farenheit, Kelvin, and Rankin.
- * <p>
+ * </li>
  * 
  * <li>SI defines the unit of frequency as the reciprocal second and gives this
  * quantity the name <i>hertz</i> and the symbol <i>Hz</i>. The Units class
@@ -200,7 +218,7 @@ double _FormalATM_P0();
  * Units class defines a unit "hertzAngular". "hertz" and "hertzAngular" are
  * <b>NOT</b> compatible with each other, the first is a frequency and the
  * second is an angular velocity.
- * <p>
+ * </li>
  * 
  * <li>Both joules and newton-meters are defined. These units are so similar
  * that they could be considered the same. They are kept separate because joules
@@ -209,7 +227,7 @@ double _FormalATM_P0();
  * interchanged. The US Customary unit for energy is the foot-pound (ft-lbf),
  * and the unit for torque is the pound-foot (lbf-ft). This last name is our
  * invention.
- * <p>
+ * </li>
  * 
  * <li>Both names <i>metre</i> and <i>meter</i> and <i>litre</i> and
  * <i>liter</i> are defined. Each pair is identical. In the approved English
@@ -218,43 +236,41 @@ double _FormalATM_P0();
  * National Institute of Standards and Technology (Special Pub. 330) using
  * current US government policy, the only defined terms are "meter" and "liter."
  * The Units class defines both; however, the reader will observe a bias in the
- * documentation in favor of the US terms.
+ * documentation in favor of the US terms.</li>
  * </ul>
  * 
  * 
- * Special Constants:
- * <p>
+ * <h2>Special Constants:</h2>
  * 
  * <ul>
- * <li>The Units class defines <i>gn</i> as the adopted physical constant of
+ * <li><p>The Units class defines <i>gn</i> as the adopted physical constant of
  * gravity. It is given (out of place) in the Units class, due to the fact that
  * the definition of the fundamental US customary unit of mass (slug) depends on
  * this quantity.
- * <p>
+ * </p>
  * 
- * This quantity, Units.gn, is defined in IEEE/ASTM SI 10-1997 as (exactly)
+ * <p>This quantity, Units.gn, is defined in IEEE/ASTM SI 10-1997 as (exactly)
  * 9.80665 m/s^2 [page 25]. The 1962 U.S. Standard Atmosphere [page 4] calls
  * this quantity "standard sea-level gravity" and describes it as the
  * acceleration due to the combined effects of gravity and the Earth's rotation
  * (i.e. the centrifugal relief) at geodetic latitude 45 degrees. This constant
  * was adopted in the US in 1935.
- * <p>
+ * </p>
  * 
- * The latitude of 45 degrees was chosen because this is the standard latitude
+ * <p>The latitude of 45 degrees was chosen because this is the standard latitude
  * chosen by the World Meteorological Organization to calibrate barometers. As a
  * note, this value is the solution to Lambert's equation (sea-level gravity as
  * a function of latitude), when the latitude is 45 degrees 32 minutes and 33
- * seconds.
+ * seconds.</p></li>
  * 
  * <li>The Units class defines Units.P0 as the adopted physical constant of
  * standard atmosphere. This quantity equals 101325 Pa. This definition is added
  * to the Units class because the definition of an atmosphere unit ("atm")
  * depends on it. This definition comes from NIST Special Publication 330, the
- * International System of Units (SI), 1991 edition, p15.
+ * International System of Units (SI), 1991 edition, p15.</li>
  * </ul>
  * 
- * Implementation Notes:
- * <p>
+ * <h2>Implementation Notes:</h2>
  * 
  * <ul>
  * <li>The Units class uses the SI system (with base units: meter [distance],
@@ -267,7 +283,7 @@ double _FormalATM_P0();
  * how the variables are stored internally. The user need only remember to
  * specifically state the units on input and output and any conversions will
  * occur automatically.
- * <p>
+ * </li>
  * 
  * <li>The purpose of this class is geared to modeling large engineered systems
  * such as airplanes. As such, many units useful in other disciplines are not
@@ -277,8 +293,7 @@ double _FormalATM_P0();
  * 
  * Please note that since the complete set of seven base units are defined, any
  * other units needed may be defined by the user with the {@link #addUnit
- * addUnit()} method.
- * <p>
+ * addUnit()} method.</li>
  * 
  * <li>Much care was used in defining each of these conversion factors. The full
  * precision from appropriate standards documents was used. However, some units
@@ -287,27 +302,25 @@ double _FormalATM_P0();
  * of double precision operations. For most engineering purposes
  * (see the point above) this is more than good enough; however, someone working
  * with very precise quantities (&gt; 12 significant digits), should be aware of
- * the possibility of differences.
- * <p>
+ * the possibility of differences.</li>
+ * 
  * 
  * <li>The names of many of the conversion factors violate standard naming
  * conventions for class variables. This was deemed acceptable since these names
  * follow the standard capitalization conventions from SI or other standards
  * bodies.
- * <p>
+ * </li>
  * 
  * <li>The Units class is not <i>immutable</i>. However modification of this
  * class is limited. Specifically, there is no mechanism to <i>delete</i> a unit from
  * the Units class, nor is there any ability to <i>change</i> a conversion factor of
  * a unit. These restrictions allow the user to be confident that once a unit is
  * in the Units class, its definition will never change. The unit <b>A</b> will
- * always be an ampere, it will never become an angstrom.
- * <p>
+ * always be an ampere, it will never become an angstrom.</li>
  * 
  * </ul>
  * 
- * References:
- * <p>
+ * <h2>References:</h2>
  * 
  * <ul>
  * <li>National Institute of Standards and Technology (NIST) Special Publication
@@ -385,19 +398,31 @@ public:
 
 	/** Meters per second */
 	static const double mps;
-	/** meters per second */
 	static const double meter_per_second;
 	/** kilometers per hour */
 	static const double kph;
+	static const double kilometer_per_hour;
 	/** knots, (nautical miles per hour) */
 	static const double knot;
-	/** knots, (nautical miles per hour) */
 	static const double kn;
-	/** knots, (nautical miles per hour) */
 	static const double kts;
 	/** feet per minute */
 	static const double fpm;
+	/** feet per second */
+	static const double foot_per_second;
+	/** nautical mile per second */
+	static const double nautical_mile_per_second;
+	/** mile per hour */
+	static const double mph;
 
+	static const double degreeC;
+	static const double degreeF;
+	static const double K;
+	static const double degreeK;
+	static const double degreeR;
+
+
+	
 	/**
 	 * gn is the adopted physical constant of gravity. It is given (out of
 	 * place) here, due to the fact that the definition of the fundamental US

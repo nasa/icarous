@@ -1,8 +1,5 @@
 # ICAROUS PARAMETERS
 
-# TRAFFIC SOURCE (ALL:0, SIM: 1, ADSB: 2, RADAR: 3)
-TRAFFIC_SRC      0.0000000
-
 # DAA Parameters
 # Length (ft), Speed (knots), time (s), climb rate (fpm)
 # Look ahead time
@@ -16,9 +13,6 @@ AL_1_DETECTOR    0.000000
 
 # Early alerting time (s)
 AL_1_E_ALERT_T   15.000000
-
-# Alert region (only place holder)
-AL_1_REGION      0.000000
 
 # spread parameters
 AL_1_SPREAD_ALT  0.000000
@@ -47,20 +41,17 @@ VS_STEP          5.000000
 
 #NMAC parameters
 HORIZONTAL_NMAC  5.000000
-VERTICAL_NMAC    10.000000
-
-# Detector type (place holder)
-LD_CR_DTCN_DET_1 0.000000
+VERTICAL_NMAC    5.500000
 
 
 # Aircraft parameters
-VERTICAL_ACCL    0.000000
-HORIZONTAL_ACCL  4.000000
+VERTICAL_ACCL    1.000000
+HORIZONTAL_ACCL  1.000000
 VERTICAL_RATE    0.000000
 RIGHT_TRK        180.000000
 LEFT_TRK         180.000000
 MAX_ALT          500.000000
-MAX_GS           5.000000
+MAX_GS           30.000000
 MAX_VS           400.000000
 MIN_ALT          0.000000
 MIN_GS           0.200000
@@ -74,13 +65,10 @@ RECOVERY_CRIT    0.000000
 RECOVERY_GS      0.000000
 RECOVERY_TRK     1.000000
 RECOVERY_VS      0.000000
-RECOV_STAB_TIME  1.000000
+RECOV_STAB_TIME  0.000000
 MIN_HORIZ_RECOV  30.000000
-MIN_VERT_RECOV   5.000000
+MIN_VERT_RECOV   10.000000
 
-
-# config file (place holder only)
-ASTAR_DAACONFILE 0.000000
 
 # Enable 3D search in while planning
 ASTAR_ENABLE3D   0.000000
@@ -95,10 +83,10 @@ ASTAR_LOOKAHEAD  5.000000
 ASTAR_RESSPEED   1.000000
 
 # Tracking parameters
-COMMAND          0.000000
-DISTH            1.000000
-DISTV            1.000000
-HEADING          0.000000
+COMMAND          1.000000
+DISTH            2.000000
+DISTV            2.000000
+HEADING          270.000000
 TRACKINGOBJID    0.000000
 PGAINX           0.500000
 PGAINY           0.500000
@@ -112,7 +100,6 @@ RESSPEED         1.000000
 
 OBSBUFFER        1.000000
 RRT_CAPR         5.000000
-RRT_DAACONFILE   0.000000
 RRT_DT           1.000000
 RRT_MACROSTEPS   5.000000
 RRT_NITERATIONS  2000.000000
@@ -121,15 +108,15 @@ SEARCHALGORITHM  1.000000
 
 # Geofence parameters
 # Look ahead time
-LOOKAHEAD        3.000000
+LOOKAHEAD        4.000000
 
 # geofence buffers
-HTHRESHOLD       1.000000
-VTHRESHOLD       1.000000
+HTHRESHOLD       2.000000
+VTHRESHOLD       2.000000
 
 # step back from geofence (if violation imminent)
-HSTEPBACK        2.000000
-VSTEPBACK        2.000000
+HSTEPBACK        20.000000
+VSTEPBACK        20.000000
 
 # Max ceiling
 MAXCEILING       50.000000
@@ -140,3 +127,5 @@ XTRKDEV          1000.000000
 
 # controller gain
 XTRKGAIN         0.600000
+
+RES_TYPE        4.0

@@ -22,6 +22,4 @@ int main() {
 
     std::cout<<" **** DAA **** "<<std::endl;
     std::cout<<tfMonitor.DAA.toString()<<std::endl;
-    std::cout<<" **** KMB **** "<<std::endl;
-    std::cout<<tfMonitor.KMB.outputString()<<std::endl;
 }

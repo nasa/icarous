@@ -6,7 +6,7 @@
  *
  * Conversion to internal units: meters, kilogrames, seconds, radians, ...
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -164,6 +164,11 @@ static double _FormalATM_foot_per_second() {
 	static double ans = _FormalATM_ft() / _FormalATM_s();
 	return ans;
 }
+static double _FormalATM_NMps() {
+	static double ans = _FormalATM_NM() / _FormalATM_s();
+	return ans;
+}
+
 
 static double _FormalATM_meter_per_second2() {
 	static double ans = _FormalATM_m() / (_FormalATM_s() * _FormalATM_s());
@@ -215,6 +220,23 @@ static double _FormalATM_atm() {
 	return ans;
 }
 
+static double _FormalATM_degreeC() {
+  static double res = -1.0;
+  return res;
+}
+static double _FormalATM_degreeF() {
+  static double res = -2.0;
+  return res;
+}
+static double _FormalATM_K() {
+  static double res = 1.0;
+  return res;
+}
+static double _FormalATM_degreeR() {
+  static double res = 1.0 / 1.8;
+  return res;
+}
+
 const double Units::unspecified = Units::getFactor("unspecified");
 const double Units::unitless = Units::getFactor("unitless");
 const double Units::internal = Units::getFactor("internal");
@@ -241,9 +263,14 @@ const double Units::pound_mass = Units::getFactor("pound_mass");
 const double Units::mps = Units::getFactor("mps");
 const double Units::meter_per_second = Units::getFactor("meter_per_second");
 const double Units::kph = Units::getFactor("kph");
+const double Units::kilometer_per_hour = Units::getFactor("kilometer_per_hour");
 const double Units::knot = Units::getFactor("knot");
 const double Units::kn = Units::getFactor("kn");
+const double Units::kts = Units::getFactor("kts");
 const double Units::fpm = Units::getFactor("fpm");
+const double Units::foot_per_second = Units::getFactor("foot_per_second");
+const double Units::nautical_mile_per_second = Units::getFactor("nautical_mile_per_second");
+const double Units::mph = Units::getFactor("mph");
 
 const double Units::meter_per_second2 = Units::getFactor("meter_per_second2");
 const double Units::gn = _FormalATM_gn();
@@ -254,6 +281,12 @@ const double Units::pascal = Units::getFactor("pascal");
 
 const double Units::P0 = _FormalATM_P0();
 const double Units::atm = Units::getFactor("atm");
+
+const double Units::degreeC = Units::getFactor("degreeC");
+const double Units::degreeF = Units::getFactor("degreeF");
+const double Units::K = Units::getFactor("K");
+const double Units::degreeK = Units::getFactor("K");
+const double Units::degreeR = Units::getFactor("degreeR");
 
 // Converts value canonical units to [symbol] units
 double Units::getFactor(const std::string& symbolp) {
@@ -319,6 +352,8 @@ double Units::getFactor(const std::string& symbolp) {
 		return _FormalATM_foot_per_second();
 	} else if (symbol == "mph") {
 		return _FormalATM_mph();
+	} else if (symbol == "NM/s") {
+		return _FormalATM_NMps();
 	} else if (symbol == "m/s") {
 		return _FormalATM_mps();
 
@@ -344,6 +379,15 @@ double Units::getFactor(const std::string& symbolp) {
 	} else if (symbol == "Pa") {
 		return _FormalATM_pascal();
 
+	} else if (symbol == "degreeC") {
+		return _FormalATM_degreeC();
+	} else if (symbol == "degreeF") {
+		return _FormalATM_degreeF();
+	} else if (symbol == "K") {
+		return _FormalATM_K();
+	} else if (symbol == "degreeR") {
+		return _FormalATM_degreeR();
+
 	} else if (symbol == "internal") {
 		return _FormalATM_internal();
 	} else if (symbol == "unspecified") {
@@ -362,7 +406,7 @@ const std::string Units::canonical(const std::string& unit) {
 	if (unit == "unspecified")
 		return unit;
 	if (unit == "unitless" || unit == "none")
-		return unit;
+		return "unitless";
 	if (unit == "internal")
 		return unit;
 	if (unit == "m" || unit == "meter" || unit == "metre")
@@ -416,17 +460,18 @@ const std::string Units::canonical(const std::string& unit) {
 	if (unit == "slug")
 		return "slug";
 
+	if (unit == "m/s" || unit == "mps" || unit == "meter_per_second")
+		return "m/s";
 	if (unit == "kph" || unit == "km/h" || unit == "kilometer_per_hour" || unit == "kilometre_per_hour")
 		return "km/h";
 	if (unit == "knot" || unit == "kn" || unit == "kts")
 		return "kn";
-	if (unit == "fpm" || unit == "ft/min" || unit == "foot/min"
-			|| unit == "feet/min")
+	if (unit == "fpm" || unit == "ft/min" || unit == "foot/min"	|| unit == "feet/min")
 		return "fpm";
-	if (unit == "m/s" || unit == "mps" || unit == "meter_per_second")
-		return "m/s";
 	if (unit == "ft/s" || unit == "fps" || unit == "foot_per_second" || unit == "feet_per_second")
 		return "ft/s";
+	if (unit == "nautical_mile_per_second" || unit == "NM/s" || unit == "nmi/s")
+		return "NM/s";
 	if (unit == "mph")
 		return "mph";
 
@@ -451,6 +496,15 @@ const std::string Units::canonical(const std::string& unit) {
 		return "atm";
 	if (unit == "pascal" || unit == "Pa")
 		return "Pa";
+
+	if (unit == "degreeF") 
+	  return "degreeF";
+	if (unit == "degreeC")
+		return "degreeC";
+	if (unit == "degreeR" || unit == "Rankine")
+		return "degreeR";
+	if (unit == "K" || unit == "degreeK")
+		return "K";
 
 	return "UNKNOWN_UNIT_" + unit;
 
@@ -478,16 +532,16 @@ bool Units::isCompatible(const std::string& unit1p, const std::string& unit2p) {
 	} else if (unit1 == "kg" || unit1 == "slug" || unit1 == "lbm") {
 		return unit2 == "kg" || unit2 == "slug" || unit2 == "lbm";
 	} else if (unit1 == "kph" || unit1 == "kn" || unit1 == "fpm"
-			|| unit1 == "m/s" || unit1 == "mph" || unit1 == "ft/s") {
+			|| unit1 == "m/s" || unit1 == "mph" || unit1 == "ft/s" || unit1 == "NM/s") {
 		return unit2 == "kph" || unit2 == "kn" || unit2 == "fpm"
-				|| unit2 == "m/s" || unit2 == "mph" || unit2 == "ft/s";
+				|| unit2 == "m/s" || unit2 == "mph" || unit2 == "ft/s" || unit2 == "NM/s";
 	} else if (unit1 == "m/s^2" || unit1 == "G" || unit1 == "ft/s^2") {
 		return unit2 == "m/s^2" || unit2 == "G" || unit2 == "ft/s^2";
 	} else if (unit1 == "N" || unit1 == "lbf") {
 		return unit2 == "N" || unit2 == "lbf";
 	} else if (unit1 == "atm" || unit1 == "Pa") {
 		return unit2 == "atm" || unit2 == "Pa";
-	} else if (unit1 == "unitless" || unit1 == "none") {
+	} else if (unit1 == "unitless") {
 		return unit2 == "unitless";
 	}
 	return false;
@@ -496,28 +550,40 @@ bool Units::isCompatible(const std::string& unit1p, const std::string& unit2p) {
 
 // Converts value canonical units to [symbol] units
 double Units::to(const std::string& symbol, double value) {
-	return value / Units::getFactor(symbol);
+  return to(Units::getFactor(symbol), value);
 }
 
 // Converts value canonical units to [symbol] units
 double Units::to(const double symbol, const double value) {
-	return value / symbol;
+  if (symbol == degreeC) {
+    return value/Units::K - 273.15;
+  } else if (symbol == degreeF) {
+    return value/Units::degreeR - (273.15 * 1.8 - 32.0); 
+  } else {
+    return value / symbol;
+  }
 }
 
 double Units::from(const std::string& symbol, double value) {
-	return Units::getFactor(symbol) * value;
+  return from(Units::getFactor(symbol), value);
 }
 
 double Units::from(const double symbol, const double value) {
-	return symbol * value;
+  if (symbol == degreeC) {
+    return (value+273.15)*Units::K;
+  } else if (symbol == degreeF) {
+    return (value + (273.15 * 1.8 - 32.0)) * Units::degreeR; 
+  } else {
+    return value * symbol;
+  }
 }
 
 double Units::fromInternal(const std::string& defaultUnits, const std::string& units, double value) {
-	if (units == "unspecified") {
-		return from(getFactor(defaultUnits), value);
-	} else {
-		return value;
-	}
+  if (units == "unspecified") {
+    return from(getFactor(defaultUnits), value);
+  } else {
+    return value;
+  }
 }
 
 std::string Units::str(const std::string& symbol, double value) {
@@ -604,7 +670,8 @@ double getd(string str, double def) {
 double Units::parse(const string& defaultUnitsFrom, const std::string& s, double default_value) {
 	double ret = 0.0;
 	std::smatch m;
-	std::regex numre("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([/^_a-zA-Z0-9]*)\\s*\\]?\\s*$"); //(.*)");   We want to add this unicode character \u00B0 (the degree symbol) to the units part
+	std::regex numre("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-/^_a-zA-Z0-9]*).*"); //(.*)");   We want to add this unicode character \u00B0 (the degree symbol) to the units part
+//	std::regex numre("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([/^_a-zA-Z0-9]*)\\s*\\]?\\s*$"); //(.*)");   We want to add this unicode character \u00B0 (the degree symbol) to the units part
 	//Java: Pattern.compile("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-\\/^_a-zA-Z0-9\\u00B0]*).*");
 
 	std::regex_match(s, m, numre);
@@ -650,7 +717,8 @@ double Units::parse(const string& defaultUnitsFrom, const std::string& s, double
 std::string Units::parseUnits(const std::string& s) {
 	std::string unit = "unspecified";
 	std::smatch m;
-	std::regex numre("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([/^_a-zA-Z0-9]*)\\s*\\]?\\s*$"); //(.*)");   We want to add this unicode character \u00B0 (the degree symbol) to the units part
+	std::regex numre("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-/^_a-zA-Z0-9]*).*"); //(.*)");   We want to add this unicode character \u00B0 (the degree symbol) to the units part
+//	std::regex numre("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([/^_a-zA-Z0-9]*)\\s*\\]?\\s*$"); //(.*)");   We want to add this unicode character \u00B0 (the degree symbol) to the units part
 	//Java: Pattern.compile("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-\\/^_a-zA-Z0-9\\u00B0]*).*");
 	std::regex_match(s, m, numre);
 	std::smatch group(m);

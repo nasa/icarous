@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -18,16 +18,27 @@
 #include "format.h"
 #include <string>
 #include <vector>
+//#include "Debug.h"
+
 /**
  * A basic polygon that describes a volume.  This volume has a flat bottom and top 
  * (specified as altitude values).  Points describe the cross-section area vertices in
  * a consistently clockwise (or consistently counter-clockwise) manner.  The cross-section
  * need not be convex, but an "out of order" listing of the vertices will result in edges 
- * that cross, and will cause several calculations to fail (with no warning).
+ * that cross, and will cause several calculations to fail (with no warning).<p>
  * 
  * A SimplePoly sets the altitude for all its points to be the _bottom_ altitude,
  * while the top is stored elsewhere as a single value.  The exact position for "top"
- * vertices is computed on demand.
+ * vertices is computed on demand.<p>
+ * 
+ * The cross-section must be a simple polygon, that is it allows for non-convex areas, but
+ * vertices and edges may not overlap or cross.  Vertices may be ordered in either a clockwise
+ * or counterclockwise manner.<p>
+ * 
+ * (A vertex-complete polygon allows for vertices and edges to overlap but not cross, while
+ * a general polygon allows for edges to cross.)<p>
+ * 
+ * Point indices are based on the order they are added.<p>
  * 
  * Note: polygon support is experimental and the interface is subject to change!
  *
@@ -38,278 +49,322 @@ using std::vector;
 using std::string;
 using std::endl;
 
+const bool SimplePoly::move_constant_shape = false;
+
+/**
+ * Constructs an empty SimplePoly.
+ */
 SimplePoly::SimplePoly() {
-	bottomTopSet = false;
-	top = 0;
-	bottom = 0;
-	points.reserve(6);
-	boundingCircleDefined = false;
+	isLatLon_b = false;
+	p3d = Poly3D();
+	p3dll = Poly3DLL();
+	init();
+}
+
+void SimplePoly::init() {
+	//boundingCircleDefined = false;
 	centroidDefined = false;
 	averagePointDefined = false;
-	maxRad = -1.0;
-	bRad = -1.0;
+	aPos = Position::ZERO_LL();
+//	bPos = Position::ZERO_LL();
 	cPos = Position::ZERO_LL();
 	clockwiseSum = 0;
 }
 
+
+
+/**
+ * Constructor for a SimplePoly with predefined top and bottom altitudes.
+ *
+ * @param b Bottom altitude
+ * @param t Top altitude
+ */
 SimplePoly::SimplePoly(double b, double t) {
-	bottomTopSet = true;
-	top = t;
-	bottom = b;
-	points.reserve(6);
-	boundingCircleDefined = false;
-	centroidDefined = false;
-	averagePointDefined = false;
-	maxRad = -1.0;
-	bRad = -1.0;
-	cPos = Position::ZERO_LL();
-	clockwiseSum = 0;
+	isLatLon_b = false;
+	p3d = Poly3D(b,t);
+	p3dll = Poly3DLL(b,t);
+	init();
 }
 
+/**
+ * Constructor for a SimplePoly with predefined top and bottom altitudes.
+ *
+ * @param b Bottom altitude
+ * @param t Top altitude
+ * @param units units to interpret both altitudes
+ */
 SimplePoly::SimplePoly(double b, double t, const std::string& units) {
-	bottomTopSet = true;
-	top = Units::from(units,t);
-	bottom = Units::from(units,b);
-	points.reserve(6);
-	boundingCircleDefined = false;
-	centroidDefined = false;
-	averagePointDefined = false;
-	maxRad = -1.0;
-	bRad = -1.0;
-	cPos = Position::ZERO_LL();
+	isLatLon_b = false;
+	double top = Units::from(units,t);
+	double bottom = Units::from(units,b);
+	p3d = Poly3D(bottom,top);
+	p3dll = Poly3DLL(bottom,top);
+	init();
 }
 
 
+/**
+ * Create a deep copy of a SimplePoly
+ *
+ * @param p Source poly.
+ */
 SimplePoly::SimplePoly(const SimplePoly& p) {
-	bottomTopSet = p.bottomTopSet;
-	bottom = p.bottom;
-	top = p.top;
-	boundingCircleDefined = false;
-	centroidDefined = false;
-	averagePointDefined = false;
-	bPos = p.bPos;
-	cPos = p.cPos;
-	aPos = p.aPos;
-	maxRad = p.maxRad;
-	bRad = p.bRad;
-
-	for(int i = 0; i < p.size(); i++) {
-		addVertex(p.getVertex(i));
-	}
+	isLatLon_b = p.isLatLon_b;
+	p3d = Poly3D(p.p3d);
+	p3dll = Poly3DLL(p.p3dll);
+	init();
 }
 
-bool SimplePoly::equals(const SimplePoly& p) const {
-	bool ret = bottom == p.bottom && top == p.top;
-	if (size() != p.size()) return false;
-	for (int i = 0; i < size(); i++) {
-		if (getVertex(i) != p.getVertex(i)) return false;
-	}
-	return ret;
-}
-
-// this uses euclidean coordinates
+/**
+ * Create a SimplePoly from a Poly3D.  This SimplePoly will use Euclidean coordinates.
+ * @param p3 3D polygon
+ * @return a new SimplePoly
+ */
 SimplePoly SimplePoly::make(const Poly3D& p3) {
-	SimplePoly sp = SimplePoly();
+	SimplePoly sp; // = SimplePoly();
 	sp.setBottom(p3.getBottom());
 	sp.setTop(p3.getTop());
 	for(int i = 0; i < p3.size(); i++) {
-		Position v = Position(Vect3(p3.getVertex(i),p3.getBottom()));
-		sp.addVertex(v);
+		Position v(Vect3(p3.get2D(i),p3.getBottom()));
+		sp.add(v);
+	}
+	return sp;
+}
+
+/**
+ * Create a SimplePoly from a Poly3D.  This SimplePoly will use Euclidean coordinates.
+ * @param p3 3D polygon
+ * @return a new SimplePoly
+ */
+SimplePoly SimplePoly::make(const Poly3DLL& p3) {
+	SimplePoly sp; //  = SimplePoly();
+	sp.setBottom(p3.getBottom());
+	sp.setTop(p3.getTop());
+	for(int i = 0; i < p3.size(); i++) {
+		Position v(p3.get(i));
+		sp.add(v);
+	}
+	return sp;
+}
+
+
+/** return a aPolygon3D version of this */
+Poly3D SimplePoly::poly3D(const EuclideanProjection& proj) const {
+	std::vector<Position> points = getVertices();
+	Poly3D p3;
+	if (isLatLon()) {
+		//		p3 = Poly3D();
+		for (int i = 0; i < (int) points.size(); i++) {
+			Position p = points[i];
+			p3.add(proj.project(p).vect2());
+		}
+	} else {
+		//		p3 = Poly3D();
+		for (int i = 0; i < (int) points.size(); i++) {
+			Position p = points[i];
+			p3.add(p.vect3().vect2());
+		}
+	}
+	p3.setBottom(getBottom());
+	p3.setTop(getTop());
+	return p3;
+}
+
+
+//	/** **********DEBUG*******************
+//	 * Create a SimplePoly from a Poly3D.  This SimplePoly will use Euclidean coordinates.
+//	 * @param p3 3D polygon
+//	 * @return a new SimplePoly
+//	 */
+//	SimplePoly make(Poly2DLL p2) {
+//		SimplePoly sp = new SimplePoly();
+//		sp.setBottom(0.0);
+//		sp.setTop(1E10);
+//		for(int i = 0; i < p2.size(); i++) {
+//			Position v(p2.get(i));
+//			sp.add(v);
+//		}
+//		return sp;
+//	}
+//
+
+
+/**
+ * Create a SimplePoly from a std::vector<LatLonAlt>.
+ * @return a new SimplePoly
+ */
+SimplePoly SimplePoly::make(std::vector<LatLonAlt> pList, double b, double t) {
+	SimplePoly sp(b,t);
+	for (int j = 0; j < (int) pList.size(); j++) {
+		sp.add(pList[j]);
+	}
+	return sp;
+}
+
+/**
+ * Create a SimplePoly from a std::vector<Position>.
+ * @return a new SimplePoly
+ */
+SimplePoly SimplePoly::mk(std::vector<Position> pList, double b, double t) {
+	SimplePoly sp(b,t);
+	for (int j = 0; j < (int) pList.size(); j++) {
+		sp.add(pList[j]);
+	}
+	return sp;
+}
+
+
+bool SimplePoly::equals(const SimplePoly& p) const {
+	bool rtn = (isLatLon() == p.isLatLon());
+	//fpln(" $$$$$$$$$$$$ equals rtn = "+rtn+" "+isLatLon()+" "+p.isLatLon());
+	if (rtn) {
+		if (isLatLon()) {
+			rtn = p3dll.equals(p.p3dll);
+		} else {
+			rtn = p3d.equals(p.p3d);
+		}
+	}
+	return rtn;
+}
+
+
+/**
+ * Returns the position of the (bottom) point with index n.
+ * If n is not a valid index, this returns the centroid position.  // TODO: Huh?
+ *
+ * NOTE: The altitude component of the nth position is ambiguous.  This method returns
+ * the bottom altitude of the 3D object.
+ *
+ * @param n index
+ * @return position
+ */
+Position SimplePoly::getVertex(int n) const {
+	if (n >= 0 && n < size()) {
+		if (isLatLon_b) {
+			return Position(p3dll.get(n).mkAlt(getBottom()));
+		} else {
+			return Position(Vect3(p3d.get2D(n),getBottom()));
+		}
+	}
+	return Position::INVALID();
+}
+
+std::vector<Position> genList_l(const std::vector<LatLonAlt>& lList) {
+	std::vector<Position> p; // = std::vector<Position>();
+	for (int i = 0; i < (int) lList.size(); i++) {
+		p.push_back(Position(lList[i]));
+	}
+	return p;
+}
+
+std::vector<Position> genList_v(const std::vector<Vect2>& vList) {
+	std::vector<Position> p; // = new std::vector<Position>();
+	for (int i = 0; i < (int) vList.size(); i++) {
+		p.push_back(Position(Vect3(vList[i],0.0)));
+	}
+	return p;
+}
+
+
+std::vector<Position> SimplePoly::getVertices() const {
+	if (isLatLon_b) {
+		return genList_l(p3dll.getVerticesRef());   // TODO: RWB is this ok?
+	} else {
+		return genList_v(p3d.getVerticesRef());
+	}
+}
+
+
+/**
+ * Create a SimplePoly from a Poly3D.  This SimplePoly will use latlon coordinates .
+ * @param p3 3D polygon
+ * @param proj projection to use to interpret the points in the 3D polygon
+ * @return a new SimplePoly
+ */
+//@Deprecated
+SimplePoly SimplePoly::make(const Poly3D& p3, const EuclideanProjection& proj) {
+	//SimplePoly sp;
+	//sp.setBottom(p3.getBottom());
+	//sp.setTop(p3.getTop());
+	SimplePoly sp(p3.getBottom(),p3.getTop());
+	for(int i = 0; i < p3.size(); i++) {
+		Position v(proj.inverse(p3.get2D(i), p3.getBottom()));
+		sp.add(v);
 	}
 	return sp;
 }
 
 
 /**
- * Create a SimplePoly from a Poly3D.  This SimplePoly will use latlon coordinates if proj != null, otherwise it will use Euclidean coordinates.
+ * Determine if the polygon contains geodetic points.
+ * @return True if this SimplePoly contains any geodetic points. If size is 0, returns false.
  */
-SimplePoly SimplePoly::make(const Poly3D& p3, const EuclideanProjection& proj) {
-	SimplePoly sp = SimplePoly();
-	sp.setBottom(p3.getBottom());
-	sp.setTop(p3.getTop());
-	for(int i = 0; i < p3.size(); i++) {
-		Position v = Position(Vect3(p3.getVertex(i),p3.getBottom()));
-		//if (proj != NULL) {
-		v = Position(proj.inverse(p3.getVertex(i), p3.getBottom()));
-		//}
-		sp.addVertex(v);
-	}
-	return sp;
+bool SimplePoly::isLatLon() const{
+	return isLatLon_b;
 }
 
-bool SimplePoly::isClockwise() const {
-	if (Util::almost_equals(clockwiseSum, 0.0)) {
-		for (int i = 0; i < (int) points.size(); i++) {
-			int h = i-1;
-			int j = i+1;
-			if (h < 0) h = points.size()-1;
-			if (j == (int) points.size()) j = 0;
-			double trk1 = points[h].finalVelocity(points[i], 100).trk();
-			double trk2 = points[i].initialVelocity(points[j], 100).trk();
-			double angle = Util::to_pi(Util::turnDelta(trk1, trk2, true));
-			clockwiseSum += angle;
-		}
-	}
-	return clockwiseSum > 0.0;
-}
-
-bool SimplePoly::isLatLon() const {
-	return points.size() > 0 && points[0].isLatLon();
-}
-
+/**
+ * Number of points
+ * @return Number of points in this SimplePoly
+ */
 int SimplePoly::size() const {
-	return points.size();
+	if (isLatLon_b) return p3dll.size();
+	else return p3d.size();
 }
 
-// area and centroid courtesy of Paul Bourke (1988) http://paulbourke.net/geometry/polyarea/
-// these are for non self-intersecting polygons
-// this calculation assumes that point 0 = point n (or the start point is counted twice)
-double SimplePoly::signedArea(double dx, double dy) const {
-	double a = 0;
-	int sz = points.size()-1;
-	double xorig = points[0].x();
-	for (int i = 0; i <= sz; i++) {
-		double x0 = points[i].x();
-		double x1 = (i==sz ? points[0].x() : points[i+1].x()) - dx;
-		double y1 = (i==sz ? points[0].y() : points[i+1].y()) - dy;
-		// correct for date line wrap around
-		if (isLatLon()) {
-			if (x0-xorig > Pi) {
-				x0 = x0 - 2*Pi;
-			} else if (x0-xorig < -Pi) {
-				x0 = x0 + 2*Pi;
-			}
-			if (x1-xorig > Pi) {
-				x1 = x1 - 2*Pi;
-			} else if (x1-xorig < -Pi) {
-				x1 = x1 + 2*Pi;
+/**
+ * Add vertices to a polygon until it has a specified number.  This will not remove vertices if there are already more than the desired number.  Each new vertex will be added the to current longest edge.
+ * @param sp1 Polygon
+ * @param sz desired number of vertices
+ */
+void SimplePoly::increaseVertices(int sz) {
+	while (size() < sz) {
+		int ii = 0;
+		double d = getVertex(0).distanceH(getVertex(size()-1));
+		Position p = getVertex(0).midPoint(getVertex(size()-1));
+		for (int i = 0; i < size()-1; i++) {
+			double d_i = getVertex(i).distanceH(getVertex(i+1));
+			if (d_i > d) {
+				p = getVertex(i).midPoint(getVertex(i+1));   // midpoint of shortest leg
+				d = d_i;
+				ii = i+1; // where to insert
 			}
 		}
-		a = a + (x0*y1 - x1*points[i].y());
-	}
-//	a = a + (points[sz].x()*points[0].y() - points[0].x()*points[sz].y()); // now do the 1st point again
-	return 0.5*a;
-}
-
-
-void SimplePoly::calcCentroid() const {
-	centroidDefined = true;
-	Position bbcent = getBoundingRectangle().centerPos();
-	double dx = bbcent.x();
-	double dy = bbcent.y();
-	double a = signedArea(dx, dy);
-	// if a point or line, use old method
-	if (a == 0) {
-		Vect2 v2 = Vect2::ZERO();
-		for (int i = 0; i < (signed)points.size(); i++) {
-			v2 = v2.Add(points[i].vect2());
-		}
-		v2 = v2.Scal(1.0/points.size());
-		double z = (top+bottom)/2.0;
-		if (points[0].isLatLon()) {
-			LatLonAlt lla = LatLonAlt::mk(v2.y, v2.x, z);
-			cPos = Position(lla);
-		} else {
-			cPos = Position(Vect3(v2,z));
-		}
-	} else {
-		// Paul's calculation
-		double x = 0;
-		double y = 0;
-		double xorig = points[0].x();
-		int sz = points.size()-1;
-		for (int i = 0; i <= sz; i++) {
-			double x0 = points[i].x() - dx;
-			double x1 = (i == sz ? points[0].x() : points[i+1].x()) -dx;
-			double y0 = points[i].y() - dy;
-			double y1 = (i == sz ? points[0].y() : points[i+1].y()) - dy;
-			// correct for date line wrap around
-			if (isLatLon()) {
-				if (x0-xorig > Pi) {
-					x0 = x0 - 2*Pi;
-				} else if (x0-xorig < -Pi) {
-					x0 = x0 + 2*Pi;
-				}
-				if (x1-xorig > Pi) {
-					x1 = x1 - 2*Pi;
-				} else if (x1-xorig < -Pi) {
-					x1 = x1 + 2*Pi;
-				}
-			}
-			x = x + (x0+x1)*(x0*y1-x1*y0);
-			y = y + (y0+y1)*(x0*y1-x1*y0);
-		}
-//		// now the last and first
-//		double x0 = points[sz].x();
-//		double x1 = points[0].x();
-//		double y0 = points[sz].y();
-//		double y1 = points[0].y();
-//		x = x + (x0+x1)*(x0*y1-x1*y0);
-//		y = y + (y0+y1)*(x0*y1-x1*y0);
-
-		x = x/(6*a) + dx;
-		y = y/(6*a) + dy;
-
-		cPos = points[0].mkX(x).mkY(y).mkZ((top+bottom)/2);
-		if (!getBoundingRectangle().contains(cPos)) {
-			// in latlon with small polygons this sometimes returns an incorrect value
-//			f.pln("WARNING SimplePoly.calcCentroid has encountered a numeric error.  Returning averagePoint instead. "+boundingCircleRadius());
-//			cPos = averagePoint();
-			cPos = getBoundingRectangle().centerPos();
-		}
+		insert(ii,p);
 	}
 }
 
-// if we have a more accurate bounding circle than one based on the centroid
-//void SimplePoly::calcBoundingCircleCenter() const {
-//	boundingCircleDefined = true;
-//	double maxD = 0.0;
-//	Position p1 = points[0];
-//	Position p2 = points[0];
-//	for (int i = 0; i < (signed)points.size(); i++) {
-//		Position p3 = points[i];
-//		Position p4 = maxDistPair(points[i]);
-//		double d = p3.distanceH(p4);
-//		if (d > maxD) {
-//			maxD = d;
-//			p1 = p3;
-//			p2 = p4;
-//		}
-//	}
-//	double r = maxD/2;
-//	double f = 0.5;
-//	if (p1.isLatLon()) {
-//		bPos = Position(GreatCircle::interpolate(p1.lla(),p2.lla(),f));
-//	} else {
-//		NavPoint np1 = NavPoint(p1,0);
-//		NavPoint np2 = NavPoint(p2,1);
-//		bPos = np1.linear(np1.initialVelocity(np2), 0.5).position();
-//	}
-//
-//	// now move along the segment to the farthest from  the current cPos
-//	p2 = maxDistPair(bPos);
-//	double d = p2.distanceH(bPos);
-//	if (d > r) {
-//		f = (d - r)/d;	// fraction of distance along new segment
-//		if (p2.isLatLon()) {
-//			bPos = Position(GreatCircle::interpolate(bPos.lla(),p2.lla(),f));
-//		} else {
-//			NavPoint np1 = NavPoint(bPos,0);
-//			NavPoint np2 = NavPoint(p2,1);
-//			bPos = np1.linear(np1.initialVelocity(np2), 0.5).position();
-//		}
-//	}
-//}
-
-
-Position SimplePoly::centroid() const {
+/**
+ * Return this centroid of this volume.
+ * Note: if sides are small (less than about 10^-5 in internal units), there may be errors in the centroid calculations
+ * @return The centroid position of this volume.
+ */
+Position SimplePoly::centroid(){
 	if (!centroidDefined) {
-		calcCentroid();
+		if (isLatLon_b) {
+			cPos = Position(p3dll.centroid());
+		} else {
+			cPos = Position(p3d.centroid());
+		}
+		centroidDefined = true;
 	}
 	return cPos;
 }
 
-Position SimplePoly::avgPos(const std::vector<Position>& points, const std::vector<double>& wgts) const {
+/**
+ * Area in square meters.
+ */
+double SimplePoly::area(){
+	if (isLatLon_b) {
+		return p3dll.area();
+	} else {
+		return p3d.area();
+	}
+}
+
+
+
+Position SimplePoly::avgPos(const std::vector<Position>& points, const std::vector<double>& wgts) {
 	// there can be numeric problems with these calculations if sides are small (multiplying small numbers loses precision)
 	// shift points to around the origin (and then back) in an attempt to alleviate these.
 	Position bbcent = getBoundingRectangle().centerPos();
@@ -347,30 +402,22 @@ Position SimplePoly::avgPos(const std::vector<Position>& points, const std::vect
 }
 
 
+
 // note: this may fail over poles!
-Position SimplePoly::averagePoint() const {
+/**
+ * Return the average of all vertices.  Note this is not the same as the centroid!  This will, however, have the nice property of having
+ * a constant velocity when dealing with a morphing polygon.
+ * @return average of all vertices
+ */
+Position SimplePoly::averagePoint()  {
 	if (!averagePointDefined) {
-		Position bbcent = getBoundingRectangle().centerPos();
-		double dx = bbcent.x();
-		double dy = bbcent.y();
-		double x = 0;
-		double y = 0;
-		double xorig = points[0].x()-dx;
-		for (int i = 0; i < (int) points.size(); i++) {
-			double x0 = points[i].x()-dx;
-			double y0 = points[i].y()-dy;
-			// correct for date line wrap around
-			if (isLatLon()) {
-				if (x0-xorig > Pi) {
-					x0 = x0 - 2*Pi;
-				} else if (x0-xorig < -Pi) {
-					x0 = x0 + 2*Pi;
-				}
-			}
-			x += x0;
-			y += y0;
+		//aPos = avgPos(points, null).mkZ((top+bottom)/2);
+		if (isLatLon_b) {
+			aPos = Position(p3dll.averagePoint());
+		} else {
+			aPos = Position(p3d.averagePoint());
 		}
-		aPos = points[0].mkX(dx+x/points.size()).mkY(dy+y/points.size()).mkZ((top+bottom)/2);
+		//aPos = aPos.mkZ((top+bottom)/2;
 		averagePointDefined = true;
 	}
 	return aPos;
@@ -379,37 +426,48 @@ Position SimplePoly::averagePoint() const {
 
 // returns the center of a bounding circle
 // calculates it and radius, if necessary
-Position SimplePoly::boundingCircleCenter() const {
+/**
+ * Returns the center of a circle completely containing this SimplePoly.  This is not necessarily the minimal bounding circle.
+ * @return center of polygon
+ */
+Position SimplePoly::boundingCircleCenter()  {
 	return centroid();
 }
 
-/** Returns true if this polygon is convex */
-bool SimplePoly::isConvex() {
-	bool ret = true;
-	if (points.size() > 2) {
-		double a1 = points[points.size()-1].track(points[0]);
-		double a2 = points[0].track(points[1]);
-		int pdir = Util::turnDir(a1, a2);
-		for (int i = 0; i < (int) points.size()-2; i++) {
-			a1 = a2;
-			a2 = points[i+1].track(points[i+2]);
-			int dir = Util::turnDir(a1, a2);
-			ret = ret && (pdir == 0 || dir == pdir);
-			if (dir != 0) pdir = dir;
-		}
+
+/** Returns true if this polygon is convex
+ * @return true, if convex
+ */
+bool SimplePoly::isConvex() const {
+	bool rtn;
+	if (isLatLon_b) {
+		rtn = p3dll.isConvex();
+	} else {
+		rtn = p3d.isConvex();
 	}
-	return ret;
+	return rtn;
 }
 
-
-double SimplePoly::boundingCircleRadius() const {
+/**
+ * Returns the radius of a circle completely containing this SimplePoly.  This is not necessarily the minimal bounding circle.
+ * @return radius of bounding circle
+ */
+double SimplePoly::boundingCircleRadius() {
 	return maxRadius();
 }
+
+
 
 Position SimplePoly::maxDistPair(const Position& p) const {
 	double maxD = 0.0;
 	Position p2 = p;
-	for (int i = 0; i < (signed)points.size(); i++) {
+	std::vector<Position> points;
+	if (isLatLon_b) {
+		points = genList_l(p3dll.getVerticesRef());
+	} else {
+		points = genList_v(p3d.getVerticesRef());
+	}
+	for (int i = 0; i < (int) points.size(); i++) {
 		double d = points[i].distanceH(p);
 		if (d > maxD) {
 			p2 = points[i];
@@ -420,319 +478,377 @@ Position SimplePoly::maxDistPair(const Position& p) const {
 }
 
 
+/**
+ * Returns the max horizontal distance between any vertex and the centroid
+ * @return radius
+ */
+double SimplePoly::maxRadius() {
+	Position c = centroid();
+	Position p = maxDistPair(c);
+	//fpln("SimplePoly,maxRadius "+this);
+	//fpln("SimplePoly,maxRadius c="+c+" p="+p+" dist="+Units::str("nmi", c.distanceH(p)));
+	return c.distanceH(p);
+}
 
 double SimplePoly::apBoundingRadius() {
-	if (bRad <= 0.0) {
-		Position c = averagePoint();
-		Position p = maxDistPair(c);
-		bRad = c.distanceH(p);
-	}
-	return bRad;
+	Position c = averagePoint();
+	Position p = maxDistPair(c);
+	return c.distanceH(p);
 }
 
 
-bool SimplePoly::addVertex(const Position& p) {
-	// error checking
-	if (p.isInvalid()) {
+/**
+ * Add a new vertex to the SimplePoly.  Points should be added in a consistently clockwise or consistently counter-clockwise manner.
+ * This currently does NOT set the Z component of the point
+ * @param p position to add
+ * @return false, if an error is detected (duplicate or invalid vertex), true otherwise.
+ */
+bool SimplePoly::add(const Position& p){
+	//fpln(" $$$ SimplePoly.add p = "+p);
+	if (p.isInvalid()){ //|| points.contains(p)) {
+		// error -- no duplicate points allowed
+		//fpln("SimplePoly.add error: bad point "+p);
+		//			Debug.halt();
 		return false;
 	}
-	//	 for (int i = 0; i < (int) points.size(); i++) {
-	//		 if (points[i] == p) return false;
-	//	 }
-
-	clockwiseSum = 0;
-	centroidDefined = false;
-	boundingCircleDefined = false;
-	averagePointDefined = false;
-	maxRad = -1.0;
-	bRad = -1.0;
-	if (points.size() < 1 && !bottomTopSet) {
-		top = bottom = p.alt();
-		bottomTopSet = true;
-	}
-	points.push_back(p.mkAlt(bottom));
-	return true;
-}
-
-
-// return the max horizontal distance between a vertex and the centroid
-double SimplePoly::maxRadius() const {
-	if (maxRad <= 0.0) {
-		Position c = centroid();
-		Position p = maxDistPair(c);
-		maxRad = c.distanceH(p);
-	}
-	return maxRad;
-}
-
-
-
-void SimplePoly::remove(int n) {
-	centroidDefined = false;
-	boundingCircleDefined = false;
-	averagePointDefined = false;
-	maxRad = -1.0;
-	bRad = -1.0;
-	clockwiseSum = 0;
-	if (n >= 0 && n < (signed)points.size()) {
-		points.erase(points.begin()+n);
-	}
-}
-
-/** This currently does NOT set the Z component of the point (unless it is the first point) */
-bool SimplePoly::setVertex(int n, Position p) {
-	// error checking
-	if (p.isInvalid()) {
-		return false;
-	}
-	Position pb = p.mkAlt(bottom);
-	for (int i = 0; i < (int) points.size(); i++) {
-		if (points[i] == pb) return false;
-	}
-	clockwiseSum = 0;
-	centroidDefined = false;
-	boundingCircleDefined = false;
-	averagePointDefined = false;
-	maxRad = -1.0;
-	bRad = -1.0;
-	if (n >= 0 && n < (signed)points.size()) {
-		points[n] = pb;
+	init();
+	isLatLon_b = p.isLatLon();
+	if (isLatLon_b) {
+		p3dll.add(p.lla());
+	} else {
+		p3d.add(p.vect2());
 	}
 	return true;
 }
 
 
-void SimplePoly::setTop(double t) {
-	centroidDefined = false;
-	boundingCircleDefined = false;
-	averagePointDefined = false;
-	maxRad = -1.0;
-	bRad = -1.0;
-	bottomTopSet = true;
-	top = t;
-}
-
-double SimplePoly::getTop() const {
-	return top;
-}
-
-void SimplePoly::setBottom(double b) {
-	centroidDefined = false;
-	boundingCircleDefined = false;
-	averagePointDefined = false;
-	maxRad = -1.0;
-	bRad = -1.0;
-	bottomTopSet = true;
-	bottom = b;
-	for (int i = 0; i < (signed)points.size(); i++) {
-		points[i] = points[i].mkAlt(bottom);
+bool SimplePoly::insert(int i, const Position& p) {
+	if (p.isInvalid()){ //|| points.contains(p)) {
+		return false;
 	}
-}
-
-double SimplePoly::getBottom() const {
-	return bottom;
-}
-
-// on invalid n, this returns the centroid!
-Position SimplePoly::getVertex(int n) const {
-	if (n >= 0 && n < (signed)points.size()) {
-		return points[n];
-	}
-	return centroid();
-}
-
-std::vector<Position> SimplePoly::getVertices()  const {
-	return points;
-}
-
-// on invalid n, this returns the centroid!
-Position SimplePoly::getTopPoint(int n) const {
-	if (n >= 0 && n < (signed)points.size()) {
-		return points[n].mkAlt(top);
-	}
-	return centroid();
-}
-
-SimplePoly SimplePoly::copy() const {
-	SimplePoly r = SimplePoly(bottom,top);
-	for(int i = 0; i < (signed)points.size(); i++) {
-		r.addVertex(points[i]);
-	}
-	return r;
-}
-
-/** return a aPolygon3D version of this */
-Poly3D SimplePoly::poly3D(const EuclideanProjection& proj) const {
-	Poly3D p3;
-	if (isLatLon()) {
-		p3 = Poly3D();
-		for (int i = 0; i < (int) points.size(); i++) {
-			Position p = points[i];
-			p3.addVertex(proj.project(p).vect2());
-		}
+	init();
+	isLatLon_b = p.isLatLon();
+	if (isLatLon_b) {
+		p3dll.insert(i, p.lla());
 	} else {
-		p3 = Poly3D();
-		for (int i = 0; i < (int) points.size(); i++) {
-			Position p = points[i];
-			p3.addVertex(p.point().vect2());
-		}
+		p3d.insert(i, p.vect2());
 	}
-	p3.setBottom(getBottom());
-	p3.setTop(getTop());
-	return p3;
-}
-
-bool SimplePoly::contains(const Position& p) const {
-	EuclideanProjection proj = Projection::createProjection(p);
-	Poly3D poly = poly3D(proj);
-	if (p.isLatLon()) {
-		return poly.contains(Vect3::ZERO());
-	} else {
-		return poly.contains(p.point());
-	}
+	return true;
 
 }
 
-bool SimplePoly::contains2D(const Position& p) const {
-	EuclideanProjection proj = Projection::createProjection(p);
-	Poly2D poly = poly3D(proj).poly2D();
-	if (p.isLatLon()) {
-		return poly.contains(Vect2::ZERO());
-	} else {
-		return poly.contains(p.vect2());
+
+/**
+ * Add a new point to the SimplePoly.  Points should be added in a consistently clockwise or consistently counter-clockwise manner.
+ * This currently does NOT set the Z component of the point (unless it is the first point)
+ * @param p position to add
+ * @return false, if an error is detected (duplicate or invalid vertex), true otherwise.
+ */
+bool SimplePoly::add(const LatLonAlt& lla){
+	if (lla.isInvalid()){ //|| points.contains(p)) {
+		return false;
 	}
+	init();
+	isLatLon_b = true;
+	p3dll.add(lla);
+	return true;
+}
+
+/**
+ * Add a new point to the SimplePoly.  Points should be added in a consistently clockwise or consistently counter-clockwise manner.
+ * This currently does NOT set the Z component of the point (unless it is the first point)
+ * @param p position to add
+ * @return false, if an error is detected (duplicate or invalid vertex), true otherwise.
+ */
+bool SimplePoly::add(const Vect2& v){
+	if (v.isInvalid()){ //|| points.contains(p)) {
+		return false;
+	}
+	init();
+	isLatLon_b = false;
+	p3d.add(v);
+	return true;
 }
 
 
 
 
 /**
- * This moves the SimplePoly by the amount determined by the given (Euclidean) offset.
- * @param off offset
+ * Remove a point from this SimplePoly.
+ * @param n Index (in order added) of the point to be removed.
  */
-void SimplePoly::translate(const Vect3& off) {
-	Position c = centroid();
-	if (isLatLon()) {
-		EuclideanProjection proj = Projection::createProjection(c.lla());
-		for (int i = 0; i < size(); i++) {
-			setVertex(i, Position(proj.project(points[i])));
+void SimplePoly::remove(int n) {
+	init();
+	if (isLatLon_b) {
+		p3dll.remove(n);
+	} else {
+		p3d.remove(n);
+	}
+}
+
+/**
+ * Change the position of a point already added to the SimplePoly, indicated by its index.
+ * This currently does NOT set the Z component of the point.
+ *
+ * @param n index
+ * @param p position
+ * @return false, if an invalid vertex is detected, true otherwise
+ */
+bool SimplePoly::set(int n, Position p) {
+	if (p.isInvalid()) { //  || points.contains2D(p.mkAlt(bottom))) {
+		// error -- no duplicate points allowed
+		return false;
+	}
+	init();
+	if (isLatLon_b) {
+		//if (p3dll.vertices.contains(p.lla().mkAlt(nullAlt))) return false; // no duplicate points allowed
+		for (int i = 0; i < (int) p3dll.size(); i++) {
+			if (p3dll.get(i).equals2D(p.lla())) return false;
+		}
+		p3dll.set(n,p.lla());
+	} else {
+		//if (p3d.p2d.vertices.contains(p.vect2())) return false; // no duplicate points allowed
+		for (int i = 0; i < (int) p3d.size(); i++) {
+			if (p3d.get2D(i) == p.vect2()) return false;
+		}
+		p3d.set(n,p.vect2());
+	}
+	return true;
+}
+
+
+
+/**
+ * Sets the top altitude of this SimplePoly.
+ * @param t New top altitude.
+ */
+void SimplePoly::setTop(double t) {
+	centroidDefined = false;
+	averagePointDefined = false;
+	if (isLatLon_b) {
+		p3dll.setTop(t);
+	} else {
+		p3d.setTop(t);
+	}
+}
+
+/**
+ * Return the top altitude of this SimplePoly.
+ * @return top altitude
+ */
+double SimplePoly::getTop() const {
+	if (isLatLon_b) {
+		return p3dll.getTop();
+	} else {
+		return p3d.getTop();
+	}
+}
+
+/**
+ * Sets the bottom altitude of this SimplePoly.
+ * @param b New bottom altitude.
+ */
+void SimplePoly::setBottom(double b) {
+	centroidDefined = false;
+	averagePointDefined = false;
+	if (isLatLon_b) {
+		p3dll.setBottom(b);
+	} else {
+		p3d.setBottom(b);
+	}
+
+
+}
+
+/**
+ * Return the bottom altitude of this SimplePoly.
+ * @return bottom altitude
+ */
+double SimplePoly::getBottom()const  {
+	if (isLatLon_b) {
+		return p3dll.getBottom();
+	} else {
+		return p3d.getBottom();
+	}
+}
+
+
+/**
+ * Returns the position of the top point with index n.
+ * If n is not a valid index, this returns INVALID // the centroid position.
+ *
+ * @param n index
+ * @return position
+ */
+Position SimplePoly::getTopPoint(int n) const {
+	//		if (n >= 0 && n < points.size()) {
+	//			return points.get(n).mkAlt(top);
+	//		}
+	if (n >= 0 && n < size()) {
+		if (isLatLon_b) {
+			return Position(p3dll.get(n).mkAlt(p3dll.getTop()));
+		} else {
+			return Position(Vect3(p3d.get2D(n),p3d.getTop()));
 		}
 	}
-	// translate
+	return Position::INVALID();
+}
+
+/**
+ * Returns a deep copy of this SimplPoly.
+ *
+ * @return copy
+ */
+SimplePoly SimplePoly::copy() const {
+	SimplePoly r(getBottom(),getTop());
 	for (int i = 0; i < size(); i++) {
-		Position p = points[i];
-		setVertex(i, p.mkX(p.x()+off.x).mkY(p.y()+off.y));
-	}
-	// shift back to latlon, if necessary
-	if (isLatLon()) {
-		EuclideanProjection proj = Projection::createProjection(c.lla());
-		for (int i = 0; i < size(); i++) {
-			setVertex(i, Position(proj.inverse(points[i].point())));
+		//fpln("copy "+i+" src point="+get(i));
+		//r.add(get(i));
+		if (isLatLon_b) {
+			r.add(Position(p3dll.get(i)));
+		} else {
+			r.add(Position(Vect3(p3d.get2D(i),getBottom())));   // TODO: LOOK AT THIS get(i) ??
 		}
 	}
-	setTop(top+off.z);
-	setBottom(bottom+off.z);
+	return r;
 }
 
-SimplePoly SimplePoly::linear(const Velocity& v, double t) const {
-	SimplePoly newPoly;
-	int sz = size();
-	for (int j = 0; j < sz; j++) {
-		Position p = getVertex(j).linear(v,t);
-		Position pt = getTopPoint(j).linear(v,t);
-		newPoly.addVertex(p);
-		newPoly.setBottom(p.z());
-		newPoly.setTop(pt.z());
-	}
-	return newPoly;
-}
-
-bool SimplePoly::validate() {
-	return validate(NULL);
-}
-
-bool SimplePoly::validate(ErrorLog* error) {
-	// not a polygon
-	if (size() < 3)	return false;
-	for (int i = 0; i < (int) points.size(); i++) {
-		// invalid points
-		if (points[i].isInvalid()) return false;
-		for (int j = 0; j < i; j++) {
-			// duplicated points
-			if (points[i].distanceH(points[j]) < Constants::get_horizontal_accuracy()) {
-				if (error != NULL) error->addError("polygon has duplicated points at "+Fm0(i));
-				return false;
-			}
-			if (j < i-2) {
-				// check for intersections
-				if (isLatLon()) {
-					LatLonAlt a = points[j].lla();
-					LatLonAlt b = points[j+1].lla();
-					LatLonAlt c = points[i-1].lla();
-					LatLonAlt d = points[i].lla();
-					double t = GreatCircle::intersection(a, GreatCircle::velocity_initial(a, b, 100), c, GreatCircle::velocity_initial(c,d,100), true).second;
-					if (t >= 0 && t <= 100) {
-						if (error != NULL) error->addError("polygon has intersecting edges at "+Fm0(i-1)+"-"+Fm0(i)+" and "+Fm0(j)+"-"+Fm0(j+1)+" t="+Fm2(t));
-						return false;
-					}
-				} else {
-					Vect3 a = points[j].point();
-					Vect3 b = points[j+1].point();
-					Vect3 c = points[i-1].point();
-					Vect3 d = points[i].point();
-					double t = VectFuns::timeOfIntersection(a, Velocity::make(b.Sub(a).Scal(0.01)), c, Velocity::make(d.Sub(c).Scal(0.01)));
-					if (t >= 0 && t <= 100) {
-						if (error != NULL) error->addError("polygon has intersecting edges at "+Fm0(i-1)+"-"+Fm0(i)+" and "+Fm0(j)+"-"+Fm0(j+1));
-						return false;
-					}
-				}
-			}
+/** return a Poly3D version of this.  proj is ignored if this is Euclidean
+ * @param proj projection
+ * @return a new 3D polygon
+ */
+//@Deprecated
+Poly3D SimplePoly::poly3D(const EuclideanProjection& proj) {
+	if (isLatLon_b) {
+		std::vector<Position> points = getVertices();
+		Poly3D p3 = Poly3D();
+		for (int i = 0; i < (int) points.size(); i++) {
+			Position p = points[i];
+			p3.add(proj.project(p).vect2());
 		}
-		if (i > 1) {
-			// redundant (consecutive collinear) points
-			if (isLatLon()) {
-				if (GreatCircle::collinear(points[i-2].lla(), points[i-1].lla(), points[i].lla())) {
-					if (error != NULL) error->addWarning("polygon has redundant collinear points at "+Fm0(i));
-					return false;
-				}
-			} else {
-				if (VectFuns::collinear(points[i-2].vect2(), points[i-1].vect2(), points[i].vect2())) {
-					if (error != NULL) error->addWarning("polygon has redundant collinear points at "+Fm0(i));
-					return false;
-				}
-			}
+		p3.setBottom(getBottom());
+		p3.setTop(getTop());
+		return p3;
+	} else {
+		Poly3D rtn = p3d; // TODO: RWB IS THIS COPY NECESSARY?
+		return rtn;
+	}
+}
+
+
+bool SimplePoly::isClockwise() const {
+	std::vector<Position> points = getVertices();
+	if (Util::almost_equals(clockwiseSum, 0.0)) {
+		for (int i = 0; i < (int) points.size(); i++) {
+			int h = i-1;
+			int j = i+1;
+			if (h < 0) h = (int) points.size()-1;
+			if (j == (int) points.size()) j = 0;
+			double trk1 = points[h].finalVelocity(points[i], 100).trk();
+			double trk2 = points[i].initialVelocity(points[j], 100).trk();
+			double angle = Util::to_pi(Util::turnDelta(trk1, trk2, true));
+			clockwiseSum += angle;
 		}
 	}
-	return true;}
-
-BoundingRectangle SimplePoly::getBoundingRectangle() const {
-	BoundingRectangle br;
-	for (int i =  0; i < (int) points.size(); i++) {
-		br.add(points[i]);
-	}
-	return br;
+	return clockwiseSum > 0.0;
 }
 
-int SimplePoly::maxInRange(const Position& p, double a1, double a2) const {
-	double maxD = 0.0;
-	int idx = -1;
-	for (int i = 0; i < (int) points.size(); i++) {
-		double d = points[i].distanceH(p);
-		double a = p.initialVelocity(points[i], 100).compassAngle();
-		if (d > maxD && a1 <= a && a < a2) {
-			idx = i;
-			maxD = d;
+void SimplePoly::reverseOrder() {
+	if (isLatLon_b) {
+		p3dll = p3dll.reverseOrder();
+	} else {
+		p3d = p3d.reverseOrder();
+	}
+}
+
+
+/**
+ * closest horizontal distance from p to an edge.
+ * @param p
+ * @return distance from edge
+ */
+double SimplePoly::distanceFromEdge(const Position& p) const {
+	if (p.isLatLon()) {
+		LatLonAlt ll = p.lla();
+		LatLonAlt cl = GreatCircle::closest_point_segment(getVertex(size()-1).lla(), getVertex(0).lla(), ll);
+		double dist = GreatCircle::distance(ll, cl);
+		for (int i = 0; i < size()-1; i++) {
+			cl = GreatCircle::closest_point_segment(getVertex(i).lla(), getVertex(i+1).lla(), ll);
+			dist = Util::min(GreatCircle::distance(ll, cl), dist);
 		}
+		return dist;
+	} else {
+		Vect3 v3 = p.vect3();
+		Vect3 cl = VectFuns::closestPointOnSegment(getVertex(size()-1).vect3(), getVertex(0).vect3(), v3);
+		double dist = v3.distanceH(cl);
+		for (int i = 0; i < size()-1; i++) {
+			cl = VectFuns::closestPointOnSegment(getVertex(i).vect3(), getVertex(i+1).vect3(), v3);
+			dist = Util::min(v3.distanceH(cl), dist);
+		}
+		return dist;
 	}
-	return idx;
 }
+
+/**
+ * return vertical distance from the polygon.  This will be zero if the point is between the polygon's top and bottom.
+ * @param p
+ * @return
+ */
+double SimplePoly::distanceV(const Position& p) const {
+	if (p.isLatLon()) {
+		if (p.alt() >= getBottom() && p.alt() <= getTop()) return 0.0;
+		return Util::min(std::abs(p.alt()-getTop()), std::abs(p.alt()-getBottom()));
+	} else {
+		if (p.z() >= getBottom() && p.z() <= getTop()) return 0.0;
+		return Util::min(std::abs(p.z()-getTop()), std::abs(p.z()-getBottom()));
+	}
+
+}
+
+/**
+ * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD detection algorithms.
+ * @param p position
+ * @return true, if position is in the polygon
+ */
+bool SimplePoly::contains(const Position& p) {
+	if (size() < 2) return false;
+	if (p.isLatLon()) {
+		return p3dll.contains(p.lla());
+	} else {
+		return p3d.contains(p.vect3());
+	}
+
+}
+
+/**
+ * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD detection algorithms.
+ *
+ * @param p position
+ * @return true, if position is in the polygon
+ */
+bool SimplePoly::contains2D(const Position& p) {
+	if (size() < 2) return false;
+	if (p.isLatLon()) {
+		return p3dll.contains2D(p.lla());
+	} else {
+		return p3d.contains2D(p.vect2());
+	}
+}
+
+
+
+//	final std::string nl = System.getProperty("line.separator");
 
 
 /**
  * Return the angle that is perpendicular to the middle of the edge from vertex i to i+1, facing outward.
  * Return NaN if i is out of bounds or vertex i overlaps vertex i+1.
+ *
+ * @param i index
+ * @return angle
  */
 double SimplePoly::perpSide(int i) const {
+	std::vector<Position> points = getVertices();
 	if (i < 0 || i >= (int) points.size()) return NaN;
 	Position p1 = points[i];
 	Position p2;
@@ -742,15 +858,15 @@ double SimplePoly::perpSide(int i) const {
 		p2 = points[i+1];
 	}
 	if (p1.almostEquals(p2)) return NaN;
-	double trk = p1.avgVelocity(p2, 100).trk() - Pi/2.0;
+	double trk = p1.avgVelocity(p2, 100).trk() - M_PI/2.0;
 	if (isClockwise()) {
 		return Util::to_2pi(trk);
 	} else {
-		return Util::to_2pi(trk+Pi);
+		return Util::to_2pi(trk+M_PI);
 	}
 }
 
-bool SimplePoly::vertexConvex(const Position& p0, const Position& p1, const Position& p2) const {
+bool SimplePoly::vertexConvex(const Position& p0, const Position& p1, const Position& p2) {
 	std::vector<Position> pts;
 	std::vector<double> wgts;
 	pts.push_back(p0);
@@ -763,8 +879,15 @@ bool SimplePoly::vertexConvex(const Position& p0, const Position& p1, const Posi
 	return contains2D(avg);
 }
 
-
-double SimplePoly::vertexAngle(int i) const {
+/**
+ * Return the internal angle of vertex i.
+ * Return NaN if i is out of bounds or vertex i overlaps with an adjacent vertex.
+ *
+ * @param i index
+ * @return angle
+ */
+double SimplePoly::vertexAngle(int i) {
+	std::vector<Position> points = getVertices();
 	if (i < 0 || i >= (int) points.size()) return NaN;
 	Position p1 = points[i];
 	Position p2;
@@ -794,11 +917,267 @@ double SimplePoly::vertexAngle(int i) const {
 }
 
 
+/**
+ * This moves the SimplePoly by the amount determined by the given (Euclidean) offset.
+ * @param off offset
+ */
+void SimplePoly::translate(const Vect3& off) {
+	centroidDefined = false;
+	averagePointDefined = false;
+	std::vector<Position> points = getVertices();
+	Position c = centroid();
+	if (isLatLon()) {
+		EuclideanProjection proj = Projection::createProjection(c.lla());
+		for (int i = 0; i < size(); i++) {
+			set(i, Position(proj.project(points[i])));
+		}
+	}
+	// translate
+	for (int i = 0; i < size(); i++) {
+		Position p = points[i];
+		set(i, p.mkX(p.x()+off.x).mkY(p.y()+off.y));
+	}
+	// shift back to latlon, if necessary
+	if (isLatLon()) {
+		EuclideanProjection proj = Projection::createProjection(c.lla());
+		for (int i = 0; i < size(); i++) {
+			set(i, Position(proj.inverse(points[i].vect3())));
+		}
+	}
+	setTop(getTop()+off.z);
+	setBottom(getBottom()+off.z);
+}
+
+
+//	SimplePoly SimplePoly::linear(const Velocity& v, double t) const {
+//		SimplePoly newPoly;
+//		int sz = size();
+//		for (int j = 0; j < sz; j++) {
+//			Position p = get(j).linear(v,t);
+//			Position pt = getTopPoint(j).linear(v,t);
+//			newPoly.add(p);
+//			newPoly.setBottom(p.z());
+//			newPoly.setTop(pt.z());
+//		}
+//		return newPoly;
+//	}
+
+
+SimplePoly SimplePoly::linearAllVerts(const Velocity& v, double t) const {
+	SimplePoly newPoly;
+	int sz = size();
+	if (isLatLon_b) {
+		double ptz = p3dll.getTop() + v.z*t;
+		double pbz = p3dll.getBottom() + v.z*t;
+		for (int j = 0; j < sz; j++) {
+			LatLonAlt p = GreatCircle::linear_initial(p3dll.get(j),v,t);
+			//f.pln("linear vj="+getVertex(j)+" v="+v+" t="+t+" p="+p);
+			//Position pt = getTopPoint(j).linear(v,t);
+			newPoly.add(p);
+			newPoly.setBottom(pbz);
+			newPoly.setTop(ptz);
+		}
+
+	} else {
+		double ptz = p3d.getTop() + v.z*t;
+		double pbz = p3d.getBottom() + v.z*t;
+		for (int j = 0; j < sz; j++) {
+			//Vect3 p0 = Vect3(p3d.get(j),getBottom());
+			Vect2 p = p3d.get2D(j).linear(v.vect2(),t);
+			//f.pln("linear vj="+getVertex(j)+" v="+v+" t="+t+" p="+p);
+			//Position pt = getTopPoint(j).linear(v,t);
+			newPoly.add(p);
+			newPoly.setBottom(pbz);
+			newPoly.setTop(ptz);
+		}
+	}
+	return newPoly;
+}
+
+
+SimplePoly SimplePoly::linear(const Velocity& v, double t) const {
+	if (move_constant_shape) {
+		return linearFixedShape(v,t);
+	} else {
+		return linearAllVerts(v,t);
+	}
+}
+
+
+/** Move a polygon by velocity using vertex 0 and reconstructing geometrically
+ *
+ * @param v
+ * @param t
+ * @return
+ */
+SimplePoly SimplePoly::linearFixedShape(const Velocity& v, double t) const {
+	SimplePoly newPoly;
+	//Position center = centroid();
+	//Position center = averagePoint();
+	Position center = getVertex(0);
+	Position newCenter = center.linear(v,t);
+	newPoly.add(newCenter);
+	for (int i = 1; i < size(); i++) {
+		Position pos_i = getVertex(i);
+		double dist_i = center.distanceH(pos_i);
+		double trk_i = center.track(pos_i);
+		Position newPos_i = newCenter.linearDist2D(trk_i,dist_i);
+		newPoly.add(newPos_i);
+	}
+	return newPoly;
+}
+
+
+
+bool SimplePoly::validate() const {
+	return validate(NULL);
+}
+
+bool SimplePoly::validate(ErrorLog* error) const {
+	std::vector<Position> points = getVertices();
+	// not a polygon
+	if (size() < 3)	{
+		if (error != NULL) error->addError("polygon has fewer than 3 points!");
+		return false;
+	}
+	for (int i = 0; i < (int) points.size(); i++) {
+		// invalid points
+		if (points[i].isInvalid()) {
+			if (error != NULL) error->addError("point "+Fm0(i)+" is invalid!");
+			return false;
+		}
+		for (int j = 0; j < i; j++) {
+			// duplicated points
+			if (points[i].distanceH(points[j]) < Constants::get_horizontal_accuracy()) {
+				if (error != NULL) error->addError("polygon has duplicated points at "+Fm0(i));
+				return false;
+			}
+			if (j < i-2) {
+				// check for intersections
+				if (isLatLon()) {
+					LatLonAlt a = points[j].lla();
+					LatLonAlt b = points[j+1].lla();
+					LatLonAlt c = points[i-1].lla();
+					LatLonAlt d = points[i].lla();
+					if (!GreatCircle::intersectSegments(a,b,c,d).isInvalid()) {
+						if (error != NULL) error->addError("polygon has intersecting edges at "+Fm0(i-1)+"-"+Fm0(i)+" and "+Fm0(j)+"-"+Fm0(j+1));
+						return false;
+					}
+//					double t = GreatCircle::intersection(a, GreatCircle::velocity_initial(a, b, 100), c, GreatCircle::velocity_initial(c,d,100)).second;
+//					if (t > 0 && t < 100) {
+//						if (error != NULL) error->addError("polygon has intersecting edges at "+Fm0(i-1)+"-"+Fm0(i)+" and "+Fm0(j)+"-"+Fm0(j+1)+" t="+Fm2(t));
+//						return false;
+//					}
+				} else {
+					Vect2 a = points[j].vect2();
+					Vect2 b = points[j+1].vect2();
+					Vect2 c = points[i-1].vect2();
+					Vect2 d = points[i].vect2();
+					if (!VectFuns::intersectSegments(a, b, c, d).first.isInvalid()) {
+						if (error != NULL) error->addError("polygon has intersecting edges at "+Fm0(i-1)+"-"+Fm0(i)+" and "+Fm0(j)+"-"+Fm0(j+1));
+						return false;
+					}
+//					double t = VectFuns::timeOfIntersection(a, Velocity::make(b.Sub(a).Hat().Scal(0.01)), c, Velocity::make(d.Sub(c).Hat().Scal(0.01)));
+//					if (t > 0 && t < 100) {
+//						if (error != NULL) error->addError("polygon has intersecting edges at "+Fm0(i-1)+"-"+Fm0(i)+" and "+Fm0(j)+"-"+Fm0(j+1));
+//						return false;
+//					}
+				}
+			}
+		}
+		if (i > 1) {
+			// redundant (consecutive collinear) points
+			if (isLatLon()) {
+				if (GreatCircle::collinear(points[i-2].lla(), points[i-1].lla(), points[i].lla())) {
+					if (error != NULL) error->addWarning("polygon has redundant collinear points at "+Fm0(i));
+					//Debug::halt();
+					//fpln(" $$$ SimplePoly::validate: polygon has redundant collinear points at "+Fm0(i));
+					//fpln(" $$$ SimplePoly::validate: points[i-2,i-1,1] = "+points[i-2].lla().toString()+", "+points[i-1].lla().toString()+", "+points[i].lla().toString());
+					//return false;
+				}
+			} else {
+				if (VectFuns::collinear(points[i-2].vect2(), points[i-1].vect2(), points[i].vect2())) {
+					if (error != NULL) error->addWarning("polygon has redundant collinear points at "+Fm0(i));
+					//Debug::halt();
+					//return false;
+				}
+			}
+		}
+	}
+	return true;
+}
+
+
+
+int SimplePoly::maxInRange(const Position& p, double a1, double a2) const {
+	std::vector<Position> points = getVertices();
+	double maxD = 0.0;
+	int idx = -1;
+	for (int i = 0; i < (int) points.size(); i++) {
+		double d = points[i].distanceH(p);
+		double a = p.initialVelocity(points[i], 100).compassAngle();
+		if (d > maxD && a1 <= a && a < a2) {
+			idx = i;
+			maxD = d;
+		}
+	}
+	return idx;
+}
+
+std::vector<LatLonAlt> SimplePoly::rip(const SimplePoly& sPoly) {
+	std::vector<LatLonAlt> polyList;
+	if (sPoly.isLatLon()) {
+		for (int j = 0; j < sPoly.size(); j++) {
+			polyList.push_back(sPoly.getVertex(j).lla());
+		}
+	}
+	return polyList;
+}
+
+
+
+
+BoundingRectangle SimplePoly::getBoundingRectangle() {
+	if (isLatLon_b) {
+		return p3dll.getBoundingRectangle();
+	} else {
+		return p3d.getBoundingRectangle();
+	}
+}
+
+
+std::string SimplePoly::toOutput(const std::string& name, int precision, int numberTcpColumns) const {
+	//std::string sb;
+	std::ostringstream sb;
+	for (int j = 0; j < size(); j++) {
+		std::vector<std::string> ret; //  = new ArrayList<std::string>(numberTcpColumns+2);
+		//ret.push_back(name);  // name is (0)
+		sb << name << " ";
+		std::vector<std::string> sl = getVertex(j).toStringList(precision);
+		sb << list2str(sl,",") << ", ";
+		//ret.push_back(FmPrecision(0.0)); // time 4
+		if (numberTcpColumns > 0) {
+			ret.push_back("-"); // type
+			int start = 0;
+			for (int k = start; k < numberTcpColumns; k++) {
+				ret.push_back("-");
+			}
+		} else {
+			ret.push_back("-"); // label
+		}
+		ret.push_back(FmPrecision(Units::to("ft", getTop()),precision));
+		sb << list2str(ret,", ") << endl;
+	}
+	return sb.str();
+}
+
+
+
 
 string SimplePoly::toString() const {
-	string s = "";
+	string s = "SimplePoly:  bottom = "+Fm1(getBottom())+" top = "+Fm1(getTop())+" size = "+Fm0(size())+"\n";
 	for (int i = 0; i < size(); i++) {
-		s = s + getVertex(i).toString()+" ";
+		s = s + getVertex(i).toString()+"\n";
 	}
 	return s;
 }
@@ -811,10 +1190,10 @@ std::vector<std::string> SimplePoly::toStringList(int vertex, int precision) con
 	if (p.isInvalid()) {
 		ret.push_back("-");
 	} else {
-		ret.push_back(FmPrecision(Units::to("ft",top),precision));
+		ret.push_back(FmPrecision(Units::to("ft",getTop()),precision));
 	}
 	return ret;
 }
 
 
-} // namespace 
+}

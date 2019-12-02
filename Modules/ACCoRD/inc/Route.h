@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 United States Government as represented by
+ * Copyright (c) 2017-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -23,6 +23,7 @@ class Route {
 
 private:
 	std::vector<std::string>   names;
+	std::vector<std::string>   infos;
 	std::vector<Position> positions;
 	std::vector<double> radius_v;                               // optional information about turn
 
@@ -74,6 +75,7 @@ public:
 
 	
 	/** Create a route from a linear plan and calculate radii using "bankAngle"
+	 * NOTE: If a radius is already stored in the source plan, this will not overwrite it
 	 * 
 	 * @param fp          source plan
 	 * @param bankAngle   bank angle used to calculate radii values (used in path distance calculations)
@@ -96,42 +98,46 @@ public:
 	
 	Position position(int i) const;
 	
-	Position positionByDistance(double dist, bool linear) const;
+	Position positionFromDistance(double dist, bool linear) const;
 
-	Position positionByDistance(int i, double dist, bool linear) const;
+	Position positionFromDistance(int i, double dist, bool linear) const;
 	
 	std::string name(int i) const;
 	
+	std::string info(int i) const;
+
 	double radius(int i) const;
 
 	
 	/**
-	 * 
+	 * Add a position
 	 * @param pos position
 	 * @param label label for point -- if this equals Route.virtualName, then this will become a virtual point when make into a linear plan
+	 * @param data  data field for a point
 	 */
-	void add(const Position& pos, const std::string& label);
+	void add(const Position& pos, const std::string& label, const std::string& data);
 	
-	/**
-	 * 
-	 * @param pos position
-	 * @param label label for point -- if this equals Route.virtualName, then this will become a virtual point when make into a linear plan
-	 */
-	void add(const Position& pos,  const std::string& label, double rad);
+
 
 	/**
 	 * 
 	 * @param pos position
 	 * @param label label for point -- if this equals Route.virtualName, then this will become a virtual point when make into a linear plan
+	 */
+	void add(const Position& pos,  const std::string& label, const std::string& data, double rad);
+
+	/**
+	 * Add a position 
 	 * 
-	 * @param ix
-	 * @param pos
-	 * @param label
+	 * @param ix    index
+	 * @param pos position
+	 * @param label label for point -- if this equals Route.virtualName, then this will become a virtual point when make into a linear plan
+	 * @param data  data field for a point
 	 * @param rad     radius
 	 */
-	void add(int ix, const Position& pos, const std::string& label, double rad);
+	void add(int ix, const Position& pos, const std::string& label, const std::string& data, double rad);
 	
-	void set(int ix, const Position& pos, const std::string& label, double rad);
+	void set(int ix, const Position& pos, const std::string& label, const std::string& data, double rad);
 
 		
 	void remove(int i);
@@ -171,6 +177,13 @@ public:
 	
 	void setName(int i, const std::string& name);
 	
+	int findInfo(const std::string&  nm, int startIx) const;
+
+	int findInfo(const std::string&  nm) const;
+
+	void setInfo(int i, const std::string& data);
+
+
 	void setPosition(int i, const Position& pos);
 	
 	void setRadius(int i, double rad);
@@ -183,6 +196,8 @@ public:
 	 * @param j    ending index
 	 * @param linear if true, use linear distance
 	 * @return distance from i to j; returns -1 if the Route is ill-formed
+	 * 
+	 * Note:  the distance is from MOT to MOT if linear = false and indices are vertices
 	 */
 	double pathDistance(int i, int j, bool linear) const;
 	
@@ -213,6 +228,13 @@ public:
 	Velocity velocityFromDistance(double dist, double gs, double defaultBank, bool linear) const;
 
 
+	/** Create a linear plan from this route using a constant ground speed "gs".  It will copy the radius information
+	 *  into the plan.
+	 * 
+	 * @param startTime   The time that will be assigned to point 0
+	 * @param gs          ground speed to use
+	 * @return            linear plan with a constant ground speed
+	 */
 	Plan linearPlan(double startTime, double gs) const;
 	
 	

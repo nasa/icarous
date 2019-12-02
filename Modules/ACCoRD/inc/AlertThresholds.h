@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -12,15 +12,15 @@
 #include "Vect3.h"
 #include "Velocity.h"
 #include "Interval.h"
-#include "TrafficState.h"
 #include "BandsRegion.h"
 #include "ParameterData.h"
 #include "ParameterTable.h"
+#include "Detection3DAcceptor.h"
 #include <map>
 
 namespace larcfm {
 
-class AlertThresholds : public ParameterTable {
+class AlertThresholds : public ParameterTable, Detection3DAcceptor {
 
 private:
   Detection3D* detector_; // State-based detector
@@ -29,15 +29,17 @@ private:
   // If alerting_time = 0, alert is based on violation
   double early_alerting_time_; // Early alerting time (for maneuver guidance). If zero, same as alerting_time
   BandsRegion::Region region_;  // Guidance region for this alert
-  double spread_trk_; // Alert when track band within spread (non-negative value)
-  double spread_gs_;  // Alert when ground speed band within spread (non-negative value)
-  double spread_vs_;  // Alert when vertical speed band within speed (non-negative value)
-  double spread_alt_; // Alert when altitude  band within spread (non-negative value)
+  double spread_hdir_;  // Alert when direction band within spread (non-negative value)
+  double spread_hs_;   // Alert when horizontal speed band within spread (non-negative value)
+  double spread_vs_;   // Alert when vertical speed band within speed (non-negative value)
+  double spread_alt_;  // Alert when altitude  band within spread (non-negative value)
   std::map<std::string,std::string> units_;
+
+  void copyFrom(const AlertThresholds& athr);
 
 public:
 
-  static const AlertThresholds INVALID;
+  static const AlertThresholds& INVALID();
 
   bool isValid() const;
 
@@ -49,7 +51,7 @@ public:
    * early_alerting_time is a early alerting time >= at (for maneuver guidance),
    * region is the type of guidance
    */
-  AlertThresholds(const Detection3D* det,
+  AlertThresholds(const Detection3D& det,
       double alerting_time, double early_alerting_time,
       BandsRegion::Region region);
 
@@ -61,14 +63,24 @@ public:
   AlertThresholds& operator=(const AlertThresholds& athr);
 
   /**
-   * Return detector.
+   * Return detector reference.
    */
-  Detection3D* getDetectorRef() const;
+  Detection3D& getCoreDetectionRef() const;
 
   /**
-   * Set detector.
+   * Return detector pointer.
    */
-  void setDetector(const Detection3D* det);
+  Detection3D* getCoreDetectionPtr() const;
+
+  /**
+   * Set detector as a reference.
+   */
+  void setCoreDetectionRef(const Detection3D& det);
+
+  /**
+   * Set detector as a pointer.
+   */
+  void setCoreDetectionPtr(const Detection3D* det);
 
   /**
    * Return alerting time in seconds.
@@ -123,46 +135,46 @@ public:
   /**
    * Get track spread in internal units [rad]. Spread is relative to ownship's track
    */
-  double getTrackSpread() const;
+  double getHorizontalDirectionSpread() const;
 
   /**
    * Get track spread in given units [u]. Spread is relative to ownship's track
    */
-  double getTrackSpread(const std::string& u) const;
+  double getHorizontalDirectionSpread(const std::string& u) const;
 
   /**
    * Set track spread in internal units. Spread is relative to ownship's track and is expected
    * to be in [0,pi].
    */
-  void setTrackSpread(double spread);
+  void setHorizontalDirectionSpread(double spread);
 
   /**
    * Set track spread in given units. Spread is relative to ownship's track and is expected
    * to be in [0,pi] [u].
    */
-  void setTrackSpread(double spread, const std::string& u);
+  void setHorizontalDirectionSpread(double spread, const std::string& u);
 
   /**
    * Get ground speed spread in internal units [m/s]. Spread is relative to ownship's ground speed
    */
-  double getGroundSpeedSpread() const;
+  double getHorizontalSpeedSpread() const;
 
   /**
    * Get ground speed spread in given units. Spread is relative to ownship's ground speed
    */
-  double getGroundSpeedSpread(const std::string& u) const;
+  double getHorizontalSpeedSpread(const std::string& u) const;
 
   /**
    * Set ground speed spread in internal units [m/s]. Spread is relative to ownship's ground speed and is expected
    * to be non-negative
    */
-  void setGroundSpeedSpread(double spread);
+  void setHorizontalSpeedSpread(double spread);
 
   /**
    * Set ground speed spread in given units. Spread is relative to ownship's ground speed and is expected
    * to be non-negative
    */
-  void setGroundSpeedSpread(double spread, const std::string& u);
+  void setHorizontalSpeedSpread(double spread, const std::string& u);
 
   /**
    * Get vertical speed spread in internal units [m/s]. Spread is relative to ownship's vertical speed
@@ -210,7 +222,7 @@ public:
 
   std::string toString() const;
 
-  std::string toPVS(int prec) const;
+  std::string toPVS() const;
 
   ParameterData getParameters() const;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -25,7 +25,7 @@ public:
   WCV_TCPA();
 
   /** Constructor that specifies a particular instance of the WCV tables. */
-  WCV_TCPA(const WCVTable& tab);
+  explicit WCV_TCPA(const WCVTable& tab);
 
   virtual ~WCV_TCPA() {};
 

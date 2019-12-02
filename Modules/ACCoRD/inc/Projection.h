@@ -3,7 +3,7 @@
  *
  * Holding area for universal projection information.  All projection objects should be retrieved using these functions.
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -28,7 +28,8 @@
  namespace larcfm {
 
 /**
- * A static holding class for universal projection information.  All projection objects should be retrieved from this class.
+ * A static holding class for universal projection (Spherical Earth to Euclidean plane) information.  
+ * All projection objects should be retrieved from this class.<p>
  * 
  * Remember that the given projection point becomes the origin of the Euclidean space, so to preserve absolute altitude (above 
  * sea level) information in the Euclidean space, it may be necessary to make the projection point's altitude zero.

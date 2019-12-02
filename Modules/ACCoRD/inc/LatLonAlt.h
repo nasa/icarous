@@ -1,9 +1,10 @@
-/*
- * LatLonAlt.h - container to hold a geodesic position 
+/* A Lat/Lon/Alt position
  * 
- * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
+ * Authors:  George Hagen              NASA Langley Research Center
+ *           Ricky Butler              NASA Langley Research Center
+ *           Jeff Maddalon             NASA Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,7 +20,15 @@
 namespace larcfm {
 
 /**
- * Container to hold a latitude/longitude/altitude position
+ * Container to hold a latitude/longitude/altitude position.
+ * 
+ * <p>Programmer's note: There has been a tendency to have methods in LatLonAlt rely on functions in GreatCircle.  But GreatCircle 
+ * depends on LatLonAlt in a fundamental way.  Although Java handles circular dependencies in a reasonable manner, they
+ * can be confusing and error-prone in many contexts.  At best, circular references are dangerous.  So to avoid the danger, should
+ * GreatCircle depend on LatLonAlt or the other way around?  The choice has been made that GreatCircle will depend on
+ * LatLonAlt.  Therefore, please do not add any references to GreatCircle in this class.  Over time we will remove
+ * any remaining GreatCircle references here.  One important reason for the dependences being setup the way they are
+ * is that LatLonAlt can be used with other Earth models besides the spherical, non-rotating model used in GreatCircle.</p>  
  */
 class LatLonAlt {
 private:
@@ -47,16 +56,24 @@ public:
 
 	/** Are these two LatLonAlt objects equal? */
 	bool equals(const LatLonAlt& v) const;
-	bool almostEquals(const LatLonAlt& v) const;
-	/** Are these two LatLonAlt almost equal, where 'almost' is defined by the given distances [m]
+	bool equals2D(const LatLonAlt& lla) const;
+
+		/**
+	 * Convert an angle in degrees/minutes/seconds into internal units
+	 * (radians). The flag indicates if this angle is north (latitude) or east
+	 * (longitude).  If the angle does not represent a latitude/longitude (it
+	 * is only an angle), then set the north_east flag tbo true.<p>
 	 * 
-	 * @param a LatLonAlt object
-	 * @param horizEps allowed difference in horizontal dimension
-	 * @param vertEps allowed difference in vertical dimension
-	 * @return true if the two are almost equals
+	 * If the degrees is negative (representing 
+	 * south or west), then the flag is ignored.
+	 * 
+	 * @param degrees value of degrees
+	 * @param minutes value of minutes
+	 * @param seconds value of seconds
+	 * @param north_east true, if north or east
+	 * @return an angle
 	 */
-	bool almostEquals(const LatLonAlt& a, double horizEps, double vertEps) const;
-	bool almostEquals2D (const LatLonAlt& v, double horizEps) const;
+    static double decimal_angle(double degrees, double minutes, double seconds, bool north_east);
 
 	/** Return latitude in degrees north 
 	 * @return latitude value in degrees
@@ -96,18 +113,15 @@ public:
 	 * */
 	std::string toString(int precision) const;
 
-	/** Return a string representation consistent with StateReader or 
-	 * PlanReader with the global default precision 
-	 * 
-	 * @return string representation
-	 * */
-	std::string toStringNP() const;
-	/** Return a string representation consistent with StateReader or 
-	 * PlanReader with user-specified precision 
-	 * @param p number of digits of precision for output
-	 * @return a string representation
-	 * */
-	std::string toStringNP(int p) const;
+	/** Return a string representation consistent with StateReader or PlanReader
+	 * with user-specified units and precision
+	 *
+	 * @param latunit units for latitude
+	 * @param lonunit units for longitude
+	 * @param zunit units for altitude
+		 * @return string representation
+	 */
+	std::string toString(const std::string& latunit, const std::string& lonunit, const std::string& zunit) const;
 
 	/** Return a string representation consistent with StateReader or PlanReader
 	 * with user-specified units and precision
@@ -118,16 +132,7 @@ public:
 	 * @param precision number of digits of precision for output
 	 * @return string representation
 	 */
-	std::string toStringNP(const std::string& latunit, const std::string& lonunit, const std::string& zunit, int p) const;
-
-	/** Return a string representation consistent with StateReader or PlanReader
-	 * with user-specified units and precision
-	 *
-	 * @param zunit units for altitude
-	 * @param precision number of digits of precision for output
-	 * @return string representation
-	 */
-	std::string toStringNP(const std::string& zunit, int p) const;
+	std::string toString(const std::string& latunit, const std::string& lonunit, const std::string& zunit, int p) const;
 
 	/**
 	 * Creates a zero position
@@ -207,6 +212,22 @@ public:
 	bool isInvalid() const;
 
 
+//	/**
+//	 * Perform a linear projection of the current Position with given velocity and time.
+//	 * A great circle route is followed and the velocity
+//	 * represents the initial velocity along the great circle.
+//	 *
+//	 * Reminder: If this is used in a stepwise fashion over lat/lon, be careful when passing
+//	 * over or near the poles and keep the velocity track in mind.
+//	 *
+//	 *  @param v the velocity
+//	 *  @param time the time from the current point
+//	 *  Note: using a negative time value is the same a velocity moving in the opposite direction (along the great circle, if appropriate)
+//	 * @return linear projection of the position
+//	 */
+	//TODO: circular definition with GreatCircle?
+//	const LatLonAlt linear(const Velocity& v, double time);
+
 	/** Compute a new lat/lon that is offset by dn meters north and de meters east.
 	 * This is a computationally fast estimate, and only should be used for relatively short distances.
 	 * 
@@ -247,8 +268,9 @@ public:
 
 	/**
 	 * Normalizes the given latitude and longitude values to conventional spherical angles.  Thus
-	 * values over the pole (95 degrees of latitude) convert to 85 degrees and the longitude 180 degrees different.
-	 *
+	 * values over the pole will map to the other side of the pole or merdian.  For example 95 degrees 
+	 * of latitude converts to 85 degrees and 190 degrees west longitude map to 170 of east longitude.
+	 * 
 	 * @param lat latitude
 	 * @param lon longitude
 	 * @param alt altitude
@@ -257,10 +279,11 @@ public:
 	static LatLonAlt normalize(double lat, double lon, double alt);
 
 	/**
-	 * Normalizes the given latitude and longitude values to conventional spherical angles.  Thus
-	 * values over the pole (95 degrees of latitude) convert to 85 degrees and the longitude 180 degrees different.
+	 * Normalizes the given latitude and longitude values to conventional spherical angles. Thus
+	 * values over the pole will map to the other side of the pole or merdian.  For example 95 degrees 
+	 * of latitude converts to 85 degrees and 190 degrees west longitude map to 170 of east longitude. 
 	 * The altitude is assumed to be zero.
-	 *
+	 * 
 	 * @param lat latitude
 	 * @param lon longitude
 	 * @return normalized LatLonAlt value
@@ -268,10 +291,11 @@ public:
 	static LatLonAlt normalize(double lat, double lon);
 
 	/**
-	 * Creates a new LatLonAlt object from the current LatLonAlt object so that latitude and longitude values are
+	 * Creates a new LatLonAlt object from the current LatLonAlt object so that latitude and longitude values are 
 	 * conventional spherical angles.  Thus
-	 * values over the pole (95 degrees of latitude) convert to 85 degrees and the longitude 180 degrees different.
-	 *
+	 * values over the pole will map to the other side of the pole or merdian.  For example 95 degrees 
+	 * of latitude converts to 85 degrees and 190 degrees west longitude map to 170 of east longitude.
+	 * 
 	 * @return normalized LatLonAlt value
 	 */
 	LatLonAlt normalize() const;
@@ -284,6 +308,7 @@ public:
 	 */
 	bool isWest(const LatLonAlt& a) const;
 
+	double track(const LatLonAlt& p) const;
 };
 
 

@@ -3,7 +3,7 @@
  *
  * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)
  *
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -50,15 +50,15 @@ bool PolycarpEdgeProximity::segments_2D_close(const Vect2& segstart1, const Vect
   double segEndStartXDiff = segend1.x - segstart2.x;
   double segEndYDiff      = segend1.y - segend2.y;
   double segEndStartYDiff = segend1.y - segstart2.y;
-  bool segXApart  = (fabs(segStartXDiff)> 2*BUFF and fabs(segStartEndXDiff) > 2*BUFF and
-      fabs(segEndXDiff)> 2*BUFF and fabs(segEndStartXDiff) > 2*BUFF and
-      sign(segStartXDiff) == sign(segStartEndXDiff) and
-      sign(segEndXDiff) == sign(segEndStartXDiff) and sign(segStartXDiff) == sign(segEndXDiff));
-  bool segYApart  = (fabs(segStartYDiff) > 2*BUFF and fabs(segStartEndYDiff) > 2*BUFF and
-      fabs(segEndYDiff) > 2*BUFF and fabs(segEndStartYDiff) > 2*BUFF and
-          sign(segStartYDiff) == sign(segStartEndYDiff) and sign(segEndYDiff) == sign(segEndStartYDiff) and
+  bool segXApart  = (fabs(segStartXDiff)> 2*BUFF && fabs(segStartEndXDiff) > 2*BUFF &&
+      fabs(segEndXDiff)> 2*BUFF && fabs(segEndStartXDiff) > 2*BUFF &&
+      sign(segStartXDiff) == sign(segStartEndXDiff) &&
+      sign(segEndXDiff) == sign(segEndStartXDiff) && sign(segStartXDiff) == sign(segEndXDiff));
+  bool segYApart  = (fabs(segStartYDiff) > 2*BUFF && fabs(segStartEndYDiff) > 2*BUFF &&
+      fabs(segEndYDiff) > 2*BUFF && fabs(segEndStartYDiff) > 2*BUFF &&
+          sign(segStartYDiff) == sign(segStartEndYDiff) && sign(segEndYDiff) == sign(segEndStartYDiff) &&
           sign(segStartYDiff) == sign(segEndYDiff));
-  if (segXApart or segYApart) return false;
+  if (segXApart || segYApart) return false;
   else if (near_edge(segstart2,segend2,segstart1,BUFF)) return true;
   else if (near_edge(segstart2,segend2,segend1,BUFF)) return true;
   else if (near_edge(segstart1,segend1,segstart2,BUFF)) return true;

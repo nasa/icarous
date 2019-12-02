@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017 United States Government as represented by
+ * Copyright (c) 2012-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -11,7 +11,6 @@
 namespace larcfm {
 
 /* Non-Hazard Zone VMOD concept */
-
 // Vertical Not Well Clear Violation
 // ZTHR and T_star are altitude and time thresholds
 bool WCV_VMOD::vertical_WCV(double ZTHR, double T_star, double sz, double vz) const {
@@ -41,6 +40,14 @@ Interval WCV_VMOD::vertical_WCV_interval(double ZTHR, double T_star, double B, d
   time_in = Util::max(B,tentry);
   time_out = Util::min(T,texit);
   return Interval(time_in,time_out);
+}
+
+/**
+ * Returns a deep copy of this WCV_VMOD object, including any results that have been calculated.
+ */
+WCV_Vertical* WCV_VMOD::copy() const {
+  WCV_VMOD* ret = new WCV_VMOD();
+  return ret;
 }
 
 }

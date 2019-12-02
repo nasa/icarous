@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,28 +19,29 @@
 #include "Velocity.h"
 #include "NavPoint.h"
 
+
 namespace larcfm {
 
 /** 
- * A data structure to maintain certain information related to a trajectory change point (TCP).  Typically,
+ * <p>A data structure to maintain certain information related to a trajectory change point (TCP).  Typically,
  * this information is associated with a {@link NavPoint} through a {@link Plan}.  The major purpose of this class is to
- * store the relevant TCP information (e.g., status information, acceleration values, etc.).<p>
+ * store the relevant TCP information (e.g., status information, acceleration values, etc.).</p>
  *  
  * Possible types of points.  
  * <ul>
  * <li>"Orig" are from the original plan with no change
  * <li>"Virtual" are temporary points, generally interpolated points (long legs are broken into segments).  Virtual 
  *   points will be silently over-written, and never register as overlapping with other points.  
- *   Virtual points may be deleted unexpectedly.  Not for general use. Virtual points are internal 
- *   to Stratway and not expected to be returned to the pilot or plane's automation.
- * <li>"AltPreserve" are marked points used in trajectory generation
+ *   Virtual points may be deleted unexpectedly.  Not for general use. Virtual points are used for
+ *   to conflict detection and not expected to be returned to the pilot or plane's automation.
+ * <li> "AltPreserve" are marked points used in trajectory generation (TrajGen.makeKinematicPlan())
  * </ul>
  * 
- * Each point can be a turn point (essentially a horizontal acceleration point), a ground speed acceleration
+ * <p>Each point can be a turn point (essentially a horizontal acceleration point), a ground speed acceleration
  * point, or a vertical speed acceleration point.  These points are indicated by either being the 
  * beginning of an acceleration zone or the end of an acceleration zone.  Thus, there are methods
  * to indicate the beginning of a turn ({@link #isBOT}), or the end of the a turn ({@link #isEOT}), similarly for
- * ground speed of vertical speed. 
+ * ground speed of vertical speed.</p> 
  */
 class TcpData {
 
@@ -51,7 +52,7 @@ public:
 
 	/** UNKNOWN values should ONLY be used when parsing a string representation fails */
 	//TODO make this private once conversion is complete
-	enum TrkTcpType {NONE, BOT, EOT, EOTBOT, UNKNOWN_TRK};
+	enum TrkTcpType {NONE, BOT, EOT, EOTBOT, MOT, UNKNOWN_TRK};
 	//TODO make this private once conversion is complete
 	enum GsTcpType {NONEg, BGS, EGS, EGSBGS, UNKNOWN_GS};
 	//TODO make this private once conversion is complete
@@ -59,6 +60,10 @@ public:
 
 	static const int TCP_OUTPUT_COLUMNS = 20;   // total number of output columns for full TCP (not including aircraft name)
 	static const int MIN_OUTPUT_COLUMNS = 5;    // total number of output columns for linear (not including aircraft name)
+
+	static bool motFlagInInfo;
+	static std::string MOTflag;
+
 
 private:
 	WayType    ty;              // type of point
@@ -69,11 +74,8 @@ private:
 	Position   centerTurn;
 	double     accelGs;         // signed gs-acceleration value
 	double     accelVs;         // signed vs-acceleration value
-//	Velocity   velocityInit_v;	// the initial velocity at the start of an acceleration zone.
-	Position   sourcePosition_p;  // source position
-	double     sourceTime_d;		// source time (if < 0, no valid source)
-	int        linearIndex;	    // in a kinematic plan provides index to original linear plan
 	std::string  information;
+	//bool        isMOTflag;
 
 public:
 	TcpData() :
@@ -85,28 +87,10 @@ public:
 		centerTurn(Position::INVALID()),
 		accelGs(0.0),
 		accelVs(0.0),
-		//velocityInit_v(Velocity::INVALID()),
-		sourcePosition_p(Position::INVALID()),
-		sourceTime_d(-1),
-		linearIndex(-1),
 		information("")
+        //isMOTflag(false)
 	{ }
 	
-	TcpData(const NavPoint& p) :
-		ty(Orig),
-		tcpTrk(NONE),
-		tcpGs(NONEg),
-		tcpVs(NONEv),
-		radiusSigned(0.0),
-		centerTurn(Position::INVALID()),
-		accelGs(0.0),
-		accelVs(0.0),
-		//velocityInit_v(Velocity::INVALID()),
-		sourcePosition_p(p.position()),
-		sourceTime_d(p.time()),
-		linearIndex(-1),
-		information("")
-	{ }
 
 	TcpData(const TcpData& data) :
 		ty(data.ty),
@@ -117,16 +101,10 @@ public:
 		centerTurn(data.centerTurn),
 		accelGs(data.accelGs),
 		accelVs(data.accelVs),
-		//velocityInit_v(data.velocityInit_v),
-		sourcePosition_p(data.sourcePosition_p),
-		sourceTime_d(data.sourceTime_d),
-		linearIndex(data.linearIndex),
 		information(data.information)
+	    //isMOTflag(data.isMOTflag)
 	{ }
 	
-	//TODO remove this method once the conversion is complete
-	TcpData::WayType getType() const;
-
 	std::string getTypeString() const;
 	static std::string toStringWayType(WayType t);
 	static TcpData::WayType valueOfWayType(const std::string& t);
@@ -166,39 +144,27 @@ public:
 	 */
 	void reset();
 
-//	//TODO remove this once conversion is complete
-//	TrkTcpType getTrackType() const;
 
 	std::string getTrkTypeString() const;
 	static std::string toStringTrkType(TrkTcpType t);
 	static TcpData::TrkTcpType valueOfTrkType(const std::string& t);
 
-//	//TODO remove this once conversion is complete
-//	void setTrkType(TrkTcpType ty);
-//
-//	//TODO remove this once conversion is complete
-//	GsTcpType getGsType() const;
 
 	std::string getGsTypeString() const;
 	static std::string toStringGsType(GsTcpType t);
 	static TcpData::GsTcpType valueOfGsType(const std::string& t);
 
-//	//TODO remove this once conversion is complete
-//	void setGsType(GsTcpType ty);
-
-//	//TODO remove this once conversion is complete
-//	VsTcpType getVsType() const;
 
 	std::string getVsTypeString() const;
 	static std::string toStringVsType(VsTcpType t);
 	static TcpData::VsTcpType valueOfVsType(const std::string& t);
-	
-//	//TODO remove this once conversion is complete
-//	void setVsType(VsTcpType ty);
 
+	/**
+	 * Get signed radius. Note: a return value of 0 indicates no specified radius
+	 * @return radius
+	 */
 	double getRadiusSigned() const;
-	double signedRadius() const;
-	double turnRadius() const;
+	int    turnDir() const;
 	TcpData setRadiusSigned(double r);
 
 	Position turnCenter() const;
@@ -206,24 +172,11 @@ public:
 	TcpData setTurnCenter(const Position& center);
 
 
-//	/** Sets the point to have the given track acceleration.  The initial velocity should already be set before this method is called. */
-//	TcpData setTrkAccel(double omega);
-
-	
-//	/**
-//	 * Return the  (signed) turn rate (i.e., position
-//	 * acceleration in the "track" dimension) associated with this point. Turn rate is in rad/sec (positive
-//	 * is clockwise/right, negative is counterclockwise/left), otherwise return 0.0;
-//	 */
-//	double trkAccel() const;
-	
 	double getGsAccel() const;
-	double gsAccel() const;
 
 	TcpData setGsAccel(double ga);
 
 	double getVsAccel() const;
-	double vsAccel() const;
 
 	/** Set the vertical acceleration rate to the given value 
 	 * @param va vertical acceleration
@@ -231,51 +184,28 @@ public:
 	 * */
 	TcpData setVsAccel(double va);
 
-//	Velocity getVelocityInit() const;
-//	Velocity velocityInit() const;
-
 	/** Set the initial velocity for this TcpData data object to the given value.
 	 *  This must be the correct value for points defining the entry into acceleration zones (BOT, BGSC, BVSC).
 	 */
 	TcpData setVelocityInit(const Velocity& v);
 
-	Position getSourcePosition() const;
-//	Position sourcePosition() const;
-	NavPoint sourceNavPoint() const;
-	bool hasSource() const;
-
-
-	/** Make a new TcpData from the current one with the source time metadata changed 
-	 * @param sp new source position
-	 * @param st new source time
-	 * @return this TcpData object (for a.setX() type operations)
-	 * */
-	TcpData setSource(const Position& sp, double st);
-	TcpData setSource(const NavPoint& np);
-	static TcpData makeSource(const NavPoint& np);
-
-	TcpData setSourcePosition(const Position& sp);
-
-	double getSourceTime() const;
-//	double sourceTime() const;
-
-	TcpData setSourceTime(double st);
-
-	int getLinearIndex() const;
-
-	TcpData setLinearIndex(int ix);
 
 	std::string getInformation() const;
 
-	void setInformation(const std::string& information);
+	void setInformation(const std::string& info);
+
+	void appendInformation(const std::string&  info);
+
+	void appendInformationNoDuplication(const std::string&  info);
 
 	
 	static TcpData makeFull(const std::string& ty, const std::string& tcp_trk, const std::string& tcp_gs, const std::string& tcp_vs,
 			double radiusSigned, const Position& center,  double accel_gs, double accel_vs,
-			const Velocity& velocityInit, const Position& sourcep, double sourcet, int linearIndex);
+			const Velocity& velocityInit);
 		
 	
 	static TcpData makeInvalid();
+
 	/** 
 	 * Make a new TcpData object with default parameters. This is essentially a 
 	 * factory method for the no parameter constructor.
@@ -290,20 +220,9 @@ public:
 	 * 
 	 * @param signedRadius right turns have a positive radius, left turns have a negative radius
 	 * @param center center of turn
-	 * @param linearIndex
 	 * @return a reference to the current TcpData object
 	 */
-	TcpData setBOT(double signedRadius, const Position& center, int linearIndex);
-
-//	/** Set this point as a "beginning of turn" point.
-//	 *
-//	 * @param velocityIn
-//	 * @param trkAccel  the track turn rate, sometimes called omega.
-//	 * @param linearIndex
-//	 * @return a reference to the current TcpData object
-//	 */
-//	TcpData setBotAccel(double trkAccel, int linearIndex);
-
+	TcpData setBOT(double signedRadius, const Position& center);
 
 	void clearTrk();
 	
@@ -322,85 +241,69 @@ public:
 
 	/** Set this point as a "end of turn" point. 
 	 * 
-	 * @param linearIndex
 	 * @return this TcpData object (for a.setX() type operations)
 	 */
-	TcpData setEOT(int linearIndex);
+	TcpData setEOT();
 
 	/** Set this point as a combined "end of turn and beginning of turn" point. 
 	 * 
-	 * @param signedRadius
+	 * @param signedRadius radius
 	 * @param center the center of turn
-	 * @param linearIndex the reference index in the associated linear plan for this TCP point
 	 * @return this TcpData object (for a.setX() type operations)
 	 */
-	TcpData setEOTBOT(double signedRadius, const Position& center, int linearIndex);
+	TcpData setEOTBOT(double signedRadius, const Position& center);
+
+	TcpData setMOT(bool b);
 
 
 	/**
 	 * Set this point as a "beginning of ground speed change" point
-	 * @param a
-	 * @param linearIndex
+	 * @param a acceleration
 	 * @return this TcpData object (for a.setX() type operations)
 	 */
-	TcpData setBGS(double a, int linearIndex);
+	TcpData setBGS(double a);
 
 	void clearGs();
 
 	/**
 	 * Set this point as a "ending of ground speed change" point
 	 * 
-	 * @param linearIndex
 	 * @return this TcpData object (for a.setX() type operations)
 	 */
-	TcpData setEGS(int linearIndex);
+	TcpData setEGS();
 
 	/**
 	 * Set this point as a combined "end of ground speed change and beginning of ground speed change" point
 	 * 
-	 * @param a
-	 * @param linearIndex
+	 * @param a acceleration
 	 * @return this TcpData object (for a.setX() type operations)
 	 */
-	TcpData setEGSBGS(double a, int linearIndex);
+	TcpData setEGSBGS(double a);
 
 
 	/**
 	 * Set this point as a "beginning of vertical speed change" point
-	 * @param a
-	 * @param linearIndex
+	 * @param a acceleration
 	 * @return this TcpData object (for a.setX() type operations)
 	 */
-	TcpData setBVS(double a, int linearIndex);
+	TcpData setBVS(double a);
 
 	void clearVs();
 
 	/**
 	 * Set this point as an "ending of vertical speed change" point
 	 * 
-	 * @param linearIndex
 	 * @return this TcpData object (for a.setX() type operations)
 	 */
-	TcpData setEVS(int linearIndex);
+	TcpData setEVS();
 
 	/**
 	 * Set this point as a combined "ending of vertical speed change and beginning of vertical speed change" point
 	 * 
-	 * @param a
-	 * @param linearIndex
+	 * @param a acceleration
 	 * @return this TcpData object (for a.setX() type operations)
 	 */
-	TcpData setEVSBVS(double a, int linearIndex);
-
-//	/** Makes a new NavPoint that is an intermediate "mid" added point */
-//	TcpData makeMidpoint(Position p, double t, int linearIndex) {
-//		return new NavPoint(p, t, this.ty,  this.label, this.tcp_trk,   this.tcp_gs, this.tcp_vs, 
-//				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit,  this.sourcePosition, this.sourceTime, linearIndex);
-//		return this;
-//	}
-	
-	
-	
+	TcpData setEVSBVS(double a);
 	
 	
 	bool isInvalid() const;
@@ -425,10 +328,18 @@ public:
 	 * */
 	bool isEOT() const;
 
+	bool isMOT() const ;
+
+
 	/** true if this point is a ground speed point 
 	 * @return groundspeed tcp status
 	 * */
 	bool isGsTCP() const;
+
+	/** true if this point is a beginning of ground speed change point 
+	 * @return BGS status
+	 * */
+	bool isEGSBGS() const;
 
 	/** true if this point is a beginning of ground speed change point 
 	 * @return BGS status
@@ -439,6 +350,11 @@ public:
 	 * @return EGS status
 	 * */
 	bool isEGS() const;
+
+	/** true if this point is the start of a vs change 
+	 * @return BVS status
+	 * */
+	bool isEVSBVS() const;
 
 	/** true if this point is part of a vs change 
 	 * @return vertical speed tcp status
@@ -467,6 +383,11 @@ public:
 	 */
 	bool isEndTCP() const;
 	
+	/** 
+	 * Return true if, for the given type, this TcpData has values for the necessary fields
+	 * @return true, if acceleration fields are defined
+	 */
+	bool isDefined() const;
 
 	/**
 	 * Can this point be merged with the given point p?  
@@ -476,28 +397,29 @@ public:
     bool mergeable(const TcpData& point) const;
 
 	/**
-	 * Creates a new point that is the merger of the this point and the given
-	 * point.  Assumes that mergeable() on the two points would return true, if
-	 * not, then approximately the original point is returned. <p>
-	 *
+	 * <p>Creates a new point that is the merger of the this point and the given 
+	 * point.  Assumes that mergeable() on the two points would return true, if 
+	 * not, then approximately the original point is returned. </p>
+	 * 
 	 * Merging rules:
 	 * <ul>
 	 * <li> mergeTCPInfo() is commutative
 	 * <li> If both points are linear points, then the points are merged.
-	 * <li> If one point is a linear point (aka, not a TCP), then the TCP info (velocity and acceleration)
+	 * <li> If one point is a linear point (aka, not a TCP), then the TCP info (velocity and acceleration) 
 	 * from the TCP point is used.
 	 * <li> If both points are TCP (aka acceleration points) of different types (Trk, Gs, Vs), then the points
-	 * should merge without an issue, note: they are required to have the same "velocity in"
-	 * <li> If both points are TCP (aka acceleration points) of the same type (Trk, Gs, or Vs), then the
-	 * resulting point should be a combined point (e.g., EOTBOT), and the TCP information should be the information
+	 * should merge without an issue 
+	 * <li> If both points are TCP (aka acceleration points) of the same type (Trk, Gs, or Vs), but
+	 * one is a beginning point and one is an ending point, then the 
+	 * resulting point should be a combined point (e.g., EOTBOT), and the TCP information should be the information 
 	 * from the beginning point.
 	 * <li> If both points are TCP "begin" points, then a message is provided if they have different source positions
-	 * </ul>
-	 *
+	 * </ul> 
+	 * 
 	 * @param point the other point
 	 * @return a new point that is the merger of the two points.
 	 */
-    TcpData mergeTCPInfo(const TcpData& point) const;
+    TcpData mergeTCPData(const TcpData& point) const;
 
 
 
@@ -508,7 +430,7 @@ public:
 	 * @param d TcpData object
 	 * @return the full label
 	 * */
-	static std::string fullLabel(const NavPoint& p, const TcpData& d);
+	static std::string fullName(const NavPoint& p, const TcpData& d);
 	
 	/**
 	 * This parses the label generated for TCP types to reconstruct the meta-data of the point.  
@@ -517,7 +439,7 @@ public:
 	 * or tcpLabel() to retrieve the full string.
 	 * If it is detected that this string uses the old metatdata format, this returns an invalid NavPoint::
 	 */
-	std::pair<TcpData,std::string> parseMetaDataLabel(const NavPoint& default_source, const std::string& tlabel);
+	std::pair<TcpData,std::string> parseMetaDataLabel(const std::string& tlabel);
 
 
 	std::string tcpTypeString() const;
@@ -526,7 +448,7 @@ public:
 	 * Return a string representation of TCP meta data (or the empty string if none)
 	 * 
 	 * @param t time of the associated NavPoint
-	 * @param precision
+	 * @param precision number of digits of precision
 	 * @return a string
 	 */
 	std::string metaDataLabel(double t, int precision) const;
@@ -539,23 +461,10 @@ public:
 	static TcpData::GsTcpType toGsTCP(int ty);
 	static TcpData::VsTcpType toVsTCP(int ty);
 
-
 	std::string toString() const;
-
-	//
-	//
-	//  THESE METHODS ARE JUST FOR THE CONVERSION
-	//  REMOVE REFERENCES TO THESE METHODS ONCE THE CONVERSION IS COMPLETE
-	//
-	//
-	//
-
-//	static NavPoint make(const NavPoint& th, const TcpData& d);
-//
-//	static TcpData getTcpData(const NavPoint& th);
-
-
-
+	
+	std::string toStringTcpType() const;
+	
 };
 
 }

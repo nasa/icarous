@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,6 +19,19 @@
 
 namespace larcfm {
 
+void WCV_tvar::copyFrom(const WCV_tvar& wcv) {
+  if (&wcv != this) {
+    table = wcv.table;
+    wcv_vertical = wcv.wcv_vertical->copy();
+    id = wcv.id;
+  }
+}
+
+WCV_tvar& WCV_tvar::operator=(const WCV_tvar& wcv) {
+  copyFrom(wcv);
+  return *this;
+}
+
 WCV_tvar::~WCV_tvar() {
   delete wcv_vertical;
 }
@@ -27,7 +40,7 @@ WCV_tvar::~WCV_tvar() {
  * Sets the internal table to be a copy of the supplied one.
  **/
 void WCV_tvar::setWCVTable(const WCVTable& tab) {
-  table.copyValues(tab);
+  table = tab;
 }
 
 double WCV_tvar::getDTHR() const {
@@ -163,8 +176,8 @@ std::string WCV_tvar::toString() const {
   return (id == "" ? "" : id+" : ")+getSimpleClassName()+" = {"+table.toString()+"}";
 }
 
-std::string WCV_tvar::toPVS(int prec) const {
-  return table.toPVS(prec);
+std::string WCV_tvar::toPVS() const {
+  return getSimpleClassName()+"("+table.toPVS()+")";
 }
 
 ParameterData WCV_tvar::getParameters() const {

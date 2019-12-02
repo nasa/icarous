@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -109,9 +109,9 @@ class SimpleMovingPoly {
 	   * @param proj relevant projection
 	   * @return moving polygon
 	   */
-	MovingPolygon3D getMovingPolygon(double time, const EuclideanProjection& proj) const;
+	MovingPolygon3D getMovingPolygon(double time, const EuclideanProjection& proj) ;
 
-	MovingPolygon3D getMovingPolygon(const EuclideanProjection& proj) const;
+	MovingPolygon3D getMovingPolygon(const EuclideanProjection& proj) ;
 
 	int size() const;
 

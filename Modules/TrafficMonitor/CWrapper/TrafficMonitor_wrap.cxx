@@ -465,21 +465,21 @@ extern "C" {
   
   SWIGEXPORTC void _wrap_TrafficMonitor_KMB_set(SwigObj * carg1, SwigObj * carg2) {
     TrafficMonitor *arg1 = (TrafficMonitor *) 0 ;
-    larcfm::KinematicMultiBands arg2 ;
+    larcfm::Daidalus arg2 ;
     
     {
       if (carg1)
       arg1 = (TrafficMonitor *) carg1->obj;
     }
     {
-      arg2 = *(larcfm::KinematicMultiBands *) (carg2->obj);
+      arg2 = *(larcfm::Daidalus *) (carg2->obj);
     }
-    if (arg1) (arg1)->KMB = arg2;
+    if (arg1) (arg1)->DAA = arg2;
   }
   
   
   SWIGEXPORTC SwigObj * _wrap_TrafficMonitor_KMB_get(SwigObj * carg1) {
-    larcfm::KinematicMultiBands * cppresult;
+    larcfm::Daidalus * cppresult;
     TrafficMonitor *arg1 = (TrafficMonitor *) 0 ;
     SwigObj * result;
     
@@ -488,10 +488,10 @@ extern "C" {
       arg1 = (TrafficMonitor *) carg1->obj;
     }
     {
-      const larcfm::KinematicMultiBands &_result_ref =  ((arg1)->KMB);cppresult = (larcfm::KinematicMultiBands*) &_result_ref;
+      const larcfm::Daidalus &_result_ref =  ((arg1)->DAA);cppresult = (larcfm::Daidalus*) &_result_ref;
     }
     {
-      result = (SwigObj*) SWIG_create_object(SWIG_STR(larcfm::KinematicMultiBands));
+      result = (SwigObj*) SWIG_create_object(SWIG_STR(larcfm::Daidalus));
       result->obj = (void*) &cppresult;
     }
     return result;

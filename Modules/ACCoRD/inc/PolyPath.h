@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -28,36 +28,51 @@ namespace larcfm{
  * change shape as it travels along the path, but the number of vertices must remain constant.  The shape
  * at non-specified time points is linearly interpolated from the neighboring points.   
  * 
- * Paths with a single entry (at any time) are considered to be static, immobile polygons that exist at 
- * all times
+ * (Note that the default mode has changed from MORPHING to AVG_VEL.)
+ * 
+ *  Paths can have one of several modes:
+ *  AVG_VEL (the default): Velocities are calculated between the average points of consecutive steps.  Polygons do not need to have the
+ *    same number of vertices at each step. The path starts to exist at the first time and stops existing at the last time.
+ *    Vertical speed is based on the bottom of the steps. 
+ *    In the case of a single-step path, velocity is zero and time is ignored: the polygon always exists statically at that location.
+ *    The time interval the path exists is either [t1,t2] or [0,+inf] (for 1-step paths)
+ *  MORPHING: all polygons must have the same number of vertices.  Velocities are calculated vertex by vertex between consecutive steps. 
+ *    The path starts to exist at the first time and stops existing at the last time.
+ *    Vertical speed is based on the bottom of the steps. 
+ *    In the case of a single-step path, velocity is zero and time is ignored: the polygon always exists statically at that location.
+ *    The time interval the path exists is either [t1,t2] or [0,+inf] (for 1-step paths)
+ *  USER_VEL: Velocities are user-specified and applied to all vertices.  Polygons do not need to have the same number of vertices at each step.
+ *    The path starts to exist at the first time, and the last step will have an infinitely continuing velocity.
+ *    The time interval the path exists is always [t1,+inf]
+ *  USER_VEL_FINITE: As USER_VEL, but the path does not continue beyond the last step. (One-step paths are considered the same as USER_VEL.)  
+ *    The last step is mostly ignored except for time and can be any non-null polygon.
+ *    The time interval the path exists is always [t1,t2]
+ *  USER_VEL_EVER: As USER_VEL, but the path also continues into the past from the first point (at least to time 0).
+ *    The time interval the path exists is always [0,+inf]
  *  
- *  Paths can have one of 3 modes:
- *  MORPHING (the default): all polygons must have the same number of vertices.  Velocities are calculated by vertex between consecutive steps.
- *  AVG_VEL: Velocities are calculated between the average points of consecutive steps.  Polygons do not need to have the same number of vertices at each step.
- *  USER_VEL: Velocities are user-specified and applied to all vertices.  Polygons do not need to have the same number of vertices at each step.  The last step will have an infinitely continuing velocity.
- *  USER_VEL_FINITE: As USER_VEL, but the path does not continue past the last step.  (One-step paths are considered the same as USER_VEL.)  The last step is mostly ignored except for time and can be any polygon.
+ *  While different modes can mimic many of the same behaviors, there are some internal optimizations when processing certain polygon modes.
+ *  For example it is more efficient to use a static polygon than to use a USER_VEL polygon with zero velocity.  Interpolating MORPHING 
+ *  polygons also can require more computation than other varieties.
  *  
  * Note: polygon support is experimental and the interface is subject to change!
  */
+
 class PolyPath : public ErrorReporter {
 public:
-    enum PathMode {MORPHING, AVG_VEL, USER_VEL, USER_VEL_FINITE};
+    enum PathMode {MORPHING, AVG_VEL, USER_VEL, USER_VEL_FINITE, USER_VEL_EVER};
 
   private:
   std::vector<SimplePoly> polyList;
   std::vector<double> times;
   std::vector<Velocity> vlist;
   std::string name;
+  std::string note;
 //  bool morphingPolys;
 //  bool calcVelocities;
   PathMode mode;
   mutable ErrorLog error;
-  
-	/**
-	 * Helper function to combine the 2 user vel modes 
-	 * @return true, if user velocity
-	 */
-  bool isUserVel() const;
+  bool modeSet;
+  bool containment;
 
   public:
   
@@ -70,8 +85,10 @@ public:
    * Constructor with associated name
    * @param n name string
    */
-  PolyPath(const std::string& n);
-  
+  explicit PolyPath(const std::string& n);
+
+  PolyPath(const std::string& n, PathMode m);
+
   /**
    * Make a PolyPlan for a non-dynamic area p.
    * @param p
@@ -88,12 +105,12 @@ public:
   
   PolyPath(const std::string& n, const std::vector<SimplePoly>& ps, const std::vector<double>& ts);
   
-  // deep copy
-  /**
-   * Construct a deep copy of path p
-   * @param p path to copy
-   */
-  PolyPath(const PolyPath& p);
+//  // deep copy
+//  /**
+//   * Construct a deep copy of path p
+//   * @param p path to copy
+//   */
+//  PolyPath(const PolyPath& p);
   
   static PolyPath pathFromState(const std::string& n, const SimplePoly& p, const Velocity& v, double tstart, double tend);
   static PolyPath pathFromState(const std::string& n, const MovingPolygon3D& mp, EuclideanProjection proj, double tstart, double tend);
@@ -117,38 +134,67 @@ public:
   bool isLatLon() const;
   
 	/**
-	 * Return true if this PolyPath is static (it always exists in a fixed location).
-	 * This is the case if there is only one step in the path and the mode is not USER_VEL 
+	 * Return true if this PolyPath is static (it exists in a fixed location).
+	 * This is the case if there is only one step in the path and the mode is MORPHING or AVG_VEL.
+	 * Note that several optimizations are applied to static polygons that are not applied to a 
+	 * USER_VEL path with zero velocity (even though they ultimately have similar behaviors).
 	 * @return true, if static
 	 */
   bool isStatic() const;
 
 	/**
 	 * Return true if this PolyPath continues to exist past the defined path (it has a velocity, which may be zero, and no definite end point)
-	 * This is the case if mode is USER_VEL or if there is only one step in the path. 
+	 * This is the case if mode is USER_VEL or if there is only one step in the path. Note that static paths will also be continuing.
 	 * @return true, if continuing
 	 */
    bool isContinuing() const;
 
 	/**
+	 * Helper function to combine the 3 user vel modes 
+	 * @return true, if user velocity
+	 */
+   bool isUserVel() const;
+
+	/**
 	 * Get the mode for this path.
-	 *  MORPHING: all polygons must have the same number of vertices.  Velocities are calculated by vertex between consecutive steps.
-	 *  AVG_VEL: Velocities are calculated between the average points of consecutive steps.  Polygons do not need to have the same 
-	 *  number of vertices at each step.
-	 *  USER_VEL: Velocities are user-specified and applied to all vertices.  Polygons do not need to have the same number of 
-	 *  vertices at each step.  The last step will have an infinitely continuing velocity.
+	 *  AVG_VEL (the default): Velocities are calculated between the average points of consecutive steps.  Polygons do not need to have the
+	 *    same number of vertices at each step. The path starts to exist at the first time and stops existing at the last time.
+	 *    In the case of a single-step path, velocity is zero and time is ignored: the polygon always exists statically at that location.
+	 *    The time interval the path exists is either [t1,t2] or [0,+inf] (for 1-step paths)
+	 *  MORPHING: all polygons must have the same number of vertices.  Velocities are calculated vertex by vertex between consecutive steps. 
+	 *    The path starts to exist at the first time and stops existing at the last time.
+	 *    In the case of a single-step path, velocity is zero and time is ignored: the polygon always exists statically at that location.
+	 *    The time interval the path exists is either [t1,t2] or [0,+inf] (for 1-step paths)
+	 *  USER_VEL: Velocities are user-specified and applied to all vertices.  Polygons do not need to have the same number of vertices at each step.
+	 *    The path starts to exist at the first time, and the last step will have an infinitely continuing velocity.
+	 *    The time interval the path exists is always [t1,+inf]
+	 *  USER_VEL_FINITE: As USER_VEL, but the path does not continue beyond the last step. (One-step paths are considered the same as USER_VEL.)  
+	 *    The last step is mostly ignored except for time and can be any non-null polygon.
+	 *    The time interval the path exists is always [t1,t2]
+	 *  USER_VEL_EVER: As USER_VEL, but the path also continues into the past from the first point (at least to time 0).
+	 *    The time interval the path exists is always [0,+inf]
 	 *  @return path mode
 	 */
    PathMode getPathMode() const;
 
 	/**
-	 * Set the mode for this path.
-	 *  MORPHING: all polygons must have the same number of vertices.  Velocities are calculated by vertex between consecutive steps.
-	 *  AVG_VEL: Velocities are calculated between the average points of consecutive steps.  Polygons do not need to have the same number of vertices at each step.
-	 *  USER_VEL: Velocities are user-specified and applied to all vertices.  Polygons do not need to have the same number of vertices at each step.  The last step will have an infinitely continuing velocity.
-	 *  Changing away from USER_VEL will erase any stored velocity information.  Changing to USER_VEL will populate the path with the same values
-	 *  as AVG_VEL (the last step will have a zero velocity). 
-	 *  USER_VEL_FINITE: as USER_VEL
+	 * Set the mode for this path.  Note that switching away from a USER_Vel* mode can cause a loss of stored velocity information.
+	 *  AVG_VEL (the default): Velocities are calculated between the average points of consecutive steps.  Polygons do not need to have the
+	 *    same number of vertices at each step. The path starts to exist at the first time and stops existing at the last time.
+	 *    In the case of a single-step path, velocity is zero and time is ignored: the polygon always exists statically at that location.
+	 *    The time interval the path exists is either [t1,t2] or [0,+inf] (for 1-step paths)
+	 *  MORPHING: all polygons must have the same number of vertices.  Velocities are calculated vertex by vertex between consecutive steps. 
+	 *    The path starts to exist at the first time and stops existing at the last time.
+	 *    In the case of a single-step path, velocity is zero and time is ignored: the polygon always exists statically at that location.
+	 *    The time interval the path exists is either [t1,t2] or [0,+inf] (for 1-step paths)
+	 *  USER_VEL: Velocities are user-specified and applied to all vertices.  Polygons do not need to have the same number of vertices at each step.
+	 *    The path starts to exist at the first time, and the last step will have an infinitely continuing velocity.
+	 *    The time interval the path exists is always [t1,+inf]
+	 *  USER_VEL_FINITE: As USER_VEL, but the path does not continue beyond the last step. (One-step paths are considered the same as USER_VEL.)  
+	 *    The last step is mostly ignored except for time and can be any non-null polygon.
+	 *    The time interval the path exists is always [t1,t2]
+	 *  USER_VEL_EVER: As USER_VEL, but the path also continues into the past from the first point (at least to time 0).
+	 *    The time interval the path exists is always [0,+inf]
 	 *  @param m path mode
 	 */
    void setPathMode(PathMode m);
@@ -170,6 +216,15 @@ public:
 	 */
   void setName(const std::string& n);
   
+
+	/**
+	 * Get the note field.
+	 * @return note
+	 */
+  std::string getNote() const;
+
+  void setNote(const std::string& n);
+
 	/**
 	 * Returns the number of time points in this path.  Static paths will have a size of 1.
 	 * @return size
@@ -177,7 +232,7 @@ public:
   int size() const;
 
 	/**
-	 * This defaults to MORPHING mode.
+	 * Add a polygon without velocity data.  If the mode has not been set, this defaults to MORPHING mode.
 	 * 
 	 * @param p polygon
 	 * @param time time
@@ -186,7 +241,7 @@ public:
 
 	/**
 	 * Add a polygon with velocity information.
-	 * This defaults to USER_VEL mode.
+	 * If mode has not been already set, this defaults to USER_VEL mode.
 	 * @param p         position
 	 * @param v         velocity
 	 * @param time      start time for this polygon
@@ -212,7 +267,20 @@ public:
   double getLastTime() const;
 
 	/**
+	 * Returns the time associated with the last polygon in the path.  Note that this may not be the same as getlastTime(). 
+	 * @return time
+	 */
+  double getLastPolyTime() const;
+
+	/**
+	 * Convert the polygons in this path so that all have the same number of vertices.
+	 *  
+	 */
+  void makeVertexCountEqual();
+
+	/**
 	 * Returns an interpolated poly from an arbitrary time on this path.
+	 * Returns null if the polygon does not exist at the given time.
 	 * 
 	 * @param time time
 	 * @return polygon
@@ -224,9 +292,9 @@ public:
 	 * @param n index
 	 * @return velocity
 	 */
-  Velocity initialVelocity(int n) const;
+  Velocity initialVelocity(int n) ;
   
-  Velocity initialVertexVelocity(int vert, int n) const;
+  Velocity initialVertexVelocity(int vert, int n) ;
 
 	/**
 	 * Return the segment number that contains 'time' in [s].  If the
@@ -243,7 +311,7 @@ public:
 	/**
 	 * Interpolate the poly at the given time
 	 * If time is outside the path's limit, return null.
-	 * @param time
+	 * @param time time
 	 * @return polygon
 	 */
   SimplePoly position(double time) const;
@@ -319,18 +387,19 @@ public:
 	 * @param t The time to halt the path.
 	 * @return A truncated path.  If t &le; the path's start time, then return an empty path.  If t &ge; the path's end time, then return a copy of the original path.
 	 */
-  PolyPath truncate(double t) const;
+  PolyPath truncate(double t) ;
 
   // this does not check poly sizes
-  /**
-   * A quick and dirty method for building paths one point at a time.
-   * This does not check that there are the same number of points at each step -- call validate() on this object
-   * when done to confirm that the final path is correct.
-   * @param p A new (bottom) point.
-   * @param top p's corresponding top altitude 
-   * @param time the time for the poly p is a vertex of
-   */
-  void addVertex(const Position& p, double top, double time);
+	/**
+	 * A quick and dirty method for building paths one point at a time.
+	 * This does not check that there are the same number of points at each step -- call validate() on this object
+	 * when done to confirm that the final path is correct.
+	 * @param p A new point.
+	 * @param bottom polygon's bottom altitude
+	 * @param top polygon's top altitude 
+	 * @param time the time for the poly p is a vertex of
+	 */
+  void addVertex(const Position& p, double bottom, double top, double time);
   
 	/**
 	 * This adds a vertex to every polygon on this path.  The vertex will be added relative to the centroid in each case, so other polygons may
@@ -363,16 +432,16 @@ public:
 	/**
 	 * Interpolate the averagePoint velocity at the given time
 	 * If time is outside the path's limit, return invalid velocity.
-	 * @param time
+	 * @param time time
 	 * @return velocity
 	 */
-  Velocity velocity(double time) const;
+  Velocity velocity(double time) ;
 
-  Velocity vertexVelocity(int vert, double time) const;
+  Velocity vertexVelocity(int vert, double time) ;
 
-  Velocity finalVelocity(int i) const;
+  Velocity finalVelocity(int i) ;
 
-  Velocity finalVertexVelocity(int vert, int i) const;
+  Velocity finalVertexVelocity(int vert, int i) ;
 
 	/**
 	 * This will return a moving polygon that starts at point i and ends at point i+1
@@ -380,48 +449,62 @@ public:
 	 * @param proj projection
 	 * @return polygon
 	 */
-  MovingPolygon3D getInitialMovingPolygon(int i, const EuclideanProjection& proj) const;
+  MovingPolygon3D getInitialMovingPolygon(int i, const EuclideanProjection& proj) ;
 
 	/**
 	 * This will return a moving polygon that STARTS at time t (relative time 0) and ends at its segment end time.
 	 * 
-	 * @param time
-	 * @param proj
+	 * @param time time
+	 * @param proj projection
 	 * @return polygon
 	 */
-  MovingPolygon3D getMovingPolygon(double time, const EuclideanProjection& proj) const;
+  MovingPolygon3D getMovingPolygon(double time, const EuclideanProjection& proj) ;
 
   static std::string pathModeToString(PathMode m);
 
   static PathMode parsePathMode(const std::string& s);
 
+  bool isContainment() const;
+  void setContainment(bool b);
+
   /**
    * Returns a string representation of this path.
    */
-  std::string toString() const;
+  std::string toString() ;
+
+  std::string toStringShort() ;
 
   // this outputs name, x y z1 z2 time fixed fields (or lat lon alt)
 	/**
 	 * Returns a string representation of this path that is compatible with the PolyReader input format.
 	 * @return string representation
 	 */
-  std::string toOutput() const;
+  std::string toOutput() ;
 
-  std::string toOutput(int precision, bool tcpColumns) const;
+  std::string toOutput(int precision, bool tcpColumns) ;
 
-  std::vector<std::string> toStringList(int i, int j, int precision, bool tcpColumns) const;
+  std::vector<std::string> toStringList(int i, int j, int precision, bool tcpColumns) ;
 
-  SimpleMovingPoly getSimpleMovingPoly(int i) const;
+  SimpleMovingPoly getSimpleMovingPoly(int i) ;
 
-  SimpleMovingPoly getSimpleMovingPoly(double t) const;
+  SimpleMovingPoly getSimpleMovingPoly(double t) ;
 
 
   bool contains (const Position& p, double t) const;
 
   bool contains2D (const Position& p, double t) const;
 
+	/** Computes a large bounding rectangle around the moving polygon. 
+	 * 
+	 *  Note: for the USER_VEL AND USER_VEL_EVER types, the last polygon is extended "user_vel_time_extension" hours
+	 *  
+	 * @param user_vel_time_extension time
+	 * @return bounding rectangle
+	 */
+  BoundingRectangle getBoundingRectangle(double user_vel_time_extension) ;
 
-  BoundingRectangle getBoundingRectangle() const;
+
+  BoundingRectangle getBoundingRectangle() ;
 
 	// ErrorReporter Interface Methods
 
@@ -438,6 +521,14 @@ public:
     return error.getMessageNoClear();
   }
   
+	void addWarning(std::string s) const {
+		error.addWarning("("+name+") "+s);
+	}
+
+	void addError(std::string s) const {
+		error.addError(s);
+	}
+
 
 
   

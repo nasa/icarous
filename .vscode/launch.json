@@ -28,10 +28,10 @@
             "name": "(gdb) launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/cFS/bin/cpu1/core-cpu1",
+            "program": "${workspaceFolder}/exe/cpu1/core-cpu1",
             "args": ["-C 1","-I 0"],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/cFS/bin/cpu1",
+            "cwd": "${workspaceFolder}/exe/cpu1",
             "environment": [ 
                 {
                     "name": "DYLD_LIBRARY_PATH",

@@ -4,7 +4,7 @@
  *           George Hagen              NASA Langley Research Center
  *           Jeff Maddalon             NASA Langley Research Center
   *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -30,7 +30,7 @@ namespace larcfm {
 			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::linear(so.lla(),vo,t);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::linear(so.point(),vo,t);
+			std::pair<Vect3,Velocity> resp = Kinematics::linear(so.vect3(),vo,t);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}       
 	}
@@ -50,7 +50,7 @@ namespace larcfm {
 			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::turn(so.lla(),vo,t,R,turnRight);
 			return std::pair<Position,Velocity>(Position(resp.first),resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::turn(so.point(),vo,t,R,turnRight);
+			std::pair<Vect3,Velocity> resp = Kinematics::turn(so.vect3(),vo,t,R,turnRight);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}
 	}
@@ -70,20 +70,20 @@ namespace larcfm {
 			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::turnOmega(so.lla(),vo,t,omega);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::turnOmega(so.point(),vo,t,omega);
+			std::pair<Vect3,Velocity> resp = Kinematics::turnOmega(so.vect3(),vo,t,omega);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}
 	}
 
-  std::pair<Position,Velocity> KinematicsPosition::turnOmegaAlt(const Position& so, const Velocity& vo, double t, double omega) {
-		if (so.isLatLon()) {
-		  std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::turnOmegaAlt(so.lla(),vo,t,omega);
-		  return std::pair<Position,Velocity>(Position(resp.first), resp.second);
-		} else {
-		  std::pair<Vect3,Velocity> resp = Kinematics::turnOmega(so.point(),vo,t,omega);
-		  return std::pair<Position,Velocity>(Position(resp.first), resp.second);
-		}
-	}
+//  std::pair<Position,Velocity> KinematicsPosition::turnOmegaAlt(const Position& so, const Velocity& vo, double t, double omega) {
+//		if (so.isLatLon()) {
+//		  std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::turnOmegaAlt(so.lla(),vo,t,omega);
+//		  return std::pair<Position,Velocity>(Position(resp.first), resp.second);
+//		} else {
+//		  std::pair<Vect3,Velocity> resp = Kinematics::turnOmega(so.point(),vo,t,omega);
+//		  return std::pair<Position,Velocity>(Position(resp.first), resp.second);
+//		}
+//	}
   
 	/**
 	 *  Position and velocity after t time units turning in direction "dir" with radius R. 
@@ -106,33 +106,33 @@ namespace larcfm {
 			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::turnByDist2D(so.lla(), center.lla(), dir, d, gsAt_d);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::turnByDist2D(so.point(), center.point(), dir, d, gsAt_d);
+			std::pair<Vect3,Velocity> resp = Kinematics::turnByDist2D(so.vect3(), center.vect3(), dir, d, gsAt_d);
 			return  std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}
 	}
 
+
+
 	Position KinematicsPosition::turnByDist2D(const Position& so, const Position& center, int dir, double d) {
 		if (so.isLatLon()) {
-			double R = GreatCircle::distance(so.lla(), center.lla());
-			double alpha = dir*d/R;
-			double trkFromCenter = GreatCircle::initial_course(center.lla(),so.lla());
-			double nTrk = trkFromCenter + alpha;
-			LatLonAlt sn = GreatCircle::linear_initial(center.lla(), nTrk, R);
-			sn = sn.mkAlt(0.0);
+			LatLonAlt sn = KinematicsLatLon::turnByDist2D(so.lla(), center.lla(), dir, d);
 			return Position(sn);
 		} else {
-			double R = so.distanceH(center);
-			if (R==0.0) return so;
-			double alpha = dir*d/R;
-			double trkFromCenter = Velocity::mkVel(center.point(), so.point(), 100.0).trk();
-			double nTrk = trkFromCenter + alpha;
-			Vect3 sn = center.point().linearByDist2D(nTrk, R);
-			sn = sn.mkZ(0.0);
+			Vect3 sn = Kinematics::turnByDist2D(so.vect3(), center.vect3(), dir, d);
 			return Position(sn);
-
 		}
+
 	}
 
+	Position KinematicsPosition::turnByAngle2D(const Position& so, const Position& center, double alpha) {
+		if (so.isLatLon()) {
+			LatLonAlt sn = KinematicsLatLon::turnByAngle2D(so.lla(), center.lla(), alpha);
+			return Position(sn);
+		} else {
+			Vect3 sn = Kinematics::turnByAngle2D(so.vect3(), center.vect3(), alpha);
+			return Position(sn);
+		}
+	}
 
 
 	/**
@@ -150,7 +150,7 @@ namespace larcfm {
 			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::turnUntil(so.lla(),vo,t,goalTrack,bankAngle);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::turnUntil(so.point(),vo,t,goalTrack,bankAngle);
+			std::pair<Vect3,Velocity> resp = Kinematics::turnUntil(so.vect3(),vo,t,goalTrack,bankAngle);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}
 	}
@@ -175,7 +175,7 @@ namespace larcfm {
 			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::turnUntilTimeOmega(so.lla(),vo,t,turnTime, omega);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::turnUntilTimeOmega(so.point(),vo,t,turnTime,omega);
+			std::pair<Vect3,Velocity> resp = Kinematics::turnUntilTimeOmega(so.vect3(),vo,t,turnTime,omega);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}       
 	}
@@ -200,7 +200,7 @@ namespace larcfm {
 			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::turnUntilTimeRadius(std::pair<LatLonAlt,Velocity>(so.lla(),vo),t,turnTime,R,turnRight);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::turnUntilTimeRadius(std::pair<Vect3,Velocity>(so.point(), vo),t,turnTime,R,turnRight);
+			std::pair<Vect3,Velocity> resp = Kinematics::turnUntilTimeRadius(std::pair<Vect3,Velocity>(so.vect3(), vo),t,turnTime,R,turnRight);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}       
 	}
@@ -218,7 +218,7 @@ namespace larcfm {
 			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::gsAccel(so.lla(),vo,t,a);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::gsAccel(so.point(),vo,t,a);
+			std::pair<Vect3,Velocity> resp = Kinematics::gsAccel(so.vect3(),vo,t,a);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}          
 	}
@@ -237,7 +237,7 @@ namespace larcfm {
 			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::gsAccelUntil(std::pair<LatLonAlt,Velocity>(so.lla(),vo),t,goalGs,a);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::gsAccelUntil(std::pair<Vect3,Velocity>(so.point(), vo),t,goalGs,a);
+			std::pair<Vect3,Velocity> resp = Kinematics::gsAccelUntil(std::pair<Vect3,Velocity>(so.vect3(), vo),t,goalGs,a);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}          
 	}
@@ -256,7 +256,7 @@ namespace larcfm {
 			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::vsAccel(std::pair<LatLonAlt,Velocity>(so.lla(),vo),t,a);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::vsAccel(std::pair<Vect3,Velocity>(so.point(), vo),t,a);
+			std::pair<Vect3,Velocity> resp = Kinematics::vsAccel(std::pair<Vect3,Velocity>(so.vect3(), vo),t,a);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}          
 	}
@@ -291,7 +291,7 @@ namespace larcfm {
 			std::pair<LatLonAlt,Velocity> resp = KinematicsLatLon::vsAccelUntil(std::pair<LatLonAlt,Velocity>(so.lla(),vo),t,goalVs,a);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::vsAccelUntil(std::pair<Vect3,Velocity>(so.point(), vo),t,goalVs,a);
+			std::pair<Vect3,Velocity> resp = Kinematics::vsAccelUntil(std::pair<Vect3,Velocity>(so.vect3(), vo),t,goalVs,a);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}          
 	}
@@ -316,7 +316,7 @@ namespace larcfm {
 					climbRate, targetAlt, accelUp, accelDown,  allowClimbRateChange);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::vsLevelOut(std::pair<Vect3,Velocity>(so.point(), vo),t,
+			std::pair<Vect3,Velocity> resp = Kinematics::vsLevelOut(std::pair<Vect3,Velocity>(so.vect3(), vo),t,
 					climbRate, targetAlt, accelUp, accelDown,  allowClimbRateChange);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}          
@@ -331,7 +331,7 @@ namespace larcfm {
 					climbRate, targetAlt, a,  allowClimbRateChange);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::vsLevelOut(std::pair<Vect3,Velocity>(so.point(), vo),t,
+			std::pair<Vect3,Velocity> resp = Kinematics::vsLevelOut(std::pair<Vect3,Velocity>(so.vect3(), vo),t,
 					climbRate, targetAlt, a,  allowClimbRateChange);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}          
@@ -346,7 +346,7 @@ namespace larcfm {
 					climbRate, targetAlt, a);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		} else {
-			std::pair<Vect3,Velocity> resp = Kinematics::vsLevelOut(std::pair<Vect3,Velocity>(so.point(), vo),t,
+			std::pair<Vect3,Velocity> resp = Kinematics::vsLevelOut(std::pair<Vect3,Velocity>(so.vect3(), vo),t,
 					climbRate, targetAlt, a);
 			return std::pair<Position,Velocity>(Position(resp.first), resp.second);
 		}          
@@ -361,7 +361,7 @@ namespace larcfm {
 				LatLonAlt center = GreatCircle::linear_initial(bot.lla(), trkToCenter, radius);
 				return Position(center);
 			} else {
-				Vect3 center = bot.point().linearByDist2D(trkToCenter, radius);
+				Vect3 center = bot.vect3().linearByDist2D(trkToCenter, radius);
 				return Position(center);
 			}
 	}

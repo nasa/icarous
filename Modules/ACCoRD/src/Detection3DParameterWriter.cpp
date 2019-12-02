@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -77,7 +77,7 @@ void Detection3DParameterWriter::clearCoreDetectionParameters(ParameterData& p) 
   p.remove("set_res_core_detection");
   std::vector<std::string> ids;
   // strip load_core_deteciton_ parameters
-  std::vector<std::string> keys = p.getList();
+  std::vector<std::string> keys = p.getKeyList();
   for (int i = 0; i < (int) keys.size(); i++) {
     std::string key = keys[i];
     if (startsWith(key, "load_core_detection_")) {
@@ -86,7 +86,7 @@ void Detection3DParameterWriter::clearCoreDetectionParameters(ParameterData& p) 
     }
   }
   // strip detection subparameters
-  keys = p.getList();
+  keys = p.getKeyList();
   for (int j = 0; j < (int) ids.size(); j++) {
     std::string id = ids[j];
     for (int i = 0; i < (int) keys.size(); i++) {

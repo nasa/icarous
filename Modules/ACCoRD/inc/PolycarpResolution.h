@@ -3,7 +3,7 @@
  *
  * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)
  *
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -23,6 +23,9 @@
 
 namespace larcfm {
 
+/**
+ * PolycarpResolution - closest point inside-outside a polygon to a given point - with a buffer
+ */
 class PolycarpResolution {
 public:
   static Vect2 proj_vect(const Vect2& u, const Vect2& v, const Vect2& w, double BUFF);

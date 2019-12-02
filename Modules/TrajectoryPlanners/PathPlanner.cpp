@@ -22,7 +22,7 @@ int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, 
 
     std::list<Plan>::iterator it;
     for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
-        if (strcmp(it->getName().c_str(),planID)){
+        if (abs(strcmp(it->getName().c_str(),planID))){
             continue;
         }
         flightPlans.erase(it);

@@ -1,0 +1,93 @@
+# This YAML file contains a list of icarous test case scenarios
+# Each scenario contains:
+#   name: name of the scenario
+#   waypoint_file: path to flight plan file to load (required)
+#   geofence_file: path to geofence file to load (null if none)
+#   parameter_file: path to icarous parameter file to load (null if none)
+#   param_adjustments: a dictionary of icarous parameters to adjust
+#                      allows making small param changes without a new file
+#                      ex: {"ALERTING_TIME": 20} to adjust alerting time to 20
+#   traffic: a list of traffic vehicles to load - format for each traffic is:
+#            [range(m), bearing(deg), height(m), speed(m/s), heading(deg), verticalspeed(m/s)]
+#   time_limit: time limit for the scenario (in seconds)
+#   [planned_wps:] optional - list the waypoint ids that ownship should reach
+#                  used to define successfull waypoint progress test condition
+#                  (default is expect to reach all waypoints)
+#   (file paths are relative to Icarous repository)
+
+- name: "Basic"
+  waypoint_file: Examples/InputData/flightplan.txt
+  geofence_file: null
+  parameter_file: Examples/InputData/icarous_default.parm
+  param_adjustments: {}
+  traffic: []
+  time_limit: 300
+
+- name: "Traffic Track Res"
+  waypoint_file: Examples/InputData/flightplan.txt
+  geofence_file: null
+  parameter_file: Examples/InputData/icarous_default.parm
+  param_adjustments: {"RES_TYPE": 2}
+  traffic:
+    - [116, 81, 5, 1, 270, 0]
+  time_limit: 300
+
+- name: "Traffic Altitude Res"
+  waypoint_file: Examples/InputData/flightplan.txt
+  geofence_file: null
+  parameter_file: Examples/InputData/icarous_default.parm
+  param_adjustments: {"RES_TYPE": 1, "DET_1_WCV_ZTHR": 50}
+  traffic:
+    - [116, 81, 5, 1, 270, 0]
+  time_limit: 300
+
+- name: "Traffic Speed Res"
+  waypoint_file: Examples/InputData/flightplan.txt
+  geofence_file: null
+  parameter_file: Examples/InputData/icarous_default.parm
+  param_adjustments: {"RES_TYPE": 0}
+  traffic:
+    - [95, 30, 5, 1, 180, 0]
+  time_limit: 300
+
+- name: "Geofence ASTAR"
+  waypoint_file: Examples/InputData/flightplan.txt
+  geofence_file: Examples/InputData/geofence2.xml
+  parameter_file: Examples/InputData/icarous_default.parm
+  param_adjustments: {"SEARCHALGORITHM": 1}
+  traffic: []
+  time_limit: 300
+  planned_wps: [0, 2, 4, 6]
+
+- name: "Geofence RRT"
+  waypoint_file: Examples/InputData/flightplan.txt
+  geofence_file: Examples/InputData/geofence2.xml
+  parameter_file: Examples/InputData/icarous_default.parm
+  param_adjustments: {"SEARCHALGORITHM": 2}
+  traffic: []
+  time_limit: 300
+  planned_wps: [0, 2, 4, 6]
+
+  # traffic conflict then geofence conflict
+- name: "Geofence+Traffic1"
+  waypoint_file: Examples/InputData/flightplan.txt
+  geofence_file: Examples/InputData/geofence2.xml
+  parameter_file: Examples/InputData/icarous_default.parm
+  param_adjustments: {"SEARCHALGORITHM": 2, "RES_TYPE": 4}
+  traffic:
+      - [77, 77, 5, 1, 270, 0]
+      - [142, 265, 5, 1, 90, 0]
+  time_limit: 300
+  planned_wps: [0, 2, 4, 6]
+
+  # geofence conflict then traffic conflict
+- name: "Geofence+Traffic2"
+  waypoint_file: Examples/InputData/flightplan.txt
+  geofence_file: Examples/InputData/geofence2.xml
+  parameter_file: Examples/InputData/icarous_default.parm
+  param_adjustments: {"SEARCHALGORITHM": 2, "RES_TYPE": 4}
+  traffic:
+      - [120, 74, 5, 1, 270, 0]
+      #    - [127, 95, 5, 1, 270, 0]
+  time_limit: 300
+  planned_wps: [0, 2, 4, 6]

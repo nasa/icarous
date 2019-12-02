@@ -8,7 +8,7 @@
  * NOTES: 
  * Track is True North/clockwise
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -28,8 +28,7 @@ namespace larcfm {
 Velocity::Velocity(const double vx, const double vy, const double vz):
     				Vect3(vx,vy,vz) {}
 
-Velocity::Velocity():
-    				Vect3(0.0,0.0,0.0) {}
+Velocity::Velocity(): Vect3(0.0,0.0,0.0) {}
 
 Velocity::Velocity(const Vect3& v3) : Vect3(v3.x,v3.y,v3.z) {};
 
@@ -77,6 +76,12 @@ Velocity Velocity::mkVel(const Vect3& p1,const Vect3& p2, double speed) {
 	//fpln(" $$ mkVel: rtn = "+rtn.toString());
 	return rtn;
 }
+
+double Velocity::track(const Vect3& p1,const Vect3& p2) {
+	double rtn = Util::atan2_safe(p2.x-p1.x,p2.y-p1.y);
+	return rtn;
+}
+
 
 Velocity Velocity::genVel(const Vect3& p1, const Vect3& p2, double dt) {
 	return make(p2.Sub(p1).Scal(1/dt));
@@ -163,6 +168,117 @@ bool Velocity::compare(const Velocity& v, double maxTrk, double maxGs, double ma
 
 bool Velocity::compare(const Velocity& v, double horizDelta, double vertDelta) {
 	return std::abs(z-v.z) <= vertDelta && vect2().Sub(v.vect2()).norm() <= horizDelta;
+}
+
+
+const Velocity& Velocity::ZEROV() {
+	static Velocity* v = new Velocity(0,0,0);
+	return *v;
+}
+
+const Velocity& Velocity::INVALIDV() {
+	static Velocity* v = new Velocity(NaN, NaN, NaN);
+	return *v;
+}
+
+/**
+ * New velocity from existing velocity, changing only the track
+ * @param trk track angle [rad]
+ * @return new velocity
+ */
+Velocity Velocity::mkTrk(double trk) const {
+	return mkTrkGsVs(trk, gs(), vs());
+}
+
+/**
+ * New velocity from existing velocity, changing only the track
+ * @param trk track angle [u]
+ * @param u units
+ * @return new velocity
+ */
+Velocity Velocity::mkTrk(double trk, std::string u) const {
+	return mkTrk(Units::from(u,trk));
+}
+
+/**
+ * New velocity from existing velocity, changing only the ground speed
+ * @param gs [m/s]
+ * @return
+ */
+Velocity Velocity::mkGs(double gs_d) const {
+	  if (gs_d < 0) return INVALIDV();
+	//return mkTrkGsVs(trk(), gs, vs());    // optimzation due to Aaron Dutle
+	double gs0 = gs();
+	if (gs0 > 0.0) {
+		double scal = gs_d/gs0;
+		return mkVxyz(x*scal, y*scal, vs());
+	} else {
+		return mkVxyz(0.0,gs_d,vs());
+	}
+}
+
+/**
+ * New velocity from existing velocity, changing only the ground speed
+ * @param gs [u]
+ * @param u unit
+ * @return
+ */
+Velocity Velocity::mkGs(double gs_d, std::string u) const {
+	return mkGs(Units::from(u,gs_d));
+}
+
+/**
+}
+ * New velocity from existing velocity, changing only the vertical speed
+ * @param vs [m/s]
+ * @return
+ */
+Velocity Velocity::mkVs(double vs) const {
+	return mkVxyz(x, y, vs);
+}
+
+/**
+ * New velocity from existing velocity, changing only the vertical speed
+ * @param vs [u]
+ * @param u units
+ * @return
+ */
+Velocity Velocity::mkVs(double vs, std::string u) const {
+	return mkVs(Units::from(u,vs));
+}
+
+Velocity Velocity::NegV() const {
+	return Velocity::make(Neg());
+}
+
+Velocity Velocity::zeroSmallVs(double threshold) const {
+	if (std::abs(z) < threshold) return mkVxyz(x,y,0.0);
+	return mkVxyz(x,y,z);
+}
+
+
+Velocity Velocity::parseXYZ(const std::string& str) {
+	return Velocity::make(Vect3::parse(str));
+}
+
+
+/** This parses a space or comma-separated string as a Trk/Gs/Vs Velocity (an inverse to the toString method).  If three bare values are
+ * present, then it is interpreted as degrees/knots/fpm. If there are 3 value/unit pairs then each values is
+ * interpreted wrt the appropriate unit.  If the string cannot be parsed, an INVALID value is
+ * returned. */
+Velocity Velocity::parse(const std::string& str) {
+	Vect3 v3 = Vect3::parse(str);
+	std::vector<std::string> fields = split(str, Constants::wsPatternParens);
+	if (fields.size() == 3) {
+		return Velocity::makeTrkGsVs(v3.x, v3.y, v3.z);
+		//		} else if (fields.length == 6 && !fields[1].substring(0,3).equalsIgnoreCase("deg") && !fields[1].substring(0,3).equalsIgnoreCase("rad")) {
+		//			return parseXYZ(str);
+	}
+	return Velocity::mkTrkGsVs(v3.x, v3.y, v3.z);
+}
+
+std::string Velocity::toUnitTest() const {
+	return "Velocity::mkTrkGsVs("  +Fm6(trk())+", "+Fm6(gs())+", "+Fm6(vs())+"); ";
 }
 
 std::string Velocity::toString() const {
@@ -257,126 +373,6 @@ std::string Velocity::toStringNP(const std::string& utrk, const std::string& ugs
     return FmPrecision(Units::to(utrk, compassAngle()), precision)+", "+FmPrecision(Units::to(ugs, gs()), precision)+", "+FmPrecision(Units::to(uvs, vs()), precision);
 }
 
-const Velocity& Velocity::ZEROV() {
-	static Velocity* v = new Velocity(0,0,0);
-	return *v;
-}
-
-const Velocity& Velocity::INVALIDV() {
-	static Velocity* v = new Velocity(NaN, NaN, NaN);
-	return *v;
-}
-
-/**
- * New velocity from existing velocity, changing only the track
- * @param trk track angle [rad]
- * @return new velocity
- */
-Velocity Velocity::mkTrk(double trk) const {
-	return mkTrkGsVs(trk, gs(), vs());
-}
-
-/**
- * New velocity from existing velocity, changing only the track
- * @param trk track angle [u]
- * @param u units
- * @return new velocity
- */
-Velocity Velocity::mkTrk(double trk, std::string u) const {
-	return mkTrk(Units::from(u,trk));
-}
-
-/**
- * New velocity from existing velocity, changing only the ground speed
- * @param gs [m/s]
- * @return
- */
-Velocity Velocity::mkGs(double gs_d) const {
-	  if (gs_d < 0) return INVALIDV();
-	//return mkTrkGsVs(trk(), gs, vs());    // optimzation due to Aaron Dutle
-	double gs0 = gs();
-	if (gs0 > 0.0) {
-		double scal = gs_d/gs0;
-		return mkVxyz(x*scal, y*scal, vs());
-	} else {
-		return mkVxyz(0.0,gs_d,vs());
-	}
-}
-
-/**
- * New velocity from existing velocity, changing only the ground speed
- * @param gs [u]
- * @param u unit
- * @return
- */
-Velocity Velocity::mkGs(double gs_d, std::string u) const {
-	return mkGs(Units::from(u,gs_d));
-}
-
-/**
-}
- * New velocity from existing velocity, changing only the vertical speed
- * @param vs [m/s]
- * @return
- */
-Velocity Velocity::mkVs(double vs) const {
-	return mkVxyz(x, y, vs);
-}
-
-/**
- * New velocity from existing velocity, changing only the vertical speed
- * @param vs [u]
- * @param u units
- * @return
- */
-Velocity Velocity::mkVs(double vs, std::string u) const {
-	return mkVs(Units::from(u,vs));
-}
-
-Velocity Velocity::Hat() const {
-	// This method means:
-	//    return make(this.Hat());
-	// but for efficiency, I am implementing it explicitly
-	double n = norm();
-	if ( n == 0.0) { // this is only checking the divide by zero case, so an exact comparison is correct.
-		return ZEROV();
-	}
-	return mkVxyz(x / n, y / n, z / n);
-}
-
-Velocity Velocity::Hat2D() const {
-	return mkVs(0.0).Hat();
-}
-
-Velocity Velocity::Neg() const {
-	return mkVxyz(-x, -y, -z);
-}
-
-Velocity Velocity::zeroSmallVs(double threshold) const {
-	if (std::abs(z) < threshold) return mkVxyz(x,y,0.0);
-	return mkVxyz(x,y,z);
-}
-
-
-Velocity Velocity::parseXYZ(const std::string& str) {
-	return Velocity::make(Vect3::parse(str));
-}
-
-
-/** This parses a space or comma-separated string as a Trk/Gs/Vs Velocity (an inverse to the toString method).  If three bare values are
- * present, then it is interpreted as degrees/knots/fpm. If there are 3 value/unit pairs then each values is
- * interpreted wrt the appropriate unit.  If the string cannot be parsed, an INVALID value is
- * returned. */
-Velocity Velocity::parse(const std::string& str) {
-	Vect3 v3 = Vect3::parse(str);
-	std::vector<std::string> fields = split(str, Constants::wsPatternParens);
-	if (fields.size() == 3) {
-		return Velocity::makeTrkGsVs(v3.x, v3.y, v3.z);
-		//		} else if (fields.length == 6 && !fields[1].substring(0,3).equalsIgnoreCase("deg") && !fields[1].substring(0,3).equalsIgnoreCase("rad")) {
-		//			return parseXYZ(str);
-	}
-	return Velocity::mkTrkGsVs(v3.x, v3.y, v3.z);
-}
 
 //************************************************
 // deprecated functions:

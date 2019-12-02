@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -55,7 +55,7 @@ void GeneralStateReader::open(const std::string& filename) {
 void GeneralStateReader::open(std::istream* in) {
     SeparatedInput si(in);
     si.setCaseSensitive(false);            // headers & parameters are lower case
-    vector<string> params = input.getParametersRef().getList();
+    vector<string> params = input.getParametersRef().getKeyList();
     for (unsigned int i = 0; i < params.size(); i++) {
       si.getParametersRef().set(params[i], input.getParametersRef().getString(params[i]));
     }
@@ -173,7 +173,7 @@ void GeneralStateReader::loadfile() {
 			if (linetype == POLY) {
 				states.push_back(GeneralState(name,  SimpleMovingPoly(), tm, containmentList.find(thisName) != containmentList.end()));
 			} else {
-				states.push_back(GeneralState(name, Position::INVALID(), Velocity::INVALID(), tm)); // need to replace later
+				states.push_back(GeneralState(name, Position::INVALID(), Velocity::INVALIDV(), tm)); // need to replace later
 			}
 		}
 

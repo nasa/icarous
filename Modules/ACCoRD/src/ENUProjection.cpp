@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -96,22 +96,28 @@ namespace larcfm {
   
     // ENUProjection
     
-    ENUProjection::ENUProjection() {
+    ENUProjection::ENUProjection() : 
+    	ref(Vect3()),
+    	llaRef(LatLonAlt::ZERO()) {
       projAlt = 0;
-      ref = Vect3();
-      llaRef = LatLonAlt::ZERO();
+      //ref = Vect3();
+      //llaRef = LatLonAlt::ZERO();
     }
     
-    ENUProjection::ENUProjection(const LatLonAlt& lla) {
+    ENUProjection::ENUProjection(const LatLonAlt& lla) :
+    	ref(spherical2xyz(lla.lat(),lla.lon())),
+    	llaRef(lla) {
         projAlt = lla.alt();
-        ref = spherical2xyz(lla.lat(),lla.lon());
-        llaRef = lla;
+        //ref = spherical2xyz(lla.lat(),lla.lon());
+        //llaRef = lla;
     }
     
-    ENUProjection::ENUProjection(double lat, double lon, double alt) {
+    ENUProjection::ENUProjection(double lat, double lon, double alt) :
+    	ref(spherical2xyz(lat,lon)),
+    	llaRef(LatLonAlt::mk(lat, lon, alt)) {
         projAlt = alt;
-        ref = spherical2xyz(lat,lon);
-        llaRef = LatLonAlt::mk(lat, lon, alt);
+        //ref = spherical2xyz(lat,lon);
+        //llaRef = LatLonAlt::mk(lat, lon, alt);
     }
     
     ENUProjection ENUProjection::makeNew(const LatLonAlt& lla) const {
@@ -156,7 +162,7 @@ namespace larcfm {
     	if (sip.isLatLon()) {
     		si = project(sip.lla());
     	} else {
-    		si = sip.point();
+    		si = sip.vect3();
     	}
     	return si;
     }
@@ -205,6 +211,10 @@ namespace larcfm {
   }
 
   std::pair<Vect3,Velocity> ENUProjection::project(const Position& p, const Velocity& v) const {
+   	return std::pair<Vect3,Velocity>(project(p),projectVelocity(p,v));
+   }
+
+  std::pair<Vect3,Velocity> ENUProjection::project(const LatLonAlt& p, const Velocity& v) const {
    	return std::pair<Vect3,Velocity>(project(p),projectVelocity(p,v));
    }
 

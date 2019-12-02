@@ -1,9 +1,10 @@
-/*
- * LatLonAlt.cpp - container to hold a geodesic position 
+/* A Lat/Lon/Alt position
  * 
- * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
+ * Authors:  George Hagen              NASA Langley Research Center
+ *           Ricky Butler              NASA Langley Research Center
+ *           Jeff Maddalon             NASA Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -50,20 +51,13 @@ bool LatLonAlt::equals(const LatLonAlt& a) const {
 	return *this == a;
 }
 
-bool LatLonAlt::almostEquals(const LatLonAlt& a) const {
-	return GreatCircle::almost_equals(this->lat(), this->lon(), a.lat(), a.lon())
-	&& Constants::almost_equals_alt(this->alt(), a.alt());
+bool LatLonAlt::equals2D(const LatLonAlt& lla) const {
+	return (lati == lla.lati) && (longi == lla.longi);
 }
 
-bool LatLonAlt::almostEquals(const LatLonAlt& a, double horizEps, double vertEps) const {
-	return GreatCircle::almost_equals(this->lat(), this->lon(), a.lat(), a.lon(), horizEps)
-	&& Util::within_epsilon(this->alt(), a.alt(), vertEps);
+double LatLonAlt::decimal_angle(double degrees, double minutes, double seconds, bool north_east) {
+	return ((north_east) ? 1.0 : -1.0) * Units::from("deg", (degrees + minutes / 60.0 + seconds / 3600.0));
 }
-
-bool LatLonAlt::almostEquals2D(const LatLonAlt& a, double horizEps) const {
-	return GreatCircle::almost_equals(this->lat(), this->lon(), a.lat(), a.lon(), horizEps);
-}
-
 
 double LatLonAlt::latitude() const {
 	return to_180(Units::to("deg", lati));
@@ -134,6 +128,16 @@ bool LatLonAlt::isInvalid() const {
 	return lati != lati || longi != longi || alti != alti;
 }
 
+//const LatLonAlt LatLonAlt::linear(const Velocity& v, double time) {
+//	LatLonAlt current = LatLonAlt(lati, longi, alti);
+//	if (time == 0 || v.isZero()) {
+//		return current;
+//	} else {
+//		return GreatCircle::linear_initial(current,v,time);
+//	}
+//}
+
+
 const LatLonAlt LatLonAlt::linearEst(double dn, double de) const {
 	//f.pln(" lat = "+Units.str("deg",lati)+" lon = "+Units.str("deg",longi));
 	double R = GreatCircle::spherical_earth_radius; //6378137;                   // diameter earth in meters
@@ -153,37 +157,24 @@ const LatLonAlt LatLonAlt::linearEst(const Velocity& vo, double tm)  const{
 
 std::string LatLonAlt::toString() const {
 	std::stringstream temp;
-	temp << "("
-			<< Units::str("deg",lat()) << ", "
+	temp << Units::str("deg",lat()) << ", "
 			<< Units::str("deg",lon()) << ", "
-			<< Units::str("ft",alt()) << ")";
+			<< Units::str("ft",alt());
 	return temp.str();
 }
 
 std::string LatLonAlt::toString(int precision) const {
-	std::stringstream temp;
-	temp << "("
-			<< toStringNP("deg","deg","ft",precision)
-			<< ")";
-	return temp.str();
+  return toString("deg","deg","ft",precision);
 }
 
-std::string LatLonAlt::toStringNP(const std::string& latunit, const std::string& lonunit, const std::string& zunit, int precision) const {
+std::string LatLonAlt::toString(const std::string& latunit, const std::string& lonunit, const std::string& zunit) const {
+	return toString(latunit,lonunit,zunit,Constants::get_output_precision());
+}
+
+std::string LatLonAlt::toString(const std::string& latunit, const std::string& lonunit, const std::string& zunit, int precision) const {
 	std::stringstream temp;
 	temp <<  FmPrecision(Units::to(latunit,lati),precision) << ", " << FmPrecision(Units::to(lonunit,longi),precision) << ", " << FmPrecision(Units::to(zunit,alti),precision);
 	return temp.str();
-}
-
-std::string LatLonAlt::toStringNP(const std::string& zunit, int precision) const {
-	std::stringstream temp;
-	temp <<  FmPrecision(Units::to("deg",lati),std::max(8,precision)) << ", "
-			<< FmPrecision(Units::to("deg",longi),std::max(8,precision)) << ", "
-			<< FmPrecision(Units::to(zunit,alti),precision);
-	return temp.str();
-}
-
-std::string LatLonAlt::toStringNP(int precision) const {
-	return toStringNP("deg","deg","ft",precision);
 }
 
 const LatLonAlt& LatLonAlt::ZERO() {
@@ -237,5 +228,11 @@ bool LatLonAlt::isWest(const LatLonAlt& a) const {
 	// this uses the same calculations as Util.clockwise:
 	return Util::clockwise(a.lon(), lon());
 }
+
+double LatLonAlt::track(const LatLonAlt& p) const {
+	LatLonAlt ThisLatLonAlt = mk(lati,longi,alti);
+	return GreatCircle::initial_course(ThisLatLonAlt,p);
+}
+
 
 }

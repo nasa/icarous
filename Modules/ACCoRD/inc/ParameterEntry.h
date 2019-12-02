@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017 United States Government as represented by
+ * Copyright (c) 2014-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,11 +19,11 @@ public:
 	std::string  units; // Unit
 	bool         bval; // Boolean value
 	std::string  comment; // Comment for printing
-	int          precision; // Precision for printing double value. Negative precision means undefined
+	long		 order; // entry ordering
 
 	ParameterEntry();
 	virtual ~ParameterEntry();
-	ParameterEntry(const std::string& s, double d, const std::string& u, bool b, const std::string& msg, int p);
+	ParameterEntry(const std::string& s, double d, const std::string& u, bool b, const std::string& msg);
 	ParameterEntry(const ParameterEntry& entry);
 
 	// Make bool entry
@@ -35,10 +35,11 @@ public:
 	// New integer entry
 	static ParameterEntry makeIntEntry(int i);
 
-	void set_sval();
+	//void set_sval();
 
 private:
 	static std::string format(const std::string& u, double d, int p);
+	static long count;
 
 };
 

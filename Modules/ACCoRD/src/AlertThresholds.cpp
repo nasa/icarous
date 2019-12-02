@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -10,9 +10,7 @@
 #include "Velocity.h"
 #include "Detection3D.h"
 #include "ConflictData.h"
-#include "KinematicMultiBands.h"
 #include "format.h"
-#include "KinematicBandsParameters.h" // REMOVE ME!  Circular reference!
 
 namespace larcfm {
 
@@ -22,55 +20,57 @@ namespace larcfm {
  * early_alerting_time is a early alerting time >= at (for maneuver guidance),
  * region is the type of guidance
  */
-AlertThresholds::AlertThresholds(const Detection3D* detector,
-    double alerting_time, double early_alerting_time,
-    BandsRegion::Region region) {
-  detector_ = detector == NULL ? NULL :detector->copy();
-  alerting_time_ = std::abs(alerting_time);
-  early_alerting_time_ = Util::max(alerting_time_,early_alerting_time);
-  region_ = region;
-  spread_trk_ = 0;
-  spread_gs_ = 0;
-  spread_vs_ = 0;
-  spread_alt_ = 0;
+AlertThresholds::AlertThresholds(const Detection3D& detector,
+    double alerting_time, double early_alerting_time, BandsRegion::Region region) :
+                            alerting_time_(std::abs(alerting_time)),
+                            early_alerting_time_(Util::max(alerting_time_,early_alerting_time)),
+                            region_(region),
+                            spread_hdir_(0.0),
+                            spread_hs_(0.0),
+                            spread_vs_(0.0),
+                            spread_alt_(0.0) {
+  detector_ = detector.copy();
   units_["alerting_time"] = "s";
   units_["early_alerting_time"] = "s";
-  units_["spread_trk"] = "deg";
-  units_["spread_gs"] = "knot";
+  units_["spread_hdir"] = "deg";
+  units_["spread_hs"] = "knot";
   units_["spread_vs"] = "fpm";
   units_["spread_alt"] = "ft";
 }
 
-AlertThresholds::AlertThresholds(const AlertThresholds& athr) {
+AlertThresholds::AlertThresholds(const AlertThresholds& athr) :
+                        alerting_time_(athr.alerting_time_),
+                        early_alerting_time_(athr.early_alerting_time_),
+                        region_(athr.region_),
+                        spread_hdir_(athr.spread_hdir_),
+                        spread_hs_(athr.spread_hs_),
+                        spread_vs_(athr.spread_vs_),
+                        spread_alt_(athr.spread_alt_) {
   detector_ = athr.isValid() ? athr.detector_->copy() : NULL;
-  alerting_time_ = athr.alerting_time_;
-  early_alerting_time_ = athr.early_alerting_time_;
-  region_ = athr.region_;
-  spread_trk_ = athr.spread_trk_;
-  spread_gs_ = athr.spread_gs_;
-  spread_vs_ = athr.spread_vs_;
-  spread_alt_ = athr.spread_alt_;
   units_ = athr.units_;
 }
 
-AlertThresholds::AlertThresholds() {
-  detector_ = NULL;
-  alerting_time_ = 0;
-  early_alerting_time_ = 0;
-  region_ = BandsRegion::UNKNOWN;
-  spread_trk_ = 0;
-  spread_gs_ = 0;
-  spread_vs_ = 0;
-  spread_alt_ = 0;
+AlertThresholds::AlertThresholds() :
+                  detector_(NULL),
+                  alerting_time_(0.0),
+                  early_alerting_time_(0.0),
+                  region_(BandsRegion::UNKNOWN),
+                  spread_hdir_(0.0),
+                  spread_hs_(0.0),
+                  spread_vs_(0.0),
+                  spread_alt_(0.0) {
   units_["alerting_time"] = "s";
   units_["early_alerting_time"] = "s";
-  units_["spread_trk"] = "deg";
-  units_["spread_gs"] = "m/s";
+  units_["spread_hdir"] = "deg";
+  units_["spread_hs"] = "m/s";
   units_["spread_vs"] = "m/s";
   units_["spread_alt"] = "m";
 }
 
-const AlertThresholds AlertThresholds::INVALID = AlertThresholds();
+const AlertThresholds& AlertThresholds::INVALID() {
+  static AlertThresholds athr;
+  return athr;
+}
 
 bool AlertThresholds::isValid() const {
   return detector_ != NULL && region_ != BandsRegion::UNKNOWN;
@@ -80,31 +80,50 @@ AlertThresholds::~AlertThresholds() {
   delete detector_;
 }
 
+void AlertThresholds::copyFrom(const AlertThresholds& athr) {
+  if (&athr != this) {
+    if (detector_ != NULL) {
+      delete detector_;
+    }
+    detector_ = athr.isValid() ? athr.detector_->copy() : NULL;
+    alerting_time_ = athr.alerting_time_;
+    early_alerting_time_ = athr.early_alerting_time_;
+    region_ = athr.region_;
+    spread_hdir_ = athr.spread_hdir_;
+    spread_hs_ = athr.spread_hs_;
+    spread_vs_ = athr.spread_vs_;
+    spread_alt_ = athr.spread_alt_;
+    units_ = athr.units_;
+  }
+}
+
 AlertThresholds& AlertThresholds::operator=(const AlertThresholds& athr) {
-  delete detector_;
-  detector_ = athr.isValid() ? athr.detector_->copy() : NULL;
-  alerting_time_ = athr.alerting_time_;
-  early_alerting_time_ = athr.early_alerting_time_;
-  region_ = athr.region_;
-  spread_trk_ = athr.spread_trk_;
-  spread_gs_ = athr.spread_gs_;
-  spread_vs_ = athr.spread_vs_;
-  spread_alt_ = athr.spread_alt_;
-  units_ = athr.units_;
+  copyFrom(athr);
   return *this;
 }
 
 /**
  * Return detector.
  */
-Detection3D* AlertThresholds::getDetectorRef() const {
+Detection3D* AlertThresholds::getCoreDetectionPtr() const {
   return detector_;
+}
+
+Detection3D& AlertThresholds::getCoreDetectionRef() const {
+  return *detector_;
 }
 
 /**
  * Set detector.
  */
-void AlertThresholds::setDetector(const Detection3D* det) {
+void AlertThresholds::setCoreDetectionRef(const Detection3D& det) {
+  setCoreDetectionPtr(&det);
+}
+
+/**
+ * Set detector.
+ */
+void AlertThresholds::setCoreDetectionPtr(const Detection3D* det) {
   delete detector_;
   detector_ = det != NULL ? det->copy() : NULL;
 }
@@ -184,63 +203,63 @@ void AlertThresholds::setRegion(BandsRegion::Region region) {
 /**
  * Get track spread in internal units [rad]. Spread is relative to ownship's track
  */
-double AlertThresholds::getTrackSpread() const {
-  return spread_trk_;
+double AlertThresholds::getHorizontalDirectionSpread() const {
+  return spread_hdir_;
 }
 
 /**
  * Get track spread in given units [u]. Spread is relative to ownship's track
  */
-double AlertThresholds::getTrackSpread(const std::string& u) const {
-  return Units::to(u,spread_trk_);
+double AlertThresholds::getHorizontalDirectionSpread(const std::string& u) const {
+  return Units::to(u,spread_hdir_);
 }
 
 /**
  * Set track spread in internal units. Spread is relative to ownship's track and is expected
  * to be in [0,pi].
  */
-void AlertThresholds::setTrackSpread(double spread) {
-  spread_trk_ = std::abs(Util::to_pi(spread));
+void AlertThresholds::setHorizontalDirectionSpread(double spread) {
+  spread_hdir_ = std::abs(Util::to_pi(spread));
 }
 
 /**
  * Set track spread in given units. Spread is relative to ownship's track and is expected
  * to be in [0,pi] [u].
  */
-void AlertThresholds::setTrackSpread(double spread, const std::string& u) {
-  setTrackSpread(Units::from(u,spread));
-  units_["spread_trk"] = u;
+void AlertThresholds::setHorizontalDirectionSpread(double spread, const std::string& u) {
+  setHorizontalDirectionSpread(Units::from(u,spread));
+  units_["spread_hdir"] = u;
 }
 
 /**
  * Get ground speed spread in internal units [m/s]. Spread is relative to ownship's ground speed
  */
-double AlertThresholds::getGroundSpeedSpread() const {
-  return spread_gs_;
+double AlertThresholds::getHorizontalSpeedSpread() const {
+  return spread_hs_;
 }
 
 /**
  * Get ground speed spread in given units. Spread is relative to ownship's ground speed
  */
-double AlertThresholds::getGroundSpeedSpread(const std::string& u) const {
-  return Units::to(u,spread_gs_);
+double AlertThresholds::getHorizontalSpeedSpread(const std::string& u) const {
+  return Units::to(u,spread_hs_);
 }
 
 /**
  * Set ground speed spread in internal units [m/s]. Spread is relative to ownship's ground speed and is expected
  * to be non-negative
  */
-void AlertThresholds::setGroundSpeedSpread(double spread) {
-  spread_gs_ = std::abs(spread);
+void AlertThresholds::setHorizontalSpeedSpread(double spread) {
+  spread_hs_ = std::abs(spread);
 }
 
 /**
  * Set ground speed spread in given units. Spread is relative to ownship's ground speed and is expected
  * to be non-negative
  */
-void AlertThresholds::setGroundSpeedSpread(double spread, const std::string& u) {
-  setGroundSpeedSpread(Units::from(u,spread));
-  units_["spread_gs"] = u;
+void AlertThresholds::setHorizontalSpeedSpread(double spread, const std::string& u) {
+  setHorizontalSpeedSpread(Units::from(u,spread));
+  units_["spread_hs"] = u;
 }
 
 /**
@@ -306,25 +325,25 @@ void AlertThresholds::setAltitudeSpread(double spread, const std::string& u) {
 }
 
 std::string AlertThresholds::toString() const {
-  return  (detector_ == NULL ? "INVALID_DETECTOR" : detector_->toString())+
+  return "volume = "+(detector_ == NULL ? "INVALID_DETECTOR" : detector_->toString())+
       ", alerting_time = "+Units::str(getUnits("alerting_time"),alerting_time_)+
       ", early_alerting_time = "+Units::str(getUnits("early_alerting_time"),early_alerting_time_)+
       ", region = "+BandsRegion::to_string(region_)+
-      ", spread_trk = "+Units::str(getUnits("spread_trk"),spread_trk_)+
-      ", spread_gs = "+Units::str(getUnits("spread_gs"),spread_gs_)+
+      ", spread_hdir = "+Units::str(getUnits("spread_hdir"),spread_hdir_)+
+      ", spread_hs = "+Units::str(getUnits("spread_hs"),spread_hs_)+
       ", spread_vs = "+Units::str(getUnits("spread_vs"),spread_vs_)+
       ", spread_alt = "+Units::str(getUnits("spread_alt"),spread_alt_);
 }
 
-std::string AlertThresholds:: toPVS(int prec) const {
-  return "(# wcv:= "+(detector_ == NULL ? "INVALID_DETECTOR" :detector_->toPVS(prec))+
-      ", alerting_time:= "+Fm1(alerting_time_)+
-      ", early_alerting_time:= "+Fm1(early_alerting_time_)+
+std::string AlertThresholds:: toPVS() const {
+  return "(# volume:= "+(detector_ == NULL ? "INVALID_DETECTOR" :detector_->toPVS())+
+      ", alerting_time:= "+FmPrecision(alerting_time_)+
+      ", early_alerting_time:= "+FmPrecision(early_alerting_time_)+
       ", region:= "+BandsRegion::to_string(region_)+
-      ", spread_trk:= ("+FmPrecision(spread_trk_,prec)+","+FmPrecision(spread_trk_,prec)+")"+
-      ", spread_gs:= ("+FmPrecision(spread_gs_,prec)+","+FmPrecision(spread_gs_,prec)+")"+
-      ", spread_vs:= ("+FmPrecision(spread_vs_,prec)+","+FmPrecision(spread_vs_,prec)+")"+
-      ", spread_alt:= ("+FmPrecision(spread_alt_,prec)+","+FmPrecision(spread_alt_,prec)+")"+
+      ", spread_hdir:= ("+FmPrecision(spread_hdir_)+","+FmPrecision(spread_hdir_)+")"+
+      ", spread_hs:= ("+FmPrecision(spread_hs_)+","+FmPrecision(spread_hs_)+")"+
+      ", spread_vs:= ("+FmPrecision(spread_vs_)+","+FmPrecision(spread_vs_)+")"+
+      ", spread_alt:= ("+FmPrecision(spread_alt_)+","+FmPrecision(spread_alt_)+")"+
       " #)";
 }
 
@@ -336,15 +355,15 @@ ParameterData AlertThresholds::getParameters() const {
 
 void AlertThresholds::updateParameterData(ParameterData& p) const {
   p.set("region",BandsRegion::to_string(region_));
+  p.setInternal("alerting_time",alerting_time_,getUnits("alerting_time"));
+  p.setInternal("early_alerting_time",early_alerting_time_,getUnits("early_alerting_time"));
+  p.setInternal("spread_hdir",spread_hdir_,getUnits("spread_hdir"));
+  p.setInternal("spread_hs",spread_hs_,getUnits("spread_hs"));
+  p.setInternal("spread_vs",spread_vs_,getUnits("spread_vs"));
+  p.setInternal("spread_alt",spread_alt_,getUnits("spread_alt"));
   if (detector_ != NULL) {
     p.set("detector",detector_->getIdentifier());
   }
-  p.setInternal("alerting_time",alerting_time_,getUnits("alerting_time"));
-  p.setInternal("early_alerting_time",early_alerting_time_,getUnits("early_alerting_time"));
-  p.setInternal("spread_trk",spread_trk_,getUnits("spread_trk"));
-  p.setInternal("spread_gs",spread_gs_,getUnits("spread_gs"));
-  p.setInternal("spread_vs",spread_vs_,getUnits("spread_vs"));
-  p.setInternal("spread_alt",spread_alt_,getUnits("spread_alt"));
 }
 
 void AlertThresholds::setParameters(const ParameterData& p) {
@@ -359,13 +378,19 @@ void AlertThresholds::setParameters(const ParameterData& p) {
     setEarlyAlertingTime(p.getValue("early_alerting_time"));
     units_["early_alerting_time"] = p.getUnit("early_alerting_time");
   }
-  if (p.contains("spread_trk")) {
-    setTrackSpread(p.getValue("spread_trk"));
-    units_["spread_trk"] = p.getUnit("spread_trk");
+  if (p.contains("spread_hdir")) {
+    setHorizontalDirectionSpread(p.getValue("spread_hdir"));
+    units_["spread_hdir"] = p.getUnit("spread_hdir");
+  } else if (p.contains("spread_trk")) {
+    setHorizontalDirectionSpread(p.getValue("spread_trk"));
+    units_["spread_hdir"] = p.getUnit("spread_trk");
   }
-  if (p.contains("spread_gs")) {
-    setGroundSpeedSpread(p.getValue("spread_gs"));
-    units_["spread_gs"] = p.getUnit("spread_gs");
+  if (p.contains("spread_hs")) {
+    setHorizontalSpeedSpread(p.getValue("spread_hs"));
+    units_["spread_hs"] = p.getUnit("spread_hs");
+  } else if (p.contains("spread_gs")) {
+    setHorizontalSpeedSpread(p.getValue("spread_gs"));
+    units_["spread_hs"] = p.getUnit("spread_gs");
   }
   if (p.contains("spread_vs")) {
     setVerticalSpeedSpread(p.getValue("spread_vs"));

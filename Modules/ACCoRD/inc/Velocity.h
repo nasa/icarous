@@ -8,7 +8,7 @@
  * NOTES: 
  * Track is True North/clockwise
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -42,14 +42,13 @@ private:
 	 */
 	Velocity(const double vx, const double vy, const double vz);
 
-
 public:
 	/**
 	 * Instantiates a zero velocity.
 	 */
 	Velocity();
 
-	Velocity(const Vect3& v3);
+	explicit Velocity(const Vect3& v3);
 
 	/**
 	 * Angle in explicit units in corresponding range [-<code>Math.PI</code>, <code>Math.PI</code>].
@@ -141,9 +140,9 @@ public:
 	 * Compare Velocities: return true iff delta is within specified limits
 	 *
 	 * @param v       the other velocity
-	 * @param maxTrk
-	 * @param maxGs
-	 * @param maxVs
+	 * @param maxTrk  maximum track
+	 * @param maxGs   maximum gs
+	 * @param maxVs   maximum vs
 	 * @return true, if the velocities compare correctly
 	 */
 	bool compare(const Velocity& v, double maxTrk, double maxGs, double maxVs);
@@ -157,85 +156,6 @@ public:
 	 */
 	bool compare(const Velocity& v, double horizDelta, double vertDelta);
 
-	/** String representation of the velocity in polar coordinates (compass angle and groundspeed) */
-	std::string toString() const;
-
-	/** String representation of the velocity in polar coordinates (compass angle and groundspeed) in [deg, knot, fpm].  This
-	 * method does not output units.
-	 * @param prec precision (0-15)
-	 */
-	std::string toString(int prec) const;
-
-	/** String representation of the velocity in polar coordinates (compass angle and groundspeed)
-	 * @return a string representation
-	 * */
-	std::string toStringUnits() const;
-
-	/** String representation (trk,gs,vs) with the given units
-	 *
-	 * @param trkUnits
-	 * @param gsUnits
-	 * @param vsUnits
-	 * @return a string representation
-	 */
-	std::string toStringUnits(const std::string& trkUnits, const std::string& gsUnits, const std::string& vsUnits) const;
-
-	/**
-	 * Euclidean vector representation to arbitrary precision, in [knot,knot,fpm]
-	 * @return a string representation
-	 */
-	std::string toStringXYZ() const;
-
-	std::string toStringXYZ(int prec) const;
-
-	/**
-	 * Return an array of string representing each value of the velocity in the units deg, knot, fpm.
-	 * @return array of strings
-	 */
-	std::vector<std::string> toStringList() const;
-
-	/**
-	 * Return an array of string representing each value of the velocity in the units deg, knot, fpm.
-	 * @param precision the number of digits to display
-	 * @return array of strings
-	 */
-	std::vector<std::string> toStringList(int precision) const;
-
-	/**
-	 * Return an array of string representing each value of the velocity in terms of its Cartesian dimensions in units knot, knot, fpm.
-	 * @return array of strings
-	 */
-	std::vector<std::string> toStringXYZList() const;
-
-	/**
-	 * Return an array of string representing each value of the velocity in terms of its Cartesian dimensions in units knot, knot, fpm.
-	 *
-	 * @param precision the number of digits to display
-	 * @return array of strings
-	 */
-	std::vector<std::string> toStringXYZList(int precision) const;
-
-	/** String representation, default number of decimal places, without parentheses
-	 * @return a string representation
-	 * */
-	std::string toStringNP() const;
-
-	/**
-	 * String representation, with user-specified precision
-	 * @param precision number of decimal places (0-15)
-	 * @return a string representation
-	 */
-	std::string toStringNP(int precision) const;
-
-	/**
-	 * String representation, with user-specified precision
-	 * @param precision number of decimal places (0-15)
-	 * @param utrk units of track
-	 * @param ugs units of ground speed
-	 * @param uvs units of vertical speed
-	 * @return a string representation
-	 */
-	std::string toStringNP(const std::string& utrk, const std::string& ugs, const std::string& uvs, int precision) const;
 
 	/**
 	 * New velocity from Vect3 in internal units.
@@ -347,6 +267,14 @@ public:
 	static Velocity mkVel(const Vect3& p1,const Vect3& p2, double speed);
 
 	/**
+	 * Return the track along the line from p1 to p2 at the given speed
+	 * @param p1 first point
+	 * @param p2 second point
+	 * @return the track
+	 */
+	static double track(const Vect3& p1, const Vect3& p2);
+
+	/**
 	 * Return the velocity if moving from p1 to p2 over the given time
 	 * @param p1 first point
 	 * @param p2 second point
@@ -377,8 +305,8 @@ public:
 	 * speed.  The track angle is assumed to use the radians from true
 	 * North-clockwise convention.
 	 *
-	 * @param trk
-	 * @param gs
+	 * @param trk track angle
+	 * @param gs  ground speed
 	 * @return x component of velocity
 	 */
 	static double trkgs2vx(double trk, double gs);
@@ -387,8 +315,8 @@ public:
 	 *	speed.  The track angle is assumed to use the radians from
 	 *	true North-clockwise convention.
 	 *
-	 * @param trk
-	 * @param gs
+	 * @param trk track
+	 * @param gs  ground speed
 	 * @return y component of velocity
 	 */
 	static double trkgs2vy(double trk, double gs);
@@ -397,8 +325,8 @@ public:
 	 *	speed.  The track angle is assumed to use the radians from
 	 *	true North-clockwise convention.
 	 *
-	 * @param trk
-	 * @param gs
+	 * @param trk track
+	 * @param gs  ground speed
 	 * @return 2-D velocity
 	 */
 	static Vect2 trkgs2v(double trk, double gs);
@@ -448,17 +376,7 @@ public:
 	 */
 	Velocity mkVs(double vs, std::string u) const;
 
-	/**
-	 * Returns a unit velocity vector in the direction of the original velocity
-	 */
-	Velocity Hat() const;
-
-	/**
-	 * Returns a unit velocity vector in the direction of the original velocity in the XY plane
-	 */
-	Velocity Hat2D() const;
-
-	Velocity Neg() const;
+	Velocity NegV() const;
 
 	/**
 	 * If the z component of the velocity vector is smaller than the threshold, return a new vector with this component set to 0.
@@ -478,11 +396,102 @@ public:
 	 */
 	static Velocity parseXYZ(const std::string& str);
 
-	/** This parses a space or comma-separated string as a Trk/Gs/Vs Velocity (an inverse to the toString method).  If three bare values are
+	/**
+	 * This parses a space or comma-separated string as a Trk/Gs/Vs Velocity (an inverse to the toString method).  If three bare values are
 	 * present, then it is interpreted as degrees/knots/fpm. If there are 3 value/unit pairs then each values is
 	 * interpreted wrt the appropriate unit.  If the string cannot be parsed, an INVALID value is
-	 * returned. */
+	 * returned.
+	 *
+	 * @param str string to parse
+	 * @return velocity
+	 */
 	static Velocity parse(const std::string& str);
+
+	std::string toUnitTest() const;
+
+	/** String representation of the velocity in polar coordinates (compass angle and groundspeed)
+	 * @return a string representation
+	 * */
+	std::string toString() const;
+
+	/** String representation of the velocity in polar coordinates (compass angle and groundspeed) in [deg, knot, fpm].  This
+	 * method does not output units.
+	 * @param prec precision (0-15)
+	 * @return a string representation
+	 */
+	std::string toString(int prec) const;
+
+	/** String representation of the velocity in polar coordinates (compass angle and groundspeed)
+	 * @return a string representation
+	 * */
+	std::string toStringUnits() const;
+
+	/** String representation (trk,gs,vs) with the given units
+	 *
+	 * @param trkUnits units for track
+	 * @param gsUnits  units for ground speed
+	 * @param vsUnits  units for vertical speed
+	 * @return a string representation
+	 */
+	std::string toStringUnits(const std::string& trkUnits, const std::string& gsUnits, const std::string& vsUnits) const;
+
+	/**
+	 * Euclidean vector representation to arbitrary precision, in [knot,knot,fpm]
+	 * @return a string representation
+	 */
+	std::string toStringXYZ() const;
+
+	std::string toStringXYZ(int prec) const;
+
+	/**
+	 * Return an array of string representing each value of the velocity in the units deg, knot, fpm.
+	 * @return array of strings
+	 */
+	std::vector<std::string> toStringList() const;
+
+	/**
+	 * Return an array of string representing each value of the velocity in the units deg, knot, fpm.
+	 * @param precision the number of digits to display
+	 * @return array of strings
+	 */
+	std::vector<std::string> toStringList(int precision) const;
+
+	/**
+	 * Return an array of string representing each value of the velocity in terms of its Cartesian dimensions in units knot, knot, fpm.
+	 * @return array of strings
+	 */
+	std::vector<std::string> toStringXYZList() const;
+
+	/**
+	 * Return an array of string representing each value of the velocity in terms of its Cartesian dimensions in units knot, knot, fpm.
+	 *
+	 * @param precision the number of digits to display
+	 * @return array of strings
+	 */
+	std::vector<std::string> toStringXYZList(int precision) const;
+
+	/** String representation, default number of decimal places, without parentheses
+	 * @return a string representation
+	 * */
+	std::string toStringNP() const;
+
+	/**
+	 * String representation, with user-specified precision
+	 * @param precision number of decimal places (0-15)
+	 * @return a string representation
+	 */
+	std::string toStringNP(int precision) const;
+
+	/**
+	 * String representation, with user-specified precision
+	 * @param precision number of decimal places (0-15)
+	 * @param utrk units of track
+	 * @param ugs units of ground speed
+	 * @param uvs units of vertical speed
+	 * @return a string representation
+	 */
+	std::string toStringNP(const std::string& utrk, const std::string& ugs, const std::string& uvs, int precision) const;
+
 
 };
 

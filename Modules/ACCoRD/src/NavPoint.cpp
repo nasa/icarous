@@ -1,10 +1,11 @@
-/*
- * NavPoint.cpp
+/*  Defines a 4D Waypoint
  *
- * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
- * NASA LaRC
+ * Authors:  George Hagen              NASA Langley Research Center
+ *           Ricky Butler              NASA Langley Research Center
+ *           Jeff Maddalon             NASA Langley Research Center
+ *
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -45,59 +46,30 @@ const NavPoint& NavPoint::INVALID() {
 NavPoint::NavPoint() :
     				p(Position::ZERO_LL()),
 					t(0.0),
-					label_s("")
-					//ty(Orig),
-					//tcp_trk(NONE),
-					//tcp_gs(NONEg),
-					//tcp_vs(NONEv),
-					//sourcePosition_p(p),
-					//sourceTime_d(t),
-					//accel_d(0.0),
-					//sgnRadius(0.0),		      // signed radius
-					//accel_gs(0.0),            // signed gs-acceleration value
-					//accel_vs(0.0),            // signed vs-acceleration value
-					//velocityInit_v(Velocity::INVALIDV()),
-                    //linearIndex_i(-1)
+					name_s("")
 { }
 
 NavPoint::NavPoint(const Position& pp, double tt) :
     				p(pp),
 					t(tt),
-					label_s("")
-					//ty(Orig),
-					//tcp_trk(NONE),
-					//tcp_gs(NONEg),
-					//tcp_vs(NONEv),
-					//sourcePosition_p(p),
-					//sourceTime_d(t),
-					//sgnRadius(0.0),           // signed radius
-					//accel_gs(0.0),            // signed gs-acceleration value
-					//accel_vs(0.0),            // signed vs-acceleration value
-					//velocityInit_v(Velocity::INVALIDV()),
-					//linearIndex_i(-1)
+					name_s("")
 { }
 
 NavPoint::NavPoint(const Position& pp, double tt, const string& llabel) :
     				p(pp),
 					t(tt),
-					label_s(llabel)
-					//ty(Orig),
-					//tcp_trk(NONE),
-					//tcp_gs(NONEg),
-					//tcp_vs(NONEv),
-					//sourcePosition_p(p),
-					//sourceTime_d(t),
-					//sgnRadius(0.0),           // signed radius
-					//accel_gs(0.0),            // signed gs-acceleration value
-					//accel_vs(0.0),            // signed vs-acceleration value
-					//velocityInit_v(Velocity::INVALIDV()),
-					//linearIndex_i(-1)
+					name_s(llabel)
 { }
 
 
 NavPoint NavPoint::makeLatLonAlt(double lat, double lon, double alt, double t) {
 	return NavPoint(Position::makeLatLonAlt(lat,lon,alt), t);
 }
+
+NavPoint NavPoint::mkLatLonAlt(double lat, double lon, double alt, double t) {
+	return NavPoint(Position::mkLatLonAlt(lat,lon,alt), t);
+}
+
 
 NavPoint NavPoint::makeXYZ(double x, double y, double z, double t) {
 	return NavPoint(Position::makeXYZ(x, y, z), t);
@@ -125,7 +97,7 @@ bool NavPoint::almostEqualsPosition(const NavPoint& v, double epsilon_horiz, dou
 
 
 bool NavPoint::operator == (const NavPoint& v) const {  // strict equality
-	return p == v.p && t==v.t && label_s == v.label_s;
+	return p == v.p && t==v.t && name_s == v.name_s;
 }
 
 bool NavPoint::equals(const NavPoint& v) const {  // strict equality
@@ -143,11 +115,11 @@ Vect2 NavPoint::vect2() const {
 	return p.vect2();
 }
 
-Point NavPoint::point() const {
+Point NavPoint::vect3() const {
 	if (NavPoint_DEBUG && p.isLatLon()) {
 		throw runtime_error("Incorrect geometry in vect3()");
 	}
-	return p.point();
+	return p.vect3();
 }
 
 const LatLonAlt& NavPoint::lla() const {
@@ -233,12 +205,12 @@ double NavPoint::time() const {
 	return t;
 }
 
-const std::string& NavPoint::label() const {
-	return label_s;
+const std::string& NavPoint::name() const {
+	return name_s;
 }
 
 bool NavPoint::isNameSet() const {
-	return label_s != "";
+	return name_s != "";
 }
 
 bool NavPoint::isLatLon() const {
@@ -247,7 +219,7 @@ bool NavPoint::isLatLon() const {
 
 
 const NavPoint NavPoint::copy(const Position& p) const {
-	return NavPoint(p, this->t, this->label_s); //, this->tcp_trk, this->tcp_gs, this->tcp_vs,
+	return NavPoint(p, this->t, this->name_s); //, this->tcp_trk, this->tcp_gs, this->tcp_vs,
 }
 
 const NavPoint NavPoint::mkLat(double lat) const {
@@ -288,24 +260,28 @@ const NavPoint NavPoint::mkZ(double z) const {
 
 
 const NavPoint NavPoint::makeTime(double time) const {
-	return NavPoint(this->p, time, this->label_s);
+	return NavPoint(this->p, time, this->name_s);
 }
 
-const NavPoint NavPoint::makeLabel(const std::string& label) const {
+const NavPoint NavPoint::makeName(const std::string& label) const {
 	return NavPoint(this->p, this->t, label);
 }
 
-const NavPoint NavPoint::appendLabel(const std::string& label) const {
-	return NavPoint(this->p, this->t, this->label_s+label);
+const NavPoint NavPoint::appendName(const std::string& label) const {
+	return NavPoint(this->p, this->t, this->name_s+label);
 }
 
+const NavPoint NavPoint::appendNameNoDuplication(const std::string& label) const {
+	if (this->name_s == label) return *this; // do nothing if this string is already equal to the existing label (e.g. A added to CAT shoudl work...)
+	return appendName(label);
+}
 
 const NavPoint NavPoint::makeMovedFrom(const NavPoint& o) const {
-	return NavPoint(this->p, this->t, o.label_s);
+	return NavPoint(this->p, this->t, o.name_s);
 }
 
 const NavPoint NavPoint::makePosition(const Position& p) const {
-	return NavPoint(p, this->t, this->label_s);
+	return NavPoint(p, this->t, this->name_s);
 }
 
 Velocity NavPoint::initialVelocity(const NavPoint& s1, const NavPoint& s2) {
@@ -319,13 +295,13 @@ Velocity NavPoint::initialVelocity(const NavPoint& s1, const NavPoint& s2) {
 		if (s2.isLatLon()) {
 			return GreatCircle::velocity_initial(s1.p.lla(), s2.p.lla(), dt);
 		} else {
-			return Velocity::make((s2.p.point().Sub(s1.p.point())).Scal(1.0/dt));
+			return Velocity::make((s2.p.vect3().Sub(s1.p.vect3())).Scal(1.0/dt));
 		}
 	} else {
 		if (s2.isLatLon()) {
 			return GreatCircle::velocity_initial(s2.p.lla(), s1.p.lla(), -dt);
 		} else {
-			return Velocity::make((s1.p.point().Sub(s2.p.point())).Scal(1.0/-dt));
+			return Velocity::make((s1.p.vect3().Sub(s2.p.vect3())).Scal(1.0/-dt));
 		}
 	}
 }
@@ -346,13 +322,13 @@ Velocity NavPoint::finalVelocity(const NavPoint& s1, const NavPoint& s2) {
 		if (s2.isLatLon()) {
 			return GreatCircle::velocity_final(s1.p.lla(), s2.p.lla(), dt);
 		} else {
-			return Velocity::make((s2.p.point().Sub(s1.p.point())).Scal(1.0/dt));
+			return Velocity::make((s2.p.vect3().Sub(s1.p.vect3())).Scal(1.0/dt));
 		}
 	} else {
 		if (s2.isLatLon()) {
 			return GreatCircle::velocity_final(s2.p.lla(), s1.p.lla(), -dt);
 		} else {
-			return Velocity::make((s1.p.point().Sub(s2.p.point())).Scal(1.0/-dt));
+			return Velocity::make((s1.p.vect3().Sub(s2.p.vect3())).Scal(1.0/-dt));
 		}
 	}
 }
@@ -374,13 +350,13 @@ Velocity NavPoint::averageVelocity(const NavPoint& s1, const NavPoint& s2) {
 		if (s2.isLatLon()) {
 			return GreatCircle::velocity_average(s1.p.lla(), s2.p.lla(), dt);
 		} else {
-			return Velocity::make((s2.p.point().Sub(s1.p.point())).Scal(1.0/dt));
+			return Velocity::make((s2.p.vect3().Sub(s1.p.vect3())).Scal(1.0/dt));
 		}
 	} else {
 		if (s2.isLatLon()) {
 			return GreatCircle::velocity_average(s2.p.lla(), s1.p.lla(), -dt);
 		} else {
-			return Velocity::make((s1.p.point().Sub(s2.p.point())).Scal(1.0/-dt));
+			return Velocity::make((s1.p.vect3().Sub(s2.p.vect3())).Scal(1.0/-dt));
 		}
 	}
 }
@@ -429,7 +405,7 @@ std::string NavPoint::toString() const {
 }
 
 std::string NavPoint::toString(int precision) const {
-	return p.toStringNP(precision) + ", " + FmPrecision(t,precision) + " " + label_s;
+	return p.toStringNP(precision) + ", " + FmPrecision(t,precision) + " " + name_s;
 }
 
 

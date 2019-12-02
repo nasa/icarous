@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -20,6 +20,7 @@
 #include "LatLonAlt.h"
 #include "EuclideanProjection.h"
 #include "Plan.h"
+#include "TcpData.h"
 #include <string>
 #include <fstream>
 #include <vector>
@@ -34,46 +35,57 @@ class PlanUtil {
 
 public:
 
-	static bool gsConsistent(const Plan& p, int ixBGS, double distEpsilon,	 bool silent);
-
-	static bool vsConsistent(const Plan& p, int ixBVS,  double distEpsilon, double a, bool silent);
-
-	static bool turnConsistent(int i, const NavPoint& BOT, const NavPoint& EOT, const Velocity& vin, double finalTrack, bool silent) ;
-
-	static bool turnConsistent(const Plan& p, int i, double distH_Epsilon, bool silent);
+    static const double maxTurnDeltaStraight;
+	static const double maximumInterpolationNumber;	// maximum number of legs that a plan should have after interpolation
+	static const double minimumInterpolationLegSize;  // do not allow interpolations to create legs smaller than this (can override maximumInterpolationNumber)
 
 
-	static bool isTrkContinuous(const Plan& p, int i, double trkEpsilon, bool silent) ;
-
-	static bool isGsContinuous(const Plan& p, int i, double gsEpsilon, bool silent) ;
-
-	static bool isVsContinuous(const Plan& p, int i, double velEpsilon, bool silent);
-
-//	static bool isVelocityContinuous(const Plan& p, int i, double velEpsilon, bool silent);
-
-	/** Checks to make sure that turnCenter, radius and location of BOT is consistent
+	/**
+	 * Returns an index before iNow where there is a significant enough track change to bother with.
+	 * This is used to "backtrack" through collinear points in order to get a reasonable sized leg to work with. 
+	 * If there is not previous track change it returns 0
+     *
+	 * Note: must use both trkIn and TrkOut because of large great circles
+	 * @param fp plan
+	 * @param iNow index
+	 * @return index of track change
 	 * 
-	 * @param p                plan
-	 * @param i                index point
-	 * @param distH_Epsilon    error bound
-	 * @param silent
-	 * @return
 	 */
-	static bool turnCenterConsistent(const Plan& p, int i, double distH_Epsilon, bool silent);
+	static int prevTrackChange(const Plan&  fp, int iNow);
 
-
-	/**  timeShift points in plan by "dt" starting at index "start"
-	 *   Note: This will drop any points that become negative or that become out of order using a negative dt
-	 *   See also Plan.timeShiftPlan for equivalent method
-	 *
-	 * @param p       plan
-	 * @param start   starting index
-	 * @param dt      delta time
-	 * @return        time-shifted plan
+	/**
+	 * Returns an index after iNow where there is a significant enough track change to bother with
+	 * This is used to move forward through collinear points in order to get a reasonable sized leg to work with. 
+	 * 
+	 * If there is not next track change it returns fp.size()-1
+	 * @param fp plan
+	 * @param iNow index
+	 * @return index of next track change
 	 */
-	static Plan timeShift(const Plan& p, int start, double dt);
+	static int nextTrackChange(const Plan& fp, int iNow);
 
-	static Plan makeSourceNew(const Plan& lpc);
+	/**
+	 * Returns an index after iNow where there is a significant enough vertical speed change to bother with
+	 * This is used to move forward through collinear points in order to get a reasonable sized leg to work with. 
+	 * 
+	 * If there is not a next vs change it returns fp.size()-1
+	 * @param p plan
+	 * @param iNow index
+	 * @return index of vertical speed change
+	 */
+	static int prevVsChange(const Plan& p, int iNow);
+
+	/**
+	 * Returns an index after iNow where there is a significant enough vertical speed change to bother with
+	 * This is used to move forward through collinear points in order to get a reasonable sized leg to work with. 
+	 * 
+	 * If there is not a next vs change it returns fp.size()-1
+	 * @param p plan
+	 * @param iNow index 
+	 * @return index of next vertical speed change
+	 */
+	static int nextVsChange(const Plan& p, int iNow);
+
 
 private:
     /** Advance forward in plan "p"  starting at time "curTm" a distance of "advDistance" within a single segment
@@ -87,9 +99,10 @@ private:
      * @param linear       if true, treat plan as a linear plan (i.e. path is not curved)
      * @return             Position "advDistance" ahead of "curTm"
      */
-	static Position advanceDistanceInSeg(const Plan& p, double curTm, double advDistance, bool linear);
+	static Position positionFromDistanceInSeg(const Plan& p, double curTm, double advDistance, bool linear);
+
 public:
-	static std::pair<Position,int> advanceDistance(const Plan& p, double currentTime, double advanceDist, bool linear);
+	static std::pair<Position,int> positionFromDistance(const Plan& p, double currentTime, double advanceDist, bool linear);
 
 
 	/** time required to cover distance "dist" if initial speed is "gsInit" and acceleration is "gsAccel"
@@ -97,13 +110,38 @@ public:
 	 * @param gsAccel   ground speed acceleration
 	 * @param gsInit    initial ground speed
 	 * @param dist      distance travelled
-	 * @return
+	 * @return time
 	 */
 	static double timeFromGs(double gsInit, double gsAccel, double dist);
 
 	static Plan applyWindField(const Plan& pin, const Velocity& v);
 
+	/**  Simple check that current position (currentPos) is where it should be according to plan "solution"
+	 * 
+	 * @param solution      the trajectory 
+	 * @param currentTime   current time
+	 * @param currentPos    current position
+	 * @return              true if position is almost equal to currentPos.position(currentTime)
+	 */
+	static bool isCurrentPositionUnchanged(const Plan& solution, double currentTime, const Position& currentPos);
+
+	/** Used in Unit tests to make sure that a resolution does not change current position or velocity of vehicle
+	 * 
+	 * @param solution plan
+	 * @param currentTime time
+	 * @param currentPos position
+	 * @param currentVel velocity
+	 * @return true if correct
+	 */
 	static bool checkMySolution(const Plan& solution, double currentTime, const Position& currentPos, const Velocity& currentVel);
+
+	/** Calculate a distance difference between two plans
+	 * 
+	 * @param A    plan A
+	 * @param B    plan B
+	 * @return distance
+	 */
+	static double distanceBetween(const Plan& A,const Plan& B);
 
 	// from Aviation Formulary
 	// longitude sign is reversed from the formulary!
@@ -122,9 +160,45 @@ public:
 	static double getLegDist(const Plan& ac, int i, double accuracy, double mindist);
 
 	// this adds for the leg starting at or before startTm, and ending before or at endTm
+	/** 
+	 * this adds virtual points int the plan starting at or before startTm, and ending before or at endTm
+	 * @param ac           plan
+	 * @param accuracy	   accuracy of projections
+	 * @param startTm      starting segment
+	 * @param endTm        ending segment
+	 */
 	static void interpolateVirtuals(Plan& ac, double accuracy, double startTm, double endTm);
 
 	static void interpolateVirtuals(Plan& ac, double accuracy);
+
+	static Plan revertAllTCPs(const Plan& pln);
+
+	/** 
+	 * Revert all TCPs in the plan, i.e. remove all acceleration zones and replace with instantaneous
+	 * velocity changes.   This undoes TrajGen.makeKinematicPlans.
+	 * 
+	 * Note:  This retains the acceleration values in the resulting linear plan.
+	 * 
+	 * @param pln         kinematic plan to be reverted to a linear plan
+	 * @param markIndices if true, add :ksrc-#: to each point's info (original behavior is "false")
+	 * This may include multiple flags in a single point.
+	 * @return plan
+	 */
+	static Plan revertAllTCPs(const Plan& pln, bool markIndices);
+
+private:
+	/** Called after revertVsTCPs to set AltPreserve.  Assumes that vsAccels have been saved in reverted Plan
+	 * 
+	 * Note: this is very similar to TrajGen.markVsChanges
+	 * 
+	 * @param lpc
+	 * @param vsAccel
+	 * @return
+	 */
+	static Plan setAltPreserveByDelta(const Plan& lpc, double vsAccel);
+	static double findVsAccel(const Plan& kpc);
+
+public:
 
 	// this removes all virtuals AFTER time startTm and BEFORE endTm.
 	// this will NOT remove any Fixed virtuals!
@@ -134,45 +208,19 @@ public:
 
 	static bool removeVirtuals(Plan& ac);
 
-
-	/**
-	 * Returns a Plan with TCPs removed between start and upto.  If it was a kinematic plan, this will attempt to regress the TCPs to 
-	 * their original source points and times (if the proper metadata is available).  
-	 * 
-	 * Note.  No check is made to insure that start or upto is not in the middle of a TCP.
-	 * Note.  See also Plan.revertGroupOfTCPs which uses sourcePosition but not sourceTimes.  It seeks to retain ground speeds.
-	 * 
-	 * Warning:  The reversion of points later in a plan without reverting earlier points can lead to strange ground speeds, because
-	 *           the source times correspond to longer paths (without turns).
-	 * 
-	 */
-	static Plan revertTCPs(const Plan& fp) ;
-
-
 	/** 
-	 * Revert the TCP pair in a plan structurally.  Properly relocate all points between TCP pair.
-	 *
-	 * Note.  No check is made to insure that start or upto is not in the middle of a TCP.
 	 * 
-	 * @param pln plan
-	 * @param ix  index
-	 */
-	static void structRevertTCP(Plan& pln, int ix);
-
-	static void structRevertTCPs(Plan& pln, bool removeRedPoints);
-
-	/** Structurally revert all TCPS that create acceleration zones containing ix
-	 *  if the point is a not a TCP do nothing.  Note that this function will timeshift the points after ix to regain 
+	 *  Used in STRATWAY to structurally revert all TCPS "near" ix.
+	 *  Note that this function will timeshift the points after ix to regain 
 	 *  original ground speed into the point after ix.  
 	 *  
-	 *  NOTE This method does not depend upon source time or source position
+	 *  NOTE: This method does not depend upon source time or source position
 	 * 
 	 * @param pln plan
 	 * @param ix  The index of one of the TCPs created together that should be reverted
-	 * @param killAllOthersInside
 	 * @return index of the reverted point
 	 */
-	static int structRevertGroupOfTCPs(Plan& pln, int ix, bool killAllOthersInside);
+	static int revertGroupOfTCPs(Plan& pln, int ix);
 
 	/** if "ix" is a BGS, then it reverts the BGS-EGS pair back to a single linear point
 	 *  Note: It (does not depend upon source time or source position!)
@@ -182,27 +230,18 @@ public:
 	 * @param revertPreviousTurn   if true then if this GS segment is right after a turn then revert the turn as well  
 	 * @return                     index of reverted point
 	 */
-	static int structRevertGsTCP(Plan& pln, int ix, bool revertPreviousTurn);
+	static int revertGsTCP(Plan& pln, int ix, bool revertPreviousTurn);
 
-	/**
-	 * change ground speed to newGs, starting at startIx 
-	 * @param p
-	 * @param newGs
-	 * @param startIx
-	 * @return a new Plan
-	 */
-	static Plan makeGsConstant(const Plan& p, double newGs, int startIx);
-
-
+	static void makeWellFormedEnds(Plan& lpc);
 
 
 	/**  make a new plan that is identical to plan from startTime to endTime 
-	 *   It assumes that  startTime and endTime are in linear segments
+	 *   It assumes that  startTime and endTime are in linear segments.  See also Plan.cut
 	 * 
 	 * @param plan         source plan
 	 * @param startTime    absolute time of start time
 	 * @param endTime      absolute time of end time
-
+     *
 	 * @return   truncated plan
 	 */
 	static Plan cutDown(const Plan& plan, double startTime, double endTime);
@@ -218,48 +257,20 @@ public:
 	 * @param timeOfCurrentPosition     Current location of aircraft in the plan file
 	 * @param intentThreshold           the absolute lookahead time -- all acceleration information after this time is not copied
 	 * @param tExtend                   After the intentThreshold, the plan is extended linearly to this time (absolute time)
-	 * @return
+	 * @return plan
 	 */
 	static Plan cutDownTo(const Plan& plan, double timeOfCurrentPosition, double intentThreshold, double tExtend);
 
-	static Plan cutDownTo(const Plan& plan, double timeOfCurrentPosition, double intentThreshold);
-
-
-	//	/**
-	//	 * Cut a Plan down to contain "numTCPs" future TCPS past the current time (i.e. timeOfCurrentPosition). If tExtend
-	//	 * is greater than 0, create an extra leg after the last TCP with a duration of "tExtend".  This is intended
-	//	 * to mimic having only state information after the last TCP.  Note that numTCPs should be interpreted as number of
-	//	 * acceleration zones.  That is  [BOT,EOT] counts as one TCP.  Similarly [BGS, EGS] is one TCP.
-	//	 *
-	//	 * This method eliminates waypoints earlier than timeOfCurrentPosition as much as possible.  If the aircraft
-	//	 * is in an acceleration zone at timeOfCurrentPosition, then it retains the plan back to the last begin TCP.
-	//	 *
-	//	 * @param numTCPs  maximum number of TCPs to allow in the future, see note above.
-	//	 * @param timeOfCurrentPosition  indicates current location of aircraft, if negative, then aircraft is at point 0.
-	//	 * @param tExtend  amount of additional time to extend the plan after last TCP end point.
-	//	 *
-	//	 * NOTE: THIS CODE WILL NOT WORK WITH OVERLAPPING HORIZONTAL/VERTICAL Accel Zones
-	//	 *
-	//	 * @return
-	//	 */
-	/**
-	 * Cut a Plan down to contain "numTCPs" future TCPS past the current time (i.e. timeOfCurrentPosition). If tExtend
-	 * is greater than 0, create an extra leg after the last TCP with a duration of "tExtend".  This is intended
-	 * to mimic having only state information after the last TCP.  Note that numTCPs should be interpreted as number of
-	 * acceleration zones.  That is  [BOT,EOT] counts as one TCP.  Similarly [BGS, EGS] is one TCP.
+	/** Create new Plan from time "timeOfCurrentPosition" to time "intentThreshold"
 	 * 
-	 * This method eliminates waypoints earlier than timeOfCurrentPosition as much as possible.  If the aircraft
-	 * is in an acceleration zone at timeOfCurrentPosition, then it retains the plan back to the last begin TCP.
+	 *  NOTE: currently only being used in Unit Tests
 	 * 
-	 * @param numTCPs  maximum number of TCPs to allow in the future, see note above.
-	 * @param timeOfCurrentPosition  indicates current location of aircraft, if negative, then aircraft is at point 0.
-	 * @param tExtend  amount of additional time to extend the plan after last TCP end point.
-	 * 
-	 * NOTE: THIS CODE WILL NOT WORK WITH OVERLAPPING HORIZONTAL/VERTICAL Accel Zones
-	 * 
-	 * @return
+	 * @param plan plan
+	 * @param timeOfCurrentPosition time
+	 * @param intentThreshold time
+	 * @return plan
 	 */
-//	static Plan cutDownToByCount(const Plan& plan, int numTCPs, double timeOfCurrentPosition, double tExtend);
+	static Plan cutDownTo(const Plan& plan, double timeOfCurrentPosition, double intentThreshold);
 
 	static std::pair<bool,double> enoughDistanceForAccel(const Plan& p, int ix, double maxAccel, double M);
 
@@ -268,14 +279,21 @@ public:
 	 * 	
 	 * @param p         plan 
 	 * @param ix        index of ground speed change 
-	 * @param maxAccel  maximum ground speed acceleration
-	 * @param checkTCP  if true, do not alter time if point is an EOT or EVS
-	 * @return -1 if no change was necessary, otherwise return the new time at ix+1
+	 * @param maxAccel  maximum ground speed acceleration (non-negative)
+	 * @param checkTCP  if true, do not alter time if point and it is an EOT or EVS
+	 * @param M max time
 	 */
 	static void fixGsAccelAt(Plan& p, int ix, double maxAccel, bool checkTCP, double M);
 
 	static int hasPointsTooClose(const Plan& plan) ;
 
+	/** This calculates a heuristic measure of the difference between two plans.   Currently only
+	 * used in KinematicsPosition test
+	 * 
+	 * @param lpc   plan 1
+	 * @param kpc   plan 2
+	 * @return metric
+	 */
 	static double diffMetric(const Plan& lpc, const Plan& kpc);
 
 	// will not remove segments that are longer than maxLegSize
@@ -288,113 +306,261 @@ public:
 
 	static Plan removeCollinearTrk(const Plan& pp, double sameTrackBound);
 
-//	/**
-//	 *
-//	 * Returns a new Plan that sets all points in a range to have a constant GS.
-//	 * THIS ASSUMES NO VERTICAL TCPS.
-//	 *
-//	 * NOTE.  First remove Vertical TCPS then re-generate Vertical TCPs
-//	 * */
-//	static Plan makeGSConstant_NO_Verts(const Plan& p, double newGs);
-//
-//	/**
-//	 * Returns a new Plan that sets all points in a range to have a constant GS.
-//	 * THIS ASSUMES NO VERTICAL TCPS, but allows turns (turn omega metatdata may be altered -- maximum omega values are not tested for).
-//	 * The return plan type will be the same as the input plan type.
-//	 * The new gs is an average over the whole plan.  End time should be preserved.
-//	 * This will set an error status in the return plan if there are any vertical TCPs.
-//	 */
-//	static Plan makeGSConstant_No_Verts(const Plan& p) ;
-
 	// This methods assumes plan is linear
 	/**
 	 * Make a new plan with constant ground speed from wp1 to wp2. 
 	 * Assumes input plan is linear.
 	 * 
+	 * <pre>
+	 * 
 	 *       200     200     200     200     200
 	 *    0 ----- 1 ----- 2 ----- 3 ----- 4 ----- 5
 	 * 
-	 *    linearMakeGSConstant(p, 1, 3, 500)
+	 *    mkGSConstant(p, 1, 3, 500)
 	 *    
 	 *    	 200     500     500     200     200     200
 	 *    0 ----- 1 ----- 2 ----- 3 ----- 4 ----- 5
 	 * 
 	 *    Note that if wp1 == wp2 no change is made.
-	 *    
+	 * </pre>
 	 * 
-	 * @param p
-	 * @param wp1
-	 * @param wp2
-	 * @param gs
+	 * @param p plan
+	 * @param i index of waypoint 1
+	 * @param j index of waypoint 2
+	 * @param gs ground speed
 	 * @return a new plan
 	 */
-	static Plan linearMakeGSConstant(const Plan& p, int wp1, int wp2, double gs);
+	static Plan mkGsConstant(const Plan& p, int i, int j, double gs);
 
 	/**
 	 * Make ground speed constant gs for entire plan.
-	 * Assumes input plan is linear.
 	 * 
 	 * @param p plan
 	 * @param gs ground speed
 	 * @return a new plan
 	 */
-	static Plan linearMakeGSConstant(const Plan& p, double gs);
+	static Plan mkGsConstant(const Plan& p, double gs);
 
 	/**
 	 * Make ground speed constant gs between wp1 and wp2.
-	 * Assumes input plan is linear.
 	 * 
 	 * @param p a plan
 	 * @return a new plan with constant ground speed
 	 */
-	static Plan linearMakeGSConstant(const Plan& p);
+	static Plan mkGsConstant(const Plan& p);
 
 
 	/**
 	 * Make ground speed constant between wp1 and wp2 as an average of the total distance and time travelled.
-	 * Assumes input plan is linear.
 	 * 
-	 * @param p   
-	 * @param wp1
-	 * @param wp2
-	 * @return
+	 * @param p       trajectory
+	 * @param wp1     starting waypoint
+	 * @param wp2     starting waypoint
+	 * @return        trajectory revised so that ground speed is constant on [wp1,wp2]
 	 */
-	static Plan linearMakeGSConstant(const Plan& p, int wp1, int wp2) ;
+	static Plan mkGsConstant(const Plan& p, int wp1, int wp2) ;
 
-
-	// change vertical profile: adjust altitudes
 	/**
 	 * Make vertical speed constant vs between wp1 and wp2.
-	 * Assumes input plan is linear.
+	 * Assumes plan does not contain any vertical speed accel regions
+	 *
 	 */
-	static void linearMakeVsConstant(Plan& p, int wp1, int wp2, double vs) ;
+	static void mkVsConstant(Plan& p, int wp1, int wp2, double vs) ;
 
-	// change vertical profile: adjust altitudes
 	/**
 	 * Make vertical speed constant vs between wp1 and wp2, with vs being the average speed.
-	 * Assumes input plan is linear.
+	 * @param p plan
+	 * @param start starting index
+	 * @param end ending index
 	 */
-	static void linearMakeVsConstant(Plan& p, int start, int end) ;
+	static void mkVsConstant(Plan& p, int start, int end) ;
 
 
 	// change vertical profile: adjust altitudes
 	/**
 	 * Make vertical speed constant vs over plan with vs being the average speed.
-	 * Assumes input plan is linear.
+	 * @param p plan
 	 */
-	static void linearMakeVsConstant(Plan& p) ;
+	static void mkVsConstant(Plan& p) ;
 
 	/**
 	 * Make vertical speed constant vs for full plan.
-	 * Assumes input plan is linear.
+	 * @param p plan
+	 * @param vs vertical speed
 	 */
-	static void linearMakeVsConstant(Plan& p, double vs);
+	static void mkVsConstant(Plan& p, double vs);
 
-	static void linearMakeGsInto(Plan& p, int ix, double gs);
+	/** Examine each vertical segment [i,i+1] over the specified range.  Calculate needed time for
+	 *  the vertical accelerations at each end.  If the sum of half of each of these accels is longer
+	 *  in time than the segment dt, then smooth away this segment vertically.  Either
+	 *  side could be potentially smooth.  This method smooths the side with the smallest
+	 *  delta vs.
+	 *
+	 * @param p            Plan to be modified
+	 * @param start        starting index
+	 * @param end          ending index
+	 * @param vsAccel      vertical speed acceleration
+	 * @param inhibitFixGs0   if true will NOT attempt to repair on segments with gsOut = 0
+	 * @param inhibitFixVs0   if true will NOT attempt to repair level segments (i.e. vertical speed = 0)
+	 * @param aggressiveFactor    a factor in the interval (0,1] that determines how aggressively the repair is done
+	 *
+	 * @return number of segments that were smoothed
+	 */
+	static int mkVsShortLegsContinuous(Plan& p, int start, int end, double vsAccel, bool allowFixGs0, double aggressiveFactor, bool inhibitFixVs0);
+
+	static int mkVsShortLegsContinuous(Plan& p, double vsAccel, bool allowFixGs0, double aggressiveFactor, bool inhibitFixGs0);
+
+	/** Repair Method: make the vertical speed continuous at index i (i.e. vsIn(i) = vsOut(i).  Accomplish this
+	 *  by changing the altitude at index i.  If the new altitude makes the point redundant, then remove it.
+	 * 
+	 * @param p     trajectory
+	 * @param i     index
+	 * @return      revised trajectory
+	 */
+	static int mkVsContinuousAt(Plan& p, int i);
+
+	/**
+	 * Attempts to repair plan with infeasible vertical points by averaging vertical speeds over 2 segments.
+	 * Assumes linear plan input.
+	 * @param fp
+	 * @param vsAccel
+	 * @param minVsChangeRequired
+	 * @return
+	 */
+	static Plan repairShortVsLegs(const Plan& fp, double vsAccel);
+
+	/**
+	 * Return the index of p1 that shares a segment (has same start and end positions) as p2, or -1 if there are none
+	 * This returns the last such shared segment
+	 * @param p1 point 1
+	 * @param p2 point 2
+	 * @return segment number
+	 */
+	static int shareSegment(const Plan& p1, const Plan& p2);
+
+	static std::pair<NavPoint,TcpData> makeMidpoint(TcpData& tcp, const Position& p, double t);
+
+	/**
+	 * Project plan from latlonalt to Euclidean.
+	 * Note: some tcp turn information may no longer be valid.
+	 * @param p plan
+	 * @param proj projection
+	 * @return plan
+	 */
+	static Plan projectPlan(const Plan& p, const EuclideanProjection& proj);
 
 
+	/**  Check that first and last points are almost the same.  Same means, same time,
+	 *  same latitude, longitude, and altitude.
+	 * 
+	 * @param lpc a plan
+	 * @param kpc another plan
+	 * @param maxlastDt Maximum distance allowed at the last point
+	 * @return True, if the first and last points are almost the same.
+	 */
+	static bool basicCheck(const Plan& lpc, const Plan& kpc, double maxlastDt);
+
+	/** 
+	 * 
+	 * Given a gs accel zone and modified starting and ending velocities,
+	 * change the acceleration and internal points' times 
+	 * so that it is continuous with the velocities into and out of the BGS-EGS zone
+	 * 
+	 * 
+	 * @param p           Plan to be fixed
+	 * @param ixBGS       index of BGS 
+	 * @param ixEGS       index of EGS
+	 * @param vo          target gsOut at ixBGS
+	 * @param vf          target gsIn at ixEGS
+	 * @param maxGsAccel  maximum gs acceleration allowed
+	 * 
+	 * NOTE:  given d, vo, vf calculate a and dt using two equations:
+	 * 
+	 *        d = vo*t + 0.5*a*t*t
+	 *        vf = vo + a*t
+	 *        
+	 * NOTE:  if the calculated acceleration exceeds maxGsAccel, then add error to plan
+	 */
+	static void fixGs_continuity(Plan& p, int ixBGS, int ixEGS, double vo, double vf, double maxGsAccel);
+
+	static void fixGs_continuity(Plan& p, int ixBGS, int ixEGS, double maxGsAccel);
+
+	/** make ground speeds correct in a newly created BGS - EGS region.
+	 *
+	 * @param traj         trajectory to be modified
+	 * @param ixBGS        starting index
+	 * @param ixEGS        ending index
+	 * @param startGs      the ground speed out that is desired at ixBGS
+	 */
+	static void fixGsInsideAccel(Plan& traj, int ixBGS, int ixEGS, double startGs);
 
 
+	/**  Repair turns for semi-linear plan.  Removes vertex point if turn is infeasible.
+	 * 
+	 * @param lpc       Plan that needs repair
+	 * @param startIx 	Starting index
+	 * @param endIx 	Ending index
+	 * @param default_bank_angle Default bank angle 
+	 * @param repair    If true, attempt repair.  If false, only determine the number of bad turns remaining.
+	 * @return          Number of repaired or infeasible vertices
+	 * 
+	 * Note: This assumes that there are no GS or VS TCPs in lpc and no existing turns in the repair range
+	 */
+	static int infeasibleTurns(Plan& lpc, int startIx, int endIx, double default_bank_angle, bool repair) ;
+
+	static int fixBadTurns(Plan& lpc, int startIx, int endIx, double default_bank_angle);
+
+	static int fixBadTurns(Plan& lpc, double default_bank_angle) ;
+
+	static int countBadTurns(Plan& lpc, double default_bank_angle) ;
+
+
+	/**  Repairs turn problem at index ix using several different strategies:
+	 *      -- create a new vertex point (that makes one turn our of two)
+	 *      -- removing the vertex point
+	 *      -- moving the vertex point
+	 *
+	 * @param lpc    semi-linear plan  (no GS or VS TCPs)
+	 * @param ix     index
+	 *
+	 * @return true if point removed
+	 */
+	static bool fixInfeasibleTurnAt(Plan& lpc, int ix, bool allowRepairByIntersection) ;
+
+	/** Create an intersection point between ix-1 and ix
+	 *
+	 * @param lpc     Plan to be repaired
+	 * @param ix      index of problem turn
+	 * @return        true if plan was successfully repaired
+	 */
+	static bool fixInfeasibleTurnAtViaIntersection(Plan& lpc, int ix) ;
+
+private:
+	static int turnDir(Plan lpc, int i);
+
+	/** Create intersection point between (i-1) and i
+	 * 
+	 * @param lpc linear plan
+	 * @param i index
+	 * @return point
+	 */
+	static NavPoint intersection(Plan lpc, int i);
+public:
+
+	static bool checkReversion(const Plan& kpc, const Plan& lpc, bool verbose);
+
+	static bool checkReversion(const Plan& kpc, const Plan& lpc);
+
+	/**  Test to make sure that all name and info in plan lpc is also in kpc
+	 * 
+	 * @param kpc kinematic plan
+	 * @param lpc linear plan
+	 * @param verbose true for verbose mode
+	 * @return true if correct
+	 */
+	static bool checkNamesInfoRetained(const Plan& kpc, const Plan& lpc, bool verbose);
+
+	static void createAndAddMOT(Plan& kpc, int ixBOT, int ixEOT);
 };
 
 }

@@ -5,7 +5,6 @@
 #define TRAFFICMONITOR_H
 
 #include "Daidalus.h"
-#include "KinematicMultiBands.h"
 #include <string>
 #include <fstream>
 #include "GenericObject.h"
@@ -54,7 +53,6 @@ private:
 
 public:
     larcfm::Daidalus DAA;
-    larcfm::KinematicMultiBands KMB;
 
     TrafficMonitor(bool reclog,char daaConfig[]);
     void UpdateDAAParameters(char daaParameters[]);

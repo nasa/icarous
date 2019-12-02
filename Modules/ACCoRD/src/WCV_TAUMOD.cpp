@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -28,7 +28,7 @@ WCV_TAUMOD::WCV_TAUMOD() {
 /** Constructor that specifies a particular instance of the TCAS tables. */
 WCV_TAUMOD::WCV_TAUMOD(const WCVTable& tab) {
   wcv_vertical = new WCV_TCOA();
-  table.copyValues(tab);
+  table = tab;
   id = "";
 }
 
@@ -79,8 +79,7 @@ Detection3D* WCV_TAUMOD::make() const {
  * Returns a deep copy of this WCV_TAUMOD object, including any results that have been calculated.
  */
 Detection3D* WCV_TAUMOD::copy() const {
-  WCV_TAUMOD* ret = new WCV_TAUMOD();
-  ret->table.copyValues(table);
+  WCV_TAUMOD* ret = new WCV_TAUMOD(table);
   ret->id = id;
   return ret;
 }
@@ -91,7 +90,7 @@ std::string WCV_TAUMOD::getSimpleClassName() const {
 
 bool WCV_TAUMOD::contains(const Detection3D* cd) const {
   if (larcfm::equals(getCanonicalClassName(), cd->getCanonicalClassName()) ||
-      larcfm::equals("gov.nasa.larcfm.ACCoRD.WCV_TCPA", cd->getCanonicalClassName())) {
+     larcfm::equals("gov.nasa.larcfm.ACCoRD.WCV_TCPA", cd->getCanonicalClassName())) {
     return containsTable((WCV_tvar*)cd);
   }
   return false;

@@ -1,0 +1,20 @@
+// -*- Mode: C++ -*-
+// Simple mission example
+
+Command pprint(...);
+
+MISSION:
+{
+	Real Heading = 0;
+	In Boolean execResolution;
+	
+	MISSION_OPS:{
+	    SkipCondition execResolution;
+	    Repeat true;
+	    
+	    Heading = Heading + 10;
+	    
+	    pprint("New heading:",Heading);
+	    
+	}
+}

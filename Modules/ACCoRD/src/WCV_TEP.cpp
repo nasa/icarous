@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -29,7 +29,7 @@ WCV_TEP::WCV_TEP() {
 /** Constructor that specifies a particular instance of the TCAS tables. */
 WCV_TEP::WCV_TEP(const WCVTable& tab) {
   wcv_vertical = new WCV_TCOA();
-  table.copyValues(tab);
+  table = tab;
   id = "";
 }
 
@@ -79,8 +79,7 @@ Detection3D* WCV_TEP::make() const {
  * Returns a deep copy of this WCV_TEP object, including any results that have been calculated.
  */
 Detection3D* WCV_TEP::copy() const {
-  WCV_TEP* ret = new WCV_TEP();
-  ret->table.copyValues(table);
+  WCV_TEP* ret = new WCV_TEP(table);
   ret->id = id;
   return ret;
 }

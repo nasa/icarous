@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -11,6 +11,8 @@
 #include "Position.h"
 #include "Plan.h"
 #include "PlanUtil.h"
+#include "Triple.h"
+#include "Constants.h"
 #include <vector>
 #include <string>
 #include <cmath>
@@ -24,13 +26,27 @@ using std::vector;
 using std::string;
 using std::endl;
 
+SimplePoly PolyUtil::convexHull(const std::vector<Position>& pinlist, double bottom, double top) {
+	const double MIN_H_DIST = Constants::get_horizontal_accuracy();
 
-
-
-
-SimplePoly PolyUtil::convexHull(const std::vector<Position>& plist, double bottom, double top) {
-	std::vector<Triple<Position,int,double> > elems = std::vector<Triple<Position,int,double> >(); // vertex position, vertex index in original polygon, angle from origin point
+	std::vector<Triple<Position,double,double> > elems; // = std::vector<Triple<Position,int,double> >(); // vertex position, vertex index in original polygon, angle from origin point
 	int origin = 0;
+	if (pinlist.size() == 0) {
+		return SimplePoly();
+	}
+	// remove redundant points
+	std::vector<Position> plist;
+	for (int i = 0; i < (int) pinlist.size(); i++) {
+		bool found = false;
+		for (int j = i+1; !found && j < (int) pinlist.size(); j++) {
+			if (pinlist[i] == pinlist[j]) {
+				found = true;
+			}
+		}
+		if (!found) {
+			plist.push_back(pinlist[i]);
+		}
+	}
 	// pick origin point
 	for (int i = 1; i < (int) plist.size(); i++) {
 		Position po = plist[origin];
@@ -44,33 +60,49 @@ SimplePoly PolyUtil::convexHull(const std::vector<Position>& plist, double botto
 		if (i != origin) {
 			Position po = plist[origin];
 			Position pi = plist[i];
-			double val = Util::to_2pi(po.initialVelocity(pi,100).trk());
-			elems.push_back(Triple<Position,int,double>(pi, i, val));
+			Velocity iv_i = po.initialVelocity(pi,100);
+			//fpln(" $$$ convexHull: i = "+Fm0(i)+" iv_i = "+iv_i.toString());
+			double val = Util::to_2pi(iv_i.trk());
+			double dist = -po.distanceH(pi);
+			//fpln(" $$$ convexHull: i = "+Fm0(i)+" iv_i = "+iv_i.toString() +" val = "+Fm6(val));
+			elems.push_back(Triple<Position,double,double>(pi, val, dist));
 		}
 	}
-	std::sort(elems.begin(), elems.end(), SIComparator());
-	elems.insert(elems.begin(),Triple<Position,int,double>(plist[origin],origin,std::numeric_limits<double>::infinity()));
+	std::stable_sort(elems.begin(), elems.end(), SIComparator());
+	elems.insert(elems.begin(),Triple<Position,double,double>(plist[origin],-DBL_MAX,-DBL_MAX));
 	// delete any points that have a left-hand turn
+	//fpln(" $$ convexHull: elems.size() = "+Fm0(elems.size()));
+	for (int i = 0; i < (int) elems.size(); i++) {
+	   //fpln(" $$$  "+Fm0(i)+"  elems[i].first = "+elems[i].first.toString());
+	   //fpln(" $$$  "+Fm0(i)+"  elems[i].third = "+Units::str("deg",elems[i].third));
+	}
+
 	int i = 1;
 	while (i < (int) elems.size()) {
 		int j = i+1;
 		if (j == (int) elems.size()) j = 0; // last point
 		Position a = elems[i-1].first;
 		Position b = elems[i].first;
+		//fp(" $$$  "+Fm0(i)+"  b = "+b.toString());
 		Position c = elems[j].first;
 		double trk1 = a.finalVelocity(b, 100).trk();
 		double trk2 = b.initialVelocity(c, 100).trk();
-		if (a.almostEquals(b) || b.almostEquals(c) || Util::turnDir(trk1, trk2) <= 0) {
+		//fpln(" "+Fm0(i)+"  trk1 = "+Units::str("deg",trk1)+" trk2 = "+Units::str("deg",trk2)+" turnDir = "+Fm0(Util::turnDir(trk1, trk2)));
+		//fpln(" "+Fm0(i)+" "+bool2str(a.almostEquals(b))+" "+bool2str(b.almostEquals(c))+" "+bool2str(Util::turnDir(trk1, trk2) <= 0));
+		if (a.almostEquals2D(b, MIN_H_DIST) || b.almostEquals2D(c, MIN_H_DIST) || Util::turnDir(trk1, trk2) <= 0) {
+			//fpln(" $$ convexHull: remove i = "+Fm0(i));
 			elems.erase(elems.begin()+i);
 			if (i > 1) i--; // backtrack 1
 		} else {
 			i++;
 		}
 	}
-	SimplePoly p2 = SimplePoly(bottom, top);
+	SimplePoly p2(bottom, top);
+	std::reverse(elems.begin(), elems.end());
 	for (i = 0; i < (int) elems.size(); i++) {
-		p2.addVertex(elems[i].first);
+		p2.add(elems[i].first);
 	}
+	//fpln(" $$ convexHull: p2.size() = "+Fm0(p2.size()));
 	return p2;
 }
 
@@ -80,11 +112,12 @@ SimplePoly PolyUtil::convexHull(const SimplePoly& p) {
 
 
 SimplePoly PolyUtil::convexHull(const std::vector<SimplePoly>& p) {
-	std::vector<Position> ps = std::vector<Position>();
+	std::vector<Position> ps; // = std::vector<Position>();
 	double t = -DBL_MAX;
 	double b = DBL_MAX;
 	for (int i = 0; i < (int) p.size(); i++) {
 		std::vector<Position> pts = p[i].getVertices();
+		//fpln(" $$$ convexHull: pts = "+Fm0(pts.size()));
 		ps.insert(ps.end(), pts.begin(), pts.end());
 		t = Util::max(t, p[i].getTop());
 		b = Util::min(b, p[i].getBottom());
@@ -94,7 +127,7 @@ SimplePoly PolyUtil::convexHull(const std::vector<SimplePoly>& p) {
 
 
 SimplePoly PolyUtil::convexHull(const SimplePoly& p, double buffer) {
-	std::vector<Position> ps = std::vector<Position>();
+	std::vector<Position> ps; // = std::vector<Position>();
 	for (int i = 0; i < p.size(); i++) {
 		for (int j = 0; j < 360; j += 30) {
 			Velocity v = Velocity::makeTrkGsVs(j, buffer, 0.0);
@@ -105,15 +138,16 @@ SimplePoly PolyUtil::convexHull(const SimplePoly& p, double buffer) {
 	return convexHull(ps,p.getBottom(), p.getTop());
 }
 
-Position PolyUtil::pushOut(const SimplePoly& poly, const Position& p, double buffer) {
+Position PolyUtil::pushOut(SimplePoly& poly, const Position& p, double buffer) {
 	Position cent = poly.centroid();
 	double dist = cent.distanceH(p);
 	Velocity v = cent.finalVelocity(p, dist).mkVs(0.0); // should have a 1 m/s gs
 	return p.linear(v, buffer);
 }
 
-Position PolyUtil::pushOut(const SimplePoly& poly, int i, double buffer) {
+Position PolyUtil::pushOut(SimplePoly& poly, int i, double buffer) {
 	Position p = poly.getVertex(i);
+	//fpln(" $$$$ pushOut p = "+p.toString());
 	Position cent = poly.centroid();
 	double dist = cent.distanceH(p);
 	Velocity v = cent.finalVelocity(p, dist).mkVs(0.0); // should have a 1 m/s gs
@@ -140,7 +174,7 @@ Position PolyUtil::pushOut(const SimplePoly& poly, int i, double buffer) {
 
 
 
-SimplePoly PolyUtil::simplify2(const SimplePoly& p, double buffer) {
+SimplePoly PolyUtil::simplify2(SimplePoly& p, double buffer) {
 	if (p.size() <= 3) {
 		fpln("Simplify size too small");
 		return p.copy();
@@ -156,7 +190,7 @@ SimplePoly PolyUtil::simplify2(const SimplePoly& p, double buffer) {
 			int idx = p.maxInRange(c, j*incr, (j+1)*incr);
 			if (idx >= 0) {
 				//					p2.addVertex(pushOut(points[idx],buffer));
-				p2.addVertex(pushOut(p,idx,buffer));
+				p2.add(pushOut(p,idx,buffer));
 			}
 		}
 		// remove points that are probably from non-convex points
@@ -189,7 +223,7 @@ SimplePoly PolyUtil::simplify2(const SimplePoly& p, double buffer) {
 }
 
 
-SimplePoly PolyUtil::simplify(const SimplePoly& p, double buffer) {
+SimplePoly PolyUtil::simplify(SimplePoly& p, double buffer) {
 	if (p.size() <= 3) {
 //			f.pln("Simplify size too small");
 		return p.copy();
@@ -207,7 +241,7 @@ SimplePoly PolyUtil::simplify(const SimplePoly& p, double buffer) {
 			int idx = p.maxInRange(c, j*incr, (j+1)*incr);
 			if (idx >= 0) {
 				//						p2.addVertex(pushOut(points[idx],buffer));
-				p2.addVertex(pushOut(p,idx,buffer));
+				p2.add(pushOut(p,idx,buffer));
 			}
 		}
 		// remove points that are probably from non-convex points
@@ -238,7 +272,7 @@ SimplePoly PolyUtil::simplify(const SimplePoly& p, double buffer) {
 	return p.copy();
 }
 
-SimplePoly PolyUtil::simplify(const SimplePoly& p) {
+SimplePoly PolyUtil::simplify(SimplePoly& p) {
 	bool done = false;
 	SimplePoly p2 = p.copy();
 //	int step = 0;
@@ -268,7 +302,7 @@ SimplePoly PolyUtil::simplify(const SimplePoly& p) {
 }
 
 
-SimplePoly PolyUtil::simplifyToSize(const SimplePoly& p, int num) {
+SimplePoly PolyUtil::simplifyToSize(SimplePoly& p, int num) {
 	if (p.size() <= num) return p.copy();
 	SimplePoly tmp = simplify(p, 0.0);
 	double incr = p.maxRadius()*0.1;
@@ -286,32 +320,40 @@ SimplePoly PolyUtil::simplifyToSize(const SimplePoly& p, int num) {
 
 
 SimplePoly PolyUtil::stretchOverTime(const SimplePoly& sp, const Velocity& v, double timeBefore, double timeAfter) {
-	std::vector<SimplePoly> alist = std::vector<SimplePoly>();
+	std::vector<SimplePoly> alist; //  = std::vector<SimplePoly>();
 	alist.push_back(sp);
 	alist.push_back(sp.linear(v, timeAfter));
-	alist.push_back(sp.linear(v.Neg(), timeBefore));
-	return convexHull(alist);
+	alist.push_back(sp.linear(Velocity(v.Neg()), timeBefore));
+	//fpln(" $$ stretchOverTime(SimplePoly): alist.size() = "+Fm0(alist.size()));
+	SimplePoly rtn = convexHull(alist);
+	//fpln(" $$ stretchOverTime(SimplePoly): rtn = "+rtn.toString());
+	return rtn;
 }
 
 PolyPath PolyUtil::stretchOverTime(const PolyPath& pbase, double timeBefore, double timeAfter) {
-	PolyPath pp = PolyPath(pbase);
+	PolyPath pp(pbase);
+	//fpln(" $$ stretchOverTime(PolyPath): timeAfter = "+Fm3(timeAfter));
 	if (pp.getPathMode() == PolyPath::MORPHING) {
 		pp.setPathMode(PolyPath::USER_VEL_FINITE);
+		pp.addWarning("PolyUtil.stretchOverTime: Mode changed from MORPHING to USER_VEL_FINITE");
 	}
 	for (int i = 0; i < pp.size(); i++) {
-		SimplePoly sp = pp.getPolyRef(i);
+		SimplePoly sp = pp.getPolyRef(i);  // TODO:  RWB IS THIS Ref OK?
 		SimplePoly np = stretchOverTime(sp,pp.initialVelocity(i), timeBefore, timeAfter);
 		pp.setPolygon(i, np);
 	}
+	//fpln(" $$ stretchOverTime(PolyPath): RETURN pp = "+pp.toString());
 	return pp;
 }
 
 
-SimplePoly PolyUtil::bufferedConvexHull(const SimplePoly& p, double hbuff, double vbuff) {
+SimplePoly PolyUtil::bufferedConvexHull(SimplePoly& p, double hbuff, double vbuff) {
+	//fpln("=========================================");
 	std::vector<Position> points = std::vector<Position>();
-	std::vector<Position> p_points = p.getVertices();
-	for (int i = 0; i < (int) p_points.size(); i++) {
-		Position pos = p_points[i];
+	std::vector<Position> p_verts = p.getVertices();
+	for (int i = 0; i < (int) p_verts.size(); i++) {
+		Position pos = p_verts[i];
+		//fpln(" $$ bufferedConvexHull: i = "+Fm0(i)+" pos = "+pos.toString());
 		double ang = p.vertexAngle(i);
 		double ang2 = ang/2.0;
 		double trk1 = p.perpSide(i);
@@ -319,78 +361,88 @@ SimplePoly PolyUtil::bufferedConvexHull(const SimplePoly& p, double hbuff, doubl
 		double trk3 = p.isClockwise() ?  (trk1 - Pi/2 + ang2) : (trk1 + Pi/2 - ang2);
 		Velocity v3 = Velocity::mkTrkGsVs(trk3, 1.0, 0.0);
 		points.push_back(pos.linear(v3, hbuff));
-
-			double trk2;
-			if (i == 0) {
-				trk2 = p.perpSide(p_points.size()-1);
-			} else {
-				trk2 = p.perpSide(i-1);
-			}
-			Velocity v2 = Velocity::mkTrkGsVs(trk2, 1.0, 0.0);
-			points.push_back(pos.linear(v1, hbuff));
-			points.push_back(pos.linear(v2, hbuff));
+		double trk2;
+		if (i == 0) {
+			trk2 = p.perpSide(p_verts.size()-1);
+		} else {
+			trk2 = p.perpSide(i-1);
+		}
+		Velocity v2 = Velocity::mkTrkGsVs(trk2, 1.0, 0.0);
+		Position pt1 = pos.linear(v1, hbuff);
+		Position pt2 = pos.linear(v2, hbuff);
+		//fpln(" $$ bufferedConvexHull: i="+Fm0(i)+" pt1="+pt1.toString()+" pgt2="+pt2.toString());
+		//fpln(" $$ bufferedConvexHull: v1="+v1.toString()+" v2="+v2.toString()+" v3="+v3.toString());
+		points.push_back(pt1);
+		points.push_back(pt2);
 	}
-	return convexHull(points, p.getBottom()-vbuff, p.getTop()+vbuff);
+	SimplePoly ret = convexHull(points, p.getBottom()-vbuff, p.getTop()+vbuff);
+	//fpln("=========================================");
+	return ret;
+
 }
 
 PolyPath PolyUtil::bufferedConvexHull(const PolyPath& pbase, double hbuff, double vbuff) {
 	PolyPath pp = PolyPath(pbase);
 	if (pp.getPathMode() == PolyPath::MORPHING) {
-		pp.setPathMode(PolyPath::USER_VEL_FINITE);
+		pp.makeVertexCountEqual();
+//		pp.setPathMode(PolyPath::USER_VEL_FINITE);
 	}
 	for (int i = 0; i < pp.size(); i++) {
-		SimplePoly sp = pp.getPolyRef(i);
+		SimplePoly sp = pp.getPolyRef(i);   // TODO: RWB is this ref ok?
 		SimplePoly np = bufferedConvexHull(sp,hbuff, vbuff);
 		pp.setPolygon(i, np);
 	}
 	return pp;
 }
 
-bool PolyUtil::intersectsPolygon2D(const Position& so, const Velocity& vo, const SimplePoly& sp, const Velocity& vp, double T, double incr) {
-	if (incr <= 0) return false;
-	BoundingRectangle br1 = BoundingRectangle();
-	br1.add(so);
-	br1.add(so.linear(vo, T));
-	BoundingRectangle br2 = sp.getBoundingRectangle();
-	br2.add(sp.linear(vp, T).getBoundingRectangle());
-	if (!br1.intersects(br2)) return false;
-	for (double t = 0; t <= T; t += incr) {
-		if (sp.linear(vp, t).contains2D(so.linear(vo, t))) return true;
-	}
-	return false;
-}
+//bool PolyUtil::intersectsPolygon2D(const Position& so, const Velocity& vo, SimplePoly& sp, const Velocity& vp, double T, double incr) {
+//	if (incr <= 0) return false;
+//	BoundingRectangle br1 = BoundingRectangle();
+//	br1.add(so);
+//	br1.add(so.linear(vo, T));
+//	BoundingRectangle br2 = sp.getBoundingRectangle();
+//	br2.add(sp.linear(vp, T).getBoundingRectangle());
+//	if (!br1.intersects(br2)) return false;
+//	for (double t = 0; t <= T; t += incr) {
+//		if (sp.linear(vp, t).contains2D(so.linear(vo, t))) return true;
+//	}
+//	return false;
+//}
+//
+//bool PolyUtil::intersectsPolygon(const Position& so, const Velocity& vo, SimplePoly& sp, const Velocity& vp, double T, double incr) {
+//	if (incr <= 0) return false;
+//	BoundingRectangle br1 = BoundingRectangle();
+//	br1.add(so);
+//	br1.add(so.linear(vo, T));
+//	BoundingRectangle br2 = sp.getBoundingRectangle();
+//	br2.add(sp.linear(vp, T).getBoundingRectangle());
+//	if (!br1.intersects(br2)) return false;
+//	for (double t = 0; t <= T; t += incr) {
+//		if (sp.linear(vp, t).contains(so.linear(vo, t))) return true;
+//	}
+//	return false;
+//}
 
-bool PolyUtil::intersectsPolygon(const Position& so, const Velocity& vo, const SimplePoly& sp, const Velocity& vp, double T, double incr) {
-	if (incr <= 0) return false;
-	BoundingRectangle br1 = BoundingRectangle();
-	br1.add(so);
-	br1.add(so.linear(vo, T));
-	BoundingRectangle br2 = sp.getBoundingRectangle();
-	br2.add(sp.linear(vp, T).getBoundingRectangle());
-	if (!br1.intersects(br2)) return false;
-	for (double t = 0; t <= T; t += incr) {
-		if (sp.linear(vp, t).contains(so.linear(vo, t))) return true;
-	}
-	return false;
-}
 
-
-std::pair<double,string> PolyUtil::intersectsPolygon2D(const Plan& p, const PolyPath& pp, double B, double T, double incr) {
-	std::pair<double,string> rtn = std::pair<double,string>(-1.0,"");
+double PolyUtil::intersectsPolygon2D(const Plan& p, PolyPath& pp, double B, double T, double incr) {
+	//fpln(" $$$ intersectsPolygon2D: ENTER pp.mode = "+pp.pathModeToString(pp.getPathMode()));
+	double rtn = -1.0;
 	if (incr <= 0) return rtn;
-	BoundingRectangle br1 = p.getBound();
-	BoundingRectangle br2 = pp.getBoundingRectangle();
+	BoundingRectangle br1 = p.getBoundBox().getBoundRect();
+	double polyExtensionTm = std::max(0.0,p.getLastTime() - pp.getLastPolyTime());
+	BoundingRectangle br2 = pp.getBoundingRectangle(polyExtensionTm);
 	if (!br1.intersects(br2)) return rtn;
 	double start = Util::max(B, Util::max(p.getFirstTime(), pp.getFirstTime()));
 	double end = Util::min(T, Util::min(p.getLastTime(), pp.getLastTime()));
-	//f.pln(" $$ PolyUtil::intersectsPolygon2D p="+p.getName()+" path="+pp.getName()+" start="+start+" end="+end+" CLEAR");
+	//fpln(" $$ PolyUtil::intersectsPolygon2D p="+p.getName()+" path="+pp.getName()+" start="+Fm0(start)+" end = "+Fm0(end));
 	for (double t = start; t <= end; t += incr) {
 		SimplePoly sp = pp.position(t);
 		Position ac = p.position(t);
 		if (sp.contains2D(ac)) {
 			//f.pln(" $$ PolyUtil::intersectsPolygon2D p="+p.getName()+" path="+pp.getName()+" t="+t+" LOSS");
-			rtn = std::pair<double,string>(t,pp.getName());
-			return rtn;
+			return t;
+		} else {
+			// f.pln(" $$ PolyUtil.intersectsPolygon2D p="+p.getName()+" path="+pp.getName()+" t="+t+" OK");
 		}
 	}
 	//f.pln(" $$ PolyUtil::intersectsPolygon2D p="+p.getName()+" path="+pp.getName()+" B="+B+" T="+T+" CLEAR");
@@ -398,66 +450,133 @@ std::pair<double,string> PolyUtil::intersectsPolygon2D(const Plan& p, const Poly
 }
 
 
-Plan PolyUtil::reducePlanAgainstPolys(const Plan& p, const std::vector<PolyPath>& paths, double incr) {
-	double gs = p.initialVelocity(0).gs();
-	return reducePlanAgainstPolys(p,gs,paths,incr);
-}
-
-Plan PolyUtil::reducePlanAgainstPolys(const Plan& plan, double gs, const std::vector<PolyPath>& paths, double incr) {
+Plan PolyUtil::reducePlanAgainstPolys(const Plan& pln, double gs, std::vector<PolyPath>& paths,
+		                             double incr, bool leadInsPresent, const std::vector<PolyPath>& containment) {
+	//fpln(" $$$$$ reducePlanAgainstPolys: pln = "+pln.toString());
+	//fpln(" $$$$$ reducePlanAgainstPolys: gs = "+Fm2(gs)+" incr = "+Fm0(incr)+" leadInsPresent = "+bool2str(leadInsPresent));
+	//fpln(" $$$$$ reducePlanAgainstPolys: paths = "+paths[0].toString());
+	//fpln(" $$$$$ reducePlanAgainstPolys: ENTER paths.size() = "+Fm0(paths.size()));
+	//fpln(" $$$$$ reducePlanAgainstPolys: ENTER containment.size() = "+Fm0(containment.size()));
 	if (incr <= 0) return Plan();
-	Plan curr = Plan(plan);
+	Plan curr = Plan(pln);
 	Plan tmp;
-	int lastsz = plan.size()+1;
+	int lastsz = pln.size()+1;
+	if (isPlanInConflictWx(curr, paths, curr.time(0), curr.getLastTime(), incr).first >= 0) { // no conflict
+		///fpln(" !!! reducePlanAgainstPolys: WARNING: input plan is not conflict free!!!");
+		curr.addWarning("PolyUtil::reducePlanAgainstPolys: WARNING: input plan is not conflict free!");
+	}
+	if (leadInsPresent && pln.size() > 3) {
+		curr.setAltPreserve(1);
+		curr.setAltPreserve(pln.size()-2);
+	}
+	//fpln("$$$$$ reducePlanAgainstPolys: BEGIN LOOP: lastsz="+Fm0(lastsz)+" currsz="+Fm0(curr.size()));
+	//fpln(" $$$$$ curr = "+curr.toString());
 	while (lastsz > curr.size()) {
-//f.pln("lastsz="+lastsz+" currsz="+curr.size());
+		//fpln("$$$$$ reducePlanAgainstPolys:: lastsz="+Fm0(lastsz)+" currsz="+Fm0(curr.size()));
 		lastsz = curr.size();
 		int i = 1;
 		while (i < curr.size()-1) {
 			tmp = Plan(curr);
-			double start = tmp.time(i-1);
-			double end = tmp.time(i+1);
-			tmp.remove(i);
-			tmp = PlanUtil::linearMakeGSConstant(tmp,gs);
-			if (isPlanInConflictWx(tmp, paths, start, end, incr).first < 0) {
-				curr = tmp; // shrink current
+			double start =  tmp.time(i-1); // tmp.time(i-1);
+			double end = tmp.getLastTime(); //  tmp.time(i+1);
+			//fpln(" $$$$ i = "+Fm0(i)+" tmp.isAltPreserve(i) = "+bool2str(tmp.isAltPreserve(i)));
+			if (tmp.isAltPreserve(i)) {
+				i++;
 			} else {
-				i++; // advance index
+				tmp.remove(i);
+				tmp = PlanUtil::mkGsConstant(tmp,gs);
+				double tmConflict = isPlanInConflictWx(tmp, paths, start, end, incr).first;
+				bool stay = isPlanContained(tmp, containment, start, end, incr);
+				//fpln("  $$$$$$ reducePlanAgainstPolys: i="+Fm0(i)+" stay = "+bool2str(stay)+" tmConflict = "+Fm4(tmConflict));
+				if (tmConflict < 0 && stay) {
+					curr = tmp; // shrink current
+				} else {
+					i++; // advance index
+				}
 			}
 		}
 	};
+	curr.removeAltPreserves();
+	//fpln(" $$$$$ reducePlanAgainstPolys: EXIT: curr = "+curr.toString());
 	return curr;
 }
 
-std::pair<double,string> PolyUtil::isPlanInConflictWx(const Plan& plan, const std::vector<PolyPath>& paths, double start, double end, double incr) {
+ Plan PolyUtil::reducePlanAgainstPolys(const Plan& pln, double gs, std::vector<PolyPath>& paths, double incr,
+		bool leadInsPresent) {
+	std::vector<PolyPath> containment;
+	return reducePlanAgainstPolys(pln, gs, paths, incr, leadInsPresent, containment);
+}
+
+
+ std::pair<double,string> PolyUtil::isPlanInConflictWx(const Plan& plan, std::vector<PolyPath>& paths, double start, double end, double incr) {
+    //fpln(" $$$ isPlanInConflictWx: ENTER paths.size() = "+Fm0(paths.size()));
 	for (int i = 0; i < (int) paths.size(); i++) {
-		std::pair<double,string> ip2D = intersectsPolygon2D(plan, paths[i], start, end, incr);
-		double tmOfIntersection = ip2D.first;
+		//fpln(" $$$ isPlanInConflictWx: i = "+Fm0(i));
+		double tmOfIntersection = intersectsPolygon2D(plan, paths[i], start, end, incr);
 		if (tmOfIntersection >= 0) {
-			return ip2D;
+			return std::pair<double,string>(tmOfIntersection,paths[i].getName());
 		}
 	}
 	return std::pair<double,string>(-1.0,"");
 }
 
-std::pair<double,string>  PolyUtil::isPlanInConflictWx(const Plan& plan, const std::vector<PolyPath>& paths, double incr) {
+ std::pair<double,string>  PolyUtil::isPlanInConflictWx(const Plan& plan,
+		 std::vector<PolyPath>& paths, double incr) {
 	 return isPlanInConflictWx(plan,paths,incr,plan.getFirstTime());
 }
 
-std::pair<double,string> PolyUtil::isPlanInConflictWx(const Plan& plan, const std::vector<PolyPath>& paths, double incr, double fromTime) {
+ std::pair<double,string> PolyUtil::isPlanInConflictWx(const Plan& plan, std::vector<PolyPath>& paths, double incr, double fromTime) {
 	if (paths.size() > 0) {
 		for (int i = 0; i < (int) paths.size(); i++) {
-			std::pair<double,string> ip2D = intersectsPolygon2D(plan, paths[i], fromTime, plan.getLastTime(), incr);
-			double tmOfIntersection = ip2D.first;
+			double tmOfIntersection = intersectsPolygon2D(plan, paths[i], fromTime, plan.getLastTime(), incr);
 			if (tmOfIntersection >= 0) {
-				return ip2D;
+				return std::pair<double,string>(tmOfIntersection,paths[i].getName());
 			}
 		}
 	}
 	return std::pair<double,string>(-1.0,"");
 }
 
+/**
+ * Returns time of intersection if the plan is NOT free of polygons from time start to time end.  This may miss intrusions of up to incr sec
+ * so it may not detect
+ * @param plan   plan to test
+ * @param paths  set of polygons
+ * @param start  start time of search
+ * @param end    end time of search
+ * @param incr   search increment
+ * @return  time of intersection with a polygon if it occurs when search time interval, otherwise -1
+ *          and polygon name that plan is in conflict with
+ */
+bool PolyUtil::isPlanContained(const Plan& plan, const std::vector<PolyPath>& paths, double B, double T, double incr) {
+	if (paths.size() == 0) return true;
+	//        f.pln(" $$$ staysWithinPolygon2D: incr = "+incr+" pp = "+pp);
+	if (incr <= 0) return true;
+	double start = std::max(B, plan.getFirstTime());
+	double end = std::min(T, plan.getLastTime());
+	//		f.pln(" $$ PolyUtil.intersectsPolygon2D p="+p.getName()+" path="+pp.getName()+" start="+start+" end="+end+" CLEAR");
+	for (double t = start; t <= end; t += incr) {
+		Position ac = plan.position(t);
+		bool ok = false;
+		for (int j = 0; !ok && j < (int) paths.size(); j++) {
+			PolyPath pp = paths[j];
+			if (t < pp.getFirstTime() || t > pp.getLastTime()) continue;
+			SimplePoly sp = pp.position(t);
+			if (sp.contains2D(ac)) {
+				ok = true;
+			} else {
+				// f.pln(" $$ PolyUtil.staysWithinPolygon2D p="+p.getName()+" path="+pp.getName()+" t="+t+" OK");
+			}
+		}
+		if (!ok) return false;
+	}
+	//f.pln(" $$ PolyUtil.staysWithinPolygon2D p="+p.getName()+" path="+pp.getName()+" B="+B+" T="+T+" CLEAR");
+	return true;
+}
 
-double PolyUtil::calculateWxExitTime(const Plan& plan, const std::vector<PolyPath>& paths, double incr, double entryTime) {
+
+
+double PolyUtil::calculateWxExitTime(const Plan& plan, std::vector<PolyPath>& paths, double incr, double entryTime) {
 	double lastTm = plan.getLastTime();
 	for (double exTm = entryTime; exTm <= lastTm; exTm = exTm + incr) {
 		double tm = isPlanInConflictWx(plan, paths, incr, exTm).first;

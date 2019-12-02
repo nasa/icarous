@@ -4,7 +4,7 @@
  *           George Hagen              NASA Langley Research Center
  *           Jeff Maddalon             NASA Langley Research Center
   *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -30,6 +30,9 @@
 
 
 namespace larcfm {
+
+
+   bool KinematicsLatLon::chordalSemantics = false;
 
 std::pair<LatLonAlt,Velocity> KinematicsLatLon::linear(const LatLonAlt& so, const Velocity& vo, double t) {
 	LatLonAlt sn = GreatCircle::linear_initial(so, vo, t);
@@ -75,86 +78,62 @@ std::pair<LatLonAlt,Velocity> KinematicsLatLon::turnOmega(std::pair<LatLonAlt,Ve
 	return turnOmega(s0,v0,t,omega);
 }
 
-  std::pair<LatLonAlt,Velocity> KinematicsLatLon::turnRadius(const LatLonAlt& so, const Velocity& vo, double t, double signedRadius) {
-    double currentTrk = vo.trk();
-    double dir = Util::sign(signedRadius);
-    double perpTrk = currentTrk+dir*M_PI/2;
-    double radius = std::abs(signedRadius);
-    LatLonAlt center = GreatCircle::linear_initial(so, perpTrk, radius);		
-    double pathDist = vo.gs()*t;	
-    double theta = pathDist/radius;
-    //TODO: theta = pathDist/radius, assumes radius is a chord radius, when it is actually a great circle radius.
-    //      for small distances the difference is not that big, but still...
-    //Note: The other problem is that this assumes a constant speed and constant ground speed through the turn.
-    //      this may or may not be true.
-    double vFinalTrk = GreatCircle::initial_course(center,so);
-    double nTrk = vFinalTrk + dir*theta;
-    LatLonAlt sn = GreatCircle::linear_initial(center, nTrk, radius);
-    sn = sn.mkAlt(so.alt() + vo.z*t);
-    double final_course = GreatCircle::final_course(center,sn);   
-    double finalTrk = final_course + dir*M_PI/2;				
-    Velocity vn = vo.mkTrk(finalTrk);  
-    return std::pair<LatLonAlt,Velocity>(sn,vn);
-  }
+//  std::pair<LatLonAlt,Velocity> KinematicsLatLon::turnRadius(const LatLonAlt& so, const Velocity& vo, double t, double signedRadius) {
+//    double currentTrk = vo.trk();
+//    double dir = Util::sign(signedRadius);
+//    double perpTrk = currentTrk+dir*M_PI/2;
+//    double radius = std::abs(signedRadius);
+//    LatLonAlt center = GreatCircle::linear_initial(so, perpTrk, radius);
+//    double pathDist = vo.gs()*t;
+//    double theta = pathDist/radius;
+//    //TODO: theta = pathDist/radius, assumes radius is a chord radius, when it is actually a great circle radius.
+//    //      for small distances the difference is not that big, but still...
+//    //Note: The other problem is that this assumes a constant speed and constant ground speed through the turn.
+//    //      this may or may not be true.
+//    double vFinalTrk = GreatCircle::initial_course(center,so);
+//    double nTrk = vFinalTrk + dir*theta;
+//    LatLonAlt sn = GreatCircle::linear_initial(center, nTrk, radius);
+//    sn = sn.mkAlt(so.alt() + vo.z*t);
+//    double final_course = GreatCircle::final_course(center,sn);
+//    double finalTrk = final_course + dir*M_PI/2;
+//    Velocity vn = vo.mkTrk(finalTrk);
+//    return std::pair<LatLonAlt,Velocity>(sn,vn);
+//  }
+//
 
-
-
-  std::pair<LatLonAlt,Velocity> KinematicsLatLon::turnOmegaAlt(const LatLonAlt& so, const Velocity& vo, double t, double omega) {
-    double currentTrk = vo.trk();
-    double perpTrk;
-    if (omega > 0.0) {
-      perpTrk = currentTrk+M_PI/2;
-    } else {
-      perpTrk = currentTrk-M_PI/2;
-    }
-    double radius = turnRadiusByRate(vo.gs(), omega);
-    LatLonAlt center = GreatCircle::linear_initial(so, perpTrk, radius);
-    //f.pln("center="+center);
-    LatLonAlt sn = GreatCircle::small_circle_rotation(so,center,omega*t).mkAlt(so.alt()+vo.z*t);
-    double finalPerpTrk = GreatCircle::initial_course(sn,center);
-    double nTrk = finalPerpTrk - M_PI/2 * Util::sign(omega);
-    Velocity vn = vo.mkTrk(nTrk);  
-    return std::pair<LatLonAlt,Velocity>(sn,vn);		
-  }
-
-
-  std::pair<LatLonAlt,Velocity> KinematicsLatLon::turnByDist(const LatLonAlt& so, const Velocity& vo, double signedRadius, double d) {
-		double currentTrk = vo.trk();
-		double perpTrk;
-		if (signedRadius > 0) perpTrk = currentTrk+M_PI/2;
-		else perpTrk = currentTrk-M_PI/2;
-		double radius = std::abs(signedRadius);
-		LatLonAlt center = GreatCircle::linear_initial(so, perpTrk, radius);
-		double alpha = d/signedRadius;
-		double vFinalTrk = GreatCircle::initial_course(center,so);
-		double nTrk = vFinalTrk + alpha;
-		LatLonAlt sn = GreatCircle::linear_initial(center, nTrk, radius);
-		double t = d/vo.gs();
-		sn = sn.mkAlt(so.alt() + vo.z*t);	
-		double final_course = GreatCircle::final_course(center,sn);
-		//double finalTrk = currentTrk+alpha;
-		double finalTrk = final_course + Util::sign(d)*M_PI/2;
-		Velocity vn = vo.mkTrk(finalTrk);  
-		return std::pair<LatLonAlt,Velocity>(sn,vn);
-	}
   
 std::pair<LatLonAlt,Velocity> KinematicsLatLon::turnByDist2D(const LatLonAlt& so, const LatLonAlt& center, int dir, double d, double gsAtd) {
-    double R = GreatCircle::distance(so, center);
-	double alpha = dir*d/R;
-	double vFinalTrk = GreatCircle::initial_course(center,so);
-	double nTrk = vFinalTrk + alpha;
-	LatLonAlt sn = GreatCircle::linear_initial(center, nTrk, R);
-	sn = sn.mkAlt(0.0);
+	LatLonAlt sn = turnByDist2D(so, center, dir, d);
 	double final_course = GreatCircle::final_course(center,sn);
 	double finalTrk = final_course + dir*M_PI/2;
     Velocity vn = Velocity::mkTrkGsVs(finalTrk,gsAtd,0.0);
-	//double finalTrk = vo.trk()+alpha;
-	//double finalTrk = final_course + Util.sign(d)*Math.PI/2;
-	//Velocity vn = vo.mkTrk(finalTrk);          // TODO:  THIS IS WRONG -- cannot assume gs is constant!!!!
 	return std::pair<LatLonAlt,Velocity>(sn,vn);
 }
 
+LatLonAlt KinematicsLatLon::turnByDist2D(const LatLonAlt& so, const LatLonAlt& center, int dir, double d) {
+    double R = GreatCircle::distance(so, center);
+    double theta;
+    if (chordalSemantics) {
+    	double chordalRadius = GreatCircle::to_chordal_radius(R);
+    	theta = dir*d/chordalRadius;
+    } else {
+    	theta = dir*d/R;
+    }
+	double vFinalTrk = GreatCircle::initial_course(center,so);
+	double nTrk = vFinalTrk + theta;
+	LatLonAlt sn = GreatCircle::linear_initial(center, nTrk, R);
+	sn = sn.mkAlt(0.0);
+	return sn;
+}
 
+LatLonAlt KinematicsLatLon::turnByAngle2D(const LatLonAlt& so, const LatLonAlt& center, double alpha) {
+    double R = GreatCircle::distance(so, center);
+	double trkFromCenter = GreatCircle::initial_course(center,so);
+	double nTrk = trkFromCenter + alpha;
+	LatLonAlt sn = GreatCircle::linear_initial(center, nTrk, R);
+	sn = sn.mkAlt(0.0);
+	return sn;
+}
 
 std::pair<LatLonAlt,Velocity> KinematicsLatLon::turn(LatLonAlt s0, Velocity v0, double t, double R, bool turnRight) {
 	if (Util::almost_equals(R,0))
@@ -222,7 +201,7 @@ LatLonAlt KinematicsLatLon::center(const LatLonAlt& s0, const Velocity& v0, doub
 
 double KinematicsLatLon::closestTimeOnTurn(const LatLonAlt& s0, const Velocity& v0, double omega, const LatLonAlt& x, double endTime) {
 	LatLonAlt cent = center(s0,v0,omega);
-	if (x.mkAlt(0).almostEquals(cent.mkAlt(0))) return -1.0;
+	if (GreatCircle::almostEquals(x.mkAlt(0), cent.mkAlt(0))) return -1.0;
 	double ang1 = GreatCircle::initial_course(cent,s0);
 	double ang2 = GreatCircle::initial_course(cent,x);
 	double delta = Util::turnDelta(ang1, ang2, Util::sign(omega));
@@ -242,7 +221,7 @@ double KinematicsLatLon::closestTimeOnTurn(const LatLonAlt& s0, const Velocity& 
 
 double KinematicsLatLon::closestDistOnTurn(const LatLonAlt& s0, const Velocity& v0, double R, int dir, const LatLonAlt& x, double maxDist) {
 	LatLonAlt cent = center(s0, v0.trk(), R, dir);
-	if (x.mkAlt(0).almostEquals(cent.mkAlt(0))) return -1.0;
+	if (GreatCircle::almostEquals(x.mkAlt(0),cent.mkAlt(0))) return -1.0;
 	double ang1 = GreatCircle::initial_course(cent,s0);
 	double ang2 = GreatCircle::initial_course(cent,x);
 	double delta = Util::turnDelta(ang1, ang2, dir);

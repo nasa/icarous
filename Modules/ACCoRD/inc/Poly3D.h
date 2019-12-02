@@ -1,7 +1,7 @@
 /*
  * Poly3D.h
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,6 +14,7 @@
 #include "Poly2D.h"
 #include "Vect2.h"
 #include "Vect3.h"
+#include "BoundingRectangle.h"
 
 namespace larcfm {
 
@@ -36,6 +37,9 @@ public:
 
 	Poly3D();
 
+	Poly3D(double b, double t);
+
+
 	Poly3D(const Poly2D& v, double b, double t);
 
 //	Poly3D(const Vect3& v);
@@ -44,9 +48,21 @@ public:
 
 	Poly2D poly2D() const;
 
-	void addVertex(const Vect2& v);
+	bool equals(const Poly3D& p) const;
 
-	Vect2 getVertex(int i) const ;
+	void add(const Vect2& v);
+
+	void insert(int i, const Vect2& v);
+
+	Vect2 get2D(int i) const ;
+
+	void set(int i,const Vect2& v);
+
+	/**
+	 * Remove a point from this SimplePolyNew.
+	 * @param n Index (in order added) of the point to be removed.
+	 */
+	void remove(int n);
 
 	int size() const;
 
@@ -54,21 +70,57 @@ public:
 
 	void setTop(double t);
 
-	double getBottom()const ;
+	double getBottom() const ;
 
 	void setBottom(double b) ;
 
+	const std::vector<Vect2> getVerticesRef() const;
+
 	Vect3 centroid() const ;
 
+	/**
+	 * Return the average of all vertices.  Note this is not the same as the centroid, and will be weighted 
+	 * towards concentrations of vertices instead of concentrations of area/mass.  This will, however, have the nice 
+	 * property of having a constant linear velocity between two polygons, even if they morph shape. 
+	 * 
+	 * @return point
+	 */
 	Vect3 averagePoint() const ;
+
+	/** Returns true if this polygon is convex 
+	 * @return true, if convex
+	 */
+	bool isConvex() const;
+
+	/**
+	 * Reverses the order of the vertices
+	 * @return polygon
+	 */
+	Poly3D reverseOrder() const;
 
 	std::string toString() ;
 
 	/**
 	 * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD detection algorithms.
+	 * @param v vector
+	 * @return true if contains
 	 */
 	bool contains(const Vect3& v) const;
 
+	/**
+	 * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD detection algorithms.
+	 * @param v vector
+	 * @return true if contains
+	 */
+	bool contains2D(const Vect2& v) const;
+
+    double area() const;
+
+	/** Creates a bounding rectangle from the vertices of the polygon.
+	 * 
+	 * @return distance
+	 */
+	BoundingRectangle getBoundingRectangle() const;
 
 };
 

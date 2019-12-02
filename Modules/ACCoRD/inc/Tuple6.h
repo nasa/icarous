@@ -6,7 +6,7 @@
  *
  * a four element tuple
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -18,7 +18,14 @@
 
 namespace larcfm {
 
-/** A 6-dimensional tuple */
+/** A 6-dimensional tuple 
+ * @param <T1> type of first element
+ * @param <T2> type of second element
+ * @param <T3> type of third element
+ * @param <T4> type of fourth element
+ * @param <T5> type of fifth element
+ * @param <T6> type of sixth element
+ * */
 template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
 class Tuple6 {
 
@@ -38,32 +45,38 @@ public:
 	  first(first), second(second), third(third), fourth(fourth), fifth(fifth), sixth(sixth) {
   }
  
-  /** Return the first element of this Tuple6 */
+    /** Return the first element of this Tuple6 
+     * @return element */
   T1 getFirst() const {
     return first;
     }
  
-  /** Return the second element of this Tuple6 */
+    /** Return the second element of this Tuple6 
+     * @return element */
   T2 getSecond() const {
     return second;
     }
  
-  /** Return the third element of this Tuple6 */
+    /** Return the third element of this Tuple6 
+     * @return element */
   T3 getThird() const {
     return third;
   }
  
-  /** Return the fourth element of this Tuple6 */
+    /** Return the fourth element of this Tuple6 
+     * @return element */
   T4 getFourth() const {
     return fourth;
   }
 
-  /** Return the fifth element of this Tuple6 */
+    /** Return the fifth element of this Tuple6 
+     * @return element */
   T5 getFifth() const {
     return fifth;
   }
 
-  /** Return the fifth element of this Tuple6 */
+    /** Return the fifth element of this Tuple6 
+     * @return element */
   T6 getSixth() const {
     return sixth;
   }
@@ -89,6 +102,12 @@ public:
   template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
   bool operator!= (const Tuple6<T1,T2,T3,T4,T5,T6>& q1, const Tuple6<T1,T2,T3,T4,T5,T6>& q2) {
     return !(q1 == q2);
+  }
+
+  /** ordering */
+  template<typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
+  bool operator< (const Tuple6<T1,T2,T3,T4,T5,T6>& q1, const Tuple6<T1,T2,T3,T4,T5,T6>& q2) {
+	  return q1 != q2 && !(q1 < q2);
   }
 
 

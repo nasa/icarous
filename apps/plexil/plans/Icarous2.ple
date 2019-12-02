@@ -1,0 +1,215 @@
+// -*- Mode: Java -*-
+Integer Lookup missionStart;
+Integer Lookup armStatus;
+Integer Lookup takeoffStatus;
+Integer Lookup numMissionWP;
+Integer Lookup nextMissionWPIndex;
+Boolean Lookup restartMission;
+Boolean Lookup ditchingStatus;
+
+Real[3] Lookup position;
+Real[3] Lookup velocity;
+
+// Low level Autopilot commands
+Command SetMode(String mode);
+Command SetYaw(Real heading);
+Command Takeoff(Real altitude);
+Command ArmMotors();
+Command Land();
+Command SetNextMissionWP(Integer index);
+Command Status(String text,Integer severity);
+Command pprint(...);
+
+// Library plans
+LibraryAction CONFLICT_MANAGEMENT(InOut Boolean DitchStatus);
+LibraryAction DITCH();
+
+ICAROUS:
+{
+
+    Real _Position[3];
+    Real _Velocity[3];
+        	        
+    FMS:
+    {
+        Boolean _idleStatus    = true;
+        Boolean _takeoffStatus = false;
+        Boolean _climbStatus   = false;
+        Boolean _cruiseStatus  = false;
+        Boolean _landStatus    = false;
+        Boolean _ditchStatus   = false;
+        Boolean ditchSignal = false;
+        Integer _numMissionWP;
+        Integer _nextMissionWP = 0;
+
+        Repeat true;
+
+        Status("PLX:IDLE",6);
+
+        IDLE:
+        {
+            Integer start;
+            StartCondition _idleStatus;
+            EndCondition !_idleStatus;
+
+            {
+                Repeat true;
+                start = Lookup(missionStart);
+                ditchSignal = Lookup(ditchingStatus);
+                if (start == 0){
+                    _numMissionWP = Lookup(numMissionWP);
+                    Status("PLX:Starting takeoff",6);
+                    _takeoffStatus = true;
+                    _idleStatus = false;
+                }elseif(start > 0){
+                    _numMissionWP = Lookup(numMissionWP);
+                    Status("PLX:Starting cruise",6);
+                    _cruiseStatus = true;
+                    _idleStatus = false;
+                }endif
+
+                if(ditchSignal){
+                    _ditchStatus = true;
+                    _idleStatus = false;
+                }endif
+            }
+
+        }// End of IDLE
+
+        TAKEOFF:{
+            Integer _armStatus;
+            Boolean _reset = false;
+            StartCondition _takeoffStatus;
+            SkipCondition !_takeoffStatus;
+            EndCondition !_takeoffStatus || _reset;
+
+            pprint("Plexil status: Starting takeoff");
+
+            /* 
+            CHANGE_MODE:SetMode("ACTIVE");
+
+            ARM:{
+                EndCondition (isKnown(_armStatus) && (_armStatus >= 0)) || (_reset);
+
+                ArmMotors();
+
+                CHECK_STATUS: {
+                    Repeat true;
+                    _armStatus = Lookup(armStatus);
+                    _reset     = Lookup(restartMission);
+                }
+            }// End of ARM
+
+            if(_armStatus != 1){
+                _takeoffStatus = false;
+            }endif
+
+            */
+
+            THROTTLE_UP:{
+                Integer status;
+                //StartCondition (_armStatus==1);
+                //SkipCondition  (_armStatus!=1);
+
+                TAKEOFF:{
+
+                    EndCondition isKnown(status) && (status>=0) || (_reset);
+
+                    Takeoff(5.0);
+
+                    CHECK_STATUS: {
+                        Repeat true;
+                        status = Lookup(takeoffStatus);
+                        _reset = Lookup(restartMission);
+                    }
+
+                }
+
+                if(status == 1){
+                    Status("PLX:Starting climb",6);
+                    _climbStatus = true;
+                    _takeoffStatus = false;
+                }else{
+                    pprint("Plexil status: Takeoff failed\n");
+                    _idleStatus = true;
+                    _takeoffStatus = false;
+                }endif
+            }// End of THROTTLE
+        }// End of TAKEOFF
+
+
+        CLIMB:{
+            Boolean _reset = false;
+            StartCondition _climbStatus;
+            SkipCondition !_climbStatus;
+            EndCondition !_climbStatus || (_reset);
+            {
+                Boolean val;
+                Repeat true;
+
+                _Position = Lookup(position);
+                _reset = Lookup(restartMission);
+
+                if(_Position[2] >= 3.0){
+                    pprint("Plexil status: Starting cruise");
+                    SetMode("PASSIVE");
+                    Status("PLX:Starting cruise",6);
+                    _cruiseStatus = true;
+                    _climbStatus = false;
+                }endif
+            }
+
+        }// End of CLIMB
+
+        CRUISE:{
+            StartCondition _cruiseStatus;
+            SkipCondition !_cruiseStatus;
+            // Perform Conflict Management (Detection and Resolution)
+            LibraryCall CONFLICT_MANAGEMENT(DitchStatus=_ditchStatus);
+
+            _cruiseStatus = false;
+
+            pprint("Plexil status: Finished cruise:",_ditchStatus);
+            if(!_ditchStatus){
+               _landStatus = true;
+            }endif
+
+        }// End of CRUISE
+
+        TERMINATE:{
+           StartCondition _ditchStatus;
+           SkipCondition !_ditchStatus;
+
+           pprint("Plexil status: Ditching");
+
+           LibraryCall DITCH();
+
+           Status("PLX:End Ditching",6);
+
+           _ditchStatus = false;
+           _landStatus = true;
+        }
+
+        LAND:{
+            Boolean _reset = false;
+            StartCondition _landStatus;
+            SkipCondition !_landStatus;
+            //EndCondition _reset;
+            
+            _reset = Lookup(restartMission);
+
+            if(!_reset){
+                Status("PLX:LAND",6);
+                pprint("Plexil status: Landing");
+                SetMode("ACTIVE");
+                Land();
+            }endif
+
+            _landStatus = false;
+            _idleStatus = true;
+        }// End of LAND
+
+	
+    }// End of FMS
+}// End of ICAROUS
+

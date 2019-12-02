@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -16,7 +16,7 @@
 
 namespace larcfm {
 
-//  const double CDPolyIter2D::accuracy = 0.01;
+       const double CDPolyIter2D::microStepNum = 10.0;
 
      // no conflict: timein = -1 AND timeout = 0;
 	  //std::vector<double> timesin = std::vector<double>();
@@ -155,8 +155,8 @@ double CDPolyIter2D::poly2D_detection_micro(const MovingPolygon2D& mpi, const Ve
         double outerRadStart = mpiStart.apBoundingRadius();
         double outerRadEnd = mpiEnd.apBoundingRadius();
         double outerRadius = Util::max(outerRadStart,outerRadEnd);
-        CD2D cd = CD2D();
-        LossData det = cd.detection(so.Sub(centerStart), vo, vi, outerRadius, T);
+        //CD2D cd = CD2D();
+        LossData det = CD2D::detection(so.Sub(centerStart), vo, vi, outerRadius, T);
         if (!det.conflict()) {
           return false;
         }
@@ -171,10 +171,10 @@ double CDPolyIter2D::poly2D_detection_micro(const MovingPolygon2D& mpi, const Ve
           bool inside = npi.contains(soAtTm);
           if (inside) {
             if (!prevInside) {
-//fpln(" poly2D_detection 1: t= "+Fm2(t)+" inside = "+bool2str(inside)+" prevInside="+bool2str(prevInside)+" soAtTm="+soAtTm.toString()+" npi = "+npi.toString());
+              //fpln(" poly2D_detection 1: t= "+Fm2(t)+" inside = "+bool2str(inside)+" prevInside="+bool2str(prevInside)+" soAtTm="+soAtTm.toString()+" npi = "+npi.toString());
               double tin = t;
               if (t > tmin) { // if not immediately in violation, get a better estimate of the time
-                tin = poly2D_detection_micro(mpi, so, vo, t-tStep, false, t, true, tStep/10.0);
+                tin = poly2D_detection_micro(mpi, so, vo, t-tStep, false, t, true, tStep/microStepNum);
               }
               conflicts++;
               timesin.push_back(tin);
@@ -185,11 +185,11 @@ double CDPolyIter2D::poly2D_detection_micro(const MovingPolygon2D& mpi, const Ve
               timesout.push_back(tmout);
             }
           } else {
-//          for (int i = 0; i < npi.size(); i++) fpln("ui_reference_point_D"+Util::nextCount()+" = "+Position(Vect3(npi.getVertex(i),0)).toString8()); 
+            // for (int i = 0; i < npi.size(); i++) fpln("ui_reference_point_D"+Util::nextCount()+" = "+Position(Vect3(npi.getVertex(i),0)).toString8());
             if (prevInside) {   // going from inside to outside
-//fpln(" poly2D_detection 2: t= "+Fm2(t)+" inside = "+bool2str(inside)+" prevInside="+bool2str(prevInside)+" soAtTm="+soAtTm.toString()+" npi = "+npi.toString());
+              //fpln(" poly2D_detection 2: t= "+Fm2(t)+" inside = "+bool2str(inside)+" prevInside="+bool2str(prevInside)+" soAtTm="+soAtTm.toString()+" npi = "+npi.toString());
               double tout = t-tStep;
-              tout = poly2D_detection_micro(mpi, so, vo, t-tStep, true, t, false, tStep/10.0); // get a better estimate of the time
+              tout = poly2D_detection_micro(mpi, so, vo, t-tStep, true, t, false, tStep/microStepNum); // get a better estimate of the time
               timesout.push_back(tout);
             }
             prevInside = false;
@@ -197,22 +197,20 @@ double CDPolyIter2D::poly2D_detection_micro(const MovingPolygon2D& mpi, const Ve
         }
         //pplans.add(sPlan);
         //DebugSupport.dumpPlanList(pplans,"pplans");
-//fpln(" %%>> poly2D_detection: tmin = "+Fm1(tmin)+" timein = "+Fm1(getTimeIn())+" timeout = "+Fm1(getTimeOut())+" tmout = "+Fm1(tmout)+" conflicts = "+Fmi(conflicts));
+        //fpln(" %%>> poly2D_detection: tmin = "+Fm1(tmin)+" timein = "+Fm1(getTimeIn())+" timeout = "+Fm1(getTimeOut())+" tmout = "+Fm1(tmout)+" conflicts = "+Fmi(conflicts));
         //if (getTimeIn() < 0) DebugSupport.halt();
-
         int i = 0;
         while (i < (int) timesin.size()) {
           if (timesout[i] - timesin[i] < tStep) {
-//fpln("CDPolyIter2D.poly2D_detection dropping short conflict "+Fm4(timesin[i])+" "+Fm4(timesout[i]));
+            //fpln("CDPolyIter2D.poly2D_detection dropping short conflict "+Fm4(timesin[i])+" "+Fm4(timesout[i]));
             timesout.erase(timesout.begin()+i);
             timesin.erase(timesin.begin()+i);
             conflicts--;
           } else {
-//fpln("CDPolyIter2D.poly2D_detection keeping long conflict "+Fm4(timesin[i])+" "+Fm4(timesout[i]));
+            //fpln("CDPolyIter2D.poly2D_detection keeping long conflict "+Fm4(timesin[i])+" "+Fm4(timesout[i]));
             i++;
           }
         }
-
         return conflicts > 0;
       }
 

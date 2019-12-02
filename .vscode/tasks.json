@@ -6,7 +6,7 @@
       "command": "cmake",
       "args": [
         "..",
-        "-DSCR=mac",
+        "-DSCR=macardupilot",
       ],
       "options": {
         "cwd": "${workspaceRoot}/build",

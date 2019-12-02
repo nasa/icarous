@@ -26,6 +26,11 @@ LossData::LossData(double tin, double tout) : time_in(tin), time_out(tout) {
 LossData::LossData() : time_in(PINFINITY), time_out(NINFINITY) {
 }
 
+const LossData& EMPTY() {
+	static LossData tmp;
+	return tmp;
+}
+
 /**
  * Returns true if loss
  */
@@ -52,6 +57,13 @@ double LossData::getTimeIn() const {
  */
 double LossData::getTimeOut() const {
 	return time_out;
+}
+
+/**
+ * Returns time interval to loss in seconds
+ */
+Interval LossData::getTimeInterval() const {
+	return Interval(time_in,time_out);
 }
 
 std::string LossData::toString() const {

@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -23,18 +23,15 @@
 #include <stdexcept>
 #include <algorithm>
 
+
 namespace larcfm {
 	using std::string;
 	using std::cout;
 	using std::endl;
 	using std::runtime_error;
 
-
-	
-	//TODO remove this method once the conversion is complete
-	TcpData::WayType TcpData::getType() const {
-		return ty;
-	}
+	bool TcpData::motFlagInInfo = false;
+	std::string TcpData::MOTflag = ".<MOT>.";
 
 	std::string TcpData::getTypeString() const {
 		return toStringWayType(ty);
@@ -109,9 +106,6 @@ namespace larcfm {
 		centerTurn = Position::INVALID();
 		accelGs = 0.0;
 		accelVs = 0.0;
-		//velocityInit_v = Velocity::INVALIDV();
-		//setSource(source);     // retain source from original TcpData object
-		//linearIndex = -1;      // retain the linear index from originial TcpData object
 		information = "";
 	}
 
@@ -121,12 +115,14 @@ namespace larcfm {
 	std::string TcpData::toStringTrkType(TrkTcpType t) {
 		static const std::string NONE_STR = "NONE";
 		static const std::string BOT_STR = "BOT";
+		static const std::string MOT_STR = "MOT";
 		static const std::string EOT_STR = "EOT";
 		static const std::string EOTBOT_STR = "EOTBOT";
 		static const std::string ELSE_STR = "ELSE";
 
 		if (t == TcpData::NONE) return NONE_STR;
 		if (t == TcpData::BOT) return BOT_STR;
+		if (t == TcpData::MOT) return MOT_STR;
 		if (t == TcpData::EOT) return EOT_STR;
 		if (t == TcpData::EOTBOT) return EOTBOT_STR;
 		return ELSE_STR;
@@ -135,6 +131,7 @@ namespace larcfm {
 	TcpData::TrkTcpType TcpData::valueOfTrkType(const std::string& t) {
 		if (t == toStringTrkType(TcpData::NONE)) return TcpData::NONE;
 		if (t == toStringTrkType(TcpData::BOT)) return TcpData::BOT;
+		if (t == toStringTrkType(TcpData::MOT)) return TcpData::MOT;
 		if (t == toStringTrkType(TcpData::EOT)) return TcpData::EOT;
 		if (t == toStringTrkType(TcpData::EOTBOT)) return TcpData::EOTBOT;
 		return TcpData::UNKNOWN_TRK;
@@ -193,17 +190,15 @@ namespace larcfm {
 		return TcpData::UNKNOWN_VS;
 	}
 	
+	// Note: a return value of 0 indicates no specified radius
 	double TcpData::getRadiusSigned() const {
 		return radiusSigned;
 	}
 
-	double TcpData::signedRadius() const {
-		return radiusSigned;
-	}
 
-	double TcpData::turnRadius() const {
+	int  TcpData::turnDir() const {
 		//fpln("NavPoint::turnRadius "+Fmb(isTurn())+" "+Fm2(accel_d)+" "+velocityIn_v.toString());
-		return std::abs(radiusSigned);
+		return Util::sign(radiusSigned);
 	}
 
 	Position TcpData::turnCenter() const {
@@ -220,28 +215,7 @@ namespace larcfm {
 		return *this;
 	}
 
-//	TcpData TcpData::setTrkAccel(double omega) {
-//		double radius = velocityInit_v.gs()/omega;
-//		radiusSigned = radius;
-//		return *this;
-//	}
-//
-//
-//	double TcpData::trkAccel() const {
-//		//return accel_trk;
-//		double rtn = 0.0;
-//		if (std::abs(radiusSigned) > 0) {
-//		    rtn = velocityInit_v.gs()/radiusSigned;
-//		}
-//		//fpln(" $$$ trkAccel: radiusSigned = "+Units::str("NM",radiusSigned)+" rtn = "+Units::str("deg/s",rtn));
-//		return rtn;
-//	}
-	
 	double TcpData::getGsAccel() const {
-		return accelGs;
-	}
-
-	double TcpData::gsAccel() const {
 		return accelGs;
 	}
 
@@ -254,105 +228,44 @@ namespace larcfm {
 		return accelVs;
 	}
 
-	double TcpData::vsAccel() const {
-		return accelVs;
-	}
-
 	TcpData TcpData::setVsAccel(double va) {
 		accelVs = va;
 		return *this;
 	}
 
-//	Velocity TcpData::getVelocityInit() const {
-//		return velocityInit_v;
-//	}
-//
-//	Velocity TcpData::velocityInit() const {
-//		return velocityInit_v;
-//	}
-
-//	TcpData TcpData::setVelocityInit(const Velocity& v) {
-//		velocityInit_v = v;
-//		return *this;
-//	}
-
-	Position TcpData::getSourcePosition() const {
-		return sourcePosition_p;
-	}
-
-//	Position TcpData::sourcePosition() const {
-//		return sourcePosition_p;
-//	}
-
-	NavPoint TcpData::sourceNavPoint() const {
-		return NavPoint(sourcePosition_p,sourceTime_d);
-	}
-
-
-	bool TcpData::hasSource() const {
-    	return sourceTime_d >= 0;
-    }
-
-
-	TcpData TcpData::setSource(const Position& sp, double st) {
-		sourcePosition_p = sp;
-		sourceTime_d = st;
-		return *this;
-	}
-
-	TcpData TcpData::setSource(const NavPoint& np) {
-		sourcePosition_p = np.position();
-		sourceTime_d = np.time();
-		return *this;
-	}
-
-	TcpData TcpData::makeSource(const NavPoint& np) {
-		TcpData tcp = TcpData();
-		tcp.sourcePosition_p = np.position();
-		tcp.sourceTime_d = np.time();
-		return tcp;
-	}
-
-
-	TcpData TcpData::setSourcePosition(const Position& sp) {
-		sourcePosition_p = sp;
-		return *this;
-	}
-
-	double TcpData::getSourceTime() const {
-		return sourceTime_d;
-	}
-
-//	double TcpData::sourceTime() const {
-//		return sourceTime_d;
-//	}
-
-	TcpData TcpData::setSourceTime(double st) {
-		sourceTime_d = st;
-		return *this;
-	}
-
-	int TcpData::getLinearIndex() const {
-		return linearIndex;
-	}
-
-	TcpData TcpData::setLinearIndex(int ix) {
-		linearIndex = ix;
-		return *this;
-	}
 
 	std::string TcpData::getInformation() const {
 		return information;
 	}
 
 
-	void TcpData::setInformation(const std::string& information) {
-		this->information = information;
+	void TcpData::setInformation(const std::string& info) {
+		information = info;
 	}
+
+
+	void TcpData::appendInformation(const std::string&  info) {
+		if (info.length() == 0 || information.length() == 0) {
+			information += info;
+		} else {
+			information += ":"+info;
+		}
+	}
+
+	void TcpData::appendInformationNoDuplication(const std::string&  info) {
+		if (contains(information,info) ||		// do nothing if this string is already in the label
+				contains(info,"$virtual") || // do not add virtual labels
+				!startsWith(info,"$")) {
+			//TODO fix me!
+		} else {
+			appendInformation(info);
+		}
+	}
+
 	
 	TcpData TcpData::makeFull(const std::string& ty, const std::string& tcp_trk, const std::string& tcp_gs, const std::string& tcp_vs,
 			double radiusSigned, const Position& center, double accel_gs, double accel_vs,
-			const Velocity& velocityInit, const Position& sourcep, double sourcet, int linearIndex) {
+			const Velocity& velocityInit) {
 		
 		TcpData d;
 		d.ty = valueOfWayType(trimCopy(ty));
@@ -363,9 +276,6 @@ namespace larcfm {
 		d.setTurnCenter(center);
 		d.setGsAccel(accel_gs);
 		d.setVsAccel(accel_vs);
-		//d.setVelocityInit(velocityInit);
-		d.setSource(sourcep, sourcet);
-		d.setLinearIndex(linearIndex);
 		//d.setInformation(information);
 		
 		return d;
@@ -384,43 +294,42 @@ namespace larcfm {
 	}
 
 	
-	TcpData TcpData::setBOT(double signedRadius, const Position& center, int linearIndex) {
+	TcpData TcpData::setBOT(double signedRadius, const Position& center) {
 		//velocityInit_v = velocityIn;
 		radiusSigned = signedRadius;
 		centerTurn = center;
-		this->linearIndex = linearIndex;
 		tcpTrk = TcpData::BOT;
 		return *this;
 	}
 	
-//	TcpData TcpData::setBotAccel(double trkAccel, int linearIndex) {
-//		double radius = velocityIn.gs()/trkAccel;
-//		return setBOT(velocityIn, radius, linearIndex);
-//	}
 
-
-
-
-	TcpData TcpData::setEOT(int linearIndex) {
-		//velocityInit_v = velocityIn;
-		this->linearIndex = linearIndex;
+	TcpData TcpData::setEOT() {
 		tcpTrk = TcpData::EOT;
 		return *this;
 	}
 
-	TcpData TcpData::setEOTBOT(double signedRadius, const Position& center, int linearIndex) {
-		//velocityInit_v = velocityIn;
+	TcpData TcpData::setMOT(bool b) {
+		if (TcpData::motFlagInInfo) {
+			setInformation(getInformation()+MOTflag);
+		} else {
+		    if (b) tcpTrk = TcpData::MOT;
+		    else if (!isTrkTCP()) tcpTrk = TcpData::NONE;
+			//isMOTflag = b;
+		}
+		return *this;
+	}
+
+
+
+	TcpData TcpData::setEOTBOT(double signedRadius, const Position& center) {
 		radiusSigned = signedRadius;
 		centerTurn = center;
-		this->linearIndex = linearIndex;
 		tcpTrk = TcpData::EOTBOT;
 		return *this;
 	}
 
-	TcpData TcpData::setBGS(double a, int linearIndex) {
-		//velocityInit_v = velocityIn;
+	TcpData TcpData::setBGS(double a) {
 		accelGs = a;
-		this->linearIndex = linearIndex;
 		tcpGs = TcpData::BGS;
 		return *this;
 	}
@@ -429,25 +338,19 @@ namespace larcfm {
 		tcpGs = TcpData::NONEg;
 	}
 
-	TcpData TcpData::setEGS(int linearIndex) {
-		//velocityInit_v = velocityIn;
-		this->linearIndex = linearIndex;
+	TcpData TcpData::setEGS() {
 		tcpGs = TcpData::EGS;
 		return *this;
 	}
 
-	TcpData TcpData::setEGSBGS(double a, int linearIndex) {
-		//velocityInit_v = velocityIn;
+	TcpData TcpData::setEGSBGS(double a) {
 		accelGs = a;
-		this->linearIndex = linearIndex;
 		tcpGs = TcpData::EGSBGS;
 		return *this;
 	}
 
-	TcpData TcpData::setBVS(double a, int linearIndex) {
-		//velocityInit_v = velocityIn;
+	TcpData TcpData::setBVS(double a) {
 		accelVs = a;
-		this->linearIndex = linearIndex;
 		tcpVs = TcpData::BVS;
 		return *this;
 	}
@@ -456,17 +359,13 @@ namespace larcfm {
 		tcpVs = TcpData::NONEv;
 	}
 
-	TcpData TcpData::setEVS(int linearIndex) {
-		//velocityInit_v = velocityIn;
-		this->linearIndex = linearIndex;
+	TcpData TcpData::setEVS() {
 		tcpVs = TcpData::EVS;
 		return *this;
 	}
 
-	TcpData TcpData::setEVSBVS(double a, int linearIndex) {
-		//velocityInit_v = velocityIn;
+	TcpData TcpData::setEVSBVS(double a) {
 		accelVs = a;
-		this->linearIndex = linearIndex;
 		tcpVs = TcpData::EVSBVS;
 		return *this;
 	}
@@ -530,28 +429,16 @@ namespace larcfm {
 		return *this;
 	}
 
-
-//	/** Makes a new NavPoint that is an intermediate "mid" added point */
-//	TcpData makeMidpoint(Position p, double t, int linearIndex) {
-//		return new NavPoint(p, t, this.ty,  this.label, this.tcp_trk,   this.tcp_gs, this.tcp_vs, 
-//				this.radiusSigned, this.accel_gs, this.accel_vs, this.velocityInit,  this.sourcePosition, this.sourceTime, linearIndex);
-//		return *this;
-//	}
-	
-	
-	
-	
-	
 	bool TcpData::isInvalid() const {
 		return information == "INVALID";
 	}
 	
 	bool TcpData::isTCP() const {
-		return tcpTrk != TcpData::NONE || tcpGs != TcpData::NONEg || tcpVs != TcpData::NONEv;
+		return isTrkTCP() || tcpGs != TcpData::NONEg || tcpVs != TcpData::NONEv;
 	}
 
-	bool TcpData::isTrkTCP() const {
-		return tcpTrk != TcpData::NONE;
+	bool TcpData::isTrkTCP() const {   // the MOT is not strictly a track TCP
+		return tcpTrk != TcpData::NONE  && tcpTrk != TcpData::MOT;
 	}
 
 	bool TcpData::isBOT() const {
@@ -562,9 +449,23 @@ namespace larcfm {
 		return tcpTrk == TcpData::EOT || tcpTrk == TcpData::EOTBOT;
 	}
 
+	bool TcpData::isMOT() const {
+		if (TcpData::motFlagInInfo) return contains(information, TcpData::MOTflag);
+		else {
+			return tcpTrk == TcpData::MOT;
+			//return isMOTflag;
+		}
+	}
+
+
 	bool TcpData::isGsTCP() const {
 		return tcpGs != TcpData::NONEg;
 	}
+
+	bool TcpData::isEGSBGS() const {
+		return tcpGs == TcpData::EGSBGS;
+	}
+
 
 	bool TcpData::isBGS() const {
 		return tcpGs == TcpData::BGS || tcpGs == TcpData::EGSBGS;
@@ -572,6 +473,11 @@ namespace larcfm {
 
 	bool TcpData::isEGS() const {
 		return tcpGs == TcpData::EGS || tcpGs == TcpData::EGSBGS;
+	}
+
+
+	bool TcpData::isEVSBVS() const {
+		return tcpVs == TcpData::EVSBVS;
 	}
 
 	bool TcpData::isVsTCP() const {
@@ -596,11 +502,21 @@ namespace larcfm {
 				tcpTrk == TcpData::EOTBOT || tcpGs == TcpData::EGSBGS || tcpVs == TcpData::EVSBVS;
 	}
 	
-	std::string TcpData::fullLabel(const NavPoint& p, const TcpData& d) {
-		return p.label()+d.metaDataLabel(p.time(),4);
+	bool TcpData::isDefined() const {
+		if (isBOT()) {
+			if (radiusSigned != radiusSigned) return false;
+			if (centerTurn.isInvalid()) return false;
+		}
+		if (isBGS() && accelGs != accelGs) return false;
+		if (isBVS() && accelVs != accelVs) return false;
+		return true;
 	}
 
-	std::pair<TcpData,std::string> TcpData::parseMetaDataLabel(const NavPoint& default_source, const std::string& tlabel) {
+	std::string TcpData::fullName(const NavPoint& p, const TcpData& d) {
+		return p.name()+d.metaDataLabel(p.time(),4);
+	}
+
+	std::pair<TcpData,std::string> TcpData::parseMetaDataLabel(const std::string& tlabel) {
 		//fpln(" $$$$$ parseMetaDataLabel: tlabel = "+tlabel);
 		int i = tlabel.find(":ACC:");
 		if (i >= 0) {
@@ -618,35 +534,18 @@ namespace larcfm {
 		i = tlabel.find(":ADDED:");
 		if (i >= 0) {
 			lowIndex = std::min(i, lowIndex);
-			point = point.setSource(Position::INVALID(),-1.0);
-		} else {
-			Position sp = default_source.position();
-			double st = default_source.time();
-			i = tlabel.find(":SRC:");
-			if (i >= 0) {
-				lowIndex = std::min(i, lowIndex);
-				j = tlabel.find(":",i+5);
-				// first try general parse, then coordinate-specific if that fails
-				std::string t = tlabel.substr(i+5, j);
-				std::replace(t.begin(), t.end(), '_', ' ');
-				sp = Position::parse(t);
-				if (sp.isInvalid()) {
-					if (default_source.isLatLon()) {
-						sp = Position::parseLL(t);
-					} else {
-						sp = Position::parseXYZ(t);
-					}
-				}
-			}
-			i = tlabel.find(":STM:");
-			if (i >= 0) {
-				lowIndex = std::min(i, lowIndex);
-				j = tlabel.find(":",i+5);
-				st = Util::parse_double(tlabel.substr(i+5,j));
-			}
-			//fpln(" $$$$$ parseMetaDataLabel: i = "+i+" st = "+st);
-			point = point.setSource(sp,st);			
 		}
+
+		// set low index of for no longer used source fields
+		i = tlabel.find(":SRC:");
+		if (i >= 0) {
+			lowIndex = std::min(i, lowIndex);
+		}
+		i = tlabel.find(":STM:");
+		if (i >= 0) {
+			lowIndex = std::min(i, lowIndex);
+		}
+
 
 		Velocity v = Velocity::ZEROV();
 		i = tlabel.find(":VEL:"); // velocity in
@@ -718,18 +617,20 @@ namespace larcfm {
 
 
 	std::string TcpData::tcpTypeString() const {
-		std::string s = "";
-		if (tcpTrk != TcpData::NONE) s += "tcpTrk";
-		if (tcpGs != TcpData::NONEg) {
-			if ( s != "") s+= ",";
-			s += "tcpGs";
-		}
-		if (tcpVs != TcpData::NONEv) {
-			if ( s !="" ) s+= ",";
-			s += "tcpVs";
-		}
-		if (s=="") s = "NONE";
-		return s;
+		std::string s1 = "NONE";
+		std::string s2 = "NONE";
+		std::string s3 = "NONE";
+		if (tcpTrk == TcpData::BOT) s1 = "BOT";
+		if (tcpTrk == TcpData::EOT) s1 = "EOT";
+		if (tcpTrk == TcpData::EOTBOT) s1 = "EOTBOT";
+		if (tcpGs == TcpData::BGS) s2 = "BGS";
+		if (tcpGs == TcpData::EGS) s2 = "EGS";
+		if (tcpGs == TcpData::EGSBGS) s2 = "EGSBGS";
+		if (tcpVs == TcpData::BVS) s3 = "BVS";
+		if (tcpVs == TcpData::EVS) s3 = "EVS";
+		if (tcpVs == TcpData::EVSBVS) s3 = "EVSBVS";
+	    if(!TcpData::motFlagInInfo & isMOT()) s1 ="MOT";
+		return s1+" "+s2+" "+s3;
 	}
 
 	std::string TcpData::metaDataLabel(double t, int precision) const {
@@ -755,26 +656,6 @@ namespace larcfm {
 				tlabel = tlabel + "AVS:"+FmPrecision(accelVs,precision)+":";
 			}
 		}
-//		if ( /*velocityInit != null &&*/ !velocityInit_v.isInvalid()) {
-//			std::string v = velocityInit_v.toStringNP(precision);
-//			replace(v, ',', '_');
-//			replace(v, ' ', '_');
-//
-//			//std::string v = velocityInit_v.toStringNP(precision).replaceAll("[, ]+", "_");
-//			tlabel = tlabel + "VEL:"+v+":";
-//		}
-		if (sourceTime_d < 0) { // MOT or other added points
-			tlabel = tlabel + "ADDED:";
-		} else if (isTCP()){ // generated TCP points
-			std::string ttt = sourcePosition_p.toStringNP(precision);
-			replace(ttt, ',', '_');
-			replace(ttt, ' ', '_');
-			tlabel = tlabel + "SRC:"+ttt+":";
-			//tlabel = tlabel + "SRC:"+sourcePosition::toStringNP(precision).replaceAll("[, ]+", "_")+":";
-			tlabel = tlabel + "STM:"+FmPrecision(sourceTime_d,precision)+":";
-		} else if (sourceTime_d != t) { // linear timeshifted point
-			tlabel = tlabel + "STM:"+FmPrecision(sourceTime_d,precision)+":";
-		}
 		// add starting colon, if there is any data;
 		if (tlabel.length() > 0) {
 			tlabel = ":"+tlabel;
@@ -791,9 +672,9 @@ namespace larcfm {
 			std::string extra = fields[MIN_OUTPUT_COLUMNS];
 
 			NavPoint np(pos, time, extra);
-			std::pair<TcpData,std::string> p = TcpData().parseMetaDataLabel(np,extra);
+			std::pair<TcpData,std::string> p = TcpData().parseMetaDataLabel(extra);
 			if ( p.second != "") {
-				np.makeLabel(p.second);
+				np.makeName(p.second);
 			}
 			return std::pair<NavPoint,TcpData>(np,p.first);
 		} else if (fields.size() == TCP_OUTPUT_COLUMNS+1) {
@@ -806,13 +687,10 @@ namespace larcfm {
 			std::string vsty = fields[12];
 			double vsacc = Units::from("m/s^2", Util::parse_double(fields[13]));
 			double radius = Util::parse_double(fields[14]);
-			LatLonAlt slla = LatLonAlt::parse(fields[15]+" "+fields[16]+" "+fields[17]);
-			Position sp(slla);
-			double st = Util::parse_double(fields[18]);
 			std::string lab = fields[19];
 			//return new NavPoint(pos, time, wt, lab,	trkty, gsty, vsty, radius, gsacc, vsacc, vv, sp, st, -1);
 			Position turnCenter = KinematicsPosition::centerFromRadius(pos, radius, vv.trk());
-			return std::pair<NavPoint, TcpData>(NavPoint(pos, time, lab), TcpData::makeFull(wt, trkty, gsty, vsty, radius, turnCenter, gsacc, vsacc, vv, sp, st, -1));
+			return std::pair<NavPoint, TcpData>(NavPoint(pos, time, lab), TcpData::makeFull(wt, trkty, gsty, vsty, radius, turnCenter, gsacc, vsacc, vv));
 		} else {
 			return std::pair<NavPoint, TcpData>(NavPoint(pos, time), TcpData());
 		}
@@ -827,9 +705,9 @@ namespace larcfm {
 		if (fields.size() == MIN_OUTPUT_COLUMNS+1) {
 			std::string extra = fields[MIN_OUTPUT_COLUMNS];
 			NavPoint np(pos, time, extra);
-			std::pair<TcpData,std::string> p = TcpData().parseMetaDataLabel(np,extra);
+			std::pair<TcpData,std::string> p = TcpData().parseMetaDataLabel(extra);
 			if ( p.second != "") {
-				np.makeLabel(p.second);
+				np.makeName(p.second);
 			}
 			return std::pair<NavPoint,TcpData>(np,p.first);
 			//return (new NavPoint(pos, time, extra)).parseMetaDataLabel(extra);
@@ -843,13 +721,10 @@ namespace larcfm {
 			std::string vsty = fields[12];
 			double vsacc = Units::from("m/s^2", Util::parse_double(fields[13]));
 			double radius = Util::parse_double(fields[14]);
-			Vect3 sv = Vect3::parse(fields[15]+" "+fields[16]+" "+fields[17]);
-			Position sp = Position::makeXYZ(sv.x, sv.y, sv.z);
-			double st = Util::parse_double(fields[18]);
 			std::string lab = fields[19];
 			//return new NavPoint(pos, time, wt, lab,	trkty, gsty, vsty, radius, gsacc, vsacc, vv, sp, st, -1);
 			Position turnCenter = KinematicsPosition::centerFromRadius(pos, radius, vv.trk());
-			return std::pair<NavPoint, TcpData>(NavPoint(pos, time, lab), TcpData::makeFull(wt, trkty, gsty, vsty, radius, turnCenter, gsacc, vsacc, vv, sp, st, -1));
+			return std::pair<NavPoint, TcpData>(NavPoint(pos, time, lab), TcpData::makeFull(wt, trkty, gsty, vsty, radius, turnCenter, gsacc, vsacc, vv));
 		} else {
 			return std::pair<NavPoint,TcpData>(NavPoint(pos, time), TcpData());
 		}
@@ -949,7 +824,7 @@ namespace larcfm {
 	 * @param point the other point
 	 * @return a new point that is the merger of the two points.
 	 */
-	TcpData TcpData::mergeTCPInfo(const TcpData& point) const {
+	TcpData TcpData::mergeTCPData(const TcpData& point) const {
 		TcpData d;
 		// position & time -- keep either (should be the same)
 
@@ -969,42 +844,24 @@ namespace larcfm {
 						((isEVS() || point.isEVS()) ? TcpData::EVS : TcpData::NONEv));
 
 		double my_radius = 0.0; // (this.tcp_trk != Trk_TCPType.NONE || point.tcp_trk != Trk_TCPType.NONE) ? 0 : this.sgnRadius;
-		if (tcpTrk == BOT || tcpTrk == EOTBOT) my_radius = radiusSigned;
-		else my_radius = point.radiusSigned;
-
+	    Position center = Position::INVALID();
+		if (tcpTrk == BOT || tcpTrk == EOTBOT) {
+			my_radius = radiusSigned;
+			center = turnCenter();
+		} else {
+			my_radius = point.radiusSigned;
+			center = point.turnCenter();
+		}
+		d.setMOT(isMOT() || point.isMOT());
 		d.setRadiusSigned(my_radius);
-
+		d.setTurnCenter(center);
 		double my_accel_gs = (tcpGs == BGS || tcpGs == EGSBGS) ? accelGs : point.accelGs;
 		double my_accel_vs = (tcpVs == BVS || tcpVs == EVSBVS) ? accelVs : point.accelVs;
 
 		d.setGsAccel(my_accel_gs);
 		d.setVsAccel(my_accel_vs);
-
-//		Velocity my_velocityIn;
-//		if (isBeginTCP()) {
-//			my_velocityIn = velocityInit_v;
-//		} else {
-//			my_velocityIn = point.velocityInit_v;
-//		}
-		//d.setVelocityInit(my_velocityIn);
-
-		Position my_sourcePosition;
-		double my_sourceTime;
-		int my_linearIndex;
-		if (isBeginTCP()) {
-			my_sourcePosition = sourcePosition_p;
-			my_sourceTime = sourceTime_d;
-			my_linearIndex = linearIndex;
-		} else {
-			my_sourcePosition = point.sourcePosition_p;
-			my_sourceTime = point.sourceTime_d;
-			my_linearIndex = point.linearIndex;
-		}
-
-		//fpln("sourceTime "+Fm4(sourceTime_d)+"  "+Fm4(sourceTime_d)+"  "+Fm4(point.sourceTime_d));
-		d.setSource(my_sourcePosition, my_sourceTime);
-		d.setLinearIndex(my_linearIndex);
-
+		d.setInformation(information+point.information);
+		d.appendInformationNoDuplication(point.information);
 		return d;
 	}
 
@@ -1031,12 +888,35 @@ namespace larcfm {
 	}
 
 	std::string TcpData::toString() const {
-		return "TcpData [ty=" + toStringWayType(ty) + " <" + tcpTypeString() + ">, radiusSigned="
-				+ Fm4(radiusSigned) + " turnCenter ="+ centerTurn.toString() +
-				+ ", accelGs=" + Fm4(accelGs) + ", accelVs=" + Fm4(accelVs) // + ", velocityInit=" + velocityInit_v.toString()
-				//+ ", sourcePosition=" + sourcePosition_p.toString() + ", sourceTime=" + Fm4(sourceTime_d)
-				+ ", linearIndex=" + Fmi(linearIndex) + ", information=" + information + "]";
-	}
+		string rtn= "TcpData [ty=" + toStringWayType(ty) + " <" + tcpTypeString() + ">";
+		if (radiusSigned != 0.0) rtn = rtn + " , radiusSigned="	+ Fm4(radiusSigned);
+		if (!centerTurn.isInvalid()) rtn = rtn + " turnCenter ="+ centerTurn.toString();
+		rtn = rtn + ", accelGs=" + Fm4(accelGs) + ", accelVs=" + Fm4(accelVs)
+				+ ", information=" + information; // + " isMOT = "+bool2str(isMOT());
+//		if (showSource) rtn = rtn + ", sourcePosition=" + sourcePosition_p.toString();// + ", sourceTime=" + Fm4(sourceTime_d)
 
+		rtn = rtn +  + "]";
+		return rtn;
+	}
+	
+	std::string TcpData::toStringTcpType() const {
+		std::string rtn = "";
+		if (isBOT()) {
+	    	if (isEOT()) rtn = rtn +"EOTBOT";
+	    	else rtn = rtn +"BOT";
+	    } else if (isEOT()) rtn = rtn +"EOT";
+	    if (isBGS()) {
+	    	if (isEGS()) rtn = rtn +"EGSBGS";
+	    	else rtn = rtn +"BGS";
+	    } else if (isEGS()) rtn = rtn +"EGS";
+	    if (isBVS()) {
+	    	if (isEVS()) rtn = rtn +"EVSBVS";
+	    	else rtn = rtn +"BVS";
+	    } else if (isEVS()) rtn = rtn +"EVS";
+	    
+	    if (!TcpData::motFlagInInfo & isMOT()) rtn = rtn +"MOT";
+	    
+        return rtn;
+	}
 
 }

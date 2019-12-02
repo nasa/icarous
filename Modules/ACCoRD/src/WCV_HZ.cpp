@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,7 +19,7 @@ WCV_HZ::WCV_HZ() {
 /** Constructor that specifies a particular instance of the TCAS tables. */
 WCV_HZ::WCV_HZ(const WCVTable& tab) {
   wcv_vertical = new WCV_VMOD();
-  table.copyValues(tab);
+  table = tab;
   id = "";
 }
 
@@ -32,7 +32,7 @@ Detection3D* WCV_HZ::make() const {
  */
 Detection3D* WCV_HZ::copy() const {
   WCV_HZ* ret = new WCV_HZ();
-  ret->table.copyValues(table);
+  ret->table = table;
   ret->id = id;
   return ret;
 }

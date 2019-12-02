@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -29,7 +29,7 @@ namespace larcfm {
 		if (v1.isLatLon()) {
 			return  Position(GreatCircle::interpolate(v1.lla(), v2.lla(), f));
 		} else {
-			return  Position(VectFuns::interpolate(v1.point(), v2.point(), f));
+			return  Position(VectFuns::interpolate(v1.vect3(), v2.vect3(), f));
 		}
 	}
 	
@@ -52,10 +52,10 @@ namespace larcfm {
 
 	std::pair<Position,double> PositionUtil::intersection(const Position & so, const Velocity & vo, const Position & si, const Velocity & vi) {
 		if (so.isLatLon()) {
-			std::pair<LatLonAlt, double> p = GreatCircle::intersection(so.lla(), vo, si.lla(), vi, true);
+			std::pair<LatLonAlt, double> p = GreatCircle::intersection(so.lla(), vo, si.lla(), vi);
 			return std::pair<Position,double>( Position(p.first), p.second);
 		} else {
-			std::pair<Vect3, double> p = VectFuns::intersection(so.point(), vo, si.point(), vi);
+			std::pair<Vect3, double> p = VectFuns::intersection(so.vect3(), vo, si.vect3(), vi);
 			return std::pair<Position,double>( Position(p.first), p.second);
 		}
 	}
@@ -66,7 +66,7 @@ namespace larcfm {
 			std::pair<LatLonAlt, double> p = GreatCircle::intersectionAvgAlt(so1.lla(), so2.lla(), dto, si1.lla(), si2.lla());
 			return std::pair<Position,double>( Position(p.first), p.second);
 		} else {
-			std::pair<Vect3, double> p = VectFuns::intersectionAvgZ(so1.point(), so2.point(), dto, si1.point(), si2.point());
+			std::pair<Vect3, double> p = VectFuns::intersectionAvgZ(so1.vect3(), so2.vect3(), dto, si1.vect3(), si2.vect3());
 			return std::pair<Position,double>( Position(p.first), p.second);
 		}
 	}
@@ -75,7 +75,7 @@ namespace larcfm {
 		if (a.isLatLon()) {
 			return  Position(GreatCircle::closest_point_circle(a.lla(), b.lla(), x.lla()));
 		} else {
-			return  Position(VectFuns::closestPoint(a.point(), b.point(), x.point()));
+			return  Position(VectFuns::closestPoint(a.vect3(), b.vect3(), x.vect3()));
 		}
 	}
 	
@@ -84,7 +84,7 @@ namespace larcfm {
 		if (a.isLatLon()) {
 			return  Position(GreatCircle::closest_point_segment(a.lla(), b.lla(), x.lla()));
 		} else {
-			return  Position(VectFuns::closestPointOnSegment(a.point(), b.point(), x.point()));
+			return  Position(VectFuns::closestPointOnSegment(a.vect3(), b.vect3(), x.vect3()));
 		}
 	}
 
@@ -92,7 +92,7 @@ namespace larcfm {
 		if (a.isLatLon()) {
 			return  Position(GreatCircle::closest_point_segment(a.lla(), b.lla(), x.lla()));
 		} else {
-			return  Position(VectFuns::closestPointOnSegment(a.point(), b.point(), x.point()));
+			return  Position(VectFuns::closestPointOnSegment(a.vect3(), b.vect3(), x.vect3()));
 		}
 	}
 
@@ -109,7 +109,7 @@ namespace larcfm {
 		if (so.isLatLon()) {
 			return GreatCircle::passingDirection(so.lla(), vo, si.lla(), vi);
 		} else {
-			return VectFuns::passingDirection(so.point(), vo, si.point(), vi);
+			return VectFuns::passingDirection(so.vect3(), vo, si.vect3(), vi);
 		}
 		
 	}
@@ -120,7 +120,7 @@ namespace larcfm {
 		if (so.isLatLon()) {
 			return GreatCircle::dirForBehind(so.lla(), vo, si.lla(), vi);
 		} else {
-			return VectFuns::dirForBehind(so.point(),vo,si.point(),vi);
+			return VectFuns::dirForBehind(so.vect3(),vo,si.vect3(),vi);
 		}
 	}
 	

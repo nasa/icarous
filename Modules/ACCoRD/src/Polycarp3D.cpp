@@ -3,7 +3,7 @@
  *
  * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)
  *
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -43,12 +43,12 @@ bool Polycarp3D::nearEdge(const Vect3& so, const Poly3D& p, double h, double v, 
     std::vector<Vect2> ps = std::vector<Vect2>();
     ps.reserve(p.size());
     for (int i = 0; i < p.size(); i++) {
-      ps.push_back(p.poly2D().getVertex(i));
+      ps.push_back(p.poly2D().get(i));
     }
     if (checkNice && !PolycarpContain::nice_polygon_2D(ps, h)) {
       ps.clear();
       for (int i = p.size()-1; i >= 0; i--) {
-        ps.push_back(p.poly2D().getVertex(i));
+        ps.push_back(p.poly2D().get(i));
       }
       if (!PolycarpContain::nice_polygon_2D(ps, h)) {
         fpln("WARNING: Polycarp3D.violation: NOT A NICE POLYGON!");
@@ -75,12 +75,12 @@ bool Polycarp3D::definitely_inside(const Vect3& so, const Poly3D& p, double buff
     std::vector<Vect2> ps = std::vector<Vect2>();
     ps.reserve(p.size());
     for (int i = 0; i < p.size(); i++) {
-      ps.push_back(p.poly2D().getVertex(i));
+      ps.push_back(p.poly2D().get(i));
     }
     if (checkNice && !PolycarpContain::nice_polygon_2D(ps, buff)) {
       ps.clear();
       for (int i = p.size()-1; i >= 0; i--) {
-        ps.push_back(p.poly2D().getVertex(i));
+        ps.push_back(p.poly2D().get(i));
       }
       if (!PolycarpContain::nice_polygon_2D(ps, buff)) {
         fpln("WARNING: Polycarp3D.definitely_inside: NOT A NICE POLYGON!");
@@ -97,12 +97,12 @@ bool Polycarp3D::definitely_outside(const Vect3& so, const Poly3D& p, double buf
     std::vector<Vect2> ps = std::vector<Vect2>();
     ps.reserve(p.size());
     for (int i = 0; i < p.size(); i++) {
-      ps.push_back(p.poly2D().getVertex(i));
+      ps.push_back(p.poly2D().get(i));
     }
     if (checkNice && !PolycarpContain::nice_polygon_2D(ps, buff)) {
       ps.clear();
       for (int i = p.size()-1; i >= 0; i--) {
-        ps.push_back(p.poly2D().getVertex(i));
+        ps.push_back(p.poly2D().get(i));
       }
       if (!PolycarpContain::nice_polygon_2D(ps, buff)) {
         fpln("WARNING: Polycarp3D.definitely_outside: NOT A NICE POLYGON!");
@@ -121,13 +121,13 @@ bool Polycarp3D::violation(const Vect3& so, const Poly3D& p, double buff, bool c
   std::vector<Vect2> ps = std::vector<Vect2>();
   ps.reserve(p.size());
   for (int i = 0; i < p.size(); i++) {
-    ps.push_back(p.poly2D().getVertex(i));
+    ps.push_back(p.poly2D().get(i));
   }
 //  if (!PolycarpAcceptablePolygon::counterclockwise_edges(ps)) {
   if (checkNice && !PolycarpContain::nice_polygon_2D(ps, buff)) {
     ps.clear();
     for (int i = p.size()-1; i >= 0; i--) {
-      ps.push_back(p.poly2D().getVertex(i));
+      ps.push_back(p.poly2D().get(i));
     }
     if (!PolycarpContain::nice_polygon_2D(ps, buff)) {
       fpln("WARNING: Polycarp3D.violation: NOT A NICE POLYGON!");

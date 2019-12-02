@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -24,20 +24,21 @@
 namespace larcfm {
 
 /**
- * This class creates a local Euclidean projection around a given point.  This projection may be used to
+ * <p>This class creates a local Euclidean projection around a given point.  This projection may be used to
  * transform geodetic coordinates (LatLonAlt objects) into this Euclidean frame, using the project() method.  Also points
  * within this frame, may be found in geodetic coordinates with the inverse() method.   As long as the points are
- * close to the projection point, the errors will be very small.<p>
+ * close to the projection point, the errors will be very small.</p>
  * 
- * This is a standard orthographic projection, and is functionally similar to the ENU projection (it uses different calculations).  
+ * <p>This is a standard orthographic projection, and is functionally similar to the ENU projection (it uses different calculations).  
  * It distorts distances from  the tangent point, compressing them more as the distance increases (similar to a picture of a 
  * planet from distant space).  
  * Note that this  projection should be considered to have a hard limit of GreatCircle.spherical_earth_radius as the maximum allowed 
- * distance from the tangent reference point, and significant distortion may occur at much smaller distances.<p>
+ * distance from the tangent reference point, and significant distortion may occur at much smaller distances.</p>
  * 
- * These formulas are taken from en.wikipedia.org/wiki/Orthographic_projection_in_cartography<p>
- * 
- * Note: projection objects should never be made directly, and instead should be retrieved via Projection.getProjection()<p> 
+ * <ul>
+ * <li>Note: These formulas are taken from en.wikipedia.org/wiki/Orthographic_projection_in_cartography</li>
+ * <li>Note: projection objects should never be made directly, and instead should be retrieved via Projection.getProjection()</li>
+ * </ul> 
  * 
  */
   class OrthographicProjection {
@@ -125,7 +126,9 @@ namespace larcfm {
     
     /** Given a velocity from a point, return a projection of this velocity and the point in Euclidean 3-space.  If the position is already in Euclidean coordinates, this acts as the idenitty function. */ 
     std::pair<Vect3,Velocity> project(const Position& p, const Velocity& v) const;
-    
+
+    std::pair<Vect3,Velocity> project(const LatLonAlt& p, const Velocity& v) const;
+
     /** Given a velocity from a point in Euclidean 3-space, return a projection of this velocity and the point.  If toLatLon is true, the point/velocity is projected into the geodetic coordinate space */ 
     std::pair<Position,Velocity> inverse(const Vect3& p, const Velocity& v, bool toLatLon) const;
     

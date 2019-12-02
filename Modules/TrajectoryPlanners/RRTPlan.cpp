@@ -71,7 +71,7 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
     std::list<Poly3D> obstacleList;
     for(fence gf: fenceList){
         if (gf.GetType() == KEEP_IN){
-            bbox = gf.GetPoly()->poly3D(proj);
+            bbox = gf.GetPolyMod()->poly3D(proj);
         }else{
             obstacleList.push_back(gf.GetPolyMod()->poly3D(proj));
         }

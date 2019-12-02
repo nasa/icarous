@@ -113,9 +113,6 @@ private:
     /* DAA object */
     Daidalus DAA;
 
-    /* Bands class */
-    KinematicMultiBands KMB;
-
     double maxInputNorm;
     bool goalreached;
     time_t startTime;

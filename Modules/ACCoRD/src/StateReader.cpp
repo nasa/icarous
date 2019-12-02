@@ -8,7 +8,7 @@
  *
  * Contact: George Hagen
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -33,6 +33,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <algorithm>
 #include <stdexcept>
 
 namespace larcfm {
@@ -46,8 +47,8 @@ namespace larcfm {
     latlon = false;
     clock = false;
     trkgsvs = false;
-    for (int i = 0; i < head_length; i++) {
-    	head[i] = 0;
+    for (int i = 0; i < definedColumns; i++) {
+    	head.push_back(-1);
     }
     interpretUnits = false;
   }
@@ -89,7 +90,7 @@ namespace larcfm {
   void StateReader::open(std::istream* in) {
     SeparatedInput si(in);
     si.setCaseSensitive(false);            // headers & parameters are lower case
-    vector<string> params = input.getParametersRef().getList();
+    vector<string> params = input.getParametersRef().getKeyList();
     for (unsigned int i = 0; i < params.size(); i++) {
       si.getParametersRef().set(params[i], input.getParametersRef().getString(params[i]));
     }
@@ -159,6 +160,18 @@ namespace larcfm {
           }
         }
         
+		// add new user column headings
+		for (int i = 0; i < input.size(); i++) {
+			std::string hd = input.getHeading(i);
+			if (!equals(hd,"")) {
+				int headingindex = input.findHeading(hd);
+				if (std::find(head.begin(), head.end(), headingindex) == head.end()) {
+					head.push_back(headingindex);
+				}
+			}
+		}
+
+
         hasRead = true;
         for (int i = 0; i <= VS_VZ; i++) {
           if (head[i] < 0) error.addError("At least one required heading was missing (look for [sx|lat,sy|lon,sz|alt] [vx|trk,vy|gs,vz|vs])");
@@ -241,6 +254,24 @@ namespace larcfm {
       }
       states[stateIndex].add(ss, vv, tm);
       
+
+		// handle extra columns
+		for (int i = definedColumns; i < (int) head.size(); i++) {
+			int colnum = head[i];
+			std::pair<int,int> newkey(stateIndex, colnum);
+			extracolumnValues.erase(newkey); // remove old entry, if it exists
+			if (input.columnHasValue(colnum)) {
+				std::string str = input.getColumnString(colnum);
+				double val = input.getColumn(colnum, NaN, false);
+				bool bol = false;
+				if (equalsIgnoreCase(str,"true")) {
+					bol = true;
+				}
+				extracolumnValues[newkey] = Triple<double,bool,std::string>(val, bol, str); // add new entry, if there is anything
+			}
+		}
+
+
       lastTime = tm;
       
     }
@@ -341,5 +372,83 @@ namespace larcfm {
   bool StateReader::isLatLon() const {
 	  return latlon;
   }
+
+	/**
+	 * Return a list of all user-defined columns in this reader.
+	 */
+	std::vector<std::string> StateReader::getExtraColumnList() const {
+		std::vector<std::string> names;
+		for (int i = definedColumns; i < (int) head.size(); i++) {
+			names.push_back(input.getHeading(head[i]));
+		}
+		return names;
+	}
+
+	/**
+	 * Return the units for a given column.  If no units were specified, then return "unspecified".  If the column name was not found, return the empty string.
+	 * @param colname name of the column in question.
+	 */
+	std::string StateReader::getExtraColumnUnits(const std::string& colname) const {
+		int col = input.findHeading(colname);
+		if (col >= 0) {
+			return input.getUnit(col);
+		} else {
+			return "";
+		}
+	}
+
+	/**
+	 * Return true if the given aircraft has data for the indicated column.
+	 * @param ac
+	 * @param colname
+	 * @return
+	 */
+	bool StateReader::hasExtraColumnData(int ac, const std::string& colname) const {
+		int colnum = input.findHeading(colname);
+		return extracolumnValues.find(std::pair<int,int>(ac,colnum)) != extracolumnValues.end();
+	}
+
+	/**
+	 * Returns the column value associated with a given aircraft, interpreted as a double, or NaN if there is no info
+	 */
+	double StateReader::getExtraColumnValue(int ac, const std::string& colname) const {
+		int colnum = input.findHeading(colname);
+		std::pair<int,int> key = std::pair<int,int>(ac,colnum);
+		extraTblType::const_iterator it = extracolumnValues.find(key);
+		if (it != extracolumnValues.end()) {
+			return it->second.first;
+		} else {
+			return NaN;
+		}
+	}
+
+	/**
+	 * Returns the column value associated with a given aircraft, interpreted as a boolean, or false if there is no info
+	 */
+	bool StateReader::getExtraColumnBool(int ac, const std::string& colname) const {
+		int colnum = input.findHeading(colname);
+		std::pair<int,int> key = std::pair<int,int>(ac,colnum);
+		extraTblType::const_iterator it = extracolumnValues.find(key);
+		if (it != extracolumnValues.end()) {
+			return it->second.second;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Returns the column value associated with a given aircraft, interpreted as a string, or the empty string if there is no info
+	 */
+	std::string StateReader::getExtraColumnString(int ac, const std::string& colname) const {
+		int colnum = input.findHeading(colname);
+		std::pair<int,int> key = std::pair<int,int>(ac,colnum);
+		extraTblType::const_iterator it = extracolumnValues.find(key);
+		if (it != extracolumnValues.end()) {
+			return it->second.third;
+		} else {
+			return "";
+		}
+	}
+
 
 }

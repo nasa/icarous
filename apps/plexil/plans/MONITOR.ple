@@ -1,0 +1,44 @@
+Boolean[2] Lookup fenceConflict;
+Boolean Lookup trafficConflict;
+Boolean Lookup flightPlanConflict;
+
+Real[3]    Command GetMissionWP(Integer index);
+Command pprint(...);
+MONITOR:{
+    InOut Integer ConflictId;
+
+    Boolean statusGF[2];
+    Boolean statusTF;
+    Boolean statusFP;
+    Boolean statusDH;
+    Integer conflictId;
+    Real position[3];
+
+    statusGF = Lookup(fenceConflict);
+    statusTF = Lookup(trafficConflict);
+    statusFP = Lookup(flightPlanConflict);
+    statusDH = Lookup(ditchingStatus);
+
+    conflictId = 0;
+
+    if(statusGF[0] || statusGF[1]){
+         conflictId = 1;
+    }endif
+
+    if(statusTF){
+         conflictId = 2;
+    }endif
+
+    if( (statusGF[0] || statusGF[1]) && statusTF){
+         conflictId = 4;
+    }endif
+
+    if(conflictId != 0){
+        ConflictId = conflictId;
+    }endif
+
+    {
+        EndCondition isKnown(position[0]);
+        position = GetMissionWP(1);
+    }
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -149,7 +149,7 @@ Velocity GeneralState::representativeVelocity() const{
 	} else if (hasPolygon()) {
 		return mp.averageVelocity();
 	} else {
-		return Velocity::INVALID();
+		return Velocity::INVALIDV();
 	}
 }
 std::string GeneralState::getName() const{
@@ -196,13 +196,13 @@ bool GeneralState::isContainment() const{
 	return hasPolygon() && containment;
 }
 
-General3DState GeneralState::get3DState(const EuclideanProjection& proj) const{
+General3DState GeneralState::get3DState(const EuclideanProjection& proj) {
 	if (pointDefined) {
 		if (si.isLatLon()) {
 			state = General3DState(proj.project(si), proj.projectVelocity(si, vi));;
 			return state;
 		} else {
-			state =  General3DState(si.point(), vi);;
+			state =  General3DState(si.vect3(), vi);;
 			return state;
 		}
 	} else if (polyDefined) {

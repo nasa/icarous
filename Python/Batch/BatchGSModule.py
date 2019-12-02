@@ -190,7 +190,7 @@ class BatchGSModule():
                 msg = self.master.recv_match(blocking=True, type=["FENCE_FETCH_POINT", "COMMAND_ACK"], timeout=50)
 
             if (msg.get_type() == "FENCE_FETCH_POINT"):
-                print "received fetch point"
+                print("received fetch point")
                 numV = fence["numV"]
                 lat = fence["Vertices"][msg.idx][0]
                 lon = fence["Vertices"][msg.idx][1]
@@ -201,7 +201,7 @@ class BatchGSModule():
             elif (msg.get_type() == "COMMAND_ACK"):
                 if msg.result == 0:
                     fence_sent = True
-                    print ("Geofence sent")
+                    print("Geofence sent")
                 else:
                     self.Send_fence(fence)
                     fence_sent = True
@@ -302,17 +302,52 @@ class BatchGSModule():
         wp.target_component = self.target_component
         self.master.mav.send(self.wploader.wp(m.seq))
         self.loading_waypoint_lasttime = time.time()
-        print("Sent waypoint %u : %s" % (m.seq, self.wploader.wp(m.seq)))
+        #print("Sent waypoint %u : %s" % (m.seq, self.wploader.wp(m.seq)))
         if m.seq == self.wploader.count() - 1:
             self.loading_waypoints = False
-            print("Sent all %u waypoints" % self.wploader.count())
+            #print("Sent all %u waypoints" % self.wploader.count())
+
+    def loadParams(self, filename):
+        '''load parameters from a file'''
+        print("Loading params %s" % filename)
+        try:
+            f = open(filename, mode='r')
+        except:
+            print("Failed to open file '%s'" % filename)
+
+        for line in f:
+            line = line.replace('=',' ')
+            line = line.strip()
+            if not line or line[0] == "#":
+                continue
+            a = line.split()
+            if len(a) < 1:
+                print("Invalid line: %s" % line)
+                continue
+            self.master.param_set_send(a[0],float(a[1]))
+
+    def setParam(self,param_id,param_value):
+        '''set an individual parameter'''
+        self.master.param_set_send(param_id,param_value)
+
+    def getParams(self):
+        '''request parameters'''
+        params = {}
+        t0 = time.time()
+        self.master.param_fetch_all()
+        while time.time() - t0 < 2:
+            msg = self.master.recv_match(type="PARAM_VALUE")
+            if msg != None:
+                #print(msg.param_id,msg.param_value)
+                params[msg.param_id] = msg.param_value
+        return params
 
     def mavlink_packet_wp(self, m):
         '''handle an incoming mavlink packet'''
         mtype = m.get_type()
         if mtype in ['WAYPOINT_COUNT', 'MISSION_COUNT']:
             if self.wp_op is None:
-                print "No waypoint load started"
+                print("No waypoint load started")
             else:
                 self.wploader.clear()
                 self.wploader.expected_count = m.count

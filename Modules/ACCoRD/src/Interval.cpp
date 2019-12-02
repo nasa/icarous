@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -139,12 +139,10 @@ Interval Interval::intersect(const Interval& r) const {
 	return Interval(Util::max(low, r.low), Util::min(up, r.up));
 }
 
-std::string Interval::toPVS(int precision) const {
-	return "(# lb:= "+FmPrecision(low, precision)+", ub:= "+FmPrecision(up, precision)+" #)";
+std::string Interval::toPVS() const {
+	return toPVS(Constants::get_output_precision());
 }
 
-
-
-
-
-
+std::string Interval::toPVS(int precision) const {
+	return "(# lb:= "+FmPrecision(low,precision)+", ub:= "+FmPrecision(up,precision)+" #)";
+}

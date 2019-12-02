@@ -1,7 +1,7 @@
 /*
  * KinematicsLatLon.h
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -23,18 +23,18 @@
 namespace larcfm {
 
 /**
- * A library of functions to aid the computation of the kinematics of an aircraft.  This
+ * <p>A library of functions to aid the computation of the kinematics of an aircraft.  This
  * library is currently under development and is far from complete.  The majority of the functions
- * handle constant velocity turns and movement with constant ground speed acceleration.<p>
+ * handle constant velocity turns and movement with constant ground speed acceleration.</p>
  * 
- * Unless otherwise noted, all kinematics function parameters are in internal units -- angles are in radians,
- * linear speeds are in m/s, distances are in meters, time is in seconds.
+ * <p>Unless otherwise noted, all kinematics function parameters are in internal units -- angles are in radians,
+ * linear speeds are in m/s, distances are in meters, time is in seconds.</p>
  * 
  */
 class KinematicsLatLon {
 public:
 
-
+    static bool chordalSemantics;
 
 	/**
 	 * Linearly project the given position and velocity to a new position and velocity
@@ -82,27 +82,8 @@ public:
 	 */
 	static std::pair<LatLonAlt,Velocity> turnOmega(std::pair<LatLonAlt,Velocity> sv0, double t, double omega) ;
 
-	static std::pair<LatLonAlt,Velocity> turnRadius(const LatLonAlt& so, const Velocity& vo, double t, double signedRadius);
+//	static std::pair<LatLonAlt,Velocity> turnRadius(const LatLonAlt& so, const Velocity& vo, double t, double signedRadius);
 
-	/**
-	 * Spherical turnOmega
-	 * @param so initial position
-	 * @param vo initial velocity
-	 * @param t time of turn
-	 * @param omega angular rate change (circular turn time/2PI)
-	 * @return position and velocity at time i
-	 */
-	static std::pair<LatLonAlt,Velocity> turnOmegaAlt(const LatLonAlt& so, const Velocity& vo, double t, double omega);
-
-	/**
-	 * Position/Velocity after turning 
-	 * @param s0          starting position
-	 * @param v0          initial velocity
-	 * @param signedRadius           radius (sign indicates direction)
-	 * @param d           distance into turn  
-	 * @return Position/Velocity after turning distance d
-	 */
-	static std::pair<LatLonAlt,Velocity> turnByDist(const LatLonAlt& so, const Velocity& vo, double signedRadius, double d);
 	
 	/**
 	 * Position/Velocity after turning (does not compute altitude!!)
@@ -115,6 +96,31 @@ public:
 	 * @return Position/Velocity after turning distance d
 	 */
 	static std::pair<LatLonAlt,Velocity> turnByDist2D(const LatLonAlt& so, const LatLonAlt& center, int dir, double d, double gsAtd);
+
+	/** 
+	 * Position/Velocity after turning (does not compute altitude!!)
+	 * 
+	 * Note: will be used in a context where altitude is computing subsequently
+	 * 
+	 * @param so          starting position
+	 * @param center      center of turn
+	 * @param dir         direction of turn
+	 * @param d           distance into turn (non-negative)
+	 * @return            Position/Velocity after turning distance d
+	 */
+	static LatLonAlt turnByDist2D(const LatLonAlt& so, const LatLonAlt& center, int dir, double d);
+
+	/** 
+	 * Position/Velocity after turning (does not compute altitude!!)
+	 * 
+	 * Note: will be used in a context where altitude is computing subsequently
+	 * 
+	 * @param so          starting position
+	 * @param center      center of turn
+	 * @param alpha       angle
+	 * @return            Position/Velocity after turning distance d
+	 */
+	static LatLonAlt turnByAngle2D(const LatLonAlt& so, const LatLonAlt& center, double alpha);
 
 	/**
 	 * Position/Velocity after turning t time units right or left with radius R in the direction turnRight
@@ -199,7 +205,7 @@ public:
 	static std::pair<LatLonAlt,Velocity> turnUntilTimeRadius(const std::pair<LatLonAlt,Velocity>& svo, double t, double turnTime, double R, bool turnRight);
 
 	/** 
-	 * center of turn
+	 * return center of turn from position on turn (and it track) and radius
 	 * @param s0 point on turn
 	 * @param trk track at point
 	 * @param radius radius of turn
@@ -222,7 +228,7 @@ public:
 	 * @param v0 turn start velocity
 	 * @param omega rate of turn (+ = right, - = left)
 	 * @param x point of interest
-	 * @param endTime time at which turn finishes.  If <= 0, assume a full turn is allowed.
+	 * @param endTime time at which turn finishes.  If &le; 0, assume a full turn is allowed.
 	 * @return time on turn when we are closest to the given point x (in seconds), or -1 if we are precisely at the turn's center
 	 * This will be bounded by [0,endTime]
 	 */
@@ -235,7 +241,7 @@ public:
 	 * @param R radius
 	 * @param dir direction of turn
 	 * @param x point of interest
-	 * @param maxDist time at which turn finishes.  If <= 0, assume a full turn is allowed.
+	 * @param maxDist time at which turn finishes.  If &le; 0, assume a full turn is allowed.
 	 * @return dist on turn when we are closest to the given point x, or -1 if we are precisely at the turn's center
 	 * This will be bounded by [0,maxDist]
 	 */

@@ -1,9 +1,10 @@
-/*
- * Position.cpp
+/* A single position represented in either Euclidean or Lat/Lon coordinates
  *
- * a position, either Geodesic or Euclidean.
+ * Authors:  George Hagen              NASA Langley Research Center
+ *           Ricky Butler              NASA Langley Research Center
+ *           Jeff Maddalon             NASA Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -55,8 +56,6 @@ Position::Position(const LatLonAlt& lla) : ll(lla) , s3(lla.lon(), lla.lat(), ll
 }
 
 Position::Position(double x, double y, double z) : ll(LatLonAlt::mk(y, x, z)) , s3(x, y, z) {
-	//s3 = new Vect3(x, y, z);
-	//ll = LatLonAlt.makeInternal(y, x, z);
 	latlon = false;
 }
 
@@ -98,7 +97,7 @@ Position Position::makeXYZ(double x, std::string x_unit, double y, std::string y
 
 bool Position::almostEquals(const Position& v) const {
 	if (latlon) {
-		return lla().almostEquals(v.lla());
+	  return GreatCircle::almostEquals(lla(),v.lla());
 	} else
 		return Constants::almost_equals_xy(s3.x,s3.y,v.s3.x,v.s3.y)
 	&& Constants::almost_equals_alt(s3.z,v.s3.z);
@@ -107,17 +106,17 @@ bool Position::almostEquals(const Position& v) const {
 
 bool Position::almostEquals(const Position& pp, double epsilon_horiz, double epsilon_vert) const {
 	if (latlon) {
-		return lla().almostEquals(pp.lla(),epsilon_horiz,epsilon_vert);
+	  return GreatCircle::almostEquals(lla(),pp.lla(),epsilon_horiz,epsilon_vert);
 	} else {
-		return s3.within_epsilon(pp.point(),epsilon_vert);
+		return s3.within_epsilon(pp.vect3(),epsilon_vert);
 	}
 }
 
 bool Position::almostEquals2D(const Position& pp, double epsilon_horiz) const {
 	if (latlon) {
-		return lla().almostEquals2D(pp.lla(),epsilon_horiz);
+	  return GreatCircle::almostEquals2D(lla(),pp.lla(),epsilon_horiz);
 	} else {
-		return s3.almostEquals2D(pp.point(),epsilon_horiz);
+		return s3.almostEquals2D(pp.vect3(),epsilon_horiz);
 	}
 }
 
@@ -141,7 +140,7 @@ Vect2 Position::vect2() const {
 	return Vect2(s3.x,s3.y);
 }
 
-const Point& Position::point() const {
+const Point& Position::vect3() const {
 	return s3;
 }
 
@@ -201,10 +200,6 @@ double Position::zCoordinate() const {
 bool Position::isLatLon() const {
 	return latlon;
 }
-
-//  bool Position::isInvalid() const {
-//	  return s3.isInvalid();
-//  }
 
 const Position Position::mkX(double x) const {
 	if (latlon) {
@@ -301,7 +296,7 @@ const Position Position::linearEst(const Velocity& vo, double time) const {
 
 //const std::pair<Position,Velocity> Position::linearDist2D(const Velocity& v, double d) const {
 //	  double track = v.trk();
-//	  //f.pln(" $$$$$$ linearDist: v.track = "+Units.str("deg",v.compassAngle()));
+//	  //f.pln(" $$$$$$ linearDist: v.track = "+Units::str("deg",v.compassAngle()));
 //	  if (latlon) {
 //		  LatLonAlt sEnd = GreatCircle::linear_initial(ll,track,d);
 //		  //sEnd = sEnd.mkAlt(altAtd);
@@ -309,7 +304,7 @@ const Position Position::linearEst(const Velocity& vo, double time) const {
 //		  if (d > minDist) {  // final course has problems if no distance between points (USE 1E-9), 1E-10 NOT GOOD
 //		     finalTrk = GreatCircle::final_course(ll, sEnd);
 //		  }
-//		  //f.pln(" $$$$$$ linearDist: v = "+v+" finalTrk = "+Units.str("deg",finalTrk)+" d = "+Units.str("ft",d));
+//		  //f.pln(" $$$$$$ linearDist: v = "+v+" finalTrk = "+Units::str("deg",finalTrk)+" d = "+Units::str("ft",d));
 //		  Velocity vEnd = v.mkTrk(finalTrk);
 //		  return std::pair<Position,Velocity>(Position(sEnd),vEnd);
 //	  } else {
@@ -321,14 +316,15 @@ const Position Position::linearEst(const Velocity& vo, double time) const {
 // }
 
 const std::pair<Position,Velocity> Position::linearDist2D(double track, double d, double gsAt_d) const {
-	  //f.pln(" $$$$$$ linearDist: v.track = "+Units.str("deg",v.compassAngle()));
+	  //f.pln(" $$$$$$ linearDist: v.track = "+Units::str("deg",v.compassAngle()));
 	  if (latlon) {
-		  LatLonAlt sEnd = GreatCircle::linear_initial(ll,track,d);
+		  LatLonAlt sEnd = lla();
 		  double finalTrk = track;
 		  if (d > minDist) {  // final course has problems if no distance between points (USE 1E-9), 1E-10 NOT GOOD
-		     finalTrk = GreatCircle::final_course(ll, sEnd);
+			  sEnd = GreatCircle::linear_initial(ll,track,d);
+			  finalTrk = GreatCircle::final_course(ll, sEnd);
 		  }
-		  //f.pln(" $$$$$$ linearDist: v = "+v+" finalTrk = "+Units.str("deg",finalTrk)+" d = "+Units.str("ft",d));
+		  //f.pln(" $$$$$$ linearDist: v = "+v+" finalTrk = "+Units::str("deg",finalTrk)+" d = "+Units::str("ft",d));
 		  Velocity vEnd = Velocity::mkTrkGsVs(finalTrk,gsAt_d,0.0);
 		  return std::pair<Position,Velocity>(Position(sEnd),vEnd);
 	  } else {
@@ -354,7 +350,7 @@ const Position Position::midPoint(const Position& p2) const{
 	if (latlon) {
 		return Position(GreatCircle::interpolate(ll,p2.lla(),0.5));
 	} else {
-		return Position(VectFuns::midPoint(s3,p2.point()));
+		return Position(VectFuns::midPoint(s3,p2.vect3()));
 	}
 }
 
@@ -374,7 +370,7 @@ Position Position::interpolate(const Position& p2, double f) const {
   if (latlon) {
     return Position(GreatCircle::interpolate(ll,p2.lla(),f));
   } else {
-    return Position(Point::mk(VectFuns::interpolate(s3,Point::mk(p2.point()),f)));
+    return Position(Point::mk(VectFuns::interpolate(s3,Point::mk(p2.vect3()),f)));
   }
 }
 
@@ -398,19 +394,19 @@ Velocity Position::initialVelocity(const Position& p, double dt) const {
 		if (isLatLon()) {
 			return GreatCircle::velocity_initial(lla(), p.lla(), dt);
 		} else {
-			return Velocity::make((p.point().Sub(point())).Scal(1.0/dt));
+			return Velocity::make((p.vect3().Sub(vect3())).Scal(1.0/dt));
 		}
 	}
 }
 
 Velocity Position::finalVelocity(const Position& p, double dt) const {
 	if (dt<=0) {
-		return Velocity::ZERO();
+		return Velocity::ZEROV();
 	} else {
 		if (isLatLon()) {
 			return GreatCircle::velocity_final(lla(), p.lla(), dt);
 		} else {
-			return Velocity::make((p.point().Sub(point())).Scal(1.0/dt));
+			return Velocity::make((p.vect3().Sub(vect3())).Scal(1.0/dt));
 		}
 	}
 }
@@ -442,10 +438,10 @@ std::pair<Position,double> Position::intersection(const Position& so, const Velo
 		return std::pair<Position,double>(Position::INVALID(),-1.0);
 	}
 	if (so.latlon) {
-		std::pair<LatLonAlt,double> pgc = GreatCircle::intersection(so.lla(),vo, si.lla(),vi,false);
+		std::pair<LatLonAlt,double> pgc = GreatCircle::intersection(so.lla(),vo, si.lla(),vi);
 		return std::pair<Position,double>(Position(pgc.first),pgc.second );
 	} else {
-		std::pair<Vect3,double> pvt = VectFuns::intersection(so.point(),vo,si.point(),vi);
+		std::pair<Vect3,double> pvt = VectFuns::intersection(so.vect3(),vo,si.vect3(),vi);
 		return std::pair<Position,double>(Position(pvt.first),pvt.second );
 	}
 }
@@ -464,10 +460,35 @@ std::pair<Position,double> Position::intersection(const Position& so, const Posi
 		std::pair<LatLonAlt,double> lgc = GreatCircle::intersectionAvgAlt(so.lla(),so2.lla(), dto, si.lla(),si2.lla());
 		return std::pair<Position,double>(Position(lgc.first),lgc.second);
 	} else {
-		std::pair<Vect3,double> pvt = VectFuns::intersectionAvgZ(so.point(),so2.point(),dto,si.point(),si2.point());
+		std::pair<Vect3,double> pvt = VectFuns::intersectionAvgZ(so.vect3(),so2.vect3(),dto,si.vect3(),si2.vect3());
 		return std::pair<Position,double>(Position(pvt.first),pvt.second);
 	}
 }
+
+
+/** Returns intersection point and time of intersection relative to the time of position so
+ *  for time return value, it assumes that an aircraft travels from so1 to so2 in dto seconds and the other aircraft from si to si2
+ *  a negative time indicates that the intersection occurred in the past (relative to directions of travel of so1)
+ */
+Position Position::intersection2D(const Position& so, const Position& so2, const Position& si, const Position& si2) {
+	if (so.latlon != si.latlon && so2.latlon != si2.latlon && so.latlon != so2.latlon) {
+		fpln("Position.intersection call was given an inconsistent argument.");
+		return Position::INVALID();
+	}
+	if (so.latlon) {
+		LatLonAlt lgc = GreatCircle::intersection(so.lla(),so2.lla(), si.lla(), si2.lla());
+		return Position(lgc);
+	} else {
+		std::pair<Vect2,double> pvt = VectFuns::intersection2D(so.vect2(),so2.vect2(),1.0,si.vect2(),si2.vect2());
+		Vect3 p3 = Vect3(pvt.first,so.z());
+		return Position(p3);
+	}
+
+}
+
+
+
+
 
 //  Velocity Position::averageVelocity(const Position& p2, double speed) {
 //	  if (p2.latlon != latlon) {
@@ -518,6 +539,7 @@ bool Position::isWest(const Position& a) const {
 
 
 bool Position::LoS(const Position& p2, double D, double H) {
+	if (p2.isInvalid()) return false;
 	if (p2.latlon != latlon) {
 		fdln("Position.LoS call given an inconsistent argument: "+toString()+" "+p2.toString());
 		return false;
@@ -532,8 +554,28 @@ bool Position::collinear(Position p1, Position p2) const {
 	if (latlon)
 		return GreatCircle::collinear(lla(),p1.lla(),p2.lla());
 	else
-		return VectFuns::collinear(point(),p1.point(),p2.point());
+		return VectFuns::collinear(vect3(),p1.vect3(),p2.vect3());
 }
+
+
+std::string Position::toUnitTest() const{
+	if (latlon) {
+		return "Position.makeLatLonAlt("+ Fm12(Units::to("deg",lat()))
+		       +", "+Fm16(Units::to("deg",lon()))+", "+Fm12(Units::to("ft",alt()))+")";
+	} else {
+		return "Position.makeXYZ("+(Fm8(Units::to("NM",x()))+", "+Fm8(Units::to("NM",y()))
+		       +", "	+Fm8(Units::to("ft",z()))+")");
+	}
+}
+
+std::string Position::toUnitTestSI() const {
+	if (latlon) {
+		return "Position.mkLatLonAlt("+ Fm12(lat())+", "+Fm12(lon())+", "+Fm12(alt())+")";
+	} else {
+		return "Position.mkXYZ("+(Fm8(x())+", "+Fm8(y())+", "+Fm8(z())+")");
+	}
+}
+
 
 std::string Position::toString() const {
 	return toString(Constants::get_output_precision());
@@ -580,7 +622,7 @@ std::string Position::toStringNP() const {
 
 std::string Position::toStringNP(int precision) const {
 	if (latlon)
-		return ll.toStringNP(precision);
+		return ll.toString(precision);
 	else
 		return s3.toStringNP(precision,"NM","NM","ft");
 }

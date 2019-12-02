@@ -6,7 +6,7 @@
  *
  * 2-D vectors.
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -332,11 +332,17 @@ public:
 	std::string toString(int precision) const;
 
 	/** A string representation of this vector */
+	std::string toStringNP(const std::string& xunit, const std::string& yunit) const;
+
 	std::string toStringNP(const std::string& xunit, const std::string& yunit, int precision) const;
+
+	std::string formatXY(const std::string& pre, const std::string& mid, const std::string& post) const;
 
 	std::string formatXY(int prec, const std::string& pre, const std::string& mid, const std::string& post) const;
 
-	std::string toPVS(int prec) const;
+	std::string toPVS() const;
+
+	std::string toPVS(int precision) const;
 
 	/**
 	 * Return actual time of closest point approach (return negative infinity if parallel)
@@ -400,8 +406,8 @@ public:
 
   /**
    * Returns true if x components and y components of both vectors are within the given bounds
-   * @param v2
-   * @param epsilon
+   * @param v2 vector
+   * @param epsilon bound
    * @return true if vector is within bounds
    */
 	bool within_epsilon(const Vect2& v2, double epsilon) const;

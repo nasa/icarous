@@ -1,10 +1,11 @@
-/*
- * NavPoint.h
+/* Defines a 4D Waypoint
  *
- * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
- * NASA LaRC
+ * Authors:  George Hagen              NASA Langley Research Center
+ *           Ricky Butler              NASA Langley Research Center
+ *           Jeff Maddalon             NASA Langley Research Center
+ *
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -28,7 +29,7 @@ class NavPoint {
 private:
 	Position p;
 	double t;
-	std::string label_s;
+	std::string name_s;
 
 
 public:
@@ -67,6 +68,16 @@ public:
 	 */
     static NavPoint makeLatLonAlt(double lat, double lon, double alt, double t);
 
+    /**
+     * Creates a new lat/lon NavPoint with coordinates (<code>lat</code>,<code>lon</code>,<code>alt</code>).
+     *
+     * @param lat latitude (radians)
+     * @param lon longitude (radians)
+     * @param alt altitude [m]
+     * @param t   time
+     * @return a new NavPoint
+     */
+    static NavPoint mkLatLonAlt(double lat, double lon, double alt, double t);
 
 	/**
 	 * Creates a new Euclidean NavPoint with coordinates (<code>x</code>,<code>y</code>,<code>z</code>).
@@ -143,7 +154,7 @@ public:
 	/** Return the three dimensional position vector 
 	 * @return a Point object (essentially a Vect3 with more natural units)
 	 * */
-    Point  point() const;
+    Point  vect3() const;
     
     /** Return the LatLonAlt object */
     const LatLonAlt& lla() const;
@@ -195,9 +206,12 @@ public:
     double time() const;
 
     /** Return the label (or name) for this point */
-    const std::string& label() const;
+    const std::string& name() const;
     
-	/** Returns true if the "name" label of this NavPoint has been set. */
+	/** Returns true if the "label" label of this NavPoint has been set. 
+	 * 
+	 * @return true, if label is set
+	 * */
     bool isNameSet() const;
 
 	/** Is this point specified in lat/lon? 
@@ -245,8 +259,9 @@ public:
 	 * @param label new string label
 	 * @return a new NavPoint
 	 * */
-    const NavPoint makeLabel(const std::string& label) const;
-    const NavPoint appendLabel(const std::string& label) const;
+    const NavPoint makeName(const std::string& label) const;
+    const NavPoint appendName(const std::string& label) const;
+    const NavPoint appendNameNoDuplication(const std::string& label) const;
 
 	/**
 	 * Make an "added" point that does not include valid source info
@@ -317,7 +332,7 @@ public:
 	 * current NavPoint is in LatLonAlt, then a constant track angle linear projection is used.
 	 * Negative time is a projection in the opposite direction (along the same great circle, if in latlon) and into the past
 	 * 
-	 * @param v
+	 * @param v velocity
 	 * @param time  relative time 
 	 * @return a linear extrapolation NavPoint
 	 */
@@ -363,19 +378,19 @@ public:
 
 	/** String representation, using the default output precision (see Contants.get_output_precision()) */
     std::string toStringShort() const;
-	/** String representation, using the give precision
+	/** String representation, using the give precision, NOT including name field
 	 * 
 	 *  @param precision number of digits of precision
 	 *  @return a string representation
 	 *  */
     std::string toStringShort(int precision) const;
 
-	/** String representation, using the default output precision (see Contants.get_output_precision()) 
+	/** String representation, using the default output precision (see Contants.get_output_precision()) INCLUDING name field 
 	 * 
 	 * @return a string representation
 	 * */
     std::string toString() const;
-	/** String representation, using the give precision 
+	/** String representation, using the give precision INCLUDING "name" field
 	 * 
 	 * @param precision number of digits of precision
 	 * @return a string representation*/

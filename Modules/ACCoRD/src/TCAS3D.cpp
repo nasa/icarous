@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017 United States Government as represented by
+ * Copyright (c) 2012-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,26 +14,52 @@
 #include "Util.h"
 #include "Vertical.h"
 #include "ConflictData.h"
+#include "Triple.h"
 #include <cfloat>
+#include <limits>
+#include <cmath>
 
 namespace larcfm {
 
 TCAS3D::TCAS3D() {
-  table = TCASTable(true);
+  table_ = TCASTable::make_TCASII_Table(true);
   id = "";
 }
 
 TCAS3D::TCAS3D(const TCASTable& tab) {
-  table.copyValues(tab);
+  table_ = tab;
   id = "";
 }
 
-TCASTable TCAS3D::getTCASTable() {
-  return table;
+/** Make TCAS3D object with empty Table **/
+TCAS3D TCAS3D::make_Empty() {
+  TCAS3D tcas3d;
+  tcas3d.table_.clear();
+  return tcas3d;
 }
 
-void TCAS3D::setTCASTable(const TCASTable& tab) {
-  table.copyValues(tab);
+/** Make TCAS3D object with an RA Table **/
+TCAS3D TCAS3D::make_TCASII_RA() {
+  TCAS3D tcas3d;
+  return tcas3d;
+}
+
+/** Make TCAS3D objec with a TA Table **/
+TCAS3D TCAS3D::make_TCASII_TA() {
+  TCAS3D tcas3d;
+  tcas3d.table_.setDefaultTCASIIThresholds(false);
+  return tcas3d;
+}
+
+TCASTable& TCAS3D::getTCASTable() {
+  return table_;
+}
+
+/**
+ * Set table to TCASII Thresholds (RA Table when ra is true, TA Table when ra is false)
+ */
+void TCAS3D::setDefaultTCASIIThresholds(bool ra) {
+  table_.setDefaultTCASIIThresholds(ra);
 }
 
 bool TCAS3D::violation(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) const {
@@ -48,22 +74,27 @@ ConflictData TCAS3D::conflictDetection(const Vect3& so, const Velocity& vo, cons
   return RA3D(so,vo,si,vi,B,T);
 }
 
-double time_coalt(double sz, double voz, double viz, double h) {
-  if (std::abs(sz) <= h)
-    return 0;
-  if (Util::almost_equals(voz, viz))
-    return -1;
-  return -sz / (voz-viz);
+// pointer to new instance of this object
+TCAS3D* TCAS3D::make() const {
+  return new TCAS3D();
 }
 
-bool vertical_RA(double sz, double vz, double ZTHR, double TAU) {
+// pointer to deep copy of current object
+TCAS3D* TCAS3D::copy() const {
+  TCAS3D* cd = new TCAS3D();
+  cd->table_ = table_;
+  cd->id = id;
+  return cd;
+}
+
+bool TCAS3D::vertical_RA(double sz, double vz, double ZTHR, double TCOA) {
   if (std::abs(sz) <= ZTHR) return true;
   if (Util::almost_equals(vz,0)) return false; // [CAM] Changed from == to almost_equals to mitigate numerical problems
   double tcoa = Vertical::time_coalt(sz,vz);
-  return 0 <= tcoa && tcoa <= TAU;
+  return 0 <= tcoa && tcoa <= TCOA;
 }
 
-bool cd2d_TCAS_after(double HMD, Vect2 s, Vect2 vo, Vect2 vi, double t) {
+bool TCAS3D::cd2d_TCAS_after(double HMD, Vect2 s, Vect2 vo, Vect2 vi, double t) {
   Vect2 v = vo.Sub(vi);
   return
       (vo.almostEquals(vi) && s.sqv() <= Util::sq(HMD)) ||
@@ -71,7 +102,7 @@ bool cd2d_TCAS_after(double HMD, Vect2 s, Vect2 vo, Vect2 vi, double t) {
           Horizontal::Theta_D(s,v,1,HMD) >= t);
 }
 
-bool cd2d_TCAS(double HMD, Vect2 s, Vect2 vo, Vect2 vi) {
+bool TCAS3D::cd2d_TCAS(double HMD, Vect2 s, Vect2 vo, Vect2 vi) {
   return cd2d_TCAS_after(HMD,s,vo,vi,0);
 }
 
@@ -84,121 +115,268 @@ bool TCAS3D::TCASII_RA(const Vect3& so, const Vect3& vo, const Vect3& si, const 
   Vect2 vo2 = vo.vect2();
   Vect2 vi2 = vi.vect2();
   Vect2 v2 = vo2.Sub(vi2);
-  int sl = TCASTable::getSensitivityLevel(so.z);
-  bool usehmdf = table.getHMDFilter();
-  double TAU  = table.getTAU(sl);
-  double DMOD = table.getDMOD(sl);
-  double HMD  = table.getHMD(sl);
-  double ZTHR = table.getZTHR(sl);
+  int sl = table_.getSensitivityLevel(so.z);
+  bool usehmdf = table_.getHMDFilter();
+  double TAU  = table_.getTAU(sl);
+  double TCOA = table_.getTCOA(sl);
+  double DMOD = table_.getDMOD(sl);
+  double HMD  = table_.getHMD(sl);
+  double ZTHR = table_.getZTHR(sl);
 
   return (!usehmdf || cd2d_TCAS(HMD,s2,vo2,vi2)) &&
       TCAS2D::horizontal_RA(DMOD,TAU,s2,v2) &&
-      vertical_RA(so.z-si.z,vo.z-vi.z,ZTHR,TAU);
+      vertical_RA(so.z-si.z,vo.z-vi.z,ZTHR,TCOA);
 }
 
 // if true, within lookahead time interval [B,T], the ownship has a TCAS resolution advisory (effectively conflict detection)
 // B must be non-negative and T > B
 
 ConflictData TCAS3D::RA3D(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const {
-  return RA3D_interval(so,vo,si,vi,B,T);
-  //  return time_in <= time_out;
-}
-
-// Assumes 0 <= B < T
-ConflictData TCAS3D::RA3D_interval(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const {
-  double time_in     = T;
-  double time_out    = B;
-  double time_mintau = -1;
-  double dist_mintau = -1;
 
   Vect3 s = so.Sub(si);
-  Velocity v = vo.Sub(vi);
-  Vect2 s2 = s.vect2();
+  Velocity v = Velocity(vo.Sub(vi));
+  Vect2 so2 = so.vect2();
   Vect2 vo2 = vo.vect2();
+  Vect2 si2 = si.vect2();
   Vect2 vi2 = vi.vect2();
-  Vect2 v2 = v.vect2();
-  int sl = TCASTable::getSensitivityLevel(so.z);
-  bool usehmdf = table.getHMDFilter();
-  double TAU  = table.getTAU(sl);
-  double DMOD = table.getDMOD(sl);
-  double HMD  = table.getHMD(sl);
-  double ZTHR = table.getZTHR(sl);
+
+  int max_sl = table_.getMaxSensitivityLevel();
+  double DMOD_max = table_.getDMOD(max_sl);
+  double ZTHR_max = table_.getZTHR(max_sl);
+
+  double tin = INFINITY;
+  double tout = -INFINITY;
+  double tmin = INFINITY;
+  int sl_first = table_.getSensitivityLevel(so.z+B*vo.z);
+  int sl_last = table_.getSensitivityLevel(so.z+T*vo.z);
+  if (sl_first == sl_last || Util::almost_equals(vo.z,0.0)) {
+    Triple<double,double,double> ra3dint = RA3D_interval(sl_first,so2,so.z,vo2,vo.z,si2,si.z,vi2,vi.z,B,T);
+    tin = ra3dint.first;
+    tout = ra3dint.second;
+    tmin = ra3dint.third;
+  } else {
+    int sl = sl_first;
+    for (double t_B = B; t_B < T; sl = sl_first < sl_last ? sl+1 : sl-1) {
+      if (table_.isValidSensitivityLevel(sl)) {
+        double level = sl_first < sl_last ? table_.getLevelAltitudeUpperBound(sl) :table_.getLevelAltitudeLowerBound(sl);
+        double t_level = !ISFINITE(level) ? INFINITY :(level-so.z)/vo.z;
+        Triple<double,double,double> ra3dint = RA3D_interval(sl,so2,so.z,vo2,vo.z,si2,si.z,vi2,vi.z,t_B,Util::min(t_level,T));
+        if (Util::almost_less(ra3dint.first,ra3dint.second)) {
+          tin = Util::min(tin,ra3dint.first);
+          tout = Util::max(tout,ra3dint.second);
+        }
+        tmin = Util::min(tmin,ra3dint.third);
+        t_B = t_level;
+        if (sl == sl_last) {
+          break;
+        }
+      }
+    }
+  }
+  double dmin = s.linear(v, tmin).cyl_norm(DMOD_max, ZTHR_max);
+  return  ConflictData(tin,tout,tmin,dmin,s,v);}
+
+// Assumes 0 <= B < T
+Triple<double,double,double> TCAS3D::RA3D_interval(int sl, const Vect2& so2, double soz, const Vect2& vo2, double voz,
+    const Vect2& si2, double siz, const Vect2& vi2, double viz, double B, double T) const {
+  double time_in_     = T;
+  double time_out_    = B;
+  double time_mintau_ = INFINITY;
+  Vect2 s2 = so2.Sub(si2);
+  Vect2 v2 = vo2.Sub(vi2);
+  double sz = soz-siz;
+  double vz = voz-viz;
+  bool usehmdf = table_.getHMDFilter();
+  double TAU  = table_.getTAU(sl);
+  double TCOA = table_.getTCOA(sl);
+  double DMOD = table_.getDMOD(sl);
+  double HMD  = table_.getHMD(sl);
+  double ZTHR = table_.getZTHR(sl);
 
   if (usehmdf && !cd2d_TCAS_after(HMD,s2,vo2,vi2,B)) {
-    time_mintau = TCAS2D::time_of_min_tau(DMOD,B,T,s2,v2);
-    dist_mintau = so.linear(vo, time_mintau).Sub(si.linear(vi, time_mintau)).cyl_norm(table.getDMOD(8), table.getZTHR(8));
-    return ConflictData(time_in,time_out,time_mintau,dist_mintau,s,vi);
-  }
-  double sz = so.z-si.z;
-  if (Util::almost_equals(vo.z, vi.z) && std::abs(sz) > ZTHR) {
-    time_mintau = TCAS2D::time_of_min_tau(DMOD,B,T,s2,v2);
-    dist_mintau = so.linear(vo, time_mintau).Sub(si.linear(vi, time_mintau)).cyl_norm(table.getDMOD(8), table.getZTHR(8));
-    return ConflictData(time_in,time_out,time_mintau,dist_mintau,s,v);
-  }
-  double nzvz = vo.z-vi.z;
-  double centry = B;
-  double cexit  = T;
-  if (!Util::almost_equals(vo.z, vi.z)) {
-    double act_H = Util::max(ZTHR,std::abs(nzvz)*TAU);
-    centry = Vertical::Theta_H(sz,nzvz,-1,act_H);
-    cexit = Vertical::Theta_H(sz,nzvz,1,ZTHR);
-  }
-  Vect2 ventry = v2.ScalAdd(centry,s2);
-  bool exit_at_centry = ventry.dot(v2) >= 0;
-  bool los_at_centry = ventry.sqv() <= Util::sq(HMD);
-  if (cexit < B || T < centry) {
-    time_mintau = TCAS2D::time_of_min_tau(DMOD,B,T,s2,v2);
-    dist_mintau = so.linear(vo, time_mintau).Sub(si.linear(vi, time_mintau)).cyl_norm(table.getDMOD(8), table.getZTHR(8));
-    return ConflictData(time_in,time_out,time_mintau,dist_mintau,s,v);
-  }
-  double tin = Util::max(B,centry);
-  double tout = Util::min(T,cexit);
-  TCAS2D tcas2d;
-  tcas2d.RA2D_interval(DMOD,TAU,tin,tout,s2,vo2,vi2);
-  double RAin2D = tcas2d.t_in;
-  double RAout2D = tcas2d.t_out;
-  double RAin2D_lookahead = Util::max(tin,Util::min(tout,RAin2D));
-  double RAout2D_lookahead = Util::max(tin,Util::min(tout,RAout2D));
-  if (RAin2D > RAout2D || RAout2D<tin || RAin2D > tout ||
-      (usehmdf && HMD < DMOD && exit_at_centry && !los_at_centry)) {
-    time_mintau = TCAS2D::time_of_min_tau(DMOD,B,T,s2,v2);
-    dist_mintau = so.linear(vo, time_mintau).Sub(si.linear(vi, time_mintau)).cyl_norm(table.getDMOD(8), table.getZTHR(8));
-    return ConflictData(time_in,time_out,time_mintau,dist_mintau,s,v);
-  }
-  if (usehmdf && HMD < DMOD) {
-    double exitTheta = T;
-    if (v2.sqv() > 0)
-      exitTheta = Util::max(B,Util::min(Horizontal::Theta_D(s2,v2,1,HMD),T));
-    double minRAoutTheta = Util::min(RAout2D_lookahead,exitTheta);
-    time_in = RAin2D_lookahead;
-    time_out = minRAoutTheta;
-    if (RAin2D_lookahead <= minRAoutTheta) {
-      time_mintau = TCAS2D::time_of_min_tau(DMOD,RAin2D_lookahead,minRAoutTheta,s2,v2);
-      dist_mintau = so.linear(vo, time_mintau).Sub(si.linear(vi, time_mintau)).cyl_norm(table.getDMOD(8), table.getZTHR(8));
-      return ConflictData(time_in,time_out,time_mintau,dist_mintau,s,v);
+    time_mintau_ = TCAS2D::time_of_min_tau(DMOD,B,T,s2,v2);
+  } else {
+    if (Util::almost_equals(voz, viz) && std::abs(sz) > ZTHR) {
+      time_mintau_ = TCAS2D::time_of_min_tau(DMOD,B,T,s2,v2);
+    } else {
+      double tentry = B;
+      double texit  = T;
+      if (!Util::almost_equals(voz, viz)) {
+        double act_H = Util::max(ZTHR,std::abs(vz)*TCOA);
+        tentry = Vertical::Theta_H(sz,vz,-1,act_H);
+        texit = Vertical::Theta_H(sz,vz,1,ZTHR);
+      }
+      Vect2 ventry = v2.ScalAdd(tentry,s2);
+      bool exit_at_centry = ventry.dot(v2) >= 0;
+      bool los_at_centry = ventry.sqv() <= Util::sq(HMD);
+      if (texit < B || T < tentry) {
+        time_mintau_ = TCAS2D::time_of_min_tau(DMOD,B,T,s2,v2);
+      } else {
+        double tin = Util::max(B,tentry);
+        double tout = Util::min(T,texit);
+        TCAS2D tcas2d;
+        tcas2d.RA2D_interval(DMOD,TAU,tin,tout,s2,vo2,vi2);
+        double RAin2D = tcas2d.t_in;
+        double RAout2D = tcas2d.t_out;
+        double RAin2D_lookahead = Util::max(tin,Util::min(tout,RAin2D));
+        double RAout2D_lookahead = Util::max(tin,Util::min(tout,RAout2D));
+        if (RAin2D > RAout2D || RAout2D<tin || RAin2D > tout ||
+            (usehmdf && HMD < DMOD && exit_at_centry && !los_at_centry)) {
+          time_mintau_ = TCAS2D::time_of_min_tau(DMOD,B,T,s2,v2);
+        } else {
+          if (usehmdf && HMD < DMOD) {
+            double exitTheta = T;
+            if (v2.sqv() > 0)
+              exitTheta = Util::max(B,Util::min(Horizontal::Theta_D(s2,v2,1,HMD),T));
+            double minRAoutTheta = Util::min(RAout2D_lookahead,exitTheta);
+            time_in_ = RAin2D_lookahead;
+            time_out_ = minRAoutTheta;
+            if (RAin2D_lookahead <= minRAoutTheta) {
+              time_mintau_ = TCAS2D::time_of_min_tau(DMOD,RAin2D_lookahead,minRAoutTheta,s2,v2);
+            } else {
+              time_mintau_ = TCAS2D::time_of_min_tau(DMOD,B,T,s2,v2);
+            }
+          } else {
+            time_in_ = RAin2D_lookahead;
+            time_out_ = RAout2D_lookahead;
+            time_mintau_ = TCAS2D::time_of_min_tau(DMOD,RAin2D_lookahead,RAout2D_lookahead,s2,v2);
+          }
+        }
+      }
     }
-    time_mintau = TCAS2D::time_of_min_tau(DMOD,B,T,s2,v2);
-    dist_mintau = so.linear(vo, time_mintau).Sub(si.linear(vi, time_mintau)).cyl_norm(table.getDMOD(8), table.getZTHR(8));
-    return ConflictData(time_in,time_out,time_mintau,dist_mintau,s,v);
   }
-  time_in = RAin2D_lookahead;
-  time_out = RAout2D_lookahead;
-  time_mintau = TCAS2D::time_of_min_tau(DMOD,RAin2D_lookahead,RAout2D_lookahead,s2,v2);
-  dist_mintau = so.linear(vo, time_mintau).Sub(si.linear(vi, time_mintau)).cyl_norm(table.getDMOD(8), table.getZTHR(8));
-  return ConflictData(time_in,time_out,time_mintau,dist_mintau,s,v);
+  return Triple<double,double,double>(time_in_, time_out_, time_mintau_);
 }
 
-// pointer to new instance of this object
-TCAS3D* TCAS3D::make() const {
-  return new TCAS3D();
+
+/**
+ * Returns TAU threshold for sensitivity level sl in seconds
+ */
+double TCAS3D::getTAU(int sl) const {
+  return table_.getTAU(sl);
 }
 
-// pointer to deep copy of current object
-TCAS3D* TCAS3D::copy() const {
-  TCAS3D* cd = new TCAS3D();
-  cd->table.copyValues(table);
-  cd->id = id;
-  return cd;
+/**
+ * Returns TCOA threshold for sensitivity level sl in seconds
+ */
+double TCAS3D::getTCOA(int sl) const {
+  return table_.getTCOA(sl);
+}
+
+/**
+ * Returns DMOD for sensitivity level sl in internal units.
+ */
+double TCAS3D::getDMOD(int sl) const {
+  return table_.getDMOD(sl);
+}
+
+/**
+ * Returns DMOD for sensitivity level sl in u units.
+ */
+double TCAS3D::getDMOD(int sl, const std::string& u) const {
+  return table_.getDMOD(sl,u);
+}
+
+/**
+ * Returns Z threshold for sensitivity level sl in internal units.
+ */
+double TCAS3D::getZTHR(int sl) const {
+  return table_.getZTHR(sl);
+}
+
+/**
+ * Returns Z threshold for sensitivity level sl in u units.
+ */
+double TCAS3D::getZTHR(int sl,const std::string& u) const {
+  return table_.getZTHR(sl,u);
+}
+
+/**
+ * Returns HMD for sensitivity level sl in internal units.
+ */
+double TCAS3D::getHMD(int sl) const {
+  return table_.getHMD(sl);
+}
+
+/**
+ * Returns HMD for sensitivity level sl in u units.
+ */
+double TCAS3D::getHMD(int sl, const std::string& u) const {
+  return table_.getHMD(sl,u);
+}
+
+/** Modify the value of Tau Threshold for a given sensitivity level (2-8)
+ * Parameter val is given in seconds
+ */
+void TCAS3D::setTAU(int sl, double val) {
+  table_.setTAU(sl,val);
+}
+
+/** Modify the value of TCOA Threshold for a given sensitivity level (2-8)
+ * Parameter val is given in seconds
+ */
+void TCAS3D::setTCOA(int sl, double val) {
+  table_.setTCOA(sl,val);
+}
+
+/** Modify the value of DMOD for a given sensitivity level (2-8)
+ * Parameter val is given in internal units
+ */
+void TCAS3D::setDMOD(int sl, double val) {
+  table_.setDMOD(sl, val);
+}
+
+/** Modify the value of DMOD for a given sensitivity level (2-8)
+ * Parameter val is given in u units
+ */
+void TCAS3D::setDMOD(int sl, double val, const std::string& u) {
+  table_.setDMOD(sl,val,u);
+}
+
+/** Modify the value of ZTHR for a given sensitivity level (2-8)
+ * Parameter val is given in internal units
+ */
+void TCAS3D::setZTHR(int sl, double val) {
+  table_.setZTHR(sl,val);
+}
+
+/** Modify the value of ZTHR for a given sensitivity level (2-8)
+ * Parameter val is given in u units
+ */
+void TCAS3D::setZTHR(int sl, double val, const std::string& u) {
+  table_.setZTHR(sl,val,u);
+}
+
+/**
+ * Modify the value of HMD for a given sensitivity level (2-8)
+ * Parameter val is given in internal units
+ */
+void TCAS3D::setHMD(int sl, double val) {
+  table_.setHMD(sl,val);
+}
+
+/**
+ * Modify the value of HMD for a given sensitivity level (2-8)
+ * Parameter val is given in u units
+ */
+void TCAS3D::setHMD(int sl, double val, const std::string& u) {
+  table_.setHMD(sl,val,u);
+}
+
+void TCAS3D::setHMDFilter(bool flag) {
+  table_.setHMDFilter(flag);
+}
+
+bool TCAS3D::getHMDFilter() {
+  return table_.getHMDFilter();
+}
+
+std::string TCAS3D::toString() const {
+  return (id == "" ? "" : id+" = ")+getSimpleClassName()+": {"+table_.toString()+"}";
+}
+
+std::string TCAS3D::toPVS() const {
+  return getSimpleClassName()+"("+table_.toPVS()+")";
 }
 
 ParameterData TCAS3D::getParameters() const {
@@ -208,16 +386,21 @@ ParameterData TCAS3D::getParameters() const {
 }
 
 void TCAS3D::updateParameterData(ParameterData& p) const {
-  table.updateParameterData(p);
+  table_.updateParameterData(p);
   p.set("id",id);
 }
 
 void TCAS3D::setParameters(const ParameterData& p) {
-  table.setParameters(p);
+  table_.setParameters(p);
   if (p.contains("id")) {
     id = p.getString("id");
   }
 }
+
+std::string TCAS3D::getSimpleClassName() const {
+  return "TCAS3D";
+}
+
 
 std::string TCAS3D::getIdentifier() const {
   return id;
@@ -230,26 +413,16 @@ void TCAS3D::setIdentifier(const std::string& s) {
 bool TCAS3D::equals(Detection3D* d) const {
   if (!larcfm::equals(getCanonicalClassName(), d->getCanonicalClassName())) return false;
   if (!larcfm::equals(id, d->getIdentifier())) return false;
-  if (!table.equals(((TCAS3D*)d)->table)) return false;
+  if (!table_.equals(((TCAS3D*)d)->table_)) return false;
   return true;
 }
 
-std::string TCAS3D::getSimpleClassName() const {
-  return "TCAS3D";
-}
 
-std::string TCAS3D::toString() const {
-  return (id == "" ? "" : id+" = ")+getSimpleClassName()+": {"+table.toString()+"}";
-}
-
-std::string TCAS3D::toPVS(int prec) const {
-  return table.toPVS(prec);
-}
 
 bool TCAS3D::contains(const Detection3D* cd) const {
   if (larcfm::equals(getCanonicalClassName(), cd->getCanonicalClassName())) {
     TCAS3D* d = (TCAS3D*)cd;
-    return table.contains(d->table);
+    return table_.contains(d->table_);
   }
   return false;
 }

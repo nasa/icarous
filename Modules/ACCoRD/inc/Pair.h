@@ -6,7 +6,7 @@
  *
  * a three element tuple
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -17,7 +17,10 @@
 
 namespace larcfm {
 
-   /** A class representing a two member tuple */
+/** A class representing a two member tuple 
+ * @param <L> Type of leftmost element
+ * @param <R> Type of rightmost element 
+ * */
 template <typename L, typename R> 
 class Pair {
  public:
@@ -43,13 +46,17 @@ class Pair {
     }
 
 
-    /** The first (or leftmost) element */
+    /** The first (or leftmost) element 
+     * @return leftmost element
+     * */
     L getFirst() const {
         return left;
     }
 
 
-    /** The first (or leftmost) element */
+    /** The first (or leftmost) element 
+     * @return rightmost element
+     * */
     R getSecond() const {
         return right;
     }
@@ -60,7 +67,13 @@ class Pair {
     Pair(const Pair<L1, R1>& t): left(t.left),  right(t.right) {}
  };
 
-/** Make a Pair */
+    /** Make a Pair 
+     * @param left left element 
+     * @param right right element
+     * @param <L> Type of leftmost element
+     * @param <R> Type of rightmost element 
+     * @return pair
+     * */
  template <typename L, typename R> 
  Pair<L, R> make(const L& left,  const R& right) {
    return new Pair<L, R>(left,  right);

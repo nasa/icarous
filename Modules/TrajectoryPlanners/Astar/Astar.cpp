@@ -95,7 +95,7 @@ bool Astar::CheckConstraints(Node& qnode) {
                 return false;
             }
 
-            std::vector<Vect2> fenceVertices = it->poly2D().getVertices();
+            std::vector<Vect2> fenceVertices = it->poly2D().getVerticesRef();
             Vect2 polyVel(0,0);
             val = geoPolyDetect.Static_Collision_Detector(0,1,fenceVertices,polyVel,O.vect2(),vel,0.1,true);
 
@@ -188,8 +188,8 @@ bool Astar::CheckProjectedFenceConflict(Node* qnode,Node* goal){
         int sizePoly = it->size();
         for(int i=0;i<sizePoly;i++){
             int j = (i + 1) % sizePoly;
-            Vect2 A = it->getVertex(i);
-            Vect2 B = it->getVertex(j);
+            Vect2 A = it->get2D(i); 
+            Vect2 B = it->get2D(j);
             Vect3 CurrPos(qnode->x,qnode->y,qnode->z);
             Vect3 NextWP(goal->x,goal->y,goal->z);
             bool intCheck = LinePlanIntersection(A,B,

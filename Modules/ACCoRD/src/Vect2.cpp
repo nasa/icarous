@@ -6,7 +6,7 @@
  *
  * 2-D vectors.
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -107,7 +107,7 @@ Vect2 Vect2::Scal(double k) const {
 	return Vect2(k*x,k*y);
 }
 
-Vect2 Vect2::ScalAdd(double k, const Vect2& v) const {
+Vect2 Vect2::ScalAdd(const double k, const Vect2& v) const {
 	//    Vect2 u = new Vect2(x,y);
 	//    u.scal(k);
 	//    u.add(v);
@@ -230,16 +230,28 @@ std::string Vect2::toString(int precision) const {
   return formatXY(precision,"(",", ",")");
 }
 
+std::string Vect2::toStringNP(const std::string& xunit, const std::string& yunit) const {
+	return toStringNP(xunit,yunit,Constants::get_output_precision());
+}
+
 std::string Vect2::toStringNP(const std::string& xunit, const std::string& yunit, int prec) const {
 	return FmPrecision(Units::to(xunit,x),prec)+", "+FmPrecision(Units::to(yunit,y),prec);
+}
+
+std::string Vect2::formatXY(const std::string& pre, const std::string& mid, const std::string& post) const {
+	return formatXY(Constants::get_output_precision(),pre,mid,post);
 }
 
 std::string Vect2::formatXY(int prec, const std::string& pre, const std::string& mid, const std::string& post) const {
 	return  pre+FmPrecision(x,prec)+mid+FmPrecision(y,prec)+post;
 }
 
-std::string Vect2::toPVS(int prec) const {
-	return "(# x:= "+FmPrecision(x,prec)+", y:= "+FmPrecision(y,prec)+" #)";
+std::string Vect2::toPVS() const {
+	return toPVS(Constants::get_output_precision());
+}
+
+std::string Vect2::toPVS(int precision) const {
+	return "(# x:= "+FmPrecision(x,precision)+", y:= "+FmPrecision(y,precision)+" #)";
 }
 
 /**

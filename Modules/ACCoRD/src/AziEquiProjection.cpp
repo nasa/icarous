@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -86,22 +86,28 @@ namespace larcfm {
   
     // AziEquiProjection
     
-    AziEquiProjection::AziEquiProjection() {
+    AziEquiProjection::AziEquiProjection() :
+    	ref(Vect3()),
+    	llaRef(LatLonAlt::ZERO()) {
       projAlt = 0;
-      ref = Vect3();
-      llaRef = LatLonAlt::ZERO();
+      //ref = Vect3();
+      //llaRef = LatLonAlt::ZERO();
     }
     
-    AziEquiProjection::AziEquiProjection(const LatLonAlt& lla) {
+    AziEquiProjection::AziEquiProjection(const LatLonAlt& lla) :
+    	ref(spherical2xyz(lla.lat(),lla.lon())),
+    	llaRef(lla) {
         projAlt = lla.alt();
-        ref = spherical2xyz(lla.lat(),lla.lon());
-        llaRef = lla;
+        //ref = spherical2xyz(lla.lat(),lla.lon());
+        //llaRef = lla;
     }
     
-    AziEquiProjection::AziEquiProjection(double lat, double lon, double alt) {
+    AziEquiProjection::AziEquiProjection(double lat, double lon, double alt) : 
+    	ref(spherical2xyz(lat,lon)),
+    	llaRef(LatLonAlt::mk(lat, lon, alt)) {
         projAlt = alt;
-        ref = spherical2xyz(lat,lon);
-        llaRef = LatLonAlt::mk(lat, lon, alt);
+        //ref = spherical2xyz(lat,lon);
+        //llaRef = LatLonAlt::mk(lat, lon, alt);
     }
     
     AziEquiProjection AziEquiProjection::makeNew(const LatLonAlt& lla) const {
@@ -151,7 +157,7 @@ namespace larcfm {
     	if (sip.isLatLon()) {
     		si = project(sip.lla());
     	} else {
-    		si = sip.point();
+    		si = sip.vect3();
     	}
     	return si;
     }
@@ -203,6 +209,18 @@ namespace larcfm {
 
   std::pair<Vect3,Velocity> AziEquiProjection::project(const Position& p, const Velocity& v) const {
    	return std::pair<Vect3,Velocity>(project(p),projectVelocity(p,v));
+   }
+
+  std::pair<Vect3,Velocity> AziEquiProjection::project(const LatLonAlt& lla, const Velocity& v) const {
+	   Vect3 vec3 = Vect3(project2(lla),lla.alt() - projAlt);
+	   double timeStep = 10.0;
+	   LatLonAlt ll2 = GreatCircle::linear_initial(lla,v,timeStep);
+	   Vect3 s2 = project(ll2);
+	   Vect3 vn = s2.Sub(vec3).Scal(1/timeStep);
+	   Velocity vel3 = Velocity::make(vn);
+
+
+   	return std::pair<Vect3,Velocity>(vec3, vel3);
    }
 
   std::pair<Position,Velocity> AziEquiProjection::inverse(const Vect3& p, const Velocity& v, bool toLatLon) const {

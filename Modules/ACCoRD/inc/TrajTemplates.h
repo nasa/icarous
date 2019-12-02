@@ -1,5 +1,5 @@
 /*
-u * Copyright (c) 2011-2017 United States Government as represented by
+u * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -36,15 +36,6 @@ namespace larcfm {
 /**
  * Trajectory generation functionality.  This class translates between Linear and Kinematic plans.  Note that the translations are 
  * not currently robust.
- * 
- * Note: there are several global variables that are settable by the user and modify low-level aspects of the transformation:
- * trajKinematicsTrack: allow track transformations (default true, if false, no turn TCPs will be generated)
- * trajKinematicsGS: allow gs transformations (default true, if false, no ground speed TCPs will be generated)
- * trajKinematicsVS: allow vs transformations (default true, if false, no vertical speed TCPs will be generated)
- * trajPreserveGS: prioritize preserving grounds speeds (default FALSE. If true, times may change, if false point times should be preserved)
- * trajAccelerationReductionAllowed: if true, if there are vs end points that nearly overlap with existing points, allow the acceleration to be adjusted so that they actually do overlap or are sufficiently distinct that there will not be problems inferring the velocities between them. (default true)
- * 
- * These values may be set through setter methods.
  * 
  */
 class TrajTemplates {

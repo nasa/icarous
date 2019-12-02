@@ -1,5 +1,5 @@
 /*
-u * Copyright (c) 2011-2017 United States Government as represented by
+u * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -61,8 +61,8 @@ using std::vector;
 	
 	Plan TrajTemplates::makeKPC(const LatLonAlt& start, const LatLonAlt& end, double gs, double vs, double cruiseAlt) {
 		Plan lpc = makeLPC(start,end,gs,vs,cruiseAlt);
-		bool allowSmoothing = true;
-		Plan kpc = TrajGen::makeKinematicPlan(lpc, bankAngle, gsAccel, vsAccel, allowSmoothing);
+		bool repair = true;
+		Plan kpc = TrajGen::makeKinematicPlan(lpc, bankAngle, gsAccel, vsAccel, repair, repair, repair);
 		//fpln(" makeKPC: kpc = \n"+kpc.toOutput());
         return kpc;
 	}
@@ -97,8 +97,8 @@ using std::vector;
 
 	Plan TrajTemplates::makeKPC_Turn(const LatLonAlt& start, const LatLonAlt& end, double gs, double vs, double cruiseAlt) {
 		Plan lpc = makeLPC_Turn(start,end,gs,vs,cruiseAlt);
-		bool allowSmoothing = true;
-		Plan kpc = TrajGen::makeKinematicPlan(lpc, bankAngle, gsAccel, vsAccel, allowSmoothing);
+		bool repair = true;
+		Plan kpc = TrajGen::makeKinematicPlan(lpc, bankAngle, gsAccel, vsAccel, repair, repair, repair);
 		//fpln(kpc.toOutput());
         return kpc;
 	}
@@ -125,9 +125,9 @@ using std::vector;
 
 	Plan TrajTemplates::makeKPC_FLC(const LatLonAlt& start, const LatLonAlt& end, double gs, double vs) {
 		Plan lpc = makeLPC_FLC(start,end,gs,vs);
-		fpln(" makeKPC_FLC: lpc = "+lpc.toOutput());
-		bool allowSmoothing = true;
-		Plan kpc = TrajGen::makeKinematicPlan(lpc, bankAngle, gsAccel, vsAccel, allowSmoothing);
+		//fpln(" makeKPC_FLC: lpc = "+lpc.toString());
+		bool repair = true;
+		Plan kpc = TrajGen::makeKinematicPlan(lpc, bankAngle, gsAccel, vsAccel, repair, repair, repair);
 		//fpln(kpc.toOutput());
         return kpc;
 	}

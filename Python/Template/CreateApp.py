@@ -62,4 +62,11 @@ fp2.write(pystache.render(template1,templ_args))
 fp1.close()
 fp2.close()
 
+# Read the .cfg file
+fp1 = open('sample_app/app.cfg','r')
+template1 = fp1.read()
+fp2 = open(args.APP_NAME+'/app.cfg','w')
+fp2.write(pystache.render(template1,templ_args))
+fp1.close()
+fp2.close()
 

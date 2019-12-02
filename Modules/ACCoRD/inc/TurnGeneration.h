@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -30,7 +30,7 @@ namespace larcfm {
 class TurnGeneration {
 
 public:
-  static Tuple5<NavPoint,NavPoint,NavPoint, int, Position> turnGenerator(const NavPoint& np1, const NavPoint& np2, int linearIndex, const NavPoint& np3, double radius);
+  static Tuple5<NavPoint,NavPoint,NavPoint, int, Position> turnGenerator(const NavPoint& np1, const NavPoint& np2, const NavPoint& np3, double radius);
   static Tuple6<Position,Position,Position,int,double,Position> turnGenerator(const Position& np1, const Position& np2, const Position& np3, double radius);
  	
 	/**
@@ -68,18 +68,7 @@ public:
 	 * NOTE.   MOT.alt = np.alt()
 	 * velocity in metadata is set correctly for BOT, with track values modified to match the MOT and EOT points
 	 */
-  static Quad<NavPoint,NavPoint,NavPoint,int> turnGeneratorProjected(const NavPoint& np1, const NavPoint& np2, int linearIndex, const NavPoint& np3, double R);
- 	
-	/**
-	 * does NOT calculate an accurate altitude
-	 * 
-	 * @param p2
-	 * @param trkIn
-	 * @param trkOut
-	 * @param radius
-	 * @return returns BOT, MOT, EOT and distance from BOT to p2 = distance from EOT to p2
-	 */
-  static Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt> turnGeneratorLLA(const LatLonAlt& p2, double trkIn, double trkOut, double radius);
+  static Quad<NavPoint,NavPoint,NavPoint,int> turnGeneratorProjected(const NavPoint& np1, const NavPoint& np2, const NavPoint& np3, double R);
  	
 	/**
 	 * Altitudes are not set.
@@ -89,7 +78,7 @@ public:
 	 * @param radius
 	 * @return
 	 */
-  static Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt> turnGeneratorLLA(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3, double radius);
+  static Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt> turnGeneratorLLA_orig(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3, double radius);
  	
 	/**
 	 * Altitudes are not set.
@@ -100,8 +89,10 @@ public:
 	 * @param radius as a distance, not an angle
 	 * @return
 	 */
-  static Triple<LatLonAlt,LatLonAlt,LatLonAlt> turnGeneratorLLA_Alt2(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3, double radius);
+  static Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,LatLonAlt> turnGeneratorLLA_Alt2(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3, double radius);
  	
+  static Tuple6<LatLonAlt,LatLonAlt,LatLonAlt,int,double,LatLonAlt> turnGeneratorLLA_Alt3(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3, double radius);
+
 
 	
 
@@ -149,8 +140,8 @@ private:
   static int turnDirection(const Vect3& p, const Vect3& q, const Vect3& r);
   	
 
-public:
-  static Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,double> turnGeneratorLLA_Alt3(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3, double radius);
+//public:
+//  static Tuple5<LatLonAlt,LatLonAlt,LatLonAlt,int,double> turnGeneratorLLA_Alt3(const LatLonAlt& p1, const LatLonAlt& p2, const LatLonAlt& p3, double radius);
   	
 	
 };

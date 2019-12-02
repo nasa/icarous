@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -58,7 +58,7 @@ void CDPolycarp::setFac(double x) {
 }
 
 bool CDPolycarp::isNicePolygon(const Poly3D& mp) const {
-  return mp.getBottom() <= mp.getTop() && PolycarpContain::nice_polygon_2D(mp.poly2D().getVertices(), buff);
+  return mp.getBottom() <= mp.getTop() && PolycarpContain::nice_polygon_2D(mp.poly2D().getVerticesRef(), buff);
 }
 
 bool CDPolycarp::isNicePolygon(const MovingPolygon3D& mp) const {

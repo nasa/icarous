@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -11,11 +11,14 @@
 #include "MovingPolygon2D.h"
 #include "Poly3D.h"
 #include "Velocity.h"
+#include "EuclideanProjection.h"
 
 namespace larcfm {
 /**
- * Polygon detection.
- * Based on UNVERIFIED PVS code.
+  * 
+ * A MovingPolygon3D contains a  MovingPolygon2D (list of Vect2 vertices) and vertical information.
+ * It is structured to interface well with other PVS-oriented code
+ * 
  */
 class MovingPolygon3D {
 
@@ -34,6 +37,11 @@ public:
 
 	MovingPolygon3D(const Poly3D& p, const std::vector<Velocity>& v, double end);
 
+    /** Polygon "location" at time t
+     * 
+     * @param t   time of interest
+     * @return    a polygon at time t
+     */
 	Poly3D position(double t) const;
 
     /**

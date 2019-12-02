@@ -1,0 +1,43 @@
+ <Interfaces ConfigurationType="default">
+  <Adapter AdapterType="OSNativeTime" />
+  <Adapter AdapterType="Utility" />
+  <Adapter AdapterType="CfsAdapter" Server="localhost:1381">
+    <DefaultAdapter/>
+    <DefaultCommandAdapter/>
+    <DefaultLookupAdapter/>
+    <CommandNames>
+      SetMode,
+      SetYaw,
+      Takeoff,
+      ArmMotors,
+      Takeoff,
+      CheckFenceViolation,
+      GetRecoveryPosition,
+      GetWaypoint,
+      SetNextMissionWP,
+      Land,
+      SetVel,
+      CheckSafeToTurn,
+      Heading2Maneuver,
+      Status
+    </CommandNames>
+    <LookupNames>
+      missionStart,
+      armStatus,
+      takeoffStatus,
+      position,
+      velocity,
+      totalMissionWP,
+      nextMissionWPIndex,
+      totalFences,
+      totalTraffic,
+      trafficResType,
+      requireDitchGuidance,
+      ditchingStatus,
+      ditchingComplete,
+      resetDitching,
+      ditchSite,
+      captureH
+    </LookupNames> 
+  </Adapter>
+</Interfaces>

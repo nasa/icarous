@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -95,7 +95,7 @@ public:
 
 	bool isContainment() const;
 	
-	General3DState get3DState(const EuclideanProjection& proj) const;
+	General3DState get3DState(const EuclideanProjection& proj) ;
 	
 	/**
 	 * Return the last computed 3D state (via get3DState)

@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -101,7 +101,7 @@ Vect3 OrthographicProjection::project(const Position& sip) const {
 	if (sip.isLatLon()) {
 		si = project(sip.lla());
 	} else {
-		si = sip.point();
+		si = sip.vect3();
 	}
 	return si;
 }
@@ -150,6 +150,10 @@ Velocity OrthographicProjection::inverseVelocity(const Vect3& s, const Velocity&
 }
 
 std::pair<Vect3,Velocity> OrthographicProjection::project(const Position& p, const Velocity& v) const {
+	return std::pair<Vect3,Velocity>(project(p),projectVelocity(p,v));
+}
+
+std::pair<Vect3,Velocity> OrthographicProjection::project(const LatLonAlt& p, const Velocity& v) const {
 	return std::pair<Vect3,Velocity>(project(p),projectVelocity(p,v));
 }
 

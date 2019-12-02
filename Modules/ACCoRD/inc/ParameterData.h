@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017 United States Government as represented by
+ * Copyright (c) 2014-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,6 +14,7 @@
 #include "format.h"
 #include "string_util.h"
 #include "ParameterEntry.h"
+#include "Function.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -37,7 +38,7 @@ struct stringCaseInsensitive {
  * parameter strings into various data structures.<p>
  * 
  * All key accesses are case insensitive, however the actual key values are stored with case information intact.  Methods returning the 
- * key values (getList, getListFull) will reflect the capitalization scheme used for the initial assignment to a key.
+ * key values (getKeyList, getListFull) will reflect the capitalization scheme used for the initial assignment to a key.
  * 
  */
 class ParameterData {
@@ -46,10 +47,7 @@ public:
 	static const std::string parenPattern;
 	static const std::string defaultEntrySeparator;
 
-
 	ParameterData();
-	bool isCaseSensitive();
-	void setCaseSensitive(bool v);
 	/** 
 	 * Will set methods update the units in the database, or will the units
 	 * in the database be preserved?
@@ -89,12 +87,27 @@ public:
 	 * @return number of parameters
 	 */
 	int size() const;
+
 	/**
-	 * Returns an array of parameter strings encountered.
+	 * Returns an array of parameter strings encountered, alphabetically ordered
 	 */
-	std::vector<std::string> getList() const;
+	std::vector<std::string> getKeyList() const;
+
 	/**
-	 * Returns an array of parameter strings encountered.
+	 * Returns an array of parameter strings encountered, in the order entered
+	 */
+	std::vector<std::string> getKeyListEntryOrder() const;
+
+	/**
+	 * Returns a list of parameter key strings encountered that satisfy the filter.
+	 * Note that this will reflect the original capitalization of the keys when they were first stored.
+	 *
+	 * @return list of parameter key names
+	 */
+	std::vector<std::string> getKeyListWithFilter(Function<const std::string&,bool>& f) const;
+
+	/**
+	 * Returns an array of parameter definition strings encountered.
 	 */
 	std::vector<std::string> getListFull() const;
 	/**
@@ -115,7 +128,7 @@ public:
 	 * Return a copy of this ParameterData object, with all key values being prepended with the string prefix.
 	 * This is intended to create a unique ParameterData object representing the parameters of a particular 
 	 * instance (of many) of an object, that can then be collected along with others into a larger ParameterData object representing the containing object.
-	 * @param prefix
+	 * @param prefix prefix to add to each key
 	 * @return copy of ParameterData with changes
 	 */
 	ParameterData copyWithPrefix(const std::string& prefix) const;
@@ -126,10 +139,18 @@ public:
 	 * This is intended to filter out the parameters of a particular instance of a group of objects.
 	 * The resulting ParameterData object will include an empty string parameter if a key exactly matches the prefix.
 	 * 
-	 * @param prefix
+	 * @param prefix prefix of each key returned
 	 * @return copy of ParameterData with changes
 	 */
 	ParameterData extractPrefix(const std::string& prefix) const;
+
+	/**
+	 * Return a copy of this ParameterData, with all keys starting with the indicated prefix removed.
+	 * Only include the key values that do not start with the given prefix (if any).
+	 * @param prefix the prefix to look for
+	 * @return copy of ParameterData without matching keys
+	 */
+	ParameterData removeKeysWithPrefix(const std::string& prefix) const;
 
 	/**
 	 * Returns the string value of the given parameter key. This may be a
@@ -234,7 +255,28 @@ public:
 	bool set(const std::string& key, const std::string& value);
 	bool set(const std::string& key, char* value);
 	/**
-	 * @deprecated Replaced by {@link #setBool(String key, boolean value)}
+	 * Associates a parameter key with a value (both represented as strings).
+	 * Examples of string values include:
+	 * <ul>
+	 * <li> true
+	 * <li> hello everyone!
+	 * <li> 20
+	 * <li> 10 [NM]
+	 * </ul>
+	 * 
+	 * A note on this last example ('10 [NM]').  The value field may include a units 
+	 * descriptor in addition to the actual
+	 * value.  This is called the supplied units.  If the supplied units
+	 * are unspecified (e.g., '20'), then the units in the database for this parameter
+	 * are used to interpret the value given.<p>
+	 * 
+	 * Another note is that the string value stored is exactly what was supplied,
+	 * except white space is trimmed off the beginning and end. 
+	 * 
+	 * @param key name of parameter
+	 * @param value string representation of parameter
+	 * @return true, if the database was updated, false otherwise.  The database may not
+	 * be updated because of an invalid parameter string was given, or incompatible units, etc.
 	 */
 	bool set(const std::string& key, const char* value);
 
@@ -263,8 +305,9 @@ public:
 	 */
 	bool setFalse(const std::string& key);
 
-	/** Associates an integer value with a parameter key.
-	 *
+	/** Associates an integer value with a parameter key.  Integer values always have
+	 * the unit of 'unitless' 
+	 * 
 	 * @param key name of parameter
 	 * @param value integer representation of parameter
 	 * @return true, if the database was updated, false otherwise.  The database may not
@@ -303,20 +346,21 @@ public:
 	 * @param key   the name of the parameter
 	 * @param value the value of the parameter in INTERNAL units
 	 * @param units the typical units of the value (but no conversion takes place, if "unspecified" any old value is preserved)
-	 * @param prec  precision 
+	 * @param prec  number of digits of precision to represent this value as a string 
 	 * @return true, if the database was updated, false otherwise.  The database may not
 	 * be updated because of incompatible units, etc.
 	 */
 	bool setInternal(const std::string& key, double value, const std::string& units, int prec);
 
-	/**
-	 * Updates the unit for an entry. This ignores the setPreservedUnits() flag.
-	 *
-	 * @param key name of parameter
-	 * @param unit unit for this parameter
-	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
-	 */
-	bool updateUnit(const std::string& key, const std::string& unit);
+	/* /\** */
+	/*  * Updates the unit for an existing entry. This ignores the setPreservedUnits() flag. */
+	/*  * You may create a blank entry in order to preemptively store a units value. */
+	/*  *  */
+	/*  * @param key name of parameter */
+	/*  * @param unit unit for this parameter */
+	/*  * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true. */
+	/*  *\/ */
+	/* bool updateUnit(const std::string& key, const std::string& unit); */
 
 	/**
 	 * Updates entry's comment
@@ -327,47 +371,14 @@ public:
 	 */
 	bool updateComment(const std::string& key, const std::string& msg);
 
-	/**
-	 * Updates entry's string
-	 *
-	 * @param key name of parameter
-	 * @param str the new string of the parameter
-	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
-	 */
-	bool updateStr(const std::string& key, const std::string& str);
-
-	/** Updates entry's double value
-	 *
-	 * @param key the name of the parameter
-	 * @param val the new double value of the parameter in INTERNAL units
-	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
-	 */
-	bool updateDouble(const std::string& key, double val);
-
-	/** Updates entry's boolean value
-	 *
-	 * @param key the name of the parameter
-	 * @param val the new boolean value of the parameter
-	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
-	 */
-	bool updateBool(const std::string& key, bool val);
-
-	/** Updates entry's integer value
-	 *
-	 * @param key the name of the parameter
-	 * @param val the new integer value of the parameter
-	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
-	 */
-	bool updateInt(const std::string& key, int val);
 
 	/**
-	 * Updates entry's precision
-	 *
+	 * Return a parameter's comment field.
 	 * @param key name of parameter
-	 * @param p the new precision of the parameter
-	 * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
+	 * @return The comment string associated with the entry.  If the entry does not exist, return the empty string.
 	 */
-	bool updatePrecision(const std::string& key, int p);
+	std::string getComment(const std::string& key) const;
+
 
 	/** Associates a value (in the given units) with a parameter key.
 	 * If the parameter was already defined with a specified unit than
@@ -410,8 +421,11 @@ public:
 	 */
 	std::vector<std::string> validateParameters(std::vector<std::string> c);
 
-	/**
-	 * Copy parameter entries from list of keys
+	/** 
+	 * Copy parameter entries from list of keys 
+	 * @param p database
+	 * @param plist list of keys
+	 * @param overwrite if a parameter key exists in both this object and p, if overwrite is true then p's value will be used, otherwise this object's value will be used
 	 */
 	void listCopy(const ParameterData& p, const std::vector<std::string>& plist, bool overwrite);
 
@@ -424,7 +438,7 @@ public:
 
 	/**
 	 * Remove the given key from this database.  If the key does not exist, do nothing.
-	 * @param key
+	 * @param key key name
 	 */
 	void remove(const std::string& key);
 
@@ -433,13 +447,15 @@ public:
 	 */
 	void removeAll(const std::vector<std::string>& key);
 
-
 	/**
 	 * Return this ParameterData as a single line string that can subsequently be parsed by parseLine()
-	 * @param separator Unique, non-empty string to separate each entry.  If left empty or null, the defaultEntrySeparator is used.
-	 * @return Single-line string representation of this ParameterData object, or the null object if the given pattern appears in any parameter definition, including whitespace.
+	 * @param separator A unique (to the key and value set) character string to separate each entry.  If this is null or the empty string, use the defaultEntrySeparator string instead.
+	 * @return Single-line string representation of this ParameterData object, possibly empty, or null if the separator is a substring of any key/value entry.
+	 *
+	 * Note that the delimiter will be included after each entry, including the last one.
 	 */
 	std::string toParameterList(const std::string& separator) const;
+
 	/**
 	 * Read in a set of parameters as created by toParameterList() with the same separator.
 	 * @param separator string used to separate definitions.  If blank or null, use defaultEntrySeparator instead.
@@ -473,17 +489,12 @@ public:
 	bool isString(const std::string& key) const;
 
 	/**
-	 * Returns a string listing all parameters in keys and their (original string) values
+	 * Returns a string listing of specified parameters in (original) key/value pairs
 	 * 
 	 * @param keys list of parameter entries
 	 * @return multi-line string
 	 */
 	std::string listToString(const std::vector<std::string>& keys) const;
-
-	/**
-	 * Returns a multi-line string listing all parameters and their (original string) values
-	 */
-	std::string toString() const;
 
 	/**
 	 * Returns a string listing all parameters in keys 
@@ -495,6 +506,11 @@ public:
 	std::string listToString(const std::vector<std::string>& keys, const std::string& separator) const;
 
 	/**
+	 * Returns a multi-line string listing all parameters and their (original string) values
+	 */
+	std::string toString() const;
+
+	/**
 	 * Returns a string listing all parameters
 	 * @param separator the separator (e.g., a comma) to separate each key
 	 * @return A separated string of all parameters
@@ -503,6 +519,13 @@ public:
 
 	bool equals(const ParameterData& pd) const;
 
+	/**
+	 * Compare this ParameterData with another.
+	 * Return a string listing all differences in stored values between the two.
+	 * @param pd parameter database
+	 * @return string listing differences, or the empty string if the contents are the same.
+	 */
+	std::string diff(const ParameterData& pd) const;
 
 	std::vector<int> getListInteger(const std::string& key) const;
 	std::vector<double> getListDouble(const std::string& key) const;
@@ -515,6 +538,9 @@ public:
 	bool setListBool(const std::string& key, const std::vector<bool>& list);
 
 private:
+	int longestKey() const;
+	int longestVal() const;
+
 	/**
 	 * Parse a string, if it is a valid parameter, then add it to the database and return true, else false.
 	 * @param str the string to parse
@@ -539,12 +565,27 @@ private:
 	static std::vector<bool> boolList(const std::string& instring);
 
 
-	bool caseSensitive;
 	bool preserveUnits;
 	bool unitCompatibility;
 	std::string patternStr;
 	typedef std::map<std::string, ParameterEntry, stringCaseInsensitive> paramtype;
 	paramtype parameters;
+
+	class comp_order {
+	public:
+		const paramtype *params;
+		comp_order(const paramtype *p) {
+			params = p;
+		}
+		bool operator() (const std::string& lhs, const std::string& rhs) const
+		{
+			paramtype::const_iterator p1 = params->find(lhs);
+			paramtype::const_iterator p2 = params->find(rhs);
+			long n1 = p1->second.order;
+			long n2 = p2->second.order;
+			return n1<n2;
+		}
+	} ;
 
 
 };

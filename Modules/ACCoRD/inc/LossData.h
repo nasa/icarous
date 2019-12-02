@@ -18,6 +18,7 @@
 #ifndef SRC_LOSSDATA_H_
 #define SRC_LOSSDATA_H_
 
+#include "Interval.h"
 #include <string>
 namespace larcfm {
 
@@ -35,6 +36,8 @@ public:
 	LossData(double time_in, double time_out);
 
 	LossData();
+
+	static const LossData& EMPTY();
 
 	/**
 	 * Returns true if loss
@@ -55,6 +58,11 @@ public:
 	 * Returns time to last loss in seconds.
 	 */
 	double getTimeOut() const;
+
+	/**
+	 * Returns time interval to loss in seconds
+	 */
+	Interval getTimeInterval() const;
 
 	virtual ~LossData() {};
 

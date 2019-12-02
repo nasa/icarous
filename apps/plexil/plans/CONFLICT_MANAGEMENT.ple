@@ -1,0 +1,350 @@
+// -*- Mode: C++ -*-
+// Simple conflict detection and resolution strategy
+
+// Lookup definitions
+Integer Lookup numMissionWP;
+Integer Lookup nextMissionWPIndex;
+Real[3] Lookup position;
+Real[3] Lookup velocity;
+Real    Lookup allowedXtrackDev;
+Real    Lookup xtrackDev;
+Real    Lookup resolutionSpeed;
+Integer Lookup totalFences;
+Integer Lookup totalTraffic;
+Integer Lookup trafficResType;
+Boolean Lookup ditchingStatus;
+Boolean[2] Lookup fenceConflict;
+Boolean Lookup trafficConflict;
+Boolean Lookup flightPlanConflict;
+Real[3] Lookup GFRecoveryPosition;
+String Lookup searchAlgorithm;
+Integer Lookup nextFeasibleWP;
+Boolean Lookup directPathToNextFeasibleWP;
+Real[3] Lookup interceptManeuver;
+Boolean Lookup restartMission;
+
+// Command definitions
+Real[3]    Command GetMissionWP(Integer index);
+Boolean[2] Command CheckFenceViolation(Real Position[3],Real Velocity[3]);
+Real       Command ComputeCrossTrackDeviation(String planID,Integer leg,Real position[3]);
+Real[3]    Command GetRecoveryPosition(Real Position[3]);
+Real[4]    Command MonitorTraffic(Boolean bands,Real position[3],Real velocity[3]);
+Real[3]    Command ManeuverToIntercept(String planID,Integer leg,Real position[3]);
+Boolean    Command CheckSafeToTurn(Real position[3],Real velocity[3],Real fromHeading,Real toHeading);
+Boolean    Command SetMode(String mode);
+Real       Command ComputeDistance(Real positionA[3],Real positionB[3]);
+
+Boolean Command SetNextMissionWP(Integer index);
+Command SetPos(Real position[3]);
+Command SetVel(Real velocity[3]);
+Command Status(String text,Integer);
+Command pprint(...);
+
+// Library plan definitions
+LibraryAction GOTO_POSITION(In String SearchType,
+                            In Boolean TrafficConflict,
+                            In Real TargetPosition[3],
+                            In Real resSpeed,
+                            In Integer PrevConflictId,
+                            InOut Boolean resolutionCompleted);
+
+LibraryAction TRAFFIC_RESOLUTION(InOut Boolean completionStatus,
+                                 In Integer nextWP,
+                                 InOut Real resSpeed);
+
+LibraryAction MONITOR(InOut Integer ConflictId);
+
+CONFLICT_MANAGEMENT:
+{
+    // Interface variables that can be read outside this plan
+    InOut Boolean  DitchStatus;
+
+    // Boolean variables
+    Boolean gResolutionActive = false;
+    Boolean gKeepInConflict = false;
+    Boolean gKeepOutConflict = false;
+    Boolean gTrafficConflict = false;
+    Boolean gFlightPlanConflict = false;
+    Boolean reset = false;
+    Boolean endFP = false;
+
+    // Real variables
+    Real gAllowedDeviation;
+    Real gDeviation;
+    Real gResSpeed;
+    Real gPosition[3];
+    Real gVelocity[3];
+
+    // Integer variables
+    Integer gNumMissionWp;
+    Integer gCurrentMissionWp = 1;
+    Integer gNumFences = 0;
+    Integer gNumTraffic = 0;
+    Integer gNumObjects = 0;
+    Integer gConflictId = 0;
+    Integer gOldConflictId = 0;
+
+    String gSearchType;
+
+
+    ExitCondition reset;
+
+    // Perform one time lookup
+    gNumMissionWp = Lookup(numMissionWP);
+    gCurrentMissionWp = Lookup(nextMissionWPIndex);
+    gAllowedDeviation = Lookup(allowedXtrackDev);
+    gResSpeed  = Lookup(resolutionSpeed);
+    gSearchType = Lookup(searchAlgorithm);
+
+    pprint("Plexil status: Starting conflict management");
+    pprint("Plexil status: Total mission waypoints:", gNumMissionWp);
+    pprint("Plexil status: Preferred planning strategy:",gSearchType);
+
+
+
+    {
+        Repeat ((!endFP) && (!DitchStatus) && (!reset));
+
+        if( gCurrentMissionWp <  gNumMissionWp ){
+           endFP = false;
+        }else{
+           Status("PLX: End of flight plan",6);
+           endFP = true; 
+        }endif
+
+        DETECTION:
+        {
+            Boolean statusGF[2];
+            Boolean statusTF;
+            Boolean statusFP;
+            Boolean statusDH;
+            Boolean statusRS = false;
+
+            gCurrentMissionWp = Lookup(nextMissionWPIndex);
+            gNumFences        = Lookup(totalFences);
+            gNumTraffic       = Lookup(totalTraffic);
+            gNumObjects       = gNumFences +  gNumTraffic;
+
+            statusGF = Lookup(fenceConflict);
+            statusTF = Lookup(trafficConflict);
+            statusFP = Lookup(flightPlanConflict);
+            statusDH = Lookup(ditchingStatus);
+            statusRS = Lookup(restartMission);
+            gResSpeed  = Lookup(resolutionSpeed);
+
+            gConflictId = 0;
+
+            if(statusGF[0] || statusGF[1]){
+                 gConflictId = 1;
+            }endif
+
+            if(statusTF){
+                 gConflictId = 2;
+            }endif
+
+            if(statusFP){
+                gConflictId = 3;
+            }endif
+
+            if( (statusGF[0] || statusGF[1]) && statusTF){
+                 gConflictId = 4;
+            }endif
+
+
+            DitchStatus = statusDH;
+            gKeepInConflict = statusGF[0];
+            gKeepOutConflict = statusGF[1];
+            gTrafficConflict = statusTF;
+            gFlightPlanConflict = statusFP;
+            reset = statusRS;
+
+            /**************** Printing status **************************/
+
+            if(statusDH){
+               //pprint("Plexil status: Preparing to ditch");
+            }endif
+
+            if(statusFP){
+               //pprint("Plexil status: conflict flight plan:",statusFP);
+            }endif
+
+            if(statusGF[0]){
+               //pprint("Plexil status: keep in conflict");
+            }endif
+
+            if(statusGF[1]){
+               //pprint("Plexil status: keep out conflict");
+            }endif
+
+            if(statusTF ){
+               //pprint("Plexil status: traffic conflict");
+            }endif
+
+        }
+
+        RESOLUTION:{
+            Real RecoveryPosition[3];
+            Real DitchPosition[3];
+
+            Boolean TrafficResolutionCompleted;
+            Boolean GeofenceResolutionCompleted;
+            Boolean FlightplanResolutionCompleted;
+            Boolean skipResumeMission = false;
+
+            SkipCondition (gConflictId == 0);
+
+            gOldConflictId = gConflictId;
+
+            pprint("Plexil status: Starting resolution enroute to WP:",gCurrentMissionWp);
+            Status("PLX:Starting conflict resolution",5);
+
+            gPosition = Lookup(position);
+            gVelocity = Lookup(velocity);
+
+            GEOFENCE_RESOLUTION:{
+                SkipCondition (!gKeepInConflict && !gKeepOutConflict) || gTrafficConflict;
+                Status("PLX:Executing fence resolution",5);
+                pprint("Plexil status: Starting fence resolution");
+
+                EXECUTE_RESOLUTION:{
+                    RecoveryPosition = Lookup(GFRecoveryPosition);
+                    LibraryCall GOTO_POSITION(SearchType = gSearchType,
+                                              TrafficConflict = false,
+                                              TargetPosition = RecoveryPosition,
+                                              resSpeed = gResSpeed,
+                                              PrevConflictId = gOldConflictId,
+                                              resolutionCompleted = GeofenceResolutionCompleted);
+                }
+                skipResumeMission = false;
+            }
+
+
+            TRAFFIC_RESOLUTION:{
+
+                String resType;
+                SkipCondition !gTrafficConflict;
+                EndCondition TrafficResolutionCompleted;
+
+                Status("PLX:Executing traffic resolution",5);
+
+                resType = "PURE_DAIDALUS";
+
+                SetMode("ACTIVE");
+
+                pprint("Plexil status: Traffic resolution type:",resType);
+
+                PURE_DAIDALUS:{
+                    SkipCondition !(resType == "PURE_DAIDALUS");
+
+                    LibraryCall TRAFFIC_RESOLUTION(completionStatus= TrafficResolutionCompleted,
+                                                 nextWP = gCurrentMissionWp,
+                                                 resSpeed = gResSpeed);
+                }
+
+                RRT_DAIDALUS:{
+                     SkipCondition !(resType == "RRT_DAIDALUS");
+
+                     {
+                         EndCondition isKnown(RecoveryPosition[0]);
+                         RecoveryPosition = GetMissionWP(gCurrentMissionWp);
+                     }
+
+
+                      LibraryCall GOTO_POSITION(SearchType = "RRT",
+                                                TrafficConflict = true,
+                                                TargetPosition = RecoveryPosition,
+                                                resSpeed = gResSpeed,
+                                                PrevConflictId = gOldConflictId,
+                                                resolutionCompleted = TrafficResolutionCompleted);
+                }
+            }
+                        
+            FLIGHTPLAN:{
+                Real deviation = 1000000;
+                SkipCondition !gFlightPlanConflict || TrafficResolutionCompleted;
+
+                pprint("Plexil status: Resolving flight plan deviations");
+
+                {
+                    EndCondition (deviation < gAllowedDeviation/2) || (reset);
+                    Status("PLX:Resolving flight plan deviation",5);
+                    SetMode("ACTIVE");
+                    MANEUVER:
+                    {
+                        Real velCmd[3];
+                        Repeat true;
+                        reset = Lookup(restartMission);
+                        deviation = Lookup(xtrackDev);
+                        velCmd = Lookup(interceptManeuver);
+                        SetVel(velCmd);
+                    }
+
+                    FlightplanResolutionCompleted = true;
+                }
+            }
+
+            reset = Lookup(restartMission);
+
+            RESUME_MISSION:{
+                Integer vNextFeasibleWp;
+                Real vNextPosition[3];
+                Boolean vResolutionCompleted;
+                SkipCondition skipResumeMission;
+
+                Status("PLX:Resuming mission",5);
+
+                vNextFeasibleWp = Lookup(nextFeasibleWP);
+                reset = Lookup(restartMission);
+
+                pprint("Plexil status: Intercepting mission to next feasible waypoint:",vNextFeasibleWp);
+
+                {
+                    EndCondition isKnown(vNextPosition[0]);
+                    vNextPosition = GetMissionWP(vNextFeasibleWp);
+                }
+
+                SetNextMissionWP(vNextFeasibleWp);
+
+                LibraryCall MONITOR(ConflictId = gConflictId);
+                gOldConflictId = gConflictId;
+
+                INTERCEPT_MISSION:{
+
+                        SkipCondition ((gConflictId == 2) || (gConflictId == 4));
+                        LibraryCall GOTO_POSITION(SearchType = gSearchType,
+                                                  TrafficConflict = false,
+                                                  TargetPosition = vNextPosition,
+                                                  resSpeed = gResSpeed,
+                                                  PrevConflictId = gOldConflictId,
+                                                  resolutionCompleted = vResolutionCompleted);
+                }
+
+
+                LibraryCall MONITOR(ConflictId = gConflictId);
+
+                CONTINUE_MISSION:{
+
+                    SkipCondition ((gConflictId == 2) || (gConflictId == 4));
+                    gCurrentMissionWp = vNextFeasibleWp;
+                    if( vNextFeasibleWp + 1 <= gNumMissionWp-1){
+                          gCurrentMissionWp = vNextFeasibleWp + 1;
+                    }endif
+
+                    pprint("Plexil status: Finished intercepting. Resuming to:",gCurrentMissionWp);
+
+                    {
+                        Boolean status;
+                        EndCondition isKnown(status);
+                        status = SetNextMissionWP(gCurrentMissionWp);
+                    }
+
+                }
+
+
+            }
+
+            SetMode("PASSIVE");
+        }
+    }
+}
+

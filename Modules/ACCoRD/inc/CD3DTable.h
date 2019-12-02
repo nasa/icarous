@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017 United States Government as represented by
+ * Copyright (c) 2012-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -32,15 +32,6 @@ public:
 
   CD3DTable(double d, const std::string& dunit, double h, const std::string& hunit);
 
-  CD3DTable copy() const;
-
-  /**
-   * Copy constructor -- returns a fresh copy.
-   */
-  CD3DTable(const CD3DTable& tab);
-
-  void copyValues(const CD3DTable& tab);
-
   double getHorizontalSeparation() const;
 
   void setHorizontalSeparation(double d);
@@ -69,7 +60,7 @@ public:
 
   std::string toString() const;
 
-  std::string toPVS(int prec) const;
+  std::string toPVS() const;
 
 };
 

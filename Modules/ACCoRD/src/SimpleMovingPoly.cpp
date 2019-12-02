@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -96,7 +96,7 @@ SimpleMovingPoly SimpleMovingPoly::copy() const {
 }
 
 bool SimpleMovingPoly::addVertex(const Position& p, const Velocity& v) {
-	bool ret = poly.addVertex(p);
+	bool ret = poly.add(p);
 	if (ret) {
 		vlist.push_back(v);
 	}
@@ -126,7 +126,7 @@ SimpleMovingPoly SimpleMovingPoly::make(const MovingPolygon3D& p3, const Euclide
 	if (!p3.isStable()) {
 		vector<Velocity> vs =  vector<Velocity>();
 		for(int i = 0; i < p3.size(); i++) {
-			vs.push_back(proj.inverseVelocity( Vect3(base.getVertex(i),0), Velocity::make( Vect3(p3.horizpoly.polyvel[i],p3.vspeed)), true));
+			vs.push_back(proj.inverseVelocity( Vect3(base.get2D(i),0), Velocity::make( Vect3(p3.horizpoly.polyvel[i],p3.vspeed)), true));
 		}
 		return  SimpleMovingPoly(SimplePoly::make(base,proj), vs);
 	} else {
@@ -166,7 +166,7 @@ SimplePoly SimpleMovingPoly::position(double dt) const {
 			Position n1t = poly.getTopPoint(j);
 			Position p = n1.linear(vlist[j],dt);
 			Position pt = n1t.linear(vlist[j],dt);
-			Poly.addVertex(p);
+			Poly.add(p);
 			Poly.setBottom(p.z());
 			Poly.setTop(pt.z());
 		}
@@ -177,7 +177,7 @@ SimplePoly SimpleMovingPoly::position(double dt) const {
 			Position n1t = poly.getTopPoint(j);
 			Position p = n1.linear(v,dt);
 			Position pt = n1t.linear(v,dt);
-			Poly.addVertex(p);
+			Poly.add(p);
 			Poly.setBottom(p.z());
 			Poly.setTop(pt.z());
 		}
@@ -190,7 +190,7 @@ SimplePoly SimpleMovingPoly::position(double dt) const {
  */
 Velocity SimpleMovingPoly::averageVelocity() const {
 	if (morphingPoly) {
-		Velocity v = Velocity::ZEROV();
+		Vect3 v = Vect3::ZERO();
 		for (int i = 0; i < (int) vlist.size(); i++) {
 			v = v.Add(vlist[i]);
 		}
@@ -209,7 +209,7 @@ SimpleMovingPoly SimpleMovingPoly::linear(double dt) const {
 			Position n1t = poly.getTopPoint(j);
 			Position p = n1.linear(vlist[j],dt);
 			Position pt = n1t.linear(vlist[j],dt);
-			Poly.addVertex(p);
+			Poly.add(p);
 			Poly.setBottom(p.z());
 			Poly.setTop(pt.z());
 		}
@@ -220,7 +220,7 @@ SimpleMovingPoly SimpleMovingPoly::linear(double dt) const {
 			Position n1t = poly.getTopPoint(j);
 			Position p = n1.linear(v,dt);
 			Position pt = n1t.linear(v,dt);
-			Poly.addVertex(p);
+			Poly.add(p);
 			Poly.setBottom(p.z());
 			Poly.setTop(pt.z());
 		}
@@ -235,7 +235,7 @@ SimpleMovingPoly SimpleMovingPoly::linear(double dt) const {
  * @param proj
  * @return
  */
-MovingPolygon3D SimpleMovingPoly::getMovingPolygon(double time, const EuclideanProjection& proj) const {
+MovingPolygon3D SimpleMovingPoly::getMovingPolygon(double time, const EuclideanProjection& proj)  {
 	Poly3D p3d = position(time).poly3D(proj);
 	if (morphingPoly) {
 		vector<Velocity> vs =  vector<Velocity>();
@@ -256,7 +256,7 @@ MovingPolygon3D SimpleMovingPoly::getMovingPolygon(double time, const EuclideanP
 	}
 }
 
-MovingPolygon3D SimpleMovingPoly::getMovingPolygon(const EuclideanProjection& proj) const {
+MovingPolygon3D SimpleMovingPoly::getMovingPolygon(const EuclideanProjection& proj)  {
 	return getMovingPolygon(0.0,proj);
 }
 

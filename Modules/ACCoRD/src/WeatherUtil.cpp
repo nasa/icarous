@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -15,26 +15,33 @@
 #include "PolyPath.h"
 #include "PlanUtil.h"
 #include "PolyUtil.h"
+//#include "DebugSupport.h"
 #include "format.h"
 #include <vector>
 #include <float.h>
 
 namespace larcfm {
-std::pair<Plan,DensityGrid> WeatherUtil::reRouteWx(const Plan& own, const std::vector<PolyPath>& paths, double gridSize, double buffer,
-		double factor, double T_p, const std::vector<PolyPath>& containment,	bool fastPolygonReroute, bool reduceGridPath,
-		double timeOfCurrentPosition, double reRouteLeadIn) {
-	//f.pln("WeatherUtil.reRouteWx 1");
-	//f.pln("WeatherUtil.reRouteWx own="+own+" paths="+paths+" gridsize="+gridSize+" buffer="+buffer+" factor="+factor+" Tp="+T_p+" containment="+containment.size()+" fast="+fastPolygonReroute+" red="+reduceGridPath+" timeOfCurrentPosition="+timeOfCurrentPosition+" reRouteLeadIn="+reRouteLeadIn);
-	//Plan p = plans.getPlan(0);
+
+std::pair<Plan,DensityGrid> WeatherUtil::reRouteWx(const Plan& own, std::vector<PolyPath>& paths, double cellSize, double gridExtension,
+		double adherenceFactor, double T_p, const std::vector<PolyPath>& containmentPolys,	bool fastPolygonReroute,
+		double timeOfCurrentPosition, double reRouteLeadIn, bool solutionSmoothing) {
+//	fpln("\n-------------------------------------------------------------------------------");
+//		for (int j = 0; j < (int) paths.size(); j++) {
+//			fpln("WeatherUtil.reRouteWx paths["+Fm0(j)+"] = "+paths[j].toStringShort()+" \n");
+//	}
+//	fpln("WeatherUtil.reRouteWx own="+own.toString()+" paths[0]="+paths[0].toString()   );
+//			+" cellSize="+Units::str("NM",cellSize)+" gridExtension="+Units::str("NM",gridExtension)
+//	       +" adherenceFactor="+Fm1(adherenceFactor)+"\n fastPolygonReroute ="+bool2str(fastPolygonReroute)
+//			+" timeOfCurrentPosition="+Fm1(timeOfCurrentPosition)+" reRouteLeadIn="+Fm1(reRouteLeadIn)+" solutionSmoothing ="+bool2str(solutionSmoothing));
+//	DebugSupport::dumpPlanAndPolyPaths(own,paths,"reRouteWx_input");
 	Plan solution;
 	if (own.size() < 2) {
-		//f.pln(" $$$$$$$$$$$$$$$$$$$$$$$$$$$$$ reRoute: FAIL !! reRoute needs at least 2 points !!");
 		own.addError("reRouteWx failed (plan too short).");
 		return std::pair<Plan,DensityGrid>(own,DensityGrid());
 	}
 	double tmCurrentPos = timeOfCurrentPosition;
 	NavPoint currentPos = own.point(0);
-	NavPoint finalPos = own.point(own.size()-1).makeTime(DBL_MAX); // ensure it is at end of plan, will correct later
+	NavPoint finalPos = own.point(own.size()-1).makeTime(1E30); // ensure it is at end of plan, will correct later
 	if (tmCurrentPos < 0) {
 		tmCurrentPos = own.getFirstTime();
 	}
@@ -48,19 +55,16 @@ std::pair<Plan,DensityGrid> WeatherUtil::reRouteWx(const Plan& own, const std::v
 	} else {
 		currentPos = NavPoint(own.position(tmCurrentPos), tmCurrentPos);
 	}
-	//f.pln(" $$$$ reRouteWx: tmCurrentPos = "+tmCurrentPos+" currentPos = "+currentPos);
+	//fpln(" $$$$ reRouteWx: tmCurrentPos = "+Fm1(tmCurrentPos)+" currentPos = "+currentPos.toString());
 	Velocity currentVel = own.velocity(tmCurrentPos);
 	Plan nPlan = own;
 	double startTime = tmCurrentPos + reRouteLeadIn;
 	double endTime = own.getLastTime() - reRouteLeadIn;
-	Position endLeadinPos = own.position(endTime);
+	//Position endLeadinPos = own.position(endTime);
 	//f.pln(" $$ reRouteWx: tmCurrentPos = "+tmCurrentPos+"  startTime = "+startTime+" endTime = "+endTime);
 	//		solution = null;
 	DensityGrid dg = DensityGrid(); // this used for visualization only
-	// cut down working plan to startTime
-	if (paths.size() == 0) {
-		solution = own;
-	} else if (own.isTimeInPlan(startTime) && own.isTimeInPlan(endTime)) {
+	if (own.isTimeInPlan(startTime) && own.isTimeInPlan(endTime)) {
 		nPlan = PlanUtil::cutDown(own, startTime, endTime);
 		double gs = nPlan.initialVelocity(0).gs();
 		if (gs <= 0) {
@@ -70,76 +74,106 @@ std::pair<Plan,DensityGrid> WeatherUtil::reRouteWx(const Plan& own, const std::v
 		if (timeOfCurrentPosition > 0 && T_p > 0) {
 			endT = timeOfCurrentPosition + T_p;
 		}
-		std::pair<Plan,DensityGrid> rr = reRouteWithAstar(paths, nPlan, gridSize, buffer, factor, gs, containment, endT,
-				fastPolygonReroute, reduceGridPath);
+		//fpln(" $$$$ reRouteWx: nPlan = "+nPlan.toString());
+//		for (int j = 0; j < (int) paths.size(); j++) {
+//		   fpln(" $$$$$ WeatherUtil::reRouteWx: paths["+Fm0(j)+"] = "+paths[j].toStringShort());
+//		}
+		//DebugSupport::dumpPlanAndPolyPaths(own,paths,"reRouteWx_input");
+		std::pair<Plan,DensityGrid> rr = reRouteWithAstar(paths, nPlan, cellSize, gridExtension, adherenceFactor, gs, containmentPolys, endT,
+				fastPolygonReroute);
 		Plan rrPlan = rr.first;
 		dg = rr.second;
-		//f.pln(" $$$$ reRouteWx: rr.first = "+rr.first);
-		//f.pln(" $$$$ reRouteWx: rr.second = "+rr.second);
+		//fpln(" $$$$ reRouteWx: ASTAR.rrPlan = "+rrPlan.toString());
+		// TODO: REMOVE NEXT LINE
+		//DebugSupport::dumpPlan(rrPlan,"ASTAR.rrPlan");
 		if (rrPlan.size() > 0) {
 			rrPlan = setAltitudes(rrPlan,currentVel.vs());
 			if (rrPlan.size() > 0) {
 				rrPlan.addNavPoint(currentPos);
 				rrPlan.addNavPoint(finalPos);
-				rrPlan.setTimeGSin(rrPlan.size()-1, nPlan.initialVelocity(0).gs());
-				//f.pln(" $$$$ reRoute: rrPlan = "+rrPlan+" "+localParams.unZigReroute);
+				double gs0 = nPlan.initialVelocity(0).gs();
+				rrPlan.setTimeGsIn(rrPlan.size()-1, gs0);
+				//fpln(" $$$$ reRoute: rrPlan = "+rrPlan.toString());
 				solution = rrPlan;
 			} else {
+				//fpln(" $$$$ reRoute failed to find solution");
 				own.addError("reRouteWx failed to find solution"); // +speedString+".");
-				//					solution = null;
+	            //solution = null;
 			}
 		} else {
-			//f.pln(" $$ reRouteWx did not find a solution"); // +speedString+"!!");
+			//fpln(" $$ reRouteWx did not find a solution"); // +speedString+"!!");
 			//				solution = null;
 		}
-		//			} // for
-		//f.pln(" reRouteWx: rrPlan = "+rrPlan);
+		//fpln(" $$$reRouteWx>>>>>> AFTER: rrPlan = "+rrPlan.toString());
 	} else {
-		//f.pln(" $$$$$$$$$$$$$$$$$$$$$$$$$$$$$ reRoute: FAIL !! $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-		own.addError("reRouteWx failed to find solution (insuffcient plan length).");
+		//fpln(" $$$$$$$$$$$$$$$$$$$$$$$$$$$$$ reRoute: FAIL !! $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+		own.addError("reRouteWx failed to find solution (insufficient plan length).");
 		//			solution = null;
 	}
 	if (solution.size() > 0) {
-		PlanUtil::checkMySolution(solution, tmCurrentPos, currentPos.position(), currentVel);
+		if (solutionSmoothing) {
+			double incr = 10.0;
+			double gs = own.initialVelocity(0).gs();
+			bool leadInsPresent = (reRouteLeadIn > 0);
+			solution = PolyUtil::reducePlanAgainstPolys(solution, gs, paths, incr, leadInsPresent, containmentPolys);
+			//fpln("$$$$ reRouteWx: reduced plan="+solution.toString());
+		}
+		PlanUtil::isCurrentPositionUnchanged(solution, tmCurrentPos, currentPos.position());
 	}
+	//fpln(" $$$$ reRouteWx: EXIT. solution.size = "+Fm0(solution.size()));
 	return std::pair<Plan,DensityGrid>(solution,dg);
 }// reRouteWx
 
 
 
 
-std::pair<Plan,DensityGrid> WeatherUtil::reRouteWx(const Plan& own, const std::vector<PolyPath>& paths, double gridSize, double buffer,
-		double factor, double T_p, const std::vector<PolyPath>& containment, bool fastPolygonReroute, bool reduceGridPath,
+std::pair<Plan,DensityGrid> WeatherUtil::reRouteWxExpand(const Plan& own, const std::vector<PolyPath>& paths, double cellSize, double gridExtension,
+		double adherenceFactor, double T_p, const std::vector<PolyPath>& containment, bool fastPolygonReroute,
 		double timeOfCurrentPosition, double reRouteLeadIn, bool expandPolygons, double timeBefore, double timeAfter,
-		bool reRouteReduction) {
-	std::vector<PolyPath> npaths = std::vector<PolyPath>();
+		bool solutionSmoothing) {
+	//fpln(" $$$ reRouteWxExpand:  expandPolygons = "+bool2str(expandPolygons)+" timeBefore = "+Fm1(timeBefore)+ " timeAfter = "+Fm1(timeAfter));
+	//fpln(" $$$$ reRouteWxExpand: paths.size() ="+Fm0(paths.size())); //+" paths[0].getPathMode() = "+paths[0].getPathMode());
+	std::vector<PolyPath> npaths = ReRouteExpandIt(paths, cellSize, expandPolygons, timeBefore, timeAfter);
+//fpln("=====");
+//for (int i = 0; i < paths.size(); i++) {
+//fpln(npaths[i].toString());
+//}
+	std::pair<Plan,DensityGrid> pr = reRouteWx(own, npaths, cellSize, gridExtension, adherenceFactor, T_p, containment,
+			fastPolygonReroute, timeOfCurrentPosition, reRouteLeadIn, solutionSmoothing);
+	Plan ret = pr.first;
+	//fpln(" $$$ reRouteWxExpand: EXIT: ret = "+ret.toString());
+	return std::pair<Plan,DensityGrid>(ret, pr.second);
+}
+
+std::vector<PolyPath> WeatherUtil::ReRouteExpandIt(const std::vector<PolyPath>& paths, double cellSize,
+		bool expandPolygons, double timeBefore, double timeAfter) {
+	std::vector<PolyPath> npaths; //  = std::vector<PolyPath>();
+	//fpln(" $$$$$$ expandIt: timeAfter = "+Fm3(timeAfter));
 	for (int i = 0; i < (int) paths.size(); i++) {
-		PolyPath exp = PolyUtil::stretchOverTime(paths[i], timeBefore, timeAfter);
+		PolyPath exp;
+		if (timeBefore > 0 || timeAfter > 0) {
+			exp = PolyUtil::stretchOverTime(paths[i], timeBefore, timeAfter);
+		} else {
+			exp = paths[i];
+		}
+		//fpln(" $$$$$$ expandIt: i = "+Fm0(i)+", exp = "+exp.toString());
 		if (expandPolygons) {
 			// expand by 1/2 diagonal of grid size to ensure no missed sections.
-			exp = PolyUtil::bufferedConvexHull(exp, gridSize*0.71, 0.0);
+			exp = PolyUtil::bufferedConvexHull(exp, cellSize*0.71, 0.0);
 		}
 		npaths.push_back(exp);
 	}
-	std::pair<Plan,DensityGrid> pr = reRouteWx(own, npaths, gridSize, buffer, factor, T_p, containment, fastPolygonReroute, reduceGridPath, timeOfCurrentPosition, reRouteLeadIn);
-	Plan ret = pr.first;
-	if (reRouteReduction && ret.size() == 0) {
-		double incr = 10.0;
-		double gs = own.initialVelocity(0).gs();
-		Plan ret2 = PolyUtil::reducePlanAgainstPolys(ret, gs, npaths, incr);
-		if (ret2.size() > 0) {
-			ret = ret2;
-		}
-		//f.pln("reduced plan="+ret);
-	}
-	return std::pair<Plan,DensityGrid>(ret, pr.second);
+	//fpln(" $$$$$$ expandIt: RETURN npaths.size() = "+npaths.size());
+	return npaths;
 }
+
 
 
 std::pair<Plan,DensityGrid> WeatherUtil::reRouteWithAstar(const std::vector<PolyPath>& paths, const Plan& ownship, double gridSize, double buffer,
 		double factor, double gs, const std::vector<PolyPath>& containment, double endT,
-		bool fastPolygonReroute, bool reduceGridPath) {
-	//f.pln("WeatherUtil.reRouteWithAstar");
+		bool fastPolygonReroute) {
+	//fpln(" $$$$$$$ reRouteWithAstar: ownship = "+ownship.toString());
+	//fpln("WeatherUtil.reRouteWithAstar: ENTER: fastPolygonReroute = "+bool2str(fastPolygonReroute));
 //	bool markPath = true; // mark all cells in the grid that are in the original optimal path
 	int b = (int)std::ceil(buffer/gridSize);
 	DensityGridTimed *dg;
@@ -150,6 +184,13 @@ std::pair<Plan,DensityGrid> WeatherUtil::reRouteWithAstar(const std::vector<Poly
 	}
 	dg->setLookaheadEndTime(endT);
 	dg->snapToStart();
+
+	// shortcut if no search
+	if (paths.size() == 0 && containment.size() == 0) {
+		DensityGrid dg2 = *dg;
+		return std::pair<Plan,DensityGrid>(ownship,dg2);
+	}
+
 	std::vector<std::pair<int,int> > origpath = dg->gridPath(ownship);
 	bool noContainment = true;
 	if (containment.size() > 0) {
@@ -173,12 +214,14 @@ std::pair<Plan,DensityGrid> WeatherUtil::reRouteWithAstar(const std::vector<Poly
 		delete dg;
 		return std::pair<Plan,DensityGrid>(Plan(),dg2);
 	}
-	Plan plan2 = dg->gridPathToPlan(gPath,gs,0.0,reduceGridPath);
+//fpln(Fobj(gPath));
+	Plan plan2 = dg->gridPathToPlan(gPath,gs,0.0);
 	DensityGrid dg2 = *dg;
 	delete dg;
 	if (plan2.size() == 0) {
 		return std::pair<Plan,DensityGrid>(Plan(),dg2);
 	}
+	//fpln("WeatherUtil.reRouteWithAstar: EXIT plan2 = "+plan2.toString());
 	return std::pair<Plan,DensityGrid>(plan2,dg2);
 }
 
@@ -189,7 +232,7 @@ Plan WeatherUtil::setAltitudes(const Plan& pp, double firstLegVs) {
 	//f.pln(" $$ setAltitudes: startAlt = "+p.point(0).alt());
 	//f.pln(" $$ setAltitudes: endAlt = "+p.point(p.size()-1).alt());
 	if (p.size() < 2) return p;
-	bool altPreserve = true;
+	bool altPreserve = false;
 	p.setAltVSin(1, firstLegVs, altPreserve);
 	if (p.size() < 3) return p;
 	double vs = (p.point(p.size()-1).alt() - p.point(1).alt())/(p.point(p.size()-1).time() - p.point(1).time());

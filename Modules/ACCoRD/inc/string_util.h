@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Cesar Munoz, George Hagen
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -35,6 +35,9 @@ namespace larcfm {
   /** return a vector of strings, split from str based on the pattern given as a regular expression. */
   std::vector<std::string> split_regex(const std::string& str,const std::string& delimiters);
 
+  bool matches(const std::string& s, const std::string& rgx_str);
+
+
   /** a C++ substring method that behaves more like Java's String.subString method.
    * the beginning index is inclusive, and the ending index is exclusive. */
   std::string substring(const std::string& s, int begin, int end);
@@ -63,6 +66,9 @@ namespace larcfm {
 
   /** Replaces all occurrences of c1 with c2 in string s */
   void replace(std::string& s, char c1, char c2);
+
+  /** Replaces all occurrences of s1 with s2 in string s */
+  std::string replace(const std::string& s, const std::string& s1, const std::string& s2);
 
   /** Is the given string in the list? */
   bool contains(const std::vector<std::string>& v, const std::string& s);

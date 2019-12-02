@@ -9,49 +9,41 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
 set(SOURCE_FILES
         src/ACCoRDConfig.cpp
         src/AircraftState.cpp
+        src/AlertThresholds.cpp 
+        src/Alerter.cpp 
         src/AlertingMofN.cpp
-        src/AlertLevels.cpp
-        src/AlertThresholds.cpp
         src/AziEquiProjection.cpp
-        src/Bands.cpp
-        src/BandsCore.cpp
         src/BandsRange.cpp
         src/BandsRegion.cpp
+	src/BoundingBox.cpp
         src/BoundingRectangle.cpp
         src/CD2D.cpp
         src/CD3D.cpp
         src/CD3DTable.cpp
         src/CDCylinder.cpp
-        src/CDII.cpp
-        src/CDIICore.cpp
-        src/CDIIPolygon.cpp
+	src/CDSIPolygon.cpp
+	src/CDIIPolygon.cpp
+        src/CDPolyIter.cpp 
+        src/CDPolyIter2D.cpp 
         src/CDPolycarp.cpp
-        src/CDPolyIter.cpp
-        src/CDPolyIter2D.cpp
-        src/CDSI.cpp
-        src/CDSICore.cpp
-        src/CDSIPolygon.cpp
-        src/CDSS.cpp
-        src/CDSSCore.cpp
-        src/ColoredValue.cpp
-        src/ConflictBandsTwoTimes.cpp
+        src/ColoredValue.cpp 
         src/ConflictData.cpp
         src/Constants.cpp
-        src/CoordinationFilter.cpp
-        src/CR3D.cpp
-        src/Criteria.cpp
         src/CriteriaCore.cpp
         src/CriticalVectors.cpp
         src/CriticalVectors2D.cpp
-        src/CriticalVectorsSI.cpp
-        src/CRSS.cpp
-        src/CRSSConfig.cpp
+        src/DCPAUrgencyStrategy.cpp 
         src/Daidalus.cpp
+	src/DaidalusAltBands.cpp
+	src/DaidalusCore.cpp
+	src/DaidalusDirBands.cpp  
         src/DaidalusFileWalker.cpp
-        src/DataServer.cpp
-        src/DCPAUrgencyStrategy.cpp
+	src/DaidalusHsBands.cpp
+	src/DaidalusIntegerBands.cpp
+	src/DaidalusParameters.cpp
+	src/DaidalusRealBands.cpp
+	src/DaidalusVsBands.cpp
         src/Debug.cpp
-        src/DebugSupport.cpp
         src/DensityGrid.cpp
         src/DensityGridAStarSearch.cpp
         src/DensityGridMovingPolys.cpp
@@ -59,11 +51,11 @@ set(SOURCE_FILES
         src/DensityGridTimed.cpp
         src/Detection3DParameterReader.cpp
         src/Detection3DParameterWriter.cpp
+	src/Detection3DSUM.cpp 
         src/DetectionPolygonParameterReader.cpp
         src/DetectionPolygonParameterWriter.cpp
         src/ENUProjection.cpp
         src/ErrorLog.cpp
-        src/FilePushTransmitter.cpp
         src/FixedAircraftUrgencyStrategy.cpp
         src/format.cpp
         src/General3DState.cpp
@@ -75,25 +67,14 @@ set(SOURCE_FILES
         src/GreatCircle.cpp
         src/GsPlan.cpp
         src/Horizontal.cpp
+	src/IndexLevelT.cpp
         src/Integerval.cpp
-        src/IntentBands.cpp
-        src/IntentBandsCore.cpp
         src/Interval.cpp
         src/IntervalSet.cpp
-        src/KinematicAltBands.cpp
-        src/KinematicBands.cpp
-        src/KinematicBandsCore.cpp
-        src/KinematicBandsParameters.cpp
-        src/KinematicGsBands.cpp
-        src/KinematicIntegerBands.cpp
-        src/KinematicMultiBands.cpp
-        src/KinematicRealBands.cpp
         src/Kinematics.cpp
         src/KinematicsDist.cpp
         src/KinematicsLatLon.cpp
         src/KinematicsPosition.cpp
-        src/KinematicTrkBands.cpp
-        src/KinematicVsBands.cpp
         src/LatLonAlt.cpp
         src/LossData.cpp
         src/MovingPolygon2D.cpp
@@ -110,26 +91,25 @@ set(SOURCE_FILES
         src/PlanWriter.cpp
         src/Point.cpp
         src/Poly2D.cpp
+	src/Poly2DLLCore.cpp
         src/Poly3D.cpp
+	src/Poly3DLL.cpp
         src/Polycarp3D.cpp
         src/PolycarpAcceptablePolygon.cpp
         src/PolycarpContain.cpp
         src/PolycarpDetection.cpp
         src/PolycarpDoubleQuadratic.cpp
         src/PolycarpEdgeProximity.cpp
-        src/PolycarpExample.cpp
         src/PolycarpQuadMinmax.cpp
         src/PolycarpResolution.cpp
         src/PolyPath.cpp
         src/PolyUtil.cpp
         src/Position.cpp
         src/PositionUtil.cpp
-        src/Priority.cpp
-        src/PriorityCore.cpp
         src/ProjectedKinematics.cpp
         src/Projection.cpp
+	src/RecoveryInformation.cpp
         src/Route.cpp
-        src/SafetyBuffers.cpp
         src/SeparatedInput.cpp
         src/SeparatedOutput.cpp
         src/SequenceReader.cpp
@@ -140,29 +120,27 @@ set(SOURCE_FILES
         src/StateReader.cpp
         src/StateVector.cpp
         src/StateWriter.cpp
+	src/SUMData.cpp
         src/string_util.cpp
         src/TangentLine.cpp
-        src/TargetUrgency.cpp
+	src/TrajGen.cpp
         src/TCAS2D.cpp
         src/TCAS3D.cpp
         src/TCASTable.cpp
         src/TcpData.cpp
-        src/TrafficCoreState.cpp
         src/TrafficState.cpp
-        src/TrajGen.cpp
-        src/TrajTemplates.cpp
-        src/TripleBands.cpp
-        src/TurnGeneration.cpp
+	src/TurnGeneration.cpp
         src/Units.cpp
         src/Util.cpp
         src/Vect2.cpp
         src/Vect3.cpp
-        src/Vect4.cpp
+	src/Vect4.cpp
         src/VectFuns.cpp
         src/Velocity.cpp
         src/Vertical.cpp
         src/WCV_HZ.cpp
-        src/WCV_TAUMOD.cpp
+        src/WCV_TAUMOD.cpp 
+        src/WCV_TAUMOD_SUM.cpp 
         src/WCV_TCOA.cpp
         src/WCV_TCPA.cpp
         src/WCV_TEP.cpp

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017 United States Government as represented by
+ * Copyright (c) 2012-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -21,11 +21,6 @@ WCVTable::WCVTable() {
   units_["WCV_ZTHR"] = "ft";
   units_["WCV_TTHR"] = "s";
   units_["WCV_TCOA"] = "s";
-}
-
-/** Copy constructor */
-WCVTable::WCVTable(const WCVTable& tab) {
-  copyValues(tab);
 }
 
 WCVTable::WCVTable(double dthr, double zthr, double tthr, double tcoa) {
@@ -54,23 +49,7 @@ WCVTable::WCVTable(double dthr, const std::string& udthr, double zthr, const std
   units_["WCV_TCOA"] = utcoa;
 }
 
-WCVTable WCVTable::copy() const {
-  WCVTable tab;
-  tab.DTHR = DTHR;
-  tab.ZTHR = ZTHR;
-  tab.TTHR = TTHR;
-  tab.TCOA = TCOA;
-  tab.units_ = units_;
-  return tab;
-}
-
-void WCVTable::copyValues(const WCVTable& tab) {
-  DTHR = tab.DTHR;
-  ZTHR = tab.ZTHR;
-  TTHR = tab.TTHR;
-  TCOA = tab.TCOA;
-  units_ = tab.units_;
-}
+WCVTable::~WCVTable() { }
 
 double WCVTable::getDTHR() const {
   return DTHR;
@@ -188,9 +167,9 @@ std::string WCVTable::toString() const {
       ", WCV_TCOA = "+Units::str(getUnits("WCV_TCOA"),TCOA);
 }
 
-std::string WCVTable::toPVS(int prec) const {
-  return "(# DTHR := "+FmPrecision(DTHR,prec)+", ZTHR := "+FmPrecision(ZTHR,prec)+
-      ", TTHR := "+Fm1(TTHR)+", TCOA := "+Fm1(TCOA)+" #)";
+std::string WCVTable::toPVS() const {
+  return "(# DTHR := "+FmPrecision(DTHR)+", ZTHR := "+FmPrecision(ZTHR)+
+      ", TTHR := "+FmPrecision(TTHR)+", TCOA := "+FmPrecision(TCOA)+" #)";
 }
 
 bool WCVTable::contains(const WCVTable& tab) const {

@@ -4,7 +4,7 @@
  *           Ricky Butler              NASA Langley Research Center
  *           Jeff Maddalon             NASA Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -15,7 +15,6 @@
 #include "Vect3.h"
 #include "NavPoint.h"
 #include "GreatCircle.h"
-#include "ProjectedKinematics.h"   //TODO -- get rid of this
 #include "KinematicsPosition.h"
 #include "TurnGeneration.h"
 #include "Projection.h"
@@ -40,103 +39,106 @@ using std::cout;
 using std::endl;
 using std::vector;
 
-
+bool TrajGen::vertexNameInBOT = false;
 bool TrajGen::verbose = false;
-const std::string TrajGen::minorTrkChangeLabel = "::minorTrkChange:";  // segmentation fault
-//const std::string TrajGen::minorTrkChangeLabel = "$minorTrkChange:";
-const double TrajGen::MIN_ACCEL_TIME = 1.0;
-const double TrajGen::MIN_TURN_BUFFER = Plan::minDt;
-const double TrajGen::MIN_VS_CHANGE = Units::from("fpm",50);
-const double TrajGen::MIN_VS_TIME = Units::from("s",30);
 
-bool TrajGen::method2 = true;
 
-//const double TrajGen::minVsChangeRecognizedDefault = 2.0; // Units::from("fpm", 50);
-
+//double TrajGen::gsOffsetTime = 0.0;
+const double TrajGen::MIN_MARK_LEG_TIME = Units::from("s",50);
 const double TrajGen::minorVfactor = 0.01; // used to differentiate "minor" vel change vs no vel change
 const double TrajGen::maxVs = Units::from("fpm",10000);
 const double TrajGen::maxAlt = Units::from("ft",60000);
 
-/**
- * Trajectory generation is discretized by a certain time unit (meaning no two points on the trajectory should be closer in time than this value)
- */
-double TrajGen::getMinTimeStep() {
-    // return Constants::get_time_accuracy();
-	return MIN_ACCEL_TIME;
-}
+const std::string TrajGen::turnFail = "<TrajGen.turnGenError>";
+const std::string TrajGen::gsFail = "<TrajGen.gsGenError>";
+const std::string TrajGen::vsFail = "<TrajGen.vsGenError>";
 
 
 void TrajGen::printError(const std::string& s) {
 	if (verbose) fpln(s);
 }
 
-Plan TrajGen::repairPlan(const Plan& fp, bool repairTurn, bool repairGs, bool repairVs,
-		bool flyOver, bool addMiddle, double bankAngle, double gsAccel, double vsAccel) {
+Plan TrajGen::repairPlan(const Plan& fp, bool repairTurn, bool repairVs,
+		double bankAngle, double vsAccel) {
 	Plan lpc = fp;
 	if (repairTurn) {
-		//fpln(" generateTCPs: removeShortLegs -----------------------------------");
 		bool addMiddle = true;
 		lpc = TrajGen::linearRepairShortTurnLegs(lpc, bankAngle, addMiddle);
 	}
-	//fpln("repairPlan turn :"+lpc.toString());
-	if (lpc.hasError()) {
-		//fpln(" $$$0 generateTCPs: repair failed! "+lpc.getMessageNoClear());
-		//DebugSupport.halt();
-	} else {
-		if (lpc.hasError())  {
-			//fpln(" $$$1 generateTCPs: repair failed! "+lpc.getMessageNoClear());
-		} else {
-			if (repairVs) {
-				lpc = TrajGen::linearRepairShortVsLegs(lpc,vsAccel);
-				if (lpc.hasError()) {
-					//fpln(" $$$2 generateTCPs: repair failed! "+lpc.getMessageNoClear());
-				} else {
-					if (repairTurn) {
-						bool strict = false;
-						lpc = removeInfeasibleTurns(lpc,bankAngle, strict);
-					}
-//					if (lpc.hasError()) {
-//						//fpln(" $$$3 generateTCPs: repair failed! "+lpc.getMessageNoClear());
-//					}
-					//DebugSupport.dumpPlan(lpc, "generateTCPs_after_repair", 0.0);
-				}
-			}
-		}
+	if (repairVs) {
+		// lpc = PlanUtil::repairShortVsLegs(lpc,vsAccel);
+		bool inhibitFixGs0 = true;
+		bool inhibitFixVs0 = true;
+		double aggressiveFactor = 1.0;
+		PlanUtil::mkVsShortLegsContinuous(lpc, vsAccel, inhibitFixGs0, aggressiveFactor, inhibitFixVs0);
+		//if (lpc.hasError()) {
+			//fpln(" $$$2 generateTCPs: repair failed! "+lpc.getMessageNoClear());
+		//}
 	}
-	return lpc;
+return lpc;
 }
+
+ Triple<double,double,double> TrajGen::getStoredParameters(const Plan& p) {
+	ParameterData pd = p.extractParameters().extractPrefix("TRAJGEN_");
+	double bank = -1.0;
+	double gs = -1.0;
+	double vs = -1.0;
+	if (pd.contains("bankAngle")) bank = pd.getValue("bankAngle");
+	if (pd.contains("gsAccel")) bank = pd.getValue("gsAccel");
+	if (pd.contains("vsAccel")) bank = pd.getValue("vsAccel");
+	return Triple<double,double,double>(bank, gs, vs);
+}
+
+/**
+ * Store accel values in a plan's note field
+ * @param p plan to modify
+ * @param bankAngle bank angle in radians, negative for none
+ * @param gsAccel gs accel in m/s, negative for none
+ * @param vsAccel vs accel in m/s, negative for none
+ */
+void TrajGen::addParams(Plan& p, double bankAngle, double gsAccel, double vsAccel) {
+	ParameterData base = p.extractParameters();
+	ParameterData pd = ParameterData();
+	if (bankAngle >= 0)	pd.setInternal("bankAngle",bankAngle,"rad");
+	if (gsAccel >= 0) pd.setInternal("gsAccel",gsAccel,"m/s");
+	if (vsAccel >= 0) pd.setInternal("vsAccel",vsAccel,"m/s");
+	base.copy(pd.copyWithPrefix("TRAJGEN_"), true);
+	p.includeParameters(pd);
+}
+
 
 /** TODO
  *	 * The resulting PlanCore will be "clean" in that it will have all original points, with no history of deleted points.
-	 *  Also all TCPs should reference points in a feasible plan.
-	 *  If the trajectory is modified, it will have added, modified, or deleted points.
-	 *  If the conversion fails, the resulting plan will have one or more error messages (and may have a point labeled as "TCP_generation_failure_point").
-	 *	@param fp input plan (is linearized if not already so)
-	 *  @param bankAngle maximum allowed (and default) bank angle for turns
-	 *  @param gsAccel    maximum allowed (and default) ground speed acceleration (m/s^2)
-	 *  @param vsAccel    maximum allowed (and default) vertical speed acceleration (m/s^2)
-	 *  @param minVsChangeRecognized minimum vs change that will register as "non-constant" (m/s)
-	 *  @param repairTurn attempt to repair infeasible turns as a preprocessing step
-	 *  @param repairGs attempt to repair infeasible gs accelerations as a preprocessing step
-	 *  @param repairVs attempt to repair infeasible vs accelerations as a preprocessing step
-	 *  @param constantGS if true, produces a constant ground speed kinematic plan with gs being average of linear plan
+ *  Also all TCPs should reference points in a feasible plan.
+ *  If the trajectory is modified, it will have added, modified, or deleted points.
+ *  If the conversion fails, the resulting plan will have one or more error messages (and may have a point labeled as "TCP_generation_failure_point").
+ *	@param fp input plan (is linearized if not already so)
+ *  @param bankAngle maximum allowed (and default) bank angle for turns
+ *  @param gsAccel    maximum allowed (and default) ground speed acceleration (m/s^2)
+ *  @param vsAccel    maximum allowed (and default) vertical speed acceleration (m/s^2)
+ *  @param minVsChangeRecognized minimum vs change that will register as "non-constant" (m/s)
+ *  @param repairTurn attempt to repair infeasible turns as a preprocessing step
+ *  @param repairGs attempt to repair infeasible gs accelerations as a preprocessing step
+ *  @param repairVs attempt to repair infeasible vs accelerations as a preprocessing step
+ *  @param constantGS if true, produces a constant ground speed kinematic plan with gs being average of linear plan
  *
  *
  *  */
-Plan TrajGen::makeKinematicPlan(const Plan& fp, double bankAngle, double gsAccel, double vsAccel,
+Plan TrajGen::makeKinematicPlan(const Plan& fp, double bankAngleIn, double gsAccelIn, double vsAccelIn,
 		bool repairTurn, bool repairGs, bool repairVs) {
-	//Plan lpc = makeLinearPlan(fp);
-	Plan lpc = fp.copyWithIndex();
+	//fpln(" generateTCPs: ENTER ----------------------------------- fp = "+fp.toString());
+	double bankAngle = bankAngleIn;
+	double gsAccel = gsAccelIn;
+	double vsAccel = vsAccelIn;
+	Plan lpc = fp;
+	lpc.mergeClosePoints(Plan::minDt);  // TODO: should we add THIS HERE?
 	Plan & ret = lpc;
 	if (lpc.size() < 2) {
 		ret = lpc;
 	} else {
-		//		fpln(" generateTCPs: ENTER ----------------------------------- lpc = "+lpc.toString());
-		bool addMiddle = true;
-		bool flyOver = false;
-		lpc = repairPlan(lpc, repairTurn, repairGs, repairVs, flyOver, addMiddle, bankAngle, gsAccel, vsAccel);
-		//fpln(" generateTCPs: generateTurnTCPs ---------------------------------------------------------------------");
-		Plan kpc = markVsChanges(lpc);
+		lpc = repairPlan(lpc, repairTurn, repairVs, bankAngle, vsAccel);
+		//fpln(" generateTCPs: after repair: ----------------------------------- lpc = "+lpc.toString());
+		Plan kpc = markVsChanges(lpc,vsAccel);
 		Plan kpc2 = generateTurnTCPs(kpc, bankAngle);
 		//DebugSupport.dumpPlan(kpc2, "generateTCPs_turns");
 		if (kpc2.hasError()) {
@@ -144,8 +146,8 @@ Plan TrajGen::makeKinematicPlan(const Plan& fp, double bankAngle, double gsAccel
 		} else {
 			//DebugSupport.dumpPlan(kpc2, "generateTCPs_fixgs");
 			//fpln(" generateTCPs: generateGsTCPs ----------------------------------- "+kpc2.isWellFormed());
-			bool useOffset = true;
-			Plan kpc3 = generateGsTCPs(kpc2, gsAccel, repairGs, useOffset);
+			//bool useOffset = true;
+			Plan kpc3 = generateGsTCPs(kpc2, gsAccel, repairGs);
 			//fpln(" $$>> makeKinematicPlan: kpc3 = "+kpc3.toStringGs());
 			//DebugSupport.dumpPlan(kpc3, "generateTCPs_gsTCPs");
 			if (kpc3.hasError()) {
@@ -162,7 +164,7 @@ Plan TrajGen::makeKinematicPlan(const Plan& fp, double bankAngle, double gsAccel
 					bool continueGen = false;
 					Plan kpc5 = generateVsTCPs(kpc4, vsAccel, continueGen);
 					//DebugSupport.dumpPlan(kpc5, "generateTCPs_VsTCPs");
-					cleanPlan(kpc5);
+					kpc5.cleanPlan();
 					//fpln(" generateVsTCPs: DONE ----------------------------------- "+kpc5.isWellFormed());
 					ret = kpc5;
 				}
@@ -171,76 +173,32 @@ Plan TrajGen::makeKinematicPlan(const Plan& fp, double bankAngle, double gsAccel
 	}
 	//fpln(" $$$$ makeKinematicPlan: "+fp.getNote());
 	ret.setNote(fp.getNote());
+	addParams(ret, bankAngle, gsAccel, vsAccel);
 	return ret;
 }
 
-
-
-Plan TrajGen::makeKinematicPlan(const Plan& fp, double bankAngle, double gsAccel, double vsAccel, bool repair) {
-	Plan traj = makeKinematicPlan(fp,bankAngle, gsAccel, vsAccel, repair, repair, repair);
-	return traj;
+Plan TrajGen::makeKinematicPlan(const Plan& fp, double bankAngleIn, double gsAccelIn, double vsAccelIn) {
+		bool repairTurn = false;
+		bool repairGs = true;
+		bool repairVs = false;
+		return TrajGen::makeKinematicPlan(fp, bankAngleIn, gsAccelIn, vsAccelIn, repairTurn, repairGs, repairVs);
 }
 
-/**
- * Remove records of deleted points and make all remaining points "original"
- * @param fp
- */
-void TrajGen::cleanPlan(Plan& fp) {
-	fp.mergeClosePoints(Plan::minDt);
-	for (int i = 0; i < fp.size(); i++) {
-        TcpData tcp = fp.getTcpData(i).setOriginal();
-		fp.set(i,fp.point(i), tcp);
-	}
-}
-
-
-
-int TrajGen::prevTrackChange(const Plan& fp, int iNow) {
-	for (int i = iNow-1; i > 0; i--) {
-		if (i==1) return 0;
-		//NavPoint npi = fp.point(i);
-		//NavPoint npPrev = fp.point(i-1);
-		Velocity vf0 = fp.finalVelocity(i-1);
-		Velocity vi1 = fp.initialVelocity(i);
-		if (std::abs(vf0.trk() - vi1.trk()) > Units::from("deg",1.0)) return i;
-	}
-	return 0;
-}
-
-int TrajGen::nextTrackChange(const Plan& fp, int iNow) {
-	for (int i = iNow+1; i+1 < fp.size(); i++) {
-		if (i>=fp.size()-1) return fp.size()-1;
-		//NavPoint npi = fp.point(i);
-		//NavPoint npNext = fp.point(i+1);
-		Velocity vf0 = fp.finalVelocity(i);
-		Velocity vi1 = fp.initialVelocity(i+1);
-		//fpln("nextTrackChange:  i = "+i+" vf0 = "+vf0+" vi1 = "+vi1);
-		if (std::abs(vf0.trk() - vi1.trk()) > Units::from("deg",1.0)) return i+1;
-	}
-	return fp.size()-1;
-}
-
-bool TrajGen::turnIsFeas(const Plan& lpc, int i, const NavPoint& BOT, const NavPoint& EOT) {
-	NavPoint np2 = lpc.point(i);
+bool TrajGen::turnCanBeInscribed(const Plan& lpc, int i, const Position& BOT, const Position& EOT) {
+	Position np2 = lpc.point(i).position();
 	double d1new = BOT.distanceH(np2);
 	double d2new = np2.distanceH(EOT);
 	int ipTC = i-1;
 	int inTC = i+1;
-	ipTC = prevTrackChange(lpc,i);
-	inTC = nextTrackChange(lpc,i);
-	double d1old = lpc.point(ipTC).distanceH(np2);
-	double d2old = np2.distanceH(lpc.point(inTC));
+	ipTC = PlanUtil::prevTrackChange(lpc,i);
+	inTC = PlanUtil::nextTrackChange(lpc,i);
+	double d1old = lpc.point(ipTC).position().distanceH(np2);
+	double d2old = np2.distanceH(lpc.point(inTC).position());
 	bool rtn = true;
 	//fpln(" $$$$ generateTurnTCPs: "+(BOT.time()-getMinTimeStep())+" "+fp.getTime(i-1)+" "+EOT.time()+getMinTimeStep()+" "+fp.getTime(i+1));
-	if (BOT.time()-MIN_TURN_BUFFER <= lpc.time(ipTC) || EOT.time()+MIN_TURN_BUFFER >= lpc.time(inTC)
-			|| d1new+Constants::get_horizontal_accuracy() >= d1old || d2new+Constants::get_horizontal_accuracy() >= d2old) {
-		//trajCore(lpc); // revert to initial plan
-		//traj.addError("ERROR in TrajGen::generateHorizTCPs: cannot achieve turn "+i+" from surrounding points.",i);
-		//printError("ERROR in TrajGen::generateHorizTCPs: cannot achieve turn "+i+" from surrounding points.");
+	if (d1new >= d1old  || d2new >= d2old) {
 		if (verbose) {
-			fpln("####### i = "+Fm0(i)+" ipTC = "+Fm0(ipTC)+" inTC = "+Fm0(inTC)+" np2 =  "+Plan::toStringFull(np2, lpc.getTcpData(i)));
-			fpln("####### BOT.time() = "+Fm2(BOT.time())+" <? fp.getTime(ipTC) = "+Fm2(lpc.time(ipTC)));
-			fpln("####### EOT.time() = "+Fm2(EOT.time())+" >? fp.getTime(inTC) = "+Fm2(lpc.time(inTC)));
+			fpln("####### i = "+Fm0(i)+" ipTC = "+Fm0(ipTC)+" inTC = "+Fm0(inTC)+" np2 =  "+np2.toString());
 			fpln("####### d1new = "+Fm2(d1new)+" >? d1old = "+Fm2(d1old));
 			fpln("####### d2new = "+Fm2(d2new)+" >? d2old = "+Fm2(d2old));
 		}
@@ -256,13 +214,13 @@ bool TrajGen::turnIsFeas(const Plan& lpc, int i, const NavPoint& BOT, const NavP
  * @param lpc source plan
  * @return kinematic plan with marked points
  */
-Plan TrajGen::markVsChanges(const Plan& lpc) {
+Plan TrajGen::markVsChanges(const Plan& lpc, double vsAccel) {
 	//fpln(" markVsChanges: lpc = "+lpc);
 	std::string name = lpc.getName();
 	Plan kpc(name);
 	if (lpc.size() < 2) {
 		kpc = Plan(lpc);
-		kpc.addError("TrajGen.markVsChanges: Source plan "+name+" is too small for kinematic conversion");
+		kpc.addError("markVsChanges"+vsFail+": Source plan "+name+" is too small for kinematic conversion");
 		return kpc;
 	}
 	kpc.add(lpc.get(0)); // first point need not be marked
@@ -276,28 +234,13 @@ Plan TrajGen::markVsChanges(const Plan& lpc) {
 		}
 		double deltaTm = 0;
 		if (i+1 < lpc.size()) deltaTm = lpc.time(i+1) - lpc.time(i);
-//		if (Util::within_epsilon(vs1, vs2, MIN_VS_CHANGE) && (deltaTm < MIN_VS_TIME)) {
-//			kpc.add(np,tcp);
-//		} else {
-//			//f.pln(" $$>> markVsChanges "+i+" PUT mark at i = "+i+" "+np2.getTcpData().toString());
-//			kpc.add(np, tcp.setAltPreserve());
-//		}
-        bool nextTheSame = true;
-		if (i+1 < lpc.size()) {
-			double vs3 = lpc.vsOut(i);
-			nextTheSame = std::abs(vs2-vs3) < MIN_VS_CHANGE;
-        }
 		double deltaVs = std::abs(vs1-vs2);
-		//f.pln("$$$$$ markVsChanges: i =  "+i+" deltaVs = "+Units.str("fpm",deltaVs)+" deltaTm = "+deltaTm+" nextTheSame = "+nextTheSame);
-		if (deltaVs >= MIN_VS_CHANGE && nextTheSame) {
+		if (std::abs(deltaVs) > 0.1*Plan::MIN_VS_DELTA_GEN || deltaTm >= MIN_MARK_LEG_TIME) {
 			kpc.add(np, tcp.setAltPreserve());
-		} else if (deltaTm >= MIN_VS_TIME) {
-			kpc.add(np, tcp.setAltPreserve());
-			//f.pln(" $$>>>>>>>>>>>>>> markVsChanges: i= "+i+" marked ALT = "+Units.str("ft",kpc.point(i).alt())+" deltaTm = "+deltaTm);
+			//fpln(" $$>>>>>>>>>>>>>> markVsChanges: i= "+i+" marked ALT = "+Units::str("ft",kpc.point(i).alt())+" deltaTm = "+deltaTm);
 		} else {
 			kpc.add(np, tcp);
 		}
-
 	}
 	//		kpc.add(lpc.point(lpc.size()-1)); // last point need not be marked
 	return kpc;
@@ -312,34 +255,15 @@ Plan TrajGen::generateTurnTCPs(const Plan& lpc, double bankAngle, bool continueG
 	//fpln("$$$ generateTurnTCPs: bankAngle = "+Units::str("deg",bankAngle));
 	Plan traj(lpc); // the current trajectory based on working
 	double bank = std::abs(bankAngle);
-	// for (int i = 1; i+1 < lpc.size(); i++) {
 	for (int i = lpc.size()-2; i > 0; i--) {
-		//NavPoint np2 = lpc.point(i);
 		if (lpc.inAccelZone(i)) continue;     // skip over regions already generated (for now only BOT-EOT pairs)
-		Velocity vf0 = lpc.finalVelocity(i-1);
-		Velocity vi1 = lpc.initialVelocity(i);
-		double gsIn = vf0.gs();
+		double gsIn = lpc.gsIn(i);
 		if (Util::almost_equals(gsIn,0.0)) {
-			printError(" ###### WARNING: Segment from point "+Fm0(i-1)+" to point "+Fm0(i)+" has zero ground speed!");
+			//fpln(" ###### WARNING: Segment from point "+Fm0(i-1)+" to point "+Fm0(i)+" has zero ground speed!");
+            continue;
 		}
-		double turnDelta = Util::turnDelta(vf0.trk(), vi1.trk());
-		double turnTime;
-		TcpData tcp_i = lpc.getTcpData(i);
-		double R = tcp_i.turnRadius();
-		if (Util::almost_equals(R, 0.0)) {
-			if (bank == 0) {
-				traj.addError("ERROR in TrajGen.generateTurnTCPs: specified bank angle is 0");
-				bank = Units::from("deg",0.001); // prevent divisions by 0.0
-			}
-		   turnTime = Kinematics::turnTime(gsIn,turnDelta,bank);
-		   R = Kinematics::turnRadius(gsIn, bank);
-		} else {
-		   turnTime =  turnDelta*R/gsIn;
-		}
-		if (turnTime >= getMinTimeStep()) {
-			insertTurnTcpsInTraj(traj, lpc, i, R, continueGen);
-			if (traj.hasError() && ! continueGen) return traj;
-		}
+    	generateTurnTcpAt(traj, i, bank, continueGen);
+		if (traj.hasError() && ! continueGen) return traj;
 	}
 	//fpln(" $$>>>>>>>>>  generateTurnTCPsRadius: EXIT traj = "+traj.toStringFull());
 	return traj;
@@ -348,359 +272,324 @@ Plan TrajGen::generateTurnTCPs(const Plan& lpc, double bankAngle, bool continueG
 
 
 
-
-Plan TrajGen::generateTurnTCPsRadius(const Plan& lpc, bool continueGen) { //, double default_radius) {
-	Plan traj = Plan(lpc); // the current trajectory based on working
-	//f.pln(" $$>> generateTurnTCPs: lpc = "+lpc.toStringFull());
-	for (int i = lpc.size()-2; i > 0; i--) {   // Perform in reverse order so indexes match between lpc and traj
-		Velocity vf0 = lpc.finalVelocity(i-1);
-		Velocity vi1 = lpc.initialVelocity(i);
-		double gsIn = vf0.gs();
-		if (Util::almost_equals(gsIn,0.0)) {
-			printError("TrajGen.generateTurnTCPs ###### WARNING: Segment from point "+Fm0(i-1)+" to point "+Fm0(i)+" has zero ground speed!");
-			continue;
-		}
-		double turnDelta = Util::turnDelta(vf0.trk(), vi1.trk());
-		TcpData tcp_i = lpc.getTcpData(i);
-		double R = tcp_i.turnRadius();
-		//f.pln(" $$>> generateTurnTCPsRadius(lpc): i = "+i+" R = "+Units.str("NM",R));
-		// if R is 0 then turnTime will be zero and point will not be processed
-		double turnTime = turnDelta*R/gsIn;    // if R = 0 ==> do not process this point
-		if (turnTime >= getMinTimeStep()) {
-			insertTurnTcpsInTraj(traj, lpc, i, R, continueGen);
-			if (!continueGen && traj.hasError()) return traj;
-		}
-	}//for
-	//f.pln(" $$>>>>>>>>>  generateTurnTCPsRadius: EXIT traj = "+traj.toStringFull());
-	return traj;
-}
-
-bool TrajGen::trackContinuousAt(const Plan& traj, int ix, double maxDelta) {
-	double courseIn = traj.finalVelocity(ix-1).compassAngle();
-	double courseOut = traj.initialVelocity(ix).compassAngle();
-	//f.pln(" $$>> generateTurnTCPs: courseIn = "+Units.str("deg",courseInB)+" courseOut = "+Units.str("deg",courseOut));
-	double turnDelta = Util::turnDelta(courseIn,courseOut);
-	//f.pln(" $$>> generateTurnTCPs: turnDeltaBOT = "+Units.str("deg",turnDeltaBOT));
-	return (turnDelta < maxDelta);
+void TrajGen::generateTurnTcpAt(Plan& traj, int ixNp2, double default_bankAngle, bool continueGen) {
+	double gsIn = traj.gsIn(ixNp2);
+	double turnDelta = Util::turnDelta(traj.trkIn(ixNp2),traj.trkOut(ixNp2));
+	//double turnTime;
+	TcpData tcp_i = traj.getTcpData(ixNp2);
+	double R = traj.vertexRadius(ixNp2);
+    bool bankUsed = true;
+	if (Util::almost_equals(R, 0.0)) {
+		R = Kinematics::turnRadius(gsIn, default_bankAngle);
+	} else {
+		bankUsed = false;
+	}
+    double gsOut_i = traj.gsOut(ixNp2);
+	if (turnDelta >= Plan::MIN_TRK_DELTA_GEN && gsOut_i > 1E-10) {  // do not generate when gsOut is near 0
+		generateTurnTcpAt(traj, ixNp2, R, bankUsed, continueGen);
+	}
 }
 
 
-
-Plan TrajGen::generateTurnTCPsRadius(const Plan& lpc) {
-	bool continueGen = false;
-	return generateTurnTCPsRadius(lpc, continueGen);
-}
-
-/**
- *
- * @param traj          trajectory under construction
- * @param lpc           original lpc
- * @param ixNp2             index of np2 in plan
- * @param np1
- * @param np2
- * @param tcp2
- * @param linearIndex
- * @param np3
- * @param R             unsigned radius
- * @param strict if strict do not allow any interior waypoints in the turn
- */
-void TrajGen::insertTurnTcpsInTraj(Plan& traj, const Plan& lpc, int ixNp2, double R, bool continueGen) {
-	NavPoint np1 = lpc.point(ixNp2-1); // get the point in the traj that corresponds to the point BEFORE fp(i)!
-	NavPoint np2 = lpc.point(ixNp2);
-	NavPoint np3 = lpc.point(ixNp2+1);
-	if (np3.time() - np2.time() < 0.1 && ixNp2+2 < lpc.size()) {
-		np3 = lpc.point(ixNp2 + 2);
+void TrajGen::generateTurnTcpAt(Plan& traj, int ixNp2, double R, bool bankUsed,  bool continueGen) {
+	//fpln(" $$ generateTurnTcpsAt: ENTER traj = "+traj.toString(12));
+    //fpln(" $$ generateTurnTcpsAt: R = "+Units::str("NM",R)+" ixNp2 = "+Fm0(ixNp2));
+	NavPoint np1 = traj.point(ixNp2-1); // get the point in the traj that corresponds to the point BEFORE fp(i)!
+	NavPoint np2 = traj.point(ixNp2);
+	NavPoint np3 = traj.point(ixNp2+1);
+	if (np3.time() - np2.time() < 0.1 && ixNp2+2 < traj.size()) {
+		np3 = traj.point(ixNp2 + 2);
 	}
-	int linearIndex = lpc.getTcpData(ixNp2).getLinearIndex();
-	//f.pln(" $$$ insertTurnTcpsInTraj: lpc = "+lpc.toStringFull(true));
-	Velocity vf0 = lpc.finalVelocity(ixNp2-1);
-	Velocity vi1 = lpc.initialVelocity(ixNp2);
-	double gsIn = vf0.gs();
-	double targetGS = vi1.gs();
-	Tuple5<NavPoint,NavPoint,NavPoint,int,Position> tg = TurnGeneration::turnGenerator(np1,np2,linearIndex,np3,R);
-	NavPoint BOT = tg.getFirst();
-	NavPoint MOT = tg.getSecond();
-	NavPoint EOT = tg.getThird();
-	int dir = tg.getFourth();
-	Velocity vin = NavPoint::initialVelocity(np1,np2);
-	Velocity vout = NavPoint::initialVelocity(np2,np3); // used to set gs and vs
-	Velocity vin2 = BOT.position().initialVelocity(np2.position(),100);
-	Velocity vout2 = np2.position().finalVelocity(EOT.position(),100);
-	vin = vin.mkTrk(vin2.trk());
-	vout = vout.mkTrk(vout2.trk());
-	NavPoint np2_src = lpc.sourceNavPoint(ixNp2).makeLabel(np2.label());
-	std::string srcinfo = lpc.getInfo(ixNp2);
-	//f.pln(" $$$ insertTurnTcpsInTraj: i = "+i+" np2_src = "+np2_src);
-	double signedRadius = dir*R;
-	Position center;
-	if (method2) {
-		center = tg.fifth;
+	Tuple6<Position,Position,Position,int,double,Position> turn = TurnGeneration::turnGenerator(np1.position(), np2.position(), np3.position(), R);
+	Position botPos = turn.first;
+	//fpln(" $$ generateTurnTcpsAt: botPos = "+botPos.toString());
+	Position motPos = turn.second;
+	Position eotPos = turn.third;
+	int dir = turn.fourth;
+	Position center = turn.sixth;
+	double distBotToVertex = botPos.distanceH(np2.position());
+	double distVertexToEot = eotPos.distanceH(np2.position());
+	double ttEOT = traj.timeFromDistance(ixNp2,distVertexToEot);
+	// ----------- recalculate radius from center (may be slightly different) -----------------------
+	double radius = center.distanceH(botPos);
+	double chordalRadius;
+	if (KinematicsLatLon::chordalSemantics) {
+		chordalRadius = dir*GreatCircle::to_chordal_radius(radius);
 	} else {
-	    center = KinematicsPosition::centerFromRadius(BOT.position(), signedRadius, vin.trk());
+		chordalRadius = dir*radius;
 	}
-	std::pair<NavPoint,TcpData> npBOT = Plan::makeBOT(np2_src, BOT.position(), BOT.time(),  signedRadius, center, linearIndex);
-	std::pair<NavPoint,TcpData> npEOT =	Plan::makeEOT(np2_src, EOT.position(), EOT.time(), linearIndex);
-	npBOT.second.setInformation(srcinfo);
-	//std::pair<NavPoint,TcpData> npMOT = Plan.makeMidpoint(np2_src, tcp2, MOT.position(),MOT.time(),linearIndex);
-	// Calculate altitudes based on lpc, NOTE THAT these times may be out of range of lpc and INVALIDs will be produced
-	if (ixNp2 > 1 && BOT.time() < np1.time()) { //only okay if ground speeds did not change, see test testJBU173
-		gsIn = traj.gsIn(ixNp2-1);   //ignore ground speed change in middle of turn
-	}
-	double botAlt;
-	if (BOT.time() < lpc.getFirstTime()) {  // is this right?
-		botAlt = lpc.point(0).alt();
-	} else {
-		//f.pln(" $$$ BOT.time() = "+BOT.time());
-		botAlt = lpc.position(BOT.time()).alt();
-	}
-	BOT = BOT.mkAlt(botAlt);
-	//f.pln(" $$$$ generateTurnTCPs: BOT.time() = "+f.Fm2(BOT.time())+" np times = "+f.Fm2(np1.time())+", "+f.Fm2(np2.time())+", "+f.Fm2(np3.time()));
-	//f.pln(" $$$$ BOT.time() = "+BOT.time()+" botAlt = "+Units::str("ft", botAlt)+" lpc.getFirstTime() = "+lpc.getFirstTime());
-	MOT = MOT.mkAlt(lpc.position(MOT.time()).alt());
-	//f.pln(" $$>> generateTurnTCPs: MOT = "+MOT.toStringFull());
-	double EotAlt;
-	if (EOT.time() > lpc.getLastTime()) { // is this right?
-		EotAlt = lpc.getLastPoint().alt();
-	} else {
-		EotAlt = lpc.position(EOT.time()).alt();
-	}
-	//f.pln(" $$: insertTurnTcpsInTraj: EotAlt =  "+Units::str("ft", EotAlt));
-	EOT = EOT.mkAlt(EotAlt);
+	//------------ store the chordal radius in the BOT TCP -------------------------------------------
 	std::string label = "";
-	if ( np2.label() != "") label = " ("+np2.label()+") ";
-	if (BOT.isInvalid() || MOT.isInvalid() || EOT.isInvalid()) {
+	if ( np2.name() != "") label = " ("+np2.name()+") ";
+	if (botPos.isInvalid() || motPos.isInvalid() || eotPos.isInvalid()) {
 		if (!continueGen) {
-			traj.addError("ERROR in TrajGen.generateTurnTCPs: turn points at "+Fm0(ixNp2)+label+" invalid.",ixNp2);
-			printError("ERROR in TrajGen.generateTurnTCPs: turn points at "+Fm0(ixNp2)+label+" invalid.");
+			traj.addError("generateTurnTCPs"+turnFail+": turn points at "+Fm0(ixNp2)+label+" invalid.",ixNp2);
+			printError("generateTurnTCPs"+turnFail+": turn points at "+Fm0(ixNp2)+label+" invalid.");
 		}
-	} else if ( ! turnIsFeas(lpc, ixNp2, BOT, EOT)) {
+	} else if ( ! turnCanBeInscribed(traj, ixNp2, botPos, eotPos)) {
 		if (!continueGen) {
-			traj.addError("ERROR in TrajGen.generateTurnTCPs: cannot achieve turn at point "+Fm0(ixNp2)+label
-					+" from surrounding points at time "+Fm2(lpc.point(ixNp2).time()),ixNp2);
-			printError("ERROR in TrajGen.generateTurnTCPs: cannot achieve turn "+Fm0(ixNp2)+label+" from surrounding points at "+Fm0(ixNp2));
+			traj.addError("generateTurnTCPs"+turnFail+": cannot achieve turn at point "+Fm0(ixNp2)+label
+					+" from surrounding points at time "+Fm2(traj.point(ixNp2).time()),ixNp2);
+			printError("generateTurnTCPs"+turnFail+": cannot achieve turn "+Fm0(ixNp2)+label+" from surrounding points at "+Fm0(ixNp2));
 		}
-	} else if (EOT.time()-BOT.time() > 2.0*getMinTimeStep()) { // ignore small changes  is the 2.0 factor right?
-		if (traj.inTrkChange(BOT.time())) {
+	} else { // if (turnTime > 2.0*getMinAccelTime() ||deltaTrack > Units::from("deg",3.5) ) { // ignore small changes  is the 2.0 factor right?
+		if (traj.inTrkChange(ttEOT)) {
 			if (!continueGen) {
-				traj.addError("ERROR in TrajGen.generateTurnTCPs: BOT in new turn overlaps existing turn in time at "+Fm0(ixNp2)+label,ixNp2);
-				printError("ERROR in TrajGen.generateTurnTCPs: BOT in new turn overlaps existing turn int time at "+Fm0(ixNp2)+label);
-			}
-		} else if (traj.inTrkChange(EOT.time())) {
-			if (!continueGen) {
-				traj.addError("ERROR in TrajGen.generateTurnTCPs: EOT in new turn overlaps existing turn in time at "+Fm0(ixNp2)+label,ixNp2);
-				printError("ERROR in TrajGen.generateTurnTCPs: EOT in new turn overlaps existing turn int time at "+Fm0(ixNp2)+label);
+				traj.addError("generateTurnTCPs"+turnFail+": EOT in new turn overlaps existing turn in time at "+Fm0(ixNp2)+label,ixNp2);
+				printError("generateTurnTCPs"+turnFail+": EOT in new turn overlaps existing turn int time at "+Fm0(ixNp2)+label);
 			}
 		} else {
-			int ixBOT = traj.add(npBOT);
-			ixNp2 = ixNp2 + 1;                      // just added point before np2
-			int ixEOT = traj.add(npEOT);
-			//f.pln(" $$$$.......................................................... insertTurnTcpsInTraj: traj = "+traj);
-			ixEOT = movePointsWithinTurn(traj,ixBOT,ixNp2,ixEOT,gsIn);
+			//fpln(" $$$$ generateTurnTCPs: BOT.time() = "+f.Fm2(BOT.time())+" np times = "+f.Fm2(np1.time())+", "+f.Fm2(np2.time())+", "+f.Fm2(np3.time()));
+			int ixBOT, ixEOT;
+			double targetGS =  traj.gsOut(ixNp2);
+			// **************** traj is not modified above here (other than errors) ************************
+			ixBOT = traj.insertByDistance(ixNp2,-distBotToVertex);
+			double botTime = traj.time(ixBOT);
+			double gsIn = traj.gsAtTime(botTime);
+			if (TrajGen::vertexNameInBOT) {
+		    	traj.setNavPoint(ixBOT, traj.point(ixBOT).makeName(np2.name()));
+			}
+			std::string srcinfo = traj.getInfo(ixNp2);
+			ixNp2 = ixNp2 + 1;  // just added point before np2
+			ixEOT = traj.insertByDistance(ixNp2,distBotToVertex);
+			TcpData tcpEOT = TcpData().setEOT();
+			TcpData tcpBOT = TcpData().setBOT(chordalRadius, center);
+	 		if (! bankUsed) tcpBOT.appendInformation(Plan::manualRadius);
+			if (TrajGen::vertexNameInBOT) {
+    			tcpBOT.setInformation(srcinfo);
+			}
+			traj.setTcpData(ixBOT,tcpBOT);
+			traj.setTcpData(ixEOT,tcpEOT);
+			//fpln(" $$$$$$ ixEOT = "+Fm0(ixEOT)+" traj = "+traj.toString(12));
+			ixEOT = traj.mergeClosePointsByDist(ixEOT,1.1E-3); // EOT may be very very close to existing point
+			//fpln(" $$$$$$ ixEOT = "+Fm0(ixEOT)+" traj = "+traj.toString(12));
+			// finally, move all points in turn proportionately to new distance divided by old distance
+			std::pair<int,double> mPair = movePointsWithinTurn(traj,ixBOT,ixNp2,ixEOT,gsIn);
+			ixEOT = mPair.first;
 			// ********** cannot survive the following errors: already added BOT, EOT ************
 			if (ixBOT < 0 || ixEOT < 0 ) {
-				traj.addError("ERROR in TrajGen.generateTurnTCPs: BOT/EOT overlaps point ");
+				//fpln("$$$$$$ TrajGen.generateTurnTCPs: BOT/EOT overlaps point at ixBOT = "+ixBOT);
+				traj.addError("generateTurnTCPs"+turnFail+": BOT/EOT overlaps point ");
 				return;
 			}
-			if (!trackContinuousAt(traj, ixBOT, M_PI/10)) {
-				traj.addError("ERROR in TrajGen.generateTurnTCPs:  track into BOT not equal to track out of BOT at "+Fm0(ixBOT)+label);
-				//f.pln("$$$$$$ TrajGen.generateTurnTCPs: track into BOT not equal to track out of BOT at "+ixBOT+label);
-				return;
-			}
-			if (!trackContinuousAt(traj, ixEOT, M_PI/10)) {
-				traj.addError("ERROR in TrajGen.generateTurnTCPs:  track into EOT not equal to track out of EOT at "+Fm0(ixEOT)+label);
-				//f.pln("TrajGen.generateTurnTCPs:  track into EOT not equal to track out of EOT at "+ixEOT+label);
-				return;// traj;
-			}
-			//f.pln(" $$>> generateTurnTCPs: at ixBOT = "+ixBOT+"  ixEOT = "+ixEOT+" gsIn = "+Units::str("kn",gsIn,4));
-			traj.mkGsIn(ixBOT, gsIn);  // ****
-			//traj.mkGsOut(ixBOT, gsIn);
-			traj.mkGsIn(ixEOT, gsIn);       // can this be removed?
+			//fpln(" $$>> generateTurnTCPs: at ixBOT = "+ixBOT+"  ixEOT = "+ixEOT+" gsIn = "+Units::str("kn",gsIn,4));
+			traj.mkGsIn(ixBOT, gsIn);
+			targetGS = mPair.second;
 			traj.mkGsOut(ixEOT, targetGS);
+			//fpln(" $$>> generateTurnTCPs: END traj = "+traj.toStringGs());
 		}
 	}
-	//f.pln(" $$$ generateTurnTCPs:: traj = "+traj.toStringGs());
+	//fpln(" $$$ generateTurnTcpAt:: traj = "+traj.toStringGs());
+
+
 }
 
-
-
-int TrajGen::movePointsWithinTurn(Plan& traj, int ixBOT, int ixNp2, int ixEOT,  double gsIn) {
-	//f.pln(" $$$ movePointsWithinTurn: ------- ixBOT, ixNp2, ixEOT = "+ixBOT+", "+ixNp2+", "+ixEOT);
+std::pair<int,double> TrajGen::movePointsWithinTurn(Plan& traj, int ixBOT, int ixNp2, int ixEOT,  double gsIn) {
+	//fpln(" $$$ movePointsWithinTurn: ------- ixBOT, ixNp2, ixEOT = "+Fm0(ixBOT)+", "+Fm0(ixNp2)+", "+Fm0(ixEOT));
+	//fpln(" $$$ movePointsWithinTurn: ENTER traj = "+traj.toStringGs());
 	NavPoint vertex = traj.point(ixNp2);
-	NavPoint BOT = traj.point(ixBOT);
-	NavPoint EOT = traj.point(ixEOT);
-	double distVertexToEOT =  vertex.distanceH(EOT);
-	double distVertexToBOT =  vertex.distanceH(BOT);
-	double longDistTOEOT = traj.point(ixBOT).distanceH(vertex) + vertex.distanceH(EOT);
-	//f.pln(" $$ movePointsWithinTurn_New: distVertexToEOT = "+Units::str("NM",distVertexToEOT,7));
-	//f.pln(" $$ movePointsWithinTurn_New: distVertexToBOT = "+Units::str("NM",distVertexToBOT,7));
-	//f.pln(" $$ movePointsWithinTurn_New: pathDist = "+Units::str("NM",pathDist,7));
-	//f.pln(" $$ movePointsWithinTurn_New: longDistTOEOT = "+Units::str("NM",longDistTOEOT,7));
-	int lastIxInTurn = -1;
-	// ************ EOT can be out of order so let's remove it before we move inner points
-	for (int ii = ixNp2; ii < traj.size(); ii++) {
-		double dist_to_ii =  vertex.distanceH(traj.point(ii));
-		//f.pln(" %%%%% generateTurnTCPs: ii = "+ii+" dist_to_ii = "+Units::str("NM",dist_to_ii,7));
-		if (ii == ixEOT) continue;
-		else if (dist_to_ii < distVertexToEOT) lastIxInTurn = ii;
-		else break;
-	}
-	int firstIxInTurn = lastIxInTurn;
-	for (int ii = ixNp2; ii > ixBOT; ii--) {
-		double dist_from_ii =  vertex.distanceH(traj.point(ii));
-		//f.pln(" %%%%% generateTurnTCPs: ii = "+ii+" dist_from_ii = "+Units::str("NM",dist_from_ii,5));
-		if (dist_from_ii <= distVertexToBOT) firstIxInTurn = ii;
-		else break;
-	}
-	Plan tempPlan = Plan();
-	if (lastIxInTurn >= 0) {
-		for (int j = lastIxInTurn; j >= firstIxInTurn; j--) {
-			if (j != ixEOT) {
-			   tempPlan.add(traj.get(j));
-			   traj.remove(j);
-			}
+	//traj.appendInfo(ixNp2,Plan::MOTflag);
+	traj.setMOT(ixNp2);
+	double longDistTOEOT = traj.point(ixBOT).distanceH(vertex) + vertex.distanceH(traj.point(ixEOT));
+	// **********************************************************
+	// create a copy of interior points, then remove from traj
+	Plan tempPlan("temp");   // needs to be a plan because it must save GS and VS TCP DATA
+	for (int j = ixEOT; j > ixBOT; j--) {
+		int ix = tempPlan.add(traj.get(j));
+		if (! TcpData::motFlagInInfo && j == ixNp2) {
+			tempPlan.setMOT(ix);
+		}
+		if (j < ixEOT) {               // EOT stays in trajectory
+//			if (traj.isTrkTCP(j) && ! traj.isMOT(j)) { // The isMOT test is included in case an MOT is made a TCP
+//				traj.addError("generateTurnTCPs"+turnFail+": TURN overlap !!! at j = "+Fm0(j));
+//			}
+			//fpln(" $$ movePointsWithinTurn:: REMOVE j = "+Fm0(j));
+			traj.remove(j);
 		}
 	}
+	//fpln("$$ movePointsWithinTurn: traj = "+traj.toString(12));
+	double targetGs = tempPlan.gsIn(tempPlan.size()-1);
+	tempPlan.addNavPoint(traj.point(ixBOT));  // add BOT as non-TCP (i.e. want linear distance
+	//fpln("$$ movePointsWithinTurn: >>>>>>>> tempPlan = "+tempPlan.toStringGs());
 	double pathDist = traj.pathDistance(ixBOT,ixBOT+1);  // all inner points now removed
 	double ratio = pathDist/longDistTOEOT;
-	tempPlan.addNavPoint(traj.point(ixBOT));  // add as non-TCP
 	double tmBOT = traj.time(ixBOT);
-	for (int i =  tempPlan.size()-1; i > 0; i--) {
+	traj.timeShiftPlan(ixBOT+1,1000);				// temporarily move EOT out of the fray, see test_UF150
+	for (int i = tempPlan.size()-2; i > 0; i--) {       // EOT is last in tempPlan, skip it here
 		NavPoint orig_i = tempPlan.point(i);
 		TcpData tcp_i = tempPlan.getTcpData(i);
 		double dist_to_i = tempPlan.pathDistance(0,i);  // linear distance
 		double d_i = ratio*dist_to_i;
+		//fpln(" $$ movePointsWithinTurn: d_i = "+Units::str("NM",d_i,5));
 		bool linear = false;
 		std::pair<Position, int> adv = traj.advanceDistance2D(ixBOT, d_i, linear);
 		double alt_i = orig_i.alt();
 		Position pos_i = adv.first.mkAlt(alt_i);
+		//fpln(" $$$  movePointsWithinTurn: i = "+i+" pos_i = "+pos_i);
 		double dt = d_i/gsIn;
 		double t_i = tmBOT + dt;
-		std::string label_i =  orig_i.label();
-		double deltaToMOT = std::abs(dist_to_i - longDistTOEOT/2.0);
-		if (deltaToMOT < 1.0) label_i = ""; // MOT label is moved to BOT
+		std::string label_i =  orig_i.name();
+		if (TrajGen::vertexNameInBOT) {
+			double deltaToMOT = std::abs(dist_to_i - longDistTOEOT/2.0);
+			if (deltaToMOT < 1.0) {
+				label_i = "";             // MOT label is moved to BOT
+				tcp_i.setInformation(""); // MOT info is moved to BOT, so remove here
+			}
+		}
 		NavPoint np_i = NavPoint(pos_i, t_i,label_i);
-		if (tcp_i.isTrkTCP()) {
-			traj.addError("ERROR in TrajGen.generateTurnTCPs: TURN overlap !!! at i = "+Fm0(i));
-		}
-		tcp_i.clearTrk();  // this could allow small turn in big turn
-        tcp_i.setRadiusSigned(0.0); // inner points shuld not have radius data
-		//f.pln(" $$ movePointsWithinTurn: ADD BACK d_i= "+Units::str("NM",d_i,5)+" np_i = "+np_i);
-		traj.add(np_i,tcp_i);
+		traj.add(np_i,tcp_i);  // add back interior point
 	}
+	for (int i = 0; i < tempPlan.size()-1; i++) {
+		double gs = tempPlan.gsOut(i);
+		traj.mkGsOut(ixBOT+i,gs);
+		//fpln(" $$ movePointsWithinTurn: mkGsOut at "+(ixBOT+i)+" = "+Units::str("kn",gs));
+	}
+	//fpln(" $$ movePointsWithinTurn: traj = "+traj.toStringGs());
 	ixEOT = traj.nextEOT(ixBOT);  // some of the points that were after EOT may have been moved in front
-	return ixEOT;
+	return std::pair<int,double>(ixEOT,targetGs);
 }
 
-
-
-// create GSC TCPS between np1 and np2 using vin from previous leg
-/**
- * @param np1 start point of the acceleration segment/where the speed change occurs
- * @param np2 end point of the acceleration segment
- * @param targetGs target gs
- * @param vin velocity in
- * @param s  signed gs acceleration
- * @return third component: distance to EGS from BGS
- * NOTE!!! This has been changed so the accel time is always returned, but if it is less than getMinTimeStep(), there is no region and this has to be handled by the calling program!!!
- */
-Triple<NavPoint,NavPoint,double> TrajGen::gsAccelGenerator(const Plan& traj, int ixNp1, double gsIn, double targetGs, double a, double timeOffset,  bool allowOverlap) {
-	NavPoint np1 = traj.point(ixNp1);
-	NavPoint np2 = traj.point(ixNp1+1);
-	std::string label = np1.label();
-	NavPoint np1b = np1.makeLabel(label);
-	double accelTime = (targetGs - gsIn)/a;
-	if (accelTime < getMinTimeStep()) {
-		//fpln(" $$$$$ gsAccelGenerator no GS TCPS needed, at time +"+np1b.time()+" accelTime = "+accelTime);
-		return Triple<NavPoint,NavPoint,double>(np1b,np2,0.0); // no change
-	}
-	double t0 = np1.time();
-	//fpln(" $$## gsAccelGenerator: at t0 = "+Fm2(t0)+" Accelerate FROM gsIn = "+Units::str("kn",gsIn)+" TO targetGs = "+Units::str("kn",targetGs));
-	double distToBGS = gsIn*timeOffset;
-	//Position bPos = traj.advanceDistanceWithinSeg2D(ixNp1,distToBGS,false); // TODO: why does this work?
-	Position bPos = traj.advanceDistance(ixNp1,distToBGS,false).first;
-	double bTm = t0+timeOffset;
-	NavPoint b = NavPoint (bPos,bTm).makeLabel(label); // .makeAdded();//.appendName(setName);
-	double d = b.distanceH(np2) - targetGs*timeOffset;
-	double remainingDist = d - accelTime * (gsIn+targetGs)/2;
-	if ( ! allowOverlap &&  remainingDist <= 0) {
-		//fpln(" ##### gsAccelGenerator: accelTime = "+accelTime+" remainingDist = "+Units::str("nm",remainingDist));
-		traj.addError("TrajGen.generateGsTCPs ERROR:  we don't have enough distance to the next point = "+Fm0(ixNp1+1));
-		return Triple<NavPoint,NavPoint,double>(np1b,np2,-1.0); // no change
-	}
-	//std::pair<Position,Velocity>  pv = KinematicsPosition::gsAccel(b.position(), vin, accelTime, a);
-	double distToEGS = gsIn*accelTime + 0.5*a*accelTime*accelTime;
-	std::pair<Position,int> pv = traj.advanceDistance(ixNp1,distToBGS+distToEGS,false);
-	NavPoint e = NavPoint(pv.first, accelTime+t0+timeOffset); // .makeAdded();//.appendName(setName);
-	return Triple<NavPoint,NavPoint,double>(b,e,distToEGS);
-}
-
-Plan TrajGen::generateGsTCPs(const Plan& fp, double gsAccel, bool repairGs, bool useOffset) {
-	Plan traj(fp); // the current trajectory based on working
-	for (int i = traj.size() - 2; i > 0; i--) {
-		if (repairGs) {
-			bool checkTCP = true;
-			PlanUtil::fixGsAccelAt(traj, i, gsAccel, checkTCP, getMinTimeStep());
+Plan TrajGen::generateTurnTCPsRadius(const Plan& lpc, bool continueGen, bool delayGsChangeUntilEOT) { //, double default_radius) {
+	Plan traj = Plan(lpc); // the current trajectory based on working
+	//fpln(" $$>> generateTurnTCPsRadius: lpc = "+lpc.toString());
+	for (int i = lpc.size()-2; i > 0; i--) {   // Perform in reverse order so indexes match between lpc and traj
+		double gsIn = lpc.gsIn(i);
+		if (Util::almost_equals(gsIn,0.0)) {
+			//printError("TrajGen.generateTurnTCPs ###### WARNING: Segment from point "+Fm0(i-1)+" to point "+Fm0(i)+" has zero ground speed!");
+			continue;
 		}
-		double timeOffset = 0.0;
-		TcpData tcp1 = traj.getTcpData(i);
-		if (useOffset && tcp1.isEOT() ) timeOffset = getMinTimeStep();
-		double targetGs = traj.gsOut(i+1);
-	    generateGsTCPsAt(traj, i, gsAccel, targetGs, timeOffset);
-	}
+		double turnDelta = Util::turnDelta(lpc.trkIn(i),lpc.trkOut(i));
+		TcpData tcp_i = lpc.getTcpData(i);
+		double R = lpc.vertexRadius(i);
+		//fpln(" $$>> generateTurnTCPsRadius(lpc): i = "+i+" R = "+Units::str("NM",R));
+		//double turnTime = turnDelta*R/gsIn;    // if R = 0 ==> do not process this point
+		double gsOut_i = lpc.gsOut(i);
+		//fpln(" $$$$$ generateTurnTCPs: i = "+i+" gsOut_i = "+gsOut_i);
+		//if (turnTime >= getMinAccelTime() && gsOut_i > 1E-10) {  // do not generate when gsOut is near 0
+		if (R > 0 && turnDelta >= Plan::MIN_TRK_DELTA_GEN && gsOut_i > 1E-10) {  // do not generate when gsOut is near 0
+            bool bankUsed = false;
+			generateTurnTcpAt(traj, i, R, bankUsed, continueGen);
+			if (!continueGen && traj.hasError()) return traj;
+		}
+	}//for
 	return traj;
 }
 
 
-void TrajGen::generateGsTCPsAt(Plan& traj, int i, double gsAccel, double targetGs, double timeOffset) {
-	bool allowOverlap = true;
-	generateGsTCPsAt(traj, i, gsAccel,  targetGs,   timeOffset, allowOverlap);
+Plan TrajGen::generateTurnTCPsRadius(const Plan& lpc, bool continueGen) {
+	bool delayGsChangeUntilEOT = true;
+    return generateTurnTCPsRadius(lpc, continueGen, delayGsChangeUntilEOT);
 }
 
-void TrajGen::generateGsTCPsAt(Plan& traj, int i, double gsAccel, double targetGs, double timeOffset, bool allowOverlap) {
-	double gsIn = traj.gsIn(i);
-	if (Util::almost_equals(gsIn,0.0) || Util::almost_equals(targetGs,0.0)) {
-		traj.addWarning("TrajGen.generateGsTCPs: zero ground speed at index "+Fm0(i));
-		gsIn = 1E-10;
+
+Plan TrajGen::generateTurnTCPsRadius(const Plan& lpc) {
+	bool continueGen = false;
+	bool delayGsChangeUntilEOT = true;
+	return generateTurnTCPsRadius(lpc, continueGen, delayGsChangeUntilEOT);
+}
+
+
+/**
+* @param p        the Plan (i.e. trajectory)
+* @param ix       vertex index
+* @param radius   radius of turn
+* @return         minimum leg distance, return 0 if no turn would be generated here
+*/
+double TrajGen::neededTurnLegDistance(const Plan& p, int ix, double radius) {
+	if (ix < 0 || ix > p.size()-1) return -1;
+	double trkIn =  p.trkIn(ix); //  GreatCircle.final_course(p1, p2);
+	double trkOut = p.trkOut(ix); // GreatCircle.initial_course(p2, p3);
+	double deltaTrack = Util::turnDelta(trkIn,trkOut);
+	if (deltaTrack < PlanUtil::maxTurnDeltaStraight) return 0;
+	double theta = deltaTrack/2.0;
+	double distance = radius*tan(theta);
+	return distance;
+}
+
+double TrajGen::neededLegLengthBankAngle(const Plan& p, int ix, double bankAngle) {
+	double gsIn = p.gsIn(ix);
+	double radius = Kinematics::turnRadius(gsIn, bankAngle);
+	return neededTurnLegDistance(p, ix, radius);
+}
+
+
+
+Plan TrajGen::generateGsTCPs(const Plan& fp, double maxGsAccel, bool repairGs) {
+	Plan traj(fp); // the current trajectory based on working
+	for (int i = 1; i < traj.size(); i++) {
+		if (traj.isGsTCP(i)) continue;
+		double a_gs = maxGsAccel;
+		double gsAccel = std::abs(traj.gsAccel(i));  // see if gsAccel is stored at point ix
+		//f.pln(" $$ generateGsTCPs: i = "+i+" gsAccel = "+gsAccel);
+		if (gsAccel > 0) {
+			a_gs = gsAccel;
+			traj.appendInfo(i,Plan::manualGsAccel);
+		}
+		//f.pln(" $$$$$$ generateGsTCPs: i = "+i+" traj.gsIn(i+1) = "+Units.str("kn",traj.gsIn(i+1))+"  traj.gsOut(i+1) = "+Units.str("kn",traj.gsOut(i+1)));
+		double targetGs = traj.gsOut(i);
+		//f.pln(" $$$ generateGsTCPs: i = "+i+" targetGs = "+Units.str("kn",targetGs));
+		double gsIn = traj.gsIn(i);
+		if (std::abs(targetGs - gsIn) > Plan::MIN_GS_DELTA_GEN) {
+			if (Util::almost_equals(targetGs,0.0,PRECISION5)) {
+				//f.pln("$$$$## generateGsTCPs: targetGs is 0 at index "+i);
+				int ixBGS = generateGsToZero(traj,i,a_gs,targetGs);
+				if (ixBGS >= 0) {
+					int ixEGS = traj.nextEGS(ixBGS);
+					if (ixEGS >= 0) i = ixEGS;
+				}
+			} else {
+				generateGsTCPsAt(traj, i, a_gs, repairGs);
+				int ixEGS = traj.nextEGS(i);
+				if (ixEGS >= 0) i = ixEGS;
+			}
+		}
 	}
-	//fpln(" ##$$ generateGsTCPs: at i = "+Fm0(i)+" Accelerate FROM gsIn = "+Units::str("kn",gsIn)+" TO targetGs = "+Units::str("kn",targetGs));
+	//f.pln(" generateGsTCPs: EXIT traj = "+traj.toStringGs());
+	return traj;
+
+}
+
+void TrajGen::generateGsTCPsAt(Plan& traj, int ixBGS, double gsAccel, bool repairGs) {
+	double gsIn = traj.gsIn(ixBGS);
+	double targetGs = traj.gsOut(ixBGS);
 	int sign = 1;
 	if (gsIn > targetGs) sign = -1;
 	double a = std::abs(gsAccel)*sign;
-	Triple<NavPoint,NavPoint,double> tcpTriple =  gsAccelGenerator(traj, i, gsIn, targetGs, a, timeOffset, allowOverlap);
-	double distanceToEGS = tcpTriple.third;
-	double distanceToEndOfPlan = traj.pathDistance(i,traj.size()-1);
-	if (distanceToEGS > distanceToEndOfPlan) {
-		traj.addError("TrajGen.generateGsTCPs ERROR: Cannot complete acceleration at i = "+Fm0(i)+" before end of Plan");
+	double neededDistance = 0.0;
+	double accelTime = 0.0;
+	int j = ixBGS+1;
+	int topIndex = traj.size();
+	if (! repairGs) topIndex = j+1;
+	for (j = ixBGS+1; j < topIndex; j++) {  // skip over segments that do not have enough distance to meet targetGs
+		double distAvailable = traj.pathDistance(ixBGS,j);
+		targetGs = traj.gsOut(j-1);
+		accelTime = (targetGs - gsIn)/a;
+		neededDistance = gsIn*accelTime + 0.5*a*accelTime*accelTime;
+		//f.pln(" $$$ findTargetGs: IN LOOP i = "+i+" j = "+j+" targetGs = "+Units.str("kn",targetGs)+" neededDistance = "+Units.str("NM",neededDistance)+" distAvailable = "+Units.str("NM",distAvailable));
+		if (neededDistance <= distAvailable) break;
+	}
+	//fpln(" ##$$ generateGsTCPs: at i = "+Fm0(i)+" Accelerate FROM gsIn = "+Units::str("kn",gsIn)+" TO targetGs = "+Units::str("kn",targetGs));
+	double distanceToEndOfPlan = traj.pathDistance(ixBGS,traj.size()-1);
+	if (neededDistance > distanceToEndOfPlan) {
+		traj.addError("generateGsTCPs"+gsFail+": Cannot complete acceleration at i = "+Fm0(ixBGS)+" before end of Plan");
 		return;
 	}
-	if (distanceToEGS >= Units::from("ft",50)) {
-		NavPoint BGS = tcpTriple.first;
-		NavPoint EGS = tcpTriple.second;
-		TcpData tcp1 = traj.getTcpData(i);
+	if (neededDistance >= Units::from("ft",50)) {
+		//std::string label = np1.name();
+		double t0 = traj.time(ixBGS);
+		std::pair<Position,int> pv = traj.advanceDistance(ixBGS,neededDistance,false);
+		NavPoint EGS = NavPoint(pv.first, accelTime+t0); // .makeAdded();//.appendName(setName);
+		TcpData tcp1 = traj.getTcpData(ixBGS);
 		TcpData EGS_tcp = makeEGS(tcp1);
-		if ( ! tcp1.isTCP()) {
-			//fpln(" #### generateGsTCPs remove point at time "+np1.time()+" index="+traj.getIndex(np1.time()));
-			traj.remove(i);  // assumes times have not changed from lpc to lpc
+		TcpData BGS_tcp = makeBGS(tcp1, a, tcp1.isAltPreserve());
+		//int ixBGS = traj.add(BGS, BGS_tcp);
+		traj.setTcpData(ixBGS,BGS_tcp);
+		bool ok = adjustGsInsideAccel(traj, ixBGS, a, neededDistance);
+		if (ok) {
+			int ixEGS = traj.add(EGS, EGS_tcp);
+			//fpln(" $$##### generateGsTCPs:  i = "+i+" ixBGS = "+ixBGS+" ixEGS = "+ixEGS);
+			traj.mkGsIn(ixEGS+1,targetGs);  // did not overlap fix gs between EGS and next point
 		}
-		int ixEGS;
-		int ixBGS;
-		TcpData BGS_tcp = makeBGS(tcp1, a, timeOffset, tcp1.isAltPreserve());
-		if (allowOverlap) {
-	        bool isAltPreserve = tcp1.isAltPreserve();
-			ixBGS = traj.add(BGS, BGS_tcp);
-			if (ixBGS < 0) {
-				//fpln(" $$##### generateGsTCPs: ixBGS = "+ixBGS+" BGS.t = "+BGS.time());
-				traj.addError("TrajGen.generateGsTCPsAt ERROR: Overlap Problem at i = "+Fm0(i));
-				return;
-			}
-			adjustGsInsideAccel(traj, ixBGS, a, distanceToEGS, timeOffset, isAltPreserve);
-		} else {
-			ixBGS = traj.add(BGS, BGS_tcp);
-			traj.timeShiftPlan(ixBGS+1,1000);
-		}
-		ixEGS = traj.add(EGS, EGS_tcp);
-		//f.pln(" $$##### generateGsTCPs:  i = "+i+" ixBGS = "+ixBGS+" ixEGS = "+ixEGS);
-		traj.mkGsIn(ixEGS+1,targetGs);  // did not overlap fix gs between EGS and next point
 	}
 }
 
@@ -711,295 +600,399 @@ void TrajGen::generateGsTCPsAt(Plan& traj, int i, double gsAccel, double targetG
  * @param aBGS       acceleration value
  * @param distToEGS  distance from BGS to new EGS point
  */
-void TrajGen::adjustGsInsideAccel(Plan& traj, int ixBGS, double aBGS, double distToEGS, double timeOffset, bool isAltPreserve) {
-	//f.pln(" $$$$$ generateGsTCPsAt(1): aBGS = "+aBGS+" traj = "+traj.toStringGs());
-	//f.pln(" $$$ adjustGsInsideAccel: distToEGS = "+Units.str("nm",distToEGS,8));
+bool TrajGen::adjustGsInsideAccel(Plan& traj, int ixBGS, double aBGS, double distToEGS) {
+	//fpln(" $$$ adjustGsInsideAccel: distToEGS = "+Units::str("nm",distToEGS,8));
 	double gsBGS = traj.gsIn(ixBGS);
 	int lastIxInGsAccel = ixBGS;
-	traj.setGsAccel(ixBGS,0.0);                         // *** THIS IS IMPORTANT --> isGsContinuous test needs this
+	bool rtn = true;
 	for (int ii = ixBGS+1; ii < traj.size(); ii++) {
 		double dist_to_ii =  traj.pathDistance(ixBGS,ii);
-		//f.pln(" $$$$$ adjustGsInsideAccel: ii = "+ii+" dist_to_ii = "+Units.str("nm",dist_to_ii,8));
+		//fpln(" $$$$$ adjustGsInsideAccel: ii = "+ii+" dist_to_ii = "+Units::str("nm",dist_to_ii,8));
 		if (dist_to_ii < distToEGS) lastIxInGsAccel = ii;
 		else break;
-		if (!PlanUtil::isGsContinuous(traj, ii, Units::from("kn",5.0), true)) { // *** ACCELERATION NEEDS TO BE OFF HERE ****
-			//f.pln("$$$$$ TrajGen.generateGsTCPsAt: passed over a ground speed discontinuity at "+ii);
-			traj.addError("TrajGen.generateGsTCPsAt: passed over a ground speed discontinuity at "+Fm0(ii));
+		if (traj.isBGS(ii)) {
+			//fpln("$$$$$ adjustGsInsideAccel: OVERLAP error:  BGS at ii = "+ii);
+			traj.addError("generateGsTCPsAt"+gsFail+": OVERLAP error:  BGS at ii = "+Fm0(ii));
+            traj.clearBGS(ixBGS);
+            return false;
 		}
 	}
-	//f.pln("\n $$$$$>>> adjustGsInsideAccel:  lastIxInGsAccel = "+lastIxInGsAccel);
+	//fpln("\n $$$$$>>> adjustGsInsideAccel:  lastIxInGsAccel = "+lastIxInGsAccel);
 	double tBGS = traj.time(ixBGS);
 	traj.timeShiftPlan(ixBGS+1,1000);
-	traj.setGsAccel(ixBGS,aBGS);               // **************** TURN ON ACCELERATION NOW *******************
 	for (int j = ixBGS+1; j <= lastIxInGsAccel; j++) {
 		double d_j = traj.pathDistance(ixBGS,j);
 		double t_j = tBGS + Plan::timeFromDistance(gsBGS, aBGS, d_j);
-		traj.setTime(j,t_j);
-		//f.pln(" $$$$$>>> adjustGsInsideAccel: set time of j = "+j+" to "+t_j);
+		if (ISNAN(t_j)) {
+            traj.addError("adjustGsInsideAccel"+gsFail+": timeFromDistance generated NaN");
+			//DebugSupport::dumpPlan(traj,"adjustGsBug");
+            rtn = false;
+		} else {
+		   traj.setTime(j,t_j);
+		}
+		//fpln(" $$$$$>>> adjustGsInsideAccel: set time of j = "+j+" to "+t_j);
+	}
+	return rtn;
+}
+
+
+
+/** generate an BGS-EGS pair with the EGS at point i
+ *
+ * @param traj        trajectory
+ * @param i           point with GSOut = 0
+ * @param a           absolute acceleration
+ * @param targetGs    should be zero are almost zero
+ * @return            index where BGS is located
+ */
+int TrajGen::generateGsToZero(Plan& traj, int i, double gsAccel, double targetGs) {
+	if (gsAccel < 0) gsAccel = -gsAccel;
+	double gsIn = traj.gsIn(i);
+	//double t_i = traj.time(i);
+	//fpln("\n $$$$ generateGSToZero: ENTER i = "+Fm0(i)+" gsIn = "+Units::str("kn",gsIn)+" targetGs = "+Units::str("kn",targetGs));
+	double accelTime = (gsIn - targetGs )/gsAccel;
+	//fpln(" $$$$$ generateGSToZero: i = "+Fm0(i)+" accelTime = "+Fm1(accelTime));
+//
+//	if (std::abs(targetGs - gsIn) <= Plan::MIN_GS_DELTA_GEN) {
+//		//fpln(" $$$$$ generateGSToZero no GS TCPS needed at i = "+i+" accelTime = "+accelTime);
+//		return -1; // no change
+//	}
+	//fpln("\n $$$$ generateGSToZero: ENTER i = "+i+" traj = "+traj.toStringGs());
+	double neededDist = accelTime*(gsIn+targetGs)/2.0;
+	//fpln(" $$$$$ generateGSToZero: distBackToBGS = "+distBackToBGS);
+	double distBack_bSeg =  0.0;
+	int bSeg = -1;
+	for (int j = i-1; j >= 0; j--) {
+		double dist_j = traj.pathDistance(j);
+		distBack_bSeg = distBack_bSeg + dist_j;
+		//fpln(" $$$$$ generateGSToZero: j = "+j+" dist_j =  "+dist_j+" distBack = "+distBack);
+		if (distBack_bSeg > neededDist) {
+			bSeg = j;
+			break;
+		}
+		// recompute needed distance with new gsIn (because previous segment will have a different gs)
+		if (j>0) gsIn = traj.gsOut(j-1);
+		accelTime = (gsIn - targetGs)/gsAccel;
+		neededDist = accelTime*(gsIn+targetGs)/2.0;
+		//fpln(" $$$$$ generateGSToZero: REVISED j = "+j+"  gsIn = "+Units::str("kn",gsIn));
+	}
+	//fpln(" $$$$$ generateGsToZero: bSeg = "+bSeg);
+	if (bSeg < 0) {
+		traj.addError("generateGsToZero"+gsFail+": Plan too short to decelerate to zero speed!");
+		return -1;
+	}
+	double deltaDist = distBack_bSeg - neededDist;
+    double bgsTime = traj.timeFromDistance(bSeg, deltaDist);
+	Position bgsPos = traj.advanceDistance(bSeg,deltaDist,false).first;
+	//NavPoint BGS = new NavPoint(bgsPos,bgsTime);
+	traj.setEGS(i);
+	//fpln(" $$$$$ >>>>>>>>>>>>>>>> generateGsToZero: setEGS = i ="+i);
+	std::string name = traj.getPointName(i);
+	std::pair<NavPoint,TcpData> BGS;
+	if (traj.inGsChange(bgsTime)) {
+	    BGS = Plan::makeEGSBGS(name, bgsPos, bgsTime, -gsAccel);
+	} else {
+    	BGS = Plan::makeBGS(name, bgsPos, bgsTime, -gsAccel);
+	}	//fpln(" $$$$$ generateGsToZero: gsAtTime("+bgsTime+") =  "+Units::str("kn",traj.gsAtTime(bgsTime)));
+	int ixBGS = traj.add(BGS);
+    int ixEGS = i+1;   // because we added a new BGS
+	int ixDelete = traj.mergeClosePoints(ixBGS-1,Plan::minDt);
+	if (ixDelete >= 0) {
+		ixBGS--;
+		ixEGS--;
+	}
+    if (ixBGS > 0) {
+    	//fpln(" $$$$$ generateGsToZero: ixBGS = "+ixBGS+" gsIn = "+Units::str("kn",gsIn));
+    	traj.mkGsIn(ixBGS, gsIn);
+     }
+	adjustGsInsideAccelToEGS(traj, ixBGS, -gsAccel, ixEGS);
+	//fpln("\n $$$$ generateGSToZero: EXIT traj = "+traj.toStringGs());
+	return ixBGS;
+}
+
+/** Adjust ground speed of all points that will fall within distance to new EGS (distToEGS)
+ *
+ * @param traj       the plan file of interest
+ * @param ixBGS      index of BGS
+ * @param aBGS       signed acceleration value
+ * @param distToEGS  distance from BGS to new EGS point
+ *
+ * Note: this function used where EGS has already been added.
+ */
+void TrajGen::adjustGsInsideAccelToEGS(Plan& traj, int ixBGS, double gsAccel, int ixEGS) {
+	//fpln(" $$$$$ adjustGsInsideAccelToEGS: ENTER ixBGS = "+ixBGS+" ixEGS = "+ixEGS+" traj = "+traj.toStringGs());
+    double dtAtIxEGS = 0;
+	if (ixEGS < traj.size()-1) {
+		dtAtIxEGS = traj.time(ixEGS+1) - traj.time(ixEGS);
+	}
+	if (ixEGS >= traj.size()) {
+		return;
+		//Debug.halt();
+	}
+	double gsBGS = traj.gsIn(ixBGS);
+	for (int ii = ixBGS+1; ii < ixEGS; ii++) {
+		if (traj.isBGS(ii)) traj.clearBGS(ii);
+		if (traj.isEGS(ii)) traj.clearEGS(ii);
+	}
+	double tBGS = traj.time(ixBGS);
+	traj.timeShiftPlan(ixBGS+1,1000);
+	//fpln(" $$$ adjustGsInsideAccelToEGS: ixBGS = "+ixBGS+" traj = "+traj);
+	for (int j = ixBGS+1; j < ixEGS; j++) {
+		double d_j = traj.pathDistance(ixBGS,j);
+		d_j = d_j - 1E-8;     // to keep timeFromDistance from return NAN
+		double t_j = tBGS + Plan::timeFromDistance(gsBGS, gsAccel, d_j);
+		if (ISNAN(t_j)) {
+            traj.addError("adjustGsInsideAccel"+gsFail+": timeFromDistance generated NaN");
+			//fpln(" $$$$$$$$$$$$$$$$$$$$ TrajGen.adjustGsInsideAccel: j = "+j+" gsBGS = "+gsBGS+" gsAccel = "+gsAccel+" d_j = "+d_j);
+		} else {
+		   //fpln(" $$$ adjustGsInsideAccelToEGS: set time of j = "+j+" to "+t_j+" sz = "+traj.size());
+		   traj.setTime(j,t_j);
+		}
+	}
+	// setting EGS time
+	double tEGS = tBGS - gsBGS/gsAccel;
+	traj.setTime(ixEGS,tEGS);
+	// ground speed should be zero at ixEGS, times cannot be based on ground speed
+	if (ixEGS < traj.size()) {
+       double dtNow = traj.time(ixEGS+1) - traj.time(ixEGS);
+       double timeCorrection = dtAtIxEGS - dtNow;
+       //fpln(" $$$ adjustGsInsideAccelToEGS: timeCorrection = "+timeCorrection);
+       traj.timeShiftPlan(ixEGS+1,timeCorrection);
 	}
 }
 
-TcpData TrajGen::makeBGS(const TcpData& tcp1, double a, double timeOffset, bool isAltPreserve) {
+bool TrajGen::attemptRepair2(Plan& kpc, int ixBGS, int ixEGS, double maxGsAccel) {
+	//f.pln("\n $$ attemptRepair2: ############## ENTER attemptRepair ixBGS = "+ixBGS+" ixEGS = "+ixEGS+" kpc = "+kpc.toStringGs());
+    if (kpc.inGsAccel(ixBGS-1)) {               // ixBGS falls within a previously generated BGS+EGS pair
+    	    int prevBGS = kpc.prevBGS(ixBGS);
+    	    kpc.revertGsTCP(prevBGS);
+    }
+    for (int jj = ixEGS-1; jj > ixBGS; jj--) {
+		if (kpc.isBGS(jj)) {
+			kpc.crudeRevertGsTCP(jj);
+			//f.pln("$$ attemptRepair2: REVERT at jj = "+jj+"  kpc = "+kpc.toStringGs());
+		}
+	}
+	//f.pln(" $$$$ attemptRepair2: kpc = "+kpc.toStringGs());
+	int ixNewEGS = kpc.nextEGS(ixBGS);
+	PlanUtil::fixGs_continuity(kpc, ixBGS, ixNewEGS, maxGsAccel);
+	bool ok = kpc.isWellFormed();
+	return ok;
+}
+
+
+TcpData TrajGen::makeBGS(const TcpData& tcp1, double a, bool isAltPreserve) {
 	TcpData BGS_tcp;
-	//f.pln(" $$$$$ generateGsTCPsAt: BGS_tcp = "+BGS_tcp);
-	if (timeOffset > 0)
-		BGS_tcp = TcpData();
-	else
-		BGS_tcp = tcp1.copy();
+	BGS_tcp = tcp1.copy();
 	if (isAltPreserve) BGS_tcp.setAltPreserve();
-	BGS_tcp.setSource(tcp1.getSourcePosition(),tcp1.getSourceTime());
-	int linearIndex = tcp1.getLinearIndex();
-	BGS_tcp.setBGS(a, linearIndex);
+	BGS_tcp.setBGS(a);
 	return BGS_tcp;
 }
 
 TcpData TrajGen::makeEGS(const TcpData& tcp1) {
 	TcpData EGS_tcp = TcpData();
-	EGS_tcp.setSource(tcp1.getSourcePosition(),tcp1.getSourceTime());
-	int linearIndex = tcp1.getLinearIndex();
-	EGS_tcp.setEGS(linearIndex);
+	EGS_tcp.setEGS();
 	return EGS_tcp;
 }
 
 
-
-
-
-
-Triple<double,double,double> TrajGen::vsAccelGenerator(double t1, double t2, double tLast, double vs1, double vs2, double a) {
-	double deltaVs = vs1 - vs2;
-	double accelTime = std::abs(deltaVs/a);
-	double tbegin = 0;
-	double tend = 0;
-	if (accelTime > 0) {
-		tbegin = t2 - accelTime/2.0;
-		tend = tbegin + accelTime;
-		if (tbegin < t1 || tend > tLast) {
-			accelTime = -1;
-		}
-	}
-	return Triple<double,double,double>(tbegin,tend,accelTime);
-}
-
-
-Triple<double,double,double> TrajGen::calcVsTimes(int i, Plan& traj, double vsAccel_d) {
-	NavPoint np1 = traj.point(i-1);
-	NavPoint np2 = traj.point(i);
-	NavPoint np3 = traj.point(i+1);
-	// find next point where vertical speed changes
-	double nextVsChangeTm = traj.getLastTime();
-	double targetVs = traj.vsOut(i);
-	for (int j = i+1; j < traj.size(); j++) {
-		//NavPoint np_j = traj.point(j);
-		nextVsChangeTm = traj.time(j);
-		double vs_j = traj.vsOut(j);
-		double dt = Kinematics::vsAccelTime(vs_j, targetVs, vsAccel_d);
-		if (dt > getMinTimeStep()) break;
-		//if (std::abs(vs_j - targetVs) > Units::from("fpm",10)) break;
-	}
-	double vs1 = np1.verticalSpeed(np2);
-	double vs2 = np2.verticalSpeed(np3);
-	int sign = 1;
-	if (vs1 > vs2) sign = -1;
-	double a = vsAccel_d*sign;
-	double prevEndTime = traj.getFirstTime();
-	int ixEVS =  traj.prevEVS(i);
-	if (ixEVS >= 0) prevEndTime = Util::max(prevEndTime,traj.time(ixEVS));
-	Triple<double,double,double> vsTriple = vsAccelGenerator(prevEndTime, np2.time(), nextVsChangeTm, vs1, vs2, a);
-	double accelTime = vsTriple.third;
-	if (accelTime < 0) {
-		// we have a calculation error, possibly too short a time for the needed accleration
-		traj.addError("TrajGen::generateVsTCPs ERROR: Insufficient room i = "+Fm0(i)+" for vertical accel! tbegin = "+Fm1(vsTriple.first)+" prevEndTime = "+Fm1(prevEndTime));
-		printError("TrajGen::generateVsTCPs ERROR: Insufficient room at i = "+Fm0(i)+" for vertical accel! tbegin = "+Fm1(vsTriple.first)+" prevEndTime = "+Fm1(prevEndTime));
-		return Triple<double,double,double>(-1.0,-1.0,-1.0);
-	} else if (accelTime > MIN_ACCEL_TIME) {
-		return Triple<double,double,double>(vsTriple.first,vsTriple.second,a);
-	} else { //if (vsTriple.third > getMinTimeStep()*minorVfactor) {
-		// we have an accel time too small for TCP generation
-		return Triple<double,double,double>(-1.0,-1.0,-1.0);
-	}
-}
-
-Plan TrajGen::generateVsTCPs(const Plan& kpc, double vsAccel_d, bool continueGen) {
+/** Generate Vertical acceleration TCPs
+ *  It assumes that all horizontal passes have been completed.
+ *
+ * @param kpc      kinematic plan with final horizontal path
+ * @param maxVsAccel  vertical speed acceleration (positive)
+ * @return
+ */
+Plan TrajGen::generateVsTCPs(const Plan& kpc, double maxVsAccel, bool continueGen) {
+	if (maxVsAccel < 0) maxVsAccel = -maxVsAccel;
 	Plan traj(kpc);
 	for (int i = 1; i < traj.size()-1; i++) {
-		NavPoint np1 = traj.point(i-1);
-		NavPoint np2 = traj.point(i);
-		double vs1 = np1.verticalSpeed(np2);
-		Triple<double,double,double> cboTrip = TrajGen::calcVsTimes(i, traj, vsAccel_d);
-		double tbegin = cboTrip.first;
-		double tend = cboTrip.second;
-		double accel = cboTrip.third;
-		//fpln(" $$$$ generateVsTCPs: for i = "+Fm0(i)+" tbegin = "+Fm2(tbegin)+" tend = "+Fm2(tend));
-		bool newTCPneeded = (tbegin >= 0 && tend >= 0 && !traj.inVsChange(tbegin));
-		if (traj.inVsChange(tbegin) && tbegin >=0 ) {     // TODO: probably should fail generation in this case !!!
-			//fpln(i+" $$!!!!!!!!!!!!! "+kpc.getName()+" generateVsTCPs:  traj.inVsChange("+f.Fm2(tbegin)+") = "+traj.inVsChange(tbegin)+"   traj.inVsChange(tend) = "+traj.inVsChange(tend));
-			if (continueGen) {
-				continue;
-			} else {
-				traj.addError("Vertical Speed regions overlap at time "+Fm2(tbegin));
-				return traj;
-			}
+		double a_vs = maxVsAccel;
+		double vsAccel = std::abs(traj.vsAccel(i));  // see if vsAccel is stored at point i
+		if (vsAccel > 0) {
+			a_vs = vsAccel;
+			//traj.appendInfo(i,Plan::manualVsAccel);
 		}
-		if (tbegin > 0 && np1.time() > tbegin && traj.isEVS(i-1)) {   // see test "test_AWE918"
-			if (continueGen) {
-				continue;
-			} else {
-				traj.addError("Vertical Speed regions overlap at time "+Fm2(tbegin));
-				return traj;
-			}
-		}
-		if (newTCPneeded) {
-			std::string label = np2.label();
-			NavPoint np2Source = traj.sourceNavPoint(i);
-			int linearIndex = traj.getTcpData(i).getLinearIndex();
-			Velocity vin = traj.velocity(tbegin);
-			std::pair<NavPoint,TcpData> bPair = Plan::makeBVS(np2Source,traj.position(tbegin), tbegin, accel, linearIndex);
-			NavPoint b = bPair.first.makeLabel(label); // .makeAdded();//.appendName(setName);
-			//fpln(" $$$$$$$$$$$$ generateVsTCPs: i = "+Fm0(i)+" make BVSC   point="+b.toString()+" vin = "+vin.toString());
-			std::pair<NavPoint,TcpData> ePair = Plan::makeEVS(np2Source,traj.position(tend), tend, linearIndex);
-			NavPoint e = ePair.first;
-			if ( ! traj.isTCP(i)) {
-				traj.remove(i);
-			}
-			int bindex = traj.add(b,bPair.second);
-			int eindex = traj.add(e,ePair.second);
-			if (bindex < 0) {
-				bindex = -bindex;
-			}
-			if (eindex < 0) {
-				eindex = -eindex;
-			}
-			i = eindex;
-			// fix altitude for all remaining points between b and e
-			bool altok = true;
-			for (int k = bindex+1; k < eindex; k++) {
-				double dt2 = traj.time(k) - tbegin;
-				std::pair<double,double> npair = vsAccel(b.alt(), vs1, dt2, accel);
-				double newAlt = npair.first;
-				//f.pln(" $$$$ k = "+k+"  dt2 = "+dt2+"  newAlt = "+Units.str("ft",newAlt));
-				NavPoint newNp = traj.point(k).mkAlt(newAlt);
-				TcpData newNp_tcp = traj.getTcpData(k);
-				//fpln(" $$ generateVsTCPs: traj.point(k) = "+traj.point(k).toStringFull());
-				if (newAlt >= 0 && newAlt <= maxAlt) {
-					traj.set(k, newNp, newNp_tcp);
-				} else {
-					altok = false;
-				}
-			}//for
-			if (!altok) traj.addError("TrajGen.generateVsTCPs: generated altitude is out of bounds");
-		}
+		//fpln("$$>> generateVsTCPs: i = "+Fm0(i)+" vsAccel "+Fm2(vsAccel));
+		i = generateOneVsTCPs(traj, i, a_vs, continueGen);
 	} // for loop
-	//fpln(" generateVsTCPs: END traj.hasError() = "+Fmb(traj.hasError()));
 	return traj;
 } // generateVsTCPs
 
 
+/** Generate a BVS EVS pair at index i if deltaVs is large enough
+ *
+ * @param traj            trajectory
+ * @param i               index
+ * @param vsAccel         vertical acceleration
+ * @param continueGen     if true continue generation even if errors are encountered, results in a partial kinematic plan
+ * @return                revised traj
+ */
+int TrajGen::generateOneVsTCPs(Plan& traj, int i, double vsAccel_d, bool continueGen) {
+	if (vsAccel_d == 0) {
+		traj.addError("generateVsTCPs"+vsFail+": vsAccel = "+Fm1(vsAccel_d));
+		return i;
+	}
+	NavPoint np2 = traj.point(i);
+	double vs1 = traj.vsOut(i-1);
+	double vs2 = traj.vsOut(i);
+	int sign = 1;
+	if (vs1 > vs2) sign = -1;
+	double a = vsAccel_d*sign;
+	double deltaVs = vs2 - vs1;
+	double accelTime = std::abs(deltaVs/a);
+    bool vsAccelNeeded = std::abs(deltaVs) > Plan::MIN_VS_DELTA_GEN;
+	if (vsAccelNeeded) {
+		//fpln(" $$$ generateOneVsTCPs: i = "+Fm0(i)+" vsAccel_d = "+Fm1(vsAccel_d)+" accelTime = "+Fm1(accelTime));
+		double tbegin = np2.time() - accelTime/2.0;
+		double tend = tbegin + accelTime;
+		double prevEndTime = traj.getFirstTime();
+		int ixEVS =  traj.prevEVS(i);
+		if (ixEVS >= 0) prevEndTime = Util::max(prevEndTime,traj.time(ixEVS));
+		//double nextVsChangeTm = TrajGen::nextVsChangeTime(traj, i, vsAccel_d);
+		int nextVsChangeIx = PlanUtil::nextVsChange(traj, i);
+		double nextVsChangeTm = traj.time(nextVsChangeIx);
+		if (tbegin < prevEndTime || tend > nextVsChangeTm) {
+			if (! continueGen) {
+				traj.addError("generateVsTCPs"+vsFail+": Insufficient time i = "+Fm0(i)+" for vertical accel! tbegin = "+Fm1(tbegin)+" prevEndTime = "+Fm1(prevEndTime));
+				printError("generateVsTCPs"+vsFail+": Insufficient time at i = "+Fm0(i)+" for vertical accel! tbegin = "+Fm1(tbegin)+" prevEndTime = "+Fm1(prevEndTime));
+			}
+			return i;
+		} else { // SUCCESS
+			bool newTCPneeded = (tbegin >= 0 && tend >= 0);
+			//fpln("$$$$ generateVsTCPs: i = "+i+" tbegin = "+f.Fm2(tbegin)+" tend = "+f.Fm2(tend)+" np1 = "+np1.time()+" np2 = "+np2.time() );
+			if (newTCPneeded) {
+				if (traj.inVsChange(tbegin)) {
+					traj.addError("generateOneVsTCPs"+vsFail+": VsAccel Overlap!");
+				} else {
+					//fpln(i+" $$ generateVsTCPs: $$ generateVsTCPs: tbegin = "+f.Fm2(tbegin)+" tend = "+f.Fm2(tend)+" np1 = "+np1.time()+" np2 = "+np2.time() );
+					std::string label = traj.point(i).name();
+					std::string info_i = traj.getInfo(i);
+					std::pair<NavPoint,TcpData> bPair = Plan::makeBVS("", traj.position(tbegin), tbegin, a);
+					std::pair<NavPoint,TcpData> ePair = Plan::makeEVS(traj.position(tend), tend);
+					bool removedVsTransitionPt = false;
+					bool manualVsAccel = std::abs(traj.vsAccel(i)) > 0;
+					if ( ! traj.isTCP(i) && ! traj.isMOT(i)) {
+						traj.remove(i);  // remove the original vs-transition point
+						removedVsTransitionPt = true;
+					}
+					int bindex = traj.add(bPair);
+					int eindex = traj.add(ePair);
+					if (bindex < 0) {
+						bindex = -bindex;   // There was an overlap
+					}
+					if (eindex < 0) {
+						eindex = -eindex;   // There was an overlap
+					}
+					if (removedVsTransitionPt) {
+						traj.setPointName(bindex, label);
+						traj.setInfo(bindex, info_i);
+					} else {
+						if (manualVsAccel) {  // move manualVsFlag to BVS
+							traj.appendInfo(bindex, Plan::manualVsAccel);
+							int iVertex = i+1;   // added BVS
+							traj.setInfo(iVertex, replace(traj.getInfo(iVertex),Plan::manualVsAccel,""));
+						}
+					}
+					i = eindex;
+					// fix altitude for all remaining points between b and e: altitudes should be between b.alt and e.alt
+					bool altok = fixAlts(traj, bindex, eindex, vs1, a);
+					if (!altok) {  // only create one error message
+						traj.addError("generateVsTCPs"+vsFail+": generated altitude is out of bounds");
+					}
+				}
+			}
 
-std::pair<double,double> TrajGen::vsAccel(double sz, double vz,  double t, double a) {
-	double nvz = vz + a*t;
-	double nsz = sz + vz*t + 0.5*a*t*t;
-	return std::pair<double,double>(nsz,nvz);
-}
-
-
-
-Plan TrajGen::removeShortFirstLeg(Plan& fp, double bank)  {
-	//fpln(" #### removeShortFirstLeg: this = "+this);
-	if (fp.size() < 3) return fp;
-	int j = 0;
-	NavPoint p0 = fp.point(j);
-	NavPoint p1 = fp.point(j+1);
-	int linearIndex = fp.getTcpData(j+1).getLinearIndex();
-	NavPoint p2 = fp.point(j+2);
-	Velocity vf0 = fp.finalVelocity(j);
-	Velocity vi1 = fp.initialVelocity(j+1);
-	double deltaTrack1 = std::abs(vf0.trk() - vi1.trk());
-	if (deltaTrack1> Units::from("deg",1.0)) {
-		double gs1 = fp.initialVelocity(j).gs();
-		double R1 = Kinematics::turnRadius(gs1,bank);
-		Tuple5<NavPoint,NavPoint,NavPoint,int,Position> turn1 = TurnGeneration::turnGenerator(p0, p1, linearIndex, p2, R1);
-		NavPoint BOT = turn1.first;
-		NavPoint EOT = turn1.third;
-		//fpln(" #### removeShortFirstLeg: BOT = "+BOT+" EOT = "+EOT);
-		if (BOT.time() < p0.time()) {
-			fp.remove(1);
-			//fpln(" ##### removeShortFirstLeg: REMOVED SECOND POINT");
 		}
 	}
-	return fp;
+	return i;
 }
 
 
-Plan TrajGen::removeShortLastLeg(Plan& fp, double bank)  {
-	//fpln(" #### removeShortLastLeg: this = "+this);
-	if (fp.size() < 3) return fp;
-	int j = fp.size()-3;
-	NavPoint p0 = fp.point(j);
-	NavPoint p1 = fp.point(j+1);
-	int linearIndex = fp.getTcpData(j+1).getLinearIndex();
-	NavPoint p2 = fp.point(j+2);
-	Velocity vf0 = fp.finalVelocity(j);
-	Velocity vi1 = fp.initialVelocity(j+1);
-	//fpln("#### removeShortLastLeg:  j = "+j+" vf0 = "+vf0+" vi1 = "+vi1);
-	double deltaTrack1 = std::abs(vf0.trk() - vi1.trk());
-	//fpln(" #### removeShortLastLeg: deltaTrack1 = "+deltaTrack1);
-	if (deltaTrack1 > Units::from("deg",1.0)) {
-		double gs1 = fp.initialVelocity(j).gs();
-		double R1 = Kinematics::turnRadius(gs1,bank);
-		Tuple5<NavPoint,NavPoint,NavPoint,int,Position> turn1 = TurnGeneration::turnGenerator(p0, p1, linearIndex, p2, R1);
-		NavPoint BOT = turn1.first;
-		NavPoint EOT = turn1.third;
-		if (p1.distanceH(p2) < p1.distanceH(EOT)) {
-			fp.remove(j+1);
-			//fpln(" ##### removeShortLastLeg: REMOVED LAST POINT");
+
+bool TrajGen::fixAlts(Plan& traj, int bindex, int eindex, double vs1, double accel) {
+	bool altok = true;
+	double balt = traj.point(bindex).alt();
+	double tbegin = traj.time(bindex);
+	for (int k = bindex+1; k <= eindex; k++) {
+		double dt2 = traj.time(k) - tbegin;
+		double newAlt = balt + vs1*dt2 + 0.5*accel*dt2*dt2;
+		//fpln(" $$$$ SET: k = "+k+"  dt2 = "+dt2+"  newAlt = "+Units::str("ft",newAlt));
+		NavPoint newNp = traj.point(k).mkAlt(newAlt);
+		TcpData newNp_tcp = traj.getTcpData(k);
+		//fpln(" $$ generateVsTCPs: traj.finalVelocity(k-1) = "+traj.finalVelocity(k-1));
+		if (newAlt >= 0 && newAlt <= maxAlt) {
+			traj.set(k, newNp, newNp_tcp);
+		} else {
+			altok = false;
 		}
-	}
-	return fp;
+	}//for
+	return altok;
 }
+
+
+
+/** calculate radius at vertex ix,  If a radius has been set use it, otherwise use bank angle and GS to
+ *  calculate value
+ *
+ * @param p          Plan
+ * @param ix         index of vertex point
+ * @param bank       bank angle
+ * @return
+ */
+double TrajGen::calcRadius(const Plan& p, int ix, double bank) {
+	double gsIn = p.gsIn(ix);
+	double R = p.vertexRadius(ix); 	   // if R is 0 then turnTime will be zero and point will not be processed
+	if (Util::almost_equals(R, 0.0)) {      // no specified radius
+		R = Kinematics::turnRadius(gsIn, bank);
+	}
+	return R;
+}
+
 
 Plan TrajGen::linearRepairShortTurnLegs(const Plan& fp, double bank, bool addMiddle) {
 	Plan npc = Plan(fp);  //fp.copy();
 	for (int j = 0; j+3 < fp.size(); j++) {
+		if (Util::almost_equals(fp.gsIn(j+1),0.0)) continue;   // first vertex
+		if (Util::almost_equals(fp.gsIn(j+2),0.0)) continue;   // second vertex
 		NavPoint p0 = fp.point(j);
 		NavPoint p1 = fp.point(j+1);
 		NavPoint p2 = fp.point(j+2);
 		NavPoint p3 = fp.point(j+3);
-		Velocity vf0 = fp.finalVelocity(j);
-		Velocity vi1 = fp.initialVelocity(j+1);
-		Velocity vf1 = fp.finalVelocity(j+1);
-		Velocity vi2 = fp.initialVelocity(j+2);
-		double deltaTrack1 = std::abs(vf0.trk() - vi1.trk());
-		double deltaTrack2 = std::abs(vf1.trk() - vi2.trk());
+		double deltaTrack1 = std::abs(fp.trkIn(j+1) - fp.trkOut(j+1));   // vertex at j+1
+		double deltaTrack2 = std::abs(fp.trkIn(j+2) - fp.trkOut(j+2));   // vertex at j+2
 		//fpln(j+"#### removeShortLegsBetween: deltaTrack1 = "+Units::str("deg",deltaTrack1)+" deltaTrack2 = "+Units::str("deg",deltaTrack2));
-		if (deltaTrack1> Units::from("deg",1.0) && deltaTrack2 > Units::from("deg",1.0)) {
-			double gs1 = fp.initialVelocity(j).gs();
-			double R1 = Kinematics::turnRadius(gs1,bank);
-			double gs2 = fp.initialVelocity(j+1).gs();
-			double R2 = Kinematics::turnRadius(gs2,bank);
-			int linearIndex1 = fp.getTcpData(j+1).getLinearIndex();
-			int linearIndex2 = fp.getTcpData(j+2).getLinearIndex();
-			Tuple5<NavPoint,NavPoint,NavPoint,int,Position> turn1 = TurnGeneration::turnGenerator(p0, p1, linearIndex1, p2, R1);
-			Tuple5<NavPoint,NavPoint,NavPoint,int,Position> turn2 = TurnGeneration::turnGenerator(p1, p2, linearIndex2, p3, R2);  // should this use R1 ~ gs1 ??
-			NavPoint A = turn1.third;
-			NavPoint B = turn2.first;
-			double distP1EOT = p1.distanceH(A);
-			double distP1BOT = p1.distanceH(B);
-			//fpln(j+" ######### removeShortLegsBetween: distP1BOT = "+Units::str("nm",distP1BOT)+" distP1EOT = "+Units::str("nm",distP1EOT));
-			if (A.time() > B.time() || distP1EOT > distP1BOT ) {
+		if (deltaTrack1> Plan::MIN_TRK_DELTA_GEN  && deltaTrack2 > Plan::MIN_TRK_DELTA_GEN ) {
+			double R1 = calcRadius(fp, j+1, bank);
+			double R2 = calcRadius(fp, j+2, bank);
+			Tuple6<Position,Position,Position,int,double,Position> turn1 = TurnGeneration::turnGenerator(p0.position(), p1.position(), p2.position(), R1);
+			Position EOT_1 = turn1.third;
+			Tuple6<Position,Position,Position,int,double,Position> turn2 = TurnGeneration::turnGenerator(p1.position(), p2.position(), p3.position(), R2);
+			Position BOT_2 = turn2.first;
+			double distP1EOT = p1.position().distanceH(EOT_1);
+			double distP1BOT = p1.position().distanceH(BOT_2);
+			//f.pln(j+" ######### removeShortLegsBetween: distP1BOT = "+Units.str("nm",distP1BOT)+" distP1EOT = "+Units.str("nm",distP1EOT));
+			if (distP1EOT > distP1BOT ) {
 				//fpln("............removeShortLegsBetween REMOVE npc.point(j+2) = "+npc.point(j+2)+ " npc.point(j+1) = "+npc.point(j+1));
+                 std::string info_1 = npc.getInfo(j+1);
+                 std::string info_2 = npc.getInfo(j+2);
+                 std::string name_1 = npc.getPointName(j+1);
+                 std::string name_2 = npc.getPointName(j+2);
 				npc.remove(j+2);
 				npc.remove(j+1);
+				double gsOut = fp.gsOut(j);
 				if (addMiddle) {
 					Position mid = p1.position().midPoint(p2.position());
-					double tmid =npc.time(j)+  mid.distanceH(p0.position())/gs1;
+					double tmid =npc.time(j)+  mid.distanceH(p0.position())/gsOut;
 					NavPoint midNP = p1.makePosition(mid).makeTime(tmid); // preserve source info
 					// fpln(" $$ ADD removeShortLegsBetween: midNP = "+midNP);
-					npc.addNavPoint(midNP);
-					npc =  PlanUtil::linearMakeGSConstant(npc, j,j+2,gs1);
+					int ixMid = npc.addNavPoint(midNP);
+					npc.appendInfo(ixMid,info_1+info_2);
+					npc.setPointName(ixMid,name_1+name_2);
+					npc =  PlanUtil::mkGsConstant(npc, j,j+2,gsOut);
 				} else {
 					double dist = p3.distanceH(p0);
-					double dt = dist/gs1;
+					double dt = dist/gsOut;
 					double t0 = p0.time();
 					//fpln(" $$## t0 = "+t0+" dt = "+dt+" j+1 = "+(j+1)+" gs1 = "+Units::str("kn",gs1)+" dist = "+Units::str("nm",dist));
 					npc.setTime(j+1,t0+dt);
@@ -1011,108 +1004,6 @@ Plan TrajGen::linearRepairShortTurnLegs(const Plan& fp, double bank, bool addMid
 	}
 	//fpln(" removeShortLegs: npc = "+npc);
 	return npc;
-}
-
-
-
-Plan TrajGen::removeInfeasibleTurns(const Plan& fp, double bankAngle, bool strict) {
-	Plan traj = Plan(fp); //fp.copy(); // the current trajectory based on working
-	//int j = 1; // traj index corresponding to i in fp
-	for (int i = fp.size() - 2; i > 0; i--) {
-		//double tm = fp.getTime(i);
-		Velocity vf0 = fp.finalVelocity(i-1);
-		Velocity vi1 = fp.initialVelocity(i);
-		if (Util::almost_equals(vi1.gs(),0.0)) {
-			fpln(" ###### WARNING: Segment from point "+Fm0(i)+" to point "+Fm0(i+1)+" has zero ground speed!");
-		}
-		if (std::abs(vf0.trk() - vi1.trk()) > Units::from("deg",1.0) && bankAngle >= 0.0) {
-			NavPoint np1 = fp.point(i-1); // get the point in the traj that corresponds to the point BEFORE fp(i)!
-			NavPoint np2 = fp.point(i);
-			NavPoint np3 = fp.point(i + 1);
-			double gs = vf0.gs();
-			double R = Kinematics::turnRadius(gs, bankAngle);
-			//fpln("$$$ generateTurnTCPs: t="+np2.time()+"   gs="+Units::to("knot", gs)+"   R = "+Units::str8("nm",R));
-			int linearIndex = fp.getTcpData(i).getLinearIndex();
-			Tuple5<NavPoint,NavPoint,NavPoint,int,Position> tg = TurnGeneration::turnGenerator(np1,np2,linearIndex,np3,R);
-			NavPoint BOT = tg.getFirst();
-			NavPoint MOT = tg.getSecond();
-			NavPoint EOT = tg.getThird();
-			// Calculate Altitudes based on fp
-			Position lBOT = fp.position(BOT.time());
-			Position lMOT = fp.position(MOT.time());
-			double tEOT = EOT.time();
-			if (tEOT < fp.getLastTime()) {
-				Position lEOT = fp.position(tEOT);
-				BOT = BOT.mkAlt(lBOT.alt());
-				MOT = MOT.mkAlt(lMOT.alt());
-				EOT = EOT.mkAlt(lEOT.alt());
-				if (!turnIsFeas(fp, i, BOT, EOT)) {
-					traj.remove(i);
-				}
-			} else {
-				traj.remove(i);
-			}
-		}
-	}//for
-	return traj;
-}
-
-/**
- * if there is a segment with a ground speed change at point j that cannot be achieved with the gsAccel value, then it
- * makes the ground speed before and after j the same (i.e. averages over two segments)
- *
- * @param fp
- * @param gsAccel
- * @return
- */
-Plan TrajGen::linearRepairShortGsLegs(const Plan& fp, double gsAccel) {
-	Plan lpc = Plan(fp);  //fp.copy();
-	//fpln(" $$ smoothShortGsLegs: BEFORE npc = "+lpc.toString());
-	for (int j = 1; j < fp.size()-1; j++) {
-		Velocity vin = lpc.finalVelocity(j-1);
-		double	targetGs = lpc.initialVelocity(j).gs();
-		int sign = 1;
-		double gs1 = vin.gs();
-		//double gs2 = np1.initialVelocity(np2).gs(); // target Gs
-		if (gs1 > targetGs) sign = -1;
-		double a = std::abs(gsAccel)*sign;
-		double accelTime = (targetGs - gs1)/a;
-		//f.p(j+" $$$$$$ smoothShortGsLegs: accelTime = "+accelTime+"  dt = "+f.Fm2(dt));
-		//fpln(" gs1 = "+Units::str("kn",gs1)+"  targetGs = "+Units::str("kn",targetGs));
-		double d = lpc.pathDistance(j-1,j) - targetGs*getMinTimeStep();
-		double remainingDist = d - accelTime * (gs1+targetGs)/2;
-		//fpln("$$$ smoothShortGsLegs: remainingDist = "+Units::str("nm",remainingDist));
-		if (accelTime > getMinTimeStep() && remainingDist <= 0) {
-			printError(Fm0(j)+" smoothShortGsLegs: REPAIRED GS ACCEL PROBLEM AT "+Fm2(lpc.point(j).time()));
-			lpc = PlanUtil::linearMakeGSConstant(lpc, j-1,j+1);
-		}
-	}
-	//fpln(" $$ smoothShortGsLegs: AFTER npc = "+lpc.toString());
-	return lpc;
-}
-
-
-Plan TrajGen::linearRepairShortVsLegs(const Plan& fp, double vsAccel) {
-	if (!fp.isLinear()) {
-		fp.addError("TrajGen.smoothShortVsLegs should only be called on linear plans");
-		return fp;
-	}
-	Plan lpc = Plan(fp); //fp.copy();
-	for (int i = 1; i < fp.size()-1; i++) {
-		Triple<double,double,double> cboTrip = calcVsTimes(i, lpc, vsAccel);
-		double tbegin = cboTrip.first;
-		double tend = cboTrip.second;
-		double accel = cboTrip.third;
-		bool repairNeeded = false;
-		if ((tbegin < 0.0 || tend < 0.0) && accel != 0.0) repairNeeded = true;
-        if (repairNeeded || (tbegin >= 0.0 && tbegin <= lpc.getFirstTime()) || tend >= lpc.getLastTime() ) {
-    		//fpln(" $$ linearRepairShortVsLegs: BEFORE  call to linearMakeVsConstant, lpc = "+lpc.toString());
-			//fpln(" ###### tbegin = "+tbegin+" tend = "+tend+" CALL linearMakeVsConstant AT i =  "+i);
-        	PlanUtil::linearMakeVsConstant(lpc, i-1,i+1);
-        }
-	}
-	//fpln(" $$ linearRepairShortVsLegs: AFTER CALL, RETURN lpc = "+lpc.toString());
-	return lpc;
 }
 
 
@@ -1137,16 +1028,12 @@ Plan TrajGen::makeMarkedVsConstant(const Plan& kpc) {
 				double newAlt = prevFixedAlt.alt() + constantVs*dt;
 				np = np.mkAlt(newAlt);
 				TcpData tcp = traj.getTcpData(j);
-//				if (traj.isTCP(j)) {
-//					tcp = tcp.setVelocityInit(traj.initialVelocity(j).mkVs(constantVs));
-//				}
+				//				if (traj.isTCP(j)) {
+				//					tcp = tcp.setVelocityInit(traj.initialVelocity(j).mkVs(constantVs));
+				//				}
 				traj.set(j,np, tcp);
 			}
 			prevIndex = i;
-//			if (currFixedAltTcp.isTCP()) {
-//				//TcpData currFixedAlt_tcp = traj.getTcpData(i);
-//				currFixedAltTcp = currFixedAltTcp.setVelocityInit(traj.initialVelocity(i).mkVs(constantVs));  // TODO: does this do anything??
-//			}
 		}
 	}
 	return traj;
@@ -1255,31 +1142,31 @@ Plan TrajGen::genDirectToLinear(const Plan& fp, const Position& so, const Veloci
 //	return genDirectTo(fp, so, vo, to, bankAngle, gsAccel, vsAccel, MIN_ACCEL_TIME, timeBeforeTurn);
 //}
 
-Plan TrajGen::genDirectTo(const Plan& fp, const Position& so, const Velocity& vo, double to,
-		double bankAngle, double gsAccel, double vsAccel, double timeBeforeTurn) {
-	Plan lpc = fp;
-	if (!fp.isLinear()) {
-		lpc = PlanUtil::revertTCPs(fp);
-	} else {
-		lpc = (Plan) fp;
-	}
-	Plan lpc2 = TrajGen::genDirectToLinear(lpc,so,vo,to,bankAngle,timeBeforeTurn);
-	//fpln(" $$$ genDirectTo: lpc2.initialVelocity(1) = "+lpc2.initialVelocity(1));
-	//fpln("$$$ +kpc.initialVelocity(3)  = "+kpc.initialVelocity(3));
-	Plan kpc = TrajGen::makeKinematicPlan(lpc2, bankAngle, gsAccel, vsAccel, false, true, true);
-	//bool twoTurnOverlap = std::abs(lpc2.initialVelocity(1).compassAngle() -  kpc.initialVelocity(3).compassAngle()) > Units::from("deg",10.0);
-	bool twoTurnOverlap = Util::turnDelta(lpc2.trkOut(1),kpc.trkOut(3)) > Units::from("deg",10.0);
-
-	if (twoTurnOverlap) {
-		//printError(" $$$ genDirectTo: Turns Overlap");
-		kpc.addError("TrajGen.genDirectTo: Turns Overlap",1);
-	}
-	if (lpc2.hasError()) {
-		//fpln(" $$$$$$$$$ genDirectTo: GENERATION ERROR: "+lpc2.getMessage());
-		kpc.addError(lpc2.getMessage(),0);
-	}
-	return kpc;
-}
+//Plan TrajGen::genDirectTo(const Plan& fp, const Position& so, const Velocity& vo, double to,
+//		double bankAngle, double gsAccel, double vsAccel, double timeBeforeTurn) {
+//	Plan lpc = fp;
+//	if (!fp.isLinear()) {
+//		lpc = PlanUtil::revertTCPs(fp);
+//	} else {
+//		lpc = (Plan) fp;
+//	}
+//	Plan lpc2 = TrajGen::genDirectToLinear(lpc,so,vo,to,bankAngle,timeBeforeTurn);
+//	//fpln(" $$$ genDirectTo: lpc2.initialVelocity(1) = "+lpc2.initialVelocity(1));
+//	//fpln("$$$ +kpc.initialVelocity(3)  = "+kpc.initialVelocity(3));
+//	Plan kpc = TrajGen::makeKinematicPlan(lpc2, bankAngle, gsAccel, vsAccel, false, true, true);
+//	//bool twoTurnOverlap = std::abs(lpc2.initialVelocity(1).compassAngle() -  kpc.initialVelocity(3).compassAngle()) > Units::from("deg",10.0);
+//	bool twoTurnOverlap = Util::turnDelta(lpc2.trkOut(1),kpc.trkOut(3)) > Units::from("deg",10.0);
+//
+//	if (twoTurnOverlap) {
+//		//printError(" $$$ genDirectTo: Turns Overlap");
+//		kpc.addError("TrajGen.genDirectTo: Turns Overlap",1);
+//	}
+//	if (lpc2.hasError()) {
+//		//fpln(" $$$$$$$$$ genDirectTo: GENERATION ERROR: "+lpc2.getMessage());
+//		kpc.addError(lpc2.getMessage(),0);
+//	}
+//	return kpc;
+//}
 
 //Plan TrajGen::genDirectToRetry(const Plan& p, const Position& so, const Velocity& vo, double to,
 //		double bankAngle, double gsAccel, double vsAccel, double timeBeforeTurn, double timeIntervalNextTry) {
@@ -1287,35 +1174,35 @@ Plan TrajGen::genDirectTo(const Plan& fp, const Position& so, const Velocity& vo
 //	return genDirectToRetry(p, so, vo, to, bankAngle, gsAccel, vsAccel, timeBeforeTurn,timeIntervalNextTry);
 //}
 
-Plan TrajGen::genDirectToRetry(const Plan& p, const Position& so, const Velocity& vo, double to,
-		double bankAngle, double gsAccel, double vsAccel,  double timeBeforeTurn, double timeIntervalNextTry) {
-	Plan fp = p;
-	bool done = false;
-	Plan kpc;
-	do {
-		kpc = TrajGen::genDirectTo(fp,so,vo,to,bankAngle,gsAccel,vsAccel,  timeBeforeTurn);
-		//fpln(" $$$$ generate GenDirectTo !!!! kpc.size() = "+kpc.size()+" kpc.hasError() = "+kpc.hasError());
-		if (kpc.hasError() && fp.size() > 1) {
-			double tm0 = fp.point(0).time();
-			double tm1 = fp.point(1).time();
-			if (tm0 + timeIntervalNextTry + 20 < tm1) { // add connection point
-				Position connectPt = fp.position(tm0+timeIntervalNextTry);
-				//fpln(" $$$$ Add connectPt = "+connectPt+" at time "+(tm0+timeIntervalNextTry));
-				fp.addNavPoint(NavPoint(connectPt,tm0+timeIntervalNextTry));
-				fp.remove(0);
-			} else {
-				fp.remove(0);
-			}
-		} else {
-			done = true;
-		}
-	} while (!done);
-
-	// 	     PlanCore lpc2 = TrajGen::genDirectToLinear((PlanCore) fp,so,vo,to,bankAngle,timeBeforeTurn);
-	//   		 kpc = TrajGen::makeKinematicPlan(lpc2, bankAngle, gsAccel, vsAccel, true);
-
-	return kpc;
-}
+//Plan TrajGen::genDirectToRetry(const Plan& p, const Position& so, const Velocity& vo, double to,
+//		double bankAngle, double gsAccel, double vsAccel,  double timeBeforeTurn, double timeIntervalNextTry) {
+//	Plan fp = p;
+//	bool done = false;
+//	Plan kpc;
+//	do {
+//		kpc = TrajGen::genDirectTo(fp,so,vo,to,bankAngle,gsAccel,vsAccel,  timeBeforeTurn);
+//		//fpln(" $$$$ generate GenDirectTo !!!! kpc.size() = "+kpc.size()+" kpc.hasError() = "+kpc.hasError());
+//		if (kpc.hasError() && fp.size() > 1) {
+//			double tm0 = fp.point(0).time();
+//			double tm1 = fp.point(1).time();
+//			if (tm0 + timeIntervalNextTry + 20 < tm1) { // add connection point
+//				Position connectPt = fp.position(tm0+timeIntervalNextTry);
+//				//fpln(" $$$$ Add connectPt = "+connectPt+" at time "+(tm0+timeIntervalNextTry));
+//				fp.addNavPoint(NavPoint(connectPt,tm0+timeIntervalNextTry));
+//				fp.remove(0);
+//			} else {
+//				fp.remove(0);
+//			}
+//		} else {
+//			done = true;
+//		}
+//	} while (!done);
+//
+//	// 	     PlanCore lpc2 = TrajGen::genDirectToLinear((PlanCore) fp,so,vo,to,bankAngle,timeBeforeTurn);
+//	//   		 kpc = TrajGen::makeKinematicPlan(lpc2, bankAngle, gsAccel, vsAccel, true);
+//
+//	return kpc;
+//}
 
 /**
  * Construct a (hopefully) feasible linear plan that describes a path from s to the goal point.
@@ -1328,7 +1215,7 @@ Plan TrajGen::buildDirectTo(std::string id, const NavPoint& s, const Velocity& v
 	double range = base.getLastTime()-s.time();
 	double stepSize = Util::max(minTimeStep, range/20.0);
 	double minGsDiff = Units::from("kts", 10.0);
-	double bestTime = base.getLastTime();
+	//double bestTime = base.getLastTime();
 	double bestdgs = MAXDOUBLE;
 	Quad<Position,Velocity,double,int> bestdtp;
 	bool bestdtpDef = false;
@@ -1343,7 +1230,7 @@ Plan TrajGen::buildDirectTo(std::string id, const NavPoint& s, const Velocity& v
 				double dgs = std::abs(dtp.second.gs() - dtp.first.distanceH(s.position())/(tt-t2));
 				if (dgs+minGsDiff < bestdgs) {
 					bestdgs = dgs;
-					bestTime = tt;
+					//bestTime = tt;
 					bestdtp = dtp;
 					bestdtpDef = true;
 				}
@@ -1374,50 +1261,16 @@ Plan TrajGen::makeLinearPlan(const Plan& fp) {
 	if (fp.isLinear()) {
 		return Plan(fp);
 	}
-	return PlanUtil::revertTCPs(fp);
+	//return PlanUtil::structRevertTCPs(fp,false);
+	//Plan np = Plan(fp);
+	//PlanUtil::structRevertTCPs(np,false);
+	Plan np = PlanUtil::revertAllTCPs(fp,false);
+	return np;
 }
-
-//// only add a point it it will not overwrite an existing one!
-//void TrajGen::safeAddPoint(Plan& p, const NavPoint& n) {
-//	if (p.overlaps(n) < 0) p.add(n);
-//}
-
-
-
-///**
-// *
-// * Returns a new Plan that sets all points in a range to have a constant GS.
-// * */
-//Plan TrajGen::makeGSConstant(const Plan& p, double newGs,  double bankAngle, double gsAccel, double vsAccel,
-//		bool repair) {
-//	Plan kpc = revertTCPs(p);
-//	kpc = linearMakeGSConstant(kpc,newGs);
-//	if (!p.isLinear()) {
-//		kpc = makeKinematicPlan(kpc,  bankAngle, gsAccel, vsAccel, repair);
-//	}
-//	return kpc;
-//}
-//
-///**
-// *
-// * Returns a new Plan that sets all points in a range to have a constant GS.
-// * */
-//Plan TrajGen::makeGSConstant(const Plan& p, double bankAngle, double gsAccel, double vsAccel,
-//		bool repair) {
-//	Plan kpc = revertTCPs(p);
-//	kpc = linearMakeGSConstant(kpc);
-//	if (!p.isLinear()) {
-//		kpc = makeKinematicPlan(kpc,  bankAngle, gsAccel, vsAccel, repair);
-//	}
-//	return kpc;
-//}
 
 
 void TrajGen::setVerbose(bool b) {
 	verbose = b;
 }
-
-
-
 
 }

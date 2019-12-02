@@ -81,14 +81,14 @@ void ConvertVnedToTrkGsVs(double vn,double ve,double vz,double *Trk,double *Gs,d
    double angle = 360 + atan2(ve, vn) * 180 / M_PI;
    *Trk = fmod(angle, 360);
    *Gs = sqrt(pow(vn, 2) + pow(ve, 2));
-   *Vs = vz;
+   *Vs = -vz;
 }
 
 void ConvertTrkGsVsToVned(double Trk,double Gs,double Vs,double *vn,double *ve,double *vd){
     Velocity vel = Velocity::makeTrkGsVs(Trk, "degree", Gs, "m/s", Vs, "m/s");
     *vn = vel.y;
     *ve = vel.x;
-    *vd = vel.z;
+    *vd = -vel.z;
 }
 
 bool CheckTurnConflict(double low, double high, double newHeading, double oldHeading) {

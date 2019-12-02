@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -41,7 +41,7 @@ namespace larcfm {
 	  }
   }
   
-  void Debug::halt() {
+  void Debug::printStack() {
 #ifdef __GNUC__
 	  cout << "Debug::halt() called.  Compiling with the DEBUG=-g option _may_ make outputs more readable" << endl;
 	  int sz = 10;
@@ -55,6 +55,10 @@ namespace larcfm {
 #else
 	  cout << "Debug::halt() called.  Backtrace is a glibc (gcc) function" << endl;
 #endif
+  }
+
+  void Debug::halt() {
+	  printStack();
 	  exit(1);
  }
 

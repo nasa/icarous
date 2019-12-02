@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,6 +19,14 @@
 
 namespace larcfm {
 
+/**
+ * A DensityGrid is a weighted grid that is used to support a heuristic search through a rectangular region.
+ * Each cell in the grid is roughly similar in size (in lat/lon the actual size and shape may vary somewhat with latitude).
+ * The grid enables a heuristic search that attempts to find the optimal path through the grid based on the assigned weights to cells from a
+ * start position to an end position.
+ * As an example, a search used with weather data may assign weights based the cell's distance from the end cell, as well as if the cell is 
+ * free of any weather polygons.
+ */
 class DensityGrid{
 protected:
 	Position startPoint_;
@@ -44,12 +52,43 @@ protected:
 
 
 public:
+	/**
+	 * Create a completely empty DensityGrid that has no specified location or area
+	 */
 	DensityGrid();
 
+	/**
+	 * Create a blank DensityGrid that covers a certain area.
+	 * Note: grid coordinates refer to the bottom left (SW) corner of a grid square.
+	 * 
+	 * @param b rectangle that roughly outlines base search area
+	 * @param start start position and time, should be within b
+	 * @param end end position, should be within b
+	 * @param buffer number of additional squares to include for each side outside of the base grid area
+	 * @param sqSz approximate square size, in meters
+	 * @param ll if true, coordinates are latlon, if false, euclidean
+	 */
 	DensityGrid(const BoundingRectangle& b, const NavPoint& start, const Position& end, int buffer, double sqSz, bool ll);
 
+	/**
+	 * Create a blank DensityGrid based on a complete plan
+	 * Note: grid coordinates refer to the bottom left (SW) corner of a grid square.
+	 * 
+	 * @param p plan that defines the base grid area
+	 * @param buffer number of additional squares to include for each side outside of the base grid area
+	 * @param squareSize approximate square size, in meters
+	 */
 	DensityGrid(const Plan& p, int buffer, double squareSize);
 
+	/**
+	 * Create a blank DensityGrid based on an in-progress plan (plan points before the current time are ignored)
+	 * Note: grid coordinates refer to the bottom left (SW) corner of a grid square.
+	 * 
+	 * @param p plan that defines the base grid area
+	 * @param startT current-time in the plan
+	 * @param buffer number of additional squares to include for each side outside of the base grid area
+	 * @param squareSize approximate square size, in meters
+	 */
 	DensityGrid(const Plan& p, double startT, int buffer, double squareSize);
 
 protected:
@@ -59,7 +98,6 @@ protected:
 private:
 	static double linearEstY(double lati, double dn);
 
-	static double distEstLatLon(double lat1, double lat2);
 
 public:
 	/**
@@ -73,6 +111,8 @@ public:
 	 * @return size
 	 */
 	double getSquareDist() const;
+
+	static double distEstLatLon(double lat1, double lat2);
 
 
 	/**
@@ -183,19 +223,13 @@ public:
 
 	void printGridPath(const std::vector<std::pair<int,int> >& gPath);
 
-	 enum Direction {undef, N, NE, E, SE, S, SW, W, NW};
-
-private:
-
-	Direction direction(const std::pair<int,int>& p1, const std::pair<int,int>& p2);
-
 public:
 
-	std::vector<std::pair<int,int> > thin(const std::vector<std::pair<int,int> >& gPath);
+	static std::vector<std::pair<int,int> > thin(const std::vector<std::pair<int,int> >& gPath);
 
-	std::vector<std::pair<int,int> > reduceGridPath(const std::vector<std::pair<int,int> >& gp);
+//	std::vector<std::pair<int,int> > reduceGridPath(const std::vector<std::pair<int,int> >& gp);
 
-	Plan gridPathToPlan(const std::vector<std::pair<int,int> >& gPath, double gs, double vs, bool reduce);
+	Plan gridPathToPlan(const std::vector<std::pair<int,int> >& gPath, double gs, double vs);
 
 private:
 
@@ -207,7 +241,8 @@ public:
 	void setProximityWeights(const std::vector<std::pair<int,int> >& gPath, double factor, bool applyToUndefined);
 
 	/**
-	 * Weight against plan points.
+	 * Weight against plan points.  Weight should be 0 for on-plan, and factor*yxdistance for off-plan.
+	 * (Weight is against the closest plan point)
 	 * @param p  plan
 	 * @param factor factor
 	 * @param applyToUndefined true, if should be applied to undefined points

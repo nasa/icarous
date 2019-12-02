@@ -6,7 +6,7 @@
  *
  * 3-D vectors.
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -72,9 +72,10 @@ public:
 	 * @param x  Real value [ux]
 	 * @param ux Units x
 	 * @param y  Real value [uy]
-	 * @param ux Units y
+	 * @param uy Units y
 	 * @param z  Real value [uz]
 	 * @param uz Units z
+	 * @return a new vector
 	 */
 	static Vect3 makeXYZ(double x, std::string ux, double y, std::string uy, double z, std::string uz);
 
@@ -84,8 +85,20 @@ public:
 	 * @param x Real value [internal units]
 	 * @param y Real value [internal units]
 	 * @param z Real value [internal units]
+	 * @return a new vector
 	 */
 	static Vect3 mkXYZ(double x, double y, double z);
+
+	/**
+	 * Creates a new vector with coordinates (<code>x</code>,<code>y</code>,<code>z</code>) in internal units.
+	 *
+	 * @param x Real value [NM]
+	 * @param y Real value [NM]
+	 * @param z Real value [ft]
+	 * @return a new vector
+	 */
+	static Vect3 make(double x, double y, double z);
+
 
 	Vect3 mkX(double nx);
 
@@ -171,25 +184,25 @@ public:
 	/** Is any component not exactly equal */
 	bool operator != (const Vect3& v) const;
 
-  /**
-   * Scalar and addition multiplication. Compute: k*<code>this</code> + v
-   * 
-   * @param k Real value
-   * @param v Vector
-   * 
-   * @return the scalar multiplication <code>this</code> vector and <code>k</code>, followed by an
-   * addition to vector <code>v</code>.
-   */
+	/**
+	 * Scalar and addition multiplication. Compute: k*<code>this</code> + v
+	 *
+	 * @param k Real value
+	 * @param v Vector
+	 *
+	 * @return the scalar multiplication <code>this</code> vector and <code>k</code>, followed by an
+	 * addition to vector <code>v</code>.
+	 */
 	Vect3  ScalAdd(const double k, const Vect3& v) const;
 
-  /**
-   * Addition and scalar multiplication.  Compute: this + k*<code>v</code>;
-   * 
-   * @param k real value
-   * @param v vector
-   * 
-   * @return the addition of <code>this</code> vector to <code>v</code> scaled by <code>k</code>.
-   */
+	/**
+	 * Addition and scalar multiplication.  Compute: this + k*<code>v</code>;
+	 *
+	 * @param k real value
+	 * @param v vector
+	 *
+	 * @return the addition of <code>this</code> vector to <code>v</code> scaled by <code>k</code>.
+	 */
 	Vect3 AddScal(double k, const Vect3& v) const;
 
 
@@ -215,12 +228,12 @@ public:
 	 */
 	Vect3 linear(const Vect3& v, double t) const;
 
-  /** Calculates position after moving distance d in the direction "track"
-    * @param track   the direction
-    * @param d       distance
-    * @return the new position (horizontal only)
-   */
-	 Vect3 linearByDist2D(double track, double d) const;
+	/** Calculates position after moving distance d in the direction "track"
+	 * @param track   the direction
+	 * @param d       distance
+	 * @return the new position (horizontal only)
+	 */
+	Vect3 linearByDist2D(double track, double d) const;
 
 	/**
 	 * 2-Dimensional projection.
@@ -234,8 +247,6 @@ public:
 	 * @return the unit vector
 	 */
 	Vect3 Hat() const ;
-
-	Vect3 Hat2D() const;
 
 	/**
 	 * Cross product.
@@ -292,6 +303,7 @@ public:
 	 * @return the dot product of <code>this</code> vector and (<code>x</code>,<code>y</code>,<code>z</code>).
 	 */
 	double dot(const double x, const double y, const double z) const;
+
 	/**
 	 * Dot product.
 	 *
@@ -301,19 +313,29 @@ public:
 	 */
 	double dot(const Vect3& v) const;
 
-
 	/**
 	 * Square.
 	 *
 	 * @return the dot product of <code>this</code> vector with itself.
 	 */
 	double sqv() const;
+
 	/**
 	 * Norm.
 	 *
 	 * @return the norm of of <code>this</code> vector.
 	 */
 	double norm() const;
+
+	double det2D(const Vect3& v) const;
+
+	double dot2D(const Vect3& v) const;
+
+	double sqv2D() const;
+
+	double norm2D() const;
+
+	Vect3 Hat2D() const;
 
 	/**
 	 * Cylindrical norm.
@@ -324,27 +346,51 @@ public:
 	 */
 	double cyl_norm(const double d, const double h) const;
 
-	/** The horizontal distance between this vector and the given vector, essentially same as v.Sub(w).vect2().norm() */
+	/** The horizontal distance between this vector and the given vector, essentially same as v.Sub(w).vect2().norm()
+	 * @param w vector
+	 * @return horizontal distance */
 	double distanceH(const Vect3& w) const;
 
-	/** The vertical distance between this vector and the given vector, essentially same as v.z - w.z */
+	/** The vertical distance between this vector and the given vector, essentially same as v.z - w.z
+	 * @param w vector
+	 * @return vertical distance */
 	double distanceV(const Vect3& w) const;
 
 	/** A string representation of this vector */
 	std::string toString() const;
 
-	/** A string representation of this vector */
+	/** A string representation of this vector 
+	 * @param precision number of digits of precision
+	 * @return a string */
 	std::string toString(int precision) const;
+
+	/** A string representation of this vector */
+	std::string toStringNP(const std::string& xunit, const std::string& yunit, const std::string& zunit) const;
 
 	/** A string representation of this vector */
 	std::string toStringNP(const std::string& xunit, const std::string& yunit, const std::string& zunit, int precision) const;
 
+	std::string formatXYZ(const std::string& pre, const std::string& mid, const std::string& post) const;
+
 	std::string formatXYZ(int prec, const std::string& pre, const std::string& mid, const std::string& post) const;
 
-	std::string toPVS(int prec) const;
+	std::string toPVS() const;
+
+	std::string toPVS(int precision) const;
+
+	/** 3-D time of closest point of approach
+	 * if time is negative or velocities are parallel returns 0
+	 * @param so position of one
+	 * @param vo velocity of one
+	 * @param si position of two
+	 * @param vi velocity of two
+	 * @return time of closest point of approach
+	 */
+	static double tcpa(const Vect3& so, const Vect3& vo, const Vect3& si, const Vect3& vi);
 
 	/**
-	 * Returns true if the current vector has an "invalid" value
+	 * Check if the current vector is valid
+	 * @return true if the current vector has an "invalid" value
 	 */
 	bool isInvalid() const;
 

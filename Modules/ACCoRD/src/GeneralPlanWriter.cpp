@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 United States Government as represented by
+ * Copyright (c) 2017-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -78,8 +78,7 @@ void GeneralPlanWriter::close() {
   			}
 			}
 		} catch (std::exception& e) {
-		//} catch (std::bad_cast& e) {
-			// don't think it can ever reach here
+			std::cout << "GeneralPlanWriter::close: An exception occurred " << e.what() << '\n';
 		}
 		fw = NULL;
 	}
@@ -210,24 +209,35 @@ void GeneralPlanWriter::clearPolyPathMode() {
 /**
  * If necessary, this must be called before the first write call
  */
-void GeneralPlanWriter::setParameterContainment(const std::vector<GeneralPlan>& list) {
+void GeneralPlanWriter::setPolyPathParameters(const std::vector<GeneralPlan>& list) {
 	std::vector<GeneralPlan> pplist;
-	for (int i = 0; i < (int) list.size(); i++) {
-		if (list[i].isContainment()) {
-			pplist.push_back(list[i]);
+	if (list.size() > 0) {
+		bool found = false;
+		std::string s = "";
+		for (int i = 0; i < (int) list.size(); i++) {
+			if (list[i].hasPolyPath()) {
+				if (!found) {
+					setPolygons(true);
+					setPolyPathMode(list[i].getPolyPath().getPathMode());
+				}
+				if (list[i].isContainment()) {
+					pplist.push_back(list[i]);
+				}
+			}
+		}
+		if (pplist.size() > 0) {
+			s = pplist[0].getName();
+			for (int i = 1; i < (int) pplist.size(); i++) {
+				s = s+","+pplist[i].getName();
+			}
+		}
+		if (pplist.size() > 0) {
+			setContainmentParameter(s);
 		}
 	}
-	std::string s = "";
-	if (pplist.size() > 0) {
-		s = pplist[0].getName();
-		for (int i = 1; i < (int) pplist.size(); i++) {
-			s = s+","+pplist[i].getName();
-		}
-	}
-	output.setParameter("containment", s);
 }
 
-void GeneralPlanWriter::setParameterContainment(const std::string& s) {
+void GeneralPlanWriter::setContainmentParameter(const std::string& s) {
 	output.setParameter("containment", s);
 }
 
@@ -388,6 +398,51 @@ bool GeneralPlanWriter::isLatLon() const {
 	return latlon;
 }
 
+
+void GeneralPlanWriter::write(const std::string& filename, const std::vector<GeneralPlan> plist, const std::vector<double> activeTimes) {
+	GeneralPlanWriter pw;
+	if (activeTimes.size() != 0 && activeTimes.size() != plist.size()) {
+		pw.error.addError("write arguments are not the same size");
+	} else {
+		pw.open(filename);
+		if (pw.hasError()) {
+			pw.error.addError("write error: output is null");
+		} else if (plist.size() > 0) {
+			pw.latlon = plist[0].isLatLon();
+			for (int i = 0; i < (int) plist.size(); i++) {
+				GeneralPlan gp = plist[i];
+				std::string note = "";
+				if (gp.hasPlan()) {
+					note = gp.getPlan().getNote();
+				} else {
+					pw.polygons = true;
+					pw.mode = gp.getPolyPath().getPathMode();
+					note = gp.getPolyPath().getNote();
+				}
+				if (!equals(note,"")) {
+					pw.output.setParameter(plist[i].getName()+"_note", note);
+				}
+			}
+			if (activeTimes.size() == plist.size()) {
+				for (int i = 0; i < (int) plist.size(); i++) {
+					pw.writePlan(plist[i], activeTimes[i]);
+				}
+			} else {
+				for (int i = 0; i < (int) plist.size(); i++) {
+					pw.writePlan(plist[i]);
+				}
+			}
+		}
+	}
+	if (pw.hasError()) {
+		std::cout << "GeneralPlanWriter.write error: " << pw.getMessage() << std::endl;
+	}
+}
+
+void GeneralPlanWriter::write(const std::string& filename, const std::vector<GeneralPlan> plist) {
+	std::vector<double> ts;
+	write(filename,plist,ts);
+}
 
 
 // ErrorReporter Interface Methods

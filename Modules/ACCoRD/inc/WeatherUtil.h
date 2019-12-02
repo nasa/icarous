@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -46,9 +46,9 @@ public:
 	 * @return new ownship plan (empty and/or error set on fail) and densitygrid used (for visualization)
 	 * Note that even a successful return does not guarantee a completely conflict-free return path, only one that does not intrude into any polygons by more than gridSize.
 	 */
-	static std::pair<Plan,DensityGrid> reRouteWx(const Plan& own, const std::vector<PolyPath>& paths, double gridSize, double buffer,
-			double factor, double T_p, const std::vector<PolyPath>& containment, bool fastPolygonReroute, bool reduceGridPath,
-			double timeOfCurrentPosition, double reRouteLeadIn);
+	static std::pair<Plan,DensityGrid> reRouteWx(const Plan& own, std::vector<PolyPath>& paths, double gridSize, double buffer,
+			double factor, double T_p, const std::vector<PolyPath>& containment, bool fastPolygonReroute,
+			double timeOfCurrentPosition, double reRouteLeadIn, bool reRouteReduction);
 
 	/**
 	 * As reRouteWx(), but this will internally expand the polygons so that they cover a larger area, either representing their total coverage over
@@ -78,15 +78,17 @@ public:
 	 * Note that even a successful return does not guarantee a completely conflict-free return path, only one that does not intrude into any polygons by more
 	 * than gridSize.  Setting expandPolygons to true should mitigate this, and setting reduceGridPath may re-introduce intrusions.
 	 */
-	static std::pair<Plan,DensityGrid> reRouteWx(const Plan& own, const std::vector<PolyPath>& paths, double gridSize, double buffer,
-			double factor, double T_p, const std::vector<PolyPath>& containment, bool fastPolygonReroute, bool reduceGridPath,
+	static std::pair<Plan,DensityGrid> reRouteWxExpand(const Plan& own, const std::vector<PolyPath>& paths, double gridSize, double buffer,
+			double factor, double T_p, const std::vector<PolyPath>& containment, bool fastPolygonReroute,
 			double timeOfCurrentPosition, double reRouteLeadIn, bool expandPolygons, double timeBefore, double timeAfter,
 			bool reRouteReduction);
 
-private:
+	static std::vector<PolyPath> ReRouteExpandIt(const std::vector<PolyPath>& paths, double cellSize,
+			bool expandPolygons, double timeBefore, double timeAfter);
+
 	static std::pair<Plan,DensityGrid> reRouteWithAstar(const std::vector<PolyPath>& paths, const Plan& ownship, double gridSize, double buffer,
 			double factor, double gs, const std::vector<PolyPath>& containment, double endT,
-			bool fastPolygonReroute, bool reduceGridPath);
+			bool fastPolygonReroute);
 
     static Plan setAltitudes(const Plan& pp, double firstLegVs);
 

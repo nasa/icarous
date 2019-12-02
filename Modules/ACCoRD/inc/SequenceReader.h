@@ -3,7 +3,7 @@
  *
  * Contact: George Hagen
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -13,6 +13,7 @@
 
 #include "StateReader.h"
 #include "AircraftState.h"
+#include "Triple.h"
 #include <string>
 #include <vector>
 #include <set>
@@ -52,6 +53,13 @@ namespace larcfm {
  * 
  * If the optional parameter <tt>filetype</tt> is specified, its value must be <tt>state</tt>, <tt>history</tt>, or <tt>sequence</tt> for this reader
  * to accept the file without error.<p>
+ * 
+ * This allows for arbitrary additional user-defined columns. New columns' information may 
+ * be accessed by the get getNewColumnValue(), getNewColumnBoolean(), or getNewColumnString() 
+ * methods. The 2-parameter versions (index, column) inherited from StateReader will only 
+ * return the last active values for a given aircraft (which may be blank).  To retrieve 
+ * values at arbitrary times, use the 3-parameter versions (time, name, column). New columns 
+ * are assumed unitless unless units are specified.
  *
  */
 class SequenceReader : public StateReader {
@@ -65,6 +73,11 @@ private:
 	std::vector<std::string> nameIndex;
 	std::set<std::string> names;
 	
+	typedef std::map<Triple<double,std::string,int>,Triple<double,bool,std::string> > allExtraTblType;
+	allExtraTblType allExtracolumnValues;
+
+
+
 	void loadfile();
 	void buildActive(double tm);
 	
@@ -72,17 +85,20 @@ public:
     /** A new, empty StateReader.  This may be used to store parameters, but nothing else. */
 	SequenceReader();
 	
-	SequenceReader(const std::string& filename);
+	explicit SequenceReader(const std::string& filename);
 
 	/** Read a new file into an existing StateReader.  Parameters are preserved if they are not specified in the file. */
-	void readFile(const std::string& filename);
+	virtual void open(const std::string& filename);
+
+    virtual void open(std::istream* in);
+
 
 	/** Return the number of sequence entries in the file */
 	int sequenceSize() const;
 	
 	/**
 	 * Sets the window size for the active sequence set
-	 * @param s > 0
+	 * @param s new window size
 	 */
 	void setWindowSize(int s);
 
@@ -138,6 +154,34 @@ public:
 
 	/** a list of n > 0 sequence keys, stopping at the given time (inclusive) */ 
 	std::vector<double> sequenceKeysUpTo(int n, double tm);
+
+	// otherwise the StateReader versions are hidden, despite having distinct signatures.
+	using StateReader::hasExtraColumnData;
+	using StateReader::getExtraColumnValue;
+	using StateReader::getExtraColumnBool;
+	using StateReader::getExtraColumnString;
+
+	/**
+	 * Updates a ParameterData with new parameters based on user columns for a given aircraft at a given time.
+	 *
+	 */
+	bool hasExtraColumnData(double time, const std::string& acName, const std::string& colname) const;
+
+	/**
+	 * Returns the column value associated with a given aircraft at a given time, interpreted as a double, or NaN if there is no info
+	 */
+	double getExtraColumnValue(double time, const std::string& acName, const std::string& colname) const;
+
+	/**
+	 * Returns the column value associated with a given aircraft at a given time, interpreted as a boolean, or false if there is no info
+	 */
+	bool getExtraColumnBool(double time, const std::string& acName, const std::string& colname) const;
+
+	/**
+	 * Returns the column value associated with a given aircraft at a given time, interpreted as a string, or the empty string if there is no info
+	 */
+	std::string getExtraColumnString(double time, const std::string& acName, const std::string& colname) const;
+
 
 //    std::string toString() const;
 };

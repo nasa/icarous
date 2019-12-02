@@ -1,7 +1,7 @@
 /*
  * VectFuns.h
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -98,6 +98,26 @@ public:
 	static bool divergent(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi);
 
 
+	/**
+	 * Return the horizontal rate of closure of two aircraft in the given state
+	 * @param so position of first aircraft
+	 * @param vo velocity of first aircraft
+	 * @param si position of second aircraft
+	 * @param vi velocity of second aircraft
+	 * @return rate of closure
+	 */
+	static double rateOfClosureHorizontal(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) ;
+
+	/**
+	 * Return the vertical rate of closure of two aircraft in the given state
+	 * @param so position of first aircraft
+	 * @param vo velocity of first aircraft
+	 * @param si position of second aircraft
+	 * @param vi velocity of second aircraft
+	 * @return rate of closure
+	 */
+	static double rateOfClosureVertical(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi);
+
 	/** time of closest approach, if parallel return Double.MAX_VALUE
 	 * @param s    relative position of aircraft
 	 * @param vo   velocity of ownship
@@ -129,7 +149,7 @@ public:
 	 */
 	static std::pair<Vect3,double> intersection(const Vect3& so3, const Velocity& vo3, const Vect3& si3, const Velocity& vi3);
 
-	static std::pair<Vect2,double> intersection(const Vect2& so, const Vect2& vo, const Vect2& si, const Vect2& vi);
+	static std::pair<Vect2,double> intersection2D(const Vect2& so, const Vect2& vo, const Vect2& si, const Vect2& vi);
 
 	 /**
      * Calculate the horizontal distance between two points.
@@ -154,9 +174,20 @@ public:
 	 */
 	static std::pair<Vect3,double> intersectionAvgZ(const Vect3& so1, const Vect3& so2, double dto, const Vect3& si1, const Vect3& si2);
 
-	static std::pair<Vect2,double> intersection(const Vect2& so1, const Vect2& so2, double dto, const Vect2& si1, const Vect2& si2);
+	static std::pair<Vect2,double> intersection2D(const Vect2& so1, const Vect2& so2, double dto, const Vect2& si1, const Vect2& si2);
 
+	static std::pair<Vect2,double> intersectSegments(const Vect2& so, const Vect2& so2, const Vect2& si, const Vect2& si2);
 
+	/**
+	 * Return the closest point on the line a-b to point so as a 3D norm
+	 * EXPERIMENTAL
+	 * 
+	 * @param a a point to define a line 
+	 * @param b another point to define a line
+	 * @param so a point
+	 * @return the closest point
+	 */
+	static Vect3 closestPoint3(const Vect3& a, const Vect3& b, const Vect3& so);
 
 	static Vect3 closestPoint(const Vect3& a, const Vect3& b, const Vect3& so);
 
@@ -164,10 +195,10 @@ public:
 	 * Return the closest (horizontal) point along line a-b to point so
 	 * EXPERIMENTAL
 	 * 
-	 * @param a vector #1
-	 * @param b vector #2
-	 * @param so vector #3
-	 * @return closest point
+     * @param a a point to define a line 
+	 * @param b another point to define a line
+	 * @param so a point
+	 * @return the closest point
 	 */
 	static Vect2 closestPoint(const Vect2& a, const Vect2& b, const Vect2& so);
 
@@ -175,10 +206,12 @@ public:
 
 	static Vect2 closestPointOnSegment(const Vect2& a, const Vect2& b, const Vect2& so);
 
+	static Vect3 closestPointOnSegment3(const Vect3& a, const Vect3& b, const Vect3& so);
+
 	static double distanceToSegment(const Vect2& a, const Vect2& b, const Vect2& so);
 
 	/**
-	 * Computes 2D intersection point of two lines, but also finds z component (projected by time from line 1)
+	 * Computes 2D intersection point of two infinite lines
 	 * @param so3 starting point of line 1
 	 * @param vo3 direction vector for line 1
 	 * @param si3 starting point of line 2

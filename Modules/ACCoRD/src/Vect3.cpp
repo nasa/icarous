@@ -6,7 +6,7 @@
  *
  * 3-D vectors.
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -36,6 +36,10 @@ Vect3 Vect3::mkXYZ(double x, double y, double z) {
 	return Vect3(x,y,z);
 }
 
+Vect3 Vect3::make(double x, double y, double z) {
+	return Vect3(Units::from("NM",x),Units::from("NM",y),Units::from("ft",z));
+}
+
 Vect3 Vect3::mkX(double nx) {
 	return Vect3(nx,y,z);
 }
@@ -59,7 +63,7 @@ bool Vect3::almostEquals(const Vect3& v, INT64FM maxUlps) const {
 }
 
 bool Vect3::almostEquals2D(const Vect3& v, double horizEps) const {
-	  return (vect2().Sub(v.vect2())).norm() < horizEps;
+	return (vect2().Sub(v.vect2())).norm() < horizEps;
 }
 
 bool Vect3::within_epsilon(const Vect3& v2, double epsilon) const {
@@ -104,37 +108,24 @@ Vect3 Vect3::Hat() const {
 		return ZERO();
 	}
 	return Vect3(x/n, y/n, z/n);
-
-	// initial tests indicate this is not significantly faster than the above
-//	double sq = sqv();
-//	if (sq == 0.0) {
-//		return ZERO();
-//	}
-//	double n_inv = Util::Q_rsqrt(sq);
-//	return Vect3(x*n_inv, y*n_inv, z*n_inv);
-}
-
-Vect3 Vect3::Hat2D() const {
-	return Vect3(x,y,0.0).Hat();
 }
 
 Vect3 Vect3::cross(const Vect3& v) const {
-	return Vect3(this->y*v.z - this->z*v.y, this->z*v.x - this->x*v.z, this->x*v.y - this->y*v.x);
+	return Vect3(y*v.z - z*v.y, z*v.x - x*v.z, x*v.y - y*v.x);
 }
 
 bool Vect3:: parallel(const Vect3& v) const {
-	return cross(v).almostEquals(Vect3::ZERO());
+	return cross(v).almostEquals(ZERO());
 }
 
-
 /**
-  * 2-Dimensional projection.
-  *
-  * @return the 2-dimensional projection of <code>this</code>.
-  */
- Vect2 Vect3::vect2() const {
-   return Vect2(x,y);
- }
+ * 2-Dimensional projection.
+ *
+ * @return the 2-dimensional projection of <code>this</code>.
+ */
+Vect2 Vect3::vect2() const {
+	return Vect2(x,y);
+}
 
 
 Vect3 Vect3::Add(const Vect3& v) const{
@@ -174,12 +165,12 @@ Vect3 Vect3::linear(const Vect3& v, double t) const {
 }
 
 Vect3 Vect3::linearByDist2D(double track, double d) const {
-	  return Vect3(x+d*sin(track), y+d*cos(track), z);
+	return Vect3(x+d*sin(track), y+d*cos(track), z);
 }
 
 
-double Vect3::dot(const double x, const double y, const double z) const {
-	return this->x*x + this->y*y + this->z*z;
+double Vect3::dot(const double xx, const double yy, const double zz) const {
+	return x*xx + y*yy + z*zz;
 }
 
 double Vect3::dot(const Vect3& v) const {
@@ -191,9 +182,8 @@ double Vect3::sqv() const {
 }
 
 double Vect3::norm() const {
-	return Util::sqrt_safe(sqv());
+	return std::sqrt(sqv());
 }
-
 
 double Vect3::cyl_norm(const double d, const double h) const {
 	return Util::max(vect2().sqv()/sq(d),sq(z/h));
@@ -215,17 +205,49 @@ std::string Vect3::toString(int precision) const {
 	return formatXYZ(precision,"(",", ",")");
 }
 
+std::string Vect3::toStringNP(const std::string& xunit, const std::string& yunit, const std::string& zunit) const {
+	return toStringNP(xunit,yunit,zunit,Constants::get_output_precision());
+}
+
 std::string Vect3::toStringNP(const std::string& xunit, const std::string& yunit, const std::string& zunit, int prec) const {
 	return FmPrecision(Units::to(xunit,x),prec)+", "+FmPrecision(Units::to(yunit,y),prec)+", " +
 			FmPrecision(Units::to(zunit,z),prec);
+}
+
+std::string Vect3::formatXYZ(const std::string& pre, const std::string& mid, const std::string& post) const {
+	return formatXYZ(Constants::get_output_precision(),pre,mid,post);
 }
 
 std::string Vect3::formatXYZ(int prec, const std::string& pre, const std::string& mid, const std::string& post) const {
 	return pre+FmPrecision(x,prec)+mid+FmPrecision(y,prec)+mid+FmPrecision(z,prec)+post;
 }
 
-std::string Vect3::toPVS(int prec) const {
-	return "(# x:= "+FmPrecision(x,prec)+", y:= "+FmPrecision(y,prec)+", z:= "+FmPrecision(z,prec)+" #)";
+std::string Vect3::toPVS() const {
+	return toPVS(Constants::get_output_precision());
+}
+
+std::string Vect3::toPVS(int precision) const {
+	return "(# x:= "+FmPrecision(x,precision)+", y:= "+FmPrecision(y,precision)+", z:= "+FmPrecision(z,precision)+" #)";
+}
+
+/** 3-D time of closest point of approach
+ * if time is negative or velocities are parallel returns 0
+ * @param so position of one
+ * @param vo velocity of one
+ * @param si position of two
+ * @param vi velocity of two
+ * @return time of closest point of approach
+ */
+double Vect3::tcpa(const Vect3& so, const Vect3& vo, const Vect3& si, const Vect3& vi) {
+	double t;
+	Vect3 s = so.Sub(si);
+	Vect3 v = vo.Sub(vi);
+	double nv = v.sqv();
+	if (nv > 0)
+		t = Util::max(0.0,-s.dot(v)/nv);
+	else
+		t = 0;
+	return t;
 }
 
 /**
@@ -258,6 +280,34 @@ Vect3 Vect3::parse(const std::string& s) {
 				Units::from(Units::clean(fields[5]),Util::parse_double(fields[4])));
 	}
 	return Vect3::INVALID();
+}
+
+/*
+ * Two dimensional calculations on Vect3s.  z components will be ignored or set to zero.
+ */
+
+double Vect3::det2D(const Vect3& v) const {
+	return x*v.y - y*v.x;
+}
+
+double Vect3::dot2D(const Vect3& v) const {
+	return x*v.x + y*v.y;
+}
+
+double Vect3::sqv2D() const {
+	return x*x+y*y;
+}
+
+double Vect3::norm2D() const {
+	return std::sqrt(sqv2D());
+}
+
+Vect3 Vect3::Hat2D() const {
+	double n = norm2D();
+	if (n == 0.0) { // this is only checking the divide by zero case, so an exact comparison is correct.
+		return ZERO();
+	}
+	return Vect3(x/n, y/n, 0.0);
 }
 
 }

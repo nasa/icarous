@@ -7,7 +7,7 @@
  *           Anthony Narkawicz         NASA Langley Research Center
  *           Aaron Dutle               NASA Langley Research Center
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -228,28 +228,36 @@ Vect2 Kinematics::center(const Vect3& s0, const Velocity& v0, double omega) {
  * @return Position/Velocity after t time
  */
 std::pair<Vect3,Velocity> Kinematics::turnByDist2D(const Vect3& so, const Vect3& center, int dir, double d, double gsAt_d) {
-	//f.pln(" $$$$ turnByDist: so = "+so+" center = "+center);
-    //double R = GreatCircle.distance(so, center);
     double R = so.distanceH(center);
-    if (R==0.0) return std::pair<Vect3,Velocity>(so,Velocity::INVALID());
+    if (R==0.0) return std::pair<Vect3,Velocity>(so,Velocity::INVALIDV());
 	double alpha = dir*d/R;
-	//double vFinalTrk = GreatCircle.initial_course(center,so);
-	double trkFromCenter = Velocity::mkVel(center, so, 100.0).trk();
+	double trkFromCenter = Velocity::track(center, so);
 	double nTrk = trkFromCenter + alpha;
-	//Vect3 sn = GreatCircle.linear_initial(center, nTrk, R);
 	Vect3 sn = center.linearByDist2D(nTrk, R);
-	//f.pln(" $$$$ turnByDist: sn = "+sn);
 	sn = sn.mkZ(0.0);
-	//double final_course = GreatCircle.final_course(center,sn);
-	//f.pln(" $$ d = "+d+" final_course = "+final_course+" nTrk = "+nTrk);
 	double finalTrk = nTrk + dir*M_PI/2;
     Velocity vn = Velocity::mkTrkGsVs(finalTrk,gsAt_d,0.0);
-	//double finalTrk = vo.trk()+alpha;
-	//double finalTrk = final_course + Util.sign(d)*Math.PI/2;
 	return std::pair<Vect3,Velocity>(sn,vn);
-
 }
 
+Vect3 Kinematics::turnByDist2D(const Vect3& so, const Vect3& center, int dir, double d) {
+    double R = so.distanceH(center);
+    if (R==0.0) return so;
+	double alpha = dir*d/R;
+	double trkFromCenter = Velocity::track(center, so);
+	double nTrk = trkFromCenter + alpha;
+	Vect3 sn = center.linearByDist2D(nTrk, R);
+	return sn;
+}
+
+
+Vect3 Kinematics::turnByAngle2D(const Vect3& so, const Vect3& center, double alpha) {
+    double R = so.distanceH(center);
+	double trkFromCenter = Velocity::track(center, so);
+	double nTrk = trkFromCenter + alpha;
+	Vect3 sn = center.linearByDist2D(nTrk, R);
+	return sn;
+}
 
 
 std::pair<Vect3,Velocity> Kinematics::turnOmega(const std::pair<Vect3,Velocity>& sv0, double t, double omega) {
@@ -560,12 +568,16 @@ std::pair<Vect3,Velocity> Kinematics::gsAccel(const Vect3& so, const Velocity& v
 }
 
 
-double Kinematics::gsAccelTime(const Velocity& vo,double goalGs, double gsAccel) {
+double Kinematics::gsAccelTime(double gs0,double goalGs, double gsAccel) {
 	if (gsAccel < 0) std::cout << " gsAccelTime: gsAccel MUST BE Non-negative!!!! " << std::endl;
-	double deltaGs = std::abs(vo.gs() - goalGs);
+	double deltaGs = std::abs(gs0 - goalGs);
 	if (deltaGs == 0.0) return 0;
 	double rtn = deltaGs/gsAccel;
 	return rtn;
+}
+
+double Kinematics::gsAccelTime(const Velocity& vo,double goalGs, double gsAccel) {
+    return gsAccelTime(vo.gs(),goalGs,gsAccel);
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -23,14 +23,14 @@ public:
   WCV_HZ();
 
   /** Constructor that specifies a particular instance of the WCV tables. */
-  WCV_HZ(const WCVTable& tab);
+  explicit WCV_HZ(const WCVTable& tab);
 
   virtual ~WCV_HZ() {};
 
   Detection3D* make() const;
 
   /**
-   * Returns a deep copy of this WCV_TAUMOD object, including any results that have been calculated.
+   * Returns a deep copy of this WCV_HZ object, including any results that have been calculated.
    */
   Detection3D* copy() const;
 

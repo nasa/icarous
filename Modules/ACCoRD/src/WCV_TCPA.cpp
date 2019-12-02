@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -27,7 +27,7 @@ WCV_TCPA::WCV_TCPA() {
 /** Constructor that specifies a particular instance of the TCAS tables. */
 WCV_TCPA::WCV_TCPA(const WCVTable& tab) {
   wcv_vertical = new WCV_TCOA();
-  table.copyValues(tab);
+  table = tab;
   id = "";
 }
 
@@ -88,8 +88,7 @@ Detection3D* WCV_TCPA::make() const {
  * Returns a deep copy of this WCV_TCPA object, including any results that have been calculated.
  */
 Detection3D* WCV_TCPA::copy() const {
-  WCV_TCPA* ret = new WCV_TCPA();
-  ret->table.copyValues(table);
+  WCV_TCPA* ret = new WCV_TCPA(table);
   ret->id = id;
   return ret;
 }

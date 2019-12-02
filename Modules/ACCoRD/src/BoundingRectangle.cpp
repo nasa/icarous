@@ -1,52 +1,54 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
 
-#include "Vect2.h"
 #include "BoundingRectangle.h"
+#include "Vect2.h"
+#include "GreatCircle.h"
 #include "format.h"
 
 
 namespace larcfm {
 
+  const double BoundingRectangle::nullAlt = -MAXDOUBLE;
 
 
-	/** Create a bounding rectangle with invalid values.  When the
-	 * first point is added, valid values are obtained.
-	 */
-  BoundingRectangle::BoundingRectangle() {
-		clear();
-	}	
-	
-	/** Create a bounding rectangle with the list of given points.
-	 */
-	BoundingRectangle::BoundingRectangle(const std::vector<Vect2>& vertices) {
-		clear();
-		for (int i = 0; i < (int) vertices.size(); i++) {
-			add(vertices[i].x,vertices[i].y);
-		}
-		
-		// Vect2 v0 = vertices[0];
-		// double xmin = v0.x;
-		// double ymin = v0.y;
-		// double xmax = v0.x;
-		// double ymax = v0.y;
-		// //fpln(" %%%%%%%%% BoundingRectangle: vertices = "+strVectArray(vertices));
-		// for (int i = 1; i < (int) vertices.size(); i++) {
-		// 	Vect2 vi = vertices[i];
-		// 	if (vi.x < xmin) xmin = vi.x;
-		// 	if (vi.y < ymin) ymin = vi.y;
-		// 	if (vi.x > xmax) xmax = vi.x;
-		// 	if (vi.y > ymax) ymax = vi.y;
-		// }
-		// xMin = xmin;
-		// xMax = xmax;
-		// yMin = ymin;
-		// yMax = ymax;
-	}	
+/** Create a bounding rectangle with invalid values.  When the
+ * first point is added, valid values are obtained.
+ */
+BoundingRectangle::BoundingRectangle() {
+	clear();
+}
+
+/** Create a bounding rectangle with the list of given points.
+ */
+BoundingRectangle::BoundingRectangle(const std::vector<Vect2>& vertices) {
+	clear();
+	for (int i = 0; i < (int) vertices.size(); i++) {
+		add(vertices[i].x,vertices[i].y);
+	}
+
+	// Vect2 v0 = vertices[0];
+	// double xmin = v0.x;
+	// double ymin = v0.y;
+	// double xmax = v0.x;
+	// double ymax = v0.y;
+	// //fpln(" %%%%%%%%% BoundingRectangle: vertices = "+strVectArray(vertices));
+	// for (int i = 1; i < (int) vertices.size(); i++) {
+	// 	Vect2 vi = vertices[i];
+	// 	if (vi.x < xmin) xmin = vi.x;
+	// 	if (vi.y < ymin) ymin = vi.y;
+	// 	if (vi.x > xmax) xmax = vi.x;
+	// 	if (vi.y > ymax) ymax = vi.y;
+	// }
+	// xMin = xmin;
+	// xMax = xmax;
+	// yMin = ymin;
+	// yMax = ymax;
+}
 
 	/** Copy a bounding rectangle from an existing bounding rectangle
 	 */
@@ -56,13 +58,55 @@ namespace larcfm {
 			xMax = br.xMax;
 			yMin = br.yMin;
 			yMax = br.yMax;
-			zMin = br.zMin;
-			zMax = br.zMax;
 			xCenter = br.xCenter;
 			//} else {
 			//clear();
 			//}
 	}
+
+	/** Create a bounding rectangle with the list of given points.
+	 *
+	 * @param vertices list of vertices
+	 */
+	BoundingRectangle BoundingRectangle::makePath(const std::vector<LatLonAlt>& vertices) {
+		BoundingRectangle br; // = new BoundingRectangle();
+		if (vertices.size() <= 0) return br;
+		LatLonAlt lastVert = vertices[0];
+		for (int i = 1; i < (int) vertices.size(); i++) {
+			LatLonAlt vert = vertices[i];
+			br.add(lastVert,vert);
+			lastVert = vert;
+		}
+		return br;
+	}
+
+
+	BoundingRectangle BoundingRectangle::makePoly(const std::vector<LatLonAlt>& vertices) {
+		BoundingRectangle br; // = new BoundingRectangle();
+		if (vertices.size() <= 0) return br;
+		LatLonAlt lastVert = vertices[vertices.size()-1];
+		for (int i = 0; i < (int) vertices.size(); i++) {
+			LatLonAlt vert = vertices[i];
+			br.add(lastVert,vert);
+			lastVert = vert;
+		}
+		return br;
+	}
+
+	/** Create a bounding rectangle with the list of unconnected points.
+	 *
+	 * @param vertices list of vertices
+	 */
+	BoundingRectangle BoundingRectangle::makeUnconnected(const std::vector<LatLonAlt>& vertices) {
+		BoundingRectangle br;
+		if (vertices.size() <= 0) return br;
+		for (int i = 0; i < (int) vertices.size(); i++) {
+			LatLonAlt vert = vertices[i];
+			br.add(vert);
+		}
+		return br;
+	}
+
 
 	/** Reset this bounding rectangle to a structure with invalid values.  When the
 	 * first point is added, valid values are obtained.
@@ -72,8 +116,6 @@ namespace larcfm {
 		xMax = -MAXDOUBLE;
 		yMin = MAXDOUBLE;
 		yMax = -MAXDOUBLE;
-		zMin = MAXDOUBLE;
-		zMax = -MAXDOUBLE;
 		
 		xCenter = MAXDOUBLE; // initially I used NaN, but this was slow.
 	}
@@ -102,29 +144,6 @@ namespace larcfm {
 	}
 	
 	/**
-	 * Add a point to this bounding rectangle.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
-	void BoundingRectangle::add(double x, double y, double z) {
-		add(x,y);
-		zMin = Util::min(z,zMin);
-		zMax = Util::max(z,zMax);
-	}
-
-	/**
-	 * Add a point to this bounding rectangle.
-	 * 
-	 * @param v
-	 */
-	void BoundingRectangle::add(const Vect3& v) {
-	  //if (v == null) return;
-		add(v.x,v.y,v.z);
-	}
-	
-	/**
 	 * Add another bounding rectangle to this bounding rectangle.
 	 * 
 	 * @param br the other bounding rectangle (this rest is not changed).
@@ -132,14 +151,14 @@ namespace larcfm {
 	void BoundingRectangle::add(const BoundingRectangle& br) {
 	  //if (br == null) return;
 		
-		if (xCenter == MAXDOUBLE) {
-			LatLonAlt ur = LatLonAlt::mk(br.getMaxY(), br.getMaxX(), br.getMaxZ());
-			LatLonAlt ll = LatLonAlt::mk(br.getMinY(), br.getMinX(), br.getMinZ());
+		if (xCenter == MAXDOUBLE && br.xCenter != MAXDOUBLE) {
+			LatLonAlt ur = LatLonAlt::mk(br.getMaxY(), br.getMaxX(), nullAlt);
+			LatLonAlt ll = LatLonAlt::mk(br.getMinY(), br.getMinX(), nullAlt);
 			add(ur);
 			add(ll);
 		} else {
-			add(br.getMaxX(),br.getMaxY(),br.getMaxZ());
-			add(br.getMinX(),br.getMinY(),br.getMinZ());
+			add(br.getMaxX(),br.getMaxY());
+			add(br.getMinX(),br.getMinY());
 		}
 	}
 
@@ -173,8 +192,8 @@ namespace larcfm {
 			xCenter = lla.lon();
 		}
 		
-		LatLonAlt nlla = denormalize(lla);
-		add(nlla.lon(),nlla.lat(),nlla.alt());
+		//LatLonAlt nlla = fixLonWrap(lla);
+		add(fix_lon(lla.lon()),lla.lat());
 	}
 	
 	/**
@@ -188,17 +207,53 @@ namespace larcfm {
 		if (p.isLatLon()) {
 			add(p.lla()); //p.lon(),Util::to_pi2_cont(p.lat()),p.alt());
 		} else {
-			add(p.x(),p.y(),p.z());
+			add(p.x(),p.y());
 		}
 	}
 	
+	/**
+	 * Add a great circle edge to this bounding rectangle.  This is the safe way to add latlon points to the volume.
+	 * @param lat x coordinate
+	 * @param lon y coordinate
+	 */
+	void BoundingRectangle::add(const LatLonAlt& lla1, const LatLonAlt& lla2) {
+		LatLonAlt nlla1 = lla1.normalize();
+		LatLonAlt nlla2 = lla2.normalize();
+		double lat1 = nlla1.lat();
+		double lon1 = nlla1.lon();
+		double lat2 = nlla2.lat();
+		double lon2 = nlla2.lon();
+		double maxLati = GreatCircle::max_latitude(lat1,lon1,lat2,lon2);
+		double minLati = GreatCircle::min_latitude(lat1,lon1,lat2,lon2);
+		//f.pln(" $$$$ add: lat1 = "+lat1+" lat2 = "+lat2+" minLati = "+minLati+" maxLati = "+maxLati);
+		//f.pln(" $$$$ add: lat1 = "+Units.str("deg",lat1)+" lat2 = "+Units.str("deg",lat2)
+		//		                +" minLati = "+Units.str("deg",minLati)+" maxLati = "+Units.str("deg",maxLati));
+		if (xCenter == MAXDOUBLE) {
+			xCenter = lon1;
+		}
+		lon1 = fix_lon(lon1);
+        lon2 = fix_lon(lon2);
+
+//		latMin = Util.min(minLati,latMin);
+//		lonMin = Util.min(Math.min(lon1,lon2),lonMin);
+//		latMax = Util.max(maxLati,latMax);
+//		lonMax = Util.max(Math.max(lon1,lon2),lonMax);
+		yMin = Util::min(minLati,yMin);
+		xMin = Util::min(std::min(lon1,lon2),xMin);
+		yMax = Util::max(maxLati,yMax);
+		xMax = Util::max(std::max(lon1,lon2),xMax);
+
+	}
+
+
+
 	/**
 	 * Return a LatLonAlt object that is consistent with this bounding rectangle.  This LatLonAlt object
 	 * may have a longitude greater than 180 degrees or less than -180 degrees.
 	 * @param lla a LatLonAlt object
 	 * @return a LatLonAlt object with (possibly) non-standard longitude.
 	 */
-	LatLonAlt BoundingRectangle::denormalize(const LatLonAlt& lla2) const {
+	LatLonAlt BoundingRectangle::fixLonWrap(const LatLonAlt& lla2) const {
 		LatLonAlt lla = lla2.normalize();
 		return LatLonAlt::mk(lla.lat(),fix_lon(lla.lon()),lla.alt());
 	}
@@ -211,9 +266,9 @@ namespace larcfm {
 	 * @param p a Position object
 	 * @return a LatLonAlt object with (possibly) non-standard longitude.
 	 */
-	Position BoundingRectangle::denormalize(const Position& p) const {
+	Position BoundingRectangle::fixLonWrap(const Position& p) const {
 		if (p.isLatLon()) {
-			return Position(denormalize(p.lla()));
+			return Position(fixLonWrap(p.lla()));
 		} else {
 			return p;
 		}
@@ -322,22 +377,14 @@ namespace larcfm {
 		return yMax;
 	}
 
-	/**
-	 * @return min Z bound
-	 */
-	double BoundingRectangle::getMinZ() const {
-		return zMin;
-	}
+	 double BoundingRectangle::getMinLon() const { return xMin; }
+	 double BoundingRectangle::getMaxLon() const { return xMax; }
+	 double BoundingRectangle::getMinLat() const { return yMin; }
+	 double BoundingRectangle::getMaxLat() const { return yMax; }
 
-	/**
-	 * @return max Z bound
-	 */
-	double BoundingRectangle::getMaxZ() const {
-		return zMax;
-	}
-	
+
 	Vect3 BoundingRectangle::centerVect() const {
-		return Vect3((xMax+xMin)/2.0,(yMax+yMin)/2.0,(zMax+zMin)/2.0);
+		return Vect3((xMax+xMin)/2.0,(yMax+yMin)/2.0,nullAlt);
 	}
 
 	Position BoundingRectangle::centerPos() const {
@@ -349,6 +396,30 @@ namespace larcfm {
 		}
 	}
 
+
+	Position BoundingRectangle::lowerLeft() const {
+		if (xCenter == MAXDOUBLE) {
+			return Position(Vect3::mkXYZ(xMin, yMin, nullAlt));
+		} else {
+			return Position(LatLonAlt::mk(yMin, xMin, nullAlt).normalize());
+		}
+	}
+
+	Position BoundingRectangle::upperRight() const {
+		if (xCenter == MAXDOUBLE) {
+			return Position(Vect3::mkXYZ(xMax, yMax, nullAlt));
+		} else {
+			return Position(LatLonAlt::mk(yMax, xMax, nullAlt).normalize());
+		}
+	}
+
+  double BoundingRectangle::getxCenter() const {
+		return xCenter;
+	}
+  
+  bool BoundingRectangle::isLatLon() const {
+    return (getxCenter() != MAXDOUBLE);
+  }
 
 	std::string BoundingRectangle::toString() const {
 	  std::string rtn = "<" +Fm8(xMin)+" "+Fm8(xMax)+" "+Fm8(yMin)+" "+Fm8(yMax)+">";

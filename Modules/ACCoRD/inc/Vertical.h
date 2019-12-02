@@ -6,7 +6,7 @@
  * NASA LaRC
  * http://shemesh.larc.nasa.gov/people/cam/ACCoRD
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -31,7 +31,7 @@ public:
   Vertical();
 
   /** Construct a vertical solution */
-  Vertical(const double vz);
+  explicit Vertical(const double vz);
 
   /** Is this solution undefined? */
   bool undef() const;
@@ -45,7 +45,7 @@ public:
   bool operator != (const Vertical& v) const;
 
   /** "Solution" indicating no solution */
-  static const Vertical NoVerticalSolution;
+  static const Vertical& NoVerticalSolution();
 
   /** */
   static bool almost_vertical_los(const double sz,const double H);

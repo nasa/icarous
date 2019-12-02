@@ -28,7 +28,7 @@ TrafficMonitor::TrafficMonitor(bool reclog,char daaConfig[]) {
     }
 
     std::string filename(daaConfig);
-    DAA.parameters.loadFromFile(filename);
+    DAA.loadFromFile(filename);
 
     numTrackBands = 0;
     numSpeedBands = 0;
@@ -44,7 +44,7 @@ void TrafficMonitor::UpdateDAAParameters(char daaParameters[]) {
 
     larcfm::ParameterData params;
     params.parseParameterList(";",to_string(daaParameters));
-    DAA.parameters.setParameters(params);
+    DAA.setParameterData(params);
 }
 
 int TrafficMonitor::InputTraffic(int id, double *position, double *velocity,double elapsedTime) {
@@ -124,48 +124,47 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
 
 
     if(conflict) {
-        DAA.kinematicMultiBands(KMB);
-        daaViolationTrack = BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()));
-        daaViolationSpeed = BandsRegion::isConflictBand(KMB.regionOfGroundSpeed(DAA.getOwnshipState().groundSpeed()));
-        daaViolationVS = BandsRegion::isConflictBand(KMB.regionOfVerticalSpeed(DAA.getOwnshipState().verticalSpeed()));
-        daaViolationAlt = BandsRegion::isConflictBand(KMB.regionOfAltitude(DAA.getOwnshipState().altitude()));
+        daaViolationTrack = BandsRegion::isConflictBand(DAA.regionOfHorizontalDirection(DAA.getOwnshipState().horizontalDirection()));
+        daaViolationSpeed = BandsRegion::isConflictBand(DAA.regionOfHorizontalSpeed(DAA.getOwnshipState().horizontalSpeed()));
+        daaViolationVS = BandsRegion::isConflictBand(DAA.regionOfVerticalSpeed(DAA.getOwnshipState().verticalSpeed()));
+        daaViolationAlt = BandsRegion::isConflictBand(DAA.regionOfAltitude(DAA.getOwnshipState().altitude()));
 
-        numTrackBands = KMB.trackLength();
+        numTrackBands = DAA.horizontalDirectionBandsLength();
         for (int i = 0; i < numTrackBands; ++i) {
             if (i > 19)
                 break; // Currently hardcoded to handle only 20 tracks
-            Interval iv = KMB.track(i, "deg");
-            trackIntTypes[i] = (int) KMB.trackRegion(i);
+            Interval iv = DAA.horizontalDirectionIntervalAt(i, "deg");
+            trackIntTypes[i] = (int) DAA.horizontalDirectionRegionAt(i);
             trackIntervals[i][0] = iv.low;
             trackIntervals[i][1] = iv.up;
         }
 
-        numSpeedBands = KMB.groundSpeedLength();
+        numSpeedBands = DAA.horizontalSpeedBandsLength();
         for (int i = 0; i < numSpeedBands; ++i) {
             if (i > 19)
                 break; // Currently hardcoded to handle only 20 tracks
-            Interval iv = KMB.groundSpeed(i, "m/s");
-            speedIntTypes[i] = (int) KMB.groundSpeedRegion(i);
+            Interval iv = DAA.horizontalSpeedIntervalAt(i, "m/s");
+            speedIntTypes[i] = (int) DAA.horizontalSpeedRegionAt(i);
             speedIntervals[i][0] = iv.low;
             speedIntervals[i][1] = iv.up;
         }
 
-        numVerticalSpeedBands = KMB.verticalSpeedLength();
+        numVerticalSpeedBands = DAA.verticalSpeedBandsLength();
         for (int i = 0; i < numVerticalSpeedBands; ++i) {
             if (i > 19)
                 break; // Currently hardcoded to handle only 20 tracks
-            Interval iv = KMB.verticalSpeed(i, "m/s");
-            vsIntTypes[i] = (int) KMB.verticalSpeedRegion(i);
+            Interval iv = DAA.verticalSpeedIntervalAt(i, "m/s");
+            vsIntTypes[i] = (int) DAA.verticalSpeedRegionAt(i);
             vsIntervals[i][0] = iv.low;
             vsIntervals[i][1] = iv.up;
         }
 
-        numAltitudeBands = KMB.altitudeLength();
+        numAltitudeBands = DAA.altitudeBandsLength();
         for(int i =0;i< numAltitudeBands; ++i){
             if(i> 19)
                 break; // Current hardcoded to handle only 20 tracks
-            Interval iv = KMB.altitude(i,"m");
-            altIntTypes[i] = (int) KMB.altitudeRegion(i);
+            Interval iv = DAA.altitudeIntervalAt(i,"m");
+            altIntTypes[i] = (int) DAA.altitudeRegionAt(i);
             altIntervals[i][0] = iv.low;
             altIntervals[i][1] = iv.up;
         }
@@ -240,11 +239,9 @@ bool TrafficMonitor::CheckSafeToTurn(double position[],double velocity[],double 
         DAA.addTrafficState(name, si, vi);
     }
 
-    DAA.kinematicMultiBands(KMB);
+    for (int i = 0; i < DAA.horizontalDirectionBandsLength(); ++i){
 
-    for (int i = 0; i < KMB.trackLength(); ++i){
-
-        Interval iv = KMB.track(i, "deg");
+        Interval iv = DAA.track(i, "deg");
         double low = iv.low;
         double high = iv.up;
 
@@ -355,26 +352,27 @@ void TrafficMonitor::GetTrackBands(int& numBands,int* bandTypes,double* low,doub
        high[i] = trackIntervals[i][1];
        if(bandTypes[i] == BandsRegion::RECOVERY) {
            recovery = 1;
-           trecovery = KMB.timeToTrackRecovery();
-           minhdist = KMB.getMinHorizontalRecovery("m");
-           minvdist = KMB.getMinVerticalRecovery("m");
+           RecoveryInformation rec = DAA.horizontalDirectionRecoveryInformation();
+           trecovery = rec.timeToRecovery();
+           minhdist = rec.recoveryHorizontalDistance("m");
+           minvdist = rec.recoveryVerticalDistance("m");
        }
     }
 
     if(numBands > 0) {
-        resup = KMB.trackResolution(true) * 180/M_PI;
-        resdown = KMB.trackResolution(false) * 180/M_PI;
-        bool prefDirection = KMB.preferredTrackDirection();
-        double prefHeading = KMB.trackResolution(prefDirection);
+        resup = DAA.horizontalDirectionResolution(true) * 180/M_PI;
+        resdown = DAA.horizontalDirectionResolution(false) * 180/M_PI;
+        bool prefDirection = DAA.preferredHorizontalDirectionRightOrLeft();
+        double prefHeading = DAA.horizontalDirectionResolution(prefDirection);
         if(!ISNAN(prefHeading)) {
             if (prefDirection) {
                 prefHeading = prefHeading + 5 * M_PI / 180;
-                if (prefHeading > 2*M_PI) {
-                    prefHeading = (prefHeading - 2 * M_PI);
+                if (prefHeading > M_PI) {
+                    prefHeading = prefHeading - 2 * M_PI;
                 }
             } else {
                 prefHeading = prefHeading - 5 * M_PI / 180;
-                if (prefHeading < 0) {
+                if (prefHeading < -M_PI) {
                     prefHeading = 2 * M_PI + prefHeading;
                 }
             }
@@ -412,28 +410,29 @@ void TrafficMonitor::GetGSBands(int& numBands,int* bandTypes,double* low,double 
        high[i] = speedIntervals[i][1];
        if(bandTypes[i] == BandsRegion::RECOVERY) {
            recovery = 1;
-           trecovery = KMB.timeToGroundSpeedRecovery();
-           minhdist = KMB.getMinHorizontalRecovery("m");
-           minvdist = KMB.getMinVerticalRecovery("m");
+	   RecoveryInformation rec = DAA.horizontalSpeedRecoveryInformation();
+           trecovery = rec.timeToRecovery();
+           minhdist = rec.recoveryHorizontalDistance("m");
+           minvdist = rec.recoveryVerticalDistance("m");
        }
 
     }
 
-    double speedMax = DAA.parameters.getMaxGroundSpeed("m/s");
-    double speedMin = DAA.parameters.getMinGroundSpeed("m/s");
+    double speedMax = DAA.getMaxHorizontalSpeed("m/s");
+    double speedMin = DAA.getMinHorizontalSpeed("m/s");
     double diff = speedMax - speedMin;
     double percentChange = 0.05 * diff;
 
-    resup = KMB.groundSpeedResolution(true) + percentChange;
-    resdown = KMB.groundSpeedResolution(false) - percentChange;
+    resup = DAA.horizontalSpeedResolution(true) + percentChange;
+    resdown = DAA.horizontalSpeedResolution(false) - percentChange;
 
     if(resup > speedMax)
-        resup =  KMB.groundSpeedResolution(true);
+        resup =  DAA.horizontalSpeedResolution(true);
 
     if(resdown < speedMin)
-        resdown = KMB.groundSpeedResolution(false);
+        resdown = DAA.horizontalSpeedResolution(false);
 
-    if(KMB.preferredGroundSpeedDirection())
+    if(DAA.preferredHorizontalSpeedUpOrDown())
         respref = resup;
     else
         respref = resdown;
@@ -460,17 +459,18 @@ void TrafficMonitor::GetVSBands(int& numBands,int* bandTypes,double* low,double 
        high[i] = vsIntervals[i][1];
        if(bandTypes[i] == BandsRegion::RECOVERY) {
            recovery = 1;
-           trecovery = KMB.timeToVerticalSpeedRecovery();
-           minhdist = KMB.getMinHorizontalRecovery("m");
-           minvdist = KMB.getMinVerticalRecovery("m");
+	   RecoveryInformation rec = DAA.verticalSpeedRecoveryInformation();
+           trecovery = rec.timeToRecovery();
+           minhdist = rec.recoveryHorizontalDistance("m");
+           minvdist = rec.recoveryVerticalDistance("m");
        }
 
     }
 
     //if(numBands > 1) {
-        resup = KMB.verticalSpeedResolution(true);
-        resdown = KMB.verticalSpeedResolution(false);
-        respref = KMB.verticalSpeedResolution(KMB.preferredVerticalSpeedDirection());
+        resup = DAA.verticalSpeedResolution(true);
+        resdown = DAA.verticalSpeedResolution(false);
+        respref = DAA.verticalSpeedResolution(DAA.preferredVerticalSpeedUpOrDown());
     //}
 }
 
@@ -496,28 +496,29 @@ void TrafficMonitor::GetAltBands(int& numBands,int* bandTypes,double* low,double
         high[i] = altIntervals[i][1];
         if(bandTypes[i] == BandsRegion::RECOVERY) {
             recovery = 1;
-            trecovery = KMB.timeToAltitudeRecovery();
-            minhdist = KMB.getMinHorizontalRecovery("m");
-            minvdist = KMB.getMinVerticalRecovery("m");
+	   RecoveryInformation rec = DAA.altitudeRecoveryInformation();
+           trecovery = rec.timeToRecovery();
+           minhdist = rec.recoveryHorizontalDistance("m");
+           minvdist = rec.recoveryVerticalDistance("m");
         }
 
     }
 
-    double altMax = DAA.parameters.getMaxAltitude("m");
-    double altMin = DAA.parameters.getMinAltitude("m");
+    double altMax = DAA.getMaxAltitude("m");
+    double altMin = DAA.getMinAltitude("m");
     double diff = altMax - altMin;
     double percentChange = 0.05 * diff;
 
-    resup = KMB.altitudeResolution(true) + percentChange;
-    resdown = KMB.altitudeResolution(false) - percentChange;
+    resup = DAA.altitudeResolution(true) + percentChange;
+    resdown = DAA.altitudeResolution(false) - percentChange;
 
     if(resup > altMax)
-        resup =  KMB.altitudeResolution(true);
+        resup =  DAA.altitudeResolution(true);
 
     if(resdown < altMin)
-        resdown = KMB.altitudeResolution(false);
+        resdown = DAA.altitudeResolution(false);
 
-    if(KMB.preferredAltitudeDirection())
+    if(DAA.preferredAltitudeUpOrDown())
         respref = resup;
     else
         respref = resdown;

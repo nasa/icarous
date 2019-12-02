@@ -5,7 +5,7 @@
  *
  * Utility functions.
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -261,6 +261,17 @@ int Util::sign(const double x) {
 		return 1;
 	return -1;
 }
+
+int Util::signTriple(const double x) {
+	if (x > 0.0) {
+		return 1;
+	} else if (x < 0.0) {
+		return -1;
+	} else {
+		return 0;
+	}
+}
+
 
 const double& Util::min(const double& x, const double& y) {
 	if (std::isnan(y)) return y;

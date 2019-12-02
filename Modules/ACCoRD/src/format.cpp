@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -17,6 +17,8 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <vector>
+#include <map>
 
 namespace larcfm {
 
@@ -122,28 +124,41 @@ string FmPrecision(double v, int precision) {
 		return "NaN";
 	}
 	if (ISINF(v)) {
-		string s = "infty";
+		string str = "infty";
 		if (v < 0) {
-			return "-"+s;
+			return "-"+str;
 		}
-		return s;
+		return str;
 	}
-	std::ostringstream s;
-	s.precision(precision);
-	s << std::fixed;
+	std::ostringstream ss;
+	ss.precision(precision);
+	ss << std::fixed;
 	if (precision == 0) {
-		s << std::noshowpoint;
+	  ss << std::noshowpoint;
 	} else {
-		s << std::showpoint;
+	  ss << std::showpoint;
 	}
-	s << fm_nz(v,precision+1);
-	return s.str();
+	ss << fm_nz(v,precision+1);
+	std::string str = ss.str();
+	if (precision > 0 && !Constants::get_trailing_zeros()) {
+	  std::size_t first=str.find('.');
+	  if (first!=std::string::npos) {
+	    std::size_t last = str.find_last_not_of('0');
+	    if (first == last) {
+	      // number has the form xxx.00000
+	      str.erase(last+2);
+	    } else {
+	      str.erase(last+1);
+	    }
+	  }
+	}
+	return str;
 }
 
-string FmLead(int i, int precision) {
+string FmLead(int i, int minLength) {
 	std::ostringstream oss;
 	oss.fill('0');
-	oss.width(precision);
+	oss.width(minLength);
 	oss << std::fixed << std::noshowpoint << i;
 	return oss.str();
 }
@@ -238,14 +253,74 @@ string Fobj(const std::vector<Triple<double,double,double> >& v) {
 	return s+"]";
 }
 
+string Fobj(const std::map<std::string,std::string>& v) {
+	string s = "[";
+	for (std::map<std::string,std::string>::const_iterator it = v.begin(); it != v.end(); ++it) {
+		s += it->first +"->"+it->second+", ";
+	}
+	return s+"]";
+}
+
+string Fobj(const std::map<int,int>& v) {
+	string s = "[";
+	for (std::map<int,int>::const_iterator it = v.begin(); it != v.end(); ++it) {
+		s += Fm0(it->first) +"->"+Fm0(it->second)+", ";
+	}
+	return s+"]";
+}
+
+string Fobj(const std::map<int,std::string>& v) {
+	string s = "[";
+	for (std::map<int,std::string>::const_iterator it = v.begin(); it != v.end(); ++it) {
+		s += Fm0(it->first) +"->"+it->second+", ";
+	}
+	return s+"]";
+}
+
+
+string Fobj(const std::map<std::string,int>& v) {
+	string s = "[";
+	for (std::map<std::string,int>::const_iterator it = v.begin(); it != v.end(); ++it) {
+		s += it->first +"->"+Fm0(it->second)+", ";
+	}
+	return s+"]";
+}
+
+string Fobj(const std::map<double,double>& v) {
+	string s = "[";
+	for (std::map<double,double>::const_iterator it = v.begin(); it != v.end(); ++it) {
+		s += Fm4(it->first) +"->"+Fm4(it->second)+", ";
+	}
+	return s+"]";
+}
+
+string Fobj(const std::map<double,std::string>& v) {
+	string s = "[";
+	for (std::map<double,std::string>::const_iterator it = v.begin(); it != v.end(); ++it) {
+		s += Fm4(it->first) +"->"+it->second+", ";
+	}
+	return s+"]";
+}
+
+
+string Fobj(const std::map<std::string,double>& v) {
+	string s = "[";
+	for (std::map<std::string,double>::const_iterator it = v.begin(); it != v.end(); ++it) {
+		s += it->first +"->"+Fm4(it->second)+", ";
+	}
+	return s+"]";
+}
+
+
 std::string list2str(const std::vector<std::string>& l, const std::string& delimiter) {
 	string s = "";
 	if (l.size() > 0) {
 		s+=l[0];
-		for (unsigned int i = 1; i < l.size(); i++) {
+		for (unsigned int i = 1; i < l.size(); ++i) {
 			s += delimiter + l[i];
 		}
 	}
+	//fpln(" $$$$ format.list2str: s = "+s);
 	return s;
 }
 
@@ -254,7 +329,7 @@ std::string list2str(const std::vector<std::string>& l, const std::string& delim
  */
 string Farray(int const v[], int sz) {
 	string s = "";
-	for (int i = 0; i < sz; i++) {
+	for (int i = 0; i < sz; ++i) {
 		s += Fm0(v[i]);
 		if (i < sz-1) s += ", ";
 	}
@@ -296,10 +371,12 @@ string FmVec(Vect3 v) {
 
 
 string padLeft(string s, int n) {
-	//return string.format("%1$#" + n + "s", s);
-	string ss = s;
-	ss.resize(n,' ');
-	return ss;
+	string pad = "";
+	for (int i = 0; i < n-(int)s.size(); i++) {
+	  pad = pad + " ";
+	}
+
+	return pad+s;
 }
 
 
@@ -314,6 +391,7 @@ string padRight(string s, int n) {
 
 void fpln(const string& str) {
 	cout << str << endl;
+	cout.flush();
 }
 
 void fp(const string& str) {
@@ -366,8 +444,12 @@ string fvStr2(const Vect3& v) {
 	return "("+Units::str("deg",v.vect2().compassAngle())+", "+Units::str("knot",v.norm())+", "+Units::str("fpm",v.z)+")";
 }
 
-string double2PVS(double val, int prec) {
-	return FmPrecision(val,prec)+"::ereal";
+string double2PVS(double val) {
+	return double2PVS(val,Constants::get_output_precision());
+}
+
+string double2PVS(double val, int precision) {
+	return FmPrecision(val,precision)+"::ereal";
 }
 
 

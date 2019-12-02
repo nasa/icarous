@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -22,9 +22,11 @@ namespace larcfm {
 
 /**
  * Encapsulates a geometric polygon. The polygon is defined in terms of its vertex coordinates. 
- * This implementation assumes a simply connected polygon. The Polygon is otherwise quite general allowing multiply
- * connected regions. The class provides a containment test for points and uses bounding rectangles
- * to speed up computations.
+ * This implementation assumes a simply connected polygon. The Polygon is otherwise quite general 
+ * allowing multiply connected regions. The class provides a containment test for points and uses 
+ * bounding rectangles to speed up computations.  
+ * 
+ * Note: It does not use the "BoundingRectangle" class to avoid importing Lat/Lon classes such as GreatCircle.
  */
 class Poly2D {
 
@@ -34,16 +36,16 @@ private:
 //	bool boundingRectangleDefined;
 	static const double vertexPerturb;
 	static const double perturbAmount;
-	mutable double minX;
-	mutable double minY;
-	mutable double maxX;
-	mutable double maxY;
+	double minX;
+	double minY;
+	double maxX;
+	double maxY;
 
 public:
 
 	Poly2D();
 
-	Poly2D(const std::vector<Vect2>& verts);
+	explicit Poly2D(const std::vector<Vect2>& verts);
 
 	/**
 	 * Constructor for creating a copy of a Polygon
@@ -61,14 +63,40 @@ public:
 
 	Poly2D linear(const std::vector<Vect2>& v, double t) const;
 
-	void addVertex(double x, double y);
+	void add(double x, double y);
 
-	void addVertex(const Vect2& v);
+	void add(const Vect2& v);
+
+	void insert(int i, const Vect2& v);
+
+	/**
+	 * Return vertex, or INVALID if out of bounds.
+	 * @param i index
+	 * @return vertex
+	 */
+	Vect2 get(int i) const;
 
 
 	/**
 	 * Determines if the supplied point lies within this polygon. Uses the "crossing number" algorithm
 	 * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD detection algorithms.
+	 * 
+	 * @param i index
+	 * @param v vector
+	 */
+
+	void set(int i, const Vect2& v);
+
+	/**
+	 * Remove a point from this SimplePolyNew.
+	 * @param n Index (in order added) of the point to be removed.
+	 */
+	void remove(int n);
+
+	/**
+	 * Determines if the supplied point lies within this polygon. Uses the "crossing number" algorithm
+	 * This uses a standard raycasting check for point inclusion.  It does not explicitly use ACCoRD 
+	 * detection algorithms.
 	 * 
 	 * @param a - x coordinate of the point
 	 * @param b - y coordinate of the point
@@ -78,16 +106,8 @@ public:
 
 	bool contains(const Vect2& v) const;
 
-	void setVertex(int i, const Vect2& v);
 
-	/**
-	 * Return vertex, or INVALID if out of bounds.
-	 * @param i index
-	 * @return vertex
-	 */
-	Vect2 getVertex(int i) const;
-
-	std::vector<Vect2> getVertices() const;
+	std::vector<Vect2> getVerticesRef() const;
 
 //	BoundingRectangle getBoundingRectangle() const;
 //
@@ -106,7 +126,7 @@ public:
 	 * Return the horizontal area (in m^2) of this Poly3D.
 	 * @return area
 	 */
-	double area();   // not const !!
+	double area() const;   // not const !!
 
 	/**
 	 * @return the geometric centroid.
@@ -134,12 +154,21 @@ public:
 
 	double outerDiameter() const;
 
+	bool isClockwise() const;
+
+	/**
+	 * Reverse order of vertices
+	 * @return polygon
+	 */
+	Poly2D reverseOrder() const;
+
 	/**
 	 * Distance from averagePoint to farthest vertex
 	 * @return radius
 	 */
 	double apBoundingRadius() const;
 
+	void recalcBoundingRectangle();
 
 	/**
 	 * Returns a GeneralPath representation for testing purposes.

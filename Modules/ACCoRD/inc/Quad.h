@@ -6,7 +6,7 @@
  *
  * a four element tuple
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -89,6 +89,30 @@ public:
   template<typename T1, typename T2, typename T3, typename T4>
   bool operator!= (const Quad<T1,T2,T3,T4>& q1, const Quad<T1,T2,T3,T4>& q2) {
     return !(q1 == q2);
+  }
+
+  /** ordering */
+  template<typename T1, typename T2, typename T3, typename T4>
+  bool operator< (const Quad<T1,T2,T3,T4>& q1, const Quad<T1,T2,T3,T4>& q2) {
+  	if (q1.first == q2.first) {
+  		if (q1.second == q2.second) {
+  			if (q1.third == q2.third) {
+  					return q1.fourth < q2.fourth;
+  			} else {
+  				return q1.third < q2.third;
+  			}
+  		} else {
+  			return q1.second < q2.second;
+  		}
+  	} else {
+  		return q1.first < q2.first;
+  	}
+  }
+
+  /** ordering */
+  template<typename T1, typename T2, typename T3, typename T4>
+  bool operator> (const Quad<T1,T2,T3,T4>& q1, const Quad<T1,T2,T3,T4>& q2) {
+  	  return q1 != q2 && !(q1 < q2);
   }
 
 

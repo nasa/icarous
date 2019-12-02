@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -21,9 +21,11 @@ using namespace std;
 int ErrorLog::global_purge_flag = 0;
 int ErrorLog::limit = 25;
 
-ErrorLog::ErrorLog(const string& name) {
-	this->name = string(name);
-	message = "";
+ErrorLog::ErrorLog(const string& logname) :
+	name(logname),
+	message("") {
+	//this->name = string(name);
+	//message = "";
 	has_error = false;
 	fail_fast = false;
 	console_out = false;

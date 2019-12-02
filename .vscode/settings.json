@@ -1,11 +1,18 @@
 {
-    "cmake.environment": {//"JAVA_HOME":"/Library/Java/JavaVirtualMachines/jdk1.8.0_201.jdk/Contents/Home",
-                          "JAVA_HOME":"/usr/lib/jvm/java-11-openjdk-amd64",
-                          "OSAL_HOME":"${workspaceFolder}/cFS/cFE/osal",
-                          "PLEXIL_HOME":"${workspaceFolder}/Modules/Plexil"},
-    "cmake.generator": "Unix Makefiles",
-    "cmake.configureSettings": {"SCR":"mac"},
+    "cmake.configureSettings": {"CMAKE_INSTALL_PREFIX":"../../exe"},
+    "cmake.sourceDirectory": "${workspaceFolder}/cfe",
     "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools",
     "C_Cpp.configurationWarnings": "Disabled",
+    "files.associations": {
+        "rotorsim.h": "c",
+        "array": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "bitset": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "regex": "cpp",
+        "utility": "cpp"
+    },
 
 }

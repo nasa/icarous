@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -20,7 +20,7 @@ namespace larcfm {
     int conflicts;
     std::vector<double> timesin;
     std::vector<double> timesout;
-//    static const double accuracy; //seconds
+    static const double microStepNum;
 
   public:
 

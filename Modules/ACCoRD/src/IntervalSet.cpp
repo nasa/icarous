@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -22,19 +22,14 @@
 using namespace std;
 using namespace larcfm;
 
-const Interval IntervalSet::empty = Interval();
-
-IntervalSet::IntervalSet() {//: error("IntervalSet") {
+IntervalSet::IntervalSet() {
 	length = 0;
 }
 
-IntervalSet::IntervalSet(const IntervalSet& l) {//: error("IntervalSet") {
+IntervalSet::IntervalSet(const IntervalSet& l) {
 	length = l.length;
 
 	memcpy(r,l.r,sizeof(Interval)*length);
-	//for (int i = 0; i < length; i++) {
-	//  r[i] = Interval(l.r[i]);  // deep copy
-	//}
 }
 
 IntervalSet::IntervalSet(const std::vector<Interval>& v) {//: error("IntervalSet") {
@@ -57,8 +52,7 @@ void IntervalSet::clear() {
 
 const Interval& IntervalSet::getInterval(int i) const {
 	if (i >= length || i < 0) {
-		//    error.addError("getInterval: Index out of bounds.");
-		return empty;
+		return Interval::EMPTY;
 	}
 
 	return r[i];
@@ -110,6 +104,18 @@ void IntervalSet::unions(const Interval& rn) {
 void IntervalSet::unions(const IntervalSet& n) {
 	for (int i = 0; i < n.length; i++) {
 		unions(n.r[i]);
+	}
+}
+
+/**
+ * Union the given IntervalSet into the current IntervalSet. Set n is
+ * unmodified. This method uses "almost" inequalities to compute the intersection.
+ * 
+ * @param n set
+ */
+void IntervalSet::almost_unions(const IntervalSet& n, INT64FM maxUlps) {
+	for (int i=0; i < n.size(); ++i) {
+		almost_add(n.getInterval(i).low,n.getInterval(i).up,maxUlps);
 	}
 }
 
@@ -379,15 +385,28 @@ int IntervalSet::order(double x) const {
 std::string  IntervalSet::toString() const {
 	std::string s = "";
 	for (int i = 0; i < length; i++) {
+		if (i != 0) {
+			s += ", ";
+		}
 		s += "Interval ["+Fm0(i)+"]: ";
 		s += r[i].toString();
-		s += "\n";
 	}
 	return s;
 }
 
 
-
+/** Print the contents of this IntervalSet */
+std::string IntervalSet::toString(const std::string& unit) const {
+	std::string s = "";
+	for (int i = 0; i < length; i++) {
+		if (i != 0) {
+			s += ", ";
+		}
+		s += "Interval ["+Fm0(i)+"]: ";
+		s += r[i].toStringUnits(unit);
+	}
+	return s;
+}
 
 
 

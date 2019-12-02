@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -137,7 +137,7 @@ namespace larcfm {
    * @param T the absolute time to end looking for conflicts
    * @return true if there is a conflict
    */
-  bool CDIIPolygon::cdiicore(const Plan& ownship, const PolyPath& traffic, double B, double T) {
+  bool CDIIPolygon::cdiicore(const Plan& ownship, PolyPath& traffic, double B, double T) {
     return def.detection(ownship, traffic, B, T);
   }
 
@@ -167,7 +167,7 @@ namespace larcfm {
    * @param T the absolute time to end looking for conflicts
    * @return true if there is a conflict
    */
-  bool CDIIPolygon::detection(const Plan& ownship, const PolyPath& traffic, double B, double T) {
+  bool CDIIPolygon::detection(const Plan& ownship,  PolyPath& traffic, double B, double T) {
     tin.clear();
     tout.clear();
     tcpa.clear();
@@ -187,7 +187,7 @@ namespace larcfm {
    * It is less efficient than the normal detection() algorithm and should only be called if accurate time in information is necessary 
    * when B might be within a loss of separation region.
    */
-  bool CDIIPolygon::detectionExtended(const Plan& ownship, const PolyPath& traffic, double B, double T) {
+  bool CDIIPolygon::detectionExtended(const Plan& ownship,  PolyPath& traffic, double B, double T) {
     if (!detection(ownship, traffic, Util::max(ownship.getFirstTime(), traffic.getFirstTime()), Util::min(ownship.getLastTime(), traffic.getLastTime()))) {
       return false;
     }
@@ -217,7 +217,7 @@ namespace larcfm {
    * @param T the absolute time to end looking for conflicts.
    * @return true if there is a conflict
    */
-  bool CDIIPolygon::detectionXYZ(const Plan& ownship, const PolyPath& traffic, double B, double T) {
+  bool CDIIPolygon::detectionXYZ(const Plan& ownship,  PolyPath& pp, double B, double T) {
     bool cont = false;                     // what is this?
     int start = B > ownship.getLastTime() ? ownship.size()-1 : Util::max(0,ownship.getSegment(B));
     // calculated end segment.  Only continue search if we are currently in a conflict
@@ -225,7 +225,7 @@ namespace larcfm {
     for (int i = start; i < ownship.size(); i++){
       // truncate the search at Tend if not in a conflict
       if (i <= end || cont) {
-        Vect3 so = ownship.point(i).point();
+        Vect3 so = ownship.point(i).vect3();
         bool linear = true;
         Velocity vo = ownship.initialVelocity(i, linear);
         double t_base = ownship.time(i);   // ownship start of leg
@@ -243,7 +243,7 @@ namespace larcfm {
           continue;
         }
 //fpln(" $$>> CDIIPolygon: detectionXYZ: call cdsi.detectionXYZ! for i = "+Fmi(i));
-        cdsi.detectionXYZ(so, vo, t_base, HT, traffic, BT, NT);
+        cdsi.detectionXYZ(so, vo, t_base, HT, pp, BT, NT);
         captureOutput(cdsi, i);
         cont = size() > 0 ? tout[tout.size()-1] == HT + t_base : false;
 
@@ -265,7 +265,7 @@ namespace larcfm {
    * @param T the absolute time to end looking for conflicts.
    * @return true if there is a conflict
    */
-  bool CDIIPolygon::detectionLL(const Plan& ownship, const PolyPath& traffic, double B, double T) {
+  bool CDIIPolygon::detectionLL(const Plan& ownship,  PolyPath& traffic, double B, double T) {
     bool cont = false;
 //fpln(" $$ CDIIPolygon.detectionLL ownship="+ownship.toString()+" traffic="+traffic.toString()+" B = "+Fm1(B)+" T= "+Fm1(T));
     int start = B > ownship.getLastTime() ? ownship.size()-1 : Util::max(0,ownship.getSegment(B));
@@ -335,6 +335,72 @@ namespace larcfm {
       }
     }
   }
+
+   bool CDIIPolygon::conflictDetectionOnly(const Plan& ownship,PolyPath& traffic, double B, double T) const {
+        if (ownship.isLatLon() != traffic.isLatLon()) {
+          return false;
+        }
+        if (ownship.isLatLon()) {
+          return conflictOnlyLL(ownship, traffic, B, T);
+        } else {
+          return conflictOnlyXYZ(ownship, traffic, B, T);
+        }
+      }
+
+  bool CDIIPolygon::conflictOnlyXYZ(const Plan& ownship,PolyPath& traffic, double B, double T) const {
+        int start = B > ownship.getLastTime() ? ownship.size()-1 : Util::max(0,ownship.getSegment(B));
+        int end = T > ownship.getLastTime() ? ownship.size()-1 : Util::max(0,ownship.size()-1);
+        for (int i = start; i < ownship.size(); i++){
+          if (i <= end) {
+            Vect3 so = ownship.point(i).vect3();
+            bool linear = true;     // was Plan.PlanType.LINEAR);
+            Velocity vo = ownship.initialVelocity(i, linear);
+            double t_base = ownship.time(i);   // ownship start of leg
+            double nextTime;                      // ownship end of range
+            if (i == ownship.size() - 1) {
+              nextTime = 0.0;                   // set to 0
+            } else {
+              nextTime = ownship.time(i + 1);  // if in the plan, set to the end of leg
+            }
+            double HT = nextTime - t_base;
+            double BT = Util::max(0.0,B - t_base); // Util::max(0,B-(t_base - t0));
+            double NT = T - t_base; // - (t_base - t0);
+
+            if (NT < 0.0) {
+              continue;
+            }
+            if (cdsi.conflictOnlyXYZ(so, vo, t_base, HT, traffic, BT, NT)) return true;
+          }
+        }
+        return false;
+      }
+  bool CDIIPolygon::conflictOnlyLL(const Plan& ownship,PolyPath& traffic, double B, double T) const{
+        int start = B > ownship.getLastTime() ? ownship.size()-1 : Util::max(0,ownship.getSegment(B));
+        int end = T > ownship.getLastTime() ? ownship.size()-1 : Util::max(0,ownship.size()-1);
+        for (int i = start; i < ownship.size(); i++){
+          if (i <= end) {
+            LatLonAlt llo = ownship.point(i).lla();
+            double t_base = ownship.time(i);
+            double nextTime;
+            if (i == ownship.size() - 1) {
+                nextTime = 0.0;
+            } else {
+              nextTime = ownship.time(i + 1);
+            }
+            double HT = nextTime - t_base;      // state-based time horizon (relative time)
+            double BT = Util::max(0.0,B - t_base); // begin time to look for conflicts (relative time)
+            double NT = T - t_base; // end time to look for conflicts (relative time)
+            if (NT < 0.0) {
+              continue;
+            }
+            bool linear = true;     // was Plan.PlanType.LINEAR);
+            Velocity vo = ownship.velocity(t_base, linear);           // CHANGED!!!
+            if (cdsi.conflictOnlyLL(llo, vo, t_base, HT, traffic, BT, NT)) return true;
+          }
+        }
+        return false;
+      }
+
 
   std::string CDIIPolygon::toString() const {
     std::string str = "CDIIPolygon: size() = "+Fmi(size());

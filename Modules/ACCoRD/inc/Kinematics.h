@@ -1,7 +1,7 @@
 /*
  * Kinematics.h
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -223,6 +223,31 @@ public:
 
 	static std::pair<Vect3,Velocity> turnByDist2D(const Vect3& so, const Vect3& center, int dir, double d, double gsAt_d);
 
+	/** 
+	 * Position after turning (does not compute altitude!!)
+	 * 
+	 * Note: will be used in a context where altitude is computing subsequently
+	 * 
+	 * @param so          starting position
+	 * @param center      center of turn
+	 * @param dir         direction of turnb
+	 * @param d           distance into turn (sign indicates direction)
+	 * @return Position   after turning distance d
+	 */
+	static Vect3 turnByDist2D(const Vect3& so, const Vect3& center, int dir, double d);
+
+	/** 
+	 * Position after turning (does not compute altitude!!)
+	 * 
+	 * Note: will be used in a context where altitude is computing subsequently
+	 * 
+	 * @param so          starting position
+	 * @param center      center of turn
+	 * @param alpha       turn angle
+	 * @return position   after turn
+	 */
+	static Vect3 turnByAngle2D(const Vect3& so, const Vect3& center, double alpha);
+
 	/**
 	 * Position/Velocity after turning t time units according to track rate omega
 	 * @param sv0         initial position and velocity
@@ -385,7 +410,7 @@ public:
 	 * @param v0 turn start velocity
 	 * @param omega rate of turn (+ = right, - = left)
 	 * @param x point of interest
-	 * @param endTime time at which turn finishes.  If <= 0, assume a full turn is allowed.
+	 * @param endTime time at which turn finishes.  If &le; 0, assume a full turn is allowed.
 	 * @return time on turn when we are closest to the given point x (in seconds), or -1 if we are precisely at the turn's center
 	 * This will be bounded by [0,endTime]
 	 */
@@ -398,7 +423,7 @@ public:
 	 * @param R turn radius
 	 * @param dir direction of turn
 	 * @param x point of interest
-	 * @param maxDist distance at which turn finishes.  If <= 0, assume a full turn is allowed.
+	 * @param maxDist distance at which turn finishes.  If &le; 0, assume a full turn is allowed.
 	 * @return distance on turn when we are closest to the given point x, or -1 if we are precisely at the turn's center
 	 * This will be bounded by [0,maxDist]
 	 */
@@ -497,13 +522,22 @@ public:
 	/**
 	 * returns time required to accelerate to target ground speed GoalGs
 	 *
+	 * @param gs0         current ground speed
+	 * @param goalGs     ground speed where the acceleration stops
+	 * @param gsAccel    ground speed acceleration (a positive value)
+	 * @return           acceleration time
+	 */
+	static double gsAccelTime(double gs0,double goalGs, double gsAccel);
+
+	/**
+	 * returns time required to accelerate to target ground speed GoalGs
+	 *
 	 * @param vo         current velocity
 	 * @param goalGs     ground speed where the acceleration stops
 	 * @param gsAccel    ground speed acceleration (a positive value)
 	 * @return           acceleration time
 	 */
 	static double gsAccelTime(const Velocity& vo,double goalGs, double gsAccel);
-
 
 	static Triple<Vect3,Velocity,double> gsAccelGoal(const Vect3& so, const Velocity& vo, double goalGs, double gsAccel);
 

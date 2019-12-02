@@ -1,80 +1,139 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
-#include "TrafficState.h"
 #include "Position.h"
 #include "Velocity.h"
 #include "Projection.h"
 #include "Constants.h"
 #include "format.h"
+#include "string_util.h"
+#include "TrafficState.h"
+
+#include <string>
+
 
 namespace larcfm {
 
-TrafficState::TrafficState() {
-  id_ = "_NoAc_";
-  pos_ = Position::INVALID();
-  vel_ = Velocity::INVALIDV();
-  posxyz_ = Position::INVALID();
-  velxyz_ = Velocity::INVALIDV();
-  eprj_ = Projection::createProjection(Position::ZERO_LL());
-  time_ = 0.0;
+TrafficState::TrafficState() :
+                            id_("_NoAc_"),
+                            pos_(Position::INVALID()),
+                            gvel_(Velocity::INVALIDV()),
+                            avel_(Velocity::INVALIDV()),
+                            eprj_(Projection::createProjection(Position::ZERO_LL())),
+                            alerter_(0),
+                            sum_(SUMData::EMPTY()),
+                            posxyz_(Position::INVALID()),
+                            sxyz_(Vect3::INVALID()),
+                            velxyz_(Velocity::INVALIDV()) {}
+
+const TrafficState& TrafficState::INVALID() {
+  static TrafficState tmp;
+  return tmp;
 }
 
-const TrafficState TrafficState::INVALID = TrafficState();
+TrafficState::TrafficState(const std::string& id, const Position& pos, const Velocity& vel) :
+                                id_(id),
+                                pos_(pos),
+                                gvel_(vel),
+                                avel_(vel),
+                                eprj_(Projection::createProjection(Position::ZERO_LL())),
+                                alerter_(1),
+                                posxyz_(pos),
+                                sxyz_(pos.vect3()),
+                                velxyz_(vel) {}
 
-const std::vector<TrafficState> TrafficState::INVALIDL = std::vector<TrafficState>();
-
-TrafficState::TrafficState(const std::string& id, const Position& pos, const Velocity& vel,
-    double time, const EuclideanProjection& eprj) {
-  id_ = id;
-  pos_ = pos;
-  vel_ = vel;
+TrafficState::TrafficState(const std::string& id, const Position& pos, const Velocity& vel, EuclideanProjection eprj, int alerter) :
+                                id_(id),
+                                pos_(pos),
+                                gvel_(vel),
+                                avel_(vel),
+                                eprj_(eprj),
+                                alerter_(alerter) {
   if (pos.isLatLon()) {
-    Vect3 s = eprj.project(pos);
+    sxyz_ = eprj.project(pos);
     Velocity v = eprj.projectVelocity(pos,vel);
-    posxyz_ = Position(s);
+    posxyz_ = Position(sxyz_);
     velxyz_ = Velocity::make(v);
   } else {
     posxyz_ = pos;
+    sxyz_ = pos.vect3();
     velxyz_ = vel;
   }
-  time_ = time;
-  eprj_ = eprj;
 }
 
-TrafficState TrafficState::makeOwnship(const TrafficState& ac) {
-  return makeOwnship(ac.id_,ac.pos_,ac.vel_,ac.time_);
+/**
+ * Apply Euclidean projection. Requires aircraft's position in lat/lon
+ */
+void TrafficState::applyEuclideanProjection() {
+  sxyz_ = eprj_.project(pos_);
+  Velocity v = eprj_.projectVelocity(pos_, avel_);
+  posxyz_ = Position(sxyz_);
+  velxyz_ = Velocity::make(v);
 }
 
-TrafficState TrafficState::makeOwnship(const std::string& id, const Position& pos, const Velocity& vel,
-    double time) {
-  return TrafficState(id,pos,vel,time,pos.isLatLon()?Projection::createProjection(pos.lla().zeroAlt()):
-      Projection::createProjection(Position::ZERO_LL()));
+/**
+ * Set aircraft as ownship
+ */
+void TrafficState::setAsOwnship() {
+  if (isLatLon()) {
+    eprj_ = Projection::createProjection(pos_.lla().zeroAlt());
+    applyEuclideanProjection();
+  }
 }
 
-TrafficState TrafficState::makeIntruder(const TrafficState& ac) {
-  return makeIntruder(ac.id_,ac.pos_,ac.vel_);
+TrafficState TrafficState::makeOwnship(const std::string& id, const Position& pos, const Velocity& vel) {
+  TrafficState ac = TrafficState(id,pos,vel);
+  ac.setAsOwnship();
+  return ac;
+}
+
+void TrafficState::setAsIntruderOf(const TrafficState& ownship) {
+  if (isLatLon() && ownship.isLatLon()) {
+    eprj_ = ownship.getEuclideanProjection();
+    applyEuclideanProjection();
+  }
 }
 
 TrafficState TrafficState::makeIntruder(const std::string& id, const Position& pos, const Velocity& vel) const {
   if (pos_.isLatLon() != pos.isLatLon()) {
-    return INVALID;
+    return INVALID();
   }
-  return TrafficState(id,pos,vel,time_,eprj_);
+  return TrafficState(id, pos, vel, eprj_, 1);
 }
 
-double TrafficState::getTime() const {
-  return time_;
+void TrafficState::setAlerterIndex(int alerter) {
+  alerter_ = std::max(0, alerter);
 }
 
-Vect3 const & TrafficState::get_s() const {
-  return posxyz_.point();
+int TrafficState::getAlerterIndex() const {
+  return alerter_;
 }
 
-Velocity const & TrafficState::get_v() const {
+void TrafficState::applyWindVector(const Velocity& wind_vector) {
+  avel_ = Velocity(gvel_.Sub(wind_vector));
+  if (isLatLon()) {
+    applyEuclideanProjection();
+  } else {
+    velxyz_ = avel_;
+  }
+}
+
+Velocity TrafficState::windVector() const {
+  return Velocity(gvel_.Sub(avel_));
+}
+
+const EuclideanProjection& TrafficState::getEuclideanProjection() const {
+  return eprj_;
+}
+
+const Vect3& TrafficState::get_s() const {
+  return sxyz_;
+}
+
+const Velocity& TrafficState::get_v() const {
   return velxyz_;
 }
 
@@ -85,9 +144,8 @@ Vect3 TrafficState::pos_to_s(const Position& p) const {
     }
     return eprj_.project(p);
   }
-  return p.point();
+  return p.vect3();
 }
-
 
 Velocity TrafficState::vel_to_v(const Position& p, const Velocity& v) const {
   if (p.isLatLon()) {
@@ -104,21 +162,27 @@ Velocity TrafficState::inverseVelocity(const Velocity& v) const {
 }
 
 TrafficState TrafficState::linearProjection(double offset) const {
-  return TrafficState(getId(),pos_.linear(vel_,offset),vel_,time_+offset,eprj_);
+  TrafficState ac = TrafficState(getId(),pos_.linear(gvel_,offset),gvel_,eprj_,alerter_);
+  ac.applyWindVector(windVector());
+  return ac;
 }
 
-TrafficState TrafficState::findAircraft(const std::vector<TrafficState>& traffic, const std::string& id) {
-  if (id != TrafficState::INVALID.getId()) {
-    for (nat i=0; i < traffic.size(); ++i) {
-      TrafficState ac = traffic[i];
-      if (id == ac.getId())
-        return ac;
+/**
+ * Index of aircraft id in traffic list. If aircraft is not in the list, returns -1
+ * @param traffic
+ * @param id
+ */
+int TrafficState::findAircraftIndex(const std::vector<TrafficState>& traffic, const std::string& id) {
+  for (nat i=0; i < traffic.size(); ++i) {
+    TrafficState ac = traffic[i];
+    if (equals(id,ac.getId())) {
+      return i;
     }
   }
-  return TrafficState::INVALID;
+  return -1;
 }
 
-std::string TrafficState::listToString(const std::vector<TrafficState>& traffic) {
+std::string TrafficState::listToString(const std::vector<std::string>& traffic) {
   std::string s = "{";
   bool comma = false;
   for (nat i=0; i < traffic.size(); ++i) {
@@ -127,181 +191,277 @@ std::string TrafficState::listToString(const std::vector<TrafficState>& traffic)
     } else {
       comma = true;
     }
-    s += traffic[i].getId();
+    s += traffic[i];
   }
   return s+"}";
 }
 
 std::string TrafficState::formattedHeader(const std::string& uxy, const std::string& ualt, const std::string&  ugs, const std::string& uvs) const {
-  std::string s = "";
+  std::string s1="NAME";
+  std::string s2="[none]";
   if (pos_.isLatLon()) {
-      s += "NAME lat lon alt trk gs vs time\n";
-      s += "[none] [deg] [deg] ["+ualt+"] [deg] ["+ugs+"] ["+uvs+"] [s]\n";
+    s1 += " lat lon alt trk gs vs";
+    s2 += " [deg] [deg] ["+ualt+"] [deg] ["+ugs+"] ["+uvs+"]";
   } else {
-      s += "NAME sx sy sz trk gs vs time\n";
-      s += "[none] ["+uxy+"] ["+uxy+"] ["+ualt+"] [deg] ["+ugs+"] ["+uvs+"] [s]\n";
+    s1 += " sx sy sz trk gs vs";
+    s2 += " ["+uxy+"] ["+uxy+"] ["+ualt+"] [deg] ["+ugs+"] ["+uvs+"]";
   }
-  return s;
+  s1 += " time alerter";
+  s2 += " [s] [none]";
+  s1 += " s_EW_std s_NS_std s_EN_std sz_std v_EW_std v_NS_std v_EN_std vz_std";
+  s2 += " ["+uxy+"] ["+uxy+"] ["+uxy+"] ["+ualt+"] ["+ugs+"] ["+ugs+"] ["+ugs+"] ["+uvs+"]";
+  return s1+"\n"+s2+"\n";
 }
 
-std::string TrafficState::formattedTrafficState(const std::string& uxy, const std::string& ualt, const std::string&  ugs, const std::string& uvs) const {
-  std::string s = "";
+std::string TrafficState::formattedTrafficState(const std::string& uxy, const std::string& ualt, const std::string&  ugs, const std::string& uvs, double time) const {
+  std::string s= getId();
   if (pos_.isLatLon()) {
-      s += getId()+", "+pos_.lla().toStringNP(ualt,Constants::get_output_precision());
+    s += ", "+pos_.lla().toString("deg","deg",ualt,Constants::get_output_precision());
   } else {
-      s += getId()+", "+pos_.point().toStringNP(Constants::get_output_precision(),uxy,uxy,ualt);
+    s += ", "+pos_.vect3().toStringNP(Constants::get_output_precision(),uxy,uxy,ualt);
   }
-  s += ", "+vel_.toStringNP("deg",ugs,uvs,Constants::get_output_precision())+", "+
-          FmPrecision(time_,Constants::get_output_precision())+"\n";
-  return s;
+  s += ", "+avel_.toStringNP("deg",ugs,uvs,Constants::get_output_precision())+", "+
+      FmPrecision(time,Constants::get_output_precision());
+  s += ", "+Fmi(alerter_);
+  s += ", "+FmPrecision(sum_.get_s_EW_std(uxy));
+  s += ", "+FmPrecision(sum_.get_s_NS_std(uxy));
+  s += ", "+FmPrecision(sum_.get_s_EN_std(uxy));
+  s += ", "+FmPrecision(sum_.get_sz_std(ualt));
+  s += ", "+FmPrecision(sum_.get_v_EW_std(ugs));
+  s += ", "+FmPrecision(sum_.get_v_NS_std(ugs));
+  s += ", "+FmPrecision(sum_.get_v_EN_std(ugs));
+  s += ", "+FmPrecision(sum_.get_vz_std(uvs));
+  return s+"\n";
 }
 
 std::string TrafficState::formattedTrafficList(const std::vector<TrafficState>& traffic,
-    const std::string& uxy, const std::string& ualt, const std::string&  ugs, const std::string& uvs) {
+    const std::string& uxy, const std::string& ualt, const std::string&  ugs, const std::string& uvs, double time) {
   std::string s = "";
   for (nat i=0; i < traffic.size(); ++i) {
-      TrafficState ac = traffic[i];
-      s += ac.formattedTrafficState(uxy, ualt, ugs, uvs);
+    TrafficState ac = traffic[i];
+    s += ac.formattedTrafficState(uxy, ualt, ugs, uvs, time);
   }
   return s;
 }
 
 std::string TrafficState::formattedTraffic(const std::vector<TrafficState>& traffic,
-    const std::string& uxy, const std::string& ualt, const std::string&  ugs, const std::string& uvs) const {
+    const std::string& uxy, const std::string& ualt, const std::string&  ugs, const std::string& uvs, double time) const {
   std::string s = "";
   s += formattedHeader(uxy,ualt,ugs,uvs);
-  s += formattedTrafficState(uxy,ualt,ugs,uvs);
-  s += formattedTrafficList(traffic,uxy,ualt,ugs,uvs);
+  s += formattedTrafficState(uxy,ualt,ugs,uvs,time);
+  s += formattedTrafficList(traffic,uxy,ualt,ugs,uvs,time);
   return s;
 }
 
-std::string TrafficState::toPVS(int prec) const {
-  return "(# id := \"" + getId() + "\", s := "+get_s().toPVS(prec)+", v := "+get_v().toPVS(prec)+" #)";
+std::string TrafficState::toPVS() const {
+  return "(# id:= \"" + id_ + "\", s:= "+get_s().toPVS()+
+      ", v:= "+get_v().toPVS()+", alerter:= "+Fmi(alerter_)+
+      ", s_EW_std:= "+FmPrecision(sum_.get_s_EW_std())+
+      ", s_NS_std:= "+FmPrecision(sum_.get_s_NS_std())+
+      ", s_EN_std:= "+FmPrecision(sum_.get_s_EN_std())+
+      ", sz_std:= "+FmPrecision(sum_.get_sz_std())+
+      ", v_EW_std:= "+FmPrecision(sum_.get_v_EW_std())+
+      ", v_NS_std:= "+FmPrecision(sum_.get_v_NS_std())+
+      ", v_EN_std:= "+FmPrecision(sum_.get_v_EN_std())+
+      ", vz_std:= "+FmPrecision(sum_.get_vz_std())+
+      " #)";
 }
 
-std::string TrafficState::listToPVSAircraftList(const std::vector<TrafficState>& traffic, int prec) const {
+std::string TrafficState::listToPVSAircraftList(const std::vector<TrafficState>& traffic) const {
   std::string s="";
   s += "(: ";
-  s += toPVS(prec);
+  s += toPVS();
   for (nat i = 0; i < traffic.size(); ++i) {
     TrafficState ac = traffic[i];
     s += ", ";
-    s += ac.toPVS(prec);
+    s += ac.toPVS();
   }
   return s+" :)";
 }
 
-std::string TrafficState::listToPVSStringList(const std::vector<TrafficState>& traffic, int prec) {
+std::string TrafficState::listToPVSStringList(const std::vector<std::string>& traffic) {
   if (traffic.empty()) {
     return "null[string]";
   } else {
     std::string s = "(:";
     bool comma = false;
     for (nat i = 0; i < traffic.size(); ++i) {
-      TrafficState ac = traffic[i];
+      std::string ac = traffic[i];
       if (comma) {
         s += ", ";
       } else {
         s += " ";
         comma = true;
       }
-      s += "\"" + ac.getId() + "\"";
+      s += "\"" + ac + "\"";
     }
     return s+" :)";
   }
 }
 
 bool TrafficState::isValid() const {
-  return !pos_.isInvalid() && !vel_.isInvalid();
+  return !pos_.isInvalid() && !gvel_.isInvalid();
 }
 
 bool TrafficState::isLatLon() const {
   return pos_.isLatLon();
 }
 
-std::string TrafficState::getId() const {
+const std::string& TrafficState::getId() const {
   return id_;
 }
 
-Position const & TrafficState::getPosition() const {
+const Position& TrafficState::getPosition() const {
   return pos_;
 }
 
-Velocity const & TrafficState::getVelocity() const {
-  return vel_;
+const Velocity& TrafficState::getGroundVelocity() const {
+  return gvel_;
 }
 
-Position const & TrafficState::getPositionXYZ() const {
+/**
+ * @return Aircraft's air velocity
+ */
+const Velocity& TrafficState::getAirVelocity() const {
+  return avel_;
+}
+
+/**
+ * @return Aircraft's velocity (can be ground or air depending on whether a wind vector was applied or not)
+ */
+const Velocity& TrafficState::getVelocity() const {
+  return avel_;
+}
+
+const Position& TrafficState::positionXYZ() const {
   return posxyz_;
 }
 
-Velocity const & TrafficState::getVelocityXYZ() const {
+const Velocity& TrafficState::velocityXYZ() const {
   return velxyz_;
 }
 
-
-/**
- *  Returns current track in internal units [0 - 2pi] [rad] (clock wise with respect to North)
- */
-double TrafficState::track() const {
-  return vel_.compassAngle();
+double TrafficState::horizontalDirection() const {
+  return avel_.compassAngle();
 }
 
-/**
- *  Returns current track in given units [0 - 2pi] [u] (clock wise with respect to North)
- */
-double TrafficState::track(const std::string& utrk) const {
-  return vel_.compassAngle(utrk);
+double TrafficState::horizontalDirection(const std::string& utrk) const {
+  return avel_.compassAngle(utrk);
 }
 
-/**
- * Returns current ground speed in internal units
- */
-double TrafficState::groundSpeed() const {
-  return vel_.gs();
+double TrafficState::horizontalSpeed() const {
+  return avel_.gs();
 }
 
-/**
- * Returns current ground speed in given units
- */
-double TrafficState::groundSpeed(const std::string& ugs) const {
-  return vel_.groundSpeed(ugs);
+double TrafficState::horizontalSpeed(const std::string& ugs) const {
+  return avel_.groundSpeed(ugs);
 }
 
-/**
- * Returns current vertical speed in internal units
- */
 double TrafficState::verticalSpeed() const {
-  return vel_.vs();
+  return avel_.vs();
 }
 
-/**
- * Returns current vertical speed in given units
- */
 double TrafficState::verticalSpeed(const std::string& uvs) const {
-  return vel_.verticalSpeed(uvs);
+  return avel_.verticalSpeed(uvs);
 }
 
-/**
- * Returns current altitude in internal units
- */
 double TrafficState::altitude() const{
   return pos_.alt();
 }
 
-/**
- * Returns current altitude in given units
- */
 double TrafficState::altitude(const std::string& ualt) const {
   return Units::to(ualt,pos_.alt());
 }
 
+const SUMData& TrafficState::sum() const {
+  return sum_;
+}
+
+/**
+ * s_EW_std: East/West position standard deviation in internal units
+ * s_NS_std: North/South position standard deviation in internal units
+ * s_EN_std: East/North position standard deviation in internal units
+ */
+void TrafficState::setHorizontalPositionUncertainty(double s_EW_std, double s_NS_std, double s_EN_std) {
+  sum_.setHorizontalPositionUncertainty(s_EW_std, s_NS_std, s_EN_std);
+}
+
+/**
+ * sz_std : Vertical position standard deviation in internal units
+ */
+void TrafficState::setVerticalPositionUncertainty(double sz_std) {
+  sum_.setVerticalPositionUncertainty(sz_std);
+}
+
+/**
+ * v_EW_std: East/West velocity standard deviation in internal units
+ * v_NS_std: North/South velocity standard deviation in internal units
+ * v_EN_std: East/North velocity standard deviation in internal units
+ */
+void TrafficState::setHorizontalVelocityUncertainty(double v_EW_std, double v_NS_std,  double v_EN_std) {
+  sum_.setHorizontalVelocityUncertainty(v_EW_std, v_NS_std, v_EN_std);
+}
+
+/**
+ * vz_std : Vertical velocity standard deviation in internal units
+ */
+void TrafficState::setVerticalSpeedUncertainty(double vz_std) {
+  sum_.setVerticalSpeedUncertainty(vz_std);
+}
+
+/**
+ * Set all uncertainties to 0
+ */
+void TrafficState::resetUncertainty() {
+  sum_.resetUncertainty();
+}
+
+double TrafficState::relativeHorizontalPositionError(const TrafficState& ac, const DaidalusParameters& parameters) const {
+  double min_error = parameters.getHorizontalNMAC()*0.1;
+  return Util::max(min_error,
+      parameters.getHorizontalPositionZScore()*
+      (sum().getHorizontalPositionError()+ac.sum().getHorizontalPositionError()));
+}
+
+double TrafficState::relativeVerticalPositionError(const TrafficState& ac, const DaidalusParameters& parameters) const {
+  double min_error = parameters.getHorizontalNMAC()*0.1;
+  return Util::max(min_error,
+      parameters.getVerticalPositionZScore()*
+      (sum().getVerticalPositionError()+ac.sum().getVerticalPositionError()));
+}
+
+double TrafficState::weighted_z_score(double range, const DaidalusParameters& parameters) {
+  if (range>=parameters.getHorizontalVelocityZDistance()) {
+    return parameters.getHorizontalVelocityZScoreMin();
+  } else {
+    double perc = range/parameters.getHorizontalVelocityZDistance();
+    return (1-perc)*parameters.getHorizontalVelocityZScoreMax()+
+        perc*parameters.getHorizontalVelocityZScoreMin();
+  }
+}
+
+double TrafficState::relativeHorizontalSpeedError(const TrafficState& ac, double s_err, const DaidalusParameters& parameters) const {
+  double min_error = parameters.getHorizontalSpeedStep()*0.1;
+  double range = get_s().distanceH(ac.get_s());
+  double  z_score = weighted_z_score(Util::max(range-s_err,0.0),parameters);
+  return Util::max(min_error,
+      z_score*
+      (sum().getHorizontalSpeedError()+ac.sum().getHorizontalSpeedError()));
+}
+
+double TrafficState::relativeVerticalSpeedError(const TrafficState& ac, const DaidalusParameters& parameters) const {
+  double min_error = parameters.getVerticalSpeedStep()*0.1;
+  return Util::max(min_error,
+      parameters.getVerticalSpeedZScore()*
+      (sum().getVerticalSpeedError()+ac.sum().getVerticalSpeedError()));
+}
+
 bool TrafficState::sameId(const TrafficState& ac) const {
-  return isValid() && ac.isValid() && id_ == ac.id_;
+  return isValid() && ac.isValid() && equals(id_, ac.id_);
 }
 
 std::string TrafficState::toString() const {
-  return "("+id_+", "+pos_.toString()+", "+vel_.toString()+")";
+  return "("+id_+", "+pos_.toString()+", "+avel_.toString()+")";
 }
 
 }

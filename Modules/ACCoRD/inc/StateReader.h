@@ -3,7 +3,7 @@
  *
  * Contact: George Hagen
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -20,7 +20,9 @@
 #include "Velocity.h"
 #include "ParameterReader.h"
 #include "ParameterProvider.h"
+#include "Triple.h"
 #include <string>
+#include <map>
 #include <vector>
 #include <iostream>
 
@@ -45,7 +47,7 @@ namespace larcfm {
  * for the first aircraft must be grouped together, then all the data for the
  * second aircraft, etc. If consecutive position and velocity lines are for the
  * same aircraft, subsequent name fields may be replaced with a double quotation
- * mark (&quot). The aircraft name is case sensitive, so US54A != Us54a !=
+ * mark (&quot;). The aircraft name is case sensitive, so US54A != Us54a !=
  * us54a.
  * <p>
  *
@@ -72,6 +74,13 @@ namespace larcfm {
  * or "history" (no quotes) for this reader to accept the file without error.
  * <p>
  *
+ * This allows for arbitrary additional user-defined columns.  
+ * New columns' information may be accessed by the get getNewColumnValue(), 
+ * getNewColumnBoolean(), or getNewColumnString() methods.
+ * If there are multiple time-points in the file, only the values for the last 
+ * time for an aircraft will be stored.
+ * New columns are assumed unitless unless units are specified.
+ *
  */
 class StateReader: public ErrorReporter, public ParameterReader, public ParameterProvider {
 private:
@@ -82,7 +91,10 @@ protected:
 	enum {
 		NAME, LAT_SX, LON_SY, ALT_SZ, TRK_VX, GS_VY, VS_VZ, TM_CLK
 	};
-	static const int head_length = TM_CLK + 1;
+	static const int definedColumns = TM_CLK + 1;
+
+	typedef std::map<std::pair<int,int>, Triple<double,bool, std::string> > extraTblType;
+	extraTblType extracolumnValues;
 
 	mutable ErrorLog error;
 	SeparatedInput input;
@@ -91,7 +103,7 @@ protected:
 	bool latlon;
 	bool trkgsvs;
 	bool clock;
-	int head[head_length];
+	std::vector<int> head;
 
 	bool interpretUnits;
 
@@ -115,7 +127,9 @@ public:
     /** A new, empty StateReader. After you have a StateReader object then use the open() method. */
 	StateReader();
 
-	/** Read a new file into an existing StateReader.  Parameters are preserved if they are not specified in the file. */
+	/** Read a new file into an existing StateReader.  Parameters are preserved if they are not specified in the file. 
+	 * @param filename file name
+	 */
 	virtual void open(const std::string& filename);
 
 	/** Read a new stream into an existing StateReader.  Parameters are preserved if they are not specified in the file. */
@@ -125,7 +139,9 @@ public:
 	ParameterData getParameters() const;
 	void updateParameterData(ParameterData& p) const;
 
-	/** Return the number of AircraftStates in the file */
+  /** Return the number of AircraftStates in the file 
+   * @return size 
+   * */
 	int size() const;
 	/** Returns the i-th AircraftState in the file */
 	AircraftState getAircraftState(int i) const;
@@ -133,18 +149,62 @@ public:
 	/** Returns the list of all AircraftStates in the file */
 	std::vector<AircraftState> getAircraftStateList() const;
 
-	/** Returns the (most recent) position of the i-th aircraft state in the file.  This is the raw position, and has not been through any projection. */
+	/** Returns the (most recent) position of the i-th aircraft state in the file.  This is the raw position, and has not been through any projection. 
+	 * @param ac aircraft index
+	 * @return position
+	 * */
 	Position getPosition(int ac) const;
 
-	/** Returns the (most recent) velocity of the i-th aircraft state in the file.   This is the raw velocity, and has not been through any projection. */
+	/** Returns the (most recent) velocity of the i-th aircraft state in the file.   This is the raw velocity, and has not been through any projection. 
+	 * @param ac aircraft index
+	 * @return velocity
+	 * */
 	Velocity getVelocity(int ac) const;
 
-	/** returns the string name of aircraft i */
+	/** returns the string name of aircraft i 
+	 * @param ac aircraft index
+	 * @return name 
+	 */
 	std::string getName(int ac) const;
 
 	double getTime(int ac) const;
 
 	bool isLatLon() const;
+
+
+	/**
+	 * Return a list of all user-defined columns in this reader.
+	 */
+	std::vector<std::string> getExtraColumnList() const;
+
+	/**
+	 * Return the units for a given column.  If no units were specified, then return "unspecified".  If the column name was not found, return the empty string.
+	 * @param colname name of the column in question.
+	 */
+	std::string getExtraColumnUnits(const std::string& colname) const;
+
+	/**
+	 * Return true if the given aircraft has data for the indicated column.
+	 * @param ac
+	 * @param colname
+	 * @return
+	 */
+	bool hasExtraColumnData(int ac, const std::string& colname) const;
+
+	/**
+	 * Returns the column value associated with a given aircraft, interpreted as a double, or NaN if there is no info
+	 */
+	double getExtraColumnValue(int ac, const std::string& colname) const;
+
+	/**
+	 * Returns the column value associated with a given aircraft, interpreted as a boolean, or false if there is no info
+	 */
+	bool getExtraColumnBool(int ac, const std::string& colname) const;
+
+	/**
+	 * Returns the column value associated with a given aircraft, interpreted as a string, or the empty string if there is no info
+	 */
+	std::string getExtraColumnString(int ac, const std::string& colname) const;
 
 	// ErrorReporter Interface Methods
 

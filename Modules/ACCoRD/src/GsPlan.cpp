@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 United States Government as represented by
+ * Copyright (c) 2017-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -43,7 +43,8 @@ GsPlan::GsPlan(const Plan& lpc, int start, int end) {
 		NavPoint np = lpc.point(i);
 		double gsOut_i = lpc.gsOut(i);
 		//f.pln(" $$$ GsPlan: i = "+i+"  "+np.tcpTypeString()+" gsOut_i() = "+Units.str("kn",gsOut_i));
-		add(np.position(),np.label(),gsOut_i);
+		std::string info = lpc.getInfo(i);
+		add(np.position(),np.name(),info, gsOut_i);
 	}
 	starttime = lpc.getFirstTime();
 }
@@ -57,7 +58,8 @@ GsPlan::GsPlan(const Plan& lpc) {
 		NavPoint np = lpc.point(i);
 		double gsOut_i = lpc.gsOut(i);
 		//f.pln(" $$$ GsPlan: i = "+i+"  "+np.tcpTypeString()+" gsOut_i() = "+Units.str("kn",gsOut_i));
-		add(np.position(),np.label(),gsOut_i);
+		std::string info = lpc.getInfo(i);
+		add(np.position(), np.name(),info, gsOut_i);
 	}
 	starttime = lpc.getFirstTime();
 }
@@ -91,7 +93,7 @@ GsPlan GsPlan::makeGsPlanConstant(const GsPlan& gsp, double gsNew) {
 GsPlan GsPlan::mkGsPlanBankAngle(const Plan& lpc, double bankAngle) {
 	Route rt = Route::mkRouteBankAngle(lpc,bankAngle);
 	GsPlan gsp = GsPlan(rt, lpc.getName(), lpc.getFirstTime(), 0.0);
-	fpln(Fm0(lpc.size())+" "+Fm0(gsp.size()));
+	//fpln(Fm0(lpc.size())+" "+Fm0(gsp.size()));
 	for (int j = 0; j < rt.size(); j++) {
 		gsp.gsOuts[j] = lpc.gsOut(j);
 	}
@@ -113,6 +115,12 @@ void GsPlan::setName(const std::string& s) {
 	id = s;
 }
 
+void GsPlan::setInfo(int i, const std::string& data) {
+	rt.setInfo(i, data);
+}
+
+
+
 double GsPlan::gs(int i) const {
 	return gsOuts[i];
 }
@@ -121,32 +129,34 @@ Route GsPlan::route() const {
 	return rt;
 }
 
-void GsPlan::add(const Position& pos, const std::string& label, double gsOut, double rad) {
-	rt.add(pos, label, rad);
+void GsPlan::add(const Position& pos, const std::string& label, const std::string& info, double gsOut, double rad) {
+	rt.add(pos, label, info, rad);
 	gsOuts.push_back(gsOut);
 }
 
-void GsPlan::set(int ix, const Position& pos, const std::string& label, double gsOut) {
-	//f.pln(" $$###>>>>> GsPlan.set: ix = "+ix+" ps = "+pos+" "+label+" gsin = "+Units.str("kn",gsOut));
-	double radius = 0.0;
-	rt.set(ix, pos, label, radius);
-	gsOuts[ix] = gsOut;
-}
 
-void GsPlan::add(const Position& pos, std::string label, double gsOut) {
+void GsPlan::add(const Position& pos, const std::string& label, const std::string& info, double gsOut) {
 	double radius = 0.0;
-	rt.add(pos, label, radius);
+	rt.add(pos, label, info, radius);
 	gsOuts.push_back(gsOut);
 }
 
-void GsPlan::add(const Position& pos, const std::string& label) {
-	rt.add(pos, label, 0.0);
+void GsPlan::add(const Position& pos, const std::string& label, const std::string& info) {
+	rt.add(pos, label, info, 0.0);
 	if (gsOuts.size() > 0) {
 		gsOuts.push_back(gsOuts[gsOuts.size()-1]);
 	} else {
 		gsOuts.push_back(-1.0);
 	}
 }
+
+void GsPlan::set(int ix, const Position& pos, const std::string& label, const std::string& info, double gsOut) {
+	//f.pln(" $$###>>>>> GsPlan.set: ix = "+ix+" ps = "+pos+" "+label+" gsin = "+Units.str("kn",gsOut));
+	double radius = 0.0;
+	rt.set(ix, pos, label, info, radius);
+	gsOuts[ix] = gsOut;
+}
+
 
 Position GsPlan::position(int i) const {
 	return rt.position(i);
@@ -156,9 +166,14 @@ Position GsPlan::last() const{
 	return rt.position(size()-1);
 }
 
-std::string GsPlan::name(int i)const {
+std::string GsPlan::name(int i) const {
 	return rt.name(i);
 }
+
+std::string GsPlan::info(int i) const {
+	return rt.info(i);
+}
+
 
 double GsPlan::radius(int i)const {
 	return rt.radius(i);
@@ -178,10 +193,12 @@ std::vector<double> GsPlan::getGsInits() const {
 }
 
 void GsPlan::add(const GsPlan& p, int ix) {
-	rt.add(p.position(ix),p.name(ix),p.radius(ix));
+	rt.add(p.position(ix),p.name(ix),p.info(ix), p.radius(ix));
 	gsOuts.push_back(p.gsOuts[ix]);
 	//f.pln(" $$ GsPlan add "+p.names.get(ix));
 }
+
+
 
 void GsPlan::addAll(const GsPlan& p) {
 	rt.addAll(p.rt);
@@ -239,20 +256,24 @@ Plan GsPlan::linearPlan() const {
 	double lastT = starttime;
 	Position lastNp = position(0);
 	//f.pln(" $$$ GsPlan.linearPlan: lastNp = "+lastNp);
-	lpc.addNavPoint(NavPoint(lastNp,starttime).makeLabel(name(0)));
+	lpc.addNavPoint(NavPoint(lastNp,starttime).makeName(name(0)));
 	for (int i = 1; i < rt.size(); i++) {
 		Position np = position(i);
 		double pathDist = np.distanceH(lastNp);
-		double gs_i = gsOuts[i-1];
+		double gs_i = std::max(0.001, gsOuts[i-1]);
 		double t = lastT + pathDist/gs_i;
 		//f.pln(" $$$ linearPlan: gs = "+Units.str("kn",gs_i)+" t = "+t);
-		NavPoint nvp = NavPoint(np,t).makeLabel(name(i));
 		//f.pln(" $$$ GsPlan.linearPlan: i = "+i+" nvp = "+nvp);
-		TcpData tcp = TcpData::makeSource(nvp).setRadiusSigned(radius(i));
-		//NavPt nvPair= new NavPt(nvp,tcp);
-		if (name(i)==rt.virtualName) tcp = tcp.setVirtual();
+		TcpData tcp = TcpData().setRadiusSigned(radius(i));
+		std::string nm = name(i);
+		if (larcfm::equals(nm,Route::virtualName)) {
+			tcp = tcp.setVirtual();
+			nm = "";
+		}
+		NavPoint nvp = NavPoint(np,t,nm);
 		//f.pln(" $$$$$ GsPlan.linearPlan: nvp = "+nvp.toStringFull());
-		lpc.add(nvp,tcp);
+		int ix = lpc.add(nvp,tcp);
+		lpc.setInfo(ix,info(i));
 		lastT = t;
 		lastNp = np;
 	}
@@ -272,7 +293,7 @@ Position GsPlan::positionFromDistance(double dist, double defaultBank, bool line
 	if (!linear) {
 		p = TrajGen::generateTurnTCPs(p, defaultBank);
 	}
-	return PlanUtil::advanceDistance(p, starttime, dist, false).first;
+	return PlanUtil::positionFromDistance(p, starttime, dist, false).first;
 }
 
 Velocity GsPlan::velocityFromDistance(double dist, double defaultBank, bool linear) const {
@@ -280,7 +301,7 @@ Velocity GsPlan::velocityFromDistance(double dist, double defaultBank, bool line
 	if (!linear) {
 		p = TrajGen::generateTurnTCPs(p, defaultBank);
 	}
-	return p.velocityByDistance(dist);
+	return p.velocityFromDistance(dist);
 }
 
 

@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -46,7 +46,7 @@ bool BandsRegion::isConflictBand(Region rt) {
   return isValidBand(rt) && !isResolutionBand(rt);
 }
 
-int BandsRegion::order(Region rt) {
+int BandsRegion::orderOfConflictRegion(Region rt) {
   if (isResolutionBand(rt)) {
     return 0;
   }
@@ -61,5 +61,18 @@ int BandsRegion::order(Region rt) {
   }
   return -1;
 }
+
+/**
+ * @return 1 -> FAR, 2 -> MID, 3 -> NEAR, otherwise -> UNKNOWN
+ */
+BandsRegion::Region BandsRegion::conflictRegionFromOrder(int i) {
+    switch (i) {
+    case 1: return FAR;
+    case 2: return MID;
+    case 3: return NEAR;
+    default: return UNKNOWN;
+    }
+}
+
 
 }

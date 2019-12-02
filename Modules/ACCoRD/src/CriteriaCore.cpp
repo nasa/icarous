@@ -3,7 +3,7 @@
  *
  * State-based Implicit Criteria
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -391,6 +391,20 @@ int CriteriaCore::dataTurnEpsilon(const Vect3& s, const Velocity& vo, const Velo
   if (absDir == trafSrchDir) return epsh;
   else return -epsh;
 }
+
+
+bool CriteriaCore::horizontal_new_repulsive_criterion(const Vect2& s,  const Vect2& vo, const Vect2& vi, const Vect2& nvo, int eps) {
+    Vect2 v = vo.Sub(vi);
+    Vect2 nv = nvo.Sub(vi);
+    bool rtn = !s.isZero() && !nv.isZero() &&
+        eps*s.det(v) <= 0 && eps*s.det(nv) < 0
+        && ((s.dot(v) < 0 &&  eps*nv.det(v) < 0)
+            || (s.dot(v) >= 0
+            && (!v.isZero() || s.dot(nv) >= 0)
+            && (v.isZero() || s.dot(nv) > s.dot(v))
+            && eps*nv.det(v) <= 0));
+    return rtn;
+  }
 
 
 bool CriteriaCore::horizontal_new_repulsive_criterion(const Vect3& s, const Vect3& vo, const Vect3& vi, const Vect3& nvo, int eps) {

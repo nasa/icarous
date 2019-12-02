@@ -5,7 +5,7 @@
  *
  * Utility functions.
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -88,7 +88,7 @@ static const INT64FM HIGH_BIT = 0x8000000000000000LLU;
 // M_PI = 3.1415926535897931
 // Java = 3.141592653589793
 
-/** A broad collection of utilities */
+/** A broad collection of utility functions */
 class Util {
 public:
 
@@ -284,7 +284,7 @@ public:
 	static double asin_safe(double x);
   /** a safe (won't return NaN or throw exceptions) version of arc-cosine
    * 
-   * @param x
+   * @param x angle
    * @return the arc-cosine of x, between [0,pi)
    */
 	static double acos_safe(double x);
@@ -301,7 +301,7 @@ public:
    * @param a a coefficient of quadratic
    * @param b b coefficient of quadratic
    * @param c c coefficient of quadratic
-   * @param eps
+   * @param eps -1 or +1 (to indicate which solution you want)
    * @return root of quadratic
    */
 	static double root(const double a, const double b, const double c, int eps);
@@ -310,7 +310,7 @@ public:
    * @param a a coefficient of quadratic
    * @param b b coefficient of quadratic
    * @param c c coefficient of quadratic
-   * @param eps
+   * @param eps -1 or +1 (to indicate which solution you want)
    * @return root of quadratic
    */
 	static double root2b(const double a, const double b, const double c, const int eps);
@@ -323,6 +323,13 @@ public:
    * @return sign of value
    */
 	static int    sign(const double x);
+
+  /**
+   * Return +1 if the value is greater than 0, -1 if it is less than 0, or 0.
+   * @param x value to be checked
+   * @return sign as a number (including 0)
+   */
+	static int signTriple(const double x);
 
 	/**
 	 * A minimum function that has the same behavior as the Java Math.min function:
@@ -522,7 +529,10 @@ public:
 	static double parse_time(const std::string& s);
 
   /**
-   * Convert the decimal time (in seconds) into a 0:00:00 string.
+   * Convert the decimal time (in seconds) into a 0:00:00 string. This prints as many 
+   * digits as necessary for the hours (one or two, typically).  See {@link #time_str(double)} for an
+   * alternate format.
+   * 
    * @param t time in seconds
    * @return String of hours:mins:secs
    */

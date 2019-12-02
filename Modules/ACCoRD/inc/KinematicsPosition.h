@@ -1,7 +1,7 @@
 /*
  * KinematicsPosition.h
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -68,15 +68,15 @@ public:
 	static std::pair<Position,Velocity> turnOmega(std::pair<Position,Velocity> pp, double t, double omega);
 
 
-		/**
-	 *  Position and velocity after t time units turning with rate omega
-	 * @param so  starting position
-	 * @param vo  initial velocity
-	 * @param t   time of turn [secs]
-	 * @param omega
-	 * @return Position and Velocity after t time
-	 */
-	static std::pair<Position,Velocity> turnOmegaAlt(const Position& so, const Velocity& vo, double t, double omega);
+//		/**
+//	 *  Position and velocity after t time units turning with rate omega
+//	 * @param so  starting position
+//	 * @param vo  initial velocity
+//	 * @param t   time of turn [secs]
+//	 * @param omega
+//	 * @return Position and Velocity after t time
+//	 */
+//	static std::pair<Position,Velocity> turnOmegaAlt(const Position& so, const Velocity& vo, double t, double omega);
 	
 	/** Advance in turn starting at "s0" by distance "d"
 	 *
@@ -88,16 +88,28 @@ public:
 	 */
 	static std::pair<Position,Velocity> turnByDist2D(const Position& so, const Position& center, int dir, double d, double gsAt_d);
 
-	/** Advance in turn starting at "so" by distance "d" 
+	/** 
+	 * Advance in turn starting at <code>so</code> by distance <code>d</code> 
 	 * 
 	 * @param so        starting position
 	 * @param center    center of turn
 	 * @param dir       direction of turn
-	 * @param d         distance to turn
-	 * @return          position after turning distance "d"
+	 * @param d         distance to turn       (can be negative)
+	 * @return          position after turning distance <code>d</code>
 	 */
 	static Position turnByDist2D(const Position& so, const Position& center, int dir, double d);
 
+	/** 
+	 * Position/Velocity after turning (does not compute altitude!!)
+	 * 
+	 * Note: will be used in a context where altitude is computing subsequently
+	 * 
+	 * @param so          starting position
+	 * @param center      center of turn
+	 * @param alpha       turn angle (signed: positive: turn right, negative: turn left);
+	 * @return            Position after turning distance d
+	 */
+	static Position turnByAngle2D(const Position& so, const Position& center, double alpha);
 
 	/**
 	 *  Position and velocity after t time units turning in direction "dir" with radius R.

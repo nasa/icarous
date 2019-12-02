@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -15,6 +15,10 @@ namespace larcfm {
 /**
  * Polygon detection.
  * Based on UNVERIFIED PVS code.
+ * 
+ * A MovingPolygon2D contains a list of Vect2 vertices and a corresponding list of velocities.  These lists
+ * must be the same size.
+ * 
  */
 class MovingPolygon2D {
 

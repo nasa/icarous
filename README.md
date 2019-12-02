@@ -26,7 +26,7 @@ https://nasa.github.io/icarous/
 
 ### Current Releases
 
-- ICAROUS  V-2.1.24 - September 18, 2019
+- ICAROUS  V-2.1.17 - May 10, 2019
 
 ### License
 
@@ -36,15 +36,6 @@ Agreement.  See the directory [`LICENSES`](LICENSES); see also the copyright not
 ### Contact
 
 [C&eacute;sar A. Mu&ntilde;oz](http://shemesh.larc.nasa.gov/people/cam) (cesar.a.munoz@nasa.gov), NASA Langley Research Center.
-
-### REQUIRED PACKAGES
-
-The following repositories are required to run (or support software-in-the-loop tests for) ICAROUS (You will also have to update the submodules in these repositories if available)
-
-- [Ardupilot](https://github.com/ArduPilot/ardupilot.git) (Only required for software in the loop simulations)
-- [mavlink](https://github.com/ArduPilot/mavlink.git) 
-- [MAVProxy](https://github.com/ArduPilot/MAVProxy.git)
-- [NLOPT](https://nlopt.readthedocs.io/en/latest/) (required only if using splines based path planner)
 
 ### Initialize and update submodules
 
@@ -56,18 +47,13 @@ The following repositories are required to run (or support software-in-the-loop 
 
 ICAROUS makes use of the cmake build system. In order to setup a build, the following environment variables must be defined. These can be added to you `~/.bashrc` script. Conveniently, you can also source the SetEnv.sh script in the repository.
 
-- PLEXIL_HOME= absolute path to the Modules/Plexil folder found in the Icarous repository.
 - OSAL_HOME= absolute path to the CFS/osal folder found in the Icarous repository.
-- JAVA_HOME= absolute path to the Java installation directory. Typically located under `/usr/lib/jvm/java-*`
-- Optional NLOPT_PATH = absolute path to the nlopt library location (libnlopt.a) [Optional-only required if splines based planner is being used].
 
 ```
     $mkdir build
     $cd build && cmake ..
     $make cpu1-install
 ```
-
-Run cmake with `-DSITL=ON` option to compile for software-in-the-loop simulations. Use `-DSPLINES=ON` to compile splines planner (This requires the nlopt library).
 
 For compilation on an ARM processor, follow the instructions in patches/arm before running cmake.
 
@@ -115,45 +101,6 @@ Geofence can be uploaded from MAVProxy using the `geofence` command, e.g.,
 Once waypoints and geofence are uploaded, the mission can be started from MAVProxy as follows:
 
     long MISSION_START
-
-### RUNNING ICAROUS WITH THE ARDUPILOT SITL
-
-Setup and launch the ardupilot SITL as described in <http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html>. By default, the ardupilot SITL is configured to output packets to udp port 14551. To interface Icarous with the ardupilot SITL, generate the SITL build and compile as follows:
-
-```
-    $mkdir build-stil
-    $cd build-sitl && cmake .. -DSITL=ON
-    $make cpu1-install
-```
-
-### DDS APP FOR ICAROUS (Optional)
-
-ICAROUS provides an application to communicate using OpenSplice DDS. Enable this application as follows:
-
-1. Download and install an OpenSplice DDS 32bit version
-
-2. Create an OpenSplice configuration file (.xml) with **domain id** 100.  Follow the examples provided in the OpenSplice DDS distribution directory within `etc/conf`.
-
-3. Add `dds_interface` to the `TGT1_APPLIST` in the file `cFS/apps/Icarous_defs/targets.cmake` to compile the dds application:
-
-4. Define the following environment variable for building:
-
-     - `OSPL_HOME`: the path of the OpenSplice local installation; for example, `/opt/OpenSplice/HDE/x86.linux`
-
-5. Define the following environment variables before executing ICAROUS:
-
-     - `OSPL_URI`: the URI of the OpenSplice `*.xml` configuration file for **domain id** 100 (the one of *Step 2*); for example, `file:///opt/OpenSplice/HDE/x86.linux/etc/icarous-ospl.xml` (note the three initial slashes)
-     - `OSPL_HOME`: the path of the OpenSplice local installation; for example, `/opt/OpenSplice/HDE/x86.linux`
-     - `LD_LIBRARY_PATH`: it has to include the library path of the OpenSplice local installation in order for ICAROUS to find them; for example, `/opt/OpenSplice/HDE/x86.linux/lib`
-
-   An example command could look like this:
-   
-```
-OSPL_URI="file:///opt/OpenSplice/HDE/x86.linux/etc/icarous-ospl.xml" \
-OSPL_HOME="/opt/OpenSplice/HDE/x86.linux" \
-LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/opt/OpenSplice/HDE/x86.linux/lib" \
-sudo ./core-cpu1
-```
 
 
 ### Detect and Avoid (DAA) and Geofencing Capabilities

@@ -6,7 +6,7 @@
  * NASA LaRC
  * http://shemesh.larc.nasa.gov/people/cam/ACCoRD
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -33,7 +33,7 @@ CDCylinder::CDCylinder() {
 
 
 CDCylinder::CDCylinder(const CD3DTable& tab) {
-  table.copyValues(tab);
+  table = tab;
   id = "";
 }
 
@@ -62,7 +62,7 @@ CD3DTable CDCylinder::getCD3DTable() {
 }
 
 void CDCylinder::setCD3DTable(const CD3DTable& tab) {
-  table.copyValues(tab);
+  table = tab;
 }
 
 double CDCylinder::getHorizontalSeparation() const {
@@ -121,7 +121,7 @@ bool CDCylinder::conflict(const Vect3& so, const Velocity& vo, const Vect3& si, 
 
 ConflictData CDCylinder::conflictDetection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double D, double H, double B, double T) const {
   Vect3 s = so.Sub(si);
-  Velocity v = vo.Sub(vi);
+  Vect3 v = vo.Sub(vi);
   double t_tca = CD3D::tccpa(s, vo, vi, D, H, B, T);
   double dist_tca = s.linear(v,t_tca).cyl_norm(D, H);
   LossData ld = CD3D::detection(s,vo,vi,D,H,B,T);
@@ -150,7 +150,7 @@ CDCylinder* CDCylinder::make() const {
 
 CDCylinder* CDCylinder::copy() const {
   CDCylinder* cd = new CDCylinder();
-  cd->table.copyValues(table);
+  cd->table = table;
   cd->id = id;
   return cd;
 }
@@ -181,8 +181,8 @@ std::string CDCylinder::toString() const {
   return (id == "" ? "" : id+" : ")+getSimpleClassName()+" = {"+table.toString()+"}";
 }
 
-std::string CDCylinder::toPVS(int prec) const {
-  return table.toPVS(prec);
+std::string CDCylinder::toPVS() const {
+  return getSimpleClassName()+"("+table.toPVS()+")";
 }
 
 std::string CDCylinder::getIdentifier() const {

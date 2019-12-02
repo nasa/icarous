@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -195,12 +195,15 @@ public:
 	 */
 	std::string toStringNP(int precision, const std::string& xUnits, const std::string& yUnits, const std::string& zUnits) const;
 
-	/**
-	 * This parses a space or comma-separated string as a Point (an inverse to the toString
-	 * method).  If three bare values are present, then it is interpreted as the default units for
-	 * a point: [NM,NM,ft].  If there are 3 value/unit pairs then each values is interpreted with regard
+	/** 
+	 * This parses a space or comma-separated string as a Point (an inverse to the toString 
+	 * method).  If three bare values are present, then it is interpreted as the default units for 
+	 * a point: [NM,NM,ft].  If there are 3 value/unit pairs then each values is interpreted with regard 
 	 * to the appropriate unit.  If the string cannot be parsed, an INVALID value is
-	 * returned.
+	 * returned. 
+	 * 
+	 * @param str string to parse
+	 * @return point
 	 */
 	static Point parse(const std::string& str);
 

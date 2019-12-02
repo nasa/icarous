@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017 United States Government as represented by
+ * Copyright (c) 2014-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -30,27 +30,6 @@ CD3DTable::CD3DTable(double d, const std::string& dunit, double h, const std::st
   H = Units::from(hunit, std::abs(h));
   units_["D"] = dunit;
   units_["H"] = hunit;
-}
-
-/**
- * Copy constructor -- returns a fresh copy.
- */
-CD3DTable::CD3DTable(const CD3DTable& tab) {
-  copyValues(tab);
-}
-
-CD3DTable CD3DTable::copy() const {
-  CD3DTable tab;
-  tab.D = D;
-  tab.H = H;
-  tab.units_ = units_;
-  return tab;
-}
-
-void CD3DTable::copyValues(const CD3DTable& tab) {
-  D = tab.D;
-  H = tab.H;
-  units_ = tab.units_;
 }
 
 double CD3DTable::getHorizontalSeparation() const {
@@ -125,8 +104,8 @@ std::string CD3DTable::toString() const {
   return "D = "+Units::str(getUnits("D"),D)+", H = "+Units::str(getUnits("H"),H);
 }
 
-std::string CD3DTable::toPVS(int prec) const {
-  return "(# D:= "+FmPrecision(D,prec)+", H:= "+FmPrecision(H,prec)+" #)";
+std::string CD3DTable::toPVS() const {
+  return "(# D:= "+FmPrecision(D)+", H:= "+FmPrecision(H)+" #)";
 }
 
 }

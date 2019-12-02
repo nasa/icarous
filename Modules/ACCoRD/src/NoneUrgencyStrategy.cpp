@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -15,8 +15,11 @@
 
 namespace larcfm {
 
-TrafficState NoneUrgencyStrategy::mostUrgentAircraft(Detection3D* detector, const TrafficState& ownship, const std::vector<TrafficState>& traffic, double T) {
-  return TrafficState::INVALID;
+/**
+ * @return -1, which is not a valid aircraft index
+ */
+int NoneUrgencyStrategy::mostUrgentAircraft(const TrafficState& ownship, const std::vector<TrafficState>& traffic, double T) const {
+  return  -1;
 }
 
 UrgencyStrategy* NoneUrgencyStrategy::copy() const {

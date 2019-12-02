@@ -1,7 +1,7 @@
 /*
  * Kinematics.h
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,12 +19,12 @@
 namespace larcfm {
 
 /**
- * A library of functions to aid the computation of the kinematics of an aircraft.  This
+ * <p>A library of functions to aid the computation of the kinematics of an aircraft.  This
  * library is currently under development and is far from complete.  The majority of the functions
- * handle constant velocity turns and movement with constant ground speed acceleration.<p>
+ * handle constant velocity turns and movement with constant ground speed acceleration.</p>
  * 
- * Unless otherwise noted, all kinematics function parameters are in internal units -- angles are in radians,
- * linear speeds are in m/s, distances are in meters, time is in seconds.
+ * <p>Unless otherwise noted, all kinematics function parameters are in internal units -- angles are in radians,
+ * linear speeds are in m/s, distances are in meters, time is in seconds.</p>
  * 
  */
 class KinematicsDist {

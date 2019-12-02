@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017 United States Government as represented by
+ * Copyright (c) 2014-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -9,54 +9,57 @@
 #include "Util.h"
 #include "Units.h"
 #include "format.h"
+#include "string_util.h"
 #include <sstream>
 
 namespace larcfm {
 
-ParameterEntry::ParameterEntry() {
-	sval = "";
-	dval = NaN;
-	units = "unspecified";
-	bval = false;
-	comment = "";
-	precision = -1;
+long ParameterEntry::count = 0;
+
+ParameterEntry::ParameterEntry() :
+	sval(""),
+	dval(NaN),
+	units("unspecified"),
+	bval(false),
+	comment(""),
+	order(count++) {
 }
 
 ParameterEntry::~ParameterEntry() {
 }
 
 ParameterEntry::ParameterEntry(const std::string& s, double d, const std::string& u,
-		bool b, const std::string& msg, int p) {
-	sval = s;
-	dval = d;
-	units = u;
-	bval = b;
-	comment = msg;
-	precision = p;
+		bool b, const std::string& msg) :
+	sval(s),
+	dval(d),
+	units(u),
+	bval(b),
+	comment(msg),
+	order(count++) {
 }
 
-ParameterEntry::ParameterEntry(const ParameterEntry& entry) {
-	sval = entry.sval;
-	dval = entry.dval;
-	units = entry.units;
-	bval = entry.bval;
-	comment = entry.comment;
-	precision = entry.precision;
+ParameterEntry::ParameterEntry(const ParameterEntry& entry) : 
+	sval(entry.sval),
+	dval(entry.dval),
+	units(entry.units),
+	bval(entry.bval),
+	comment(entry.comment),
+	order(entry.order) {
 }
 
 // Make boolean entry
 ParameterEntry ParameterEntry::makeBoolEntry(bool b) {
 	return ParameterEntry(b ? "true" : "false",0,
-			"unitless", b, "", -1);
+			"unitless", b, "");
 }
 
 // New double entry
 ParameterEntry ParameterEntry::makeDoubleEntry(double d, const std::string& u, int p) {
-	return ParameterEntry(format(u,d,p),d,u,false,"",p);
+	return ParameterEntry(format(u,d,p),d,u,false,"");
 }
 // New integer entry
 ParameterEntry ParameterEntry::makeIntEntry(int i){
-	return ParameterEntry(to_string(i),i,"unitless",false,"",0);
+	return ParameterEntry(to_string(i),i,"unitless",false,"");
 }
 
 std::string ParameterEntry::format(const std::string& u, double d, int p) {
@@ -78,9 +81,11 @@ std::string ParameterEntry::format(const std::string& u, double d, int p) {
 	}
 }
 
-void ParameterEntry::set_sval() {
-	sval = format(units,dval,precision);
-}
+  //void ParameterEntry::set_sval() {
+  //	// see java note, was truncating things that "looked like numbers" unnecessarily
+  //	//sval = format(units,dval,precision);
+  //	sval = trimCopy(sval);
+  //}
 
 
 

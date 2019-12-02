@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2014-2017 United States Government as represented by
+ * Copyright (c) 2014-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -29,7 +29,9 @@ namespace larcfm {
 
 /**
  * A class to writes a separated value file (separated by commas, spaces, or tabs).<p>
- * only one file can be created from an object.
+ * only one file can be created from an object.<p>
+ * 
+ * TODO Future: handle a memory buffer, standard output/error, file, socket?
  */
 class SeparatedOutput : public ErrorReporter {
 private:
@@ -57,7 +59,9 @@ public:
     /** Create an "empty" separated output */
     SeparatedOutput();
 
-    /** Create a new SeparatedInput from the given reader */
+	/** Create a new SeparatedOutput from the given writer 
+	 * @param w writer object 
+	 * */
 	SeparatedOutput(std::ostream* w);
 
 
@@ -70,13 +74,20 @@ public:
 
 	void close();
 
-	/** Return the heading for the given column */ 
+	/** Return the heading for the given column 
+	 * @param i column index 
+	 * @return heading 
+	 * */ 
 	std::string getHeading(int i);
  
-	/** Return the number of rows written */ 
+	/** Return the number of rows written 
+	 * @return number of rows
+	 * */ 
 	long length();
 
-	/** Return the number of columns */ 
+	/** Return the number of columns 
+	 * @return number of columns
+	 * */ 
 	long size();
 
 	/** 
@@ -117,6 +128,9 @@ public:
 	 * Find the index of the column with given heading.  If 
 	 * the heading is not found, then -1 is returned. 
      * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
+	 * @param heading name of heading
+	 * @param caseSensitive false if ignoring case
+	 * @return  index of heading
 	 */
 	int findHeading(const std::string& heading, bool caseSensitive);
 
@@ -126,6 +140,10 @@ public:
 	 * first heading, and if it finds it then returns that index.  If it doesn't 
 	 * find it, it moves to the next heading, etc.
      * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
+	 * @param heading1 name of heading
+	 * @param heading2 alternate name of heading
+	 * @param caseSensitive false if ignore case
+	 * @return index of heading
 	 */
 	int findHeading(const std::string& heading1, const std::string& heading2, bool caseSensitive);
 
@@ -135,6 +153,11 @@ public:
 	 * first heading, and if it finds it then returns that index.  If it doesn't 
 	 * find it, it moves to the next heading, etc.
      * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
+	 * @param heading1 name of heading
+	 * @param heading2 alternate name of heading
+	 * @param heading3 alternate name of heading
+	 * @param caseSensitive false if ignore heading
+	 * @return index of heading
 	 */
 	int findHeading(const std::string& heading1, const std::string& heading2, const std::string& heading3, bool caseSensitive);
 
@@ -144,12 +167,20 @@ public:
 	 * first heading, and if it finds it then returns that index.  If it doesn't 
 	 * find it, it moves to the next heading, etc.
      * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
+	 * @param heading1 name of heading
+	 * @param heading2 alternate name of heading
+	 * @param heading3 alternate name of heading
+	 * @param heading4 alternate name of heading
+	 * @param caseSensitive false if ignore heading
+	 * @return index of heading
 	 */
 	int findHeading(const std::string& heading1, const std::string& heading2, const std::string& heading3, const std::string& heading4, bool caseSensitive);
 	
 	/** 
 	 * Returns the units string for the i-th column. If an invalid 
 	 * column is entered, then "unspecified" is returned. 
+	 * @param i column index
+	 * @return unit
 	 */
 	std::string getUnit(int i);
     
@@ -165,11 +196,14 @@ public:
 
     /**
      * Sets the next column value equal to the given value.
+     * @param i index of column
+     * @param val value
      */
 	void setColumn(int i, const std::string& val);
 	
     /**
      * Adds the given value to the next column.
+     * @param val value
      */
 	void addColumn(const std::string& val);
 
@@ -180,6 +214,7 @@ public:
 
     /**
      * Adds each of the given values to the next columns.
+     * @param vals  list of values
      */
 	void addColumn(const std::vector<std::string>& vals);
 
@@ -201,21 +236,25 @@ public:
    
    /** 
     * Sets the number of extra spaces after the delimiter
+    * @param num number of spaces
     */
    void setColumnSpace(int num);
    
    /** 
-    * The value to be displayed if a column is "skipped".  Empty values are only added inside a line, not at the end.
+    * The value to be displayed if a column is &quot;skipped&quot;.  Empty values are only added inside a line, not at the end.
+    * @param e value to indicate empty
     */
    void setEmptyValue(std::string e);
    
    /** 
     * Set the code indicating the start of a comment.
+    * @param c comment character
     */
    void setCommentCharacter(const std::string& c);
    
    /** 
-    * Set parameters.  Use all the parameters in the reader.
+    * Additively set parameters.  (This does not delete existing parameters, but will overwrite them.) 
+    * @param pr  parameter object
     */
    void setParameters(const ParameterData& pr);
 
@@ -229,6 +268,7 @@ public:
 
    /** 
     * Add the following line to the comments.
+    * @param c comment string
     */
    void addComment(const std::string& c);
    
@@ -237,6 +277,8 @@ public:
 	 */
 	void writeLine();
     
+	void flush();
+
 private:
     void print_line(std::vector<std::string> vals); // throws IOException;
 

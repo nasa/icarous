@@ -13,24 +13,24 @@ int main() {
     pathfinder.SetGoal(100.0,100.0,0.0);
 
     Poly2D _bbox;
-    _bbox.addVertex(-10.0,-10.0);
-    _bbox.addVertex(110.0,-10.0);
-    _bbox.addVertex(110.0,110.0);
-    _bbox.addVertex(-10.0,110.0);
+    _bbox.add(-10.0,-10.0);
+    _bbox.add(110.0,-10.0);
+    _bbox.add(110.0,110.0);
+    _bbox.add(-10.0,110.0);
     Poly3D bbox(_bbox,-10,50);
 
     Poly2D _obs1;
-    _obs1.addVertex(20,20);
-    _obs1.addVertex(60,20);
-    _obs1.addVertex(60,60);
-    _obs1.addVertex(20,60);
+    _obs1.add(20,20);
+    _obs1.add(60,20);
+    _obs1.add(60,60);
+    _obs1.add(20,60);
     Poly3D obs1(_obs1,0,30);
 
     Poly2D _obs2;
-    _obs2.addVertex(20,40);
-    _obs2.addVertex(40,40);
-    _obs2.addVertex(40,80);
-    _obs2.addVertex(20,80);
+    _obs2.add(20,40);
+    _obs2.add(40,40);
+    _obs2.add(40,80);
+    _obs2.add(20,80);
     Poly3D obs2(_obs2,0,30);
 
     pathfinder.SetBoundary(&bbox);

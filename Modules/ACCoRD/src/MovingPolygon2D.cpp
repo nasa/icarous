@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -40,8 +40,8 @@ namespace larcfm {
   
   MovingPolygon2D::MovingPolygon2D(const Poly2D& polygon, const Vect2& polyvel_d, double tend_d) {
        //super();
-	   for (int i = 0; i < (int) polygon.getVertices().size(); i++) {
-           Vect2 v = polygon.getVertices()[i];
+	   for (int i = 0; i < (int) polygon.size(); i++) {
+           Vect2 v = polygon.get(i); //    getVerticesRef()[i];
            polystart.push_back(v);
            polyvel.push_back(polyvel_d);              // same velocity vector for all vertices
        }
@@ -52,8 +52,8 @@ namespace larcfm {
 
   MovingPolygon2D::MovingPolygon2D(const Poly2D& polygon, const std::vector<Vect2>& vels, double tend_d) {
        //super();
-	   for (int i = 0; i < (int) polygon.getVertices().size(); i++) {
-           Vect2 v = polygon.getVertices()[i];
+	   for (int i = 0; i < (int) polygon.size(); i++) {
+           Vect2 v = polygon.get(i); // getVerticesRef()[i];
            Vect2 vv = vels[i];
            polystart.push_back(v);
            polyvel.push_back(vv);              // same velocity vector for all vertices

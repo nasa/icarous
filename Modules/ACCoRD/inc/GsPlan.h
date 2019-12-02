@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 United States Government as represented by
+ * Copyright (c) 2017-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -59,7 +59,7 @@ public:
 
 	/** Creates a copy of a GsPlan
 	 * 
-	 * @param gsp
+	 * @param gsp ground speed plan
 	 */
 	GsPlan(const GsPlan& gsp);
 
@@ -85,8 +85,19 @@ public:
 
 	std::string getName() const;
 
+	/**
+	 * set aircraft id
+	 * @param s string name
+	 */
 	void setName(const std::string& s);
 
+	void setInfo(int i, const std::string& s);
+
+	/**
+	 * Get groundspeed
+	 * @param i index
+	 * @return ground speed
+	 */
 	double gs(int i) const;
 
 	/** Provide a copy of the route in this GsPlan
@@ -95,30 +106,52 @@ public:
 	 */
 	Route route() const;
 
-	void add(const Position& pos, const std::string& label, double gsOut, double rad);
+	void add(const Position& pos, const std::string& label, const std::string& info, double gsOut, double rad);
+
 
 	/**
-	 * 
+	 * Add a position 
 	 * @param pos position
 	 * @param label label for point -- if this equals GsPlan.virtualName, then this will become a virtual point when make into a linear plan
-	 * @param gsOut   ground speed out of "ix"
-	 */
-	void set(int ix, const Position& pos, const std::string& label, double gsOut);
-
-	/**
-	 * 
-	 * @param pos position
-	 * @param label label for point -- if this equals GsPlan.virtualName, then this will become a virtual point when make into a linear plan
+	 * @param info  information for a point
 	 * @param gsOut ground speed out 
 	 */
-	void add(const Position& pos, std::string label, double gsOut);
+	void add(const Position& pos, const std::string& label, const std::string& info, double gsOut);
 
 	/** This method is primarily added to prevent accidental use of lower level Route method
 	 * 
 	 *  It makes the ground speed the same as the last one, if there is a previous point, otherwise -1.0
+	 * @param pos position
+	 * @param label label for this point
+	 * @param info info string for this point
 	 * 
 	 */
-	void add(const Position& pos, const std::string& label);
+	void add(const Position& pos, const std::string& label, const std::string& info);
+
+	/** add point "ix" from GsPlan "p"
+	 * 
+	 * @param p ground speed plan
+	 * @param ix index
+	 */
+	void add(const GsPlan& p, int ix);
+
+
+	/** Add all of the points of GsPlan "p" to this plan
+	 * 
+	 * @param p ground speed plan
+	 */
+	void addAll(const GsPlan& p);
+
+	/**
+	 * Sets a point
+	 * @param ix  index of the point
+	 * @param pos position
+	 * @param label label for point -- if this equals GsPlan.virtualName, then this will become a virtual point when make into a linear plan
+	 * @param info  information for a point
+	 * @param gsOut ground speed out of "ix"
+	 */
+	void set(int ix, const Position& pos, const std::string& label, const std::string& info, double gsOut);
+
 
 	Position position(int i) const;
 
@@ -126,25 +159,23 @@ public:
 
 	std::string name(int i) const;
 
+	std::string info(int i) const;
+
 	double radius(int i) const;
 
+	/** Set the radius at point "i" to be "rad"
+	 *
+	 * @param i          index
+	 * @param rad        radius to be stored
+	 */
 	void setRadius(int i, double rad);
 
 	std::vector<double> getGsInits() const;
 
-	/** add point "ix" from GsPlan "p"
-	 * 
-	 * @param p
-	 * @param ix
-	 */
-	void add(const GsPlan& p, int ix);
-
-	void addAll(const GsPlan& p);
-
 	/** Create a new GsPlan that is a copy of this one, then add all the elements from p2 to this new GsPlan 
 	 * 
-	 * @param p2
-	 * @return
+	 * @param p2 point
+	 * @return groundspeed
 	 */
 	GsPlan append(const GsPlan& p2);
 
@@ -158,24 +189,32 @@ public:
 
 	/**
 	 * Return the index of first point that has a label equal to the given string -1 if there are no matches.
-	 * 
-	 *  @param label      String to match
+	 * @param nm name 
+	 * @return index of name
 	 */
 	int findName(const std::string& nm) const;
 
 	double pathDistance(int i, int j, bool linear) const;
 
 	/**
-	 * Return ETA for this gsplan
+	 * Calculate ETA for this GsPlan
+	 * 
 	 * @param linear false to include kinematic plans
 	 * @return estimated final time for this plan
 	 */
 	double ETA(bool linear) const;
 
+	/**
+	 * Make linear plan from GsPlan.
+	 * Note: in order to not generate invalid Plans, this ensures each segment has a positive groundspeed (currently &ge; 0.001 m/s)
+	 * @return plan
+	 */
 	Plan linearPlan() const;
 	
 	/**
 	 * Return the segment containing the point closest to the given position.
+	 * @param pos position
+	 * @return  segment number
 	 */
 	int closestSegment(const Position& pos) const;
 

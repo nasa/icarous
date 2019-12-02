@@ -1,7 +1,7 @@
 /*
  * VectFuns.cpp
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -82,7 +82,9 @@ double VectFuns::angle_between(const Vect2& v1, const Vect2& v2) {
 double VectFuns::angle_between(const Vect2& a, const Vect2& b, const Vect2& c) {
 	Vect2 A = b.Sub(a);
 	Vect2 B = b.Sub(c);
-	return Util::acos_safe(A.dot(B)/(A.norm()*B.norm()));
+	double d = (A.norm()*B.norm());
+	if (d == 0.0) return M_PI;
+	return Util::acos_safe(A.dot(B)/d);
 }
 
 
@@ -105,8 +107,13 @@ bool VectFuns::divergent(const Vect3& so, const Velocity& vo, const Vect3& si, c
 	  return so.Sub(si).dot(vo.Sub(vi)) > 0;
 }
 
+double VectFuns::rateOfClosureHorizontal(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) {
+	return -so.Sub(si).vect2().Hat().dot(vo.Sub(vi).vect2());
+}
 
-
+double VectFuns::rateOfClosureVertical(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) {
+	return Util::sign(si.z-so.z)*(vo.z-vi.z);
+}
 
 // time of closest approach
 double VectFuns::tau(const Vect3& s, const Vect3& vo, const Vect3& vi) {
@@ -161,7 +168,7 @@ std::pair<Vect3,double> VectFuns::intersection(const Vect3& so3, const Velocity&
 	return std::pair<Vect3,double>(intersec.mkZ(nZ),tt);
 }
 
-std::pair<Vect2,double> VectFuns::intersection(const Vect2& so, const Vect2& vo, const Vect2& si, const Vect2& vi) {
+std::pair<Vect2,double> VectFuns::intersection2D(const Vect2& so, const Vect2& vo, const Vect2& si, const Vect2& vi) {
 	Vect2 ds = si.Sub(so);
 	if (vo.det(vi) == 0) {
 		//f.pln(" $$$ intersection: lines are parallel");
@@ -194,12 +201,31 @@ std::pair<Vect3,double> VectFuns::intersectionAvgZ(const Vect3& so1, const Vect3
 	        return std::pair<Vect3,double>(interSec.mkZ(nZ),iP.second);
 }
 
-std::pair<Vect2,double> VectFuns::intersection(const Vect2& so1, const Vect2& so2, double dto, const Vect2& si1, const Vect2& si2) {
+std::pair<Vect2,double> VectFuns::intersection2D(const Vect2& so1, const Vect2& so2, double dto, const Vect2& si1, const Vect2& si2) {
 	Vect2 vo = so2.Sub(so1).Scal(1/dto);
 	Vect2 vi = si2.Sub(si1).Scal(1/dto);      // its ok to use any time here,  all times are relative to so
-	return intersection(so1,vo,si1,vi);
+	return intersection2D(so1,vo,si1,vi);
 }
 
+
+std::pair<Vect2,double> VectFuns::intersectSegments(const Vect2& so, const Vect2& so2, const Vect2& si, const Vect2& si2) {
+	Vect2 vo = so2.Sub(so);
+	Vect2 vi = si2.Sub(si);
+	std::pair<Vect2,double> int2D = intersection2D(so,vo,si,vi);
+	double fractDist = int2D.second;
+	if (int2D.first.isInvalid()) return int2D;
+	if (fractDist < 0 || fractDist > 1.0) return std::pair<Vect2,double>(Vect2::INVALID(), fractDist);
+	Vect2 w = so.Sub(si);
+	double D = vo.det(vi);
+	double tI = vo.det(w)/D;
+	if (tI < 0 || tI > 1) return std::pair<Vect2,double>(Vect2::INVALID(), tI);
+	return int2D;
+}
+
+Vect3 VectFuns::closestPoint3(const Vect3& a, const Vect3& b, const Vect3& so) {
+	Vect3 ab = b.Sub(a);
+	return ab.Scal(so.Sub(a).dot(ab)/ab.dot(ab)).Add(a);
+}
 
 
 Vect3 VectFuns::closestPoint(const Vect3& a, const Vect3& b, const Vect3& so) {
@@ -262,6 +288,21 @@ Vect2 VectFuns::closestPointOnSegment(const Vect2& a, const Vect2& b, const Vect
 		return b;
 	}
 }
+
+Vect3 VectFuns::closestPointOnSegment3(const Vect3& a, const Vect3& b, const Vect3& so) {
+	Vect3 i = closestPoint3(a,b,so);
+	double d1 = a.Sub(b).norm();
+	double d2 = a.Sub(i).norm();
+	double d3 = b.Sub(i).norm();
+	if (d2 <= d1 && d3 <= d1) {
+		return i;
+	} else if (d2 < d3) {
+		return a;
+	} else {
+		return b;
+	}
+}
+
 
 
 /**

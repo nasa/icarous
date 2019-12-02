@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 United States Government as represented by
+ * Copyright (c) 2017-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -81,8 +81,7 @@ const double GeneralStateWriter::default_time = 0.0;
       			}
   			}
   		} catch (std::exception& e) {
-  		//} catch (std::bad_cast& e) {
-  			// don't think it can ever reach here
+			std::cout << "GeneralStateWriter::close: An exception occurred " << e.what() << '\n';
   		}
   		fw = NULL;
   	}
@@ -242,11 +241,11 @@ const double GeneralStateWriter::default_time = 0.0;
 	}
 
 	void GeneralStateWriter::writeState(const std::string& name, double time, const Position& p, const std::string& label) {
-		writeState(name,time,p,Velocity::ZERO(), label);
+		writeState(name,time,p,Velocity::ZEROV(), label);
 	}
 
 	void GeneralStateWriter::writeState(const std::string& name, double time, const Position& p) {
-		writeState(name,time,p,Velocity::ZERO(), "");
+		writeState(name,time,p,Velocity::ZEROV(), "");
 	}
 
 	void GeneralStateWriter::writeState(const std::string& name, double time, std::pair<Position,Velocity> pv, const std::string& label) {
@@ -266,7 +265,7 @@ const double GeneralStateWriter::default_time = 0.0;
 	}
 
 	void GeneralStateWriter::writeState(const std::string& name, const NavPoint& np) {
-		writeState(name,np.time(),np.position(),Velocity::ZERO(),np.label());
+		writeState(name,np.time(),np.position(),Velocity::ZEROV(),np.name());
 	}
 
 	void GeneralStateWriter::writeState(const std::string& name, double time, const SimpleMovingPoly& smp, const std::string& label, bool containment) {

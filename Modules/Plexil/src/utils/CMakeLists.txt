@@ -14,10 +14,10 @@ set(SOURCE_FILES
         DynamicLoader.h
         Error.cc
         Error.hh
-        JNIHelper.cc
-        JNIHelper.hh
-        JNIUtils.cc
-        JNIUtils.hh
+        #JNIHelper.cc
+        #JNIHelper.hh
+        #JNIUtils.cc
+        #JNIUtils.hh
         lifecycle-utils.c
         lifecycle-utils.h
         LinkedQueue.hh
@@ -47,25 +47,25 @@ set(SOURCE_FILES
         timeval-utils.hh
         utils_main_page.hh)
 
-if(DEFINED ENV{JAVA_HOME})
+#if(DEFINED ENV{JAVA_HOME})
     add_library(PlexilUtils SHARED ${SOURCE_FILES})
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
     include_directories(
-            $ENV{JAVA_HOME}/include/
-            $ENV{JAVA_HOME}/include/darwin/
+#            $ENV{JAVA_HOME}/include/
+#            $ENV{JAVA_HOME}/include/darwin/
             ${PLEXIL_ROOT}/include)
 
 else()
     include_directories(
-            $ENV{JAVA_HOME}/include/
-            $ENV{JAVA_HOME}/include/linux/
+#            $ENV{JAVA_HOME}/include/
+#            $ENV{JAVA_HOME}/include/linux/
             ${PLEXIL_ROOT}/include)
 endif()
 
-else()
-    message(FATAL_ERROR "JAVA_HOME not defined.")
-endif()
+#else()
+#    message(FATAL_ERROR "JAVA_HOME not defined.")
+#endif()
 
 target_link_libraries(PlexilUtils dl)
 

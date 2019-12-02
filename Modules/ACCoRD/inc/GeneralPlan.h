@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -50,7 +50,7 @@ public:
 
 	GeneralPlan(const GeneralPlan& g);
 
-	GeneralState state(double time) const;
+	GeneralState state(double time) ;
 
 	double getFirstTime() const;
 
@@ -74,15 +74,15 @@ public:
 
 	bool isInvalid() const;
 
-	GeneralState point(int i) const;
+	GeneralState point(int i) ;
 
 	int getSegment(double t) const;
 
 	bool validate() const;
 
-	std::string toString() const;
+	std::string toString() ;
 
-	std::string toOutput(int precision) const;
+	//std::string toOutput(int precision) ;
 
 
 	// ErrorReporter Interface Methods

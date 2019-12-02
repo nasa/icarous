@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -35,7 +35,7 @@ MovingPolygon3D::MovingPolygon3D(const Poly3D& p, const Velocity& v, double end)
 	std::vector<Vect2> ps = std::vector<Vect2>();
 	std::vector<Vect2> vs = std::vector<Vect2>();
 	for (int i = 0; i < p.size(); i++) {
-		ps.push_back(p.getVertex(i));
+		ps.push_back(p.get2D(i));
 		vs.push_back(v.vect2());
 //fpln("MovingPolygon3D "+Fm0(i)+" "+ps[i].toString()+" "+vs[i].toString());
 	}
@@ -49,7 +49,7 @@ MovingPolygon3D::MovingPolygon3D(const Poly3D& p, const std::vector<Velocity>& v
 	std::vector<Vect2> ps = std::vector<Vect2>();
 	std::vector<Vect2> vs = std::vector<Vect2>();
 	for (int i = 0; i < p.size(); i++) {
-		ps.push_back(p.getVertex(i));
+		ps.push_back(p.get2D(i));
 		vs.push_back(vlist[i].vect2());
 //fpln("MovingPolygon3D "+Fm0(i)+" "+ps[i].toString()+" "+vs[i].toString());
 	}
@@ -81,6 +81,7 @@ MovingPolygon3D MovingPolygon3D::linear(double t) const {
 	}
 	return MovingPolygon3D(position(t), vlist, horizpoly.tend+t);
 }
+
 
 int MovingPolygon3D::size() const {
 	return horizpoly.size();

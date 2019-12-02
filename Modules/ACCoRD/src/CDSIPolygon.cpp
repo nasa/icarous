@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -14,7 +14,7 @@
 #include "CDSIPolygon.h"
 #include "DetectionPolygon.h"
 #include "DetectionPolygonAcceptor.h"
-#include "EuclideanProjection.h"
+#include "ENUProjection.h"
 #include "PolyPath.h"
 #include "Projection.h"
 #include "Position.h"
@@ -139,7 +139,7 @@ namespace larcfm {
    * @param T the time to end looking for conflicts relative to t0
    * @return true if there is a conflict
    */
-  bool CDSIPolygon::cdsicore(const Position& so, const Velocity& vo, double t0, double state_horizon, const PolyPath& intent, double B, double T) {
+  bool CDSIPolygon::cdsicore(const Position& so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T) {
      return def.detection(so, vo, t0, state_horizon, intent, B, T);
   }
 
@@ -163,7 +163,7 @@ namespace larcfm {
       const Velocity& vo3 = proj.projectVelocity(so, vo);
       return cdss->violation(so3, vo3, intent.position(tm).poly3D(proj));
     } else {
-      return cdss->violation(so.point(), vo, intent.position(tm).poly3D(proj));
+      return cdss->violation(so.vect3(), vo, intent.position(tm).poly3D(proj));
     }
   }
 
@@ -182,11 +182,11 @@ namespace larcfm {
    * @param T the time to end looking for conflicts relative to t0
    * @return true if there is a conflict
    */
-  bool CDSIPolygon::detection(const Position& so, const Velocity& vo, double t0, double state_horizon, const PolyPath& intent, double B, double T) {
+  bool CDSIPolygon::detection(const Position& so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T) {
     if (so.isLatLon()) {
       return detectionLL(so.lla(), vo, t0, state_horizon, intent, B, T);
     } else {
-      return detectionXYZ(so.point(), vo, t0, state_horizon, intent, B, T);
+      return detectionXYZ(so.vect3(), vo, t0, state_horizon, intent, B, T);
     }
   }
 
@@ -208,7 +208,7 @@ namespace larcfm {
    * @param T the time to end looking for conflicts relative to t0
    * @return true if there is a conflict
    */
-  bool CDSIPolygon::detectionXYZ(Vect3 so, const Velocity& vo, double t0, double state_horizon, const PolyPath& intent, double B, double T) {
+  bool CDSIPolygon::detectionXYZ(Vect3 so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T) {
     tin.clear();
     tout.clear();
     tca.clear();
@@ -289,7 +289,7 @@ namespace larcfm {
    * @param T the time to end looking for conflicts relative to t0
    * @return true if there is a conflict
    */
-  bool CDSIPolygon::detectionLL(const LatLonAlt& so, const Velocity& vo, double t0, double state_horizon, const PolyPath& intent, double B, double T) {
+  bool CDSIPolygon::detectionLL(const LatLonAlt& so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T) {
 //fpln("======== $$$$$$ CDSIPolygon.detectionLL so="+so.toString()+" vo="+vo.toString()+" to="+Fm1(t0)+" state_horizon="+Fm1(state_horizon)+" intent="+intent.toString()+" B (relto t0) = "+Fm1(B)+" T (rel to t0) = "+Fm1(T));
     tin.clear();
     tout.clear();
@@ -391,6 +391,105 @@ namespace larcfm {
       }
     }
   }
+
+  bool CDSIPolygon::conflictOnlyXYZ(const Vect3& so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T) const {
+        double t_base;
+        int start_seg;
+        double BT = 0.0;
+        double NT = 0.0;
+        double HT = 0.0;
+        if (t0 < intent.getTime(0)) {
+          t_base = intent.getTime(0);
+          start_seg = 0;
+        } else {
+          t_base = t0;
+          start_seg = intent.getSegment(t0);
+          if (start_seg < 0) {
+            return false;  // t0 past end of Flight Plan
+          }
+        }
+        for (int j = start_seg; j < intent.size(); j++){
+          Vect3 sop = so.AddScal((t_base - t0),vo);
+          if (j == intent.size() - 1 && !intent.isContinuing()) {
+            continue;
+          } else { // normal case
+            double tend = MAXDOUBLE;
+            if (j < intent.size()-1) {
+              tend = intent.getTime(j+1) - t_base;
+            }
+            HT = Util::max(0.0, Util::min(state_horizon - (t_base - t0), tend));
+            BT = Util::max(0.0, B + t0 - t_base);
+            NT = T + t0 - t_base;
+            if (NT >= 0) {
+              EuclideanProjection nullproj = Projection::createProjection(Position::ZERO_LL());
+              MovingPolygon3D mpg = intent.getMovingPolygon(t_base, nullproj);
+              //f.pln("CDSIPolygon.conflictXYZ test");
+              bool ret = cdss->conflict(sop, vo, mpg, BT, Util::min(NT, HT));
+             if (ret) return true;
+            }
+            t_base = intent.getTime(j+1);
+          }
+        }
+        return false;
+    }
+
+
+/**
+ * EXPERIMENTAL
+ * @param so
+ * @param vo
+ * @param t0
+ * @param state_horizon
+ * @param intent
+ * @param B
+ * @param T
+ * @return true if conflict
+ */
+ bool CDSIPolygon::conflictOnlyLL(const LatLonAlt& so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T) const {
+        double t_base;
+        int start_seg;
+        //f.pln("cdsipolygon.conflictLL T="+T);
+        double BT = 0.0;
+        double NT = 0.0;
+        double HT = 0.0;
+        if (t0 < intent.getTime(0)) {
+          t_base = intent.getTime(0);
+          start_seg = 0;
+        } else {
+          t_base = t0;
+          start_seg = intent.getSegment(t0);
+          if (start_seg < 0) {
+            return false;  // t0 past end of Flight Plan
+          }
+        }
+        for (int j = start_seg; j < intent.size(); j++){
+          LatLonAlt so2p = GreatCircle::linear_initial(so, vo, t_base-t0);  //CHANGED!!!
+          EuclideanProjection proj = Projection::createProjection(so.zeroAlt()); // CHECK THIS!!!  Should it be so2p?
+          Vect3 so3 = proj.project(so2p);
+          if (j == intent.size() - 1 && !intent.isContinuing()) {
+            continue; // leave loop
+          } else { // normal case
+            double tend = MAXDOUBLE;
+            if (j < intent.size()-1) {
+              tend = intent.getTime(j+1) - t_base;
+            }
+            HT = Util::max(0.0, Util::min(state_horizon - (t_base - t0), tend));
+            BT = Util::max(0.0, B + t0 - t_base);
+            NT = T + t0 - t_base;
+            Velocity vop = proj.projectVelocity(so2p, vo);  //CHANGED!!!
+            if (NT >= 0) {
+              MovingPolygon3D mpg = intent.getMovingPolygon(t_base, proj);
+              //f.pln("CDSIPolygon.conflictLL test");
+              bool ret = cdss->conflict(so3, vop, mpg, BT, Util::min(NT, HT));
+              if (ret) return true;
+            }
+            t_base = intent.getTime(j+1); // ignored if last value
+          }
+        }
+        return false;
+      }
+
+
 
   std::string CDSIPolygon::toString() const {
        return "CDSIPolygon: cd = "+cdss->toString();

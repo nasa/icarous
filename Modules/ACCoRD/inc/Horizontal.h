@@ -6,7 +6,7 @@
  * NASA LaRC
  * http://shemesh.larc.nasa.gov/people/cam/ACCoRD
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -22,13 +22,14 @@ namespace larcfm {
 
 /** Horizontal solution */
 class Horizontal: public Vect2 {
+
 public:
 
   /** Construct a horizontal solution */
   Horizontal();
 
   /** Construct a horizontal solution */
-  Horizontal(const Vect2& v);
+  explicit Horizontal(const Vect2& v);
 
   /** Construct a horizontal solution */
   Horizontal(double kk, const Vect2& v);
@@ -40,7 +41,7 @@ public:
   double  k;
 
   /** "Solution" indicating no solution */
-  static const Horizontal NoHorizontalSolution;
+  static const Horizontal& NoHorizontalSolution();
 
   /** */
   static Horizontal best_horizontal(const Vect2& vo,const Horizontal& v1, const Horizontal& v2);

@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -62,7 +62,7 @@ private:
    * @param distance the minimum horizontal separation distance
    * @param height the minimum vertical separation height
    */
-  CDIIPolygon(DetectionPolygon* cd);
+  explicit CDIIPolygon(DetectionPolygon* cd);
 
   CDIIPolygon();
 
@@ -130,7 +130,7 @@ private:
    * @param T the absolute time to end looking for conflicts
    * @return true if there is a conflict
    */
-  static bool cdiicore(const Plan& ownship, const PolyPath& traffic, double B, double T);
+  static bool cdiicore(const Plan& ownship, PolyPath& traffic, double B, double T);
 
   /**
    * Return true if there is a violation between two aircraft at time tm.
@@ -153,19 +153,32 @@ private:
    * @param T the absolute time to end looking for conflicts
    * @return true if there is a conflict
    */
-  bool detection(const Plan& ownship, const PolyPath& traffic, double B, double T);
+  bool detection(const Plan& ownship,  PolyPath& traffic, double B, double T);
 
   /**
    * This version calculates the "true" time in and time out for all conflicts that overlap with [B,T].
    * It is less efficient than the normal detection() algorithm and should only be called if accurate time in information is necessary
    * when B might be within a loss of separation region.
    */
-  bool detectionExtended(const Plan& ownship, const PolyPath& traffic, double B, double T);
+  bool detectionExtended(const Plan& ownship,  PolyPath& traffic, double B, double T);
+
+  /**
+   * EXPERIMENTAL
+   * Perform a "quick" conflict-only check without storing statistics
+   * @param ownship
+   * @param traffic
+   * @param B
+   * @param T
+   * @return true if conflict
+   */
+  bool conflictDetectionOnly(const Plan& ownship,PolyPath& traffic, double B, double T) const ;
+  bool conflictOnlyXYZ(const Plan& ownship,PolyPath& traffic, double B, double T) const ;
+  bool conflictOnlyLL(const Plan& ownship,PolyPath& traffic, double B, double T) const;
+
 
 private:
   /**
-   * Returns if there is a conflict between two aircraft: the ownship and
-   * the traffic aircraft.  <p>
+   * Returns if there is a conflict between the ownship aircraft and the PolyPath pp.
    *
    * This will not return any timing information prior to the owhship segment containing B.
    *
@@ -175,11 +188,10 @@ private:
    * @param T the absolute time to end looking for conflicts.
    * @return true if there is a conflict
    */
-  bool detectionXYZ(const Plan& ownship, const PolyPath& traffic, double B, double T);
+  bool detectionXYZ(const Plan& ownship,  PolyPath& pp, double B, double T);
 
   /**
-   * Returns if there is a conflict between two aircraft: the ownship and
-   * the traffic aircraft.  <p>
+   * Returns if there is a conflict between the ownship aircraft and the PolyPath pp.
    *
    * This will not return any timing information prior to the ownship segment containing B.
    *
@@ -189,7 +201,7 @@ private:
    * @param T the absolute time to end looking for conflicts.
    * @return true if there is a conflict
    */
-  bool detectionLL(const Plan& ownship, const PolyPath& traffic, double B, double T);
+  bool detectionLL(const Plan& ownship,  PolyPath& pp, double B, double T);
 
   void captureOutput(CDSIPolygon cdsi, int seg);
 

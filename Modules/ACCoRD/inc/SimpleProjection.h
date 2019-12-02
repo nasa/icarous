@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -121,7 +121,9 @@ namespace larcfm {
     
     /** Given a velocity from a point, return a projection of this velocity and the point in Euclidean 3-space.  If the position is already in Euclidean coordinates, this acts as the idenitty function. */ 
     std::pair<Vect3,Velocity> project(const Position& p, const Velocity& v) const;
-    
+
+    std::pair<Vect3,Velocity> project(const LatLonAlt& p, const Velocity& v) const;
+
     /** Given a velocity from a point in Euclidean 3-space, return a projection of this velocity and the point.  If toLatLon is true, the point/velocity is projected into the geodetic coordinate space */ 
     std::pair<Position,Velocity> inverse(const Vect3& p, const Velocity& v, bool toLatLon) const;
     
@@ -142,8 +144,8 @@ namespace larcfm {
 	 * <p>
 	 * 
 	 * This transform has a symmetric correspondence, that is, it doesn't matter
-	 * which point is the origin: <tt>projectXY(lat0,lon0,lat1,lon1) =
-	 * -projectXY(lat1,lon1,lat0,lon0)</tt>
+	 * which point is the origin: <code>projectXY(lat0,lon0,lat1,lon1) =
+	 * -projectXY(lat1,lon1,lat0,lon0)</code>
 	 * 
 	 * @param lat0 latitude of first point
 	 * @param lon0 longitude of first point
@@ -167,8 +169,8 @@ namespace larcfm {
 	 * <p>
 	 * 
 	 * This transform has a symmetric correspondence, that is, it doesn't matter
-	 * which point is the origin: <tt>projectXY(lat0,lon0,lat1,lon1) =
-	 * -projectXY(lat1,lon1,lat0,lon0)</tt>
+	 * which point is the origin: <code>projectXY(lat0,lon0,lat1,lon1) =
+	 * -projectXY(lat1,lon1,lat0,lon0)</code>
 	 * 
 	 * @param p0 position one
 	 * @param p1 position two

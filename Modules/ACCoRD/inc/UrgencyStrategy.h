@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -24,7 +24,14 @@ class UrgencyStrategy {
 public:
   UrgencyStrategy() {}
   virtual ~UrgencyStrategy() {}
-  virtual TrafficState mostUrgentAircraft(Detection3D* detector, const TrafficState& ownship, const std::vector<TrafficState>& traffic, double T) = 0;
+
+
+  /**
+   * @return index of most urgent traffic aircraft for given ownship, traffic, and lookahead time T.
+   * If index <= -1, then no aircraft is the most urgent
+   */
+
+  virtual int mostUrgentAircraft(const TrafficState& ownship, const std::vector<TrafficState>& traffic, double T) const = 0;
   virtual UrgencyStrategy* copy() const = 0;
 };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -54,7 +54,7 @@ GeneralPlan::GeneralPlan(const GeneralPlan& g) {
 	//		t = g.t;
 }
 
-GeneralState GeneralPlan::state(double time) const {
+GeneralState GeneralPlan::state(double time)  {
 	//		if (time >= t) {
 	if (plan) {
 		if (time >= fp.getFirstTime() && time <= fp.getLastTime()) {
@@ -138,7 +138,7 @@ bool GeneralPlan::isInvalid() const {
 	return !poly && !plan;
 }
 
-GeneralState GeneralPlan::point(int i) const {
+GeneralState GeneralPlan::point(int i)  {
 	if (i >= 0) {
 		if (plan) {
 			if (i < fp.size()) {
@@ -173,7 +173,7 @@ bool GeneralPlan::validate() const {
 	return false;
 }
 
-std::string GeneralPlan::toString() const {
+std::string GeneralPlan::toString()  {
 	if (plan) {
 		return fp.toString();
 	} else if (poly) {
@@ -182,18 +182,16 @@ std::string GeneralPlan::toString() const {
 	return "INVALID";
 }
 
-std::string GeneralPlan::toOutput(int precision) const {
-	if (plan) {
-		return fp.toOutput();
-	} else if (poly) {
-		return pp.toOutput();
-	} else {
-		return "";
-	}
-}
-
-
-
-
+//std::string GeneralPlan::toOutput(int precision)  {
+//	if (plan) {
+//		return fp.toOutput();
+//	} else if (poly) {
+//		return pp.toOutput();
+//	} else {
+//		return "";
+//	}
+//}
+//
+//
 
 }

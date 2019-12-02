@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -40,6 +40,8 @@ namespace larcfm {
  * from true north.
  * <li>When the returned value is in lat/long and it is a Vect2, latitude is in
  * the "x" position and longitude is in the "y" position.
+ * <li>For any of these calculations that rely on a radius for the earth, the
+ * value used is GreatCircle.spherical_earth_radius.
  * <li>Great circles cannot be defined by antipodal points
  * </ul>
  */
@@ -47,24 +49,6 @@ namespace larcfm {
   public:
 
 	static const double minDt; // small number, about machine
-
-
-	/**
-	 * Convert an angle in degrees/minutes/seconds into internal units
-	 * (radians). The flag indicates if this angle is north (latitude) or east
-	 * (longitude).  If the angle does not represent a latitude/longitude (it
-	 * is only an angle), then set the north_east flag tbo true.<p>
-	 * 
-	 * If the degrees is negative (representing 
-	 * south or west), then the flag is ignored.
-	 * 
-	 * @param degrees value of degrees
-	 * @param minutes value of minutes
-	 * @param seconds value of seconds
-	 * @param north_east true, if north or east
-	 * @return an angle
-	 */
-    static double decimal_angle(double degrees, double minutes, double seconds, bool north_east);
 
 
 	/**
@@ -158,7 +142,7 @@ namespace larcfm {
 
 	/**
 	 * Determines if two points are close to each other, where 'close'
-	 * is defined by the distance parameter given in meters.
+	 * is defined by the distance value given in meters.
 	 * 
 	 * @param lat1 latitude of point 1
 	 * @param lon1 longitude of point 1
@@ -169,6 +153,18 @@ namespace larcfm {
 	 */							  
   static bool almost_equals(double lat1, double lon1, double lat2,
 			       double lon2, double epsilon);
+
+  static bool almostEquals(const LatLonAlt& b, const LatLonAlt& v);
+	/** Are these two LatLonAlt almost equal, where 'almost' is defined by the given distances [m]
+	 * 
+	 * @param b LatLonAlt object
+	 * @param a LatLonAlt object
+	 * @param horizEps allowed difference in horizontal dimension
+	 * @param vertEps allowed difference in vertical dimension
+	 * @return true if the two are almost equals
+	 */
+  static bool almostEquals(const LatLonAlt& b, const LatLonAlt& a, double horizEps, double vertEps);
+  static bool almostEquals2D(const LatLonAlt& b, const LatLonAlt& v, double horizEps);
 	
 	/**
 	 * The initial true course (course relative to true north) at lat/long #1 on
@@ -204,9 +200,9 @@ namespace larcfm {
 	 * @param p2 another point
 	 * @return initial course
 	 */
-  static double initial_course(LatLonAlt p1, LatLonAlt p2);
+  static double initial_course(const LatLonAlt& p1, const LatLonAlt& p2);
 
-  static double final_course(LatLonAlt p1, LatLonAlt p2);
+  static double final_course(const LatLonAlt& p1, const LatLonAlt& p2);
 
 	/**
 	 * A representative course (course relative to true north) for the entire
@@ -226,7 +222,80 @@ namespace larcfm {
   
   static double representative_course(const LatLonAlt& p1, const LatLonAlt& p2);
 
+	/**
+	 * Find the maximum latitude of the great circle defined by the
+	 * two points.
+	 *
+	 * @param lat1 latitude of point 1
+	 * @param lon1 longitude of point 1
+	 * @param lat2 latitude of point 2
+	 * @param lon2 longitude of point 2
+	 * @return maximum latitude
+	 */
+	static double max_latitude_gc(double lat1, double lon1, double lat2, double lon2) ;
+
+  private:
+	static double max_latitude_gc_course(double lat1, double lon1, double lat2, double lon2, double trk) ;
+
+  public:
+	static double max_latitude_gc(const LatLonAlt& p1, const LatLonAlt& p2);
+
+	/**
+	 * Find the minimum latitude of the great circle defined by the
+	 * two points.
+	 *
+	 * @param lat1 latitude of point 1
+	 * @param lon1 longitude of point 1
+	 * @param lat2 latitude of point 2
+	 * @param lon2 longitude of point 2
+	 * @return minimum latitude
+	 */
+	static double min_latitude_gc(double lat1, double lon1, double lat2, double lon2);
+
+  private:
+	static double min_latitude_gc_course(double lat1, double lon1, double lat2, double lon2, double trk);
+
+  public:
+	static double min_latitude_gc(const LatLonAlt& p1, const LatLonAlt& p2);
+
+	// Given a great circle defined by Point 1 and 2, find the longitude of where it
+	// crosses the latitude defined by lat3.
+	//
+	// from Aviation Formulary
+	// longitude sign is reversed from the formulary!
+	static double lonCross(double lat1, double lon1, double lat2, double lon2, double lat3);
+
+
   
+	/**
+	 * Find the maximum (northern-most) latitude of the line segment defined by the two points
+	 * along a great circle path.
+	 * 
+	 * @param lat1 latitude of point 1
+	 * @param lon1 longitude of point 1
+	 * @param lat2 latitude of point 2
+	 * @param lon2 longitude of point 2
+	 * @return maximum latitude
+	 */
+	static double max_latitude(double lat1, double lon1, double lat2, double lon2);
+
+	static double max_latitude(const LatLonAlt& p1, const LatLonAlt& p2);
+
+	/**
+	 * Find the minimum (southern-most) latitude of the line segment defined by the two points
+	 * along a great circle path.
+	 * 
+	 * @param lat1 latitude of point 1
+	 * @param lon1 longitude of point 1
+	 * @param lat2 latitude of point 2
+	 * @param lon2 longitude of point 2
+	 * @return minimum latitude
+	 */
+	static double min_latitude(double lat1, double lon1, double lat2, double lon2);
+
+	static double min_latitude(const LatLonAlt& p1, const LatLonAlt& p2);
+
+
 	/**
 	 * Find the position (latitude, longitude, and altitude) of a point on the
 	 * great circle from point #1 to point #2 as a fraction of the distance
@@ -418,6 +487,23 @@ namespace larcfm {
 	 */
 	static Triple<double,double,double> angle_side_angle(double A, double c, double B);
 
+	static LatLonAlt intersectionSegment(double T, const LatLonAlt& so, const Velocity& vo, const LatLonAlt& si, const LatLonAlt& si2);
+
+	/**  EXPERIMENTAL
+	 * Given two great circle segments defined by a1,a2 and b1,b2, return the intersection point that is closest a1.  
+	 * This assumes that the arc distance between a1,a2 &lt; 90 and b1,b2 &lt; 90
+	 * The altitude of the return value is equal to a1.alt()
+	 * This returns an INVALID value if both segments are collinear
+	 * 
+	 * @param so  starting point of segment [so,so2]
+	 * @param so2 ending point of segment [so,so2]
+	 * @param si  starting point of segment [si,si2]
+	 * @param si2 ending point of segment [si,si2]
+	 * @return the point that intersects the two "great circle" segments
+	 */
+	static LatLonAlt intersectSegments(const LatLonAlt& so, const LatLonAlt& so2, const LatLonAlt& si, const LatLonAlt& si2);
+
+
 private:
 	static bool gauss_check(double a, double b, double c, double A, double B, double C);
 public:
@@ -519,24 +605,56 @@ public:
     static std::pair<LatLonAlt,double>  intersectionAvgAlt(const LatLonAlt& so, const LatLonAlt& so2, double dto, const LatLonAlt& si, const LatLonAlt& si2);
 
 
-    static std::pair<LatLonAlt,double> intersection(const LatLonAlt& so, const Velocity& vo, const LatLonAlt& si, const Velocity& vi, bool checkBehind);
+    static std::pair<LatLonAlt,double> intersection(const LatLonAlt& so, const Velocity& vo, const LatLonAlt& si, const Velocity& vi);
 
-    /**
-     * Given two great circles defined by so, so2 and si, si2 return the acute angle between them at the
-     * intersection point.  This is the same as the dihedral angle, or angle between the two GC planes.
-     * Note this may not be the same angle as the one projected into the Euclidean (unless the projection point is the intersection point),
-     * and will generally not be the same as the (non-projected) track angle difference between them.
-     */
+	/**
+	 * Given two great circles defined by so, so2 and si, si2 return the angle between them at the intersection point.  
+	 * This is the same as the dihedral angle, or angle between the two GC planes. 
+	 * Note this may not be the same angle as the one projected into the Euclidean (unless the projection point is the intersection point). 
+	 * and will generally not be the same as the (non-projected) track angle difference between them (though that can be very close).
+	 * This will always return a value between 0 and PI.
+	 * 
+	 * Note: If a1 and b1 or if a2 and b2 are the "closest" to the intersection point (and both a's are on the same side of the 
+	 * intersection point, similarly for both b's), this will return the angle "between" them, the one you
+	 * would go through to make the shortest turn from a2 to b2 (or from b2 to a2), which may or may not be acute.  
+	 * 
+	 * @param a1 one point on the first great circle
+	 * @param a2 second point on the first great circle
+	 * @param b1 one point on the second great circle
+	 * @param b2 second point on the second great circle
+	 * @return angle between two great circles
+	 */
     static double angleBetween(const LatLonAlt& a1, const LatLonAlt& a2, const LatLonAlt& b1, const LatLonAlt& b2);
 
 	/**
-	 * Return angle between great circles
+	 * Return angle between great circles (old version, uses spherical trig)
 	 * @param a point on gc1
 	 * @param b intersection of gc1 and gc2
 	 * @param c point on gc2
-	 * @return angle between two great circles
+	 * @return angle between the two great circles
+	 */
+    static double angle_betweenOLD(const LatLonAlt& a, const LatLonAlt& b, const LatLonAlt& c);
+
+	/**
+	 * Return the turn angle between great circles (this will return a value between 0 and PI)
+	 * (uses coordinate transformation)
+	 * @param a point on gc1
+	 * @param b intersection of gc1 and gc2
+	 * @param c point on gc2
+	 * @return magnitude of angle between the two great circles, from a-b to b-c
 	 */
     static double angle_between(const LatLonAlt& a, const LatLonAlt& b, const LatLonAlt& c);
+
+	/**
+	 * Return the turn angle between two great circles, measured in the indicated direction.  This can return a value larger than PI.
+	 * @param a first point
+	 * @param b turn point
+	 * @param c last point
+	 * @param dir +1 is right (clockwise), -1 is left (counterclockwise)
+	 * @return Value of angle of turn from a-b to b-c
+	 */
+    static double angle_between(const LatLonAlt& a, const LatLonAlt& b, const LatLonAlt& c, int dir);
+
 
 	/**
 	 * Return true if x is "behind" ll, considering its current direction of travel, v.
@@ -544,7 +662,7 @@ public:
 	 * That is, x is within the region behind the perpendicular line to v through ll.
 	 * @param ll aircraft position
 	 * @param v aircraft velocity
-	 * @param x intruder positino
+	 * @param x intruder position
 	 * @return true, if x is behind ll
 	 */
     static bool behind(const LatLonAlt& x, const LatLonAlt& ll, const Velocity& v) ;
@@ -657,22 +775,30 @@ public:
 	 * Transforms a lat/lon position to a point in R3 (on a sphere)
 	 * This is an Earth-Centered, Earth-Fixed translation (assuming earth-surface altitude).
 	 * From Wikipedia: en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
-	 * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0. 
 	 * 
 	 * The x-axis intersects the sphere of the earth at 0 latitude (the equator) and 0 longitude (Greenwich). 
-	 * 
-	 * 
-	 * @param lat Latitude
-	 * @param lon Longitude
-	 * @return point in R3 on surface of the earth
+	 * 	
+	 * @param lat latitude
+	 * @param lon longitude
+	 * @return point in R3 on surface of the earth (zero altitude)
 	 */
   static Vect3 spherical2xyz(double lat, double lon);
 
+	/**
+	 * Transforms a lat/lon position to a point in R3 (on a sphere)
+	 * This is an Earth-Centered, Earth-Fixed translation (ECEF, assuming earth-surface altitude).
+	 * From Wikipedia: en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
+	 * 
+	 * The x-axis intersects the sphere of the earth at 0 latitude (the equator) and 0 longitude (Greenwich). 
+	 * 	
+	 * @param lla lattitude/longitude point
+	 * @return point in R3 on surface of the earth (zero altitude)
+	 */
   static Vect3 spherical2xyz(const LatLonAlt& lla);
 
 	/**
 	 * Transforms a R3 position on the earth surface into lat/lon coordinates
-	 * This is an Earth-Centered, Earth-Fixed translation (assuming earth-surface altitude).
+	 * This is an Earth-Centered, Earth-Fixed translation (ECEF, assuming earth-surface altitude).
 	 * From Wikipedia: en.wikipedia.org/wiki/Curvilinear_coordinates (contents apparently moved to Geodetic datum entry)
 	 * We take a standard radius of the earth as defined in GreatCircle, and treat altitude as 0. 
 	 * @param v position in R3, with ECEF origin
@@ -694,19 +820,25 @@ public:
   static double chord_distance(double lat1, double lon1, double lat2, double lon2);
  
 	/**
-	 * Return the chord distance (through the earth) corresponding to a given surface distance (at the nominal earth radius)
-	 * @param surface_dist
+	 * Return the chord distance (through the earth) corresponding to a given surface distance (at the nominal earth radius).
+	 * This is the distance of a direct line between two surface points.
+	 * @param surface_dist distance across surface
 	 * @return chord distance
 	 */
 	static double chord_distance(double surface_dist);
 	
 	/**
-	 * Return the surface distance (at the nominal earth radius) corresponding to a given chord distance (through the earth) 
-	 * @param chord_distance
+	 * Return the surface distance (at the nominal earth radius) corresponding to a given chord distance (through the earth).
+	 * @param chord_distance cordal distance
 	 * @return surface distance
 	 */
 	static double surface_distance(double chord_distance);
 	
+	static double to_chordal_radius(double surface_radius);
+
+	static double to_surface_radius(double chord_radius);
+
+
 
 		/**
 	 * EXPERIMENTAL

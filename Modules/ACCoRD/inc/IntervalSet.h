@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -25,19 +25,19 @@
 namespace larcfm {
 
 /**
- * The IntervalSet class represents a set of "double" values.  Ranges
+ * <p>The IntervalSet class represents a set of "double" values.  Ranges
  * of doubles are maintained as intervals (Interval).  These Intervals
  * are ordered consecutively from lowest to highest. Standard set
  * operations of <code>in</code> (membership), <code>union</code> (set union), 
  * <code>intersect</code> (set intersection), and <code>diff</code> (set difference) 
- * are provided.<p>
+ * are provided.</p>
  *
- * Within the IntervalSet, intervals are generally considered closed (including end-points), and the
+ * <p>Within the IntervalSet, intervals are generally considered closed (including end-points), and the
  * results off operations are closed intervals.  This implies that the interval difference
- * is between a set of closed intervals and one or more open intervals.
+ * is between a set of closed intervals and one or more open intervals.</p>
  * 
- * The intervals are numbered 0 to size()-1.  To cycle through the
- * intervals one may:<p>
+ * <p>The intervals are numbered 0 to size()-1.  To cycle through the
+ * intervals one may:</p>
  *
  * <pre><code>
  * IntervalSet set;
@@ -60,13 +60,14 @@ public:
 public:
 	/** Construct an empty IntervalSet */
 	IntervalSet();
+
 	/** Copy the IntervalSet into a new set 
 	 * @param l IntervalSet to copy
 	 * */ 
 	IntervalSet(const IntervalSet& l);
 
 	/** Build an IntervalSet from the given vector */
-	IntervalSet(const std::vector<Interval>& v);
+	explicit IntervalSet(const std::vector<Interval>& v);
 
 	/** Return this set as a vector */
 	std::vector<Interval> toVector() const;
@@ -110,6 +111,14 @@ public:
 	 * IntervalSet. IntervalSet n is unmodified.
 	 */
 	void unions(const IntervalSet& n);
+
+	/**
+	 * Union the given IntervalSet into the current IntervalSet. Set n is
+	 * unmodified. This method uses "almost" inequalities to compute the intersection.
+	 * 
+	 * @param n set
+	 */
+	void almost_unions(const IntervalSet& n, INT64FM maxUlps);
 
 	/**
 	 * Add the given interval into this set. If this interval overlaps any
@@ -205,20 +214,9 @@ public:
 	/** Print the contents of this IntervalSet */
 	std::string toString() const;
 
-	//  // ErrorReporter Interface Methods
-	//
-	//  bool hasError() const {
-	//    return error.hasError();
-	//  }
-	//  bool hasMessage() const {
-	//    return error.hasMessage();
-	//  }
-	//  std::string getMessage() {
-	//    return error.getMessage();
-	//  }
-	//  std::string getMessageNoClear() const {
-	//    return error.getMessageNoClear();
-	//  }
+
+	/** Print the contents of this IntervalSet */
+	std::string toString(const std::string& unit) const;
 
 private:
 	int order(double x) const;
@@ -229,7 +227,6 @@ private:
 	static const Interval empty;
 	Interval r[max_intervals];
 	int length;
-	//    mutable ErrorLog error;
 };
 
 }

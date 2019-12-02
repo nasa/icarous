@@ -8,7 +8,7 @@
  *
  * Contact: George Hagen
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -74,11 +74,13 @@ void PlanReader::open(const string& filename) {
     return;
   }
   PlanReader::open(&in);
+  return;
 }
 
 void PlanReader::open(std::istream* si) {
   input = SeparatedInput(si);
   PlanReader::loadfile();
+  return;
 }
 
 
@@ -89,13 +91,13 @@ void PlanReader::loadfile() {
 	paths.clear();
 	bool hasRead = false;
 	bool latlon = true;
-	bool tcpinfo = true;
+	bool tcp_data = true;
 	bool trkgsvs = true;
 	clock = true;
 	plans.reserve(10);
 	paths.reserve(10);
 	head.resize(TcpData::TCP_OUTPUT_COLUMNS+7); // MAKE SURE THIS MATCHES THE NUMBER OF COLUMNS!
-	string name = ""; // the current aircraft name
+	std::string name = ""; // the current aircraft name
 	int planIndex = -1;
 	int pathIndex = -1;
 	int containmentIndex = -1;
@@ -136,8 +138,9 @@ void PlanReader::loadfile() {
 			head[LON_SY] =  altHeadings("sy", "lon", "long", "longitude");
 			head[SZ] =      altHeadings5("sz", "alt", "altitude", "sz1", "alt1");
 			head[TIME] =    altHeadings("clock", "time", "tm", "st");
-			head[SZ2] =      altHeadings("sz2", "alt2", "altitude_top");
+			head[SZ2] =     altHeadings("sz2", "alt2", "altitude_top");
 			head[LABEL] =   input.findHeading("label");
+			head[INFO] =		altHeadings("info", "information", "tcp_info");
 
 			head[TYPE] = 	input.findHeading("type");
 			head[TCP_TRK] =	input.findHeading("tcp_trk");
@@ -149,10 +152,10 @@ void PlanReader::loadfile() {
 			head[TRK] =	altHeadings("trk", "v_trk", "v_x","track");
 			head[GS] =	altHeadings("gs", "v_gs", "v_y", "groundspeed");
 			head[VS] =	altHeadings("vs", "v_vs", "v_z", "verticalspeed");
-			head[SRC_LAT_SX] =	altHeadings("src_x", "src_sx", "src_lat", "src_latitude");
-			head[SRC_LON_SY] =	altHeadings("src_y", "src_sy", "src_lon", "src_longitude");
-			head[SRC_ALT] =		altHeadings("src_z", "src_sz", "src_alt", "src_altitude");
-			head[SRC_TIME] =    altHeadings("src_clock", "src_time", "src_tm", "src_t");
+//			head[SRC_LAT_SX] =	altHeadings("src_x", "src_sx", "src_lat", "src_latitude");
+//			head[SRC_LON_SY] =	altHeadings("src_y", "src_sy", "src_lon", "src_longitude");
+//			head[SRC_ALT] =		altHeadings("src_z", "src_sz", "src_alt", "src_altitude");
+//			head[SRC_TIME] =    altHeadings("src_clock", "src_time", "src_tm", "src_t");
 			head[RADIUS] =    altHeadings("radius", "turn_radius", "R");
 			head[CENTER_LAT_SX] = altHeadings("center_x", "center_lat");
 			head[CENTER_LON_SY] = altHeadings("center_y", "center_lon");
@@ -166,10 +169,12 @@ void PlanReader::loadfile() {
 					|| (head[RADIUS] < 0 && head[ACC_TRK] < 0)
 					|| head[ACC_GS] < 0 || head[ACC_VS] < 0
 					//|| head[TRK] < 0 || head[GS] < 0 || head[VS] < 0
-					|| head[SRC_LAT_SX] < 0 || head[SRC_LON_SY] < 0 || head[SRC_ALT] < 0 || head[SRC_TIME] < 0) {
+//					|| head[SRC_LAT_SX] < 0 || head[SRC_LON_SY] < 0 || head[SRC_ALT] < 0 || head[SRC_TIME] < 0
+					) {
 				if (	   head[TCP_TRK] >= 0 || head[TCP_GS] >= 0 || head[TCP_VS] >= 0
 						|| head[ACC_GS] >= 0 || head[ACC_VS] >= 0
-						|| head[SRC_LAT_SX] >= 0 || head[SRC_LON_SY] >= 0 || head[SRC_ALT] >= 0 || head[SRC_TIME] >= 0)
+//						|| head[SRC_LAT_SX] >= 0 || head[SRC_LON_SY] >= 0 || head[SRC_ALT] >= 0 || head[SRC_TIME] >= 0
+						)
 				{
 					std::string missing = "";
 					int i;
@@ -183,19 +188,19 @@ void PlanReader::loadfile() {
 					if (head[i] < 0) missing += " "+Fm0(i);
 					i = ACC_VS;
 					if (head[i] < 0) missing += " "+Fm0(i);
-					i = SRC_LAT_SX;
-					if (head[i] < 0) missing += " "+Fm0(i);
-					i = SRC_LON_SY;
-					if (head[i] < 0) missing += " "+Fm0(i);
-					i = SRC_ALT;
-					if (head[i] < 0) missing += " "+Fm0(i);
-					i = SRC_TIME;
-					if (head[i] < 0) missing += " "+Fm0(i);
+//					i = SRC_LAT_SX;
+//					if (head[i] < 0) missing += " "+Fm0(i);
+//					i = SRC_LON_SY;
+//					if (head[i] < 0) missing += " "+Fm0(i);
+//					i = SRC_ALT;
+//					if (head[i] < 0) missing += " "+Fm0(i);
+//					i = SRC_TIME;
+//					if (head[i] < 0) missing += " "+Fm0(i);
 					i = RADIUS;
 					if (head[i] < 0) missing += " "+Fm0(i);
 					error.addWarning("Ignoring incorrect or incomplete TCP headers:"+missing);
 				}
-				tcpinfo = false;
+				tcp_data = false;
 			}
 
 			// set accuracy parameters
@@ -225,7 +230,7 @@ void PlanReader::loadfile() {
 			if (this->getParametersRef().contains("pathMode")) {
 				// note: does not generate error like Java does
 				pathmode = PolyPath::parsePathMode(this->getParametersRef().getString("pathMode"));
-				if ((pathmode == PolyPath::USER_VEL || pathmode == PolyPath::USER_VEL_FINITE) && (head[TRK] < 0 || head[GS] < 0 || head[VS] < 0)) {
+				if ((pathmode == PolyPath::USER_VEL || pathmode == PolyPath::USER_VEL_FINITE || pathmode == PolyPath::USER_VEL_EVER) && (head[TRK] < 0 || head[GS] < 0 || head[VS] < 0)) {
 					error.addError("Pathmode USER_VEL does not have velocity data, reverting to pathmode MORPHING");
 					pathmode = PolyPath::MORPHING;
 				}
@@ -261,7 +266,6 @@ void PlanReader::loadfile() {
 
 		string thisName = input.getColumnString(head[NAME]);
 		double myTime = getClock(input.getColumnString(head[TIME]));
-
 		if ((!equals(thisName,name) )//|| lastTime > myTime)
 				&& !equals(thisName,"\"")) {
 			if (linetype == POLY) {
@@ -276,7 +280,11 @@ void PlanReader::loadfile() {
 						containmentIndex = containment.size();
 						PolyPath pp = PolyPath(name);
 						pp.setPathMode(pathmode);
+						pp.setContainment(true);
 						containment.push_back(pp);
+						if (getParametersRef().contains(name+"_note")) {
+							pp.setNote(getParametersRef().getString(name+"_note"));
+						}
 					} else {
 						containmentIndex = i;
 					}
@@ -291,6 +299,10 @@ void PlanReader::loadfile() {
 						pathIndex = paths.size();
 						PolyPath pp = PolyPath(name);
 						pp.setPathMode(pathmode);
+						pp.setContainment(false);
+						if (getParametersRef().contains(name+"_note")) {
+							pp.setNote(getParametersRef().getString(name+"_note"));
+						}
 						paths.push_back(pp);
 					} else {
 						pathIndex = i;
@@ -328,29 +340,32 @@ void PlanReader::loadfile() {
 			paths.clear();
 			break;
 		}
-
 		Position pos;
 		if (latlon) {
 			pos = Position::makeLatLonAlt(
-					input.getColumn(head[LAT_SX], "deg"), "unspecified", // getColumn(_deg, head[LAT_SX]),
-					input.getColumn(head[LON_SY], "deg"), "unspecified", // getColumn(_deg, head[LON_SY]),
-					input.getColumn(head[SZ],      "ft"), "unspecified" // getColumn(_ft, head[SZ]),
+					input.getColumn(head[LAT_SX], "deg"), "rad", // getColumn(_deg, head[LAT_SX]),
+					input.getColumn(head[LON_SY], "deg"), "rad", // getColumn(_deg, head[LON_SY]),
+					input.getColumn(head[SZ],      "ft"), "m" // getColumn(_ft, head[SZ]),
 			);
 		} else {
 			pos = Position::makeXYZ(
-					input.getColumn(head[LAT_SX], "nmi"), "unspecified", // getColumn(_deg, head[LAT_SX]),
-					input.getColumn(head[LON_SY], "nmi"), "unspecified", // getColumn(_deg, head[LON_SY]),
-					input.getColumn(head[SZ],      "ft"), "unspecified"  // getColumn(_ft, head[SZ]),
+					input.getColumn(head[LAT_SX], "nmi"), "m", // getColumn(_deg, head[LAT_SX]),
+					input.getColumn(head[LON_SY], "nmi"), "m", // getColumn(_deg, head[LON_SY]),
+					input.getColumn(head[SZ],      "ft"), "m"  // getColumn(_ft, head[SZ]),
 			);
 		}
 		if (linetype == POLY) {
 			double top = input.getColumn(head[SZ2], "ft");
+			double bottom = input.getColumn(head[SZ], "ft");
 
 			if (containmentLine) {
-				containment[containmentIndex].addVertex(pos,top,myTime);
+				containment[containmentIndex].addVertex(pos,bottom,top,myTime);
 
-				if ((pathmode == PolyPath::USER_VEL || pathmode == PolyPath::USER_VEL_FINITE) && input.columnHasValue(head[TRK]) && input.columnHasValue(head[GS]) && input.columnHasValue(head[VS])) {
-					Velocity vi = Velocity::makeTrkGsVs(input.getColumn(head[TRK]),input.getColumn(head[GS]),input.getColumn(head[VS]));
+				if ((pathmode == PolyPath::USER_VEL || pathmode == PolyPath::USER_VEL_FINITE || pathmode == PolyPath::USER_VEL_EVER)
+				    && input.columnHasValue(head[TRK]) && input.columnHasValue(head[GS]) && input.columnHasValue(head[VS])) {
+					Velocity vi = Velocity::makeTrkGsVs(input.getColumn(head[TRK], "deg"), "rad",
+							input.getColumn(head[GS], "knot"), "m/s",
+							input.getColumn(head[VS], "fpm"), "m/s");
 					containment[containmentIndex].setVelocity(containment[containmentIndex].getSegment(myTime), vi);
 				}
 
@@ -366,10 +381,13 @@ void PlanReader::loadfile() {
 					error.addWarning(containment[containmentIndex].getMessage());
 				}
 			} else {
-				paths[pathIndex].addVertex(pos,top,myTime);
+				paths[pathIndex].addVertex(pos,bottom,top,myTime);
 
-				if ((pathmode == PolyPath::USER_VEL || pathmode == PolyPath::USER_VEL_FINITE) && input.columnHasValue(head[TRK]) && input.columnHasValue(head[GS]) && input.columnHasValue(head[VS])) {
-					Velocity vi = Velocity::makeTrkGsVs(input.getColumn(head[TRK]),input.getColumn(head[GS]),input.getColumn(head[VS]));
+				if ((pathmode == PolyPath::USER_VEL || pathmode == PolyPath::USER_VEL_FINITE || pathmode == PolyPath::USER_VEL_EVER)
+						&& input.columnHasValue(head[TRK]) && input.columnHasValue(head[GS]) && input.columnHasValue(head[VS])) {
+					Velocity vi = Velocity::makeTrkGsVs(input.getColumn(head[TRK], "deg"), "rad",
+							input.getColumn(head[GS], "knot"), "m/s",
+							input.getColumn(head[VS], "fpm"), "m/s");
 					paths[pathIndex].setVelocity(paths[pathIndex].getSegment(myTime), vi);
 				}
 
@@ -389,10 +407,18 @@ void PlanReader::loadfile() {
 			//        string mutString = "";
 			//        if (input.columnHasValue(head[MUTABLE])) mutString = toLowerCase(input.getColumnString(head[MUTABLE])); // defined in SeparatedInput
 			string label = "";
+			string info = "";
 			if (input.columnHasValue(head[LABEL])) label = input.getColumnString(head[LABEL]);
+			if (input.columnHasValue(head[INFO])) info = input.getColumnString(head[INFO]);
 			NavPoint nnp = NavPoint(pos, myTime, label);
 			TcpData n;
-
+			if (! TcpData::motFlagInInfo) {
+               if (contains(info,TcpData::MOTflag)) {  // upward compatibility with old file format
+            	   n.setMOT(true);
+            	   info = larcfm::replace(info,TcpData::MOTflag,"");
+               }
+			}
+			n.setInformation(info);
 			if (input.columnHasValue(head[TYPE])) {
 				TcpData::WayType ty = TcpData::valueOfWayType(input.getColumnString(head[TYPE]));
 				if (ty == TcpData::UNKNOWN_WT) {
@@ -413,119 +439,116 @@ void PlanReader::loadfile() {
 			if (input.columnHasValue(head[CENTER_LAT_SX])) {
 				if (latlon) {
 					turnCenter = Position::makeLatLonAlt(
-							input.getColumn(head[CENTER_LAT_SX], "deg"), "unspecified", // getColumn(_deg, head[LAT_SX]),
-							input.getColumn(head[CENTER_LON_SY], "deg"), "unspecified", // getColumn(_deg, head[LON_SY]),
-							input.getColumn(head[CENTER_ALT],     "ft"), "unspecified" // getColumn(_ft, head[SZ]),
+							input.getColumn(head[CENTER_LAT_SX], "deg"), "rad", // getColumn(_deg, head[LAT_SX]),
+							input.getColumn(head[CENTER_LON_SY], "deg"), "rad", // getColumn(_deg, head[LON_SY]),
+							input.getColumn(head[CENTER_ALT],     "ft"), "m" // getColumn(_ft, head[SZ]),
 							);
 				} else {
 					turnCenter = Position::makeXYZ(
-							input.getColumn(head[CENTER_LAT_SX], "NM"), "unspecified", // getColumn(_deg, head[LAT_SX]),
-							input.getColumn(head[CENTER_LON_SY], "NM"), "unspecified", // getColumn(_deg, head[LON_SY]),
-							input.getColumn(head[CENTER_ALT],    "ft"), "unspecified"  // getColumn(_ft, head[SZ]),
+							input.getColumn(head[CENTER_LAT_SX], "NM"), "m", // getColumn(_deg, head[LAT_SX]),
+							input.getColumn(head[CENTER_LON_SY], "NM"), "m", // getColumn(_deg, head[LON_SY]),
+							input.getColumn(head[CENTER_ALT],    "ft"), "m"  // getColumn(_ft, head[SZ]),
 							);
 				}
 				n = n.setTurnCenter(turnCenter);
 				//f.pln("\n $$$$ PlanReader.loadfile: SET setTurnCenter ="+turnCenter);
 			}
-
-			if (!tcpinfo) {
-				std::pair<TcpData,std::string> p = n.parseMetaDataLabel(nnp,label);
+			if (!tcp_data) {
+				std::pair<TcpData,std::string> p = n.parseMetaDataLabel(label);
 				TcpData n2 = p.first;
 				if (n2.isInvalid()) {
 					error.addError("Plan file uses invalid metadata format");
 				} else {
 					n=n2;
-					nnp = nnp.makeLabel(p.second);
+					nnp = nnp.makeName(p.second);
 				}
-//			if (!tcpinfo) {
-//				NavPoint n2 = n.parseMetaDataLabel(label);
-//				if (n2.isInvalid()) {
-//					error.addError("Plan file uses invalid metadata format");
-//				} else {
-//					n = n2;
-//				}
 			} else { // read tcp columns
-				Position srcpos = Position::INVALID();
-				if (input.columnHasValue(head[SRC_LAT_SX])) {
-					if (latlon) {
-						srcpos = Position::makeLatLonAlt(
-								input.getColumn(head[SRC_LAT_SX], "deg"), "unspecified", // getColumn(_deg, head[LAT_SX]),
-								input.getColumn(head[SRC_LON_SY], "deg"), "unspecified", // getColumn(_deg, head[LON_SY]),
-								input.getColumn(head[SRC_ALT],      "ft"), "unspecified" // getColumn(_ft, head[SZ]),
-						);
-					} else {
-						srcpos = Position::makeXYZ(
-								input.getColumn(head[SRC_LAT_SX], "nmi"), "unspecified", // getColumn(_deg, head[LAT_SX]),
-								input.getColumn(head[SRC_LON_SY], "nmi"), "unspecified", // getColumn(_deg, head[LON_SY]),
-								input.getColumn(head[SRC_ALT],      "ft"), "unspecified"  // getColumn(_ft, head[SZ]),
-						);
-					}
-				}
-				double srcTime = input.getColumn(head[SRC_TIME], "s");
-				n = n.setSource(srcpos,  srcTime);
+//				Position srcpos = Position::INVALID();
+//				if (input.columnHasValue(head[SRC_LAT_SX])) {
+//					if (latlon) {
+//						srcpos = Position::makeLatLonAlt(
+//								input.getColumn(head[SRC_LAT_SX], "deg"), "rad", // getColumn(_deg, head[LAT_SX]),
+//								input.getColumn(head[SRC_LON_SY], "deg"), "rad", // getColumn(_deg, head[LON_SY]),
+//								input.getColumn(head[SRC_ALT],      "ft"), "m" // getColumn(_ft, head[SZ]),
+//						);
+//					} else {
+//						srcpos = Position::makeXYZ(
+//								input.getColumn(head[SRC_LAT_SX], "nmi"), "m", // getColumn(_deg, head[LAT_SX]),
+//								input.getColumn(head[SRC_LON_SY], "nmi"), "m", // getColumn(_deg, head[LON_SY]),
+//								input.getColumn(head[SRC_ALT],      "ft"), "m"  // getColumn(_ft, head[SZ]),
+//						);
+//					}
+//				}
+				//double srcTime = input.getColumn(head[SRC_TIME], "s");
+				//n = n.setSource(srcpos,  srcTime);
 //				NavPoint np = n.makePosition(srcpos).makeTime(srcTime);
 				Velocity vel = Velocity::INVALIDV();
 				if (input.columnHasValue(head[TRK])) {
 					if (trkgsvs) {
 						vel = Velocity::makeTrkGsVs(
-								input.getColumn(head[TRK], "deg"), "unspecified", // getColumn(_deg, head[LAT_SX]),
-								input.getColumn(head[GS],  "kts"), "unspecified", // getColumn(_deg, head[LON_SY]),
-								input.getColumn(head[VS],  "fpm"), "unspecified" // getColumn(_ft, head[SZ]),
+								input.getColumn(head[TRK], "deg"), "rad", // getColumn(_deg, head[LAT_SX]),
+								input.getColumn(head[GS],  "kts"), "m/s", // getColumn(_deg, head[LON_SY]),
+								input.getColumn(head[VS],  "fpm"), "m/s" // getColumn(_ft, head[SZ]),
 						);
 					} else {
 						vel = Velocity::makeVxyz(
 								input.getColumn(head[TRK], "kts"), // getColumn(_deg, head[LAT_SX]),
-								input.getColumn(head[GS],  "kts"), "unspecified", // getColumn(_deg, head[LON_SY]),
-								input.getColumn(head[VS],  "fpm"), "unspecified"  // getColumn(_ft, head[SZ]),
+								input.getColumn(head[GS],  "kts"), "m/s", // getColumn(_deg, head[LON_SY]),
+								input.getColumn(head[VS],  "fpm"), "m/s"  // getColumn(_ft, head[SZ]),
 						);
 					}
 				}
 				//n.setVelocityInit(vel);
 				TcpData::TrkTcpType tcptrk = TcpData::valueOfTrkType(input.getColumnString(head[TCP_TRK]));
 
-				double sRadius = n.signedRadius();
+				double sRadius = n.getRadiusSigned();
 				if (Util::almost_equals(sRadius,0.0) && input.columnHasValue(head[ACC_TRK])) {
 					double acctrk = input.getColumn(head[ACC_TRK], "deg/s");
 					sRadius = vel.gs()/acctrk;
 				}
 
 				// TODO fix linearIndex
-				int linearIndex = -1;
+				//int linearIndex = -1;
 				// TODO: linearIndex
-				if (turnCenter.isInvalid()) {
+				if ((equals(input.getColumnString(head[TCP_TRK]),"BOT") || equals(input.getColumnString(head[TCP_TRK]),"EOTBOT")) && turnCenter.isInvalid()) {
+					//if (turnCenter.isInvalid()) {
 				   // This relies on the file having a TRK column !!
 				   //f.pln(" $$$$ PlanReader.loadfile: pos = "+pos+" sRadius = "+sRadius+" vel = "+vel);
 				   turnCenter = KinematicsPosition::centerFromRadius(pos, sRadius, vel.trk());
 				   //f.pln(" $$$$ PlanReader.loadfile: turnCenter = "+turnCenter);
 				}
 				switch (tcptrk) {
-				case TcpData::BOT: n = n.setBOT( sRadius, turnCenter, linearIndex); break;
-				case TcpData::EOT: n = n.setEOT( linearIndex); break;
-				case TcpData::EOTBOT: n = n.setEOTBOT( sRadius, turnCenter, linearIndex); break;
+				case TcpData::BOT: n = n.setBOT( sRadius, turnCenter); break;
+				case TcpData::EOT: n = n.setEOT(); break;
+				case TcpData::MOT: n = n.setMOT(true); break;
+				case TcpData::EOTBOT: n = n.setEOTBOT( sRadius, turnCenter); break;
 				case TcpData::UNKNOWN_TRK: error.addError("Unrecognized Trk_TCPType: "+input.getColumnString(head[TCP_TRK])); break;
 				default: break;// no change
 				}
 				TcpData::GsTcpType tcpgs = TcpData::valueOfGsType(input.getColumnString(head[TCP_GS]));
 				double accgs = input.getColumn(head[ACC_GS], "m/s^2");
 				// TODO fix linearIndex
-				linearIndex = -1;
+				//linearIndex = -1;
 				switch (tcpgs) {
-				case TcpData::BGS: n = n.setBGS(accgs,  linearIndex); break;
-				case TcpData::EGS: n = n.setEGS( linearIndex); break;
-				case TcpData::EGSBGS: n = n.setEGSBGS(accgs,  linearIndex); break;
+				case TcpData::BGS: n = n.setBGS(accgs); break;
+				case TcpData::EGS: n = n.setEGS( ); break;
+				case TcpData::EGSBGS: n = n.setEGSBGS(accgs); break;
 				case TcpData::UNKNOWN_GS: error.addError("Unrecognized Gs_TCPType: "+input.getColumnString(head[TCP_GS])); break;
 				default: break;// no change
 				}
 				TcpData::VsTcpType tcpvs = TcpData::valueOfVsType(input.getColumnString(head[TCP_VS]));
 				double accvs = input.getColumn(head[ACC_VS], "m/s^2");
 				// TODO fix linearIndex
-				linearIndex = -1;
+				//linearIndex = -1;
 				switch (tcpvs) {
-				case TcpData::BVS: n = n.setBVS(accvs,  linearIndex); break;
-				case TcpData::EVS: n = n.setEVS( linearIndex); break;
-				case TcpData::EVSBVS: n = n.setEVSBVS(accvs,  linearIndex); break;
+				case TcpData::BVS: n = n.setBVS(accvs); break;
+				case TcpData::EVS: n = n.setEVS( ); break;
+				case TcpData::EVSBVS: n = n.setEVSBVS(accvs); break;
 				case TcpData::UNKNOWN_VS: error.addError("Unrecognized Vs_TCPType: "+input.getColumnString(head[TCP_VS])); break;
 				default: break;// no change
+				}
+				if (!n.isDefined()) {
+					error.addError("Line "+Fm0(input.lineNumber())+": missing necessary TcpData information");
 				}
 			}
 			plans[planIndex].add(nnp,n);
@@ -538,7 +561,6 @@ void PlanReader::loadfile() {
 				error.addWarning(plans[planIndex].getMessage());
 			}
 		}
-
 		//      lastTime = myTime;
 	} // while
 	for (int i = 0; i < (signed)paths.size(); i++) {
@@ -552,28 +574,11 @@ void PlanReader::loadfile() {
 		if (!path.validate())
 			error.addError("Containment area "+Fm0(i)+" "+path.getName()+":"+path.getMessage());
 	}
-
-	//	// check if we have kinematic plans with no tcps (this is not actually a problem, but is unlikely)
-	//	if (kinematic) {
-	//		for (int i = 0; i < (int)plans.size(); i++) {
-	//			bool hastcp = false;
-	//			for (int j = 0; j < plans[i].size(); j++) {
-	//				if (plans[i].point(j).isTCP()) {
-	//					hastcp = true;
-	//					break;
-	//				}
-	//			}
-	//			if (!hastcp) {
-	//				error.addWarning("Plan "+plans[i].getName()+" is marked as kinematic but has no TCP data");
-	//			}
-	//		}
-	//	}
-
-
 	// reset accuracy parameters to their previous values
 	Constants::set_horizontal_accuracy(h);
 	Constants::set_vertical_accuracy(v);
 	Constants::set_time_accuracy(t);
+	return;
 }// loadfile
 
 

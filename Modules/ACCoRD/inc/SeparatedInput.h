@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Cesar Munoz, George Hagen
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -52,6 +52,7 @@ namespace larcfm {
  * then further processing of the stored data may be necessary upon 
  * retrieval. Use [unspecified] for any column that has no applicable units 
  * (e.g. strings or booleans).
+ * A dash (-) in the units field will be interpreted as "unitless".
  * </ul>
  * 
  * Notes on the columns of data
@@ -93,7 +94,7 @@ namespace larcfm {
   class SeparatedInput : public ParameterReader, ErrorReporter {
   public:
     static const int maxLineSize = 800;
-    
+
     class SeparatedInputException : public std::logic_error
     {
     public:
@@ -104,7 +105,7 @@ namespace larcfm {
     SeparatedInput();
     
     /** Create a new SeparatedInput from the given stream */
-    SeparatedInput(std::istream *fs);
+    explicit SeparatedInput(std::istream *fs);
 
     /** Copy Constructor.  This should not be used. */
     SeparatedInput(const SeparatedInput& x);
@@ -112,64 +113,134 @@ namespace larcfm {
     /** Assignment Operator. */
     SeparatedInput& operator=(const SeparatedInput& x);
 
+	/** 
+	 * Sets the regular expression used to divide each line into columns.  If the supplied parameter 
+	 * is not a valid regular expression, then the current delimiter is retained.  This should be set 
+	 * before the first "readLine" is called. 
+	 * @param delim 
+	 * 
+	 */
     void setColumnDelimiters(const std::string& delim);
+
+	/**
+	 * Return the regular expression used to divide each line into columns.
+	 * @return pattern
+	 */
+    std::string getColumnDelimiters() const;
 
     void setFixedColumn(const std::string& widths, const std::string& nameList, const std::string& unitList);
       
-    /** Return the heading for the given column */ 
+	/** 
+	 * Return the heading for the given column 
+	 * @param i column index
+	 * @return heading
+	 */ 
     std::string getHeading(int i) const;
  
-    /** 
-     * Find the index of the column with given heading.  If 
-     * the heading is not found, then -1 is returned. 
-     * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
-     */
+    int size() const;
+
+	/** 
+	 * Find the index of the column with given heading.  If 
+	 * the heading is not found, then -1 is returned.<p>
+	 *  
+	 * Note: If you are getting some oddly large indexes, there are probably some nonstandard characters in the input.
+	 * 
+	 * @param heading name of heading
+	 * @return index of heading
+	 */
     int findHeading(const std::string& heading) const;
 
-    /** 
-     * Returns the units string for the i-th column. If an invalid 
-     * column is entered, then "unspecified" is returned. 
-     */
+	/** 
+	 * Returns the units string for the i-th column. If an invalid 
+	 * column is entered, then "unspecified" is returned. 
+	 * @param i column index
+	 * @return unit
+	 */
     std::string getUnit(int i) const;
 
-    /**
-     * Returns true if a line defining column units was detected.
-     */
+	/**
+	 * Returns true if a line defining column units was detected.
+	 * @return true means a units line exists
+	 */
     bool unitFieldsDefined() const;
 
-    /** If set to false, all read-in headers and parameters will be converted to lower case. */
+	/** If set to false, all read-in headers and parameters will be converted to lower case. 
+	 * @param b false means ignore case
+	 */
     void setCaseSensitive(bool b);
 
-    /** If true, headers & parameters will be case sensitive.  If false, all headers & parameters will be converted to lower case. */
+	/** If true, headers and parameters will be case sensitive.  If false, all headers and 
+	 * parameters will be converted to lower case. 
+	 * @return false if case is ignored 
+	 */
     bool getCaseSensitive() const;
   
+
+	/**
+	 * If set to a non-zero value, this character will be used to delimit complex strings in a line, overriding the normal column delimiters.
+	 * This does not allow for nested quote delimiters.
+	 * The specified character will stripped inside the stored string.
+	 * The user must also supply a string that is not a column delimiter and is known not to be contained within any quoted string.
+	 * The default column delimiters are space, comma, semicolon, and tab.
+	 * This will generate an error if some input is obviously nonsense.
+	 * This is not used for parameters or fixed-width columns.
+	 * @param q quotation character, if set to zero do not treat quote characters specially
+	 * @param delims array of column delimiter characters.  The default column delimiters are space, comma, semicolon, and tab.
+	 * @param sub unique short string to replace column delimiter characters at the same index.   Examples might be "!" or "__".
+	 */
+    void setQuoteCharacter(char q, const std::vector<char>& delims, const std::string& sub);
+
+    /**
+     * This returns 0 if no character is defined.
+     * @return the character used as a quote
+     */
+    char getQuoteCharacter() const;
+
     ParameterData& getParametersRef();
 
     ParameterData getParameters() const;
 
-    /**
-     * Return true if the column entry has some (nonempty) value, otherwise return false.
-     * A value of "-" is considered a lack of a value.
-     */
+	/**
+	 * Return true if the column entry has some (nonempty) value, otherwise return false.
+	 * A value of hyphen (-) is considered a lack of a value.
+	 * @param i column index
+	 * @return true if column has a value
+	 */
     bool columnHasValue(int i) const;
   
-    /**
-     * Returns the raw string of the given column read.
-     */
+	/**
+	 * Returns the raw string of the given column read.
+	 * @param i column index
+	 * @return column value (as a string)
+	 */
     std::string getColumnString(int i) const;
 	
-    /**
-     * Returns the value of the given column (as a double) in internal units.
-     */
+	/**
+	 * Returns the value of the given column (as a double) in internal units.  This call will log errors, and has an arbitrary default value.
+	 * @param i column index
+	 * @return value of column
+	 */
     double getColumn(int i) const;
 
-	/**
-	 * Returns the value of the given column (as a double) in internal units.  If
+	/** 
+	 * Returns the value of the given column (as a double) in internal units.  If 
 	 * no units were specified in the file, then this value is assumed to be
-	 * in the given default units and an appropriate conversion takes place.
+	 * in the given default units and an appropriate conversion takes place.  
+	 * @param i column index
+	 * @param default_unit unit, if none is specified
+	 * @return value of column
 	 */
 	double getColumn(int i, const std::string& default_unit) const;
 
+
+	/**
+	 * Returns the value of the given column (as a double) in internal units.
+	 * @param i column index
+	 * @param verbose if true, log a message on errors, if false, fail silently and return an arbitrary value
+	 * @param defaultValue this is the value returned if there is some error
+	 * @return value of column
+	 */
+	double getColumn(int i, double defaultValue, bool verbose) const;
 
     /**
      * Reads a line of the input.  The first call to readLine will read the column headings, units, etc.
@@ -178,11 +249,22 @@ namespace larcfm {
      */
     bool readLine();	
     
-    /** Returns the number of the most recently read in line */
+	/** Returns the number of the most recently read in line 
+	 * @return line number 
+	 * */
     int lineNumber() const;
 
-	/** Return the last line read as a comma-delineated string */
+	/** Return the last line read as a comma-delineated string 
+	 * @return line 
+	 */
     std::string getLine() const;
+
+	/**
+	 * Return the raw header information for the file.  
+	 * This includes any comments or excess whitespace, before the column definition line.
+	 * @return preamble
+	 */
+    std::string getPreambleImage() const;
 
     // ErrorReporter Interface Methods
     
@@ -214,12 +296,18 @@ namespace larcfm {
     bool fixed_width;    // Instead of using a delimiter, use fixed width columns
     std::vector<int> width_int;        // The width of columns
 
+	char quoteCharacter; 	// If a non-empty value, use that character to delimit complex string tokens
+	bool quoteCharDefined;	// because we don't have null
+	std::map<std::string,std::string> quoteSubstitutions; // map of substitutions.  Will recalculate if this is null.
+
     int linenum;
     
     bool caseSensitive;
     
     std::string patternStr;
     
+    std::string preambleImage;
+
 //    typedef std::map<std::string, Quad<std::string,double,std::string,bool> > paramtype;
 //    paramtype parameters;
 
@@ -230,7 +318,9 @@ namespace larcfm {
     bool process_preamble(std::string str);
     void process_line(const std::string& str);
 	
+    std::string tokenizeQuotes(const std::string& str) const;
 
+    std::string unTokenizeQuotes(const std::string& str) const;
     
   };
 }

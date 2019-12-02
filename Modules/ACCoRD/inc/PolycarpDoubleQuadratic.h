@@ -4,7 +4,7 @@
  *
  * Contact: Anthony Narkawicz (anthony.narkawicz@nasa.gov), George Hagen (george.hagen@nasa.gov)
  *
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -12,7 +12,11 @@
 #ifndef POLYCARPDOUBLEQUADRATIC_H_
 #define POLYCARPDOUBLEQUADRATIC_H_
 namespace larcfm {
-    class PolycarpDoubleQuadratic {
+    /**
+ * PolycarpDoubleQuadratic - Determining if a quadratic in two variables ever passes below a threshold
+ * 						   - for inputs in the unit box
+ */
+class PolycarpDoubleQuadratic {
     public:
         static const double AE;
         static bool ae(double a, double b);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017 United States Government as represented by
+ * Copyright (c) 2014-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -12,6 +12,7 @@
 #include "format.h"
 #include "string_util.h"
 #include "Constants.h"
+#include "Function.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -26,7 +27,6 @@ const std::string ParameterData::parenPattern = "[()]+";
 const std::string ParameterData::defaultEntrySeparator = "?";
 
 ParameterData::ParameterData() {
-	caseSensitive = true;
 	preserveUnits = false;
 	unitCompatibility = true;
 	parameters = paramtype();
@@ -62,13 +62,23 @@ ParameterData ParameterData::extractPrefix(const std::string& prefix) const {
 	return p;
 }
 
-bool ParameterData::isCaseSensitive() {
-	return caseSensitive;
+ParameterData ParameterData::removeKeysWithPrefix(const std::string& prefix) const {
+	std::string prefixlc = toLowerCase(prefix);
+	ParameterData p;
+	p.preserveUnits = preserveUnits;
+	p.unitCompatibility = unitCompatibility;
+	p.patternStr = patternStr;
+	for (paramtype::const_iterator pos = parameters.begin(); pos != parameters.end(); ++pos) {
+		std::string key = pos->first;
+		std::string keylc = toLowerCase(key);
+		if (keylc.find(prefixlc) != 0) {
+			p.parameters[key] = pos->second;
+		}
+	}
+	return p;
 }
 
-void ParameterData::setCaseSensitive(bool v) {
-	caseSensitive = v;
-}
+
 
 bool ParameterData::isPreserveUnits() {
 	return preserveUnits;
@@ -85,23 +95,53 @@ void ParameterData::setUnitCompatibility(bool v) {
 	unitCompatibility = v;
 }
 
-
 int ParameterData::size() const {
 	return parameters.size();
 }
 
-std::vector<std::string> ParameterData::getList() const {
+std::vector<std::string> ParameterData::getKeyList() const {
 	paramtype::const_iterator pos;
-	std::vector<std::string> v;
-	// TODO: check for empty entries in this list
+	std::vector<std::string> keys;
 	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
-		v.push_back(pos->first);
+		keys.push_back(pos->first);
 	}
-	return v;
+	std::sort(keys.begin(), keys.end());
+	return keys;
+}
+
+std::vector<std::string> ParameterData::getKeyListEntryOrder() const {
+
+	paramtype::const_iterator pos;
+	std::vector<std::string> keys;
+	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
+		keys.push_back(pos->first);
+	}
+	const paramtype* pt = &parameters;
+	comp_order entryOrderingCompare(pt);
+
+	std::sort(keys.begin(), keys.end(), entryOrderingCompare); // this may be redundant in most cases, due to stability of (most) map implementations.
+	return keys;
+}
+/**
+ * Returns a list of parameter key strings encountered that satisfy the filter.
+ * Note that this will reflect the original capitalization of the keys when they were first stored.
+ *
+ * @return list of parameter key names
+ */
+std::vector<std::string> ParameterData::getKeyListWithFilter(Function<const std::string&,bool>& f) const {
+	paramtype::const_iterator pos;
+	std::vector<std::string> keys;
+	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
+		if (f.apply(pos->first)) {
+			keys.push_back(pos->first);
+		}
+	}
+	std::sort(keys.begin(), keys.end());
+	return keys;
 }
 
 std::vector<std::string> ParameterData::getListFull() const {
-	std::vector<std::string> list = getList();
+	std::vector<std::string> list = getKeyList();
 	for (int i = 0; i < (int) list.size(); i++) {
 		std::string s = list[i];
 		list[i] = list[i] + " = " + getString(s);
@@ -119,7 +159,7 @@ bool ParameterData::contains(const std::string& key) const {
 
 std::vector<std::string> ParameterData::matchList(const std::string& substr2) const {
 	std::vector<std::string> ret;
-	std::vector<std::string> plist = getList();
+	std::vector<std::string> plist = getKeyList();
 	for (int i = 0; i < (int) plist.size(); i++) {
 		std::string p = plist[i];
 		if (p.find(substr2) != std::string::npos)  // checking for a substring
@@ -200,18 +240,15 @@ bool ParameterData::putParam(const std::string& ikey, const std::pair<bool, Para
 	bool compatible = true;
 	if (contains(key)) {
 		ParameterEntry oldEntry = parameters[key];
+		newEntry.order = oldEntry.order; // preserve ordering
 		if (!Units::isCompatible(newEntry.units,oldEntry.units)) {
 			compatible = false;
 		} else {
 			if (newEntry.units == "unspecified") {
+				newEntry.units = oldEntry.units;
 				if (perform_conversion) {
-					std::string units = oldEntry.units;
-					double convert = Units::from(units,newEntry.dval);
-					newEntry.dval = convert;
-					newEntry.units = units;
-					newEntry.set_sval();
-				} else {
-					newEntry.units = oldEntry.units;
+					newEntry.dval = Units::from(oldEntry.units,newEntry.dval);
+					//do NOT change the string ("newEntry.sval").  The parameter coming in may not be a double value, it may be a list or a name
 				}
 			} else if (isPreserveUnits()) { // newEntry.units != "unspecified"
 				if ( oldEntry.units != "unspecified") {
@@ -233,15 +270,16 @@ std::pair<bool, ParameterEntry> ParameterData::parse_parameter_value(const std::
 	bool perform_conversion = true;
 	double dbl = Units::parse(value,-123456.78);
 	if (dbl == -123456.78) {
-		perform_conversion = true;
+		perform_conversion = true; //TODO: Does not match Java.  Problem?
 		dbl = 0.0;
+		//do NOT change the string ("value").  The parameter coming in may not be a double value, it may be a list or a name
 	}
 	std::string unit = Units::parseUnits(value);
 	bool boolx = false;
 	if (equalsIgnoreCase(value, "true") || equalsIgnoreCase(value, "T")) {
 		boolx = true;
 	}
-	ParameterEntry quad(value,dbl,unit,boolx,"",-1);
+	ParameterEntry quad(value,dbl,unit,boolx,"");
 	return std::pair<bool,ParameterEntry>(perform_conversion,quad);
 }
 
@@ -297,33 +335,7 @@ bool ParameterData::setInternal(const std::string& key, double value,
 	return putParam(key, std::pair<bool, ParameterEntry>(false,newEntry));
 }
 
-/**
- * Updates the unit for an entry. This ignores the setPreservedUnits() flag.
- *
- * @param key name of parameter
- * @param unit unit for this parameter
- * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
- */
-bool ParameterData::updateUnit(const std::string& key, const std::string& unit) {
-	paramtype::iterator entry = parameters.find(key);
-	if (Units::isUnit(unit) && entry != parameters.end() &&
-			Units::isCompatible(entry->second.units,unit) &&
-			unit !="unitless" && unit != "unspecified") {
-		entry->second.units = unit;
-		entry->second.set_sval();
-		return true;
-	} else {
-		return false;
-	}
-}
 
-/**
- * Updates entry's comment
- *
- * @param key name of parameter
- * @param msg the new comment of the parameter
- * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
- */
 bool ParameterData::updateComment(const std::string& key, const std::string& msg) {
 	paramtype::iterator entry = parameters.find(key);
 	if (entry != parameters.end()) {
@@ -334,83 +346,19 @@ bool ParameterData::updateComment(const std::string& key, const std::string& msg
 	}
 }
 
-/**
- * Updates entry's string
- *
- * @param key name of parameter
- * @param str the new string of the parameter
- * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
- */
-bool ParameterData::updateStr(const std::string& key, const std::string& str) {
-	paramtype::iterator entry = parameters.find(key);
+std::string ParameterData::getComment(const std::string& key) const {
+	paramtype::const_iterator entry = parameters.find(key);
 	if (entry != parameters.end()) {
-		entry->second.sval = str;
-		entry->second.dval = 0;
-		entry->second.bval = false;
-		entry->second.units = "unitless";
-		return true;
+		return entry->second.comment;
 	} else {
-		return false;
+		return "";
 	}
 }
 
-/** Updates entry's double value
- *
- * @param key the name of the parameter
- * @param val the new double value of the parameter in INTERNAL units
- * @return If the entry does not exist or the supplied unit is not recognized, this returns false, otherwise it returns true.
- */
-bool ParameterData::updateDouble(const std::string& key, double val) {
-	paramtype::iterator entry = parameters.find(key);
-	if (entry != parameters.end()) {
-		entry->second.dval = val;
-		if (entry->second.precision == 0) {
-			entry->second.precision = -1;
-		}
-		entry->second.set_sval();
-		return true;
-	} else {
-		return false;
-	}
-}
-
-bool ParameterData::updateBool(const std::string& key, bool val) {
-	paramtype::iterator entry = parameters.find(key);
-	if (entry != parameters.end()) {
-		entry->second.sval = val ? "true" : "false";
-		entry->second.bval = val;
-		return true;
-	} else {
-		return false;
-	}
-}
-
-bool ParameterData::updateInt(const std::string& key, int val) {
-	paramtype::iterator entry = parameters.find(key);
-	if (entry != parameters.end()) {
-		entry->second.precision = 0;
-		entry->second.dval = val;
-		entry->second.set_sval();
-		return true;
-	} else {
-		return false;
-	}
-}
-
-bool ParameterData::updatePrecision(const std::string& key, int p) {
-	paramtype::iterator entry = parameters.find(key);
-	if (entry != parameters.end()) {
-		entry->second.precision = p;
-		entry->second.set_sval();
-		return true;
-	} else {
-		return false;
-	}
-}
 
 std::vector<std::string> ParameterData::unrecognizedParameters(
 		std::vector<std::string> v) const {
-	std::vector<std::string> p = getList();
+	std::vector<std::string> p = getKeyList();
 	std::vector<std::string>::iterator pos;
 	unsigned int i = 0;
 	while (i < v.size()) {
@@ -440,7 +388,7 @@ void ParameterData::listCopy(const ParameterData& p, const std::vector<std::stri
 }
 
 void ParameterData::copy(const ParameterData& p, bool overwrite) {
-	listCopy(p,p.getList(),overwrite);
+	listCopy(p,p.getKeyListEntryOrder(),overwrite);
 }
 
 /**
@@ -542,7 +490,7 @@ bool ParameterData::set(const std::string& key, const std::vector<int>& list) {
 	std:: string s = "";
 	if (list.size() > 0) {
 		s = ""+Fm0(list[0]);
-		for (int i = 0; i < (int) list.size(); i++) {
+		for (int i = 1; i < (int) list.size(); i++) {
 			s = s + ","+Fm0(list[i]);
 		}
 	}
@@ -553,7 +501,7 @@ bool ParameterData::set(const std::string& key, const std::vector<double>& list)
 	std:: string s = "";
 	if (list.size() > 0) {
 		s = ""+Fm8(list[0]);
-		for (int i = 0; i < (int) list.size(); i++) {
+		for (int i = 1; i < (int) list.size(); i++) {
 			s = s + ","+Fm8(list[i]);
 		}
 	}
@@ -564,7 +512,7 @@ bool ParameterData::set(const std::string& key, const std::vector<std::string>& 
 	std:: string s = "";
 	if (list.size() > 0) {
 		s = ""+list[0];
-		for (int i = 0; i < (int) list.size(); i++) {
+		for (int i = 1; i < (int) list.size(); i++) {
 			s = s + ","+list[i];
 		}
 	}
@@ -575,7 +523,7 @@ bool ParameterData::setListBool(const std::string& key, const std::vector<bool>&
 	std:: string s = "";
 	if (list.size() > 0) {
 		s = (list[0] ? "true" : "false");
-		for (int i = 0; i < (int) list.size(); i++) {
+		for (int i = 1; i < (int) list.size(); i++) {
 			s = s + ","+(list[i] ? "true" : "false");;
 		}
 	}
@@ -647,16 +595,6 @@ std::string ParameterData::listToString(const std::vector<std::string>& keys) co
 	return s;
 }
 
-std::string ParameterData::toString() const {
-	std::vector<std::string> keys;
-	paramtype::const_iterator pos;
-	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
-		keys.push_back(pos->first);
-	}
-	std::sort(keys.begin(), keys.end());
-	return listToString(keys);
-}
-
 std::string ParameterData::listToString(const std::vector<std::string>& keys, const std::string& separator) const {
 	std::string s = "";
 	bool first = true;
@@ -675,6 +613,11 @@ std::string ParameterData::listToString(const std::vector<std::string>& keys, co
 	return s;
 }
 
+std::string ParameterData::toString() const {
+	std::vector<std::string> keys = getKeyList();
+	return listToString(keys);
+}
+
 /**
  * Returns a string listing all parameters in keys
  *
@@ -683,24 +626,99 @@ std::string ParameterData::listToString(const std::vector<std::string>& keys, co
  * @return string
  */
 std::string ParameterData::toString(const std::string& separator) const {
-	std::vector<std::string> keys;
-	paramtype::const_iterator pos;
-	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
-		keys.push_back(pos->first);
-	}
-	std::sort(keys.begin(), keys.end());
+	std::vector<std::string> keys = getKeyList();
 	return listToString(keys,separator);
 }
 
 bool ParameterData::equals(const ParameterData& pd) const {
 	if (parameters.size() != pd.parameters.size()) return false;
-	std::vector<std::string> keys = getList();
+	std::vector<std::string> keys = getKeyList();
 	for (int i = 0; i < (int) keys.size(); i++) {
 		std::string key = keys[i];
 		if (!pd.contains(key)) return false;
 		if (getString(key) != pd.getString(key)) return false; // this should cover all cases
 	}
-	return caseSensitive == pd.caseSensitive && preserveUnits == pd.preserveUnits && unitCompatibility == pd.unitCompatibility;
+	return preserveUnits == pd.preserveUnits && unitCompatibility == pd.unitCompatibility;
+}
+
+int ParameterData::longestKey() const {
+	int longest = 0;
+	paramtype::const_iterator pos;
+	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
+		std::string key = pos->first;
+		longest = Util::max(longest, key.length());
+	}
+	return longest;
+}
+
+int ParameterData::longestVal() const {
+	int longest = 0;
+	paramtype::const_iterator pos;
+	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
+		std::string key = pos->first;
+		longest = Util::max(longest, getString(key).length());
+	}
+	return longest;
+}
+
+/**
+ * Compare this ParameterData with another.
+ * Return a string listing all differences in stored values between the two.
+ * @param pd parameter database
+ * @return string listing differences, or the empty string if the contents are the same.
+ */
+std::string ParameterData::diff(const ParameterData& pd) const {
+	std::vector<std::string> keys0; // list of keys in both objects
+	std::vector<std::string> keys1; // list of keys only in this object
+	std::vector<std::string>::const_iterator ptr;
+	std::vector<std::string> keys = getKeyList();
+	for (ptr = keys.begin(); ptr != keys.end(); ++ptr) {
+		std::string key = (*ptr);
+		if (!pd.contains(key)) {
+			keys1.push_back(key);
+		} else {
+			keys0.push_back(key);
+		}
+	}
+	std::vector<std::string> keys2; // list of keys only in pd
+	keys = pd.getKeyList();
+	for (ptr = keys.begin(); ptr != keys.end(); ++ptr) {
+		std::string key = (*ptr);
+		if (!contains(key)) {
+			keys2.push_back(key);
+		}
+	}
+	int keyLen = Util::max(longestKey(), pd.longestKey());
+	int valLen = Util::max(longestVal(), pd.longestVal());
+	std::string out = "";
+	for (ptr = keys0.begin(); ptr != keys0.end(); ++ptr) {
+		std::string key = (*ptr);
+		std::string val1 = getString(key);
+		std::string val2 = pd.getString(key);
+		if (isBoolean(key) && getBool(key) != pd.getBool(key))
+			out += padRight(key, keyLen)+"\t"+padRight(val1, valLen)+"\t"+val2+"\n";
+		else if (isNumber(key) && getValue(key) != pd.getValue(key)) {
+			double d = getValue(key)-pd.getValue(key);
+			out += padRight(key, keyLen)+"\t"+val1+"\t"+val2+"\t[delta="+FmPrecision(d)+"]\n";
+		} else if (isNumber(key) && !(getUnit(key) == pd.getUnit(key)))
+			out += padRight(key, keyLen)+" [unit="+getUnit(key)+"]\t"+val1+"\t"+val2+" [unit="+pd.getUnit(key)+"]\n";
+		else if (!(getString(key) == pd.getString(key)))
+			out += padRight(key, keyLen)+"\t"+padRight(val1, valLen)+"\t"+val2+"\n";
+	}
+	for (ptr = keys1.begin(); ptr != keys1.end(); ++ptr) {
+		std::string key = (*ptr);
+		std::string val1 = getString(key);
+		out += padRight(key, keyLen)+"\t"+padRight(val1, valLen)+"\t-\n";
+	}
+	for (ptr = keys2.begin(); ptr != keys2.end(); ++ptr) {
+		std::string key = (*ptr);
+		std::string val2 = pd.getString(key);
+		out += padRight(key, keyLen)+"\t"+padRight("-", valLen)+"\t"+val2+"\n";
+	}
+	if (out.length() > 0) {
+		out = padRight("key", keyLen)+"\t"+padRight("p1", valLen)+"\tp2\n"+out;
+	}
+	return out;
 }
 
 std::vector<std::string> ParameterData::stringList(const std::string& instring) {

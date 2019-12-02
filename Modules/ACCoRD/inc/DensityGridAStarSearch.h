@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 United States Government as represented by
+ * Copyright (c) 2016-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -28,8 +28,14 @@ namespace larcfm {
 class DensityGridAStarSearch : public DensityGridSearch, public DensityGridTimedSearch {
 
 public:
-	double dirWeight; //1.0
-	double distWeight; //1.0
+	static double dirWeight; //0.5
+	static double distWeight; //1.0
+	static double predDistWeight; //2.0
+	static bool fourway;
+	static bool oldHeuristics;
+	static bool gridDistances;
+	static const double diagonalCost;
+
 
 	DensityGridAStarSearch();
 
@@ -38,69 +44,83 @@ public:
 		int x;
 		int y;
 		double t;
-		double cost;
+		double actualCost;
+		double predictedCost;
 		std::vector<std::pair<int,int> > path;
 
-		FringeEntry(std::pair<int,int> xy, double cc) {
+		FringeEntry(std::pair<int,int> xy, double cc, double pc) {
 			t = 0;
 			x = xy.first;
 			y = xy.second;
-			cost = cc;
+			actualCost = cc;
+			predictedCost = pc;
 			path = std::vector<std::pair<int,int> >();
 			path.push_back(xy);
 		}
 
-		FringeEntry(std::pair<int,int> xy, double cc, FringeEntry f) {
+		FringeEntry(std::pair<int,int> xy, double ac, double pc, FringeEntry f) {
 			x = xy.first;
 			y = xy.second;
-			cost = f.cost + cc;
+			actualCost = f.actualCost + ac;
+			predictedCost = pc;
 			path = std::vector<std::pair<int,int> >();
 			path.insert( path.end(), f.path.begin(), f.path.end() );
 			path.push_back(xy);
 		}
 
-		FringeEntry(std::pair<int,int> xy, double t_d, double cc) {
+		FringeEntry(double t_d, std::pair<int,int> xy, double ac, double pc) {
 			x = xy.first;
 			y = xy.second;
 			t = t_d;
-			cost = cc;
+			actualCost = ac;
+			predictedCost = pc;
 			path = std::vector<std::pair<int,int> >();
 			path.push_back(xy);
 		}
 
-		FringeEntry(std::pair<int,int> xy, double t_d, double cc, FringeEntry f) {
+		FringeEntry(double t_d, std::pair<int,int> xy, double ac, double pc, FringeEntry f) {
 			x = xy.first;
 			y = xy.second;
 			t = t_d;
-			cost = f.cost + cc;
+			actualCost = f.actualCost + ac;
+			predictedCost = pc;
 			path = std::vector<std::pair<int,int> >();
 			path.insert( path.end(), f.path.begin(), f.path.end() );
 			path.push_back(xy);
 		}
 
-		std::pair<int,int> getCell() {
+		std::pair<int,int> getCell() const {
 			return std::pair<int,int>(x, y);
 		}
 
-		Triple<int,int,int> getCell3() {
+		Triple<int,int,int> getCell3() const {
 			return Triple<int,int,int>(x, y, (int)t);
 		}
 
-		double getCost() {
-			return cost;
+		double getActualCost() const {
+			return actualCost;
 		}
 
-		std::vector<std::pair<int,int> > getPath() {
+		double getPredictedCost() const {
+			return predictedCost;
+		}
+
+		double getTotalCost() const {
+			return actualCost+predictedCost;
+		}
+
+		std::vector<std::pair<int,int> > getPath() const {
+//fpln("DensiyGridAstarSearch getpath:"+Fobj(path));
 			return path;
 		}
 
-		std::string toString() {
-			return "("+Fm0(x)+","+Fm0(y)+","+Fm0(t)+") = "+Fm3(cost);
+		std::string toString() const {
+			return "("+Fm0(x)+","+Fm0(y)+","+Fm4(t)+") = "+Fm6(actualCost)+"+"+Fm6(predictedCost);
 		}
 
 	    bool operator < (const FringeEntry& f2) const
 	    {
-	        return (cost < f2.cost);
+	        return (getTotalCost() < f2.getTotalCost());
 	    }
 
 
@@ -112,16 +132,56 @@ private:
 
 public:
 
+	static double getDirectionWeight() {
+		return dirWeight;
+	}
 
-	bool sameDirection(FringeEntry c, std::pair<int,int> cell2) const;
+	static void setDirectionWeight(double dw) {
+		dirWeight = dw;
+	}
 
-	double directionCost(FringeEntry c, std::pair<int,int> cell2) const;
+	static double getDistanceWeight() {
+		return distWeight;
+	}
 
-	double distanceCost(std::pair<int,int> cell2, int endx, int endy) const;
+	static void setDistanceWeight(double dw) {
+		distWeight = dw;
+	}
 
-	std::vector<std::pair<int,int> > astar(DensityGrid& dg, int endx, int endy, std::vector<FringeEntry>& fringe, std::vector<std::pair<int,int> >& searched) const;
+	static bool isFourway() {
+		return fourway;
+	}
 
-	std::vector<std::pair<int,int> > astarT(DensityGridTimed& dg, int endx, int endy, double gs, std::vector<FringeEntry>& fringe, std::vector<Triple<int,int,int> >& searched) const;
+	static void setFourway(bool fw) {
+		fourway = fw;
+	}
+
+	static bool isOldHeuristics() {
+		return oldHeuristics;
+	}
+
+	static void setOldHeuristics(bool oh) {
+		oldHeuristics = oh;
+	}
+
+	static double getPredictedDistanceWeight() {
+		return predDistWeight;
+	}
+
+	static void setPredictedDistanceWeight(double pdw) {
+		predDistWeight = pdw;
+	}
+
+
+//	bool sameDirection(FringeEntry c, std::pair<int,int> cell2) const;
+
+	double directionCost(FringeEntry c, int x2, int y2, double directionWeight) const;
+
+	double predictedDistanceCost(std::pair<int,int> cell2, int endx, int endy, double distanceWeight) const;
+
+	std::vector<std::pair<int,int> > astar(DensityGrid& dg, int endx, int endy, std::vector<FringeEntry>& fringe, std::vector<std::pair<int,int> >& searched, bool fourway, double directionWeight, double distanceWeight, double predictedDistanceWeight) const;
+
+	std::vector<std::pair<int,int> > astarT(DensityGridTimed& dg, int endx, int endy, double gs, std::vector<FringeEntry>& fringe, std::vector<Triple<int,int,int> >& searched, bool fourway, double directionWeight, double distanceWeight, double predictedDistanceWeight) const;
 
 	virtual std::vector<std::pair<int,int> > search(DensityGrid& dg, const Position& startPos, const Position& endPos) const;
 
@@ -130,7 +190,6 @@ public:
 	virtual std::vector<std::pair<int,int> > optimalPath(DensityGrid& dg) const;
 
 	virtual std::vector<std::pair<int,int> > optimalPathT(DensityGridTimed& dg) const;
-
 };
 }
 #endif /* FORMAT_H_ */

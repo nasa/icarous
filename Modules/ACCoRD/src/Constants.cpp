@@ -5,7 +5,7 @@
  *
  * General Constants
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -31,7 +31,8 @@ double Constants::VERTICAL_ACCURACY   = 1E-7; //Constants::GPS_LIMIT_VERTICAL;
 double Constants::HORIZONTAL_ACCURACY_RAD = Units::to("NM", Constants::HORIZONTAL_ACCURACY) * M_PI / (180.0 * 60.0);
 double Constants::TIME_ACCURACY       = 1E-7; // Constants::TIME_LIMIT_EPSILON;
 
-int Constants::OUTPUT_PRECISION = 6;
+int  Constants::OUTPUT_PRECISION = 6;
+bool Constants::TRAILING_ZEROS = true;
 
 const std::string Constants::separatorPattern = ",;";
 const std::string Constants::wsPatternBaseNoRegex = " \t,;";
@@ -84,6 +85,19 @@ void Constants::set_output_precision(int i) {
 	if (i >= 0 && i <= 16) {
 		OUTPUT_PRECISION = i;
 	}
+}
+
+/** set default trailing zeros in format printing
+ * @param b enable/disable trailing zeros
+ * */
+void Constants::set_trailing_zeros(bool b) {
+	TRAILING_ZEROS = b;
+}
+
+/** return true if trailing zeros are enabled
+ * */
+bool Constants::get_trailing_zeros() {
+	return TRAILING_ZEROS;
 }
 
 bool Constants::almost_equals_time(double t1, double t2) {

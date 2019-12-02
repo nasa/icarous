@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -7,7 +7,6 @@
 #ifndef CDSIPOLYGON_H
 #define CDSIPOLYGON_H
 
-#include "CDSSCore.h"
 #include "EuclideanProjection.h"
 #include "PolyPath.h"
 #include "Projection.h"
@@ -58,7 +57,7 @@ private:
   std::vector<double> tout;
   std::vector<double> tca;
   std::vector<double> dist_tca;
-  DetectionPolygon* cdss;
+  DetectionPolygon* cdss; // note this does NOT refer to CDSSPolygon!
   ErrorLog error;
 
 public:
@@ -68,7 +67,7 @@ public:
    * parameters for the minimum horizontal distance and the minimum
    * vertical information.
    */
-  CDSIPolygon(DetectionPolygon* d);
+  explicit CDSIPolygon(DetectionPolygon* d);
 
   CDSIPolygon();
 
@@ -129,7 +128,7 @@ public:
    * @param T the time to end looking for conflicts relative to t0
    * @return true if there is a conflict
    */
-  static bool cdsicore(const Position& so, const Velocity& vo, double t0, double state_horizon, const PolyPath& intent, double B, double T);
+  static bool cdsicore(const Position& so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T);
 
   /**
    * Return true if the given position and velocity are in violation with the intent aircraft at time tm.
@@ -157,7 +156,7 @@ public:
    * @param T the time to end looking for conflicts relative to t0
    * @return true if there is a conflict
    */
-  bool detection(const Position& so, const Velocity& vo, double t0, double state_horizon, const PolyPath& intent, double B, double T);
+  bool detection(const Position& so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T);
 
 
   /**
@@ -177,7 +176,7 @@ public:
    * @param T the time to end looking for conflicts relative to t0
    * @return true if there is a conflict
    */
-  bool detectionXYZ(Vect3 so, const Velocity& vo, double t0, double state_horizon, const PolyPath& intent, double B, double T);
+  bool detectionXYZ(Vect3 so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T);
 
 
   /**
@@ -197,8 +196,10 @@ public:
    * @param T the time to end looking for conflicts relative to t0
    * @return true if there is a conflict
    */
-  bool detectionLL(const LatLonAlt& so, const Velocity& vo, double t0, double state_horizon, const PolyPath& intent, double B, double T);
+  bool detectionLL(const LatLonAlt& so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T);
 
+  bool conflictOnlyXYZ(const Vect3& so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T) const;
+  bool conflictOnlyLL(const LatLonAlt& so, const Velocity& vo, double t0, double state_horizon, PolyPath& intent, double B, double T) const ;
 
 private:
   void captureOutput(double t_base, int conf, DetectionPolygon* cd);

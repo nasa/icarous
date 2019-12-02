@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -16,7 +16,7 @@
 namespace larcfm {
 
 FixedAircraftUrgencyStrategy::FixedAircraftUrgencyStrategy() {
-  ac_ = TrafficState::INVALID.getId();
+  ac_ = TrafficState::INVALID().getId();
 }
 
 FixedAircraftUrgencyStrategy::FixedAircraftUrgencyStrategy(const std::string& id) {
@@ -31,8 +31,11 @@ void FixedAircraftUrgencyStrategy::setFixedAircraftId(const std::string& id) {
   ac_ = id;
 }
 
-TrafficState FixedAircraftUrgencyStrategy::mostUrgentAircraft(Detection3D* detector, const TrafficState& ownship, const std::vector<TrafficState>& traffic, double T) {
-  return TrafficState::findAircraft(traffic,ac_);
+/**
+ * @return index of aircraft id
+ */
+int FixedAircraftUrgencyStrategy::mostUrgentAircraft( const TrafficState& ownship, const std::vector<TrafficState>& traffic, double T) const {
+  return TrafficState::findAircraftIndex(traffic,ac_);
 }
 
 UrgencyStrategy* FixedAircraftUrgencyStrategy::copy() const {

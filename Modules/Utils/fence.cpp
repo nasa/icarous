@@ -53,7 +53,7 @@ fence::fence(int ID, FENCE_TYPE ftype, uint16_t nVert, double infloor, double in
 
 void fence::AddVertex(int index, double lat,double lon,double ResolBUFF){
 	Position pos = Position::makeLatLonAlt(lat,"degree",lon,"degree",0,"m");
-	geoPoly0.addVertex(pos);
+	geoPoly0.add(pos);
 
 	if(geoPoly0.size() == nVertices){
 		geoPoly0.setBottom(floor);
@@ -62,7 +62,7 @@ void fence::AddVertex(int index, double lat,double lon,double ResolBUFF){
 		geoPoly3D = geoPoly0.poly3D(proj);
 
 		for(int i=0;i<nVertices;++i){
-			fenceVertices0.push_back(geoPoly3D.getVertex(i));
+			fenceVertices0.push_back(geoPoly3D.get2D(i));
 		}
 
 		if(fenceType == KEEP_IN){
@@ -145,7 +145,7 @@ void fence::Print(){
 	std::cout<<"floor:"<<floor<<std::endl;
 	std::cout<<"roof:"<<ceiling<<std::endl;
 	for(int i=0;i<nVertices;++i){
-		std::cout<<geoPoly3D.getVertex(i).toString(6)<<std::endl;
+		std::cout<<geoPoly3D.get2D(i).toString(6)<<std::endl;
 	}
 }
 

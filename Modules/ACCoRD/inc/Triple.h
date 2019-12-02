@@ -6,7 +6,7 @@
  *
  * a three element tuple
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -93,6 +93,9 @@ class Triple {
      * @param left first element of tuple
      * @param center second element of tuple
      * @param right third element of tuple
+     * @param <L> Type of the first element of the tuple
+     * @param <C> Type of the second element of the tuple
+     * @param <R> Type of the third element of the tuple
      * @return new triple
      */
  template <typename L, typename C, typename R> 
@@ -112,6 +115,27 @@ class Triple {
     return !(t1==t2);
   }
   
+  /** ordering */
+  template <typename L, typename C, typename R>
+  bool operator< (const Triple<L,R,C>& t1, const Triple<L,R,C>& t2) {
+	if (t1.first == t2.first) {
+		if (t1.second == t2.second) {
+			return t1.third < t2.third;
+		} else {
+			return t1.second < t2.second;
+		}
+	} else {
+		return t1.first < t2.first;
+	}
+  }
+
+  /** ordering */
+  template <typename L, typename C, typename R>
+  bool operator> (const Triple<L,R,C>& t1, const Triple<L,R,C>& t2) {
+	  return t1 != t2 && !(t1 < t2);
+  }
+
+
 }
 
 

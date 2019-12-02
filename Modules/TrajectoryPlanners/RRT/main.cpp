@@ -55,25 +55,25 @@ int main(int argc,char* argv[]){
 
     // create bounding box
     Poly2D box;
-    box.addVertex(0,0);
-    box.addVertex(100,0);
-    box.addVertex(100,100);
-    box.addVertex(0,100);
+    box.add(0,0);
+    box.add(100,0);
+    box.add(100,100);
+    box.add(0,100);
     Poly3D bbox(box,0,100);
 
     // obstacles
     Poly2D obs2D;
-    obs2D.addVertex(10,10);
-    obs2D.addVertex(20,10);
-    obs2D.addVertex(20,20);
-    obs2D.addVertex(10,20);
+    obs2D.add(10,10);
+    obs2D.add(20,10);
+    obs2D.add(20,20);
+    obs2D.add(10,20);
     Poly3D obs1(obs2D,-100,100);
 
     Poly2D obs2D_2;
-    obs2D_2.addVertex(30,0);
-    obs2D_2.addVertex(60,0);
-    obs2D_2.addVertex(60,30);
-    obs2D_2.addVertex(30,30);
+    obs2D_2.add(30,0);
+    obs2D_2.add(60,0);
+    obs2D_2.add(60,30);
+    obs2D_2.add(30,30);
     Poly3D obs2(obs2D_2,-100,100);
 
     std::list<Poly3D> obstacleList;

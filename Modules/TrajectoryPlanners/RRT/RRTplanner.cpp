@@ -15,17 +15,23 @@ RRTplanner::RRTplanner(Poly3D &boundary,
 
     double avgRadius = boundary.poly2D().apBoundingRadius();
 
-    xmin = 0;
-    xmax = 2*avgRadius;
-    ymin = 0;
-    ymax = 2*avgRadius;
-    zmin = -1;
-    zmax = 10;
+    xmin = ymin = MAXDOUBLE;
+	xmax = ymax = -MAXDOUBLE;
+    int n = boundary.poly2D().size();
+	for (int i = 0; i < n; ++i) {  // copy
+		xmax = Util::max(boundary.poly2D().get(i).x, xmax);
+		ymax = Util::max(boundary.poly2D().get(i).y, ymax);
+		xmin = Util::min(boundary.poly2D().get(i).x, xmin);
+		ymin = Util::min(boundary.poly2D().get(i).y, ymin);
+	}
+
+    zmin = boundary.getBottom();
+    zmax = boundary.getTop();
 
     goalreached = false;
 
-    DAA.parameters.loadFromFile(daaConfig);
-    daaLookAhead = DAA.parameters.getLookaheadTime("s");
+    DAA.loadFromFile(daaConfig);
+    daaLookAhead = DAA.getLookaheadTime("s");
     time(&startTime);
 
     maxInputNorm = maxNorm;
@@ -33,6 +39,8 @@ RRTplanner::RRTplanner(Poly3D &boundary,
     F = PlantDynamics;
     InputFunction = ControlInput;
     nodeCount = 0;
+
+    boundingBox = boundary;
 }
 
 void RRTplanner::SetParameters(int stepT, double dt, double maxD, double maxInputNorm) {
@@ -44,7 +52,7 @@ void RRTplanner::SetParameters(int stepT, double dt, double maxD, double maxInpu
 void RRTplanner::SetDAAParameters(std::string parameterList) {
     larcfm::ParameterData newParams;
     newParams.parseParameterList(";",parameterList);
-    DAA.parameters.updateParameterData(newParams);
+    DAA.setParameterData(newParams);
 }
 
 
@@ -289,8 +297,8 @@ bool RRTplanner::CheckProjectedFenceConflict(node_t* qnode,node_t* goal){
                 j = i+1;
             }
 
-            Vect2 A = it->getVertex(i);
-            Vect2 B = it->getVertex(j);
+            Vect2 A = it->get2D(i);
+            Vect2 B = it->get2D(j);
             bool intCheck = LinePlanIntersection(A,B,
                                                  it->getBottom(),it->getTop(),
                                                  qnode->pos,goal->pos);
@@ -318,9 +326,6 @@ bool RRTplanner::CheckTrafficCollision(Vect3& qPos,Vect3& qVel,std::vector<Vect3
     std::vector<Vect3>::iterator itP;
     std::vector<Vect3>::iterator itV;
     int i=0;
-    double trafficDist = MAXDOUBLE;
-    double violationTime;
-    double alertTime = DAA.parameters.alertor.getLevel(1).getAlertingTime();
     for(itP = TrafficPos.begin(),itV = TrafficVel.begin();
         itP != TrafficPos.end() && itV != TrafficVel.end();
         ++itP,++itV){
@@ -328,30 +333,12 @@ bool RRTplanner::CheckTrafficCollision(Vect3& qPos,Vect3& qVel,std::vector<Vect3
         Velocity vi = Velocity::makeVxyz(itV->x,itV->y,"m/s",itV->z,"m/s");
         char name[10];
         sprintf(name,"Traffic%d",i);i++;
-        DAA.addTrafficState(name,si,vi);
-
-        //printf("Traffic pos:%f,%f\n",itP->x,itP->y);
-        //printf("Traffic heading:%f\n",vi.track("degree"));
-
-        double distH = so.distanceH(si);
-
-        if(distH < trafficDist){
-            trafficDist = distH;
-        }
-
-        DAA.kinematicMultiBands(KMB);
-        if(!KMB.timeIntervalOfViolation(1).isEmpty()){
-            violationTime = KMB.timeIntervalOfViolation(1).low;
-        }
-        else{
-            violationTime = NAN;
-        }
-
-        if(ISFINITE(violationTime) && violationTime <= alertTime){
+        int ac_idx = DAA.addTrafficState(name,si,vi);
+        int alert_level = DAA.alertLevel(ac_idx);
+        if(alert_level > 0){
             return true;
         }
     }
-
     return false;
 }
 
@@ -404,20 +391,19 @@ bool RRTplanner::CheckTrafficCollisionWithBands(bool CheckTurn,Vect3& qPos,Vect3
     //printf("curr heading:%f\n",qHeading);
     //printf("old heading:%f\n",oldHeading);
 
-    DAA.kinematicMultiBands(KMB);
-    if( BandsRegion::isConflictBand(KMB.regionOfTrack(DAA.getOwnshipState().track()))){
+    if( BandsRegion::isConflictBand(DAA.regionOfHorizontalDirection(DAA.getOwnshipState().horizontalDirection()))){
         return true;
     }
     else if(CheckTurn){
         Velocity vo0 = Velocity::makeVxyz(oldVel.x,oldVel.y,"m/s",oldVel.z,"m/s");
         double oldHeading = vo0.track("degree");
-        if(BandsRegion::isConflictBand(KMB.regionOfTrack(vo0.trk()))){
+        if(BandsRegion::isConflictBand(DAA.regionOfHorizontalDirection(vo0.trk()))){
             return true;
         }
         // Check collision with traffic based on current heading
-        for(int ib=0;ib<KMB.trackLength();++ib){
-            if(KMB.trackRegion(ib) != larcfm::BandsRegion::NONE ){
-                Interval ii = KMB.track(ib,"deg");
+        for(int ib=0;ib<DAA.horizontalDirectionBandsLength();++ib){
+            if(DAA.horizontalDirectionRegionAt(ib) != larcfm::BandsRegion::NONE ){
+                Interval ii = DAA.horizontalDirectionIntervalAt(ib,"deg");
 
                 if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
                     //printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);

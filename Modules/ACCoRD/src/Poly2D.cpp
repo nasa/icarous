@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -9,6 +9,7 @@
 #include "Vect2.h"
 #include "format.h"
 #include "Util.h"
+#include "VectFuns.h"
 //#include "GeneralPath.h"
 
 /**
@@ -80,39 +81,96 @@ Poly2D::Poly2D(const Poly2D& polygon) {
 
 
 Poly2D Poly2D::linear(const Vect2& v, double t) const  {
-	Poly2D rtn = Poly2D();
+	Poly2D rtn; // = Poly2D();
 	//for (Vect2 vt: vertices) {
 	for (int i = 0 ; i < (int) vertices.size() ; i++) {
 		Vect2 vt = vertices[i];
-		rtn.addVertex(vt.linear(v,t));
+		rtn.add(vt.linear(v,t));
 	}
 	return rtn;
 }
 
 Poly2D Poly2D::linear(const std::vector<Vect2>& v, double t) const  {
-	Poly2D rtn = Poly2D();
+	Poly2D rtn; // = Poly2D();
 	for (int i = 0 ; i < (int) vertices.size() ; i++) {
 		Vect2 vt = vertices[i];
-		rtn.addVertex(vt.linear(v[i],t));
+		rtn.add(vt.linear(v[i],t));
 	}
 	return rtn;
 }
 
 
-void Poly2D::addVertex(double x, double y) {
+void Poly2D::add(double x, double y) {
 	vertices.push_back(Vect2(x,y));
 //	boundingRectangleDefined = false;
-	minX = minY = MAXDOUBLE;
-	maxX = maxY = -MAXDOUBLE;
+//	minX = minY = MAXDOUBLE;
+//	maxX = maxY = -MAXDOUBLE;
+	minX = Util::min(x,minX);
+	minY = Util::min(y,minY);
+	maxX = Util::max(x,maxX);
+	maxY = Util::max(y,maxY);
+
 }
 
 
-void Poly2D::addVertex(const Vect2& v) {
+void Poly2D::add(const Vect2& v) {
 	//f.pln("Poly2D.addVertex "+v);
 	vertices.push_back(v);
 	//	boundingRectangleDefined = false;
-	minX = minY = MAXDOUBLE;
-	maxX = maxY = -MAXDOUBLE;
+//	minX = minY = MAXDOUBLE;
+//	maxX = maxY = -MAXDOUBLE;
+	minX = Util::min(v.x,minX);
+	minY = Util::min(v.y,minY);
+	maxX = Util::max(v.x,maxX);
+	maxY = Util::max(v.y,maxY);
+
+}
+
+void Poly2D::insert(int i, const Vect2& v) {
+	if (i >= 0 && i < size()-1) {
+		vertices.insert(vertices.begin()+i, v);
+		minX = Util::min(v.x,minX);
+		minY = Util::min(v.y,minY);
+		maxX = Util::max(v.x,maxX);
+		maxY = Util::max(v.y,maxY);
+	}
+}
+
+
+Vect2 Poly2D::get(int i) const {
+	if (i < 0 || i >= (int) vertices.size()) {
+//		fpln("Poly2D.getVertex index out of bounds: "+Fm0(i));
+		return Vect2::INVALID();
+	} else {
+		return vertices[i];
+	}
+}
+
+
+void Poly2D::set(int i,const Vect2& v) {
+	if (i < 0 || i >= (int) vertices.size()) {
+		fpln("Poly2D.setVertex index out of bounds: "+Fm0(i));
+	} else if (v.isInvalid()) {
+		fpln("Poly2D.setVertex vertex invalid");
+	} else {
+		vertices[i] = v;
+	}
+//	boundingRectangleDefined = false;
+//	minX = minY = MAXDOUBLE;
+//	maxX = maxY = -MAXDOUBLE;
+	recalcBoundingRectangle();
+}
+
+/**
+ * Remove a point from this SimplePolyNew.
+ * @param n Index (in order added) of the point to be removed.
+ */
+void Poly2D::remove(int n) {
+	if (n >= 0 && n < (int) vertices.size()) {
+		//vertices.remove(n);
+		vertices.erase(vertices.begin()+n);
+	}
+	recalcBoundingRectangle();
 }
 
 
@@ -124,14 +182,14 @@ bool Poly2D::contains(double a, double b) const {
 //	if (!boundingRect.contains(a, b)) {
 //		return false;
 //	}
-	if (minX == MAXDOUBLE) {
-		for (int i = 0; i < (int) vertices.size(); i++) {  // copy
-			maxX = Util::max(vertices[i].x, maxX);
-			maxY = Util::max(vertices[i].y, maxY);
-			minX = Util::min(vertices[i].x, minX);
-			minY = Util::min(vertices[i].y, minY);
-		}
-	}
+//	if (minX == MAXDOUBLE) {
+//		for (int i = 0; i < (int) vertices.size(); i++) {  // copy
+//			maxX = Util::max(vertices[i].x, maxX);
+//			maxY = Util::max(vertices[i].y, maxY);
+//			minX = Util::min(vertices[i].x, minX);
+//			minY = Util::min(vertices[i].y, minY);
+//		}
+//	}
 	if (a > maxX || a < minX || b > maxY || b < minY) {
 		return false;
 	}
@@ -192,36 +250,14 @@ bool Poly2D::contains(const Vect2& v) const {
 	return contains(v.x,v.y);
 }
 
-void Poly2D::setVertex(int i,const Vect2& v) {
-	if (i < 0 || i >= (int) vertices.size()) {
-		fpln("Poly2D.setVertex index out of bounds: "+Fm0(i));
-	} else {
-		vertices[i] = v;
-	}
-//	boundingRectangleDefined = false;
-	minX = minY = MAXDOUBLE;
-	maxX = maxY = -MAXDOUBLE;
-
-}
-
-Vect2 Poly2D::getVertex(int i) const {
-	if (i < 0 || i >= (int) vertices.size()) {
-//		fpln("Poly2D.getVertex index out of bounds: "+Fm0(i));
-		return Vect2::INVALID();
-	} else {
-		return vertices[i];
-	}
-}
 
 
-std::vector<Vect2> Poly2D::getVertices() const {
+std::vector<Vect2> Poly2D::getVerticesRef() const {
 	return vertices;
 }
 
-//BoundingRectangle Poly2D::getBoundingRectangle() const {
-//	return boundingRect;
-//}
-//
+
+
 //void Poly2D::setBoundingRectangle(BoundingRectangle boundingRectangle) {
 //	boundingRect = boundingRectangle;
 //}
@@ -234,20 +270,16 @@ std::vector<Vect2> Poly2D::getVertices() const {
  * @return the signed area of the polygon
  */
 double Poly2D::signedArea() const {
+	if (size() < 3) return 0;
+	// re-centering on the middle (dx and dy offsets) are used to avoid precision issues for small polys, since coordinates can be very large
 	double dx = (minX+maxX)/2.0;
 	double dy = (minY+maxY)/2.0;
-	double temp = 0;
-	int size = vertices.size();
-	if (vertices[0].x == vertices[size - 1].x && vertices[0].y == vertices[size - 1].y) {
-		size--;
+	double a = ((vertices[size()-1].x-dx)*(vertices[0].y-dy) - (vertices[0].x-dx)*(vertices[size()-1].y-dy));
+	for (int i = 0; i < (int) vertices.size()-1; i++) {
+		a = a + ((vertices[i].x-dx)*(vertices[i+1].y-dy) - (vertices[i+1].x-dx)*(vertices[i].y-dy));
 	}
-	for (int i = 1 ; i < size - 1 ; ++i) {
-		temp += (vertices[i].x-dx) * ((vertices[i + 1].y-dy) - (vertices[i - 1].y-dy));
-	}
-	double area2 =
-			(vertices[0].x-dx) * ((vertices[1].y-dy) - (vertices[size - 1].y-dy)) + temp + (vertices[size - 1].x-dx) * ((vertices[0].y-dy) - (vertices[size - 2].y-dy));
-
-	return area2 / 2;
+	// note: this is signed, and indicates direction (positive is clockwise)
+	return 0.5*a;
 }
 
 // area and centroid courtesy of Paul Bourke (1988) http://paulbourke.net/geometry/polyarea/
@@ -256,7 +288,7 @@ double Poly2D::signedArea() const {
 /**
  * Return the horizontal area (in m^2) of this Poly3D.
  */
-double Poly2D::area() {
+double Poly2D::area() const {
 	return std::abs(signedArea());
 	//fpln(" Poly2D.area -- not yet implemented!!"); return -1;
 	//		double a = 0;
@@ -278,12 +310,21 @@ double Poly2D::area() {
  * @return the geometric centroid.
  */
 Vect2 Poly2D::centroid()	const {
+	if (size() == 1) {
+		return get(0);
+	} else if (size() == 2) {
+		Vect2 v0 = get(0);
+		Vect2 v1 = get(1);
+		return VectFuns::midPoint(v0,v1);
+	}
 	double dx = (minX+maxX)/2.0;
 	double dy = (minY+maxY)/2.0;
 	double temp = 0;
 	double tempX = 0;
 	double tempY = 0;
 	int size = vertices.size();
+	//fpln(" $$ Poly2D::centroid  2: size = "+Fm0(size));
+	if (size < 2) return Vect2::INVALID();
 	if (vertices[0].x == vertices[size - 1].x && vertices[0].y == vertices[size - 1].y) {
 		size--;
 	}
@@ -353,6 +394,18 @@ double Poly2D::outerDiameter() const {
 	return maxDist;
 }
 
+bool Poly2D::isClockwise() const {
+	return signedArea() > 0;
+}
+
+Poly2D Poly2D::reverseOrder() const {
+	std::vector<Vect2> np; // std::vector<LatLonAlt>();
+	for (int i = size()-1; i >= 0; i--) {
+		np.push_back(vertices[i]);
+	}
+	return Poly2D(np);
+}
+
 double Poly2D::apBoundingRadius() const {
 	Vect2 cpos = averagePoint();
 	double maxDist = 0.0;
@@ -362,6 +415,18 @@ double Poly2D::apBoundingRadius() const {
 		if (dist > maxDist) maxDist = dist;
 	}
 	return maxDist;
+}
+
+void Poly2D::recalcBoundingRectangle() {
+	minX = minY = MAXDOUBLE;
+	maxX = maxY = -MAXDOUBLE;
+	for (int i = 0; i < (int) vertices.size(); i++) {  // copy
+		maxX = Util::max(vertices[i].x, maxX);
+		maxY = Util::max(vertices[i].y, maxY);
+		minX = Util::min(vertices[i].x, minX);
+		minY = Util::min(vertices[i].y, minY);
+	}
+//		boundingRectangleDefined = true;
 }
 
 

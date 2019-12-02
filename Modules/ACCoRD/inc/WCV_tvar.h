@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017 United States Government as represented by
+ * Copyright (c) 2015-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -7,7 +7,7 @@
 #ifndef WCV_TVAR_H_
 #define WCV_TVAR_H_
 
-#include "Detection3D.h"
+#include "Detection3DSUM.h"
 #include "Vect3.h"
 #include "Velocity.h"
 #include "WCVTable.h"
@@ -17,15 +17,18 @@
 #include <string>
 
 namespace larcfm {
-class WCV_tvar : public Detection3D {
+class WCV_tvar : public Detection3DSUM {
 
 protected:
   WCVTable table;
   WCV_Vertical* wcv_vertical;
   std::string id;
 
+  void copyFrom(const WCV_tvar& core);
+
 public:
 
+  WCV_tvar& operator=(const WCV_tvar& core);
   virtual ~WCV_tvar();
 
   /**
@@ -63,11 +66,11 @@ public:
 
   bool horizontal_WCV(const Vect2& s, const Vect2& v) const;
 
-  bool violation(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) const;
+  virtual bool violation(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) const;
 
-  bool conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
+  virtual bool conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
 
-  ConflictData conflictDetection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
+  virtual ConflictData conflictDetection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
 
   LossData WCV3D(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
 
@@ -76,7 +79,7 @@ public:
   bool containsTable(WCV_tvar* wcv) const;
 
   virtual std::string toString() const;
-  virtual std::string toPVS(int prec) const;
+  virtual std::string toPVS() const;
 
   ParameterData getParameters() const;
 

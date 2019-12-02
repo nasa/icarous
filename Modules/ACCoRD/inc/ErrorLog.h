@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -35,7 +35,7 @@ public:
 	 * Construct a new ErrorLog object.  Every message includes the name of this error log.
 	 * @param name the name of this error log
 	 */
-	ErrorLog(const std::string& name);
+	explicit ErrorLog(const std::string& name);
 
 	/**
 	 * If fail fast is true, then when an error is added, the program will terminate.

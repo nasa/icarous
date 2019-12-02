@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -74,7 +74,7 @@ class GenericBands {
    * band information is cleared. */
   virtual void setMaxGroundSpeed(double gs, const std::string& unit) = 0;
   /** Returns the maximum ground speed that is output by Bands in knots. */
-  virtual double getMaxGroundSpeed(const std::string& unit) = 0;
+  virtual double getMaxGroundSpeed(const std::string& unit) const = 0;
 
   /** Sets the range of vertical speeds output by Bands, -max_vs to
    * max_vs [fpm]. When this parameter is set any existing band
@@ -84,7 +84,7 @@ class GenericBands {
    * Returns the range of vertical speeds output by Bands [fpm]. Any existing
    * bands information is cleared.
    */
-  virtual double getMaxVerticalSpeed(const std::string& unit) = 0;
+  virtual double getMaxVerticalSpeed(const std::string& unit) const = 0;
 
   /** Clear all bands information. */
   virtual void clear() = 0;
