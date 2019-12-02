@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6.4)
 project(CFE_LOGGER C)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+
 include_directories(../Icarouslib/fsw/platform_inc)
 include_directories(fsw/src)
 include_directories(fsw/tables)

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6.4)
 project(GEOFENCE_APP C)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+
 set(CMAKE_CXX_STANDARD 11)
 
 

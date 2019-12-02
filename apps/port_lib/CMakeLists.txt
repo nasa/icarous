@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6.4)
 project(CFE_PORT_LIB C)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+
 include_directories(fsw/public_inc)
 
 # The shared OSAL and cFE include directories should always be used
