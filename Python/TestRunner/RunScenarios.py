@@ -9,7 +9,6 @@ import yaml
 import numpy as np
 from polygon_contain import *
 from pymavlink import mavutil
-from matplotlib import pyplot as plt
 
 sys.path.append("../Batch")
 import BatchGSModule as GS
@@ -50,7 +49,7 @@ def GetWaypoints(wploader):
     return WP
 
 
-def RunScenario(scenario, watch=False, save=False, output_dir=""):
+def RunScenario(scenario, watch=False, save=False, verbose=True, output_dir=""):
     ownship = vehicle()
     traffic = {}
     name = scenario["name"].replace(' ', '-')
@@ -83,7 +82,8 @@ def RunScenario(scenario, watch=False, save=False, output_dir=""):
     ic = subprocess.Popen(["./core-cpu1", "-I 0", "-C 1"],stdout=subprocess.DEVNULL)
 
     # Pause for a couple of seconds here so that ICAROUS can boot up
-    print("Waiting for heartbeat...")
+    if verbose:
+        print("Waiting for heartbeat...")
     master.wait_heartbeat()
     gs = GS.BatchGSModule(master, 1, 0)
 
@@ -114,9 +114,13 @@ def RunScenario(scenario, watch=False, save=False, output_dir=""):
 
     # Wait for GPS fix before starting mission
     time.sleep(1)
-    print("Waiting for GPS fix...")
+    if verbose: 
+        print("Waiting for GPS fix...")
     master.recv_match(type="GLOBAL_POSITION_INT", blocking=True)
-    print("Starting mission")
+
+    if verbose:
+        print("Starting mission")
+
     gs.StartMission()
 
     # Run simulation for specified duration
@@ -126,8 +130,9 @@ def RunScenario(scenario, watch=False, save=False, output_dir=""):
     alt = 0
     dist2final = 1000
     while duration < simTimeLimit:
-        print("Sim Duration: %.1fs\t Dist to Final: %.1fm\t Alt: %.1fm%s" %
-              (duration, dist2final, alt, " "*10), end="\r")
+        if verbose:
+            print("Sim Duration: %.1fs\t Dist to Final: %.1fm\t Alt: %.1fm%s" %
+                  (duration, dist2final, alt, " "*10), end="\r")
         time.sleep(0.01)
         currentT = time.time()
         duration = currentT - startT
@@ -156,7 +161,8 @@ def RunScenario(scenario, watch=False, save=False, output_dir=""):
         dist2final = GS.gps_distance(msg.lat/1E7, msg.lon/1E7, final[0], final[1])
         alt = ownship["position"][-1][2]
         if duration > 20 and dist2final < 5:
-            print("\nReached final waypoint")
+            if verbose:
+                print("\nReached final waypoint")
             break
 
     # Once simulation is finished, kill the icarous process
@@ -203,7 +209,13 @@ if __name__ == "__main__":
                         help="directory to save output (default: 'simoutput')")
     parser.add_argument("--watch", action="store_true",
                         help="watch the simulation as it runs")
+    parser.add_argument("--verbose",action="store_true",
+                         help="print sim information")
     args = parser.parse_args()
+
+
+    if args.watch:
+        from matplotlib import pyplot as plt
 
     # Load scenarios
     f = open(args.scenario_file, 'r')
@@ -221,7 +233,7 @@ if __name__ == "__main__":
 
         # Run the simulation
         print("\nRunning scenario: \"%s\"\t(%d/%d)\n" % (scenario["name"], i+1, len(scenario_list)))
-        simdata = RunScenario(scenario, watch=args.watch, save=args.save, output_dir=output_dir)
+        simdata = RunScenario(scenario, watch=args.watch, save=args.save, verbose=args.verbose, output_dir=output_dir)
 
         # Verify the sim output
         result = VS.validate_sim_data(simdata, plot=args.plot, save=args.save, test=args.test, output_dir=output_dir)
