@@ -49,6 +49,9 @@ class GeoFenceModule(mp_module.MPModule):
         self.t2 = 0
         self.numSentFence = 0
         self.communicating = False
+        self.requestingFence = False
+        self.totalVertices = 0
+        self.recvVertices = 0   
         self.wp = []
         self.numwp = 0
         self.startrequest = False
@@ -125,7 +128,13 @@ class GeoFenceModule(mp_module.MPModule):
      
 
         if m.get_type() == "MISSION_COUNT":
-            if m.mission_type == 2:
+
+            if m.mission_type == 1:
+                self.fenceList = []
+                self.totalVertices = m.count
+                self.master.mav.mission_request_send(1,0,self.recvVertices,mission_type=1)
+
+            elif m.mission_type == 2:
                 self.numwp = m.count
                 self.wpreceived = 0
                 self.wp = []
@@ -136,7 +145,43 @@ class GeoFenceModule(mp_module.MPModule):
 
 
         if m.get_type() == "MISSION_ITEM":
-            if m.mission_type == 2:
+
+
+             if m.mission_type == 1:
+                self.recvVertices += 1
+                _id = m.seq  # index of fence
+                _type = m.frame  # type of fence
+                _numV = m.param1  # _numVertices
+                _ci = m.param2
+                _floor = m.param3
+                _roof = m.param4
+                _lat = m.x  # latitude
+                _lon = m.y  # longitude
+                if m.seq >= len(self.fenceList):
+                    Geofence = {'id':_id,'type': _type,'numV':_numV,'floor':_floor,
+                                'roof':_roof,'Vertices':[]}
+                    self.fenceList.append(Geofence)
+
+                self.fenceList[_id]['Vertices'].append((_lat,_lon))
+
+                if _ci == _numV -1:
+                    points = self.fenceList[_id]['Vertices'][:]
+                    points.append(points[0])
+                    if self.fenceList[_id]['type'] == 0:
+                        gcf = (255, 255, 150)
+                    else:
+                        gcf = (255, 200, 200)
+
+                    name = 'Fence'+str(self.fenceList[_id]['id'])
+                    from MAVProxy.modules.mavproxy_map import mp_slipmap
+                    self.mpstate.map.add_object(mp_slipmap.SlipPolygon(name, points, layer=2,
+                                                                                   linewidth=2, colour=gcf))
+                    if(self.recvVertices != self.totalVertices):
+                        self.master.mav.mission_request_send(1,0,self.recvVertices,mission_type=1)
+                else:
+                    self.master.mav.mission_request_send(1,0,self.recvVertices,mission_type=1)
+
+             if m.mission_type == 2:
                 if m.seq == self.wpreceived:
 		    self.startrequest = False
                     self.wpreceived += 1
@@ -182,6 +227,10 @@ class GeoFenceModule(mp_module.MPModule):
                 print("usage: geofence load <filename>")
                 return
             self.load_fence(args[1])
+
+        elif args[0] == "list":
+            self.requestingFence = True
+            self.master.mav.mission_request_list_send(1,0,1)
 
         elif args[0] == "save":
             if(len(args) != 2):
@@ -392,9 +441,12 @@ class GeoFenceModule(mp_module.MPModule):
             print("Insufficient points in polygon, try drawing polygon again")
             print("(Expected %d points, Received %d points)" % (self.Geofence0["numV"], len(points)))
             return
-            
-            for pts in points:
-                self.Geofence0['Vertices'].append(pts)
+           
+        from MAVProxy.modules.lib import mp_util
+        from MAVProxy.modules.mavproxy_map import mp_slipmap
+
+        for pts in points:
+            self.Geofence0['Vertices'].append(pts)
 
         # Adjust fence id to not leave empty spaces
         if self.Geofence0['id'] > len(self.fenceList) + len(self.drawnFenceList):
