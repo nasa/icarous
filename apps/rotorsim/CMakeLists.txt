@@ -13,12 +13,15 @@ include_directories(../scheduler/fsw/platform_inc)
 include_directories(${MODULES_ROOT}/Utils)
 include_directories(fsw/src)
 include_directories(fsw/tables)
+include_directories(QuadCopterSim)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
+aux_source_directory(QuadCopterSim SIM_SRC_FILES)
+
 link_directories(${MODULES_LIB})
 
-add_library(rotorsim MODULE ${APP_SRC_FILES})
+add_library(rotorsim MODULE ${APP_SRC_FILES} ${SIM_SRC_FILES})
 
 target_link_libraries(rotorsim Utils)
 
