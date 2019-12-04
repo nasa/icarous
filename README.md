@@ -26,7 +26,7 @@ https://nasa.github.io/icarous/
 
 ### Current Releases
 
-- ICAROUS  V-2.1.17 - May 10, 2019
+- ICAROUS  V-2.1.25 - December 4, 2019
 
 ### License
 
@@ -45,19 +45,10 @@ Agreement.  See the directory [`LICENSES`](LICENSES); see also the copyright not
 
 ### COMPILING ICAROUS
 
-ICAROUS makes use of the cmake build system. In order to setup a build, the following environment variables must be defined. These can be added to you `~/.bashrc` script. Conveniently, you can also source the SetEnv.sh script in the repository.
-
-- OSAL_HOME= absolute path to the CFS/osal folder found in the Icarous repository.
-
 ```
-    $mkdir build
-    $cd build && cmake ..
-    $make cpu1-install
+    $make 
+    $make install
 ```
-
-For compilation on an ARM processor, follow the instructions in patches/arm before running cmake.
-
-ICAROUS and cFS can be compiled and run on OSX as well. Follow instructions in patches/osx. NOTE: Due to the lack of extended posix functionality on OSX, the patches provide implementations of osal's timer api. However, the scheduler application doesn't work well with this patch. We recommend using the macScheduler app instead. 
 
 ### LAUNCHING ICAROUS
 
@@ -66,8 +57,6 @@ The generated executable file is installed under `cFS/bin/cpu1`. Launch Icarous 
 ```
     $sudo ./core-cpu1 -I 0 -C 1
 ```
-
-Note that you need root previleges. When running ICAROUS on an embedded platform, one can make use of the `nohup` or `screen` command to avoid termination when a terminal is closed.
 
 The intf_tbl.c located under `cFS/apps/ardupilot/fsw/tables` defines parameters required to configure the serial port settings to connect to an autopilot. Similarly gsIntf_tbl.c contains parameters that configure the connection to a ground station (radio link [SERIAL] or a socket connection [SOCKET]).
 
@@ -95,6 +84,10 @@ Waypoints can be uploaded from MAVProxy using the `wp` command, e.g.,
 Geofence can be uploaded from MAVProxy using the `geofence` command, e.g.,
 
 	geofence load Examples/InputData/geofence.xml
+
+Parameters can be uploaded from MAVProxy using the `param` command, e.g.,
+
+        param load Examples/InputData/icarous_default.parm
 
 (Optional: To automatically check that geofences are composed of "nice" polygons before uploading, download PolyCARP from https://github.com/nasa/PolyCARP.git and add the Python folder in this repository to the PYTHONPATH environment variable.)
 	
