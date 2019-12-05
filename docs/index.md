@@ -6,7 +6,7 @@ nav_order: 1
 
 <div>
  <p align="center">
- <img src="/assets/ICAROUS-logo.jpeg" style="width:45%;">
+ <img src="{{ site.baseurl }}/assets/ICAROUS-logo.jpeg" style="width:45%;">
  </p>
 </div>
 
@@ -25,7 +25,7 @@ nav_order: 1
 ICAROUS is implemented in a distributed fashion enabling modularity and facilitating rapid incorporation of new features. The various core functionalities are each distributed across one or more applications. ICAROUS depends on an interprocess communication framework that provides publish/subscribe capabilities to exchange data between applications. The default implementation provided in the repository uses NASA's <a href="https://cfs.gsfc.nasa.gov/">core Flight Systems (cFS)</a> middleware to achieve this distributed architecture. Each ICAROUS functionality is implemented as a cFS application. Such a distributed architecture enables ICAROUS to be easily integrated with any autopilot system by developing a suitable interface application. The default distribution of ICAROUS provides a MAVLink interface application for ArduPilot autopilots.
 <br>
 <p align="center">
-<img src="/assets/Architecture.png" style="width:75%;">
+<img src="{{ site.baseurl }}/assets/Architecture.png" style="width:75%;">
 <figcaption style="text-align:center;">Distributed and modular architecture of ICAROUS</figcaption>
 </p>
 </div>

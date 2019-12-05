@@ -1,8 +1,8 @@
----
-layout: default
-title: Flight setup 
-nav_order: 5
----
+#---
+#layout: default
+#title: Flight setup 
+#nav_order: 5
+#---
 
 ## Hardware configuration
 

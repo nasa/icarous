@@ -7,19 +7,14 @@ nav_order: 3
 ## Executing Icarous
 
 The cFS core executive is launched by running the `core-cpu1` executable. This
-is installed in cFS/bin/cpu1 after running `make cpu1-install` in the previous
+is installed in exe/cpu1 after running `make install` in the previous
 section.
 
 This cFS executable in turn launches the varous applications configured to
-run in the cFS/bin/cpu1/cfe_core_cpu1.scr. The CMake build system in the
+run in the exe/cpu1/cfe_core_cpu1.scr. The CMake build system in the
 ICAROUS repository automatically generates a cfe_core_cpu1.scr file with the
 appropriate apps that are configured to run. More information about specific
 applications and their functions can be found in the applications section.
-
-NOTE: On a linux operating system, cFS software bus makes use of os queues
-(mqueues) to enable data exchange between apps. The msg_max parameter located
-under /proc/sys/fs/mqueue/msg_max file should be set to a value greater than
-250.
 
 ```
 # running the cFS executive
