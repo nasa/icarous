@@ -87,7 +87,7 @@ Geofence can be uploaded from MAVProxy using the `geofence` command, e.g.,
 
 Parameters can be uploaded from MAVProxy using the `param` command, e.g.,
 
-        param load Examples/InputData/icarous_default.parm
+    param load Examples/InputData/icarous_default.parm
 
 (Optional: To automatically check that geofences are composed of "nice" polygons before uploading, download PolyCARP from https://github.com/nasa/PolyCARP.git and add the Python folder in this repository to the PYTHONPATH environment variable.)
 	
