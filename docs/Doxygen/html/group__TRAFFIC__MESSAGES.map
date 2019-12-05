@@ -1,4 +1,0 @@
-<map id="TRAFFIC_MESSAGES" name="TRAFFIC_MESSAGES">
-<area shape="rect" id="node1" href="$group__MESSAGES.html" title="MESSAGES" alt="" coords="5,5,103,32"/>
-<area shape="rect" id="node2" href="$group__TRAFFIC.html" title="Application to monitor traffic conflicts. " alt="" coords="15,56,93,83"/>
-</map>

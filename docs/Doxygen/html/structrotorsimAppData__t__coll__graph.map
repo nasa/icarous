@@ -1,5 +1,0 @@
-<map id="rotorsimAppData_t" name="rotorsimAppData_t">
-<area shape="rect" id="node2" href="$structflightplan__t.html" title="message encoding flight plan information " alt="" coords="5,95,91,121"/>
-<area shape="rect" id="node3" href="$structwaypoint__t.html" title="waypoint data. " alt="" coords="5,5,91,32"/>
-<area shape="rect" id="node4" href="$structRotorsimTable__t.html" title="Rotorsim table data. " alt="" coords="115,95,234,121"/>
-</map>
