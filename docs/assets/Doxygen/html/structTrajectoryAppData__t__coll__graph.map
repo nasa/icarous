@@ -1,0 +1,5 @@
+<map id="TrajectoryAppData_t" name="TrajectoryAppData_t">
+<area shape="rect" id="node2" href="$structflightplan__t.html" title="message encoding flight plan information " alt="" coords="5,95,91,121"/>
+<area shape="rect" id="node3" href="$structwaypoint__t.html" title="waypoint data. " alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node4" href="$structflightplan__monitor__t.html" title="Information regarding the mission flight plan. " alt="" coords="115,95,250,121"/>
+</map>
