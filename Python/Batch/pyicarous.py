@@ -25,6 +25,7 @@ class VehicleSim():
 def ComputeControl(speed, currentPos, nextPos):
     ds = nextPos - currentPos
     ds = ds/np.linalg.norm(ds) * speed
+    ds[2] = -ds[2]
     return ds
 
 
@@ -90,6 +91,7 @@ class IcarousSim():
             if (self.count > 2000) and (self.dist >= 200):
                 break
 
+            U = (0, 0, 0)
             self.dist = np.linalg.norm(self.targetPos - self.currentOwnshipPos)
             if self.conflict == 0:
                 U = ComputeControl(1, self.currentOwnshipPos, self.targetPos)
@@ -104,13 +106,13 @@ class IcarousSim():
                                                         1, self.pvs)
                 U = np.array([ve, vn, vd])
 
-            self.ownship.step(U[0], U[1], U[2])
+            self.ownship.input(U[0],U[1],U[2])
+            self.ownship.step()
 
             opos = self.ownship.getOutputPosition()
             ovel = self.ownship.getOutputVelocity()
             self.currentOwnshipPos = (opos[0], opos[1], opos[2])
             self.currentOwnshipVel = (ovel[0], ovel[1], ovel[2])
-
             self.ownshipPosLog.append(self.currentOwnshipPos)
 
             home_pos = self.home_pos
@@ -121,10 +123,10 @@ class IcarousSim():
             (wgx, wgy) = gps_offset(home_pos[0], home_pos[1],
                                     targetPos[0], targetPos[1])
 
-            ownship_pos = [ogx, ogy, opos[2]]
+            ownship_pos_gx = [ogx, ogy, opos[2]]
             ownship_vel = [ovel[0], ovel[1], ovel[2]]
             ovelTrkGsVs = ConvertVnedToTrkGsVs(*ownship_vel)
-            self.heading2target = ComputeHeading(ownship_pos, targetPos)
+            self.heading2target = ComputeHeading(ownship_pos_gx, targetPos)
 
             for i in range(len(self.traffic)):
                 traffic = self.traffic[i]
@@ -140,13 +142,13 @@ class IcarousSim():
                 (tgx, tgy) = gps_offset(home_pos[0], home_pos[1],
                                         traffic.pos[0], traffic.pos[1])
 
-                traffic_pos = [tgx, tgy, traffic.pos[2]]
+                traffic_pos_gx = [tgx, tgy, traffic.pos[2]]
                 traffic_vel = [traffic.vel[0], traffic.vel[1], traffic.vel[2]]
 
-                self.tfMonitor.input_traffic(i, traffic_pos,
+                self.tfMonitor.input_traffic(i, traffic_pos_gx,
                                              traffic_vel, self.count)
 
-            self.tfMonitor.monitor_traffic(ownship_pos, ovelTrkGsVs,
+            self.tfMonitor.monitor_traffic(ownship_pos_gx, ovelTrkGsVs,
                                            self.count)
 
             (conflict1, self.ptrack) = self.tfMonitor.GetTrackBands()
@@ -168,11 +170,11 @@ class IcarousSim():
                         else:
                             self.ptrack = -1
                     currentHeading = ovelTrkGsVs[0]
-                    safe2Turn = self.tfMonitor.check_safe_to_turn(ownship_pos,ovelTrkGsVs,currentHeading,self.heading2target)
-                    wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos,ovelTrkGsVs,[wgx,wgy,targetPos[2]])
+                    safe2Turn = self.tfMonitor.check_safe_to_turn(ownship_pos_gx,ovelTrkGsVs,currentHeading,self.heading2target)
+                    wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,ovelTrkGsVs,[wgx,wgy,targetPos[2]])
                     newOvelTrkGsVs = ovelTrkGsVs
                     newOvelTrkGsVs = (self.heading2target,ovelTrkGsVs[1],ovelTrkGsVs[2])
-                    wpFeasibility |= self.tfMonitor.monitor_wp_feasibility(ownship_pos,newOvelTrkGsVs,[wgx,wgy,targetPos[2]])
+                    wpFeasibility |= self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,newOvelTrkGsVs,[wgx,wgy,targetPos[2]])
 
                     if safe2Turn == 0 and not wpFeasibility:
                         self.conflict = 1
@@ -189,7 +191,7 @@ class IcarousSim():
 
                     self.vehicleSpeed.append(ovelTrkGsVs[1])
                     ovelTrkGsVs = (ovelTrkGsVs[0],self.simSpeed,ovelTrkGsVs[2])
-                    wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos,ovelTrkGsVs,[wgx,wgy,targetPos[2]])
+                    wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,ovelTrkGsVs,[wgx,wgy,targetPos[2]])
                     if not wpFeasibility:
                         self.conflict = 1
                         if len(self.preferredSpeed) > 0:
@@ -210,12 +212,12 @@ class IcarousSim():
                         else:
                             self.palt = -1000
 
-                    wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos,ovelTrkGsVs,[wgx,wgy,targetPos[2]])
+                    wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,ovelTrkGsVs,[wgx,wgy,targetPos[2]])
                     if not wpFeasibility: 
                         self.conflict = 1
 
                     if self.conflict:
-                        diffAlt = self.palt - ownship_pos[2]
+                        diffAlt = self.palt - ownship_pos_gx[2]
                         self.pvs = 0.1 * diffAlt
 
                     self.preferredAlt.append(self.palt)
@@ -224,20 +226,17 @@ class IcarousSim():
                         self.palt = 5
 
 
-"""
-ic = Icarous(None,[200.0,0.0,5.0],None)
+ic = IcarousSim((37.102177,-76.387207),[200.0,0.0,5.0],5)
 ic.Run()
 
 
 
-plt.figure(2)
-plt.plot(ic.posOwnX,ic.posOwnY,'r')
-plt.plot(ic.posTrafficX,ic.posTrafficY,'b')
-sqre = plt.Polygon([[80,-20],[120,-20],[120,20],[80,20]],fill=None,edgecolor='r')
-plt.scatter(100,0,c='green')
-plt.gca().add_line(sqre)
+plt.figure(1)
+plt.plot(np.array(ic.ownshipPosLog)[:,0],np.array(ic.ownshipPosLog)[:,1],'r')
+#plt.plot(ic.posTrafficX,ic.posTrafficY,'b')
+#sqre = plt.Polygon([[80,-20],[120,-20],[120,20],[80,20]],fill=None,edgecolor='r')
+#plt.scatter(100,0,c='green')
+#plt.gca().add_line(sqre)
 plt.axis([-200,200,-200,200])
 
-
 plt.show()
-"""
