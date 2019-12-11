@@ -33,10 +33,12 @@ TrafficMonitor::TrafficMonitor(bool reclog,char daaConfig[]) {
     numTrackBands = 0;
     numSpeedBands = 0;
     numVerticalSpeedBands = 0;
+    numAltitudeBands = 0;
 
     trackIntTypes[0] = BandsRegion::NONE;
     speedIntTypes[0] = BandsRegion::NONE;
     vsIntTypes[0] = BandsRegion::NONE;
+    altIntTypes[0] = BandsRegion::NONE;
 
 }
 
