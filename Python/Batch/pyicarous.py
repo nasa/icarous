@@ -1,11 +1,10 @@
 import math
 import numpy as np
-from matplotlib import pyplot as plt
-from mpl_toolkits import mplot3d
 from pyTrafficMonitor import TrafficMonitor
 from quadsim import QuadSim
 
 from ichelper import (ConvertTrkGsVsToVned,
+                      distance,
                       gps_offset,
                       ConvertVnedToTrkGsVs,
                       ComputeHeading)
@@ -14,12 +13,34 @@ from ichelper import (ConvertTrkGsVsToVned,
 class VehicleSim():
     def __init__(self, dt, x, y, z, vx, vy, vz):
         self.dt = dt
+        self.pos0 = np.array([x, y, z])
+        self.vel0 = np.array([vx, vy, vz])
+        self.noise = False
+        self.coeff = 0
+        self.sigma_pos = 0
+        self.old_x = 0
+        self.old_y = 0
+        self.old_z = 0
         self.pos = np.array([x, y, z])
         self.vel = np.array([vx, vy, vz])
 
+    def setpos_uncertainty(self,xx,yy,zz,xy,yz,xz,coeff):
+        self.noise = True
+        self.coeff = coeff
+        self.sigma_pos = np.array([[xx, xy, xz],
+                                   [xy, yy, yz],
+                                   [xz, yz, zz]])
+
     def run(self, U):
-        self.vel = self.vel + 0.2 * (U - self.vel)
-        self.pos = self.pos + self.vel * self.dt
+        self.vel0 = self.vel0 + 0.2 * (U - self.vel0)
+        self.pos0 = self.pos0 + self.vel0 * self.dt
+        n = np.zeros((1,3))
+        if self.noise:
+            n = np.random.multivariate_normal(mean=np.array([0.0,0.0,0.0]),cov = self.sigma_pos, size=1)
+
+        self.pos[0] = self.coeff*self.pos[0] + (1 - self.coeff)*(self.pos0[0] + n[0,0]) 
+        self.pos[1] = self.coeff*self.pos[1] + (1 - self.coeff)*(self.pos0[1] + n[0,1]) 
+        self.pos[2] = self.coeff*self.pos[2] + (1 - self.coeff)*(self.pos0[2] + n[0,2]) 
 
 
 def ComputeControl(speed, currentPos, nextPos):
@@ -30,7 +51,7 @@ def ComputeControl(speed, currentPos, nextPos):
 
 
 class IcarousSim():
-    def __init__(self, initialPos, targetPos, vehicleSpeed):
+    def __init__(self, initialPos, vehicleSpeed, targetPosLLA = None, targetPosNED = None):
         """
         @initialPos (lat,lon) tuple containing starting
                     latitude, longitude  of simulation
@@ -38,13 +59,19 @@ class IcarousSim():
                     N,E,D range to target position
         """
 
-        self.home_pos = [initialPos[0], initialPos[1]]
+        self.home_pos = [initialPos[0], initialPos[1], initialPos[2]]
         self.traffic = []
         self.ownship = QuadSim()
-        self.targetPos = np.array([targetPos[0], targetPos[1], targetPos[2]])
+
+        if targetPosNED is not None:
+            self.targetPos = np.array([targetPosNED[1], targetPosNED[0], targetPosNED[2]])
+        else:
+            targetN = distance(self.home_pos[0],self.home_pos[1],targetPosLLA[0],self.home_pos[1])
+            targetE = distance(self.home_pos[0],self.home_pos[1],self.home_pos[0],targetPosLLA[1])
+            self.targetPos = np.array([targetE,targetN,targetPosLLA[2]])
         self.simSpeed = vehicleSpeed
 
-        self.currentOwnshipPos = (0, 0, 0)
+        self.currentOwnshipPos = (0, 0, initialPos[2])
         self.currentOwnshipVel = (0, 0, 0)
         self.ownshipPosLog = []
         self.ownshipVelLog = []
@@ -66,7 +93,7 @@ class IcarousSim():
         self.pvs = 0
         self.conflict = 0
         self.heading2target = 0
-        self.trackResolution = False
+        self.trackResolution = True
         self.speedResolution = False
         self.altResolution = False
         self.resObtained = False
@@ -75,6 +102,13 @@ class IcarousSim():
         self.relpos = []
         self.relvel = []
 
+    def setpos_uncertainty_ownship(self,xx,yy,zz,xy,yz,xz,coeff=0.8):
+        self.ownship.setpos_uncertainty(xx,yy,zz,xy,yz,xz,coeff)
+
+    def setpos_uncertainty_traffic(self,xx,yy,zz,xy,yz,xz,coeff=0.8):
+        for tf in self.traffic:
+            tf.setpos_uncertainty(xx,yy,zz,xy,yz,xz,coeff)
+
     def InputTraffic(self, rng, brng, alt, speed, heading, crate):
         tx = rng*np.sin(brng*np.pi/180)
         ty = rng*np.cos(brng*np.pi/180)
@@ -82,7 +116,9 @@ class IcarousSim():
         tvx = speed*np.sin(heading*np.pi/180)
         tvy = speed*np.cos(heading*np.pi/180)
         tvz = crate
-        self.traffic.append(VehicleSim(0.5, tx, ty, tz, tvx, tvy, tvz))
+        self.traffic.append(VehicleSim(0.05, tx, ty, tz, tvx, tvy, tvz))
+        self.trafficPosLog.append([])
+        self.trafficVelLog.append([])
 
     def Run(self):
 
@@ -94,14 +130,18 @@ class IcarousSim():
             U = (0, 0, 0)
             self.dist = np.linalg.norm(self.targetPos - self.currentOwnshipPos)
             if self.conflict == 0:
-                U = ComputeControl(1, self.currentOwnshipPos, self.targetPos)
+                U = ComputeControl(self.simSpeed, self.currentOwnshipPos, self.targetPos)
             else:
+                (ve,vn,vd) = (0,0,0)
                 if self.trackResolution:
+                    #print("executing track resolution")
                     (ve, vn, vd) = ConvertTrkGsVsToVned(self.ptrack, 1, 0)
                 elif self.speedResolution:
+                    #print("executing speed resolution")
                     (ve, vn, vd) = ConvertTrkGsVsToVned(self.heading2target,
                                                         self.pspeed, 0)
                 elif self.altResolution:
+                    #print("executing alt resolution")
                     (ve, vn, vd) = ConvertTrkGsVsToVned(self.heading2target,
                                                         1, self.pvs)
                 U = np.array([ve, vn, vd])
@@ -111,9 +151,11 @@ class IcarousSim():
 
             opos = self.ownship.getOutputPosition()
             ovel = self.ownship.getOutputVelocity()
-            self.currentOwnshipPos = (opos[0], opos[1], opos[2])
+
+            self.currentOwnshipPos = (opos[0], opos[1], opos[2] + self.home_pos[2])
             self.currentOwnshipVel = (ovel[0], ovel[1], ovel[2])
             self.ownshipPosLog.append(self.currentOwnshipPos)
+            self.ownshipVelLog.append(self.currentOwnshipVel)
 
             home_pos = self.home_pos
             targetPos = self.targetPos
@@ -123,8 +165,10 @@ class IcarousSim():
             (wgx, wgy) = gps_offset(home_pos[0], home_pos[1],
                                     targetPos[0], targetPos[1])
 
-            ownship_pos_gx = [ogx, ogy, opos[2]]
-            ownship_vel = [ovel[0], ovel[1], ovel[2]]
+            ownship_pos_gx = [ogx, ogy, self.currentOwnshipPos[2]]
+            ownship_vel = [self.currentOwnshipVel[0], 
+                           self.currentOwnshipVel[1], 
+                           self.currentOwnshipVel[2] ]
             ovelTrkGsVs = ConvertVnedToTrkGsVs(*ownship_vel)
             self.heading2target = ComputeHeading(ownship_pos_gx, targetPos)
 
@@ -155,9 +199,9 @@ class IcarousSim():
             (conflict2, self.pspeed) = self.tfMonitor.GetGSBands()
             (conflict3, pdown, pup, self.palt) = self.tfMonitor.GetAltBands()
 
-            self.conflict = conflict1 or conflict2 or conflict3
-
+            self.conflict = (conflict1 == 1) or (conflict2 == 1) or (conflict3 == 1)
             if (self.conflict is True) and not self.resObtained:
+                print("conflict detected")
                 self.resObtained = True
                 # Place holder for to use functions to obtain resolutions
 
@@ -178,7 +222,8 @@ class IcarousSim():
 
                     if safe2Turn == 0 and not wpFeasibility:
                         self.conflict = 1
-                        self.ptrack = self.preferredTrack[-1]
+                        if self.ptrack == -1:
+                            self.ptrack = self.preferredTrack[-1]
 
                     self.preferredTrack.append(self.ptrack)
 
@@ -226,17 +271,3 @@ class IcarousSim():
                         self.palt = 5
 
 
-ic = IcarousSim((37.102177,-76.387207),[200.0,0.0,5.0],5)
-ic.Run()
-
-
-
-plt.figure(1)
-plt.plot(np.array(ic.ownshipPosLog)[:,0],np.array(ic.ownshipPosLog)[:,1],'r')
-#plt.plot(ic.posTrafficX,ic.posTrafficY,'b')
-#sqre = plt.Polygon([[80,-20],[120,-20],[120,20],[80,20]],fill=None,edgecolor='r')
-#plt.scatter(100,0,c='green')
-#plt.gca().add_line(sqre)
-plt.axis([-200,200,-200,200])
-
-plt.show()

@@ -1,6 +1,6 @@
 from ctypes import *
 
-lib = CDLL('../../Modules/lib/libTrafficMonitor.dylib')
+lib = CDLL('../../Modules/lib/libTrafficMonitor.so')
 
 lib._wrap_new_TrafficMonitor.restype = c_void_p
 lib._wrap_TrafficMonitor_InputTraffic.argtypes = [c_void_p,c_int,c_double*3,c_double*3,c_double]
@@ -75,7 +75,6 @@ class TrafficMonitor():
                				       byref(resup),
                                                byref(resdown),
                                                byref(respref))
-
        return (currentConflict.value,respref.value)
 
     def GetGSBands(self):
