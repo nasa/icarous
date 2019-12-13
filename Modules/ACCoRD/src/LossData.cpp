@@ -49,14 +49,14 @@ bool LossData::conflict(double thr) const {
  * Returns time to first loss in seconds.
  */
 double LossData::getTimeIn() const {
-	return time_in;
+	return conflict() ? time_in : PINFINITY;
 }
 
 /**
  * Returns time to last loss in seconds.
  */
 double LossData::getTimeOut() const {
-	return time_out;
+	return conflict() ? time_out : NINFINITY;
 }
 
 /**

@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon, Rick Butler, Cesar Munoz
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -136,8 +136,6 @@ public:
    */
   Bands();
 
-  Bands(const Bands& b);
-
   //
   // Interface methods...
   //
@@ -183,7 +181,7 @@ public:
 
   void setTime(double t);
 
-  /** Returns the time of the lookahead time. [s] */
+  /** Returns the time of the lookahead time in specified units */
   double getLookaheadTime(const std::string& unit) const;
 
   /** Returns the time of the lookahead time in seconds */
@@ -205,11 +203,11 @@ public:
 
   void setMaxGroundSpeed(double gs, const std::string& unit);
   double getMaxGroundSpeed() const;
-  double getMaxGroundSpeed(const std::string& unit);
+  double getMaxGroundSpeed(const std::string& unit) const;
 
   void setMaxVerticalSpeed(double vs, const std::string& unit);
   double getMaxVerticalSpeed() const;
-  double getMaxVerticalSpeed(const std::string& unit);
+  double getMaxVerticalSpeed(const std::string& unit) const;
 
   void setTrackTolerance(double trk, const std::string& unit);
   double getTrackTolerance(const std::string& unit) const;

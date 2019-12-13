@@ -111,25 +111,31 @@ int AlertingMofN::m_of_n(int alert_level) {
  * In addition of m_of_n, this also applies hysteresis and persistence
  */
 int AlertingMofN::m_of_n(int alert_level, double current_time) {
-    if (!ISNAN(_last_time_) &&
-        (current_time <= _last_time_ || current_time - _last_time_ > hysteresis_time_)) {
-        reset();
+  if (!ISNAN(_last_time_)) {
+    if (current_time == _last_time_) {
+      return _alert_;
     }
-    int alert_mofn = m_of_n(alert_level);
-    if (alert_mofn < 0) {
-        return alert_mofn;
+    if (current_time < _last_time_ || current_time - _last_time_ > hysteresis_time_) {
+      reset();
     }
-    if (!ISNAN(_init_time_) && _alert_ > 0 && alert_mofn < _alert_ && current_time >= _init_time_ &&
-            current_time - _init_time_ < persistence_time_) {
-        // Do nothing. Keep the previous alert_
-    } else {
-        if (alert_mofn > 0 && alert_mofn != _alert_) {
-            _init_time_ = current_time;
-        }
-        _alert_ = alert_mofn;
-    }
+  }
+  int alert_mofn = m_of_n(alert_level);
+  if (alert_mofn < 0) {
     _last_time_ = current_time;
-    return _alert_;
+    _alert_ = alert_mofn;
+    return alert_mofn;
+  }
+  if (!ISNAN(_init_time_) && _alert_ > 0 && alert_mofn < _alert_ && current_time >= _init_time_ &&
+      current_time - _init_time_ < persistence_time_) {
+    // Do nothing. Keep the previous alert_
+  } else {
+    if (alert_mofn > 0 && alert_mofn != _alert_) {
+      _init_time_ = current_time;
+    }
+    _alert_ = alert_mofn;
+  }
+  _last_time_ = current_time;
+  return _alert_;
 }
 
 } /* namespace larcfm */

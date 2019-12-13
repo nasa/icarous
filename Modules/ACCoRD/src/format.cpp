@@ -120,6 +120,10 @@ string FmPrecision(double v) {
 }
 
 string FmPrecision(double v, int precision) {
+  return FmPrecision(v, precision, Constants::get_trailing_zeros());
+}
+
+string FmPrecision(double v, int precision, bool includeTrailingZeros) {
 	if (ISNAN(v)) {
 		return "NaN";
 	}
@@ -140,7 +144,7 @@ string FmPrecision(double v, int precision) {
 	}
 	ss << fm_nz(v,precision+1);
 	std::string str = ss.str();
-	if (precision > 0 && !Constants::get_trailing_zeros()) {
+	if (precision > 0 && !includeTrailingZeros) {
 	  std::size_t first=str.find('.');
 	  if (first!=std::string::npos) {
 	    std::size_t last = str.find_last_not_of('0');

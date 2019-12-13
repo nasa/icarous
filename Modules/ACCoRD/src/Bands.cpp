@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -36,36 +36,6 @@ Bands::Bands(double D, const std::string& dunit, double H, const std::string& hu
   init(D, dunit, H, hunit, T, tunit, max_gs, gsunit, max_vs, vsunit);
 }
 
-Bands::Bands(const Bands& b) : error("Bands") {
-  red = BandsCore(b.red);
-  doTrk = b.doTrk;
-  doGs = b.doGs;
-  doVs = b.doVs;
-
-  computeTrk = b.computeTrk;
-  computeGs = b.computeGs;
-  computeVs = b.computeVs;
-
-  trackArray = std::vector<Interval>();
-  trackArray.insert(trackArray.end(),b.trackArray.begin(),b.trackArray.end());
-  trackRegionArray = std::vector<BandsRegion::Region>();
-  trackRegionArray.insert(trackRegionArray.end(),b.trackRegionArray.begin(),b.trackRegionArray.end());
-
-  groundArray = std::vector<Interval>();
-  groundArray.insert(groundArray.end(),b.groundArray.begin(),b.groundArray.end());
-  groundRegionArray = std::vector<BandsRegion::Region>();
-  groundRegionArray.insert(groundRegionArray.end(),b.groundRegionArray.begin(),b.groundRegionArray.end());
-
-  verticalArray = std::vector<Interval>();
-  verticalArray.insert(verticalArray.end(),b.verticalArray.begin(),b.verticalArray.end());
-  verticalRegionArray = std::vector<BandsRegion::Region>();
-  verticalRegionArray.insert(verticalRegionArray.end(),b.verticalRegionArray.begin(),b.verticalRegionArray.end());
-
-  conflictBands = b.conflictBands;
-  ownship = b.ownship;
-  traffic = b.traffic;
-}
-
 void Bands::init(double D, const std::string& dunit, double H, const std::string& hunit, double T, const std::string& tunit, double max_gs, const std::string& gsunit, double max_vs, const std::string& vsunit) {
   red = BandsCore(Units::from(dunit,D),Units::from(hunit,H),Units::from(tunit,T),Units::from(gsunit,max_gs),Units::from(vsunit,max_vs));
   doGs = true;
@@ -74,15 +44,15 @@ void Bands::init(double D, const std::string& dunit, double H, const std::string
   computeTrk = true;
   computeGs = true;
   computeVs = true;
-  trackArray = std::vector<Interval>();
-  groundArray = std::vector<Interval>();
-  verticalArray = std::vector<Interval>();
-  trackRegionArray = std::vector<BandsRegion::Region>();
-  groundRegionArray = std::vector<BandsRegion::Region>();
-  verticalRegionArray = std::vector<BandsRegion::Region>();
   conflictBands = false;
-  ownship = TrafficState::INVALID;
   traffic = 0;
+  // trackArray = std::vector<Interval>(); // Default value
+  // groundArray = std::vector<Interval>(); // Default value
+  // verticalArray = std::vector<Interval>(); // Default value
+  // trackRegionArray = std::vector<BandsRegion::Region>(); // Default value
+  // groundRegionArray = std::vector<BandsRegion::Region>(); // Default value
+  // verticalRegionArray = std::vector<BandsRegion::Region>(); // Default value
+  // ownship = TrafficState::INVALID();
 }
 
 void Bands::needComputeBands() {
@@ -236,7 +206,7 @@ double Bands::getMaxGroundSpeed() const {
   return red.getMaxGroundSpeed();
 }
 
-double Bands::getMaxGroundSpeed(const std::string& unit) {
+double Bands::getMaxGroundSpeed(const std::string& unit) const {
   return Units::to(unit, red.getMaxGroundSpeed());
 }
 
@@ -250,7 +220,7 @@ double Bands::getMaxVerticalSpeed() const {
   return red.getMaxVerticalSpeed();
 }
 
-double Bands::getMaxVerticalSpeed(const std::string& unit) {
+double Bands::getMaxVerticalSpeed(const std::string& unit) const {
   return Units::to(unit, red.getMaxVerticalSpeed());
 }
 
@@ -315,10 +285,10 @@ void Bands::addTraffic(const TrafficState& ac) {
     return;
   }
   traffic++;
-  Vect3 si0 = ac.get_s();
-  Vect3 s0 = ownship.get_s().Sub(si0);
-  Velocity vi0 = ac.get_v();
-  red.addTraffic(s0,ownship.get_v(),vi0,doTrk,doGs,doVs);
+  Vect3 si = ac.get_s();
+  Vect3 s = ownship.get_s().Sub(si);
+  Velocity vi = ac.get_v();
+  red.addTraffic(s,ownship.get_v(),vi,doTrk,doGs,doVs);
   needComputeBands();
 }
 
@@ -336,7 +306,7 @@ void Bands::addTraffic(const Position& pi, const Velocity& vi) {
 
 void Bands::clear() {
   resetRegions();
-  ownship = TrafficState::INVALID;
+  ownship = TrafficState::INVALID();
 }
 
 void Bands::resetRegions() {
@@ -676,12 +646,16 @@ int Bands::find_first_implicit_none(double tolerance,
   if (arraylist.size() == 0) {
     return 0;
   }
-  for (Interval::nat i = 0; i <= arraylist.size(); ++i) {
-    if (i==0 ? arraylist[i].low - lb > tolerance :
-        i == arraylist.size() ? ub - arraylist[i-1].up > tolerance :
-            arraylist[i].low -arraylist[i-1].up > tolerance) {
+  if (arraylist[0].low - lb > tolerance) {
+      return 0;
+  }
+  for (Interval::nat i = 1; i < arraylist.size(); ++i) {
+    if (arraylist[i].low -arraylist[i-1].up > tolerance) {
       return i;
     }
+  }
+  if (ub - arraylist[arraylist.size()-1].up > tolerance) {
+      return arraylist.size()-1;
   }
   return -1;
 }

@@ -38,7 +38,7 @@
  * opt [d/t,d/t] (optimal horizontal resolution)
  * vs  [d/t]     (vertical speed resolution)
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -56,8 +56,8 @@ namespace larcfm {
 
 
 CR3D::CR3D() {
-  trk = gs = opt = Horizontal::NoHorizontalSolution;
-  vs = Vertical::NoVerticalSolution;
+  trk = gs = opt = Horizontal::NoHorizontalSolution();
+  vs = Vertical::NoVerticalSolution();
 }
 bool CR3D::cr(const Vect3& s, const Vect3& vo, const Vect3& vi,
     const double D, const double H, int epsh, int epsv) {
@@ -66,8 +66,8 @@ bool CR3D::cr(const Vect3& s, const Vect3& vo, const Vect3& vi,
   //Vect2 v2 = v.vect2();
   //    Vect3 ns = -s;
 
-  trk = gs = opt = Horizontal::NoHorizontalSolution;
-  vs = Vertical::NoVerticalSolution;
+  trk = gs = opt = Horizontal::NoHorizontalSolution();
+  vs = Vertical::NoVerticalSolution();
 
   //    int epsh = horizontalCoordination(s2,v2);
   //    int epsv = verticalCoordination(s,v,D,ownship,traffic);
@@ -106,8 +106,8 @@ bool CR3D::losr_repulsive(const Vect3& s, const Velocity& vo, const Velocity& vi
     double minHorizExitSpeedLoS, double minVertExitSpeedLoS,
     double minGs, double maxGs, double maxVs, int epsh, int epsv) {
   Vect2 s2  = s.vect2();
-  trk = gs = opt = Horizontal::NoHorizontalSolution;
-  vs = Vertical::NoVerticalSolution;
+  trk = gs = opt = Horizontal::NoHorizontalSolution();
+  vs = Vertical::NoVerticalSolution();
   //fpln(" ## CR3D::losr_repulsive:  maxVs = "+Units::str("fpm",maxVs));
   if (!s2.isZero()) {
     trk = losr_trk_iter(s,vo,vi,minHorizExitSpeedLoS, M_PI/2, Units::from("deg",1.0),epsh);
@@ -127,8 +127,8 @@ int CR3D::cr3d_repulsive(const Vect3& s, const Velocity& vo, const Velocity& vi,
 
   int resolution = larcfm::None;
   //fpln(" ## CR3D::cr3d_old:  maxVs = "+Units::str("fpm",maxVs));
-  trk = gs = opt = Horizontal::NoHorizontalSolution;
-  vs = Vertical::NoVerticalSolution;
+  trk = gs = opt = Horizontal::NoHorizontalSolution();
+  vs = Vertical::NoVerticalSolution();
 
   //Vect2 s2 = s.vect2();
   Vect2 vo2 = vo.vect2();
@@ -189,7 +189,7 @@ Horizontal CR3D::losr_trk_iter(const Vect3& s, const Vect3& vo, const Vect3& vi,
   //int dir = CR3D::trk_los_iter_dir(s2,vo2,vi2,step,epsh);
   int dir = CriteriaCore::losr_trk_iter_dir(s2,vo2,vi2,step,epsh); // ,step,epsh);
   if (dir == 0)
-    return Horizontal::NoHorizontalSolution;
+    return Horizontal::NoHorizontalSolution();
   else {
     Vect2 nvo = CR3D::incr_vect(vo2,step,dir);
     if (CriteriaCore::horizontal_los_criterion(s2,vo2,vi2,nvo,epsh)) {
@@ -202,7 +202,7 @@ Horizontal CR3D::losr_trk_iter(const Vect3& s, const Vect3& vo, const Vect3& vi,
         nvo = nvop;
       }
     } else {
-      return Horizontal::NoHorizontalSolution;
+      return Horizontal::NoHorizontalSolution();
     }
   }
 }
@@ -215,7 +215,7 @@ Horizontal losr_gs_iter_aux(const Vect3& s, const Vect3& vo, const Vect3& vi,
   Vect2 vi2 = vi.vect2();
   int dir = CriteriaCore::losr_gs_iter_dir(s2,vo2,vi2,mings,maxgs,step,epsh);
   if (dir == 0)
-    return Horizontal::NoHorizontalSolution;
+    return Horizontal::NoHorizontalSolution();
   else {
     Vect2 nvo = CriteriaCore::incr_gs_vect(vo2,step,dir);
     if (CriteriaCore::horizontal_los_criterion(s2,vo2,vi2,nvo,epsh)) {
@@ -234,7 +234,7 @@ Horizontal losr_gs_iter_aux(const Vect3& s, const Vect3& vo, const Vect3& vi,
         nvo = nvop;
       }
     } else {
-      return Horizontal::NoHorizontalSolution;
+      return Horizontal::NoHorizontalSolution();
     }
   }
 }
@@ -269,7 +269,7 @@ Horizontal CR3D::losr_gs_iter(const Vect3& s, const Vect3& vo, const Vect3& vi,
       return nvo;
     } else {
       //f.pln("@@@@ losr_gs_iter: Gs Resolution FAILED FINAL TEST ***** tau = "+tau+" distAtTau = "+Units.str("nm",distAtTau));
-      return Horizontal::NoHorizontalSolution;
+      return Horizontal::NoHorizontalSolution();
     }
   } else {
     return nvo;

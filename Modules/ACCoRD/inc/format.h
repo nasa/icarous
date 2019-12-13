@@ -50,6 +50,7 @@ namespace larcfm {
 
   std::string FmPrecision(double v);
   std::string FmPrecision(double v, int precision);
+  std::string FmPrecision(double v, int precision, bool includeTrailingZeros);
 
   std::string Fmb(bool b);
 

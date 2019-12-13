@@ -567,7 +567,7 @@ private:
 
 	bool preserveUnits;
 	bool unitCompatibility;
-	std::string patternStr;
+	std::string listPatternStr;
 	typedef std::map<std::string, ParameterEntry, stringCaseInsensitive> paramtype;
 	paramtype parameters;
 

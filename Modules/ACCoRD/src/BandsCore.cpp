@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon, Rick Butler, Cesar Munoz
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -43,23 +43,12 @@ BandsCore::BandsCore(double D, double H, double B, double T, double max_gs, doub
   init(D, H, B, T, max_gs, max_vs);
 }
 
-BandsCore::BandsCore(const BandsCore& b) {
-  init(b.D, b.H, b.B, b.T, b.max_gs, b.max_vs);
-  trkTol = b.trkTol;
-  gsTol = b.gsTol;
-  vsTol = b.vsTol;
-
-  trk_regions = IntervalSet(b.trk_regions);
-  gs_regions = IntervalSet(b.gs_regions);
-  vs_regions = IntervalSet(b.vs_regions);
-}
-
 void BandsCore::init(double D, double H, double B, double T, double max_gs, double max_vs) {
 
-  trk_regions = IntervalSet();
-  gs_regions = IntervalSet();
-  vs_regions = IntervalSet();
-  regions = IntervalSet();
+  // trk_regions = IntervalSet(); // Default value
+  // gs_regions = IntervalSet(); // Default value
+  // vs_regions = IntervalSet(); // Default value
+  // regions = IntervalSet(); // Default value
 
   setDiameter(D);
   setHeight(H);
@@ -67,9 +56,9 @@ void BandsCore::init(double D, double H, double B, double T, double max_gs, doub
   setMaxGroundSpeed(max_gs);
   setMaxVerticalSpeed(max_vs);
 
-  trkTol = larcfm::Units::from("deg", 0.0);
-  gsTol = larcfm::Units::from("knot", 0.0);
-  vsTol = larcfm::Units::from("fpm", 0.0);
+  trkTol = Units::from("deg", 0.0);
+  gsTol = Units::from("knot", 0.0);
+  vsTol = Units::from("fpm", 0.0);
 }
 
 void BandsCore::setTime(double t) {
@@ -276,6 +265,7 @@ void BandsCore::calcTrkBands(Vect3 s3, Vect3 vo3, Vect3 vi3) const {
   int end_len = 0;
   list<Vect2> l = CriticalVectors::tracks(s3, vo3, vi3, D, H, B, T);
   list<Vect2>::iterator i = l.begin();
+
   while (i != l.end()) {
     end_pts[end_len++] = i->compassAngle();
     ++i;
@@ -284,7 +274,7 @@ void BandsCore::calcTrkBands(Vect3 s3, Vect3 vo3, Vect3 vi3) const {
   sort(end_pts, end_pts+end_len);
   regions.clear();
   double lang = 0.0;
-  double speed = vo3.vect2().norm(); 
+  double speed = vo3.norm2D();
   for (int i = 0; i < end_len; i++) {
     double nang = end_pts[i];
     //pln(" >> Angles "+toString(lang, "deg")+"  "+toString(nang, "deg"));

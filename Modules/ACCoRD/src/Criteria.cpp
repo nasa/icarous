@@ -3,7 +3,7 @@
  *
  * Contact: Cesar Munoz
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2018 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -64,7 +64,7 @@ using namespace larcfm;
             return CriteriaCore::criteria(po.first.Sub(pi.first), po.second, pi.second, nvop,
             		minRelVs, D_i, H_i,epsh,epsv);
         } else {
-            return CriteriaCore::criteria(so.point().Sub(si.point()), vo, vi, nvo,
+            return CriteriaCore::criteria(so.vect3().Sub(si.vect3()), vo, vi, nvo,
             		minRelVs, D_i, H_i,epsh,epsv);
         }
     }

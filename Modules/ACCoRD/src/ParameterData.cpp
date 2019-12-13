@@ -30,14 +30,14 @@ ParameterData::ParameterData() {
 	preserveUnits = false;
 	unitCompatibility = true;
 	parameters = paramtype();
-	patternStr = Constants::wsPatternBaseNoRegex;
+	listPatternStr = Constants::wsPatternBaseNoRegex;
 }
 
 ParameterData ParameterData::copyWithPrefix(const std::string& prefix) const {
 	ParameterData p;
 	p.preserveUnits = preserveUnits;
 	p.unitCompatibility = unitCompatibility;
-	p.patternStr = patternStr;
+	p.listPatternStr = listPatternStr;
 	paramtype::const_iterator pos;
 	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
 		std::string key = pos->first;
@@ -51,7 +51,7 @@ ParameterData ParameterData::extractPrefix(const std::string& prefix) const {
 	ParameterData p;
 	p.preserveUnits = preserveUnits;
 	p.unitCompatibility = unitCompatibility;
-	p.patternStr = patternStr;
+	p.listPatternStr = listPatternStr;
 	for (paramtype::const_iterator pos = parameters.begin(); pos != parameters.end(); ++pos) {
 		std::string key = pos->first;
 		std::string keylc = toLowerCase(key);
@@ -67,7 +67,7 @@ ParameterData ParameterData::removeKeysWithPrefix(const std::string& prefix) con
 	ParameterData p;
 	p.preserveUnits = preserveUnits;
 	p.unitCompatibility = unitCompatibility;
-	p.patternStr = patternStr;
+	p.listPatternStr = listPatternStr;
 	for (paramtype::const_iterator pos = parameters.begin(); pos != parameters.end(); ++pos) {
 		std::string key = pos->first;
 		std::string keylc = toLowerCase(key);
@@ -553,7 +553,7 @@ bool ParameterData::isNumber(const std::string& key) const {
 		return false;
 	} else {
 		std::string s = parameters.find(key)->second.sval;
-		std::vector<std::string> fields = split(s, patternStr);
+		std::vector<std::string> fields = split(s, listPatternStr);
 		if (fields.size() == 1) {
 			return Util::is_double(fields[0]);
 		} else if (fields.size() == 2) {

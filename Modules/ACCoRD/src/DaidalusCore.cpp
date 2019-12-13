@@ -35,8 +35,8 @@ void DaidalusCore::init() {
   acs_conflict_bands__ = std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
 
   // Cached__ variables are cleared
-  outdated__ = false; // Force stale
-  stale(true);
+  cache__ = -1;
+  stale(true,true);
 }
 
 DaidalusCore::DaidalusCore() {
@@ -69,8 +69,8 @@ void DaidalusCore::copyFrom(const DaidalusCore& core) {
     parameters = core.parameters;
     urgency_strategy = core.urgency_strategy->copy();
     // Cached__ variables are cleared
-    outdated__ = false; // Force stale
-    stale(true);
+    cache__ = -1;
+    stale(true,true);
   }
 }
 
@@ -93,9 +93,9 @@ void DaidalusCore::clear() {
 /**
  * Set cached values to stale conditions as they are no longer fresh
  */
-void DaidalusCore::stale(bool hysteresis) {
-  if (!outdated__) {
-    outdated__ = true;
+void DaidalusCore::stale(bool hysteresis, bool forced) {
+  if (forced || cache__ >= 0) {
+    cache__ = -1;
     most_urgent_ac__ = TrafficState::INVALID();
     epsh__ = 0;
     epsv__ = 0;
@@ -111,17 +111,24 @@ void DaidalusCore::stale(bool hysteresis) {
 }
 
 /**
+ * Set cached values to stale conditions as they are no longer fresh
+ */
+void DaidalusCore::stale(bool hysteresis) {
+  stale(hysteresis,false);
+}
+
+/**
  * Returns true is object is fresh
  */
 bool DaidalusCore::isFresh() const {
-  return !outdated__;
+  return cache__ > 0;
 }
 
 /**
  *  Refresh cached values
  */
 void DaidalusCore::refresh() {
-  if (outdated__) {
+  if (cache__ <= 0) {
     for (int conflict_region=0; conflict_region < BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++conflict_region) {
       conflict_aircraft(conflict_region);
       BandsRegion::Region region = BandsRegion::conflictRegionFromOrder(BandsRegion::NUMBER_OF_CONFLICT_BANDS-conflict_region);
@@ -134,6 +141,13 @@ void DaidalusCore::refresh() {
         }
       }
     }
+    refresh_mua_eps();
+    cache__ = 1;
+  }
+}
+
+void DaidalusCore::refresh_mua_eps() {
+  if (cache__ < 0) {
     int muac = -1;
     if (!traffic.empty()) {
       muac = urgency_strategy->mostUrgentAircraft(ownship, traffic, parameters.getLookaheadTime());
@@ -145,7 +159,7 @@ void DaidalusCore::refresh() {
     }
     epsh__ = epsilonH(ownship,most_urgent_ac__);
     epsv__ = epsilonV(ownship,most_urgent_ac__);
-    outdated__ = false;
+    cache__ = 0;
   }
 }
 
@@ -153,7 +167,7 @@ void DaidalusCore::refresh() {
  * @return most urgent aircraft for implicit coordination
  */
 TrafficState DaidalusCore::mostUrgentAircraft() {
-  refresh();
+  refresh_mua_eps();
   return most_urgent_ac__;
 }
 
@@ -162,7 +176,7 @@ TrafficState DaidalusCore::mostUrgentAircraft() {
  *
  */
 int DaidalusCore::epsilonH() {
-  refresh();
+  refresh_mua_eps();
   return epsh__;
 }
 
@@ -170,7 +184,7 @@ int DaidalusCore::epsilonH() {
  * Returns vertical epsilon for implicit coordination with respect to criteria ac.
  */
 int DaidalusCore::epsilonV() {
-  refresh();
+  refresh_mua_eps();
   return epsv__;
 }
 
@@ -179,7 +193,7 @@ int DaidalusCore::epsilonV() {
  *
  */
 int DaidalusCore::epsilonH(bool recovery_case, const TrafficState& traffic) {
-  refresh();
+  refresh_mua_eps();
   if ((recovery_case? parameters.isEnabledRecoveryCriteria() : parameters.isEnabledConflictCriteria()) &&
       traffic.sameId(most_urgent_ac__)) {
     return epsh__;
@@ -191,7 +205,7 @@ int DaidalusCore::epsilonH(bool recovery_case, const TrafficState& traffic) {
  * Returns vertical epsilon for implicit coordination with respect to criteria ac.
  */
 int DaidalusCore::epsilonV(bool recovery_case, const TrafficState& traffic) {
-  refresh();
+  refresh_mua_eps();
   if ((recovery_case? parameters.isEnabledRecoveryCriteria() : parameters.isEnabledConflictCriteria()) &&
       traffic.sameId(most_urgent_ac__)) {
     return epsv__;
@@ -629,33 +643,37 @@ bool DaidalusCore::check_alerting_thresholds(const AlertThresholds& athr, const 
  * 2. This methods applies MofN alerting strategy
  */
 int DaidalusCore::alert_level(int idx, int turning, int accelerating, int climbing) {
-  int alert = -1;
   if (0 <= idx && idx < (int)traffic.size()) {
+    TrafficState& intruder = traffic[idx];
     int alerter_idx = alerter_index_of(idx);
     if (alerter_idx > 0) {
-      alert = 0;
-      Alerter alerter = parameters.getAlerterAt(alerter_idx);
-      for (int alert_level=alerter.mostSevereAlertLevel(); alert_level > 0; --alert_level) {
-        if (check_alerting_thresholds(alerter.getLevel(alert_level),traffic[idx],turning,accelerating,climbing)) {
-          alert = alert_level;
-          break;
-        }
-      }
-      std::string id = traffic[idx].getId();
+      std::string id = intruder.getId();
       std::map<std::string,AlertingMofN>::iterator find_ptr = _alerting_mofns_.find(id);
+      const Alerter& alerter = parameters.getAlerterAt(alerter_idx);
       if (find_ptr == _alerting_mofns_.end()) {
         AlertingMofN mofn = AlertingMofN(parameters.getAlertingParameterM(),
             parameters.getAlertingParameterN(),
             parameters.getHysteresisTime(),
             parameters.getPersistenceTime());
-        alert = mofn.m_of_n(alert,current_time);
+        int alert = mofn.m_of_n(alert_level(alerter,intruder,turning,accelerating,climbing),current_time);
         _alerting_mofns_[id]=mofn;
+        return alert;
       } else {
-        alert = find_ptr->second.m_of_n(alert,current_time);
+        return find_ptr->second.m_of_n(alert_level(alerter,intruder,turning,accelerating,climbing),current_time);
       }
     }
   }
-  return alert;
+  return -1;
+}
+
+int DaidalusCore::alert_level(const Alerter& alerter, const TrafficState& intruder, int turning, int accelerating, int climbing) {
+  for (int alert_level=alerter.mostSevereAlertLevel(); alert_level > 0; --alert_level) {
+    AlertThresholds athr = alerter.getLevel(alert_level);
+    if (check_alerting_thresholds(athr,intruder,turning,accelerating,climbing)) {
+      return alert_level;
+    }
+  }
+  return 0;
 }
 
 void DaidalusCore::setParameterData(const ParameterData& p) {
@@ -669,7 +687,7 @@ std::string DaidalusCore::rawString() const {
   s+="## DaidalusCore Parameters\n";
   s+=parameters.toString();
   s+="## Cached variables__\n";
-  s+="outdated__ = "+Fmb(outdated__)+"\n";
+  s+="cache__ = "+Fmi(cache__)+"\n";
   s+="most_urgent_ac__ = "+most_urgent_ac__.getId()+"\n";
   s+="epsh__ = "+Fmi(epsh__)+"\n";
   s+="epsv__ = "+Fmi(epsv__)+"\n";

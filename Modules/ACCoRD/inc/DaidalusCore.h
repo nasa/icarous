@@ -44,8 +44,8 @@ public:
 private:
   /**** CACHED VARIABLES__ ****/
 
-  /* bool to control re-computation of cached values */
-  bool outdated__;
+  /* Variable to control re-computation of cached values */
+  int cache__; // -1: outdated, 1:updated, 0: updated only most_urgent_ac and eps
   /* Most urgent aircraft */
   TrafficState most_urgent_ac__;
   /* Cached horizontal epsilon for implicit coordination */
@@ -67,6 +67,8 @@ private:
 
   void init();
   void copyFrom(const DaidalusCore& core);
+  void stale(bool hysteresis, bool forced);
+  void refresh_mua_eps();
 
 public:
   DaidalusCore();
@@ -87,12 +89,12 @@ public:
   /**
    * Set cached values to stale conditions as they are no longer fresh
    */
-  virtual void stale(bool hysteresis);
+  void stale(bool hysteresis);
 
   /**
    * Returns true is object is fresh
    */
-  virtual bool isFresh() const;
+  bool isFresh() const;
 
   /**
    *  Refresh cached values
@@ -181,6 +183,8 @@ public:
   int alert_level(int idx, int turning, int accelerating, int climbing);
 
 private:
+
+  int alert_level(const Alerter& alerter, const TrafficState& intruder, int turning, int accelerating, int climbing);
 
   static void add_blob(std::vector<std::vector<Position> >& blobs, std::vector<Position>& vin, std::vector<Position>& vout);
 

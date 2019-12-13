@@ -268,10 +268,12 @@ bool WCV_TAUMOD_SUM::violationSUMAt(const Vect3& so, const Velocity& vo, const V
     if (s_err == 0.0 && sz_err == 0.0 && v_err == 0.0 && vz_err == 0.0) {
         return violation(so.AddScal(t,vo),vo,si.AddScal(t,vi),vi);
     }
-    Vect3 s = so.Sub(si);
-    Vect3 v = vo.Sub(vi);
-    Vect3 st = t == 0 ? s : v.ScalAdd(t,s);
-    return WCV_taumod_uncertain(st,v,s_err+t*v_err,sz_err+t*vz_err,v_err,vz_err);
+    return conflictSUM(so,vo,si,vi,t,t,s_err,sz_err,v_err,vz_err);
+    // This original code have numerical issues at the border of the volume
+    // Vect3 s = so.Sub(si);
+    // Vect3 v = vo.Sub(vi);
+    // Vect3 st = t == 0 ? s : v.ScalAdd(t,s);
+    // return WCV_taumod_uncertain(st,v,s_err+t*v_err,sz_err+t*vz_err,v_err,vz_err);
 }
 
 
