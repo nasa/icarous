@@ -61,7 +61,7 @@ void Rotorsim_AppInit(void) {
 
     CFE_SB_SubscribeLocal(ICAROUS_COMMANDS_MID, rotorsimAppData.Rotorsim_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_FLIGHTPLAN_MID,rotorsimAppData.Rotorsim_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(FREQ_30_WAKEUP_MID,rotorsimAppData.Rotorsim_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(FREQ_20_WAKEUP_MID,rotorsimAppData.Rotorsim_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Register table with table services
     CFE_TBL_Handle_t tblHandle;
@@ -116,7 +116,7 @@ void Rotorsim_ProcessPacket(){
 
     switch(MsgId){
 
-        case FREQ_30_WAKEUP_MID:{
+        case FREQ_20_WAKEUP_MID:{
             timer_callback(0);
             break;
         }
