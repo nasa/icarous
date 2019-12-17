@@ -16,3 +16,9 @@
 [submodule "tools/gen_sch_tbl"]
 	path = tools/gen_sch_tbl
 	url = https://github.com/nasa/gen_sch_tbl.git
+[submodule "apps/raft"]
+	path = apps/raft
+	url = git@gitlab.larc.nasa.gov:larc-nia-fm/uas/raft-cfs.git
+[submodule "apps/merger"]
+	path = apps/merger
+	url = git@gitlab.larc.nasa.gov:larc-nia-fm/uas/mergespace-cfs.git
