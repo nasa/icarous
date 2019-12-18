@@ -22,14 +22,37 @@
 #include "Icarous_msgids.h"
 #include "sch_msgids.h"
 #include "paramdef.h"
+
+#ifdef APPDEF_TRAFFIC
 #include "traffic_msg.h"
 #include "traffic_msgids.h"
+#endif
+
+#ifdef APPDEF_TRACKING
 #include "tracking_msg.h"
 #include "tracking_msgids.h"
+#endif 
+
+#ifdef APPDEF_TRAJECTORY
 #include "trajectory_msg.h"
 #include "trajectory_msgids.h"
+#endif 
+
+#ifdef APPDEF_GEOFENCE
 #include "geofence_msg.h"
 #include "geofence_msgids.h"
+#endif
+
+#ifdef APPDEF_ROTORSIM
+#include "rotorsim_msg.h"
+#include "rotorsim_msgids.h"
+#endif
+
+#ifdef APPDEF_MERGER
+#include "merger_msg.h"
+#include "merger_msgids.h"
+#endif
+
 #include "mavlink/ardupilotmega/mavlink.h"
 #include "port_lib.h"
 
@@ -81,6 +104,7 @@ typedef struct{
     int hbeatFreqCount;                     ///< Counter for sending hbeat message
     mavlink_mission_item_t ReceivedMissionItems[MAX_WAYPOINTS];
     flightplan_t fpData;
+    flightplan_t mgData;
     flightplan_t trajectory;
     argsCmd_t startMission;
     geofence_t gfData[MAX_GEOFENCES];
@@ -165,6 +189,8 @@ void gs_tjCallback(uint32_t timerId);
 void gs_startTimer(uint32_t *timerID,void (*f)(uint32_t),char* name,uint32_t startTime,uint32_t intvl);
 
 void gs_stopTimer(uint32_t *timerID);
+
+void gsInterface_ReadFlightplanFromFile();
 
 #define SendGSMsg(arg) writeMavlinkData(&appdataIntGS.gs,&arg)
 

@@ -11,18 +11,14 @@
 
 void gsInterface_PublishParams() {
     //Initialize SB messages
-    traffic_parameters_t localTrafficParams;
-    tracking_parameters_t localTrackingParams;
-    trajectory_parameters_t localTrajectoryParams;
-    geofence_parameters_t localGeofenceParams;
-    CFE_SB_InitMsg(&localTrafficParams,TRAFFIC_PARAMETERS_MID,sizeof(traffic_parameters_t),TRUE);
-    CFE_SB_InitMsg(&localTrackingParams,TRACKING_PARAMETERS_MID,sizeof(tracking_parameters_t),TRUE);
-    CFE_SB_InitMsg(&localTrajectoryParams,TRAJECTORY_PARAMETERS_MID,sizeof(trajectory_parameters_t),TRUE);
-    CFE_SB_InitMsg(&localGeofenceParams,GEOFENCE_PARAMETERS_MID,sizeof(geofence_parameters_t),TRUE);
 
     //Store the locally saved parameters to the messages
     int i = 0;
     //Traffic Parameters
+
+    #ifdef APPDEF_TRAFFIC
+    traffic_parameters_t localTrafficParams;
+    CFE_SB_InitMsg(&localTrafficParams,TRAFFIC_PARAMETERS_MID,sizeof(traffic_parameters_t),TRUE);
     localTrafficParams.trafficSource = (uint32_t) gsNextParam;
     localTrafficParams.resType = (uint32_t) gsNextParam;
     localTrafficParams.logDAAdata = (bool) gsNextParam;
@@ -75,7 +71,18 @@ void gsInterface_PublishParams() {
     localTrafficParams.det_1_WCV_TCOA = gsNextParam;
     localTrafficParams.det_1_WCV_TTHR = gsNextParam;
     localTrafficParams.det_1_WCV_ZTHR = gsNextParam;
+
+    SendSBMsg(localTrafficParams);
+    #else
+       for(int k=0;k<46;++k){
+          gsNextParam;
+       }
+    #endif
+
     // Tracking parameters
+    #ifdef APPDEF_TRACKING
+    tracking_parameters_t localTrackingParams;
+    CFE_SB_InitMsg(&localTrackingParams,TRACKING_PARAMETERS_MID,sizeof(tracking_parameters_t),TRUE);
     localTrackingParams.command = (bool) gsNextParam;
     localTrackingParams.trackingObjId = (int) gsNextParam;
     localTrackingParams.pGainX = (double) gsNextParam;
@@ -84,7 +91,17 @@ void gsInterface_PublishParams() {
     localTrackingParams.heading = (double) gsNextParam;
     localTrackingParams.distH = (double) gsNextParam;
     localTrackingParams.distV = (double) gsNextParam;
+    SendSBMsg(localTrackingParams);
+    #else
+       for(int k=0;k<8;++k){
+          gsNextParam;
+       }
+    #endif
+
     // Trajectory parameters
+    #ifdef APPDEF_TRAJECTORY
+    trajectory_parameters_t localTrajectoryParams;
+    CFE_SB_InitMsg(&localTrajectoryParams,TRAJECTORY_PARAMETERS_MID,sizeof(trajectory_parameters_t),TRUE);
     localTrajectoryParams.obsbuffer = (double) gsNextParam;
     localTrajectoryParams.maxCeiling = (double) gsNextParam;
     localTrajectoryParams.astar_enable3D = (bool) gsNextParam;
@@ -104,19 +121,66 @@ void gsInterface_PublishParams() {
     localTrajectoryParams.xtrkGain = (double) gsNextParam;
     localTrajectoryParams.resSpeed = (double) gsNextParam;
     localTrajectoryParams.searchAlgorithm = (uint8_t) gsNextParam;
+
+    SendSBMsg(localTrajectoryParams);
+    #else
+       for(int k=0;k<15;++k){
+          gsNextParam;
+       }
+    #endif
+
     // Geofence parameters
+    #ifdef APPDEF_GEOFENCE
+    geofence_parameters_t localGeofenceParams;
+    CFE_SB_InitMsg(&localGeofenceParams,GEOFENCE_PARAMETERS_MID,sizeof(geofence_parameters_t),TRUE);
     localGeofenceParams.lookahead = (double) gsNextParam;
     localGeofenceParams.hthreshold = (double) gsNextParam;
     localGeofenceParams.vthreshold = (double) gsNextParam;
     localGeofenceParams.hstepback = (double) gsNextParam;
     localGeofenceParams.vstepback = (double) gsNextParam;
-
-    //Send Traffic Params SB message
-
-    SendSBMsg(localTrafficParams);
-    SendSBMsg(localTrackingParams);
-    SendSBMsg(localTrajectoryParams);
     SendSBMsg(localGeofenceParams);
+    #else
+       for(int k=0;k<5;++k){
+          gsNextParam;
+       }
+    #endif
 
-    //printf("gsInterface Sent SB Param Messages\n");
+    #ifdef APPDEF_ROTORSIM
+    // Rotorsim parameters
+    rotorsim_parameters_t localRotorsimParams;
+    localRotorsimParams.speed = (double) gsNextParam;
+    SendSBMsg(localRotorsimParams);
+    #else
+       for(int k=0;k<1;++k){
+          gsNextParam;
+       }
+    #endif
+
+    #ifdef APPDEF_MERGER
+    merger_parameters_t localMergerParams;
+    CFE_SB_InitMsg(&localMergerParams,MERGER_PARAMETERS_MID,sizeof(merger_parameters_t),TRUE);
+    localMergerParams.missionSpeed = appdataIntGS.storedparams[i].value;
+    localMergerParams.maxVehicleSpeed = (double) gsNextParam;
+    localMergerParams.minVehicleSpeed = (double) gsNextParam;
+    localMergerParams.corridorWidth = (double) gsNextParam;
+    localMergerParams.entryRadius = (double) gsNextParam;
+    localMergerParams.coordZone = (double) gsNextParam;
+    localMergerParams.scheduleZone = (double) gsNextParam;
+    localMergerParams.minSeparationDistance = (double) gsNextParam;
+    localMergerParams.minSeparationTime = (double) gsNextParam;
+    localMergerParams.maxVehicleTurnRadius = (double) gsNextParam;
+    localMergerParams.startIntersection = (int) gsNextParam;
+
+    memset(localMergerParams.IntersectionID,0,INTERSECTION_MAX*sizeof(uint32_t));
+    for(int i=0;i<appdataIntGS.mgData.num_waypoints;++i){
+        localMergerParams.IntersectionLocation[i][0] = appdataIntGS.mgData.waypoints[i].latitude;
+        localMergerParams.IntersectionLocation[i][1] = appdataIntGS.mgData.waypoints[i].longitude;
+        localMergerParams.IntersectionLocation[i][2] = appdataIntGS.mgData.waypoints[i].altitude;
+        localMergerParams.IntersectionID[i] = atoi(appdataIntGS.mgData.waypoints[i].name);
+    }
+    SendSBMsg(localMergerParams);
+    OS_printf("publishing merger params\n");
+    #endif
+
+
 }
