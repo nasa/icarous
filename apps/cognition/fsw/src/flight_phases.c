@@ -97,6 +97,7 @@ void FlightPhases(void){
         case MERGING_PHASE:{
             if(!appdataCog.mergingActive){
                 appdataCog.fpPhase = CRUISE_PHASE;
+                SetGuidanceFlightPlan("Plan0",appdataCog.nextFeasibleWP1);
             }
             break;
         }
@@ -156,7 +157,7 @@ status_e Cruise(){
        }
 
        case RUNNING:{
-            TrafficConflictManagement();
+            //TrafficConflictManagement();
 
             GeofenceConflictManagement();
 
