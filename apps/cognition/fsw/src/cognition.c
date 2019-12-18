@@ -93,6 +93,7 @@ void COGNITION_AppInit(void){
     CFE_SB_SubscribeLocal(FLIGHTPLAN_MONITOR_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_GEOFENCE_MONITOR_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_WPREACHED_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(MERGER_STATUS_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
 	// Initialize all messages that this App generates.
 	// To perfrom sense and avoid, as a minimum, the following messages must be generated
@@ -360,6 +361,17 @@ void COGNITION_ProcessSBData() {
 
             fp = gfConflct->waypointConflict2;
             appdataCog.directPathToFeasibleWP2 = gfConflct->directPathToWaypoint2[appdataCog.nextFeasibleWP2] && appdataCog.trkBands.wpFeasibility2[appdataCog.nextFeasibleWP2];
+            break;
+        }
+
+        case MERGER_STATUS_MID:{
+            argsCmd_t* cmd = (argsCmd_t*) appdataCog.CogMsgPtr;
+            if((int)cmd->param1 == MERGING_ACTIVE){
+                appdataCog.mergingActive = true;
+            }else{
+                appdataCog.mergingActive = false;
+            }
+
             break;
         }
     }

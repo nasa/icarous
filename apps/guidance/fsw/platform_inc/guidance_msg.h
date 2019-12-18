@@ -17,6 +17,7 @@ typedef enum{
     HELIX,                  ///< A helical orbit
     TAKEOFF,                ///< Takeoff mode
     LAND,                   ///< Landing mode
+    SPEED_CHANGE,           ///< Speed change command
     NOOP                    ///< No operations
 }guidance_mode_e;
 

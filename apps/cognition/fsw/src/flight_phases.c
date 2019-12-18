@@ -56,6 +56,10 @@ void FlightPhases(void){
                 // TODO: Figure out a fall back plan
             }
 
+            if( appdataCog.mergingActive){
+                appdataCog.fpPhase = MERGING_PHASE;
+            }
+
             break;
         }
 
@@ -86,6 +90,13 @@ void FlightPhases(void){
                 appdataCog.fpPhase = IDLE_PHASE;
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
+            }
+            break;
+        }
+
+        case MERGING_PHASE:{
+            if(!appdataCog.mergingActive){
+                appdataCog.fpPhase = CRUISE_PHASE;
             }
             break;
         }

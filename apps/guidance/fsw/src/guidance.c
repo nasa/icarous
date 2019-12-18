@@ -184,22 +184,33 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
 
         case TAKEOFF:{
             //OS_printf("Received takeoff command in guidance app\n");
+            argsCmd_t cmd1;              
+            CFE_SB_InitMsg(&cmd1,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
+            cmd1.name = _TAKEOFF_;
+            cmd1.param1 = guidanceAppData.primaryFlightPlan.waypoints[1].altitude;
+            SendSBMsg(cmd1);
             guidanceAppData.takeoffComplete = false;
             guidanceAppData.guidanceMode = TAKEOFF;
             break;
         }
 
         case LAND:{
-            argsCmd_t cmd;
-            CFE_SB_InitMsg(&cmd,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
-            cmd.name = _LAND_;
+            argsCmd_t cmd1;
+            CFE_SB_InitMsg(&cmd1,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
+            cmd1.name = _LAND_;
             int wp = guidanceAppData.primaryFlightPlan.num_waypoints;
-            cmd.param5 = guidanceAppData.primaryFlightPlan.waypoints[wp-1].latitude;
-            cmd.param6 = guidanceAppData.primaryFlightPlan.waypoints[wp-1].longitude;
-            cmd.param7 = guidanceAppData.primaryFlightPlan.waypoints[wp-1].altitude;
-            SendSBMsg(cmd);
+            cmd1.param5 = guidanceAppData.primaryFlightPlan.waypoints[wp-1].latitude;
+            cmd1.param6 = guidanceAppData.primaryFlightPlan.waypoints[wp-1].longitude;
+            cmd1.param7 = guidanceAppData.primaryFlightPlan.waypoints[wp-1].altitude;
+            SendSBMsg(cmd1);
             break;
         }
+
+        case SPEED_CHANGE:{
+            guidanceAppData.refSpeed = cmd->param1;
+            break;
+        }
+
     }
 }
 

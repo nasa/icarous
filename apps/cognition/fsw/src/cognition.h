@@ -21,12 +21,14 @@
 #include "trajectory_msg.h"
 #include "geofence_msg.h"
 #include "guidance_msg.h"
+#include "merger_msg.h"
 #include "Icarous_msgids.h"
 #include "sch_msgids.h"
 #include "traffic_msgids.h"
 #include "trajectory_msgids.h"
 #include "geofence_msgids.h"
 #include "guidance_msgids.h"
+#include "merger_msgids.h"
 
 #define COGNITION_PIPE_NAME "COGPIPE"
 #define COGNITION_PIPE_DEPTH 100
@@ -53,7 +55,8 @@ typedef enum{
     CRUISE_PHASE,
     DESCENT_PHASE,
     APPROACH_PHASE,
-    LANDING_PHASE
+    LANDING_PHASE,
+    MERGING_PHASE
 }flightphase_e;
 
 /**
@@ -189,6 +192,9 @@ typedef struct{
     bool p2pcomplete;
     bool fp1complete;
     bool fp2complete;
+
+    // Status of merging activity
+    bool mergingActive;     
 
     status_t statustxt;
 }appdataCog_t;
