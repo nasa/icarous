@@ -154,7 +154,7 @@
 ** these are a limited resource and only a handful can be created.
 ** This is only used by the "-ng" variants with the timebase implementation
 */
-#define OS_MAX_TIMEBASES        5
+#define OS_MAX_TIMEBASES        10
 
 /*
 ** This define sets the maximum number of user timers available
@@ -165,7 +165,7 @@
 **
 ** Keeping this at "5" in case this config file is used with an older OSAL
 */
-#define OS_MAX_TIMERS         5
+#define OS_MAX_TIMERS         50
 
 /*
 ** This define sets the maximum number of open directories
@@ -187,7 +187,7 @@
  * leaks, but may slightly affect realtime performance.  This should be left undefined in
  * a normal build.
  */
-#undef OSAL_EXTRA_DEBUG
+#define OSAL_EXTRA_DEBUG
 
 /*
  * If OSAL_DEBUG_PERMISSIVE_MODE is defined, this will enable features to make the
