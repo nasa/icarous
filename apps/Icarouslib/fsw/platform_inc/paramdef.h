@@ -1,7 +1,7 @@
 #ifndef PARAMDEF
 #define PARAMDEF
 #include <stdint.h>
-#define PARAM_COUNT 74      ///< Total number of ICAROUS parameters
+#define PARAM_COUNT 85     ///< Total number of ICAROUS parameters
 
 typedef struct{
     char param_id[16];
@@ -96,6 +96,18 @@ param_t initialValues[PARAM_COUNT] =
     {"VTHRESHOLD",2.0,10},
     {"HSTEPBACK",20.0,10},
     {"VSTEPBACK",20.0,10},
+    {"MISSION_SPEED",3.0,10},
+    {"MAX_MERGE_SPEED",7.0},
+    {"MIN_MERGE_SPEED",0.5},
+    {"CORRIDOR_WIDTH",20.0},
+    {"ENTRY_RADIUS",50.0},
+    {"COORD_ZONE",80.0},
+    {"SCHEDULE_ZONE",60.0},
+    {"MIN_SEP_DIST",30.0},
+    {"MIN_SEP_TIME",20.0},
+    {"MAX_TURN_RADIUS",10.0},
+    {"START_MERGE_PT",0}
+
 };
 #else
 extern uint8_t sysid_ap;
