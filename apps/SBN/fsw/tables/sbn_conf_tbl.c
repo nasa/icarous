@@ -25,7 +25,7 @@ SBN_ConfTbl_t SBN_ConfTbl =
 						"127.0.0.1:1234" /* Address */
 				},
 				{ /* Peers[1] */
-						1, /* ProcessorID */
+						2, /* ProcessorID */
 						1, /* SpacecraftID */
 						0, /* NetNum */
 						0, /* ModIdx */

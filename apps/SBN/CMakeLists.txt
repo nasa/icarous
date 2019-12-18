@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 2.6.4)
 project(SBN_APP C)
 
+
+
 # workaround until these definitions are exposed by cfe_sb
-include_directories(${CFECORE_SOURCE_DIR}/src/sb)
+include_directories(${CMAKE_SOURCE_DIR}/fsw/cfe-core/src/sb)
 
 include_directories(fsw/platform_inc)
 include_directories(fsw/tables)

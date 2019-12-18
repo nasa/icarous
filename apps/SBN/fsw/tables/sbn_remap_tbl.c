@@ -7,14 +7,22 @@ SBN_RemapTbl_t SBN_RemapTbl =
     0, /* number of entries, initialized at validation time */
     {  /* remap table */
         /* {CPU_ID, from, to} and if to is 0x0000, filter rather than remap */
-        {1, 0x18C9, 0x18C9},
-        {1, 0x18DF, 0x18DF},
-        {1, 0x18D1, 0x18D1},
-        {1, 0x18D2, 0x18D2},
-        {1, 0x18CA, 0x18CA},
-        {1, 0x18DA, 0x18DA},
+        {1, 0x0601, 0x0601},
+        {1, 0x0602, 0x0602},
+        {1, 0x0603, 0x0603},
+        {1, 0x0604, 0x0604},
         {1, 0x0817, 0x0817},
-        {1, 0x0140, 0x0140}
+        {2, 0x0601, 0x0601},
+        {2, 0x0602, 0x0602},
+        {2, 0x0603, 0x0603},
+        {2, 0x0604, 0x0604},
+        {2, 0x0817, 0x0817},
+        {3, 0x0601, 0x0601},
+        {3, 0x0602, 0x0602},
+        {3, 0x0603, 0x0603},
+        {3, 0x0604, 0x0604},
+        {3, 0x0817, 0x0817}
+
     }
 };/* end SBN_RemapTbl */
 
