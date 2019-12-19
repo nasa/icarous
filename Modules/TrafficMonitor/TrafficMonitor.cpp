@@ -47,7 +47,7 @@ void TrafficMonitor::UpdateDAAParameters(char daaParameters[],bool reclog) {
     larcfm::ParameterData params;
     params.parseParameterList(";",to_string(daaParameters));
     DAA.setParameterData(params);
-    if(reclog) {
+    if(reclog && !log) {
         log = reclog;
         char            fmt1[64],fmt2[64];
         struct timeval  tv;
