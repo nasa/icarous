@@ -222,6 +222,12 @@ void COGNITION_ProcessSBData() {
             break;
         }
 
+        case ICAROUS_BANDS_VS_MID:{
+            bands_t* vspeed = (bands_t*)appdataCog.CogMsgPtr;
+            memcpy(&appdataCog.vsBands,vspeed,sizeof(bands_t));
+            break;
+        }
+
 		case ICAROUS_POSITION_MID:{
             position_t* pos = (position_t*) appdataCog.CogMsgPtr;
 			memcpy(&appdataCog.position,pos,sizeof(position_t));			
@@ -267,6 +273,7 @@ void COGNITION_ProcessSBData() {
         case TRAFFIC_PARAMETERS_MID:{
             traffic_parameters_t* msg = (traffic_parameters_t*) appdataCog.CogMsgPtr;
             appdataCog.DTHR = msg->det_1_WCV_DTHR;
+            appdataCog.ZTHR = msg->det_1_WCV_ZTHR;
             appdataCog.resolutionTypeCmd = msg->resType;
             break;
         }

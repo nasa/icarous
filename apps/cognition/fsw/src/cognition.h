@@ -152,8 +152,10 @@ typedef struct{
     bands_t trkBands;
     bands_t gsBands;
     bands_t altBands;
+    bands_t vsBands;
 
     double DTHR;
+    double ZTHR;
 
     double ditchsite[3];
     bool ditch;

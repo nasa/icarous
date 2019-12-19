@@ -333,7 +333,15 @@ bool RunTrafficResolution(){
       }
 
       case VERTICALSPEED_RESOLUTION:{
-
+         double speed = appdataCog.resolutionSpeed;
+         double prefVS = appdataCog.vsBands.resPreferred;
+         if(!isinf(prefVS) && !isnan(prefVS)){
+            SetGuidanceVelCmd(appdataCog.position.hdg,speed,-prefVS);
+            appdataCog.prevResVspeed = prefVS;
+         }else{
+            prefVS = appdataCog.prevResVspeed;
+         }
+         //OS_printf("Setting preferred resoluion: %f\n",-prefVS);
          break;
       }
 
