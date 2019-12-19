@@ -42,11 +42,22 @@ TrafficMonitor::TrafficMonitor(bool reclog,char daaConfig[]) {
 
 }
 
-void TrafficMonitor::UpdateDAAParameters(char daaParameters[]) {
+void TrafficMonitor::UpdateDAAParameters(char daaParameters[],bool reclog) {
 
     larcfm::ParameterData params;
     params.parseParameterList(";",to_string(daaParameters));
     DAA.setParameterData(params);
+    if(reclog) {
+        log = reclog;
+        char            fmt1[64],fmt2[64];
+        struct timeval  tv;
+        struct tm       *tm;
+        gettimeofday(&tv, NULL);
+        tm = localtime(&tv.tv_sec);
+        strftime(fmt1, sizeof fmt1, "Icarous-%Y-%m-%d-%H:%M:%S", tm);
+        strcat(fmt1,".login");
+        logfileIn.open(fmt1);
+    }
 }
 
 int TrafficMonitor::InputTraffic(int id, double *position, double *velocity,double elapsedTime) {

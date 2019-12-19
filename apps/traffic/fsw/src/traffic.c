@@ -414,7 +414,7 @@ void TRAFFIC_ProcessPacket(){
             n += sprintf(params + n,"det_1_WCV_ZTHR = %f [ft];",msg->det_1_WCV_ZTHR);
             n += sprintf(params + n,"load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.%s;",msg->load_core_detection_det_1);
 
-            TrafficMonitor_UpdateDAAParameters(trafficAppData.tfMonitor,params);
+            TrafficMonitor_UpdateDAAParameters(trafficAppData.tfMonitor,params,(bool)msg->logDAAdata);
             trafficAppData.trafficSrc = msg->trafficSource;
             break;
         }

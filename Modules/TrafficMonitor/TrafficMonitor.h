@@ -55,7 +55,7 @@ public:
     larcfm::Daidalus DAA;
 
     TrafficMonitor(bool reclog,char daaConfig[]);
-    void UpdateDAAParameters(char daaParameters[]);
+    void UpdateDAAParameters(char daaParameters[],bool log);
     int InputTraffic(int id,double position[],double velocity[],double elapsedTime);
     void MonitorTraffic(double position[],double velocity[],double elapsedTime);
     bool MonitorWPFeasibility(double position[],double velocity[],double wp[]);
