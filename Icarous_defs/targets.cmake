@@ -92,6 +92,12 @@ SET(TGT1_APPLIST ${APPS2RUN})
 
 execute_process(COMMAND python ${MISSION_SOURCE_DIR}/Python/ConfigureApps.py ${MISSION_SOURCE_DIR}/apps ${CMAKE_INSTALL_PREFIX}/cpu1/cf ${APPS2RUN})
 
+foreach(appname ${APPS2RUN})
+  string(TOUPPER ${appname} APPNAME)
+  add_definitions("-DAPPDEF_${APPNAME}")
+  message(STATUS "Adding definition APPDEF_${APPNAME}")
+endforeach(appname ${APPS2RUN})
+
 #SET(TGT1_APPLIST scheduler ardupilot gsInterface rotorsim geofence traffic trajectory guidance cognition logger)
 #SET(TGT1_FILELIST cfe_es_startup.scr)
 
