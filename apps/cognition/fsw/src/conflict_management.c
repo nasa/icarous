@@ -335,13 +335,45 @@ bool RunTrafficResolution(){
       case VERTICALSPEED_RESOLUTION:{
          double speed = appdataCog.resolutionSpeed;
          double prefVS = appdataCog.vsBands.resPreferred;
-         if(!isinf(prefVS) && !isnan(prefVS)){
-            SetGuidanceVelCmd(appdataCog.position.hdg,speed,-prefVS);
-            appdataCog.prevResVspeed = prefVS;
+         double resUp = appdataCog.vsBands.resUp;
+         double resDown = appdataCog.vsBands.resDown;
+         // If there is a valid up resolution, execute up resolution.
+         // else execute the down resolution. If 0 vertical speed is possible,
+         // that is preferred over the up or down resolutions.
+         if(!isinf(resUp) && !isnan(resUp)){
+            if(resUp >= 1e-3){
+                  SetGuidanceVelCmd(appdataCog.position.hdg,speed,-resUp);
+                  appdataCog.prevResVspeed = resUp;
+                  OS_printf("preferred vspeed: %f\n",-resUp);
+            }else{
+               SetGuidanceVelCmd(appdataCog.position.hdg,speed,0.0);
+               appdataCog.prevResVspeed = 0.0;
+               OS_printf("preferred vspeed: %f\n",0.0);
+            }
+         }else if(!isinf(resDown) && !isnan(resDown)){
+            if(resDown <= -1e-3){
+                  SetGuidanceVelCmd(appdataCog.position.hdg,speed,-resDown);
+                  appdataCog.prevResVspeed = resDown;
+                  OS_printf("preferred vspeed: %f\n",-resDown);
+            }else{
+               SetGuidanceVelCmd(appdataCog.position.hdg,speed,0.0);
+               appdataCog.prevResVspeed = 0.0;
+               OS_printf("preferred vspeed: %f\n",0.0);
+            }
          }else{
             prefVS = appdataCog.prevResVspeed;
+            SetGuidanceVelCmd(appdataCog.position.hdg,speed,appdataCog.prevResVspeed);
          }
-         //OS_printf("Setting preferred resoluion: %f\n",-prefVS);
+         
+         uint8_t val;
+         if(appdataCog.vsBands.numBands > 0){
+            val = 0;
+         }else{
+            val = 1;
+         }
+
+         OS_printf("Return safe: %d\n\n",val);
+         appdataCog.returnSafe = (bool) val;
          break;
       }
 

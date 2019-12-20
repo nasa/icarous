@@ -365,6 +365,7 @@ void TRAFFIC_ProcessPacket(){
 
         case TRAFFIC_PARAMETERS_MID:{
             traffic_parameters_t* msg = (traffic_parameters_t*) trafficAppData.Traffic_MsgPtr;
+            memcpy(&trafficAppData.params,msg,sizeof(traffic_parameters_t));
             char params[2000];
             int n = 0;
             n += sprintf(params,"lookahead_time=%f [s];",msg->lookahead_time);
@@ -389,7 +390,7 @@ void TRAFFIC_ProcessPacket(){
             n += sprintf(params + n,"min_horizontal_recovery=%f [ft];",msg->min_horizontal_recovery);
             n += sprintf(params + n,"min_vertical_recovery=%f [ft];",msg->min_vertical_recovery);
             n += msg->recovery_trk? sprintf(params + n,"recovery_trk=true;"):sprintf(params + n,"recovery_trk=false;");
-            n += msg->recovery_gs? sprintf(params + n,"recovery_gs=true;"):sprintf(params + n,"recovery_gs=false;");
+            n += msg->recovery_gs? sprintf(params + n,"recovery_hs=true;"):sprintf(params + n,"recovery_hs=false;");
             n += msg->recovery_vs? sprintf(params + n,"recovery_vs=true;"):sprintf(params + n,"recovery_vs=false;");
             n += msg->recovery_alt? sprintf(params + n,"recovery_alt=true;"):sprintf(params + n,"recovery_alt=false;");
             n += msg->conflict_crit? sprintf(params + n,"conflict_crit=true;"):sprintf(params + n,"conflict_crit=false;");

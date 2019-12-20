@@ -441,7 +441,7 @@ void TRAJECTORY_Monitor(void)
                     n += sprintf(params + n,"min_horizontal_recovery=%f [ft];",msg->min_horizontal_recovery);
                     n += sprintf(params + n,"min_vertical_recovery=%f [ft];",msg->min_vertical_recovery);
                     n += msg->recovery_trk? sprintf(params + n,"recovery_trk=true;"):sprintf(params + n,"recovery_trk=false;");
-                    n += msg->recovery_gs? sprintf(params + n,"recovery_gs=true;"):sprintf(params + n,"recovery_gs=false;");
+                    n += msg->recovery_gs? sprintf(params + n,"recovery_hs=true;"):sprintf(params + n,"recovery_hs=false;");
                     n += msg->recovery_vs? sprintf(params + n,"recovery_vs=true;"):sprintf(params + n,"recovery_vs=false;");
                     n += msg->recovery_alt? sprintf(params + n,"recovery_alt=true;"):sprintf(params + n,"recovery_alt=false;");
                     n += msg->conflict_crit? sprintf(params + n,"conflict_crit=true;"):sprintf(params + n,"conflict_crit=false;");
