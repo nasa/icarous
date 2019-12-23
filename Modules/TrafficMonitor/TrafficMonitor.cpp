@@ -29,6 +29,7 @@ TrafficMonitor::TrafficMonitor(bool reclog,char daaConfig[]) {
 
     std::string filename(daaConfig);
     DAA.loadFromFile(filename);
+    DAA2.loadFromFile(filename);
 
     numTrackBands = 0;
     numSpeedBands = 0;
@@ -47,6 +48,7 @@ void TrafficMonitor::UpdateDAAParameters(char daaParameters[],bool reclog) {
     larcfm::ParameterData params;
     params.parseParameterList(";",to_string(daaParameters));
     DAA.setParameterData(params);
+    DAA2.setParameterData(params);
     if(reclog && !log) {
         log = reclog;
         char            fmt1[64],fmt2[64];
@@ -208,7 +210,7 @@ bool TrafficMonitor::MonitorWPFeasibility(double *position, double *velocity, do
     double cmd = -(position[2] - wp[2])/5;
     Velocity vo = Velocity::makeTrkGsVs(track,"degree",velocity[1],"m/s",cmd,"m/s");
 
-    DAA.setOwnshipState("Ownship", so, vo, elapsedTime);
+    DAA2.setOwnshipState("Ownship", so, vo, elapsedTime);
     double dist2traffic = MAXDOUBLE;
     int count = 0;
     bool conflict = false;
@@ -219,9 +221,9 @@ bool TrafficMonitor::MonitorWPFeasibility(double *position, double *velocity, do
 
         char name[50];
         sprintf(name, "Traffic%d", _traffic.id);
-        DAA.addTrafficState(name, si, vi, _traffic.time);
+        DAA2.addTrafficState(name, si, vi, _traffic.time);
 
-        if(DAA.alerting(count)) {
+        if(DAA2.alerting(count)) {
             conflict = true;
         }
     }

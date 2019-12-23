@@ -138,7 +138,7 @@ void TRAFFIC_ProcessPacket(){
             int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->index,pos,vel,trafficAppData.time);
             if(val) {
                 trafficAppData.numTraffic++;
-                CFE_ES_WriteToSysLog("Geofence:Received intruder:%d\n",msg->index);
+                CFE_ES_WriteToSysLog("Traffic:Received intruder:%d\n",msg->index);
             }
             break;
         }

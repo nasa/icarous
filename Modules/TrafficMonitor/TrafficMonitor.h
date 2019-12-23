@@ -53,6 +53,7 @@ private:
 
 public:
     larcfm::Daidalus DAA;
+    larcfm::Daidalus DAA2;
 
     TrafficMonitor(bool reclog,char daaConfig[]);
     void UpdateDAAParameters(char daaParameters[],bool log);
