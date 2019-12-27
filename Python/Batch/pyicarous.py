@@ -10,6 +10,67 @@ from ichelper import (ConvertTrkGsVsToVned,
                       ComputeHeading)
 
 
+class WellClearParams():
+    def __init__(self):
+        self.data = {}
+        self.data["lookahead_time"] = "60.000000 [s]"
+        self.data["left_trk"] = "180.000000 [deg]"
+        self.data["right_trk"] = "180.000000 [deg]"
+        self.data["min_gs"] = "0.200000 [m/s]"
+        self.data["max_gs"] = "5.000000 [m/s]"
+        self.data["min_vs"] = "-400.000000 [fpm]"
+        self.data["max_vs"] = "400.000000 [fpm]"
+        self.data["min_alt"] = "0.000000 [ft]"
+        self.data["max_alt"] = "500.000000 [ft]"
+        # Kinematic Parameters
+        self.data["trk_step"] = "1.000000 [deg]"
+        self.data["gs_step"] = "0.100 [m/s]"
+        self.data["vs_step"] = "5.000000 [fpm]"
+        self.data["alt_step"] = "1.000000 [m]"
+        self.data["horizontal_accel"] = "1.000000 [m/s^2]"
+        self.data["vertical_accel"] = "1.000000 [m/s^2]"
+        self.data["turn_rate"] = "0.000000 [deg/s]"
+        self.data["bank_angle"] = "0.000000 [deg]"
+        self.data["vertical_rate"] = "0.000000 [m/s]"
+        # Recovery Bands Parameters
+        self.data["recovery_stability_time"] = "0.000000 [s]"
+        self.data["min_horizontal_recovery"] = "2.000000 [m]"
+        self.data["min_vertical_recovery"] = "1.000000 [m]"
+        self.data["recovery_trk"] = "true"
+        self.data["recovery_gs"] = "false"
+        self.data["recovery_vs"] = "false"
+        self.data["recovery_alt"] = "false"
+        # Collision Avoidance Bands Parameters
+        self.data["ca_bands"] = "true"
+        self.data["ca_factor"] = "0.200000"
+        self.data["horizontal_nmac"] = "1.000000 [m]"
+        self.data["vertical_nmac"] = "0.500000 [m]"
+        # Implicit Coordination Parameters
+        self.data["conflict_crit"] = "false"
+        self.data["recovery_crit"] = "false"
+        # Horizontal Contour Threshold
+        self.data["contour_thr"] = "180.000000 [deg]"
+        # Alert Levels
+        self.data["alert_1_alerting_time"] = "10.000000 [s]"
+        self.data["alert_1_detector"] = "det_1"
+        self.data["alert_1_early_alerting_time"] = "15.000000 [s]"
+        self.data["alert_1_region"] = "NEAR"
+        self.data["alert_1_spread_alt"] = "0.000000 [m]"
+        self.data["alert_1_spread_gs"] = "0.000000 [m/s]"
+        self.data["alert_1_spread_trk"] = "0.000000 [deg]"
+        self.data["alert_1_spread_vs"] = "0.000000 [fpm]"
+        self.data["conflict_level"] = "1"
+        self.data["det_1_WCV_DTHR"] = "20.000000 [m]"
+        self.data["det_1_WCV_TCOA"] = "0.000000 [s]"
+        self.data["det_1_WCV_TTHR"] = "0.000000 [s]"
+        self.data["det_1_WCV_ZTHR"] = "5.000000 [m]"
+        self.data["load_core_detection_det_1"] = "gov.nasa.larcfm.ACCoRD.WCV_TAUMOD"
+
+    def WriteParams(self):
+        fp = open('DaidalusQuadConfig.txt','w')
+        for key in self.data.keys():
+            fp.write(key + "=" + self.data[key] + "\n")
+
 class VehicleSim():
     def __init__(self, dt, x, y, z, vx, vy, vz):
         self.dt = dt
@@ -135,7 +196,7 @@ class IcarousSim():
                 (ve,vn,vd) = (0,0,0)
                 if self.trackResolution:
                     #print("executing track resolution")
-                    (ve, vn, vd) = ConvertTrkGsVsToVned(self.ptrack, 1, 0)
+                    (ve, vn, vd) = ConvertTrkGsVsToVned(self.ptrack, self.simSpeed, 0)
                 elif self.speedResolution:
                     #print("executing speed resolution")
                     (ve, vn, vd) = ConvertTrkGsVsToVned(self.heading2target,
@@ -143,7 +204,7 @@ class IcarousSim():
                 elif self.altResolution:
                     #print("executing alt resolution")
                     (ve, vn, vd) = ConvertTrkGsVsToVned(self.heading2target,
-                                                        1, self.pvs)
+                                                        self.simSpeed, self.pvs)
                 U = np.array([ve, vn, vd])
 
             self.ownship.input(U[0],U[1],U[2])

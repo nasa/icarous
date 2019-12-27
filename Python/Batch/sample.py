@@ -1,7 +1,12 @@
-from pyicarous import IcarousSim
+from pyicarous import WellClearParams,IcarousSim
 from matplotlib import pyplot as plt
 from mpl_toolkits import mplot3d
 import numpy as np
+
+
+params = WellClearParams()
+params.data["det_1_WCV_DTHR"] = "30.0 [ft]"
+params.WriteParams()
 
 # Create a simulator
 ic = IcarousSim((37.102177,-76.387207,5),1,[37.1021769,-76.38495433,5.0])
