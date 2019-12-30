@@ -129,7 +129,17 @@ class IcarousSim():
         else:
             targetN = distance(self.home_pos[0],self.home_pos[1],targetPosLLA[0],self.home_pos[1])
             targetE = distance(self.home_pos[0],self.home_pos[1],self.home_pos[0],targetPosLLA[1])
-            self.targetPos = np.array([targetE,targetN,targetPosLLA[2]])
+            if(targetPosLLA[0] > self.home_pos[0]):
+                signN = 1
+            else:
+                signN = -1
+
+            if(targetPosLLA[1] > self.home_pos[1]):
+                signE = 1
+            else:
+                signE = -1
+
+            self.targetPos = np.array([signE*targetE,signN*targetN,targetPosLLA[2]])
         self.simSpeed = vehicleSpeed
 
         self.currentOwnshipPos = (0, 0, initialPos[2])
