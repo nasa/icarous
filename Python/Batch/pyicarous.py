@@ -71,6 +71,8 @@ class WellClearParams():
         for key in self.data.keys():
             fp.write(key + "=" + self.data[key] + "\n")
 
+        fp.close()
+
 class VehicleSim():
     def __init__(self, dt, x, y, z, vx, vy, vz):
         self.dt = dt
@@ -195,7 +197,8 @@ class IcarousSim():
 
         while(self.dist > 10):
             self.count += 1
-            if (self.count > 2000) and (self.dist >= 200):
+            if (self.count > 2000) and (self.dist >= 1000):
+                print("terminating simulation")
                 break
 
             U = (0, 0, 0)
@@ -286,11 +289,10 @@ class IcarousSim():
                             self.ptrack = -1
                     currentHeading = ovelTrkGsVs[0]
                     safe2Turn = self.tfMonitor.check_safe_to_turn(ownship_pos_gx,ovelTrkGsVs,currentHeading,self.heading2target)
-                    wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,ovelTrkGsVs,[wgx,wgy,targetPos[2]])
+                    #wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,ovelTrkGsVs,[wgx,wgy,targetPos[2]])
                     newOvelTrkGsVs = ovelTrkGsVs
                     newOvelTrkGsVs = (self.heading2target,ovelTrkGsVs[1],ovelTrkGsVs[2])
-                    wpFeasibility |= self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,newOvelTrkGsVs,[wgx,wgy,targetPos[2]])
-
+                    wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,newOvelTrkGsVs,[wgx,wgy,targetPos[2]])
                     if safe2Turn == 0 and not wpFeasibility:
                         self.conflict = 1
                         if self.ptrack == -1:
