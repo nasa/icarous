@@ -5,17 +5,18 @@ import numpy as np
 
 
 params = WellClearParams()
-params.data["det_1_WCV_DTHR"] = "30.0 [ft]"
+params.data["det_1_WCV_DTHR"] = "150.0 [ft]"
+params.data["RESSPEED"] = "7.0"
 params.WriteParams()
 
 # Create a simulator
-ic = IcarousSim((37.102177,-76.387207,5),1,[37.1021769,-76.38495433,5.0])
+ic = IcarousSim((37.09810759,-76.392393,5),7,[37.105061,-76.386288,5.0])
 
 # Setup uncertainty and smoothing parameters
 ic.setpos_uncertainty_ownship(0.05,0.05,0,0,0,0)
 
 # Input traffic and setup uncertainty for traffic
-ic.InputTraffic(100,90,5,1,270,0)
+ic.InputTraffic(627.75,33.933,10,6,216,0)
 ic.setpos_uncertainty_traffic(0.05,0.05,0,0,0,0)
 
 # Run the simulation
