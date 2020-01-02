@@ -312,8 +312,9 @@ class BatchGSModule():
         print("Loading params %s" % filename)
         try:
             f = open(filename, mode='r')
-        except:
+        except (IOError, TypeError):
             print("Failed to open file '%s'" % filename)
+            return
 
         for line in f:
             line = line.replace('=',' ')
