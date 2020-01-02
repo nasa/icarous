@@ -104,26 +104,28 @@ def RunScenario(scenario, watch=False, save=False, verbose=True, out="14557", ou
     final = [WP[-1][0], WP[-1][1]]
 
     # Upload the geofence
-    if scenario["geofence_file"]:
+    if scenario.get("geofence_file"):
         gs.loadGeofence(os.path.join(icarous_home, scenario["geofence_file"]))
     # Read the geofences
     GF = GetPolygons(origin, gs.fenceList)
 
     # Upload the icarous parameters
-    if scenario["parameter_file"]:
+    if scenario.get("parameter_file"):
         gs.loadParams(os.path.join(icarous_home, scenario["parameter_file"]))
-    for param_id, param_value in scenario["param_adjustments"].items():
-        gs.setParam(param_id, param_value)
+    if scenario.get("param_adjustments"):
+        for param_id, param_value in scenario["param_adjustments"].items():
+            gs.setParam(param_id, param_value)
     # Get the parameters
     params = gs.getParams()
 
     # Load traffic vehicles
-    for traf in scenario["traffic"]:
-        gs.load_traffic([0]+traf)
+    if scenario.get("traffic"):
+        for traf in scenario["traffic"]:
+            gs.load_traffic([0]+traf)
 
     # Wait for GPS fix before starting mission
     time.sleep(1)
-    if verbose: 
+    if verbose:
         print("Waiting for GPS fix...")
     master.recv_match(type="GLOBAL_POSITION_INT", blocking=True)
 
