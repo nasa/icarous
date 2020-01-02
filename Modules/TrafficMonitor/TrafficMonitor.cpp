@@ -209,7 +209,7 @@ bool TrafficMonitor::MonitorWPFeasibility(double *position, double *velocity, do
     double track = so.track(WP) * 180/M_PI;
     double cmd = -(position[2] - wp[2])/5;
     Velocity vo = Velocity::makeTrkGsVs(track,"degree",velocity[1],"m/s",cmd,"m/s");
-
+    DAA2.stale(true);
     DAA2.setOwnshipState("Ownship", so, vo, elapsedTime);
     double dist2traffic = MAXDOUBLE;
     int count = 0;
