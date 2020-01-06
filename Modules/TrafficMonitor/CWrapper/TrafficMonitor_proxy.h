@@ -100,5 +100,7 @@ void TrafficMonitor_GetGSBands(SwigObj * carg1, int * carg2, int * carg3, double
 void TrafficMonitor_GetVSBands(SwigObj * carg1, int * carg2, int * carg3, double * carg4, double * carg5, int * carg6, int * carg7, double * carg8, double * carg9, double * carg10, double * carg11, double * carg12, double * carg13, double * carg14);
 void TrafficMonitor_GetAltBands(SwigObj * carg1, int * carg2, int * carg3, double * carg4, double * carg5, int * carg6, int * carg7, double * carg8, double * carg9, double * carg10, double * carg11, double * carg12, double * carg13, double * carg14);
 void delete_TrafficMonitor(TrafficMonitor * carg1);
+int TrafficMonitor_GetTrafficAlerts(SwigObj* carg1,int carg2,int* carg3,int* carg4);
+
 
 #endif /* _TrafficMonitor_proxy_H_ */

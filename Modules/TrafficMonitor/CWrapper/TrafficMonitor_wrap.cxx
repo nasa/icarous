@@ -778,6 +778,13 @@ extern "C" {
     arg14 = (double *) carg14;
     (arg1)->GetAltBands(*arg2,arg3,arg4,arg5,*arg6,*arg7,*arg8,*arg9,*arg10,*arg11,*arg12,*arg13,*arg14);
   }
+
+
+  SWIGEXPORTC int TrafficMonitor_GetTrafficAlerts(SwigObj* carg1,int carg2,uint32_t* carg3,int* carg4){
+      TrafficMonitor* arg1;
+      arg1 =(TrafficMonitor*)carg1->obj;
+      arg1->GetTrafficAlerts(carg2,carg3,carg4);
+  }
   
   
   SWIGEXPORTC void _wrap_delete_TrafficMonitor(SwigObj * carg1) {

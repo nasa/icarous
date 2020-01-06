@@ -115,10 +115,14 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
             dist2traffic = dist;
         }
 
-        if(DAA.alerting(count)) {
+        int alert = DAA.alerting(count);
+        if(alert) {
             conflict = true;
             conflictStartTime = time(&currentTime);
         }
+
+        trafficIDs[count-1] = _traffic.id;
+        trafficAlerts[count-1] = alert;
     }
 
     // Remove all the stale data
@@ -541,4 +545,14 @@ void TrafficMonitor::GetAltBands(int& numBands,int* bandTypes,double* low,double
     //printf("num bands :%d\n",numBands);
     //printf("current conflict: %d\n",currentConflict);
     //printf("pref resolution:%f\n",respref);
+}
+
+int TrafficMonitor::GetTrafficAlerts(int index,uint32_t* trafficID,int* alertLevel){
+    int sizetf = trafficList.size();
+    if (sizetf > index){
+       *trafficID = trafficIDs[index];
+       *alertLevel = trafficAlerts[index];
+    }
+
+    return sizetf;
 }

@@ -70,6 +70,8 @@ void TRAFFIC_AppInit(void) {
     CFE_SB_InitMsg(&trafficAppData.speedBands, ICAROUS_BANDS_SPEED_MID, sizeof(bands_t), TRUE);
     CFE_SB_InitMsg(&trafficAppData.vsBands, ICAROUS_BANDS_VS_MID, sizeof(bands_t), TRUE);
     CFE_SB_InitMsg(&trafficAppData.altBands,ICAROUS_BANDS_ALT_MID,sizeof(bands_t),TRUE);
+    CFE_SB_InitMsg(&trafficAppData.altBands,ICAROUS_BANDS_ALT_MID,sizeof(bands_t),TRUE);
+    CFE_SB_InitMsg(&trafficAppData.tfAlerts,TRAFFIC_ALERTS_MID,sizeof(traffic_alerts_t),TRUE);
 
     // Register table with table services
     status = CFE_TBL_Register(&trafficAppData.Traffic_tblHandle,
@@ -359,6 +361,21 @@ void TRAFFIC_ProcessPacket(){
             SendSBMsg(trafficAppData.vsBands);
 
             SendSBMsg(trafficAppData.altBands);
+
+            int count = 1;
+            for(int i=0;i<count;++i){
+                int alert;
+                uint32_t id;
+                count = TrafficMonitor_GetTrafficAlerts(trafficAppData.tfMonitor,i,&id,&alert);
+                if(count > 0){
+                    trafficAppData.tfAlerts.trafficID[i] = id;
+                    trafficAppData.tfAlerts.trafficAlerts[i] = alert;
+                    //OS_printf("Alert level for traffic: %ld is %d\n",id,alert);
+                }
+            }
+
+            if(count>0)
+                SendSBMsg(trafficAppData.tfAlerts);
 
             break;
         }

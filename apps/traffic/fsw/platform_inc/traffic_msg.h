@@ -9,6 +9,7 @@
 #include "cfe.h"
 #include "stdbool.h"
 
+#define MAX_TRAFFIC_ALERTS 10
 
 /**
  * @defgroup TRAFFIC_MESSAGES
@@ -46,6 +47,12 @@ typedef struct{
     bool fp1ClosestPointFeasible;            /**< feasibility of nearest point on flightplan 1 */
     bool fp2ClosestPointFeasible;            /**< feasibility of nearest point on flightplan 2 */
 }bands_t;
+
+typedef struct{
+    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    uint32_t trafficID[MAX_TRAFFIC_ALERTS];
+    uint32_t trafficAlerts[MAX_TRAFFIC_ALERTS];
+}traffic_alerts_t;
 
 /**
  * @struct checkTurnSafety_t

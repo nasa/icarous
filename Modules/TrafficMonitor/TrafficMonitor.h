@@ -51,6 +51,9 @@ private:
     double prevLogTime;
     double elapsedTime;
 
+    uint32_t trafficIDs[100];
+    int32_t trafficAlerts[100];
+
 public:
     larcfm::Daidalus DAA;
     larcfm::Daidalus DAA2;
@@ -106,6 +109,8 @@ public:
                     double& resUp,
                     double& resDown,
                     double& redPref);
+
+    int GetTrafficAlerts(int index,uint32_t* trafficID,int* alertLevel);
 
 };
 
