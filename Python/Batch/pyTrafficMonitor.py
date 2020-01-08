@@ -14,7 +14,10 @@ lib._wrap_TrafficMonitor_GetAltBands.argtypes = [c_void_p,c_int*1,c_int*5,c_doub
 class TrafficMonitor():
     def __init__(self,log):
         self.obj = lib._wrap_new_TrafficMonitor(c_bool(log),c_char_p("DaidalusQuadConfig.txt".encode('utf-8')))
-  
+
+    def deleteobj(self):
+        lib._wrap_delete_TrafficMonitor(self.obj)
+
     def input_traffic(self,index,position,velocity,time):
         cpos = c_double*3
         cvel = c_double*3
