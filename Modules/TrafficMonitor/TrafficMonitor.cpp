@@ -118,7 +118,7 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
         int alert = DAA.alerting(count);
         if(alert) {
             conflict = true;
-            conflictStartTime = time(&currentTime);
+            conflictStartTime = elapsedTime;
         }
 
         trafficIDs[count-1] = _traffic.id;
@@ -131,7 +131,7 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
     }
 
 
-    double daaTimeElapsed = difftime(currentTime,conflictStartTime);
+    double daaTimeElapsed = elapsedTime - conflictStartTime;
 
     if(daaTimeElapsed > holdConflictTime && conflict != true){
        numTrackBands = 0;
