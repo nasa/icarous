@@ -63,7 +63,7 @@ class WellClearParams():
         self.data["det_1_WCV_DTHR"] = "20.000000 [m]"
         self.data["det_1_WCV_TCOA"] = "0.000000 [s]"
         self.data["det_1_WCV_TTHR"] = "0.000000 [s]"
-        self.data["det_1_WCV_ZTHR"] = "5.000000 [m]"
+        self.data["det_1_WCV_ZTHR"] = "30.000000 [m]"
         self.data["load_core_detection_det_1"] = "gov.nasa.larcfm.ACCoRD.WCV_TAUMOD"
 
     def WriteParams(self):
@@ -165,6 +165,7 @@ class IcarousSim():
         self.palt = 0
         self.pvs = 0
         self.conflict = 0
+        self.cleared = False
         self.heading2target = 0
         self.trackResolution = True
         self.speedResolution = False
@@ -174,6 +175,7 @@ class IcarousSim():
 
         self.relpos = []
         self.relvel = []
+        self.confcount = 0
 
     def setpos_uncertainty_ownship(self,xx,yy,zz,xy,yz,xz,coeff=0.8):
         self.ownship.setpos_uncertainty(xx,yy,zz,xy,yz,xz,coeff)
@@ -193,6 +195,9 @@ class IcarousSim():
         self.trafficPosLog.append([])
         self.trafficVelLog.append([])
 
+    def Cleanup(self):
+        self.tfMonitor.deleteobj()
+
     def Run(self):
 
         while(self.dist > 10):
@@ -205,6 +210,7 @@ class IcarousSim():
             self.dist = np.linalg.norm(self.targetPos - self.currentOwnshipPos)
             if self.conflict == 0:
                 U = ComputeControl(self.simSpeed, self.currentOwnshipPos, self.targetPos)
+                self.resObtained = False
             else:
                 (ve,vn,vd) = (0,0,0)
                 if self.trackResolution:
@@ -246,6 +252,9 @@ class IcarousSim():
             ovelTrkGsVs = ConvertVnedToTrkGsVs(*ownship_vel)
             self.heading2target = ComputeHeading(ownship_pos_gx, targetPos)
 
+
+            traffic_pos_gx = []
+            traffic_vel = []
             for i in range(len(self.traffic)):
                 traffic = self.traffic[i]
                 traffic.run(self.traffic[i].vel)
@@ -260,27 +269,31 @@ class IcarousSim():
                 (tgx, tgy) = gps_offset(home_pos[0], home_pos[1],
                                         traffic.pos[0], traffic.pos[1])
 
+
+
                 traffic_pos_gx = [tgx, tgy, traffic.pos[2]]
                 traffic_vel = [traffic.vel[0], traffic.vel[1], traffic.vel[2]]
 
                 self.tfMonitor.input_traffic(i, traffic_pos_gx,
-                                             traffic_vel, self.count)
+                                             traffic_vel, self.count*0.05)
 
             self.tfMonitor.monitor_traffic(ownship_pos_gx, ovelTrkGsVs,
-                                           self.count)
+                                           self.count*0.05)
 
             (conflict1, self.ptrack) = self.tfMonitor.GetTrackBands()
             (conflict2, self.pspeed) = self.tfMonitor.GetGSBands()
             (conflict3, pdown, pup, self.palt) = self.tfMonitor.GetAltBands()
 
+            
             self.conflict = (conflict1 == 1) or (conflict2 == 1) or (conflict3 == 1)
             if (self.conflict is True) and not self.resObtained:
+                self.confcount = 1
                 print("conflict detected")
                 self.resObtained = True
                 # Place holder for to use functions to obtain resolutions
 
+            wpFeasibility = False
             if self.resObtained:
-
                 if self.trackResolution:
                     if not math.isfinite(self.ptrack) or self.ptrack == -1:
                         if len(self.preferredTrack) > 0:
@@ -289,11 +302,11 @@ class IcarousSim():
                             self.ptrack = -1
                     currentHeading = ovelTrkGsVs[0]
                     safe2Turn = self.tfMonitor.check_safe_to_turn(ownship_pos_gx,ovelTrkGsVs,currentHeading,self.heading2target)
-                    #wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,ovelTrkGsVs,[wgx,wgy,targetPos[2]])
                     newOvelTrkGsVs = ovelTrkGsVs
                     newOvelTrkGsVs = (self.heading2target,ovelTrkGsVs[1],ovelTrkGsVs[2])
-                    wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,newOvelTrkGsVs,[wgx,wgy,targetPos[2]])
-                    if safe2Turn == 0 and not wpFeasibility:
+                    wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,ovelTrkGsVs,[wgx,wgy,targetPos[2]])
+
+                    if not wpFeasibility:
                         self.conflict = 1
                         if self.ptrack == -1:
                             self.ptrack = self.preferredTrack[-1]
@@ -329,7 +342,6 @@ class IcarousSim():
                             self.palt = self.preferredAlt[-1]
                         else:
                             self.palt = -1000
-
                     wpFeasibility = self.tfMonitor.monitor_wp_feasibility(ownship_pos_gx,ovelTrkGsVs,[wgx,wgy,targetPos[2]])
                     if not wpFeasibility: 
                         self.conflict = 1
@@ -342,5 +354,4 @@ class IcarousSim():
 
                     if self.palt == -1000:
                         self.palt = 5
-
-
+            
