@@ -52,7 +52,7 @@ Agreement.  See the directory [`LICENSES`](LICENSES); see also the copyright not
 
 ### LAUNCHING ICAROUS
 
-The generated executable file is installed under `cFS/bin/cpu1`. Launch Icarous using the following command:
+The generated executable file is installed under `exe/cpu1`. Launch Icarous using the following command:
 
 ```
     $sudo ./core-cpu1 -I 0 -C 1
