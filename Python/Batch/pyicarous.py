@@ -86,6 +86,7 @@ class VehicleSim():
         self.old_z = 0
         self.pos = np.array([x, y, z])
         self.vel = np.array([vx, vy, vz])
+        self.U   = np.array([0.0, 0.0, 0.0])
 
     def setpos_uncertainty(self,xx,yy,zz,xy,yz,xz,coeff):
         self.noise = True
@@ -94,8 +95,13 @@ class VehicleSim():
                                    [xy, yy, yz],
                                    [xz, yz, zz]])
 
-    def run(self, U):
-        self.vel0 = self.vel0 + 0.2 * (U - self.vel0)
+    def input(self,U1,U2,U3):
+        self.U[0] = U1
+        self.U[1] = U2
+        self.U[2] = -U3
+
+    def step(self):
+        self.vel0 = self.vel0 + 0.01 * (self.U - self.vel0)
         self.pos0 = self.pos0 + self.vel0 * self.dt
         n = np.zeros((1,3))
         if self.noise:
@@ -105,16 +111,22 @@ class VehicleSim():
         self.pos[1] = self.coeff*self.pos[1] + (1 - self.coeff)*(self.pos0[1] + n[0,1]) 
         self.pos[2] = self.coeff*self.pos[2] + (1 - self.coeff)*(self.pos0[2] + n[0,2]) 
 
+    def getOutputPosition(self):
+        return (self.pos[0],self.pos[1],self.pos[2])
+
+    def getOutputVelocity(self):
+        return (self.vel0[0],self.vel0[1],self.vel0[2])
+
 
 def ComputeControl(speed, currentPos, nextPos):
     ds = nextPos - currentPos
     ds = ds/np.linalg.norm(ds) * speed
-    ds[2] = -ds[2]
+    ds[2] = -ds[2] * 30
     return ds
 
 
 class IcarousSim():
-    def __init__(self, initialPos, vehicleSpeed, targetPosLLA = None, targetPosNED = None):
+    def __init__(self, initialPos, vehicleSpeed, targetPosLLA = None, targetPosNED = None, simtype="UAS_ROTOR"):
         """
         @initialPos (lat,lon) tuple containing starting
                     latitude, longitude  of simulation
@@ -124,7 +136,10 @@ class IcarousSim():
 
         self.home_pos = [initialPos[0], initialPos[1], initialPos[2]]
         self.traffic = []
-        self.ownship = QuadSim()
+        if simtype == "UAM_VTOL":
+            self.ownship = VehicleSim(0.05,0.0,0.0,0.0,0.0,0.0,0.0)
+        else:
+            self.ownship = QuadSim()
 
         if targetPosNED is not None:
             self.targetPos = np.array([targetPosNED[1], targetPosNED[0], targetPosNED[2]])
@@ -207,6 +222,7 @@ class IcarousSim():
                 break
 
             U = (0, 0, 0)
+
             self.dist = np.linalg.norm(self.targetPos - self.currentOwnshipPos)
             if self.conflict == 0:
                 U = ComputeControl(self.simSpeed, self.currentOwnshipPos, self.targetPos)
@@ -225,6 +241,8 @@ class IcarousSim():
                     (ve, vn, vd) = ConvertTrkGsVsToVned(self.heading2target,
                                                         self.simSpeed, self.pvs)
                 U = np.array([ve, vn, vd])
+
+
 
             self.ownship.input(U[0],U[1],U[2])
             self.ownship.step()
@@ -257,14 +275,13 @@ class IcarousSim():
             traffic_vel = []
             for i in range(len(self.traffic)):
                 traffic = self.traffic[i]
-                traffic.run(self.traffic[i].vel)
-                self.trafficPosLog[i].append((traffic.pos[0],
-                                              traffic.pos[1],
-                                              traffic.pos[2]))
-
-                self.trafficVelLog[i].append((traffic.vel[0],
-                                              traffic.vel[1],
-                                              traffic.vel[2]))
+                oldvel = traffic.getOutputVelocity()
+                traffic.input(oldvel[0],oldvel[1],oldvel[2])
+                traffic.step()
+                newpos = traffic.getOutputPosition()
+                newvel = traffic.getOutputVelocity()
+                self.trafficPosLog[i].append(newpos)
+                self.trafficVelLog[i].append(newvel)
 
                 (tgx, tgy) = gps_offset(home_pos[0], home_pos[1],
                                         traffic.pos[0], traffic.pos[1])
