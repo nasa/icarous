@@ -40,7 +40,7 @@ Agreement.  See the directory [`LICENSES`](LICENSES); see also the copyright not
 ### Initialize and update submodules
 
 ```
-    $git submodule update --init --recursive
+    $bash UpdateModules.sh
 ```
 
 ### COMPILING ICAROUS
