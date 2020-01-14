@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import time
 from pyTrafficMonitor import TrafficMonitor
 from quadsim import QuadSim
 
@@ -126,14 +127,14 @@ def ComputeControl(speed, currentPos, nextPos):
 
 
 class IcarousSim():
-    def __init__(self, initialPos, vehicleSpeed, targetPosLLA = None, targetPosNED = None, simtype="UAS_ROTOR"):
+    def __init__(self, initialPos, vehicleSpeed, targetPosLLA = None, targetPosNED = None, simtype="UAS_ROTOR",fasttime = True):
         """
         @initialPos (lat,lon) tuple containing starting
                     latitude, longitude  of simulation
         @targetPos (rangeN,rangeE,rangeD) tuple containing
                     N,E,D range to target position
         """
-
+        self.fasttime = fasttime
         self.home_pos = [initialPos[0], initialPos[1], initialPos[2]]
         self.traffic = []
         if simtype == "UAM_VTOL":
@@ -215,7 +216,17 @@ class IcarousSim():
 
     def Run(self):
 
+
+        time_prev =  0
+
         while(self.dist > 10):
+            time_now = time.time()
+            if not self.fasttime:
+                if time_now - time_prev >= 0.05:
+                    time_prev = time_now
+                else:
+                    continue
+
             self.count += 1
             if (self.count > 2000) and (self.dist >= 1000):
                 print("terminating simulation")

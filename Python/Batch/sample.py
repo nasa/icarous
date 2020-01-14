@@ -10,7 +10,7 @@ params.data["RESSPEED"] = "7.0"
 params.WriteParams()
 
 # Create a simulator
-ic = IcarousSim((37.09810759,-76.392393,5),7,[37.105061,-76.386288,10.0],simtype="UAM_VTOL")
+ic = IcarousSim((37.09810759,-76.392393,5),7,[37.105061,-76.386288,10.0],simtype="UAM_VTOL",fasttime=False)
 
 # Setup uncertainty and smoothing parameters
 ic.setpos_uncertainty_ownship(0.05,0.05,0,0,0,0)
