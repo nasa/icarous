@@ -116,7 +116,7 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
         }
 
         int alert = DAA.alerting(count);
-        if(alert) {
+        if(alert > 0) {
             conflict = true;
             conflictStartTime = elapsedTime;
         }
@@ -227,7 +227,7 @@ bool TrafficMonitor::MonitorWPFeasibility(double *position, double *velocity, do
         sprintf(name, "Traffic%d", _traffic.id);
         DAA2.addTrafficState(name, si, vi, _traffic.time);
 
-        if(DAA2.alerting(count)) {
+        if(DAA2.alerting(count) > 0) {
             conflict = true;
         }
     }
@@ -386,14 +386,14 @@ void TrafficMonitor::GetTrackBands(int& numBands,int* bandTypes,double* low,doub
         if(!ISNAN(prefHeading)) {
             if (prefDirection) {
                 prefHeading = prefHeading + 5 * M_PI / 180;
-                if (prefHeading > M_PI) {
-                    prefHeading = prefHeading - 2 * M_PI;
-                }
+                //if (prefHeading > M_PI) {
+                 //   prefHeading = prefHeading - 2 * M_PI;
+                //}
             } else {
                 prefHeading = prefHeading - 5 * M_PI / 180;
-                if (prefHeading < -M_PI) {
-                    prefHeading = 2 * M_PI + prefHeading;
-                }
+                //if (prefHeading < -M_PI) {
+                 //   prefHeading = 2 * M_PI + prefHeading;
+                //}
             }
             respref = prefHeading * 180 / M_PI;
         }else{
