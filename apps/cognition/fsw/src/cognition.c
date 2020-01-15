@@ -121,6 +121,9 @@ void COGNITION_AppInitData(){
 
     appdataCog.trafficConflictState = NOOPC;
     appdataCog.geofenceConflictState = NOOPC;
+    appdataCog.trafficTrackConflict = false;
+    appdataCog.trafficSpeedConflict = false;
+    appdataCog.trafficAltConflict = false;
     appdataCog.XtrackConflictState = NOOPC;
     appdataCog.resolutionTypeCmd = TRACK_RESOLUTION;
     appdataCog.requestGuidance2NextWP = -1;
@@ -198,7 +201,9 @@ void COGNITION_ProcessSBData() {
                    appdataCog.trafficSpeedConflict = false;
                }
                else {
-                   appdataCog.trafficSpeedConflict = true;
+                   if(appdataCog.trafficSpeedConflict){
+                      appdataCog.trafficSpeedConflict = true;
+                   }
                }
                appdataCog.preferredSpeed = -1000;
             }
