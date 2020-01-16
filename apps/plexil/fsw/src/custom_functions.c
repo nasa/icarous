@@ -13,7 +13,7 @@
 #include "geofence_msgids.h"
 #include "traffic_msgids.h"
 #include "trajectory_msgids.h"
-#include "safe2ditch_msgids.h"
+//#include "safe2ditch_msgids.h"
 #include "guidance_msgids.h"
 #include "../../../../../Modules/Utils/fence.h"
 
@@ -22,7 +22,7 @@
 #include <geofence_msg.h>
 #include <traffic_msg.h>
 #include <trajectory_msg.h>
-#include <safe2ditch_msg.h>
+//#include <safe2ditch_msg.h>
 #include <guidance_msg.h>
 #include <float.h>
 #include <UtilFunctions.h>
@@ -73,7 +73,7 @@ void PLEXIL_CustomSubscription(void){
     CFE_SB_SubscribeLocal(ICAROUS_BANDS_ALT_MID,plexilAppData.DATA_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(FLIGHTPLAN_MONITOR_MID,plexilAppData.DATA_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(GEOFENCE_PATH_CHECK_RESULT_MID,plexilAppData.DATA_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(SAFE2DITCH_STATUS_MID,plexilAppData.DATA_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    //CFE_SB_SubscribeLocal(SAFE2DITCH_STATUS_MID,plexilAppData.DATA_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(TRAFFIC_PARAMETERS_MID,plexilAppData.DATA_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 }
 
@@ -324,6 +324,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
 
         }
 
+        /*
         case SAFE2DITCH_STATUS_MID:{
             safe2ditchStatus_t *s2dstatus = (safe2ditchStatus_t*) plexilAppData.DATA_MsgPtr;
             plexilCustomData.ditchsite[0] = s2dstatus->ditchsite[0];
@@ -334,7 +335,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
             plexilCustomData.resetDitch = s2dstatus->resetDitch;
             plexilCustomData.endDitch = s2dstatus->endDitch;
             break;
-        }
+        }*/
 
         case TRAFFIC_PARAMETERS_MID:{
             traffic_parameters_t* msg = (traffic_parameters_t*) plexilAppData.DATA_MsgPtr;
@@ -530,6 +531,10 @@ void PLEXIL_HandleCustomCommands(PlexilMsg* msg){
         const bool val = true;
         serializeBool(false,val,plxInput.buffer);
         plexil_return(plexilAppData.adap, &plxInput);
+
+        cmd.name = PRIMARY_FLIGHTPLAN;
+        cmd.param1 = tempSeq;
+        SendSBMsg(cmd);
 
     }else if(CHECKNAME(msg ,"SetPos")){
         double _position[3];

@@ -115,7 +115,7 @@ ICAROUS:
 
                     EndCondition isKnown(status) && (status>=0) || (_reset);
 
-                    Takeoff(5.0);
+                    Takeoff(10.0);
 
                     CHECK_STATUS: {
                         Repeat true;
