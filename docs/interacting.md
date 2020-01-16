@@ -13,10 +13,16 @@ The gsInterface app must be run inorder to interact with Icarous using a suitabl
 
 ## Using MAVProxy
 
-Install the custom mavproxy modules using the Script:
+Install the custom mavproxy modules using the script: [Python/CustomModules](https://github.com/nasa/icarous/tree/master/Python/CustomModules)
 
 ```
 bash SetupMavProxy.sh <path/to/parentfolder/of/MAVProxy>
+```
+
+Launch the MAVProxy ground station using the provided script: [Scripts/runGS.sh](https://github.com/nasa/icarous/blob/master/Scripts/runGS.sh)
+
+```
+./runGS.sh
 ```
 
 ### Uploading flightplan
