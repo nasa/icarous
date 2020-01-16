@@ -7,9 +7,12 @@ nav_order: 2
 ## Downloading 
 ICAROUS is publicly available through the NASA open source agreement from [NASA/Icarous github repository](https://github.com/nasa/icarous.git). To download ICAROUS, clone the repository and its submodules:
 ```
-git clone --recurse-submodules https://github.com/nasa/icarous.git
+git clone https://github.com/nasa/icarous.git
 ```
-Note that the above repository includes the NASA [core Flight Executive (cFE)](https://github.com/nasa/cFE) repository as a submodule.
+Note that the above repository includes the NASA [core Flight Executive (cFE)](https://github.com/nasa/cFE) repository as a submodule. Update the publicly available submodules using the provided script:
+```
+bash UpdateModules.sh
+```
 
 ## Compilation 
 ICAROUS comes with a CMake build system. 
