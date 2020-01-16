@@ -83,6 +83,7 @@ void ComputeTakeoffGuidanceInput(){
        argsCmd_t cmd;
        CFE_SB_InitMsg(&cmd, ICAROUS_COMMANDS_MID, sizeof(cmd), TRUE);
        cmd.name = _TAKEOFF_;
+       cmd.param1 = 10;
        SendSBMsg(cmd);
        guidanceAppData.takeoffComplete = true;
    }

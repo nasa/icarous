@@ -184,12 +184,8 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
 
         case TAKEOFF:{
             //OS_printf("Received takeoff command in guidance app\n");
-            argsCmd_t cmd;              
-            CFE_SB_InitMsg(&cmd,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
-            cmd.name = _TAKEOFF_;
-            cmd.param1 = guidanceAppData.primaryFlightPlan.waypoints[1].altitude;
-            SendSBMsg(cmd);
             guidanceAppData.takeoffComplete = false;
+            guidanceAppData.guidanceMode = TAKEOFF;
             break;
         }
 
