@@ -75,6 +75,11 @@ void ProcessGSMessage(mavlink_message_t message) {
 		        gsConvertMissionItemsToPlan(appdataIntGS.numWaypoints,appdataIntGS.ReceivedMissionItems,&appdataIntGS.fpData);
                 SendSBMsg(appdataIntGS.fpData);
 
+                flightplan_t uplink;
+                memcpy(&uplink,&appdataIntGS.fpData,sizeof(flightplan_t));
+                CFE_SB_InitMsg(&uplink,UPLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),FALSE);
+                SendSBMsg(uplink);
+
                 mavlink_message_t msgAck;
                 mavlink_msg_mission_ack_pack(sysid_ic, compid_ic, &msgAck, sysid_gs, compid_gs, MAV_MISSION_ACCEPTED, msg.mission_type);
                 //printf("mission accepted\n");
