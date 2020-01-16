@@ -1,6 +1,6 @@
 /**
- * @file ardupilot.c
- * @brief function definitions for ardupilot app
+ * @file arducopter.c
+ * @brief function definitions for arducopter app
  */
 
 #define EXTERN
@@ -8,24 +8,24 @@
 #define INIT_PARAM
 
 #include <paramdef.h>
-#include "ardupilot.h"
-#include "ardupilot_version.h"
+#include "arducopter.h"
+#include "arducopter_version.h"
 #include "intf_tbl.c"
 
-/// Event filter definition for ardupilot
-CFE_EVS_BinFilter_t  ARDUPILOT_EventFilters[] =
+/// Event filter definition for arducopter
+CFE_EVS_BinFilter_t  ARDUCOPTER_EventFilters[] =
 {  /* Event ID    mask */
-		{ARDUPILOT_STARTUP_INF_EID,       0x0000},
-		{ARDUPILOT_COMMAND_ERR_EID,       0x0000},
+		{ARDUCOPTER_STARTUP_INF_EID,       0x0000},
+		{ARDUCOPTER_COMMAND_ERR_EID,       0x0000},
 };
 
-/* ARDUPILOT_AppMain() -- Application entry points */
-void ARDUPILOT_AppMain(void){
+/* ARDUCOPTER_AppMain() -- Application entry points */
+void ARDUCOPTER_AppMain(void){
 
 	int32 status;
 	uint32 RunStatus = CFE_ES_APP_RUN;
 
-    ARDUPILOT_AppInit();
+    ARDUCOPTER_AppInit();
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE) {
         status = CFE_SB_RcvMsg(&appdataInt.Sch_MsgPtr, appdataInt.SchInterface_Pipe, CFE_SB_PEND_FOREVER);
@@ -48,7 +48,7 @@ void ARDUPILOT_AppMain(void){
 
         if (status == CFE_SUCCESS)
         {
-            ARDUPILOT_ProcessPacket();
+            ARDUCOPTER_ProcessPacket();
         }
 
         // Stop parameter timer if parameter was sent
@@ -56,12 +56,12 @@ void ARDUPILOT_AppMain(void){
             ap_stopTimer(&appdataInt.pmtimer);
     }
 
-    ARDUPILOT_AppCleanUp();
+    ARDUCOPTER_AppCleanUp();
 
 	CFE_ES_ExitApp(RunStatus);
 }
 
-void ARDUPILOT_AppInit(void){
+void ARDUCOPTER_AppInit(void){
 
 	memset(&appdataInt,0,sizeof(appdataInt_t));
 	appdataInt.runThreads = 1;
@@ -72,18 +72,18 @@ void ARDUPILOT_AppInit(void){
 	CFE_ES_RegisterApp();
 
 	// Register the events
-	CFE_EVS_Register(ARDUPILOT_EventFilters,
-			sizeof(ARDUPILOT_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
+	CFE_EVS_Register(ARDUCOPTER_EventFilters,
+			sizeof(ARDUCOPTER_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
 			CFE_EVS_BINARY_FILTER);
 
 	// Create pipe to receive SB messages
 	status = CFE_SB_CreatePipe( &appdataInt.INTERFACE_Pipe, /* Variable to hold Pipe ID */
-								ARDUPILOT_PIPE_DEPTH,    /* Depth of Pipe */
-								ARDUPILOT_PIPE_NAME);    /* Name of pipe */
+								ARDUCOPTER_PIPE_DEPTH,    /* Depth of Pipe */
+								ARDUCOPTER_PIPE_NAME);    /* Name of pipe */
 
 	status = CFE_SB_CreatePipe( &appdataInt.SchInterface_Pipe, /* Variable to hold Pipe ID */
-								ARDUPILOT_PIPE_DEPTH,    /* Depth of Pipe */
-								SCH_ARDUPILOT_PIPE1_NAME);    /* Name of pipe */
+								ARDUCOPTER_PIPE_DEPTH,    /* Depth of Pipe */
+								SCH_ARDUCOPTER_PIPE1_NAME);    /* Name of pipe */
 
 	// Subscribe to wakeup messages from scheduler
 	CFE_SB_SubscribeLocal(FREQ_50_WAKEUP_MID,appdataInt.SchInterface_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
@@ -112,10 +112,10 @@ void ARDUPILOT_AppInit(void){
     CFE_SB_InitMsg(&startMission,ICAROUS_STARTMISSION_MID,sizeof(argsCmd_t),TRUE);
 
 	// Send event indicating app initialization
-	CFE_EVS_SendEvent (ARDUPILOT_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+	CFE_EVS_SendEvent (ARDUCOPTER_STARTUP_INF_EID, CFE_EVS_INFORMATION,
                        "Ardupilot Interface initialized. Version %d.%d",
-					   ARDUPILOT_MAJOR_VERSION,
-					   ARDUPILOT_MINOR_VERSION);
+					   ARDUCOPTER_MAJOR_VERSION,
+					   ARDUCOPTER_MINOR_VERSION);
 
 	// Register table with table services
 	status = CFE_TBL_Register(&appdataInt.INTERFACE_tblHandle,
@@ -180,7 +180,7 @@ void ARDUPILOT_AppInit(void){
 
 }
     
-void ARDUPILOT_AppCleanUp(){
+void ARDUCOPTER_AppCleanUp(){
 	free((void*)appdataInt.waypoint_type);
 }
 

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.6.4)
-project(CFE_ARDUPILOT_INTERFACE C)
+project(CFE_ARDUCOPTER_INTERFACE C)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
 
@@ -22,12 +22,12 @@ aux_source_directory(fsw/src APP_SRC_FILES)
 
 link_directories(${MODULES_LIB})
 
-add_library(ardupilot MODULE ${APP_SRC_FILES})
+add_library(arducopter MODULE ${APP_SRC_FILES})
 
-set_target_properties(ardupilot PROPERTIES PREFIX "")
+set_target_properties(arducopter PROPERTIES PREFIX "")
 
 
 foreach(TGT ${APP_INSTALL_LIST})
-    install(TARGETS ardupilot DESTINATION ${TGT}/${INSTALL_SUBDIR})
+    install(TARGETS arducopter DESTINATION ${TGT}/${INSTALL_SUBDIR})
 endforeach()
 

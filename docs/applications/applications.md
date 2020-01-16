@@ -30,7 +30,7 @@ The following suite of apps must be run to provide geofencing, traffic resolutio
 * GsInterface app must be run to send/receive data to ICAROUS. 
 * A suitable autopilot interface application to send/receive commands/data to an external autopilot.
 
-NOTE: Ardupilot app serves a dual role. It can send data to the autopilot and also to a GCS using the mavlink routing capability. See [ardupilot]().
+NOTE: Arducopter app serves a dual role. It can send data to the autopilot and also to a GCS using the mavlink routing capability. See [ardupilot]().
 
 ### Creating your own apps
 

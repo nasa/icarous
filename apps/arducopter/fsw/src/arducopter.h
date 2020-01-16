@@ -1,9 +1,9 @@
 /**
- * @file ardupilot.h
+ * @file arducopter.h
  * @brief function declarations, definitions of macros, datastructures and global variables for the arudpilot application
  */
-#ifndef _ardupilot_h_
-#define _ardupilot_h_
+#ifndef _arducopter_h_
+#define _arducopter_h_
 
 #include "cfe.h"
 #include "cfe_error.h"
@@ -17,7 +17,7 @@
 #include <unistd.h>
 #include <paramdef.h>
 #include <network_includes.h>
-#include <ardupilot_events.h>
+#include <arducopter_events.h>
 #include <Icarous_msg.h>
 #include <Icarous_msgids.h>
 #include <traffic_msg.h>
@@ -34,14 +34,14 @@
 #include <mavlink/ardupilotmega/mavlink.h>
 #include <port_lib.h>
 
-#define ARDUPILOT_PIPE_NAME "FLIGHTPLAN"
-#define ARDUPILOT_PIPE_DEPTH 100
+#define ARDUCOPTER_PIPE_NAME "FLIGHTPLAN"
+#define ARDUCOPTER_PIPE_DEPTH 100
 
-#define SCH_ARDUPILOT_PIPE1_NAME "SCH_ARDUPILOT"
+#define SCH_ARDUCOPTER_PIPE1_NAME "SCH_ARDUCOPTER"
 
 /**
- * @defgroup ARDUPILOT
- * @brief An application to interface cFS with an ardupilot autopilot system
+ * @defgroup ARDUCOPTER
+ * @brief An application to interface cFS with an arducopter autopilot system
  * @ingroup APPLICATIONS
  *
  * @details This application opens two ports, one port connects to the autopilot and the other connects to the ground station.
@@ -54,7 +54,7 @@
  * sent to the ground station. Reading data from the autopilot and groundstation are each on separate threads. The rate
  * at which each thread executes is controlled by the cFS scheduler.
  *
- * @see ARDUPILOT_MESSAGES, ARDUPILOT_MESSAGE_TOPICS, ARDUPILOT_TABLES
+ * @see ARDUCOPTER_MESSAGES, ARDUCOPTER_MESSAGE_TOPICS, ARDUCOPTER_TABLES
  */
 
 /**
@@ -145,17 +145,17 @@ typedef struct{
 /**
  * Entry point for app
  */
-void ARDUPILOT_AppMain(void);
+void ARDUCOPTER_AppMain(void);
 
 /**
  * Initialize app properties
  */
-void ARDUPILOT_AppInit(void);
+void ARDUCOPTER_AppInit(void);
 
 /**
  * Clean up variables
  */
-void ARDUPILOT_AppCleanUp(void);
+void ARDUCOPTER_AppCleanUp(void);
 
 /**
  * Read from Ardupilot data stream and pass data to
@@ -169,7 +169,7 @@ void Task1(void);
 int GetMAVLinkMsgFromAP(void);
 
 /**
- * Process mavlink message from ardupilot and take action
+ * Process mavlink message from arducopter and take action
  * @param message mavlink message
  */
 void ProcessAPMessage(mavlink_message_t message);
@@ -177,7 +177,7 @@ void ProcessAPMessage(mavlink_message_t message);
 /**
  * Process SB messages from pipes and take action
  */
-void ARDUPILOT_ProcessPacket(void);
+void ARDUCOPTER_ProcessPacket(void);
 
 
 void apSendHeartbeat();
@@ -224,4 +224,4 @@ EXTERN rc_channels_t rc_channels;              ///< rc channels
 
 #define apNextParam appdataInt.storedparams[i].value;i++; 
 
-#endif /* _ardupilot_h_ */
+#endif /* _arducopter_h_ */

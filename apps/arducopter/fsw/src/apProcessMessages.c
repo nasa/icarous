@@ -1,12 +1,12 @@
 /*
- * ardupilot_process_messages.c
+ * arducopter_process_messages.c
  *
  *
  */
 #define EXTERN extern
 
 #include <paramdef.h>
-#include "ardupilot.h"
+#include "arducopter.h"
 #include "UtilFunctions.h"
 
 int GetMAVLinkMsgFromAP(){
@@ -54,7 +54,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                 mavlink_message_t msg;
                 mavlink_msg_request_data_stream_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_DATA_STREAM_ALL,4,1);
                 writeMavlinkData(&appdataInt.ap,&msg);
-                CFE_EVS_SendEvent(ARDUPILOT_CONNECTED_TO_AP_EID,CFE_EVS_INFORMATION,"Connection to autopilot established");
+                CFE_EVS_SendEvent(ARDUCOPTER_CONNECTED_TO_AP_EID,CFE_EVS_INFORMATION,"Connection to autopilot established");
 
                 mavlink_message_t msg_tune;
                 mavlink_msg_play_tune_pack(sysid_ic,compid_ic,&msg_tune,sysid_ap,compid_ap,"MFT90O2C16C16C16F8.A8C16C16C");
@@ -732,7 +732,7 @@ void ProcessAPMessage(mavlink_message_t message) {
     }
 }
 
-void ARDUPILOT_ProcessPacket() {
+void ARDUCOPTER_ProcessPacket() {
     CFE_SB_MsgId_t  MsgId;
 
 
