@@ -37,65 +37,6 @@ Agreement.  See the directory [`LICENSES`](LICENSES); see also the copyright not
 
 [C&eacute;sar A. Mu&ntilde;oz](http://shemesh.larc.nasa.gov/people/cam) (cesar.a.munoz@nasa.gov), NASA Langley Research Center.
 
-### Initialize and update submodules
-
-```
-    $bash UpdateModules.sh
-```
-
-### COMPILING ICAROUS
-
-```
-    $make 
-    $make install
-```
-
-### LAUNCHING ICAROUS
-
-The generated executable file is installed under `exe/cpu1`. Launch Icarous using the following command:
-
-```
-    $sudo ./core-cpu1 -I 0 -C 1
-```
-
-The intf_tbl.c located under `cFS/apps/ardupilot/fsw/tables` defines parameters required to configure the serial port settings to connect to an autopilot. Similarly gsIntf_tbl.c contains parameters that configure the connection to a ground station (radio link [SERIAL] or a socket connection [SOCKET]).
-
-For list of parameters that Icarous uses, please refer to Examples/InputData/icarous_default.parm
-
-### INTERACTING WITH ICAROUS
-
-We strongly recommend using MAVProxy as a ground station to communicate with ICAROUS. The custom MAVProxy modules provided in `Python/CustomModules` help upload geofence and visualize track bands.
-
-- Install the custom modules provided as part of the ICAROUS repository:
-
-```
-    $cd Python/CustomModules
-    $bash SetuMavProxy.sh <Location of MAVProxy/>
-```
-
-The MAVProxy ground station can be lauched using the run script located under the Scripts folder:
-
-    $./runGS.sh
-
-Waypoints can be uploaded from MAVProxy using the `wp` command, e.g.,
-
-	wp load Examples/InputData/flightplan.txt
-
-Geofence can be uploaded from MAVProxy using the `geofence` command, e.g.,
-
-	geofence load Examples/InputData/geofence.xml
-
-Parameters can be uploaded from MAVProxy using the `param` command, e.g.,
-
-    param load Examples/InputData/icarous_default.parm
-
-(Optional: To automatically check that geofences are composed of "nice" polygons before uploading, download PolyCARP from https://github.com/nasa/PolyCARP.git and add the Python folder in this repository to the PYTHONPATH environment variable.)
-	
-Once waypoints and geofence are uploaded, the mission can be started from MAVProxy as follows:
-
-    long MISSION_START
-
-
 ### Detect and Avoid (DAA) and Geofencing Capabilities
 
 ICAROUS integrates NASA's open source software packages [DAIDALUS](http://shemesh.larc.nasa.gov/fm/DAIDALUS)
