@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Source code
-nav_order: 6
+nav_order: 8
 ---
 
 # Source code information
