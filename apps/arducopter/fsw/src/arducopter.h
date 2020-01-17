@@ -59,7 +59,7 @@
 
 /**
  * @enum controlMode_e
- * @brief enumeration for Ardupilot control modes
+ * @brief enumeration for Arducopter control modes
  */
 typedef enum{
     STABILIZE =     0,  ///< manual airframe angle with manual throttle
@@ -158,13 +158,13 @@ void ARDUCOPTER_AppInit(void);
 void ARDUCOPTER_AppCleanUp(void);
 
 /**
- * Read from Ardupilot data stream and pass data to
+ * Read from Arducopter data stream and pass data to
  * groundstation and ICAROUS app
  */
 void Task1(void);
 
 /**
- * Get mavlink message from Ardupilot
+ * Get mavlink message from Arducopter
  */
 int GetMAVLinkMsgFromAP(void);
 
@@ -199,7 +199,7 @@ void apInterface_PublishParams();
  * Validate table data
  * @param *TblPtr pointer to table
  */
-int32_t ArdupilotTableValidationFunc(void *TblPtr);
+int32_t ArducopterTableValidationFunc(void *TblPtr);
 
 uint16_t apConvertPlanToMissionItems(flightplan_t* fp);
 

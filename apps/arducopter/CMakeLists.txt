@@ -24,7 +24,12 @@ link_directories(${MODULES_LIB})
 
 add_library(arducopter MODULE ${APP_SRC_FILES})
 
+target_link_libraries(arducopter Utils)
+
 set_target_properties(arducopter PROPERTIES PREFIX "")
+
+set_target_properties(arducopter PROPERTIES INSTALL_RPATH "${MODULES_LIB}")
+
 
 
 foreach(TGT ${APP_INSTALL_LIST})

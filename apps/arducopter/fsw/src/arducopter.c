@@ -113,24 +113,24 @@ void ARDUCOPTER_AppInit(void){
 
 	// Send event indicating app initialization
 	CFE_EVS_SendEvent (ARDUCOPTER_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                       "Ardupilot Interface initialized. Version %d.%d",
+                       "Arducopter Interface initialized. Version %d.%d",
 					   ARDUCOPTER_MAJOR_VERSION,
 					   ARDUCOPTER_MINOR_VERSION);
 
 	// Register table with table services
 	status = CFE_TBL_Register(&appdataInt.INTERFACE_tblHandle,
 				  "InterfaceTable",
-				  sizeof(ArdupilotTable_t),
+				  sizeof(ArducopterTable_t),
 				  CFE_TBL_OPT_DEFAULT,
-				  &ArdupilotTableValidationFunc);
+				  &ArducopterTableValidationFunc);
 
     // Load app table data 
     
-    status = CFE_TBL_Load(appdataInt.INTERFACE_tblHandle,CFE_TBL_SRC_ADDRESS,&Ardupilot_TblStruct);
+    status = CFE_TBL_Load(appdataInt.INTERFACE_tblHandle,CFE_TBL_SRC_ADDRESS,&Arducopter_TblStruct);
 
-    ArdupilotTable_t *TblPtr;
+    ArducopterTable_t *TblPtr;
 
-    // Check which port to open from user defined parameters ArdupilotTable_t *TblPtr;
+    // Check which port to open from user defined parameters ArducopterTable_t *TblPtr;
     status = CFE_TBL_GetAddress((void**)&TblPtr,appdataInt.INTERFACE_tblHandle);
 
 	char apName[50],gsName[50];
@@ -184,7 +184,7 @@ void ARDUCOPTER_AppCleanUp(){
 	free((void*)appdataInt.waypoint_type);
 }
 
-int32_t ArdupilotTableValidationFunc(void *TblPtr){
+int32_t ArducopterTableValidationFunc(void *TblPtr){
   int32_t status = 0;
   return status;
 }

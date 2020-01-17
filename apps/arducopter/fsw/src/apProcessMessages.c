@@ -927,6 +927,7 @@ void ARDUCOPTER_ProcessPacket() {
 
                 case _TAKEOFF_:
                 {
+
                     // Set mode to guided
                     if(appdataInt.icarousMode != 1){
                         int mode = GUIDED;
