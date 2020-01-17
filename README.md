@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/nasa/icarous.svg?branch=master)](https://travis-ci.org/nasa/icarous)
-
 ![](ICAROUS-logo.jpeg "")
 
 Independent Configurable Architecture for Reliable Operations of
