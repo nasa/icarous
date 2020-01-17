@@ -1,7 +1,7 @@
 set(APPS2RUN 
 port_lib 
 scheduler
-arducopter
+rotorsim
 gsInterface 
 cognition 
 guidance 
