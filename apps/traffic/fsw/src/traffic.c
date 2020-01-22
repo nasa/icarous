@@ -289,6 +289,12 @@ void TRAFFIC_ProcessPacket(){
                                       &trafficAppData.altBands.resDown,
                                       &trafficAppData.altBands.resPreferred);
 
+            // Set band times
+            trafficAppData.altBands.time = trafficAppData.time;
+            trafficAppData.vsBands.time = trafficAppData.time;
+            trafficAppData.speedBands.time = trafficAppData.time;
+            trafficAppData.trackBands.time = trafficAppData.time;
+
 
             // Get feasibility data for primary flight plan
             double speed = 0.0;

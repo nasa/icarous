@@ -28,6 +28,7 @@
  */
 typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];  /**< cFS header information */
+    double time;                             /**< band time */
     int numConflictTraffic;                  /**< total number of conflict traffic */
 	int numBands;                            /**< total number of bands (max:5)*/
 	int type[20];                            /**< type of each band @see Region */
