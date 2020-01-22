@@ -9,6 +9,7 @@
 #include "gsInterface_version.h"
 #include "gsInterface_events.h"
 #include "gsIntf_tbl.c"
+#include "fputil.h"
 
 /// Event filter definition for ardupilot
 CFE_EVS_BinFilter_t  gsInterface_EventFilters[] =
@@ -102,7 +103,6 @@ void gsInterface_AppInit(void){
     CFE_SB_SubscribeLocal(ICAROUS_STATUS_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_VFRHUD_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_TRAFFIC_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(ICAROUS_ATTITUDE_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_BATTERY_STATUS_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 	CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
@@ -168,7 +168,6 @@ void gsInterface_InitializeAppData(){
     appdataIntGS.tjtimer = 0xffff;
     appdataIntGS.fenceSent = false;
     appdataIntGS.publishDefaultParams = false;
-	ReadFlightplanFromFile("merge_fixes.txt",&appdataIntGS.mgData);
 
     bool status = InitializeParams("../ram/icarous_default.parm",appdataIntGS.storedparams,PARAM_COUNT);
     if(!status){
@@ -176,6 +175,13 @@ void gsInterface_InitializeAppData(){
         exit(0);
     }
 
+
+	int val = ReadFlightplanFromFile("merge_fixes.txt",&appdataIntGS.mgData);
+    if(val < 0){
+        OS_printf("Merge fixes not available\n");
+    }else{
+        OS_printf("Merge fixes read successfully\n");
+    }
 }
 
 void gsInterface_AppCleanUp(){
@@ -192,3 +198,8 @@ int32_t gsInterfaceTableValidationFunc(void *TblPtr){
 }
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> Fix compile warnings
