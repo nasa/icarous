@@ -11,6 +11,7 @@ before_script:
   - echo -e "$SWEE_SSHKEY" > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
   - git submodule update --init --recursive
+  - sed -i s/arducopter/rotorsim/ Icarous_defs/apps.cmake
   - make 
   - make install
   
