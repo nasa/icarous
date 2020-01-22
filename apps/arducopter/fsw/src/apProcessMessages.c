@@ -1212,20 +1212,17 @@ void ap_tjCallback(uint32_t timerId)
     writeMavlinkData(&appdataInt.ap,&msg);
 }
 
+
 void apInterface_PublishParams() {
     //Initialize SB messages
-    traffic_parameters_t localTrafficParams;
-    tracking_parameters_t localTrackingParams;
-    trajectory_parameters_t localTrajectoryParams;
-    geofence_parameters_t localGeofenceParams;
-    CFE_SB_InitMsg(&localTrafficParams,TRAFFIC_PARAMETERS_MID,sizeof(traffic_parameters_t),TRUE);
-    CFE_SB_InitMsg(&localTrackingParams,TRACKING_PARAMETERS_MID,sizeof(tracking_parameters_t),TRUE);
-    CFE_SB_InitMsg(&localTrajectoryParams,TRAJECTORY_PARAMETERS_MID,sizeof(trajectory_parameters_t),TRUE);
-    CFE_SB_InitMsg(&localGeofenceParams,GEOFENCE_PARAMETERS_MID,sizeof(geofence_parameters_t),TRUE);
 
     //Store the locally saved parameters to the messages
     int i = 0;
     //Traffic Parameters
+
+    #ifdef APPDEF_TRAFFIC
+    traffic_parameters_t localTrafficParams;
+    CFE_SB_InitMsg(&localTrafficParams,TRAFFIC_PARAMETERS_MID,sizeof(traffic_parameters_t),TRUE);
     localTrafficParams.trafficSource = (uint32_t) apNextParam;
     localTrafficParams.resType = (uint32_t) apNextParam;
     localTrafficParams.logDAAdata = (bool) apNextParam;
@@ -1278,7 +1275,18 @@ void apInterface_PublishParams() {
     localTrafficParams.det_1_WCV_TCOA = apNextParam;
     localTrafficParams.det_1_WCV_TTHR = apNextParam;
     localTrafficParams.det_1_WCV_ZTHR = apNextParam;
+
+    SendSBMsg(localTrafficParams);
+    #else
+       for(int k=0;k<46;++k){
+          apNextParam;
+       }
+    #endif
+
     // Tracking parameters
+    #ifdef APPDEF_TRACKING
+    tracking_parameters_t localTrackingParams;
+    CFE_SB_InitMsg(&localTrackingParams,TRACKING_PARAMETERS_MID,sizeof(tracking_parameters_t),TRUE);
     localTrackingParams.command = (bool) apNextParam;
     localTrackingParams.trackingObjId = (int) apNextParam;
     localTrackingParams.pGainX = (double) apNextParam;
@@ -1287,7 +1295,17 @@ void apInterface_PublishParams() {
     localTrackingParams.heading = (double) apNextParam;
     localTrackingParams.distH = (double) apNextParam;
     localTrackingParams.distV = (double) apNextParam;
+    SendSBMsg(localTrackingParams);
+    #else
+       for(int k=0;k<8;++k){
+          apNextParam;
+       }
+    #endif
+
     // Trajectory parameters
+    #ifdef APPDEF_TRAJECTORY
+    trajectory_parameters_t localTrajectoryParams;
+    CFE_SB_InitMsg(&localTrajectoryParams,TRAJECTORY_PARAMETERS_MID,sizeof(trajectory_parameters_t),TRUE);
     localTrajectoryParams.obsbuffer = (double) apNextParam;
     localTrajectoryParams.maxCeiling = (double) apNextParam;
     localTrajectoryParams.astar_enable3D = (bool) apNextParam;
@@ -1307,20 +1325,64 @@ void apInterface_PublishParams() {
     localTrajectoryParams.xtrkGain = (double) apNextParam;
     localTrajectoryParams.resSpeed = (double) apNextParam;
     localTrajectoryParams.searchAlgorithm = (uint8_t) apNextParam;
+
+    SendSBMsg(localTrajectoryParams);
+    #else
+       for(int k=0;k<15;++k){
+          apNextParam;
+       }
+    #endif
+
     // Geofence parameters
+    #ifdef APPDEF_GEOFENCE
+    geofence_parameters_t localGeofenceParams;
+    CFE_SB_InitMsg(&localGeofenceParams,GEOFENCE_PARAMETERS_MID,sizeof(geofence_parameters_t),TRUE);
     localGeofenceParams.lookahead = (double) apNextParam;
     localGeofenceParams.hthreshold = (double) apNextParam;
     localGeofenceParams.vthreshold = (double) apNextParam;
     localGeofenceParams.hstepback = (double) apNextParam;
     localGeofenceParams.vstepback = (double) apNextParam;
-
-    //Send Traffic Params SB message
-    //OS_printf("recorded all params\n");
-
-    SendSBMsg(localTrafficParams);
-    SendSBMsg(localTrackingParams);
-    SendSBMsg(localTrajectoryParams);
     SendSBMsg(localGeofenceParams);
+    #else
+       for(int k=0;k<5;++k){
+          apNextParam;
+       }
+    #endif
 
-    //printf("gsInterface Sent SB Param Messages\n");
+    #ifdef APPDEF_ROTORSIM
+    // Rotorsim parameters
+    rotorsim_parameters_t localRotorsimParams;
+    localRotorsimParams.speed = (double) apNextParam;
+    SendSBMsg(localRotorsimParams);
+    #else
+       for(int k=0;k<1;++k){
+          apNextParam;
+       }
+    #endif
+
+    #ifdef APPDEF_MERGER
+    merger_parameters_t localMergerParams;
+    CFE_SB_InitMsg(&localMergerParams,MERGER_PARAMETERS_MID,sizeof(merger_parameters_t),TRUE);
+    localMergerParams.missionSpeed = appdataIntGS.storedparams[i].value;
+    localMergerParams.maxVehicleSpeed = (double) apNextParam;
+    localMergerParams.minVehicleSpeed = (double) apNextParam;
+    localMergerParams.corridorWidth = (double) apNextParam;
+    localMergerParams.entryRadius = (double) apNextParam;
+    localMergerParams.coordZone = (double) apNextParam;
+    localMergerParams.scheduleZone = (double) apNextParam;
+    localMergerParams.minSeparationDistance = (double) apNextParam;
+    localMergerParams.minSeparationTime = (double) apNextParam;
+    localMergerParams.maxVehicleTurnRadius = (double) apNextParam;
+    localMergerParams.startIntersection = (int) apNextParam;
+
+    memset(localMergerParams.IntersectionID,0,INTERSECTION_MAX*sizeof(uint32_t));
+    for(int i=0;i<appdataIntGS.mgData.num_waypoints;++i){
+        localMergerParams.IntersectionLocation[i][0] = appdataIntGS.mgData.waypoints[i].latitude;
+        localMergerParams.IntersectionLocation[i][1] = appdataIntGS.mgData.waypoints[i].longitude;
+        localMergerParams.IntersectionLocation[i][2] = appdataIntGS.mgData.waypoints[i].altitude;
+        localMergerParams.IntersectionID[i] = atoi(appdataIntGS.mgData.waypoints[i].name);
+    }
+    SendSBMsg(localMergerParams);
+    OS_printf("publishing merger params\n");
+    #endif
 }
