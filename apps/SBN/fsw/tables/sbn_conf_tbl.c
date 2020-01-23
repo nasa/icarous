@@ -30,16 +30,16 @@ SBN_ConfTbl_t SBN_ConfTbl =
 						0, /* NetNum */
 						0, /* ModIdx */
 						"127.0.0.1:1235" /* Address */
+				},
+				{ /* Peers[2] */
+						3, /* ProcessorID */
+						2, /* SpacecraftID */
+						0, /* NetNum */
+						0, /* ModIdx */
+						"127.0.0.1:1236" /* Address */
 				}
-				//{ /* Peers[2] */
-				//		3, /* ProcessorID */
-				//		42, /* SpacecraftID */
-				//		0, /* NetNum */
-				//		0, /* ModIdx */
-				//		"127.0.0.1:1236" /* Address */
-				//}
 		},
-		2 /* PeerCnt */
+		3 /* PeerCnt */
 };
 
 //CFE_TBL_FILEDEF(SBN_ConfTbl, SBN.SBN_ConfTbl, SBN Configuration Table, sbn_conf_tbl.tbl)
