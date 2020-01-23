@@ -10,7 +10,8 @@ before_script:
   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - echo -e "$SWEE_SSHKEY" > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
-  - git submodule update --init --recursive
+  - bash UpdateModules.sh
+  - git submodule update --init --recursive apps/rotorsim/QuadCopterSim
   - sed -i s/arducopter/rotorsim/ Icarous_defs/apps.cmake
   - make 
   - make install
