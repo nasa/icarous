@@ -97,6 +97,7 @@ void ARDUCOPTER_AppInit(void){
     CFE_SB_SubscribeLocal(ICAROUS_TRAFFIC_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_BANDS_TRACK_MID, appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID, appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(UPLINK_FLIGHTPLAN_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 	CFE_SB_SubscribeLocal(GUIDANCE_COMMAND_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
 	// Initialize all messages that this App generates
