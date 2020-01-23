@@ -133,18 +133,18 @@ void ProcessAPMessage(mavlink_message_t message) {
 
             mavlink_message_t msgMissionItem;
             if(msg.mission_type == MAV_MISSION_TYPE_MISSION){
-                mavlink_msg_mission_item_pack(sysid_ic,compid_ic,&msgMissionItem,message.sysid,message.compid,msg.seq,appdataInt.DownlinkMissionItems[msg.seq].frame,
-                                                                               appdataInt.DownlinkMissionItems[msg.seq].command,
-                                                                               appdataInt.DownlinkMissionItems[msg.seq].current,
-                                                                               appdataInt.DownlinkMissionItems[msg.seq].autocontinue,
-                                                                               appdataInt.DownlinkMissionItems[msg.seq].param1,
-                                                                               appdataInt.DownlinkMissionItems[msg.seq].param2,
-                                                                               appdataInt.DownlinkMissionItems[msg.seq].param3,
-                                                                               appdataInt.DownlinkMissionItems[msg.seq].param4,
-                                                                               appdataInt.DownlinkMissionItems[msg.seq].x,
-                                                                               appdataInt.DownlinkMissionItems[msg.seq].y,
-                                                                               appdataInt.DownlinkMissionItems[msg.seq].z,
-                                                                               appdataInt.DownlinkMissionItems[msg.seq].mission_type);
+                mavlink_msg_mission_item_pack(sysid_ic,compid_ic,&msgMissionItem,message.sysid,message.compid,msg.seq,appdataInt.UplinkMissionItems[msg.seq].frame,
+                                                                               appdataInt.UplinkMissionItems[msg.seq].command,
+                                                                               appdataInt.UplinkMissionItems[msg.seq].current,
+                                                                               appdataInt.UplinkMissionItems[msg.seq].autocontinue,
+                                                                               appdataInt.UplinkMissionItems[msg.seq].param1,
+                                                                               appdataInt.UplinkMissionItems[msg.seq].param2,
+                                                                               appdataInt.UplinkMissionItems[msg.seq].param3,
+                                                                               appdataInt.UplinkMissionItems[msg.seq].param4,
+                                                                               appdataInt.UplinkMissionItems[msg.seq].x,
+                                                                               appdataInt.UplinkMissionItems[msg.seq].y,
+                                                                               appdataInt.UplinkMissionItems[msg.seq].z,
+                                                                               appdataInt.UplinkMissionItems[msg.seq].mission_type);
             }else if(msg.mission_type == MAV_MISSION_TYPE_FENCE){
                 int reqItem = msg.seq;
                 int index = 0;
