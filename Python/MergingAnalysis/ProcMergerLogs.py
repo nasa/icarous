@@ -83,9 +83,9 @@ Vehicles3 = np.array(Vehicles[2])
 
 
 # Extract data only for intersction 1
-Vehicles1 = Vehicles1[ abs(Vehicles1[:,1] - 1) < 1e-3 ]
-Vehicles2 = Vehicles2[ abs(Vehicles2[:,1] - 1) < 1e-3 ]
-Vehicles3 = Vehicles3[ abs(Vehicles3[:,1] - 1) < 1e-3 ]
+Vehicles1 = Vehicles1[ abs(Vehicles1[:,1] - 2) < 1e-3 ]
+Vehicles2 = Vehicles2[ abs(Vehicles2[:,1] - 2) < 1e-3 ]
+Vehicles3 = Vehicles3[ abs(Vehicles3[:,1] - 2) < 1e-3 ]
 
 Vehicles1 = EndTrim(Vehicles1,2)
 Vehicles2 = EndTrim(Vehicles2,2)
@@ -113,6 +113,7 @@ plt.plot(Vehicles2[:, 0], Vehicles2[:, 3], 'g')
 plt.plot(Vehicles2[:, 0], Vehicles2[:, 10], 'g--')
 plt.plot(Vehicles3[:, 0], Vehicles3[:, 3], 'b')
 plt.plot(Vehicles3[:, 0], Vehicles3[:, 10], 'b--')
+plt.ylim([0.1,12])
 plt.xlabel('time (s)')
 plt.ylabel('speed (m/s)')
 plt.legend(['Vehicle1 actual','Vehicle1 command','Vehicle2 actual','Vehicle2 command','Vehicle3 actual','Vehicle3 command'])
