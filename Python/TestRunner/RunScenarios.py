@@ -43,7 +43,8 @@ def GetWaypoints(wploader):
     WP = []
     for i in range(wploader.count()):
         if wploader.wp(i).command == 16:
-            WP.append([wploader.wp(i).x, wploader.wp(i).y, wploader.wp(i).z, wploader.wp(i).seq])
+            WP.append([wploader.wp(i).x, wploader.wp(i).y,
+                       wploader.wp(i).z, wploader.wp(i).seq])
     return WP
 
 
@@ -88,7 +89,8 @@ def RunScenario(scenario, watch=False, save=False, verbose=True, out="14557", ou
 
     # Start the ICAROUS process
     os.chdir(icarous_exe)
-    ic = subprocess.Popen(["./core-cpu1", "-I 0", "-C 1"],stdout=subprocess.DEVNULL)
+    ic = subprocess.Popen(["./core-cpu1", "-I 0", "-C 1"],
+                          stdout=subprocess.DEVNULL)
 
     # Pause for a couple of seconds here so that ICAROUS can boot up
     if verbose:
@@ -157,8 +159,10 @@ def RunScenario(scenario, watch=False, save=False, verbose=True, out="14557", ou
 
         # Store ownship position/velocity information
         ownship["t"].append(duration)
-        ownship["position"].append([msg.lat/1E7, msg.lon/1E7, msg.relative_alt/1E3])
-        ownship["velocity"].append([msg.vx/1E2, msg.vy/1E2, msg.vz/1E2])
+        ownship["position"].append([msg.lat/1E7, msg.lon/1E7,
+                                    msg.relative_alt/1E3])
+        ownship["velocity"].append([msg.vx/1E2, msg.vy/1E2,
+                                    msg.vz/1E2])
 
         # Store traffic position/velocity information
         for i, traf in enumerate(gs.traffic_list):
@@ -169,7 +173,8 @@ def RunScenario(scenario, watch=False, save=False, verbose=True, out="14557", ou
             traffic[i]["velocity"].append([traf.vx0, traf.vy0, traf.vz0])
 
         # Check end conditions
-        dist2final = GS.gps_distance(msg.lat/1E7, msg.lon/1E7, final[0], final[1])
+        dist2final = GS.gps_distance(msg.lat/1E7, msg.lon/1E7,
+                                     final[0], final[1])
         alt = ownship["position"][-1][2]
         if duration > 20 and dist2final < 5:
             if verbose:
@@ -222,8 +227,8 @@ if __name__ == "__main__":
                         help="directory to save output (default: 'simoutput')")
     parser.add_argument("--watch", action="store_true",
                         help="watch the simulation as it runs")
-    parser.add_argument("--verbose",action="store_true",
-                         help="print sim information")
+    parser.add_argument("--verbose", action="store_true",
+                        help="print sim information")
     parser.add_argument("--out", nargs='?', default="",
                         help="localhost port to forward mavlink stream to (for visualization)")
     parser.add_argument("--validate", action="store_true",
@@ -252,15 +257,21 @@ if __name__ == "__main__":
         # Set up output directory
         name = scenario["name"].replace(' ', '-')
         timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H_%M_%S")
-        output_dir = os.path.join(sim_home, args.output_dir, timestamp+"_"+name)
+        output_dir = os.path.join(sim_home, args.output_dir,
+                                  timestamp+"_"+name)
 
         # Run the simulation
-        print("\nRunning scenario: \"%s\"\t(%d/%d)\n" % (scenario["name"], i+1, len(scenario_list)))
-        simdata = RunScenario(scenario, watch=args.watch, save=args.save, verbose=args.verbose, output_dir=output_dir,out=args.out)
+        print("\nRunning scenario: \"%s\"\t(%d/%d)\n" %
+              (scenario["name"], i+1, len(scenario_list)))
+        simdata = RunScenario(scenario, watch=args.watch,
+                              save=args.save, verbose=args.verbose,
+                              output_dir=output_dir, out=args.out)
 
         # Verify the sim output
         if args.validate:
-            result = VS.validate_sim_data(simdata, plot=args.plot, save=args.save, test=args.test, output_dir=output_dir)
+            result = VS.validate_sim_data(simdata, plot=args.plot,
+                                          save=args.save, test=args.test,
+                                          output_dir=output_dir)
             results.append(result)
 
     # Print summary of results
