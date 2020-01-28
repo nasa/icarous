@@ -19,5 +19,5 @@ before_script:
 run-test:
   script:
     - cd Python/TestRunner
-    - python3 RunScenarios.py scenarios.yaml --test
+    - python3 RunScenarios.py scenarios.yaml --validate --test
 
