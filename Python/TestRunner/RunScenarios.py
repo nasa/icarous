@@ -7,7 +7,7 @@ import datetime
 import json
 import yaml
 import numpy as np
-from pymavlink import mavutil
+from pymavlink import mavutil, mavwp
 
 sys.path.append("../Batch")
 import BatchGSModule as GS
@@ -48,7 +48,36 @@ def GetWaypoints(wploader):
     return WP
 
 
-def RunScenario(scenario, watch=False, save=False, verbose=True, out="14557", output_dir=""):
+def SetApps(sitl=False):
+    '''set the apps that ICAROUS will run)'''
+    if sitl:
+        sim_app = "arducopter"
+    else:
+        sim_app = "rotorsim"
+
+    app_list = ["port_lib", "scheduler", sim_app, "gsInterface", "cognition",
+                "guidance", "traffic", "trajectory", "geofence"]
+
+    approot = os.path.join(icarous_home, "apps")
+    outputloc = os.path.join(icarous_exe, "cf")
+
+    subprocess.call(["python3", "../ConfigureApps.py",
+                     approot, outputloc, *app_list])
+
+
+def LaunchArducopter(scenario):
+    wploader = mavwp.MAVWPLoader()
+    wploader.load(os.path.join(icarous_home, scenario["waypoint_file"]))
+    wp0 = wploader.wp(0)
+    start_point = ','.join(str(x) for x in [wp0.x, wp0.y, wp0.z, 0])
+    ap = subprocess.Popen(["sim_vehicle.py", "-v", "ArduCopter",
+                           "-l", str(start_point)],
+                          stdout=subprocess.DEVNULL)
+    time.sleep(60)
+
+
+def RunScenario(scenario, watch=False, save=False, verbose=True,
+                out="14557", output_dir="", sitl=False):
     '''run an icarous simulation of the given scenario'''
     ownship = vehicle()
     traffic = {}
@@ -97,6 +126,10 @@ def RunScenario(scenario, watch=False, save=False, verbose=True, out="14557", ou
         print("Waiting for heartbeat...")
     master.wait_heartbeat()
     gs = GS.BatchGSModule(master, 1, 0)
+
+    # Launch SITL simulator
+    if sitl:
+        LaunchArducopter(scenario)
 
     # Upload the flight plan
     gs.loadWaypoint(os.path.join(icarous_home, scenario["waypoint_file"]))
@@ -188,6 +221,9 @@ def RunScenario(scenario, watch=False, save=False, verbose=True, out="14557", ou
     if watch:
         mapwindow.send_signal(signal.SIGINT)
         subprocess.call(["pkill", "-9", "mavproxy"])
+    if sitl:
+        subprocess.call(["pkill", "-9", "arducopter"])
+        subprocess.call(["pkill", "-9", "xterm"])
 
     # Construct the sim data for verification
     simdata = {"geofences": GF,
@@ -233,6 +269,8 @@ if __name__ == "__main__":
                         help="localhost port to forward mavlink stream to (for visualization)")
     parser.add_argument("--validate", action="store_true",
                         help="check simulation results for test conditions")
+    parser.add_argument("--sitl", action="store_true",
+                        help="use arducopter SITL sim instead of rotorsim")
     args = parser.parse_args()
 
 
@@ -252,6 +290,9 @@ if __name__ == "__main__":
     if args.validate:
         import ValidateSim as VS
 
+    # Set the apps that ICAROUS will run
+    SetApps(sitl=args.sitl)
+
     results = []
     for i, scenario in enumerate(scenario_list):
         # Set up output directory
@@ -265,7 +306,8 @@ if __name__ == "__main__":
               (scenario["name"], i+1, len(scenario_list)))
         simdata = RunScenario(scenario, watch=args.watch,
                               save=args.save, verbose=args.verbose,
-                              output_dir=output_dir, out=args.out)
+                              output_dir=output_dir, out=args.out,
+                              sitl=args.sitl)
 
         # Verify the sim output
         if args.validate:

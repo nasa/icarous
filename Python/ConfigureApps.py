@@ -31,13 +31,13 @@ for app in sys.argv[3:]:
         if(int(appdata['SHOULD_START']) == 1):
             print("-- Writing config for app: %s"%(app))
             outfp.write(appdata['OBJ_TYPE']+', ')
-	    outfp.write(appdata['APP_PATH']+', ')
-	    outfp.write(appdata['ENTRY_PT']+', ')
-	    outfp.write(appdata['CFE_NAME']+', ')
-	    outfp.write(appdata['PRIORITY']+', ')
-	    outfp.write(appdata['STACK_SIZE']+', ')
-	    outfp.write(appdata['LOAD_ADDR']+', ')
-	    outfp.write(appdata['EXCEPT_ACT']+';\n')
+            outfp.write(appdata['APP_PATH']+', ')
+            outfp.write(appdata['ENTRY_PT']+', ')
+            outfp.write(appdata['CFE_NAME']+', ')
+            outfp.write(appdata['PRIORITY']+', ')
+            outfp.write(appdata['STACK_SIZE']+', ')
+            outfp.write(appdata['LOAD_ADDR']+', ')
+            outfp.write(appdata['EXCEPT_ACT']+';\n')
     except:
         print("Error in config: Check configuration for %s"%(app))
    
