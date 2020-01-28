@@ -157,7 +157,7 @@ status_e Cruise(){
        }
 
        case RUNNING:{
-            //TrafficConflictManagement();
+            TrafficConflictManagement();
 
             GeofenceConflictManagement();
 
