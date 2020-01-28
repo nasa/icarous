@@ -2,7 +2,7 @@
 #  GIT_SUBMODULE_STRATEGY: recursive
 
 default:
-  image: marcofeliu/icarous-base:latest
+  image: marcofeliu/gitlab-icarous-base:latest
 
 
 before_script:
