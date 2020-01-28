@@ -271,6 +271,12 @@ if __name__ == "__main__":
                         help="check simulation results for test conditions")
     parser.add_argument("--sitl", action="store_true",
                         help="use arducopter SITL sim instead of rotorsim")
+    parser.add_argument("--h_allow", type=float, default=0.85,
+                        help="use h_allow*DTHR to check WC violation")
+    parser.add_argument("--v_allow", type=float, default=1,
+                        help="use v_allow*ZTHR to check WC violation")
+    parser.add_argument("--wp_radius", type=float, default=5,
+                        help="dist (m) to consider a waypoint reached")
     args = parser.parse_args()
 
 
@@ -311,14 +317,23 @@ if __name__ == "__main__":
 
         # Verify the sim output
         if args.validate:
-            result = VS.validate_sim_data(simdata, plot=args.plot,
-                                          save=args.save, test=args.test,
-                                          output_dir=output_dir)
+            validation_params = {"h_allow": args.h_allow,
+                                 "v_allow": args.v_allow,
+                                 "wp_radius": args.wp_radius}
+
+            VF = VS.ValidateFlight(simdata, params=validation_params,
+                                output_dir=output_dir)
+
+            result = VF.validate_sim_data(test=args.test)
             results.append(result)
+
+            if args.plot:
+                VF.plot_scenario(save=args.save)
+
 
     # Print summary of results
     if args.validate:
         print("\nTest Scenario Results Summary:")
         print("------------------------------")
         for i in range(len(scenario_list)):
-            VS.print_results(scenario_list[i], results[i])
+            VF.print_results(results[i], scenario_list[i]["name"])
