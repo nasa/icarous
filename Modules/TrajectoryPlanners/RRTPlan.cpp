@@ -95,6 +95,9 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
             //printf("Goal found\n");
             goalFound = true;
             break;
+        }else if(i==Nsteps-1){
+            printf("Reached iteration limit\n");
+            printf("Tree size: %d\n",RRT.GetNodeList()->size());
         }
     }
 
