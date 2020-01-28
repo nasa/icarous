@@ -88,7 +88,7 @@ def verify_traffic(simdata):
 
             dist = np.sqrt((o_pos[0] - t_pos[0])**2 + (o_pos[1] - t_pos[1])**2)
             horiz_violation = (dist < DMOD*0.85)
-            vert_violation = (abs(o_alt - t_alt) < ZTHR)
+            vert_violation = (abs(o_alt - t_alt) < ZTHR*0.85)
             if horiz_violation and vert_violation:
                 t = simdata["ownship"]["t"][i]
                 msg = "Well Clear Violation at t = %fs" % t
