@@ -82,7 +82,7 @@ param_t initialValues[PARAM_COUNT] =
     {"ASTAR_GRIDSIZE",10.0,10},
     {"ASTAR_RESSPEED",1.0,10},
     {"ASTAR_LOOKAHEAD",5.0,10},
-    {"RRT_RESSPEED",1.0,10},
+    {"RRT_RESSPEED",2.0,10},
     {"RRT_NITERATIONS",2000,10},
     {"RRT_DT",1.0,10},
     {"RRT_MACROSTEPS",5,10},
