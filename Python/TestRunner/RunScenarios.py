@@ -273,7 +273,7 @@ if __name__ == "__main__":
                         help="use arducopter SITL sim instead of rotorsim")
     parser.add_argument("--h_allow", type=float, default=0.85,
                         help="use h_allow*DTHR to check WC violation")
-    parser.add_argument("--v_allow", type=float, default=1,
+    parser.add_argument("--v_allow", type=float, default=0.85,
                         help="use v_allow*ZTHR to check WC violation")
     parser.add_argument("--wp_radius", type=float, default=5,
                         help="dist (m) to consider a waypoint reached")
