@@ -192,24 +192,6 @@ void RRTplanner::MotionModel(node_t& nearest,node_t& outputNode, double U[]){
         }
     }
 
-
-    //if(trafficSize > 0){
-      //  bool checkTurn;
-       // if(nearest.id > 0){
-        //    checkTurn = true;
-        //}
-        //else{
-         //   checkTurn = false;
-        //}
-        //if(CheckTrafficCollisionWithBands(checkTurn,newPos,newVel,newTrafficPos,trafficVel,vel)){
-          //  node_t newNode;
-            //newNode.id = -1;
-            //return newNode;
-        //}
-    //}
-
-
-
     nodeCount++;
     outputNode.id  = nodeCount;
     outputNode.pos = newPos;
@@ -248,6 +230,9 @@ void RRTplanner::RRTStep(){
 
     double U[3];
     InputFunction(*nearest,rd,U);
+    U[0] *= maxInputNorm;
+    U[1] *= maxInputNorm;
+    U[2] *= maxInputNorm;
 
 
     if(CheckDirectPath2Goal(nearest)){
@@ -360,7 +345,7 @@ bool RRTplanner::CheckTrafficCollisionWithBands(bool CheckTurn,Vect3& qPos,Vect3
     std::vector<Vect3>::iterator itV;
     int i=0;
     double trafficDist = MAXDOUBLE;
-
+    DAA.stale(true);
     for(itP = TrafficPos.begin(),itV = TrafficVel.begin();
         itP != TrafficPos.end() && itV != TrafficVel.end();
         ++itP,++itV){
@@ -522,7 +507,8 @@ bool RRTplanner::CheckDirectPath2Goal(node_t* qnode){
         }
 
         bool CheckTurn = false;
-        if(CheckTrafficCollisionWithBands(CheckTurn,qnode->pos,AB,qnode->trafficPos,qnode->trafficVel,vel)){
+
+        if(CheckTrafficCollision(qnode->pos,AB,qnode->trafficPos,qnode->trafficVel)){
             return false;
         }
         else{
@@ -627,15 +613,14 @@ bool RRTplanner::CheckGoal(){
         closestDist = mag;
         closestNode = lastNode;
 
+        /* USE THIS FOR EARLY TERMINATION */
         if(CheckDirectPath2Goal(closestNode)){
             //printf("found direct path to goal\n");
             return true;
         }
     }
 
-    //TODO: make this value a parameter
-    if( mag < 3 ){
-        //printf("found goal\n");
+    if( mag < 2*maxInputNorm ){
         goalreached = true;
         return true;
     }else{
