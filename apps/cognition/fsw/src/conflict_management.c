@@ -420,6 +420,7 @@ bool ReturnToNextWP(){
 
          if (directPath)
          {
+            SetStatus(appdataCog.statustxt,"IC:Direct path feasible",SEVERITY_NOTICE);
             missionItemReached_t itemReached;
             CFE_SB_InitMsg(&itemReached, ICAROUS_WPREACHED_MID, sizeof(itemReached), TRUE);
             itemReached.feedback = false;
