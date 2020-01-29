@@ -100,7 +100,7 @@ int PathPlanner_GetTotalWaypoints(SwigObj * carg1, /*aaa*/ char * carg2);
 void PathPlanner_GetWaypoint(SwigObj * carg1, /*aaa*/ char * carg2, int carg3, /*aaa*/ double * carg4);
 void PathPlanner_OutputFlightPlan(SwigObj * carg1, SwigObj * carg2, char * carg3, char * carg4, char * carg5);
 void PathPlanner_ClearAllPlans(SwigObj * carg1);
-void PathPlanner_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double * carg7[2]);
+void PathPlanner_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double (* carg7)[2]);
 /*aaaaaa*/SwigObj * PathPlanner_GetGeofence(SwigObj * carg1, int carg2);
 void PathPlanner_ClearFences(SwigObj * carg1);
 int PathPlanner_InputTraffic(SwigObj * carg1, int carg2, double * carg3, double * carg4);

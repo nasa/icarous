@@ -80,10 +80,12 @@ void Rotorsim_AppInit(void) {
     memcpy(&rotorsimAppData.Rotorsim_Tbl,TblPtr,sizeof(RotorsimTable_t));
 
     // Send event indicating app initialization
-    CFE_EVS_SendEvent(ROTORSIM_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                      "Rotorsim App Initialized. Version %d.%d",
-                      ROTORSIM_MAJOR_VERSION,
-                      ROTORSIM_MINOR_VERSION);
+    if(status == CFE_SUCCESS){
+        CFE_EVS_SendEvent(ROTORSIM_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+                        "Rotorsim App Initialized. Version %d.%d",
+                        ROTORSIM_MAJOR_VERSION,
+                        ROTORSIM_MINOR_VERSION);
+    }
 
 
     Rotorsim_AppInitData(TblPtr);

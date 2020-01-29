@@ -10,7 +10,8 @@ int main() {
     Position si = Position::makeLatLonAlt(37.10217667,"deg", -76.38679504,"deg", 5.0,"m");
     Velocity vi = Velocity::makeTrkGsVs(270.023339,"deg", 0.5,"m/s", 0.0,"fpm");
 
-    TrafficMonitor tfMonitor(false,"DaidalusQuadConfig.txt");
+    char filename[] = "DaidalusQuadConfig.txt";
+    TrafficMonitor tfMonitor(false,filename);
 
     double pos[3] = {si.latitude(),si.longitude(),si.alt()};
     double vel[3] = {vi.y,vi.x,vi.z};

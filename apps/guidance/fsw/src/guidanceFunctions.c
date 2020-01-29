@@ -74,6 +74,8 @@ void GUIDANCE_Run(){
             break;
         }
 
+        case SPEED_CHANGE: break;
+
     }
 }
 
@@ -107,21 +109,7 @@ int ComputeFlightplanGuidanceInput(flightplan_t* fp, int nextWP)
                           guidanceAppData.position.longitude,
                           guidanceAppData.position.altitude_rel};
 
-    double velocity[3] = {guidanceAppData.position.vn,
-                          guidanceAppData.position.ve,
-                          guidanceAppData.position.vd};
-
     double dist = ComputeDistance(position, nextWaypoint);
-
-    double speed = sqrt(pow(velocity[0], 2) +
-                        pow(velocity[1], 2) +
-                        pow(velocity[2], 2));
-
-    double prevWaypoint[3] = {fp->waypoints[nextWP - 1].latitude,
-                              fp->waypoints[nextWP - 1].longitude,
-                              fp->waypoints[nextWP - 1].altitude};
-
-    double distbtWP = ComputeDistance(prevWaypoint, nextWaypoint);
 
     if (fp->waypoints[nextWP - 1].wp_metric == WP_METRIC_SPEED)
     {
@@ -131,7 +119,6 @@ int ComputeFlightplanGuidanceInput(flightplan_t* fp, int nextWP)
     double refSpeed = guidanceAppData.refSpeed;
     
     double newPositionToTrack[3];
-    double heading = guidanceAppData.position.hdg;
 
     bool maintainspeed = ComputeOffSetPositionOnPlan(fp, position, nextWP - 1, newPositionToTrack);
 
@@ -142,12 +129,14 @@ int ComputeFlightplanGuidanceInput(flightplan_t* fp, int nextWP)
         {
             missionItemReached_t wpReached;
             CFE_SB_InitMsg(&wpReached, ICAROUS_WPREACHED_MID, sizeof(wpReached), TRUE);
-            strcpy(&wpReached.planID, fp->id);
+            strcpy(wpReached.planID, fp->id);
             wpReached.reachedwaypoint = nextWP;
             wpReached.feedback = true;
             SendSBMsg(wpReached);
             guidanceAppData.reachedStatusUpdated = true;
             return (++nextWP);
+        }else{
+            return nextWP;
         }
     }
     else
@@ -261,6 +250,7 @@ bool ComputeOffSetPositionOnPlan(flightplan_t *fp,double position[],int currentL
             }
         }
     }
+    return false;
 }
 
 
@@ -334,18 +324,11 @@ bool Point2PointControl(){
                           guidanceAppData.position.longitude,
                           guidanceAppData.position.altitude_abs};
 
-    double velocity[3] = {guidanceAppData.position.vn,
-                          guidanceAppData.position.ve,
-                          guidanceAppData.position.vd};
-
     double heading = ComputeHeading(position, guidanceAppData.point);
     double speed = guidanceAppData.pointSpeed;
     double climbrate = (guidanceAppData.point[2] - position[2]) * guidanceAppData.guidance_tbl.climbRageGainP;
 
     double dist = ComputeDistance(position, guidanceAppData.point);
-    double currentspeed = sqrt(pow(velocity[0], 2) +
-                               pow(velocity[1], 2) +
-                               pow(velocity[2], 2));
 
     bool reached = false;
     // If distance to next waypoint is < captureRadius, switch to next waypoint
@@ -388,7 +371,7 @@ bool Point2PointControl(){
 
         missionItemReached_t wpReached;
         CFE_SB_InitMsg(&wpReached, ICAROUS_WPREACHED_MID, sizeof(wpReached), TRUE);
-        strcpy(&wpReached.planID, "P2P\0");
+        strcpy(wpReached.planID, "P2P\0");
         wpReached.reachedwaypoint = 1;
         wpReached.feedback = true;
         SendSBMsg(wpReached);

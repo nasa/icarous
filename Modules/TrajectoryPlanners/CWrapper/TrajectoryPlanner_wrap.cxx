@@ -654,7 +654,7 @@ extern "C" {
   }
   
   
-  SWIGEXPORTC void _wrap_PathPlanner_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double *carg7[2]) {
+  SWIGEXPORTC void _wrap_PathPlanner_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double (*carg7)[2]) {
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     int arg2 ;
     int arg3 ;

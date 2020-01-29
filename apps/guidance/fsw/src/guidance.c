@@ -77,11 +77,14 @@ void GUIDANCE_AppInit(void) {
 
     GUIDANCE_AppInitData();
 
-    // Send event indicating app initialization
-    CFE_EVS_SendEvent(GUIDANCE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                      "guidance App Initialized. Version %d.%d",
-                      GUIDANCE_MAJOR_VERSION,
-                      GUIDANCE_MINOR_VERSION);
+
+    if(status == CFE_SUCCESS){
+        // Send event indicating app initialization
+        CFE_EVS_SendEvent(GUIDANCE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+                        "guidance App Initialized. Version %d.%d",
+                        GUIDANCE_MAJOR_VERSION,
+                        GUIDANCE_MINOR_VERSION);
+    }
 }
 
 void GUIDANCE_AppInitData(){

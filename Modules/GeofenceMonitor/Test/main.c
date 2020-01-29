@@ -36,7 +36,7 @@ int main(int argc,char** argv){
     vertex[3][0]= 37.102575;
     vertex[3][1]= -76.386962;
 
-    GeofenceMonitor_InputGeofenceData(gfMonitor,KEEP_IN,0,4,0,100,vertex);
+    GeofenceMonitor_InputGeofenceData(gfMonitor,KEEP_IN,0,4,0,100,&vertex[0]);
 
 
     double position[3] = {37.102192,-76.386942,5.000000};

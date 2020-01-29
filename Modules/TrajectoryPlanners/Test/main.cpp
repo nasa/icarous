@@ -7,20 +7,21 @@ int main(int argc,char** argv){
 
 
     PathPlanner planner(2,30);
-    planner.InitializeAstarParameters(false,2,1,1,"../Test/DaidalusQuadConfig.txt");
-    planner.InitializeRRTParameters(1.0,2000,1,5,5,"../Test/DaidalusQuadConfig.txt");
+    char filename[] = "../Test/DaidalusQuadConfig.txt";
+    planner.InitializeAstarParameters(false,2,1,1,filename);
+    planner.InitializeRRTParameters(1.0,2000,1,5,5,filename);
 
     double pos1[3] = {37.1021769,-76.3872069,5};
     double pos2[3] = {37.102192,-76.386940,5};
     double pos3[3] = {37.102066,-76.387047,5.000000};
     double pos4[3] = {37.101978,-76.387115,5.000000};
 
-
-    planner.InputFlightPlan("Plan0",0,pos1,1);
-    planner.InputFlightPlan("Plan0",1,pos2,1);
-    planner.InputFlightPlan("Plan0",2,pos3,1);
-    planner.InputFlightPlan("Plan0",3,pos4,1);
-    planner.InputFlightPlan("Plan0",4,pos1,1);
+    char input_name[] = "Plan0";
+    planner.InputFlightPlan(input_name,0,pos1,1);
+    planner.InputFlightPlan(input_name,1,pos2,1);
+    planner.InputFlightPlan(input_name,2,pos3,1);
+    planner.InputFlightPlan(input_name,3,pos4,1);
+    planner.InputFlightPlan(input_name,4,pos1,1);
 
     // Create a keep in geofence with 4 vertices
     double vertex_gf1[4][2];
@@ -61,35 +62,35 @@ int main(int argc,char** argv){
 
     double positionB[3] = {37.103522,-76.386211,0};
 
-    Position pos = Position::makeLatLonAlt(positionA[0],"degree",positionA[1],"degree",positionA[2],"m");
+    Position pos = Position::makeLatLonAlt(positionA[0],(char*)"degree",positionA[1],(char*)"degree",positionA[2],"m");
     EuclideanProjection projection =  Projection::createProjection(pos);
 
-    int status1 = planner.FindPath(_GRID_,"PlanA",positionA,positionB,velocityA);
+    int status1 = planner.FindPath(_GRID_,(char*)"PlanA",positionA,positionB,velocityA);
 
     if (status1 > 0)
-        planner.OutputFlightPlan(&projection,"PlanA","fence1.txt","waypoints1.txt");
+        planner.OutputFlightPlan(&projection,(char*)"PlanA",(char*)"fence1.txt",(char*)"waypoints1.txt");
     else
         std::cout<<"Grid Astar algorithm couldn't find solution"<<std::endl;
 
-    int status2 = planner.FindPath(_ASTAR_,"PlanB",positionA,positionB,velocityA);
+    int status2 = planner.FindPath(_ASTAR_,(char*)"PlanB",positionA,positionB,velocityA);
 
     if (status2 > 0)
-        planner.OutputFlightPlan(&projection,"PlanB","fence2.txt","waypoints2.txt");
+        planner.OutputFlightPlan(&projection,(char*)"PlanB",(char*)"fence2.txt",(char*)"waypoints2.txt");
     else
         std::cout<<"Astar algorithm couldn't find solution"<<std::endl;
 
-    int status3 = planner.FindPath(_RRT_,"PlanC",positionA,positionB,velocityA);
+    int status3 = planner.FindPath(_RRT_,(char*)"PlanC",positionA,positionB,velocityA);
 
     if (status3 > 0)
-        planner.OutputFlightPlan(&projection,"PlanC","fence3.txt","waypoints3.txt");
+        planner.OutputFlightPlan(&projection,(char*)"PlanC",(char*)"fence3.txt",(char*)"waypoints3.txt");
     else
         std::cout<<"RRT algorithm couldn't find solution"<<std::endl;
 
 
-    int status4 = planner.FindPath(_SPLINES_,"PlanD",positionA,positionB,velocityA);
+    int status4 = planner.FindPath(_SPLINES_,(char*)"PlanD",positionA,positionB,velocityA);
 
     if (status4 > 0)
-        planner.OutputFlightPlan(&projection,"PlanD","fence4.txt","waypoints4.txt");
+        planner.OutputFlightPlan(&projection,(char*)"PlanD",(char*)"fence4.txt",(char*)"waypoints4.txt");
     else
         std::cout<<"SPLINES algorithm couldn't find solution"<<std::endl;
 

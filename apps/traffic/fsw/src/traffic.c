@@ -86,15 +86,19 @@ void TRAFFIC_AppInit(void) {
     TrafficTable_t *TblPtr;
     status = CFE_TBL_GetAddress((void**)&TblPtr, trafficAppData.Traffic_tblHandle);
 
-    // Send event indicating app initialization
-    CFE_EVS_SendEvent(TRAFFIC_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                      "TRAFFIC App Initialized. Version %d.%d",
-                      TRAFFIC_MAJOR_VERSION,
-                      TRAFFIC_MINOR_VERSION);
-
+    
     trafficAppData.log = TblPtr->log;
     trafficAppData.tfMonitor = new_TrafficMonitor(trafficAppData.log,TblPtr->configFile);
     trafficAppData.numTraffic = 0;
+
+    // Send event indicating app initialization
+    if(status == CFE_SUCCESS){
+        CFE_EVS_SendEvent(TRAFFIC_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+                        "TRAFFIC App Initialized. Version %d.%d",
+                        TRAFFIC_MAJOR_VERSION,
+                        TRAFFIC_MINOR_VERSION);
+    }
+
 }
 
 void TRAFFIC_AppCleanUp(){
@@ -373,7 +377,7 @@ void TRAFFIC_ProcessPacket(){
             int count = 1;
             for(int i=0;i<count;++i){
                 int alert;
-                uint32_t id;
+                int32_t id;
                 count = TrafficMonitor_GetTrafficAlerts(trafficAppData.tfMonitor,i,&id,&alert);
                 if(count > 0){
                     trafficAppData.tfAlerts.trafficID[i] = id;

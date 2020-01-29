@@ -101,7 +101,7 @@ typedef SwigObj GeofenceMonitor;
 
 GeofenceMonitor * new_GeofenceMonitor(/*aaa*/ double * carg1);
 void GeofenceMonitor_SetGeofenceParameters(SwigObj * carg1, /*aaa*/ double * carg2);
-void GeofenceMonitor_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double *carg7[2]);
+void GeofenceMonitor_InputGeofenceData(SwigObj * carg1, int carg2, int carg3, int carg4, double carg5, double carg6, double (*carg7)[2]);
 bool GeofenceMonitor_CheckViolation(SwigObj * carg1, /*aaa*/ double * carg2, double carg3, double carg4, double carg5);
 bool GeofenceMonitor_CheckWPFeasibility(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3);
 int GeofenceMonitor_GetNumConflicts(SwigObj * carg1);

@@ -26,8 +26,6 @@ int32 Port_LibInit(void)
 
 
 void InitializeSocketPort(port_t* prt){
-	int32_t                     CFE_SB_status;
-	uint16_t                   size;
 
 	memset(&prt->self_addr, 0, sizeof(prt->self_addr));
 	prt->self_addr.sin_family      = AF_INET;
@@ -98,7 +96,7 @@ int InitializeSerialPort(port_t* prt,bool should_block){
 	}
 
     OS_printf("Opened serial port %s\n",prt->target);
-
+    return 0;
 }
 
 int readPort(port_t* prt){
@@ -122,7 +120,7 @@ int readPort(port_t* prt){
 
 void writeData(port_t* prt,char* sendbuffer,int datalength){
 	if(prt->portType == SOCKET){
-		int n = sendto(prt->sockId, sendbuffer, datalength, 0, (struct sockaddr*)&prt->target_addr, sizeof (struct sockaddr_in));
+		sendto(prt->sockId, sendbuffer, datalength, 0, (struct sockaddr*)&prt->target_addr, sizeof (struct sockaddr_in));
 	}else if(prt->portType == SERIAL){
 		for(int i=0;i<datalength;i++){
 			char c = sendbuffer[i];

@@ -4,6 +4,8 @@
 #include "cognition.h"
 #include "UtilFunctions.h"
 
+static bool CheckSafeToTurn(double fromHeading, double toHeading);
+
 void SetGuidanceVelCmd(double track,double gs,double vs){
       double vn = gs*cos(track* M_PI/180);
       double ve = gs*sin(track* M_PI/180);
@@ -15,7 +17,6 @@ void SetGuidanceVelCmd(double track,double gs,double vs){
       cmd.param1 = (float)vn;
       cmd.param2 = (float)ve;
       cmd.param3 = (float)vu;
-      double speed = sqrt(pow(vn,2) + pow(ve,2) + pow(vu,2));
       SendSBMsg(cmd);
 }
 
@@ -107,6 +108,10 @@ bool GeofenceConflictManagement(){
          SetStatus(appdataCog.statustxt,"IC:Geofence resolution complete",SEVERITY_NOTICE);
          break;
       }
+
+      case COMPUTE:{
+         break;
+      }
    } 
 
    return true;
@@ -166,6 +171,10 @@ bool XtrackManagement(){
          }
          SetStatus(appdataCog.statustxt,"IC:xtrack conflict resolved",SEVERITY_NOTICE);
          
+         break;
+      }
+
+      case COMPUTE:{
          break;
       }
    }
@@ -232,6 +241,10 @@ bool TrafficConflictManagement(){
          }
          SetStatus(appdataCog.statustxt,"IC:traffic conflict resolved",SEVERITY_NOTICE);
          appdataCog.return2NextWPState = NOOPC;
+         break;
+      }
+
+      case COMPUTE:{
          break;
       }
    }
@@ -309,10 +322,10 @@ bool RunTrafficResolution(){
          double speed = appdataCog.resolutionSpeed;
          double climbrate = 0;
          if(prefTrack > 0){
-            SetGuidanceVelCmd(prefTrack,speed,0);
+            SetGuidanceVelCmd(prefTrack,speed,climbrate);
             appdataCog.prevResTrack = prefTrack;
          }else if(prefTrack > -10000){
-            SetGuidanceVelCmd(appdataCog.prevResTrack,speed,0);
+            SetGuidanceVelCmd(appdataCog.prevResTrack,speed,climbrate);
          }else{
 
          }
@@ -334,7 +347,6 @@ bool RunTrafficResolution(){
 
       case VERTICALSPEED_RESOLUTION:{
          double speed = appdataCog.resolutionSpeed;
-         double prefVS = appdataCog.vsBands.resPreferred;
          double resUp = appdataCog.vsBands.resUp;
          double resDown = appdataCog.vsBands.resDown;
          // If there is a valid up resolution, execute up resolution.
@@ -361,7 +373,6 @@ bool RunTrafficResolution(){
                OS_printf("preferred vspeed: %f\n",0.0);
             }
          }else{
-            prefVS = appdataCog.prevResVspeed;
             SetGuidanceVelCmd(appdataCog.position.hdg,speed,appdataCog.prevResVspeed);
          }
          
@@ -372,7 +383,7 @@ bool RunTrafficResolution(){
             val = 1;
          }
 
-         OS_printf("Return safe: %d\n\n",val);
+         //OS_printf("Return safe: %d\n\n",val);
          appdataCog.returnSafe = (bool) val;
          break;
       }
@@ -515,6 +526,7 @@ bool ReturnToNextWP(){
          break;
       }
    }
+   return true;
 }
 
 static bool CheckSafeToTurn(double fromHeading, double toHeading) {
@@ -536,10 +548,9 @@ static bool CheckSafeToTurn(double fromHeading, double toHeading) {
    return !conflict;
 }
 
-bool CheckDirectPathFeasibility(position_t posA,waypoint_t posB){
+void CheckDirectPathFeasibility(position_t posA,waypoint_t posB){
     double positionA[3] = {posA.latitude,posA.longitude,posA.altitude_rel};
     double positionB[3] = {posB.latitude,posB.longitude,posB.altitude};
-    double distance;
 
     pathFeasibilityCheck_t pfcheck;
     CFE_SB_InitMsg(&pfcheck, GEOFENCE_PATH_CHECK_MID, sizeof(pathFeasibilityCheck_t), TRUE);
@@ -549,8 +560,6 @@ bool CheckDirectPathFeasibility(position_t posA,waypoint_t posB){
 }
 
 void FindNewPath(algorithm_e searchType, double positionA[],double velocityA[],double positionB[]){
-
-   char algName[10];
 
    trajectory_request_t pathRequest;
    CFE_SB_InitMsg(&pathRequest, ICAROUS_TRAJECTORY_REQUEST_MID, sizeof(trajectory_request_t), TRUE);

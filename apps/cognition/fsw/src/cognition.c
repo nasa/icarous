@@ -101,10 +101,12 @@ void COGNITION_AppInit(void){
 	// To perfrom sense and avoid, as a minimum, the following messages must be generated
 
 	// Send event indicating app initialization
-	CFE_EVS_SendEvent (COGNITION_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                       "Cognition Interface initialized. Version %d.%d",
-					   COGNITION_MAJOR_VERSION,
-					   COGNITION_MINOR_VERSION);
+    if(status == CFE_SUCCESS){
+        CFE_EVS_SendEvent (COGNITION_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+                        "Cognition Interface initialized. Version %d.%d",
+                        COGNITION_MAJOR_VERSION,
+                        COGNITION_MINOR_VERSION);
+    }
 
     COGNITION_AppInitData();
 
@@ -348,8 +350,6 @@ void COGNITION_ProcessSBData() {
                     break;
                 }
             }
-            bool *fp;
-            fp = gfConflct->waypointConflict1;
             appdataCog.directPathToFeasibleWP1 = gfConflct->directPathToWaypoint1[appdataCog.nextFeasibleWP1] && appdataCog.trkBands.wpFeasibility1[appdataCog.nextFeasibleWP1];
             totalWP = appdataCog.flightplan2.num_waypoints;
             for (int i = appdataCog.nextSecondaryWP; i < totalWP; ++i)
@@ -360,8 +360,6 @@ void COGNITION_ProcessSBData() {
                     break;
                 }
             }
-
-            fp = gfConflct->waypointConflict2;
             appdataCog.directPathToFeasibleWP2 = gfConflct->directPathToWaypoint2[appdataCog.nextFeasibleWP2] && appdataCog.trkBands.wpFeasibility2[appdataCog.nextFeasibleWP2];
             break;
         }

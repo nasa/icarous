@@ -87,5 +87,5 @@ int readPort(port_t *prt);
  */
 void writeData(port_t* prt,char* sendbuffer,int datalength);
 
-#endif _port_lib_h_
+#endif //_port_lib_h_
 

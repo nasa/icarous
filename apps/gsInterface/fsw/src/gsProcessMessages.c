@@ -30,7 +30,6 @@ void gsSendHeartbeat(){
 }
 
 void ProcessGSMessage(mavlink_message_t message) {
-    bool send2ap = true;
     switch (message.msgid) {
 
         case MAVLINK_MSG_ID_MISSION_COUNT:
@@ -210,7 +209,6 @@ void ProcessGSMessage(mavlink_message_t message) {
                 mavlink_msg_statustext_pack(sysid_ic,compid_ic,&paramStatusMsg,MAV_SEVERITY_INFO,"Parameters Sent to Apps");
                 writeMavlinkData(&appdataIntGS.gs,&paramStatusMsg);
 
-                send2ap = false;
                 if (appdataIntGS.numWaypoints > 1) {
                     appdataIntGS.startMission.param1 = msg.param1;
                     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &appdataIntGS.startMission);
@@ -255,14 +253,12 @@ void ProcessGSMessage(mavlink_message_t message) {
 
                 CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &appdataIntGS.traffic);
                 CFE_SB_SendMsg((CFE_SB_Msg_t *) &appdataIntGS.traffic);
-                send2ap = false;
             }else if (msg.command == MAV_CMD_USER_1) {
                 argsCmd_t resetIcarous;
                 CFE_SB_InitMsg(&resetIcarous,ICAROUS_RESET_MID,sizeof(argsCmd_t),TRUE);
                 resetIcarous.param1 = msg.param1;
                 SendSBMsg(resetIcarous);
                 appdataIntGS.nextWaypointIndex = 1000;
-                send2ap = false;
 
                 mavlink_message_t statusMsg;;
                 mavlink_msg_statustext_pack(sysid_ic,compid_ic,&statusMsg,MAV_SEVERITY_WARNING,"IC:Resetting Icarous");
@@ -275,14 +271,12 @@ void ProcessGSMessage(mavlink_message_t message) {
                 CFE_SB_InitMsg(&trackCmd,ICAROUS_TRACK_STATUS_MID, sizeof(argsCmd_t),TRUE);
                 trackCmd.param1 = (float) msg.param1;
                 SendSBMsg(trackCmd);
-                send2ap = false;
             }else if (msg.command == MAV_CMD_USER_3) {
                 argsCmd_t radarCmd;
                 CFE_SB_InitMsg(&radarCmd,RADAR_TRIGGER_MID, sizeof(argsCmd_t),TRUE);
                 radarCmd.name = _RADAR_;
                 CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &radarCmd);
                 CFE_SB_SendMsg((CFE_SB_Msg_t *) &radarCmd);
-                send2ap = false;
                 radarCmd.param1 =  msg.param1;
                 OS_printf("Received radar command %f\n",msg.param1);
                 SendSBMsg(radarCmd);
@@ -296,7 +290,6 @@ void ProcessGSMessage(mavlink_message_t message) {
                 ditchCmd.name = _DITCH_;
                 CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &ditchCmd);
                 CFE_SB_SendMsg((CFE_SB_Msg_t *) &ditchCmd);
-                send2ap = false;
                 OS_printf("Received ditching command \n");
 
                 mavlink_message_t status;
@@ -436,8 +429,6 @@ void ProcessGSMessage(mavlink_message_t message) {
 
 void gsInterface_ProcessPacket() {
 	CFE_SB_MsgId_t  MsgId;
-
-	argsCmd_t* cmd;
 
 	MsgId = CFE_SB_GetMsgId(appdataIntGS.INTERFACEMsgPtr);
 	switch (MsgId)
@@ -727,8 +718,6 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
 
             case MAV_CMD_DO_CHANGE_SPEED:{
                 if(i>0 && i < size-1) {
-                    double wpA[3] = {items[i - 1].x, items[i - 1].y, items[i - 1].z};
-                    double wpB[3] = {items[i + 1].x,items[i + 1].y,items[i + 1].z};
                     fp->waypoints[count-1].value_to_next_wp = items[i].param2;
                     fp->waypoints[count-1].wp_metric = WP_METRIC_SPEED;
                     //OS_printf("Setting ETA to %f\n",eta);
@@ -776,7 +765,7 @@ void gs_tjCallback(uint32_t timerId)
 void gs_startTimer(uint32_t *timerID,void (*f)(uint32_t),char name[],uint32_t startTime,uint32_t intvl){
 
     gs_stopTimer(timerID);
-    int32 clockacc;
+    uint32_t clockacc;
     int32 status = OS_TimerCreate(timerID,name,&clockacc,f);
     if(status != CFE_SUCCESS){
             OS_printf("Could not create timer: %s, %d\n",name,status);

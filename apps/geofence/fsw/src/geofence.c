@@ -77,12 +77,7 @@ void GEOFENCE_AppInit(void) {
 
 
 
-    // Send event indicating app initialization
-    CFE_EVS_SendEvent(GEOFENCE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                      "Geofence App Initialized. Version %d.%d",
-                      GEOFENCE_MAJOR_VERSION,
-                      GEOFENCE_MINOR_VERSION);
-
+   
     double inputParam[5] = {TblPtr->lookahead,
                             TblPtr->hbuffer,TblPtr->vbuffer,
                             TblPtr->hstepback,TblPtr->vstepback};
@@ -101,6 +96,16 @@ void GEOFENCE_AppInit(void) {
     memset(geofenceAppData.directPathToWP2,true,50);
     geofenceAppData.flightplan1.num_waypoints = 0;
     geofenceAppData.numFences = 0;
+
+
+    if(status == CFE_SUCCESS){
+        // Send event indicating app initialization
+        CFE_EVS_SendEvent(GEOFENCE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+                        "Geofence App Initialized. Version %d.%d",
+                        GEOFENCE_MAJOR_VERSION,
+                        GEOFENCE_MINOR_VERSION);
+    }
+
 }
 
 void GEOFENCE_AppCleanUp(){

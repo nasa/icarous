@@ -25,7 +25,7 @@ void gsInterface_AppMain(void){
 
     gsInterface_AppInit();
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
-        int32 status = CFE_SB_RcvMsg(&appdataIntGS.Sch_MsgPtr, appdataIntGS.SchInterface_Pipe, CFE_SB_PEND_FOREVER);
+        status = CFE_SB_RcvMsg(&appdataIntGS.Sch_MsgPtr, appdataIntGS.SchInterface_Pipe, CFE_SB_PEND_FOREVER);
         if (status == CFE_SUCCESS)
         {
             CFE_SB_MsgId_t  MsgId;
@@ -108,12 +108,7 @@ void gsInterface_AppInit(void){
     CFE_SB_InitMsg(&appdataIntGS.traffic,ICAROUS_TRAFFIC_MID,sizeof(object_t),TRUE);
     CFE_SB_InitMsg(&appdataIntGS.fpData,ICAROUS_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
 
-	// Send event indicating app initialization
-	CFE_EVS_SendEvent (GSINTERFACE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                       "GS Interface initialized. Version %d.%d",
-					   GSINTERFACE_INTERFACE_MAJOR_VERSION,
-					   GSINTERFACE_INTERFACE_MINOR_VERSION);
-
+	
 	// Register table with table services
 	status = CFE_TBL_Register(&appdataIntGS.INTERFACE_tblHandle,
 				  "GSIntfTable",
@@ -127,8 +122,6 @@ void gsInterface_AppInit(void){
     // Check which port to open from user defined parameters
     gsInterfaceTable_t *TblPtr;
     status = CFE_TBL_GetAddress((void**)&TblPtr,appdataIntGS.INTERFACE_tblHandle);
-
-	char apName[50],gsName[50];
 
 	appdataIntGS.gs.id = 1;
 	appdataIntGS.gs.portType = TblPtr->PortType;
@@ -161,6 +154,16 @@ void gsInterface_AppInit(void){
     appdataIntGS.tjtimer = 0xffff;
     appdataIntGS.fenceSent = false;
 	gsInterface_ReadFlightplanFromFile();
+
+    if(status == CFE_SUCCESS){
+        // Send event indicating app initialization
+        CFE_EVS_SendEvent (GSINTERFACE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+                        "GS Interface initialized. Version %d.%d",
+                        GSINTERFACE_INTERFACE_MAJOR_VERSION,
+                        GSINTERFACE_INTERFACE_MINOR_VERSION);
+    }
+
+
 }
 
 void gsInterface_AppCleanUp(){

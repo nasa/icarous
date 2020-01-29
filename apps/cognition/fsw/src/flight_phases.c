@@ -27,6 +27,10 @@ void FlightPhases(void){
             break;
         }
 
+        case TAXI_PHASE:{
+            break;
+        }
+
         case TAKEOFF_PHASE:{
             //OS_printf("Takeoff phase\n");
             status = Takeoff();
@@ -136,6 +140,9 @@ status_e Takeoff(){
            }
            break;
        }
+
+       case SUCCESS: break;
+       case FAILED: break;
     }
 
     return appdataCog.takeoffState;
@@ -171,6 +178,9 @@ status_e Cruise(){
             }
             break;
        }
+
+       case SUCCESS:break;
+       case FAILED: break;
    }
 
    return appdataCog.cruiseState;

@@ -15,6 +15,7 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include <math.h>
 #include "cognition_events.h"
 #include "Icarous_msg.h"
 #include "traffic_msg.h"
@@ -252,9 +253,7 @@ void FlightPhases(void);
  */
 bool TrafficConflictManagement(void);
 
-static bool CheckSafeToTurn(double fromHeading, double toHeading);
-
-bool CheckDirectPathFeasibility(position_t posA,waypoint_t posB);
+void CheckDirectPathFeasibility(position_t posA,waypoint_t posB);
 
 void FindNewPath(algorithm_e searchType, double positionA[],double velocityA[],double positionB[]);
 

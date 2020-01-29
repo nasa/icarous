@@ -7,6 +7,7 @@
 #ifndef _gsInterface_h_
 #define _gsInterface_h_
 
+#define _GNU_SOURCE
 #include "cfe.h"
 #include "cfe_error.h"
 #include "cfe_evs.h"
@@ -15,6 +16,8 @@
 #include "cfe_platform_cfg.h"
 
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <unistd.h>
 #include <network_includes.h>

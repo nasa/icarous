@@ -74,9 +74,7 @@ void gsInterface_PublishParams() {
 
     SendSBMsg(localTrafficParams);
     #else
-       for(int k=0;k<46;++k){
-          gsNextParam;
-       }
+       for(int k=0;k<46;++k) i++;
     #endif
 
     // Tracking parameters
@@ -93,9 +91,7 @@ void gsInterface_PublishParams() {
     localTrackingParams.distV = (double) gsNextParam;
     SendSBMsg(localTrackingParams);
     #else
-       for(int k=0;k<8;++k){
-          gsNextParam;
-       }
+       for(int k=0;k<8;++k) i++;
     #endif
 
     // Trajectory parameters
@@ -124,9 +120,7 @@ void gsInterface_PublishParams() {
 
     SendSBMsg(localTrajectoryParams);
     #else
-       for(int k=0;k<15;++k){
-          gsNextParam;
-       }
+       for(int k=0;k<15;++k) i++;
     #endif
 
     // Geofence parameters
@@ -140,9 +134,7 @@ void gsInterface_PublishParams() {
     localGeofenceParams.vstepback = (double) gsNextParam;
     SendSBMsg(localGeofenceParams);
     #else
-       for(int k=0;k<5;++k){
-          gsNextParam;
-       }
+       for(int k=0;k<5;++k) i++;
     #endif
 
     #ifdef APPDEF_ROTORSIM
@@ -151,9 +143,7 @@ void gsInterface_PublishParams() {
     localRotorsimParams.speed = (double) gsNextParam;
     SendSBMsg(localRotorsimParams);
     #else
-       for(int k=0;k<1;++k){
-          gsNextParam;
-       }
+       for(int k=0;k<1;++k) i++;
     #endif
 
     #ifdef APPDEF_MERGER

@@ -98,13 +98,16 @@ void TRAJECTORY_AppInit(void)
     TrajectoryTable_t *TblPtr;
     status = CFE_TBL_GetAddress((void **)&TblPtr, TrajectoryAppData.Trajectory_TblHandle);
 
-    // Send event indicating app initialization
-    CFE_EVS_SendEvent(TRAJECTORY_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                      "TRAJECTORY App Initialized. Version %d.%d",
-                      TRAJECTORY_MAJOR_VERSION,
-                      TRAJECTORY_MINOR_VERSION);
-
     TRAJECTORY_AppInitData(TblPtr);
+
+    // Send event indicating app initialization
+    if(status == CFE_SUCCESS){
+        CFE_EVS_SendEvent(TRAJECTORY_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+                         "TRAJECTORY App Initialized. Version %d.%d",
+                         TRAJECTORY_MAJOR_VERSION,
+                         TRAJECTORY_MINOR_VERSION);
+    }
+
 }
 
 void TRAJECTORY_AppInitData(TrajectoryTable_t* TblPtr){
@@ -166,6 +169,10 @@ void TRAJECTORY_ProcessPacket()
         //sprintf(planID,"Plan%d",TrajectoryAppData.numPlansComputed);
         sprintf(planID, "Plan%d", 1);
         int val = PathPlanner_FindPath(TrajectoryAppData.pplanner, TrajectoryAppData.searchType, planID, msg->initialPosition, msg->finalPosition, msg->initialVelocity);
+
+        if(val <= 0){
+             OS_printf("*** No path found ***\n");
+        }
 
         flightplan_t result;
         CFE_SB_InitMsg(&result, ICAROUS_TRAJECTORY_MID, sizeof(flightplan_t), TRUE);
