@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <paramdef.h>
 #include <network_includes.h>
+#include <arducopter_table.h>
 #include <arducopter_events.h>
 #include <Icarous_msg.h>
 #include <Icarous_msgids.h>
@@ -91,6 +92,7 @@ typedef struct{
     CFE_SB_MsgPtr_t    INTERFACEMsgPtr;     ///< msg pointer to SB message
     CFE_SB_MsgPtr_t    Sch_MsgPtr;          ///< msg pointer to SB message
     CFE_TBL_Handle_t   INTERFACE_tblHandle; ///< table handle
+    ArducopterTable_t  Table;
     port_t ap;                              ///< autopilot port
     uint8_t runThreads;                     ///< thread active status
     int numWaypoints;                       ///< num total waypoints
@@ -151,6 +153,11 @@ void ARDUCOPTER_AppMain(void);
  * Initialize app properties
  */
 void ARDUCOPTER_AppInit(void);
+
+/**
+ * Initialize app data
+ */
+void ARDUCOPTER_AppInitializeData(void);
 
 /**
  * Clean up variables

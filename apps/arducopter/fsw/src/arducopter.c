@@ -112,11 +112,6 @@ void ARDUCOPTER_AppInit(void){
     CFE_SB_InitMsg(&local_position,ICAROUS_LOCAL_POSITION_MID,sizeof(local_position_t),TRUE);
     CFE_SB_InitMsg(&startMission,ICAROUS_STARTMISSION_MID,sizeof(argsCmd_t),TRUE);
 
-	// Send event indicating app initialization
-	CFE_EVS_SendEvent (ARDUCOPTER_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                       "Arducopter Interface initialized. Version %d.%d",
-					   ARDUCOPTER_MAJOR_VERSION,
-					   ARDUCOPTER_MINOR_VERSION);
 
 	// Register table with table services
 	status = CFE_TBL_Register(&appdataInt.INTERFACE_tblHandle,
@@ -134,7 +129,27 @@ void ARDUCOPTER_AppInit(void){
     // Check which port to open from user defined parameters ArducopterTable_t *TblPtr;
     status = CFE_TBL_GetAddress((void**)&TblPtr,appdataInt.INTERFACE_tblHandle);
 
-	char apName[50],gsName[50];
+    memcpy(&appdataInt.Table,TblPtr,sizeof(ArducopterTable_t));
+
+    // Free table pointer
+	status = CFE_TBL_ReleaseAddress(appdataInt.INTERFACE_tblHandle);
+
+    ARDUCOPTER_AppInitializeData();
+
+    if(status == CFE_SUCCESS){
+        // Send event indicating app initialization
+        CFE_EVS_SendEvent (ARDUCOPTER_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+                       "Arducopter Interface initialized. Version %d.%d",
+					   ARDUCOPTER_MAJOR_VERSION,
+					   ARDUCOPTER_MINOR_VERSION);
+
+    }
+
+}
+
+void ARDUCOPTER_AppInitializeData(){
+
+    ArducopterTable_t *TblPtr = &appdataInt.Table;
 
 	appdataInt.ap.id = 0;
 	appdataInt.waypointSeq = 0;
@@ -152,9 +167,7 @@ void ARDUCOPTER_AppInit(void){
     //Set mission start flag to -1
     startMission.param1 = -1;
 
-	// Free table pointer
-	status = CFE_TBL_ReleaseAddress(appdataInt.INTERFACE_tblHandle);
-
+	
 	if (appdataInt.ap.portType == SOCKET){
 		InitializeSocketPort(&appdataInt.ap);
 	}else if(appdataInt.ap.portType == SERIAL){
@@ -178,6 +191,7 @@ void ARDUCOPTER_AppInit(void){
     appdataInt.fenceSent = false;
 
     memcpy(appdataInt.storedparams,initialValues,sizeof(param_t)*PARAM_COUNT);
+
 
 }
     

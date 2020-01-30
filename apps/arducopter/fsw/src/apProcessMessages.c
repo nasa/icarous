@@ -886,7 +886,6 @@ void ARDUCOPTER_ProcessPacket() {
                 }
 
                 case LAND:{
-                    mavlink_message_t msg2;
                     if(appdataInt.icarousMode != 1){
                         int mode = GUIDED;
                         appdataInt.icarousMode = 1;
@@ -1144,8 +1143,6 @@ void apConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
 
             case MAV_CMD_DO_CHANGE_SPEED:{
                 if(i>0 && i < size-1) {
-                    double wpA[3] = {items[i - 1].x, items[i - 1].y, items[i - 1].z};
-                    double wpB[3] = {items[i + 1].x,items[i + 1].y,items[i + 1].z};
                     fp->waypoints[count-1].value_to_next_wp = items[i].param2;
                     fp->waypoints[count-1].wp_metric = WP_METRIC_SPEED;
                     //OS_printf("Setting ETA to %f\n",eta);
@@ -1162,7 +1159,7 @@ void ap_startTimer(uint32_t *timerID,void (*f)(uint32_t),char name[],uint32_t st
 
     ap_stopTimer(timerID);
 
-    int32 clockacc;
+    uint32 clockacc;
     int32 status = OS_TimerCreate(timerID,name,&clockacc,f);
     if(status != CFE_SUCCESS){
             OS_printf("Could not create timer: %s, %d\n",name,status);
@@ -1278,9 +1275,7 @@ void apInterface_PublishParams() {
 
     SendSBMsg(localTrafficParams);
     #else
-       for(int k=0;k<46;++k){
-          apNextParam;
-       }
+       for(int k=0;k<46;++k) i++;
     #endif
 
     // Tracking parameters
@@ -1297,9 +1292,7 @@ void apInterface_PublishParams() {
     localTrackingParams.distV = (double) apNextParam;
     SendSBMsg(localTrackingParams);
     #else
-       for(int k=0;k<8;++k){
-          apNextParam;
-       }
+       for(int k=0;k<8;++k) i++;
     #endif
 
     // Trajectory parameters
@@ -1328,9 +1321,7 @@ void apInterface_PublishParams() {
 
     SendSBMsg(localTrajectoryParams);
     #else
-       for(int k=0;k<15;++k){
-          apNextParam;
-       }
+       for(int k=0;k<15;++k) i++;
     #endif
 
     // Geofence parameters
@@ -1344,9 +1335,7 @@ void apInterface_PublishParams() {
     localGeofenceParams.vstepback = (double) apNextParam;
     SendSBMsg(localGeofenceParams);
     #else
-       for(int k=0;k<5;++k){
-          apNextParam;
-       }
+       for(int k=0;k<5;++k) i++;
     #endif
 
     #ifdef APPDEF_ROTORSIM
@@ -1355,9 +1344,7 @@ void apInterface_PublishParams() {
     localRotorsimParams.speed = (double) apNextParam;
     SendSBMsg(localRotorsimParams);
     #else
-       for(int k=0;k<1;++k){
-          apNextParam;
-       }
+       for(int k=0;k<1;++k) i++;
     #endif
 
     #ifdef APPDEF_MERGER
