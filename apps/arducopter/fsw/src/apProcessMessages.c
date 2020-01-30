@@ -1340,9 +1340,9 @@ void apInterface_PublishParams() {
 
     #ifdef APPDEF_ROTORSIM
     // Rotorsim parameters
-    rotorsim_parameters_t localRotorsimParams;
-    localRotorsimParams.speed = (double) apNextParam;
-    SendSBMsg(localRotorsimParams);
+    //rotorsim_parameters_t localRotorsimParams;
+    //localRotorsimParams.speed = (double) apNextParam;
+    //SendSBMsg(localRotorsimParams);
     #else
        for(int k=0;k<1;++k) i++;
     #endif
