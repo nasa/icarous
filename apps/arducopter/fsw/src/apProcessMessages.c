@@ -787,7 +787,7 @@ void ARDUCOPTER_ProcessPacket() {
             double heading = fmod(2 * M_PI + atan2(traffic->ve, traffic->vn), 2 * M_PI) * 180 / M_PI;
             double speed = sqrt(traffic->vn * traffic->vn + traffic->ve * traffic->ve);
             char callsign[9]="\0";
-            memcpy(callsign,msg->callsign,8);
+            memcpy(callsign,traffic->callsign,8);
             mavlink_msg_adsb_vehicle_pack(sysid_ic, compid_ic, &msg, traffic->index,
                                           (int32_t)(traffic->latitude * 1E7),
                                           (int32_t)(traffic->longitude * 1E7),
