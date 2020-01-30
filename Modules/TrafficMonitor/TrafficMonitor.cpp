@@ -62,12 +62,12 @@ void TrafficMonitor::UpdateDAAParameters(char daaParameters[],bool reclog) {
     }
 }
 
-int TrafficMonitor::InputTraffic(int id, double *position, double *velocity,double elapsedTime) {
+int TrafficMonitor::InputTraffic(int id,char *callsign, double *position, double *velocity,double elapsedTime) {
 
     time_t currentTime = time(&currentTime);
     //double elapsedTime = difftime(currentTime, startTime);
 
-    TrafficObject _traffic(elapsedTime,_TRAFFIC_,id,(float)position[0],(float)position[1],(float)position[2],
+    TrafficObject _traffic(elapsedTime,_TRAFFIC_,id,callsign,(float)position[0],(float)position[1],(float)position[2],
                                         (float)velocity[0],(float)velocity[1],(float)velocity[2]);
     return TrafficObject::AddObject(trafficList,_traffic);
 }
@@ -101,7 +101,14 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
         Velocity vi = _traffic.vel;
 
         char name[50];
-        sprintf(name, "Traffic%d", _traffic.id);
+        if(_traffic.callsign[0] == '\0'){
+            sprintf(name, "Traffic%d", _traffic.id);
+        }
+        else
+        {
+            memcpy(name,_traffic.callsign,sizeof(char)*25);
+        }
+        
 
         // Use traffic only if its data has been updated within the last 10s.
         if(elapsedTime - _traffic.time < 10){
@@ -121,7 +128,7 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
             conflictStartTime = elapsedTime;
         }
 
-        trafficIDs[count-1] = _traffic.id;
+        memcpy(trafficIDs[count-1],_traffic.callsign,25);
         trafficAlerts[count-1] = alert;
     }
 
@@ -547,10 +554,10 @@ void TrafficMonitor::GetAltBands(int& numBands,int* bandTypes,double* low,double
     //printf("pref resolution:%f\n",respref);
 }
 
-int TrafficMonitor::GetTrafficAlerts(int index,uint32_t* trafficID,int* alertLevel){
+int TrafficMonitor::GetTrafficAlerts(int index,char* trafficID,int* alertLevel){
     int sizetf = trafficList.size();
     if (sizetf > index){
-       *trafficID = trafficIDs[index];
+       memcpy(trafficID,trafficIDs[index],25);
        *alertLevel = trafficAlerts[index];
     }
 

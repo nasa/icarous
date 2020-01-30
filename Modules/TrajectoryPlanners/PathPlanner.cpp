@@ -455,7 +455,7 @@ void PathPlanner::ClearFences() {
 
 int PathPlanner::InputTraffic(int id, double *position, double *velocity) {
 
-    GenericObject _traffic(0,_TRAFFIC_,id,(float)position[0],(float)position[1],(float)position[2],
+    GenericObject _traffic(0,_TRAFFIC_,id,(char*)"\0",(float)position[0],(float)position[1],(float)position[2],
                                         (float)velocity[0],(float)velocity[1],(float)velocity[2]);
     return GenericObject::AddObject(trafficList,_traffic);
 }

@@ -7,19 +7,34 @@
 
 #include "GenericObject.h"
 
-GenericObject::GenericObject(double _time,genericObjectType_e type_in,int id_in,float lat_in,float lon_in,float altmsl_in,
+GenericObject::GenericObject(double _time,genericObjectType_e type_in,int id_in,char *callsign_in,float lat_in,float lon_in,float altmsl_in,
 		                          float vx_in,float vy_in,float vz_in){
     time = _time;
 	id = id_in;
 	type = type_in;
+	memcpy(callsign,callsign_in,25*sizeof(char));
 	pos = Position::makeLatLonAlt(lat_in,"degree",lon_in,"degree",altmsl_in,"m");
 	vel = Velocity::makeVxyz(vx_in,vy_in,"m/s",vz_in,"m/s");
 	orientation = vel.trk();
 
+	if (callsign[0] == '\0'){
+        callsign_avail = false;
+	}else{
+		callsign_avail = true;
+	}
+
 }
 
 bool GenericObject::isEqual(GenericObject& obj, bool update){
-	if(id == obj.id){
+
+	bool same;
+	if(!callsign_avail){
+        same = id == obj.id;
+	}else{
+		same = strcmp(callsign,obj.callsign) == 0;
+	}
+
+	if(same){
 		if(update){
 			time = obj.time;
 			pos = obj.pos;

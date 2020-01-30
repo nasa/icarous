@@ -15,7 +15,7 @@ int main() {
 
     double pos[3] = {si.latitude(),si.longitude(),si.alt()};
     double vel[3] = {vi.y,vi.x,vi.z};
-    tfMonitor.InputTraffic(0,pos,vel,0);
+    tfMonitor.InputTraffic(0,(char*)"SPDBIRD",pos,vel,0);
 
     double position[3] = {so.latitude(),so.longitude(),so.alt()};
     double velocity[3] = {vo.track("degree"),vo.gs(),vo.vs()};

@@ -51,7 +51,7 @@ typedef struct{
 
 typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    uint32_t trafficID[MAX_TRAFFIC_ALERTS];
+    char trafficID[MAX_TRAFFIC_ALERTS][25];
     uint32_t trafficAlerts[MAX_TRAFFIC_ALERTS];
 }traffic_alerts_t;
 

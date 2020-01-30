@@ -90,7 +90,7 @@ SwigObj * TrafficMonitor_KMB_get(SwigObj * carg1);
 #include <stdbool.h>
 TrafficMonitor * new_TrafficMonitor(bool carg1, /*aaa*/ char * carg2);
 void TrafficMonitor_UpdateDAAParameters(SwigObj * carg1, /*aaa*/ char * carg2,bool log);
-int TrafficMonitor_InputTraffic(SwigObj * carg1, int carg2, /*aaa*/ double * carg3, /*aaa*/ double * carg4, double carg5);
+int TrafficMonitor_InputTraffic(SwigObj * carg1, int carg2, char* calls,/*aaa*/ double * carg3, /*aaa*/ double * carg4, double carg5);
 void TrafficMonitor_MonitorTraffic(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, double carg4);
 bool TrafficMonitor_MonitorWPFeasibility(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, /*aaa*/ double * carg4);
 bool TrafficMonitor_CheckSafeToTurn(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3, double carg4, double carg5);
@@ -100,7 +100,7 @@ void TrafficMonitor_GetGSBands(SwigObj * carg1, int * carg2, int * carg3, double
 void TrafficMonitor_GetVSBands(SwigObj * carg1, int * carg2, int * carg3, double * carg4, double * carg5, int * carg6, int * carg7, double * carg8, double * carg9, double * carg10, double * carg11, double * carg12, double * carg13, double * carg14);
 void TrafficMonitor_GetAltBands(SwigObj * carg1, int * carg2, int * carg3, double * carg4, double * carg5, int * carg6, int * carg7, double * carg8, double * carg9, double * carg10, double * carg11, double * carg12, double * carg13, double * carg14);
 void delete_TrafficMonitor(TrafficMonitor * carg1);
-int TrafficMonitor_GetTrafficAlerts(SwigObj* carg1,int carg2,int* carg3,int* carg4);
+int TrafficMonitor_GetTrafficAlerts(SwigObj* carg1,int carg2,char* carg3,int* carg4);
 
 
 #endif /* _TrafficMonitor_proxy_H_ */

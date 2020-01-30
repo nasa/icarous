@@ -51,7 +51,7 @@ private:
     double prevLogTime;
     double elapsedTime;
 
-    uint32_t trafficIDs[100];
+    char trafficIDs[100][25];
     int32_t trafficAlerts[100];
 
 public:
@@ -60,7 +60,7 @@ public:
 
     TrafficMonitor(bool reclog,char daaConfig[]);
     void UpdateDAAParameters(char daaParameters[],bool log);
-    int InputTraffic(int id,double position[],double velocity[],double elapsedTime);
+    int InputTraffic(int id,char* callsign,double position[],double velocity[],double elapsedTime);
     void MonitorTraffic(double position[],double velocity[],double elapsedTime);
     bool MonitorWPFeasibility(double position[],double velocity[],double wp[]);
     bool CheckSafeToTurn(double position[],double velocity[],double fromHeading,double toHeading);
@@ -110,7 +110,7 @@ public:
                     double& resDown,
                     double& redPref);
 
-    int GetTrafficAlerts(int index,uint32_t* trafficID,int* alertLevel);
+    int GetTrafficAlerts(int index,char* trafficID,int* alertLevel);
 
 };
 

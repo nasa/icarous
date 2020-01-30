@@ -243,6 +243,7 @@ void ProcessGSMessage(mavlink_message_t message) {
             }
             else if (msg.command == MAV_CMD_SPATIAL_USER_1) {
                 appdataIntGS.traffic.index = (uint32_t)msg.param1;
+                memset(appdataIntGS.traffic.callsign,0,25);
                 appdataIntGS.traffic.type = _TRAFFIC_SIM_;
                 appdataIntGS.traffic.latitude = msg.param5;
                 appdataIntGS.traffic.longitude = msg.param6;
@@ -488,6 +489,8 @@ void gsInterface_ProcessPacket() {
 
                 double heading = fmod(2*M_PI + atan2(pos->ve,pos->vn),2*M_PI)*180/M_PI;
                 double speed = sqrt(pos->vn*pos->vn + pos->ve*pos->ve);
+                char callsign[9] = "\0";
+                memcpy(callsign,pos->call_sign,8);
                 mavlink_msg_adsb_vehicle_pack(sysid_ic,compid_ic,&msg,pos->aircraft_id,
                                           (int32_t)(pos->latitude*1E7),
                                           (int32_t)(pos->longitude*1E7),
@@ -539,6 +542,8 @@ void gsInterface_ProcessPacket() {
 
             double heading = fmod(2 * M_PI + atan2(traffic->ve, traffic->vn), 2 * M_PI) * 180 / M_PI;
             double speed = sqrt(traffic->vn * traffic->vn + traffic->ve * traffic->ve);
+            char callsign[9] = "\0";
+            memcpy(callsign,traffic->callsign,8);
             mavlink_msg_adsb_vehicle_pack(sysid_ic, compid_ic, &msg, traffic->index,
                                           (int32_t)(traffic->latitude * 1E7),
                                           (int32_t)(traffic->longitude * 1E7),
@@ -547,7 +552,7 @@ void gsInterface_ProcessPacket() {
                                           (uint16_t)(heading * 1E2),
                                           (uint16_t)(speed * 1E2),
                                           (uint16_t)(traffic->vd * 1E2),
-                                          "NONE", emitterType, 0, 0, 0);
+                                          callsign, emitterType, 0, 0, 0);
 
             writeMavlinkData(&appdataIntGS.gs, &msg);
             break;
