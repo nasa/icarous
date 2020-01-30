@@ -245,10 +245,6 @@ void ProcessGSMessage(mavlink_message_t message) {
                 appdataIntGS.traffic.index = (uint32_t)msg.param1;
                 memset(appdataIntGS.traffic.callsign,0,25);
 
-                char name[25];
-                sprintf(name,"Traffic%d",appdataIntGS.traffic.index);
-                memcpy(appdataIntGS.traffic.callsign,name,25);
-
                 appdataIntGS.traffic.type = _TRAFFIC_SIM_;
                 appdataIntGS.traffic.latitude = msg.param5;
                 appdataIntGS.traffic.longitude = msg.param6;
@@ -504,7 +500,7 @@ void gsInterface_ProcessPacket() {
                                           (uint16_t) (heading*1E2),
                                           (uint16_t) (speed*1E2),
                                           (uint16_t) (pos->vd*1E2),
-                                          "NONE",0,0,0,0);
+                                          callsign,0,0,0,0);
 
                 writeMavlinkData(&appdataIntGS.gs,&msg);
 
