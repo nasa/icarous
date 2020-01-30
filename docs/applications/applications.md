@@ -9,7 +9,7 @@ permalink: applications
 The ICAROUS architecture is modular and the core functionalities are
 organized into individual apps. These apps communicate among each other via
 the cFS software bus to ensure a UAS can operate safely. The apps to run
-should be listed in the CMake/apps.cmake file.
+should be listed in the Icarous_defs/apps.cmake file.
 
 The cmake build system configures the executable folder along with the
 appropriate startup configuration to script that will start all the apps
