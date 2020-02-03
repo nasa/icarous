@@ -64,6 +64,11 @@ void FlightPhases(void){
                 appdataCog.fpPhase = MERGING_PHASE;
             }
 
+            if(appdataCog.ditch){
+                appdataCog.emergencyDescentState = INITIALIZING;
+                appdataCog.fpPhase = EMERGENCY_DESCENT_PHASE;
+            }
+
             break;
         }
 
@@ -73,6 +78,22 @@ void FlightPhases(void){
                 appdataCog.fpPhase = APPROACH_PHASE;
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
+            }
+            break;
+        }
+
+        case EMERGENCY_DESCENT_PHASE:{
+            status = EmergencyDescent();
+
+            // Check if there is another request for ditching
+            // and initialize ditching again
+            if(appdataCog.ditch){
+                appdataCog.emergencyDescentState = INITIALIZING;
+            }
+            
+            // If end ditch is requested, kill ditching
+            if(appdataCog.endDitch){
+                appdataCog.emergencyDescentState = SUCCESS;
             }
             break;
         }
@@ -105,6 +126,8 @@ void FlightPhases(void){
             }
             break;
         }
+
+    
     }
 
 
@@ -197,9 +220,89 @@ status_e Approach(){
 }
 
 status_e Landing(){
+    SetStatus(appdataCog.statustxt,"IC: Landing",SEVERITY_NOTICE);
     argsCmd_t cmd;
     CFE_SB_InitMsg(&cmd, GUIDANCE_COMMAND_MID, sizeof(cmd), TRUE);
     cmd.name = LAND;
     SendSBMsg(cmd);
     return SUCCESS;
+}
+
+status_e EmergencyDescent(){
+    static bool command_sent;
+    double positionA[3] = {appdataCog.position.latitude,
+                           appdataCog.position.longitude,
+                           appdataCog.position.altitude_abs};
+   
+    double positionB[3] = {appdataCog.ditchsite[0],
+                           appdataCog.ditchsite[1],
+                           positionA[2]};
+
+    double Trk, Gs, Vs;
+    ConvertVnedToTrkGsVs(appdataCog.position.vn, 
+                         appdataCog.position.ve,
+                         appdataCog.position.vd, 
+                         &Trk, &Gs, &Vs);
+
+    double velocityA[3] = {Trk,Gs,Vs};
+
+
+    switch(appdataCog.emergencyDescentState){
+
+        case INITIALIZING:{
+            command_sent = false;
+            appdataCog.request = REQUEST_NIL;
+
+            // Find a new path to the ditch site 
+            // Note that if a direct path is not availabe, this will find
+            // a possible detour. 
+            FindNewPath(appdataCog.searchAlgType, positionA, velocityA, positionB);
+
+            appdataCog.request = REQUEST_PROCESSING;
+            appdataCog.emergencyDescentState = RUNNING;
+            appdataCog.ditch = false;
+            break;
+        }
+
+        case RUNNING:{
+            double dist2Target = ComputeDistance(positionA,positionB);
+
+            // Proceeed to the top of descent by following the 
+            // computed flight plan
+            if(appdataCog.request == REQUEST_RESPONDED && !appdataCog.topofdescent){
+                SetGuidanceFlightPlan("Plan1",1);  
+                appdataCog.request = REQUEST_NIL;
+            }else if(!appdataCog.topofdescent){
+                // Check if top of descent (TOD) has been reached
+                // TOP is calculated assuming a 45 degree flight path angle
+                // while descending
+                if(dist2Target < positionA[2]){
+                    appdataCog.topofdescent = true;
+                    SetStatus(appdataCog.statustxt,"IC:Reached TOP",SEVERITY_NOTICE);
+                }
+            }else{
+                //TODO: Add parameter for final leg of ditching
+                if(!command_sent){
+                    SetGuidanceP2P(appdataCog.ditchsite[0],appdataCog.ditchsite[1],appdataCog.ditchsite[2],1.5);
+                    command_sent = true;
+                }else{
+                   if(appdataCog.p2pcomplete){
+                      appdataCog.emergencyDescentState = SUCCESS;
+                   }      
+                }
+            }
+            break;
+        }
+
+        case SUCCESS:{
+            // Once vehicle has reached the final ditch site, we can land
+            appdataCog.fpPhase = LANDING_PHASE;
+            break;
+        }
+
+        case FAILED:{
+            break;
+        }
+    }
+    return appdataCog.emergencyDescentState;
 }

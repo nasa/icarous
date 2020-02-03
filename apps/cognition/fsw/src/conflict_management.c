@@ -454,14 +454,14 @@ bool ReturnToNextWP(){
          else
          {
             appdataCog.return2NextWPState = COMPUTE;
-            appdataCog.request = 0;
+            appdataCog.request = REQUEST_NIL;
          }
          break;
       }
 
       case COMPUTE:
       {
-         if (appdataCog.request == 0)
+         if (appdataCog.request == REQUEST_NIL)
          {
             // Compute a secondary path
             int nextWP;
@@ -488,12 +488,12 @@ bool ReturnToNextWP(){
                                    appdataCog.fp->waypoints[nextWP].altitude};
 
             FindNewPath(appdataCog.searchAlgType, positionA, velocityA, positionB);
-            appdataCog.request = -1;
+            appdataCog.request = REQUEST_PROCESSING;
             SetStatus(appdataCog.statustxt,"IC:Computing secondary path",SEVERITY_NOTICE);
          }
-         else if (appdataCog.request == 1)
+         else if (appdataCog.request == REQUEST_RESPONDED)
          {
-            appdataCog.request = 0;
+            appdataCog.request = REQUEST_NIL;
             appdataCog.return2NextWPState = RESOLVE;
             appdataCog.fp2complete = false;
             SetGuidanceFlightPlan("Plan1",1);  

@@ -93,10 +93,14 @@ void COGNITION_AppInit(void){
     CFE_SB_SubscribeLocal(FLIGHTPLAN_MONITOR_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_GEOFENCE_MONITOR_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_WPREACHED_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
+
     #ifdef APPDEF_MERGER
     CFE_SB_SubscribeLocal(MERGER_STATUS_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     #endif
 
+    #ifdef APPDEF_SAFE2DITCH
+    CFE_SB_SubscribeLocal(SAFE2DITCH_STATUS_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    #endif
 	// Initialize all messages that this App generates.
 	// To perfrom sense and avoid, as a minimum, the following messages must be generated
 
@@ -116,7 +120,7 @@ void COGNITION_AppInitData(){
     appdataCog.returnSafe = true;
     appdataCog.nextPrimaryWP = 1;
     appdataCog.resolutionTypeCmd = -1;
-    appdataCog.request = 0;
+    appdataCog.request = REQUEST_NIL;
     appdataCog.fpPhase = IDLE_PHASE;
     appdataCog.missionStart = -1;
     appdataCog.keepInConflict = false;
@@ -133,6 +137,10 @@ void COGNITION_AppInitData(){
     appdataCog.resolutionTypeCmd = TRACK_RESOLUTION;
     appdataCog.requestGuidance2NextWP = -1;
     appdataCog.searchAlgType = _ASTAR;
+    appdataCog.topofdescent = false;
+    appdataCog.ditch = false;
+    appdataCog.endDitch = false;
+    appdataCog.resetDitch = false;
     memset(appdataCog.trkBands.wpFeasibility1,1,sizeof(bool)*50);
     memset(appdataCog.trkBands.wpFeasibility2,1,sizeof(bool)*50);
     CFE_SB_InitMsg(&appdataCog.statustxt,ICAROUS_STATUS_MID,sizeof(status_t),TRUE);
@@ -322,7 +330,7 @@ void COGNITION_ProcessSBData() {
             flightplan_t *fp;
             fp = (flightplan_t *)appdataCog.CogMsgPtr;
             memcpy(&appdataCog.flightplan2, fp, sizeof(flightplan_t));
-            appdataCog.request = 1;
+            appdataCog.request = REQUEST_RESPONDED;
             break;
         }
 
@@ -373,6 +381,16 @@ void COGNITION_ProcessSBData() {
                 appdataCog.mergingActive = false;
             }
 
+            break;
+        }
+        #endif
+
+        #ifdef APPDEF_SAFE2DITCH
+        case SAFE2DITCH_STATUS_MID:{
+            OS_printf("Received ditch status\n");
+            safe2ditchStatus_t* status = (safe2ditchStatus_t*) appdataCog.CogMsgPtr;
+            appdataCog.ditch = status->ditchRequested;
+            memcpy(appdataCog.ditchsite,status->ditchsite,sizeof(double)*3);
             break;
         }
         #endif

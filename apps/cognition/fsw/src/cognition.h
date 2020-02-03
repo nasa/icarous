@@ -28,10 +28,16 @@
 #include "trajectory_msgids.h"
 #include "geofence_msgids.h"
 #include "guidance_msgids.h"
+#include "UtilFunctions.h"
 
 #ifdef APPDEF_MERGER
 #include "merger_msgids.h"
 #include "merger_msg.h"
+#endif
+
+#ifdef APPDEF_SAFE2DITCH
+#include "safe2ditch_msg.h"
+#include "safe2ditch_msgids.h"
 #endif
 
 #define COGNITION_PIPE_NAME "COGPIPE"
@@ -58,6 +64,7 @@ typedef enum{
     CLIMB_PHASE,
     CRUISE_PHASE,
     DESCENT_PHASE,
+    EMERGENCY_DESCENT_PHASE,
     APPROACH_PHASE,
     LANDING_PHASE,
     MERGING_PHASE
@@ -97,6 +104,12 @@ typedef enum{
     RESOLVE,
     COMPLETE
 }conflictState_e;
+
+typedef enum{
+    REQUEST_NIL,
+    REQUEST_PROCESSING,
+    REQUEST_RESPONDED
+}request_e;
 
 
 /**
@@ -168,8 +181,7 @@ typedef struct{
     bool ditch;
     bool resetDitch;
     bool endDitch;
-    bool ditchGuidanceRequired;
-    bool ditchRequested;
+    bool ditchRouteFeasible;
     bool returnSafe;
 
     resolutionType_e resolutionTypeCmd;
@@ -180,6 +192,7 @@ typedef struct{
 
     status_e takeoffState;
     status_e cruiseState;
+    status_e emergencyDescentState;
     int takeoffComplete;
 
 
@@ -196,6 +209,7 @@ typedef struct{
     bool p2pcomplete;
     bool fp1complete;
     bool fp2complete;
+    bool topofdescent;
 
     // Status of merging activity
     bool mergingActive;     
@@ -279,6 +293,8 @@ status_e Descent(void);
 status_e Approach(void);
 
 status_e Landing(void);
+
+status_e EmergencyDescent(void);
 
 bool RunTrafficResolution(void);
 

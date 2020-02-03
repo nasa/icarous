@@ -171,7 +171,7 @@ bool Astar::ComputePath() {
         _cn = _cn->parent;
     }
 
-    if (Path.size()>2){
+    if (Path.size()>=2){
         return true;
     }else{
         return false;

@@ -77,6 +77,29 @@ void GUIDANCE_Run(){
         case SPEED_CHANGE: break;
 
     }
+
+    PublishGuidanceStatus();
+}
+
+void PublishGuidanceStatus(){
+
+    guidance_status_t status;
+    CFE_SB_InitMsg(&status,GUIDANCE_STATUS_MID,sizeof(guidance_status_t),TRUE);
+    status.mode = guidanceAppData.guidanceMode;
+    if(status.mode == PRIMARY_FLIGHTPLAN){
+        status.nextWP = guidanceAppData.nextPrimaryWP;
+        status.totalWP = guidanceAppData.primaryFlightPlan.num_waypoints;
+    }
+    else{
+        status.nextWP = guidanceAppData.nextSecondaryWP;
+        status.totalWP = guidanceAppData.secondaryFlightPlan.num_waypoints;
+    }
+
+    status.velCmd[0] = guidanceAppData.velCmd.param1;
+    status.velCmd[1] = guidanceAppData.velCmd.param2;
+    status.velCmd[2] = guidanceAppData.velCmd.param3;
+    SendSBMsg(status);
+
 }
 
 void ComputeTakeoffGuidanceInput(){

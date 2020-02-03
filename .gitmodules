@@ -22,3 +22,6 @@
 [submodule "apps/merger"]
 	path = apps/merger
 	url = git@gitlab.larc.nasa.gov:larc-nia-fm/uas/mergespace-cfs.git
+[submodule "apps/safe2ditch"]
+	path = apps/safe2ditch
+	url = git@gitlab.larc.nasa.gov:larc-nia-fm/uas/safe2ditch-cfs.git

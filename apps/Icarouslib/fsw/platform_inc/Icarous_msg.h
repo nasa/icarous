@@ -298,7 +298,11 @@ typedef struct{
 	double climb;                             /**< climb rate in m/s */
 	uint8_t modeAP;                           /**< pixhawk mode */
 	uint8_t modeIcarous;                      /**< icarous mode */
+	uint8_t modeFlagAP;                       /**< pixhawk mode flag */
 	uint16_t waypointCurrent;                 /**< current waypoint */
+	uint32_t home_latitude;                   /**< latitude in degE7 */
+    uint32_t home_longitude;                  /**< longitude in degE7 */
+    uint32_t home_altitude;                   /**< altitude in mm */
 }vfrhud_t;
 
 /**

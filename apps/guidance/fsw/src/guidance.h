@@ -138,9 +138,17 @@ void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double heading,doub
  */
 bool Point2PointControl();
 
+
+/**
+ * Publish guidance status
+ */
+void PublishGuidanceStatus();
+
+
 /**
  * @var Global variable to store all app related data
  */
 EXTERN guidanceAppData_t guidanceAppData;
+
 
 #endif //ICAROUS_CFS_GUIDANCE_H

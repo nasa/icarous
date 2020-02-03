@@ -21,4 +21,14 @@ typedef enum{
     NOOP                    ///< No operations
 }guidance_mode_e;
 
+typedef struct{
+    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];  /**< cFS header information */
+    guidance_mode_e mode;                    /**< Guidance mode currently being used */
+    uint32_t totalWP;                        /**< Total number of waypoints in flightplan */
+    uint32_t nextWP;                         /**< Next WP - Same as current WP vehicles is flying towards */
+    double dist2nextWP;                      /**< Distance to next WP */
+    double crossTrackDeviation;              /**< Cross track deviation */
+    double velCmd[3];                        /**< Velocity command currently being used */
+}guidance_status_t;
+
 #endif
