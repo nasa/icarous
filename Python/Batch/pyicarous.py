@@ -127,7 +127,7 @@ def ComputeControl(speed, currentPos, nextPos):
 
 
 class IcarousSim():
-    def __init__(self, initialPos, vehicleSpeed, targetPosLLA = None, targetPosNED = None, simtype="UAS_ROTOR",fasttime = True):
+    def __init__(self, initialPos, vehicleSpeed, targetPosLLA = None, targetPosNED = None, simtype="UAS_ROTOR", fasttime = True, params = {}, logfile = None):
         """
         @initialPos (lat,lon) tuple containing starting
                     latitude, longitude  of simulation
@@ -135,6 +135,8 @@ class IcarousSim():
                     N,E,D range to target position
         """
         self.fasttime = fasttime
+        self.logfile = logfile
+        self.params = params
         self.home_pos = [initialPos[0], initialPos[1], initialPos[2]]
         self.traffic = []
         if simtype == "UAM_VTOL":
@@ -382,4 +384,23 @@ class IcarousSim():
 
                     if self.palt == -1000:
                         self.palt = 5
-            
+
+        if self.logfile is not None:
+            self.write_log(self.logfile)
+
+    def write_log(self, logname="simoutput.json"):
+        """ Write vehicles states to an json file """
+        import json
+        print("writing log: %s" % logname)
+        log_data = {}
+        log_data["parameters"] = self.params.data
+        log_data["pos"] = self.ownshipPosLog
+        log_data["vel"] = self.ownshipVelLog
+        log_data["traffic"] = {}
+        log_data["waypoints"] = [self.ownshipPosLog[0], list(self.targetPos)]
+        for i in range(len(self.traffic)):
+            log_data["traffic"][i] = {"pos": self.trafficPosLog[i],
+                                      "vel": self.trafficVelLog[i]}
+
+        with open(logname, 'w') as f:
+            json.dump(log_data, f)
