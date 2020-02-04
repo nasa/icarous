@@ -90,6 +90,7 @@ void TRAFFIC_AppInit(void) {
     trafficAppData.log = TblPtr->log;
     trafficAppData.tfMonitor = new_TrafficMonitor(trafficAppData.log,TblPtr->configFile);
     trafficAppData.numTraffic = 0;
+    trafficAppData.updateDaaParams = TblPtr->updateParams;
 
     // Send event indicating app initialization
     if(status == CFE_SUCCESS){
@@ -444,7 +445,9 @@ void TRAFFIC_ProcessPacket(){
             n += sprintf(params + n,"det_1_WCV_ZTHR = %f [ft];",msg->det_1_WCV_ZTHR);
             n += sprintf(params + n,"load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.%s;",msg->load_core_detection_det_1);
 
-            TrafficMonitor_UpdateDAAParameters(trafficAppData.tfMonitor,params,(bool)msg->logDAAdata);
+            if(trafficAppData.updateDaaParams){
+                TrafficMonitor_UpdateDAAParameters(trafficAppData.tfMonitor,params,(bool)msg->logDAAdata);
+            }
             trafficAppData.trafficSrc = msg->trafficSource;
             break;
         }

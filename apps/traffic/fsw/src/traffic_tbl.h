@@ -23,7 +23,7 @@ typedef struct
 {
     char configFile[50];   ///< Daidalus configuration file
     bool log;              ///< Enable Daidalus log output
-
+    bool updateParams;     ///< Enable parameter updates through SB messages
 }TrafficTable_t;
 
 

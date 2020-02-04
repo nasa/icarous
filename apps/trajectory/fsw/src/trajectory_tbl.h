@@ -46,6 +46,7 @@ typedef struct
 
     // Preferred search algorithm to use
     algorithm_e searchAlgorithm;         ///< Algorithm used for computing a new path.
+    bool updateDaaParams;                ///< Update DAA params via SB messages
 }TrajectoryTable_t;
 
 /**@}*/

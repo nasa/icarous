@@ -79,6 +79,7 @@ typedef struct{
     bool return2fp1leg;                    ///< Return to flight plan 1 leg
     bool return2fp2leg;                    ///< Return to flight plan 2 leg
     uint32_t trafficSrc;                   ///< Traffic source selector
+    bool updateDaaParams;                  ///< Update DAA params via SB messages
     traffic_parameters_t params;           ///< DAIDALUS parameters
 }TrafficAppData_t;
 

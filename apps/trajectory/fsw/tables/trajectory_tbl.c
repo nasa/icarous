@@ -27,7 +27,8 @@ TrajectoryTable_t Trajectory_TblStruct = {
   6.0,                              // Xtrack deviation allowed
   0.6,                              // Xtrack error gain.
   1.0,                              // Resolution speed for maneuvers
-  _ASTAR                            // Search algorithm for planning
+  _ASTAR,                           // Search algorithm for planning
+  true                              // Update DAA params via SB messages
 };
 
 

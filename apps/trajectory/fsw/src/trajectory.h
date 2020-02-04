@@ -85,6 +85,7 @@ typedef struct{
     int nextWP2;                               ///< Next waypoint index in flightplan 2
     char planID[10];                           ///< Current plan ID
     bool monitor;                              ///< Flag indicating when monitoring should begin.
+    bool updateDAAParams;                      ///< Update DAA params via SB messages
     flightplan_t flightplan1;                  ///< primary flightplan to monitor
     flightplan_t flightplan2;                  ///< secondary flightplan to monitor
     double xtrkDev;                            ///< xtrk deviation allowed

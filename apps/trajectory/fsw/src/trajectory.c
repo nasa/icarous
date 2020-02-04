@@ -136,6 +136,7 @@ void TRAJECTORY_AppInitData(TrajectoryTable_t* TblPtr){
     TrajectoryAppData.xtrkGain = TblPtr->xtrkGain;
     TrajectoryAppData.resSpeed = TblPtr->resSpeed;
     TrajectoryAppData.searchType = TblPtr->searchAlgorithm;
+    TrajectoryAppData.updateDAAParams = TblPtr->updateDaaParams;
     strcpy(TrajectoryAppData.planID, "Plan0\0");
 
     int32 status = OS_MutSemCreate(&TrajectoryAppData.mutexAcState, "ACstate", 0);
@@ -473,7 +474,9 @@ void TRAJECTORY_Monitor(void)
                     n += sprintf(params + n,"det_1_WCV_ZTHR = %f [ft];",msg->det_1_WCV_ZTHR);
                     n += sprintf(params + n,"load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.%s;",msg->load_core_detection_det_1);
 
-                    PathPlanner_UpdateDAAParameters(TrajectoryAppData.pplanner,params);
+                    if(TrajectoryAppData.updateDAAParams){
+                        PathPlanner_UpdateDAAParameters(TrajectoryAppData.pplanner,params);
+                    }
 		    break;
             }
 
