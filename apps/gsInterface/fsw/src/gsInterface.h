@@ -7,7 +7,6 @@
 #ifndef _gsInterface_h_
 #define _gsInterface_h_
 
-#define _GNU_SOURCE
 #include "cfe.h"
 #include "cfe_error.h"
 #include "cfe_evs.h"
@@ -21,10 +20,9 @@
 #include <errno.h>
 #include <unistd.h>
 #include <network_includes.h>
-#include "Icarous_msg.h"
-#include "Icarous_msgids.h"
+#include "Icarous.h"
+
 #include "sch_msgids.h"
-#include "paramdef.h"
 #include "gsInterface_table.h"
 
 #ifdef APPDEF_TRAFFIC
@@ -200,11 +198,6 @@ void gs_startTimer(uint32_t *timerID,void (*f)(uint32_t),char* name,uint32_t sta
 
 void gs_stopTimer(uint32_t *timerID);
 
-void gsInterface_ReadFlightplanFromFile();
-
 #define SendGSMsg(arg) writeMavlinkData(&appdataIntGS.gs,&arg)
 
-
-#define gsNextParam appdataIntGS.storedparams[i].value;i++
-
-#endif /* _ardupilot_h_ */
+#endif 

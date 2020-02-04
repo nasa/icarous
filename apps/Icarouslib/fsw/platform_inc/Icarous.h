@@ -1,6 +1,10 @@
 #ifndef PARAMDEF
 #define PARAMDEF
 #include <stdint.h>
+
+#include "Icarous_msg.h"
+#include "Icarous_msgids.h"
+
 #define PARAM_COUNT 85     ///< Total number of ICAROUS parameters
 
 typedef struct{
@@ -125,5 +129,6 @@ extern param_t initialValues[PARAM_COUNT];
 
 
 void PublishParams(param_t *params);
+void ReadFlightplanFromFile(char* filename,flightplan_t *fplan);
 
 #endif

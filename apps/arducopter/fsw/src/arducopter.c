@@ -7,7 +7,6 @@
 
 #define INIT_PARAM
 
-#include <paramdef.h>
 #include "arducopter.h"
 #include "arducopter_version.h"
 #include "intf_tbl.c"

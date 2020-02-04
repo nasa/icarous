@@ -15,12 +15,11 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
-#include <paramdef.h>
 #include <network_includes.h>
 #include <arducopter_table.h>
 #include <arducopter_events.h>
-#include <Icarous_msg.h>
-#include <Icarous_msgids.h>
+#include <Icarous.h>
+
 #include <traffic_msg.h>
 #include <traffic_msgids.h>
 #include <guidance_msg.h>
@@ -229,6 +228,5 @@ EXTERN cmdAck_t ack;                           ///< command acknowledge message
 EXTERN vfrhud_t vfrhud;                        ///< vfr hud data
 EXTERN rc_channels_t rc_channels;              ///< rc channels
 
-#define apNextParam appdataInt.storedparams[i].value;i++; 
 
 #endif /* _arducopter_h_ */

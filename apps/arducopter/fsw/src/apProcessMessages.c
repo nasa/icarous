@@ -5,7 +5,6 @@
  */
 #define EXTERN extern
 
-#include <paramdef.h>
 #include "arducopter.h"
 #include "UtilFunctions.h"
 
