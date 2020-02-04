@@ -362,6 +362,7 @@ int GetParams(char *filename, char (*params)[16],double *val){
        if(fgets(line,199,fp) == NULL){
           break;
        }
+       memset(params[i],0,16);
        x =  sscanf(line,"%s %lf",params[i],val+i);
        if(x > 0){
             if (params[i][0] !='#'){
