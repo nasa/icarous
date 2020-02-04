@@ -203,13 +203,6 @@ void PublishParams(param_t *params) {
     localMergerParams.maxVehicleTurnRadius = (double) params[i].value;i++;;
     localMergerParams.startIntersection = (int) params[i].value;i++;;
 
-    memset(localMergerParams.IntersectionID,0,INTERSECTION_MAX*sizeof(uint32_t));
-    for(int i=0;i<appdataIntGS.mgData.num_waypoints;++i){
-        localMergerParams.IntersectionLocation[i][0] = appdataIntGS.mgData.waypoints[i].latitude;
-        localMergerParams.IntersectionLocation[i][1] = appdataIntGS.mgData.waypoints[i].longitude;
-        localMergerParams.IntersectionLocation[i][2] = appdataIntGS.mgData.waypoints[i].altitude;
-        localMergerParams.IntersectionID[i] = atoi(appdataIntGS.mgData.waypoints[i].name);
-    }
     SendSBMsg(localMergerParams);
     #endif
 
