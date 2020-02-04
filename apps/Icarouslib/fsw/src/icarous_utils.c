@@ -353,6 +353,7 @@ void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
 
 /**
  * Function to read in key value pairs from a file
+ * Returns the number of pairs read from the file
  * KEY VALUE
  */
 int GetParams(char *filename, char (*params)[16],double *val){

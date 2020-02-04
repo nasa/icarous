@@ -1,0 +1,146 @@
+# ICAROUS PARAMETERS
+
+# DAA Parameters
+# Length (ft), Speed (knots), time (s), climb rate (fpm)
+# Look ahead time
+LOOKAHEAD_TIME   20.000000
+
+# Alerting time (s)
+AL_1_ALERT_T     10.000000
+
+# Detector (only place holder)
+AL_1_DETECTOR    0.000000
+
+# Early alerting time (s)
+AL_1_E_ALERT_T   15.000000
+
+# spread parameters
+AL_1_SPREAD_ALT  0.000000
+AL_1_SPREAD_GS   0.000000
+AL_1_SPREAD_TRK  0.000000
+AL_1_SPREAD_VS   0.000000
+
+CA_BANDS         1.000000
+CA_FACTOR        0.200000
+
+CONFLICT_CRIT    0.000000
+CONFLICT_LEVEL   1.000000
+CONTOUR_THR      180.000000
+
+# Well clear volume parameters 
+DET_1_WCV_DTHR   30.000000
+DET_1_WCV_TCOA   0.000000
+DET_1_WCV_TTHR   0.000000
+DET_1_WCV_ZTHR   200.000000
+
+# discretization
+ALT_STEP         1.000000
+GS_STEP          0.100000
+TRK_STEP         1.000000
+VS_STEP          5.000000
+
+#NMAC parameters
+HORIZONTAL_NMAC  5.000000
+VERTICAL_NMAC    5.500000
+
+
+# Aircraft parameters
+VERTICAL_ACCL    1.000000
+HORIZONTAL_ACCL  1.000000
+VERTICAL_RATE    0.000000
+RIGHT_TRK        180.000000
+LEFT_TRK         180.000000
+MAX_ALT          500.000000
+MAX_GS           30.000000
+MAX_VS           400.000000
+MIN_ALT          0.000000
+MIN_GS           0.200000
+MIN_VS           -400.000000
+BANK_ANGLE       0.000000
+TURN_RATE        0.000000
+
+# Recovery parameters
+RECOVERY_ALT     0.000000
+RECOVERY_CRIT    0.000000
+RECOVERY_GS      0.000000
+RECOVERY_TRK     1.000000
+RECOVERY_VS      0.000000
+RECOV_STAB_TIME  0.000000
+MIN_HORIZ_RECOV  30.000000
+MIN_VERT_RECOV   10.000000
+
+# Traffic source
+TRAFFIC_SRC      0.0
+
+# Enable 3D search in while planning
+ASTAR_ENABLE3D   0.000000
+
+# Grid size for astar serach
+ASTAR_GRIDSIZE   10.000000
+
+# Astar lookahead
+ASTAR_LOOKAHEAD  5.000000
+
+# Astar path speed
+ASTAR_RESSPEED   1.000000
+
+# Tracking parameters
+COMMAND          1.000000
+DISTH            2.000000
+DISTV            2.000000
+HEADING          270.000000
+TRACKINGOBJID    0.000000
+PGAINX           0.500000
+PGAINY           0.500000
+PGAINZ           0.500000
+
+# Log data
+LOGDAADATA       1.000000
+
+# Resolution speed
+RESSPEED         1.000000
+
+OBSBUFFER        1.000000
+RRT_CAPR         5.000000
+RRT_DT           1.000000
+RRT_MACROSTEPS   5.000000
+RRT_NITERATIONS  2000.000000
+RRT_RESSPEED     2.000000
+SEARCHALGORITHM  1.000000
+
+# Geofence parameters
+# Look ahead time
+LOOKAHEAD        4.000000
+
+# geofence buffers
+HTHRESHOLD       2.000000
+VTHRESHOLD       2.000000
+
+# step back from geofence (if violation imminent)
+HSTEPBACK        20.000000
+VSTEPBACK        20.000000
+
+# Max ceiling
+MAXCEILING       50.000000
+
+# Flight plan deviation parameters
+# Allowed deviation
+XTRKDEV          1000.000000
+
+# controller gain
+XTRKGAIN         0.600000
+
+RES_TYPE        4.0
+
+#MERGING PARAMS
+MISSION_SPEED    3.0
+MAX_MERGE_SPEED  7.0
+MIN_MERGE_SPEED  0.5
+CORRIDOR_WIDTH   20.0
+ENTRY_RADIUS     50.0
+COORD_ZONE       80.0
+SCHEDULE_ZONE    60.0
+MIN_SEP_DIST     30.0
+MIN_SEP_TIME     20.0
+MAX_TURN_RADIUS  10.0
+START_MERGE_PT   0
