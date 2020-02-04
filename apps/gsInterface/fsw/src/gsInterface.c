@@ -152,7 +152,7 @@ void gsInterface_InitializeAppData(){
     //Set mission start flag to -1
     appdataIntGS.startMission.param1 = -1;
     appdataIntGS.hbeatFreqCount = 0;
-    memcpy(appdataIntGS.storedparams,initialValues,sizeof(param_t)*PARAM_COUNT);
+
 
     if (appdataIntGS.gs.portType == SOCKET){
 		InitializeSocketPort(&appdataIntGS.gs);
@@ -169,6 +169,12 @@ void gsInterface_InitializeAppData(){
     appdataIntGS.tjtimer = 0xffff;
     appdataIntGS.fenceSent = false;
 	ReadFlightplanFromFile("merge_fixes.txt",&appdataIntGS.mgData);
+
+    bool status = InitializeParams("../ram/icarous_default.parm",appdataIntGS.storedparams);
+    if(!status){
+        OS_printf("Error loading parameters\n");
+        exit(0);
+    }
 }
 
 void gsInterface_AppCleanUp(){

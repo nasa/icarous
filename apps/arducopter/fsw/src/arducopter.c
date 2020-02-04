@@ -189,9 +189,11 @@ void ARDUCOPTER_AppInitializeData(){
     appdataInt.tjtimer = 0xffff;
     appdataInt.fenceSent = false;
 
-    memcpy(appdataInt.storedparams,initialValues,sizeof(param_t)*PARAM_COUNT);
-
-
+    bool status = InitializeParams("../ram/icarous_default.parm",appdataInt.storedparams);
+    if(!status){
+        OS_printf("Error loading parameters\n");
+        exit(0);
+    }
 }
     
 void ARDUCOPTER_AppCleanUp(){

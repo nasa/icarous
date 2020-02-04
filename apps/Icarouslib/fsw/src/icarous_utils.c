@@ -48,13 +48,13 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 int32 Icarous_LibInit(void)
 {
-
     OS_printf ("ICAROUS_LIB Initialized.\n");
-
     return CFE_SUCCESS;
-
 }
 
+/**
+ *Function to publish parameters on the software bus
+ */
 void PublishParams(param_t *params) {
 
     //Store the locally saved parameters to the messages
@@ -216,6 +216,9 @@ void PublishParams(param_t *params) {
     OS_printf("Published parameters\n");
 }
 
+/**
+ * Function to read a flightplan from a mavlink flightplan file
+ */
 void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
    
    FILE *fp = fopen(filename,"r");
@@ -255,7 +258,7 @@ void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
                switch(count){
                     case 0:{
                             // index
-                            printf("index: %d\n",atoi(tok));
+                            //printf("index: %d\n",atoi(tok));
                             plan->num_waypoints++;
                             break;
                           }
@@ -274,7 +277,7 @@ void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
                     case 3:{
                             // command
                             command = atoi(tok);
-                            printf("command: %d\n",command);
+                            //printf("command: %d\n",command);
                             break;
                            }
 
@@ -296,7 +299,7 @@ void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
                     case 7:{
                             // param4
                             int param4 = atoi(tok);
-                            printf("Param 4: %d\n",param4);
+                            //printf("Param 4: %d\n",param4);
                             char wp_name[MAX_FIX_NAME_SIZE];
                             sprintf(wp_name,"%d",param4);
                             memcpy(plan->waypoints[index].name,wp_name,MAX_FIX_NAME_SIZE);
@@ -306,7 +309,7 @@ void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
                     case 8:{
                             // x
                             double x = atof(tok);
-                            printf("x: %f\n",x);
+                            //printf("x: %f\n",x);
                             plan->waypoints[index].latitude = x;
                             break;
                            }
@@ -314,7 +317,7 @@ void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
                     case 9:{
                             // y
                             double y = atof(tok);
-                            printf("y: %f\n",y); 
+                            //printf("y: %f\n",y); 
                             plan->waypoints[index].longitude = y;
                             break;
                            }
@@ -322,7 +325,7 @@ void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
                     case 10:{
                             // z
                             double z = atof(tok);
-                            printf("z: %f\n",z);
+                            //printf("z: %f\n",z);
                             plan->waypoints[index].altitude = z;
                             break;
                             }
@@ -348,3 +351,48 @@ void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
     }
 }
 
+/**
+ * Function to read in key value pairs from a file
+ * KEY VALUE
+ */
+int GetParams(char *filename, char (*params)[16],double *val){
+   FILE* fp = fopen(filename,"r");
+   if(fp == NULL){
+       return -1;
+   }
+
+   int i = 0;
+   while(1){
+       int x;
+       char line[200];
+       if(fgets(line,199,fp) == NULL){
+          break;
+       }
+       x =  sscanf(line,"%s %lf",params[i],val+i);
+       if(x > 0){
+            if (params[i][0] !='#'){
+                i++;
+            }
+       }
+   }
+   fclose(fp);
+   return i;
+}
+
+bool InitializeParams(char *filename,param_t* params){
+
+    char locparams[PARAM_COUNT][16];
+    double locvals[PARAM_COUNT];
+    int n = GetParams(filename,locparams,locvals);
+    if (n != PARAM_COUNT){
+        return false;
+    }else{
+        for(int i=0;i<PARAM_COUNT;++i){
+            memcpy(params[i].param_id,locparams+i,16);
+            params[i].value = locvals[i];
+            params[i].type = 10;
+        }
+        return true;
+    }
+
+}
