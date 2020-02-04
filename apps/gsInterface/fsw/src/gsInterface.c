@@ -122,8 +122,27 @@ void gsInterface_AppInit(void){
     // Check which port to open from user defined parameters
     gsInterfaceTable_t *TblPtr;
     status = CFE_TBL_GetAddress((void**)&TblPtr,appdataIntGS.INTERFACE_tblHandle);
+    memcpy(&appdataIntGS.Tbl,TblPtr,sizeof(gsInterfaceTable_t));
 
-	appdataIntGS.gs.id = 1;
+	// Free table pointer
+	status = CFE_TBL_ReleaseAddress(appdataIntGS.INTERFACE_tblHandle);
+
+    gsInterface_InitializeAppData();
+
+    if(status == CFE_SUCCESS){
+        // Send event indicating app initialization
+        CFE_EVS_SendEvent (GSINTERFACE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
+                        "GS Interface initialized. Version %d.%d",
+                        GSINTERFACE_INTERFACE_MAJOR_VERSION,
+                        GSINTERFACE_INTERFACE_MINOR_VERSION);
+    }
+
+}
+
+void gsInterface_InitializeAppData(){
+
+    gsInterfaceTable_t* TblPtr = &appdataIntGS.Tbl;
+    appdataIntGS.gs.id = 1;
 	appdataIntGS.gs.portType = TblPtr->PortType;
     appdataIntGS.gs.baudrate = TblPtr->BaudRate;
 	appdataIntGS.gs.portin   = TblPtr->Portin + 10 * CFE_PSP_GetSpacecraftId();
@@ -135,11 +154,7 @@ void gsInterface_AppInit(void){
     appdataIntGS.hbeatFreqCount = 0;
     memcpy(appdataIntGS.storedparams,initialValues,sizeof(param_t)*PARAM_COUNT);
 
-	// Free table pointer
-	status = CFE_TBL_ReleaseAddress(appdataIntGS.INTERFACE_tblHandle);
-
-
-	if (appdataIntGS.gs.portType == SOCKET){
+    if (appdataIntGS.gs.portType == SOCKET){
 		InitializeSocketPort(&appdataIntGS.gs);
 	}else if(appdataIntGS.gs.portType == SERIAL){
 		InitializeSerialPort(&appdataIntGS.gs,false);
@@ -154,16 +169,6 @@ void gsInterface_AppInit(void){
     appdataIntGS.tjtimer = 0xffff;
     appdataIntGS.fenceSent = false;
 	gsInterface_ReadFlightplanFromFile();
-
-    if(status == CFE_SUCCESS){
-        // Send event indicating app initialization
-        CFE_EVS_SendEvent (GSINTERFACE_STARTUP_INF_EID, CFE_EVS_INFORMATION,
-                        "GS Interface initialized. Version %d.%d",
-                        GSINTERFACE_INTERFACE_MAJOR_VERSION,
-                        GSINTERFACE_INTERFACE_MINOR_VERSION);
-    }
-
-
 }
 
 void gsInterface_AppCleanUp(){

@@ -545,7 +545,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                 SendSBMsg(resetIcarous);
                 appdataInt.startMission = false;
                 appdataInt.restartMission = true;
-                apInterface_PublishParams();
+                PublishParams(appdataInt.storedparams);
                 appdataInt.startWPDownlink = true;
 				mavlink_message_t msg;
 				mavlink_msg_mission_request_list_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_MISSION_TYPE_MISSION);
@@ -688,7 +688,7 @@ void ProcessAPMessage(mavlink_message_t message) {
                 if (appdataInt.numWaypoints > 1)
                 {
 
-                    apInterface_PublishParams();
+                    PublishParams(appdataInt.storedparams);
                     startMission.param1 = msg.param1;
                     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *)&startMission);
                     CFE_SB_SendMsg((CFE_SB_Msg_t *)&startMission);
@@ -1201,7 +1201,7 @@ void ap_gfCallback(uint32_t timerId)
 }
 
 void ap_pmCallback(uint32_t timerId){
-    apInterface_PublishParams();
+    PublishParams(appdataInt.storedparams);
     mavlink_message_t statusMsg;
     mavlink_msg_statustext_pack(sysid_ic,compid_ic,&statusMsg,MAV_SEVERITY_INFO,"IC:Publishing parameters");
     writeMavlinkData(&appdataInt.ap, &statusMsg);
@@ -1213,169 +1213,4 @@ void ap_tjCallback(uint32_t timerId)
     mavlink_message_t msg;
     mavlink_msg_mission_count_pack(sysid_ic,compid_ic,&msg,sysid_gs,compid_gs,appdataInt.trajectory.num_waypoints,MAV_MISSION_TYPE_RALLY);
     writeMavlinkData(&appdataInt.ap,&msg);
-}
-
-
-void apInterface_PublishParams() {
-    //Initialize SB messages
-
-    //Store the locally saved parameters to the messages
-    int i = 0;
-    //Traffic Parameters
-
-    #ifdef APPDEF_TRAFFIC
-    traffic_parameters_t localTrafficParams;
-    CFE_SB_InitMsg(&localTrafficParams,TRAFFIC_PARAMETERS_MID,sizeof(traffic_parameters_t),TRUE);
-    localTrafficParams.trafficSource = (uint32_t) apNextParam;
-    localTrafficParams.resType = (uint32_t) apNextParam;
-    localTrafficParams.logDAAdata = (bool) apNextParam;
-    localTrafficParams.lookahead_time = apNextParam;
-    localTrafficParams.left_trk = apNextParam;
-    localTrafficParams.right_trk = apNextParam;
-    localTrafficParams.min_gs = apNextParam;
-    localTrafficParams.max_gs = apNextParam;
-    localTrafficParams.min_vs = apNextParam;
-    localTrafficParams.max_vs = apNextParam;
-    localTrafficParams.min_alt = apNextParam;
-    localTrafficParams.max_alt = apNextParam;
-    localTrafficParams.trk_step = apNextParam;
-    localTrafficParams.gs_step = apNextParam;
-    localTrafficParams.vs_step = apNextParam;
-    localTrafficParams.alt_step = apNextParam;
-    localTrafficParams.horizontal_accel = apNextParam;
-    localTrafficParams.vertical_accel = apNextParam;
-    localTrafficParams.turn_rate = apNextParam;
-    localTrafficParams.bank_angle = apNextParam;
-    localTrafficParams.vertical_rate = apNextParam;
-    localTrafficParams.recovery_stability_time = apNextParam;
-    localTrafficParams.min_horizontal_recovery = apNextParam;
-    localTrafficParams.min_vertical_recovery = apNextParam;
-    localTrafficParams.recovery_trk = (bool) apNextParam;
-    localTrafficParams.recovery_gs = (bool) apNextParam;
-    localTrafficParams.recovery_vs = (bool) apNextParam;
-    localTrafficParams.recovery_alt = (bool) apNextParam;
-    localTrafficParams.ca_bands = (bool) apNextParam;
-    localTrafficParams.ca_factor = apNextParam;
-    localTrafficParams.horizontal_nmac = apNextParam;
-    localTrafficParams.vertical_nmac = apNextParam;
-    localTrafficParams.conflict_crit = (bool) apNextParam;
-    localTrafficParams.recovery_crit = (bool) apNextParam;
-    localTrafficParams.contour_thr = apNextParam;
-    localTrafficParams.alert_1_alerting_time = apNextParam;
-    strcpy(localTrafficParams.alert_1_detector, "det_1");   //Hard coded, not parameter
-    //apNextParam;
-    localTrafficParams.alert_1_early_alerting_time = apNextParam;
-    strcpy(localTrafficParams.alert_1_region, "NEAR");      //Hard coded, not parameter
-    //apNextParam;
-    localTrafficParams.alert_1_spread_alt = apNextParam;
-    localTrafficParams.alert_1_spread_gs = apNextParam;
-    localTrafficParams.alert_1_spread_trk = apNextParam;
-    localTrafficParams.alert_1_spread_vs = apNextParam;
-    localTrafficParams.conflict_level = (uint8_t) apNextParam;
-    strcpy(localTrafficParams.load_core_detection_det_1, "WCV_TAUMOD"); //Hard coded, not parameter
-    //apNextParam;
-    localTrafficParams.det_1_WCV_DTHR = apNextParam;
-    localTrafficParams.det_1_WCV_TCOA = apNextParam;
-    localTrafficParams.det_1_WCV_TTHR = apNextParam;
-    localTrafficParams.det_1_WCV_ZTHR = apNextParam;
-
-    SendSBMsg(localTrafficParams);
-    #else
-       for(int k=0;k<46;++k) i++;
-    #endif
-
-    // Tracking parameters
-    #ifdef APPDEF_TRACKING
-    tracking_parameters_t localTrackingParams;
-    CFE_SB_InitMsg(&localTrackingParams,TRACKING_PARAMETERS_MID,sizeof(tracking_parameters_t),TRUE);
-    localTrackingParams.command = (bool) apNextParam;
-    localTrackingParams.trackingObjId = (int) apNextParam;
-    localTrackingParams.pGainX = (double) apNextParam;
-    localTrackingParams.pGainY = (double) apNextParam;
-    localTrackingParams.pGainZ = (double) apNextParam;
-    localTrackingParams.heading = (double) apNextParam;
-    localTrackingParams.distH = (double) apNextParam;
-    localTrackingParams.distV = (double) apNextParam;
-    SendSBMsg(localTrackingParams);
-    #else
-       for(int k=0;k<8;++k) i++;
-    #endif
-
-    // Trajectory parameters
-    #ifdef APPDEF_TRAJECTORY
-    trajectory_parameters_t localTrajectoryParams;
-    CFE_SB_InitMsg(&localTrajectoryParams,TRAJECTORY_PARAMETERS_MID,sizeof(trajectory_parameters_t),TRUE);
-    localTrajectoryParams.obsbuffer = (double) apNextParam;
-    localTrajectoryParams.maxCeiling = (double) apNextParam;
-    localTrajectoryParams.astar_enable3D = (bool) apNextParam;
-    localTrajectoryParams.astar_gridSize = (double) apNextParam;
-    localTrajectoryParams.astar_resSpeed = (double) apNextParam;
-    localTrajectoryParams.astar_lookahead = (double) apNextParam;
-    strcpy(localTrajectoryParams.astar_daaConfigFile, "../ram/DaidalusQuadConfig.txt");   //Hard coded, not parameter
-    //apNextParam;
-    localTrajectoryParams.rrt_resSpeed = (double) apNextParam;
-    localTrajectoryParams.rrt_numIterations = (int) apNextParam;
-    localTrajectoryParams.rrt_dt = (double) apNextParam;
-    localTrajectoryParams.rrt_macroSteps = (int) apNextParam;
-    localTrajectoryParams.rrt_capR = (double) apNextParam;
-    strcpy(localTrajectoryParams.rrt_daaConfigFile, "../ram/DaidalusQuadConfig.txt");     //Hard coded, not parameter
-    //apNextParam;
-    localTrajectoryParams.xtrkDev = (double) apNextParam;
-    localTrajectoryParams.xtrkGain = (double) apNextParam;
-    localTrajectoryParams.resSpeed = (double) apNextParam;
-    localTrajectoryParams.searchAlgorithm = (uint8_t) apNextParam;
-
-    SendSBMsg(localTrajectoryParams);
-    #else
-       for(int k=0;k<15;++k) i++;
-    #endif
-
-    // Geofence parameters
-    #ifdef APPDEF_GEOFENCE
-    geofence_parameters_t localGeofenceParams;
-    CFE_SB_InitMsg(&localGeofenceParams,GEOFENCE_PARAMETERS_MID,sizeof(geofence_parameters_t),TRUE);
-    localGeofenceParams.lookahead = (double) apNextParam;
-    localGeofenceParams.hthreshold = (double) apNextParam;
-    localGeofenceParams.vthreshold = (double) apNextParam;
-    localGeofenceParams.hstepback = (double) apNextParam;
-    localGeofenceParams.vstepback = (double) apNextParam;
-    SendSBMsg(localGeofenceParams);
-    #else
-       for(int k=0;k<5;++k) i++;
-    #endif
-
-    #ifdef APPDEF_ROTORSIM
-    // Rotorsim parameters
-    //rotorsim_parameters_t localRotorsimParams;
-    //localRotorsimParams.speed = (double) apNextParam;
-    //SendSBMsg(localRotorsimParams);
-    #else
-       for(int k=0;k<1;++k) i++;
-    #endif
-
-    #ifdef APPDEF_MERGER
-    merger_parameters_t localMergerParams;
-    CFE_SB_InitMsg(&localMergerParams,MERGER_PARAMETERS_MID,sizeof(merger_parameters_t),TRUE);
-    localMergerParams.missionSpeed = appdataIntGS.storedparams[i].value;
-    localMergerParams.maxVehicleSpeed = (double) apNextParam;
-    localMergerParams.minVehicleSpeed = (double) apNextParam;
-    localMergerParams.corridorWidth = (double) apNextParam;
-    localMergerParams.entryRadius = (double) apNextParam;
-    localMergerParams.coordZone = (double) apNextParam;
-    localMergerParams.scheduleZone = (double) apNextParam;
-    localMergerParams.minSeparationDistance = (double) apNextParam;
-    localMergerParams.minSeparationTime = (double) apNextParam;
-    localMergerParams.maxVehicleTurnRadius = (double) apNextParam;
-    localMergerParams.startIntersection = (int) apNextParam;
-
-    memset(localMergerParams.IntersectionID,0,INTERSECTION_MAX*sizeof(uint32_t));
-    for(int i=0;i<appdataIntGS.mgData.num_waypoints;++i){
-        localMergerParams.IntersectionLocation[i][0] = appdataIntGS.mgData.waypoints[i].latitude;
-        localMergerParams.IntersectionLocation[i][1] = appdataIntGS.mgData.waypoints[i].longitude;
-        localMergerParams.IntersectionLocation[i][2] = appdataIntGS.mgData.waypoints[i].altitude;
-        localMergerParams.IntersectionID[i] = atoi(appdataIntGS.mgData.waypoints[i].name);
-    }
-    SendSBMsg(localMergerParams);
-    OS_printf("publishing merger params\n");
-    #endif
 }

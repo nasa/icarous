@@ -6,6 +6,7 @@
 #define _GSINTERFACE_TABLE_H
 #include <stdint.h>
 #include "gsInterface.h"
+#include "port_lib.h"
 
 /**
  * @defgroup GSINTERFACE_TABLES

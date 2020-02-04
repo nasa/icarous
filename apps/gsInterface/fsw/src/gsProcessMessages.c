@@ -203,7 +203,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 
                 //Publish local array of parameters to SB for other apps
                 //printf("Publishing Parameters\n");
-                gsInterface_PublishParams();
+                PublishParams(appdataIntGS.storedparams);
                 //Send confirmation message to GS
                 mavlink_message_t paramStatusMsg;
                 mavlink_msg_statustext_pack(sysid_ic,compid_ic,&paramStatusMsg,MAV_SEVERITY_INFO,"Parameters Sent to Apps");
@@ -753,7 +753,8 @@ void gs_gfCallback(uint32_t timerId)
 }
 
 void gs_pmCallback(uint32_t timerId){
-    gsInterface_PublishParams();
+    //gsInterface_PublishParams();
+    PublishParams(appdataIntGS.storedparams);
 
     mavlink_message_t statusMsg;
     mavlink_msg_statustext_pack(sysid_ic,compid_ic,&statusMsg,MAV_SEVERITY_INFO,"IC:Publishing parameters");

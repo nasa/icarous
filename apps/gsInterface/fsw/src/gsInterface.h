@@ -25,6 +25,7 @@
 #include "Icarous_msgids.h"
 #include "sch_msgids.h"
 #include "paramdef.h"
+#include "gsInterface_table.h"
 
 #ifdef APPDEF_TRAFFIC
 #include "traffic_msg.h"
@@ -97,6 +98,7 @@ typedef struct{
     CFE_SB_MsgPtr_t    INTERFACEMsgPtr;     ///< msg pointer to SB message
     CFE_SB_MsgPtr_t    Sch_MsgPtr;         ///< msg pointer to SB message
     CFE_TBL_Handle_t   INTERFACE_tblHandle; ///< table handle
+    gsInterfaceTable_t Tbl;                 ///< Table
     port_t gs;                              ///< groundstation port
     int receivingWP;                        ///< waypoint current being received
     int numWaypoints;                       ///< num total waypoints
@@ -136,6 +138,11 @@ void gsInterface_AppMain(void);
  * Initialize app properties
  */
 void gsInterface_AppInit(void);
+
+/**
+ * Initialize app data
+ */
+void gsInterface_InitializeAppData(void);
 
 /**
  * Clean up variables
