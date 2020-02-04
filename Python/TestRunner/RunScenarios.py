@@ -55,7 +55,7 @@ def SetApps(sitl=False):
     else:
         sim_app = "rotorsim"
 
-    app_list = ["port_lib", "scheduler", sim_app, "gsInterface", "cognition",
+    app_list = ["Icarouslib","port_lib", "scheduler", sim_app, "gsInterface", "cognition",
                 "guidance", "traffic", "trajectory", "geofence"]
 
     approot = os.path.join(icarous_home, "apps")
