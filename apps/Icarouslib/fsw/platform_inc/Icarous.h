@@ -5,7 +5,7 @@
 #include "Icarous_msg.h"
 #include "Icarous_msgids.h"
 
-#define PARAM_COUNT 86     ///< Total number of ICAROUS parameters
+#define PARAM_COUNT 85     ///< Total number of ICAROUS parameters
 
 typedef struct{
     char param_id[16];
