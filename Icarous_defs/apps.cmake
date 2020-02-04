@@ -1,4 +1,5 @@
 set(APPS2RUN 
+Icarouslib
 port_lib 
 scheduler
 arducopter

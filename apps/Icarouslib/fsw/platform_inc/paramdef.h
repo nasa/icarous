@@ -123,4 +123,7 @@ extern param_t initialValues[PARAM_COUNT];
 #endif
 
 
+
+void PublishParams(param_t *params);
+
 #endif
