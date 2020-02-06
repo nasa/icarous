@@ -141,13 +141,9 @@ void gsInterface_AppInit(void){
 
 void gsInterface_InitializeAppData(){
 
-    gsInterfaceTable_t* TblPtr = &appdataIntGS.Tbl;
-    appdataIntGS.gs.id = 1;
-	appdataIntGS.gs.portType = TblPtr->PortType;
-    appdataIntGS.gs.baudrate = TblPtr->BaudRate;
-	appdataIntGS.gs.portin   = TblPtr->Portin + 10 * CFE_PSP_GetSpacecraftId();
-	appdataIntGS.gs.portout  = TblPtr->Portout + 10 * CFE_PSP_GetSpacecraftId();
-	memcpy(appdataIntGS.gs.target,TblPtr->Address,50);
+    InitializePortConfig("gsInterface",&appdataIntGS.gs);
+
+    InitializeAircraftCallSign(appdataIntGS.callsign);
 
     //Set mission start flag to -1
     appdataIntGS.startMission.param1 = -1;
@@ -170,7 +166,7 @@ void gsInterface_InitializeAppData(){
     appdataIntGS.fenceSent = false;
 	ReadFlightplanFromFile("merge_fixes.txt",&appdataIntGS.mgData);
 
-    bool status = InitializeParams("../ram/icarous_default.parm",appdataIntGS.storedparams);
+    bool status = InitializeParams("../ram/icarous_default.parm",appdataIntGS.storedparams,PARAM_COUNT);
     if(!status){
         OS_printf("Error loading parameters\n");
         exit(0);

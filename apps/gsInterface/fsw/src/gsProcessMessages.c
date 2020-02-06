@@ -491,7 +491,7 @@ void gsInterface_ProcessPacket() {
                 double heading = fmod(2*M_PI + atan2(pos->ve,pos->vn),2*M_PI)*180/M_PI;
                 double speed = sqrt(pos->vn*pos->vn + pos->ve*pos->ve);
                 char callsign[9] = "\0";
-                memcpy(callsign,pos->call_sign,8);
+                memcpy(callsign,pos->callsign,8);
                 mavlink_msg_adsb_vehicle_pack(sysid_ic,compid_ic,&msg,pos->aircraft_id,
                                           (int32_t)(pos->latitude*1E7),
                                           (int32_t)(pos->longitude*1E7),

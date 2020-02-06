@@ -148,25 +148,22 @@ void ARDUCOPTER_AppInit(void){
 
 void ARDUCOPTER_AppInitializeData(){
 
+    InitializePortConfig("arducopter",&appdataInt.ap);
+
+    InitializeAircraftCallSign(appdataInt.callsign);
+
     ArducopterTable_t *TblPtr = &appdataInt.Table;
 
 	appdataInt.ap.id = 0;
 	appdataInt.waypointSeq = 0;
 	appdataInt.nextWaypointIndex = 0;
-	appdataInt.ap.portType = TblPtr->PortType;
-    appdataInt.ap.baudrate = TblPtr->BaudRate;
-    appdataInt.ap.portin   = TblPtr->Portin + 10 * CFE_PSP_GetSpacecraftId();
-    appdataInt.ap.portout  = TblPtr->Portout;
     appdataInt.icRcChannel = TblPtr->icRcChannel;
     appdataInt.pwmStart = TblPtr->pwmStart;
     appdataInt.pwmReset = TblPtr->pwmReset; 
-    memcpy(appdataInt.ap.target,TblPtr->Address,50);
-
 
     //Set mission start flag to -1
     startMission.param1 = -1;
 
-	
 	if (appdataInt.ap.portType == SOCKET){
 		InitializeSocketPort(&appdataInt.ap);
 	}else if(appdataInt.ap.portType == SERIAL){
@@ -189,7 +186,7 @@ void ARDUCOPTER_AppInitializeData(){
     appdataInt.tjtimer = 0xffff;
     appdataInt.fenceSent = false;
 
-    bool status = InitializeParams("../ram/icarous_default.parm",appdataInt.storedparams);
+    bool status = InitializeParams("../ram/icarous_default.parm",appdataInt.storedparams,PARAM_COUNT);
     if(!status){
         OS_printf("Error loading parameters\n");
         exit(0);

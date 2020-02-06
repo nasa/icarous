@@ -349,9 +349,10 @@ void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
  * Returns the number of pairs read from the file
  * KEY VALUE
  */
-int GetParams(char *filename, char (*params)[16],double *val){
+int GetParams(char *filename, char (*params)[16],char (*val)[16]){
    FILE* fp = fopen(filename,"r");
    if(fp == NULL){
+       OS_printf("Error opening file: %s\n",filename);
        return -1;
    }
 
@@ -363,7 +364,8 @@ int GetParams(char *filename, char (*params)[16],double *val){
           break;
        }
        memset(params[i],0,16);
-       x =  sscanf(line,"%s %lf",params[i],val+i);
+       memset(val[i],0,16);
+       x =  sscanf(line,"%s %16s",params[i],val[i]);
        if(x > 0){
             if (params[i][0] !='#'){
                 i++;
@@ -374,20 +376,68 @@ int GetParams(char *filename, char (*params)[16],double *val){
    return i;
 }
 
-bool InitializeParams(char *filename,param_t* params){
+bool InitializeParams(char *filename,param_t* params,uint16_t paramCount){
 
-    char locparams[PARAM_COUNT][16];
-    double locvals[PARAM_COUNT];
+    char locparams[250][16];
+    char locvals[250][16];
     int n = GetParams(filename,locparams,locvals);
-    if (n != PARAM_COUNT){
+    if (n != paramCount){
+        OS_printf("Parameter count incorrect in %s",filename);
         return false;
     }else{
         for(int i=0;i<PARAM_COUNT;++i){
             memcpy(params[i].param_id,locparams+i,16);
-            params[i].value = locvals[i];
+            params[i].value = atof(locvals[i]);
             params[i].type = 10;
         }
         return true;
     }
 
+}
+
+bool InitializeAircraftCallSign(char* callsign){
+    char configfile[25];
+    uint32_t aircraft_id = CFE_PSP_GetSpacecraftId();
+    sprintf(configfile,"../ram/aircraft%d.cfg",aircraft_id);
+    char configParams[5][MAX_CALLSIGN_LEN];
+    char configValues[5][MAX_CALLSIGN_LEN];
+
+    GetParams(configfile,configParams,configValues);
+    
+    if(strcmp(configParams[0],"CALLSIGN") == 0){
+        strcpy(callsign,configValues[0]);
+    }else{
+        return false;
+    }
+
+    return true;
+}
+
+bool InitializePortConfig(char* filename,port_t* prt){
+
+    char configfile[25];
+    uint32_t aircraft_id = CFE_PSP_GetSpacecraftId();
+    sprintf(configfile,"../ram/%s%d.cfg",filename,aircraft_id);
+
+    char configParams[20][16];
+    char configValues[20][16];
+    int n = GetParams(configfile,configParams,configValues);
+
+    if(n == 5){
+        if(strcmp(configValues[0],"SERIAL") == 0){
+            prt->portType = SERIAL;
+        }else{
+            prt->portType = SOCKET;
+        }
+
+        strcpy(prt->target,configValues[1]);
+        prt->baudrate = atoi(configValues[2]);
+        prt->portin = atoi(configValues[3]);
+        prt->portout = atoi(configValues[4]);
+    }else{
+        OS_printf("Insufficient port parameters\n");
+        return false;
+    }
+
+    return true;
 }

@@ -125,6 +125,7 @@ typedef struct{
     uint32_t rcv_gf_seq;
     bool fenceSent;
     bool paramSent;
+    callsign_t callsign;
 }appdataIntGS_t;
 
 /**
@@ -184,7 +185,6 @@ void gsInterface_PublishParams();
 void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp);
 
 uint16_t gsConvertPlanToMissionItems(flightplan_t* fp);
-
 
 void gs_wpCallback(uint32_t timer);
 

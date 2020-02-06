@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include "cfe.h"
 #include "stdbool.h"
+#include "Icarous_msg.h"
 
 #define MAX_TRAFFIC_ALERTS 10
 
@@ -51,7 +52,7 @@ typedef struct{
 
 typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];
-    char trafficID[MAX_TRAFFIC_ALERTS][25];
+    callsign_t callsign[MAX_TRAFFIC_ALERTS];
     double time;
     uint32_t numAlerts;
     uint32_t trafficAlerts[MAX_TRAFFIC_ALERTS];

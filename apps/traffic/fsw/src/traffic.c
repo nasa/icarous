@@ -142,7 +142,7 @@ void TRAFFIC_ProcessPacket(){
 
             double pos[3] = {msg->latitude,msg->longitude,msg->altitude};
             double vel[3] = {msg->ve,msg->vn,msg->vd};
-            int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->index,msg->callsign,pos,vel,trafficAppData.time);
+            int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->index,(char*)msg->callsign,pos,vel,trafficAppData.time);
             if(val) {
                 trafficAppData.numTraffic++;
                 CFE_ES_WriteToSysLog("Traffic:Received intruder:%d\n",msg->index);
@@ -201,7 +201,7 @@ void TRAFFIC_ProcessPacket(){
 
                 double pos[3] = {msg->latitude,msg->longitude,msg->altitude_rel};
                 double vel[3] = {msg->ve,msg->vn,msg->vd};
-                int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->aircraft_id,msg->call_sign,pos,vel,trafficAppData.time);
+                int val = TrafficMonitor_InputTraffic(trafficAppData.tfMonitor,msg->aircraft_id,(char*)msg->callsign,pos,vel,trafficAppData.time);
                 if(val){
                     trafficAppData.numTraffic++;
                     CFE_EVS_SendEvent(TRAFFIC_RECEIVED_INTRUDER_EID, CFE_EVS_INFORMATION,"Received intruder:%d",msg->aircraft_id);
@@ -381,7 +381,7 @@ void TRAFFIC_ProcessPacket(){
                 char callsign[25];
                 count = TrafficMonitor_GetTrafficAlerts(trafficAppData.tfMonitor,i,callsign,&alert);
                 if(count > 0){
-                    memcpy(trafficAppData.tfAlerts.trafficID[i],callsign,25);
+                    memcpy(trafficAppData.tfAlerts.callsign[i],callsign,25);
                     trafficAppData.tfAlerts.trafficAlerts[i] = alert;
                     //OS_printf("Alert level for traffic: %ld is %d\n",id,alert);
                 }

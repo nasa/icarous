@@ -140,6 +140,7 @@ typedef struct{
     uint8_t icRcChannel;
     uint32_t pwmStart;
     uint32_t pwmReset;
+    callsign_t callsign;
 }appdataInt_t;
 
 
