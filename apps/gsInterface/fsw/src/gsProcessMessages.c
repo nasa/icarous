@@ -7,6 +7,7 @@
 #include "gsInterface.h"
 #include "UtilFunctions.h"
 
+
 int GetMAVLinkMsgFromGS(){
 	int n = readPort(&appdataIntGS.gs);
 	mavlink_message_t message;
@@ -97,6 +98,45 @@ void ProcessGSMessage(mavlink_message_t message) {
 
             break;
         }
+
+        case MAVLINK_MSG_ID_MISSION_ITEM_INT:
+        {
+			mavlink_mission_item_int_t msg;
+			mavlink_msg_mission_item_int_decode(&message, &msg);
+
+		    bool correct = false;
+		    if (appdataIntGS.receivingWP == msg.seq) {
+				correct = true;
+				appdataIntGS.receivingWP = msg.seq + 1;
+			}
+
+			if (correct) {
+				memcpy(appdataIntGS.ReceivedMissionItemsInt+msg.seq,&msg,sizeof(mavlink_mission_item_int_t));
+			}
+
+			if (msg.seq == appdataIntGS.numWaypoints - 1) {
+		        gsConvertMissionItemsIntToPlan(appdataIntGS.numWaypoints,appdataIntGS.ReceivedMissionItemsInt,&appdataIntGS.fpData);
+                SendSBMsg(appdataIntGS.fpData);
+
+                flightplan_t uplink;
+                memcpy(&uplink,&appdataIntGS.fpData,sizeof(flightplan_t));
+                CFE_SB_InitMsg(&uplink,UPLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),FALSE);
+                SendSBMsg(uplink);
+
+                mavlink_message_t msgAck;
+                mavlink_msg_mission_ack_pack(sysid_ic, compid_ic, &msgAck, sysid_gs, compid_gs, MAV_MISSION_ACCEPTED, msg.mission_type);
+                //printf("mission accepted\n");
+                writeMavlinkData(&appdataIntGS.gs, &msgAck);
+                gs_stopTimer(&appdataIntGS.wptimer);
+            }
+
+            if(appdataIntGS.receivingWP < appdataIntGS.numWaypoints) {
+                gs_startTimer(&appdataIntGS.wptimer,gs_wpCallback,"WPTIMER",1000,1000000);   
+            }
+
+            break;
+        }
+
 
         case MAVLINK_MSG_ID_MISSION_REQUEST_LIST:
         {
@@ -681,6 +721,59 @@ uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
 
     appdataIntGS.numWaypoints = count;
     return count;
+}
+
+void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t items[],flightplan_t* fp){
+    int count = 0;
+    strcpy(fp->id,"Plan0\0");
+    for(int i=0;i<size;++i){
+        switch(items[i].command){
+
+            case MAV_CMD_NAV_WAYPOINT: {
+                fp->waypoints[count].latitude = items[i].x/1e7;
+                fp->waypoints[count].longitude = items[i].y/1e7;
+                fp->waypoints[count].altitude = items[i].z;
+                fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                count++;
+                //OS_printf("constructed waypoint\n");
+                break;
+            }
+
+            case MAV_CMD_NAV_SPLINE_WAYPOINT:{
+                fp->waypoints[count].latitude = items[i].x/1e7;
+                fp->waypoints[count].longitude = items[i].y/1e7;
+                fp->waypoints[count].altitude = items[i].z;
+                fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                count++;
+                break;
+            }
+
+            case MAV_CMD_NAV_LOITER_TIME:{
+                fp->waypoints[count].latitude = items[i].x/1e7;
+                fp->waypoints[count].longitude = items[i].y/1e7;
+                fp->waypoints[count].altitude = items[i].z;
+                if(items[i].command == MAV_CMD_NAV_LOITER_TIME){
+                    fp->waypoints[count].wp_metric = WP_METRIC_ETA;
+                    fp->waypoints[count-1].value_to_next_wp = items[i].param1;
+
+                }
+                count++;
+                //OS_printf("Setting loiter point %f\n",items[i].param1);
+                break;
+            }
+
+            case MAV_CMD_DO_CHANGE_SPEED:{
+                if(i>0 && i < size-1) {
+                    fp->waypoints[count-1].value_to_next_wp = items[i].param2;
+                    fp->waypoints[count-1].wp_metric = WP_METRIC_SPEED;
+                    //OS_printf("Setting ETA to %f\n",eta);
+                }
+                break;
+            }
+        }
+    }
+
+    fp->num_waypoints = count;
 }
 
 void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp){

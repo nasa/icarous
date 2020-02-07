@@ -106,6 +106,7 @@ typedef struct{
     int nextWaypointIndex;                  ///< Next waypoint index to goto.
     int hbeatFreqCount;                     ///< Counter for sending hbeat message
     mavlink_mission_item_t ReceivedMissionItems[MAX_WAYPOINTS];
+    mavlink_mission_item_int_t ReceivedMissionItemsInt[MAX_WAYPOINTS];
     flightplan_t fpData;
     flightplan_t mgData;
     flightplan_t trajectory;
@@ -183,6 +184,7 @@ appdataIntGS_t appdataIntGS;
 void gsInterface_PublishParams();
 
 void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp);
+void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t items[],flightplan_t* fp);
 
 uint16_t gsConvertPlanToMissionItems(flightplan_t* fp);
 
