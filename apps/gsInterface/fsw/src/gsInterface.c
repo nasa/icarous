@@ -171,6 +171,8 @@ void gsInterface_InitializeAppData(){
         OS_printf("Error loading parameters\n");
         exit(0);
     }
+
+    PublishParams(appdataIntGS.storedparams);
 }
 
 void gsInterface_AppCleanUp(){
