@@ -196,7 +196,7 @@ void ProcessAPMessage(mavlink_message_t message) {
             mavlink_global_position_int_t globalPositionInt;
             mavlink_msg_global_position_int_decode(&message,&globalPositionInt);
             position.aircraft_id = CFE_PSP_GetSpacecraftId();
-            position.time_boot  = (double)globalPositionInt.time_boot_ms/1E3;
+            position.time_boot  = globalPositionInt.time_boot_ms;
             position.latitude  = (double)globalPositionInt.lat/1E7;
             position.longitude = (double)globalPositionInt.lon/1E7;
             position.altitude_abs  = (double)globalPositionInt.alt/1E3;

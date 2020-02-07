@@ -193,8 +193,8 @@ typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
     uint32_t aircraft_id;                     /**< aircraft id */
 	callsign_t callsign[MAX_CALLSIGN_LEN];    /**< aircraft call sign */
-	double time_gps;                          /**< gps time */
-    double time_boot;                         /**< boot time of onboard autopilot */
+	int64_t time_gps;                         /**< gps time */
+    int64_t time_boot;                        /**< boot time of onboard autopilot */
 	double latitude;                          /**< latitude (degrees) */
 	double longitude;                         /**< longitude (degrees) */
 	double altitude_abs;                      /**< absolution altitude, ASL (m)  */
