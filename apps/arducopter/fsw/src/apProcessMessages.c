@@ -42,6 +42,7 @@ void apSendHeartbeat(){
 
 void apSendCallsign(){
     char buffer[50];
+    memset(buffer,0,50);
     mavlink_message_t status_msg;
     sprintf(buffer,"CALLSIGN:%s",appdataInt.callsign);
     mavlink_msg_statustext_pack(sysid_ic,compid_ic,&status_msg,MAV_SEVERITY_INFO,buffer);
