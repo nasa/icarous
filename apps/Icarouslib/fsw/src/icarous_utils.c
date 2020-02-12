@@ -182,6 +182,7 @@ void PublishParams(param_t *params) {
     #ifdef APPDEF_ROTORSIM
     // Rotorsim parameters
     rotorsim_parameters_t localRotorsimParams;
+    CFE_SB_InitMsg(&localRotorsimParams,ROTORSIM_PARAMETERS_MID,sizeof(rotorsim_parameters_t),TRUE);
     localRotorsimParams.speed = (double) params[i].value;i++;;
     SendSBMsg(localRotorsimParams);
     #else

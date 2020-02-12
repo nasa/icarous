@@ -126,6 +126,7 @@ typedef struct{
     uint32_t rcv_gf_seq;
     bool fenceSent;
     bool paramSent;
+    bool publishDefaultParams;
     callsign_t callsign;
 }appdataIntGS_t;
 
@@ -169,6 +170,12 @@ void gsInterface_ProcessPacket(void);
  * Send heartbeat message
  */
 void gsSendHeartbeat();
+
+/**
+ * Send callsign
+ */
+void gsSendCallsign();
+
 
 /**
  * Validate table data

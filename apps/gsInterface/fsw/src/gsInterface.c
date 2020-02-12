@@ -164,6 +164,7 @@ void gsInterface_InitializeAppData(){
     appdataIntGS.pmtimer = 0xffff;
     appdataIntGS.tjtimer = 0xffff;
     appdataIntGS.fenceSent = false;
+    appdataIntGS.publishDefaultParams = false;
 	ReadFlightplanFromFile("merge_fixes.txt",&appdataIntGS.mgData);
 
     bool status = InitializeParams("../ram/icarous_default.parm",appdataIntGS.storedparams,PARAM_COUNT);
@@ -172,7 +173,6 @@ void gsInterface_InitializeAppData(){
         exit(0);
     }
 
-    PublishParams(appdataIntGS.storedparams);
 }
 
 void gsInterface_AppCleanUp(){
