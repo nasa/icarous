@@ -135,6 +135,7 @@ typedef struct{
     flightplan_t trajectory;
     bool fenceSent;
     bool paramSent;
+    bool sentDefaultParams;
 
 
     uint8_t icRcChannel;
@@ -188,6 +189,8 @@ void ARDUCOPTER_ProcessPacket(void);
 
 
 void apSendHeartbeat();
+
+void apSendCallsign();
 
 void ap_gfCallback(uint32_t timer);
 

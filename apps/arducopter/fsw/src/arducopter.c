@@ -154,6 +154,7 @@ void ARDUCOPTER_AppInitializeData(){
 
     ArducopterTable_t *TblPtr = &appdataInt.Table;
 
+    appdataInt.sentDefaultParams = false;
 	appdataInt.ap.id = 0;
 	appdataInt.waypointSeq = 0;
 	appdataInt.nextWaypointIndex = 0;

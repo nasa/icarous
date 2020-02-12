@@ -33,6 +33,19 @@ void apSendHeartbeat(){
         mavlink_msg_request_data_stream_pack(sysid_ic,compid_ic,&msg,1,0,MAV_DATA_STREAM_ALL,4,1);
         writeMavlinkData(&appdataInt.ap,&msg);
     }    
+
+    if(!appdataInt.sentDefaultParams){
+        PublishParams(appdataInt.storedparams);
+        appdataInt.sentDefaultParams = true;
+    }
+}
+
+void apSendCallsign(){
+    char buffer[50];
+    mavlink_message_t status_msg;
+    sprintf(buffer,"CALLSIGN:%s",appdataInt.callsign);
+    mavlink_msg_statustext_pack(sysid_ic,compid_ic,&status_msg,MAV_SEVERITY_INFO,buffer);
+    writeMavlinkData(&appdataInt.ap,&status_msg);
 }
 
 void ProcessAPMessage(mavlink_message_t message) {
@@ -589,6 +602,8 @@ void ProcessAPMessage(mavlink_message_t message) {
 
         case MAVLINK_MSG_ID_PARAM_REQUEST_LIST:
         {
+
+            apSendCallsign();
             //printf("MAVLINK_MSG_ID_REQUEST_LIST\n");
             mavlink_param_request_list_t msg;
             mavlink_msg_param_request_list_decode(&message, &msg);
