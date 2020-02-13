@@ -7,6 +7,23 @@
 #include "gsInterface.h"
 #include "UtilFunctions.h"
 
+const mavlink_icarous_kinematic_bands_t EMPTY_BAND_MSG = {
+  .type1 = END_OF_REGION,
+  .min1 = 0,
+  .max1 = 0,
+  .type2 = END_OF_REGION,
+  .min2 = 0,
+  .max2 = 0,
+  .type3 = END_OF_REGION,
+  .min3 = 0,
+  .max3 = 0,
+  .type4 = END_OF_REGION,
+  .min4 = 0,
+  .max4 = 0,
+  .type5 = END_OF_REGION,
+  .min5 = 0,
+  .max5 = 0,
+};
 
 int GetMAVLinkMsgFromGS(){
 	int n = readPort(&appdataIntGS.gs);
@@ -496,17 +513,56 @@ void gsInterface_ProcessPacket() {
         {
             mavlink_message_t msg;
             bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
-            mavlink_msg_icarous_kinematic_bands_pack(sysid_ic,compid_ic,&msg,(int8_t)bands->numBands,
-                    (uint8_t)bands->type[0],(float)bands->min[0],(float)bands->max[0],
-					(uint8_t)bands->type[1],(float)bands->min[1],(float)bands->max[1],
-                    (uint8_t)bands->type[2],(float)bands->min[2],(float)bands->max[2],
-                    (uint8_t)bands->type[3],(float)bands->min[3],(float)bands->max[3],
-                    (uint8_t)bands->type[4],(float)bands->min[4],(float)bands->max[4]);
 
-
-			if(bands->numBands > 0) {
-				writeMavlinkData(&appdataIntGS.gs, &msg);
-			}
+            if(bands->numBands > 0) {
+                const size_t ranges_per_mavlink_msg = 5;
+                const size_t required_mavlink_msgs = (bands->numBands + ranges_per_mavlink_msg - 1) / ranges_per_mavlink_msg;
+                size_t i = 0;
+                for (i = 0; i < required_mavlink_msgs && i < 20 /* */; i++) {
+                    const base_index = i * ranges_per_mavlink_msg;
+                    mavlink_icarous_kinematic_bands_t mavbands;
+                    memcpy(&mavbands,&EMPTY_BAND_MSG,sizeof(mavlink_icarous_kinematic_bands_t));
+                    size_t j = 0;
+                    for (j = 0; j < 5 && base_index + j < bands->numBands; j++) {
+                      const size_t region_index = base_index + j;
+                      switch (j) {
+                        case 0:
+                          mavbands.type1 = bands->type[region_index];
+                          mavbands.min1 = bands->min[region_index];
+                          mavbands.max1 = bands->max[region_index];
+                          break;
+                        case 1:
+                          mavbands.type2 = bands->type[region_index];
+                          mavbands.min2 = bands->min[region_index];
+                          mavbands.max2 = bands->max[region_index];
+                          break;
+                        case 2:
+                          mavbands.type3 = bands->type[region_index];
+                          mavbands.min3 = bands->min[region_index];
+                          mavbands.max3 = bands->max[region_index];
+                          break;
+                        case 3:
+                          mavbands.type4 = bands->type[region_index];
+                          mavbands.min4 = bands->min[region_index];
+                          mavbands.max4 = bands->max[region_index];
+                          break;
+                        case 4:
+                          mavbands.type5 = bands->type[region_index];
+                          mavbands.min5 = bands->min[region_index];
+                          mavbands.max5 = bands->max[region_index];
+                          break;
+                      }
+                    }
+                    mavbands.numBands = j;
+                    mavlink_msg_icarous_kinematic_bands_encode(
+                        sysid_ic,
+                        compid_ic,
+                        &msg,
+                        &mavbands
+                    );
+                    writeMavlinkData(&appdataIntGS.gs, &msg);
+                }
+            }
 			break;
 		}
 

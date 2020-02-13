@@ -134,7 +134,7 @@ typedef struct{
  * @enum Region
  * Defines the band types
  */
-enum Region {UNKNOWN,NONE,RECOVERY,NEAR,MID,FAR};
+enum Region {UNKNOWN,NONE,RECOVERY,NEAR,MID,FAR,END_OF_REGION};
 
 
 /**@}*/
