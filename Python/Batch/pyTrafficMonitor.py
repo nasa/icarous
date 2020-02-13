@@ -3,7 +3,7 @@ from ctypes import *
 lib = CDLL('../../Modules/lib/libTrafficMonitor.so')
 
 lib._wrap_new_TrafficMonitor.restype = c_void_p
-lib._wrap_TrafficMonitor_InputTraffic.argtypes = [c_void_p,c_int,c_double*3,c_double*3,c_double]
+lib._wrap_TrafficMonitor_InputTraffic.argtypes = [c_void_p,c_int,c_char_p,c_double*3,c_double*3,c_double]
 lib._wrap_TrafficMonitor_MonitorTraffic.argtypes = [c_void_p,c_double*3,c_double*3,c_double]
 lib._wrap_TrafficMonitor_MonitorWPFeasibility.argtypes = [c_void_p,c_double*3,c_double*3,c_double*3]
 lib._wrap_TrafficMonitor_CheckSafeToTurn.argtypes =[c_void_p,c_double*3,c_double*3,c_double,c_double] 
@@ -26,7 +26,8 @@ class TrafficMonitor():
         _time = c_double(time)
         _index = c_int(index)
         ret = c_int(0)
-        ret.value = lib._wrap_TrafficMonitor_InputTraffic(self.obj,_index,_pos,_vel,_time)
+        callsign = "traffic"+str(index)
+        ret.value = lib._wrap_TrafficMonitor_InputTraffic(self.obj,_index,c_char_p(callsign.encode('utf-8')),_pos,_vel,_time)
         
     def monitor_traffic(self,position,velocity,time):
         cpos = c_double*3
