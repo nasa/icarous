@@ -511,58 +511,8 @@ void gsInterface_ProcessPacket() {
 
         case ICAROUS_BANDS_TRACK_MID:
         {
-            mavlink_message_t msg;
             bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
-
-            if(bands->numBands > 0) {
-                const size_t ranges_per_mavlink_msg = 5;
-                const size_t required_mavlink_msgs = (bands->numBands + ranges_per_mavlink_msg - 1) / ranges_per_mavlink_msg;
-                size_t i = 0;
-                for (i = 0; i < required_mavlink_msgs && i < 20 /* */; i++) {
-                    const base_index = i * ranges_per_mavlink_msg;
-                    mavlink_icarous_kinematic_bands_t mavbands;
-                    memcpy(&mavbands,&EMPTY_BAND_MSG,sizeof(mavlink_icarous_kinematic_bands_t));
-                    size_t j = 0;
-                    for (j = 0; j < 5 && base_index + j < bands->numBands; j++) {
-                      const size_t region_index = base_index + j;
-                      switch (j) {
-                        case 0:
-                          mavbands.type1 = bands->type[region_index];
-                          mavbands.min1 = bands->min[region_index];
-                          mavbands.max1 = bands->max[region_index];
-                          break;
-                        case 1:
-                          mavbands.type2 = bands->type[region_index];
-                          mavbands.min2 = bands->min[region_index];
-                          mavbands.max2 = bands->max[region_index];
-                          break;
-                        case 2:
-                          mavbands.type3 = bands->type[region_index];
-                          mavbands.min3 = bands->min[region_index];
-                          mavbands.max3 = bands->max[region_index];
-                          break;
-                        case 3:
-                          mavbands.type4 = bands->type[region_index];
-                          mavbands.min4 = bands->min[region_index];
-                          mavbands.max4 = bands->max[region_index];
-                          break;
-                        case 4:
-                          mavbands.type5 = bands->type[region_index];
-                          mavbands.min5 = bands->min[region_index];
-                          mavbands.max5 = bands->max[region_index];
-                          break;
-                      }
-                    }
-                    mavbands.numBands = j;
-                    mavlink_msg_icarous_kinematic_bands_encode(
-                        sysid_ic,
-                        compid_ic,
-                        &msg,
-                        &mavbands
-                    );
-                    writeMavlinkData(&appdataIntGS.gs, &msg);
-                }
-            }
+            gsFragmentBands(bands);
 			break;
 		}
 
@@ -954,4 +904,59 @@ void gs_stopTimer(uint32_t *timerID){
         OS_TimerDelete(*timerID);
         *timerID = 0xffff;
     }
+}
+
+void gsFragmentBands(bands_t* bands){
+    mavlink_message_t msg;
+    if(bands->numBands > 0) {
+        const size_t ranges_per_mavlink_msg = 5;
+        const size_t required_mavlink_msgs = (bands->numBands + ranges_per_mavlink_msg - 1) / ranges_per_mavlink_msg;
+        size_t i = 0;
+        for (i = 0; i < required_mavlink_msgs && i < 20 /* */; i++) {
+            const size_t base_index = i * ranges_per_mavlink_msg;
+            mavlink_icarous_kinematic_bands_t mavbands;
+            memcpy(&mavbands,&EMPTY_BAND_MSG,sizeof(mavlink_icarous_kinematic_bands_t));
+            size_t j = 0;
+            for (j = 0; j < 5 && base_index + j < bands->numBands; j++) {
+                const size_t region_index = base_index + j;
+                switch (j) {
+                case 0:
+                    mavbands.type1 = bands->type[region_index];
+                    mavbands.min1 = bands->min[region_index];
+                    mavbands.max1 = bands->max[region_index];
+                    break;
+                case 1:
+                    mavbands.type2 = bands->type[region_index];
+                    mavbands.min2 = bands->min[region_index];
+                    mavbands.max2 = bands->max[region_index];
+                    break;
+                case 2:
+                    mavbands.type3 = bands->type[region_index];
+                    mavbands.min3 = bands->min[region_index];
+                    mavbands.max3 = bands->max[region_index];
+                    break;
+                case 3:
+                    mavbands.type4 = bands->type[region_index];
+                    mavbands.min4 = bands->min[region_index];
+                    mavbands.max4 = bands->max[region_index];
+                    break;
+                case 4:
+                    mavbands.type5 = bands->type[region_index];
+                    mavbands.min5 = bands->min[region_index];
+                    mavbands.max5 = bands->max[region_index];
+                    break;
+                }
+            }
+            mavbands.numBands = j;
+            mavlink_msg_icarous_kinematic_bands_encode(
+                sysid_ic,
+                compid_ic,
+                &msg,
+                &mavbands
+            );
+            writeMavlinkData(&appdataIntGS.gs, &msg);
+        }
+    }
+
+
 }

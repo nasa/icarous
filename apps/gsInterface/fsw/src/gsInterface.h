@@ -207,8 +207,8 @@ void gs_startTimer(uint32_t *timerID,void (*f)(uint32_t),char* name,uint32_t sta
 
 void gs_stopTimer(uint32_t *timerID);
 
-#define SendGSMsg(arg) writeMavlinkData(&appdataIntGS.gs,&arg)
+void gsFragmentBands(bands_t *bands);
 
-extern const mavlink_icarous_kinematic_bands_t EMPTY_BAND_MSG;
+#define SendGSMsg(arg) writeMavlinkData(&appdataIntGS.gs,&arg)
 
 #endif
