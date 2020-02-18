@@ -207,7 +207,7 @@ void gs_startTimer(uint32_t *timerID,void (*f)(uint32_t),char* name,uint32_t sta
 
 void gs_stopTimer(uint32_t *timerID);
 
-void gsFragmentBands(bands_t *bands);
+void gsFragmentBands(bands_t *bands,uint8_t bandtype);
 
 #define SendGSMsg(arg) writeMavlinkData(&appdataIntGS.gs,&arg)
 

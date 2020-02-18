@@ -512,7 +512,28 @@ void gsInterface_ProcessPacket() {
         case ICAROUS_BANDS_TRACK_MID:
         {
             bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
-            gsFragmentBands(bands);
+            gsFragmentBands(bands,0);
+			break;
+		}
+
+        case ICAROUS_BANDS_SPEED_MID:
+        {
+            bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
+            gsFragmentBands(bands,1);
+			break;
+		}
+
+        case ICAROUS_BANDS_ALT_MID:
+        {
+            bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
+            gsFragmentBands(bands,2);
+			break;
+		}
+
+        case ICAROUS_BANDS_VS_MID:
+        {
+            bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
+            gsFragmentBands(bands,3);
 			break;
 		}
 
@@ -906,7 +927,7 @@ void gs_stopTimer(uint32_t *timerID){
     }
 }
 
-void gsFragmentBands(bands_t* bands){
+void gsFragmentBands(bands_t* bands,uint8_t bandtype){
     mavlink_message_t msg;
     if(bands->numBands > 0) {
         const size_t ranges_per_mavlink_msg = 5;
@@ -921,27 +942,27 @@ void gsFragmentBands(bands_t* bands){
                 const size_t region_index = base_index + j;
                 switch (j) {
                 case 0:
-                    mavbands.type1 = bands->type[region_index];
+                    mavbands.type1 = bands->type[region_index] + 7*bandtype;
                     mavbands.min1 = bands->min[region_index];
                     mavbands.max1 = bands->max[region_index];
                     break;
                 case 1:
-                    mavbands.type2 = bands->type[region_index];
+                    mavbands.type2 = bands->type[region_index]+ 7*bandtype;
                     mavbands.min2 = bands->min[region_index];
                     mavbands.max2 = bands->max[region_index];
                     break;
                 case 2:
-                    mavbands.type3 = bands->type[region_index];
+                    mavbands.type3 = bands->type[region_index]+ 7*bandtype;
                     mavbands.min3 = bands->min[region_index];
                     mavbands.max3 = bands->max[region_index];
                     break;
                 case 3:
-                    mavbands.type4 = bands->type[region_index];
+                    mavbands.type4 = bands->type[region_index]+ 7*bandtype;
                     mavbands.min4 = bands->min[region_index];
                     mavbands.max4 = bands->max[region_index];
                     break;
                 case 4:
-                    mavbands.type5 = bands->type[region_index];
+                    mavbands.type5 = bands->type[region_index]+ 7*bandtype;
                     mavbands.min5 = bands->min[region_index];
                     mavbands.max5 = bands->max[region_index];
                     break;

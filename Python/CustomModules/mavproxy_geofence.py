@@ -183,7 +183,7 @@ class GeoFenceModule(mp_module.MPModule):
 
              if m.mission_type == 2:
                 if m.seq == self.wpreceived:
-		    self.startrequest = False
+                    self.startrequest = False
                     self.wpreceived += 1
                     self.wp.append((m.x,m.y))
                     if self.wpreceived < self.numwp:

@@ -112,6 +112,9 @@ class TrafficModule(mp_module.MPModule):
         
     def AddBand(self,i,center,bands):
 
+        if bands[2] >=6:
+            return
+
         if bands[2] == 1:
             colour = (0,255,0,100)
         elif bands[2] == 3:
@@ -147,13 +150,18 @@ class TrafficModule(mp_module.MPModule):
                 self.Bands = []
 
             if m.get_type() == "ICAROUS_KINEMATIC_BANDS":
+                if m.type1 >= 6:
+                    return
+
+                self.Bands = []
+
                 self.kmbMsgCounter = 0;
                 self.oldNumBands = self.numBands;
                 self.numBands = m.numBands;
                 numBands = 0
                 numBands = numBands + 1
 
-                self.Bands = []
+
 
                 if(numBands <= self.numBands):
                     low    = m.min1
