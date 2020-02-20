@@ -24,6 +24,11 @@ void FlightPhases(void){
                 appdataCog.fpPhase = CRUISE_PHASE;
                 appdataCog.missionStart = -1;
             }
+
+            if(appdataCog.ditch){
+                appdataCog.emergencyDescentState = INITIALIZING;
+                appdataCog.fpPhase = EMERGENCY_DESCENT_PHASE;
+            }
             break;
         }
 
@@ -250,6 +255,7 @@ status_e EmergencyDescent(){
     switch(appdataCog.emergencyDescentState){
 
         case INITIALIZING:{
+            SetStatus(appdataCog.statustxt,"IC:Starging to ditch",SEVERITY_NOTICE);
             command_sent = false;
             appdataCog.request = REQUEST_NIL;
 

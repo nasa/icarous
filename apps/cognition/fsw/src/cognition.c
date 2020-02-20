@@ -82,6 +82,7 @@ void COGNITION_AppInit(void){
 	//Subscribe to command messages from the SB to command the autopilot
     CFE_SB_Subscribe(ICAROUS_POSITION_MID, appdataCog.CognitionPipe);
 	CFE_SB_SubscribeLocal(ICAROUS_COMMANDS_MID, appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(ICAROUS_RESET_MID, appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_FLIGHTPLAN_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_BANDS_TRACK_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_BANDS_SPEED_MID,appdataCog.CognitionPipe,CFE_SB_DEFAULT_MSG_LIMIT);
@@ -161,6 +162,11 @@ void COGNITION_ProcessSBData() {
             memcpy(&appdataCog.flightplan1,fplan,sizeof(flightplan_t));
 
             //TODO: The flight plan icarous uses is stored in appdataCog.flightplan
+            break;
+        }
+
+        case ICAROUS_RESET_MID:{
+            COGNITION_AppInitData();  
             break;
         }
 
