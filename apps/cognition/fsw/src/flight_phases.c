@@ -284,7 +284,7 @@ status_e EmergencyDescent(){
                 // while descending
                 if(dist2Target < positionA[2]){
                     appdataCog.topofdescent = true;
-                    SetStatus(appdataCog.statustxt,"IC:Reached TOP",SEVERITY_NOTICE);
+                    SetStatus(appdataCog.statustxt,"IC:Reached TOD",SEVERITY_NOTICE);
                 }
             }else{
                 //TODO: Add parameter for final leg of ditching
