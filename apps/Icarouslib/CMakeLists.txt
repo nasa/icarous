@@ -11,6 +11,7 @@ include_directories(../geofence/fsw/platform_inc)
 include_directories(../tracking/fsw/platform_inc)
 include_directories(../rotorsim/fsw/platform_inc)
 include_directories(../merger/fsw/platform_inc)
+include_directories(../guidance/fsw/platform_inc)
 include_directories(../port_lib/fsw/public_inc)
 
 aux_source_directory(fsw/src LIB_SRC_FILES)

@@ -118,6 +118,11 @@ void HandleGuidanceCommands(argsCmd_t *cmd);
 void ComputeTakeoffGuidanceInput();
 
 /**
+ * Compute vertical rate needed to climb/descend at a given angle
+ */
+double ComputeClimbRate();
+
+/**
  * Compute guidance input for a given flight plan
  */
 int ComputeFlightplanGuidanceInput(flightplan_t* fp, int nextWP);

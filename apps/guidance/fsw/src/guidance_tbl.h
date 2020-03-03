@@ -21,7 +21,10 @@ typedef struct
 {
     double defaultWpSpeed;
     double captureRadiusScaling;
-    double climbRageGainP;
+    double climbFpAngle;
+    double climbAngleVRange;
+    double climbAngleHRange;
+    double climbRateGain;
     double maxClimbRate;
     double minClimbRate;
 }guidanceTable_t;

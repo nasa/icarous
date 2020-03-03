@@ -58,6 +58,7 @@ void GUIDANCE_AppInit(void) {
     CFE_SB_SubscribeLocal(ICAROUS_FLIGHTPLAN_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(GUIDANCE_COMMAND_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(GUIDANCE_PARAMETERS_MID,guidanceAppData.guidance_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Register table with table services
     CFE_TBL_Handle_t tblHandle;
@@ -139,6 +140,30 @@ void GUIDANCE_ProcessPacket(){
 
         case FREQ_30_WAKEUP_MID:{
             GUIDANCE_Run();
+            break;
+        }
+
+        case GUIDANCE_PARAMETERS_MID:{
+            guidance_parameters_t* msg = (guidance_parameters_t*) guidanceAppData.guidance_MsgPtr;
+
+            double climbAngle = msg->climbAngle;
+            if (climbAngle >= 75){
+                climbAngle = 75;
+            } else if (climbAngle <= 30){
+                climbAngle = 30;
+            }
+
+            guidanceAppData.guidance_tbl.defaultWpSpeed = msg->defaultWpSpeed;
+            guidanceAppData.guidance_tbl.captureRadiusScaling = msg->captureRadiusScaling;
+            guidanceAppData.guidance_tbl.climbFpAngle = climbAngle;
+            guidanceAppData.guidance_tbl.climbAngleVRange = msg->climbAngleVRange;
+            guidanceAppData.guidance_tbl.climbAngleHRange = msg->climbAngleHRange;
+            guidanceAppData.guidance_tbl.climbRateGain = msg->climbRateGain;
+            guidanceAppData.guidance_tbl.maxClimbRate = msg->maxClimbRate;
+            guidanceAppData.guidance_tbl.minClimbRate = msg->minClimbRate;
+
+            guidanceAppData.refSpeed = guidanceAppData.guidance_tbl.defaultWpSpeed;
+            guidanceAppData.capRScaling = guidanceAppData.guidance_tbl.captureRadiusScaling;
             break;
         }
     }

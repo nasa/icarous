@@ -118,6 +118,30 @@ void ComputeTakeoffGuidanceInput(){
    }
 }
 
+double ComputeClimbRate(double position[3], double nextWaypoint[3], double speed){
+    double deltaH = nextWaypoint[2] - position[2];
+    double climbrate;
+    if (fabs(deltaH) > guidanceAppData.guidance_tbl.climbAngleVRange &&
+        ComputeDistance(position, nextWaypoint) > guidanceAppData.guidance_tbl.climbAngleHRange){
+        // Over longer altitude changes and distances, control the ascent/descent angle
+        double angle = guidanceAppData.guidance_tbl.climbFpAngle;
+        if (deltaH < 0){
+            angle = -angle;
+        }
+        double cfactor = tan(angle * M_PI/180);
+        climbrate = cfactor * speed;
+    } else {
+        // Over shorter altitude changes and distances, use proportional control
+        climbrate = deltaH * guidanceAppData.guidance_tbl.climbRateGain;
+    }
+    if (climbrate > guidanceAppData.guidance_tbl.maxClimbRate) {
+        climbrate = guidanceAppData.guidance_tbl.maxClimbRate;
+    } else if (climbrate < guidanceAppData.guidance_tbl.minClimbRate) {
+        climbrate = guidanceAppData.guidance_tbl.minClimbRate;
+    }
+    return climbrate;
+}
+
 int ComputeFlightplanGuidanceInput(flightplan_t* fp, int nextWP)
 {
     // Default to position control
@@ -172,18 +196,7 @@ int ComputeFlightplanGuidanceInput(flightplan_t* fp, int nextWP)
             speed = speed/3;
         }
         
-
-        //TODO: climbrate gain = -0.5
-        double climbrate = (nextWaypoint[2] - position[2]) * guidanceAppData.guidance_tbl.climbRageGainP;
-
-        if (climbrate > guidanceAppData.guidance_tbl.maxClimbRate)
-        {
-            climbrate = guidanceAppData.guidance_tbl.maxClimbRate;
-        }
-        else if (climbrate < guidanceAppData.guidance_tbl.minClimbRate)
-        {
-            climbrate = guidanceAppData.guidance_tbl.minClimbRate;
-        }
+        double climbrate = ComputeClimbRate(position, nextWaypoint, speed);
 
         double vn, ve, vd;
         ConvertTrkGsVsToVned(heading, speed, climbrate, &vn, &ve, &vd);
@@ -349,7 +362,8 @@ bool Point2PointControl(){
 
     double heading = ComputeHeading(position, guidanceAppData.point);
     double speed = guidanceAppData.pointSpeed;
-    double climbrate = (guidanceAppData.point[2] - position[2]) * guidanceAppData.guidance_tbl.climbRageGainP;
+
+    double climbrate = ComputeClimbRate(position, guidanceAppData.point, speed);
 
     double dist = ComputeDistance(position, guidanceAppData.point);
 
@@ -358,15 +372,6 @@ bool Point2PointControl(){
     if (dist <= speed * guidanceAppData.capRScaling)
     {
         reached = true;
-    }
-
-    if (climbrate > guidanceAppData.guidance_tbl.maxClimbRate)
-    {
-        climbrate = guidanceAppData.guidance_tbl.maxClimbRate;
-    }
-    else if (climbrate < guidanceAppData.guidance_tbl.minClimbRate)
-    {
-        climbrate = guidanceAppData.guidance_tbl.minClimbRate;
     }
 
     double vn, ve, vd;

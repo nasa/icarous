@@ -10,7 +10,10 @@
 guidanceTable_t guidance_TblStruct = {
     .defaultWpSpeed = 1.0,
     .captureRadiusScaling = 2,
-    .climbRageGainP = 0.5,
+    .climbFpAngle = 45,
+    .climbAngleVRange = 10,
+    .climbAngleHRange = 10,
+    .climbRateGain = 0.5,
     .maxClimbRate = 5,
     .minClimbRate = -5
 };

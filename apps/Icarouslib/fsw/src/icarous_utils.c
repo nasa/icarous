@@ -40,6 +40,11 @@
 #include "merger_msgids.h"
 #endif
 
+#ifdef APPDEF_GUIDANCE
+#include "guidance_msg.h"
+#include "guidance_msgids.h"
+#endif
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
 /* Library Initialization Routine                                  */
@@ -203,8 +208,23 @@ void PublishParams(param_t *params) {
     localMergerParams.minSeparationTime = (double) params[i].value;i++;;
     localMergerParams.maxVehicleTurnRadius = (double) params[i].value;i++;;
     localMergerParams.startIntersection = (int) params[i].value;i++;;
-
     SendSBMsg(localMergerParams);
+    #else
+       for(int k=0;k<10;++k) i++;
+    #endif
+
+    #ifdef APPDEF_GUIDANCE
+    guidance_parameters_t localGuidanceParams;
+    CFE_SB_InitMsg(&localGuidanceParams,GUIDANCE_PARAMETERS_MID,sizeof(guidance_parameters_t),TRUE);
+    localGuidanceParams.defaultWpSpeed = (double) params[i].value;i++;;
+    localGuidanceParams.captureRadiusScaling = (double) params[i].value;i++;;
+    localGuidanceParams.climbAngle = (double) params[i].value;i++;;
+    localGuidanceParams.climbAngleVRange = (double) params[i].value;i++;;
+    localGuidanceParams.climbAngleHRange = (double) params[i].value;i++;;
+    localGuidanceParams.climbRateGain = (double) params[i].value;i++;;
+    localGuidanceParams.maxClimbRate = (double) params[i].value;i++;;
+    localGuidanceParams.minClimbRate = (double) params[i].value;i++;;
+    SendSBMsg(localGuidanceParams);
     #endif
 
     OS_printf("Published parameters\n");

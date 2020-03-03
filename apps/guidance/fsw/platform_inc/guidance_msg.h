@@ -31,4 +31,20 @@ typedef struct{
     double velCmd[3];                        /**< Velocity command currently being used */
 }guidance_status_t;
 
+/**
+ * @struct guidance_parameters_t
+ * @brief parameters used by the guidance application
+ */
+typedef struct{
+    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];
+    float defaultWpSpeed;        /**< Default waypoint to waypoint speed (m/s) */
+    float captureRadiusScaling;  /**< A waypoint is reached if distance is within speed*captureRadiusScaling */
+    float climbAngle;            /**< Desired angle to climb/descend at (deg) */
+    float climbAngleVRange;      /**< Use proportional control when within climbAngleVRange of target altitude (m) */
+    float climbAngleHRange;      /**< Use proportional control when within climbAngleHRange of target wp (m) */
+    float climbRateGain;         /**< Gain used for proportional altitude control*/
+    float maxClimbRate;          /**< Maximum allowed climb rate (m/s) */
+    float minClimbRate;          /**< Minimum allowed climb rate (maximum descend rate) (m/s) */
+}guidance_parameters_t;
+
 #endif
