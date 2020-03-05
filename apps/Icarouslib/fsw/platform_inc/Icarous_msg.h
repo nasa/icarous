@@ -65,7 +65,7 @@ typedef enum {
 	_LAND_,          ///< Start the landing sequence
 	_GOTOWP_,        ///< Goto waypoint. 1 parameter (waypoint index)
 	_SETPOS_,        ///< Set position. 3 parameters (lat [deg], lon [deg], alt [m])
-	_SETVEL_,        ///< Set velocity. 3 parameters (Vn [m/s], Ve [m/s], Vu [m/s])
+	_SETVEL_,        ///< Set velocity. 4 parameters (Vn [m/s], Ve [m/s], Vu [m/s], yaw behavior (1/0) [yaw to face forward/don't yaw])
 	_SETYAW_,        ///< Set yaw. 4 parameters (target angle [deg], angular rate [deg/s], direction (clk,anit-clk) [1,-1], type (1/0) [relative/absolute] )
 	_SETSPEED_,      ///< Set speed. 1 parameter (speed [m/s])
 	_SETMODE_,       ///< Set mode. will be deprecated

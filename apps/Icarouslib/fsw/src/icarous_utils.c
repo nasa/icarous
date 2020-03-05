@@ -224,6 +224,7 @@ void PublishParams(param_t *params) {
     localGuidanceParams.climbRateGain = (double) params[i].value;i++;;
     localGuidanceParams.maxClimbRate = (double) params[i].value;i++;;
     localGuidanceParams.minClimbRate = (double) params[i].value;i++;;
+    localGuidanceParams.yawForward = (bool) params[i].value;i++;;
     SendSBMsg(localGuidanceParams);
     #endif
 

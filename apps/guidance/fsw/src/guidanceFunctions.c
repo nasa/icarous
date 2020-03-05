@@ -213,6 +213,7 @@ int ComputeFlightplanGuidanceInput(flightplan_t* fp, int nextWP)
         guidanceAppData.velCmd.param1 = velCmd[0];
         guidanceAppData.velCmd.param2 = velCmd[1];
         guidanceAppData.velCmd.param3 = velCmd[2];
+        guidanceAppData.velCmd.param4 = guidanceAppData.guidance_tbl.yawForward;
 
         SendSBMsg(guidanceAppData.velCmd);
         return nextWP;

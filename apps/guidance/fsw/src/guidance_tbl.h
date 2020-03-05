@@ -27,6 +27,7 @@ typedef struct
     double climbRateGain;
     double maxClimbRate;
     double minClimbRate;
+    bool yawForward;
 }guidanceTable_t;
 
 

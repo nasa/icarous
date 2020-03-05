@@ -15,7 +15,8 @@ guidanceTable_t guidance_TblStruct = {
     .climbAngleHRange = 10,
     .climbRateGain = 0.5,
     .maxClimbRate = 5,
-    .minClimbRate = -5
+    .minClimbRate = -5,
+    .yawForward = false
 };
 
 

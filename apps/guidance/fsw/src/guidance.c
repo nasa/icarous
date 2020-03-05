@@ -161,6 +161,7 @@ void GUIDANCE_ProcessPacket(){
             guidanceAppData.guidance_tbl.climbRateGain = msg->climbRateGain;
             guidanceAppData.guidance_tbl.maxClimbRate = msg->maxClimbRate;
             guidanceAppData.guidance_tbl.minClimbRate = msg->minClimbRate;
+            guidanceAppData.guidance_tbl.yawForward = msg->yawForward;
 
             guidanceAppData.refSpeed = guidanceAppData.guidance_tbl.defaultWpSpeed;
             guidanceAppData.capRScaling = guidanceAppData.guidance_tbl.captureRadiusScaling;
@@ -197,6 +198,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             guidanceAppData.velCmd.param1 = cmd->param1;
             guidanceAppData.velCmd.param2 = cmd->param2;
             guidanceAppData.velCmd.param3 = cmd->param3;
+            guidanceAppData.velCmd.param4 = guidanceAppData.guidance_tbl.yawForward;
             break;
         }
         

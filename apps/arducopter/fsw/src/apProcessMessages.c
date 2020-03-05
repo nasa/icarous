@@ -1043,6 +1043,14 @@ void ARDUCOPTER_ProcessPacket() {
                         if(speed < 20){
                             writeMavlinkData(&appdataInt.ap, &msg); 
                         }
+
+                        if (cmd->param4 == 1){
+                            double trk, gs, vs;
+                            ConvertVnedToTrkGsVs(cmd->param1, cmd->param2, cmd->param3, &trk, &gs, &vs);
+                            mavlink_msg_command_long_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_CMD_CONDITION_YAW,0,
+                                                          trk,0,0,0,0,0,0);
+                            writeMavlinkData(&appdataInt.ap, &msg);
+                        }
                     }
 
                     break;
