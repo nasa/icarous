@@ -40,11 +40,6 @@ int ComputeFlightplanGuidanceInput(flightplan_t* fp, double position[3], int nex
 
     double dist = ComputeDistance(position, nextWaypoint);
 
-    if (fp->waypoints[nextWP - 1].wp_metric == WP_METRIC_SPEED)
-    {
-        *refSpeedPtr = fp->waypoints[nextWP - 1].value_to_next_wp;
-    }
-
     double refSpeed = *refSpeedPtr;
     
     double newPositionToTrack[3];
@@ -103,7 +98,7 @@ bool ComputeOffSetPositionOnPlan(flightplan_t *fp,double position[],int currentL
     double wpSpeed;
 
     if(fp->waypoints[currentLeg].wp_metric == WP_METRIC_SPEED){
-        wpSpeed = fp->waypoints[currentLeg].value_to_next_wp;
+        wpSpeed = fp->waypoints[currentLeg].value;
     }else{
         wpSpeed = refSpeed;
     }
@@ -113,7 +108,7 @@ bool ComputeOffSetPositionOnPlan(flightplan_t *fp,double position[],int currentL
         wpC[1] = fp->waypoints[currentLeg+2].longitude;
         wpC[2] = fp->waypoints[currentLeg+2].altitude;
         if(fp->waypoints[currentLeg + 1].wp_metric == WP_METRIC_SPEED){
-            wpSpeed = fp->waypoints[currentLeg + 1].value_to_next_wp;
+            wpSpeed = fp->waypoints[currentLeg + 1].value;
         }else{
             wpSpeed = refSpeed;
         }

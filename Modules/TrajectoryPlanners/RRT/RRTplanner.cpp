@@ -675,7 +675,7 @@ bool RRTplanner::LinePlanIntersection(Vect2& A,Vect2& B,double floor,double ceil
     return false;
 }
 
-Plan RRTplanner::GetPlan(EuclideanProjection& proj){
+void RRTplanner::GetPlan(EuclideanProjection& proj,Plan& newRoute){
 
     double speed = maxInputNorm;
     node_t *node = closestNode;
@@ -697,7 +697,6 @@ Plan RRTplanner::GetPlan(EuclideanProjection& proj){
     }
 
     std::list<node_t>::iterator nodeIt;
-    Plan newRoute;
     int count = 0;
     double ETA;
     for(nodeIt = path.begin(); nodeIt != path.end(); ++nodeIt){
@@ -717,8 +716,6 @@ Plan RRTplanner::GetPlan(EuclideanProjection& proj){
     }
 
     //std::cout<<newRoute.toString()<<std::endl;
-
-    return newRoute;
 }
 
 std::list<node_t>* RRTplanner::GetNodeList() {

@@ -16,6 +16,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <math.h>
+#include <time.h>
 #include "cognition_events.h"
 #include "Icarous_msg.h"
 #include "traffic_msg.h"
@@ -133,6 +134,8 @@ typedef struct{
     flightplan_t flightplan2;              ///< Contigency flight plan
     flightplan_t *fp;
 
+    uint64_t UTCtime;                    ///< Current time
+
     int missionStart;
 
     int nextPrimaryWP;
@@ -143,6 +146,7 @@ typedef struct{
     char currentPlanID[10];
     bool Plan0;
     bool Plan1;
+    bool primaryFPReceived;
     double resolutionSpeed;
 
     flightplan_monitor_t fp1monitor;
@@ -215,6 +219,7 @@ typedef struct{
     bool mergingActive;     
 
     status_t statustxt;
+    
 }appdataCog_t;
 
 
@@ -279,6 +284,8 @@ bool GeofenceConflictManagement(void);
 bool ReturnToNextWP(void);
 
 bool XtrackManagement(void);
+
+bool TimeManagement(void);
 
 void GetResolutionType(void);
 

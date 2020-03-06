@@ -1106,7 +1106,7 @@ uint16_t apConvertPlanToMissionItems(flightplan_t* fp){
         count++;
         if(i < fp->num_waypoints-1){
             if(fp->waypoints[i].wp_metric == WP_METRIC_SPEED) {
-                    double speed2NextWP = fp->waypoints[i].value_to_next_wp;
+                    double speed2NextWP = fp->waypoints[i].value;
                     appdataInt.UplinkMissionItems[count].target_system = 1;
                     appdataInt.UplinkMissionItems[count].target_component = 0;
                     appdataInt.UplinkMissionItems[count].seq = (uint16_t) count;
@@ -1162,7 +1162,7 @@ void apConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
                 fp->waypoints[count].altitude = items[i].z;
                 if(items[i].command == MAV_CMD_NAV_LOITER_TIME){
                     fp->waypoints[count].wp_metric = WP_METRIC_ETA;
-                    fp->waypoints[count-1].value_to_next_wp = items[i].param1;
+                    fp->waypoints[count-1].value = items[i].param1;
 
                 }
                 count++;
@@ -1172,7 +1172,7 @@ void apConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
 
             case MAV_CMD_DO_CHANGE_SPEED:{
                 if(i>0 && i < size-1) {
-                    fp->waypoints[count-1].value_to_next_wp = items[i].param2;
+                    fp->waypoints[count-1].value = items[i].param2;
                     fp->waypoints[count-1].wp_metric = WP_METRIC_SPEED;
                     //OS_printf("Setting ETA to %f\n",eta);
                 }

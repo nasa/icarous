@@ -17,11 +17,29 @@ void FlightPhases(void){
             ResetFlightPhases();
             if(appdataCog.missionStart == 0){
                 // If missionStart = 0 time to start the misison
-                appdataCog.fpPhase = TAKEOFF_PHASE; 
-                appdataCog.missionStart = -1;
+                if(appdataCog.primaryFPReceived){
+                    time_t fpTime = appdataCog.flightplan1.scenario_time;
+                    time_t currTime = time(NULL);
+                    if( currTime >= fpTime ){
+                        appdataCog.fpPhase = TAKEOFF_PHASE; 
+                        appdataCog.missionStart = -1;
+                    }else{
+                        time_t timeRemanining = (fpTime - currTime);
+                        if(timeRemanining%5 == 0){
+                            SetStatus(appdataCog.statustxt,"FP counting down",SEVERITY_INFO);
+                        }
+                    }
+                }else{
+                    SetStatus(appdataCog.statustxt,"No flightplan loaded",SEVERITY_WARNING);
+                    appdataCog.missionStart = -1;
+                }
             }else if(appdataCog.missionStart > 0){
                 // If missionStart > 0 goto climb state directly
-                appdataCog.fpPhase = CRUISE_PHASE;
+                if(appdataCog.primaryFPReceived){
+                    appdataCog.fpPhase = CRUISE_PHASE;
+                }else{
+                    SetStatus(appdataCog.statustxt,"No flightplan loaded",SEVERITY_WARNING);
+                }
                 appdataCog.missionStart = -1;
             }
 
@@ -192,13 +210,21 @@ status_e Cruise(){
        }
 
        case RUNNING:{
-            TrafficConflictManagement();
 
-            GeofenceConflictManagement();
+            bool status = false;
 
-            XtrackManagement(); 
+            status |= TrafficConflictManagement();
 
-            ReturnToNextWP();
+            status |= GeofenceConflictManagement();
+
+            status |= XtrackManagement(); 
+
+            status |= ReturnToNextWP();
+
+            // Perform time management only when following the primary flightplan
+            if(!status){
+                TimeManagement();
+            }
 
             if(appdataCog.nextPrimaryWP >= appdataCog.flightplan1.num_waypoints){
                 appdataCog.cruiseState = SUCCESS;

@@ -282,6 +282,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 
                 if (appdataIntGS.numWaypoints > 1) {
                     appdataIntGS.startMission.param1 = msg.param1;
+                    appdataIntGS.startMission.param2 = msg.param2;
                     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &appdataIntGS.startMission);
                     CFE_SB_SendMsg((CFE_SB_Msg_t *) &appdataIntGS.startMission);
 
@@ -716,7 +717,7 @@ uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
                 double nextWP[3] = {fp->waypoints[i + 1].latitude, fp->waypoints[i + 1].longitude,
                                     fp->waypoints[i + 1].altitude};
                 double dist2NextWP = ComputeDistance(currentWP, nextWP);
-                double speed2NextWP = fp->waypoints[i].value_to_next_wp;
+                double speed2NextWP = fp->waypoints[i].value;
                 double time2NextWP = dist2NextWP/speed2NextWP;
 
                 if (dist2NextWP > 1E-3) {
@@ -776,7 +777,12 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
                 fp->waypoints[count].latitude = items[i].x/1e7;
                 fp->waypoints[count].longitude = items[i].y/1e7;
                 fp->waypoints[count].altitude = items[i].z;
-                fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                if(items[i].param4 > 0){
+                    fp->waypoints[count].wp_metric = WP_METRIC_ETA;
+                    fp->waypoints[count].value = items[i].param4;
+                }else{
+                    fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                }
                 count++;
                 //OS_printf("constructed waypoint\n");
                 break;
@@ -797,7 +803,7 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
                 fp->waypoints[count].altitude = items[i].z;
                 if(items[i].command == MAV_CMD_NAV_LOITER_TIME){
                     fp->waypoints[count].wp_metric = WP_METRIC_ETA;
-                    fp->waypoints[count-1].value_to_next_wp = items[i].param1;
+                    fp->waypoints[count-1].value = items[i].param1;
 
                 }
                 count++;
@@ -807,8 +813,8 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
 
             case MAV_CMD_DO_CHANGE_SPEED:{
                 if(i>0 && i < size-1) {
-                    fp->waypoints[count-1].value_to_next_wp = items[i].param2;
                     fp->waypoints[count-1].wp_metric = WP_METRIC_SPEED;
+                    fp->waypoints[count-1].value = items[i].param2;
                     //OS_printf("Setting ETA to %f\n",eta);
                 }
                 break;
@@ -829,7 +835,12 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
                 fp->waypoints[count].latitude = items[i].x;
                 fp->waypoints[count].longitude = items[i].y;
                 fp->waypoints[count].altitude = items[i].z;
-                fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                if(items[i].param4 > 0){
+                    fp->waypoints[count].wp_metric = WP_METRIC_ETA;
+                    fp->waypoints[count].value = items[i].param4;
+                }else{
+                    fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                }
                 count++;
                 //OS_printf("constructed waypoint\n");
                 break;
@@ -850,7 +861,7 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
                 fp->waypoints[count].altitude = items[i].z;
                 if(items[i].command == MAV_CMD_NAV_LOITER_TIME){
                     fp->waypoints[count].wp_metric = WP_METRIC_ETA;
-                    fp->waypoints[count-1].value_to_next_wp = items[i].param1;
+                    fp->waypoints[count-1].value = items[i].param1;
 
                 }
                 count++;
@@ -860,8 +871,8 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
 
             case MAV_CMD_DO_CHANGE_SPEED:{
                 if(i>0 && i < size-1) {
-                    fp->waypoints[count-1].value_to_next_wp = items[i].param2;
                     fp->waypoints[count-1].wp_metric = WP_METRIC_SPEED;
+                    fp->waypoints[count-1].value = items[i].param2;
                     //OS_printf("Setting ETA to %f\n",eta);
                 }
                 break;

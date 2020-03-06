@@ -181,7 +181,7 @@ void TRAJECTORY_ProcessPacket()
         result.num_waypoints = (uint16_t)PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner, planID);
         for (int i = 0; i < result.num_waypoints; ++i)
         {
-            double wp[3];
+            double wp[4];
             PathPlanner_GetWaypoint(TrajectoryAppData.pplanner, planID, i, wp);
             if (i >= MAX_WAYPOINTS)
             {
@@ -189,7 +189,7 @@ void TRAJECTORY_ProcessPacket()
                 break;
             }
             result.waypoints[i].wp_metric = WP_METRIC_SPEED;
-            result.waypoints[i].value_to_next_wp = TrajectoryAppData.trajParams.astar_resSpeed;
+            result.waypoints[i].value = TrajectoryAppData.trajParams.astar_resSpeed;
             result.waypoints[i].latitude = (float)wp[0];
             result.waypoints[i].longitude = (float)wp[1];
             result.waypoints[i].altitude = (float)wp[2];

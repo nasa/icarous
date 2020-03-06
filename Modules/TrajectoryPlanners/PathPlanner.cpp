@@ -100,10 +100,12 @@ void PathPlanner::GetWaypoint(char *planID, int wpID, double *waypoint) {
         waypoint[0] = pos.latitude();
         waypoint[1] = pos.longitude();
         waypoint[2] = pos.alt();
+        waypoint[3] = fp->time(wpID);
     }else{
         waypoint[0] = 0;
         waypoint[1] = 0;
         waypoint[2] = 0;
+        waypoint[3] = 0;
     }
 
 }

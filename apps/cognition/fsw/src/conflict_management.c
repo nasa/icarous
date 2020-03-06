@@ -4,6 +4,7 @@
 #include "cognition.h"
 #include "UtilFunctions.h"
 
+
 static bool CheckSafeToTurn(double fromHeading, double toHeading);
 
 void SetGuidanceVelCmd(double track,double gs,double vs){
@@ -575,4 +576,52 @@ void FindNewPath(algorithm_e searchType, double positionA[],double velocityA[],d
 
 void GetResolutionType(){
    //
+}
+
+
+bool TimeManagement(){
+
+   size_t nextWP = appdataCog.nextWP;
+   if(appdataCog.flightplan1.waypoints[nextWP].wp_metric != WP_METRIC_ETA){
+      return false;
+   }
+   double currPosition[3] = {appdataCog.position.latitude,
+                             appdataCog.position.longitude,
+                             appdataCog.position.altitude_rel};
+
+   double nextPosition[3] = {appdataCog.flightplan1.waypoints[nextWP].latitude,
+                             appdataCog.flightplan1.waypoints[nextWP].longitude,
+                             appdataCog.flightplan1.waypoints[nextWP].altitude};
+   double dist2NextWP = ComputeDistance(currPosition,nextPosition);
+   double currentSpeed = sqrt(appdataCog.position.vn*appdataCog.position.vn + 
+                              appdataCog.position.ve*appdataCog.position.ve + 
+                              appdataCog.position.vd*appdataCog.position.vd);
+   time_t currTime = time(NULL);
+   time_t scenarioTime = appdataCog.flightplan1.scenario_time;
+   time_t nextWP_STA = scenarioTime + (long)appdataCog.flightplan1.waypoints[nextWP].value;
+   time_t nextWP_ETA = currTime + dist2NextWP/currentSpeed;
+   double arrTolerance = 3; //TODO: Make this a user defined parameter
+   double maxSpeed = 7;     //TODO: Make parameter
+   double minSpeed = 0.5;   //TODO: Make parameter
+   double newSpeed;
+
+   if (abs(nextWP_STA - nextWP_ETA) > arrTolerance){
+      newSpeed = dist2NextWP/(nextWP_STA - currTime);
+      if (newSpeed > maxSpeed){
+         newSpeed = maxSpeed;
+      }else{
+         if(newSpeed < minSpeed){
+            newSpeed = minSpeed;
+         }
+      }
+      
+      // Send speed change command
+      argsCmd_t cmd;
+      CFE_SB_InitMsg(&cmd,GUIDANCE_COMMAND_MID,sizeof(argsCmd_t),TRUE);
+      cmd.name = SPEED_CHANGE;
+      cmd.param1 = newSpeed;
+      SendSBMsg(cmd);
+      return true;
+   }
+   return false;
 }

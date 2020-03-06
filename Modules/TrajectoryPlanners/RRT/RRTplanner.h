@@ -163,7 +163,7 @@ public:
     double NodeDistance(node_t& A,node_t& B);
     void RRTStep();
     bool CheckGoal();
-    Plan GetPlan(EuclideanProjection& proj);
+    void GetPlan(EuclideanProjection& proj,Plan& plan);
     void SetGoal(node_t& goal);
     bool CheckDirectPath2Goal(node_t* nearest);
     bool LinePlanIntersection(Vect2& A,Vect2& B,double floor,double ceiling,Vect3& currentPos,Vect3& nextPos);

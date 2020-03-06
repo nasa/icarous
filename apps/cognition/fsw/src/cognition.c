@@ -142,6 +142,7 @@ void COGNITION_AppInitData(){
     appdataCog.ditch = false;
     appdataCog.endDitch = false;
     appdataCog.resetDitch = false;
+    appdataCog.primaryFPReceived = false;
     memset(appdataCog.trkBands.wpFeasibility1,1,sizeof(bool)*50);
     memset(appdataCog.trkBands.wpFeasibility2,1,sizeof(bool)*50);
     CFE_SB_InitMsg(&appdataCog.statustxt,ICAROUS_STATUS_MID,sizeof(status_t),TRUE);
@@ -160,7 +161,7 @@ void COGNITION_ProcessSBData() {
         case ICAROUS_FLIGHTPLAN_MID:{
             flightplan_t* fplan = (flightplan_t*)appdataCog.CogMsgPtr;
             memcpy(&appdataCog.flightplan1,fplan,sizeof(flightplan_t));
-
+            appdataCog.primaryFPReceived = true;
             //TODO: The flight plan icarous uses is stored in appdataCog.flightplan
             break;
         }
@@ -277,6 +278,7 @@ void COGNITION_ProcessSBData() {
         case ICAROUS_STARTMISSION_MID:{
             argsCmd_t* msg = (argsCmd_t*) appdataCog.CogMsgPtr;
             appdataCog.missionStart = (int)msg->param1;            
+            appdataCog.flightplan1.scenario_time += msg->param2;
             CFE_ES_WriteToSysLog("Cognition:Received start mission command\n");
             break;
         }

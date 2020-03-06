@@ -169,7 +169,6 @@ void GUIDANCE_ProcessPacket(){
 }
 
 void HandleGuidanceCommands(argsCmd_t *cmd){
-    guidanceAppData.guidanceMode = (int)cmd->name;
     //OS_printf("received guidance command %d\n",(int)cmd->name);
     switch((int)cmd->name){
         case PRIMARY_FLIGHTPLAN:{
@@ -193,6 +192,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
         }
 
         case VECTOR:{
+            guidanceAppData.guidanceMode = VECTOR;
             guidanceAppData.velCmd.param1 = cmd->param1;
             guidanceAppData.velCmd.param2 = cmd->param2;
             guidanceAppData.velCmd.param3 = cmd->param3;
@@ -201,6 +201,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
         }
         
         case POINT2POINT:{
+            guidanceAppData.guidanceMode = POINT2POINT;
             guidanceAppData.reachedStatusUpdated = false;
             guidanceAppData.point[0] = cmd->param1;
             guidanceAppData.point[1] = cmd->param2;
@@ -226,6 +227,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             argsCmd_t cmd1;
             CFE_SB_InitMsg(&cmd1,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
             cmd1.name = _LAND_;
+            guidanceAppData.guidanceMode = POINT2POINT;
             int wp = guidanceAppData.primaryFlightPlan.num_waypoints;
             cmd1.param5 = guidanceAppData.primaryFlightPlan.waypoints[wp-1].latitude;
             cmd1.param6 = guidanceAppData.primaryFlightPlan.waypoints[wp-1].longitude;
@@ -298,7 +300,7 @@ void GUIDANCE_Run(){
             fp.waypoints[1].altitude = guidanceAppData.point[2];
 
             fp.waypoints[0].wp_metric = WP_METRIC_SPEED;
-            fp.waypoints[0].value_to_next_wp = guidanceAppData.pointSpeed;
+            fp.waypoints[0].value = guidanceAppData.pointSpeed;
             int nextWP  = ComputeFlightplanGuidanceInput(&fp,
                                                         position,
                                                         1,
@@ -308,11 +310,13 @@ void GUIDANCE_Run(){
                                                         &guidanceAppData.refSpeed);
             HandleFlightplanGuidance(&fp, velCmd, 1, nextWP);
 
+            /*
             bool status = Point2PointControl(position,
                                              guidanceAppData.point,
                                              guidanceAppData.pointSpeed,
                                              &guidanceAppData.guidance_tbl,
-                                             velCmd);
+                                             velCmd); 
+                                             
             if(status){
                 missionItemReached_t wpReached;
                 CFE_SB_InitMsg(&wpReached, ICAROUS_WPREACHED_MID, sizeof(wpReached), TRUE);
@@ -324,6 +328,7 @@ void GUIDANCE_Run(){
                 guidanceAppData.guidanceMode = NOOP;
             }
             SendVelocityCommand(velCmd);
+            */
             break;
         }
 
@@ -352,7 +357,9 @@ void GUIDANCE_Run(){
             break;
         }
 
-        case SPEED_CHANGE: break;
+        case SPEED_CHANGE:{
+            break;
+        }
 
     }
 

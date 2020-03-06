@@ -122,7 +122,7 @@ typedef struct __attribute__((__packed__))
 	double  longitude; 					    /**< longitude in degrees */
 	double  altitude;                       /**< altitude Meters */
 	int     wp_metric;                      /**< see @see wp_metric_e */
-	double  value_to_next_wp;               /**< wp_metric value to next waypoint. */
+	double  value;                          /**< wp_metric value to next waypoint. */
 }waypoint_t;
 
 /**
@@ -134,7 +134,7 @@ typedef struct __attribute__((__packed__))
 	uint8    TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< cFS header information */
 	char     id[ACID_SIZE];                  /**< identifier */
 	int      num_waypoints;                  /**< total waypoints. Cannot be greater than max. */
-	double   scenario_time;                  /**< flight plan time */
+	uint64_t   scenario_time;                  /**< flight plan time */
 	waypoint_t waypoints[MAX_WAYPOINTS];     /**< waypoint data */
 }flightplan_t;
 

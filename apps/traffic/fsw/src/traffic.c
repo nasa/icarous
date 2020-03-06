@@ -321,8 +321,8 @@ void TRAFFIC_ProcessPacket(){
                 trafficAppData.trackBands.fp1ClosestPointFeasible = trafficAppData.return2fp1leg;
 
                 if(i > 0){
-                    if(trafficAppData.flightplan1.waypoints[i-1].value_to_next_wp > 0){
-                        speed = trafficAppData.flightplan1.waypoints[i-1].value_to_next_wp;
+                    if(trafficAppData.flightplan1.waypoints[i-1].value > 0){
+                        speed = trafficAppData.flightplan1.waypoints[i-1].value;
                     }
 
                     double originalVelocity[3] = {trafficAppData.velocity[0],
@@ -354,8 +354,8 @@ void TRAFFIC_ProcessPacket(){
                 trafficAppData.trackBands.fp2ClosestPointFeasible = trafficAppData.return2fp2leg;
 
                 if(i > 0){
-                    if(trafficAppData.flightplan2.waypoints[i-1].value_to_next_wp > 0){
-                        speed = trafficAppData.flightplan2.waypoints[i-1].value_to_next_wp;
+                    if(trafficAppData.flightplan2.waypoints[i-1].value > 0){
+                        speed = trafficAppData.flightplan2.waypoints[i-1].value;
                     }
 
                     double originalVelocity[3] = {trafficAppData.velocity[0],
