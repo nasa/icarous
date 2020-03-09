@@ -38,7 +38,7 @@ extern uint8_t compid_gs;
 #endif
 
 void PublishParams(param_t *params);
-void ReadFlightplanFromFile(char* filename,flightplan_t *fplan);
+int ReadFlightplanFromFile(char* filename,flightplan_t *fplan);
 int GetParams(char *filename, char (*params)[16],char (*val)[16]);
 bool InitializeParams(char *filename,param_t* params,uint16_t paramCount);
 bool InitializeAircraftCallSign(char* callsign);

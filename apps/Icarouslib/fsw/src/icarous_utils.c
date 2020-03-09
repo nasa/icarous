@@ -234,13 +234,13 @@ void PublishParams(param_t *params) {
 /**
  * Function to read a flightplan from a mavlink flightplan file
  */
-void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
+int ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
    
    FILE *fp = fopen(filename,"r");
   
    if (fp == NULL){
        printf("error reading flight plan file file\n");
-       return;
+       return -1;
    }
 
    char *buffer;
@@ -364,6 +364,7 @@ void ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
            }
        }
     }
+    return 0;
 }
 
 /**
