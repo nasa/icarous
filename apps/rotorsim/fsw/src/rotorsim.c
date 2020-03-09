@@ -221,7 +221,7 @@ void Rotorsim_GetOutputs(){
     // Current velocity
     double currentVelocity[3] = {PC_Quadcopter_Simulation_Y.yout[13],
                                  PC_Quadcopter_Simulation_Y.yout[12],
-                                 PC_Quadcopter_Simulation_Y.yout[14]};
+                                 -PC_Quadcopter_Simulation_Y.yout[14]};
 
     double currentAttitude[3] = {PC_Quadcopter_Simulation_Y.yout[24],
                                  PC_Quadcopter_Simulation_Y.yout[25],0};
