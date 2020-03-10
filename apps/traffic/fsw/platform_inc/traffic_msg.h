@@ -55,7 +55,7 @@ typedef struct{
     callsign_t callsign[MAX_TRAFFIC_ALERTS];
     double time;
     uint32_t numAlerts;
-    uint32_t trafficAlerts[MAX_TRAFFIC_ALERTS];
+    int32_t trafficAlerts[MAX_TRAFFIC_ALERTS];
 }traffic_alerts_t;
 
 /**
