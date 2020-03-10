@@ -387,8 +387,10 @@ void TRAFFIC_ProcessPacket(){
                 }
             }
 
-            if(count>0)
-                SendSBMsg(trafficAppData.tfAlerts);
+            if(count>0) {
+		trafficAppData.tfAlerts.numAlerts = count;
+       		SendSBMsg(trafficAppData.tfAlerts);
+	    }
 
             break;
         }
