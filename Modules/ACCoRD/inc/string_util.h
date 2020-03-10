@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Cesar Munoz, George Hagen
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -24,13 +24,16 @@
  
 namespace larcfm {
 
-  /** return a vector of strings, split from str based on the pattern.  The pattern is not a regular expression, instead
-   * it is a list of single character delimiters.  If the delimiters are "abc", this function will behave as if
-   * the string was being split by the regular expression "[abc]+"  */
+  /** return a vector of strings, split from a list of delimiters in str.  The pattern is not a regular expression, instead
+   * it is a delimiter represented as a string.    */
   std::vector<std::string> split(const std::string& str,const std::string& delimiters);
   
-  /** return a vector of strings, split from str based on the pattern. Allows empty strings */
+  
+  /** return a vector of strings, split from a list of delimiters in str. Allows empty strings */
   std::vector<std::string> split_empty(const std::string& str,const std::string& delimiters);
+
+  /** return a vector of strings, split from str based on the string. Allows empty strings */
+  std::vector<std::string> split_string_empty(const std::string& str,const std::string& delimiter);
 
   /** return a vector of strings, split from str based on the pattern given as a regular expression. */
   std::vector<std::string> split_regex(const std::string& str,const std::string& delimiters);

@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -375,22 +375,23 @@ Plan PlanUtil::revertAllTCPs(const Plan& pln, bool markIndices) {
 		}
 	}
     //fpln(" $$$$$$ revertAllTCPs: AFTER markIndices, rtn = "+rtn.toStringGs());
-	double vsAccel = findVsAccel(rtn);
+	//double vsAccel = findVsAccel(rtn);
 	rtn.revertVsTCPs();
     //fpln(" $$$$$$ revertAllTCPs: AFTER revertVsTCPs, rtn = "+rtn.toStringGs());
- 	rtn = setAltPreserveByDelta(rtn, vsAccel);
+ 	rtn = setAltPreserveByDelta(rtn);
     //fpln(" $$$$$$ revertAllTCPs: AFTER setAltPreserveByDelta, rtn = "+rtn.toStringGs());
 	rtn.revertGsTCPs();
     //fpln(" $$$$$$ revertAllTCPs: AFTER revertGsTCPs, rtn = "+rtn.toStringGs());
 	rtn.revertTurnTCPs();
     //fpln(" $$$$$$ revertAllTCPs: AFTER revertTurnTCPs, rtn = "+rtn.toStringGs());
 	rtn = TrajGen::makeMarkedVsConstant(rtn);
+	rtn.cleanPlan();
 	return rtn;
 }
 
-Plan PlanUtil::setAltPreserveByDelta(const Plan& lpc, double vsAccel) {
+Plan PlanUtil::setAltPreserveByDelta(const Plan& lpc) {
 	//fpln(" $$$ setAltPreserveByDelta: ENTER, lpc = "+lpc.toStringTrk());
-	Plan kpc = Plan(lpc.getName(),lpc.getNote());
+	Plan kpc = Plan(lpc.getID(),lpc.getNote());
 	kpc.add(lpc.get(0)); // first point need not be marked
 	for (int i = 1; i < lpc.size()-1; i++) {
 		NavPoint np_i = lpc.point(i);
@@ -518,7 +519,7 @@ int PlanUtil::revertGroupOfTCPs(Plan& pln, int ix) {
 	int firstInGroup = ix;                  // index of first TCP in the group
 	int lastInGroup = ix; // pln.size()-1;         // index of the last TCP in the group
 	if (firstInGroup == 0) {
-		fpln(" !! structRevertGroupOfTCPs: ERROR cannot remove first point 1");
+		pln.addError(" .. structRevertGroupOfTCPs: cannot remove first point",0);
 		return -1;
 	}
 	if (pln.isVsTCP(ix)) {
@@ -571,8 +572,8 @@ int PlanUtil::revertGroupOfTCPs(Plan& pln, int ix) {
 	}
 	// get rid of all ground speed TCPs if this is fundamentally a turn
 	if (pln.isTrkTCP(firstInGroup)) {
-		bool killNextGsTCPs = true;
-		pln.revertTurnTCP(firstInGroup, killNextGsTCPs);
+		//bool killNextGsTCPs = true;
+		pln.revertTurnTCP(firstInGroup); // , killNextGsTCPs);
 	}
 	if (pln.isGsTCP(firstInGroup)) {  // does not revert previous turn
 		//fpln(" $$$$ structRevertGroupOfTCPs: GS section: firstInGroup = "+firstInGroup);
@@ -590,13 +591,14 @@ int PlanUtil::revertGsTCP(Plan& pln, int ix, bool revertPreviousTurn) {
 	if (! pln.validIndex(ix)) return -1;
 	if (pln.isBGS(ix)) {
 		if (revertPreviousTurn) { // && ixPrev >= 0 && pln.isEOT(ixPrev) && pln.getTcpData(ix).getLinearIndex() == prevLinIndex) {
-			bool killNextGsTCPs = true;
+			pln.revertGsTCP(ix);
+			//bool killNextGsTCPs = true;
 			int ixPrevBOT = pln.prevBOT(ix);
 			//fpln(" $$$$$$$$$$$ structRevertGsTCP: ixPrevBOT = "+ixPrevBOT);
 			if (ixPrevBOT >= 0) {
-		    	pln.revertTurnTCP(ixPrevBOT, killNextGsTCPs);
+		    	pln.revertTurnTCP(ixPrevBOT); // , killNextGsTCPs);
+				return ixPrevBOT;
 			}
-			return ixPrevBOT;
 		} else {
 			pln.revertGsTCP(ix);
 		}
@@ -605,8 +607,8 @@ int PlanUtil::revertGsTCP(Plan& pln, int ix, bool revertPreviousTurn) {
 }
 
 
-Plan PlanUtil::cutDown(const Plan& plan, double startTime, double endTime) {
-	Plan rtn(plan.getName(),plan.getNote());
+Plan PlanUtil::cutDownLinear(const Plan& plan, double startTime, double endTime) {
+	Plan rtn(plan.getID(),plan.getNote());
 	int ix = plan.getIndex(startTime);
 	NavPoint start;
 	TcpData start_tcp;
@@ -637,96 +639,106 @@ Plan PlanUtil::cutDown(const Plan& plan, double startTime, double endTime) {
 	return rtn;
 }
 
-/** This method cuts a Plan so that the acceleration information after intentThreshold is discarded.  The plan
- *  is continued linearly to time tExtend.  The first time point of the new plan is the
- *  NavPoint before timeOfCurrentPosition in the plan.  The  intentThreshold and tExtend times are absolute.
+/**
+ *  Cut down a plan to the region between t1 and t2.
+ *  The plan is continued linearly to time tExtend.   A new point is created at t1 and t2 if necessary.
+ *  The  t1, t2 and tExtend times are absolute.
  *
- * @param plan                      Plan file to be cut
- * @param timeOfCurrentPosition     Current location of aircraft in the plan file
- * @param intentThreshold           the absolute lookahead time -- all acceleration information after this time is not copied
- * @param tExtend                   After the intentThreshold, the plan is extended linearly to this time (absolute time)
- * @return
+ * @param plan     Plan file to be cut
+ * @param t1       Location to start cut out. If before first point or negative, first point is used
+ * @param t2       The absolute lookahead time -- all plan information after this time is not copied
+ * @param tExtend  After the intentThreshold, the plan is extended linearly to this time (absolute time)
+ * @return         plan cut down to times [t1,t2].
  */
-Plan PlanUtil::cutDownTo(const Plan& plan, double timeOfCurrentPosition, double intentThreshold, double tExtend) {
-	Plan nPlan(plan.getName(),plan.getNote());
-	if (intentThreshold < 0) {
-		fpln(" $$$ ERROR:  negative intentThreshold = "+Fm1(intentThreshold));
+Plan PlanUtil::cutDownTo(const Plan& plan, double t1, double t2, double tExtend) {
+	if (plan.size() == 0) return plan;
+	Plan nPlan(plan.getID(),plan.getNote());
+	if (t2 < t1) {
 		return nPlan;
 	}
-	if (plan.size() == 0) return plan;
-	int ixInit = 0;
-	bool inAccel = false;
-	NavPoint firstPoint = plan.point(0);
-	if (timeOfCurrentPosition >= firstPoint.time()) {
-		inAccel = plan.inAccel(timeOfCurrentPosition);
-		//if (inAccel) ix = prevNonTCP(ix);
-		ixInit = plan.getSegment(timeOfCurrentPosition);
-		//fpln(" $$$$$$$$$$$$>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> timeOfCurrentPosition = "+timeOfCurrentPosition+" ixInit = "+ixInit);
-		if (ixInit < 0) {
-			return Plan(""); // TODO -- what do we really want to do here ??
-		}
-		//fpln(" $$$$$$$$$$$$>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> inAccel = "+inAccel);
-		if (inAccel) ixInit = plan.prevTCP(ixInit+1);            // NOTE THE ixInit+1
+	double lastTime = plan.getLastTime();
+	if (t1 < plan.point(0).time()) t1 = plan.point(0).time();
+	if (t2 > lastTime) t2 = lastTime;
+	int ixInit = plan.getSegment(t1);
+	Position startPos = plan.position(t1);
+	NavPoint firstPoint(startPos, t1);
+	nPlan.addNavPoint(firstPoint);
+	TcpData firstPoint_tcp;
+	//f.pln(" $$ cutDownTo:  at t1 = "+t1+" "+plan.inTrkChange(t1)+" "+plan.inGsChange(t1)+" "+plan.inVsChange(t1));
+	if (plan.inTrkChange(t1)) {
+       	int ixBOT = plan.prevBOT(ixInit+1);
+       	double signedRadius = plan.signedRadius(ixBOT);
+       	Position center = plan.turnCenter(ixBOT);
+    	firstPoint_tcp.setBOT(signedRadius,center);
 	}
-	std::pair<NavPoint,TcpData> firstPair = plan.get(ixInit);
-	firstPoint = firstPair.first;
-	TcpData firstPoint_tcp = firstPair.second;
-	if (plan.isEndTCP(ixInit)) {
-		firstPoint_tcp.reset();
-	}
+    if (plan.inGsChange(t1)) {
+    	int ixBGS = plan.prevBGS(ixInit+1);
+    	firstPoint_tcp.setBGS(plan.gsAccel(ixBGS));
+    }
+     if (plan.inVsChange(t1)) {
+    	int ixBVS = plan.prevBVS(ixInit+1);
+    	firstPoint_tcp.setBVS(plan.vsAccel(ixBVS));
+    }
 	nPlan.add(firstPoint,firstPoint_tcp);
-	//fpln(" $$$$0 cutDownTo: ADD INITIAL point("+ixInit+") = "+firstPoint.toStringFull());
+	//f.pln(" $$$$0 cutDownTo: ADD INITIAL point("+ixInit+") = "+firstPoint.toString());
 	int ix = ixInit + 1;
-	while (ix < plan.size() && plan.point(ix).time() < intentThreshold) {
+	while (ix < plan.size() && plan.point(ix).time() < t2) {
 		std::pair<NavPoint,TcpData> p = plan.get(ix);
 		nPlan.add(p);
 		//fpln(" $$$$$$ cutDownTo ADD p = "+p);
 		ix++;
 	}
 	if (ix >= plan.size()) { // plan ran out before intentThreshold
-		double dt = intentThreshold - plan.getLastTime();
+		double dt = t2 - plan.getLastTime();
 		Velocity vout = plan.initialVelocity(plan.size()-1);
 		NavPoint lastP = plan.point(plan.size()-1);
-		NavPoint np = lastP.linear(vout, dt).makeName("CutDownTo_0");
+		NavPoint np = lastP.linear(vout, dt); // .makeName("CutDownTo_0");
 		nPlan.addNavPoint(np);
 		//fpln(" $$$$$$ cutDownTo ADD np = "+np);
 	} else {                // intentThreshold is within plan
-		NavPoint newLastPt = NavPoint(plan.position(intentThreshold),intentThreshold).makeName("CutDownTo_newLastPt");
-		Velocity vout = plan.velocity(intentThreshold);
-		if (! plan.inAccel(intentThreshold)) {
+		NavPoint newLastPt = NavPoint(plan.position(t2),t2); // .makeName("CutDownTo_newLastPt");
+		//Velocity vout = plan.velocity(t2);
+		TcpData newLastTcpDatad;
+		if (! plan.inAccel(t2)) {
 			//fpln(" $$$$$$ cutDownTo ADD newLastPtp = "+newLastPt+" vout = "+vout);
 			nPlan.addNavPoint(newLastPt);
 		} else {
-			bool inTurn = plan.inTrkChange(intentThreshold);
-			bool inGsAccel = plan.inGsChange(intentThreshold);
-			bool inVsAccel = plan.inVsChange(intentThreshold);
-			std::string trkType = "NONE";
-			std::string gsType = "NONE";
-			std::string vsType = "NONE";
-			if (inTurn) trkType = "EOT";
-			if (inGsAccel) gsType = "EGS";
-			if (inVsAccel) vsType = "EVS";
-			NavPoint lastP(newLastPt.position(), newLastPt.time(), "CutDownTo_lastP");
-			TcpData lastTcp = TcpData::makeFull("Orig",  trkType,  gsType, vsType,
-					0.0, Position::ZERO_LL(), 0.0, 0.0, vout);
-			int ixNP = nPlan.add(lastP,lastTcp);
+			//bool inTurn = plan.inTrkChange(t2);
+			//bool inGsAccel = plan.inGsChange(t2);
+			//bool inVsAccel = plan.inVsChange(t2);
+			bool inTurn = nPlan.inTrkAccel(nPlan.size()-1);
+			bool inGsAccel = nPlan.inGsAccel(nPlan.size()-1);
+			bool inVsAccel = nPlan.inVsAccel(nPlan.size()-1);
+			NavPoint lastP(newLastPt.position(), newLastPt.time()); // , "CutDownTo_lastP");
+			int ixNP = nPlan.addNavPoint(lastP);
+			if (inTurn) nPlan.setEOT(ixNP);
+			if (inGsAccel) nPlan.setEGS(ixNP);
+			if (inVsAccel) nPlan.setEVS(ixNP);
 			if (nPlan.isEOT(ixNP)) {
 				int ixPrevBOT = nPlan.prevBOT(ixNP);
 				if (ixPrevBOT >= 0) {
 					PlanUtil::createAndAddMOT(nPlan,ixPrevBOT,ixNP);
 				}
 			}
-
 			//fpln(" $$$$$$ cutDownTo ADD lastP = "+lastP+" vout = "+vout);
 		}
 	}
 	NavPoint lastPt = nPlan.getLastPoint();
-	if (tExtend > intentThreshold && tExtend > lastPt.time()) {
+	if (tExtend > t2 && tExtend > lastPt.time()) {
 		Velocity vout = nPlan.initialVelocity(nPlan.size()-1);  // final velocity of next to last point
 		double dt = tExtend - lastPt.time();
-		NavPoint extendPt = lastPt.linear(vout, dt).makeName("CutDownTo_extendPt");
-		nPlan.addNavPoint(extendPt);
+		NavPoint extendPt = lastPt.linear(vout, dt); // .makeName("CutDownTo_extendPt");
+		TcpData extendTcpData = TcpData();
+		extendTcpData.setInformation("CutDownTo_extendPt");
+		nPlan.add(extendPt,extendTcpData);
+
 	}
+	nPlan.repairPlan();
+	nPlan.cleanPlan();
+	if (nPlan.isBOT(0)) nPlan.repairMOT(0);
+	int lastIx = nPlan.size()-1;
+    if (nPlan.isEOT(lastIx)) nPlan.repairMOT(lastIx);
+
 	//fpln(" $$$$ cutDownTo: nPlan = "+nPlan);
 	return nPlan;
 }
@@ -873,9 +885,9 @@ bool PlanUtil::aboutTheSameTrk(const Velocity& v1, const Velocity& v2, double sa
 }
 
 Plan PlanUtil::removeCollinearTrk(const Plan& pp, double sameTrackBound){
-	if (pp.size() < 1) return Plan(pp.getName());
+	if (pp.size() < 1) return Plan(pp.getID());
 	//fpln(" $$ removeCollinearTrk: pp = "+pp);
-	Plan p(pp.getName(),pp.getNote());
+	Plan p(pp.getID(),pp.getNote());
 	Velocity lastVel = pp.initialVelocity(0);
 	p.add(pp.get(0));
 	for (int j = 1; j < pp.size()-1; j++) {
@@ -1090,7 +1102,7 @@ std::pair<NavPoint,TcpData> PlanUtil::makeMidpoint( TcpData& tcp, const Position
 
 
 Plan PlanUtil::projectPlan(const Plan& p, const EuclideanProjection& proj) {
-	Plan p3d = Plan(p.getName());
+	Plan p3d = Plan(p.getID());
 	for (int i = 0; i < p.size(); i++) {
 		Vect3 v = proj.project(p.point(i).position());
 		NavPoint n = NavPoint(Position(v), p.time(i));
@@ -1126,38 +1138,6 @@ bool PlanUtil::basicCheck(const Plan& lpc, const Plan& kpc, double maxlastDt) {
    return true;
 }
 
-void PlanUtil::fixGs_continuity(Plan& p, int ixBGS, int ixEGS, double vo, double vf, double maxGsAccel) {
-	p.getMessage();   // clear previous error messages
-	double d = p.pathDistance(ixBGS,ixEGS);
-	double delV = vf - vo;
-    double a = (vo*delV + 0.5*delV*delV)/d;
-    if (std::abs(a) > std::abs(maxGsAccel)) {
-    	p.addError("fixGs_continuity: calculated gs acceleration exceeds maximum value a = "+Fm2(a)+" maxGsAccel = "+Fm2(maxGsAccel));
-       	//fpln("fixGs_continuity: calculated gs acceleration exceeds maximum value a = "+a+" maxGsAccel = "+maxGsAccel);
-    }
-	//f.pln(" $$ fixGs_continuity: a = "+a+" dt = "+dt);
-	p.setGsAccel(ixBGS,a);
-	fixGsInsideAccel(p,ixBGS,ixEGS,vo);
-}
-
-void PlanUtil::fixGs_continuity(Plan& p, int ixBGS, int ixEGS, double maxGsAccel) {
-	double gsIn;
-	if (ixBGS == 0) gsIn = p.gsOut(ixBGS);
-	else gsIn = p.gsIn(ixBGS);
-	double gsOut = p.gsOut(ixEGS);
-	//f.pln(" $$$$$ fixGs_continuity("+ixBGS+","+ixEGS+")): gsIn("+ixBGS+") = "+Units::str("kn",gsIn)+" gsOut("+ixEGS+")  = "+Units::str("kn",gsOut));
-	fixGs_continuity(p, ixBGS, ixEGS, gsIn, gsOut, maxGsAccel);
-}
-
-void PlanUtil::fixGsInsideAccel(Plan& traj, int ixBGS, int ixEGS, double startGs) {
-	double targetGsOut = startGs;
-	for (int ii = ixBGS; ii < ixEGS; ii++) {
-		//f.pln(" $$ fixGsInsideAccel: ii = "+ii+" targetGsOut = "+Units::str("kn",targetGsOut));
-		traj.mkGsOut(ii,targetGsOut);
-		targetGsOut = traj.gsIn(ii+1);
-	}
-}
-
 
 /**  Repair turns for semi-linear plan.  Removes vertex point if turn is infeasible.
  *
@@ -1170,7 +1150,7 @@ void PlanUtil::fixGsInsideAccel(Plan& traj, int ixBGS, int ixEGS, double startGs
  */
 int PlanUtil::infeasibleTurns(Plan& lpc, int startIx, int endIx, double default_bank_angle, bool repair) {
 	//f.pln(" $$>> fixInfeasibleTurns: ENTER default_bank_angle = "+Units::str("deg",default_bank_angle));
-	std::string name = lpc.getName();
+	std::string name = lpc.getID();
 	if (repair) {
 		lpc.mergeClosePoints();
 		bool trkF = true;
@@ -1268,9 +1248,9 @@ int PlanUtil::countBadTurns(Plan& lpc, double default_bank_angle) {
 bool PlanUtil::fixInfeasibleTurnAt(Plan& lpc, int ix, bool allowRepairByIntersection) {
 	// if turns are in same direction can fix with an intersection point
 	//int iPrev = PlanUtil::prevTrackChange(lpc,ix);
-	std::string pName = lpc.getName();
+	std::string pName = lpc.getID();
 	std::string info_i = lpc.getInfo(ix);
-	std::string name_i = lpc.getPointName(ix);
+	std::string name_i = lpc.getName(ix);
 	bool altPres_i = lpc.isAltPreserve(ix);
 	//f.pln(" $$$$ fixInfeasibleTurnAt: info_i = "+info_i+" name_i = "+name_i+" altPres_i = "+altPres_i);
 	if (equals(info_i,"") && equals(name_i,"") && !altPres_i) {
@@ -1328,7 +1308,7 @@ bool PlanUtil::fixInfeasibleTurnAt(Plan& lpc, int ix, bool allowRepairByIntersec
  */
 bool PlanUtil::fixInfeasibleTurnAtViaIntersection(Plan& lpc, int ix) {
 	bool rtn = false;
-	std::string name = lpc.getName();
+	std::string name = lpc.getID();
 	//f.pln(" $$$ fixInfeasibleTurnAtViaIntersection: ix = "+ix+" "+turnDir(lpc,ix-1)+" =?"+ turnDir(lpc,ix));
 	if (turnDir(lpc,ix-1) == turnDir(lpc,ix)) { // && iPrev == ix-1) {
 		NavPoint inters = intersection(lpc, ix);
@@ -1428,9 +1408,9 @@ bool PlanUtil::checkReversion(const Plan& kpc, const Plan& lpc, bool verbose) {
 			if (verbose) fpln(" ## checkReversion: FAILED j = "+Fm0(j)+" ALTS: "+Fm4(lpc.point(j).alt())+" "+Fm4(kpc.point(j).alt()));
 			return false;
 		}
-		std::string nm1 = lpc.getPointName(j);
-		if (! larcfm::equals(nm1, kpc.getPointName(j))) {
-			if (verbose) fpln(" ## checkReversion: FAILED j = "+Fm0(j)+" NAMES MISMATCH: "+lpc.getPointName(j)+" != "+kpc.getPointName(j));
+		std::string nm1 = lpc.getName(j);
+		if (! larcfm::equals(nm1, kpc.getName(j))) {
+			if (verbose) fpln(" ## checkReversion: FAILED j = "+Fm0(j)+" NAMES MISMATCH: "+lpc.getName(j)+" != "+kpc.getName(j));
 			return false;
 		}
 		if (! larcfm::equals(lpc.getInfo(j),kpc.getInfo(j))) {
@@ -1454,7 +1434,7 @@ bool PlanUtil::checkReversion(const Plan& kpc, const Plan& lpc, bool verbose) {
 bool PlanUtil::checkNamesInfoRetained(const Plan& kpc, const Plan& lpc, bool verbose) {
 	bool rtn = true;
 	for (int j = 0; j < lpc.size(); j++) {
-		std::string name_j =  lpc.getPointName(j);
+		std::string name_j =  lpc.getName(j);
 		if (! equals(name_j,"")) {
 			int ixN = kpc.findName(name_j);
 			if (ixN < 0) {
@@ -1487,6 +1467,169 @@ void PlanUtil::createAndAddMOT(Plan& kpc, int ixBOT, int ixEOT) {
 	//kpc.setInfo(ixMOT,Plan::MOTflag);
 	kpc.setMOT(ixMOT);
 }
+
+
+
+/** Only tests velocity continuity at TCPs.
+ *
+ * Note: If given a linear plan as input, Stratway will only generate a kinematic
+ *       subplan over the conflict region.   The output can still be linear elsewhere.
+ *       This test is appropriate for Stratway output.
+ *
+ * @param p            Plan to be tested
+ * @param silent       if true, output is suppressed
+ * @return
+ */
+bool PlanUtil::isVelocityContAtTcps(const Plan& p, bool silent) {
+	for (int i = 1; i < p.size(); i++) {
+		if ( ! p.isTCP(i)) continue;
+		if ( ! p.isTrkContinuous(i, silent)) return false;
+		if ( ! p.isGsContinuous(i, silent)) return false;
+		if ( ! p.isVsContinuous(i, silent)) return false;
+	}
+	return true;
+}
+
+Plan PlanUtil::repairSmallNegativeGS(const Plan& p) {
+	Plan pp = Plan(p);
+	double gsMinNegativeToFix = -1E-4;	// do not repair negative values less than this (bad plan data assumed)
+	for (int ix = 0; ix < pp.size(); ix++) {
+		if (pp.isBGS(ix)) {
+			double gsOutCalc = pp.gsOutCalc(ix, false);
+			if (gsOutCalc < 0 && gsOutCalc > gsMinNegativeToFix) {
+				// repair small negative GS by a small adjustment of the time at the next point
+				double a = pp.getGsAccel(ix);
+				double dist = pp.pathDistance(ix, ix+1, false);
+				double newT = pp.time(ix) + std::sqrt(2.0*dist/a);
+				pp.setTime(ix+1,newT);
+			} else if (gsOutCalc <= gsMinNegativeToFix) {
+				pp.addError("PlanUtil.repairSmallNegativeGS failed on BGS "+Fm0(ix));
+			}
+		} else if (pp.isEGS(ix)) {
+			double gsInCalc = pp.gsInCalc(ix);
+			if (gsInCalc < 0 && gsInCalc > gsMinNegativeToFix) {
+				// repair small negative GS by a small adjustment of the time at the previous point
+				double a = -pp.getGsAccel(pp.prevBGS(ix));
+				double dist = pp.pathDistance(ix-1, ix, false);
+				double newT = pp.time(ix-1) + std::sqrt(2.0*dist/a);
+				pp.setTime(ix,newT);
+			} else if (gsInCalc <= gsMinNegativeToFix) {
+				pp.addError("PlanUtil.repairSmallNegativeGS failed on EGS "+Fm0(ix));
+			}
+		} else {
+			double gsOutCalc = pp.gsOutCalc(ix, false);
+			if (gsOutCalc < 0 && gsOutCalc > gsMinNegativeToFix) {
+				pp.addError("PlanUtil.repairSmallNegativeGS failed on internal point "+Fm0(ix));
+			}
+		}
+	}
+	return pp;
+}
+
+Plan PlanUtil::fixAccelConsistency(const Plan& p) {
+	// use the following to store "current" relative times
+	Plan ret = p.copy();
+
+	for (int i = 0; i < ret.size(); i++) {
+		if (ret.isBGS(i)) {
+			int egs = ret.nextEGS(i);
+			double t0 = ret.time(i);
+			double t1 = ret.time(egs);
+			double dt = t1-t0;
+			double d = ret.pathDistance(i, egs);
+			double a = ret.gsAccel(i);
+			double gs0 = d/dt-0.5*a*dt;
+			double gs1 = d/dt+0.5*a*dt;
+			if (gs0 < 0) {
+				a = gs1/dt;
+				ret.setGsAccel(i, a);
+				gs0 = 0.0;
+			} else if (gs1 < 0) {
+				a = -gs0/dt;
+				ret.setGsAccel(i, a);
+				gs1 = 0.0;
+			}
+
+			for (int j = i+1; j < egs; j++) {
+				// distances in accel zone parts, before/after j
+				double dd = ret.pathDistance(i,j);
+				double dd2 = ret.pathDistance(j,egs);
+
+				// calculated relative times from i to j and from j to egs
+				double tt1 = Util::root(0.5*a, gs0, -dd, 1); // tmie from i to j
+//					double tt2 = Util.root(0.5*a, gs0, -dd, -1);
+				// time from end
+				double tt3 = Util::root(-0.5*a, gs1, -dd2, 1); // time from j to end
+//					double tt4 = Util.root(-0.5*a, gs1, -dd2, -1);
+				// assume the first time
+				double tj = t0+tt1;
+//f.pln("dt="+dt+"  tt1="+tt1+"  tt2="+tt2+"  tt3="+tt3+"  tt4="+tt4);
+
+
+				if (!Util::almost_equals(tt1+tt3, dt)) {
+					// if the times are not quite consistent, check the calculated ground speeds at either end of the accel segment for both
+					// if tt1 calculations result in a less than zero gs, use the time that results in the larger gs (it may still be < 0)
+					// these are the calculations for using tt1
+					double dt2 = dt-tt1; // time from j to end
+					double gsA = dd/tt1-0.5*a*tt1; //start
+					double gsB = dd2/dt2+0.5*a*dt2; //end
+					// these are the calculations for using tt3
+					double dt3 = dt-tt3; // time from i to j
+					double gsC = dd/dt3-0.5*a*dt3; //start ALT
+					double gsD = dd2/tt3+0.5*a*tt3; //end ALT
+					if ((gsA < 0 && gsA < gsC) || (gsB < 0 && gsB < gsD)) {
+						fpln(">>>>>>>>>>> PlanUtil.fixAccelConsistency Choosing second time because first is more negative");
+						tj = t1-tt3;
+					}
+					if ((gsA < 0 && gsC < 0) || (gsB < 0 && gsD < 0)) {
+						fpln(">>>>>>>>>>> PlanUtil.fixAccelConsistency ERROR!!!  j="+Fm0(j)+" gsA="+Fm3(gsA)+" gsB="+Fm3(gsB)+" gsC="+Fm3(gsC)+" gsD="+Fm3(gsD));
+					}
+				}
+
+				if (!ISNAN(tj)) {
+					ret.setTimeInPlace(j,tj);
+				} else {
+					fpln("PlanUtil.fixAccelConsistency ERROR NaN time! j="+Fm0(j));
+				}
+
+				if (!Util::within_epsilon(dd+dd2, d, 0.001)) { // check distances are consistent.  if this is the case, something weird is going on...
+					fpln("PlanUtil.fixAccelConsistency ERROR i= "+Fm0(i)+" j="+Fm0(j)+" egs="+Fm0(egs));
+					fpln("total path dist  = "+Fm3(d));
+					fpln("sum of distances = "+Fm3(dd+dd2));
+//						Debug.halt();
+				}
+			}
+
+//				f.pln("fixAccelConsistency i="+i+" dt="+dt+" d="+d+" a="+a+" gs0="+gs0+" gs1="+gs1);
+//				f.pln("fixAccelConsistency gsOut BGS = "+ret.gsOut(i));
+//				f.pln("fixAccelConsistency  gsIn EGS = "+ret.gsFinalCalc(egs-1, false));
+
+		}
+	}
+	return ret;
+}
+
+NavPoint PlanUtil::closestPoint3D(const Plan& plan, const Position& p, double maxLegLength) {
+	if (plan.isLatLon()) {
+		Plan pp = Plan(plan);
+		int i = 0;
+		// cut any leg of size > maxlength in half
+		while (i < pp.size()-1) {
+			if (pp.pathDistance(i) > maxLegLength) {
+				double t = (pp.time(i)+pp.time(i+1))/2;
+				Position pos = pp.position(t);
+				NavPoint np = NavPoint(pos, t);
+				pp.addNavPoint(np);
+			} else {
+				i++;
+			}
+		}
+		return pp.closestPoint3D(p);
+	} else {
+		return plan.closestPoint3D(p);
+	}
+}
+
 
 }
 

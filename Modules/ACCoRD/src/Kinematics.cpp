@@ -7,7 +7,7 @@
  *           Anthony Narkawicz         NASA Langley Research Center
  *           Aaron Dutle               NASA Langley Research Center
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -528,7 +528,7 @@ Vect2 Kinematics::centerOfTurn(const Vect2& so, const Vect2& vo, double bankAng,
 
 
 bool Kinematics::testLoSTrk(const Vect3& so, const Velocity& vo, const Velocity& nvo, const Vect3& si, const Velocity& vi,
-		double bankAngOwn, bool turnRightOwn, double stopTime, double D, double H) {
+		double bankAngOwn, double stopTime, double D, double H) {
 	//fpln(" $$$$ testLoSTrk: vo = "+vo+" vi = "+vi+"  nvo = "+nvo+" nvi = "+nvi);
 	double step = 1.0;
 	bool rtn = false;

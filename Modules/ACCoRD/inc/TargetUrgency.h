@@ -5,7 +5,7 @@
  *
  * Determines which traffic aircraft is the highest priority target for avoidance.
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -35,7 +35,7 @@ class TargetUrgency  {
 
 public:
 
-static bool mostUrgent(Detection3D* cd, const Vect3& so, const Velocity& vo, const Vect3& si1, const Velocity& vi1, const Vect3& si2, const Velocity& vi2, double D, double H, double B, double T);
+static bool mostUrgent(Detection3D* cd, const Vect3& so, const Velocity& vo, const Vect3& si1, const Velocity& vi1, const Vect3& si2, const Velocity& vi2, double B, double T);
 
   /**
    * Return a priority ranking value far an aircraft s.t. if two ranking values are compared, the lower (possibly negative)

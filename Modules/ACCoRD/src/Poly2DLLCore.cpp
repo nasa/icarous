@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 United States Government as represented by
+ * Copyright (c) 2018-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -95,7 +95,7 @@ std::vector<LatLonAlt> Poly2DLLCore::fix_polygon(const std::vector<LatLonAlt>& p
 	return fp;
 }
 
-bool Poly2DLLCore::spherical_inside_prelim(const std::vector<LatLonAlt>& p, const LatLonAlt& ll, double BUFF) {
+bool Poly2DLLCore::spherical_inside_prelim(const std::vector<LatLonAlt>& p, const LatLonAlt& ll) {
 	std::pair<int,bool> nuc = number_upshot_crosses_upto(p,ll);
 //fpln("spherical_inside_prelim nuc="+Fmb(nuc.second)+" "+Fm0(nuc.first)+" "+Fm0(nuc.first%2));
 	return nuc.second == false && (nuc.first % 2) != 0;
@@ -111,12 +111,12 @@ bool Poly2DLLCore::spherical_inside_prelim(const std::vector<LatLonAlt>& p, cons
 bool Poly2DLLCore::spherical_inside(const std::vector<LatLonAlt>& p, const LatLonAlt& ll, double BUFF) {
 	//fpln("calling spherical_inside with ll1 = "+p.get(0).lon()+" and ll2 = "+p.get(1).lon()+" and ll3 = "+p.get(2).lon());
 	std::vector<LatLonAlt> fixp = fix_polygon(p, ll, BUFF);
-	bool insidefixp = spherical_inside_prelim(fixp,ll,BUFF);
+	bool insidefixp = spherical_inside_prelim(fixp,ll);
 	return insidefixp;
 
 }
 
-bool Poly2DLLCore::spherical_outside_prelim(const std::vector<LatLonAlt>& p, const LatLonAlt& ll, double BUFF) {
+bool Poly2DLLCore::spherical_outside_prelim(const std::vector<LatLonAlt>& p, const LatLonAlt& ll) {
 	std::pair<int,bool> nuc = number_upshot_crosses_upto(p,ll);
 	return nuc.second == false && nuc.first % 2 == 0;
 }
@@ -130,7 +130,7 @@ bool Poly2DLLCore::spherical_outside_prelim(const std::vector<LatLonAlt>& p, con
  */
 bool Poly2DLLCore::spherical_outside(const std::vector<LatLonAlt>& p, const LatLonAlt& ll, double BUFF) {
 	std::vector<LatLonAlt> fixp = fix_polygon(p, ll, BUFF);
-	bool outsidefixp = spherical_outside_prelim(fixp,ll,BUFF);
+	bool outsidefixp = spherical_outside_prelim(fixp,ll);
 	return outsidefixp;
 }
 

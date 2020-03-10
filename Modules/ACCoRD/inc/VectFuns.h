@@ -1,7 +1,7 @@
 /*
  * VectFuns.h
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -207,6 +207,8 @@ public:
 	static Vect2 closestPointOnSegment(const Vect2& a, const Vect2& b, const Vect2& so);
 
 	static Vect3 closestPointOnSegment3(const Vect3& a, const Vect3& b, const Vect3& so);
+
+	static std::pair<Vect3,double> closestPointOnSegment3_extended(const Vect3& a, const Vect3& b, const Vect3& so);
 
 	static double distanceToSegment(const Vect2& a, const Vect2& b, const Vect2& so);
 

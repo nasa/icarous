@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -23,6 +23,14 @@ WCV_HZ::WCV_HZ(const WCVTable& tab) {
   id = "";
 }
 
+/**
+ * @return one static WCV_HZ
+ */
+const WCV_HZ& WCV_HZ::A_WCV_HZ() {
+  static WCV_HZ dwc;
+  return dwc;
+}
+
 Detection3D* WCV_HZ::make() const {
   return new WCV_HZ();
 }
@@ -32,8 +40,7 @@ Detection3D* WCV_HZ::make() const {
  */
 Detection3D* WCV_HZ::copy() const {
   WCV_HZ* ret = new WCV_HZ();
-  ret->table = table;
-  ret->id = id;
+  ret->copyFrom(*this);
   return ret;
 }
 

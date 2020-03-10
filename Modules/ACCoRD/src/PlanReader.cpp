@@ -8,7 +8,7 @@
  *
  * Contact: George Hagen
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -57,12 +57,7 @@ PlanReader::PlanReader()  : error("PlanReader()") {
 //	loadfile();
 }
 
-//PolyReader::PolyReader(SeparatedInput& si) {
-//	error = ErrorLog("PolyReader(SeparatedInput)");
-//	input = si;
-//	input.setCaseSensitive(false);            // headers & parameters are lower case
-//	loadfile();
-//}
+//PolyReader::PolyReader(SeparatedInput& si)  // Not implemented!
 
 void PlanReader::open(const string& filename) {
   std::ifstream in;
@@ -79,6 +74,7 @@ void PlanReader::open(const string& filename) {
 
 void PlanReader::open(std::istream* si) {
   input = SeparatedInput(si);
+//  timeOffset = 0.0;
   PlanReader::loadfile();
   return;
 }
@@ -94,7 +90,7 @@ void PlanReader::loadfile() {
 	bool tcp_data = true;
 	bool trkgsvs = true;
 	clock = true;
-	plans.reserve(10);
+	plans.reserve(10); // note: reserve() is appropriate because we exclusively use push_back to populate the vectors
 	paths.reserve(10);
 	head.resize(TcpData::TCP_OUTPUT_COLUMNS+7); // MAKE SURE THIS MATCHES THE NUMBER OF COLUMNS!
 	std::string name = ""; // the current aircraft name
@@ -103,19 +99,14 @@ void PlanReader::loadfile() {
 	int containmentIndex = -1;
 	vector<string> containmentList;
 	bool containmentLine = false;
-	//    double lastTime = -1000000; // time must be increasing
 
 
-	//    bool calcpolyvels = true;
-	//    bool morphpolys = true;
 	PolyPath::PathMode pathmode = PolyPath::MORPHING;
 
 	// save accuracy info in temp vars
 	double h = Constants::get_horizontal_accuracy();
 	double v = Constants::get_vertical_accuracy();
 	double t = Constants::get_time_accuracy();
-
-	//    bool kinematic = false;
 
 	while (!input.readLine()) {
 		// look for each possible heading
@@ -132,14 +123,25 @@ void PlanReader::loadfile() {
 			if (input.findHeading("clock") < 0) {
 				clock = false;
 			}
+			OLD_COLUMN_HEADERS = false;
+			if (input.findHeading("name") == 0) {
+				OLD_COLUMN_HEADERS = true;
+			}
 
-			head[NAME] =    altHeadings("name", "aircraft", "id");
+			if (OLD_COLUMN_HEADERS) {
+				head[ID] = altHeadings("name", "aircraft", "id"); //TODO: name->label ?
+				head[POINT_NAME] = altHeadings("label","point_name", "fix"); //TODO: label->name ?
+				//error.addWarning("Deprecated file format: plan identifier column should now use 'ID' header.  'name' refers to navpoint names.");
+			} else { // new format!
+				head[ID] = altHeadings("aircraft", "id");
+				head[POINT_NAME] = altHeadings("name","point_label","point_name", "fix");
+			}
+
 			head[LAT_SX] =  altHeadings("sx", "lat", "latitude");
 			head[LON_SY] =  altHeadings("sy", "lon", "long", "longitude");
 			head[SZ] =      altHeadings5("sz", "alt", "altitude", "sz1", "alt1");
 			head[TIME] =    altHeadings("clock", "time", "tm", "st");
 			head[SZ2] =     altHeadings("sz2", "alt2", "altitude_top");
-			head[LABEL] =   input.findHeading("label");
 			head[INFO] =		altHeadings("info", "information", "tcp_info");
 
 			head[TYPE] = 	input.findHeading("type");
@@ -152,10 +154,6 @@ void PlanReader::loadfile() {
 			head[TRK] =	altHeadings("trk", "v_trk", "v_x","track");
 			head[GS] =	altHeadings("gs", "v_gs", "v_y", "groundspeed");
 			head[VS] =	altHeadings("vs", "v_vs", "v_z", "verticalspeed");
-//			head[SRC_LAT_SX] =	altHeadings("src_x", "src_sx", "src_lat", "src_latitude");
-//			head[SRC_LON_SY] =	altHeadings("src_y", "src_sy", "src_lon", "src_longitude");
-//			head[SRC_ALT] =		altHeadings("src_z", "src_sz", "src_alt", "src_altitude");
-//			head[SRC_TIME] =    altHeadings("src_clock", "src_time", "src_tm", "src_t");
 			head[RADIUS] =    altHeadings("radius", "turn_radius", "R");
 			head[CENTER_LAT_SX] = altHeadings("center_x", "center_lat");
 			head[CENTER_LON_SY] = altHeadings("center_y", "center_lon");
@@ -168,12 +166,9 @@ void PlanReader::loadfile() {
 			if (	   head[TCP_TRK] < 0 || head[TCP_GS] < 0 || head[TCP_VS] < 0
 					|| (head[RADIUS] < 0 && head[ACC_TRK] < 0)
 					|| head[ACC_GS] < 0 || head[ACC_VS] < 0
-					//|| head[TRK] < 0 || head[GS] < 0 || head[VS] < 0
-//					|| head[SRC_LAT_SX] < 0 || head[SRC_LON_SY] < 0 || head[SRC_ALT] < 0 || head[SRC_TIME] < 0
 					) {
 				if (	   head[TCP_TRK] >= 0 || head[TCP_GS] >= 0 || head[TCP_VS] >= 0
 						|| head[ACC_GS] >= 0 || head[ACC_VS] >= 0
-//						|| head[SRC_LAT_SX] >= 0 || head[SRC_LON_SY] >= 0 || head[SRC_ALT] >= 0 || head[SRC_TIME] >= 0
 						)
 				{
 					std::string missing = "";
@@ -188,14 +183,6 @@ void PlanReader::loadfile() {
 					if (head[i] < 0) missing += " "+Fm0(i);
 					i = ACC_VS;
 					if (head[i] < 0) missing += " "+Fm0(i);
-//					i = SRC_LAT_SX;
-//					if (head[i] < 0) missing += " "+Fm0(i);
-//					i = SRC_LON_SY;
-//					if (head[i] < 0) missing += " "+Fm0(i);
-//					i = SRC_ALT;
-//					if (head[i] < 0) missing += " "+Fm0(i);
-//					i = SRC_TIME;
-//					if (head[i] < 0) missing += " "+Fm0(i);
 					i = RADIUS;
 					if (head[i] < 0) missing += " "+Fm0(i);
 					error.addWarning("Ignoring incorrect or incomplete TCP headers:"+missing);
@@ -218,15 +205,6 @@ void PlanReader::loadfile() {
 				containmentList = getParametersRef().getListString("containment");
 			}
 
-			//        if (this->getParametersRef().contains("filetype")) {
-			//          string sval = this->getParametersRef().getString("filetype");
-			//          if (!equalsIgnoreCase(sval, "plan") && !equalsIgnoreCase(sval, "trajectory") &&
-			//            !equalsIgnoreCase(sval, "poly") && !equalsIgnoreCase(sval, "plan+poly")) {
-			//            error.addError("Wrong filetype: "+sval);
-			//            break;
-			//          }
-			//        }
-
 			if (this->getParametersRef().contains("pathMode")) {
 				// note: does not generate error like Java does
 				pathmode = PolyPath::parsePathMode(this->getParametersRef().getString("pathMode"));
@@ -236,14 +214,6 @@ void PlanReader::loadfile() {
 				}
 			}
 
-			//        if (this->getParameters().contains("plantype")) {
-			//          string sval = this->getParameters().getString("plantype");
-			//          if (equalsIgnoreCase(sval, "kinematic")) {
-			//              kinematic = true;
-			//          }
-			//        }
-
-
 			hasRead = true;
 			for (int i = 0; i <= TIME; i++) {
 				if (head[i] < 0) error.addError("This appears to be an invalid poly/plan file (missing header definitions) "+Fm0(i));
@@ -251,7 +221,7 @@ void PlanReader::loadfile() {
 		}
 		// determine what type of data this is...
 		int linetype = UNKNOWN;
-		if (input.columnHasValue(head[NAME]) &&
+		if (input.columnHasValue(head[ID]) &&
 				input.columnHasValue(head[LAT_SX]) &&
 				input.columnHasValue(head[LON_SY]) &&
 				input.columnHasValue(head[SZ]) &&
@@ -264,8 +234,8 @@ void PlanReader::loadfile() {
 			error.addError("Invalid data line "+Fm0(input.lineNumber()));
 		}
 
-		string thisName = input.getColumnString(head[NAME]);
-		double myTime = getClock(input.getColumnString(head[TIME]));
+		string thisName = input.getColumnString(head[ID]);
+		double myTime = getClock(input.getColumnString(head[TIME]));// + timeOffset;
 		if ((!equals(thisName,name) )//|| lastTime > myTime)
 				&& !equals(thisName,"\"")) {
 			if (linetype == POLY) {
@@ -277,7 +247,7 @@ void PlanReader::loadfile() {
 					}
 					name = thisName;
 					if (i < 0 ){//|| lastTime > myTime) {
-						containmentIndex = containment.size();
+						containmentIndex = static_cast<int>(containment.size());
 						PolyPath pp = PolyPath(name);
 						pp.setPathMode(pathmode);
 						pp.setContainment(true);
@@ -296,7 +266,7 @@ void PlanReader::loadfile() {
 					}
 					name = thisName;
 					if (i < 0 ){//|| lastTime > myTime) {
-						pathIndex = paths.size();
+						pathIndex = static_cast<int>(paths.size());
 						PolyPath pp = PolyPath(name);
 						pp.setPathMode(pathmode);
 						pp.setContainment(false);
@@ -404,11 +374,9 @@ void PlanReader::loadfile() {
 				}
 			}
 		} else if (linetype == PLAN) {
-			//        string mutString = "";
-			//        if (input.columnHasValue(head[MUTABLE])) mutString = toLowerCase(input.getColumnString(head[MUTABLE])); // defined in SeparatedInput
 			string label = "";
 			string info = "";
-			if (input.columnHasValue(head[LABEL])) label = input.getColumnString(head[LABEL]);
+			if (input.columnHasValue(head[POINT_NAME])) label = input.getColumnString(head[POINT_NAME]);
 			if (input.columnHasValue(head[INFO])) info = input.getColumnString(head[INFO]);
 			NavPoint nnp = NavPoint(pos, myTime, label);
 			TcpData n;
@@ -439,19 +407,18 @@ void PlanReader::loadfile() {
 			if (input.columnHasValue(head[CENTER_LAT_SX])) {
 				if (latlon) {
 					turnCenter = Position::makeLatLonAlt(
-							input.getColumn(head[CENTER_LAT_SX], "deg"), "rad", // getColumn(_deg, head[LAT_SX]),
-							input.getColumn(head[CENTER_LON_SY], "deg"), "rad", // getColumn(_deg, head[LON_SY]),
-							input.getColumn(head[CENTER_ALT],     "ft"), "m" // getColumn(_ft, head[SZ]),
+							input.getColumn(head[CENTER_LAT_SX], "deg"), "rad", 
+							input.getColumn(head[CENTER_LON_SY], "deg"), "rad", 
+							input.getColumn(head[CENTER_ALT],     "ft"), "m" 
 							);
 				} else {
 					turnCenter = Position::makeXYZ(
-							input.getColumn(head[CENTER_LAT_SX], "NM"), "m", // getColumn(_deg, head[LAT_SX]),
-							input.getColumn(head[CENTER_LON_SY], "NM"), "m", // getColumn(_deg, head[LON_SY]),
-							input.getColumn(head[CENTER_ALT],    "ft"), "m"  // getColumn(_ft, head[SZ]),
+							input.getColumn(head[CENTER_LAT_SX], "NM"), "m", 
+							input.getColumn(head[CENTER_LON_SY], "NM"), "m", 
+							input.getColumn(head[CENTER_ALT],    "ft"), "m"  
 							);
 				}
 				n = n.setTurnCenter(turnCenter);
-				//f.pln("\n $$$$ PlanReader.loadfile: SET setTurnCenter ="+turnCenter);
 			}
 			if (!tcp_data) {
 				std::pair<TcpData,std::string> p = n.parseMetaDataLabel(label);
@@ -463,25 +430,6 @@ void PlanReader::loadfile() {
 					nnp = nnp.makeName(p.second);
 				}
 			} else { // read tcp columns
-//				Position srcpos = Position::INVALID();
-//				if (input.columnHasValue(head[SRC_LAT_SX])) {
-//					if (latlon) {
-//						srcpos = Position::makeLatLonAlt(
-//								input.getColumn(head[SRC_LAT_SX], "deg"), "rad", // getColumn(_deg, head[LAT_SX]),
-//								input.getColumn(head[SRC_LON_SY], "deg"), "rad", // getColumn(_deg, head[LON_SY]),
-//								input.getColumn(head[SRC_ALT],      "ft"), "m" // getColumn(_ft, head[SZ]),
-//						);
-//					} else {
-//						srcpos = Position::makeXYZ(
-//								input.getColumn(head[SRC_LAT_SX], "nmi"), "m", // getColumn(_deg, head[LAT_SX]),
-//								input.getColumn(head[SRC_LON_SY], "nmi"), "m", // getColumn(_deg, head[LON_SY]),
-//								input.getColumn(head[SRC_ALT],      "ft"), "m"  // getColumn(_ft, head[SZ]),
-//						);
-//					}
-//				}
-				//double srcTime = input.getColumn(head[SRC_TIME], "s");
-				//n = n.setSource(srcpos,  srcTime);
-//				NavPoint np = n.makePosition(srcpos).makeTime(srcTime);
 				Velocity vel = Velocity::INVALIDV();
 				if (input.columnHasValue(head[TRK])) {
 					if (trkgsvs) {
@@ -498,7 +446,6 @@ void PlanReader::loadfile() {
 						);
 					}
 				}
-				//n.setVelocityInit(vel);
 				TcpData::TrkTcpType tcptrk = TcpData::valueOfTrkType(input.getColumnString(head[TCP_TRK]));
 
 				double sRadius = n.getRadiusSigned();
@@ -507,15 +454,8 @@ void PlanReader::loadfile() {
 					sRadius = vel.gs()/acctrk;
 				}
 
-				// TODO fix linearIndex
-				//int linearIndex = -1;
-				// TODO: linearIndex
 				if ((equals(input.getColumnString(head[TCP_TRK]),"BOT") || equals(input.getColumnString(head[TCP_TRK]),"EOTBOT")) && turnCenter.isInvalid()) {
-					//if (turnCenter.isInvalid()) {
-				   // This relies on the file having a TRK column !!
-				   //f.pln(" $$$$ PlanReader.loadfile: pos = "+pos+" sRadius = "+sRadius+" vel = "+vel);
 				   turnCenter = KinematicsPosition::centerFromRadius(pos, sRadius, vel.trk());
-				   //f.pln(" $$$$ PlanReader.loadfile: turnCenter = "+turnCenter);
 				}
 				switch (tcptrk) {
 				case TcpData::BOT: n = n.setBOT( sRadius, turnCenter); break;
@@ -527,8 +467,7 @@ void PlanReader::loadfile() {
 				}
 				TcpData::GsTcpType tcpgs = TcpData::valueOfGsType(input.getColumnString(head[TCP_GS]));
 				double accgs = input.getColumn(head[ACC_GS], "m/s^2");
-				// TODO fix linearIndex
-				//linearIndex = -1;
+
 				switch (tcpgs) {
 				case TcpData::BGS: n = n.setBGS(accgs); break;
 				case TcpData::EGS: n = n.setEGS( ); break;
@@ -538,8 +477,6 @@ void PlanReader::loadfile() {
 				}
 				TcpData::VsTcpType tcpvs = TcpData::valueOfVsType(input.getColumnString(head[TCP_VS]));
 				double accvs = input.getColumn(head[ACC_VS], "m/s^2");
-				// TODO fix linearIndex
-				//linearIndex = -1;
 				switch (tcpvs) {
 				case TcpData::BVS: n = n.setBVS(accvs); break;
 				case TcpData::EVS: n = n.setEVS( ); break;
@@ -561,18 +498,17 @@ void PlanReader::loadfile() {
 				error.addWarning(plans[planIndex].getMessage());
 			}
 		}
-		//      lastTime = myTime;
 	} // while
 	for (int i = 0; i < (signed)paths.size(); i++) {
 		PolyPath path = paths[i];
 		if (!path.validate())
-			error.addError("Path "+Fm0(i)+" "+path.getName()+":"+path.getMessage());
+			error.addError("Path "+Fm0(i)+" "+path.getID()+":"+path.getMessage());
 	}
 
 	for (int i = 0; i < (signed)containment.size(); i++) {
 		PolyPath path = containment[i];
 		if (!path.validate())
-			error.addError("Containment area "+Fm0(i)+" "+path.getName()+":"+path.getMessage());
+			error.addError("Containment area "+Fm0(i)+" "+path.getID()+":"+path.getMessage());
 	}
 	// reset accuracy parameters to their previous values
 	Constants::set_horizontal_accuracy(h);
@@ -584,7 +520,7 @@ void PlanReader::loadfile() {
 
 int PlanReader::pathNameIndex(const std::string& name) const {
 	for (unsigned int i = 0; i < paths.size(); i++) {
-		if (equals(paths[i].getName(), name))
+		if (equals(paths[i].getID(), name))
 			return i;
 	}
 	return -1;
@@ -593,7 +529,7 @@ int PlanReader::pathNameIndex(const std::string& name) const {
 
 int PlanReader::containmentNameIndex(const std::string& name) const {
 	for (unsigned int i = 0; i < containment.size(); i++) {
-		if (equals(containment[i].getName(), name))
+		if (equals(containment[i].getID(), name))
 			return i;
 	}
 	return -1;
@@ -601,7 +537,7 @@ int PlanReader::containmentNameIndex(const std::string& name) const {
 
 int PlanReader::planNameIndex(const std::string& name) const {
 		for (unsigned int i = 0; i < plans.size(); i++) {
-			if (equals(plans[i].getName(), name))
+			if (equals(plans[i].getID(), name))
 				return i;
 		}
 		return -1;
@@ -628,15 +564,15 @@ int PlanReader::altHeadings5(const string& s1, const string& s2, const string& s
 }
 
 int PlanReader::planSize() const {
-	return plans.size();
+	return static_cast<int>(plans.size());
 }
 
 int PlanReader::polySize() const {
-	return paths.size();
+	return static_cast<int>(paths.size());
 }
 
 int PlanReader::containmentSize() const {
-	return containment.size();
+	return static_cast<int>(containment.size());
 }
 
 Plan PlanReader::getPlan(int i) const {
@@ -652,14 +588,14 @@ PolyPath PlanReader::getContainmentPolygon(int i) const {
 }
 
 int PlanReader::combinedSize() const {
-	return plans.size() + paths.size();
+	return static_cast<int>(plans.size() + paths.size());
 }
 
 Plan PlanReader::getCombinedPlan(int i) const {
-	if (i < (signed)plans.size()) {
+	if (i < static_cast<int>(plans.size())) {
 		return plans[i];
 	} else {
-		int j = i-plans.size();
+		int j = i-static_cast<int>(plans.size());
 		return paths[j].buildPlan().first;
 	}
 }
@@ -706,15 +642,9 @@ double PlanReader::getClock(const string& s) const {
   return tm;
 }
 
-//  NavPoint PolyReader::setTcpType(const NavPoint& n, const string& s) {
-//    if (equalsIgnoreCase(s,"bot")) return n.makeBOT(n.position(), n.time(),  n.velocityInit(), n.signedRadius(), n.linearIndex());
-//    else if(equalsIgnoreCase(s,"eot")) return n.makeEOT(n.position(), n.time(), n.velocityInit(), n.linearIndex());
-//     else return n;
-//  }
-
 
 int PlanReader::size() const {
-  return plans.size();
+  return static_cast<int>(plans.size());
 }
 
 ParameterData& PlanReader::getParametersRef() {
@@ -728,9 +658,6 @@ ParameterData PlanReader::getParameters() const {
 void PlanReader::updateParameterData(ParameterData& p) const {
 	  return p.copy(input.getParameters(),true);
 }
-
-
-
 
 
 }

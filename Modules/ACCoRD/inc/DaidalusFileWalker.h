@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -20,7 +20,7 @@
 
 namespace larcfm {
 
-class DaidalusFileWalker {
+class DaidalusFileWalker : public ErrorReporter {
   private:
   SequenceReader sr_;
   ParameterData p_;
@@ -67,8 +67,16 @@ class DaidalusFileWalker {
   static void readExtraColumns(Daidalus& daa, const SequenceReader& sr, int ac_idx);
 
   void readState(Daidalus& daa);
+  bool hasError() const;
+
+  bool hasMessage() const;
+
+  std::string getMessage();
+
+  std::string getMessageNoClear() const;
 
 };
+
 }
 
 #endif /* DAIDALUSFILEWALKER_H_ */

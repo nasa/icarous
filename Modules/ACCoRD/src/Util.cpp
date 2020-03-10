@@ -5,7 +5,7 @@
  *
  * Utility functions.
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -315,12 +315,29 @@ const long& Util::max(const long& x, const long& y) {
 
 /**
  * Computes the modulo of val and mod. The returned value is in the range [0,mod)
+ *
+ * @param val numerator
+ * @param mod denominator
+ * @return modulo value
  */
 double Util::modulo(double val, double mod) {
 	double n = floor(val / mod);
 	double r = val - n * mod;
 	return Util::almost_equals(r,mod) ? 0.0 : r;
 }
+
+/**
+ * Computes the modulo of val and mod. If mod > 0, the returned value is in the r
+ * ange [0,mod). Otherwise, returns val.
+ *
+ * @param val numerator
+ * @param mod denominator
+ * @return modulo value
+ */
+double Util::safe_modulo(double val, double mod) {
+	return mod > 0 ? modulo(val,mod) : val;
+}
+
 
 // To range [0,2*pi)
 double Util::to_2pi(double rad) {
@@ -413,37 +430,37 @@ double Util::turnDelta(double alpha, double beta, bool turnRight) {
 	return rtn;
 }
 
- double Util::turnDelta(double alpha, double beta, int dir) {
-   return turnDelta(alpha, beta, dir > 0);
- }
+double Util::turnDelta(double alpha, double beta, int dir) {
+	return turnDelta(alpha, beta, dir > 0);
+}
 
 
 #if defined(_MSC_VER)
- bool Util::is_double(const string& str) {
-	 std::string sb(str);
-	 trim(sb," \t");
-	 std::regex numre("^-?[0-9]*(\\.[0-9]*)?$");
-	 return std::regex_match(sb, numre);
- }
+bool Util::is_double(const string& str) {
+	std::string sb(str);
+	trim(sb," \t");
+	std::regex numre("^-?[0-9]*(\\.[0-9]*)?$");
+	return std::regex_match(sb, numre);
+}
 
 #else
- bool Util::is_double(const string& str) {
+bool Util::is_double(const string& str) {
 
-	 string sb(str);
-	 regex_t regex;
-	 int reti;
+	string sb(str);
+	regex_t regex;
+	int reti;
 
-	 trim(sb," \t");
+	trim(sb," \t");
 
-	 reti = regcomp(&regex, "^-?[0-9]*(\\.[0-9]*)?$", REG_EXTENDED);
-	 if (reti != 0) {
-		 fdln("Could not compile regex\n");
-	 }
+	reti = regcomp(&regex, "^-?[0-9]*(\\.[0-9]*)?$", REG_EXTENDED);
+	if (reti != 0) {
+		fdln("Could not compile regex\n");
+	}
 
-	 /* Execute regular expression */
-	 reti = regexec(&regex, sb.c_str(), 0, NULL, 0);
-	 return !reti;
- }
+	/* Execute regular expression */
+	reti = regexec(&regex, sb.c_str(), 0, NULL, 0);
+	return !reti;
+}
 #endif
 
 double Util::parse_double(const string& str) {
@@ -463,7 +480,7 @@ double Util::parse_double(const string& str) {
  * @return true if string value is true/false/t/f, false otherwise
  */
 bool Util::is_boolean(const std::string& s) {
-	  return (equalsIgnoreCase(s, "true") || equalsIgnoreCase(s, "T") || equalsIgnoreCase(s, "false") || equalsIgnoreCase(s, "F"));
+	return (equalsIgnoreCase(s, "true") || equalsIgnoreCase(s, "T") || equalsIgnoreCase(s, "false") || equalsIgnoreCase(s, "F"));
 }
 
 

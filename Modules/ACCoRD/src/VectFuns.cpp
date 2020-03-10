@@ -1,7 +1,7 @@
 /*
  * VectFuns.cpp
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -300,6 +300,22 @@ Vect3 VectFuns::closestPointOnSegment3(const Vect3& a, const Vect3& b, const Vec
 		return a;
 	} else {
 		return b;
+	}
+}
+
+std::pair<Vect3,double> VectFuns::closestPointOnSegment3_extended(const Vect3& a, const Vect3& b, const Vect3& so) {
+	Vect3 i = closestPoint3(a,b,so);
+	if (a.almostEquals(b)) return std::pair<Vect3,double>(a,  0.0);
+	double d1 = a.Sub(b).norm();
+	double d2 = a.Sub(i).norm();
+	double d3 = b.Sub(i).norm();
+	if (d2 <= d1 && d3 <= d1) {
+		double r = d2/d1;
+		return std::pair<Vect3,double>(i, r);
+	} else if (d2 < d3) {
+		return std::pair<Vect3,double>(a, 0.0);
+	} else {
+		return std::pair<Vect3,double>(b, 1.0);
 	}
 }
 

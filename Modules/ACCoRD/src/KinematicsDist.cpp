@@ -1,7 +1,7 @@
 /*
  * KinematicsDist.cpp
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -24,7 +24,7 @@ namespace larcfm {
 
 
 Vect4 KinematicsDist::minDistBetweenTrk(const Vect3& so, const Velocity& vo, const Velocity& nvo, const Vect3& si, const Velocity& vi, const Velocity& nvi,
-		double bankAngOwn, bool turnRightOwn, double bankAngTraf, bool turnRightTraf, double stopTime) {
+		double bankAngOwn, double stopTime) {
 	double minDist =  MAXDOUBLE;
 	double minDistH =  MAXDOUBLE;
 	double minDistV =  MAXDOUBLE;

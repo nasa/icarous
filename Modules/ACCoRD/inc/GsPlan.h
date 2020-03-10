@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 United States Government as represented by
+ * Copyright (c) 2017-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -83,13 +83,13 @@ public:
 
 	int size() const;
 
-	std::string getName() const;
+	std::string getID() const;
 
 	/**
 	 * set aircraft id
 	 * @param s string name
 	 */
-	void setName(const std::string& s);
+	void setID(const std::string& s);
 
 	void setInfo(int i, const std::string& s);
 
@@ -150,7 +150,7 @@ public:
 	 * @param info  information for a point
 	 * @param gsOut ground speed out of "ix"
 	 */
-	void set(int ix, const Position& pos, const std::string& label, const std::string& info, double gsOut);
+	void set(int ix, const Position& pos, const std::string& label, const std::string& info, double gsOut, double radius);
 
 
 	Position position(int i) const;
@@ -162,6 +162,10 @@ public:
 	std::string info(int i) const;
 
 	double radius(int i) const;
+
+//	bool isAltPreserve(int i) const;
+//
+//	void setAltPreserve(int i, bool val);
 
 	/** Set the radius at point "i" to be "rad"
 	 *

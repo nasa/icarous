@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon, Rick Butler, Cesar Munoz
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -363,7 +363,7 @@ private:
    *
    */
   static int find_first_implicit_none(double tolerance,
-      const std::vector<Interval>& arraylist, const std::vector<BandsRegion::Region>& regions,
+      const std::vector<Interval>& arraylist,
       double lb, double ub);
 
   /*

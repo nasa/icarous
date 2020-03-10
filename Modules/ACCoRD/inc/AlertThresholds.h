@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -51,7 +51,7 @@ public:
    * early_alerting_time is a early alerting time >= at (for maneuver guidance),
    * region is the type of guidance
    */
-  AlertThresholds(const Detection3D& det,
+  AlertThresholds(const Detection3D* det,
       double alerting_time, double early_alerting_time,
       BandsRegion::Region region);
 

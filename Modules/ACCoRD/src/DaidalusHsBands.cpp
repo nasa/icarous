@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -22,8 +22,7 @@ DaidalusHsBands::DaidalusHsBands(DaidalusParameters& parameters) {
   setDaidalusParameters(parameters);
 }
 
-DaidalusHsBands::DaidalusHsBands(const DaidalusHsBands& b) {
-  super_DaidalusRealBands(&b);
+DaidalusHsBands::DaidalusHsBands(const DaidalusHsBands& b) : DaidalusRealBands(b) {
   horizontal_accel_ = b.horizontal_accel_;
 }
 
@@ -34,9 +33,9 @@ void DaidalusHsBands::setDaidalusParameters(const DaidalusParameters& parameters
   set_step(parameters.getHorizontalSpeedStep());
   set_recovery(parameters.isEnabledRecoveryHorizontalSpeedBands());
   set_min_rel(parameters.getBelowRelativeHorizontalSpeed());
-  set_max_rel(parameters.getAboveRelativeHorizontalSpeed());
+  setmax_rel(parameters.getAboveRelativeHorizontalSpeed());
   set_min_nomod(parameters.getMinHorizontalSpeed());
-  set_max_nomod(parameters.getMaxHorizontalSpeed());
+  setmax_nomod(parameters.getMaxHorizontalSpeed());
   set_horizontal_accel(parameters.getHorizontalAcceleration());
 }
 
@@ -71,7 +70,7 @@ std::pair<Vect3, Velocity> DaidalusHsBands::trajectory(const TrafficState& ownsh
     posvel = std::pair<Position, Velocity>(ownship.positionXYZ(),ownship.velocityXYZ().mkGs(gs));
   } else {
     posvel = ProjectedKinematics::gsAccel(ownship.positionXYZ(),ownship.velocityXYZ(),time,
-            (dir?1:-1)*horizontal_accel_);
+        (dir?1:-1)*horizontal_accel_);
   }
   return std::pair<Vect3, Velocity>(ownship.pos_to_s(posvel.first),ownship.vel_to_v(posvel.first,posvel.second));
 }

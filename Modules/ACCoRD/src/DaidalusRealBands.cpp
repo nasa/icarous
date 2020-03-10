@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 United States Government as represented by
+ * Copyright (c) 2018-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,23 +19,18 @@
 #include "DaidalusCore.h"
 #include "DaidalusParameters.h"
 #include "RecoveryInformation.h"
-#include "ColoredValue.h"
-#include <cmath>
 
+#include <cmath>
 #include <vector>
 #include <string>
 
+#include "ColorValue.h"
 #include "TrafficState.h"
 
 namespace larcfm {
 
 DaidalusRealBands::DaidalusRealBands(double mod) {
-  super_mod(mod);
-}
-
-void DaidalusRealBands::super_mod(double mod) {
-
-  // Private variables_ are initialized
+  // Private variables are initialized
   mod_ = std::abs(mod);
   step_ = 0;
   min_param_ = 0;
@@ -44,45 +39,45 @@ void DaidalusRealBands::super_mod(double mod) {
   max_rel_param_ = 0;
   recovery_ = false;
 
-  // Cached arrays__ are initialized
-  acs_peripheral_bands__ = std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
-  acs_bands__ = std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
+  bands_hysteresis_.setMod(mod_);
 
-  // Cached__ variables are cleared
-  outdated__ = false; // Force stale
+  // Cached arrays_ are initialized
+  acs_peripheral_bands_ = std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
+  acs_bands_ = std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
+
+  // Cached_ variables are cleared
+  outdated_ = false; // Force stale
   stale(true);
 }
 
-DaidalusRealBands::DaidalusRealBands(const DaidalusRealBands* b) {
-  super_DaidalusRealBands(b);
-}
+DaidalusRealBands::DaidalusRealBands(const DaidalusRealBands& b) {
+  // Private variables are copied
+  mod_ = b.mod_;
+  step_ = b.step_;
+  min_param_ = b.min_param_;
+  max_param_ = b.max_param_;
+  min_rel_param_ = b.min_rel_param_;
+  max_rel_param_ = b.max_rel_param_;
+  recovery_ = b.recovery_;
 
-void DaidalusRealBands::super_DaidalusRealBands(const DaidalusRealBands* b) {
-  // Private variables_ are copied
-  mod_ = b->mod_;
-  step_ = b->step_;
-  min_param_ = b->min_param_;
-  max_param_ = b->max_param_;
-  min_rel_param_ = b->min_rel_param_;
-  max_rel_param_ = b->max_rel_param_;
-  recovery_ = b->recovery_;
+  bands_hysteresis_.setMod(mod_);
 
-  // Cached arrays__ are initialized
-  acs_peripheral_bands__ = std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
-  acs_bands__ = std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
+  // Cached arrays_ are initialized
+  acs_peripheral_bands_ = std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
+  acs_bands_ = std::vector<std::vector<IndexLevelT> >(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
 
-  // Cached__ variables are cleared
-  outdated__ = false; // Force stale
+  // Cached_ variables are cleared
+  outdated_ = false; // Force stale
   stale(true);
 }
 
 
-double DaidalusRealBands::get_min_val__() const {
-  return min_val__;
+double DaidalusRealBands::get_min_val_() const {
+  return min_val_;
 }
 
-double DaidalusRealBands::get_max_val__() const {
-  return max_val__;
+double DaidalusRealBands::getmax_val_() const {
+  return max_val_;
 }
 
 double DaidalusRealBands::get_mod() const {
@@ -126,7 +121,7 @@ void DaidalusRealBands::set_min_rel(double min_rel) {
  * Set min_rel. When mod_ > 0, requires max_rel to be in [0,mod/2]. Otherwise, a
  * negative value represents max.
  */
-void DaidalusRealBands::set_max_rel(double max_rel) {
+void DaidalusRealBands::setmax_rel(double max_rel) {
   if (max_rel_param_ != max_rel) {
     max_rel_param_ = max_rel;
     stale(true);
@@ -142,7 +137,7 @@ void DaidalusRealBands::set_min_nomod(double min) {
 }
 
 // Set max when mod == 0.
-void DaidalusRealBands::set_max_nomod(double max) {
+void DaidalusRealBands::setmax_nomod(double max) {
   if (mod_ == 0 && max_param_ != max) {
     max_param_ = max;
     stale(true);
@@ -150,7 +145,7 @@ void DaidalusRealBands::set_max_nomod(double max) {
 }
 
 // Set min and max when mod_ > 0. Requires min_val and max_val to be in range [0,mod)
-void DaidalusRealBands::set_min_max_mod(double min, double max) {
+void DaidalusRealBands::set_minmax_mod(double min, double max) {
   if (mod_ > 0 && (min_param_ != min || max_param_ != max)) {
     min_param_ = min;
     max_param_ = max;
@@ -160,158 +155,133 @@ void DaidalusRealBands::set_min_max_mod(double min, double max) {
   }
 }
 
-/**
- * Return val modulo mod_, when mod_ > 0. Otherwise, returns val.
- */
-double DaidalusRealBands::mod_val(double val) const {
-  return mod_ > 0 ? Util::modulo(val,mod_) : val;
-}
-
 bool DaidalusRealBands::check_input(const TrafficState& ownship) {
-  if (checked__ < 0) {
-    checked__ = 0;
+  if (checked_ < 0) {
+    checked_ = 0;
     if (ownship.isValid() && step_ > 0) {
       double val = own_val(ownship);
       // When mod_ == 0, min_val <= max_val. When mod_ > 0, min_val, max_val in [0,mod_].
       // In the later case, min_val may be greater than max_val. Furthermore, min_val = max_val means
       // a range of values from 0 to mod, i.e., a circular band.
       if (min_rel_param_ == 0 && max_rel_param_ == 0) {
-        min_val__ = min_param_;
-        max_val__ = max_param_;
+        min_val_ = min_param_;
+        max_val_ = max_param_;
       } else {
         if (min_rel_param_ >= 0) {
-          min_val__ = mod_val(own_val(ownship)-min_rel_param_);
+          min_val_ = Util::safe_modulo(own_val(ownship)-min_rel_param_,mod_);
         } else {
-          min_val__ = min_param_;
+          min_val_ = min_param_;
         }
         if (max_rel_param_ >= 0) {
-          max_val__ = mod_val(own_val(ownship)+max_rel_param_);
+          max_val_ = Util::safe_modulo(own_val(ownship)+max_rel_param_,mod_);
         } else {
-          max_val__ = max_param_;
+          max_val_ = max_param_;
         }
         if (mod_ == 0) {
-          min_val__ = Util::max(min_val__,min_param_);
-          max_val__ = Util::min(max_val__,max_param_);
+          min_val_ = Util::max(min_val_,min_param_);
+          max_val_ = Util::min(max_val_,max_param_);
         }
       }
-      circular__ = mod_ > 0 && Util::almost_equals(min_val__,max_val__, DaidalusParameters::ALMOST_);
-      if (circular__) {
-        min_relative__ = mod_/2.0;
-        max_relative__ = mod_/2.0;
+      circular_ = mod_ > 0 && Util::almost_equals(min_val_,max_val_, DaidalusParameters::ALMOST_);
+      if (circular_) {
+        min_relative_ = mod_/2.0;
+        max_relative_ = mod_/2.0;
       } else {
         if (min_rel_param_ > 0) {
-          min_relative__ = min_rel_param_;
+          min_relative_ = min_rel_param_;
         } else {
-          min_relative__ = mod_val(own_val(ownship)-min_val__);
+          min_relative_ = Util::safe_modulo(own_val(ownship)-min_val_,mod_);
         }
         if (max_rel_param_ > 0) {
-          max_relative__ = max_rel_param_;
+          max_relative_ = max_rel_param_;
         } else {
-          max_relative__ = mod_val(max_val__-own_val(ownship));
+          max_relative_ = Util::safe_modulo(max_val_-own_val(ownship),mod_);
         }
       }
-      if ((min_val__ <= val && val <= max_val__ && min_val__ != max_val__) ||
-          (mod_ > 0 && (circular__ ||
-              (0 <= val && val <= max_val__) || (min_val__ <= val && val <= mod_)))) {
-        checked__     = 1;
+      if ((min_val_ <= val && val <= max_val_ && min_val_ != max_val_) ||
+          (mod_ > 0 && (circular_ ||
+              (0 <= val && val <= max_val_) || (min_val_ <= val && val <= mod_)))) {
+        checked_     = 1;
       }
     }
   }
-  return checked__ > 0;
+  return checked_ > 0;
 }
 
-bool DaidalusRealBands::kinematic_conflict(const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters,
+bool DaidalusRealBands::kinematic_conflict(const TrafficState& ownship, const TrafficState& traffic,
     Detection3D* detector, int epsh, int epsv, double alerting_time) {
   return check_input(ownship) &&
-      any_red(detector,NULL,epsh,epsv,0.0,alerting_time,ownship,traffic,parameters);
+      any_red(detector,NULL,epsh,epsv,0.0,alerting_time,ownship,traffic);
 }
 
 int DaidalusRealBands::length(DaidalusCore& core) {
   refresh(core);
-  return ranges__.size();
+  return static_cast<int>(ranges_.size());
 }
 
 const Interval& DaidalusRealBands::interval(DaidalusCore& core, int i) {
   if (i < 0 || i >= length(core)) {
     return Interval::EMPTY;
   }
-  return ranges__[i].interval;
+  return ranges_[i].interval;
 }
 
 BandsRegion::Region DaidalusRealBands::region(DaidalusCore& core, int i) {
   if (i < 0 || i >= length(core)) {
     return BandsRegion::UNKNOWN;
   } else {
-    return ranges__[i].region;
+    return ranges_[i].region;
   }
 }
 
 /**
- * Return index where val is found, -1 if invalid input, >= length if not found
+ * Return index in ranges_ where val is found, -1 if invalid input, >= length if not found
  */
 int DaidalusRealBands::indexOf(DaidalusCore& core, double val) {
   if (check_input(core.ownship)) {
-    val = mod_val(val);
-    int last_index = length(core)-1;
-    for (int i=0; i <= last_index; ++i) {
-      bool none = BandsRegion::isResolutionBand(ranges__[i].region);
-      int order_i = BandsRegion::orderOfConflictRegion(ranges__[i].region);
-      bool lb_close = none;
-      if (!lb_close && order_i > 0) {
-        lb_close =
-            (i > 0 && order_i <= BandsRegion::orderOfConflictRegion(ranges__[i-1].region)) ||
-            (i == 0 && mod_ > 0 && order_i <= BandsRegion::orderOfConflictRegion(ranges__[last_index].region));
-      }
-      bool ub_close = none;
-      if (!ub_close && order_i > 0) {
-        ub_close =
-            (i < last_index && order_i <= BandsRegion::orderOfConflictRegion(ranges__[i+1].region)) ||
-            (i == last_index && mod_ > 0 && order_i <= BandsRegion::orderOfConflictRegion(ranges__[0].region));
-      }
-      if (ranges__[i].interval.almost_in(val, lb_close, ub_close, DaidalusParameters::ALMOST_)) {
-        return i;
-      }
-    }
-    if (mod_ > 0) {
-      if (Util::almost_equals(val,0,DaidalusParameters::ALMOST_)) {
-        return 0;
-      }
-    } else {
-      if (Util::almost_equals(val,min_val__,DaidalusParameters::ALMOST_)) {
-        return 0;
-      }
-      if (Util::almost_equals(val,max_val__,DaidalusParameters::ALMOST_)) {
-        return last_index;
-      }
-    }
+    refresh(core);
+    return BandsRange::index_of(ranges_,val,mod_);
+  } else {
+    return -1;
   }
-  return -1;
 }
 
 /**
  * Set cached values to stale conditions as they are no longer fresh
  */
 void DaidalusRealBands::stale(bool hysteresis) {
-  if (!outdated__) {
-    outdated__ = true;
-    checked__ = -1;
+  if (!outdated_) {
+    outdated_ = true;
+    checked_ = -1;
     for (int conflict_region=0; conflict_region < BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++conflict_region) {
-      acs_peripheral_bands__[conflict_region].clear();
-      acs_bands__[conflict_region].clear();
+      acs_peripheral_bands_[conflict_region].clear();
+      acs_bands_[conflict_region].clear();
     }
-    ranges__.clear();
-    recovery_time__ = NaN;
-    recovery_nfactor__ = 0;
-    recovery_horizontal_distance__ = NaN;
-    recovery_vertical_distance__ = NaN;
-    min_val__ = 0;
-    max_val__ = 0;
-    min_relative__ = 0;
-    max_relative__ = 0;
-    circular__ = false;
+    ranges_.clear();
+    recovery_time_ = NaN;
+    recovery_nfactor_ = -1;
+    recovery_horizontal_distance_ = NaN;
+    recovery_vertical_distance_ = NaN;
+    min_val_ = 0;
+    max_val_ = 0;
+    min_relative_ = 0;
+    max_relative_ = 0;
+    circular_ = false;
   }
   if (hysteresis) {
-    reset_hysteresis();
+    bands_hysteresis_.reset();
+  }
+}
+
+/**
+ * stale hysteresis depending on current_time
+ */
+void DaidalusRealBands::reset_hysteresis(double current_time, double hysteresis_time) {
+  double last_time = bands_hysteresis_.getLastTime();
+  if (ISNAN(last_time) ||
+      current_time <= last_time ||
+      current_time-last_time > hysteresis_time) {
+    bands_hysteresis_.reset();
   }
 }
 
@@ -319,25 +289,25 @@ void DaidalusRealBands::stale(bool hysteresis) {
  * Returns true is object is fresh
  */
 bool DaidalusRealBands::isFresh() const {
-  return !outdated__;
+  return !outdated_;
 }
 
 /**
  * Refresh cached values
  */
 void DaidalusRealBands::refresh(DaidalusCore& core) {
-  if (outdated__) {
+  if (outdated_) {
     for (int conflict_region=0; conflict_region < BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++conflict_region) {
-      acs_bands__[conflict_region] = core.acs_conflict_bands(conflict_region);
+      acs_bands_[conflict_region] = core.acs_conflict_bands(conflict_region);
       if (core.bands_for(conflict_region)) {
         peripheral_aircraft(core,conflict_region);
-        acs_bands__[conflict_region].insert(acs_bands__[conflict_region].end(), acs_peripheral_bands__[conflict_region].begin(), acs_peripheral_bands__[conflict_region].end());
+        acs_bands_[conflict_region].insert(acs_bands_[conflict_region].end(), acs_peripheral_bands_[conflict_region].begin(), acs_peripheral_bands_[conflict_region].end());
       }
     }
     if (check_input(core.ownship)) {
       compute(core);
     }
-    outdated__ = false;
+    outdated_ = false;
   }
 }
 
@@ -350,31 +320,25 @@ void DaidalusRealBands::force_compute(DaidalusCore& core) {
 }
 
 /**
- * Requires 0 <= conflict_region < CONFICT_BANDS and acs_peripheral_bands__ is empty
- * Put in acs_peripheral_bands__ the list of aircraft predicted to have a peripheral band for the given region.
+ * Requires 0 <= conflict_region < CONFICT_BANDS and acs_peripheral_bands_ is empty
+ * Put in acs_peripheral_bands_ the list of aircraft predicted to have a peripheral band for the given region.
  */
 void DaidalusRealBands::peripheral_aircraft(DaidalusCore& core, int conflict_region) {
   // Iterate on all traffic aircraft
-  for (int ac = 0; ac < (int) core.traffic.size(); ++ac) {
+  for (int ac = 0; ac < static_cast<int>(core.traffic.size()); ++ac) {
     TrafficState intruder = core.traffic[ac];
     Alerter alerter = core.alerter_of(ac);
     // Assumes that thresholds of severe alerts are included in the volume of less severe alerts
-    BandsRegion::Region region = BandsRegion::conflictRegionFromOrder(BandsRegion::NUMBER_OF_CONFLICT_BANDS - conflict_region);
+    BandsRegion::Region region = BandsRegion::regionFromOrder(BandsRegion::NUMBER_OF_CONFLICT_BANDS-conflict_region);
     int alert_level = alerter.alertLevelForRegion(region);
     if (alert_level > 0) {
       Detection3D* detector = alerter.getLevel(alert_level).getCoreDetectionPtr();
       double alerting_time = Util::min(core.parameters.getLookaheadTime(),
           alerter.getLevel(alert_level).getAlertingTime());
-      double s_err = intruder.relativeHorizontalPositionError(core.ownship,core.parameters);
-      double sz_err = intruder.relativeVerticalPositionError(core.ownship,core.parameters);
-      double v_err = intruder.relativeHorizontalSpeedError(core.ownship,s_err,core.parameters);
-      double vz_err = intruder.relativeVerticalSpeedError(core.ownship,core.parameters);
-      ConflictData det = detector->conflictDetectionSUM(core.ownship.get_s(),core.ownship.get_v(),
-          intruder.get_s(),intruder.get_v(),0,alerting_time,
-          s_err,sz_err,v_err,vz_err);
-      if (!det.conflict() && kinematic_conflict(core.ownship,intruder,core.parameters,detector,
+      ConflictData det = detector->conflictDetectionWithTrafficState(core.ownship,intruder,0.0,alerting_time);
+      if (!det.conflict() && kinematic_conflict(core.ownship,intruder,detector,
           core.epsilonH(false,intruder),core.epsilonV(false,intruder),alerting_time)) {
-        acs_peripheral_bands__[conflict_region].push_back(IndexLevelT(ac,alert_level,alerting_time,false));
+        acs_peripheral_bands_[conflict_region].push_back(IndexLevelT(ac,alert_level,alerting_time));
       }
     }
   }
@@ -388,7 +352,7 @@ void DaidalusRealBands::peripheral_aircraft(DaidalusCore& core, int conflict_reg
  */
 const std::vector<IndexLevelT>& DaidalusRealBands::acs_peripheral_bands(DaidalusCore& core, int conflict_region) {
   refresh(core);
-  return acs_peripheral_bands__[conflict_region];
+  return acs_peripheral_bands_[conflict_region];
 }
 
 /**
@@ -396,7 +360,7 @@ const std::vector<IndexLevelT>& DaidalusRealBands::acs_peripheral_bands(Daidalus
  */
 RecoveryInformation DaidalusRealBands::recoveryInformation(DaidalusCore& core) {
   refresh(core);
-  return RecoveryInformation(recovery_time__,recovery_nfactor__, recovery_horizontal_distance__,recovery_vertical_distance__);
+  return RecoveryInformation(recovery_time_,recovery_nfactor_, recovery_horizontal_distance_,recovery_vertical_distance_);
 }
 
 /**
@@ -404,31 +368,32 @@ RecoveryInformation DaidalusRealBands::recoveryInformation(DaidalusCore& core) {
  */
 const std::vector<BandsRange>& DaidalusRealBands::ranges(DaidalusCore& core) {
   refresh(core);
-  return ranges__;
+  return ranges_;
 }
 
 /**
- * Compute list of colored values in lcvs from sets of none bands
+ * Compute list of color values in lcvs from sets of none bands
  * Ensure that the intervals are "complete", filling in missing intervals and ensuring the
  * bands end at the proper bounds.
  */
-void DaidalusRealBands::color_values(std::vector<ColoredValue>& lcvs, const std::vector<IntervalSet>& none_sets, DaidalusCore& core, bool recovery, int last_region) {
-
-  BandsRegion::Region green = recovery ? BandsRegion::RECOVERY : BandsRegion::NONE;
+void DaidalusRealBands::color_values(std::vector<ColorValue>& lcvs, const std::vector<IntervalSet>& none_sets, DaidalusCore& core, bool recovery,
+    int last_region) {
   if (mod_ == 0) {
-    ColoredValue::init(lcvs,min_param_,max_param_,min_val__,max_val__,green);
+    ColorValue::init(lcvs,min_param_,max_param_,min_val_,max_val_,BandsRegion::NONE);
   } else {
-    ColoredValue::init(lcvs,min_val__,max_val__,mod_,green);
+    ColorValue::init_with_mod(lcvs,min_val_,max_val_,mod_,BandsRegion::NONE);
   }
-
   for (int conflict_region = 0; conflict_region <= last_region; ++conflict_region) {
     if (core.bands_for(conflict_region)) {
-      ColoredValue::insertNoneSetToColoredValues(lcvs, none_sets[conflict_region],
-          BandsRegion::conflictRegionFromOrder(BandsRegion::NUMBER_OF_CONFLICT_BANDS-conflict_region));
+      ColorValue::insertNoneSetToColorValues(lcvs, none_sets[conflict_region],
+          BandsRegion::regionFromOrder(BandsRegion::NUMBER_OF_CONFLICT_BANDS-conflict_region));
       if (none_sets[conflict_region].isEmpty()) {
         break;
       }
     }
+  }
+  if (recovery) {
+    ColorValue::insertRecoverySetToColorValues(lcvs,none_sets[last_region]);
   }
 }
 
@@ -438,15 +403,15 @@ void DaidalusRealBands::color_values(std::vector<ColoredValue>& lcvs, const std:
 void DaidalusRealBands::saturateNoneIntervalSet(IntervalSet& noneset) const {
   noneset.clear();
   if (mod_ == 0) {
-    noneset.almost_add(min_val__,max_val__,DaidalusParameters::ALMOST_);
+    noneset.almost_add(min_val_,max_val_,DaidalusParameters::ALMOST_);
   } else {
-    if (circular__) {
+    if (circular_) {
       noneset.almost_add(0,mod_,DaidalusParameters::ALMOST_);
-    } else if (min_val__ < max_val__) {
-      noneset.almost_add(min_val__,max_val__,DaidalusParameters::ALMOST_);
+    } else if (min_val_ < max_val_) {
+      noneset.almost_add(min_val_,max_val_,DaidalusParameters::ALMOST_);
     } else {
-      noneset.almost_add(min_val__,mod_,DaidalusParameters::ALMOST_);
-      noneset.almost_add(0,max_val__,DaidalusParameters::ALMOST_);
+      noneset.almost_add(min_val_,mod_,DaidalusParameters::ALMOST_);
+      noneset.almost_add(0,max_val_,DaidalusParameters::ALMOST_);
     }
   }
 }
@@ -476,13 +441,13 @@ void DaidalusRealBands::compute_none_bands(IntervalSet& none_set_region, const s
         // the internal cylinder is checked until this time.
         if (recovery != NULL) {
           none_bands(noneset2,recovery,NULL,
-              core.epsilonH(recovery_case,intruder),core.epsilonV(recovery_case,intruder),0,T,core.ownship,intruder,core.parameters);
+              core.epsilonH(recovery_case,intruder),core.epsilonV(recovery_case,intruder),0,T,core.ownship,intruder);
         } else {
           saturateNoneIntervalSet(noneset2);
         }
       } else if (B <= T) {
         none_bands(noneset2,detector,recovery,
-            core.epsilonH(recovery_case,intruder),core.epsilonV(recovery_case,intruder),B,T,core.ownship,intruder,core.parameters);
+            core.epsilonH(recovery_case,intruder),core.epsilonV(recovery_case,intruder),B,T,core.ownship,intruder);
       }
       none_set_region.almost_intersect(noneset2,DaidalusParameters::ALMOST_);
       if (none_set_region.isEmpty()) {
@@ -493,16 +458,16 @@ void DaidalusRealBands::compute_none_bands(IntervalSet& none_set_region, const s
 }
 
 /**
- * Compute recovery bands. Class variables recovery_time__, recovery_horizontal_distance__,
- * and recovery_vertical_distance__ are set.
+ * Compute recovery bands. Class variables recovery_time_, recovery_horizontal_distance_,
+ * and recovery_vertical_distance_ are set.
  * Return true if non-saturated recovery bands where computed
  */
 bool DaidalusRealBands::compute_recovery_bands(IntervalSet& none_set_region, const std::vector<IndexLevelT>& ilts,
     DaidalusCore& core) {
-  recovery_time__ = NINFINITY;
-  recovery_nfactor__ = 0;
-  recovery_horizontal_distance__ = NINFINITY;
-  recovery_vertical_distance__ = NINFINITY;
+  recovery_time_ = NINFINITY;
+  recovery_nfactor_ = 0;
+  recovery_horizontal_distance_ = NINFINITY;
+  recovery_vertical_distance_ = NINFINITY;
   double T = core.parameters.getLookaheadTime();
   CDCylinder cd3d = CDCylinder::mk(core.parameters.getHorizontalNMAC(),core.parameters.getVerticalNMAC());
   Detection3D* ocd3d = &cd3d;
@@ -548,16 +513,16 @@ bool DaidalusRealBands::compute_recovery_bands(IntervalSet& none_set_region, con
             recovery_time,core);
         solidred = none_set_region.isEmpty();
         if (!solidred) {
-          recovery_time__ = recovery_time;
-          recovery_horizontal_distance__ = cd3d.getHorizontalSeparation();
-          recovery_vertical_distance__ = cd3d.getVerticalSeparation();
+          recovery_time_ = recovery_time;
+          recovery_horizontal_distance_ = cd3d.getHorizontalSeparation();
+          recovery_vertical_distance_ = cd3d.getVerticalSeparation();
           return true;
         } else if (!core.parameters.isEnabledCollisionAvoidanceBands()) {
           // Nothing else to do. Collision avoidance bands are not enabled.
           return false;
         }
       }
-      ++recovery_nfactor__;
+      ++recovery_nfactor_;
       cd3d.setHorizontalSeparation(std::max(core.parameters.getHorizontalNMAC(),cd3d.getHorizontalSeparation()*factor));
       cd3d.setVerticalSeparation(std::max(core.parameters.getVerticalNMAC(),cd3d.getVerticalSeparation()*factor));
     }
@@ -567,7 +532,7 @@ bool DaidalusRealBands::compute_recovery_bands(IntervalSet& none_set_region, con
 
 // Return index of corrective region: 0: NEAR, 1: MID, 2: FAR
 int DaidalusRealBands::corrective_region_index(const DaidalusCore& core) {
-  return BandsRegion::NUMBER_OF_CONFLICT_BANDS - BandsRegion::orderOfConflictRegion(core.parameters.getCorrectiveRegion());
+  return BandsRegion::NUMBER_OF_CONFLICT_BANDS - BandsRegion::orderOfRegion(core.parameters.getCorrectiveRegion());
 }
 
 /**
@@ -575,28 +540,21 @@ int DaidalusRealBands::corrective_region_index(const DaidalusCore& core) {
  * Compute bands for one region. Return true iff recovery bands were computed.
  */
 bool DaidalusRealBands::compute_region(std::vector<IntervalSet>& none_sets, int conflict_region, DaidalusCore& core) {
-  compute_none_bands(none_sets[conflict_region], acs_bands__[conflict_region],
+  compute_none_bands(none_sets[conflict_region], acs_bands_[conflict_region],
       NULL,NULL,false,0.0,core);
   if (recovery_) {
     int corrective_region = corrective_region_index(core);
     if  (none_sets[conflict_region].isEmpty() && conflict_region <= corrective_region) {
       // Compute recovery bands
-      if (compute_recovery_bands(none_sets[corrective_region],acs_bands__[corrective_region],core)) {
-        CDCylinder cd3d = CDCylinder::mk(recovery_horizontal_distance__,recovery_vertical_distance__);
-        Detection3D* ocd3d = &cd3d;
-        // Re-compute bands for regions that are more severe than conflict_region
-        for (int i=0;i<corrective_region;++i){
-          compute_none_bands(none_sets[i],acs_bands__[i],NULL,ocd3d,true,
-              recovery_time__,core);
-        }
-      }
+      compute_recovery_bands(none_sets[corrective_region],acs_bands_[corrective_region],core);
       return true;
     } else if (instantaneous_bands() && conflict_region == corrective_region &&
         core.tiov(conflict_region).low == 0) {
       // Recovery bands for instantaneous bands saturate when internal volume is violated
-      recovery_time__ = 0;
-      recovery_horizontal_distance__ = core.parameters.getMinHorizontalRecovery();
-      recovery_vertical_distance__ = core.parameters.getMinVerticalRecovery();
+      recovery_time_ = 0;
+      recovery_nfactor_ = 0;
+      recovery_horizontal_distance_ = core.parameters.getMinHorizontalRecovery();
+      recovery_vertical_distance_ = core.parameters.getMinVerticalRecovery();
       return true;
     }
   }
@@ -608,191 +566,49 @@ bool DaidalusRealBands::compute_region(std::vector<IntervalSet>& none_sets, int 
  * Compute all bands.
  */
 void DaidalusRealBands::compute(DaidalusCore& core) {
-  recovery_time__ = NaN;
-  recovery_horizontal_distance__ = NaN;
-  recovery_vertical_distance__ = NaN;
+  recovery_time_ = NaN;
+  recovery_horizontal_distance_ = NaN;
+  recovery_vertical_distance_ = NaN;
   std::vector<IntervalSet> none_sets;
-  none_sets.reserve(BandsRegion::NUMBER_OF_CONFLICT_BANDS);
+  none_sets.resize(BandsRegion::NUMBER_OF_CONFLICT_BANDS); // use resize since we are then using subscript assignment
   for (int conflict_region=0;conflict_region<BandsRegion::NUMBER_OF_CONFLICT_BANDS;++conflict_region) {
     none_sets[conflict_region] = IntervalSet();
   }
   bool recovery = false;
   bool saturated = false;
   int conflict_region = 0;
-  for (;conflict_region < BandsRegion::NUMBER_OF_CONFLICT_BANDS && !saturated;++conflict_region)  {
+  // From most severe to least severe
+  while (conflict_region < BandsRegion::NUMBER_OF_CONFLICT_BANDS && !saturated)  {
     if (core.bands_for(conflict_region)) {
       recovery = compute_region(none_sets,conflict_region,core);
       saturated = recovery || none_sets[conflict_region].isEmpty();
     }
+    ++conflict_region;
   }
-  --conflict_region;
-  int corrective_region = corrective_region_index(core);
-  // From this point on, hysteresis parameters are considered and they may affect the
-  // actual output.
-  double delta = max_delta_resolution(core.parameters);
-  if (!ISNAN(_last_time_) &&
-      (core.current_time <= _last_time_ ||
-          core.current_time - _last_time_ > core.parameters.getHysteresisTime())) {
-    reset_hysteresis();
-  }
-  // Check if previous resolution is still OK and keep it by adding a yellow band to the left/right of
-  // the resolution.
-  double val = own_val(core.ownship);
-  if (core.parameters.isEnabledBandsPersistence() &&
-      !ISNAN(_last_time_) && !ISNAN(_resolution_low_) && !ISNAN(_resolution_up_) &&
-      in_range(val,_resolution_low_,_resolution_up_) &&
-      !core.acs_conflict_bands(corrective_region).empty()) {
-    IntervalSet res_set;
-    if (ISFINITE(_resolution_up_)) {
-      double lb_max = in_range(_resolution_low_,_resolution_up_,max_val__)?_resolution_low_ : max_val__;
-      add_noneset(res_set,_resolution_up_,lb_max);
-    }
-    if (ISFINITE(_resolution_low_)) {
-      double ub_min = in_range(_resolution_up_,min_val__,_resolution_low_)?_resolution_up_ : min_val__;
-      add_noneset(res_set,ub_min,_resolution_low_);
-    }
-    none_sets[corrective_region].almost_intersect(res_set,DaidalusParameters::ALMOST_);
-  }
-  std::vector<ColoredValue> lcvs;
-  color_values(lcvs,none_sets,core,recovery,recovery?corrective_region:conflict_region);
-  // Color bands
-  ColoredValue::fromColoredValuestoBandsRanges(ranges__, lcvs);
-  find_resolutions(core.ownship,none_sets[corrective_region],core.current_time);
-  preferred_direction_hysteresis(core,delta);
-}
-
-// Return true if val is in in range [lb,ub]. When mod_ > 0, lb may be greater than ub. In this case,
-// mod logic is taken into account.
-bool DaidalusRealBands::in_range(double val, double lb, double ub) const {
-  if (ISFINITE(val)) {
-    lb = ISFINITE(lb) ? lb : min_val__;
-    ub = ISFINITE(ub) ? ub : max_val__;
-    if ((mod_ == 0 || Util::almost_less(lb,ub,DaidalusParameters::ALMOST_)) &&
-        Util::almost_leq(lb,val,DaidalusParameters::ALMOST_) &&
-        Util::almost_leq(val,ub,DaidalusParameters::ALMOST_)) {
-      return true;
-    } else if (mod_ > 0) {
-      if (Util::almost_equals(lb,ub,DaidalusParameters::ALMOST_) ||
-          Util::almost_leq(val,ub,DaidalusParameters::ALMOST_) ||
-          Util::almost_leq(lb,val,DaidalusParameters::ALMOST_)) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-// Find a resolution interval closest to the current value of the ownship (takes into account
-// circular bands, i.e., when mod_ > 0)
-void DaidalusRealBands::find_resolutions(const TrafficState& ownship, IntervalSet& noneset, double time) {
-  double l = NINFINITY;
-  double u = PINFINITY;
-  bool conflict = true;
-  double val = own_val(ownship);
-  if (!noneset.isEmpty()) {
-    // There is a resolution
-    for (int i=0; i < noneset.size(); ++i) {
-      if (noneset.getInterval(i).almost_in(val,true,true,DaidalusParameters::ALMOST_)) {
-        // There is no conflict
-        l = NaN;
-        u = NaN;
-        conflict = false;
-        break;
-      } else if (noneset.getInterval(i).up < val) {
-        if (i+1==noneset.size()) {
-          l = noneset.getInterval(i).up;
-          if (mod_ > 0) {
-            u = noneset.getInterval(0).low;
-          }
-          break;
-        } else if (val < noneset.getInterval(i+1).low) {
-          l = noneset.getInterval(i).up;
-          u = noneset.getInterval(i+1).low;
-          break;
-        }
-      } else if (val < noneset.getInterval(i).low) {
-        if (i==0) {
-          if (mod_ > 0) {
-            l = noneset.getInterval(noneset.size()-1).up;
-          }
-          u = noneset.getInterval(i).low;
-          break;
-        }
-      }
-    }
-  }
-  if (conflict) {
-    if (Util::almost_geq(mod_val(val-l),min_relative__,DaidalusParameters::ALMOST_)) {
-      l = NINFINITY;
-    }
-    if (Util::almost_geq(mod_val(u-val),max_relative__,DaidalusParameters::ALMOST_)) {
-      u = PINFINITY;
-    }
-  }
-  _last_time_ = time;
-  _resolution_up_ = u;
-  _resolution_region_up_ = find_region_of_value(u);
-  _resolution_low_ = l;
-  _resolution_region_low_ = find_region_of_value(l);
-}
-
-// Reset values that control and that depend on hysteresis
-void DaidalusRealBands::reset_hysteresis() {
-  _last_time_ = NaN;
-  _time_of_dir_ = NaN;
-  _actual_dir_ = false;
-  _preferred_dir_ = false;
-  _resolution_up_ = NaN;
-  _resolution_low_ = NaN;
-  _resolution_region_up_ = BandsRegion::UNKNOWN;
-  _resolution_region_low_ = BandsRegion::UNKNOWN;
-}
-
-/**
- * Compute preferred direction based on resolution that is closer
- * to current value.
- */
-void DaidalusRealBands::preferred_direction_hysteresis(const DaidalusCore& core, double delta) {
-  double up = _resolution_up_;
-  double low = _resolution_low_;
-  if (!ISFINITE(up) && !ISFINITE(low)) {
-    _time_of_dir_ = NaN;
-    _actual_dir_ = false;
-    _preferred_dir_ = _actual_dir_;
-  } else if (!ISFINITE(up)) {
-    _time_of_dir_ = core.current_time;
-    _actual_dir_ = false;
-    _preferred_dir_ = _actual_dir_;
-  } else if (!ISFINITE(low)) {
-    _time_of_dir_ = core.current_time;
-    _actual_dir_ = true;
-    _preferred_dir_ = _actual_dir_;
+  if (saturated) {
+    conflict_region = corrective_region_index(core);
   } else {
-    double val = own_val(core.ownship);
-    double mod_up = mod_val(up-val);
-    double mod_down = mod_val(val-low);
-    _actual_dir_ = Util::almost_leq(mod_up,mod_down,DaidalusParameters::ALMOST_);
-    if (_actual_dir_ == _preferred_dir_ || ISNAN(_time_of_dir_) || core.current_time <= _time_of_dir_ ||
-        (std::abs(mod_up - mod_down) >= delta && core.current_time - _time_of_dir_ > core.parameters.getPersistenceTime())) {
-      _time_of_dir_ = core.current_time;
-      _preferred_dir_ = _actual_dir_;
-    }
-    // In the else case preferred_dir remains the same
+    --conflict_region;
   }
-}
+  // At this point conflict_region has the last region for which bands are computed
+  // Compute list of color values (primitive representation of bands)
+  std::vector<ColorValue> lcvs;
+  color_values(lcvs,none_sets,core,recovery,conflict_region);
 
-BandsRegion::Region DaidalusRealBands::find_region_of_value(double val) const {
-  if (ISFINITE(val)) {
-    std::vector<BandsRange>::const_iterator br_ptr;
-    for (br_ptr = ranges__.begin(); br_ptr != ranges__.end();++br_ptr) {
-      if (BandsRegion::isConflictBand(br_ptr->region) && br_ptr->interval.almost_in(val,true,true,DaidalusParameters::ALMOST_)) {
-        return br_ptr->region;
-      } else if (br_ptr->interval.low > val) {
-        return BandsRegion::UNKNOWN;
-      }
-    }
+  // From this point of hysteresis logic, including M of N and persistence, is applied.
+  if (ISNAN(bands_hysteresis_.getLastTime())) {
+    bands_hysteresis_.initialize(core.parameters.getHysteresisTime(),
+        core.parameters.getPersistenceTime(),
+        core.parameters.isEnabledBandsPersistence(),
+        core.parameters.getAlertingParameterM(),
+        core.parameters.getAlertingParameterN());
   }
-  return BandsRegion::UNKNOWN;
+  bands_hysteresis_.resetIfCurrentTime(core.current_time);
+  bands_hysteresis_.m_of_n(lcvs);
+  int idx = bands_hysteresis_.bandsPersistence(ranges_,lcvs,recovery,own_val(core.ownship));
+  // Compute resolutions and preferred direction using persistence logic
+  bands_hysteresis_.bandsHysteresis(ranges_,core.parameters.getCorrectiveRegion(),
+      max_delta_resolution(core.parameters),recovery_nfactor_,own_val(core.ownship),idx);
 }
 
 /**
@@ -804,21 +620,9 @@ BandsRegion::Region DaidalusRealBands::find_region_of_value(double val) const {
 double DaidalusRealBands::resolution(DaidalusCore& core, bool dir) {
   refresh(core);
   if (dir) {
-    return _resolution_up_;
+    return bands_hysteresis_.getLastResolutionUp();
   } else {
-    return _resolution_low_;
-  }
-}
-
-/**
- * Returns resolution region for each direction (true=up/right, false=low/left)
- */
-BandsRegion::Region DaidalusRealBands::resolution_region(DaidalusCore& core, bool dir) {
-  refresh(core);
-  if (dir) {
-    return _resolution_region_up_;
-  } else {
-    return _resolution_region_low_;
+    return bands_hysteresis_.getLastResolutionLow();
   }
 }
 
@@ -828,7 +632,7 @@ BandsRegion::Region DaidalusRealBands::resolution_region(DaidalusCore& core, boo
  */
 bool DaidalusRealBands::preferred_direction(DaidalusCore& core) {
   refresh(core);
-  return _preferred_dir_;
+  return bands_hysteresis_.getLastPreferredDirection();
 }
 
 /**
@@ -845,12 +649,7 @@ double DaidalusRealBands::last_time_to_maneuver(DaidalusCore& core, const Traffi
     AlertThresholds alertthr = core.parameters.getAlerterAt(alert_idx).getLevel(alert_level);
     Detection3D* detector = alertthr.getCoreDetectionPtr();
     double T = Util::min(core.parameters.getLookaheadTime(),alertthr.getEarlyAlertingTime());
-    double s_err = intruder.relativeHorizontalPositionError(core.ownship,core.parameters);
-    double sz_err = intruder.relativeVerticalPositionError(core.ownship,core.parameters);
-    double v_err = intruder.relativeHorizontalSpeedError(core.ownship,s_err,core.parameters);
-    double vz_err = intruder.relativeVerticalSpeedError(core.ownship,core.parameters);
-    ConflictData det = detector->conflictDetectionSUM(ownship.get_s(),ownship.get_v(),intruder.get_s(),intruder.get_v(),0,T,
-        s_err,sz_err,v_err,vz_err);
+    ConflictData det = detector->conflictDetectionWithTrafficState(ownship,intruder,0.0,T);
     if (det.conflict()) {
       double pivot_red = det.getTimeIn();
       if (pivot_red == 0) {
@@ -861,9 +660,8 @@ double DaidalusRealBands::last_time_to_maneuver(DaidalusCore& core, const Traffi
       while ((pivot_red-pivot_green) > 0.5) {
         TrafficState ownship_at_pivot  = ownship.linearProjection(pivot);
         TrafficState intruder_at_pivot = intruder.linearProjection(pivot);
-        if (detector->violationSUMAt(ownship_at_pivot.get_s(),ownship_at_pivot.get_v(),intruder_at_pivot.get_s(),intruder_at_pivot.get_v(),
-            s_err,sz_err,v_err,vz_err,0.0) ||
-            all_red(detector,NULL,0,0,0.0,T,ownship_at_pivot,intruder_at_pivot,core.parameters)) {
+        if (detector->violationAtWithTrafficState(ownship_at_pivot,intruder_at_pivot,0.0) ||
+            all_red(detector,NULL,0,0,0.0,T,ownship_at_pivot,intruder_at_pivot)) {
           pivot_red = pivot;
         } else {
           pivot_green = pivot;
@@ -881,7 +679,7 @@ double DaidalusRealBands::last_time_to_maneuver(DaidalusCore& core, const Traffi
 }
 
 int DaidalusRealBands::maxdown(const TrafficState& ownship) const {
-  int down = (int)std::ceil(min_relative__/get_step());
+  int down = static_cast<int>(std::ceil(min_relative_/get_step()));
   if (mod_ > 0 && Util::almost_greater(down*get_step(),mod_/2.0,DaidalusParameters::ALMOST_)) {
     --down;
   }
@@ -889,7 +687,7 @@ int DaidalusRealBands::maxdown(const TrafficState& ownship) const {
 }
 
 int DaidalusRealBands::maxup(const TrafficState& ownship) const {
-  int up = (int)std::ceil(max_relative__/get_step());
+  int up = static_cast<int>(std::ceil(max_relative_/get_step()));
   if (mod_ > 0 && Util::almost_greater(up*get_step(),mod_/2.0,DaidalusParameters::ALMOST_)) {
     --up;
   }
@@ -908,22 +706,22 @@ void DaidalusRealBands::add_noneset(IntervalSet& noneset, double lb, double ub) 
     return;
   }
   if (mod_ == 0)  {
-    lb = Util::max(min_val__,lb);
-    ub = Util::min(max_val__,ub);
+    lb = Util::max(min_val_,lb);
+    ub = Util::min(max_val_,ub);
     if (Util::almost_less(lb,ub,DaidalusParameters::ALMOST_)) {
       noneset.almost_add(lb,ub,DaidalusParameters::ALMOST_);
     }
     return;
   }
-  lb = mod_val(lb);
-  ub = mod_val(ub);
+  lb = Util::safe_modulo(lb,mod_);
+  ub = Util::safe_modulo(ub,mod_);
   IntervalSet minmax_noneset = IntervalSet();
-  if (circular__) {
-  } else if (min_val__ < max_val__) {
-    minmax_noneset.almost_add(min_val__,max_val__,DaidalusParameters::ALMOST_);
+  if (circular_) {
+  } else if (min_val_ < max_val_) {
+    minmax_noneset.almost_add(min_val_,max_val_,DaidalusParameters::ALMOST_);
   } else {
-    minmax_noneset.almost_add(0,max_val__,DaidalusParameters::ALMOST_);
-    minmax_noneset.almost_add(min_val__,mod_,DaidalusParameters::ALMOST_);
+    minmax_noneset.almost_add(0,max_val_,DaidalusParameters::ALMOST_);
+    minmax_noneset.almost_add(min_val_,mod_,DaidalusParameters::ALMOST_);
   }
   IntervalSet lbub_noneset = IntervalSet();
   if (Util::almost_equals(lb,ub,DaidalusParameters::ALMOST_)) {
@@ -953,10 +751,10 @@ void DaidalusRealBands::add_noneset(IntervalSet& noneset, double lb, double ub) 
  */
 void DaidalusRealBands::toIntervalSet(IntervalSet& noneset, const std::vector<Integerval>& l, double scal, double add) const {
   noneset.clear();
-  for (int i=0; i < (int) l.size(); ++i) {
+  for (int i=0; i < static_cast<int>(l.size()); ++i) {
     const Integerval& ii = l[i];
     if (ii.lb == ii.ub) {
-        continue;
+      continue;
     }
     double lb = scal*ii.lb+add;
     double ub = scal*ii.ub+add;
@@ -969,46 +767,46 @@ void DaidalusRealBands::toIntervalSet(IntervalSet& noneset, const std::vector<In
  * values (or [0,mod] in the case of circular bands, i.e., when mod == 0).
  */
 void DaidalusRealBands::none_bands(IntervalSet& noneset, const Detection3D* conflict_det, const Detection3D* recovery_det,
-    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters) {
+    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic) {
   std::vector<Integerval> bands_int;
   int mino = maxdown(ownship);
   int maxo = maxup(ownship);
   if (instantaneous_bands()) {
     instantaneous_bands_combine(bands_int,conflict_det,recovery_det,B,T,0.0,B,
-        mino,maxo,ownship,traffic,parameters,epsh,epsv);
+        mino,maxo,ownship,traffic,epsh,epsv);
   } else {
     kinematic_bands_combine(bands_int,conflict_det,recovery_det,time_step(ownship),B,T,0.0,B,
-        mino,maxo,ownship,traffic,parameters,epsh,epsv);
+        mino,maxo,ownship,traffic,epsh,epsv);
   }
   toIntervalSet(noneset,bands_int,get_step(),own_val(ownship));
 }
 
 bool DaidalusRealBands::any_red(const Detection3D* conflict_det, const Detection3D* recovery_det,
-    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters) {
+    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic) {
   return instantaneous_bands() ?
       any_instantaneous_red(conflict_det,recovery_det,B,T,0.0,B,
-          maxdown(ownship),maxup(ownship),ownship,traffic,parameters,epsh,epsv,0):
+          maxdown(ownship),maxup(ownship),ownship,traffic,epsh,epsv,0):
           any_int_red(conflict_det,recovery_det,time_step(ownship),B,T,0.0,B,
-              maxdown(ownship),maxup(ownship),ownship,traffic,parameters,epsh,epsv,0);
+              maxdown(ownship),maxup(ownship),ownship,traffic,epsh,epsv,0);
 }
 
 bool DaidalusRealBands::all_red(const Detection3D* conflict_det, const Detection3D* recovery_det,
-    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters) {
+    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic) {
   return instantaneous_bands() ?
       all_instantaneous_red(conflict_det,recovery_det,B,T,0,B,
-          maxdown(ownship),maxup(ownship),ownship,traffic,parameters,epsh,epsv,0):
+          maxdown(ownship),maxup(ownship),ownship,traffic,epsh,epsv,0):
           all_int_red(conflict_det,recovery_det,time_step(ownship),B,T,0.0,B,
-              maxdown(ownship),maxup(ownship),ownship,traffic,parameters,epsh,epsv,0);
+              maxdown(ownship),maxup(ownship),ownship,traffic,epsh,epsv,0);
 }
 
 bool DaidalusRealBands::all_green(const Detection3D* conflict_det, const Detection3D* recovery_det,
-    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters) {
-  return !any_red(conflict_det,recovery_det,epsh,epsv,B,T,ownship,traffic,parameters);
+    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic) {
+  return !any_red(conflict_det,recovery_det,epsh,epsv,B,T,ownship,traffic);
 }
 
 bool DaidalusRealBands::any_green(const Detection3D* conflict_det, const Detection3D* recovery_det,
-    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters) {
-  return !all_red(conflict_det,recovery_det,epsh,epsv,B,T,ownship,traffic,parameters);
+    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic) {
+  return !all_red(conflict_det,recovery_det,epsh,epsv,B,T,ownship,traffic);
 }
 
 /**
@@ -1018,7 +816,7 @@ bool DaidalusRealBands::any_green(const Detection3D* conflict_det, const Detecti
  * The value dir=false is down and dir=true is up.
  */
 double DaidalusRealBands::resolution(const Detection3D* conflict_det, const Detection3D* recovery_det, const TrafficState& repac,
-    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters,
+    int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic,
     bool dir) {
   int maxn;
   int sign;
@@ -1030,19 +828,19 @@ double DaidalusRealBands::resolution(const Detection3D* conflict_det, const Dete
     sign = -1;
   }
   int ires = first_green(conflict_det,recovery_det,time_step(ownship),B,T,0.0,B,
-      dir,maxn,ownship,traffic,parameters,epsh,epsv);
+      dir,maxn,ownship,traffic,epsh,epsv);
   if (ires == 0) {
     return NaN;
   } else if (ires < 0) {
     return sign*PINFINITY;
   } else {
-    return mod_val(own_val(ownship)+sign*ires*get_step());
+    return Util::safe_modulo(own_val(ownship)+sign*ires*get_step(),mod_);
   }
 }
 
 std::string DaidalusRealBands::rawString() const {
   std::string s = "";
-  s+="# Private variables_\n";
+  s+="# Private variables\n";
   s+="mod_ = "+FmPrecision(mod_)+"\n";
   s+="step_ = "+FmPrecision(step_)+"\n";
   s+="min_param_ = "+FmPrecision(min_param_)+"\n";
@@ -1050,69 +848,59 @@ std::string DaidalusRealBands::rawString() const {
   s+="min_rel_param_ = "+FmPrecision(min_rel_param_)+"\n";
   s+="max_rel_param_ = "+FmPrecision(max_rel_param_)+"\n";
   s+="recovery_ = "+Fmb(recovery_)+"\n";
-  s+="# Cached variables__\n";
-  s+="outdated__ = "+Fmb(outdated__)+"\n";
-  s+="checked__ = "+Fmi(checked__)+"\n";
+  s+="# Cached variables\n";
+  s+="outdated_ = "+Fmb(outdated_)+"\n";
+  s+="checked_ = "+Fmi(checked_)+"\n";
   for (int conflict_region=0; conflict_region < BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++conflict_region) {
-    s+="acs_peripheral_bands__["+Fmi(conflict_region)+"] = "+
-        IndexLevelT::toString(acs_peripheral_bands__[conflict_region])+"\n";
+    s+="acs_peripheral_bands_["+Fmi(conflict_region)+"] = "+
+        IndexLevelT::toString(acs_peripheral_bands_[conflict_region])+"\n";
   }
   for (int conflict_region=0; conflict_region < BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++conflict_region) {
-    s+="acs_bands__["+Fmi(conflict_region)+"] = "+
-        IndexLevelT::toString(acs_bands__[conflict_region])+"\n";
+    s+="acs_bands_["+Fmi(conflict_region)+"] = "+
+        IndexLevelT::toString(acs_bands_[conflict_region])+"\n";
   }
-  for (int i = 0; i < (int) ranges__.size(); ++i) {
-    s+="ranges__["+Fmi(i)+"] = ";
-    s+=ranges__[i].toString()+"\n";
+  for (int i = 0; i < static_cast<int>(ranges_.size()); ++i) {
+    s+="ranges_["+Fmi(i)+"] = ";
+    s+=ranges_[i].toString()+"\n";
   }
-  s+="recovery_time__ = "+FmPrecision(recovery_time__)+"\n";
-  s+="recovery_nfactor__ = "+Fmi(recovery_nfactor__)+"\n";
-  s+="recovery_horizontal_distance__ = "+FmPrecision(recovery_horizontal_distance__)+ " [m]\n";
-  s+="recovery_vertical_distance__ = "+FmPrecision(recovery_vertical_distance__)+ " [m]\n";
-  s+="min_val__ = "+FmPrecision(min_val__)+"\n";
-  s+="max_val__ = "+FmPrecision(max_val__)+"\n";
-  s+="min_relative__ = "+FmPrecision(min_relative__)+"\n";
-  s+="max_relative__ = "+FmPrecision(max_relative__)+"\n";
-  s+="circular__ = "+Fmb(circular__)+"\n";
-  s+="# Hysteresis _variables_\n";
-  s+="_last_time_ = "+FmPrecision(_last_time_)+"\n";
-  s+="_time_of_dir_ = "+FmPrecision(_time_of_dir_)+"\n";
-  s+="_actual_dir_ = "+Fmb(_actual_dir_)+"\n";
-  s+="_preferred_dir_ = "+Fmb(_preferred_dir_)+"\n";
-  s+="_resolution_low_ = "+FmPrecision(_resolution_low_)+"\n";
-  s+="_resolution_up_ = "+FmPrecision(_resolution_up_)+"\n";
-  s+="_resolution_region_low_ = "+BandsRegion::to_string(_resolution_region_low_)+"\n";
-  s+="_resolution_region_up_ = "+BandsRegion::to_string(_resolution_region_up_)+"\n";
+  s+="recovery_time_ = "+FmPrecision(recovery_time_)+"\n";
+  s+="recovery_nfactor_ = "+Fmi(recovery_nfactor_)+"\n";
+  s+="recovery_horizontal_distance_ = "+FmPrecision(recovery_horizontal_distance_)+"\n";
+  s+="recovery_vertical_distance_ = "+FmPrecision(recovery_vertical_distance_)+"\n";
+  s+="min_val_ = "+FmPrecision(min_val_)+"\n";
+  s+="max_val_ = "+FmPrecision(max_val_)+"\n";
+  s+="min_relative_ = "+FmPrecision(min_relative_)+"\n";
+  s+="max_relative_ = "+FmPrecision(max_relative_)+"\n";
+  s+="circular_ = "+Fmb(circular_)+"\n";
+  s+=bands_hysteresis_.toString();
   return s;
 }
 
 std::string DaidalusRealBands::toString() const {
   std::string s = "";
-  for (int i = 0; i < (int) ranges__.size(); ++i) {
+  for (int i = 0; i < static_cast<int>(ranges_.size()); ++i) {
     s+="ranges["+Fmi(i)+"] = ";
-    s+=ranges__[i].toString()+"\n";
+    s+=ranges_[i].toString()+"\n";
   }
-  s+="recovery_time = "+FmPrecision(recovery_time__)+" [s]\n";
-  s+="recovery_nfactor = "+Fmi(recovery_nfactor__)+"\n";
-  s+="recovery_horizontal_distance = "+FmPrecision(recovery_horizontal_distance__)+ " [m]\n";
-  s+="recovery_vertical_distance = "+FmPrecision(recovery_vertical_distance__)+ " [m]\n";
-  s+="preferred_dir = "+Fmb(_preferred_dir_)+"\n";
-  s+="resolution_low = "+FmPrecision(_resolution_low_)+"\n";
-  s+="resolution_up = "+FmPrecision(_resolution_up_)+"\n";
-  s+="resolution_region_low = "+BandsRegion::to_string(_resolution_region_low_)+"\n";
-  s+="resolution_region_up = "+BandsRegion::to_string(_resolution_region_up_)+"\n";
+  s+="recovery_time = "+FmPrecision(recovery_time_)+" [s]\n";
+  s+="recovery_nfactor = "+Fmi(recovery_nfactor_)+"\n";
+  s+="recovery_horizontal_distance = "+FmPrecision(recovery_horizontal_distance_)+ " [m]\n";
+  s+="recovery_vertical_distance = "+FmPrecision(recovery_vertical_distance_)+ " [m]\n";
+  s+="preferred_dir = "+Fmb(bands_hysteresis_.getLastPreferredDirection())+"\n";
+  s+="resolution_low = "+FmPrecision(bands_hysteresis_.getLastResolutionLow())+"\n";
+  s+="resolution_up = "+FmPrecision(bands_hysteresis_.getLastResolutionUp())+"\n";
   return s;
 }
 
 std::string DaidalusRealBands::toPVS() const {
   std::string s = "(:";
-  for (int i = 0; i < (int) ranges__.size(); ++i) {
+  for (int i = 0; i < static_cast<int>(ranges_.size()); ++i) {
     if (i > 0) {
       s+=", ";
     } else {
       s+=" ";
     }
-    s += ranges__[i].toPVS();
+    s += ranges_[i].toPVS();
   }
   s+=" :)";
   return s;

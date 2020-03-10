@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -35,6 +35,8 @@ void FixedAircraftUrgencyStrategy::setFixedAircraftId(const std::string& id) {
  * @return index of aircraft id
  */
 int FixedAircraftUrgencyStrategy::mostUrgentAircraft( const TrafficState& ownship, const std::vector<TrafficState>& traffic, double T) const {
+  (void)ownship; //bypass unused parameter warning (needed for interface)
+  (void)T; //bypass unused parameter warning (needed for interface)
   return TrafficState::findAircraftIndex(traffic,ac_);
 }
 

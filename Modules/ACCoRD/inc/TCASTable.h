@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018 United States Government as represented by
+ * Copyright (c) 2012-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -114,7 +114,7 @@ private:
   std::vector<double> DMOD_;
   std::vector<double> ZTHR_;
   std::vector<double> HMD_;
-  std::vector<double> levels_; // this is the upper end for each level, indexed from _1_.
+  std::vector<double> levels_; // this is the upper end for each level, indexed from 1.
   // This list has one less element than the other lists.
 
   void add_zeros();

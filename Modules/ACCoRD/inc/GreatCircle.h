@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -235,7 +235,7 @@ namespace larcfm {
 	static double max_latitude_gc(double lat1, double lon1, double lat2, double lon2) ;
 
   private:
-	static double max_latitude_gc_course(double lat1, double lon1, double lat2, double lon2, double trk) ;
+	static double max_latitude_gc_course(double lat1, double trk) ;
 
   public:
 	static double max_latitude_gc(const LatLonAlt& p1, const LatLonAlt& p2);
@@ -253,7 +253,7 @@ namespace larcfm {
 	static double min_latitude_gc(double lat1, double lon1, double lat2, double lon2);
 
   private:
-	static double min_latitude_gc_course(double lat1, double lon1, double lat2, double lon2, double trk);
+	static double min_latitude_gc_course(double lat1, double trk);
 
   public:
 	static double min_latitude_gc(const LatLonAlt& p1, const LatLonAlt& p2);

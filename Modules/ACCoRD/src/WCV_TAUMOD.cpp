@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -30,6 +30,49 @@ WCV_TAUMOD::WCV_TAUMOD(const WCVTable& tab) {
   wcv_vertical = new WCV_TCOA();
   table = tab;
   id = "";
+}
+
+/**
+ * @return one static WCV_TAUMOD
+ */
+const WCV_TAUMOD& WCV_TAUMOD::A_WCV_TAUMOD() {
+  static WCV_TAUMOD dwc;
+  return dwc;
+}
+
+/**
+ * @return DO-365 preventive thresholds, i.e., DTHR=0.66nmi, ZTHR=700ft,
+ * TTHR=35s, TCOA=0.
+ */
+const WCV_TAUMOD& WCV_TAUMOD::DO_365_Phase_I_preventive() {
+  static WCV_TAUMOD preventive(WCVTable::DO_365_Phase_I_preventive());
+  return preventive;
+}
+
+/**
+ * @return DO-365 Well-Clear thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=0.
+ */
+const WCV_TAUMOD& WCV_TAUMOD::DO_365_DWC_Phase_I() {
+  return A_WCV_TAUMOD();
+}
+
+/**
+ * @return buffered preventive thresholds, i.e., DTHR=1nmi, ZTHR=750ft,
+ * TTHR=35s, TCOA=20.
+ */
+const WCV_TAUMOD& WCV_TAUMOD::Buffered_Phase_I_preventive() {
+  static WCV_TAUMOD preventive(WCVTable::Buffered_Phase_I_preventive());
+  return preventive;
+}
+
+/**
+ * @return buffered Well-Clear thresholds, i.e., DTHR=1.0nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=20.
+ */
+const WCV_TAUMOD& WCV_TAUMOD::Buffered_DWC_Phase_I() {
+  static WCV_TAUMOD dwc(WCVTable::Buffered_DWC_Phase_I());
+  return dwc;
 }
 
 double WCV_TAUMOD::horizontal_tvar(const Vect2& s, const Vect2& v) const {
@@ -79,8 +122,8 @@ Detection3D* WCV_TAUMOD::make() const {
  * Returns a deep copy of this WCV_TAUMOD object, including any results that have been calculated.
  */
 Detection3D* WCV_TAUMOD::copy() const {
-  WCV_TAUMOD* ret = new WCV_TAUMOD(table);
-  ret->id = id;
+  WCV_TAUMOD* ret = new WCV_TAUMOD();
+  ret->copyFrom(*this);
   return ret;
 }
 
@@ -90,7 +133,7 @@ std::string WCV_TAUMOD::getSimpleClassName() const {
 
 bool WCV_TAUMOD::contains(const Detection3D* cd) const {
   if (larcfm::equals(getCanonicalClassName(), cd->getCanonicalClassName()) ||
-     larcfm::equals("gov.nasa.larcfm.ACCoRD.WCV_TCPA", cd->getCanonicalClassName())) {
+      larcfm::equals("gov.nasa.larcfm.ACCoRD.WCV_TCPA", cd->getCanonicalClassName())) {
     return containsTable((WCV_tvar*)cd);
   }
   return false;

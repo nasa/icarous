@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Cesar Munoz, George Hagen
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -42,7 +42,7 @@ SeparatedInput::SeparatedInputException::SeparatedInputException(
 SeparatedInput::SeparatedInput() :
 						error("SeparatedInput") {
 	header = false;
-	units = false;
+	bunits = false;
 	caseSensitive = true;
 	parameters = ParameterData();
 	patternStr = Constants::wsPatternBase;
@@ -59,9 +59,9 @@ SeparatedInput::SeparatedInput(std::istream* ins) :
 						error("SeparatedInput") {
 	reader = ins;
 	header = false;
-	units = false;
+	bunits = false;
 	caseSensitive = true;
-	header_str.reserve(10);
+	header_str.reserve(10); // note: reserve() is appropriate because we exclusively use push_back to populate the vectors
 	units_str.reserve(10);
 	units_factor.reserve(10);
 	line_str.reserve(10);
@@ -81,7 +81,7 @@ SeparatedInput::SeparatedInput(const SeparatedInput& x) :
 	error = x.error;
 	reader = x.reader;
 	header = x.header;
-	units = x.units;
+	bunits = x.bunits;
 	caseSensitive = x.caseSensitive;
 	header_str = x.header_str;
 	units_str = x.units_str;
@@ -93,7 +93,6 @@ SeparatedInput::SeparatedInput(const SeparatedInput& x) :
 	fixed_width = x.fixed_width;
 	quoteCharDefined = x.quoteCharDefined;
 	quoteCharacter = x.quoteCharacter;
-	quoteSubstitutions = x.quoteSubstitutions;
 	preambleImage = x.preambleImage;
 
 
@@ -106,7 +105,7 @@ SeparatedInput& SeparatedInput::operator=(const SeparatedInput& x) {
 	error = x.error;
 	reader = x.reader;
 	header = x.header;
-	units = x.units;
+	bunits = x.bunits;
 	caseSensitive = x.caseSensitive;
 	header_str = x.header_str;
 	units_str = x.units_str;
@@ -118,7 +117,6 @@ SeparatedInput& SeparatedInput::operator=(const SeparatedInput& x) {
 	fixed_width = x.fixed_width;
 	quoteCharDefined = x.quoteCharDefined;
 	quoteCharacter = x.quoteCharacter;
-	quoteSubstitutions = x.quoteSubstitutions;
 	preambleImage = x.preambleImage;
 
 	//std::cout << "SeparatedInput assignment operator failure" << std::endl;
@@ -175,7 +173,7 @@ void SeparatedInput::setFixedColumn(const string& widths, const string& nameList
 
 		fixed_width = true;
 		header = true;
-		units = true;
+		bunits = true;
 	} catch (int e) {
 		string outstr = "No exception";
 		if (e == 1) outstr = "In parsing fixed width file, number of names does not match number of widths";
@@ -184,63 +182,33 @@ void SeparatedInput::setFixedColumn(const string& widths, const string& nameList
 	}
 }
 
+void SeparatedInput::setQuoteCharacter(char q) {
+		// the easy case
+		if (q == 0) {
+			quoteCharDefined = false;
+			return;
+		}
+		if (matches(std::string(&q,1), patternStr)) {
+			error.addError("setQuoteCharacter: quote character is in list of column delimiters.");
+			quoteCharDefined = false; // ignore this setQuoteCharacter()
+			return;				
+		}
+		quoteCharacter = q;
+		quoteCharDefined = true;
+	}
+
 // q = 0 is the same as setting the quote character to null in java
 void SeparatedInput::setQuoteCharacter(char q, const std::vector<char>& delims, const std::string& sub) {
-	if (q == 0) {
-		quoteCharDefined = false;
-		return;
-	}
-	// there are a bunch of ways this can go wrong.
-	if (delims.size() == 0 || sub.size() == 0) {
-		error.addError("setQuoteCharacter: substitution lists are empty");
-		return;
-	}
-	if (delims.size() > 99) {
-		error.addError("setQuoteCharacter: exceeded 100 delimiter max");
-		return;
-	}
-	for (int i = 0; i < (int) delims.size(); i++) {
-		char d = delims.at(i);
-		if (d == q) {
-			error.addError("setQuoteCharacter: substitution delim list contains the quote character!");
-			return;
-		}
-		if (!matches(std::string(&d,1), patternStr)) {
-			error.addError("setQuoteCharacter: substitution delim list does not match column delimiters!");
-			return;
-		}
-	}
-	if (sub.size() == 0) {
-		error.addError("setQuoteCharacter: substitution subs list null or empty string!");
-		return;
-	}
-	if (sub.find(std::string(&q,1)) != std::string::npos) {
-		error.addError("setQuoteCharacter: substitution subs list contains the quote character!");
-		return;
-	}
-	for (int j = 0; j < (int) delims.size(); j++) {
-		char d = delims.at(j);
-		if (sub.find(std::string(&d,1)) != std::string::npos) {
-			error.addError("setQuoteCharacter: substitution subs list contains recursion!");
-			return;
-		}
-	}
-	if (matches(sub, patternStr)) {
-		error.addError("setQuoteCharacter: substitution subs list matches column delimiters!");
-		return;
-	}
-	quoteCharacter = q;
-	quoteSubstitutions = std::map<std::string,std::string>();
-	for (int i = 0; i < (int) delims.size(); i++) {
-		char d = delims.at(i);
-		std::string cs = std::string(&d,1);
-		quoteSubstitutions[cs] = sub+FmLead(i,2);
-	}
-	quoteCharDefined = true;
+	setQuoteCharacter(q);
+}
+
+void SeparatedInput::setCsv() {
+	setColumnDelimiters("[ \t]*,[ \t]*");
+	setQuoteCharacter('"');
 }
 
 char SeparatedInput::getQuoteCharacter() const {
-	if (!quoteCharDefined) return 0;
+	if ( ! quoteCharDefined) return 0;
 	return quoteCharacter;
 }
 
@@ -263,14 +231,14 @@ string SeparatedInput::getHeading(int i) const {
 }
 
 int SeparatedInput::size() const {
-	return header_str.size();
+	return static_cast<int>(header_str.size());
 }
 
 int SeparatedInput::findHeading(const std::string& heading) const {
 	int rtn = -1;
-	for (unsigned int i = 0; i < header_str.size(); i++) {
+	for (size_t i = 0; i < header_str.size(); i++) {
 		if (heading.compare(header_str[i]) == 0) {
-			rtn = i;
+			rtn = static_cast<int>(i);
 			break;
 		}
 	}
@@ -278,14 +246,14 @@ int SeparatedInput::findHeading(const std::string& heading) const {
 }
 
 string SeparatedInput::getUnit(int i) const {
-	if (!units || i < 0 || (unsigned int) i >= units_str.size()) {
+	if (!bunits || i < 0 || (unsigned int) i >= units_str.size()) {
 		return "unspecified";
 	}
 	return units_str[i];
 }
 
 bool SeparatedInput::unitFieldsDefined() const {
-	return units;
+	return bunits;
 }
 
 void SeparatedInput::setCaseSensitive(bool b) {
@@ -297,7 +265,7 @@ bool SeparatedInput::getCaseSensitive() const {
 }
 
 double SeparatedInput::getUnitFactor(int i) const {
-	if (!units || i < 0 || (unsigned int) i >= units_str.size()) {
+	if (!bunits || i < 0 || (unsigned int) i >= units_str.size()) {
 		return Units::getFactor("unspecified");
 	}
 	return units_factor[i];
@@ -349,42 +317,7 @@ double SeparatedInput::getColumn(int i, const std::string& default_unit) const {
 }
 
 
-// given a string, replace separation delimiters that occur within quoted strings
-std::string SeparatedInput::tokenizeQuotes(const std::string& str) const {
-	std::string tmp = str;
-	std::string qchar = std::string(&quoteCharacter,1);
-	int index = tmp.find(qchar,0);
-	// only do replacements inside of quotes
-	while (index != (int) std::string::npos) {
-		int index2 = tmp.find(qchar,index+1);
-		if (index2 != (int) std::string::npos) {
-			std::string s1 = tmp.substr(0, index);
-			std::string s2 = tmp.substr(index+1, index2-(index+1));
-			std::string s3 = "";
-			if (index2+1 < (int) tmp.length()) {
-				s3 = tmp.substr(index2+1, tmp.length()-(index2+1));
-			}
-			std::map<std::string,std::string>::const_iterator pos;
-			for (pos = quoteSubstitutions.begin(); pos != quoteSubstitutions.end(); ++pos) {
-				s2 = replace(s2, pos->first, pos->second);
-			}
-			tmp = s1+s2+s3;
-			index2 = (s1+s2).size()-1;
-		}
-		index = tmp.find(qchar,index2+1);
-	}
-	return tmp;
-}
 
-// given a string that has gone through the above substitution, return the column delimiter characters
-std::string SeparatedInput::unTokenizeQuotes(const std::string& str) const {
-	std::string tmp = str;
-	std::map<std::string,std::string>::const_iterator pos;
-	for (pos = quoteSubstitutions.begin(); pos != quoteSubstitutions.end(); ++pos) {
-		tmp = replace(tmp, pos->second, pos->first);
-	}
-	return tmp;
-}
 
 
 
@@ -394,16 +327,19 @@ bool SeparatedInput::readLine() {
 	str.reserve(maxLineSize);
 	str.clear();
 	try {
-		while ( ! reader->eof()) {
-			//reader->getline(linestr, maxLineSize);
-			getline(*reader, str);
-			++linenum;
+		while( ! reader->eof()) {
+//		while ( ! reader->eof()) {
+//			//reader->getline(linestr, maxLineSize);
+//			getline(*reader, str);
+//			++linenum;
+
+			str = readFullLine(reader);
 
 			string lineRead = str + "\n";
 
 			// Remove comments from line
-			int comment_num = str.find('#');
-			if (comment_num >= 0) {
+			size_t comment_num = str.find('#');
+			if (comment_num != string::npos) {   //if (comment_num >= 0) {
 				str = str.substr(0,comment_num);
 			}
 			trim(str);
@@ -420,13 +356,13 @@ bool SeparatedInput::readLine() {
 				if (!header) {
 					preambleImage += lineRead;
 				}
-			} else if (!units) {
+			} else if ( ! bunits) {
 				try {
-					units = process_units(str);
+					bunits = process_units(str);
 				}
 				catch (SeparatedInputException e) {
 					// use default units
-					units = false;
+					bunits = false;
 					process_line(str);
 					break;
 				}
@@ -448,6 +384,34 @@ bool SeparatedInput::readLine() {
 	} else {
 		return false;
 	}
+}
+
+
+string SeparatedInput::readFullLine(std::istream* reader) {
+//		while ( ! reader->eof()) {
+//			//reader->getline(linestr, maxLineSize);
+//			getline(*reader, str);
+//			++linenum;
+
+	string t1;
+	getline(*reader, t1);
+	++linenum;
+	if (reader->eof()) return t1;
+	if (quoteCharDefined) {
+		do {
+			int count = 0;
+			for (unsigned long i = 0; i < t1.length(); i++) {
+				if (t1[i] == quoteCharacter) count++;
+			}
+			if (count %2 == 0) break;
+			string t2;
+			getline(*reader, t2);
+			++linenum;
+			if (reader->eof()) break;
+			t1 = t1 + "\n" + t2;
+		} while (true);
+	}
+	return t1;
 }
 
 int SeparatedInput::lineNumber() const {
@@ -536,7 +500,7 @@ void SeparatedInput::process_line(const string& str) {
 			if (idx < str.length() && end <= str.length()) {
 				fields[i] = substring(str, idx, idx+width_int[i]);
 			} else if (idx < str.length() && end > str.length()) {
-				fields[i] = substring(str, idx, str.length());
+				fields[i] = substring(str, idx, static_cast<int>(str.length()));
 			} else {
 				fields[i] = "";
 			}
@@ -546,18 +510,68 @@ void SeparatedInput::process_line(const string& str) {
 	} else {
 		std::string str2 = str;
 		if (quoteCharDefined) {
-			str2 = tokenizeQuotes(str);
-		}
-		fields = split_regex(str2, patternStr);
-		for (int i = 0; i < (int) fields.size(); i++) {
-			trim(fields[i]);
-			if (quoteCharDefined) {
-				fields[i] = unTokenizeQuotes(fields[i]);
-			}
+			fields = processQuotes(str);
+		} else {
+			fields = split_regex(str2, patternStr);
 		}
 	}
 	line_str = fields;
 }
+
+vector<string> SeparatedInput::processQuotes(const string& str) const {
+	vector<string> rtn;
+	string temp = "";
+		
+	if ( ! quoteCharDefined) return rtn;
+	bool squote = true;  // true means the next quote character is a starting quote
+	string split1;
+	split1.push_back(quoteCharacter);
+	split1.push_back(quoteCharacter);
+	string split2;
+	split2.push_back(quoteCharacter);
+
+	vector<string> fields_i = split_string_empty(str, split1);
+	for (unsigned long i=0; i<fields_i.size(); i++) {
+	    string str_i = fields_i[i];
+		//fpln("X"+str_i);
+		if ( str_i != "") {
+			vector<string> fields_j = split_string_empty(str_i,split2);
+			for (unsigned long j=0; j<fields_j.size(); j++) {
+				string str_j =fields_j[j];
+				//fpln(" Y"+str_j+"Y");
+				if ( str_j != "") {
+					if ( ! squote) {
+						//fpln("  ZZ"+str_j+"ZZ");
+						temp = temp + str_j;
+					} else {
+						vector<string> fields_k = split_regex(str_j,patternStr);
+						for (unsigned long k=0; k<fields_k.size(); k++) {
+							string str_k = fields_k[k];
+							temp = temp + str_k;
+							//fpln("  Z"+str_k+"Z");
+							if (fields_k.size() - 1 != k) {
+								rtn.push_back(temp);
+								temp = "";
+							}
+						}
+					}						
+				}
+				if (fields_j.size()>1 && fields_j.size() - 1 != j) {
+					squote = ! squote;
+				}  
+			}
+		}
+		if (fields_i.size() - 1 != i) {
+			temp = temp + quoteCharacter;
+		}
+	}
+	if ( temp != "") {
+		rtn.push_back(temp);
+	}
+	//fpln("NEXT");
+	return rtn;
+}
+
 
 string SeparatedInput::getLine() const {
 	string s = "";

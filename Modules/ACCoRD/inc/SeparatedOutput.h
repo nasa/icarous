@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2014-2018 United States Government as represented by
+ * Copyright (c) 2014-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -40,7 +40,7 @@ private:
 	
 	bool header;         // has header line been written?
 	std::vector<std::string> header_str;    // header line
-	bool units;          // Should units line be written?
+	bool bunits;          // Should units line be written?
 	std::vector<std::string> units_str;     // Units type
 	std::vector<std::string> line_str;      // raw line
 	long   size_l;

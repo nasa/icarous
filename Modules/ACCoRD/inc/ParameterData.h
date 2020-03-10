@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2018 United States Government as represented by
+ * Copyright (c) 2014-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -525,7 +525,16 @@ public:
 	 * @param pd parameter database
 	 * @return string listing differences, or the empty string if the contents are the same.
 	 */
-	std::string diff(const ParameterData& pd) const;
+	std::string diffString(const ParameterData& pd) const;
+
+	/**
+	 * Compare this object with a base ParameterData object and return all parameters in this object that are different from parameters in the base object,
+	 * either having different values or that are not present in the base.  (Parameters that are only in the base are not included.)  If the objects are
+	 * the same, the result will be an empty ParameterData object.
+	 * @param base "base" or "default" ParameterData to compare this object to
+	 * @return A ParameterData object containing all parameters that are in this object, but not in the base, or that are in both but have different values.  This return may be empty.
+	 */	ParameterData delta(const ParameterData& base) const;
+
 
 	std::vector<int> getListInteger(const std::string& key) const;
 	std::vector<double> getListDouble(const std::string& key) const;

@@ -5,7 +5,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  *
  *
- *Copyright (c) 2011-2017 United States Government as represented by
+ *Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -62,7 +62,7 @@ namespace larcfm {
    * @param distance the minimum horizontal separation distance [nmi]
    * @param height the minimum vertical separation height [ft].
    */
-    CDSI(Detection3D* cd);
+    explicit CDSI(Detection3D* cd);
 
     /** Returns the minimum horizontal separation distance in [m] */
     double getDistance() const;
@@ -163,22 +163,9 @@ namespace larcfm {
      */
     int getSegmentOut(int i) const;
 
-    /** 
-     * Returns an estimate of the time of closest approach.  This value is in absolute time 
-     * (not relative from a waypoint).  This point approximates the point where the two aircraft
-     * are closest.  The definition of closest is not simple.  Specifically, space in the vertical
-     * dimension counts more than space in the horizontal dimension: encroaching in the protected
-     * zone 100 vertically is much more serious than encroaching 100 ft. horizontally. 
-     * 
-     * @param i the i-th conflict, must be between 0..size()-1
-     */
-    double getTimeClosest(int i) const;
+     double getCriticalTime(int i) const;
 
-  /** 
-   * Returns the cylindrical distance at the time of closest approach. 
-   * @param i the i-th conflict, must be between 0..size()-1
-   */
-    double getDistanceClosest(int i) const;
+    double getDistanceAtCriticalTime(int i) const;
 
   /**
    * Returns if there is a conflict between two aircraft: the state

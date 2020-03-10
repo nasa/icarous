@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -195,7 +195,7 @@ private:
 	 * @param vsAccel
 	 * @return
 	 */
-	static Plan setAltPreserveByDelta(const Plan& lpc, double vsAccel);
+	static Plan setAltPreserveByDelta(const Plan& lpc);
 	static double findVsAccel(const Plan& kpc);
 
 public:
@@ -244,7 +244,7 @@ public:
      *
 	 * @return   truncated plan
 	 */
-	static Plan cutDown(const Plan& plan, double startTime, double endTime);
+	static Plan cutDownLinear(const Plan& plan, double startTime, double endTime);
 
 
 	/** 
@@ -460,39 +460,6 @@ public:
 	 */
 	static bool basicCheck(const Plan& lpc, const Plan& kpc, double maxlastDt);
 
-	/** 
-	 * 
-	 * Given a gs accel zone and modified starting and ending velocities,
-	 * change the acceleration and internal points' times 
-	 * so that it is continuous with the velocities into and out of the BGS-EGS zone
-	 * 
-	 * 
-	 * @param p           Plan to be fixed
-	 * @param ixBGS       index of BGS 
-	 * @param ixEGS       index of EGS
-	 * @param vo          target gsOut at ixBGS
-	 * @param vf          target gsIn at ixEGS
-	 * @param maxGsAccel  maximum gs acceleration allowed
-	 * 
-	 * NOTE:  given d, vo, vf calculate a and dt using two equations:
-	 * 
-	 *        d = vo*t + 0.5*a*t*t
-	 *        vf = vo + a*t
-	 *        
-	 * NOTE:  if the calculated acceleration exceeds maxGsAccel, then add error to plan
-	 */
-	static void fixGs_continuity(Plan& p, int ixBGS, int ixEGS, double vo, double vf, double maxGsAccel);
-
-	static void fixGs_continuity(Plan& p, int ixBGS, int ixEGS, double maxGsAccel);
-
-	/** make ground speeds correct in a newly created BGS - EGS region.
-	 *
-	 * @param traj         trajectory to be modified
-	 * @param ixBGS        starting index
-	 * @param ixEGS        ending index
-	 * @param startGs      the ground speed out that is desired at ixBGS
-	 */
-	static void fixGsInsideAccel(Plan& traj, int ixBGS, int ixEGS, double startGs);
 
 
 	/**  Repair turns for semi-linear plan.  Removes vertex point if turn is infeasible.
@@ -561,6 +528,30 @@ public:
 	static bool checkNamesInfoRetained(const Plan& kpc, const Plan& lpc, bool verbose);
 
 	static void createAndAddMOT(Plan& kpc, int ixBOT, int ixEOT);
+
+	static bool isVelocityContAtTcps(const Plan& p, bool silent);
+
+	static Plan repairSmallNegativeGS(const Plan& p);
+
+	static Plan fixAccelConsistency(const Plan& p);
+
+	/**
+	 * Experimental
+	 * Return the closest geometric point on a plan to a reference point, as measured as a Euclidean 3D norm from each linear segment.
+	 * For latlon plans, perform linear interpolation on any legs longer then the given amount.
+	 * (Kinematic turns are somewhat accounted for in this distance calculation, via linear interpolation.)
+	 *
+	 * Choosing a shorter maxLegLength can increase the accuracy of the closest point calculation, but it can significantly increase the
+	 * computational expense of the operation.
+	 *
+	 * @param plan base plan
+	 * @param p reference point
+	 * @param maxLegLength linearly interpolate any latlon legs longer than this amount
+	 * @return point
+	 */
+	static NavPoint closestPoint3D(const Plan& plan, const Position& p, double maxLegLength);
+
+
 };
 
 }

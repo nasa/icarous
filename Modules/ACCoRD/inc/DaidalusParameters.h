@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -114,6 +114,16 @@ private:
 
   static bool initialized;
   static void init();
+
+  /** This method is needed because WCV_TAUMOD_SUM doesn't require the
+   *  user to initialize SUM parameters, which may be specified globally.
+   */
+  void set_alerter_with_SUM_parameters(Alerter& alerter) ;
+
+  /** This method is needed because WCV_TAUMOD_SUM doesn't require the
+   *  user to initialize SUM parameters, which may be specified globally.
+   */
+  void set_alerters_with_SUM_parameters();
 
 public:
 
@@ -264,8 +274,14 @@ public:
 
   double getRecoveryStabilityTime(const std::string& u) const;
 
+  /**
+   * @return hysteresis time in seconds.
+   */
   double getHysteresisTime() const;
 
+  /**
+   * @return hysteresis time in specified units [u]
+   */
   double getHysteresisTime(const std::string& u) const;
 
   double getPersistenceTime() const;
@@ -277,7 +293,7 @@ public:
   void   setBandsPersistence(bool flag);
 
   void   enableBandsPersistence();
- 
+
   void   disableBandsPersistence();
 
   double getPersistencePreferredHorizontalDirectionResolution() const;
@@ -728,6 +744,10 @@ public:
 
   ParameterData getParameters() const;
 
+  void updateParameterData(ParameterData& parameters) const;
+
+private:
+
   /**
    * Return a ParameterData suitable to be read by readAlerterList() based on the supplied Alerter instances.
    * @param alerters list of Alerter instances
@@ -736,9 +756,19 @@ public:
    */
   void writeAlerterList(ParameterData& p) const;
 
-  void updateParameterData(ParameterData& parameters) const;
-
-private:
+  /**
+   * This parses parameters involved with a list of Alerter objects, if properly specified.  The list will be sorted by the instance identifiers.
+   *
+   * Specifically this looks for parameters:
+   * alerterNameList : create Alerter objects for each item in the list
+   * XXX_* : parameters associated with Alerter with id "XXX"
+   *
+   * The user still needs to assign these to the appropriate object(s).
+   * If no alternates are loaded, return the empty list.
+   *
+   * If verbose is false (default true), suppress all status messages except exceptions
+   */
+  void readAlerterList(const std::vector<std::string>& alerter_list, const ParameterData& params);
 
   static bool contains(const ParameterData& p,const std::string& key);
 
@@ -755,20 +785,6 @@ private:
   static std::vector<std::string> getListString(const ParameterData& p,const std::string& key);
 
 public:
-  /**
-   * This parses parameters involved with a list of Alerter objects, if properly specified.  The list will be sorted by the instance identifiers.
-   *
-   * Specifically this looks for parameters:
-   * alerterNameList : create Alerter objects for each item in the list
-   * XXX_* : parameters associated with Alerter with id "XXX"
-   *
-   * The user still needs to assign these to the appropriate object(s).
-   * If no alternates are loaded, return the empty list.
-   *
-   * If verbose is false (default true), suppress all status messages except exceptions
-   */
-  void readAlerterList(const std::vector<std::string>& alerter_list, const ParameterData& params);
-
   bool setParameterData(const ParameterData& p);
 
   void setParameters(const ParameterData& p);

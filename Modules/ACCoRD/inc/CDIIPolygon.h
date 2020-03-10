@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -203,7 +203,7 @@ private:
    */
   bool detectionLL(const Plan& ownship,  PolyPath& pp, double B, double T);
 
-  void captureOutput(CDSIPolygon cdsi, int seg);
+  void captureOutput(CDSIPolygon cdsi);
 
   void merge();
 

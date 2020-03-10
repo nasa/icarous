@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -514,7 +514,7 @@ Plan PolyUtil::reducePlanAgainstPolys(const Plan& pln, double gs, std::vector<Po
 		//fpln(" $$$ isPlanInConflictWx: i = "+Fm0(i));
 		double tmOfIntersection = intersectsPolygon2D(plan, paths[i], start, end, incr);
 		if (tmOfIntersection >= 0) {
-			return std::pair<double,string>(tmOfIntersection,paths[i].getName());
+			return std::pair<double,string>(tmOfIntersection,paths[i].getID());
 		}
 	}
 	return std::pair<double,string>(-1.0,"");
@@ -530,7 +530,7 @@ Plan PolyUtil::reducePlanAgainstPolys(const Plan& pln, double gs, std::vector<Po
 		for (int i = 0; i < (int) paths.size(); i++) {
 			double tmOfIntersection = intersectsPolygon2D(plan, paths[i], fromTime, plan.getLastTime(), incr);
 			if (tmOfIntersection >= 0) {
-				return std::pair<double,string>(tmOfIntersection,paths[i].getName());
+				return std::pair<double,string>(tmOfIntersection,paths[i].getID());
 			}
 		}
 	}

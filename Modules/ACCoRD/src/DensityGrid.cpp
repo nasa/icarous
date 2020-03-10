@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 United States Government as represented by
+ * Copyright (c) 2017-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -390,10 +390,10 @@ std::vector<std::pair<int,int> > DensityGrid::gridPath(const Plan& p) const {
 }
 
 void DensityGrid::printGridPath(const std::vector<std::pair<int,int> >& gPath) {
-	fpln("$$$$ ENTER: printGridPath size = "+Fm0(gPath.size()));
+	fpln("$$$$ ENTER: printGridPath size = "+Fmui(static_cast<unsigned int>(gPath.size())));
 	for (int i = 0; i < (int) gPath.size(); i++) {
 		std::pair<int,int> ijPair = gPath[i];
-		fpln("printGridPath i = "+Fm0(i)+" ijPair = "+Fm0(ijPair.first)+","+Fm0(ijPair.second));
+		fpln("printGridPath i = "+Fmi(i)+" ijPair = "+Fmi(ijPair.first)+","+Fmi(ijPair.second));
 	}
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 United States Government as represented by
+ * Copyright (c) 2017-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -108,7 +108,10 @@ public:
 
 	double radius(int i) const;
 
-	
+//	bool isAltPreserve(int i) const;
+//
+//	void setAltPreserve(int i, bool val);
+
 	/**
 	 * Add a position
 	 * @param pos position
@@ -136,8 +139,13 @@ public:
 	 * @param rad     radius
 	 */
 	void add(int ix, const Position& pos, const std::string& label, const std::string& data, double rad);
+
+	void add(const Route& p, int ix);
+
+	void addAll(const Route& p) ;
+
 	
-	void set(int ix, const Position& pos, const std::string& label, const std::string& data, double rad);
+	void set(int ix, const Position& pos, const std::string& label, const std::string& data, double);
 
 		
 	void remove(int i);
@@ -148,9 +156,7 @@ public:
 	void removeLast();
 
 	
-	void add(const Route& p, int ix);
 	
-	void addAll(const Route& p) ;
 	
 	Route append(const Route& p2);
 

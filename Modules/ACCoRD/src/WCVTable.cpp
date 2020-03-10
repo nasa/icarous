@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018 United States Government as represented by
+ * Copyright (c) 2012-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -50,6 +50,42 @@ WCVTable::WCVTable(double dthr, const std::string& udthr, double zthr, const std
 }
 
 WCVTable::~WCVTable() { }
+
+/**
+ * @return DO-365 preventive thresholds, i.e., DTHR=0.66nmi, ZTHR=700ft,
+ * TTHR=35s, TCOA=0.
+ */
+const WCVTable& WCVTable::DO_365_Phase_I_preventive() {
+  static WCVTable preventive(0.66,"nmi",700,"ft",35,"s",0,"s");
+  return preventive;
+}
+
+/**
+ * @return DO-365 Well-Clear thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=0.
+ */
+const WCVTable& WCVTable::DO_365_DWC_Phase_I() {
+  static WCVTable dwc;
+  return dwc;
+}
+
+/**
+ * @return buffered preventive thresholds, i.e., DTHR=1.0nmi, ZTHR=750ft,
+ * TTHR=35s, TCOA=20.
+ */
+const WCVTable& WCVTable::Buffered_Phase_I_preventive() {
+  static WCVTable preventive(1.0,"nmi",750,"ft",35,"s",20,"s");
+  return preventive;
+}
+
+/**
+ * @return buffered Well-Clear thresholds, i.e., DTHR=1.0nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=20.
+ */
+const WCVTable& WCVTable::Buffered_DWC_Phase_I() {
+  static WCVTable dwc(1.0,"nmi",450,"ft",35,"s",20,"s");
+  return dwc;
+}
 
 double WCVTable::getDTHR() const {
   return DTHR;
@@ -167,9 +203,14 @@ std::string WCVTable::toString() const {
       ", WCV_TCOA = "+Units::str(getUnits("WCV_TCOA"),TCOA);
 }
 
+std::string WCVTable::toPVS_() const {
+  return "DTHR := "+FmPrecision(DTHR)+", ZTHR := "+FmPrecision(ZTHR)+
+      ", TTHR := "+FmPrecision(TTHR)+", TCOA := "+FmPrecision(TCOA);
+}
+
+
 std::string WCVTable::toPVS() const {
-  return "(# DTHR := "+FmPrecision(DTHR)+", ZTHR := "+FmPrecision(ZTHR)+
-      ", TTHR := "+FmPrecision(TTHR)+", TCOA := "+FmPrecision(TCOA)+" #)";
+  return "(# "+toPVS_()+" #)";
 }
 
 bool WCVTable::contains(const WCVTable& tab) const {

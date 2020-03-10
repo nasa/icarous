@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2018 United States Government as represented by
+ * Copyright (c) 2013-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -17,6 +17,7 @@
 #include "Vect3.h"
 #include "Velocity.h"
 #include "ParameterData.h"
+#include "TrafficState.h"
 #include "ConflictData.h"
 #include "string_util.h"
 #include "ParameterAcceptor.h"
@@ -33,45 +34,28 @@ public:
    * of view, and also potentially less efficient in C++, due to various type conversions (needs testing).
    * Externally, we have semantically distinct types as inputs, even though they are actually all just Euclidean triples.
    */
-  virtual bool violation(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) const = 0;
 
   /**
-   * This functional call returns true if there is a violation at time t.
+   * This functional call returns true if there is a violation given the current states.
    * @param so  ownship position
    * @param vo  ownship velocity
    * @param si  intruder position
    * @param vi  intruder velocity
-   * @param s_err  Uncertainty in the relative horizontal position
-   * @param sz_err Uncertainty in the relative vertical position
-   * @param v_err  Uncertainty in the relative horizontal speed
-   * @param vz_err Uncertainty in the relative vertical speed
-   * @param t      time in seconds
-   * @return    true if there is a SUM violation at relative time t
+   * @return    true if there is a violation
    */
-  virtual bool violationSUMAt(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double s_err, double sz_err, double v_err, double vz_err, double t) const = 0;
-
-
-  virtual bool conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const = 0;
-
+  bool violation(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) const;
 
   /**
-   * This functional call returns true if there will be a SUM violation between times B and T from now (relative).
+   * This functional call returns true if there will be a violation between times B and T from now (relative).
    * @param so  ownship position
    * @param vo  ownship velocity
    * @param si  intruder position
    * @param vi  intruder velocity
    * @param B   beginning of detection time (>=0)
    * @param T   end of detection time (if T < 0 then use an "infinite" lookahead time)
-   * @param s_err  Uncertainty in the relative horizontal position
-   * @param sz_err Uncertainty in the relative vertical position
-   * @param v_err  Uncertainty in the relative horizontal speed
-   * @param vz_err Uncertainty in the relative vertical speed
    * @return true if there is a conflict within times B to T
    */
-  virtual bool conflictSUM(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T, double s_err, double sz_err, double v_err, double vz_err) const = 0;
-
-
-  virtual ConflictData conflictDetection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const = 0;
+  bool conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
 
   /**
    * This functional call returns a ConflictData object detailing the conflict between times B and T from now (relative), if any.
@@ -83,13 +67,40 @@ public:
    * @param H   vertical separation
    * @param B   beginning of detection time (>=0)
    * @param T   end of detection time (if T < 0 then use an "infinite" lookahead time)
-   * @param s_err  Uncertainty in the relative horizontal position
-   * @param sz_err Uncertainty in the relative vertical position
-   * @param v_err  Uncertainty in the relative horizontal speed
-   * @param vz_err Uncertainty in the relative vertical speed
    * @return a ConflictData object detailing the conflict
    */
-  virtual ConflictData conflictDetectionSUM(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T, double s_err, double sz_err, double v_err, double vz_err) const = 0;
+  virtual ConflictData conflictDetection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const = 0;
+
+  /**
+   * This functional call returns true if there is a violation at time t.
+   * @param ownship   ownship state
+   * @param intruder  intruder state
+   * @param t      time in seconds
+   * @return    true if there is a violation at time t
+   */
+  bool violationAtWithTrafficState(const TrafficState& ownship, const TrafficState& intruder, double t) const;
+
+  /**
+   * This functional call returns true if there will be a violation between times B and T from now (relative).
+   * @param ownship   ownship state
+   * @param intruder  intruder state
+   * @param B   beginning of detection time (>=0)
+   * @param T   end of detection time (if T < 0 then use an "infinite" lookahead time)
+   * @return true if there is a conflict within times B to T
+   */
+  bool conflictWithTrafficState(const TrafficState& ownship, const TrafficState& intruder, double B, double T) const;
+
+  /**
+   * This functional call returns a ConflictData object detailing the conflict between times B and T from now (relative), if any.
+   * @param ownship   ownship state
+   * @param intruder  intruder state
+   * @param D   horizontal separation
+   * @param H   vertical separation
+   * @param B   beginning of detection time (>=0)
+   * @param T   end of detection time (if T < 0 then use an "infinite" lookahead time)
+   * @return a ConflictData object detailing the conflict
+   */
+  virtual ConflictData conflictDetectionWithTrafficState(const TrafficState& ownship, const TrafficState& intruder, double B, double T) const;
 
   /** This returns a pointer to a new instance of this type of Detector3D.  You are responsible for destroying this instance when it is no longer needed. */
   virtual Detection3D* copy() const = 0;
@@ -108,9 +119,7 @@ public:
     return getSimpleClassName();
   }
   virtual std::string toString() const = 0;
-  virtual std::string toPVS() const {
-    return "";
-  }
+  virtual std::string toPVS() const = 0;
 
   virtual std::string getIdentifier() const = 0;
   virtual void setIdentifier(const std::string& s) = 0;

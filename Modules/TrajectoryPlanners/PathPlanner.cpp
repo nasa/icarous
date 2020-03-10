@@ -22,7 +22,7 @@ int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, 
 
     std::list<Plan>::iterator it;
     for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
-        if (abs(strcmp(it->getName().c_str(),planID))){
+        if (abs(strcmp(it->getID().c_str(),planID))){
             continue;
         }
         flightPlans.erase(it);
@@ -112,7 +112,7 @@ Plan* PathPlanner::GetPlan(char planID[]){
     std::list<Plan>::iterator it;
     Plan *fp;
     for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
-        if (strcmp(it->getName().c_str(),planID)){
+        if (strcmp(it->getID().c_str(),planID)){
             continue;
         }
         fp = &(*it);
@@ -124,7 +124,7 @@ Plan* PathPlanner::GetPlan(char planID[]){
 
 void PathPlanner::OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceFile,char* waypointFile){
     for(Plan pl: flightPlans){
-        if(strcmp(pl.getName().c_str(),planID)){
+        if(strcmp(pl.getID().c_str(),planID)){
             continue;
         }else {
             std::ofstream fp1;
@@ -394,7 +394,7 @@ void PathPlanner::GetExitPoint(char *planID,double currentPoisition[],int nextWP
         double entryTime = geoCDIIPolygon.getTimeIn(0);
         double exitTime = geoCDIIPolygon.getTimeOut(0);
 
-        Plan cutPlan = PlanUtil::cutDown(*fp, entryTime, exitTime);
+        Plan cutPlan = PlanUtil::cutDownLinear(*fp, entryTime, exitTime);
 
         lastPos = cutPlan.getLastPoint().position();
     }else{

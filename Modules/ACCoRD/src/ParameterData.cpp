@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2018 United States Government as represented by
+ * Copyright (c) 2014-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -96,7 +96,7 @@ void ParameterData::setUnitCompatibility(bool v) {
 }
 
 int ParameterData::size() const {
-	return parameters.size();
+	return static_cast<int>(parameters.size());
 }
 
 std::vector<std::string> ParameterData::getKeyList() const {
@@ -217,7 +217,7 @@ long ParameterData::getLong(const std::string& key) const {
 }
 
 bool ParameterData::parse_parameter_string(const std::string& str) {
-	int loc = str.find('=');
+	int loc = static_cast<int>(str.find('='));
 	if (loc > 0) {
 		std::string id(substring(str,0,loc));
 		trim(id);
@@ -646,7 +646,7 @@ int ParameterData::longestKey() const {
 	paramtype::const_iterator pos;
 	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
 		std::string key = pos->first;
-		longest = Util::max(longest, key.length());
+		longest = Util::max(longest, static_cast<int>(key.length()));
 	}
 	return longest;
 }
@@ -656,7 +656,7 @@ int ParameterData::longestVal() const {
 	paramtype::const_iterator pos;
 	for (pos = parameters.begin(); pos != parameters.end(); ++pos) {
 		std::string key = pos->first;
-		longest = Util::max(longest, getString(key).length());
+		longest = Util::max(longest, static_cast<int>(getString(key).length()));
 	}
 	return longest;
 }
@@ -667,7 +667,7 @@ int ParameterData::longestVal() const {
  * @param pd parameter database
  * @return string listing differences, or the empty string if the contents are the same.
  */
-std::string ParameterData::diff(const ParameterData& pd) const {
+std::string ParameterData::diffString(const ParameterData& pd) const {
 	std::vector<std::string> keys0; // list of keys in both objects
 	std::vector<std::string> keys1; // list of keys only in this object
 	std::vector<std::string>::const_iterator ptr;
@@ -720,6 +720,23 @@ std::string ParameterData::diff(const ParameterData& pd) const {
 	}
 	return out;
 }
+
+ParameterData ParameterData::delta(const ParameterData& base) const {
+	ParameterData pd = ParameterData();
+	std::vector<std::string>::const_iterator ptr;
+	std::vector<std::string> keys = getKeyList();
+	for (ptr = keys.begin(); ptr != keys.end(); ++ptr) {
+		std::string key = (*ptr);
+		if (!base.contains(key) ||
+				(isBoolean(key) && base.getBool(key) != getBool(key)) ||
+				(isNumber(key) && base.getValue(key) != getValue(key)) ||
+				!larcfm::equals(base.getString(key),(getString(key)))) {
+			pd.set(key, getString(key));
+		}
+	}
+	return pd;
+}
+
 
 std::vector<std::string> ParameterData::stringList(const std::string& instring) {
 	std::string s = instring;

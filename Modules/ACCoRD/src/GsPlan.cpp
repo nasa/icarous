@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 United States Government as represented by
+ * Copyright (c) 2017-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -38,7 +38,7 @@ GsPlan::GsPlan(const std::string& s) {
 GsPlan::GsPlan(const Plan& lpc, int start, int end) {
 	if (start < 0) start = 0;
 	if (end >= lpc.size()) end = lpc.size()-1;
-	id = lpc.getName();
+	id = lpc.getID();
 	for (int i = start; i <= end ; i++) {
 		NavPoint np = lpc.point(i);
 		double gsOut_i = lpc.gsOut(i);
@@ -53,7 +53,7 @@ GsPlan::GsPlan(const Plan& lpc, int start, int end) {
 GsPlan::GsPlan(const Plan& lpc) {
 	int start = 0;
 	int end = lpc.size()-1;
-	id = lpc.getName();
+	id = lpc.getID();
 	for (int i = start; i <= end ; i++) {
 		NavPoint np = lpc.point(i);
 		double gsOut_i = lpc.gsOut(i);
@@ -92,7 +92,7 @@ GsPlan GsPlan::makeGsPlanConstant(const GsPlan& gsp, double gsNew) {
 
 GsPlan GsPlan::mkGsPlanBankAngle(const Plan& lpc, double bankAngle) {
 	Route rt = Route::mkRouteBankAngle(lpc,bankAngle);
-	GsPlan gsp = GsPlan(rt, lpc.getName(), lpc.getFirstTime(), 0.0);
+	GsPlan gsp = GsPlan(rt, lpc.getID(), lpc.getFirstTime(), 0.0);
 	//fpln(Fm0(lpc.size())+" "+Fm0(gsp.size()));
 	for (int j = 0; j < rt.size(); j++) {
 		gsp.gsOuts[j] = lpc.gsOut(j);
@@ -107,11 +107,11 @@ int GsPlan::size() const {
 }
 
 
-std::string GsPlan::getName() const {
+std::string GsPlan::getID() const {
 	return id;
 }
 
-void GsPlan::setName(const std::string& s) {
+void GsPlan::setID(const std::string& s) {
 	id = s;
 }
 
@@ -150,9 +150,8 @@ void GsPlan::add(const Position& pos, const std::string& label, const std::strin
 	}
 }
 
-void GsPlan::set(int ix, const Position& pos, const std::string& label, const std::string& info, double gsOut) {
+void GsPlan::set(int ix, const Position& pos, const std::string& label, const std::string& info, double gsOut, double radius) {
 	//f.pln(" $$###>>>>> GsPlan.set: ix = "+ix+" ps = "+pos+" "+label+" gsin = "+Units.str("kn",gsOut));
-	double radius = 0.0;
 	rt.set(ix, pos, label, info, radius);
 	gsOuts[ix] = gsOut;
 }
@@ -178,6 +177,14 @@ std::string GsPlan::info(int i) const {
 double GsPlan::radius(int i)const {
 	return rt.radius(i);
 }
+
+//bool GsPlan::isAltPreserve(int i)const {
+//	return rt.isAltPreserve(i);
+//}
+//
+//void GsPlan::setAltPreserve(int i, bool val) {
+//	rt.setAltPreserve(i, val);
+//}
 
 
 void GsPlan::setRadius(int i, double rad) {

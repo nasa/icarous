@@ -6,7 +6,7 @@
  *
  * Conversion to internal units: meters, kilogrames, seconds, radians, ...
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -17,7 +17,6 @@
 #include "Constants.h"
 #include "format.h"
 #include "string_util.h"
-//#include "DebugSupport.h"
 #if defined(_MSC_VER)
 #include <regex>
 #else
@@ -617,12 +616,12 @@ std::string Units::cleanOnly(const std::string& unit) {
 	std::string sb(unit);
 	trimBuilder(sb);
 
-	  int start_idx = sb.find_first_of("[");
-	  if (start_idx >= 0) {
+	  size_t start_idx = sb.find_first_of("[");
+	  if (start_idx != string::npos) {    //if (start_idx >= 0) {
 		  sb.erase(0,start_idx+1);
 	  }
-	  int end_idx = sb.find_first_of("]");
-	  if (end_idx >= 0) {
+	  size_t end_idx = sb.find_first_of("]");
+	  if (end_idx != string::npos) {   //if (end_idx >= 0) {
 		  sb.erase(end_idx);
 	  }
 	  trimBuilder(sb);
@@ -670,7 +669,7 @@ double getd(string str, double def) {
 double Units::parse(const string& defaultUnitsFrom, const std::string& s, double default_value) {
 	double ret = 0.0;
 	std::smatch m;
-	std::regex numre("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-/^_a-zA-Z0-9]*).*"); //(.*)");   We want to add this unicode character \u00B0 (the degree symbol) to the units part
+	std::regex numre("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-/^_a-zA-Z0-9]*).*"); //(.*)");   We want to add this unicode character \u00B0 (the degree symbol) to the units part  //TODO: does not recognize e-notation
 //	std::regex numre("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([/^_a-zA-Z0-9]*)\\s*\\]?\\s*$"); //(.*)");   We want to add this unicode character \u00B0 (the degree symbol) to the units part
 	//Java: Pattern.compile("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-\\/^_a-zA-Z0-9\\u00B0]*).*");
 
@@ -737,10 +736,10 @@ double Units::parse(const string& defaultUnitsFrom, const std::string& s, double
 	char msgbuf[100];
 
 	/* Compile regular expression, use C regular expression library */
-	reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([-\\/^_a-zA-Z0-9]*).*", REG_EXTENDED); //[[:blank:]]*\\]?(.*)", REG_EXTENDED);
+	reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([-\\/^_a-zA-Z0-9]*).*", REG_EXTENDED); //[[:blank:]]*\\]?(.*)", REG_EXTENDED); //TODO: does not recognize e-notation
 	//Java: Pattern.compile("\\s*([-+0-9\\.]+)\\s*\\[?\\s*([-\\/^_a-zA-Z0-9\\u00B0]*).*");
 	if (reti != 0) {
-		fdln("Could not compile regex\n");
+		fdln("Could not compile regex in Units::parse\n");
 		//		DebugSupport::halt();
 	}
 
@@ -817,9 +816,9 @@ std::string Units::parseUnits(const std::string& s) {
 
 	/* Compile regular expression */
 	//reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([/^_a-zA-Z0-9]*)[[:blank:]]*\\]?(.*)", REG_EXTENDED);
-	reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([-\\/^_a-zA-Z0-9]*).*", REG_EXTENDED); //[[:blank:]]*\\]?(.*)", REG_EXTENDED);
+	reti = regcomp(&regex, "^[[:blank:]]*([-+0-9\\.]+)[[:blank:]]*\\[?[[:blank:]]*([-\\/^_a-zA-Z0-9]*).*", REG_EXTENDED); //[[:blank:]]*\\]?(.*)", REG_EXTENDED); //TODO: does not recognize e-notation
 	if (reti != 0) {
-		fdln("$$$ERROR$$$: Could not compile regex\n");
+		fdln("$$$ERROR$$$: Could not compile regex in Units::parseUnits\n");
 //		DebugSupport::halt();
 	}
 
@@ -843,7 +842,7 @@ std::string Units::parseUnits(const std::string& s) {
 		// no match, return default value
 	} else {
 		regerror(reti, &regex, msgbuf, sizeof(msgbuf));
-		fprintf(stderr, "$$$ERROR$$$ Regex match failed line 673: %s\n", msgbuf);
+		fprintf(stderr, "$$$ERROR$$$ Regex match failed in Units::parseUnits: %s\n", msgbuf);
 //		DebugSupport::halt();
 	}
 

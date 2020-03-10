@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -65,7 +65,7 @@ public:
   std::vector<SimplePoly> polyList;
   std::vector<double> times;
   std::vector<Velocity> vlist;
-  std::string name;
+  std::string label;
   std::string note;
 //  bool morphingPolys;
 //  bool calcVelocities;
@@ -208,13 +208,13 @@ public:
 	 * Returns the name associated with this path
 	 * @return name
 	 */
-  std::string getName() const;
+  std::string getID() const;
   
 	/**
 	 * Sets the name to be associated with this path.
 	 * @param n new name
 	 */
-  void setName(const std::string& n);
+  void setID(const std::string& n);
   
 
 	/**
@@ -483,7 +483,7 @@ public:
 
   std::string toOutput(int precision, bool tcpColumns) ;
 
-  std::vector<std::string> toStringList(int i, int j, int precision, bool tcpColumns) ;
+  std::vector<std::string> toStringList(int i, int j, int precision, int latLonExtraPrecision, bool tcpColumns) ;
 
   SimpleMovingPoly getSimpleMovingPoly(int i) ;
 
@@ -522,7 +522,7 @@ public:
   }
   
 	void addWarning(std::string s) const {
-		error.addWarning("("+name+") "+s);
+		error.addWarning("("+label+") "+s);
 	}
 
 	void addError(std::string s) const {

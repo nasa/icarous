@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -47,62 +47,83 @@ const std::string& Alerter::getId() const {
   return id_;
 }
 
+/**
+ * @return DO-365 HAZ preventive thresholds, i.e., DTHR=0.66nmi, ZTHR=700ft,
+ * TTHR=35s, TCOA=0, alerting time = 55s, early alerting time = 75s,
+ * bands region = NONE
+ */
+const AlertThresholds& Alerter::DO_365_Phase_I_HAZ_preventive() {
+  static AlertThresholds preventive(&WCV_TAUMOD::DO_365_Phase_I_preventive(),55,75,BandsRegion::NONE);
+  return preventive;
+}
+
+/**
+ * @return DO-365 HAZ corrective thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=0, alerting time = 55s, early alerting time = 75s,
+ * bands region = MID
+ */
+const AlertThresholds& Alerter::DO_365_Phase_I_HAZ_corrective() {
+  static AlertThresholds corrective(&WCV_TAUMOD::DO_365_DWC_Phase_I(),55,75,BandsRegion::MID);
+  return corrective;
+}
+
+/**
+ * @return DO-365 HAZ warning thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=0, alerting time = 25s, early alerting time = 55s,
+ * bands region = NEAR
+ */
+const AlertThresholds& Alerter::DO_365_Phase_I_HAZ_warning() {
+  static AlertThresholds corrective(&WCV_TAUMOD::DO_365_DWC_Phase_I(),25,55,BandsRegion::NEAR);
+  return corrective;
+}
 
 const Alerter& Alerter::DWC_Phase_I() {
   static Alerter alerter;
   if (!alerter.isValid()) {
-    WCVTable preventive;
-    preventive.setDTHR(0.66,"nmi");
-    preventive.setZTHR(700,"ft");
-    preventive.setTTHR(35);
-    preventive.setTCOA(0);
-
-    WCVTable corrective;
-    corrective.setDTHR(0.66,"nmi");
-    corrective.setZTHR(450,"ft");
-    corrective.setTTHR(35);
-    corrective.setTCOA(0);
-
-    WCVTable warning;
-    warning.setDTHR(0.66,"nmi");
-    warning.setZTHR(450,"ft");
-    warning.setTTHR(35);
-    warning.setTCOA(0);
-
     alerter.setId("DWC_Phase_I");
-    alerter.addLevel(AlertThresholds(WCV_TAUMOD(preventive),55,75,BandsRegion::NONE));
-    alerter.addLevel(AlertThresholds(WCV_TAUMOD(corrective),55,75,BandsRegion::MID));
-    alerter.addLevel(AlertThresholds(WCV_TAUMOD(warning),25,55,BandsRegion::NEAR));
+    alerter.addLevel(DO_365_Phase_I_HAZ_preventive());
+    alerter.addLevel(DO_365_Phase_I_HAZ_corrective());
+    alerter.addLevel(DO_365_Phase_I_HAZ_warning());
   }
   return alerter;
 }
 
+/**
+ * @return buffered HAZ preventive thresholds, i.e., DTHR=1nmi, ZTHR=750ft,
+ * TTHR=35s, TCOA=20s, alerting time = 60s, early alerting time = 75s,
+ * bands region = NONE
+ */
+const AlertThresholds& Alerter::Buffered_Phase_I_HAZ_preventive() {
+  static AlertThresholds preventive(&WCV_TAUMOD::Buffered_Phase_I_preventive(),60,75,BandsRegion::NONE);
+  return preventive;
+}
+
+/**
+ * @return buffered HAZ corrective thresholds, i.e., DTHR=1nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=20s, alerting time = 60s, early alerting time = 75s,
+ * bands region = MID
+ */
+const AlertThresholds& Alerter::Buffered_Phase_I_HAZ_corrective() {
+  static AlertThresholds corrective(&WCV_TAUMOD::Buffered_DWC_Phase_I(),60,75,BandsRegion::MID);
+  return corrective;
+}
+
+/**
+ * @return buffered HAZ warning thresholds, i.e., DTHR=1nmi, ZTHR=450ft,
+ * TTHR=35s, TCOA=20s, alerting time = 30s, early alerting time = 55s,
+ * bands region = NEAR
+ */
+const AlertThresholds& Alerter::Buffered_Phase_I_HAZ_warning() {
+  static AlertThresholds corrective(&WCV_TAUMOD::Buffered_DWC_Phase_I(),30,55,BandsRegion::NEAR);
+  return corrective;
+}
 
 const Alerter& Alerter::Buffered_DWC_Phase_I() {
   static Alerter alerter;
   if (!alerter.isValid()) {
-    WCVTable preventive;
-    preventive.setDTHR(1.0,"nmi");
-    preventive.setZTHR(750,"ft");
-    preventive.setTTHR(35);
-    preventive.setTCOA(20);
-
-    WCVTable corrective;
-    corrective.setDTHR(1.0,"nmi");
-    corrective.setZTHR(450,"ft");
-    corrective.setTTHR(35);
-    corrective.setTCOA(20);
-
-    WCVTable warning;
-    warning.setDTHR(1.0,"nmi");
-    warning.setZTHR(450,"ft");
-    warning.setTTHR(35);
-    warning.setTCOA(20);
-
-    alerter.setId("Buffered_DWC_Phase_I");
-    alerter.addLevel(AlertThresholds(WCV_TAUMOD(preventive),60,75,BandsRegion::NONE));
-    alerter.addLevel(AlertThresholds(WCV_TAUMOD(corrective),60,75,BandsRegion::MID));
-    alerter.addLevel(AlertThresholds(WCV_TAUMOD(warning),30,55,BandsRegion::NEAR));
+    alerter.addLevel(Buffered_Phase_I_HAZ_preventive());
+    alerter.addLevel(Buffered_Phase_I_HAZ_corrective());
+    alerter.addLevel(Buffered_Phase_I_HAZ_warning());
   }
   return alerter;
 }
@@ -111,7 +132,7 @@ const Alerter& Alerter::Buffered_DWC_Phase_I() {
  * @return alerting thresholds for single bands given by detector,
  * alerting time, and lookahead time. The single bands region is NEAR
  */
-Alerter Alerter::SingleBands(const Detection3D& detector, double alerting_time, double lookahead_time) {
+Alerter Alerter::SingleBands(const Detection3D* detector, double alerting_time, double lookahead_time) {
   Alerter alerter("");
   alerter.addLevel(AlertThresholds(detector,alerting_time,lookahead_time,BandsRegion::NEAR));
   return alerter;
@@ -119,11 +140,23 @@ Alerter Alerter::SingleBands(const Detection3D& detector, double alerting_time, 
 
 /**
  * @return alerting thresholds for ACCoRD's CD3D, i.e.,
- * Separation is given by cylinder of 5nmi/1000ft. Lookahead time is 180s.
+ * separation is given by cylinder of 5nmi/1000ft. Alerting time is
+ * 180s.
  */
-const Alerter& Alerter::CD3D() {
-  static Alerter alerter = Alerter::SingleBands(CDCylinder(5,"nmi",1000,"ft"),180,180);
+const Alerter& Alerter::CD3D_SingleBands() {
+  static Alerter alerter = SingleBands(&CDCylinder::CD3DCylinder(),180,180);
   alerter.setId("CD3D");
+  return alerter;
+}
+
+/**
+ * @return alerting thresholds for DAIDALUS single bands WCV_TAUMOD , i.e.,
+ * separation is given by cylinder of DTHR=0.66nmi, ZTHR=450ft, TTHR=35s, TCOA=0,
+ * alerting time = 55s, early alerting time = 75s.
+ */
+const Alerter& Alerter::WCV_TAUMOD_SingleBands() {
+  static Alerter alerter = SingleBands(&WCV_TAUMOD::DO_365_DWC_Phase_I(),55,75);
+  alerter.setId("WCV_TAUMOD");
   return alerter;
 }
 
@@ -131,11 +164,9 @@ void Alerter::clear() {
   levels_.clear();
 }
 
-
 int Alerter::mostSevereAlertLevel() const {
   return levels_.size();
 }
-
 
 int Alerter::alertLevelForRegion(BandsRegion::Region region) const {
   for (int i=0; i < (int) levels_.size(); ++i) {
@@ -146,7 +177,6 @@ int Alerter::alertLevelForRegion(BandsRegion::Region region) const {
   return 0;
 }
 
-
 Detection3D* Alerter::getDetectorPtr(int alert_level) const {
   if (1 <= alert_level && alert_level <= (int) levels_.size()) {
     return levels_[alert_level-1].getCoreDetectionPtr();
@@ -154,7 +184,6 @@ Detection3D* Alerter::getDetectorPtr(int alert_level) const {
     return NULL;
   }
 }
-
 
 void Alerter::setLevel(int level, const AlertThresholds& thresholds) {
   if (1 <= level && level <= (int) levels_.size()) {
@@ -170,7 +199,6 @@ int Alerter::addLevel(const AlertThresholds& thresholds) {
   cd->setIdentifier("det_"+Fmi(sz));
   return sz;
 }
-
 
 const AlertThresholds& Alerter::getLevel(int alert_level) const {
   if (1 <= alert_level && alert_level <= (int) levels_.size()) {
@@ -193,14 +221,14 @@ void Alerter::updateParameterData(ParameterData& p) const {
   ParameterData pdmain;
   // add parameters for each alerter, ensuring they have an ordered set of identifiers
   for (int i = 0; i < (int)levels_.size(); i++) {
-      const ParameterData& pd = levels_[i].getParameters();
-      //make sure each instance has a unique, ordered name
-      std::string prefix = "alert_"+Fmi(i+1)+"_";
-      pdmain.copy(pd.copyWithPrefix(prefix),true);
-      Detection3D* det = levels_[i].getCoreDetectionPtr();
-      pdmain.copy(det->getParameters().copyWithPrefix(det->getIdentifier()+"_"),true);
-      pdmain.set("load_core_detection_"+det->getIdentifier()+" = "+det->getCanonicalClassName());
-      pdmain.remove(det->getIdentifier()+"_id");
+    const ParameterData& pd = levels_[i].getParameters();
+    //make sure each instance has a unique, ordered name
+    std::string prefix = "alert_"+Fmi(i+1)+"_";
+    pdmain.copy(pd.copyWithPrefix(prefix),true);
+    Detection3D* det = levels_[i].getCoreDetectionPtr();
+    pdmain.copy(det->getParameters().copyWithPrefix(det->getIdentifier()+"_"),true);
+    pdmain.set("load_core_detection_"+det->getIdentifier()+" = "+det->getCanonicalClassName());
+    pdmain.remove(det->getIdentifier()+"_id");
   }
   p.copy(pdmain,true);
 }

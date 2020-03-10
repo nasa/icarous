@@ -4,14 +4,13 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
  */
 
 #include "Util.h"
-//#include "UnitSymbols.h"
 #include "GreatCircle.h"
 #include "Triple.h"
 
@@ -124,22 +123,12 @@ double GreatCircle::final_course(const LatLonAlt& p1, const LatLonAlt& p2) {
 }
 
 
-/**
- * Find the maximum latitude of the great circle defined by the
- * two points.
- *
- * @param lat1 latitude of point 1
- * @param lon1 longitude of point 1
- * @param lat2 latitude of point 2
- * @param lon2 longitude of point 2
- * @return maximum latitude
- */
 double GreatCircle::max_latitude_gc(double lat1, double lon1, double lat2, double lon2) {
-	return max_latitude_gc_course(lat1, lon1, lat2, lon2, initial_course(lat1,lon1,lat2,lon2));
+	return max_latitude_gc_course(lat1, initial_course(lat1,lon1,lat2,lon2));
 }
 
 
-double GreatCircle::max_latitude_gc_course(double lat1, double lon1, double lat2, double lon2, double trk) {
+double GreatCircle::max_latitude_gc_course(double lat1, double trk) {
 	return Util::acos_safe(std::abs(sin(trk)*cos(lat1)));
 }
 
@@ -147,21 +136,11 @@ double GreatCircle::max_latitude_gc(const LatLonAlt& p1, const LatLonAlt& p2) {
 	return max_latitude(p1.lat(), p1.lon(), p2.lat(), p2.lon());
 }
 
-/**
- * Find the minimum latitude of the great circle defined by the
- * two points.
- *
- * @param lat1 latitude of point 1
- * @param lon1 longitude of point 1
- * @param lat2 latitude of point 2
- * @param lon2 longitude of point 2
- * @return minimum latitude
- */
 double GreatCircle::min_latitude_gc(double lat1, double lon1, double lat2, double lon2) {
-	return min_latitude_gc_course(lat1, lon1, lat2, lon2, initial_course(lat1,lon1,lat2,lon2));
+	return min_latitude_gc_course(lat1, initial_course(lat1,lon1,lat2,lon2));
 }
 
-double GreatCircle::min_latitude_gc_course(double lat1, double lon1, double lat2, double lon2, double trk) {
+double GreatCircle::min_latitude_gc_course(double lat1, double trk) {
 	return -Util::acos_safe(std::abs(sin(trk)*cos(lat1)));
 }
 
@@ -225,14 +204,14 @@ double GreatCircle::max_latitude(double lat1, double lon1, double lat2, double l
 			if (lat1 > 0 && (trk >= 0.5*Pi && trk <= 1.5*Pi)) {
 				return lat1;
 			} else {
-				maxLat = max_latitude_gc_course(lat1,lon1,lat2,lon2,trk);
+				maxLat = max_latitude_gc_course(lat1,trk);
 			}
 		} else {
 			double trk = initial_course(lat2, lon2, lat1, lon1);
 			if (lat2 > 0 && (trk >= 0.5*Pi && trk <= 1.5*Pi)) {
 				return lat2;
 			} else {
-				maxLat = max_latitude_gc_course(lat2,lon2,lat1,lon1,trk);
+				maxLat = max_latitude_gc_course(lat2,trk);
 			}
 		}
 		// END BLOCK
@@ -264,14 +243,14 @@ double GreatCircle::min_latitude(double lat1, double lon1, double lat2, double l
 			if (lat1 < 0 && (trk <= 0.5*Pi || trk >= 1.5*Pi)) {
 				return lat1;
 			} else {
-				minLat = min_latitude_gc_course(lat1,lon1,lat2,lon2,trk);
+				minLat = min_latitude_gc_course(lat1,trk);
 			}
 		} else {
 			double trk = initial_course(lat2, lon2, lat1, lon1);
 			if (lat2 < 0 && (trk <= 0.5*Pi || trk >= 1.5*Pi)) {
 				return lat2;
 			} else {
-				minLat = min_latitude_gc_course(lat2,lon2,lat1,lon1,trk);
+				minLat = min_latitude_gc_course(lat2,trk);
 			}
 		}
 		// END BLOCK

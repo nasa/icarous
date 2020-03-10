@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2017 United States Government as represented by
+/* Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -6,6 +6,7 @@
 
 #include "DebugSupport.h"
 #include "PlanIO.h"
+#include "PlanWriter.h"
 #include "string_util.h"
 #include <string>
 #include <iostream>
@@ -27,14 +28,14 @@ namespace larcfm {
   using std::endl;
   using std::cout;
 
-  std::string DebugSupport::getNameNoPath(std::string filename) {
-//	  if (filename == null) {
-//		  return null;
-//	  }
-	  // replace all \ (dos) with / (unix), then find last
-	  //return filename.substring(filename.replaceAll("\\\\", "/").lastIndexOf("/") + 1);
-	  return "DebugSupport::getNameNoPath: NOT YET IMPLENTED";
-  }
+//  std::string DebugSupport::getNameNoPath(std::string filename) {
+////	  if (filename == null) {
+////		  return null;
+////	  }
+//	  // replace all \ (dos) with / (unix), then find last
+//	  //return filename.substring(filename.replaceAll("\\\\", "/").lastIndexOf("/") + 1);
+//	  return "DebugSupport::getNameNoPath: NOT YET IMPLENTED";
+//  }
 
 
   void DebugSupport::dumpPlan(const Plan& plan, std::string str) {
@@ -44,11 +45,76 @@ namespace larcfm {
 	  if (!pw) {
 		  cout << "Error opening file " << dumpFileName << endl;
 	  }
-	  pw << plan.getOutputHeader(true) << std::endl;
-	  pw << plan.toOutput(0, 12, true, false);
-	  pw.close();
+	  PlanWriter pwr;
+	  pwr.open(&pw);
+
+	  pwr.setPrecision(12);
+	  pwr.writePlan(plan, true);
+	  pwr.close();
 	  fpln(" ............. dumpPlan: created file "+dumpFileName);
   }
+
+
+  void DebugSupport::dumpPlanAndPoly(const Plan& pln, const SimplePoly& sp, std::string str) {
+	  std::string fileName = "1dump_"+str+".txt";
+	  //std::ofstream pw;
+	  //  pw.open(fileName.c_str(),std::ofstream::out);
+
+	  PlanWriter pw;
+	  pw.open(fileName);
+	  pw.setPolygons(true);
+	  bool write_tcp = true;
+	  pw.writePlan(pln, write_tcp);
+	  PolyPath ppTemp = PolyPath("TEMP");
+	  fpln(" $$$$$ dumpPlanAndPoly: sp.size() = "+Fm0(sp.size()));
+	  ppTemp.addPolygon(sp,0.0);
+	  //fpln(" $$$$$ dumpPlanAndPoly: ppTemp = "+ppTemp.toString());
+	  pw.writePolyPath(ppTemp, write_tcp);
+	  pw.close();
+	  fpln(" ............. dumpPlan: created file "+fileName);
+	  return;
+  }
+
+  void DebugSupport::dumpPlanAndPolyPaths(const Plan& pln, const std::vector<PolyPath>& paths, std::string str) {
+	bool write_tcp = true;
+	dumpPlanAndPolyPaths(pln,  paths, write_tcp,  str);
+}
+
+ void DebugSupport::dumpPlanAndPolyPaths(const Plan& pln, const std::vector<PolyPath>& paths, bool write_tcp, std::string str) {
+	std::string fileName = "1dump_"+str+".txt";
+	PlanWriter pw;
+	pw.open(fileName);
+	pw.setPolygons(true);
+	if (paths.size() > 0) {
+		 pw.setPolyPathMode(paths[0].getPathMode());
+	}
+	pw.writePlan(pln, write_tcp);
+	for (int i = 0; i < (int) paths.size(); i++) {
+	   pw.setPolyPathMode(paths[i].getPathMode());
+	   pw.writePolyPath(paths[i], write_tcp);
+	}
+	pw.close();
+    fpln(" ............. dumpPlan: created file "+fileName);
+	//return osw.toString();
+	return;
+}
+
+
+
+//public static void dumpPoly(SimplePoly p, String str) {
+//	String  dumpFileName = "1dump_"+str+".txt";
+//	String s = SimplePolyToOutput(p,str);
+//	try {
+//		java.io.PrintWriter pw =
+//				new java.io.PrintWriter(new java.io.BufferedWriter(new java.io.FileWriter(dumpFileName)));
+//		pw.println(s);
+//		pw.flush();
+//		pw.close();
+//	} catch (Exception e) {
+//		f.pln(" ERROR: "+e.toString());
+//	}
+//	f.pln(" ............. dumpSimplePoly: created file "+dumpFileName);
+//}
 
 
 

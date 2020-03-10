@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  * NASA LaRC
  * 
- * Copyright (c) 2016-2018 United States Government as represented by
+ * Copyright (c) 2016-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -71,11 +71,12 @@ private:
 	GsTcpType  tcpGs;		    // Gs TCP type
 	VsTcpType  tcpVs;		    // Vs TCP type
 	double     radiusSigned;	// signed turn radius, positive values indicate right turn, negative values indicate left turn, zero indicates no specified radius
-	Position   centerTurn;
-	double     accelGs;         // signed gs-acceleration value
-	double     accelVs;         // signed vs-acceleration value
+	                            // Used in two ways:  (1) in a BOT to specify a turn radius, sign indicates direction of turn
+	                            //                    (2) in a vertex of a linear plan to specify a desired turn radius at this location.  The sign is ignored.
+	Position   centerTurn;      // location of the turn center (stored in BOT)
+	double     accelGs;         // signed gs-acceleration value (stored in BGS)
+	double     accelVs;         // signed vs-acceleration value (stored in BVS)
 	std::string  information;
-	//bool        isMOTflag;
 
 public:
 	TcpData() :
@@ -88,7 +89,6 @@ public:
 		accelGs(0.0),
 		accelVs(0.0),
 		information("")
-        //isMOTflag(false)
 	{ }
 	
 
@@ -102,7 +102,6 @@ public:
 		accelGs(data.accelGs),
 		accelVs(data.accelVs),
 		information(data.information)
-	    //isMOTflag(data.isMOTflag)
 	{ }
 	
 	std::string getTypeString() const;
@@ -200,8 +199,7 @@ public:
 
 	
 	static TcpData makeFull(const std::string& ty, const std::string& tcp_trk, const std::string& tcp_gs, const std::string& tcp_vs,
-			double radiusSigned, const Position& center,  double accel_gs, double accel_vs,
-			const Velocity& velocityInit);
+			double radiusSigned, const Position& center,  double accel_gs, double accel_vs);
 		
 	
 	static TcpData makeInvalid();
@@ -245,6 +243,23 @@ public:
 	 */
 	TcpData setEOT();
 
+
+
+	/** Set this point as a "beginning of turn" point.
+	 *
+	 * @param signedRadius right turns have a positive radius, left turns have a negative radius
+	 * @param center center of turn
+	 * @return a reference to the current TcpData object
+	 */
+	TcpData addBOT(double signedRadius, Position center);
+
+	/** Set this point as an "end of turn" point, either an EOTBOT or an EOT
+	 *
+	 * @return a reference to the current TcpData object
+	 */
+	TcpData addEOT();
+
+
 	/** Set this point as a combined "end of turn and beginning of turn" point. 
 	 * 
 	 * @param signedRadius radius
@@ -262,6 +277,12 @@ public:
 	 * @return this TcpData object (for a.setX() type operations)
 	 */
 	TcpData setBGS(double a);
+
+	/** Set this point as an "end ground speed" point, either a EGS or an EGSBGS
+	 *
+	 * @return a reference to the current TcpData object
+	 */
+	TcpData addEGS();
 
 	void clearGs();
 
@@ -296,6 +317,12 @@ public:
 	 * @return this TcpData object (for a.setX() type operations)
 	 */
 	TcpData setEVS();
+
+	/** Set this point as an "end vertical speed" point, either a EVS or an EVSBVS
+	 *
+	 * @return a reference to the current TcpData object
+	 */
+	TcpData addEVS();
 
 	/**
 	 * Set this point as a combined "ending of vertical speed change and beginning of vertical speed change" point
@@ -451,7 +478,7 @@ public:
 	 * @param precision number of digits of precision
 	 * @return a string
 	 */
-	std::string metaDataLabel(double t, int precision) const;
+	std::string metaDataLabel(int precision) const;
 
 	static std::pair<NavPoint,TcpData> parseLL(const std::string& s);
 	

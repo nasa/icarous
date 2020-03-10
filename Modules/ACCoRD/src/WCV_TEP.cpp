@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -31,6 +31,14 @@ WCV_TEP::WCV_TEP(const WCVTable& tab) {
   wcv_vertical = new WCV_TCOA();
   table = tab;
   id = "";
+}
+
+/**
+ * @return one static WCV_TEP
+ */
+const WCV_TEP& WCV_TEP::A_WCV_TEP() {
+  static WCV_TEP dwc;
+  return dwc;
 }
 
 double WCV_TEP::horizontal_tvar(const Vect2& s, const Vect2& v) const {
@@ -79,8 +87,8 @@ Detection3D* WCV_TEP::make() const {
  * Returns a deep copy of this WCV_TEP object, including any results that have been calculated.
  */
 Detection3D* WCV_TEP::copy() const {
-  WCV_TEP* ret = new WCV_TEP(table);
-  ret->id = id;
+  WCV_TEP* ret = new WCV_TEP();
+  ret->copyFrom(*this);
   return ret;
 }
 

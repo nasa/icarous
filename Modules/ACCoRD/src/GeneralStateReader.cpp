@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 United States Government as represented by
+ * Copyright (c) 2016-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -298,7 +298,7 @@ int GeneralStateReader::altHeadings5(const std::string& s1, const std::string& s
 }
 
 int GeneralStateReader::size() const {
-	return states.size();
+	return static_cast<int>(states.size());
 }
 
 int GeneralStateReader::numAircraft() const {

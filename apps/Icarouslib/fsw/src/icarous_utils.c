@@ -405,7 +405,7 @@ bool InitializeParams(char *filename,param_t* params,uint16_t paramCount){
     char locvals[250][16];
     int n = GetParams(filename,locparams,locvals);
     if (n != paramCount){
-        OS_printf("Parameter count incorrect in %s",filename);
+        OS_printf("Parameter count incorrect in %s\n",filename);
         return false;
     }else{
         for(int i=0;i<PARAM_COUNT;++i){

@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -133,12 +133,12 @@ int CDSICore::getSegmentOut(int i) const {
   return segout[i];
 }
 
-double CDSICore::getTimeClosest(int i) const {
+double CDSICore::getCriticalTime(int i) const {
   if (i < 0 || i >= (int)tca.size()) return 0.0;
   return tca[i];
 }
 
-double CDSICore::getDistanceClosest(int i) const {
+double CDSICore::getDistanceAtCriticalTime(int i) const {
   if (i < 0 || i >= (int)dist_tca.size()) return 0.0;
   return dist_tca[i];
 }
@@ -170,18 +170,19 @@ double CDSICore::getDistanceClosest(int i) const {
 bool CDSICore::cdsicore_xyz(const Vect3& so, const Velocity& vo, Detection3D* cd,double t0, double state_horizon, const Plan& intent,
     double B, double T) {
   CDSICore_def.setCoreDetectionPtr(cd);
-  return CDSICore_def.detectionXYZ(so, vo, t0, 10.0e+100, intent, B, T);
+  return CDSICore_def.detectionXYZ(so, vo, t0, state_horizon, intent, B, T);
 }
 
 bool CDSICore::cdsicore_ll(const LatLonAlt& state, Velocity vo, Detection3D* cd, double t0, double state_horizon,
     const Plan& intent, double B, double T) {
   CDSICore_def.setCoreDetectionPtr(cd);
-  return CDSICore_def.detectionLL(state, vo, t0, 10.0e+100, intent, B, T);
+  return CDSICore_def.detectionLL(state, vo, t0, state_horizon, intent, B, T);
 }
 
 
 bool CDSICore::cdsicore(const Position& so, const Velocity& vo, Detection3D* cd, double t0, double state_horizon,
     const Plan& intent, double B, double T) {
+  CDSICore_def.setCoreDetectionPtr(cd);
   return CDSICore_def.detection(so, vo, t0, state_horizon, intent, B, T);
 }
 
@@ -190,7 +191,7 @@ bool CDSICore::detection(const Position& so, const Velocity& vo, double t0, doub
   if (so.isLatLon()) {
     return detectionLL(so.lla(), vo, t0, state_horizon, intent, B, T);
   } else {
-    return detectionXYZ(so.point(), vo, t0, state_horizon, intent, B, T);
+    return detectionXYZ(so.vect3(), vo, t0, state_horizon, intent, B, T);
   }
 }
 
@@ -231,8 +232,14 @@ bool CDSICore::detectionXYZ(const Vect3& so, const Velocity& vo, double t0, doub
   for (int j = start_seg; j < intent.size(); j++){
     // invariant: t0 <= t_base
 
+    double dt = t_base - intent.time(j);
+    if (checkSmallTimes && dt > 0.0 && dt < 0.000001) {
+      error.addWarning("Attempting detectionXYZ on segment "+Fm0(j)+" of "+intent.getID()+" with very small offset: "+Fm12(dt));
+    }
+
+
     Vect3 sop = so.AddScal((t_base - t0),vo);
-    Vect3 sip = intent.position(t_base,linear).point(); // intent.positionXYZ(j).AddScal((t_base - intent.getTime(j)),vi);
+    Vect3 sip = intent.position(t_base,linear).vect3(); // intent.positionXYZ(j).AddScal((t_base - intent.getTime(j)),vi);
     //Vect3 s = sop.Sub(sip);
 
     //      if (allowVariableDistanceBuffer) {
@@ -257,6 +264,17 @@ bool CDSICore::detectionXYZ(const Vect3& so, const Velocity& vo, double t0, doub
       //        std::cout << "CDSICore.detectionXYZ: vo=" << vo.toString() << " vi=" << intent.initialVelocity(j).toString() << std::endl;
       if (NT >= 0.0) {
         //cd.setTimeHorizon(HT);
+
+        double dt = NT-BT;
+        if (checkSmallTimes && dt > 0) {
+          if (dt < cdsscore.getFilterTime()) {
+            error.addWarning("Attempting detectionXYZ on segment "+Fm0(j)+" of "+intent.getID()+" with duration smaller than the filter time");
+          } else if (dt < 0.000001) {
+            error.addWarning("Attempting detectionXYZ on segment "+Fm0(j)+" at time "+Fm12(BT+t_base)+" of "+intent.getID()+" with very small duration: "+Fm12(dt));
+          }
+        }
+
+
         if ( cdsscore.detectionBetween(sop, vo, sip, intent.initialVelocity(j, linear), BT, NT, HT) ) {
           if (std::abs((t0+B) - (cdsscore.getTimeOut()+t_base)) > 0.0000001) {
             captureOutput(t_base, j);
@@ -316,13 +334,17 @@ bool CDSICore::detectionLL(const LatLonAlt& so, const Velocity& vo, double t0, d
   for (int j = start_seg; j < intent.size(); j++){
     // invariant: t0 <= t_base
 
+    double dt = t_base - intent.time(j);
+    if (checkSmallTimes && dt > 0.0 && dt < 0.000001) {
+      error.addWarning("Attempting detectionLL on segment "+Fm0(j)+" of "+intent.getID()+" with very small offset: "+Fm12(dt));
+    }
 
     LatLonAlt so2p = GreatCircle::linear_initial(so, vo, t_base-t0);  //CHANGED!!!
     LatLonAlt sip = intent.position(t_base,linear).lla();
     EuclideanProjection proj = Projection::createProjection(so.zeroAlt());   // CHECK THIS!!!  Should it be so2p?
     //      Vect3 s = proj.project(so2p).Sub(proj.project(sip));
-    Vect3 so3 = proj.project(so2p);
-    Vect3 si3 = proj.project(sip);
+//    Vect3 so3 = proj.project(so2p);
+//    Vect3 si3 = proj.project(sip);
 
 
     //      if (allowVariableDistanceBuffer) {
@@ -340,8 +362,16 @@ bool CDSICore::detectionLL(const LatLonAlt& so, const Velocity& vo, double t0, d
 
       //        Velocity vop = vo;
       //        Velocity vip = intent.initialVelocity(t_base);
-      Velocity vop = proj.projectVelocity(so2p, vo); //CHANGED!!!
-      Velocity vip = proj.projectVelocity(sip, intent.velocity(t_base, linear));
+//      Velocity vop = proj.projectVelocity(so2p, vo); //CHANGED!!!
+//      Velocity vip = proj.projectVelocity(sip, intent.velocity(t_base, linear));
+
+        std::pair<Vect3,Velocity> prj_o = proj.project(so2p, vo);
+        std::pair<Vect3,Velocity> prj_i = proj.project(sip, intent.velocity(t_base, linear));
+        Vect3 so3 = prj_o.first;
+        Vect3 si3 = prj_i.first;
+        Velocity vop = prj_o.second;
+        Velocity vip = prj_i.second;
+
 
       //        std::cout << "$$CDSICoreLL2 positions: "<< so2p.toString() <<" "<<sip.toString() << std::endl;
       //        std::cout << "$$CDSICoreLL3 rel pos and vo: "<<s.toString() <<" "<<vop.toString() << std::endl;
@@ -352,6 +382,17 @@ bool CDSICore::detectionLL(const LatLonAlt& so, const Velocity& vo, double t0, d
       //std::cout << "$$CDSICoreLL6" << r << " " << r.vect2().norm()<< " "<<Units.str("ft", r.z));
       if (NT >= 0) {
         //cd.setTimeHorizon(HT);
+
+        double dt = NT-BT;
+        if (checkSmallTimes && dt > 0) {
+          if (dt < cdsscore.getFilterTime()) {
+            error.addWarning("Attempting detectionLL on segment "+Fm0(j)+" of "+intent.getID()+" with duration smaller than the filter time");
+          } else if (dt < 0.000001) {
+            error.addWarning("Attempting detectionLL on segment "+Fm0(j)+" at time "+Fm12(BT+t_base)+" of "+intent.getID()+" with very small duration: "+Fm12(dt));
+          }
+        }
+
+
         if ( cdsscore.detectionBetween(so3, vop, si3, vip, BT, NT, HT) ) {  //CHANGED!!!
           if (std::abs((t0+B) - (cdsscore.getTimeOut()+t_base)) > 0.0000001) {
             captureOutput(t_base, j);
@@ -378,7 +419,7 @@ bool CDSICore::detectionLL(const LatLonAlt& so, const Velocity& vo, double t0, d
 
 
 void CDSICore::captureOutput(double t_base, int seg) {
-//  std::cout << "$$CDSICore output times "<<t_base<<" "<<(cdsscore.getTimeIn()+t_base)<<" "<<(cdsscore.getTimeOut()+t_base)<<" seg:"<<seg<<" tcpa: "<<cdsscore.timeOfClosestApproach()<<" filter="<< cdsscore.getFilterTime()<<std::endl;
+  //  std::cout << "$$CDSICore output times "<<t_base<<" "<<(cdsscore.getTimeIn()+t_base)<<" "<<(cdsscore.getTimeOut()+t_base)<<" seg:"<<seg<<" tcpa: "<<cdsscore.timeOfClosestApproach()<<" filter="<< cdsscore.getFilterTime()<<std::endl;
 
   segin.push_back(seg);
   segout.push_back(seg);
@@ -388,7 +429,7 @@ void CDSICore::captureOutput(double t_base, int seg) {
   } else {
     tout.push_back(cdsscore.getTimeOut()+t_base);
   }
-  tca.push_back(cdsscore.timeOfClosestApproach() + t_base);
+  tca.push_back(cdsscore.getCriticalTime() + t_base);
   dist_tca.push_back(cdsscore.distanceAtCriticalTime());
   //    tin_size++;
   //    if (tin_size >= SIZE) {
@@ -442,6 +483,140 @@ bool CDSICore::violation(const Position& so, const Velocity& vo, const Plan& int
   }
   return cdsscore.violation(so, vo, intent.position(tm), intent.velocity(tm));
 }
+
+
+
+/**
+ * EXPERIMENTAL
+ * @param so
+ * @param vo
+ * @param t0
+ * @param state_horizon
+ * @param intent
+ * @param B
+ * @param T
+ * @return true if conflict
+ */
+bool CDSICore::conflictXYZ(const Vect3& so, const Velocity& vo, double t0, double state_horizon, const Plan& intent, double B, double T) const {
+  bool linear = true;     // was Plan.PlanType.LINEAR);
+  double t_base;
+  int start_seg;
+  double BT = 0.0;
+  double NT = 0.0;
+  double HT = 0.0;
+
+  if (t0 < intent.time(0)) {
+    t_base = intent.time(0);
+    start_seg = 0;
+  } else {
+    t_base = t0;
+    start_seg = intent.getSegment(t0);
+    if (start_seg < 0) {
+      return false;  // t0 past end of Flight Plan
+    }
+  }
+  for (int j = start_seg; j < intent.size(); j++){
+
+    double dt = t_base - intent.time(j);
+    if (checkSmallTimes && dt > 0.0 && dt < 0.000001) {
+      error.addWarning("Attempting conflictXYZ on segment "+Fm0(j)+" of "+intent.getID()+" with very small offset: "+Fm12(dt));
+    }
+
+
+    Vect3 sop = so.AddScal((t_base - t0),vo);
+    Vect3 sip = intent.position(t_base,linear).vect3(); // intent.positionXYZ(j).AddScal((t_base - intent.getTime(j)),vi);
+    if (j == intent.size() - 1) {
+      continue;
+    } else { // normal case
+      HT = Util::max(0.0, Util::min(state_horizon - (t_base - t0), intent.time(j+1) - t_base));
+      BT = Util::max(0.0, B + t0 - t_base);
+      NT = T + t0 - t_base;
+      if (NT >= 0) {
+
+        double dt = NT-BT;
+        if (checkSmallTimes && dt > 0) {
+          if (dt < cdsscore.getFilterTime()) {
+            error.addWarning("Attempting conflictXYZ on segment "+Fm0(j)+" of "+intent.getID()+" with duration smaller than the filter time");
+          } else if (dt < 0.000001) {
+            error.addWarning("Attempting conflictXYZ on segment "+Fm0(j)+" at time "+Fm12(BT+t_base)+" of "+intent.getID()+" with very small duration: "+Fm12(dt));
+          }
+        }
+
+
+        if (cdsscore.conflict(sop, vo, sip, intent.initialVelocity(j, linear), BT, Util::min(NT, HT)) ) return true;
+      }
+      t_base = intent.time(j+1);
+    }
+  }
+  return false;
+}
+
+
+
+/**
+ * EXPERIMENTAL
+ */
+bool CDSICore::conflictLL(const LatLonAlt& so, const Velocity& vo, double t0, double state_horizon, const Plan& intent, double B, double T) const {
+  bool linear = true;     // was Plan.PlanType.LINEAR);
+
+  double t_base;
+  int start_seg;
+  double BT = 0.0;
+  double NT = 0.0;
+  double HT = 0.0;
+
+  if (t0 < intent.time(0)) {
+    t_base = intent.time(0);
+    start_seg = 0;
+  } else {
+    t_base = t0;
+    start_seg = intent.getSegment(t0);
+    if (start_seg < 0) {
+      return false;  // t0 past end of Flight Plan
+    }
+  }
+  for (int j = start_seg; j < intent.size(); j++){
+
+    double dt = t_base - intent.time(j);
+    if (checkSmallTimes && dt > 0.0 && dt < 0.000001) {
+      error.addWarning("Attempting conflictLL on segment "+Fm0(j)+" of "+intent.getID()+" with very small offset: "+Fm12(dt));
+    }
+
+
+    LatLonAlt so2p = GreatCircle::linear_initial(so, vo, t_base-t0);  //CHANGED!!!
+    LatLonAlt sip = intent.position(t_base,linear).lla();
+    EuclideanProjection proj = Projection::createProjection(so.zeroAlt()); // CHECK THIS!!!  Should it be so2p?
+    Vect3 so3 = proj.project(so2p);
+    Vect3 si3 = proj.project(sip);
+    if (j == intent.size() - 1) {
+      continue; // leave loop
+    } else { // normal case
+      HT = Util::max(0.0, Util::min(state_horizon - (t_base - t0), intent.time(j+1) - t_base));
+      BT = Util::max(0.0, B + t0 - t_base);
+      NT = T + t0 - t_base;
+      Velocity vop = proj.projectVelocity(so2p, vo);  //CHANGED!!!
+      Velocity vip = proj.projectVelocity(sip, intent.velocity(t_base, linear));
+      if (NT >= 0) {
+
+        dt = NT-BT;
+        if (checkSmallTimes && dt > 0) {
+          if (dt < cdsscore.getFilterTime()) {
+            error.addWarning("Attempting conflictLL on segment "+Fm0(j)+" of "+intent.getID()+" with duration smaller than the filter time");
+          } else if (dt < 0.000001) {
+            error.addWarning("Attempting conflictLL on segment "+Fm0(j)+" at time "+Fm12(BT+t_base)+" of "+intent.getID()+" with very small duration: "+Fm12(dt));
+          }
+        }
+
+
+        if (cdsscore.conflict(so3, vop, si3, vip, BT, Util::min(NT, HT)) ) return true;
+      }
+      t_base = intent.time(j+1);
+    }
+  }
+  return false;
+}
+
+
 
 void CDSICore::setCoreDetectionPtr(const Detection3D* d) {
   cdsscore.setCoreDetectionPtr(d);

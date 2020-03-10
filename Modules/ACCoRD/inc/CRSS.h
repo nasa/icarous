@@ -7,7 +7,7 @@
  * 
  * Conflict resolution between an ownship and traffic aircraft using state information.
  *   
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -24,18 +24,20 @@
 
 namespace larcfm {
 
-  /**
-   * Conflict resolution.<p>
-   *
-   * Possible resolution values:
-   * <ul>
-   * <li> LoS -- Loss of separation resolution
-   * <li> None -- No resolution available
-   * <li> Conflict -- Conflict resolution
-   * <li> Unnecessary -- Conflict resolution is not needed
-   * </ul>
-   *
-   */
+/**
+ * Conflict resolution.<p>
+ * Conflict resolution between an ownship and traffic aircraft
+ * using state information.
+ * 
+ * Possible resolution values:
+ * <ul>
+ * <li> LoS -- Loss of separation resolution
+ * <li> None -- No resolution available
+ * <li> Conflict -- Conflict resolution
+ * <li> Unnecessary -- Conflict resolution is not needed
+ * </ul>
+ *
+ */
   class CRSS {
 
   public:

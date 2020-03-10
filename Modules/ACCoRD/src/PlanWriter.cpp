@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -36,9 +36,14 @@ namespace larcfm {
         display_units = true;
         tcpColumns = false;
         precision = 8;
+        latLonExtraPrecision = 2;
         mode = PolyPath::MORPHING;
         polyColumns = false;
         trkgsvs = true;
+//        timeOffset = 0.0;
+        lines = 0;
+        first_line = true;
+        latlon = true;
 	}
 	
 
@@ -93,6 +98,25 @@ namespace larcfm {
 		precision = prec;
 	}
 
+	int PlanWriter::getLatLonExtraPrecision() const {
+		return latLonExtraPrecision;
+	}
+
+	void PlanWriter::setLatLonExtraPrecision(int prec) {
+		latLonExtraPrecision = prec;
+	}
+
+//	double PlanWriter::getTimeOffset() const {
+//		return timeOffset;
+//	}
+//
+//	void PlanWriter::setTimeOffset(double offset) {
+//		if (offset >= 0.0) {
+//			timeOffset = offset;
+//		}
+//	}
+
+
 	void PlanWriter::setPolyPathMode(PolyPath::PathMode m) {
 		polyColumns = true;
 		mode = m;
@@ -127,13 +151,13 @@ namespace larcfm {
 					}
 					std::string note = list[i].getNote();
 					if (!equals(note,"")) {
-						output.setParameter(list[i].getName()+"_note", note);
+						output.setParameter(list[i].getID()+"_note", note);
 					}
 			}
 			if (pplist.size() > 0) {
-				s = pplist[0].getName();
+				s = pplist[0].getID();
 				for (int i = 1; i < (int) pplist.size(); i++) {
-					s = s+","+pplist[i].getName();
+					s = s+","+pplist[i].getID();
 				}
 			}
 			if (pplist.size() > 0) {
@@ -148,7 +172,7 @@ namespace larcfm {
 			for (int i = 0; i < (int) plans.size(); i++) {
 				std::string note = plans[i].getNote();
 				if (!equals(note,"")) {
-					output.setParameter(plans[i].getName()+"_note", note);
+					output.setParameter(plans[i].getID()+"_note", note);
 				}
 			}
 		}
@@ -203,7 +227,12 @@ namespace larcfm {
 				output.setParameter("PathMode", PolyPath::pathModeToString(mode));
 			}
 
-			output.addHeading("name", "unitless");
+//			if (timeOffset > 0.0) {
+//				output.setParameter("timeOffset", Fm8(timeOffset));
+//
+//			}
+
+			output.addHeading("ID", "unitless");
 			if (latlon) {
 				output.addHeading("lat",  "deg");
 				output.addHeading("lon",  "deg");
@@ -246,7 +275,7 @@ namespace larcfm {
 				}
 				output.addHeading("info", "unitless");
 			}
-			output.addHeading("label", "unitless");
+			output.addHeading("name", "unitless");
 			if (polyColumns) {
 				if (latlon) {
 					output.addHeading("alt2", "ft");//21
@@ -273,10 +302,20 @@ namespace larcfm {
 	void PlanWriter::writePlan(const Plan& p, bool write_tcp) {
 		//fpln(" $$$$$$$$ writePlan: first_line = "+bool2str(first_line));
 
+		Plan pp = p;
+
 		writeHeader(write_tcp, p.isLatLon());
 
-		for (int i = 0; i < p.size(); i++) {
-			output.addColumn(p.toStringList(i,precision,tcpColumns));
+//		if (timeOffset > 0 && timeOffset <= p.getFirstTime()) {
+//			pp = Plan(p);
+//			pp.timeShiftPlan(0,-timeOffset);
+//		} else if (timeOffset < 0 || timeOffset > p.getFirstTime()) {
+//			error.addError("Invalid time offset: "+timeOffset+" plan first time="+p.getFirstTime());
+//			fpln("PlanWriter ERROR: invalid time offset");
+//		}
+
+		for (int i = 0; i < pp.size(); i++) {
+			output.addColumn(pp.toStringList(i,precision,tcpColumns));
 			if (polyColumns) {
 				output.addColumn("-"); //alt2
 				if (mode == PolyPath::USER_VEL || mode == PolyPath::USER_VEL_FINITE || mode == PolyPath::USER_VEL_EVER) {
@@ -300,17 +339,24 @@ namespace larcfm {
 
 			PolyPath pp = p;
 
+//			if (timeOffset <= pp.getFirstTime()) {
+//				pp.timeshift(-timeOffset);
+//			} else if (timeOffset < 0 || timeOffset > p.getFirstTime()) {
+//				error.addError("Invalid time offset: "+timeOffset+" polypath first time="+p.getFirstTime());
+//				fpln("PlanWriter ERROR: invalid time offset");
+//			}
+
 			if (mode != pp.getPathMode()) {
-				error.addWarning("Attempting to convert PolyPath "+pp.getName()+" to user-specified mode "+PolyPath::pathModeToString(mode));
+				error.addWarning("Attempting to convert PolyPath "+pp.getID()+" to user-specified mode "+PolyPath::pathModeToString(mode));
 				pp.setPathMode(mode);
 			}
 			for (int i = 0; i < pp.size(); i++) {
 				//fpln(" $$$ writePolyPath: pp.getPolyRef("+Fm0(i)+").size() = "+Fm0(pp.getPolyRef(i).size()));
 				for (int j = 0; j < pp.getPolyRef(i).size(); j++) {   // TODO: RWB IS THE Ref ok?
 					if (pp.getPolyRef(i).size() < 3) {
-						error.addWarning("Polygon "+pp.getName()+"("+Fm0(i)+") has fewer than 3 sides!");
+						error.addWarning("Polygon "+pp.getID()+"("+Fm0(i)+") has fewer than 3 sides!");
 					}
-					output.addColumn(pp.toStringList(i,j,precision,tcpColumns));
+					output.addColumn(pp.toStringList(i,j,precision,latLonExtraPrecision,tcpColumns));
 					lines++;
 					output.writeLine();
 				}

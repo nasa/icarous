@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -95,7 +95,7 @@ Daidalus::Daidalus(const Alerter& alerter) : error("Daidalus"), core_(alerter), 
  * Construct a Daidalus object with the default parameters and one alerter with the
  * given detector and T (in seconds) as the alerting time, early alerting time, and lookahead time.
  */
-Daidalus::Daidalus(const Detection3D& det, double T) : error("Daidalus"), core_(det,T), hdir_band_(core_.parameters), hs_band_(core_.parameters), vs_band_(core_.parameters), alt_band_(core_.parameters) {}
+Daidalus::Daidalus(const Detection3D* det, double T) : error("Daidalus"), core_(det,T), hdir_band_(core_.parameters), hs_band_(core_.parameters), vs_band_(core_.parameters), alt_band_(core_.parameters) {}
 
 /* Setting for WC Definitions RTCA DO-365 */
 
@@ -145,7 +145,7 @@ void Daidalus::set_Buffered_WC_DO_365(bool type) {
  * - Instantaneous maneuvers */
 void Daidalus::set_CD3D() {
   clearAlerters();
-  addAlerter(Alerter::CD3D());
+  addAlerter(Alerter::CD3D_SingleBands());
   setCorrectiveRegion(BandsRegion::NEAR);
   setInstantaneousBands();
   setCollisionAvoidanceBands(true);
@@ -187,23 +187,35 @@ const TrafficState& Daidalus::getAircraftStateAt(int idx) const {
 
 /**
  * Set ownship state and current time. Clear all traffic.
- * @param id Ownship's identified
+ * @param id Ownship's identifier
  * @param pos Ownship's position
  * @param vel Ownship's ground velocity
  * @param time Time stamp of ownship's state
  */
 void Daidalus::setOwnshipState(const std::string& id, const Position& pos, const Velocity& vel, double time) {
-  clear();
-  core_.set_ownship_state(id,pos,vel,time);
+  if (!hasOwnship() || !equals(core_.ownship.getId(),id) ||
+      time <= getCurrentTime() ||
+      time-getCurrentTime() > getHysteresisTime()) {
+    // Full reset (including hysteresis) if adding a different ownship or time is
+    // in the past.
+    core_.clear();
+    core_.set_ownship_state(id,pos,vel,time);
+    reset();
+  } else {
+    // Otherwise, reset cache values but keeps hysteresis.
+    core_.clear();
+    core_.set_ownship_state(id,pos,vel,time);
+    reset_cache(0);
+  }
 }
 
 /**
  * Set ownship state at time 0.0. Clear all traffic.
- * @param id Ownship's identified
+ * @param id Ownship's identifier
  * @param pos Ownship's position
  * @param vel Ownship's ground velocity
  */
-void Daidalus::setOwnship(const std::string& id, const Position& pos, const Velocity& vel) {
+void Daidalus::setOwnshipState(const std::string& id, const Position& pos, const Velocity& vel) {
   setOwnshipState(id,pos,vel,0.0);
 }
 
@@ -223,9 +235,12 @@ int Daidalus::addTrafficState(const std::string& id, const Position& pos, const 
     setOwnshipState(id,pos,vel,time);
     return 0;
   } else {
-    int ac_idx = core_.add_traffic_state(id,pos,vel,time);
-    stale(false);
-    return ac_idx;
+    int idx = core_.set_traffic_state(id,pos,vel,time);
+    if (idx >= 0) {
+      ++idx;
+      reset_cache(idx);
+    }
+    return idx;
   }
 }
 
@@ -241,33 +256,22 @@ int Daidalus::addTrafficState(const std::string& id, const Position& pos, const 
   return addTrafficState(id,pos,vel,core_.current_time);
 }
 
-/**
- * Add traffic state at current time. If it's the first aircraft, this aircraft is
- * set as the ownship.
- * @param id Aircraft's identifier
- * @param pos Aircraft's position
- * @param vel Aircraft's ground velocity
- * Same function as addTrafficState, but it doesn't return index of added traffic. This is neeeded
- * for compatibility with GenericBands
- */
-void Daidalus::addTraffic(const std::string& id, const Position& pos, const Velocity& vel) {
-  addTrafficState(id,pos,vel);
-}
 
 /**
  * Get index of aircraft with given name. Return -1 if no such index exists
  */
 int Daidalus::aircraftIndex(const std::string& name) const {
+  int idx = -1;
   if (lastTrafficIndex() >= 0) {
     if (equals(core_.ownship.getId(),name)) {
       return 0;
     }
-    for (int i = 0; i < (int) core_.traffic.size(); ++i) {
-      if (equals(core_.traffic[i].getId(),name))
-        return i+1;
+    idx = core_.find_traffic_state(name);
+    if (idx >= 0) {
+      ++idx;
     }
   }
-  return -1;
+  return idx;
 }
 
 /**
@@ -278,7 +282,7 @@ void Daidalus::resetOwnship(const std::string& id) {
   int ac_idx = aircraftIndex(id);
   if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
     core_.reset_ownship(ac_idx-1);
-    stale(true);
+    reset();
   } else {
     error.addError("resetOwnship: aircraft index "+Fmi(ac_idx)+" is out of bounds");
   }
@@ -294,7 +298,7 @@ bool Daidalus::removeTrafficAircraft(const std::string& name) {
   int ac_idx = aircraftIndex(name);
   if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
     core_.traffic.erase(core_.traffic.begin()+(ac_idx-1));
-    stale(true);
+    reset();
     return true;
   }
   return false;
@@ -310,7 +314,7 @@ void Daidalus::linearProjection(double offset) {
     for (int i = 0; i < (int) core_.traffic.size(); i++) {
       core_.traffic[i] = core_.traffic[i].linearProjection(offset);
     }
-    stale(true);
+    reset();
   }
 }
 
@@ -390,7 +394,7 @@ Velocity Daidalus::getWindVelocityFrom() const {
  */
 void Daidalus::setWindVelocityTo(const Velocity& wind_vector) {
   core_.set_wind_velocity(wind_vector);
-  stale(false);
+  reset_cache(0);
 }
 
 /**
@@ -413,17 +417,17 @@ void Daidalus::setAlerterIndex(int ac_idx, int alerter_idx) {
     if (getAircraftStateAt(ac_idx).getAlerterIndex() != alerter_idx) {
       if (ac_idx == 0 && core_.ownship.isValid()) {
         core_.ownship.setAlerterIndex(alerter_idx);
-        stale(false);
+        reset_cache(ac_idx);
       } else if (1 <= ac_idx && ac_idx <= lastTrafficIndex()) {
         core_.traffic[ac_idx-1].setAlerterIndex(alerter_idx);
-        stale(false);
+        reset_cache(ac_idx);
       }
     }
   } else {
-    error.addError("setAlerter: aircraft index "+Fmi(ac_idx)+" is out of bounds");
+    error.addError("setAlerterIndex: aircraft index "+Fmi(ac_idx)+" is out of bounds");
   }
   if (alerter_idx > core_.parameters.numberOfAlerters()) {
-    error.addWarning("setAlerter: alerter index "+Fmi(alerter_idx)+" is out of bounds");
+    error.addWarning("setAlerterIndex: alerter index "+Fmi(alerter_idx)+" is out of bounds");
   }
 }
 
@@ -475,7 +479,7 @@ void Daidalus::setHorizontalPositionUncertainty(int ac_idx, double s_EW_std, dou
     } else {
       core_.traffic[ac_idx-1].setHorizontalPositionUncertainty(s_EW_std,s_NS_std,s_EN_std);
     }
-    stale(false);
+    reset_cache(ac_idx);
   }
 }
 
@@ -500,7 +504,7 @@ void Daidalus::setVerticalPositionUncertainty(int ac_idx, double sz_std) {
     } else {
       core_.traffic[ac_idx-1].setVerticalPositionUncertainty(sz_std);
     }
-    stale(false);
+    reset_cache(ac_idx);
   }
 }
 
@@ -525,7 +529,7 @@ void Daidalus::setHorizontalVelocityUncertainty(int ac_idx, double v_EW_std, dou
     } else {
       core_.traffic[ac_idx-1].setHorizontalVelocityUncertainty(v_EW_std,v_NS_std,v_EN_std);
     }
-    stale(false);
+    reset_cache(ac_idx);
   }
 }
 
@@ -550,7 +554,7 @@ void Daidalus::setVerticalSpeedUncertainty(int ac_idx, double vz_std) {
     } else {
       core_.traffic[ac_idx-1].setVerticalSpeedUncertainty(vz_std);
     }
-    stale(false);
+    reset_cache(ac_idx);
   }
 }
 
@@ -572,7 +576,7 @@ void Daidalus::resetUncertainty(int ac_idx) {
     } else {
       core_.traffic[ac_idx-1].resetUncertainty();
     }
-    stale(false);
+    reset_cache(ac_idx);
   }
 }
 
@@ -589,8 +593,11 @@ const UrgencyStrategy* Daidalus::getUrgencyStrategy() const {
  * Set strategy for computing most urgent aircraft.
  */
 void Daidalus::setUrgencyStrategy(const UrgencyStrategy* strat) {
-  core_.urgency_strategy = strat->copy();
-  stale(true);
+  if (core_.urgency_strategy != NULL) {
+    delete core_.urgency_strategy;
+  }
+  core_.urgency_strategy = strat != NULL ? strat->copy() : NULL;
+  reset();
 }
 
 /**
@@ -667,7 +674,7 @@ int Daidalus::getAlerterIndex(std::string id) const {
  */
 void Daidalus::clearAlerters() {
   core_.parameters.clearAlerters();
-  stale(true);
+  reset();
 }
 
 /**
@@ -675,7 +682,7 @@ void Daidalus::clearAlerters() {
  */
 int Daidalus::addAlerter(const Alerter& alerter) {
   int alert_idx = core_.parameters.addAlerter(alerter);
-  stale(true);
+  reset();
   return alert_idx;
 }
 
@@ -1113,7 +1120,7 @@ bool Daidalus::isEnabledBandsPersistence() const {
  */
 void Daidalus::setBandsPersistence(bool flag) {
   core_.parameters.setBandsPersistence(flag);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1233,7 +1240,7 @@ double Daidalus::getMinVerticalRecovery(const std::string& u) const {
  */
 void Daidalus::setLookaheadTime(double t) {
   core_.parameters.setLookaheadTime(t);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1241,7 +1248,7 @@ void Daidalus::setLookaheadTime(double t) {
  */
 void Daidalus::setLookaheadTime(double t, const std::string& u) {
   core_.parameters.setLookaheadTime(t,u);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1265,7 +1272,7 @@ void Daidalus::setLeftHorizontalDirection(double val, const std::string& u) {
  */
 void Daidalus::setRightHorizontalDirection(double val) {
   core_.parameters.setRightHorizontalDirection(val);
-  hdir_band_.set_max_rel(getRightHorizontalDirection());
+  hdir_band_.setmax_rel(getRightHorizontalDirection());
 }
 
 /**
@@ -1273,7 +1280,7 @@ void Daidalus::setRightHorizontalDirection(double val) {
  */
 void Daidalus::setRightHorizontalDirection(double val, const std::string& u) {
   core_.parameters.setRightHorizontalDirection(val,u);
-  hdir_band_.set_max_rel(getRightHorizontalDirection());
+  hdir_band_.setmax_rel(getRightHorizontalDirection());
 }
 
 /**
@@ -1297,7 +1304,7 @@ void Daidalus::setMinHorizontalSpeed(double val, const std::string& u) {
  */
 void Daidalus::setMaxHorizontalSpeed(double val) {
   core_.parameters.setMaxHorizontalSpeed(val);
-  hs_band_.set_max_nomod(getMaxHorizontalSpeed());
+  hs_band_.setmax_nomod(getMaxHorizontalSpeed());
 }
 
 /**
@@ -1305,7 +1312,7 @@ void Daidalus::setMaxHorizontalSpeed(double val) {
  */
 void Daidalus::setMaxHorizontalSpeed(double val, const std::string& u) {
   core_.parameters.setMaxHorizontalSpeed(val,u);
-  hs_band_.set_max_nomod(getMaxHorizontalSpeed());
+  hs_band_.setmax_nomod(getMaxHorizontalSpeed());
 }
 
 /**
@@ -1329,7 +1336,7 @@ void Daidalus::setMinVerticalSpeed(double val, const std::string& u) {
  */
 void Daidalus::setMaxVerticalSpeed(double val) {
   core_.parameters.setMaxVerticalSpeed(val);
-  vs_band_.set_max_nomod(getMaxVerticalSpeed());
+  vs_band_.setmax_nomod(getMaxVerticalSpeed());
 }
 
 /**
@@ -1337,7 +1344,7 @@ void Daidalus::setMaxVerticalSpeed(double val) {
  */
 void Daidalus::setMaxVerticalSpeed(double val, const std::string& u) {
   core_.parameters.setMaxVerticalSpeed(val,u);
-  vs_band_.set_max_nomod(getMaxVerticalSpeed());
+  vs_band_.setmax_nomod(getMaxVerticalSpeed());
 }
 
 /**
@@ -1361,7 +1368,7 @@ void Daidalus::setMinAltitude(double val, const std::string& u) {
  */
 void Daidalus::setMaxAltitude(double val) {
   core_.parameters.setMaxAltitude(val);
-  alt_band_.set_max_nomod(getMaxAltitude());
+  alt_band_.setmax_nomod(getMaxAltitude());
 }
 
 /**
@@ -1369,7 +1376,7 @@ void Daidalus::setMaxAltitude(double val) {
  */
 void Daidalus::setMaxAltitude(double val, const std::string& u) {
   core_.parameters.setMaxAltitude(val,u);
-  alt_band_.set_max_nomod(getMaxAltitude());
+  alt_band_.setmax_nomod(getMaxAltitude());
 }
 
 /**
@@ -1396,7 +1403,7 @@ void Daidalus::setBelowRelativeHorizontalSpeed(double val,std::string u) {
  */
 void Daidalus::setAboveRelativeHorizontalSpeed(double val) {
   core_.parameters.setAboveRelativeHorizontalSpeed(val);
-  hs_band_.set_max_rel(getAboveRelativeHorizontalSpeed());
+  hs_band_.setmax_rel(getAboveRelativeHorizontalSpeed());
 }
 
 /**
@@ -1405,7 +1412,7 @@ void Daidalus::setAboveRelativeHorizontalSpeed(double val) {
  */
 void Daidalus::setAboveRelativeHorizontalSpeed(double val, const std::string& u) {
   core_.parameters.setAboveRelativeHorizontalSpeed(val,u);
-  hs_band_.set_max_rel(getAboveRelativeHorizontalSpeed());
+  hs_band_.setmax_rel(getAboveRelativeHorizontalSpeed());
 }
 
 /**
@@ -1432,7 +1439,7 @@ void Daidalus::setBelowRelativeVerticalSpeed(double val, const std::string& u) {
  */
 void Daidalus::setAboveRelativeVerticalSpeed(double val) {
   core_.parameters.setAboveRelativeVerticalSpeed(val);
-  vs_band_.set_max_rel(getAboveRelativeVerticalSpeed());
+  vs_band_.setmax_rel(getAboveRelativeVerticalSpeed());
 }
 
 /**
@@ -1441,7 +1448,7 @@ void Daidalus::setAboveRelativeVerticalSpeed(double val) {
  */
 void Daidalus::setAboveRelativeVerticalSpeed(double val, const std::string& u) {
   core_.parameters.setAboveRelativeVerticalSpeed(val,u);
-  vs_band_.set_max_rel(getAboveRelativeVerticalSpeed());
+  vs_band_.setmax_rel(getAboveRelativeVerticalSpeed());
 }
 
 /**
@@ -1468,7 +1475,7 @@ void Daidalus::setBelowRelativeAltitude(double val, const std::string& u) {
  */
 void Daidalus::setAboveRelativeAltitude(double val) {
   core_.parameters.setAboveRelativeAltitude(val);
-  alt_band_.set_max_rel(getAboveRelativeAltitude());
+  alt_band_.setmax_rel(getAboveRelativeAltitude());
 }
 
 /**
@@ -1477,7 +1484,7 @@ void Daidalus::setAboveRelativeAltitude(double val) {
  */
 void Daidalus::setAboveRelativeAltitude(double val, const std::string& u) {
   core_.parameters.setAboveRelativeAltitude(val,u);
-  alt_band_.set_max_rel(getAboveRelativeAltitude());
+  alt_band_.setmax_rel(getAboveRelativeAltitude());
 }
 
 /**
@@ -1707,7 +1714,7 @@ void Daidalus::setVerticalRate(double val, const std::string& u) {
  */
 void Daidalus::setHorizontalNMAC(double val) {
   core_.parameters.setHorizontalNMAC(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1715,7 +1722,7 @@ void Daidalus::setHorizontalNMAC(double val) {
  */
 void Daidalus::setHorizontalNMAC(double val, const std::string& u) {
   core_.parameters.setHorizontalNMAC(val,u);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1723,7 +1730,7 @@ void Daidalus::setHorizontalNMAC(double val, const std::string& u) {
  */
 void Daidalus::setVerticalNMAC(double val) {
   core_.parameters.setVerticalNMAC(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1731,7 +1738,7 @@ void Daidalus::setVerticalNMAC(double val) {
  */
 void Daidalus::setVerticalNMAC(double val, const std::string& u) {
   core_.parameters.setVerticalNMAC(val,u);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1740,7 +1747,7 @@ void Daidalus::setVerticalNMAC(double val, const std::string& u) {
  */
 void Daidalus::setRecoveryStabilityTime(double t) {
   core_.parameters.setRecoveryStabilityTime(t);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1749,7 +1756,7 @@ void Daidalus::setRecoveryStabilityTime(double t) {
  */
 void Daidalus::setRecoveryStabilityTime(double t, const std::string& u) {
   core_.parameters.setRecoveryStabilityTime(t,u);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1757,7 +1764,7 @@ void Daidalus::setRecoveryStabilityTime(double t, const std::string& u) {
  */
 void Daidalus::setHysteresisTime(double val) {
   core_.parameters.setHysteresisTime(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1765,7 +1772,7 @@ void Daidalus::setHysteresisTime(double val) {
  */
 void Daidalus::setHysteresisTime(double val, const std::string& u) {
   core_.parameters.setHysteresisTime(val,u);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1773,7 +1780,7 @@ void Daidalus::setHysteresisTime(double val, const std::string& u) {
  */
 void Daidalus::setPersistenceTime(double val) {
   core_.parameters.setPersistenceTime(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1781,7 +1788,7 @@ void Daidalus::setPersistenceTime(double val) {
  */
 void Daidalus::setPersistenceTime(double val, const std::string& u) {
   core_.parameters.setPersistenceTime(val,u);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1853,7 +1860,7 @@ void Daidalus::setPersistencePreferredAltitudeResolution(double val, const std::
  */
 void Daidalus::setAlertingMofN(int m, int n) {
   core_.parameters.setAlertingMofN(m,n);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1861,7 +1868,7 @@ void Daidalus::setAlertingMofN(int m, int n) {
  */
 void Daidalus::setMinHorizontalRecovery(double val) {
   core_.parameters.setMinHorizontalRecovery(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1869,7 +1876,7 @@ void Daidalus::setMinHorizontalRecovery(double val) {
  */
 void Daidalus::setMinHorizontalRecovery(double val, const std::string& u) {
   core_.parameters.setMinHorizontalRecovery(val,u);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1877,7 +1884,7 @@ void Daidalus::setMinHorizontalRecovery(double val, const std::string& u) {
  */
 void Daidalus::setMinVerticalRecovery(double val) {
   core_.parameters.setMinVerticalRecovery(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1885,7 +1892,7 @@ void Daidalus::setMinVerticalRecovery(double val) {
  */
 void Daidalus::setMinVerticalRecovery(double val, const std::string& u) {
   core_.parameters.setMinVerticalRecovery(val,u);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1900,7 +1907,7 @@ bool Daidalus::isEnabledConflictCriteria() {
  */
 void Daidalus::setConflictCriteria(bool flag) {
   core_.parameters.setConflictCriteria(flag);
-  stale(true);
+  reset();
 }
 
 /**
@@ -1929,7 +1936,7 @@ bool Daidalus::isEnabledRecoveryCriteria() {
  */
 void Daidalus::setRecoveryCriteria(bool flag) {
   core_.parameters.setRecoveryCriteria(flag);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2064,7 +2071,7 @@ bool Daidalus::isEnabledCollisionAvoidanceBands() {
  */
 void Daidalus::setCollisionAvoidanceBands(bool flag) {
   core_.parameters.setCollisionAvoidanceBands(flag);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2093,7 +2100,7 @@ double Daidalus::getCollisionAvoidanceBandsFactor() const {
  */
 void Daidalus::setCollisionAvoidanceBandsFactor(double val) {
   core_.parameters.setCollisionAvoidanceBandsFactor(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2108,7 +2115,7 @@ double Daidalus::getHorizontalPositionZScore() const {
  */
 void Daidalus::setHorizontalPositionZScore(double val) {
   core_.parameters.setHorizontalPositionZScore(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2123,7 +2130,7 @@ double Daidalus::getHorizontalVelocityZScoreMin() const {
  */
 void Daidalus::setHorizontalVelocityZScoreMin(double val) {
   core_.parameters.setHorizontalVelocityZScoreMin(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2138,7 +2145,7 @@ double Daidalus::getHorizontalVelocityZScoreMax() const {
  */
 void Daidalus::setHorizontalVelocityZScoreMax(double val) {
   core_.parameters.setHorizontalVelocityZScoreMax(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2160,7 +2167,7 @@ double Daidalus::getHorizontalVelocityZDistance(std::string u) const {
  */
 void Daidalus::setHorizontalVelocityZDistance(double val) {
   core_.parameters.setHorizontalVelocityZDistance(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2168,7 +2175,7 @@ void Daidalus::setHorizontalVelocityZDistance(double val) {
  */
 void Daidalus::setHorizontalVelocityZDistance(double val, const std::string& u) {
   core_.parameters.setHorizontalVelocityZDistance(val,u);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2183,7 +2190,7 @@ double Daidalus::getVerticalPositionZScore() const {
  */
 void Daidalus::setVerticalPositionZScore(double val) {
   core_.parameters.setVerticalPositionZScore(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2198,7 +2205,7 @@ double Daidalus::getVerticalSpeedZScore() const {
  */
 void Daidalus::setVerticalSpeedZScore(double val) {
   core_.parameters.setVerticalSpeedZScore(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2246,7 +2253,7 @@ void Daidalus::setHorizontalContourThreshold(double val, const std::string& u) {
  */
 void Daidalus::setAlertingLogic(bool ownship_centric) {
   core_.parameters.setAlertingLogic(ownship_centric);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2284,7 +2291,7 @@ BandsRegion::Region Daidalus::getCorrectiveRegion() const {
  */
 void Daidalus::setCorrectiveRegion(BandsRegion::Region val) {
   core_.parameters.setCorrectiveRegion(val);
-  stale(true);
+  reset();
 }
 
 /**
@@ -2334,7 +2341,7 @@ void Daidalus::setKinematicBands(bool type) {
  */
 void Daidalus::disableHysteresis() {
   core_.parameters.disableHysteresis();
-  stale(true);
+  reset();
 }
 
 /**
@@ -2397,7 +2404,7 @@ std::string Daidalus::getUnitsOf(const std::string& key) const {
 void Daidalus::setAbsoluteHorizontalDirectionBands(double min, double max) {
   min = Util::to_2pi(min);
   max = Util::to_2pi(max);
-  hdir_band_.set_min_max_mod(min,max);
+  hdir_band_.set_minmax_mod(min,max);
 }
 
 /**
@@ -2419,45 +2426,43 @@ const DaidalusCore& Daidalus::getCore() {
 }
 
 /**
- *  Clear ownship and traffic data from this object.
+ *  Clear ownship and traffic state data from this object.
+ *  IMPORTANT: This method reset cache and hysteresis parameters.
  */
 void Daidalus::clear() {
   core_.clear();
+  reset();
+}
+
+/**
+ * Reset cached values, but keep hysteresis variables.
+ * The hysteresis variables of aircraft ac_idx are reset,
+ * when curren_time is equal to last_time (meaning that current hysteresis
+ * values are not longer valid for that aircraft). The value ac_idx = 0 means
+ * all aircraft.
+ */
+void Daidalus::reset_cache(int ac_idx) {
+  core_.stale(false);
+  core_.reset_hysteresis(ac_idx);
   hdir_band_.stale(false);
+  hdir_band_.reset_hysteresis(getCurrentTime(),getHysteresisTime());
   hs_band_.stale(false);
+  hs_band_.reset_hysteresis(getCurrentTime(),getHysteresisTime());
   vs_band_.stale(false);
+  vs_band_.reset_hysteresis(getCurrentTime(),getHysteresisTime());
   alt_band_.stale(false);
+  alt_band_.reset_hysteresis(getCurrentTime(),getHysteresisTime());
 }
 
 /**
- * Set cached values to stale conditions as they are no longer fresh.
- * If hysteresis is true, it also clears hysteresis variables
+ * Set cached values to stale conditions and clear hysteresis variables.
  */
-void Daidalus::stale(bool hysteresis) {
-  core_.stale(hysteresis);
-  hdir_band_.stale(hysteresis);
-  hs_band_.stale(hysteresis);
-  vs_band_.stale(hysteresis);
-  alt_band_.stale(hysteresis);
-}
-
-/**
- * Returns true is object is fresh
- */
-bool Daidalus::isFresh() const {
-  return core_.isFresh() && hdir_band_.isFresh() &&
-      hs_band_.isFresh() && vs_band_.isFresh() && alt_band_.isFresh();
-}
-
-/**
- * Refresh Daidalus object
- */
-void Daidalus::refresh() {
-  core_.refresh();
-  hdir_band_.refresh(core_);
-  hs_band_.refresh(core_);
-  vs_band_.refresh(core_);
-  alt_band_.refresh(core_);
+void Daidalus::reset() {
+  core_.stale(true);
+  hdir_band_.stale(true);
+  hs_band_.stale(true);
+  vs_band_.stale(true);
+  alt_band_.stale(true);
 }
 
 /* Main interface methods */
@@ -2466,16 +2471,9 @@ void Daidalus::refresh() {
  * Compute in acs list of aircraft identifiers contributing to conflict bands for given region.
  */
 void Daidalus::conflictBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region) {
-  conflictBandsAircraft(acs,BandsRegion::orderOfConflictRegion(region));
-}
-
-/**
- * Compute in acs list of aircraft identifiers contributing to conflict bands for given region.
- */
-void Daidalus::conflictBandsAircraft(std::vector<std::string>& acs, int region) {
-  if (BandsRegion::orderOfConflictRegion(BandsRegion::FAR) <= region && region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR)) {
+  if (BandsRegion::isConflictBand(region)) {
     IndexLevelT::toStringList(acs,
-        core_.acs_conflict_bands(BandsRegion::NUMBER_OF_CONFLICT_BANDS-region),core_.traffic);
+        core_.acs_conflict_bands(BandsRegion::NUMBER_OF_CONFLICT_BANDS-BandsRegion::orderOfRegion(region)),core_.traffic);
   } else {
     acs.clear();
   }
@@ -2485,15 +2483,8 @@ void Daidalus::conflictBandsAircraft(std::vector<std::string>& acs, int region) 
  * Return time interval of violation for given bands region
  */
 Interval Daidalus::timeIntervalOfConflict(BandsRegion::Region region) {
-  return timeIntervalOfConflict(BandsRegion::orderOfConflictRegion(region));
-}
-
-/**
- * Return time interval of conflict for given bands region
- */
-Interval Daidalus::timeIntervalOfConflict(int region) {
-  if (BandsRegion::orderOfConflictRegion(BandsRegion::FAR) <= region && region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR)) {
-    return core_.tiov(BandsRegion::NUMBER_OF_CONFLICT_BANDS-region);
+  if (BandsRegion::isConflictBand(region)) {
+    return core_.tiov(BandsRegion::NUMBER_OF_CONFLICT_BANDS-BandsRegion::orderOfRegion(region));
   }
   return Interval::EMPTY;
 }
@@ -2597,16 +2588,8 @@ RecoveryInformation Daidalus::horizontalDirectionRecoveryInformation() {
  * for given region.
  */
 void Daidalus::peripheralHorizontalDirectionBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region) {
-  peripheralHorizontalDirectionBandsAircraft(acs,BandsRegion::orderOfConflictRegion(region));
-}
-
-/**
- * Compute in acs list of aircraft identifiers contributing to peripheral horizontal direction bands
- * for given region. 1=FAR, 2=MID, 3=NEAR
- */
-void Daidalus::peripheralHorizontalDirectionBandsAircraft(std::vector<std::string>& acs, int region) {
-  if (BandsRegion::orderOfConflictRegion(BandsRegion::FAR) <= region && region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR)) {
-    IndexLevelT::toStringList(acs,hdir_band_.acs_peripheral_bands(core_, BandsRegion::NUMBER_OF_CONFLICT_BANDS-region),core_.traffic);
+  if (BandsRegion::isConflictBand(region)) {
+    IndexLevelT::toStringList(acs,hdir_band_.acs_peripheral_bands(core_,BandsRegion::NUMBER_OF_CONFLICT_BANDS-BandsRegion::orderOfRegion(region)),core_.traffic);
   } else {
     acs.clear();
   }
@@ -2643,15 +2626,6 @@ double Daidalus::horizontalDirectionResolution(bool dir, const std::string& u) {
  */
 bool Daidalus::preferredHorizontalDirectionRightOrLeft() {
   return hdir_band_.preferred_direction(core_);
-}
-
-/**
- * Compute horizontal direction resolution region for a given direction.
- * @parameter dir is right (true)/left (false) of ownship current direction
- * @return Bands region of horizontal direction resolution for given direction
- */
-BandsRegion::Region Daidalus::horizontalDirectionResolutionRegion(bool dir) {
-  return hdir_band_.resolution_region(core_,dir);
 }
 
 /**
@@ -2753,16 +2727,8 @@ RecoveryInformation Daidalus::horizontalSpeedRecoveryInformation() {
  * for given region.
  */
 void Daidalus::peripheralHorizontalSpeedBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region) {
-  peripheralHorizontalSpeedBandsAircraft(acs,BandsRegion::orderOfConflictRegion(region));
-}
-
-/**
- * Compute in acs list of aircraft identifiers contributing to peripheral horizontal speed bands
- * for given region. 1=FAR, 2=MID, 3=NEAR
- */
-void Daidalus::peripheralHorizontalSpeedBandsAircraft(std::vector<std::string>& acs, int region) {
-  if (BandsRegion::orderOfConflictRegion(BandsRegion::FAR) <= region && region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR)) {
-    IndexLevelT::toStringList(acs,hs_band_.acs_peripheral_bands(core_, BandsRegion::NUMBER_OF_CONFLICT_BANDS-region),core_.traffic);
+  if (BandsRegion::isConflictBand(region)) {
+    IndexLevelT::toStringList(acs,hs_band_.acs_peripheral_bands(core_,BandsRegion::NUMBER_OF_CONFLICT_BANDS-BandsRegion::orderOfRegion(region)),core_.traffic);
   } else {
     acs.clear();
   }
@@ -2799,15 +2765,6 @@ double Daidalus::horizontalSpeedResolution(bool dir, const std::string& u) {
  */
 bool Daidalus::preferredHorizontalSpeedUpOrDown() {
   return hs_band_.preferred_direction(core_);
-}
-
-/**
- * Compute horizontal speed resolution region for a given direction.
- * @parameter dir is up (true)/down (false) of ownship current horizontal speed
- * @return Bands region of horizontal speed resolution for given direction
- */
-BandsRegion::Region Daidalus::horizontalSpeedResolutionRegion(bool dir) {
-  return hs_band_.resolution_region(core_,dir);
 }
 
 /**
@@ -2909,16 +2866,8 @@ RecoveryInformation Daidalus::verticalSpeedRecoveryInformation() {
  * for given region.
  */
 void Daidalus::peripheralVerticalSpeedBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region) {
-  peripheralVerticalSpeedBandsAircraft(acs,BandsRegion::orderOfConflictRegion(region));
-}
-
-/**
- * Compute in acs list of aircraft identifiers contributing to peripheral vertical speed bands
- * for given region. 1=FAR, 2=MID, 3=NEAR
- */
-void Daidalus::peripheralVerticalSpeedBandsAircraft(std::vector<std::string>& acs, int region) {
-  if (BandsRegion::orderOfConflictRegion(BandsRegion::FAR) <= region && region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR)) {
-    IndexLevelT::toStringList(acs,vs_band_.acs_peripheral_bands(core_, BandsRegion::NUMBER_OF_CONFLICT_BANDS-region),core_.traffic);
+  if (BandsRegion::isConflictBand(region)) {
+    IndexLevelT::toStringList(acs,vs_band_.acs_peripheral_bands(core_,BandsRegion::NUMBER_OF_CONFLICT_BANDS-BandsRegion::orderOfRegion(region)),core_.traffic);
   } else {
     acs.clear();
   }
@@ -2955,15 +2904,6 @@ double Daidalus::verticalSpeedResolution(bool dir, const std::string& u) {
  */
 bool Daidalus::preferredVerticalSpeedUpOrDown() {
   return vs_band_.preferred_direction(core_);
-}
-
-/**
- * Compute vertical speed resolution region for a given direction.
- * @parameter dir is up (true)/down (false) of ownship current vertical speed
- * @return Bands region of vertical speed resolution for given direction
- */
-BandsRegion::Region Daidalus::verticalSpeedResolutionRegion(bool dir) {
-  return vs_band_.resolution_region(core_,dir);
 }
 
 /**
@@ -3065,16 +3005,8 @@ RecoveryInformation Daidalus::altitudeRecoveryInformation() {
  * for given region.
  */
 void Daidalus::peripheralAltitudeBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region) {
-  peripheralAltitudeBandsAircraft(acs,BandsRegion::orderOfConflictRegion(region));
-}
-
-/**
- * Compute in acs list of aircraft identifiers contributing to peripheral altitude bands
- * for given region. 1=FAR, 2=MID, 3=NEAR
- */
-void Daidalus::peripheralAltitudeBandsAircraft(std::vector<std::string>& acs, int region) {
-  if (BandsRegion::orderOfConflictRegion(BandsRegion::FAR) <= region && region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR)) {
-    IndexLevelT::toStringList(acs,alt_band_.acs_peripheral_bands(core_, BandsRegion::NUMBER_OF_CONFLICT_BANDS-region),core_.traffic);
+  if (BandsRegion::isConflictBand(region)) {
+    IndexLevelT::toStringList(acs,alt_band_.acs_peripheral_bands(core_,BandsRegion::NUMBER_OF_CONFLICT_BANDS-BandsRegion::orderOfRegion(region)),core_.traffic);
   } else {
     acs.clear();
   }
@@ -3111,15 +3043,6 @@ double Daidalus::altitudeResolution(bool dir, const std::string& u) {
  */
 bool Daidalus::preferredAltitudeUpOrDown() {
   return alt_band_.preferred_direction(core_);
-}
-
-/**
- * Compute altitude resolution region for a given direction.
- * @parameter dir is up (true)/down (false) of ownship current altitude
- * @return Bands region of altitude resolution for given direction
- */
-BandsRegion::Region Daidalus::altitudeResolutionRegion(bool dir) {
-  return alt_band_.resolution_region(core_,dir);
 }
 
 /*
@@ -3179,13 +3102,7 @@ ConflictData Daidalus::violationOfAlertThresholds(int ac_idx, int alert_level) {
       if (alert_level > 0) {
         Detection3D* detector = alerter.getDetectorPtr(alert_level);
         if (detector != NULL) {
-          double s_err = intruder.relativeHorizontalPositionError(core_.ownship,core_.parameters);
-          double sz_err = intruder.relativeVerticalPositionError(core_.ownship,core_.parameters);
-          double v_err = intruder.relativeHorizontalSpeedError(core_.ownship,s_err,core_.parameters);
-          double vz_err = intruder.relativeVerticalSpeedError(core_.ownship,core_.parameters);
-          return detector->conflictDetectionSUM(core_.ownship.get_s(),core_.ownship.get_v(),intruder.get_s(),intruder.get_v(),
-              0,core_.parameters.getLookaheadTime(),
-              s_err,sz_err,v_err,vz_err);
+          return detector->conflictDetectionWithTrafficState(core_.ownship,intruder,0.0,core_.parameters.getLookaheadTime());
         } else {
           error.addError("violationOfAlertThresholds: detector of traffic aircraft "+Fmi(ac_idx)+" is not set");
         }
@@ -3234,18 +3151,7 @@ double Daidalus::timeToCorrectiveVolume(int ac_idx) {
 /* Input/Output methods */
 
 std::string Daidalus::outputStringAircraftStates() const {
-  std::string ualt = core_.parameters.getUnitsOf("step_alt");
-  std::string uhs = core_.parameters.getUnitsOf("step_hs");
-  std::string uvs = core_.parameters.getUnitsOf("step_vs");
-  std::string uxy = "m";
-  if (Units::isCompatible(uhs,"knot")) {
-    uxy = "nmi";
-  } else if (Units::isCompatible(uhs,"fpm")) {
-    uxy = "ft";
-  } else if (Units::isCompatible(uhs,"kph")) {
-    uxy = "km";
-  }
-  return core_.ownship.formattedTraffic(core_.traffic, uxy, ualt, uhs, uvs, core_.current_time);
+  return core_.outputStringAircraftStates(false);
 }
 
 std::string Daidalus::rawString() const {
@@ -3271,15 +3177,19 @@ std::string Daidalus::toString() const {
     if (core_.isFresh()) {
       s+=core_.toString();
       if (hdir_band_.isFresh()) {
+        s+="## Direction Bands\n";
         s+=hdir_band_.toString();
       }
       if (hs_band_.isFresh()) {
+        s+="## Horizontal Speed Bands\n";
         s+=hs_band_.toString();
       }
       if (vs_band_.isFresh()) {
+        s+="## Vertical Speed Bands\n";
         s+=vs_band_.toString();
       }
       if (alt_band_.isFresh()) {
+        s+="## Altitude Bands\n";
         s+=alt_band_.toString();
       }
     }
@@ -3293,19 +3203,8 @@ std::string Daidalus::toString() const {
 
 std::string Daidalus::outputStringInfo() {
   std::string s="";
-  std::string ualt = core_.parameters.getUnitsOf("step_alt");
-  std::string uhs = core_.parameters.getUnitsOf("step_hs");
-  std::string uvs = core_.parameters.getUnitsOf("step_vs");
-  std::string uxy = "m";
-  if (Units::isCompatible(uhs,"knot")) {
-    uxy = "nmi";
-  } else if (Units::isCompatible(uhs,"fpm")) {
-    uxy = "ft";
-  } else if (Units::isCompatible(uhs,"kph")) {
-    uxy = "km";
-  }
   s+="Time: "+Units::str("s",core_.current_time)+"\n";
-  s += core_.ownship.formattedTraffic(core_.traffic,uxy, ualt, uhs, uvs, core_.current_time);
+  s+= outputStringAircraftStates();
   std::string enabled = core_.parameters.isEnabledConflictCriteria()?"Enabled":"Disabled";
   s+="Conflict Criteria: "+enabled+"\n";
   enabled = core_.parameters.isEnabledRecoveryCriteria()?"Enabled":"Disabled";
@@ -3314,13 +3213,15 @@ std::string Daidalus::outputStringInfo() {
   s+="Horizontal Epsilon: "+Fmi(core_.epsilonH())+"\n";
   s+="Vertical Epsilon: "+Fmi(core_.epsilonV())+"\n";
   std::vector<std::string> acs;
-  for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
     conflictBandsAircraft(acs,region);
-    s+="Conflict Bands Aircraft ("+BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region))+"): "+
+    s+="Conflict Bands Aircraft ("+BandsRegion::to_string(region)+"): "+
         TrafficState::listToString(acs)+"\n";
   }
-  for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
-    s+="Time Interval of Conflict ("+BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region))+"): "+
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
+    s+="Time Interval of Conflict ("+BandsRegion::to_string(region)+"): "+
         timeIntervalOfConflict(region).toStringUnits("s")+"\n";
   }
   return s;
@@ -3356,9 +3257,10 @@ std::string Daidalus::outputStringDirectionBands() {
     s+="  "+horizontalDirectionIntervalAt(i).toStringUnits(u)+" "+BandsRegion::to_string(horizontalDirectionRegionAt(i))+"\n";
   }
   std::vector<std::string> acs;
-  for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
     peripheralHorizontalDirectionBandsAircraft(acs,region);
-    s+="Peripheral Horizontal Direction Bands Aircraft ("+BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region))+"): "+
+    s+="Peripheral Horizontal Direction Bands Aircraft ("+BandsRegion::to_string(region)+"): "+
         TrafficState::listToString(acs)+"\n";
   }
   s+="Horizontal Direction Resolution (right): "+Units::str(u,horizontalDirectionResolution(true))+"\n";
@@ -3394,9 +3296,10 @@ std::string Daidalus::outputStringHorizontalSpeedBands() {
     s+="  "+horizontalSpeedIntervalAt(i).toStringUnits(u)+" "+BandsRegion::to_string(horizontalSpeedRegionAt(i))+"\n";
   }
   std::vector<std::string> acs;
-  for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
     peripheralHorizontalSpeedBandsAircraft(acs,region);
-    s+="Peripheral Horizontal Speed Bands Aircraft ("+BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region))+"): "+
+    s+="Peripheral Horizontal Speed Bands Aircraft ("+BandsRegion::to_string(region)+"): "+
         TrafficState::listToString(acs)+"\n";
   }
   s+="Horizontal Speed Resolution (up): "+Units::str(u,horizontalSpeedResolution(true))+"\n";
@@ -3432,9 +3335,10 @@ std::string Daidalus::outputStringVerticalSpeedBands() {
     s+="  "+verticalSpeedIntervalAt(i).toStringUnits(u)+" "+ BandsRegion::to_string(verticalSpeedRegionAt(i))+"\n";
   }
   std::vector<std::string> acs;
-  for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
     peripheralVerticalSpeedBandsAircraft(acs,region);
-    s+="Peripheral Vertical Speed Bands Aircraft ("+BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region))+"): "+
+    s+="Peripheral Vertical Speed Bands Aircraft ("+BandsRegion::to_string(region)+"): "+
         TrafficState::listToString(acs)+"\n";
   }
   s+="Vertical Speed Resolution (up): "+Units::str(u,verticalSpeedResolution(true))+"\n";
@@ -3470,9 +3374,10 @@ std::string Daidalus::outputStringAltitudeBands() {
     s+="  "+altitudeIntervalAt(i).toStringUnits(u)+" "+ BandsRegion::to_string(altitudeRegionAt(i))+"\n";
   }
   std::vector<std::string> acs;
-  for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
     peripheralAltitudeBandsAircraft(acs,region);
-    s+="Peripheral Altitude Bands Aircraft ("+BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region))+"): "+
+    s+="Peripheral Altitude Bands Aircraft ("+BandsRegion::to_string(region)+"): "+
         TrafficState::listToString(acs)+"\n";
   }
   s+="Altitude Resolution (up): "+Units::str(u,altitudeResolution(true))+"\n";
@@ -3538,13 +3443,14 @@ std::string Daidalus::toPVS(bool parameters) {
   s += "%%% Bands for Regions:\n";
   s += "(# ";
   comma = false;
-  for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
     if (comma) {
       s += ", ";
     } else {
       comma = true;
     }
-    s += BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region))+"_:= "+Fmb(core_.bands_for(BandsRegion::NUMBER_OF_CONFLICT_BANDS-region));
+    s += BandsRegion::to_string(region)+"_:= "+Fmb(core_.bands_for(BandsRegion::NUMBER_OF_CONFLICT_BANDS-regidx));
   }
   s += " #)\n";
   s += "%%% OUTPUTS %%%\n";
@@ -3552,7 +3458,8 @@ std::string Daidalus::toPVS(bool parameters) {
   s += "( ";
   comma = false;
   std::vector<std::string> acs;
-  for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
     if (comma) {
       s += ", ";
     } else {
@@ -3569,8 +3476,8 @@ std::string Daidalus::toPVS(bool parameters) {
   s += "%%% Peripheral Horizontal Direction Bands Aircraft (FAR,MID,NEAR):\n";
   s += "( ";
   comma = false;
-  for (int r=1; r <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++r) {
-    BandsRegion::Region region = BandsRegion::conflictRegionFromOrder(r);
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
     if (comma) {
       s += ", ";
     } else {
@@ -3605,8 +3512,8 @@ std::string Daidalus::toPVS(bool parameters) {
   s += "%%% Peripheral Horizontal Speed Bands Aircraft (FAR,MID,NEAR):\n";
   s += "( ";
   comma = false;
-  for (int r=1; r <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++r) {
-    BandsRegion::Region region = BandsRegion::conflictRegionFromOrder(r);
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
     if (comma) {
       s += ", ";
     } else {
@@ -3641,8 +3548,8 @@ std::string Daidalus::toPVS(bool parameters) {
   s += "%%% Peripheral Vertical Speed Bands Aircraft (FAR,MID,NEAR):\n";
   s += "( ";
   comma = false;
-  for (int r=1; r <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++r) {
-    BandsRegion::Region region = BandsRegion::conflictRegionFromOrder(r);
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
     if (comma) {
       s += ", ";
     } else {
@@ -3677,8 +3584,8 @@ std::string Daidalus::toPVS(bool parameters) {
   s += "%%% Peripheral Altitude Bands Aircraft (FAR,MID,NEAR):\n";
   s += "( ";
   comma = false;
-  for (int r=1; r <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++r) {
-    BandsRegion::Region region = BandsRegion::conflictRegionFromOrder(r);
+  for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+    BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
     if (comma) {
       s += ", ";
     } else {
@@ -3738,19 +3645,19 @@ std::string Daidalus::toPVS(bool parameters) {
 // ErrorReporter Interface Methods
 
 bool Daidalus::hasError() const {
-  return error.hasError();
+  return error.hasError() || core_.parameters.hasError();
 }
 
 bool Daidalus::hasMessage() const {
-  return error.hasMessage();
+  return error.hasMessage() || core_.parameters.hasMessage();
 }
 
 std::string Daidalus::getMessage() {
-  return error.getMessage();
+  return error.getMessage()+"; "+core_.parameters.getMessage();
 }
 
 std::string Daidalus::getMessageNoClear() const {
-  return error.getMessageNoClear();
+  return error.getMessageNoClear()+"; "+core_.parameters.getMessageNoClear();
 }
 
 }

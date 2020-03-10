@@ -125,7 +125,7 @@ int64_t PathPlanner::FindPathGridAstar(char planID[],double fromPosition[],doubl
         output = &ResolutionPlan2;
     }
 
-    output->setName(std::string(planID));
+    output->setID(std::string(planID));
     flightPlans.push_back(*output);
     return output->size();
 }

@@ -2,7 +2,7 @@
  * Authors: Alwyn Goodloe, Cesar Munoz, and Anthony Narkawicz
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -18,7 +18,7 @@
 
 namespace larcfm {
 
-bool TargetUrgency::mostUrgent(Detection3D* cd, const Vect3& so, const Velocity& vo, const Vect3& si1, const Velocity& vi1, const Vect3& si2, const Velocity& vi2, double D, double H, double B, double T) {
+bool TargetUrgency::mostUrgent(Detection3D* cd, const Vect3& so, const Velocity& vo, const Vect3& si1, const Velocity& vi1, const Vect3& si2, const Velocity& vi2, double B, double T) {
   double cdist = so.distanceH(si1);
   ConflictData conflict = cd->conflictDetection(so, vo, si1, vi1, B, T);
   double tin = conflict.getTimeIn();

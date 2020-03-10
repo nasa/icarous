@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -12,7 +12,7 @@
 #include <iostream>
 
 #ifdef __GNUC__
-#include <execinfo.h>
+  #include <execinfo.h>
 #endif
 
 
@@ -26,6 +26,11 @@ namespace larcfm {
 
   void Debug::setUserDebugFlag(bool b) {
 	  userDebugFlag = b;
+  }
+
+  // For compatibility with Java
+  void Debug::setVerbose(int level) {
+	  setUserDebugFlag(level!=0);
   }
 
   void Debug::pln(const string& tag, const string& msg) {
@@ -62,7 +67,11 @@ namespace larcfm {
 	  exit(1);
  }
 
-
+  void Debug::pln(const string& msg) {
+    if (userDebugFlag) {
+      cout << msg << endl;
+    }
+  }
 
 //  void Debug::pln(const string& msg)
 //  {

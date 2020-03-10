@@ -7,7 +7,7 @@
  *
  *           See An Efficient Universal Trajectory Language, NASA/TM-2017-219669, Sept 2017.
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -89,13 +89,14 @@ protected:
 	typedef tcpDataVector::iterator tcpDataIterator;
 
 	friend class PlanCollection;        // Plans needs to access some of these
-	std::string  name;
+	std::string  label;
 	navPointVector points;
 	tcpDataVector data;
 	mutable ErrorLog error;
 	mutable int errorLocation;
 	std::string  note;                  // Note for whole plan?
 
+    static bool newConsistencyAlg;
 	static bool debug;
 //    static double gsIn_0;
 	BoundingBox bound; // NOTE: This bound is only computed when points are added, when points are
@@ -107,7 +108,7 @@ public:
     static double MIN_TRK_DELTA_GEN;        // minimum track delta that will result in a BOT-EOT generation
     static double MIN_GS_DELTA_GEN;         // minimum GS delta that will result in a BGS-EGS generation
     static double MIN_VS_DELTA_GEN;         // minimum VS delta that will result in a BVS-EVS generation
-     static std::string manualRadius;        // indicates whether a manual radius was specified at vertex
+    static std::string manualRadius;        // indicates whether a manual radius was specified at vertex
     static std::string manualGsAccel;       // indicates whether a manual gs accel value was specified
     static std::string manualVsAccel;       // indicates whether a manual vs accel value was specified
 	static const double minDt;              // points that are closer together in time than this are treated as the same point
@@ -228,22 +229,22 @@ public:
 	/**
 	 * Return the name of this plan (probably the aircraft name).
 	 */
-	const std::string& getName() const;
+	const std::string& getID() const;
 
 	/**
 	 * Set the name of this plan (probably the aircraft name).
 	 * @param s name
 	 */
-	void setName(const std::string& s);
+	void setID(const std::string& s);
 
 	/**
 	 * Return the name of the point i.
 	 * @param i index
 	 * @return name of point
 	 */
-	const std::string getPointName(int i) const;
+	const std::string getName(int i) const;
 
-	void setPointName(int i, const std::string& s);
+	void setName(int i, const std::string& s);
 
 	/**
 	 * Return the note of this plan.
@@ -330,10 +331,10 @@ public:
 	 * Return the index of first point that has a name equal to the given
 	 * string, return -1 if there are no matches.
 	 * 
-	 * @param label    String to match
+	 * @param name    String to match
 	 * @return index
 	 */
-	int findName(const std::string& label) const;
+	int findName(const std::string& name) const;
 
 	void clearName(int ix);
 
@@ -582,6 +583,11 @@ public:
 	 *  
 	 * @param i          index of point
 	 * @param radius     value to be set
+	 *
+	 * Note: the radius may be either signed or unsigned.   The TrajGen generators use the absolute value
+	 * of this parameter.  Note that the radius stored in a BOT must be signed.  This is done in
+	 * the turn generators.
+	 *
 	 */
 	void setVertexRadius(int i, double radius);
 
@@ -651,19 +657,35 @@ public:
 	 * @param center            center of turn
 	 */
 	void setEOTBOT(int i, double signedRadius, Position center);
-	/**  makes the point at index i to be a BGS
-	 * 
-	 * @param i        plan index
-	 * @param acc      ground speed acceleration
+
+	/**  makes the point at index i to be a Beginning of turn (either BOT or EOTBOT)
+	 *
+	 * @param i                 plan index
+	 * @param signedRadius      signed radius, positive indicates turn right, negative indicated turn left
+	 * @param center            center of turn
 	 */
+	void addBOT(int i, double signedRadius, Position center);
 
+	/**  makes the point at index i to be an end of turn (either BOT or EOTBOT)
+	 * 
+	 * @param i                 plan index
+	 * @param signedRadius      signed radius, positive indicates turn right, negative indicated turn left
+	 * @param center            center of turn
+	 */
+	void addEOT(int i);
 	void setMOT(int i);
-
 	void clearMOT(int i);
-
-
+	void clearBOT(int ix);
+	void clearEOT(int ix);
 	void setBGS(int i, double acc);
 	void setEGS(int i);
+	/**  makes the point at index i to be either a BGS or EGSBGS)
+	 *
+	 * @param i                 plan index
+	 * @param signedRadius      signed radius, positive indicates turn right, negative indicated turn left
+	 * @param center            center of turn
+	 */
+	void addEGS(int i);
 	void clearEGS(int ix);
 	void setEGSBGS(int i, double acc);
 	void clearBGS(int ix);
@@ -674,8 +696,16 @@ public:
 	 */
 	void setBVS(int i, double acc);
 	void setEVS(int i);
+	/**  makes the point at index i to be either a BGS or EGSBGS)
+	 *
+	 * @param i                 plan index
+	 * @param signedRadius      signed radius, positive indicates turn right, negative indicated turn left
+	 * @param center            center of turn
+	 */
+	void addEVS(int i);
 	void setEVSBVS(int i, double acc);
-
+	void clearBVS(int ix);
+	void clearEVS(int ix);
 
 
 	/** Add a Navpoint to the plan that does not have any associated TCP information.  Once this point is added to the plan a set of default
@@ -737,6 +767,7 @@ private:
 
 	int indexSearch(double tm, int i1, int i2) const;
 
+public:
 	/**
 	 * ground speed out of point "i"
 	 * 
@@ -745,6 +776,9 @@ private:
 	 * @return        ground speed at the beginning of segment "i"
 	 */
 	double gsOutCalc(int i, bool linear) const;
+	double gsOutCalc(int i) const;
+
+private:
 	/**
 	 * ground speed at the end of segment "i"
 	 * 
@@ -755,11 +789,6 @@ private:
 	 * @return         ground speed at the end of segment "i"
 	 */
 	double gsFinalCalc(int i, bool linear) const;
-
-
-//	std::vector<Tuple5<double,double,double,std::string,std::string> > buildDistList(int ixBOT, int ixEOT, double ratio);
-//
-//	std::vector<Tuple5<double,double,double,std::string,std::string> > buildDistList(int ixBOT, int ixEOT, const Position& vertex);
 
 
 public:
@@ -792,6 +821,11 @@ public:
 	 */
 	void setTime(int i, double t);
 
+private:
+	void setTimeInPlace(int i, double t);
+	friend class PlanUtil;
+
+public:
 	/**
 	 * Temporally shift all points in the plan (starting at index start) by the provided amount st.
 	 * This will drop any points that become negative or that become out of order. 
@@ -1102,6 +1136,7 @@ public:
 	 */
 	Position position(double t, bool linear) const;
 
+	NavPoint navPt(double t) const;
 
 	/** 
 	 * Estimate the initial velocity at the given time for this aircraft.   
@@ -1159,8 +1194,21 @@ public:
 	 */
 	double timeFromDistance(int startSeg, double dist) const;
 
+private:
+	std::pair<double,double> timeFromHeight(int seg, double height) const;
+
+public:
 	/**
 	 * Estimate the velocity between point i to point i+1 for this aircraft.
+	 * This is not defined for the last point of the plan.
+	 * @param i index
+	 * @param linear if true, calculate the linear velocity, otherwise calculate the kinematic velocity (use pathdistance for gs)
+	 * @return velocity
+	 */
+	Velocity averageVelocity(int i, bool linear) const;
+
+	/**
+	 * Estimate the linear velocity between point i to point i+1 for this aircraft.
 	 * This is not defined for the last point of the plan.
 	 * @param i index
 	 * @return velocity
@@ -1279,6 +1327,10 @@ public:
 	 * @return ground speed, or NaN for segment 0.
 	 */
 	double gsIn(int seg, bool linear) const;
+
+	double gsInCalc(int seg) const;
+
+
 	/**
 	 * @param seg       The index of the point of interest
 	 * @return          ground speed out of point "seg"
@@ -1748,7 +1800,6 @@ public:
 	 * @return index of MOT
 	 */
 	int findMOT(int ixBOT) const;
-	int findMOT(int ixBOT, int ixEOT) const;
 
 
 	/**
@@ -1771,24 +1822,76 @@ public:
 	 */
 	void repairPlan();
 
+	void repairMOTs();
+
+	void repairMOT(int ixBOT);
+
 	/**
-	 * Structurally revert TCP at ix: (does not depend upon source time or
-	 * source position!!) This private method assumes ix &gt; 0 AND ix &lt;
-	 * pln.size(). If ix is not a BOT, then nothing is done
-	 * 
-	 * @param ix    index of point to be reverted
-	 * @param addBackMidPoints
-	 *            if addBackMidPoints = true, then if there are extra points
-	 *            between the BOT and EOT, make sure they are moved to the
-	 *            correct place in the new linear sections. Do this by distance
-	 *            not time.
-	 * @param killNextGsTCPs
-	 *            if true, then if there is a BGS-EGS pair after the turn remove
-	 *            both of these
-	 * @param zVertex
-	 *            if non-negative, then assigned reverted vertex this altitude
+	 *
+	 * Given a gs accel zone and modified starting and ending velocities,
+	 * change the acceleration and internal points' times
+	 * so that it is continuous with the velocities into and out of the BGS-EGS zone
+	 *
+	 *
+	 * @param p           Plan to be fixed
+	 * @param ixBGS       index of BGS
+	 * @param ixEGS       index of EGS
+	 * @param vo          target gsOut at ixBGS
+	 * @param vf          target gsIn at ixEGS
+	 * @param maxGsAccel  maximum gs acceleration allowed
+	 *
+	 * NOTE:  given d, vo, vf calculate a and dt using two equations:
+	 *
+	 *        d = vo*t + 0.5*a*t*t
+	 *        vf = vo + a*t
+	 *
+	 * NOTE:  if the calculated acceleration exceeds maxGsAccel, then add error to plan
 	 */
-	void revertTurnTCP(int ix, bool killNextGsTCPs);
+	void repairGsContinuity(int ixBGS, int ixEGS, double vo, double vf, double maxGsAccel);
+
+	void repairGsContinuity(int ixBGS, int ixEGS, double maxGsAccel);
+
+	void repairGsContinuity(double maxGsAccel);
+
+	bool repairGsContInside(int ixBGS, int ixEGS, double v0);
+
+
+	/**
+	 * Attempt to fix (gs) acceleration inconsistencies in this plan by adjusting accel values and/or point times.
+	 * @return new plan with fixed inconsistencies, or null if unfixable.  This new plan may have warnings (informational, possibly not concerning) or errors (possibly concerning).
+	 */
+	 void repairGsConsistency();
+
+	 void repairGsConsistencyAt(int ixBGS);
+
+	/** Repair a negative GsIn value at ix
+	 *
+	 * @param ix
+	 */
+	 void repairNegGsIn(int ix);
+
+	/** Repair a negative GsOut value at ix
+	 *
+	 * @param ix
+	 */
+
+	 void repairNegGsOut(int ix) ;
+
+
+
+
+
+
+
+	/**
+	 * Structurally revert Turn TCP at ix. This method assumes ix &gt; 0 AND ix &lt;
+	 * pln.size(). If ix is not a BOT, then nothing is done
+	 *
+	 * NOTE:  Assumes BGS_EGS and BVS-EVS TCPs have already been reverted
+	 *
+	 * @param ixBOT    index of point to be reverted
+	 */
+	void revertTurnTCP(int ix); // , bool killNextGsTCPs);
 
 	/**
 	 * Structurally revert BGS-EGS pair at index "ix"
@@ -1805,65 +1908,21 @@ public:
 
 
 	/**
-	 * Revert BVS at ix
+	 * Revert BVS at ix to an instantaneous vertical speed change
 	 * 
-	 * @param ix    index of a BVS point
-	 * @return 
+	 * @param ixBVS    index of a BVS point
+	 * @return         index of reverted point, -1 if not reverted
 	 */
-	double revertVsTCP(int ix);
+	int revertVsTCP(int ix);
+
+	double inferredVsIn(int ixBVS);
 
 	static double interpolateAlts(double vsInit, double vsAccel, double alt1, double t1, double t);
 
 
-	/** Remove all redundant points in Plan in the index range [from,to] using "removeIfRedundant"
-	 * 
-	 * Note: A point is NOT redundant if it is a TCP, is AltPreserve, has information or a name
-	 *       or if there is significant change in velocity.  
-	 * 
-	 * @param from     starting location
-	 * @param to       ending location
-	 */
-	void removeRedundantPoints(int from, int to);
 
-	void removeRedundantPoints() ;
 
-	/** Remove point from plan if it passes all specified tests (indicated by flags
-	 * 
-	 * @param ix    index of interest
-	 * @param trkF  track flag: perform track continuity test
-	 * @param gsF   ground speed flag: perform ground speed continuity test
-	 * @param vsF   vertical speed flag: perform vertical speed continuity test
-	 * @return      ix if point is removed, -1 otherwise
-	 */
-	int removeIfRedundant(int ix, bool trkF, bool gsF, bool vsF);
-
-	/** <p>Remove point from plan if it passes all specified tests (indicated by flags)</p>
-	 * 
-	 * Note: This method can remove a "named" point, but will not remove a TCP or AltPreserve
-	 * Note: A point is not redundant if it is a TCP, is AltPreserve, has information or a name
-	 *       or if there is a significant change in velocity as determined by parameters minTrk, minGs, and minVs,
-	 * 
-	 * @param ix    index of interest
-	 * @param trkF  track flag: perform track continuity test
-	 * @param gsF   ground speed flag: perform ground speed continuity test
-	 * @param vsF   vertical speed flag: perform vertical speed continuity test
-	 * @param minTrk minimum track
-	 * @param minGs  minimum ground speed
-	 * @param minVs minimum vertical speed
-	 * @param repair true if method should repair points
-	 * @return index if point is removed, -1 otherwise
-	 * 
-	 */
-	int removeIfRedundant(int ix,  bool trkF, bool gsF, bool vsF, double minTrk, double minGs, double minVs, bool repair);
-
-	/** Remove point from plan if it passes trk and gs tests
-	 * 
-	 * @param ix    index of interest
-	 * @return      ix if point is removed, -1 otherwise
-	 */
-	int removeIfRedundant(int ix);
-
-	int removeIfVsConstant(int ix);
+	std::pair<int,std::string> wellFormed(bool strongMOT) const;
 
 	/**
 	 * This returns true if the entire plan is "well formed", i.e. all acceleration zones have a matching beginning and 
@@ -1900,11 +1959,19 @@ private:
 	 */
 	int findBot(int i) const;
 
-	void fixBGS_EGS(int wp1, int wp2, double gs);
+	int findMOT(int ixBOT, int ixEOT) const;
+
+	void fixBGS_EGS(int wp1, int wp2);
 
 public:
 
 	bool isGsConsistent(int ixBGS, double distEpsilon, bool silent, double nearZeroGsValue) const;
+
+	bool checkBGS(int ixBGS, bool silent) const;
+
+	bool checkBGS(int ixBGS) const;
+
+	bool isGsConsistent(bool silent);
 
 	bool isVsConsistent(int ixBVS, double distEpsilon, bool silent) const;
 
@@ -2014,7 +2081,7 @@ public:
 	 */
 	bool isWeakFlyable() const ;
 
-	static std::pair<NavPoint,TcpData> makeBOT(const std::string& name, Position p, double t,  double signedRadius, const Position& center);
+	static std::pair<NavPoint,TcpData> makeBOT(Position p, double t,  double signedRadius, const Position& center);
 	static std::pair<NavPoint,TcpData> makeEOT(Position p, double t);
 	static std::pair<NavPoint,TcpData> makeEOTBOT(Position p, double t,  double signedRadius, const Position& center);
 
@@ -2093,7 +2160,8 @@ public:
 	 * @param p reference point
 	 * @return 
 	 */
-	Vect3 closestPoint3D(int seg, const Vect3& v0) const;
+	std::pair<Vect3,double> closestPoint3D(int seg, const Vect3& v0) const;
+
 	/**
 	 * Experimental
 	 * Return the closest geometric point on a plan to a reference point, as measured as a Euclidean 3D norm from each linear segment.
@@ -2172,14 +2240,16 @@ public:
 
 	/**
 	 * Create new plan from existing using points from index "firstIx" to index "lastIx".  This
-	 * is a "raw" cut, no attention is given to TCPs.  For that see PlanUtil.cutDown
+	 * is a "raw" cut, no attention is given to TCPs.
+	 *
+	 * For a more general cutter see PlanUtil.cutDownTo
 	 * 
 	 * @param firstIx  first index
 	 * @param lastIx   last index
 	 * @return new cut down plan
 	 * 
-	 * Note.  It is often a good idea to follow this method with a call to "PlanUtil.cleanPlan" and "repairPlan"
-	 * Note.  See also PlanUtil.cutDown
+	 * Note.  It is often a good idea to follow this method with a call to "cleanPlan" and "repairPlan"
+	 * Note.  See also PlanUtil.cutDown and PlanUtil.cutDownTo
 	 */
 	Plan cut(int firstIx, int lastIx) const;
 
@@ -2205,12 +2275,65 @@ public:
 
 	void cleanPlan();
 
+	/** Remove all redundant points in Plan in the index range [from,to] using "removeIfRedundant"
+	 *
+	 * Note: A point is NOT redundant if it is a TCP, is AltPreserve, has information or a name
+	 *       or if there is significant change in velocity.
+	 *
+	 * @param from     starting location
+	 * @param to       ending location
+	 */
+	void removeRedundantPoints(int from, int to);
+
+	void removeRedundantPoints() ;
+
+	/** Remove point from plan if it passes all specified tests (indicated by flags
+	 *
+	 * @param ix    index of interest
+	 * @param trkF  track flag: perform track continuity test
+	 * @param gsF   ground speed flag: perform ground speed continuity test
+	 * @param vsF   vertical speed flag: perform vertical speed continuity test
+	 * @return      ix if point is removed, -1 otherwise
+	 */
+	int removeIfRedundant(int ix, bool trkF, bool gsF, bool vsF);
+
+	/** <p>Remove point from plan if it passes all specified tests (indicated by flags)</p>
+	 *
+	 * Note: This method can remove a "named" point, but will not remove a TCP or AltPreserve
+	 * Note: A point is not redundant if it is a TCP, is AltPreserve, has information or a name
+	 *       or if there is a significant change in velocity as determined by parameters minTrk, minGs, and minVs,
+	 *
+	 * @param ix    index of interest
+	 * @param trkF  track flag: perform track continuity test
+	 * @param gsF   ground speed flag: perform ground speed continuity test
+	 * @param vsF   vertical speed flag: perform vertical speed continuity test
+	 * @param minTrk minimum track
+	 * @param minGs  minimum ground speed
+	 * @param minVs minimum vertical speed
+	 * @param repair true if method should repair points
+	 * @return index if point is removed, -1 otherwise
+	 *
+	 */
+	int removeIfRedundant(int ix,  bool trkF, bool gsF, bool vsF, double minTrk, double minGs, double minVs, bool repair);
+
+	/** Remove point from plan if it passes trk and gs tests
+	 *
+	 * @param ix    index of interest
+	 * @return      ix if point is removed, -1 otherwise
+	 */
+	int removeIfRedundant(int ix);
+
+	int removeIfVsConstant(int ix);
+
+
 	double getMIN_GS_DELTA_GEN() const;
 	static void setMIN_GS_DELTA_GEN(double minGsDeltaGen);
 	double getMIN_TRK_DELTA_GEN() const ;
 	static void setMIN_TRK_DELTA_GEN(double minTrkDeltaGen);
 	double getMIN_VS_DELTA_GEN() const ;
 	static void setMIN_VS_DELTA_GEN(double minVsDeltaGen);
+
+	static void setMinDeltaGen(double trkDelta, double gsDelta, double vsDelta);
 
 	/** Restores TrajGen generation parameters back to default values
 	 * 
@@ -2232,7 +2355,7 @@ public:
  private:
 	/** Return a string representation that includes NavPoint and TcpData from index i
     */
-	std::string toStringPoint(int i, int precision) const;
+	std::string toStringPoint(int i) const;
  public:
 	std::vector<std::string> toStringList(int i, int precision, bool tcp) const;
 	static std::vector<std::string> toStringList(const NavPoint& p, const TcpData& d, int precision, bool tcp);
@@ -2257,20 +2380,20 @@ public:
 
 public:
 
-	/**
-	 * @deprecated
-	 * Returns string that of header information that is compatible with the
-	 * file format with header and consistent with a call to toOutput(bool, int,
-	 * int). This does not include a terminating newline.
-	 * Using the PlanWriter class to print formatted plans instead is preferred.
-	 */
-	std::string getOutputHeader(bool tcpcolumns) const;
+//	/**
+//	 * @deprecated
+//	 * Returns string that of header information that is compatible with the
+//	 * file format with header and consistent with a call to toOutput(bool, int,
+//	 * int). This does not include a terminating newline.
+//	 * Using the PlanWriter class to print formatted plans instead is preferred.
+//	 */
+//	std::string getOutputHeader(bool tcpcolumns) const;
 
 
 	// ErrorReporter Interface Methods
 
 	void addWarning(std::string s) const {
-		error.addWarning("("+name+") "+s);
+		error.addWarning("("+label+") "+s);
 	}
 
 	void addError(std::string s) const {
@@ -2278,7 +2401,7 @@ public:
 	}
 
 	void addError(std::string s, int loc) const {
-		error.addError("("+name+") "+s);
+		error.addError("("+label+") "+s);
 		if (errorLocation < 0 || loc < errorLocation) errorLocation = loc; // save the most recent error location
 	}
 

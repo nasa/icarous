@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 United States Government as represented by
+ * Copyright (c) 2017-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -34,7 +34,8 @@ GeneralPlanWriter::GeneralPlanWriter() : error(ErrorLog("GeneralPlanWriter")), o
 	polygons = true;
 	source = true;
 	time2 = true;
-	precision = 6;
+	precision = 8;
+    latLonExtraPrecision = 2;
 	mode = PolyPath::MORPHING;
 	modedefined = false;
 	latlon = true;
@@ -112,6 +113,14 @@ int GeneralPlanWriter::getPrecision() const {
 
 void GeneralPlanWriter::setPrecision(int prec) {
 	precision = prec;
+}
+
+int GeneralPlanWriter::getLatLonExtraPrecision() const {
+	return latLonExtraPrecision;
+}
+
+void GeneralPlanWriter::setLatLonExtraPrecision(int prec) {
+	latLonExtraPrecision = prec;
 }
 
 /** Will the time be added to the file
@@ -226,9 +235,9 @@ void GeneralPlanWriter::setPolyPathParameters(const std::vector<GeneralPlan>& li
 			}
 		}
 		if (pplist.size() > 0) {
-			s = pplist[0].getName();
+			s = pplist[0].getID();
 			for (int i = 1; i < (int) pplist.size(); i++) {
-				s = s+","+pplist[i].getName();
+				s = s+","+pplist[i].getID();
 			}
 		}
 		if (pplist.size() > 0) {
@@ -331,7 +340,7 @@ void GeneralPlanWriter::writePlan(const GeneralPlan& gp, double activation_time)
 		}
 		for (int i = 0; i < pp.size(); i++) {
 			for (int j = 0; j < pp.getPolyRef(i).size(); j++) {
-				output.addColumn(pp.toStringList(i, j, 6, true));
+				output.addColumn(pp.toStringList(i, j, precision, latLonExtraPrecision, true));
 				if (pp.getPathMode() == PolyPath::MORPHING || pp.getPathMode() == PolyPath::AVG_VEL) {
 					output.addColumn("-"); // trk
 					output.addColumn("-"); // gs
@@ -345,7 +354,7 @@ void GeneralPlanWriter::writePlan(const GeneralPlan& gp, double activation_time)
 	} else {
 		Plan p = gp.getPlan();
 		for (int i = 0; i < p.size(); i++) {
-			output.addColumn(p.toStringList(i, 6, true));
+			output.addColumn(p.toStringList(i, precision, true));
 			output.addColumn("-"); // alt2
 			output.addColumn("-"); // trk
 			output.addColumn("-"); // gs
@@ -420,7 +429,7 @@ void GeneralPlanWriter::write(const std::string& filename, const std::vector<Gen
 					note = gp.getPolyPath().getNote();
 				}
 				if (!equals(note,"")) {
-					pw.output.setParameter(plist[i].getName()+"_note", note);
+					pw.output.setParameter(plist[i].getID()+"_note", note);
 				}
 			}
 			if (activeTimes.size() == plist.size()) {

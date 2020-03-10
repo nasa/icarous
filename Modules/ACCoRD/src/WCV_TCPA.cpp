@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -29,6 +29,14 @@ WCV_TCPA::WCV_TCPA(const WCVTable& tab) {
   wcv_vertical = new WCV_TCOA();
   table = tab;
   id = "";
+}
+
+/**
+ * @return one static WCV_TCPA
+ */
+const WCV_TCPA& WCV_TCPA::A_WCV_TCPA() {
+  static WCV_TCPA dwc;
+  return dwc;
 }
 
 double WCV_TCPA::horizontal_tvar(const Vect2& s, const Vect2& v) const {
@@ -88,8 +96,8 @@ Detection3D* WCV_TCPA::make() const {
  * Returns a deep copy of this WCV_TCPA object, including any results that have been calculated.
  */
 Detection3D* WCV_TCPA::copy() const {
-  WCV_TCPA* ret = new WCV_TCPA(table);
-  ret->id = id;
+  WCV_TCPA* ret = new WCV_TCPA();
+  ret->copyFrom(*this);
   return ret;
 }
 

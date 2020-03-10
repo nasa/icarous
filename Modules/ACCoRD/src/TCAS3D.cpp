@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018 United States Government as represented by
+ * Copyright (c) 2012-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -31,6 +31,14 @@ TCAS3D::TCAS3D(const TCASTable& tab) {
   id = "";
 }
 
+/**
+ * @return one static TCAS3D
+ */
+const TCAS3D& TCAS3D::A_TCAS3D() {
+  static TCAS3D dwc;
+  return dwc;
+}
+
 /** Make TCAS3D object with empty Table **/
 TCAS3D TCAS3D::make_Empty() {
   TCAS3D tcas3d;
@@ -60,14 +68,6 @@ TCASTable& TCAS3D::getTCASTable() {
  */
 void TCAS3D::setDefaultTCASIIThresholds(bool ra) {
   table_.setDefaultTCASIIThresholds(ra);
-}
-
-bool TCAS3D::violation(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) const {
-  return TCASII_RA(so, vo, si, vi);
-}
-
-bool TCAS3D::conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const {
-  return RA3D(so,vo,si,vi,B,T).conflict();
 }
 
 ConflictData TCAS3D::conflictDetection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const {

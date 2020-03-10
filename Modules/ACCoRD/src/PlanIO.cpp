@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -23,7 +23,7 @@ using std::vector;
 
 
 void PlanIO::savePlan(const Plan& plan, const std::string& fileName) {
-	if (plan.getName() == "") {
+	if (plan.getID() == "") {
 		//plan.setName("noname");    // removed because const nature of plan
 		fdln("Attempt to save plan without a name. Ignored in PlanIO::savePlan");
 		return;

@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -41,7 +41,7 @@ CDII CDII::mk(double distance, double height) {
   return CDII(distance, height);
 }
 
-CDIICore CDII::getCore() {
+CDIICore const & CDII::getCore() const {
   return cdii_core;
 }
 
@@ -146,20 +146,20 @@ int CDII::getSegmentOut(int i) const {
   return cdii_core.getSegmentOut(i);
 }
 
-double CDII::getTimeClosest(int i) const {
+double CDII::getCriticalTime(int i) const {
   if (i < 0 || i >= size()) {
-    error.addError("Out of range error 0 <= "+to_string(i)+" < "+to_string(size())+" in getTimeClosest()");
+    error.addError("Out of range error 0 <= "+to_string(i)+" < "+to_string(size())+" in getCriticalTime()");
     return 0.0;
   }
-  return cdii_core.getTimeClosest(i);
+  return cdii_core.getCriticalTime(i);
 }
 
-double CDII::getDistanceClosest(int i) const {
+double CDII::getDistanceAtCriticalTime(int i) const {
   if (i < 0 || i >= size()) {
-    error.addError("Out of range error 0 <= "+to_string(i)+" < "+to_string(size())+" in getDistanceClosest()");
+    error.addError("Out of range error 0 <= "+to_string(i)+" < "+to_string(size())+" in getDistanceAtCriticalTime()");
     return 0.0;
   }
-  return cdii_core.getDistanceClosest(i);
+  return cdii_core.getDistanceAtCriticalTime(i);
 }
 
 bool CDII::conflictBetween(double start, double end) const {

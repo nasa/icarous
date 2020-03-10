@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -39,10 +39,13 @@ private:
 	bool polyColumns;
 	bool trkgsvs;
 	int precision;
+	int latLonExtraPrecision;
 	int lines;
 	std::string fname;
 	std::ofstream fw;
 	PolyPath::PathMode mode;
+
+//	double timeOffset;
 
 	void writeHeader(bool write_tcp, bool ll);
 
@@ -62,6 +65,13 @@ public:
 
 	void setPrecision(int precision);
 
+	int getLatLonExtraPrecision() const;
+
+	void setLatLonExtraPrecision(int precision);
+
+	double getTimeOffset() const;
+
+	void setTimeOffset(double offset);
 
 	/**
 	 * Indicate polygons will be output and set the path mode to be output.  This must be called before the first write command,

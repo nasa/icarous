@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -141,20 +141,20 @@ namespace larcfm {
     return core.getSegmentOut(i);
   }
 
-  double CDSI::getTimeClosest(int i) const {
+  double CDSI::getCriticalTime(int i) const {
     if (i < 0 || i >= size()) {
       error.addError("Out of range error 0 <= "+to_string(i)+" < "+to_string(size())+" in getTimeClosest()");
       return 0.0;
     }
-    return core.getTimeClosest(i);
+    return core.getCriticalTime(i);
   }
 
-  double CDSI::getDistanceClosest(int i) const {
+  double CDSI::getDistanceAtCriticalTime(int i) const {
     if (i < 0 || i >= size()) {
       error.addError("Out of range error 0 <= "+to_string(i)+" < "+to_string(size())+" in getDistanceClosest()");
       return 0.0;
     }
-    return core.getDistanceClosest(i);
+    return core.getDistanceAtCriticalTime(i);
   }
 
 

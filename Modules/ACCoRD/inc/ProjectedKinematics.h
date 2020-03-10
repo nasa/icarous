@@ -1,7 +1,7 @@
 /*
  * Kinematics.h
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -46,29 +46,32 @@ public:
    */
 	static double turnDistance(Position s1, Position s2, double R);
 
-  /**
-   * Given two points on a turn and the velocity (direction) at the first point, determine the direction for the shortest turn going through the second point,
-   * returning true if that relative direction is to the right
-   * 
-   * @param s1
-   * @param v1
-   * @param s2
-   * @return true if clockwise turn
-   */
-	 static bool clockwise(Position s1, Velocity v1, Position s2);
+	/**
+	 * Given two points on a turn and the velocity (direction) at the first point, determine the direction for the shortest turn going through the second point,
+	 * returning true if that relative direction is to the right
+	 *
+	 * @param s1
+	 * @param v1
+	 * @param s2
+	 * @return true if clockwise turn
+	 */
+	static bool clockwise(Position s1, Velocity v1, Position s2);
 
-//	  /**
-//	   * Turn velocity at point s1, given addition position s2 on turn at relative time t
-//	   * @param s1 position to take tangent
-//	   * @param s2 additional position on turn
-//	   * @param C center of circle of rotation
-//	   * @param t time to get from s1 to s2 (negative if s1 after s2)
-//	   * @return velocity at point s1
-//	   */
-	//static Velocity turnVelocity(Position s1, Position s2, Position C, double t);
+	//static double closestTimeOnTurn(const Position& turnstart, const Velocity& v1, double omega, const Position& x, double endTime);
 
-		static double closestTimeOnTurn(const Position& so, const Velocity& v1, double omega, const Position& s2, const Position& x, double endTime);
-		static double closestDistOnTurn(const Position& turnstart, const Velocity& v1, double R, int dir, const Position& center, const Position& x, double endDist);
+	/**
+	 *  Return distance along turn where x is closest to.
+	 *  This returns -1 if x is at the turn's center
+	 *
+	 * @param turnstart starting position of turn
+	 * @param v1        velocity
+	 * @param R         turn radius
+	 * @param dir       +1 = turn right, -1  turn left
+	 * @param x         a position
+	 * @param endDist   end distance of turn
+	 * @return          distance along turn
+	 */
+	static double closestDistOnTurn(const Position& turnstart, const Velocity& v1, double R, int dir, const Position& x, double endDist);
 
 	static std::pair<Position,Velocity> turn(const Position& so, const Velocity& vo, double t, double R, bool turnRight);
 	static std::pair<Position,Velocity> gsAccel(const Position& so, const Velocity& vo, double t, double accel);
@@ -94,16 +97,16 @@ public:
 
 
 	/**
-	  *  Position and velocity after t time units turning in direction "dir" with radius R.  This is a wrapper around turnUntil
-	  *  and uses the projection defined in the static Projection class.
-	  * @param so  starting position
-	  * @param vo  initial velocity
-	  * @param goalTrack the target track angle
-	  * @param bankAngle the aircraft's bank angle
-	  * @param t   time of turn [secs]
-	  * @param turnRight true iff only turn direction is to the right
-	  * @return Position and Velocity after t time
-	  */
+	 *  Position and velocity after t time units turning in direction "dir" with radius R.  This is a wrapper around turnUntil
+	 *  and uses the projection defined in the static Projection class.
+	 * @param so  starting position
+	 * @param vo  initial velocity
+	 * @param goalTrack the target track angle
+	 * @param bankAngle the aircraft's bank angle
+	 * @param t   time of turn [secs]
+	 * @param turnRight true iff only turn direction is to the right
+	 * @return Position and Velocity after t time
+	 */
 	static std::pair<Position,Velocity> turnUntil(const Position& so, const Velocity& vo, double t, double goalTrack, double bankAngle);
 
 	static std::pair<Position,Velocity> turnUntil(std::pair<Position,Velocity> sv, double t, double goalTrack, double bankAngle);

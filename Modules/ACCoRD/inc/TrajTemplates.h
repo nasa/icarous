@@ -1,5 +1,5 @@
 /*
-u * Copyright (c) 2011-2018 United States Government as represented by
+u * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -60,7 +60,7 @@ public:
 	 * Then add a top of climb point and beginning of descent point.
 	 * Also add level sections at beginning and end
 	 */
-	static Plan addClimbDescent(Plan lpc, double gs, double vs, double cruiseAlt);
+	static Plan addClimbDescent(Plan lpc, double vs, double cruiseAlt);
 
 };
 

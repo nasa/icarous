@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -20,16 +20,16 @@ namespace larcfm {
  * early_alerting_time is a early alerting time >= at (for maneuver guidance),
  * region is the type of guidance
  */
-AlertThresholds::AlertThresholds(const Detection3D& detector,
+AlertThresholds::AlertThresholds(const Detection3D* detector,
     double alerting_time, double early_alerting_time, BandsRegion::Region region) :
-                            alerting_time_(std::abs(alerting_time)),
-                            early_alerting_time_(Util::max(alerting_time_,early_alerting_time)),
-                            region_(region),
-                            spread_hdir_(0.0),
-                            spread_hs_(0.0),
-                            spread_vs_(0.0),
-                            spread_alt_(0.0) {
-  detector_ = detector.copy();
+                                alerting_time_(std::abs(alerting_time)),
+                                early_alerting_time_(Util::max(alerting_time_,early_alerting_time)),
+                                region_(region),
+                                spread_hdir_(0.0),
+                                spread_hs_(0.0),
+                                spread_vs_(0.0),
+                                spread_alt_(0.0) {
+  detector_ = detector != NULL ? detector->copy() : NULL;
   units_["alerting_time"] = "s";
   units_["early_alerting_time"] = "s";
   units_["spread_hdir"] = "deg";
@@ -39,26 +39,26 @@ AlertThresholds::AlertThresholds(const Detection3D& detector,
 }
 
 AlertThresholds::AlertThresholds(const AlertThresholds& athr) :
-                        alerting_time_(athr.alerting_time_),
-                        early_alerting_time_(athr.early_alerting_time_),
-                        region_(athr.region_),
-                        spread_hdir_(athr.spread_hdir_),
-                        spread_hs_(athr.spread_hs_),
-                        spread_vs_(athr.spread_vs_),
-                        spread_alt_(athr.spread_alt_) {
+                            alerting_time_(athr.alerting_time_),
+                            early_alerting_time_(athr.early_alerting_time_),
+                            region_(athr.region_),
+                            spread_hdir_(athr.spread_hdir_),
+                            spread_hs_(athr.spread_hs_),
+                            spread_vs_(athr.spread_vs_),
+                            spread_alt_(athr.spread_alt_) {
   detector_ = athr.isValid() ? athr.detector_->copy() : NULL;
   units_ = athr.units_;
 }
 
 AlertThresholds::AlertThresholds() :
-                  detector_(NULL),
-                  alerting_time_(0.0),
-                  early_alerting_time_(0.0),
-                  region_(BandsRegion::UNKNOWN),
-                  spread_hdir_(0.0),
-                  spread_hs_(0.0),
-                  spread_vs_(0.0),
-                  spread_alt_(0.0) {
+                      detector_(NULL),
+                      alerting_time_(0.0),
+                      early_alerting_time_(0.0),
+                      region_(BandsRegion::UNKNOWN),
+                      spread_hdir_(0.0),
+                      spread_hs_(0.0),
+                      spread_vs_(0.0),
+                      spread_alt_(0.0) {
   units_["alerting_time"] = "s";
   units_["early_alerting_time"] = "s";
   units_["spread_hdir"] = "deg";
@@ -124,7 +124,9 @@ void AlertThresholds::setCoreDetectionRef(const Detection3D& det) {
  * Set detector.
  */
 void AlertThresholds::setCoreDetectionPtr(const Detection3D* det) {
-  delete detector_;
+  if (detector_ != NULL) {
+    delete detector_;
+  }
   detector_ = det != NULL ? det->copy() : NULL;
 }
 

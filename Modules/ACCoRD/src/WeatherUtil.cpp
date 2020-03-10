@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 United States Government as represented by
+ * Copyright (c) 2016-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -25,15 +25,6 @@ namespace larcfm {
 std::pair<Plan,DensityGrid> WeatherUtil::reRouteWx(const Plan& own, std::vector<PolyPath>& paths, double cellSize, double gridExtension,
 		double adherenceFactor, double T_p, const std::vector<PolyPath>& containmentPolys,	bool fastPolygonReroute,
 		double timeOfCurrentPosition, double reRouteLeadIn, bool solutionSmoothing) {
-//	fpln("\n-------------------------------------------------------------------------------");
-//		for (int j = 0; j < (int) paths.size(); j++) {
-//			fpln("WeatherUtil.reRouteWx paths["+Fm0(j)+"] = "+paths[j].toStringShort()+" \n");
-//	}
-//	fpln("WeatherUtil.reRouteWx own="+own.toString()+" paths[0]="+paths[0].toString()   );
-//			+" cellSize="+Units::str("NM",cellSize)+" gridExtension="+Units::str("NM",gridExtension)
-//	       +" adherenceFactor="+Fm1(adherenceFactor)+"\n fastPolygonReroute ="+bool2str(fastPolygonReroute)
-//			+" timeOfCurrentPosition="+Fm1(timeOfCurrentPosition)+" reRouteLeadIn="+Fm1(reRouteLeadIn)+" solutionSmoothing ="+bool2str(solutionSmoothing));
-//	DebugSupport::dumpPlanAndPolyPaths(own,paths,"reRouteWx_input");
 	Plan solution;
 	if (own.size() < 2) {
 		own.addError("reRouteWx failed (plan too short).");
@@ -55,17 +46,13 @@ std::pair<Plan,DensityGrid> WeatherUtil::reRouteWx(const Plan& own, std::vector<
 	} else {
 		currentPos = NavPoint(own.position(tmCurrentPos), tmCurrentPos);
 	}
-	//fpln(" $$$$ reRouteWx: tmCurrentPos = "+Fm1(tmCurrentPos)+" currentPos = "+currentPos.toString());
 	Velocity currentVel = own.velocity(tmCurrentPos);
 	Plan nPlan = own;
 	double startTime = tmCurrentPos + reRouteLeadIn;
 	double endTime = own.getLastTime() - reRouteLeadIn;
-	//Position endLeadinPos = own.position(endTime);
-	//f.pln(" $$ reRouteWx: tmCurrentPos = "+tmCurrentPos+"  startTime = "+startTime+" endTime = "+endTime);
-	//		solution = null;
 	DensityGrid dg = DensityGrid(); // this used for visualization only
 	if (own.isTimeInPlan(startTime) && own.isTimeInPlan(endTime)) {
-		nPlan = PlanUtil::cutDown(own, startTime, endTime);
+		nPlan = PlanUtil::cutDownLinear(own, startTime, endTime);
 		double gs = nPlan.initialVelocity(0).gs();
 		if (gs <= 0) {
 			fpln("reRouteWx: ERROR Warning!!! initial groundspeed is zero!");
@@ -74,18 +61,11 @@ std::pair<Plan,DensityGrid> WeatherUtil::reRouteWx(const Plan& own, std::vector<
 		if (timeOfCurrentPosition > 0 && T_p > 0) {
 			endT = timeOfCurrentPosition + T_p;
 		}
-		//fpln(" $$$$ reRouteWx: nPlan = "+nPlan.toString());
-//		for (int j = 0; j < (int) paths.size(); j++) {
-//		   fpln(" $$$$$ WeatherUtil::reRouteWx: paths["+Fm0(j)+"] = "+paths[j].toStringShort());
-//		}
-		//DebugSupport::dumpPlanAndPolyPaths(own,paths,"reRouteWx_input");
 		std::pair<Plan,DensityGrid> rr = reRouteWithAstar(paths, nPlan, cellSize, gridExtension, adherenceFactor, gs, containmentPolys, endT,
 				fastPolygonReroute);
 		Plan rrPlan = rr.first;
 		dg = rr.second;
 		//fpln(" $$$$ reRouteWx: ASTAR.rrPlan = "+rrPlan.toString());
-		// TODO: REMOVE NEXT LINE
-		//DebugSupport::dumpPlan(rrPlan,"ASTAR.rrPlan");
 		if (rrPlan.size() > 0) {
 			rrPlan = setAltitudes(rrPlan,currentVel.vs());
 			if (rrPlan.size() > 0) {

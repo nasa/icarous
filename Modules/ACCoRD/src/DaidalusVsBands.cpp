@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -22,8 +22,7 @@ DaidalusVsBands::DaidalusVsBands(DaidalusParameters& parameters) {
   setDaidalusParameters(parameters);
 }
 
-DaidalusVsBands::DaidalusVsBands(const DaidalusVsBands& b) {
-  super_DaidalusRealBands(&b);
+DaidalusVsBands::DaidalusVsBands(const DaidalusVsBands& b) : DaidalusRealBands(b) {
   vertical_accel_ = b.vertical_accel_;
 }
 
@@ -34,9 +33,9 @@ void DaidalusVsBands::setDaidalusParameters(const DaidalusParameters& parameters
   set_step(parameters.getVerticalSpeedStep());
   set_recovery(parameters.isEnabledRecoveryVerticalSpeedBands());
   set_min_rel(parameters.getBelowRelativeVerticalSpeed());
-  set_max_rel(parameters.getAboveRelativeVerticalSpeed());
+  setmax_rel(parameters.getAboveRelativeVerticalSpeed());
   set_min_nomod(parameters.getMinVerticalSpeed());
-  set_max_nomod(parameters.getMaxVerticalSpeed());
+  setmax_nomod(parameters.getMaxVerticalSpeed());
   set_vertical_accel(parameters.getVerticalAcceleration());
 }
 

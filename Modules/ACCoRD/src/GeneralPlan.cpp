@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 United States Government as represented by
+ * Copyright (c) 2016-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -58,11 +58,11 @@ GeneralState GeneralPlan::state(double time)  {
 	//		if (time >= t) {
 	if (plan) {
 		if (time >= fp.getFirstTime() && time <= fp.getLastTime()) {
-			return  GeneralState(fp.getName(), fp.position(time), fp.velocity(time), time);
+			return  GeneralState(fp.getID(), fp.position(time), fp.velocity(time), time);
 		}
 	} else if (poly) {
 		if (time >= pp.getFirstTime() && time <= pp.getLastTime()) {
-			return  GeneralState(pp.getName(), pp.getSimpleMovingPoly(time), time, containment);
+			return  GeneralState(pp.getID(), pp.getSimpleMovingPoly(time), time, containment);
 		}
 	}
 	//		}
@@ -96,11 +96,11 @@ int GeneralPlan::size() const {
 	return 0;
 }
 
-std::string GeneralPlan::getName() const {
+std::string GeneralPlan::getID() const {
 	if (plan) {
-		return fp.getName();
+		return fp.getID();
 	} else if (poly) {
-		return pp.getName();
+		return pp.getID();
 	}
 	return "";
 }
@@ -143,12 +143,12 @@ GeneralState GeneralPlan::point(int i)  {
 		if (plan) {
 			if (i < fp.size()) {
 				double time = fp.time(i);
-				return  GeneralState(fp.getName(), fp.point(i).position(), fp.initialVelocity(i), time);
+				return  GeneralState(fp.getID(), fp.point(i).position(), fp.initialVelocity(i), time);
 			}
 		} else if (poly) {
 			if (i < pp.size()) {
 				double time = pp.getTime(i);
-				return  GeneralState(pp.getName(), pp.getSimpleMovingPoly(i), time, containment);
+				return  GeneralState(pp.getID(), pp.getSimpleMovingPoly(i), time, containment);
 			}
 		}
 	}

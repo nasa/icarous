@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -7,7 +7,7 @@
 #ifndef WCV_TVAR_H_
 #define WCV_TVAR_H_
 
-#include "Detection3DSUM.h"
+#include "Detection3D.h"
 #include "Vect3.h"
 #include "Velocity.h"
 #include "WCVTable.h"
@@ -17,7 +17,7 @@
 #include <string>
 
 namespace larcfm {
-class WCV_tvar : public Detection3DSUM {
+class WCV_tvar : public Detection3D {
 
 protected:
   WCVTable table;
@@ -66,9 +66,8 @@ public:
 
   bool horizontal_WCV(const Vect2& s, const Vect2& v) const;
 
-  virtual bool violation(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) const;
-
-  virtual bool conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
+  // The methods violation and conflict are inherited from Detection3DSum. This enable a uniform
+  // treatment of border cases in the generic bands algorithms
 
   virtual ConflictData conflictDetection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
 

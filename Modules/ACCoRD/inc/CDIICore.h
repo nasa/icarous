@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -80,13 +80,13 @@ namespace larcfm {
 	 * @param height
 	 *            the minimum vertical separation height
 	 */
-    CDIICore(Detection3D* cd);
+    explicit CDIICore(Detection3D* cd);
 
 
     /**
      * Copy constructor
      */
-    CDIICore(const CDIICore& cdiicore);
+    explicit CDIICore(const CDIICore& cdiicore);
 
     CDIICore();
 
@@ -159,22 +159,9 @@ namespace larcfm {
      */
     int getSegmentOut(int i) const;
 
-    /** 
-     * Returns an estimate of the time of closest approach.  This value is in absolute time 
-     * (not relative from a waypoint).  This point approximates the point where the two aircraft
-     * are closest.  The definition of closest is not simple.  Specifically, space in the vertical
-     * dimension counts more than space in the horizontal dimension: encroaching in the protected
-     * zone 100 vertically is much more serious than encroaching 100 ft. horizontally. 
-     * 
-     * @param i the i-th conflict, must be between 0..size()-1
-     */
-    double getTimeClosest(int i) const;
+     double getCriticalTime(int i) const;
 
-    /** 
-     * Returns the distance index at the time of closest approach. 
-     * @param i the i-th conflict, must be between 0..size()-1
-     */
-    double getDistanceClosest(int i) const;
+     double getDistanceAtCriticalTime(int i) const;
 
     /**
      * Is there a conflict at any time in the interval from start to
@@ -243,6 +230,18 @@ namespace larcfm {
      */
     static bool cdiicore(const Plan& ownship, const Plan& traffic, Detection3D* cd, double B, double T);
 
+    /**
+     * EXPERIMENTAL
+     * Perform a "quick" conflict detection test only.  This will not record or modify existing timing information, and should be at least as fast as the static cdiicore() call.
+     * @param ownship
+     * @param traffic
+     * @param B
+     * @param T
+     * @return true if conflict
+     */
+    bool conflictDetection(const Plan& ownship, const Plan& traffic, double B, double T) const;
+
+
 	/**
 	 * Return true if there is a violation between two aircraft at time tm. If
 	 * tm is outside either of the plans' times, this will return false.
@@ -307,6 +306,12 @@ namespace larcfm {
 
     void captureOutput(const CDSICore& cd3d, int seg);
     void merge();
+
+
+    bool conflictXYZ(const Plan& ownship, const Plan& traffic, double B, double T) const ;
+
+    bool conflictLL(const Plan& ownship, const Plan& traffic, double B, double T) const;
+
   };
 }
 

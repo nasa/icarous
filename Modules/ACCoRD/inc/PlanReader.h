@@ -3,7 +3,7 @@
  *
  * Authors: George Hagen
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -69,12 +69,12 @@ class PlanReader : public ErrorReporter, public ParameterReader, public Paramete
 private:
 	// we store the heading indices in the following order:
 	enum {
-		NAME,
+		ID,
 		LAT_SX,
 		LON_SY,
 		SZ,
 		TIME,
-		LABEL,
+		POINT_NAME,
 		INFO,
 		TYPE,
 		TCP_TRK,
@@ -127,6 +127,10 @@ protected:
 	int altHeadings(const std::string& s1, const std::string& s2, const std::string& s3) const;
 	int altHeadings(const std::string& s1, const std::string& s2) const;
 	double getClock(const std::string& s) const;
+
+	bool OLD_COLUMN_HEADERS;
+
+//	double timeOffset;
 
 
 public:

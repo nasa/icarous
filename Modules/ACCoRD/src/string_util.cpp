@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Cesar Munoz, George Hagen
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -56,6 +56,29 @@ vector<string> split_empty(const string& str,const string& delimiters) {
 		}
 		lastPos = pos+1;
 		pos = str.find_first_of(delimiters, lastPos);
+	}
+	if (lastPos != str.size()) {
+		tokens.push_back(str.substr(lastPos, str.size() - lastPos));
+	}
+	if (lastPos == str.size()) {
+		tokens.push_back("");
+	}
+	return tokens;
+}
+
+vector<string> split_string_empty(const string& str,const string& delimiter) {
+	vector<string> tokens;
+	string::size_type lastPos = 0; //str.find_first_not_of(delimiters, 0);
+	string::size_type pos     = str.find(delimiter, lastPos);
+	while (string::npos != pos) {
+		//fpln(" www "+str.substr(lastPos, pos - lastPos));
+		if (pos == lastPos) {
+			tokens.push_back("");
+		} else {
+			tokens.push_back(str.substr(lastPos, pos - lastPos));
+		}
+		lastPos = pos+delimiter.size();
+		pos = str.find(delimiter, lastPos);
 	}
 	if (lastPos != str.size()) {
 		tokens.push_back(str.substr(lastPos, str.size() - lastPos));
@@ -122,6 +145,10 @@ bool matches(const string& s, const string& rgx_str) {
 				//fpln("match1="+m1);
 
 				count = count + matchptr[0].rm_eo;
+
+				if (count == length) {
+					elems.push_back("");
+				}
 			} else if (reti == REG_NOMATCH) {
 				numchars = length - count;
 				strncpy(between,cstr+count,numchars);
@@ -161,7 +188,8 @@ bool matches(const string& s, const string& rgx_str) {
 #endif
 
 	string substring(const string& s, int begin, int end){
-		end = (end < (int) s.length()) ? end : s.length();
+		int len = static_cast<int>(s.length());
+		end = (end < len) ? end : s.length();
 		if (begin < end || begin < 0) {
 			return s.substr(begin,end-begin);
 		} else {
@@ -170,7 +198,7 @@ bool matches(const string& s, const string& rgx_str) {
 	}
 
 	string substring(const string& s, int begin){
-		return substring(s, begin, s.length());
+		return substring(s, begin, static_cast<int>(s.length()));
 	}
 
 	void trim(string& s, const string& drop){
@@ -189,9 +217,10 @@ bool matches(const string& s, const string& rgx_str) {
 		nstr.resize(strToConvert.size());
 
 		for(unsigned int i=0;i<strToConvert.size();i++)  {
-			nstr[i] = tolower(strToConvert[i]);
+			nstr[i] = static_cast<char>(tolower(strToConvert[i]));
 		}
 		return nstr;  //return the converted string
+		
 
 	}
 
@@ -200,7 +229,7 @@ bool matches(const string& s, const string& rgx_str) {
 		nstr.resize(strToConvert.size());
 
 		for(unsigned int i=0;i<strToConvert.size();i++)  {
-			nstr[i] = toupper(strToConvert[i]);
+			nstr[i] = static_cast<char>(toupper(strToConvert[i]));
 		}
 		return nstr;  //return the converted string
 

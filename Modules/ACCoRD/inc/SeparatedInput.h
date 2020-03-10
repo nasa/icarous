@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Cesar Munoz, George Hagen
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -176,19 +176,11 @@ namespace larcfm {
     bool getCaseSensitive() const;
   
 
-	/**
-	 * If set to a non-zero value, this character will be used to delimit complex strings in a line, overriding the normal column delimiters.
-	 * This does not allow for nested quote delimiters.
-	 * The specified character will stripped inside the stored string.
-	 * The user must also supply a string that is not a column delimiter and is known not to be contained within any quoted string.
-	 * The default column delimiters are space, comma, semicolon, and tab.
-	 * This will generate an error if some input is obviously nonsense.
-	 * This is not used for parameters or fixed-width columns.
-	 * @param q quotation character, if set to zero do not treat quote characters specially
-	 * @param delims array of column delimiter characters.  The default column delimiters are space, comma, semicolon, and tab.
-	 * @param sub unique short string to replace column delimiter characters at the same index.   Examples might be "!" or "__".
-	 */
-    void setQuoteCharacter(char q, const std::vector<char>& delims, const std::string& sub);
+	void setQuoteCharacter(char q);
+
+    void setCsv();
+
+	void setQuoteCharacter(char q, const std::vector<char>& delims, const std::string& sub);
 
     /**
      * This returns 0 if no character is defined.
@@ -288,7 +280,7 @@ namespace larcfm {
     mutable ErrorLog error;
     bool header;         // header line read in
     std::vector<std::string> header_str;    // header line raw string
-    bool units;          // units line read in
+    bool bunits;          // units line read in
     std::vector<std::string> units_str;     // Units type
     std::vector<double> units_factor;  // Units conversion value
     std::vector<std::string> line_str;      // raw line
@@ -298,7 +290,6 @@ namespace larcfm {
 
 	char quoteCharacter; 	// If a non-empty value, use that character to delimit complex string tokens
 	bool quoteCharDefined;	// because we don't have null
-	std::map<std::string,std::string> quoteSubstitutions; // map of substitutions.  Will recalculate if this is null.
 
     int linenum;
     
@@ -318,10 +309,8 @@ namespace larcfm {
     bool process_preamble(std::string str);
     void process_line(const std::string& str);
 	
-    std::string tokenizeQuotes(const std::string& str) const;
-
-    std::string unTokenizeQuotes(const std::string& str) const;
-    
+    std::vector<std::string> processQuotes(const std::string& str) const; 
+	std::string readFullLine(std::istream* reader);  
   };
 }
 

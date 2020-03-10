@@ -1,5 +1,5 @@
 /*
-u * Copyright (c) 2011-2018 United States Government as represented by
+u * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -137,7 +137,7 @@ using std::vector;
 	 * Then add a top of climb point and beginning of descent point.
 	 * Also add level sections at beginning and end
 	 */
-	Plan TrajTemplates::addClimbDescent(Plan lpc, double gs, double vs, double cruiseAlt) {
+	Plan TrajTemplates::addClimbDescent(Plan lpc, double vs, double cruiseAlt) {
 		Plan npc(lpc);
 		npc.setAlt(0,0);
 		npc.setAlt(npc.size()-1,0);

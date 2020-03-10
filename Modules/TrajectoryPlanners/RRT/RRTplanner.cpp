@@ -311,7 +311,7 @@ bool RRTplanner::CheckTrafficCollision(Vect3& qPos,Vect3& qVel,std::vector<Vect3
     std::vector<Vect3>::iterator itP;
     std::vector<Vect3>::iterator itV;
     int i=0;
-    DAA.stale(true);
+    //DAA.stale(true);
     for(itP = TrafficPos.begin(),itV = TrafficVel.begin();
         itP != TrafficPos.end() && itV != TrafficVel.end();
         ++itP,++itV){
@@ -345,7 +345,7 @@ bool RRTplanner::CheckTrafficCollisionWithBands(bool CheckTurn,Vect3& qPos,Vect3
     std::vector<Vect3>::iterator itV;
     int i=0;
     double trafficDist = MAXDOUBLE;
-    DAA.stale(true);
+    //DAA.stale(true);
     for(itP = TrafficPos.begin(),itV = TrafficVel.begin();
         itP != TrafficPos.end() && itV != TrafficVel.end();
         ++itP,++itV){

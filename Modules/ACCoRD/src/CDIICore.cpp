@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -18,54 +18,17 @@
 
 namespace larcfm {
 
-CDIICore CDIICore::CDIICore_def = CDIICore();
+CDIICore CDIICore::CDIICore_def;
 
 
-CDIICore::CDIICore() : error("CDIICore") {
-  //
-  //  for (int i = 0; i < SIZE; i++) {
-  //    tin[i] = 0;
-  //    tout[i] = 0;
-  //    tcpa[i] = 0;
-  //    dist_tca[i] = 0;
-  //    segin[i] = 0;
-  //    segout[i] = 0;
-  //  }
-  //  tin_size = 0;
-}
+CDIICore::CDIICore() : error("CDIICore") {}
 
 
 CDIICore::CDIICore(Detection3D* cd):
-                    cdsicore(cd),
-                    error("CDIICore") {
-  //  for (int i = 0; i < SIZE; i++) {
-  //    tin[i] = 0;
-  //    tout[i] = 0;
-  //    tcpa[i] = 0;
-  //    dist_tca[i] = 0;
-  //    segin[i] = 0;
-  //    segout[i] = 0;
-  //  }
-  //  tin_size = 0;
-}
-
-//CDIICore::CDIICore(double distance, double height):
-//                cdsi(distance, height),
-//                error("CDIICore") {
-//  for (int i = 0; i < SIZE; i++) {
-//    tin[i] = 0;
-//    tout[i] = 0;
-//    tcpa[i] = 0;
-//    dist_tca[i] = 0;
-//    segin[i] = 0;
-//    segout[i] = 0;
-//  }
-//  tin_size = 0;
-//}
+                        cdsicore(cd),
+                        error("CDIICore") {}
 
 CDIICore::CDIICore(const CDIICore& cdiicore) : error("CDIICore") {
-  //fpln(" $$$$$$$ CDIICore COPY");
-  //  tin_size  = cdiicore.tin_size;
   for (int i = 0; i < (int)cdiicore.tin.size(); i++) {
     tin.push_back(cdiicore.tin[i]);
     tout.push_back(cdiicore.tout[i]);
@@ -79,8 +42,6 @@ CDIICore::CDIICore(const CDIICore& cdiicore) : error("CDIICore") {
 }
 
 CDIICore& CDIICore::operator= (const CDIICore& cdiicore) {
-  //fpln(" $$$$$$$ CDIICore ASSIGN");
-  //  tin_size  = cdiicore.tin_size;
   for (int i = 0; i < (int)cdiicore.tin.size(); i++) {
     tin.push_back(cdiicore.tin[i]);
     tout.push_back(cdiicore.tout[i]);
@@ -96,23 +57,6 @@ CDIICore& CDIICore::operator= (const CDIICore& cdiicore) {
 
 CDIICore::~CDIICore() { }
 
-
-//double CDIICore::getDistance() const {
-//  return cdsi.getDistance();
-//}
-//
-//double CDIICore::getHeight() const {
-//  return cdsi.getHeight();
-//}
-//
-//void CDIICore::setDistance(double distance) {
-//  cdsi.setDistance(distance);
-//}
-//
-//void CDIICore::setHeight(double height) {
-//  cdsi.setHeight(height);
-//}
-
 int CDIICore::size() const {
   return (int)tin.size();
 }
@@ -122,11 +66,11 @@ bool CDIICore::conflict() const {
 }
 
 double CDIICore::getFilterTime() {
-    return cdsicore.getFilterTime();
+  return cdsicore.getFilterTime();
 }
 
 void CDIICore::setFilterTime(double cdfilter) {
-    cdsicore.setFilterTime(cdfilter);
+  cdsicore.setFilterTime(cdfilter);
 }
 
 double CDIICore::getTimeIn(int i) const {
@@ -149,12 +93,12 @@ int CDIICore::getSegmentOut(int i) const {
   return segout[i];
 }
 
-double CDIICore::getTimeClosest(int i) const {
+double CDIICore::getCriticalTime(int i) const {
   if (i < 0 || i >= (int)tcpa.size()) return 0.0;
   return tcpa[i];
 }
 
-double CDIICore::getDistanceClosest(int i) const {
+double CDIICore::getDistanceAtCriticalTime(int i) const {
   if (i < 0 || i >= (int)dist_tca.size()) return 0.0;
   return dist_tca[i];
 }
@@ -256,13 +200,20 @@ bool CDIICore::detectionXYZ(const Plan& ownship, const Plan& traffic, double B, 
 
   for (int i = start; i < ownship.size(); i++){
     if (i <= end || cont) {
-      Vect3 so = ownship.point(i).point();
+      Vect3 so = ownship.point(i).vect3();
       Velocity vo = ownship.initialVelocity(i, linear);
       double t_base = ownship.time(i);
-      // GEH : special case!!!
+      // this does make the algorithm have a special case on the first leg, but because cdsscore can return conflict information
+       // from before the stated B time (the intent was to have the "full conflict" information if we started in LoS), we need to
+       // cut off the search the plan starts before the given B time, otherwise, if the B represents the current time, we could
+       // return a conflict in the past
       if (t_base < B) {
-          so = so.AddScal(B-t_base, vo);
-          t_base = B;
+        double dt = B-t_base;
+         if (cdsicore.checkSmallTimes && dt > 0.0 && dt < 0.000001) {
+             error.addWarning("Attempting detectionXYZ on segment "+Fm0(i)+" of "+ownship.getID()+" against "+traffic.getID()+" with very small offset: "+Fm12(dt));
+         }
+       so = ownship.position(B, linear).vect3();
+        t_base = B;
       }
       double nextTime;
       if (i == ownship.size() - 1) {
@@ -290,6 +241,7 @@ bool CDIICore::detectionXYZ(const Plan& ownship, const Plan& traffic, double B, 
       //r = so.AddScal(213.1 - to, vo);
       //System.out.println("$$CDIICore4 xyz: "+r.cyl_norm(cdsi.getDistance(), cdsi.getHeight()));
       //System.out.println("$$CDIICore5 xyz: "+cdsi.size());
+
       cdsicore.detectionXYZ(so, vo, t_base, HT, traffic, BT, NT);
       captureOutput(cdsicore,i);
       //      if ( ! captureOutput(cdsicore, i) ){
@@ -339,10 +291,14 @@ bool CDIICore::detectionLL(const Plan& ownship, const Plan& traffic, double B, d
       //double lono = lla.longitudeInternal(); //Units.from(Units.deg, ownship.getLongitude(i));
       //double alto = lla.altitudeInternal(); //Units.from(Units.ft, ownship.getAltitude(i));
       double t_base = ownship.time(i);
-      // GEH : special case!!!
+      // special case!!!  see note in detectionXYZ, above
       if (t_base < B) {
-          llo = ownship.position(B,linear).lla();
-          t_base = B;
+        double dt = B-t_base;
+         if (cdsicore.checkSmallTimes && dt > 0.0 && dt < 0.000001) {
+             error.addWarning("Attempting detectionLL on segment "+Fm0(i)+" of "+ownship.getID()+" against "+traffic.getID()+" with very small offset: "+Fm12(dt));
+         }
+        llo = ownship.position(B,linear).lla();
+        t_base = B;
       }
 
       double nextTime;
@@ -367,6 +323,7 @@ bool CDIICore::detectionLL(const Plan& ownship, const Plan& traffic, double B, d
 
       //System.out.println("$$CDIICore1 LL: BT = "+BT+"  NT = "+NT+" HT = "+HT);
       //System.out.println("$$CDIICore2 LL: "+llo+" "+vo+" "+t_base);
+
       cdsicore.detectionLL(llo, vo, t_base, HT, traffic, BT, NT);
       captureOutput(cdsicore,i);
       //      if ( ! captureOutput(cdsicore, i) ){
@@ -391,8 +348,8 @@ void CDIICore::captureOutput(const CDSICore& cdsi, int seg) {
   for (int index = 0; index < cdsi.size(); index++) {
     double vtin = cdsi.getTimeIn(index);
     double vtout = cdsi.getTimeOut(index);
-    double vtcpa = cdsi.getTimeClosest(index);
-    double vd = cdsi.getDistanceClosest(index);
+    double vtcpa = cdsi.getCriticalTime(index);
+    double vd = cdsi.getDistanceAtCriticalTime(index);
     //double vdv = cdsi.getClosestVert(index);
     segin.push_back(seg);
     segout.push_back(seg);
@@ -435,6 +392,107 @@ void CDIICore::merge() {
     }
   }
 }
+
+
+/**
+ * EXPERIMENTAL
+ * Perform a "quick" conflict detection test only.  This will not record or modify existing timing information, and should be at least as fast as the static cdiicore() call.
+ * @param ownship
+ * @param traffic
+ * @param B
+ * @param T
+ * @return true if conflict
+ */
+bool CDIICore::conflictDetection(const Plan& ownship, const Plan& traffic, double B, double T) const {
+    if (ownship.isLatLon() != traffic.isLatLon()) {
+        return false;
+    }
+    if (ownship.isLatLon()) {
+        return conflictLL(ownship, traffic, B, T);
+    } else {
+        return conflictXYZ(ownship, traffic, B, T);
+    }
+}
+
+bool CDIICore::conflictXYZ(const Plan& ownship, const Plan& traffic, double B, double T) const{
+    bool linear = true;     // was Plan.PlanType.LINEAR);
+    int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util::max(0, ownship.getSegment(B));
+    int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util::max(0,ownship.size() - 1);
+    for (int i = start; i < ownship.size(); i++) {
+        if (i <= end) {
+            Vect3 so = ownship.point(i).vect3();
+            Velocity vo = ownship.initialVelocity(i,linear);
+            double t_base = ownship.time(i); // ownship start of leg
+            // special case!!!  see note in detectionXYZ, above
+            if (t_base < B) {
+                double dt = B-t_base;
+                if (cdsicore.checkSmallTimes && dt > 0.0 && dt < 0.000001) {
+                    error.addWarning("Attempting conflictXYZ on segment "+Fm0(i)+" of "+ownship.getID()+" against "+traffic.getID()+" with very small offset: "+Fm12(dt));
+                }
+                so = ownship.position(B,linear).vect3();
+                t_base = B;
+            }
+            double nextTime; // ownship end of range
+            if (i == ownship.size() - 1) {
+                nextTime = 0.0; // set to 0
+            } else {
+                nextTime = ownship.time(i + 1); // if in the plan, set to
+                                                    // the end of leg
+            }
+            double HT = nextTime - t_base;
+            double BT = Util::max(0.0, (B - t_base));
+            double NT = T - t_base; // - (t_base - t0);
+            if (NT < 0.0) {
+                continue;
+            }
+
+            if (cdsicore.conflictXYZ(so, vo, t_base, HT, traffic, BT, NT)) return true;
+        }
+    }
+    return false;
+}
+
+bool CDIICore::conflictLL(const Plan& ownship, const Plan& traffic, double B, double T) const{
+    bool linear = true;     // was Plan.PlanType.LINEAR);
+    int start = B > ownship.getLastTime() ? ownship.size() - 1 : Util::max(
+            0, ownship.getSegment(B));
+    int end = T > ownship.getLastTime() ? ownship.size() - 1 : Util::max(0,
+            ownship.size() - 1);
+    for (int i = start; i < ownship.size(); i++) {
+        if (i <= end) {
+            LatLonAlt llo = ownship.point(i).lla();
+            double t_base = ownship.time(i);
+            // special case!!!  see note in detectionXYZ, above
+            if (t_base < B) {
+                double dt = B-t_base;
+                if (cdsicore.checkSmallTimes && dt > 0.0 && dt < 0.000001) {
+                    error.addWarning("Attempting conflictLL on segment "+Fm0(i)+" of "+ownship.getID()+" against "+traffic.getID()+" with very small offset: "+Fm12(dt));
+                }
+                llo = ownship.position(B,linear).lla();
+                t_base = B;
+            }
+            double nextTime;
+            if (i == ownship.size() - 1) {
+                nextTime = 0.0;
+            } else {
+                nextTime = ownship.time(i + 1);
+            }
+            double HT = nextTime - t_base; // state-based time horizon
+            double BT = Util::max(0.0, B - t_base); // begin time to look for
+            double NT = T - t_base; // end time to look for
+            if (NT < 0.0) {
+                continue;
+            }
+            Velocity vo = ownship.velocity(t_base, linear); // CHANGED!!!
+
+            if (cdsicore.conflictLL(llo, vo, t_base, HT, traffic, BT, NT)) return true;
+        }
+    }
+    return false;
+}
+
+
+
 
 bool CDIICore::violation(const Plan& ownship, const Plan& traffic, double tm) const {
   if (tm < ownship.getFirstTime() || tm > ownship.getLastTime()) {
@@ -485,7 +543,7 @@ std::string CDIICore::toString() const {
   }
   for (int k = 0; k < size(); k++) {
     str = str + "      "+Fm4(getTimeIn(k))+"    "+Fm4(getTimeOut(k))
-                        +"       "+Fmi(getSegmentIn(k))+"              "+Fmi(getSegmentOut(k))+" \n";
+                            +"       "+Fmi(getSegmentIn(k))+"              "+Fmi(getSegmentOut(k))+" \n";
   }
   str = str + "CDSI = "+cdsicore.toString();
   return str;

@@ -120,7 +120,7 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
             output.addNavPoint(np);
             count++;
         }
-        output.setName(string(planID));
+        output.setID(string(planID));
         flightPlans.push_back(output);
         return output.size();
     }else{

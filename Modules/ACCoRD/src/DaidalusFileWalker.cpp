@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -179,7 +179,7 @@ void DaidalusFileWalker::readExtraColumns(Daidalus& daa, const SequenceReader& s
 void DaidalusFileWalker::readState(Daidalus& daa) {
   if (p_.size() > 0) {
     daa.setParameterData(p_);
-    daa.stale(true);
+    daa.reset();
   }
   for (int ac = 0; ac < sr_.size();++ac) {
     std::string ida = sr_.getName(ac);
@@ -193,6 +193,24 @@ void DaidalusFileWalker::readState(Daidalus& daa) {
     readExtraColumns(daa,sr_,ac);
   }
   goNext();
+}
+
+// ErrorReporter Interface Methods
+
+bool DaidalusFileWalker::hasError() const {
+  return sr_.hasError();
+}
+
+bool DaidalusFileWalker::hasMessage() const {
+  return sr_.hasMessage();
+}
+
+std::string DaidalusFileWalker::getMessage() {
+  return sr_.getMessage();
+}
+
+std::string DaidalusFileWalker::getMessageNoClear() const {
+  return sr_.getMessageNoClear();
 }
 
 }

@@ -5,7 +5,7 @@
  *
  * General Constants
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -21,12 +21,12 @@ namespace larcfm {
 
 
 // these will all eventually be moved into the object initialization
-static const std::string _FormalATM_version = "v2.7.3";
-static const double _FormalATM_GPS_LIMIT_HORIZONTAL = Units::from("ft", 25.0); // in order to keep both versions tied to a single entry, this needs to be defined here.
-static const double _FormalATM_GPS_LIMIT_VERTICAL = Units::from("ft", 25.0); // in order to keep both versions tied to a single entry, this needs to be defined here.
-static const double _FormalATM_TIME_LIMIT_EPSILON = 1.0;// in order to keep both versions tied to a single entry, this needs to be defined here.
-static const double _FormalATM_NO_TIME_LIMIT_EPSILON = -1;
-static const double _FormalATM_NO_TIME = -1;
+static const std::string FormalATM_version = "v2.7.4";
+static const double FormalATM_GPS_LIMIT_HORIZONTAL = Units::from("ft", 25.0); // in order to keep both versions tied to a single entry, this needs to be defined here.
+static const double FormalATM_GPS_LIMIT_VERTICAL = Units::from("ft", 25.0); // in order to keep both versions tied to a single entry, this needs to be defined here.
+static const double FormalATM_TIME_LIMIT_EPSILON = 1.0;// in order to keep both versions tied to a single entry, this needs to be defined here.
+static const double FormalATM_NO_TIME_LIMIT_EPSILON = -1;
+static const double FormalATM_NO_TIME = -1;
 
 class Constants {
 private:
@@ -198,17 +198,17 @@ public:
 /**
  * \deprecated {Use Constants:: version}
  * Most GPS units update with a frequency of at least 1 HZ.  */
-static const double TIME_LIMIT_EPSILON = _FormalATM_TIME_LIMIT_EPSILON;// in order to keep both versions tied to a single entry, this needs to be defined here.
+static const double TIME_LIMIT_EPSILON = FormalATM_TIME_LIMIT_EPSILON;// in order to keep both versions tied to a single entry, this needs to be defined here.
 
 /**
  * \deprecated {Use Constants:: version}
  */
-static const double NO_TIME_LIMIT_EPSILON = _FormalATM_NO_TIME_LIMIT_EPSILON;
+static const double NO_TIME_LIMIT_EPSILON = FormalATM_NO_TIME_LIMIT_EPSILON;
 
 /**
  * \deprecated {Use Constants:: version}
  */
-static const double NO_TIME = _FormalATM_NO_TIME;
+static const double NO_TIME = FormalATM_NO_TIME;
 /**
  * \deprecated {Use Constants:: version}
  * Set the time accuracy value.  This value means any two times that

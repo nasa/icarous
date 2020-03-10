@@ -3,7 +3,7 @@
  *
  * Contact: George Hagen
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -42,7 +42,7 @@ SequenceReader::SequenceReader() {
 	error = ErrorLog("SequenceReader(no file)");
 	windowSize = AircraftState::DEFAULT_BUFFER_SIZE;
 	input.setCaseSensitive(false);            // headers & parameters are lower case
-	for (int i = head.size(); i < definedColumns; i++) {
+	for (int i = static_cast<int>(head.size()); i < definedColumns; i++) {
 		head.push_back(-1);
 	}
 }
@@ -265,7 +265,7 @@ void SequenceReader::loadfile() {
 
 /** Return the number of sequence entries in the file */
 int SequenceReader::sequenceSize() const {
-	return sequenceTable.size();
+	return static_cast<int>(sequenceTable.size());
 }
 
 /**

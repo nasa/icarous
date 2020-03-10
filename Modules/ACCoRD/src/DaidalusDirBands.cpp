@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -18,13 +18,11 @@
 
 namespace larcfm {
 
-DaidalusDirBands::DaidalusDirBands(DaidalusParameters& parameters) {
-  super_mod(2*Pi);
+DaidalusDirBands::DaidalusDirBands(DaidalusParameters& parameters) : DaidalusRealBands(2*Pi) {
   setDaidalusParameters(parameters);
 }
 
-DaidalusDirBands::DaidalusDirBands(const DaidalusDirBands& b) {
-  super_DaidalusRealBands(&b);
+DaidalusDirBands::DaidalusDirBands(const DaidalusDirBands& b) : DaidalusRealBands(b) {
   turn_rate_ = b.turn_rate_;
   bank_angle_ = b.bank_angle_;
 }
@@ -36,7 +34,7 @@ void DaidalusDirBands::setDaidalusParameters(const DaidalusParameters& parameter
   set_step(parameters.getHorizontalDirectionStep());
   set_recovery(parameters.isEnabledRecoveryHorizontalDirectionBands());
   set_min_rel(parameters.getLeftHorizontalDirection());
-  set_max_rel(parameters.getRightHorizontalDirection());
+  setmax_rel(parameters.getRightHorizontalDirection());
   set_turn_rate(parameters.getTurnRate());
   set_bank_angle(parameters.getBankAngle());
 }

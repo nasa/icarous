@@ -6,7 +6,7 @@
  *
  *
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -470,7 +470,9 @@ public:
 
 	std::vector<std::string> toStringList() const;
 
-	std::vector<std::string> toStringList(int) const;
+	std::vector<std::string> toStringList(int precision) const;
+
+	std::vector<std::string> toStringList(int precision,int latLonExtraPrecision,bool internalUnits) const;
 
 	/** Return a string representation with a default precision but without parentheses.
 	 * @return string representation

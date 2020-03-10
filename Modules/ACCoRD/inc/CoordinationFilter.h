@@ -4,7 +4,7 @@
  *
  * manages a history of aircraft state information
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -15,14 +15,10 @@
 
 namespace larcfm {
 /**
- * This class implements a simple filter to an input in {-1,1} that guarantees a stable output for at
- * least "n" iterations. This number of iterations is called "tolerance". The tolerance is also the maximum
- * delay for any given input. The filter has the property of being symmetric, i.e., it produces opposite outputs
+ * This class implements a simple filter to an input in {-1,1} that guarantees a stable output for at 
+ * least "n" iterations. This number of iterations is called "tolerance". The tolerance is also the maximum 
+ * delay for any given input. The filter has the property of being symmetric, i.e., it produces opposite outputs 
  * to opposite inputs. All filters for a given signal should have the same tolerance and they should be reset at the same time.
- *
- * This filter was designed by Mahyar R. Malekpour (NASA Langley) and implemented by
- * Cesar Munoz (NASA Langley)
- *
  */
 
 class CoordinationFilter {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -17,9 +17,8 @@
 namespace larcfm {
 class WCV_TAUMOD : public WCV_tvar {
 
-
 public:
-  
+
   /** Constructor that a default instance of the WCV tables. */
   WCV_TAUMOD();
 
@@ -27,6 +26,35 @@ public:
   explicit WCV_TAUMOD(const WCVTable& tab);
 
   virtual ~WCV_TAUMOD() {};
+
+  /**
+   * @return one static WCV_TAUMOD
+   */
+  static const WCV_TAUMOD& A_WCV_TAUMOD();
+
+  /**
+   * @return DO-365 preventive thresholds, i.e., DTHR=0.66nmi, ZTHR=700ft,
+   * TTHR=35s, TCOA=0.
+   */
+  static const WCV_TAUMOD& DO_365_Phase_I_preventive();
+
+  /**
+   * @return DO-365 Well-Clear thresholds, i.e., DTHR=0.66nmi, ZTHR=450ft,
+   * TTHR=35s, TCOA=0.
+   */
+  static const WCV_TAUMOD& DO_365_DWC_Phase_I();
+
+  /**
+   * @return buffered preventive thresholds, i.e., DTHR=1nmi, ZTHR=750ft,
+   * TTHR=35s, TCOA=20.
+   */
+  static const WCV_TAUMOD& Buffered_Phase_I_preventive();
+
+  /**
+   * @return buffered Well-Clear thresholds, i.e., DTHR=1.0nmi, ZTHR=450ft,
+   * TTHR=35s, TCOA=20.
+   */
+  static const WCV_TAUMOD& Buffered_DWC_Phase_I();
 
   virtual double horizontal_tvar(const Vect2& s, const Vect2& v) const;
 

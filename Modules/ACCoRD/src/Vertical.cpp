@@ -6,7 +6,7 @@
  * NASA LaRC
  * http://shemesh.larc.nasa.gov/people/cam/ACCoRD
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -15,7 +15,6 @@
 #include "Vertical.h"
 #include "Horizontal.h"
 #include <limits>
-//#include "CriteriaCore.h"
 #include "format.h"
 
 namespace larcfm {
@@ -105,7 +104,6 @@ Vertical vs_only(const Vect3& s, const Vect2& v, const double t,
   return Vertical::NoVerticalSolution();
 }
 
-
 /* Solve the following equation on vz:
  *   sz+t*vz = eps*H,
  *
@@ -140,7 +138,6 @@ Vertical Vertical::vs_los_recovery(const Vect3& s, const Vect3& vo, const Vect3&
     return NoVerticalSolution();
   Vect3 v = vo-vi;
   double nvz = (epsv*H - s.z)/t;
-
   if (s.z*v.z >= 0 && std::abs(v.z) >= std::abs(nvz))
     return Vertical(vo.z);
   else

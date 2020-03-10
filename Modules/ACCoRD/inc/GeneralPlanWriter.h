@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 United States Government as represented by
+ * Copyright (c) 2017-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -73,6 +73,7 @@ private:
 	bool source;
 	bool time2;
 	int precision;
+	int latLonExtraPrecision;
 	int lines_i;
 	int num;
 	std::string fname;
@@ -110,6 +111,10 @@ public:
 	int getPrecision() const;
 
 	void setPrecision(int precision);
+
+	int getLatLonExtraPrecision() const;
+
+	void setLatLonExtraPrecision(int precision);
 
 	/** Will the time be added to the file
 	 * @return true, if the time is to be output to the file

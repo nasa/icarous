@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018 United States Government as represented by
+ * Copyright (c) 2012-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,7 +19,7 @@ namespace larcfm {
 const std::vector<double>& TCASTable::default_levels() {
   static std::vector<double> default_levels_;
   if (default_levels_.empty()) {
-    default_levels_.reserve(7);
+    default_levels_.resize(7); // use resize since we are then using subscript assignment
     default_levels_[0] = Units::from(Units::ft,0);     // Upper bound of SL 1
     default_levels_[1] = Units::from(Units::ft,1000);  // Upper bound of SL 2
     default_levels_[2] = Units::from(Units::ft,2350);  // Upper bound of SL 3
@@ -36,7 +36,7 @@ const std::vector<double>& TCASTable::default_levels() {
 const std::vector<double>& TCASTable::TA_TAU() {
   static std::vector<double> TA_TAU_;
   if (TA_TAU_.empty()) {
-    TA_TAU_.reserve(8);
+    TA_TAU_.resize(8); // use resize since we are then using subscript assignment
     TA_TAU_[0] = 0;   // SL 1
     TA_TAU_[1] = 20;  // SL 2
     TA_TAU_[2] = 25;  // SL 3
@@ -53,7 +53,7 @@ const std::vector<double>& TCASTable::TA_TAU() {
 const std::vector<double>& TCASTable::RA_TAU() {
   static std::vector<double> RA_TAU_;
   if (RA_TAU_.empty()) {
-    RA_TAU_.reserve(8);
+    RA_TAU_.resize(8); // use resize since we are then using subscript assignment
     RA_TAU_[0] = 0;  // SL 1
     RA_TAU_[1] = 0;  // SL 2
     RA_TAU_[2] = 15; // SL 3
@@ -70,7 +70,7 @@ const std::vector<double>& TCASTable::RA_TAU() {
 const std::vector<double>& TCASTable::TA_DMOD() {
   static std::vector<double> TA_DMOD_;
   if (TA_DMOD_.empty()) {
-    TA_DMOD_.reserve(8);
+    TA_DMOD_.resize(8); // use resize since we are then using subscript assignment
     TA_DMOD_[0] = 0;                             // SL 1
     TA_DMOD_[1] = Units::from(Units::NM,0.30);   // SL 2
     TA_DMOD_[2] = Units::from(Units::NM,0.33);   // SL 3
@@ -87,7 +87,7 @@ const std::vector<double>& TCASTable::TA_DMOD() {
 const std::vector<double>& TCASTable::RA_DMOD() {
   static std::vector<double> RA_DMOD_;
   if (RA_DMOD_.empty()) {
-    RA_DMOD_.reserve(8);
+    RA_DMOD_.resize(8); // use resize since we are then using subscript assignment
     RA_DMOD_[0] = 0;                               // SL 1
     RA_DMOD_[1] = 0;                               // SL 2
     RA_DMOD_[2] = Units::from(Units::NM,0.2);      // SL 3
@@ -104,7 +104,7 @@ const std::vector<double>& TCASTable::RA_DMOD() {
 const std::vector<double>& TCASTable::TA_ZTHR() {
   static std::vector<double> TA_ZTHR_;
   if (TA_ZTHR_.empty()) {
-    TA_ZTHR_.reserve(8);
+    TA_ZTHR_.resize(8); // use resize since we are then using subscript assignment
     TA_ZTHR_[0] = 0;                               // SL 1                                          // 1
     TA_ZTHR_[1] = Units::from(Units::ft,850);      // SL 2
     TA_ZTHR_[2] = Units::from(Units::ft,850);      // SL 3
@@ -121,7 +121,7 @@ const std::vector<double>& TCASTable::TA_ZTHR() {
 const std::vector<double>& TCASTable::RA_ZTHR() {
   static std::vector<double> RA_ZTHR_;
   if (RA_ZTHR_.empty()) {
-    RA_ZTHR_.reserve(8);
+    RA_ZTHR_.resize(8); // use resize since we are then using subscript assignment
     RA_ZTHR_[0] = 0;                             // SL1
     RA_ZTHR_[1] = 0;                             // SL 2
     RA_ZTHR_[2] = Units::from(Units::ft,600);    // SL 3
@@ -138,7 +138,7 @@ const std::vector<double>& TCASTable::RA_ZTHR() {
 const std::vector<double>& TCASTable::RA_HMD() {
   static std::vector<double> RA_HMD_;
   if (RA_HMD_.empty()) {
-    RA_HMD_.reserve(8);
+    RA_HMD_.resize(8); // use resize since we are then using subscript assignment
     RA_HMD_[0] = 0;                                // SL 1
     RA_HMD_[1] = 0;                                // SL 2
     RA_HMD_[2] = Units::from(Units::ft,1215);      // SL 3

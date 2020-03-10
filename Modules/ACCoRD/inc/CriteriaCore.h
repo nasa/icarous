@@ -4,7 +4,7 @@
  *
  * State-based Implicit Criteria
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -15,7 +15,6 @@
 
 #include "Velocity.h"
 #include "CDCylinder.h"
-//#include "CR3D.h"
 
 namespace larcfm {
 
@@ -100,7 +99,7 @@ public:
    *    @param vo     velocity of the ownship aircraft
    *    @param vi     velocity of the traffic aircraft
    *    @param nvo    resolution velocity of the traffic aircraft
-   *    @param eps    CR3D.horizontalCoordination
+   *    @param eps    horizontalCoordination
    */
   static bool horizontal_los_criterion(const Vect2& s, const Vect2& vo, const Vect2& vi,const Vect2& nvo, int eps);
 
@@ -114,7 +113,7 @@ public:
    *    @param vo3     velocity of the ownship aircraft
    *    @param vi3     velocity of the traffic aircraft
    *    @param nvo3    resolution velocity of the traffic aircraft
-   *    @param eps     CR3D.horizontalCoordination
+   *    @param eps     horizontalCoordination
    */
   static bool horizontalRepulsiveCriteria(const Vect3& s3, const Velocity& vo3, const Velocity& vi3, const Velocity& nvo3, int eps);
 
@@ -128,7 +127,7 @@ public:
    * @param epsv      vertical coordination parameter
    */
   static bool verticalRepulsiveCriterion(const Vect3& s, const Vect3& vo, const Vect3& vi, const Vect3& nvo,
-      double H, double minrelvs, int epsh, int epsv);
+      double H, double minrelvs, int epsv);
 
   /**
    *  true iff the velocity vector nvo satisfies the implicit coordination criteria
@@ -184,7 +183,7 @@ public:
    * @param trackRate     trackRate of traffic
    * @return horizontal epsilon
    */
-  static int dataVsRateEpsilon(const Vect3& s, const Velocity& vo, const Velocity& vi, int epsv, double vsRate);
+  static int dataVsRateEpsilon(int epsv, double vsRate);
 
 
   /** Return the horizontal epsilon that corresponds to the direction the traffic aircraft is currently turning indicated by sign of trackRate
@@ -210,7 +209,7 @@ public:
    *    @param vo     velocity of the ownship aircraft
    *    @param vi     velocity of the traffic aircraft
    *    @param nvo    resolution velocity of the traffic aircraft
-   *    @param eps    CR3D.horizontalCoordination
+   *    @param eps    horizontalCoordination
    */
   static bool horizontal_new_repulsive_criterion(const Vect2& s,  const Vect2& vo, const Vect2& vi, const Vect2& nvo, int eps);
 
@@ -226,7 +225,7 @@ public:
    *    @param vo     velocity of the ownship aircraft
    *    @param vi     velocity of the traffic aircraft
    *    @param nvo    resolution velocity of the traffic aircraft
-   *    @param eps    CR3D.horizontalCoordination
+   *    @param eps    horizontalCoordination
    */
   static bool horizontal_new_repulsive_criterion(const Vect3& s, const Vect3& vo, const Vect3& vi, const Vect3& nvo, int eps);
 
@@ -261,9 +260,9 @@ private:
   // Compute an absolute repulsive vertical direction
   static int losr_vs_dir(const Vect3& s, const Vect3& vo, const Vect3& vi, double caD, double caH,  std::string ownship, std::string traffic);
 
-  static bool vs_bound_crit(const Vect3& s, const Vect3& v, const Vect3& nv, int eps);
+  static bool vs_bound_crit(const Vect3& v, const Vect3& nv, int eps);
 
-  static double min_rel_vert_speed(double sz, double vz, int eps, double minrelvs);
+  static double min_rel_vert_speed(double vz, int eps, double minrelvs);
 
   static bool vertical_los_criterion(const Vect3& s, const Vect3& v, const Vect3& nv, int eps, double H, double minrelvs);
 

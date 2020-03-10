@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 United States Government as represented by
+ * Copyright (c) 2017-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -18,6 +18,16 @@
 
 namespace larcfm {
 
+/**
+ * This class represents a wrapper for a collection of Transmitter object that represents a server's behavior.
+ * The server takes updates to plan, state, and/or parameter information and parcels it out to its various Transmitter object.
+ * Each Transmitter is intended to handle a certain type of request (e.g. for plan information that is updated every second 
+ * and sent over a socket) and handles distributing the information to its clients.
+ * The particulars of the transmission of data are handled by the provided Transmitters.
+ * 
+ * Known keywords:
+ * GeneralState, GeneralPlan, ParameterData, String
+ */
 class DataServer {
 private:
 	std::map<std::string,Transmitter*> transmitters;

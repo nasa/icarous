@@ -4,7 +4,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -23,7 +23,6 @@
 #include "Kinematics.h"
 #include "KinematicsDist.h"
 #include "Tuple5.h"
-//#include "GsPlan.h"
 #include "Velocity.h"
 #include "format.h"
 #include "Util.h"
@@ -51,6 +50,7 @@ using std::endl;
 using std::vector;
 
 bool   Plan::debug = false;
+bool   Plan::newConsistencyAlg = true;
 double Plan::MIN_TRK_DELTA_GEN = Units::from("deg", 1);
 double Plan::MIN_GS_DELTA_GEN = Units::from("kn", 10);
 double Plan::MIN_VS_DELTA_GEN = Units::from("fpm", 200);
@@ -61,11 +61,10 @@ const std::string Plan::noteParamStart = ":PARAM_START:";
 const std::string Plan::noteParamEnd = ":PARAM_END:";
 
 
-
 TcpData Plan::invalid_value = TcpData::makeInvalid();
 
 const double Plan::minDt = GreatCircle::minDt;
-const double Plan::nearlyZeroGs = 1E-7;                   // used in GsConsistent
+const double Plan::nearlyZeroGs = 1E-4;                   // used in GsConsistent
 const double em6DegtoMeter = 0.15;
 
 //double Plan::gsIn_0 = -1;
@@ -77,21 +76,21 @@ std::string Plan::specPre() {
 }
 
 Plan::Plan() : 
-	name(""),
+	label(""),
 	error("Plan"),
 	note("") {
 	init();
 }
 
 Plan::Plan(const std::string& planname) : 
-	name(planname),
+	label(planname),
 	error("Plan"),
 	note("") {
 	init();
 }
 
 Plan::Plan(const std::string& planname, const std::string& plannote) : 
-	name(planname),
+	label(planname),
 	error("Plan"),
 	note(plannote) {
 	init();
@@ -104,7 +103,7 @@ void Plan::init() {
 }
 
 Plan::Plan(const Plan& fp) : 
-	name(fp.name),
+	label(fp.label),
 	points(fp.points),
 	data(fp.data),
 	error(fp.error),
@@ -129,18 +128,18 @@ Plan::~Plan() {
 bool Plan::operator ==(const Plan& o) const {
 	Plan fp = (Plan) o;
 
-	unsigned int numPts = points.size();
+	size_t numPts = points.size();
 	if (numPts != fp.points.size()) {
 		return false;
 	}
 
 	bool r = true;
 
-	for (unsigned int j = 0; j < numPts; j++) {
+	for (size_t j = 0; j < numPts; j++) {
 		//r = r && points[j].equals(fp.points[j]);
 		r = r && points[j] == fp.points[j];
 	}
-	return r && /*latlon == fp.latlon && */ equalsIgnoreCase(name,fp.name);
+	return r && /*latlon == fp.latlon && */ equalsIgnoreCase(label,fp.label);
 }
 
 bool Plan::operator != (const Plan& fp) const {
@@ -168,7 +167,7 @@ bool Plan::equals(const Plan& fp){
 	for (int j = 0; j < (int) points.size(); j++) {
 		r = r && points[j].equals(fp.points[j]);
 	}
-	return r && (name == fp.name); // && type_p == fp.type_p; //  && numTCPs == fp.numTCPs;
+	return r && (label == fp.label); // && type_p == fp.type_p; //  && numTCPs == fp.numTCPs;
 }
 
 bool Plan::almostEquals(const Plan& p) const {
@@ -196,7 +195,7 @@ bool Plan::almostEquals(const Plan& p, double epsilon_horiz, double epsilon_vert
 			//fpln("almostEquals: point i = " + i + " does not match: " + point(i) + "  !=   " + p.point(i) + " epsilon_horiz = " + epsilon_horiz);
 		}
 		if (!(point(i).name() == p.point(i).name())) {
-			//fpln("almostEquals: point i = " + i + " labels do not match.");
+			//fpln("almostEquals: point i = " + i + " names do not match.");
 			return false;
 		}
 	}
@@ -232,7 +231,7 @@ void Plan::clearVirtuals() {
 }
 
 int Plan::size() const {
-	return points.size();
+	return static_cast<int>(points.size());
 }
 
 /** Get an approximation of the bounding rectangle around this plan */
@@ -257,21 +256,21 @@ bool Plan::isLatLon(bool latlon) const {
 	}
 }
 
-const std::string& Plan::getName() const {
-	return name;
+const std::string& Plan::getID() const {
+	return label;
 }
 
-void Plan::setName(const std::string& s) {
-	name = s;
+void Plan::setID(const std::string& s) {
+	label = s;
 }
 
 
-const std::string Plan::getPointName(int i) const {
+const std::string Plan::getName(int i) const {
 	if (i < 0 || i >= size()) return "";
 	else return point(i).name();
 }
 
-void Plan::setPointName(int i, const std::string& s) {
+void Plan::setName(int i, const std::string& s) {
 	if (i < 0 || i >= size()) {
 		addError(" $$ setPointName: illegal index",i);
 		return;
@@ -294,9 +293,9 @@ void Plan::appendNote(const std::string& s) {
 }
 
 void Plan::includeParameters(ParameterData pd) {
-	int i1 = note.find(noteParamStart);
-	int i2 = note.find(noteParamEnd);
-	if (i1 >= 0 && i2 > i1) note = note.substr(0,i1)+note.substr(i2+noteParamEnd.length()); // remove old parameters
+	size_t i1 = note.find(noteParamStart);
+	size_t i2 = note.find(noteParamEnd);
+	if (i2 > i1) note = note.substr(0,i1)+note.substr(i2+noteParamEnd.length()); // remove old parameters
 	if (pd.size() > 0) {
 		note += noteParamStart+pd.toParameterList(";")+noteParamEnd;
 	}
@@ -308,10 +307,14 @@ void Plan::includeParameters(ParameterData pd) {
  */
 ParameterData Plan::extractParameters() const {
 	ParameterData pd = ParameterData();
-	int i1 = note.find(noteParamStart);
-	int i2 = note.find(noteParamEnd);
-	if (i1 >= 0 && i2 > (int)noteParamStart.length()) {
+	//int i1 = note.find(noteParamStart);
+	//int i2 = note.find(noteParamEnd);
+	//if (i1 >= 0 && i2 > noteParamStart.length()) {
+	size_t i1 = note.find(noteParamStart);
+	size_t i2 = note.find(noteParamEnd);
+	if (i1 != string::npos && i2 != string::npos && i2 > noteParamStart.length()) {
 		int start = i1+noteParamStart.length();
+		//fpln(" $$$$ extractParameters: start = "+Fm0(start)+" i2 = "+Fm0(i2));
 		std::string s = note.substr(start,  i2-start);
 		pd.parseParameterList(";", s);
 	}
@@ -360,8 +363,8 @@ double  Plan::getFirstRealTime() const {
 }
 
 int Plan::nextPtOrEnd(int startWp) const {
-	int rtn = points.size()-1;
-	if (startWp < (int)points.size()-1) rtn = startWp+1;
+	int rtn = static_cast<int>(points.size())-1;
+	if (startWp < rtn) rtn = startWp+1;
 	return rtn;
 }
 
@@ -372,7 +375,7 @@ int Plan::nextPtOrEnd(int startWp) const {
  * string -1 if there are no matches.
  *
  * @param startIx   start with this index
- * @param label     String to match
+ * @param name     String to match
  * @param withWrap  if true, go through whole list
  */
 int Plan::findName(const std::string& name, int startIx, bool withWrap) {
@@ -401,16 +404,16 @@ int Plan::findName(const std::string& name, int startIx, bool withWrap) {
  * Return the index of first point that has a name equal to the given
  * string, return -1 if there are no matches.
  *
- * @param label    String to match
+ * @param name    String to match
  */
-int Plan::findName(const std::string& label) const {
+int Plan::findName(const std::string& name) const {
 	if (! isLinear()) {  // debug RWB-MOT
-		//f.pln(" $$ findName: label = "+label);
+		//f.pln(" $$ findName: name = "+name);
 		//Debug.printCallingMethod();
 	}
 	for (int i = 0; i < (int) points.size(); i++) {
 		NavPoint np = points[i];
-		if (np.name() == label)
+		if (np.name() == name)
 			return i;
 	}
 	return -1;
@@ -496,7 +499,7 @@ void Plan::clearInfo(int ix) {
 
 
 int Plan::getIndex(double tm) const {
-	int numPts = points.size();
+	int numPts = static_cast<int>(points.size());
 	if (numPts == 0) {
 		return -1;
 	}
@@ -531,10 +534,11 @@ int Plan::getSegmentByDistance(int startix, double d) const {
 	if (d < 0) return -1;
 	double tdist = 0;
 	int i = startix;
-	while (tdist <= d && i < size()) {
+	while (tdist < d && i < size()) {
 		tdist += pathDistance(i);
 		i++;
 	}
+	if (tdist == d) return i;
 	if (tdist > d && i <= size()) return i-1; // on segment i-1
 	if (Util::within_epsilon(d, tdist, 0.01) && i == size()) return size()-1;
 	return -1; // not found
@@ -547,7 +551,7 @@ int Plan::getSegmentByDistance(double d) const {
 
 int Plan::getNearestIndex(double tm) const {
 	int p = getIndex(tm);
-	int numPts = points.size();
+	int numPts = static_cast<int>(points.size());
 	if (p<0) {
 		if (p <= -numPts-1) {
 			p = numPts-1;
@@ -769,6 +773,16 @@ void Plan::setEOT(int i) {
 	d.setEOT();
 }
 
+void Plan::addBOT(int i, double signedRadius, Position center) {
+	TcpData& d = getTcpDataRef(i);
+	d.addBOT(signedRadius, center);
+}
+
+void Plan::addEOT(int i) {
+	TcpData& d = getTcpDataRef(i);
+	d.addEOT();
+}
+
 void Plan::setEOTBOT(int i, double signedRadius, Position center) {
 	if (i < 0 || i >= size()) {
 		addError("setEOTBOT: invalid point index of "+Fmi(i)+" size="+Fmi(size()));
@@ -784,6 +798,13 @@ void Plan::clearMOT(int i) {
 	getTcpDataRef(i).setMOT(false);
 }
 
+void Plan::clearBOT(int ix) {
+	getTcpDataRef(ix).clearBOT();
+}
+
+void Plan::clearEOT(int ix) {
+	getTcpDataRef(ix).clearEOT();
+}
 
 
 void Plan::setBGS(int i, double acc) {
@@ -801,6 +822,12 @@ void Plan::setEGS(int i) {
 	TcpData& d = data[i];
 	d.setEGS();
 }
+
+void Plan::addEGS(int i) {
+	TcpData& d = getTcpDataRef(i);
+	d.addEGS();
+}
+
 
 void Plan::clearEGS(int ix) {
 	getTcpDataRef(ix).clearEGS();
@@ -828,6 +855,12 @@ void Plan::setBVS(int i, double acc) {
 	d.setBVS(acc);
 }
 
+void Plan::addEVS(int i) {
+	TcpData& d = getTcpDataRef(i);
+	d.addEVS();
+}
+
+
 void Plan::setEVS(int i) {
 	if (i < 0 || i >= size()) {
 		addError("setEVS: invalid point index of "+Fmi(i)+" size="+Fmi(size()));
@@ -843,6 +876,16 @@ void Plan::setEVSBVS(int i, double acc) {
 	TcpData& d = data[i];
 	d.setEVSBVS(acc);
 }
+
+void Plan::clearBVS(int ix) {
+	getTcpDataRef(ix).clearBVS();
+}
+
+
+void Plan::clearEVS(int ix) {
+	getTcpDataRef(ix).clearEVS();
+}
+
 
 
 
@@ -868,7 +911,7 @@ int Plan::add(const NavPoint& p2, const TcpData& d) {
 		addError("add: Attempt to add invalid NavPoint",0);
 		return -1;
 	}
-	int numPts = points.size();
+	int numPts = static_cast<int>(points.size());
 
 	if (p.isInvalid()) {
 		addError("add: Attempt to add invalid NavPoint",0);
@@ -925,7 +968,7 @@ int Plan::add(const NavPoint& p2, const TcpData& d) {
 // Insert a point at position i
 // Warning: i must be a valid index: 0..numPts-1
 void Plan::insert(int i, const NavPoint& v, const TcpData& d) {
-	int numPts = points.size();
+	int numPts = static_cast<int>(points.size());
 	if (i < 0 || i > numPts) {
 		addError("insert: Invalid index "+Fm0(i),i);
 		return;
@@ -971,7 +1014,7 @@ int Plan::insertByDistance(int i, double d) {
 
 
 void Plan::remove(int i) {
-	int numPts = points.size();
+	int numPts = static_cast<int>(points.size());
 	if (i < 0 || i >= numPts) {
 		addWarning("remove1: invalid index " +Fm0(i));
 		return;
@@ -1052,6 +1095,10 @@ void Plan::setTime(int i, double t) {
 
 }
 
+void Plan:: setTimeInPlace(int i, double t) {
+	points[i] = points[i].makeTime(t);
+}
+
 
 void Plan::setAlt(int i, double alt) {
 	if (i < 0 || i >= (int)points.size()) {
@@ -1059,8 +1106,7 @@ void Plan::setAlt(int i, double alt) {
 		return;
 	}
 	NavPoint tempv = points[i].mkAlt(alt);
-	remove(i);
-	add(tempv, getTcpData(i));
+	setNavPoint(i, tempv);
 }
 
 
@@ -1511,8 +1557,12 @@ Position Plan::position(double t, bool linear) const {
 	return positionVelocity(t, linear).first;
 }
 
-Position Plan::position(double t) const{
+Position Plan::position(double t) const {
 	return positionVelocity(t, false).first;
+}
+
+NavPoint Plan::navPt(double t) const {
+	return NavPoint(position(t),t);
 }
 
 
@@ -1545,19 +1595,21 @@ double Plan::timeFromDistance(double vo, double gsAccel, double dist) {
 	//double vo = initialVelocity(seg).gs();
 	//double a = point(prevBGS(seg)).gsAccel();
 	double t1 = Util::root(0.5*gsAccel, vo, -dist, 1);
+	if (ISNAN(t1)) return t1;
 	double t2 = Util::root(0.5*gsAccel, vo, -dist, -1);
-	double dt = ISNAN(t1) || t1 < 0 ? t2 : (ISNAN(t2) || t2 < 0 ? t1 : Util::min(t1, t2));
+	double dt = t1 < 0 ? t2 :  (t2 < 0 ? t1 : Util::min(t1, t2));
 	return dt;
 }
 
 
 double Plan::timeFromDistanceWithinSeg(int seg, double rdist) const {
-	if (seg < 0 || seg > size()-1 || rdist < 0 || rdist > pathDistance(seg)) {
+	if (seg < 0 || seg >= size()-1 || rdist < 0 || rdist > pathDistance(seg)) {
         addError("timeFromDistanceWithinSeg: seg="+Fm0(seg)+" rdist="+Fm2(rdist)+" not in segment");
 		return -1;
 	}
-	double gs0 = initialVelocity(seg).gs();
-	if (Util::almost_equals(gs0, 0.0)) return 0;
+	double gs0 =gsOut(seg);
+	double gs1 = gsFinal(seg);
+	if (Util::almost_equals(gs0, 0.0) && Util::almost_equals(gs1, 0.0)) return 0;
 	if (inGsChange(time(seg))) {
 		double a = gsAccel(prevBGS(seg+1));//fixed
 		return timeFromDistance(gs0, a, rdist);
@@ -1588,6 +1640,58 @@ double Plan::timeFromDistance(int startSeg, double dist) const {
 	double tmWithin = timeFromDistanceWithinSeg(seg, distWithinLastSeg);
 	return tmWithin + time(seg);
 }
+
+
+std::pair<double,double> Plan::timeFromHeight(int seg, double height) const {
+	if (seg < 0 || seg >= size()-1) {
+		return std::pair<double,double>(-1.0, -1.0); // bad parameters
+	}
+	double alt0 = getPos(seg).alt();
+	double alt1 = getPos(seg+1).alt();
+	double t0 = time(seg);
+	double dt = time(seg+1) - t0;
+	double vs = vsOut(seg);
+	double a = vsAccel(seg);
+	if (Util::almost_equals(a,  0.0)) {
+		if ((height < alt0 && height < alt1) || (height > alt0 && height > alt1)) {
+			return std::pair<double,double>(-1.0, -1.0); // out of range
+		}
+		if (Util::almost_equals(height,  alt0)) {
+			return std::pair<double,double>(t0, -1.0); // at start
+		}
+		if (Util::almost_equals(vs,  0.0) && !Util::almost_equals(height, alt0)) {
+			return std::pair<double,double>(-1.0, -1.0); // out of range
+		}
+		double t = (height-alt0)/vs;
+		if (t < 0.0 || t > dt) {
+			return std::pair<double,double>(-1.0, -1.0); // out of range
+		}
+		return std::pair<double,double>(t+t0, -1.0);
+	} else { // in accel zone
+		double t1 = Util::root(-.5*a, vs, (alt0-height), 1);
+		double t2 = Util::root(-.5*a, vs, (alt0-height), -1);
+		// various error conditions:
+		if (t1 < 0.0 || t1 > dt) {
+			t1 = -1.0;
+		} else {
+			t1 = t1+t0;
+		}
+		if (t2 < 0.0 || t2 > dt) {
+			t2 = -1.0;
+		} else {
+			t2 = t2+t0;
+		}
+		if (t1 < 0.0 || (t1 >= 0.0 && t2 >= 0.0 && t2 < t1)) { // swap if the first is bad or if both good and t2 > t1
+			double tmp = t1;
+			t1 = t2;
+			t2 = tmp;
+		}
+		return std::pair<double,double>(t1,  t2);
+	}
+
+}
+
+
 
 Velocity Plan::velocityFromDistance(double d) const {
 	return velocity(timeFromDistance(d));
@@ -1710,6 +1814,11 @@ double Plan::gsOutCalc(int i, bool linear) const {
 	return rtn;
 }
 
+double Plan::gsOutCalc(int i) const {
+	return gsOutCalc(i,false);
+}
+
+
 double Plan::gsOut(int i, bool linear) const {
 	double rtn = gsOutCalc(i,linear);
 	if (rtn < 0) {  // to guard against -1.2E-12 calculations, see GsConsistent
@@ -1746,13 +1855,43 @@ double Plan::gsFinal(int i, bool linear) const {
 }
 
 double Plan::gsIn(int seg, bool linear)  const {
-	if (seg==0) return NaN;
+	if (seg<0) {
+		//if (Debug::FAIL_FAST) return NaN;
+		//else
+			return gsOut(0);   // This is usually what you want
+	}
 	return gsFinal(seg-1,linear);
 }
+
+double Plan::gsInCalc(int i)  const {
+	if (i < 0) {
+		//if (Debug::FAIL_FAST) return NaN;
+		//else
+			return gsOut(0);   // This is usually what you want
+	}
+	bool linear = false;
+	return gsFinalCalc(i-1,linear);
+}
+
 
 double Plan::gsOut(int seg)  const { return gsOut(seg,false); }
 double Plan::gsFinal(int seg) const { return gsFinal(seg,false); }
 double Plan::gsIn(int seg)  const { return gsIn(seg,false); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 double Plan::gsAtTime(int seg, double gsAtSeg, double t, bool linear) const {
 	//fpln(" $$ gsAtTime: seg = "+seg+" gsAt = "+Units::str("kn",gsAt,8));
@@ -1974,7 +2113,7 @@ Position Plan::advanceDistanceWithinSeg2D(int seg, double distFromSeg, bool line
 std::pair<Position,int> Plan::advanceDistance2D(int seg, double distFromSeg, bool linear) const{
 	double remainingDist = distFromSeg;
 	for (int i = seg; i < size(); i++) {
-		double pathDist_i = pathDistance(i);
+		double pathDist_i = pathDistance(i,linear);
 		if (remainingDist < pathDist_i) {
 			Position newPos = advanceDistanceWithinSeg2D(i, remainingDist, linear);
 			return std::pair<Position,int>(newPos,i);
@@ -2068,7 +2207,7 @@ std::pair<Position, Velocity> Plan::posVelWithinSeg(int seg, double t, bool line
  */
 std::pair<Position,Velocity> Plan::positionVelocity(double t, bool linear) const {
 	if (t < getFirstTime() || ISNAN(t) || t > getLastTime()) {
-		return std::pair<Position,Velocity>(Position::INVALID(), Velocity::ZEROV());
+		return std::pair<Position,Velocity>(Position::INVALID(), Velocity::INVALIDV());
 	}
 	if (size() == 1) {
 		return std::pair<Position,Velocity>(points[0].position(), Velocity::INVALIDV());
@@ -2121,7 +2260,7 @@ std::pair<double,double> Plan::altitudeVs(double t, bool linear) const {
 
 
 
-Velocity Plan::averageVelocity(int i) const {
+Velocity Plan::averageVelocity(int i, bool linear) const {
 	if (i >= size()-1) {   // there is no velocity after the last point
 		addWarning("averageVelocity(int): Attempt to get an averge velocity after the end of the Plan: "+Fm0(i));
 		return Velocity::INVALIDV();
@@ -2130,7 +2269,18 @@ Velocity Plan::averageVelocity(int i) const {
 		addWarning("averageVelocity(int): Attempt to get an average velocity before beginning of the Plan: "+Fm0(i));
 		return Velocity::INVALIDV();
 	}
-	return NavPoint::averageVelocity(points[i],points[i+1]);
+	Velocity v = NavPoint::averageVelocity(points[i],points[i+1]);
+
+	if (!linear) {
+		double dt = time(i+1) - time(i);
+		double gs = pathDistance(i)/dt;
+		v = v.mkGs(gs);
+	}
+	return v;
+}
+
+Velocity Plan::averageVelocity(int i) const {
+	return averageVelocity(i, true);
 }
 
 
@@ -2242,11 +2392,17 @@ bool Plan::mkGsIn(int ix, double gs) {
  * @return     revised plan
  */
 bool Plan::mkGsOut(int ix, double gs) {
-	if (ix >= size() - 1) return false;
-	double a = 0.0;
+	if (ix < 0 || ix >= size() - 1) return false;
+//	double a = 0.0;
 	double d = pathDistance(ix);
 	double dt;
-	if (Util::almost_equals(gs,0.0,PRECISION13)) {
+	double a = 0;
+	bool inGsAccel_b = inGsAccel(ix);
+	if (inGsAccel_b) {
+		int ixBGS = prevBGS(ix+1);
+		if (ixBGS >= 0) a = gsAccel(ixBGS);
+	}
+	if (Util::almost_equals(gs,0.0,PRECISION13) && a <= 0.0) {
 		if (Util::almost_equals(d,0.0,PRECISION13)) { // hover
 			dt = 0.0;
 			addWarning("mkGsOut: setting ground speed to zero on hover segment does not change segment time");
@@ -2254,9 +2410,9 @@ bool Plan::mkGsOut(int ix, double gs) {
 			dt = NaN;
 			addError("mkGsOut: setting ground speed to zero is impossible on non-zero lengthed segment");
 		}
-	} else if (inGsChange(points[ix].time())) {
-		int ixBGS = prevBGS(ix+1);
-		a = gsAccel(ixBGS);
+	} else if (inGsAccel_b) {
+		//int ixBGS = prevBGS(ix+1);
+		//double a = gsAccel(ixBGS);
 		dt = Util::root(0.5*a,gs,-d,1);
 	} else {
 		dt = d/gs;
@@ -2280,7 +2436,7 @@ void Plan::mkGsConstant(int wp1, int wp2, double gs) {
 	if (wp1 < 0) wp1 = 0;
 	if (wp2 >= size()) wp2 = size()-1;
 	if (wp1 >= wp2) return;
-	fixBGS_EGS(wp1,wp2,gs);
+	fixBGS_EGS(wp1,wp2);
 	for (int j = wp2-1; j >= wp1; j--) {
 		mkGsOut(j,gs);
 	}
@@ -2290,7 +2446,7 @@ void Plan::mkGsConstant(double gs) {
 	mkGsConstant(0, size()-1, gs);
 }
 
-void Plan::fixBGS_EGS(int wp1, int wp2, double gs) {
+void Plan::fixBGS_EGS(int wp1, int wp2) {
 	bool inGsChange1 = inGsChange(points[wp1].time());
 	bool inGsChange2 = inGsChange(points[wp2].time());
 	//f.pln(" $$ mkGsConstant: inGsChange1 = "+inGsChange1+" inGsChange2 = "+inGsChange2);
@@ -2521,7 +2677,9 @@ Position Plan::vertexFromTurnTcps(int ixBOT, int ixEOT, double altMid) const {
 
 NavPoint Plan::vertexPointTurnTcps(int ixBOT, int ixEOT, double altMid) const {
 	Position vertex = vertexFromTurnTcps(ixBOT, ixEOT, altMid);
-	double gsIn_d = gsIn(ixBOT);
+	double gsIn_d;
+	if (ixBOT == 0) gsIn_d = gsOut(ixBOT);
+	else gsIn_d = gsIn(ixBOT);
 	Position botPos = getPos(ixBOT);
 	double distToVertex = botPos.distanceH(vertex);
 	double gsAccel_d = 0.0;
@@ -2612,6 +2770,78 @@ void Plan::revertGsTCPs() {
 	}
 }
 
+void Plan::revertGsTCP(int ixBGS) {
+	//fpln(" $$ structRevertGsTCP: ENTER this = "+toStringTrk());
+	if (isBGS(ixBGS)) {
+		//fpln("\n\n $$$$>>>>>>>>>>>>>>>>>>>>>> structRevertGsTCP:  point("+Fm0(ixBGS)+") = "+point(ixBGS).toString());
+		int ixEGS = nextEGS(ixBGS);
+		//f.pln(" $$ structRevertGsTCP: ixBGS = "+ixBGS+" ixEGS = "+ixEGS);
+		if (ixEGS < 0) {
+			//f.pln(" $$$$---------------------- structRevertGsTCP : ERROR nextEGSix = "+nextEGSix);
+			addError(" structRevertGsTCP: Ill-formed BGS-EGS structure: no EGS found!");
+		}
+		// store sequence of ground speeds within BGS - EGS
+		double gsInBGS = gsIn(ixBGS);
+		double gsOutEGS = gsOut(ixEGS);
+		//f.pln(" $$$ structRevertGsTCP: gsOutEGS = "+Units.str("kn",gsOutEGS));
+		TcpData& tcpEGS= getTcpDataRef(ixEGS);
+		tcpEGS.clearEGS();
+		TcpData& tcpBGS= getTcpDataRef(ixBGS);
+		tcpBGS.clearBGS();
+		//if (!saveAccel) tcpBGS.setGsAccel(0.0);
+		std::string infoBGS = tcpBGS.getInformation();
+		if (contains(infoBGS,Plan::manualGsAccel)) { // leave gsAccel data in Point ixBGS
+			setInfo(ixBGS,replace(infoBGS,Plan::manualGsAccel,""));
+		} else {
+			tcpBGS.setGsAccel(0.0);
+		}
+		//fpln(" $$>>>>>>>>>>>>>>>>>> structRevertGsTCP: ixBGS = "+Fm0(ixBGS)+" this = "+toStringTrk());
+		if (Util::almost_equals(gsOutEGS,0.0,PRECISION5)) {
+			//fpln(" $$$ structRevertGsTCP: NEAR-0: gsOutEGS = "+Units::str("kn",gsOutEGS));
+			setGsAccel(ixBGS,tcpBGS.getGsAccel());
+			for (int i = ixBGS; i < ixEGS; i++) {
+				mkGsOut(i,gsInBGS);
+			}
+			std::string name = getName(ixBGS);
+			std::string info = getInfo(ixBGS)+getInfo(ixEGS);
+			setName(ixEGS,name);
+			setInfo(ixEGS,info);
+			setName(ixBGS,"");
+			setInfo(ixBGS,"");
+			removeIfVsConstant(ixBGS);
+		} else {
+			setGsAccel(ixBGS,tcpBGS.getGsAccel());
+			for (int i = ixBGS; i < ixEGS; i++) {
+				mkGsOut(i,gsOutEGS);
+			}
+			//f.pln(" $$$$ structRevertGsTCP: AT ixBGS = "+ixBGS+" make gsOutBGS = "+Units.str("kn",gsOutBGS));
+			bool trkF = true;
+			bool gsF = false;
+			bool vsF = true;
+			removeIfRedundant(ixEGS, trkF, gsF, vsF);
+			//f.pln(" $$$$ structRevertGsTCP: AT ixBGS = "+ixBGS+" make gsOut = gsOutEGS = "+Units.str("kn",gsOutEGS));
+		}
+	}
+}
+
+void Plan::crudeRevertGsTCP(int ixBGS) {
+	if (isBGS(ixBGS)) {
+		TcpData& tcpBGS = getTcpDataRef(ixBGS);
+		tcpBGS.clearBGS();
+		int ixEGS = nextEGS(ixBGS);
+		//f.pln(" $$>>>> structRevertGsTCP: ixBGS = "+ixBGS+" ixEGS = "+ixEGS);
+		if (ixEGS < 0)	return;
+		TcpData& tcpEGS = getTcpDataRef(ixEGS);
+		tcpEGS.clearEGS();
+		bool trkF = true;
+		bool gsF = false;
+		bool vsF = false;  // rely on AltPreserve
+		removeIfRedundant(ixEGS, trkF, gsF, vsF);
+	}
+
+}
+
+
 
 void Plan::revertVsTCPs() {
 	int start = 0;
@@ -2623,15 +2853,6 @@ void Plan::revertVsTCPs() {
 	for (int j = end; j >= start; j--) {
 		//fpln(" $$$ REVERT VS TCP at j = "+Fm0(j)+" np_ix = "+point(j).toString());
 		revertVsTCP(j);
-	}
-}
-
-void Plan::revertTurnTCPs() {
-	//f.pln(" $$$ revertGsTCPs start = "+start+" size = "+size());
-	for (int j = 0; j < size(); j++) {
-		//f.pln(" $$$ REVERT GS AT j = "+j+" np_ix = "+point(j));
-		bool killNextGsTCPs = false;
-		revertTurnTCP(j, killNextGsTCPs);
 	}
 }
 
@@ -2671,73 +2892,231 @@ void Plan::repairPlan() {
 		//f.pln(" $$$$ cleanPlan: "+name+" last point is in VS accel!!!");
 		getTcpDataRef(size()-1).setEVS();
 	}
+}
+
+// supply missing MOTs
+void Plan::repairMOTs() {
+	for (int i = 0; i < size(); i++) {
+		if (isBOT(i)) {
+			repairMOT(i);
+		}
+	}
+}
+
+/** supply missing MOTs
+ *
+ * @param ixBOT         index of a BOT
+ */
+void Plan::repairMOT(int ixBOT) {
+	int ixEOT = nextEOT(ixBOT);
+	if (ixEOT >= 0) {
+		int ixMOT = findMOT(ixBOT);
+		//f.pln(" $$$$ ixBOT = "+ixBOT+" ixMOT = "+ixMOT);
+		if (ixMOT < 0) {
+			double pathD = pathDistance(ixBOT,ixEOT);
+			double halfDist = pathD/2.0;
+			double tMOT = timeFromDistance(ixBOT, halfDist);
+			Position MOTpos = position(tMOT);
+			NavPoint MOT(MOTpos,tMOT);
+			ixMOT = addNavPoint(MOT);
+			setMOT(ixMOT);
+		}
+	}
+}
+
+
+
+void Plan::repairGsContinuity(int ixBGS, int ixEGS, double vo, double vf, double maxGsAccel) {
+	getMessage();   // clear previous error messages
+	double D = pathDistance(ixBGS,ixEGS);
+	if (D > 0) {
+		double delV = vf - vo;
+		double newT = 2*D/(vo+vf);
+		double newA = delV/newT;
+		if (std::abs(newA) > std::abs(maxGsAccel)) {
+			addError("fixGs_continuity: calculated gs acceleration exceeds maximum value a = "+Fm2(newA)+" maxGsAccel = "+Fm2(maxGsAccel));
+			//fpln("fixGs_continuity: calculated gs acceleration exceeds maximum value a = "+a+" maxGsAccel = "+maxGsAccel);
+		}
+		//f.pln(" $$ fixGs_continuity: a = "+a+" dt = "+dt);
+		setGsAccel(ixBGS,newA);
+		repairGsContInside(ixBGS,ixEGS,vo);
+	} else {
+		addWarning("Cannot fix continuity at ixBGS = "+Fm0(ixBGS)+" because D = "+Fm1(D));
+	}
+}
+
+void Plan::repairGsContinuity(int ixBGS, int ixEGS, double maxGsAccel) {
+	double gsIn_d;
+	if (ixBGS == 0) gsIn_d = gsOut(ixBGS);
+	else gsIn_d = gsIn(ixBGS);
+	double gsOut_d = gsOut(ixEGS);
+	//f.pln(" $$$$$ fixGs_continuity("+ixBGS+","+ixEGS+")): gsIn("+ixBGS+") = "+Units::str("kn",gsIn)+" gsOut("+ixEGS+")  = "+Units::str("kn",gsOut));
+	repairGsContinuity(ixBGS, ixEGS, gsIn_d, gsOut_d, maxGsAccel);
+}
+
+
+void Plan::repairGsContinuity(double maxGsAccel) {
+	for (int ii = 0; ii < size(); ii++) {
+		if (isBGS(ii)) {
+			int ixBGS = prevBGS(ii+1);
+			int ixEGS = nextEGS(ixBGS);
+			repairGsContinuity(ixBGS,ixEGS,maxGsAccel);
+		}
+	}
+}
+
+
+bool Plan::repairGsContInside(int ixBGS, int ixEGS, double v0) {
+	//f.pln(" $$$ fixGsContInside: ixBGS = "+ixBGS+" ixEGS = "+ixEGS);
+	double a = gsAccel(ixBGS);
+	bool rtn = true;
+	//f.pln("$$$$$>>> fixGsContInside:  ixBGS = "+ixBGS+" lastIxInGsAccel = "+lastIxInGsAccel);
+	double tBGS = time(ixBGS);
+	double gsOutEGS = gsOut(ixEGS);
+	if (ixEGS + 1 < size()) {
+		timeShiftPlan(ixEGS+1,1E10);
+	}
+	for (int j = ixBGS+1; j <= ixEGS; j++) {
+		double d_j = pathDistance(ixBGS,j);
+		double t_j = tBGS + Plan::timeFromDistance(v0, a, d_j);
+		if (ISNAN(t_j)) {
+			addError("fixGsContInside: timeFromDistance generated NAN");
+			//f.pln(" $$$$$$ PlanUtil.fixGsContInside: j = "+j+"  aBGS = "+a+" d_j = "+d_j+" t_j = "+t_j);
+			rtn = false;
+			//Debug.halt();
+		} else {
+			setTimeInPlace(j,t_j);
+			//fpln(" $$$ fixGsContInside: set time of j = "+j+" to "+t_j);
+		}
+	}
+	if (ixEGS+1 < size()) mkGsOut(ixEGS,gsOutEGS);                       // undo timeshift
+	return rtn; // success
 
 }
 
 
 /**
- * Structurally revert TCP at ix: (does not depend upon source time or
- * source position!!) This private method assumes ix &gt; 0 AND ix &lt;
- * pln.size(). If ix is not a BOT, then nothing is done
- *
- * @param ixBOT    index of point to be reverted
- * @param addBackMidPoints
- *            if addBackMidPoints = true, then if there are extra points
- *            between the BOT and EOT, make sure they are moved to the
- *            correct place in the new linear sections. Do this by distance
- *            not time.
- * @param killNextGsTCPs
- *            if true, then if there is a BGS-EGS pair after the turn (i.e. creat by TrajGen), then
- *            remove these points
- * @param zVertex
- *            if non-negative, then assigned reverted vertex this altitude
+ * Attempt to fix (gs) acceleration inconsistencies in this plan by adjusting accel values and/or point times.
+ * @return new plan with fixed inconsistencies, or null if unfixable.  This new plan may have warnings (informational, possibly not concerning) or errors (possibly concerning).
  */
-void Plan::revertTurnTCP(int ixBOT, bool killNextGsTCPs) {
-	if (!isBOT(ixBOT)) return;
-	//f.pln("\n\n $$$$$ structRevertTurnTCP: ixBOT = "+ixBOT+" isBOT = "+isBOT(ixBOT)+" "+killNextGsTCPs);
-	NavPoint BOT = point(ixBOT);
-	std::string name = "";
-	int ixMOT = -1;
-	if (TrajGen::vertexNameInBOT) {
-		name = BOT.name();
-	} else {
-		int ixEOT = nextEOT(ixBOT);
-		ixMOT = findMOT(ixBOT,ixEOT);
-		if (ixMOT >= 0) {                     // in the rare cases there is no MOT
-			NavPoint MOT = point(ixMOT);
-			name = MOT.name();
+ void Plan::repairGsConsistency() {
+	for (int i = 0; i < size(); i++) {
+			//p.repairGsInNeg(i);
+		if (isBGS(i)) repairGsConsistencyAt(i);
+		repairNegGsOut(i);
+		repairNegGsIn(i);
+	}
+	//mergeClosePoints();
+}
+
+ void Plan::repairGsConsistencyAt(int ixBGS) {
+	//f.pln(" $$ repairGsConsistencyAt: ENTER ixBGS = "+ixBGS);
+	if (ixBGS < 0 || ixBGS > size() || ! isBGS(ixBGS)) return;
+	int ixEGS = nextEGS(ixBGS);
+	if (ixEGS >= 0) {
+		if ( ! checkBGS(ixBGS)) {
+			double d = 	pathDistance(ixBGS,ixEGS);
+			double dt = time(ixEGS) - time(ixBGS);
+			double a = gsAccel(ixBGS);
+			double newAccel;
+			if (a >= 0) {
+				newAccel = 2*d/(dt*dt) - 1E-5;
+			} else {
+				newAccel = -2*d/(dt*dt) + 1E-5;
+			}
+			//f.pln(" $$>>>>>>>>>>>>>  repairGsConsistencyAt: at ixBGS = "+ixBGS+" CHANGE a = "+a+" TO    newAccel = "+newAccel);
+			setGsAccel(ixBGS,newAccel);
 		}
 	}
-	double radius = std::abs(getTcpData(ixBOT).getRadiusSigned());
-	int ixEOT = nextEOT(ixBOT);
-	double dist2Mid = pathDistance(ixBOT,ixEOT)/2.0;
-	//f.pln(" $$$ structRevertTurnTCP: ixBOT = "+ixBOT+" info = "+info+" dist2Mid = "+Units.str("ft",dist2Mid));
-	bool linear = false;
-	double tMid = timeFromDistance(ixBOT, dist2Mid);
-	//f.pln(" $$$ structRevertTurnTCP: timeFromDistance =  "+timeFromDistance(ixBOT, dist2Mid));
-	Position posMid = position(tMid);
-	double altMid = posMid.alt();
-	//double gsOutMid = velocity(tMid).gs();
-	NavPoint vertex = vertexPointTurnTcps(ixBOT,ixEOT,altMid).makeName(name);
+}
+
+
+/** Repair a negative GsIn value at ix
+ *
+ * @param ix
+ */
+ void Plan::repairNegGsIn(int ix) {
+	if (ix < 1 || ix >= size()) return;
+	if (gsFinalCalc(ix-1,false) >= 0) return;
+	double dist = pathDistance(ix-1, ix, false);
+	double dt = time(ix) - time(ix-1);
+	if (isBGS(ix-1)) {
+		double a = -2.0*dist / (dt * dt);
+		//f.pln(" $$ repairNegGsIn: gsInCalc("+ix+") = "+gsInCalc(ix)+" change a from "+getGsAccel(ix-1)+" TO a = "+a);
+		setGsAccel(ix-1,a);
+	} else {
+		int ixBGS = prevBGS(ix);
+		double a = getGsAccel(ixBGS);
+		//f.pln(" $$ repairNegGsIn: a = "+a+" dist = "+dist);
+		double newT = time(ix-1) + std::sqrt(2.0*dist/std::abs(a));
+		//f.pln(" $$ repairNegGsIn: gsInCalc("+ix+") = "+gsInCalc(ix)+" change time from "+time(ix)+" to "+newT);
+		setTime(ix,newT);
+	}
+}
+
+
+/** Repair a negative GsOut value at ix
+ *
+ * @param ix
+ */
+
+ void Plan::repairNegGsOut(int ix) {
+	if (ix < 1 || ix >= size()) return;
+	if (gsOutCalc(ix) < 0) {
+		int ixBGS = prevBGS(ix+1);
+		if (ixBGS >= 0) {
+			double a = getGsAccel(ixBGS);
+			double dist = pathDistance(ix, ix+1, false);
+			//f.pln(" $$ repairNegGsOut: a = "+a+" dist = "+dist);
+			double newT = time(ix) + std::sqrt(2.0*dist/std::abs(a));
+			//f.pln(" $$ repairNegGsOut: gsOutCalc("+ix+") = "+gsOutCalc(ix)+" change time("+(ix+1)+") from "+time(ix+1)+" to "+newT);
+			setTime(ix+1,newT);
+		}
+	}
+}
+
+
+
+
+
+ /**
+  * Structurally revert Turn TCP at ix. This method assumes ix &gt; 0 AND ix &lt;
+  * pln.size(). If ix is not a BOT, then nothing is done
+  *
+  * NOTE:  Assumes BGS_EGS and BVS-EVS TCPs have already been reverted
+  *
+  * @param ixBOT    index of point to be reverted
+  */
+ void Plan::revertTurnTCP(int ixBOT) { // , bool killNextGsTCPs) {
+	 if (!isBOT(ixBOT)) return;
+	 //f.pln("\n\n $$$$$ structRevertTurnTCP: ixBOT = "+ixBOT+" isBOT = "+isBOT(ixBOT)+" "+killNextGsTCPs);
+	 NavPoint BOT = point(ixBOT);
+	 std::string name = "";
+	 int ix_EOT = nextEOT(ixBOT);
+	 int ixMOT = findMOT(ixBOT,ix_EOT);
+	 if (ixMOT >= 0) {                     // in the rare cases there is no MOT
+		 NavPoint MOT = point(ixMOT);
+		 name = MOT.name();
+	 }
+	 double radius = std::abs(getTcpData(ixBOT).getRadiusSigned());
+	 int ixEOT = nextEOT(ixBOT);
+	 double dist2Mid = pathDistance(ixBOT,ixEOT)/2.0;
+	 //f.pln(" $$$ structRevertTurnTCP: ixBOT = "+ixBOT+" info = "+info+" dist2Mid = "+Units.str("ft",dist2Mid));
+	 bool linear = false;
+	 double tMid = timeFromDistance(ixBOT, dist2Mid);
+	 //f.pln(" $$$ structRevertTurnTCP: timeFromDistance =  "+timeFromDistance(ixBOT, dist2Mid));
+	 Position posMid = position(tMid);
+	 double altMid = posMid.alt();
+	 NavPoint vertex = vertexPointTurnTcps(ixBOT,ixEOT,altMid).makeName(name);
 	if (vertex.isInvalid()) {
 		fpln("$$$ structRevertTurnTCP: ixBOT = "+Fm0(ixBOT)+" calculated vertex is invalid!");
 	}
-	//ArrayList<Tuple5<Double,Double,Double,String,String>> distList = buildDistList(ixBOT, ixEOT, vertex.position());
 	double turnDist = pathDistance(ixBOT,ixEOT);
 	double vertexDist = point(ixBOT).position().distanceH(vertex.position()) + point(ixEOT).position().distanceH(vertex.position());
 	double ratio = vertexDist/turnDist;
 	Plan turnCut = cut(ixBOT,ixEOT);
 	//f.pln(" $$$$ turnCut = "+turnCut.toStringGs());
 	// ======================== No Changes To Plan Before This Point ================================
-	if (killNextGsTCPs && (ixEOT + 1 < size())) {  // remove BGS-EGS pair 1 sec after EOT (created by TrajGen)
-		int ixBGS = nextBGS(ixEOT);
-		if (ixBGS >= 0) {
-			int ixEGS = nextEGS(ixBGS);
-			//f.pln(" $$$$$ let's KILL TWO GS points AT  ixBGS ="+ixBGS+" and ixEGS = "+ixEGS);
-			remove(ixEGS);
-			remove(ixBGS);
-		}
-	}
 	// ========================= REMOVE all points between ixBOT and ixEOT =============================
     bool vertexShouldBeAltPreserve = false;
 	for (int k = ixEOT-1; k > ixBOT; k--) {  // remove (ixBOT,ixEOT)
@@ -2746,21 +3125,19 @@ void Plan::revertTurnTCP(int ixBOT, bool killNextGsTCPs) {
 		remove(k);
 	}
 	//f.pln(" $$$ name = "+name+" info = "+info);
+	timeShiftPlan(ixBOT+1,10000);                // this will be corrected later: revertedTurn.mkGsOut(i,gsOut_i)
 	int ixVert = addNavPoint(vertex);             // Need to add vertex so new distances can be calculated
-	//setInfo(ixVert,info);
 	std::string infoBOT = getInfo(ixBOT);
 	if (contains(infoBOT, Plan::manualRadius)) {
 	   setVertexRadius(ixVert, radius);              // Sets vertex radius
 	   setInfo(ixBOT,replace(infoBOT,Plan::manualRadius,""));
 	}
 	double lastTm = turnCut.time(0);
-	//f.pln(" $$$$ turnCut= "+turnCut.toStringGs());
 	Plan revertedTurn = Plan();
 	for (int i = 0; i < turnCut.size(); i++) {   // do not process EOT
 		double d_i = ratio*turnCut.pathDistance(0,i);
 		double alt_i = turnCut.alt(i);
-		//double gsOut_i = turnCut.gsOut(i);
-		std::string label_i = turnCut.point(i).name();
+		std::string name_i = turnCut.point(i).name();
 		std::string info_i = turnCut.getInfo(i);
 		//f.pln(" $$>>>>>> structRevertTurnTCP:  i = "+i+" info_i = "+info_i+" d_i = "+Units.str("NM",d_i));
 		if (turnCut.isMOT(i)) {
@@ -2773,7 +3150,7 @@ void Plan::revertTurnTCP(int ixBOT, bool killNextGsTCPs) {
 			std::pair<Position, int> adv = advanceDistance2D(ixBOT, d_i, linear);
 			Position pos_i = adv.first.mkAlt(alt_i);
 			//f.pln(" $$ structRevertTurnTCP: ADD i = "+i+" info_i = "+info_i);
-			NavPoint rev_i = NavPoint(pos_i,lastTm+100*i).makeName(label_i);
+			NavPoint rev_i = NavPoint(pos_i,lastTm+100*i).makeName(name_i);
 			revertedTurn.addNavPoint(rev_i);
 		}
 		revertedTurn.setInfo(i,info_i);
@@ -2796,7 +3173,6 @@ void Plan::revertTurnTCP(int ixBOT, bool killNextGsTCPs) {
 		//f.pln(" $$$ structRevertTurnTCP: ix = "+ix+" point(+"+j+") = "+revertedTurn.point(j));
 		setInfo(ix,revertedTurn.getInfo(j));
 		double gsOut_j = turnCut.gsOut(j);
-		//f.pln("^^^^^^^^^^^^^^^^ j = "+j+" gsOut_j = "+Units.str("kn",gsOut_j));
 		mkGsOut(ix,gsOut_j);
 		// save manual settings for GS and VS acceleration
 		double gsAccel_j = turnCut.getGsAccel(j);
@@ -2813,168 +3189,48 @@ void Plan::revertTurnTCP(int ixBOT, bool killNextGsTCPs) {
 	}
 	mergeClosePoints();
 	//f.pln(" $$$ structRevertTurnTCP: AFTER merge: this = "+this);
-
 }
 
-
-// will not remove first or last point
-void Plan::removeRedundantPoints(int from, int to) {
-	//	double velEpsilon = 1.0;
-	int ixLast = Util::min(size() - 2, to);
-	int ixFirst = Util::max(1, from);
-	for (int i = ixLast; i >= ixFirst; i--) {
-		removeIfRedundant(i);
+void Plan::revertTurnTCPs() {
+	//f.pln(" $$$ revertGsTCPs start = "+start+" size = "+size());
+	for (int j = 0; j < size(); j++) {
+		//bool killNextGsTCPs = false;
+		revertTurnTCP(j); // , killNextGsTCPs);
 	}
 }
 
-void Plan::removeRedundantPoints() {
-	removeRedundantPoints(0,200000000);           // MAX_INT ??  MAXINTEGER ??
-}
 
-int Plan::removeIfRedundant(int ix,  bool trkF, bool gsF, bool vsF) {
-	double minTrk = Units::from("deg",1.0);
-	double minGs = Units::from("kn",5.0);
-	double minVs = Units::from("fpm",100.0);
-	bool repair = true;
-	return removeIfRedundant(ix,trkF, gsF, vsF, minTrk, minGs, minVs, repair);
-}
-
-int Plan::removeIfRedundant(int ix,  bool trkF, bool gsF, bool vsF, double minTrk, double minGs, double minVs, bool repair) {
-	//fpln(" $$$$$ removeIfRedundant: ENTER ix = "+Fm0(ix)+" "+bool2str(isTCP(ix))+" "+bool2str(isAltPreserve(ix))+" info ="+getInfo(ix));
-	if (ix <= 0 || ix >= size()-1) return -1;   // should not remove first or last point
-	if (isTCP(ix)) return -1;
-	if (isAltPreserve(ix)) return -1;
-	if (isMOT(ix)) return -1;           // should not remove AltPreserve point
-	if (! larcfm::equals(getInfo(ix),"")) return -1;
-	if (! larcfm::equals(getPointName(ix),"")) return -1;
-	Velocity vin = finalVelocity(ix - 1);
-	Velocity vout = initialVelocity(ix);
-	double deltaTrk = Util::turnDelta(vin.trk(),vout.trk());
-	double deltaGs = std::abs(vin.gs()-vout.gs());
-	double deltaVs = std::abs(vin.vs()-vout.vs());
-	//fpln(" $$$$$ removeIfRedundant: ix = "+Fm0(ix)+" deltaTrk = "+Units::str("deg",deltaTrk)+" deltaGs ="+Units::str("kn",deltaGs)+" deltaVs = "+Units::str("fpm",deltaVs));
-	if (
-			( ! trkF || deltaTrk <= minTrk) &&
-			( ! gsF  || deltaGs <= minGs)   &&
-			( ! vsF  || deltaVs <= minVs)     ) {
-		if (repair) remove(ix);
-		return ix;
-	}
-	return -1;
-}
-
-
-
-int Plan::removeIfRedundant(int ix) {
-	bool trkF = true;
-	bool gsF = true;
-	bool vsF = false;
-	return removeIfRedundant(ix,trkF, gsF, vsF);
-}
-
-
-int Plan::removeIfVsConstant(int ix) {
-	bool trkF = true;
-	bool gsF = false;
-	bool vsF = true;
-	return removeIfRedundant(ix,trkF, gsF, vsF);
-}
-
-
-void Plan::revertGsTCP(int ixBGS) {
-	//fpln(" $$ structRevertGsTCP: ENTER this = "+toStringTrk());
-	if (isBGS(ixBGS)) {
-		//fpln("\n\n $$$$>>>>>>>>>>>>>>>>>>>>>> structRevertGsTCP:  point("+Fm0(ixBGS)+") = "+point(ixBGS).toString());
-		int ixEGS = nextEGS(ixBGS);
-		//f.pln(" $$ structRevertGsTCP: ixBGS = "+ixBGS+" ixEGS = "+ixEGS);
-		if (ixEGS < 0) {
-			//f.pln(" $$$$---------------------- structRevertGsTCP : ERROR nextEGSix = "+nextEGSix);
-			addError(" structRevertGsTCP: Ill-formed BGS-EGS structure: no EGS found!");
-		}
-		// store sequence of ground speeds within BGS - EGS
-		double gsInBGS = gsIn(ixBGS);
-		double gsOutEGS = gsOut(ixEGS);
-		//f.pln(" $$$ structRevertGsTCP: gsOutEGS = "+Units.str("kn",gsOutEGS));
-		TcpData& tcpEGS= getTcpDataRef(ixEGS);
-		tcpEGS.clearEGS();
-		TcpData& tcpBGS= getTcpDataRef(ixBGS);
-		tcpBGS.clearBGS();
-		//if (!saveAccel) tcpBGS.setGsAccel(0.0);
-		std::string infoBGS = tcpBGS.getInformation();
-		if (contains(infoBGS,Plan::manualGsAccel)) { // leave gsAccel data in Point ixBGS
-			setInfo(ixBGS,replace(infoBGS,Plan::manualGsAccel,""));
-		} else {
-			tcpBGS.setGsAccel(0.0);
-		}
-		//fpln(" $$>>>>>>>>>>>>>>>>>> structRevertGsTCP: ixBGS = "+Fm0(ixBGS)+" this = "+toStringTrk());
-		if (Util::almost_equals(gsOutEGS,0.0,PRECISION5)) {
-			//fpln(" $$$ structRevertGsTCP: NEAR-0: gsOutEGS = "+Units::str("kn",gsOutEGS));
-			setGsAccel(ixBGS,tcpBGS.getGsAccel());
-			for (int i = ixBGS; i < ixEGS; i++) {
-				mkGsOut(i,gsInBGS);
-			}
-			std::string name = getPointName(ixBGS);
-			std::string info = getInfo(ixBGS)+getInfo(ixEGS);
-			setPointName(ixEGS,name);
-			setInfo(ixEGS,info);
-			setPointName(ixBGS,"");
-			setInfo(ixBGS,"");
-			removeIfVsConstant(ixBGS);
-		} else {
-			setGsAccel(ixBGS,tcpBGS.getGsAccel());
-			for (int i = ixBGS; i < ixEGS; i++) {
-				mkGsOut(i,gsOutEGS);
-			}
-			//f.pln(" $$$$ structRevertGsTCP: AT ixBGS = "+ixBGS+" make gsOutBGS = "+Units.str("kn",gsOutBGS));
-			bool trkF = true;
-			bool gsF = false;
-			bool vsF = true;
-			removeIfRedundant(ixEGS, trkF, gsF, vsF);
-			//f.pln(" $$$$ structRevertGsTCP: AT ixBGS = "+ixBGS+" make gsOut = gsOutEGS = "+Units.str("kn",gsOutEGS));
-		}
-	}
-}
-
-void Plan::crudeRevertGsTCP(int ixBGS) {
-	if (isBGS(ixBGS)) {
-		TcpData& tcpBGS = getTcpDataRef(ixBGS);
-		tcpBGS.clearBGS();
-		int ixEGS = nextEGS(ixBGS);
-		//f.pln(" $$>>>> structRevertGsTCP: ixBGS = "+ixBGS+" ixEGS = "+ixEGS);
-		if (ixEGS < 0)	return;
-		TcpData& tcpEGS = getTcpDataRef(ixEGS);
-		tcpEGS.clearEGS();
-		bool trkF = true;
-		bool gsF = false;
-		bool vsF = false;  // rely on AltPreserve
-		removeIfRedundant(ixEGS, trkF, gsF, vsF);
-	}
-
-}
 
 // assumes ix > 0 AND ix < size()
-double Plan::revertVsTCP(int ixBVS) {
+int Plan::revertVsTCP(int ixBVS) {
 	if (isBVS(ixBVS)) {
-		//fpln(" $$ structRevertVsTCP: ENTER ixBVS = "+Fm0(ixBVS)+" this = "+toStringVs());
+		//fpln(" $$ revertVsTCP: ENTER ixBVS = "+Fm0(ixBVS)+" this = "+toStringVs());
 		NavPoint BVS = point(ixBVS);
 		int ixEVS = nextEVS(ixBVS);
 		if (ixEVS < 0) {
-			addError(" $$$ structRevertVsTCP: Plan "+getName()+" is not well-formed at ix = "+Fm0(ixBVS));
+			addError(" $$$ revertVsTCP: Plan "+getID()+" is not well-formed at ix = "+Fm0(ixBVS));
 			return ixBVS;
 		}
 		NavPoint EVS = point(ixEVS);
-		double vsout = vsOut(ixBVS);
+		double vsin;
+		if (ixBVS == 0) vsin = vsOut(ixBVS);
+		else vsin = vsIn(ixBVS);
 		double dt = EVS.time() - BVS.time();
 		double tVertex = BVS.time() + dt/2.0;
-		double zVertex = BVS.z() + vsout*dt/2.0;
+		double zVertex = BVS.z() + vsin*dt/2.0;
 		Position pVertex = position(tVertex);
 		std::string info = getInfo(ixBVS)+getInfo(ixEVS); // NOTE: ATS sometimes puts $TOD in EVS rather than BVS
-		std::string label = point(ixBVS).name();
-		if (ixEVS == size()-1) {
-			if (label=="") label = getPointName(ixEVS);
+		std::string name = point(ixBVS).name();
+		if (ixEVS == size()-1) {       // if BVS name is empty, use name in EVS
+			if (name=="") {           // move name of BVS/EVS to reverted point
+				name = getName(ixEVS);
+				setName(ixEVS,"");
+			} else {
+				setName(ixBVS,"");
+			}
 		}
-		NavPoint vertex = NavPoint(pVertex.mkAlt(zVertex), tVertex).makeName(label);
-		//fpln(" $$$$ structRevertVsTCP: ixBVS = "+Fm0(ixBVS)+" vertex = "+vertex.toString()+" info = "+info);
+		NavPoint vertex = NavPoint(pVertex.mkAlt(zVertex), tVertex).makeName(name);
+		//fpln(" $$$$ revertVsTCP: ixBVS = "+Fm0(ixBVS)+" vertex = "+vertex.toString()+" info = "+info);
 		for (int j = ixBVS+1; j < ixEVS; j++) {
 			double t = time(j);
 			double newAlt;
@@ -2988,7 +3244,7 @@ double Plan::revertVsTCP(int ixBVS) {
 			set(j,np_j,tcp_j);
 		}
 		std::string infoBVS = getInfo(ixBVS);
-		//fpln(" $$$$ structRevertVsTCP: ixBVS = "+Fm0(ixBVS)+" infoBVS = "+infoBVS);
+		//fpln(" $$$$ revertVsTCP: ixBVS = "+Fm0(ixBVS)+" infoBVS = "+infoBVS);
 		double vsAccel_bvs;
 		if (contains(infoBVS,Plan::manualVsAccel)) {
 			//setInfo(ixBVS,replace(infoBVS,Plan::manualVsAccel,""));
@@ -2996,7 +3252,7 @@ double Plan::revertVsTCP(int ixBVS) {
 		} else {
 			vsAccel_bvs = 0;
 		}
-		//fpln(" $$$$ structRevertVsTCP: ixBVS = "+Fm0(ixBVS)+" vsAccel_bvs = "+Fm2(vsAccel_bvs));
+		//fpln(" $$$$ revertVsTCP: ixBVS = "+Fm0(ixBVS)+" vsAccel_bvs = "+Fm2(vsAccel_bvs));
 		getTcpDataRef(ixBVS).clearBVS();
 		clearName(ixBVS);
 		clearInfo(ixBVS);
@@ -3004,17 +3260,36 @@ double Plan::revertVsTCP(int ixBVS) {
 		removeIfRedundant(ixEVS);
 		removeIfRedundant(ixBVS);
 		int ixVertex = addNavPoint(vertex);
-		//fpln(" $$$$ structRevertVsTCP: APPEND at ixVertex = "+Fm0(ixVertex)+" info = "+info);
+		//fpln(" $$$$ revertVsTCP: APPEND at ixVertex = "+Fm0(ixVertex)+" info = "+info);
 		appendInfo(ixVertex,replace(info,Plan::manualVsAccel,""));
 		setAltPreserve(ixVertex);
-		//fpln(" $$$$ structRevertVsTCP: ixVertex = "+Fm0(ixVertex)+" vsAccel_bvs = "+Fm2(vsAccel_bvs));
+		//fpln(" $$$$ revertVsTCP: ixVertex = "+Fm0(ixVertex)+" vsAccel_bvs = "+Fm2(vsAccel_bvs));
 		setVsAccel(ixBVS,vsAccel_bvs);   // save old vsAccel in linear plan
 		mergeClosePoints();
-		//fpln(" $$$$ structRevertVsTCP: EXIT "+toStringGs());
-		return zVertex;
+		//fpln(" $$$$ revertVsTCP: EXIT "+toStringGs());
+		return ixVertex;
 	}
 	return -1;
 }
+
+double Plan::inferredVsIn(int ixBVS) {
+	double vin = 0.0;
+	if (isBVS(ixBVS)) {
+         double a = vsAccel(ixBVS);
+         int ixEVS = nextEVS(ixBVS);
+         if (ixEVS >= 0) {
+     		double dz = alt(ixEVS) - alt(ixBVS);
+     		double dt = time(ixEVS) - time(ixBVS);
+            vin = (dz - 0.5*a*dt*dt)/dt;
+         } else {
+		     addError("inferedVsIn: attempted on an inconsistent plan");
+         }
+	} else {
+	     addError("inferedVsIn: attempt on non BVS point!");
+	}
+	return vin;
+}
+
 
 double Plan::interpolateAlts(double t, double t1, double alt1, double t2, double alt2) {
 	if (t2 <= t1) return -1;
@@ -3027,8 +3302,64 @@ double Plan::interpolateAlts(double t, double t1, double alt1, double t2, double
 }
 
 
+std::pair<int,std::string> Plan::wellFormed(bool strongMOT) const{
+	if (size() < 2) return std::pair<int,std::string>(0,"Plan must have at least two points!");
+	double lastTm = -1;
+	for (int i = 0; i < size(); i++) {
+		NavPoint np = point(i);
+		if (isBOT(i)) {
+			int j1 = nextBOT(i);
+			int j2 = nextEOT(i);
+			if (j2 < 0 || (j1 > 0 && j1 < j2)) return std::pair<int,std::string>(i, "BOT at i "+Fm0(i)+" NOT FOLLOWED BY EOT!");
+			int ixMOT = findMOT(i);
+			if (ixMOT < 0 || ixMOT >= j2)
+				return std::pair<int,std::string>(i, " NO MOT IN TURN in turn at i = "+Fm0(i)+"!");
+			else if (strongMOT && ! isMOT(ixMOT)) return std::pair<int,std::string>(i, "at i = "+Fm0(i)+" midPoint inside [BOT,EOT] not marked as MOT");
+		}
+		if (isEOT(i)) {
+			int j1 = prevBOT(i);
+			int j2 = prevEOT(i);
+			if (!(j1 >= 0 && j1 >= j2)) return std::pair<int,std::string>(i, "EOT at i "+Fm0(i)+" NOT PRECEEDED BY BOT!");
+		}
+		if (isBGS(i)) {
+			int j1 = nextBGS(i);
+			int j2 = nextEGS(i);
+			if (j2 < 0 || (j1 > 0 && j1 < j2)) return std::pair<int,std::string>(i, "BGS at i "+Fm0(i)+" NOT FOLLOWED BY EGS!");
+		}
+		if (isEGS(i)) {
+			int j1 = prevBGS(i);
+			int j2 = prevEGS(i);
+			if (!(j1 >= 0 && j1 >= j2)) return std::pair<int,std::string>(i, "EGS at i "+Fm0(i)+" NOT PRECEEDED BY BGS!");
+		}
+		if (isBVS(i)) {
+			int j1 = nextBVS(i);
+			int j2 = nextEVS(i);
+			if (j2 < 0 || (j1 > 0 && j1 < j2)) return std::pair<int,std::string>(i, "BVS at i "+Fm0(i)+" NOT FOLLOWED BY EVS!");
+		}
+		if (isEVS(i)) {
+			int j1 = prevBVS(i);
+			int j2 = prevEVS(i);
+			if (!(j1 >= 0 && j1 >= j2)) return std::pair<int,std::string>(i, "EVS at i "+Fm0(i)+" NOT PRECEEDED BY BVS!");
+		}
+		double tm_i = time(i);
+		if (i > 0) {
+			if (time(i) <= time(i-1)) {
+				return std::pair<int,std::string>(i, "Point times at i = "+Fm0(i)+" are out of order!");
+			}
+			double dt = std::abs(tm_i-lastTm);
+			if (dt < minDt) {
+				return std::pair<int,std::string>(i, "Delta time into i = "+Fm0(i)+" is less than minDt = "+Fm12(minDt));
+			}
+			lastTm = tm_i;
+		}
+	}
+	return std::pair<int,std::string>(-1, "");
+
+
+}
+
 bool Plan::isWellFormed() const {
-	if (size() == 0) return true;
+	//if (size() == 0) return true;
 	return indexWellFormed() < 0;
 }
 
@@ -3038,56 +3369,60 @@ bool Plan::isWellFormed() const {
  * Returns a nonnegative value to indicate the problem point
  */
 int Plan::indexWellFormed() const {
-	if (size() < 2) return 0;
-	double lastTm = -1;
-	for (int i = 0; i < size(); i++) {
-		NavPoint np = point(i);
-		if (isBOT(i)) {
-			int j1 = nextBOT(i);
-			int j2 = nextEOT(i);
-			if (j2 < 0 || (j1 > 0 && j1 < j2)) return i;
-			int ixMOT = findMOT(i);
-			if (ixMOT < 0 || ixMOT >= j2) return i;
-		}
-		if (isEOT(i)) {
-			int j1 = prevBOT(i);
-			int j2 = prevEOT(i);
-			if (!(j1 >= 0 && j1 >= j2)) return i;
-		}
-		if (isBGS(i)) {
-			int j1 = nextBGS(i);
-			int j2 = nextEGS(i);
-			if (j2 < 0 || (j1 > 0 && j1 < j2)) return i;
-		}
-		if (isEGS(i)) {
-			int j1 = prevBGS(i);
-			int j2 = prevEGS(i);
-			if (!(j1 >= 0 && j1 >= j2)) return i;
-		}
-		if (isBVS(i)) {
-			int j1 = nextBVS(i);
-			int j2 = nextEVS(i);
-			if (j2 < 0 || (j1 > 0 && j1 < j2)) return i;
-		}
-		if (isEVS(i)) {
-			int j1 = prevBVS(i);
-			int j2 = prevEVS(i);
-			if (!(j1 >= 0 && j1 >= j2)) return i;
-		}
-		double tm_i = time(i);
-		if (i > 0) {
-			double dt = std::abs(tm_i-lastTm);
-			if (dt < minDt) {
-				fpln("$$ isWellFormed: Delta time into i = "+Fm0(i)+" is less than minDt = "+Fm8(minDt));
-				return i;
-			}
-			lastTm = tm_i;
-		}
-
-
-	}
-	return -1;
+	bool strongMOT = false;
+	return wellFormed(strongMOT).first;
 }
+
+//	if (size() < 2) return 0;
+//	double lastTm = -1;
+//	for (int i = 0; i < size(); i++) {
+//		NavPoint np = point(i);
+//		if (isBOT(i)) {
+//			int j1 = nextBOT(i);
+//			int j2 = nextEOT(i);
+//			if (j2 < 0 || (j1 > 0 && j1 < j2)) return i;
+//			int ixMOT = findMOT(i);
+//			if (ixMOT < 0 || ixMOT >= j2) return i;
+//		}
+//		if (isEOT(i)) {
+//			int j1 = prevBOT(i);
+//			int j2 = prevEOT(i);
+//			if (!(j1 >= 0 && j1 >= j2)) return i;
+//		}
+//		if (isBGS(i)) {
+//			int j1 = nextBGS(i);
+//			int j2 = nextEGS(i);
+//			if (j2 < 0 || (j1 > 0 && j1 < j2)) return i;
+//		}
+//		if (isEGS(i)) {
+//			int j1 = prevBGS(i);
+//			int j2 = prevEGS(i);
+//			if (!(j1 >= 0 && j1 >= j2)) return i;
+//		}
+//		if (isBVS(i)) {
+//			int j1 = nextBVS(i);
+//			int j2 = nextEVS(i);
+//			if (j2 < 0 || (j1 > 0 && j1 < j2)) return i;
+//		}
+//		if (isEVS(i)) {
+//			int j1 = prevBVS(i);
+//			int j2 = prevEVS(i);
+//			if (!(j1 >= 0 && j1 >= j2)) return i;
+//		}
+//		double tm_i = time(i);
+//		if (i > 0) {
+//			double dt = std::abs(tm_i-lastTm);
+//			if (dt < minDt) {
+//				fpln("$$ isWellFormed: Delta time into i = "+Fm0(i)+" is less than minDt = "+Fm8(minDt));
+//				return i;
+//			}
+//			lastTm = tm_i;
+//		}
+//
+//
+//	}
+//	return -1;
+//}
 
 
 /**
@@ -3095,50 +3430,66 @@ int Plan::indexWellFormed() const {
  * "well formed", i.e. all acceleration zones have a matching beginning and end point.
  */
 std::string Plan::strWellFormed() const {
-	std::string rtn = "";
-	for (int i = 0; i < size(); i++) {
-		NavPoint np = point(i);
-		// not well formed if GSC overlaps with other accel zones
-		//			if ((isTurn() || isVSC()) && inGroundSpeedChange(np.time())) rtn = false;
-		//			if (isGSC() && (inTurn(np.time()) || inVerticalSpeedChange(np.time()))) rtn = false;
-		if (isBOT(i)) {
-			int j1 = nextBOT(i);
-			int j2 = nextEOT(i);
-			if (j2 < 0 || (j1 > 0 && j1 < j2)) return "BOT at i "+Fm0(i)+" NOT FOLLOWED BY EOT!";
-		}
-		if (isEOT(i)) {
-			int j1 = prevBOT(i);
-			int j2 = prevEOT(i);
-			if (!(j1 >= 0 && j1 >= j2)) return "EOT at i "+Fm0(i)+" NOT PRECEEDED BY BOT!";
-		}
-		if (isBGS(i)) {
-			int j1 = nextBGS(i);
-			int j2 = nextEGS(i);
-			if (j2 < 0 || (j1 > 0 && j1 < j2)) return "BGS at i "+Fm0(i)+" NOT FOLLOWED BY EGS!";
-		}
-		if (isEGS(i)) {
-			int j1 = prevBGS(i);
-			int j2 = prevEGS(i);
-			if (!(j1 >= 0 && j1 >= j2)) return "EGS at i "+Fm0(i)+" NOT PRECEEDED BY BGS!";
-		}
-		if (isBVS(i)) {
-			int j1 = nextBVS(i);
-			int j2 = nextEVS(i);
-			if (j2 < 0 || (j1 > 0 && j1 < j2)) return "BVS at i "+Fm0(i)+" NOT FOLLOWED BY EVS!";
-		}
-		if (isEVS(i)) {
-			int j1 = prevBVS(i);
-			int j2 = prevEVS(i);
-			if (!(j1 >= 0 && j1 >= j2)) return "EVS at i "+Fm0(i)+" NOT PRECEEDED BY BVS!";
-		}
+	bool strongMOT = true;
+	return wellFormed(strongMOT).second;
 
-		if (inGsChange(np.time()) && inTrkChange(np.time())) {
-			rtn = rtn + "  Overlap FAIL at i = "+Fm0(i);
-		}
-		//			fpln(" isWellFormed: i = "+i+" OK");e
-	}
-	return rtn;
 }
+//	std::string rtn = "";
+//	double lastTm = -1;
+//	for (int i = 0; i < size(); i++) {
+//		NavPoint np = point(i);
+//		// not well formed if GSC overlaps with other accel zones
+//		//			if ((isTurn() || isVSC()) && inGroundSpeedChange(np.time())) rtn = false;
+//		//			if (isGSC() && (inTurn(np.time()) || inVerticalSpeedChange(np.time()))) rtn = false;
+//		if (isBOT(i)) {
+//			int j1 = nextBOT(i);
+//			int j2 = nextEOT(i);
+//			if (j2 < 0 || (j1 > 0 && j1 < j2)) return "BOT at i "+Fm0(i)+" NOT FOLLOWED BY EOT!";
+//			int ixMOT = findMOT(i);
+//			if (ixMOT < 0 || ixMOT >= j2)
+//				return " NO MOT IN TURN in turn at i = "+Fm0(i)+"!";
+//			else if (! isMOT(ixMOT)) return "at i = "+Fm0(i)+" midPoint inside [BOT,EOT] not marked as MOT";
+//		}
+//		if (isEOT(i)) {
+//			int j1 = prevBOT(i);
+//			int j2 = prevEOT(i);
+//			if (!(j1 >= 0 && j1 >= j2)) return "EOT at i "+Fm0(i)+" NOT PRECEEDED BY BOT!";
+//		}
+//		if (isBGS(i)) {
+//			int j1 = nextBGS(i);
+//			int j2 = nextEGS(i);
+//			if (j2 < 0 || (j1 > 0 && j1 < j2)) return "BGS at i "+Fm0(i)+" NOT FOLLOWED BY EGS!";
+//		}
+//		if (isEGS(i)) {
+//			int j1 = prevBGS(i);
+//			int j2 = prevEGS(i);
+//			if (!(j1 >= 0 && j1 >= j2)) return "EGS at i "+Fm0(i)+" NOT PRECEEDED BY BGS!";
+//		}
+//		if (isBVS(i)) {
+//			int j1 = nextBVS(i);
+//			int j2 = nextEVS(i);
+//			if (j2 < 0 || (j1 > 0 && j1 < j2)) return "BVS at i "+Fm0(i)+" NOT FOLLOWED BY EVS!";
+//		}
+//		if (isEVS(i)) {
+//			int j1 = prevBVS(i);
+//			int j2 = prevEVS(i);
+//			if (!(j1 >= 0 && j1 >= j2)) return "EVS at i "+Fm0(i)+" NOT PRECEEDED BY BVS!";
+//		}
+//
+////		if (inGsChange(np.time()) && inTrkChange(np.time())) {
+////			rtn = rtn + "  Overlap FAIL at i = "+Fm0(i);
+////		}
+//		double tm_i = time(i);
+//		if (i > 0) {
+//			double dt = std::abs(tm_i-lastTm);
+//			if (dt < minDt) {
+//				return "Delta time into i = "+Fm0(i)+" is less than minDt = "+Fm12(minDt);
+//			}
+//			lastTm = tm_i;
+//		}
+//	}
+//	return rtn;
+//}
 
 int Plan::findBot(int i) const {
 	if (inTrkChange(point(i).time())) {
@@ -3154,37 +3505,85 @@ bool Plan::isGsConsistent(int ix, double distEpsilon, bool silent, double nearZe
 	double gsOut_ix = gsOutCalc(ix,linear);
 	if (gsOut_ix < -nearZeroGsValue ) {
 		if ( ! silent) {
-			fpln(" >>> isGsConsistent"+getName()+": GS NEGATIVE! at i = "+Fm0(ix)+" gsOut = "+Units::str("kn",gsOut_ix));
+			fpln(" >>> isGsConsistent"+getID()+": GS NEGATIVE! gsOut ("+Fm0(ix)+") = "+Units::str("kn",gsOut_ix));
 		}
 		return false;
 	}
 	if (ix > 0) {
-		double gsFinal_ixM1 = gsFinalCalc(ix-1,linear);
+		double gsFinal_ix = gsInCalc(ix);
 		//f.pln(" $$ isGsConsistent: at i = "+ixBGS+" gsIn = "+Units.str("kn",gsFinal_ixM1,15));
-		if (gsFinal_ixM1 < -nearZeroGsValue) {
-			if ( ! silent ) fpln(" >>> isGsConsistent"+getName()+": GS NEGATIVE! at i = "+Fm0(ix)+" gsIn = "+Units::str("kn",gsFinal_ixM1,15));
+		if (gsFinal_ix < -nearZeroGsValue) {
+			if ( ! silent ) fpln(" >>> isGsConsistent"+getID()+": GS NEGATIVE! gsIn("+Fm0(ix-1)+") = "+Units::str("kn",gsFinal_ix,15));
 			return false;
 		}
 	}
 	if ( ! isBGS(ix))  return true;
-	NavPoint BGS = point(ix);
-	int ixEGS = nextEGS(ix);
-	if (ixEGS < 0) return false; // plan not well-formed
-	NavPoint EGS = point(ixEGS);
-	double gsOutBGS = gsOut(ix);
 	bool rtn = true;
-	double dt = EGS.time() - BGS.time();
-	double aBGS = gsAccel(ix);
-	double ds = gsOutBGS*dt + 0.5*aBGS*dt*dt;
-	double distH = 	pathDistance(ix,ixEGS);
-	double absDiff = std::abs(ds-distH);
-	if (absDiff > distEpsilon) {
-		if (!silent) {
-			fpln(" >>> isConsistent"+getName()+": GS FAIL! at i = "+Fm0(ix)+" GSC section fails test! difference = "+Units::str("ft",absDiff,8));
+	if (newConsistencyAlg) {
+		rtn = checkBGS(ix,silent);		//f.pln(" $$$$$$$$$$$$$$$$$$$ isGsConsistent: rtn = "+rtn);
+	} else  {
+		NavPoint BGS = point(ix);
+		int ixEGS = nextEGS(ix);
+		if (ixEGS < 0) {
+			if ( ! silent ) fpln(" >>> isGsConsistent("+getID()+"): ix = "+Fm0(ix)+" ixEGS = "+Fm0(ixEGS));
+			return false; // plan not well-formed
 		}
-		rtn = false;
+		NavPoint EGS = point(ixEGS);
+		double gsOutBGS = gsOut(ix);
+		rtn = true;
+		double dt = EGS.time() - BGS.time();
+		double aBGS = gsAccel(ix);
+		double ds = gsOutBGS*dt + 0.5*aBGS*dt*dt;
+		double distH = 	pathDistance(ix,ixEGS);
+		double absDiff = std::abs(ds-distH);
+		if (absDiff > distEpsilon) {
+			if (!silent) {
+				fpln(" >>> isConsistent"+getID()+": GS FAIL! at i = "+Fm0(ix)+" GSC section fails test! difference = "+Units::str("ft",absDiff,8));
+			}
+			rtn = false;
+		}
 	}
 	return rtn;
+}
+
+bool Plan::checkBGS(int ixBGS) const {
+    return checkBGS(ixBGS,true);
+}
+
+bool Plan::checkBGS(int ixBGS, bool silent) const {
+	bool ok = true;
+	int ixEGS = nextEGS(ixBGS);
+	if (ixEGS >= 0) {
+		double dt = time(ixEGS) - time(ixBGS);
+		double d = 	pathDistance(ixBGS,ixEGS);
+		double a = gsAccel(ixBGS);
+        // need v0 = d/t - 0.5*a*t >= 0 and vf = d/t + 0.5*a*t>= 0
+		double epsilon = 1E-7;  // for floating point errors
+		if (a >= 0) {
+			ok = d*(1+epsilon) + epsilon/100.0 > 0.5*a*dt*dt;
+		} else {
+			ok = d*(1+epsilon) + epsilon/100.0 > -0.5*a*dt*dt;
+		}
+		if (!ok && ! silent ) {
+			fpln(" >>> isGsConsistent("+getID()+"): GS FAIL! at i = "+Fm0(ixBGS)+" GSC section fails for a = "+Fm1(a)+" d = "+Fm1(d)+" >??  0.5*|a|*dt*dt = "+Fm1(0.5*std::abs(a)*dt*dt));
+		}
+		//f.pln(" $$$$$$ checkBGS: ixBGS = "+ixBGS+" dt = "+dt+" a = "+a+" d = "+d+" >??  0.5*|a|*dt*dt = "+(0.5*Math.abs(a)*dt*dt)+" ok = "+ok);
+	}
+    return ok;
+}
+
+
+/**
+ * This returns true if the entire plan produces reasonable accelerations.
+ * If the plan has instantaneous "jumps," it is not consistent.
+ * @param silent use true to ensure limited console messages
+ * @return true if consistent
+ */
+bool Plan::isGsConsistent(bool silent) {
+	for (int i = 0; i < size(); i++) {
+	   if (!isGsConsistent(i, 0.001, silent, nearlyZeroGs)) return false;
+	}
+	return true;
 }
 
 
@@ -3203,7 +3602,7 @@ bool Plan::isVsConsistent(int ix, double distEpsilon, bool silent) const {
 	double absDiff = std::abs(ds-deltaAlt);
 	if (absDiff > distEpsilon) {
 		if ( ! silent) {
-			fpln(" >>> isVsConsistent"+getName()+": VS FAIL!  at i = "+Fm0(ix)+" VSC Section fails Test! absDiff = "+Units::str("ft",absDiff,8));
+			fpln(" >>> isVsConsistent"+getID()+": VS FAIL!  at i = "+Fm0(ix)+" VSC Section fails Test! absDiff = "+Units::str("ft",absDiff,8));
 		}
 		return false;
 	}
@@ -3219,7 +3618,7 @@ bool Plan::isTurnConsistent(int i, double distH_Epsilon, bool silent) const {
 	bool rtn = true;
 	Position center = turnCenter(ixBOT);
 	if (center.isInvalid()) {
-		if ( ! silent) fpln(" >>> isTurnConsistent"+getName()+": "+getName()+" at i = +"+Fm0(i)+" turn center is invalid!");
+		if ( ! silent) fpln(" >>> isTurnConsistent"+getID()+": "+getID()+" at i = +"+Fm0(i)+" turn center is invalid!");
 		rtn = false;
 	} else {
 		//double turnRadius = p.getTcpData(ixBOT).turnRadius(); // unsigned radius
@@ -3231,14 +3630,14 @@ bool Plan::isTurnConsistent(int i, double distH_Epsilon, bool silent) const {
 			double distanceFromCenter = point(ix).position().distanceH(center);
 			if (std::abs(distanceFromCenter - calcRadius) > distH_Epsilon) {
 				if ( ! silent) {
-					fpln(" >>> isTurnConsistent: "+getName()+" POINT OFF CIRCLE at ix = "+Fmi(ix)+" deltaRadius = "+Units::str("NM",(distanceFromCenter - calcRadius)));
+					fpln(" >>> isTurnConsistent: "+getID()+" POINT OFF CIRCLE at ix = "+Fmi(ix)+" deltaRadius = "+Units::str("NM",(distanceFromCenter - calcRadius)));
 				}
 				rtn = false;
 			}
 		}
 		if (!containsMOTflag) {
 			if ( ! silent) {
-				fpln(" >>> isTurnConsistent: WARNING "+getName()+" does not have MOT flag in turn at "+Fm0(ixBOT));
+				fpln(" >>> isTurnConsistent: WARNING "+getID()+" does not have MOT in turn at "+Fm0(ixBOT));
 				//rtn = false;
 			}
 		}
@@ -3270,9 +3669,9 @@ bool Plan::isVsConsistent(bool silent) const {
 	bool rtn = true;
 	if (!isWellFormed()) {
 		if (!silent) {
-			fpln("  >>> isConsistent"+getName()+": FAIL! not WellFormed!! " + strWellFormed());
+			fpln("  >>> isConsistent"+getID()+": FAIL! not WellFormed!! " + strWellFormed());
 		}
-		error.addError("  >>> isConsistent"+getName()+": FAIL! not WellFormed!! " + strWellFormed());
+		error.addError("  >>> isConsistent"+getID()+": FAIL! not WellFormed!! " + strWellFormed());
 		return false;
 	}
 	for (int i = 0; i < size(); i++) {
@@ -3291,35 +3690,33 @@ bool Plan::isVsConsistent(bool silent) const {
 bool Plan::isConsistent(double maxTrkDist, double maxGsDist, double maxVsDist, bool silent, double nearZeroGsValue) const {
 	bool rtn = true;
 	if (!isWellFormed()) {
-		error.addError("isConsistent"+getName()+": not well formed");
-		//fpln("  $$$ isConsistent: FAIL! not WellFormed!!");
+		if ( ! silent) fpln("  >>> isConsistent FAIL! not WellFormed!! " + strWellFormed());
+		error.addError("isConsistent"+getID()+": not well formed");
 		return false;
 	}
 	for (int i = 0; i < size(); i++) {
-//		if (isBOT(i)) {
-			if ( ! isTurnConsistent(i, maxTrkDist, silent)) {
-				//error.addWarning("isConsistent: turn "+Fm0(i)+" not consistent");
-				rtn = false;
-			}
-//		}
-//		if (isBGS(i)) {
-			if ( ! isGsConsistent(i, maxGsDist, silent, nearZeroGsValue)) {
-				//error.addWarning("isConsistent: GS "+Fm0(i)+" not consistent");
-				rtn = false;
-			}
-//		}
-//		if (isBVS(i)) {
-			if ( ! isVsConsistent(i, maxVsDist, silent)) {
-				//error.addWarning("isConsistent: VS "+Fm0(i)+" not consistent");
-				rtn = false;
-			}
-//		}
+		if ( ! isTurnConsistent(i, maxTrkDist, silent)) {
+			error.addWarning("isConsistent: turn "+Fm0(i)+" not consistent");
+			if ( ! silent) fpln("isConsistent: turn " + Fm0(i) + " not consistent");
+			rtn = false;
+		}
+		if ( ! isGsConsistent(i, maxGsDist, silent, nearZeroGsValue)) {
+			error.addWarning("isConsistent: GS "+Fm0(i)+" not consistent");
+			if ( ! silent) fpln("isConsistent: GS " + Fm0(i) + " not consistent");
+			rtn = false;
+		}
+		if ( ! isVsConsistent(i, maxVsDist, silent)) {
+			error.addWarning("isConsistent: VS "+Fm0(i)+" not consistent");
+			if ( ! silent) fpln("isConsistent: VS " + Fm0(i) + " not consistent");
+			rtn = false;
+		}
 	}
 	return rtn;
 }
 
 bool Plan::isConsistent() const {
-	return isConsistent(false);
+	bool silent = true;
+	return isConsistent(silent);
 }
 
 
@@ -3333,7 +3730,7 @@ bool Plan::isWeakConsistent(bool silent) const {
 }
 
 bool Plan::isWeakConsistent() const {
-	bool silent = false;
+	bool silent = true;
 	return isWeakConsistent(silent);
 }
 
@@ -3345,16 +3742,16 @@ bool Plan::isTrkContinuous(int i, double trkEpsilon, bool silent) const {
 	if (Util::almost_equals(gsIn_i,0.0,PRECISION5) || Util::almost_equals(gsOut_i,0.0,PRECISION5)) return true;
 	bool rtn = true;
 	double trkDel = trkDelta(i);
-	if (! isTrkTCP(i) && (trkDel < Plan::MIN_TRK_DELTA_GEN || gsOut(i) > 1E-10)) return true;
+	if (! isTrkTCP(i) && (trkDel < Plan::MIN_TRK_DELTA_GEN || gsOut(i) < 1E-10)) return true;
 	if ( std::abs(trkDel) > trkEpsilon) {
-		if (!silent) fpln(" $$ isTrkContinuous"+getName()+": FAIL trkDelta ("+Fm0(i)+") = "+Units::str("deg",trkDel));
+		if (!silent) fpln(" $$ isTrkContinuous"+getID()+": FAIL trkDelta ("+Fm0(i)+") = "+Units::str("deg",trkDel));
 		rtn = false;
 	}
 	return rtn;
 }
 
 bool Plan::isTrkContinuous(int i, bool silent) const {
-	return isTrkContinuous(i,Units::from("deg", 2.0),silent);
+	return isTrkContinuous(i,MIN_TRK_DELTA_GEN,silent);
 }
 
 bool Plan::isTrkContinuous(bool silent) const {
@@ -3370,7 +3767,7 @@ bool Plan::isGsContinuous(int i, double gsEpsilon, bool silent) const {
 	if (! isGsTCP(i) && gsDelta < Plan::MIN_GS_DELTA_GEN) return true;
 	if (gsDelta > gsEpsilon) {
 		if (!silent) {
-			fpln(" $$ isGsContinuous"+getName()+": FAIL gsIn ("+Fm0(i)+") = "+Units::str("kn",gsIn(i))+"  gsOut ("+Fm0(i)+") = "+Units::str("kn",gsOut(i))+" gsDelta = "+Units::str("kn",gsDelta));
+			fpln(" $$ isGsContinuous"+getID()+": FAIL gsIn ("+Fm0(i)+") = "+Units::str("kn",gsIn(i))+"  gsOut ("+Fm0(i)+") = "+Units::str("kn",gsOut(i))+" gsDelta = "+Units::str("kn",gsDelta));
 		}
 		rtn = false;
 	}
@@ -3378,7 +3775,7 @@ bool Plan::isGsContinuous(int i, double gsEpsilon, bool silent) const {
 }
 
 bool Plan::isGsContinuous(int i, bool silent)  const{
-	return isGsContinuous(i,Units::from("kn", 10),silent);
+	return isGsContinuous(i,MIN_GS_DELTA_GEN,silent);
 }
 
 bool Plan::isGsContinuous(bool silent)  const {
@@ -3394,7 +3791,7 @@ bool Plan::isVsContinuous(int i, double velEpsilon, bool silent) const {
 	if (! isVsTCP(i) && vsDelta < Plan::MIN_VS_DELTA_GEN) return true;
 	if (vsDelta > velEpsilon) {
 		if (!silent) {
-			fpln(" $$ isVsContinuous"+getName()+": FAIL vsIn ("+Fm0(i)+") = "+Units::str("fpm",vsIn(i))+" vsOut ("+Fm0(i)+") = "+Units::str("fpm",vsOut(i))+" vsDelta  = "+Units::str("fpm",vsDelta));
+			fpln(" $$ isVsContinuous"+getID()+": FAIL vsIn ("+Fm0(i)+") = "+Units::str("fpm",vsIn(i))+" vsOut ("+Fm0(i)+") = "+Units::str("fpm",vsOut(i))+" vsDelta  = "+Units::str("fpm",vsDelta));
 		}
 		rtn = false;
 	}
@@ -3402,7 +3799,7 @@ bool Plan::isVsContinuous(int i, double velEpsilon, bool silent) const {
 }
 
 bool Plan::isVsContinuous(int i, bool silent)  const{
-	return isVsContinuous(i,Units::from("fpm", 100),silent);
+	return isVsContinuous(i,MIN_VS_DELTA_GEN,silent);
 }
 
 bool Plan::isVsContinuous(bool silent)  const{
@@ -3421,22 +3818,21 @@ bool Plan::isVelocityContinuous() const {
 
 bool Plan::isVelocityContinuous(bool silent) const {
 	for (int i = 1; i < size(); i++) {
-//		if (isTCP(i)) {
-			if (!isTrkContinuous(i, Units::from("deg", 2.0), silent)) return false;
-			if (!isGsContinuous(i, Units::from("kn", 10), silent)) return false;
-			if (!isVsContinuous(i, Units::from("fpm", 100), silent)) return false;
-//		}
+//		if (!isTrkContinuous(i, Units::from("deg", 2.0), silent)) return false;
+//		if (!isGsContinuous(i, Units::from("kn", 10), silent)) return false;
+//		if (!isVsContinuous(i, Units::from("fpm", 100), silent)) return false;
+		if (!isTrkContinuous(i, MIN_TRK_DELTA_GEN, silent)) return false;    // TODO: SWITCH TO THESE PARAMS
+		if (!isGsContinuous(i, MIN_GS_DELTA_GEN, silent)) return false;
+		if (!isVsContinuous(i, MIN_VS_DELTA_GEN, silent)) return false;
 	}
 	return true;
 }
 
 bool Plan::isWeakVelocityContinuous(bool silent) const {
 	for (int i = 1; i < size(); i++) {
-//		if (isTCP(i))
-			if (!isTrkContinuous(i, Units::from("deg", 5.0), silent)) return false;
-			if (!isGsContinuous(i, Units::from("kn", 20), silent)) return false;
-			if (!isVsContinuous(i, Units::from("fpm", 300), silent)) return false;
-//		}
+		if (!isTrkContinuous(i, Units::from("deg", 5.0), silent)) return false;
+		if (!isGsContinuous(i, Units::from("kn", 20), silent)) return false;
+		if (!isVsContinuous(i, Units::from("fpm", 300), silent)) return false;
 	}
 	return true;
 }
@@ -3469,13 +3865,8 @@ bool Plan::isWeakFlyable() {
 }
 
 
-std::pair<NavPoint,TcpData> Plan::makeBOT(const std::string& name, Position p, double t,  double signedRadius, const Position& center) {
-	NavPoint np;
-	if (TrajGen::vertexNameInBOT) {
-		np = NavPoint(p,t).makeName(name);
-	} else {
-		np = NavPoint(p,t);
-	}
+std::pair<NavPoint,TcpData> Plan::makeBOT(Position p, double t,  double signedRadius, const Position& center) {
+	NavPoint np(p,t);
 	TcpData tcp = TcpData().setBOT(signedRadius, center);
 	return  std::pair<NavPoint,TcpData>(np,tcp);
 }
@@ -3556,12 +3947,12 @@ NavPoint Plan::closestPointHoriz(int seg, const Position& p) const {
 	double dt = time(seg+1)-t1;
 	NavPoint np = points[seg];
 	NavPoint np2 = points[seg+1];
-	if (pathDistance(seg) <= 0.0) {
+	if (np.distanceH(np2) < 0.001 && np.distanceV(np2) < 0.001) { // almost same point
 		return np;
 	}
 	NavPoint ret;
 	// vertical case is special
-	if (Util::almost_equals(initialVelocity(seg).gs(), 0.0) && Util::almost_equals(initialVelocity(seg+1).gs(), 0.0)) {
+	if (pathDistance(seg) <= 0.0 || (Util::almost_equals(initialVelocity(seg).gs(), 0.0) && Util::almost_equals(initialVelocity(seg+1).gs(), 0.0))) {
 		if ((p.alt() <= np.alt() && np.alt() <= np2.alt()) || (p.alt() >= np.alt() && np.alt() >= np2.alt())) {
 			ret = np;
 		} else if ((p.alt() <= np2.alt() && np2.alt() <= np.alt()) || (p.alt() >= np2.alt() && np2.alt() >= np.alt())) {
@@ -3581,7 +3972,7 @@ NavPoint Plan::closestPointHoriz(int seg, const Position& p) const {
 		int ixBOT = prevBOT(getSegment(t1)+1);
 		Position center = turnCenter(ixBOT);
 		double endD = pathDistance(seg);
-		double d2 = ProjectedKinematics::closestDistOnTurn(np.position(), initialVelocity(seg), std::abs(signedRadius(ixBOT)), turnDir(ixBOT), center, p, endD);
+		double d2 = ProjectedKinematics::closestDistOnTurn(np.position(), initialVelocity(seg), std::abs(signedRadius(ixBOT)), turnDir(ixBOT), p, endD);
 		if (Util::almost_equals(d2, 0.0)) {
 			ret = np;
 		} else if (Util::almost_equals(d2, endD)) {
@@ -3590,7 +3981,6 @@ NavPoint Plan::closestPointHoriz(int seg, const Position& p) const {
 			double segDt = timeFromDistanceWithinSeg(seg, d2);
 			ret = NavPoint(position(t1+segDt), t1+segDt);
 		}
-
 	} else if (isLatLon()) {
 		LatLonAlt lla = GreatCircle::closest_point_segment(points[seg].lla(), points[seg+1].lla(), p.lla());
 		d = GreatCircle::distance(points[seg].lla(), lla);
@@ -3600,8 +3990,6 @@ NavPoint Plan::closestPointHoriz(int seg, const Position& p) const {
 		Vect3 cp = VectFuns::closestPointOnSegment(points[seg].vect3(), points[seg+1].vect3(), p.vect3());
 		d = points[seg].vect3().distanceH(cp);
 		double segDt = timeFromDistanceWithinSeg(seg, d);
-		//		double frac = d/pathDistance(seg);
-		//		ret = NavPoint(position(t1 + frac*dt), t1 + frac*dt);
 		ret = NavPoint(position(t1+segDt), t1+ segDt);
 	}
 	return ret;
@@ -3637,10 +4025,10 @@ NavPoint Plan::closestPoint(int start, int end, const Position& p, bool horizOnl
 }
 
 
-Vect3 Plan::closestPoint3D(int seg, const Vect3& v0) const {
+std::pair<Vect3,double> Plan::closestPoint3D(int seg, const Vect3& v0) const {
 	if (seg < 0 || seg >= size() - 1) {
 		addError("closestPoint3D: invalid index");
-		return Vect3::INVALID();
+		return std::pair<Vect3,double>(Vect3::INVALID(), NaN);
 	}
 	Position p1 = getPos(seg);
 	Position p2 = getPos(seg+1);
@@ -3651,7 +4039,7 @@ Vect3 Plan::closestPoint3D(int seg, const Vect3& v0) const {
 		v2 = GreatCircle::spherical2xyz(p2.lla());
 	}
 
-	Vect3 closest3 = VectFuns::closestPointOnSegment3(v1, v2, v0);
+	std::pair<Vect3,double> closest3 = VectFuns::closestPointOnSegment3_extended(v1, v2, v0);
 	return closest3;
 }
 
@@ -3664,6 +4052,7 @@ Vect3 Plan::closestPoint3D(int seg, const Vect3& v0) const {
  */
 NavPoint Plan::closestPoint3D(const Position& p) const {
 	double mindist = DBL_MAX;
+	double ratio = 0.0;
 	int minseg = -1;
 	Vect3 closest = Vect3::INVALID();
 	Vect3 p3 = p.vect3();
@@ -3672,22 +4061,33 @@ NavPoint Plan::closestPoint3D(const Position& p) const {
 	}
 
 	for (int i = 0; i < size()-1; i++) {
-		Vect3 np = closestPoint3D(i, p3);
-		double d = np.Sub(p3).norm();
+		std::pair<Vect3,double> pvd = closestPoint3D(i, p3);
+		double d = pvd.first.Sub(p3).norm();
 		if (d < mindist) {
 			mindist = d;
-			closest = np;
+			closest = pvd.first;
 			minseg = i;
+			ratio = pvd.second;
 		}
 	}
 	Position pos = Position(closest);
 	if (isLatLon()) {
 		pos = Position(GreatCircle::xyz2spherical(closest));
 	}
+	double dist = pathDistance(minseg)*ratio;
+	double time = timeFromDistance(minseg, dist);
+	double gs0 = gsOut(minseg);
+	double gs1 = gsFinal(minseg);
+	if (Util::within_epsilon(gs0, 0.0, 0.1) && Util::within_epsilon(gs1, 0.0, 0.1)) {
+		double height = pos.alt();
+		std::pair<double,double> times = timeFromHeight(minseg, height);
+		if (times.first >= 0.0) {
+			time = times.first;
+		}
+	}
+	NavPoint np = NavPoint(position(time),time);
 
-	NavPoint ret = closestPointHoriz(minseg, pos); // to figure out things like kinematics and timing
-
-	return ret;
+	return np;
 }
 
 
@@ -3713,7 +4113,7 @@ Plan Plan::planFromState(const std::string& id, const Position& pos, const Veloc
 }
 
 Plan Plan::copy() const {
-	Plan lpc = Plan(name,note);
+	Plan lpc = Plan(label,note);
 	for (int j = 0; j < size(); j++) {
 		lpc.add(get(j));
 	}
@@ -3721,7 +4121,7 @@ Plan Plan::copy() const {
 }
 
 Plan Plan::cut(int firstIx, int lastIx) const {
-	Plan lpc = Plan(name,note);
+	Plan lpc = Plan(label,note);
 	for (int i = firstIx; i <= lastIx; i++) {
 		std::pair<NavPoint,TcpData> np = get(i);
 		lpc.add(np);
@@ -3753,6 +4153,14 @@ void Plan::setMIN_VS_DELTA_GEN(double minVsDeltaGen) {
 	MIN_VS_DELTA_GEN = minVsDeltaGen;
 }
 
+void Plan::setMinDeltaGen(double trkDelta, double gsDelta, double vsDelta) {
+	MIN_TRK_DELTA_GEN = trkDelta;   // minimum track delta that will result in a BOT-EOT generation
+	MIN_GS_DELTA_GEN = gsDelta;    // minimum GS delta that will result in a BGS-EGS generation
+	MIN_VS_DELTA_GEN = vsDelta;  // minimum VS delta that will result in a BVS-EVS generation
+}
+
+
+
 void Plan::setMinDeltaGen_BackToDefaults() {
 	MIN_TRK_DELTA_GEN = Units::from("deg", 1);   // minimum track delta that will result in a BOT-EOT generation
 	MIN_GS_DELTA_GEN = Units::from("kn", 10);    // minimum GS delta that will result in a BGS-EGS generation
@@ -3763,28 +4171,39 @@ void Plan::setMinDeltaGen_BackToDefaults() {
 
 int  Plan::mergeClosePoints(int i, double minDt) {
 	int rtn = -1;
+	if (i >= size() - 1) return -1;  // nothing to do
 	if (minDt > 0) {
 		double deltaTm = point(i+1).time() - point(i).time();
 		//fpln(" $$$$$$ mergeClosePoints: i = "+Fm0(i)+" deltaTm = "+Fm12(deltaTm));
 		if (deltaTm < minDt) {
 			int ixDelete = i+1;
-			if (i == size()-1) ixDelete = i;
-			else if (i == 0) ixDelete = 1;
+			if (i == 0) ixDelete = 1;
 			else if (!isBeginTCP(i) && isBeginTCP(i+1)) ixDelete = i;
 			// save attributes of "ixDelete"
 			NavPoint npDelete2 = point(ixDelete);
-			TcpData npDelTCP = getTcpData(ixDelete);
+			TcpData tcp_i = getTcpData(i);
+			TcpData tcp_ip1 = getTcpData(i+1);
 			remove(ixDelete);
 			rtn = ixDelete;
-			// the index of the remaining point is "i"
-			//NavPoint newNpi = point(i).mergeTCPInfo(npDelete);
-			TcpData mergeTCPData = getTcpData(i).mergeTCPData(npDelTCP);
+			// check for a very small accel region that is being removed
+			if (tcp_i.isBOT() && tcp_ip1.isEOT()) {
+				tcp_i.clearBOT();
+				tcp_ip1.clearEOT();
+			}
+			if (tcp_i.isBGS() && tcp_ip1.isEGS()) {
+				tcp_i.clearBGS();
+				tcp_ip1.clearEGS();
+			}
+			if (tcp_i.isBVS() && tcp_ip1.isEVS()) {
+				tcp_i.clearBVS();
+				tcp_ip1.clearEVS();
+			}
+			TcpData mergeTCPData = tcp_i.mergeTCPData(tcp_ip1);
 			NavPoint newNpi = point(i);
 			newNpi = newNpi.appendName(npDelete2.name());
-			//fpln(" $$$$$$ mergeClosePoints: i = "+Fm0(i)+" ixDelete = "+Fm0(ixDelete)+" npDelTCP = "+npDelTCP.toString()+" getTcpData(i) = "+getTcpData(i).toString());
+			//fpln(" $$$$$$ mergeClosePoints: i = "+Fm0(i)+" ixDelete = "+Fm0(ixDelete)+" tcp_ip1 = "+tcp_ip1.toString()+" getTcpData(i) = "+getTcpData(i).toString());
 			//fpln(" $$$$$$ mergeClosePoints: i = "+Fm0(i)+" ixDelete = "+Fm0(ixDelete)+" mergeTCPData = "+mergeTCPData.toString());
 			set(i,newNpi,mergeTCPData);
-			//fpln(" $$$$$ mergeClosePoints: DELETE point ixDelete = "+ixDelete);
 		}
 	}
 	return rtn;
@@ -3817,6 +4236,73 @@ int Plan::mergeClosePointsByDist(int j, double minDist) {
 	return rtn;
 }
 
+
+
+// will not remove first or last point
+void Plan::removeRedundantPoints(int from, int to) {
+	//	double velEpsilon = 1.0;
+	int ixLast = Util::min(size() - 2, to);
+	int ixFirst = Util::max(1, from);
+	for (int i = ixLast; i >= ixFirst; i--) {
+		removeIfRedundant(i);
+	}
+}
+
+void Plan::removeRedundantPoints() {
+	removeRedundantPoints(0,200000000);           // MAX_INT ??  MAXINTEGER ??
+}
+
+int Plan::removeIfRedundant(int ix,  bool trkF, bool gsF, bool vsF) {
+	double minTrk = Units::from("deg",1.0);
+	double minGs = Units::from("kn",5.0);
+	double minVs = Units::from("fpm",100.0);
+	bool repair = true;
+	return removeIfRedundant(ix,trkF, gsF, vsF, minTrk, minGs, minVs, repair);
+}
+
+int Plan::removeIfRedundant(int ix,  bool trkF, bool gsF, bool vsF, double minTrk, double minGs, double minVs, bool repair) {
+	//fpln(" $$$$$ removeIfRedundant: ENTER ix = "+Fm0(ix)+" "+bool2str(isTCP(ix))+" "+bool2str(isAltPreserve(ix))+" info ="+getInfo(ix));
+	if (ix <= 0 || ix >= size()-1) return -1;   // should not remove first or last point
+	if (isTCP(ix)) return -1;
+	if (isAltPreserve(ix)) return -1;
+	if (isMOT(ix)) return -1;           // should not remove AltPreserve point
+	if (! larcfm::equals(getInfo(ix),"")) return -1;
+	if (! larcfm::equals(getName(ix),"")) return -1;
+	Velocity vin = finalVelocity(ix - 1);
+	Velocity vout = initialVelocity(ix);
+	double deltaTrk = Util::turnDelta(vin.trk(),vout.trk());
+	double deltaGs = std::abs(vin.gs()-vout.gs());
+	double deltaVs = std::abs(vin.vs()-vout.vs());
+	//fpln(" $$$$$ removeIfRedundant: ix = "+Fm0(ix)+" deltaTrk = "+Units::str("deg",deltaTrk)+" deltaGs ="+Units::str("kn",deltaGs)+" deltaVs = "+Units::str("fpm",deltaVs));
+	if (
+			( ! trkF || deltaTrk <= minTrk) &&
+			( ! gsF  || deltaGs <= minGs)   &&
+			( ! vsF  || deltaVs <= minVs)     ) {
+		if (repair) remove(ix);
+		return ix;
+	}
+	return -1;
+}
+
+
+
+int Plan::removeIfRedundant(int ix) {
+	bool trkF = true;
+	bool gsF = true;
+	bool vsF = false;
+	return removeIfRedundant(ix,trkF, gsF, vsF);
+}
+
+
+int Plan::removeIfVsConstant(int ix) {
+	bool trkF = true;
+	bool gsF = false;
+	bool vsF = true;
+	return removeIfRedundant(ix,trkF, gsF, vsF);
+}
+
+
+
 /**
  * Remove records of deleted points and make all remaining points "original"
  * @param fp
@@ -3824,56 +4310,21 @@ int Plan::mergeClosePointsByDist(int j, double minDist) {
 void Plan::cleanPlan() {
 	mergeClosePoints(Plan::minDt);
 	for (int i = 0; i < size(); i++) {
-		TcpData tcp = getTcpData(i).setOriginal();
+		TcpData tcp = getTcpData(i).setOriginal();    // get rid of AltPreserves
 		set(i,point(i), tcp);
 	}
 }
 
-
-// std::string Plan::toString() const {
-// 	int precision = 4;
-// 	std::ostringstream sb;
-// 	//sb << planTypeName() << " Plan for aircraft: ";
-// 	if (isLatLon()) sb << "*LatLon*"; else sb << "*Euclidean*";
-// 	sb << " Plan for aircraft: ";
-// 	sb << (name);
-// 	if (error.hasMessage()) {
-// 		sb << " error.message = " << error.getMessageNoClear();
-// 	}
-// 	sb << endl;
-// 	if (note.length() > 0) {
-// 		sb << "Note=" << note << endl;
-// 	}
-
-// 	if (size() == 0) {
-// 		sb << ("<empty>");
-// 	} else {
-// 		for (int j = 0; j < size(); j++) {
-// 			sb << " "+Fm0(j)+": " << toStringPoint(j,precision);
-// 			sb << endl;
-// 		}
-// 	}
-// 	return sb.str();
-// }
 
   std::string Plan::toString() const {
     return toStringVelocity(6);
 }
 
 
-  //std::string Plan::toStringPoint(int i) const {
-  //	int precision = 4;
-  //	return toStringPoint(point(i), getTcpData(i),precision);
-  //}
-
-std::string Plan::toStringPoint(int i, int precision) const{
+std::string Plan::toStringPoint(int i) const{
   NavPoint p = point(i);
   TcpData d = getTcpData(i);
 	std::stringstream sb;
-	//sb << "[(";
-	//if (p.isLatLon()) sb << "LL: ";
-	//sb << p.toStringShort(precision);
-	//sb << "), ";
 	sb << d.getTypeString();
 	//if (d.isTrkTCP()) {
 	//	sb << ", " << d.getTrkTypeString();
@@ -3903,7 +4354,7 @@ std::string Plan::toStringPoint(int i, int precision) const{
 
 std::vector<std::string> Plan::toStringList(int i, int precision, bool tcp) const {
 	std::vector<std::string> ret;// name is (0)
-	ret.push_back(name);
+	ret.push_back(label);
 	std::vector<std::string> sl = toStringList(point(i), getTcpData(i), precision, tcp);
 	ret.insert(ret.end(), sl.begin(), sl.end());
 	return ret;
@@ -3928,19 +4379,19 @@ std::vector<std::string> Plan::toStringList(const NavPoint& p, const TcpData& d,
 		vec = d.turnCenter().toStringList(precision);
 		ret.insert(ret.end(),vec.begin(),vec.end()); // turn Center (16-18)
 		if (d.getInformation().size() > 0) {
-			ret.push_back(d.getInformation()); // label (string) (20)
+			ret.push_back(d.getInformation()); // name (string) (20)
 		} else {
 			ret.push_back("-");
 		}
 		if (p.name().size() > 0) {
-			ret.push_back(p.name()); // label (string) (20)
+			ret.push_back(p.name()); // name (string) (20)
 		} else {
 			ret.push_back("-");
 		}
 	} else { // no tcp
 		std::string fl = TcpData::fullName(p,d);
 		if (fl.size() > 0) {
-			ret.push_back(fl); // label (string) (5)
+			ret.push_back(fl); // name (string) (5)
 		} else {
 			ret.push_back("-");
 		}
@@ -3975,7 +4426,7 @@ std::string Plan::toStringVs() const {
 		}
 
 		//sb << " Plan for aircraft: ";
-	sb << name;
+	sb << label;
 	if (error.hasMessage()) {
 		sb << " error.message = " + error.getMessageNoClear();
 	}
@@ -4023,10 +4474,12 @@ std::string Plan::toStringVs() const {
 					  sb << padRight("TrkOut: " + Units::str("deg", trkOut(j), 4),15);
 					else
 					  sb << padRight("TrkOut: -------------",15);
+					if (!Util::almost_equals(signedRadius(j),0.0))
+					  sb << padRight("R: "+Units::str("NM", signedRadius(j), 4),15);
 				}
 				if (velocityDisplay == 2) {
 					if (j > 0)
-					  sb << padRight("GSin: " + Units::str("kn", gsFinal(j - 1), 4),20);
+					  sb << padRight("GSin: " + Units::str("kn", gsIn(j), 4),20);
 					else
 					  sb << padRight("GSin: -------------",20);
 					if (j < size() - 1)
@@ -4050,7 +4503,7 @@ std::string Plan::toStringVs() const {
 					sb << "  pathDist " + Units::str("NM", pathDistance(0,j), 4);
 				}
 				if (velocityDisplay == 6) {
-				  sb << toStringPoint(j,precision);
+				  sb << toStringPoint(j);
 				}
 				//if (isAltPreserve(j)) sb << " *AltPreserve*";
 			}
@@ -4121,27 +4574,27 @@ std::string Plan::toStringVs() const {
 
 
 
-std::string Plan::getOutputHeader(bool tcpcolumns) const {
-	std::string s = "";
-	s += "Name, ";
-	if (isLatLon()) {
-		s += "Lat, Lon, Alt";
-	} else {
-		s += "SX SY SZ";
-	}
-	s += ", Time, ";
-	if (tcpcolumns) {
-		s += "type, trk, gs, vs, tcp_trk, accel_trk, tcp_gs, accel_gs, tcp_vs, accel_vs, radius, ";
-		if (isLatLon()) {
-			s += "src_lat, src_lon, src_alt, ";
-		} else {
-			s += "src_x, src_y, src_z, ";
-		}
-		s += "src_time, ";
-	}
-	s += "Label";
-	return s;
-}
+//std::string Plan::getOutputHeader(bool tcpcolumns) const {
+//	std::string s = "";
+//	s += "Name, ";
+//	if (isLatLon()) {
+//		s += "Lat, Lon, Alt";
+//	} else {
+//		s += "SX SY SZ";
+//	}
+//	s += ", Time, ";
+//	if (tcpcolumns) {
+//		s += "type, trk, gs, vs, tcp_trk, accel_trk, tcp_gs, accel_gs, tcp_vs, accel_vs, radius, ";
+//		if (isLatLon()) {
+//			s += "src_lat, src_lon, src_alt, ";
+//		} else {
+//			s += "src_x, src_y, src_z, ";
+//		}
+//		s += "src_time, ";
+//	}
+//	s += "name";
+//	return s;
+//}
 
 
 std::ostream& operator << (std::ostream& os, const Plan &f) {

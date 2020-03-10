@@ -6,7 +6,7 @@
  *
  * Conversion to internal units: meters, seconds, radians.
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -524,8 +524,8 @@ public:
 
   /**
    * Parse a string, including an optional units identifier, as a double value.
-   * If the string does not contain a (valid) unit, then the value is interpreted as an "unspecified" unit. This version does not
-   * parse numbers in exponential notation, e.g., "10e-4".  
+   * If the string does not contain a (valid) unit, then the value is interpreted as an "unspecified" unit.
+   * This version does not parse numbers in exponential notation, e.g., "10e-4".  (Java does)
    * @param str string to parse
    * @param default_value if the string is not recognized as a valid value, the result to be returned 
    * @return value
@@ -537,6 +537,7 @@ public:
 	/**
 	 * Parse a string, representing a value and a unit.
 	 * If the string does not contain a unit, then the unit "unspecified" is returned.
+     * This version does not parse numbers in exponential notation, e.g., "10e-4".  (Java does)
 	 * @param s string to parse
 	 * @return unit string;
 	 */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -1048,8 +1048,10 @@ bool SimplePoly::validate(ErrorLog* error) const {
 		}
 		for (int j = 0; j < i; j++) {
 			// duplicated points
-			if (points[i].distanceH(points[j]) < Constants::get_horizontal_accuracy()) {
-				if (error != NULL) error->addError("polygon has duplicated points at "+Fm0(i));
+
+			double distH = points[i].distanceH(points[j]);
+			if (distH < Constants::get_horizontal_accuracy()) {
+				if (error != NULL) error->addError("polygon has duplicated points at "+Fm0(i)+" distH = "+Fm1(distH));
 				return false;
 			}
 			if (j < i-2) {
@@ -1153,7 +1155,7 @@ std::string SimplePoly::toOutput(const std::string& name, int precision, int num
 		std::vector<std::string> ret; //  = new ArrayList<std::string>(numberTcpColumns+2);
 		//ret.push_back(name);  // name is (0)
 		sb << name << " ";
-		std::vector<std::string> sl = getVertex(j).toStringList(precision);
+		std::vector<std::string> sl = getVertex(j).toStringList(precision,0,false);
 		sb << list2str(sl,",") << ", ";
 		//ret.push_back(FmPrecision(0.0)); // time 4
 		if (numberTcpColumns > 0) {

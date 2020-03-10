@@ -5,7 +5,7 @@
  *
  * General Constants
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -16,15 +16,15 @@
 
 namespace larcfm {
 
-const std::string Constants::version = larcfm::_FormalATM_version;							// eventually move definition here
+const std::string Constants::version = larcfm::FormalATM_version;							// eventually move definition here
 const std::string Constants::build_date = __DATE__;
 const std::string Constants::build_time = __TIME__;
 
-const double Constants::GPS_LIMIT_HORIZONTAL = larcfm::_FormalATM_GPS_LIMIT_HORIZONTAL; 	// eventually Units::from(_ft, 25.0);
-const double Constants::GPS_LIMIT_VERTICAL = larcfm::_FormalATM_GPS_LIMIT_VERTICAL; 		// eventually Units::from(_ft, 25.0);
-const double Constants::TIME_LIMIT_EPSILON = larcfm::_FormalATM_TIME_LIMIT_EPSILON; 		// eventually Units::from(_s, 1.0);
-const double Constants::NO_TIME_LIMIT_EPSILON = _FormalATM_NO_TIME_LIMIT_EPSILON;
-const double Constants::NO_TIME = _FormalATM_NO_TIME;
+const double Constants::GPS_LIMIT_HORIZONTAL = larcfm::FormalATM_GPS_LIMIT_HORIZONTAL; 	// eventually Units::from(_ft, 25.0);
+const double Constants::GPS_LIMIT_VERTICAL = larcfm::FormalATM_GPS_LIMIT_VERTICAL; 		// eventually Units::from(_ft, 25.0);
+const double Constants::TIME_LIMIT_EPSILON = larcfm::FormalATM_TIME_LIMIT_EPSILON; 		// eventually Units::from(_s, 1.0);
+const double Constants::NO_TIME_LIMIT_EPSILON = FormalATM_NO_TIME_LIMIT_EPSILON;
+const double Constants::NO_TIME = FormalATM_NO_TIME;
 
 double Constants::HORIZONTAL_ACCURACY = 1E-7;  // Constants::GPS_LIMIT_HORIZONTAL;
 double Constants::VERTICAL_ACCURACY   = 1E-7; //Constants::GPS_LIMIT_VERTICAL;

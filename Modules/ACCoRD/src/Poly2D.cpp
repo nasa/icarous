@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -26,7 +26,7 @@ const double Poly2D::perturbAmount = 2E-10;
 
 
 int Poly2D::size() const {
-	return vertices.size();
+	return static_cast<int>(vertices.size());
 }
 
 Poly2D::Poly2D() {
@@ -210,7 +210,7 @@ bool Poly2D::contains(double a, double b) const {
 	// which proceeds in the positive direction from the point in question intersects the edge.
 	// Count the number of edges intersected. If the count is odd, the point lies within the polygon
 	int crossingCount = 0;
-	int n = poly2.vertices.size();
+	int n = static_cast<int>(poly2.vertices.size());
 	for (int i = 0 ; i < n ; i++) {
 		// Note: the purpose of the modulo n on the index is to make the last
 		// line segment
@@ -322,7 +322,7 @@ Vect2 Poly2D::centroid()	const {
 	double temp = 0;
 	double tempX = 0;
 	double tempY = 0;
-	int size = vertices.size();
+	int size = static_cast<int>(vertices.size());
 	//fpln(" $$ Poly2D::centroid  2: size = "+Fm0(size));
 	if (size < 2) return Vect2::INVALID();
 	if (vertices[0].x == vertices[size - 1].x && vertices[0].y == vertices[size - 1].y) {

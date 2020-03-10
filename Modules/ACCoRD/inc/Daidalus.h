@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -101,6 +101,16 @@ private:
   DaidalusVsBands   vs_band_;
   DaidalusAltBands  alt_band_;
 
+  /**
+   * Reset cached values, but keep hysteresis variables.
+   * The hysteresis variables of aircraft ac_idx are reset,
+   * when curren_time is equal to last_time (meaning that current hysteresis
+   * values are not longer valid for that aircraft). The value ac_idx = 0 means
+   * all aircraft.
+   */
+  void reset_cache(int ac_idx);
+
+
 public:
   /* Constructors */
 
@@ -118,7 +128,7 @@ public:
    * Construct a Daidalus object with the default parameters and one alerter with the
    * given detector and T (in seconds) as the alerting time, early alerting time, and lookahead time.
    */
-  Daidalus(const Detection3D& det, double T);
+  Daidalus(const Detection3D* det, double T);
 
   /* Destructor */
   virtual ~Daidalus() {}
@@ -170,7 +180,7 @@ public:
 
   /**
    * Set ownship state and current time. Clear all traffic.
-   * @param id Ownship's identified
+   * @param id Ownship's identifier
    * @param pos Ownship's position
    * @param vel Ownship's ground velocity
    * @param time Time stamp of ownship's state
@@ -179,11 +189,11 @@ public:
 
   /**
    * Set ownship state at time 0.0. Clear all traffic.
-   * @param id Ownship's identified
+   * @param id Ownship's identifier
    * @param pos Ownship's position
    * @param vel Ownship's ground velocity
    */
-  void setOwnship(const std::string& id, const Position& pos, const Velocity& vel);
+  void setOwnshipState(const std::string& id, const Position& pos, const Velocity& vel);
 
   /**
    * Add traffic state at given time.
@@ -207,17 +217,6 @@ public:
    * @return Aircraft's index
    */
   int addTrafficState(const std::string& id, const Position& pos, const Velocity& vel);
-
-  /**
-   * Add traffic state at current time. If it's the first aircraft, this aircraft is
-   * set as the ownship.
-   * @param id Aircraft's identifier
-   * @param pos Aircraft's position
-   * @param vel Aircraft's ground velocity
-   * Same function as addTrafficState, but it doesn't return index of added traffic. This is neeeded
-   * for compatibility with GenericBands
-   */
-  void addTraffic(const std::string& id, const Position& pos, const Velocity& vel);
 
   /**
    * Get index of aircraft with given name. Return -1 if no such index exists
@@ -1629,24 +1628,15 @@ public:
   const DaidalusCore& getCore();
 
   /**
-   *  Clear ownship and traffic data from this object.
+   *  Clear ownship and traffic state data from this object.
+   *  IMPORTANT: This method reset cache and hysteresis parameters.
    */
   void clear();
 
   /**
-   * Set cached values to stale conditions as they are no longer fresh
+   * Set cached values to stale conditions and clear hysteresis variables.
    */
-  void stale(bool hysteresis);
-
-  /**
-   * Returns true is object is fresh
-   */
-  bool isFresh() const;
-
-  /**
-   * Refresh Daidalus object
-   */
-  void refresh();
+  void reset();
 
   /* Main interface methods */
 
@@ -1656,19 +1646,9 @@ public:
   void conflictBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
 
   /**
-   * Compute in acs list of aircraft identifiers contributing to conflict bands for given region.
-   */
-  void conflictBandsAircraft(std::vector<std::string>& acs, int region);
-
-  /**
    * Return time interval of violation for given bands region
    */
   Interval timeIntervalOfConflict(BandsRegion::Region region);
-
-  /**
-   * Return time interval of conflict for given bands region
-   */
-  Interval timeIntervalOfConflict(int region);
 
   /**
    * @return the number of horizontal direction bands negative if the ownship has not been set
@@ -1745,12 +1725,6 @@ public:
   void peripheralHorizontalDirectionBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
 
   /**
-   * Compute in acs list of aircraft identifiers contributing to peripheral horizontal direction bands
-   * for given region. 1=FAR, 2=MID, 3=NEAR
-   */
-  void peripheralHorizontalDirectionBandsAircraft(std::vector<std::string>& acs, int region);
-
-  /**
    * Compute horizontal direction resolution maneuver for a given direction.
    * @parameter dir is right (true)/left (false) of ownship current direction
    * @return direction resolution in internal units [rad] in specified direction.
@@ -1776,13 +1750,6 @@ public:
    * @return True: Right. False: Left.
    */
   bool preferredHorizontalDirectionRightOrLeft();
-
-  /**
-   * Compute horizontal direction resolution region for a given direction.
-   * @parameter dir is right (true)/left (false) of ownship current direction
-   * @return Bands region of horizontal direction resolution for given direction
-   */
-  BandsRegion::Region horizontalDirectionResolutionRegion(bool dir);
 
   /**
    * @return the number of horizontal speed band intervals, negative if the ownship has not been set
@@ -1859,12 +1826,6 @@ public:
   void peripheralHorizontalSpeedBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
 
   /**
-   * Compute in acs list of aircraft identifiers contributing to peripheral horizontal speed bands
-   * for given region. 1=FAR, 2=MID, 3=NEAR
-   */
-  void peripheralHorizontalSpeedBandsAircraft(std::vector<std::string>& acs, int region);
-
-  /**
    * Compute horizontal speed resolution maneuver.
    * @parameter dir is up (true)/down (false) of ownship current horizontal speed
    * @return horizontal speed resolution in internal units [m/s] in specified direction.
@@ -1890,13 +1851,6 @@ public:
    * True: Increase speed, False: Decrease speed.
    */
   bool preferredHorizontalSpeedUpOrDown();
-
-  /**
-   * Compute horizontal speed resolution region for a given direction.
-   * @parameter dir is up (true)/down (false) of ownship current horizontal speed
-   * @return Bands region of horizontal speed resolution for given direction
-   */
-  BandsRegion::Region horizontalSpeedResolutionRegion(bool dir);
 
   /**
    * @return the number of vertical speed band intervals, negative if the ownship has not been set
@@ -1973,12 +1927,6 @@ public:
   void peripheralVerticalSpeedBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
 
   /**
-   * Compute in acs list of aircraft identifiers contributing to peripheral vertical speed bands
-   * for given region. 1=FAR, 2=MID, 3=NEAR
-   */
-  void peripheralVerticalSpeedBandsAircraft(std::vector<std::string>& acs, int region);
-
-  /**
    * Compute vertical speed resolution maneuver for given direction.
    * @parameter dir is up (true)/down (false) of ownship current vertical speed
    * @return vertical speed resolution in internal units [m/s] in specified direction.
@@ -2004,13 +1952,6 @@ public:
    * True: Increase speed, False: Decrease speed.
    */
   bool preferredVerticalSpeedUpOrDown();
-
-  /**
-   * Compute vertical speed resolution region for a given direction.
-   * @parameter dir is up (true)/down (false) of ownship current vertical speed
-   * @return Bands region of vertical speed resolution for given direction
-   */
-  BandsRegion::Region verticalSpeedResolutionRegion(bool dir);
 
   /**
    * @return the number of altitude band intervals, negative if the ownship has not been set.
@@ -2088,12 +2029,6 @@ public:
   void peripheralAltitudeBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
 
   /**
-   * Compute in acs list of aircraft identifiers contributing to peripheral altitude bands
-   * for given region. 1=FAR, 2=MID, 3=NEAR
-   */
-  void peripheralAltitudeBandsAircraft(std::vector<std::string>& acs, int region);
-
-  /**
    * Compute altitude resolution maneuver for given direction.
    * @parameter dir is up (true)/down (false) of ownship current altitude
    * @return altitude resolution in internal units [m] in specified direction.
@@ -2119,13 +2054,6 @@ public:
    * True: Climb, False: Descend.
    */
   bool preferredAltitudeUpOrDown();
-
-  /**
-   * Compute altitude resolution region for a given direction.
-   * @parameter dir is up (true)/down (false) of ownship current altitude
-   * @return Bands region of altitude resolution for given direction
-   */
-  BandsRegion::Region altitudeResolutionRegion(bool dir);
 
   /*
    * Alerting logic
@@ -2223,24 +2151,50 @@ public:
   // Deprecate interface methods
 
   /**
-    @Deprecated
-    Use alertLevel instead
+  @Deprecated
+   * Use setOwnshipState instead.
+   * Set ownship state at time 0.0. Clear all traffic.
+   * @param id Ownship's identified
+   * @param pos Ownship's position
+   * @param vel Ownship's ground velocity
    */
-  int alerting(int ac_idx) {
-    return alertLevel(ac_idx);
+  virtual void setOwnship(const std::string& id, const Position& pos, const Velocity& vel) {
+    setOwnshipState(id,pos,vel);
   }
 
   /**
   @Deprecated
-  interface method
+   * Use setOwnshipState instead.
+   * Set ownship state at time 0.0. Clear all traffic. Name of ownship will be "Ownship"
+   * @param pos Ownship's position
+   * @param vel Ownship's ground velocity
    */
-  void setOwnship(const Position& pos, const Velocity& vel) {
+  virtual void setOwnship(const Position& pos, const Velocity& vel) {
     setOwnship("Ownship",pos,vel);
   }
 
   /**
   @Deprecated
-  interface method
+   * Add traffic state at current time. If it's the first aircraft, this aircraft is
+   * set as the ownship.
+   * @param id Aircraft's identifier
+   * @param pos Aircraft's position
+   * @param vel Aircraft's ground velocity
+   * Same function as addTrafficState, but it doesn't return index of added traffic. This is neeeded
+   * for compatibility with GenericBands
+   */
+  void addTraffic(const std::string& id, const Position& pos, const Velocity& vel) {
+    addTrafficState(id,pos,vel);
+  }
+
+  /**
+  @Deprecated
+   * Use addTrafficState instead
+   * Add traffic state at current time. If it's the first aircraft, this aircraft is
+   * set as the ownship. Name of aircraft is AC_n, where n is the index of the aicraft
+   * @param pos Aircraft's position
+   * @param vel Aircraft's ground velocity
+   * Same function as addTrafficState, but it doesn't return index of added traffic.
    */
   void addTraffic(const Position& pos, const Velocity& vel) {
     if (!hasOwnship()) {
@@ -2251,8 +2205,16 @@ public:
   }
 
   /**
+    @Deprecated
+    Use alertLevel instead
+   */
+  int alerting(int ac_idx) {
+    return alertLevel(ac_idx);
+  }
+
+  /**
   @Deprecated
-  interface method
+   * Use setMaxHorizontalSpeed instead
    */
   virtual void setMaxGroundSpeed(double gs, const std::string& unit) {
     setMaxHorizontalSpeed(gs,unit);
@@ -2260,15 +2222,15 @@ public:
 
   /**
   @Deprecated
-  interface method
+   * Use getMaxHorizontalSpeed instead
    */
   virtual double getMaxGroundSpeed(const std::string& unit) const {
     return getMaxHorizontalSpeed(unit);
   }
 
   /**
-    @Deprecated
-    interface method
+  @Deprecated
+   * Use horizontalDirectionBandsLength instead
    */
   virtual int trackLength() {
     return horizontalDirectionBandsLength();
@@ -2276,7 +2238,7 @@ public:
 
   /**
     @Deprecated
-    interface method
+   * Use horizontalDirectionIntervalAt instead
    */
   virtual Interval track(int i, const std::string& unit) {
     return horizontalDirectionIntervalAt(i,unit);
@@ -2284,7 +2246,7 @@ public:
 
   /**
     @Deprecated
-    interface method
+   * Use horizontalDirectionRegionAt instead
    */
   virtual BandsRegion::Region trackRegion(int i) {
     return horizontalDirectionRegionAt(i);
@@ -2292,7 +2254,7 @@ public:
 
   /**
     @Deprecated
-    interface method
+   * Use regionOfHorizontalDirection instead
    */
   virtual BandsRegion::Region regionOfTrack(double trk, const std::string& unit) {
     return regionOfHorizontalDirection(trk,unit);
@@ -2300,31 +2262,7 @@ public:
 
   /**
     @Deprecated
-    interface method
-   */
-  virtual int verticalSpeedLength() {
-    return verticalSpeedBandsLength();
-  }
-
-  /**
-    @Deprecated
-    interface method
-   */
-  virtual Interval verticalSpeed(int i, const std::string& unit) {
-    return verticalSpeedIntervalAt(i,unit);
-  }
-
-  /**
-    @Deprecated
-    interface method
-   */
-  virtual BandsRegion::Region verticalSpeedRegion(int i) {
-    return verticalSpeedRegionAt(i);
-  }
-
-  /**
-    @Deprecated
-    interface method
+   * Use horizontalSpeedBandsLength instead
    */
   virtual int groundSpeedLength() {
     return horizontalSpeedBandsLength();
@@ -2332,7 +2270,7 @@ public:
 
   /**
     @Deprecated
-    interface method
+   * Use horizontalSpeedIntervalAt instead
    */
   virtual Interval groundSpeed(int i, const std::string& unit) {
     return horizontalSpeedIntervalAt(i,unit);
@@ -2340,7 +2278,7 @@ public:
 
   /**
     @Deprecated
-    interface method
+   * Use horizontalSpeedRegionAt instead
    */
   virtual BandsRegion::Region groundSpeedRegion(int i) {
     return horizontalSpeedRegionAt(i);
@@ -2348,10 +2286,34 @@ public:
 
   /**
     @Deprecated
-    interface method
+   * Use regionOfHorizontalSpeed instead
    */
   virtual BandsRegion::Region regionOfGroundSpeed(double gs, const std::string& unit) {
     return regionOfHorizontalSpeed(gs,unit);
+  }
+
+  /**
+    @Deprecated
+   * Use verticalSpeedBandsLength instead
+   */
+  virtual int verticalSpeedLength() {
+    return verticalSpeedBandsLength();
+  }
+
+  /**
+    @Deprecated
+   * Use verticalSpeedIntervalAt instead
+   */
+  virtual Interval verticalSpeed(int i, const std::string& unit) {
+    return verticalSpeedIntervalAt(i,unit);
+  }
+
+  /**
+    @Deprecated
+   * Use verticalSpeedRegionAt instead
+   */
+  virtual BandsRegion::Region verticalSpeedRegion(int i) {
+    return verticalSpeedRegionAt(i);
   }
 
 };

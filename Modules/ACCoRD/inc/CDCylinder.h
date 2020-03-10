@@ -40,7 +40,7 @@
  * t_in  : Time to loss of separation
  * t_out : Time to recovery from loss of separation
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -52,32 +52,32 @@
 #include "CD2D.h"
 #include "CD3D.h"
 #include "Vertical.h"
-#include "Detection3DSUM.h"
-#include "CD3DTable.h"
+#include "Detection3D.h"
 #include "LossData.h"
 #include "ConflictData.h"
 
 namespace larcfm {
 
-class CDCylinder : public Detection3DSUM {
+class CDCylinder : public Detection3D {
 
 private:
   std::string id;
-
-  CD3DTable table;
+  std::map<std::string,std::string> units_;
+  double D_;
+  double H_;
 
 public:
 
   /**
    * Instantiates a new CD3D object.
    */
-  CDCylinder();
+  CDCylinder(const std::string& s="");
 
   /**
    * This specifies the internal table is a copy of the provided table
    * @param tab
    */
-  explicit CDCylinder(const CD3DTable& tab);
+  CDCylinder(const CDCylinder& cdc);
 
   CDCylinder(double d, double h);
   CDCylinder(double d, const std::string& dunit, double h, const std::string& hunit);
@@ -99,29 +99,32 @@ public:
   static CDCylinder mk(double distance, double height);
 
   /**
-   * Return a copy of this object's table
+   * @return one static CDCylinder
    */
-  CD3DTable getCD3DTable();
+  static const CDCylinder& A_CDCylinder();
 
-  /** Sets the internal table to be a copy of the supplied one */
-  void setCD3DTable(const CD3DTable& tab);
+  /**
+   * @return CDCylinder thresholds, i.e., D=5nmi, H=1000ft.
+   */
+  static const CDCylinder& CD3DCylinder();
+
+  std::string getUnits(const std::string& key) const;
 
   double getHorizontalSeparation() const;
 
-  double getVerticalSeparation() const;
-
   void setHorizontalSeparation(double d);
+
+  double getVerticalSeparation() const;
 
   void setVerticalSeparation(double h);
 
-  double getHorizontalSeparation(const std::string& unit) const;
+  double getHorizontalSeparation(const std::string& u) const;
 
-  double getVerticalSeparation(const std::string& unit) const;
+  void setHorizontalSeparation(double d, const std::string& u);
 
-  void setHorizontalSeparation(double d, const std::string& unit);
+  double getVerticalSeparation(const std::string& u) const;
 
-  void setVerticalSeparation(double h, const std::string& unit);
-
+  void setVerticalSeparation(double h, const std::string& u);
 
   /**
    * Computes the conflict time interval in [B,T].
@@ -167,15 +170,16 @@ public:
 
   virtual ~CDCylinder() {};
 
-  virtual bool violation(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double D, double H) const;
-  virtual bool conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double D, double H, double B, double T) const;
-  virtual ConflictData conflictDetection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double D, double H, double B, double T) const;
-  virtual double timeOfClosestApproach(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double D, double H, double B, double T);
+  static ConflictData conflict_detection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double D, double H, double B, double T);
+  static double time_of_closest_approach(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double D, double H, double B, double T);
 
 
-  virtual bool violation(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) const;
-  virtual bool conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
+  // The non-static methods violation and conflict are
+  // inherited from Detection3D. This enable a uniform
+  // treatment of border cases in the generic bands algorithms
+
   virtual ConflictData conflictDetection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
+  double timeOfClosestApproach(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
 
   /** This returns a pointer to a new instance of this type of Detector3D.  You are responsible for destroying this instance when it is no longer needed. */
   virtual CDCylinder* copy() const;

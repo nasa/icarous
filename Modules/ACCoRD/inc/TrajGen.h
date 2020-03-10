@@ -5,7 +5,7 @@
  *           Jeff Maddalon             NASA Langley Research Center
  *
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -62,7 +62,7 @@ private:
 
 
 public:
-	static bool vertexNameInBOT;
+//	static bool vertexNameInBOT;
 //	static double gsOffsetTime;
 
     static const double MIN_MARK_LEG_TIME;
@@ -105,7 +105,7 @@ public:
 	 * @param vsAccel vertical acceleration
 	 * @return kinematic plan with marked points
 	 */
-	static Plan markVsChanges(const Plan& lpc, double vsAccel);
+	static Plan markVsChanges(const Plan& lpc);
 
 	
 	static Plan generateTurnTCPs(const Plan& kpc, double bankAngle) ;
@@ -141,7 +141,7 @@ public:
 	 * @param bankUsed      true if default bank angle was used to compute R
 	 * @param continueGen   continue generation, even with problems
 	 */
-	static void generateTurnTcpAt(Plan& traj, int ixNp2, double R,  bool bankUsed, bool continueGen);
+	static void generateTurnTcp(Plan& traj, int ixNp2, double R,  bool bankUsed, bool continueGen);
 
 	/**  Calculates the minimum leg distance that can handle a specified radius
 	 * 
@@ -176,8 +176,6 @@ public:
 	 * @param continueGen continue generation, even with problems
 	 * @return           a plan with BOTs and EOTs
 	 */
-	static Plan generateTurnTCPsRadius(const Plan& lpc, bool continueGen, bool gsDelayInTurn);
-
 	static Plan generateTurnTCPsRadius(const Plan& lpc, bool continueGen);
 
 	
@@ -242,7 +240,7 @@ public:
 	 */
 	static TcpData makeBGS(const TcpData& tcp1, double a, bool isAltPreserve);
 
-	static TcpData makeEGS(const TcpData& tcp1);
+	static TcpData makeEGS();
 
 	/** 
 	 * 
@@ -255,7 +253,7 @@ public:
 	 */
 	static Plan generateGsTCPs(const Plan& fp, double maxGsAccel, bool repairGs);
 
-
+	static void generateGsTCP(Plan& traj, int i, double maxGsAccel, bool repairGs);
 
 	/** Generate Vertical acceleration TCPs
 	 *  It assumes that all horizontal passes have been completed.
@@ -265,7 +263,10 @@ public:
 	 * @param continueGen true means continue generation even with problems
 	 * @return plan
 	 */
-	static Plan generateVsTCPs(const Plan& kpc, double maxVsAccel, bool continueGen);
+	static Plan generateVsTCPs(const Plan& kpc, double maxVsAccel, bool continueGen, bool repairVs_zeroGs);
+
+	static Plan generateVsTCPs(const Plan& kpc, double maxVsAccel);
+
 
 	/** Generate a BVS EVS pair at index i if deltaVs is large enough
 	 * 
@@ -273,7 +274,7 @@ public:
 	 * @param i               index
 	 * @param vsAccel         vertical acceleration
 	 * @param continueGen     if true continue generation even if errors are encountered, results in a partial kinematic plan
-	 * @return                revised traj
+	 * @return                the index of the EVS if successful, otherwise just i
 	 * 
 	 * t1 = previous point's time (previous EVS)
 	 * t2 = np2.time() = end time of the linear segment where the vertical speed change occurred
@@ -288,7 +289,7 @@ public:
 	 *                                          tbegin       tend
 	 * 
 	 */
-	static int generateOneVsTCPs(Plan& traj, int i, double vsAccel, bool continueGen);
+	static int generateVsTCP(Plan& traj, int i, double vsAccel, bool continueGen,  bool repairVs_zeroGs);
 
 
 	/** This method makes all of the vertical speed out of bindex to be vs1.  It also
@@ -388,7 +389,13 @@ public:
 	 */
 	static Plan makeKinematicPlan(const Plan& fp, double bankAngle, double gsAccel, double vsAccel);
 
-	
+	/**
+	 * This assumes a plan that has altitude preserve points marked.  Generate the vertical profile (only) for VsTCPs in this plan.
+	 * @param p         input plan (need not be linear)
+	 * @param vsAccel   vertical acceleration
+	 * @return plan with vertical TCPs generated
+	 */
+	static Plan makeVsKinematicPlan(const Plan& p, double vsAccel);
 	
 	/**
 	 * Attempts to compute (heuristic) the amount of time to continue current velocity before starting direct to turn.  (in 2-D)
@@ -432,7 +439,7 @@ public:
 	 * Construct a (hopefully) feasible linear plan that describes a path from s to the goal point.
 	 * If this fails, it reurns a simple direct plan.
 	 */
-	static Plan buildDirectTo(std::string id, const NavPoint& s, const Velocity& v, const Plan& base, double bankAngle);
+	static Plan buildDirectTo(const NavPoint& s, const Velocity& v, const Plan& base, double bankAngle);
 
 	/**
 	 * Returns a PlanCore version of the given plan.  If it was a kinematic plan, this will attempt to regress the TCPs to their original

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 United States Government as represented by
+ * Copyright (c) 2018-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -20,11 +20,13 @@
 #include "DaidalusCore.h"
 #include "DaidalusParameters.h"
 #include "RecoveryInformation.h"
-#include "ColoredValue.h"
+#include "BandsMofN.h"
+#include "BandsHysteresis.h"
 
 #include <vector>
 #include <string>
 
+#include "ColorValue.h"
 #include "TrafficState.h"
 //#include "DaidalusCore.h"
 
@@ -34,7 +36,7 @@ class DaidalusRealBands : public DaidalusIntegerBands {
 
 private:
 
-  /*** PRIVATE VARIABLES_ */
+  /*** PRIVATE VARIABLES */
 
   double mod_;  // If mod_ > 0, bands are circular modulo this value
   double step_; // Value step
@@ -48,21 +50,21 @@ private:
   /* Parameters for recovery bands */
   bool recovery_;
 
-  /**** CACHED VARIABLES__ ****/
+  /**** CACHED VARIABLES ****/
 
-  bool outdated__; // bool to control re-computation of cached values
-  int checked__;  // Cached status of input values. Negative unchecked, 0 invalid, 1 valid
+  bool outdated_; // bool to control re-computation of cached values
+  int checked_;  // Cached status of input values. Negative unchecked, 0 invalid, 1 valid
 
   /* Cached lists of aircraft indices, alert_levels, and lookahead times, sorted by indices, contributing to peripheral
    * bands listed per conflict bands, where 0th:NEAR, 1th:MID, 2th:FAR */
-  std::vector<std::vector<IndexLevelT> > acs_peripheral_bands__;
+  std::vector<std::vector<IndexLevelT> > acs_peripheral_bands_;
 
   /* Cached lists of aircraft indices, alert_levels, and lookahead times, sorted by indices, contributing to any type
    * of bands listed per conflict bands, where 0th:NEAR, 1th:MID, 2th:FAR.
    * These lists are computed as the concatenation of acs_conflict_bands and acs_peripheral_bands. */
-  std::vector<std::vector<IndexLevelT> > acs_bands__;
+  std::vector<std::vector<IndexLevelT> > acs_bands_;
 
-  std::vector<BandsRange> ranges__;     // Cached list of bands ranges
+  std::vector<BandsRange> ranges_;     // Cached list of bands ranges
 
   /*
    * recovery_time_ is the time to recovery from violation.
@@ -70,55 +72,35 @@ private:
    * NaN means no recovery bands are computed (either because there is no conflict or
    * because they are disabled)
    */
-  double recovery_time__;   // Cached recovery time
-  int recovery_nfactor__; // Number of times the recovery volume was reduced
+  double recovery_time_;   // Cached recovery time
+  int recovery_nfactor_; // Number of times the recovery volume was reduced
   /*
    * recovery_horizontal_distance and recovery_vertical_distance is the
    * distance guaranteed by the recovery bands. Negative infinity means no possible recovery.
    * NaN means no recovery bands are computed (either because there is no conflict of
    * because they are disabled)
    */
-  double recovery_horizontal_distance__; // Cached recovery horizontal_separaton
-  double recovery_vertical_distance__; // Cached recovery horizontal_separaton
+  double recovery_horizontal_distance_; // Cached recovery horizontal_separaton
+  double recovery_vertical_distance_; // Cached recovery horizontal_separaton
 
-  double min_val__; // Absolute min value (min_val= min when mod == 0 && !rel)
-  double max_val__; // Absolute max value (max_val = max when mod == 0 && !rel)
-  double min_relative__; // Computed relative min value
-  double max_relative__; // Computed relative max value
-  bool   circular__; // True if bands is fully circular
+  double min_val_; // Absolute min value (min_val= min when mod == 0 && !rel)
+  double max_val_; // Absolute max value (max_val = max when mod == 0 && !rel)
+  double min_relative_; // Computed relative min value
+  double max_relative_; // Computed relative max value
+  bool   circular_; // True if bands is fully circular
 
-  /**** HYSTERESIS _VARIABLES_ ****/
+  /**** HYSTERESIS VARIABLES ****/
 
-  /* Parameters for hysteresis of preferred direction */
-  double  _last_time_;   // Last data time
-  double  _time_of_dir_; // Time of current preferred direction
-  bool _actual_dir_;     // Actual preferred direction before hysteresis
-  bool _preferred_dir_;  // Returned preferred direction after hysteresis
-  /*
-   * resolution_up_,resolution_low_ are the resolution interval computed from all regions that are at least
-   * as severe as the corrective region. Negative/positive infinity means no possible resolutions
-   * NaN means no resolutions are computed (either because there is no conflict or
-   * because of invalid inputs)
-   */
-  double _resolution_up_;
-  double _resolution_low_;
-
-  /*
-   * Conflict region of the up/low resolutions
-   */
-  BandsRegion::Region _resolution_region_up_;
-  BandsRegion::Region _resolution_region_low_;
+  BandsHysteresis bands_hysteresis_;
 
 protected:
-  void super_mod(double mod);
-  void super_DaidalusRealBands(const DaidalusRealBands* b);
-  double get_min_val__() const;
-  double get_max_val__() const;
+  double get_min_val_() const;
+  double getmax_val_() const;
 
 public:
   DaidalusRealBands(double mod=0);
 
-  DaidalusRealBands(const DaidalusRealBands* b);
+  DaidalusRealBands(const DaidalusRealBands& b);
 
   virtual void setDaidalusParameters(const DaidalusParameters& parameters) = 0;
 
@@ -130,7 +112,6 @@ public:
 
   virtual double max_delta_resolution(const DaidalusParameters& parameters) const = 0;
 
-public:
   double get_mod() const;
 
   double get_step() const;
@@ -138,13 +119,13 @@ public:
   bool get_recovery() const;
 
   // Set min and max when mod_ > 0. Requires min_val and max_val to be in range [0,mod)
-  void set_min_max_mod(double min, double max);
+  void set_minmax_mod(double min, double max);
 
   // Set min when mod == 0.
   void set_min_nomod(double min);
 
   // Set max when mod == 0.
-  void set_max_nomod(double max);
+  void setmax_nomod(double max);
 
   /**
    * Set min_rel. When mod_ > 0, requires min_rel to be in [0,mod/2]. Otherwise, a
@@ -156,22 +137,17 @@ public:
    * Set min_rel. When mod_ > 0, requires max_rel to be in [0,mod/2]. Otherwise, a
    * negative value represents max.
    */
-  void set_max_rel(double max_rel);
+  void setmax_rel(double max_rel);
 
   void set_step(double val);
 
   void set_recovery(bool flag);
 
 private:
-  /**
-   * Return val modulo mod_, when mod_ > 0. Otherwise, returns val.
-   */
-  double mod_val(double val) const;
-
   bool check_input(const TrafficState& ownship);
 
 public:
-  bool kinematic_conflict(const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters,
+  bool kinematic_conflict(const TrafficState& ownship, const TrafficState& traffic,
       Detection3D* detector, int epsh, int epsv, double alerting_time);
 
   int length(DaidalusCore& core);
@@ -181,7 +157,7 @@ public:
   BandsRegion::Region region(DaidalusCore& core, int i);
 
   /**
-   * Return index where val is found, -1 if invalid input, >= length if not found
+   * Return index in ranges_ where val is found, -1 if invalid input or not found
    */
   int indexOf(DaidalusCore& core, double val);
 
@@ -206,6 +182,7 @@ public:
   void force_compute(DaidalusCore& core);
 
 private:
+
   /**
    * Requires 0 <= conflict_region < CONFICT_BANDS and acs_peripheral_bands_ is empty
    * Put in acs_peripheral_bands_ the list of aircraft predicted to have a peripheral band for the given region.
@@ -233,11 +210,11 @@ public:
 
 private:
   /**
-   * Compute list of colored values in lcvs from sets of none bands
+   * Compute list of color values in lcvs from sets of none bands
    * Ensure that the intervals are "complete", filling in missing intervals and ensuring the
    * bands end at the proper bounds.
    */
-  void color_values(std::vector<ColoredValue>& lcvs, const std::vector<IntervalSet>& none_sets, DaidalusCore& core, bool recovery, int last_region);
+  void color_values(std::vector<ColorValue>& lcvs, const std::vector<IntervalSet>& none_sets, DaidalusCore& core, bool recovery, int last_region);
 
   /**
    * Create an IntervalSet that represents a satured NONE band
@@ -276,29 +253,12 @@ private:
    */
   void compute(DaidalusCore& core);
 
-  // Return true if val is in in range [lb,ub]. When mod_ > 0, lb may be greater than ub. In this case,
-  // mod logic is taken into account.
-  bool in_range(double val, double lb, double ub) const;
-
-  // Find a resolution interval closest to the current value of the ownship (takes into account
-  // circular bands, i.e., when mod_ > 0)
-  void find_resolutions(const TrafficState& ownship, IntervalSet& noneset, double time);
-
-  // Reset values that control and that depend on hysteresis
-  void reset_hysteresis();
-
 public:
   /**
-   * Compute preferred direction based on resolution that is closer
-   * to current value.
+   * stale hysteresis depending on current_time and hysteresis_time
    */
-  void preferred_direction_hysteresis(const DaidalusCore& core, double delta);
+  void reset_hysteresis(double current_time, double hysteresis_time);
 
-
-private:
-  BandsRegion::Region find_region_of_value(double val) const;
-
-public:
   /**
    * Returns resolution maneuver.
    * Return NaN if there is no conflict or if input is invalid.
@@ -306,11 +266,6 @@ public:
    * right/up and negative infinity if there is no resolution to the left/down.
    */
   double resolution(DaidalusCore& core, bool dir);
-
-  /**
-   * Returns resolution region for each direction (true=up/right, false=low/left)
-   */
-  BandsRegion::Region resolution_region(DaidalusCore& core, bool dir);
 
   /**
    * Compute preferred direction based on resolution that is closer
@@ -340,7 +295,6 @@ private:
    */
   void add_noneset(IntervalSet& noneset, double lb, double ub) const;
 
-
 public:
   /**
    *  This function scales the interval, add a constant, and constraint the intervals to min and max.
@@ -353,19 +307,19 @@ public:
    * values (or [0,mod] in the case of circular bands, i.e., when mod == 0).
    */
   virtual void none_bands(IntervalSet& noneset, const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters);
+      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic);
 
   virtual bool any_red(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters);
+      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic);
 
   virtual bool all_red(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters);
+      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic);
 
   bool all_green(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters);
+      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic);
 
   bool any_green(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters);
+      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic);
 
   /**
    * This function returns a resolution maneuver that is valid from B to T.
@@ -374,7 +328,7 @@ public:
    * The value dir=false is down and dir=true is up.
    */
   virtual double resolution(const Detection3D* conflict_det, const Detection3D* recovery_det, const TrafficState& repac,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic, const DaidalusParameters& parameters,
+      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic,
       bool dir);
 
   std::string rawString() const;

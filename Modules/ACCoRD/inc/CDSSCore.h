@@ -8,7 +8,7 @@
  * 
  * Conflict detection between an ownship and traffic aircraft using state information.
  *   
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -28,6 +28,9 @@ namespace larcfm {
 
 /**
  * The Class CDSSCore.
+ * Conflict detection between an ownship and traffic aircraft
+ * using state information for generic detectors.
+ *  
  */
 class CDSSCore : Detection3DAcceptor {
 private:
@@ -67,6 +70,12 @@ public:
   CDSSCore& operator=(const CDSSCore& cdss);
 
   static CDSSCore make(Detection3D& cd, double cdfilter, const std::string& tunit);
+
+  static CDSSCore mkCyl(const std::string& id, double D, double H, double filter);
+
+  static CDSSCore mkCyl(const std::string& id, double D, double H);
+
+  static CDSSCore mkTauMOD(const std::string& id, double DTHR, double ZTHR, double TTHR, double TCOA);
 
   /**
    * Returns the conflict detection filter time.
@@ -120,6 +129,11 @@ public:
    * @return true, if the aircraft are in conflict in the interval [0,T].
    */
   bool conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double T) const;
+
+  bool conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
+
+  bool conflict(const Position& sop, const Velocity& vop, const Position& sip, const Velocity& vip, double B, double T) const;
+
 
   /**
    * Detects a conflict that lasts more than filter time within time horizon 
@@ -212,6 +226,26 @@ public:
   bool detection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi,
       double T, const std::string& ut);
 
+  bool detection(const Position& sop, const Velocity& vop, const Position& sip, const Velocity& vip, double T);
+
+  /**
+   * Detects a conflict that lasts more than filter time within a given lookahed time
+   * and computes the time interval of conflict (internal units).  If timeIn() == 0, after this function is called then aircraft
+   * is in loss of separation.
+   *
+   * @param so   the position of the ownship
+   * @param vo   the velocity of the ownship
+   * @param si   the position of the intruder
+   * @param vi   the velocity of the intruder
+   * @param T    the lookahead time in internal units [s] (T > 0)
+   * @param proj projection function from lat/lon -> euclidean coordinates
+
+   *
+   * @return true, if there is a conflict that last more than the filter time
+   * in the interval [0,T].
+   */
+  bool detection(const Position& sop, const Velocity& vop, const Position& sip, const Velocity& vip, double T, EuclideanProjection proj);
+
   /**
    * Duration of conflict in internal units. 
    * 
@@ -263,40 +297,15 @@ public:
    */
   double getTimeOut(const std::string& ut) const;
 
-  /**
-   * Time of closest approach in internal units.
-   * 
-   * @return the cylindrical time of closest approach [s].
-   */
-  double timeOfClosestApproach() const;
+  double getCriticalTime() const;
 
-  /**
-   * Time of (cylindrical) closest approach in explicit units.
-   *
-   * @param ut the explicit units of time
-   *
-   * @return the time of (cylindrical) closest approach in explicit units [ut]
-   */
-  double timeOfClosestApproach(const std::string& ut) const;
+  double getCriticalTime(const std::string& ut) const;
 
-  /**
-   * Cylindrical distance at time of closest approach.
-   *
-   * @return the cylindrical distance at time of closest approach. This distance normalizes
-   * horizontal and vertical distances. Therefore, it is unitless. It has the property that
-   * the value is less than 1 if and only if the aircraft are in loss of separation. The value is 1
-   * if the ownship is at the boundary of the intruder's protected zone.
-   */
   double distanceAtCriticalTime() const;
 
-  /**
-   * Relative position at time of closest approach (internal units).
-   *
-   * @return the relative position of the ownship with respect to the intruder
-   * at time of closest approach.
-   *
-   */
-  Vect3 relativePositionAtTCA() const;
+  std::string getIdentifier() const;
+
+  Vect3 relativePositionAtCriticalTime() const;
 
   std::string toString() const;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -11,7 +11,6 @@
 #include "Velocity.h"
 #include "EuclideanProjection.h"
 #include "SUMData.h"
-#include "DaidalusParameters.h"
 #include <string>
 
 namespace larcfm {
@@ -44,6 +43,13 @@ public:
 
   static const TrafficState& INVALID();
 
+  // Set air velocity to new_avel
+  void setAirVelocity(const Velocity &new_avel);
+
+  // Set position to new_pos and apply Euclidean projection. This methods doesn't change ownship, i.e.,
+  // the resulting aircraft is considered as another intruder.
+  void setPosition(const Position& new_pos);
+
 private:
   /**
    * Create a traffic state that is not lat/lon
@@ -70,6 +76,7 @@ private:
   void applyEuclideanProjection();
 
 public:
+
   /**
    * Set aircraft as ownship
    */
@@ -137,9 +144,11 @@ public:
   Velocity inverseVelocity(const Velocity& v) const;
 
   /**
-   * Project aircraft state offset time, which can be positive or negative.
+   * Project aircraft state offset time, which can be positive or negative, in the direction of the
+   * air velocity. This methods doesn't change ownship, i.e., the resulting aircraft is considered as
+   * another intruder.
    * @param offset Offset time.
-   * @return Projected aircraft, including wind velocities
+   * @return Projected aircraft.
    */
   TrafficState linearProjection(double offset) const;
 
@@ -152,15 +161,15 @@ public:
 
   static std::string listToString(const std::vector<std::string>& traffic);
 
-  std::string formattedHeader(const std::string& uxy, const std::string& ualt, const std::string& ugs, const std::string& uvs) const;
+  std::string formattedHeader(const std::string& utrk, const std::string& uxy, const std::string& ualt, const std::string& ugs, const std::string& uvs) const;
 
-  std::string formattedTrafficState(const std::string& uxy, const std::string& ualt, const std::string& ugs, const std::string& uvs, double time) const;
+  std::string formattedTrafficState(const std::string& utrk, const std::string& uxy, const std::string& ualt, const std::string& ugs, const std::string& uvs, double time) const;
 
   static std::string formattedTrafficList(const std::vector<TrafficState>& traffic,
-      const std::string& uxy, const std::string& ualt, const std::string& ugs, const std::string& uvs, double time);
+      const std::string& utrk, const std::string& uxy, const std::string& ualt, const std::string& ugs, const std::string& uvs, double time);
 
   std::string formattedTraffic(const std::vector<TrafficState>& traffic,
-      const std::string& uxy, const std::string& ualt, const std::string& ugs, const std::string& uvs, double time) const;
+      const std::string& utrk, const std::string& uxy, const std::string& ualt, const std::string& ugs, const std::string& uvs, double time) const;
 
   std::string toPVS() const;
 
@@ -286,18 +295,6 @@ public:
    * Set all uncertainties to 0
    */
   void resetUncertainty();
-
-  double relativeHorizontalPositionError(const TrafficState& ac, const DaidalusParameters& parameters) const;
-
-  double relativeVerticalPositionError(const TrafficState& ac, const DaidalusParameters& parameters) const;
-
-private:
-  static double weighted_z_score(double range, const DaidalusParameters& parameters);
-
-public:
-  double relativeHorizontalSpeedError(const TrafficState& ac, double s_err, const DaidalusParameters& parameters) const;
-
-  double relativeVerticalSpeedError(const TrafficState& ac, const DaidalusParameters& parameters) const;
 
   bool sameId(const TrafficState& ac) const;
 

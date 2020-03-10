@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 United States Government as represented by
+ * Copyright (c) 2018-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -151,7 +151,7 @@ namespace larcfm {
 	}
 
 	int Poly3DLL::size() const {
-		return vertices.size();
+		return static_cast<int>(vertices.size());
 	}
 
 	double Poly3DLL::getTop() const{
@@ -211,7 +211,7 @@ namespace larcfm {
 		double temp = 0;
 		double tempX = 0;
 		double tempY = 0;
-		int size = vertices.size();
+		int size = static_cast<int>(vertices.size());
 		if (size < 3) return LatLonAlt::INVALID();
 		if (vertices[0].lat() == vertices[size - 1].lat() && vertices[0].lon() == vertices[size - 1].lon()) {
 			size--;
@@ -384,7 +384,7 @@ namespace larcfm {
 			int j1 = i;
 			int j2 = i+1;
 			if (j0 < 0) {
-				j0 = vertices.size()-1;
+				j0 = static_cast<int>(vertices.size())-1;
 			} else if (j2 > (int) vertices.size()-1) {
 				j2 = 0;
 			}
@@ -422,7 +422,7 @@ namespace larcfm {
 		double dLat = (minLat+maxLat)/2.0;
 		double dLon = (minLon+maxLon)/2.0;
 		double temp = 0;
-		int size = vertices.size();
+		int size = static_cast<int>(vertices.size());
 		if (vertices[0].lat() == vertices[size - 1].lat() && vertices[0].lon() == vertices[size - 1].lon()) {
 			size--;
 		}

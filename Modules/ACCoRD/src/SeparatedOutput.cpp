@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov)
  *
- * Copyright (c) 2014-2018 United States Government as represented by
+ * Copyright (c) 2014-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -23,7 +23,7 @@ namespace larcfm {
 
 	void SeparatedOutput::init() {
 		header = false;
-		units = false;
+		bunits = false;
         size_l = 0;
         column_count = -1;
         header_count = -1;
@@ -58,7 +58,7 @@ namespace larcfm {
 		error = x.error;
 		writer = x.writer;
 		header = x.header;
-		units = x.units;
+		bunits = x.bunits;
 		header_str = x.header_str;
 		units_str = x.units_str;
 		line_str = x.line_str;
@@ -106,7 +106,7 @@ namespace larcfm {
 
 	/** Return the number of columns */ 
 	long SeparatedOutput::size() {
-		return header_str.size();
+		return static_cast<long>(header_str.size());
 	}
 
 	/** 
@@ -114,7 +114,7 @@ namespace larcfm {
 	 * @param output if true, then the units should be displayed
 	 */
 	void SeparatedOutput::setOutputUnits(bool output) {
-		units = output;
+		bunits = output;
 	}
 
 	/**
@@ -414,7 +414,7 @@ namespace larcfm {
 					}
 				}
 				print_line(header_str);
-				if (units) {
+				if (bunits) {
 					print_line(units_str);
 				}
 				header = true;

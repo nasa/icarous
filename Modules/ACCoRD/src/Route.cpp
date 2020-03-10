@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018 United States Government as represented by
+ * Copyright (c) 2017-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -129,7 +129,7 @@ Route::Route(const Plan& lpc) {
 
 	
 	int Route::size() const{
-		return positions.size();
+		return static_cast<int>(positions.size());
 	}
 	
 	Position Route::position(int i) const {
@@ -173,6 +173,18 @@ Route::Route(const Plan& lpc) {
 		else return radius_v[i];
 	}
 
+//	bool Route::isAltPreserve(int i) const{
+//		if (i < 0 || i >= size()) return false;
+//		else return altPreserve_v[i];
+//	}
+//
+//	void Route::setAltPreserve(int i, bool val) {
+//		if (i >= 0 && i < size()) {
+//			altPreserve_v[i] = val;
+//		}
+//	}
+
+
 	void Route::add(const Position& pos, const std::string& label, const std::string& data) {
 		positions.push_back(pos);
 		names.push_back(label);
@@ -205,6 +217,7 @@ Route::Route(const Plan& lpc) {
 
 		
 	void Route::remove(int i) {
+		if (i < 0 || i >= static_cast<int>(positions.size())) return;
 		positions.erase(positions.begin()+i);
 		names.erase(names.begin()+i);
 		infos.erase(infos.begin()+i);
@@ -220,7 +233,7 @@ Route::Route(const Plan& lpc) {
 
 	
 	void Route::removeLast() {
-		remove(positions.size()-1);
+		remove(static_cast<int>(positions.size())-1);
 	}
 
 	
@@ -345,12 +358,12 @@ Route::Route(const Plan& lpc) {
 			//f.pln(" $$$ Route.pathDistance: kpc = "+kpc);
 			kix = kpc.findInfo("$startIx");
 			kjx = kpc.findInfo("$endIx");
-			if (kpc.isBOT(kix) && TrajGen::vertexNameInBOT) {
-				kix = kpc.findMOT(kix);
-			}
-			if (kpc.isBOT(kjx) && TrajGen::vertexNameInBOT) {
-				kjx = kpc.findMOT(kjx);
-			}
+//			if (kpc.isBOT(kix) && TrajGen::vertexNameInBOT) {
+//				kix = kpc.findMOT(kix);
+//			}
+//			if (kpc.isBOT(kjx) && TrajGen::vertexNameInBOT) {
+//				kjx = kpc.findMOT(kjx);
+//			}
 			//f.pln(" $$$ Route.pathDistance: kix = "+kix+" kjx = "+kjx);
 			rtn = kpc.pathDistance(kix,kjx);
 		}
@@ -429,13 +442,13 @@ Route::Route(const Plan& lpc) {
 
 	
 	std::string Route::toString() const{
-		std::string rtn = "PrePlan size = "+Fm0(positions.size())+"\n";
+		std::string rtn = "size = "+Fm0(positions.size())+"\n";
 		double dist = 0;
-		for (int i = 0; i < (int) positions.size(); i++) {
-			rtn += " "+padLeft(""+Fm0(i),2)+" "+positions[i].toString2D(6)+" "+padRight(names[i],15);
+		for (int i = 0; i < static_cast<int>(positions.size()); i++) {
+			rtn += " "+padLeft(""+Fm0(i),2)+" "+positions[i].toString2D(6)+" "+padRight(names[i],15)+" "+padRight(infos[i],15);
 			if (radius_v[i] != 0.0) rtn += " radius_v = "+Units::str("NM",radius_v[i]);
 			if (i > 0) dist += pathDistance(i-1,i, false);
-			rtn += " dist="+Units::str("NM",dist);
+			rtn += ", dist="+Units::str("NM",dist);
 			rtn += "\n";
 		}
 		return rtn;

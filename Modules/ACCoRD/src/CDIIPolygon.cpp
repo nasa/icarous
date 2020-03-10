@@ -3,7 +3,7 @@
  *
  * Contact: Jeff Maddalon (j.m.maddalon@nasa.gov), Rick Butler
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -244,7 +244,7 @@ namespace larcfm {
         }
 //fpln(" $$>> CDIIPolygon: detectionXYZ: call cdsi.detectionXYZ! for i = "+Fmi(i));
         cdsi.detectionXYZ(so, vo, t_base, HT, pp, BT, NT);
-        captureOutput(cdsi, i);
+        captureOutput(cdsi);
         cont = size() > 0 ? tout[tout.size()-1] == HT + t_base : false;
 
       }
@@ -294,7 +294,7 @@ namespace larcfm {
         //        System.out.println("$$CDIICore LL: "+llo+" "+vo+" "+t_base);       
         cdsi.detectionLL(llo, vo, t_base, HT, traffic, BT, NT);
 //        fpln(" $$## CDIIPolygon.detectionLL: cdsi = "+cdsi);
-        captureOutput(cdsi, i);
+        captureOutput(cdsi);
         cont = size() > 0 ? tout[tout.size()-1] == HT + t_base : false;
       }
     }
@@ -304,7 +304,7 @@ namespace larcfm {
     return conflict();
   }
 
-  void CDIIPolygon::captureOutput(CDSIPolygon cdsi, int seg) {
+  void CDIIPolygon::captureOutput(CDSIPolygon cdsi) {
     for (int index = 0; index < cdsi.size(); index++) {
       double vtin = cdsi.getTimeIn(index);
       double vtout = cdsi.getTimeOut(index);

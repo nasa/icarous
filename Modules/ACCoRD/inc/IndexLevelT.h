@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 United States Government as represented by
+ * Copyright (c) 2018-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -18,10 +18,8 @@ public:
   int index_; // Aircraft 0-Index
   int level_; // Alert level
   double T_;  // Lookahead time
-  bool conflict_ac_; // True if information is from a conflict aircraft
 
-
-  IndexLevelT(int index, int level, double T, bool conflict_ac);
+  IndexLevelT(int index, int level, double T);
 
   std::string toString() const;
 

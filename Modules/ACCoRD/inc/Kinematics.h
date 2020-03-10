@@ -1,7 +1,7 @@
 /*
  * Kinematics.h
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -477,7 +477,7 @@ public:
 
 
 	/** Test for LoS(D,H) between two aircraft when only ownship turns, compute trajectories up to time stopTime
-	 * 
+	 *
 	 * @param so    initial position of ownship
 	 * @param vo    initial velocity of ownship
 	 * @param nvo   the target velocity of ownship (i.e. after turn maneuver complete)
@@ -491,7 +491,7 @@ public:
 	 * @return                 minimum distance data packed in a Vect4
 	 */
 	static bool testLoSTrk(const Vect3& so, const Velocity& vo, const Velocity& nvo, const Vect3& si, const Velocity& vi,
-			double bankAngleOwn, bool turnRightOwn, double stopTime, double D, double H);
+			double bankAngleOwn, double stopTime, double D, double H);
 
 
 	// ****************************** Ground Speed KINEMATIC CALCULATIONS *******************************

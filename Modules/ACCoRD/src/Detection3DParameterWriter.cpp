@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -40,7 +40,7 @@ ParameterData Detection3DParameterWriter::writeCoreDetection(std::vector<Detecti
     //make sure each instance has a unique name
     if (ordered) {
       if (equals(cd->getIdentifier(),"")) {
-        cd->setIdentifier("det_"+FmLead(counter, 4)+"_"+cd->getCanonicalClassName());
+        cd->setIdentifier("det_"+FmLead(counter, 4)+"_"+cd->getSimpleClassName());
       } else {
         cd->setIdentifier("det_"+FmLead(counter, 4)+"_"+cd->getIdentifier());
       }

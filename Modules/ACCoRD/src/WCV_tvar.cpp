@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -22,7 +22,10 @@ namespace larcfm {
 void WCV_tvar::copyFrom(const WCV_tvar& wcv) {
   if (&wcv != this) {
     table = wcv.table;
-    wcv_vertical = wcv.wcv_vertical->copy();
+    if (wcv_vertical != NULL) {
+      delete wcv_vertical;
+    }
+    wcv_vertical = wcv.wcv_vertical != NULL ? wcv.wcv_vertical->copy() : NULL;
     id = wcv.id;
   }
 }
@@ -107,22 +110,6 @@ bool WCV_tvar::horizontal_WCV(const Vect2& s, const Vect2& v) const {
   }
   return false;
 }
-
-bool WCV_tvar::violation(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) const {
-  Vect2 so2 = so.vect2();
-  Vect2 si2 = si.vect2();
-  Vect2 s2 = so2.Sub(si2);
-  Vect2 vo2 = vo.vect2();
-  Vect2 vi2 = vi.vect2();
-  Vect2 v2 = vo2.Sub(vi2);
-  return horizontal_WCV(s2,v2) &&
-      wcv_vertical->vertical_WCV(table.getZTHR(),table.getTCOA(),so.z-si.z,vo.z-vi.z);
-}
-
-bool WCV_tvar::conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const {
-  return WCV3D(so,vo,si,vi,B,T).conflict();
-}
-
 
 ConflictData WCV_tvar::conflictDetection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const {
   LossData ret = WCV3D(so,vo,si,vi,B,T);

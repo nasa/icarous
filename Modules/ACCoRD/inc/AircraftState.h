@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -104,7 +104,7 @@ class AircraftState : public ErrorReporter {
 
   // assumes that all arrays are the same length and have at least "length" elements
   // assumes the arrays are sorted in increasing time order.
-  void calc(Vect2* pos2, double* posH, Vect2* vel2, double* velZ, double* timevar, int length);
+  void calc(Vect2* vel2, double* velZ, double* timevar, int length);
 	
   Vect3 predS(double t) const;
   

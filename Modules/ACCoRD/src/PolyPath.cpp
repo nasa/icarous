@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -33,19 +33,19 @@ using std::string;
 using std::endl;
 
 PolyPath::PolyPath() : error("PolyPath") {
-	name = "";
+	label = "";
 	mode = AVG_VEL;
 	modeSet = false;
 }
 
 PolyPath::PolyPath(const std::string& n) : error("PolyPath") {
-	name = n;
+	label = n;
 	mode = AVG_VEL;
 	modeSet = false;
 }
 
 PolyPath::PolyPath(const std::string& n, PathMode m) : error("PolyPath") {
-	name = n;
+	label = n;
 	mode = m;
 	modeSet = true;
 }
@@ -56,7 +56,7 @@ PolyPath::PolyPath(const std::string& n, PathMode m) : error("PolyPath") {
  * @param p
  */
 PolyPath::PolyPath(const std::string& n, const SimplePoly& p) : error("PolyPath") {
-	name = n;
+	label = n;
 	polyList.push_back(p);
 	times.push_back(0.0);
 	vlist.push_back(Velocity::INVALIDV());
@@ -65,7 +65,7 @@ PolyPath::PolyPath(const std::string& n, const SimplePoly& p) : error("PolyPath"
 }
 
 PolyPath::PolyPath(const std::string& n, const SimplePoly& p, double t) : error("PolyPath") {
-	name = n;
+	label = n;
 	polyList.push_back(p);
 	times.push_back(t);
 	vlist.push_back(Velocity::INVALIDV());
@@ -74,7 +74,7 @@ PolyPath::PolyPath(const std::string& n, const SimplePoly& p, double t) : error(
 }
 
 PolyPath::PolyPath(const std::string& n, const SimplePoly& p, const Velocity& v, double t) : error("PolyPath") {
-	name = n;
+	label = n;
 	polyList.push_back(p);
 	times.push_back(t);
 	vlist.push_back(v);
@@ -84,7 +84,7 @@ PolyPath::PolyPath(const std::string& n, const SimplePoly& p, const Velocity& v,
 
 
 PolyPath::PolyPath(const std::string& n, const vector<SimplePoly>& ps, const vector<double>& ts) : error("PolyPath") {
-	name = n;
+	label = n;
 	if (ps.size() == ts.size()){
 		for (int i=0; i < (signed)ps.size(); i++) {
 			addPolygon(ps[i],ts[i]);
@@ -115,7 +115,7 @@ PolyPath PolyPath::pathFromState(const std::string& n, const SimplePoly& p, cons
 	SimplePoly ep = p.linear(v, tend-tstart);
 	PolyPath pp = PolyPath(n,p,tstart);
 	pp.addPolygon(ep, tend);
-	pp.setName(n);
+	pp.setID(n);
 	pp.mode = AVG_VEL;
 	pp.modeSet = true;
 	return pp;
@@ -129,7 +129,7 @@ PolyPath PolyPath::pathFromState(const std::string& n, const MovingPolygon3D& p,
 	pp.mode = AVG_VEL;
 	pp.modeSet = true;
 	if (sp.size() < p.size()) {
-		pp.error.addWarning("pathFromState: "+pp.getName()+" attempted to add "+Fm0(p.size()-sp.size())+" invalid or duplicate vertices, ignored");
+		pp.error.addWarning("pathFromState: "+pp.getID()+" attempted to add "+Fm0(p.size()-sp.size())+" invalid or duplicate vertices, ignored");
 	}
 	return pp;
 }
@@ -166,7 +166,7 @@ void PolyPath::addPolygon(const SimplePoly& ps, const Velocity& v, double ts) {
 	//fpln(" $$$ "+getName()+" times.size() = "+Fm0(times.size())+" isUserVel() = "+bool2str(isUserVel()));
 	if (times.size() > 0 && !isUserVel()) {
 		//fpln(" $$$ "+getName()+".addPolygon(p,v,t): previous polygons did not have velocity information, it will be ignored here");
-		error.addWarning(getName()+".addPolygon(p,v,t): previous polygons did not have velocity information, it will be ignored here");
+		error.addWarning(getID()+".addPolygon(p,v,t): previous polygons did not have velocity information, it will be ignored here");
 		if (mode == MORPHING && ps.size() != polyList[0].size()) {
 			error.addError("addPolygon: Poly size does not match existing list for MORPHING mode!");
 			return;
@@ -188,7 +188,7 @@ void PolyPath::addPolygon(const SimplePoly& ps, const Velocity& v, double ts) {
 PolyPath PolyPath::copy() const {
 	PolyPath pp;
 	pp.error = error;
-	pp.name = name;
+	pp.label = label;
 	//	morphingPolys = p.morphingPolys;
 	//fpln("\n $$$$$$$$ PolyPath.copy(): name = "+pp.getName());
 	for (int i = 0; i < size(); i++) {
@@ -204,7 +204,7 @@ PolyPath PolyPath::copy() const {
 // builds a Plan based on this PolyPath
 // this will probably change to an arraylist in the future
 Triple<Plan,double,double> PolyPath::buildPlan() const {
-	Plan p = Plan(name);
+	Plan p = Plan(label);
 	if (size() < 1) return Triple<Plan,double,double>(p, 0.0, 0.0);
 
 	double maxH = 0;
@@ -267,8 +267,8 @@ void PolyPath::setPathMode(PathMode m) {
 	if (m == MORPHING) {
 		for (int i = 1; i < size(); i++) {
 			if (polyList[i].size() != polyList[0].size()) {
-				fpln("PolyPathMode.setPathMode: "+getName()+": polygon "+Fm0(i)+" sizes are not consistent, cannot switch to MORPHING mode");
-				error.addError("PolyPathMode.setPathMode: "+getName()+": polygon "+Fm0(i)+" sizes are not consistent, cannot switch to MORPHING mode");
+				fpln("PolyPathMode.setPathMode: "+getID()+": polygon "+Fm0(i)+" sizes are not consistent, cannot switch to MORPHING mode");
+				error.addError("PolyPathMode.setPathMode: "+getID()+": polygon "+Fm0(i)+" sizes are not consistent, cannot switch to MORPHING mode");
 				return;
 			}
 		}
@@ -291,12 +291,12 @@ void PolyPath::setPathMode(PathMode m) {
 
 
 
-string PolyPath::getName() const {
-	return name;
+string PolyPath::getID() const {
+	return label;
 }
 
-void PolyPath::setName(const string& n) {
-	name = n;
+void PolyPath::setID(const string& n) {
+	label = n;
 }
 
 string PolyPath::getNote() const {
@@ -566,28 +566,28 @@ void PolyPath::setVelocity(int i, const Velocity& v) {
 bool PolyPath::validate() const {
 	double lastTime = -100;
 	if (polyList.size() != times.size()) {
-		error.addError("PolyPath.validate "+name+": poly list different size from times list");
+		error.addError("PolyPath.validate "+label+": poly list different size from times list");
 		return false;
 	}
 	if (polyList.size() != vlist.size()) {
-		error.addError("PolyPath.validate "+name+": poly list "+Fm0((int)polyList.size())+" different size from velocity list "+Fm0((int)vlist.size()));
+		error.addError("PolyPath.validate "+label+": poly list "+Fm0((int)polyList.size())+" different size from velocity list "+Fm0((int)vlist.size()));
 		return false;
 	}
 	for (int i = 0 ; i < (signed)polyList.size(); i++) {
 		if (mode == MORPHING && polyList[0].size() != polyList[i].size()) {
-			error.addError("PolyPath.validate "+name+": Mode MORPHING step "+Fm0(i)+" size != step 0 size");
+			error.addError("PolyPath.validate "+label+": Mode MORPHING step "+Fm0(i)+" size != step 0 size");
 			return false;
 		}
 		if (isUserVel() && vlist[i].isInvalid()) {
-			error.addError("PolyPath.validate "+name+": Mode USER_VEL step "+Fm0(i)+" has invalid velocity");
+			error.addError("PolyPath.validate "+label+": Mode USER_VEL step "+Fm0(i)+" has invalid velocity");
 		}
 		if (times[i] < lastTime) {
-			error.addError("PolyPath.validate "+name+": Times are not increasing from "+Fm4(lastTime)+" to "+Fm4(times[i])+" "+Fm0(i));
+			error.addError("PolyPath.validate "+label+": Times are not increasing from "+Fm4(lastTime)+" to "+Fm4(times[i])+" "+Fm0(i));
 			return false;
 		}
 		lastTime = times[i];
 		if (!polyList[i].validate(&error)) {
-			error.addError("PolyPath.validate "+name+": Key polygon at time "+Fm4(lastTime)+" is invalid!");
+			error.addError("PolyPath.validate "+label+": Key polygon at time "+Fm1(lastTime)+" is invalid!");
 			return false;
 		}
 	}
@@ -597,7 +597,7 @@ bool PolyPath::validate() const {
 
 PolyPath PolyPath::truncate(double t)  {
 	if (t >= getLastTime()) return copy();
-	PolyPath path = PolyPath(name);
+	PolyPath path = PolyPath(label);
 	if (t <= getFirstTime()) return path;
 
 	SimplePoly end = interpolate(t);
@@ -889,7 +889,7 @@ void PolyPath::setContainment(bool b) {
 
 
 string PolyPath::toString()  {
-	string s = "PolyPath: " + name +" mode="+pathModeToString(mode)+" size() = "+Fm0(size())+  "\n";
+	string s = "PolyPath: " + label +" mode="+pathModeToString(mode)+" size() = "+Fm0(size())+  "\n";
 	for (int i = 0; i < (signed)size(); i++) {
 		s = s + Fm2(times[i])+"s : "+polyList[i].toString() + " v="+initialVelocity(i).toString()+"\n";
 	}
@@ -936,7 +936,7 @@ string PolyPath::toOutput(int precision, bool tcpColumns)  {
 	for (int i = 0; i < (signed)times.size(); i++) {
 		SimplePoly poly = polyList[i];
 		for (int j = 0; j < poly.size(); j++) {
-			std::vector<std::string> ret = toStringList(i,j,precision,tcpColumns);
+			std::vector<std::string> ret = toStringList(i,j,precision,0,tcpColumns);
 			sb << list2str(ret, ", ") << endl;
 		}
 	}
@@ -944,11 +944,11 @@ string PolyPath::toOutput(int precision, bool tcpColumns)  {
 	return sb.str();
 }
 
-std::vector<std::string> PolyPath::toStringList(int i, int j, int precision, bool tcpColumns)  {
+std::vector<std::string> PolyPath::toStringList(int i, int j, int precision, int latLonExtraPrecision, bool tcpColumns)  {
 	SimplePoly poly = polyList[i];
 	std::vector<std::string> ret;
-	ret.push_back(name);  // name is (0)
-	std::vector<std::string> vertices = poly.getVertex(j).toStringList(precision);
+	ret.push_back(label);  // name is (0)
+	std::vector<std::string> vertices = poly.getVertex(j).toStringList(precision,latLonExtraPrecision,false);
 	ret.insert(ret.end(), vertices.begin(), vertices.end()); //vertex 1-3
 	ret.push_back(FmPrecision(times[i],precision)); // time 4
 	if (tcpColumns) {

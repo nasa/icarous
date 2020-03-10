@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -33,13 +33,13 @@ IntervalSet::IntervalSet(const IntervalSet& l) {
 }
 
 IntervalSet::IntervalSet(const std::vector<Interval>& v) {//: error("IntervalSet") {
-	length = v.size();
+	length = static_cast<int>(v.size());
 	memcpy(r,&v[0],sizeof(Interval)*length);
 }
 
 std::vector<Interval> IntervalSet::toVector() const {
 	std::vector<Interval> v = std::vector<Interval>();
-	v.reserve(length);
+	v.reserve(length); // note: reserve() is appropriate because we exclusively use push_back to populate the vector
 	for (int i = 0; i < length; i++) {
 		v.push_back(v[i]);
 	}

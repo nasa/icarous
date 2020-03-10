@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2018 United States Government as represented by
+ * Copyright (c) 2015-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -15,12 +15,13 @@
 #include "string_util.h"
 #include "format.h"
 #include "Constants.h"
+#include "WCV_TAUMOD_SUM.h"
 #include <vector>
 #include <map>
 
 namespace larcfm {
 
-const std::string DaidalusParameters::VERSION = "2.0.e";
+const std::string DaidalusParameters::VERSION = "2.0.f";
 const INT64FM DaidalusParameters::ALMOST_ = PRECISION5;
 bool DaidalusParameters::initialized = false;
 
@@ -226,7 +227,7 @@ int DaidalusParameters::numberOfAlerters() const {
 }
 
 const Alerter& DaidalusParameters::getAlerterAt(int i) const {
-  if (1 <= i && i <= (int) alerters_.size()) {
+  if (1 <= i && i <= static_cast<int>(alerters_.size())) {
     return alerters_[i-1];
   } else {
     return Alerter::INVALID();
@@ -234,7 +235,7 @@ const Alerter& DaidalusParameters::getAlerterAt(int i) const {
 }
 
 int DaidalusParameters::getAlerterIndex(const std::string& id) const {
-  for (int i=0; i < (int) alerters_.size(); ++i) {
+  for (int i=0; i < static_cast<int>(alerters_.size()); ++i) {
     if (equals(id, alerters_[i].getId())) {
       return i+1;
     }
@@ -254,10 +255,32 @@ int DaidalusParameters::addAlerter(const Alerter& alerter) {
   int i = getAlerterIndex(alerter.getId());
   if (i == 0) {
     alerters_.push_back(alerter);
-    return alerters_.size();
+    i = alerters_.size();
   } else {
     alerters_[i-1] = alerter;
-    return i;
+  }
+  set_alerter_with_SUM_parameters(alerters_[i-1]);
+  return i;
+}
+
+/** This method is needed because WCV_TAUMOD_SUM doesn't require the
+ *  user to initialize SUM parameters, which may be specified globally.
+ */
+void DaidalusParameters::set_alerter_with_SUM_parameters(Alerter& alerter) {
+  for (int level=1; level <= alerter.mostSevereAlertLevel(); ++level) {
+    Detection3D* det = alerter.getDetectorPtr(level);
+    if (det != NULL && larcfm::equals(det->getSimpleClassName(),"WCV_TAUMOD_SUM")) {
+      ((WCV_TAUMOD_SUM*)det)->set_global_SUM_parameters(*this);
+    }
+  }
+}
+
+/** This method is needed because WCV_TAUMOD_SUM doesn't require the
+ *  user to initialize SUM parameters, which may be specified globally.
+ */
+void DaidalusParameters::set_alerters_with_SUM_parameters() {
+  for (int i=0; i < static_cast<int>(alerters_.size()); ++i) {
+    set_alerter_with_SUM_parameters(alerters_[i]);
   }
 }
 
@@ -528,11 +551,16 @@ double DaidalusParameters::getRecoveryStabilityTime(const std::string& u) const 
   return Units::to(u,getRecoveryStabilityTime());
 }
 
-
+/**
+ * @return hysteresis time in seconds.
+ */
 double DaidalusParameters::getHysteresisTime() const {
   return hysteresis_time_;
 }
 
+/**
+ * @return hysteresis time in specified units [u]
+ */
 double DaidalusParameters::getHysteresisTime(const std::string& u) const {
   return Units::to(u,getHysteresisTime());
 }
@@ -1462,6 +1490,7 @@ double DaidalusParameters::getHorizontalPositionZScore() const {
 bool DaidalusParameters::setHorizontalPositionZScore(double val) {
   if (error.isNonNegative("setHorizontalPositionZScore",val)) {
     h_pos_z_score_ = val;
+    set_alerters_with_SUM_parameters();
     return true;
   }
   return false;
@@ -1476,6 +1505,7 @@ double DaidalusParameters::getHorizontalVelocityZScoreMin() const {
 bool DaidalusParameters::setHorizontalVelocityZScoreMin(double val) {
   if (error.isNonNegative("setHorizontalVelocityZScoreMin",val)) {
     h_vel_z_score_min_ = val;
+    set_alerters_with_SUM_parameters();
     return true;
   }
   return false;
@@ -1490,6 +1520,7 @@ double DaidalusParameters::getHorizontalVelocityZScoreMax() const {
 bool DaidalusParameters::setHorizontalVelocityZScoreMax(double val) {
   if (error.isNonNegative("setHorizontalVelocityZScoreMax",val)) {
     h_vel_z_score_max_ = val;
+    set_alerters_with_SUM_parameters();
     return true;
   }
   return false;
@@ -1504,6 +1535,7 @@ double DaidalusParameters::getHorizontalVelocityZDistance() const {
 bool DaidalusParameters::setHorizontalVelocityZDistance(double val) {
   if (error.isNonNegative("setHorizontalVelocityZDistance",val)) {
     h_vel_z_distance_ = val;
+    set_alerters_with_SUM_parameters();
     return true;
   }
   return false;
@@ -1532,6 +1564,7 @@ double DaidalusParameters::getVerticalPositionZScore() const {
 bool DaidalusParameters::setVerticalPositionZScore(double val) {
   if (error.isNonNegative("setVerticalPositionZScore",val)) {
     v_pos_z_score_ = val;
+    set_alerters_with_SUM_parameters();
     return true;
   }
   return false;
@@ -1545,8 +1578,9 @@ double DaidalusParameters::getVerticalSpeedZScore() const {
 
 bool DaidalusParameters::setVerticalSpeedZScore(double val) {
   if (error.isNonNegative("setVerticalSpeedZScore",val)) {
-      v_vel_z_score_ = val;
-      return true;
+    v_vel_z_score_ = val;
+    set_alerters_with_SUM_parameters();
+    return true;
   }
   return false;
 }
@@ -1611,7 +1645,7 @@ bool DaidalusParameters::setCorrectiveRegion(BandsRegion::Region val) {
 
 
 int DaidalusParameters::correctiveAlertLevel(int alerter_idx) {
-  if (1 <= alerter_idx && alerter_idx <= (int) alerters_.size()) {
+  if (1 <= alerter_idx && alerter_idx <= static_cast<int>(alerters_.size())) {
     Alerter alerter = alerters_[alerter_idx-1];
     return alerter.alertLevelForRegion(corrective_region_);
   } else {
@@ -1622,11 +1656,11 @@ int DaidalusParameters::correctiveAlertLevel(int alerter_idx) {
 
 
 int DaidalusParameters::maxAlertLevel() const {
-  int max_alert_level = 0;
-  for (int alerter_idx=1; alerter_idx <= (int) alerters_.size(); ++alerter_idx) {
-    max_alert_level = std::max(max_alert_level,alerters_[alerter_idx-1].mostSevereAlertLevel());
+  int maxalert_level = 0;
+  for (int alerter_idx=1; alerter_idx <= static_cast<int>(alerters_.size()); ++alerter_idx) {
+    maxalert_level = std::max(maxalert_level,alerters_[alerter_idx-1].mostSevereAlertLevel());
   }
-  return max_alert_level;
+  return maxalert_level;
 }
 
 
@@ -1959,7 +1993,7 @@ std::vector<std::string> DaidalusParameters::getListString(const ParameterData& 
 
 void DaidalusParameters::readAlerterList(const std::vector<std::string>& alerter_list, const ParameterData& params) {
   alerters_.clear();
-  for (int i = 0; i < (int) alerter_list.size(); i++) {
+  for (int i = 0; i < static_cast<int>(alerter_list.size()); i++) {
     std::string id = alerter_list[i];
     ParameterData aPd = params.extractPrefix(id+"_");
     Alerter alerter(id);
@@ -2262,6 +2296,9 @@ bool DaidalusParameters::setParameterData(const ParameterData& p) {
       readAlerterList(alerter_list,p);
       setit = true;
     }
+  }
+  if (setit) {
+    set_alerters_with_SUM_parameters();
   }
   return setit;
 }

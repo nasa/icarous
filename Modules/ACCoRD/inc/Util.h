@@ -5,7 +5,7 @@
  *
  * Utility functions.
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -28,8 +28,10 @@
 #include <algorithm>
 
 typedef long long INT64FM;
-static const double Pi  = 3.141592653589793;
-#define M_PI Pi
+#ifndef M_PI
+# define M_PI 3.141592653589793
+#endif
+static const double Pi  = M_PI;
 
 const unsigned long lnan[2]={0xffffffff, 0x7fffffff};
 #define NaN *( double* )lnan
@@ -92,152 +94,152 @@ static const INT64FM HIGH_BIT = 0x8000000000000000LLU;
 class Util {
 public:
 
-  /**
-   * Determines if a &lt; b, without being almost equal, according to the
-   * definition of the almostEquals() method..
-   * 
-   * @param a one number
-   * @param b another number
-   * @return true, if almost_less
-   */
+	/**
+	 * Determines if a &lt; b, without being almost equal, according to the
+	 * definition of the almostEquals() method..
+	 *
+	 * @param a one number
+	 * @param b another number
+	 * @return true, if almost_less
+	 */
 	static bool almost_less(double a, double b);
 
-  /**
-   * Determines if a &lt; b, without being almost equal, according to the
-   * definition of the almostEquals() method..
-   * 
-   * @param a one number
-   * @param b another number
-   * @param maxUlps maximum units of least precision
-   * @return true, if almost_less
-   */
+	/**
+	 * Determines if a &lt; b, without being almost equal, according to the
+	 * definition of the almostEquals() method..
+	 *
+	 * @param a one number
+	 * @param b another number
+	 * @param maxUlps maximum units of least precision
+	 * @return true, if almost_less
+	 */
 	static bool almost_less(double a, double b, INT64FM maxUlps);
 
-  /**
-   * Determines if a &gt; b, without being almost equal, according to the
-   * definition of the almostEquals() method.
-   * 
-   * @param a one number
-   * @param b another number
-   * @return true, if almost_greater
-   */
+	/**
+	 * Determines if a &gt; b, without being almost equal, according to the
+	 * definition of the almostEquals() method.
+	 *
+	 * @param a one number
+	 * @param b another number
+	 * @return true, if almost_greater
+	 */
 	static bool almost_greater(double a, double b);
 
-  /**
-   * Determines if a &gt; b, without being almost equal, according to the
-   * definition of the almostEquals() method.
-   * 
-   * @param a one number
-   * @param b another number
-   * @param maxUlps maximum units of least precision
-   * @return true, if almost_greater
-   */
+	/**
+	 * Determines if a &gt; b, without being almost equal, according to the
+	 * definition of the almostEquals() method.
+	 *
+	 * @param a one number
+	 * @param b another number
+	 * @param maxUlps maximum units of least precision
+	 * @return true, if almost_greater
+	 */
 	static bool almost_greater(double a, double b, INT64FM maxUlps);
 
-  /**
-   * Determines if a is greater than or almost equal to b, according to the
-   * definition of the almostEquals() method.
-   * 
-   * @param a one number
-   * @param b another number
-   * @param maxUlps maximum units of least precision
-   * @return true, if almost greater or equal
-   */
+	/**
+	 * Determines if a is greater than or almost equal to b, according to the
+	 * definition of the almostEquals() method.
+	 *
+	 * @param a one number
+	 * @param b another number
+	 * @param maxUlps maximum units of least precision
+	 * @return true, if almost greater or equal
+	 */
 	static bool almost_geq(double a, double b, INT64FM maxUlps);
 
-  /**
-   * Determines if a is greater than or almost equal to b, according to the
-   * definition of the almostEquals() method.
-   * 
-   * @param a one number
-   * @param b another number
-   * @return true, if almost great or equal
-   */
+	/**
+	 * Determines if a is greater than or almost equal to b, according to the
+	 * definition of the almostEquals() method.
+	 *
+	 * @param a one number
+	 * @param b another number
+	 * @return true, if almost great or equal
+	 */
 	static bool almost_geq(double a, double b);
 
-  /**
-   * Determines if a is less than or almost equal to b, according to the
-   * definition of the almostEquals() method.
-   * 
-   * @param a one number
-   * @param b another number
-   * @param maxUlps maximum units of least precision
-   * @return true, if almost less or equal
-   */
+	/**
+	 * Determines if a is less than or almost equal to b, according to the
+	 * definition of the almostEquals() method.
+	 *
+	 * @param a one number
+	 * @param b another number
+	 * @param maxUlps maximum units of least precision
+	 * @return true, if almost less or equal
+	 */
 	static bool almost_leq(double a, double b, INT64FM maxUlps);
 
-  /**
-   * Determines if a is less than or almost equal to b, according to the
-   * definition of the almostEquals() method.
-   * 
-   * @param a one number
-   * @param b another number
-   * @return true, if almost less or equal
-   */
+	/**
+	 * Determines if a is less than or almost equal to b, according to the
+	 * definition of the almostEquals() method.
+	 *
+	 * @param a one number
+	 * @param b another number
+	 * @return true, if almost less or equal
+	 */
 	static bool almost_leq(double a, double b);
 
-  /**
-   * Determines if these two doubles, relative to each other, are almost
-   * equal. The "nearness" metric is captured in maxUlps.
-   * Mathematically, a == b is the same as a - b == 0.  Due to quirks
-   * in floating point, generally almostEquals(a, b) is not the same
-   * as almostEquals(a - b, 0).  The form without the subtraction is
-   * preferred.  <p>
-   * 
-   * Consistent with the IEEE-754 floating point specification, "not a number"
-   * (NaN) won't compare as equal to anything (including itself or another
-   * NaN).
-   * <p>
-   * 
-   * If two doubles are almost_equals() with a maxUlps parameter of 16348, then
-   * this means there can be at most 16347 floating point
-   * numbers between them. A value of 16348 for "units of least
-   * precision" (ulps) corresponds to a and b agreeing to about 13
-   * decimal places.  Said another way, the two numbers have an
-   * absolute difference of (approximately) 1e-13 if the two floating
-   * point numbers are near 1.  <p>
-   * 
-   * The maxUlps parameter must be positive and smaller than 2^50
-   * <p>
-   * 
-   * The implementation is based on the discussion (but not the code) in
-   * (google: comparing floats cygnus)
-   * 
-   * @param a one number
-   * @param b another number
-   * @param maxUlps maximum units of least precision
-   * @return true, if almost equals
-   */
+	/**
+	 * Determines if these two doubles, relative to each other, are almost
+	 * equal. The "nearness" metric is captured in maxUlps.
+	 * Mathematically, a == b is the same as a - b == 0.  Due to quirks
+	 * in floating point, generally almostEquals(a, b) is not the same
+	 * as almostEquals(a - b, 0).  The form without the subtraction is
+	 * preferred.  <p>
+	 *
+	 * Consistent with the IEEE-754 floating point specification, "not a number"
+	 * (NaN) won't compare as equal to anything (including itself or another
+	 * NaN).
+	 * <p>
+	 *
+	 * If two doubles are almost_equals() with a maxUlps parameter of 16348, then
+	 * this means there can be at most 16347 floating point
+	 * numbers between them. A value of 16348 for "units of least
+	 * precision" (ulps) corresponds to a and b agreeing to about 13
+	 * decimal places.  Said another way, the two numbers have an
+	 * absolute difference of (approximately) 1e-13 if the two floating
+	 * point numbers are near 1.  <p>
+	 *
+	 * The maxUlps parameter must be positive and smaller than 2^50
+	 * <p>
+	 *
+	 * The implementation is based on the discussion (but not the code) in
+	 * (google: comparing floats cygnus)
+	 *
+	 * @param a one number
+	 * @param b another number
+	 * @param maxUlps maximum units of least precision
+	 * @return true, if almost equals
+	 */
 	static bool almost_equals(double a, double b, INT64FM maxUlps);
 
-  /** Are these two numbers almost equal, given the PRECISION_DEFAULT
-   * 
-   * @param a one number
-   * @param b another number 
-   * @return true, if almost equals
-   */
+	/** Are these two numbers almost equal, given the PRECISION_DEFAULT
+	 *
+	 * @param a one number
+	 * @param b another number
+	 * @return true, if almost equals
+	 */
 	static bool almost_equals(double a, double b);
 
 
-  /** 
-   * Comparison of two values to determine if their absolute difference is within a value 
-   * epsilon.  If the epsilon value is too small relative to the 
-   * a and b values in question, then this is essentially the same as ==.  Epsilon must be positive.
-   * 
-   * @param a one number
-   * @param b another number
-   * @param epsilon maximum difference
-   * @return true, if values are within epsilon
-   */
+	/**
+	 * Comparison of two values to determine if their absolute difference is within a value
+	 * epsilon.  If the epsilon value is too small relative to the
+	 * a and b values in question, then this is essentially the same as ==.  Epsilon must be positive.
+	 *
+	 * @param a one number
+	 * @param b another number
+	 * @param epsilon maximum difference
+	 * @return true, if values are within epsilon
+	 */
 	static bool within_epsilon(double a, double b, double epsilon);
 
-  /**
-   * Returns true if the magnitude of a is less than epsilon. Epsilon must be positive.
-   * 
-   * @param a a number
-   * @param epsilon maximum value
-   * @return true, if value is within epsilon
-   */
+	/**
+	 * Returns true if the magnitude of a is less than epsilon. Epsilon must be positive.
+	 *
+	 * @param a a number
+	 * @param epsilon maximum value
+	 * @return true, if value is within epsilon
+	 */
 	static bool within_epsilon(double a, double epsilon);
 
 
@@ -250,85 +252,85 @@ public:
 	 */
 	static double discretizeDir(double voz, double nvoz, double discreteUnits);
 
-  /** Square 
-   * 
-   * @param x value
-   * @return square of value
-   */
+	/** Square
+	 *
+	 * @param x value
+	 * @return square of value
+	 */
 	static double sq(const double x);
 	/** return the absolute value */
 	static INT64FM llabs(const INT64FM x);
-  /** a safe (won't return NaN or throw exceptions) version of square root 
-   * 
-   * @param x value
-   * @return square root of value
-   */
+	/** a safe (won't return NaN or throw exceptions) version of square root
+	 *
+	 * @param x value
+	 * @return square root of value
+	 */
 	static double sqrt_safe(const double x);
 
-//	/**
-//	 * Fast inverse square root approximation, as presented in https://en.wikipedia.org/wiki/Fast_inverse_square_root
-//	 */
-//	static double Q_rsqrt(const double number);
+	//	/**
+	//	 * Fast inverse square root approximation, as presented in https://en.wikipedia.org/wiki/Fast_inverse_square_root
+	//	 */
+	//	static double Q_rsqrt(const double number);
 
-  /** a safe (won't return NaN or throw exceptions) version of arc-tangent 
-   * 
-   * @param y ordinate coordinate
-   * @param x abscissa coordinate
-   * @return arc-tangent
-   */
+	/** a safe (won't return NaN or throw exceptions) version of arc-tangent
+	 *
+	 * @param y ordinate coordinate
+	 * @param x abscissa coordinate
+	 * @return arc-tangent
+	 */
 	static double atan2_safe(const double y, const double x);
-  /** a safe (won't return NaN or throw exceptions) version of arc-sine 
-   * @param x value
-   * @return arc-sine of value
-   * */
+	/** a safe (won't return NaN or throw exceptions) version of arc-sine
+	 * @param x value
+	 * @return arc-sine of value
+	 * */
 	static double asin_safe(double x);
-  /** a safe (won't return NaN or throw exceptions) version of arc-cosine
-   * 
-   * @param x angle
-   * @return the arc-cosine of x, between [0,pi)
-   */
+	/** a safe (won't return NaN or throw exceptions) version of arc-cosine
+	 *
+	 * @param x angle
+	 * @return the arc-cosine of x, between [0,pi)
+	 */
 	static double acos_safe(double x);
-  /** Discriminant of a quadratic
-   * 
-   * @param a a coefficient of quadratic
-   * @param b b coefficient of quadratic
-   * @param c c coefficient of quadratic
-   * @return discriminant
-   */
+	/** Discriminant of a quadratic
+	 *
+	 * @param a a coefficient of quadratic
+	 * @param b b coefficient of quadratic
+	 * @param c c coefficient of quadratic
+	 * @return discriminant
+	 */
 	static double discr(const double a, const double b, const double c);
-  /** Quadratic equation, eps = -1 or +1 
-   * 
-   * @param a a coefficient of quadratic
-   * @param b b coefficient of quadratic
-   * @param c c coefficient of quadratic
-   * @param eps -1 or +1 (to indicate which solution you want)
-   * @return root of quadratic
-   */
+	/** Quadratic equation, eps = -1 or +1
+	 *
+	 * @param a a coefficient of quadratic
+	 * @param b b coefficient of quadratic
+	 * @param c c coefficient of quadratic
+	 * @param eps -1 or +1 (to indicate which solution you want)
+	 * @return root of quadratic
+	 */
 	static double root(const double a, const double b, const double c, int eps);
-  /** root2b(a,b,c,eps) = root(a,2*b,c,eps) , eps = -1 or +1 
-   * 
-   * @param a a coefficient of quadratic
-   * @param b b coefficient of quadratic
-   * @param c c coefficient of quadratic
-   * @param eps -1 or +1 (to indicate which solution you want)
-   * @return root of quadratic
-   */
+	/** root2b(a,b,c,eps) = root(a,2*b,c,eps) , eps = -1 or +1
+	 *
+	 * @param a a coefficient of quadratic
+	 * @param b b coefficient of quadratic
+	 * @param c c coefficient of quadratic
+	 * @param eps -1 or +1 (to indicate which solution you want)
+	 * @return root of quadratic
+	 */
 	static double root2b(const double a, const double b, const double c, const int eps);
-  /** 
-   * Returns +1 if the argument is positive or 0, -1 otherwise.  Note:
-   * This is not the classic signum function from mathematics that 
-   * returns 0 when a 0 is supplied. 
-   * 
-   * @param x value
-   * @return sign of value
-   */
+	/**
+	 * Returns +1 if the argument is positive or 0, -1 otherwise.  Note:
+	 * This is not the classic signum function from mathematics that
+	 * returns 0 when a 0 is supplied.
+	 *
+	 * @param x value
+	 * @return sign of value
+	 */
 	static int    sign(const double x);
 
-  /**
-   * Return +1 if the value is greater than 0, -1 if it is less than 0, or 0.
-   * @param x value to be checked
-   * @return sign as a number (including 0)
-   */
+	/**
+	 * Return +1 if the value is greater than 0, -1 if it is less than 0, or 0.
+	 * @param x value to be checked
+	 * @return sign as a number (including 0)
+	 */
 	static int signTriple(const double x);
 
 	/**
@@ -357,25 +359,35 @@ public:
 
 	static const long& max(const long& x, const long& y);
 
-  /**
-   * Computes the modulo of val and mod. The returned value is in the range [0,mod)
-   * 
-   * @param val numerator
-   * @param mod denominator
-   * @return modulo value
-   */
+	/**
+	 * Computes the modulo of val and mod. The returned value is in the range [0,mod)
+	 *
+	 * @param val numerator
+	 * @param mod denominator
+	 * @return modulo value
+	 */
 	static double modulo(double val, double mod);
 
-  /**
-   * Converts <code>rad</code> radians to the range
-   * (-<code>pi</code>, <code>pi</code>].
-   * <p>Note: this should not be used for argument reduction for trigonometric functions (Math.sin(to_pi(x))
-   *
-   * @param rad Radians
-   *
-   * @return <code>rad</code> in the range
-   * (-<code>pi</code>, <code>pi</code>].
-   */
+	/**
+	 * Computes the modulo of val and mod. If mod > 0, the returned value is in the r
+	 * ange [0,mod). Otherwise, returns val.
+	 *
+	 * @param val numerator
+	 * @param mod denominator
+	 * @return modulo value
+	 */
+	static double safe_modulo(double val, double mod);
+
+	/**
+	 * Converts <code>rad</code> radians to the range
+	 * (-<code>pi</code>, <code>pi</code>].
+	 * <p>Note: this should not be used for argument reduction for trigonometric functions (Math.sin(to_pi(x))
+	 *
+	 * @param rad Radians
+	 *
+	 * @return <code>rad</code> in the range
+	 * (-<code>pi</code>, <code>pi</code>].
+	 */
 	static double to_pi(double rad);
 
 	/**
@@ -388,16 +400,16 @@ public:
 	 */
 	static double to_360(double deg);
 
-  /**
-   * Converts <code>rad</code> radians to the range
-   * [<code>0</code>, <code>2*pi</code>]. 
-   * <p>Note: this should not be used for argument reduction for trigonometric functions (Math.sin(to_2pi(x))
-   *
-   * @param rad Radians
-   *
-   * @return <code>rad</code> in the range
-   * [<code>0</code>, <code>2*pi</code>).
-   */
+	/**
+	 * Converts <code>rad</code> radians to the range
+	 * [<code>0</code>, <code>2*pi</code>].
+	 * <p>Note: this should not be used for argument reduction for trigonometric functions (Math.sin(to_2pi(x))
+	 *
+	 * @param rad Radians
+	 *
+	 * @return <code>rad</code> in the range
+	 * [<code>0</code>, <code>2*pi</code>).
+	 */
 	static double to_2pi(double rad);
 
 	/**
@@ -422,93 +434,93 @@ public:
 	static double to_180(double deg);
 
 
-  /** Returns true if string s1 is less than or equal to string s2.
-   * 
-   * @param s1 one string
-   * @param s2 another string
-   * @return true, if s1 is less or equals to s2
-   */
+	/** Returns true if string s1 is less than or equal to string s2.
+	 *
+	 * @param s1 one string
+	 * @param s2 another string
+	 * @return true, if s1 is less or equals to s2
+	 */
 	static bool less_or_equal(std::string s1, std::string s2);
 
-  /**
-   * Returns true if a turn from track angle alpha to track angle beta is 
-   * clockwise (by the shortest path).  If the two angles are equal, then 
-   * this function returns true.
-   * 
-   * @param alpha one angle
-   * @param beta another angle
-   * @return true, if clockwise
-   */
+	/**
+	 * Returns true if a turn from track angle alpha to track angle beta is
+	 * clockwise (by the shortest path).  If the two angles are equal, then
+	 * this function returns true.
+	 *
+	 * @param alpha one angle
+	 * @param beta another angle
+	 * @return true, if clockwise
+	 */
 	static bool clockwise(double alpha, double beta);
 
-  /**
-   * Returns 1 if the minimal turn to goalTrack (i.e. less than pi) is to the right, else -1
-   * @param initTrack   initial track [rad]
-   * @param goalTrack   target track [rad]
-   * @return direction of turn
-   */
+	/**
+	 * Returns 1 if the minimal turn to goalTrack (i.e. less than pi) is to the right, else -1
+	 * @param initTrack   initial track [rad]
+	 * @param goalTrack   target track [rad]
+	 * @return direction of turn
+	 */
 	static int turnDir(double initTrack, double goalTrack);
 
 
-  /**
-   * Returns the smallest angle between two track angles [0,PI].
-   * 
-   * @param alpha one angle
-   * @param beta another angle
-   * @return difference in angle
-   */
+	/**
+	 * Returns the smallest angle between two track angles [0,PI].
+	 *
+	 * @param alpha one angle
+	 * @param beta another angle
+	 * @return difference in angle
+	 */
 	static double turnDelta(double alpha, double beta);
 
 
-  /**
-   * Returns the smallest angle between two track angles [-PI,PI]. The sign indicates the direction of 
-   * the turn, positive is clockwise, negative counterclockwise.
-   * 
-   * @param alpha one angle
-   * @param beta another angle
-   * @return angle difference
-   */
+	/**
+	 * Returns the smallest angle between two track angles [-PI,PI]. The sign indicates the direction of
+	 * the turn, positive is clockwise, negative counterclockwise.
+	 *
+	 * @param alpha one angle
+	 * @param beta another angle
+	 * @return angle difference
+	 */
 	static double signedTurnDelta(double alpha, double beta);
 
 
-  /**
-   * Returns the angle between two tracks when turning in direction indicated by turnRight flag [0,2PI]
-   * Note: this function can return an angle larger than PI!
-   * 
-   * @param alpha one angle
-   * @param beta  another angle
-   * @param turnRight when true, measure angles from the right
-   * @return angle difference
-   */
+	/**
+	 * Returns the angle between two tracks when turning in direction indicated by turnRight flag [0,2PI]
+	 * Note: this function can return an angle larger than PI!
+	 *
+	 * @param alpha one angle
+	 * @param beta  another angle
+	 * @param turnRight when true, measure angles from the right
+	 * @return angle difference
+	 */
 	static double turnDelta(double alpha, double beta, bool turnRight);
 
-  /**
-   * Returns the angle between two tracks when turning in direction indicated by turnRight flag [0,2PI]
-   * Note: this function can return an angle larger than PI!
-   * 
-   * @param alpha one angle
-   * @param beta another angle
-   * @param dir = +/- 1 + right, - left
-   * @return angle difference
-   */
+	/**
+	 * Returns the angle between two tracks when turning in direction indicated by turnRight flag [0,2PI]
+	 * Note: this function can return an angle larger than PI!
+	 *
+	 * @param alpha one angle
+	 * @param beta another angle
+	 * @param dir = +/- 1 + right, - left
+	 * @return angle difference
+	 */
 	static double turnDelta(double alpha, double beta, int dir);
 
 	static bool is_double(const std::string& str);
 
-	  /**
-	   * Returns true if the stored value for key is likely a boolean
-	   * @param s name
-	   * @return true if string value is true/false/t/f, false otherwise
-	   */
-	 static bool is_boolean(const std::string& s);
+	/**
+	 * Returns true if the stored value for key is likely a boolean
+	 * @param s name
+	 * @return true if string value is true/false/t/f, false otherwise
+	 */
+	static bool is_boolean(const std::string& s);
 
-	  /**
-	   * Returns a double value which is a representation of the given string.  If the string does
-	   * not represent a number, an arbitrary value is returned.
-	   * In many cases, but not all, if the string is not a number then 0.0 is returned.  However,
-	   * on some platforms, "1abc" will return 1.  If one wants to know
-	   * the fact that the string is not a number, then use Util.is_double() method.
-	   */
+	/**
+	 * Returns a double value which is a representation of the given string.  If the string does
+	 * not represent a number, an arbitrary value is returned.
+	 * In many cases, but not all, if the string is not a number then 0.0 is returned.  However,
+	 * on some platforms, "1abc" will return 1.  If one wants to know
+	 * the fact that the string is not a number, then use Util.is_double() method.
+	 */
 	static double parse_double(const std::string& str);
 
 	/** @param degMinSec  Lat/Lon String of the form "46:55:00"  or "-111:57:00"
@@ -520,22 +532,22 @@ public:
 	 * Otherwise, string must be a single decimal number
 	 *
 	 */
-  /** Reads in a clock string and converts it to seconds.  
-   * Accepts hh:mm:ss, mm:ss, and ss.
-   * 
-   * @param s string value
-   * @return time in [s]
-   */
+	/** Reads in a clock string and converts it to seconds.
+	 * Accepts hh:mm:ss, mm:ss, and ss.
+	 *
+	 * @param s string value
+	 * @return time in [s]
+	 */
 	static double parse_time(const std::string& s);
 
-  /**
-   * Convert the decimal time (in seconds) into a 0:00:00 string. This prints as many 
-   * digits as necessary for the hours (one or two, typically).  See {@link #time_str(double)} for an
-   * alternate format.
-   * 
-   * @param t time in seconds
-   * @return String of hours:mins:secs
-   */
+	/**
+	 * Convert the decimal time (in seconds) into a 0:00:00 string. This prints as many
+	 * digits as necessary for the hours (one or two, typically).  See {@link #time_str(double)} for an
+	 * alternate format.
+	 *
+	 * @param t time in seconds
+	 * @return String of hours:mins:secs
+	 */
 	static std::string hoursMinutesSeconds(double t);
 
 	/**

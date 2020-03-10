@@ -1,7 +1,7 @@
 /*
  * CRSSConfig
  *
- *Copyright (c) 2011-2017 United States Government as represented by
+ *Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -31,7 +31,7 @@ namespace larcfm {
 
   }
   
-  void CRSSConfig::load_parameters(ParameterReader& sRdr, CDSS& cdss, CRSS& crss) {
+  void CRSSConfig::load_parameters(ParameterReader& sRdr, CDSSCyl& cdss, CRSS& crss) {
     crss.setDistance(sRdr.getParametersRef().getValue("D", "NM"));
     crss.setHeight(sRdr.getParametersRef().getValue("H", "ft"));
     cdss.setDistance(sRdr.getParametersRef().getValue("D", "NM"));

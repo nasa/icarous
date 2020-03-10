@@ -39,7 +39,7 @@ namespace larcfm {
         Vect3 vi = fp.initialVelocity(i, linear);
         double st = Util::max(fi_st,B+to);
         double et = Util::min(fi_et,T+to);
-        Vect3 si = fp.point(i).point();
+        Vect3 si = fp.point(i).vect3();
         Vect3 si_o = si -(vi * (fi_st-to));
         Vect3 s = so - (si_o);
         double rel_st = st-to;
@@ -65,7 +65,7 @@ namespace larcfm {
         Vect3 vi = fp.initialVelocity(i, linear);
         double st = Util::max(fi_st,B+to);
         double et = Util::min(fi_et,T+to);
-        Vect3 si = fp.point(i).point();
+        Vect3 si = fp.point(i).vect3();
         Vect3 si_o = si -(vi * (fi_st-to));
         Vect3 s = so - (si_o);
         double rel_st = st-to;
@@ -90,7 +90,7 @@ namespace larcfm {
         Vect3 vi = fp.initialVelocity(i, linear);
         double st = Util::max(fi_st,B+to);
         double et = Util::min(fi_et,T+to);
-        Vect3 si = fp.point(i).point();
+        Vect3 si = fp.point(i).vect3();
         Vect3 si_o = si -(vi * (fi_st-to));
         Vect3 s = so - (si_o);
         double rel_st = st-to;

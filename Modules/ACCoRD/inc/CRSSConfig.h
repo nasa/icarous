@@ -1,7 +1,7 @@
 /*
  * CRSSConfig.h
  *
- * Copyright (c) 2011-2017 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -10,7 +10,7 @@
 #ifndef CRSSConfig_H_
 #define CRSSConfig_H_
 
-#include "CDSS.h"
+#include "CDSSCyl.h"
 #include "CRSS.h"
 #include "StateReader.h"
 #include "Projection.h"
@@ -35,7 +35,7 @@ namespace larcfm {
 
 
     static void setDefaultsForParameters(ParameterReader& sRdr);
-    static void load_parameters(ParameterReader& sRdr, CDSS& cdss, CRSS& crss);
+    static void load_parameters(ParameterReader& sRdr, CDSSCyl& cdss, CRSS& crss);
 
 
   private:

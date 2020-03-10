@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2018 United States Government as represented by
+ * Copyright (c) 2012-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -7,7 +7,7 @@
 #ifndef TCAS3D_H_
 #define TCAS3D_H_
 
-#include "Detection3DSUM.h"
+#include "Detection3D.h"
 #include "TCAS2D.h"
 #include "Vect2.h"
 #include "TCASTable.h"
@@ -15,7 +15,7 @@
 #include "Triple.h"
 
 namespace larcfm {
-class TCAS3D : public Detection3DSUM {
+class TCAS3D : public Detection3D {
 
 private:
   TCASTable table_;
@@ -29,6 +29,11 @@ public:
   /** Constructor that specifies a particular instance of the TCAS tables. */
   explicit TCAS3D(const TCASTable& tables);
 
+  /**
+   * @return one static TCAS3D
+   */
+  static const TCAS3D& A_TCAS3D();
+
   /** Make TCAS3D object with empty Table **/
   static TCAS3D make_Empty();
 
@@ -37,7 +42,6 @@ public:
 
   /** Make TCAS3D objec with a TA Table **/
   static TCAS3D make_TCASII_TA();
-
 
   /** This returns a copy of the internal TCAS table */
   TCASTable& getTCASTable();
@@ -60,9 +64,8 @@ public:
   // if true, within lookahead time T, the ownship has a TCAS resolution advisory (at time time before T) (effectively conflict detection)
   ConflictData RA3D(const Vect3& so, const Velocity& vo,  const Vect3& si, const Velocity& vi, double B, double T) const;
 
-  bool violation(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) const;
-
-  bool conflict(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
+  // The methods violation and conflict are inherited from Detection3DSum. This enable a uniform
+  // treatment of border cases in the generic bands algorithms
 
   ConflictData conflictDetection(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi, double B, double T) const;
 

@@ -4,7 +4,7 @@
  *           Ricky Butler              NASA Langley Research Center
  *           Jeff Maddalon             NASA Langley Research Center
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -646,19 +646,36 @@ std::vector<std::string> Position::toStringList() const {
 }
 
 std::vector<std::string> Position::toStringList(int precision) const {
+	return toStringList(precision,0,false);
+}
+
+std::vector<std::string> Position::toStringList(int precision, int latLonExtraPrecision, bool internalUnits) const {
 	std::vector<std::string> ret;
+	int extra = std::max(0,latLonExtraPrecision);
 	if (isInvalid()) {
 		ret.push_back("-");
 		ret.push_back("-");
 		ret.push_back("-");
 	} else if (latlon) {
-		ret.push_back(FmPrecision(ll.latitude(),precision));
-		ret.push_back(FmPrecision(ll.longitude(),precision));
-		ret.push_back(FmPrecision(ll.altitude(),precision));
+		if (internalUnits) {
+			ret.push_back(FmPrecision(ll.lat(),precision+extra));
+			ret.push_back(FmPrecision(ll.lon(),precision+extra));
+			ret.push_back(FmPrecision(ll.alt(),precision));
+		} else {
+			ret.push_back(FmPrecision(ll.latitude(),precision+extra));
+			ret.push_back(FmPrecision(ll.longitude(),precision+extra));
+			ret.push_back(FmPrecision(ll.altitude(),precision));
+		}
 	} else {
-		ret.push_back(FmPrecision(Units::to("NM",s3.x),precision));
-		ret.push_back(FmPrecision(Units::to("NM",s3.y),precision));
-		ret.push_back(FmPrecision(Units::to("ft",s3.z),precision));
+		if (internalUnits) {
+			ret.push_back(FmPrecision(s3.x,precision));
+			ret.push_back(FmPrecision(s3.y,precision));
+			ret.push_back(FmPrecision(s3.z,precision));
+		} else {
+			ret.push_back(FmPrecision(Units::to("NM",s3.x),precision));
+			ret.push_back(FmPrecision(Units::to("NM",s3.y),precision));
+			ret.push_back(FmPrecision(Units::to("ft",s3.z),precision));
+		}
 	}
 	return ret;
 }

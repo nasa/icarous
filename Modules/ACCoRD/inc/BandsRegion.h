@@ -4,7 +4,7 @@
  * Contact: Jeff Maddalon
  * Organization: NASA/Langley Research Center
  *
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -19,16 +19,27 @@ namespace larcfm {
 
 class BandsRegion {
 public:
-  enum Region {UNKNOWN,NONE,RECOVERY,NEAR,MID,FAR};
+  /*
+   * NONE: No band
+   * FAR: Far conflict band
+   * MID: Mid conflict bands
+   * NEAR: Near conflict band
+   * RECOVERY: Band for violation recovery
+   * UNKNOWN : Invalid band
+   */
+
+  enum Region {UNKNOWN,NONE,FAR,MID,NEAR,RECOVERY};
+
+  // Number of conflict bands (NEAR, MID, FAR)
   static const int NUMBER_OF_CONFLICT_BANDS = 3;
-  static bool isValidBand(Region rt);
-  static bool isResolutionBand(Region rt);
-  static bool isConflictBand(Region rt);
+  static bool isValidBand(Region region);
+  static bool isResolutionBand(Region region);
+  static bool isConflictBand(Region region);
   static Region valueOf(const std::string& str);
-  static std::string to_string(Region rt);
-  static int order(Region rt);
-  static int orderOfConflictRegion(Region rt);
-  static Region conflictRegionFromOrder(int i);
+  static std::string to_string(Region region);
+  static int orderOfRegion(Region region);
+  static int orderOfConflictRegion(Region region);
+  static Region regionFromOrder(int i);
 
 };
 

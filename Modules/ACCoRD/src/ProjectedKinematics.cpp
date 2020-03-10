@@ -1,7 +1,7 @@
 /*
  * Kinematics.cpp
  * 
- * Copyright (c) 2011-2018 United States Government as represented by
+ * Copyright (c) 2011-2019 United States Government as represented by
  * the National Aeronautics and Space Administration.  No copyright
  * is claimed in the United States under Title 17, U.S.Code. All Other
  * Rights Reserved.
@@ -77,50 +77,22 @@ bool ProjectedKinematics::clockwise(Position s1, Velocity v1, Position s2) {
 	return Util::clockwise(trk1, trk2);
 }
 
-
-///**
-// * Turn velocity at point s1, given addition position s2 on turn at relative time t
-// * @param s1 position to take tangent
-// * @param s2 additional position on turn
-// * @param R radius
-// * @param t time to get from s1 to s2 (negative if s1 after s2)
-// * @return velocity at point s1
-// */
-//Velocity ProjectedKinematics::turnVelocity(Position s1, Position s2, Position C, double t) {
-//	  double R = s1.distanceH(C);
-//	  double gs = turnDistance(s1,s2,R)/t;
-//	  double vs = (s2.z() - s1.z())/t;
-//	  double trk = s1.track(C); // work from this due to potential GC issues
-//	  double trk1 = C.track(s1);
-//	  double trk2 = C.track(s2);
-//	  bool clockwise = Util::clockwise(trk1, trk2);
-//	  if (t < 0) {
-//		  clockwise = !clockwise;
-//	  }
-//	  if (clockwise) {
-//		  trk = Util::to_2pi(trk - Pi/2);
-//	  } else if (clockwise) {
-//		  trk = Util::to_2pi(trk + Pi/2);
-//	  } else if (t < 0) {
-//
-//	  }
-//	  return Velocity::mkTrkGsVs(trk, gs, vs);
+//double ProjectedKinematics::closestTimeOnTurn(const Position& turnstart, const Velocity& v1, double omega, const Position& center, const Position& x, double endTime) {
+//    Vect3 s3 = turnstart.vect3();
+//    Vect3 x3 = x.vect3();
+//    if (turnstart.isLatLon()) {
+////	      EuclideanProjection proj = Projection::createProjection(center.lla().zeroAlt());
+////	      s3 = proj.project(turnstart);
+////	      x3 = proj.project(x);
+////	      v1 = proj.projectVelocity(turnstart, v1);
+//    	return KinematicsLatLon::closestTimeOnTurn(turnstart.lla(), v1, omega, x.lla(), endTime);
+//    }
+//    return Kinematics::closestTimeOnTurn(s3, v1, omega, x3, endTime);
 //}
+//
 
-double ProjectedKinematics::closestTimeOnTurn(const Position& turnstart, const Velocity& v1, double omega, const Position& center, const Position& x, double endTime) {
-    Vect3 s3 = turnstart.vect3();
-    Vect3 x3 = x.vect3();
-    if (turnstart.isLatLon()) {
-//	      EuclideanProjection proj = Projection::createProjection(center.lla().zeroAlt());
-//	      s3 = proj.project(turnstart);
-//	      x3 = proj.project(x);
-//	      v1 = proj.projectVelocity(turnstart, v1);
-    	return KinematicsLatLon::closestTimeOnTurn(turnstart.lla(), v1, omega, x.lla(), endTime);
-    }
-    return Kinematics::closestTimeOnTurn(s3, v1, omega, x3, endTime);
-}
 
-double ProjectedKinematics::closestDistOnTurn(const Position& turnstart, const Velocity& v1, double R, int dir, const Position& center, const Position& x, double endDist) {
+double ProjectedKinematics::closestDistOnTurn(const Position& turnstart, const Velocity& v1, double R, int dir, const Position& x, double endDist) {
     Vect3 s3 = turnstart.vect3();
     Vect3 x3 = x.vect3();
     if (turnstart.isLatLon()) {
