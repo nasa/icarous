@@ -134,8 +134,7 @@ typedef struct{
  * @enum Region
  * Defines the band types
  */
-enum Region {UNKNOWN,NONE,RECOVERY,NEAR,MID,FAR,END_OF_REGION};
-
+enum Region {UNKNOWN,NONE,FAR,MID,NEAR,RECOVERY,END_OF_REGION};
 
 /**@}*/
 #endif //ICAROUS_CFS_TRAFFIC_MSG_H
