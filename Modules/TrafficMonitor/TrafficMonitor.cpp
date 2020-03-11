@@ -111,7 +111,7 @@ void TrafficMonitor::MonitorTraffic(double position[],double velocity[],double _
         
 
         // Use traffic only if its data has been updated within the last 10s.
-        if(elapsedTime - _traffic.time < 10){
+        if(elapsedTime - _traffic.time < 120){
             DAA.addTrafficState(name, si, vi, _traffic.time);
         }else{
             staleData.push_back(_traffic);
