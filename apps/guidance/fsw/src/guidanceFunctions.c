@@ -2,129 +2,13 @@
 #include "guidance.h"
 #include <math.h>
 
-void GUIDANCE_Run(){
-
-    switch(guidanceAppData.guidanceMode){
-        case NOOP:{
-            break;
-        }
-
-        case PRIMARY_FLIGHTPLAN:{
-            int nextWP  = ComputeFlightplanGuidanceInput(&guidanceAppData.primaryFlightPlan,
-                                                        guidanceAppData.nextPrimaryWP);
-            guidanceAppData.nextPrimaryWP = nextWP;
-            break;
-        }
-
-        case SECONDARY_FLIGHTPLAN:{
-            int nextWP  = ComputeFlightplanGuidanceInput(&guidanceAppData.secondaryFlightPlan,
-                                                        guidanceAppData.nextSecondaryWP);
-            guidanceAppData.nextSecondaryWP = nextWP;
-
-            break;
-        }
-
-        case POINT2POINT:{
-            flightplan_t fp;
-            fp.num_waypoints = 2;
-            memset(fp.id,0,sizeof(char)*20);
-            strcpy(fp.id,"P2P");
-            // Starting position is the first waypoint
-            fp.waypoints[0].latitude = guidanceAppData.position.latitude;
-            fp.waypoints[0].longitude = guidanceAppData.position.longitude;
-            fp.waypoints[0].altitude = guidanceAppData.position.altitude_abs;
-
-            // Target position is second waypoint
-            fp.waypoints[1].latitude = guidanceAppData.point[0];
-            fp.waypoints[1].longitude = guidanceAppData.point[1];
-            fp.waypoints[1].altitude = guidanceAppData.point[2];
-
-            fp.waypoints[0].wp_metric = WP_METRIC_SPEED;
-            fp.waypoints[0].value_to_next_wp = guidanceAppData.pointSpeed;
-            ComputeFlightplanGuidanceInput(&fp,1);
-
-            //bool status = Point2PointControl();
-            //if(status)
-                //guidanceAppData.guidanceMode = NOOP;
-            break;
-        }
-
-        case VECTOR:{
-            SendSBMsg(guidanceAppData.velCmd);
-            break;
-        }
-
-        case ORBIT:{
-            //TODO: 
-            break;
-        }
-
-        case HELIX:{
-            //TODO:
-            break;
-        }
-
-        case TAKEOFF:{
-            ComputeTakeoffGuidanceInput();
-            break;
-        }
-
-        case LAND:{
-            //TODO:
-            break;
-        }
-
-        case SPEED_CHANGE: break;
-
-    }
-
-    PublishGuidanceStatus();
-}
-
-void PublishGuidanceStatus(){
-
-    guidance_status_t status;
-    CFE_SB_InitMsg(&status,GUIDANCE_STATUS_MID,sizeof(guidance_status_t),TRUE);
-    status.mode = guidanceAppData.guidanceMode;
-    if(status.mode == PRIMARY_FLIGHTPLAN){
-        status.nextWP = guidanceAppData.nextPrimaryWP;
-        status.totalWP = guidanceAppData.primaryFlightPlan.num_waypoints;
-    }
-    else{
-        status.nextWP = guidanceAppData.nextSecondaryWP;
-        status.totalWP = guidanceAppData.secondaryFlightPlan.num_waypoints;
-    }
-
-    status.velCmd[0] = guidanceAppData.velCmd.param1;
-    status.velCmd[1] = guidanceAppData.velCmd.param2;
-    status.velCmd[2] = guidanceAppData.velCmd.param3;
-    SendSBMsg(status);
-
-}
-
-void ComputeTakeoffGuidanceInput(){
-   if(!guidanceAppData.takeoffComplete){
-       // Send the takeoff command and let the autopilot interfaces takeoff 
-       // care of the various operations involved in takeoff
-       argsCmd_t cmd;
-       CFE_SB_InitMsg(&cmd, ICAROUS_COMMANDS_MID, sizeof(cmd), TRUE);
-       cmd.name = _TAKEOFF_;
-       cmd.param1 = 10;
-       SendSBMsg(cmd);
-       guidanceAppData.takeoffComplete = true;
-   }
-   else
-   {
-   }
-}
-
-double ComputeClimbRate(double position[3], double nextWaypoint[3], double speed){
+double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,guidanceTable_t* guidanceParams){
     double deltaH = nextWaypoint[2] - position[2];
     double climbrate;
-    if (fabs(deltaH) > guidanceAppData.guidance_tbl.climbAngleVRange &&
-        ComputeDistance(position, nextWaypoint) > guidanceAppData.guidance_tbl.climbAngleHRange){
+    if (fabs(deltaH) > guidanceParams->climbAngleVRange &&
+        ComputeDistance(position, nextWaypoint) > guidanceParams->climbAngleHRange){
         // Over longer altitude changes and distances, control the ascent/descent angle
-        double angle = guidanceAppData.guidance_tbl.climbFpAngle;
+        double angle = guidanceParams->climbFpAngle;
         if (deltaH < 0){
             angle = -angle;
         }
@@ -132,17 +16,18 @@ double ComputeClimbRate(double position[3], double nextWaypoint[3], double speed
         climbrate = cfactor * speed;
     } else {
         // Over shorter altitude changes and distances, use proportional control
-        climbrate = deltaH * guidanceAppData.guidance_tbl.climbRateGain;
+        climbrate = deltaH * guidanceParams->climbRateGain;
     }
-    if (climbrate > guidanceAppData.guidance_tbl.maxClimbRate) {
-        climbrate = guidanceAppData.guidance_tbl.maxClimbRate;
-    } else if (climbrate < guidanceAppData.guidance_tbl.minClimbRate) {
-        climbrate = guidanceAppData.guidance_tbl.minClimbRate;
+    if (climbrate > guidanceParams->maxClimbRate) {
+        climbrate = guidanceParams->maxClimbRate;
+    } else if (climbrate < guidanceParams->minClimbRate) {
+        climbrate = guidanceParams->minClimbRate;
     }
     return climbrate;
 }
 
-int ComputeFlightplanGuidanceInput(flightplan_t* fp, int nextWP)
+int ComputeFlightplanGuidanceInput(flightplan_t* fp, double position[3], int nextWP, bool* reachedStatusUpdated, guidanceTable_t* guidanceParams,
+                                   double velCmd[4], double* refSpeedPtr)
 {
     // Default to position control
     if (nextWP >= fp->num_waypoints)
@@ -152,35 +37,26 @@ int ComputeFlightplanGuidanceInput(flightplan_t* fp, int nextWP)
                               fp->waypoints[nextWP].longitude,
                               fp->waypoints[nextWP].altitude};
 
-    double position[3] = {guidanceAppData.position.latitude,
-                          guidanceAppData.position.longitude,
-                          guidanceAppData.position.altitude_rel};
 
     double dist = ComputeDistance(position, nextWaypoint);
 
     if (fp->waypoints[nextWP - 1].wp_metric == WP_METRIC_SPEED)
     {
-        guidanceAppData.refSpeed = fp->waypoints[nextWP - 1].value_to_next_wp;
+        *refSpeedPtr = fp->waypoints[nextWP - 1].value_to_next_wp;
     }
 
-    double refSpeed = guidanceAppData.refSpeed;
+    double refSpeed = *refSpeedPtr;
     
     double newPositionToTrack[3];
 
-    bool maintainspeed = ComputeOffSetPositionOnPlan(fp, position, nextWP - 1, newPositionToTrack);
+    bool maintainspeed = ComputeOffSetPositionOnPlan(fp, position, nextWP - 1, refSpeed, newPositionToTrack);
 
     // If distance to next waypoint is < captureRadius, switch to next waypoint
-    if (dist <= refSpeed * guidanceAppData.capRScaling)
+    if (dist <= refSpeed * guidanceParams->captureRadiusScaling)
     {
-        if (!guidanceAppData.reachedStatusUpdated)
+        if (!*reachedStatusUpdated)
         {
-            missionItemReached_t wpReached;
-            CFE_SB_InitMsg(&wpReached, ICAROUS_WPREACHED_MID, sizeof(wpReached), TRUE);
-            strcpy(wpReached.planID, fp->id);
-            wpReached.reachedwaypoint = nextWP;
-            wpReached.feedback = true;
-            SendSBMsg(wpReached);
-            guidanceAppData.reachedStatusUpdated = true;
+            *reachedStatusUpdated = true;
             return (++nextWP);
         }else{
             return nextWP;
@@ -188,7 +64,7 @@ int ComputeFlightplanGuidanceInput(flightplan_t* fp, int nextWP)
     }
     else
     {
-        guidanceAppData.reachedStatusUpdated = false;
+        *reachedStatusUpdated = false;
         // Compute velocity command to next waypoint
         double heading = ComputeHeading(position, newPositionToTrack);
         double speed = refSpeed;
@@ -196,31 +72,22 @@ int ComputeFlightplanGuidanceInput(flightplan_t* fp, int nextWP)
             speed = speed/3;
         }
         
-        double climbrate = ComputeClimbRate(position, nextWaypoint, speed);
+        double climbrate = ComputeClimbRate(position, nextWaypoint, speed, guidanceParams);
 
         double vn, ve, vd;
         ConvertTrkGsVsToVned(heading, speed, climbrate, &vn, &ve, &vd);
 
         // Store velocity command in relevant structure
         // A weighted average of the new command is used.
-        double velCmd[3] = {guidanceAppData.velCmd.param1,
-                            guidanceAppData.velCmd.param2,
-                            guidanceAppData.velCmd.param3};
         velCmd[0] = 0.2 * velCmd[0] + 0.8 * vn;
         velCmd[1] = 0.2 * velCmd[1] + 0.8 * ve;
-        velCmd[2] = vd;
+        velCmd[2] = 0.2 * velCmd[2] + 0.8 * vd;
 
-        guidanceAppData.velCmd.param1 = velCmd[0];
-        guidanceAppData.velCmd.param2 = velCmd[1];
-        guidanceAppData.velCmd.param3 = velCmd[2];
-        guidanceAppData.velCmd.param4 = guidanceAppData.guidance_tbl.yawForward;
-
-        SendSBMsg(guidanceAppData.velCmd);
         return nextWP;
     }
 }
 
-bool ComputeOffSetPositionOnPlan(flightplan_t *fp,double position[],int currentLeg,double outputLLA[]){
+bool ComputeOffSetPositionOnPlan(flightplan_t *fp,double position[],int currentLeg,double refSpeed,double outputLLA[]){
     //Starting waypoint
     double wpA[3] = {fp->waypoints[currentLeg].latitude,
                      fp->waypoints[currentLeg].longitude,
@@ -238,7 +105,7 @@ bool ComputeOffSetPositionOnPlan(flightplan_t *fp,double position[],int currentL
     if(fp->waypoints[currentLeg].wp_metric == WP_METRIC_SPEED){
         wpSpeed = fp->waypoints[currentLeg].value_to_next_wp;
     }else{
-        wpSpeed = guidanceAppData.refSpeed;
+        wpSpeed = refSpeed;
     }
 
     if(currentLeg+2 < fp->num_waypoints){
@@ -248,7 +115,7 @@ bool ComputeOffSetPositionOnPlan(flightplan_t *fp,double position[],int currentL
         if(fp->waypoints[currentLeg + 1].wp_metric == WP_METRIC_SPEED){
             wpSpeed = fp->waypoints[currentLeg + 1].value_to_next_wp;
         }else{
-            wpSpeed = guidanceAppData.refSpeed;
+            wpSpeed = refSpeed;
         }
     }else{
         finalleg = true;
@@ -355,22 +222,17 @@ void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double heading,doub
     }
 }
 
-bool Point2PointControl(){
+bool Point2PointControl(double position[3], double target_point[3], double speed, guidanceTable_t* guidanceParams, double velCmd[3]){
 
-    double position[3] = {guidanceAppData.position.latitude,
-                          guidanceAppData.position.longitude,
-                          guidanceAppData.position.altitude_abs};
+    double heading = ComputeHeading(position, target_point);
 
-    double heading = ComputeHeading(position, guidanceAppData.point);
-    double speed = guidanceAppData.pointSpeed;
+    double climbrate = ComputeClimbRate(position, target_point, speed, guidanceParams);
 
-    double climbrate = ComputeClimbRate(position, guidanceAppData.point, speed);
-
-    double dist = ComputeDistance(position, guidanceAppData.point);
+    double dist = ComputeDistance(position, target_point);
 
     bool reached = false;
     // If distance to next waypoint is < captureRadius, switch to next waypoint
-    if (dist <= speed * guidanceAppData.capRScaling)
+    if (dist <= speed * guidanceParams->captureRadiusScaling)
     {
         reached = true;
     }
@@ -379,39 +241,18 @@ bool Point2PointControl(){
     ConvertTrkGsVsToVned(heading, speed, climbrate, &vn, &ve, &vd);
 
     // Store velocity command in relevant structure
-
-    double velCmd[3] = {guidanceAppData.velCmd.param1,
-                        guidanceAppData.velCmd.param2,
-                        guidanceAppData.velCmd.param3};
-
     if (!reached)
     {
         // Store velocity command in relevant structure
         // A weighted average of the new command is used.
         velCmd[0] = 0.7 * velCmd[0] + 0.3 * vn;
         velCmd[1] = 0.7 * velCmd[1] + 0.3 * ve;
-        velCmd[2] = vd;
-    }
-    else
-    {
+        velCmd[2] = 0.7 * velCmd[2] + 0.3 * vd;
+    } else {
         velCmd[0] = 0;
         velCmd[1] = 0;
         velCmd[2] = 0;
-
-        missionItemReached_t wpReached;
-        CFE_SB_InitMsg(&wpReached, ICAROUS_WPREACHED_MID, sizeof(wpReached), TRUE);
-        strcpy(wpReached.planID, "P2P\0");
-        wpReached.reachedwaypoint = 1;
-        wpReached.feedback = true;
-        SendSBMsg(wpReached);
-        SetStatus(guidanceAppData.statustxt,"Reached position",SEVERITY_INFO);
-
     }
-    guidanceAppData.velCmd.param1 = velCmd[0];
-    guidanceAppData.velCmd.param2 = velCmd[1];
-    guidanceAppData.velCmd.param3 = velCmd[2];
-
-    SendSBMsg(guidanceAppData.velCmd);
     return reached;
 }
 
