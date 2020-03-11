@@ -117,9 +117,9 @@ class TrafficModule(mp_module.MPModule):
 
         if bands[2] == 1:
             colour = (0,255,0,100)
-        elif bands[2] == 3:
+        elif bands[2] == 4:
             colour = (255,0,0,100)
-        elif bands[2] == 2:
+        elif bands[2] == 5:
             colour = (255,255,0,100)
             
         axes = (self.radius,self.radius)
