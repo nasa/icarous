@@ -5,6 +5,7 @@
  */
 #define EXTERN extern
 
+#include <time.h>
 #include "arducopter.h"
 #include "UtilFunctions.h"
 
@@ -918,6 +919,15 @@ void ARDUCOPTER_ProcessPacket() {
 
                     mavlink_message_t msg;
                     mavlink_msg_command_long_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_CMD_NAV_LAND,0,1,0,0,0,cmd->param5,cmd->param6,cmd->param7);
+                    writeMavlinkData(&appdataInt.ap, &msg); 
+
+                    break;
+                }
+
+                case SPEED_CHANGE:{
+                    mavlink_message_t msg;
+                    mavlink_msg_command_long_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_CMD_DO_CHANGE_SPEED,0,
+                                                  1,(float)cmd->param1,0,0,0,0,0);
                     writeMavlinkData(&appdataInt.ap, &msg); 
 
                     break;
