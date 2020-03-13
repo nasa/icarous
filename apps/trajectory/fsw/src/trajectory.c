@@ -3,6 +3,7 @@
 //
 #include <CWrapper/TrajectoryPlanner_proxy.h>
 #include <time.h>
+#include <math.h>
 #include "trajectory.h"
 #include "UtilFunctions.h"
 #include "trajectory_tbl.h"
