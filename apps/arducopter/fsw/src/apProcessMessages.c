@@ -1134,6 +1134,8 @@ uint16_t apConvertPlanToMissionItems(flightplan_t* fp){
 void apConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp){
     int count = 0;
     strcpy(fp->id,"Plan0\0");
+    double speed = 0.0;
+    fp->scenario_time = time(NULL);
     for(int i=0;i<size;++i){
         switch(items[i].command){
 
@@ -1142,6 +1144,30 @@ void apConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
                 fp->waypoints[count].longitude = items[i].y;
                 fp->waypoints[count].altitude = items[i].z;
                 fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                // If param4 is non-zero, extract time information from param4
+                if(items[i].param4 > 0){
+                    fp->waypoints[count].wp_metric = WP_METRIC_ETA;
+                    fp->waypoints[count].value = items[i].param4;
+                }else{
+                    //Else if speed is non-zero (i.e. CHANGE_SPEED seen already),
+                    //Determine ETA based on distance and speed.
+                    if( count > 0 && speed > 0){
+                        double wpA[3] = {fp->waypoints[count-1].latitude,
+                                         fp->waypoints[count-1].longitude,
+                                         fp->waypoints[count-1].altitude};
+                        double wpB[3] = {fp->waypoints[count].latitude,
+                                         fp->waypoints[count].longitude,
+                                         fp->waypoints[count].altitude};
+                        double distAB = ComputeDistance(wpA,wpB);
+                        double timeAB = distAB/speed;
+
+                        fp->waypoints[count].wp_metric = WP_METRIC_ETA;
+                        fp->waypoints[count].value = fp->waypoints[count-1].value + timeAB;
+   
+                    }else{
+                        fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                    }
+                }
                 count++;
                 //OS_printf("constructed waypoint\n");
                 break;
@@ -1171,11 +1197,7 @@ void apConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
             }
 
             case MAV_CMD_DO_CHANGE_SPEED:{
-                if(i>0 && i < size-1) {
-                    fp->waypoints[count-1].value = items[i].param2;
-                    fp->waypoints[count-1].wp_metric = WP_METRIC_SPEED;
-                    //OS_printf("Setting ETA to %f\n",eta);
-                }
+                speed = items[i].param2;
                 break;
             }
         }
