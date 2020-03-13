@@ -13,8 +13,6 @@ RRTplanner::RRTplanner(Poly3D &boundary,
     dTsteps = stepT;
     dT    = dt;
 
-    double avgRadius = boundary.poly2D().apBoundingRadius();
-
     xmin = ymin = MAXDOUBLE;
 	xmax = ymax = -MAXDOUBLE;
     int n = boundary.poly2D().size();
@@ -58,7 +56,6 @@ void RRTplanner::SetDAAParameters(std::string parameterList) {
 
 void RRTplanner::Initialize(Vect3& Pos, Vect3& Vel,std::list<Poly3D> &obstacles, std::vector<Vect3>& TrafficPos, std::vector<Vect3>& TrafficVel,node_t& goal) {
 
-
     root.pos = Pos;
     root.vel = Vel;
     root.trafficPos = TrafficPos;
@@ -80,6 +77,16 @@ void RRTplanner::Initialize(Vect3& Pos, Vect3& Vel,std::list<Poly3D> &obstacles,
     goalNode.pos = goal.pos;
     goalNode.vel = goal.vel;
 
+    if(boundingBox.size() == 0){
+        double goalDist = root.pos.distanceH(goal.pos);
+        double size = 3*goalDist;
+        xmin = -size;
+        xmax = size;
+        ymin = -size;
+        ymax = size;
+        zmin = -10;
+        zmax = root.pos.z + 100;
+    }
 }
 
 
