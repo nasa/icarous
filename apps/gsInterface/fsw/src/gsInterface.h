@@ -20,6 +20,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <network_includes.h>
+#include <time.h>
 #include "Icarous.h"
 
 #include "sch_msgids.h"

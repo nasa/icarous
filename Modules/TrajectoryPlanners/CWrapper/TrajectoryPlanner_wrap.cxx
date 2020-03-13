@@ -1021,8 +1021,22 @@ extern "C" {
     SWIG_remove_registry_entry(carg1);
     SWIG_destroy_object(carg1);
   }
-  
-  
+
+  SWIGEXPORTC void PathPlanner_PlanToString(SwigObj * carg1,char* carg2,char* carg3,bool carg4,long int carg5) {
+     PathPlanner *arg1 = (PathPlanner*) carg1->obj;
+     arg1->PlanToString(carg2,carg3,carg4,carg5);
+  } 
+
+  SWIGEXPORTC void PathPlanner_StringToPlan(SwigObj * carg1,char* carg2,char* carg3) {
+     PathPlanner *arg1 = (PathPlanner*) carg1->obj;
+     arg1->StringToPlan(carg2,carg3);
+  }
+
+  SWIGEXPORTC void PathPlanner_CombinePlan(SwigObj * carg1,char* carg2,char* carg3,int carg4){
+     PathPlanner *arg1 = (PathPlanner*) carg1->obj;
+     arg1->CombinePlan(carg2,carg3,carg4);
+
+  }
 #ifdef __cplusplus
 }
 #endif

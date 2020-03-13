@@ -2,8 +2,12 @@
 // Created by Swee Balachandran on 12/14/17.
 //
 #include <cstring>
-#include <PlanUtil.h>
 #include <list>
+#include <string>
+#include <sstream>
+#include <PlanWriter.h>
+#include <PlanReader.h>
+#include <PlanUtil.h>
 #include "PathPlanner.h"
 
 using namespace std;
@@ -173,22 +177,77 @@ int PathPlanner::GetTotalWaypoints(char planID[]){
         return 0;
 }
 
-void PathPlanner::InputFlightPlan(char planID[],int wpID,double waypoint[],double speed){
+void PathPlanner::InputFlightPlan(char planID[],int wpID,double waypoint[],double time){
     Position pos = Position::makeLatLonAlt(waypoint[0],"degree",waypoint[1],"degree",waypoint[2],"m");
     std::list<Plan>::iterator it;
     Plan* fp = GetPlan(planID);
 
     if(fp != NULL) {
-        fp->add(pos, (double) wpID);
+        if(wpID == 0){
+            fp->clear();
+        }
+        int n = fp->add(pos, (double) time);
+        n = n + 1;
         return;
     }
     else{
         string planName = planID;
         Plan newPlan(planName);
-        newPlan.add(pos,(double)wpID);
+        newPlan.add(pos,(double)time);
         flightPlans.push_back(newPlan);
         return;
     }
+}
+
+void PathPlanner::PlanToString(char planID[],char outputString[],bool tcpColumnsLocal,long int timeshift){
+    Plan *fp = GetPlan(planID);
+    Plan outputFp = fp->copy();
+    outputFp.timeShiftPlan(0,(double)timeshift);
+    if(fp){
+       PlanWriter planWriter; 
+       std::ostringstream planString;
+       planWriter.open(&planString);
+       planWriter.writePlan(outputFp, tcpColumnsLocal);
+       strcpy(outputString,planString.str().c_str());
+    }
+}
+
+void PathPlanner::StringToPlan(char planID[],char inputString[]){
+    Plan output;
+    std::string inputPlan(inputString);
+    PlanReader planReader;
+    std::istringstream planString;
+    planString.str(inputPlan);
+    planReader.open(&planString);
+    output = planReader.getPlan(0);
+
+    // Check if a plan already exists with the given ID and replace it if 
+    // it does exist
+    std::list<Plan>::iterator it;
+    for(it=flightPlans.begin();it != flightPlans.end(); ++it){
+        if (!strcmp(it->getID().c_str(),planID)){
+           flightPlans.erase(it);
+           break;
+        }
+    }
+
+    string planName(planID);
+    output.setID(planName);
+    flightPlans.push_back(output);
+}
+
+void PathPlanner::CombinePlan(char planID_A[],char planID_B[],int index){
+    Plan *fp1 = GetPlan(planID_A);
+    Plan *fp2 = GetPlan(planID_B);
+    Plan fp = fp1->copy(); 
+    fp.setID("Plan+");
+    for(int i=index;i<fp2->size();++i){
+        double delta = fp2->time(i) - fp2->time(i-1);
+        double time = fp.getLastTime() + delta;
+        NavPoint oldPoint = fp2->point(i);
+        fp.add(oldPoint.position(),time);
+    }
+    flightPlans.push_back(fp);
 }
 
 double PathPlanner::Dist2Waypoint(double currPosition[],double nextPosition[]){

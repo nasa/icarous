@@ -54,7 +54,6 @@ private:
     CDIIPolygon geoCDIIPolygon;
     PolyPath geoPolyPath;
     Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
-    Plan* GetPlan(char planID[]);
     int64_t FindPathGridAstar(char planID[],double fromPosition[],double toPosition[]);
     int64_t FindPathAstar(char planID[],double fromPosition[],double toPosition[],double velocity[]);
     int64_t FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]);
@@ -75,14 +74,18 @@ public:
     void OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceFile,char* waypointFile);
 
 
+    Plan* GetPlan(char planID[]);
     void ClearAllPlans();
     void InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, double pos[][2]);
     fence* GetGeofence(int id);
     void ClearFences();
     int InputTraffic(int id, double *position, double *velocity);
 
+    void PlanToString(char planID[],char outputString[],bool tcpColumnsLocal,long int timeshift);
+    void StringToPlan(char planID[],char inputString[]);
+    void CombinePlan(char planID_A[],char planID_B[],int index);
 
-    void InputFlightPlan(char planID[],int wpID,double waypoint[],double speed);
+    void InputFlightPlan(char planID[],int wpID,double waypoint[],double time);
     double Dist2Waypoint(double currPosition[],double nextWaypoint[]);
     double ComputeXtrackDistance(Plan* fp,int leg,double position[],double offset[]);
     double ComputeXtrackDistance_c(char planID[],int leg,double position[],double offset[]);

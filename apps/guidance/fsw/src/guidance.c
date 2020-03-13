@@ -128,6 +128,8 @@ void GUIDANCE_ProcessPacket(){
         case ICAROUS_TRAJECTORY_MID:{
             flightplan_t *msg = (flightplan_t*)guidanceAppData.guidance_MsgPtr;
             memcpy(&guidanceAppData.secondaryFlightPlan,msg,sizeof(flightplan_t));
+            //TODO: This is temporary until the new updates to the guidance app are integrated.
+            guidanceAppData.refSpeed = msg->waypoints[1].value;
             break;
         }
 

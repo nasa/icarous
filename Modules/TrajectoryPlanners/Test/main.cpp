@@ -2,11 +2,22 @@
 // Created by Swee Balachandran on 12/18/17.
 //
 #include "PathPlanner.h"
+#include "PlanWriter.h"
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <stdio.h>
 
 int main(int argc,char** argv){
 
+    
 
     PathPlanner planner(2,30);
+    larcfm::PlanWriter plwriter;
+        
+    std::ostringstream planString;
+    plwriter.open(&planString);
+
     char filename[] = "../Test/DaidalusQuadConfig.txt";
     planner.InitializeAstarParameters(false,2,1,1,filename);
     planner.InitializeRRTParameters(1.0,2000,1,5,5,filename);
@@ -94,7 +105,9 @@ int main(int argc,char** argv){
     else
         std::cout<<"SPLINES algorithm couldn't find solution"<<std::endl;
 
-
+    //plwriter.writePlan(*planner.GetPlan((char*)"PlanB"),false);
+    //std::cout<<planString.str()<<std::endl;
+    //printf("plan c string %s\n",planString.str().c_str());
 }
 
 

@@ -279,8 +279,13 @@ void ProcessGSMessage(mavlink_message_t message) {
                 mavlink_message_t paramStatusMsg;
                 mavlink_msg_statustext_pack(sysid_ic,compid_ic,&paramStatusMsg,MAV_SEVERITY_INFO,"Parameters Sent to Apps");
                 writeMavlinkData(&appdataIntGS.gs,&paramStatusMsg);
-
+             
                 if (appdataIntGS.numWaypoints > 1) {
+
+                    // Update flightplan scenario time and publish updated flightplan 
+                    appdataIntGS.fpData.scenario_time = time(NULL);
+                    SendSBMsg(appdataIntGS.fpData);
+
                     appdataIntGS.startMission.param1 = msg.param1;
                     appdataIntGS.startMission.param2 = msg.param2;
                     CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &appdataIntGS.startMission);
@@ -770,6 +775,8 @@ uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
 void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t items[],flightplan_t* fp){
     int count = 0;
     strcpy(fp->id,"Plan0\0");
+    double speed = 0.0;
+    fp->scenario_time = time(NULL);
     for(int i=0;i<size;++i){
         switch(items[i].command){
 
@@ -777,12 +784,32 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
                 fp->waypoints[count].latitude = items[i].x/1e7;
                 fp->waypoints[count].longitude = items[i].y/1e7;
                 fp->waypoints[count].altitude = items[i].z;
+
+                // If param4 is non-zero, extract time information from param4
                 if(items[i].param4 > 0){
                     fp->waypoints[count].wp_metric = WP_METRIC_ETA;
                     fp->waypoints[count].value = items[i].param4;
                 }else{
-                    fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                    //Else if speed is non-zero (i.e. CHANGE_SPEED seen already),
+                    //Determine ETA based on distance and speed.
+                    if( count > 0 && speed > 0){
+                        double wpA[3] = {fp->waypoints[count-1].latitude,
+                                         fp->waypoints[count-1].longitude,
+                                         fp->waypoints[count-1].altitude};
+                        double wpB[3] = {fp->waypoints[count].latitude,
+                                         fp->waypoints[count].longitude,
+                                         fp->waypoints[count].altitude};
+                        double distAB = ComputeDistance(wpA,wpB);
+                        double timeAB = distAB/speed;
+
+                        fp->waypoints[count].wp_metric = WP_METRIC_ETA;
+                        fp->waypoints[count].value = fp->waypoints[count-1].value + timeAB;
+   
+                    }else{
+                        fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                    }
                 }
+
                 count++;
                 //OS_printf("constructed waypoint\n");
                 break;
@@ -812,11 +839,7 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
             }
 
             case MAV_CMD_DO_CHANGE_SPEED:{
-                if(i>0 && i < size-1) {
-                    fp->waypoints[count-1].wp_metric = WP_METRIC_SPEED;
-                    fp->waypoints[count-1].value = items[i].param2;
-                    //OS_printf("Setting ETA to %f\n",eta);
-                }
+                speed = items[i].param2;
                 break;
             }
         }
@@ -828,6 +851,8 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
 void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp){
     int count = 0;
     strcpy(fp->id,"Plan0\0");
+    double speed = 0.0;
+    fp->scenario_time = time(NULL);
     for(int i=0;i<size;++i){
         switch(items[i].command){
 
@@ -835,11 +860,30 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
                 fp->waypoints[count].latitude = items[i].x;
                 fp->waypoints[count].longitude = items[i].y;
                 fp->waypoints[count].altitude = items[i].z;
+
+                // If param4 is non-zero, extract time information from param4
                 if(items[i].param4 > 0){
                     fp->waypoints[count].wp_metric = WP_METRIC_ETA;
                     fp->waypoints[count].value = items[i].param4;
                 }else{
-                    fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                    //Else if speed is non-zero (i.e. CHANGE_SPEED seen already),
+                    //Determine ETA based on distance and speed.
+                    if( count > 0 && speed > 0){
+                        double wpA[3] = {fp->waypoints[count-1].latitude,
+                                         fp->waypoints[count-1].longitude,
+                                         fp->waypoints[count-1].altitude};
+                        double wpB[3] = {fp->waypoints[count].latitude,
+                                         fp->waypoints[count].longitude,
+                                         fp->waypoints[count].altitude};
+                        double distAB = ComputeDistance(wpA,wpB);
+                        double timeAB = distAB/speed;
+
+                        fp->waypoints[count].wp_metric = WP_METRIC_ETA;
+                        fp->waypoints[count].value = fp->waypoints[count-1].value + timeAB;
+   
+                    }else{
+                        fp->waypoints[count].wp_metric = WP_METRIC_NONE;
+                    }
                 }
                 count++;
                 //OS_printf("constructed waypoint\n");
@@ -870,11 +914,7 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
             }
 
             case MAV_CMD_DO_CHANGE_SPEED:{
-                if(i>0 && i < size-1) {
-                    fp->waypoints[count-1].wp_metric = WP_METRIC_SPEED;
-                    fp->waypoints[count-1].value = items[i].param2;
-                    //OS_printf("Setting ETA to %f\n",eta);
-                }
+                speed = items[i].param2;
                 break;
             }
         }
