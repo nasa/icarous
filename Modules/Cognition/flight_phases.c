@@ -1,51 +1,52 @@
-#define EXTERN extern
 
-#include "cognition.h"
+#include "cognition_core.h"
+
+cognition_t cog;
 
 void ResetFlightPhases(void) {
-    appdataCog.takeoffState = INITIALIZING;
-    appdataCog.cruiseState = INITIALIZING;
+    cog.takeoffState = INITIALIZING;
+    cog.cruiseState = INITIALIZING;
 }
 
 void FlightPhases(void){
 
     // Handling nominal flight phases
     status_e status;
-    switch(appdataCog.fpPhase){
+    switch(cog.fpPhase){
 
         case IDLE_PHASE:{
             ResetFlightPhases();
-            if(appdataCog.missionStart == 0){
+            if(cog.missionStart == 0){
                 // If missionStart = 0 time to start the misison
-                if(appdataCog.primaryFPReceived){
-                    time_t fpTime = appdataCog.flightplan1.scenario_time;
+                if(cog.primaryFPReceived){
+                    time_t fpTime = cog.scenarioTime;
                     time_t currTime = time(NULL);
                     if( currTime >= fpTime ){
-                        appdataCog.fpPhase = TAKEOFF_PHASE; 
-                        appdataCog.missionStart = -1;
+                        cog.fpPhase = TAKEOFF_PHASE; 
+                        cog.missionStart = -1;
                     }else{
                         time_t timeRemanining = (fpTime - currTime);
                         if(timeRemanining%5 == 0){
-                            SetStatus(appdataCog.statustxt,"FP counting down",SEVERITY_INFO);
+                            SendStatus("FP counting down",6);
                         }
                     }
                 }else{
-                    SetStatus(appdataCog.statustxt,"No flightplan loaded",SEVERITY_WARNING);
-                    appdataCog.missionStart = -1;
+                    SendStatus("No flightplan loaded",4);
+                    cog.missionStart = -1;
                 }
-            }else if(appdataCog.missionStart > 0){
+            }else if(cog.missionStart > 0){
                 // If missionStart > 0 goto climb state directly
-                if(appdataCog.primaryFPReceived){
-                    appdataCog.fpPhase = CRUISE_PHASE;
+                if(cog.primaryFPReceived){
+                    cog.fpPhase = CRUISE_PHASE;
                 }else{
-                    SetStatus(appdataCog.statustxt,"No flightplan loaded",SEVERITY_WARNING);
+                    SendStatus("No flightplan loaded",4);
                 }
-                appdataCog.missionStart = -1;
+                cog.missionStart = -1;
             }
 
-            if(appdataCog.ditch){
-                appdataCog.emergencyDescentState = INITIALIZING;
-                appdataCog.fpPhase = EMERGENCY_DESCENT_PHASE;
+            if(cog.ditch){
+                cog.emergencyDescentState = INITIALIZING;
+                cog.fpPhase = EMERGENCY_DESCENT_PHASE;
             }
             break;
         }
@@ -55,12 +56,12 @@ void FlightPhases(void){
         }
 
         case TAKEOFF_PHASE:{
-            //OS_printf("Takeoff phase\n");
+            //printf("Takeoff phase\n");
             status = Takeoff();
             if (status == SUCCESS){
-                appdataCog.fpPhase = CLIMB_PHASE;
+                cog.fpPhase = CLIMB_PHASE;
             }else if(status == FAILED){
-                appdataCog.fpPhase = IDLE_PHASE;
+                cog.fpPhase = IDLE_PHASE;
             }
             break;
         }
@@ -68,7 +69,7 @@ void FlightPhases(void){
         case CLIMB_PHASE:{
             status = Climb();
             if (status == SUCCESS){
-                appdataCog.fpPhase = CRUISE_PHASE;
+                cog.fpPhase = CRUISE_PHASE;
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
             }
@@ -78,18 +79,18 @@ void FlightPhases(void){
         case CRUISE_PHASE:{
             status = Cruise();
             if (status == SUCCESS){
-                appdataCog.fpPhase = DESCENT_PHASE;
+                cog.fpPhase = DESCENT_PHASE;
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
             }
 
-            if( appdataCog.mergingActive){
-                appdataCog.fpPhase = MERGING_PHASE;
+            if( cog.mergingActive){
+                cog.fpPhase = MERGING_PHASE;
             }
 
-            if(appdataCog.ditch){
-                appdataCog.emergencyDescentState = INITIALIZING;
-                appdataCog.fpPhase = EMERGENCY_DESCENT_PHASE;
+            if(cog.ditch){
+                cog.emergencyDescentState = INITIALIZING;
+                cog.fpPhase = EMERGENCY_DESCENT_PHASE;
             }
 
             break;
@@ -98,7 +99,7 @@ void FlightPhases(void){
         case DESCENT_PHASE:{
             status = Descent();
             if (status == SUCCESS){
-                appdataCog.fpPhase = APPROACH_PHASE;
+                cog.fpPhase = APPROACH_PHASE;
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
             }
@@ -110,13 +111,13 @@ void FlightPhases(void){
 
             // Check if there is another request for ditching
             // and initialize ditching again
-            if(appdataCog.ditch){
-                appdataCog.emergencyDescentState = INITIALIZING;
+            if(cog.ditch){
+                cog.emergencyDescentState = INITIALIZING;
             }
             
             // If end ditch is requested, kill ditching
-            if(appdataCog.endDitch){
-                appdataCog.emergencyDescentState = SUCCESS;
+            if(cog.endDitch){
+                cog.emergencyDescentState = SUCCESS;
             }
             break;
         }
@@ -124,7 +125,7 @@ void FlightPhases(void){
         case APPROACH_PHASE:{
             status = Approach();
             if (status == SUCCESS){
-                appdataCog.fpPhase = LANDING_PHASE;
+                cog.fpPhase = LANDING_PHASE;
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
             }
@@ -133,9 +134,10 @@ void FlightPhases(void){
 
         case LANDING_PHASE:{
             status = Landing();
-            //OS_printf("Landing\n");
+            //printf("Landing\n");
             if (status == SUCCESS){
-                appdataCog.fpPhase = IDLE_PHASE;
+                cog.fpPhase = IDLE_PHASE;
+                cog.missionStart = -2;
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
             }
@@ -143,9 +145,9 @@ void FlightPhases(void){
         }
 
         case MERGING_PHASE:{
-            if(!appdataCog.mergingActive){
-                appdataCog.fpPhase = CRUISE_PHASE;
-                SetGuidanceFlightPlan("Plan0",appdataCog.nextFeasibleWP1);
+            if(!cog.mergingActive){
+                cog.fpPhase = CRUISE_PHASE;
+                SetGuidanceFlightPlan("Plan0",cog.nextFeasibleWP1);
             }
             break;
         }
@@ -157,18 +159,16 @@ void FlightPhases(void){
 }
 
 status_e Takeoff(){
-    switch(appdataCog.takeoffState){
+    switch(cog.takeoffState){
        case INITIALIZING:{
            // Send takeoff command to guidance application
-           if(!appdataCog.keepInConflict && !appdataCog.keepOutConflict){
-               argsCmd_t cmd;
-               CFE_SB_InitMsg(&cmd,GUIDANCE_COMMAND_MID,sizeof(cmd),TRUE);
-               cmd.name = TAKEOFF;
-               SendSBMsg(cmd);
-               appdataCog.takeoffState = RUNNING;
-               appdataCog.takeoffComplete = 0;
+           if(!cog.keepInConflict && !cog.keepOutConflict){
+               cog.guidanceCommand = cTAKEOFF;
+               cog.sendCommand = true;
+               cog.takeoffState = RUNNING;
+               cog.takeoffComplete = 0;
            }else{
-               appdataCog.takeoffState = FAILED;
+               cog.takeoffState = FAILED;
            }
            break;
        } 
@@ -176,13 +176,13 @@ status_e Takeoff(){
        case RUNNING:{
            // Wait for confirmation status from guidance application
 
-           if(appdataCog.takeoffComplete == 1){
-               appdataCog.takeoffState = SUCCESS;
-           }else if(appdataCog.takeoffComplete == 0){
-               appdataCog.takeoffState = RUNNING;
+           if(cog.takeoffComplete == 1){
+               cog.takeoffState = SUCCESS;
+           }else if(cog.takeoffComplete == 0){
+               cog.takeoffState = RUNNING;
            }else{
-               appdataCog.takeoffState = FAILED;
-               OS_printf("Takeoff failed\n");
+               cog.takeoffState = FAILED;
+               printf("Takeoff failed\n");
            }
            break;
        }
@@ -191,7 +191,7 @@ status_e Takeoff(){
        case FAILED: break;
     }
 
-    return appdataCog.takeoffState;
+    return cog.takeoffState;
 }
 
 status_e Climb(){
@@ -201,11 +201,11 @@ status_e Climb(){
 
 status_e Cruise(){
 
-   switch(appdataCog.cruiseState){
+   switch(cog.cruiseState){
 
        case INITIALIZING:{
-            SetGuidanceFlightPlan("Plan0",appdataCog.nextPrimaryWP);
-            appdataCog.cruiseState = RUNNING;
+            SetGuidanceFlightPlan("Plan0",cog.nextPrimaryWP);
+            cog.cruiseState = RUNNING;
             break;
        }
 
@@ -226,9 +226,9 @@ status_e Cruise(){
                 TimeManagement();
             }
 
-            if(appdataCog.nextPrimaryWP >= appdataCog.flightplan1.num_waypoints){
-                appdataCog.cruiseState = SUCCESS;
-                OS_printf("Completing cruise\n");  
+            if(cog.nextPrimaryWP >= cog.num_waypoints){
+                cog.cruiseState = SUCCESS;
+                printf("Completing cruise\n");  
             }
             break;
        }
@@ -237,7 +237,7 @@ status_e Cruise(){
        case FAILED: break;
    }
 
-   return appdataCog.cruiseState;
+   return cog.cruiseState;
 }
 
 status_e Descent(){
@@ -251,48 +251,46 @@ status_e Approach(){
 }
 
 status_e Landing(){
-    SetStatus(appdataCog.statustxt,"IC: Landing",SEVERITY_NOTICE);
-    argsCmd_t cmd;
-    CFE_SB_InitMsg(&cmd, GUIDANCE_COMMAND_MID, sizeof(cmd), TRUE);
-    cmd.name = LAND;
-    SendSBMsg(cmd);
+    SendStatus("IC: Landing",6);
+    cog.sendCommand = true;
+    cog.guidanceCommand = cLAND;
     return SUCCESS;
 }
 
 status_e EmergencyDescent(){
     static bool command_sent;
-    double positionA[3] = {appdataCog.position.latitude,
-                           appdataCog.position.longitude,
-                           appdataCog.position.altitude_abs};
+    double positionA[3] = {cog.position[0],
+                           cog.position[1],
+                           cog.position[2]};
    
-    double positionB[3] = {appdataCog.ditchsite[0],
-                           appdataCog.ditchsite[1],
+    double positionB[3] = {cog.ditchsite[0],
+                           cog.ditchsite[1],
                            positionA[2]};
 
     double Trk, Gs, Vs;
-    ConvertVnedToTrkGsVs(appdataCog.position.vn, 
-                         appdataCog.position.ve,
-                         appdataCog.position.vd, 
+    ConvertVnedToTrkGsVs(cog.velocity[0], 
+                         cog.velocity[1],
+                         cog.velocity[2], 
                          &Trk, &Gs, &Vs);
 
     double velocityA[3] = {Trk,Gs,Vs};
 
 
-    switch(appdataCog.emergencyDescentState){
+    switch(cog.emergencyDescentState){
 
         case INITIALIZING:{
-            SetStatus(appdataCog.statustxt,"IC:Starging to ditch",SEVERITY_NOTICE);
+            SendStatus("IC:Starting to ditch",6);
             command_sent = false;
-            appdataCog.request = REQUEST_NIL;
+            cog.request = REQUEST_NIL;
 
             // Find a new path to the ditch site 
             // Note that if a direct path is not availabe, this will find
             // a possible detour. 
-            FindNewPath(appdataCog.searchAlgType, positionA, velocityA, positionB);
+            FindNewPath(cog.searchType, positionA, velocityA, positionB);
 
-            appdataCog.request = REQUEST_PROCESSING;
-            appdataCog.emergencyDescentState = RUNNING;
-            appdataCog.ditch = false;
+            cog.request = REQUEST_PROCESSING;
+            cog.emergencyDescentState = RUNNING;
+            cog.ditch = false;
             break;
         }
 
@@ -301,25 +299,25 @@ status_e EmergencyDescent(){
 
             // Proceeed to the top of descent by following the 
             // computed flight plan
-            if(appdataCog.request == REQUEST_RESPONDED && !appdataCog.topofdescent){
+            if(cog.request == REQUEST_RESPONDED && !cog.topofdescent){
                 SetGuidanceFlightPlan("Plan1",1);  
-                appdataCog.request = REQUEST_NIL;
-            }else if(!appdataCog.topofdescent){
+                cog.request = REQUEST_NIL;
+            }else if(!cog.topofdescent){
                 // Check if top of descent (TOD) has been reached
                 // TOP is calculated assuming a 45 degree flight path angle
                 // while descending
                 if(dist2Target < positionA[2]){
-                    appdataCog.topofdescent = true;
-                    SetStatus(appdataCog.statustxt,"IC:Reached TOD",SEVERITY_NOTICE);
+                    cog.topofdescent = true;
+                    SendStatus("IC:Reached TOD",6);
                 }
             }else{
                 //TODO: Add parameter for final leg of ditching
                 if(!command_sent){
-                    SetGuidanceP2P(appdataCog.ditchsite[0],appdataCog.ditchsite[1],appdataCog.ditchsite[2],1.5);
+                    SetGuidanceP2P(cog.ditchsite[0],cog.ditchsite[1],cog.ditchsite[2],1.5);
                     command_sent = true;
                 }else{
-                   if(appdataCog.p2pcomplete){
-                      appdataCog.emergencyDescentState = SUCCESS;
+                   if(cog.p2pcomplete){
+                      cog.emergencyDescentState = SUCCESS;
                    }      
                 }
             }
@@ -328,7 +326,7 @@ status_e EmergencyDescent(){
 
         case SUCCESS:{
             // Once vehicle has reached the final ditch site, we can land
-            appdataCog.fpPhase = LANDING_PHASE;
+            cog.fpPhase = LANDING_PHASE;
             break;
         }
 
@@ -336,5 +334,5 @@ status_e EmergencyDescent(){
             break;
         }
     }
-    return appdataCog.emergencyDescentState;
+    return cog.emergencyDescentState;
 }

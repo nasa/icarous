@@ -6,10 +6,30 @@
 #ifndef GUIDANCE_FUNCTIONS_H
 #define GUIDANCE_FUNCTIONS_H
 
+
+#define _GNU_SOURCE
+
 #include <math.h>
 #include <string.h>
 #include "UtilFunctions.h"
-#include "guidance_tbl.h"
+
+/**
+ * @struct GuidanceParams_t
+ * @brief Structure to hold parameters required for guidance
+ */
+typedef struct{
+    double defaultWpSpeed;
+    double captureRadiusScaling;
+    double guidanceRadiusScaling;
+    double xtrkDev;
+    double climbFpAngle;
+    double climbAngleVRange;
+    double climbAngleHRange;
+    double climbRateGain;
+    double maxClimbRate;
+    double minClimbRate;
+    bool yawForward;
+}guidanceParams_t;
 
 /**
  * @struct GuidanceInput_t
@@ -41,17 +61,17 @@ typedef struct{
 /**
  * Compute guidance input for a given flight plan
  */
-int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutput_t* guidanceOutput, guidanceTable_t* guidanceParams);
+int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutput_t* guidanceOutput, guidanceParams_t* guidanceParams);
 
 /**
  * Compute vertical rate needed to climb/descend at a given angle and speed
  */
-double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,guidanceTable_t* guidanceParams);
+double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,guidanceParams_t* guidanceParams);
 
 /**
  * Computes the point on the flight plan to fly towards
  */
-void ComputeOffSetPositionOnPlan(guidanceInput_t* guidanceInput, guidanceTable_t* guidanceParams, double outputLLA[]);
+void ComputeOffSetPositionOnPlan(guidanceInput_t* guidanceInput, guidanceParams_t* guidanceParams, double outputLLA[]);
 
 /**
  * Compute the correct intersection with the circle and flight plan
@@ -61,7 +81,7 @@ void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double r,double out
 /**
  * Point to point control
  */
-bool Point2PointControl(double position[3], double target_point[3], double speed, guidanceTable_t* guidanceParams, double velCmd[3]);
+bool Point2PointControl(double position[3], double target_point[3], double speed, guidanceParams_t* guidanceParams, double velCmd[3]);
 
 /**
  * Compute distance between two points

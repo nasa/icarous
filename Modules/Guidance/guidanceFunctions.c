@@ -1,7 +1,7 @@
 #define EXTERN extern
 #include "guidanceFunctions.h"
 
-double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,guidanceTable_t* guidanceParams){
+double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,guidanceParams_t* guidanceParams){
     double deltaH = nextWaypoint[2] - position[2];
     double climbrate;
     if (fabs(deltaH) > guidanceParams->climbAngleVRange &&
@@ -25,7 +25,7 @@ double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,g
     return climbrate;
 }
 
-int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutput_t* guidanceOutput, guidanceTable_t* guidanceParams) {
+int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutput_t* guidanceOutput, guidanceParams_t* guidanceParams) {
     int nextWP = guidanceInput->nextWP;
     bool finalleg = false;
     if (nextWP >= guidanceInput->num_waypoints - 1){
@@ -80,7 +80,7 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
     return guidanceOutput->newNextWP;
 }
 
-void ComputeOffSetPositionOnPlan(guidanceInput_t* guidanceInput, guidanceTable_t* guidanceParams, double outputLLA[]){
+void ComputeOffSetPositionOnPlan(guidanceInput_t* guidanceInput, guidanceParams_t* guidanceParams, double outputLLA[]){
     double guidance_radius = guidanceInput->speed*guidanceParams->guidanceRadiusScaling;
     double xtrkDev = guidanceParams->xtrkDev;
     if(xtrkDev > guidance_radius)
@@ -188,7 +188,7 @@ void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double r,double out
     }
 }
 
-bool Point2PointControl(double position[3], double target_point[3], double speed, guidanceTable_t* guidanceParams, double velCmd[3]){
+bool Point2PointControl(double position[3], double target_point[3], double speed, guidanceParams_t* guidanceParams, double velCmd[3]){
 
     double heading = ComputeHeading(position, target_point);
 

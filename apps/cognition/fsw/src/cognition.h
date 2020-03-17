@@ -54,64 +54,6 @@
  * @details  *
  */
 
-/**
- * @enum flightphase_e
- * @brief Enumerations of the various flight phases
- */
-typedef enum{
-    IDLE_PHASE,
-    TAXI_PHASE,
-    TAKEOFF_PHASE,
-    CLIMB_PHASE,
-    CRUISE_PHASE,
-    DESCENT_PHASE,
-    EMERGENCY_DESCENT_PHASE,
-    APPROACH_PHASE,
-    LANDING_PHASE,
-    MERGING_PHASE
-}flightphase_e;
-
-/**
- * @enum status_e
- * @brief output status of each flight phase state
- */
-typedef enum{
-    SUCCESS,
-    FAILED,
-    RUNNING,
-    INITIALIZING
-}status_e;
-
-/**
- * @enum resolutionType_e
- * @brief Enumeration of resolution types
- */
-typedef enum{
-    SPEED_RESOLUTION,
-    ALTITUDE_RESOLUTION,
-    TRACK_RESOLUTION,
-    VERTICALSPEED_RESOLUTION,
-    SEARCH_RESOLUTION
-}resolutionType_e;
-
-/**
- * @enum conflictStatus_e
- * @brief conflict status
- */
-typedef enum{
-    NOOPC,
-    INITIALIZE,
-    COMPUTE,
-    RESOLVE,
-    COMPLETE
-}conflictState_e;
-
-typedef enum{
-    REQUEST_NIL,
-    REQUEST_PROCESSING,
-    REQUEST_RESPONDED
-}request_e;
-
 
 /**
  * @struct appdataCog_t
@@ -124,104 +66,26 @@ typedef struct{
     CFE_SB_MsgPtr_t    SchMsgPtr;          ///< msg pointer to SB message
     CFE_TBL_Handle_t   CogtblHandle;       ///< table handle
 
-    flightphase_e fpPhase;                 ///< Current phase of flight
+    flightplan_monitor_t fp1monitor;
+    flightplan_monitor_t fp2monitor;
 
     position_t position;                   ///< position message
     attitude_t attitude;                   ///< attitude message
-    double speed;                          ///< Current speed of the vehicle
 
     flightplan_t flightplan1;              ///< Mission flight plan
     flightplan_t flightplan2;              ///< Contigency flight plan
     flightplan_t *fp;
 
-    uint64_t UTCtime;                    ///< Current time
-
-    int missionStart;
-
-    int nextPrimaryWP;
-    int nextSecondaryWP;
-    int nextFeasibleWP1;
-    int nextFeasibleWP2;
-    int nextWP;
-    char currentPlanID[10];
-    bool Plan0;
-    bool Plan1;
-    bool primaryFPReceived;
-    double resolutionSpeed;
-
-    flightplan_monitor_t fp1monitor;
-    flightplan_monitor_t fp2monitor;
-
-    // Geofence conflict related variables
-    bool keepInConflict;
-    bool keepOutConflict;
-    double recoveryPosition[3];
-
-    // Traffic conflict related variables
-    bool trafficConflict;
-    bool trafficTrackConflict;
-    bool trafficSpeedConflict;
-    bool trafficAltConflict;
-
-    // Flight plan related variables
-    bool XtrackConflict1;
-    bool XtrackConflict2;
-    bool directPathToFeasibleWP1;
-    bool directPathToFeasibleWP2;
-
-    int trafficResType;
-    double preferredTrack;
-    double preferredSpeed;
-    double preferredAlt;
     bands_t trkBands;
     bands_t gsBands;
     bands_t altBands;
     bands_t vsBands;
 
-    double DTHR;
-    double ZTHR;
-
-    double ditchsite[3];
-    bool ditch;
-    bool resetDitch;
-    bool endDitch;
-    bool ditchRouteFeasible;
-    bool returnSafe;
-
-    resolutionType_e resolutionTypeCmd;
-    double prevResSpeed;
-    double prevResAlt;
-    double prevResTrack;
-    double prevResVspeed;
-
-    status_e takeoffState;
-    status_e cruiseState;
-    status_e emergencyDescentState;
-    int takeoffComplete;
-
-
-    conflictState_e geofenceConflictState;
-    conflictState_e XtrackConflictState;
-    conflictState_e trafficConflictState;
-    conflictState_e return2NextWPState;
-
-
-    int8_t request;
     algorithm_e searchAlgType;
 
-    int requestGuidance2NextWP;             // -1: undediced, 0: no guidance, 1: obtain guidance
-    bool p2pcomplete;
-    bool fp1complete;
-    bool fp2complete;
-    bool topofdescent;
-
-    // Status of merging activity
-    bool mergingActive;     
-
     status_t statustxt;
-    
-}appdataCog_t;
 
+}appdataCog_t;
 
 /**
  * Entry point for app
@@ -265,54 +129,20 @@ void COGNITION_DecisionProcess();
  */
 int32_t cognitionTableValidationFunc(void *TblPtr);
 
-/**
- * Top level finite state machines governing flight phase transitions
- */
-void FlightPhases(void);
 
-/**
- * Function to handle conflict management
- */
-bool TrafficConflictManagement(void);
+void COGNITION_SendGuidanceVelCmd();
 
-void CheckDirectPathFeasibility(position_t posA,waypoint_t posB);
+void COGNITION_SendGuidanceFlightPlan();
 
-void FindNewPath(algorithm_e searchType, double positionA[],double velocityA[],double positionB[]);
+void COGNITION_SendGuidanceP2P();
 
-bool GeofenceConflictManagement(void);
+void COGNITION_SendSpeedChange();
 
-bool ReturnToNextWP(void);
+void COGNITION_SendTakeoff();
 
-bool XtrackManagement(void);
+void COGNITION_SendLand();
 
-bool TimeManagement(void);
-
-void GetResolutionType(void);
-
-status_e Takeoff(void);
-
-status_e Climb(void);
-
-status_e Cruise(void);
-
-status_e Descent(void);
-
-status_e Approach(void);
-
-status_e Landing(void);
-
-status_e EmergencyDescent(void);
-
-bool RunTrafficResolution(void);
-
-void SetGuidanceVelCmd(double track,double gs,double vs);
-
-void SetGuidanceFlightPlan(char name[],int nextWP);
-
-void SetGuidanceP2P(double lat,double lon,double alt,double speed);
-
-void ResetFlightPhases(void);
+void COGNITION_FindNewPath();
 
 EXTERN appdataCog_t appdataCog;
-
 #endif /* _apInterface_h_ */

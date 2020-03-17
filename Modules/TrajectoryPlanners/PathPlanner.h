@@ -64,7 +64,9 @@ public:
     PathPlanner(double obsBuffer,double maxCeiling);
     void InitializeAstarParameters(bool enable3D,double gridSize,double resSpeed,double lookahead,char daaConfig[]);
     void InitializeRRTParameters(double resSpeed,int Nsteps,double dt,int Dt,double capR,char daaConfig[]);
+#ifdef SPLINES
     void InitializeBSplinesParameters(bool enable3D,double computationT,int numControlPts,int lenTVec);
+#endif
     void UpdateAstarParameters(bool enable3D,double gridSize,double resSpeed,double lookahead,char daaConfig[]);
     void UpdateRRTParameters(double resSpeed,int Nsteps,double dt,int Dt,double capR,char daaConfig[]);
     void UpdateDAAParameters(char parameterString[]);

@@ -2,10 +2,10 @@
 *.o
 .*
 *.dSYM
+*.dylib
 *.parm
 *.tlog.raw
 *.tlog
-Python/*
 log
 *.a
 *.bin
@@ -27,6 +27,7 @@ Modules/build
 Modules/Plexil/compilers/plexil/classes
 Modules/Plexil/compilers/plexil/generated
 Modules/Plexil/jars/PlexilCompiler.jar
+Modules/lib
 exe/cpu1
 sim
 **/gen

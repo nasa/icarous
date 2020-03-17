@@ -16,6 +16,7 @@ include_directories(../guidance/fsw/platform_inc)
 set(MODULES_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../Modules")
 set(MODULES_LIB "${MODULES_ROOT}/lib")
 include_directories(${MODULES_ROOT}/Utils)
+include_directories(${MODULES_ROOT}/Guidance)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
@@ -23,7 +24,7 @@ link_directories(${MODULES_LIB})
 
 add_library(guidance MODULE ${APP_SRC_FILES})
 
-target_link_libraries(guidance Utils)
+target_link_libraries(guidance Utils Guidance)
 
 set_target_properties(guidance PROPERTIES PREFIX "")
 

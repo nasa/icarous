@@ -8,5 +8,7 @@ add_subdirectory(GeofenceMonitor)
 add_subdirectory(TrafficMonitor)
 add_subdirectory(TrajectoryPlanners)
 add_subdirectory(Utils)
+add_subdirectory(Guidance)
+add_subdirectory(Cognition)
 
 

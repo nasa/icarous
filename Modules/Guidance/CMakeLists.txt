@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 2.6)
+project(TrafficMonitor)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
+set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
+set(SOURCE_FILES guidanceFunctions.c)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../Utils)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+
+link_directories(${LIBRARY_OUTPUT_PATH})
+
+add_library(Guidance SHARED ${SOURCE_FILES})
+
+target_link_libraries(Guidance m Utils ACCoRD)

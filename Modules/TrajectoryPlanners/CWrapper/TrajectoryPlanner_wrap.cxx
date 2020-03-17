@@ -485,26 +485,6 @@ extern "C" {
     (arg1)->InitializeRRTParameters(arg2,arg3,arg4,arg5,arg6,arg7);
   }
   
-  
-  SWIGEXPORTC void _wrap_PathPlanner_InitializeBSplinesParameters(SwigObj * carg1, bool carg2, double carg3, int carg4, int carg5) {
-    PathPlanner *arg1 = (PathPlanner *) 0 ;
-    bool arg2 ;
-    double arg3 ;
-    int arg4 ;
-    int arg5 ;
-    
-    {
-      if (carg1)
-      arg1 = (PathPlanner *) carg1->obj;
-    }
-    arg2 = (bool) carg2;
-    arg3 = (double) carg3;
-    arg4 = (int) carg4;
-    arg5 = (int) carg5;
-    (arg1)->InitializeBSplinesParameters(arg2,arg3,arg4,arg5);
-  }
-  
-  
   SWIGEXPORTC void _wrap_PathPlanner_UpdateAstarParameters(SwigObj * carg1, bool carg2, double carg3, double carg4, double carg5, /*aaa*/ char * carg6) {
     PathPlanner *arg1 = (PathPlanner *) 0 ;
     bool arg2 ;

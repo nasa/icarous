@@ -19,6 +19,7 @@ include_directories(../merger/fsw/platform_inc/)
 include_directories(fsw/src)
 include_directories(fsw/tables)
 include_directories(${MODULES_ROOT}/Utils)
+include_directories(${MODULES_ROOT}/Cognition)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 
@@ -27,7 +28,7 @@ link_directories(${MODULES_LIB})
 
 add_library(cognition MODULE ${APP_SRC_FILES})
 
-target_link_libraries(cognition Utils)
+target_link_libraries(cognition Utils Cognition)
 set_target_properties(cognition PROPERTIES INSTALL_RPATH "${MODULES_LIB}")
 
 

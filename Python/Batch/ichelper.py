@@ -86,4 +86,27 @@ def GetInitialConditions2(theta,intercept):
     _climbRateA = 0
     return (_rangeA, _bearingA, _altA, _speedA, _headingA, _climbRateA)
 
+def LoadIcarousParams(filename):
+    '''load parameters from a file'''
+    try:
+        f = open(filename, mode='r')
+    except (IOError, TypeError):
+        print("Failed to open file '%s'" % filename)
+        return
+    param = {}
+    for line in f:
+        line = line.replace('=',' ')
+        line = line.strip()
+        if not line or line[0] == "#":
+            continue
+        a = line.split()
+        if len(a) < 1:
+            print("Invalid line: %s" % line)
+            continue
+        param[a[0]] = float(a[1])
+
+    return param
+
+        
+
 

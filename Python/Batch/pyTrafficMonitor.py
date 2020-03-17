@@ -1,15 +1,27 @@
 from ctypes import *
 
-lib = CDLL('../../Modules/lib/libTrafficMonitor.so')
+lib = CDLL('libTrafficMonitor.so')
 
 lib._wrap_new_TrafficMonitor.restype = c_void_p
 lib._wrap_TrafficMonitor_InputTraffic.argtypes = [c_void_p,c_int,c_char_p,c_double*3,c_double*3,c_double]
 lib._wrap_TrafficMonitor_MonitorTraffic.argtypes = [c_void_p,c_double*3,c_double*3,c_double]
 lib._wrap_TrafficMonitor_MonitorWPFeasibility.argtypes = [c_void_p,c_double*3,c_double*3,c_double*3]
 lib._wrap_TrafficMonitor_CheckSafeToTurn.argtypes =[c_void_p,c_double*3,c_double*3,c_double,c_double] 
-lib._wrap_TrafficMonitor_GetTrackBands.argtypes = [c_void_p,c_int*1,c_int*5,c_double*5,c_double*5,c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1]
-lib._wrap_TrafficMonitor_GetGSBands.argtypes = [c_void_p,c_int*1,c_int*5,c_double*5,c_double*5,c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1]
-lib._wrap_TrafficMonitor_GetAltBands.argtypes = [c_void_p,c_int*1,c_int*5,c_double*5,c_double*5,c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1]
+lib._wrap_TrafficMonitor_UpdateDAAParameters.argtypes = [c_void_p,c_char_p,c_bool]
+lib._wrap_TrafficMonitor_GetTrackBands.argtypes = [c_void_p,c_int*1,c_int*20,c_double*20,c_double*20,c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1]
+lib._wrap_TrafficMonitor_GetGSBands.argtypes = [c_void_p,c_int*1,c_int*20,c_double*20,c_double*20,c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1]
+lib._wrap_TrafficMonitor_GetAltBands.argtypes = [c_void_p,c_int*1,c_int*20,c_double*20,c_double*20,c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1]
+lib._wrap_TrafficMonitor_GetVSBands.argtypes = [c_void_p,c_int*1,c_int*20,c_double*20,c_double*20,c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1]
+class Bands():
+    def __init__(self):
+        self.currentConflict = 0
+        self.resup = 0
+        self.resdown = 0
+        self.resdown = 0
+        self.numBands = 0
+        self.bandTypes = []
+        self.low = []
+        self.high = []
 
 class TrafficMonitor():
     def __init__(self,log):
@@ -17,6 +29,9 @@ class TrafficMonitor():
 
     def deleteobj(self):
         lib._wrap_delete_TrafficMonitor(self.obj)
+
+    def SetParameters(self,params,log):
+        lib._wrap_TrafficMonitor_UpdateDAAParameters(self.obj,c_char_p(params.encode('utf-8')),c_bool(log))
 
     def input_traffic(self,index,position,velocity,time):
         cpos = c_double*3
@@ -54,8 +69,8 @@ class TrafficMonitor():
       
     def GetTrackBands(self):
        numBands = c_int(0)
-       intArr10 = c_int * 5
-       doubleArr10 = c_double * 5
+       intArr20 = c_int * 20
+       doubleArr20 = c_double * 20
        recovery = c_int(0)
        currentConflict = c_int(0)
        tviolation = c_double(0)
@@ -65,9 +80,9 @@ class TrafficMonitor():
        resup = c_double(0)
        resdown = c_double(0)
        respref = c_double(0)
-       bandTypes = intArr10(0,0,0,0,0)
-       low = doubleArr10(0,0,0,0,0)
-       high = doubleArr10(0,0,0,0,0)
+       bandTypes = intArr20()
+       low = doubleArr20()
+       high = doubleArr20()
        lib._wrap_TrafficMonitor_GetTrackBands(self.obj,byref(numBands),bandTypes,low,
                                                high,
                                                byref(recovery),
@@ -79,12 +94,22 @@ class TrafficMonitor():
                				       byref(resup),
                                                byref(resdown),
                                                byref(respref))
-       return (currentConflict.value,respref.value)
+
+       trkband = Bands()
+       trkband.currentConflict = currentConflict.value
+       trkband.resup = resup.value
+       trkband.resdown = resdown.value
+       trkband.respref = respref.value
+       trkband.numBands = numBands.value
+       trkband.bandTypes = bandTypes
+       trkband.low = low
+       trkband.high = high
+       return trkband
 
     def GetGSBands(self):
        numBands = c_int(0)
-       intArr10 = c_int * 5
-       doubleArr10 = c_double * 5
+       intArr20 = c_int * 20
+       doubleArr20 = c_double * 20
        recovery = c_int(0)
        currentConflict = c_int(0)
        tviolation = c_double(0)
@@ -94,9 +119,9 @@ class TrafficMonitor():
        resup = c_double(0)
        resdown = c_double(0)
        respref = c_double(0)
-       bandTypes = intArr10(0,0,0,0,0)
-       low = doubleArr10(0,0,0,0,0)
-       high = doubleArr10(0,0,0,0,0)
+       bandTypes = intArr20(0,0,0,0,0)
+       low = doubleArr20(0,0,0,0,0)
+       high = doubleArr20(0,0,0,0,0)
        lib._wrap_TrafficMonitor_GetGSBands(self.obj,byref(numBands),bandTypes,low,
                                                high,
                                                byref(recovery),
@@ -109,12 +134,21 @@ class TrafficMonitor():
                                                byref(resdown),
                                                byref(respref))
 
-       return (currentConflict.value,respref.value)
+       gsband = Bands()
+       gsband.currentConflict = currentConflict.value
+       gsband.resup = resup.value
+       gsband.resdown = resdown.value
+       gsband.respref = respref.value
+       gsband.numBands = numBands.value
+       gsband.bandTypes = bandTypes
+       gsband.low = low
+       gsband.high = high
+       return gsband
 
     def GetAltBands(self):
        numBands = c_int(0)
-       intArr10 = c_int * 5
-       doubleArr10 = c_double * 5
+       intArr20 = c_int * 20
+       doubleArr20 = c_double * 20
        recovery = c_int(0)
        currentConflict = c_int(0)
        tviolation = c_double(0)
@@ -124,9 +158,9 @@ class TrafficMonitor():
        resup = c_double(0)
        resdown = c_double(0)
        respref = c_double(0)
-       bandTypes = intArr10(0,0,0,0,0)
-       low = doubleArr10(0,0,0,0,0)
-       high = doubleArr10(0,0,0,0,0)
+       bandTypes = intArr20(0,0,0,0,0)
+       low = doubleArr20(0,0,0,0,0)
+       high = doubleArr20(0,0,0,0,0)
        lib._wrap_TrafficMonitor_GetAltBands(self.obj,byref(numBands),bandTypes,low,
                                                high,
                                                byref(recovery),
@@ -139,5 +173,57 @@ class TrafficMonitor():
                                                byref(resdown),
                                                byref(respref))
 
-       return (currentConflict.value,resdown.value,resup.value,respref.value)
+       altband = Bands()
+       altband.currentConflict = currentConflict.value
+       altband.resup = resup.value
+       altband.resdown = resdown.value
+       altband.respref = respref.value
+       altband.numBands = numBands.value
+       altband.bandTypes = bandTypes
+       altband.low = low
+       altband.high = high
+
+       return altband 
+
+
+    def GetVSBands(self):
+       numBands = c_int(0)
+       intArr10= c_int * 20
+       doubleArr10 = c_double * 20
+       recovery = c_int(0)
+       currentConflict = c_int(0)
+       tviolation = c_double(0)
+       trecovery = c_double(0)
+       minhdist = c_double(0)
+       minvdist = c_double(0)
+       resup = c_double(0)
+       resdown = c_double(0)
+       respref = c_double(0)
+       bandTypes = intArr10(0,0,0,0,0)
+       low = doubleArr10(0,0,0,0,0)
+       high = doubleArr10(0,0,0,0,0)
+       lib._wrap_TrafficMonitor_GetVSBands(self.obj,byref(numBands),bandTypes,low,
+                                               high,
+                                               byref(recovery),
+                                               byref(currentConflict),
+            				       byref(tviolation),
+ 					       byref(trecovery),
+                                               byref(minhdist),
+ 					       byref(minvdist),
+               				       byref(resup),
+                                               byref(resdown),
+                                               byref(respref))
+
+       vsband = Bands()
+       vsband.currentConflict = currentConflict.value
+       vsband.resup = resup.value
+       vsband.resdown = resdown.value
+       vsband.respref = respref.value
+       vsband.numBands = numBands.value
+       vsband.bandTypes = bandTypes
+       vsband.low = low
+       vsband.high = high
+
+       return vsband
+
 

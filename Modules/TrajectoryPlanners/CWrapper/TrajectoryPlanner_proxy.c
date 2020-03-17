@@ -12,7 +12,6 @@
 PathPlanner * _wrap_new_PathPlanner(double carg1, double carg2);
 void _wrap_PathPlanner_InitializeAstarParameters(SwigObj * carg1, bool carg2, double carg3, double carg4, double carg5, /*aaa*/ char * carg6);
 void _wrap_PathPlanner_InitializeRRTParameters(SwigObj * carg1, double carg2, int carg3, double carg4, int carg5, double carg6, /*aaa*/ char * carg7);
-void _wrap_PathPlanner_InitializeBSplinesParameters(SwigObj * carg1, bool carg2, double carg3, int carg4, int carg5);
 void _wrap_PathPlanner_UpdateAstarParameters(SwigObj * carg1, bool carg2, double carg3, double carg4, double carg5, /*aaa*/ char * carg6);
 void _wrap_PathPlanner_UpdateRRTParameters(SwigObj * carg1, double carg2, int carg3, double carg4, int carg5, double carg6, /*aaa*/ char * carg7);
 void _wrap_PathPlanner_UpdateDAAParameters(SwigObj * carg1, /*aaa*/ char * carg2);
@@ -40,9 +39,7 @@ void PathPlanner_InitializeAstarParameters(SwigObj * carg1, bool carg2, double c
 void PathPlanner_InitializeRRTParameters(SwigObj * carg1, double carg2, int carg3, double carg4, int carg5, double carg6, /*aaa*/ char * carg7) {
   return _wrap_PathPlanner_InitializeRRTParameters(carg1, carg2, carg3, carg4, carg5, carg6, carg7);
 }
-void PathPlanner_InitializeBSplinesParameters(SwigObj * carg1, bool carg2, double carg3, int carg4, int carg5) {
-  return _wrap_PathPlanner_InitializeBSplinesParameters(carg1, carg2, carg3, carg4, carg5);
-}
+
 void PathPlanner_UpdateAstarParameters(SwigObj * carg1, bool carg2, double carg3, double carg4, double carg5, /*aaa*/ char * carg6) {
   return _wrap_PathPlanner_UpdateAstarParameters(carg1, carg2, carg3, carg4, carg5, carg6);
 }

@@ -58,7 +58,7 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
     Position start = currentPos.linearDist2D(currentVel.trk(), dist);
     Position goalPos = endPos;
 
-    Vect3 initPosR3 = proj.project(currentPos);
+    Vect3 initPosR3 = proj.project(start);
     Vect3 gpos = proj.project(goalPos);
 
 

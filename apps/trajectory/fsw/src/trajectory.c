@@ -421,15 +421,15 @@ void TRAJECTORY_Monitor(void)
 
                 double position[3];
                 double velocity[3];
-                int nextWP1;
-                int nextWP2;
+                int newWP1;
+                int newWP2;
                 bool monitor;
 
                 OS_MutSemTake(TrajectoryAppData.mutexAcState);
                 memcpy(position, TrajectoryAppData.position, sizeof(double) * 3);
                 memcpy(velocity, TrajectoryAppData.velocity, sizeof(double) * 3);
-                nextWP1 = TrajectoryAppData.nextWP1;
-                nextWP2 = TrajectoryAppData.nextWP2;
+                newWP1 = TrajectoryAppData.nextWP1;
+                newWP2 = TrajectoryAppData.nextWP2;
                 monitor = TrajectoryAppData.monitor;
                 OS_MutSemGive(TrajectoryAppData.mutexAcState);
 
@@ -437,23 +437,26 @@ void TRAJECTORY_Monitor(void)
                     break;
 
                 // Compute distance to next waypoint.
-                double nextWPPosition1[3] = {TrajectoryAppData.flightplan1.waypoints[nextWP1].latitude,
-                                            TrajectoryAppData.flightplan1.waypoints[nextWP1].longitude,
-                                            TrajectoryAppData.flightplan1.waypoints[nextWP1].altitude};
+                double nextWP1[3] = {TrajectoryAppData.flightplan1.waypoints[newWP1].latitude,
+                                     TrajectoryAppData.flightplan1.waypoints[newWP1].longitude,
+                                     TrajectoryAppData.flightplan1.waypoints[newWP1].altitude};
 
-                double dist2NextWP1 = PathPlanner_Dist2Waypoint(TrajectoryAppData.pplanner, position, nextWPPosition1);
+                double dist2NextWP1 = PathPlanner_Dist2Waypoint(TrajectoryAppData.pplanner, position, nextWP1);
+
+
+                double prevWP1[3] = {TrajectoryAppData.flightplan1.waypoints[newWP1-1].latitude,
+                                     TrajectoryAppData.flightplan1.waypoints[newWP1-1].longitude,
+                                     TrajectoryAppData.flightplan1.waypoints[newWP1-1].altitude};
 
                 // Compute xtrack deviation for current leg.
                 double offset[2];
-                PathPlanner_ComputeXtrackDistance_c(TrajectoryAppData.pplanner, "Plan0", nextWP1, position, offset);
-
+                ComputeXtrackDistance(prevWP1,nextWP1,position,offset);
                 // Maneuver to intercept plan
                 double maneuver[3];
-                PathPlanner_ManueverToIntercept_c(TrajectoryAppData.pplanner, "Plan0", nextWP1, position, maneuver,
-                                                  TrajectoryAppData.xtrkGain, TrajectoryAppData.resSpeed, TrajectoryAppData.xtrkDev);
+                ManueverToIntercept(prevWP1,nextWP1,position,maneuver,TrajectoryAppData.xtrkGain,TrajectoryAppData.resSpeed,TrajectoryAppData.xtrkDev);
 
                 double interceptHeadingToPlan;
-                interceptHeadingToPlan = PathPlanner_GetInterceptHeadingToPlan_c(TrajectoryAppData.pplanner, "Plan0", nextWP1, position);
+                interceptHeadingToPlan = GetInterceptHeadingToPlan(prevWP1,nextWP1,position);
 
                 CFE_SB_InitMsg(&TrajectoryAppData.fpMonitor, FLIGHTPLAN_MONITOR_MID, sizeof(flightplan_monitor_t), TRUE);
                 strcpy(TrajectoryAppData.fpMonitor.planID,"Plan0\0");
@@ -468,24 +471,28 @@ void TRAJECTORY_Monitor(void)
                 SendSBMsg(TrajectoryAppData.fpMonitor);
 
                 // Compute monitoring information for flight plan 2
-                if(nextWP2 >= TrajectoryAppData.flightplan2.num_waypoints || TrajectoryAppData.flightplan2.num_waypoints > 0){
+                if(newWP2 >= TrajectoryAppData.flightplan2.num_waypoints || TrajectoryAppData.flightplan2.num_waypoints > 0){
                     break;
                 }
                  // Compute distance to next waypoint.
-                double nextWPPosition2[3] = {TrajectoryAppData.flightplan2.waypoints[nextWP2].latitude,
-                                            TrajectoryAppData.flightplan2.waypoints[nextWP2].longitude,
-                                            TrajectoryAppData.flightplan2.waypoints[nextWP2].altitude};
+                double nextWP2[3] = {TrajectoryAppData.flightplan2.waypoints[newWP2].latitude,
+                                     TrajectoryAppData.flightplan2.waypoints[newWP2].longitude,
+                                     TrajectoryAppData.flightplan2.waypoints[newWP2].altitude};
+               
+                double prevWP2[3] = {TrajectoryAppData.flightplan2.waypoints[newWP2-1].latitude,
+                                     TrajectoryAppData.flightplan2.waypoints[newWP2-1].longitude,
+                                     TrajectoryAppData.flightplan2.waypoints[newWP2-1].altitude};
+               
+                double dist2NextWP2 = PathPlanner_Dist2Waypoint(TrajectoryAppData.pplanner, position, nextWP2);
 
-                double dist2NextWP2 = PathPlanner_Dist2Waypoint(TrajectoryAppData.pplanner, position, nextWPPosition2);
 
                 // Compute xtrack deviation for current leg.
-                PathPlanner_ComputeXtrackDistance_c(TrajectoryAppData.pplanner, "Plan1", nextWP1, position, offset);
+                ComputeXtrackDistance(prevWP2,nextWP2,position,offset);
 
                 // Maneuver to intercept plan
-                PathPlanner_ManueverToIntercept_c(TrajectoryAppData.pplanner, "Plan1", nextWP2, position, maneuver,
-                                                  TrajectoryAppData.xtrkGain, TrajectoryAppData.resSpeed, TrajectoryAppData.xtrkDev);
+                ManueverToIntercept(prevWP2,nextWP2,position,maneuver,TrajectoryAppData.xtrkGain,TrajectoryAppData.resSpeed,TrajectoryAppData.xtrkDev);
 
-                interceptHeadingToPlan = PathPlanner_GetInterceptHeadingToPlan_c(TrajectoryAppData.pplanner, "Plan1", nextWP2, position);
+                interceptHeadingToPlan = GetInterceptHeadingToPlan(prevWP2,nextWP2,position);
 
                 CFE_SB_InitMsg(&TrajectoryAppData.fpMonitor, FLIGHTPLAN_MONITOR_MID, sizeof(flightplan_monitor_t), TRUE);
                 strcpy(TrajectoryAppData.fpMonitor.planID,"Plan1\0");

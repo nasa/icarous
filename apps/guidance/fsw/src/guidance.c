@@ -256,7 +256,7 @@ void GUIDANCE_Run(){
             guidanceInput_t guidanceInput = AssembleGuidanceInput(&guidanceAppData.primaryFlightPlan, guidanceAppData.nextPrimaryWP);
             guidanceOutput_t guidanceOutput;
             int nextWP = guidanceAppData.nextPrimaryWP;
-            int newNextWP = ComputeFlightplanGuidanceInput(&guidanceInput, &guidanceOutput, &guidanceAppData.guidance_tbl);
+            int newNextWP = ComputeFlightplanGuidanceInput(&guidanceInput, &guidanceOutput, (guidanceParams_t*)&guidanceAppData.guidance_tbl);
             HandleFlightplanGuidance(&guidanceAppData.primaryFlightPlan, nextWP, &guidanceOutput);
             guidanceAppData.nextPrimaryWP = newNextWP;
             break;
@@ -266,7 +266,7 @@ void GUIDANCE_Run(){
             guidanceInput_t guidanceInput = AssembleGuidanceInput(&guidanceAppData.secondaryFlightPlan, guidanceAppData.nextSecondaryWP);
             guidanceOutput_t guidanceOutput;
             int nextWP = guidanceAppData.nextSecondaryWP;
-            int newNextWP = ComputeFlightplanGuidanceInput(&guidanceInput, &guidanceOutput, &guidanceAppData.guidance_tbl);
+            int newNextWP = ComputeFlightplanGuidanceInput(&guidanceInput, &guidanceOutput, (guidanceParams_t*)&guidanceAppData.guidance_tbl);
             HandleFlightplanGuidance(&guidanceAppData.secondaryFlightPlan, nextWP, &guidanceOutput);
             guidanceAppData.nextSecondaryWP = newNextWP;
             break;
@@ -292,7 +292,7 @@ void GUIDANCE_Run(){
 
             guidanceInput_t guidanceInput = AssembleGuidanceInput(&fp, 1);
             guidanceOutput_t guidanceOutput;
-            ComputeFlightplanGuidanceInput(&guidanceInput, &guidanceOutput, &guidanceAppData.guidance_tbl);
+            ComputeFlightplanGuidanceInput(&guidanceInput, &guidanceOutput, (guidanceParams_t*)&guidanceAppData.guidance_tbl);
             HandleFlightplanGuidance(&fp, 1, &guidanceOutput);
 
             /*

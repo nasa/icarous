@@ -4,7 +4,7 @@ project(PathPlanner)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
-
+set(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
 add_subdirectory(RRT)
 add_subdirectory(Astar)
 
