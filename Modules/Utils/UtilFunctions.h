@@ -28,8 +28,11 @@ void ComputeTrackingResolution(double targetPos[],double currentPos[],double cur
                                       double PropGains[],double outputVel[],double *outputHeading);
 double SaturateVelocity(double V, double Vsat);
 void ComputeLatLngAlt(double origin[],double xyz[],double output[]);
-
-
+double ComputeXtrackDistance(double wpA[],double wpB[],double position[],double offset[]);
+void GetPositionOnPlan(double wpA[],double wpB[],double currentPos[],double position[]);
+void ManueverToIntercept(double wpA[],double wpB[],double currPosition[],double velocity[],
+                        double xtrkDevGain,double resolutionSpeed,double allowedDev);
+double GetInterceptHeadingToPlan(double wpA[],double wpB[],double currentPos[]);
 
 #ifdef __cplusplus
 };

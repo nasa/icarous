@@ -65,6 +65,7 @@ bool Astar::Visited(const Node qnode) {
             return true;
         }
     }
+    return false;
 }
 
 bool Astar::CheckConstraints(Node& qnode) {

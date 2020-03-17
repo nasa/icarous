@@ -62,6 +62,7 @@ bool Node::AddChild(Node child) {
             return false;
     }
     children.push_back(child);
+    return true;
 }
 
 

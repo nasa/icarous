@@ -16,7 +16,12 @@ double objfunc(unsigned n,const double *x,double *grad,void* data) {
     return fval;
 }
 
-
+void PathPlanner::InitializeBSplinesParameters(bool enable3D,double computationT,int numControlPts,int lenTVec) {
+    _bsplines_enable3D = enable3D;
+    _bsplines_compTime = computationT;
+    _bsplines_numControlPts = numControlPts;
+    _bsplines_lenTVec = lenTVec;
+}
 
 int64_t PathPlanner::FindPathBSplines(char planID[],double fromPosition[],double toPosition[],double velocity[]){
 
