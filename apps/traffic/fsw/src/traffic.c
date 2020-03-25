@@ -303,6 +303,7 @@ void TRAFFIC_ProcessPacket(){
 
             // Get feasibility data for primary flight plan
             double speed = 0.0;
+            double time = 0.0;
             for(int i=0;i<trafficAppData.flightplan1.num_waypoints;++i){
                 double wp[3] = {trafficAppData.flightplan1.waypoints[i].latitude,
                                 trafficAppData.flightplan1.waypoints[i].longitude,
@@ -320,9 +321,25 @@ void TRAFFIC_ProcessPacket(){
                 trafficAppData.vsBands.wpFeasibility1[i] = feasibility;
                 trafficAppData.trackBands.fp1ClosestPointFeasible = trafficAppData.return2fp1leg;
 
+                if (trafficAppData.flightplan1.waypoints[i].wp_metric == WP_METRIC_SPEED){
+                    speed = trafficAppData.flightplan1.waypoints[i].value;
+                }else if(trafficAppData.flightplan1.waypoints[i].wp_metric == WP_METRIC_ETA){
+                    time = trafficAppData.flightplan1.waypoints[i].value;
+                }
+
                 if(i > 0){
-                    if(trafficAppData.flightplan1.waypoints[i-1].value > 0){
-                        speed = trafficAppData.flightplan1.waypoints[i-1].value;
+                    if(speed < 1e-6){
+                        double wp2[3] = {trafficAppData.flightplan1.waypoints[i-1].latitude,
+                                        trafficAppData.flightplan1.waypoints[i-1].longitude,
+                                        trafficAppData.flightplan1.waypoints[i-1].altitude};
+                        double dist = ComputeDistance(wp,wp2);
+
+                        if(time > 0){
+                            speed = dist/time;
+                        }else{
+                            speed = 1;
+                        }
+
                     }
 
                     double originalVelocity[3] = {trafficAppData.velocity[0],
@@ -335,6 +352,8 @@ void TRAFFIC_ProcessPacket(){
 
             }
 
+            speed = 0.0;
+            time  = 0.0;
             // Get feasibility data for secondary flight plan
             for(int i=0;i<trafficAppData.flightplan2.num_waypoints;++i){
                 double wp[3] = {trafficAppData.flightplan2.waypoints[i].latitude,
@@ -353,11 +372,27 @@ void TRAFFIC_ProcessPacket(){
                 trafficAppData.vsBands.wpFeasibility2[i] = feasibility;
                 trafficAppData.trackBands.fp2ClosestPointFeasible = trafficAppData.return2fp2leg;
 
-                if(i > 0){
-                    if(trafficAppData.flightplan2.waypoints[i-1].value > 0){
-                        speed = trafficAppData.flightplan2.waypoints[i-1].value;
-                    }
 
+                if (trafficAppData.flightplan1.waypoints[i].wp_metric == WP_METRIC_SPEED){
+                    speed = trafficAppData.flightplan1.waypoints[i].value;
+                }else if(trafficAppData.flightplan1.waypoints[i].wp_metric == WP_METRIC_ETA){
+                    time = trafficAppData.flightplan1.waypoints[i].value;
+                }
+
+                if(i > 0){
+                    if(speed < 1e-6){
+                        double wp2[3] = {trafficAppData.flightplan2.waypoints[i-1].latitude,
+                                        trafficAppData.flightplan2.waypoints[i-1].longitude,
+                                        trafficAppData.flightplan2.waypoints[i-1].altitude};
+                        double dist = ComputeDistance(wp,wp2);
+
+                        if(time > 0){
+                            speed = dist/time;
+                        }else{
+                            speed = 1;
+                        }
+
+                    }
                     double originalVelocity[3] = {trafficAppData.velocity[0],
                                                   speed,
                                                   trafficAppData.velocity[2]};
