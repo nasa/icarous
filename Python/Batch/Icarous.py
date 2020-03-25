@@ -417,11 +417,22 @@ class Icarous():
         self.cog.trkBandMax = self.trkband.high
 
         if self.cog.nextPrimaryWP < len(self.flightplan1):
-            self.cog.nextWPFeasibility1 = self.tfMonitor.monitor_wp_feasibility(self.position,self.trkgsvs,self.flightplan1[self.cog.nextPrimaryWP])
+            self.cog.nextWPFeasibility1 = self.tfMonitor.monitor_wp_feasibility(self.position,
+                                                                                self.trkgsvs,
+                                                                                self.flightplan1[self.cog.nextPrimaryWP])
+            self.cog.nextWPFeasibility1 &= self.tfMonitor.monitor_wp_feasibility(self.position,
+                                                                                [self.trkgsvs[0],self.cog.resolutionSpeed,self.trkgsvs[2]],
+                                                                                self.flightplan1[self.cog.nextPrimaryWP])
             
 
         if len(self.flightplan2) > 0:
-            self.cog.nextWPFeasibility2 = self.tfMonitor.monitor_wp_feasibility(self.position,self.trkgsvs,self.flightplan2[self.cog.nextSecondaryWP])
+            self.cog.nextWPFeasibility2 = self.tfMonitor.monitor_wp_feasibility(self.position,
+                                                                                self.trkgsvs,
+                                                                                self.flightplan2[self.cog.nextSecondaryWP])
+            self.cog.nextWPFeasibility2 &= self.tfMonitor.monitor_wp_feasibility(self.position,
+                                                                                [self.trkgsvs[0],self.cog.resolutionSpeed,self.trkgsvs[2]],
+                                                                                self.flightplan2[self.cog.nextSecondaryWP])
+
         else:
             self.cog.nextWPFeasibility2 = True
 
