@@ -237,13 +237,18 @@ void COGNITION_ProcessSBData() {
                else
                    cog.preferredSpeed = -10000;
             }else{
-               int id = cog.nextPrimaryWP;
-               if (id >= appdataCog.flightplan1.num_waypoints)
-                   id = appdataCog.flightplan1.num_waypoints-1;
+               int id1 = cog.nextPrimaryWP;
+               int id2 = cog.nextSecondaryWP;
+               if (id1 >= appdataCog.flightplan1.num_waypoints)
+                   id1 = appdataCog.flightplan1.num_waypoints-1;
 
-               if(cog.Plan0 && gs->wpFeasibility1[id]) {
+               if (id2 >= appdataCog.flightplan2.num_waypoints)
+                   id2 = appdataCog.flightplan2.num_waypoints-1;
+
+
+               if(cog.Plan0 && gs->wpFeasibility1[id1]) {
                    cog.trafficSpeedConflict = false;
-               }else if(cog.Plan1 && gs->wpFeasibility2[id]){
+               }else if(cog.Plan1 && gs->wpFeasibility2[id2]){
                    cog.trafficSpeedConflict = false;
                }
                else {
