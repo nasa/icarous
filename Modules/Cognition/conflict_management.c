@@ -43,7 +43,12 @@ void SetGuidanceP2P(double lat,double lon,double alt,double speed){
 }
 
 void SendStatus(char buffer[],uint8_t severity){
+   memset(cog.statusBuf,0,250);
    strcpy(cog.statusBuf,buffer); 
+
+   if(cog.sendStatusTxt){
+      printf("Status not sent\n");
+   }
    cog.sendStatusTxt = true;
    cog.statusSeverity = severity;
 }
