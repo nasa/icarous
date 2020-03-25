@@ -28,6 +28,7 @@ void _wrap_PathPlanner_InputFlightPlan(SwigObj * carg1, /*aaa*/ char * carg2, in
 double _wrap_PathPlanner_Dist2Waypoint(SwigObj * carg1, /*aaa*/ double * carg2, /*aaa*/ double * carg3);
 void _wrap_PathPlanner_GetExitPoint(SwigObj * carg1, char * carg2, /*aaa*/ double * carg3, int carg4, /*aaa*/ double * carg5);
 double _wrap_PathPlanner_GetApproxElapsedPlanTime(SwigObj * carg1, SwigObj * carg2, /*aaa*/ double * carg3, int carg4);
+double _wrap_PathPlanner_GetInterceptHeadingToPoint(SwigObj * carg1, double* carg2, double* carg3);
 void _wrap_delete_PathPlanner(PathPlanner * carg1);
 
 PathPlanner * new_PathPlanner(double carg1, double carg2) {
