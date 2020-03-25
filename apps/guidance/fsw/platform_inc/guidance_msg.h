@@ -38,7 +38,9 @@ typedef struct{
 typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];
     float defaultWpSpeed;        /**< Default waypoint to waypoint speed (m/s) */
-    float captureRadiusScaling;  /**< A waypoint is reached if distance is within speed*captureRadiusScaling */
+    float captureRadiusScaling;  /**< Scaling factor to compute capture radius to determine if a wp has been reached */
+    float guidanceRadiusScaling; /**< Scaling factor to compute guidance radius used for waypoint navigation */
+    float xtrkDev;               /**< Max deviation from flight plan to use guidance radius navigation method (m)*/
     float climbAngle;            /**< Desired angle to climb/descend at (deg) */
     float climbAngleVRange;      /**< Use proportional control when within climbAngleVRange of target altitude (m) */
     float climbAngleHRange;      /**< Use proportional control when within climbAngleHRange of target wp (m) */

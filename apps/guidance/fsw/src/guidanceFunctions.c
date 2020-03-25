@@ -1,6 +1,5 @@
 #define EXTERN extern
-#include "guidance.h"
-#include <math.h>
+#include "guidanceFunctions.h"
 
 double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,guidanceTable_t* guidanceParams){
     double deltaH = nextWaypoint[2] - position[2];
@@ -26,134 +25,120 @@ double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,g
     return climbrate;
 }
 
-int ComputeFlightplanGuidanceInput(flightplan_t* fp, double position[3], int nextWP, bool* reachedStatusUpdated, guidanceTable_t* guidanceParams,
-                                   double velCmd[4], double* refSpeedPtr)
-{
-    // Default to position control
-    if (nextWP >= fp->num_waypoints)
-        nextWP = fp->num_waypoints - 1;
+int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutput_t* guidanceOutput, guidanceTable_t* guidanceParams) {
+    int nextWP = guidanceInput->nextWP;
+    bool finalleg = false;
+    if (nextWP >= guidanceInput->num_waypoints - 1){
+        nextWP = guidanceInput->num_waypoints - 1;
+        finalleg = true;
+    }
 
-    double nextWaypoint[3] = {fp->waypoints[nextWP].latitude,
-                              fp->waypoints[nextWP].longitude,
-                              fp->waypoints[nextWP].altitude};
+    double dist = ComputeDistance(guidanceInput->position, guidanceInput->curr_waypoint);
+    double speed = guidanceInput->speed;
+    double capture_radius = speed * guidanceParams->captureRadiusScaling;
 
-
-    double dist = ComputeDistance(position, nextWaypoint);
-
-    double refSpeed = *refSpeedPtr;
-    
     double newPositionToTrack[3];
+    ComputeOffSetPositionOnPlan(guidanceInput, guidanceParams, newPositionToTrack);
 
-    bool maintainspeed = ComputeOffSetPositionOnPlan(fp, position, nextWP - 1, refSpeed, newPositionToTrack);
+    // Reduce speed if approaching final waypoint or if turning sharply
+    double ownship_heading = fmod(2*M_PI + atan2(guidanceInput->velocity[1],guidanceInput->velocity[0]),2*M_PI) *180/M_PI;
+    double target_heading = ComputeHeading(guidanceInput->position, newPositionToTrack);
+    double turn_angle = fabs(fmod(180 + ownship_heading - target_heading, 360) - 180);
+    if((finalleg && dist < capture_radius) || turn_angle > 30)
+        speed = speed/3;
 
     // If distance to next waypoint is < captureRadius, switch to next waypoint
-    if (dist <= refSpeed * guidanceParams->captureRadiusScaling)
+    if (dist <= capture_radius)
     {
-        if (!*reachedStatusUpdated)
+        if (!guidanceInput->reachedStatusUpdated)
         {
-            *reachedStatusUpdated = true;
-            return (++nextWP);
+            guidanceOutput->reachedStatusUpdated = true;
+            guidanceOutput->newNextWP = nextWP + 1;
         }else{
-            return nextWP;
+            guidanceOutput->newNextWP = nextWP;
         }
     }
     else
     {
-        *reachedStatusUpdated = false;
+        guidanceOutput->reachedStatusUpdated = false;
         // Compute velocity command to next waypoint
-        double heading = ComputeHeading(position, newPositionToTrack);
-        double speed = refSpeed;
-        if(!maintainspeed){
-            speed = speed/3;
-        }
-        
-        double climbrate = ComputeClimbRate(position, nextWaypoint, speed, guidanceParams);
+        double heading = ComputeHeading(guidanceInput->position, newPositionToTrack);
+
+        double climbrate = ComputeClimbRate(guidanceInput->position, guidanceInput->curr_waypoint, speed, guidanceParams);
 
         double vn, ve, vd;
         ConvertTrkGsVsToVned(heading, speed, climbrate, &vn, &ve, &vd);
 
         // Store velocity command in relevant structure
         // A weighted average of the new command is used.
-        velCmd[0] = 0.2 * velCmd[0] + 0.8 * vn;
-        velCmd[1] = 0.2 * velCmd[1] + 0.8 * ve;
-        velCmd[2] = 0.2 * velCmd[2] + 0.8 * vd;
+        guidanceOutput->velCmd[0] = 0.2 * guidanceInput->velCmd[0] + 0.8 * vn;
+        guidanceOutput->velCmd[1] = 0.2 * guidanceInput->velCmd[1] + 0.8 * ve;
+        guidanceOutput->velCmd[2] = 0.2 * guidanceInput->velCmd[2] + 0.8 * vd;
 
-        return nextWP;
+        guidanceOutput->newNextWP = nextWP;
     }
+    return guidanceOutput->newNextWP;
 }
 
-bool ComputeOffSetPositionOnPlan(flightplan_t *fp,double position[],int currentLeg,double refSpeed,double outputLLA[]){
-    //Starting waypoint
-    double wpA[3] = {fp->waypoints[currentLeg].latitude,
-                     fp->waypoints[currentLeg].longitude,
-                     fp->waypoints[currentLeg].altitude};
+void ComputeOffSetPositionOnPlan(guidanceInput_t* guidanceInput, guidanceTable_t* guidanceParams, double outputLLA[]){
+    double guidance_radius = guidanceInput->speed*guidanceParams->guidanceRadiusScaling;
+    double xtrkDev = guidanceParams->xtrkDev;
+    if(xtrkDev > guidance_radius)
+        xtrkDev = guidance_radius;
 
-    //Ending waypoint
-    double wpB[3] = {fp->waypoints[currentLeg+1].latitude,
-                     fp->waypoints[currentLeg+1].longitude,
-                     fp->waypoints[currentLeg+1].altitude};
+    // Create vectors for wpA->wpB and wpA->ownship_position
+    double AB[3], AP[3];
+    ConvertLLA2END(guidanceInput->prev_waypoint,guidanceInput->curr_waypoint, AB);
+    ConvertLLA2END(guidanceInput->prev_waypoint,guidanceInput->position, AP);
 
-    double wpC[3];
-    bool finalleg = false;
-    double wpSpeed;
+    double distAB = ComputeDistance(guidanceInput->prev_waypoint,guidanceInput->curr_waypoint);
+    double distAP = ComputeDistance(guidanceInput->position,guidanceInput->prev_waypoint);
+    double distPB = ComputeDistance(guidanceInput->position,guidanceInput->curr_waypoint);
 
-    if(fp->waypoints[currentLeg].wp_metric == WP_METRIC_SPEED){
-        wpSpeed = fp->waypoints[currentLeg].value;
-    }else{
-        wpSpeed = refSpeed;
-    }
+    double projection = (AB[0]*AP[0]+AB[1]*AP[1])/pow(distAB,2);
+    double closest_point[3];
+    closest_point[0] = AB[0]*projection;
+    closest_point[1] = AB[1]*projection;
+    closest_point[2] = AB[2]*projection;
+    double deviation = distance(AP[0], AP[1], closest_point[0], closest_point[1]);
 
-    if(currentLeg+2 < fp->num_waypoints){
-        wpC[0] = fp->waypoints[currentLeg+2].latitude;
-        wpC[1] = fp->waypoints[currentLeg+2].longitude;
-        wpC[2] = fp->waypoints[currentLeg+2].altitude;
-        if(fp->waypoints[currentLeg + 1].wp_metric == WP_METRIC_SPEED){
-            wpSpeed = fp->waypoints[currentLeg + 1].value;
-        }else{
-            wpSpeed = refSpeed;
-        }
-    }else{
-        finalleg = true;
-    }
+    //Convert waypoints to local frame (with ownship position as origin)
+    double _wpA[3],_wpB[3];
+    ConvertLLA2END(guidanceInput->position,guidanceInput->prev_waypoint,_wpA);
+    ConvertLLA2END(guidanceInput->position,guidanceInput->curr_waypoint,_wpB);
 
-    double distAB = ComputeDistance(wpA,wpB);
-    double distAP = ComputeDistance(wpA,position);
-
-    double heading1 = ComputeHeading(wpA,wpB);
-    double heading2 = ComputeHeading(wpB,wpC);
-
-    //Convert to local frame
-    double _wpA[3],_wpB[3],_wpC[3];
-    ConvertLLA2END(position,wpA,_wpA);
-    ConvertLLA2END(position,wpB,_wpB);
-    ConvertLLA2END(position,wpC,_wpC);
-    
-    double r = wpSpeed*2;
     double outputEND[3] = {0.0,0.0,0.0};
 
-    // If there is enough room on the current leg, get the point to track on this leg
-    // else, use the other leg.
-    if(distAB - distAP > r){
-        GetCorrectIntersectionPoint(_wpA,_wpB,heading1,r,outputEND); 
-        ConvertEND2LLA(position,outputEND,outputLLA);
-        return true;
-    }else{
-        if(finalleg){
-            memcpy(outputLLA,wpB,sizeof(double)*3);
-            return false;
-        }else{
-            GetCorrectIntersectionPoint(_wpB,_wpC,heading2,r,outputEND); 
-            ConvertEND2LLA(position,outputEND,outputLLA);
-            if(fabs(heading1 - heading2) > 30){
-                return false;
+    if(distPB <= guidance_radius){
+        //If within guidance radius of wpB, track to wpB
+        memcpy(outputLLA,guidanceInput->curr_waypoint,sizeof(double)*3);
+    } else if(distAP <= guidance_radius){
+        // If within guidance radius of wpA, use guidance circle method
+        GetCorrectIntersectionPoint(_wpA,_wpB,guidance_radius,outputEND);
+        ConvertEND2LLA(guidanceInput->position,outputEND,outputLLA);
+    } else {
+        // Otherwise, check projection of position onto flight plan
+        if(projection <= 0){
+            // If behind wpA, track to wpA
+            memcpy(outputLLA,guidanceInput->prev_waypoint,sizeof(double)*3);
+        } else if(projection >= 1){
+            // If past wpB, track to wpB
+            memcpy(outputLLA,guidanceInput->curr_waypoint,sizeof(double)*3);
+        } else {
+            // If between wpA and wpB
+            if(deviation < xtrkDev){
+                // If close enough to flight plan, use guidance circle method
+                GetCorrectIntersectionPoint(_wpA,_wpB,guidance_radius,outputEND);
+                ConvertEND2LLA(guidanceInput->position,outputEND,outputLLA);
+            } else {
+                // If far from flight plan, track to closest point on flight plan
+                ConvertEND2LLA(guidanceInput->prev_waypoint,closest_point,outputLLA);
             }
         }
     }
-    return false;
 }
 
-
-void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double heading,double r,double output[]){
+void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double r,double output[]){
     double x1,x2,y1,y2;    
     if( fabs(_wpB[0] - _wpA[0]) > 1e-2 ){
         double m = (_wpB[1] - _wpA[1])/(_wpB[0] - _wpA[0]);
@@ -187,26 +172,12 @@ void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double heading,doub
         }
     }
 
-    // Check which point has the smallest bearing
-
-    double heading1 = fmod(2*M_PI + atan2(y1,x1) ,2*M_PI) *180/M_PI;
-    double heading2 = fmod(2*M_PI + atan2(y2,x2) ,2*M_PI) *180/M_PI;
-
-    heading1 = fmod(360 + 90 - heading1,360);
-    heading2 = fmod(360 + 90 - heading2,360);
-
-    double bearing1 = fabs(heading - heading1);
-    double bearing2 = fabs(heading - heading2);
-
-    if(bearing1 > 180){
-        bearing1 = 180 - fabs(180 - bearing1);
-    }
-
-    if(bearing2 > 180){
-        bearing2 = 180 - fabs(180 - bearing2);
-    }
-
-    if(bearing1 < bearing2){
+    // Check which point is closest to waypoint B
+    double p1[] = {x1, y1};
+    double p2[] = {x2, y2};
+    double dist1 = ComputeDistance(p1,_wpB);
+    double dist2 = ComputeDistance(p2,_wpB);
+    if(dist1 < dist2){
         // Use (x1,y1)
         output[0] = x1;
         output[1] = y1;

@@ -218,6 +218,8 @@ void PublishParams(param_t *params) {
     CFE_SB_InitMsg(&localGuidanceParams,GUIDANCE_PARAMETERS_MID,sizeof(guidance_parameters_t),TRUE);
     localGuidanceParams.defaultWpSpeed = (double) params[i].value;i++;;
     localGuidanceParams.captureRadiusScaling = (double) params[i].value;i++;;
+    localGuidanceParams.guidanceRadiusScaling = (double) params[i].value;i++;;
+    localGuidanceParams.xtrkDev = localTrajectoryParams.xtrkDev;
     localGuidanceParams.climbAngle = (double) params[i].value;i++;;
     localGuidanceParams.climbAngleVRange = (double) params[i].value;i++;;
     localGuidanceParams.climbAngleHRange = (double) params[i].value;i++;;

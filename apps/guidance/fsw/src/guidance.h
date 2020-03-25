@@ -23,6 +23,7 @@
 #include "trajectory_msgids.h"
 #include "guidance_msg.h"
 #include "guidance_msgids.h"
+#include "guidanceFunctions.h"
 #include "sch_msgids.h"
 #include "UtilFunctions.h"
 
@@ -118,42 +119,19 @@ void HandleGuidanceCommands(argsCmd_t *cmd);
 void ComputeTakeoffGuidanceInput();
 
 /**
- * Compute vertical rate needed to climb/descend at a given angle
+ * Assemble the inputs to be passed to guidance functions
  */
-double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,guidanceTable_t* guidanceParams);
-
-/**
- * Compute guidance input for a given flight plan
- */
-int ComputeFlightplanGuidanceInput(flightplan_t* fp, double position[3], int nextWP, bool* reachedStatusUpdated, guidanceTable_t* guidanceParams,
-                                   double velCmd[3], double* refSpeedPtr);
+guidanceInput_t AssembleGuidanceInput(flightplan_t* fp, int nextWP);
 
 /**
  * Handle flight plan guidance results (send necessary SB messages)
  */
-void HandleFlightplanGuidance(flightplan_t* fp, double velCmd[3], int prevWP, int nextWP);
+void HandleFlightplanGuidance(flightplan_t* fp, int newNextWP, guidanceOutput_t* guidanceOutput);
 
 /**
  * Send a velocity command ([vn, ve, vd]) on the software bus
  */
 void SendVelocityCommand(double velCmd[3]);
-
-/**
- * Computes the point on the flight plan to fly towards
- */
-bool ComputeOffSetPositionOnPlan(flightplan_t *fp,double position[],int currentLeg,double refSpeed,double outputLLA[]);
-
-/**
- * Compute the correct intersection with the circle and flight plan
- */
-void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double heading,double r,double output[]);
-
-
-/**
- * Point to point control
- */
-bool Point2PointControl(double position[3], double target_point[3], double speed, guidanceTable_t* guidanceParams, double velCmd[3]);
-
 
 /**
  * Publish guidance status

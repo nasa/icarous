@@ -21,6 +21,8 @@ typedef struct
 {
     double defaultWpSpeed;
     double captureRadiusScaling;
+    double guidanceRadiusScaling;
+    double xtrkDev;
     double climbFpAngle;
     double climbAngleVRange;
     double climbAngleHRange;
