@@ -173,14 +173,6 @@ void gsInterface_InitializeAppData(){
         OS_printf("Error loading parameters\n");
         exit(0);
     }
-
-
-	int val = ReadFlightplanFromFile("merge_fixes.txt",&appdataIntGS.mgData);
-    if(val < 0){
-        OS_printf("Merge fixes not available\n");
-    }else{
-        OS_printf("Merge fixes read successfully\n");
-    }
 }
 
 void gsInterface_AppCleanUp(){
