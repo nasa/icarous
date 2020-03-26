@@ -106,31 +106,33 @@ class cog(Structure):
 mCognition = CDLL('libCognition.so')
 gCog = cog.in_dll(mCognition,'cog');
 
-gCog.returnSafe = True;
-gCog.nextPrimaryWP = 1;
-gCog.resolutionTypeCmd = -1;
-gCog.request = 0;
-gCog.fpPhase = 0;
-gCog.missionStart = -1;
-gCog.keepInConflict = False;
-gCog.keepOutConflict = False;
-gCog.p2pcomplete = False;
-gCog.takeoffComplete = -1;
+def initCognition():
+    gCog.returnSafe = True;
+    gCog.nextPrimaryWP = 1;
+    gCog.resolutionTypeCmd = -1;
+    gCog.request = 0;
+    gCog.fpPhase = 0;
+    gCog.missionStart = -1;
+    gCog.keepInConflict = False;
+    gCog.keepOutConflict = False;
+    gCog.p2pcomplete = False;
+    gCog.takeoffComplete = -1;
 
-gCog.trafficConflictState = 0;
-gCog.geofenceConflictState = 0;
-gCog.trafficTrackConflict = False;
-gCog.trafficSpeedConflict = False;
-gCog.trafficAltConflict = False;
-gCog.XtrackConflictState = 0;
-gCog.resolutionTypeCmd = 2;
-gCog.requestGuidance2NextWP = -1;
-gCog.searchType = 1;
-gCog.topofdescent = False;
-gCog.ditch = False;
-gCog.endDitch = False;
-gCog.resetDitch = False;
-gCog.primaryFPReceived = False;
-gCog.nextWPFeasibility1 = True;
-gCog.nextWPFeasibility2 = True;
+    gCog.trafficConflictState = 0;
+    gCog.geofenceConflictState = 0;
+    gCog.trafficTrackConflict = False;
+    gCog.trafficSpeedConflict = False;
+    gCog.trafficAltConflict = False;
+    gCog.XtrackConflictState = 0;
+    gCog.resolutionTypeCmd = 2;
+    gCog.requestGuidance2NextWP = -1;
+    gCog.searchType = 1;
+    gCog.topofdescent = False;
+    gCog.ditch = False;
+    gCog.endDitch = False;
+    gCog.resetDitch = False;
+    gCog.primaryFPReceived = False;
+    gCog.nextWPFeasibility1 = True;
+    gCog.nextWPFeasibility2 = True;
 
+initCognition()

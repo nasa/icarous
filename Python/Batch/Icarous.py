@@ -2,7 +2,7 @@ from ctypes import byref
 import numpy as np
 
 
-from pyCognition import gCog,mCognition
+from pyCognition import gCog,initCognition,mCognition
 from pyGuidance import (mGuidance,
                       GuidanceInput,
                       GuidanceOutput,
@@ -35,6 +35,7 @@ class Icarous():
             self.ownship = QuadSim()
 
         # Modules
+        self.InitializeModules()
         self.cog = gCog
         self.Cognition = mCognition
         self.Guidance = mGuidance
@@ -64,6 +65,9 @@ class Icarous():
         self.positionLog = []
         self.emergbreak = False
         self.currTime   = 0
+
+    def InitializeModules(self):
+        initCognition()
 
     def setpos_uncertainty(self,xx,yy,zz,xy,yz,xz,coeff=0.8):
         self.ownship.setpos_uncertainty(xx,yy,zz,xy,yz,xz,coeff)
