@@ -45,7 +45,7 @@ def RunPyIcarous(scenario):
 
     # Start Icarous
     ic = Icarous(HomePos)
-    ic.setpos_uncertainty(0.01, 0.01, 0, 0, 0, 0)
+    #ic.setpos_uncertainty(0.01, 0.01, 0, 0, 0, 0)
 
     # Load flight plan
     ic.InputFlightplan(WP, 0)
@@ -68,8 +68,8 @@ def RunPyIcarous(scenario):
     tfList = []
     for tf in scenario["traffic"]:
         StartTraffic(HomePos, tf[0], tf[1], tf[2], tf[3], tf[4], tf[5], tfList)
-    for tf in tfList:
-        tf.setpos_uncertainty(0.01, 0.01, 0, 0, 0, 0)
+    #for tf in tfList:
+    #    tf.setpos_uncertainty(0.01, 0.01, 0, 0, 0, 0)
 
     # Run the scenario
     while not ic.CheckMissionComplete():
@@ -119,6 +119,9 @@ if __name__ == "__main__":
                         help="dist (m) to consider a waypoint reached")
     args = parser.parse_args()
 
+
+    import ValidateSim as VS
+
     # Load scenarios
     if os.path.isfile(args.scenario):
         f = open(args.scenario, 'r')
@@ -129,8 +132,6 @@ if __name__ == "__main__":
 
     if args.num:
         scenario_list = [scenario_list[int(args.num)]]
-    if args.validate:
-        import ValidateSim as VS
 
     results = []
     for i, scenario in enumerate(scenario_list):
@@ -143,20 +144,20 @@ if __name__ == "__main__":
         print("****"+scenario["name"]+"****")
         simdata = RunPyIcarous(scenario)
 
-        # Verify the sim output
-        if args.validate:
-            validation_params = {"h_allow": args.h_allow,
-                                 "v_allow": args.v_allow,
-                                 "wp_radius": args.wp_radius}
+        validation_params = {"h_allow": args.h_allow,
+                             "v_allow": args.v_allow,
+                             "wp_radius": args.wp_radius}
 
-            VF = VS.ValidateFlight(simdata, params=validation_params,
+        VF = VS.ValidateFlight(simdata, params=validation_params,
                                 output_dir=output_dir)
 
+        # Verify the sim output
+        if args.validate:
             result = VF.validate_sim_data(test=args.test)
             results.append(result)
-
-            if args.plot:
-                VF.plot_scenario(save=args.save)
+           
+        if args.plot:
+            VF.plot_scenario(save=args.save)
 
 
     # Print summary of results
