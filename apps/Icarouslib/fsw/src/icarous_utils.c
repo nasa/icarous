@@ -197,7 +197,6 @@ void PublishParams(param_t *params) {
     #ifdef APPDEF_MERGER
     merger_parameters_t localMergerParams;
     CFE_SB_InitMsg(&localMergerParams,MERGER_PARAMETERS_MID,sizeof(merger_parameters_t),TRUE);
-    localMergerParams.missionSpeed = appdataIntGS.storedparams[i].value;
     localMergerParams.maxVehicleSpeed = (double) params[i].value;i++;;
     localMergerParams.minVehicleSpeed = (double) params[i].value;i++;;
     localMergerParams.corridorWidth = (double) params[i].value;i++;;
@@ -241,7 +240,7 @@ int ReadFlightplanFromFile(char* filename,flightplan_t *fplan){
    FILE *fp = fopen(filename,"r");
   
    if (fp == NULL){
-       printf("error reading flight plan file file\n");
+       printf("Could not open file %s\n",filename);
        return -1;
    }
 
