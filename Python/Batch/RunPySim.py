@@ -50,6 +50,7 @@ while not ic.CheckMissionComplete():
     RunTraffic(tfList)
     for i,tf in enumerate(tfList):
         ic.InputTraffic(i,tf.pos_gps,tf.vel)
+ic.WriteLog()
 
 # Plot data for visualization    
 plt.figure(1)

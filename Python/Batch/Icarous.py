@@ -63,6 +63,8 @@ class Icarous():
         self.trkgsvs  = [0.0,0.0,0.0]
 
         self.positionLog = []
+        self.ownshipLog = {"t": [], "position": [], "velocity": []}
+        self.trafficLog = {}
         self.emergbreak = False
         self.currTime   = 0
 
@@ -75,6 +77,7 @@ class Icarous():
 
     def InputTraffic(self,id,position,velocity):
         self.tfMonitor.input_traffic(id,position,velocity,self.currTime)
+        self.RecordTraffic(id, position, velocity)
 
     def InputFlightplan(self,fp,scenarioTime,eta=False):
         
@@ -188,6 +191,7 @@ class Icarous():
         self.tfMonitor.SetParameters(paramString,daa_log)
         
     def SetParameters(self,params):
+        self.params = params
         self.SetGuidanceParams(params)
         self.SetGeofenceParams(params)
         self.SetTrajectoryParams(params)
@@ -213,6 +217,8 @@ class Icarous():
         self.gsband = None
         self.altband = None
         self.vsband = None
+
+        self.RecordOwnship()
 
     def RunCogntiion(self):
 
@@ -485,6 +491,32 @@ class Icarous():
             return True
         else:
             return False
+
+
+    def RecordOwnship(self):
+        self.ownshipLog["t"].append(self.currTime)
+        self.ownshipLog["position"].append(self.position)
+        self.ownshipLog["velocity"].append(self.velocity)
+
+    def RecordTraffic(self, id, position, velocity):
+        if id not in self.trafficLog:
+            self.trafficLog[id] = {"t": [], "position": [], "velocity": []}
+        self.trafficLog[id]["t"].append(self.currTime)
+        self.trafficLog[id]["position"].append(list(position))
+        self.trafficLog[id]["velocity"].append(list(velocity))
+
+    def WriteLog(self, logname="simoutput.json"):
+        import json
+        print("writing log: %s" % logname)
+        log_data = {"parameters": self.params,
+                    "ownship": self.ownshipLog,
+                    "traffic": self.trafficLog,
+                    "waypoints": self.flightplan1,
+                    "geofences": self.fenceList}
+
+        with open(logname, 'w') as f:
+            json.dump(log_data, f)
+
 
     def Run(self):
 
