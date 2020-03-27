@@ -276,7 +276,7 @@ class Icarous():
                 if self.guidanceMode == GuidanceCommands.PRIMARY_FLIGHTPLAN:
                     self.flightplan2 = []
                     if not self.etaFP1:
-                        self.guidIn.speed = self.flightplan1[self.guidIn.nextWP][3]
+                        self.guidIn.speed = self.flightplan1[self.cog.nextPrimaryWP][3]
                     else:
                         self.guidIn.speed = self.guidTbl.defaultWpSpeed
             else:
