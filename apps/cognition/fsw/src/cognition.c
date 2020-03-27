@@ -175,8 +175,9 @@ void COGNITION_ProcessSBData() {
             cog.wpNext1[1] =fplan->waypoints[1].longitude;
             cog.wpNext1[2] =fplan->waypoints[1].altitude;
             cog.num_waypoints = fplan->num_waypoints;
+            cog.scenarioTime = fplan->scenario_time;
 
-            if(fplan->waypoints[1].wp_metric != WP_METRIC_ETA){
+            if(fplan->waypoints[1].wp_metric == WP_METRIC_ETA){
                 cog.wpMetricTime = true;
                 cog.refWPTime = fplan->waypoints[1].value;
             }else{
@@ -472,7 +473,7 @@ void COGNITION_ProcessSBData() {
         #ifdef APPDEF_MERGER
         case MERGER_STATUS_MID:{
             argsCmd_t* cmd = (argsCmd_t*) appdataCog.CogMsgPtr;
-            if((int)cmd->param1 == MERGING_ACTIVE){
+            if((int)cmd->param1 == 1){
                 cog.mergingActive = true;
             }else{
                 cog.mergingActive = false;
