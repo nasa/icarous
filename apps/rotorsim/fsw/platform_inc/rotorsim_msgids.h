@@ -15,7 +15,7 @@
  * @{
  */
 
-#define ROTORSIM_PARAMETERS_MID        0x0142    ///< Rotorsim parameters
+#define ROTORSIM_PARAMETERS_MID        0x0139    ///< Rotorsim parameters
 
 /**@}*/
 
