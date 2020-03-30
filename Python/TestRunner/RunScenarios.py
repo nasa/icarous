@@ -342,7 +342,7 @@ if __name__ == "__main__":
                         help="plot the simulation results")
     parser.add_argument("--save", action="store_true",
                         help="save the simulation results")
-    parser.add_argument("--num", default="",
+    parser.add_argument("--num", type=int, nargs="+",
                         help="If multiple scenarios in file, just run this one")
     parser.add_argument("output_dir", nargs='?', default="simoutput",
                         help="directory to save output (default: 'simoutput')")
@@ -376,15 +376,16 @@ if __name__ == "__main__":
     if args.validate:
         import ValidateSim as VS
 
-    # Load scenarios
+    # Load scenarios from file
     if os.path.isfile(args.scenario):
         with open(args.scenario, 'r') as f:
             scenario_list = yaml.load(f, Loader=yaml.FullLoader)
     else:
-        # (alternatively, scenario can be passed as a JSON string)
+        # (alternatively, scenarios can be passed as a JSON string)
         scenario_list = [json.loads(args.scenario)]
-    if args.num:
-        scenario_list = [scenario_list[int(args.num)]]
+    if args.num is not None:
+        selected_scenarios = [scenario_list[i] for i in args.num]
+        scenario_list = selected_scenarios
 
     # Set the apps that ICAROUS will run
     if not args.python:
