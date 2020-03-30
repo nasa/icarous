@@ -67,6 +67,7 @@ class Icarous():
         self.trafficLog = {}
         self.emergbreak = False
         self.currTime   = 0
+        self.numSecPlan = 0
 
     def InitializeModules(self):
         initCognition()
@@ -77,6 +78,7 @@ class Icarous():
 
     def InputTraffic(self,id,position,velocity):
         self.tfMonitor.input_traffic(id,position,velocity,self.currTime)
+        self.Trajectory.InputTrafficData(id,position,velocity)
         self.RecordTraffic(id, position, velocity)
 
     def InputFlightplan(self,fp,scenarioTime,eta=False):
@@ -189,6 +191,7 @@ class Icarous():
         +"load_core_detection_det_1="+"gov.nasa.larcfm.ACCoRD.WCV_TAUMOD;"
         daa_log = True if params['LOGDAADATA'] == 1 else False
         self.tfMonitor.SetParameters(paramString,daa_log)
+        self.Trajectory.UpdateDAAParams(paramString)
         
     def SetParameters(self,params):
         self.params = params
@@ -293,17 +296,20 @@ class Icarous():
             print(self.cog.statusBuf.decode('utf-8'))
 
         if self.cog.pathRequest:
+            self.flightplan2 = []
+            self.numSecPlan += 1
             self.cog.pathRequest = False
             numWP = self.Trajectory.FindPath(
                     self.cog.searchType,
-                    "Plan1",
+                    "Plan"+str(self.numSecPlan),
                     self.cog.startPosition,
                     self.cog.stopPosition,
                     self.cog.startVelocity)
 
             if numWP > 0:
+                print("Computed flightplan with %d waypoints" % numWP)
                 for i in range(numWP):
-                    wp = self.Trajectory.GetWaypoint("Plan1",i)
+                    wp = self.Trajectory.GetWaypoint("Plan"+str(self.numSecPlan),i)
                     self.flightplan2.append([wp[0],wp[1],wp[2],self.cog.resolutionSpeed])
                 self.cog.request = 2
                 self.cog.nextSecondaryWP = 1

@@ -91,5 +91,5 @@ class Trajectory():
         _pos = cpos(position[0],position[1],position[2])
         _vel = cvel(velocity[0],velocity[1],velocity[2])
         _index = c_int(index)
-        return lib._wrap_PathPlanner_InputTraffic(self.obj,_index,_pos,_vel)
+        return lib._wrap_PathPlanner_InputTraffic(self.module,_index,_pos,_vel)
 
