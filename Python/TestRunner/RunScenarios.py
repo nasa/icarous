@@ -235,12 +235,16 @@ def RunScenario(scenario, watch=False, save=False, verbose=True,
         subprocess.call(["pkill", "-9", "xterm"])
 
     # Construct the sim data for verification
+    sim_type = "cFS rotorsim"
+    if sitl:
+        sim_type = "cFS SITL"
     simdata = {"geofences": GF,
                "waypoints": WP,
                "scenario": scenario,
                "params": params,
                "ownship": ownship,
-               "traffic": traffic}
+               "traffic": traffic,
+               "sim_type": sim_type}
 
     # Save the sim data
     if save:
@@ -305,7 +309,8 @@ def RunPyIcarous(scenario, save=False, output_dir=""):
                "scenario": scenario,
                "params": params,
                "ownship": ic.ownshipLog,
-               "traffic": ic.trafficLog}
+               "traffic": ic.trafficLog,
+               "sim_type": "python fasttime"}
 
     # Save the sim data
     if save:
