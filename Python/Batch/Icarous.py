@@ -146,32 +146,32 @@ class Icarous():
         +"lookahead_time="+str(params['LOOKAHEAD_TIME'])+ "[s];"\
         +"left_trk="+str(params['LEFT_TRK'])+ "[deg];"\
         +"right_trk="+str(params['RIGHT_TRK'])+ "[deg];"\
-        +"min_gs="+str(params['MIN_GS'])+ "[m/s];"\
-        +"max_gs="+str(params['MAX_GS'])+ "[m/s];"\
+        +"min_gs="+str(params['MIN_GS'])+ "[knot];"\
+        +"max_gs="+str(params['MAX_GS'])+ "[knot];"\
         +"min_vs="+str(params['MIN_VS'])+ "[fpm];"\
         +"max_vs="+str(params['MAX_VS'])+ "[fpm];"\
         +"min_alt="+str(params['MIN_ALT'])+ "[ft];"\
         +"max_alt="+str(params['MAX_ALT'])+ "[ft];"\
         +"trk_step="+str(params['TRK_STEP'])+ "[deg];"\
-        +"gs_step="+str(params['GS_STEP'])+ "[m/s];"\
+        +"gs_step="+str(params['GS_STEP'])+ "[knot];"\
         +"vs_step="+str(params['VS_STEP'])+ "[fpm];"\
-        +"alt_step="+str(params['ALT_STEP'])+ "[m];"\
+        +"alt_step="+str(params['ALT_STEP'])+ "[ft];"\
         +"horizontal_accel="+str(params['HORIZONTAL_ACCL'])+ "[m/s^2];"\
         +"vertical_accel="+str(params['VERTICAL_ACCL'])+ "[m/s^2];"\
         +"turn_rate="+str(params['TURN_RATE'])+ "[deg/s];"\
         +"bank_angle="+str(params['BANK_ANGLE'])+ "[deg];"\
-        +"vertical_rate="+str(params['VERTICAL_RATE'])+ "[m/s];"\
+        +"vertical_rate="+str(params['VERTICAL_RATE'])+ "[fpm];"\
         +"recovery_stability_time="+str(params['RECOV_STAB_TIME'])+ "[s];"\
-        +"min_horizontal_recovery="+str(params['MIN_HORIZ_RECOV'])+ "[m];"\
-        +"min_vertical_recovery="+str(params['MIN_VERT_RECOV'])+ "[m];"\
+        +"min_horizontal_recovery="+str(params['MIN_HORIZ_RECOV'])+ "[ft];"\
+        +"min_vertical_recovery="+str(params['MIN_VERT_RECOV'])+ "[ft];"\
         +"recovery_trk="+( "true;" if params['RECOVERY_TRK'] == 1 else "false;" )\
         +"recovery_gs="+( "true;" if params['RECOVERY_GS'] == 1 else "false;" )\
         +"recovery_vs="+( "true;" if params['RECOVERY_VS'] == 1 else "false;" )\
         +"recovery_alt="+( "true;" if params['RECOVERY_ALT'] == 1 else "false;" )\
         +"ca_bands="+( "true;" if params['CA_BANDS'] == 1 else "false;" )\
         +"ca_factor="+str(params['CA_FACTOR'])+ ";"\
-        +"horizontal_nmac="+str(params['HORIZONTAL_NMAC'])+ "[m];"\
-        +"vertical_nmac="+str(params['VERTICAL_NMAC'])+ "[m];"\
+        +"horizontal_nmac="+str(params['HORIZONTAL_NMAC'])+ "[ft];"\
+        +"vertical_nmac="+str(params['VERTICAL_NMAC'])+ "[ft];"\
         +"conflict_crit="+( "true;" if params['CONFLICT_CRIT'] == 1 else "false;" )\
         +"recovery_crit="+( "true;" if params['RECOVERY_CRIT'] == 1 else "false;" )\
         +"contour_thr="+str(params['CONTOUR_THR'])+ "[deg];"\
@@ -179,8 +179,8 @@ class Icarous():
         +"alert_1_detector="+"det_1;"\
         +"alert_1_early_alerting_time="+str(params['AL_1_E_ALERT_T'])+ "[s];"\
         +"alert_1_region="+"NEAR;"\
-        +"alert_1_spread_alt="+str(params['AL_1_SPREAD_ALT'])+ "[m];"\
-        +"alert_1_spread_gs="+str(params['AL_1_SPREAD_GS'])+ "[m/s];"\
+        +"alert_1_spread_alt="+str(params['AL_1_SPREAD_ALT'])+ "[ft];"\
+        +"alert_1_spread_gs="+str(params['AL_1_SPREAD_GS'])+ "[knot];"\
         +"alert_1_spread_trk="+str(params['AL_1_SPREAD_TRK'])+ "[deg];"\
         +"alert_1_spread_vs="+str(params['AL_1_SPREAD_VS'])+ "[fpm];"\
         +"conflict_level="+str(params['CONFLICT_LEVEL'])+ ";"\
