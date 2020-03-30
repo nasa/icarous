@@ -315,6 +315,22 @@ def RunPyIcarous(scenario, save=False, output_dir=""):
     return simdata
 
 
+def ValidateSimOutput(simdata, params, plot=False, save=False, output_dir="", test=False):
+    """ Run validation check on simulation output """
+    VF = VS.ValidateFlight(simdata, params=params, output_dir=output_dir)
+    result = VF.validate_sim_data(test=test)
+    if plot:
+        VF.plot_scenario(save=save)
+    return result
+
+
+def PrintSummary(results, scenario_list):
+    print("\nTest Scenario Results Summary:")
+    print("------------------------------")
+    for i in range(len(scenario_list)):
+        VS.print_results(results[i], scenario_list[i]["name"])
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Run Icarous test scenarios")
@@ -349,6 +365,9 @@ if __name__ == "__main__":
     parser.add_argument("--wp_radius", type=float, default=5,
                         help="dist (m) to consider a waypoint reached")
     args = parser.parse_args()
+    validation_params = {"h_allow": args.h_allow,
+                         "v_allow": args.v_allow,
+                         "wp_radius": args.wp_radius}
 
 
     # Import modules as needed
@@ -362,6 +381,7 @@ if __name__ == "__main__":
         with open(args.scenario, 'r') as f:
             scenario_list = yaml.load(f, Loader=yaml.FullLoader)
     else:
+        # (alternatively, scenario can be passed as a JSON string)
         scenario_list = [json.loads(args.scenario)]
     if args.num:
         scenario_list = [scenario_list[int(args.num)]]
@@ -390,25 +410,13 @@ if __name__ == "__main__":
         else:
             simdata = RunPyIcarous(scenario, save=args.save, output_dir=output_dir)
 
-        # Verify the sim output
+        # Validate the sim output
         if args.validate:
-            validation_params = {"h_allow": args.h_allow,
-                                 "v_allow": args.v_allow,
-                                 "wp_radius": args.wp_radius}
-
-            VF = VS.ValidateFlight(simdata, params=validation_params,
-                                output_dir=output_dir)
-
-            result = VF.validate_sim_data(test=args.test)
+            result = ValidateSimOutput(simdata, params=validation_params,
+                                       plot=args.plot, save=args.save,
+                                       output_dir=output_dir, test=args.test)
             results.append(result)
 
-            if args.plot:
-                VF.plot_scenario(save=args.save)
-
-
     # Print summary of results
-    if args.validate:
-        print("\nTest Scenario Results Summary:")
-        print("------------------------------")
-        for i in range(len(scenario_list)):
-            VF.print_results(results[i], scenario_list[i]["name"])
+    if args.validate and len(scenario_list) > 1:
+        PrintSummary(results, scenario_list)

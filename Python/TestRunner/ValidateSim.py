@@ -32,7 +32,7 @@ class ValidateFlight:
         results = [c() for c in conditions]
 
         # Print results
-        self.print_results(results)
+        print_results(results, self.simdata["scenario"]["name"])
 
         if test:
             # Assert conditions
@@ -190,18 +190,17 @@ class ValidateFlight:
             plt.show()
 
 
-    def print_results(self, results, scenario_name=None):
-        ''' print results of a test scenario '''
-        scenario_name = scenario_name or self.simdata["scenario"]["name"]
-        if all([res for res, msg, name in results]):
-            print("\n\033[32m\"%s\" scenario PASSED:\033[0m" % scenario_name)
+def print_results(results, scenario_name):
+    ''' print results of a test scenario '''
+    if all([res for res, msg, name in results]):
+        print("\n\033[32m\"%s\" scenario PASSED:\033[0m" % scenario_name)
+    else:
+        print("\n\033[31m\"%s\" scenario FAILED:\033[0m" % scenario_name)
+    for result, msg, name in results:
+        if result:
+            print("\t\033[32m* %s - PASS:\033[0m %s" % (name, msg))
         else:
-            print("\n\033[31m\"%s\" scenario FAILED:\033[0m" % scenario_name)
-        for result, msg, name in results:
-            if result:
-                print("\t\033[32m* %s - PASS:\033[0m %s" % (name, msg))
-            else:
-                print("\t\033[31mX %s - FAIL:\033[0m %s" % (name, msg))
+            print("\t\033[31mX %s - FAIL:\033[0m %s" % (name, msg))
 
 
 if __name__ == "__main__":
