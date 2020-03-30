@@ -72,7 +72,8 @@ def RunPyIcarous(scenario):
     #    tf.setpos_uncertainty(0.01, 0.01, 0, 0, 0, 0)
 
     # Run the scenario
-    while not ic.CheckMissionComplete():
+    simTimeLimit = scenario["time_limit"]
+    while (not ic.CheckMissionComplete()) and (ic.currTime < simTimeLimit):
         status = ic.Run()
         if not status:
             continue
