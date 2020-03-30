@@ -312,7 +312,7 @@ bool RRTplanner::CheckTrafficCollision(Vect3& qPos,Vect3& qVel,std::vector<Vect3
     Position so  = Position::makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
     Velocity vo  = Velocity::makeVxyz(qVel.x,qVel.y,"m/s",qVel.z,"m/s");
 
-    DAA.setOwnshipState("Ownship",so,vo,elapsedTime);
+    DAA.setOwnshipState("Ownship",so,vo,0);
 
 
     std::vector<Vect3>::iterator itP;
