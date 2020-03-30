@@ -422,6 +422,7 @@ void COGNITION_ProcessSBData() {
             fp = (flightplan_t *)appdataCog.CogMsgPtr;
             memcpy(&appdataCog.flightplan2, fp, sizeof(flightplan_t));
             cog.request = REQUEST_RESPONDED;
+            cog.num_waypoints2 = fp->num_waypoints;
             break;
         }
 

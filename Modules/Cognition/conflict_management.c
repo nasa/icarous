@@ -469,6 +469,14 @@ bool ReturnToNextWP(){
          bool val = cog.fp2complete;
          if(val){
             cog.return2NextWPState = COMPLETE;
+         }else{
+            if(cog.num_waypoints2 == 2 || cog.nextSecondaryWP > 2){
+               if (cog.keepInConflict || cog.keepOutConflict || cog.trafficConflict){
+                  printf("Incomplete termination of return to path\n");
+                  cog.return2NextWPState = NOOPC;
+                  return false;
+               }
+            }
          }
          break;
       }

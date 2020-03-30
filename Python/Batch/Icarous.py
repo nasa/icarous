@@ -314,6 +314,7 @@ class Icarous():
                 self.cog.request = 2
                 self.cog.nextSecondaryWP = 1
                 self.cog.nextWP          = 1
+                self.cog.num_waypoints2  = numWP
             else:
                 print("Error finding path")
 

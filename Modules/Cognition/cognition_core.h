@@ -102,6 +102,8 @@ typedef struct{
     bool primaryFPReceived;
     double scenarioTime;
     int num_waypoints;
+    int num_waypoints2;
+
 
     double wpPrev1[3];
     double wpPrev2[3];

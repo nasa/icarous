@@ -14,6 +14,7 @@ class cog(Structure):
  ( "primaryFPReceived",c_bool ),\
  ( "scenarioTime",c_double ),\
  ( "num_waypoints",c_int ),\
+ ( "num_waypoints2",c_int ),\
  ( "wpPrev1",c_double*3 ),\
  ( "wpPrev2",c_double*3),\
  ( "wpNext1",c_double*3 ),\
