@@ -11,6 +11,7 @@ from pymavlink import mavutil, mavwp
 
 sys.path.append("../Batch")
 import BatchGSModule as GS
+from Icarous import *
 
 sim_home = os.getcwd()
 icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
@@ -74,6 +75,15 @@ def LaunchArducopter(scenario):
                            "-l", str(start_point)],
                           stdout=subprocess.DEVNULL)
     time.sleep(60)
+
+
+def SaveSimData(simdata, outputdir):
+    if not os.path.isdir(output_dir):
+        os.makedirs(output_dir)
+    output_file = os.path.join(output_dir, "simoutput.json")
+    with open(output_file, 'w') as f:
+        json.dump(simdata, f)
+    print("\nWrote sim data")
 
 
 def RunScenario(scenario, watch=False, save=False, verbose=True,
@@ -235,13 +245,72 @@ def RunScenario(scenario, watch=False, save=False, verbose=True,
 
     # Save the sim data
     if save:
-        if not os.path.isdir(output_dir):
-            os.makedirs(output_dir)
-        output_file = os.path.join(output_dir, "simoutput.json")
-        f = open(output_file, 'w')
-        json.dump(simdata, f)
-        print("\nWrote sim data")
-        f.close()
+        SaveSimData(simdata, output_dir)
+
+    return simdata
+
+
+def RunPyIcarous(scenario, save=False, output_dir=""):
+    '''run a pyIcarous simulation of the given scenario'''
+    # Read flight plan
+    wploader = mavwp.MAVWPLoader()
+    wploader.load(os.path.join(icarous_home, scenario["waypoint_file"]))
+    WP = [(wp.x, wp.y, wp.z, int(wp.seq != 0))
+          for wp in wploader.wpoints if wp.command == 16]
+    WP_seq = [(wp.x, wp.y, wp.z, wp.seq)
+              for wp in wploader.wpoints if wp.command == 16]
+    origin = [WP[0][0], WP[0][1]]
+    HomePos = WP[0][:3]
+
+    # Start Icarous
+    ic = Icarous(HomePos)
+    ic.setpos_uncertainty(0.01, 0.01, 0, 0, 0, 0)
+
+    # Load flight plan
+    ic.InputFlightplan(WP, 0)
+
+    # Load geofence
+    GF = []
+    if scenario.get("geofence_file"):
+        geofence_path = os.path.join(icarous_home, scenario["geofence_file"])
+        ic.InputGeofence(geofence_path)
+        GF = GetPolygons(origin, Getfence(geofence_path))
+
+    # Load parameters
+    params = LoadIcarousParams(os.path.join(icarous_home, scenario["parameter_file"]))
+    if scenario.get("param_adjustments"):
+        params.update(scenario["param_adjustments"])
+    ic.SetParameters(params)
+
+    # Load traffic
+    tfList = []
+    for tf in scenario["traffic"]:
+        StartTraffic(HomePos, tf[0], tf[1], tf[2], tf[3], tf[4], tf[5], tfList)
+    for tf in tfList:
+        tf.setpos_uncertainty(0.01, 0.01, 0, 0, 0, 0)
+
+    # Run the scenario
+    simTimeLimit = scenario["time_limit"]
+    while (not ic.CheckMissionComplete()) and (ic.currTime < simTimeLimit):
+        status = ic.Run()
+        if not status:
+            continue
+
+        RunTraffic(tfList)
+        for i, tf in enumerate(tfList):
+            ic.InputTraffic(i, tf.pos_gps, tf.vel)
+
+    # Construct the sim data for verification
+    simdata = {"geofences": GF,
+               "waypoints": WP_seq,
+               "scenario": scenario,
+               "params": params,
+               "ownship": ic.ownshipLog,
+               "traffic": ic.trafficLog}
+
+    # Save the sim data
+    if save:
+        SaveSimData(simdata, output_dir)
 
     return simdata
 
@@ -271,6 +340,8 @@ if __name__ == "__main__":
                         help="check simulation results for test conditions")
     parser.add_argument("--sitl", action="store_true",
                         help="use arducopter SITL sim instead of rotorsim")
+    parser.add_argument("--python", action="store_true",
+                        help="use python based fasttime Icarous simulation instead of cFS")
     parser.add_argument("--h_allow", type=float, default=0.85,
                         help="use h_allow*DTHR to check WC violation")
     parser.add_argument("--v_allow", type=float, default=0.85,
@@ -280,25 +351,26 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
 
+    # Import modules as needed
     if args.watch:
         from matplotlib import pyplot as plt
-
-    # Load scenarios
-    if os.path.isfile(args.scenario):
-        f = open(args.scenario, 'r')
-        scenario_list = yaml.load(f, Loader=yaml.FullLoader)
-        f.close()
-    else:
-        scenario_list = [json.loads(args.scenario)]
-
-    if args.num:
-        scenario_list = [scenario_list[int(args.num)]]
     if args.validate:
         import ValidateSim as VS
 
-    # Set the apps that ICAROUS will run
-    SetApps(sitl=args.sitl)
+    # Load scenarios
+    if os.path.isfile(args.scenario):
+        with open(args.scenario, 'r') as f:
+            scenario_list = yaml.load(f, Loader=yaml.FullLoader)
+    else:
+        scenario_list = [json.loads(args.scenario)]
+    if args.num:
+        scenario_list = [scenario_list[int(args.num)]]
 
+    # Set the apps that ICAROUS will run
+    if not args.python:
+        SetApps(sitl=args.sitl)
+
+    # Run each scenario
     results = []
     for i, scenario in enumerate(scenario_list):
         # Set up output directory
@@ -310,10 +382,13 @@ if __name__ == "__main__":
         # Run the simulation
         print("\nRunning scenario: \"%s\"\t(%d/%d)\n" %
               (scenario["name"], i+1, len(scenario_list)))
-        simdata = RunScenario(scenario, watch=args.watch,
-                              save=args.save, verbose=args.verbose,
-                              output_dir=output_dir, out=args.out,
-                              sitl=args.sitl)
+        if not args.python:
+            simdata = RunScenario(scenario, watch=args.watch,
+                                save=args.save, verbose=args.verbose,
+                                output_dir=output_dir, out=args.out,
+                                sitl=args.sitl)
+        else:
+            simdata = RunPyIcarous(scenario, save=args.save, output_dir=output_dir)
 
         # Verify the sim output
         if args.validate:
