@@ -11,7 +11,6 @@ from pymavlink import mavutil, mavwp
 
 sys.path.append("../Batch")
 import BatchGSModule as GS
-from Icarous import *
 
 sim_home = os.getcwd()
 icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
@@ -375,6 +374,8 @@ if __name__ == "__main__":
         from matplotlib import pyplot as plt
     if args.validate:
         import ValidateSim as VS
+    if args.python:
+        from Icarous import *
 
     # Load scenarios from file
     if os.path.isfile(args.scenario):
