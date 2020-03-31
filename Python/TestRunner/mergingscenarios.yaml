@@ -1,0 +1,44 @@
+# This YAML file contains a list of icarous test case scenarios
+# Each scenario contains:
+#   name: name of the scenario
+#   waypoint_file: path to flight plan file to load (required)
+#   geofence_file: path to geofence file to load (null if none)
+#   parameter_file: path to icarous parameter file to load (null if none)
+#   param_adjustments: a dictionary of icarous parameters to adjust
+#                      allows making small param changes without a new file
+#                      ex: {"ALERTING_TIME": 20} to adjust alerting time to 20
+#   traffic: a list of traffic vehicles to load - format for each traffic is:
+#            [range(m), bearing(deg), height(m), speed(m/s), heading(deg), verticalspeed(m/s)]
+#   time_limit: time limit for the scenario (in seconds)
+#   [planned_wps:] optional - list the waypoint ids that ownship should reach
+#                  used to define successfull waypoint progress test condition
+#                  (default is expect to reach all waypoints)
+#   (file paths are relative to Icarous repository)
+
+- name: "TCL4+"
+  time_limit: 200
+  vehicles:
+    - name: AC0
+      cpu_id: 1
+      waypoint_file: Python/TestRunner/tcl4+_scenario_files/vehicle1_flightplan.txt
+      geofence_file: null
+      parameter_file: Python/TestRunner/tcl4+_scenario_files/merging_default.parm
+      param_adjustments: {}
+      traffic: []
+      time_limit: 200
+    - name: AC1
+      cpu_id: 2
+      waypoint_file: Python/TestRunner/tcl4+_scenario_files/vehicle2_flightplan.txt
+      geofence_file: null
+      parameter_file: Python/TestRunner/tcl4+_scenario_files/merging_default.parm
+      param_adjustments: {}
+      traffic: []
+      time_limit: 200
+    - name: AC2
+      cpu_id: 3
+      waypoint_file: Python/TestRunner/tcl4+_scenario_files/vehicle3_flightplan.txt
+      geofence_file: null
+      parameter_file: Python/TestRunner/tcl4+_scenario_files/merging_default.parm
+      param_adjustments: {}
+      traffic: []
+      time_limit: 200
