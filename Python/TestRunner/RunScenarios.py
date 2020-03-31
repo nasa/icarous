@@ -86,11 +86,13 @@ def SaveSimData(simdata, outputdir):
 
 
 def RunScenario(scenario, watch=False, save=False, verbose=True,
-                out="14557", output_dir="", sitl=False):
+                out=14557, output_dir="", sitl=False):
     '''run an icarous simulation of the given scenario'''
     ownship = vehicle()
     traffic = {}
     name = scenario["name"].replace(' ', '-')
+    cpu_id = scenario.get("cpu_id", 1)
+    spacecraft_id = cpu_id - 1
 
     # Clear message queue to avoid icarous problems
     messages = os.listdir("/dev/mqueue")
@@ -98,36 +100,38 @@ def RunScenario(scenario, watch=False, save=False, verbose=True,
         os.remove(os.path.join("/dev/mqueue", m))
 
     # Set up mavlink connections
-    gs_port = "14553"
+    gs_port = 14553 + (cpu_id - 1)*10
     # Use mavproxy to forward mavlink stream (for visualization)
     if watch and not out:
-        out = "14557"
+        out = 14557 + (cpu_id - 1)*10
     if out:
-        gs_port = "14554"
-        icarous_port = "14553"
+        icarous_port = gs_port
+        gs_port += 1
         mav_forwarding = subprocess.Popen(["mavproxy.py",
-                                           "--master=127.0.0.1:"+icarous_port,
-                                           "--out=127.0.0.1:"+gs_port,
-                                           "--out=127.0.0.1:"+out],
+                                           "--master=127.0.0.1:"+str(icarous_port),
+                                           "--out=127.0.0.1:"+str(gs_port),
+                                           "--out=127.0.0.1:"+str(out)],
                                           stdout=subprocess.DEVNULL)
     # Optionally open up mavproxy with a map window to watch simulation
     if watch:
         logfile = os.path.join(output_dir, name+".tlog")
         mapwindow = subprocess.Popen(["mavproxy.py",
-                                      "--master=127.0.0.1:"+out,
+                                      "--master=127.0.0.1:"+str(out),
                                       "--target-component=5",
                                       "--load-module", "map,console",
                                       "--load-module", "traffic,geofence",
                                       "--logfile", logfile])
     # Open connection for virtual ground station
     try:
-        master = mavutil.mavlink_connection("127.0.0.1:"+gs_port)
+        master = mavutil.mavlink_connection("127.0.0.1:"+str(gs_port))
     except Exception as msg:
         print("Error opening mavlink connection")
 
     # Start the ICAROUS process
     os.chdir(icarous_exe)
-    ic = subprocess.Popen(["./core-cpu1", "-I 0", "-C 1"],
+    ic = subprocess.Popen(["./core-cpu1",
+                           "-I "+str(spacecraft_id),
+                           "-C "+str(cpu_id)],
                           stdout=subprocess.DEVNULL)
 
     # Pause for a couple of seconds here so that ICAROUS can boot up
@@ -354,7 +358,7 @@ if __name__ == "__main__":
                         help="watch the simulation as it runs")
     parser.add_argument("--verbose", action="store_true",
                         help="print sim information")
-    parser.add_argument("--out", nargs='?', default="",
+    parser.add_argument("--out", nargs='?', type=int, default=0,
                         help="localhost port to forward mavlink stream to (for visualization)")
     parser.add_argument("--validate", action="store_true",
                         help="check simulation results for test conditions")
@@ -372,7 +376,6 @@ if __name__ == "__main__":
     validation_params = {"h_allow": args.h_allow,
                          "v_allow": args.v_allow,
                          "wp_radius": args.wp_radius}
-
 
     # Import modules as needed
     if args.watch:
