@@ -8,6 +8,7 @@ def ReadLogData(filename):
     data_string = fp.readlines()
     data = []
     for line in data_string:
+        line = line.rstrip('\n')
         entries = line.split(',')
         time = float(entries[0])
         intID = int(entries[1])
@@ -21,11 +22,14 @@ def ReadLogData(filename):
         numSc = int(entries[9])
         mergeSpeed = float(entries[10])
         commandedSpeed = float(entries[11])
-        mergeDev = float(entries[12].rstrip('\n'))
+        mergeDev = float(entries[12])
         mergingStatus = int(entries[13])
+        lat = float(entries[14])
+        lon = float(entries[15])
+        alt = float(entries[16])
         data.append([time, intID, dist2int, speed, nodeRole,
                      earlyArrTime, currArrTime, lateArrTime,
-                     zone, numSc, mergeSpeed, commandedSpeed, mergeDev, mergingStatus])
+                     zone, numSc, mergeSpeed, commandedSpeed, mergeDev, mergingStatus, lat,lon,alt])
     return data
 
 def EndTrim(inputData,index):
