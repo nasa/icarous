@@ -84,7 +84,7 @@ void FlightPhases(void){
                 // TODO: Figure out a fall back plan
             }
 
-            if( cog.mergingActive){
+            if( cog.mergingActive == 2){
                 cog.fpPhase = MERGING_PHASE;
             }
 
@@ -145,7 +145,7 @@ void FlightPhases(void){
         }
 
         case MERGING_PHASE:{
-            if(!cog.mergingActive){
+            if(cog.mergingActive == 1){
                 cog.fpPhase = CRUISE_PHASE;
                 SetGuidanceFlightPlan("Plan0",cog.nextFeasibleWP1);
             }
@@ -213,17 +213,19 @@ status_e Cruise(){
 
             bool status = false;
 
-            status |= TrafficConflictManagement();
+            if(cog.mergingActive == 0){
+                status |= TrafficConflictManagement();
 
-            status |= GeofenceConflictManagement();
+                status |= GeofenceConflictManagement();
 
-            status |= XtrackManagement(); 
+                status |= XtrackManagement(); 
 
-            status |= ReturnToNextWP();
+                status |= ReturnToNextWP();
 
-            // Perform time management only when following the primary flightplan
-            if(!status){
-                TimeManagement();
+                // Perform time management only when following the primary flightplan
+                if(!status){
+                    TimeManagement();
+                }
             }
 
             if(cog.nextPrimaryWP >= cog.num_waypoints){

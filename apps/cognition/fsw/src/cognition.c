@@ -147,6 +147,7 @@ void COGNITION_AppInitData(){
     cog.endDitch = false;
     cog.resetDitch = false;
     cog.primaryFPReceived = false;
+    cog.mergingActive = 0;
 
     cog.nextWPFeasibility1 = 1;
     cog.nextWPFeasibility2 = 1;
@@ -474,12 +475,7 @@ void COGNITION_ProcessSBData() {
         #ifdef APPDEF_MERGER
         case MERGER_STATUS_MID:{
             argsCmd_t* cmd = (argsCmd_t*) appdataCog.CogMsgPtr;
-            if((int)cmd->param1 == 1){
-                cog.mergingActive = true;
-            }else{
-                cog.mergingActive = false;
-            }
-
+            cog.mergingActive = (int) cmd->param1;
             break;
         }
         #endif

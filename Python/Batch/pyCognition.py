@@ -88,7 +88,7 @@ class cog(Structure):
  ( "fp1complete",c_bool ),\
  ( "fp2complete",c_bool ),\
  ( "topofdescent",c_bool ),\
- ( "mergingActive",c_bool ),\
+ ( "mergingActive",c_ubyte ),\
  ( "guidanceCommand",c_ubyte ),\
  ( "cmdparams",c_double*10 ),\
  ( "statusBuf",c_char*250 ),\
@@ -118,7 +118,7 @@ def initCognition():
     gCog.keepOutConflict = False;
     gCog.p2pcomplete = False;
     gCog.takeoffComplete = -1;
-
+    gCog.mergingActive = 0
     gCog.trafficConflictState = 0;
     gCog.geofenceConflictState = 0;
     gCog.trafficTrackConflict = False;

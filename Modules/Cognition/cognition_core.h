@@ -206,7 +206,7 @@ typedef struct{
     bool topofdescent;
 
     // Status of merging activity
-    bool mergingActive;     
+    uint8_t mergingActive;
 
     // output
     uint8_t guidanceCommand;
