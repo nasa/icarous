@@ -48,7 +48,7 @@ def GetWaypoints(wploader):
     return WP
 
 
-def SetApps(sitl=False):
+def SetApps(sitl=False, merger=False):
     '''set the apps that ICAROUS will run)'''
     if sitl:
         sim_app = "arducopter"
@@ -57,6 +57,9 @@ def SetApps(sitl=False):
 
     app_list = ["Icarouslib","port_lib", "scheduler", sim_app, "gsInterface", "cognition",
                 "guidance", "traffic", "trajectory", "geofence"]
+
+    if merger:
+        app_list += ["merger", "raft", "SBN", "udp"]
 
     approot = os.path.join(icarous_home, "apps")
     outputloc = os.path.join(icarous_exe, "cf")
@@ -366,6 +369,8 @@ if __name__ == "__main__":
                         help="use arducopter SITL sim instead of rotorsim")
     parser.add_argument("--python", action="store_true",
                         help="use python based fasttime Icarous simulation instead of cFS")
+    parser.add_argument("--merger", action="store_true",
+                        help="run the icarous merger apps (merger, raft, SBN, and udp)")
     parser.add_argument("--h_allow", type=float, default=0.85,
                         help="use h_allow*DTHR to check WC violation")
     parser.add_argument("--v_allow", type=float, default=0.85,
@@ -398,7 +403,7 @@ if __name__ == "__main__":
 
     # Set the apps that ICAROUS will run
     if not args.python:
-        SetApps(sitl=args.sitl)
+        SetApps(sitl=args.sitl, merger=args.merger)
 
     # Run each scenario
     results = []
