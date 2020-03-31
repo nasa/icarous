@@ -20,41 +20,15 @@ def ReadLogData(filename):
         zone = int(entries[8])
         numSc = int(entries[9])
         mergeSpeed = float(entries[10])
-        mergeDev = float(entries[11].rstrip('\n'))
+        commandedSpeed = float(entries[11])
+        mergeDev = float(entries[12].rstrip('\n'))
+        mergingStatus = int(entries[13])
         data.append([time, intID, dist2int, speed, nodeRole,
                      earlyArrTime, currArrTime, lateArrTime,
-                     zone, numSc, mergeSpeed, mergeDev])
+                     zone, numSc, mergeSpeed, commandedSpeed, mergeDev, mergingStatus])
     return data
 
-def FixTimes(inputTimes):
-    numRows = inputTimes.shape[0]
-    i = 0
-    val1 = inputTimes[i]
-    # Go through all the entries
-    #import pdb; pdb.set_trace()
-    while i < numRows:
-        # Initialize count and start
-        count = 1
-        start = i
-        val2 = val1
-        while val1 == val2:
-            i += 1
-            if i >= numRows:
-                break
-            val2 = val1
-            val1 = inputTimes[i]
-            if val1 == val2:
-                count += 1
-        for j in range(count):
-            if count > 1: 
-                inputTimes[start + j] = val2 + (1.0/float(count)) * (j + 1)
-            else:
-                inputTimes[start + j] = val2 + 0.5
-
-    return inputTimes
-
 def EndTrim(inputData,index):
-    #import pdb; pdb.set_trace()
     i = inputData.shape[0] - 1
     val1 = inputData[i,2]
     val2 = inputData[i-1,2]
@@ -70,64 +44,64 @@ def EndTrim(inputData,index):
 
 
 NumVehicles = int(sys.argv[1])
-PathToLogs = sys.argv[2]
+IntID      = int(sys.argv[2])
+PathToLogs = sys.argv[3]
 
-Vehicles = []
+AllVehicles = []
+Vehicle  = {}
 for i in range(NumVehicles):
     filename = PathToLogs + '/merger_appdata_' + str(i) + '.txt'
-    Vehicles.append(ReadLogData(filename))
+    AllVehicles.append(ReadLogData(filename))
 
-Vehicles1 = np.array(Vehicles[0])
-Vehicles2 = np.array(Vehicles[1])
-Vehicles3 = np.array(Vehicles[2])
+for i in range(NumVehicles):
+    vehicle = np.array(AllVehicles[i])
+    # Extract data only for required intersection
+    vehicle = vehicle[ abs(vehicle[:,1] - IntID) < 1e-3 ]
+
+    # Trim redundant data
+    vehicle = EndTrim(vehicle,2)
 
 
-# Extract data only for intersction 1
-Vehicles1 = Vehicles1[ abs(Vehicles1[:,1] - 2) < 1e-3 ]
-Vehicles2 = Vehicles2[ abs(Vehicles2[:,1] - 2) < 1e-3 ]
-Vehicles3 = Vehicles3[ abs(Vehicles3[:,1] - 2) < 1e-3 ]
-
-Vehicles1 = EndTrim(Vehicles1,2)
-Vehicles2 = EndTrim(Vehicles2,2)
-Vehicles3 = EndTrim(Vehicles3,2)
-
-FixTimes(Vehicles1[:,0])
-FixTimes(Vehicles2[:,0])
-FixTimes(Vehicles3[:,0])
+    #FixTimes(Vehicle[:,0])
+    Vehicle[i] = vehicle
 
 plt.figure(1)
-line1, = plt.plot(Vehicles1[:, 0], Vehicles1[:, 2], 'r',)
-line2, = plt.plot(Vehicles2[:, 0], Vehicles2[:, 2], 'g',)
-line3, = plt.plot(Vehicles3[:, 0], Vehicles3[:, 2], 'b',)
-line1.set_label('Vehicle1')
-line2.set_label('Vehicle2')
-line3.set_label('Vehicle3')
+for i in range(NumVehicles):
+  for j in range(Vehicle[i].shape[0]):
+    if Vehicle[i][j,13] == 1:
+      startval = Vehicle[i][j,0] 
+      break;
+  stopval =  Vehicle[i][-1,0]
+  line, = plt.plot(Vehicle[i][:, 0], Vehicle[i][:, 2])
+  col_line = line.get_color()
+  plt.axvspan(startval,stopval,color=col_line,alpha=0.5)
+  line.set_label('Vehicle'+str(i))
 plt.xlabel('time (s)')
 plt.ylabel('distance to merge fix (m)')
 plt.legend()
 plt.savefig(PathToLogs+'/time_distance.png')
 
 plt.figure(2)
-plt.plot(Vehicles1[:, 0], Vehicles1[:, 3], 'r')
-plt.plot(Vehicles1[:, 0], Vehicles1[:, 10], 'r--')
-plt.plot(Vehicles2[:, 0], Vehicles2[:, 3], 'g')
-plt.plot(Vehicles2[:, 0], Vehicles2[:, 10], 'g--')
-plt.plot(Vehicles3[:, 0], Vehicles3[:, 3], 'b')
-plt.plot(Vehicles3[:, 0], Vehicles3[:, 10], 'b--')
-plt.ylim([0,15])
+for i in range(NumVehicles):
+  line1, = plt.plot(Vehicle[i][:, 0], Vehicle[i][:, 3], '')
+  line2, = plt.plot(Vehicle[i][:, 0], Vehicle[i][:, 10], '--')
+  line3, = plt.plot(Vehicle[i][:, 0], Vehicle[i][:, 11], '-.')
+  line1.set_label('Vehicle'+str(i)+' actual')
+  line2.set_label('Vehicle'+str(i)+' merging')
+  line3.set_label('Vehicle'+str(i)+' commanded')
 plt.xlabel('time (s)')
 plt.ylabel('speed (m/s)')
-plt.legend(['Vehicle1 actual','Vehicle1 command','Vehicle2 actual','Vehicle2 command','Vehicle3 actual','Vehicle3 command'])
+plt.legend()
 plt.savefig(PathToLogs+'/time_speed.png')
 
 plt.figure(3)
-plt.plot(Vehicles1[:,0],Vehicles1[:,4],'r')
-plt.plot(Vehicles2[:,0],Vehicles2[:,4],'g')
-plt.plot(Vehicles3[:,0],Vehicles3[:,4],'b')
+for i in range(NumVehicles):
+  line, = plt.plot(Vehicle[i][:,0],Vehicle[i][:,4])
+  line.set_label('Vehicle'+str(i))
 plt.yticks([0.0,1.0,2.0,3.0],['NEUTRAL','FOLLOWER','CANDIDATE','LEADER'],rotation=45)
 plt.xlabel('time (s)')
 plt.ylabel('Node states')
-plt.legend(['Vehicle1','Vehicle2','Vehicle3'])
+plt.legend()
 plt.savefig(PathToLogs+'/time_states.png')
 plt.show()
 
