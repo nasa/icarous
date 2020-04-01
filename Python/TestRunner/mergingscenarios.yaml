@@ -15,31 +15,60 @@
 #                  (default is expect to reach all waypoints)
 #   (file paths are relative to Icarous repository)
 
-- name: "TCL4+"
+- name: "TCL4+ Scenaio 1"
   time_limit: 200
   merge_fixes: Python/TestRunner/tcl4+_scenario_files/merge_fixes.txt
   vehicles:
     - name: AC0
       cpu_id: 1
-      waypoint_file: Python/TestRunner/tcl4+_scenario_files/vehicle1_flightplan.txt
+      waypoint_file: Python/TestRunner/tcl4+/sc1/vehicle1_flightplan.txt
       geofence_file: null
-      parameter_file: Python/TestRunner/tcl4+_scenario_files/merging_default.parm
+      parameter_file: Python/TestRunner/tcl4+/sc1/merging_default.parm
       param_adjustments: {}
       traffic: []
       time_limit: 200
     - name: AC1
       cpu_id: 2
-      waypoint_file: Python/TestRunner/tcl4+_scenario_files/vehicle2_flightplan.txt
+      waypoint_file: Python/TestRunner/tcl4+/sc1/vehicle2_flightplan.txt
       geofence_file: null
-      parameter_file: Python/TestRunner/tcl4+_scenario_files/merging_default.parm
+      parameter_file: Python/TestRunner/tcl4+/sc1/merging_default.parm
       param_adjustments: {}
       traffic: []
       time_limit: 200
     - name: AC2
       cpu_id: 3
-      waypoint_file: Python/TestRunner/tcl4+_scenario_files/vehicle3_flightplan.txt
+      waypoint_file: Python/TestRunner/tcl4+/sc1/vehicle3_flightplan.txt
       geofence_file: null
-      parameter_file: Python/TestRunner/tcl4+_scenario_files/merging_default.parm
+      parameter_file: Python/TestRunner/tcl4+/sc1/merging_default.parm
+      param_adjustments: {}
+      traffic: []
+      time_limit: 200
+
+- name: "TCL4+ Scenario 2"
+  time_limit: 100
+  merge_fixes: Python/TestRunner/tcl4+/sc2/merge_fixes.txt
+  vehicles:
+    - name: AC0
+      cpu_id: 1
+      waypoint_file: Python/TestRunner/tcl4+/sc2/vehicle1_flightplan.txt
+      geofence_file: null
+      parameter_file: Python/TestRunner/tcl4+/sc2/merging_default.parm
+      param_adjustments: {}
+      traffic: []
+      time_limit: 200
+    - name: AC1
+      cpu_id: 2
+      waypoint_file: Python/TestRunner/tcl4+/sc2/vehicle2_flightplan.txt
+      geofence_file: null
+      parameter_file: Python/TestRunner/tcl4+/sc2/merging_default.parm
+      param_adjustments: {}
+      traffic: []
+      time_limit: 200
+    - name: AC2
+      cpu_id: 3
+      waypoint_file: Python/TestRunner/tcl4+/sc2/vehicle3_flightplan.txt
+      geofence_file: null
+      parameter_file: Python/TestRunner/tcl4+/sc2/merging_default.parm
       param_adjustments: {}
       traffic: []
       time_limit: 200
