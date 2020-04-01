@@ -162,11 +162,6 @@ if __name__ == "__main__":
             duration = time.time() - t0
         print("Simulation time limit finished")
 
-        # Collect log files
-        for f in os.listdir(icarous_exe):
-            if f.startswith("merger") or f.startswith("raft"):
-                os.rename(os.path.join(icarous_exe, f), os.path.join(output_dir, f))
-
         # Terminate Icarous, mavproxy, and arducopter
         for v in vehicles:
             v.icarous.kill()
@@ -175,3 +170,14 @@ if __name__ == "__main__":
         if args.sitl:
             subprocess.call(["pkill", "-9", "arducopter"])
             subprocess.call(["pkill", "-9", "xterm"])
+
+        # Collect log files
+        for f in os.listdir(icarous_exe):
+            if f.startswith("merger") or f.startswith("raft"):
+                os.rename(os.path.join(icarous_exe, f), os.path.join(output_dir, f))
+
+        # Generate plots
+        script = os.path.join(icarous_home, "Python", "MergingAnalysis", "ProcMergerLogs.py")
+        n_vehicles = str(len(scenario["vehicles"]))
+        merge_id = str(1)
+        subprocess.call(["python3", script, n_vehicles, merge_id, output_dir])
