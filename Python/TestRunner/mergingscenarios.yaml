@@ -17,6 +17,7 @@
 
 - name: "TCL4+"
   time_limit: 200
+  merge_fixes: Python/TestRunner/tcl4+_scenario_files/merge_fixes.txt
   vehicles:
     - name: AC0
       cpu_id: 1

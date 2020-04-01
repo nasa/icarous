@@ -3,6 +3,7 @@ import sys
 import yaml
 import time
 import datetime
+import shutil
 import subprocess
 from pymavlink import mavutil
 
@@ -130,6 +131,12 @@ if __name__ == "__main__":
         timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H_%M_%S")
         output_dir = os.path.join(sim_home, args.output_dir, timestamp+"_"+name)
         os.makedirs(output_dir)
+
+        # Copy merge_fixes file to exe/ram
+        if "merge_fixes" in scenario:
+            merge_fixes = os.path.join(icarous_home, scenario["merge_fixes"])
+            ram_directory = os.path.join(icarous_home, "exe", "ram")
+            shutil.copy(merge_fixes, ram_directory)
 
         # Set up each vehicle
         vehicles = []
