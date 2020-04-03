@@ -90,7 +90,7 @@ SET(FT_INSTALL_SUBDIR "host/functional-test")
 SET(TGT1_NAME cpu1)
 SET(TGT1_APPLIST ${APPS2RUN})
 
-execute_process(COMMAND python ${MISSION_SOURCE_DIR}/Python/ConfigureApps.py ${MISSION_SOURCE_DIR}/apps ${CMAKE_INSTALL_PREFIX}/cpu1/cf ${APPS2RUN})
+execute_process(COMMAND python ${MISSION_SOURCE_DIR}/Python/cFS_Utils/ConfigureApps.py ${MISSION_SOURCE_DIR}/apps ${CMAKE_INSTALL_PREFIX}/cpu1/cf ${APPS2RUN})
 
 foreach(appname ${APPS2RUN})
   string(TOUPPER ${appname} APPNAME)
