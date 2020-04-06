@@ -47,6 +47,8 @@ class GuidanceTable(Structure):
                  ( "climbRateGain",c_double ), \
                  ( "maxClimbRate",c_double ), \
                  ( "minClimbRate",c_double ), \
+                 ( "maxCap",c_double ), \
+                 ( "minCap",c_double ), \
                  ( "yawForward",c_bool ) \
                 ]
 

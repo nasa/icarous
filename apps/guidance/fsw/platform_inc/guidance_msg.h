@@ -47,6 +47,8 @@ typedef struct{
     float climbRateGain;         /**< Gain used for proportional altitude control*/
     float maxClimbRate;          /**< Maximum allowed climb rate (m/s) */
     float minClimbRate;          /**< Minimum allowed climb rate (maximum descend rate) (m/s) */
+    float maxCap;                /**< Maximum allowed capture radius */
+    float minCap;                /**< Minimum allowed for capture radius */    
     bool yawForward;             /**< When true, yaw the vehicle so that it points in the direction of travel */
 }guidance_parameters_t;
 

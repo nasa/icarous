@@ -134,6 +134,8 @@ class Icarous():
         self.guidTbl.climbRateGain = params['CLIMB_RATE_GAIN']
         self.guidTbl.maxClimbRate = params['MAX_CLIMB_RATE']
         self.guidTbl.minClimbRate = params['MIN_CLIMB_RATE']
+        self.guidTbl.maxCap = params['MAX_CAP']
+        self.guidTbl.minCap = params['MIN_CAP']
         self.guidTbl.yawForward = True if params['YAW_FORWARD'] == 1 else False
 
     def SetCognitionParams(self,params):

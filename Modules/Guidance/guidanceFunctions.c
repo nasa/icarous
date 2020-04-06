@@ -36,6 +36,11 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
     double dist = ComputeDistance(guidanceInput->position, guidanceInput->curr_waypoint);
     double speed = guidanceInput->speed;
     double capture_radius = speed * guidanceParams->captureRadiusScaling;
+    if (guidanceParams->minCap >= capture_radius){
+        capture_radius = guidanceParams->minCap;
+    }else if(capture_radius > guidanceParams->maxCap){
+        capture_radius = guidanceParams->maxCap;
+    }
 
     double newPositionToTrack[3];
     ComputeOffSetPositionOnPlan(guidanceInput, guidanceParams, newPositionToTrack);
