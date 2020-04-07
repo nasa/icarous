@@ -61,7 +61,7 @@ def SetApps(sitl=False):
     approot = os.path.join(icarous_home, "apps")
     outputloc = os.path.join(icarous_exe, "cf")
 
-    subprocess.call(["python3", "../ConfigureApps.py",
+    subprocess.call(["python3", "../cFS_Utils/ConfigureApps.py",
                      approot, outputloc, *app_list])
 
 
