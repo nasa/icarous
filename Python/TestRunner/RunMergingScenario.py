@@ -17,10 +17,12 @@ icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
 icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
 
 class Vehicle:
-    def __init__(self, icarous_process, gs_process, mav_forwarding_process):
+    def __init__(self, icarous_process, gs_process, mav_forwarding_process, scenario):
         self.icarous = icarous_process
         self.gs = gs_process
         self.mav_forwarding = mav_forwarding_process
+        self.scenario = scenario
+        self.started = False
 
 def SetUpVehicle(scenario, verbose=True, out=14557, output_dir="", sitl=False):
     """ Set up a vehicle running icarous, but don't start mission """
@@ -95,7 +97,7 @@ def SetUpVehicle(scenario, verbose=True, out=14557, output_dir="", sitl=False):
         print("Waiting for GPS fix...")
     master.recv_match(type="GLOBAL_POSITION_INT", blocking=True)
 
-    vehicle = Vehicle(ic, gs, mav_forwarding)
+    vehicle = Vehicle(ic, gs, mav_forwarding, scenario)
     return vehicle
 
 
@@ -149,15 +151,18 @@ if __name__ == "__main__":
                              output_dir=output_dir, sitl=args.sitl)
             vehicles.append(v)
 
-        # Start each vehicle
-        for v in vehicles:
-            v.gs.StartMission()
 
         # Wait for the given time limit
         t0 = time.time()
         time_limit = scenario["time_limit"]
         duration = 0
         while duration < time_limit:
+            # Start vehicles
+            for v in vehicles:
+                if not v.started and duration >= v.scenario.get("delay", 0):
+                    v.gs.StartMission()
+                    v.started = True
+                    print("***Starting %s" % v.scenario["name"])
             if args.verbose:
                 print("Sim Duration: %.1fs       " % duration, end="\r")
             time.sleep(0.1)
