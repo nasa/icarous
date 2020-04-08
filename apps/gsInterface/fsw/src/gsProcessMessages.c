@@ -776,6 +776,7 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
     int count = 0;
     strcpy(fp->id,"Plan0\0");
     double speed = 0.0;
+    bool useTime = false;
     fp->scenario_time = time(NULL);
     for(int i=0;i<size;++i){
         switch(items[i].command){
@@ -802,9 +803,16 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
                         double distAB = ComputeDistance(wpA,wpB);
                         double timeAB = distAB/speed;
 
-                        fp->waypoints[count].wp_metric = WP_METRIC_ETA;
-                        fp->waypoints[count].value = fp->waypoints[count-1].value + timeAB;
-   
+                        if(useTime){
+                            double distAB = ComputeDistance(wpA,wpB);
+                            double timeAB = distAB/speed;
+                            fp->waypoints[count].wp_metric = WP_METRIC_ETA;
+                            fp->waypoints[count].value = fp->waypoints[count-1].value + timeAB;
+                        }else{
+                            fp->waypoints[count].wp_metric = WP_METRIC_SPEED;
+                            fp->waypoints[count].value = speed;
+                        }
+
                     }else{
                         fp->waypoints[count].wp_metric = WP_METRIC_NONE;
                     }
@@ -840,6 +848,7 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
 
             case MAV_CMD_DO_CHANGE_SPEED:{
                 speed = items[i].param2;
+                useTime = (items[i].z > 0)?true:false;
                 break;
             }
         }
@@ -852,6 +861,7 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
     int count = 0;
     strcpy(fp->id,"Plan0\0");
     double speed = 0.0;
+    bool useTime = false;
     fp->scenario_time = time(NULL);
     for(int i=0;i<size;++i){
         switch(items[i].command){
@@ -875,12 +885,15 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
                         double wpB[3] = {fp->waypoints[count].latitude,
                                          fp->waypoints[count].longitude,
                                          fp->waypoints[count].altitude};
-                        double distAB = ComputeDistance(wpA,wpB);
-                        double timeAB = distAB/speed;
-
-                        fp->waypoints[count].wp_metric = WP_METRIC_ETA;
-                        fp->waypoints[count].value = fp->waypoints[count-1].value + timeAB;
-   
+                        if(useTime){
+                            double distAB = ComputeDistance(wpA,wpB);
+                            double timeAB = distAB/speed;
+                            fp->waypoints[count].wp_metric = WP_METRIC_ETA;
+                            fp->waypoints[count].value = fp->waypoints[count-1].value + timeAB;
+                        }else{
+                            fp->waypoints[count].wp_metric = WP_METRIC_SPEED;
+                            fp->waypoints[count].value = speed;
+                        }
                     }else{
                         fp->waypoints[count].wp_metric = WP_METRIC_NONE;
                     }
@@ -915,6 +928,7 @@ void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],
 
             case MAV_CMD_DO_CHANGE_SPEED:{
                 speed = items[i].param2;
+                useTime = (items[i].z > 0)?true:false;
                 break;
             }
         }
