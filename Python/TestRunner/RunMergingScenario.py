@@ -114,6 +114,8 @@ if __name__ == "__main__":
                         help="print sim information")
     parser.add_argument("--sitl", action="store_true",
                         help="use arducopter SITL sim instead of rotorsim")
+    parser.add_argument("--pause", action="store_true",
+                        help="wait to start sim until <Enter> is pressed")
     parser.add_argument("--output_dir", default="merging_sim_output",
                         help="directory to save output (default: 'merging_sim_output')")
     args = parser.parse_args()
@@ -151,6 +153,8 @@ if __name__ == "__main__":
                              output_dir=output_dir, sitl=args.sitl)
             vehicles.append(v)
 
+        if args.pause:
+            input("**** Press enter to start simulation ****")
 
         # Wait for the given time limit
         t0 = time.time()
