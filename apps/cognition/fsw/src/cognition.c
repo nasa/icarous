@@ -379,9 +379,9 @@ void COGNITION_ProcessSBData() {
                 cog.wpNext1[1] =appdataCog.flightplan1.waypoints[cog.nextWP].longitude;
                 cog.wpNext1[2] =appdataCog.flightplan1.waypoints[cog.nextWP].altitude;
 
-                if(appdataCog.flightplan1.waypoints[1].wp_metric != WP_METRIC_ETA){
+                if(appdataCog.flightplan1.waypoints[cog.nextWP].wp_metric == WP_METRIC_ETA){
                     cog.wpMetricTime = true;
-                    cog.refWPTime = appdataCog.flightplan1.waypoints[1].value;
+                    cog.refWPTime = appdataCog.flightplan1.waypoints[cog.nextWP].value;
                 }else{
                     cog.refWPTime = 0;
                     cog.wpMetricTime = false;
