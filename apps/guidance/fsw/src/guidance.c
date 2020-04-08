@@ -128,8 +128,6 @@ void GUIDANCE_ProcessPacket(){
         case ICAROUS_TRAJECTORY_MID:{
             flightplan_t *msg = (flightplan_t*)guidanceAppData.guidance_MsgPtr;
             memcpy(&guidanceAppData.secondaryFlightPlan,msg,sizeof(flightplan_t));
-            //TODO: This is temporary until the new updates to the guidance app are integrated.
-            guidanceAppData.refSpeed = msg->waypoints[1].value;
             break;
         }
 
@@ -289,8 +287,8 @@ void GUIDANCE_Run(){
             fp.waypoints[1].longitude = guidanceAppData.point[1];
             fp.waypoints[1].altitude = guidanceAppData.point[2];
 
-            fp.waypoints[0].wp_metric = WP_METRIC_SPEED;
-            fp.waypoints[0].value = guidanceAppData.pointSpeed;
+            fp.waypoints[1].wp_metric = WP_METRIC_SPEED;
+            fp.waypoints[1].value = guidanceAppData.pointSpeed;
 
             guidanceInput_t guidanceInput = AssembleGuidanceInput(&fp, 1);
             guidanceOutput_t guidanceOutput;
@@ -354,6 +352,18 @@ void GUIDANCE_Run(){
 }
 
 guidanceInput_t AssembleGuidanceInput(flightplan_t* fp, int nextWP){
+
+    if(nextWP >= fp->num_waypoints){
+       nextWP = fp->num_waypoints - 1;
+    }
+
+    double refSpeed = 0.0, refTime = 0.0;
+    if(fp->waypoints[nextWP].wp_metric == WP_METRIC_SPEED){
+        refSpeed = fp->waypoints[nextWP].value;
+    } else {
+        refTime = fp->scenario_time + fp->waypoints[nextWP].value;
+    }
+
     guidanceInput_t guidanceInput;
     guidanceInput.position[0] = guidanceAppData.position.latitude;
     guidanceInput.position[1] = guidanceAppData.position.longitude;
@@ -362,28 +372,26 @@ guidanceInput_t AssembleGuidanceInput(flightplan_t* fp, int nextWP){
     guidanceInput.velocity[1] = guidanceAppData.position.ve;
     guidanceInput.velocity[2] = guidanceAppData.position.vd;
 
-    guidanceInput.prev_waypoint[0] = fp->waypoints[nextWP - 1].latitude,
-    guidanceInput.prev_waypoint[1] = fp->waypoints[nextWP - 1].longitude,
-    guidanceInput.prev_waypoint[2] = fp->waypoints[nextWP - 1].altitude,
+    guidanceInput.prev_waypoint[0] = fp->waypoints[nextWP - 1].latitude;
+    guidanceInput.prev_waypoint[1] = fp->waypoints[nextWP - 1].longitude;
+    guidanceInput.prev_waypoint[2] = fp->waypoints[nextWP - 1].altitude;
 
-    guidanceInput.curr_waypoint[0] = fp->waypoints[nextWP].latitude,
-    guidanceInput.curr_waypoint[1] = fp->waypoints[nextWP].longitude,
-    guidanceInput.curr_waypoint[2] = fp->waypoints[nextWP].altitude,
-
-    guidanceInput.next_waypoint[0] = fp->waypoints[nextWP + 1].latitude,
-    guidanceInput.next_waypoint[1] = fp->waypoints[nextWP + 1].longitude,
-    guidanceInput.next_waypoint[2] = fp->waypoints[nextWP + 1].altitude,
+    guidanceInput.curr_waypoint[0] = fp->waypoints[nextWP].latitude;
+    guidanceInput.curr_waypoint[1] = fp->waypoints[nextWP].longitude;
+    guidanceInput.curr_waypoint[2] = fp->waypoints[nextWP].altitude;
+    if (refTime > 0){
+      guidanceInput.curr_waypoint[3] = 1,
+      guidanceInput.curr_waypoint[4] = refTime;
+    }else{
+      guidanceInput.curr_waypoint[3] = 0,
+      guidanceInput.curr_waypoint[4] = refSpeed;
+    }
 
     guidanceInput.num_waypoints = fp->num_waypoints;
     guidanceInput.nextWP = nextWP;
     guidanceInput.reachedStatusUpdated = guidanceAppData.reachedStatusUpdated;
 
-    if(fp->waypoints[nextWP - 1].wp_metric == WP_METRIC_SPEED){
-        guidanceInput.speed = fp->waypoints[nextWP - 1].value;
-    } else {
-        guidanceInput.speed = guidanceAppData.refSpeed;
-    }
-
+    
     guidanceInput.velCmd[0] = guidanceAppData.velCmd.param1;
     guidanceInput.velCmd[1] = guidanceAppData.velCmd.param2;
     guidanceInput.velCmd[2] = guidanceAppData.velCmd.param3;

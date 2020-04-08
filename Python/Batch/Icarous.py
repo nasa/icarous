@@ -46,6 +46,7 @@ class Icarous():
         # Aircraft data
         self.flightplan1 = []
         self.etaFP1      = False
+        self.etaFP2      = False
         self.flightplan2 = []
         self.controlInput = [0.0,0.0,0.0]
         self.fenceList   = []
@@ -134,8 +135,6 @@ class Icarous():
         self.guidTbl.climbRateGain = params['CLIMB_RATE_GAIN']
         self.guidTbl.maxClimbRate = params['MAX_CLIMB_RATE']
         self.guidTbl.minClimbRate = params['MIN_CLIMB_RATE']
-        self.guidTbl.maxCap = params['MAX_CAP']
-        self.guidTbl.minCap = params['MIN_CAP']
         self.guidTbl.yawForward = True if params['YAW_FORWARD'] == 1 else False
 
     def SetCognitionParams(self,params):
@@ -286,12 +285,6 @@ class Icarous():
                 self.guidanceMode = self.cog.guidanceCommand
                 if self.guidanceMode == GuidanceCommands.PRIMARY_FLIGHTPLAN:
                     self.flightplan2 = []
-                    if not self.etaFP1:
-                        self.guidIn.speed = self.flightplan1[self.cog.nextPrimaryWP][3]
-                    else:
-                        self.guidIn.speed = self.guidTbl.defaultWpSpeed
-            else:
-                self.guidIn.speed = self.cog.cmdparams[0]
 
         if self.cog.sendStatusTxt:
             self.cog.sendStatusTxt = False;
@@ -340,7 +333,12 @@ class Icarous():
                     self.guidIn.prev_waypoint[i] = self.flightplan1[self.guidIn.nextWP-1][i]
                     self.guidIn.curr_waypoint[i] = self.flightplan1[self.guidIn.nextWP][i]
 
-                self.guidIn.speed = self.flightplan1[self.guidIn.nextWP][3]
+                if self.etaFP1:
+                    self.guidIn.curr_waypoint[3] = 1;
+                else:
+                    self.guidIn.curr_waypoint[3] = 0;
+                self.guidIn.curr_waypoint[4] = self.flightplan1[self.guidIn.nextWP][3]
+
             self.Guidance.ComputeFlightplanGuidanceInput(byref(self.guidIn),byref(self.guidOut),byref(self.guidTbl))
 
         elif self.guidanceMode == GuidanceCommands.SECONDARY_FLIGHTPLAN:
@@ -351,7 +349,12 @@ class Icarous():
                 self.guidIn.prev_waypoint[i] = self.flightplan2[self.guidIn.nextWP-1][i]
                 self.guidIn.curr_waypoint[i] = self.flightplan2[self.guidIn.nextWP][i]
 
-            self.guidIn.speed = self.flightplan2[self.guidIn.nextWP][3]
+            if self.etaFP1:
+                self.guidIn.curr_waypoint[3] = 1;
+            else:
+                self.guidIn.curr_waypoint[3] = 0;
+            self.guidIn.curr_waypoint[4] = self.flightplan2[self.guidIn.nextWP][3]
+
             self.Guidance.ComputeFlightplanGuidanceInput(byref(self.guidIn),byref(self.guidOut),byref(self.guidTbl))
 
         elif self.guidanceMode == GuidanceCommands.TAKEOFF:

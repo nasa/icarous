@@ -18,9 +18,8 @@ class GuidanceInput(Structure):
      _fields_ = [ 
      ("position",c_double*3), \
      ("velocity",c_double*3), \
-     ("prev_waypoint",c_double*3),\
-     ("curr_waypoint",c_double*3),\
-     ("next_waypoint",c_double*3),\
+     ("prev_waypoint",c_double*5),\
+     ("curr_waypoint",c_double*5),\
      ("num_waypoints",c_int),\
      ("nextWP",c_int),\
      ("reachedStatusUpdated",c_bool),\
@@ -47,8 +46,6 @@ class GuidanceTable(Structure):
                  ( "climbRateGain",c_double ), \
                  ( "maxClimbRate",c_double ), \
                  ( "minClimbRate",c_double ), \
-                 ( "maxCap",c_double ), \
-                 ( "minCap",c_double ), \
                  ( "yawForward",c_bool ) \
                 ]
 

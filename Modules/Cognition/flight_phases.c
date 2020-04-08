@@ -223,9 +223,9 @@ status_e Cruise(){
                 status |= ReturnToNextWP();
 
                 // Perform time management only when following the primary flightplan
-                if(!status){
-                    TimeManagement();
-                }
+                //if(!status){
+                //    TimeManagement();
+                //}
             }
 
             if(cog.nextPrimaryWP >= cog.num_waypoints){

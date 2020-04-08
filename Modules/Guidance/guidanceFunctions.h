@@ -11,6 +11,7 @@
 
 #include <math.h>
 #include <string.h>
+#include <time.h>
 #include "UtilFunctions.h"
 
 /**
@@ -40,9 +41,8 @@ typedef struct{
 typedef struct{
     double       position[3];           ///< Vehicle current position (lat, lon, alt)
     double       velocity[3];           ///< Vehicle current velocity (vn, ve, vd)
-    double       prev_waypoint[3];      ///< Previous waypoint (lat, lon, alt)
-    double       curr_waypoint[3];      ///< Current target waypoint (lat, lon, alt)
-    double       next_waypoint[3];      ///< Next target waypoint (lat, lon, alt)
+    double       prev_waypoint[5];      ///< Previous waypoint (lat, lon, alt, 0/1, speed(0)/time(1))
+    double       curr_waypoint[5];      ///< Current target waypoint (lat, lon, alt, 0/1, speed(0)/time(1))
     int          num_waypoints;         ///< Total number of waypoints in the flight plan
     int          nextWP;                ///< Next waypoint index
     bool         reachedStatusUpdated;  ///< True if target waypoint has been reached
@@ -73,7 +73,7 @@ double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,g
 /**
  * Computes the point on the flight plan to fly towards
  */
-void ComputeOffSetPositionOnPlan(guidanceInput_t* guidanceInput, guidanceParams_t* guidanceParams, double outputLLA[]);
+void ComputeOffSetPositionOnPlan(double speedRef,guidanceInput_t* guidanceInput, guidanceParams_t* guidanceParams, double outputLLA[]);
 
 /**
  * Compute the correct intersection with the circle and flight plan
@@ -89,5 +89,10 @@ bool Point2PointControl(double position[3], double target_point[3], double speed
  * Compute distance between two points
  */
 double distance(double x1,double y1,double x2,double y2);
+
+/*
+ * Compute speed to the next WP
+ */
+double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,guidanceParams_t* guidanceParams);
 
 #endif //GUIDANCE_FUNCTIONS_H

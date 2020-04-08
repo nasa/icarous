@@ -1,7 +1,7 @@
 #define EXTERN extern
 #include "guidanceFunctions.h"
 
-double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,guidanceParams_t* guidanceParams){
+double ComputeClimbRate(double position[4],double nextWaypoint[4],double speed,guidanceParams_t* guidanceParams){
     double deltaH = nextWaypoint[2] - position[2];
     double climbrate;
     if (fabs(deltaH) > guidanceParams->climbAngleVRange &&
@@ -25,6 +25,34 @@ double ComputeClimbRate(double position[3],double nextWaypoint[3],double speed,g
     return climbrate;
 }
 
+double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,guidanceParams_t* guidanceParams){
+
+   // If speed is provided for nextWP, use given speed
+   if (nextWP[3] < 1){
+       return nextWP[4];
+   }
+
+   double dist2NextWP = ComputeDistance(currPosition,nextWP);
+   struct timespec ts;
+   clock_gettime(CLOCK_REALTIME,&ts);
+
+   double currTime = ts.tv_sec + (double)(ts.tv_nsec)/1E9;
+   double nextWP_STA = nextWP[4];
+   double arrTolerance = 3; //TODO: Make this a user defined parameter
+   double maxSpeed = 15;     //TODO: Make parameter
+   double minSpeed = 0.5;   //TODO: Make parameter
+   double newSpeed;
+   newSpeed = dist2NextWP/(nextWP_STA - currTime);
+   if (newSpeed > maxSpeed){
+       newSpeed = maxSpeed;
+   }else{
+       if(newSpeed < minSpeed){
+       newSpeed = minSpeed;
+       }
+   }
+   return newSpeed;
+}
+
 int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutput_t* guidanceOutput, guidanceParams_t* guidanceParams) {
     int nextWP = guidanceInput->nextWP;
     bool finalleg = false;
@@ -34,23 +62,25 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
     }
 
     double dist = ComputeDistance(guidanceInput->position, guidanceInput->curr_waypoint);
-    double speed = guidanceInput->speed;
-    double capture_radius = speed * guidanceParams->captureRadiusScaling;
+
+    double currSpeed = sqrt( guidanceInput->velocity[0] * guidanceInput->velocity[0] + 
+                             guidanceInput->velocity[1] * guidanceInput->velocity[1] + 
+                             guidanceInput->velocity[2] * guidanceInput->velocity[2]);
+    double speedRef = ComputeSpeed(guidanceInput->position, guidanceInput->curr_waypoint,currSpeed,guidanceParams);
+    double capture_radius = speedRef * guidanceParams->captureRadiusScaling;
     if (guidanceParams->minCap >= capture_radius){
         capture_radius = guidanceParams->minCap;
     }else if(capture_radius > guidanceParams->maxCap){
         capture_radius = guidanceParams->maxCap;
     }
-
     double newPositionToTrack[3];
-    ComputeOffSetPositionOnPlan(guidanceInput, guidanceParams, newPositionToTrack);
-
+    ComputeOffSetPositionOnPlan(speedRef, guidanceInput, guidanceParams, newPositionToTrack);
     // Reduce speed if approaching final waypoint or if turning sharply
     double ownship_heading = fmod(2*M_PI + atan2(guidanceInput->velocity[1],guidanceInput->velocity[0]),2*M_PI) *180/M_PI;
     double target_heading = ComputeHeading(guidanceInput->position, newPositionToTrack);
     double turn_angle = fabs(fmod(180 + ownship_heading - target_heading, 360) - 180);
     if((finalleg && dist < capture_radius) || turn_angle > 30)
-        speed = speed/3;
+        speedRef = speedRef/3;
 
     // If distance to next waypoint is < captureRadius, switch to next waypoint
     if (dist <= capture_radius)
@@ -69,24 +99,25 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
         // Compute velocity command to next waypoint
         double heading = ComputeHeading(guidanceInput->position, newPositionToTrack);
 
-        double climbrate = ComputeClimbRate(guidanceInput->position, guidanceInput->curr_waypoint, speed, guidanceParams);
+        double climbrate = ComputeClimbRate(guidanceInput->position, guidanceInput->curr_waypoint, speedRef, guidanceParams);
 
         double vn, ve, vd;
-        ConvertTrkGsVsToVned(heading, speed, climbrate, &vn, &ve, &vd);
+        ConvertTrkGsVsToVned(heading, speedRef, climbrate, &vn, &ve, &vd);
 
         // Store velocity command in relevant structure
         // A weighted average of the new command is used.
-        guidanceOutput->velCmd[0] = 0.2 * guidanceInput->velCmd[0] + 0.8 * vn;
-        guidanceOutput->velCmd[1] = 0.2 * guidanceInput->velCmd[1] + 0.8 * ve;
-        guidanceOutput->velCmd[2] = 0.2 * guidanceInput->velCmd[2] + 0.8 * vd;
+        double n = 1;
+        guidanceOutput->velCmd[0] = (n-1) * guidanceInput->velCmd[0] + n * vn;
+        guidanceOutput->velCmd[1] = (n-1) * guidanceInput->velCmd[1] + n * ve;
+        guidanceOutput->velCmd[2] = (n-1) * guidanceInput->velCmd[2] + n * vd;
 
         guidanceOutput->newNextWP = nextWP;
     }
     return guidanceOutput->newNextWP;
 }
 
-void ComputeOffSetPositionOnPlan(guidanceInput_t* guidanceInput, guidanceParams_t* guidanceParams, double outputLLA[]){
-    double guidance_radius = guidanceInput->speed*guidanceParams->guidanceRadiusScaling;
+void ComputeOffSetPositionOnPlan(double speedRef,guidanceInput_t* guidanceInput, guidanceParams_t* guidanceParams, double outputLLA[]){
+    double guidance_radius = speedRef*guidanceParams->guidanceRadiusScaling;
     double xtrkDev = guidanceParams->xtrkDev;
     if(xtrkDev > guidance_radius)
         xtrkDev = guidance_radius;
