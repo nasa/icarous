@@ -72,3 +72,33 @@
       param_adjustments: {}
       traffic: []
       time_limit: 200
+
+- name: "TCL4+ Scenario 3"
+  time_limit: 250
+  merge_fixes: Python/TestRunner/tcl4+/sc3/merge_fixes.txt
+  vehicles:
+    - name: AC0
+      cpu_id: 1
+      waypoint_file: Python/TestRunner/tcl4+/sc3/vehicle1_flightplan.txt
+      geofence_file: null
+      parameter_file: Python/TestRunner/tcl4+/sc3/merging_default.parm
+      param_adjustments: {}
+      traffic: []
+      time_limit: 200
+    - name: AC1
+      cpu_id: 2
+      waypoint_file: Python/TestRunner/tcl4+/sc3/vehicle2_flightplan.txt
+      geofence_file: null
+      parameter_file: Python/TestRunner/tcl4+/sc3/merging_default.parm
+      param_adjustments: {}
+      traffic: []
+      time_limit: 200
+    - name: AC2
+      cpu_id: 3
+      waypoint_file: Python/TestRunner/tcl4+/sc3/vehicle3_flightplan.txt
+      geofence_file: null
+      parameter_file: Python/TestRunner/tcl4+/sc3/merging_default.parm
+      param_adjustments: {}
+      traffic: []
+      delay: 120
+      time_limit: 200
