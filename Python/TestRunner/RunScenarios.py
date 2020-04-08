@@ -96,6 +96,8 @@ def RunScenario(scenario, watch=False, save=False, verbose=True,
         gs_port += 1
         mav_forwarding = subprocess.Popen(["mavproxy.py",
                                            "--master=127.0.0.1:"+str(icarous_port),
+                                           "--target-system=1",
+                                           "--target-component=5",
                                            "--out=127.0.0.1:"+str(gs_port),
                                            "--out=127.0.0.1:"+str(out),
                                            "--target-system=1",
