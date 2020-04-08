@@ -231,9 +231,9 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             cmd1.name = _LAND_;
             guidanceAppData.guidanceMode = POINT2POINT;
             int wp = guidanceAppData.primaryFlightPlan.num_waypoints;
-            cmd1.param5 = guidanceAppData.primaryFlightPlan.waypoints[wp-1].latitude;
-            cmd1.param6 = guidanceAppData.primaryFlightPlan.waypoints[wp-1].longitude;
-            cmd1.param7 = guidanceAppData.primaryFlightPlan.waypoints[wp-1].altitude;
+            guidanceAppData.point[0] = guidanceAppData.primaryFlightPlan.waypoints[wp-1].latitude;
+            guidanceAppData.point[1] = guidanceAppData.primaryFlightPlan.waypoints[wp-1].longitude;
+            guidanceAppData.point[2] = guidanceAppData.primaryFlightPlan.waypoints[wp-1].altitude;
             SendSBMsg(cmd1);
             break;
         }
