@@ -223,7 +223,7 @@ void TRAJECTORY_ProcessPacket()
         PathPlanner_CombinePlan(TrajectoryAppData.pplanner,planID,"Plan0",destinationWP+1);
 
         // Publish EUTIL trajectory information
-        char buffer[1000] = {0};
+        char buffer[MAX_DATABUFFER_SIZE] = {0};
         time_t timeNow = time(NULL);
         PathPlanner_PlanToString(TrajectoryAppData.pplanner,"Plan+",buffer,false,timeNow);
 
@@ -285,7 +285,7 @@ void TRAJECTORY_Monitor(void)
 
             case EUTL1_TRAJECTORY_MID:{
                 stringdata_t *strdata = (stringdata_t*)TrajectoryAppData.Traj_MsgPtr;
-                char buffer[1000] = {0};    // TODO: Read this from the  message
+                char buffer[MAX_DATABUFFER_SIZE] = {0};    // TODO: Read this from the  message
                 strcpy(buffer,strdata->buffer);
                 char planID[] = "Plan0";
                 PathPlanner_StringToPlan(TrajectoryAppData.pplanner,planID,buffer);  
