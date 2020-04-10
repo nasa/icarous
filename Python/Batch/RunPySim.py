@@ -10,8 +10,7 @@ tfList = []
 # Start a single traffic vehicle from Home at specified
 # range,brg,alt,track,speed,climb rate
 # Call this function again to start multiple traffic vehicles
-StartTraffic(HomePos,100,80,5,1,270,0,tfList)
-
+#StartTraffic(HomePos,100,80,5,1,270,0,tfList)
 # Set uncertainty and smoothing params for traffic
 for tf in tfList:
     tf.setpos_uncertainty(0.01,0.01,0,0,0,0)
@@ -20,7 +19,7 @@ for tf in tfList:
 ic = Icarous(HomePos)
 
 # Setup uncertainty and smoothing parameters
-ic.setpos_uncertainty(0.01,0.01,0,0,0,0)
+#ic.setpos_uncertainty(0.01,0.01,0,0,0,0)
 
 # Read params from file and input params
 params = LoadIcarousParams('icarous_default.parm')
