@@ -293,7 +293,7 @@ void TRAJECTORY_Monitor(void)
                 flightplan_t fp;
                 CFE_SB_InitMsg(&fp,ICAROUS_FLIGHTPLAN_MID,sizeof(flightplan_t),TRUE);
                 fp.num_waypoints = (uint16_t)PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner, planID);
-
+                strcpy(fp.id,"Plan0");
                 for (int i = 0; i < fp.num_waypoints; ++i)
                 {
                     double wp[4];
