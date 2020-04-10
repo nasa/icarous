@@ -32,7 +32,9 @@ double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,gui
        return nextWP[4];
    }
 
-   double dist2NextWP = ComputeDistance(currPosition,nextWP);
+   double distH = ComputeDistance(currPosition,nextWP);
+   double distV = fabs(currPosition[2] - nextWP[2]);
+   double dist = sqrt(distH*distH + distV*distV);
    struct timespec ts;
    clock_gettime(CLOCK_REALTIME,&ts);
 
@@ -42,7 +44,7 @@ double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,gui
    double maxSpeed = 15;     //TODO: Make parameter
    double minSpeed = 0.5;   //TODO: Make parameter
    double newSpeed;
-   newSpeed = dist2NextWP/(nextWP_STA - currTime);
+   newSpeed = dist/(nextWP_STA - currTime);
    if (newSpeed > maxSpeed){
        newSpeed = maxSpeed;
    }else{
@@ -61,7 +63,8 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
         finalleg = true;
     }
 
-    double dist = ComputeDistance(guidanceInput->position, guidanceInput->curr_waypoint);
+    double distH = ComputeDistance(guidanceInput->position, guidanceInput->curr_waypoint);
+    double distV = fabs(guidanceInput->position[2] - guidanceInput->curr_waypoint[2]);
 
     double currSpeed = sqrt( guidanceInput->velocity[0] * guidanceInput->velocity[0] + 
                              guidanceInput->velocity[1] * guidanceInput->velocity[1] + 
@@ -79,11 +82,11 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
     double ownship_heading = fmod(2*M_PI + atan2(guidanceInput->velocity[1],guidanceInput->velocity[0]),2*M_PI) *180/M_PI;
     double target_heading = ComputeHeading(guidanceInput->position, newPositionToTrack);
     double turn_angle = fabs(fmod(180 + ownship_heading - target_heading, 360) - 180);
-    if((finalleg && dist < capture_radius) || turn_angle > 30)
+    if((finalleg && distH < capture_radius) || turn_angle > 30)
         speedRef = speedRef/3;
 
     // If distance to next waypoint is < captureRadius, switch to next waypoint
-    if (dist <= capture_radius)
+    if (distH <= capture_radius && distV <= guidanceParams->climbAngleVRange)
     {
         if (!guidanceInput->reachedStatusUpdated)
         {
