@@ -558,6 +558,13 @@ void gsInterface_ProcessPacket() {
             break;
         }
 
+        case ICAROUS_FLIGHTPLAN_MID:{
+            flightplan_t* fp = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
+            memcpy(&appdataIntGS.fpData, fp, sizeof(flightplan_t));
+            gsConvertPlanToMissionItems(&appdataIntGS.fpData);
+            break;
+        }
+
         case ICAROUS_POSITION_MID:{
             position_t* pos = (position_t*) appdataIntGS.INTERFACEMsgPtr;
 
@@ -712,9 +719,24 @@ uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
         appdataIntGS.ReceivedMissionItems[count].x = (float)fp->waypoints[i].latitude;
         appdataIntGS.ReceivedMissionItems[count].y = (float)fp->waypoints[i].longitude;
         appdataIntGS.ReceivedMissionItems[count].z = (float)fp->waypoints[i].altitude;
+
+        appdataIntGS.ReceivedMissionItemsInt[count].target_system = 1;
+        appdataIntGS.ReceivedMissionItemsInt[count].target_component = 0;
+        appdataIntGS.ReceivedMissionItemsInt[count].seq = (uint16_t )count;
+        appdataIntGS.ReceivedMissionItemsInt[count].mission_type = MAV_MISSION_TYPE_MISSION;
+        appdataIntGS.ReceivedMissionItemsInt[count].command = MAV_CMD_NAV_WAYPOINT;
+        appdataIntGS.ReceivedMissionItemsInt[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+        appdataIntGS.ReceivedMissionItemsInt[count].autocontinue = 1;
+        appdataIntGS.ReceivedMissionItemsInt[count].current = 0;
+        appdataIntGS.ReceivedMissionItemsInt[count].x = fp->waypoints[i].latitude * 1E7;
+        appdataIntGS.ReceivedMissionItemsInt[count].y = fp->waypoints[i].longitude * 1E7;
+        appdataIntGS.ReceivedMissionItemsInt[count].z = (int) fp->waypoints[i].altitude;
+
+
         //appdataIntGS.waypoint_index[i] = count;
 
         count++;
+        /*
         if(i < fp->num_waypoints-1){
             if(fp->waypoints[i].wp_metric == WP_METRIC_ETA) {
                 double currentWP[3] = {fp->waypoints[i].latitude, fp->waypoints[i].longitude,
@@ -742,6 +764,23 @@ uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
                     appdataIntGS.ReceivedMissionItems[count].y = 0;
                     appdataIntGS.ReceivedMissionItems[count].z = 0;
                     count++;
+
+                    appdataIntGS.ReceivedMissionItemsInt[count].target_system = 1;
+                    appdataIntGS.ReceivedMissionItemsInt[count].target_component = 0;
+                    appdataIntGS.ReceivedMissionItemsInt[count].seq = (uint16_t) count;
+                    appdataIntGS.ReceivedMissionItemsInt[count].mission_type = MAV_MISSION_TYPE_MISSION;
+                    appdataIntGS.ReceivedMissionItemsInt[count].command = MAV_CMD_DO_CHANGE_SPEED;
+                    appdataIntGS.ReceivedMissionItemsInt[count].frame = MAV_FRAME_GLOBAL_RELATIVE_ALT;
+                    appdataIntGS.ReceivedMissionItemsInt[count].autocontinue = 1;
+                    appdataIntGS.ReceivedMissionItemsInt[count].current = 0;
+                    appdataIntGS.ReceivedMissionItemsInt[count].param1 = 1;
+                    appdataIntGS.ReceivedMissionItemsInt[count].param2 = (int) speed2NextWP;
+                    appdataIntGS.ReceivedMissionItemsInt[count].param3 = 0;
+                    appdataIntGS.ReceivedMissionItemsInt[count].param4 = 0;
+                    appdataIntGS.ReceivedMissionItemsInt[count].x = 0;
+                    appdataIntGS.ReceivedMissionItemsInt[count].y = 0;
+                    appdataIntGS.ReceivedMissionItemsInt[count].z = 0;
+
                     //OS_printf("Constructed speed waypoint:%f\n",speed2NextWP);
                 }else if(time2NextWP > 0){
                     appdataIntGS.ReceivedMissionItems[count].target_system = 1;
@@ -765,6 +804,7 @@ uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
                 }
             }
         }
+        */
 
     }
 

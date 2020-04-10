@@ -104,6 +104,7 @@ void gsInterface_AppInit(void){
     CFE_SB_SubscribeLocal(ICAROUS_TRAFFIC_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_BATTERY_STATUS_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 	CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(ICAROUS_FLIGHTPLAN_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     CFE_SB_InitMsg(&appdataIntGS.startMission,ICAROUS_STARTMISSION_MID,sizeof(argsCmd_t),TRUE);
     CFE_SB_InitMsg(&appdataIntGS.gfData,ICAROUS_GEOFENCE_MID,sizeof(geofence_t),TRUE);
