@@ -39,7 +39,7 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
     Position endPos     = Position::makeLatLonAlt(toPosition[0], "degree", toPosition[1], "degree", toPosition[2], "m");
     Velocity currentVel = Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
 
-    double computationTime = 1;
+    double computationTime = 3;
 
     EuclideanProjection proj = Projection::createProjection(currentPos.mkAlt(0));
 
@@ -92,7 +92,7 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
     for(int i=0;i<Nsteps;i++){
         RRT.RRTStep();
         if(RRT.CheckGoal()){
-            //printf("Goal found\n");
+            //printf("Goal found : %lu\n",RRT.GetNodeList()->size());
             goalFound = true;
             break;
         }else if(i==Nsteps-1){

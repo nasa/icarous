@@ -13,19 +13,19 @@ RRTplanner::RRTplanner(Poly3D &boundary,
     dTsteps = stepT;
     dT    = dt;
 
-    xmin = ymin = MAXDOUBLE;
-	xmax = ymax = -MAXDOUBLE;
+    xmin = ymin = zmin = MAXDOUBLE;
+	xmax = ymax = zmax = -MAXDOUBLE;
     int n = boundary.poly2D().size();
 	for (int i = 0; i < n; ++i) {  // copy
 		xmax = Util::max(boundary.poly2D().get(i).x, xmax);
 		ymax = Util::max(boundary.poly2D().get(i).y, ymax);
 		xmin = Util::min(boundary.poly2D().get(i).x, xmin);
 		ymin = Util::min(boundary.poly2D().get(i).y, ymin);
+        zmin = boundary.getBottom();
+        zmax = boundary.getTop();
 	}
 
-    zmin = boundary.getBottom();
-    zmax = boundary.getTop();
-
+    
     goalreached = false;
 
     DAA.loadFromFile(daaConfig);
@@ -189,7 +189,7 @@ void RRTplanner::MotionModel(node_t& nearest,node_t& outputNode, double U[]){
             newTrafficPos.push_back(newTraffic);
         }
 
-        if(trafficSize > 0 && (i == dTsteps - 1)){
+        if(trafficSize > 0 && (i == dTsteps - 1) && nodeList.size() >= 3){
             trafficConflict = CheckTrafficCollision(newPos,newVel,newTrafficPos,trafficVel);
         }
 
@@ -241,6 +241,17 @@ void RRTplanner::RRTStep(){
     U[1] *= maxInputNorm;
     U[2] *= maxInputNorm;
 
+    Vect3 nearestVel = nearest->vel;
+    nearestVel = nearestVel.Scal(maxInputNorm/nearestVel.norm2D());
+    
+    double n = 0.5;
+    U[0] = n * nearestVel.x + (1 - n) * U[0];
+    U[1] = n * nearestVel.y + (1 - n) * U[1];
+
+    double normU = sqrt(U[0]*U[0] + U[1]*U[1] + U[2]*U[2]);
+    U[0] = U[0]/normU * maxInputNorm;
+    U[1] = U[1]/normU * maxInputNorm;
+    U[2] = U[2]/normU * maxInputNorm;
 
     if(CheckDirectPath2Goal(nearest)){
         nodeCount++;
@@ -305,10 +316,6 @@ bool RRTplanner::CheckProjectedFenceConflict(node_t* qnode,node_t* goal){
 }
 
 bool RRTplanner::CheckTrafficCollision(Vect3& qPos,Vect3& qVel,std::vector<Vect3>& TrafficPos,std::vector<Vect3>& TrafficVel){
-    time_t currentTime;
-    time(&currentTime);
-    double elapsedTime = difftime(currentTime,startTime);
-
     Position so  = Position::makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
     Velocity vo  = Velocity::makeVxyz(qVel.x,qVel.y,"m/s",qVel.z,"m/s");
 
@@ -496,9 +503,19 @@ bool RRTplanner::CheckDirectPath2Goal(node_t* qnode){
     Vect3 A = qnode->pos;
     Vect3 B = goalNode.pos;
     Vect3 AB = B.Sub(A);
+    Vect3 vec1 = qnode->vel;
+    Vect3 vec2;
     double norm = AB.norm();
     if(norm > 0){
         AB = AB.Scal(maxInputNorm/norm);
+    }
+
+    vec1 = vec1.Scal(1/vec1.norm());
+    vec2 = AB.Scal(1/AB.norm());
+    double dotprod = vec1.dot2D(vec2);
+
+    if (nodeList.size() > 3 && dotprod <= 0.7){
+        return false;
     }
 
     if(CheckProjectedFenceConflict(qnode,&goalNode)){

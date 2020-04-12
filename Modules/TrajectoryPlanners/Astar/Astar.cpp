@@ -184,6 +184,19 @@ std::list<Node> Astar::GetPath() {
 }
 
 bool Astar::CheckProjectedFenceConflict(Node* qnode,Node* goal){
+
+    // Ensuring direct line of sight to goal doesn't require a steep turn
+    Vect2 AB(goal->x - qnode->x, goal->y - qnode->y);
+    Vect2 vel = Vect2::mkTrkGs(qnode->psi * M_PI/180,qnode->speed);
+
+    AB = AB.Scal(1/AB.norm());
+    vel = vel.Scal(1/vel.norm());
+    double dotprod = AB.dot(vel);
+
+    if (nodeList.size() > 2 && dotprod < 0.7){
+        return true;
+    }
+
     std::list<Poly3D>::iterator it;
     for(it = keepOutFence.begin(); it != keepOutFence.end(); ++ it){
         int sizePoly = it->size();
