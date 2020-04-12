@@ -426,13 +426,8 @@ bool ReturnToNextWP(){
             // Compute a secondary path
             int nextWP;
             double positionB[3];
-            if(cog.Plan0){
-               nextWP = cog.nextFeasibleWP1;
-               memcpy(positionB,cog.wpNextFb1,sizeof(double)*3);
-            }else if(cog.Plan1){
-               nextWP = cog.nextFeasibleWP2;
-               memcpy(positionB,cog.wpNextFb2,sizeof(double)*3);
-            }
+            nextWP = cog.nextFeasibleWP1;
+            memcpy(positionB,cog.wpNextFb1,sizeof(double)*3);
 
             double positionA[3] = {cog.position[0],
                                    cog.position[1],
@@ -472,6 +467,7 @@ bool ReturnToNextWP(){
          }else{
             if(cog.num_waypoints2 == 2 || cog.nextSecondaryWP > 2){
                if (cog.keepInConflict || cog.keepOutConflict || cog.trafficConflict){
+                  printf("%d/%d\n",cog.num_waypoints2,cog.nextSecondaryWP);
                   printf("Incomplete termination of return to path\n");
                   cog.return2NextWPState = NOOPC;
                   return false;

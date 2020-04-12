@@ -386,12 +386,13 @@ class Icarous():
         
         if self.guidOut.reachedStatusUpdated:
             if self.guidanceMode == GuidanceCommands.PRIMARY_FLIGHTPLAN:
-                print("reached waypoint %d" % self.guidOut.newNextWP)
+                print("reached waypoint %d" % (self.guidOut.newNextWP-1))
                 if self.guidOut.newNextWP <= len(self.flightplan1):
                     self.cog.nextPrimaryWP = self.guidOut.newNextWP
                     self.cog.nextWP        = self.guidOut.newNextWP
 
             elif self.guidanceMode == GuidanceCommands.SECONDARY_FLIGHTPLAN:
+                #print("reached waypoint %d" % (self.guidOut.newNextWP-1))
                 if(self.guidOut.newNextWP < len(self.flightplan2)):
                     self.cog.nextSecondaryWP = self.guidOut.newNextWP
                     self.cog.nextWP          = self.guidOut.newNextWP
