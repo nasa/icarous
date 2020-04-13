@@ -1,54 +1,37 @@
 import numpy as np
 from matplotlib import pyplot as plt
+import os
 
-
-roles = {"NEUTRAL": 0,
-         "FOLLOWER": 1,
-         "CANDIDATE": 2,
-         "LEADER": 3}
 
 class RaftData:
     def __init__(self, v_id):
         self.id = v_id
-        self.t = []
         self.log_entries = []
-
         self.role_changes = []
         self.current_role = None
 
-    def log(self, t, role, mtype, mf_id, hb_id=None, leader_id=None):
-        self.t.append(t)
-        self.log_entries.append(LogEntry(t, role, mtype, mf_id, hb_id, leader_id))
-
-        if self.current_role is not None:
-            self.role_changes[-1][2] = t
-        else:
-            self.role_changes.append([role, t, None])
-        if role != self.current_role:
-            self.role_changes[-1][2] = t
-            self.role_changes.append([role, t, None])
-        self.current_role = role
-
     def get_role(self, t):
-        return next((rc[0] for rc in self.role_changes if rc[1] < t < rc[2]),
-                    roles["NEUTRAL"])
+        if t is None:
+            return "NEUTRAL"
+        return next((rc[0] for rc in self.role_changes if rc[1] < t < rc[2]), "NEUTRAL")
 
 
 class LogEntry:
     def __init__(self, t, role, mtype, mf_id, hb_id=None, leader_id=None):
-        self.t = t
-        self.role = role
-        self.mtype = mtype
-        self.mf_id = mf_id
-        self.hb_id = hb_id
-        self.leader_id = leader_id
+        self.t = t                  # Time the message was received
+        self.role = role            # Raft node role (NEUTRAL, FOLLOWER, CANDIDATE, LEADER)
+        self.mtype = mtype          # SEND_HBEAT, RECV_HBEAT, ALIVE, ...
+        self.mf_id = mf_id          # Current merge fix id
+        self.hb_id = hb_id          # Heartbeat id (for SEND_HBEAT or RECV_HBEAT)
+        self.leader_id = leader_id  # The id of the leader node (for RECV_HBEAT)
 
 
-def ReadLogData(filename, vehicle_id=0, mf=1):
+def ReadRaftLog(filename, vehicle_id=0, mf=1):
     with open(filename, 'r') as fp:
         data_string = fp.readlines()[3:]
 
-    Vehicle = RaftData(v_id=vehicle_id)
+    vehicle = RaftData(v_id=vehicle_id)
+    vehicle.output_dir = os.path.dirname(filename)
     for line in data_string:
         # Skip lines containing other types of data
         if "MFID" not in line:
@@ -58,9 +41,12 @@ def ReadLogData(filename, vehicle_id=0, mf=1):
 
         t = float(entries[0])
         mf_id = int(entries[1].split()[1])
-        role = roles[entries[2].strip()]
+        role = entries[2].strip()
         mtype = entries[3].strip().split()[0]
 
+        # Skip until time starts
+        if t < 1e-3:
+            continue
         # Skip lines that don't match the selected merge point
         if mf !=0 and mf_id not in [-1, mf]:
             continue
@@ -76,12 +62,20 @@ def ReadLogData(filename, vehicle_id=0, mf=1):
             leader_id = None
             hb_id = None
 
-        Vehicle.log(t, role, mtype, mf_id, hb_id, leader_id)
+        # Record changes in node role
+        if vehicle.current_role is not None:
+            vehicle.role_changes[-1][2] = t
+        if role != vehicle.current_role:
+            vehicle.role_changes.append([role, t, t])
+        vehicle.current_role = role
 
-    return Vehicle
+        # Record a raft log entry
+        vehicle.log_entries.append(LogEntry(t, role, mtype, mf_id, hb_id, leader_id))
+
+    return vehicle
 
 
-def analyze_latency(sending_vehicle, receiving_vehicle, verbose=True, plot=True):
+def analyze_latency(sending_vehicle, receiving_vehicle, verbose=True, plot=False, save=False):
     sentHB = [e for e in sending_vehicle.log_entries if e.mtype == "SEND_HBEAT"]
     recvHB = [e for e in receiving_vehicle.log_entries if e.mtype == "RECV_HBEAT"
               and e.leader_id == sending_vehicle.id]
@@ -94,16 +88,16 @@ def analyze_latency(sending_vehicle, receiving_vehicle, verbose=True, plot=True)
     for HB in sentHB:
         t_sent = HB.t
         msg_id = HB.hb_id
-        # Ignore message unless sender was leader and receiver was follower
-        if not (sending_vehicle.get_role(t_sent) == roles["LEADER"] and
-          receiving_vehicle.get_role(t_sent) == roles["FOLLOWER"]):
+        # Ignore heartbeats except when sender was leader and receiver was follower
+        if not (sending_vehicle.get_role(t_sent) == "LEADER" and
+          receiving_vehicle.get_role(t_sent) == "FOLLOWER"):
             continue
         sent_times.append(t_sent)
         t_recv = next((hb.t for hb in recvHB if hb.hb_id == msg_id
                       and hb.leader_id == sending_vehicle.id), None)
         if t_recv is not None:
-            delay.append(t_recv - t_sent)
             received_times.append(t_recv)
+            delay.append(t_recv - t_sent)
         else:
             missed_times.append(t_sent)
     n_recv = len(received_times)
@@ -138,17 +132,21 @@ def analyze_latency(sending_vehicle, receiving_vehicle, verbose=True, plot=True)
         plt.xlabel("Time (s)")
         plt.legend()
         plt.grid()
+        if save:
+            name = "raft_comms_v%d_to_v%d" % (sending_vehicle.id, receiving_vehicle.id)
+            plt.savefig(os.path.join(receiving_vehicle.output_dir, name))
 
 
-def plot_roles(vehicles):
+def plot_roles(vehicles, save=False):
     plt.figure()
     plt.title("Raft Node Roles")
     colors = ['y', 'r', 'b', 'g']
-    labels = ["Neutral", "Follower", "Candidate", "Leader"]
+    labels = ["NEUTRAL", "FOLLOWER", "CANDIDATE", "LEADER"]
     for v in vehicles:
         for rc in v.role_changes:
             role, t0, tEnd = rc
-            plt.plot([t0, tEnd], [v.id, v.id], '-', c = colors[role],
+            color = colors[labels.index(role)]
+            plt.plot([t0, tEnd], [v.id, v.id], '-', c = color,
                      linewidth=20.0, solid_capstyle="butt")
     for c, l in zip(colors, labels):
         plt.plot([], [], 's', color=c, label=l)
@@ -159,6 +157,8 @@ def plot_roles(vehicles):
     plt.xlabel("Time (s)")
     plt.legend()
     plt.grid()
+    if save:
+        plt.savefig(os.path.join(v.output_dir, "raft_roles"))
 
 
 if __name__ == "__main__":
@@ -170,24 +170,27 @@ if __name__ == "__main__":
     parser.add_argument("data_location", help="directory where log files are")
     parser.add_argument("--merge_id", default=1, type=int, help="merge point id to analyze")
     parser.add_argument("--num_vehicles", default=10, type=int, help="number of vehicles")
+    parser.add_argument("--verbose", action="store_true", help="print output information")
     parser.add_argument("--plot", action="store_true", help="plot the scenario")
     parser.add_argument("--save", action="store_true", help="save the results")
     args = parser.parse_args()
 
     # Read raft log data
-    vehicles = {}
+    vehicles = []
     for i in range(args.num_vehicles):
         filename = "raftLog_" + str(i) + ".txt"
         filename = os.path.join(args.data_location, filename)
         if not os.path.isfile(filename):
             break
-        vehicles[i] = ReadLogData(filename, vehicle_id=i, mf=args.merge_id)
+        data = ReadRaftLog(filename, vehicle_id=i, mf=args.merge_id)
+        vehicles.append(data)
 
     # Analyze communication between each pair of vehicles
-    for v1, v2 in itertools.combinations(vehicles.values(), 2):
-        analyze_latency(v1, v2)
-        analyze_latency(v2, v1)
+    for v1, v2 in itertools.combinations(vehicles, 2):
+        analyze_latency(v1, v2, verbose=args.verbose, plot=args.plot, save=args.save)
+        analyze_latency(v2, v1, verbose=args.verbose, plot=args.plot, save=args.save)
 
-    plot_roles(vehicles.values())
-
-    plt.show()
+    # Generate plots
+    if args.plot:
+        plot_roles(vehicles, save=args.save)
+        plt.show()
