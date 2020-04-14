@@ -147,18 +147,18 @@ class Icarous():
     def SetTrafficParams(self,params):
         paramString = "" \
         +"lookahead_time="+str(params['LOOKAHEAD_TIME'])+ "[s];"\
-        +"left_trk="+str(params['LEFT_TRK'])+ "[deg];"\
-        +"right_trk="+str(params['RIGHT_TRK'])+ "[deg];"\
-        +"min_gs="+str(params['MIN_GS'])+ "[knot];"\
-        +"max_gs="+str(params['MAX_GS'])+ "[knot];"\
+        +"left_hdir="+str(params['LEFT_TRK'])+ "[deg];"\
+        +"right_hdir="+str(params['RIGHT_TRK'])+ "[deg];"\
+        +"min_hs="+str(params['MIN_GS'])+ "[knot];"\
+        +"max_hs="+str(params['MAX_GS'])+ "[knot];"\
         +"min_vs="+str(params['MIN_VS'])+ "[fpm];"\
         +"max_vs="+str(params['MAX_VS'])+ "[fpm];"\
         +"min_alt="+str(params['MIN_ALT'])+ "[ft];"\
         +"max_alt="+str(params['MAX_ALT'])+ "[ft];"\
-        +"trk_step="+str(params['TRK_STEP'])+ "[deg];"\
-        +"gs_step="+str(params['GS_STEP'])+ "[knot];"\
-        +"vs_step="+str(params['VS_STEP'])+ "[fpm];"\
-        +"alt_step="+str(params['ALT_STEP'])+ "[ft];"\
+        +"step_hdir="+str(params['TRK_STEP'])+ "[deg];"\
+        +"step_hs="+str(params['GS_STEP'])+ "[knot];"\
+        +"step_vs="+str(params['VS_STEP'])+ "[fpm];"\
+        +"step_alt="+str(params['ALT_STEP'])+ "[ft];"\
         +"horizontal_accel="+str(params['HORIZONTAL_ACCL'])+ "[m/s^2];"\
         +"vertical_accel="+str(params['VERTICAL_ACCL'])+ "[m/s^2];"\
         +"turn_rate="+str(params['TURN_RATE'])+ "[deg/s];"\
@@ -167,8 +167,8 @@ class Icarous():
         +"recovery_stability_time="+str(params['RECOV_STAB_TIME'])+ "[s];"\
         +"min_horizontal_recovery="+str(params['MIN_HORIZ_RECOV'])+ "[ft];"\
         +"min_vertical_recovery="+str(params['MIN_VERT_RECOV'])+ "[ft];"\
-        +"recovery_trk="+( "true;" if params['RECOVERY_TRK'] == 1 else "false;" )\
-        +"recovery_gs="+( "true;" if params['RECOVERY_GS'] == 1 else "false;" )\
+        +"recovery_hdir="+( "true;" if params['RECOVERY_TRK'] == 1 else "false;" )\
+        +"recovery_hs="+( "true;" if params['RECOVERY_GS'] == 1 else "false;" )\
         +"recovery_vs="+( "true;" if params['RECOVERY_VS'] == 1 else "false;" )\
         +"recovery_alt="+( "true;" if params['RECOVERY_ALT'] == 1 else "false;" )\
         +"ca_bands="+( "true;" if params['CA_BANDS'] == 1 else "false;" )\
@@ -178,20 +178,20 @@ class Icarous():
         +"conflict_crit="+( "true;" if params['CONFLICT_CRIT'] == 1 else "false;" )\
         +"recovery_crit="+( "true;" if params['RECOVERY_CRIT'] == 1 else "false;" )\
         +"contour_thr="+str(params['CONTOUR_THR'])+ "[deg];"\
-        +"alert_1_alerting_time="+str(params['AL_1_ALERT_T'])+ "[s];"\
-        +"alert_1_detector="+"det_1;"\
-        +"alert_1_early_alerting_time="+str(params['AL_1_E_ALERT_T'])+ "[s];"\
-        +"alert_1_region="+"NEAR;"\
-        +"alert_1_spread_alt="+str(params['AL_1_SPREAD_ALT'])+ "[ft];"\
-        +"alert_1_spread_gs="+str(params['AL_1_SPREAD_GS'])+ "[knot];"\
-        +"alert_1_spread_trk="+str(params['AL_1_SPREAD_TRK'])+ "[deg];"\
-        +"alert_1_spread_vs="+str(params['AL_1_SPREAD_VS'])+ "[fpm];"\
-        +"conflict_level="+str(params['CONFLICT_LEVEL'])+ ";"\
-        +"det_1_WCV_DTHR="+str(params['DET_1_WCV_DTHR'])+ "[ft];"\
-        +"det_1_WCV_TCOA="+str(params['DET_1_WCV_TCOA'])+ "[s];"\
-        +"det_1_WCV_TTHR="+str(params['DET_1_WCV_TTHR'])+ "[s];"\
-        +"det_1_WCV_ZTHR="+str(params['DET_1_WCV_ZTHR'])+ "[ft];"\
-        +"load_core_detection_det_1="+"gov.nasa.larcfm.ACCoRD.WCV_TAUMOD;"
+        +"alerters = default;"\
+        +"default_alert_1_alerting_time="+str(params['AL_1_ALERT_T'])+ "[s];"\
+        +"default_alert_1_detector="+"det_1;"\
+        +"default_alert_1_early_alerting_time="+str(params['AL_1_E_ALERT_T'])+ "[s];"\
+        +"default_alert_1_region="+"NEAR;"\
+        +"default_alert_1_spread_alt="+str(params['AL_1_SPREAD_ALT'])+ "[ft];"\
+        +"default_alert_1_spread_hs="+str(params['AL_1_SPREAD_GS'])+ "[knot];"\
+        +"default_alert_1_spread_hdir="+str(params['AL_1_SPREAD_TRK'])+ "[deg];"\
+        +"default_alert_1_spread_vs="+str(params['AL_1_SPREAD_VS'])+ "[fpm];"\
+        +"default_det_1_WCV_DTHR="+str(params['DET_1_WCV_DTHR'])+ "[ft];"\
+        +"default_det_1_WCV_TCOA="+str(params['DET_1_WCV_TCOA'])+ "[s];"\
+        +"default_det_1_WCV_TTHR="+str(params['DET_1_WCV_TTHR'])+ "[s];"\
+        +"default_det_1_WCV_ZTHR="+str(params['DET_1_WCV_ZTHR'])+ "[ft];"\
+        +"default_load_core_detection_det_1="+"gov.nasa.larcfm.ACCoRD.WCV_TAUMOD;"
         daa_log = True if params['LOGDAADATA'] == 1 else False
         self.tfMonitor.SetParameters(paramString,daa_log)
         self.Trajectory.UpdateDAAParams(paramString)
