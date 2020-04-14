@@ -840,8 +840,6 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
                         double wpB[3] = {fp->waypoints[count].latitude,
                                          fp->waypoints[count].longitude,
                                          fp->waypoints[count].altitude};
-                        double distAB = ComputeDistance(wpA,wpB);
-                        double timeAB = distAB/speed;
 
                         if(useTime){
                             double distAB = ComputeDistance(wpA,wpB);

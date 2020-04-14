@@ -14,8 +14,8 @@
 
 #include <string.h>
 
+#include "Icarous.h"
 #include "TrajectoryPlanner_proxy.h"
-#include "Icarous_msgids.h"
 #include "sch_msgids.h"
 #include "trajectory_msgids.h"
 #include "traffic_msg.h"

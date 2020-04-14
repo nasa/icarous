@@ -17,12 +17,11 @@
 
 #include "TrafficMonitor_proxy.h"
 
-#include "Icarous_msgids.h"
+#include "Icarous.h"
 #include "traffic_msgids.h"
 #include "trajectory_msgids.h"
 #include "sch_msgids.h"
 
-#include "Icarous_msg.h"
 #include "traffic_msg.h"
 #include "trajectory_msg.h"
 #include "traffic_tbl.h"

@@ -10,6 +10,10 @@
 #include "cfe_platform_cfg.h"
 #include "Icarous.h"
 
+#ifdef APPDEF_PORT_LIB
+#include "port_lib.h"
+#endif
+
 #ifdef APPDEF_TRAFFIC
 #include "traffic_msg.h"
 #include "traffic_msgids.h"
@@ -44,6 +48,7 @@
 #include "guidance_msg.h"
 #include "guidance_msgids.h"
 #endif
+
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                 */
@@ -439,8 +444,8 @@ bool InitializeAircraftCallSign(char* callsign){
     return true;
 }
 
-bool InitializePortConfig(char* filename,port_t* prt){
-
+bool InitializePortConfig(char* filename,void* vprt){
+    port_t * prt = (port_t*) vprt;
     char configfile[25];
     uint32_t aircraft_id = CFE_PSP_GetSpacecraftId();
     sprintf(configfile,"../ram/%s%d.cfg",filename,aircraft_id);
@@ -467,3 +472,56 @@ bool InitializePortConfig(char* filename,port_t* prt){
 
     return true;
 }
+
+#ifdef APPDEF_TRAFFIC
+void ConstructDAAParamString(void* vdparam,char* params){
+    traffic_parameters_t* tfParam = (traffic_parameters_t*)vdparam;
+    int n = 0;
+    n += sprintf(params,"lookahead_time=%f [s];",tfParam->lookahead_time);
+    n += sprintf(params + n,"left_hdir=%f [deg];",tfParam->left_trk);
+    n += sprintf(params + n,"right_hdir=%f [deg];",tfParam->right_trk);
+    n += sprintf(params + n,"min_hs=%f [knot];",tfParam->min_gs);
+    n += sprintf(params + n,"max_hs=%f [knot];",tfParam->max_gs);
+    n += sprintf(params + n,"min_vs=%f [fpm];",tfParam->min_vs);
+    n += sprintf(params + n,"max_vs=%f [fpm];",tfParam->max_vs);
+    n += sprintf(params + n,"min_alt=%f [ft];",tfParam->min_alt);
+    n += sprintf(params + n,"max_alt=%f [ft];",tfParam->max_alt);
+    n += sprintf(params + n,"step_hdir=%f [deg];",tfParam->trk_step);
+    n += sprintf(params + n,"step_hs=%f [knot];",tfParam->gs_step);
+    n += sprintf(params + n,"step_vs=%f [fpm];",tfParam->vs_step);
+    n += sprintf(params + n,"step_alt=%f [ft];",tfParam->alt_step);
+    n += sprintf(params + n,"horizontal_accel=%f [m/s^2];",tfParam->horizontal_accel);
+    n += sprintf(params + n,"vertical_accel=%f [m/s^2];",tfParam->vertical_accel);
+    n += sprintf(params + n,"turn_rate=%f [deg/s];",tfParam->turn_rate);
+    n += sprintf(params + n,"bank_angle=%f [deg];",tfParam->bank_angle);
+    n += sprintf(params + n,"vertical_rate=%f [fpm];",tfParam->vertical_rate);
+    n += sprintf(params + n,"recovery_stability_time=%f [s];",tfParam->recovery_stability_time);
+    n += sprintf(params + n,"min_horizontal_recovery=%f [ft];",tfParam->min_horizontal_recovery);
+    n += sprintf(params + n,"min_vertical_recovery=%f [ft];",tfParam->min_vertical_recovery);
+    n += tfParam->recovery_trk? sprintf(params + n,"recovery_hdir=true;"):sprintf(params + n,"recovery_dir=false;");
+    n += tfParam->recovery_gs? sprintf(params + n,"recovery_hs=true;"):sprintf(params + n,"recovery_hs=false;");
+    n += tfParam->recovery_vs? sprintf(params + n,"recovery_vs=true;"):sprintf(params + n,"recovery_vs=false;");
+    n += tfParam->recovery_alt? sprintf(params + n,"recovery_alt=true;"):sprintf(params + n,"recovery_alt=false;");
+    n += tfParam->conflict_crit? sprintf(params + n,"conflict_crit=true;"):sprintf(params + n,"conflict_crit=false;");
+    n += tfParam->recovery_crit? sprintf(params + n,"recovery_crit=true;"):sprintf(params + n,"recovery_crit=false;");
+    n += tfParam->ca_bands? sprintf(params + n,"ca_bands=true;"):sprintf(params + n,"ca_bands=false;");
+    n += sprintf(params + n,"ca_factor=%f;",tfParam->ca_factor);
+    n += sprintf(params + n,"horizontal_nmac=%f [ft];",tfParam->horizontal_nmac);
+    n += sprintf(params + n,"vertical_nmac=%f [ft];",tfParam->vertical_nmac);
+    n += sprintf(params + n,"contour_thr=%f [deg];",tfParam->contour_thr);
+    n += sprintf(params + n,"alerters=default;");
+    n += sprintf(params + n,"default_alert_1_region=%s ;",tfParam->alert_1_region); 
+    n += sprintf(params + n,"default_alert_1_alerting_time=%f [s];",tfParam->alert_1_alerting_time);
+    n += sprintf(params + n,"default_alert_1_early_alerting_time=%f [s];",tfParam->alert_1_early_alerting_time);
+    n += sprintf(params + n,"default_alert_1_spread_hdir=%f [deg];",tfParam->alert_1_spread_trk);
+    n += sprintf(params + n,"default_alert_1_spread_hs=%f [knot];",tfParam->alert_1_spread_gs);
+    n += sprintf(params + n,"default_alert_1_spread_vs=%f [fpm];",tfParam->alert_1_spread_vs);
+    n += sprintf(params + n,"default_alert_1_spread_alt=%f [ft];",tfParam->alert_1_spread_alt);
+    n += sprintf(params + n,"default_alert_1_detector=%s;",tfParam->alert_1_detector);
+    n += sprintf(params + n,"default_det_1_WCV_DTHR = %f [ft];",tfParam->det_1_WCV_DTHR);
+    n += sprintf(params + n,"default_det_1_WCV_TCOA = %f [s];",tfParam->det_1_WCV_TCOA);
+    n += sprintf(params + n,"default_det_1_WCV_TTHR = %f [s];",tfParam->det_1_WCV_TTHR);
+    n += sprintf(params + n,"default_det_1_WCV_ZTHR = %f [ft];",tfParam->det_1_WCV_ZTHR);
+    n += sprintf(params + n,"default_load_core_detection_det_1 = gov.nasa.larcfm.ACCoRD.%s;",tfParam->load_core_detection_det_1);
+}
+#endif

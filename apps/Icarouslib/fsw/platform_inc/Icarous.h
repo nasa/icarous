@@ -4,7 +4,7 @@
 
 #include "Icarous_msg.h"
 #include "Icarous_msgids.h"
-#include "port_lib.h"
+
 
 #define PARAM_COUNT 97    ///< Total number of ICAROUS parameters
 
@@ -42,5 +42,11 @@ int ReadFlightplanFromFile(char* filename,flightplan_t *fplan);
 int GetParams(char *filename, char (*params)[16],char (*val)[16]);
 bool InitializeParams(char *filename,param_t* params,uint16_t paramCount);
 bool InitializeAircraftCallSign(char* callsign);
-bool InitializePortConfig(char* filename,port_t* prt);
+bool InitializePortConfig(char* filename,void* prt);
+
+#ifdef APPDEF_TRAFFIC
+void ConstructDAAParamString(void* tfparam,char *params);
+#endif
+
+
 #endif
