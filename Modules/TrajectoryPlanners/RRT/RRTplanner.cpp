@@ -190,7 +190,7 @@ void RRTplanner::MotionModel(node_t& nearest,node_t& outputNode, double U[]){
         }
 
         if(trafficSize > 0 && (i == dTsteps - 1) && nodeList.size() >= 3){
-            trafficConflict = CheckTrafficCollision(newPos,newVel,newTrafficPos,trafficVel);
+            trafficConflict = CheckTrafficCollision(newPos,newVel,newTrafficPos,trafficVel,false);
         }
 
         if(fenceConflict || trafficConflict){
@@ -315,7 +315,7 @@ bool RRTplanner::CheckProjectedFenceConflict(node_t* qnode,node_t* goal){
     return false;
 }
 
-bool RRTplanner::CheckTrafficCollision(Vect3& qPos,Vect3& qVel,std::vector<Vect3>& TrafficPos,std::vector<Vect3>& TrafficVel){
+bool RRTplanner::CheckTrafficCollision(Vect3& qPos,Vect3& qVel,std::vector<Vect3>& TrafficPos,std::vector<Vect3>& TrafficVel,bool full){
     Position so  = Position::makeXYZ(qPos.x,"m",qPos.y,"m",qPos.z,"m");
     Velocity vo  = Velocity::makeVxyz(qVel.x,qVel.y,"m/s",qVel.z,"m/s");
 
@@ -335,7 +335,12 @@ bool RRTplanner::CheckTrafficCollision(Vect3& qPos,Vect3& qVel,std::vector<Vect3
         sprintf(name,"Traffic%d",i);i++;
         int ac_idx = DAA.addTrafficState(name,si,vi);
         int alert_level = DAA.alertLevel(ac_idx);
-        if(alert_level > 0){
+
+        double time1 = DAA.timeIntervalOfConflict(larcfm::BandsRegion::NEAR).low;
+        double time2 = DAA.getParameterData().getValue("default_alert_1_alerting_time");
+
+        bool test = full?true:time1 < time2*0.8; 
+        if(alert_level > 0 && test){
             return true;
         }
     }
@@ -532,7 +537,7 @@ bool RRTplanner::CheckDirectPath2Goal(node_t* qnode){
 
         bool CheckTurn = false;
 
-        if(CheckTrafficCollision(qnode->pos,AB,qnode->trafficPos,qnode->trafficVel)){
+        if(CheckTrafficCollision(qnode->pos,AB,qnode->trafficPos,qnode->trafficVel,true)){
             return false;
         }
         else{

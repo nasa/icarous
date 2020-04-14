@@ -8,6 +8,7 @@
 #include <PlanWriter.h>
 #include <PlanReader.h>
 #include <PlanUtil.h>
+#include <sys/time.h>
 #include "PathPlanner.h"
 
 using namespace std;
@@ -17,6 +18,15 @@ PathPlanner::PathPlanner(double _obsBuffer,double _maxCeiling) {
     obsbuffer = _obsBuffer;
     maxCeiling = _maxCeiling;
     geoCDIIPolygon = CDIIPolygon(&geoPolyCarp);
+    numPlans = 0;
+    char            fmt1[64];
+    struct timeval  tv;
+    struct tm       *tm;
+    gettimeofday(&tv, NULL);
+    tm = localtime(&tv.tv_sec);
+    strftime(fmt1, sizeof fmt1, "Path-%Y-%m-%d-%H:%M:%S", tm);
+    strcat(fmt1,".log");
+    log.open(fmt1);
 }
 
 void PathPlanner::InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, double pos[][2]){
@@ -72,7 +82,6 @@ int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, 
                               double velocity[]) {
 
     int64_t retval = -1;
-
     std::list<Plan>::iterator it;
     for(it=flightPlans.begin();it != flightPlans.end(); ++ it){
         if (abs(strcmp(it->getID().c_str(),planID))){
@@ -111,7 +120,11 @@ int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, 
     sprintf(wpFile,"wp_%s.log",planID);
     OutputFlightPlan(&projection,planID,fenceFile,wpFile);
 
+    if(retval > 0){
+        numPlans++;
+    }
     return retval;
+
 }
 
 Plan PathPlanner::ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed){
@@ -178,12 +191,19 @@ Plan* PathPlanner::GetPlan(char planID[]){
 }
 
 void PathPlanner::OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceFile,char* waypointFile){
+    struct timeval  tv;
+    gettimeofday(&tv, NULL);
+    char buffer[100];
+    sprintf(buffer,"%f",(double)tv.tv_sec + (double)(tv.tv_usec)/1E6);
+    log<<"Time after computation:"<<std::string(buffer)<<std::endl; 
+    log<<"Resolution plan:"<<std::endl;
     for(Plan pl: flightPlans){
         if(strcmp(pl.getID().c_str(),planID)){
             continue;
         }else {
             std::ofstream fp1;
             std::ofstream fp2;
+            log<<pl.toString()<<std::endl;
 
             if (pl.size() > 0)
                 fp1.open(waypointFile);
@@ -356,3 +376,40 @@ void PathPlanner::ClearAllPlans() {
     flightPlans.clear();
 }
 
+void PathPlanner::LogInput(Position start, Position goal, Velocity startVel){
+     
+    log<<"Start Pos:"<<start.toString(5)<<std::endl;
+    log<<"Goal Pos:"<<goal.toString(5)<<std::endl;
+    log<<"Start vel:"<<startVel.toString(5)<<std::endl;
+    log<<"Num traffic:"<<trafficList.size()<<std::endl;
+    for(GenericObject traffic: trafficList){
+        Velocity Vel = traffic.vel;
+        Position Pos = traffic.pos;
+        log<<"- pos: "<<Pos.toString(5)<<std::endl;
+        log<<"- vel: "<<Vel.toString(5)<<std::endl;
+    }
+    log<<"Num Geofence:"<<fenceList.size()<<std::endl;
+    for(fence gf: fenceList){
+        log<<"- id   : "<<gf.GetID()<<std::endl;
+        log<<"- type : "<<gf.GetType()<<std::endl;
+        log<<"- floor: "<<gf.GetPoly()->getBottom()<<std::endl;
+        log<<"- root : "<<gf.GetPoly()->getTop()<<std::endl;
+        log<<"- numV : "<<gf.GetSize()<<std::endl;
+        for(int i = 0; i < gf.GetSize(); ++i){
+            log<<"-- vertex: " << gf.GetPoly()->getVertex(0).toString(5)<<std::endl;
+        }
+    }
+    Plan *fp = GetPlan((char*)"Plan0");
+    if(fp != NULL){
+        log<<"Nominal plan:"<<std::endl;
+        log<<fp->toString()<<std::endl;
+    }
+
+    struct timeval  tv;
+    gettimeofday(&tv, NULL);
+    char buffer[100];
+    sprintf(buffer,"%f",(double)tv.tv_sec + (double)(tv.tv_usec)/1E6);
+    log<<"Time before computation:"<<std::string(buffer)<<std::endl;
+
+    return;
+}

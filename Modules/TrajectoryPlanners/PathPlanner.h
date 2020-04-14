@@ -20,6 +20,7 @@ typedef enum algorithm{
 class PathPlanner{
 
 private:
+    int numPlans;
     double obsbuffer;
     double maxCeiling;
 
@@ -47,6 +48,8 @@ private:
     int _bsplines_lenTVec;
     double _bsplines_knotVec[100];
 
+    std::ofstream log;
+
     std::list<Plan> flightPlans;
     std::list<fence> fenceList;
     std::list<GenericObject> trafficList;
@@ -57,6 +60,7 @@ private:
     int64_t FindPathGridAstar(char planID[],double fromPosition[],double toPosition[]);
     int64_t FindPathAstar(char planID[],double fromPosition[],double toPosition[],double velocity[]);
     int64_t FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]);
+    void LogInput(Position start,Position goal,Velocity startVel);
 #ifdef SPLINES
     int64_t FindPathBSplines(char planID[],double fromPosition[],double toPosition[],double velocity[]);
 #endif

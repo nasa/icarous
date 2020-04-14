@@ -34,6 +34,7 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
     Position endPos     = Position::makeLatLonAlt(toPosition[0], "degree", toPosition[1], "degree", toPosition[2], "m");
     Velocity currentVel = Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
 
+    LogInput(currentPos,endPos,currentVel);
 
     EuclideanProjection proj = Projection::createProjection(currentPos.mkAlt(0));
 
