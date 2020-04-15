@@ -18,8 +18,8 @@ TrafficMonitor::TrafficMonitor(bool reclog,char daaConfig[]) {
     struct tm       *tm;
     gettimeofday(&tv, NULL);
     tm = localtime(&tv.tv_sec);
-    strftime(fmt1, sizeof fmt1, "Icarous-%Y-%m-%d-%H:%M:%S", tm);
-    strcat(fmt1,".login");
+    strftime(fmt1, sizeof fmt1, "Daidalus-%Y-%m-%d-%H:%M:%S", tm);
+    strcat(fmt1,".log");
 
     log = reclog;
 
@@ -56,7 +56,7 @@ void TrafficMonitor::UpdateDAAParameters(char daaParameters[],bool reclog) {
         struct tm       *tm;
         gettimeofday(&tv, NULL);
         tm = localtime(&tv.tv_sec);
-        strftime(fmt1, sizeof fmt1, "Icarous-%Y-%m-%d-%H:%M:%S", tm);
+        strftime(fmt1, sizeof fmt1, "Daidalus-%Y-%m-%d-%H:%M:%S", tm);
         strcat(fmt1,".login");
         logfileIn.open(fmt1);
     }
