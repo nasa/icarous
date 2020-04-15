@@ -24,26 +24,17 @@ void PathPlanner::UpdateRRTParameters(double resSpeed, int Nsteps, double dt, in
    _rrt_goalCaptureRadius = capR;
 }
 
-int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]){
+int64_t PathPlanner::FindPathRRT(char planID[]){
 
     double maxInputNorm = _rrt_resSpeed;
-    double trk = velocity[0];
-    double gs = velocity[1];
-    double vs = velocity[2];
 
     // Reroute flight plan
     std::vector<Vect3> TrafficPos;
     std::vector<Vect3> TrafficVel;
 
-    Position currentPos = Position::makeLatLonAlt(fromPosition[0], "degree",fromPosition[1], "degree", fromPosition[2], "m");
-    Position endPos     = Position::makeLatLonAlt(toPosition[0], "degree", toPosition[1], "degree", toPosition[2], "m");
-    Velocity currentVel = Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
-
-    LogInput(currentPos,endPos,currentVel);
-
     double computationTime = 3;
 
-    EuclideanProjection proj = Projection::createProjection(currentPos.mkAlt(0));
+    EuclideanProjection proj = Projection::createProjection(startPos.mkAlt(0));
 
     for(GenericObject traffic: trafficList){
         Velocity Vel = traffic.vel;
@@ -58,9 +49,9 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
     Plan currentFP;
     Position prevWP;
     Position nextWP;
-    double dist = currentVel.gs()*computationTime;
+    double dist = startVel.gs()*computationTime;
 
-    Position start = currentPos.linearDist2D(currentVel.trk(), dist);
+    Position start = startPos.linearDist2D(startVel.trk(), dist);
 
     Position goalPos = endPos;
 
@@ -79,7 +70,7 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
         }
     }
 
-    Vect3 initPosR3 = proj.project(currentPos);
+    Vect3 initPosR3 = proj.project(startPos);
 
     Vect3 gpos = proj.project(goalPos);
     node_t goal;
@@ -87,7 +78,7 @@ int64_t PathPlanner::FindPathRRT(char planID[],double fromPosition[],double toPo
 
 
     RRTplanner RRT(bbox,dTsteps,dT,maxD,maxInputNorm,RRT_F,RRT_U,_rrt_daaConfig.c_str());
-    RRT.Initialize(initPosR3,currentVel,obstacleList,TrafficPos,TrafficVel,goal);
+    RRT.Initialize(initPosR3,startVel,obstacleList,TrafficPos,TrafficVel,goal);
     RRT.SetDAAParameters(daaParameters);
 
     bool goalFound = false;

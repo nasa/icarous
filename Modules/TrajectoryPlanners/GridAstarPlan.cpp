@@ -7,7 +7,7 @@
 #include "DensityGridAStarSearch.h"
 
 
-int64_t PathPlanner::FindPathGridAstar(char planID[],double fromPosition[],double toPosition[]) {
+int64_t PathPlanner::FindPathGridAstar(char planID[]) {
 
     double gridsize          = _astar_gridSize;
     double buffer            = gridsize * 2;
@@ -15,9 +15,6 @@ int64_t PathPlanner::FindPathGridAstar(char planID[],double fromPosition[],doubl
     double maxAlt            = maxCeiling;
     double Hthreshold        = obsbuffer;
     double altFence;
-
-    Position startPos = Position::makeLatLonAlt(fromPosition[0],"degree",fromPosition[1],"degree",fromPosition[2],"m");
-    Position endPos   = Position::makeLatLonAlt(toPosition[0],"degree",toPosition[1],"degree",toPosition[2],"m");
 
     BoundingRectangle BR;
     int totalfences = fenceList.size();

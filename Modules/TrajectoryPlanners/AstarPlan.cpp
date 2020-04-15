@@ -20,23 +20,13 @@ void PathPlanner::UpdateAstarParameters(bool enable3D, double gridSize, double r
     _astar_resSpeed = resSpeed;
 }
 
-int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double toPosition[],double velocity[]) {
-
-    double trk = velocity[0];
-    double gs = velocity[1];
-    double vs = velocity[2];
+int64_t PathPlanner::FindPathAstar(char planID[]) {
 
     // Reroute flight plan
     std::vector<Vect3> TrafficPos;
     std::vector<Vect3> TrafficVel;
 
-    Position currentPos = Position::makeLatLonAlt(fromPosition[0], "degree",fromPosition[1], "degree", fromPosition[2], "m");
-    Position endPos     = Position::makeLatLonAlt(toPosition[0], "degree", toPosition[1], "degree", toPosition[2], "m");
-    Velocity currentVel = Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
-
-    LogInput(currentPos,endPos,currentVel);
-
-    EuclideanProjection proj = Projection::createProjection(currentPos.mkAlt(0));
+    EuclideanProjection proj = Projection::createProjection(startPos.mkAlt(0));
 
     double computationTime = 1.0;
 
@@ -54,9 +44,9 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
     Plan currentFP;
     Position prevWP;
     Position nextWP;
-    double dist = currentVel.gs()*computationTime;
+    double dist = startVel.gs()*computationTime;
 
-    Position start = currentPos.linearDist2D(currentVel.trk(), dist);
+    Position start = startPos.linearDist2D(startVel.trk(), dist);
     Position goalPos = endPos;
 
     Vect3 initPosR3 = proj.project(start);
@@ -77,7 +67,8 @@ int64_t PathPlanner::FindPathAstar(char planID[],double fromPosition[],double to
         VS[2] = 1.0;
         lenV  = 3;
     }
-    
+
+    double trk = startVel.track("degree"); 
     double res_speed = _astar_resSpeed;
     double horizon = _astar_lookahead;
     double eps = res_speed*horizon*0.5;

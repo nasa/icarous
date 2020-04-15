@@ -53,6 +53,29 @@ void PathPlanner::InputGeofenceData(int type,int index, int totalVertices, doubl
 
 }
 
+void PathPlanner::InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, std::list<Position> &vertices){
+
+    double ResolBUFF = obsbuffer;
+    fence newfence(index,(FENCE_TYPE)type,totalVertices,floor,ceiling);
+    
+    size_t i = 0;
+    for(Position pos: vertices) {
+        newfence.AddVertex(i, pos.latitude(), pos.longitude(), ResolBUFF);
+        i++;
+    }
+
+    if(fenceList.size() > index){
+        fenceList.clear();
+        for(int i=geoPolyPath.size()-1;i>=0;i--){
+            geoPolyPath.remove(i);
+        }
+    }
+
+    fenceList.push_back(newfence);
+    if(newfence.GetType() == KEEP_OUT)
+        geoPolyPath.addPolygon(*newfence.GetPolyMod(),Velocity::makeVxyz(0,0,0),0);
+}
+
 fence* PathPlanner::GetGeofence(int id) {
     std::list<fence>::iterator fenceListIt;
     for(fenceListIt = fenceList.begin();fenceListIt != fenceList.end();++fenceListIt){
@@ -74,12 +97,27 @@ int PathPlanner::InputTraffic(int id, double *position, double *velocity) {
     return GenericObject::AddObject(trafficList,_traffic);
 }
 
+int PathPlanner::InputTraffic(int id, Position &position, Velocity &velocity) {
+
+    double positionR[3] = {position.latitude(),position.longitude(),position.alt()};
+    double velocityR[3] = {velocity.x, velocity.y, velocity.z};
+    
+    return InputTraffic(id,positionR,velocityR);
+}
+
 void PathPlanner::UpdateDAAParameters(char *parameterString) {
     daaParameters = to_string(parameterString);
 }
 
-int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, double *toPosition,
+int PathPlanner::FindPath(algorithm searchType, char *planID, double *fromPosition, double *toPosition,
                               double velocity[]) {
+
+    search = searchType; 
+    startPos = Position::makeLatLonAlt(fromPosition[0], "degree",fromPosition[1], "degree", fromPosition[2], "m");
+    endPos   = Position::makeLatLonAlt(toPosition[0], "degree", toPosition[1], "degree", toPosition[2], "m");
+    startVel = Velocity::makeTrkGsVs(velocity[0],"degree",velocity[1],"m/s",velocity[2],"m/s");
+
+    LogInput();
 
     int64_t retval = -1;
     std::list<Plan>::iterator it;
@@ -94,17 +132,17 @@ int PathPlanner::FindPath(algorithm search, char *planID, double *fromPosition, 
     switch(search){
 
         case _GRID_:
-            retval = FindPathGridAstar(planID,fromPosition,toPosition);
+            retval = FindPathGridAstar(planID);
             break;
         case _ASTAR_:
-            retval = FindPathAstar(planID,fromPosition,toPosition,velocity);
+            retval = FindPathAstar(planID);
             break;
         case _RRT_:
-            retval = FindPathRRT(planID,fromPosition,toPosition,velocity);
+            retval = FindPathRRT(planID);
             break;
 #ifdef SPLINES
         case _SPLINES_:
-            retval = FindPathBSplines(planID,fromPosition,toPosition,velocity);
+            retval = FindPathBSplines(planID);
             break;
 #endif
         default:
@@ -376,10 +414,23 @@ void PathPlanner::ClearAllPlans() {
     flightPlans.clear();
 }
 
-void PathPlanner::LogInput(Position start, Position goal, Velocity startVel){
-     
-    log<<"Start Pos:"<<start.toString(5)<<std::endl;
-    log<<"Goal Pos:"<<goal.toString(5)<<std::endl;
+void PathPlanner::LogInput(){
+    log<<"Search type:"<<search<<std::endl; 
+    if(search == _ASTAR_ || search == _GRID_){
+        log<<"- Enable 3D:"<<_astar_enable3D<<std::endl
+           <<"- Grid size:"<<_astar_gridSize<<std::endl
+           <<"- Lookahead:"<<_astar_lookahead<<std::endl
+           <<"- Resspeed :"<<_astar_resSpeed<<std::endl;
+    }else if(search == _RRT_){
+        log<<"- Resspeed:"<<_rrt_resSpeed<<std::endl
+           <<"- DAA     :"<<_rrt_daaConfig<<std::endl
+           <<"- Max itrn:"<<_rrt_maxIterations<<std::endl
+           <<"- Mic step:"<<_rrt_dt<<","<<std::endl
+           <<"- Mac step:"<<_rrt_macroSteps<<std::endl
+           <<"- Cap rad :"<<_rrt_goalCaptureRadius<<std::endl;
+    }
+    log<<"Start Pos:"<<startPos.toString(5)<<std::endl;
+    log<<"Goal Pos:"<<endPos.toString(5)<<std::endl;
     log<<"Start vel:"<<startVel.toString(5)<<std::endl;
     log<<"Num traffic:"<<trafficList.size()<<std::endl;
     for(GenericObject traffic: trafficList){
@@ -393,17 +444,21 @@ void PathPlanner::LogInput(Position start, Position goal, Velocity startVel){
         log<<"- id   : "<<gf.GetID()<<std::endl;
         log<<"- type : "<<gf.GetType()<<std::endl;
         log<<"- floor: "<<gf.GetPoly()->getBottom()<<std::endl;
-        log<<"- root : "<<gf.GetPoly()->getTop()<<std::endl;
+        log<<"- roof : "<<gf.GetPoly()->getTop()<<std::endl;
         log<<"- numV : "<<gf.GetSize()<<std::endl;
         for(int i = 0; i < gf.GetSize(); ++i){
-            log<<"-- vertex: " << gf.GetPoly()->getVertex(0).toString(5)<<std::endl;
+            log<<"-- vertex: " << gf.GetPoly()->getVertex(i).toString(5)<<std::endl;
         }
     }
     Plan *fp = GetPlan((char*)"Plan0");
     if(fp != NULL){
-        log<<"Nominal plan:"<<std::endl;
+        log<<"Nominal plan:"<<fp->size()<<std::endl;
         log<<fp->toString()<<std::endl;
+    }else{
+        log<<"Nominal plan: 0"<<std::endl;
     }
+    
+
 
     struct timeval  tv;
     gettimeofday(&tv, NULL);
@@ -412,4 +467,123 @@ void PathPlanner::LogInput(Position start, Position goal, Velocity startVel){
     log<<"Time before computation:"<<std::string(buffer)<<std::endl;
 
     return;
+}
+
+Position PathPlanner::GetPositionFromLog(std::ifstream& fp){
+       std::string line, data;
+       std::getline(fp,line);
+       data = split(line,":")[1];
+       return Position::parse(data); 
+}
+
+Velocity PathPlanner::GetVelocityFromLog(std::ifstream& fp){
+       std::string line, data;
+       std::getline(fp,line);
+       data = split(line,":")[1];
+       return Velocity::parse(data); 
+}
+
+int PathPlanner::GetIntFromLog(std::ifstream& fp){
+       std::string line,data;
+       std::getline(fp,line);
+       data = split(line,":")[1];
+       return stoi(data);
+}
+
+double PathPlanner::GetDoubleFromLog(std::ifstream& fp){
+       std::string line,data;
+       std::getline(fp,line);
+       data = split(line,":")[1];
+       return stod(data);
+}
+
+string PathPlanner::GetStringFromLog(std::ifstream& fp){
+       std::string line;
+       std::getline(fp,line);
+       return split(line,":")[1];
+}
+
+string PathPlanner::GetPlanFromLog(std::ifstream& fp){
+       std::string line("plan");
+       std::string plan;
+       while(line != ""){
+           line = "";
+           std::getline(fp,line);
+           plan += line;
+       }
+       return plan;
+}
+
+void PathPlanner::InputDataFromLog(string filename){
+    std::ifstream fp;
+    fp.open(filename,std::ifstream::in);
+    
+    if(fp.is_open()){
+
+       search = (algorithm)GetIntFromLog(fp);
+       if(search == _ASTAR_ || search == _GRID_){
+           bool enable3D = (bool) GetIntFromLog(fp);
+           double grid = GetDoubleFromLog(fp);
+           double lookahead = GetDoubleFromLog(fp);
+           double resSpeed = GetDoubleFromLog(fp);
+           UpdateAstarParameters(enable3D,grid,resSpeed,lookahead,(char*)"");
+       }else if(search == _RRT_){
+           bool resSpeed = GetDoubleFromLog(fp);
+           string filenm = GetStringFromLog(fp); 
+           int maxItn = GetIntFromLog(fp);
+           double micStep = GetDoubleFromLog(fp);
+           double macStep = GetDoubleFromLog(fp);
+           double capR = GetDoubleFromLog(fp);
+           UpdateRRTParameters(resSpeed,maxItn,micStep,macStep,capR,(char*)filenm.c_str());
+       }
+
+       startPos = GetPositionFromLog(fp); 
+       endPos = GetPositionFromLog(fp); 
+       startVel = GetVelocityFromLog(fp); 
+
+       std::cout<<startPos.toString()<<std::endl;
+       std::cout<<endPos.toString()<<std::endl;
+       std::cout<<startVel.toString()<<std::endl;
+
+       int numTraffic = GetIntFromLog(fp); 
+       for(int i=0;i<numTraffic;++i){
+           Position trafficPos = GetPositionFromLog(fp);
+           Velocity trafficVel = GetVelocityFromLog(fp);
+           InputTraffic(i,trafficPos,trafficVel);
+       }
+
+       int numFences = GetIntFromLog(fp);
+       std::cout<<"numFences:"<<numFences<<std::endl;
+
+       for(int i=0; i< numFences; ++i){
+            size_t id = GetIntFromLog(fp);
+            size_t fenceType = GetIntFromLog(fp); 
+            double floor = GetDoubleFromLog(fp);
+            double roof = GetDoubleFromLog(fp);
+            size_t numV = GetIntFromLog(fp);
+            std::list<Position> vertices;
+
+            cout<<id<<","<<fenceType<<","<<floor<<","<<roof<<","<<numV<<std::endl;
+            for(int j=0;j<numV;++j){
+                Position vertex = GetPositionFromLog(fp);
+                vertices.push_back(vertex);
+                cout<<vertex.toString()<<std::endl;
+            }
+            InputGeofenceData(fenceType,id,numV,floor,roof,vertices);
+       }
+
+       int nominalPlanSize = GetIntFromLog(fp);
+       if (nominalPlanSize > 0){
+           cout<<GetPlanFromLog(fp);
+       }
+       double timeA = GetDoubleFromLog(fp);
+       double timeB = GetDoubleFromLog(fp);
+       cout<<"Computation time:"<<timeA<<","<<timeB<<std::endl;
+
+       GetPlanFromLog(fp);
+       fp.close();
+    }
+    else{
+        std::cout<<"Error opening log file:"<<filename<<std::endl;
+    }
 }

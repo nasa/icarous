@@ -48,6 +48,7 @@ private:
     int _bsplines_lenTVec;
     double _bsplines_knotVec[100];
 
+    
     std::ofstream log;
 
     std::list<Plan> flightPlans;
@@ -57,14 +58,25 @@ private:
     CDIIPolygon geoCDIIPolygon;
     PolyPath geoPolyPath;
     Plan ComputeGoAbovePlan(Position start,Position goal,double altFence,double rSpeed);
-    int64_t FindPathGridAstar(char planID[],double fromPosition[],double toPosition[]);
-    int64_t FindPathAstar(char planID[],double fromPosition[],double toPosition[],double velocity[]);
-    int64_t FindPathRRT(char planID[],double fromPosition[],double toPosition[],double velocity[]);
-    void LogInput(Position start,Position goal,Velocity startVel);
+    int64_t FindPathGridAstar(char planID[]);
+    int64_t FindPathAstar(char planID[]);
+    int64_t FindPathRRT(char planID[]);
+    void LogInput();
+    Position GetPositionFromLog(std::ifstream& fp);
+    Velocity GetVelocityFromLog(std::ifstream& fp);
+    int GetIntFromLog(std::ifstream& fp);
+    double GetDoubleFromLog(std::ifstream& fp);
+    std::string GetPlanFromLog(std::ifstream& fp);
+    std::string GetStringFromLog(std::ifstream& fp);
 #ifdef SPLINES
-    int64_t FindPathBSplines(char planID[],double fromPosition[],double toPosition[],double velocity[]);
+    int64_t FindPathBSplines(char planID[]);
 #endif
 public:
+    Position startPos;
+    Position endPos;
+    Velocity startVel;
+    algorithm search;
+
     PathPlanner(double obsBuffer,double maxCeiling);
     void InitializeAstarParameters(bool enable3D,double gridSize,double resSpeed,double lookahead,char daaConfig[]);
     void InitializeRRTParameters(double resSpeed,int Nsteps,double dt,int Dt,double capR,char daaConfig[]);
@@ -83,10 +95,12 @@ public:
     Plan* GetPlan(char planID[]);
     void ClearAllPlans();
     void InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, double pos[][2]);
+    void InputGeofenceData(int type,int index, int totalVertices, double floor, double ceiling, std::list<Position> &vertices);
     fence* GetGeofence(int id);
     void ClearFences();
     int InputTraffic(int id, double *position, double *velocity);
-
+    int InputTraffic(int id, Position &position, Velocity &velocity);
+    void InputDataFromLog(string filename);
     void PlanToString(char planID[],char outputString[],bool tcpColumnsLocal,long int timeshift);
     void StringToPlan(char planID[],char inputString[]);
     void CombinePlan(char planID_A[],char planID_B[],int index);
@@ -101,3 +115,5 @@ public:
 #endif
 
 #endif //PATHPLANNER_H
+
+

@@ -23,34 +23,25 @@ void PathPlanner::InitializeBSplinesParameters(bool enable3D,double computationT
     _bsplines_lenTVec = lenTVec;
 }
 
-int64_t PathPlanner::FindPathBSplines(char planID[],double fromPosition[],double toPosition[],double velocity[]){
-
-    //TODO: make hardcoded parameters as parameters and make relevant changes
-    double trk = velocity[0];
-    double gs = velocity[1];
-    double vs = velocity[2];
+int64_t PathPlanner::FindPathBSplines(char planID[]){
 
     // Reroute flight plan
     std::vector<Vect3> TrafficPos;
     std::vector<Vect3> TrafficVel;
 
-    Position currentPos = Position::makeLatLonAlt(fromPosition[0], "degree",fromPosition[1], "degree", fromPosition[2], "m");
-    Position endPos     = Position::makeLatLonAlt(toPosition[0], "degree", toPosition[1], "degree", toPosition[2], "m");
-    Velocity currentVel = Velocity::makeTrkGsVs(trk,"degree",gs,"m/s",vs,"m/s");
 
-
-    EuclideanProjection proj = Projection::createProjection(currentPos.mkAlt(0));
+    EuclideanProjection proj = Projection::createProjection(startPos.mkAlt(0));
 
     Plan currentFP;
     Position prevWP;
     Position nextWP;
     double computationTime = 1;
-    double dist = currentVel.gs()*computationTime;
+    double dist = startVel.gs()*computationTime;
 
-    Position start = currentPos.linearDist2D(currentVel.trk(), dist);
+    Position start = startPos.linearDist2D(startVel.trk(), dist);
     Position goalPos = endPos;
 
-    Vect3 initPosR3 = proj.project(currentPos);
+    Vect3 initPosR3 = proj.project(startPos);
     Vect3 gpos = proj.project(goalPos);
 
     Bsplines splinePath;
