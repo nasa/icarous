@@ -257,6 +257,7 @@ void ProcessGSMessage(mavlink_message_t message) {
                                               appdataIntGS.trajectory.waypoints[msg.seq].latitude,
                                               appdataIntGS.trajectory.waypoints[msg.seq].longitude,
                                               appdataIntGS.trajectory.waypoints[msg.seq].altitude,MAV_MISSION_TYPE_RALLY);
+               printf("sending traj seq: %d\n",msg.seq);
             }
 
             writeMavlinkData(&appdataIntGS.gs,&msgMissionItem);
@@ -552,6 +553,7 @@ void gsInterface_ProcessPacket() {
         }
 
         case ICAROUS_TRAJECTORY_MID:{
+            printf("Received new trajectory\n");
             flightplan_t* fp = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
             memcpy(&appdataIntGS.trajectory, fp, sizeof(flightplan_t));
             gs_startTimer(&appdataIntGS.tjtimer,gs_tjCallback,"TJTIMER",1000,1000000);   
@@ -1005,6 +1007,7 @@ void gs_tjCallback(uint32_t timerId)
 {
     mavlink_message_t msg;
     mavlink_msg_mission_count_pack(sysid_ic,compid_ic,&msg,sysid_gs,compid_gs,appdataIntGS.trajectory.num_waypoints,MAV_MISSION_TYPE_RALLY);
+    printf("sending count %d\n",appdataIntGS.trajectory.num_waypoints);
     writeMavlinkData(&appdataIntGS.gs,&msg);
 }
 

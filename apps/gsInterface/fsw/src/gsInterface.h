@@ -65,6 +65,9 @@
 #define GSINTERFACE_PIPE_NAME "GSINTF_PIPE"
 #define GSINTERFACE_PIPE_DEPTH 100
 
+#define GSINT_TRAJ_PIPE_NAME "GSTRAJ_PIPE"
+
+
 #define SCH_GSINTERFACE_PIPE1_NAME "SCH_GSINTERFACE"
 
 
@@ -93,6 +96,7 @@
  */
 typedef struct{
     CFE_SB_PipeId_t    INTERFACE_Pipe;      ///< pipe variable
+    CFE_SB_PipeId_t    Traj_Pipe;          ///< pipe variable
     CFE_SB_PipeId_t    SchInterface_Pipe;  ///< pipe variable
     CFE_SB_MsgPtr_t    INTERFACEMsgPtr;     ///< msg pointer to SB message
     CFE_SB_MsgPtr_t    Sch_MsgPtr;         ///< msg pointer to SB message
