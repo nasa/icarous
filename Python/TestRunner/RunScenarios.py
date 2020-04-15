@@ -113,13 +113,17 @@ def RunScenario(scenario, watch=False, save=False, verbose=True,
         mav_forwarding = subprocess.Popen(["mavproxy.py",
                                            "--master=127.0.0.1:"+str(icarous_port),
                                            "--out=127.0.0.1:"+str(gs_port),
-                                           "--out=127.0.0.1:"+str(out)],
+                                           "--out=127.0.0.1:"+str(out),
+                                           "--target-system=1",
+                                           "--target-component=5"],
+
                                           stdout=subprocess.DEVNULL)
     # Optionally open up mavproxy with a map window to watch simulation
     if watch:
         logfile = os.path.join(output_dir, name+".tlog")
         mapwindow = subprocess.Popen(["mavproxy.py",
                                       "--master=127.0.0.1:"+str(out),
+                                      "--target-system=1",
                                       "--target-component=5",
                                       "--load-module", "map,console",
                                       "--load-module", "traffic,geofence",
