@@ -89,83 +89,83 @@ void ProcessGSMessage(mavlink_message_t message) {
 
         case MAVLINK_MSG_ID_MISSION_ITEM:
         {
-			mavlink_mission_item_t msg;
-			mavlink_msg_mission_item_decode(&message, &msg);
+          mavlink_mission_item_t msg;
+          mavlink_msg_mission_item_decode(&message, &msg);
 
-		    bool correct = false;
-		    if (appdataIntGS.receivingWP == msg.seq) {
-				correct = true;
-				appdataIntGS.receivingWP = msg.seq + 1;
-			}
+          bool correct = false;
+          if (appdataIntGS.receivingWP == msg.seq) {
+            correct = true;
+            appdataIntGS.receivingWP = msg.seq + 1;
+          }
 
-			if (correct) {
-				memcpy(appdataIntGS.ReceivedMissionItems+msg.seq,&msg,sizeof(mavlink_mission_item_t));
-			}
+          if (correct) {
+            memcpy(appdataIntGS.ReceivedMissionItems+msg.seq,&msg,sizeof(mavlink_mission_item_t));
+          }
 
-			if (msg.seq == appdataIntGS.numWaypoints - 1) {
-		        gsConvertMissionItemsToPlan(appdataIntGS.numWaypoints,appdataIntGS.ReceivedMissionItems,&appdataIntGS.fpData);
-                SendSBMsg(appdataIntGS.fpData);
+          if (msg.seq == appdataIntGS.numWaypoints - 1) {
+            gsConvertMissionItemsToPlan(appdataIntGS.numWaypoints,appdataIntGS.ReceivedMissionItems,&appdataIntGS.fpData);
+            SendSBMsg(appdataIntGS.fpData);
 
-                flightplan_t uplink;
-                memcpy(&uplink,&appdataIntGS.fpData,sizeof(flightplan_t));
-                CFE_SB_InitMsg(&uplink,UPLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),FALSE);
-                SendSBMsg(uplink);
+            flightplan_t uplink;
+            memcpy(&uplink,&appdataIntGS.fpData,sizeof(flightplan_t));
+            CFE_SB_InitMsg(&uplink,UPLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),FALSE);
+            SendSBMsg(uplink);
 
-                mavlink_message_t msgAck;
-                mavlink_msg_mission_ack_pack(sysid_ic, compid_ic, &msgAck, sysid_gs, compid_gs, MAV_MISSION_ACCEPTED, msg.mission_type);
-                //printf("mission accepted\n");
-                writeMavlinkData(&appdataIntGS.gs, &msgAck);
-                gs_stopTimer(&appdataIntGS.wptimer);
-            }
+            mavlink_message_t msgAck;
+            mavlink_msg_mission_ack_pack(sysid_ic, compid_ic, &msgAck, sysid_gs, compid_gs, MAV_MISSION_ACCEPTED, msg.mission_type);
+            //printf("mission accepted\n");
+            writeMavlinkData(&appdataIntGS.gs, &msgAck);
+            gs_stopTimer(&appdataIntGS.wptimer);
+          }
 
-            if(appdataIntGS.receivingWP < appdataIntGS.numWaypoints) {
-                //mavlink_message_t msgRequest;
-                //mavlink_msg_mission_request_pack(sysid, compid, &msgRequest, target_sys, target_comp, appdataIntGS.receivingWP,
-                //                                    MAV_MISSION_TYPE_MISSION);
-                //writeMavlinkData(&appdataIntGS.gs, &msgRequest);
+          if(appdataIntGS.receivingWP < appdataIntGS.numWaypoints) {
+            //mavlink_message_t msgRequest;
+            //mavlink_msg_mission_request_pack(sysid, compid, &msgRequest, target_sys, target_comp, appdataIntGS.receivingWP,
+            //                                    MAV_MISSION_TYPE_MISSION);
+            //writeMavlinkData(&appdataIntGS.gs, &msgRequest);
 
-                gs_startTimer(&appdataIntGS.wptimer,gs_wpCallback,"WPTIMER",1000,1000000);   
-            }
+            gs_startTimer(&appdataIntGS.wptimer,gs_wpCallback,"WPTIMER",1000,1000000);   
+          }
 
-            break;
+          break;
         }
 
         case MAVLINK_MSG_ID_MISSION_ITEM_INT:
         {
-			mavlink_mission_item_int_t msg;
-			mavlink_msg_mission_item_int_decode(&message, &msg);
+          mavlink_mission_item_int_t msg;
+          mavlink_msg_mission_item_int_decode(&message, &msg);
 
-		    bool correct = false;
-		    if (appdataIntGS.receivingWP == msg.seq) {
-				correct = true;
-				appdataIntGS.receivingWP = msg.seq + 1;
-			}
+          bool correct = false;
+          if (appdataIntGS.receivingWP == msg.seq) {
+            correct = true;
+            appdataIntGS.receivingWP = msg.seq + 1;
+          }
 
-			if (correct) {
-				memcpy(appdataIntGS.ReceivedMissionItemsInt+msg.seq,&msg,sizeof(mavlink_mission_item_int_t));
-			}
+          if (correct) {
+            memcpy(appdataIntGS.ReceivedMissionItemsInt+msg.seq,&msg,sizeof(mavlink_mission_item_int_t));
+          }
 
-			if (msg.seq == appdataIntGS.numWaypoints - 1) {
-		        gsConvertMissionItemsIntToPlan(appdataIntGS.numWaypoints,appdataIntGS.ReceivedMissionItemsInt,&appdataIntGS.fpData);
-                SendSBMsg(appdataIntGS.fpData);
+          if (msg.seq == appdataIntGS.numWaypoints - 1) {
+            gsConvertMissionItemsIntToPlan(appdataIntGS.numWaypoints,appdataIntGS.ReceivedMissionItemsInt,&appdataIntGS.fpData);
+            SendSBMsg(appdataIntGS.fpData);
 
-                flightplan_t uplink;
-                memcpy(&uplink,&appdataIntGS.fpData,sizeof(flightplan_t));
-                CFE_SB_InitMsg(&uplink,UPLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),FALSE);
-                SendSBMsg(uplink);
+            flightplan_t uplink;
+            memcpy(&uplink,&appdataIntGS.fpData,sizeof(flightplan_t));
+            CFE_SB_InitMsg(&uplink,UPLINK_FLIGHTPLAN_MID,sizeof(flightplan_t),FALSE);
+            SendSBMsg(uplink);
 
-                mavlink_message_t msgAck;
-                mavlink_msg_mission_ack_pack(sysid_ic, compid_ic, &msgAck, sysid_gs, compid_gs, MAV_MISSION_ACCEPTED, msg.mission_type);
-                //printf("mission accepted\n");
-                writeMavlinkData(&appdataIntGS.gs, &msgAck);
-                gs_stopTimer(&appdataIntGS.wptimer);
-            }
+            mavlink_message_t msgAck;
+            mavlink_msg_mission_ack_pack(sysid_ic, compid_ic, &msgAck, sysid_gs, compid_gs, MAV_MISSION_ACCEPTED, msg.mission_type);
+            //printf("mission accepted\n");
+            writeMavlinkData(&appdataIntGS.gs, &msgAck);
+            gs_stopTimer(&appdataIntGS.wptimer);
+          }
 
-            if(appdataIntGS.receivingWP < appdataIntGS.numWaypoints) {
-                gs_startTimer(&appdataIntGS.wptimer,gs_wpCallback,"WPTIMER",1000,1000000);   
-            }
+          if(appdataIntGS.receivingWP < appdataIntGS.numWaypoints) {
+            gs_startTimer(&appdataIntGS.wptimer,gs_wpCallback,"WPTIMER",1000,1000000);   
+          }
 
-            break;
+          break;
         }
 
 
@@ -203,21 +203,21 @@ void ProcessGSMessage(mavlink_message_t message) {
             mavlink_mission_request_t msg;
             mavlink_msg_mission_request_decode(&message, &msg);
 
-
             mavlink_message_t msgMissionItem;
             if(msg.mission_type == MAV_MISSION_TYPE_MISSION){
-                mavlink_msg_mission_item_pack(sysid_ic,compid_ic,&msgMissionItem,sysid_gs,compid_gs,msg.seq,appdataIntGS.ReceivedMissionItems[msg.seq].frame,
-                                                                               appdataIntGS.ReceivedMissionItems[msg.seq].command,
-                                                                               appdataIntGS.ReceivedMissionItems[msg.seq].current,
-                                                                               appdataIntGS.ReceivedMissionItems[msg.seq].autocontinue,
-                                                                               appdataIntGS.ReceivedMissionItems[msg.seq].param1,
-                                                                               appdataIntGS.ReceivedMissionItems[msg.seq].param2,
-                                                                               appdataIntGS.ReceivedMissionItems[msg.seq].param3,
-                                                                               appdataIntGS.ReceivedMissionItems[msg.seq].param4,
-                                                                               appdataIntGS.ReceivedMissionItems[msg.seq].x,
-                                                                               appdataIntGS.ReceivedMissionItems[msg.seq].y,
-                                                                               appdataIntGS.ReceivedMissionItems[msg.seq].z,
-                                                                               appdataIntGS.ReceivedMissionItems[msg.seq].mission_type);
+              mavlink_msg_mission_item_pack(sysid_ic,compid_ic,&msgMissionItem,sysid_gs,compid_gs,msg.seq,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].frame,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].command,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].current,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].autocontinue,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].param1,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].param2,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].param3,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].param4,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].x,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].y,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].z,
+                  appdataIntGS.ReceivedMissionItems[msg.seq].mission_type);
             }else if(msg.mission_type == MAV_MISSION_TYPE_FENCE){
                 int reqItem = msg.seq;
                 int index = 0;
@@ -238,15 +238,15 @@ void ProcessGSMessage(mavlink_message_t message) {
                         double _numVertices = appdataIntGS.fenceVertices[i];
 
                         mavlink_msg_mission_item_pack(sysid_ic,compid_ic,&msgMissionItem,sysid_gs,compid_gs,i,
-                                                          _type,
-                                                          0,
-                                                          0,
-                                                          0,
-                                                        _numVertices,
-                                                        index,_floor,_ceiling,
-                                                        appdataIntGS.gfData[i].vertices[index][0],
-                                                        appdataIntGS.gfData[i].vertices[index][1],
-                                                        0,MAV_MISSION_TYPE_FENCE);
+                            _type,
+                            0,
+                            0,
+                            0,
+                            _numVertices,
+                            index,_floor,_ceiling,
+                            appdataIntGS.gfData[i].vertices[index][0],
+                            appdataIntGS.gfData[i].vertices[index][1],
+                            0,MAV_MISSION_TYPE_FENCE);
 
                         break;
                     }
@@ -257,7 +257,7 @@ void ProcessGSMessage(mavlink_message_t message) {
                                               appdataIntGS.trajectory.waypoints[msg.seq].latitude,
                                               appdataIntGS.trajectory.waypoints[msg.seq].longitude,
                                               appdataIntGS.trajectory.waypoints[msg.seq].altitude,MAV_MISSION_TYPE_RALLY);
-               printf("sending traj seq: %d\n",msg.seq);
+               //printf("sending traj seq: %d\n",msg.seq);
             }
 
             writeMavlinkData(&appdataIntGS.gs,&msgMissionItem);
@@ -473,10 +473,10 @@ void ProcessGSMessage(mavlink_message_t message) {
                 //SendGSMsg(appdataIntGS.params[i]);
                 mavlink_message_t param_value_msg;
                 mavlink_msg_param_value_pack(sysid_ic, compid_ic, &param_value_msg,
-                                                 appdataIntGS.storedparams[i].param_id,
-                                                 appdataIntGS.storedparams[i].value,
-                                                 appdataIntGS.storedparams[i].type,
-                                                 PARAM_COUNT, i);
+                    appdataIntGS.storedparams[i].param_id,
+                    appdataIntGS.storedparams[i].value,
+                    appdataIntGS.storedparams[i].type,
+                    PARAM_COUNT, i);
 
                 writeMavlinkData(&appdataIntGS.gs,&param_value_msg);
                 //printf("Sending parameter : %s: %f\n",appdataIntGS.param_ids[i],appdataIntGS.params[i].param_value);
@@ -495,11 +495,11 @@ void ProcessGSMessage(mavlink_message_t message) {
             //(Assume valid param_index is given, so no need to look up params by param_id)
             mavlink_message_t param_value_msg;
             mavlink_msg_param_value_pack(sysid_ic, compid_ic, &param_value_msg,
-                                         appdataIntGS.storedparams[msg.param_index].param_id,
-                                         appdataIntGS.storedparams[msg.param_index].value,
-                                         appdataIntGS.storedparams[msg.param_index].type,
-                                         PARAM_COUNT, msg.param_index);
-			SendGSMsg(param_value_msg);
+                appdataIntGS.storedparams[msg.param_index].param_id,
+                appdataIntGS.storedparams[msg.param_index].value,
+                appdataIntGS.storedparams[msg.param_index].type,
+                PARAM_COUNT, msg.param_index);
+            SendGSMsg(param_value_msg);
             //printf("Requested param id : %s\n",msg.param_id);
 			//printf("Requested param index : %d\n",msg.param_index);
             //printf("Sending parameter : %s: %f\n",appdataIntGS.param_ids[msg.param_index],appdataIntGS.params[msg.param_index].param_value);
@@ -512,199 +512,207 @@ void ProcessGSMessage(mavlink_message_t message) {
 void gsInterface_ProcessPacket() {
 	CFE_SB_MsgId_t  MsgId;
 
-	MsgId = CFE_SB_GetMsgId(appdataIntGS.INTERFACEMsgPtr);
-	switch (MsgId)
-	{
+  MsgId = CFE_SB_GetMsgId(appdataIntGS.INTERFACEMsgPtr);
+  switch (MsgId)
+  {
 
-        case ICAROUS_BANDS_TRACK_MID:
+    case ICAROUS_BANDS_TRACK_MID:
+      {
+        bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
+        gsFragmentBands(bands,0);
+        break;
+      }
+
+    case ICAROUS_BANDS_SPEED_MID:
+      {
+        bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
+        gsFragmentBands(bands,1);
+        break;
+      }
+
+    case ICAROUS_BANDS_ALT_MID:
+      {
+        bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
+        gsFragmentBands(bands,2);
+        break;
+      }
+
+    case ICAROUS_BANDS_VS_MID:
+      {
+        bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
+        gsFragmentBands(bands,3);
+        break;
+      }
+
+    case ICAROUS_STATUS_MID:
+      {
+        status_t* statusMsg = (status_t*) appdataIntGS.INTERFACEMsgPtr;
+        mavlink_message_t msg;
+        mavlink_msg_statustext_pack(sysid_ic,compid_ic,&msg,statusMsg->severity,statusMsg->buffer);
+        writeMavlinkData(&appdataIntGS.gs,&msg);
+        break;
+      }
+
+    case ICAROUS_TRAJECTORY_MID:
+      {
+        //printf("Received new trajectory\n");
+        flightplan_t* fp = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
+        memcpy(&appdataIntGS.trajectory, fp, sizeof(flightplan_t));
+        gs_startTimer(&appdataIntGS.tjtimer,gs_tjCallback,"TJTIMER",1000,1000000);   
+        break;
+      }
+
+    case ICAROUS_FLIGHTPLAN_MID:
+      {
+        flightplan_t* fp = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
+        memcpy(&appdataIntGS.fpData, fp, sizeof(flightplan_t));
+        gsConvertPlanToMissionItems(&appdataIntGS.fpData);
+        break;
+      }
+
+    case ICAROUS_POSITION_MID:
+      {
+        position_t* pos = (position_t*) appdataIntGS.INTERFACEMsgPtr;
+
+        if(pos->aircraft_id == CFE_PSP_GetSpacecraftId()) {
+          mavlink_message_t msg;
+          mavlink_msg_global_position_int_pack(sysid_ic, compid_ic, &msg, (uint32_t) pos->time_gps,
+              (int32_t) (pos->latitude * 1E7),
+              (int32_t) (pos->longitude * 1E7),
+              (int32_t) (pos->altitude_abs * 1E3),
+              (int32_t) (pos->altitude_rel * 1E3),
+              (int16_t) (pos->vn * 1E2),
+              (int16_t) (pos->ve * 1E2),
+              (int16_t) (pos->vd * 1E2),
+              (uint16_t) (pos->hdg * 1E2));
+
+          writeMavlinkData(&appdataIntGS.gs, &msg);
+        }else{
+          mavlink_message_t msg;
+
+          double heading = fmod(2*M_PI + atan2(pos->ve,pos->vn),2*M_PI)*180/M_PI;
+          double speed = sqrt(pos->vn*pos->vn + pos->ve*pos->ve);
+          char callsign[9] = "\0";
+          memcpy(callsign,pos->callsign,8);
+          mavlink_msg_adsb_vehicle_pack(sysid_ic,compid_ic,&msg,pos->aircraft_id,
+              (int32_t)(pos->latitude*1E7),
+              (int32_t)(pos->longitude*1E7),
+              ADSB_ALTITUDE_TYPE_GEOMETRIC,
+              (int32_t)(pos->altitude_rel*1E3),
+              (uint16_t) (heading*1E2),
+              (uint16_t) (speed*1E2),
+              (uint16_t) (pos->vd*1E2),
+              callsign,0,0,0,0);
+
+          writeMavlinkData(&appdataIntGS.gs,&msg);
+
+        }
+        break;
+      }
+
+    case ICAROUS_VFRHUD_MID:
+      {
+        vfrhud_t* vfrhud = (vfrhud_t*) appdataIntGS.INTERFACEMsgPtr;
+        appdataIntGS.currentApMode = vfrhud->modeAP;
+        appdataIntGS.currentIcarousMode = vfrhud->modeIcarous;
+
+        mavlink_message_t msg1;
+        mavlink_msg_vfr_hud_pack(sysid_ic,compid_ic,&msg1,(float)vfrhud->airspeed,
+            (float)vfrhud->groundspeed,
+            vfrhud->heading,
+            vfrhud->throttle,
+            (float)vfrhud->alt,
+            (float)vfrhud->climb);
+        writeMavlinkData(&appdataIntGS.gs,&msg1);
+
+        mavlink_message_t msg2;
+        mavlink_msg_mission_current_pack(sysid_ic,compid_ic,&msg2,vfrhud->waypointCurrent);
+        writeMavlinkData(&appdataIntGS.gs,&msg2);
+
+        break;
+      }
+
+    case ICAROUS_TRAFFIC_MID:
+      {
+        object_t *traffic = (object_t *)appdataIntGS.INTERFACEMsgPtr;
+        mavlink_message_t msg;
+
+        uint8_t emitterType = 0;
+        if (traffic->type == _TRAFFIC_RADAR_)
         {
-            bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
-            gsFragmentBands(bands,0);
-			break;
-		}
-
-        case ICAROUS_BANDS_SPEED_MID:
-        {
-            bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
-            gsFragmentBands(bands,1);
-			break;
-		}
-
-        case ICAROUS_BANDS_ALT_MID:
-        {
-            bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
-            gsFragmentBands(bands,2);
-			break;
-		}
-
-        case ICAROUS_BANDS_VS_MID:
-        {
-            bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
-            gsFragmentBands(bands,3);
-			break;
-		}
-
-        case ICAROUS_STATUS_MID:{
-            status_t* statusMsg = (status_t*) appdataIntGS.INTERFACEMsgPtr;
-            mavlink_message_t msg;
-            mavlink_msg_statustext_pack(sysid_ic,compid_ic,&msg,statusMsg->severity,statusMsg->buffer);
-            writeMavlinkData(&appdataIntGS.gs,&msg);
-            break;
+          emitterType = 100;
+        }else if(traffic->type == _TRAFFIC_SIM_){
+          emitterType = 255;
         }
 
-        case ICAROUS_TRAJECTORY_MID:{
-            printf("Received new trajectory\n");
-            flightplan_t* fp = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
-            memcpy(&appdataIntGS.trajectory, fp, sizeof(flightplan_t));
-            gs_startTimer(&appdataIntGS.tjtimer,gs_tjCallback,"TJTIMER",1000,1000000);   
-            break;
-        }
+        double heading = fmod(2 * M_PI + atan2(traffic->ve, traffic->vn), 2 * M_PI) * 180 / M_PI;
+        double speed = sqrt(traffic->vn * traffic->vn + traffic->ve * traffic->ve);
+        char callsign[9] = "\0";
+        memcpy(callsign,traffic->callsign,8);
+        mavlink_msg_adsb_vehicle_pack(sysid_ic, compid_ic, &msg, traffic->index,
+            (int32_t)(traffic->latitude * 1E7),
+            (int32_t)(traffic->longitude * 1E7),
+            ADSB_ALTITUDE_TYPE_GEOMETRIC,
+            (int32_t)(traffic->altitude * 1E3),
+            (uint16_t)(heading * 1E2),
+            (uint16_t)(speed * 1E2),
+            (uint16_t)(traffic->vd * 1E2),
+            callsign, emitterType, 0, 0, 0);
 
-        case ICAROUS_FLIGHTPLAN_MID:{
-            flightplan_t* fp = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
-            memcpy(&appdataIntGS.fpData, fp, sizeof(flightplan_t));
-            gsConvertPlanToMissionItems(&appdataIntGS.fpData);
-            break;
-        }
+        writeMavlinkData(&appdataIntGS.gs, &msg);
+        break;
+      }
 
-        case ICAROUS_POSITION_MID:{
-            position_t* pos = (position_t*) appdataIntGS.INTERFACEMsgPtr;
-
-            if(pos->aircraft_id == CFE_PSP_GetSpacecraftId()) {
-                mavlink_message_t msg;
-                mavlink_msg_global_position_int_pack(sysid_ic, compid_ic, &msg, (uint32_t) pos->time_gps,
-                                                     (int32_t) (pos->latitude * 1E7),
-                                                     (int32_t) (pos->longitude * 1E7),
-                                                     (int32_t) (pos->altitude_abs * 1E3),
-                                                     (int32_t) (pos->altitude_rel * 1E3),
-                                                     (int16_t) (pos->vn * 1E2),
-                                                     (int16_t) (pos->ve * 1E2),
-                                                     (int16_t) (pos->vd * 1E2),
-                                                     (uint16_t) (pos->hdg * 1E2));
-
-                writeMavlinkData(&appdataIntGS.gs, &msg);
-            }else{
-                mavlink_message_t msg;
-
-                double heading = fmod(2*M_PI + atan2(pos->ve,pos->vn),2*M_PI)*180/M_PI;
-                double speed = sqrt(pos->vn*pos->vn + pos->ve*pos->ve);
-                char callsign[9] = "\0";
-                memcpy(callsign,pos->callsign,8);
-                mavlink_msg_adsb_vehicle_pack(sysid_ic,compid_ic,&msg,pos->aircraft_id,
-                                          (int32_t)(pos->latitude*1E7),
-                                          (int32_t)(pos->longitude*1E7),
-                                          ADSB_ALTITUDE_TYPE_GEOMETRIC,
-                                          (int32_t)(pos->altitude_rel*1E3),
-                                          (uint16_t) (heading*1E2),
-                                          (uint16_t) (speed*1E2),
-                                          (uint16_t) (pos->vd*1E2),
-                                          callsign,0,0,0,0);
-
-                writeMavlinkData(&appdataIntGS.gs,&msg);
-
-            }
-            break;
-        }
-
-        case ICAROUS_VFRHUD_MID:{
-            vfrhud_t* vfrhud = (vfrhud_t*) appdataIntGS.INTERFACEMsgPtr;
-            appdataIntGS.currentApMode = vfrhud->modeAP;
-            appdataIntGS.currentIcarousMode = vfrhud->modeIcarous;
-
-            mavlink_message_t msg1;
-            mavlink_msg_vfr_hud_pack(sysid_ic,compid_ic,&msg1,(float)vfrhud->airspeed,
-                                     (float)vfrhud->groundspeed,
-                                     vfrhud->heading,
-                                     vfrhud->throttle,
-                                     (float)vfrhud->alt,
-                                     (float)vfrhud->climb);
-            writeMavlinkData(&appdataIntGS.gs,&msg1);
-
-            mavlink_message_t msg2;
-            mavlink_msg_mission_current_pack(sysid_ic,compid_ic,&msg2,vfrhud->waypointCurrent);
-            writeMavlinkData(&appdataIntGS.gs,&msg2);
-
-            break;
-        }
-
-        case ICAROUS_TRAFFIC_MID:{
-            object_t *traffic = (object_t *)appdataIntGS.INTERFACEMsgPtr;
-            mavlink_message_t msg;
-
-            uint8_t emitterType = 0;
-            if (traffic->type == _TRAFFIC_RADAR_)
-            {
-                emitterType = 100;
-            }else if(traffic->type == _TRAFFIC_SIM_){
-                emitterType = 255;
-            }
-
-            double heading = fmod(2 * M_PI + atan2(traffic->ve, traffic->vn), 2 * M_PI) * 180 / M_PI;
-            double speed = sqrt(traffic->vn * traffic->vn + traffic->ve * traffic->ve);
-            char callsign[9] = "\0";
-            memcpy(callsign,traffic->callsign,8);
-            mavlink_msg_adsb_vehicle_pack(sysid_ic, compid_ic, &msg, traffic->index,
-                                          (int32_t)(traffic->latitude * 1E7),
-                                          (int32_t)(traffic->longitude * 1E7),
-                                          ADSB_ALTITUDE_TYPE_GEOMETRIC,
-                                          (int32_t)(traffic->altitude * 1E3),
-                                          (uint16_t)(heading * 1E2),
-                                          (uint16_t)(speed * 1E2),
-                                          (uint16_t)(traffic->vd * 1E2),
-                                          callsign, emitterType, 0, 0, 0);
-
-            writeMavlinkData(&appdataIntGS.gs, &msg);
-            break;
-        }
-
-		case ICAROUS_ATTITUDE_MID: {
-			attitude_t* attitude = (attitude_t*) appdataIntGS.INTERFACEMsgPtr;
+    case ICAROUS_ATTITUDE_MID: 
+      {
+        attitude_t* attitude = (attitude_t*) appdataIntGS.INTERFACEMsgPtr;
 
 
-			double roll = (attitude->roll > 180)? -(180-(attitude->roll - 180)):attitude->roll;
-            double pitch = (attitude->pitch > 180)? -(180-(attitude->pitch - 180)):attitude->pitch;
-            double yaw = (attitude->yaw > 180)? -(180-(attitude->yaw - 180)):attitude->yaw;
-            double rollspeed = (attitude->rollspeed > 180)? -(180-(attitude->rollspeed - 180)):attitude->rollspeed;
-            double pitchspeed = (attitude->pitchspeed > 180)? -(180-(attitude->pitchspeed - 180)):attitude->pitchspeed;
-            double yawspeed = (attitude->yawspeed > 180)? -(180-(attitude->yawspeed - 180)):attitude->yawspeed;
+        double roll = (attitude->roll > 180)? -(180-(attitude->roll - 180)):attitude->roll;
+        double pitch = (attitude->pitch > 180)? -(180-(attitude->pitch - 180)):attitude->pitch;
+        double yaw = (attitude->yaw > 180)? -(180-(attitude->yaw - 180)):attitude->yaw;
+        double rollspeed = (attitude->rollspeed > 180)? -(180-(attitude->rollspeed - 180)):attitude->rollspeed;
+        double pitchspeed = (attitude->pitchspeed > 180)? -(180-(attitude->pitchspeed - 180)):attitude->pitchspeed;
+        double yawspeed = (attitude->yawspeed > 180)? -(180-(attitude->yawspeed - 180)):attitude->yawspeed;
 
-            mavlink_message_t msg;
+        mavlink_message_t msg;
 
-            mavlink_msg_attitude_pack(sysid_ic,compid_ic,&msg,
-                                      (uint32) attitude->time_boot*M_PI/180,
-                                      (float) roll*M_PI/180,
-                                      (float) pitch*M_PI/180,
-                                      (float) yaw*M_PI/180,
-                                      (float) rollspeed*M_PI/180,
-                                      (float) pitchspeed*M_PI/180,
-                                      (float) yawspeed*M_PI/180);
+        mavlink_msg_attitude_pack(sysid_ic,compid_ic,&msg,
+            (uint32) attitude->time_boot*M_PI/180,
+            (float) roll*M_PI/180,
+            (float) pitch*M_PI/180,
+            (float) yaw*M_PI/180,
+            (float) rollspeed*M_PI/180,
+            (float) pitchspeed*M_PI/180,
+            (float) yawspeed*M_PI/180);
 
-            //printf("IC sending attitude info to GCS\n");
-            writeMavlinkData(&appdataIntGS.gs,&msg);
-            break;
-        }
+        //printf("IC sending attitude info to GCS\n");
+        writeMavlinkData(&appdataIntGS.gs,&msg);
+        break;
+      }
 
-        case ICAROUS_BATTERY_STATUS_MID: {
-            battery_status_t* battery_status = (battery_status_t*) appdataIntGS.INTERFACEMsgPtr;
+    case ICAROUS_BATTERY_STATUS_MID: 
+      {
+        battery_status_t* battery_status = (battery_status_t*) appdataIntGS.INTERFACEMsgPtr;
 
-            mavlink_message_t msg;
+        mavlink_message_t msg;
 
-            mavlink_msg_battery_status_pack(sysid_ic,compid_ic,&msg,
-                                            battery_status->id,
-                                            battery_status->battery_function,
-                                            battery_status->type,
-                                            battery_status->temperature,
-                                            battery_status->voltages,
-                                            battery_status->current_battery,
-                                            battery_status->current_consumed,
-                                            battery_status->energy_consumed,
-                                            battery_status->battery_remaining);
+        mavlink_msg_battery_status_pack(sysid_ic,compid_ic,&msg,
+            battery_status->id,
+            battery_status->battery_function,
+            battery_status->type,
+            battery_status->temperature,
+            battery_status->voltages,
+            battery_status->current_battery,
+            battery_status->current_consumed,
+            battery_status->energy_consumed,
+            battery_status->battery_remaining);
 
-            //printf("IC sending battery info to GCS\n");
-            writeMavlinkData(&appdataIntGS.gs,&msg);
-            break;
-        }
-    }
+        //printf("IC sending battery info to GCS\n");
+        writeMavlinkData(&appdataIntGS.gs,&msg);
+        break;
+      }
+  }
 }
 
 uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
@@ -1007,7 +1015,7 @@ void gs_tjCallback(uint32_t timerId)
 {
     mavlink_message_t msg;
     mavlink_msg_mission_count_pack(sysid_ic,compid_ic,&msg,sysid_gs,compid_gs,appdataIntGS.trajectory.num_waypoints,MAV_MISSION_TYPE_RALLY);
-    printf("sending count %d\n",appdataIntGS.trajectory.num_waypoints);
+    //printf("sending count %d\n",appdataIntGS.trajectory.num_waypoints);
     writeMavlinkData(&appdataIntGS.gs,&msg);
 }
 
