@@ -57,7 +57,7 @@ void TrafficMonitor::UpdateDAAParameters(char daaParameters[],bool reclog) {
         gettimeofday(&tv, NULL);
         tm = localtime(&tv.tv_sec);
         strftime(fmt1, sizeof fmt1, "Daidalus-%Y-%m-%d-%H:%M:%S", tm);
-        strcat(fmt1,".login");
+        strcat(fmt1,".log");
         logfileIn.open(fmt1);
     }
 }
