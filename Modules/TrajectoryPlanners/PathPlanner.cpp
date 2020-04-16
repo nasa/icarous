@@ -10,6 +10,7 @@
 #include <PlanUtil.h>
 #include <sys/time.h>
 #include "PathPlanner.h"
+#include <TrajGen.h>
 
 using namespace std;
 using namespace larcfm;
@@ -310,11 +311,12 @@ void PathPlanner::PlanToString(char planID[],char outputString[],bool tcpColumns
     Plan *fp = GetPlan(planID);
     Plan outputFp = fp->copy();
     outputFp.timeShiftPlan(0,(double)timeshift);
+    Plan repairedPlan = TrajGen::makeKinematicPlan(outputFp,45*M_PI/180,4,2,true,true,true);
     if(fp){
        PlanWriter planWriter; 
        std::ostringstream planString;
        planWriter.open(&planString);
-       planWriter.writePlan(outputFp, tcpColumnsLocal);
+       planWriter.writePlan(repairedPlan, tcpColumnsLocal);
        strcpy(outputString,planString.str().c_str());
     }
 }
@@ -528,7 +530,7 @@ void PathPlanner::InputDataFromLog(string filename){
            double resSpeed = GetDoubleFromLog(fp);
            UpdateAstarParameters(enable3D,grid,resSpeed,lookahead,(char*)"");
        }else if(search == _RRT_){
-           bool resSpeed = GetDoubleFromLog(fp);
+           double resSpeed = GetDoubleFromLog(fp);
            string filenm = GetStringFromLog(fp); 
            int maxItn = GetIntFromLog(fp);
            double micStep = GetDoubleFromLog(fp);
@@ -546,6 +548,7 @@ void PathPlanner::InputDataFromLog(string filename){
        std::cout<<startVel.toString()<<std::endl;
 
        int numTraffic = GetIntFromLog(fp); 
+        std::cout<<"numTraffic:"<<numTraffic<<std::endl;
        for(int i=0;i<numTraffic;++i){
            Position trafficPos = GetPositionFromLog(fp);
            Velocity trafficVel = GetVelocityFromLog(fp);
