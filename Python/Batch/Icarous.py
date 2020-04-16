@@ -93,6 +93,22 @@ class Icarous():
         self.cog.num_waypoints = len(self.flightplan1)
         self.cog.wpMetricTime = False;
 
+    def ConvertToLocalCoordinates(self,pos):
+        dh = lambda x, y: abs(distance(self.home_pos[0],self.home_pos[1],x,y))
+        if pos[1] > self.home_pos[1]:
+            sgnX = 1
+        else:
+            sgnX = -1
+
+        if pos[0] > self.home_pos[0]:
+            sgnY = 1
+        else:
+            sgnY = -1
+        dx = dh(self.home_pos[0],pos[1])
+        dy = dh(pos[0],self.home_pos[1])
+        return [dx*sgnX,dy*sgnY]
+
+
     def InputGeofence(self,filename):
         self.fenceList = Getfence(filename)
         for fence in self.fenceList:
