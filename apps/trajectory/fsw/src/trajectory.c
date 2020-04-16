@@ -225,7 +225,7 @@ void TRAJECTORY_ProcessPacket()
         // Publish EUTIL trajectory information
         char buffer[MAX_DATABUFFER_SIZE] = {0};
         time_t timeNow = time(NULL);
-        PathPlanner_PlanToString(TrajectoryAppData.pplanner,"Plan+",buffer,false,timeNow);
+        PathPlanner_PlanToString(TrajectoryAppData.pplanner,"Plan+",buffer,true,timeNow);
 
         CFE_SB_ZeroCopyHandle_t cpyhandle;
         stringdata_t *bigdataptr = (stringdata_t *)CFE_SB_ZeroCopyGetPtr(sizeof(stringdata_t),&cpyhandle);

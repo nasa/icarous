@@ -577,7 +577,7 @@ void PathPlanner::InputDataFromLog(string filename){
 
        int nominalPlanSize = GetIntFromLog(fp);
        if (nominalPlanSize > 0){
-           cout<<GetPlanFromLog(fp);
+           GetPlanFromLog(fp);
        }
        double timeA = GetDoubleFromLog(fp);
        double timeB = GetDoubleFromLog(fp);
