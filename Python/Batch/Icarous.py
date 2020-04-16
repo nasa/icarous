@@ -64,11 +64,13 @@ class Icarous():
         self.trkgsvs  = [0.0,0.0,0.0]
 
         self.positionLog = []
-        self.ownshipLog = {"t": [], "position": [], "velocity": []}
+        self.ownshipLog = {"t": [], "position": [], "velocityNED": [], "positionNED": []}
         self.trafficLog = {}
         self.emergbreak = False
         self.currTime   = 0
         self.numSecPlan = 0
+        self.plans = []
+        self.localPlans = []
 
     def InitializeModules(self):
         initCognition()
@@ -77,10 +79,10 @@ class Icarous():
         self.ownship.setpos_uncertainty(xx,yy,zz,xy,yz,xz,coeff)
 
 
-    def InputTraffic(self,id,position,velocity):
+    def InputTraffic(self,id,position,velocity,localPos):
         self.tfMonitor.input_traffic(id,position,velocity,self.currTime)
         self.Trajectory.InputTrafficData(id,position,velocity)
-        self.RecordTraffic(id, position, velocity)
+        self.RecordTraffic(id, position, velocity, localPos)
 
     def InputFlightplan(self,fp,scenarioTime,eta=False):
         
@@ -92,6 +94,8 @@ class Icarous():
         self.cog.missionStart = 0
         self.cog.num_waypoints = len(self.flightplan1)
         self.cog.wpMetricTime = False;
+        self.plans.append(fp)
+        self.localPlans.append(self.GetLocalFlightPlan(fp))
 
     def ConvertToLocalCoordinates(self,pos):
         dh = lambda x, y: abs(distance(self.home_pos[0],self.home_pos[1],x,y))
@@ -108,6 +112,11 @@ class Icarous():
         dy = dh(pos[0],self.home_pos[1])
         return [dx*sgnX,dy*sgnY]
 
+    def GetLocalFlightPlan(self,fp):
+        local = []
+        for wp in fp:
+            local.append(self.ConvertToLocalCoordinates(wp))
+        return local
 
     def InputGeofence(self,filename):
         self.fenceList = Getfence(filename)
@@ -130,14 +139,15 @@ class Icarous():
         resSpeed = params['ASTAR_RESSPEED']
         lookahead= params['ASTAR_LOOKAHEAD']
         daaconfig = "DaidalusQuadConfig.txt"
+        self.Trajectory.UpdateAstarParams(enable3d,gridSize,resSpeed,lookahead,daaconfig)
 
         # RRT Params
         Nstep = int(params['RRT_NITERATIONS'])
         dt    = params['RRT_DT'] 
         Dt    = int(params['RRT_MACROSTEPS'])
         capR  = params['RRT_CAPR']
+        resSpeed = params['RRT_RESSPEED']
 
-        self.Trajectory.UpdateAstarParams(enable3d,gridSize,resSpeed,lookahead,daaconfig)
         self.Trajectory.UpdateRRTParams(resSpeed,Nstep,dt,Dt,capR,daaconfig)
 
     def SetGuidanceParams(self,params):
@@ -271,6 +281,9 @@ class Icarous():
                 self.cog.wpPrev1[i] = self.flightplan1[self.cog.nextPrimaryWP - 1][i]
                 self.cog.wpNext1[i] = self.flightplan1[self.cog.nextPrimaryWP][i]
 
+            dist = distance(self.position[0],self.position[1],self.cog.wpNext1[0],self.cog.wpNext1[1])
+            #print(dist)
+
         # Check for feasiblity of path
         if len(self.flightplan2) > 0:
             nextWP = 0
@@ -328,6 +341,8 @@ class Icarous():
                 self.cog.nextSecondaryWP = 1
                 self.cog.nextWP          = 1
                 self.cog.num_waypoints2  = numWP
+                self.plans.append(self.flightplan2)
+                self.localPlans.append(self.GetLocalFlightPlan(self.flightplan2))
             else:
                 print("Error finding path")
 
@@ -528,14 +543,18 @@ class Icarous():
     def RecordOwnship(self):
         self.ownshipLog["t"].append(self.currTime)
         self.ownshipLog["position"].append(self.position)
-        self.ownshipLog["velocity"].append(self.velocity)
+        self.ownshipLog["velocityNED"].append(self.velocity)
+        self.ownshipLog["positionNED"].append([self.positionLog[-1][1],
+                                               self.positionLog[-1][0],
+                                               self.positionLog[-1][2]])
 
-    def RecordTraffic(self, id, position, velocity):
+    def RecordTraffic(self, id, position, velocity, positionLoc):
         if id not in self.trafficLog:
-            self.trafficLog[id] = {"t": [], "position": [], "velocity": []}
+            self.trafficLog[id] = {"t": [], "position": [], "velocityNED": [], "positionNED": []}
         self.trafficLog[id]["t"].append(self.currTime)
         self.trafficLog[id]["position"].append(list(position))
-        self.trafficLog[id]["velocity"].append(list(velocity))
+        self.trafficLog[id]["velocityNED"].append([velocity[1], velocity[0], velocity[2]])
+        self.trafficLog[id]["positionNED"].append([positionLoc[1],positionLoc[0],positionLoc[2]])
 
     def WriteLog(self, logname="simoutput.json"):
         import json
@@ -561,15 +580,31 @@ class Icarous():
         else:
             self.currTime += 0.05
 
+
+        #time_cog_in = time.time()
         self.RunCogntiion()
+        #time_cog_out = time.time()
 
+        #time_traff_in = time.time()
         self.RunTrafficMonitor()
+        #time_traff_out = time.time()
 
+        #time_geof_in = time.time()
         self.RunGeofenceMonitor()
+        #time_geof_out = time.time()
 
+        #time_guid_in = time.time()
         self.RunGuidance()
+        #time_guid_out = time.time()
 
+        #time_ship_in = time.time()
         self.RunOwnship()
+        #time_ship_out = time.time()
+
+        #print("cog     %f" % (time_cog_out - time_cog_in))
+        #print("traffic %f" % (time_traff_out - time_traff_in))
+        #print("geofence %f" % (time_geof_out - time_geof_in))
+        #print("ownship %f" % (time_ship_out - time_ship_in))
 
         return True
 

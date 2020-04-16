@@ -1,5 +1,6 @@
 from Icarous import *
 from matplotlib import pyplot as plt
+from Animation import AgentAnimation
 
 # Set the home position for the simulation
 HomePos = [37.102177,-76.387207,0.000000]
@@ -10,7 +11,7 @@ tfList = []
 # Start a single traffic vehicle from Home at specified
 # range,brg,alt,track,speed,climb rate
 # Call this function again to start multiple traffic vehicles
-#StartTraffic(HomePos,100,80,5,1,270,0,tfList)
+StartTraffic(HomePos,100,80,5,1,270,0,tfList)
 # Set uncertainty and smoothing params for traffic
 for tf in tfList:
     tf.setpos_uncertainty(0.01,0.01,0,0,0,0)
@@ -48,8 +49,10 @@ while not ic.CheckMissionComplete():
     # Run simulation traffic and input traffic data to Icarous
     RunTraffic(tfList)
     for i,tf in enumerate(tfList):
-        ic.InputTraffic(i,tf.pos_gps,tf.vel)
+        ic.InputTraffic(i,tf.pos_gps,tf.vel,tf.pos)
 ic.WriteLog()
+
+
 
 # Plot data for visualization    
 plt.figure(1)
@@ -57,3 +60,11 @@ plt.plot(np.array(ic.positionLog)[:,0],np.array(ic.positionLog)[:,1],'r')
 for tf in tfList:
     plt.plot(np.array(tf.log['pos'])[:,0],np.array(tf.log['pos'])[:,1],'b')
 plt.show()
+
+
+anim= AgentAnimation(-50,-50, 100,30,30)
+anim.AddPath(np.array(ic.localPlans[0]),'k--')
+anim.AddAgent('ownship',2,'r',ic.ownshipLog)
+anim.AddAgent('traffic0',2,'b',ic.trafficLog[0])
+
+anim.run()
