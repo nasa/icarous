@@ -156,7 +156,7 @@ public:
     bool CheckFenceCollision(Vect3& qPos);
     bool CheckTrafficCollision(Vect3& qPos,Vect3& qVel,std::vector<Vect3>& TrafficPos,std::vector<Vect3>& trafficVel,bool full);
     bool CheckTrafficCollisionWithBands(bool CheckTurn,Vect3& qPos,Vect3& qVel,
-                                        std::vector<Vect3>& TrafficPos,std::vector<Vect3>& trafficVel,Vect3& oldVel);
+                                        std::vector<Vect3>& TrafficPos,std::vector<Vect3>& trafficVel,Vect3& newPos);
     bool CheckTurnConflict(double low,double high,double newHeading,double oldHeading);
     void GetInput(node_t& nn, node_t& qn,double U[]);
     node_t* FindNearest(node_t& query);

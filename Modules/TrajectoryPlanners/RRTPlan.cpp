@@ -95,13 +95,9 @@ int64_t PathPlanner::FindPathRRT(char planID[]){
         }
     }
 
-    if(goalFound){
-        Plan output;
-        RRT.GetPlan(proj,output);
-        output.setID(string(planID));
-        flightPlans.push_back(output);
-        return output.size();
-    }else{
-        return -1;
-    }
+    Plan output;
+    RRT.GetPlan(proj,output);
+    output.setID(string(planID));
+    flightPlans.push_back(output);
+    return output.size();
 }

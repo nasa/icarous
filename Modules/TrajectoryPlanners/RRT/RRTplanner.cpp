@@ -348,7 +348,7 @@ bool RRTplanner::CheckTrafficCollision(Vect3& qPos,Vect3& qVel,std::vector<Vect3
 }
 
 bool RRTplanner::CheckTrafficCollisionWithBands(bool CheckTurn,Vect3& qPos,Vect3& qVel,
-                                           std::vector<Vect3>& TrafficPos,std::vector<Vect3>& TrafficVel,Vect3& oldVel){
+                                           std::vector<Vect3>& TrafficPos,std::vector<Vect3>& TrafficVel,Vect3& newPos){
 
 
     time_t currentTime;
@@ -373,36 +373,17 @@ bool RRTplanner::CheckTrafficCollisionWithBands(bool CheckTurn,Vect3& qPos,Vect3
         char name[10];
         sprintf(name,"Traffic%d",i);i++;
         DAA.addTrafficState(name,si,vi);
-
-        //printf("Traffic pos:%f,%f\n",itP->x,itP->y);
-        //printf("Traffic heading:%f\n",vi.track("degree"));
-
-        double distH = so.distanceH(si);
-
-        if(distH < trafficDist){
-            trafficDist = distH;
-        }
-    }
-
-    //TODO: change this number to a parameter
-    if(trafficDist < maxD){
-        //printf("In cylinder\n");
-        return true;
     }
 
     double qHeading = vo.track("degree");
-
-
-    //printf("curr heading:%f\n",qHeading);
-    //printf("old heading:%f\n",oldHeading);
 
     if( BandsRegion::isConflictBand(DAA.regionOfHorizontalDirection(DAA.getOwnshipState().horizontalDirection()))){
         return true;
     }
     else if(CheckTurn){
-        Velocity vo0 = Velocity::makeVxyz(oldVel.x,oldVel.y,"m/s",oldVel.z,"m/s");
-        double oldHeading = vo0.track("degree");
-        if(BandsRegion::isConflictBand(DAA.regionOfHorizontalDirection(vo0.trk()))){
+        Position go = Position::makeXYZ(newPos.x,"m",newPos.y,"m",newPos.z,"m");
+        double newHeading = so.track(go);
+        if(BandsRegion::isConflictBand(DAA.regionOfHorizontalDirection(newHeading))){
             return true;
         }
         // Check collision with traffic based on current heading
@@ -410,7 +391,7 @@ bool RRTplanner::CheckTrafficCollisionWithBands(bool CheckTurn,Vect3& qPos,Vect3
             if(DAA.horizontalDirectionRegionAt(ib) != larcfm::BandsRegion::NONE ){
                 Interval ii = DAA.horizontalDirectionIntervalAt(ib,"deg");
 
-                if(CheckTurnConflict(ii.low,ii.up,qHeading,oldHeading)){
+                if(CheckTurnConflict(ii.low,ii.up,newHeading*180/M_PI,qHeading)){
                     //printf("RRT:turn conflict old:%f, new:%f [%f,%f]\n",oldHeading,qHeading,ii.low,ii.up);
                     return true;
                 }
@@ -519,7 +500,7 @@ bool RRTplanner::CheckDirectPath2Goal(node_t* qnode){
     vec2 = AB.Scal(1/AB.norm());
     double dotprod = vec1.dot2D(vec2);
 
-    if (nodeList.size() > 3 && dotprod <= 0.7){
+    if (dotprod <= 0.7){
         return false;
     }
 
@@ -716,7 +697,8 @@ void RRTplanner::GetPlan(EuclideanProjection& proj,Plan& newRoute){
 
     if(!goalreached){
         node = &goalNode;
-        node->parent = closestNode;
+        node->parent = &nodeList.back();
+        printf("Using last node in list\n");
     }
 
     while(node != NULL){
