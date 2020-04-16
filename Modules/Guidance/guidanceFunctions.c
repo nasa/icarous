@@ -101,7 +101,6 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
         guidanceOutput->reachedStatusUpdated = false;
         // Compute velocity command to next waypoint
         double heading = ComputeHeading(guidanceInput->position, newPositionToTrack);
-
         double climbrate = ComputeClimbRate(guidanceInput->position, guidanceInput->curr_waypoint, speedRef, guidanceParams);
 
         double vn, ve, vd;
@@ -214,8 +213,8 @@ void GetCorrectIntersectionPoint(double _wpA[],double _wpB[],double r,double out
     // Check which point is closest to waypoint B
     double p1[] = {x1, y1};
     double p2[] = {x2, y2};
-    double dist1 = ComputeDistance(p1,_wpB);
-    double dist2 = ComputeDistance(p2,_wpB);
+    double dist1 = distance(p1[0],p1[1],_wpB[0],_wpB[1]);
+    double dist2 = distance(p2[0],p2[1],_wpB[0],_wpB[1]);
     if(dist1 < dist2){
         // Use (x1,y1)
         output[0] = x1;
