@@ -42,6 +42,7 @@ class Icarous():
         self.Geofence = GeofenceMonitor([3,2,2,20,20])
         self.Trajectory = Trajectory(5.0,250)
         self.tfMonitor = TrafficMonitor(False)
+        self.daafile = "DaidalusQuadConfig.txt"
 
         # Aircraft data
         self.flightplan1 = []
@@ -138,7 +139,7 @@ class Icarous():
         gridSize = params['ASTAR_GRIDSIZE'] 
         resSpeed = params['ASTAR_RESSPEED']
         lookahead= params['ASTAR_LOOKAHEAD']
-        daaconfig = "DaidalusQuadConfig.txt"
+        daaconfig = self.daafile
         self.Trajectory.UpdateAstarParams(enable3d,gridSize,resSpeed,lookahead,daaconfig)
 
         # RRT Params
