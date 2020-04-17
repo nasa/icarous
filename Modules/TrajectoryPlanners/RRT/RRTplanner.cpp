@@ -39,6 +39,7 @@ RRTplanner::RRTplanner(Poly3D &boundary,
     nodeCount = 0;
 
     boundingBox = boundary;
+    srand(1);
 }
 
 void RRTplanner::SetParameters(int stepT, double dt, double maxD, double maxInputNorm) {
@@ -496,11 +497,7 @@ bool RRTplanner::CheckDirectPath2Goal(node_t* qnode){
         AB = AB.Scal(maxInputNorm/norm);
     }
 
-    vec1 = vec1.Scal(1/vec1.norm());
-    vec2 = AB.Scal(1/AB.norm());
-    double dotprod = vec1.dot2D(vec2);
-
-    if (dotprod <= 0.7){
+    if (!CheckVelProjection(qnode)){
         return false;
     }
 
@@ -612,6 +609,29 @@ bool RRTplanner::CheckWaitAndGo(node_t& qnode){
 
 }
 
+
+bool RRTplanner::CheckVelProjection(node_t *qnode){
+    Vect3 A = qnode->pos;
+    Vect3 B = goalNode.pos;
+    Vect3 AB = B.Sub(A);
+    Vect3 vec1 = qnode->vel;
+    Vect3 vec2;
+    double norm = AB.norm();
+    if(norm > 0){
+        AB = AB.Scal(maxInputNorm/norm);
+    }
+
+    vec1 = vec1.Scal(1/vec1.norm());
+    vec2 = AB.Scal(1/AB.norm());
+    double dotprod = vec1.dot2D(vec2);
+
+    if (dotprod <= 0.7){
+        return false;
+    }else{
+        return true;
+    }
+}
+
 bool RRTplanner::CheckGoal(){
 
     node_t *lastNode = &nodeList.back();
@@ -700,8 +720,13 @@ void RRTplanner::GetPlan(EuclideanProjection& proj,Plan& newRoute){
 
     if(!goalreached){
         node = &goalNode;
-        node->parent = &nodeList.back();
-        printf("Using last node in list\n");
+        node_t *temp = &nodeList.back();
+        while(!CheckVelProjection(temp)){
+            nodeList.pop_back();
+            temp = &nodeList.back();
+            printf("Removing incompatible node\n");
+        }
+        node->parent = temp;
     }else{
         node = &goalNode;
         node->parent = closestNode;

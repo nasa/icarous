@@ -169,6 +169,7 @@ public:
     bool LinePlanIntersection(Vect2& A,Vect2& B,double floor,double ceiling,Vect3& currentPos,Vect3& nextPos);
     bool CheckProjectedFenceConflict(node_t* qnode,node_t* goal);
     bool CheckWaitAndGo(node_t& qnode);
+    bool CheckVelProjection(node_t *qnode);
     std::list<node_t>* GetNodeList();
 
 };
