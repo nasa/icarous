@@ -72,6 +72,7 @@ class Icarous():
         self.numSecPlan = 0
         self.plans = []
         self.localPlans = []
+        self.daa_radius = 0
 
     def InitializeModules(self):
         initCognition()
@@ -171,6 +172,7 @@ class Icarous():
         self.cog.searchType = int(params['SEARCHALGORITHM'])
         self.cog.resolutionTypeCmd = int(params['RES_TYPE'])
 
+
     def SetTrafficParams(self,params):
         paramString = "" \
         +"lookahead_time="+str(params['LOOKAHEAD_TIME'])+ "[s];"\
@@ -222,6 +224,7 @@ class Icarous():
         daa_log = True if params['LOGDAADATA'] == 1 else False
         self.tfMonitor.SetParameters(paramString,daa_log)
         self.Trajectory.UpdateDAAParams(paramString)
+        self.daa_radius = params['DET_1_WCV_DTHR']/3
         
     def SetParameters(self,params):
         self.params = params
@@ -266,6 +269,13 @@ class Icarous():
             nextWP = i
             wp = self.flightplan1[i]
             conflict = self.Geofence.CheckViolation(wp[:3],0,0,0)
+
+            if self.cog.resolutionTypeCmd == 4 and self.cog.trafficTrackConflict:
+                dist = distance(self.position[0],self.position[1],wp[0],wp[1])
+                if (dist < 3*self.daa_radius):
+                    self.cog.nextPrimaryWP = i
+                    conflict = True
+
             if not conflict:
                 break
 

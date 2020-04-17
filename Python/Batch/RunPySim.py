@@ -64,7 +64,7 @@ plt.show()
 
 anim= AgentAnimation(-50,-50, 100,30,30)
 anim.AddPath(np.array(ic.localPlans[0]),'k--')
-anim.AddAgent('ownship',2,'r',ic.ownshipLog)
+anim.AddAgent('ownship',2,'r',ic.ownshipLog,show_circle=True,circle_rad=10)
 anim.AddAgent('traffic0',2,'b',ic.trafficLog[0])
 
 anim.run()

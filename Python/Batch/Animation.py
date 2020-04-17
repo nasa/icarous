@@ -17,8 +17,9 @@ class AgentAnimation():
         self.agentLines = []
         self.data = {}
         self.interval = interval
+        self.circle = {}
 
-    def AddAgent(self,name,radius,color,data):
+    def AddAgent(self,name,radius,color,data,show_circle=False,circle_rad = 10):
         #agt = plt.Circle((0.0, 0.0), radius=radius, fc=color)
         agt = self.GetTriangle(radius,(0.0,0,0),(1.0,0.0),color)
         self.ax.add_patch(agt)
@@ -29,6 +30,10 @@ class AgentAnimation():
         line, = plt.plot(0,0)
         self.paths[name] = line
         self.agentsRadius[name] = radius
+        if show_circle:
+            circlePatch = plt.Circle((0, 0), radius=circle_rad, fc='y',alpha=0.5)
+            self.circle[name] = circlePatch
+            self.ax.add_patch(circlePatch)
 
     def GetTriangle(self, tfsize, pos, vel, col):
         x = pos[0]
@@ -75,7 +80,7 @@ class AgentAnimation():
         plt.scatter(path[:,0],path[:,1])
 
     def init(self):
-        return self.agents,self.paths
+        return self.agents,self.paths,self.circle
 
     def animate(self,i):
         if i < self.minlen:
@@ -88,7 +93,10 @@ class AgentAnimation():
                 self.UpdateTriangle(radius,position,velocity,vehicle)
                 self.paths[id].set_xdata(np.array(self.data[id]["positionNED"])[:i,1])
                 self.paths[id].set_ydata(np.array(self.data[id]["positionNED"])[:i,0])
-        return self.agents,self.paths
+                if id in self.circle.keys():
+                    if self.circle[id] is not None:
+                        self.circle[id].center = position
+        return self.agents,self.paths,self.circle
 
     def run(self):
         animate = lambda x: self.animate(x)

@@ -12,7 +12,7 @@ tfList = []
 # range,brg,alt,track,speed,climb rate
 # Call this function again to start multiple traffic vehicles
 #StartTraffic(HomePos,15000,309,5,50,127,0,tfList)
-StartTraffic(HomePos,25000,309,100,50,127,0,tfList)
+StartTraffic(HomePos,14000,309,100,50,127,0,tfList)
 
 # Set uncertainty and smoothing params for traffic
 #for tf in tfList:
@@ -81,7 +81,7 @@ plt.show()
 anim= AgentAnimation(-15000,-2000, 100,15000,5)
 for pln in ic.localPlans:
     anim.AddPath(np.array(pln),'--')
-anim.AddAgent('ownship',100,'r',ic.ownshipLog)
+anim.AddAgent('ownship',100,'r',ic.ownshipLog,show_circle=True,circle_rad = 1222)
 anim.AddAgent('traffic0',100,'b',ic.trafficLog[0])
 
 anim.run()
