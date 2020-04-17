@@ -13,12 +13,28 @@ DEFAULT_VALIDATION_PARAMS = {"h_allow": 0.85,
                              "wp_radius": 5}
 
 
+def GetPolygons(origin, fenceList):
+    """
+    Constructs a list of Polygon (for use with PolyCARP) given a list of fences
+    @param fenceList list of fence dictionaries
+    @return list of polygons (a polygon here is a list of Vectors)
+    """
+    Polygons = []
+    for fence in fenceList:
+        vertices = fence["Vertices"]
+        vertices_ned = [list(reversed(GS.LLA2NED(origin[0:2], position)))
+                        for position in vertices]
+        polygon = [(vertex[0], vertex[1]) for vertex in vertices_ned]
+        Polygons.append(polygon)
+    return Polygons
+
+
 class ValidateFlight:
     def __init__(self, simdata, params={}, output_dir=""):
         self.simdata = simdata
         self.params = {**DEFAULT_VALIDATION_PARAMS, **params}
         self.output_dir = output_dir
-
+        self.origin = self.simdata["ownship"]["position"][0]
 
     def validate_sim_data(self, test=False):
         '''Check simulation data for test conditions'''
@@ -47,8 +63,7 @@ class ValidateFlight:
         condition_name = "Waypoint Progress"
         waypoints = self.simdata["waypoints"]
         wp_radius = self.params["wp_radius"]
-        origin = [waypoints[0][0], waypoints[0][1]]
-        lla2ned = lambda x: GS.LLA2NED(origin, x)
+        lla2ned = lambda x: GS.LLA2NED(self.origin, x)
 
         reached = []
 
@@ -56,7 +71,7 @@ class ValidateFlight:
             pos = lla2ned(pos)
             # Check for reached waypoints
             for wp in waypoints:
-                wp_pos = lla2ned([wp[0], wp[1]])
+                wp_pos = lla2ned(wp[0:3])
                 wp_seq = wp[3]
                 # If within 5m, add to reached
                 dist = np.sqrt((pos[0] - wp_pos[0])**2 + (pos[1] - wp_pos[1])**2)
@@ -76,10 +91,9 @@ class ValidateFlight:
     def verify_geofence(self):
         '''Check simulation data for geofence violations'''
         condition_name = "Geofencing"
-        geofences = self.simdata["geofences"]
         waypoints = self.simdata["waypoints"]
-        origin = [waypoints[0][0], waypoints[0][1]]
-        lla2ned = lambda x: GS.LLA2NED(origin, x)
+        geofences = GetPolygons(self.origin, self.simdata["geofences"])
+        lla2ned = lambda x: GS.LLA2NED(self.origin, x)
 
         if len(geofences) == 0:
             return True, "No Geofences", condition_name
@@ -107,13 +121,12 @@ class ValidateFlight:
     def verify_traffic(self):
         '''Check simulation data for traffic well clear violations'''
         condition_name = "Traffic Avoidance"
-        DMOD = self.simdata["params"]["DET_1_WCV_DTHR"]*0.3048  # Convert ft to m
-        ZTHR = self.simdata["params"]["DET_1_WCV_ZTHR"]*0.3048  # Convert ft to m
+        DMOD = self.simdata["parameters"]["DET_1_WCV_DTHR"]*0.3048  # Convert ft to m
+        ZTHR = self.simdata["parameters"]["DET_1_WCV_ZTHR"]*0.3048  # Convert ft to m
         h_allow = self.params["h_allow"]
         v_allow = self.params["v_allow"]
         waypoints = self.simdata["waypoints"]
-        origin = [waypoints[0][0], waypoints[0][1], waypoints[0][2]]
-        lla2ned = lambda x: GS.LLA2NED(origin, x)
+        lla2ned = lambda x: GS.LLA2NED(self.origin, x)
 
         for i, o_pos in enumerate(self.simdata["ownship"]["position"]):
             o_pos = lla2ned(o_pos)
@@ -139,8 +152,8 @@ class ValidateFlight:
         from matplotlib import pyplot as plt
         fig = plt.figure()
         WP = self.simdata["waypoints"]
-        origin = [WP[0][0], WP[0][1]]
-        lla2ned = lambda x: GS.LLA2NED(origin, x)
+        geofences = GetPolygons(self.origin, self.simdata["geofences"])
+        lla2ned = lambda x: GS.LLA2NED(self.origin, x)
 
         # Plot waypoints
         waypoints = [[wp[0], wp[1]] for wp in WP]
@@ -163,7 +176,7 @@ class ValidateFlight:
             plt.plot(traffic_y, traffic_x, label="Traffic Path")
 
         # Plot geofences
-        for i, fence in enumerate(self.simdata["geofences"]):
+        for i, fence in enumerate(geofences):
             geopos_x = [val[0] for val in fence]
             geopos_y = [val[1] for val in fence]
             geopos_x.append(geopos_x[0])
