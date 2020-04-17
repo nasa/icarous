@@ -273,8 +273,9 @@ class Icarous():
             if self.cog.resolutionTypeCmd == 4 and self.cog.trafficTrackConflict:
                 dist = distance(self.position[0],self.position[1],wp[0],wp[1])
                 if (dist < 3*self.daa_radius):
-                    self.cog.nextPrimaryWP = i
                     conflict = True
+                else:
+                    self.cog.nextPrimaryWP = i
 
             if not conflict:
                 break
