@@ -447,8 +447,21 @@ void COGNITION_ProcessSBData() {
             {
                 if (!gfConflct->waypointConflict1[i])
                 {
-                    cog.nextFeasibleWP1 = i;
-                    break;
+                    // Check to see that the next waypoint is not too close when
+                    // dealing with a traffic conflict
+                    if(cog.resolutionTypeCmd == 4 && cog.trafficTrackConflict){
+                        double nextWP[3] = {appdataCog.flightplan1.waypoints[i].latitude,
+                                            appdataCog.flightplan1.waypoints[i].longitude,
+                                            appdataCog.flightplan1.waypoints[i].altitude};
+                        double dist = ComputeDistance(cog.position,nextWP);
+                        // Consider a waypoint feasible if its greater than the DTHR values.
+                        // Note DTHR is in ft. Convert from ft to m before comparing with dist.
+                        if (dist > cog.DTHR/3){
+                            cog.nextFeasibleWP1 = i;
+                            cog.nextPrimaryWP = cog.nextFeasibleWP1;
+                            break;
+                        }
+                    }
                 }
             }
             cog.directPathToFeasibleWP1 = gfConflct->directPathToWaypoint1[cog.nextFeasibleWP1] && appdataCog.trkBands.wpFeasibility1[cog.nextFeasibleWP1];
