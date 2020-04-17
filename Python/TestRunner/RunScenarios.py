@@ -22,22 +22,6 @@ def vehicle():
     return {"t": [], "position": [], "velocity": []}
 
 
-def GetPolygons(origin, fenceList):
-    """
-    Constructs a list of Polygon (for use with PolyCARP) given a list of fences
-    @param fenceList list of fence dictionaries
-    @return list of polygons (a polygon here is a list of Vectors)
-    """
-    Polygons = []
-    for fence in fenceList:
-        vertices = fence["Vertices"]
-        vertices_ned = [list(reversed(GS.LLA2NED(origin, position)))
-                        for position in vertices]
-        polygon = [(vertex[0], vertex[1]) for vertex in vertices_ned]
-        Polygons.append(polygon)
-    return Polygons
-
-
 def GetWaypoints(wploader):
     '''extract waypoints'''
     WP = []
@@ -161,8 +145,6 @@ def RunScenario(scenario, watch=False, save=False, verbose=True,
     # Upload the geofence
     if scenario.get("geofence_file"):
         gs.loadGeofence(os.path.join(icarous_home, scenario["geofence_file"]))
-    # Read the geofences
-    GF = GetPolygons(origin, gs.fenceList)
 
     # Upload the icarous parameters
     if scenario.get("parameter_file"):
@@ -246,15 +228,16 @@ def RunScenario(scenario, watch=False, save=False, verbose=True,
         subprocess.call(["pkill", "-9", "xterm"])
 
     # Construct the sim data for verification
-    sim_type = "cFS rotorsim"
     if sitl:
         sim_type = "cFS SITL"
-    simdata = {"geofences": GF,
-               "waypoints": WP,
-               "scenario": scenario,
-               "params": params,
+    else:
+        sim_type = "cFS rotorsim"
+    simdata = {"scenario": scenario,
                "ownship": ownship,
                "traffic": traffic,
+               "waypoints": WP,
+               "geofences": gs.fenceList,
+               "parameters": params,
                "sim_type": sim_type}
 
     # Save the sim data
@@ -288,7 +271,7 @@ def RunPyIcarous(scenario, save=False, output_dir=""):
     if scenario.get("geofence_file"):
         geofence_path = os.path.join(icarous_home, scenario["geofence_file"])
         ic.InputGeofence(geofence_path)
-        GF = GetPolygons(origin, Getfence(geofence_path))
+        GF = Getfence(geofence_path)
 
     # Load parameters
     params = LoadIcarousParams(os.path.join(icarous_home, scenario["parameter_file"]))
@@ -318,10 +301,10 @@ def RunPyIcarous(scenario, save=False, output_dir=""):
     simdata = {"geofences": GF,
                "waypoints": WP_seq,
                "scenario": scenario,
-               "params": params,
+               "parameters": params,
                "ownship": ic.ownshipLog,
                "traffic": ic.trafficLog,
-               "sim_type": "python fasttime"}
+               "sim_type": "pyIcarous"}
 
     # Save the sim data
     if save:

@@ -572,11 +572,12 @@ class Icarous():
     def WriteLog(self, logname="simoutput.json"):
         import json
         print("writing log: %s" % logname)
-        log_data = {"parameters": self.params,
-                    "ownship": self.ownshipLog,
+        log_data = {"ownship": self.ownshipLog,
                     "traffic": self.trafficLog,
                     "waypoints": self.flightplan1,
-                    "geofences": self.fenceList}
+                    "geofences": self.fenceList,
+                    "parameters": self.params,
+                    "sim_type": "pyIcarous"}
 
         with open(logname, 'w') as f:
             json.dump(log_data, f)
