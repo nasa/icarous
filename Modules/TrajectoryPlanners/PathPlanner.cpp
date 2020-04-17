@@ -236,13 +236,18 @@ void PathPlanner::OutputFlightPlan(ENUProjection* proj,char* planID,char* fenceF
     sprintf(buffer,"%f",(double)tv.tv_sec + (double)(tv.tv_usec)/1E6);
     log<<"Time after computation:"<<std::string(buffer)<<std::endl; 
     log<<"Resolution plan:"<<std::endl;
+
+
+    char outputPlan[10000];
+    PlanToString(planID,outputPlan,true,0);
+    std::string resPlan(outputPlan);
+    log<<resPlan<<std::endl;
     for(Plan pl: flightPlans){
         if(strcmp(pl.getID().c_str(),planID)){
             continue;
         }else {
             std::ofstream fp1;
             std::ofstream fp2;
-            log<<pl.toString()<<std::endl;
 
             if (pl.size() > 0)
                 fp1.open(waypointFile);
@@ -311,7 +316,12 @@ void PathPlanner::PlanToString(char planID[],char outputString[],bool tcpColumns
     Plan *fp = GetPlan(planID);
     Plan outputFp = fp->copy();
     outputFp.timeShiftPlan(0,(double)timeshift);
-    Plan repairedPlan = TrajGen::makeKinematicPlan(outputFp,45*M_PI/180,4,2,true,true,true);
+    Plan repairedPlan;
+    if(timeshift >= 0){
+        repairedPlan = TrajGen::makeKinematicPlan(outputFp,45*M_PI/180,4,2,true,true,true);
+    }else{
+        repairedPlan = *fp;
+    }
     if(fp){
        PlanWriter planWriter; 
        std::ostringstream planString;
@@ -454,8 +464,10 @@ void PathPlanner::LogInput(){
     }
     Plan *fp = GetPlan((char*)"Plan0");
     if(fp != NULL){
+        char outputPlan[10000];
         log<<"Nominal plan:"<<fp->size()<<std::endl;
-        log<<fp->toString()<<std::endl;
+        PlanToString((char*)"Plan0",outputPlan,true,-1);
+        log<<std::string(outputPlan)<<std::endl;
     }else{
         log<<"Nominal plan: 0"<<std::endl;
     }
@@ -511,7 +523,7 @@ string PathPlanner::GetPlanFromLog(std::ifstream& fp){
        while(line != ""){
            line = "";
            std::getline(fp,line);
-           plan += line;
+           plan += line + "\r\n";
        }
        return plan;
 }
@@ -578,7 +590,7 @@ void PathPlanner::InputDataFromLog(string filename){
        int nominalPlanSize = GetIntFromLog(fp);
        if (nominalPlanSize > 0){
            string plan0 = GetPlanFromLog(fp);
-           StringToPlan("Plan0",(char*) plan0.c_str());
+           StringToPlan((char*)"Plan0",(char*) plan0.c_str());
        }
        double timeA = GetDoubleFromLog(fp);
        double timeB = GetDoubleFromLog(fp);
