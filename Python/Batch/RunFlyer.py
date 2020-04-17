@@ -26,6 +26,7 @@ ic = Icarous(HomePos,simtype = 'UAM_VTOL')
 
 # Read params from file and input params
 params = LoadIcarousParams('icarous_default2.parm')
+ic.daafile = "DaidalusQuadConfig2.txt"
 ic.SetParameters(params)
 
 # Input flightplan
@@ -78,7 +79,8 @@ plt.show()
 
 
 anim= AgentAnimation(-15000,-2000, 100,15000,5)
-anim.AddPath(np.array(ic.localPlans[0]),'k--')
+for pln in ic.localPlans:
+    anim.AddPath(np.array(pln),'--')
 anim.AddAgent('ownship',100,'r',ic.ownshipLog)
 anim.AddAgent('traffic0',100,'b',ic.trafficLog[0])
 

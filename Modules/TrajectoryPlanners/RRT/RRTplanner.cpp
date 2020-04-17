@@ -619,24 +619,22 @@ bool RRTplanner::CheckGoal(){
     Vect3 diff = lastNode->pos.Sub(goalNode.pos);
     double mag = diff.norm();
 
+    bool directPath;
     if(mag <= closestDist){
         closestDist = mag;
         closestNode = lastNode;
 
         /* USE THIS FOR EARLY TERMINATION */
-        if(CheckDirectPath2Goal(closestNode)){
+        bool directPath = CheckDirectPath2Goal(closestNode);
+        if(directPath){
             //printf("found direct path to goal\n");
+            goalreached = true;
             return true;
         }
     }
 
-    if( mag < 2*maxInputNorm ){
-        goalreached = true;
-        return true;
-    }else{
-        goalreached = false;
-        return false;
-    }
+    goalreached = false;
+    return false;
 }
 
 void RRTplanner::SetGoal(node_t& goal){
@@ -688,7 +686,7 @@ bool RRTplanner::LinePlanIntersection(Vect2& A,Vect2& B,double floor,double ceil
 void RRTplanner::GetPlan(EuclideanProjection& proj,Plan& newRoute){
 
     double speed = maxInputNorm;
-    node_t *node = closestNode;
+    node_t *node;
     node_t parent;
     std::list<node_t> path;
     //printf("Node count:%d\n",nodeCount);
@@ -696,9 +694,17 @@ void RRTplanner::GetPlan(EuclideanProjection& proj,Plan& newRoute){
     //printf("goal: x,y:%f,%f\n",goalNode.pos.x,goalNode.pos.y);
 
     if(!goalreached){
+        node_t *fn = &nodeList.back();
+
+    }
+
+    if(!goalreached){
         node = &goalNode;
         node->parent = &nodeList.back();
         printf("Using last node in list\n");
+    }else{
+        node = &goalNode;
+        node->parent = closestNode;
     }
 
     while(node != NULL){
