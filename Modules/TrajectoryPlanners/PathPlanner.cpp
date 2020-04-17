@@ -431,9 +431,9 @@ void PathPlanner::LogInput(){
            <<"- Mac step:"<<_rrt_macroSteps<<std::endl
            <<"- Cap rad :"<<_rrt_goalCaptureRadius<<std::endl;
     }
-    log<<"Start Pos:"<<startPos.toString(5)<<std::endl;
-    log<<"Goal Pos:"<<endPos.toString(5)<<std::endl;
-    log<<"Start vel:"<<startVel.toString(5)<<std::endl;
+    log<<"Start Pos:"<<startPos.toString(8)<<std::endl;
+    log<<"Goal Pos:"<<endPos.toString(8)<<std::endl;
+    log<<"Start vel:"<<startVel.toString(8)<<std::endl;
     log<<"Num traffic:"<<trafficList.size()<<std::endl;
     for(GenericObject traffic: trafficList){
         Velocity Vel = traffic.vel;
@@ -577,7 +577,8 @@ void PathPlanner::InputDataFromLog(string filename){
 
        int nominalPlanSize = GetIntFromLog(fp);
        if (nominalPlanSize > 0){
-           GetPlanFromLog(fp);
+           string plan0 = GetPlanFromLog(fp);
+           StringToPlan("Plan0",(char*) plan0.c_str());
        }
        double timeA = GetDoubleFromLog(fp);
        double timeB = GetDoubleFromLog(fp);

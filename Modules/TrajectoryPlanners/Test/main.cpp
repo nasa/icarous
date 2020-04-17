@@ -14,7 +14,7 @@
 int main(int argc,char** argv){
 
     PathPlanner planner(2,30);
-    planner.InputDataFromLog("Path-2020-04-15-11:59:02.log"); 
+    planner.InputDataFromLog("flyer3.log"); 
     
     double positionA[3] = {planner.startPos.latitude(),
                            planner.startPos.longitude(),
@@ -33,9 +33,7 @@ int main(int argc,char** argv){
     if(planner.search == _ASTAR_){
         int status2 = planner.FindPath(_ASTAR_, (char *)"PlanB", positionA, positionB, velocityA);
 
-        if (status2 > 0)
-            planner.OutputFlightPlan(&projection, (char *)"PlanB", (char *)"fence2.txt", (char *)"waypoints2.txt");
-        else
+        if (status2 <= 0)
             std::cout << "Astar algorithm couldn't find solution" << std::endl;
     }
 
@@ -43,9 +41,7 @@ int main(int argc,char** argv){
     {
         int status3 = planner.FindPath(_RRT_, (char *)"PlanC", positionA, positionB, velocityA);
 
-        if (status3 > 0)
-            planner.OutputFlightPlan(&projection, (char *)"PlanC", (char *)"fence3.txt", (char *)"waypoints3.txt");
-        else
+        if (status3 <= 0)
             std::cout << "RRT algorithm couldn't find solution" << std::endl;
     }
 }

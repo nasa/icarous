@@ -312,7 +312,7 @@ def RunPyIcarous(scenario, save=False, output_dir=""):
 
         RunTraffic(tfList)
         for i, tf in enumerate(tfList):
-            ic.InputTraffic(i, tf.pos_gps, tf.vel)
+            ic.InputTraffic(i, tf.pos_gps, tf.vel, tf.pos)
 
     # Construct the sim data for verification
     simdata = {"geofences": GF,

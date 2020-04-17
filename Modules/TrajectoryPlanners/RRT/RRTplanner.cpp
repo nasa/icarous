@@ -227,7 +227,6 @@ void RRTplanner::RRTStep(){
     X[0] = xmin + (rand() % rangeX);
     X[1] = ymin + (rand() % rangeY);
 
-
     node_t rd;
     rd.pos.x = X[0];
     rd.pos.y = X[1];

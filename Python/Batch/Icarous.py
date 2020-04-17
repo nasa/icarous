@@ -98,6 +98,7 @@ class Icarous():
         self.cog.wpMetricTime = False;
         self.plans.append(fp)
         self.localPlans.append(self.GetLocalFlightPlan(fp))
+        self.Trajectory.InputFlightplan("Plan0",fp)
 
     def ConvertToLocalCoordinates(self,pos):
         dh = lambda x, y: abs(distance(self.home_pos[0],self.home_pos[1],x,y))
