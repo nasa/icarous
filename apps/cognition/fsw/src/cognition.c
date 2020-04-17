@@ -454,9 +454,9 @@ void COGNITION_ProcessSBData() {
                                             appdataCog.flightplan1.waypoints[i].longitude,
                                             appdataCog.flightplan1.waypoints[i].altitude};
                         double dist = ComputeDistance(cog.position,nextWP);
-                        // Consider a waypoint feasible if its greater than the DTHR values.
+                        // Consider a waypoint feasible if its greater than the 3*DTHR values.
                         // Note DTHR is in ft. Convert from ft to m before comparing with dist.
-                        if (dist > cog.DTHR/3){
+                        if (dist > 3 * (cog.DTHR/3)){
                             cog.nextFeasibleWP1 = i;
                             cog.nextPrimaryWP = cog.nextFeasibleWP1;
                             break;
