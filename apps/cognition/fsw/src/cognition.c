@@ -461,6 +461,9 @@ void COGNITION_ProcessSBData() {
                             cog.nextPrimaryWP = cog.nextFeasibleWP1;
                             break;
                         }
+                    }else{
+                        cog.nextFeasibleWP1 = i;
+                        break;
                     }
                 }
             }
