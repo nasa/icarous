@@ -54,15 +54,16 @@ class Trajectory():
 
     
     def InputFlightplan(self,planID,fp,eta=False):
+
+        wpTime = 0
         for i in range(len(fp)):
-            wpTime = 0
             if not eta:
                 if i > 0:
                     speed = fp[i][3]
                     prevWP  = fp[i-1][:3]
                     nextWP  = fp[i][:3]
                     dist = distance(prevWP[0],prevWP[1],nextWP[0],nextWP[1])
-                    wpTime = dist/speed
+                    wpTime += dist/speed
             else:
                 wpTime = fp[i][3]
             wp = Pos(fp[i][0],fp[i][1],fp[i][2]) 
