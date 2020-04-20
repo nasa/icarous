@@ -15,9 +15,9 @@ def ReadLogData(filename):
         dist2int = float(entries[2])
         speed = float(entries[3])
         nodeRole = int(entries[4])
-        earlyArrTime = int(entries[5].lstrip().lstrip('('))
-        currArrTime = int(entries[6])
-        lateArrTime = int(entries[7].lstrip().rstrip(')'))
+        earlyArrTime = float(entries[5].lstrip().lstrip('('))
+        currArrTime = float(entries[6])
+        lateArrTime = float(entries[7].lstrip().rstrip(')'))
         zone = int(entries[8])
         numSc = int(entries[9])
         mergeSpeed = float(entries[10])
@@ -46,6 +46,34 @@ def EndTrim(inputData,index):
     return inputData
 
 
+def ProcessConsensusTimes(A,B):
+    times = []
+    start = -1
+    stop = 0
+    old = 0
+    new = 0
+    collect = True
+    for i in range(len(A)):
+        if B[i] < 1e-3:
+           continue
+        if collect is True:
+            if start < 0:
+                start = A[i]
+            new = B[i]
+            if new == old:
+                stop = A[i]
+                times.append(stop - start)
+                collect = False
+                start = -1
+            old = new
+        else:
+            new = B[i]
+            if new != old:
+                start = A[i]
+                collect = True
+            old = new
+    return times
+
 
 NumVehicles = int(sys.argv[1])
 IntID      = int(sys.argv[2])
@@ -53,6 +81,7 @@ PathToLogs = sys.argv[3]
 
 AllVehicles = []
 Vehicle  = {}
+ConsensusTimes = []
 for i in range(NumVehicles):
     filename = PathToLogs + '/merger_appdata_' + str(i) + '.txt'
     AllVehicles.append(ReadLogData(filename))
@@ -68,6 +97,14 @@ for i in range(NumVehicles):
 
     #FixTimes(Vehicle[:,0])
     Vehicle[i] = vehicle
+
+    conTimes = ProcessConsensusTimes(vehicle[:,0],vehicle[:,9])
+    ConsensusTimes.append(conTimes)
+
+for i in range(NumVehicles):
+    avgConTime = np.mean(ConsensusTimes[i])
+    print("avg consensus time for vehicle %d: %f" % (i,avgConTime))
+    
 
 plt.figure(1)
 for i in range(NumVehicles):
