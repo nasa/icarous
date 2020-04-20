@@ -120,10 +120,11 @@ def RunScenario(scenario, watch=False, save=False, verbose=True,
 
     # Start the ICAROUS process
     os.chdir(icarous_exe)
+    fpic = open('icout.txt','w')
     ic = subprocess.Popen(["./core-cpu1",
                            "-I "+str(spacecraft_id),
                            "-C "+str(cpu_id)],
-                          stdout=subprocess.DEVNULL)
+                          stdout=fpic)
 
     # Pause for a couple of seconds here so that ICAROUS can boot up
     if verbose:

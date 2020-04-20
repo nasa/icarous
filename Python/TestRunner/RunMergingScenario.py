@@ -45,6 +45,8 @@ def SetUpVehicle(scenario, verbose=True, out=14557, output_dir="", sitl=False):
                                            "--master=127.0.0.1:"+str(icarous_port),
                                            "--out=127.0.0.1:"+str(gs_port),
                                            "--out=127.0.0.1:"+str(out),
+                                           "--target-system=1",
+                                           "--target-component=5",
                                            "--logfile="+logfile],
                                           stdout=subprocess.DEVNULL)
     # Open connection for virtual ground station
@@ -52,11 +54,11 @@ def SetUpVehicle(scenario, verbose=True, out=14557, output_dir="", sitl=False):
 
     # Start the ICAROUS process
     os.chdir(icarous_exe)
+    fpic = open('icout.txt','w')
     ic = subprocess.Popen(["./core-cpu1",
                            "-I "+str(spacecraft_id),
-                           "-C "+str(cpu_id)])
-                           #"-C "+str(cpu_id)],
-                          #stdout=subprocess.DEVNULL)
+                           "-C "+str(cpu_id)],
+                          stdout=fpic)
 
     # Pause for a couple of seconds here so that ICAROUS can boot up
     if verbose:
