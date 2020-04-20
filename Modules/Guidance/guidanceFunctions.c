@@ -41,8 +41,8 @@ double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,gui
    double currTime = ts.tv_sec + (double)(ts.tv_nsec)/1E9;
    double nextWP_STA = nextWP[4];
    double arrTolerance = 3; //TODO: Make this a user defined parameter
-   double maxSpeed = 15;     //TODO: Make parameter
-   double minSpeed = 0.5;   //TODO: Make parameter
+   double maxSpeed = guidanceParams->maxSpeed;
+   double minSpeed = guidanceParams->minSpeed;
    double newSpeed;
    newSpeed = dist/(nextWP_STA - currTime);
    if (newSpeed > maxSpeed){

@@ -31,6 +31,8 @@ typedef struct{
     double minClimbRate;
     double maxCap;
     double minCap;
+    double maxSpeed;
+    double minSpeed;
     bool yawForward;
 }guidanceParams_t;
 
