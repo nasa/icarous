@@ -188,7 +188,10 @@ if __name__ == "__main__":
                 os.rename(os.path.join(icarous_exe, f), os.path.join(output_dir, f))
 
         # Generate plots
-        script = os.path.join(icarous_home, "Python", "MergingAnalysis", "ProcMergerLogs.py")
+        script = os.path.join(icarous_home, "Python", "MergingAnalysis", "MergerLogAnalysis.py")
         n_vehicles = str(len(scenario["vehicles"]))
         merge_id = str(1)
-        subprocess.call(["python3", script, n_vehicles, merge_id, output_dir])
+        subprocess.call(["python3", script, output_dir,
+                         "--num_vehicles", n_vehicles,
+                         "--merge_id", merge_id,
+                         "--plot", "--save"])
