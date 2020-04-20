@@ -29,7 +29,14 @@ double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,gui
 
    // If speed is provided for nextWP, use given speed
    if (nextWP[3] < 1){
-       return nextWP[4];
+       double speed = nextWP[4];
+       if(speed <= guidanceParams->minSpeed){
+           return guidanceParams->minSpeed;
+       }else if(speed >= guidanceParams->maxSpeed){
+           return guidanceParams->maxSpeed;
+       }else{
+           return speed;
+       }
    }
 
    double distH = ComputeDistance(currPosition,nextWP);

@@ -164,6 +164,8 @@ void GUIDANCE_ProcessPacket(){
             guidanceAppData.guidance_tbl.minClimbRate = msg->minClimbRate;
             guidanceAppData.guidance_tbl.maxCap = msg->maxCap;
             guidanceAppData.guidance_tbl.minCap = msg->minCap;
+            guidanceAppData.guidance_tbl.maxSpeed = msg->maxSpeed;
+            guidanceAppData.guidance_tbl.minSpeed = msg->minSpeed;
             guidanceAppData.guidance_tbl.yawForward = msg->yawForward;
             break;
         }
