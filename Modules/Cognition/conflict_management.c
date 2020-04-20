@@ -465,7 +465,7 @@ bool ReturnToNextWP(){
          if(val){
             cog.return2NextWPState = COMPLETE;
          }else{
-            if(cog.nextSecondaryWP >= ((float)(cog.num_waypoints2-1))/2){
+            if(cog.nextSecondaryWP > (ceil((float)(cog.num_waypoints2-1))/2)){
                if (cog.keepInConflict || cog.keepOutConflict || cog.trafficConflict){
                   printf("%d/%d\n",cog.num_waypoints2,cog.nextSecondaryWP);
                   printf("Incomplete termination of return to path\n");

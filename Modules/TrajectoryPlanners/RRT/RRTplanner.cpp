@@ -90,7 +90,6 @@ void RRTplanner::Initialize(Vect3& Pos, Vect3& Vel,std::list<Poly3D> &obstacles,
     }
 }
 
-
 double RRTplanner::NodeDistance(node_t& A, node_t& B){
     return sqrt(pow((A.pos.x - B.pos.x),2) + pow((A.pos.y - B.pos.y),2));
 }
@@ -191,7 +190,7 @@ void RRTplanner::MotionModel(node_t& nearest,node_t& outputNode, double U[]){
         }
 
         if(trafficSize > 0 && (i == dTsteps - 1) && nodeList.size() >= 3){
-            trafficConflict = CheckTrafficCollision(newPos,newVel,newTrafficPos,trafficVel,false);
+            trafficConflict = CheckTrafficCollision(newPos,newVel,newTrafficPos,trafficVel,true);
         }
 
         if(fenceConflict || trafficConflict){
@@ -220,12 +219,24 @@ void RRTplanner::MotionModel(node_t& nearest,node_t& outputNode, double U[]){
 void RRTplanner::RRTStep(){
 
     double X[2];
-    // Generate random number
-    int rangeX = xmax - xmin;
-    int rangeY = ymax - ymin;
 
-    X[0] = xmin + (rand() % rangeX);
-    X[1] = ymin + (rand() % rangeY);
+    if(obstacleList.size()> 0){
+        // Generate random number
+        int rangeX = xmax - xmin;
+        int rangeY = ymax - ymin;
+
+        X[0] = xmin + (rand() % rangeX);
+        X[1] = ymin + (rand() % rangeY);
+    }else{
+        double heading = root.vel.vect2().compassAngle();
+        double h1 = fmod(2*M_PI + (heading - M_PI/4),2*M_PI);
+        double h2 = fmod(2*M_PI + (heading + M_PI/4),2*M_PI);
+
+        double rh = (h2 * 180/M_PI) + (rand() % 270);
+        double rhc = fmod(2*M_PI + rh * M_PI/180,2*M_PI);
+        X[0] = (xmax - xmin) * cos(rhc);
+        X[1] = (xmax - xmin) * sin(rhc);
+    }
 
     node_t rd;
     rd.pos.x = X[0];

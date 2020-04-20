@@ -152,7 +152,6 @@ public:
                     std::vector<Vect3>& TrafficPos,std::vector<Vect3>& TrafficVel,node_t& goal);
 
     void MotionModel(node_t& nearest,node_t& outputNode, double U[]);
-
     bool CheckFenceCollision(Vect3& qPos);
     bool CheckTrafficCollision(Vect3& qPos,Vect3& qVel,std::vector<Vect3>& TrafficPos,std::vector<Vect3>& trafficVel,bool full);
     bool CheckTrafficCollisionWithBands(bool CheckTurn,Vect3& qPos,Vect3& qVel,
