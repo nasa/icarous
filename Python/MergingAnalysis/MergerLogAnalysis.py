@@ -107,6 +107,7 @@ def compute_metrics(vehicles, plot=False, save=False):
                                                              v.metrics["handoff_time"])
         v.metrics["actual_speed_to_merge"] = average_speed(v, v.metrics["entry_time"],
                                                            v.metrics["actual_arr_time"])
+        v.metrics["mean_consensus_time"] = np.mean(compute_consensus_times(v))
 
     if plot:
         plt.figure()
@@ -134,6 +135,38 @@ def compute_metrics(vehicles, plot=False, save=False):
         plt.grid()
         if save:
             plt.savefig(os.path.join(v.output_dir, "summary"))
+
+
+def compute_consensus_times(vehicle):
+    """ Compute the time it took to reach consensus """
+    A = vehicle.get("t")
+    B = vehicle.get("numSch")
+    times = []
+    start = -1
+    stop = 0
+    old = 0
+    new = 0
+    collect = True
+    for i in range(len(A)):
+        if B[i] < 1e-3:
+           continue
+        if collect is True:
+            if start < 0:
+                start = A[i]
+            new = B[i]
+            if new == old:
+                stop = A[i]
+                times.append(stop - start)
+                collect = False
+                start = -1
+            old = new
+        else:
+            new = B[i]
+            if new != old:
+                start = A[i]
+                collect = True
+            old = new
+    return times
 
 
 def write_metrics(vehicles):
