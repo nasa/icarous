@@ -470,6 +470,7 @@ bool ReturnToNextWP(){
                   printf("%d/%d\n",cog.num_waypoints2,cog.nextSecondaryWP);
                   printf("Incomplete termination of return to path\n");
                   cog.return2NextWPState = NOOPC;
+                  cog.requestGuidance2NextWP = 1;
                   return false;
                }
             }
