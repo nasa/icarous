@@ -731,11 +731,11 @@ void RRTplanner::GetPlan(EuclideanProjection& proj,Plan& newRoute){
     if(!goalreached){
         node = &goalNode;
         node_t *temp = &nodeList.back();
-        while(!CheckVelProjection(temp)){
-            nodeList.pop_back();
-            temp = &nodeList.back();
-            printf("Removing incompatible node\n");
-        }
+        //while(!CheckVelProjection(temp)){
+        //    nodeList.pop_back();
+        //    temp = &nodeList.back();
+        //    printf("Removing incompatible node\n");
+        //}
         node->parent = temp;
     }else{
         node = &goalNode;

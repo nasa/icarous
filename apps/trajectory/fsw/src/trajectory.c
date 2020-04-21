@@ -162,83 +162,85 @@ void TRAJECTORY_ProcessPacket()
 
     switch (MsgId)
     {
-    case ICAROUS_TRAJECTORY_REQUEST_MID:
-    {
-        trajectory_request_t *msg;
-        msg = (trajectory_request_t *)TrajectoryAppData.TrajRequest_MsgPtr;
-        TrajectoryAppData.numPlansComputed++;
-
-        // Plan
-        char planID[10];
-        //sprintf(planID,"Plan%d",TrajectoryAppData.numPlansComputed);
-        sprintf(planID, "Plan%d", 1);
-        int val = PathPlanner_FindPath(TrajectoryAppData.pplanner, TrajectoryAppData.searchType, planID, msg->initialPosition, msg->finalPosition, msg->initialVelocity);
-
-        if(val <= 0){
-             OS_printf("*** No path found ***\n");
-        }
-
-        flightplan_t result;
-        CFE_SB_InitMsg(&result, ICAROUS_TRAJECTORY_MID, sizeof(flightplan_t), TRUE);
-        memcpy(result.id, planID, 10);
-        result.num_waypoints = (uint16_t)PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner, planID);
-        for (int i = 0; i < result.num_waypoints; ++i)
+        case ICAROUS_TRAJECTORY_REQUEST_MID:
         {
-            double wp[4];
-            PathPlanner_GetWaypoint(TrajectoryAppData.pplanner, planID, i, wp);
-            if (i >= MAX_WAYPOINTS)
-            {
-                OS_printf("Trajectory: more than MAX_WAYPOINTS");
-                break;
+            trajectory_request_t *msg;
+            msg = (trajectory_request_t *)TrajectoryAppData.TrajRequest_MsgPtr;
+            TrajectoryAppData.numPlansComputed++;
+
+            // Plan
+            char planID[10];
+            //sprintf(planID,"Plan%d",TrajectoryAppData.numPlansComputed);
+            sprintf(planID, "Plan%d", 1);
+            int val = PathPlanner_FindPath(TrajectoryAppData.pplanner, TrajectoryAppData.searchType, planID, msg->initialPosition, msg->finalPosition, msg->initialVelocity);
+
+            if(val <= 0){
+                OS_printf("*** No path found ***\n");
+            }else{
+                flightplan_t result;
+                CFE_SB_InitMsg(&result, ICAROUS_TRAJECTORY_MID, sizeof(flightplan_t), TRUE);
+                memcpy(result.id, planID, 10);
+                result.num_waypoints = (uint16_t)PathPlanner_GetTotalWaypoints(TrajectoryAppData.pplanner, planID);
+                for (int i = 0; i < result.num_waypoints; ++i)
+                {
+                    double wp[4];
+                    PathPlanner_GetWaypoint(TrajectoryAppData.pplanner, planID, i, wp);
+                    if (i >= MAX_WAYPOINTS)
+                    {
+                        OS_printf("Trajectory: more than MAX_WAYPOINTS");
+                        break;
+                    }
+                    result.waypoints[i].wp_metric = WP_METRIC_SPEED;
+                    result.waypoints[i].value = TrajectoryAppData.trajParams.astar_resSpeed;
+                    result.waypoints[i].latitude = (float)wp[0];
+                    result.waypoints[i].longitude = (float)wp[1];
+                    result.waypoints[i].altitude = (float)wp[2];
+                }
+
+                SendSBMsg(result);
+
+                memcpy(&TrajectoryAppData.flightplan2, &result, sizeof(flightplan_t));
+
+                // Check that the nextWP is the destination for the new plan.
+                // If not increment nextWP until it is the destination WP
+                int destinationWP = TrajectoryAppData.nextWP1;
+                while (true)
+                {
+                    double wp[3] = {TrajectoryAppData.flightplan1.waypoints[destinationWP].latitude,
+                                    TrajectoryAppData.flightplan1.waypoints[destinationWP].longitude,
+                                    TrajectoryAppData.flightplan1.waypoints[destinationWP].altitude};
+                    if ((fabs(wp[0] - msg->finalPosition[0]) < 1e-8) &&
+                        (fabs(wp[1] - msg->finalPosition[1]) < 1e-8) &&
+                        (fabs(wp[2] - msg->finalPosition[2]) < 1e-8))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        destinationWP++;
+                    }
+                }
+
+                PathPlanner_CombinePlan(TrajectoryAppData.pplanner, planID, "Plan0", destinationWP + 1);
+
+                // Publish EUTIL trajectory information
+                char buffer[MAX_DATABUFFER_SIZE] = {0};
+                time_t timeNow = time(NULL);
+                PathPlanner_PlanToString(TrajectoryAppData.pplanner, "Plan+", buffer, true, timeNow);
+
+                CFE_SB_ZeroCopyHandle_t cpyhandle;
+                stringdata_t *bigdataptr = (stringdata_t *)CFE_SB_ZeroCopyGetPtr(sizeof(stringdata_t), &cpyhandle);
+                CFE_SB_InitMsg(bigdataptr, EUTL2_TRAJECTORY_MID, sizeof(stringdata_t), TRUE);
+                strcpy(bigdataptr->buffer, buffer);
+                CFE_SB_TimeStampMsg((CFE_SB_Msg_t *)bigdataptr);
+                int32 status = CFE_SB_ZeroCopySend((CFE_SB_Msg_t *)bigdataptr, cpyhandle);
+                if (status != CFE_SUCCESS)
+                {
+                    OS_printf("Error sending EUTL trajectory\n");
+                }
             }
-            result.waypoints[i].wp_metric = WP_METRIC_SPEED;
-            result.waypoints[i].value = TrajectoryAppData.trajParams.astar_resSpeed;
-            result.waypoints[i].latitude = (float)wp[0];
-            result.waypoints[i].longitude = (float)wp[1];
-            result.waypoints[i].altitude = (float)wp[2];
-
-            //OS_printf("%f, %f , %f\n",wp[0],wp[1],wp[2]);
+            break;
         }
-        SendSBMsg(result);
-
-        memcpy(&TrajectoryAppData.flightplan2,&result,sizeof(flightplan_t));
-        
-
-        // Check that the nextWP is the destination for the new plan.
-        // If not increment nextWP until it is the destination WP
-        int destinationWP = TrajectoryAppData.nextWP1;
-        while(true){
-              double wp[3] = {TrajectoryAppData.flightplan1.waypoints[destinationWP].latitude,
-                              TrajectoryAppData.flightplan1.waypoints[destinationWP].longitude,
-                              TrajectoryAppData.flightplan1.waypoints[destinationWP].altitude};
-              if( (fabs(wp[0] - msg->finalPosition[0]) < 1e-8) &&
-                  (fabs(wp[1] - msg->finalPosition[1]) < 1e-8) && 
-                  (fabs(wp[2] - msg->finalPosition[2]) < 1e-8) ){
-                  break;
-              }else{
-                  destinationWP++;
-              }
-        }
-
-        PathPlanner_CombinePlan(TrajectoryAppData.pplanner,planID,"Plan0",destinationWP+1);
-
-        // Publish EUTIL trajectory information
-        char buffer[MAX_DATABUFFER_SIZE] = {0};
-        time_t timeNow = time(NULL);
-        PathPlanner_PlanToString(TrajectoryAppData.pplanner,"Plan+",buffer,true,timeNow);
-
-        CFE_SB_ZeroCopyHandle_t cpyhandle;
-        stringdata_t *bigdataptr = (stringdata_t *)CFE_SB_ZeroCopyGetPtr(sizeof(stringdata_t),&cpyhandle);
-        CFE_SB_InitMsg(bigdataptr,EUTL2_TRAJECTORY_MID,sizeof(stringdata_t),TRUE);
-        strcpy(bigdataptr->buffer,buffer);
-        CFE_SB_TimeStampMsg( (CFE_SB_Msg_t *) bigdataptr);
-        int32 status = CFE_SB_ZeroCopySend( (CFE_SB_Msg_t *) bigdataptr,cpyhandle);
-        if(status != CFE_SUCCESS){
-            OS_printf("Error sending EUTL trajectory\n");
-        }
-
-        break;
-    }
     }
     return;
 }
