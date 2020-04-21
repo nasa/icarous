@@ -106,6 +106,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run Icarous test scenarios")
     parser.add_argument("scenario",
                         help="yaml file containing scenario(s) to run ")
+    parser.add_argument("--plot", action="store_true",
+                        help="plot the simulation results")
     parser.add_argument("--save", action="store_true",
                         help="save the simulation results")
     parser.add_argument("--num", type=int, nargs="+",
@@ -118,6 +120,8 @@ if __name__ == "__main__":
                         help="wait to start sim until <Enter> is pressed")
     parser.add_argument("--output_dir", default="merging_sim_output",
                         help="directory to save output (default: 'merging_sim_output')")
+    parser.add_argument("--validate", action="store_true",
+                        help="check simulation results for test conditions")
     args = parser.parse_args()
 
     # Load scenarios from file
@@ -187,11 +191,24 @@ if __name__ == "__main__":
             if f.startswith("merger") or f.startswith("raft"):
                 os.rename(os.path.join(icarous_exe, f), os.path.join(output_dir, f))
 
+        # Validate test conditions
+        if args.validate:
+            script = os.path.join(icarous_home, "Python", "TestRunner", "ValidateMerge.py")
+            n_vehicles = str(len(scenario["vehicles"]))
+            merge_id = str(1)
+            arguments = [output_dir, "--num_vehicles", n_vehicles, "--merge_id", merge_id]
+            if args.plot:
+                arguments.append("--plot")
+            if args.save:
+                arguments.append("save")
+            subprocess.call(["python3", script] + arguments)
+
         # Generate plots
-        script = os.path.join(icarous_home, "Python", "MergingAnalysis", "MergerLogAnalysis.py")
-        n_vehicles = str(len(scenario["vehicles"]))
-        merge_id = str(1)
-        subprocess.call(["python3", script, output_dir,
-                         "--num_vehicles", n_vehicles,
-                         "--merge_id", merge_id,
-                         "--plot", "--save"])
+        if args.plot and not args.validate:
+            script = os.path.join(icarous_home, "Python", "MergingAnalysis", "MergerLogAnalysis.py")
+            n_vehicles = str(len(scenario["vehicles"]))
+            merge_id = str(1)
+            subprocess.call(["python3", script, output_dir,
+                             "--num_vehicles", n_vehicles,
+                             "--merge_id", merge_id,
+                             "--plot", "--save"])

@@ -42,7 +42,7 @@ class MergerData:
         if t is None:
             t = self.t
         return interp1d(self.state["t"], self.state[x], axis=0,
-                        bounds_error=False, fill_value=None)(t)
+                        bounds_error=False, fill_value="extrapolate")(t)
 
 
 def ReadMergerAppData(filename, vehicle_id, merge_id=1, group="test"):
@@ -98,9 +98,9 @@ def compute_metrics(vehicles, plot=False, save=False):
         v.metrics["coord_time"] = next(v.t[i] for i in range(len(v.t)) if zone[i] == 1)
         v.metrics["sched_time"] = next(v.t[i] for i in range(len(v.t)) if zone[i] == 2)
         v.metrics["entry_time"] = next(v.t[i] for i in range(len(v.t)) if zone[i] == 3)
-        v.metrics["handoff_time"] = next(v.t[i] for i in range(len(v.t)) if status[i] == 1)
         v.metrics["sched_arr_time"] = v.get("currArrTime")[-1]
         v.metrics["actual_arr_time"] = v.t[-1]
+        v.metrics["handoff_time"] = next((v.t[i] for i in range(len(v.t)) if status[i] == 1), v.metrics["actual_arr_time"])
         v.metrics["initial_speed"] = v.get("speed", v.metrics["sched_time"])
         v.metrics["merge_speed"] = v.get("mergeSpeed", v.metrics["entry_time"])
         v.metrics["actual_speed_to_handoff"] = average_speed(v, v.metrics["entry_time"],
@@ -189,6 +189,15 @@ def average_speed(vehicle, t1, t2):
     dT = t2 - t1
     return abs(dX/dT)
 
+def compute_separation(v1, v2):
+    time_range = v1.t
+    lat1 = v1.get("lat", time_range)
+    lon1 = v1.get("lon", time_range)
+    lat2 = v2.get("lat", time_range)
+    lon2 = v2.get("lon", time_range)
+    dist = [gps_distance(la1, lo1, la2, lo2) for la1,lo1,la2,lo2 in
+            zip(lat1,lon1,lat2,lon2)]
+    return time_range, dist
 
 def gps_distance(lat1, lon1, lat2, lon2):
     '''return distance between two points in meters,
@@ -222,13 +231,7 @@ def plot(vehicles, field, save=False):
 def plot_separation(vehicles, save=False):
     plt.figure()
     for v1, v2 in itertools.combinations(vehicles, 2):
-        time_range = v1.t
-        lat1 = v1.get("lat", time_range)
-        lon1 = v1.get("lon", time_range)
-        lat2 = v2.get("lat", time_range)
-        lon2 = v2.get("lon", time_range)
-        dist = [gps_distance(la1, lo1, la2, lo2) for la1,lo1,la2,lo2 in
-                zip(lat1,lon1,lat2,lon2)]
+        time_range, dist = compute_separation(v1, v2)
         plt.plot(time_range, dist, label="vehicle"+str(v1.id)+" to vehicle"+str(v2.id))
     plt.legend()
     plt.grid()
