@@ -15,6 +15,7 @@ geofence
 #raft
 #SBN
 #SBN_UDP
+zmq_iface
 ) 
 
 
