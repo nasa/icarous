@@ -1,5 +1,8 @@
 #include <zmq.h>
 
+#include "Icarous.h"
+#include "traffic_msg.h"
+
 #define MAX_PUB_CHAR 10000
 #define MAX_INTR_NAME_CHAR 100
 #define RECV_BUFFER_SIZE 600000
@@ -17,9 +20,11 @@ typedef struct {
     void *telemetrySocket;
     bool started;
     char msgBuffer[RECV_BUFFER_SIZE];
+    callsign_t callSign;
 } ZMQ_IFACE_Connection_t;
 
 
 void ZMQ_IFACE_InitZMQServices(ZMQ_IFACE_Connection_t * const conn);
-void ZMQ_IFACE_SendTelemetryMsg(ZMQ_IFACE_Connection_t * const conn, char const * const msg);
+void ZMQ_IFACE_SendTelemetry(ZMQ_IFACE_Connection_t * const conn, char const * const msg);
+void ZMQ_IFACE_SendAlertReport(ZMQ_IFACE_Connection_t * const conn, traffic_alerts_t const * const cfsAlerts);
 

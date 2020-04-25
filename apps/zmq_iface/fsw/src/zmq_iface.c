@@ -1,3 +1,6 @@
+#include "Icarous.h"
+#include "traffic_msgids.h"
+
 #include "zmq_iface.h"
 #include "utils.h"
 
@@ -13,7 +16,7 @@ CFE_EVS_BinFilter_t  ZMQ_IFACE_EventFilters[] =
 static ZMQ_IFACE_AppData_t AppData;
 static ZMQ_IFACE_Connection_t * const connPtr = &AppData.connection;
 
-const char STUB_MESSAGE[] = "ZMQ_IFACE HELO";
+const char STUB_MESSAGE[] = "ZMQ_IFACE TRAFFIC_ALERTS_MID received";
 
 /* Application entry points */
 void ZMQ_IFACE_AppMain(void){
@@ -22,11 +25,6 @@ void ZMQ_IFACE_AppMain(void){
     uint32 RunStatus = CFE_ES_APP_RUN;
 
     ZMQ_IFACE_AppInit();
-
-    while(1){
-        ZMQ_IFACE_SendTelemetryMsg(connPtr, STUB_MESSAGE);
-        SleepOneSecond();
-    }
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
         status = CFE_SB_RcvMsg(&AppData.msgPtr, AppData.pipe, 10);
@@ -61,7 +59,8 @@ void ZMQ_IFACE_AppInit(void) {
 		    ZMQ_IFACE_PIPE_DEPTH,       /* Depth of Pipe */
 		    ZMQ_IFACE_PIPE_NAME);       /* Name of pipe */
 
-    //Subscribe to plexil output messages from the SB
+    // Subscribe to SB messages
+    CFE_SB_Subscribe(TRAFFIC_ALERTS_MID, AppData.pipe);
 
     // Initialize all messages that this App generates
 
@@ -74,17 +73,20 @@ void ZMQ_IFACE_AppInit(void) {
                       ZMQ_IFACE_MINOR_VERSION);
 }
 
-void ZMQ_IFACE_AppCleanUp(){
+void ZMQ_IFACE_AppCleanUp()
+{
     // Do clean up here
 }
 
-void ZMQ_IFACE_ProcessPacket(){
-
+void ZMQ_IFACE_ProcessPacket()
+{
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(AppData.msgPtr);
 
     switch(MsgId){
-
+    case TRAFFIC_ALERTS_MID:
+        ZMQ_IFACE_SendAlertReport(connPtr, (traffic_alerts_t const * const) AppData.msgPtr);
+        break;
     }
 }
 
