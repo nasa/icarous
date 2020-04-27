@@ -18,10 +18,12 @@ def validate_merging_data(vehicles, output_dir="", test=False):
     '''Check simulation data for test conditions'''
     # Define conditions
     conditions = []
+    conditions.append(verify_merge_complete)
     conditions.append(verify_merge_time_separation)
     conditions.append(verify_valid_schedule)
     conditions.append(verify_merge_order)
-    conditions.append(verify_separation_distance)
+    conditions.append(verify_merge_spacing)
+    conditions.append(verify_spacing)
 
     # Check conditions
     results = [c(vehicles) for c in conditions]
@@ -42,26 +44,50 @@ def verify_valid_schedule(vehicles):
     condition_name = "Valid Schedule"
     min_separation_time = 20 - 1
 
+    computed_schedule = [v.metrics["computed_schedule"] for v in vehicles]
     scheduled_arrivals = sorted([v.metrics["sched_arr_time"] for v in vehicles])
     separation_times = np.diff(scheduled_arrivals)
 
     if all((s > min_separation_time for s in separation_times)):
-        return True, "Computed valid merge point arrival schedule", condition_name
+        if any(computed_schedule):
+            return True, "Computed valid merge point arrival schedule", condition_name
+        else:
+            return True, "No merge conflict - no scheduling required", condition_name
     else:
         return False, "Failed to find valid schedule", condition_name
+
+
+def verify_merge_complete(vehicles):
+    '''Check that all vehicles reached the merge point'''
+    condition_name = "Merge Complete"
+
+    reached_merge_point = [v.metrics["reached_merge_point"] for v in vehicles]
+
+    if len(reached_merge_point) == 0:
+        return False, "No merging vehicles", condition_name
+    if all(reached_merge_point):
+        return True, "All vehicles reached the merge point", condition_name
+    else:
+        return False, "Not all vehicles reached the merge point", condition_name
 
 
 def verify_merge_order(vehicles):
     '''Check that the vehicles merged in the scheduled order'''
     condition_name = "Merge Order"
 
-    if not verify_valid_schedule(vehicles):
-        return True, "N/A - no valid schedule", condition_name
-
     scheduled_times = sorted([(v.metrics["sched_arr_time"], v.id) for v in vehicles])
     scheduled_order = [name for time, name in scheduled_times]
-    actual_times = sorted([(v.metrics["actual_arr_time"], v.id) for v in vehicles])
+    actual_times = sorted([(v.metrics["actual_arr_time"], v.id) for v in vehicles
+                           if v.metrics["reached_merge_point"]])
     actual_order = [name for time, name in actual_times]
+
+    print("\nScheduled order: %s" % scheduled_order)
+    print("Actual order: %s" % actual_order)
+
+    if not verify_merge_complete(vehicles)[0]:
+        return False, "N/A - not all vehicles reached merge point", condition_name
+    if not verify_valid_schedule(vehicles)[0]:
+        return False, "N/A - no valid schedule", condition_name
 
     if scheduled_order == actual_order:
         return True, "Arrival order matches schedule", condition_name
@@ -74,15 +100,19 @@ def verify_merge_time_separation(vehicles):
     condition_name = "Arrival Time Separation"
     min_separation_time = 20
 
-    arrival_times = sorted([v.metrics["actual_arr_time"] for v in vehicles])
+    arrival_times = sorted([v.metrics["actual_arr_time"] for v in vehicles
+                            if v.metrics["reached_merge_point"]])
     separation_times = np.diff(arrival_times)
 
     print("\nArrival times:")
     for i in range(len(arrival_times)):
         line = ("%.2f" % (arrival_times[i]))
         if i > 0:
-            line += ("\t(%.2fs)" % separation_times[i-1])
+            line += ("\t(+ %.2fs)" % separation_times[i-1])
         print(line)
+
+    if not verify_merge_complete(vehicles)[0]:
+        return False, "N/A - not all vehicles reached merge point", condition_name
 
     if all((s > min_separation_time for s in separation_times)):
         return True, "Sufficient time spacing at merge point", condition_name
@@ -90,22 +120,59 @@ def verify_merge_time_separation(vehicles):
         return False, "Insufficient time spacing at merge point", condition_name
 
 
-def verify_separation_distance(vehicles):
-    '''Check merging data for minimum separation'''
+def verify_merge_spacing(vehicles):
+    '''Check minimum horizontal separation during merging operation'''
+    condition_name = "Merge Spacing"
+    DTHR = 30
+
+    separation_ok = True
+    print("\nMinimum separation distances during merge")
+    for v1, v2 in itertools.combinations(vehicles, 2):
+        time_range, dist = MA.compute_separation(v1, v2)
+        min_separation, t_min = min(zip(dist, time_range))
+        print("v%s to v%s min separation: %.2fm (at %.2fs)" %
+              (v1.id, v2.id, min_separation, t_min))
+        if (min_separation < DTHR):
+            separation_ok = False
+            msg = ("v%s and v%s violated minimum separation (%.2f < %.2f)" %
+                   (v1.id, v2.id, min_separation, DTHR))
+
+    if separation_ok:
+        return True, "Acceptable spacing during merging operation:", condition_name
+    else:
+        return False, msg, condition_name
+
+
+def verify_spacing(vehicles):
+    '''Check minimum horizontal separation during entire flight'''
     condition_name = "Spacing"
     DTHR = 30
 
-    print("\nMinimum separation distances")
+    vehicles = []
+    for i in range(args.num_vehicles):
+        filename = "merger_appdata_" + str(i) + ".txt"
+        filename = os.path.join(args.data_location, filename)
+        if not os.path.isfile(filename):
+            break
+        data = MA.ReadMergerAppData(filename, vehicle_id=i, merge_id="all")
+        vehicles.append(data)
+
+    separation_ok = True
+    print("\nMinimum separation distances during entire flight")
     for v1, v2 in itertools.combinations(vehicles, 2):
         time_range, dist = MA.compute_separation(v1, v2)
-        min_separation = min(dist)
-        print("v%s to v%s min separation: %.2fm" % (v1.id, v2.id, min_separation))
+        min_separation, t_min = min(zip(dist, time_range))
+        print("v%s to v%s min separation: %.2fm (at %.2fs)" %
+              (v1.id, v2.id, min_separation, t_min))
         if (min_separation < DTHR):
+            separation_ok = False
             msg = ("v%s and v%s violated minimum separation (%.2f < %.2f)" %
                    (v1.id, v2.id, min_separation, DTHR))
-            return False, msg, condition_name
 
-    return True, "Acceptable spacing throughout flight", condition_name
+    if separation_ok:
+        return True, "Acceptable spacing during entire flight:", condition_name
+    else:
+        return False, msg, condition_name
 
 
 def print_results(results, scenario_name):
@@ -152,7 +219,7 @@ if __name__ == "__main__":
         plt.show()
 
     # Compute metrics
-    MA.compute_metrics(vehicles, plot=args.plot, save=args.save)
+    MA.compute_metrics(vehicles)
     MA.write_metrics(vehicles)
 
     # Check test conditions
