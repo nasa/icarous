@@ -61,6 +61,7 @@ def SetUpVehicle(scenario, verbose=True, out=14557, output_dir="", sitl=False):
                            "-I "+str(spacecraft_id),
                            "-C "+str(cpu_id)],
                           stdout=fpic)
+    os.chdir(sim_home)
 
     # Pause for a couple of seconds here so that ICAROUS can boot up
     if verbose:
