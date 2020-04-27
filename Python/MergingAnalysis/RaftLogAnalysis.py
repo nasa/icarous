@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+import pandas as pd
 import os
 
 
@@ -9,6 +10,8 @@ class RaftData:
         self.log_entries = []
         self.role_changes = []
         self.current_role = None
+        self.output_dir = ""
+        self.group = ""
 
     def get_role(self, t):
         if t is None:
@@ -32,6 +35,7 @@ def ReadRaftLog(filename, vehicle_id=0, mf=1):
 
     vehicle = RaftData(v_id=vehicle_id)
     vehicle.output_dir = os.path.dirname(filename)
+    vehicle.group = vehicle.output_dir.strip("/").split("/")[-1]
     for line in data_string:
         # Skip lines containing other types of data
         if "MFID" not in line:
@@ -84,6 +88,7 @@ def analyze_latency(sending_vehicle, receiving_vehicle, verbose=True, plot=False
     received_times = []
     delay = []
     missed_times = []
+    metrics = {}
 
     for HB in sentHB:
         t_sent = HB.t
@@ -105,7 +110,19 @@ def analyze_latency(sending_vehicle, receiving_vehicle, verbose=True, plot=False
 
     # if 0 messages were sent, no need to perform analysis
     if n_sent == 0:
-        return
+        return metrics
+
+    # Save metrics
+    metrics["group"] = v1.group
+    metrics["transmitting_vehicle"] = v1.id
+    metrics["receiving_vehicle"] = v2.id
+    metrics["messages_sent"] = n_sent
+    metrics["messages_received"] = n_recv
+    metrics["messages_missed"] = len(missed_times)
+    metrics["percentage_received"] = n_recv/n_sent*100
+    metrics["average_latency"] = np.mean(delay)
+    metrics["longest_delay"] = max(delay)
+    metrics["mean_time_between_heartbeats"] = np.mean(np.diff(received_times))
 
     if verbose:
         print("\nRaft communication, vechicle%d to vehicle%d:" %
@@ -135,6 +152,25 @@ def analyze_latency(sending_vehicle, receiving_vehicle, verbose=True, plot=False
         if save:
             name = "raft_comms_v%d_to_v%d" % (sending_vehicle.id, receiving_vehicle.id)
             plt.savefig(os.path.join(receiving_vehicle.output_dir, name))
+
+    return metrics
+
+
+def write_metrics(metrics):
+    """ Add vehicle metrics to a csv table """
+    filename = "CommunicationMetrics.csv"
+    if len(metrics) == 0:
+        return
+    if os.path.isfile(filename):
+        table = pd.read_csv(filename, index_col=0)
+    else:
+        table = pd.DataFrame({})
+    index = metrics["group"] + "_" + str(metrics["transmitting_vehicle"]) + "to" + \
+            str(metrics["receiving_vehicle"])
+    metrics_table = pd.DataFrame(metrics, index=[index])
+    table = metrics_table.combine_first(table)
+    table = table[metrics.keys()]
+    table.to_csv(filename)
 
 
 def plot_roles(vehicles, save=False):
@@ -187,8 +223,10 @@ if __name__ == "__main__":
 
     # Analyze communication between each pair of vehicles
     for v1, v2 in itertools.combinations(vehicles, 2):
-        analyze_latency(v1, v2, verbose=args.verbose, plot=args.plot, save=args.save)
-        analyze_latency(v2, v1, verbose=args.verbose, plot=args.plot, save=args.save)
+        v1_metrics = analyze_latency(v1, v2, verbose=args.verbose, plot=args.plot, save=args.save)
+        v2_metrics = analyze_latency(v2, v1, verbose=args.verbose, plot=args.plot, save=args.save)
+        write_metrics(v1_metrics)
+        write_metrics(v2_metrics)
 
     # Generate plots
     if args.plot:
