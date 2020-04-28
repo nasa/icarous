@@ -14,6 +14,9 @@ lib._wrap_PathPlanner_InputGeofenceData.argtypes = [c_void_p,c_int,c_int,c_int,c
 lib._wrap_PathPlanner_InputTraffic.argtypes = [c_void_p,c_int,c_double*3,c_double*3]
 lib._wrap_PathPlanner_InputTraffic.restype = c_int
 lib._wrap_PathPlanner_InputFlightPlan.argtypes = [c_void_p,c_char_p,c_int,c_double*3,c_double]
+lib._wrap_PathPlanner_GetTotalWaypoints.argtypes = [c_void_p,c_char_p]
+lib._wrap_PathPlanner_GetTotalWaypoints.restype = c_int
+lib.PathPlanner_CombinePlan.argtypes = [c_void_p,c_char_p,c_char_p,c_int]
 Pos = c_double*3
 
 class Trajectory():
@@ -41,10 +44,16 @@ class Trajectory():
         lib._wrap_PathPlanner_UpdateDAAParameters(self.module,c_char_p(param.encode('utf-8')))
 
 
+    def CombinePlan(self,planA,planB,wp):
+        lib.PathPlanner_CombinePlan(self.module,c_char_p(planA.encode('utf-8')),c_char_p(planB.encode('utf-8')),c_int(wp))
+
     def FindPath(self,serachType,planID,fromPos,toPos,fromVel):
         return lib._wrap_PathPlanner_FindPath(self.module,c_int(serachType),c_char_p(planID.encode('utf-8')),
                 Pos(*fromPos),Pos(*toPos),Pos(*fromVel))
 
+
+    def GetTotalWaypoints(self,planID):
+        return lib._wrap_PathPlanner_GetTotalWaypoints(self.module,c_char_p(planID.encode('utf-8')))
 
     def GetWaypoint(self,planID,wpID):
         WP = c_double*4
