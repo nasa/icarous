@@ -120,3 +120,73 @@ static struct json_object * BuildAlertJSON(callsign_t const callSign, double tim
     return alert;
 }
 
+
+/*
+ * ZMQ Send Kinematic Band Report
+ */
+
+static struct json_object * BuildBandReportJSON(callsign_t const callSign, band_report_t const * const cfsBands);
+static struct json_object * BuildBandJSON(bands_t const * const cfsBand, char const * const units, const double min, const double max);
+static struct json_object * BuildBandRangesJSON(bands_t const * const cfsBand);
+static char const * const GetRegionName(enum Region region);
+
+void ZMQ_IFACE_SendBandReport(ZMQ_IFACE_Connection_t * const conn, band_report_t const * const bands)
+{
+    struct json_object * bandReport = BuildBandReportJSON(conn->callSign, bands);
+    char const * const msg = json_object_to_json_string_ext(bandReport, JSON_C_TO_STRING_PLAIN);
+    APP_DEBUG("Sending Band Report message: %s...\n", msg);
+    s_send(conn->telemetrySocket, msg);
+    APP_DEBUG("...sent!\n");
+    json_object_put(bandReport);
+}
+
+static struct json_object * BuildBandReportJSON(callsign_t const callSign, band_report_t const * const cfsBands)
+{
+    struct json_object * report = json_object_new_object();
+    json_object_object_add(report, "type", json_object_new_string("BandReport"));
+    json_object_object_add(report, "callSign", json_object_new_string(callSign.value));
+    json_object_object_add(report, "time", json_object_new_string_from_double(cfsBands->trackBands.time));
+    json_object_object_add(report, "HorizontalDirection", BuildBandJSON(&cfsBands->trackBands, "deg", 0, 360));
+    json_object_object_add(report, "HorizontalSpeed", BuildBandJSON(&cfsBands->groundSpeedBands, "m/s", 0, 1000));
+    json_object_object_add(report, "VerticalSpeed", BuildBandJSON(&cfsBands->verticalSpeedBands, "m/s", 0, 1000));
+    json_object_object_add(report, "Altitude", BuildBandJSON(&cfsBands->altitudeBands, "m", 0, 20000));
+    return report;
+}
+
+static struct json_object * BuildBandJSON(bands_t const * const cfsBand, char const * const units, const double min, const double max)
+{
+    struct json_object * band = json_object_new_object();
+    json_object_object_add(band, "units", json_object_new_string(units));
+    json_object_object_add(band, "min", json_object_new_double(min));
+    json_object_object_add(band, "max", json_object_new_double(max));
+    json_object_object_add(band, "ranges", BuildBandRangesJSON(cfsBand));
+    return band;
+}
+
+static struct json_object * BuildBandRangesJSON(bands_t const * const cfsBand)
+{
+    struct json_object * ranges = json_object_new_array();
+    struct json_object * range = NULL;
+    for (size_t i = 0; i < cfsBand->numBands; i++) {
+        range = json_object_new_object();
+        json_object_object_add(range, "region", json_object_new_string(GetRegionName(cfsBand->type[i])));
+        json_object_object_add(range, "lower_bound", json_object_new_double(cfsBand->min[i]));
+        json_object_object_add(range, "upper_bound", json_object_new_double(cfsBand->max[i]));
+        json_object_array_add(ranges, range);
+    }
+    return ranges;
+}
+
+static char const * const GetRegionName(enum Region region) // TODO: Possibly this should be an Icarouslib function
+{
+    static char const * const NAMES[END_OF_REGION] = {
+        "UNKNOWN",
+        "NONE",
+        "FAR",
+        "MID",
+        "NEAR",
+        "RECOVERY"
+    };
+    return NAMES[region];
+}
+

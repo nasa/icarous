@@ -60,6 +60,7 @@ void ZMQ_IFACE_AppInit(void) {
 		    ZMQ_IFACE_PIPE_NAME);       /* Name of pipe */
 
     // Subscribe to SB messages
+    CFE_SB_Subscribe(ICAROUS_BAND_REPORT_MID, AppData.pipe);
     CFE_SB_Subscribe(TRAFFIC_ALERTS_MID, AppData.pipe);
 
     // Initialize all messages that this App generates
@@ -87,6 +88,11 @@ void ZMQ_IFACE_ProcessPacket()
     case TRAFFIC_ALERTS_MID:
         ZMQ_IFACE_SendAlertReport(connPtr, (traffic_alerts_t const * const) AppData.msgPtr);
         break;
+    case ICAROUS_BAND_REPORT_MID:
+        ZMQ_IFACE_SendBandReport(connPtr, (band_report_t const * const) AppData.msgPtr);
+        break;
+    default:
+        OS_printf("[zmq_iface] Unhandled message id: %x\n", MsgId);
     }
 }
 
