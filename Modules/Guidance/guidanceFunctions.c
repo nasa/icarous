@@ -30,6 +30,11 @@ double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,gui
    // If speed is provided for nextWP, use given speed
    if (nextWP[3] < 1){
        double speed = nextWP[4];
+
+       if( (speed - 0.25) < 1e-3){
+           speed = guidanceParams->defaultWpSpeed;
+       }
+
        if(speed <= guidanceParams->minSpeed){
            return guidanceParams->minSpeed;
        }else if(speed >= guidanceParams->maxSpeed){
@@ -90,7 +95,8 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
     double target_heading = ComputeHeading(guidanceInput->position, newPositionToTrack);
     double turn_angle = fabs(fmod(180 + ownship_heading - target_heading, 360) - 180);
     if((finalleg && distH < capture_radius) || turn_angle > 30)
-        speedRef = speedRef/3;
+        speedRef = speedRef/2;
+
 
     // If distance to next waypoint is < captureRadius, switch to next waypoint
     if (distH <= capture_radius && distV <= guidanceParams->climbAngleVRange)
@@ -115,7 +121,7 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
 
         // Store velocity command in relevant structure
         // A weighted average of the new command is used.
-        double n = 1;
+        double n = 0.9;
         guidanceOutput->velCmd[0] = (n-1) * guidanceInput->velCmd[0] + n * vn;
         guidanceOutput->velCmd[1] = (n-1) * guidanceInput->velCmd[1] + n * ve;
         guidanceOutput->velCmd[2] = (n-1) * guidanceInput->velCmd[2] + n * vd;

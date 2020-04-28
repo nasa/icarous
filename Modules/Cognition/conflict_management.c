@@ -249,12 +249,13 @@ bool RunTrafficResolution(){
       case SPEED_RESOLUTION:{
          double speedPref = cog.preferredSpeed;
 
+         double refHdg = ComputeHeading(cog.position,cog.wpNext1);
          //printf("resolution speed = %f\n",speedPref);
          if(speedPref >= 0){
-            SetGuidanceVelCmd(cog.hdg,speedPref,0);
+            SetGuidanceVelCmd(refHdg,speedPref,0);
             cog.prevResSpeed = speedPref;
          }else{
-            SetGuidanceVelCmd(cog.hdg,cog.prevResSpeed,0);
+            SetGuidanceVelCmd(refHdg,cog.prevResSpeed,0);
          }
 
          bool val;

@@ -235,9 +235,11 @@ void COGNITION_ProcessSBData() {
                cog.trafficSpeedConflict = true;
                if(!isinf(gs->resPreferred)){
                    cog.preferredSpeed = gs->resPreferred * fac;
+                   cog.prevResSpeed = cog.preferredSpeed;
                }
-               else
+               else{
                    cog.preferredSpeed = -10000;
+               }
             }else{
                int id1 = cog.nextPrimaryWP;
                int id2 = cog.nextSecondaryWP;
