@@ -318,7 +318,7 @@ void PathPlanner::PlanToString(char planID[],char outputString[],bool tcpColumns
     outputFp.timeShiftPlan(0,(double)timeshift);
     Plan repairedPlan;
     if(timeshift >= 0){
-        repairedPlan = TrajGen::makeKinematicPlan(outputFp,45*M_PI/180,4,2,true,true,true);
+        repairedPlan = TrajGen::makeKinematicPlan(outputFp,45*M_PI/180,1,1,true,true,true);
     }else{
         repairedPlan = *fp;
     }
