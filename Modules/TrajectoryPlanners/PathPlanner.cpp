@@ -360,12 +360,27 @@ void PathPlanner::CombinePlan(char planID_A[],char planID_B[],int index){
     Plan *fp2 = GetPlan(planID_B);
     Plan fp = fp1->copy(); 
     fp.setID("Plan+");
+    int fp1len = fp.size();
+    bool TODAvail = false;
     for(int i=index;i<fp2->size();++i){
         double delta = fp2->time(i) - fp2->time(i-1);
+        std::string info = fp2->getInfo(i);
+        std::string name = fp2->getName(i);
         double time = fp.getLastTime() + delta;
         NavPoint oldPoint = fp2->point(i);
         fp.add(oldPoint.position(),time);
+        fp.setInfo(fp1len + i-index,info);
+        fp.setName(fp1len + i-index,name);
+
+        if (info == "<TOD>"){
+            TODAvail = true;
+        }
     }
+
+    if(!TODAvail){
+       fp.setInfo(fp1len,std::string("<TOD>"));
+    }
+
     flightPlans.push_back(fp);
 }
 
