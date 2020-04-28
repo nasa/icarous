@@ -150,7 +150,7 @@ void ARDUCOPTER_AppInitializeData(){
 
     InitializePortConfig("arducopter",&appdataInt.ap);
 
-    InitializeAircraftCallSign(appdataInt.callsign);
+    InitializeAircraftCallSign(appdataInt.callsign.value);
 
     ArducopterTable_t *TblPtr = &appdataInt.Table;
 

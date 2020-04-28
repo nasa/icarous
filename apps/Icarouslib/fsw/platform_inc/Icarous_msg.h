@@ -27,7 +27,9 @@
  * @{
  */
 
-typedef char callsign_t[MAX_CALLSIGN_LEN];
+typedef struct{
+   char value[MAX_CALLSIGN_LEN];
+}callsign_t;
 
 
 /**
@@ -202,7 +204,7 @@ typedef struct{
 typedef struct{
     uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];   /**< cFS header information */
     uint32_t aircraft_id;                     /**< aircraft id */
-	callsign_t callsign[MAX_CALLSIGN_LEN];    /**< aircraft call sign */
+	callsign_t callsign;                      /**< aircraft call sign */
 	int64_t time_gps;                         /**< gps time */
     int64_t time_boot;                        /**< boot time of onboard autopilot */
 	double latitude;                          /**< latitude (degrees) */

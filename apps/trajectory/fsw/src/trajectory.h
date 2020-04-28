@@ -92,7 +92,7 @@ typedef struct{
     double xtrkGain;                           ///< xtrk gain
     double resSpeed;                           ///< resolution speed
     algorithm_e searchType;                    ///< preferred search algorithm
-
+    bool eutlReceived;                         ///< eutl plan received check
     flightplan_monitor_t fpMonitor;            ///< flight plan monitor
     trajectory_parameters_t trajParams;
 }TrajectoryAppData_t;

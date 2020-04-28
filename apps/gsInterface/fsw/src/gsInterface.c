@@ -160,7 +160,7 @@ void gsInterface_InitializeAppData(){
 
   InitializePortConfig("gsInterface",&appdataIntGS.gs);
 
-  InitializeAircraftCallSign(appdataIntGS.callsign);
+  InitializeAircraftCallSign(appdataIntGS.callsign.value);
 
   //Set mission start flag to -1
   appdataIntGS.startMission.param1 = -1;

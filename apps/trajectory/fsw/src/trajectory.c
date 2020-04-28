@@ -140,6 +140,7 @@ void TRAJECTORY_AppInitData(TrajectoryTable_t* TblPtr){
     TrajectoryAppData.resSpeed = TblPtr->resSpeed;
     TrajectoryAppData.searchType = TblPtr->searchAlgorithm;
     TrajectoryAppData.updateDAAParams = TblPtr->updateDaaParams;
+    TrajectoryAppData.eutlReceived = false;
     strcpy(TrajectoryAppData.planID, "Plan0\0");
 
     int32 status = OS_MutSemCreate(&TrajectoryAppData.mutexAcState, "ACstate", 0);
@@ -260,6 +261,10 @@ void TRAJECTORY_Monitor(void)
 
             case ICAROUS_FLIGHTPLAN_MID:
             {
+                if(TrajectoryAppData.eutlReceived){
+                    break;
+                }
+
                 flightplan_t *fp;
                 fp = (flightplan_t *)TrajectoryAppData.Traj_MsgPtr;
                 PathPlanner_ClearAllPlans(TrajectoryAppData.pplanner);
@@ -286,6 +291,7 @@ void TRAJECTORY_Monitor(void)
             }
 
             case EUTL1_TRAJECTORY_MID:{
+                TrajectoryAppData.eutlReceived = true;
                 stringdata_t *strdata = (stringdata_t*)TrajectoryAppData.Traj_MsgPtr;
                 char buffer[MAX_DATABUFFER_SIZE] = {0};    // TODO: Read this from the  message
                 strcpy(buffer,strdata->buffer);
@@ -321,6 +327,7 @@ void TRAJECTORY_Monitor(void)
                     fp.waypoints[i].altitude = (float)wp[2];
                 }
                 memcpy(&TrajectoryAppData.flightplan1, &fp, sizeof(flightplan_t));
+                TrajectoryAppData.monitor = true;
                 SendSBMsg(fp);
                 break;
             }

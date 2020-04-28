@@ -56,7 +56,7 @@ void gsSendCallsign(){
     char buffer[50];
     memset(buffer,0,50);
     mavlink_message_t status_msg;
-    sprintf(buffer,"CALLSIGN:%s",appdataIntGS.callsign);
+    sprintf(buffer,"CALLSIGN:%s",appdataIntGS.callsign.value);
     mavlink_msg_statustext_pack(sysid_ic,compid_ic,&status_msg,MAV_SEVERITY_INFO,buffer);
     writeMavlinkData(&appdataIntGS.gs,&status_msg);
 }
@@ -321,7 +321,7 @@ void ProcessGSMessage(mavlink_message_t message) {
             }
             else if (msg.command == MAV_CMD_SPATIAL_USER_1) {
                 appdataIntGS.traffic.index = (uint32_t)msg.param1;
-                memset(appdataIntGS.traffic.callsign,0,25);
+                memset(appdataIntGS.traffic.callsign.value,0,25);
 
                 appdataIntGS.traffic.type = _TRAFFIC_SIM_;
                 appdataIntGS.traffic.latitude = msg.param5;
@@ -593,7 +593,7 @@ void gsInterface_ProcessPacket() {
           double heading = fmod(2*M_PI + atan2(pos->ve,pos->vn),2*M_PI)*180/M_PI;
           double speed = sqrt(pos->vn*pos->vn + pos->ve*pos->ve);
           char callsign[9] = "\0";
-          memcpy(callsign,pos->callsign,8);
+          memcpy(callsign,(pos->callsign.value),8);
           mavlink_msg_adsb_vehicle_pack(sysid_ic,compid_ic,&msg,pos->aircraft_id,
               (int32_t)(pos->latitude*1E7),
               (int32_t)(pos->longitude*1E7),
@@ -648,7 +648,7 @@ void gsInterface_ProcessPacket() {
         double heading = fmod(2 * M_PI + atan2(traffic->ve, traffic->vn), 2 * M_PI) * 180 / M_PI;
         double speed = sqrt(traffic->vn * traffic->vn + traffic->ve * traffic->ve);
         char callsign[9] = "\0";
-        memcpy(callsign,traffic->callsign,8);
+        memcpy(callsign,traffic->callsign.value,8);
         mavlink_msg_adsb_vehicle_pack(sysid_ic, compid_ic, &msg, traffic->index,
             (int32_t)(traffic->latitude * 1E7),
             (int32_t)(traffic->longitude * 1E7),
