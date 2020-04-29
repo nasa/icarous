@@ -233,7 +233,7 @@ void COGNITION_ProcessSBData() {
 
             if(gs->currentConflictBand == 1){
                cog.trafficSpeedConflict = true;
-               if(!isinf(gs->resPreferred)){
+               if(!isinf(gs->resPreferred) && !isnan(gs->resPreferred)){
                    cog.preferredSpeed = gs->resPreferred * fac;
                    cog.prevResSpeed = cog.preferredSpeed;
                }
