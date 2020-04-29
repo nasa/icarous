@@ -517,7 +517,7 @@ class Icarous():
 
         if self.gsband.currentConflict == 1:
             self.cog.trafficSpeedConflict = True
-            if not np.isinf(self.gsband.respref):
+            if not np.isinf(self.gsband.respref) and not np.isnan(self.gsband.respref):
                 self.cog.preferredSpeed = self.gsband.respref * fac
             else:
                 self.cog.preferredSpeed = -10000
