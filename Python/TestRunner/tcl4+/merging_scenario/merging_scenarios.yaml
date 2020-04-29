@@ -295,7 +295,7 @@
     name: AC0
     param_adjustments:
       DEF_WP_SPEED: 3
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
@@ -305,7 +305,7 @@
     name: AC1
     param_adjustments:
       DEF_WP_SPEED: 3
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
@@ -319,7 +319,7 @@
     name: AC0
     param_adjustments:
       DEF_WP_SPEED: 5
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
@@ -329,7 +329,7 @@
     name: AC1
     param_adjustments:
       DEF_WP_SPEED: 5
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
@@ -343,7 +343,7 @@
     name: AC0
     param_adjustments:
       DEF_WP_SPEED: 7
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
@@ -353,7 +353,7 @@
     name: AC1
     param_adjustments:
       DEF_WP_SPEED: 7
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
@@ -367,7 +367,7 @@
     name: AC0
     param_adjustments:
       DEF_WP_SPEED: 3
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
@@ -377,7 +377,7 @@
     name: AC1
     param_adjustments:
       DEF_WP_SPEED: 5
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
@@ -391,7 +391,7 @@
     name: AC0
     param_adjustments:
       DEF_WP_SPEED: 3
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
@@ -401,7 +401,7 @@
     name: AC1
     param_adjustments:
       DEF_WP_SPEED: 7
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
@@ -415,7 +415,7 @@
     name: AC0
     param_adjustments:
       DEF_WP_SPEED: 5
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
@@ -425,7 +425,7 @@
     name: AC1
     param_adjustments:
       DEF_WP_SPEED: 7
-      SCHEDULE_ZONE: 60
+      SCHEDULE_ZONE: 65
     parameter_file: Python/TestRunner/tcl4+/merging_scenario/merging_default.parm
     time_limit: 100
     traffic: []
