@@ -94,8 +94,12 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
     double ownship_heading = fmod(2*M_PI + atan2(guidanceInput->velocity[1],guidanceInput->velocity[0]),2*M_PI) *180/M_PI;
     double target_heading = ComputeHeading(guidanceInput->position, newPositionToTrack);
     double turn_angle = fabs(fmod(180 + ownship_heading - target_heading, 360) - 180);
-    if((finalleg && distH < capture_radius) || turn_angle > 30)
-        speedRef = speedRef/2;
+    if((finalleg && distH < capture_radius) || turn_angle > 60){
+        double range = guidanceParams->maxSpeed - guidanceParams->minSpeed;
+        if( speedRef > (guidanceParams->minSpeed + range * 0.6) ){
+            speedRef = speedRef/2;
+        }
+    }
 
 
     // If distance to next waypoint is < captureRadius, switch to next waypoint
