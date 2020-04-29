@@ -301,12 +301,20 @@ def plot_speed(vehicles, save=False):
         line1.set_label("vehicle"+str(v.id)+" actual speed")
         line2.set_label("vehicle"+str(v.id)+" merge speed")
         line3.set_label("vehicle"+str(v.id)+" commanded speed")
+        if v.merge_id != "all":
+            plt.axvspan(v.metrics["coord_time"], v.metrics["sched_time"], color="blue", alpha=0.3)
+            plt.axvspan(v.metrics["sched_time"], v.metrics["entry_time"], color="orange", alpha=0.5)
+            plt.axvspan(v.metrics["entry_time"], v.metrics["actual_arr_time"], color="red", alpha=0.3)
         plt.xlabel('time (s)')
         plt.ylabel('speed (m/s)')
         plt.legend()
         plt.grid()
         if save:
-            plt.savefig(os.path.join(v.output_dir, "speed_"+str(v.id)))
+            if v.merge_id == "all":
+                title = "speed_" + str(v.id)
+            else:
+                title = "speed_" + str(v.id) + "_merge" + str(v.merge_id)
+            plt.savefig(os.path.join(v.output_dir, title))
 
 
 def plot_roles(vehicles, save=False):
@@ -329,7 +337,42 @@ def plot_roles(vehicles, save=False):
     plt.legend()
     plt.grid()
     if save:
-        plt.savefig(os.path.join(v.output_dir, "roles"))
+        plt.savefig(os.path.join(v.output_dir, "rolesA"))
+
+    plt.figure()
+    for v in vehicles:
+        plt.plot(v.get("t"), v.get("nodeRole"), label=v.id)
+    plt.grid()
+    plt.legend()
+    plt.yticks(range(4), labels)
+    plt.xlabel("Time (s)")
+    if save:
+        plt.savefig(os.path.join(v.output_dir, "rolesB"))
+
+
+def plot_flight_trace(vehicles, save=False):
+    plt.figure()
+    for v in vehicles:
+        plt.plot(v.get("lon"), v.get("lat"), label=v.id)
+    plt.grid()
+    plt.legend()
+    plt.xlabel("Longitude (deg)")
+    plt.ylabel("Latitude (deg)")
+    if save:
+        plt.savefig(os.path.join(v.output_dir, "flight_trace"))
+
+
+def process_data(data_location, num_vehicles, merge_id):
+    vehicles = []
+    group = data_location.strip("/").split("/")[-1]
+    for i in range(num_vehicles):
+        filename = "merger_appdata_" + str(i) + ".txt"
+        filename = os.path.join(data_location, filename)
+        if not os.path.isfile(filename):
+            break
+        data = ReadMergerAppData(filename, vehicle_id=i, merge_id=merge_id, group=group)
+        vehicles.append(data)
+    return vehicles
 
 
 if __name__ == "__main__":
@@ -343,25 +386,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Read merger log data (just during merge operation)
-    vehicles = []
-    group = args.data_location.strip("/").split("/")[-1]
-    for i in range(args.num_vehicles):
-        filename = "merger_appdata_" + str(i) + ".txt"
-        filename = os.path.join(args.data_location, filename)
-        if not os.path.isfile(filename):
-            break
-        data = ReadMergerAppData(filename, vehicle_id=i, merge_id=args.merge_id, group=group)
-        vehicles.append(data)
-
+    vehicles = process_data(args.data_location, args.num_vehicles, args.merge_id)
     # Read merger log data (for entire flight)
-    vehicles_entire_flight = []
-    for i in range(args.num_vehicles):
-        filename = "merger_appdata_" + str(i) + ".txt"
-        filename = os.path.join(args.data_location, filename)
-        if not os.path.isfile(filename):
-            break
-        data = ReadMergerAppData(filename, vehicle_id=i, merge_id="all")
-        vehicles_entire_flight.append(data)
+    vehicles_entire_flight = process_data(args.data_location, args.num_vehicles, "all")
 
     # Compute metrics
     compute_metrics(vehicles)
@@ -372,7 +399,9 @@ if __name__ == "__main__":
         plot_summary(vehicles, save=args.save)
         plot(vehicles, "dist2int", save=args.save)
         plot_roles(vehicles, save=args.save)
+        plot_speed(vehicles, save=args.save)
         plot_speed(vehicles_entire_flight, save=args.save)
         plot_spacing(vehicles, save=args.save)
         plot_spacing(vehicles_entire_flight, save=args.save)
+        plot_flight_trace(vehicles_entire_flight, save=args.save)
         plt.show()

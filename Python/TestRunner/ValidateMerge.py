@@ -199,28 +199,25 @@ if __name__ == "__main__":
     parser.add_argument("--test", action="store_true", help="assert test conditions")
     args = parser.parse_args()
 
-    # Read merger log data
-    vehicles = []
-    group = args.data_location.strip("/").split("/")[-1]
-    for i in range(args.num_vehicles):
-        filename = "merger_appdata_" + str(i) + ".txt"
-        filename = os.path.join(args.data_location, filename)
-        if not os.path.isfile(filename):
-            break
-        data = MA.ReadMergerAppData(filename, vehicle_id=i, merge_id=args.merge_id, group=group)
-        vehicles.append(data)
+    # Read merger log data (just during merge operation)
+    vehicles = MA.process_data(args.data_location, args.num_vehicles, args.merge_id)
+    # Read merger log data (for entire flight)
+    vehicles_entire_flight = MA.process_data(args.data_location, args.num_vehicles, "all")
+
+    # Compute metrics
+    MA.compute_metrics(vehicles)
+    MA.write_metrics(vehicles)
 
     # Generate plots
     if args.plot:
         MA.plot(vehicles, "dist2int", save=args.save)
         MA.plot_roles(vehicles, save=args.save)
         MA.plot_speed(vehicles, save=args.save)
-        MA.plot_separation(vehicles, save=args.save)
+        MA.plot_speed(vehicles_entire_flight, save=args.save)
+        MA.plot_spacing(vehicles, save=args.save)
+        MA.plot_spacing(vehicles_entire_flight, save=args.save)
+        MA.plot_summary(vehicles, save=args.save)
         plt.show()
-
-    # Compute metrics
-    MA.compute_metrics(vehicles)
-    MA.write_metrics(vehicles)
 
     # Check test conditions
     validate_merging_data(vehicles, output_dir=args.data_location, test=args.test)

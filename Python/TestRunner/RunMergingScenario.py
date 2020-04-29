@@ -139,6 +139,7 @@ if __name__ == "__main__":
     for scenario in scenario_list:
         # Set up a directory to save log files
         name = scenario["name"].replace(' ', '-')
+        print("Running scenario: %s" % name)
         timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H_%M_%S")
         output_dir = os.path.join(sim_home, args.output_dir, timestamp+"_"+name)
         os.makedirs(output_dir)
@@ -201,7 +202,7 @@ if __name__ == "__main__":
             if args.plot:
                 arguments.append("--plot")
             if args.save:
-                arguments.append("save")
+                arguments.append("--save")
             subprocess.call(["python3", script] + arguments)
 
         # Generate plots
