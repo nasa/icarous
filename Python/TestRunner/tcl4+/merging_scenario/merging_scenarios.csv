@@ -1,4 +1,4 @@
-Id,Scenario Name,File Home,Merge Fixes,Parameter File,Time Limit,Num Vehicles,AC0 Flightplan,AC1 Flightplan,AC2 Flightplan,AC0 Param:MIN_GS,AC1 Param:MIN_GS,AC2 Param:MIN_GS,Param:SCHEDULE_ZONE,AC0 Delay,AC1 Delay,AC2 Delay
+Id,Scenario Name,File Home,Merge Fixes,Parameter File,Time Limit,Num Vehicles,AC0 Flightplan,AC1 Flightplan,AC2 Flightplan,AC0 Param:DEF_WP_SPEED,AC1 Param:DEF_WP_SPEED,AC2 Param:DEF_WP_SPEED,Param:SCHEDULE_ZONE,AC0 Delay,AC1 Delay,AC2 Delay
 1,merging1,Python/TestRunner/tcl4+/merging_scenario,merge_fixes.txt,merging_default.parm,100,2,vehicle0_waypoints.txt,vehicle1_waypoints.txt,vehicle2_waypoints.txt,3,3,NA,70,0,0,NA
 2,merging2,Python/TestRunner/tcl4+/merging_scenario,merge_fixes.txt,merging_default.parm,100,2,vehicle0_waypoints.txt,vehicle1_waypoints.txt,vehicle2_waypoints.txt,5,5,NA,70,0,0,NA
 3,merging3,Python/TestRunner/tcl4+/merging_scenario,merge_fixes.txt,merging_default.parm,100,2,vehicle0_waypoints.txt,vehicle1_waypoints.txt,vehicle2_waypoints.txt,7,7,NA,70,0,0,NA
