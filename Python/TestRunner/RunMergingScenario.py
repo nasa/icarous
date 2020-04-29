@@ -192,6 +192,12 @@ if __name__ == "__main__":
         for f in os.listdir(icarous_exe):
             if f.startswith("merger") or f.startswith("raft"):
                 os.rename(os.path.join(icarous_exe, f), os.path.join(output_dir, f))
+        for f in os.listdir(output_dir):
+            if f.endswith(".tlog"):
+                tlog = os.path.join(output_dir, f)
+                param_file_name = os.path.join(output_dir, f.split('.')[0]+".parm")
+                param_file = open(os.path.join(output_dir, f.split('.')[0]+".parm"), 'w')
+                subprocess.call(["mavparms.py", tlog], stdout=param_file)
 
         # Validate test conditions
         if args.validate:
