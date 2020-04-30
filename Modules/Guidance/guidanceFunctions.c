@@ -125,7 +125,7 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
 
         // Store velocity command in relevant structure
         // A weighted average of the new command is used.
-        double n = 0.5;
+        double n = 0.95;
         guidanceOutput->velCmd[0] = (1-n) * guidanceInput->velCmd[0] + n * vn;
         guidanceOutput->velCmd[1] = (1-n) * guidanceInput->velCmd[1] + n * ve;
         guidanceOutput->velCmd[2] = (1-n) * guidanceInput->velCmd[2] + n * vd;

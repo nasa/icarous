@@ -210,7 +210,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
 
             double n = 0.5;
             if ( (refSpeed - currSpeed) <= - range/2 ){
-                n = 0.5;
+                n = 0.3;
             }
             double trk,gs,vs;
             ConvertVnedToTrkGsVs(cmd->param1,cmd->param2,cmd->param3,&trk,&gs,&vs);
