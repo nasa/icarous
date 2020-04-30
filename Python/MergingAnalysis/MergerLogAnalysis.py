@@ -37,9 +37,11 @@ class MergerData:
         self.role_changes = []
         self.metrics = {}
 
-    def get(self, x, t=None):
+    def get(self, x, t="all"):
         """Return the value of state[x] at time t"""
         if t is None:
+            return None
+        if t == "all":
             t = self.t
         return interp1d(self.state["t"], self.state[x], axis=0,
                         bounds_error=False, fill_value="extrapolate")(t)
@@ -109,9 +111,12 @@ def compute_metrics(vehicles):
         v.metrics["group"] = v.group
         v.metrics["merge_id"] = v.merge_id
         v.metrics["vehicle_id"] = v.id
-        v.metrics["coord_time"] = next(v.t[i] for i in range(len(v.t)) if zone[i] == 1)
-        v.metrics["sched_time"] = next(v.t[i] for i in range(len(v.t)) if zone[i] == 2)
-        v.metrics["entry_time"] = next(v.t[i] for i in range(len(v.t)) if zone[i] == 3)
+        v.metrics["coord_time"] = next((v.t[i] for i in range(len(v.t))
+                                        if zone[i] == 1), None)
+        v.metrics["sched_time"] = next((v.t[i] for i in range(len(v.t))
+                                        if zone[i] == 2), None)
+        v.metrics["entry_time"] = next((v.t[i] for i in range(len(v.t))
+                                        if zone[i] == 3), None)
         v.metrics["initial_speed"] = v.get("speed", v.metrics["sched_time"])
         v.metrics["computed_schedule"] = (numSch[-1] > numSch[0])
         v.metrics["reached_merge_point"] = (min(dist2int) < 10)
@@ -250,12 +255,15 @@ def plot_summary(vehicles, save=False):
     for v in vehicles:
         plt.plot(v.t, v.get("dist2int"), label="vehicle"+str(v.id))
     for v in vehicles:
-        plt.plot(v.metrics["coord_time"],
-                 v.get("dist2int", v.metrics["coord_time"]), '*')
-        plt.plot(v.metrics["sched_time"],
-                 v.get("dist2int", v.metrics["sched_time"]), '*')
-        plt.plot(v.metrics["entry_time"],
-                 v.get("dist2int", v.metrics["entry_time"]), '*')
+        if v.metrics["coord_time"] is not None:
+            plt.plot(v.metrics["coord_time"],
+                     v.get("dist2int", v.metrics["coord_time"]), '*')
+        if v.metrics["sched_time"] is not None:
+            plt.plot(v.metrics["sched_time"],
+                     v.get("dist2int", v.metrics["sched_time"]), '*')
+        if v.metrics["entry_time"] is not None:
+            plt.plot(v.metrics["entry_time"],
+                     v.get("dist2int", v.metrics["entry_time"]), '*')
         if v.metrics["computed_schedule"]:
             plt.plot(v.metrics["handoff_time"],
                      v.get("dist2int", v.metrics["handoff_time"]), 'r*')
@@ -302,9 +310,15 @@ def plot_speed(vehicles, save=False):
         line2.set_label("vehicle"+str(v.id)+" merge speed")
         line3.set_label("vehicle"+str(v.id)+" commanded speed")
         if v.merge_id != "all":
-            plt.axvspan(v.metrics["coord_time"], v.metrics["sched_time"], color="blue", alpha=0.3)
-            plt.axvspan(v.metrics["sched_time"], v.metrics["entry_time"], color="orange", alpha=0.5)
-            plt.axvspan(v.metrics["entry_time"], v.metrics["actual_arr_time"], color="red", alpha=0.3)
+            if v.metrics["coord_time"] is not None:
+                plt.axvspan(v.metrics["coord_time"],
+                            v.metrics["sched_time"], color="blue", alpha=0.3)
+            if v.metrics["sched_time"] is not None:
+                plt.axvspan(v.metrics["sched_time"],
+                            v.metrics["entry_time"], color="orange", alpha=0.5)
+            if v.metrics["entry_time"] is not None:
+                plt.axvspan(v.metrics["entry_time"],
+                            v.metrics["actual_arr_time"], color="red", alpha=0.3)
         plt.xlabel('time (s)')
         plt.ylabel('speed (m/s)')
         plt.legend()
