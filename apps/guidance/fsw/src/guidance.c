@@ -197,10 +197,32 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
 
         case VECTOR:{
             guidanceAppData.guidanceMode = VECTOR;
-            guidanceAppData.velCmd.param1 = cmd->param1;
-            guidanceAppData.velCmd.param2 = cmd->param2;
-            guidanceAppData.velCmd.param3 = cmd->param3;
+
+            double vn = guidanceAppData.position.vn;
+            double ve = guidanceAppData.position.ve;
+            double vd = guidanceAppData.position.vd;
+            double currSpeed = sqrt(vn*vn + ve*ve + vd*vd);
+            double refSpeed = sqrt(cmd->param1*cmd->param1 +
+                                   cmd->param2*cmd->param2 +
+                                   cmd->param3*cmd->param3);
+
+            double range = guidanceAppData.guidance_tbl.maxSpeed - guidanceAppData.guidance_tbl.minSpeed;
+
+            double n = 0.5;
+            if ( (refSpeed - currSpeed) <= - range/2 ){
+                n = 0.5;
+            }
+            double trk,gs,vs;
+            ConvertVnedToTrkGsVs(cmd->param1,cmd->param2,cmd->param3,&trk,&gs,&vs);
+            double fspeed = n*refSpeed + (1-n) * currSpeed;
+
+            double vnr = 0.0,ver = 0.0,vdr = 0.0;
+            ConvertTrkGsVsToVned(trk,fspeed,vs,&vnr,&ver,&vdr);
+            guidanceAppData.velCmd.param1 = vnr;
+            guidanceAppData.velCmd.param2 = ver;
+            guidanceAppData.velCmd.param3 = vdr;
             guidanceAppData.velCmd.param4 = guidanceAppData.guidance_tbl.yawForward;
+
             break;
         }
         
