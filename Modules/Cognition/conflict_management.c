@@ -285,7 +285,7 @@ bool RunTrafficResolution(){
                diff = -50;
             }
 
-            climbRate = -0.1*diff;
+            climbRate = -0.2*diff;
             double speed = cog.resolutionSpeed;
             SetGuidanceVelCmd(cog.hdg,speed,climbRate);
             cog.prevResVspeed = climbRate;
