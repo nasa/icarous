@@ -37,14 +37,14 @@ class MergerData:
         self.role_changes = []
         self.metrics = {}
 
-    def get(self, x, t="all"):
+    def get(self, x, t="all", default="extrapolate"):
         """Return the value of state[x] at time t"""
         if t is None:
             return None
         if t == "all":
             t = self.t
         return interp1d(self.state["t"], self.state[x], axis=0,
-                        bounds_error=False, fill_value="extrapolate")(t)
+                        bounds_error=False, fill_value=default)(t)
 
 
 def ReadMergerAppData(filename, vehicle_id, merge_id=1, group="test"):
@@ -104,13 +104,15 @@ def ReadMergerAppData(filename, vehicle_id, merge_id=1, group="test"):
 
 def compute_metrics(vehicles):
     for v in vehicles:
+        v.metrics["group"] = v.group
+        v.metrics["merge_id"] = v.merge_id
+        v.metrics["vehicle_id"] = v.id
+    compute_election_times(vehicles)
+    for v in vehicles:
         zone = v.get("zone")
         status = v.get("mergingStatus")
         numSch = v.get("numSch")
         dist2int = v.get("dist2int")
-        v.metrics["group"] = v.group
-        v.metrics["merge_id"] = v.merge_id
-        v.metrics["vehicle_id"] = v.id
         v.metrics["coord_time"] = next((v.t[i] for i in range(len(v.t))
                                         if zone[i] == 1), None)
         v.metrics["sched_time"] = next((v.t[i] for i in range(len(v.t))
@@ -150,6 +152,44 @@ def compute_metrics(vehicles):
             t, d = compute_separation(v, traf)
             dist += d
         v.metrics["min_sep_during_merge"] = min(dist)
+
+
+def get_leader(vehicles, t):
+    leader = [v.id for v in vehicles if v.get("nodeRole", t, default=-1) == 3]
+    if len(leader) > 0:
+        return leader[0]
+    else:
+        return None
+
+
+def compute_election_times(vehicles):
+    """ Compute the time it took for each vehicle to be elected leader """
+    all_time = []
+    for v in vehicles:
+        all_time += v.t
+
+    for v in vehicles:
+        time_start = None
+        prev_leader = 0
+        for t in v.t:
+            leader = get_leader(vehicles, t)
+            if leader is None and prev_leader is not None:
+                time_start = t
+            if leader == v.id:
+                break
+            prev_leader = leader
+
+        time_elected = next((t for t in v.t if get_leader(vehicles, t) == v.id), None)
+        if time_start is None:
+            time_start = time_elected
+
+        if time_elected is not None:
+            election_time = time_elected - time_start
+            v.metrics["time_to_become_leader"] = election_time
+            #print("%d elected in %f" % (v.id, election_time))
+        else:
+            # Never elected leader
+            v.metrics["time_to_become_leader"] = None
 
 
 def compute_consensus_times(vehicle):
@@ -237,10 +277,10 @@ def gps_distance(lat1, lon1, lat2, lon2):
     return RADIUS_OF_EARTH * c
 
 
-def plot(vehicles, field, save=False):
+def plot(vehicles, field, save=False, fmt=""):
     plt.figure()
     for v in vehicles:
-        plt.plot(v.t, v.get(field), label="vehicle"+str(v.id))
+        plt.plot(v.t, v.get(field), fmt, label="vehicle"+str(v.id))
     plt.title(field)
     plt.xlabel("time (s)")
     plt.ylabel(field)
