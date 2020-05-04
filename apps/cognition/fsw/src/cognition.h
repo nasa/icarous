@@ -11,6 +11,7 @@
 #include "cfe_sb.h"
 #include "cfe_es.h"
 #include "cfe_platform_cfg.h"
+#include "cognition_core.h"
 
 #include <string.h>
 #include <errno.h>
@@ -84,6 +85,8 @@ typedef struct{
     algorithm_e searchAlgType;
 
     status_t statustxt;
+
+    cognition_t cog;
 
 }appdataCog_t;
 

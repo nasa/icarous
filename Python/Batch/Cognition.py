@@ -1,6 +1,6 @@
 from ctypes import *
 
-class cog(Structure):
+class Cog(Structure):
     _fields_ = [ \
  ( "UTCtime",c_ulonglong ),\
  ( "nextPrimaryWP",c_int ),\
@@ -104,36 +104,14 @@ class cog(Structure):
  ]
 
 
-mCognition = CDLL('libCognition.so')
-gCog = cog.in_dll(mCognition,'cog');
+class Cognition():
+    def __init__(self):
+        self.mCognition = CDLL('libCognition.so')
+        self.mCognition.InitializeCognition.argtypes = [POINTER(Cog)] 
+        self.mCognition.FlightPhases.argtypes = [POINTER(Cog)]
 
-def initCognition():
-    gCog.returnSafe = True;
-    gCog.nextPrimaryWP = 1;
-    gCog.resolutionTypeCmd = -1;
-    gCog.request = 0;
-    gCog.fpPhase = 0;
-    gCog.missionStart = -1;
-    gCog.keepInConflict = False;
-    gCog.keepOutConflict = False;
-    gCog.p2pcomplete = False;
-    gCog.takeoffComplete = -1;
-    gCog.mergingActive = 0
-    gCog.trafficConflictState = 0;
-    gCog.geofenceConflictState = 0;
-    gCog.trafficTrackConflict = False;
-    gCog.trafficSpeedConflict = False;
-    gCog.trafficAltConflict = False;
-    gCog.XtrackConflictState = 0;
-    gCog.resolutionTypeCmd = 2;
-    gCog.requestGuidance2NextWP = -1;
-    gCog.searchType = 1;
-    gCog.topofdescent = False;
-    gCog.ditch = False;
-    gCog.endDitch = False;
-    gCog.resetDitch = False;
-    gCog.primaryFPReceived = False;
-    gCog.nextWPFeasibility1 = True;
-    gCog.nextWPFeasibility2 = True;
+    def InitializeCognition(self,cogd):
+        self.mCognition.InitializeCognition(byref(cogd))
 
-initCognition()
+    def RunFlightPhases(self,cogd):
+        self.mCognition.FlightPhases(byref(cogd))

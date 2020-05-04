@@ -39,19 +39,10 @@ ic.InputFlightplan(flightplan,0)
 # Input geofences from file
 #ic.InputGeofence("geofence2.xml")
 
+icInstances = []
+icInstances.append(ic)
 
-# Run simulation until mission is complete
-while not ic.CheckMissionComplete():
-    status = ic.Run()
-    if not status:
-        continue
-
-    # Run simulation traffic and input traffic data to Icarous
-    RunTraffic(tfList)
-    for i,tf in enumerate(tfList):
-        ic.InputTraffic(i,tf.pos_gps,tf.vel,tf.pos)
-ic.WriteLog()
-
+RunSimulation(icInstances,tfList)
 
 
 # Plot data for visualization    

@@ -224,52 +224,54 @@ typedef struct{
 }cognition_t;
 
 
+void InitializeCognition(cognition_t* cog);
+
 /**
  * Top level finite state machines governing flight phase transitions
  */
-void FlightPhases(void);
+void FlightPhases(cognition_t* cog);
 
 /**
  * Function to handle conflict management
  */
-bool TrafficConflictManagement(void);
+bool TrafficConflictManagement(cognition_t* cog);
 
-void FindNewPath(uint8_t searchType, double positionA[],double velocityA[],double positionB[]);
+void FindNewPath(cognition_t *cog,uint8_t searchType, double positionA[],double velocityA[],double positionB[]);
 
-bool GeofenceConflictManagement(void);
+bool GeofenceConflictManagement(cognition_t *cog);
 
-bool ReturnToNextWP(void);
+bool ReturnToNextWP(cognition_t *cog);
 
-bool XtrackManagement(void);
+bool XtrackManagement(cognition_t *cog);
 
-bool TimeManagement(void);
+bool TimeManagement(cognition_t *cog);
 
-void GetResolutionType(void);
+void GetResolutionType(cognition_t *cog);
 
-status_e Takeoff(void);
+status_e Takeoff(cognition_t *cog);
 
-status_e Climb(void);
+status_e Climb(cognition_t *cog);
 
-status_e Cruise(void);
+status_e Cruise(cognition_t *cog);
 
-status_e Descent(void);
+status_e Descent(cognition_t *cog);
 
-status_e Approach(void);
+status_e Approach(cognition_t *cog);
 
-status_e Landing(void);
+status_e Landing(cognition_t *cog);
 
-status_e EmergencyDescent(void);
+status_e EmergencyDescent(cognition_t *cog);
 
-bool RunTrafficResolution(void);
+bool RunTrafficResolution(cognition_t *cog);
 
-void SetGuidanceVelCmd(double track,double gs,double vs);
+void SetGuidanceVelCmd(cognition_t *cog,double track,double gs,double vs);
 
-void SetGuidanceFlightPlan(char name[],int nextWP);
+void SetGuidanceFlightPlan(cognition_t *cog,char name[],int nextWP);
 
-void SetGuidanceP2P(double lat,double lon,double alt,double speed);
+void SetGuidanceP2P(cognition_t *cog,double lat,double lon,double alt,double speed);
 
-void ResetFlightPhases(void);
+void ResetFlightPhases(cognition_t *cog);
 
-void SendStatus(char buffer[],uint8_t severity);
+void SendStatus(cognition_t *cog,char buffer[],uint8_t severity);
 
 #endif

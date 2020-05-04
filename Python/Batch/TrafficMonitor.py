@@ -1,17 +1,5 @@
 from ctypes import *
 
-lib = CDLL('libTrafficMonitor.so')
-
-lib._wrap_new_TrafficMonitor.restype = c_void_p
-lib._wrap_TrafficMonitor_InputTraffic.argtypes = [c_void_p,c_int,c_char_p,c_double*3,c_double*3,c_double]
-lib._wrap_TrafficMonitor_MonitorTraffic.argtypes = [c_void_p,c_double*3,c_double*3,c_double]
-lib._wrap_TrafficMonitor_MonitorWPFeasibility.argtypes = [c_void_p,c_double*3,c_double*3,c_double*3]
-lib._wrap_TrafficMonitor_CheckSafeToTurn.argtypes =[c_void_p,c_double*3,c_double*3,c_double,c_double] 
-lib._wrap_TrafficMonitor_UpdateDAAParameters.argtypes = [c_void_p,c_char_p,c_bool]
-lib._wrap_TrafficMonitor_GetTrackBands.argtypes = [c_void_p,c_int*1,c_int*20,c_double*20,c_double*20,c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1]
-lib._wrap_TrafficMonitor_GetGSBands.argtypes = [c_void_p,c_int*1,c_int*20,c_double*20,c_double*20,c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1]
-lib._wrap_TrafficMonitor_GetAltBands.argtypes = [c_void_p,c_int*1,c_int*20,c_double*20,c_double*20,c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1]
-lib._wrap_TrafficMonitor_GetVSBands.argtypes = [c_void_p,c_int*1,c_int*20,c_double*20,c_double*20,c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1,c_double*1]
 class Bands():
     def __init__(self):
         self.currentConflict = 0
@@ -24,14 +12,31 @@ class Bands():
         self.high = []
 
 class TrafficMonitor():
+
+
     def __init__(self,log):
-        self.obj = lib._wrap_new_TrafficMonitor(c_bool(log),c_char_p("DaidalusQuadConfig.txt".encode('utf-8')))
+        self.lib = CDLL('libTrafficMonitor.so')
+
+        self.lib._wrap_new_TrafficMonitor.restype = c_void_p
+        self.lib._wrap_TrafficMonitor_InputTraffic.argtypes = [c_void_p,c_int,c_char_p,c_double*3,c_double*3,c_double]
+        self.lib._wrap_TrafficMonitor_MonitorTraffic.argtypes = [c_void_p,c_double*3,c_double*3,c_double]
+        self.lib._wrap_TrafficMonitor_MonitorWPFeasibility.argtypes = [c_void_p,c_double*3,c_double*3,c_double*3]
+        self.lib._wrap_TrafficMonitor_CheckSafeToTurn.argtypes =[c_void_p,c_double*3,c_double*3,c_double,c_double] 
+        self.lib._wrap_TrafficMonitor_UpdateDAAParameters.argtypes = [c_void_p,c_char_p,c_bool]
+        bandargtype = [c_void_p,c_int*1,c_int*20,c_double*20,c_double*20,\
+                       c_int*1,c_int*1,c_double*1,c_double*1,c_double*1,\
+                       c_double*1,c_double*1,c_double*1,c_double*1]
+        self.lib._wrap_TrafficMonitor_GetTrackBands.argtypes = bandargtype
+        self.lib._wrap_TrafficMonitor_GetGSBands.argtypes = bandargtype
+        self.lib._wrap_TrafficMonitor_GetAltBands.argtypes = bandargtype
+        self.lib._wrap_TrafficMonitor_GetVSBands.argtypes = bandargtype
+        self.obj = self.lib._wrap_new_TrafficMonitor(c_bool(log),c_char_p("DaidalusQuadConfig.txt".encode('utf-8')))
 
     def deleteobj(self):
-        lib._wrap_delete_TrafficMonitor(self.obj)
+        self.lib._wrap_delete_TrafficMonitor(self.obj)
 
     def SetParameters(self,params,log):
-        lib._wrap_TrafficMonitor_UpdateDAAParameters(self.obj,c_char_p(params.encode('utf-8')),c_bool(log))
+        self.lib._wrap_TrafficMonitor_UpdateDAAParameters(self.obj,c_char_p(params.encode('utf-8')),c_bool(log))
 
     def input_traffic(self,index,position,velocity,time):
         cpos = c_double*3
@@ -42,13 +47,13 @@ class TrafficMonitor():
         _index = c_int(index)
         ret = c_int(0)
         callsign = "traffic"+str(index)
-        ret.value = lib._wrap_TrafficMonitor_InputTraffic(self.obj,_index,c_char_p(callsign.encode('utf-8')),_pos,_vel,_time)
+        ret.value = self.lib._wrap_TrafficMonitor_InputTraffic(self.obj,_index,c_char_p(callsign.encode('utf-8')),_pos,_vel,_time)
         
     def monitor_traffic(self,position,velocity,time):
         cpos = c_double*3
         _pos = cpos(position[0],position[1],position[2])
         _vel = cpos(velocity[0],velocity[1],velocity[2])
-        lib._wrap_TrafficMonitor_MonitorTraffic(self.obj,_pos,_vel,c_double(time))
+        self.lib._wrap_TrafficMonitor_MonitorTraffic(self.obj,_pos,_vel,c_double(time))
 
     def monitor_wp_feasibility(self,position,velocity,wp):
         cpos = c_double*3
@@ -56,7 +61,7 @@ class TrafficMonitor():
         _vel = cpos(velocity[0],velocity[1],velocity[2])
         _wp = cpos(wp[0],wp[1],wp[2])
         val = c_bool(0)
-        val.value = lib._wrap_TrafficMonitor_MonitorWPFeasibility(self.obj,_pos,_vel,_wp)
+        val.value = self.lib._wrap_TrafficMonitor_MonitorWPFeasibility(self.obj,_pos,_vel,_wp)
         return val.value
 
     def check_safe_to_turn(self,position,velocity,fromHeading,toHeading):
@@ -64,7 +69,7 @@ class TrafficMonitor():
         _pos = cpos(position[0],position[1],position[2])
         _vel = cpos(velocity[0],velocity[1],velocity[2])
         ret = c_int(0)
-        ret.value = lib._wrap_TrafficMonitor_CheckSafeToTurn(self.obj,_pos,_vel,c_double(fromHeading),c_double(toHeading))
+        ret.value = self.lib._wrap_TrafficMonitor_CheckSafeToTurn(self.obj,_pos,_vel,c_double(fromHeading),c_double(toHeading))
         return ret.value
       
     def GetTrackBands(self):
@@ -83,7 +88,7 @@ class TrafficMonitor():
        bandTypes = intArr20()
        low = doubleArr20()
        high = doubleArr20()
-       lib._wrap_TrafficMonitor_GetTrackBands(self.obj,byref(numBands),bandTypes,low,
+       self.lib._wrap_TrafficMonitor_GetTrackBands(self.obj,byref(numBands),bandTypes,low,
                                                high,
                                                byref(recovery),
                                                byref(currentConflict),
@@ -122,7 +127,7 @@ class TrafficMonitor():
        bandTypes = intArr20(0,0,0,0,0)
        low = doubleArr20(0,0,0,0,0)
        high = doubleArr20(0,0,0,0,0)
-       lib._wrap_TrafficMonitor_GetGSBands(self.obj,byref(numBands),bandTypes,low,
+       self.lib._wrap_TrafficMonitor_GetGSBands(self.obj,byref(numBands),bandTypes,low,
                                                high,
                                                byref(recovery),
                                                byref(currentConflict),
@@ -161,7 +166,7 @@ class TrafficMonitor():
        bandTypes = intArr20(0,0,0,0,0)
        low = doubleArr20(0,0,0,0,0)
        high = doubleArr20(0,0,0,0,0)
-       lib._wrap_TrafficMonitor_GetAltBands(self.obj,byref(numBands),bandTypes,low,
+       self.lib._wrap_TrafficMonitor_GetAltBands(self.obj,byref(numBands),bandTypes,low,
                                                high,
                                                byref(recovery),
                                                byref(currentConflict),
@@ -202,7 +207,7 @@ class TrafficMonitor():
        bandTypes = intArr10(0,0,0,0,0)
        low = doubleArr10(0,0,0,0,0)
        high = doubleArr10(0,0,0,0,0)
-       lib._wrap_TrafficMonitor_GetVSBands(self.obj,byref(numBands),bandTypes,low,
+       self.lib._wrap_TrafficMonitor_GetVSBands(self.obj,byref(numBands),bandTypes,low,
                                                high,
                                                byref(recovery),
                                                byref(currentConflict),

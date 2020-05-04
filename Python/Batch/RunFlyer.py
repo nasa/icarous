@@ -43,36 +43,18 @@ flightplan = [[37.55290000,-122.27250000,0.00000000, 0],
               [37.63545875,-122.39993840,988.17284609, 50],
               [37.63890105,-122.40526271,851.70136857, 50]]
 
-localFP = []
-for fp in flightplan:
-    localFP.append(ic.ConvertToLocalCoordinates(fp[:2]))
-
-
-
 ic.InputFlightplan(flightplan,0)
+icInstances = []
+icInstances.append(ic)
 
-# Input geofences from file
-#ic.InputGeofence("geofence2.xml")
 
-#import pdb; pdb.set_trace()
-
-# Run simulation until mission is complete
-while not ic.CheckMissionComplete():
-    status = ic.Run()
-    if not status:
-        continue
-
-    # Run simulation traffic and input traffic data to Icarous
-    RunTraffic(tfList)
-    for i,tf in enumerate(tfList):
-        ic.InputTraffic(i,tf.pos_gps,tf.vel,tf.pos)
-ic.WriteLog()
+RunSimulation(icInstances,tfList)
 
 # Plot data for visualization    
 plt.figure(1)
 plt.plot(np.array(ic.positionLog)[:,0],np.array(ic.positionLog)[:,1],'r')
-plt.plot(np.array(localFP)[:,0],np.array(localFP)[:,1],'g--')
-plt.scatter(np.array(localFP)[:,0],np.array(localFP)[:,1])
+plt.plot(np.array(ic.localPlans[0])[:,1],np.array(ic.localPlans[0])[:,0],'g--')
+plt.scatter(np.array(ic.localPlans[0])[:,1],np.array(ic.localPlans[0])[:,0])
 for tf in tfList:
     plt.plot(np.array(tf.log['pos'])[:,0],np.array(tf.log['pos'])[:,1],'b')
 plt.show()

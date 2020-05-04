@@ -78,6 +78,7 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
     double distH = ComputeDistance(guidanceInput->position, guidanceInput->curr_waypoint);
     double distV = fabs(guidanceInput->position[2] - guidanceInput->curr_waypoint[2]);
 
+
     double currSpeed = sqrt( guidanceInput->velocity[0] * guidanceInput->velocity[0] + 
                              guidanceInput->velocity[1] * guidanceInput->velocity[1] + 
                              guidanceInput->velocity[2] * guidanceInput->velocity[2]);

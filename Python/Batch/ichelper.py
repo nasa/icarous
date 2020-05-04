@@ -64,7 +64,7 @@ def ConvertTrkGsVsToVned(trk,gs,vs):
     vy = gs * np.cos(trk*np.pi/180)
     vx = gs * np.sin(trk*np.pi/180)
     vz = vs
-    return (vx,vy,vz)
+    return (vy,vx,vz)
 
 def GetInitialConditions():
     theta = random.randint(90,270)
@@ -106,6 +106,40 @@ def LoadIcarousParams(filename):
         param[a[0]] = float(a[1])
 
     return param
+
+def ReadFlightplanFile(filename):
+    try:
+        f = open(filename,mode='r')
+    except (IOError,TypeError):
+        print("Failed to open file '%s'" % filename)
+        return
+
+    wp = []
+    wp_ind = []
+    wp_speed = []
+    speed = 1
+    line='#'
+    while line is not '':
+        line = f.readline()
+        lc = line.replace(' ','\t').split('\t')
+        if len(lc) < 10:
+            continue
+
+        wplist = [elem for elem in lc if elem is not '']
+
+        if int(wplist[3]) == 178:
+            speed = float(wplist[5])
+
+        if int(wplist[3]) == 16:
+            wp.append([float(wplist[8]),float(wplist[9]),float(wplist[10])])
+            wp_ind.append(int(float(wplist[7])))
+            wp_speed.append(speed)
+
+    return wp,wp_ind,wp_speed
+
+
+
+
 
         
 

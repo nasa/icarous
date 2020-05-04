@@ -2,15 +2,16 @@ from ctypes import byref
 import numpy as np
 
 
-from pyCognition import gCog,initCognition,mCognition
-from pyGuidance import (mGuidance,
+from Cognition import (Cog,Cognition)
+from Guidance import (mGuidance,
                       GuidanceInput,
                       GuidanceOutput,
                       GuidanceTable,
                       GuidanceCommands)
-from pyGeofence import (Getfence,GeofenceMonitor)
-from pyTrajectory import Trajectory
-from pyTrafficMonitor import TrafficMonitor
+from Geofence import (Getfence,GeofenceMonitor)
+from Trajectory import Trajectory
+from TrafficMonitor import TrafficMonitor
+from Merger import (MAX_NODES,Merger,LogData,MergerData)
 from quadsim import QuadSim
 from VehicleSim import (VehicleSim,
                         StartTraffic,
@@ -20,11 +21,12 @@ from ichelper import (ConvertTrkGsVsToVned,
                       gps_offset,
                       ConvertVnedToTrkGsVs,
                       ComputeHeading,
-                      LoadIcarousParams)
+                      LoadIcarousParams,
+                      ReadFlightplanFile)
 import time
 
 class Icarous():
-    def __init__(self, initialPos, simtype="UAS_ROTOR", fasttime = True, logfile = None):
+    def __init__(self, initialPos, simtype="UAS_ROTOR", vehicleID = 0,fasttime = True, logfile = None):
         self.fasttime = fasttime
         self.logfile = logfile
         self.home_pos = [initialPos[0], initialPos[1], initialPos[2]]
@@ -34,14 +36,15 @@ class Icarous():
         else:
             self.ownship = QuadSim()
 
-        # Modules
-        self.InitializeModules()
-        self.cog = gCog
-        self.Cognition = mCognition
+        self.vehicleID = vehicleID
+        self.Cognition = Cognition()
+        self.cog = Cog()
+        self.Cognition.InitializeCognition(self.cog)
         self.Guidance = mGuidance
         self.Geofence = GeofenceMonitor([3,2,2,20,20])
         self.Trajectory = Trajectory(5.0,250)
         self.tfMonitor = TrafficMonitor(False)
+        self.Merger = Merger("AC",vehicleID)
         self.daafile = "DaidalusQuadConfig.txt"
 
         # Aircraft data
@@ -60,6 +63,12 @@ class Icarous():
         self.guidanceMode = GuidanceCommands.NOOP
         self.guidCommParams = []
 
+        # Merger
+        self.arrTime = None
+        self.logLatency = 0
+        self.prevLogUpdate = 0
+        self.mergerLog = LogData()
+
         self.position = self.home_pos
         self.velocity = [0.0,0.0,0.0]
         self.trkgsvs  = [0.0,0.0,0.0]
@@ -73,9 +82,6 @@ class Icarous():
         self.plans = []
         self.localPlans = []
         self.daa_radius = 0
-
-    def InitializeModules(self):
-        initCognition()
 
     def setpos_uncertainty(self,xx,yy,zz,xy,yz,xz,coeff=0.8):
         self.ownship.setpos_uncertainty(xx,yy,zz,xy,yz,xz,coeff)
@@ -100,6 +106,13 @@ class Icarous():
         self.localPlans.append(self.GetLocalFlightPlan(fp))
         self.Trajectory.InputFlightplan("Plan0",fp)
 
+    def InputFlightplanFromFile(self,filename):
+        wp, ind, speed = ReadFlightplanFile(filename)
+        fp = []
+        for w,i in zip(wp,speed):
+            fp.append(w + [i])
+        self.InputFlightplan(fp,0)
+
     def ConvertToLocalCoordinates(self,pos):
         dh = lambda x, y: abs(distance(self.home_pos[0],self.home_pos[1],x,y))
         if pos[1] > self.home_pos[1]:
@@ -113,7 +126,7 @@ class Icarous():
             sgnY = -1
         dx = dh(self.home_pos[0],pos[1])
         dy = dh(pos[0],self.home_pos[1])
-        return [dx*sgnX,dy*sgnY]
+        return [dy*sgnY,dx*sgnX,pos[2]]
 
     def GetLocalFlightPlan(self,fp):
         local = []
@@ -126,6 +139,11 @@ class Icarous():
         for fence in self.fenceList:
             self.Geofence.InputData(fence)
             self.Trajectory.InputGeofenceData(fence)
+
+    def InputMergeFixes(self,filename):
+        wp, ind, _ = ReadFlightplanFile(filename)
+        self.Merger.SetIntersectionData(list(zip(ind,wp)))
+
 
     def SetGeofenceParams(self,params):
         gfparams = [params['LOOKAHEAD'],
@@ -228,6 +246,17 @@ class Icarous():
         self.tfMonitor.SetParameters(paramString,daa_log)
         self.Trajectory.UpdateDAAParams(paramString)
         self.daa_radius = params['DET_1_WCV_DTHR']/3
+
+    def SetMergerParams(self,params):
+        self.Merger.SetVehicleConstraints(params["MIN_GS"]*0.5,
+                                          params["MAX_GS"]*0.5,
+                                          params["MAX_TURN_RADIUS"])
+        self.Merger.SetFixParams(params["MIN_SEP_TIME"],
+                                 params["COORD_ZONE"],
+                                 params["SCHEDULE_ZONE"],
+                                 params["ENTRY_RADIUS"],
+                                 params["CORRIDOR_WIDTH"])
+
         
     def SetParameters(self,params):
         self.params = params
@@ -236,6 +265,7 @@ class Icarous():
         self.SetTrajectoryParams(params)
         self.SetCognitionParams(params)
         self.SetTrafficParams(params)
+        self.SetMergerParams(params)
 
     def RunOwnship(self):
         self.ownship.input(self.controlInput[1],self.controlInput[0],self.controlInput[2])
@@ -297,7 +327,7 @@ class Icarous():
                 self.cog.wpNext1[i] = self.flightplan1[self.cog.nextPrimaryWP][i]
 
             dist = distance(self.position[0],self.position[1],self.cog.wpNext1[0],self.cog.wpNext1[1])
-            #print(dist)
+            #print("IC: %d, Distance to wp %d: %f" %(self.vehicleID,nextWP,dist))
 
         # Check for feasiblity of path
         if len(self.flightplan2) > 0:
@@ -322,7 +352,7 @@ class Icarous():
 
 
 
-        self.Cognition.FlightPhases()
+        self.Cognition.RunFlightPhases(self.cog)
 
         if self.cog.sendCommand:
             self.cog.sendCommand = False
@@ -548,6 +578,30 @@ class Icarous():
         self.cog.vsBandsNum = self.vsband.numBands
 
 
+    def RunMerger(self):
+        self.Merger.SetAircraftState(self.position,self.velocity)
+        if self.currTime - self.prevLogUpdate > self.logLatency:
+            self.Merger.SetMergerLog(self.mergerLog)
+            self.prevLogUpdate = self.currTime
+
+        self.cog.mergingActive = self.Merger.Run(self.currTime)
+        outAvail, arrTime =  self.Merger.GetArrivalTimes()
+        if outAvail:
+            self.arrTime = arrTime
+        if self.cog.mergingActive == 3:
+            velCmd = self.Merger.GetVelocityCmd()
+            (vn,ve,vd) = ConvertTrkGsVsToVned(*velCmd)
+            self.guidanceMode = GuidanceCommands.VECTOR
+            self.guidCommParams[0] = vn
+            self.guidCommParams[1] = ve
+            self.guidCommParams[2] = vd
+
+
+    def InputMergeLogs(self,logs,delay):
+        self.mergerLog = logs
+        self.logLatency = delay
+
+
     def CheckMissionComplete(self):
         if self.cog.missionStart == -2:
             return True
@@ -613,6 +667,9 @@ class Icarous():
         self.RunGuidance()
         #time_guid_out = time.time()
 
+
+        self.RunMerger()
+
         #time_ship_in = time.time()
         self.RunOwnship()
         #time_ship_out = time.time()
@@ -623,4 +680,64 @@ class Icarous():
         #print("ownship %f" % (time_ship_out - time_ship_in))
 
         return True
+
+def ExchangeArrivalTimes(icInstances,delay):
+    arrTimes = []
+    log = []
+    for ic in icInstances:
+        if ic.arrTime is not None:
+            arrTimes.append(ic.arrTime)
+
+
+    for arr in arrTimes:
+        fid = arr.intersectionID
+        if fid <= 0:
+            continue
+        avail = False
+        for g in log:
+            if fid == g[0].intersectionID:
+                avail = True
+                g.append(arr)
+        if not avail:
+            log.append([arr])
+
+    for lg in log:
+        if len(lg) == 0:
+            continue
+
+        datalog = LogData()
+        datalog.intersectionID = lg[0].intersectionID
+        datalog.nodeRole = 1
+        datalog.totalNodes = len(lg)
+        mg = MergerData*MAX_NODES
+        datalog.log = mg(*lg)
+        for ic in icInstances:
+            ic.InputMergeLogs(datalog,delay)
+            
+
+def RunSimulation(icInstances,trafficVehicles,commDelay=0):
+    # Run simulation until mission is complete
+    simComplete = False
+        
+    while not simComplete:
+        status = False
+        for ic in icInstances:
+            status |= ic.Run()
+            simComplete |= ic.CheckMissionComplete()
+
+        if status:
+            RunTraffic(trafficVehicles)
+            for ic in icInstances:
+                for i,tf in enumerate(trafficVehicles):
+                    ic.InputTraffic(i,tf.pos_gps,tf.vel,tf.pos)
+
+        ExchangeArrivalTimes(icInstances,commDelay)
+
+    # Transfer all vehicle to a common reference frame
+    for i,ic in enumerate(icInstances):
+        if i > 0:
+            ic.ownshipLog["positionNED"] = list(map(icInstances[0].ConvertToLocalCoordinates,ic.ownshipLog["position"]))
+            ic.localPlans[0] = list(map(icInstances[0].ConvertToLocalCoordinates,ic.flightplan1))
+
+        ic.WriteLog()
 

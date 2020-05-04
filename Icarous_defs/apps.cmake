@@ -2,7 +2,7 @@ set(APPS2RUN
 Icarouslib
 port_lib 
 scheduler
-arducopter
+rotorsim
 gsInterface 
 cognition 
 guidance 

@@ -76,8 +76,8 @@ class AgentAnimation():
         poly.set_xy([[x1, y1], [x2, y2], [x3, y3]])
 
     def AddPath(self,path,color):
-        plt.plot(path[:,0],path[:,1],color)
-        plt.scatter(path[:,0],path[:,1])
+        plt.plot(path[:,1],path[:,0],color)
+        plt.scatter(path[:,1],path[:,0])
 
     def init(self):
         return self.agents,self.paths,self.circle

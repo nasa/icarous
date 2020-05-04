@@ -7,9 +7,6 @@
 #include "cognition.h"
 #include "cognition_version.h"
 #include "cog_tbl.c"
-#include "cognition_core.h"
-
-extern cognition_t cog;
 
 /// Event filter definition for ardupilot
 CFE_EVS_BinFilter_t  Cognition_EventFilters[] =
@@ -122,35 +119,35 @@ void COGNITION_AppInit(void){
 }
 
 void COGNITION_AppInitData(){
-    cog.returnSafe = true;
-    cog.nextPrimaryWP = 1;
-    cog.resolutionTypeCmd = -1;
-    cog.request = REQUEST_NIL;
-    cog.fpPhase = IDLE_PHASE;
-    cog.missionStart = -1;
-    cog.keepInConflict = false;
-    cog.keepOutConflict = false;
-    cog.p2pcomplete = false;
-    cog.takeoffComplete = -1;
+    appdataCog.cog.returnSafe = true;
+    appdataCog.cog.nextPrimaryWP = 1;
+    appdataCog.cog.resolutionTypeCmd = -1;
+    appdataCog.cog.request = REQUEST_NIL;
+    appdataCog.cog.fpPhase = IDLE_PHASE;
+    appdataCog.cog.missionStart = -1;
+    appdataCog.cog.keepInConflict = false;
+    appdataCog.cog.keepOutConflict = false;
+    appdataCog.cog.p2pcomplete = false;
+    appdataCog.cog.takeoffComplete = -1;
 
-    cog.trafficConflictState = NOOPC;
-    cog.geofenceConflictState = NOOPC;
-    cog.trafficTrackConflict = false;
-    cog.trafficSpeedConflict = false;
-    cog.trafficAltConflict = false;
-    cog.XtrackConflictState = NOOPC;
-    cog.resolutionTypeCmd = TRACK_RESOLUTION;
-    cog.requestGuidance2NextWP = -1;
-    cog.searchType = _ASTAR;
-    cog.topofdescent = false;
-    cog.ditch = false;
-    cog.endDitch = false;
-    cog.resetDitch = false;
-    cog.primaryFPReceived = false;
-    cog.mergingActive = 0;
+    appdataCog.cog.trafficConflictState = NOOPC;
+    appdataCog.cog.geofenceConflictState = NOOPC;
+    appdataCog.cog.trafficTrackConflict = false;
+    appdataCog.cog.trafficSpeedConflict = false;
+    appdataCog.cog.trafficAltConflict = false;
+    appdataCog.cog.XtrackConflictState = NOOPC;
+    appdataCog.cog.resolutionTypeCmd = TRACK_RESOLUTION;
+    appdataCog.cog.requestGuidance2NextWP = -1;
+    appdataCog.cog.searchType = _ASTAR;
+    appdataCog.cog.topofdescent = false;
+    appdataCog.cog.ditch = false;
+    appdataCog.cog.endDitch = false;
+    appdataCog.cog.resetDitch = false;
+    appdataCog.cog.primaryFPReceived = false;
+    appdataCog.cog.mergingActive = 0;
 
-    cog.nextWPFeasibility1 = 1;
-    cog.nextWPFeasibility2 = 1;
+    appdataCog.cog.nextWPFeasibility1 = 1;
+    appdataCog.cog.nextWPFeasibility2 = 1;
     CFE_SB_InitMsg(&appdataCog.statustxt,ICAROUS_STATUS_MID,sizeof(status_t),TRUE);
 }
 
@@ -166,24 +163,24 @@ void COGNITION_ProcessSBData() {
         case ICAROUS_FLIGHTPLAN_MID:{
             flightplan_t* fplan = (flightplan_t*)appdataCog.CogMsgPtr;
             memcpy(&appdataCog.flightplan1,fplan,sizeof(flightplan_t));
-            cog.primaryFPReceived = true;
+            appdataCog.cog.primaryFPReceived = true;
 
-            cog.wpPrev1[0] =fplan->waypoints[0].latitude;
-            cog.wpPrev1[1] =fplan->waypoints[0].longitude;
-            cog.wpPrev1[2] =fplan->waypoints[0].altitude;
+            appdataCog.cog.wpPrev1[0] =fplan->waypoints[0].latitude;
+            appdataCog.cog.wpPrev1[1] =fplan->waypoints[0].longitude;
+            appdataCog.cog.wpPrev1[2] =fplan->waypoints[0].altitude;
 
-            cog.wpNext1[0] =fplan->waypoints[1].latitude;
-            cog.wpNext1[1] =fplan->waypoints[1].longitude;
-            cog.wpNext1[2] =fplan->waypoints[1].altitude;
-            cog.num_waypoints = fplan->num_waypoints;
-            cog.scenarioTime = fplan->scenario_time;
+            appdataCog.cog.wpNext1[0] =fplan->waypoints[1].latitude;
+            appdataCog.cog.wpNext1[1] =fplan->waypoints[1].longitude;
+            appdataCog.cog.wpNext1[2] =fplan->waypoints[1].altitude;
+            appdataCog.cog.num_waypoints = fplan->num_waypoints;
+            appdataCog.cog.scenarioTime = fplan->scenario_time;
 
             if(fplan->waypoints[1].wp_metric == WP_METRIC_ETA){
-                cog.wpMetricTime = true;
-                cog.refWPTime = fplan->waypoints[1].value;
+                appdataCog.cog.wpMetricTime = true;
+                appdataCog.cog.refWPTime = fplan->waypoints[1].value;
             }else{
-                cog.wpMetricTime = false;
-                cog.refWPTime = 0;
+                appdataCog.cog.wpMetricTime = false;
+                appdataCog.cog.refWPTime = 0;
             }
             break;
         }
@@ -199,22 +196,22 @@ void COGNITION_ProcessSBData() {
             memcpy(&appdataCog.trkBands,trk,sizeof(bands_t));
 
             if(trk->currentConflictBand == 1){
-               cog.trafficTrackConflict = true;
+               appdataCog.cog.trafficTrackConflict = true;
                if(trk->resPreferred >= 0)
-                   cog.preferredTrack = trk->resPreferred;
+                   appdataCog.cog.preferredTrack = trk->resPreferred;
                else
-                   cog.preferredTrack = -1000;
+                   appdataCog.cog.preferredTrack = -1000;
             }else{
-               cog.trafficTrackConflict = false;
-               cog.preferredTrack = -10000;
+               appdataCog.cog.trafficTrackConflict = false;
+               appdataCog.cog.preferredTrack = -10000;
             }
 
-            memcpy(cog.trkBandType,appdataCog.trkBands.type,sizeof(int)*20);
-            memcpy(cog.trkBandMin,appdataCog.trkBands.min,sizeof(double)*20);
-            memcpy(cog.trkBandMax,appdataCog.trkBands.max,sizeof(double)*20);
-            cog.trkBandNum = appdataCog.trkBands.numBands;
-            cog.nextWPFeasibility1 = appdataCog.trkBands.wpFeasibility1[cog.nextPrimaryWP];
-            cog.nextWPFeasibility2 = appdataCog.trkBands.wpFeasibility1[cog.nextPrimaryWP];
+            memcpy(appdataCog.cog.trkBandType,appdataCog.trkBands.type,sizeof(int)*20);
+            memcpy(appdataCog.cog.trkBandMin,appdataCog.trkBands.min,sizeof(double)*20);
+            memcpy(appdataCog.cog.trkBandMax,appdataCog.trkBands.max,sizeof(double)*20);
+            appdataCog.cog.trkBandNum = appdataCog.trkBands.numBands;
+            appdataCog.cog.nextWPFeasibility1 = appdataCog.trkBands.wpFeasibility1[appdataCog.cog.nextPrimaryWP];
+            appdataCog.cog.nextWPFeasibility2 = appdataCog.trkBands.wpFeasibility1[appdataCog.cog.nextPrimaryWP];
             break;
         }
 
@@ -232,17 +229,17 @@ void COGNITION_ProcessSBData() {
 
 
             if(gs->currentConflictBand == 1){
-               cog.trafficSpeedConflict = true;
+               appdataCog.cog.trafficSpeedConflict = true;
                if(!isinf(gs->resPreferred) && !isnan(gs->resPreferred)){
-                   cog.preferredSpeed = gs->resPreferred * fac;
-                   cog.prevResSpeed = cog.preferredSpeed;
+                   appdataCog.cog.preferredSpeed = gs->resPreferred * fac;
+                   appdataCog.cog.prevResSpeed = appdataCog.cog.preferredSpeed;
                }
                else{
-                   cog.preferredSpeed = -10000;
+                   appdataCog.cog.preferredSpeed = -10000;
                }
             }else{
-               int id1 = cog.nextPrimaryWP;
-               int id2 = cog.nextSecondaryWP;
+               int id1 = appdataCog.cog.nextPrimaryWP;
+               int id2 = appdataCog.cog.nextSecondaryWP;
                if (id1 >= appdataCog.flightplan1.num_waypoints)
                    id1 = appdataCog.flightplan1.num_waypoints-1;
 
@@ -250,17 +247,17 @@ void COGNITION_ProcessSBData() {
                    id2 = appdataCog.flightplan2.num_waypoints-1;
 
 
-               if(cog.Plan0 && gs->wpFeasibility1[id1]) {
-                   cog.trafficSpeedConflict = false;
-               }else if(cog.Plan1 && gs->wpFeasibility2[id2]){
-                   cog.trafficSpeedConflict = false;
+               if(appdataCog.cog.Plan0 && gs->wpFeasibility1[id1]) {
+                   appdataCog.cog.trafficSpeedConflict = false;
+               }else if(appdataCog.cog.Plan1 && gs->wpFeasibility2[id2]){
+                   appdataCog.cog.trafficSpeedConflict = false;
                }
                else {
-                   if(cog.trafficSpeedConflict){
-                      cog.trafficSpeedConflict = true;
+                   if(appdataCog.cog.trafficSpeedConflict){
+                      appdataCog.cog.trafficSpeedConflict = true;
                    }
                }
-               cog.preferredSpeed = -1000;
+               appdataCog.cog.preferredSpeed = -1000;
             }
             break;
         }
@@ -270,14 +267,14 @@ void COGNITION_ProcessSBData() {
 
             memcpy(&appdataCog.altBands,alt,sizeof(bands_t));
             if(alt->currentConflictBand == 1){
-               cog.trafficAltConflict = true;
+               appdataCog.cog.trafficAltConflict = true;
                if(!isinf(alt->resPreferred))
-                   cog.preferredAlt = alt->resPreferred;
+                   appdataCog.cog.preferredAlt = alt->resPreferred;
                else
-                   cog.preferredAlt = -10000;
+                   appdataCog.cog.preferredAlt = -10000;
             }else{
-               cog.trafficAltConflict = false;
-               cog.preferredAlt = -1000;
+               appdataCog.cog.trafficAltConflict = false;
+               appdataCog.cog.preferredAlt = -1000;
             }
             break;
         }
@@ -285,25 +282,25 @@ void COGNITION_ProcessSBData() {
         case ICAROUS_BANDS_VS_MID:{
             bands_t* vspeed = (bands_t*)appdataCog.CogMsgPtr;
             memcpy(&appdataCog.vsBands,vspeed,sizeof(bands_t));
-            cog.resVUp = vspeed->resUp;
-            cog.resVDown = vspeed->resDown;
-            cog.vsBandsNum = vspeed->numBands;
+            appdataCog.cog.resVUp = vspeed->resUp;
+            appdataCog.cog.resVDown = vspeed->resDown;
+            appdataCog.cog.vsBandsNum = vspeed->numBands;
             break;
         }
 
 		case ICAROUS_POSITION_MID:{
             position_t* pos = (position_t*) appdataCog.CogMsgPtr;
 			memcpy(&appdataCog.position,pos,sizeof(position_t));			
-            cog.speed = sqrt(pow(pos->vn,2) + pow(pos->ve,2));
-            cog.position[0] = pos->latitude;
-            cog.position[1] = pos->longitude;
-            cog.position[2] = pos->altitude_rel;
+            appdataCog.cog.speed = sqrt(pow(pos->vn,2) + pow(pos->ve,2));
+            appdataCog.cog.position[0] = pos->latitude;
+            appdataCog.cog.position[1] = pos->longitude;
+            appdataCog.cog.position[2] = pos->altitude_rel;
 
-            cog.velocity[0] = pos->vn;
-            cog.velocity[1] = pos->ve;
-            cog.velocity[2] = pos->vd;
+            appdataCog.cog.velocity[0] = pos->vn;
+            appdataCog.cog.velocity[1] = pos->ve;
+            appdataCog.cog.velocity[2] = pos->vd;
 
-            cog.hdg         = pos->hdg;
+            appdataCog.cog.hdg         = pos->hdg;
 			break;
 		}
 
@@ -312,7 +309,7 @@ void COGNITION_ProcessSBData() {
 
             switch(cmd->name){
                 case _TRAFFIC_RES_:{
-                    cog.resolutionTypeCmd = cmd->param1;
+                    appdataCog.cog.resolutionTypeCmd = cmd->param1;
                     break;
                 }
 
@@ -324,8 +321,8 @@ void COGNITION_ProcessSBData() {
 
         case ICAROUS_STARTMISSION_MID:{
             argsCmd_t* msg = (argsCmd_t*) appdataCog.CogMsgPtr;
-            cog.missionStart = (int)msg->param1;            
-            cog.scenarioTime += msg->param2;
+            appdataCog.cog.missionStart = (int)msg->param1;
+            appdataCog.cog.scenarioTime += msg->param2;
             CFE_ES_WriteToSysLog("Cognition:Received start mission command\n");
             break;
         }
@@ -340,24 +337,24 @@ void COGNITION_ProcessSBData() {
             }else if(strcmp(fpm->planID,"Plan1") == 0){
                 memcpy(&appdataCog.fp2monitor,fpm,sizeof(flightplan_monitor_t));
             }
-            cog.resolutionSpeed = fpm->resolutionSpeed;
+            appdataCog.cog.resolutionSpeed = fpm->resolutionSpeed;
             break;
         }
 
         case TRAFFIC_PARAMETERS_MID:{
             traffic_parameters_t* msg = (traffic_parameters_t*) appdataCog.CogMsgPtr;
-            cog.DTHR = msg->det_1_WCV_DTHR;
-            cog.ZTHR = msg->det_1_WCV_ZTHR;
-            cog.resolutionTypeCmd = msg->resType;
+            appdataCog.cog.DTHR = msg->det_1_WCV_DTHR;
+            appdataCog.cog.ZTHR = msg->det_1_WCV_ZTHR;
+            appdataCog.cog.resolutionTypeCmd = msg->resType;
             break;
         }
 
         case TRAJECTORY_PARAMETERS_MID:{
             trajectory_parameters_t* msg = (trajectory_parameters_t*) appdataCog.CogMsgPtr;
-            cog.allowedXtrackDev1 = msg->xtrkDev;
-            cog.xtrkGain = msg->xtrkGain;
-            cog.resolutionSpeed = msg->resSpeed;
-            cog.searchType = msg->searchAlgorithm;
+            appdataCog.cog.allowedXtrackDev1 = msg->xtrkDev;
+            appdataCog.cog.xtrkGain = msg->xtrkGain;
+            appdataCog.cog.resolutionSpeed = msg->resSpeed;
+            appdataCog.cog.searchType = msg->searchAlgorithm;
             break;
         }
 
@@ -368,52 +365,58 @@ void COGNITION_ProcessSBData() {
             }
 
             if(strcmp(msg->planID,"Plan0") == 0){
-                cog.nextPrimaryWP = msg->reachedwaypoint + 1;
-                cog.nextWP = cog.nextPrimaryWP;
-                strcpy(cog.currentPlanID,"Plan0");
+                appdataCog.cog.nextPrimaryWP = msg->reachedwaypoint + 1;
+                appdataCog.cog.nextWP = appdataCog.cog.nextPrimaryWP;
+                strcpy(appdataCog.cog.currentPlanID,"Plan0");
                 CFE_ES_WriteToSysLog("Cognition:Received wp reached %s, %d/%d\n",msg->planID,msg->reachedwaypoint,appdataCog.flightplan1.num_waypoints);
 
-                cog.wpPrev1[0] =appdataCog.flightplan1.waypoints[cog.nextWP - 1].latitude;
-                cog.wpPrev1[1] =appdataCog.flightplan1.waypoints[cog.nextWP - 1].longitude;
-                cog.wpPrev1[2] =appdataCog.flightplan1.waypoints[cog.nextWP - 1].altitude;
+                appdataCog.cog.wpPrev1[0] =appdataCog.flightplan1.waypoints[appdataCog.cog.nextWP - 1].latitude;
+                appdataCog.cog.wpPrev1[1] =appdataCog.flightplan1.waypoints[appdataCog.cog.nextWP - 1].longitude;
+                appdataCog.cog.wpPrev1[2] =appdataCog.flightplan1.waypoints[appdataCog.cog.nextWP - 1].altitude;
 
-                cog.wpNext1[0] =appdataCog.flightplan1.waypoints[cog.nextWP].latitude;
-                cog.wpNext1[1] =appdataCog.flightplan1.waypoints[cog.nextWP].longitude;
-                cog.wpNext1[2] =appdataCog.flightplan1.waypoints[cog.nextWP].altitude;
+                appdataCog.cog.wpNext1[0] =appdataCog.flightplan1.waypoints[appdataCog.cog.nextWP].latitude;
+                appdataCog.cog.wpNext1[1] =appdataCog.flightplan1.waypoints[appdataCog.cog.nextWP].longitude;
+                appdataCog.cog.wpNext1[2] =appdataCog.flightplan1.waypoints[appdataCog.cog.nextWP].altitude;
 
-                if(appdataCog.flightplan1.waypoints[cog.nextWP].wp_metric == WP_METRIC_ETA){
-                    cog.wpMetricTime = true;
-                    cog.refWPTime = appdataCog.flightplan1.waypoints[cog.nextWP].value;
+                if(appdataCog.flightplan1.waypoints[appdataCog.cog.nextWP].wp_metric == WP_METRIC_ETA){
+                    appdataCog.cog.wpMetricTime = true;
+                    appdataCog.cog.refWPTime = appdataCog.flightplan1.waypoints[appdataCog.cog.nextWP].value;
                 }else{
-                    cog.refWPTime = 0;
-                    cog.wpMetricTime = false;
+                    appdataCog.cog.refWPTime = 0;
+                    appdataCog.cog.wpMetricTime = false;
                 }
 
             }else if(strcmp(msg->planID,"Plan1") == 0){
-                cog.nextSecondaryWP = msg->reachedwaypoint + 1;
-                cog.nextWP = cog.nextSecondaryWP;
-                strcpy(cog.currentPlanID,"Plan1");
-                if(cog.nextSecondaryWP >= appdataCog.flightplan2.num_waypoints)
-                    cog.fp2complete = true;
+                appdataCog.cog.nextSecondaryWP = msg->reachedwaypoint + 1;
+                appdataCog.cog.nextWP = appdataCog.cog.nextSecondaryWP;
+                strcpy(appdataCog.cog.currentPlanID,"Plan1");
+                if(appdataCog.cog.nextSecondaryWP >= appdataCog.flightplan2.num_waypoints)
+                    appdataCog.cog.fp2complete = true;
                 CFE_ES_WriteToSysLog("Cognition:Received wp reached %s, %d/%d\n",msg->planID,msg->reachedwaypoint,appdataCog.flightplan2.num_waypoints);
 
-                cog.wpPrev2[0] =appdataCog.flightplan2.waypoints[cog.nextWP - 1].latitude;
-                cog.wpPrev2[1] =appdataCog.flightplan2.waypoints[cog.nextWP - 1].longitude;
-                cog.wpPrev2[2] =appdataCog.flightplan2.waypoints[cog.nextWP - 1].altitude;
+                appdataCog.cog.wpPrev2[0] =appdataCog.flightplan2.waypoints[appdataCog.cog.nextWP - 1].latitude;
+                appdataCog.cog.wpPrev2[1] =appdataCog.flightplan2.waypoints[appdataCog.cog.nextWP - 1].longitude;
+                appdataCog.cog.wpPrev2[2] =appdataCog.flightplan2.waypoints[appdataCog.cog.nextWP - 1].altitude;
 
-                cog.wpNext2[0] =appdataCog.flightplan2.waypoints[cog.nextWP].latitude;
-                cog.wpNext2[1] =appdataCog.flightplan2.waypoints[cog.nextWP].longitude;
-                cog.wpNext2[2] =appdataCog.flightplan2.waypoints[cog.nextWP].altitude;
+                appdataCog.cog.wpNext2[0] =appdataCog.flightplan2.waypoints[appdataCog.cog.nextWP].latitude;
+                appdataCog.cog.wpNext2[1] =appdataCog.flightplan2.waypoints[appdataCog.cog.nextWP].longitude;
+                appdataCog.cog.wpNext2[2] =appdataCog.flightplan2.waypoints[appdataCog.cog.nextWP].altitude;
 
 
 
 
             }else if(strcmp(msg->planID,"P2P") == 0){
-                cog.p2pcomplete = true;
+                appdataCog.cog.p2pcomplete = true;
                 CFE_ES_WriteToSysLog("Cognition:Received wp reached %s\n",msg->planID);
             }else if(strcmp(msg->planID,"Takeoff") == 0){
-                cog.takeoffComplete = msg->reachedwaypoint;
+                appdataCog.cog.takeoffComplete = msg->reachedwaypoint;
                 CFE_ES_WriteToSysLog("Cognition:Received wp reached %s\n",msg->planID);
+            }else if(strcmp(msg->planID,"PlanM") == 0){
+                appdataCog.cog.nextSecondaryWP = msg->reachedwaypoint + 1;
+                if(appdataCog.cog.nextSecondaryWP >= appdataCog.cog.num_waypoints2){
+                    appdataCog.cog.mergingActive = 2; 
+                }
+                CFE_ES_WriteToSysLog("Cognition:Received wp reached %s, %d/%d\n",msg->planID,msg->reachedwaypoint,appdataCog.flightplan2.num_waypoints);
             }else{
             }
             break;
@@ -424,8 +427,8 @@ void COGNITION_ProcessSBData() {
             flightplan_t *fp;
             fp = (flightplan_t *)appdataCog.CogMsgPtr;
             memcpy(&appdataCog.flightplan2, fp, sizeof(flightplan_t));
-            cog.request = REQUEST_RESPONDED;
-            cog.num_waypoints2 = fp->num_waypoints;
+            appdataCog.cog.request = REQUEST_RESPONDED;
+            appdataCog.cog.num_waypoints2 = fp->num_waypoints;
             break;
         }
 
@@ -433,67 +436,67 @@ void COGNITION_ProcessSBData() {
             geofenceConflict_t* gfConflct = (geofenceConflict_t*) appdataCog.CogMsgPtr;
             if(gfConflct->numConflicts > 0 ) {
                 if (gfConflct->conflictTypes[0] == _KEEPIN_)
-                    cog.keepInConflict = true;
+                    appdataCog.cog.keepInConflict = true;
                 else if (gfConflct->conflictTypes[0] == _KEEPOUT_)
-                    cog.keepOutConflict = true;
+                    appdataCog.cog.keepOutConflict = true;
             }else{
-                cog.keepOutConflict = false;
-                cog.keepInConflict = false;
+                appdataCog.cog.keepOutConflict = false;
+                appdataCog.cog.keepInConflict = false;
             }
 
-            memcpy(cog.recoveryPosition,gfConflct->recoveryPosition, sizeof(double)*3);
+            memcpy(appdataCog.cog.recoveryPosition,gfConflct->recoveryPosition, sizeof(double)*3);
 
             int totalWP;
             totalWP = appdataCog.flightplan1.num_waypoints;
-            for (int i = cog.nextPrimaryWP; i < totalWP; ++i)
+            for (int i = appdataCog.cog.nextPrimaryWP; i < totalWP; ++i)
             {
                 if (!gfConflct->waypointConflict1[i])
                 {
                     // Check to see that the next waypoint is not too close when
                     // dealing with a traffic conflict
-                    if(cog.resolutionTypeCmd == 4 && cog.trafficTrackConflict){
+                    if(appdataCog.cog.resolutionTypeCmd == 4 && appdataCog.cog.trafficTrackConflict){
                         double nextWP[3] = {appdataCog.flightplan1.waypoints[i].latitude,
                                             appdataCog.flightplan1.waypoints[i].longitude,
                                             appdataCog.flightplan1.waypoints[i].altitude};
-                        double dist = ComputeDistance(cog.position,nextWP);
+                        double dist = ComputeDistance(appdataCog.cog.position,nextWP);
                         // Consider a waypoint feasible if its greater than the 3*DTHR values.
                         // Note DTHR is in ft. Convert from ft to m before comparing with dist.
-                        if (dist > 3 * (cog.DTHR/3)){
-                            cog.nextFeasibleWP1 = i;
-                            cog.nextPrimaryWP = cog.nextFeasibleWP1;
+                        if (dist > 3 * (appdataCog.cog.DTHR/3)){
+                            appdataCog.cog.nextFeasibleWP1 = i;
+                            appdataCog.cog.nextPrimaryWP = appdataCog.cog.nextFeasibleWP1;
                             break;
                         }
                     }else{
-                        cog.nextFeasibleWP1 = i;
+                        appdataCog.cog.nextFeasibleWP1 = i;
                         break;
                     }
                 }
             }
-            cog.directPathToFeasibleWP1 = gfConflct->directPathToWaypoint1[cog.nextFeasibleWP1] && appdataCog.trkBands.wpFeasibility1[cog.nextFeasibleWP1];
+            appdataCog.cog.directPathToFeasibleWP1 = gfConflct->directPathToWaypoint1[appdataCog.cog.nextFeasibleWP1] && appdataCog.trkBands.wpFeasibility1[appdataCog.cog.nextFeasibleWP1];
             totalWP = appdataCog.flightplan2.num_waypoints;
-            for (int i = cog.nextSecondaryWP; i < totalWP; ++i)
+            for (int i = appdataCog.cog.nextSecondaryWP; i < totalWP; ++i)
             {
                 if (!gfConflct->waypointConflict2[i])
                 {
-                    cog.nextFeasibleWP2 = i;
+                    appdataCog.cog.nextFeasibleWP2 = i;
                     break;
                 }
             }
-            cog.directPathToFeasibleWP2 = gfConflct->directPathToWaypoint2[cog.nextFeasibleWP2] && appdataCog.trkBands.wpFeasibility2[cog.nextFeasibleWP2];
-            cog.wpNextFb1[0] = appdataCog.flightplan1.waypoints[cog.nextFeasibleWP1].latitude;
-            cog.wpNextFb1[1] = appdataCog.flightplan1.waypoints[cog.nextFeasibleWP1].longitude;
-            cog.wpNextFb1[2] = appdataCog.flightplan1.waypoints[cog.nextFeasibleWP1].altitude;
+            appdataCog.cog.directPathToFeasibleWP2 = gfConflct->directPathToWaypoint2[appdataCog.cog.nextFeasibleWP2] && appdataCog.trkBands.wpFeasibility2[appdataCog.cog.nextFeasibleWP2];
+            appdataCog.cog.wpNextFb1[0] = appdataCog.flightplan1.waypoints[appdataCog.cog.nextFeasibleWP1].latitude;
+            appdataCog.cog.wpNextFb1[1] = appdataCog.flightplan1.waypoints[appdataCog.cog.nextFeasibleWP1].longitude;
+            appdataCog.cog.wpNextFb1[2] = appdataCog.flightplan1.waypoints[appdataCog.cog.nextFeasibleWP1].altitude;
 
-            cog.wpNextFb2[0] = appdataCog.flightplan2.waypoints[cog.nextFeasibleWP2].latitude;
-            cog.wpNextFb2[1] = appdataCog.flightplan2.waypoints[cog.nextFeasibleWP2].longitude;
-            cog.wpNextFb2[2] = appdataCog.flightplan2.waypoints[cog.nextFeasibleWP2].altitude;
+            appdataCog.cog.wpNextFb2[0] = appdataCog.flightplan2.waypoints[appdataCog.cog.nextFeasibleWP2].latitude;
+            appdataCog.cog.wpNextFb2[1] = appdataCog.flightplan2.waypoints[appdataCog.cog.nextFeasibleWP2].longitude;
+            appdataCog.cog.wpNextFb2[2] = appdataCog.flightplan2.waypoints[appdataCog.cog.nextFeasibleWP2].altitude;
             break;
         }
 
         #ifdef APPDEF_MERGER
         case MERGER_STATUS_MID:{
             argsCmd_t* cmd = (argsCmd_t*) appdataCog.CogMsgPtr;
-            cog.mergingActive = (int) cmd->param1;
+            appdataCog.cog.mergingActive = (int) cmd->param1;
             break;
         }
         #endif
@@ -502,8 +505,8 @@ void COGNITION_ProcessSBData() {
         case SAFE2DITCH_STATUS_MID:{
             OS_printf("Received ditch status\n");
             safe2ditchStatus_t* status = (safe2ditchStatus_t*) appdataCog.CogMsgPtr;
-            cog.ditch = status->ditchRequested;
-            memcpy(cog.ditchsite,status->ditchsite,sizeof(double)*3);
+            appdataCog.cog.ditch = status->ditchRequested;
+            memcpy(appdataCog.cog.ditchsite,status->ditchsite,sizeof(double)*3);
             break;
         }
         #endif
@@ -521,9 +524,9 @@ int32_t cognitionTableValidationFunc(void *TblPtr){
 }
 
 void COGNITION_DecisionProcess(){
-    FlightPhases();
-    if(cog.sendCommand){
-        switch(cog.guidanceCommand){
+    FlightPhases(&appdataCog.cog);
+    if(appdataCog.cog.sendCommand){
+        switch(appdataCog.cog.guidanceCommand){
             case PRIMARY_FLIGHTPLAN:
             case SECONDARY_FLIGHTPLAN:{
                 COGNITION_SendGuidanceFlightPlan(); 
@@ -555,17 +558,17 @@ void COGNITION_DecisionProcess(){
                 break;
             }
         }
-        cog.sendCommand = false;
+        appdataCog.cog.sendCommand = false;
     }
 
-    if(cog.sendStatusTxt){
-        SetStatus(appdataCog.statustxt,cog.statusBuf,cog.statusSeverity);
-        cog.sendStatusTxt = false;
+    if(appdataCog.cog.sendStatusTxt){
+        SetStatus(appdataCog.statustxt,appdataCog.cog.statusBuf,appdataCog.cog.statusSeverity);
+        appdataCog.cog.sendStatusTxt = false;
     }
 
-    if(cog.pathRequest){
+    if(appdataCog.cog.pathRequest){
         COGNITION_FindNewPath();
-        cog.pathRequest = false;
+        appdataCog.cog.pathRequest = false;
     }
 }
 
@@ -573,30 +576,30 @@ void COGNITION_SendGuidanceVelCmd(){
       argsCmd_t cmd;
       CFE_SB_InitMsg(&cmd,GUIDANCE_COMMAND_MID,sizeof(argsCmd_t),TRUE);
       cmd.name = VECTOR;
-      cmd.param1 = (float) cog.cmdparams[0];
-      cmd.param2 = (float) cog.cmdparams[1];
-      cmd.param3 = (float) cog.cmdparams[2];
+      cmd.param1 = (float) appdataCog.cog.cmdparams[0];
+      cmd.param2 = (float) appdataCog.cog.cmdparams[1];
+      cmd.param3 = (float) appdataCog.cog.cmdparams[2];
       SendSBMsg(cmd);
 }
 
 void COGNITION_SendGuidanceFlightPlan(){
   argsCmd_t cmd;
   CFE_SB_InitMsg(&cmd,GUIDANCE_COMMAND_MID,sizeof(argsCmd_t),TRUE);
-  if(cog.Plan0){
+  if(appdataCog.cog.Plan0){
      cmd.name = PRIMARY_FLIGHTPLAN;
-     cmd.param1 = cog.nextPrimaryWP;
-  }else if(cog.Plan1){
+     cmd.param1 = appdataCog.cog.nextPrimaryWP;
+  }else if(appdataCog.cog.Plan1){
      cmd.name = SECONDARY_FLIGHTPLAN;
-     cmd.param1 = cog.nextSecondaryWP;
+     cmd.param1 = appdataCog.cog.nextSecondaryWP;
 
      missionItemReached_t itemReached;
      CFE_SB_InitMsg(&itemReached,ICAROUS_WPREACHED_MID,sizeof(itemReached),TRUE);
      itemReached.feedback = false;
      strcpy(itemReached.planID,"Plan0");
-     itemReached.reachedwaypoint = cog.nextFeasibleWP1-1;
+     itemReached.reachedwaypoint = appdataCog.cog.nextFeasibleWP1-1;
      SendSBMsg(itemReached);
   }
-  cmd.param2 =  cog.nextFeasibleWP1; 
+  cmd.param2 =  appdataCog.cog.nextFeasibleWP1; 
   SendSBMsg(cmd);
 }
 
@@ -604,10 +607,10 @@ void COGNITION_SendGuidanceP2P(){
    //Send Goto position
    argsCmd_t guidanceCmd; CFE_SB_InitMsg(&guidanceCmd, GUIDANCE_COMMAND_MID, sizeof(argsCmd_t), TRUE);
    guidanceCmd.name = POINT2POINT;
-   guidanceCmd.param1 = cog.cmdparams[0];
-   guidanceCmd.param2 = cog.cmdparams[1];
-   guidanceCmd.param3 = cog.cmdparams[2];
-   guidanceCmd.param4 = cog.cmdparams[3]; 
+   guidanceCmd.param1 = appdataCog.cog.cmdparams[0];
+   guidanceCmd.param2 = appdataCog.cog.cmdparams[1];
+   guidanceCmd.param3 = appdataCog.cog.cmdparams[2];
+   guidanceCmd.param4 = appdataCog.cog.cmdparams[3]; 
    SendSBMsg(guidanceCmd);
 }
 
@@ -616,7 +619,7 @@ void COGNITION_SendSpeedChange(){
     argsCmd_t cmd;
     CFE_SB_InitMsg(&cmd,GUIDANCE_COMMAND_MID,sizeof(argsCmd_t),TRUE);
     cmd.name = SPEED_CHANGE;
-    cmd.param1 = cog.cmdparams[0];
+    cmd.param1 = appdataCog.cog.cmdparams[0];
     SendSBMsg(cmd);
 }
 
@@ -638,11 +641,11 @@ void COGNITION_FindNewPath(){
    trajectory_request_t pathRequest;
    CFE_SB_InitMsg(&pathRequest, ICAROUS_TRAJECTORY_REQUEST_MID, sizeof(trajectory_request_t), TRUE);
 
-   pathRequest.algorithm = cog.searchType;
+   pathRequest.algorithm = appdataCog.cog.searchType;
 
-   memcpy(pathRequest.initialPosition, cog.startPosition, sizeof(double) * 3);
-   memcpy(pathRequest.initialVelocity, cog.startVelocity, sizeof(double) * 3);
-   memcpy(pathRequest.finalPosition, cog.stopPosition, sizeof(double) * 3);
+   memcpy(pathRequest.initialPosition, appdataCog.cog.startPosition, sizeof(double) * 3);
+   memcpy(pathRequest.initialVelocity, appdataCog.cog.startVelocity, sizeof(double) * 3);
+   memcpy(pathRequest.finalPosition, appdataCog.cog.stopPosition, sizeof(double) * 3);
 
    SendSBMsg(pathRequest);
 }
