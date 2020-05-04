@@ -6,6 +6,7 @@ cdouble3 = c_double*3
 MAX_NODES = 5
 
 class MergerData(Structure):
+    _pack_ = 1
     _fields_ = [
             ("aircraftID",c_byte),\
             ("intersectionID",c_byte),\
@@ -13,11 +14,11 @@ class MergerData(Structure):
             ("currentArrivalTime",c_double),\
             ("lateArrivalTime",c_double),\
             ("numSchedulesComputed",c_int),\
-            ("zoneStatus",c_ubyte),\
-            ("nodeRaftStatus",c_ubyte)\
+            ("zoneStatus",c_ubyte)
             ]
 
 class LogData(Structure):
+    _pack_ = 1
     _fields_ = [
             ("intersectionID",c_int),\
             ("nodeRole",c_ubyte),\
