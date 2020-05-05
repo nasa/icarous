@@ -2,7 +2,8 @@ import numpy as np
 from ichelper import gps_offset
 
 class VehicleSim():
-    def __init__(self, x, y, z, vx, vy, vz, dt=0.05):
+    def __init__(self, idx,x, y, z, vx, vy, vz, dt=0.05):
+        self.vehicleID = idx
         self.dt = dt
         self.pos0 = np.array([x, y, z])
         self.vel0 = np.array([vx, vy, vz])
@@ -52,14 +53,14 @@ class VehicleSim():
         return (self.vel0[0],self.vel0[1],self.vel0[2])
 
 
-def StartTraffic(home, rng, brng, alt, speed, heading, crate, tflist=[]):
+def StartTraffic(idx, home, rng, brng, alt, speed, heading, crate, tflist=[]):
         tx = rng*np.sin(brng*np.pi/180)
         ty = rng*np.cos(brng*np.pi/180)
         tz = alt
         tvx = speed*np.sin(heading*np.pi/180)
         tvy = speed*np.cos(heading*np.pi/180)
         tvz = crate
-        sim = VehicleSim(tx, ty, tz, tvx, tvy, tvz)
+        sim = VehicleSim(idx,tx, ty, tz, tvx, tvy, tvz)
         sim.home_gps = np.array(home)
         tflist.append(sim)
 

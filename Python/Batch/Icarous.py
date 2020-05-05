@@ -32,7 +32,7 @@ class Icarous():
         self.home_pos = [initialPos[0], initialPos[1], initialPos[2]]
         self.traffic = []
         if simtype == "UAM_VTOL":
-            self.ownship = VehicleSim(0.0,0.0,0.0,0.0,0.0,0.0)
+            self.ownship = VehicleSim(vehicleID,0.0,0.0,0.0,0.0,0.0,0.0)
         else:
             self.ownship = QuadSim()
 
@@ -87,10 +87,11 @@ class Icarous():
         self.ownship.setpos_uncertainty(xx,yy,zz,xy,yz,xz,coeff)
 
 
-    def InputTraffic(self,id,position,velocity,localPos):
-        self.tfMonitor.input_traffic(id,position,velocity,self.currTime)
-        self.Trajectory.InputTrafficData(id,position,velocity)
-        self.RecordTraffic(id, position, velocity, localPos)
+    def InputTraffic(self,idx,position,velocity,localPos):
+        if idx is not self.vehicleID:
+            self.tfMonitor.input_traffic(idx,position,velocity,self.currTime)
+            self.Trajectory.InputTrafficData(idx,position,velocity)
+            self.RecordTraffic(idx, position, velocity, localPos)
 
     def InputFlightplan(self,fp,scenarioTime,eta=False):
         
@@ -724,12 +725,19 @@ def RunSimulation(icInstances,trafficVehicles,commDelay=0):
         for ic in icInstances:
             status |= ic.Run()
             simComplete |= ic.CheckMissionComplete()
+            pos = ic.position
+            locpos = ic.positionLog[-1]
+            vel = [ic.velocity[1],ic.velocity[0],ic.velocity[2]]
+            #map(lambda x: x.InputTraffic(ic.vehicleID,pos,vel),icInstances)
+            for tf in icInstances:
+                tf.InputTraffic(ic.vehicleID,pos,vel,locpos)
+
 
         if status:
             RunTraffic(trafficVehicles)
             for ic in icInstances:
-                for i,tf in enumerate(trafficVehicles):
-                    ic.InputTraffic(i,tf.pos_gps,tf.vel,tf.pos)
+                for tf in trafficVehicles:
+                    ic.InputTraffic(tf.vehicleID,tf.pos_gps,tf.vel,tf.pos)
 
         ExchangeArrivalTimes(icInstances,commDelay)
 
