@@ -279,11 +279,11 @@ unsigned char Merger::RunMergingOperation(double time)
             }
         }
         // Append entry to log
-        AddLogEntry();
 
 
     }
 
+    AddLogEntry();
     return mergingStatus;
 }
 
@@ -734,9 +734,15 @@ void Merger::ExecuteNewPath()
 void Merger::AddLogEntry(){
     // LOG DATA for Analysis
     // Populate log entries
-    fprintf(logFile2,"%f, %u, %f, %f, %u, (%f, %f, %f), %u, %u, %f, %f, %f, %u, %f, %f, %f\n",
+
+    int fixid = -1;
+    if ((int) currentFixIndex >= 0){
+        fixid = (int) currentFixIndex; 
+    }
+
+    fprintf(logFile2,"%f, %d, %f, %f, %u, (%f, %f, %f), %u, %u, %f, %f, %f, %u, %f, %f, %f\n",
                       currentLocalTime,
-                      mergeFixId[currentFixIndex],
+                      fixid,
                       dist2Int,
                       currentSpeed,
                       raftRole,
