@@ -38,10 +38,12 @@ def ReadRaftLog(filename, vehicle_id=0, mf=1):
     vehicle.group = vehicle.output_dir.strip("/").split("/")[-1]
     for line in data_string:
         # Skip lines containing other types of data
-        if "MFID" not in line:
-            continue
         line = line.rstrip('\n')
         entries = line.split('|')
+        if len(entries) < 4:
+            continue
+        if "MFID" not in entries[1]:
+            continue
 
         t = float(entries[0])
         mf_id = int(entries[1].split()[1])
@@ -113,9 +115,9 @@ def analyze_latency(sending_vehicle, receiving_vehicle, verbose=True, plot=False
         return metrics
 
     # Save metrics
-    metrics["group"] = v1.group
-    metrics["transmitting_vehicle"] = v1.id
-    metrics["receiving_vehicle"] = v2.id
+    metrics["group"] = sending_vehicle.group
+    metrics["transmitting_vehicle"] = sending_vehicle.id
+    metrics["receiving_vehicle"] = receiving_vehicle.id
     metrics["messages_sent"] = n_sent
     metrics["messages_received"] = n_recv
     metrics["messages_missed"] = len(missed_times)
@@ -174,6 +176,8 @@ def write_metrics(metrics):
 
 
 def plot_roles(vehicles, save=False):
+    if len(vehicles) == 0:
+        return
     plt.figure()
     plt.title("Raft Node Roles")
     colors = ['y', 'r', 'b', 'g']
