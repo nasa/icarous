@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import numpy as np
+import pandas as pd
 import itertools
 from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
@@ -30,6 +31,7 @@ def validate_merging_data(vehicles, output_dir="", test=False):
 
     # Print results
     print_results(results, output_dir.split('_')[-1].strip('/'))
+    record_results(results, output_dir.split('/')[-1])
 
     if test:
         # Assert conditions
@@ -98,7 +100,8 @@ def verify_merge_order(vehicles):
 def verify_merge_time_separation(vehicles):
     '''Check merging data for arrival time separation'''
     condition_name = "Arrival Time Separation"
-    min_separation_time = 20
+    #min_separation_time = 20
+    min_separation_time = 10
 
     arrival_times = sorted([v.metrics["actual_arr_time"] for v in vehicles
                             if v.metrics["reached_merge_point"]])
@@ -123,7 +126,8 @@ def verify_merge_time_separation(vehicles):
 def verify_merge_spacing(vehicles):
     '''Check minimum horizontal separation during merging operation'''
     condition_name = "Merge Spacing"
-    DTHR = 30
+    #DTHR = 30
+    DTHR = 25
 
     separation_ok = True
     print("\nMinimum separation distances during merge")
@@ -138,7 +142,7 @@ def verify_merge_spacing(vehicles):
                    (v1.id, v2.id, min_separation, DTHR))
 
     if separation_ok:
-        return True, "Acceptable spacing during merging operation:", condition_name
+        return True, "Acceptable spacing during merging operation", condition_name
     else:
         return False, msg, condition_name
 
@@ -146,7 +150,8 @@ def verify_merge_spacing(vehicles):
 def verify_spacing(vehicles):
     '''Check minimum horizontal separation during entire flight'''
     condition_name = "Spacing"
-    DTHR = 30
+    #DTHR = 30
+    DTHR = 25
 
     vehicles = []
     for i in range(args.num_vehicles):
@@ -170,7 +175,7 @@ def verify_spacing(vehicles):
                    (v1.id, v2.id, min_separation, DTHR))
 
     if separation_ok:
-        return True, "Acceptable spacing during entire flight:", condition_name
+        return True, "Acceptable spacing during entire flight", condition_name
     else:
         return False, msg, condition_name
 
@@ -188,6 +193,20 @@ def print_results(results, scenario_name):
             print("\t\033[31mX %s - FAIL:\033[0m %s" % (name, msg))
 
 
+def record_results(results, scenario_name):
+    filename = "MergingResults.csv"
+    if os.path.isfile(filename):
+        table = pd.read_csv(filename, index_col=0)
+    else:
+        table = pd.DataFrame({})
+    metrics = {r[2]:r[0] for r in results}
+    index = scenario_name
+    metrics = pd.DataFrame(metrics, index=[index])
+    table = metrics.combine_first(table)
+    table = table[metrics.keys()]
+    table.to_csv(filename)
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Validate Icarous simulation data")
@@ -197,27 +216,36 @@ if __name__ == "__main__":
     parser.add_argument("--plot", action="store_true", help="plot the scenario")
     parser.add_argument("--save", action="store_true", help="save the results")
     parser.add_argument("--test", action="store_true", help="assert test conditions")
+    parser.add_argument("--many", action="store_true", help="validate many flights")
     args = parser.parse_args()
 
-    # Read merger log data (just during merge operation)
-    vehicles = MA.process_data(args.data_location, args.num_vehicles, args.merge_id)
-    # Read merger log data (for entire flight)
-    vehicles_entire_flight = MA.process_data(args.data_location, args.num_vehicles, "all")
+    flights = []
+    if args.many:
+        for f in os.listdir(args.data_location):
+            flights.append(os.path.join(args.data_location, f))
+    else:
+        flights.append(args.data_location)
 
-    # Compute metrics
-    MA.compute_metrics(vehicles)
-    MA.write_metrics(vehicles)
+    for flight in flights:
+        # Read merger log data (just during merge operation)
+        vehicles = MA.process_data(flight, args.num_vehicles, args.merge_id)
+        # Read merger log data (for entire flight)
+        vehicles_entire_flight = MA.process_data(flight, args.num_vehicles, "all")
 
-    # Generate plots
-    if args.plot:
-        MA.plot(vehicles, "dist2int", save=args.save)
-        MA.plot_roles(vehicles, save=args.save)
-        MA.plot_speed(vehicles, save=args.save)
-        MA.plot_speed(vehicles_entire_flight, save=args.save)
-        MA.plot_spacing(vehicles, save=args.save)
-        MA.plot_spacing(vehicles_entire_flight, save=args.save)
-        MA.plot_summary(vehicles, save=args.save)
-        plt.show()
+        # Compute metrics
+        MA.compute_metrics(vehicles)
+        MA.write_metrics(vehicles)
 
-    # Check test conditions
-    validate_merging_data(vehicles, output_dir=args.data_location, test=args.test)
+        # Generate plots
+        if args.plot:
+            MA.plot(vehicles, "dist2int", save=args.save)
+            MA.plot_roles(vehicles, save=args.save)
+            MA.plot_speed(vehicles, save=args.save)
+            MA.plot_speed(vehicles_entire_flight, save=args.save)
+            MA.plot_spacing(vehicles, save=args.save)
+            MA.plot_spacing(vehicles_entire_flight, save=args.save)
+            MA.plot_summary(vehicles, save=args.save)
+            plt.show()
+
+        # Check test conditions
+        validate_merging_data(vehicles, output_dir=flight, test=args.test)
