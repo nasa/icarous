@@ -17,85 +17,101 @@
 
 # Test ID: AT-0
 - name: "Basic"
-  waypoint_file: Examples/InputData/flightplan.txt
-  geofence_file: null
-  parameter_file: Examples/InputData/icarous_default.parm
-  param_adjustments: {}
-  traffic: []
   time_limit: 300
+  vehicles:
+  - name: Ownship
+    waypoint_file: Examples/InputData/flightplan.txt
+    geofence_file: null
+    parameter_file: Examples/InputData/icarous_default.parm
+    param_adjustments: {}
+    traffic: []
 
 # Test ID: AT-1
 - name: "Traffic Track Res"
-  waypoint_file: Examples/InputData/flightplan.txt
-  geofence_file: null
-  parameter_file: Examples/InputData/icarous_default.parm
-  param_adjustments: {"RES_TYPE": 2}
-  traffic:
-    - [116, 81, 5, 1, 270, 0]
   time_limit: 300
+  vehicles:
+  - name: Ownship
+    waypoint_file: Examples/InputData/flightplan.txt
+    geofence_file: null
+    parameter_file: Examples/InputData/icarous_default.parm
+    param_adjustments: {"RES_TYPE": 2}
+    traffic:
+    - [116, 81, 5, 1, 270, 0]
 
 # Test ID: AT-2
 - name: "Traffic Altitude Res"
-  waypoint_file: Examples/InputData/flightplan.txt
-  geofence_file: null
-  parameter_file: Examples/InputData/icarous_default.parm
-  param_adjustments: {"RES_TYPE": 1, "DET_1_WCV_ZTHR": 50}
-  traffic:
-    - [116, 81, 5, 1, 270, 0]
   time_limit: 300
+  vehicles:
+  - name: Ownship
+    waypoint_file: Examples/InputData/flightplan.txt
+    geofence_file: null
+    parameter_file: Examples/InputData/icarous_default.parm
+    param_adjustments: {"RES_TYPE": 1, "DET_1_WCV_ZTHR": 50}
+    traffic:
+    - [116, 81, 5, 1, 270, 0]
 
 # Test ID: AT-3
 - name: "Traffic Speed Res"
-  waypoint_file: Examples/InputData/flightplan.txt
-  geofence_file: null
-  parameter_file: Examples/InputData/icarous_default.parm
-  param_adjustments: {"RES_TYPE": 0}
-  traffic:
-    - [95, 30, 5, 1, 180, 0]
   time_limit: 300
+  vehicles:
+  - name: Ownship
+    waypoint_file: Examples/InputData/flightplan.txt
+    geofence_file: null
+    parameter_file: Examples/InputData/icarous_default.parm
+    param_adjustments: {"RES_TYPE": 0}
+    traffic:
+    - [95, 30, 5, 1, 180, 0]
 
 # Test ID: AT-4
 - name: "Geofence ASTAR"
-  waypoint_file: Examples/InputData/flightplan.txt
-  geofence_file: Examples/InputData/geofence2.xml
-  parameter_file: Examples/InputData/icarous_default.parm
-  param_adjustments: {"SEARCHALGORITHM": 1}
-  traffic: []
   time_limit: 300
-  planned_wps: [0, 2, 4, 6]
+  vehicles:
+  - name: Ownship
+    waypoint_file: Examples/InputData/flightplan.txt
+    geofence_file: Examples/InputData/geofence2.xml
+    parameter_file: Examples/InputData/icarous_default.parm
+    param_adjustments: {"SEARCHALGORITHM": 1}
+    traffic: []
+    planned_wps: [0, 2, 4, 6]
 
 # Test ID: AT-5
 - name: "Geofence RRT"
-  waypoint_file: Examples/InputData/flightplan.txt
-  geofence_file: Examples/InputData/geofence2.xml
-  parameter_file: Examples/InputData/icarous_default.parm
-  param_adjustments: {"SEARCHALGORITHM": 2}
-  traffic: []
   time_limit: 300
-  planned_wps: [0, 2, 4, 6]
+  vehicles:
+  - name: Ownship
+    waypoint_file: Examples/InputData/flightplan.txt
+    geofence_file: Examples/InputData/geofence2.xml
+    parameter_file: Examples/InputData/icarous_default.parm
+    param_adjustments: {"SEARCHALGORITHM": 2}
+    traffic: []
+    planned_wps: [0, 2, 4, 6]
 
 # Test ID: AT-6
 # traffic conflict then geofence conflict
 - name: "Geofence+Traffic1"
-  waypoint_file: Examples/InputData/flightplan.txt
-  geofence_file: Examples/InputData/geofence2.xml
-  parameter_file: Examples/InputData/icarous_default.parm
-  param_adjustments: {"SEARCHALGORITHM": 2, "RES_TYPE": 4}
-  traffic:
+  time_limit: 300
+  vehicles:
+  - name: Ownship
+    waypoint_file: Examples/InputData/flightplan.txt
+    geofence_file: Examples/InputData/geofence2.xml
+    parameter_file: Examples/InputData/icarous_default.parm
+    param_adjustments: {"SEARCHALGORITHM": 2, "RES_TYPE": 4}
+    traffic:
       - [77, 77, 5, 1, 270, 0]
       - [142, 265, 5, 1, 90, 0]
-  time_limit: 300
-  planned_wps: [0, 2, 4, 6]
+    planned_wps: [0, 2, 4, 6]
 
 # Test ID: AT-7
 # geofence conflict then traffic conflict
 - name: "Geofence+Traffic2"
-  waypoint_file: Examples/InputData/flightplan.txt
-  geofence_file: Examples/InputData/geofence2.xml
-  parameter_file: Examples/InputData/icarous_default.parm
-  param_adjustments: {"SEARCHALGORITHM": 2, "RES_TYPE": 4}
-  traffic:
-      - [120, 74, 5, 1, 270, 0]
-      #    - [127, 95, 5, 1, 270, 0]
   time_limit: 300
-  planned_wps: [0, 2, 4, 6]
+  vehicles:
+  - name: Ownship
+    waypoint_file: Examples/InputData/flightplan.txt
+    geofence_file: Examples/InputData/geofence2.xml
+    parameter_file: Examples/InputData/icarous_default.parm
+    param_adjustments: {"SEARCHALGORITHM": 2, "RES_TYPE": 4}
+    traffic:
+      - [120, 74, 5, 1, 270, 0]
+      #- [127, 95, 5, 1, 270, 0]
+    planned_wps: [0, 2, 4, 6]
