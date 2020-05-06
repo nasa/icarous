@@ -156,24 +156,20 @@ class ValidateFlight:
         lla2ned = lambda x: GS.LLA2NED(self.origin, x)
 
         # Plot waypoints
-        waypoints = [[wp[0], wp[1]] for wp in WP]
+        waypoints = [wp[0:3] for wp in WP]
         waypoints_local = list(map(lla2ned, waypoints))
         wp_x = [val[0] for val in waypoints_local]
         wp_y = [val[1] for val in waypoints_local]
         plt.plot(wp_y, wp_x, 'k*:', label="Flight Plan")
 
         # Plot ownship path
-        ownship_poslocal = list(map(lla2ned, self.simdata["ownship"]["position"]))
-        ownpos_x = [val[0] for val in ownship_poslocal]
-        ownpos_y = [val[1] for val in ownship_poslocal]
-        plt.plot(ownpos_y, ownpos_x, label="Ownship Path")
+        ownpos_local = np.array(list(map(lla2ned, self.simdata["ownship"]["position"])))
+        plt.plot(ownpos_local[:,1], ownpos_local[:,0], label="Ownship Path")
 
         # Plot traffic path
-        for traf in self.simdata["traffic"].values():
-            traffic_poslocal = list(map(lla2ned, traf["position"]))
-            traffic_x = [val[0] for val in traffic_poslocal]
-            traffic_y = [val[1] for val in traffic_poslocal]
-            plt.plot(traffic_y, traffic_x, label="Traffic Path")
+        for traf_id, traf in self.simdata["traffic"].items():
+            trafpos_local = list(map(lla2ned, traf["position"]))
+            plt.plot(trafpos_local[:,1], trafpos_local[:,0], label=str(traf_id)+" Path")
 
         # Plot geofences
         for i, fence in enumerate(geofences):
