@@ -327,8 +327,12 @@ void Merger::CheckIntersectionExit()
         if(currentFixIndex < 0){
              return;
         }
+
+        // Only reset if we passed half way through the entry zone.
         // Reset all necessary state variables
-        ResetData(); 
+        if(dist2Int < 0.5*entryZone){
+            ResetData(); 
+        }
     }
 }
 
@@ -414,19 +418,31 @@ void Merger::ExchangeArrivalTimes(){
     arrivalData.currentArrivalTime = ownshipArrivalData.currentArrivalTime; 
     arrivalData.zoneStatus = currentZone;
     
-    //Only publish data if there is significant difference between new value and old value
-    //NOTE: significant difference here is defined by variable sigdef
-
+    
+    // Publish data if there is no one in the intersection
     bool send = false;
     if(numNodesInt == 0){
         send = true;
     }
 
+    //Publish data if there is significant difference between new value and old value
+    //NOTE: significant difference here is defined by variable sigdef
     uint8_t sigdef = 2;
-    if ((abs(arrivalData.currentArrivalTime - globalArrivalData[vehicleID].currentArrivalTime) >= sigdef) ||
-       (arrivalData.zoneStatus != globalArrivalData[vehicleID].zoneStatus))
+    if (abs(arrivalData.currentArrivalTime - globalArrivalData[vehicleID].currentArrivalTime) >= sigdef) 
     {
         send = true;
+    }
+
+    // Publish data if there is a change in the zone status 
+    for (int i = 0; i < numNodesInt; ++i)
+    {
+        if(globalArrivalData[i].aircraftID == vehicleID){
+            if (arrivalData.zoneStatus != globalArrivalData[i].zoneStatus)
+            {
+               send = true;
+            }
+            break;
+        }
     }
 
     if(send){
@@ -700,13 +716,13 @@ void Merger::ExecuteNewPath()
                 int32_t timeDelta = ownshipArrivalData.currentArrivalTime - 
                                     (currentLocalTime + dist2Int/currentSpeed);
 
-                double speedDelta = -0.5*timeDelta;
+                double speedDelta = -0.25*timeDelta;
 
                 refSpeed = (currentSpeed + speedDelta);
 
                 if(refSpeed > maxSpeed){
                     refSpeed = maxSpeed;
-                }else if(refSpeed > minSpeed){
+                }else if(refSpeed < minSpeed){
                     refSpeed = minSpeed;
                 }
 
