@@ -117,7 +117,7 @@ def ReadFlightplanFile(filename):
     wp = []
     wp_ind = []
     wp_speed = []
-    speed = 1
+    speed = 0.25 
     line='#'
     while line is not '':
         line = f.readline()
