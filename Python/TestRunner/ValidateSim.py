@@ -157,19 +157,17 @@ class ValidateFlight:
 
         # Plot waypoints
         waypoints = [wp[0:3] for wp in WP]
-        waypoints_local = list(map(lla2ned, waypoints))
-        wp_x = [val[0] for val in waypoints_local]
-        wp_y = [val[1] for val in waypoints_local]
-        plt.plot(wp_y, wp_x, 'k*:', label="Flight Plan")
+        waypoints_local = np.array(list(map(lla2ned, waypoints)))
+        plt.plot(waypoints_local[:, 1], waypoints_local[:, 0], 'k*:', label="Flight Plan")
 
         # Plot ownship path
         ownpos_local = np.array(list(map(lla2ned, self.simdata["ownship"]["position"])))
-        plt.plot(ownpos_local[:,1], ownpos_local[:,0], label="Ownship Path")
+        plt.plot(ownpos_local[:, 1], ownpos_local[:, 0], label="Ownship Path")
 
         # Plot traffic path
         for traf_id, traf in self.simdata["traffic"].items():
-            trafpos_local = list(map(lla2ned, traf["position"]))
-            plt.plot(trafpos_local[:,1], trafpos_local[:,0], label=str(traf_id)+" Path")
+            trafpos_local = np.array(list(map(lla2ned, traf["position"])))
+            plt.plot(trafpos_local[:, 1], trafpos_local[:, 0], label=str(traf_id)+" Path")
 
         # Plot geofences
         for i, vertices in enumerate(geofences):
