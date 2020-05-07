@@ -36,7 +36,7 @@ class VehicleSim():
         self.U[2] = -U3
 
     def step(self):
-        self.vel0 = self.vel0 + 0.01 * (self.U - self.vel0)
+        self.vel0 = self.vel0 + 0.05 * (self.U - self.vel0)
         self.pos0 = self.pos0 + self.vel0 * self.dt
         n = np.zeros((1,3))
         if self.noise:
