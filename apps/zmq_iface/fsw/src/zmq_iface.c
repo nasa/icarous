@@ -1,8 +1,10 @@
 #include "Icarous.h"
 #include "traffic_msgids.h"
+#include "trajectory_msgids.h"
 
-#include "zmq_iface.h"
+#include "commands.h"
 #include "utils.h"
+#include "zmq_iface.h"
 
 CFE_EVS_BinFilter_t  ZMQ_IFACE_EventFilters[] =
 {  /* Event ID    mask */
@@ -18,7 +20,10 @@ static ZMQ_IFACE_Connection_t * const connPtr = &AppData.connection;
 
 const char STUB_MESSAGE[] = "ZMQ_IFACE TRAFFIC_ALERTS_MID received";
 
-/* Application entry points */
+/* Application entry point */
+
+static void ZMQ_IFACE_HandleCommandMessage();
+
 void ZMQ_IFACE_AppMain(void){
 
     int32 status;
@@ -33,6 +38,8 @@ void ZMQ_IFACE_AppMain(void){
         {
 		    ZMQ_IFACE_ProcessPacket();
         }
+
+        ZMQ_IFACE_HandleCommandMessage();
     }
 
     ZMQ_IFACE_AppCleanUp();
@@ -96,3 +103,10 @@ void ZMQ_IFACE_ProcessPacket()
     }
 }
 
+static void ZMQ_IFACE_HandleCommandMessage()
+{
+	bool success = ZMQ_IFACE_ReceiveCommand(connPtr, AppData.msgBuffer, MAX_ZMQ_MESSAGE_SIZE);
+	if (success) {
+        ZMQ_IFACE_ProcessCommand(AppData.msgBuffer);
+	}
+}

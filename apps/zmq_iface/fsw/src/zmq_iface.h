@@ -41,7 +41,8 @@ typedef struct {
     CFE_SB_PipeId_t    pipe;       ///< Pipe variable
     CFE_SB_MsgPtr_t    msgPtr;     ///< Msg pointer to SB message
 
-    ZMQ_IFACE_Connection_t connection; ///< ZMQ connection configuration
+    ZMQ_IFACE_Connection_t connection;    ///< ZMQ connection configuration
+    char msgBuffer[MAX_ZMQ_MESSAGE_SIZE]; ///< ZMQ message buffer
 } ZMQ_IFACE_AppData_t;
 
 /**

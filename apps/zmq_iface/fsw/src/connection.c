@@ -15,21 +15,22 @@
  *
  */
 static int s_send(void * const socket, char const * const string);
-static int s_recv(void * const socket, char       * const buffer);
+static bool s_recv_nowait(void * const socket, char * const buffer, size_t size);
 
-static int s_send (void * const socket, char const * const string)
+static int s_send(void * const socket, char const * const string)
 {
     int size = zmq_send(socket, string, strlen(string), 0);
     return size;
 }
 
-static int s_recv (void * const socket, char * const buffer)
+static bool s_recv_nowait(void * const socket, char * const buffer, size_t size)
 {
-    int size = zmq_recv(socket, buffer, RECV_BUFFER_SIZE-1, 0);
-    buffer[size] = '\0';
-    if (size == -1)
-        return 1;
-    return 0;
+    int bytesReceived = zmq_recv(socket, buffer, size-1, ZMQ_DONTWAIT);
+    if (bytesReceived == -1) {
+        return false;
+    }
+    buffer[bytesReceived] = '\0';
+    return true;
 }
 
 
@@ -38,21 +39,31 @@ static int s_recv (void * const socket, char * const buffer)
  *
  */
 void ZMQ_IFACE_StartTelemetryServer(ZMQ_IFACE_Connection_t* conn);
+void ZMQ_IFACE_StartCommandServer(ZMQ_IFACE_Connection_t* conn);
 
 void ZMQ_IFACE_InitZMQServices(ZMQ_IFACE_Connection_t * const conn)
 {
     InitializeAircraftCallSign(conn->callSign.value);
+    conn->context = zmq_ctx_new ();
     ZMQ_IFACE_StartTelemetryServer(conn);
+    ZMQ_IFACE_StartCommandServer(conn);
     conn->started = true;
     APP_DEBUG("ZMQ Services successfully initialized\n");
 }
 
 void ZMQ_IFACE_StartTelemetryServer(ZMQ_IFACE_Connection_t * const conn)
 {
-    conn->context = zmq_ctx_new ();
     conn->telemetrySocket = zmq_socket (conn->context, ZMQ_PUB);
-    int rc = zmq_bind (conn->telemetrySocket, TCP_SERVER_ADDR);
+    int rc = zmq_bind (conn->telemetrySocket, TELEMETRY_SERVER_ADDR);
     assert (rc == 0);
+}
+
+void ZMQ_IFACE_StartCommandServer(ZMQ_IFACE_Connection_t* conn)
+{
+    conn->commandSocket = zmq_socket(conn->context, ZMQ_REP);
+    assert (conn->commandSocket != NULL);
+    int rc = zmq_bind(conn->commandSocket, COMMAND_SERVER_ADDR);
+    assert(rc == 0);
 }
 
 
@@ -188,5 +199,22 @@ static char const * const GetRegionName(enum Region region) // TODO: Possibly th
         "RECOVERY"
     };
     return NAMES[region];
+}
+
+
+/*
+ * ZMQ Receive Command
+ */
+
+bool ZMQ_IFACE_ReceiveCommand(ZMQ_IFACE_Connection_t * const conn, char * const buffer, size_t size) {
+    bool success = s_recv_nowait(conn->commandSocket, buffer, size);
+    if (success) {
+        APP_DEBUG("ZMQ Command Received. Sending ack...");
+        int rc = zmq_send(conn->commandSocket, "", 0, 0);
+        assert (rc == 0);
+        APP_DEBUG("DONE\n");
+        return true;
+    }
+    return false;
 }
 
