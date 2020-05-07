@@ -591,11 +591,9 @@ class Icarous():
             self.arrTime = arrTime
         if self.cog.mergingActive == 3:
             velCmd = self.Merger.GetVelocityCmd()
-            (vn,ve,vd) = ConvertTrkGsVsToVned(*velCmd)
-            self.guidanceMode = GuidanceCommands.VECTOR
-            self.guidCommParams[0] = vn
-            self.guidCommParams[1] = ve
-            self.guidCommParams[2] = vd
+            self.etaFP1 = False
+            self.flightplan1[self.guidIn.nextWP][3] = velCmd[1]
+
 
 
     def InputMergeLogs(self,logs,delay):
