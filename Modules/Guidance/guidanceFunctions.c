@@ -121,15 +121,40 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
         double heading = ComputeHeading(guidanceInput->position, newPositionToTrack);
         double climbrate = ComputeClimbRate(guidanceInput->position, guidanceInput->curr_waypoint, speedRef, guidanceParams);
 
+        // Smooth the output
+        double n_gs, n_vs, n_heading;
+        double ownship_gs = currSpeed;
+        double ownship_vs = guidanceInput->velocity[2];
+        double gs_range = guidanceParams->maxSpeed - guidanceParams->minSpeed;
+        double vs_range = guidanceParams->maxClimbRate - guidanceParams->minClimbRate;
+        double heading_change = fabs(fmod(180 + ownship_heading - heading, 360) - 180);
+
+        if (fabs(speedRef - ownship_gs) > gs_range/2 ){
+            n_gs = 0.3;
+        }else{
+            n_gs = 0.95;
+        }
+        if (fabs(climbrate - ownship_vs) > vs_range/2 ){
+            n_vs = 0.3;
+        }else{
+            n_vs = 0.95;
+        }
+        if (heading_change > 45){
+            n_heading = 0.3;
+        }else{
+            n_heading = 0.95;
+        }
+        speedRef = (1-n_gs)*ownship_gs + n_gs*speedRef;
+        climbrate = (1-n_vs)*ownship_vs + n_vs*climbrate;
+        //heading = (1-n_heading)*ownship_heading + n_heading*heading;
+
         double vn, ve, vd;
         ConvertTrkGsVsToVned(heading, speedRef, climbrate, &vn, &ve, &vd);
 
         // Store velocity command in relevant structure
-        // A weighted average of the new command is used.
-        double n = 0.95;
-        guidanceOutput->velCmd[0] = (1-n) * guidanceInput->velCmd[0] + n * vn;
-        guidanceOutput->velCmd[1] = (1-n) * guidanceInput->velCmd[1] + n * ve;
-        guidanceOutput->velCmd[2] = (1-n) * guidanceInput->velCmd[2] + n * vd;
+        guidanceOutput->velCmd[0] = vn;
+        guidanceOutput->velCmd[1] = ve;
+        guidanceOutput->velCmd[2] = vd;
 
         guidanceOutput->newNextWP = nextWP;
     }
