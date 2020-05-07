@@ -28,6 +28,7 @@ void Merger::ResetData(){
     // before entering another intersection
     numSchedulesComputed = 0;
     numNodesInt = 1;
+    dist2Int = 0;
     time2ZoneEntry = 0;
     mergingSpeed = -1;
     approaching = false;
