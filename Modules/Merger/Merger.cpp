@@ -753,7 +753,7 @@ void Merger::AddLogEntry(){
 
     int fixid = -1;
     if ((int) currentFixIndex >= 0){
-        fixid = (int) currentFixIndex; 
+        fixid = (int) mergeFixId[currentFixIndex]; 
     }
 
     fprintf(logFile2,"%f, %d, %f, %f, %u, (%f, %f, %f), %u, %u, %f, %f, %f, %u, %f, %f, %f\n",
