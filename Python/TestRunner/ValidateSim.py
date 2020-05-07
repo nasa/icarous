@@ -24,7 +24,7 @@ def GetPolygons(origin, fenceList):
         vertices = fence["Vertices"]
         vertices_ned = [list(reversed(GS.LLA2NED(origin[0:2], position)))
                         for position in vertices]
-        polygon = [(vertex[0], vertex[1]) for vertex in vertices_ned]
+        polygon = [[vertex[0], vertex[1]] for vertex in vertices_ned]
         Polygons.append(polygon)
     return Polygons
 
@@ -172,15 +172,13 @@ class ValidateFlight:
             plt.plot(trafpos_local[:,1], trafpos_local[:,0], label=str(traf_id)+" Path")
 
         # Plot geofences
-        for i, fence in enumerate(geofences):
-            geopos_x = [val[0] for val in fence]
-            geopos_y = [val[1] for val in fence]
-            geopos_x.append(geopos_x[0])
-            geopos_y.append(geopos_y[0])
+        for i, vertices in enumerate(geofences):
+            vertices.append(vertices[0])
+            vertices = np.array(vertices)
             if i == 0:
-                plt.plot(geopos_x, geopos_y, 'orange', label="Keep In Geofence")
+                plt.plot(vertices[:, 0], vertices[:, 1], 'orange', label="Keep In Geofence")
             else:
-                plt.plot(geopos_x, geopos_y, 'r', label="Keep Out Geofence"+str(i))
+                plt.plot(vertices[:, 0], vertices[:, 1], 'r', label="Keep Out Geofence"+str(i))
 
         # Set up figure
         plt.title(self.simdata["scenario"]["name"]+" Scenario - Simulation Results")
