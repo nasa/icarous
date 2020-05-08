@@ -32,6 +32,10 @@ private:
     double _astar_maxCeiling;
     string _astar_daaConfig;
 
+    double maxBankAngle;
+    double maxHorAccel;
+    double maxVertAccel;
+
     // RRT specific parameters
     double _rrt_resSpeed;
     int _rrt_maxIterations;

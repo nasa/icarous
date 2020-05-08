@@ -108,6 +108,11 @@ int PathPlanner::InputTraffic(int id, Position &position, Velocity &velocity) {
 
 void PathPlanner::UpdateDAAParameters(char *parameterString) {
     daaParameters = to_string(parameterString);
+    larcfm::ParameterData newParams;
+    newParams.parseParameterList(";",daaParameters);
+    maxBankAngle = newParams.getValue("bank_angle") * 180/M_PI;
+    maxHorAccel = newParams.getValue("horizontal_accel");
+    maxVertAccel = newParams.getValue("vertical_accel");
 }
 
 int PathPlanner::FindPath(algorithm searchType, char *planID, double *fromPosition, double *toPosition,
@@ -318,7 +323,7 @@ void PathPlanner::PlanToString(char planID[],char outputString[],bool tcpColumns
     outputFp.timeShiftPlan(0,(double)timeshift);
     Plan repairedPlan;
     if(timeshift >= 0){
-        repairedPlan = TrajGen::makeKinematicPlan(outputFp,45*M_PI/180,1,1,true,true,true);
+        repairedPlan = TrajGen::makeKinematicPlan(outputFp,maxBankAngle*M_PI/180,maxHorAccel,maxVertAccel,true,true,true);
     }else{
         repairedPlan = *fp;
     }
