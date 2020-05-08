@@ -17,7 +17,7 @@ icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
 
 
 def vehicle_log():
-    return {"t": [], "position": [], "velocity": []}
+    return {"t": [], "position": [], "velocityNED": []}
 
 
 def LaunchArducopter(scenario, spacecraft_id=0, verbose=False):
@@ -25,15 +25,10 @@ def LaunchArducopter(scenario, spacecraft_id=0, verbose=False):
     wploader.load(os.path.join(icarous_home, scenario["waypoint_file"]))
     wp0 = wploader.wp(0)
     start_point = ','.join(str(x) for x in [wp0.x, wp0.y, wp0.z, 0])
-    print("*** START", start_point)
-    args = ["sim_vehicle.py", "-v", "ArduCopter", "-l", str(start_point), "-I", str(spacecraft_id)]
-    print(args)
-    ap = subprocess.Popen(args, stdout=subprocess.DEVNULL)
-    #ap = subprocess.Popen(["sim_vehicle.py", "-v", "ArduCopter",
-                           #"-l", str(start_point)],
-                           ##"-l", str(start_point),
-                           ##"-I", str(spacecraft_id)],
-                          #stdout=subprocess.DEVNULL)
+    ap = subprocess.Popen(["sim_vehicle.py", "-v", "ArduCopter",
+                           "-l", str(start_point),
+                           "-I", str(spacecraft_id)],
+                          stdout=subprocess.DEVNULL)
     if verbose:
         print("Waiting several seconds to allow ArduCopter to start up")
     time.sleep(60)
@@ -94,6 +89,7 @@ class SimVehicle:
 
         # Pause for a couple of seconds here so that ICAROUS can boot up
         if self.verbose:
+            print("Telemetry for %s is on 127.0.0.1:%d" % (self.name, self.out))
             print("Waiting for heartbeat...")
         master.wait_heartbeat()
         self.gs = GS.BatchGSModule(master, 1, 0)
@@ -126,10 +122,6 @@ class SimVehicle:
             m = master.recv_match(type="GLOBAL_POSITION_INT", blocking=False)
             if m is None:
                 continue
-            d = m.to_dict()
-            print(m._timestamp)
-            for k, v in d.items():
-                print('\t', k, v)
             if m.lat > 1e-5:
                 break
 
@@ -194,19 +186,18 @@ class SimVehicle:
 
             # Store ownship position/velocity information
             self.ownship_log["t"].append(duration)
-            print(msg.lat, msg.lon, msg.relative_alt)
             self.ownship_log["position"].append([msg.lat/1E7, msg.lon/1E7,
-                                        msg.relative_alt/1E3])
-            self.ownship_log["velocity"].append([msg.vx/1E2, msg.vy/1E2,
-                                        msg.vz/1E2])
+                                                 msg.relative_alt/1E3])
+            self.ownship_log["velocityNED"].append([msg.vx/1E2, msg.vy/1E2,
+                                                    msg.vz/1E2])
 
             # Store traffic position/velocity information
             for i, traf in enumerate(self.gs.traffic_list):
-                if i not in traffic.keys():
+                if i not in self.traffic_log.keys():
                     self.traffic_log[i] = vehicle_log()
                 self.traffic_log[i]["t"].append(duration)
                 self.traffic_log[i]["position"].append([traf.lat, traf.lon, traf.alt])
-                self.traffic_log[i]["velocity"].append([traf.vx0, traf.vy0, traf.vz0])
+                self.traffic_log[i]["velocityNED"].append([traf.vx0, traf.vy0, traf.vz0])
 
         # Once simulation is finished, kill the icarous process
         self.ic.kill()
