@@ -8,7 +8,6 @@ import subprocess
 
 sys.path.append("../Batch")
 import BatchGSModule as GS
-
 from SimVehicle import SimVehicle
 
 sim_home = os.getcwd()
@@ -36,6 +35,7 @@ def SetApps(sitl=False, merger=False):
 
 
 def RunScenario(scenario, sitl=False, verbose=False, output_dir="sim_output"):
+    from threading import Thread
     # Set up a directory to save log files
     name = scenario["name"].replace(' ', '-')
     if verbose:
@@ -56,17 +56,16 @@ def RunScenario(scenario, sitl=False, verbose=False, output_dir="sim_output"):
 
     # Set up each vehicle
     vehicles = []
-    for vehicle in scenario["vehicles"]:
-        v = SimVehicle(vehicle, verbose=verbose, out=14557,
-                         output_dir=output_dir, sitl=sitl)
+    for vehicle_scenario in scenario["vehicles"]:
+        out = 14557 + (vehicle_scenario.get("cpu_id", 1) - 1)*10
+        v = SimVehicle(vehicle_scenario, verbose=verbose, out=out,
+                       output_dir=output_dir, sitl=sitl)
         vehicles.append(v)
 
-    # Wait for the given time limit
+    # Run the simulation
     t0 = time.time()
     time_limit = scenario["time_limit"]
     duration = 0
-    from threading import Thread
-    from RunVehicle import RunVehicle
     threads = [Thread(target=v.run, args=[time_limit]) for v in vehicles]
     for t in threads:
         t.start()
@@ -78,6 +77,7 @@ def RunScenario(scenario, sitl=False, verbose=False, output_dir="sim_output"):
     if verbose:
         print("Simulation finished")
 
+    # Shut down SITL if necessary
     if sitl:
         subprocess.call(["pkill", "-9", "arducopter"])
         subprocess.call(["pkill", "-9", "mavproxy"])
