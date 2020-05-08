@@ -9,6 +9,7 @@ from pymavlink import mavutil, mavwp
 
 sys.path.append("../Batch")
 import BatchGSModule as GS
+from ichelper import LoadIcarousParams, ReadFlightplanFile
 
 
 sim_home = os.getcwd()
@@ -18,20 +19,6 @@ icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
 
 def vehicle_log():
     return {"t": [], "position": [], "velocityNED": []}
-
-
-def LaunchArducopter(scenario, spacecraft_id=0, verbose=False):
-    wploader = mavwp.MAVWPLoader()
-    wploader.load(os.path.join(icarous_home, scenario["waypoint_file"]))
-    wp0 = wploader.wp(0)
-    start_point = ','.join(str(x) for x in [wp0.x, wp0.y, wp0.z, 0])
-    ap = subprocess.Popen(["sim_vehicle.py", "-v", "ArduCopter",
-                           "-l", str(start_point),
-                           "-I", str(spacecraft_id)],
-                          stdout=subprocess.DEVNULL)
-    if verbose:
-        print("Waiting several seconds to allow ArduCopter to start up")
-    time.sleep(60)
 
 
 class SimVehicle:
@@ -48,9 +35,30 @@ class SimVehicle:
             self.sim_type = "cFS rotorsim"
 
         self.setup()
-        self.waypoints = self.get_waypoints()
-        self.params = self.gs.getParams()
-        self.geofences = self.gs.fenceList
+
+
+    def launch_arducopter(self):
+        waypoints,_,_ = ReadFlightplanFile(os.path.join(icarous_home,
+                                           self.scenario["waypoint_file"]))
+        start_point = ','.join(str(x) for x in waypoints[0][0:3]+[0])
+        icarous_params = LoadIcarousParams(os.path.join(icarous_home,
+                                           self.scenario["parameter_file"]))
+        sitl_params = LoadIcarousParams("sitl_defaults.parm")
+        sitl_params["WPNAV_SPEED"] = icarous_params["DEF_WP_SPEED"]*100
+        sitl_param_file = os.path.join(self.output_dir, self.name + "_sitl.parm")
+        with open(sitl_param_file, 'w') as f:
+            for param_id, param_value in sitl_params.items():
+                f.write("%-16s %f\n" % (param_id, param_value))
+        arguments = ["sim_vehicle.py", "-v", "ArduCopter",
+                     "-l", str(start_point),
+                     "--add-param-file", sitl_param_file,
+                     "-I", str(self.spacecraft_id)]
+        arguments += ["-m", "--logfile="+os.path.join(self.output_dir,
+                                                      self.name+"_sitl.tlog")]
+        subprocess.Popen(arguments, stdout=subprocess.DEVNULL)
+        if self.verbose:
+            print("Waiting several seconds to allow ArduCopter to start up")
+        time.sleep(60)
 
 
     def setup(self):
@@ -58,15 +66,12 @@ class SimVehicle:
         self.name = scenario["name"]
         self.cpu_id = scenario.get("cpu_id", 1)
         self.spacecraft_id = self.cpu_id - 1
-        self.out = self.out + self.spacecraft_id
 
         # Set up mavlink connections
         icarous_port = 14553 + (self.cpu_id - 1)*10
         gs_port = icarous_port + 1
         # Use mavproxy to forward mavlink stream (for visualization)
         logfile = os.path.join(self.output_dir, self.name + ".tlog")
-        print("gs_port:", gs_port)
-        print("out", self.out)
         self.mav_forwarding = subprocess.Popen(["mavproxy.py",
                                            "--master=127.0.0.1:"+str(icarous_port),
                                            "--out=127.0.0.1:"+str(gs_port),
@@ -96,7 +101,7 @@ class SimVehicle:
 
         # Launch SITL simulator
         if self.sitl:
-            LaunchArducopter(scenario, self.spacecraft_id, self.verbose)
+            self.launch_arducopter()
 
         # Set up the scenario (flight plan, geofence, parameters, traffic)
         self.gs.loadWaypoint(os.path.join(icarous_home, scenario["waypoint_file"]))
@@ -114,6 +119,9 @@ class SimVehicle:
         if scenario.get("traffic"):
             for traf in scenario["traffic"]:
                 self.gs.load_traffic([0]+traf)
+        self.waypoints = self.get_waypoints()
+        self.params = self.gs.getParams()
+        self.geofences = self.gs.fenceList
 
         # Wait for GPS fix before starting mission
         if self.verbose:
