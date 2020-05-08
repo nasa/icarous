@@ -48,22 +48,22 @@ def gps_offset(lat, lon, east, north):
     distance = math.sqrt(east**2 + north**2)
     return gps_newpos(lat, lon, bearing, distance)
 
-def ConvertVnedToTrkGsVs(ve,vn,vz):
+def ConvertVnedToTrkGsVs(vn,ve,vz):
     angle = 360 + np.arctan2(ve,vn) * 180/np.pi
     trk = np.fmod(angle,360)
     gs = np.sqrt(vn**2 + ve**2)
-    vs = vz
+    vs = -vz
     return (trk,gs,vs)
 
 def ComputeHeading(start,end):
     relvec = [end[0]-start[0],end[1]-start[1],end[2]-start[2]]
-    (trk,gs,vs) = ConvertVnedToTrkGsVs(relvec[0],relvec[1],relvec[2])
+    (trk,gs,vs) = ConvertVnedToTrkGsVs(relvec[1],relvec[0],-relvec[2])
     return trk
 
 def ConvertTrkGsVsToVned(trk,gs,vs):
     vy = gs * np.cos(trk*np.pi/180)
     vx = gs * np.sin(trk*np.pi/180)
-    vz = vs
+    vz = -vs
     return (vy,vx,vz)
 
 def GetInitialConditions():

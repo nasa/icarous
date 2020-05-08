@@ -280,9 +280,8 @@ class Icarous():
         (ogx, ogy) = gps_offset(self.home_pos[0], self.home_pos[1], opos[0], opos[1])
        
         self.position = [ogx, ogy, opos[2]]
-        self.velocity = [ovel[1],ovel[0],ovel[2]]           
-
-        self.trkgsvs = ConvertVnedToTrkGsVs(ovel[0],ovel[1],ovel[2])
+        self.velocity = [ovel[1],ovel[0],-ovel[2]]
+        self.trkgsvs = ConvertVnedToTrkGsVs(ovel[1],ovel[0],-ovel[2])
         self.trkband = None
         self.gsband = None
         self.altband = None
@@ -578,6 +577,9 @@ class Icarous():
         self.cog.resVDown = self.vsband.resdown
         self.cog.vsBandsNum = self.vsband.numBands
 
+        self.cog.trafficConflict = (self.cog.trafficSpeedConflict or\
+                                   self.cog.trafficTrackConflict or\
+                                   self.cog.trafficAltConflict)
 
     def RunMerger(self):
         self.Merger.SetAircraftState(self.position,self.velocity)
@@ -725,7 +727,7 @@ def RunSimulation(icInstances,trafficVehicles,commDelay=0):
             simComplete |= ic.CheckMissionComplete()
             pos = ic.position
             locpos = ic.positionLog[-1]
-            vel = [ic.velocity[1],ic.velocity[0],ic.velocity[2]]
+            vel = [ic.velocity[1],ic.velocity[0],-ic.velocity[2]]
             #map(lambda x: x.InputTraffic(ic.vehicleID,pos,vel),icInstances)
             for tf in icInstances:
                 tf.InputTraffic(ic.vehicleID,pos,vel,locpos)

@@ -51,8 +51,10 @@ plt.figure(1)
 plt.plot(np.array(ic.positionLog)[:,0],np.array(ic.positionLog)[:,1],'r')
 for tf in tfList:
     plt.plot(np.array(tf.log['pos'])[:,0],np.array(tf.log['pos'])[:,1],'b')
-plt.show()
 
+plt.figure(2)
+plt.plot([i for i in range(len(ic.positionLog))],np.array(ic.positionLog)[:,2])
+plt.show()
 
 anim= AgentAnimation(-50,-50, 100,30,30)
 anim.AddPath(np.array(ic.localPlans[0]),'k--')

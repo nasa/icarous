@@ -2,6 +2,7 @@ from Icarous import *
 from matplotlib import pyplot as plt
 from Animation import AgentAnimation
 
+
 # Set the home position for the simulation
 HomePos = [37.55290000,-122.27250000,0.000000]
 
@@ -12,7 +13,7 @@ tfList = []
 # range,brg,alt,track,speed,climb rate
 # Call this function again to start multiple traffic vehicles
 #StartTraffic(1,HomePos,15000,309,5,50,127,0,tfList)
-StartTraffic(1,HomePos,14000,309,100,50,127,0,tfList)
+StartTraffic(1,HomePos,26000,309,1000,50,127,0,tfList)
 
 # Set uncertainty and smoothing params for traffic
 #for tf in tfList:
@@ -57,9 +58,11 @@ plt.plot(np.array(ic.localPlans[0])[:,1],np.array(ic.localPlans[0])[:,0],'g--')
 plt.scatter(np.array(ic.localPlans[0])[:,1],np.array(ic.localPlans[0])[:,0])
 for tf in tfList:
     plt.plot(np.array(tf.log['pos'])[:,0],np.array(tf.log['pos'])[:,1],'b')
+
+plt.figure(2)
+plt.plot([i for i in range(len(ic.positionLog))],np.array(ic.positionLog)[:,2])
+
 plt.show()
-
-
 anim= AgentAnimation(-15000,-2000, 100,15000,5)
 for pln in ic.localPlans:
     anim.AddPath(np.array(pln),'--')
