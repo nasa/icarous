@@ -52,6 +52,7 @@ class SimVehicle:
         arguments = ["sim_vehicle.py", "-v", "ArduCopter",
                      "-l", str(start_point),
                      "--add-param-file", sitl_param_file,
+                     "--use-dir", sitl_param_file,
                      "-I", str(self.spacecraft_id)]
         arguments += ["-m", "--logfile="+os.path.join(self.output_dir,
                                                       self.name+"_sitl.tlog")]
