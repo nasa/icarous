@@ -124,9 +124,9 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
         // Smooth the output
         double n_gs, n_vs, n_heading;
         double ownship_gs = currSpeed;
-        double ownship_vs = guidanceInput->velocity[2];
+        double ownship_vd = guidanceInput->velocity[2];
         double gs_range = guidanceParams->maxSpeed - guidanceParams->minSpeed;
-        double vs_range = guidanceParams->maxClimbRate - guidanceParams->minClimbRate;
+        double vs_range = (guidanceParams->maxClimbRate - guidanceParams->minClimbRate);
         double heading_change = fabs(fmod(180 + ownship_heading - heading, 360) - 180);
 
         if (fabs(speedRef - ownship_gs) > gs_range/2 ){
@@ -134,7 +134,7 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
         }else{
             n_gs = 0.95;
         }
-        if (fabs(climbrate - ownship_vs) > vs_range/2 ){
+        if (fabs(climbrate - (-ownship_vd)) > vs_range/2 ){
             n_vs = 0.3;
         }else{
             n_vs = 0.95;
@@ -145,7 +145,7 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
             n_heading = 0.95;
         }
         speedRef = (1-n_gs)*ownship_gs + n_gs*speedRef;
-        climbrate = (1-n_vs)*ownship_vs + n_vs*climbrate;
+        climbrate = (1-n_vs)*ownship_vd + n_vs*climbrate;
         //heading = (1-n_heading)*ownship_heading + n_heading*heading;
 
         double vn, ve, vd;
