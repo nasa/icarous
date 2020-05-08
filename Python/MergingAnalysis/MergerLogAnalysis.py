@@ -58,6 +58,8 @@ def ReadMergerAppData(filename, vehicle_id, merge_id=1, group="test"):
     for line in data_string:
         line = line.rstrip('\n')
         entries = line.split(',')
+        if len(entries) != 17 or not entries[-1].strip():
+            continue
         intID = int(entries[1])
         lon = float(entries[14])
 
