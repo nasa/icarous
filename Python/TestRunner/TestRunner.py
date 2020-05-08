@@ -117,5 +117,9 @@ if __name__ == "__main__":
 
     # Run the scenarios
     for scenario in scenario_list:
-        output = RunScenario(scenario, args.sitl, args.verbose, args.output_dir)
+        output_dir = RunScenario(scenario, args.sitl, args.verbose, args.output_dir)
 
+        if args.merger:
+            subprocess.call(["python3", "ValidateMerge.py", output_dir, "--plot", "--save"])
+        else:
+            subprocess.call(["python3", "ValidateSim.py", output_dir, "--plot", "--save"])
