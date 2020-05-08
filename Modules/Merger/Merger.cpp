@@ -44,6 +44,7 @@ void Merger::ResetData(){
     numSchedulesComputed = 0;
     refSpeed = 0;
     XtrkDev = 0;
+    raftRole = 0;
 
     // Update arrival data with NULL zone and invalid intersection
     memset(&ownshipArrivalData,0,sizeof(mergingData_t));
