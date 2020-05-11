@@ -266,6 +266,8 @@ bool RunTrafficResolution(cognition_t *cog);
 
 void SetGuidanceVelCmd(cognition_t *cog,double track,double gs,double vs);
 
+void SetGuidanceSpeedCmd(cognition_t* cog, double speed);
+
 void SetGuidanceFlightPlan(cognition_t *cog,char name[],int nextWP);
 
 void SetGuidanceP2P(cognition_t *cog,double lat,double lon,double alt,double speed);

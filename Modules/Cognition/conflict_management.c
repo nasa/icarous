@@ -14,6 +14,13 @@ void SetGuidanceVelCmd(cognition_t * cog,double track,double gs,double vs){
       cog->sendCommand = true;
  }
 
+ void SetGuidanceSpeedCmd(cognition_t* cog, double speed){
+      cog->guidanceCommand = cSPEED_CHANGE;
+      cog->cmdparams[0] = speed;
+      cog->cmdparams[1] = 1;
+      cog->sendCommand = true;
+ }
+
 void SetGuidanceFlightPlan(cognition_t* cog,char name[],int nextWP){
   cog->Plan0 = false;
   cog->Plan1 = false;
@@ -228,6 +235,12 @@ bool TrafficConflictManagement(cognition_t* cog){
          }else{
             cog->requestGuidance2NextWP = -1;
          }
+
+         if(cog->resolutionTypeCmd == SPEED_RESOLUTION){
+            cog->requestGuidance2NextWP = -1;
+            cog->trafficConflictState = NOOPC;
+         }
+
          SendStatus(cog,"IC:traffic conflict resolved",6);
          cog->return2NextWPState = NOOPC;
          break;
@@ -250,10 +263,10 @@ bool RunTrafficResolution(cognition_t *cog){
          double refHdg = ComputeHeading(cog->position,cog->wpNext1);
          //printf("resolution speed = %f\n",speedPref);
          if(speedPref >= 0){
-            SetGuidanceVelCmd(cog,refHdg,speedPref,0);
+            SetGuidanceSpeedCmd(cog,speedPref);
             cog->prevResSpeed = speedPref;
          }else{
-            SetGuidanceVelCmd(cog,refHdg,cog->prevResSpeed,0);
+            SetGuidanceSpeedCmd(cog,speedPref);
          }
 
          bool val;

@@ -361,11 +361,18 @@ class Icarous():
 
         if self.cog.sendCommand:
             self.cog.sendCommand = False
-            if self.cog.guidanceCommand is not GuidanceCommands.SPEED_CHANGE:
+            if self.cog.guidanceCommand != GuidanceCommands.SPEED_CHANGE:
                 self.guidCommParams = self.cog.cmdparams
                 self.guidanceMode = self.cog.guidanceCommand
                 if self.guidanceMode == GuidanceCommands.PRIMARY_FLIGHTPLAN:
                     self.flightplan2 = []
+            elif self.cog.guidanceCommand == GuidanceCommands.SPEED_CHANGE:
+                self.etaFP1 = False
+                if len(self.flightplan2) > 0 and self.guidanceMode == GuidanceCommands.SECONDARY_FLIGHTPLAN:
+                    self.flightplan2[self.guidIn.nextWP][3] = max(0,self.cog.cmdparams[0])
+                else:
+                    self.flightplan1[self.guidIn.nextWP][3] = max(0,self.cog.cmdparams[0])
+
 
         if self.cog.sendStatusTxt:
             self.cog.sendStatusTxt = False;
