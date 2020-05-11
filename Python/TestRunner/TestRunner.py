@@ -1,6 +1,7 @@
 import os
 import sys
 import yaml
+import json
 import time
 import datetime
 import shutil
@@ -9,6 +10,8 @@ import subprocess
 sys.path.append("../Batch")
 import BatchGSModule as GS
 from SimVehicle import SimVehicle
+from Icarous import (Icarous, ReadFlightplanFile, LoadIcarousParams,
+                    StartTraffic, RunSimulation)
 
 sim_home = os.getcwd()
 icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
@@ -35,15 +38,8 @@ def SetApps(sitl=False, merger=False):
 
 
 def RunScenario(scenario, sitl=False, verbose=False, output_dir="sim_output"):
+    """ Run an ICAROUS scenario using cFS """
     from threading import Thread
-    # Set up a directory to save log files
-    name = scenario["name"].replace(' ', '-')
-    if verbose:
-        print("Running scenario: %s" % name)
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H_%M_%S")
-    output_dir = os.path.join(sim_home, output_dir, timestamp+"_"+name)
-    os.makedirs(output_dir)
-
     # Copy merge_fixes file to exe/ram
     if "merge_fixes" in scenario:
         merge_fixes = os.path.join(icarous_home, scenario["merge_fixes"])
@@ -90,6 +86,78 @@ def RunScenario(scenario, sitl=False, verbose=False, output_dir="sim_output"):
         if f.endswith("tlog.raw"):
             os.remove(os.path.join(output_dir, f))
 
+
+def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
+    """ Run an ICAROUS scenario using pyIcarous """
+    # Clear existing log files
+    for f in os.listdir(sim_home):
+        if f.endswith(".txt") or f.endswith(".log") and f != "DaidalusQuadConfig.txt":
+            os.remove(os.path.join(sim_home, f))
+
+    num_vehicles = len(scenario["vehicles"])
+    icInstances = []
+    tfList = []
+    for v_scenario in scenario["vehicles"]:
+        cpu_id = v_scenario.get("cpu_id", 1)
+        spacecraft_id = cpu_id - 1
+        waypoints,_,_ = ReadFlightplanFile(os.path.join(icarous_home,
+                                           v_scenario["waypoint_file"]))
+        HomePos = waypoints[0][0:3]
+
+        ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id)
+        ic.name = v_scenario["name"]
+
+        # Set up the scenario
+        if "merge_fixes" in scenario:
+            ic.InputMergeFixes(os.path.join(icarous_home, scenario["merge_fixes"]))
+
+        params = LoadIcarousParams(os.path.join(icarous_home, v_scenario["parameter_file"]))
+        if v_scenario.get("param_adjustments"):
+            params.update(v_scenario["param_adjustments"])
+        ic.SetParameters(params)
+
+        ic.InputFlightplanFromFile(os.path.join(icarous_home, v_scenario["waypoint_file"]))
+
+        if v_scenario.get("geofence_file"):
+            ic.InputGeofence(os.path.join(icarous_home, v_scenario["geofence_file"]))
+
+        for tf in v_scenario["traffic"]:
+            traf_id = num_vehicles + len(tfList)
+            StartTraffic(traf_id, HomePos, tf[0], tf[1], tf[2], tf[3], tf[4], tf[5], tfList)
+
+        icInstances.append(ic)
+
+    for tf in tfList:
+        tf.setpos_uncertainty(0.01, 0.01, 0, 0, 0, 0)
+
+    RunSimulation(icInstances,tfList)
+
+    # Collect log files
+    for ic in icInstances:
+        #ic.WriteLog(logname=os.path.join(output_dir, ic.name+"_simoutput.json"))
+        logname = os.path.join(output_dir, ic.name+"_simoutput.json")
+        print("writing log: %s" % logname)
+        log_data = {"scenario": scenario,
+                    "ownship_id": ic.vehicleID,
+                    "ownship": ic.ownshipLog,
+                    "traffic": ic.trafficLog,
+                    "waypoints": ic.flightplan1,
+                    "geofences": ic.fenceList,
+                    "parameters": ic.params,
+                    "sim_type": "pyIcarous"}
+        with open(logname, 'w') as f:
+            json.dump(log_data, f)
+    for f in os.listdir(sim_home):
+        if f.endswith(".txt") or f.endswith(".log") and f != "DaidalusQuadConfig.txt":
+            os.rename(os.path.join(sim_home, f), os.path.join(output_dir, f))
+
+
+def set_up_output_dir(scenario, base_dir="sim_output"):
+    """ Set up a directory to save log files for a scenario """
+    name = scenario["name"].replace(' ', '-')
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H_%M_%S")
+    output_dir = os.path.join(sim_home, base_dir, timestamp+"_"+name)
+    os.makedirs(output_dir)
     return output_dir
 
 
@@ -112,13 +180,23 @@ if __name__ == "__main__":
         selected_scenarios = [scenario_list[i] for i in args.num]
         scenario_list = selected_scenarios
 
-    # Set the apps that ICAROUS will run
-    SetApps(sitl=args.sitl, merger=args.merger)
+    if not args.python:
+        # Set the apps that ICAROUS will run
+        SetApps(sitl=args.sitl, merger=args.merger)
 
     # Run the scenarios
     for scenario in scenario_list:
-        output_dir = RunScenario(scenario, args.sitl, args.verbose, args.output_dir)
+        if args.verbose:
+            print("Running scenario: %s" % scenario["name"])
+        output_dir = set_up_output_dir(scenario, args.output_dir)
 
+        # Run the simulation
+        if args.python:
+            RunScenarioPy(scenario, args.verbose, output_dir)
+        else:
+            RunScenario(scenario, args.sitl, args.verbose, output_dir)
+
+        # Perform validation
         if args.merger:
             subprocess.call(["python3", "ValidateMerge.py", output_dir, "--plot", "--save"])
         else:
