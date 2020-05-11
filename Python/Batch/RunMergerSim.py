@@ -33,7 +33,8 @@ ic2.InputMergeFixes('../TestRunner/tcl4+/merging_scenario/merge_fixes.txt')
 
 tfList =[]
 
-RunSimulation(icInstances,tfList)
+icDelay = [0.15,0.0]
+RunSimulation(icInstances,tfList,startDelay=icDelay)
 
 # Plot data for visualization    
 anim= AgentAnimation(-50,-50, 100,30,30)

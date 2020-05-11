@@ -78,7 +78,10 @@ class Icarous():
         self.ownshipLog = {"t": [], "position": [], "velocityNED": [], "positionNED": []}
         self.trafficLog = {}
         self.emergbreak = False
-        self.currTime   = 0
+        if self.fasttime:
+            self.currTime = 0
+        else:
+            self.currTime = time.time()
         self.numSecPlan = 0
         self.plans = []
         self.localPlans = []
@@ -730,12 +733,10 @@ def ExchangeArrivalTimes(icInstances,delay):
 def RunSimulation(icInstances,trafficVehicles,startDelay=[],commDelay=0):
     # Run simulation until mission is complete
     simComplete = False
-    prevTime = []
+    prevTime = [ic.currTime for ic in icInstances]
     while not simComplete:
         status = False
         for i,ic in enumerate(icInstances):
-            if len(prevTime) == 0:
-                prevTime.append(ic.currTime)
             if not ic.startSent:
                 if len(startDelay) == 0:
                     ic.cog.missionStart = 0
