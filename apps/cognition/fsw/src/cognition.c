@@ -620,6 +620,7 @@ void COGNITION_SendSpeedChange(){
     CFE_SB_InitMsg(&cmd,GUIDANCE_COMMAND_MID,sizeof(argsCmd_t),TRUE);
     cmd.name = SPEED_CHANGE;
     cmd.param1 = appdataCog.cog.cmdparams[0];
+    cmd.param2 = appdataCog.cog.cmdparams[1];
     SendSBMsg(cmd);
 }
 
