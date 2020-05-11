@@ -877,37 +877,48 @@ void ARDUCOPTER_ProcessPacket() {
             argsCmd_t *cmd = (argsCmd_t*) appdataInt.INTERFACEMsgPtr;
             switch (cmd->name)
             {
-                case PRIMARY_FLIGHTPLAN:
+                case FLIGHTPLAN:
                 {
-                    // Change to auto mode if guidance command is in primary flight plan mode
-                    appdataInt.takeoff = false;
-                    mavlink_message_t msg1, msg2;
-
-                    if (appdataInt.numWaypoints == 0)
+                    if (strcmp("Plan0", cmd->buffer) == 0)
                     {
-                        break;
-                    }
+                        // Change to auto mode if guidance command is in primary flight plan mode
+                        appdataInt.takeoff = false;
+                        mavlink_message_t msg1, msg2;
 
-                    // Set next waypoint for the controller to follow
-                    int tempSeq = (int)cmd->param1;
-                    if(tempSeq > 1){
-                        int seq = appdataInt.waypoint_index[tempSeq];
-                        mavlink_msg_mission_set_current_pack(sysid_ic, compid_ic, &msg2, sysid_ap, compid_ap, seq);
-                        writeMavlinkData(&appdataInt.ap, &msg2);
-                    }
+                        if (appdataInt.numWaypoints == 0)
+                        {
+                            break;
+                        }
 
-                    int mode = AUTO;
-                    if (appdataInt.icarousMode != 0)
-                    {
-                        appdataInt.icarousMode = 0;
-                        mavlink_msg_set_mode_pack(sysid_ic, compid_ic, &msg1, sysid_ap, compid_ap, mode);
-                        writeMavlinkData(&appdataInt.ap, &msg1);
+                        // Set next waypoint for the controller to follow
+                        int tempSeq = (int)cmd->param1;
+                        if (tempSeq > 1)
+                        {
+                            int seq = appdataInt.waypoint_index[tempSeq];
+                            mavlink_msg_mission_set_current_pack(sysid_ic, compid_ic, &msg2, sysid_ap, compid_ap, seq);
+                            writeMavlinkData(&appdataInt.ap, &msg2);
+                        }
+
+                        int mode = AUTO;
+                        if (appdataInt.icarousMode != 0)
+                        {
+                            appdataInt.icarousMode = 0;
+                            mavlink_msg_set_mode_pack(sysid_ic, compid_ic, &msg1, sysid_ap, compid_ap, mode);
+                            writeMavlinkData(&appdataInt.ap, &msg1);
+                        }
+                    } else {
+                        mavlink_message_t msg;
+                        int mode = GUIDED;
+                        if (appdataInt.icarousMode != 1) {
+                            appdataInt.icarousMode = 1;
+                            mavlink_msg_set_mode_pack(sysid_ic, compid_ic, &msg, sysid_ap, compid_ap, mode);
+                            writeMavlinkData(&appdataInt.ap, &msg);
+                        }
                     }
 
                     break;
                 }
 
-                case SECONDARY_FLIGHTPLAN:
                 case POINT2POINT: 
                 {
                     mavlink_message_t msg;
@@ -945,15 +956,6 @@ void ARDUCOPTER_ProcessPacket() {
 
                     mavlink_message_t msg;
                     mavlink_msg_command_long_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_CMD_NAV_LAND,0,1,0,0,0,cmd->param5,cmd->param6,cmd->param7);
-                    writeMavlinkData(&appdataInt.ap, &msg); 
-
-                    break;
-                }
-
-                case SPEED_CHANGE:{
-                    mavlink_message_t msg;
-                    mavlink_msg_command_long_pack(sysid_ic,compid_ic,&msg,sysid_ap,compid_ap,MAV_CMD_DO_CHANGE_SPEED,0,
-                                                  1,(float)cmd->param1,0,0,0,0,0);
                     writeMavlinkData(&appdataInt.ap, &msg); 
 
                     break;

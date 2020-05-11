@@ -64,7 +64,7 @@ void GUIDANCE_AppInit(void) {
     CFE_TBL_Handle_t tblHandle;
     status = CFE_TBL_Register(&tblHandle,
                               "GuidanceTable",
-                              sizeof(guidanceTable_t),
+                              sizeof(GuidanceParams_t),
                               CFE_TBL_OPT_DEFAULT,
                               &GuidanceTableValidationFunc);
 
@@ -74,7 +74,7 @@ void GUIDANCE_AppInit(void) {
     guidanceTable_t *TblPtr;
     status = CFE_TBL_GetAddress((void**)&TblPtr, tblHandle);
 
-    memcpy(&guidanceAppData.guidance_tbl,TblPtr,sizeof(guidanceTable_t));
+    memcpy(&guidanceAppData.guidance_params,TblPtr,sizeof(guidanceTable_t));
 
     GUIDANCE_AppInitData();
 
@@ -90,14 +90,8 @@ void GUIDANCE_AppInit(void) {
 
 void GUIDANCE_AppInitData(){
 
-    guidanceAppData.guidanceMode = NOOP;
-    guidanceAppData.nextPrimaryWP = 1;
-
-    CFE_SB_InitMsg(&guidanceAppData.velCmd,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
-    guidanceAppData.velCmd.name = _SETVEL_;
-    guidanceAppData.refSpeed = guidanceAppData.guidance_tbl.defaultWpSpeed;
-    CFE_SB_InitMsg(&guidanceAppData.statustxt,ICAROUS_STATUS_MID,sizeof(status_t),TRUE);
-
+    guidanceAppData.Guidance = InitGuidance((GuidanceParams_t*)&guidanceAppData.guidance_params);
+    guidanceAppData.takeoffComplete = false;
 }
 
 void GUIDANCE_AppCleanUp(){
@@ -110,27 +104,36 @@ void GUIDANCE_ProcessPacket(){
 
     switch(MsgId){
         case ICAROUS_POSITION_MID:{
-            position_t *msg = (position_t*) guidanceAppData.guidance_MsgPtr;
-            if(msg->aircraft_id == CFE_PSP_GetSpacecraftId()){
-                memcpy(&guidanceAppData.position,msg,sizeof(position_t));
+            position_t *position = (position_t*) guidanceAppData.guidance_MsgPtr;
+            memcpy(&guidanceAppData.pos,position,sizeof(position_t));
+            if(position->aircraft_id == CFE_PSP_GetSpacecraftId()){
+                double posLLA[3] = {position->latitude,
+                                    position->longitude,
+                                    position->altitude_rel}; 
+                double TrkGsVs[3] = {0.0,0.0,0.0};
+                ConvertVnedToTrkGsVs(position->vn,position->ve, position->vd,
+                                     TrkGsVs, TrkGsVs+1, TrkGsVs+2);
+                guidSetAircraftState(guidanceAppData.Guidance,posLLA,TrkGsVs);
             }
             break;
         }
 
-        case ICAROUS_FLIGHTPLAN_MID:{
-            flightplan_t *msg = (flightplan_t*)guidanceAppData.guidance_MsgPtr;
-            memcpy(&guidanceAppData.primaryFlightPlan,msg,sizeof(flightplan_t));
-            //OS_printf("Received primary flight plan %s\n",msg->id);
+        case ICAROUS_FLIGHTPLAN_MID:
+        case ICAROUS_TRAJECTORY_MID:{
+            flightplan_t *fp = (flightplan_t*)guidanceAppData.guidance_MsgPtr;
+            for (int i=0;i<fp->num_waypoints;++i){
+                double wp[3] = {fp->waypoints[i].latitude,
+                                fp->waypoints[i].longitude,
+                                fp->waypoints[i].altitude};
+                bool eta = fp->waypoints[i].wp_metric == WP_METRIC_ETA?true:false;
+                double value = fp->waypoints[i].value;
+                guidInputFlightplanData(guidanceAppData.Guidance,
+                                    fp->id,fp->scenario_time,i,wp,eta,value);
+            }
             break;
         }
 
         
-        case ICAROUS_TRAJECTORY_MID:{
-            flightplan_t *msg = (flightplan_t*)guidanceAppData.guidance_MsgPtr;
-            memcpy(&guidanceAppData.secondaryFlightPlan,msg,sizeof(flightplan_t));
-            break;
-        }
-
         case GUIDANCE_COMMAND_MID:{
             argsCmd_t* msg = (argsCmd_t*)guidanceAppData.guidance_MsgPtr;
             HandleGuidanceCommands(msg);
@@ -152,100 +155,75 @@ void GUIDANCE_ProcessPacket(){
                 climbAngle = 30;
             }
 
-            guidanceAppData.guidance_tbl.defaultWpSpeed = msg->defaultWpSpeed;
-            guidanceAppData.guidance_tbl.captureRadiusScaling = msg->captureRadiusScaling;
-            guidanceAppData.guidance_tbl.guidanceRadiusScaling = msg->guidanceRadiusScaling;
-            guidanceAppData.guidance_tbl.xtrkDev = msg->xtrkDev;
-            guidanceAppData.guidance_tbl.climbFpAngle = climbAngle;
-            guidanceAppData.guidance_tbl.climbAngleVRange = msg->climbAngleVRange;
-            guidanceAppData.guidance_tbl.climbAngleHRange = msg->climbAngleHRange;
-            guidanceAppData.guidance_tbl.climbRateGain = msg->climbRateGain;
-            guidanceAppData.guidance_tbl.maxClimbRate = msg->maxClimbRate;
-            guidanceAppData.guidance_tbl.minClimbRate = msg->minClimbRate;
-            guidanceAppData.guidance_tbl.maxCap = msg->maxCap;
-            guidanceAppData.guidance_tbl.minCap = msg->minCap;
-            guidanceAppData.guidance_tbl.maxSpeed = msg->maxSpeed;
-            guidanceAppData.guidance_tbl.minSpeed = msg->minSpeed;
-            guidanceAppData.guidance_tbl.yawForward = msg->yawForward;
+            guidanceAppData.guidance_params.defaultWpSpeed = msg->defaultWpSpeed;
+            guidanceAppData.guidance_params.captureRadiusScaling = msg->captureRadiusScaling;
+            guidanceAppData.guidance_params.guidanceRadiusScaling = msg->guidanceRadiusScaling;
+            guidanceAppData.guidance_params.xtrkDev = msg->xtrkDev;
+            guidanceAppData.guidance_params.climbFpAngle = climbAngle;
+            guidanceAppData.guidance_params.climbAngleVRange = msg->climbAngleVRange;
+            guidanceAppData.guidance_params.climbAngleHRange = msg->climbAngleHRange;
+            guidanceAppData.guidance_params.climbRateGain = msg->climbRateGain;
+            guidanceAppData.guidance_params.maxClimbRate = msg->maxClimbRate;
+            guidanceAppData.guidance_params.minClimbRate = msg->minClimbRate;
+            guidanceAppData.guidance_params.maxCap = msg->maxCap;
+            guidanceAppData.guidance_params.minCap = msg->minCap;
+            guidanceAppData.guidance_params.maxSpeed = msg->maxSpeed;
+            guidanceAppData.guidance_params.minSpeed = msg->minSpeed;
+            guidanceAppData.guidance_params.yawForward = msg->yawForward;
+            guidSetParams(guidanceAppData.Guidance,&guidanceAppData.guidance_params);
             break;
         }
     }
 }
 
 void HandleGuidanceCommands(argsCmd_t *cmd){
-    //OS_printf("received guidance command %d\n",(int)cmd->name);
     switch((int)cmd->name){
-        case PRIMARY_FLIGHTPLAN:{
-            guidanceAppData.reachedStatusUpdated = false;
-            guidanceAppData.guidanceMode = PRIMARY_FLIGHTPLAN;
-            guidanceAppData.nextPrimaryWP = (int)cmd->param1;
-            //OS_printf("received primary waypoint following command to %d\n",(int)cmd->param1);
+        case FLIGHTPLAN:{
+            strcpy(guidanceAppData.activePlan,cmd->buffer);
+            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,cmd->buffer,(int)cmd->param1);
             char buffer[100];
             memset(buffer,0,sizeof(char)*100);
-            sprintf(buffer,"Following primary flightplan to waypoint %d",(int)cmd->param1);
+            sprintf(buffer,"Following flightplan %s to waypoint %d",cmd->buffer,(int)cmd->param1);
             SetStatus(guidanceAppData.statustxt,buffer,SEVERITY_INFO);
             break;
         }
 
-        case SECONDARY_FLIGHTPLAN:{
-            guidanceAppData.reachedStatusUpdated = false;
-            guidanceAppData.guidanceMode = SECONDARY_FLIGHTPLAN;
-            guidanceAppData.nextSecondaryWP = (int)cmd->param1;
-            SetStatus(guidanceAppData.statustxt,"Following secondary flightplan",SEVERITY_INFO);
-            break;
-        }
-
         case VECTOR:{
-            guidanceAppData.guidanceMode = VECTOR;
-
-            double vn = guidanceAppData.position.vn;
-            double ve = guidanceAppData.position.ve;
-            double vd = guidanceAppData.position.vd;
-            double currSpeed = sqrt(vn*vn + ve*ve + vd*vd);
-            double refSpeed = sqrt(cmd->param1*cmd->param1 +
-                                   cmd->param2*cmd->param2 +
-                                   cmd->param3*cmd->param3);
-
-            double range = guidanceAppData.guidance_tbl.maxSpeed - guidanceAppData.guidance_tbl.minSpeed;
-
-            double n = 0.5;
-            if ( (refSpeed - currSpeed) <= - range/2 ){
-                n = 0.3;
-            }
-            double trk,gs,vs;
-            ConvertVnedToTrkGsVs(cmd->param1,cmd->param2,cmd->param3,&trk,&gs,&vs);
-            double fspeed = n*refSpeed + (1-n) * currSpeed;
-
-            double vnr = 0.0,ver = 0.0,vdr = 0.0;
-            ConvertTrkGsVsToVned(trk,fspeed,vs,&vnr,&ver,&vdr);
-            guidanceAppData.velCmd.param1 = vnr;
-            guidanceAppData.velCmd.param2 = ver;
-            guidanceAppData.velCmd.param3 = vdr;
-            guidanceAppData.velCmd.param4 = guidanceAppData.guidance_tbl.yawForward;
-
+            double trkgsvs[3] = {0.0,0.0,0.0};  
+            ConvertVnedToTrkGsVs(cmd->param1,cmd->param2,cmd->param3,trkgsvs,trkgsvs+1,trkgsvs+2);
+            guidInputVelocityCmd(guidanceAppData.Guidance,trkgsvs);
+            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,"",0);
             break;
         }
         
         case POINT2POINT:{
-            guidanceAppData.guidanceMode = POINT2POINT;
-            guidanceAppData.reachedStatusUpdated = false;
-            guidanceAppData.point[0] = cmd->param1;
-            guidanceAppData.point[1] = cmd->param2;
-            guidanceAppData.point[2] = cmd->param3; 
-            guidanceAppData.pointSpeed = cmd->param4;
+            double pointA[3] = {guidanceAppData.pos.latitude,
+                                  guidanceAppData.pos.longitude,
+                                  guidanceAppData.pos.altitude_abs};
+            double pointB[3] = {cmd->param1,cmd->param2,cmd->param3};
+            double speed = cmd->param4;
+            for(int i=0;i<2;++i){
+                if (i == 0)
+                    guidInputFlightplanData(guidanceAppData.Guidance,"P2P",0,i,pointA,false,speed);
+                else
+                    guidInputFlightplanData(guidanceAppData.Guidance,"P2P",0,i,pointB,false,speed);
+
+            }
+
+            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,"P2P",1);
             SetStatus(guidanceAppData.statustxt,"Point to point control",SEVERITY_INFO);
             break;
         }
 
         case TAKEOFF:{
             //OS_printf("Received takeoff command in guidance app\n");
-            argsCmd_t cmd1;              
-            CFE_SB_InitMsg(&cmd1,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
-            cmd1.name = _TAKEOFF_;
-            cmd1.param1 = guidanceAppData.primaryFlightPlan.waypoints[1].altitude;
-            SendSBMsg(cmd1);
-            guidanceAppData.takeoffComplete = false;
-            guidanceAppData.guidanceMode = TAKEOFF;
+            ComputeTakeoffGuidanceInput();
+            missionItemReached_t msg;
+            CFE_SB_InitMsg(&msg,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);
+            msg.feedback = true;
+            strcpy(msg.planID,"Takeoff");
+            msg.reachedwaypoint = 0;
+            SendSBMsg(msg);
             break;
         }
 
@@ -253,28 +231,17 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             argsCmd_t cmd1;
             CFE_SB_InitMsg(&cmd1,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
             cmd1.name = _LAND_;
-            guidanceAppData.guidanceMode = POINT2POINT;
-            int wp = guidanceAppData.primaryFlightPlan.num_waypoints;
-            guidanceAppData.point[0] = guidanceAppData.primaryFlightPlan.waypoints[wp-1].latitude;
-            guidanceAppData.point[1] = guidanceAppData.primaryFlightPlan.waypoints[wp-1].longitude;
-            guidanceAppData.point[2] = guidanceAppData.primaryFlightPlan.waypoints[wp-1].altitude;
-            SendSBMsg(cmd1);
+            SendSBMsg(cmd);
             break;
         }
 
         case SPEED_CHANGE:{
+            char planID[25];
+            strcpy(planID,cmd->buffer);
             double speed = cmd->param1;
-            int hold = cmd->param2;
-
-            // Change speed for current waypoint
-            int nextWP = guidanceAppData.nextPrimaryWP;
-            guidanceAppData.primaryFlightPlan.waypoints[nextWP].wp_metric = WP_METRIC_SPEED;
-            guidanceAppData.primaryFlightPlan.waypoints[nextWP].value = speed;
-
-            if(hold > 1e-3){
-                // Also change default speed for all future waypoints
-                guidanceAppData.guidance_tbl.defaultWpSpeed = speed;
-            }
+            bool hold = cmd->param2==1?true:false;
+            int wp = cmd->param3;
+            ChangeWaypointSpeed(guidanceAppData.Guidance,planID,wp,speed,hold);
             break;
         }
 
@@ -282,188 +249,48 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
 }
 
 void GUIDANCE_Run(){
-    switch(guidanceAppData.guidanceMode){
-        case NOOP:{
-            break;
-        }
 
-        case PRIMARY_FLIGHTPLAN:{
-            guidanceInput_t guidanceInput = AssembleGuidanceInput(&guidanceAppData.primaryFlightPlan, guidanceAppData.nextPrimaryWP);
-            guidanceOutput_t guidanceOutput;
-            int nextWP = guidanceAppData.nextPrimaryWP;
-            int newNextWP = ComputeFlightplanGuidanceInput(&guidanceInput, &guidanceOutput, (guidanceParams_t*)&guidanceAppData.guidance_tbl);
-            HandleFlightplanGuidance(&guidanceAppData.primaryFlightPlan, nextWP, &guidanceOutput);
-            guidanceAppData.nextPrimaryWP = newNextWP;
-            break;
-        }
-
-        case SECONDARY_FLIGHTPLAN:{
-            guidanceInput_t guidanceInput = AssembleGuidanceInput(&guidanceAppData.secondaryFlightPlan, guidanceAppData.nextSecondaryWP);
-            guidanceOutput_t guidanceOutput;
-            int nextWP = guidanceAppData.nextSecondaryWP;
-            int newNextWP = ComputeFlightplanGuidanceInput(&guidanceInput, &guidanceOutput, (guidanceParams_t*)&guidanceAppData.guidance_tbl);
-            HandleFlightplanGuidance(&guidanceAppData.secondaryFlightPlan, nextWP, &guidanceOutput);
-            guidanceAppData.nextSecondaryWP = newNextWP;
-            break;
-        }
-
-        case POINT2POINT:{
-            flightplan_t fp;
-            fp.num_waypoints = 2;
-            memset(fp.id,0,sizeof(char)*20);
-            strcpy(fp.id,"P2P");
-            // Starting position is the first waypoint
-            fp.waypoints[0].latitude = guidanceAppData.position.latitude;
-            fp.waypoints[0].longitude = guidanceAppData.position.longitude;
-            fp.waypoints[0].altitude = guidanceAppData.position.altitude_abs;
-
-            // Target position is second waypoint
-            fp.waypoints[1].latitude = guidanceAppData.point[0];
-            fp.waypoints[1].longitude = guidanceAppData.point[1];
-            fp.waypoints[1].altitude = guidanceAppData.point[2];
-
-            fp.waypoints[1].wp_metric = WP_METRIC_SPEED;
-            fp.waypoints[1].value = guidanceAppData.pointSpeed;
-
-            guidanceInput_t guidanceInput = AssembleGuidanceInput(&fp, 1);
-            guidanceOutput_t guidanceOutput;
-            ComputeFlightplanGuidanceInput(&guidanceInput, &guidanceOutput, (guidanceParams_t*)&guidanceAppData.guidance_tbl);
-            HandleFlightplanGuidance(&fp, 1, &guidanceOutput);
-
-            /*
-            bool status = Point2PointControl(position,
-                                             guidanceAppData.point,
-                                             guidanceAppData.pointSpeed,
-                                             &guidanceAppData.guidance_tbl,
-                                             velCmd);
-
-            if(status){
-                missionItemReached_t wpReached;
-                CFE_SB_InitMsg(&wpReached, ICAROUS_WPREACHED_MID, sizeof(wpReached), TRUE);
-                strcpy(wpReached.planID, "P2P\0");
-                wpReached.reachedwaypoint = 1;
-                wpReached.feedback = true;
-                SendSBMsg(wpReached);
-                SetStatus(guidanceAppData.statustxt,"Reached position",SEVERITY_INFO);
-                guidanceAppData.guidanceMode = NOOP;
-            }
-            SendVelocityCommand(velCmd);
-            */
-            break;
-        }
-
-        case VECTOR:{
-            SendSBMsg(guidanceAppData.velCmd);
-            break;
-        }
-
-        case ORBIT:{
-            //TODO:
-            break;
-        }
-
-        case HELIX:{
-            //TODO:
-            break;
-        }
-
-        case TAKEOFF:{
-            ComputeTakeoffGuidanceInput();
-            break;
-        }
-
-        case LAND:{
-            //TODO:
-            break;
-        }
-
-        case SPEED_CHANGE:{
-            break;
-        }
-
-    }
-
-    PublishGuidanceStatus();
-}
-
-guidanceInput_t AssembleGuidanceInput(flightplan_t* fp, int nextWP){
-
-    if(nextWP >= fp->num_waypoints){
-       nextWP = fp->num_waypoints - 1;
-    }
-
-    double refSpeed = 0.0, refTime = 0.0;
-    if(fp->waypoints[nextWP].wp_metric == WP_METRIC_SPEED){
-        refSpeed = fp->waypoints[nextWP].value;
-    } else {
-        refTime = fp->scenario_time + fp->waypoints[nextWP].value;
-    }
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME,&ts);
-    double currTime = ts.tv_sec + (double)(ts.tv_nsec)/1E9;
- 
-    guidanceInput_t guidanceInput;
-    guidanceInput.position[0] = guidanceAppData.position.latitude;
-    guidanceInput.position[1] = guidanceAppData.position.longitude;
-    guidanceInput.position[2] = guidanceAppData.position.altitude_rel;
-    guidanceInput.velocity[0] = guidanceAppData.position.vn;
-    guidanceInput.velocity[1] = guidanceAppData.position.ve;
-    guidanceInput.velocity[2] = guidanceAppData.position.vd;
+    double time = ts.tv_sec + (double)(ts.tv_nsec)/1E9;
+    RunGuidance(guidanceAppData.Guidance,time);
 
-    guidanceInput.prev_waypoint[0] = fp->waypoints[nextWP - 1].latitude;
-    guidanceInput.prev_waypoint[1] = fp->waypoints[nextWP - 1].longitude;
-    guidanceInput.prev_waypoint[2] = fp->waypoints[nextWP - 1].altitude;
+    GuidanceOutput_t guidOutput;
+    guidGetOutput(guidanceAppData.Guidance,&guidOutput);
 
-    guidanceInput.curr_waypoint[0] = fp->waypoints[nextWP].latitude;
-    guidanceInput.curr_waypoint[1] = fp->waypoints[nextWP].longitude;
-    guidanceInput.curr_waypoint[2] = fp->waypoints[nextWP].altitude;
-    if (refTime > 0){
-      guidanceInput.curr_waypoint[3] = 1,
-      guidanceInput.curr_waypoint[4] = refTime;
-    }else{
-      guidanceInput.curr_waypoint[3] = 0,
-      guidanceInput.curr_waypoint[4] = refSpeed;
+    if(guidOutput.guidanceMode == TAKEOFF){
+        return;
     }
 
-    guidanceInput.num_waypoints = fp->num_waypoints;
-    guidanceInput.nextWP = nextWP;
-    guidanceInput.reachedStatusUpdated = guidanceAppData.reachedStatusUpdated;
+    if(guidOutput.nextWP >=0 && guidOutput.wpReached){
+        missionItemReached_t msg;
+        CFE_SB_InitMsg(&msg,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);
+        msg.feedback = true;
+        strcpy(msg.planID,guidOutput.activePlan);
+        msg.reachedwaypoint = guidOutput.nextWP-1;
+        SendSBMsg(msg);
 
-    
-    guidanceInput.velCmd[0] = guidanceAppData.velCmd.param1;
-    guidanceInput.velCmd[1] = guidanceAppData.velCmd.param2;
-    guidanceInput.velCmd[2] = guidanceAppData.velCmd.param3;
-    guidanceInput.currTime  = currTime;
-    return guidanceInput;
-}
-
-void HandleFlightplanGuidance(flightplan_t* fp, int oldNextWP, guidanceOutput_t* guidanceOutput){
-    guidanceAppData.reachedStatusUpdated = guidanceOutput->reachedStatusUpdated;
-    if(oldNextWP != guidanceOutput->newNextWP){
-        missionItemReached_t wpReached;
-        CFE_SB_InitMsg(&wpReached, ICAROUS_WPREACHED_MID, sizeof(wpReached), TRUE);
-        strcpy(wpReached.planID, fp->id);
-        wpReached.reachedwaypoint = oldNextWP;
-        wpReached.feedback = true;
-        SendSBMsg(wpReached);
-
-        if(oldNextWP+1 < fp->num_waypoints){
-            argsCmd_t speedChange;
-            CFE_SB_InitMsg(&speedChange,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
-            speedChange.name = _SETSPEED_;
-            speedChange.param1 = guidanceAppData.guidance_tbl.defaultWpSpeed;
-            SendSBMsg(speedChange);
-        }
+        argsCmd_t speedChange;
+        CFE_SB_InitMsg(&speedChange,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
+        speedChange.name = _SETSPEED_;
+        speedChange.param1 = guidanceAppData.guidance_params.defaultWpSpeed;
+        SendSBMsg(speedChange);
+        
     }
-    SendVelocityCommand(guidanceOutput->velCmd);
-}
 
-void SendVelocityCommand(double velCmd[3]){
-    guidanceAppData.velCmd.param1 = velCmd[0];
-    guidanceAppData.velCmd.param2 = velCmd[1];
-    guidanceAppData.velCmd.param3 = velCmd[2];
-    guidanceAppData.velCmd.param4 = guidanceAppData.guidance_tbl.yawForward;
-    SendSBMsg(guidanceAppData.velCmd);
+    if (guidOutput.guidanceMode != GUIDE_NOOP){
+        argsCmd_t cmd;
+        CFE_SB_InitMsg(&cmd, ICAROUS_COMMANDS_MID, sizeof(argsCmd_t), TRUE);
+        cmd.name = _SETVEL_;
+        double vn,ve,vd;
+        ConvertTrkGsVsToVned(guidOutput.velCmd[0],guidOutput.velCmd[1],
+                             guidOutput.velCmd[2],&vn,&ve,&vd);
+        cmd.param1 = vn;
+        cmd.param2 = ve;
+        cmd.param3 = vd;
+        cmd.param4 = guidanceAppData.guidance_params.yawForward;
+        SendSBMsg(cmd);
+    }
 }
 
 void ComputeTakeoffGuidanceInput(){
@@ -476,31 +303,9 @@ void ComputeTakeoffGuidanceInput(){
        cmd.param1 = 10;
        SendSBMsg(cmd);
        guidanceAppData.takeoffComplete = true;
-   }
-   else
-   {
-   }
+   } 
 }
 
-void PublishGuidanceStatus(){
-
-    guidance_status_t status;
-    CFE_SB_InitMsg(&status,GUIDANCE_STATUS_MID,sizeof(guidance_status_t),TRUE);
-    status.mode = guidanceAppData.guidanceMode;
-    if(status.mode == PRIMARY_FLIGHTPLAN){
-        status.nextWP = guidanceAppData.nextPrimaryWP;
-        status.totalWP = guidanceAppData.primaryFlightPlan.num_waypoints;
-    }
-    else{
-        status.nextWP = guidanceAppData.nextSecondaryWP;
-        status.totalWP = guidanceAppData.secondaryFlightPlan.num_waypoints;
-    }
-
-    status.velCmd[0] = guidanceAppData.velCmd.param1;
-    status.velCmd[1] = guidanceAppData.velCmd.param2;
-    status.velCmd[2] = guidanceAppData.velCmd.param3;
-    SendSBMsg(status);
-}
 
 int32_t GuidanceTableValidationFunc(void *TblPtr){
     return 0;

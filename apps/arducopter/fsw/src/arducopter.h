@@ -24,6 +24,7 @@
 #include <traffic_msgids.h>
 #include <guidance_msg.h>
 #include <guidance_msgids.h>
+#include <Guidance.h>
 #include <geofence_msg.h>
 #include <geofence_msgids.h>
 #include <trajectory_msg.h>

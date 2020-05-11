@@ -21,6 +21,7 @@ include_directories(fsw/tables)
 include_directories(${MODULES_ROOT}/Utils)
 include_directories(${MODULES_ROOT}/Cognition)
 include_directories(${MODULES_ROOT}/Interfaces)
+include_directories(${MODULES_ROOT}/Guidance)
 
 aux_source_directory(fsw/src APP_SRC_FILES)
 

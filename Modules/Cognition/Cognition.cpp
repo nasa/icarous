@@ -1164,7 +1164,8 @@ bool Cognition::ReturnToNextWP(){
          {
             request = REQUEST_NIL;
             return2NextWPState = RESOLVE;
-            SetGuidanceFlightPlan((char*)"Plan1",1);
+            std::string pathName = "Plan" + std::to_string(numSecPaths);
+            SetGuidanceFlightPlan((char*)pathName.c_str(),1);
          }else{
 
             std::string pathName = "Plan" + std::to_string(numSecPaths);

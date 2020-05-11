@@ -8,6 +8,7 @@ set(MODULES_LIB "${MODULES_ROOT}/lib")
 
 include_directories(${MODULES_ROOT}/Utils)
 include_directories(${MODULES_ROOT}/Interfaces)
+include_directories(${MODULES_ROOT}/Guidance)
 include_directories(../Icarouslib/fsw/platform_inc)
 include_directories(../scheduler/fsw/platform_inc)
 include_directories(../traffic/fsw/platform_inc)

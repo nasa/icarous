@@ -389,11 +389,13 @@ void COGNITION_SendGuidanceVelCmd(VelocityCommand velocity_command){
 void COGNITION_SendGuidanceFlightPlan(FpChange fp_change_command){
     argsCmd_t cmd;
     CFE_SB_InitMsg(&cmd,GUIDANCE_COMMAND_MID,sizeof(argsCmd_t),TRUE);
+
+    strcpy(cmd.buffer,fp_change_command.name);
     if(strcmp(fp_change_command.name,"Plan0") == 0){
-       cmd.name = PRIMARY_FLIGHTPLAN;
+       cmd.name = FLIGHTPLAN;
        cmd.param1 = fp_change_command.wpIndex;
     }else{
-       cmd.name = SECONDARY_FLIGHTPLAN;
+       cmd.name = FLIGHTPLAN;
        cmd.param1 = fp_change_command.wpIndex;
 
        missionItemReached_t itemReached;

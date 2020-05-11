@@ -30,6 +30,7 @@
 #include "geofence_msgids.h"
 #include "guidance_msgids.h"
 #include "UtilFunctions.h"
+#include "Guidance.h"
 
 #include "Cognition.h"
 
