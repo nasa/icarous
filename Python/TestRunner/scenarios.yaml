@@ -10,9 +10,6 @@
 #   traffic: a list of traffic vehicles to load - format for each traffic is:
 #            [range(m), bearing(deg), height(m), speed(m/s), heading(deg), verticalspeed(m/s)]
 #   time_limit: time limit for the scenario (in seconds)
-#   [planned_wps:] optional - list the waypoint ids that ownship should reach
-#                  used to define successfull waypoint progress test condition
-#                  (default is expect to reach all waypoints)
 #   (file paths are relative to Icarous repository)
 
 # Test ID: AT-0
@@ -72,7 +69,6 @@
     parameter_file: Examples/InputData/icarous_default.parm
     param_adjustments: {"SEARCHALGORITHM": 1}
     traffic: []
-    planned_wps: [0, 2, 4, 6]
 
 # Test ID: AT-5
 - name: "Geofence RRT"
@@ -84,7 +80,6 @@
     parameter_file: Examples/InputData/icarous_default.parm
     param_adjustments: {"SEARCHALGORITHM": 2}
     traffic: []
-    planned_wps: [0, 2, 4, 6]
 
 # Test ID: AT-6
 # traffic conflict then geofence conflict
@@ -99,7 +94,6 @@
     traffic:
       - [77, 77, 5, 1, 270, 0]
       - [142, 265, 5, 1, 90, 0]
-    planned_wps: [0, 2, 4, 6]
 
 # Test ID: AT-7
 # geofence conflict then traffic conflict
@@ -114,4 +108,3 @@
     traffic:
       - [120, 74, 5, 1, 270, 0]
       #- [127, 95, 5, 1, 270, 0]
-    planned_wps: [0, 2, 4, 6]

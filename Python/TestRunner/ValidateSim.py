@@ -2,16 +2,16 @@ import os
 import sys
 import json
 import numpy as np
+import pandas as pd
 from polygon_contain import Vector, definitely_inside
 
 sys.path.append("../Batch")
 import BatchGSModule as GS
 
 
-DEFAULT_VALIDATION_PARAMS = {"h_allow": 0.85,
-                             "v_allow": 1,
-                             "wp_radius": 5}
-
+DEFAULT_VALIDATION_PARAMS = {"h_allow": 0.85,   # use h_allow*DTHR to check WC violations
+                             "v_allow": 1,      # use v_allow*ZTHR to check WC violations
+                             "wp_radius": 5}    # dist (m) to consider a waypoint reached
 
 def GetPolygons(origin, fenceList):
     """
@@ -29,170 +29,201 @@ def GetPolygons(origin, fenceList):
     return Polygons
 
 
-class ValidateFlight:
-    def __init__(self, simdata, params={}, output_dir=""):
-        self.simdata = simdata
-        self.params = {**DEFAULT_VALIDATION_PARAMS, **params}
-        self.output_dir = output_dir
-        self.origin = self.simdata["ownship"]["position"][0]
+def get_planned_waypoints(simdata):
+    """ Return the list of wps that are reachable without violating a geofence """
+    if not simdata.get("geofences"):
+        # All waypoints should be reachable
+        return range(len(simdata["waypoints"]))
 
-    def validate_sim_data(self, test=False):
-        '''Check simulation data for test conditions'''
-        # Define conditions
-        conditions = []
-        conditions.append(self.verify_waypoint_progress)
-        conditions.append(self.verify_geofence)
-        conditions.append(self.verify_traffic)
+    planned_wps = []
+    origin = simdata["ownship"]["position"][0]
+    geofences = GetPolygons(origin, simdata["geofences"])
+    keep_in_fence = [Vector(*vertex) for vertex in geofences[0]]
+    keep_out_fences = [[Vector(*vertex) for vertex in fence]
+                       for fence in geofences[1:]]
+    lla2ned = lambda x: GS.LLA2NED(origin, x)
+    waypoints = [lla2ned(wp[0:3]) for wp in simdata["waypoints"]]
 
-        # Check conditions
-        results = [c() for c in conditions]
+    for i, wp in enumerate(waypoints):
+        reachable = True
+        s = Vector(wp[1], wp[0])
 
-        # Print results
-        print_results(results, self.simdata["scenario"]["name"])
+        # Check for keep in fence violations
+        if not definitely_inside(keep_in_fence, s, 0.01):
+            reachable = False
 
-        if test:
-            # Assert conditions
-            for r in results:
-                assert r[0], r[1]
+        # Check for keep out fence violations
+        for fence in keep_out_fences:
+            if definitely_inside(fence, s, 0.01):
+                reachable = False
 
-        return results
+        if reachable:
+            planned_wps.append(i)
 
-
-    def verify_waypoint_progress(self):
-        '''Check simulation data for progress towards goal'''
-        condition_name = "Waypoint Progress"
-        waypoints = self.simdata["waypoints"]
-        wp_radius = self.params["wp_radius"]
-        lla2ned = lambda x: GS.LLA2NED(self.origin, x)
-
-        reached = []
-
-        for i, pos in enumerate(self.simdata["ownship"]["position"]):
-            pos = lla2ned(pos)
-            # Check for reached waypoints
-            for wp in waypoints:
-                wp_pos = lla2ned(wp[0:3])
-                wp_seq = wp[3]
-                # If within 5m, add to reached
-                dist = np.sqrt((pos[0] - wp_pos[0])**2 + (pos[1] - wp_pos[1])**2)
-                if dist < wp_radius and wp_seq not in reached:
-                    reached.append(wp[3])
-
-        default = [wp[3] for wp in waypoints]
-        reached_expected = self.simdata["scenario"].get("planned_wps", default)
-        #print("reached  %s" % reached)
-        #print("expected %s" % reached_expected)
-        if set(reached) == set(reached_expected):
-            return True, "Reached all planned waypoints", condition_name
-        else:
-            return False, "Did not reach all planned waypoints", condition_name
+    return planned_wps
 
 
-    def verify_geofence(self):
-        '''Check simulation data for geofence violations'''
-        condition_name = "Geofencing"
-        waypoints = self.simdata["waypoints"]
-        geofences = GetPolygons(self.origin, self.simdata["geofences"])
-        lla2ned = lambda x: GS.LLA2NED(self.origin, x)
+def validate_sim_data(simdata, params=DEFAULT_VALIDATION_PARAMS, name="test", test=False):
+    '''Check simulation data for test conditions'''
+    # Define conditions
+    conditions = []
+    conditions.append(verify_waypoint_progress)
+    conditions.append(verify_geofence)
+    conditions.append(verify_traffic)
 
-        if len(geofences) == 0:
-            return True, "No Geofences", condition_name
+    # Check conditions
+    results = [c(simdata, params) for c in conditions]
 
-        for i, pos in enumerate(self.simdata["ownship"]["position"]):
-            pos = lla2ned(pos)
-            # Check for keep in fence violations
-            keep_in_fence = [Vector(*vertex) for vertex in geofences[0]]
-            s = Vector(pos[1], pos[0])
-            if not definitely_inside(keep_in_fence, s, 0.01):
-                t = self.simdata["ownship"]["t"][i]
-                msg = "Keep In Geofence Violation at time = %fs" % t
+    # Print results
+    print_results(results, name)
+    record_results(results, name)
+
+    # Assert conditions
+    if test:
+        for r in results:
+            assert r[0], r[1]
+
+    return results
+
+
+def verify_waypoint_progress(simdata, params=DEFAULT_VALIDATION_PARAMS):
+    '''Check simulation data for progress towards goal'''
+    condition_name = "Waypoint Progress"
+    wp_radius = params["wp_radius"]
+    origin = simdata["ownship"]["position"][0]
+    lla2ned = lambda x: GS.LLA2NED(origin, x)
+    waypoints = [lla2ned(wp[0:3])+[i] for i, wp in enumerate(simdata["waypoints"])]
+    pos_local = [lla2ned(pos) for pos in simdata["ownship"]["position"]]
+
+    reached = []
+
+    for pos in pos_local:
+        # Check for reached waypoints
+        for wp_seq, wp_pos in enumerate(waypoints):
+            # If within wp_radius, add to reached
+            dist = np.sqrt((pos[0] - wp_pos[0])**2 + (pos[1] - wp_pos[1])**2)
+            if dist < wp_radius and wp_seq not in reached:
+                #print("reached", wp[3], pos)
+                reached.append(wp_seq)
+
+    reached_expected = get_planned_waypoints(simdata)
+    #print("reached  %s" % reached)
+    #print("expected %s" % reached_expected)
+    if set(reached) == set(reached_expected):
+        return True, "Reached all planned waypoints", condition_name
+    else:
+        return False, "Did not reach all planned waypoints", condition_name
+
+
+def verify_geofence(simdata, params=DEFAULT_VALIDATION_PARAMS):
+    '''Check simulation data for geofence violations'''
+    condition_name = "Geofencing"
+
+    origin = simdata["ownship"]["position"][0]
+    geofences = GetPolygons(origin, simdata["geofences"])
+    if len(geofences) == 0:
+        return True, "No Geofences", condition_name
+    keep_in_fence = [Vector(*vertex) for vertex in geofences[0]]
+    keep_out_fences = [[Vector(*vertex) for vertex in fence]
+                       for fence in geofences[1:]]
+
+    lla2ned = lambda x: GS.LLA2NED(origin, x)
+    pos_local = [lla2ned(pos) for pos in simdata["ownship"]["position"]]
+    pos_vector = [Vector(pos[1], pos[0]) for pos in pos_local]
+
+    for i, s in enumerate(pos_vector):
+        # Check for keep in fence violations
+        if not definitely_inside(keep_in_fence, s, 0.01):
+            t = simdata["ownship"]["t"][i]
+            msg = "Keep In Geofence Violation at time = %fs" % t
+            return False, msg, condition_name
+
+        # Check for keep out fence violations
+        for fence in keep_out_fences:
+            if definitely_inside(fence, s, 0.01):
+                t = simdata["ownship"]["t"][i]
+                msg = "Keep Out Geofence Violation at time = %fs" % t
                 return False, msg, condition_name
 
-            # Check for keep out fence violations
-            for fence in geofences[1:]:
-                fencePoly = [Vector(*vertex) for vertex in fence]
-                if definitely_inside(fencePoly, s, 0.01):
-                    t = self.simdata["ownship"]["t"][i]
-                    msg = "Keep Out Geofence Violation at time = %fs" % t
-                    return False, msg, condition_name
-        return True, "No Geofence Violation", condition_name
+    return True, "No Geofence Violation", condition_name
 
 
-    def verify_traffic(self):
-        '''Check simulation data for traffic well clear violations'''
-        condition_name = "Traffic Avoidance"
-        DMOD = self.simdata["parameters"]["DET_1_WCV_DTHR"]*0.3048  # Convert ft to m
-        ZTHR = self.simdata["parameters"]["DET_1_WCV_ZTHR"]*0.3048  # Convert ft to m
-        h_allow = self.params["h_allow"]
-        v_allow = self.params["v_allow"]
-        waypoints = self.simdata["waypoints"]
-        lla2ned = lambda x: GS.LLA2NED(self.origin, x)
+def verify_traffic(simdata, params=DEFAULT_VALIDATION_PARAMS):
+    '''Check simulation data for traffic well clear violations'''
+    condition_name = "Traffic Avoidance"
+    DMOD = simdata["parameters"]["DET_1_WCV_DTHR"]*0.3048  # Convert ft to m
+    ZTHR = simdata["parameters"]["DET_1_WCV_ZTHR"]*0.3048  # Convert ft to m
+    h_allow = params["h_allow"]
+    v_allow = params["v_allow"]
+    waypoints = simdata["waypoints"]
+    origin = simdata["ownship"]["position"][0]
+    lla2ned = lambda x: GS.LLA2NED(origin, x)
+    ownship_position = [lla2ned(pos) for pos in simdata["ownship"]["position"]]
 
-        for i, o_pos in enumerate(self.simdata["ownship"]["position"]):
-            o_pos = lla2ned(o_pos)
-            o_alt = o_pos[2]
-            for traffic_id in self.simdata["traffic"].keys():
-                traffic = self.simdata["traffic"][traffic_id]
-                t_pos = lla2ned(traffic["position"][i])
-                t_alt = t_pos[2]
+    for i, o_pos in enumerate(ownship_position):
+        o_alt = o_pos[2]
+        for traffic_id in simdata["traffic"].keys():
+            traffic = simdata["traffic"][traffic_id]
+            t_pos = lla2ned(traffic["position"][i])
+            t_alt = t_pos[2]
 
-                dist = np.sqrt((o_pos[0] - t_pos[0])**2 + (o_pos[1] - t_pos[1])**2)
-                horiz_violation = (dist < DMOD*h_allow)
-                vert_violation = (abs(o_alt - t_alt) < ZTHR*v_allow)
-                if horiz_violation and vert_violation:
-                    t = self.simdata["ownship"]["t"][i]
-                    msg = "Well Clear Violation at t = %fs" % t
-                    return False, msg, condition_name
+            dist = np.sqrt((o_pos[0] - t_pos[0])**2 + (o_pos[1] - t_pos[1])**2)
+            horiz_violation = (dist < DMOD*h_allow)
+            vert_violation = (abs(o_alt - t_alt) < ZTHR*v_allow)
+            if horiz_violation and vert_violation:
+                t = simdata["ownship"]["t"][i]
+                msg = "Well Clear Violation at t = %fs" % t
+                return False, msg, condition_name
 
-        return True, "No Well Clear Violation", condition_name
+    return True, "No Well Clear Violation", condition_name
 
 
-    def plot_scenario(self, save=False):
-        '''Plot the result of the scenario'''
-        from matplotlib import pyplot as plt
-        fig = plt.figure()
-        WP = self.simdata["waypoints"]
-        geofences = GetPolygons(self.origin, self.simdata["geofences"])
-        lla2ned = lambda x: GS.LLA2NED(self.origin, x)
+def plot_scenario(simdata, output_dir="", save=False):
+    '''Plot the result of the scenario'''
+    from matplotlib import pyplot as plt
+    scenario_name = os.path.basename(output_dir)
+    fig = plt.figure()
+    WP = simdata["waypoints"]
+    origin = simdata["ownship"]["position"][0]
+    geofences = GetPolygons(origin, simdata["geofences"])
+    lla2ned = lambda x: GS.LLA2NED(origin, x)
 
-        # Plot waypoints
-        waypoints = [wp[0:3] for wp in WP]
-        waypoints_local = np.array(list(map(lla2ned, waypoints)))
-        plt.plot(waypoints_local[:, 1], waypoints_local[:, 0], 'k*:', label="Flight Plan")
+    # Plot waypoints
+    waypoints = [wp[0:3] for wp in WP]
+    waypoints_local = np.array([lla2ned(wp) for wp in waypoints])
+    plt.plot(waypoints_local[:, 1], waypoints_local[:, 0], 'k*:', label="Flight Plan")
 
-        # Plot ownship path
-        ownpos_local = np.array(list(map(lla2ned, self.simdata["ownship"]["position"])))
-        plt.plot(ownpos_local[:, 1], ownpos_local[:, 0], label="Ownship Path")
+    # Plot ownship path
+    ownpos_local = np.array([lla2ned(ownpos) for ownpos in simdata["ownship"]["position"]])
+    plt.plot(ownpos_local[:, 1], ownpos_local[:, 0], label="Ownship Path")
 
-        # Plot traffic path
-        for traf_id, traf in self.simdata["traffic"].items():
-            trafpos_local = np.array(list(map(lla2ned, traf["position"])))
-            plt.plot(trafpos_local[:, 1], trafpos_local[:, 0], label=str(traf_id)+" Path")
+    # Plot traffic path
+    for traf_id, traf in simdata["traffic"].items():
+        trafpos_local = np.array([lla2ned(t_pos) for t_pos in traf["position"]])
+        plt.plot(trafpos_local[:, 1], trafpos_local[:, 0], label=str(traf_id)+" Path")
 
-        # Plot geofences
-        for i, vertices in enumerate(geofences):
-            vertices.append(vertices[0])
-            vertices = np.array(vertices)
-            if i == 0:
-                plt.plot(vertices[:, 0], vertices[:, 1], 'orange', label="Keep In Geofence")
-            else:
-                plt.plot(vertices[:, 0], vertices[:, 1], 'r', label="Keep Out Geofence"+str(i))
-
-        # Set up figure
-        plt.title(self.simdata["scenario"]["name"]+" Scenario - Simulation Results")
-        plt.xlabel("X (m)")
-        plt.ylabel("Y (m)")
-        plt.legend()
-        plt.axis('equal')
-
-        if save:
-            if not os.path.isdir(self.output_dir):
-                os.makedirs(self.output_dir)
-            output_file = os.path.join(self.output_dir, "simplot.png")
-            plt.savefig(output_file)
-            plt.close(fig)
+    # Plot geofences
+    for i, vertices in enumerate(geofences):
+        vertices.append(vertices[0])
+        vertices = np.array(vertices)
+        if i == 0:
+            plt.plot(vertices[:, 0], vertices[:, 1], 'orange', label="Keep In Geofence")
         else:
-            plt.show()
+            plt.plot(vertices[:, 0], vertices[:, 1], 'r', label="Keep Out Geofence"+str(i))
+
+    # Set up figure
+    plt.title(scenario_name + " - Simulation Results")
+    plt.xlabel("X (m)")
+    plt.ylabel("Y (m)")
+    plt.legend()
+    plt.axis('equal')
+
+    if save:
+        output_file = os.path.join(output_dir, "simplot.png")
+        plt.savefig(output_file)
+        plt.close(fig)
+    else:
+        plt.show()
 
 
 def print_results(results, scenario_name):
@@ -208,6 +239,20 @@ def print_results(results, scenario_name):
             print("\t\033[31mX %s - FAIL:\033[0m %s" % (name, msg))
 
 
+def record_results(results, scenario_name):
+    filename = "ValidationResults.csv"
+    if os.path.isfile(filename):
+        table = pd.read_csv(filename, index_col=0)
+    else:
+        table = pd.DataFrame({})
+    metrics = {r[2]:r[0] for r in results}
+    index = scenario_name
+    metrics = pd.DataFrame(metrics, index=[index])
+    table = metrics.combine_first(table)
+    table = table[metrics.keys()]
+    table.to_csv(filename)
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Validate Icarous simulation data")
@@ -215,13 +260,17 @@ if __name__ == "__main__":
     parser.add_argument("--plot", action="store_true", help="plot the scenario")
     parser.add_argument("--save", action="store_true", help="save the results")
     parser.add_argument("--test", action="store_true", help="assert test conditions")
-    parser.add_argument("--h_allow", type=float, default=0.85,
-                        help="use h_allow*DTHR to check WC violation")
-    parser.add_argument("--v_allow", type=float, default=1,
-                        help="use v_allow*ZTHR to check WC violation")
-    parser.add_argument("--wp_radius", type=float, default=5,
-                        help="dist (m) to consider a waypoint reached")
+    parser.add_argument("--param", nargs=2, action="append", default=[],
+                        metavar=("KEY", "VALUE"), help="set validation parameter")
     args = parser.parse_args()
+
+    # Set validation parameters
+    params = dict(DEFAULT_VALIDATION_PARAMS)
+    for p in args.param:
+        if p[0] not in params:
+            print("** Warning, unrecognized validation parameter: %s" % p[0])
+            continue
+        params[p[0]] = float(p[1])
 
     # Gather all simulation data files
     if os.path.isfile(args.sim_output) and args.sim_output.endswith(".json"):
@@ -232,18 +281,16 @@ if __name__ == "__main__":
             data_files += [os.path.join(root, f) for f in files if f.endswith(".json")]
         print("Found %d simulation data files in %s" % (len(data_files), args.sim_output))
 
-    validation_params = {"h_allow": args.h_allow,
-                         "v_allow": args.v_allow,
-                         "wp_radius": args.wp_radius}
-
     for data_file in data_files:
         # Read in the simulation data
+        output_dir = os.path.dirname(data_file)
+        scenario_name = os.path.basename(output_dir)
         with open(data_file, 'r') as fp:
             simdata = json.load(fp)
 
-        # Validate the data
-        output_dir = os.path.split(data_file)[0]
-        VF = ValidateFlight(simdata, validation_params, output_dir=output_dir)
-        VF.validate_sim_data()
+        # Check the test conditions
+        validate_sim_data(simdata, params, name=scenario_name, test=args.test)
+
+        # Generate plots
         if args.plot:
-            VF.plot_scenario(save=args.save)
+            plot_scenario(simdata, output_dir=output_dir, save=args.save)
