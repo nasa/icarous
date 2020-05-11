@@ -45,7 +45,7 @@ class Icarous():
         self.Geofence = GeofenceMonitor([3,2,2,20,20])
         self.Trajectory = Trajectory(5.0,250)
         self.tfMonitor = TrafficMonitor(False)
-        self.Merger = Merger("AC",vehicleID)
+        self.Merger = Merger("AC",vehicleID,self.logName)
         self.daafile = "DaidalusQuadConfig.txt"
 
         # Aircraft data
@@ -636,7 +636,7 @@ class Icarous():
 
     def WriteLog(self, logname="simoutput.json"):
         if self.logName is not "":
-             logname = self.logName 
+             logname = self.logName + '.json'
 
         import json
         if self.verbose > 0:

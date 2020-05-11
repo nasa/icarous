@@ -9,8 +9,8 @@ HomePos2 = [37.416407,-122.056657,0]
 icInstances = []
 
 # Initialize Icarous class
-ic1 = Icarous(HomePos1,simtype="UAM_VTOL",vehicleID=0)
-ic2 = Icarous(HomePos2,simtype="UAM_VTOL",vehicleID=1)
+ic1 = Icarous(HomePos1,simtype="UAM_VTOL",vehicleID=0,verbose=1,logName="sc0")
+ic2 = Icarous(HomePos2,simtype="UAM_VTOL",vehicleID=1,verbose=1,logName="sc1")
 
 icInstances.append(ic1)
 icInstances.append(ic2)

@@ -28,12 +28,14 @@ class LogData(Structure):
 
 
 class Merger():
-    def __init__(self,callsign,vehicleID):
+    def __init__(self,callsign,vehicleID,scenarioID=""):
 
         # Define the type interfaces
         self.lib = CDLL('libMerger.so')
         self.lib.MergerInit.restype = c_void_p
         self.lib.MergerInit.argtypes = [c_char_p,c_int]
+        self.lib.MergerInitWithLogSuffix.argtypes = [c_char_p,c_int,c_char_p]
+        self.lib.MergerInitWithLogSuffix.restype = c_void_p
         self.lib.MergerDeinit.argtypes = [c_void_p]
         self.lib.MergerSetAircraftState.argtypes = [c_void_p,cdouble3,cdouble3]
         self.lib.MergerSetVehicleConstraints.argtypes = [c_void_p,c_double,c_double,c_double]
@@ -48,7 +50,7 @@ class Merger():
         self.lib.MergerGetArrivalTimes.restype = c_bool
 
         # Initiate the C++ class
-        self.obj = self.lib.MergerInit(c_char_p(callsign.encode('utf-8')),c_int(vehicleID))
+        self.obj = self.lib.MergerInitWithLogSuffix(c_char_p(callsign.encode('utf-8')),c_int(vehicleID),c_char_p(scenarioID.encode('utf-8')))
 
     def Deinit(self):
         self.lib.MergerDeinit(self.obj)
