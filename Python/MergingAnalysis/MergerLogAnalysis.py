@@ -423,12 +423,11 @@ def process_data(data_location, num_vehicles, merge_id):
     vehicles = []
     group = data_location.strip("/").split("/")[-1]
     for i in range(num_vehicles):
-        filename = "merger_appdata_" + str(i) + ".txt"
-        filename = os.path.join(data_location, filename)
-        if not os.path.isfile(filename):
-            break
-        data = ReadMergerAppData(filename, vehicle_id=i, merge_id=merge_id, group=group)
-        vehicles.append(data)
+        for f in os.listdir(data_location):
+            if f.startswith("merger_appdata_"+str(i)):
+                filename = os.path.join(data_location, f)
+                data = ReadMergerAppData(filename, i, merge_id, group)
+                vehicles.append(data)
     return vehicles
 
 
