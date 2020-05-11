@@ -284,7 +284,7 @@ if __name__ == "__main__":
     for data_file in data_files:
         # Read in the simulation data
         output_dir = os.path.dirname(data_file)
-        scenario_name = os.path.basename(output_dir)
+        scenario_name = os.path.basename(os.path.normpath(output_dir))
         with open(data_file, 'r') as fp:
             simdata = json.load(fp)
 

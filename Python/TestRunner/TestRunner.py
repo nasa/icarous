@@ -97,15 +97,17 @@ def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
     num_vehicles = len(scenario["vehicles"])
     icInstances = []
     tfList = []
+    icDelay = []
     for v_scenario in scenario["vehicles"]:
         cpu_id = v_scenario.get("cpu_id", 1)
         spacecraft_id = cpu_id - 1
         waypoints,_,_ = ReadFlightplanFile(os.path.join(icarous_home,
                                            v_scenario["waypoint_file"]))
         HomePos = waypoints[0][0:3]
+        name=v_scenario["name"]
 
-        ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id)
-        ic.name = v_scenario["name"]
+        ic = Icarous(HomePos, simtype="UAM_VTOL", vehicleID=spacecraft_id,
+                     verbose=1, logName=name)
 
         # Set up the scenario
         if "merge_fixes" in scenario:
@@ -125,17 +127,20 @@ def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
             traf_id = num_vehicles + len(tfList)
             StartTraffic(traf_id, HomePos, tf[0], tf[1], tf[2], tf[3], tf[4], tf[5], tfList)
 
+        delay = v_scenario.get("delay", 0)
+        icDelay.append(delay)
+
         icInstances.append(ic)
 
     for tf in tfList:
         tf.setpos_uncertainty(0.01, 0.01, 0, 0, 0, 0)
 
-    RunSimulation(icInstances,tfList)
+    RunSimulation(icInstances, tfList, startDelay=icDelay)
 
     # Collect log files
     for ic in icInstances:
-        #ic.WriteLog(logname=os.path.join(output_dir, ic.name+"_simoutput.json"))
-        logname = os.path.join(output_dir, ic.name+"_simoutput.json")
+        #ic.WriteLog(logname=os.path.join(output_dir, ic.logName+"_simoutput.json"))
+        logname = os.path.join(output_dir, ic.logName+".json")
         print("writing log: %s" % logname)
         log_data = {"scenario": scenario,
                     "ownship_id": ic.vehicleID,
@@ -148,7 +153,7 @@ def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
         with open(logname, 'w') as f:
             json.dump(log_data, f)
     for f in os.listdir(sim_home):
-        if f.endswith(".txt") or f.endswith(".log") and f != "DaidalusQuadConfig.txt":
+        if f.endswith(".txt") or f.endswith(".log") or f.endswith(".json"):
             os.rename(os.path.join(sim_home, f), os.path.join(output_dir, f))
 
 

@@ -253,7 +253,7 @@ if __name__ == "__main__":
         MA.write_metrics(vehicles)
 
         # Check test conditions
-        scenario_name = os.path.basename(flight_dir)
+        scenario_name = os.path.basename(os.path.normpath(flight_dir))
         validate_merging_data(vehicles, params, name=scenario_name, test=args.test)
 
         # Generate plots
