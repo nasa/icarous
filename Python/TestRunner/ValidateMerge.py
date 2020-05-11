@@ -14,8 +14,14 @@ sys.path.append("../MergingAnalysis")
 import MergerLogAnalysis as MA
 
 
+DEFAULT_VALIDATION_PARAMS = {"arr_time_allow": 5,   # allowable arrival time error
+                             "sched_time_allow": 1, # allowable schedule time error
+                             "h_allow": 0.85}       # use h_allow*DTHR to check spacing
+
+
 # Validation functions
-def validate_merging_data(vehicles, output_dir="", test=False):
+def validate_merging_data(vehicles, params=DEFAULT_VALIDATION_PARAMS,
+                          name="test", test=False):
     '''Check simulation data for test conditions'''
     # Define conditions
     conditions = []
@@ -27,24 +33,24 @@ def validate_merging_data(vehicles, output_dir="", test=False):
     conditions.append(verify_spacing)
 
     # Check conditions
-    results = [c(vehicles) for c in conditions]
+    results = [c(vehicles, params) for c in conditions]
 
     # Print results
-    print_results(results, output_dir.split('_')[-1].strip('/'))
-    record_results(results, output_dir.split('/')[-1])
+    print_results(results, name)
+    record_results(results, name)
 
+    # Assert conditions
     if test:
-        # Assert conditions
         for r in results:
             assert r[0], r[1]
 
     return results
 
 
-def verify_valid_schedule(vehicles):
+def verify_valid_schedule(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check that the scheduled arrival times are acceptable'''
     condition_name = "Valid Schedule"
-    min_separation_time = 20 - 1
+    min_separation_time = 20 - params["sched_time_allow"]
 
     computed_schedule = [v.metrics["computed_schedule"] for v in vehicles]
     scheduled_arrivals = sorted([v.metrics["sched_arr_time"] for v in vehicles])
@@ -59,7 +65,7 @@ def verify_valid_schedule(vehicles):
         return False, "Failed to find valid schedule", condition_name
 
 
-def verify_merge_complete(vehicles):
+def verify_merge_complete(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check that all vehicles reached the merge point'''
     condition_name = "Merge Complete"
 
@@ -73,7 +79,7 @@ def verify_merge_complete(vehicles):
         return False, "Not all vehicles reached the merge point", condition_name
 
 
-def verify_merge_order(vehicles):
+def verify_merge_order(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check that the vehicles merged in the scheduled order'''
     condition_name = "Merge Order"
 
@@ -97,11 +103,10 @@ def verify_merge_order(vehicles):
         return False, "Arrival order doesn't match schedule", condition_name
 
 
-def verify_merge_time_separation(vehicles):
+def verify_merge_time_separation(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check merging data for arrival time separation'''
     condition_name = "Arrival Time Separation"
-    #min_separation_time = 20
-    min_separation_time = 10
+    min_separation_time = 20 - params["arr_time_allow"]
 
     arrival_times = sorted([v.metrics["actual_arr_time"] for v in vehicles
                             if v.metrics["reached_merge_point"]])
@@ -123,11 +128,10 @@ def verify_merge_time_separation(vehicles):
         return False, "Insufficient time spacing at merge point", condition_name
 
 
-def verify_merge_spacing(vehicles):
+def verify_merge_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check minimum horizontal separation during merging operation'''
     condition_name = "Merge Spacing"
-    #DTHR = 30
-    DTHR = 25
+    DTHR = 30*params["h_allow"]
 
     separation_ok = True
     print("\nMinimum separation distances during merge")
@@ -147,11 +151,10 @@ def verify_merge_spacing(vehicles):
         return False, msg, condition_name
 
 
-def verify_spacing(vehicles):
+def verify_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check minimum horizontal separation during entire flight'''
     condition_name = "Spacing"
-    #DTHR = 30
-    DTHR = 25
+    DTHR = 30*params["h_allow"]
 
     vehicles = []
     for i in range(args.num_vehicles):
@@ -213,12 +216,24 @@ if __name__ == "__main__":
     parser.add_argument("data_location", help="directory where log files are")
     parser.add_argument("--merge_id", default=1, type=int, help="merge point id to analyze")
     parser.add_argument("--num_vehicles", default=10, type=int, help="number of vehicles")
+    parser.add_argument("--many", action="store_true", help="validate many flights")
     parser.add_argument("--plot", action="store_true", help="plot the scenario")
     parser.add_argument("--save", action="store_true", help="save the results")
     parser.add_argument("--test", action="store_true", help="assert test conditions")
-    parser.add_argument("--many", action="store_true", help="validate many flights")
+    parser.add_argument("--param", nargs=2, action="append", default=[],
+                        metavar=("KEY", "VALUE"), help="set validation parameter")
+    args = parser.parse_args()
     args = parser.parse_args()
 
+    # Set validation parameters
+    params = dict(DEFAULT_VALIDATION_PARAMS)
+    for p in args.param:
+        if p[0] not in params:
+            print("** Warning, unrecognized validation parameter: %s" % p[0])
+            continue
+        params[p[0]] = float(p[1])
+
+    # Gather all simulation data files
     flights = []
     if args.many:
         for f in os.listdir(args.data_location):
@@ -226,26 +241,28 @@ if __name__ == "__main__":
     else:
         flights.append(args.data_location)
 
-    for flight in flights:
+    for flight_dir in flights:
+        output_dir = flight_dir
         # Read merger log data (just during merge operation)
-        vehicles = MA.process_data(flight, args.num_vehicles, args.merge_id)
+        vehicles = MA.process_data(flight_dir, args.num_vehicles, args.merge_id)
         # Read merger log data (for entire flight)
-        vehicles_entire_flight = MA.process_data(flight, args.num_vehicles, "all")
+        vehicles_entire_flight = MA.process_data(flight_dir, args.num_vehicles, "all")
 
-        # Compute metrics
+        # Compute merging metrics
         MA.compute_metrics(vehicles)
         MA.write_metrics(vehicles)
 
+        # Check test conditions
+        scenario_name = os.path.basename(flight_dir)
+        validate_merging_data(vehicles, params, name=scenario_name, test=args.test)
+
         # Generate plots
         if args.plot:
-            MA.plot(vehicles, "dist2int", save=args.save)
             MA.plot_roles(vehicles, save=args.save)
             MA.plot_speed(vehicles, save=args.save)
             MA.plot_speed(vehicles_entire_flight, save=args.save)
             MA.plot_spacing(vehicles, save=args.save)
             MA.plot_spacing(vehicles_entire_flight, save=args.save)
+            MA.plot_flight_trace(vehicles_entire_flight, save=args.save)
             MA.plot_summary(vehicles, save=args.save)
             plt.show()
-
-        # Check test conditions
-        validate_merging_data(vehicles, output_dir=flight, test=args.test)

@@ -13,6 +13,7 @@ RADIUS_OF_EARTH = 6378100.0
 class MergerData:
     def __init__(self, v_id, merge_id=1, group="test"):
         self.id = v_id
+        self.output_dir = ""
         self.merge_id = merge_id
         self.group = group
         self.t = []
