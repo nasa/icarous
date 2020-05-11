@@ -263,7 +263,7 @@ status_e Cruise(cognition_t* cog){
 
             if(cog->nextPrimaryWP >= cog->num_waypoints){
                 cog->cruiseState = SUCCESS;
-                printf("Completing cruise\n");  
+                //printf("Completing cruise\n");  
             }
             break;
        }
