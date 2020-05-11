@@ -54,6 +54,7 @@ typedef struct __attribute__((__packed__)){
 
 
 void* MergerInit(char callsign[],int vehicleID);
+void* MergerInitWithLogSuffix(char callsign[],int vehicleID,char logSuffix[]);
 void  MergerDeinit(void *obj);
 void  MergerSetAircraftState(void* obj, double pos[],double vel[]);
 void  MergerSetVehicleConstraints(void* obj, double minVel, double maxVel, double turnRadius);

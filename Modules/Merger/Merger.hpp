@@ -14,7 +14,7 @@
 
 class Merger{
    public:
-        Merger(char callsign[],int vehicleID);
+        Merger(char callsign[],int vehicleID,char scenarioID[]=(char*)"");
 
         void SetVehicleConstraints(double minVel, double maxVel, double turnRadius);
 

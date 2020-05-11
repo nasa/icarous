@@ -1,16 +1,16 @@
 #include "Merger.hpp"
 
-Merger::Merger(char callsign[],int vID){
+Merger::Merger(char callsign[],int vID, char logSuffix[]){
 
     vehicleID = vID;
     // Open log files
     char filename1[30];
-    sprintf(filename1,"mergerLog_%d.txt",vehicleID);
+    sprintf(filename1,"mergerLog_%d%s.txt",vehicleID,logSuffix);
     logFile1 = fopen(filename1,"w");
     fprintf(logFile1, "Vehicle ID: %d",vID);   
 
     char filename2[30];
-    sprintf(filename2,"merger_appdata_%d.txt",vehicleID);
+    sprintf(filename2,"merger_appdata_%d%s.txt",vehicleID,logSuffix);
     logFile2 = fopen(filename2,"w");
     fprintf(logFile2,"# time (s), intID, dist2int, speed, f/c/l, (r,t,d), zone, numSch, merge speed, merge dev, merging status, lat, lon, alt\n");
 
@@ -783,6 +783,11 @@ void Merger::AddLogEntry(){
 
 void* MergerInit(char callsign[],int vehicleID){
     Merger* mg = new Merger(callsign,vehicleID);
+    return (void*) mg;
+}
+
+void* MergerInitWithLogSuffix(char callsign[],int vehicleID,char logSuffix[]){
+    Merger* mg = new Merger(callsign,vehicleID,logSuffix);
     return (void*) mg;
 }
 
