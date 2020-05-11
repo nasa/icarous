@@ -26,9 +26,10 @@ from ichelper import (ConvertTrkGsVsToVned,
 import time
 
 class Icarous():
-    def __init__(self, initialPos, simtype="UAS_ROTOR", vehicleID = 0,fasttime = True, logfile = None):
+    def __init__(self, initialPos, simtype="UAS_ROTOR", vehicleID = 0,fasttime = True, verbose=0,logName = ""):
         self.fasttime = fasttime
-        self.logfile = logfile
+        self.logName = logName
+        self.verbose = verbose
         self.home_pos = [initialPos[0], initialPos[1], initialPos[2]]
         self.traffic = []
         if simtype == "UAM_VTOL":
@@ -82,6 +83,7 @@ class Icarous():
         self.plans = []
         self.localPlans = []
         self.daa_radius = 0
+        self.startSent = False
 
     def setpos_uncertainty(self,xx,yy,zz,xy,yz,xz,coeff=0.8):
         self.ownship.setpos_uncertainty(xx,yy,zz,xy,yz,xz,coeff)
@@ -327,7 +329,8 @@ class Icarous():
                 self.cog.wpNext1[i] = self.flightplan1[self.cog.nextPrimaryWP][i]
 
             dist = distance(self.position[0],self.position[1],self.cog.wpNext1[0],self.cog.wpNext1[1])
-            #print("IC: %d, Distance to wp %d: %f" %(self.vehicleID,nextWP,dist))
+            if self.verbose > 1:
+                print("IC: %d, Distance to wp %d: %f" %(self.vehicleID,nextWP,dist))
 
         # Check for feasiblity of path
         if len(self.flightplan2) > 0:
@@ -364,7 +367,8 @@ class Icarous():
 
         if self.cog.sendStatusTxt:
             self.cog.sendStatusTxt = False;
-            print(self.cog.statusBuf.decode('utf-8'))
+            if self.verbose > 0:
+                print(self.cog.statusBuf.decode('utf-8'))
 
         if self.cog.pathRequest:
             self.flightplan2 = []
@@ -378,7 +382,8 @@ class Icarous():
                     self.cog.startVelocity)
 
             if numWP > 0:
-                print("Computed flightplan with %d waypoints" % numWP)
+                if self.verbose > 0:
+                    print("Computed flightplan with %d waypoints" % numWP)
                 for i in range(numWP):
                     wp = self.Trajectory.GetWaypoint("Plan"+str(self.numSecPlan),i)
                     self.flightplan2.append([wp[0],wp[1],wp[2],self.cog.resolutionSpeed])
@@ -389,7 +394,8 @@ class Icarous():
                 self.plans.append(self.flightplan2)
                 self.localPlans.append(self.GetLocalFlightPlan(self.flightplan2))
             else:
-                print("Error finding path")
+                if self.verbose > 0:
+                    print("Error finding path")
 
 
     def RunGuidance(self):
@@ -462,13 +468,15 @@ class Icarous():
         
         if self.guidOut.reachedStatusUpdated:
             if self.guidanceMode == GuidanceCommands.PRIMARY_FLIGHTPLAN:
-                print("reached waypoint %d" % (self.guidOut.newNextWP-1))
+                if self.verbose > 0:
+                    print("Reached primary waypoint %d" % (self.guidOut.newNextWP-1))
                 if self.guidOut.newNextWP <= len(self.flightplan1):
                     self.cog.nextPrimaryWP = self.guidOut.newNextWP
                     self.cog.nextWP        = self.guidOut.newNextWP
 
             elif self.guidanceMode == GuidanceCommands.SECONDARY_FLIGHTPLAN:
-                #print("reached waypoint %d" % (self.guidOut.newNextWP-1))
+                if self.verbose > 0:
+                    print("reached secondary waypoint %d" % (self.guidOut.newNextWP-1))
                 if(self.guidOut.newNextWP < len(self.flightplan2)):
                     self.cog.nextSecondaryWP = self.guidOut.newNextWP
                     self.cog.nextWP          = self.guidOut.newNextWP
@@ -627,8 +635,12 @@ class Icarous():
         self.trafficLog[id]["positionNED"].append([positionLoc[1],positionLoc[0],positionLoc[2]])
 
     def WriteLog(self, logname="simoutput.json"):
+        if self.logName is not "":
+             logname = self.logName 
+
         import json
-        print("writing log: %s" % logname)
+        if self.verbose > 0:
+            print("writing log: %s" % logname)
         log_data = {"ownship": self.ownshipLog,
                     "traffic": self.trafficLog,
                     "waypoints": self.flightplan1,
@@ -716,19 +728,31 @@ def ExchangeArrivalTimes(icInstances,delay):
             ic.InputMergeLogs(datalog,delay)
             
 
-def RunSimulation(icInstances,trafficVehicles,commDelay=0):
+def RunSimulation(icInstances,trafficVehicles,startDelay=[],commDelay=0):
     # Run simulation until mission is complete
     simComplete = False
-        
+    prevTime = []
     while not simComplete:
         status = False
-        for ic in icInstances:
+        for i,ic in enumerate(icInstances):
+            if len(prevTime) == 0:
+                prevTime.append(ic.currTime)
+            if not ic.startSent:
+                if len(startDelay) == 0:
+                    ic.cog.missionStart = 0
+                    ic.startSent = True
+                else:
+                    if ic.currTime - prevTime[i] > startDelay[i]:
+                        ic.cog.missionStart = 0
+                        ic.startSent = True
+                    else:
+                        prevTime[i] = ic.currTime
+
             status |= ic.Run()
             simComplete |= ic.CheckMissionComplete()
             pos = ic.position
             locpos = ic.positionLog[-1]
             vel = [ic.velocity[1],ic.velocity[0],-ic.velocity[2]]
-            #map(lambda x: x.InputTraffic(ic.vehicleID,pos,vel),icInstances)
             for tf in icInstances:
                 tf.InputTraffic(ic.vehicleID,pos,vel,locpos)
 
