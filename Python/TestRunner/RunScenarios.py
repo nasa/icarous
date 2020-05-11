@@ -291,14 +291,7 @@ def RunPyIcarous(scenario, save=False, output_dir=""):
 
     # Run the scenario
     simTimeLimit = scenario["time_limit"]
-    while (not ic.CheckMissionComplete()) and (ic.currTime < simTimeLimit):
-        status = ic.Run()
-        if not status:
-            continue
-
-        RunTraffic(tfList)
-        for i, tf in enumerate(tfList):
-            ic.InputTraffic(i, tf.pos_gps, tf.vel, tf.pos)
+    RunSimulation([ic],tfList)
 
     # Construct the sim data for verification
     simdata = {"geofences": GF,
