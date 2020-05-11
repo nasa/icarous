@@ -102,7 +102,6 @@ class Icarous():
         self.etaFP1 = eta
         self.cog.primaryFPReceived = True
         self.cog.scenarioTime = scenarioTime
-        self.cog.missionStart = 0
         self.cog.num_waypoints = len(self.flightplan1)
         self.cog.wpMetricTime = False;
         self.plans.append(fp)
@@ -745,8 +744,6 @@ def RunSimulation(icInstances,trafficVehicles,startDelay=[],commDelay=0):
                     if ic.currTime - prevTime[i] > startDelay[i]:
                         ic.cog.missionStart = 0
                         ic.startSent = True
-                    else:
-                        prevTime[i] = ic.currTime
 
             status |= ic.Run()
             simComplete |= ic.CheckMissionComplete()

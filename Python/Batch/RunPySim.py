@@ -18,7 +18,7 @@ for tf in tfList:
     tf.setpos_uncertainty(0.01,0.01,0,0,0,0)
 
 # Initialize Icarous class
-ic = Icarous(HomePos)
+ic = Icarous(HomePos,verbose=1)
 
 # Setup uncertainty and smoothing parameters
 #ic.setpos_uncertainty(0.01,0.01,0,0,0,0)
@@ -43,7 +43,9 @@ ic.InputFlightplan(flightplan,0)
 icInstances = []
 icInstances.append(ic)
 
-RunSimulation(icInstances,tfList)
+icDelay = [10]
+
+RunSimulation(icInstances,tfList,startDelay = icDelay)
 
 
 # Plot data for visualization    
