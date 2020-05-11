@@ -15,6 +15,7 @@ from ichelper import LoadIcarousParams, ReadFlightplanFile
 sim_home = os.getcwd()
 icarous_home = os.path.abspath(os.path.join(sim_home, "../.."))
 icarous_exe = os.path.join(icarous_home, "exe", "cpu1")
+sitl_default = os.path.join("Python", "TestRunner", "sitl_files", "sitl_defaults.parm")
 
 
 def vehicle_log():
@@ -41,22 +42,30 @@ class SimVehicle:
         waypoints,_,_ = ReadFlightplanFile(os.path.join(icarous_home,
                                            self.scenario["waypoint_file"]))
         start_point = ','.join(str(x) for x in waypoints[0][0:3]+[0])
-        icarous_params = LoadIcarousParams(os.path.join(icarous_home,
-                                           self.scenario["parameter_file"]))
-        sitl_params = LoadIcarousParams("sitl_defaults.parm")
+
+        # Set up parameters for SITL
+        sitl_param_file = self.scenario.get("sitl_parameter_file", sitl_default)
+        sitl_params = LoadIcarousParams(os.path.join(icarous_home, sitl_param_file))
+
+        icarous_param_file = self.scenario["parameter_file"]
+        icarous_params = LoadIcarousParams(os.path.join(icarous_home, icarous_param_file))
+
         sitl_params["WPNAV_SPEED"] = icarous_params["DEF_WP_SPEED"]*100
         sitl_param_file = os.path.join(self.output_dir, self.name + "_sitl.parm")
         with open(sitl_param_file, 'w') as f:
             for param_id, param_value in sitl_params.items():
                 f.write("%-16s %f\n" % (param_id, param_value))
+
+        # Launch SITL
         arguments = ["sim_vehicle.py", "-v", "ArduCopter",
                      "-l", str(start_point),
                      "--add-param-file", sitl_param_file,
-                     "--use-dir", sitl_param_file,
+                     "--use-dir", "sitl_files",
                      "-I", str(self.spacecraft_id)]
-        arguments += ["-m", "--logfile="+os.path.join(self.output_dir,
-                                                      self.name+"_sitl.tlog")]
+        logfile = os.path.join(self.output_dir, self.name+"_sitl.tlog")
+        arguments += ["-m", "--logfile="+logfile]
         subprocess.Popen(arguments, stdout=subprocess.DEVNULL)
+
         if self.verbose:
             print("Waiting several seconds to allow ArduCopter to start up")
         time.sleep(60)
