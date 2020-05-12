@@ -291,6 +291,7 @@ class Icarous():
         self.altband = None
         self.vsband = None
 
+
         self.RecordOwnship()
 
     def RunCogntiion(self):
@@ -300,6 +301,7 @@ class Icarous():
             self.cog.velocity[i] = self.velocity[i]
 
         self.cog.hdg = self.trkgsvs[0]
+        self.cog.speed = self.trkgsvs[1]
 
         nextWP = 0
         for i in range(self.cog.nextPrimaryWP,len(self.flightplan1)):

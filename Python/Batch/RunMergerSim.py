@@ -2,6 +2,7 @@ from Icarous import *
 from matplotlib import pyplot as plt
 from Animation import AgentAnimation
 
+import pdb; pdb.set_trace()
 # Set the home position for the simulation
 HomePos1 = [37.415756,-122.056634,0]
 HomePos2 = [37.416407,-122.056657,0]
@@ -33,8 +34,9 @@ ic2.InputMergeFixes('../TestRunner/tcl4+/merging_scenario/merge_fixes.txt')
 
 tfList =[]
 
-icDelay = [0.15,0.0]
-RunSimulation(icInstances,tfList,startDelay=icDelay)
+icDelay = [5.0,0.0]
+tlimit = [15.0,15.0]
+RunSimulation(icInstances,tfList,startDelay=icDelay,timeLimit=tlimit)
 
 # Plot data for visualization    
 anim= AgentAnimation(-50,-50, 100,30,30)
