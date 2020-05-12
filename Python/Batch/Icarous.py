@@ -737,12 +737,13 @@ def ExchangeArrivalTimes(icInstances,delay):
             ic.InputMergeLogs(datalog,delay)
             
 
-def RunSimulation(icInstances,trafficVehicles,startDelay=[],commDelay=0):
+def RunSimulation(icInstances,trafficVehicles,startDelay=[],timeLimit=[],commDelay=0):
     # Run simulation until mission is complete
     simComplete = False
     prevTime = [ic.currTime for ic in icInstances]
     while not simComplete:
         status = False
+        simComplete = True
         for i,ic in enumerate(icInstances):
             if not ic.startSent:
                 if len(startDelay) == 0:
@@ -752,14 +753,19 @@ def RunSimulation(icInstances,trafficVehicles,startDelay=[],commDelay=0):
                     if ic.currTime - prevTime[i] > startDelay[i]:
                         ic.cog.missionStart = 0
                         ic.startSent = True
+                        prevTime[i] = ic.currTime
 
             status |= ic.Run()
-            simComplete |= ic.CheckMissionComplete()
+            simComplete &= ic.CheckMissionComplete()
             pos = ic.position
             locpos = ic.positionLog[-1]
             vel = [ic.velocity[1],ic.velocity[0],-ic.velocity[2]]
             for tf in icInstances:
                 tf.InputTraffic(ic.vehicleID,pos,vel,locpos)
+
+            if len(timeLimit) > 0:
+                if ic.currTime - prevTime[i] > timeLimit[i]:
+                    ic.cog.missionStart = -2
 
 
         if status:
