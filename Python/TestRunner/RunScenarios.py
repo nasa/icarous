@@ -213,7 +213,7 @@ if __name__ == "__main__":
         if args.python:
             RunScenarioPy(scenario, args.verbose, out_dir)
         else:
-            RunScenario(scenario, args.sitl, args.verbose, True, out_dir)
+            RunScenario(scenario, args.sitl, args.verbose, output_dir=out_dir, use_threads = False )
 
         # Perform validation
         if args.validate:
