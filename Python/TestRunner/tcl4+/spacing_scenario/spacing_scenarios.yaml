@@ -6,7 +6,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -16,7 +16,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -30,7 +30,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -40,7 +40,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -54,7 +54,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -64,7 +64,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -78,7 +78,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -88,7 +88,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -102,7 +102,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -112,7 +112,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -126,7 +126,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -136,7 +136,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -150,7 +150,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -160,7 +160,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -174,7 +174,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -184,7 +184,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -198,7 +198,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -208,7 +208,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -222,7 +222,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -232,7 +232,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -246,7 +246,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -256,7 +256,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -270,7 +270,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -280,7 +280,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -294,7 +294,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -304,7 +304,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -318,7 +318,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -328,7 +328,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -342,7 +342,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -352,7 +352,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -366,7 +366,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -376,7 +376,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -390,7 +390,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -400,7 +400,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -414,7 +414,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -424,7 +424,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -438,7 +438,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -448,7 +448,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -462,7 +462,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -472,7 +472,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -486,7 +486,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -496,7 +496,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -510,7 +510,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -520,7 +520,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -534,7 +534,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -544,7 +544,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -558,7 +558,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -568,7 +568,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -582,7 +582,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -592,7 +592,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -606,7 +606,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -616,7 +616,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -630,7 +630,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -640,7 +640,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -654,7 +654,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -664,7 +664,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -678,7 +678,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -688,7 +688,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -702,7 +702,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -712,7 +712,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -726,7 +726,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -736,7 +736,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -750,7 +750,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -760,7 +760,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -774,7 +774,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -784,7 +784,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -798,7 +798,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -808,7 +808,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -822,7 +822,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -832,7 +832,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -846,7 +846,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -856,7 +856,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -870,7 +870,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -880,7 +880,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -890,7 +890,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -904,7 +904,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -914,7 +914,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -924,7 +924,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -938,7 +938,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -948,7 +948,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -958,7 +958,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -972,7 +972,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -982,7 +982,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -992,7 +992,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1006,7 +1006,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1016,7 +1016,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1026,7 +1026,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1040,7 +1040,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1050,7 +1050,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1060,7 +1060,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1074,7 +1074,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1084,7 +1084,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1094,7 +1094,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1108,7 +1108,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1118,7 +1118,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1128,7 +1128,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1142,7 +1142,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1152,7 +1152,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1162,7 +1162,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1176,7 +1176,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1186,7 +1186,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1196,7 +1196,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1210,7 +1210,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1220,7 +1220,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1230,7 +1230,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1244,7 +1244,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1254,7 +1254,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1264,7 +1264,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1278,7 +1278,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1288,7 +1288,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1298,7 +1298,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1312,7 +1312,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1322,7 +1322,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1332,7 +1332,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1346,7 +1346,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1356,7 +1356,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1366,7 +1366,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1380,7 +1380,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1390,7 +1390,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1400,7 +1400,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1414,7 +1414,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1424,7 +1424,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1434,7 +1434,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1448,7 +1448,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1458,7 +1458,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1468,7 +1468,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1482,7 +1482,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1492,7 +1492,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1502,7 +1502,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1516,7 +1516,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1526,7 +1526,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1536,7 +1536,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1550,7 +1550,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1560,7 +1560,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1570,7 +1570,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1584,7 +1584,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1594,7 +1594,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1604,7 +1604,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1618,7 +1618,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1628,7 +1628,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1638,7 +1638,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1652,7 +1652,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1662,7 +1662,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1672,7 +1672,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1686,7 +1686,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1696,7 +1696,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1706,7 +1706,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1720,7 +1720,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1730,7 +1730,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1740,7 +1740,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1754,7 +1754,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1764,7 +1764,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1774,7 +1774,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1788,7 +1788,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1798,7 +1798,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1808,7 +1808,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 0
+      AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1822,7 +1822,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1832,7 +1832,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1842,7 +1842,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1856,7 +1856,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1866,7 +1866,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1876,7 +1876,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1890,7 +1890,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1900,7 +1900,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1910,7 +1910,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1924,7 +1924,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1934,7 +1934,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1944,7 +1944,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 2
+      AL_1_ALERT_T: 8
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1958,7 +1958,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1968,7 +1968,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1978,7 +1978,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -1992,7 +1992,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -2002,7 +2002,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -2012,7 +2012,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -2026,7 +2026,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -2036,7 +2036,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -2046,7 +2046,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -2060,7 +2060,7 @@
     delay: 0
     name: AC0
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -2070,7 +2070,7 @@
     delay: 0
     name: AC1
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
@@ -2080,7 +2080,7 @@
     delay: 0
     name: AC2
     param_adjustments:
-      AL_1_ALERT_T: 5
+      AL_1_ALERT_T: 10
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
     time_limit: 200
