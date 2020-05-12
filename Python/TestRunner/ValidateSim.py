@@ -10,7 +10,7 @@ import BatchGSModule as GS
 
 
 DEFAULT_VALIDATION_PARAMS = {"h_allow": 0.85,   # use h_allow*DTHR to check WC violations
-                             "v_allow": 1,      # use v_allow*ZTHR to check WC violations
+                             "v_allow": 0.85,      # use v_allow*ZTHR to check WC violations
                              "wp_radius": 5}    # dist (m) to consider a waypoint reached
 
 def GetPolygons(origin, fenceList):
