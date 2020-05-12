@@ -135,11 +135,12 @@ def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
     for tf in tfList:
         tf.setpos_uncertainty(0.01, 0.01, 0, 0, 0, 0)
 
-    RunSimulation(icInstances, tfList, startDelay=icDelay)
+    tlimit = [scenario.get("time_limit", 1000)]*len(icInstances)
+    RunSimulation(icInstances, tfList, startDelay=icDelay, timeLimit=tlimit)
 
     # Collect log files
     for ic in icInstances:
-        #ic.WriteLog(logname=os.path.join(output_dir, ic.logName+"_simoutput.json"))
+        #ic.WriteLog(logname=os.path.join(output_dir, ic.logName+".json"))
         logname = os.path.join(output_dir, ic.logName+".json")
         print("writing log: %s" % logname)
         log_data = {"scenario": scenario,
