@@ -203,6 +203,9 @@ bool TrafficConflictManagement(cognition_t* cog){
          // Use this only for search based resolution
          if(cog->resolutionTypeCmd == SEARCH_RESOLUTION){
             cog->return2NextWPState = INITIALIZE;
+         }else if(cog->resolutionTypeCmd == SPEED_RESOLUTION){
+            cog->startVelocity[0] = cog->hdg;
+            cog->startVelocity[1] = cog->speed;
          }
          break;
       }
@@ -239,6 +242,7 @@ bool TrafficConflictManagement(cognition_t* cog){
          if(cog->resolutionTypeCmd == SPEED_RESOLUTION){
             cog->requestGuidance2NextWP = -1;
             cog->trafficConflictState = NOOPC;
+            SetGuidanceSpeedCmd(cog,cog->startVelocity[1]);
          }
 
          SendStatus(cog,"IC:traffic conflict resolved",6);
@@ -266,7 +270,7 @@ bool RunTrafficResolution(cognition_t *cog){
             SetGuidanceSpeedCmd(cog,speedPref);
             cog->prevResSpeed = speedPref;
          }else{
-            SetGuidanceSpeedCmd(cog,speedPref);
+            SetGuidanceSpeedCmd(cog,cog->prevResSpeed);
          }
 
          bool val;
