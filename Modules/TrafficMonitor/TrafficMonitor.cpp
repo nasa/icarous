@@ -14,12 +14,11 @@ TrafficMonitor::TrafficMonitor(bool reclog,char daaConfig[]) {
     conflictVerticalSpeed = false;
     prevLogTime = 0;
     char            fmt1[64],fmt2[64];
-    struct timeval  tv;
+    struct timespec  tv;
     struct tm       *tm;
-    gettimeofday(&tv, NULL);
-    tm = localtime(&tv.tv_sec);
-    strftime(fmt1, sizeof fmt1, "Daidalus-%Y-%m-%d-%H:%M:%S", tm);
-    strcat(fmt1,".log");
+    clock_gettime(CLOCK_REALTIME,&tv);
+    double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
+    sprintf(fmt1,"Daidalus-%f.log",localT);
 
     log = reclog;
 
@@ -52,12 +51,11 @@ void TrafficMonitor::UpdateDAAParameters(char daaParameters[],bool reclog) {
     if(reclog && !log) {
         log = reclog;
         char            fmt1[64],fmt2[64];
-        struct timeval  tv;
+        struct timespec  tv;
         struct tm       *tm;
-        gettimeofday(&tv, NULL);
-        tm = localtime(&tv.tv_sec);
-        strftime(fmt1, sizeof fmt1, "Daidalus-%Y-%m-%d-%H:%M:%S", tm);
-        strcat(fmt1,".log");
+        clock_gettime(CLOCK_REALTIME,&tv);
+        double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
+        sprintf(fmt1,"Daidalus-%f.log",localT);
         logfileIn.open(fmt1);
     }
 }

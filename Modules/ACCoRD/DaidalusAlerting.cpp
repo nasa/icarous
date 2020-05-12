@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019 United States Government as represented by
+ * the National Aeronautics and Space Administration.  No copyright
+ * is claimed in the United States under Title 17, U.S.Code. All Other
+ * Rights Reserved.
+ */
 /**
 
 Notices:
@@ -229,6 +235,7 @@ int main(int argc, char* argv[]) {
         }
       }
       out << std::endl;
+      out << daa.outputString() << std::endl;
     }
   }
   out.close();

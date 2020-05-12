@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2019 United States Government as represented by
+ * the National Aeronautics and Space Administration.  No copyright
+ * is claimed in the United States under Title 17, U.S.Code. All Other
+ * Rights Reserved.
+ */
 /**
 
 Notices:
@@ -91,9 +97,10 @@ void printBands(Daidalus& daa) {
 	std::cout << std::endl;
 
 	std::vector<std::string> acs;
-	for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+	for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+		BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
 		daa.conflictBandsAircraft(acs,region);
-		std::cout << "Conflict Aircraft for Bands Region " << BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region))
+		std::cout << "Conflict Aircraft for Bands Region " << BandsRegion::to_string(region)
 		<< ": " << TrafficState::listToString(acs) << std::endl;
 	}
 	std::cout << std::endl;
@@ -108,9 +115,10 @@ void printBands(Daidalus& daa) {
 		Interval ii = daa.horizontalDirectionIntervalAt(i,"deg");
 		std::cout << "  " << BandsRegion::to_string(daa.horizontalDirectionRegionAt(i)) << ":\t" << ii.toString(2) << std::endl;
 	}
-	for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+	for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+		BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
 		daa.peripheralHorizontalDirectionBandsAircraft(acs,region);
-		std::cout << "Peripheral Aircraft for " << hdstr << " Bands Region " << BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region)) << ": " <<
+		std::cout << "Peripheral Aircraft for " << hdstr << " Bands Region " << BandsRegion::to_string(region) << ": " <<
 				TrafficState::listToString(acs)  << std::endl;
 	}
 	std::cout << hdstr << " Resolution (right): " << num2str(daa.horizontalDirectionResolution(true,"deg"),"deg")  << std::endl;
@@ -140,9 +148,10 @@ void printBands(Daidalus& daa) {
 		Interval ii = daa.horizontalSpeedIntervalAt(i,"knot");
 		std::cout << "  " << BandsRegion::to_string(daa.horizontalSpeedRegionAt(i)) << ":\t" << ii.toString(2) << std::endl;
 	}
-	for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+	for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+		BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
 		daa.peripheralHorizontalSpeedBandsAircraft(acs,region);
-		std::cout << "Peripheral Aircraft for " << hsstr << " Bands Region " << BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region)) << ": " <<
+		std::cout << "Peripheral Aircraft for " << hsstr << " Bands Region " << BandsRegion::to_string(region) << ": " <<
 				TrafficState::listToString(acs)  << std::endl;
 	}
 	std::cout << hsstr << " Resolution (up): " << num2str(daa.horizontalSpeedResolution(true,"knot"),"knot")  << std::endl;
@@ -172,9 +181,10 @@ void printBands(Daidalus& daa) {
 		Interval ii = daa.verticalSpeedIntervalAt(i,"fpm");
 		std::cout << "  " << BandsRegion::to_string(daa.verticalSpeedRegionAt(i)) << ":\t" << ii.toString(2) << std::endl;
 	}
-	for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+	for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+		BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
 		daa.peripheralVerticalSpeedBandsAircraft(acs,region);
-		std::cout << "Peripheral Aircraft for Vertical Speed Bands Region " << BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region)) << ": " <<
+		std::cout << "Peripheral Aircraft for Vertical Speed Bands Region " << BandsRegion::to_string(region) << ": " <<
 				TrafficState::listToString(acs)  << std::endl;
 	}
 	std::cout << "Vertical Speed Resolution (up): " << num2str(daa.verticalSpeedResolution(true,"fpm"),"fpm")  << std::endl;
@@ -203,9 +213,10 @@ void printBands(Daidalus& daa) {
 		Interval ii = daa.altitudeIntervalAt(i,"ft");
 		std::cout << "  " << BandsRegion::to_string(daa.altitudeRegionAt(i)) << ":\t" << ii.toString(2) << std::endl;
 	}
-	for (int region=BandsRegion::orderOfConflictRegion(BandsRegion::FAR); region <= BandsRegion::orderOfConflictRegion(BandsRegion::NEAR); ++region) {
+	for (int regidx=1; regidx <= BandsRegion::NUMBER_OF_CONFLICT_BANDS; ++regidx) {
+		BandsRegion::Region region = BandsRegion::regionFromOrder(regidx);
 		daa.peripheralAltitudeBandsAircraft(acs,region);
-		std::cout << "Peripheral Aircraft for Altitude Bands Region " << BandsRegion::to_string(BandsRegion::conflictRegionFromOrder(region)) << ": " <<
+		std::cout << "Peripheral Aircraft for Altitude Bands Region " << BandsRegion::to_string(region) << ": " <<
 				TrafficState::listToString(acs)  << std::endl;
 	}
 	std::cout << "Altitude Resolution (up): " << num2str(daa.altitudeResolution(true,"ft"),"ft")  << std::endl;
@@ -305,7 +316,7 @@ int main(int argc, char* argv[]) {
 	Velocity vo = Velocity::makeTrkGsVs(206.0,"deg", 151.0,"knot", 0.0,"fpm");
 	daa.setOwnshipState("ownship",so,vo,t);
 
-	// In case of SUM, set uncertainties of traffic aircraft
+    // In case of SUM, set uncertainties of ownhip aircraft
 	// daa.setHorizontalPositionUncertainty(0, s_EW, s_NS, s_EN, units);
 	// daa.setVerticalPositionUncertainty(0, sz, units);
 	// daa.setHorizontalVelocityUncertainty(0, v_EW, v_NS, v_EN, units);
@@ -322,7 +333,7 @@ int main(int argc, char* argv[]) {
 	int ac_idx = daa.addTrafficState("intruder",si,vi);
 	// ... more traffic ...
 
-	// In case of SUM, set uncertainties of traffic aircraft
+    // In case of SUM, set uncertainties of ac_idx'th traffic aircraft
 	// daa.setHorizontalPositionUncertainty(ac_idx, s_EW, s_NS, s_EN, units_string);
 	// daa.setVerticalPositionUncertainty(ac_idx, sz, units_string);
 	// daa.setHorizontalVelocityUncertainty(ac_idx, v_EW, v_NS, v_EN, units_string);
