@@ -328,10 +328,12 @@ def plot_summary(vehicles, save=False):
 
 def plot_spacing(vehicles, save=False):
     plt.figure()
+    spacing_value = 30
     for v1, v2 in itertools.combinations(vehicles, 2):
         time_range, dist = compute_separation(v1, v2)
         plt.plot(time_range, dist, label="vehicle"+str(v1.id)+" to vehicle"+str(v2.id))
         d, t_min = min(zip(dist, time_range))
+    plt.plot(plt.xlim(), [spacing_value]*2, 'm--', label="Minimum allowed spacing")
     plt.legend()
     plt.grid()
     plt.ylim((0, plt.ylim()[1]))
@@ -410,7 +412,11 @@ def plot_roles(vehicles, save=False):
 def plot_flight_trace(vehicles, save=False):
     plt.figure()
     for v in vehicles:
-        plt.plot(v.get("lon"), v.get("lat"), label=v.id)
+        lon = v.get("lon")
+        lat = v.get("lat")
+        trace, = plt.plot(lon, lat, label=v.id)
+        plt.plot(lon[0], lat[0], 'o', color=trace.get_color())
+        plt.plot(lon[-1], lat[-1], 'x', color=trace.get_color())
     plt.grid()
     plt.legend()
     plt.xlabel("Longitude (deg)")
