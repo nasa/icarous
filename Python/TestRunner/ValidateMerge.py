@@ -51,19 +51,28 @@ def validate_merging_data(vehicles, params=DEFAULT_VALIDATION_PARAMS,
 def verify_valid_schedule(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check that the scheduled arrival times are acceptable'''
     condition_name = "Valid Schedule"
-    min_separation_time = 20 - params["sched_time_allow"]
+    min_separation_time_scheduled = 20 - params["sched_time_allow"]
+    min_separation_time_actual = 20 - params["arr_time_allow"]
 
     computed_schedule = [v.metrics["computed_schedule"] for v in vehicles]
     scheduled_arrivals = sorted([v.metrics["sched_arr_time"] for v in vehicles])
-    separation_times = np.diff(scheduled_arrivals)
+    actual_arrivals = sorted([(v.metrics["actual_arr_time"], v.id) for v in vehicles
+                              if v.metrics["reached_merge_point"]])
+    scheduled_sep = np.diff(scheduled_arrivals)
+    actual_sep = np.diff(actual_arrivals)
 
-    if all((s > min_separation_time for s in separation_times)):
-        if any(computed_schedule):
-            return True, "Computed valid merge point arrival schedule", condition_name
-        else:
-            return True, "No merge conflict - no scheduling required", condition_name
+    schedule_exists = any(computed_schedule)
+    schedule_ok = all((s > min_separation_time_scheduled for s in scheduled_sep))
+    arrival_ok = all((s > min_separation_time_actual for s in actual_sep))
+
+    if schedule_exists and schedule_ok:
+        return True, "Computed valid merge point arrival schedule", condition_name
+    elif schedule_exists and not schedule_ok:
+        return False, "Computed invalid merge point arrival schedule", condition_name
+    elif not schedule_exists and arrival_ok:
+        return True, "No merge conflict - no scheduling required", condition_name
     else:
-        return False, "Failed to find valid schedule", condition_name
+        return False, "No schedule found", condition_name
 
 
 def verify_merge_complete(vehicles, params=DEFAULT_VALIDATION_PARAMS):
@@ -72,8 +81,6 @@ def verify_merge_complete(vehicles, params=DEFAULT_VALIDATION_PARAMS):
 
     reached_merge_point = [v.metrics["reached_merge_point"] for v in vehicles]
 
-    if len(reached_merge_point) == 0:
-        return False, "No merging vehicles", condition_name
     if all(reached_merge_point):
         return True, "All vehicles reached the merge point", condition_name
     else:
@@ -83,25 +90,30 @@ def verify_merge_complete(vehicles, params=DEFAULT_VALIDATION_PARAMS):
 def verify_merge_order(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check that the vehicles merged in the scheduled order'''
     condition_name = "Merge Order"
+    min_separation_time_actual = 20 - params["arr_time_allow"]
 
-    scheduled_times = sorted([(v.metrics["sched_arr_time"], v.id) for v in vehicles])
-    scheduled_order = [name for time, name in scheduled_times]
-    actual_times = sorted([(v.metrics["actual_arr_time"], v.id) for v in vehicles
+    computed_schedule = [v.metrics["computed_schedule"] for v in vehicles]
+    scheduled_arrivals = sorted([(v.metrics["sched_arr_time"], v.id) for v in vehicles])
+    scheduled_order = [name for time, name in scheduled_arrivals]
+    actual_arrivals = sorted([(v.metrics["actual_arr_time"], v.id) for v in vehicles
                            if v.metrics["reached_merge_point"]])
-    actual_order = [name for time, name in actual_times]
+    actual_order = [name for time, name in actual_arrivals]
+    actual_sep = np.diff([a[0] for a in actual_arrivals])
 
-    print("\nScheduled order: %s" % scheduled_order)
-    print("Actual order: %s" % actual_order)
+    schedule_exists = any(computed_schedule)
+    order_ok = (scheduled_order == actual_order)
+    arrival_ok = all((s > min_separation_time_actual for s in actual_sep))
 
-    if not verify_merge_complete(vehicles)[0]:
-        return False, "N/A - not all vehicles reached merge point", condition_name
-    if not verify_valid_schedule(vehicles)[0]:
-        return False, "N/A - no valid schedule", condition_name
-
-    if scheduled_order == actual_order:
-        return True, "Arrival order matches schedule", condition_name
+    if schedule_exists:
+        if order_ok:
+            return True, "Merge order matches scheduled order", condition_name
+        else:
+            return False, "Merge order does not match scheduled order", condition_name
     else:
-        return False, "Arrival order doesn't match schedule", condition_name
+        if arrival_sep_ok:
+            return True, "No merge conflict - no scheduling required", condition_name
+        else:
+            return False, "No schedule found", condition_name
 
 
 def verify_merge_time_separation(vehicles, params=DEFAULT_VALIDATION_PARAMS):
@@ -109,6 +121,8 @@ def verify_merge_time_separation(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     condition_name = "Arrival Time Separation"
     min_separation_time = 20 - params["arr_time_allow"]
 
+    reached_merge_point = [v.metrics["reached_merge_point"] for v in vehicles]
+    merge_complete = all(reached_merge_point)
     arrival_times = sorted([v.metrics["actual_arr_time"] for v in vehicles
                             if v.metrics["reached_merge_point"]])
     separation_times = np.diff(arrival_times)
@@ -120,7 +134,7 @@ def verify_merge_time_separation(vehicles, params=DEFAULT_VALIDATION_PARAMS):
             line += ("\t(+ %.2fs)" % separation_times[i-1])
         print(line)
 
-    if not verify_merge_complete(vehicles)[0]:
+    if not merge_complete:
         return False, "N/A - not all vehicles reached merge point", condition_name
 
     if all((s > min_separation_time for s in separation_times)):

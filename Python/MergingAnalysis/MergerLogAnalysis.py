@@ -55,7 +55,6 @@ def ReadMergerAppData(filename, vehicle_id, merge_id=1, group="test"):
 
     data = MergerData(vehicle_id, merge_id=merge_id, group=group)
     data.output_dir = os.path.dirname(filename)
-    started_merge = False
     for line in data_string:
         line = line.rstrip('\n')
         entries = line.split(',')
@@ -68,12 +67,8 @@ def ReadMergerAppData(filename, vehicle_id, merge_id=1, group="test"):
         if abs(lon) < 1:
             continue
 
-        if merge_id != "all":
-            if not started_merge and intID != merge_id:
-                continue
-            if started_merge and intID != merge_id:
-                break
-        started_merge = True
+        if merge_id != "all" and intID != merge_id:
+            continue
 
         t = float(entries[0])
         data.t.append(t)
@@ -123,7 +118,7 @@ def compute_metrics(vehicles):
         v.metrics["entry_time"] = next((v.t[i] for i in range(len(v.t))
                                         if zone[i] == 3), None)
         v.metrics["initial_speed"] = v.get("speed", v.metrics["sched_time"])
-        v.metrics["computed_schedule"] = (numSch[-1] > numSch[0])
+        v.metrics["computed_schedule"] = (max(numSch) > 0)
         v.metrics["reached_merge_point"] = (min(dist2int) < 10)
         v.metrics["sched_arr_time"] = v.get("currArrTime")[-1]
 
