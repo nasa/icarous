@@ -9,7 +9,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -19,7 +19,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -33,7 +33,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -43,7 +43,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -57,7 +57,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -67,7 +67,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -81,7 +81,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -91,7 +91,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -105,7 +105,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -115,7 +115,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -129,7 +129,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -139,7 +139,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -153,7 +153,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -163,7 +163,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -177,7 +177,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -187,7 +187,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -201,7 +201,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -211,7 +211,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -225,7 +225,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -235,7 +235,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -249,7 +249,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -259,7 +259,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -273,7 +273,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -283,7 +283,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -297,7 +297,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -307,7 +307,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -321,7 +321,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -331,7 +331,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -345,7 +345,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -355,7 +355,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -369,7 +369,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -379,7 +379,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -393,7 +393,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -403,7 +403,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -417,7 +417,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -427,7 +427,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -441,7 +441,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -451,7 +451,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -465,7 +465,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -475,7 +475,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -489,7 +489,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -499,7 +499,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -513,7 +513,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -523,7 +523,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -537,7 +537,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -547,7 +547,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -561,7 +561,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -571,7 +571,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -585,7 +585,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -595,7 +595,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -609,7 +609,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -619,7 +619,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -633,7 +633,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -643,7 +643,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -657,7 +657,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -667,7 +667,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -681,7 +681,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -691,7 +691,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -705,7 +705,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -715,7 +715,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -729,7 +729,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -739,7 +739,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -753,7 +753,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -763,7 +763,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -777,7 +777,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -787,7 +787,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -801,7 +801,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -811,7 +811,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -825,7 +825,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -835,7 +835,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -849,7 +849,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -859,7 +859,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -873,7 +873,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -883,7 +883,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -893,7 +893,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -907,7 +907,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -917,7 +917,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -927,7 +927,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -941,7 +941,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -951,7 +951,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -961,7 +961,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -975,7 +975,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -985,7 +985,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -995,7 +995,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1009,7 +1009,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -1019,7 +1019,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1029,7 +1029,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1043,7 +1043,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -1053,7 +1053,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1063,7 +1063,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1077,7 +1077,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -1087,7 +1087,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1097,7 +1097,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1111,7 +1111,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -1121,7 +1121,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1131,7 +1131,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1145,7 +1145,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -1155,7 +1155,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1165,7 +1165,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1179,7 +1179,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -1189,7 +1189,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1199,7 +1199,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1213,7 +1213,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -1223,7 +1223,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1233,7 +1233,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1247,7 +1247,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -1257,7 +1257,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1267,7 +1267,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1281,7 +1281,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -1291,7 +1291,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1301,7 +1301,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1315,7 +1315,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -1325,7 +1325,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1335,7 +1335,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1349,7 +1349,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -1359,7 +1359,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1369,7 +1369,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1383,7 +1383,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -1393,7 +1393,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1403,7 +1403,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1417,7 +1417,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -1427,7 +1427,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1437,7 +1437,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1451,7 +1451,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -1461,7 +1461,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1471,7 +1471,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1485,7 +1485,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -1495,7 +1495,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1505,7 +1505,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1519,7 +1519,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -1529,7 +1529,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1539,7 +1539,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1553,7 +1553,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -1563,7 +1563,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1573,7 +1573,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1587,7 +1587,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -1597,7 +1597,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1607,7 +1607,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1621,7 +1621,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -1631,7 +1631,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1641,7 +1641,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1655,7 +1655,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.1
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -1665,7 +1665,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1675,7 +1675,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1689,7 +1689,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -1699,7 +1699,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1709,7 +1709,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1723,7 +1723,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -1733,7 +1733,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1743,7 +1743,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1757,7 +1757,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -1767,7 +1767,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1777,7 +1777,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1791,7 +1791,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -1801,7 +1801,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1811,7 +1811,7 @@
       AL_1_ALERT_T: 0
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1825,7 +1825,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -1835,7 +1835,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1845,7 +1845,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1859,7 +1859,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -1869,7 +1869,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1879,7 +1879,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1893,7 +1893,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -1903,7 +1903,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1913,7 +1913,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1927,7 +1927,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -1937,7 +1937,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1947,7 +1947,7 @@
       AL_1_ALERT_T: 2
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1961,7 +1961,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsA.txt
   - cpu_id: 2
@@ -1971,7 +1971,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -1981,7 +1981,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -1995,7 +1995,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsB.txt
   - cpu_id: 2
@@ -2005,7 +2005,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -2015,7 +2015,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -2029,7 +2029,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsC.txt
   - cpu_id: 2
@@ -2039,7 +2039,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -2049,7 +2049,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt
 - merge_fixes: Python/TestRunner/tcl4+/spacing_scenario/merge_fixes.txt
@@ -2063,7 +2063,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 5.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle0_waypointsD.txt
   - cpu_id: 2
@@ -2073,7 +2073,7 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle1_waypoints.txt
   - cpu_id: 3
@@ -2083,6 +2083,6 @@
       AL_1_ALERT_T: 5
       DEF_WP_SPEED: 3.0
     parameter_file: Python/TestRunner/tcl4+/spacing_scenario/merging_default.parm
-    time_limit: 100
+    time_limit: 200
     traffic: []
     waypoint_file: Python/TestRunner/tcl4+/spacing_scenario/vehicle2_waypoints.txt

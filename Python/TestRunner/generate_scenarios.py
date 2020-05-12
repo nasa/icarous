@@ -20,8 +20,9 @@ scenario_list = []
 for i, row in table.iterrows():
     # Read scenario info
     file_home = row.get("File Home", "")
+    time_limit = row.get("Time Limit", 1000)
     scenario = {"name": row["Scenario Name"],
-                "time_limit": row.get("Time Limit", 1000),
+                "time_limit": time_limit,
                 "merge_fixes": os.path.join(file_home, row.get("Merge Fixes", None))}
 
     # Read scenario info for each vehicle
@@ -35,7 +36,7 @@ for i, row in table.iterrows():
                    "param_adjustments": {},
                    "traffic": [],
                    "delay": row.get(name+" Delay", 0),
-                   "time_limit": 100}
+                   "time_limit": time_limit}
         if name+" Geofence" in row:
             vehicle["geofence_file"] = os.path.join(file_home, row[name+" Geofence"])
 
