@@ -40,8 +40,9 @@ RunSimulation(icInstances,tfList,startDelay=icDelay,timeLimit=tlimit)
 
 # Plot data for visualization    
 anim= AgentAnimation(-50,-50, 100,30,30)
-anim.AddPath(np.array(ic1.localPlans[0]),'k--')
-anim.AddPath(np.array(ic2.localPlans[0]),'k--')
-anim.AddAgent('ownship1',2,'r',ic1.ownshipLog,show_circle=True,circle_rad=10)
-anim.AddAgent('ownship2',2,'b',ic2.ownshipLog,show_circle=True,circle_rad=10)
+for i,ic in enumerate(icInstances):
+    name = 'ownship' + str(i)
+    anim.AddPath(np.array(ic.localPlans[0]),'k--')
+    anim.AddAgent(name,2,'r',ic.ownshipLog,show_circle=True,circle_rad=10)
+
 anim.run()
