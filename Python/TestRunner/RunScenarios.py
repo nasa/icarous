@@ -176,6 +176,10 @@ if __name__ == "__main__":
     parser.add_argument("--sitl", action="store_true", help="use SITL simulator")
     parser.add_argument("--merger", action="store_true", help="run merging apps")
     parser.add_argument("--python", action="store_true", help="use pyIcarous")
+    parser.add_argument("--validate", action="store_true", help="check test conditions")
+    parser.add_argument("--test", action="store_true", help="assert test conditions")
+    parser.add_argument("--plot", action="store_true", help="generate plots")
+    parser.add_argument("--save", action="store_true", help="save plots")
     parser.add_argument("--output_dir", default="sim_output", help="directory for output")
     args = parser.parse_args()
 
@@ -203,7 +207,15 @@ if __name__ == "__main__":
             RunScenario(scenario, args.sitl, args.verbose, output_dir)
 
         # Perform validation
-        if args.merger:
-            subprocess.call(["python3", "ValidateMerge.py", output_dir, "--plot", "--save"])
-        else:
-            subprocess.call(["python3", "ValidateSim.py", output_dir, "--plot", "--save"])
+        if args.validate:
+            arguments = [output_dir]
+            if args.test:
+                arguments.append("--test")
+            if args.plot:
+                arguments.append("--plot")
+            if args.save:
+                arguments.append("--save")
+            if args.merger:
+                subprocess.call(["python3", "ValidateMerge.py"] + arguments)
+            else:
+                subprocess.call(["python3", "ValidateSim.py"] + arguments)
