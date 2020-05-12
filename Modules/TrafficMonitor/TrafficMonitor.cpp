@@ -15,7 +15,6 @@ TrafficMonitor::TrafficMonitor(bool reclog,char daaConfig[]) {
     prevLogTime = 0;
     char            fmt1[64],fmt2[64];
     struct timespec  tv;
-    struct tm       *tm;
     clock_gettime(CLOCK_REALTIME,&tv);
     double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
     sprintf(fmt1,"Daidalus-%f.log",localT);

@@ -21,12 +21,10 @@ PathPlanner::PathPlanner(double _obsBuffer,double _maxCeiling) {
     geoCDIIPolygon = CDIIPolygon(&geoPolyCarp);
     numPlans = 0;
     char            fmt1[64];
-    struct timeval  tv;
-    struct tm       *tm;
-    gettimeofday(&tv, NULL);
-    tm = localtime(&tv.tv_sec);
-    strftime(fmt1, sizeof fmt1, "Path-%Y-%m-%d-%H:%M:%S", tm);
-    strcat(fmt1,".log");
+    struct timespec  tv;
+    clock_gettime(CLOCK_REALTIME,&tv);
+    double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
+    sprintf(fmt1,"Path-%f.log",localT);
     log.open(fmt1);
 }
 
