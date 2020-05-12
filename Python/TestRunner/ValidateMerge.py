@@ -156,18 +156,11 @@ def verify_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     condition_name = "Spacing"
     DTHR = 30*params["h_allow"]
 
-    vehicles = []
-    for i in range(args.num_vehicles):
-        filename = "merger_appdata_" + str(i) + ".txt"
-        filename = os.path.join(args.data_location, filename)
-        if not os.path.isfile(filename):
-            break
-        data = MA.ReadMergerAppData(filename, vehicle_id=i, merge_id="all")
-        vehicles.append(data)
+    vehicles_entire_flight = MA.process_data(flight_dir, args.num_vehicles, "all")
 
     separation_ok = True
     print("\nMinimum separation distances during entire flight")
-    for v1, v2 in itertools.combinations(vehicles, 2):
+    for v1, v2 in itertools.combinations(vehicles_entire_flight, 2):
         time_range, dist = MA.compute_separation(v1, v2)
         min_separation, t_min = min(zip(dist, time_range))
         print("v%s to v%s min separation: %.2fm (at %.2fs)" %
@@ -266,3 +259,4 @@ if __name__ == "__main__":
             MA.plot_flight_trace(vehicles_entire_flight, save=args.save)
             MA.plot_summary(vehicles, save=args.save)
             plt.show()
+        plt.close("all")

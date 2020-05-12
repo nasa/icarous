@@ -467,3 +467,4 @@ if __name__ == "__main__":
         plot_spacing(vehicles_entire_flight, save=args.save)
         plot_flight_trace(vehicles_entire_flight, save=args.save)
         plt.show()
+    plt.close("all")
