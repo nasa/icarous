@@ -79,17 +79,17 @@ class SimVehicle:
 
         # Set up mavlink connections
         icarous_port = 14553 + (self.cpu_id - 1)*10
-        gs_port = icarous_port + 1
+        gs_port = icarous_port
         # Use mavproxy to forward mavlink stream (for visualization)
-        logfile = os.path.join(self.output_dir, self.name + ".tlog")
-        self.mav_forwarding = subprocess.Popen(["mavproxy.py",
-                                           "--master=127.0.0.1:"+str(icarous_port),
-                                           "--out=127.0.0.1:"+str(gs_port),
-                                           "--out=127.0.0.1:"+str(self.out),
-                                           "--target-system=1",
-                                           "--target-component=5",
-                                           "--logfile="+logfile],
-                                          stdout=subprocess.DEVNULL)
+        #logfile = os.path.join(self.output_dir, self.name + ".tlog")
+        #self.mav_forwarding = subprocess.Popen(["mavproxy.py",
+        #                                   "--master=127.0.0.1:"+str(icarous_port),
+         #                                  "--out=127.0.0.1:"+str(gs_port),
+          #                                 "--out=127.0.0.1:"+str(self.out),
+           #                                "--target-system=1",
+            #                               "--target-component=5",
+             #                              "--logfile="+logfile],
+              #                            stdout=subprocess.DEVNULL)
         # Open connection for virtual ground station
         master = mavutil.mavlink_connection("127.0.0.1:"+str(gs_port))
 
@@ -133,6 +133,11 @@ class SimVehicle:
         self.params = self.gs.getParams()
         self.geofences = self.gs.fenceList
 
+        self.ownship_log = vehicle_log()
+        self.traffic_log = {}
+        self.delay = self.scenario.get("delay", 0)
+        self.duration = 0
+
         # Wait for GPS fix before starting mission
         if self.verbose:
             print("Waiting for GPS fix...")
@@ -142,6 +147,8 @@ class SimVehicle:
                 continue
             if m.lat > 1e-5:
                 break
+
+        self.t0 = time.time()
 
 
     def get_waypoints(self):
@@ -178,32 +185,27 @@ class SimVehicle:
             for param_id, param_value in self.params.items():
                 f.write("%-16s %f\n" % (param_id, param_value))
 
-
-    def run(self, time_limit):
-        self.ownship_log = vehicle_log()
-        self.traffic_log = {}
-        delay = self.scenario.get("delay", 0)
-        t0 = time.time()
-        duration = 0
-        while duration < time_limit:
-            if not self.started and duration >= delay:
-                self.gs.StartMission()
-                self.started = True
-                if self.verbose:
-                    print("***Starting %s" % self.name)
+    def step(self,time_limit):
+        if self.duration < time_limit:
+            if self.duration >= self.delay:
+                if not self.started:
+                    self.gs.StartMission()
+                    self.started = True
+                    if self.verbose:
+                        print("***Starting %s" % self.name)
             time.sleep(0.01)
             currentT = time.time()
-            duration = currentT - t0
+            self.duration = currentT - self.t0
 
             self.gs.Update_traffic()
 
             msg = self.gs.master.recv_match(blocking=False, type=["GLOBAL_POSITION_INT"])
 
             if msg is None:
-                continue
+                return False
 
             # Store ownship position/velocity information
-            self.ownship_log["t"].append(duration)
+            self.ownship_log["t"].append(self.duration)
             self.ownship_log["position"].append([msg.lat/1E7, msg.lon/1E7,
                                                  msg.relative_alt/1E3])
             self.ownship_log["velocityNED"].append([msg.vx/1E2, msg.vy/1E2,
@@ -213,13 +215,24 @@ class SimVehicle:
             for i, traf in enumerate(self.gs.traffic_list):
                 if i not in self.traffic_log.keys():
                     self.traffic_log[i] = vehicle_log()
-                self.traffic_log[i]["t"].append(duration)
+                self.traffic_log[i]["t"].append(self.duration)
                 self.traffic_log[i]["position"].append([traf.lat, traf.lon, traf.alt])
                 self.traffic_log[i]["velocityNED"].append([traf.vx0, traf.vy0, traf.vz0])
 
+            return False
+        else:
+            self.terminate()
+            return True
+
+    def run(self, time_limit):
+        finished = False
+        while not finished:
+            finished = self.step(time_limit)
+
+    def terminate(self):
         # Once simulation is finished, kill the icarous process
         self.ic.kill()
-        subprocess.call(["kill", "-9", str(self.mav_forwarding.pid)])
+        #subprocess.call(["kill", "-9", str(self.mav_forwarding.pid)])
 
         self.write_log()
         self.write_params()

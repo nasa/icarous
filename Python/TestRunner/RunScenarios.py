@@ -37,19 +37,19 @@ def SetApps(sitl=False, merger=False):
                      approot, outputloc, *app_list])
 
 
-def RunScenario(scenario, sitl=False, verbose=False, output_dir="sim_output"):
+def RunScenario(scenario, sitl=False, verbose=False, use_threads=True, output_dir="sim_output"):
     """ Run an ICAROUS scenario using cFS """
-    from threading import Thread
     # Copy merge_fixes file to exe/ram
     if "merge_fixes" in scenario:
         merge_fixes = os.path.join(icarous_home, scenario["merge_fixes"])
         ram_directory = os.path.join(icarous_home, "exe", "ram")
         shutil.copy(merge_fixes, ram_directory)
+    
     # Clear existing log files
     for f in os.listdir(icarous_exe):
         if f.endswith(".txt") or f.endswith(".log"):
             os.remove(os.path.join(icarous_exe, f))
-
+    
     # Set up each vehicle
     vehicles = []
     for vehicle_scenario in scenario["vehicles"]:
@@ -57,15 +57,24 @@ def RunScenario(scenario, sitl=False, verbose=False, output_dir="sim_output"):
         v = SimVehicle(vehicle_scenario, verbose=verbose, out=out,
                        output_dir=output_dir, sitl=sitl)
         vehicles.append(v)
-
+        
     # Run the simulation
     t0 = time.time()
     time_limit = scenario["time_limit"]
     duration = 0
-    threads = [Thread(target=v.run, args=[time_limit]) for v in vehicles]
-    for t in threads:
-        t.start()
-    while duration < time_limit:
+    if use_threads:
+        from threading import Thread
+        threads = [Thread(target=v.run, args=[time_limit]) for v in vehicles]
+        for t in threads:
+            t.start()
+
+    finished = False
+    while not finished:
+        if not use_threads:
+            for v in vehicles:
+                finished = v.step(time_limit)
+        else:
+           finished = duration > time_limit
         if verbose:
             print("Sim Duration: %.1fs       " % duration, end="\r")
         time.sleep(0.1)
@@ -198,17 +207,17 @@ if __name__ == "__main__":
     for scenario in scenario_list:
         if args.verbose:
             print("Running scenario: %s" % scenario["name"])
-        output_dir = set_up_output_dir(scenario, args.output_dir)
+        out_dir = set_up_output_dir(scenario, args.output_dir)
 
         # Run the simulation
         if args.python:
-            RunScenarioPy(scenario, args.verbose, output_dir)
+            RunScenarioPy(scenario, args.verbose, out_dir)
         else:
-            RunScenario(scenario, args.sitl, args.verbose, output_dir)
+            RunScenario(scenario, args.sitl, args.verbose, True, out_dir)
 
         # Perform validation
         if args.validate:
-            arguments = [output_dir]
+            arguments = [out_dir]
             if args.test:
                 arguments.append("--test")
             if args.plot:

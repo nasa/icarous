@@ -2,7 +2,6 @@ import os
 import sys
 import json
 import numpy as np
-import pandas as pd
 from polygon_contain import Vector, definitely_inside
 
 sys.path.append("../Batch")
@@ -76,7 +75,7 @@ def validate_sim_data(simdata, params=DEFAULT_VALIDATION_PARAMS, name="test", te
 
     # Print results
     print_results(results, name)
-    record_results(results, name)
+    #record_results(results, name)
 
     # Assert conditions
     if test:
@@ -240,6 +239,7 @@ def print_results(results, scenario_name):
 
 
 def record_results(results, scenario_name):
+    import pandas as pd
     filename = "ValidationResults.csv"
     if os.path.isfile(filename):
         table = pd.read_csv(filename, index_col=0)
