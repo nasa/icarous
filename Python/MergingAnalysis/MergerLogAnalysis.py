@@ -114,16 +114,20 @@ def compute_metrics(vehicles):
         v.metrics["coord_time"] = next((v.t[i] for i in range(len(v.t))
                                         if zone[i] == 1), None)
         v.metrics["sched_time"] = next((v.t[i] for i in range(len(v.t))
-                                        if zone[i] == 2), None)
+                                        if zone[i] == 2 and
+                                        v.t[i] > v.metrics["coord_time"]), None)
         v.metrics["entry_time"] = next((v.t[i] for i in range(len(v.t))
-                                        if zone[i] == 3), None)
+                                        if zone[i] == 3 and
+                                        v.t[i] > v.metrics["sched_time"]), None)
         v.metrics["initial_speed"] = v.get("speed", v.metrics["sched_time"])
         v.metrics["computed_schedule"] = (max(numSch) > 0)
         v.metrics["reached_merge_point"] = (min(dist2int) < 10)
         v.metrics["sched_arr_time"] = v.get("currArrTime")[-1]
 
         if v.metrics["reached_merge_point"]:
-            _, v.metrics["actual_arr_time"] = min(zip(dist2int, v.t))
+            t_merge = [t for t in v.t if t > v.metrics["coord_time"]]
+            dist2int_merge = v.get("dist2int", t_merge)
+            _, v.metrics["actual_arr_time"] = min(zip(dist2int_merge, t_merge))
         else:
             v.metrics["actual_arr_time"] = v.t[-1]
 
@@ -326,8 +330,9 @@ def plot_spacing(vehicles, save=False):
     spacing_value = 30
     for v1, v2 in itertools.combinations(vehicles, 2):
         time_range, dist = compute_separation(v1, v2)
-        plt.plot(time_range, dist, label="vehicle"+str(v1.id)+" to vehicle"+str(v2.id))
-        d, t_min = min(zip(dist, time_range))
+        if len(dist) > 0:
+            plt.plot(time_range, dist, label="vehicle"+str(v1.id)+" to vehicle"+str(v2.id))
+            d, t_min = min(zip(dist, time_range))
     plt.plot(plt.xlim(), [spacing_value]*2, 'm--', label="Minimum allowed spacing")
     plt.legend()
     plt.grid()
