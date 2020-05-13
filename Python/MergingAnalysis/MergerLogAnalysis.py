@@ -425,7 +425,7 @@ def plot_flight_trace(vehicles, save=False):
         plt.savefig(os.path.join(v.output_dir, "flight_trace"))
 
 
-def process_data(data_location, num_vehicles, merge_id):
+def process_data(data_location, num_vehicles=10, merge_id=1):
     vehicles = []
     group = data_location.strip("/").split("/")[-1]
     for i in range(num_vehicles):

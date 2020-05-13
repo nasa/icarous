@@ -37,27 +37,30 @@ def SetApps(sitl=False, merger=False):
                      approot, outputloc, *app_list])
 
 
-def RunScenario(scenario, sitl=False, verbose=False, use_threads=True, output_dir="sim_output"):
+def RunScenario(scenario, sitl=False, verbose=False, out=14557,
+                use_threads=True, output_dir="sim_output"):
     """ Run an ICAROUS scenario using cFS """
     # Copy merge_fixes file to exe/ram
     if "merge_fixes" in scenario:
         merge_fixes = os.path.join(icarous_home, scenario["merge_fixes"])
         ram_directory = os.path.join(icarous_home, "exe", "ram")
         shutil.copy(merge_fixes, ram_directory)
-    
+
     # Clear existing log files
     for f in os.listdir(icarous_exe):
         if f.endswith(".txt") or f.endswith(".log"):
             os.remove(os.path.join(icarous_exe, f))
-    
+
     # Set up each vehicle
     vehicles = []
     for vehicle_scenario in scenario["vehicles"]:
-        out = 14557 + (vehicle_scenario.get("cpu_id", 1) - 1)*10
-        v = SimVehicle(vehicle_scenario, verbose=verbose, out=out,
+        out_port = out
+        if out_port is not None:
+            out_port = out + (vehicle_scenario.get("cpu_id", 1) - 1)*10
+        v = SimVehicle(vehicle_scenario, verbose=verbose, out=out_port,
                        output_dir=output_dir, sitl=sitl)
         vehicles.append(v)
-        
+
     # Run the simulation
     t0 = time.time()
     time_limit = scenario["time_limit"]
@@ -72,13 +75,15 @@ def RunScenario(scenario, sitl=False, verbose=False, use_threads=True, output_di
     while not finished:
         if not use_threads:
             for v in vehicles:
-                finished = v.step(time_limit)
+                finished |= v.step(time_limit)
         else:
-           finished = duration > time_limit
+            finished = duration > time_limit
         if verbose:
             print("Sim Duration: %.1fs       " % duration, end="\r")
         time.sleep(0.1)
         duration = time.time() - t0
+    for v in vehicles:
+        v.terminate()
     if verbose:
         print("Simulation finished")
 
@@ -183,6 +188,7 @@ if __name__ == "__main__":
     parser.add_argument("--num", type=int, nargs="+", help="index of scenario to run")
     parser.add_argument("--verbose", action="store_true", help="print output")
     parser.add_argument("--sitl", action="store_true", help="use SITL simulator")
+    parser.add_argument("--out", type=int, default=None, help="port to fwd mavlink stream")
     parser.add_argument("--merger", action="store_true", help="run merging apps")
     parser.add_argument("--python", action="store_true", help="use pyIcarous")
     parser.add_argument("--validate", action="store_true", help="check test conditions")
@@ -213,18 +219,14 @@ if __name__ == "__main__":
         if args.python:
             RunScenarioPy(scenario, args.verbose, out_dir)
         else:
-            RunScenario(scenario, args.sitl, args.verbose, output_dir=out_dir, use_threads = False )
+            RunScenario(scenario, args.sitl, args.verbose, output_dir=out_dir,
+                        out=args.out, use_threads=True)
 
         # Perform validation
         if args.validate:
-            arguments = [out_dir]
-            if args.test:
-                arguments.append("--test")
-            if args.plot:
-                arguments.append("--plot")
-            if args.save:
-                arguments.append("--save")
             if args.merger:
-                subprocess.call(["python3", "ValidateMerge.py"] + arguments)
+                import ValidateMerge as VM
+                VM.run_validation(out_dir, args.test, args.plot, args.save)
             else:
-                subprocess.call(["python3", "ValidateSim.py"] + arguments)
+                import ValidateSim as VS
+                VS.run_validation(out_dir, args.test, args.plot, args.save)

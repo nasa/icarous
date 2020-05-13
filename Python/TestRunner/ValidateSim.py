@@ -11,6 +11,7 @@ import BatchGSModule as GS
 DEFAULT_VALIDATION_PARAMS = {"h_allow": 0.85,   # use h_allow*DTHR to check WC violations
                              "v_allow": 0.85,      # use v_allow*ZTHR to check WC violations
                              "wp_radius": 5}    # dist (m) to consider a waypoint reached
+params = dict(DEFAULT_VALIDATION_PARAMS)
 
 def GetPolygons(origin, fenceList):
     """
@@ -62,7 +63,8 @@ def get_planned_waypoints(simdata):
     return planned_wps
 
 
-def validate_sim_data(simdata, params=DEFAULT_VALIDATION_PARAMS, name="test", test=False):
+def validate_sim_data(simdata, params=DEFAULT_VALIDATION_PARAMS, name="test",
+                      save=False, test=False):
     '''Check simulation data for test conditions'''
     # Define conditions
     conditions = []
@@ -75,7 +77,8 @@ def validate_sim_data(simdata, params=DEFAULT_VALIDATION_PARAMS, name="test", te
 
     # Print results
     print_results(results, name)
-    #record_results(results, name)
+    if save:
+        record_results(results, name)
 
     # Assert conditions
     if test:
@@ -253,6 +256,31 @@ def record_results(results, scenario_name):
     table.to_csv(filename)
 
 
+def run_validation(logfile, test=False, plot=False, save=False):
+    # Gather all simulation data files
+    if os.path.isfile(logfile) and logfile.endswith(".json"):
+        data_files = [logfile]
+    elif os.path.isdir(logfile):
+        data_files = []
+        for root, dirs, files in os.walk(logfile):
+            data_files += [os.path.join(root, f) for f in files if f.endswith(".json")]
+        print("Found %d simulation data files in %s" % (len(data_files), logfile))
+
+    for data_file in data_files:
+        # Read in the simulation data
+        output_dir = os.path.dirname(data_file)
+        scenario_name = os.path.basename(os.path.normpath(output_dir))
+        with open(data_file, 'r') as fp:
+            simdata = json.load(fp)
+
+        # Check the test conditions
+        validate_sim_data(simdata, params, scenario_name, save, test)
+
+        # Generate plots
+        if plot:
+            plot_scenario(simdata, output_dir, save)
+
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Validate Icarous simulation data")
@@ -265,32 +293,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Set validation parameters
-    params = dict(DEFAULT_VALIDATION_PARAMS)
     for p in args.param:
         if p[0] not in params:
             print("** Warning, unrecognized validation parameter: %s" % p[0])
             continue
         params[p[0]] = float(p[1])
 
-    # Gather all simulation data files
-    if os.path.isfile(args.sim_output) and args.sim_output.endswith(".json"):
-        data_files = [args.sim_output]
-    elif os.path.isdir(args.sim_output):
-        data_files = []
-        for root, dirs, files in os.walk(args.sim_output):
-            data_files += [os.path.join(root, f) for f in files if f.endswith(".json")]
-        print("Found %d simulation data files in %s" % (len(data_files), args.sim_output))
-
-    for data_file in data_files:
-        # Read in the simulation data
-        output_dir = os.path.dirname(data_file)
-        scenario_name = os.path.basename(os.path.normpath(output_dir))
-        with open(data_file, 'r') as fp:
-            simdata = json.load(fp)
-
-        # Check the test conditions
-        validate_sim_data(simdata, params, name=scenario_name, test=args.test)
-
-        # Generate plots
-        if args.plot:
-            plot_scenario(simdata, output_dir=output_dir, save=args.save)
+    run_validation(args.sim_output, args.test, args.plot, args.save)

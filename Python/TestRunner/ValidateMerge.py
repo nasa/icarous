@@ -2,7 +2,6 @@ import os
 import sys
 import json
 import numpy as np
-import pandas as pd
 import itertools
 from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
@@ -17,11 +16,12 @@ import MergerLogAnalysis as MA
 DEFAULT_VALIDATION_PARAMS = {"arr_time_allow": 5,   # allowable arrival time error
                              "sched_time_allow": 1, # allowable schedule time error
                              "h_allow": 0.85}       # use h_allow*DTHR to check spacing
+params = dict(DEFAULT_VALIDATION_PARAMS)
 
 
 # Validation functions
 def validate_merging_data(vehicles, params=DEFAULT_VALIDATION_PARAMS,
-                          name="test", test=False):
+                          name="test", test=False, save=False):
     '''Check simulation data for test conditions'''
     # Define conditions
     conditions = []
@@ -37,7 +37,8 @@ def validate_merging_data(vehicles, params=DEFAULT_VALIDATION_PARAMS,
 
     # Print results
     print_results(results, name)
-    record_results(results, name)
+    if save:
+        record_results(results, name)
 
     # Assert conditions
     if test:
@@ -156,7 +157,8 @@ def verify_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     condition_name = "Spacing"
     DTHR = 30*params["h_allow"]
 
-    vehicles_entire_flight = MA.process_data(flight_dir, args.num_vehicles, "all")
+    flight_dir = vehicles[0].output_dir
+    vehicles_entire_flight = MA.process_data(flight_dir, merge_id="all")
 
     separation_ok = True
     print("\nMinimum separation distances during entire flight")
@@ -190,6 +192,7 @@ def print_results(results, scenario_name):
 
 
 def record_results(results, scenario_name):
+    import pandas as pd
     filename = "MergingResults.csv"
     if os.path.isfile(filename):
         table = pd.read_csv(filename, index_col=0)
@@ -201,6 +204,33 @@ def record_results(results, scenario_name):
     table = metrics.combine_first(table)
     table = table[metrics.keys()]
     table.to_csv(filename)
+
+
+def run_validation(flight_dir, test=False, plot=False, save=False):
+    # Read merger log data (just during merge operation)
+    vehicles = MA.process_data(flight_dir)
+    # Read merger log data (for entire flight)
+    vehicles_entire_flight = MA.process_data(flight_dir, merge_id="all")
+
+    # Compute merging metrics
+    MA.compute_metrics(vehicles)
+    MA.write_metrics(vehicles)
+
+    # Check test conditions
+    scenario_name = os.path.basename(os.path.normpath(flight_dir))
+    validate_merging_data(vehicles, params, scenario_name, test, save)
+
+    # Generate plots
+    if plot:
+        MA.plot_roles(vehicles, save=save)
+        MA.plot_speed(vehicles, save=save)
+        MA.plot_speed(vehicles_entire_flight, save=save)
+        MA.plot_spacing(vehicles, save=save)
+        MA.plot_spacing(vehicles_entire_flight, save=save)
+        MA.plot_flight_trace(vehicles_entire_flight, save=save)
+        MA.plot_summary(vehicles, save=save)
+        plt.show()
+    plt.close("all")
 
 
 if __name__ == "__main__":
@@ -219,7 +249,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Set validation parameters
-    params = dict(DEFAULT_VALIDATION_PARAMS)
     for p in args.param:
         if p[0] not in params:
             print("** Warning, unrecognized validation parameter: %s" % p[0])
@@ -235,28 +264,4 @@ if __name__ == "__main__":
         flights.append(args.data_location)
 
     for flight_dir in flights:
-        output_dir = flight_dir
-        # Read merger log data (just during merge operation)
-        vehicles = MA.process_data(flight_dir, args.num_vehicles, args.merge_id)
-        # Read merger log data (for entire flight)
-        vehicles_entire_flight = MA.process_data(flight_dir, args.num_vehicles, "all")
-
-        # Compute merging metrics
-        MA.compute_metrics(vehicles)
-        MA.write_metrics(vehicles)
-
-        # Check test conditions
-        scenario_name = os.path.basename(os.path.normpath(flight_dir))
-        validate_merging_data(vehicles, params, name=scenario_name, test=args.test)
-
-        # Generate plots
-        if args.plot:
-            MA.plot_roles(vehicles, save=args.save)
-            MA.plot_speed(vehicles, save=args.save)
-            MA.plot_speed(vehicles_entire_flight, save=args.save)
-            MA.plot_spacing(vehicles, save=args.save)
-            MA.plot_spacing(vehicles_entire_flight, save=args.save)
-            MA.plot_flight_trace(vehicles_entire_flight, save=args.save)
-            MA.plot_summary(vehicles, save=args.save)
-            plt.show()
-        plt.close("all")
+        run_validation(flight_dir, args.test, args.plot, args.save)

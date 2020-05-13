@@ -30,6 +30,8 @@ class SimVehicle:
         self.output_dir = output_dir
         self.sitl = sitl
         self.started = False
+        self.running = False
+        self.terminated = False
         if self.sitl:
             self.sim_type = "cFS SITL"
         else:
@@ -80,16 +82,18 @@ class SimVehicle:
         # Set up mavlink connections
         icarous_port = 14553 + (self.cpu_id - 1)*10
         gs_port = icarous_port
-        # Use mavproxy to forward mavlink stream (for visualization)
-        #logfile = os.path.join(self.output_dir, self.name + ".tlog")
-        #self.mav_forwarding = subprocess.Popen(["mavproxy.py",
-        #                                   "--master=127.0.0.1:"+str(icarous_port),
-         #                                  "--out=127.0.0.1:"+str(gs_port),
-          #                                 "--out=127.0.0.1:"+str(self.out),
-           #                                "--target-system=1",
-            #                               "--target-component=5",
-             #                              "--logfile="+logfile],
-              #                            stdout=subprocess.DEVNULL)
+        if self.out is not None:
+            # Use mavproxy to forward mavlink stream (for visualization)
+            gs_port = icarous_port + 1
+            logfile = os.path.join(self.output_dir, self.name + ".tlog")
+            self.mav_forwarding = subprocess.Popen(["mavproxy.py",
+                                               "--master=127.0.0.1:"+str(icarous_port),
+                                               "--out=127.0.0.1:"+str(gs_port),
+                                               "--out=127.0.0.1:"+str(self.out),
+                                               "--target-system=1",
+                                               "--target-component=5",
+                                               "--logfile="+logfile],
+                                              stdout=subprocess.DEVNULL)
         # Open connection for virtual ground station
         master = mavutil.mavlink_connection("127.0.0.1:"+str(gs_port))
 
@@ -103,8 +107,9 @@ class SimVehicle:
         os.chdir(sim_home)
 
         # Pause for a couple of seconds here so that ICAROUS can boot up
-        if self.verbose:
+        if self.verbose and self.out is not None:
             print("Telemetry for %s is on 127.0.0.1:%d" % (self.name, self.out))
+        if self.verbose:
             print("Waiting for heartbeat...")
         master.wait_heartbeat()
         self.gs = GS.BatchGSModule(master, 1, 0)
@@ -148,8 +153,6 @@ class SimVehicle:
             if m.lat > 1e-5:
                 break
 
-        self.t0 = time.time()
-
 
     def get_waypoints(self):
         '''extract waypoints'''
@@ -171,9 +174,7 @@ class SimVehicle:
                    "geofences": self.geofences,
                    "parameters": self.params,
                    "sim_type": self.sim_type}
-
-        # Save the sim data
-        dest = os.path.join(self.output_dir, self.name + "_simoutput.json")
+        dest = os.path.join(self.output_dir, self.name + ".json")
         with open(dest, 'w') as f:
             json.dump(simdata, f)
         print("\nWrote " + self.name + " simulation data")
@@ -185,7 +186,13 @@ class SimVehicle:
             for param_id, param_value in self.params.items():
                 f.write("%-16s %f\n" % (param_id, param_value))
 
-    def step(self,time_limit):
+    def step(self, time_limit):
+        if self.terminated:
+            return True
+        if not self.running:
+            self.t0 = time.time()
+            self.running = True
+
         if self.duration < time_limit:
             if self.duration >= self.delay:
                 if not self.started:
@@ -232,7 +239,7 @@ class SimVehicle:
     def terminate(self):
         # Once simulation is finished, kill the icarous process
         self.ic.kill()
-        #subprocess.call(["kill", "-9", str(self.mav_forwarding.pid)])
-
+        if self.out is not None:
+            subprocess.call(["kill", "-9", str(self.mav_forwarding.pid)])
         self.write_log()
         self.write_params()
