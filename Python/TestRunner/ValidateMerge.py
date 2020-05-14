@@ -102,7 +102,7 @@ def verify_merge_order(vehicles, params=DEFAULT_VALIDATION_PARAMS):
 
     schedule_exists = any(computed_schedule)
     order_ok = (scheduled_order == actual_order)
-    arrival_ok = all((s > min_separation_time_actual for s in actual_sep))
+    arrival_sep_ok = all((s > min_separation_time_actual for s in actual_sep))
 
     if schedule_exists:
         if order_ok:
