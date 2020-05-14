@@ -43,7 +43,7 @@ void ZMQ_IFACE_StartCommandServer(ZMQ_IFACE_Connection_t* conn);
 
 void ZMQ_IFACE_InitZMQServices(ZMQ_IFACE_Connection_t * const conn)
 {
-    InitializeAircraftCallSign(conn->callSign.value);
+    InitializeAircraftCallSign(&conn->callSign);
     conn->context = zmq_ctx_new ();
     ZMQ_IFACE_StartTelemetryServer(conn);
     ZMQ_IFACE_StartCommandServer(conn);
@@ -139,7 +139,7 @@ static struct json_object * BuildAlertJSON(callsign_t const callSign, double tim
 static struct json_object * BuildBandReportJSON(callsign_t const callSign, band_report_t const * const cfsBands);
 static struct json_object * BuildBandJSON(bands_t const * const cfsBand, char const * const units, const double min, const double max);
 static struct json_object * BuildBandRangesJSON(bands_t const * const cfsBand);
-static char const * const GetRegionName(enum Region region);
+static char const * GetRegionName(enum Region region);
 
 void ZMQ_IFACE_SendBandReport(ZMQ_IFACE_Connection_t * const conn, band_report_t const * const bands)
 {
@@ -178,7 +178,7 @@ static struct json_object * BuildBandRangesJSON(bands_t const * const cfsBand)
 {
     struct json_object * ranges = json_object_new_array();
     struct json_object * range = NULL;
-    for (size_t i = 0; i < cfsBand->numBands; i++) {
+    for (size_t i = 0; i < (size_t) cfsBand->numBands; i++) {
         range = json_object_new_object();
         json_object_object_add(range, "region", json_object_new_string(GetRegionName(cfsBand->type[i])));
         json_object_object_add(range, "lower_bound", json_object_new_double(cfsBand->min[i]));
@@ -188,7 +188,7 @@ static struct json_object * BuildBandRangesJSON(bands_t const * const cfsBand)
     return ranges;
 }
 
-static char const * const GetRegionName(enum Region region) // TODO: Possibly this should be an Icarouslib function
+static char const * GetRegionName(enum Region region) // TODO: Possibly this should be an Icarouslib function
 {
     static char const * const NAMES[END_OF_REGION] = {
         "UNKNOWN",

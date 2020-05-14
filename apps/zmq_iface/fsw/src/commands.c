@@ -1,17 +1,20 @@
 #include "Icarous.h"
 #include "trajectory_msgids.h"
+#include "utils.h"
 
 #include <json-c/json.h>
 
 typedef enum CommandId {
     TRAJECTORY,
+    OWNSHIP,
+    OBJECT,
     UNKNOWN
 } CommandId ;
 
 static struct json_object * parseCommand(char const * const msgBuffer);
 static CommandId getCommandId(struct json_object * commandJSON);
-static void processTrajectory(struct json_object * commandJSON);
-static char const * json_to_string(struct json_object * obj);
+void processTrajectory(struct json_object * commandJSON);
+static void processOwnship(struct json_object * commandJSON);
 
 void ZMQ_IFACE_ProcessCommand(char const * const msgBuffer)
 {
@@ -25,6 +28,9 @@ void ZMQ_IFACE_ProcessCommand(char const * const msgBuffer)
     switch (id) {
         case TRAJECTORY:
             processTrajectory(commandJSON);
+            break;
+        case OWNSHIP:
+            processOwnship(commandJSON);
             break;
         default:
             OS_printf("UNKNOWN Command JSON: %s\n", json_to_string(commandJSON));
@@ -52,6 +58,8 @@ static struct json_object * parseCommand(char const * const msgBuffer)
 static CommandId getCommandId(struct json_object * commandJSON)
 {
     char const * const TRAJECTORY_TYPE_STRING = "ICAROUS::FlightPlan";
+    char const * const OWNSHIP_TYPE_STRING = "ICAROUS::Ownship";
+    char const * const OBJECT_TYPE_STRING = "ICAROUS::Object";
     struct json_object * msgTypeJSON = NULL;
     json_bool status = json_object_object_get_ex(commandJSON, "type", &msgTypeJSON);
     if (status == FALSE) {
@@ -65,35 +73,46 @@ static CommandId getCommandId(struct json_object * commandJSON)
     }
     if (strcmp(msgType,TRAJECTORY_TYPE_STRING) == 0) {
         return TRAJECTORY;
+    } else if (strcmp(msgType,OWNSHIP_TYPE_STRING) == 0) {
+        return OWNSHIP;
+    } else if (strcmp(msgType,OBJECT_TYPE_STRING) == 0) {
+        return OBJECT;
     } else {
         return UNKNOWN;
     }
 }
 
-static void processTrajectory(struct json_object * commandJSON)
+void processTrajectory(struct json_object * commandJSON)
 {
-        struct json_object * trajectoryJSON = NULL;
-        json_bool json_success = json_object_object_get_ex(commandJSON, "data", &trajectoryJSON);
-        if (json_success == FALSE) {
-            OS_printf("JSON \"data\" field does not exist or its null): %s\n",json_to_string(commandJSON));
-            return;
-        }
-        char const * const data = json_object_get_string(trajectoryJSON);
-        CFE_SB_ZeroCopyHandle_t cpyhandle;
-        stringdata_t *bigdataptr = (stringdata_t *)CFE_SB_ZeroCopyGetPtr(sizeof(stringdata_t),&cpyhandle);
-        CFE_SB_InitMsg(bigdataptr,EUTL1_TRAJECTORY_MID,sizeof(stringdata_t),TRUE);
-        strcpy(bigdataptr->buffer,data);
-        CFE_SB_TimeStampMsg( (CFE_SB_Msg_t *) bigdataptr );
-        int32 status = CFE_SB_ZeroCopySend( (CFE_SB_Msg_t *) bigdataptr,cpyhandle );
-        if(status != CFE_SUCCESS) {
-        OS_printf("[testbed] Error publishing EUTL trajectory to SB\n");
-        } else {
-            OS_printf("[testbed] EUTL trajectory successfully published\n");
-        }
-
+    char const * trajectory = json_get_string_field(commandJSON, "data");
+    if (trajectory == NULL) {
+        OS_printf("JSON \"data\" field of type string does not exist: %s\n",json_to_string(commandJSON));
+        return;
+    }
+    CFE_SB_ZeroCopyHandle_t cpyhandle;
+    stringdata_t *bigdataptr = (stringdata_t *)CFE_SB_ZeroCopyGetPtr(sizeof(stringdata_t),&cpyhandle);
+    CFE_SB_InitMsg(bigdataptr,EUTL1_TRAJECTORY_MID,sizeof(stringdata_t),TRUE);
+    strcpy(bigdataptr->buffer,trajectory);
+    CFE_SB_TimeStampMsg( (CFE_SB_Msg_t *) bigdataptr );
+    int32 status = CFE_SB_ZeroCopySend( (CFE_SB_Msg_t *) bigdataptr,cpyhandle );
+    if(status != CFE_SUCCESS) {
+    OS_printf("[testbed] Error publishing EUTL trajectory to SB\n");
+    } else {
+        OS_printf("[testbed] EUTL trajectory successfully published\n");
+    }
 }
 
-static char const * json_to_string(struct json_object *obj)
+static void processOwnship(struct json_object * obj)
 {
-    return json_object_to_json_string_ext(obj, JSON_C_TO_STRING_PLAIN);
+    bool success = false;
+    position_t ownship;
+    double time = 0;
+    success = json_get_double_field(&time, obj, "time");
+    if (success == false) {
+        OS_printf("[zmq_iface] JSON object double field \"time\" does not exist: %s\n...ignoring Ownship message\n", json_to_string(obj));
+        return;
+    }
+    ownship.time_gps = (int64_t) time;
+    ownship.time_boot = ownship.time_gps;
 }
+

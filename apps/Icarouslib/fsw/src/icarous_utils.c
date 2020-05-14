@@ -436,7 +436,7 @@ bool InitializeParams(char *filename,param_t* params,uint16_t paramCount){
 
 }
 
-char const * const GetAircraftCallSign(void) {
+char const * GetAircraftCallSign(void) {
     if (!callsignCache.isInitialized) {
         InitializeAircraftCallSign(&callsignCache.value);
         callsignCache.isInitialized = true;
@@ -459,7 +459,7 @@ void adsb_callsign_from_callsign_t(adsb_callsign * dest, callsign_t * orig) {
     }
 }
 
-char const * const callsign_t_get(callsign_t * dest) {
+char const * callsign_t_get(callsign_t * dest) {
     return dest->value;
 }
 

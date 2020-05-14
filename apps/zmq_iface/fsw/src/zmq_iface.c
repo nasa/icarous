@@ -6,6 +6,8 @@
 #include "utils.h"
 #include "zmq_iface.h"
 
+#include <assert.h>
+
 CFE_EVS_BinFilter_t  ZMQ_IFACE_EventFilters[] =
 {  /* Event ID    mask */
         { ZMQ_IFACE_STARTUP_INF_EID,       0x0000},
@@ -22,7 +24,7 @@ const char STUB_MESSAGE[] = "ZMQ_IFACE TRAFFIC_ALERTS_MID received";
 
 /* Application entry point */
 
-static void ZMQ_IFACE_HandleCommandMessage();
+static void ZMQ_IFACE_HandleCommandMessage(void);
 
 void ZMQ_IFACE_AppMain(void){
 
@@ -65,6 +67,9 @@ void ZMQ_IFACE_AppInit(void) {
     status = CFE_SB_CreatePipe(&AppData.pipe, /* Variable to hold Pipe ID */
 		    ZMQ_IFACE_PIPE_DEPTH,       /* Depth of Pipe */
 		    ZMQ_IFACE_PIPE_NAME);       /* Name of pipe */
+    if (status != CFE_SUCCESS) {
+        OS_printf("[zmq_iface] Cannot create pipe %s: %d", ZMQ_IFACE_PIPE_NAME, status);
+    }
 
     // Subscribe to SB messages
     CFE_SB_Subscribe(ICAROUS_BAND_REPORT_MID, AppData.pipe);
@@ -81,12 +86,12 @@ void ZMQ_IFACE_AppInit(void) {
                       ZMQ_IFACE_MINOR_VERSION);
 }
 
-void ZMQ_IFACE_AppCleanUp()
+void ZMQ_IFACE_AppCleanUp(void)
 {
     // Do clean up here
 }
 
-void ZMQ_IFACE_ProcessPacket()
+void ZMQ_IFACE_ProcessPacket(void)
 {
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(AppData.msgPtr);
@@ -103,7 +108,7 @@ void ZMQ_IFACE_ProcessPacket()
     }
 }
 
-static void ZMQ_IFACE_HandleCommandMessage()
+static void ZMQ_IFACE_HandleCommandMessage(void)
 {
 	bool success = ZMQ_IFACE_ReceiveCommand(connPtr, AppData.msgBuffer, MAX_ZMQ_MESSAGE_SIZE);
 	if (success) {

@@ -58,11 +58,11 @@ void ZMQ_IFACE_AppInit(void);
 /**
  * Deallocates memory
  */
-void ZMQ_IFACE_AppCleanUp();
+void ZMQ_IFACE_AppCleanUp(void);
 
 /**
  * Processes incoming software bus messages
  */
-void ZMQ_IFACE_ProcessPacket();
+void ZMQ_IFACE_ProcessPacket(void);
 
 #endif //ICAROUS_CFS_ZMQ_IFACE_H
