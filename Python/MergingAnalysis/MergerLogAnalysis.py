@@ -295,7 +295,8 @@ def plot(vehicles, field, save=False, fmt=""):
 def plot_summary(vehicles, save=False):
     plt.figure()
     for v in vehicles:
-        plt.plot(v.t, v.get("dist2int"), label="vehicle"+str(v.id))
+        line, = plt.plot(v.t, v.get("dist2int"), label="vehicle"+str(v.id))
+        v.color = line.get_color()
     for v in vehicles:
         if v.metrics["coord_time"] is not None:
             plt.plot(v.metrics["coord_time"],
@@ -307,13 +308,13 @@ def plot_summary(vehicles, save=False):
             plt.plot(v.metrics["entry_time"],
                      v.get("dist2int", v.metrics["entry_time"]), '*')
         if v.metrics["computed_schedule"]:
-            plt.plot(v.metrics["handoff_time"],
-                     v.get("dist2int", v.metrics["handoff_time"]), 'r*')
+            plt.plot(v.metrics["sched_arr_time"], 0, 'o', color=v.color)
         if v.metrics["reached_merge_point"]:
-            plt.plot(v.metrics["actual_arr_time"],
-                     v.get("dist2int", v.metrics["actual_arr_time"]), 'b*')
-        plt.plot(v.metrics["sched_arr_time"], 0, 'g*')
+            arrival_time = v.metrics["actual_arr_time"]
+            dist_at_arrival = v.get("dist2int", v.metrics["actual_arr_time"])
+            plt.plot(arrival_time, dist_at_arrival, 'b*')
     plt.title("Merging Operation Summary")
+    plt.plot([], [], 'ok', label="scheduled arrival time")
     plt.plot([], [], 'r*', label="merger app gives back control")
     plt.plot([], [], 'g*', label="scheduled arrival time")
     plt.plot([], [], 'b*', label="actual arrival time")
