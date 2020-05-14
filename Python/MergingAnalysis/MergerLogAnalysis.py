@@ -283,7 +283,7 @@ def plot(vehicles, field, save=False, fmt=""):
     plt.figure()
     for v in vehicles:
         plt.plot(v.t, v.get(field), fmt, label="vehicle"+str(v.id))
-    plt.title(field)
+    plt.title(field + " vs time")
     plt.xlabel("time (s)")
     plt.ylabel(field)
     plt.legend()
@@ -338,11 +338,13 @@ def plot_spacing(vehicles, save=False):
     plt.legend()
     plt.grid()
     plt.ylim((0, plt.ylim()[1]))
+    if v1.merge_id == "all":
+        title = "spacing"
+        plt.title("Vehicle Horizontal Spacing (entire flight)")
+    else:
+        title = "spacing_merge" + str(v1.merge_id)
+        plt.title("Vehicle Horizontal Spacing (during merge %d)" % v1.merge_id)
     if save:
-        if v1.merge_id == "all":
-            title = "spacing"
-        else:
-            title = "spacing_merge" + str(v1.merge_id)
         plt.savefig(os.path.join(v1.output_dir, title))
 
 
@@ -369,17 +371,18 @@ def plot_speed(vehicles, save=False):
         plt.ylabel('speed (m/s)')
         plt.legend()
         plt.grid()
+        if v.merge_id == "all":
+            title = "speed_" + str(v.id)
+            plt.title("vehicle%d Speed (entire flight)" % v.id)
+        else:
+            title = "speed_%s_merge%d" % (v.id, v.merge_id)
+            plt.title("vehicle%s Speed (during merge %d)" % (v.id, v.merge_id))
         if save:
-            if v.merge_id == "all":
-                title = "speed_" + str(v.id)
-            else:
-                title = "speed_" + str(v.id) + "_merge" + str(v.merge_id)
             plt.savefig(os.path.join(v.output_dir, title))
 
 
 def plot_roles(vehicles, save=False):
     plt.figure()
-    plt.title("Raft Node Roles")
     colors = ['y', 'r', 'b', 'g']
     labels = ["NEUTRAL", "FOLLOWER", "CANDIDATE", "LEADER"]
     for v in vehicles:
@@ -391,6 +394,7 @@ def plot_roles(vehicles, save=False):
         plt.plot([], [], 's', color=c, label=l)
     vids = [v.id for v in vehicles]
     vnames = ["vehicle"+str(v.id) for v in vehicles]
+    plt.title("Raft communication node roles")
     plt.yticks(vids, vnames)
     plt.ylim([min(vids) - 1, max(vids) + 1])
     plt.xlabel("Time (s)")
@@ -401,9 +405,10 @@ def plot_roles(vehicles, save=False):
 
     plt.figure()
     for v in vehicles:
-        plt.plot(v.get("t"), v.get("nodeRole"), label=v.id)
+        plt.plot(v.get("t"), v.get("nodeRole"), label="vehicle"+str(v.id))
     plt.grid()
     plt.legend()
+    plt.title("Raft communication node roles")
     plt.yticks(range(4), labels)
     plt.xlabel("Time (s)")
     if save:
@@ -415,11 +420,12 @@ def plot_flight_trace(vehicles, save=False):
     for v in vehicles:
         lon = v.get("lon")
         lat = v.get("lat")
-        trace, = plt.plot(lon, lat, label=v.id)
+        trace, = plt.plot(lon, lat, label="vehicle"+str(v.id))
         plt.plot(lon[0], lat[0], 'o', color=trace.get_color())
         plt.plot(lon[-1], lat[-1], 'x', color=trace.get_color())
     plt.grid()
     plt.legend()
+    plt.title("Flight Trace")
     plt.xlabel("Longitude (deg)")
     plt.ylabel("Latitude (deg)")
     if save:
