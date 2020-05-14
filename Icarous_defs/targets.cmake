@@ -76,7 +76,7 @@ SET(MISSION_NAME "Icarous")
 
 # SPACECRAFT_ID gets compiled into the build data structure and the PSP may use it.
 # should be an integer.
-SET(SPACECRAFT_ID 42)
+SET(SPACECRAFT_ID 0)
 
 # UI_INSTALL_SUBDIR indicates where the UI data files (included in some apps) should
 # be copied during the install process.
