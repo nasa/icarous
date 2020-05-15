@@ -152,6 +152,8 @@ def verify_merge_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     print("\nMinimum separation distances during merge")
     for v1, v2 in itertools.combinations(vehicles, 2):
         time_range, dist = MA.compute_separation(v1, v2)
+        if not dist:
+            continue
         min_separation, t_min = min(zip(dist, time_range))
         print("v%s to v%s min separation: %.2fm (at %.2fs)" %
               (v1.id, v2.id, min_separation, t_min))
@@ -178,6 +180,8 @@ def verify_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     print("\nMinimum separation distances during entire flight")
     for v1, v2 in itertools.combinations(vehicles_entire_flight, 2):
         time_range, dist = MA.compute_separation(v1, v2)
+        if not dist:
+            continue
         min_separation, t_min = min(zip(dist, time_range))
         print("v%s to v%s min separation: %.2fm (at %.2fs)" %
               (v1.id, v2.id, min_separation, t_min))
