@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import json
 import os
 from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
@@ -98,6 +99,15 @@ def ReadMergerAppData(filename, vehicle_id, merge_id=1, group="test"):
         data.current_role = role
 
     return data
+
+
+def read_params(data_location):
+    simlog = next(f for f in os.listdir(data_location) if f.endswith(".json"))
+    if simlog is not None:
+        with open(os.path.join(data_location, simlog)) as f:
+            data = json.load(f)
+    params = data["parameters"]
+    return params
 
 
 def compute_metrics(vehicles):
@@ -298,24 +308,17 @@ def plot_summary(vehicles, save=False):
         line, = plt.plot(v.t, v.get("dist2int"), label="vehicle"+str(v.id))
         v.color = line.get_color()
     for v in vehicles:
-        if v.metrics["coord_time"] is not None:
-            plt.plot(v.metrics["coord_time"],
-                     v.get("dist2int", v.metrics["coord_time"]), '*')
-        if v.metrics["sched_time"] is not None:
-            plt.plot(v.metrics["sched_time"],
-                     v.get("dist2int", v.metrics["sched_time"]), '*')
-        if v.metrics["entry_time"] is not None:
-            plt.plot(v.metrics["entry_time"],
-                     v.get("dist2int", v.metrics["entry_time"]), '*')
         if v.metrics["computed_schedule"]:
             plt.plot(v.metrics["sched_arr_time"], 0, 'o', color=v.color)
         if v.metrics["reached_merge_point"]:
             arrival_time = v.metrics["actual_arr_time"]
             dist_at_arrival = v.get("dist2int", v.metrics["actual_arr_time"])
             plt.plot(arrival_time, dist_at_arrival, 'b*')
+    plt.plot(plt.xlim(), [vehicles[0].params["ENTRY_RADIUS"]]*2, "r--")
+    plt.plot(plt.xlim(), [vehicles[0].params["SCHEDULE_ZONE"]]*2, "--", color="orange")
+    plt.plot(plt.xlim(), [vehicles[0].params["COORD_ZONE"]]*2, "b--")
     plt.title("Merging Operation Summary")
     plt.plot([], [], 'ok', label="scheduled arrival time")
-    plt.plot([], [], 'r*', label="merger app gives back control")
     plt.plot([], [], 'g*', label="scheduled arrival time")
     plt.plot([], [], 'b*', label="actual arrival time")
     plt.xlabel("time (s)")
@@ -440,6 +443,7 @@ def process_data(data_location, num_vehicles=10, merge_id=1):
             if f.startswith("merger_appdata_"+str(i)):
                 filename = os.path.join(data_location, f)
                 data = ReadMergerAppData(filename, i, merge_id, group)
+                data.params = read_params(data_location)
                 vehicles.append(data)
     return vehicles
 

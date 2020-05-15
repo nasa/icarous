@@ -51,8 +51,8 @@ def validate_merging_data(vehicles, params=DEFAULT_VALIDATION_PARAMS,
 def verify_valid_schedule(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check that the scheduled arrival times are acceptable'''
     condition_name = "Valid Schedule"
-    min_separation_time_scheduled = 20 - params["sched_time_allow"]
-    min_separation_time_actual = 20 - params["arr_time_allow"]
+    min_sep_time_sched = vehicles[0].params["MIN_SEP_TIME"] - params["sched_time_allow"]
+    min_sep_time_actual = vehicles[0].params["MIN_SEP_TIME"] - params["arr_time_allow"]
 
     computed_schedule = [v.metrics["computed_schedule"] for v in vehicles]
     scheduled_arrivals = sorted([v.metrics["sched_arr_time"] for v in vehicles])
@@ -62,8 +62,8 @@ def verify_valid_schedule(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     actual_sep = np.diff(actual_arrivals)
 
     schedule_exists = any(computed_schedule)
-    schedule_ok = all((s > min_separation_time_scheduled for s in scheduled_sep))
-    arrival_ok = all((s > min_separation_time_actual for s in actual_sep))
+    schedule_ok = all((s > min_sep_time_sched for s in scheduled_sep))
+    arrival_ok = all((s > min_sep_time_actual for s in actual_sep))
 
     if schedule_exists and schedule_ok:
         return True, "Computed valid merge point arrival schedule", condition_name
@@ -90,7 +90,7 @@ def verify_merge_complete(vehicles, params=DEFAULT_VALIDATION_PARAMS):
 def verify_merge_order(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check that the vehicles merged in the scheduled order'''
     condition_name = "Merge Order"
-    min_separation_time_actual = 20 - params["arr_time_allow"]
+    min_sep_time = vehicles[0].params["MIN_SEP_TIME"] - params["arr_time_allow"]
 
     computed_schedule = [v.metrics["computed_schedule"] for v in vehicles]
     scheduled_arrivals = sorted([(v.metrics["sched_arr_time"], v.id) for v in vehicles])
@@ -102,7 +102,7 @@ def verify_merge_order(vehicles, params=DEFAULT_VALIDATION_PARAMS):
 
     schedule_exists = any(computed_schedule)
     order_ok = (scheduled_order == actual_order)
-    arrival_sep_ok = all((s > min_separation_time_actual for s in actual_sep))
+    arrival_sep_ok = all((s > min_sep_time for s in actual_sep))
 
     if schedule_exists:
         if order_ok:
@@ -119,7 +119,7 @@ def verify_merge_order(vehicles, params=DEFAULT_VALIDATION_PARAMS):
 def verify_merge_time_separation(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check merging data for arrival time separation'''
     condition_name = "Arrival Time Separation"
-    min_separation_time = 20 - params["arr_time_allow"]
+    min_sep_time = vehicles[0].params["MIN_SEP_TIME"] - params["arr_time_allow"]
 
     reached_merge_point = [v.metrics["reached_merge_point"] for v in vehicles]
     merge_complete = all(reached_merge_point)
@@ -137,7 +137,7 @@ def verify_merge_time_separation(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     if not merge_complete:
         return False, "N/A - not all vehicles reached merge point", condition_name
 
-    if all((s > min_separation_time for s in separation_times)):
+    if all((s > min_sep_time for s in separation_times)):
         return True, "Sufficient time spacing at merge point", condition_name
     else:
         return False, "Insufficient time spacing at merge point", condition_name
@@ -146,7 +146,7 @@ def verify_merge_time_separation(vehicles, params=DEFAULT_VALIDATION_PARAMS):
 def verify_merge_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check minimum horizontal separation during merging operation'''
     condition_name = "Merge Spacing"
-    DTHR = 30*params["h_allow"]
+    DTHR = vehicles[0].params["DET_1_WCV_DTHR"]*0.3048*params["h_allow"]
 
     separation_ok = True
     print("\nMinimum separation distances during merge")
@@ -169,7 +169,7 @@ def verify_merge_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
 def verify_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     '''Check minimum horizontal separation during entire flight'''
     condition_name = "Spacing"
-    DTHR = 30*params["h_allow"]
+    DTHR = vehicles[0].params["DET_1_WCV_DTHR"]*0.3048*params["h_allow"]
 
     flight_dir = vehicles[0].output_dir
     vehicles_entire_flight = MA.process_data(flight_dir, merge_id="all")
