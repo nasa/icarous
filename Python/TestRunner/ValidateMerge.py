@@ -151,7 +151,7 @@ def verify_merge_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     separation_ok = True
     print("\nMinimum separation distances during merge")
     for v1, v2 in itertools.combinations(vehicles, 2):
-        time_range, dist = MA.compute_separation(v1, v2)
+        time_range, dist = MA.compute_separation(v1, v2, merge_id=1)
         if not dist:
             continue
         min_separation, t_min = min(zip(dist, time_range))
@@ -173,13 +173,10 @@ def verify_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     condition_name = "Spacing"
     DTHR = vehicles[0].params["DET_1_WCV_DTHR"]*0.3048*params["h_allow"]
 
-    flight_dir = vehicles[0].output_dir
-    vehicles_entire_flight = MA.process_data(flight_dir, merge_id="all")
-
     separation_ok = True
     print("\nMinimum separation distances during entire flight")
-    for v1, v2 in itertools.combinations(vehicles_entire_flight, 2):
-        time_range, dist = MA.compute_separation(v1, v2)
+    for v1, v2 in itertools.combinations(vehicles, 2):
+        time_range, dist = MA.compute_separation(v1, v2, merge_id="all")
         if not dist:
             continue
         min_separation, t_min = min(zip(dist, time_range))
@@ -224,15 +221,13 @@ def record_results(results, scenario_name):
     table.to_csv(filename)
 
 
-def run_validation(flight_dir, test=False, plot=False, save=False):
+def run_validation(flight_dir, merge_id=1, test=False, plot=False, save=False):
     # Read merger log data (just during merge operation)
     vehicles = MA.process_data(flight_dir)
-    # Read merger log data (for entire flight)
-    vehicles_entire_flight = MA.process_data(flight_dir, merge_id="all")
 
     # Compute merging metrics
-    MA.compute_metrics(vehicles)
-    MA.write_metrics(vehicles)
+    MA.compute_metrics(vehicles, merge_id)
+    MA.write_metrics(vehicles, merge_id)
 
     # Check test conditions
     scenario_name = os.path.basename(os.path.normpath(flight_dir))
@@ -240,13 +235,13 @@ def run_validation(flight_dir, test=False, plot=False, save=False):
 
     # Generate plots
     if plot:
-        MA.plot_roles(vehicles, save=save)
-        MA.plot_speed(vehicles, save=save)
-        MA.plot_speed(vehicles_entire_flight, save=save)
-        MA.plot_spacing(vehicles, save=save)
-        MA.plot_spacing(vehicles_entire_flight, save=save)
-        MA.plot_flight_trace(vehicles_entire_flight, save=save)
-        MA.plot_summary(vehicles, save=save)
+        MA.plot_roles(vehicles, merge_id=merge_id, save=save)
+        MA.plot_speed(vehicles, merge_id=merge_id, save=save)
+        MA.plot_speed(vehicles, merge_id="all", save=save)
+        MA.plot_spacing(vehicles, merge_id=merge_id, save=save)
+        MA.plot_spacing(vehicles, merge_id="all", save=save)
+        MA.plot_flight_trace(vehicles, merge_id="all", save=save)
+        MA.plot_summary(vehicles, merge_id=merge_id, save=save)
         plt.show()
     plt.close("all")
 
@@ -277,9 +272,10 @@ if __name__ == "__main__":
     flights = []
     if args.many:
         for f in os.listdir(args.data_location):
-            flights.append(os.path.join(args.data_location, f))
+            if os.path.isdir(os.path.join(args.data_location, f)):
+                flights.append(os.path.join(args.data_location, f))
     else:
         flights.append(args.data_location)
 
     for flight_dir in flights:
-        run_validation(flight_dir, args.test, args.plot, args.save)
+        run_validation(flight_dir, args.merge_id, args.test, args.plot, args.save)

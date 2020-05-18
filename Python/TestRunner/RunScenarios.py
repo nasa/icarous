@@ -226,7 +226,7 @@ if __name__ == "__main__":
         if args.validate:
             if args.merger:
                 import ValidateMerge as VM
-                VM.run_validation(out_dir, args.test, args.plot, args.save)
+                VM.run_validation(out_dir, 1, args.test, args.plot, args.save)
             else:
                 import ValidateSim as VS
                 VS.run_validation(out_dir, args.test, args.plot, args.save)
