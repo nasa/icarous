@@ -12,6 +12,7 @@ before_script:
   - chmod 600 ~/.ssh/id_rsa
   - bash UpdateModules.sh
   - git submodule update --init --recursive apps/rotorsim/QuadCopterSim
+  - git submodule update --init --recursive Python/PyIcarous
   - cd apps/rotorsim/QuadCopterSim && make
   - cd /builds/larc-nia-fm/icarous
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/Modules/lib
