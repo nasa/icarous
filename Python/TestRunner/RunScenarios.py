@@ -7,7 +7,7 @@ import datetime
 import shutil
 import subprocess
 
-sys.path.append("../PyIcarous")
+sys.path.append("../pyicarous")
 import BatchGSModule as GS
 from SimVehicle import SimVehicle
 from Icarous import (Icarous, ReadFlightplanFile, LoadIcarousParams,
