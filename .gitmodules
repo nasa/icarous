@@ -25,3 +25,6 @@
 [submodule "apps/safe2ditch"]
 	path = apps/safe2ditch
 	url = git@gitlab.larc.nasa.gov:larc-nia-fm/uas/safe2ditch-cfs.git
+[submodule "Python/pyicarous"]
+	path = Python/pyicarous
+	url = git@gitlab.larc.nasa.gov:larc-nia-fm/uas/pyicarous.git
