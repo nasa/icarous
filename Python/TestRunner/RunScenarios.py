@@ -78,9 +78,9 @@ def RunScenario(scenario, sitl=False, verbose=False, out=14557,
                 finished |= v.step(time_limit)
         else:
             finished = duration > time_limit
+            time.sleep(0.1)
         if verbose:
             print("Sim Duration: %.1fs       " % duration, end="\r")
-        time.sleep(0.1)
         duration = time.time() - t0
     for v in vehicles:
         v.terminate()
