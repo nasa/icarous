@@ -7,7 +7,7 @@ import json
 
 from pymavlink import mavutil, mavwp
 
-sys.path.append("../Batch")
+sys.path.append("../PyIcarous")
 import BatchGSModule as GS
 from ichelper import LoadIcarousParams, ReadFlightplanFile
 

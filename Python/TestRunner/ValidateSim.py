@@ -4,7 +4,7 @@ import json
 import numpy as np
 from polygon_contain import Vector, definitely_inside
 
-sys.path.append("../Batch")
+sys.path.append("../PyIcarous")
 import BatchGSModule as GS
 
 
