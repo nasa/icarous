@@ -247,6 +247,8 @@ def compute_consensus_times(vehicle, merge_id=1):
 
 
 def average_speed(vehicle, t1, t2):
+    if t1 is None or t2 is None:
+        return None
     dX = vehicle.get("dist2int", t1) - vehicle.get("dist2int", t2)
     dT = t2 - t1
     return abs(dX/dT)
