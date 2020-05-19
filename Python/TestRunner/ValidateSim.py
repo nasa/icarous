@@ -280,11 +280,10 @@ def print_results(results, scenario_name):
             print("\t\033[31mX %s - FAIL:\033[0m %s" % (name, msg))
 
 
-def record_results(results, scenario_name):
+def record_results(results, scenario_name, output_file="ValidationResults.csv"):
     import pandas as pd
-    filename = "ValidationResults.csv"
-    if os.path.isfile(filename):
-        table = pd.read_csv(filename, index_col=0)
+    if os.path.isfile(output_file):
+        table = pd.read_csv(output_file, index_col=0)
     else:
         table = pd.DataFrame({})
     metrics = {r[2]:r[0] for r in results}
@@ -292,7 +291,7 @@ def record_results(results, scenario_name):
     metrics = pd.DataFrame(metrics, index=[index])
     table = metrics.combine_first(table)
     table = table[metrics.keys()]
-    table.to_csv(filename)
+    table.to_csv(output_file)
 
 
 def run_validation(logfile, test=False, plot=False, save=False):

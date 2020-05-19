@@ -163,13 +163,12 @@ def compute_metrics(vehicles, merge_id=1):
         v.metrics["mean_non-merging_speed"] = np.mean(spacing_speed)
 
 
-def write_metrics(vehicles, merge_id=1):
+def write_metrics(vehicles, merge_id=1, output_file="MergingMetrics.csv"):
     """ Add vehicle metrics to a csv table """
     if len(vehicles) == 0:
         return
-    filename = "MergingMetrics.csv"
-    if os.path.isfile(filename):
-        table = pd.read_csv(filename, index_col=0)
+    if os.path.isfile(output_file):
+        table = pd.read_csv(output_file, index_col=0)
     else:
         table = pd.DataFrame({})
     for v in vehicles:
@@ -177,7 +176,7 @@ def write_metrics(vehicles, merge_id=1):
         metrics = pd.DataFrame(v.metrics, index=[index])
         table = metrics.combine_first(table)
     table = table[v.metrics.keys()]
-    table.to_csv(filename)
+    table.to_csv(output_file)
 
 
 def get_leader(vehicles, t):
