@@ -103,10 +103,7 @@ def RunScenario(scenario, sitl=False, verbose=False, out=14557,
 
 def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
     """ Run an ICAROUS scenario using pyIcarous """
-    # Clear existing log files
-    for f in os.listdir(sim_home):
-        if f.endswith(".txt") or f.endswith(".log") and f != "DaidalusQuadConfig.txt":
-            os.remove(os.path.join(sim_home, f))
+    os.chdir(output_dir)
 
     num_vehicles = len(scenario["vehicles"])
     icInstances = []
@@ -151,6 +148,7 @@ def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
 
     tlimit = [scenario.get("time_limit", 1000)]*len(icInstances)
     RunSimulation(icInstances, tfList, startDelay=icDelay, timeLimit=tlimit)
+    os.chdir(sim_home)
 
     # Collect log files
     for ic in icInstances:
@@ -167,9 +165,6 @@ def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
                     "sim_type": "pyIcarous"}
         with open(logname, 'w') as f:
             json.dump(log_data, f)
-    for f in os.listdir(sim_home):
-        if f.endswith(".txt") or f.endswith(".log") or f.endswith(".json"):
-            os.rename(os.path.join(sim_home, f), os.path.join(output_dir, f))
 
 
 def set_up_output_dir(scenario, base_dir="sim_output"):
