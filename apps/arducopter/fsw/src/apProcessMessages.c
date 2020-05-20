@@ -221,10 +221,26 @@ void ProcessAPMessage(mavlink_message_t message) {
             position.vd = (double)globalPositionInt.vz/100;
             position.hdg = (double)globalPositionInt.hdg/100;
 
-            CFE_SB_TimeStampMsg((CFE_SB_Msg_t *) &position);
-            CFE_SB_SendMsg((CFE_SB_Msg_t *) &position);
+            SendSBMsg(position);
             break;
         }
+
+        case MAVLINK_MSG_ID_LOCAL_POSITION_NED:
+        {
+            //OS_printf("apInterface received local position\n");
+            mavlink_local_position_ned_t localPosition;
+            mavlink_msg_local_position_ned_decode(&message,&localPosition);
+            local_position.time_boot = (double)localPosition.time_boot_ms;
+            local_position.x = (double)localPosition.x;
+            local_position.y = (double)localPosition.y;
+            local_position.z = (double)localPosition.z;
+            local_position.vx = (double)localPosition.vx;
+            local_position.vy = (double)localPosition.vy;
+            local_position.vz = (double)localPosition.vz;
+            SendSBMsg(local_position);
+            break;
+        }
+
 
         case MAVLINK_MSG_ID_ATTITUDE:{
             mavlink_attitude_t apAttitude;
