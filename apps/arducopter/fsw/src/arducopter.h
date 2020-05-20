@@ -119,9 +119,6 @@ typedef struct{
     bool restartMission;
     bool fpread;
     mavlink_mission_item_t ReceivedMissionItems[MAX_WAYPOINTS];
-    uint32_t home_latitude;                 ///< vehicle home position latitude in degE7
-    uint32_t home_longitude;                ///< vehicle home position longitude in degE7
-    uint32_t home_altitude;                 ///< vehicle home position altitude in mm
     bool takeoff;
 
     int receivingWP;                        ///< waypoint current being received
@@ -231,6 +228,7 @@ EXTERN battery_status_t battery_status;        ///< battery status message
 EXTERN cmdAck_t ack;                           ///< command acknowledge message
 EXTERN vfrhud_t vfrhud;                        ///< vfr hud data
 EXTERN rc_channels_t rc_channels;              ///< rc channels
+EXTERN home_position_t home_position;          ///< home position
 
 
 #endif /* _arducopter_h_ */

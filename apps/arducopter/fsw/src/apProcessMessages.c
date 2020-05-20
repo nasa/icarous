@@ -488,9 +488,19 @@ void ProcessAPMessage(mavlink_message_t message) {
             mavlink_home_position_t msg;
             mavlink_msg_home_position_decode(&message,&msg);
 
-            appdataInt.home_latitude = msg.latitude;
-            appdataInt.home_longitude = msg.longitude;
-            appdataInt.home_altitude = msg.altitude;
+            home_position.latitude = msg.latitude;
+            home_position.longitude = msg.longitude;
+            home_position.altitude = msg.altitude;
+            home_position.x = msg.x;
+            home_position.y = msg.y;
+            home_position.z = msg.z;
+            home_position.approach_x = msg.approach_x;
+            home_position.approach_y = msg.approach_y;
+            home_position.approach_z = msg.approach_z;
+            memcpy(home_position.q,msg.q,sizeof(float)*4);
+            home_position.time_boot = msg.time_usec;
+            SendSBMsg(home_position);
+
             break;
         }
 

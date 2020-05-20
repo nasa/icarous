@@ -14,15 +14,15 @@
 /// Event filter definition for arducopter
 CFE_EVS_BinFilter_t  ARDUCOPTER_EventFilters[] =
 {  /* Event ID    mask */
-		{ARDUCOPTER_STARTUP_INF_EID,       0x0000},
-		{ARDUCOPTER_COMMAND_ERR_EID,       0x0000},
+        {ARDUCOPTER_STARTUP_INF_EID,       0x0000},
+        {ARDUCOPTER_COMMAND_ERR_EID,       0x0000},
 };
 
 /* ARDUCOPTER_AppMain() -- Application entry points */
 void ARDUCOPTER_AppMain(void){
 
-	int32 status;
-	uint32 RunStatus = CFE_ES_APP_RUN;
+    int32 status;
+    uint32 RunStatus = CFE_ES_APP_RUN;
 
     ARDUCOPTER_AppInit();
 
@@ -57,36 +57,36 @@ void ARDUCOPTER_AppMain(void){
 
     ARDUCOPTER_AppCleanUp();
 
-	CFE_ES_ExitApp(RunStatus);
+    CFE_ES_ExitApp(RunStatus);
 }
 
 void ARDUCOPTER_AppInit(void){
 
-	memset(&appdataInt,0,sizeof(appdataInt_t));
-	appdataInt.runThreads = 1;
+    memset(&appdataInt,0,sizeof(appdataInt_t));
+    appdataInt.runThreads = 1;
 
-	int32 status;
+    int32 status;
 
-	// Register the app with executive services
-	CFE_ES_RegisterApp();
+    // Register the app with executive services
+    CFE_ES_RegisterApp();
 
-	// Register the events
-	CFE_EVS_Register(ARDUCOPTER_EventFilters,
-			sizeof(ARDUCOPTER_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
-			CFE_EVS_BINARY_FILTER);
+    // Register the events
+    CFE_EVS_Register(ARDUCOPTER_EventFilters,
+            sizeof(ARDUCOPTER_EventFilters)/sizeof(CFE_EVS_BinFilter_t),
+            CFE_EVS_BINARY_FILTER);
 
-	// Create pipe to receive SB messages
-	status = CFE_SB_CreatePipe( &appdataInt.INTERFACE_Pipe, /* Variable to hold Pipe ID */
-								ARDUCOPTER_PIPE_DEPTH,    /* Depth of Pipe */
-								ARDUCOPTER_PIPE_NAME);    /* Name of pipe */
+    // Create pipe to receive SB messages
+    status = CFE_SB_CreatePipe( &appdataInt.INTERFACE_Pipe, /* Variable to hold Pipe ID */
+                                ARDUCOPTER_PIPE_DEPTH,    /* Depth of Pipe */
+                                ARDUCOPTER_PIPE_NAME);    /* Name of pipe */
 
-	status = CFE_SB_CreatePipe( &appdataInt.SchInterface_Pipe, /* Variable to hold Pipe ID */
-								ARDUCOPTER_PIPE_DEPTH,    /* Depth of Pipe */
-								SCH_ARDUCOPTER_PIPE1_NAME);    /* Name of pipe */
+    status = CFE_SB_CreatePipe( &appdataInt.SchInterface_Pipe, /* Variable to hold Pipe ID */
+                                ARDUCOPTER_PIPE_DEPTH,    /* Depth of Pipe */
+                                SCH_ARDUCOPTER_PIPE1_NAME);    /* Name of pipe */
 
-	// Subscribe to wakeup messages from scheduler
-	CFE_SB_SubscribeLocal(FREQ_50_WAKEUP_MID,appdataInt.SchInterface_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-	CFE_SB_SubscribeLocal(FREQ_01_WAKEUP_MID,appdataInt.SchInterface_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    // Subscribe to wakeup messages from scheduler
+    CFE_SB_SubscribeLocal(FREQ_50_WAKEUP_MID,appdataInt.SchInterface_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(FREQ_01_WAKEUP_MID,appdataInt.SchInterface_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
 
     //Subscribe to command messages and kinematic band messages from the SB
@@ -97,14 +97,14 @@ void ARDUCOPTER_AppInit(void){
     CFE_SB_SubscribeLocal(ICAROUS_BANDS_TRACK_MID, appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID, appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(UPLINK_FLIGHTPLAN_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-	CFE_SB_SubscribeLocal(GUIDANCE_COMMAND_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(GUIDANCE_COMMAND_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
-	// Initialize all messages that this App generates
-	CFE_SB_InitMsg(&wpreached,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);
-	CFE_SB_InitMsg(&traffic,ICAROUS_TRAFFIC_MID,sizeof(object_t),TRUE);
-	CFE_SB_InitMsg(&position,ICAROUS_POSITION_MID,sizeof(position_t),TRUE);
-	CFE_SB_InitMsg(&attitude,ICAROUS_ATTITUDE_MID,sizeof(attitude_t),TRUE);
-	CFE_SB_InitMsg(&ack,ICAROUS_COMACK_MID,sizeof(cmdAck_t),TRUE);
+    // Initialize all messages that this App generates
+    CFE_SB_InitMsg(&wpreached,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);
+    CFE_SB_InitMsg(&traffic,ICAROUS_TRAFFIC_MID,sizeof(object_t),TRUE);
+    CFE_SB_InitMsg(&position,ICAROUS_POSITION_MID,sizeof(position_t),TRUE);
+    CFE_SB_InitMsg(&attitude,ICAROUS_ATTITUDE_MID,sizeof(attitude_t),TRUE);
+    CFE_SB_InitMsg(&ack,ICAROUS_COMACK_MID,sizeof(cmdAck_t),TRUE);
     CFE_SB_InitMsg(&vfrhud,ICAROUS_VFRHUD_MID,sizeof(vfrhud_t),TRUE);
     CFE_SB_InitMsg(&battery_status,ICAROUS_BATTERY_STATUS_MID,sizeof(battery_status_t),TRUE);
     CFE_SB_InitMsg(&rc_channels,ICAROUS_RC_CHANNELS_MID,sizeof(rc_channels_t),TRUE);
@@ -112,12 +112,12 @@ void ARDUCOPTER_AppInit(void){
     CFE_SB_InitMsg(&startMission,ICAROUS_STARTMISSION_MID,sizeof(argsCmd_t),TRUE);
 
 
-	// Register table with table services
-	status = CFE_TBL_Register(&appdataInt.INTERFACE_tblHandle,
-				  "InterfaceTable",
-				  sizeof(ArducopterTable_t),
-				  CFE_TBL_OPT_DEFAULT,
-				  &ArducopterTableValidationFunc);
+    // Register table with table services
+    status = CFE_TBL_Register(&appdataInt.INTERFACE_tblHandle,
+                  "InterfaceTable",
+                  sizeof(ArducopterTable_t),
+                  CFE_TBL_OPT_DEFAULT,
+                  &ArducopterTableValidationFunc);
 
     // Load app table data 
     
@@ -131,7 +131,7 @@ void ARDUCOPTER_AppInit(void){
     memcpy(&appdataInt.Table,TblPtr,sizeof(ArducopterTable_t));
 
     // Free table pointer
-	status = CFE_TBL_ReleaseAddress(appdataInt.INTERFACE_tblHandle);
+    status = CFE_TBL_ReleaseAddress(appdataInt.INTERFACE_tblHandle);
 
     ARDUCOPTER_AppInitializeData();
 
@@ -139,8 +139,8 @@ void ARDUCOPTER_AppInit(void){
         // Send event indicating app initialization
         CFE_EVS_SendEvent (ARDUCOPTER_STARTUP_INF_EID, CFE_EVS_INFORMATION,
                        "Arducopter Interface initialized. Version %d.%d",
-					   ARDUCOPTER_MAJOR_VERSION,
-					   ARDUCOPTER_MINOR_VERSION);
+                       ARDUCOPTER_MAJOR_VERSION,
+                       ARDUCOPTER_MINOR_VERSION);
 
     }
 
@@ -155,9 +155,9 @@ void ARDUCOPTER_AppInitializeData(){
     ArducopterTable_t *TblPtr = &appdataInt.Table;
 
     appdataInt.sentDefaultParams = false;
-	appdataInt.ap.id = 0;
-	appdataInt.waypointSeq = 0;
-	appdataInt.nextWaypointIndex = 0;
+    appdataInt.ap.id = 0;
+    appdataInt.waypointSeq = 0;
+    appdataInt.nextWaypointIndex = 0;
     appdataInt.icRcChannel = TblPtr->icRcChannel;
     appdataInt.pwmStart = TblPtr->pwmStart;
     appdataInt.pwmReset = TblPtr->pwmReset; 
@@ -165,11 +165,11 @@ void ARDUCOPTER_AppInitializeData(){
     //Set mission start flag to -1
     startMission.param1 = -1;
 
-	if (appdataInt.ap.portType == SOCKET){
-		InitializeSocketPort(&appdataInt.ap);
-	}else if(appdataInt.ap.portType == SERIAL){
-		InitializeSerialPort(&appdataInt.ap,false);
-	}
+    if (appdataInt.ap.portType == SOCKET){
+        InitializeSocketPort(&appdataInt.ap);
+    }else if(appdataInt.ap.portType == SERIAL){
+        InitializeSerialPort(&appdataInt.ap,false);
+    }
 
     appdataInt.waypoint_type = (int*)malloc(sizeof(int)*2);
     appdataInt.startWPUplink = false;
@@ -195,7 +195,7 @@ void ARDUCOPTER_AppInitializeData(){
 }
     
 void ARDUCOPTER_AppCleanUp(){
-	free((void*)appdataInt.waypoint_type);
+    free((void*)appdataInt.waypoint_type);
 }
 
 int32_t ArducopterTableValidationFunc(void *TblPtr){
