@@ -1,29 +1,54 @@
 #variables:
 #  GIT_SUBMODULE_STRATEGY: recursive
 
+
+
 default:
   image: gitlab-icarous-base:latest
 
+stages:
+  - build
+  - test
 
 before_script:
+  - apt-get install -y ssh-client
   - mkdir -p ~/.ssh
   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
   - echo -e "$SWEE_SSHKEY" > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
-  - bash UpdateModules.sh
-  - git submodule update --init --recursive apps/rotorsim/QuadCopterSim
-  - git submodule update --init --recursive Python/pyicarous
+  - git submodule sync --recursive
+  - git submodule update --init Python/pyicarous
+  - git submodule update --init apps/rotorsim/QuadCopterSim
+  - git submodule update --init apps/merger
+  - git submodule update --init apps/raft
+  - git submodule update --init apps/safe2ditch
   - cd apps/rotorsim/QuadCopterSim && make
   - cd /builds/larc-nia-fm/icarous
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/Modules/lib
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
   - export PYTHONPATH=$PYTHONPATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
-  - sed -i s/arducopter/rotorsim/ Icarous_defs/apps.cmake
-  - make 
-  - make install
   
-run-test:
+build:
+  stage: build
   script:
+    - sed -i s/#rotorsim/rotorsim/ Icarous_defs/apps.cmake
+    - sed -i s/#merger/merger/ Icarous_defs/apps.cmake
+    - sed -i s/#raft/raft/ Icarous_defs/apps.cmake
+    - sed -i s/#SBN/SBN/ Icarous_defs/apps.cmake
+    - sed -i s/#udp/udp/ Icarous_defs/apps.cmake
+    - sed -i s/#safe2ditch/safe2ditch/ Icarous_defs/apps.cmake
+    - make 
+    - make install
+  artifacts:
+    paths:
+      - exe/cpu1/*
+      - Modules/lib/*
+    expire_in: 10 mins
+  
+test:
+  stage: test
+  script:
+    - sed -i s/arducopter/rotorsim/ Icarous_defs/apps.cmake
     - cd Python/TestRunner
     - python3 RunScenarios.py scenarios.yaml --validate --test --verbose
 
