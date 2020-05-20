@@ -36,7 +36,7 @@
 #define RADAR_TRIGGER_MID 0x0825          ///< Radar trigger
 #define ICAROUS_RC_CHANNELS_MID 0x0826    ///< RC channels
 #define ICAROUS_LOCAL_POSITION_MID 0x0827 ///< Local position information. message type: local_position_t
-
+#define ICAROUS_HOME_POSITION_MID 0x0828  ///< Home position message id
 /**@}*/
 #define SendSBMsg(msg)\
 CFE_SB_TimeStampMsg((CFE_SB_Msg_t * ) &msg); \
