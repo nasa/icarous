@@ -147,5 +147,7 @@ void COGNITION_SendLand();
 
 void COGNITION_FindNewPath();
 
+void COGNITION_SendDitchRequest();
+
 EXTERN appdataCog_t appdataCog;
 #endif /* _apInterface_h_ */

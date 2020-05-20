@@ -149,6 +149,7 @@ void COGNITION_AppInitData(){
     appdataCog.cog.nextWPFeasibility1 = 1;
     appdataCog.cog.nextWPFeasibility2 = 1;
     CFE_SB_InitMsg(&appdataCog.statustxt,ICAROUS_STATUS_MID,sizeof(status_t),TRUE);
+    memset(appdataCog.cog.ditchsite,0,sizeof(double)*3);
 }
 
 
@@ -570,6 +571,10 @@ void COGNITION_DecisionProcess(){
         COGNITION_FindNewPath();
         appdataCog.cog.pathRequest = false;
     }
+
+    if(appdataCog.cog.emergencyDescentState == NOOPC){
+       COGNITION_SendDitchRequest();
+    }
 }
 
 void COGNITION_SendGuidanceVelCmd(){
@@ -649,4 +654,11 @@ void COGNITION_FindNewPath(){
    memcpy(pathRequest.finalPosition, appdataCog.cog.stopPosition, sizeof(double) * 3);
 
    SendSBMsg(pathRequest);
+}
+
+void COGNITION_SendDitchRequest(){
+   noArgsCmd_t cmd;
+   CFE_SB_InitMsg(&cmd,ICAROUS_DITCH_MID,sizeof(noArgsCmd_t),TRUE);
+   cmd.name = _DITCH_;
+   SendSBMsg(cmd);
 }

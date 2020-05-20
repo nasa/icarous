@@ -121,6 +121,12 @@ void FlightPhases(cognition_t *cog){
                 cog->fpPhase = EMERGENCY_DESCENT_PHASE;
             }
 
+            if(cog->trafficConflictState == RESOLVE && cog->resolutionTypeCmd == DITCH_RESOLUTION){
+                cog->trafficConflictState = NOOPC;
+                cog->fpPhase = EMERGENCY_DESCENT_PHASE;
+                cog->emergencyDescentState = NOOPS;
+            }
+
             break;
         }
 
@@ -312,6 +318,10 @@ status_e EmergencyDescent(cognition_t *cog){
 
 
     switch(cog->emergencyDescentState){
+
+        case NOOPS:{
+            break;
+        }
 
         case INITIALIZING:{
             SendStatus(cog,"IC:Starting to ditch",6);

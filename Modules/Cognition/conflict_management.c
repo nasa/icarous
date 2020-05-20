@@ -206,6 +206,9 @@ bool TrafficConflictManagement(cognition_t* cog){
          }else if(cog->resolutionTypeCmd == SPEED_RESOLUTION){
             cog->startVelocity[0] = cog->hdg;
             cog->startVelocity[1] = cog->speed;
+         }else if(cog->resolutionTypeCmd == DITCH_RESOLUTION){
+            // The top level statemachine should catch this
+            // and transition to the emergency descent state.
          }
          break;
       }

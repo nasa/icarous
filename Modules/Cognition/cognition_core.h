@@ -49,6 +49,7 @@ typedef enum{
  * @brief output status of each flight phase state
  */
 typedef enum{
+    NOOPS,
     SUCCESS,
     FAILED,
     RUNNING,
@@ -64,7 +65,8 @@ typedef enum{
     ALTITUDE_RESOLUTION,
     TRACK_RESOLUTION,
     VERTICALSPEED_RESOLUTION,
-    SEARCH_RESOLUTION
+    SEARCH_RESOLUTION,
+    DITCH_RESOLUTION
 }resolutionType_e;
 
 /**
