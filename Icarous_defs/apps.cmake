@@ -2,13 +2,15 @@ set(APPS2RUN
 Icarouslib
 port_lib 
 scheduler
-rotorsim
+arducopter
 gsInterface 
 cognition 
 guidance 
 traffic 
 trajectory 
 geofence
+#rotorsim
+#safe2ditch
 #merger
 #raft
 #SBN
