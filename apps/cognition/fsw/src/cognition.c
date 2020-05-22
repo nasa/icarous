@@ -148,6 +148,7 @@ void COGNITION_AppInitData(){
 
     appdataCog.cog.nextWPFeasibility1 = 1;
     appdataCog.cog.nextWPFeasibility2 = 1;
+    appdataCog.cog.emergencyDescentState = SUCCESS;
     CFE_SB_InitMsg(&appdataCog.statustxt,ICAROUS_STATUS_MID,sizeof(status_t),TRUE);
     memset(appdataCog.cog.ditchsite,0,sizeof(double)*3);
 }
