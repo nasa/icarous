@@ -572,7 +572,7 @@ void COGNITION_DecisionProcess(){
         appdataCog.cog.pathRequest = false;
     }
 
-    if(appdataCog.cog.emergencyDescentState == NOOPC){
+    if(appdataCog.cog.emergencyDescentState == NOOPS){
        COGNITION_SendDitchRequest();
     }
 }
