@@ -1140,6 +1140,7 @@ uint16_t apConvertPlanToMissionItems(flightplan_t* fp){
         appdataInt.waypoint_index[i] = count;
 
         count++;
+        /*
         if(i < fp->num_waypoints-1){
             if(fp->waypoints[i].wp_metric == WP_METRIC_SPEED) {
                     double speed2NextWP = fp->waypoints[i].value;
@@ -1160,7 +1161,7 @@ uint16_t apConvertPlanToMissionItems(flightplan_t* fp){
                     appdataInt.UplinkMissionItems[count].z = 0;
                     count++;
             }
-        }
+        }*/
     }
 
     appdataInt.numUplinkWaypoints = count;
