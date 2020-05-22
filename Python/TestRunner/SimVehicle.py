@@ -51,6 +51,7 @@ class SimVehicle:
 
         icarous_param_file = self.scenario["parameter_file"]
         icarous_params = LoadIcarousParams(os.path.join(icarous_home, icarous_param_file))
+        icarous_params.update(self.scenario["param_adjustments"])
 
         sitl_params["WPNAV_SPEED"] = icarous_params["DEF_WP_SPEED"]*100
         sitl_param_file = os.path.join(self.output_dir, self.name + "_sitl.parm")
