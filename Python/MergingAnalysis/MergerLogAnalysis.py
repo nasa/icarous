@@ -31,6 +31,7 @@ class MergerData:
                       "commandedSpeed": [],
                       "mergeDev": [],
                       "mergingStatus": [],
+                      "mergePassID": [],
                       "lat": [],
                       "lon": [],
                       "alt": []}
@@ -38,7 +39,7 @@ class MergerData:
         self.role_changes = []
         self.metrics = {}
 
-    def get(self, x, t=None, merge_id=None, default="extrapolate"):
+    def get(self, x, t=None, merge_id=None, pass_id=None, default="extrapolate"):
         """Return the value of state[x] at time, t, or during merge, merge_id"""
         if t is None and merge_id is None:
             # Return the value of x for all time available
@@ -55,7 +56,9 @@ class MergerData:
                 return self.state[x]
             else:
                 return [self.state[x][i] for i in range(len(self.state[x]))
-                        if self.state["intID"][i] == merge_id]
+                        if self.state["intID"][i] == merge_id
+                        and pass_id is None
+                        or self.state["mergePassID"][i] == pass_id]
 
 
 def ReadMergerAppData(filename, vehicle_id, group="test"):
@@ -65,6 +68,8 @@ def ReadMergerAppData(filename, vehicle_id, group="test"):
 
     data = MergerData(vehicle_id, group=group)
     data.output_dir = os.path.dirname(filename)
+    data.pass_ids = {-1: [None], "all": [None]}
+    prev_intID = -1
     for line in data_string:
         line = line.rstrip('\n')
         entries = line.split(',')
@@ -97,18 +102,26 @@ def ReadMergerAppData(filename, vehicle_id, group="test"):
         data.state["lon"].append(float(entries[15]))
         data.state["alt"].append(float(entries[16]))
 
-        role = int(entries[4])
-        if data.current_role is not None:
-            data.role_changes[-1][2] = t
-        if role != data.current_role:
-            data.role_changes.append([role, t, None])
-        data.current_role = role
+        if data.state["mergingStatus"][-1] == 0:
+            data.state["intID"][-1] = -1
+
+        # Keep track of number of times passing through each merge fix
+        if intID != prev_intID and intID != -1:
+            if intID not in data.pass_ids:
+                data.pass_ids[intID] = set()
+                data.metrics[intID] = {}
+            pass_id = len(data.pass_ids[intID]) + 1
+            data.pass_ids[intID].add(pass_id)
+        pass_id = list(data.pass_ids[intID])[-1]
+        data.state["mergePassID"].append(pass_id)
+        prev_intID = intID
 
     return data
 
 
-def read_params(data_location):
-    simlog = next(f for f in os.listdir(data_location) if f.endswith(".json"))
+def read_params(data_location, vehicle_id=0):
+    simlog = next(f for f in os.listdir(data_location)
+                  if f.endswith(".json") and str(vehicle_id) in f)
     with open(os.path.join(data_location, simlog)) as f:
         data = json.load(f)
     params = data["parameters"]
@@ -117,53 +130,59 @@ def read_params(data_location):
 
 def compute_metrics(vehicles, merge_id=1):
     for v in vehicles:
-        v.metrics["group"] = v.group
-        v.metrics["merge_id"] = merge_id
-        v.metrics["vehicle_id"] = v.id
-    compute_election_times(vehicles)
-    for v in vehicles:
-        t = v.get("t", merge_id=merge_id)
-        zone = v.get("zone", merge_id=merge_id)
-        status = v.get("mergingStatus", merge_id=merge_id)
-        numSch = v.get("numSch", merge_id=merge_id)
-        dist2int = v.get("dist2int", merge_id=merge_id)
-        coord = next((t[i] for i in range(len(t)) if zone[i] == 1), None)
-        v.metrics["coord_time"] = coord
-        sched = next((t[i] for i in range(len(t)) if zone[i] == 2 and t[i] > coord), None)
-        v.metrics["sched_time"] = sched
-        entry = next((t[i] for i in range(len(t)) if zone[i] == 3 and t[i] > sched), None)
-        v.metrics["entry_time"] = entry
-        v.metrics["initial_speed"] = v.get("speed", v.metrics["sched_time"])
-        v.metrics["computed_schedule"] = (max(numSch) > 0)
-        v.metrics["reached_merge_point"] = (min(dist2int) < 10)
-        v.metrics["sched_arr_time"] = v.get("currArrTime", merge_id=merge_id)[-1]
+        for pass_id in v.pass_ids.get(merge_id, []):
+            metrics = {}
+            metrics["group"] = v.group
+            metrics["merge_id"] = merge_id
+            metrics["pass_id"] = pass_id
+            metrics["vehicle_id"] = v.id
 
-        if v.metrics["reached_merge_point"]:
-            _, v.metrics["actual_arr_time"] = min(zip(dist2int, t))
-        else:
-            v.metrics["actual_arr_time"] = None
+            election_time = compute_election_time(v, vehicles, merge_id, pass_id)
+            metrics["time_to_become_leader"] = election_time
+            t = v.get("t", merge_id=merge_id, pass_id=pass_id)
+            zone = v.get("zone", merge_id=merge_id, pass_id=pass_id)
+            dist2int = v.get("dist2int", merge_id=merge_id, pass_id=pass_id)
+            coordT = next((t[i] for i in range(len(t)) if zone[i] == 1), None)
+            metrics["coord_time"] = coordT
+            schedT = next((t[i] for i in range(len(t)) if zone[i] == 2), None)
+            metrics["sched_time"] = schedT
+            entryT = next((t[i] for i in range(len(t)) if zone[i] == 3), None)
+            metrics["entry_time"] = entryT
+            if schedT is not None:
+                metrics["initial_speed"] = v.get("speed", schedT)
+            else:
+                metrics["initial_speed"] = None
+            metrics["computed_schedule"] = (v.get("numSch", entryT) > 0)
+            metrics["reached_merge_point"] = (min(dist2int) < 10)
+            metrics["sched_arr_time"] = v.get("currArrTime", entryT)
 
-        if v.metrics["computed_schedule"]:
-            consensus_times = compute_consensus_times(v, merge_id)
-            v.metrics["mean_consensus_time"] = np.mean(consensus_times)
-            v.metrics["merge_speed"] = v.get("mergeSpeed", v.metrics["entry_time"])
-        else:
-            v.metrics["mean_consensus_time"] = None
-            v.metrics["merge_speed"] = None
+            if metrics["reached_merge_point"]:
+                _, metrics["actual_arr_time"] = min(zip(dist2int, t))
+            else:
+                metrics["actual_arr_time"] = None
 
-        speed = average_speed(v, v.metrics["entry_time"], v.metrics["actual_arr_time"])
-        v.metrics["actual_speed_to_merge"] = speed
+            if metrics["computed_schedule"]:
+                consensus_times = compute_consensus_times(v, merge_id, pass_id)
+                metrics["mean_consensus_time"] = np.mean(consensus_times)
+                metrics["merge_speed"] = v.get("mergeSpeed", entryT)
+            else:
+                metrics["mean_consensus_time"] = None
+                metrics["merge_speed"] = None
 
-        min_sep = compute_min_separation(v, vehicles, merge_id=merge_id)
-        v.metrics["min_sep_during_merge"] = min_sep
-        min_sep = compute_min_separation(v, vehicles, merge_id="all")
-        v.metrics["min_sep_during_flight"] = min_sep
+            speed = average_speed(v, metrics["entry_time"], metrics["actual_arr_time"])
+            metrics["actual_speed_to_merge"] = speed
 
-        spacing_speed = v.get("speed", merge_id="spacing")
-        v.metrics["mean_non-merging_speed"] = np.mean(spacing_speed)
+            min_sep = compute_min_separation(v, vehicles, merge_id=merge_id)
+            metrics["min_sep_during_merge"] = min_sep
+            min_sep = compute_min_separation(v, vehicles, merge_id="all")
+            metrics["min_sep_during_flight"] = min_sep
+
+            spacing_speed = v.get("speed", merge_id="spacing")
+            metrics["mean_non-merging_speed"] = np.mean(spacing_speed)
+            v.metrics[merge_id][pass_id] = metrics
 
 
-def write_metrics(vehicles, merge_id=1, output_file="MergingMetrics.csv"):
+def write_metrics(vehicles, output_file="MergingMetrics.csv"):
     """ Add vehicle metrics to a csv table """
     if len(vehicles) == 0:
         return
@@ -172,10 +191,12 @@ def write_metrics(vehicles, merge_id=1, output_file="MergingMetrics.csv"):
     else:
         table = pd.DataFrame({})
     for v in vehicles:
-        index = v.group+"_"+str(merge_id)+"_"+str(v.id)
-        metrics = pd.DataFrame(v.metrics, index=[index])
-        table = metrics.combine_first(table)
-    table = table[v.metrics.keys()]
+        for merge_id in v.metrics:
+            for pass_id in v.pass_ids[merge_id]:
+                index = v.group+"_"+str(merge_id)+"_"+str(v.id)+"_"+str(pass_id)
+                metrics = pd.DataFrame(v.metrics[merge_id][pass_id], index=[index])
+                table = metrics.combine_first(table)
+    table = table[v.metrics[merge_id][pass_id].keys()]
     table.to_csv(output_file)
 
 
@@ -189,35 +210,27 @@ def get_leader(vehicles, t):
     return leader
 
 
-def compute_election_times(vehicles, merge_id=1):
+def compute_election_time(ownship, vehicles, merge_id=1, pass_id=None):
     """ Compute the time it took for each vehicle to be elected leader """
-    all_time = []
-    v_dict = {}
-    for v in vehicles:
-        all_time += v.get("t", merge_id=merge_id)
-        v_dict[v.id] = v
-        v.metrics["time_to_become_leader"] = None
-    all_time.sort()
-    leader = get_leader(vehicles, all_time)
+    time_range = ownship.get("t", merge_id=merge_id, pass_id=pass_id)
+    leader = get_leader(vehicles, time_range)
 
-    i = 0
-    while True:
-        time_no_leader = next((t for t, l in zip(all_time[i:], leader[i:])
-                               if l is None), None)
-        if time_no_leader is None: break
-        time_leader, leader_id = next(((t, l) for t, l in zip(all_time[i:], leader[i:])
-                                       if l is not None and t > time_no_leader),
-                                       (None, None))
-        if time_leader is None: break
-        election_time = time_leader - time_no_leader
-        v_dict[leader_id].metrics["time_to_become_leader"] = election_time
-        i = all_time.index(time_leader) + 1
+    time_no_leader = next((t for t, l in zip(time_range, leader)
+                           if l is None), time_range[0])
+    time_elected = next((t for t, l in zip(time_range, leader)
+                         if l is ownship.id), None)
+
+    if time_elected is not None:
+        time_to_become_leader = time_elected - time_no_leader
+        return time_to_become_leader
+    else:
+        return None
 
 
-def compute_consensus_times(vehicle, merge_id=1):
+def compute_consensus_times(vehicle, merge_id=1, pass_id=None):
     """ Compute the time it took to reach consensus """
-    A = vehicle.get("t", merge_id=merge_id)
-    B = vehicle.get("numSch", merge_id=merge_id)
+    A = vehicle.get("t", merge_id=merge_id, pass_id=pass_id)
+    B = vehicle.get("numSch", merge_id=merge_id, pass_id=pass_id)
     times = []
     start = -1
     stop = 0
@@ -264,8 +277,8 @@ def compute_min_separation(ownship, traffic, merge_id=1):
     return min(dist)
 
 
-def compute_separation(v1, v2, merge_id=1):
-    time_range = v1.get("t", merge_id=merge_id)
+def compute_separation(v1, v2, merge_id=1, pass_id=None):
+    time_range = v1.get("t", merge_id=merge_id, pass_id=pass_id)
     lat1 = v1.get("lat", time_range)
     lon1 = v1.get("lon", time_range)
     lat2 = v2.get("lat", time_range)
@@ -291,36 +304,48 @@ def gps_distance(lat1, lon1, lat2, lon2):
     return RADIUS_OF_EARTH * c
 
 
-def plot(vehicles, field, merge_id="all", save=False, fmt=""):
+def plot(vehicles, *fields, merge_id="all", save=False, fmt=""):
     plt.figure()
     for v in vehicles:
         time_range = v.get("t", merge_id=merge_id)
-        plt.plot(time_range, v.get(field, time_range), fmt, label="vehicle"+str(v.id))
-    plt.title(field + " vs time")
+        for f in fields:
+            plt.plot(time_range, v.get(f, time_range), fmt,
+                     label="vehicle"+str(v.id))
+    plt.title(fields[0] + " vs time")
     plt.xlabel("time (s)")
-    plt.ylabel(field)
+    plt.ylabel(fields[0])
     plt.legend()
     plt.grid()
     if save:
-        plt.savefig(os.path.join(v.output_dir, field))
+        plt.savefig(os.path.join(v.output_dir, fields[0]))
 
 
 def plot_summary(vehicles, merge_id=1, save=False):
     plt.figure()
+
     for v in vehicles:
-        t = v.get("t", merge_id=merge_id)
-        line, = plt.plot(t, v.get("dist2int", merge_id=merge_id), label="vehicle"+str(v.id))
-        v.color = line.get_color()
-    for v in vehicles:
-        if v.metrics["computed_schedule"]:
-            plt.plot(v.metrics["sched_arr_time"], 0, 'o', color=v.color)
-        if v.metrics["reached_merge_point"]:
-            arrival_time = v.metrics["actual_arr_time"]
-            dist_at_arrival = v.get("dist2int", v.metrics["actual_arr_time"])
-            plt.plot(arrival_time, dist_at_arrival, 'b*')
+        if merge_id not in v.metrics:
+            continue
+        for pass_id in v.metrics[merge_id]:
+            t = v.get("t", merge_id=merge_id, pass_id=pass_id)
+            line, = plt.plot(t, v.get("dist2int", merge_id=merge_id, pass_id=pass_id))
+            color = line.get_color()
+            label = "vehicle%d" % v.id
+            if pass_id > 1:
+                label += " (pass %d)" % pass_id
+            line.set_label(label)
+            if v.metrics[merge_id][pass_id]["computed_schedule"]:
+                schedT = v.metrics[merge_id][pass_id]["sched_arr_time"]
+                plt.plot(schedT, 0, 'o', color=color)
+            if v.metrics[merge_id][pass_id]["reached_merge_point"]:
+                arrT = v.metrics[merge_id][pass_id]["actual_arr_time"]
+                dist_at_arrival = v.get("dist2int", arrT)
+                plt.plot(arrT, dist_at_arrival, 'b*')
+
     plt.plot(plt.xlim(), [vehicles[0].params["ENTRY_RADIUS"]]*2, "r--")
     plt.plot(plt.xlim(), [vehicles[0].params["SCHEDULE_ZONE"]]*2, "--", color="orange")
     plt.plot(plt.xlim(), [vehicles[0].params["COORD_ZONE"]]*2, "b--")
+
     plt.title("Merging Operation Summary")
     plt.plot([], [], 'ok', label="scheduled arrival time")
     plt.plot([], [], 'b*', label="actual arrival time")
@@ -332,14 +357,74 @@ def plot_summary(vehicles, merge_id=1, save=False):
         plt.savefig(os.path.join(v.output_dir, "summary"))
 
 
+def plot_spacing_summary(vehicles, save=False):
+    fig, (ax1, ax2) = plt.subplots(2, sharex=True)
+    spacing_value = vehicles[0].params["DET_1_WCV_DTHR"]*0.3048
+
+    # Plot spacing
+    for v1, v2 in itertools.combinations(vehicles, 2):
+        time_range, dist = compute_separation(v1, v2, merge_id="all")
+        if len(dist) > 0:
+            line, = ax1.plot(time_range, dist)
+            line.set_label("vehicle%d to vehicle%d spacing" % (v1.id, v2.id))
+    ax1.plot(plt.xlim(), [spacing_value]*2, 'm--', label="Minimum allowed spacing")
+    ax1.set_ylim((0, ax1.get_ylim()[1]))
+    ax1.set_ylabel("Horizontal separation (m)")
+    box = ax1.get_position()
+    ax1.set_position([box.x0, box.y0, box.width*0.8, box.height])
+    ax1.legend(loc="center left", bbox_to_anchor=(1, 0.5), fontsize=6)
+    ax1.grid()
+
+    # Plot speeds
+    for v in vehicles:
+        time_range = v.get("t", merge_id="all")
+        xlim = [min(time_range), max(time_range)]
+        def_speed = v.params["DEF_WP_SPEED"]
+        line1, = ax2.plot(xlim, [def_speed]*2, "--")
+        v.color = line1.get_color()
+
+    # Highlight merging
+    for v in vehicles:
+        time_range = v.get("t", merge_id="all")
+        for mid in v.metrics:
+            for pid in v.metrics[mid]:
+                coordT = v.metrics[mid][pid].get("coord_time")
+                arrT = v.metrics[mid][pid].get("actual_arr_time")
+                ax1.axvspan(coordT, arrT, color=v.color, alpha=0.3)
+                ax2.axvspan(coordT, arrT, color=v.color, alpha=0.3)
+        line2, = ax2.plot(time_range, v.get("speed", time_range), color=v.color)
+        line2.set_label("vehicle%d speed" % v.id)
+
+    ax2.set_ylabel("Vehicle speed (m/s)")
+    ax2.set_xlabel("Time (s)")
+    box = ax2.get_position()
+    ax2.set_position([box.x0, box.y0, box.width*0.8, box.height])
+    ax2.legend(loc="center left", bbox_to_anchor=(1, 0.5), fontsize=6)
+    ax2.grid()
+
+    fig.suptitle("Spacing Summary")
+    if save:
+        plt.savefig(os.path.join(v.output_dir, "spacing_summary"))
+
+
 def plot_spacing(vehicles, merge_id=1, save=False):
     plt.figure()
-    spacing_value = 30
+    spacing_value = vehicles[0].params["DET_1_WCV_DTHR"]*0.3048
+
+    # Plot separation
     for v1, v2 in itertools.combinations(vehicles, 2):
-        time_range, dist = compute_separation(v1, v2, merge_id=merge_id)
-        if len(dist) > 0:
-            plt.plot(time_range, dist, label="vehicle"+str(v1.id)+" to vehicle"+str(v2.id))
-            d, t_min = min(zip(dist, time_range))
+        if merge_id != "all" and merge_id not in v1.metrics:
+            continue
+        blank, = plt.plot([], [])
+        color = blank.get_color()
+        line = None
+        for pid in v1.pass_ids[merge_id]:
+            time_range, dist = compute_separation(v1, v2, merge_id, pid)
+            if len(dist) > 0:
+                line, = plt.plot(time_range, dist, color=color)
+        if line:
+            line.set_label("vehicle"+str(v1.id)+" to vehicle"+str(v2.id))
+
     plt.plot(plt.xlim(), [spacing_value]*2, 'm--', label="Minimum allowed spacing")
     plt.legend()
     plt.grid()
@@ -357,33 +442,42 @@ def plot_spacing(vehicles, merge_id=1, save=False):
 def plot_speed(vehicles, merge_id=1, save=False):
     for v in vehicles:
         plt.figure()
-        time_range = v.get("t", merge_id=merge_id)
-        line1, = plt.plot(time_range, v.get("speed", time_range))
-        line2, = plt.plot(time_range, v.get("mergeSpeed", time_range), '--')
-        line3, = plt.plot(time_range, v.get("commandedSpeed", time_range), '-.')
-        line1.set_label("vehicle"+str(v.id)+" actual speed")
-        line2.set_label("vehicle"+str(v.id)+" merge speed")
-        line3.set_label("vehicle"+str(v.id)+" commanded speed")
-        if merge_id != "all":
-            if v.metrics["coord_time"] is not None:
-                plt.axvspan(v.metrics["coord_time"],
-                            v.metrics["sched_time"], color="blue", alpha=0.3)
-            if v.metrics["sched_time"] is not None:
-                plt.axvspan(v.metrics["sched_time"],
-                            v.metrics["entry_time"], color="orange", alpha=0.5)
-            if v.metrics["entry_time"] is not None:
-                plt.axvspan(v.metrics["entry_time"],
-                            v.metrics["actual_arr_time"], color="red", alpha=0.3)
+        if merge_id == "all":
+            title = "speed_" + str(v.id)
+            plt.title("vehicle%d Speed (entire flight)" % v.id)
+            merge_ids = list(v.metrics.keys())
+        else:
+            if merge_id not in v.metrics:
+                continue
+            merge_ids = [merge_id]
+            title = "speed_%s_merge%d" % (v.id, merge_id)
+            plt.title("vehicle%s Speed (during merge %d)" % (v.id, merge_id))
+
+        # Plot speed
+        for pass_id in v.pass_ids.get(merge_id, []):
+            time_range = v.get("t", merge_id=merge_id, pass_id=pass_id)
+            line1, = plt.plot(time_range, v.get("speed", time_range))
+            line2, = plt.plot(time_range, v.get("mergeSpeed", time_range), '--')
+            line3, = plt.plot(time_range, v.get("commandedSpeed", time_range), '-.')
+            line1.set_label("vehicle"+str(v.id)+" actual speed")
+            line2.set_label("vehicle"+str(v.id)+" merge speed")
+            line3.set_label("vehicle"+str(v.id)+" commanded speed")
+
+        # Highlight merges
+        for mid in merge_ids:
+            for pid in v.metrics[mid]:
+                coordT = v.metrics[mid][pid]["coord_time"]
+                schedT = v.metrics[mid][pid]["sched_time"]
+                entryT = v.metrics[mid][pid]["entry_time"]
+                arrT = v.metrics[mid][pid]["actual_arr_time"]
+                plt.axvspan(coordT, schedT, color="blue", alpha=0.3)
+                plt.axvspan(schedT, entryT, color="orange", alpha=0.5)
+                plt.axvspan(entryT, arrT, color="red", alpha=0.3)
+
         plt.xlabel('time (s)')
         plt.ylabel('speed (m/s)')
         plt.legend()
         plt.grid()
-        if merge_id == "all":
-            title = "speed_" + str(v.id)
-            plt.title("vehicle%d Speed (entire flight)" % v.id)
-        else:
-            title = "speed_%s_merge%d" % (v.id, merge_id)
-            plt.title("vehicle%s Speed (during merge %d)" % (v.id, merge_id))
         if save:
             plt.savefig(os.path.join(v.output_dir, title))
 
@@ -432,7 +526,7 @@ def process_data(data_location):
                 found_log = True
                 filename = os.path.join(data_location, f)
                 data = ReadMergerAppData(filename, i, group)
-                data.params = read_params(data_location)
+                data.params = read_params(data_location, i)
                 vehicles.append(data)
         i += 1
     return vehicles
@@ -453,7 +547,7 @@ if __name__ == "__main__":
 
     # Compute metrics
     compute_metrics(vehicles, merge_id=args.merge_id)
-    write_metrics(vehicles, merge_id=args.merge_id)
+    write_metrics(vehicles)
 
     # Generate plots
     if args.plot:

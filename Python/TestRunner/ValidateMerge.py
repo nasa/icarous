@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import numpy as np
+import copy
 import itertools
 from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
@@ -20,9 +21,21 @@ params = dict(DEFAULT_VALIDATION_PARAMS)
 
 
 # Validation functions
-def validate_merging_data(vehicles, params=DEFAULT_VALIDATION_PARAMS,
+def validate_merging_data(vehicles, params=DEFAULT_VALIDATION_PARAMS, merge_id=1,
                           name="test", test=False, save=False):
     '''Check simulation data for test conditions'''
+
+    merging_vehicles = []
+    for v in vehicles:
+        for m in v.metrics.get(merge_id, {}).values():
+            new_v = copy.deepcopy(v)
+            new_v.metrics = m
+            merging_vehicles.append(new_v)
+    vehicles = merging_vehicles
+    if not vehicles:
+        print("No vehicles merged at point %d" % merge_id)
+        return
+
     # Define conditions
     conditions = []
     conditions.append(verify_merge_complete)
@@ -149,21 +162,15 @@ def verify_merge_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     DTHR = vehicles[0].params["DET_1_WCV_DTHR"]*0.3048*params["h_allow"]
 
     separation_ok = True
-    print("\nMinimum separation distances during merge")
-    for v1, v2 in itertools.combinations(vehicles, 2):
-        time_range, dist = MA.compute_separation(v1, v2, merge_id=1)
-        if not dist:
-            continue
-        min_separation, t_min = min(zip(dist, time_range))
-        print("v%s to v%s min separation: %.2fm (at %.2fs)" %
-              (v1.id, v2.id, min_separation, t_min))
-        if (min_separation < DTHR):
+    for v in vehicles:
+        min_sep = v.metrics["min_sep_during_merge"]
+        if min_sep < DTHR:
+            msg = "v%d violated min spacing (%.2fm < %.2fm)" % (v.id, min_sep, DTHR)
             separation_ok = False
-            msg = ("v%s and v%s violated minimum separation (%.2f < %.2f)" %
-                   (v1.id, v2.id, min_separation, DTHR))
+            break
 
     if separation_ok:
-        return True, "Acceptable spacing during merging operation", condition_name
+        return True, "Acceptable spacing during merge", condition_name
     else:
         return False, msg, condition_name
 
@@ -174,18 +181,12 @@ def verify_spacing(vehicles, params=DEFAULT_VALIDATION_PARAMS):
     DTHR = vehicles[0].params["DET_1_WCV_DTHR"]*0.3048*params["h_allow"]
 
     separation_ok = True
-    print("\nMinimum separation distances during entire flight")
-    for v1, v2 in itertools.combinations(vehicles, 2):
-        time_range, dist = MA.compute_separation(v1, v2, merge_id="all")
-        if not dist:
-            continue
-        min_separation, t_min = min(zip(dist, time_range))
-        print("v%s to v%s min separation: %.2fm (at %.2fs)" %
-              (v1.id, v2.id, min_separation, t_min))
-        if (min_separation < DTHR):
+    for v in vehicles:
+        min_sep = v.metrics["min_sep_during_flight"]
+        if min_sep < DTHR:
+            msg = "v%d violated min spacing (%.2fm < %.2fm)" % (v.id, min_sep, DTHR)
             separation_ok = False
-            msg = ("v%s and v%s violated minimum separation (%.2f < %.2f)" %
-                   (v1.id, v2.id, min_separation, DTHR))
+            break
 
     if separation_ok:
         return True, "Acceptable spacing during entire flight", condition_name
@@ -226,12 +227,11 @@ def run_validation(flight_dir, merge_id=1, test=False, plot=False, save=False):
 
     # Compute merging metrics
     MA.compute_metrics(vehicles, merge_id)
-    MA.write_metrics(vehicles, merge_id)
+    MA.write_metrics(vehicles)
 
     # Check test conditions
     scenario_name = os.path.basename(os.path.normpath(flight_dir))
-    validate_merging_data(vehicles, params, scenario_name, test, save)
-
+    validate_merging_data(vehicles, params, merge_id, scenario_name, test, save)
     # Generate plots
     if plot:
         MA.plot_roles(vehicles, merge_id=merge_id, save=save)
@@ -241,6 +241,7 @@ def run_validation(flight_dir, merge_id=1, test=False, plot=False, save=False):
         MA.plot_spacing(vehicles, merge_id="all", save=save)
         MA.plot_flight_trace(vehicles, merge_id="all", save=save)
         MA.plot_summary(vehicles, merge_id=merge_id, save=save)
+        MA.plot_spacing_summary(vehicles, save=save)
         plt.show()
     plt.close("all")
 
