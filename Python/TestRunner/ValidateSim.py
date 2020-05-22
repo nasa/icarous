@@ -184,7 +184,7 @@ def plot_scenario(simdata, output_dir="", save=False):
     '''Plot the result of the scenario'''
     from matplotlib import pyplot as plt
     scenario_name = os.path.basename(output_dir)
-    fig = plt.figure()
+    fig1 = plt.figure()
     WP = simdata["waypoints"]
     origin = simdata["ownship"]["position"][0]
     geofences = GetPolygons(origin, simdata["geofences"])
@@ -213,20 +213,59 @@ def plot_scenario(simdata, output_dir="", save=False):
         else:
             plt.plot(vertices[:, 0], vertices[:, 1], 'r', label="Keep Out Geofence"+str(i))
 
+
     # Set up figure
-    plt.title(scenario_name + " - Simulation Results")
+    plt.title(scenario_name + " - Ground track")
     plt.xlabel("X (m)")
     plt.ylabel("Y (m)")
     plt.legend()
     plt.axis('equal')
 
+
     if save:
         output_file = os.path.join(output_dir, "simplot.png")
         plt.savefig(output_file)
-        plt.close(fig)
-    else:
-        plt.show()
+        plt.close(fig1)
 
+    # Plot ownship and traffic altitudes   
+    fig2 = plt.figure()
+    ownship_alt = np.array(simdata['ownship']['position'])[:,2]
+    t = np.array(simdata['ownship']['t'])
+    plt.plot(t,ownship_alt,label='ownship')
+
+    plt.title(scenario_name + " - Altitude data")
+    plt.xlabel("t (s)")
+    plt.ylabel("Alt (m)")
+    plt.legend()
+
+
+    # Plot traffic path
+    for traf_id, traf in simdata["traffic"].items():
+        trafpos_alt = np.array(traf["position"])[:,2]
+        plt.plot(t, trafpos_alt, label=str(traf_id)+" Path")
+
+    if save:
+        output_file = os.path.join(output_dir, "alt.png")
+        plt.savefig(output_file)
+        plt.close(fig2)
+
+    # Plot onwship speed
+    fig3 = plt.figure()
+    ownship_vel = simdata['ownship']['velocityNED']
+    speed = [np.sqrt(v[0]**2 + v[1]**2 + v[2]**2) for v in ownship_vel]
+    plt.plot(t,speed,label='ownship')
+    plt.title(scenario_name + " - Speed data")
+    plt.xlabel("t (s)")
+    plt.ylabel("speed (m/s)")
+    plt.legend()
+
+    if save:
+        output_file = os.path.join(output_dir, "speed.png")
+        plt.savefig(output_file)
+        plt.close(fig3)
+
+    if not save:
+        plt.show()
 
 def print_results(results, scenario_name):
     ''' print results of a test scenario '''
