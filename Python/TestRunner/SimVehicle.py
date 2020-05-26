@@ -137,6 +137,8 @@ class SimVehicle:
                 self.gs.load_traffic([0]+traf)
         self.waypoints = self.get_waypoints()
         self.params = self.gs.getParams()
+        self.gs.setParam("RESSPEED", self.params["DEF_WP_SPEED"])
+        self.params = self.gs.getParams()
         self.geofences = self.gs.fenceList
 
         self.ownship_log = vehicle_log()

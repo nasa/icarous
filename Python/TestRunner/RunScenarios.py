@@ -127,6 +127,7 @@ def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
         params = LoadIcarousParams(os.path.join(icarous_home, v_scenario["parameter_file"]))
         if v_scenario.get("param_adjustments"):
             params.update(v_scenario["param_adjustments"])
+            params["RESSPEED"] = params["DEF_WP_SPEED"]
         ic.SetParameters(params)
 
         ic.InputFlightplanFromFile(os.path.join(icarous_home, v_scenario["waypoint_file"]))
