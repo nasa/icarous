@@ -190,6 +190,15 @@ def write_metrics(vehicles, output_file="MergingMetrics.csv"):
     """ Add vehicle metrics to a csv table """
     if len(vehicles) == 0:
         return
+
+    headers = ["group", "merge_id", "pass_id", "vehicle_id",
+               "time_to_become_leader", "coord_time", "sched_time",
+               "entry_time", "reached_merge_point", "initial_speed",
+               "computed_schedule", "sched_arr_time", "actual_arr_time",
+               "mean_consensus_time", "merge_speed", "actual_speed_to_merge",
+               "min_sep_during_merge", "min_sep_during_flight",
+               "mean_non-merging_speed"]
+
     if os.path.isfile(output_file):
         table = pd.read_csv(output_file, index_col=0)
     else:
@@ -200,8 +209,9 @@ def write_metrics(vehicles, output_file="MergingMetrics.csv"):
                 index = v.group+"_"+str(merge_id)+"_"+str(v.id)+"_"+str(pass_id)
                 metrics = pd.DataFrame(v.metrics[merge_id][pass_id], index=[index])
                 table = metrics.combine_first(table)
-    table = table[v.metrics[merge_id][pass_id].keys()]
-    table.to_csv(output_file)
+    if len(vehicles) > 0:
+        table = table[headers]
+        table.to_csv(output_file)
 
 
 def get_leader(vehicles, t):
