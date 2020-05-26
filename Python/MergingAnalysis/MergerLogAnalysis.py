@@ -130,7 +130,7 @@ def read_params(data_location, vehicle_id=0):
 
 def compute_metrics(vehicles, merge_id=1):
     for v in vehicles:
-        for pass_id in v.pass_ids.get(merge_id, []):
+        for pass_id in v.metrics:
             metrics = {}
             metrics["group"] = v.group
             metrics["merge_id"] = merge_id
@@ -148,13 +148,17 @@ def compute_metrics(vehicles, merge_id=1):
             metrics["sched_time"] = schedT
             entryT = next((t[i] for i in range(len(t)) if zone[i] == 3), None)
             metrics["entry_time"] = entryT
+            metrics["reached_merge_point"] = (min(dist2int) < 10)
             if schedT is not None:
                 metrics["initial_speed"] = v.get("speed", schedT)
             else:
                 metrics["initial_speed"] = None
-            metrics["computed_schedule"] = (v.get("numSch", entryT) > 0)
-            metrics["reached_merge_point"] = (min(dist2int) < 10)
-            metrics["sched_arr_time"] = v.get("currArrTime", entryT)
+            if entryT is not None:
+                metrics["computed_schedule"] = (v.get("numSch", entryT) > 0)
+                metrics["sched_arr_time"] = v.get("currArrTime", entryT)
+            else:
+                metrics["computed_schedule"] = False
+                metrics["sched_arr_time"] = 0
 
             if metrics["reached_merge_point"]:
                 _, metrics["actual_arr_time"] = min(zip(dist2int, t))
