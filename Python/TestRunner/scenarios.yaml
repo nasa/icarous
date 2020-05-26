@@ -43,7 +43,7 @@
     waypoint_file: Examples/InputData/flightplan.txt
     geofence_file: null
     parameter_file: Examples/InputData/icarous_default.parm
-    param_adjustments: {"RES_TYPE": 1, "DET_1_WCV_ZTHR": 50}
+    param_adjustments: {"RES_TYPE": 1, "DET_1_WCV_ZTHR": 30}
     traffic:
     - [116, 81, 5, 1, 270, 0]
 
