@@ -43,7 +43,7 @@ build:
     paths:
       - exe/cpu1/*
       - Modules/lib/*
-    expire_in: 10 mins
+    expire_in: 2 days 
   
 test:
   stage: test
@@ -51,4 +51,8 @@ test:
     - sed -i s/arducopter/rotorsim/ Icarous_defs/apps.cmake
     - cd Python/TestRunner
     - python3 RunScenarios.py scenarios.yaml --validate --test --verbose
+  artifacts:
+    paths:
+      - Python/TestRunner/sim_output/*
+    expire_in: 2 days
 
