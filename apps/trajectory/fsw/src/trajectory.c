@@ -205,7 +205,7 @@ void TRAJECTORY_ProcessPacket()
                 // Check that the nextWP is the destination for the new plan.
                 // If not increment nextWP until it is the destination WP
                 int destinationWP = TrajectoryAppData.nextWP1;
-                while (true)
+                while (destinationWP < TrajectoryAppData.flightplan1.num_waypoints)
                 {
                     double wp[3] = {TrajectoryAppData.flightplan1.waypoints[destinationWP].latitude,
                                     TrajectoryAppData.flightplan1.waypoints[destinationWP].longitude,
@@ -222,22 +222,26 @@ void TRAJECTORY_ProcessPacket()
                     }
                 }
 
-                PathPlanner_CombinePlan(TrajectoryAppData.pplanner, planID, "Plan0", destinationWP + 1);
-
-                // Publish EUTIL trajectory information
-                char buffer[MAX_DATABUFFER_SIZE] = {0};
-                time_t timeNow = time(NULL);
-                PathPlanner_PlanToString(TrajectoryAppData.pplanner, "Plan+", buffer, true, timeNow);
-
-                CFE_SB_ZeroCopyHandle_t cpyhandle;
-                stringdata_t *bigdataptr = (stringdata_t *)CFE_SB_ZeroCopyGetPtr(sizeof(stringdata_t), &cpyhandle);
-                CFE_SB_InitMsg(bigdataptr, EUTL2_TRAJECTORY_MID, sizeof(stringdata_t), TRUE);
-                strcpy(bigdataptr->buffer, buffer);
-                CFE_SB_TimeStampMsg((CFE_SB_Msg_t *)bigdataptr);
-                int32 status = CFE_SB_ZeroCopySend((CFE_SB_Msg_t *)bigdataptr, cpyhandle);
-                if (status != CFE_SUCCESS)
+                if (destinationWP < TrajectoryAppData.flightplan1.num_waypoints)
                 {
-                    OS_printf("Error sending EUTL trajectory\n");
+
+                    PathPlanner_CombinePlan(TrajectoryAppData.pplanner, planID, "Plan0", destinationWP + 1);
+
+                    // Publish EUTIL trajectory information
+                    char buffer[MAX_DATABUFFER_SIZE] = {0};
+                    time_t timeNow = time(NULL);
+                    PathPlanner_PlanToString(TrajectoryAppData.pplanner, "Plan+", buffer, true, timeNow);
+
+                    CFE_SB_ZeroCopyHandle_t cpyhandle;
+                    stringdata_t *bigdataptr = (stringdata_t *)CFE_SB_ZeroCopyGetPtr(sizeof(stringdata_t), &cpyhandle);
+                    CFE_SB_InitMsg(bigdataptr, EUTL2_TRAJECTORY_MID, sizeof(stringdata_t), TRUE);
+                    strcpy(bigdataptr->buffer, buffer);
+                    CFE_SB_TimeStampMsg((CFE_SB_Msg_t *)bigdataptr);
+                    int32 status = CFE_SB_ZeroCopySend((CFE_SB_Msg_t *)bigdataptr, cpyhandle);
+                    if (status != CFE_SUCCESS)
+                    {
+                        OS_printf("Error sending EUTL trajectory\n");
+                    }
                 }
             }
             break;
