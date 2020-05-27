@@ -442,6 +442,14 @@ void HandleFlightplanGuidance(flightplan_t* fp, int oldNextWP, guidanceOutput_t*
         wpReached.reachedwaypoint = oldNextWP;
         wpReached.feedback = true;
         SendSBMsg(wpReached);
+
+        if(oldNextWP+1 < fp->num_waypoints){
+            argsCmd_t speedChange;
+            CFE_SB_InitMsg(&speedChange,ICAROUS_COMMANDS_MID,sizeof(argsCmd_t),TRUE);
+            speedChange.name = _SETSPEED_;
+            speedChange.param1 = guidanceAppData.guidance_tbl.defaultWpSpeed;
+            SendSBMsg(speedChange);
+        }
     }
     SendVelocityCommand(guidanceOutput->velCmd);
 }
