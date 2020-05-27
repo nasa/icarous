@@ -205,7 +205,7 @@ def write_metrics(vehicles, output_file="MergingMetrics.csv"):
         table = pd.DataFrame({})
     for v in vehicles:
         for merge_id in v.metrics:
-            for pass_id in v.pass_ids[merge_id]:
+            for pass_id in v.metrics[merge_id]:
                 index = v.group+"_"+str(merge_id)+"_"+str(v.id)+"_"+str(pass_id)
                 metrics = pd.DataFrame(v.metrics[merge_id][pass_id], index=[index])
                 table = metrics.combine_first(table)
