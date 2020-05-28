@@ -35,8 +35,7 @@ class MergerData:
                       "lat": [],
                       "lon": [],
                       "alt": []}
-        self.current_role = None
-        self.role_changes = []
+        self.pass_ids = {-1: [None], "all": [None]}
         self.metrics = {}
 
     def get(self, x, t=None, merge_id=None, pass_id=None, default="extrapolate"):
@@ -68,7 +67,6 @@ def ReadMergerAppData(filename, vehicle_id, group="test"):
 
     data = MergerData(vehicle_id, group=group)
     data.output_dir = os.path.dirname(filename)
-    data.pass_ids = {-1: [None], "all": [None]}
     prev_intID = -1
     for line in data_string:
         line = line.rstrip('\n')
@@ -130,7 +128,7 @@ def read_params(data_location, vehicle_id=0):
 
 def compute_metrics(vehicles, merge_id=1):
     for v in vehicles:
-        for pass_id in v.metrics:
+        for pass_id in v.pass_ids[merge_id]:
             metrics = {}
             metrics["group"] = v.group
             metrics["merge_id"] = merge_id
@@ -188,30 +186,20 @@ def compute_metrics(vehicles, merge_id=1):
 
 def write_metrics(vehicles, output_file="MergingMetrics.csv"):
     """ Add vehicle metrics to a csv table """
-    if len(vehicles) == 0:
-        return
-
-    headers = ["group", "merge_id", "pass_id", "vehicle_id",
-               "time_to_become_leader", "coord_time", "sched_time",
-               "entry_time", "reached_merge_point", "initial_speed",
-               "computed_schedule", "sched_arr_time", "actual_arr_time",
-               "mean_consensus_time", "merge_speed", "actual_speed_to_merge",
-               "min_sep_during_merge", "min_sep_during_flight",
-               "mean_non-merging_speed"]
-
     if os.path.isfile(output_file):
         table = pd.read_csv(output_file, index_col=0)
     else:
         table = pd.DataFrame({})
+
     for v in vehicles:
-        for merge_id in v.metrics:
-            for pass_id in v.metrics[merge_id]:
-                index = v.group+"_"+str(merge_id)+"_"+str(v.id)+"_"+str(pass_id)
+        for merge_id in v.metrics.keys():
+            for pass_id in v.metrics[merge_id].keys():
+                index = "%s_%d_%d_%d" % (v.group, merge_id, v.id, pass_id)
                 metrics = pd.DataFrame(v.metrics[merge_id][pass_id], index=[index])
                 table = metrics.combine_first(table)
-    if len(vehicles) > 0:
-        table = table[headers]
-        table.to_csv(output_file)
+                headers = v.metrics[merge_id][pass_id].keys()
+                table = table[headers]
+    table.to_csv(output_file)
 
 
 def get_leader(vehicles, t):
@@ -338,9 +326,9 @@ def plot_summary(vehicles, merge_id=1, save=False):
     plt.figure()
 
     for v in vehicles:
-        if merge_id not in v.metrics:
+        if merge_id not in v.pass_ids:
             continue
-        for pass_id in v.metrics[merge_id]:
+        for pass_id in v.pass_ids[merge_id]:
             t = v.get("t", merge_id=merge_id, pass_id=pass_id)
             line, = plt.plot(t, v.get("dist2int", merge_id=merge_id, pass_id=pass_id))
             color = line.get_color()
@@ -461,14 +449,14 @@ def plot_speed(vehicles, merge_id=1, save=False):
             plt.title("vehicle%d Speed (entire flight)" % v.id)
             merge_ids = list(v.metrics.keys())
         else:
-            if merge_id not in v.metrics:
+            if merge_id not in v.pass_ids:
                 continue
             merge_ids = [merge_id]
             title = "speed_%s_merge%d" % (v.id, merge_id)
             plt.title("vehicle%s Speed (during merge %d)" % (v.id, merge_id))
 
         # Plot speed
-        for pass_id in v.pass_ids.get(merge_id, []):
+        for pass_id in v.pass_ids[merge_id]:
             time_range = v.get("t", merge_id=merge_id, pass_id=pass_id)
             line1, = plt.plot(time_range, v.get("speed", time_range))
             line2, = plt.plot(time_range, v.get("mergeSpeed", time_range), '--')
