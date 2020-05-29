@@ -11,5 +11,6 @@ add_subdirectory(Utils)
 add_subdirectory(Guidance)
 add_subdirectory(Merger)
 add_subdirectory(Cognition)
+add_subdirectory(QuadCopterSim)
 
 
