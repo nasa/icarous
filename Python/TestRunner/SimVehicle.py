@@ -241,6 +241,8 @@ class SimVehicle:
 
     def terminate(self):
         # Once simulation is finished, kill the icarous process
+        if self.terminated:
+            return
         self.ic.kill()
         if self.out is not None:
             subprocess.call(["kill", "-9", str(self.mav_forwarding.pid)])
