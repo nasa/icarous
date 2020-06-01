@@ -68,6 +68,7 @@ def ReadMergerAppData(filename, vehicle_id, group="test"):
     data = MergerData(vehicle_id, group=group)
     data.output_dir = os.path.dirname(filename)
     prev_intID = -1
+    time_last_merging = -10
     for line in data_string:
         line = line.rstrip('\n')
         entries = line.split(',')
@@ -101,18 +102,30 @@ def ReadMergerAppData(filename, vehicle_id, group="test"):
         data.state["alt"].append(float(entries[16]))
 
         if data.state["mergingStatus"][-1] == 0:
-            data.state["intID"][-1] = -1
+            intID = -1
+            data.state["intID"][-1] = intID
 
         # Keep track of number of times passing through each merge fix
-        if intID != prev_intID and intID != -1:
+        if intID != -1:
             if intID not in data.pass_ids:
                 data.pass_ids[intID] = set()
                 data.metrics[intID] = {}
-            pass_id = len(data.pass_ids[intID]) + 1
+            # Increment pass_id if it's been 10 seconds since last merging
+            if (t - time_last_merging > 10) or intID != prev_intID:
+                pass_id = len(data.pass_ids[intID]) + 1
             data.pass_ids[intID].add(pass_id)
-        pass_id = list(data.pass_ids[intID])[-1]
-        data.state["mergePassID"].append(pass_id)
-        prev_intID = intID
+            time_last_merging = t
+            prev_intID = intID
+            data.state["mergePassID"].append(pass_id)
+        else:
+            data.state["mergePassID"].append(None)
+
+    # Ignore passes through a merge fix that last < 1 second total
+    for mid in data.pass_ids:
+        for pid in list(data.pass_ids[mid]):
+            t = data.get("t", merge_id=mid, pass_id=pid)
+            if t[-1] - t[0] < 1:
+                data.pass_ids[mid].remove(pid)
 
     return data
 
