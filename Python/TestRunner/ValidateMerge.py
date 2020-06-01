@@ -69,7 +69,7 @@ def verify_valid_schedule(vehicles, params=DEFAULT_VALIDATION_PARAMS):
 
     computed_schedule = [v.metrics["computed_schedule"] for v in vehicles]
     scheduled_arrivals = sorted([v.metrics["sched_arr_time"] for v in vehicles])
-    actual_arrivals = sorted([(v.metrics["actual_arr_time"], v.id) for v in vehicles
+    actual_arrivals = sorted([v.metrics["actual_arr_time"] for v in vehicles
                               if v.metrics["reached_merge_point"]])
     scheduled_sep = np.diff(scheduled_arrivals)
     actual_sep = np.diff(actual_arrivals)
