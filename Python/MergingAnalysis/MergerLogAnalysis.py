@@ -141,6 +141,8 @@ def read_params(data_location, vehicle_id=0):
 
 def compute_metrics(vehicles, merge_id=1):
     for v in vehicles:
+        if merge_id not in v.pass_ids:
+            continue
         for pass_id in v.pass_ids[merge_id]:
             metrics = {}
             metrics["group"] = v.group
@@ -373,6 +375,8 @@ def plot_summary(vehicles, merge_id=1, save=False):
 
 
 def plot_spacing_summary(vehicles, save=False):
+    if len(vehicles) < 2:
+        return
     fig, (ax1, ax2) = plt.subplots(2, sharex=True)
     spacing_value = vehicles[0].params["DET_1_WCV_DTHR"]*0.3048
 
@@ -423,6 +427,8 @@ def plot_spacing_summary(vehicles, save=False):
 
 
 def plot_spacing(vehicles, merge_id=1, save=False):
+    if len(vehicles) < 2:
+        return
     plt.figure()
     spacing_value = vehicles[0].params["DET_1_WCV_DTHR"]*0.3048
 

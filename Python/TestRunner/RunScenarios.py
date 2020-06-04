@@ -154,8 +154,9 @@ def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
     # Collect log files
     for ic in icInstances:
         #ic.WriteLog(logname=os.path.join(output_dir, ic.logName+".json"))
-        logname = os.path.join(output_dir, ic.logName+".json")
-        print("writing log: %s" % logname)
+        logname = str(ic.vehicleID) + ic.logName+".json"
+        dest = os.path.join(output_dir, logname)
+        print("writing log: %s" % dest)
         log_data = {"scenario": scenario,
                     "ownship_id": ic.vehicleID,
                     "ownship": ic.ownshipLog,
@@ -164,7 +165,7 @@ def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
                     "geofences": ic.fenceList,
                     "parameters": ic.params,
                     "sim_type": "pyIcarous"}
-        with open(logname, 'w') as f:
+        with open(dest, 'w') as f:
             json.dump(log_data, f)
 
 

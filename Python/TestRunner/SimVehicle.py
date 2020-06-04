@@ -177,7 +177,8 @@ class SimVehicle:
                    "geofences": self.geofences,
                    "parameters": self.params,
                    "sim_type": self.sim_type}
-        dest = os.path.join(self.output_dir, self.name + ".json")
+        logname = str(self.spacecraft_id) + self.name + ".json"
+        dest = os.path.join(self.output_dir, logname)
         with open(dest, 'w') as f:
             json.dump(simdata, f)
         print("\nWrote " + self.name + " simulation data")
