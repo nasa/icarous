@@ -118,8 +118,8 @@ namespace larcfm {
     	return si;
     }
 
-    Point SimpleNoPolarProjection::projectPoint(const Position& sip) const {
-    	return Point::mk(project(sip));
+    Vect3 SimpleNoPolarProjection::projectPoint(const Position& sip) const {
+    	return project(sip);
     }
 
     LatLonAlt SimpleNoPolarProjection::inverse(const Vect2& xy, double alt) const {

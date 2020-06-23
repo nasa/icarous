@@ -167,8 +167,8 @@ namespace larcfm {
     	return si;
     }
 
-    Point ENUProjection::projectPoint(const Position& sip) const {
-    	return Point::mk(project(sip));
+    Vect3 ENUProjection::projectPoint(const Position& sip) const {
+    	return project(sip);
     }
 
     LatLonAlt ENUProjection::inverse(const Vect2& xy, double alt) const {

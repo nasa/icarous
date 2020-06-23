@@ -28,6 +28,11 @@ Vect3::Vect3(const double xx, const double yy, const double zz) : x(xx), y(yy), 
 Vect3::Vect3(const Vect2&v, const double vz) : x(v.x), y(v.y), z(vz) {
 }
 
+Vect3 Vect3::mk(double x, double y, double z)
+{
+	return Vect3(x,y,z);
+}
+
 Vect3 Vect3::makeXYZ(double x, std::string ux, double y, std::string uy, double z, std::string uz) {
 	return Vect3(Units::from(ux,x),Units::from(uy,y),Units::from(uz,z));
 }
@@ -38,6 +43,10 @@ Vect3 Vect3::mkXYZ(double x, double y, double z) {
 
 Vect3 Vect3::make(double x, double y, double z) {
 	return Vect3(Units::from("NM",x),Units::from("NM",y),Units::from("ft",z));
+}
+
+Vect3 Vect3::make(double x, const std::string& xunits, double y, const std::string& yunits, double z, const std::string& zunits) {
+	return Vect3(Units::from(xunits, x), Units::from(yunits, y), Units::from(zunits, z));
 }
 
 Vect3 Vect3::mkX(double nx) {

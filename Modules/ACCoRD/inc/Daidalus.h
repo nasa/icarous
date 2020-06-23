@@ -101,15 +101,7 @@ private:
   DaidalusVsBands   vs_band_;
   DaidalusAltBands  alt_band_;
 
-  /**
-   * Reset cached values, but keep hysteresis variables.
-   * The hysteresis variables of aircraft ac_idx are reset,
-   * when curren_time is equal to last_time (meaning that current hysteresis
-   * values are not longer valid for that aircraft). The value ac_idx = 0 means
-   * all aircraft.
-   */
-  void reset_cache(int ac_idx);
-
+  void stale_bands();
 
 public:
   /* Constructors */
@@ -225,7 +217,7 @@ public:
 
   /**
    * Exchange ownship aircraft with aircraft named id.
-   * DO NOT USE IT, UNLESS YOU KNOW WHAT YOU ARE DOING. EXPERT USE ONLY !!!
+   * EXPERT USE ONLY !!!
    */
   void resetOwnship(const std::string& id);
 
@@ -233,13 +225,13 @@ public:
    * Remove traffic from the list of aircraft. Returns false if no aircraft was removed.
    * Ownship cannot be removed.
    * If traffic is at index i, the indices of aircraft at k > i, are shifted to k-1.
-   * DO NOT USE IT, UNLESS YOU KNOW WHAT YOU ARE DOING. EXPERT USE ONLY !!!
+   * EXPERT USE ONLY !!!
    */
   bool removeTrafficAircraft(const std::string& name);
 
   /**
    * Project ownship and traffic aircraft offset seconds in the future (if positive) or in the past (if negative)
-   * DO NOT USE IT, UNLESS YOU KNOW WHAT YOU ARE DOING. EXPERT USE ONLY !!!
+   * EXPERT USE ONLY !!!
    */
   void linearProjection(double offset);
 
@@ -303,6 +295,11 @@ public:
    */
   void setWindVelocityFrom(const Velocity& nwind_vector);
 
+  /**
+   * Set no wind velocity
+   */
+  void setNoWind();
+
   /* Alerter Setting */
 
   /**
@@ -325,12 +322,12 @@ public:
    * alert index of ownship. Otherwise, it returns the alert index of the traffic aircraft
    * at ac_idx.
    */
-  int alerterIndexBasedOnAlertingLogic(int ac_idx) const;
+  int alerterIndexBasedOnAlertingLogic(int ac_idx);
 
   /**
    * Returns most severe alert level for a given aircraft. Returns 0 if either the aircraft or the alerter is undefined.
    */
-  int mostSevereAlertLevel(int ac_idx) const;
+  int mostSevereAlertLevel(int ac_idx);
 
   /* SUM Setting */
 
@@ -1515,6 +1512,145 @@ public:
   void setHorizontalContourThreshold(double val, const std::string& u);
 
   /**
+   * Return true if DTA logic is active at current time
+   */
+  bool isActiveDTALogic();
+
+  /**
+   * Return true if DTA special maneuver guidance is active at current time
+   */
+  bool isActiveDTASpecialManeuverGuidance();
+
+  /**
+   * Return true if DAA Terminal Area (DTA) logic is disabled.
+   */
+  bool isDisabledDTALogic() const;
+
+  /**
+   * Return true if DAA Terminal Area (DTA) logic is enabled with horizontal
+   * direction recovery guidance. If true, horizontal direction recovery is fully enabled,
+   * but vertical recovery blocks down resolutions when alert is higher than corrective.
+   * NOTE:
+   * When DTA logic is enabled, DAIDALUS automatically switches to DTA alerter and to
+   * special maneuver guidance, when aircraft enters DTA volume (depending on ownship- vs
+   * intruder-centric logic).
+   */
+  bool isEnabledDTALogicWithHorizontalDirRecovery() const;
+
+  /**
+   * Return true if DAA Terminal Area (DTA) logic is enabled without horizontal
+   * direction recovery guidance. If true, horizontal direction recovery is disabled and
+   * vertical recovery blocks down resolutions when alert is higher than corrective.
+   * NOTE:
+   * When DTA logic is enabled, DAIDALUS automatically switches to DTA alerter and to
+   * special maneuver guidance, when aircraft enters DTA volume (depending on ownship- vs
+   * intruder-centric logic).
+   */
+  bool isEnabledDTALogicWithoutHorizontalDirRecovery() const;
+
+  /**
+   * Disable DAA Terminal Area (DTA) logic
+   */
+  void disableDTALogic();
+
+  /**
+   * Enable DAA Terminal Area (DTA) logic with horizontal direction recovery guidance, i.e.,
+   * horizontal direction recovery is fully enabled, but vertical recovery blocks down
+   * resolutions when alert is higher than corrective.
+   * NOTE:
+   * When DTA logic is enabled, DAIDALUS automatically switches to DTA alerter and to
+   * special maneuver guidance, when aircraft enters DTA volume (depending on ownship- vs
+   * intruder-centric logic).
+   */
+  void enableDTALogicWithHorizontalDirRecovery();
+
+  /**
+   * Enable DAA Terminal Area (DTA) logic withou horizontal direction recovery guidance, i.e.,
+   * horizontal direction recovery is disabled and vertical recovery blocks down
+   * resolutions when alert is higher than corrective.
+   * NOTE:
+   * When DTA logic is enabled, DAIDALUS automatically switches to DTA alerter and to
+   * special maneuver guidance, when aircraft enters DTA volume (depending on ownship- vs
+   * intruder-centric logic).
+   */
+  void enableDTALogicWithoutHorizontalDirRecovery();
+
+  /**
+   * Get DAA Terminal Area (DTA) position (lat/lon)
+   */
+  const Position& getDTAPosition() const;
+
+  /**
+   * Set DAA Terminal Area (DTA) latitude (internal units)
+   */
+  void setDTALatitude(double lat);
+
+  /**
+   * Set DAA Terminal Area (DTA) latitude in given units
+   */
+  void setDTALatitude(double lat, const std::string& ulat);
+
+  /**
+   * Set DAA Terminal Area (DTA) longitude (internal units)
+   */
+  void setDTALongitude(double lon);
+
+  /**
+   * Set DAA Terminal Area (DTA) longitude in given units
+   */
+  void setDTALongitude(double lon, const std::string& ulon);
+
+  /**
+   * Get DAA Terminal Area (DTA) radius (internal units)
+   */
+  double getDTARadius() const;
+
+  /**
+   * Get DAA Terminal Area (DTA) radius in given units
+   */
+  double getDTARadius(const std::string& u) const;
+
+  /**
+   * Set DAA Terminal Area (DTA) radius (internal units)
+   */
+  void setDTARadius(double val);
+
+  /**
+   * Set DAA Terminal Area (DTA) radius in given units
+   */
+  void setDTARadius(double val, const std::string& u);
+
+  /**
+   * Get DAA Terminal Area (DTA) height (internal units)
+   */
+  double getDTAHeight() const;
+
+  /**
+   * Get DAA Terminal Area (DTA) height in given units
+   */
+  double getDTAHeight(const std::string& u) const;
+
+  /**
+   * Set DAA Terminal Area (DTA) height (internal units)
+   */
+  void setDTAHeight(double val);
+
+  /**
+   * Set DAA Terminal Area (DTA) height in given units
+   */
+  void setDTAHeight(double val, const std::string& u);
+
+  /**
+   * Get DAA Terminal Area (DTA) alerter
+   */
+  int getDTAAlerter() const;
+
+  /**
+   * Set DAA Terminal Area (DTA) alerter
+   */
+  void setDTAAlerter(int alerter);
+
+  /**
    * Set alerting logic to the value indicated by ownship_centric.
    * If ownship_centric is true, alerting and guidance logic will use the alerter in ownship. Alerter
    * in every intruder will be disregarded.
@@ -1628,6 +1764,11 @@ public:
   const DaidalusCore& getCore();
 
   /**
+   *  Clear hysteresis data
+   */
+  void clearHysteresis();
+
+  /**
    *  Clear ownship and traffic state data from this object.
    *  IMPORTANT: This method reset cache and hysteresis parameters.
    */
@@ -1642,8 +1783,20 @@ public:
 
   /**
    * Compute in acs list of aircraft identifiers contributing to conflict bands for given region.
+   * 1 = FAR, 2 = MID, 3 = NEAR
+   */
+  void conflictBandsAircraft(std::vector<std::string>& acs, int region);
+
+  /**
+   * Compute in acs list of aircraft identifiers contributing to conflict bands for given region.
    */
   void conflictBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
+
+  /**
+   * Return time interval of violation for given bands region
+   * 1 = FAR, 2 = MID, 3 = NEAR
+   */
+  Interval timeIntervalOfConflict(int region);
 
   /**
    * Return time interval of violation for given bands region
@@ -1717,6 +1870,13 @@ public:
    * @return recovery information for horizontal direction bands.
    */
   RecoveryInformation horizontalDirectionRecoveryInformation();
+
+  /**
+   * Compute in acs list of aircraft identifiers contributing to peripheral horizontal direction bands
+   * for given region.
+   * 1 = FAR, 2 = MID, 3 = NEAR
+   */
+  void peripheralHorizontalDirectionBandsAircraft(std::vector<std::string>& acs, int region);
 
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral horizontal direction bands
@@ -1822,6 +1982,13 @@ public:
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral horizontal speed bands
    * for given region.
+   * 1 = FAR, 2 = MID, 3 = NEAR
+   */
+  void peripheralHorizontalSpeedBandsAircraft(std::vector<std::string>& acs, int region);
+
+  /**
+   * Compute in acs list of aircraft identifiers contributing to peripheral horizontal speed bands
+   * for given region.
    */
   void peripheralHorizontalSpeedBandsAircraft(std::vector<std::string>& acs, BandsRegion::Region region);
 
@@ -1919,6 +2086,13 @@ public:
    * @return recovery information for vertical speed bands.
    */
   RecoveryInformation verticalSpeedRecoveryInformation();
+
+  /**
+   * Compute in acs list of aircraft identifiers contributing to peripheral vertical speed bands
+   * for given region.
+   * 1 = FAR, 2 = MID, 3 = NEAR
+   */
+  void peripheralVerticalSpeedBandsAircraft(std::vector<std::string>& acs, int region);
 
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral vertical speed bands
@@ -2021,6 +2195,13 @@ public:
    * @return recovery information for altitude speed bands.
    */
   RecoveryInformation altitudeRecoveryInformation();
+
+  /**
+   * Compute in acs list of aircraft identifiers contributing to peripheral altitude bands
+   * for given region.
+   * 1 = FAR, 2 = MID, 3 = NEAR
+   */
+  void peripheralAltitudeBandsAircraft(std::vector<std::string>& acs, int region);
 
   /**
    * Compute in acs list of aircraft identifiers contributing to peripheral altitude bands

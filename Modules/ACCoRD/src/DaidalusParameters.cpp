@@ -21,7 +21,7 @@
 
 namespace larcfm {
 
-const std::string DaidalusParameters::VERSION = "2.0.f";
+const std::string DaidalusParameters::VERSION = "2.0.g";
 const INT64FM DaidalusParameters::ALMOST_ = PRECISION5;
 bool DaidalusParameters::initialized = false;
 
@@ -187,8 +187,19 @@ DaidalusParameters::DaidalusParameters() : error("DaidalusParameters") {
   contour_thr_ = Units::from("deg",180.0);
   units_["contour_thr"] = "deg";
 
-  // Alerting logic
+  // DAA Terminal Area (DTA)
+  dta_logic_ = 0;
+  dta_latitude_ = 0.0;
+  units_["dta_latitude"] = "deg";
+  dta_longitude_ = 0.0;
+  units_["dta_longitude"] = "deg";
+  dta_radius_ = 0.0;
+  units_["dta_radius"] = "nmi";
+  dta_height_ = 0.0;
+  units_["dta_height"] = "ft";
+  dta_alerter_  = 0;
 
+  // Alerting logic
   ownship_centric_alerting_ = true;
 
   corrective_region_ = BandsRegion::NEAR;
@@ -938,7 +949,7 @@ bool DaidalusParameters::setHorizontalDirectionStep(double val) {
 
 bool DaidalusParameters::setHorizontalDirectionStep(double val, const std::string& u) {
   if (setHorizontalDirectionStep(Units::from(u,val))) {
-    units_["step_hdir"] = u;;
+    units_["step_hdir"] = u;
     return true;
   }
   return false;
@@ -1607,6 +1618,164 @@ bool DaidalusParameters::setHorizontalContourThreshold(double val, const std::st
   return setHorizontalContourThreshold(Units::from(u,val));
 }
 
+/**
+ * DTA Logic:
+ * 0: Disabled
+ * 1: Enabled special DTA maneuver guidance. Horizontal recovery is fully enabled,
+ * but vertical recovery blocks down resolutions when alert is higher than corrective.
+ * -1: Enabled special DTA maneuver guidance. Horizontal recovery is disabled,
+ * vertical recovery blocks down resolutions when raw alert is higher than corrective.
+ * NOTE:
+ * When DTA logic is enabled, DAIDALUS automatically switches to DTA alerter and to
+ * special maneuver guidance, when aircraft enters DTA volume (depending on ownship- vs
+ * intruder-centric logic).
+ */
+int DaidalusParameters::getDTALogic() const {
+  return dta_logic_;
+}
+
+/**
+ * DTA Logic:
+ * 0: Disabled
+ * 1: Enabled special DTA maneuver guidance. Horizontal recovery is fully enabled,
+ * but vertical recovery blocks down resolutions when alert is higher than corrective.
+ * -1: Enabled special DTA maneuver guidance. Horizontal recovery is disabled,
+ * vertical recovery blocks down resolutions when raw alert is higher than corrective.
+ * NOTE:
+ * When DTA logic is enabled, DAIDALUS automatically switches to DTA alerter and to
+ * special maneuver guidance, when aircraft enters DTA volume (depending on ownship- vs
+ * intruder-centric logic).
+ */
+void DaidalusParameters::setDTALogic(int dta_logic) {
+  dta_logic_ = Util::signTriple(dta_logic);
+}
+
+/**
+ * Get DAA Terminal Area (DTA) position (lat/lon)
+ */
+const Position& DaidalusParameters::getDTAPosition() const {
+  static Position dta_position;
+  if (dta_latitude_ != dta_position.lat() ||
+      dta_longitude_ != dta_position.lon()) {
+    std::string ulat = getUnitsOf("dta_latitude");
+    std::string ulon = getUnitsOf("dta_longitude");
+    if (Units::isCompatible(ulat,ulon)) {
+      if (Units::isCompatible("m",ulat)) {
+        dta_position = Position::mkXYZ(dta_latitude_,dta_longitude_,0.0);
+      } else if (Units::isCompatible("deg",ulat)) {
+        dta_position = Position::mkLatLonAlt(dta_latitude_,dta_longitude_,0.0);
+      } else {
+        dta_position = Position::INVALID();
+      }
+    } else {
+      dta_position = Position::INVALID();
+    }
+  }
+  return dta_position;
+}
+
+/**
+ * Set DAA Terminal Area (DTA) latitude (internal units)
+ */
+void DaidalusParameters::setDTALatitude(double lat) {
+  dta_latitude_ = lat;
+}
+
+/**
+ * Set DAA Terminal Area (DTA) latitude in given units
+ */
+void DaidalusParameters::setDTALatitude(double lat, const std::string& ulat) {
+  setDTALatitude(Units::from(ulat,lat));
+  units_["dta_latitude"] =  ulat;
+
+}
+
+/**
+ * Set DAA Terminal Area (DTA) longitude (internal units)
+ */
+void DaidalusParameters::setDTALongitude(double lon) {
+  dta_longitude_ = lon;
+}
+
+/**
+ * Set DAA Terminal Area (DTA) longitude in given units
+ */
+void DaidalusParameters::setDTALongitude(double lon, const std::string& ulon) {
+  setDTALongitude(Units::from(ulon,lon));
+  units_["dta_longitude"] = ulon;
+}
+
+/**
+ * Get DAA Terminal Area (DTA) radius (internal units)
+ */
+double DaidalusParameters::getDTARadius() const {
+  return dta_radius_;
+}
+
+/**
+ * Get DAA Terminal Area (DTA) radius in given units
+ */
+double DaidalusParameters::getDTARadius(const std::string& u) const {
+  return Units::to(u,dta_radius_);
+}
+
+/**
+ * Set DAA Terminal Area (DTA) radius (internal units)
+ */
+void DaidalusParameters::setDTARadius(double val) {
+  dta_radius_ = val;
+}
+
+/**
+ * Set DAA Terminal Area (DTA) radius in given units
+ */
+void DaidalusParameters::setDTARadius(double val, const std::string& u) {
+  setDTARadius(Units::from(u,val));
+  units_["dta_radius"] = u;
+}
+
+/**
+ * Get DAA Terminal Area (DTA) height (internal units)
+ */
+double DaidalusParameters::getDTAHeight() const {
+  return dta_height_;
+}
+
+/**
+ * Get DAA Terminal Area (DTA) height in given units
+ */
+double DaidalusParameters::getDTAHeight(const std::string& u) const {
+  return Units::to(u,dta_height_);
+}
+
+/**
+ * Set DAA Terminal Area (DTA) height (internal units)
+ */
+void DaidalusParameters::setDTAHeight(double val) {
+  dta_height_ = val;
+}
+
+/**
+ * Set DAA Terminal Area (DTA) height in given units
+ */
+void DaidalusParameters::setDTAHeight(double val, const std::string& u) {
+  setDTAHeight(Units::from(u,val));
+  units_["dta_height"] = u;
+}
+
+/**
+ * Get DAA Terminal Area (DTA) alerter
+ */
+int DaidalusParameters::getDTAAlerter() const {
+  return dta_alerter_;
+}
+
+/**
+ * Set DAA Terminal Area (DTA) alerter
+ */
+void DaidalusParameters::setDTAAlerter(int alerter) {
+  dta_alerter_ = alerter;
+}
 
 void DaidalusParameters::setAlertingLogic(bool ownship_centric) {
   ownship_centric_alerting_ = ownship_centric;
@@ -1790,6 +1959,12 @@ std::string DaidalusParameters::toPVS() const {
   s+="v_pos_z_score := "+FmPrecision(v_pos_z_score_)+", ";
   s+="v_vel_z_score := "+FmPrecision(v_vel_z_score_)+", ";
   s+="contour_thr := "+FmPrecision(contour_thr_)+", ";
+  s+="dta_logic := "+Fmi(dta_logic_)+", ";
+  s+="dta_latitude := "+FmPrecision(dta_latitude_)+", ";
+  s+="dta_longitude := "+FmPrecision(dta_longitude_)+", ";
+  s+="dta_radius := "+FmPrecision(dta_radius_)+", ";
+  s+="dta_height := "+FmPrecision(dta_height_)+", ";
+  s+="dta_alerter := "+Fmi(dta_alerter_)+", ";
   s+="ownship_centric_alerting := "+Fmb(ownship_centric_alerting_)+", ";
   s+="corrective_region := "+BandsRegion::to_string(corrective_region_)+", ";
   s+="alerters := "+Alerter::listToPVS(alerters_);
@@ -1899,6 +2074,15 @@ void DaidalusParameters::updateParameterData(ParameterData& p) const {
   // Horizontal Contour Threshold
   p.setInternal("contour_thr", contour_thr_, getUnitsOf("contour_thr"));
   p.updateComment("contour_thr","Horizontal Contour Threshold");
+
+  // DAA Terminal Area (DTA)
+  p.setInt("dta_logic", dta_logic_);
+  p.updateComment("dta_logic","DAA Terminal Area (DTA)");
+  p.setInternal("dta_latitude", dta_latitude_, getUnitsOf("dta_latitude"));
+  p.setInternal("dta_longitude", dta_longitude_, getUnitsOf("dta_longitude"));
+  p.setInternal("dta_radius", dta_radius_, getUnitsOf("dta_radius"));
+  p.setInternal("dta_height", dta_height_, getUnitsOf("dta_height"));
+  p.setInt("dta_alerter", dta_alerter_);
 
   // Alerting logic
   p.setBool("ownship_centric_alerting",ownship_centric_alerting_);
@@ -2262,6 +2446,35 @@ bool DaidalusParameters::setParameterData(const ParameterData& p) {
   if (contains(p,"contour_thr")) {
     setHorizontalContourThreshold(getValue(p,"contour_thr"));
     units_["contour_thr"] = getUnit(p,"contour_thr");
+    setit = true;
+  }
+  // DAA Terminal Area (DTA)
+  if (contains(p,"dta_logic")) {
+    setDTALogic(getInt(p,"dta_logic"));
+    setit = true;
+  }
+  if (contains(p,"dta_latitude")) {
+    setDTALatitude(getValue(p,"dta_latitude"));
+    units_["dta_latitude"] = getUnit(p,"dta_latitude");
+    setit = true;
+  }
+  if (contains(p,"dta_longitude")) {
+    setDTALongitude(getValue(p,"dta_longitude"));
+    units_["dta_longitude"] = getUnit(p,"dta_longitude");
+    setit = true;
+  }
+  if (contains(p,"dta_radius")) {
+    setDTARadius(getValue(p,"dta_radius"));
+    units_["dta_radius"] = getUnit(p,"dta_radius");
+    setit = true;
+  }
+  if (contains(p,"dta_height")) {
+    setDTAHeight(getValue(p,"dta_height"));
+    units_["dta_height"] = getUnit(p,"dta_height");
+    setit = true;
+  }
+  if (contains(p,"dta_alerter")) {
+    setDTAAlerter(getInt(p,"dta_alerter"));
     setit = true;
   }
   // Alerting logic

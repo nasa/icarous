@@ -169,7 +169,7 @@ int Alerter::mostSevereAlertLevel() const {
 }
 
 int Alerter::alertLevelForRegion(BandsRegion::Region region) const {
-  for (int i=0; i < (int) levels_.size(); ++i) {
+  for (int i=0; i < static_cast<int>(levels_.size()); ++i) {
     if (levels_[i].getRegion() == region) {
       return i+1;
     }
@@ -178,7 +178,7 @@ int Alerter::alertLevelForRegion(BandsRegion::Region region) const {
 }
 
 Detection3D* Alerter::getDetectorPtr(int alert_level) const {
-  if (1 <= alert_level && alert_level <= (int) levels_.size()) {
+  if (1 <= alert_level && alert_level <= static_cast<int>(levels_.size())) {
     return levels_[alert_level-1].getCoreDetectionPtr();
   } else {
     return NULL;
@@ -186,7 +186,7 @@ Detection3D* Alerter::getDetectorPtr(int alert_level) const {
 }
 
 void Alerter::setLevel(int level, const AlertThresholds& thresholds) {
-  if (1 <= level && level <= (int) levels_.size()) {
+  if (1 <= level && level <= static_cast<int>(levels_.size())) {
     levels_[level-1] = AlertThresholds(thresholds);
   }
 }
@@ -201,7 +201,7 @@ int Alerter::addLevel(const AlertThresholds& thresholds) {
 }
 
 const AlertThresholds& Alerter::getLevel(int alert_level) const {
-  if (1 <= alert_level && alert_level <= (int) levels_.size()) {
+  if (1 <= alert_level && alert_level <= static_cast<int>(levels_.size())) {
     return levels_[alert_level-1];
   } else {
     return AlertThresholds::INVALID();
@@ -220,7 +220,7 @@ void Alerter::updateParameterData(ParameterData& p) const {
   // this also ensures they each have a unique identifier
   ParameterData pdmain;
   // add parameters for each alerter, ensuring they have an ordered set of identifiers
-  for (int i = 0; i < (int)levels_.size(); i++) {
+  for (int i = 0; i < static_cast<int>(levels_.size()); i++) {
     const ParameterData& pd = levels_[i].getParameters();
     //make sure each instance has a unique, ordered name
     std::string prefix = "alert_"+Fmi(i+1)+"_";
@@ -239,7 +239,7 @@ void Alerter::setParameters(const ParameterData& p) {
   std::vector<Detection3D*> dlist = Detection3DParameterReader::readCoreDetection(p).first;
   // put in map for easy lookup
   std::map<std::string, Detection3D*> dmap;
-  for (int i = 0; i < (int) dlist.size(); i ++) {
+  for (int i = 0; i < static_cast<int>(dlist.size()); i ++) {
     std::string id = dlist[i]->getIdentifier();
     dmap[id] = dlist[i];
   }
@@ -256,7 +256,7 @@ void Alerter::setParameters(const ParameterData& p) {
     al.setCoreDetectionPtr(dmap[pdsub.getString("detector")]);
     al.setParameters(pdsub);
     // modify or add the alertlevel (this cannot remove levels)
-    if (counter <= (int) levels_.size()) {
+    if (counter <= static_cast<int>(levels_.size())) {
       setLevel(counter,al);
     } else {
       addLevel(al);
@@ -271,7 +271,7 @@ void Alerter::setParameters(const ParameterData& p) {
 std::string Alerter::toString() const {
   std::string s = "Alerter: ";
   s += id_+"\n";
-  for (int i=0; i < (int) levels_.size(); ++i) {
+  for (int i=0; i < static_cast<int>(levels_.size()); ++i) {
     s += "Level "+Fmi(i+1)+": "+levels_[i].toString()+"\n";
   }
   return s;
@@ -280,7 +280,7 @@ std::string Alerter::toString() const {
 std::string Alerter::toPVS() const {
   std::string s = "(: ";
   bool first = true;
-  for (int i=0; i < (int) levels_.size(); ++i) {
+  for (int i=0; i < static_cast<int>(levels_.size()); ++i) {
     if (first) {
       first = false;
     } else {
@@ -294,7 +294,7 @@ std::string Alerter::toPVS() const {
 std::string Alerter::listToPVS(const std::vector<Alerter>& alerters) {
   std::string s = "(: ";
   bool first = true;
-  for (int i=0; i < (int) alerters.size(); ++i) {
+  for (int i=0; i < static_cast<int>(alerters.size()); ++i) {
     if (first) {
       first = false;
     } else {

@@ -42,7 +42,7 @@ private:
   // relative to the current value. In general, if above >= 0 and below >= 0 the bands range is
   // [val-below,val+above], where val is current value. The following are special cases,
   // if below < 0 && above >= 0 then [min,val+above]
-  // if below >=0 && above < = then [val-below,max]
+  // if below >=0 && above < 0  then [val-below,max]
   // if below == 0 && above == 0] then [min,max]
   double below_relative_hs_;
   double above_relative_hs_;
@@ -103,6 +103,28 @@ private:
   // Contours
   double contour_thr_; // Horizontal threshold, specified as an angle to the left/right of current aircraft direction,
   // for computing horizontal contours. A value of 0 means only conflict contours. A value of pi means all contours.
+
+  // DAA Terminal Area (DTA)
+
+  /**
+   * DTA Logic:
+   * 0: Disabled
+   * 1: Enabled special DTA maneuver guidance. Horizontal recovery is fully enabled,
+   * but vertical recovery blocks down resolutions when alert is higher than corrective.
+   * -1: Enabled special DTA maneuver guidance. Horizontal recovery is disabled,
+   * vertical recovery blocks down resolutions when raw alert is higher than corrective.
+   * NOTE:
+   * When DTA logic is enabled, DAIDALUS automatically switches to DTA alerter and to
+   * special maneuver guidance, when aircraft enters DTA volume (depending on ownship- vs
+   * intruder-centric logic).
+   */
+  int dta_logic_;
+  double dta_latitude_;
+  double dta_longitude_;
+  double dta_radius_;
+  double dta_height_;
+  int dta_alerter_;
+
 
   // Alerting logic
   bool ownship_centric_alerting_; // When true, alerting logic is ownship-centric.
@@ -698,12 +720,133 @@ public:
    */
   bool setHorizontalContourThreshold(double val, const std::string& u);
 
+  /**
+   * DTA Logic:
+   * 0: Disabled
+   * 1: Enabled special DTA maneuver guidance. Horizontal recovery is fully enabled,
+   * but vertical recovery blocks down resolutions when alert is higher than corrective.
+   * -1: Enabled special DTA maneuver guidance. Horizontal recovery is disabled,
+   * vertical recovery blocks down resolutions when raw alert is higher than corrective.
+   * NOTE:
+   * When DTA logic is enabled, DAIDALUS automatically switches to DTA alerter and to
+   * special maneuver guidance, when aircraft enters DTA volume (depending on ownship- vs
+   * intruder-centric logic).
+   */
+  int getDTALogic() const;
+
+  /**
+   * DTA Logic:
+   * 0: Disabled
+   * 1: Enabled special DTA maneuver guidance. Horizontal recovery is fully enabled,
+   * but vertical recovery blocks down resolutions when alert is higher than corrective.
+   * -1: Enabled special DTA maneuver guidance. Horizontal recovery is disabled,
+   * vertical recovery blocks down resolutions when raw alert is higher than corrective.
+   * NOTE:
+   * When DTA logic is enabled, DAIDALUS automatically switches to DTA alerter and to
+   * special maneuver guidance, when aircraft enters DTA volume (depending on ownship- vs
+   * intruder-centric logic).
+   */
+  void setDTALogic(int dta_logic);
+
+  /**
+   * Get DAA Terminal Area (DTA) position (lat/lon)
+   */
+  const Position& getDTAPosition() const;
+
+  /**
+   * Set DAA Terminal Area (DTA) latitude (internal units)
+   */
+  void setDTALatitude(double lat);
+
+  /**
+   * Set DAA Terminal Area (DTA) latitude in given units
+   */
+  void setDTALatitude(double lat, const std::string& ulat);
+
+  /**
+   * Set DAA Terminal Area (DTA) longitude (internal units)
+   */
+  void setDTALongitude(double lon);
+
+  /**
+   * Set DAA Terminal Area (DTA) longitude in given units
+   */
+  void setDTALongitude(double lon, const std::string& ulon);
+
+  /**
+   * Get DAA Terminal Area (DTA) radius (internal units)
+   */
+  double getDTARadius() const;
+
+  /**
+   * Get DAA Terminal Area (DTA) radius in given units
+   */
+  double getDTARadius(const std::string& u) const;
+
+  /**
+   * Set DAA Terminal Area (DTA) radius (internal units)
+   */
+  void setDTARadius(double val);
+
+  /**
+   * Set DAA Terminal Area (DTA) radius in given units
+   */
+  void setDTARadius(double val, const std::string& u);
+
+  /**
+   * Get DAA Terminal Area (DTA) height (internal units)
+   */
+  double getDTAHeight() const;
+
+  /**
+   * Get DAA Terminal Area (DTA) height in given units
+   */
+  double getDTAHeight(const std::string& u) const;
+
+  /**
+   * Set DAA Terminal Area (DTA) height (internal units)
+   */
+  void setDTAHeight(double val);
+
+  /**
+   * Set DAA Terminal Area (DTA) height in given units
+   */
+  void setDTAHeight(double val, const std::string& u);
+
+  /**
+   * Get DAA Terminal Area (DTA) alerter
+   */
+  int getDTAAlerter() const;
+
+  /**
+   * Set DAA Terminal Area (DTA) alerter
+   */
+  void setDTAAlerter(int alerter);
+
+  /**
+   * Set alerting logic to the value indicated by ownship_centric.
+   * If ownship_centric is true, alerting and guidance logic will use the alerter in ownship. Alerter
+   * in every intruder will be disregarded.
+   * If ownship_centric is false, alerting and guidance logic will use the alerter in every intruder. Alerter
+   * in ownship will be disregarded.
+   */
   void setAlertingLogic(bool ownship_centric);
 
+  /**
+   * Set alerting and guidance logic to ownship-centric. Alerting and guidance logic will use the alerter in ownship.
+   * Alerter in every intruder will be disregarded.
+   */
   void setOwnshipCentricAlertingLogic();
 
+  /**
+   * Set alerting and guidance logic to intruder-centric. Alerting and guidance logic will use the alerter in every intruder.
+   * Alerter in ownship will be disregarded.
+   */
   void setIntruderCentricAlertingLogic();
 
+  /**
+   * @return true if alerting/guidance logic is ownship centric.
+   */
   bool isAlertingLogicOwnshipCentric() const;
 
   BandsRegion::Region getCorrectiveRegion() const;

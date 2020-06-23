@@ -248,6 +248,8 @@ public:
 
 	static int dirForBehind(const Vect3& so, const Velocity& vo, const Vect3& si, const Velocity& vi) ;
 
+	static Vect3 parse(const std::string& s);
+
 
 };
 

@@ -21,36 +21,32 @@ namespace larcfm {
 
 class DaidalusDirBands : public DaidalusRealBands {
 
-
-private:
-  double turn_rate_;
-  double bank_angle_; // Only used when turn_rate is set to 0
-
 public:
-  DaidalusDirBands(DaidalusParameters& parameters);
+  DaidalusDirBands();
 
   DaidalusDirBands(const DaidalusDirBands& b);
 
-  /**
-   * Set DaidalusParmaeters
-   */
-  virtual void setDaidalusParameters(const DaidalusParameters& parameters);
+  virtual bool get_recovery(const DaidalusParameters& parameters) const;
 
-  virtual bool instantaneous_bands() const;
+  virtual double get_step(const DaidalusParameters& parameters) const;
 
-  double get_turn_rate() const;
+  virtual double get_min(const DaidalusParameters& parameters) const;
 
-  void set_turn_rate(double val);
+  virtual double get_max(const DaidalusParameters& parameters) const;
 
-  double get_bank_angle() const;
+  virtual double get_min_rel(const DaidalusParameters& parameters) const;
 
-  void set_bank_angle(double val);
+  virtual double get_max_rel(const DaidalusParameters& parameters) const;
+
+  virtual bool saturate_corrective_bands(const DaidalusParameters& parameters, int dta_status) const;
+
+  virtual bool instantaneous_bands(const DaidalusParameters& parameters) const;
 
   virtual double own_val(const TrafficState& ownship) const;
 
-  virtual double time_step(const TrafficState& ownship) const;
+  virtual double time_step(const DaidalusParameters& parameters, const TrafficState& ownship) const;
 
-  virtual std::pair<Vect3, Velocity> trajectory(const TrafficState& ownship, double time, bool dir) const;
+  virtual std::pair<Vect3, Velocity> trajectory(const DaidalusParameters& parameters, const TrafficState& ownship, double time, bool dir) const;
 
   virtual double max_delta_resolution(const DaidalusParameters& parameters) const;
 

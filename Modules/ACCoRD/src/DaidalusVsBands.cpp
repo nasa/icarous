@@ -18,39 +18,41 @@
 
 namespace larcfm {
 
-DaidalusVsBands::DaidalusVsBands(DaidalusParameters& parameters) {
-  setDaidalusParameters(parameters);
+DaidalusVsBands::DaidalusVsBands() {}
+
+DaidalusVsBands::DaidalusVsBands(const DaidalusVsBands& b) : DaidalusRealBands(b) {}
+
+bool DaidalusVsBands::get_recovery(const DaidalusParameters& parameters) const {
+  return parameters.isEnabledRecoveryVerticalSpeedBands();
 }
 
-DaidalusVsBands::DaidalusVsBands(const DaidalusVsBands& b) : DaidalusRealBands(b) {
-  vertical_accel_ = b.vertical_accel_;
+double DaidalusVsBands::get_step(const DaidalusParameters& parameters) const {
+  return parameters.getVerticalSpeedStep();
 }
 
-/**
- * Set DaidalusParmaeters
- */
-void DaidalusVsBands::setDaidalusParameters(const DaidalusParameters& parameters) {
-  set_step(parameters.getVerticalSpeedStep());
-  set_recovery(parameters.isEnabledRecoveryVerticalSpeedBands());
-  set_min_rel(parameters.getBelowRelativeVerticalSpeed());
-  setmax_rel(parameters.getAboveRelativeVerticalSpeed());
-  set_min_nomod(parameters.getMinVerticalSpeed());
-  setmax_nomod(parameters.getMaxVerticalSpeed());
-  set_vertical_accel(parameters.getVerticalAcceleration());
+double DaidalusVsBands::get_min(const DaidalusParameters& parameters) const {
+  return parameters.getMinVerticalSpeed();
 }
 
-bool DaidalusVsBands::instantaneous_bands() const {
-  return vertical_accel_ == 0;
+double DaidalusVsBands::get_max(const DaidalusParameters& parameters) const {
+  return parameters.getMaxVerticalSpeed();
 }
 
-double DaidalusVsBands::get_vertical_accel() const {
-  return vertical_accel_;
+double DaidalusVsBands::get_min_rel(const DaidalusParameters& parameters) const {
+  return parameters.getBelowRelativeVerticalSpeed();
 }
 
-void DaidalusVsBands::set_vertical_accel(double val) {
-  if (val != vertical_accel_) {
-    vertical_accel_ = val;
-    stale(true);
+double DaidalusVsBands::get_max_rel(const DaidalusParameters& parameters) const {
+  return parameters.getAboveRelativeVerticalSpeed();
+}
+
+bool DaidalusVsBands::instantaneous_bands(const DaidalusParameters& parameters) const {
+  return parameters.getVerticalAcceleration() == 0;
+}
+
+void DaidalusVsBands::set_special_configuration(const DaidalusParameters& parameters, int dta_status) {
+  if (dta_status > 0) {
+    set_min_max_rel(0,-1);
   }
 }
 
@@ -58,21 +60,20 @@ double DaidalusVsBands::own_val(const TrafficState& ownship) const {
   return ownship.velocityXYZ().vs();
 }
 
-double DaidalusVsBands::time_step(const TrafficState& ownship) const {
-  return get_step()/vertical_accel_;
+double DaidalusVsBands::time_step(const DaidalusParameters& parameters, const TrafficState& ownship) const {
+  return get_step(parameters)/parameters.getVerticalAcceleration();
 }
 
-std::pair<Vect3, Velocity> DaidalusVsBands::trajectory(const TrafficState& ownship, double time, bool dir) const {
+std::pair<Vect3, Velocity> DaidalusVsBands::trajectory(const DaidalusParameters& parameters, const TrafficState& ownship, double time, bool dir) const {
   std::pair<Position,Velocity> posvel;
-  if (instantaneous_bands()) {
-    double vs = ownship.velocityXYZ().vs()+(dir?1:-1)*j_step_*get_step();
+  if (instantaneous_bands(parameters)) {
+    double vs = ownship.velocityXYZ().vs()+(dir?1:-1)*j_step_*get_step(parameters);
     posvel = std::pair<Position, Velocity>(ownship.positionXYZ(),ownship.velocityXYZ().mkVs(vs));
   } else {
-    posvel = ProjectedKinematics::vsAccel(ownship.positionXYZ(),ownship.velocityXYZ(),time,(dir?1:-1)*vertical_accel_);
+    posvel = ProjectedKinematics::vsAccel(ownship.positionXYZ(),ownship.velocityXYZ(),time,(dir?1:-1)*parameters.getVerticalAcceleration());
   }
   return std::pair<Vect3, Velocity>(ownship.pos_to_s(posvel.first),ownship.vel_to_v(posvel.first,posvel.second));
 }
-
 
 double DaidalusVsBands::max_delta_resolution(const DaidalusParameters& parameters) const {
   return parameters.getPersistencePreferredVerticalSpeedResolution();

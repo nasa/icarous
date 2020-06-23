@@ -15,6 +15,7 @@
 #include "VectFuns.h"
 #include "Constants.h"
 #include "format.h"
+#include "string_util.h"
 #include <cmath>
 #include <float.h>
 
@@ -397,7 +398,21 @@ int VectFuns::dirForBehind(const Vect3& so, const Velocity& vo, const Vect3& si,
      return dirForBehind(so.vect2(),vo.vect2(),si.vect2(),vi.vect2());
 }
 
-
+Vect3 VectFuns::parse(const std::string& s) {
+	std::vector<std::string> fields = split(s, Constants::wsPatternParens);
+	while (fields.size() > 0 && equals(fields[0], "")) {
+		fields.erase(fields.begin());
+	}
+	if (fields.size() == 3) {
+		return Vect3::make(Util::parse_double(fields[0]), Util::parse_double(fields[1]), Util::parse_double(fields[2]));
+	}
+	else if (fields.size() == 6) {
+		return Vect3::make(Util::parse_double(fields[0]), Units::clean(fields[1]),
+			Util::parse_double(fields[2]), Units::clean(fields[3]),
+			Util::parse_double(fields[4]), Units::clean(fields[5]));
+	}
+	return Vect3::INVALID();
+}
 
 
 

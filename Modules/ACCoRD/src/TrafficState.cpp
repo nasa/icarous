@@ -240,7 +240,7 @@ std::string TrafficState::formattedTrafficState(const std::string& utrk, const s
   if (pos_.isLatLon()) {
     s += ", "+pos_.lla().toString("deg","deg",ualt,Constants::get_output_precision());
   } else {
-    s += ", "+pos_.vect3().toStringNP(Constants::get_output_precision(),uxy,uxy,ualt);
+    s += ", "+fsStrNP(pos_.vect3(), Constants::get_output_precision(),uxy,uxy,ualt);
   }
   s += ", "+avel_.toStringNP(utrk,ugs,uvs,Constants::get_output_precision())+", "+
       FmPrecision(time,Constants::get_output_precision());

@@ -139,7 +139,7 @@ public:
   int mostSevereAlertLevel() const;
 
   /**
-   * @return first alert level whose region is equal to given one. Returns 0 if none.
+   * @return first alert level whose region is equal to given region. Returns 0 if none.
    */
   int alertLevelForRegion(BandsRegion::Region region) const;
 

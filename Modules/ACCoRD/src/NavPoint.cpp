@@ -115,7 +115,7 @@ Vect2 NavPoint::vect2() const {
 	return p.vect2();
 }
 
-Point NavPoint::vect3() const {
+Vect3 NavPoint::vect3() const {
 	if (NavPoint_DEBUG && p.isLatLon()) {
 		throw runtime_error("Incorrect geometry in vect3()");
 	}

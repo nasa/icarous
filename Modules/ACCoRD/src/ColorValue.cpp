@@ -233,9 +233,9 @@ BandsRegion::Region ColorValue::region_of(const std::vector<ColorValue>& l, doub
   for (i=0; i < static_cast<int>(l.size()) && Util::almost_less(l[i].val,val,DaidalusParameters::ALMOST_); ++i);
   if (i < static_cast<int>(l.size())) {
     if (Util::almost_equals(l[i].val,val,DaidalusParameters::ALMOST_)) {
-      if (BandsRegion::isResolutionBand(l[i].color_right)) {
+      if (BandsRegion::isResolutionBand(l[i].color_right) || !BandsRegion::isValidBand(l[i].color_left)) {
         return l[i].color_right;
-      } else if (BandsRegion::isResolutionBand(l[i].color_left) ||
+      } else if (BandsRegion::isResolutionBand(l[i].color_left) || !BandsRegion::isValidBand(l[i].color_right) ||
           BandsRegion::orderOfConflictRegion(l[i].color_left) <
           BandsRegion::orderOfConflictRegion(l[i].color_right)) {
         return l[i].color_left;

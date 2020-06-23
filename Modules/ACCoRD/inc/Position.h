@@ -42,7 +42,7 @@ private:
 	// This class is a disjoint union on LatLonAlt and Point
 	bool latlon;            // indicates whether point is geodesic or Euclidean
 	LatLonAlt ll;           // only valid if latlon = true
-	Point s3;               // only valid if latlon = false
+	Vect3 s3;               // only valid if latlon = false
 
 	Position(const double x, const double y, const double z);
 
@@ -132,6 +132,9 @@ public:
 	 */
 	static Position makeXYZ(double x, std::string x_unit, double y, std::string y_unit, double z, std::string z_unit);
 
+	static Position make(const LatLonAlt& lla);
+
+	static Position make(const Vect3& p);
 
 	//  private:
 	//    static Position& makeZeroLL();
@@ -182,7 +185,7 @@ public:
 	 * */
 	Vect2  vect2() const;
 	/** Return the three dimensional position vector */
-	const Point&  vect3() const;
+	const Vect3&  vect3() const;
 	/** Return the associated LatLonAlt object */
 	const LatLonAlt& lla() const;
 
@@ -456,12 +459,7 @@ public:
 	 * @return string representation
 	 * */
 	std::string toString2D(int prec) const;
-	/**
-	 * Return a string representation using the given unit conversions (latitude and longitude, if 
-	 * appropriate, are always in degrees, so only the z unit is used in that case)
-	 * @return string representation
-	 */
-	std::string toStringUnits() const;
+
 
 	/**
 	 * Return a string representation using the given unit conversions (latitude and longitude, if appropriate, are always in degrees, so only the z unit is used in that case)

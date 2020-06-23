@@ -154,7 +154,7 @@ public:
 	/** Return the three dimensional position vector 
 	 * @return a Point object (essentially a Vect3 with more natural units)
 	 * */
-    Point  vect3() const;
+    Vect3 vect3() const;
     
     /** Return the LatLonAlt object */
     const LatLonAlt& lla() const;

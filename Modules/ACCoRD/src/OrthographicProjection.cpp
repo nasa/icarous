@@ -106,8 +106,8 @@ Vect3 OrthographicProjection::project(const Position& sip) const {
 	return si;
 }
 
-Point OrthographicProjection::projectPoint(const Position& sip) const {
-	return Point::mk(project(sip));
+Vect3 OrthographicProjection::projectPoint(const Position& sip) const {
+	return project(sip);
 }
 
 LatLonAlt OrthographicProjection::inverse(const Vect2& xy, double alt) const {

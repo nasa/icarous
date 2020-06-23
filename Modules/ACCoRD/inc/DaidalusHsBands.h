@@ -21,32 +21,30 @@ namespace larcfm {
 
 class DaidalusHsBands : public DaidalusRealBands {
 
-
-private:
-  double horizontal_accel_; // Horizontal acceleration
-
-
 public:
-  DaidalusHsBands(DaidalusParameters& parameters);
+  DaidalusHsBands();
 
   DaidalusHsBands(const DaidalusHsBands& b);
 
-  /**
-   * Set DaidalusParmaeters
-   */
-  virtual void setDaidalusParameters(const DaidalusParameters& parameters);
+  virtual bool get_recovery(const DaidalusParameters& parameters) const;
 
-  virtual bool instantaneous_bands() const;
+  virtual double get_step(const DaidalusParameters& parameters) const;
 
-  double get_horizontal_accel() const;
+  virtual double get_min(const DaidalusParameters& parameters) const;
 
-  void set_horizontal_accel(double val);
+  virtual double get_max(const DaidalusParameters& parameters) const;
+
+  virtual double get_min_rel(const DaidalusParameters& parameters) const;
+
+  virtual double get_max_rel(const DaidalusParameters& parameters) const;
+
+  virtual bool instantaneous_bands(const DaidalusParameters& parameters) const;
 
   virtual double own_val(const TrafficState& ownship) const;
 
-  virtual double time_step(const TrafficState& ownship) const;
+  virtual double time_step(const DaidalusParameters& parameters, const TrafficState& ownship) const;
 
-  virtual std::pair<Vect3, Velocity> trajectory(const TrafficState& ownship, double time, bool dir) const;
+  virtual std::pair<Vect3, Velocity> trajectory(const DaidalusParameters& parameters, const TrafficState& ownship, double time, bool dir) const;
 
   virtual double max_delta_resolution(const DaidalusParameters& parameters) const;
 

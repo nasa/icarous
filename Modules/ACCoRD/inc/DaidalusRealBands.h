@@ -39,16 +39,12 @@ private:
   /*** PRIVATE VARIABLES */
 
   double mod_;  // If mod_ > 0, bands are circular modulo this value
-  double step_; // Value step
-  double min_param_; // Min value in parameters
-  double max_param_; // Max value in parameters
+  // When the following values are different from 0, they overwrite the values in the
+  // parameters.
   // min_rel (max_rel) is the positive distance from current value to minimum (maximum) value.
   // When mod_ > 0, min_rel, max_rel in [0,mod_/2]
-  double min_rel_param_; // Relative min value in parameters. A negative value represents val-min
-  double max_rel_param_; // Relative max value in parameters. A negative value represents max-val
-
-  /* Parameters for recovery bands */
-  bool recovery_;
+  double min_rel_; // Relative min value. A negative value represents val-min, i.e., from val to min
+  double max_rel_; // Relative max value. A negative value represents max-val, i.e., from val to max
 
   /**** CACHED VARIABLES ****/
 
@@ -93,62 +89,59 @@ private:
 
   BandsHysteresis bands_hysteresis_;
 
-protected:
-  double get_min_val_() const;
-  double getmax_val_() const;
-
 public:
   DaidalusRealBands(double mod=0);
 
   DaidalusRealBands(const DaidalusRealBands& b);
 
-  virtual void setDaidalusParameters(const DaidalusParameters& parameters) = 0;
+  virtual bool get_recovery(const DaidalusParameters& parameters) const = 0;
+
+  virtual double get_step(const DaidalusParameters& parameters) const = 0;
+
+  virtual double get_min(const DaidalusParameters& parameters) const = 0;
+
+  virtual double get_max(const DaidalusParameters& parameters) const = 0;
+
+  virtual double get_min_rel(const DaidalusParameters& parameters) const = 0;
+
+  virtual double get_max_rel(const DaidalusParameters& parameters) const = 0;
 
   virtual double own_val(const TrafficState& ownship) const = 0;
 
-  virtual double time_step(const TrafficState& ownship) const = 0;
+  virtual double time_step(const DaidalusParameters& parameters, const TrafficState& ownship) const = 0;
 
-  virtual bool instantaneous_bands() const = 0;
+  virtual bool instantaneous_bands(const DaidalusParameters& parameters) const = 0;
 
   virtual double max_delta_resolution(const DaidalusParameters& parameters) const = 0;
 
+  virtual bool saturate_corrective_bands(const DaidalusParameters& parameters, int dta_status) const;
+
+  // If necessary to be defined by the subclasses
+  virtual void set_special_configuration(const DaidalusParameters& parameters, int dta_status) {}
+
+  double get_min_val_() const;
+
+  double get_max_val_() const;
+
   double get_mod() const;
 
-  double get_step() const;
-
-  bool get_recovery() const;
-
-  // Set min and max when mod_ > 0. Requires min_val and max_val to be in range [0,mod)
-  void set_minmax_mod(double min, double max);
-
-  // Set min when mod == 0.
-  void set_min_nomod(double min);
-
-  // Set max when mod == 0.
-  void setmax_nomod(double max);
-
   /**
-   * Set min_rel. When mod_ > 0, requires min_rel to be in [0,mod/2]. Otherwise, a
-   * negative value represents min.
+   * Overwrite relative values from those in the parameters. When mod_ > 0, requires min_rel and max_rel
+   * to be in [0,mod/2]. When mod_ == 0, a negative min_rel value represents val-min and a negative value
+   * max_rel value represents max-val.
    */
-  void set_min_rel(double min_rel);
-
-  /**
-   * Set min_rel. When mod_ > 0, requires max_rel to be in [0,mod/2]. Otherwise, a
-   * negative value represents max.
-   */
-  void setmax_rel(double max_rel);
-
-  void set_step(double val);
-
-  void set_recovery(bool flag);
+  void set_min_max_rel(double min_rel, double max_rel);
 
 private:
-  bool check_input(const TrafficState& ownship);
+  double min_rel(const DaidalusParameters& parameters) const;
+
+  double max_rel(const DaidalusParameters& parameters) const;
+
+  bool set_input(const DaidalusParameters& parameters, const TrafficState& ownship, int dta_status);
 
 public:
-  bool kinematic_conflict(const TrafficState& ownship, const TrafficState& traffic,
-      Detection3D* detector, int epsh, int epsv, double alerting_time);
+  bool kinematic_conflict(const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic,
+      Detection3D* detector, int epsh, int epsv, double alerting_time, int dta_status);
 
   int length(DaidalusCore& core);
 
@@ -164,7 +157,12 @@ public:
   /**
    * Set cached values to stale conditions as they are no longer fresh
    */
-  void stale(bool hysteresis);
+  void stale();
+
+  /**
+   * clear hysteresis
+   */
+  void clear_hysteresis();
 
   /**
    * Returns true is object is fresh
@@ -239,14 +237,11 @@ private:
   bool compute_recovery_bands(IntervalSet& none_set_region, const std::vector<IndexLevelT>& ilts,
       DaidalusCore& core);
 
-  // Return index of corrective region: 0: NEAR, 1: MID, 2: FAR
-  static int corrective_region_index(const DaidalusCore& core);
-
   /**
    * Requires: compute_bands(conflict_region) = true && 0 <= conflict_region < CONFLICT_BANDS
    * Compute bands for one region. Return true iff recovery bands were computed.
    */
-  bool compute_region(std::vector<IntervalSet>& none_sets, int conflict_region, DaidalusCore& core);
+  bool compute_region(std::vector<IntervalSet>& none_sets, int conflict_region, int corrective_region, DaidalusCore& core);
 
   /**
    * Compute all bands.
@@ -254,10 +249,6 @@ private:
   void compute(DaidalusCore& core);
 
 public:
-  /**
-   * stale hysteresis depending on current_time and hysteresis_time
-   */
-  void reset_hysteresis(double current_time, double hysteresis_time);
 
   /**
    * Returns resolution maneuver.
@@ -275,16 +266,17 @@ public:
 
   /**
    * Return last time to maneuver, in seconds, for ownship with respect to traffic
-   * aircraft at ac_idx for conflict alert level. Return NaN if the ownship is not in conflict with aircraft within
-   * early alerting time. Return negative infinity if there is no time to maneuver.
+   * aircraft at ac_idx for conflict alert level. Return NaN if the ownship is not
+   * in conflict with aircraft within lookahead time. Return negative infinity if
+   * there is no time to maneuver.
    * Note: 1 <= alert_level <= alerter.size()
    */
   double last_time_to_maneuver(DaidalusCore& core, const TrafficState& intruder);
 
 private:
-  int maxdown(const TrafficState& ownship) const;
+  int maxdown(const DaidalusParameters& parameters, const TrafficState& ownship) const;
 
-  int maxup(const TrafficState& ownship) const;
+  int maxup(const DaidalusParameters& parameters, const TrafficState& ownship) const;
 
   /** Add (lb,ub) to noneset. In the case of mod_ > 0, lb can be greater than ub. This function takes
    * care of the mod logic. This function doesn't do anything when lb and ub are almost equals.
@@ -307,19 +299,19 @@ public:
    * values (or [0,mod] in the case of circular bands, i.e., when mod == 0).
    */
   virtual void none_bands(IntervalSet& noneset, const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
 
   virtual bool any_red(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
 
   virtual bool all_red(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
 
   bool all_green(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
 
   bool any_green(const Detection3D* conflict_det, const Detection3D* recovery_det,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic);
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic);
 
   /**
    * This function returns a resolution maneuver that is valid from B to T.
@@ -328,7 +320,7 @@ public:
    * The value dir=false is down and dir=true is up.
    */
   virtual double resolution(const Detection3D* conflict_det, const Detection3D* recovery_det, const TrafficState& repac,
-      int epsh, int epsv, double B, double T, const TrafficState& ownship, const TrafficState& traffic,
+      int epsh, int epsv, double B, double T, const DaidalusParameters& parameters, const TrafficState& ownship, const TrafficState& traffic,
       bool dir);
 
   std::string rawString() const;

@@ -91,25 +91,44 @@ vector<string> split_string_empty(const string& str,const string& delimiter) {
 
 
 #if defined(_MSC_VER)
-vector<string> split_regex(const string& s, const string& rgx_str) {
+vector<string> split_regex(const std::string& s, const std::string& rgx_str) {
 	std::vector<std::string> elems;
+	size_t index = 0;
+	size_t last = 0;
+	std::string xs = s;
 
-	std::regex rgx(rgx_str);
-	std::sregex_token_iterator iter(s.begin(), s.end(), rgx, -1);
-	std::sregex_token_iterator end;
-
-	while (iter != end)  {
-		elems.push_back(*iter);
-		++iter;
+	//fpln("Hello "+s+" X"+rgx_str+"X");
+	try {
+		std::regex rgx(rgx_str);
+		std::smatch sm;
+		while (std::regex_search(xs, sm, rgx)) {
+			//fpln("E" + xs.substr(0, sm.position()) + "E");
+			elems.push_back(xs.substr(0, sm.position()));
+			last = sm.position()+sm.length();
+			xs = sm.suffix().str();
+		}
+	}
+	catch (std::regex_error& e) {
+		fpln("Could not compile regex " + Fmi(e.code()) + "\n");
+		return elems;
+	}
+	//something let on the end, then add it here.
+	if (index < xs.size()) {
+		elems.push_back(xs.substr(index, (xs.size()-index)));
+	}
+	if (index == xs.size()) {
+		elems.push_back("");
 	}
 
 	return elems;
 }
 
+
 bool matches(const string& s, const string& rgx_str) {
 	std::regex rgx(rgx_str);
-	return regex_match(s.cbegin(), s.cend(), rgx);
+	return regex_match(s, rgx);
 }
+
 #else
 	vector<string> split_regex(const std::string& s, const std::string& rgx_str) {
 		std::vector<std::string> elems;

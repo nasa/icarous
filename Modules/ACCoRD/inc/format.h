@@ -78,18 +78,15 @@ namespace larcfm {
   /** send string to the error console with a "carriage return" */
   void fdln(const std::string& str);
 
-  /** Format a position vector as a Euclidean position */
-  std::string fvStrE(const Vect3& v);
-  
-  /** Format a position vector as a Euclidean position */
-  std::string fvStrE(const Vect2& v);
-
   /** Format a position vector */
   std::string fsStr(const Vect2& s);
 
   /** Format a position vector */
   std::string fsStr(const Vect3& s);
 
+  std::string fsStrNP(const Vect3& v, int prec, const std::string& xunits, const std::string& yunits, const std::string& zunits);
+
+  std::string fsStrNP(const Vect3& s, int prec);
 
   std::string fsStr8NP(const Vect3& s);
 

@@ -15,14 +15,14 @@
 #include "Alerter.h"
 #include "Constants.h"
 #include "NoneUrgencyStrategy.h"
-#include "ParameterData.h"
 #include "TrafficState.h"
 #include "DaidalusParameters.h"
 #include <map>
 #include <vector>
 #include <string>
 #include <cmath>
-#include "AlertingHysteresis.h"
+
+#include "HysteresisData.h"
 
 namespace larcfm {
 
@@ -46,13 +46,19 @@ private:
   /**** CACHED VARIABLES ****/
 
   /* Variable to control re-computation of cached values */
-  int cache_; // -1: outdated, 1:updated, 0: updated only most_urgent_ac and eps
+  int cache_; // -1: outdated, 1:updated, 0: updated only most_urgent_ac and eps values
   /* Most urgent aircraft */
   TrafficState most_urgent_ac_;
   /* Cached horizontal epsilon for implicit coordination */
   int epsh_;
   /* Cached vertical epsilon for implicit coordination */
   int epsv_;
+  /* Cached value of DTA status given current aircraft states.
+   *  0 : Not in DTA
+   * -1 : In DTA, but special bands are not enabled yet
+   *  1 : In DTA and special bands are enabled
+   */
+  int dta_status_;
   /* Cached lists of aircraft indices, alert_levels, and lookahead times sorted by indices, contributing to conflict (non-peripheral)
    * band listed per conflict bands, where 0th:NEAR, 1th:MID, 2th:FAR */
   std::vector<std::vector<IndexLevelT> > acs_conflict_bands_;
@@ -64,8 +70,9 @@ private:
 
   /**** HYSTERESIS VARIABLES ****/
 
-  // Alerting hysteresis per aircraft's ids
-  std::map<std::string,AlertingHysteresis> alerting_hysteresis_acs_;
+  // Alerting and DTA hysteresis per aircraft's ids
+  std::map<std::string,HysteresisData> alerting_hysteresis_acs_;
+  std::map<std::string,HysteresisData> dta_hysteresis_acs_;
 
   void init();
   void copyFrom(const DaidalusCore& core);
@@ -88,15 +95,23 @@ public:
   void clear();
 
   /**
-   * Set cached values to stale conditions as they are no longer fresh.
-   * If hysteresis is true, it also clears hysteresis variables
+   *  Clear wind vector from this object.
    */
-  void stale(bool hysteresis);
+  void clear_wind();
+
+  bool set_alerter_ownship(int alerter_idx);
+
+  bool set_alerter_traffic(int idx, int alerter_idx);
 
   /**
-   * stale hysteresis of given aircraft index (1-based index, where 0 is ownship)
+   *  Clear hysteresis information from this object.
    */
-  void reset_hysteresis(int ac_idx);
+  void clear_hysteresis();
+
+  /**
+   * Set cached values to stale conditions as they are no longer fresh.
+   */
+  void stale();
 
   /**
    * Returns true is object is fresh
@@ -107,6 +122,14 @@ public:
    *  Refresh cached values
    */
   void refresh();
+
+  /**
+   * Returns DTA status:
+   *  0 : DTA is not active
+   * -1 : DTA is active, but special bands are not enabled yet
+   *  1 : DTA is active and special bands are enabled
+   */
+  int DTAStatus();
 
   /**
    * @return most urgent aircraft for implicit coordination
@@ -161,7 +184,12 @@ public:
 
   void reset_ownship(int idx);
 
+  // idx is 0-based index in traffic list
+  bool remove_traffic(int idx);
+
   void set_wind_velocity(const Velocity& wind);
+
+  bool linear_projection(double offset);
 
   bool has_ownship() const;
 
@@ -196,14 +224,20 @@ public:
 
 private:
 
-  int alert_level(const Alerter& alerter, const TrafficState& intruder, int turning, int accelerating, int climbing);
+  int dta_hysteresis_current_value(const TrafficState& ac);
+
+  int alerting_hysteresis_current_value(const TrafficState& intruder, int turning, int accelerating, int climbing);
+
+  bool greater_than_corrective() const;
+
+  int raw_alert_level(const Alerter& alerter, const TrafficState& intruder, int turning, int accelerating, int climbing);
 
   static void add_blob(std::vector<std::vector<Position> >& blobs, std::vector<Position>& vin, std::vector<Position>& vout);
 
   /**
    * Return true if and only if threshold values, defining an alerting level, are violated.
    */
-  bool check_alerting_thresholds(const AlertThresholds& athr, const TrafficState& intruder, int turning, int accelerating, int climbing);
+  bool check_alerting_thresholds(const Alerter& alerter, int alert_level, const TrafficState& intruder, int turning, int accelerating, int climbing);
 
   /**
    * Requires 0 <= conflict_region < CONFICT_BANDS
@@ -230,20 +264,14 @@ public:
   const Interval& tiov(int conflict_region);
 
   /**
-   * Return alert index used for the traffic aircraft at 0 <= idx < traffic.size().
-   * The alert index depends on alerting logic. If ownship centric, it returns the
-   * alert index of ownship. Otherwise, returns the alert index of the traffic aircraft
-   * at idx. Return 0 if idx is out of range
+   * Return alert index used for intruder aircraft.
+   * The alert index depends on alerting logic and DTA logic.
+   * If ownship centric, it returns the alert index of ownship.
+   * Otherwise, returns the alert index of the intruder.
+   * If the DTA logic is enabled, the alerter of an aircraft is determined by
+   * its dta status.
    */
-  int alerter_index_of(int idx) const;
-
-  /**
-   * Return alerter used for the traffic aircraft at 0 <= idx < traffic.size().
-   * The alert index depends on alerting logic. If ownship centric, it returns the
-   * alerter of the ownship. Otherwise, returns the alerter of the traffic aircraft
-   * at idx.
-   */
-  const Alerter& alerter_of(int ac) const;
+  int alerter_index_of(const TrafficState& intruder);
 
   static int epsilonH(const TrafficState& ownship, const TrafficState& ac);
 
@@ -252,8 +280,6 @@ public:
   TrafficState criteria_ac();
 
   TrafficState recovery_ac();
-
-  void setParameterData(const ParameterData& p);
 
   std::string outputStringAircraftStates(bool internal) const;
 

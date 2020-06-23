@@ -15,11 +15,13 @@ namespace larcfm {
 
 class IndexLevelT {
 public:
-  int index_; // Aircraft 0-Index
-  int level_; // Alert level
-  double T_;  // Lookahead time
+  int index; // Aircraft 0-Index
+  int level; // Alert level
+  double time_horizon;
+  // Time horizon for computation of bands, either lookahead time for conflict bands
+  // or alerting time for peripheral bands
 
-  IndexLevelT(int index, int level, double T);
+  IndexLevelT(int idx, int lvl, double th);
 
   std::string toString() const;
 

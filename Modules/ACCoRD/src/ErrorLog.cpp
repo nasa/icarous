@@ -185,4 +185,9 @@ string ErrorLog::getMessageNoClear() const {
 	return message;
 }
 
+void ErrorLog::setName(const std::string& logname) {
+	name = logname;
+}
+
+
 }

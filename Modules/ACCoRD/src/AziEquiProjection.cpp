@@ -162,8 +162,8 @@ namespace larcfm {
     	return si;
     }
 
-    Point AziEquiProjection::projectPoint(const Position& sip) const {
-    	return Point::mk(project(sip));
+    Vect3 AziEquiProjection::projectPoint(const Position& sip) const {
+    	return project(sip);
     }
 
 

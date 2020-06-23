@@ -63,6 +63,8 @@ public:
 	 */
 	Vect3(const Vect2& v, const double vz);
 
+	static Vect3 mk(double x, double y, double z);
+
 	/** Destructor */
 	virtual ~Vect3() { }
 
@@ -98,6 +100,8 @@ public:
 	 * @return a new vector
 	 */
 	static Vect3 make(double x, double y, double z);
+
+	static Vect3 make(double x, const std::string& xunits, double y, const std::string& yunits, double z, const std::string& zunits);
 
 
 	Vect3 mkX(double nx);

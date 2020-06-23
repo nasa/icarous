@@ -13,7 +13,9 @@
 namespace larcfm {
 class Debug{
 private:
-	static bool userDebugFlag;
+	static const bool FAIL_FAST;
+	static int VERBOSE;
+	static void output(const std::string& tag, const std::string& msg);
 public:
 	
 	static void setUserDebugFlag(bool b);
@@ -28,7 +30,17 @@ public:
 	 * @param msg the debug message
 	 */
 	static void pln(const std::string& tag, const std::string& msg);
+	static void pln2(const std::string& msg, bool verbose);
 	static void pln(const std::string& msg);
+	static void pln(const std::string& tag, const std::string& msg, bool verbose);
+	static void pln(int lvl, const std::string& tag, const std::string& msg);
+	static void pln(int lvl, const std::string& msg);
+
+	static void warning(const std::string& tag, const std::string& msg);
+	static void warning(const std::string& msg);
+
+	static void error(const std::string& msg, bool fail_fast);
+	static void error(const std::string& msg);
 
 	/**
 	 * backtrace will only work under gcc

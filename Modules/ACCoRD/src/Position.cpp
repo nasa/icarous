@@ -13,7 +13,6 @@
 #include "Position.h"
 #include "Point.h"
 #include "LatLonAlt.h"
-//#include "UnitSymbols.h"
 #include "GreatCircle.h"
 #include "Projection.h"
 #include "Constants.h"
@@ -47,7 +46,7 @@ const Position& Position::ZERO_XYZ() {
 }
 
 
-Position::Position() : ll(LatLonAlt::ZERO()) , s3(Point::ZEROP()) {
+Position::Position() : ll(LatLonAlt::ZERO()) , s3(Vect3::ZERO()) {
 	latlon = true;
 }
 
@@ -92,6 +91,16 @@ Position Position::mkXYZ(double x, double y, double z) {
 
 Position Position::makeXYZ(double x, std::string x_unit, double y, std::string y_unit, double z, std::string z_unit) {
 	return Position(Units::from(x_unit, x), Units::from(y_unit, y), Units::from(z_unit,z));
+}
+
+Position Position::make(const LatLonAlt& lla)
+{
+	return Position(lla);
+}
+
+Position Position::make(const Vect3& p)
+{
+	return Position(p);
 }
 
 
@@ -140,7 +149,7 @@ Vect2 Position::vect2() const {
 	return Vect2(s3.x,s3.y);
 }
 
-const Point& Position::vect3() const {
+const Vect3& Position::vect3() const {
 	return s3;
 }
 
@@ -274,7 +283,7 @@ const Position Position::linearEst(double dn, double de) const {
 	if (latlon) {
 		newNP = Position(lla().linearEst(dn,de));
 	} else {
-		return Position(Point::mk(s3.x + de, s3.y + dn, s3.z));
+		return Position::mkXYZ(s3.x + de, s3.y + dn, s3.z);
 	}
 	return newNP;
 }
@@ -294,26 +303,6 @@ const Position Position::linearEst(const Velocity& vo, double time) const {
 	return newNP;
 }
 
-//const std::pair<Position,Velocity> Position::linearDist2D(const Velocity& v, double d) const {
-//	  double track = v.trk();
-//	  //f.pln(" $$$$$$ linearDist: v.track = "+Units::str("deg",v.compassAngle()));
-//	  if (latlon) {
-//		  LatLonAlt sEnd = GreatCircle::linear_initial(ll,track,d);
-//		  //sEnd = sEnd.mkAlt(altAtd);
-//		  double finalTrk = track;
-//		  if (d > minDist) {  // final course has problems if no distance between points (USE 1E-9), 1E-10 NOT GOOD
-//		     finalTrk = GreatCircle::final_course(ll, sEnd);
-//		  }
-//		  //f.pln(" $$$$$$ linearDist: v = "+v+" finalTrk = "+Units::str("deg",finalTrk)+" d = "+Units::str("ft",d));
-//		  Velocity vEnd = v.mkTrk(finalTrk);
-//		  return std::pair<Position,Velocity>(Position(sEnd),vEnd);
-//	  } else {
-//		  //Velocity vEnd = Velocity.mkTrkGsVs(track,fakeGs,0.0);
-//		  Vect3 sNew = s3.linearByDist2D(track,d);
-//		  //sNew = sNew.mkZ(altAtd);
-//		  return std::pair<Position,Velocity>(Position(sNew),v);
-//	  }
-// }
 
 const std::pair<Position,Velocity> Position::linearDist2D(double track, double d, double gsAt_d) const {
 	  //f.pln(" $$$$$$ linearDist: v.track = "+Units::str("deg",v.compassAngle()));
@@ -355,22 +344,11 @@ const Position Position::midPoint(const Position& p2) const{
 }
 
 
-
-
-//  const Position Position::relativeProjection(const Position& si) const {
-//    if (latlon) {
-//      Vect3 s3 = larcfm::Projection::createProjection(si.lla()).project(lla());
-//      return Position(LatLonAlt::mk(s3.y, s3.x, s3.z));
-//    } else {
-//      return Position(s3 - si.point());
-//    }
-//  }
-
 Position Position::interpolate(const Position& p2, double f) const {
   if (latlon) {
     return Position(GreatCircle::interpolate(ll,p2.lla(),f));
   } else {
-    return Position(Point::mk(VectFuns::interpolate(s3,Point::mk(p2.vect3()),f)));
+    return Position(VectFuns::interpolate(s3,p2.vect3(),f));
   }
 }
 
@@ -598,14 +576,6 @@ std::string Position::toString2D(int prec) const {
 
 /**
  * Return a string representation using the given unit conversions (latitude and longitude,
- * if appropriate, are always in degrees, so only the z unit is used in that case)
- */
-std::string Position::toStringUnits() const {
-	return toStringUnits("NM", "NM", "ft");
-}
-
-/**
- * Return a string representation using the given unit conversions (latitude and longitude,
  * if appropriate, are always in degrees,
  * so only the z unit is used in that case).
  */
@@ -624,7 +594,7 @@ std::string Position::toStringNP(int precision) const {
 	if (latlon)
 		return ll.toString(precision);
 	else
-		return s3.toStringNP(precision,"NM","NM","ft");
+		return fsStrNP(s3, precision); // .toStringNP(precision, "NM", "NM", "ft");
 }
 
 std::vector<std::string> Position::toStringList() const {
@@ -682,14 +652,14 @@ std::vector<std::string> Position::toStringList(int precision, int latLonExtraPr
 
 /** This interprets a string as a LatLonAlt position with units of deg/deg/ft or in the specified units (inverse of toString()) */
 const Position Position::parseLL(const std::string& s) {
-	return Position(LatLonAlt::parse(s));
+	return Position::make(LatLonAlt::parse(s));
 }
 
 /** This interprets a string as a XYZ position with units of nmi/nmi/ft or in the specified units (inverse of toString()) */
 const Position Position::parseXYZ(const std::string& s) {
-	Point v = Point::parse(s); // Vect3.parse assumes internal units
+	Vect3 v = VectFuns::parse(s); // Vect3.parse assumes internal units
 	//return makeXYZ(v.x, v.y, v.z);
-	return Position(v);
+	return Position::make(v);
 }
 
 const Position Position::parse(const std::string& s) {

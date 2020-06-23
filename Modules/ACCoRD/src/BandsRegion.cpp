@@ -35,7 +35,7 @@ std::string BandsRegion::to_string(Region region) {
 }
 
 bool BandsRegion::isValidBand(Region region) {
-  return region != UNKNOWN;;
+  return region != UNKNOWN;
 }
 
 bool BandsRegion::isResolutionBand(Region region) {

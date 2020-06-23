@@ -18,59 +18,54 @@
 
 namespace larcfm {
 
-DaidalusHsBands::DaidalusHsBands(DaidalusParameters& parameters) {
-  setDaidalusParameters(parameters);
+DaidalusHsBands::DaidalusHsBands() {}
+
+DaidalusHsBands::DaidalusHsBands(const DaidalusHsBands& b) : DaidalusRealBands(b) {}
+
+bool DaidalusHsBands::get_recovery(const DaidalusParameters& parameters) const {
+  return parameters.isEnabledRecoveryHorizontalSpeedBands();
 }
 
-DaidalusHsBands::DaidalusHsBands(const DaidalusHsBands& b) : DaidalusRealBands(b) {
-  horizontal_accel_ = b.horizontal_accel_;
+double DaidalusHsBands::get_step(const DaidalusParameters& parameters) const {
+  return parameters.getHorizontalSpeedStep();
 }
 
-/**
- * Set DaidalusParmaeters
- */
-void DaidalusHsBands::setDaidalusParameters(const DaidalusParameters& parameters) {
-  set_step(parameters.getHorizontalSpeedStep());
-  set_recovery(parameters.isEnabledRecoveryHorizontalSpeedBands());
-  set_min_rel(parameters.getBelowRelativeHorizontalSpeed());
-  setmax_rel(parameters.getAboveRelativeHorizontalSpeed());
-  set_min_nomod(parameters.getMinHorizontalSpeed());
-  setmax_nomod(parameters.getMaxHorizontalSpeed());
-  set_horizontal_accel(parameters.getHorizontalAcceleration());
+double DaidalusHsBands::get_min(const DaidalusParameters& parameters) const {
+  return parameters.getMinHorizontalSpeed();
 }
 
-bool DaidalusHsBands::instantaneous_bands() const {
-  return horizontal_accel_ == 0;
+double DaidalusHsBands::get_max(const DaidalusParameters& parameters) const {
+  return parameters.getMaxHorizontalSpeed();
 }
 
-double DaidalusHsBands::get_horizontal_accel() const {
-  return horizontal_accel_;
+double DaidalusHsBands::get_min_rel(const DaidalusParameters& parameters) const {
+  return parameters.getBelowRelativeHorizontalSpeed();
 }
 
-void DaidalusHsBands::set_horizontal_accel(double val) {
-  if (val != horizontal_accel_) {
-    horizontal_accel_ = val;
-    stale(true);
-  }
+double DaidalusHsBands::get_max_rel(const DaidalusParameters& parameters) const{
+  return parameters.getAboveRelativeHorizontalSpeed();
 }
 
+bool DaidalusHsBands::instantaneous_bands(const DaidalusParameters& parameters) const {
+  return parameters.getHorizontalAcceleration() == 0;
+}
 
 double DaidalusHsBands::own_val(const TrafficState& ownship) const {
   return ownship.velocityXYZ().gs();
 }
 
-double DaidalusHsBands::time_step(const TrafficState& ownship) const {
-  return get_step()/horizontal_accel_;
+double DaidalusHsBands::time_step(const DaidalusParameters& parameters, const TrafficState& ownship) const {
+  return get_step(parameters)/parameters.getHorizontalAcceleration();
 }
 
-std::pair<Vect3, Velocity> DaidalusHsBands::trajectory(const TrafficState& ownship, double time, bool dir) const {
+std::pair<Vect3, Velocity> DaidalusHsBands::trajectory(const DaidalusParameters& parameters, const TrafficState& ownship, double time, bool dir) const {
   std::pair<Position,Velocity> posvel;
-  if (instantaneous_bands()) {
-    double gs = ownship.velocityXYZ().gs()+(dir?1:-1)*j_step_*get_step();
+  if (instantaneous_bands(parameters)) {
+    double gs = ownship.velocityXYZ().gs()+(dir?1:-1)*j_step_*get_step(parameters);
     posvel = std::pair<Position, Velocity>(ownship.positionXYZ(),ownship.velocityXYZ().mkGs(gs));
   } else {
     posvel = ProjectedKinematics::gsAccel(ownship.positionXYZ(),ownship.velocityXYZ(),time,
-        (dir?1:-1)*horizontal_accel_);
+        (dir?1:-1)*parameters.getHorizontalAcceleration());
   }
   return std::pair<Vect3, Velocity>(ownship.pos_to_s(posvel.first),ownship.vel_to_v(posvel.first,posvel.second));
 }
@@ -79,10 +74,6 @@ std::pair<Vect3, Velocity> DaidalusHsBands::trajectory(const TrafficState& ownsh
 double DaidalusHsBands::max_delta_resolution(const DaidalusParameters& parameters) const {
   return parameters.getPersistencePreferredHorizontalSpeedResolution();
 }
-
-
-
-
 
 }
 

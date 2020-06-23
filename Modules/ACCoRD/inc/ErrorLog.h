@@ -142,6 +142,9 @@ public:
 	bool hasMessage() const;
 	std::string getMessage();
 	std::string getMessageNoClear() const;
+
+	void setName(const std::string& logname);
+
 };
 
 }

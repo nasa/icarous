@@ -65,8 +65,9 @@ int BandsRange::index_of(const std::vector<BandsRange>& ranges, double val, doub
         } else if (mod > 0) {
           prev_index = last_index;
         }
-        if (prev_index > 0) {
-          return BandsRegion::orderOfConflictRegion(ranges[i].region) <=
+        if (prev_index > 0 && BandsRegion::isValidBand(ranges[i].region)) {
+          return !BandsRegion::isValidBand(ranges[prev_index].region) ||
+              BandsRegion::orderOfConflictRegion(ranges[i].region) <=
               BandsRegion::orderOfConflictRegion(ranges[prev_index].region) ? i : prev_index;
         }
         return prev_index;
@@ -80,8 +81,10 @@ int BandsRange::index_of(const std::vector<BandsRange>& ranges, double val, doub
         } else if (mod > 0) {
           next_index = 0;
         }
-        if (next_index > 0) {
-          return BandsRegion::orderOfConflictRegion(ranges[i].region) <=
+        if (next_index > 0 && BandsRegion::isValidBand(ranges[i].region)) {
+          return
+              !BandsRegion::isValidBand(ranges[next_index].region) ||
+              BandsRegion::orderOfConflictRegion(ranges[i].region) <=
               BandsRegion::orderOfConflictRegion(ranges[next_index].region) ? i : next_index;
         }
         return next_index;

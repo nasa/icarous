@@ -93,7 +93,7 @@ namespace larcfm {
 	Vect3 project(const Position& sip) const;
 
     /** Return a projection of a Position in Euclidean 3-space (if already in Euclidian coordinate, this is the identity function) */
-	Point projectPoint(const Position& sip) const;
+	Vect3 projectPoint(const Position& sip) const;
     
     /** Return a LatLonAlt value corresponding to the given Euclidean position */
     LatLonAlt inverse(const Vect2& xy, double alt) const;

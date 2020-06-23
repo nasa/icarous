@@ -274,7 +274,7 @@ void BandsHysteresis::resolutionsHysteresis(const std::vector<BandsRange>& range
     nfactor_low_ = nfactor;
     resolution_up_ = res_u;
     nfactor_up_ = nfactor;
-    time_of_dir_ = last_time_;
+    time_of_dir_ = NaN;
   } else {
     // Make sure that old resolutions are still valid. If not, reset them.
     // persistence of up/right resolutions
@@ -299,9 +299,6 @@ void BandsHysteresis::resolutionsHysteresis(const std::vector<BandsRange>& range
     } else {
       resolution_up_ = res_u;
       nfactor_up_ = nfactor;
-      if (preferred_dir_) { // Only update time if up/right is preferred resolution
-        time_of_dir_ = last_time_;
-      }
     }
     // persistence of low/left resolutions
     idx = -1;
@@ -325,9 +322,6 @@ void BandsHysteresis::resolutionsHysteresis(const std::vector<BandsRange>& range
     } else {
       resolution_low_ = res_l;
       nfactor_low_ = nfactor;
-      if (!preferred_dir_) { // Only update time if low/left is preferred resolution
-        time_of_dir_ = last_time_;
-      }
     }
   }
 }
@@ -347,7 +341,7 @@ void BandsHysteresis::preferredDirectionHysteresis(double delta, double val, dou
     double mod_down = Util::safe_modulo(val-low,mod_);
     bool actual_dir = Util::almost_leq(mod_up,mod_down,DaidalusParameters::ALMOST_);
     if (hysteresis_time_ <= 0 || ISNAN(time_of_dir_) ||
-        last_time_ <= time_of_dir_ || delta <= 0) {
+        last_time_ < time_of_dir_ || delta <= 0) {
       time_of_dir_ = last_time_;
       preferred_dir_ = actual_dir;
     } else if (last_time_-time_of_dir_ < persistence_time_ ||

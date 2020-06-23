@@ -14,14 +14,14 @@
 namespace larcfm {
 
 
-IndexLevelT::IndexLevelT(int index, int level, double T) {
-  index_ = index;
-  level_ = level;
-  T_ = T;
+IndexLevelT::IndexLevelT(int idx, int lvl, double th) {
+  index = idx;
+  level = lvl;
+  time_horizon = th;
 }
 
 std::string IndexLevelT::toString() const {
-  std::string s="(index: "+Fmi(index_)+", level: "+Fmi(level_)+", T: "+FmPrecision(T_)+")";
+  std::string s="(index: "+Fmi(index)+", level: "+Fmi(level)+", time_horizon: "+FmPrecision(time_horizon)+")";
   return s;
 }
 
@@ -32,7 +32,7 @@ void IndexLevelT::toStringList(std::vector<std::string>& acs, const std::vector<
   acs.clear();
   for (int i = 0; i < (int) idxs.size(); ++i) {
     IndexLevelT ilt = idxs[i];
-    acs.push_back(traffic[ilt.index_].getId());
+    acs.push_back(traffic[ilt.index].getId());
   }
 }
 
