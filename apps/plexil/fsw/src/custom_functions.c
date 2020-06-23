@@ -180,7 +180,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
         }
 
         case ICAROUS_GEOFENCE_MONITOR_MID:{
-            geofenceConflict_t* gfConflct = (geofenceConflict_t*) plexilAppData.DATA_MsgPtr;
+            geofenceConflict_t* gfConflct = (geofenceConflict_t*) CFE_SB_GetUserData(plexilAppData.DATA_MsgPtr);
             if(gfConflct->numConflicts > 0 ) {
                 if (gfConflct->conflictTypes[0] == KEEP_IN)
                     plexilCustomData.keepInConflict = true;
@@ -211,7 +211,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
         }
 
         case ICAROUS_BANDS_TRACK_MID:{
-            bands_t* trk = (bands_t*) plexilAppData.DATA_MsgPtr;
+            bands_t* trk = (bands_t*) CFE_SB_GetUserData(plexilAppData.DATA_MsgPtr);
 
             memcpy(&plexilCustomData.trkBands,trk,sizeof(bands_t));
 
@@ -232,7 +232,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
         }
 
         case ICAROUS_BANDS_SPEED_MID:{
-            bands_t* gs = (bands_t*) plexilAppData.DATA_MsgPtr;
+            bands_t* trk = (bands_t*) CFE_SB_GetUserData(plexilAppData.DATA_MsgPtr);
 
             memcpy(&plexilCustomData.gsBands,gs,sizeof(bands_t));
 
@@ -260,7 +260,7 @@ void PLEXIL_ProcessCustomPackets(bool data){
         }
 
         case ICAROUS_BANDS_ALT_MID:{
-            bands_t* alt = (bands_t*) plexilAppData.DATA_MsgPtr;
+            bands_t* gs = (bands_t*) CFE_SB_GetUserData(plexilAppData.DATA_MsgPtr);
 
             memcpy(&plexilCustomData.altBands,alt,sizeof(bands_t));
             if(alt->currentConflictBand == 1){

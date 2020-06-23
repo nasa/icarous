@@ -170,9 +170,9 @@ void TRAJECTORY_ProcessPacket()
             TrajectoryAppData.numPlansComputed++;
 
             // Plan
-            char planID[10];
+            char planID[25];
             //sprintf(planID,"Plan%d",TrajectoryAppData.numPlansComputed);
-            sprintf(planID, "Plan%d", 1);
+            strcpy(planID,msg->planID);
             int val = PathPlanner_FindPath(TrajectoryAppData.pplanner, TrajectoryAppData.searchType, planID, msg->initialPosition, msg->finalPosition, msg->initialVelocity);
 
             if(val <= 0){

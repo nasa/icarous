@@ -518,28 +518,28 @@ void gsInterface_ProcessPacket() {
 
     case ICAROUS_BANDS_TRACK_MID:
       {
-        bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
+        bands_t* bands = (bands_t*) CFE_SB_GetUserData(appdataIntGS.INTERFACEMsgPtr);
         gsFragmentBands(bands,0);
         break;
       }
 
     case ICAROUS_BANDS_SPEED_MID:
       {
-        bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
+        bands_t* bands = (bands_t*) CFE_SB_GetUserData(appdataIntGS.INTERFACEMsgPtr);
         gsFragmentBands(bands,1);
         break;
       }
 
     case ICAROUS_BANDS_ALT_MID:
       {
-        bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
+        bands_t* bands = (bands_t*) CFE_SB_GetUserData(appdataIntGS.INTERFACEMsgPtr);
         gsFragmentBands(bands,2);
         break;
       }
 
     case ICAROUS_BANDS_VS_MID:
       {
-        bands_t* bands = (bands_t*) appdataIntGS.INTERFACEMsgPtr;
+        bands_t* bands = (bands_t*) CFE_SB_GetUserData(appdataIntGS.INTERFACEMsgPtr);
         gsFragmentBands(bands,3);
         break;
       }

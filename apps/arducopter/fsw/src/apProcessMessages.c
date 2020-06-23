@@ -787,7 +787,7 @@ void ARDUCOPTER_ProcessPacket() {
         case ICAROUS_BANDS_TRACK_MID:
         {
             mavlink_message_t msg;
-            bands_t* bands = (bands_t*) appdataInt.INTERFACEMsgPtr;
+            bands_t* bands = (bands_t*) CFE_SB_GetUserData(appdataInt.INTERFACEMsgPtr);
             mavlink_msg_icarous_kinematic_bands_pack(sysid_ic,compid_ic,&msg,(int8_t)bands->numBands,
                     (uint8_t)bands->type[0],(float)bands->min[0],(float)bands->max[0],
                     (uint8_t)bands->type[1],(float)bands->min[1],(float)bands->max[1],

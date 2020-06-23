@@ -223,28 +223,28 @@ void APINTERFACE_ProcessSBData() {
         }
 
         case ICAROUS_BANDS_TRACK_MID:{
-            bands_t* bands = (bands_t*) appdataApIntf.INTERFACEMsgPtr;
+            bands_t* bands = (bands_t*) CFE_SB_GetUserData(appdataApIntf.INTERFACEMsgPtr);
 
             //TODO: Track bands can be displayed to the piot if there is an interface
             break;
         }
 
         case ICAROUS_BANDS_SPEED_MID:{
-            bands_t* bands = (bands_t*) appdataApIntf.INTERFACEMsgPtr;
+            bands_t* bands = (bands_t*) CFE_SB_GetUserData(appdataApIntf.INTERFACEMsgPtr);
 
             //TODO: speed bands can be displayed to the piot if there is an interface
             break;
         }
 
         case ICAROUS_BANDS_ALT_MID:{
-            bands_t* bands = (bands_t*) appdataApIntf.INTERFACEMsgPtr;
+            bands_t* bands = (bands_t*) CFE_SB_GetUserData(appdataApIntf.INTERFACEMsgPtr);
 
             //TODO: alt bands
             break;
         }
 
         case ICAROUS_BANDS_VS_MID:{
-            bands_t* bands = (bands_t*) appdataApIntf.INTERFACEMsgPtr;
+            bands_t* bands = (bands_t*) CFE_SB_GetUserData(appdataApIntf.INTERFACEMsgPtr);
 
             //TODO: vertical speed bands
             break;

@@ -11,7 +11,6 @@
 #include "cfe_sb.h"
 #include "cfe_es.h"
 #include "cfe_platform_cfg.h"
-#include "cognition_core.h"
 
 #include <string.h>
 #include <errno.h>
@@ -31,6 +30,8 @@
 #include "geofence_msgids.h"
 #include "guidance_msgids.h"
 #include "UtilFunctions.h"
+
+#include "Cognition.h"
 
 #ifdef APPDEF_MERGER
 #include "merger_msgids.h"
@@ -86,7 +87,10 @@ typedef struct{
 
     status_t statustxt;
 
-    cognition_t cog;
+    cognition_params_t parameters;
+
+    void* cog;                              ///< Cognition module object
+
 
 }appdataCog_t;
 
@@ -133,21 +137,21 @@ void COGNITION_DecisionProcess();
 int32_t cognitionTableValidationFunc(void *TblPtr);
 
 
-void COGNITION_SendGuidanceVelCmd();
+void COGNITION_SendGuidanceVelCmd(VelocityCommand cmd);
 
-void COGNITION_SendGuidanceFlightPlan();
+void COGNITION_SendGuidanceFlightPlan(FpChange cmd);
 
-void COGNITION_SendGuidanceP2P();
+void COGNITION_SendGuidanceP2P(P2PCommand cmd);
 
-void COGNITION_SendSpeedChange();
+void COGNITION_SendSpeedChange(SpeedChange cmd);
 
-void COGNITION_SendTakeoff();
+void COGNITION_SendTakeoff(TakeoffCommand cmd);
 
-void COGNITION_SendLand();
+void COGNITION_SendLand(LandCommand cmd);
 
-void COGNITION_FindNewPath();
+void COGNITION_FindNewPath(FpRequest cmd);
 
-void COGNITION_SendDitchRequest();
+void COGNITION_SendDitchRequest(DitchCommand cmd);
 
 EXTERN appdataCog_t appdataCog;
 #endif /* _apInterface_h_ */

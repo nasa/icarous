@@ -166,6 +166,8 @@ def verify_traffic(simdata, params=DEFAULT_VALIDATION_PARAMS):
         o_alt = o_pos[2]
         for traffic_id in simdata["traffic"].keys():
             traffic = simdata["traffic"][traffic_id]
+            if i > len(traffic["t"]) - 1:
+                continue
             t_pos = lla2ned(traffic["position"][i])
             t_alt = t_pos[2]
 

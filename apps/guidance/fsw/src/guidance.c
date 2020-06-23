@@ -264,14 +264,14 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
 
         case SPEED_CHANGE:{
             double speed = cmd->param1;
-            int one_waypoint = cmd->param2;
+            int hold = cmd->param2;
 
             // Change speed for current waypoint
             int nextWP = guidanceAppData.nextPrimaryWP;
             guidanceAppData.primaryFlightPlan.waypoints[nextWP].wp_metric = WP_METRIC_SPEED;
             guidanceAppData.primaryFlightPlan.waypoints[nextWP].value = speed;
 
-            if(one_waypoint < 1e-3){
+            if(hold > 1e-3){
                 // Also change default speed for all future waypoints
                 guidanceAppData.guidance_tbl.defaultWpSpeed = speed;
             }

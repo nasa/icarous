@@ -32,6 +32,7 @@ typedef enum {
  */
 typedef struct{
    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE]; /**< cFS header information */
+   char planID[25];                        /**< Plan name */
    algorithm_e algorithm;                  /**< algorithm to use */
    double initialPosition[3];              /**< initial position, lat (degree), lon (degree), alt (m) */
    double initialVelocity[3];              /**< initial velocity track (degree), ground speed (m/s), vertical speed (m/s) */

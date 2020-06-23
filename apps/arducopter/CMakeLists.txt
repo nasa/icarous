@@ -7,6 +7,7 @@ set(MODULES_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../Modules")
 set(MODULES_LIB "${MODULES_ROOT}/lib")
 
 include_directories(${MODULES_ROOT}/Utils)
+include_directories(${MODULES_ROOT}/Interfaces)
 include_directories(../Icarouslib/fsw/platform_inc)
 include_directories(../scheduler/fsw/platform_inc)
 include_directories(../traffic/fsw/platform_inc)
@@ -19,7 +20,6 @@ include_directories(fsw/src)
 include_directories(fsw/tables)
 include_directories(../port_lib/fsw/public_inc)
 aux_source_directory(fsw/src APP_SRC_FILES)
-
 
 link_directories(${MODULES_LIB})
 

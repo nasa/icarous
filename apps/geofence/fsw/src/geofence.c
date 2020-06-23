@@ -195,7 +195,8 @@ void GEOFENCE_ProcessPacket(){
         }
 
         case FREQ_30_WAKEUP_MID:{
-            CFE_SB_InitMsg(&geofenceAppData.gfConflictData,ICAROUS_GEOFENCE_MONITOR_MID,sizeof(geofenceConflict_t),TRUE);
+            cfsGeofenceConflict_t geofence_conflict_msg;
+            CFE_SB_InitMsg(&geofence_conflict_msg,ICAROUS_GEOFENCE_MONITOR_MID,sizeof(cfsGeofenceConflict_t),TRUE);
 
             double angle = 360 + atan2(geofenceAppData.velocity[1], geofenceAppData.velocity[0]) * 180 / M_PI;
             double track = fmod(angle, 360);
@@ -254,7 +255,9 @@ void GEOFENCE_ProcessPacket(){
             memcpy(geofenceAppData.gfConflictData.directPathToWaypoint1,geofenceAppData.directPathToWP1,sizeof(bool)*50);
             memcpy(geofenceAppData.gfConflictData.waypointConflict2,geofenceAppData.waypointConflict2,sizeof(bool)*50);
             memcpy(geofenceAppData.gfConflictData.directPathToWaypoint2,geofenceAppData.directPathToWP2,sizeof(bool)*50);
-            SendSBMsg(geofenceAppData.gfConflictData);
+
+            memcpy(geofence_conflict_msg.databuffer,(char*) &geofenceAppData.gfConflictData,sizeof(geofenceConflict_t));
+            SendSBMsg(geofence_conflict_msg);
 
             break;
         }

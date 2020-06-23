@@ -66,11 +66,6 @@ void TRAFFIC_AppInit(void) {
     CFE_SB_SubscribeLocal(FLIGHTPLAN_MONITOR_MID,trafficAppData.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Initialize all messages that this App generates
-    CFE_SB_InitMsg(&trafficAppData.trackBands, ICAROUS_BANDS_TRACK_MID, sizeof(bands_t), TRUE);
-    CFE_SB_InitMsg(&trafficAppData.speedBands, ICAROUS_BANDS_SPEED_MID, sizeof(bands_t), TRUE);
-    CFE_SB_InitMsg(&trafficAppData.vsBands, ICAROUS_BANDS_VS_MID, sizeof(bands_t), TRUE);
-    CFE_SB_InitMsg(&trafficAppData.altBands,ICAROUS_BANDS_ALT_MID,sizeof(bands_t),TRUE);
-    CFE_SB_InitMsg(&trafficAppData.altBands,ICAROUS_BANDS_ALT_MID,sizeof(bands_t),TRUE);
     CFE_SB_InitMsg(&trafficAppData.tfAlerts,TRAFFIC_ALERTS_MID,sizeof(traffic_alerts_t),TRUE);
 
     // Register table with table services
@@ -402,13 +397,25 @@ void TRAFFIC_ProcessPacket(){
                 }
             }
 
-            SendSBMsg(trafficAppData.trackBands);
+            cfsBands_t track_bands_msg;
+            CFE_SB_InitMsg(&track_bands_msg, ICAROUS_BANDS_TRACK_MID, sizeof(cfsBands_t), TRUE);
+            memcpy(track_bands_msg.databuffer,(char*) &trafficAppData.trackBands,sizeof(bands_t));
+            SendSBMsg(track_bands_msg);
 
-            SendSBMsg(trafficAppData.speedBands);
+            cfsBands_t speed_bands_msg;
+            CFE_SB_InitMsg(&speed_bands_msg, ICAROUS_BANDS_SPEED_MID, sizeof(cfsBands_t), TRUE);
+            memcpy(speed_bands_msg.databuffer,(char*) &trafficAppData.speedBands,sizeof(bands_t));
+            SendSBMsg(speed_bands_msg);
 
-            SendSBMsg(trafficAppData.vsBands);
+            cfsBands_t vs_bands_msg;
+            CFE_SB_InitMsg(&vs_bands_msg, ICAROUS_BANDS_VS_MID, sizeof(cfsBands_t), TRUE);
+            memcpy(vs_bands_msg.databuffer,(char*) &trafficAppData.vsBands,sizeof(bands_t));
+            SendSBMsg(vs_bands_msg);
 
-            SendSBMsg(trafficAppData.altBands);
+            cfsBands_t alt_bands_msg;
+            CFE_SB_InitMsg(&alt_bands_msg,ICAROUS_BANDS_ALT_MID,sizeof(cfsBands_t),TRUE);
+            memcpy(alt_bands_msg.databuffer,(char*) &trafficAppData.altBands,sizeof(bands_t));
+            SendSBMsg(alt_bands_msg);
 
             int count = 1;
             for(int i=0;i<count;++i){

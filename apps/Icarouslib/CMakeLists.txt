@@ -13,6 +13,7 @@ include_directories(../rotorsim/fsw/platform_inc)
 include_directories(../merger/fsw/platform_inc)
 include_directories(../guidance/fsw/platform_inc)
 include_directories(../port_lib/fsw/public_inc)
+include_directories(../../Modules/Interfaces)
 
 aux_source_directory(fsw/src LIB_SRC_FILES)
 

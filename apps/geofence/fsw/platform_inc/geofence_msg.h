@@ -17,26 +17,6 @@
  */
 
 /**
- * @struct geofenceConflict_t
- * @brief message contaning information about goefence conflicts
- *
- * Published under the ICAROUS_GEOFENCE_MONITOR_MID topic
- */
-typedef struct{
-    uint8_t TlmHeader[CFE_SB_TLM_HDR_SIZE];  /**< cFS header information */
-    uint8_t numConflicts;                    /**< number of conflicts */
-    uint16_t numFences;                      /**< total fences */
-    uint8_t conflictFenceIDs[5];             /**< conflicting fence ids */
-    uint8_t conflictTypes[5];                /**< type of conflict (keep in: 0/ keep out:1) */
-    double timeToViolation[5];               /**< time to violating constraint at current speed */
-    double recoveryPosition[3];              /**< recovery position */
-    bool waypointConflict1[50];              /**< 0 if waypoint is conflict free. 1 if waypoint conflict due to geofence */
-    bool directPathToWaypoint1[50];          /**< 1 if direct path exists, 0 if no direct path exist */
-    bool waypointConflict2[50];              /**< 0 if waypoint is conflict free. 1 if waypoint conflict due to geofence */
-    bool directPathToWaypoint2[50];          /**< 1 if direct path exists, 0 if no direct path exist */
-}geofenceConflict_t;
-
-/**
  * @struct pathFeasibilityCheck_t
  * @brief request to check if a path is feasible between two given points. Also used as a response.
  *
