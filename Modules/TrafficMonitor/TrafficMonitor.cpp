@@ -387,6 +387,7 @@ void TrafficMonitor::GetTrackBands(int& numBands,int* bandTypes,double* low,doub
         resdown = DAA.horizontalDirectionResolution(false) * 180/M_PI;
         bool prefDirection = DAA.preferredHorizontalDirectionRightOrLeft();
         double prefHeading = DAA.horizontalDirectionResolution(prefDirection);
+        respref = prefHeading;
         if(!ISNAN(prefHeading)) {
             if (prefDirection) {
                 prefHeading = prefHeading + 5 * M_PI / 180;
@@ -400,8 +401,6 @@ void TrafficMonitor::GetTrackBands(int& numBands,int* bandTypes,double* low,doub
                 //}
             }
             respref = prefHeading * 180 / M_PI;
-        }else{
-            respref = -1;
         }
     }else{
         respref = -1;
