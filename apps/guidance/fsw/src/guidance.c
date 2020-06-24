@@ -398,7 +398,10 @@ guidanceInput_t AssembleGuidanceInput(flightplan_t* fp, int nextWP){
     } else {
         refTime = fp->scenario_time + fp->waypoints[nextWP].value;
     }
-
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME,&ts);
+    double currTime = ts.tv_sec + (double)(ts.tv_nsec)/1E9;
+ 
     guidanceInput_t guidanceInput;
     guidanceInput.position[0] = guidanceAppData.position.latitude;
     guidanceInput.position[1] = guidanceAppData.position.longitude;
@@ -430,6 +433,7 @@ guidanceInput_t AssembleGuidanceInput(flightplan_t* fp, int nextWP){
     guidanceInput.velCmd[0] = guidanceAppData.velCmd.param1;
     guidanceInput.velCmd[1] = guidanceAppData.velCmd.param2;
     guidanceInput.velCmd[2] = guidanceAppData.velCmd.param3;
+    guidanceInput.currTime  = currTime;
     return guidanceInput;
 }
 

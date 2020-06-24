@@ -96,6 +96,6 @@ double distance(double x1,double y1,double x2,double y2);
 /*
  * Compute speed to the next WP
  */
-double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,guidanceParams_t* guidanceParams);
+double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,double currTime,guidanceParams_t* guidanceParams);
 
 #endif //GUIDANCE_FUNCTIONS_H

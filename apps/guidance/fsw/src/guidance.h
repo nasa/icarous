@@ -16,6 +16,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "guidance_tbl.h"
 #include "Icarous_msg.h"
