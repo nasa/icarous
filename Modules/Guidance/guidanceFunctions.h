@@ -50,6 +50,7 @@ typedef struct{
     bool         reachedStatusUpdated;  ///< True if target waypoint has been reached
     double       speed;                 ///< Desired vehicle speed (m/s)
     double       velCmd[3];             ///< Current velocity command
+    double       currTime;              ///< Current time
 }guidanceInput_t;
 
 /**

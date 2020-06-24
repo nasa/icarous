@@ -25,7 +25,7 @@ double ComputeClimbRate(double position[4],double nextWaypoint[4],double speed,g
     return climbrate;
 }
 
-double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,guidanceParams_t* guidanceParams){
+double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,double currTime, guidanceParams_t* guidanceParams){
 
    // If speed is provided for nextWP, use given speed
    if (nextWP[3] < 1){
@@ -47,12 +47,8 @@ double ComputeSpeed(double currPosition[5],double nextWP[5],double currSpeed,gui
    double distH = ComputeDistance(currPosition,nextWP);
    double distV = fabs(currPosition[2] - nextWP[2]);
    double dist = sqrt(distH*distH + distV*distV);
-   struct timespec ts;
-   clock_gettime(CLOCK_REALTIME,&ts);
 
-   double currTime = ts.tv_sec + (double)(ts.tv_nsec)/1E9;
    double nextWP_STA = nextWP[4];
-   double arrTolerance = 3; //TODO: Make this a user defined parameter
    double maxSpeed = guidanceParams->maxSpeed;
    double minSpeed = guidanceParams->minSpeed;
    double newSpeed;
@@ -82,7 +78,7 @@ int ComputeFlightplanGuidanceInput(guidanceInput_t* guidanceInput, guidanceOutpu
     double currSpeed = sqrt( guidanceInput->velocity[0] * guidanceInput->velocity[0] + 
                              guidanceInput->velocity[1] * guidanceInput->velocity[1] + 
                              guidanceInput->velocity[2] * guidanceInput->velocity[2]);
-    double speedRef = ComputeSpeed(guidanceInput->position, guidanceInput->curr_waypoint,currSpeed,guidanceParams);
+    double speedRef = ComputeSpeed(guidanceInput->position, guidanceInput->curr_waypoint,currSpeed,guidanceInput->currTime,guidanceParams);
     double capture_radius = speedRef * guidanceParams->captureRadiusScaling;
     if (guidanceParams->minCap >= capture_radius){
         capture_radius = guidanceParams->minCap;
