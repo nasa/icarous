@@ -100,7 +100,7 @@ void StartMission(void *obj,const int mission_start_value,const double delay){
     cog->StartMission(mission_start_value,delay);
 }
 
-int FlightPhases(void *obj){
+int FlightPhases(void *obj,double time){
     Cognition* cog = (Cognition*)obj;
-    return cog->FlightPhases();
+    return cog->FlightPhases(time);
 }

@@ -332,7 +332,7 @@ class Icarous():
             else:
                 print("IC: %d, %s, Distance to wp %d: %f" %(self.vehicleID,self.activePlan,self.nextWP2,dist))
 
-        self.fphase = self.Cog.RunFlightPhases()
+        self.fphase = self.Cog.RunFlightPhases(self.currTime)
         if self.fphase == 8:
             self.land = True
 

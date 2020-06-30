@@ -24,7 +24,7 @@ PathPlanner::PathPlanner(double _obsBuffer,double _maxCeiling) {
     struct timespec  tv;
     clock_gettime(CLOCK_REALTIME,&tv);
     double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
-    sprintf(fmt1,"Path-%f.log",localT);
+    sprintf(fmt1,"log/Path-%f.log",localT);
     log.open(fmt1);
 }
 
@@ -158,8 +158,8 @@ int PathPlanner::FindPath(algorithm searchType, char *planID, double *fromPositi
     EuclideanProjection projection =  Projection::createProjection(pos);
     char fenceFile[20];
     char wpFile[20];
-    sprintf(fenceFile,"gf_%s.log",planID);
-    sprintf(wpFile,"wp_%s.log",planID);
+    sprintf(fenceFile,"log/gf_%s.log",planID);
+    sprintf(wpFile,"log/wp_%s.log",planID);
     OutputFlightPlan(&projection,planID,fenceFile,wpFile);
 
     if(retval > 0){

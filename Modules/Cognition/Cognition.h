@@ -31,7 +31,7 @@ void ReachedWaypoint(void *obj, const char plan_id[], const int wp_reached_id);
 int GetCognitionOutput(void *obj,Command *command);
 void GetResolutionType(void *obj);
 void StartMission(void *obj,const int mission_start_value,const double delay);
-int FlightPhases(void *obj);
+int FlightPhases(void *obj,double time);
 
 #ifdef __cplusplus
 }

@@ -34,7 +34,7 @@ class Cognition():
         self.lib.GetCognitionOutput.argtypes = [c_void_p,POINTER(Command)]
         self.lib.GetCognitionOutput.restype = c_int
         self.lib.StartMission.argtypes = [c_void_p,c_int,c_double]
-        self.lib.FlightPhases.argtypes = [c_void_p]
+        self.lib.FlightPhases.argtypes = [c_void_p,c_double]
         self.lib.FlightPhases.restype = c_int
 
         self.obj = self.lib.CognitionInit()
@@ -73,8 +73,8 @@ class Cognition():
     def InputStartMission(self,startWP,delay):
         self.lib.StartMission(self.obj,c_int(startWP),c_double(delay))
 
-    def RunFlightPhases(self):
-        val = self.lib.FlightPhases(self.obj)
+    def RunFlightPhases(self,currTime):
+        val = self.lib.FlightPhases(self.obj,c_double(currTime))
         return val
 
     def GetOutput(self):

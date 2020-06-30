@@ -5,12 +5,12 @@ Merger::Merger(char callsign[],int vID, char logSuffix[]){
     vehicleID = vID;
     // Open log files
     char filename1[30];
-    sprintf(filename1,"mergerLog_%d%s.txt",vehicleID,logSuffix);
+    sprintf(filename1,"log/mergerLog_%d%s.log",vehicleID,logSuffix);
     logFile1 = fopen(filename1,"w");
     fprintf(logFile1, "Vehicle ID: %d",vID);   
 
     char filename2[30];
-    sprintf(filename2,"merger_appdata_%d%s.txt",vehicleID,logSuffix);
+    sprintf(filename2,"log/merger_appdata_%d%s.log",vehicleID,logSuffix);
     logFile2 = fopen(filename2,"w");
     fprintf(logFile2,"# time (s), intID, dist2int, speed, f/c/l, (r,t,d), zone, numSch, merge speed, merge dev, merging status, lat, lon, alt\n");
 

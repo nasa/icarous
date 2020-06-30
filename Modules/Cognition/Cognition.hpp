@@ -3,17 +3,13 @@
 
 //#define _GNU_SOURCE
 
-#include <string.h>
+#include <string>
 #include <list>
 #include <map>
 #include <vector>
-#include <errno.h>
-#include <unistd.h>
-#include <math.h>
-#include <time.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <fstream>
+#include <cstdio>
+
 
 #include "Interfaces.h"
 #include "Position.h"
@@ -140,7 +136,7 @@ class Cognition{
         /**
          * Top level finite state machines governing flight phase transitions
          */
-        int FlightPhases();
+        int FlightPhases(double time);
 
     private:
         void Initialize();
@@ -225,7 +221,8 @@ class Cognition{
                                const double old_heading);
 
     private:
-        double utcTime;                       ///< Current time
+        double utcTime;                         ///< Current time
+        std::string timeString;                 ///< Formatted time string
         cognition_params_t parameters;          ///< Configurable parameters used by Cognition
 
         // Flight plan book keeping
@@ -320,6 +317,8 @@ class Cognition{
 
         // output
         std::list<Command> cognitionCommands;
+
+        std::ofstream log;
 };
 
 #endif
