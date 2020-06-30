@@ -240,8 +240,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             strcpy(planID,cmd->buffer);
             double speed = cmd->param1;
             bool hold = cmd->param2==1?true:false;
-            int wp = cmd->param3;
-            ChangeWaypointSpeed(guidanceAppData.Guidance,planID,wp,speed,hold);
+            ChangeWaypointSpeed(guidanceAppData.Guidance,planID,0,speed,hold);
             break;
         }
 
