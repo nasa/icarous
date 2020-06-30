@@ -16,6 +16,7 @@ typedef struct{
 
 // Command structure containing data for speed changes
 typedef struct{
+    char name[25];      // Plan ID
     double speed;       // New speed value (m/s)
     int hold;           // 0: use new speed only until next wp, 1: use new speed for all future wps
 }SpeedChange;

@@ -610,6 +610,7 @@ status_e Cognition::Takeoff(){
 
        case SUCCESS: break;
        case FAILED: break;
+       case NOOPS: break;
     }
 
     return takeoffState;
@@ -657,6 +658,7 @@ status_e Cognition::Cruise(){
 
        case SUCCESS:break;
        case FAILED: break;
+       case NOOPS: break;
    }
 
    return cruiseState;
@@ -766,11 +768,9 @@ void Cognition::SetGuidanceVelCmd(const double track,const double gs,const doubl
     cognitionCommands.push_back(cmd);
 }
 
-void Cognition::SetGuidanceSpeedCmd(const double speed,const int hold){
-    SpeedChange speed_change = {
-        .speed = speed,
-        .hold = hold
-    };
+void Cognition::SetGuidanceSpeedCmd(const std::string &planID,const double speed,const int hold){
+    SpeedChange speed_change = {"",speed, hold };
+    strcpy(speed_change.name,planID.c_str());
     Command cmd = {.commandType = Command::SPEED_CHANGE_COMMAND};
     cmd.speedChange = speed_change;
     cognitionCommands.push_back(cmd);
@@ -993,7 +993,7 @@ bool Cognition::TrafficConflictManagement(){
          if(parameters.resolutionType == SPEED_RESOLUTION){
             requestGuidance2NextWP = -1;
             trafficConflictState = NOOPC;
-            SetGuidanceSpeedCmd(parameters.resolutionSpeed);
+            SetGuidanceSpeedCmd(activePlan->getID(),parameters.resolutionSpeed);
          }
 
          SendStatus((char*)"IC:traffic conflict resolved",6);
@@ -1015,10 +1015,10 @@ bool Cognition::RunTrafficResolution(){
       case SPEED_RESOLUTION:{
          //printf("resolution speed = %f\n",preferredSpeed);
          if(preferredSpeed >= 0){
-            SetGuidanceSpeedCmd(preferredSpeed);
+            SetGuidanceSpeedCmd(activePlan->getID(),preferredSpeed);
             prevResSpeed = preferredSpeed;
          }else{
-            SetGuidanceSpeedCmd(prevResSpeed);
+            SetGuidanceSpeedCmd(activePlan->getID(),prevResSpeed);
          }
 
          returnSafe = NextWpFeasible();
@@ -1284,7 +1284,7 @@ bool Cognition::TimeManagement(){
       }
 
 
-      SetGuidanceSpeedCmd(new_speed);
+      SetGuidanceSpeedCmd(activePlan->getID(),new_speed);
       return true;
    }
    return false;

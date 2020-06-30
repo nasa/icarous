@@ -187,7 +187,7 @@ class Cognition{
 
         void SetGuidanceVelCmd(const double track,const double gs,const double vs);
 
-        void SetGuidanceSpeedCmd(const double speed,const int hold = 0);
+        void SetGuidanceSpeedCmd(const std::string &planID,const double speed,const int hold = 0);
 
         void SetGuidanceFlightPlan(const std::string &plan_id,const int wp_index);
 

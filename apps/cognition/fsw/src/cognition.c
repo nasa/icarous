@@ -425,6 +425,7 @@ void COGNITION_SendSpeedChange(SpeedChange speed_command){
     argsCmd_t cmd;
     CFE_SB_InitMsg(&cmd,GUIDANCE_COMMAND_MID,sizeof(argsCmd_t),TRUE);
     cmd.name = SPEED_CHANGE;
+    strcpy(cmd.buffer,speed_command.name);
     cmd.param1 = speed_command.speed;
     cmd.param2 = speed_command.hold;
     SendSBMsg(cmd);
