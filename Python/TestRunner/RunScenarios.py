@@ -28,7 +28,7 @@ def SetApps(sitl=False, merger=False):
     app_list = ["Icarouslib","port_lib", "scheduler", sim_app, "gsInterface",
                 "cognition", "guidance", "traffic", "trajectory", "geofence"]
     if merger:
-        app_list += ["merger", "raft", "SBN", "udp"]
+        app_list += ["merger", "raft", "SBN", "SBN_UDP"]
 
     approot = os.path.join(icarous_home, "apps")
     outputloc = os.path.join(icarous_exe, "cf")
