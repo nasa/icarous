@@ -420,19 +420,20 @@ void TRAFFIC_ProcessPacket(void){
             int count = 1;
             for(int i=0;i<count;++i){
                 int alert;
-                char callsign[25];
+                char callsign[MAX_CALLSIGN_LEN];
                 count = TrafficMonitor_GetTrafficAlerts(trafficAppData.tfMonitor,i,callsign,&alert);
+                count = min(count,MAX_TRAFFIC_ALERTS);
                 if(count > 0){
-                    memcpy(trafficAppData.tfAlerts.callsign[i].value,callsign,25);
+                    memcpy(trafficAppData.tfAlerts.callsign[i].value,callsign,MAX_CALLSIGN_LEN);
                     trafficAppData.tfAlerts.trafficAlerts[i] = alert;
                     //OS_printf("Alert level for traffic: %ld is %d\n",id,alert);
                 }
             }
 
-            if(count>0) {
-		trafficAppData.tfAlerts.numAlerts = count;
-       		SendSBMsg(trafficAppData.tfAlerts);
-	    }
+            if (count > 0) {
+                trafficAppData.tfAlerts.numAlerts = count;
+                SendSBMsg(trafficAppData.tfAlerts);
+            }
 
             break;
         }
