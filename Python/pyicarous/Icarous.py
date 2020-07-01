@@ -11,7 +11,6 @@ from Geofence import (Getfence,GeofenceMonitor)
 from Trajectory import Trajectory
 from TrafficMonitor import TrafficMonitor
 from Merger import (MAX_NODES,Merger,LogData,MergerData)
-from quadsim import QuadSim
 from VehicleSim import (VehicleSim,
                         StartTraffic,
                         RunTraffic)
@@ -34,6 +33,7 @@ class Icarous():
         if simtype == "UAM_VTOL":
             self.ownship = VehicleSim(vehicleID,0.0,0.0,0.0,0.0,0.0,0.0)
         else:
+            from quadsim import QuadSim
             self.ownship = QuadSim()
 
         self.vehicleID = vehicleID

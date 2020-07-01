@@ -17,7 +17,7 @@ StartTraffic(1,HomePos,100,80,5,1,270,0,tfList)
 #    tf.setpos_uncertainty(0.01,0.01,0,0,0,0)
 
 # Initialize Icarous class
-ic = Icarous(HomePos,verbose=1)
+ic = Icarous(HomePos,simtype="UAM_VTOL",verbose=1)
 
 # Setup uncertainty and smoothing parameters
 #ic.setpos_uncertainty(0.01,0.01,0,0,0,0)
