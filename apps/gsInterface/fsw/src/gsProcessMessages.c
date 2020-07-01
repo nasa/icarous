@@ -832,7 +832,7 @@ uint16_t gsConvertPlanToMissionItems(flightplan_t* fp){
 void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t items[],flightplan_t* fp){
     int count = 0;
     strcpy(fp->id,"Plan0\0");
-    double speed = 0.25;
+    double speed = appdataIntGS.storedparams[85].value;
     bool useTime = false;
     fp->scenario_time = time(NULL);
     for(int i=0;i<size;++i){
@@ -915,7 +915,7 @@ void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t i
 void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp){
     int count = 0;
     strcpy(fp->id,"Plan0\0");
-    double speed = 0.25;
+    double speed = appdataIntGS.storedparams[85].value;
     bool useTime = false;
     fp->scenario_time = time(NULL);
     for(int i=0;i<size;++i){
