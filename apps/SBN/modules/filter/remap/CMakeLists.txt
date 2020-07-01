@@ -13,3 +13,6 @@ aux_source_directory(fsw/src LIB_SRC_FILES)
 
 # Create the app module
 add_cfe_app(sbn_f_remap ${LIB_SRC_FILES})
+
+# Create remap table
+add_cfe_tables(sbn_remap_tbl fsw/tables/sbn_remap_tbl.c)
