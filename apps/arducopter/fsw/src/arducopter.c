@@ -50,6 +50,28 @@ void ARDUCOPTER_AppMain(void){
             ARDUCOPTER_ProcessPacket();
         }
 
+        status = CFE_SB_RcvMsg(&appdataInt.INTERFACEMsgPtr, appdataInt.Command_Pipe, CFE_SB_POLL);
+
+        if (status == CFE_SUCCESS)
+        {
+            ARDUCOPTER_ProcessPacket();
+        }
+
+        status = CFE_SB_RcvMsg(&appdataInt.INTERFACEMsgPtr, appdataInt.Traffic_Pipe, CFE_SB_POLL);
+
+        if (status == CFE_SUCCESS)
+        {
+            ARDUCOPTER_ProcessPacket();
+        }
+
+        status = CFE_SB_RcvMsg(&appdataInt.INTERFACEMsgPtr, appdataInt.Band_Pipe, CFE_SB_POLL);
+
+        if (status == CFE_SUCCESS)
+        {
+            ARDUCOPTER_ProcessPacket();
+        }
+
+
         // Stop parameter timer if parameter was sent
         if(appdataInt.paramSent)
             ap_stopTimer(&appdataInt.pmtimer);
@@ -84,20 +106,38 @@ void ARDUCOPTER_AppInit(void){
                                 ARDUCOPTER_PIPE_DEPTH,    /* Depth of Pipe */
                                 SCH_ARDUCOPTER_PIPE1_NAME);    /* Name of pipe */
 
+    status = CFE_SB_CreatePipe( &appdataInt.Command_Pipe, /* Variable to hold Pipe ID */
+                                ARDUCOPTER_PIPE_DEPTH,    /* Depth of Pipe */
+                                "ARD_COMMPIPE");          /* Name of pipe */
+
+    status = CFE_SB_CreatePipe( &appdataInt.Traffic_Pipe, /* Variable to hold Pipe ID */
+                                ARDUCOPTER_PIPE_DEPTH,    /* Depth of Pipe */
+                                "ARD_TRAFPIPE");          /* Name of pipe */
+
+    status = CFE_SB_CreatePipe( &appdataInt.Band_Pipe,    /* Variable to hold Pipe ID */
+                                ARDUCOPTER_PIPE_DEPTH,    /* Depth of Pipe */
+                                "ARD_BANDPIPE");          /* Name of pipe */
+
+
+
     // Subscribe to wakeup messages from scheduler
     CFE_SB_SubscribeLocal(FREQ_50_WAKEUP_MID,appdataInt.SchInterface_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(FREQ_01_WAKEUP_MID,appdataInt.SchInterface_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
 
     //Subscribe to command messages and kinematic band messages from the SB
-    CFE_SB_SubscribeLocal(ICAROUS_COMMANDS_MID, appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(ICAROUS_COMMANDS_MID, appdataInt.Command_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+    CFE_SB_SubscribeLocal(GUIDANCE_COMMAND_MID,appdataInt.Command_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+
     CFE_SB_SubscribeLocal(ICAROUS_FLIGHTPLAN_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_STATUS_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(ICAROUS_TRAFFIC_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(ICAROUS_BANDS_TRACK_MID, appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID, appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
     CFE_SB_SubscribeLocal(UPLINK_FLIGHTPLAN_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-    CFE_SB_SubscribeLocal(GUIDANCE_COMMAND_MID,appdataInt.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+
+
+    CFE_SB_SubscribeLocal(ICAROUS_TRAFFIC_MID,appdataInt.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+
+    CFE_SB_SubscribeLocal(ICAROUS_BANDS_TRACK_MID, appdataInt.Band_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
     // Initialize all messages that this App generates
     CFE_SB_InitMsg(&wpreached,ICAROUS_WPREACHED_MID,sizeof(missionItemReached_t),TRUE);

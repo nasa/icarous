@@ -60,6 +60,20 @@ void gsInterface_AppMain(void){
       gsInterface_ProcessPacket();
     }
 
+    status = CFE_SB_RcvMsg(&appdataIntGS.INTERFACEMsgPtr, appdataIntGS.Band_Pipe, CFE_SB_POLL);
+
+    if (status == CFE_SUCCESS)
+    {
+      gsInterface_ProcessPacket();
+    }
+
+    status = CFE_SB_RcvMsg(&appdataIntGS.INTERFACEMsgPtr, appdataIntGS.Traffic_Pipe, CFE_SB_POLL);
+
+    if (status == CFE_SUCCESS)
+    {
+      gsInterface_ProcessPacket();
+    }
+
 
     // Stop parameter timer if parameter has been sent
     if(appdataIntGS.paramSent)
@@ -99,6 +113,14 @@ void gsInterface_AppInit(void){
       GSINTERFACE_PIPE_DEPTH,    /* Depth of Pipe */
       GSINT_TRAJ_PIPE_NAME );    /* Name of pipe */
 
+  status = CFE_SB_CreatePipe( &appdataIntGS.Band_Pipe, /* Variable to hold Pipe ID */
+      GSINTERFACE_PIPE_DEPTH,    /* Depth of Pipe */
+      "GSINTF_BANDPIPE" );    /* Name of pipe */
+
+  status = CFE_SB_CreatePipe( &appdataIntGS.Traffic_Pipe, /* Variable to hold Pipe ID */
+      GSINTERFACE_PIPE_DEPTH,    /* Depth of Pipe */
+      "GSINTF_TRAFPIPE" );    /* Name of pipe */
+
 
   // Subscribe to wakeup messages from scheduler
   CFE_SB_SubscribeLocal(FREQ_50_WAKEUP_MID,appdataIntGS.SchInterface_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
@@ -107,15 +129,17 @@ void gsInterface_AppInit(void){
   //Subscribe to command messages and kinematic band messages from the SB
   CFE_SB_Subscribe(ICAROUS_POSITION_MID,appdataIntGS.INTERFACE_Pipe);
   CFE_SB_SubscribeLocal(ICAROUS_ATTITUDE_MID,appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-  CFE_SB_SubscribeLocal(ICAROUS_COMMANDS_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-  CFE_SB_SubscribeLocal(ICAROUS_BANDS_TRACK_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-  CFE_SB_SubscribeLocal(ICAROUS_BANDS_SPEED_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-  CFE_SB_SubscribeLocal(ICAROUS_BANDS_ALT_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-  CFE_SB_SubscribeLocal(ICAROUS_BANDS_VS_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
   CFE_SB_SubscribeLocal(ICAROUS_STATUS_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
   CFE_SB_SubscribeLocal(ICAROUS_VFRHUD_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
-  CFE_SB_SubscribeLocal(ICAROUS_TRAFFIC_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
   CFE_SB_SubscribeLocal(ICAROUS_BATTERY_STATUS_MID, appdataIntGS.INTERFACE_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+
+
+  CFE_SB_SubscribeLocal(ICAROUS_TRAFFIC_MID, appdataIntGS.Traffic_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+
+  CFE_SB_SubscribeLocal(ICAROUS_BANDS_TRACK_MID, appdataIntGS.Band_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+  CFE_SB_SubscribeLocal(ICAROUS_BANDS_SPEED_MID, appdataIntGS.Band_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+  CFE_SB_SubscribeLocal(ICAROUS_BANDS_ALT_MID, appdataIntGS.Band_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
+  CFE_SB_SubscribeLocal(ICAROUS_BANDS_VS_MID, appdataIntGS.Band_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
 
   CFE_SB_SubscribeLocal(ICAROUS_TRAJECTORY_MID, appdataIntGS.Traj_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);
   CFE_SB_SubscribeLocal(ICAROUS_FLIGHTPLAN_MID, appdataIntGS.Traj_Pipe,CFE_SB_DEFAULT_MSG_LIMIT);

@@ -96,10 +96,13 @@
  */
 typedef struct{
     CFE_SB_PipeId_t    INTERFACE_Pipe;      ///< pipe variable
-    CFE_SB_PipeId_t    Traj_Pipe;          ///< pipe variable
-    CFE_SB_PipeId_t    SchInterface_Pipe;  ///< pipe variable
+    CFE_SB_PipeId_t    Traffic_Pipe;        ///< pipe variable
+    CFE_SB_PipeId_t    Traj_Pipe;           ///< pipe variable
+    CFE_SB_PipeId_t    Band_Pipe;           ///< pipe variable
+    CFE_SB_PipeId_t    Command_Pipe;        ///< pipe variable
+    CFE_SB_PipeId_t    SchInterface_Pipe;   ///< pipe variable
     CFE_SB_MsgPtr_t    INTERFACEMsgPtr;     ///< msg pointer to SB message
-    CFE_SB_MsgPtr_t    Sch_MsgPtr;         ///< msg pointer to SB message
+    CFE_SB_MsgPtr_t    Sch_MsgPtr;          ///< msg pointer to SB message
     CFE_TBL_Handle_t   INTERFACE_tblHandle; ///< table handle
     gsInterfaceTable_t Tbl;                 ///< Table
     port_t gs;                              ///< groundstation port
