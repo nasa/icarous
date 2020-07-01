@@ -36,20 +36,20 @@ void Guidance::ChangeWaypointSpeed(const std::string planID,const int wpid,const
    
    int wpidprev = wpid > 0?wpid - 1:nextWpId[planID]-1;
    int newInd = wpidprev + 1;
-   larcfm::Position prev_position = fp->getPos(wpidprev);
-   double start_time = fp->time(wpidprev);
-   double old_time   = fp->time(newInd);
-   double dist = prev_position.distanceH(currentPos);
-   double new_time = start_time + dist/speed;
-   double delta = old_time - new_time;
+   //larcfm::Position prev_position = fp->getPos(wpidprev);
+   //double start_time = fp->time(wpidprev);
+   //double old_time   = fp->time(newInd);
+   //double dist = prev_position.distanceH(currentPos);
+   //double new_time = start_time + dist/speed;
+   //double delta = old_time - new_time;
    if (updateAll){
-        fp->timeShiftPlan(newInd,delta);
+        //fp->timeShiftPlan(newInd,delta);
         for(int i=newInd;i<fp->size();++i){
               wpSpeeds[planID][i] = speed;
         }
    }
    else{
-        fp->setTime(newInd,new_time);
+        //fp->setTime(newInd,new_time);
         wpSpeeds[planID][newInd] = speed;
    }
 }
@@ -238,7 +238,6 @@ void Guidance::ComputePlanGuidance(){
     }else{
         speedRef = ComputeSpeed(currentPlan->point(nextWP),wpSpeeds[activePlanId][nextWP]);
     }
-
     double capture_radius = speedRef * params.captureRadiusScaling;
     if (params.minCap >= capture_radius){
         capture_radius = params.minCap;
