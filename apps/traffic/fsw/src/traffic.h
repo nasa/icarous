@@ -14,6 +14,7 @@
 #include "cfe_platform_cfg.h"
 
 #include <string.h>
+#include <math.h>
 
 #include "TrafficMonitor_proxy.h"
 

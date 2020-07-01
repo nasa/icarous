@@ -422,7 +422,7 @@ void TRAFFIC_ProcessPacket(void){
                 int alert;
                 char callsign[MAX_CALLSIGN_LEN];
                 count = TrafficMonitor_GetTrafficAlerts(trafficAppData.tfMonitor,i,callsign,&alert);
-                count = min(count,MAX_TRAFFIC_ALERTS);
+                count = fmin(count,MAX_TRAFFIC_ALERTS);
                 if(count > 0){
                     memcpy(trafficAppData.tfAlerts.callsign[i].value,callsign,MAX_CALLSIGN_LEN);
                     trafficAppData.tfAlerts.trafficAlerts[i] = alert;
