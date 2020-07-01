@@ -17,7 +17,6 @@ before_script:
   - echo -e "$SWEE_SSHKEY" > ~/.ssh/id_rsa
   - chmod 600 ~/.ssh/id_rsa
   - git submodule sync --recursive
-  - git submodule update --init Python/pyicarous
   - git submodule update --init apps/rotorsim/QuadCopterSim
   - git submodule update --init apps/merger
   - git submodule update --init apps/raft
