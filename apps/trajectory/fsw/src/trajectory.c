@@ -32,7 +32,7 @@ void TRAJECTORY_AppMain(void)
 
     while (CFE_ES_RunLoop(&RunStatus) == TRUE)
     {
-        status = CFE_SB_RcvMsg(&TrajectoryAppData.TrajRequest_MsgPtr, TrajectoryAppData.TrajRequest_Pipe, 10);
+        status = CFE_SB_RcvMsg(&TrajectoryAppData.TrajRequest_MsgPtr, TrajectoryAppData.TrajRequest_Pipe, CFE_SB_PEND_FOREVER);
 
         if (status == CFE_SUCCESS)
         {

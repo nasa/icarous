@@ -26,7 +26,7 @@ void RotorSim_AppMain(void){
     Rotorsim_AppInit();
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
-        status = CFE_SB_RcvMsg(&rotorsimAppData.Rotorsim_MsgPtr, rotorsimAppData.Rotorsim_Pipe, 10);
+        status = CFE_SB_RcvMsg(&rotorsimAppData.Rotorsim_MsgPtr, rotorsimAppData.Rotorsim_Pipe, CFE_SB_POLL);
 
         if (status == CFE_SUCCESS)
         {
@@ -107,11 +107,11 @@ void Rotorsim_AppInitData(RotorsimTable_t* TblPtr){
     memset(PC_Quadcopter_Simulation_Y.yout,0,sizeof(real_T)*30);
 }
 
-void Rotorsim_AppCleanUp(){
+void Rotorsim_AppCleanUp(void){
     // Do clean up here
 }
 
-void Rotorsim_ProcessPacket(){
+void Rotorsim_ProcessPacket(void){
 
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(rotorsimAppData.Rotorsim_MsgPtr);
@@ -210,7 +210,7 @@ void timer_callback(uint32_t timerId){
     /* Enable interrupts here */
 }
 
-void Rotorsim_GetOutputs(){
+void Rotorsim_GetOutputs(void){
 
     // Get outputs from relevant structure
     // Current position in local frame

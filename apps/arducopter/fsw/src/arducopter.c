@@ -43,7 +43,7 @@ void ARDUCOPTER_AppMain(void){
             }
         }
 
-        status = CFE_SB_RcvMsg(&appdataInt.INTERFACEMsgPtr, appdataInt.INTERFACE_Pipe, 10);
+        status = CFE_SB_RcvMsg(&appdataInt.INTERFACEMsgPtr, appdataInt.INTERFACE_Pipe, CFE_SB_POLL);
 
         if (status == CFE_SUCCESS)
         {

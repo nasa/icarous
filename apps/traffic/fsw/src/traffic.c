@@ -24,7 +24,7 @@ void TRAFFIC_AppMain(void){
     TRAFFIC_AppInit();
 
     while(CFE_ES_RunLoop(&RunStatus) == TRUE){
-        status = CFE_SB_RcvMsg(&trafficAppData.Traffic_MsgPtr, trafficAppData.Traffic_Pipe, 10);
+        status = CFE_SB_RcvMsg(&trafficAppData.Traffic_MsgPtr, trafficAppData.Traffic_Pipe, CFE_SB_PEND_FOREVER);
 
         if (status == CFE_SUCCESS)
         {

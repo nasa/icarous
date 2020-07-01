@@ -87,12 +87,12 @@ void Rotorsim_AppInitData(RotorsimTable_t* TblPtr);
 /**
  * App clean up
  */
-void Rotorsim_AppCleanUp();
+void Rotorsim_AppCleanUp(void);
 
 /**
  * Function to process received packets
  */
-void Rotorsim_ProcessPacket();
+void Rotorsim_ProcessPacket(void);
 
 /**
  * @var rotorsimAppData
@@ -109,9 +109,9 @@ int32_t RotorsimTableValidationFunc(void *TblPtr);
 
 void Rotorsim_InitModules(RotorsimTable_t* params);
 
-void Rotorsim_GetInputs();
+void Rotorsim_GetInputs(void);
 
-void Rotorsim_GetOutputs();
+void Rotorsim_GetOutputs(void);
 
 void timer_callback(uint32_t timerId);
 

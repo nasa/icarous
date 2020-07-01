@@ -46,14 +46,14 @@ void gsInterface_AppMain(void){
       }
     }
 
-    status = CFE_SB_RcvMsg(&appdataIntGS.INTERFACEMsgPtr, appdataIntGS.INTERFACE_Pipe, 10);
+    status = CFE_SB_RcvMsg(&appdataIntGS.INTERFACEMsgPtr, appdataIntGS.INTERFACE_Pipe, CFE_SB_POLL);
 
     if (status == CFE_SUCCESS)
     {
       gsInterface_ProcessPacket();
     }
 
-    status = CFE_SB_RcvMsg(&appdataIntGS.INTERFACEMsgPtr, appdataIntGS.Traj_Pipe, 10);
+    status = CFE_SB_RcvMsg(&appdataIntGS.INTERFACEMsgPtr, appdataIntGS.Traj_Pipe, CFE_SB_POLL);
 
     if (status == CFE_SUCCESS)
     {

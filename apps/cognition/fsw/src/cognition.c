@@ -37,7 +37,7 @@ void COGNITION_AppMain(void){
 		}
 
         // Get data from Software bus and send necessary commands to autopilot
-        int32 status = CFE_SB_RcvMsg(&appdataCog.CogMsgPtr, appdataCog.CognitionPipe, 10);
+        int32 status = CFE_SB_RcvMsg(&appdataCog.CogMsgPtr, appdataCog.CognitionPipe, CFE_SB_POLL);
 
         if (status == CFE_SUCCESS)
         {
