@@ -50,11 +50,11 @@ SWIGIMPORT struct SWIG_exc_struct {
   SwigObj *klass;
 } SWIG_exc;
 
-SWIGIMPORT void SWIG_rt_try();
+SWIGIMPORT void SWIG_rt_try(void);
 SWIGIMPORT int SWIG_rt_catch(const char *type);
 SWIGIMPORT void SWIG_rt_throw(SwigObj *klass, const char * msg);
-SWIGIMPORT int SWIG_rt_unhandled();
-SWIGIMPORT void SWIG_rt_endtry();
+SWIGIMPORT int SWIG_rt_unhandled(void);
+SWIGIMPORT void SWIG_rt_endtry(void);
 SWIGIMPORT int SWIG_exit(int code);
 
 #define SWIG_try \

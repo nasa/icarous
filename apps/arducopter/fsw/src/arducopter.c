@@ -148,7 +148,8 @@ void ARDUCOPTER_AppInit(void){
 
 void ARDUCOPTER_AppInitializeData(){
 
-    InitializePortConfig("arducopter",&appdataInt.ap);
+    char portFilePrefix[] = "arducopter";
+    InitializePortConfig(portFilePrefix,&appdataInt.ap);
 
     InitializeAircraftCallSign(appdataInt.callsign.value);
 
@@ -187,7 +188,8 @@ void ARDUCOPTER_AppInitializeData(){
     appdataInt.tjtimer = 0xffff;
     appdataInt.fenceSent = false;
 
-    bool status = InitializeParams("../ram/icarous_default.parm",appdataInt.storedparams,PARAM_COUNT);
+    char paramFile[] = "../ram/icarous_default.parm";
+    bool status = InitializeParams(paramFile,appdataInt.storedparams,PARAM_COUNT);
     if(!status){
         OS_printf("Error loading parameters\n");
         exit(0);

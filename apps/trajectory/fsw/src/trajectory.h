@@ -115,12 +115,12 @@ void TRAJECTORY_AppInitData(TrajectoryTable_t* TblPtr);
 /**
  * Clean up any memory allocated.
  */
-void TRAJECTORY_AppCleanUp();
+void TRAJECTORY_AppCleanUp(void);
 
 /**
  * Process software bus messages
  */
-void TRAJECTORY_ProcessPacket();
+void TRAJECTORY_ProcessPacket(void);
 
 /**
  * Peform the trajectory monitoring functions

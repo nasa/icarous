@@ -186,9 +186,9 @@ void ProcessAPMessage(mavlink_message_t message);
 void ARDUCOPTER_ProcessPacket(void);
 
 
-void apSendHeartbeat();
+void apSendHeartbeat(void);
 
-void apSendCallsign();
+void apSendCallsign(void);
 
 void ap_gfCallback(uint32_t timer);
 
@@ -201,7 +201,7 @@ void ap_startTimer(uint32_t *timerID,void (*f)(uint32_t),char* name,uint32_t sta
 
 void ap_stopTimer(uint32_t *timerID);
 
-void apInterface_PublishParams();
+void apInterface_PublishParams(void);
 
 /**
  * Validate table data

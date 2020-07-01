@@ -118,13 +118,13 @@ void COGNITION_AppInit(void){
 
 }
 
-void COGNITION_AppInitData(){
+void COGNITION_AppInitData(void){
     appdataCog.cog = CognitionInit();
     CFE_SB_InitMsg(&appdataCog.statustxt,ICAROUS_STATUS_MID,sizeof(status_t),TRUE);
 }
 
 
-void COGNITION_ProcessSBData() {
+void COGNITION_ProcessSBData(void) {
 
 
     CFE_SB_MsgId_t  MsgId;
@@ -309,7 +309,7 @@ void COGNITION_ProcessSBData() {
     return;
 }
 
-void COGNITION_AppCleanUp(){
+void COGNITION_AppCleanUp(void){
     //TODO: clean up memory allocation here if necessary
 }
 
@@ -318,7 +318,7 @@ int32_t cognitionTableValidationFunc(void *TblPtr){
   return status;
 }
 
-void COGNITION_DecisionProcess(){
+void COGNITION_DecisionProcess(void){
     FlightPhases(appdataCog.cog);
 
     Command command;

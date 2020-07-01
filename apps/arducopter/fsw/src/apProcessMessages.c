@@ -9,7 +9,7 @@
 #include "arducopter.h"
 #include "UtilFunctions.h"
 
-int GetMAVLinkMsgFromAP(){
+int GetMAVLinkMsgFromAP(void){
     int n = readPort(&appdataInt.ap);
     mavlink_message_t message;
     mavlink_status_t status;
@@ -25,7 +25,7 @@ int GetMAVLinkMsgFromAP(){
     return n;
 }
 
-void apSendHeartbeat(){
+void apSendHeartbeat(void){
     mavlink_message_t hbeat;
     mavlink_msg_heartbeat_pack(sysid_ic,compid_ic,&hbeat,MAV_TYPE_ONBOARD_CONTROLLER,MAV_AUTOPILOT_INVALID,0,0,0);
     writeMavlinkData(&appdataInt.ap,&hbeat);
@@ -41,7 +41,7 @@ void apSendHeartbeat(){
     }
 }
 
-void apSendCallsign(){
+void apSendCallsign(void){
     char buffer[50];
     memset(buffer,0,50);
     mavlink_message_t status_msg;
@@ -619,7 +619,8 @@ void ProcessAPMessage(mavlink_message_t message) {
                                                  PARAM_COUNT, i);
                     writeMavlinkData(&appdataInt.ap,&param_value_msg);
                     //OS_printf("%s, %f\n",appdataInt.storedparams[i].param_id,appdataInt.storedparams[i].value);
-                    ap_startTimer(&appdataInt.pmtimer,ap_pmCallback,"PMTIMER",10000000,5000000);
+                    char name[] = "PMTIMER";
+                    ap_startTimer(&appdataInt.pmtimer,ap_pmCallback,name,10000000,5000000);
                     appdataInt.paramSent = false;
                     break;
                 }
@@ -695,8 +696,8 @@ void ProcessAPMessage(mavlink_message_t message) {
                 //mavlink_message_t fetchfence;
                 //mavlink_msg_fence_fetch_point_pack(sysid,compid,&fetchfence,target_sys,target_comp,count+1);
                 //writeMavlinkData(&appdataIntGS.gs,&fetchfence);
-
-                ap_startTimer(&appdataInt.gftimer,ap_gfCallback,"GFTIMER",1000,1000000);
+                char name[] = "GFTIMER";
+                ap_startTimer(&appdataInt.gftimer,ap_gfCallback,name,1000,1000000);
 
             }else{
                 ap_stopTimer(&appdataInt.gftimer);
@@ -767,8 +768,8 @@ void ProcessAPMessage(mavlink_message_t message) {
                 appdataInt.gfData[index].ceiling = msg.param6;
                 appdataInt.rcv_gf_seq = 0;
                 appdataInt.fenceSent = false;
-
-                ap_startTimer(&appdataInt.gftimer,ap_gfCallback,"GFTIMER",1000,1000000);
+                char name[] = "GFTIMER";
+                ap_startTimer(&appdataInt.gftimer,ap_gfCallback,name,1000,1000000);
             }
             break;
 
@@ -776,7 +777,7 @@ void ProcessAPMessage(mavlink_message_t message) {
     }
 }
 
-void ARDUCOPTER_ProcessPacket() {
+void ARDUCOPTER_ProcessPacket(void) {
     CFE_SB_MsgId_t  MsgId;
 
 
@@ -847,8 +848,8 @@ void ARDUCOPTER_ProcessPacket() {
         case ICAROUS_TRAJECTORY_MID:{
             flightplan_t* fp = (flightplan_t*) appdataInt.INTERFACEMsgPtr;
             memcpy(&appdataInt.trajectory, fp, sizeof(flightplan_t));
-
-            ap_startTimer(&appdataInt.tjtimer,ap_tjCallback,"TJTIMER1",1000,1000000);   
+            char name[] = "TJTIMER1";
+            ap_startTimer(&appdataInt.tjtimer,ap_tjCallback,name,1000,1000000);   
             break;
         }
 

@@ -19,7 +19,7 @@ void _wrap_GeofenceConflict_recoveryPoint_set(SwigObj * carg1, /*aaa*/ double * 
 double * _wrap_GeofenceConflict_recoveryPoint_get(SwigObj * carg1);
 void _wrap_GeofenceConflict__gf_set(SwigObj * carg1, SwigObj * carg2);
 /*aaaaaa*/SwigObj * _wrap_GeofenceConflict__gf_get(SwigObj * carg1);
-GeofenceConflict * _wrap_new_GeofenceConflict();
+GeofenceConflict * _wrap_new_GeofenceConflict(void);
 void _wrap_delete_GeofenceConflict(GeofenceConflict * carg1);
 GeofenceMonitor * _wrap_new_GeofenceMonitor(/*aaa*/ double * carg1);
 void _wrap_GeofenceMonitor_SetGeofenceParameters(SwigObj * carg1, /*aaa*/ double * carg2);

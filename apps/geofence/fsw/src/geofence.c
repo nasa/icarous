@@ -108,12 +108,12 @@ void GEOFENCE_AppInit(void) {
 
 }
 
-void GEOFENCE_AppCleanUp(){
+void GEOFENCE_AppCleanUp(void){
     // Do clean up here
     delete_GeofenceMonitor(geofenceAppData.gfMonitor);
 }
 
-void GEOFENCE_ProcessPacket(){
+void GEOFENCE_ProcessPacket(void){
 
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(geofenceAppData.Geofence_MsgPtr);

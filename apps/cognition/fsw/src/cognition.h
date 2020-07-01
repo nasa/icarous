@@ -127,9 +127,9 @@ void COGNITION_ProcessSBData(void);
  * Process ADSB data
  * @brief Read ADSB data from ADSB transponder and publish traffic data on software bus.
  */
-void COGNITION_GetADSBData();
+void COGNITION_GetADSBData(void);
 
-void COGNITION_DecisionProcess();
+void COGNITION_DecisionProcess(void);
 
 /**
  * Validate table data

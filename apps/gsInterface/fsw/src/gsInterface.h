@@ -174,12 +174,12 @@ void gsInterface_ProcessPacket(void);
 /**
  * Send heartbeat message
  */
-void gsSendHeartbeat();
+void gsSendHeartbeat(void);
 
 /**
  * Send callsign
  */
-void gsSendCallsign();
+void gsSendCallsign(void);
 
 
 /**
@@ -193,7 +193,7 @@ appdataIntGS_t appdataIntGS;
 /**
  *  Send all locally stored params over the SB
  */
-void gsInterface_PublishParams();
+void gsInterface_PublishParams(void);
 
 void gsConvertMissionItemsToPlan(uint16_t  size, mavlink_mission_item_t items[],flightplan_t* fp);
 void gsConvertMissionItemsIntToPlan(uint16_t  size, mavlink_mission_item_int_t items[],flightplan_t* fp);

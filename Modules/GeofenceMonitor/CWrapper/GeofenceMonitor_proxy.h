@@ -50,11 +50,11 @@ SWIGIMPORT struct SWIG_exc_struct {
   SwigObj *klass;
 } SWIG_exc;
 
-SWIGIMPORT void SWIG_rt_try();
+SWIGIMPORT void SWIG_rt_try(void);
 SWIGIMPORT int SWIG_rt_catch(const char *type);
 SWIGIMPORT void SWIG_rt_throw(SwigObj *klass, const char * msg);
-SWIGIMPORT int SWIG_rt_unhandled();
-SWIGIMPORT void SWIG_rt_endtry();
+SWIGIMPORT int SWIG_rt_unhandled(void);
+SWIGIMPORT void SWIG_rt_endtry(void);
 SWIGIMPORT int SWIG_exit(int code);
 
 #define SWIG_try \
@@ -94,7 +94,7 @@ void GeofenceConflict_recoveryPoint_set(SwigObj * carg1, /*aaa*/ double * carg2)
 double * GeofenceConflict_recoveryPoint_get(SwigObj * carg1);
 void GeofenceConflict__gf_set(SwigObj * carg1, SwigObj * carg2);
 /*aaaaaa*/SwigObj * GeofenceConflict__gf_get(SwigObj * carg1);
-GeofenceConflict * new_GeofenceConflict();
+GeofenceConflict * new_GeofenceConflict(void);
 void delete_GeofenceConflict(GeofenceConflict * carg1);
 
 typedef SwigObj GeofenceMonitor;

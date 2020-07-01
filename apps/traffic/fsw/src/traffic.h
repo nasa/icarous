@@ -95,12 +95,12 @@ void TRAFFIC_AppInit(void);
 /**
  * Deallocates memory
  */
-void TRAFFIC_AppCleanUp();
+void TRAFFIC_AppCleanUp(void);
 
 /**
  * Processes incoming software bus messages
  */
-void TRAFFIC_ProcessPacket();
+void TRAFFIC_ProcessPacket(void);
 
 /**
  * Validates table parameters

@@ -25,7 +25,7 @@ const mavlink_icarous_kinematic_bands_t EMPTY_BAND_MSG = {
   .max5 = 0,
 };
 
-int GetMAVLinkMsgFromGS(){
+int GetMAVLinkMsgFromGS(void){
 	int n = readPort(&appdataIntGS.gs);
 	mavlink_message_t message;
 	mavlink_status_t status;
@@ -40,7 +40,7 @@ int GetMAVLinkMsgFromGS(){
 	return n;
 }
 
-void gsSendHeartbeat(){
+void gsSendHeartbeat(void){
 
     mavlink_message_t hbeat;
     mavlink_msg_heartbeat_pack(sysid_ic,compid_ic,&hbeat,MAV_TYPE_GENERIC,MAV_AUTOPILOT_INVALID,appdataIntGS.currentIcarousMode,appdataIntGS.currentApMode,0);
@@ -52,7 +52,7 @@ void gsSendHeartbeat(){
     }
 }
 
-void gsSendCallsign(){
+void gsSendCallsign(void){
     char buffer[50];
     memset(buffer,0,50);
     mavlink_message_t status_msg;
@@ -82,8 +82,8 @@ void ProcessGSMessage(mavlink_message_t message) {
             //mavlink_message_t msgRequest;
             //mavlink_msg_mission_request_pack(sysid,compid,&msgRequest,target_sys,target_comp,appdataIntGS.waypointSeq,MAV_MISSION_TYPE_MISSION);
             //writeMavlinkData(&appdataIntGS.gs,&msgRequest);
-
-            gs_startTimer(&appdataIntGS.wptimer,gs_wpCallback,"WPTIMER",1000,1000000);
+            char name[] = "WPTIMER";
+            gs_startTimer(&appdataIntGS.wptimer,gs_wpCallback,name,1000,1000000);
             break;
         }
 
@@ -124,7 +124,8 @@ void ProcessGSMessage(mavlink_message_t message) {
             //                                    MAV_MISSION_TYPE_MISSION);
             //writeMavlinkData(&appdataIntGS.gs, &msgRequest);
 
-            gs_startTimer(&appdataIntGS.wptimer,gs_wpCallback,"WPTIMER",1000,1000000);   
+            char name[] = "WPTIMER";
+            gs_startTimer(&appdataIntGS.wptimer,gs_wpCallback,name,1000,1000000);   
           }
 
           break;
@@ -162,7 +163,8 @@ void ProcessGSMessage(mavlink_message_t message) {
           }
 
           if(appdataIntGS.receivingWP < appdataIntGS.numWaypoints) {
-            gs_startTimer(&appdataIntGS.wptimer,gs_wpCallback,"WPTIMER",1000,1000000);   
+            char name[] = "WPTIMER";
+            gs_startTimer(&appdataIntGS.wptimer,gs_wpCallback,name,1000,1000000);   
           }
 
           break;
@@ -317,7 +319,8 @@ void ProcessGSMessage(mavlink_message_t message) {
                 appdataIntGS.rcv_gf_seq = 0;
                 appdataIntGS.fenceSent = false;
 
-                gs_startTimer(&appdataIntGS.gftimer,gs_gfCallback,"GFTIMER",1000,1000000);
+                char name[] = "GFTIMER";
+                gs_startTimer(&appdataIntGS.gftimer,gs_gfCallback,name,1000,1000000);
             }
             else if (msg.command == MAV_CMD_SPATIAL_USER_1) {
                 appdataIntGS.traffic.index = (uint32_t)msg.param1;
@@ -403,7 +406,8 @@ void ProcessGSMessage(mavlink_message_t message) {
                 //mavlink_msg_fence_fetch_point_pack(sysid,compid,&fetchfence,target_sys,target_comp,count+1);
                 //writeMavlinkData(&appdataIntGS.gs,&fetchfence);
 
-                gs_startTimer(&appdataIntGS.gftimer,gs_gfCallback,"GFTIMER",1000,1000000);
+                char name[] = "GFTIMER";
+                gs_startTimer(&appdataIntGS.gftimer,gs_gfCallback,name,1000,1000000);
 
             }else{
                 gs_stopTimer(&appdataIntGS.gftimer);
@@ -451,7 +455,8 @@ void ProcessGSMessage(mavlink_message_t message) {
                     SendGSMsg(param_value_msg);
                     
 
-                    gs_startTimer(&appdataIntGS.pmtimer,gs_pmCallback,"PMTIMER",10000000,10000000);
+                    char name[] = "PMTIMER";
+                    gs_startTimer(&appdataIntGS.pmtimer,gs_pmCallback,name,10000000,10000000);
                     appdataIntGS.paramSent = false;
                     break;
                 }
@@ -509,7 +514,7 @@ void ProcessGSMessage(mavlink_message_t message) {
 	}
 }
 
-void gsInterface_ProcessPacket() {
+void gsInterface_ProcessPacket(void) {
 	CFE_SB_MsgId_t  MsgId;
 
   MsgId = CFE_SB_GetMsgId(appdataIntGS.INTERFACEMsgPtr);
@@ -558,7 +563,9 @@ void gsInterface_ProcessPacket() {
         //printf("Received new trajectory\n");
         flightplan_t* fp = (flightplan_t*) appdataIntGS.INTERFACEMsgPtr;
         memcpy(&appdataIntGS.trajectory, fp, sizeof(flightplan_t));
-        gs_startTimer(&appdataIntGS.tjtimer,gs_tjCallback,"TJTIMER",1000,1000000);   
+
+        char name[] = "TJTIMER";
+        gs_startTimer(&appdataIntGS.tjtimer,gs_tjCallback,name,1000,1000000);   
         break;
       }
 

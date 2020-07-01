@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-void* CognitionInit();
+void* CognitionInit(void);
 void Reset(void *obj);
 void ResetFlightPhases(void *obj);
 void InputVehicleState(void *obj,const double pos[3],const double vel[3],const double heading);

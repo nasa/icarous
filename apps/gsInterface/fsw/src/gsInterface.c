@@ -156,9 +156,10 @@ void gsInterface_AppInit(void){
 
 }
 
-void gsInterface_InitializeAppData(){
+void gsInterface_InitializeAppData(void){
 
-  InitializePortConfig("gsInterface",&appdataIntGS.gs);
+  char filePrefix[] = "gsInterface";
+  InitializePortConfig(filePrefix,&appdataIntGS.gs);
 
   InitializeAircraftCallSign(appdataIntGS.callsign.value);
 
@@ -183,14 +184,15 @@ void gsInterface_InitializeAppData(){
   appdataIntGS.fenceSent = false;
   appdataIntGS.publishDefaultParams = false;
 
-  bool status = InitializeParams("../ram/icarous_default.parm",appdataIntGS.storedparams,PARAM_COUNT);
+  char paramFile[] = "../ram/icarous_default.parm";
+  bool status = InitializeParams(paramFile,appdataIntGS.storedparams,PARAM_COUNT);
   if(!status){
     OS_printf("Error loading parameters\n");
     exit(0);
   }
 }
 
-void gsInterface_AppCleanUp(){
+void gsInterface_AppCleanUp(void){
 
 }
 

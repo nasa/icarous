@@ -88,12 +88,12 @@ void GEOFENCE_AppInit(void);
 /**
  * App clean up
  */
-void GEOFENCE_AppCleanUp();
+void GEOFENCE_AppCleanUp(void);
 
 /**
  * Function to process received packets
  */
-void GEOFENCE_ProcessPacket();
+void GEOFENCE_ProcessPacket(void);
 
 /**
  * @var geofenceAppData

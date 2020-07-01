@@ -75,22 +75,22 @@ void GUIDANCE_AppInit(void);
 /**
  * Initialize app specific data structures
  */
-void GUIDANCE_AppInitData();
+void GUIDANCE_AppInitData(void);
 
 /**
  * Deallocates memory
  */
-void GUIDANCE_AppCleanUp();
+void GUIDANCE_AppCleanUp(void);
 
 /**
  * Processes incoming software bus messages
  */
-void GUIDANCE_ProcessPacket();
+void GUIDANCE_ProcessPacket(void);
 
 /**
  * Main function that computes guidance
  */
-void GUIDANCE_Run();
+void GUIDANCE_Run(void);
 
 /**
  * Validates table parameters
@@ -107,7 +107,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd);
 /**
  * Compute guidance commands for takeoff 
  */
-void ComputeTakeoffGuidanceInput();
+void ComputeTakeoffGuidanceInput(void);
 
 
 /**

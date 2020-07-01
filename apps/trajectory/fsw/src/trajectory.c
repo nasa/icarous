@@ -149,13 +149,13 @@ void TRAJECTORY_AppInitData(TrajectoryTable_t* TblPtr){
 
 }
 
-void TRAJECTORY_AppCleanUp()
+void TRAJECTORY_AppCleanUp(void)
 {
     // Do clean up here
     delete_PathPlanner(TrajectoryAppData.pplanner);
 }
 
-void TRAJECTORY_ProcessPacket()
+void TRAJECTORY_ProcessPacket(void)
 {
 
     CFE_SB_MsgId_t MsgId;
@@ -224,13 +224,14 @@ void TRAJECTORY_ProcessPacket()
 
                 if (destinationWP < TrajectoryAppData.flightplan1.num_waypoints)
                 {
-
-                    PathPlanner_CombinePlan(TrajectoryAppData.pplanner, planID, "Plan0", destinationWP + 1);
+                    char missionPlan[] = "Plan0";
+                    PathPlanner_CombinePlan(TrajectoryAppData.pplanner, planID, missionPlan, destinationWP + 1);
 
                     // Publish EUTIL trajectory information
                     char buffer[MAX_DATABUFFER_SIZE] = {0};
                     time_t timeNow = time(NULL);
-                    PathPlanner_PlanToString(TrajectoryAppData.pplanner, "Plan+", buffer, true, timeNow);
+                    char combinePlanId[] = "Plan+";
+                    PathPlanner_PlanToString(TrajectoryAppData.pplanner, combinePlanId, buffer, true, timeNow);
 
                     CFE_SB_ZeroCopyHandle_t cpyhandle;
                     stringdata_t *bigdataptr = (stringdata_t *)CFE_SB_ZeroCopyGetPtr(sizeof(stringdata_t), &cpyhandle);

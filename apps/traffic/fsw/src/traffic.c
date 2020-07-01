@@ -97,12 +97,12 @@ void TRAFFIC_AppInit(void) {
 
 }
 
-void TRAFFIC_AppCleanUp(){
+void TRAFFIC_AppCleanUp(void){
     // Do clean up here
     delete_TrafficMonitor(trafficAppData.tfMonitor);
 }
 
-void TRAFFIC_ProcessPacket(){
+void TRAFFIC_ProcessPacket(void){
 
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(trafficAppData.Traffic_MsgPtr);

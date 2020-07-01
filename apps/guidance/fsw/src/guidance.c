@@ -88,17 +88,17 @@ void GUIDANCE_AppInit(void) {
     }
 }
 
-void GUIDANCE_AppInitData(){
+void GUIDANCE_AppInitData(void){
 
     guidanceAppData.Guidance = InitGuidance((GuidanceParams_t*)&guidanceAppData.guidance_params);
     guidanceAppData.takeoffComplete = false;
 }
 
-void GUIDANCE_AppCleanUp(){
+void GUIDANCE_AppCleanUp(void){
     // Do clean up here
 }
 
-void GUIDANCE_ProcessPacket(){
+void GUIDANCE_ProcessPacket(void){
     CFE_SB_MsgId_t  MsgId;
     MsgId = CFE_SB_GetMsgId(guidanceAppData.guidance_MsgPtr);
 
@@ -192,7 +192,8 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
             double trkgsvs[3] = {0.0,0.0,0.0};  
             ConvertVnedToTrkGsVs(cmd->param1,cmd->param2,cmd->param3,trkgsvs,trkgsvs+1,trkgsvs+2);
             guidInputVelocityCmd(guidanceAppData.Guidance,trkgsvs);
-            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,"",0);
+            char name[] = "";
+            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,name,0);
             break;
         }
         
@@ -202,15 +203,16 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
                                   guidanceAppData.pos.altitude_abs};
             double pointB[3] = {cmd->param1,cmd->param2,cmd->param3};
             double speed = cmd->param4;
+            char name[] = "P2P";
             for(int i=0;i<2;++i){
                 if (i == 0)
-                    guidInputFlightplanData(guidanceAppData.Guidance,"P2P",0,i,pointA,false,speed);
+                    guidInputFlightplanData(guidanceAppData.Guidance,name,0,i,pointA,false,speed);
                 else
-                    guidInputFlightplanData(guidanceAppData.Guidance,"P2P",0,i,pointB,false,speed);
+                    guidInputFlightplanData(guidanceAppData.Guidance,name,0,i,pointB,false,speed);
 
             }
 
-            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,"P2P",1);
+            SetGuidanceMode(guidanceAppData.Guidance,(int)cmd->name,name,1);
             SetStatus(guidanceAppData.statustxt,"Point to point control",SEVERITY_INFO);
             break;
         }
@@ -247,7 +249,7 @@ void HandleGuidanceCommands(argsCmd_t *cmd){
     }
 }
 
-void GUIDANCE_Run(){
+void GUIDANCE_Run(void){
 
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME,&ts);
@@ -292,7 +294,7 @@ void GUIDANCE_Run(){
     }
 }
 
-void ComputeTakeoffGuidanceInput(){
+void ComputeTakeoffGuidanceInput(void){
    if(!guidanceAppData.takeoffComplete){
        // Send the takeoff command and let the autopilot interfaces takeoff
        // care of the various operations involved in takeoff
