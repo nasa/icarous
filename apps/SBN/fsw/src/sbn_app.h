@@ -41,6 +41,7 @@
 #include "sbn_subs.h"
 #include "sbn_main_events.h"
 #include "sbn_perfids.h"
+#include "sbn_types.h"
 
 #include "cfe_platform_cfg.h"
 
@@ -58,26 +59,22 @@
 void SBN_ShowPeerData(void);
 int32 SBN_GetPeerFileData(void);
 
-#ifndef SBN_RECV_TASK
 void SBN_RecvNetMsgs(void);
-#endif /* !SBN_RECV_TASK */
 
-#ifndef SBN_SEND_TASK
 void SBN_CheckPeerPipes(void);
-#endif /* !SBN_SEND_TASK */
 
 /**
  * \brief SBN global data structure definition
  */
 typedef struct
 {
-    uint16 NetCnt;
+    SBN_NetIdx_t NetCnt;
 
     /** \brief Data only on host definitions. */
     SBN_NetInterface_t Nets[SBN_MAX_NETS];
 
     /** \brief The application ID provided by ES */
-    uint32 AppID;
+    CFE_ES_AppID_t AppID;
 
     /** \brief The application full name provided by SB */
     char App_FullName[(OS_MAX_API_NAME * 2)];
@@ -95,7 +92,7 @@ typedef struct
     /**
      * \brief Number of local subs.
      */
-    uint16 SubCnt;
+    SBN_SubCnt_t SubCnt;
 
     /**
      * \brief All subscriptions by apps connected to the SB.
@@ -115,27 +112,20 @@ typedef struct
      */
     SBN_IfOps_t *IfOps[SBN_MAX_MOD_CNT];
 
-    /**
-     * Retain the module ID's for each interface.
-     */
-    uint32 ModuleIDs[SBN_MAX_MOD_CNT];
+    /** @brief Retain the module ID's for each interface in case we need to unload. */
+    CFE_ES_ModuleID_t ProtocolModules[SBN_MAX_MOD_CNT];
 
-    SBN_RemapTbl_t *RemapTbl;
-    uint8 RemapEnabled; /* !0 == enabled */
-    uint32 RemapMutex;
+    /** @brief Retain the module ID's for each interface in case we need to unload. */
+    CFE_ES_ModuleID_t FilterModules[SBN_MAX_MOD_CNT];
 
     SBN_ConfTbl_t *ConfTbl;
 
-#ifdef SBN_SEND_TASK
-
     /** Global mutex for Send Tasks. */
-    uint32 SendMutex;
+    CFE_ES_MutexID_t SendMutex;
 
-#endif
+    SBN_HKTlm_t CmdCnt, CmdErrCnt;
 
-    uint16 CmdCnt, CmdErrCnt;
-
-    CFE_TBL_Handle_t RemapTblHandle, ConfTblHandle;
+    CFE_TBL_Handle_t ConfTblHandle;
 } SBN_App_t;
 
 /**
@@ -148,10 +138,9 @@ extern SBN_App_t SBN;
 */
 void SBN_AppMain(void);
 void SBN_ProcessNetMsg(SBN_NetInterface_t *Net, SBN_MsgType_t MsgType,
-    SBN_CpuID_t CpuID, SBN_MsgSz_t MsgSz, void *Msg);
-SBN_PeerInterface_t *SBN_GetPeer(SBN_NetInterface_t *Net, uint32 ProcessorID);
+    CFE_ProcessorID_t ProcessorID, SBN_MsgSz_t MsgSz, void *Msg);
+SBN_PeerInterface_t *SBN_GetPeer(SBN_NetInterface_t *Net, CFE_ProcessorID_t ProcessorID);
 uint32 SBN_ReloadConfTbl(void);
-uint32 SBN_ReloadRemapTbl(void);
 
 #endif /* _sbn_app_ */
 /*****************************************************************************/

@@ -3,43 +3,75 @@
 
 SBN_ConfTbl_t SBN_ConfTbl =
 {
-		{ /* Mods */
-				{ /* Mods[0] */
-						"UDP", /* Name */
-						"/cf/sbn_udp.so", /* LibFileName */
-						"SBN_UDP_Ops" /* LibSymbol */
-				}
-				//{ /* Mods[1] */
-				//		"TCP", /* Name */
-				//		"/cf/sbn_tcp.so", /* LibFileName */
-				//		"SBN_TCP_Ops" /* LibSymbol */
-				//}
-		},
-		1, /* ModCnt */
-		{ /* Peers */
-				{ /* Peers[0] */
-						1, /* ProcessorID */
-						0, /* SpacecraftID */
-						0, /* NetNum */
-						0, /* ModIdx */
-						"127.0.0.1:1234" /* Address */
-				},
-				{ /* Peers[1] */
-						2, /* ProcessorID */
-						1, /* SpacecraftID */
-						0, /* NetNum */
-						0, /* ModIdx */
-						"127.0.0.1:1235" /* Address */
-				},
-				{ /* Peers[2] */
-						3, /* ProcessorID */
-						2, /* SpacecraftID */
-						0, /* NetNum */
-						0, /* ModIdx */
-						"127.0.0.1:1236" /* Address */
-				}
-		},
-		3 /* PeerCnt */
+    .ProtocolModules =
+    {
+        { /* [0] */
+            .Name = "UDP",
+            .LibFileName = "/cf/sbn_udp.so",
+            .LibSymbol = "SBN_UDP_Ops",
+            .BaseEID = 0x0100
+        },
+        { /* [1] */
+            .Name = "TCP",
+            .LibFileName = "/cf/sbn_tcp.so",
+            .LibSymbol = "SBN_TCP_Ops",
+            .BaseEID = 0x0200
+        }
+    },
+    .ProtocolCnt = 2,
+    .FilterModules =
+    {
+        { /* [0] */
+            .Name = "CCSDS Endian",
+            .LibFileName = "/cf/sbn_f_ccsds_end.so",
+            .LibSymbol = "SBN_F_CCSDS_End",
+            .BaseEID = 0x1000
+        },
+        { /* [1] */
+            .Name = "Test",
+            .LibFileName = "/cf/sbn_f_test.so",
+            .LibSymbol = "SBN_F_Test",
+            .BaseEID = 0x1100
+        }
+    },
+    .FilterCnt = 2,
+
+    .Peers = {
+        { /* [0] */
+            .ProcessorID = 1,
+            .SpacecraftID = 42,
+            .NetNum = 0,
+            .ProtocolName = "UDP",
+            .Filters = {
+                "CCSDS Endian"
+            },
+            .Address = "127.0.0.1:2234",
+            .TaskFlags = SBN_TASK_POLL
+        },
+        { /* [1] */
+            .ProcessorID = 2,
+            .SpacecraftID = 42,
+            .NetNum = 0,
+            .ProtocolName = "UDP",
+            .Filters = {
+                "CCSDS Endian"
+            },
+            .Address = "127.0.0.1:2235",
+            .TaskFlags = SBN_TASK_POLL
+        },
+        { /* [2] */
+            .ProcessorID = 3,
+            .SpacecraftID = 42,
+            .NetNum = 0,
+            .ProtocolName = "UDP",
+            .Filters = {
+                "CCSDS Endian"
+            },
+            .Address = "127.0.0.1:2236",
+            .TaskFlags = SBN_TASK_POLL
+        },
+    },
+    .PeerCnt = 3
 };
 
-//CFE_TBL_FILEDEF(SBN_ConfTbl, SBN.SBN_ConfTbl, SBN Configuration Table, sbn_conf_tbl.tbl)
+CFE_TBL_FILEDEF(SBN_ConfTbl, SBN.SBN_ConfTbl, SBN Configuration Table, sbn_conf_tbl.tbl)

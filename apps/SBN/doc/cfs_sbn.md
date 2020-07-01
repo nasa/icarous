@@ -4,7 +4,7 @@ Core Flight Software (cFS) Software Bus Networking (SBN)
 Documentation Version History
 ------------------------------
 This document details the design and use of the SBN application. This is current
-as of SBN version 1.10.
+as of SBN version 1.11.
 
 This document is maintained by [Chris Knight, NASA Ames Research Center]
 (Christopher.D.Knight@nasa.gov).
@@ -29,6 +29,7 @@ SBN Version History
 - SBN 1.8 \@ae9a1f5 - Removed separate housekeeping status structs (moved housekeeping-related values to the main structs (`SBN_App_t`, `SBN_NetInterface_s` (`SBN_NetInterface_t`), `SBN_PeerInterface_t`). standardized on housekeeping being hand-packed big-endian.
 - SBN 1.9 \@063ebf2 - Adds protocol packet to identify protocol version. For now SBN reports if the version matches or not. (Is backward-compatible.) Also modules communicate to the main SBN app when a connection is established and lost and message pipes are only created/maintained for connected peers.
 - SBN 1.10 - Table-driven configuration, rather than flat-file. Removed net and peer names, instead should always use ProcessorID and NetIdx.
+- SBN 1.11 - Modules loaded by ES as libraries, OSAL used for TCP + UDP.
 
 Overview
 --------
@@ -45,14 +46,12 @@ table-configured.)
 SBN Build and Configuration
 ---------------------------
 SBN is built like any other cFS application, either via specifying it in 
-the the `TGT#_APPLISTS` parameter in the targets.cmake (for the CMake build)
-or `THE_APPS` in the Makefile (for the "classic" build). Protocol modules
-(`sbn_udp`, `sbn_tcp`, `sbn_dtn`, ...) should also be specified as an
-application in the build process (and the module should be linked or copied
-to the apps source directory). SBN must be defined as an application
-in the `cfe_es_startup.scr` script but Modules should *not* be defined there.
+the the `TGT#_APPLISTS` parameter in the targets.cmake. Protocol modules
+(`sbn_udp`, `sbn_tcp`, `sbn_dtn`, ...) must also be specified as an
+application in the build process and loaded by ES after the core SBN
+application.
 
-SBN uses two tables, the "conf" table for configuring which modules to load
+SBN uses two tables, the "conf" table for configuring which modules to connect
 and which networks and peers to communicate with and the "remap" table for
 identifying which Message ID's should be remapped or filtered before sending
 to specific peers.
@@ -200,7 +199,7 @@ fields in big-endian, packed (no alignment) format:
 
 Field    |Type    |Description
 ---------|--------|-----------
-`MsgSz`  |`uint16`|The total size of the message, including this header.
+`MsgSz`  |`uint16`|The total size of the message, excluding this header.
 `MsgType`|`uint8` |The type of the message (see below).
 `CpuID`  |`uint32`|The ProcessorID of the sender.
 
@@ -246,7 +245,7 @@ best to stick with either SCH-driven processing or task-driven processing.
 
 SBN Protocol Modules
 --------------------
-SBN requires the use of protocol modules--shared libraries that provide a
+SBN requires the use of protocol libraries that provide a
 defined set of functions to send and receive encapsulated software bus messages
 and subscription updates. Protocol modules may use connection-less (UDP)
 or connection-based (TCP) network technologies and network reliability and
@@ -255,10 +254,6 @@ network technology it is using. SBN does benefit from knowing when a peer
 is "connected" so that the local subscriptions can be sent (in bulk) to
 that peer; otherwise SBN does not need to know the state of the network
 the module is communicating with.
-
-SBN modules are built as separate cFS "applications" but are not loaded via the
-Executive Service (ES) interface, instead the module's shared library is
-loaded by the SBN application (as defined by a start-time configuration file.)
 
 Currently SBN provides the following modules:
 - UDP - Utilizing the UDP/IP connectionless protocol, the UDP module uses

@@ -10,7 +10,7 @@
 #ifndef _sbn_main_events_h_
 #define _sbn_main_events_h_
 
-#include "sbn_events.h"
+#define SBN_FIRST_EID 0x0001
 
 #define SBN_SB_EID          SBN_FIRST_EID + 0
 #define SBN_INIT_EID        SBN_FIRST_EID + 1

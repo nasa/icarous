@@ -3,7 +3,6 @@
 #include <stdbool.h>
 
 #include "sbn_app.h"
-#include "sbn_remap.h"
 #include "sbn_pack.h"
 
 /**
@@ -70,7 +69,7 @@ void SBN_InitializeCounters(void)
 **  \sa #SBN_LEN_EID
 **
 *************************************************************************/
-static boolean VerifyMsgLen(CFE_SB_MsgPtr_t msg, uint16 ExpectedLen,
+static bool VerifyMsgLen(CFE_SB_MsgPtr_t msg, uint16 ExpectedLen,
     const char *MsgName)
 {
     uint16 CommandCode = 0;
@@ -314,7 +313,7 @@ static void HKNetCmd(CFE_SB_MsgPtr_t MsgPtr)
         SBN_HKNET_LEN - CFE_SB_TLM_HDR_SIZE, 1);
 
     Pack_UInt8(&Pack, SBN_HK_NET_CC);
-    Pack_UInt8(&Pack, SBN.Nets[NetIdx].ProtocolID);
+    Pack_UInt8(&Pack, SBN.Nets[NetIdx].ProtocolIdx);
     Pack_UInt16(&Pack, SBN.Nets[NetIdx].PeerCnt);
 
     /* 
@@ -434,7 +433,7 @@ static void MySubsCmd(CFE_SB_MsgPtr_t MsgPtr)
     CFE_SB_SendMsg((CFE_SB_Msg_t *) HKBuf);
 }/* end MySubsCmd */
 
-/** \brief Reloads a table.
+/** \brief Reloads the config table.
  *
  *  \param [in]   MsgPtr A #CFE_SB_MsgPtr_t pointer that
  *                       references the software bus message
@@ -443,23 +442,14 @@ static void MySubsCmd(CFE_SB_MsgPtr_t MsgPtr)
  */
 static void ReloadTblCmd(CFE_SB_MsgPtr_t MsgPtr)
 {
-    if(!VerifyMsgLen(MsgPtr, sizeof(uint32), "reloadtbl"))
+    if(!VerifyMsgLen(MsgPtr, CFE_SB_CMD_HDR_SIZE, "reloadtbl"))
     {   
         return;
     }/* end if */
 
     CFE_EVS_SendEvent(SBN_CMD_EID, CFE_EVS_INFORMATION, "reload tbl command");
 
-    SBN_ReloadTblCmd_t *CmdPtr = (SBN_ReloadTblCmd_t *)MsgPtr;
-    switch(CmdPtr->TblId)
-    {
-        case 0: /** TODO: make #define */
-            SBN_ReloadConfTbl();
-            break;
-        case 1:
-            SBN_ReloadRemapTbl();
-            break;
-    }/* end switch */
+    SBN_ReloadConfTbl();
 }/* end MySubsCmd */
 
 /************************************************************************/

@@ -29,6 +29,12 @@
 /** @brief Maximum number of subscriptions allowed per peer allowed. */
 #define SBN_MAX_SUBS_PER_PEER       256 
 
+/** @brief Maximum number of incoming and outgoing message filters. */
+#define SBN_MAX_FILTERS 16
+
+/** @brief Maximum number of outgoing and incoming message filters for each peer. */
+#define SBN_MAX_FILTERS_PER_PEER    8
+
 /**
  * @brief At most process this many SB messages per peer per wakeup.
  * (To prevent starvation if a peer is babbling.)
@@ -55,7 +61,7 @@
  * subscribed to. The pipe should be deep enough to handle all messages that
  * will queue between wakeups.
  */
-#define SBN_PEER_PIPE_DEPTH           64
+#define SBN_PEER_PIPE_DEPTH           32
 
 /**
  * @brief The maximum number of messages that will be queued for a particular
@@ -67,14 +73,14 @@
  * @brief The maximum number of subscription messages that will be queued
  * between wakeups.
  */
-#define SBN_SUB_PIPE_DEPTH            256
+#define SBN_SUB_PIPE_DEPTH            32
 
 /**
  * @brief The maximum number of subscription messages for a single message ID
  * that will be queued between wakeups. (These are received when updates occur
  * after SBN starts up.)
  */
-#define SBN_MAX_ONESUB_PKTS_ON_PIPE   256
+#define SBN_MAX_ONESUB_PKTS_ON_PIPE   16
 
 /**
  * @brief The maximum number of subscription messages for all message IDs that
@@ -91,7 +97,7 @@
 /** @brief Maximum number of protocol modules. */
 #define SBN_MAX_MOD_CNT		     8
 
-/** @brief Maximum number of protocol modules. */
+/** @brief Maximum number of peers. */
 #define SBN_MAX_PEER_CNT             16
 
 /**
@@ -101,17 +107,11 @@
 #define SBN_MOD_STATUS_MSG_SZ         128
 
 /**
- * @brief Define this to use one task per peer pipe to send messages (each
- * task blocks on read). Otherwise, pipes will be polled periodically.
+ * @brief The number of characters for a "peer address", this can be
+ * an IP address, a device inode path, a DTN EIN, etc. The meaning
+ * of the address field is network module-dependent.
  */
-#define SBN_SEND_TASK
-
-/**
- * @brief Define this to use one task per peer to receive messages (each
- * task blocks on read). Otherwise, another method (e.g. select) must be used
- * to prevent blocking.
- */
-#define SBN_RECV_TASK
+#define SBN_ADDR_SZ                 48
 
 /**
  * @brief If defined, remapping is enabled at boot time.

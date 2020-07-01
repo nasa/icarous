@@ -38,7 +38,7 @@ static inline uint32 Pack_Data(Pack_t *PackPtr, void *DataBuf, size_t DataBufSz)
         return 0;
     }
 
-    memcpy(PackPtr->Buf + PackPtr->BufUsed, DataBuf, DataBufSz);
+    memcpy((uint8 *)PackPtr->Buf + PackPtr->BufUsed, DataBuf, DataBufSz);
     PackPtr->BufUsed += DataBufSz;
 
     return 1;
@@ -99,7 +99,7 @@ static inline uint32 Unpack_Data(Unpack_t *Unpack, void *DataBuf, size_t Sz)
         return 0;
     }
 
-    memcpy(DataBuf, Unpack->Buf + Unpack->Curr, Sz);
+    memcpy(DataBuf, (uint8 *)Unpack->Buf + Unpack->Curr, Sz);
 
     Unpack->Curr += Sz;
 
