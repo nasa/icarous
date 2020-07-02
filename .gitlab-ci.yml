@@ -11,6 +11,7 @@ stages:
   - test
 
 before_script:
+  - adduser myuser
   - apt-get install -y ssh-client
   - mkdir -p ~/.ssh
   - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
@@ -21,7 +22,6 @@ before_script:
   - git submodule update --init apps/merger
   - git submodule update --init apps/raft
   - git submodule update --init apps/safe2ditch
-  - cd apps/rotorsim/QuadCopterSim && make
   - cd /builds/larc-nia-fm/icarous
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/Modules/lib
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/builds/larc-nia-fm/icarous/apps/rotorsim/QuadCopterSim
@@ -36,8 +36,9 @@ build:
     - sed -i s/#SBN/SBN/ Icarous_defs/apps.cmake
     - sed -i s/#udp/udp/ Icarous_defs/apps.cmake
     - sed -i s/#safe2ditch/safe2ditch/ Icarous_defs/apps.cmake
-    - make 
-    - make install
+    - su myuser -c make 
+    - su myuser -c 'make install'
+
   artifacts:
     paths:
       - exe/cpu1/*
@@ -49,7 +50,7 @@ test:
   script:
     - sed -i s/arducopter/rotorsim/ Icarous_defs/apps.cmake
     - cd Python/TestRunner
-    - python3 RunScenarios.py scenarios.yaml --validate --test --verbose
+    - su myuser -c 'python3 RunScenarios.py scenarios.yaml --validate --test --verbose'
   artifacts:
     paths:
       - Python/TestRunner/sim_output/*
