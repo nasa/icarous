@@ -219,4 +219,4 @@ set(OSAL_CONFIG_MAX_CMD_LEN             1000)
 # The maximum depth of an OSAL message queue.
 # On some implementations this may affect the overall OSAL memory footprint
 # so it may be beneficial to set this limit accordingly.
-set(OSAL_CONFIG_QUEUE_MAX_DEPTH         50)
+set(OSAL_CONFIG_QUEUE_MAX_DEPTH         200)
