@@ -720,8 +720,13 @@ status_e Cognition::EmergencyDescent(){
             // Proceeed to the top of descent by following the
             // computed flight plan
             if(request == REQUEST_RESPONDED && !topOfDescent){
-                SetGuidanceFlightPlan((char*)"Plan1",1);
+                SetGuidanceFlightPlan("DitchPath",1);
                 request = REQUEST_NIL;
+            }else if(request == REQUEST_PROCESSING){
+                larcfm::Plan* fp = GetPlan("DitchPath");
+                if(fp != nullptr){
+                    request = REQUEST_RESPONDED;
+                }
             }else if(!topOfDescent){
                 // Check if top of descent (TOD) has been reached
                 // TOP is calculated assuming a 45 degree flight path angle
