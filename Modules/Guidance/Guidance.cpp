@@ -123,6 +123,7 @@ void Guidance::InputFlightplanData(const std::string &plan_id,
         }else if(eta){
             // wp metric is ETA
             wpSpeeds[plan_id].push_back(-1);
+            wp_time = wp_value;
         }else{
             double speed = wp_value;
             int prev_wp_id = wp_id - 1;
