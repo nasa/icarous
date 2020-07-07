@@ -95,19 +95,19 @@ void Cognition::InputFlightPlanData(const std::string &plan_id,
         larcfm::Plan newPlan(plan_id);
         newPlan.add(wp_position,scenario_time);
         flightPlans.push_back(newPlan);
-        primaryFPReceived = true;
         std::vector<bool> init(1,true);
         wpFeasibility[plan_id] = std::move(init);
         nextWpId[plan_id] = 1;
+        if(plan_id == "Plan0"){
+            primaryFPReceived = true;
+            scenarioTime = scenario_time;
+        }
         return;
     }
 
     wpMetricEta[plan_id] = {(wp_metric == 1)};
 
-    if(plan_id == "Plan0"){
-        primaryFPReceived = true;
-        scenarioTime = scenario_time;
-    }
+    
 }
 
 larcfm::Plan* Cognition::GetPlan(const std::string &plan_id){
