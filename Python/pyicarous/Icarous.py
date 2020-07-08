@@ -727,7 +727,7 @@ def RunSimulation(icInstances,trafficVehicles,startDelay=[],timeLimit=[],commDel
             ic.ownshipLog["positionNED"] = list(map(icInstances[0].ConvertToLocalCoordinates,ic.ownshipLog["position"]))
             ic.localPlans[0] = list(map(icInstances[0].ConvertToLocalCoordinates,ic.flightplan1))
 
-        ic.WriteLog()
+        #ic.WriteLog()
 
 def VisualizeSimData(ic,allplans=False,xmin=-100,ymin=-100,xmax=100,ymax=100,interval=30):
     '''
