@@ -25,7 +25,7 @@ aux_source_directory(fsw/src APP_SRC_FILES)
 
 link_directories(${MODULES_LIB})
 
-add_library(trajectory MODULE ${APP_SRC_FILES} ${MODULES_ROOT}/TrajectoryPlanners/CWrapper/TrajectoryPlanner_proxy.c)
+add_library(trajectory MODULE ${APP_SRC_FILES})
 
 target_link_libraries(trajectory PathPlanner)
 

@@ -23,7 +23,7 @@ aux_source_directory(fsw/src APP_SRC_FILES)
 
 link_directories(${MODULES_LIB})
 
-add_library(traffic MODULE ${APP_SRC_FILES} ${MODULES_ROOT}/TrafficMonitor/CWrapper/TrafficMonitor_proxy.c)
+add_library(traffic MODULE ${APP_SRC_FILES})
 
 target_link_libraries(traffic TrafficMonitor Utils)
 

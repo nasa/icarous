@@ -14,7 +14,7 @@ IF(SPLINES)
     add_subdirectory(BSplines)
 ENDIF(SPLINES)
 
-set(SOURCE_FILES PathPlanner.cpp AstarPlan.cpp GridAstarPlan.cpp RRTPlan.cpp Dynamics.cpp CWrapper/TrajectoryPlanner_wrap.cxx)
+set(SOURCE_FILES PathPlanner.cpp AstarPlan.cpp GridAstarPlan.cpp RRTPlan.cpp Dynamics.cpp CWrapper/TrajectoryPlanner_wrap.cxx CWrapper/TrajectoryPlanner_proxy.c)
 
 IF(SPLINES)
     set(SOURCE_FILES ${SOURCE_FILES} SplinesPlan.cpp)
