@@ -218,7 +218,7 @@ void Cognition::InputTrackBands(const bands_t &track_bands){
     utcTime = track_bands.time;
     if (track_bands.currentConflictBand == 1) {
         trafficTrackConflict = true;
-        if (!isnan(track_bands.resPreferred) && !isinf(track_bands.resPreferred))
+        if (!std::isnan(track_bands.resPreferred) && !std::isinf(track_bands.resPreferred))
             preferredTrack = track_bands.resPreferred;
         else
             preferredTrack = prevResTrack;
@@ -229,9 +229,9 @@ void Cognition::InputTrackBands(const bands_t &track_bands){
         preferredTrack = prevResTrack;
     }
 
-    memcpy(trkBandType,track_bands.type,sizeof(int)*20);
-    memcpy(trkBandMin,track_bands.min,sizeof(double)*20);
-    memcpy(trkBandMax,track_bands.max,sizeof(double)*20);
+    std::memcpy(trkBandType,track_bands.type,sizeof(int)*20);
+    std::memcpy(trkBandMin,track_bands.min,sizeof(double)*20);
+    std::memcpy(trkBandMax,track_bands.max,sizeof(double)*20);
     trkBandNum = track_bands.numBands;
 
     if (activePlan != nullptr)
@@ -239,10 +239,10 @@ void Cognition::InputTrackBands(const bands_t &track_bands){
         std::string plan_id = activePlan->getID();
         bool wpF[50];
         if (plan_id == "Plan0") {
-            memcpy(wpF, track_bands.wpFeasibility1, sizeof(bool) * 50);
+            std::memcpy(wpF, track_bands.wpFeasibility1, sizeof(bool) * 50);
             closestPointFeasible = track_bands.fp1ClosestPointFeasible;
         } else {
-            memcpy(wpF, track_bands.wpFeasibility2, sizeof(bool) * 50);
+            std::memcpy(wpF, track_bands.wpFeasibility2, sizeof(bool) * 50);
         }
         std::vector<bool> v(wpF, wpF + 50);
         wpFeasibility[plan_id] = std::move(v);
@@ -265,7 +265,7 @@ void Cognition::InputSpeedBands(const bands_t &speed_bands){
         }
 
         // Use the provided resolution if it is valid
-        if (!isinf(speed_bands.resPreferred) && !isnan(speed_bands.resPreferred)) {
+        if (!std::isinf(speed_bands.resPreferred) && !std::isnan(speed_bands.resPreferred)) {
             preferredSpeed = speed_bands.resPreferred * fac;
             prevResSpeed = preferredSpeed;
         }
@@ -294,7 +294,7 @@ void Cognition::InputSpeedBands(const bands_t &speed_bands){
 void Cognition::InputAltBands(const bands_t &alt_bands){
     if(alt_bands.currentConflictBand == 1){
         trafficAltConflict = true;
-        if(!isinf(alt_bands.resPreferred) && !isnan(alt_bands.resPreferred))
+        if(!std::isinf(alt_bands.resPreferred) && !std::isnan(alt_bands.resPreferred))
             preferredAlt = alt_bands.resPreferred;
         else
             preferredAlt = prevResAlt;
@@ -817,7 +817,7 @@ void Cognition::SetGuidanceFlightPlan(const std::string &plan_id,const int wp_in
     nextWpId[plan_id] = wp_index;
 
     FpChange fp_change;
-    memset(fp_change.name,0,25);
+    std::memset(fp_change.name,0,25);
     strcpy(fp_change.name,plan_id.c_str());
     fp_change.wpIndex = wp_index;
     fp_change.nextFeasibleWp = nextFeasibleWpId["Plan0"];
@@ -838,7 +838,7 @@ void Cognition::SetGuidanceP2P(const larcfm::Position &point,const double speed)
 
 void Cognition::SendStatus(const char buffer[],const uint8_t severity){
     StatusMessage status_message;
-    memset(status_message.buffer,0,250);
+    std::memset(status_message.buffer,0,250);
     strcpy(status_message.buffer,buffer);
     status_message.severity = severity;
 
@@ -1121,7 +1121,7 @@ bool Cognition::RunTrafficResolution(){
          // If there is a valid up resolution, execute up resolution.
          // else execute the down resolution. If 0 vertical speed is possible,
          // that is preferred over the up or down resolutions.
-         if(!isinf(res_up) && !isnan(res_up)){
+         if(!std::isinf(res_up) && !std::isnan(res_up)){
             if(res_up >= 1e-3){
                   SetGuidanceVelCmd(hdg,speed,-res_up);
                   prevResVspeed = res_up;
@@ -1129,7 +1129,7 @@ bool Cognition::RunTrafficResolution(){
                SetGuidanceVelCmd(hdg,speed,0.0);
                prevResVspeed = 0.0;
             }
-         }else if(!isinf(res_down) && !isnan(res_down)){
+         }else if(!std::isinf(res_down) && !std::isnan(res_down)){
             if(res_down <= -1e-3){
                   SetGuidanceVelCmd(hdg,speed,-res_down);
                   prevResVspeed = res_down;

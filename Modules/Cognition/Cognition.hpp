@@ -4,11 +4,13 @@
 //#define _GNU_SOURCE
 
 #include <string>
+#include <cstring>
 #include <list>
 #include <map>
 #include <vector>
 #include <fstream>
 #include <cstdio>
+#include <cmath>
 
 
 #include "Interfaces.h"
