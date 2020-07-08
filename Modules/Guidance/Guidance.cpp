@@ -89,7 +89,7 @@ void Guidance::GetOutput(GuidanceOutput_t& output){
         output.xtrackDev = xtrackDist;
    }
 
-   output.velCmd[0] = larcfm::Units::to(larcfm::Units::deg,outputCmd.trk());
+   output.velCmd[0] = larcfm::Units::to(larcfm::Units::deg,outputCmd.compassAngle());
    output.velCmd[1] = larcfm::Units::to(larcfm::Units::mps,outputCmd.gs());
    output.velCmd[2] = larcfm::Units::to(larcfm::Units::mps,outputCmd.vs());
 
@@ -185,7 +185,14 @@ double Guidance::ComputeSpeed(const larcfm::NavPoint &nextPos, double refSpeed){
        double maxSpeed = params.maxSpeed;
        double minSpeed = params.minSpeed;
        double newSpeed;
-       newSpeed = distH / (nextWP_STA - currTime);
+       double timediff = nextWP_STA - currTime;
+
+       if (distH > 0.5 && timediff > 0.001){
+           newSpeed = distH / timediff;
+       }else{
+           newSpeed = maxSpeed;
+       }
+
        if (newSpeed > maxSpeed) {
            newSpeed = maxSpeed;
        } else {
@@ -193,6 +200,7 @@ double Guidance::ComputeSpeed(const larcfm::NavPoint &nextPos, double refSpeed){
                newSpeed = minSpeed;
            }
        }
+
        return newSpeed;
    }
 }
@@ -249,9 +257,9 @@ void Guidance::ComputePlanGuidance(){
     const larcfm:: Position newPositionToTrack = ComputeOffSetPositionOnPlan(speedRef,xdev);
 
     // Reduce speed if approaching final waypoint or if turning sharply
-    const double ownship_heading = currentVel.trk() * 180/M_PI;
+    const double ownship_heading = currentVel.compassAngle() * 180/M_PI;
     const double target_heading = currentPos.track(newPositionToTrack) * 180/M_PI;
-    const double turn_angle = fabs(fmod(180 + ownship_heading - target_heading, 360) - 180);
+    const double turn_angle = std::fmod(360 + std::fabs(ownship_heading - target_heading), 360);
     if((finalleg && distH < capture_radius) || turn_angle > 60){
         const double range = params.maxSpeed - params.minSpeed;
         if( speedRef > (params.minSpeed + range * 0.6) ){

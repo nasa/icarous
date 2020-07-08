@@ -3,7 +3,9 @@
 
 #include <cstring>
 #include <list>
+#include <cmath>
 #include <vector>
+#include <iostream>
 #include <Plan.h>
 #include <Position.h>
 #include <Velocity.h>
