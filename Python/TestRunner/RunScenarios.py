@@ -174,7 +174,9 @@ def set_up_output_dir(scenario, base_dir="sim_output"):
     name = scenario["name"].replace(' ', '-')
     timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H_%M_%S")
     output_dir = os.path.join(sim_home, base_dir, timestamp+"_"+name)
+    output_logdir = os.path.join(output_dir,'log')
     os.makedirs(output_dir)
+    os.makedirs(output_logdir)
     return output_dir
 
 
