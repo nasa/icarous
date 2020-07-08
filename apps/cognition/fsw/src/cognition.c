@@ -319,7 +319,10 @@ int32_t cognitionTableValidationFunc(void *TblPtr){
 }
 
 void COGNITION_DecisionProcess(void){
-    FlightPhases(appdataCog.cog);
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME,&ts);
+    double time = ts.tv_sec + (double)(ts.tv_nsec)/1E9;
+    FlightPhases(appdataCog.cog,time);
 
     Command command;
     int commands_remaining = 1;

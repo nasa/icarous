@@ -380,7 +380,7 @@ typedef struct{
  *
  * Published under the following topics: ICAROUS_BANDS_TRACK_MID, ICAROUS_BANDS_SPEED_MID, ICAROUS_BANDS_VS_MID
  */
-DEF_MSG(cfsBands_t,sizeof(bands_t));
+DEF_MSG(cfsBands_t,sizeof(bands_t))
 
 /**
  * @struct cfsGeofenceConflict_t
@@ -388,7 +388,7 @@ DEF_MSG(cfsBands_t,sizeof(bands_t));
  *
  * Published under the ICAROUS_GEOFENCE_MONITOR_MID topic
  */
-DEF_MSG(cfsGeofenceConflict_t,sizeof(geofenceConflict_t));
+DEF_MSG(cfsGeofenceConflict_t,sizeof(geofenceConflict_t))
 
 /**@}*/
 

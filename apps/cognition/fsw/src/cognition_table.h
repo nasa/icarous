@@ -21,7 +21,7 @@
 
 typedef struct
 {
-
+ char temp;
 }cognitionTable_t;
 
 

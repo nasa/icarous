@@ -23,14 +23,17 @@ typedef struct{
 
 // Command structure containing data for takeoff commands
 typedef struct{
+    char temp;
 }TakeoffCommand;
 
 // Command structure containing data for land commands
 typedef struct{
+    char temp;
 }LandCommand;
 
 // Command structure containing data for ditch commands
 typedef struct{
+    char temp;
 }DitchCommand;
 
 // Command structure containing data for flightplan changes

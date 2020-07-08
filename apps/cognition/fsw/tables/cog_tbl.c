@@ -3,10 +3,7 @@
 #include "cfe_tbl_filedef.h"  /* Required to obtain the CFE_TBL_FILEDEF macro definition */
 #include "cognition_table.h"
 
-cognitionTable_t cognition_TblStruct = {
-
-};
-
+cognitionTable_t cognition_TblStruct;
 
 
 /*

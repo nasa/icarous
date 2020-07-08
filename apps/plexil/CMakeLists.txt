@@ -3,7 +3,7 @@ project(CFE_PLEXIL)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
 
 set(PLEXIL_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/../../Modules/Plexil/src")
 set(PLEXIL_LIB "${PLEXIL_SOURCE}/../lib")

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6.4)
 project(CFE_ARDUCOPTER_INTERFACE C)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
 
 set(MODULES_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../Modules")
 set(MODULES_LIB "${MODULES_ROOT}/lib")
