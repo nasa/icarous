@@ -101,7 +101,7 @@ def RunScenario(scenario, sitl=False, verbose=False, out=14557,
             os.remove(os.path.join(output_dir, f))
 
 
-def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
+def RunScenarioPy(scenario, verbose=False, eta=False, output_dir="sim_output"):
     """ Run an ICAROUS scenario using pyIcarous """
     os.chdir(output_dir)
 
@@ -130,7 +130,7 @@ def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
             params["RESSPEED"] = params["DEF_WP_SPEED"]
         ic.SetParameters(params)
 
-        ic.InputFlightplanFromFile(os.path.join(icarous_home, v_scenario["waypoint_file"]))
+        ic.InputFlightplanFromFile(os.path.join(icarous_home, v_scenario["waypoint_file"]), eta=eta)
 
         if v_scenario.get("geofence_file"):
             ic.InputGeofence(os.path.join(icarous_home, v_scenario["geofence_file"]))
@@ -154,7 +154,7 @@ def RunScenarioPy(scenario, verbose=False, output_dir="sim_output"):
     # Collect log files
     for ic in icInstances:
         #ic.WriteLog(logname=os.path.join(output_dir, ic.logName+".json"))
-        logname = str(ic.vehicleID) + ic.logName+".json"
+        logname = "%s_%d.json" % (ic.logName, ic.vehicleID)
         dest = os.path.join(output_dir, logname)
         print("writing log: %s" % dest)
         log_data = {"scenario": scenario,
@@ -182,14 +182,16 @@ def set_up_output_dir(scenario, base_dir="sim_output"):
 
 if __name__ == "__main__":
     import argparse
+    from collections import ChainMap
     parser = argparse.ArgumentParser(description="Run Icarous test scenarios")
     parser.add_argument("scenario", help="yaml file containing scenario(s) to run ")
     parser.add_argument("--num", type=int, nargs="+", help="index of scenario to run")
     parser.add_argument("--verbose", action="store_true", help="print output")
     parser.add_argument("--sitl", action="store_true", help="use SITL simulator")
-    parser.add_argument("--out", type=int, default=None, help="port to fwd mavlink stream")
+    parser.add_argument("--eta", action="store_true", help="Enforce wp etas")
     parser.add_argument("--merger", action="store_true", help="run merging apps")
     parser.add_argument("--python", action="store_true", help="use pyIcarous")
+    parser.add_argument("--out", type=int, default=None, help="port to fwd mavlink stream")
     parser.add_argument("--validate", action="store_true", help="check test conditions")
     parser.add_argument("--test", action="store_true", help="assert test conditions")
     parser.add_argument("--plot", action="store_true", help="generate plots")
@@ -199,14 +201,17 @@ if __name__ == "__main__":
 
     # Load scenarios from file
     with open(args.scenario, 'r') as f:
-        scenario_list = yaml.load(f, Loader=yaml.FullLoader)
+        scenario_data = yaml.load(f, Loader=yaml.FullLoader)
+        scenario_list = scenario_data.get("scenarios", [])
+        input_sim_params = scenario_data.get("sim_params", {})
+        sim_params = ChainMap(input_sim_params, vars(args))
     if args.num is not None:
         selected_scenarios = [scenario_list[i] for i in args.num]
         scenario_list = selected_scenarios
 
-    if not args.python:
+    if not sim_params["python"]:
         # Set the apps that ICAROUS will run
-        SetApps(sitl=args.sitl, merger=args.merger)
+        SetApps(sitl=sim_params["sitl"], merger=sim_params["merger"])
 
     # Run the scenarios
     for scenario in scenario_list:
@@ -215,15 +220,15 @@ if __name__ == "__main__":
         out_dir = set_up_output_dir(scenario, args.output_dir)
 
         # Run the simulation
-        if args.python:
-            RunScenarioPy(scenario, args.verbose, out_dir)
+        if sim_params["python"]:
+            RunScenarioPy(scenario, args.verbose, sim_params["eta"], out_dir)
         else:
-            RunScenario(scenario, args.sitl, args.verbose, output_dir=out_dir,
+            RunScenario(scenario, sim_params["sitl"], args.verbose, output_dir=out_dir,
                         out=args.out, use_threads=True)
 
         # Perform validation
         if args.validate:
-            if args.merger:
+            if sim_params["merger"]:
                 import ValidateMerge as VM
                 VM.run_validation(out_dir, 1, args.test, args.plot, args.save)
             else:

@@ -13,6 +13,7 @@
 #   (file paths are relative to Icarous repository)
 
 # Test ID: AT-0
+scenarios:
 - name: "Basic"
   time_limit: 300
   vehicles:
