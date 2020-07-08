@@ -107,7 +107,7 @@ class Icarous():
         self.etaFP1 = eta
         self.plans.append(fp)
         self.localPlans.append(self.GetLocalFlightPlan(fp))
-        self.Trajectory.InputFlightplan("Plan0",fp)
+        self.Trajectory.InputFlightplan("Plan0",fp,eta)
         self.Cog.InputFlightplanData("Plan0",scenarioTime,fp,eta)
         self.Guidance.InputFlightplanData("Plan0",scenarioTime,fp,eta)
 
