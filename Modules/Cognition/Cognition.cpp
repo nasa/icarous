@@ -342,7 +342,6 @@ void Cognition::InputGeofenceConflictData(const geofenceConflict_t &gf_conflict)
                 // dealing with a traffic conflict
                 if (parameters.resolutionType == 4 && trafficTrackConflict)
                 {
-                    nextWpId[primary_plan_id] = i;
                     double dist = position.distanceH(GetNextWP());
                     // Consider a waypoint feasible if its greater than the 3*DTHR values.
                     // Note DTHR is in ft. Convert from ft to m before comparing with dist.
@@ -354,7 +353,6 @@ void Cognition::InputGeofenceConflictData(const geofenceConflict_t &gf_conflict)
                 }
                 else
                 {
-                    nextWpId[primary_plan_id] = i;
                     nextFeasibleWpId[primary_plan_id] = i;
                     break;
                 }
@@ -1201,12 +1199,14 @@ bool Cognition::ReturnToNextWP(){
             nextWpId[activePlan->getID()] = nextFeasibleWpId[activePlan->getID()];
             positionB = GetNextWP();
 
+
             larcfm::Position positionA = position;
             larcfm::Velocity velocityA = velocity;
             FindNewPath(pathName,positionA, velocityA, positionB);
             request = REQUEST_PROCESSING;
             SendStatus((char*)"IC:Computing secondary path",6);
             log << timeString + ": Computing secondary path: " <<pathName<<"\n";
+
          }
          else if (request == REQUEST_RESPONDED)
          {
@@ -1221,6 +1221,7 @@ bool Cognition::ReturnToNextWP(){
             if(fp != nullptr){
                 request = REQUEST_RESPONDED;
             } 
+
 
          }
          break;
@@ -1248,16 +1249,14 @@ bool Cognition::ReturnToNextWP(){
       }
 
       case COMPLETE:{
-
+  
          return2NextWPState = NOOPC;
          requestGuidance2NextWP = -1;
-         if(nextFeasibleWpId["Plan0"] + 1 < GetTotalWaypoints("Plan0")){
-            SetGuidanceFlightPlan((char*)"Plan0",nextFeasibleWpId["Plan0"]+1);
-         }else{
-            nextWpId["Plan0"] = nextFeasibleWpId["Plan0"] + 1;
+         if(nextWpId["Plan0"] < GetTotalWaypoints("Plan0")){
+            SetGuidanceFlightPlan((char*)"Plan0",nextWpId["Plan0"]);
          }
          SendStatus((char*)"IC:Resuming mission",6);
-         log << timeString + ": Resuming Plan0, proceeding to waypoint:"<<nextFeasibleWpId["Plan0"]+1<<"\n";
+         log << timeString + ": Resuming Plan0, proceeding from waypoint:"<<nextWpId["Plan0"]<<"\n";
          break;
       }
    }
