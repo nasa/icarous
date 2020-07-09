@@ -173,7 +173,7 @@ bool Cognition::NextWpFeasible(){
 
 void Cognition::ReachedWaypoint(const std::string &plan_id, const int reached_wp_id){
 
-    log<<timeString + ": Reached waypoint: " << reached_wp_id << " on plan: " << plan_id << "\n";
+    log<<timeString + "| [WPREACHED] | Plan: " << plan_id<<", wp: "<<reached_wp_id<<"\n";
     if(plan_id == "P2P"){
         p2pComplete = true;
     }else if(plan_id == "Takeoff"){
@@ -441,7 +441,7 @@ int Cognition::FlightPhases(double time){
                     if( utcTime >= fp_time ){
                         fpPhase = TAKEOFF_PHASE;
                         missionStart = -1;
-                        log << timeString + ": IDLE -> TAKEOFF" <<"\n";
+                        log << timeString + "| [FLIGHT_PHASES] | IDLE -> TAKEOFF" <<"\n";
                     }else{
                         double time_remanining = (fp_time - utcTime);
                         if(fmod(time_remanining,5) == 0){
@@ -450,7 +450,7 @@ int Cognition::FlightPhases(double time){
                     }
                 }else{
 
-                    log << timeString + ": Flighplan not loaded" <<"\n";
+                    log << timeString + "| [WARNING] | Flighplan not loaded" <<"\n";
                     SendStatus((char*)"No flightplan loaded",4);
                     missionStart = -1;
                 }
@@ -458,10 +458,10 @@ int Cognition::FlightPhases(double time){
                 // If missionStart > 0 goto climb state directly
                 if(primaryFPReceived){
                     fpPhase = CRUISE_PHASE;
-                    log << timeString + ": IDLE -> CRUISE" <<"\n";
+                    log << timeString + "| [FLIGHT_PHASES] | IDLE -> CRUISE" <<"\n";
                 }else{
                     SendStatus((char*)"No flightplan loaded",4);
-                    log << timeString + ": Flightplan not loaded" <<"\n";
+                    log << timeString + "| [WARNING] | Flightplan not loaded" <<"\n";
                 }
                 missionStart = -1;
             }
@@ -469,7 +469,7 @@ int Cognition::FlightPhases(double time){
             if(ditch){
                 emergencyDescentState = INITIALIZING;
                 fpPhase = EMERGENCY_DESCENT_PHASE;
-                log << timeString + ": IDLE -> EMERGENCY_DESCENT" <<"\n";
+                log << timeString + "| [FLIGHT_PHASES] | IDLE -> EMERGENCY_DESCENT" <<"\n";
             }
             break;
         }
@@ -484,7 +484,7 @@ int Cognition::FlightPhases(double time){
             if (status == SUCCESS){
                 fpPhase = CLIMB_PHASE;
 
-                log << timeString + ": TAKEOFF -> CLIMB" <<"\n";
+                log << timeString + "| [FLIGHT_PHASES] | TAKEOFF -> CLIMB" <<"\n";
             }else if(status == FAILED){
                 fpPhase = IDLE_PHASE;
             }
@@ -495,7 +495,7 @@ int Cognition::FlightPhases(double time){
             status = Climb();
             if (status == SUCCESS){
                 fpPhase = CRUISE_PHASE;
-                log << timeString + ": CLIMB -> CRUISE" <<"\n";
+                log << timeString + "| [FLIGHT_PHASES] | CLIMB -> CRUISE" <<"\n";
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
             }
@@ -506,20 +506,20 @@ int Cognition::FlightPhases(double time){
             status = Cruise();
             if (status == SUCCESS){
                 fpPhase = DESCENT_PHASE;
-                log << timeString + ": CRUISE -> DESCENT" <<"\n";
+                log << timeString + "| [FLIGHT_PHASES] | CRUISE -> DESCENT" <<"\n";
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
             }
 
             if( mergingActive == 1){
                 fpPhase = MERGING_PHASE;
-                log << timeString + ": CRUISE -> MERGING" <<"\n";
+                log << timeString + "| [FLIGHT_PHASES] | CRUISE -> MERGING" <<"\n";
             }
 
             if(ditch){
                 emergencyDescentState = INITIALIZING;
                 fpPhase = EMERGENCY_DESCENT_PHASE;
-                log << timeString + ": CRUISE -> EMERGENCY_DESCENT" <<"\n";
+                log << timeString + "| [FLIGHT_PHASES] | CRUISE -> EMERGENCY_DESCENT" <<"\n";
             }
 
             if(trafficConflictState == RESOLVE && parameters.resolutionType == DITCH_RESOLUTION){
@@ -539,7 +539,7 @@ int Cognition::FlightPhases(double time){
             status = Descent();
             if (status == SUCCESS){
                 fpPhase = APPROACH_PHASE;
-                log << timeString + ": DESCENT -> APPROACH" <<"\n";
+                log << timeString + "| [FLIGHT_PHASES] | DESCENT -> APPROACH" <<"\n";
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
             }
@@ -558,7 +558,7 @@ int Cognition::FlightPhases(double time){
             // If end ditch is requested, kill ditching
             if(endDitch){
                 emergencyDescentState = SUCCESS;
-                log << timeString + ": END DITCHING" <<"\n";
+                log << timeString + "| [STATUS] | END DITCHING" <<"\n";
             }
             break;
         }
@@ -567,7 +567,7 @@ int Cognition::FlightPhases(double time){
             status = Approach();
             if (status == SUCCESS){
                 fpPhase = LANDING_PHASE;
-                log << timeString + ": APPROACH -> LANDING" <<"\n";
+                log << timeString + "| [FLIGHT_PHASES] | APPROACH -> LANDING" <<"\n";
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
             }
@@ -580,7 +580,7 @@ int Cognition::FlightPhases(double time){
             if (status == SUCCESS){
                 fpPhase = IDLE_PHASE;
                 missionStart = -2;
-                log << timeString + ": LANDING -> IDLE" <<"\n";
+                log << timeString + "| [FLIGHT_PHASES] | LANDING -> IDLE" <<"\n";
             }else if(status == FAILED){
                 // TODO: Figure out a fall back plan
             }
@@ -591,7 +591,7 @@ int Cognition::FlightPhases(double time){
             if(mergingActive == 2 || mergingActive == 0){
                 fpPhase = CRUISE_PHASE;
                 SetGuidanceFlightPlan((char*)"Plan0",nextFeasibleWpId["Plan0"]);
-                log << timeString + ": MERGING -> CRUISE" <<"\n";
+                log << timeString + "| [FLIGHT_PHASES] | MERGING -> CRUISE" <<"\n";
             }else if(mergingActive == 3){
                 //printf("Setting guidance flightplan\n");
                 //SetGuidanceFlightPlan((char*)"PlanM",1);
@@ -618,7 +618,7 @@ status_e Cognition::Takeoff(){
                takeoffComplete = 0;
            }else{
                takeoffState = FAILED;
-               log << timeString + ": Geofence constraint violated before takeoff" <<"\n";
+               log << timeString + "| [CONFLICT] | Geofence constraint violated before takeoff" <<"\n";
            }
            break;
        }
@@ -631,7 +631,7 @@ status_e Cognition::Takeoff(){
                takeoffState = RUNNING;
            }else{
                takeoffState = FAILED;
-               log << timeString + ": Takeoff failed" <<"\n";
+               log << timeString + "| [WARNING] | Takeoff failed" <<"\n";
            }
            break;
        }
@@ -762,7 +762,7 @@ status_e Cognition::EmergencyDescent(){
                 if(dist_to_target < positionA.alt()){
                     topOfDescent = true;
                     SendStatus((char*)"IC:Reached TOD",6);
-                    log << timeString + ": Reached TOD" <<"\n";
+                    log << timeString + "| [STATUS] | Reached TOD" <<"\n";
                 }
             }else{
                 //TODO: Add parameter for final leg of ditching
@@ -822,6 +822,7 @@ void Cognition::SetGuidanceFlightPlan(const std::string &plan_id,const int wp_in
     Command cmd = {.commandType = Command::FP_CHANGE};
     cmd.fpChange = fp_change;
     cognitionCommands.push_back(cmd);
+    log << timeString + "| [MODE] | Guidance Flightplan change, Plan: "<<plan_id<<", wp:"<<wp_index<<"\n";
 }
 
 void Cognition::SetGuidanceP2P(const larcfm::Position &point,const double speed){
@@ -853,7 +854,7 @@ bool Cognition::GeofenceConflictManagement(){
          if(geofence_conflict){
             SendStatus((char*)"IC: Geofence conflict detected",1);
 
-            log << timeString + ": Geofence conflict detected" <<"\n";
+            log << timeString + "| [CONFLICT] | Geofence conflict detected" <<"\n";
             geofenceConflictState = INITIALIZE;
             requestGuidance2NextWP = -1;
             return2NextWPState = NOOPC;
@@ -886,7 +887,7 @@ bool Cognition::GeofenceConflictManagement(){
          geofenceConflictState = NOOPC;
          return2NextWPState = NOOPC;
          SendStatus((char*)"IC:Geofence resolution complete",6);
-         log << timeString + ": Geofence conflict resolved" <<"\n";
+         log << timeString + "| [RESOLVED] | Geofence conflict resolved" <<"\n";
          break;
       }
 
@@ -921,7 +922,7 @@ bool Cognition::XtrackManagement(){
          if(conflict){
             SendStatus((char*)"IC:xtrack conflict",1);
             XtrackConflictState = INITIALIZE;
-            log << timeString + ": Xtrack conflict detected" <<"\n";
+            log << timeString + "| [CONFLICT] | Xtrack conflict detected" <<"\n";
             break;
          }
          return false;
@@ -949,7 +950,7 @@ bool Cognition::XtrackManagement(){
          int next_wp_id = nextWpId[activePlan->getID()];
          SetGuidanceFlightPlan((char*)"Plan0",next_wp_id);
          SendStatus((char*)"IC:xtrack conflict resolved",6);
-         log << timeString + ": Xtrack conflict resolved" <<"\n";
+         log << timeString + "| [RESOLVED] | Xtrack conflict resolved" <<"\n";
          break;
       }
 
@@ -970,7 +971,7 @@ bool Cognition::TrafficConflictManagement(){
       case NOOPC:{
          if(trafficConflict){
             SendStatus((char*)"IC:traffic conflict",1);
-            log << timeString + ": Traffic conflict detected" <<"\n";
+            log << timeString + "| [CONFLICT] | Traffic conflict detected" <<"\n";
             trafficConflictState = INITIALIZE;
             requestGuidance2NextWP = -1;
             break;
@@ -992,16 +993,20 @@ bool Cognition::TrafficConflictManagement(){
          // Use this only for search based resolution
          if(parameters.resolutionType == SEARCH_RESOLUTION){
             return2NextWPState = INITIALIZE;
-            log << timeString + ": Resolving conflict with search resolution" <<"\n";
+            log << timeString + "| [STATUS] Resolving conflict with search resolution" <<"\n";
          }else if(parameters.resolutionType == SPEED_RESOLUTION){
-            log << timeString + ": Resolving conflict with speed resolution" <<"\n";
+            log << timeString + "| [STATUS] Resolving conflict with speed resolution" <<"\n";
+            log << timeString + "| [MODE] | Guidance Speed Request"<<"\n";
          }else if(parameters.resolutionType == ALTITUDE_RESOLUTION){
-            log << timeString + ": Resolving conflict with altitude resolution" <<"\n";
+            log << timeString + "| [STATUS] Resolving conflict with altitude resolution" <<"\n";
+            log << timeString + "| [MODE] | Guidance Vector Request"<<"\n";
          }else if(parameters.resolutionType == TRACK_RESOLUTION){
-            log << timeString + ": Resolving conflict with track resolution" <<"\n";
+            log << timeString + "| [STATUS] Resolving conflict with track resolution" <<"\n";
+            log << timeString + "| [MODE] | Guidance Vector Request"<<"\n";
          }else if(parameters.resolutionType == DITCH_RESOLUTION){
             // The top level statemachine should catch this
             // and transition to the emergency descent state.
+            log << timeString + "| [STATUS] Resolving conflict with ditch resolution" <<"\n";
          }
          break;
       }
@@ -1041,7 +1046,7 @@ bool Cognition::TrafficConflictManagement(){
 
          SendStatus((char*)"IC:traffic conflict resolved",6);
 
-         log << timeString + ": Traffic conflict resolved" <<"\n";
+         log << timeString + "| [RESOLVED] | Traffic conflict resolved" <<"\n";
          return2NextWPState = NOOPC;
          break;
       }
@@ -1180,10 +1185,14 @@ bool Cognition::ReturnToNextWP(){
       }
 
       case INITIALIZE:{
-         nextWpId[activePlan->getID()] = nextFeasibleWpId[activePlan->getID()];
+
+         std::string returningPlan("Plan0");
+         // Currently only consider return to nominal mission plan
+         //returningPlan = activePlan->getID();
+         nextWpId[returningPlan] = nextFeasibleWpId[returningPlan];
          return2NextWPState = COMPUTE;
          request = REQUEST_NIL;
-
+         log << timeString + "| [CONFLICT] | Returning to "<<returningPlan<<" wp:"<<nextWpId[returningPlan]<<"\n";
          break;
       }
 
@@ -1205,7 +1214,6 @@ bool Cognition::ReturnToNextWP(){
             FindNewPath(pathName,positionA, velocityA, positionB);
             request = REQUEST_PROCESSING;
             SendStatus((char*)"IC:Computing secondary path",6);
-            log << timeString + ": Computing secondary path: " <<pathName<<"\n";
 
          }
          else if (request == REQUEST_RESPONDED)
@@ -1238,7 +1246,7 @@ bool Cognition::ReturnToNextWP(){
             int num_secondary_wps = GetTotalWaypoints(plan_id);
             if(next_secondary_wp_id > (ceil((float)(num_secondary_wps-1))/2)){
                if (keepInConflict || keepOutConflict || trafficConflict){
-                  log << timeString + ": Incomplete termination of return to path: " <<next_secondary_wp_id<<"/"<<num_secondary_wps<<"\n";
+                  log << timeString + "| [STATUS] | Incomplete termination of return to path: " <<next_secondary_wp_id<<"/"<<num_secondary_wps<<"\n";
                   return2NextWPState = NOOPC;
                   requestGuidance2NextWP = 1;
                   return false;
@@ -1252,11 +1260,11 @@ bool Cognition::ReturnToNextWP(){
   
          return2NextWPState = NOOPC;
          requestGuidance2NextWP = -1;
+         log << timeString + "| [RESOLVED] | Resuming Plan0"<<"\n";
          if(nextWpId["Plan0"] < GetTotalWaypoints("Plan0")){
             SetGuidanceFlightPlan((char*)"Plan0",nextWpId["Plan0"]);
          }
          SendStatus((char*)"IC:Resuming mission",6);
-         log << timeString + ": Resuming Plan0, proceeding from waypoint:"<<nextWpId["Plan0"]<<"\n";
          break;
       }
    }
@@ -1296,6 +1304,8 @@ void Cognition::FindNewPath(const std::string &PlanID,
     Command cmd = {.commandType=Command::FP_REQUEST};
     cmd.fpRequest = fp_request;
     cognitionCommands.push_back(cmd);
+
+    log << timeString + "| [PATH_REQUEST] | Computing secondary path: " <<PlanID<<"\n";
 }
 
 void Cognition::GetResolutionType(){
