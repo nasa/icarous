@@ -119,7 +119,10 @@ void COGNITION_AppInit(void){
 }
 
 void COGNITION_AppInitData(void){
-    appdataCog.cog = CognitionInit();
+    char buffer[25];
+    memset(buffer,0,25);
+    sprintf(buffer,"vehicle%d",CFE_PSP_GetSpacecraftId());
+    appdataCog.cog = CognitionInit(buffer);
     CFE_SB_InitMsg(&appdataCog.statustxt,ICAROUS_STATUS_MID,sizeof(status_t),TRUE);
 }
 

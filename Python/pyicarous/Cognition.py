@@ -15,8 +15,9 @@ class CognitionParams(Structure):
 ARR3 = c_double*3
 
 class Cognition():
-    def __init__(self):
+    def __init__(self,callSign):
         self.lib = CDLL('libCognition.so')
+        self.lib.CognitionInit.argtypes = [c_char_p]
         self.lib.CognitionInit.restype = c_void_p
         self.lib.Reset.argtypes = [c_void_p]
         self.lib.ResetFlightPhases.argtypes = [c_void_p]
@@ -37,7 +38,7 @@ class Cognition():
         self.lib.FlightPhases.argtypes = [c_void_p,c_double]
         self.lib.FlightPhases.restype = c_int
 
-        self.obj = self.lib.CognitionInit()
+        self.obj = self.lib.CognitionInit(c_char_p(callSign.encode('utf-8')))
 
     def InputVehicleState(self,pos,vel,hdg):
         cpos = ARR3(*pos)

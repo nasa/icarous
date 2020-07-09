@@ -96,7 +96,7 @@ typedef enum{
 
 class Cognition{
     public:
-        Cognition();
+        Cognition(const std::string callSign);
 
         void Reset();
 
@@ -225,6 +225,7 @@ class Cognition{
     private:
         double utcTime;                         ///< Current time
         std::string timeString;                 ///< Formatted time string
+        std::string callSign;                   ///< Vehicle's callsign string
         cognition_params_t parameters;          ///< Configurable parameters used by Cognition
 
         // Flight plan book keeping

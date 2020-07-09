@@ -37,7 +37,7 @@ class Icarous():
             self.ownship = QuadSim()
 
         self.vehicleID = vehicleID
-        self.Cog = Cognition()
+        self.Cog = Cognition("vehicle"+str(vehicleID))
         self.Guidance = Guidance(GuidanceParam())
         self.Geofence = GeofenceMonitor([3,2,2,20,20])
         self.Trajectory = Trajectory(5.0,250)

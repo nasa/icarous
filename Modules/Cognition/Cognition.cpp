@@ -1,6 +1,6 @@
 #include "Cognition.hpp"
 
-Cognition::Cognition(){
+Cognition::Cognition(const std::string callsign){
     Initialize();
     parameters.resolutionType = TRACK_RESOLUTION;
     parameters.DTHR = 30;
@@ -13,7 +13,8 @@ Cognition::Cognition(){
     struct timespec  tv;
     clock_gettime(CLOCK_REALTIME,&tv);
     double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
-    std::string filename("log/Cognition-" + std::to_string(localT) + ".log");
+    callSign = callsign;
+    std::string filename("log/Cognition-" + callSign + "-" + std::to_string(localT) + ".log");
     log.open(filename);
 }
 

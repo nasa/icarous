@@ -1,8 +1,8 @@
 #include "Cognition.hpp"
 #include "Cognition.h"
 
-void* CognitionInit(){
-    Cognition* cog = new Cognition();
+void* CognitionInit(const char callsign[]){
+    Cognition* cog = new Cognition(std::string(callsign));
     return (void*)cog;
 }
 
