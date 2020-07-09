@@ -54,7 +54,7 @@ void TrafficMonitor::UpdateDAAParameters(char daaParameters[],bool reclog) {
         struct tm       *tm;
         clock_gettime(CLOCK_REALTIME,&tv);
         double localT = tv.tv_sec + static_cast<float>(tv.tv_nsec)/1E9;
-        sprintf(fmt1,"Daidalus-%f.log",localT);
+        sprintf(fmt1,"log/Daidalus-%f.log",localT);
         logfileIn.open(fmt1);
     }
 }
