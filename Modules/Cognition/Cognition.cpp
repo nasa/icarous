@@ -765,6 +765,12 @@ status_e Cognition::EmergencyDescent(){
                     SendStatus((char*)"IC:Reached TOD",6);
                     log << timeString + "| [STATUS] | Reached TOD" <<"\n";
                 }
+
+                // Continuously check for conflicts with intruders when proceeding to ditch site
+                trafficConflict = trafficSpeedConflict | trafficAltConflict | trafficTrackConflict;
+                if(trafficConflict){
+                    emergencyDescentState = INITIALIZING;
+                }
             }else{
                 //TODO: Add parameter for final leg of ditching
                 if(!command_sent){
